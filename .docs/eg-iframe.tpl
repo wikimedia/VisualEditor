@@ -3,7 +3,6 @@
 <head>
 	<meta charset="utf-8">
 	<title>VisualEditor Examples</title>
-	<head>
 {{VE-LOAD-HEAD}}
 		<script>
 			function loadInlineExample(code, options, callback) {

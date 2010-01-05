@@ -4,12 +4,12 @@ cd $(cd $(dirname $0); pwd)
 (
 	while IFS='' read -r l
 	do
-		if [[ "$l" =~ {{VE-LOAD-BODY}} ]]
-		then
-			php ../maintenance/makeStaticLoader.php --section=body --ve-path=../modules/
-		elif [[ "$l" =~ {{VE-LOAD-HEAD}} ]]
+		if [[ "$l" == "{{VE-LOAD-HEAD}}" ]]
 		then
 			php ../maintenance/makeStaticLoader.php --section=head --ve-path=../modules/
+		elif [[ "$l" == "{{VE-LOAD-BODY}}" ]]
+		then
+			php ../maintenance/makeStaticLoader.php --section=body --ve-path=../modules/
 		else
 			echo "$l"
 		fi
