@@ -148,3 +148,25 @@ es.insertIntoArray = function( dst, offset, src ) {
 		index += batchSize;
 	}
 };
+
+/**
+ * Gets a string with a pattern repeated a given number of times.
+ * 
+ * @static
+ * @method
+ * @param {String} pattern Pattern to repeat
+ * @param {Integer} count Number of times to repeat pattern
+ * @returns {String} String of repeated pattern
+ */
+es.repeatString = function( pattern, count ) {
+	if ( count < 1 ) {
+		return '';
+	}
+	var result = '';
+	while ( count > 0 ) {
+		if ( count & 1 ) { result += pattern; }
+		count >>= 1;
+		pattern += pattern;
+	}
+	return result;
+};
