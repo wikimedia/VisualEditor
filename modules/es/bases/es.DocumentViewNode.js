@@ -199,7 +199,7 @@ es.DocumentViewNode.prototype.detach = function() {
 };
 
 /**
- * Gets the length of the content in the model.
+ * Gets the length of the element in the model.
  * 
  * @method
  * @returns {Integer} Length of content
@@ -208,6 +208,12 @@ es.DocumentViewNode.prototype.getElementLength = function() {
 	return this.model.getElementLength();
 };
 
+/**
+ * Gets the length of the content in the model.
+ * 
+ * @method
+ * @returns {Integer} Length of content
+ */
 es.DocumentViewNode.prototype.getContentLength = function() {
 	return this.model.getContentLength();
 };
