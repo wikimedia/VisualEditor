@@ -1,0 +1,222 @@
+.es-surfaceView {
+	overflow: hidden;
+}
+
+.es-surfaceView-input {
+	position: absolute;
+	z-index: -1;
+	opacity: 0;
+	color: white;
+	background-color: white;
+	border: none;
+	padding: 0;
+	margin: 0;
+	width: 1px;
+}
+
+.es-surfaceView-input:focus {
+	outline: none;
+}
+
+.es-surfaceView-cursor {
+	position: absolute;
+	background-color: black;
+	width: 1px;
+	height: 1.5em;
+	min-height: 1.5em;
+	display: none;
+}
+
+.es-documentView {
+	cursor: text;
+	margin-top: 1em;
+	overflow: hidden;
+	-webkit-user-select: none;
+}
+
+.es-contentView {
+	position: relative;
+}
+
+.es-headingView,
+.es-tableView,
+.es-listView,
+.es-paragraphView {
+	margin: 1em;
+	margin-top: 0;
+	position: relative;
+	min-height: 1.5em;
+	font-size: 1em;
+}
+
+.es-headingView-level1,
+.es-headingView-level2 {
+	border-bottom: 1px solid #AAA;
+}
+
+.es-headingView-level1 > * {
+	font-size:188%;
+	font-weight: normal;
+}
+
+.es-headingView-level2 > * {
+	font-size:150%;
+	font-weight: normal;
+}
+
+.es-headingView-level3 > * {
+	font-size:132%;
+	font-weight: bold;
+}
+
+.es-headingView-level4 > * {
+	font-size:116%;
+	font-weight: bold;
+}
+
+.es-headingView-level5 > * {
+	font-size:100%;
+	font-weight: bold;
+}
+
+.es-headingView-level6 > * {
+	font-size:80%;
+	font-weight: bold;
+}
+
+.es-listItemView {
+	position: relative;
+	padding: 0 0 0 1em;
+	background-position: left 0.6em;
+	background-repeat: no-repeat;
+}
+
+.es-listItemView-bullet {
+	background-image: url(images/bullet.png);
+}
+
+.es-listItemView-number {
+	/* */
+}
+
+.es-listItemView-bullet .es-listItemView-icon {
+	display: none;
+}
+
+.es-listItemView-number .es-listItemView-icon {
+	position: absolute;
+	right: 100%;
+	margin-right: -0.5em;
+	height: 1.5em;
+	line-height: 1.5em;
+}
+
+.es-listItemView-level0 {
+	margin-left: 0.5em;
+}
+
+.es-listItemView-level1 {
+	margin-left: 2.5em;
+}
+
+.es-listItemView-level2 {
+	margin-left: 4.5em;
+}
+
+.es-listItemView-level3 {
+	margin-left: 6.5em;
+}
+
+.es-listItemView-level4 {
+	margin-left: 8.5em;
+}
+
+.es-listItemView-level5 {
+	margin-left: 10.5em;
+}
+
+.es-listItemView-level6 {
+	margin-left: 12.5em;
+}
+
+.es-contentView-line,
+.es-contentView-ruler {
+	line-height: 1.5em;
+	cursor: text;
+	white-space: nowrap;
+	color: #000000;
+}
+
+.es-contentView-ruler {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: inline-block;
+	z-index: -1000;
+}
+
+.es-contentView-line.empty {
+	display: block;
+	width: 0px;
+}
+
+.es-contentView-whitespace {
+	color: #ffffff;
+}
+
+.es-contentView-range {
+	display: none;
+	position: absolute;
+	background-color: #bbffcc;
+	cursor: text;
+	z-index: -1;
+}
+
+.es-contentView-format-object {
+	background-color: rgba(0,0,0,0.05);
+	border-radius: 0.25em;
+	margin: 1px 0 1px 1px;
+	padding: 0.25em 0;
+	cursor: default;
+}
+
+.es-contentView-format-object * {
+	cursor: default !important;
+}
+
+.es-contentView-format-object a:link,
+.es-contentView-format-object a:visited,
+.es-contentView-format-object a:active {
+	color: blue;
+}
+
+.es-contentView-format-italic {
+	font-style: italic;
+}
+
+.es-contentView-format-bold {
+	font-weight: bold;
+}
+
+.es-contentView-format-link {
+	color: blue;
+	text-decoration: underline;
+}
+
+.es-contentView-format-big {
+	font-size: 1.2em;
+}
+
+.es-contentView-format-small,
+.es-contentView-format-sub,
+.es-contentView-format-super {
+	font-size: .8em;
+}
+
+.es-contentView-format-sub {
+	vertical-align: sub;
+}
+
+.es-contentView-format-super {
+	vertical-align: super;
+}
