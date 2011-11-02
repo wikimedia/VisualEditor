@@ -481,7 +481,6 @@ es.ContentView.prototype.scanBoundaries = function() {
 	// Get and cache a copy of all content, the make a plain-text version of the cached content
 	var data = this.contentCache = this.model.getContent(),
 		text = '';
-	debugger;
 	for ( var i = 0, length = data.length; i < length; i++ ) {
 		text += typeof data[i] === 'string' ? data[i] : data[i][0];
 	}
