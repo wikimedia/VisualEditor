@@ -27,7 +27,7 @@ es.HeadingView.prototype.setClasses = function() {
 		level = this.model.getElementAttribute( 'level' );
 	this.$
 		// Remove any existing level classes
-		.attr( 'class', classes.replace( /es-headingView-level[1-6]/, '' ) )
+		.attr( 'class', classes.replace( /es-headingView-level[0-9]/, '' ) )
 		// Add a new level class
 		.addClass( 'es-headingView-level' + level );
 };
