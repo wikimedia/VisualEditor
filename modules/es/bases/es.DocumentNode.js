@@ -23,6 +23,10 @@ es.DocumentNode.prototype.getElementLength = function() {
 	throw 'DocumentNode.getElementLength not implemented in this subclass: ' + this.constructor;
 };
 
+es.DocumentNode.prototype.getContentLength = function() {
+	throw 'DocumentNode.getContentLength not implemented in this subclass: ' + this.constructor;
+};
+
 /* Methods */
 
 /**
@@ -138,7 +142,11 @@ es.DocumentNode.prototype.getNodeFromOffset = function( offset, shallow ) {
  * covered by the range and the range within the node that is covered
  */
 es.DocumentNode.prototype.selectNodes = function( range, shallow ) {
-	range.normalize();
+	if ( typeof range === 'undefined' ) {
+		range = new es.Range( 0, this.model.getContentLength() );
+	} else {
+		range.normalize();
+	}
 	var nodes = [],
 		i,
 		left,

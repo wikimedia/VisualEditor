@@ -73,16 +73,6 @@ es.DocumentViewLeafNode.prototype.getRenderedPositionFromOffset = function( offs
 	return position;
 };
 
-/**
- * Gets the length of the content in the model.
- * 
- * @method
- * @returns {Integer} Length of content
- */
-es.DocumentViewLeafNode.prototype.getElementLength = function() {
-	return this.model.getElementLength();
-};
-
 es.DocumentViewLeafNode.prototype.getRenderedLineRangeFromOffset = function( offset ) {
 	return this.contentView.getRenderedLineRangeFromOffset( offset );
 };

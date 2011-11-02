@@ -198,6 +198,20 @@ es.DocumentViewNode.prototype.detach = function() {
 	this.emit( 'detach', parent );
 };
 
+/**
+ * Gets the length of the content in the model.
+ * 
+ * @method
+ * @returns {Integer} Length of content
+ */
+es.DocumentViewNode.prototype.getElementLength = function() {
+	return this.model.getElementLength();
+};
+
+es.DocumentViewNode.prototype.getContentLength = function() {
+	return this.model.getContentLength();
+};
+
 /* Inheritance */
 
 es.extendClass( es.DocumentViewNode, es.DocumentNode );

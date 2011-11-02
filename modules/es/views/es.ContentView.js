@@ -209,8 +209,11 @@ es.ContentView.renderAnnotation = function( bias, annotation, stack ) {
  * @param {es.Range} range Range to draw selection around
  */
 es.ContentView.prototype.drawSelection = function( range ) {
-	range.normalize();
-
+	if ( typeof range === 'undefined' ) {
+		range = new es.Range( 0, this.model.getContentLength() );
+	} else {
+		range.normalize();
+	}
 	var fromLineIndex = this.getRenderedLineIndexFromOffset( range.start ),
 		toLineIndex = this.getRenderedLineIndexFromOffset( range.end ),
 		fromPosition = this.getRenderedPositionFromOffset( range.start ),
