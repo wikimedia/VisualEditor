@@ -6,11 +6,13 @@
  * @extends {es.Serializer}
  * @property options {Object} List of options for serialization
  * @property options.indentWith {String} Text to use as indentation, such as \t or 4 spaces
+ * @property options.joinWith {String} Text to use as line joiner, such as \n or '' (empty string)
  */
 es.JsonSerializer = function( options ) {
 	es.Serializer.call( this );
 	this.options = $.extend( {
-		'indentWith': '\t'
+		'indentWith': '\t',
+		'joinWith': '\n'
 	}, options || {} );
 };
 
@@ -68,8 +70,8 @@ es.JsonSerializer.prototype.encode = function( data, indention ) {
 	var comma = false;
 	for ( key in data ) {
 		if ( data.hasOwnProperty( key ) ) {
-			json += ( comma ? ',' : '' ) + '\n' + indention + this.options.indentWith +
-				( type === 'array' ? '' : '"' + key + '"' + ': ' );
+			json += ( comma ? ',' : '' ) + this.options.joinWith + indention +
+				this.options.indentWith + ( type === 'array' ? '' : '"' + key + '"' + ': ' );
 			switch ( es.JsonSerializer.typeOf( data[key] ) ) {
 				case 'array':
 				case 'object':
@@ -83,9 +85,7 @@ es.JsonSerializer.prototype.encode = function( data, indention ) {
 					json += 'null';
 					break;
 				case 'string':
-					json += '"' + data[key]
-						.replace(/[\n]/g, '\\n')
-						.replace(/[\t]/g, '\\t') + '"';
+					json += '"' + data[key].replace(/[\n]/g, '\\n').replace(/[\t]/g, '\\t') + '"';
 					break;
 				// Skip other types
 			}
@@ -94,7 +94,7 @@ es.JsonSerializer.prototype.encode = function( data, indention ) {
 	}
 	
 	// Close object/array
-	json += '\n' + indention + ( type === 'array' ? ']' : '}' );
+	json += this.options.joinWith + indention + ( type === 'array' ? ']' : '}' );
 	
 	return json;
 };
