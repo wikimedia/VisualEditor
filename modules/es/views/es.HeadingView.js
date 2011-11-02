@@ -8,7 +8,7 @@
  */
 es.HeadingView = function( model ) {
 	// Inheritance
-	es.DocumentViewLeafNode.call( this, model, $( '<h' + model.getElementAttribute( 'level' )  + '>') );
+	es.DocumentViewLeafNode.call( this, model );
 
 	// DOM Changes
 	this.$.addClass( 'es-headingView' );
