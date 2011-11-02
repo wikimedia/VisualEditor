@@ -12,7 +12,7 @@ es.DocumentViewLeafNode = function( model, $element ) {
 	es.DocumentViewNode.call( this, model, $element );
 
 	// Properties
-	this.$content = $( '<div class="es-content"></div>' ).appendTo( this.$ );
+	this.$content = $( '<div class="es-contentView"></div>' ).appendTo( this.$ );
 	this.contentView = new es.ContentView( this.$content, model );
 };
 
