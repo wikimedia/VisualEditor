@@ -40,8 +40,8 @@ es.DocumentViewBranchNode.prototype.drawSelection = function( range ) {
 		if ( nodes.length && this.children[i] === nodes[0].node ) {
 			for ( var j = 0; j < nodes.length; j++ ) {
 				nodes[j].node.drawSelection( nodes[j].range );
-				i++;
 			}
+			i += nodes.length - 1;
 		} else {
 			this.children[i].clearSelection();
 		}

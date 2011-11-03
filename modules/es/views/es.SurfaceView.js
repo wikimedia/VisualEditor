@@ -68,10 +68,10 @@ es.SurfaceView = function( $container, model ) {
 				$document.off( '.es-surfaceView' );
 				$document.on({
 					'mousemove.es-surfaceView': function(e) {
-						//return surfaceView.onMouseMove( e );
+						return surfaceView.onMouseMove( e );
 					},
 					'mouseup.es-surfaceView': function(e) {
-						//return surfaceView.onMouseUp( e );
+						return surfaceView.onMouseUp( e );
 					},
 					'keydown.es-surfaceView': function( e ) {
 						return surfaceView.onKeyDown( e );			
@@ -114,14 +114,47 @@ es.SurfaceView = function( $container, model ) {
 };
 
 es.SurfaceView.prototype.onMouseDown = function( e ) {
-	var position = es.Position.newFromEventPagePosition( e ),
-		offset = this.documentView.getOffsetFromEvent( e ),
-		nodeView = this.documentView.getNodeFromOffset( offset, false );
-	this.showCursor( offset, position.left > nodeView.$.offset().left );
+	if ( e.button === 0 /* left mouse button */ ) {
+		var position = es.Position.newFromEventPagePosition( e ),
+			offset = this.documentView.getOffsetFromEvent( e ),
+			nodeView = this.documentView.getNodeFromOffset( offset, false );
+		this.showCursor( offset, position.left > nodeView.$.offset().left );
+		this.mouse.selecting = true;
+		if ( !this.keyboard.keys.shift ) {
+			this.selection.from = offset;
+		}
+		this.selection.to = offset;
+		this.drawSelection();
+	}
 	if ( !this.$input.is( ':focus' ) ) {
 		this.$input.focus().select();
 	}
+	this.cursor.initialLeft = null;
 	return false;
+};
+
+es.SurfaceView.prototype.onMouseMove = function( e ) {
+	if ( e.button === 0 /* left mouse button */ && this.mouse.selecting ) {
+		this.hideCursor();
+		this.selection.to = this.documentView.getOffsetFromEvent( e );
+		if ( !this.drawSelection() ) {
+			this.showCursor();
+		}
+	}
+};
+
+es.SurfaceView.prototype.onMouseUp = function( e ) {
+	if ( e.button === 0 /* left mouse button */ && this.selection.to ) {
+		if ( this.drawSelection() ) {
+			this.hideCursor();
+		}
+	}
+	this.mouse.selecting = false;
+};
+
+es.SurfaceView.prototype.drawSelection = function() {
+	this.documentView.drawSelection( new es.Range( this.selection.from, this.selection.to ) );
+	return this.selection.from !== this.selection.to;
 };
 
 es.SurfaceView.prototype.onKeyDown = function( e ) {
