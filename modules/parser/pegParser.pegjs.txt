@@ -116,17 +116,17 @@ anything
                       + ", matched: " + str.substr(0,m));
               // reverse parser position
               pos -= str.length - m;
-              return str.substr(0,m);
+              return {text: str.substr(0,m)};
           } else {
               if (m == 0) {
                   pos -= str.length;
                   return null;
               } else {
-                  return str;
+                  return {text: str};
               }
           }
       } else {
-          return str;
+          return {text: str};
       }
   }
 
@@ -143,17 +143,17 @@ anyline
               pos -= str.length - m;
               dp("anyline reverse " + (str.length - m) 
                       + ", matched: " + str.substr(0,m));
-              return str.substr(0,m);
+              return {text: str.substr(0,m)};
           } else {
               if (m == 0) {
                   pos -= str.length;
                   return null;
               } else {
-                  return str;
+                  return {text : str};
               }
           }
       } else {
-          return str;
+          return {text: str};
       }
   }
         
@@ -286,8 +286,8 @@ inlineline
     }
     if (text.length) {
       out.push({
-        type: 'text',
-        text: text
+        text: text,
+        //annotations: []
       });
     }
     return out;

@@ -50,6 +50,7 @@ _require(pj('es', 'es.js'));
 _require(pj('es', 'bases', 'es.EventEmitter.js'));
 _require(pj('es', 'bases', 'es.Document.js'));
 _require(pj('es', 'bases', 'es.Document.Serializer.js'));
+_require(pj('es', 'serializers', 'es.AnnotationSerializer.js'));
 _require(pj('es', 'serializers', 'es.Document.HtmlSerializer.js'));
 _require(pj('es', 'serializers', 'es.Document.WikitextSerializer.js'));
 _require(pj('es', 'serializers', 'es.Document.JsonSerializer.js'));

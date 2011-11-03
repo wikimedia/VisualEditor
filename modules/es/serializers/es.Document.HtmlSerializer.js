@@ -58,9 +58,8 @@ es.Document.HtmlSerializer.prototype.serializeHeading = function( heading ) {
 
 es.Document.HtmlSerializer.prototype.serializeParagraph = function( paragraph, raw ) {
 	var out = [];
-	for ( var l = 0, lMax = paragraph.lines.length; l < lMax; l++ ) {
-		out.push( this.serializeLine( paragraph.lines[l] ) );
-	}
+        // XXX: fix content to be single oblect with text and annotations!
+	out.push( this.serializeLine( paragraph.content[0] ) );
 	if ( raw ) {
 		return out.join( '\n' );
 	} else {
