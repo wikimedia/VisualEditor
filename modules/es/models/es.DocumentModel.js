@@ -488,7 +488,7 @@ es.DocumentModel.flattenPlainObjectElementNode = function( obj ) {
  * @method
  * @returns {Object} Plain object representation
  */
-es.DocumentModel.expandContentData = function( data ) {
+es.DocumentModel.getExpandedContentData = function( data ) {
 	var stack = [];
 	// Text and annotations
 	function start( offset, annotation ) {

@@ -75,7 +75,7 @@ es.DocumentModelNode.prototype.getPlainObject = function() {
 			obj.children.push( this.children[i].getPlainObject() );
 		}
 	} else if ( this.getContentLength() ) {
-		obj.content = es.DocumentModel.expandContentData( this.getContent() );
+		obj.content = es.DocumentModel.getExpandedContentData( this.getContent() );
 	}
 	return obj;
 };

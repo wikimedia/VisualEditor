@@ -38,6 +38,21 @@ es.HtmlSerializer.getHtmlAttributes = function( attributes ) {
 	return count ? htmlAttributes : null;
 };
 
+es.HtmlSerializer.getExpandedListItems = function( node ) {
+	var styles,
+		levels = [];
+	for ( var i = 0; i < this.children.length; i++ ) {
+		styles = this.children[i].model.getElementAttribute( 'styles' );
+		levels = levels.slice( 0, styles.length );
+		if ( styles[styles.length - 1] === 'number' ) {
+			if ( !levels[styles.length - 1] ) {
+				levels[styles.length - 1] = 0;
+			}
+			this.children[i].setNumber( ++levels[styles.length - 1] );
+		}
+	}
+};
+
 /* Methods */
 
 es.HtmlSerializer.prototype.document = function( node, rawFirstParagraph ) {
