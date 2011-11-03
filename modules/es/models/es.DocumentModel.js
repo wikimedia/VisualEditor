@@ -492,12 +492,21 @@ es.DocumentModel.expandContentData = function( data ) {
 	var stack = [];
 	// Text and annotations
 	function start( offset, annotation ) {
-		stack.push( es.extendObject( true, {}, annotation, { 'range': { 'start': offset } } ) );
+		// Make a new verion of the annotation object and push it to the stack
+		var obj = {
+			'type': annotation.type,
+			'range': { 'start': offset }
+		};
+		if ( annotation.data ) {
+			obj.data = es.copyObject( annotation.data );
+		}
+		stack.push( obj );
 	}
 	function end( offset, annotation ) {
 		for ( var i = stack.length - 1; i >= 0; i-- ) {
 			if ( !stack[i].range.end ) {
 				if ( annotation ) {
+					// We would just compare hashes, but the stack doesn't contain any
 					if ( stack[i].type === annotation.type &&
 							es.compareObjects( stack[i].data, annotation.data ) ) {
 						stack[i].range.end = offset;

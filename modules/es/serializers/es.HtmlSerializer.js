@@ -26,6 +26,18 @@ es.HtmlSerializer.stringify = function( data, options ) {
 	return ( new es.HtmlSerializer( options ) ).document( data );
 };
 
+es.HtmlSerializer.getHtmlAttributes = function( attributes ) {
+	var htmlAttributes = {},
+		count = 0;
+	for ( var key in attributes ) {
+		if ( key.indexOf( 'html/' ) === 0 ) {
+			htmlAttributes[key.substr( 5 )] = attributes[key];
+			count++;
+		}
+	}
+	return count ? htmlAttributes : null;
+};
+
 /* Methods */
 
 es.HtmlSerializer.prototype.document = function( node, rawFirstParagraph ) {
@@ -35,7 +47,7 @@ es.HtmlSerializer.prototype.document = function( node, rawFirstParagraph ) {
 		if ( childNode.type in this ) {
 			// Special case for paragraphs which have particular wrapping needs
 			if ( childNode.type === 'paragraph' ) {
-				lines.push( this.paragraph( childNode, rawFirstParagraph && b === 0 ) );
+				lines.push( this.paragraph( childNode, rawFirstParagraph && i === 0 ) );
 			} else {
 				lines.push( this[childNode.type].call( this, childNode ) );
 			}
@@ -52,9 +64,9 @@ es.HtmlSerializer.prototype.horizontalRule = function( node ) {
 	return es.Html.makeTag( 'hr', {}, false );
 };
 
-es.HtmlSerializer.prototype.heading = function( heading ) {
+es.HtmlSerializer.prototype.heading = function( node ) {
 	return es.Html.makeTag(
-		'h' + heading.level, {}, this.serializeLine( heading.content )
+		'h' + node.attributes.level, {}, this.content( node.content )
 	);
 };
 
@@ -72,8 +84,9 @@ es.HtmlSerializer.prototype.list = function( node ) {
 };
 
 es.HtmlSerializer.prototype.table = function( node ) {
-	var lines = [];
-	lines.push( es.Html.makeOpeningTag( 'table', node.attributes ) );
+	var lines = [],
+		attributes = es.HtmlSerializer.getHtmlAttributes( node.attributes );
+	lines.push( es.Html.makeOpeningTag( 'table', attributes ) );
 	for ( var i = 0, length = node.children.length; i < length; i++ ) {
 		lines.push( this.tableRow( node.children[i] ) );
 	}
@@ -82,8 +95,9 @@ es.HtmlSerializer.prototype.table = function( node ) {
 };
 
 es.HtmlSerializer.prototype.tableRow = function( node ) {
-	var lines = [];
-	lines.push( es.Html.makeOpeningTag( 'tr', node.attributes ) );
+	var lines = [],
+		attributes = es.HtmlSerializer.getHtmlAttributes( node.attributes );
+	lines.push( es.Html.makeOpeningTag( 'tr', attributes ) );
 	for ( var i = 0, length = node.children.length; i < length; i++ ) {
 		lines.push( this.tableCell( node.children[i] ) );
 	}
@@ -93,10 +107,11 @@ es.HtmlSerializer.prototype.tableRow = function( node ) {
 
 es.HtmlSerializer.prototype.tableCell = function( node ) {
 	var symbolTable = {
-		'tableHeading': 'th',
-		'tableCell': 'td'
-	};
-	return es.Html.makeTag( symbolTable[node.type], node.attributes, this.document( node, true ) );
+			'tableHeading': 'th',
+			'tableCell': 'td'
+		},
+		attributes = es.HtmlSerializer.getHtmlAttributes( node.attributes );
+	return es.Html.makeTag( symbolTable[node.type], attributes, this.document( node, true ) );
 };
 
 es.HtmlSerializer.prototype.transclusion = function( node ) {

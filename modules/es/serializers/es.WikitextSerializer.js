@@ -26,6 +26,18 @@ es.WikitextSerializer.stringify = function( data, options ) {
 	return ( new es.WikitextSerializer( options ) ).document( data );
 };
 
+es.WikitextSerializer.getHtmlAttributes = function( attributes ) {
+	var htmlAttributes = {},
+		count = 0;
+	for ( var key in attributes ) {
+		if ( key.indexOf( 'html/' ) === 0 ) {
+			htmlAttributes[key.substr( 5 )] = attributes[key];
+			count++;
+		}
+	}
+	return count ? htmlAttributes : null;
+};
+
 /* Methods */
 
 es.WikitextSerializer.prototype.document = function( node, rawFirstParagraph ) {
@@ -56,8 +68,8 @@ es.WikitextSerializer.prototype.horizontalRule = function( node ) {
 };
 
 es.WikitextSerializer.prototype.heading = function( node ) {
-	var symbols = es.repeatString( '=', node.level );
-	return symbols + this.serializeLine( node.line ) + symbols;
+	var symbols = es.repeatString( '=', node.attributes.level );
+	return symbols + this.content( node.content ) + symbols;
 };
 
 es.WikitextSerializer.prototype.paragraph = function( node ) {
@@ -80,28 +92,37 @@ es.WikitextSerializer.prototype.list = function( node ) {
 	for ( var i = 0, length = node.children.length; i < length; i++ ) {
 		var childNode = node.children[i];
 		lines.push(
-			convertStyles( childNode.styles ) + ' ' + this.content( childNode.content, path )
+			convertStyles( childNode.attributes.styles ) + ' ' +
+				this.content( childNode.content )
 		);
 	}
 	return lines.join( '\n' );
 };
 
-es.WikitextSerializer.prototype.table = function( table ) {
-	var lines = [];
-	lines.push( '{|' + es.Document.Serializer.buildXmlAttributes( table.attributes ) );
+es.WikitextSerializer.prototype.table = function( node ) {
+	var lines = [],
+		attributes = es.WikitextSerializer.getHtmlAttributes( node.attributes );
+	if ( attributes ) {
+		attributes = es.Html.makeAttributeList( attributes );
+	}
+	lines.push( '{|' + attributes );
 	for ( var i = 0, length = node.children.length; i < length; i++ ) {
-		lines.push( this.tableRow( node.children[i] ) );
+		lines.push( this.tableRow( node.children[i], i === 0 ) );
 	}
 	lines.push( '|}' );
 	return lines.join( '\n' );
 };
 
-es.WikitextSerializer.prototype.tableRow = function( node ) {
-	var lines = [];
+es.WikitextSerializer.prototype.tableRow = function( node, first ) {
+	var lines = [],
+		attributes = es.WikitextSerializer.getHtmlAttributes( node.attributes );
+	if ( attributes ) {
+		attributes = es.Html.makeAttributeList( attributes );
+	}
+	if ( !first || attributes ) {
+		lines.push( '|-' + attributes );
+	}
 	for ( var i = 0, length = node.children.length; i < length; i++ ) {
-		if ( i > 0 ) {
-			lines.push( '|-' );
-		}
 		lines.push( this.tableCell( node.children[i] ) );
 	}
 	return lines.join( '\n' );
@@ -110,11 +131,13 @@ es.WikitextSerializer.prototype.tableRow = function( node ) {
 es.WikitextSerializer.prototype.tableCell = function( node ) {
 	var symbolTable = {
 		'tableHeading': '!',
-		'tableData': '|'
+		'tableCell': '|'
 	};
-	return symbolTable[node.type] +
-		(  node.attributes ? es.Html.makeAttributeList( cell.attributes ) + '|' : '' ) +
-		this.document( node, true );
+	var attributes = es.WikitextSerializer.getHtmlAttributes( node.attributes );
+	if ( attributes ) {
+		attributes = es.Html.makeAttributeList( attributes ) + '|';
+	}
+	return symbolTable[node.type] + attributes + this.document( node, true );
 };
 
 es.WikitextSerializer.prototype.transclusion = function( node ) {
