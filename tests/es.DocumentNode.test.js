@@ -1,9 +1,12 @@
 module( 'es/bases' );
 
 function DocumentNodeStub( items, name, size ) {
+	// Inheritance
+	es.DocumentBranchNode.call( this, items );
+
+	// Properties
 	this.name = name;
 	this.size = size;
-	return es.extendObject( new es.DocumentNode( items ), this );
 }
 
 DocumentNodeStub.prototype.getContentLength = function() {
@@ -14,6 +17,8 @@ DocumentNodeStub.prototype.getElementLength = function() {
 	// Mimic document data which has an opening and closing around the content
 	return this.size + 2;
 };
+
+es.extendClass( DocumentNodeStub, es.DocumentBranchNode );
 
 test( 'es.DocumentNode', function() {
 

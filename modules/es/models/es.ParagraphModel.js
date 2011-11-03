@@ -3,13 +3,13 @@
  * 
  * @class
  * @constructor
- * @extends {es.DocumentModelNode}
+ * @extends {es.DocumentModelLeafNode}
  * @param {Object} element Document data element of this node
  * @param {Integer} length Length of document data element
  */
 es.ParagraphModel = function( element, length ) {
 	// Inheritance
-	es.DocumentModelNode.call( this, 'paragraph', element, length );
+	es.DocumentModelLeafNode.call( this, 'paragraph', element, length );
 };
 
 /* Methods */
@@ -35,4 +35,4 @@ es.DocumentModel.nodeRules.paragraph = {
 
 /* Inheritance */
 
-es.extendClass( es.ParagraphModel, es.DocumentModelNode );
+es.extendClass( es.ParagraphModel, es.DocumentModelLeafNode );

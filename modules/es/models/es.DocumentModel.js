@@ -6,17 +6,18 @@
  * 
  * @class
  * @constructor
- * @extends {es.DocumentModelNode}
+ * @extends {es.DocumentModelBranchNode}
  * @param {Array} data Model data to initialize with, such as data from es.DocumentModel.getData()
  * @param {Object} attributes Document attributes
  */
 es.DocumentModel = function( data, attributes ) {
 	// Inheritance
-	es.DocumentModelNode.call( this, 'document', null, data ? data.length : 0 );
-	
+	es.DocumentModelBranchNode.call( this, 'document', null );
+
 	// Properties
 	this.data = es.isArray( data ) ? data : [];
 	this.attributes = es.isPlainObject( attributes ) ? attributes : {};
+	this.contentLength = this.data.length;
 
 	// Auto-generate model tree
 	var nodes = es.DocumentModel.createNodesFromData( this.data );
@@ -273,7 +274,7 @@ es.DocumentModel.operations = ( function() {
  * it's child nodes.
  */
 es.DocumentModel.createNodesFromData = function( data ) {
-	var currentNode = new es.DocumentModelNode();
+	var currentNode = new es.DocumentModelBranchNode();
 	for ( var i = 0, length = data.length; i < length; i++ ) {
 		if ( data[i].type !== undefined ) {
 			// It's an element, figure out it's type
@@ -290,7 +291,7 @@ es.DocumentModel.createNodesFromData = function( data ) {
 					throw 'Unsuported element error. No class registered for element type: ' + type;
 				}
 				// Create a model node for the element
-				var newNode = new es.DocumentModel.nodeModels[element.type]( element );
+				var newNode = new es.DocumentModel.nodeModels[element.type]( element, 0 );
 				// Add the new model node as a child
 				currentNode.push( newNode );
 				// Descend into the new model node
@@ -1251,4 +1252,4 @@ es.DocumentModel.prototype.rollback = function( transaction ) {
 
 /* Inheritance */
 
-es.extendClass( es.DocumentModel, es.DocumentModelNode );
+es.extendClass( es.DocumentModel, es.DocumentModelBranchNode );

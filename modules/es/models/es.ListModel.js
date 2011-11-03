@@ -3,13 +3,13 @@
  * 
  * @class
  * @constructor
- * @extends {es.DocumentModelNode}
+ * @extends {es.DocumentModelBranchNode}
  * @param {Object} element Document data element of this node
- * @param {es.DocumentModelNode[]} contents List of child nodes to initially add
+ * @param {es.ListItemModel[]} contents List of child nodes to initially add
  */
 es.ListModel = function( element, contents ) {
 	// Inheritance
-	es.DocumentModelNode.call( this, 'list', element, contents );
+	es.DocumentModelBranchNode.call( this, 'list', element, contents );
 };
 
 /* Methods */
@@ -35,4 +35,4 @@ es.DocumentModel.nodeRules.list = {
 
 /* Inheritance */
 
-es.extendClass( es.ListModel, es.DocumentModelNode );
+es.extendClass( es.ListModel, es.DocumentModelBranchNode );

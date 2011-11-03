@@ -2,6 +2,7 @@
  * Creates an es.DocumentViewLeafNode object.
  * 
  * @class
+ * @abstract
  * @constructor
  * @extends {es.DocumentViewNode}
  * @param model {es.ModelNode} Model to observe

@@ -224,7 +224,12 @@ test( 'es.DocumentModel.getChildren', 1, function() {
 				console.log( 'mismatched content lengths', a[i], b[i] );
 				return false;
 			}
-			if ( !equalLengths( a[i].getChildren(), b[i].getChildren() ) ) {
+			aIsBranch = typeof a[i].getChildren === 'function';
+			bIsBranch = typeof b[i].getChildren === 'function';
+			if ( aIsBranch !== bIsBranch ) {
+				return false;
+			}
+			if ( aIsBranch && !equalLengths( a[i].getChildren(), b[i].getChildren() ) ) {
 				return false;
 			}
 		}
@@ -891,13 +896,17 @@ test( 'es.DocumentModel.commit, es.DocumentModel.rollback', 10, function() {
 
 test( 'es.DocumentDocumentModelNode child operations', 20, function() {
 	// Example data (integers) is used for simplicity of testing
-	var node1 = new es.DocumentModelNode( '1' ),
-		node2 = new es.DocumentModelNode( '2' ),
-		node3 = new es.DocumentModelNode( '3', null, [new es.DocumentModelNode( '3a' )] ),
-		node4 = new es.DocumentModelNode(
+	var node1 = new es.DocumentModelBranchNode( '1' ),
+		node2 = new es.DocumentModelBranchNode( '2' ),
+		node3 = new es.DocumentModelBranchNode(
+			'3',
+			null,
+			[new es.DocumentModelBranchNode( '3a' )]
+		),
+		node4 = new es.DocumentModelBranchNode(
 			'4',
 			null,
-			[new es.DocumentModelNode( '4a' ), new es.DocumentModelNode( '4b' )]
+			[new es.DocumentModelBranchNode( '4a' ), new es.DocumentModelBranchNode( '4b' )]
 		);
 	
 	// Event triggering is detected using a callback that increments a counter

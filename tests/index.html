@@ -12,14 +12,22 @@
 		<h2 id="qunit-userAgent"></h2>
 		<ol id="qunit-tests"></ol>
 		<div id="qunit-fixture">test markup</div>
+
+		<!-- EditSurface -->
 		<script src="../modules/jquery/jquery.js"></script>
 		<script src="../modules/qunit/qunit.js"></script>
 		<script src="../modules/es/es.js"></script>
 		<script src="../modules/es/es.Range.js"></script>
 		<script src="../modules/es/es.Transaction.js"></script>
+
+		<!-- Bases -->
 		<script src="../modules/es/bases/es.EventEmitter.js"></script>
-		<script src="../modules/es/bases/es.DocumentNode.js"></script>
+		<script src="../modules/es/bases/es.DocumentBranchNode.js"></script>
 		<script src="../modules/es/bases/es.DocumentModelNode.js"></script>
+		<script src="../modules/es/bases/es.DocumentModelBranchNode.js"></script>
+		<script src="../modules/es/bases/es.DocumentModelLeafNode.js"></script>
+
+		<!-- Models -->
 		<script src="../modules/es/models/es.DocumentModel.js"></script>
 		<script src="../modules/es/models/es.ListItemModel.js"></script>
 		<script src="../modules/es/models/es.ListModel.js"></script>
@@ -27,6 +35,8 @@
 		<script src="../modules/es/models/es.TableCellModel.js"></script>
 		<script src="../modules/es/models/es.TableModel.js"></script>
 		<script src="../modules/es/models/es.TableRowModel.js"></script>
+
+		<!-- Tests -->
 		<script src="es.test.js"></script>
 		<script src="es.DocumentNode.test.js"></script>
 		<script src="es.DocumentModel.test.js"></script>

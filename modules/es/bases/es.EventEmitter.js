@@ -2,6 +2,7 @@
  * Event emitter.
  * 
  * @class
+ * @abstract
  * @constructor
  * @property events {Object}
  */

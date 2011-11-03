@@ -3,13 +3,13 @@
  * 
  * @class
  * @constructor
- * @extends {es.DocumentModelNode}
+ * @extends {es.DocumentModelLeafNode}
  * @param {Object} element Document data element of this node
  * @param {Integer} length Length of document data element
  */
 es.ListItemModel = function( element, length ) {
 	// Inheritance
-	es.DocumentModelNode.call( this, 'listItem', element, length );
+	es.DocumentModelLeafNode.call( this, 'listItem', element, length );
 };
 
 /* Methods */
@@ -35,4 +35,4 @@ es.DocumentModel.nodeRules.listItem = {
 
 /* Inheritance */
 
-es.extendClass( es.ListItemModel, es.DocumentModelNode );
+es.extendClass( es.ListItemModel, es.DocumentModelLeafNode );
