@@ -4,7 +4,7 @@
  * @class
  * @abstract
  * @constructor
- * @param {es.DocumentBranchNode[]} nodes List of document nodes to initially add
+ * @param {es.DocumentNode[]} nodes List of document nodes to initially add
  */
 es.DocumentBranchNode = function( nodes ) {
 	this.children = es.isArray( nodes ) ? nodes : [];
@@ -17,7 +17,7 @@ es.DocumentBranchNode = function( nodes ) {
  * 
  * @abstract
  * @method
- * @returns {es.DocumentBranchNode[]} List of document nodes
+ * @returns {es.DocumentNode[]} List of document nodes
  */
 es.DocumentBranchNode.prototype.getChildren = function() {
 	return this.children;
@@ -62,7 +62,7 @@ es.DocumentBranchNode.prototype.getRangeFromNode = function( node, shallow ) {
  * TODO: Rewrite this method to not use recursion, because the function call overhead is expensive
  * 
  * @method
- * @param {es.DocumentModelNode} node Node to get offset of
+ * @param {es.DocumentNode} node Node to get offset of
  * @param {Boolean} [shallow] Do not iterate into child nodes of child nodes
  * @returns {Integer} Offset of node or -1 of node was not found
  */
@@ -98,7 +98,7 @@ es.DocumentBranchNode.prototype.getOffsetFromNode = function( node, shallow ) {
  * @method
  * @param {Integer} offset Offset get node for
  * @param {Boolean} [shallow] Do not iterate into child nodes of child nodes
- * @returns {es.DocumentModelNode|null} Node at offset, or null if non was found
+ * @returns {es.DocumentNode|null} Node at offset, or null if non was found
  */
 es.DocumentBranchNode.prototype.getNodeFromOffset = function( offset, shallow ) {
 	if ( this.children.length ) {
