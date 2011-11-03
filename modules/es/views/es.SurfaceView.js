@@ -243,7 +243,7 @@ es.SurfaceView.prototype.moveCursor = function( instruction ) {
 			this.hideCursor();
 		} else {
 			this.showCursor(
-				this.documentView.getModel().getRelativeContentOffset( this.selection.start, -1 )
+				this.documentView.getModel().getRelativeContentOffset( this.selection.getLength() ? this.selection.start : this.selection.to, -1 )
 			);
 			this.selection.from = this.selection.to;
 			this.documentView.clearSelection();
@@ -258,7 +258,7 @@ es.SurfaceView.prototype.moveCursor = function( instruction ) {
 			this.hideCursor();
 		} else {
 			this.showCursor(
-				this.documentView.getModel().getRelativeContentOffset( this.selection.end, 1 )
+				this.documentView.getModel().getRelativeContentOffset( this.selection.getLength() ? this.selection.end : this.selection.to, 1 )
 			);
 			this.selection.from = this.selection.to;
 			this.documentView.clearSelection();
@@ -286,6 +286,7 @@ es.SurfaceView.prototype.moveCursor = function( instruction ) {
 			this.drawSelection();
 			this.hideCursor();
 		} else {
+			this.selection.from = this.selection.to;
 			this.documentView.clearSelection();
 		}
 
