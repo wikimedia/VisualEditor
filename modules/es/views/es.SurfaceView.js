@@ -43,10 +43,7 @@ es.SurfaceView = function( $container, model ) {
 			alt: false
 		}
 	};
-	this.selection = {
-		from: 0,
-		to: 0
-	};
+	this.selection = new es.Range();
 
 	// References for use in closures
 	var	surfaceView = this,
@@ -113,18 +110,25 @@ es.SurfaceView = function( $container, model ) {
 	} );
 };
 
+es.SurfaceView.prototype.hasSelection = function() {
+	return !!this.selection.getLength();
+}
+
 es.SurfaceView.prototype.onMouseDown = function( e ) {
 	if ( e.button === 0 /* left mouse button */ ) {
-		var position = es.Position.newFromEventPagePosition( e ),
-			offset = this.documentView.getOffsetFromEvent( e ),
-			nodeView = this.documentView.getNodeFromOffset( offset, false );
-		this.showCursor( offset, position.left > nodeView.$.offset().left );
 		this.mouse.selecting = true;
-		if ( !this.keyboard.keys.shift ) {
-			this.selection.from = offset;
+		this.selection.to = this.documentView.getOffsetFromEvent( e );
+
+		if ( this.keyboard.keys.shift ) {
+			this.drawSelection();
+			this.hideCursor();
+		} else {
+			this.documentView.clearSelection();
+			this.selection.from = this.selection.to;
+			var	position = es.Position.newFromEventPagePosition( e ),
+				nodeView = this.documentView.getNodeFromOffset( this.selection.to, false );
+			this.showCursor( this.selection.to, position.left > nodeView.$.offset().left );
 		}
-		this.selection.to = offset;
-		this.drawSelection();
 	}
 	if ( !this.$input.is( ':focus' ) ) {
 		this.$input.focus().select();
@@ -135,21 +139,18 @@ es.SurfaceView.prototype.onMouseDown = function( e ) {
 
 es.SurfaceView.prototype.onMouseMove = function( e ) {
 	if ( e.button === 0 /* left mouse button */ && this.mouse.selecting ) {
-		this.hideCursor();
 		this.selection.to = this.documentView.getOffsetFromEvent( e );
-		if ( !this.drawSelection() ) {
-			this.showCursor();
+		this.drawSelection();
+		if ( this.selection.getLength() ) {
+			this.hideCursor();
 		}
 	}
 };
 
 es.SurfaceView.prototype.onMouseUp = function( e ) {
-	if ( e.button === 0 /* left mouse button */ && this.selection.to ) {
-		if ( this.drawSelection() ) {
-			this.hideCursor();
-		}
+	if ( e.button === 0 /* left mouse button */ ) {
+		this.mouse.selecting = false;
 	}
-	this.mouse.selecting = false;
 };
 
 es.SurfaceView.prototype.drawSelection = function() {
@@ -161,6 +162,7 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 	switch ( e.keyCode ) {
 		case 16: // Shift
 			this.keyboard.keys.shift = true;
+			this.keyboard.selecting = true;
 			break;
 		case 17: // Control
 			this.keyboard.keys.control = true;
@@ -231,30 +233,60 @@ es.SurfaceView.prototype.onKeyUp = function( e ) {
 };
 
 es.SurfaceView.prototype.moveCursor = function( instruction ) {
+	this.selection.normalize();
 	if ( instruction === 'left') {
-		this.showCursor(
-			this.documentView.getModel().getRelativeContentOffset( this.cursor.offset, -1 )
-		);
+		if ( this.keyboard.keys.shift ) {
+			this.showCursor(
+				this.documentView.getModel().getRelativeContentOffset( this.selection.to, -1 )
+			);
+			this.drawSelection();
+			this.hideCursor();
+		} else {
+			this.showCursor(
+				this.documentView.getModel().getRelativeContentOffset( this.selection.start, -1 )
+			);
+			this.selection.from = this.selection.to;
+			this.documentView.clearSelection();
+		}
 	} else if ( instruction === 'right' ) {
-		this.showCursor(
-			this.documentView.getModel().getRelativeContentOffset( this.cursor.offset, 1 )
-		);
+
+		if ( this.keyboard.keys.shift ) {
+			this.showCursor(
+				this.documentView.getModel().getRelativeContentOffset( this.selection.to, 1 )
+			);
+			this.drawSelection();
+			this.hideCursor();
+		} else {
+			this.showCursor(
+				this.documentView.getModel().getRelativeContentOffset( this.selection.end, 1 )
+			);
+			this.selection.from = this.selection.to;
+			this.documentView.clearSelection();
+		}
 	} else if ( instruction === 'up' || instruction === 'down' ) {
 		// ...
 	} else if ( instruction === 'home' || instruction === 'end' ) {
 		var offset;
 		if ( this.cursor.initialBias ) {
 			offset = this.documentView.getModel().getRelativeContentOffset(
-				this.cursor.offset, -1 );
+				this.selection.to, -1 );
 		} else {
-			offset = this.cursor.offset;
+			offset = this.selection.to;
 		}
+		
+
+		
 		if ( instruction === 'home' ) {
 			this.showCursor(
 				this.documentView.getRenderedLineRangeFromOffset( offset ).start, false );
 		} else { // end
 			this.showCursor( this.documentView.getRenderedLineRangeFromOffset( offset ).end, true );
 		}
+		if ( this.keyboard.keys.shift ) {
+			this.drawSelection();
+			this.hideCursor();
+		}
+
 	}
 };
 
@@ -267,9 +299,9 @@ es.SurfaceView.prototype.moveCursor = function( instruction ) {
 es.SurfaceView.prototype.showCursor = function( offset, leftBias ) {	
 	if ( typeof offset !== 'undefined' ) {
 		this.cursor.initialBias = leftBias ? true : false;
-		this.cursor.offset = offset;
+		this.selection.to = offset;
 		var position = this.documentView.getRenderedPositionFromOffset(
-			this.cursor.offset, leftBias
+			this.selection.to, leftBias
 		);
 		this.cursor.$.css( {
 			'left': position.left,
