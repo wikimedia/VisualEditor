@@ -28,14 +28,18 @@ var obj = {
 				'text': 'abc',
 				'annotations': [
 					{
-						'type': 'bold',
-						'start': 1,
-						'end': 2
+						'type': 'textStyle/bold',
+						'range': {
+							'start': 1,
+							'end': 2
+						}
 					},
 					{
-						'type': 'italic',
-						'start': 2,
-						'end': 3
+						'type': 'textStyle/italic',
+						'range': {
+							'start': 2,
+							'end': 3
+						}
 					}
 				]
 			}
@@ -125,9 +129,9 @@ var data = [
 	//  1 - Plain content
 	'a',
 	//  2 - Annotated content
-	['b', { 'type': 'bold', 'hash': '#bold' }],
+	['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
 	//  3 - Annotated content
-	['c', { 'type': 'italic', 'hash': '#italic' }],
+	['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }],
 	//  4 - End of paragraph
 	{ 'type': '/paragraph' },
 	//  5 - Beginning of table
@@ -289,8 +293,8 @@ test( 'es.DocumentModel.getContent', 6, function() {
 	deepEqual(
 		childNodes[0].getContent( new es.Range( 1, 3 ) ),
 		[
-			['b', { 'type': 'bold', 'hash': '#bold' }],
-			['c', { 'type': 'italic', 'hash': '#italic' }]
+			['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
+			['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }]
 		],
 		'getContent can return an ending portion of the content'
 	);
@@ -298,14 +302,14 @@ test( 'es.DocumentModel.getContent', 6, function() {
 	// Test 2
 	deepEqual(
 		childNodes[0].getContent( new es.Range( 0, 2 ) ),
-		['a', ['b', { 'type': 'bold', 'hash': '#bold' }]],
+		['a', ['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }]],
 		'getContent can return a beginning portion of the content'
 	);
 	
 	// Test 3
 	deepEqual(
 		childNodes[0].getContent( new es.Range( 1, 2 ) ),
-		[['b', { 'type': 'bold', 'hash': '#bold' }]],
+		[['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }]],
 		'getContent can return a middle portion of the content'
 	);
 	
@@ -330,8 +334,8 @@ test( 'es.DocumentModel.getContent', 6, function() {
 test( 'es.DocumentModel.getIndexOfAnnotation', 3, function() {
 	var documentModel = es.DocumentModel.newFromPlainObject( obj );
 	
-	var bold = { 'type': 'bold', 'hash': '#bold' },
-		italic = { 'type': 'italic', 'hash': '#italic' },
+	var bold = { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' },
+		italic = { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' },
 		nothing = { 'type': 'nothing', 'hash': '#nothing' },
 		character = ['a', bold, italic];
 	
@@ -374,12 +378,12 @@ test( 'es.DocumentModel.getWordBoundaries', 2, function() {
 test( 'es.DocumentModel.getAnnotationBoundaries', 2, function() {
 	var documentModel = es.DocumentModel.newFromPlainObject( obj );
 	deepEqual(
-		documentModel.getAnnotationBoundaries( 2, { 'type': 'bold' } ),
+		documentModel.getAnnotationBoundaries( 2, { 'type': 'textStyle/bold' } ),
 		new es.Range( 2, 3 ),
 		'getWordBoundaries returns range around content covered by annotation'
 	);
 	strictEqual(
-		documentModel.getAnnotationBoundaries( 1, { 'type': 'bold' } ),
+		documentModel.getAnnotationBoundaries( 1, { 'type': 'textStyle/bold' } ),
 		null,
 		'getWordBoundaries returns null if offset is not covered by annotation'
 	);
@@ -394,12 +398,12 @@ test( 'es.DocumentModel.getAnnotationsFromOffset', 4, function() {
 	);
 	deepEqual(
 		documentModel.getAnnotationsFromOffset( 2 ),
-		[{ 'type': 'bold', 'hash': '#bold' }],
+		[{ 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
 		'getAnnotationsFromOffset returns annotations of annotated content correctly'
 	);
 	deepEqual(
 		documentModel.getAnnotationsFromOffset( 3 ),
-		[{ 'type': 'italic', 'hash': '#italic' }],
+		[{ 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }],
 		'getAnnotationsFromOffset returns annotations of annotated content correctly'
 	);
 	deepEqual(
@@ -460,7 +464,7 @@ test( 'es.DocumentModel.prepareContentAnnotation', 1, function() {
 	// Test 1
 	deepEqual(
 		documentModel.prepareContentAnnotation(
-			new es.Range( 1, 4 ), 'set', { 'type': 'bold' }
+			new es.Range( 1, 4 ), 'set', { 'type': 'textStyle/bold' }
 		).getOperations(),
 		[
 			{ 'type': 'retain', 'length': 1 },
@@ -468,28 +472,28 @@ test( 'es.DocumentModel.prepareContentAnnotation', 1, function() {
 				'type': 'annotate',
 				'method': 'set',
 				'bias': 'start',
-				'annotation': { 'type': 'bold', 'hash': '#bold' }
+				'annotation': { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }
 			},
 			{ 'type': 'retain', 'length': 1 },
 			{
 				'type': 'annotate',
 				'method': 'set',
 				'bias': 'stop',
-				'annotation': { 'type': 'bold', 'hash': '#bold' }
+				'annotation': { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }
 			},
 			{ 'type': 'retain', 'length': 1 },
 			{
 				'type': 'annotate',
 				'method': 'set',
 				'bias': 'start',
-				'annotation': { 'type': 'bold', 'hash': '#bold' }
+				'annotation': { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }
 			},
 			{ 'type': 'retain', 'length': 1 },
 			{
 				'type': 'annotate',
 				'method': 'set',
 				'bias': 'stop',
-				'annotation': { 'type': 'bold', 'hash': '#bold' }
+				'annotation': { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }
 			},
 			{ 'type': 'retain', 'length': 24 }
 		],
@@ -509,8 +513,8 @@ test( 'es.DocumentModel.prepareRemoval', 1, function() {
 				'type': 'remove',
 				'data': [
 					'a',
-					['b', { 'type': 'bold', 'hash': '#bold' }],
-					['c', { 'type': 'italic', 'hash': '#italic' }]
+					['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
+					['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }]
 				]
 			},
 			{ 'type': 'retain', 'length': 24 }
@@ -625,7 +629,12 @@ test( 'es.DocumentModel.prepareInsertion', 11, function() {
 			{ 'type': 'retain', 'length': 2 },
 			{
 				'type': 'insert',
-				'data': [ { 'type': '/paragraph' }, { 'type': 'table' }, { 'type': '/table' }, { 'type': 'paragraph' } ]
+				'data': [
+					{ 'type': '/paragraph' },
+					{ 'type': 'table' },
+					{ 'type': '/table' },
+					{ 'type': 'paragraph' }
+				]
 			},
 			{ 'type': 'retain', 'length': 26 }
 		],
@@ -641,11 +650,21 @@ test( 'es.DocumentModel.prepareInsertion', 11, function() {
 			{ 'type': 'retain', 'length': 2 },
 			{
 				'type': 'insert',
-				'data': [ 'f', 'o', 'o', { 'type': '/paragraph' }, { 'type': 'paragraph' }, 'b', 'a', 'r' ]
+				'data': [
+					'f',
+					'o',
+					'o',
+					{ 'type': '/paragraph' },
+					{ 'type': 'paragraph' },
+					'b',
+					'a',
+					'r'
+				]
 			},
 			{ 'type': 'retain', 'length': 26 }
 		],
-		'prepareInsertion splits up paragraph when inserting a paragraph closing and opening into a paragraph'
+		'prepareInsertion splits up paragraph when inserting a paragraph closing and opening into' +
+			'a paragraph'
 	);
 	
 	// Test 7
@@ -729,8 +748,8 @@ test( 'es.DocumentModel.commit, es.DocumentModel.rollback', 10, function() {
 		[
 			{ 'type': 'paragraph', 'attributes': { 'test': 1 } },
 			'a',
-			['b', { 'type': 'bold', 'hash': '#bold' }],
-			['c', { 'type': 'italic', 'hash': '#italic' }],
+			['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
+			['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }],
 			{ 'type': '/paragraph' }
 		],
 		'commit applies an element attribute change transaction to the content'
@@ -743,15 +762,15 @@ test( 'es.DocumentModel.commit, es.DocumentModel.rollback', 10, function() {
 		[
 			{ 'type': 'paragraph' },
 			'a',
-			['b', { 'type': 'bold', 'hash': '#bold' }],
-			['c', { 'type': 'italic', 'hash': '#italic' }],
+			['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
+			['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }],
 			{ 'type': '/paragraph' }
 		],
 		'rollback reverses the effect of an element attribute change transaction on the content'
 	);
 
 	var contentAnnotation = documentModel.prepareContentAnnotation(
-		new es.Range( 1, 4 ), 'set', { 'type': 'bold' }
+		new es.Range( 1, 4 ), 'set', { 'type': 'textStyle/bold' }
 	);
 
 	// Test 3
@@ -760,9 +779,13 @@ test( 'es.DocumentModel.commit, es.DocumentModel.rollback', 10, function() {
 		documentModel.getData( new es.Range( 0, 5 ) ),
 		[
 			{ 'type': 'paragraph' },
-			['a', { 'type': 'bold', 'hash': '#bold' }],
-			['b', { 'type': 'bold', 'hash': '#bold' }],
-			['c', { 'type': 'italic', 'hash': '#italic' }, { 'type': 'bold', 'hash': '#bold' }],
+			['a', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
+			['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
+			[
+				'c',
+				{ 'type': 'textStyle/italic', 'hash': '#textStyle/italic' },
+				{ 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }
+			],
 			{ 'type': '/paragraph' }
 		],
 		'commit applies a content annotation transaction to the content'
@@ -775,8 +798,8 @@ test( 'es.DocumentModel.commit, es.DocumentModel.rollback', 10, function() {
 		[
 			{ 'type': 'paragraph' },
 			'a',
-			['b', { 'type': 'bold', 'hash': '#bold' }],
-			['c', { 'type': 'italic', 'hash': '#italic' }],
+			['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
+			['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }],
 			{ 'type': '/paragraph' }
 		],
 		'rollback reverses the effect of a content annotation transaction on the content'
@@ -791,9 +814,9 @@ test( 'es.DocumentModel.commit, es.DocumentModel.rollback', 10, function() {
 		[
 			{ 'type': 'paragraph' },
 			'a',
-			['b', { 'type': 'bold', 'hash': '#bold' }],
+			['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
 			'd',
-			['c', { 'type': 'italic', 'hash': '#italic' }],
+			['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }],
 			{ 'type': '/paragraph' }
 		],
 		'commit applies an insertion transaction to the content'
@@ -804,9 +827,9 @@ test( 'es.DocumentModel.commit, es.DocumentModel.rollback', 10, function() {
 		documentModel.getChildren()[0].getContent(),
 		[
 			'a',
-			['b', { 'type': 'bold', 'hash': '#bold' }],
+			['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
 			'd',
-			['c', { 'type': 'italic', 'hash': '#italic' }]
+			['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }]
 		],
 		'commit keeps model tree up to date'
 	);
@@ -818,8 +841,8 @@ test( 'es.DocumentModel.commit, es.DocumentModel.rollback', 10, function() {
 		[
 			{ 'type': 'paragraph' },
 			'a',
-			['b', { 'type': 'bold', 'hash': '#bold' }],
-			['c', { 'type': 'italic', 'hash': '#italic' }],
+			['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
+			['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }],
 			{ 'type': '/paragraph' }
 		],
 		'rollback reverses the effect of an insertion transaction on the content'
@@ -830,8 +853,8 @@ test( 'es.DocumentModel.commit, es.DocumentModel.rollback', 10, function() {
 		documentModel.getChildren()[0].getContent(),
 		[
 			'a',
-			['b', { 'type': 'bold', 'hash': '#bold' }],
-			['c', { 'type': 'italic', 'hash': '#italic' }]
+			['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
+			['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }]
 		],
 		'rollback keeps model tree up to date'
 	);
@@ -857,8 +880,8 @@ test( 'es.DocumentModel.commit, es.DocumentModel.rollback', 10, function() {
 		[
 			{ 'type': 'paragraph' },
 			'a',
-			['b', { 'type': 'bold', 'hash': '#bold' }],
-			['c', { 'type': 'italic', 'hash': '#italic' }],
+			['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
+			['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }],
 			{ 'type': '/paragraph' }
 		],
 		'rollback reverses the effect of a removal transaction on the content'

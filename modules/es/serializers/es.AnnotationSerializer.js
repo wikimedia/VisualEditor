@@ -22,12 +22,16 @@ es.AnnotationSerializer = function() {
  *     // Outputs: "a[{b}]c"
  *     console.log( stack.render( 'abc' ) );
  * 
- * @param range {es.Range} Range to insert text around
- * @param pre {String} Text to insert before range
- * @param post {String} Text to insert after range
+ * @method
+ * @param {es.Range} range Range to insert text around
+ * @param {String} pre Text to insert before range
+ * @param {String} post Text to insert after range
  */
 es.AnnotationSerializer.prototype.add = function( range, pre, post ) {
-	// TODO: Once we are using Range objects, we should do a range.normalize(); here
+	// Normalize the range if it can be normalized
+	if ( typeof range.normalize === 'function' ) {
+		range.normalize();
+	}
 	if ( !( range.start in this.annotations ) ) {
 		this.annotations[range.start] = [pre];
 	} else {
@@ -41,9 +45,22 @@ es.AnnotationSerializer.prototype.add = function( range, pre, post ) {
 };
 
 /**
+ * Adds a set of HTML tags to be inserted around a range of text.
+ * 
+ * @method
+ * @param {es.Range} range Range to insert text around
+ * @param {String} type Tag name
+ * @param {Object} [attributes] List of HTML attributes
+ */
+es.AnnotationSerializer.prototype.addTags = function( range, type, attributes ) {
+	this.add( range, es.Html.makeOpeningTag( type, attributes ), es.Html.makeClosingTag( type ) );
+};
+
+/**
  * Renders annotations into text.
  * 
- * @param text {String} Text to apply annotations to
+ * @method
+ * @param {String} text Text to apply annotations to
  * @returns {String} Wrapped text
  */
 es.AnnotationSerializer.prototype.render = function( text ) {

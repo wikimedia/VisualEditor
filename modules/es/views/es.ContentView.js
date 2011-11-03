@@ -70,53 +70,61 @@ es.ContentView = function( $container, model ) {
  * @member
  */
 es.ContentView.annotationRenderers = {
-	'template': {
+	'object/template': {
 		'open': function( data ) {
 			return '<span class="es-contentView-format-object">' + data.html;
 		},
-		'close': '</span>',
-		'float': function( data ) {
-			console.log( data.html );
-			return $( data.html ).css( 'float' );
-		}
+		'close': '</span>'
 	},
-	'bold': {
-		'open': '<span class="es-contentView-format-bold">',
-		'close': '</span>',
-		'float': false
-	},
-	'italic': {
-		'open': '<span class="es-contentView-format-italic">',
-		'close': '</span>',
-		'float': false
-	},
-	'size': {
+	'object/hook': {
 		'open': function( data ) {
-			return '<span class="es-contentView-format-' + data.type + '">';
+			return '<span class="es-contentView-format-object">' + data.html;
 		},
-		'close': '</span>',
-		'float': false
+		'close': '</span>'
 	},
-	'script': {
-		'open': function( data ) {
-			return '<span class="es-contentView-format-' + data.type + '">';
-		},
-		'close': '</span>',
-		'float': false
+	'textStyle/bold': {
+		'open': '<span class="es-contentView-format-textStyle-bold">',
+		'close': '</span>'
 	},
-	'xlink': {
+	'textStyle/italic': {
+		'open': '<span class="es-contentView-format-textStyle-italic">',
+		'close': '</span>'
+	},
+	'textStyle/strong': {
+		'open': '<span class="es-contentView-format-textStyle-strong">',
+		'close': '</span>'
+	},
+	'textStyle/emphasis': {
+		'open': '<span class="es-contentView-format-textStyle-emphasis">',
+		'close': '</span>'
+	},
+	'textStyle/big': {
+		'open': '<span class="es-contentView-format-textStyle-big">',
+		'close': '</span>'
+	},
+	'textStyle/small': {
+		'open': '<span class="es-contentView-format-textStyle-small">',
+		'close': '</span>'
+	},
+	'textStyle/superScript': {
+		'open': '<span class="es-contentView-format-textStyle-superScript">',
+		'close': '</span>'
+	},
+	'textStyle/subScript': {
+		'open': '<span class="es-contentView-format-textStyle-subScript">',
+		'close': '</span>'
+	},
+	'link/external': {
 		'open': function( data ) {
 			return '<span class="es-contentView-format-link" data-href="' + data.href + '">';
 		},
-		'close': '</span>',
-		'float': false
+		'close': '</span>'
 	},
-	'ilink': {
+	'link/internal': {
 		'open': function( data ) {
-			return '<span class="es-contentView-format-link" data-title="' + data.title + '">';
+			return '<span class="es-contentView-format-link" data-title="wiki/' + data.title + '">';
 		},
-		'close': '</span>',
-		'float': false
+		'close': '</span>'
 	}
 };
 

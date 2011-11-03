@@ -190,11 +190,13 @@
 	color: blue;
 }
 
-.es-contentView-format-italic {
+.es-contentView-format-textStyle-italic,
+.es-contentView-format-textStyle-emphasis {
 	font-style: italic;
 }
 
-.es-contentView-format-bold {
+.es-contentView-format-textStyle-bold,
+.es-contentView-format-textStyle-strong {
 	font-weight: bold;
 }
 
@@ -203,20 +205,20 @@
 	text-decoration: underline;
 }
 
-.es-contentView-format-big {
+.es-contentView-format-textStyle-big {
 	font-size: 1.2em;
 }
 
-.es-contentView-format-small,
-.es-contentView-format-sub,
-.es-contentView-format-super {
+.es-contentView-format-textStyle-small,
+.es-contentView-format-textStyle-subScript,
+.es-contentView-format-textStyle-superScript {
 	font-size: .8em;
 }
 
-.es-contentView-format-sub {
+.es-contentView-format-textStyle-subScript {
 	vertical-align: sub;
 }
 
-.es-contentView-format-super {
+.es-contentView-format-textStyle-superScript {
 	vertical-align: super;
 }

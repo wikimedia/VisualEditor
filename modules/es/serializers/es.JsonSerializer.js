@@ -1,15 +1,13 @@
 /**
- * Serializes a WikiDom into JSON.
+ * Serializes a WikiDom plain object into a JSON string.
  * 
  * @class
  * @constructor
- * @extends {es.Serializer}
- * @property options {Object} List of options for serialization
- * @property options.indentWith {String} Text to use as indentation, such as \t or 4 spaces
- * @property options.joinWith {String} Text to use as line joiner, such as \n or '' (empty string)
+ * @param {Object} options List of options for serialization
+ * @param {String} options.indentWith Text to use as indentation, such as \t or 4 spaces
+ * @param {String} options.joinWith Text to use as line joiner, such as \n or '' (empty string)
  */
 es.JsonSerializer = function( options ) {
-	es.Serializer.call( this );
 	this.options = $.extend( {
 		'indentWith': '\t',
 		'joinWith': '\n'
@@ -18,6 +16,27 @@ es.JsonSerializer = function( options ) {
 
 /* Static Methods */
 
+/**
+ * Get a serialized version of data.
+ * 
+ * @static
+ * @method
+ * @param {Object} data Data to serialize
+ * @param {Object} options Options to use, @see {es.JsonSerializer} for details
+ * @returns {String} Serialized version of data
+ */
+es.JsonSerializer.stringify = function( data, options ) {
+	return ( new es.JsonSerializer( options ) ).stringify( data );
+};
+
+/**
+ * Gets the type of a given value.
+ * 
+ * @static
+ * @method
+ * @param {Mixed} value Value to get type of
+ * @returns {String} Symbolic name of type
+ */
 es.JsonSerializer.typeOf = function( value ) {
 	if ( typeof value === 'object' ) {
 		if ( value === null ) {
@@ -37,7 +56,17 @@ es.JsonSerializer.typeOf = function( value ) {
 	return typeof value;
 };
 
-es.JsonSerializer.prototype.encode = function( data, indention ) {
+/* Methods */
+
+/**
+ * Get a serialized version of data.
+ * 
+ * @method
+ * @param {Object} data Data to serialize
+ * @param {String} indentation String to prepend each line with (used internally with recursion)
+ * @returns {String} Serialized version of data
+ */
+es.JsonSerializer.prototype.stringify = function( data, indention ) {
 	if ( indention === undefined ) {
 		indention = '';
 	}
@@ -75,7 +104,7 @@ es.JsonSerializer.prototype.encode = function( data, indention ) {
 			switch ( es.JsonSerializer.typeOf( data[key] ) ) {
 				case 'array':
 				case 'object':
-					json += this.encode( data[key], indention + this.options.indentWith );
+					json += this.stringify( data[key], indention + this.options.indentWith );
 					break;
 				case 'boolean':
 				case 'number':
