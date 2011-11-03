@@ -172,4 +172,4 @@ es.Document.serializers.wikitext = function( doc, context, options ) {
 
 /* Inheritance */
 
-es.extend( es.Document.WikitextSerializer, es.Document.Serializer );
+es.extendClass( es.Document.WikitextSerializer, es.Document.Serializer );

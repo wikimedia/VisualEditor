@@ -201,4 +201,4 @@ es.Document.serializers.html = function( doc, context, options ) {
 
 /* Inheritance */
 
-es.extend( es.Document.HtmlSerializer, es.Document.Serializer );
+es.extendClass( es.Document.HtmlSerializer, es.Document.Serializer );

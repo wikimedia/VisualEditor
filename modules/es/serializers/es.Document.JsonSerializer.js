@@ -117,4 +117,4 @@ es.Document.serializers.json = function( doc, context, options ) {
 
 /* Inheritance */
 
-es.extend( es.Document.JsonSerializer, es.Document.Serializer );
+es.extendClass( es.Document.JsonSerializer, es.Document.Serializer );

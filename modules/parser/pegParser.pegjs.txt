@@ -93,7 +93,7 @@ start
             else
                 es.push(ei);
         });
-        //dp(print_r(es));
+        dp(print_r(es));
         return {
             type: 'page', 
             content: es
@@ -180,7 +180,7 @@ h = h1 / h2 / h3 / h4 / h5 / h6
 
 h1 = '=' c:heading_text '=' newline {
     return {
-      type: 'h',
+      type: 'heading',
       level: 1,
       text: c
     }
@@ -188,7 +188,7 @@ h1 = '=' c:heading_text '=' newline {
 
 h2 = '==' c:heading_text '==' newline {
     return {
-      type: 'h',
+      type: 'heading',
       level: 2,
       text: c
     }
@@ -196,7 +196,7 @@ h2 = '==' c:heading_text '==' newline {
 
 h3 = '===' c:heading_text '===' newline {
     return {
-      type: 'h',
+      type: 'heading',
       level: 3,
       text: c
     }
@@ -204,7 +204,7 @@ h3 = '===' c:heading_text '===' newline {
 
 h4 = '====' c:heading_text '====' newline {
     return {
-      type: 'h',
+      type: 'heading',
       level: 4,
       text: c
     }
@@ -212,7 +212,7 @@ h4 = '====' c:heading_text '====' newline {
 
 h5 = '=====' c:heading_text '=====' newline {
     return {
-      type: 'h',
+      type: 'heading',
       level: 5,
       text: c
     }
@@ -220,7 +220,7 @@ h5 = '=====' c:heading_text '=====' newline {
 
 h6 = '======' c:heading_text '======' newline {
     return {
-      type: 'h',
+      type: 'heading',
       level: 6,
       text: c
     }
@@ -236,7 +236,7 @@ br
   = newline { return {type: 'br'} }
 
 para
-  = c:inlineline newline { return {type: 'para', content: c } } /
+  = c:inlineline newline { return {type: 'paragraph', content: c } } /
     c:anyline
 
 inline
