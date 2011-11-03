@@ -173,13 +173,15 @@ es.DocumentBranchNode.prototype.selectNodes = function( range, shallow ) {
 			return [ { 'node': this.children[i] } ];
 		}
 		if ( start == left - 1 ) {
-			// start is between this.children[i-1] and this.children[i], move it to left for convenience
+			// start is between this.children[i-1] and this.children[i], move it to left for
+			// convenience
 			// We don't need to check for start < end here because we already have start != end and
 			// start <= end
 			start = left;
 		}
 		if ( end == right + 1 ) {
-			// end is between this.children[i] and this.children[i+1], move it to right for convenience
+			// end is between this.children[i] and this.children[i+1], move it to right for
+			// convenience
 			// We don't need to check for start < end here because we already have start != end and
 			// start <= end
 			end = right;
@@ -191,18 +193,22 @@ es.DocumentBranchNode.prototype.selectNodes = function( range, shallow ) {
 		if ( startInside && endInside ) {
 			// The range is entirely inside this.children[i]
 			if ( shallow ) {
-				nodes = [{ 'node': this.children[i], 'range': new es.Range( start - left, end - left ) }];
+				nodes = [
+					{ 'node': this.children[i], 'range': new es.Range( start - left, end - left ) }
+				];
 			} else {
 				// Recurse into this.children[i]
 				nodes = this.children[i].selectNodes( new es.Range( start - left, end - left ) );
 			}
-			// Since the start and end are both inside this.children[i], we know for sure that we're done, so
-			// return
+			// Since the start and end are both inside this.children[i], we know for sure that we're
+			// done, so return
 			return nodes;
 		} else if ( startInside ) {
 			// The start is inside this.children[i] but the end isn't
 			// Add a range from the start of the range to the end of this.children[i]
-			nodes.push( { 'node': this.children[i], 'range': new es.Range( start - left, right - left ) } );
+			nodes.push(
+				{ 'node': this.children[i], 'range': new es.Range( start - left, right - left ) }
+			);
 		} else if ( endInside ) {
 			// The end is inside this.children[i] but the start isn't
 			// Add a range from the start of this.children[i] to the end of the range
@@ -217,7 +223,8 @@ es.DocumentBranchNode.prototype.selectNodes = function( range, shallow ) {
 		}
 		
 		// Move left to the start of this.children[i+1] for the next iteration
-		// +2 because we need to jump over the offset between this.children[i] and this.children[i+1]
+		// We use +2 because we need to jump over the offset between this.children[i] and
+		// this.children[i+1]
 		left = right + 2;
 	}
 	
