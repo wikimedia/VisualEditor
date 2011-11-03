@@ -71,7 +71,7 @@ es.HtmlSerializer.prototype.list = function( node ) {
 	return '<!-- TODO: Support list and listItem nodes -->';
 };
 
-es.WikitextSerializer.prototype.table = function( node ) {
+es.HtmlSerializer.prototype.table = function( node ) {
 	var lines = [];
 	lines.push( es.Html.makeOpeningTag( 'table', node.attributes ) );
 	for ( var i = 0, length = node.children.length; i < length; i++ ) {
@@ -81,7 +81,7 @@ es.WikitextSerializer.prototype.table = function( node ) {
 	return lines.join( '\n' );
 };
 
-es.WikitextSerializer.prototype.tableRow = function( node ) {
+es.HtmlSerializer.prototype.tableRow = function( node ) {
 	var lines = [];
 	lines.push( es.Html.makeOpeningTag( 'tr', node.attributes ) );
 	for ( var i = 0, length = node.children.length; i < length; i++ ) {
@@ -91,7 +91,7 @@ es.WikitextSerializer.prototype.tableRow = function( node ) {
 	return lines.join( '\n' );
 };
 
-es.WikitextSerializer.prototype.tableCell = function( node ) {
+es.HtmlSerializer.prototype.tableCell = function( node ) {
 	var symbolTable = {
 		'tableHeading': 'th',
 		'tableCell': 'td'
