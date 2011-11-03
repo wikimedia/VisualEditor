@@ -110,10 +110,6 @@ es.SurfaceView = function( $container, model ) {
 	} );
 };
 
-es.SurfaceView.prototype.hasSelection = function() {
-	return !!this.selection.getLength();
-}
-
 es.SurfaceView.prototype.onMouseDown = function( e ) {
 	if ( e.button === 0 /* left mouse button */ ) {
 		this.mouse.selecting = true;
@@ -170,7 +166,9 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 		case 18: // Alt
 			this.keyboard.keys.alt = true;
 			break;
-		case 91: // Command
+		case 91: // Left Command in WebKit
+		case 93: // Right Command in WebKit
+		case 224: // Command in FireFox
 			this.keyboard.keys.command = true;
 			break;
 		case 36: // Home
@@ -223,7 +221,9 @@ es.SurfaceView.prototype.onKeyUp = function( e ) {
 		case 18: // Alt
 			this.keyboard.keys.alt = false;
 			break;
-		case 91: // Command
+		case 91: // Left Command in WebKit
+		case 93: // Right Command in WebKit
+		case 224: // Command in FireFox
 			this.keyboard.keys.command = false;
 			break;
 		default:
