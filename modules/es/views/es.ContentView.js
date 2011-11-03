@@ -606,7 +606,7 @@ es.ContentView.prototype.renderIteration = function( limit ) {
  * rendering of all lines is complete.
  * 
  * @method
- * @param {Integer} offset Offset to re-render from, if possible (not yet implemented)
+ * @param {Integer} [offset] Offset to re-render from, if possible
  */
 es.ContentView.prototype.render = function( offset ) {
 	var rs = this.renderState;
