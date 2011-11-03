@@ -65,13 +65,22 @@ es.DocumentModel.nodeRules = {};
  * Each function is called in the context of a state, and takes an operation object as a parameter.
  */
 es.DocumentModel.operations = ( function() {
-	function invalidate( from, to ) {
-		this.rebuild.push( { 'from': from, 'to': to } );
-	}
-
 	function retain( op ) {
 		annotate.call( this, this.cursor + op.length );
 		this.cursor += op.length;
+	}
+
+	function rebuild( newData, oldNodes ) {
+		var parent = oldNodes[0].getParent(),
+			index = parent.indexOf( oldNodes[0] );
+		// Remove the node we are about to insert into from the model tree
+		parent.splice( index, oldNodes.length );
+		// Regenerate nodes for the data we've affected
+		var newNodes = es.DocumentModel.createNodesFromData( newData );
+		// Insert new elements into the tree where the old ones used to be
+		for ( var i = newNodes.length; i >= 0; i-- ) {
+			parent.splice( index, 0, newNodes[i] );
+		}
 	}
 
 	function insert( op ) {
@@ -80,30 +89,23 @@ es.DocumentModel.operations = ( function() {
 		} else {
 			// Get the node we are about to insert into
 			var node = this.tree.getNodeFromOffset( this.cursor );
+			if ( !node ) {
+				throw 'Missing node error. A node could not not be found at the cursor.';
+			}
 			if ( es.DocumentModel.containsElementData( op.data ) ) {
-				var nodeParent = node.getParent();
-				if ( !nodeParent ) {
-					throw 'Missing parent error. Node does not have a parent node.';
-				}
-				var offset = this.tree.getOffsetFromNode( node ),
-					length = node.getElementLength() + op.data.length,
-					index = nodeParent.indexOf( node );
-				if ( index === -1 ) {
-					throw 'Missing child error. Node could not be found in its parent node.';
-				}
-				// Remove the node we are about to insert into from the model tree
-				nodeParent.splice( index, 1 );
 				// Perform insert on linear data model
 				es.insertIntoArray( this.data, this.cursor, op.data );
 				annotate.call( this, this.cursor + op.data.length );
-				// Regenerate nodes for the data we've affected
-				var nodes = es.DocumentModel.createNodesFromData(
-					this.data.slice( offset, length )
-				);
-				// Insert new elements into the tree where the old one used to be
-				for ( var i = nodes.length; i >= 0; i-- ) {
-					this.tree.splice( index, nodes[i] );
+				// Synchronize model tree
+				var offset = this.tree.getOffsetFromNode( node );
+				if ( offset === -1 ) {
+					throw 'Invalid offset error. Node is not in model tree';
 				}
+				rebuild.call(
+					this,
+					this.data.slice( offset, offset + node.getElementLength() + op.data.length ),
+					[node]
+				);
 			} else {
 				// Perform insert on linear data model
 				es.insertIntoArray( this.data, this.cursor, op.data );
@@ -1208,8 +1210,7 @@ es.DocumentModel.prototype.commit = function( transaction ) {
 			'tree': this,
 			'cursor': 0,
 			'set': [],
-			'clear': [],
-			'rebuild': []
+			'clear': []
 		},
 		operations = transaction.getOperations();
 	for ( var i = 0, length = operations.length; i < length; i++ ) {
@@ -1220,7 +1221,6 @@ es.DocumentModel.prototype.commit = function( transaction ) {
 			throw 'Invalid operation error. Operation type is not supported: ' + operation.type;
 		}
 	}
-	// TODO: Synchronize op.tree - insert elements and adjust lengths
 };
 
 /**
@@ -1235,8 +1235,7 @@ es.DocumentModel.prototype.rollback = function( transaction ) {
 			'tree': this,
 			'cursor': 0,
 			'set': [],
-			'clear': [],
-			'rebuild': []
+			'clear': []
 		},
 		operations = transaction.getOperations();
 	for ( var i = 0, length = operations.length; i < length; i++ ) {
@@ -1247,7 +1246,6 @@ es.DocumentModel.prototype.rollback = function( transaction ) {
 			throw 'Invalid operation error. Operation type is not supported: ' + operation.type;
 		}
 	}
-	// TODO: Synchronize op.tree - insert elements and adjust lengths
 };
 
 /* Inheritance */

@@ -200,6 +200,17 @@ es.DocumentModelBranchNode.prototype.reverse = function() {
 };
 
 /**
+ * Gets the index of a given child node.
+ * 
+ * @method
+ * @param {es.DocumentModelNode} node Child node to find index of
+ * @returns {Integer} Index of child node or -1 if node was not found
+ */
+es.DocumentModelBranchNode.prototype.indexOf = function( node ) {
+	return this.children.indexOf( node );
+};
+
+/**
  * Sets the root node to this and all of it's children.
  * 
  * @method
