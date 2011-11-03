@@ -891,12 +891,13 @@ test( 'es.DocumentModel.commit, es.DocumentModel.rollback', 10, function() {
 
 test( 'es.DocumentDocumentModelNode child operations', 20, function() {
 	// Example data (integers) is used for simplicity of testing
-	var node1 = new es.DocumentModelNode( null ),
-		node2 = new es.DocumentModelNode( null ),
-		node3 = new es.DocumentModelNode( null, [new es.DocumentModelNode()] ),
+	var node1 = new es.DocumentModelNode( '1' ),
+		node2 = new es.DocumentModelNode( '2' ),
+		node3 = new es.DocumentModelNode( '3', null, [new es.DocumentModelNode( '3a' )] ),
 		node4 = new es.DocumentModelNode(
+			'4',
 			null,
-			[new es.DocumentModelNode(), new es.DocumentModelNode()]
+			[new es.DocumentModelNode( '4a' ), new es.DocumentModelNode( '4b' )]
 		);
 	
 	// Event triggering is detected using a callback that increments a counter
