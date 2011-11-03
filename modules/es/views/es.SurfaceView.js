@@ -285,6 +285,8 @@ es.SurfaceView.prototype.moveCursor = function( instruction ) {
 		if ( this.keyboard.keys.shift ) {
 			this.drawSelection();
 			this.hideCursor();
+		} else {
+			this.documentView.clearSelection();
 		}
 
 	}
