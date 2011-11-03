@@ -236,9 +236,7 @@ es.SurfaceView.prototype.moveCursor = function( instruction ) {
 	this.selection.normalize();
 	if ( instruction === 'left') {
 		if ( this.keyboard.keys.shift ) {
-			this.showCursor(
-				this.documentView.getModel().getRelativeContentOffset( this.selection.to, -1 )
-			);
+			this.selection.to = this.documentView.getModel().getRelativeContentOffset( this.selection.to, -1 );
 			this.drawSelection();
 			this.hideCursor();
 		} else {
@@ -251,9 +249,7 @@ es.SurfaceView.prototype.moveCursor = function( instruction ) {
 	} else if ( instruction === 'right' ) {
 
 		if ( this.keyboard.keys.shift ) {
-			this.showCursor(
-				this.documentView.getModel().getRelativeContentOffset( this.selection.to, 1 )
-			);
+			this.selection.to = this.documentView.getModel().getRelativeContentOffset( this.selection.to, 1 );
 			this.drawSelection();
 			this.hideCursor();
 		} else {
