@@ -424,17 +424,17 @@ es.DocumentModel.flattenPlainObjectContentNode = function( obj ) {
 				// Add a hash to the annotation for faster comparison
 				dst.hash = es.DocumentModel.getAnnotationHash( dst );
 				// Apply annotation to range
-				if ( src.start < 0 ) {
+				if ( src.range.start < 0 ) {
 					// TODO: The start can not be lower than 0! Throw error?
 					// Clamp start value
-					src.start = 0;
+					src.range.start = 0;
 				}
-				if ( src.end > data.length ) {
+				if ( src.range.end > data.length ) {
 					// TODO: The end can not be higher than the length! Throw error?
 					// Clamp end value
-					src.end = data.length;
+					src.range.end = data.length;
 				}
-				for ( var j = src.start; j < src.end; j++ ) {
+				for ( var j = src.range.start; j < src.range.end; j++ ) {
 					// Auto-convert to array
 					if ( typeof data[j] === 'string' ) {
 						data[j] = [data[j]];
