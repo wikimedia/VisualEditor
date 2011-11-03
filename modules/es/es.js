@@ -44,6 +44,8 @@ es.extendObject = $.extend;
 
 es.isPlainObject = $.isPlainObject;
 
+es.isEmptyObject = $.isEmptyObject;
+
 es.isArray = $.isArray;
 
 /**

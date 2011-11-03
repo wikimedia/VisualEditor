@@ -9,7 +9,7 @@
  */
 es.ListItemModel = function( element, length ) {
 	// Inheritance
-	es.DocumentModelNode.call( this, element, length );
+	es.DocumentModelNode.call( this, 'listItem', element, length );
 };
 
 /* Methods */

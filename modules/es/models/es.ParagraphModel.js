@@ -9,7 +9,7 @@
  */
 es.ParagraphModel = function( element, length ) {
 	// Inheritance
-	es.DocumentModelNode.call( this, element, length );
+	es.DocumentModelNode.call( this, 'paragraph', element, length );
 };
 
 /* Methods */

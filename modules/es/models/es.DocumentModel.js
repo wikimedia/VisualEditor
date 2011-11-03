@@ -12,7 +12,7 @@
  */
 es.DocumentModel = function( data, attributes ) {
 	// Inheritance
-	es.DocumentModelNode.call( this, null, data ? data.length : 0 );
+	es.DocumentModelNode.call( this, 'document', null, data ? data.length : 0 );
 	
 	// Properties
 	this.data = es.isArray( data ) ? data : [];
@@ -480,6 +480,83 @@ es.DocumentModel.flattenPlainObjectElementNode = function( obj ) {
 	// Close element - TODO: Do we need attributes here or not?
 	data.push( { 'type': '/' + obj.type } );
 	return data;
+};
+
+/**
+ * Get a plain object representation of content data.
+ * 
+ * @method
+ * @returns {Object} Plain object representation
+ */
+es.DocumentModel.expandContentData = function( data ) {
+	var stack = [];
+	// Text and annotations
+	function start( offset, annotation ) {
+		stack.push( es.extendObject( true, {}, annotation, { 'range': { 'start': offset } } ) );
+	}
+	function end( offset, annotation ) {
+		for ( var i = stack.length - 1; i >= 0; i-- ) {
+			if ( !stack[i].range.end ) {
+				if ( annotation ) {
+					if ( stack[i].type === annotation.type &&
+							es.compareObjects( stack[i].data, annotation.data ) ) {
+						stack[i].range.end = offset;
+						break;
+					}
+				} else {
+					stack[i].range.end = offset;
+				}
+			}
+		}
+	}
+	var left = '',
+		right,
+		leftPlain,
+		rightPlain,
+		obj = { 'text': '' },
+		offset = 0,
+		i,
+		j;
+	for ( i = 0; i < data.length; i++ ) {
+		right = data[i];
+		leftPlain = typeof left === 'string';
+		rightPlain = typeof right === 'string';
+		// Open or close annotations
+		if ( !leftPlain && rightPlain ) {
+			// [formatted][plain] pair, close any annotations for left
+			end( i - offset );
+		} else if ( leftPlain && !rightPlain ) {
+			// [plain][formatted] pair, open any annotations for right
+			for ( j = 1; j < right.length; j++ ) {
+				start( i - offset, right[j] );
+			}
+		} else if ( !leftPlain && !rightPlain ) {
+			// [formatted][formatted] pair, open/close any differences
+			for ( j = 1; j < left.length; j++ ) {
+				if ( es.DocumentModel.getIndexOfAnnotation( data[i] , left[j], true ) === -1 ) {
+					end( i - offset, left[j] );
+				}
+			}
+			for ( j = 1; j < right.length; j++ ) {
+				if ( es.DocumentModel.getIndexOfAnnotation( data[i - 1], right[j], true ) === -1 ) {
+					start( i - offset, right[j] );
+				}
+			}
+		}
+		obj.text += rightPlain ? right : right[0];
+		left = right;		
+	}
+	if ( data.length ) {
+		end( i - offset );
+	}
+	if ( stack.length ) {
+		obj.annotation = stack;
+	}
+	// Copy attributes if there are any set
+	if ( !es.isEmptyObject( this.attributes ) ) {
+		obj.attributes = es.extendObject( true, {}, this.attributes );
+	}
+	return obj;
 };
 
 /**

@@ -9,7 +9,7 @@
  */
 es.TableRowModel = function( element, contents ) {
 	// Inheritance
-	es.DocumentModelNode.call( this, element, contents );
+	es.DocumentModelNode.call( this, 'tableRow', element, contents );
 };
 
 /* Methods */

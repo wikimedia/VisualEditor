@@ -5,13 +5,14 @@
  * nodes to be used as nodes in a space partitioning tree.
  * 
  * @class
+ * @abstract
  * @constructor
  * @extends {es.DocumentNode}
  * @extends {es.EventEmitter}
  * @param {Integer|Array} contents Either Length of content or array of child nodes to append
  * @property {Integer} contentLength Length of content
  */
-es.DocumentModelNode = function( element, contents ) {
+es.DocumentModelNode = function( type, element, contents ) {
 	// Inheritance
 	es.DocumentNode.call( this );
 	es.EventEmitter.call( this );
@@ -21,8 +22,9 @@ es.DocumentModelNode = function( element, contents ) {
 	this.emitUpdate = function() {
 		_this.emit( 'update' );
 	};
-	
+
 	// Properties
+	this.type = type;
 	this.parent = null;
 	this.root = this;
 	this.element = element || null;
@@ -53,6 +55,30 @@ es.DocumentModelNode.prototype.createView = function() {
 };
 
 /* Methods */
+
+/**
+ * Gets a plain object representation of the document's data.
+ * 
+ * The resulting object is compatible with es.DocumentModel.newFromPlainObject.
+ * 
+ * @method
+ * @returns {Object} Plain object representation
+ */
+es.DocumentModelNode.prototype.getPlainObject = function() {
+	var obj = { 'type': this.type };
+	if ( this.element && this.element.attributes ) {
+		obj.attributes = es.copyObject( this.element.attributes );
+	}
+	if ( this.children.length ) {
+		obj.children = [];
+		for ( var i = 0; i < this.children.length; i++ ) {
+			obj.children.push( this.children[i].getPlainObject() );
+		}
+	} else if ( this.getContentLength() ) {
+		obj.content = es.DocumentModel.expandContentData( this.getContent() );
+	}
+	return obj;
+};
 
 /**
  * Adds a node to the end of this node's children.
@@ -370,7 +396,7 @@ es.DocumentModelNode.prototype.getElementType = function() {
  * @returns {Mixed} Value of attribute, or null if no such attribute exists
  */
 es.DocumentModelNode.prototype.getElementAttribute = function( key ) {
-	if ( this.element.attributes && key in this.element.attributes ) {
+	if ( this.element && this.element.attributes && key in this.element.attributes ) {
 		return this.element.attributes[key];
 	}
 	return null;
