@@ -124,7 +124,8 @@ es.SurfaceView.prototype.onMouseDown = function( e ) {
 			this.selection.from = this.selection.to;
 			var	position = es.Position.newFromEventPagePosition( e ),
 				nodeView = this.documentView.getNodeFromOffset( this.selection.to, false );
-			this.showCursor( position.left > nodeView.$.offset().left );
+			this.cursor.initialBias = position.left > nodeView.$.offset().left;
+			this.showCursor();
 		}
 	}
 	if ( !this.$input.is( ':focus' ) ) {
@@ -231,96 +232,88 @@ es.SurfaceView.prototype.onKeyUp = function( e ) {
 es.SurfaceView.prototype.moveCursor = function( instruction ) {
 	this.selection.normalize();
 
-	var from, to;
+	if ( instruction !== 'up' && instruction !== 'down' ) {
+		this.cursor.initialLeft = null;
+	}
+	
+	var newTo;
 
-	if ( instruction === 'up' || instruction === 'down' ) {
-		/*
-		 * Looks for the in-document character position that would match up with the same horizontal
-		 * position - jumping a few pixels up/down at a time until we reach the next/previous line
-		 */
-
-		var position = this.documentView.getRenderedPositionFromOffset( this.selection.to );
-		if ( this.cursor.initialLeft === null ) {
-			this.cursor.initialLeft = position.left;
-		}
-
-		var	fakePosition = new es.Position( this.cursor.initialLeft, position.top ),
-			i = 0,
-			step = instruction === 'up' ? -5 : 5,
-			top = this.$.position().top;
-
-		do {
-			fakePosition.top += ++i * step;
-			if ( fakePosition.top < top || fakePosition.top > top + this.dimensions.height ) {
-				break;
+	switch ( instruction ) {
+		case 'left' :
+		case 'right' :
+			var offset;
+			if ( this.keyboard.keys.shift ) {
+				offset = this.selection.to;
+			} else {
+				offset = this.selection.from === this.selection.to ?
+					this.selection.to :
+						instruction === 'left' ? this.selection.start : this.selection.end;
 			}
-			fakePosition = this.documentView.getRenderedPositionFromOffset(
-				this.documentView.getOffsetFromRenderedPosition( fakePosition )
+			newTo = this.documentView.getModel().getRelativeContentOffset(
+				offset,
+				instruction === 'left' ? -1 : 1
 			);
-			fakePosition.left = this.cursor.initialLeft;
-		} while ( position.top === fakePosition.top );
+			break;
+		case 'home' :
+		case 'end' :
+			var range = this.documentView.getRenderedLineRangeFromOffset(
+				this.cursor.initialBias ?
+					this.documentView.getModel().getRelativeContentOffset( this.selection.to, -1 ) :
+						this.selection.to
+			);
+			newTo = instruction === 'home' ? range.start : range.end;
+			break;
+		case 'up' :
+		case 'down' :
+			/*
+			 * Looks for the in-document character position that would match up with the same
+			 * horizontal position - jumping a few pixels up/down at a time until we reach
+			 * the next/previous line
+			 */
 
-		to = this.documentView.getOffsetFromRenderedPosition( fakePosition );
-		if ( !this.keyboard.keys.shift ) {
-			from = to;
-		}
-
-	} else if ( instruction === 'left' ) {
-		this.cursor.initialLeft = null;
-		if ( !this.keyboard.keys.shift ) {
-			from = to = this.documentView.getModel().getRelativeContentOffset(
-				this.selection.getLength() ? this.selection.start : this.selection.to, -1 );
-		} else {
-			to = this.documentView.getModel().getRelativeContentOffset( this.selection.to, -1 );
-		}
-	} else if ( instruction === 'right' ) {
-		this.cursor.initialLeft = null;
-		if ( !this.keyboard.keys.shift ) {
-			from = to = this.documentView.getModel().getRelativeContentOffset(
-				this.selection.getLength() ? this.selection.end : this.selection.to, 1 );
-		} else {
-			to = this.documentView.getModel().getRelativeContentOffset( this.selection.to, 1 );
-		}
-	} else if ( instruction === 'home' ) {
-		this.cursor.initialLeft = null;
-		to = this.documentView.getRenderedLineRangeFromOffset(
-			this.cursor.initialBias ?
-				this.documentView.getModel().getRelativeContentOffset( this.selection.to, -1 ) :
-					this.selection.to
-		).start;
-		if ( !this.keyboard.keys.shift ) {
-			from = to;
-		}
-	} else if ( instruction === 'end' ) {
-		this.cursor.initialLeft = null;
-		to = this.documentView.getRenderedLineRangeFromOffset(
-			this.cursor.initialBias ?
-				this.documentView.getModel().getRelativeContentOffset( this.selection.to, -1 ) :
-					this.selection.to
-		).end;
-		if ( !this.keyboard.keys.shift ) {
-			from = to;
-		}
+			var position = this.documentView.getRenderedPositionFromOffset( this.selection.to );
+			if ( this.cursor.initialLeft === null ) {
+				this.cursor.initialLeft = position.left;
+			}
+			var	fakePosition = new es.Position( this.cursor.initialLeft, position.top ),
+				i = 0,
+				step = instruction === 'up' ? -5 : 5,
+				top = this.$.position().top;
+			do {
+				fakePosition.top += ++i * step;
+				if ( fakePosition.top < top || fakePosition.top > top + this.dimensions.height ) {
+					break;
+				}
+				fakePosition = this.documentView.getRenderedPositionFromOffset(
+					this.documentView.getOffsetFromRenderedPosition( fakePosition )
+				);
+				fakePosition.left = this.cursor.initialLeft;
+			} while ( position.top === fakePosition.top );
+			newTo = this.documentView.getOffsetFromRenderedPosition( fakePosition );
+			break;
 	}
 
-	if ( from === to ) {
-		if ( this.selection.from !== this.selection.to ) {
+	
+	if( instruction === 'end' ) {
+		this.cursor.initialBias = true;
+	} else {
+		this.cursor.initialBias = false;
+	} 
+	
+	if ( !this.keyboard.keys.shift ) {
+		if ( this.selection.from !== this.selection.to ) { 
 			this.documentView.clearSelection();
 		}
-		this.selection.from = this.selection.to = to;
+		this.selection.from = this.selection.to = newTo;
+		this.showCursor();
 	} else {
-		this.selection.to = to;
-		this.documentView.drawSelection( this.selection );
-	}
-
-	if ( this.selection.from !== this.selection.to ) {
-		this.hideCursor();
-		if(instruction === 'home')
-			this.cursor.initialBias = false;
-		else if(instruction === 'end')
-			this.cursor.initialBias = true;
-	} else {
-		this.showCursor( instruction === 'end' );
+		this.selection.to = newTo;
+		if ( this.selection.from !== this.selection.to ) {
+			this.documentView.drawSelection( this.selection );
+			this.hideCursor();
+		} else {
+			this.showCursor();
+		}
 	}
 };
 
@@ -330,10 +323,9 @@ es.SurfaceView.prototype.moveCursor = function( instruction ) {
  * @method
  * @param offset {Integer} Position to show the cursor at
  */
-es.SurfaceView.prototype.showCursor = function( leftBias ) {	
-	this.cursor.initialBias = leftBias ? true : false;
+es.SurfaceView.prototype.showCursor = function() {	
 	var position = this.documentView.getRenderedPositionFromOffset(
-		this.selection.to, leftBias
+		this.selection.to, this.cursor.initialBias
 	);
 	this.cursor.$.css( {
 		'left': position.left,
