@@ -1,5 +1,7 @@
 module( 'es/bases' );
 
+/* Stubs */
+
 function DocumentBranchNodeStub( items, name, size ) {
 	// Inheritance
 	es.DocumentBranchNode.call( this, items );
@@ -20,28 +22,27 @@ DocumentBranchNodeStub.prototype.getElementLength = function() {
 
 es.extendClass( DocumentBranchNodeStub, es.DocumentBranchNode );
 
-test( 'es.DocumentNode', function() {
+/* Tests */
 
-	// Stub test
-
+test( 'es.DocumentBranchNodeStub.getElementLength', 1, function() {
+	// Test 1
 	strictEqual(
 		( new DocumentBranchNodeStub( [], 'a', 0 ) ).getElementLength(),
 		2,
 		'DocumentBranchNodeStub.getElementLength() returns initialized length plus 2 for elements'
 	);
+} );
 
-	// Stubs
+// Common stubs
+var a = new DocumentBranchNodeStub( [], 'a', 0 ),
+	b = new DocumentBranchNodeStub( [], 'b', 1 ),
+	c = new DocumentBranchNodeStub( [], 'c', 2 ),
+	d = new DocumentBranchNodeStub( [], 'd', 3 ),
+	e = new DocumentBranchNodeStub( [], 'e', 4 ),
+	root1 = new DocumentBranchNodeStub( [a, b, c, d, e], 'root1', 20 );
 
-	var a = new DocumentBranchNodeStub( [], 'a', 0 ),
-		b = new DocumentBranchNodeStub( [], 'b', 1 ),
-		c = new DocumentBranchNodeStub( [], 'c', 2 ),
-		d = new DocumentBranchNodeStub( [], 'd', 3 ),
-		e = new DocumentBranchNodeStub( [], 'e', 4 ),
-		root1 = new DocumentBranchNodeStub( [a, b, c, d, e], 'root1', 20 ),
-		i;
-
-	// getRangeFromNode tests
-
+test( 'es.DocumentBranchNode.getRangeFromNode', 6, function() {
+	// Tests 1 .. 6
 	var getRangeFromNodeTests = [
 		{ 'input': a, 'output': new es.Range( 0, 2 ) },
 		{ 'input': b, 'output': new es.Range( 2, 5 ) },
@@ -50,17 +51,17 @@ test( 'es.DocumentNode', function() {
 		{ 'input': e, 'output': new es.Range( 14, 20 ) },
 		{ 'input': null, 'output': null }
 	];
-	
-	for ( i = 0; i < getRangeFromNodeTests.length; i++ ) {
+	for ( var i = 0; i < getRangeFromNodeTests.length; i++ ) {
 		deepEqual(
 			root1.getRangeFromNode( getRangeFromNodeTests[i].input ),
 			getRangeFromNodeTests[i].output,
 			'getRangeFromNode returns the correct range or null if item is not found'
 		);
 	}
+} );
 
-	// getNodeFromOffset tests
-
+test( 'es.DocumentBranchNode.getNodeFromOffset', 22, function() {
+	// Tests 1 .. 22
 	var getNodeFromOffsetTests = [
 		{ 'input': -1, 'output': null },
 		{ 'input': 0, 'output': a },
@@ -85,17 +86,17 @@ test( 'es.DocumentNode', function() {
 		{ 'input': 19, 'output': e },
 		{ 'input': 20, 'output': null }
 	];
-
-	for ( i = 0; i < getNodeFromOffsetTests.length; i++ ) {
+	for ( var i = 0; i < getNodeFromOffsetTests.length; i++ ) {
 		strictEqual(
 			root1.getNodeFromOffset( getNodeFromOffsetTests[i].input ),
 			getNodeFromOffsetTests[i].output,
 			'getNodeFromOffset finds the right item or returns null when out of range'
 		);
 	}
+} );
 
-	// getOffsetFromNode tests
-
+test( 'es.DocumentBranchNode.getOffsetFromNode', 6, function() {
+	// Tests 1 .. 6
 	var getOffsetFromNodeTests = [
 		{ 'input': a, 'output': 0 },
 		{ 'input': b, 'output': 2 },
@@ -104,8 +105,7 @@ test( 'es.DocumentNode', function() {
 		{ 'input': e, 'output': 14 },
 		{ 'input': null, 'output': -1 }
 	];
-
-	for ( i = 0; i < getOffsetFromNodeTests.length; i++ ) {
+	for ( var i = 0; i < getOffsetFromNodeTests.length; i++ ) {
 		strictEqual(
 			root1.getOffsetFromNode( getOffsetFromNodeTests[i].input ),
 			getOffsetFromNodeTests[i].output,
@@ -114,7 +114,7 @@ test( 'es.DocumentNode', function() {
 	}
 } );
 
-test( 'es.DocumentNode.selectNodes', function() {
+test( 'es.DocumentBranchNode.selectNodes', 21, function() {
 
 	// selectNodes tests
 
@@ -131,6 +131,7 @@ test( 'es.DocumentNode.selectNodes', function() {
 	// TODO also nest with a more complicated nested structure, like the one from
 	// es.DocumentModel.test.js
 	
+	// Tests 1 ... 22
 	// Possible positions are:
 	// * before beginning
 	// * at beginning
@@ -283,7 +284,6 @@ test( 'es.DocumentNode.selectNodes', function() {
 			'desc': 'Range from at the end of a node to the middle of the next node'
 		}
 	];
-
 	for ( var i = 0; i < selectNodesTests.length; i++ ) {
 		deepEqual(
 			root2.selectNodes( selectNodesTests[i].input ),

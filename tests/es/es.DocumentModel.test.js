@@ -738,7 +738,7 @@ test( 'es.DocumentModel.prepareInsertion', 11, function() {
 	);
 } );
 
-test( 'es.DocumentModel.commit, es.DocumentModel.rollback', 10, function() {
+test( 'es.DocumentModel.commit, es.DocumentModel.rollback', 12, function() {
 	var documentModel = es.DocumentModel.newFromPlainObject( obj );
 
 	var elementAttributeChange = documentModel.prepareElementAttributeChange(
@@ -835,7 +835,7 @@ test( 'es.DocumentModel.commit, es.DocumentModel.rollback', 10, function() {
 			'd',
 			['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }]
 		],
-		'commit keeps model tree up to date'
+		'commit keeps model tree up to date with insertions'
 	);
 
 	// Test 7
@@ -860,7 +860,7 @@ test( 'es.DocumentModel.commit, es.DocumentModel.rollback', 10, function() {
 			['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
 			['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }]
 		],
-		'rollback keeps model tree up to date'
+		'rollback keeps model tree up to date with insertions'
 	);
 
 	var removal = documentModel.prepareRemoval( new es.Range( 2, 4 ) );
@@ -878,6 +878,13 @@ test( 'es.DocumentModel.commit, es.DocumentModel.rollback', 10, function() {
 	);
 
 	// Test 10
+	deepEqual(
+		documentModel.getChildren()[0].getContent(),
+		['a'],
+		'commit keeps model tree up to date with removals'
+	);
+
+	// Test 11
 	documentModel.rollback( removal );
 	deepEqual(
 		documentModel.getData( new es.Range( 0, 5 ) ),
@@ -891,6 +898,16 @@ test( 'es.DocumentModel.commit, es.DocumentModel.rollback', 10, function() {
 		'rollback reverses the effect of a removal transaction on the content'
 	);
 
+	// Test 12
+	deepEqual(
+		documentModel.getChildren()[0].getContent(),
+		[
+			'a',
+			['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
+			['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }]
+		],
+		'rollback keeps model tree up to date with removals'
+	);
 } );
 
 test( 'es.DocumentDocumentModelNode child operations', 20, function() {
