@@ -1,219 +1,14 @@
 module( 'es/models' );
 
-/*
- * Sample plain object (WikiDom).
- * 
- * There are two kinds of nodes in WikiDom:
- * 
- *     {Object} ElementNode
- *         type: {String} Symbolic node type name
- *         [attributes]: {Object} List of symbolic attribute name and literal value pairs
- *         [content]: {Object} Content node (not defined if node has children)
- *         [children]: {Object[]} Child nodes (not defined if node has content)
- * 
- *     {Object} ContentNode
- *         text: {String} Plain text data of content
- *         [annotations]: {Object[]} List of annotation objects that can be used to render text
- *             type: {String} Symbolic name of annotation type
- *             start: {Integer} Offset within text to begin annotation
- *             end: {Integer} Offset within text to end annotation
- *             [data]: {Object} Additional information, only used by more complex annotations
- */
-var obj = {
-	'type': 'document',
-	'children': [
-		{
-			'type': 'paragraph',
-			'content': {
-				'text': 'abc',
-				'annotations': [
-					{
-						'type': 'textStyle/bold',
-						'range': {
-							'start': 1,
-							'end': 2
-						}
-					},
-					{
-						'type': 'textStyle/italic',
-						'range': {
-							'start': 2,
-							'end': 3
-						}
-					}
-				]
-			}
-		},
-		{
-			'type': 'table',
-			'children': [
-				{
-					'type': 'tableRow',
-					'children': [
-						{
-							'type': 'tableCell',
-							'children': [
-								{
-									'type': 'paragraph',
-									'content': {
-										'text': 'd'
-									}
-								},
-								{
-									'type': 'list',
-									'children': [
-										{
-											'type': 'listItem',
-											'attributes': {
-												'styles': ['bullet']
-											},
-											'content': {
-												'text': 'e'
-											}
-										},
-										{
-											'type': 'listItem',
-											'attributes': {
-												'styles': ['bullet', 'bullet']
-											},
-											'content': {
-												'text': 'f'
-											}
-										},
-										{
-											'type': 'listItem',
-											'attributes': {
-												'styles': ['number']
-											},
-											'content': {
-												'text': 'g'
-											}
-										}
-									]
-								}
-							]
-						}
-					]
-				}
-			]
-		},
-		{
-			'type': 'paragraph',
-			'content': {
-				'text': 'h'
-			}
-		}
-	]
-};
-
-/*
- * Sample content data.
- * 
- * There are three types of components in content data:
- * 
- *     {String} Plain text character
- *     
- *     {Array} Annotated character
- *         {String} Character
- *         {String} Hash
- *         {Object}... List of annotation object references
- *     
- *     {Object} Opening or closing structural element
- *         type: {String} Symbolic node type name, if closing element first character will be "/"
- *         node: {Object} Reference to model tree node
- *         [attributes]: {Object} List of symbolic attribute name and literal value pairs
- */
-var data = [
-	//  0 - Beginning of paragraph
-	{ 'type': 'paragraph' },
-	//  1 - Plain content
-	'a',
-	//  2 - Annotated content
-	['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
-	//  3 - Annotated content
-	['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }],
-	//  4 - End of paragraph
-	{ 'type': '/paragraph' },
-	//  5 - Beginning of table
-	{ 'type': 'table' },
-	//  6 - Beginning of row
-	{ 'type': 'tableRow' },
-	//  7 - Beginning of cell
-	{ 'type': 'tableCell' },
-	//  8 - Beginning of paragraph
-	{ 'type': 'paragraph' },
-	//  9 - Plain content
-	'd',
-	// 10 - End of paragraph
-	{ 'type': '/paragraph' },
-	// 11 - Beginning of list
-	{ 'type': 'list' },
-	// 12 - Beginning of bullet list item
-	{ 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } },
-	// 13 - Plain content
-	'e',
-	// 14 - End of item
-	{ 'type': '/listItem' },
-	// 15 - Beginning of nested bullet list item
-	{ 'type': 'listItem', 'attributes': { 'styles': ['bullet', 'bullet'] } },
-	// 16 - Plain content
-	'f',
-	// 17 - End of item
-	{ 'type': '/listItem' },
-	// 18 - Beginning of numbered list item
-	{ 'type': 'listItem', 'attributes': { 'styles': ['number'] } },
-	// 19 - Plain content
-	'g',
-	// 20 - End of item
-	{ 'type': '/listItem' },
-	// 21 - End of list
-	{ 'type': '/list' },
-	// 22 - End of cell
-	{ 'type': '/tableCell' },
-	// 23 - End of row
-	{ 'type': '/tableRow' },
-	// 24 - End of table
-	{ 'type': '/table' },
-	// 25 - Beginning of paragraph
-	{ 'type': 'paragraph' },
-	// 26 - Plain content
-	'h',
-	// 27 - End of paragraph
-	{ 'type': '/paragraph' }
-];
-
-/**
- * Sample content data index.
- * 
- * This is a node tree that describes each partition within the document's content data. This is
- * what is automatically built by the es.DocumentModel constructor.
- */
-var tree = [
-	new es.ParagraphModel( data[0], 3 ),
-	new es.TableModel( data[5], [
-		new es.TableRowModel( data[6], [
-			new es.TableCellModel( data[7], [
-				new es.ParagraphModel( data[8], 1 ),
-				new es.ListModel( data[11], [
-					new es.ListItemModel( data[12], 1 ),
-					new es.ListItemModel( data[15], 1 ),
-					new es.ListItemModel( data[18], 1 )
-				] )
-			] )
-		] )
-	] ),
-	new es.ParagraphModel( data[25], 1 )
-];
-
 test( 'es.DocumentModel.getData', 1, function() {
-	var documentModel = es.DocumentModel.newFromPlainObject( obj );
+	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
 	
 	// Test 1
-	deepEqual( documentModel.getData(), data, 'Flattening plain objects results in correct data' );
+	deepEqual( documentModel.getData(), esTest.data, 'Flattening plain objects results in correct data' );
 } );
 
 test( 'es.DocumentModel.getChildren', 1, function() {
-	var documentModel = es.DocumentModel.newFromPlainObject( obj );
+	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
 
 	function equalLengths( a, b ) {
 		if ( a.length !== b.length ) {
@@ -238,13 +33,13 @@ test( 'es.DocumentModel.getChildren', 1, function() {
 	
 	// Test 1
 	ok(
-		equalLengths( documentModel.getChildren(), tree ),
+		equalLengths( documentModel.getChildren(), esTest.tree ),
 		'Nodes in the model tree contain correct lengths'
 	);
 } );
 
 test( 'es.DocumentModel.getRelativeContentOffset', 7, function() {
-	var documentModel = es.DocumentModel.newFromPlainObject( obj );
+	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
 	
 	// Test 1
 	equal(
@@ -291,7 +86,7 @@ test( 'es.DocumentModel.getRelativeContentOffset', 7, function() {
 } );
 
 test( 'es.DocumentModel.getContent', 6, function() {
-	var documentModel = es.DocumentModel.newFromPlainObject( obj ),
+	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj ),
 		childNodes = documentModel.getChildren();
 
 	// Test 1
@@ -337,7 +132,7 @@ test( 'es.DocumentModel.getContent', 6, function() {
 } );
 
 test( 'es.DocumentModel.getIndexOfAnnotation', 3, function() {
-	var documentModel = es.DocumentModel.newFromPlainObject( obj );
+	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
 	
 	var bold = { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' },
 		italic = { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' },
@@ -367,7 +162,7 @@ test( 'es.DocumentModel.getIndexOfAnnotation', 3, function() {
 } );
 
 test( 'es.DocumentModel.getWordBoundaries', 2, function() {
-	var documentModel = es.DocumentModel.newFromPlainObject( obj );
+	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
 	deepEqual(
 		documentModel.getWordBoundaries( 2 ),
 		new es.Range( 1, 4 ),
@@ -381,7 +176,7 @@ test( 'es.DocumentModel.getWordBoundaries', 2, function() {
 } );
 
 test( 'es.DocumentModel.getAnnotationBoundaries', 2, function() {
-	var documentModel = es.DocumentModel.newFromPlainObject( obj );
+	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
 	deepEqual(
 		documentModel.getAnnotationBoundaries( 2, { 'type': 'textStyle/bold' } ),
 		new es.Range( 2, 3 ),
@@ -395,7 +190,7 @@ test( 'es.DocumentModel.getAnnotationBoundaries', 2, function() {
 } );
 
 test( 'es.DocumentModel.getAnnotationsFromOffset', 4, function() {
-	var documentModel = es.DocumentModel.newFromPlainObject( obj );
+	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
 	deepEqual(
 		documentModel.getAnnotationsFromOffset( 1 ),
 		[],
@@ -419,7 +214,7 @@ test( 'es.DocumentModel.getAnnotationsFromOffset', 4, function() {
 } );
 
 test( 'es.DocumentModel.prepareElementAttributeChange', 4, function() {
-	var documentModel = es.DocumentModel.newFromPlainObject( obj );
+	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
 
 	// Test 1
 	deepEqual(
@@ -464,7 +259,7 @@ test( 'es.DocumentModel.prepareElementAttributeChange', 4, function() {
 } );
 
 test( 'es.DocumentModel.prepareContentAnnotation', 1, function() {
-	var documentModel = es.DocumentModel.newFromPlainObject( obj );
+	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
 
 	// Test 1
 	deepEqual(
@@ -507,7 +302,7 @@ test( 'es.DocumentModel.prepareContentAnnotation', 1, function() {
 } );
 
 test( 'es.DocumentModel.prepareRemoval', 3, function() {
-	var documentModel = es.DocumentModel.newFromPlainObject( obj );
+	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
 
 	// Test 1
 	deepEqual(
@@ -564,7 +359,7 @@ test( 'es.DocumentModel.prepareRemoval', 3, function() {
 } );
 
 test( 'es.DocumentModel.prepareInsertion', 11, function() {
-	var documentModel = es.DocumentModel.newFromPlainObject( obj );
+	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
 
 	// Test 1
 	deepEqual(
@@ -737,7 +532,7 @@ test( 'es.DocumentModel.prepareInsertion', 11, function() {
 } );
 
 test( 'es.DocumentModel.commit, es.DocumentModel.rollback', 12, function() {
-	var documentModel = es.DocumentModel.newFromPlainObject( obj );
+	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
 
 	var elementAttributeChange = documentModel.prepareElementAttributeChange(
 		0, 'set', 'test', 1
