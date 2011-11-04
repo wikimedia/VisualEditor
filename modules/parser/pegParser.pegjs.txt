@@ -55,8 +55,8 @@
         var level_padding = "";
         var bracket_level_padding = "";
 
-        for (var j = 0; j < level + 1; j++) level_padding += "    ";
-        for (var b = 0; b < level; b++) bracket_level_padding += "    ";
+        for (var j = 0; j < level + 1; j++) level_padding += "  ";
+        for (var b = 0; b < level; b++) bracket_level_padding += "  ";
 
         if (typeof(arr) == 'object') { //Array/Hashes/Objects 
             dumped_text += "Array\n";
@@ -74,8 +74,8 @@
 
             }
             dumped_text += bracket_level_padding + ")\n\n";
-        } else { //Stings/Chars/Numbers etc.
-            dumped_text = "===>" + arr + "<===(" + typeof(arr) + ")";
+        } else { //Strings/Chars/Numbers etc.
+            dumped_text = "=>" + arr + "<=(" + typeof(arr) + ")";
         }
 
         return dumped_text;
@@ -566,19 +566,20 @@ ext_param_val
 
 lists = es:(dtdd / li)+
 {  
-    // flatten es
+    // Flatten es
     var esLen = es.length;
     var flatEs = [];
     for (var i = 0; i < esLen; i++) {
-        if (es[i].constructor === Array) {
-            flatEs.concat(es[i]);
+        var ei = es[i];
+        if ($.isArray(ei)) {
+            flatEs = flatEs.concat(ei);
         } else {
-            flatEs.push(es[i]);
+            flatEs.push(ei);
         }
     }
     return {
         type: 'list',
-        children: es
+        children: flatEs
     }
 }
 
@@ -598,7 +599,7 @@ li = bullets:list_char+
 dtdd = bullets:list_char+
        c:(inline_element / [^:\n])+
        ":"
-       d:(inline / anyline)
+       d:(inline_element / [^\n])+
        newline 
 {
     // reject rule if bullets do not end in semicolon
@@ -609,12 +610,12 @@ dtdd = bullets:list_char+
             {
                 type: 'listItem',
                     attributes: {styles: bulletsToTypes(bullets)},
-                    content: c[0]
+                    content: {text: c.join('')}
             }, {
                 type: 'listItem',
                     attributes: {styles: bulletsToTypes(
                             bullets.slice(0, bullets.length - 1) + ':')},
-                    content: d[0]
+                    content: {text: d.join('')}
             }
         ]
     }

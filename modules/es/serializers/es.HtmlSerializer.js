@@ -99,13 +99,14 @@ es.HtmlSerializer.prototype.list = function( node ) {
 	var commonPrefixLength = function (x, y) {
 		var minLength = Math.min(x.length, y.length);
 		for(var i = 0; i < minLength; i++) {
-			if (x[i] !== y[i] 
+			if (x[i] !== y[i]) {
 			    // Both definitiondata and definitionterm are
 			    // inside dls, so consider them equivalent here.
-			    && [x[i], y[i]].sort() 
-				!== ['definitiondata', 'definitionterm'] ) 
-			{
+			    var diffs =  [x[i], y[i]].sort();
+			    if (diffs[0] !== 'definitiondata'
+				&& diffs[1] !== 'definitionterm' ) { 
 				break;
+			    }
 			}
 		}
 		return i;
