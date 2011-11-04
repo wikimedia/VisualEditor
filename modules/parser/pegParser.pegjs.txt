@@ -235,8 +235,9 @@ heading_text
 br
   = newline { return {type: 'br'} }
 
+// TODO: convert inline content to annotations!
 para
-  = c:inlineline newline { return {type: 'paragraph', content: c } } /
+  = c:inlineline newline { return {type: 'paragraph', content: c[0] } } /
     c:anyline
 
 inline

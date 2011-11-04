@@ -47,13 +47,11 @@ _import(pj('parser', 'ext.cite.taghook.ref.js'), ['MWRefTagHook']);
 
 // WikiDom and serializers
 _require(pj('es', 'es.js'));
-_require(pj('es', 'bases', 'es.EventEmitter.js'));
-_require(pj('es', 'bases', 'es.Document.js'));
-_require(pj('es', 'bases', 'es.Document.Serializer.js'));
+_require(pj('es', 'es.Html.js'));
 _require(pj('es', 'serializers', 'es.AnnotationSerializer.js'));
-_require(pj('es', 'serializers', 'es.Document.HtmlSerializer.js'));
-_require(pj('es', 'serializers', 'es.Document.WikitextSerializer.js'));
-_require(pj('es', 'serializers', 'es.Document.JsonSerializer.js'));
+_require(pj('es', 'serializers', 'es.HtmlSerializer.js'));
+_require(pj('es', 'serializers', 'es.WikitextSerializer.js'));
+_require(pj('es', 'serializers', 'es.JsonSerializer.js'));
 
 // Preload the grammar file...
 PegParser.src = fs.readFileSync(path.join(basePath, 'parser', 'pegParser.pegjs.txt'), 'utf8');
@@ -127,11 +125,9 @@ function processTest(item) {
 	}
 	console.log(item.title);
         console.log("INPUT:");
-        console.log(item.input);
+        console.log(item.input + "\n");
 
 	parser.parseToTree(item.input + "\n", function(tree, err) {
-		console.log('INPUT:');
-		console.log(item.input + "\n");
 		if (err) {
 			console.log('PARSE FAIL', err);
 		} else {
@@ -141,10 +137,9 @@ function processTest(item) {
 					'references': MWReferencesTagHook
 				}
 			});
-			var renderer = new es.Document.HtmlSerializer(environment);
                         // XXX: hack
-                        tree.blocks = tree.content;
-			var res = renderer.serializeDocument(tree, false);
+                        tree.children = tree.content;
+			var res = es.HtmlSerializer.stringify(tree,environment);
                         if (err) {
                             console.log('RENDER FAIL', err);
                         } else {
