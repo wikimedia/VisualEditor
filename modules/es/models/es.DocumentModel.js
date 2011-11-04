@@ -1072,7 +1072,7 @@ es.DocumentModel.prototype.prepareRemoval = function( range ) {
 			} else if ( op.type === 'remove' ) {
 				// we add one because to remove(3,5) we need to slice(3,6), the ending is last
 				// subscript removed + 1.
-				tx.pushRemove( this.data.slice( op.start, op.end + 1 ) );
+				tx.pushRemove( doc.data.slice( op.start, op.end + 1 ) );
 			} else {
 				console.log( "this is impossible" );
 			}
