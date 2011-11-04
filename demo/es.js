@@ -148,10 +148,46 @@ $(document).ready( function() {
 					{
 						'type': 'listItem',
 						'attributes': {
-							'styles': ['number']
+							'styles': ['bullet', 'bullet', 'bullet']
 						},
 						'content': {
 							'text': 'Test 666666'
+						}
+					},
+					{
+						'type': 'listItem',
+						'attributes': {
+							'styles': ['number']
+						},
+						'content': {
+							'text': 'Test 7777777'
+						}
+					},
+					{
+						'type': 'listItem',
+						'attributes': {
+							'styles': ['number', 'number']
+						},
+						'content': {
+							'text': 'Test 88888888'
+						}
+					},
+					{
+						'type': 'listItem',
+						'attributes': {
+							'styles': ['term']
+						},
+						'content': {
+							'text': 'Test 999999999'
+						}
+					},
+					{
+						'type': 'listItem',
+						'attributes': {
+							'styles': ['definition']
+						},
+						'content': {
+							'text': 'Test 0000000000'
 						}
 					}
 				]
