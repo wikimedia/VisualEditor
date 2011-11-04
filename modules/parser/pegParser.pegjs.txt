@@ -632,9 +632,9 @@ table
       var res = {type: 'table'}
       var body = b !== '' ? b : [];
       if (c !== '') {
-          res.content = [c].concat(body); 
+          res.children = [c].concat(body); 
       } else { 
-          res.content = body;
+          res.children = body;
       }
       if (tas.length > 0) {
           // FIXME: actually parse and build structure
@@ -659,7 +659,7 @@ table_caption
   = "|+" c:inline* newline? { 
       return {
           type: 'tableCaption',
-          content: c
+          content: c[0]
       }
   }
 
@@ -679,7 +679,7 @@ table_firstrow
   = td:table_data+ { 
       return {
           type: 'tableRow',
-          content: td
+          children: td
       };
   }
 
@@ -687,7 +687,7 @@ table_row
   = "|-" space* newline? td:(table_data / table_header)* { 
       return {
           type: 'tableRow',
-          content: td
+          children: td
       };
   }
 
@@ -697,7 +697,7 @@ table_data
       //dp("table || result:" + print_r(td));
       return {
           type: 'tableCell',
-          content: td
+          children: td
       };
   }
   / & { dp("table_data : | enter pos=" + pos); return true; }
@@ -705,7 +705,7 @@ table_data
       //dp("table | result:" + print_r(td));
       return {
           type: 'tableCell',
-          content: td
+          children: td
       };
   }
 
@@ -717,14 +717,14 @@ td_attr = a:[^\n|]+ "|" !"|" {
 table_header 
   = "!!" c:(inline / ("!" !"!") / [^!\n])* newline? { 
       return { 
-          type: 'tableHeader',
-              content: c
+          type: 'tableHeading',
+              children: c
       }
   }
   / "!" c:(inline / text / '!' !'!' / [^!\n])* newline? { 
       return { 
-          type: 'tableHeader',
-              content: c
+          type: 'tableHeading',
+              children: c
       }
   }
 

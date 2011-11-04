@@ -174,7 +174,8 @@ es.HtmlSerializer.prototype.table = function( node ) {
 		attributes = es.HtmlSerializer.getHtmlAttributes( node.attributes );
 	lines.push( es.Html.makeOpeningTag( 'table', attributes ) );
 	for ( var i = 0, length = node.children.length; i < length; i++ ) {
-		lines.push( this.tableRow( node.children[i] ) );
+		var child = node.children[i];
+		lines.push( this[child.type]( child ) );
 	}
 	lines.push( es.Html.makeClosingTag( 'table' ) );
 	return lines.join( '\n' );
@@ -198,6 +199,11 @@ es.HtmlSerializer.prototype.tableCell = function( node ) {
 		},
 		attributes = es.HtmlSerializer.getHtmlAttributes( node.attributes );
 	return es.Html.makeTag( symbolTable[node.type], attributes, this.document( node, true ) );
+};
+
+es.HtmlSerializer.prototype.tableCaption = function( node ) {
+	attributes = es.HtmlSerializer.getHtmlAttributes( node.attributes );
+	return es.Html.makeTag( 'caption', attributes, this.content( node.content ) );
 };
 
 es.HtmlSerializer.prototype.transclusion = function( node ) {
