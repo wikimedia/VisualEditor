@@ -300,20 +300,21 @@ es.SurfaceView.prototype.moveCursor = function( instruction ) {
 		this.cursor.initialBias = false;
 	} 
 	
-	if ( !this.keyboard.keys.shift ) {
-		if ( this.selection.from !== this.selection.to ) { 
-			this.documentView.clearSelection();
-		}
-		this.selection.from = this.selection.to = newTo;
-		this.showCursor();
-	} else {
+	if ( this.keyboard.keys.shift ) {
 		this.selection.to = newTo;
 		if ( this.selection.from !== this.selection.to ) {
 			this.documentView.drawSelection( this.selection );
 			this.hideCursor();
 		} else {
+			this.documentView.clearSelection();
 			this.showCursor();
 		}
+	} else {
+		if ( this.selection.from !== this.selection.to ) { 
+			this.documentView.clearSelection();
+		}
+		this.selection.from = this.selection.to = newTo;
+		this.showCursor();
 	}
 };
 
