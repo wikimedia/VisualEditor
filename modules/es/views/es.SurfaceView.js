@@ -230,28 +230,38 @@ es.SurfaceView.prototype.onKeyUp = function( e ) {
 
 es.SurfaceView.prototype.moveCursor = function( instruction ) {
 	this.selection.normalize();
+	var offset;
 	if ( instruction === 'left') {
 		if ( !this.keyboard.keys.shift ) {
-			this.selection.from = this.selection.to = this.documentView.getModel().getRelativeContentOffset( this.selection.getLength() ? this.selection.start : this.selection.to, -1 );
+			this.selection.from = this.selection.to =
+				this.documentView.getModel().getRelativeContentOffset(
+					this.selection.getLength() ? this.selection.start : this.selection.to, -1
+				);
 			this.documentView.clearSelection();
 			this.showCursor();
 		} else {
-			this.selection.to = this.documentView.getModel().getRelativeContentOffset( this.selection.to, -1 );
+			this.selection.to = this.documentView.getModel().getRelativeContentOffset(
+				this.selection.to, -1
+			);
 			this.documentView.drawSelection( this.selection );
 			this.hideCursor();
 		}
 	} else if ( instruction === 'right' ) {
 		if ( !this.keyboard.keys.shift ) {
-			this.selection.from = this.selection.to = this.documentView.getModel().getRelativeContentOffset( this.selection.getLength() ? this.selection.end : this.selection.to, 1 );
+			this.selection.from = this.selection.to =
+				this.documentView.getModel().getRelativeContentOffset(
+					this.selection.getLength() ? this.selection.end : this.selection.to, 1
+				);
 			this.documentView.clearSelection();
 			this.showCursor();
 		} else {
-			this.selection.to = this.documentView.getModel().getRelativeContentOffset( this.selection.to, 1 );
+			this.selection.to = this.documentView.getModel().getRelativeContentOffset(
+				this.selection.to, 1
+			);
 			this.documentView.drawSelection( this.selection );
 			this.hideCursor();
 		}
 	} else if ( instruction === 'up' || instruction === 'down' ) {
-		
 		var currentPosition = this.documentView.getRenderedPositionFromOffset( this.selection.to );
 
 		if ( this.cursor.initialLeft === null ) {
@@ -259,8 +269,10 @@ es.SurfaceView.prototype.moveCursor = function( instruction ) {
 		}
 
 		var	fakePosition = new es.Position( this.cursor.initialLeft, currentPosition.top ),
-			offset, step, edge, i = 0;
-		
+			step,
+			edge,
+			i = 0;
+
 		if ( instruction === 'up' ) {
 			step = -5;
 			edge = 0;
@@ -269,7 +281,6 @@ es.SurfaceView.prototype.moveCursor = function( instruction ) {
 			edge = this.documentView.getContentLength();
 		}
 
-
 		do {
 			fakePosition.top += ++i * step;
 			offset = this.documentView.getOffsetFromRenderedPosition( fakePosition );
@@ -277,9 +288,9 @@ es.SurfaceView.prototype.moveCursor = function( instruction ) {
 			fakePosition.left = this.cursor.initialLeft;
 		} while ( currentPosition.top === fakePosition.top && offset !== edge );
 
-		
 		if ( !this.keyboard.keys.shift ) {
-			this.selection.from = this.selection.to = this.documentView.getOffsetFromRenderedPosition( fakePosition );
+			this.selection.from = this.selection.to =
+				this.documentView.getOffsetFromRenderedPosition( fakePosition );
 			this.documentView.clearSelection();
 			this.showCursor();
 		} else {
@@ -287,10 +298,12 @@ es.SurfaceView.prototype.moveCursor = function( instruction ) {
 			this.documentView.drawSelection( this.selection );
 			this.hideCursor();
 		}
-
 	} else if ( instruction === 'home' ) {
-		var offset = this.cursor.initialBias ? this.documentView.getModel().getRelativeContentOffset( this.selection.to, -1 ) : this.selection.to;
-		offset = this.documentView.getRenderedLineRangeFromOffset( offset ).start;
+		offset = this.documentView.getRenderedLineRangeFromOffset(
+			this.cursor.initialBias ?
+				this.documentView.getModel().getRelativeContentOffset( this.selection.to, -1 ) :
+				this.selection.to
+		).start;
 		if ( !this.keyboard.keys.shift ) {
 			this.selection.from = this.selection.to = offset;
 			this.documentView.clearSelection();
@@ -301,8 +314,11 @@ es.SurfaceView.prototype.moveCursor = function( instruction ) {
 			this.hideCursor();
 		}
 	} else if ( instruction === 'end' ) {
-		var offset = this.cursor.initialBias ? this.documentView.getModel().getRelativeContentOffset( this.selection.to, -1 ) : this.selection.to;
-		offset = this.documentView.getRenderedLineRangeFromOffset( offset ).end;
+		offset = this.documentView.getRenderedLineRangeFromOffset(
+			this.cursor.initialBias ?
+				this.documentView.getModel().getRelativeContentOffset( this.selection.to, -1 ) :
+				this.selection.to
+		).end;
 		if ( !this.keyboard.keys.shift ) {
 			this.selection.from = this.selection.to = offset;
 			this.documentView.clearSelection();
