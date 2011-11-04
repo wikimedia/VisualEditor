@@ -230,104 +230,97 @@ es.SurfaceView.prototype.onKeyUp = function( e ) {
 
 es.SurfaceView.prototype.moveCursor = function( instruction ) {
 	this.selection.normalize();
-	var offset;
-	if ( instruction === 'left') {
-		if ( !this.keyboard.keys.shift ) {
-			this.selection.from = this.selection.to =
-				this.documentView.getModel().getRelativeContentOffset(
-					this.selection.getLength() ? this.selection.start : this.selection.to, -1
-				);
-			this.documentView.clearSelection();
-			this.showCursor();
-		} else {
-			this.selection.to = this.documentView.getModel().getRelativeContentOffset(
-				this.selection.to, -1
-			);
-			this.documentView.drawSelection( this.selection );
-			this.hideCursor();
-		}
-	} else if ( instruction === 'right' ) {
-		if ( !this.keyboard.keys.shift ) {
-			this.selection.from = this.selection.to =
-				this.documentView.getModel().getRelativeContentOffset(
-					this.selection.getLength() ? this.selection.end : this.selection.to, 1
-				);
-			this.documentView.clearSelection();
-			this.showCursor();
-		} else {
-			this.selection.to = this.documentView.getModel().getRelativeContentOffset(
-				this.selection.to, 1
-			);
-			this.documentView.drawSelection( this.selection );
-			this.hideCursor();
-		}
-	} else if ( instruction === 'up' || instruction === 'down' ) {
-		var currentPosition = this.documentView.getRenderedPositionFromOffset( this.selection.to );
 
+	var from, to;
+
+	if ( instruction === 'up' || instruction === 'down' ) {
+		/*
+		 * Looks for the in-document character position that would match up with the same horizontal
+		 * position - jumping a few pixels up/down at a time until we reach the next/previous line
+		 */
+
+		var position = this.documentView.getRenderedPositionFromOffset( this.selection.to );
 		if ( this.cursor.initialLeft === null ) {
-			this.cursor.initialLeft = currentPosition.left;
+			this.cursor.initialLeft = position.left;
 		}
 
-		var	fakePosition = new es.Position( this.cursor.initialLeft, currentPosition.top ),
-			step,
-			edge,
-			i = 0;
-
-		if ( instruction === 'up' ) {
-			step = -5;
-			edge = 0;
-		} else {
-			step = 5;
-			edge = this.documentView.getContentLength();
-		}
+		var	fakePosition = new es.Position( this.cursor.initialLeft, position.top ),
+			i = 0,
+			step = instruction === 'up' ? -5 : 5,
+			top = this.$.position().top;
 
 		do {
 			fakePosition.top += ++i * step;
-			offset = this.documentView.getOffsetFromRenderedPosition( fakePosition );
-			fakePosition = this.documentView.getRenderedPositionFromOffset( offset );
+			if ( fakePosition.top < top || fakePosition.top > top + this.dimensions.height ) {
+				break;
+			}
+			fakePosition = this.documentView.getRenderedPositionFromOffset(
+				this.documentView.getOffsetFromRenderedPosition( fakePosition )
+			);
 			fakePosition.left = this.cursor.initialLeft;
-		} while ( currentPosition.top === fakePosition.top && offset !== edge );
+		} while ( position.top === fakePosition.top );
 
+		to = this.documentView.getOffsetFromRenderedPosition( fakePosition );
 		if ( !this.keyboard.keys.shift ) {
-			this.selection.from = this.selection.to =
-				this.documentView.getOffsetFromRenderedPosition( fakePosition );
-			this.documentView.clearSelection();
-			this.showCursor();
+			from = to;
+		}
+
+	} else if ( instruction === 'left' ) {
+		this.cursor.initialLeft = null;
+		if ( !this.keyboard.keys.shift ) {
+			from = to = this.documentView.getModel().getRelativeContentOffset(
+				this.selection.getLength() ? this.selection.start : this.selection.to, -1 );
 		} else {
-			this.selection.to = this.documentView.getOffsetFromRenderedPosition( fakePosition );
-			this.documentView.drawSelection( this.selection );
-			this.hideCursor();
+			to = this.documentView.getModel().getRelativeContentOffset( this.selection.to, -1 );
+		}
+	} else if ( instruction === 'right' ) {
+		this.cursor.initialLeft = null;
+		if ( !this.keyboard.keys.shift ) {
+			from = to = this.documentView.getModel().getRelativeContentOffset(
+				this.selection.getLength() ? this.selection.end : this.selection.to, 1 );
+		} else {
+			to = this.documentView.getModel().getRelativeContentOffset( this.selection.to, 1 );
 		}
 	} else if ( instruction === 'home' ) {
-		offset = this.documentView.getRenderedLineRangeFromOffset(
-			this.cursor.initialBias ?
-				this.documentView.getModel().getRelativeContentOffset( this.selection.to, -1 ) :
-				this.selection.to
+		this.cursor.initialLeft = null;
+		to = this.documentView.getRenderedLineRangeFromOffset(
+			this.cursor.initialBias
+				? this.documentView.getModel().getRelativeContentOffset( this.selection.to, -1 )
+				: this.selection.to
 		).start;
 		if ( !this.keyboard.keys.shift ) {
-			this.selection.from = this.selection.to = offset;
-			this.documentView.clearSelection();
-			this.showCursor();
-		} else {
-			this.selection.to = offset;
-			this.documentView.drawSelection( this.selection );
-			this.hideCursor();
+			from = to;
 		}
 	} else if ( instruction === 'end' ) {
-		offset = this.documentView.getRenderedLineRangeFromOffset(
-			this.cursor.initialBias ?
-				this.documentView.getModel().getRelativeContentOffset( this.selection.to, -1 ) :
-				this.selection.to
+		this.cursor.initialLeft = null;
+		to = this.documentView.getRenderedLineRangeFromOffset(
+			this.cursor.initialBias
+				? this.documentView.getModel().getRelativeContentOffset( this.selection.to, -1 )
+				: this.selection.to
 		).end;
 		if ( !this.keyboard.keys.shift ) {
-			this.selection.from = this.selection.to = offset;
-			this.documentView.clearSelection();
-			this.showCursor();
-		} else {
-			this.selection.to = offset;
-			this.documentView.drawSelection( this.selection );
-			this.hideCursor();
+			from = to;
 		}
+	}
+
+	if ( from === to ) {
+		if ( this.selection.from !== this.selection.to ) {
+			this.documentView.clearSelection();
+		}
+		this.selection.from = this.selection.to = to;
+	} else {
+		this.selection.to = to;
+		this.documentView.drawSelection( this.selection );
+	}
+
+	if ( this.selection.from !== this.selection.to ) {
+		this.hideCursor();
+		if(instruction === 'home')
+			this.cursor.initialBias = false;
+		else if(instruction === 'end')
+			this.cursor.initialBias = true;
+	} else {
+		this.showCursor( instruction === 'end' );
 	}
 };
 
