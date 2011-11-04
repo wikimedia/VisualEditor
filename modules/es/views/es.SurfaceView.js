@@ -284,9 +284,9 @@ es.SurfaceView.prototype.moveCursor = function( instruction ) {
 	} else if ( instruction === 'home' ) {
 		this.cursor.initialLeft = null;
 		to = this.documentView.getRenderedLineRangeFromOffset(
-			this.cursor.initialBias
-				? this.documentView.getModel().getRelativeContentOffset( this.selection.to, -1 )
-				: this.selection.to
+			this.cursor.initialBias ?
+				this.documentView.getModel().getRelativeContentOffset( this.selection.to, -1 ) :
+					this.selection.to
 		).start;
 		if ( !this.keyboard.keys.shift ) {
 			from = to;
@@ -294,9 +294,9 @@ es.SurfaceView.prototype.moveCursor = function( instruction ) {
 	} else if ( instruction === 'end' ) {
 		this.cursor.initialLeft = null;
 		to = this.documentView.getRenderedLineRangeFromOffset(
-			this.cursor.initialBias
-				? this.documentView.getModel().getRelativeContentOffset( this.selection.to, -1 )
-				: this.selection.to
+			this.cursor.initialBias ?
+				this.documentView.getModel().getRelativeContentOffset( this.selection.to, -1 ) :
+					this.selection.to
 		).end;
 		if ( !this.keyboard.keys.shift ) {
 			from = to;
