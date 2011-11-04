@@ -81,6 +81,25 @@
         return dumped_text;
 
     }
+
+    // Convert list prefixes to a list of WikiDom list styles
+    var bulletsToTypes = function (bullets) {
+        var bTypes = [];
+        var blen = bullets.length;
+        for (var i = 0; i < bullets.length; i++) {
+            switch (bullets[i]) {
+                case '*': 
+                    bTypes.push('bullet'); break;
+                case '#': 
+                    bTypes.push('number'); break;
+                case ';':
+                    bTypes.push('definitionterm'); break;
+                case ':':
+                    bTypes.push('definitiondata'); break;
+            }
+        }
+        return bTypes;
+    }
 }
 
 start
@@ -93,7 +112,7 @@ start
             else
                 es.push(ei);
         });
-        dp(print_r(es));
+        dp(es);
         return {
             type: 'page', 
             content: es
@@ -547,86 +566,32 @@ ext_param_val
 
 lists = es:(dtdd / li)+
 {  
-    var out = [],    // List of list nodes
-        bstack = "", // Bullet stack, previous element's listStyle
-        bnext = "",  // Next element's listStyle
-        nodes = [];  // Stack of currently active, nested list nodes
-    
-    var commonPrefixLength = function (x, y) {
-        var minLength = Math.min(x.length, y.length);
-        for(var i = 0; i < minLength; i++) {
-            if (x[i] != y[i])
-                break;
-        }
-        return i;
-    }
-    
-    var pushN = function ( n ) {
-        if (nodes.length > 0) {
-            nodes[nodes.length - 1].content.push(n);
+    // flatten es
+    var esLen = es.length;
+    var flatEs = [];
+    for (var i = 0; i < esLen; i++) {
+        if (es[i].constructor === Array) {
+            flatEs.concat(es[i]);
         } else {
-            out.push(n);
-            nodes.push(n);
+            flatEs.push(es[i]);
         }
-
     }
-
-    var openLists = function ( bs, bn ) {
-        var prefix = commonPrefixLength (bs, bn);
-        nodes = nodes.slice(0, prefix);
-        $.each(bn.slice(prefix, bn.length), function (i, c) {
-            switch (c) {
-                case '*':
-                    pushN({type: 'ul', content: []});
-                    break;
-                case '#':
-                    pushN({type: 'ol', content: []});
-                    break;
-                case ';':
-                case ':':
-                    pushN({type: 'dl', content: []});
-                    break;
-                default:
-                    throw("Unknown node prefix " + c);
-            }
-        });
+    return {
+        type: 'list',
+        children: es
     }
-                    
-
-    $.each(es, function(i, e) {
-        if (e.type == 'dtdd') {
-            bnext = e.content[0].listStyle;
-            lnode = openLists( bstack, bnext );
-            
-            nodes[nodes.length - 1].content = 
-                nodes[nodes.length - 1].content.concat(e.content);
-        } else {
-            bnext = e.listStyle;
-            openLists( bstack, bnext, nodes );
-            nodes[nodes.length - 1].content.push(e);
-        }
-        bstack = bnext;
-    });
-    //dp("out: " + print_r(out, 5));
-    return out;
 }
 
 li = bullets:list_char+ 
     c:(inlineline / anyline)
     newline 
 {
-    var type;
-    switch (bullets[bullets.length - 1]) {
-        case '#': 
-        case '*': 
-            type = 'li'; break;
-        case ';': type = 'dt'; break;
-        case ':': type = 'dd'; break;
-    }
     return {
-        type: type,
-        listStyle: bullets,
-        content: c
+        type: 'listItem',
+        attributes: {
+            styles: bulletsToTypes(bullets)
+        },
+        content: c[0]
     };
 }
 
@@ -640,21 +605,18 @@ dtdd = bullets:list_char+
     if (bullets[bullets.length - 1] != ';') {
         return null;
     } else {
-        return { 
-            type: 'dtdd',
-            content: [
-                {
-                    type: 'dt',
-                    listStyle: bullets,
-                    content: c
-                }, {
-                    type: 'dd',
-                    listStyle: bullets.slice(0, bullets.length - 1) + ':',
-                    content: d
-                }
-
-            ]
-        }
+        return [
+            {
+                type: 'listItem',
+                    attributes: {styles: bulletsToTypes(bullets)},
+                    content: c[0]
+            }, {
+                type: 'listItem',
+                    attributes: {styles: bulletsToTypes(
+                            bullets.slice(0, bullets.length - 1) + ':')},
+                    content: d[0]
+            }
+        ]
     }
 }
 

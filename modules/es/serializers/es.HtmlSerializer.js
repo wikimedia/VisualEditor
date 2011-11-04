@@ -91,8 +91,81 @@ es.HtmlSerializer.prototype.paragraph = function( node, raw ) {
 };
 
 es.HtmlSerializer.prototype.list = function( node ) {
-	// TODO: Convert list from flat to structured format and output it as HTML
-	return '<!-- TODO: Support list and listItem nodes -->';
+	var out = [],    // List of list nodes
+	    bstack = [], // Bullet stack, previous element's listStyles
+	    bnext  = [], // Next element's listStyles
+	    closeTags  = []; // Stack of close tags for currently active lists
+
+	var commonPrefixLength = function (x, y) {
+		var minLength = Math.min(x.length, y.length);
+		for(var i = 0; i < minLength; i++) {
+			if (x[i] !== y[i] 
+			    // Both definitiondata and definitionterm are
+			    // inside dls, so consider them equivalent here.
+			    && [x[i], y[i]].sort() 
+				!== ['definitiondata', 'definitionterm'] ) 
+			{
+				break;
+			}
+		}
+		return i;
+	}
+
+	var popTags = function ( n ) {
+		for (var i = 0; i < n; i++ ) {
+			out.push(closeTags.pop());
+		}
+	}
+
+	var openLists = function ( bs, bn, attribs ) {
+		var prefix = commonPrefixLength (bs, bn);
+		// pop close tags from stack
+		popTags(closeTags.length - prefix);
+		for(var i = prefix; i < bn.length; i++) {
+			var c = bn[i];
+			switch (c) {
+				case 'bullet':
+					out.push(es.Html.makeOpeningTag('ul', attribs));
+					closeTags.push(es.Html.makeClosingTag('ul'));
+					break;
+				case 'number':
+					out.push(es.Html.makeOpeningTag('ol', attribs));
+					closeTags.push(es.Html.makeClosingTag('ol'));
+					break;
+				case 'definitionterm':
+				case 'definitiondata':
+					out.push(es.Html.makeOpeningTag('dl', attribs));
+					closeTags.push(es.Html.makeClosingTag('dl'));
+					break;
+				default:
+					throw("Unknown node prefix " + c);
+			}
+		};
+	}
+
+	var childrenLength = node.children.length;
+	for (var i = 0; i < childrenLength; i++) {
+		var e = node.children[i];
+		bnext = e.attributes.styles;
+		delete e.attributes['styles'];
+		openLists( bstack, bnext, e.attributes );
+		var tag;
+		switch(bnext[bnext.length - 1]) {
+			case 'definitionterm':
+				tag = 'dt'; break;
+			case 'definitiondata':
+				tag = 'dd'; break;
+			default:
+				tag = 'li'; break;
+		}
+		out.push( es.Html.makeTag(tag, e.attributes, 
+					  this.content(e.content)
+			  )
+			);
+		bstack = bnext;
+	};
+	popTags(closeTags.length);
+	return out.join("\n");
 };
 
 es.HtmlSerializer.prototype.table = function( node ) {
