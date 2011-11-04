@@ -506,7 +506,7 @@ test( 'es.DocumentModel.prepareContentAnnotation', 1, function() {
 	);
 } );
 
-test( 'es.DocumentModel.prepareRemoval', 1, function() {
+test( 'es.DocumentModel.prepareRemoval', 3, function() {
 	var documentModel = es.DocumentModel.newFromPlainObject( obj );
 
 	// Test 1
@@ -527,7 +527,6 @@ test( 'es.DocumentModel.prepareRemoval', 1, function() {
 		'prepareRemoval includes the content being removed'
 	);
 	
-	/*
 	// Test 2
 	deepEqual(
 		documentModel.prepareRemoval( new es.Range( 15, 18 ) ).getOperations(),
@@ -537,7 +536,7 @@ test( 'es.DocumentModel.prepareRemoval', 1, function() {
 				'type': 'remove',
 				'data': [
 					{ 'type': 'listItem', 'attributes': { 'styles': ['bullet', 'bullet'] } },
-					'b',
+					'f',
 					{ 'type': '/listItem' }
 				]
 			},
@@ -562,7 +561,6 @@ test( 'es.DocumentModel.prepareRemoval', 1, function() {
 		],
 		'prepareRemoval merges two list items'
 	);
-	*/
 } );
 
 test( 'es.DocumentModel.prepareInsertion', 11, function() {
