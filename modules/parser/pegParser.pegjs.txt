@@ -95,7 +95,7 @@
                 case ';':
                     bTypes.push('definitionterm'); break;
                 case ':':
-                    bTypes.push('definitiondata'); break;
+                    bTypes.push('definitiondescription'); break;
             }
         }
         return bTypes;
@@ -115,7 +115,7 @@ start
         dp(es);
         return {
             type: 'page', 
-            content: es
+            children: es
         } 
     }
 
@@ -313,6 +313,7 @@ inlineline
     return out;
 }
 
+// TODO: convert all these to annotations!
 inline_element
   = comment
   / xmlish_tag

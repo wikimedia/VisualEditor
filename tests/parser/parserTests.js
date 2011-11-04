@@ -137,8 +137,6 @@ function processTest(item) {
 					'references': MWReferencesTagHook
 				}
 			});
-                        // XXX: hack
-                        tree.children = tree.content;
 			var res = es.HtmlSerializer.stringify(tree,environment);
                         if (err) {
                             console.log('RENDER FAIL', err);

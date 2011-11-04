@@ -100,10 +100,10 @@ es.HtmlSerializer.prototype.list = function( node ) {
 		var minLength = Math.min(x.length, y.length);
 		for(var i = 0; i < minLength; i++) {
 			if (x[i] !== y[i]) {
-			    // Both definitiondata and definitionterm are
+			    // Both definitiondescription and definitionterm are
 			    // inside dls, so consider them equivalent here.
 			    var diffs =  [x[i], y[i]].sort();
-			    if (diffs[0] !== 'definitiondata'
+			    if (diffs[0] !== 'definitiondescription'
 				&& diffs[1] !== 'definitionterm' ) { 
 				break;
 			    }
@@ -134,7 +134,7 @@ es.HtmlSerializer.prototype.list = function( node ) {
 					closeTags.push(es.Html.makeClosingTag('ol'));
 					break;
 				case 'definitionterm':
-				case 'definitiondata':
+				case 'definitiondescription':
 					out.push(es.Html.makeOpeningTag('dl', attribs));
 					closeTags.push(es.Html.makeClosingTag('dl'));
 					break;
@@ -144,8 +144,7 @@ es.HtmlSerializer.prototype.list = function( node ) {
 		};
 	}
 
-	var childrenLength = node.children.length;
-	for (var i = 0; i < childrenLength; i++) {
+	for (var i = 0, length = node.children.length; i < length; i++) {
 		var e = node.children[i];
 		bnext = e.attributes.styles;
 		delete e.attributes['styles'];
@@ -154,7 +153,7 @@ es.HtmlSerializer.prototype.list = function( node ) {
 		switch(bnext[bnext.length - 1]) {
 			case 'definitionterm':
 				tag = 'dt'; break;
-			case 'definitiondata':
+			case 'definitiondescription':
 				tag = 'dd'; break;
 			default:
 				tag = 'li'; break;

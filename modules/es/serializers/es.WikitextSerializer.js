@@ -79,7 +79,9 @@ es.WikitextSerializer.prototype.paragraph = function( node ) {
 es.WikitextSerializer.prototype.list = function( node ) {
 	var symbolTable = {
 		'bullet': '*',
-		'number': '#'
+		'number': '#',
+		'definitionterm': ';',
+		'definitiondescription': ':'
 	};
 	function convertStyles( styles ) {
 		var symbols = '';
