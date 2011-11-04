@@ -7,14 +7,15 @@
  * @extends {es.DocumentModelNode}
  * @extends {es.DocumentNode}
  * @param {String} type Symbolic name of node type
- * @param {Integer} length Length of content data in document
+ * @param {Object} element Element object in document data
+ * @param {Integer} [length] Length of content data in document
  */
 es.DocumentModelLeafNode = function( type, element, length ) {
 	// Inheritance
 	es.DocumentModelNode.call( this, type, element, length );
 
 	// Properties
-	this.contentLength = length;
+	this.contentLength = length || 0;
 };
 
 /* Methods */
@@ -22,10 +23,10 @@ es.DocumentModelLeafNode = function( type, element, length ) {
 /**
  * Gets a plain object representation of the document's data.
  * 
- * The resulting object is compatible with es.DocumentModel.newFromPlainObject.
- * 
  * @method
- * @returns {Object} Plain object representation
+ * @see {es.DocumentModelNode.getPlainObject}
+ * @see {es.DocumentModel.newFromPlainObject}
+ * @returns {Object} Plain object representation, 
  */
 es.DocumentModelLeafNode.prototype.getPlainObject = function() {
 	var obj = { 'type': this.type };

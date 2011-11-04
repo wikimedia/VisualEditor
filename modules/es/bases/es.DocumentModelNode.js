@@ -6,25 +6,19 @@
  * @constructor
  * @extends {es.EventEmitter}
  * @param {String} type Symbolic name of node type
- * @param {Integer|Array} contents Either Length of content or array of child nodes to append
- * @property {Integer} contentLength Length of content
+ * @param {Object} element Element object in document data
+ * @param {Integer} [length] Length of content data in document
  */
 es.DocumentModelNode = function( type, element, length ) {
 	// Inheritance
-	es.EventEmitter.call( this );
-
-	// Reusable function for passing update events upstream
-	var _this = this;
-	this.emitUpdate = function() {
-		_this.emit( 'update' );
-	};
+	es.DocumentNode.call( this );
 
 	// Properties
 	this.type = type;
 	this.parent = null;
 	this.root = this;
 	this.element = element || null;
-	this.contentLength = length;
+	this.contentLength = length || 0;
 };
 
 /* Abstract Methods */
@@ -43,8 +37,6 @@ es.DocumentModelNode.prototype.createView = function() {
 /**
  * Gets a plain object representation of the document's data.
  * 
- * The resulting object is compatible with es.DocumentModel.newFromPlainObject.
- * 
  * @method
  * @returns {Object} Plain object representation
  */
@@ -55,73 +47,25 @@ es.DocumentModelNode.prototype.getPlainObject = function() {
 /* Methods */
 
 /**
- * Gets a reference to this node's parent.
+ * Gets the content length.
  * 
  * @method
- * @returns {es.DocumentModelNode} Reference to this node's parent
+ * @see {es.DocumentNode.prototype.getContentLength}
+ * @returns {Integer} Length of content
  */
-es.DocumentModelNode.prototype.getParent = function() {
-	return this.parent;
+es.DocumentModelNode.prototype.getContentLength = function() {
+	return this.contentLength;
 };
 
 /**
- * Gets the root node in the tree this node is currently attached to.
+ * Gets the element length.
  * 
  * @method
- * @returns {es.DocumentModelNode} Root node
+ * @see {es.DocumentNode.prototype.getElementLength}
+ * @returns {Integer} Length of content
  */
-es.DocumentModelNode.prototype.getRoot = function() {
-	return this.root;
-};
-
-/**
- * Sets the root node to this and all of it's children.
- * 
- * This method is overridden by nodes with children.
- * 
- * @method
- * @param {es.DocumentModelNode} root Node to use as root
- */
-es.DocumentModelNode.prototype.setRoot = function( root ) {
-	this.root = root;
-};
-
-/**
- * Clears the root node from this and all of it's children.
- * 
- * This method is overridden by nodes with children.
- * 
- * @method
- */
-es.DocumentModelNode.prototype.clearRoot = function() {
-	this.root = null;
-};
-
-/**
- * Attaches this node to another as a child.
- * 
- * @method
- * @param {es.DocumentModelNode} parent Node to attach to
- * @emits attach (parent)
- */
-es.DocumentModelNode.prototype.attach = function( parent ) {
-	this.emit( 'beforeAttach', parent );
-	this.parent = parent;
-	this.setRoot( parent.getRoot() );
-	this.emit( 'afterAttach', parent );
-};
-
-/**
- * Detaches this node from it's parent.
- * 
- * @method
- * @emits detach
- */
-es.DocumentModelNode.prototype.detach = function() {
-	this.emit( 'beforeDetach' );
-	this.parent = null;
-	this.clearRoot();
-	this.emit( 'afterDetach' );
+es.DocumentModelNode.prototype.getElementLength = function() {
+	return this.contentLength + 2;
 };
 
 /**
@@ -167,23 +111,73 @@ es.DocumentModelNode.prototype.adjustContentLength = function( adjustment, quiet
 };
 
 /**
- * Gets the content length.
+ * Attaches this node to another as a child.
  * 
  * @method
- * @returns {Integer} Length of content
+ * @param {es.DocumentModelNode} parent Node to attach to
+ * @emits attach (parent)
  */
-es.DocumentModelNode.prototype.getContentLength = function() {
-	return this.contentLength;
+es.DocumentModelNode.prototype.attach = function( parent ) {
+	this.emit( 'beforeAttach', parent );
+	this.parent = parent;
+	this.setRoot( parent.getRoot() );
+	this.emit( 'afterAttach', parent );
 };
 
 /**
- * Gets the element length.
+ * Detaches this node from it's parent.
  * 
  * @method
- * @returns {Integer} Length of content
+ * @emits detach
  */
-es.DocumentModelNode.prototype.getElementLength = function() {
-	return this.contentLength + 2;
+es.DocumentModelNode.prototype.detach = function() {
+	this.emit( 'beforeDetach' );
+	this.parent = null;
+	this.clearRoot();
+	this.emit( 'afterDetach' );
+};
+
+/**
+ * Gets a reference to this node's parent.
+ * 
+ * @method
+ * @returns {es.DocumentModelNode} Reference to this node's parent
+ */
+es.DocumentModelNode.prototype.getParent = function() {
+	return this.parent;
+};
+
+/**
+ * Gets the root node in the tree this node is currently attached to.
+ * 
+ * @method
+ * @returns {es.DocumentModelNode} Root node
+ */
+es.DocumentModelNode.prototype.getRoot = function() {
+	return this.root;
+};
+
+/**
+ * Sets the root node to this and all of it's children.
+ * 
+ * This method is overridden by nodes with children.
+ * 
+ * @method
+ * @param {es.DocumentModelNode} root Node to use as root
+ */
+es.DocumentModelNode.prototype.setRoot = function( root ) {
+	this.root = root;
+};
+
+/**
+ * Clears the root node from this and all of it's children.
+ * 
+ * This method is overridden by nodes with children.
+ * 
+ * @method
+ */
+es.DocumentModelNode.prototype.clearRoot = function() {
+	this.root = null;
 };
 
 /**
@@ -221,4 +215,4 @@ es.DocumentModelNode.prototype.getElementAttribute = function( key ) {
 
 /* Inheritance */
 
-es.extendClass( es.DocumentModelNode, es.EventEmitter );
+es.extendClass( es.DocumentModelNode, es.DocumentNode );

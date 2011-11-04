@@ -4,7 +4,7 @@
  * @class
  * @abstract
  * @constructor
- * @param {es.DocumentNode[]} nodes List of document nodes to initially add
+ * @param {es.DocumentNode[]} nodes List of document nodes to add
  */
 es.DocumentBranchNode = function( nodes ) {
 	this.children = es.isArray( nodes ) ? nodes : [];

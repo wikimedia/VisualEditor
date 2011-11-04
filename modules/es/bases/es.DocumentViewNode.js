@@ -1,55 +1,45 @@
 /**
  * Creates an es.DocumentViewNode object.
  * 
- * es.DocumentViewNode extends native JavaScript Array objects, without changing Array.prototype by
- * dynamically extending an array literal with the methods of es.DocumentViewNode.
- * 
- * View nodes follow the operations performed on model nodes and keep elements in the DOM in sync.
- * 
- * Child objects must extend es.DocumentViewNode.
- * 
  * @class
  * @abstract
  * @constructor
  * @extends {es.EventEmitter}
- * @param model {es.ModelNode} Model to observe
- * @param {jQuery} [$element=New DIV element] Element to use as a container
- * @property {es.ModelItem} model Model being observed
- * @property {jQuery} $ Container element
+ * @param {es.DocumentModelNode} model Model to observe
+ * @param {jQuery} [$element=$( '<div></div>' )] Element to use as a container
  */
 es.DocumentViewNode = function( model, $element ) {
 	// Inheritance
-	es.EventEmitter.call( this );
+	es.DocumentNode.call( this );
 	
 	// Properties
 	this.model = model;
+	this.parent = null;
 	this.$ = $element || $( '<div/>' );
+};
 
-	// Reusable function for passing update events upstream
-	var _this = this;
-	this.emitUpdate = function() {
-		_this.emit( 'update' );
-	};
+/* Methods */
+
+/**
+ * Gets the length of the element in the model.
+ * 
+ * @method
+ * @see {es.DocumentNode.prototype.getElementLength}
+ * @returns {Integer} Length of content
+ */
+es.DocumentViewNode.prototype.getElementLength = function() {
+	return this.model.getElementLength();
 };
 
 /**
- * Gets a reference to the model this node observes.
+ * Gets the length of the content in the model.
  * 
  * @method
- * @returns {es.ModelNode} Reference to the model this node observes
+ * @see {es.DocumentNode.prototype.getContentLength}
+ * @returns {Integer} Length of content
  */
-es.DocumentViewNode.prototype.getModel = function() {
-	return this.model;
-};
-
-/**
- * Gets a reference to this node's parent.
- * 
- * @method
- * @returns {es.DocumentViewNode} Reference to this node's parent
- */
-es.DocumentViewNode.prototype.getParent = function() {
-	return this.parent;
+es.DocumentViewNode.prototype.getContentLength = function() {
+	return this.model.getContentLength();
 };
 
 /**
@@ -77,25 +67,25 @@ es.DocumentViewNode.prototype.detach = function() {
 };
 
 /**
- * Gets the length of the element in the model.
+ * Gets a reference to this node's parent.
  * 
  * @method
- * @returns {Integer} Length of content
+ * @returns {es.DocumentViewNode} Reference to this node's parent
  */
-es.DocumentViewNode.prototype.getElementLength = function() {
-	return this.model.getElementLength();
+es.DocumentViewNode.prototype.getParent = function() {
+	return this.parent;
 };
 
 /**
- * Gets the length of the content in the model.
+ * Gets a reference to the model this node observes.
  * 
  * @method
- * @returns {Integer} Length of content
+ * @returns {es.DocumentModelNode} Reference to the model this node observes
  */
-es.DocumentViewNode.prototype.getContentLength = function() {
-	return this.model.getContentLength();
+es.DocumentViewNode.prototype.getModel = function() {
+	return this.model;
 };
 
 /* Inheritance */
 
-es.extendClass( es.DocumentViewNode, es.EventEmitter );
+es.extendClass( es.DocumentViewNode, es.DocumentNode );

@@ -7,7 +7,8 @@
  * @extends {es.DocumentModelNode}
  * @extends {es.DocumentBranchNode}
  * @param {String} type Symbolic name of node type
- * @param {es.DocumentModelBranchNode[]} contents List of child nodes to append
+ * @param {Object} element Element object in document data
+ * @param {es.DocumentModelBranchNode[]} [contents] List of child nodes to append
  */
 es.DocumentModelBranchNode = function( type, element, contents ) {
 	// Inheritance
@@ -27,9 +28,9 @@ es.DocumentModelBranchNode = function( type, element, contents ) {
 /**
  * Gets a plain object representation of the document's data.
  * 
- * The resulting object is compatible with es.DocumentModel.newFromPlainObject.
- * 
  * @method
+ * @see {es.DocumentModelNode.getPlainObject}
+ * @see {es.DocumentModel.newFromPlainObject}
  * @returns {Object} Plain object representation
  */
 es.DocumentModelBranchNode.prototype.getPlainObject = function() {
@@ -214,6 +215,7 @@ es.DocumentModelBranchNode.prototype.indexOf = function( node ) {
  * Sets the root node to this and all of it's children.
  * 
  * @method
+ * @see {es.DocumentModelNode.prototype.setRoot}
  * @param {es.DocumentModelNode} root Node to use as root
  */
 es.DocumentModelBranchNode.prototype.setRoot = function( root ) {
@@ -227,6 +229,7 @@ es.DocumentModelBranchNode.prototype.setRoot = function( root ) {
  * Clears the root node from this and all of it's children.
  * 
  * @method
+ * @see {es.DocumentModelNode.prototype.clearRoot}
  */
 es.DocumentModelBranchNode.prototype.clearRoot = function() {
 	this.root = null;
