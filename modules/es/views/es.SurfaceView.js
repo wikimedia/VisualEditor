@@ -251,7 +251,43 @@ es.SurfaceView.prototype.moveCursor = function( instruction ) {
 			this.hideCursor();
 		}
 	} else if ( instruction === 'up' || instruction === 'down' ) {
-		// ...
+		
+		var currentPosition = this.documentView.getRenderedPositionFromOffset( this.selection.to );
+
+		if ( this.cursor.initialLeft === null ) {
+			this.cursor.initialLeft = currentPosition.left;
+		}
+
+		var	fakePosition = new es.Position( this.cursor.initialLeft, currentPosition.top ),
+			offset, step, edge, i = 0;
+		
+		if ( instruction === 'up' ) {
+			step = -5;
+			edge = 0;
+		} else {
+			step = 5;
+			edge = this.documentView.getContentLength();
+		}
+
+
+		do {
+			fakePosition.top += ++i * step;
+			offset = this.documentView.getOffsetFromRenderedPosition( fakePosition );
+			fakePosition = this.documentView.getRenderedPositionFromOffset( offset );
+			fakePosition.left = this.cursor.initialLeft;
+		} while ( currentPosition.top === fakePosition.top && offset !== edge );
+
+		
+		if ( !this.keyboard.keys.shift ) {
+			this.selection.from = this.selection.to = this.documentView.getOffsetFromRenderedPosition( fakePosition );
+			this.documentView.clearSelection();
+			this.showCursor();
+		} else {
+			this.selection.to = this.documentView.getOffsetFromRenderedPosition( fakePosition );
+			this.documentView.drawSelection( this.selection );
+			this.hideCursor();
+		}
+
 	} else if ( instruction === 'home' ) {
 		var offset = this.cursor.initialBias ? this.documentView.getModel().getRelativeContentOffset( this.selection.to, -1 ) : this.selection.to;
 		offset = this.documentView.getRenderedLineRangeFromOffset( offset ).start;
