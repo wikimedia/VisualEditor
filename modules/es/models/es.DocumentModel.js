@@ -1031,8 +1031,6 @@ es.DocumentModel.prototype.prepareRemoval = function( range ) {
 		// So you can merge adjacent paragraphs, or listitems. And you can't merge a paragraph into
 		// a table row. There may be other rules we will want in here later, for instance, special
 		// casing merging a listitem into a paragraph.
-		
-		// wait, some nodes don't have types? Is this the top document node?
 		return (
 			( ( node1 && node2 ) && ( node1.getElementType() === node2.getElementType() ) )  &&
 			( node1.getParent() === node2.getParent() )
