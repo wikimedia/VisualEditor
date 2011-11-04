@@ -137,7 +137,7 @@ es.SurfaceView.prototype.onMouseDown = function( e ) {
 es.SurfaceView.prototype.onMouseMove = function( e ) {
 	if ( e.button === 0 /* left mouse button */ && this.mouse.selecting ) {
 		this.selection.to = this.documentView.getOffsetFromEvent( e );
-		this.drawSelection();
+		this.documentView.drawSelection( this.selection );
 		if ( this.selection.getLength() ) {
 			this.hideCursor();
 		}
@@ -148,11 +148,6 @@ es.SurfaceView.prototype.onMouseUp = function( e ) {
 	if ( e.button === 0 /* left mouse button */ ) {
 		this.mouse.selecting = false;
 	}
-};
-
-es.SurfaceView.prototype.drawSelection = function() {
-	this.documentView.drawSelection( new es.Range( this.selection.from, this.selection.to ) );
-	return this.selection.from !== this.selection.to;
 };
 
 es.SurfaceView.prototype.onKeyDown = function( e ) {
@@ -236,57 +231,51 @@ es.SurfaceView.prototype.onKeyUp = function( e ) {
 es.SurfaceView.prototype.moveCursor = function( instruction ) {
 	this.selection.normalize();
 	if ( instruction === 'left') {
-		if ( this.keyboard.keys.shift ) {
-			this.selection.to = this.documentView.getModel().getRelativeContentOffset( this.selection.to, -1 );
-			this.drawSelection();
-			this.hideCursor();
-		} else {
-			this.showCursor(
-				this.documentView.getModel().getRelativeContentOffset( this.selection.getLength() ? this.selection.start : this.selection.to, -1 )
-			);
-			this.selection.from = this.selection.to;
+		if ( !this.keyboard.keys.shift ) {
+			this.selection.from = this.selection.to = this.documentView.getModel().getRelativeContentOffset( this.selection.getLength() ? this.selection.start : this.selection.to, -1 );
 			this.documentView.clearSelection();
+			this.showCursor();
+		} else {
+			this.selection.to = this.documentView.getModel().getRelativeContentOffset( this.selection.to, -1 );
+			this.documentView.drawSelection( this.selection );
+			this.hideCursor();
 		}
 	} else if ( instruction === 'right' ) {
-
-		if ( this.keyboard.keys.shift ) {
-			this.selection.to = this.documentView.getModel().getRelativeContentOffset( this.selection.to, 1 );
-			this.drawSelection();
-			this.hideCursor();
-		} else {
-			this.showCursor(
-				this.documentView.getModel().getRelativeContentOffset( this.selection.getLength() ? this.selection.end : this.selection.to, 1 )
-			);
-			this.selection.from = this.selection.to;
+		if ( !this.keyboard.keys.shift ) {
+			this.selection.from = this.selection.to = this.documentView.getModel().getRelativeContentOffset( this.selection.getLength() ? this.selection.end : this.selection.to, 1 );
 			this.documentView.clearSelection();
+			this.showCursor();
+		} else {
+			this.selection.to = this.documentView.getModel().getRelativeContentOffset( this.selection.to, 1 );
+			this.documentView.drawSelection( this.selection );
+			this.hideCursor();
 		}
 	} else if ( instruction === 'up' || instruction === 'down' ) {
 		// ...
-	} else if ( instruction === 'home' || instruction === 'end' ) {
-		var offset;
-		if ( this.cursor.initialBias ) {
-			offset = this.documentView.getModel().getRelativeContentOffset(
-				this.selection.to, -1 );
-		} else {
-			offset = this.selection.to;
-		}
-		
-
-		
-		if ( instruction === 'home' ) {
-			this.showCursor(
-				this.documentView.getRenderedLineRangeFromOffset( offset ).start, false );
-		} else { // end
-			this.showCursor( this.documentView.getRenderedLineRangeFromOffset( offset ).end, true );
-		}
-		if ( this.keyboard.keys.shift ) {
-			this.drawSelection();
-			this.hideCursor();
-		} else {
-			this.selection.from = this.selection.to;
+	} else if ( instruction === 'home' ) {
+		var offset = this.cursor.initialBias ? this.documentView.getModel().getRelativeContentOffset( this.selection.to, -1 ) : this.selection.to;
+		offset = this.documentView.getRenderedLineRangeFromOffset( offset ).start;
+		if ( !this.keyboard.keys.shift ) {
+			this.selection.from = this.selection.to = offset;
 			this.documentView.clearSelection();
+			this.showCursor();
+		} else {
+			this.selection.to = offset;
+			this.documentView.drawSelection( this.selection );
+			this.hideCursor();
 		}
-
+	} else if ( instruction === 'end' ) {
+		var offset = this.cursor.initialBias ? this.documentView.getModel().getRelativeContentOffset( this.selection.to, -1 ) : this.selection.to;
+		offset = this.documentView.getRenderedLineRangeFromOffset( offset ).end;
+		if ( !this.keyboard.keys.shift ) {
+			this.selection.from = this.selection.to = offset;
+			this.documentView.clearSelection();
+			this.showCursor();
+		} else {
+			this.selection.to = offset;
+			this.documentView.drawSelection( this.selection );
+			this.hideCursor();
+		}
 	}
 };
 
