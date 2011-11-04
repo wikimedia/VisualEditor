@@ -1,6 +1,6 @@
 module( 'es/bases' );
 
-function DocumentNodeStub( items, name, size ) {
+function DocumentBranchNodeStub( items, name, size ) {
 	// Inheritance
 	es.DocumentBranchNode.call( this, items );
 
@@ -9,35 +9,35 @@ function DocumentNodeStub( items, name, size ) {
 	this.size = size;
 }
 
-DocumentNodeStub.prototype.getContentLength = function() {
+DocumentBranchNodeStub.prototype.getContentLength = function() {
 	return this.size;
 };
 
-DocumentNodeStub.prototype.getElementLength = function() {
+DocumentBranchNodeStub.prototype.getElementLength = function() {
 	// Mimic document data which has an opening and closing around the content
 	return this.size + 2;
 };
 
-es.extendClass( DocumentNodeStub, es.DocumentBranchNode );
+es.extendClass( DocumentBranchNodeStub, es.DocumentBranchNode );
 
 test( 'es.DocumentNode', function() {
 
 	// Stub test
 
 	strictEqual(
-		( new DocumentNodeStub( [], 'a', 0 ) ).getElementLength(),
+		( new DocumentBranchNodeStub( [], 'a', 0 ) ).getElementLength(),
 		2,
-		'DocumentNodeStub.getElementLength() returns initialized length plus 2 for elements'
+		'DocumentBranchNodeStub.getElementLength() returns initialized length plus 2 for elements'
 	);
 
 	// Stubs
 
-	var a = new DocumentNodeStub( [], 'a', 0 ),
-		b = new DocumentNodeStub( [], 'b', 1 ),
-		c = new DocumentNodeStub( [], 'c', 2 ),
-		d = new DocumentNodeStub( [], 'd', 3 ),
-		e = new DocumentNodeStub( [], 'e', 4 ),
-		root1 = new DocumentNodeStub( [a, b, c, d, e], 'root1', 20 ),
+	var a = new DocumentBranchNodeStub( [], 'a', 0 ),
+		b = new DocumentBranchNodeStub( [], 'b', 1 ),
+		c = new DocumentBranchNodeStub( [], 'c', 2 ),
+		d = new DocumentBranchNodeStub( [], 'd', 3 ),
+		e = new DocumentBranchNodeStub( [], 'e', 4 ),
+		root1 = new DocumentBranchNodeStub( [a, b, c, d, e], 'root1', 20 ),
 		i;
 
 	// getRangeFromNode tests
@@ -122,13 +122,14 @@ test( 'es.DocumentNode.selectNodes', function() {
 	//^   ^ ^ ^ ^ ^ ^ ^ ^ ^    ^   ^ ^ ^ ^ ^ ^ ^ ^ ^    ^   ^ ^ ^ ^ ^ ^ ^ ^ ^     ^
 	//0   1 2 3 4 5 6 7 8 9    0   1 2 3 4 5 6 7 8 9    0   1 2 3 4 5 6 7 8 9     0
 	//    0 1 2 3 4 5 6 7 8        0 1 2 3 4 5 6 7 8        0 1 2 3 4 5 6 7 8
-	var f = new DocumentNodeStub( [], 'f', 8 ),
-		g = new DocumentNodeStub( [], 'g', 8 ),
-		h = new DocumentNodeStub( [], 'h', 8 ),
-		root2 = new DocumentNodeStub( [f, g, h], 'root2', 30 );
+	var f = new DocumentBranchNodeStub( [], 'f', 8 ),
+		g = new DocumentBranchNodeStub( [], 'g', 8 ),
+		h = new DocumentBranchNodeStub( [], 'h', 8 ),
+		root2 = new DocumentBranchNodeStub( [f, g, h], 'root2', 30 );
 	// FIXME: QUnit thinks f == g because both are empty arrays. Rawr.
 	// TODO make sure there is a test case for everything that is special-cased in the code
-	// TODO also nest with a more complicated nested structure, like the one from es.DocumentModel.test.js
+	// TODO also nest with a more complicated nested structure, like the one from
+	// es.DocumentModel.test.js
 	
 	// Possible positions are:
 	// * before beginning
@@ -243,7 +244,7 @@ test( 'es.DocumentNode.selectNodes', function() {
 				{ 'node': g },
 				{ 'node': h, 'range': new es.Range( 0, 4 ) }
 			],
-			'desc': 'Range starting in the middle of the first node and ending in the middle of the third'
+			'desc': 'Range from the middle of the first node to the middle of the third'
 		},
 		{
 			'node': root2,
@@ -252,7 +253,7 @@ test( 'es.DocumentNode.selectNodes', function() {
 				{ 'node': f, 'range': new es.Range( 4, 8 ) },
 				{ 'node': g, 'range': new es.Range( 0, 0 ) }
 			],
-			'desc': 'Range starting in the middle of a node and ending at the beginning of the second'
+			'desc': 'Range from the middle of a node to the beginning of the second'
 		},
 		{
 			'node': root2,
@@ -261,7 +262,7 @@ test( 'es.DocumentNode.selectNodes', function() {
 				{ 'node': f, 'range': new es.Range( 4, 8 ) },
 				{ 'node': g, 'range': new es.Range( 0, 1 ) }
 			],
-			'desc': 'Range starting in the middle of a node and ending after the first character of the second'
+			'desc': 'Range from in the middle of a node to the first character of the second'
 		},
 		{
 			'node': root2,
@@ -270,7 +271,7 @@ test( 'es.DocumentNode.selectNodes', function() {
 				{ 'node': f, 'range': new es.Range( 7, 8 ) },
 				{ 'node': g, 'range': new es.Range( 0, 5 ) }
 			],
-			'desc': 'Range starting before the last character of a node and ending in the middle of the next node'
+			'desc': 'Range from before the last character of a node to the middle of the next node'
 		},
 		{
 			'node': root2,
@@ -279,7 +280,7 @@ test( 'es.DocumentNode.selectNodes', function() {
 				{ 'node': f, 'range': new es.Range( 8, 8 ) },
 				{ 'node': g, 'range': new es.Range( 0, 5 ) }
 			],
-			'desc': 'Range starting at the end of a node and ending in the middle of the next node'
+			'desc': 'Range from at the end of a node to the middle of the next node'
 		}
 	];
 

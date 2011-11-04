@@ -668,8 +668,7 @@ test( 'es.DocumentModel.prepareInsertion', 11, function() {
 			},
 			{ 'type': 'retain', 'length': 26 }
 		],
-		'prepareInsertion splits up paragraph when inserting a paragraph closing and opening into' +
-			'a paragraph'
+		'prepareInsertion splits paragraph when inserting a paragraph closing and opening inside it'
 	);
 	
 	// Test 7
