@@ -114,7 +114,7 @@ test( 'es.DocumentBranchNode.getOffsetFromNode', 6, function() {
 	}
 } );
 
-test( 'es.DocumentBranchNode.selectNodes', 21, function() {
+test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 
 	// selectNodes tests
 
@@ -125,11 +125,8 @@ test( 'es.DocumentBranchNode.selectNodes', 21, function() {
 	var f = new DocumentBranchNodeStub( [], 'f', 8 ),
 		g = new DocumentBranchNodeStub( [], 'g', 8 ),
 		h = new DocumentBranchNodeStub( [], 'h', 8 ),
-		root2 = new DocumentBranchNodeStub( [f, g, h], 'root2', 30 );
-	// FIXME: QUnit thinks f == g because both are empty arrays. Rawr.
-	// TODO make sure there is a test case for everything that is special-cased in the code
-	// TODO also nest with a more complicated nested structure, like the one from
-	// es.DocumentModel.test.js
+		root2 = new DocumentBranchNodeStub( [f, g, h], 'root2', 30 ),
+		big = es.DocumentModel.newFromPlainObject( esTest.obj );
 	
 	// Tests 1 ... 22
 	// Possible positions are:
@@ -236,16 +233,164 @@ test( 'es.DocumentBranchNode.selectNodes', 21, function() {
 			'output': [],
 			'desc': 'Zero-length range past the end of a node'
 		},
-		// TODO add a complete set of combinations for cross-node ranges
 		{
 			'node': root2,
-			'input': new es.Range( 5, 25 ),
+			'input': new es.Range( 20, 20 ),
+			'output': [],
+			'desc': 'Zero-length range between two nodes'
+		},
+		// Complete set of combinations for cross-node selections. Generated with help of a script
+		{
+			'node': root2,
+			'input': new es.Range( 0, 11 ),
 			'output': [
-				{ 'node': f, 'range': new es.Range( 4, 8 ) },
-				{ 'node': g },
-				{ 'node': h, 'range': new es.Range( 0, 4 ) }
+				{ 'node': f },
+				{ 'node': g, 'range': new es.Range( 0, 0 ) }
 			],
-			'desc': 'Range from the middle of the first node to the middle of the third'
+			'desc': 'Range starting before the beginning of the first node and ending at the beginning of the second node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 0, 14 ),
+			'output': [
+				{ 'node': f },
+				{ 'node': g, 'range': new es.Range( 0, 3 ) }
+			],
+			'desc': 'Range starting before the beginning of the first node and ending in the middle of the second node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 0, 19 ),
+			'output': [
+				{ 'node': f },
+				{ 'node': g, 'range': new es.Range( 0, 8 ) }
+			],
+			'desc': 'Range starting before the beginning of the first node and ending at the end of the second node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 0, 20 ),
+			'output': [
+				{ 'node': f },
+				{ 'node': g }
+			],
+			'desc': 'Range starting before the beginning of the first node and ending between the second and the third node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 0, 21 ),
+			'output': [
+				{ 'node': f },
+				{ 'node': g },
+				{ 'node': h, 'range': new es.Range( 0, 0 ) }
+			],
+			'desc': 'Range starting before the beginning of the first node and ending at the beginning of the third node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 0, 27 ),
+			'output': [
+				{ 'node': f },
+				{ 'node': g },
+				{ 'node': h, 'range': new es.Range( 0, 6 ) }
+			],
+			'desc': 'Range starting before the beginning of the first node and ending in the middle of the third node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 0, 29 ),
+			'output': [
+				{ 'node': f },
+				{ 'node': g },
+				{ 'node': h, 'range': new es.Range( 0, 8 ) }
+			],
+			'desc': 'Range starting before the beginning of the first node and ending at the end of the third node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 0, 30 ),
+			'output': [
+				{ 'node': f },
+				{ 'node': g },
+				{ 'node': h }
+			],
+			'desc': 'Range starting before the beginning of the first node and ending past the end of the third node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 1, 11 ),
+			'output': [
+				{ 'node': f, 'range': new es.Range( 0, 8 ) },
+				{ 'node': g, 'range': new es.Range( 0, 0 ) }
+			],
+			'desc': 'Range starting at the beginning of the first node and ending at the beginning of the second node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 1, 14 ),
+			'output': [
+				{ 'node': f, 'range': new es.Range( 0, 8 ) },
+				{ 'node': g, 'range': new es.Range( 0, 3 ) }
+			],
+			'desc': 'Range starting at the beginning of the first node and ending in the middle of the second node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 1, 19 ),
+			'output': [
+				{ 'node': f, 'range': new es.Range( 0, 8 ) },
+				{ 'node': g, 'range': new es.Range( 0, 8 ) }
+			],
+			'desc': 'Range starting at the beginning of the first node and ending at the end of the second node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 1, 20 ),
+			'output': [
+				{ 'node': f, 'range': new es.Range( 0, 8 ) },
+				{ 'node': g }
+			],
+			'desc': 'Range starting at the beginning of the first node and ending between the second and the third node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 1, 21 ),
+			'output': [
+				{ 'node': f, 'range': new es.Range( 0, 8 ) },
+				{ 'node': g },
+				{ 'node': h, 'range': new es.Range( 0, 0 ) }
+			],
+			'desc': 'Range starting at the beginning of the first node and ending at the beginning of the third node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 1, 27 ),
+			'output': [
+				{ 'node': f, 'range': new es.Range( 0, 8 ) },
+				{ 'node': g },
+				{ 'node': h, 'range': new es.Range( 0, 6 ) }
+			],
+			'desc': 'Range starting at the beginning of the first node and ending in the middle of the third node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 1, 29 ),
+			'output': [
+				{ 'node': f, 'range': new es.Range( 0, 8 ) },
+				{ 'node': g },
+				{ 'node': h, 'range': new es.Range( 0, 8 ) }
+			],
+			'desc': 'Range starting at the beginning of the first node and ending at the end of the third node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 1, 30 ),
+			'output': [
+				{ 'node': f, 'range': new es.Range( 0, 8 ) },
+				{ 'node': g },
+				{ 'node': h }
+			],
+			'desc': 'Range starting at the beginning of the first node and ending past the end of the third node'
 		},
 		{
 			'node': root2,
@@ -254,41 +399,392 @@ test( 'es.DocumentBranchNode.selectNodes', 21, function() {
 				{ 'node': f, 'range': new es.Range( 4, 8 ) },
 				{ 'node': g, 'range': new es.Range( 0, 0 ) }
 			],
-			'desc': 'Range from the middle of a node to the beginning of the second'
+			'desc': 'Range starting in the middle of the first node and ending at the beginning of the second node'
 		},
 		{
 			'node': root2,
-			'input': new es.Range( 5, 12 ),
+			'input': new es.Range( 5, 14 ),
 			'output': [
 				{ 'node': f, 'range': new es.Range( 4, 8 ) },
-				{ 'node': g, 'range': new es.Range( 0, 1 ) }
+				{ 'node': g, 'range': new es.Range( 0, 3 ) }
 			],
-			'desc': 'Range from in the middle of a node to the first character of the second'
+			'desc': 'Range starting in the middle of the first node and ending in the middle of the second node'
 		},
 		{
 			'node': root2,
-			'input': new es.Range( 8, 16 ),
+			'input': new es.Range( 5, 19 ),
 			'output': [
-				{ 'node': f, 'range': new es.Range( 7, 8 ) },
-				{ 'node': g, 'range': new es.Range( 0, 5 ) }
+				{ 'node': f, 'range': new es.Range( 4, 8 ) },
+				{ 'node': g, 'range': new es.Range( 0, 8 ) }
 			],
-			'desc': 'Range from before the last character of a node to the middle of the next node'
+			'desc': 'Range starting in the middle of the first node and ending at the end of the second node'
 		},
 		{
 			'node': root2,
-			'input': new es.Range( 9, 16 ),
+			'input': new es.Range( 5, 20 ),
+			'output': [
+				{ 'node': f, 'range': new es.Range( 4, 8 ) },
+				{ 'node': g }
+			],
+			'desc': 'Range starting in the middle of the first node and ending between the second and the third node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 5, 21 ),
+			'output': [
+				{ 'node': f, 'range': new es.Range( 4, 8 ) },
+				{ 'node': g },
+				{ 'node': h, 'range': new es.Range( 0, 0 ) }
+			],
+			'desc': 'Range starting in the middle of the first node and ending at the beginning of the third node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 5, 27 ),
+			'output': [
+				{ 'node': f, 'range': new es.Range( 4, 8 ) },
+				{ 'node': g },
+				{ 'node': h, 'range': new es.Range( 0, 6 ) }
+			],
+			'desc': 'Range starting in the middle of the first node and ending in the middle of the third node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 5, 29 ),
+			'output': [
+				{ 'node': f, 'range': new es.Range( 4, 8 ) },
+				{ 'node': g },
+				{ 'node': h, 'range': new es.Range( 0, 8 ) }
+			],
+			'desc': 'Range starting in the middle of the first node and ending at the end of the third node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 5, 30 ),
+			'output': [
+				{ 'node': f, 'range': new es.Range( 4, 8 ) },
+				{ 'node': g },
+				{ 'node': h }
+			],
+			'desc': 'Range starting in the middle of the first node and ending past the end of the third node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 9, 11 ),
 			'output': [
 				{ 'node': f, 'range': new es.Range( 8, 8 ) },
-				{ 'node': g, 'range': new es.Range( 0, 5 ) }
+				{ 'node': g, 'range': new es.Range( 0, 0 ) }
 			],
-			'desc': 'Range from at the end of a node to the middle of the next node'
+			'desc': 'Range starting at the end of the first node and ending at the beginning of the second node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 9, 14 ),
+			'output': [
+				{ 'node': f, 'range': new es.Range( 8, 8 ) },
+				{ 'node': g, 'range': new es.Range( 0, 3 ) }
+			],
+			'desc': 'Range starting at the end of the first node and ending in the middle of the second node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 9, 19 ),
+			'output': [
+				{ 'node': f, 'range': new es.Range( 8, 8 ) },
+				{ 'node': g, 'range': new es.Range( 0, 8 ) }
+			],
+			'desc': 'Range starting at the end of the first node and ending at the end of the second node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 9, 20 ),
+			'output': [
+				{ 'node': f, 'range': new es.Range( 8, 8 ) },
+				{ 'node': g }
+			],
+			'desc': 'Range starting at the end of the first node and ending between the second and the third node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 9, 21 ),
+			'output': [
+				{ 'node': f, 'range': new es.Range( 8, 8 ) },
+				{ 'node': g },
+				{ 'node': h, 'range': new es.Range( 0, 0 ) }
+			],
+			'desc': 'Range starting at the end of the first node and ending at the beginning of the third node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 9, 27 ),
+			'output': [
+				{ 'node': f, 'range': new es.Range( 8, 8 ) },
+				{ 'node': g },
+				{ 'node': h, 'range': new es.Range( 0, 6 ) }
+			],
+			'desc': 'Range starting at the end of the first node and ending in the middle of the third node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 9, 29 ),
+			'output': [
+				{ 'node': f, 'range': new es.Range( 8, 8 ) },
+				{ 'node': g },
+				{ 'node': h, 'range': new es.Range( 0, 8 ) }
+			],
+			'desc': 'Range starting at the end of the first node and ending at the end of the third node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 9, 30 ),
+			'output': [
+				{ 'node': f, 'range': new es.Range( 8, 8 ) },
+				{ 'node': g },
+				{ 'node': h }
+			],
+			'desc': 'Range starting at the end of the first node and ending past the end of the third node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 10, 21 ),
+			'output': [
+				{ 'node': g },
+				{ 'node': h, 'range': new es.Range( 0, 0 ) }
+			],
+			'desc': 'Range starting between the first and the second node and ending at the beginning of the third node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 10, 27 ),
+			'output': [
+				{ 'node': g },
+				{ 'node': h, 'range': new es.Range( 0, 6 ) }
+			],
+			'desc': 'Range starting between the first and the second node and ending in the middle of the third node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 10, 29 ),
+			'output': [
+				{ 'node': g },
+				{ 'node': h, 'range': new es.Range( 0, 8 ) }
+			],
+			'desc': 'Range starting between the first and the second node and ending at the end of the third node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 10, 30 ),
+			'output': [
+				{ 'node': g },
+				{ 'node': h }
+			],
+			'desc': 'Range starting between the first and the second node and ending past the end of the third node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 11, 21 ),
+			'output': [
+				{ 'node': g, 'range': new es.Range( 0, 8 ) },
+				{ 'node': h, 'range': new es.Range( 0, 0 ) }
+			],
+			'desc': 'Range starting at the beginning of the second node and ending at the beginning of the third node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 11, 27 ),
+			'output': [
+				{ 'node': g, 'range': new es.Range( 0, 8 ) },
+				{ 'node': h, 'range': new es.Range( 0, 6 ) }
+			],
+			'desc': 'Range starting at the beginning of the second node and ending in the middle of the third node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 11, 29 ),
+			'output': [
+				{ 'node': g, 'range': new es.Range( 0, 8 ) },
+				{ 'node': h, 'range': new es.Range( 0, 8 ) }
+			],
+			'desc': 'Range starting at the beginning of the second node and ending at the end of the third node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 11, 30 ),
+			'output': [
+				{ 'node': g, 'range': new es.Range( 0, 8 ) },
+				{ 'node': h }
+			],
+			'desc': 'Range starting at the beginning of the second node and ending past the end of the third node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 14, 21 ),
+			'output': [
+				{ 'node': g, 'range': new es.Range( 3, 8 ) },
+				{ 'node': h, 'range': new es.Range( 0, 0 ) }
+			],
+			'desc': 'Range starting in the middle of the second node and ending at the beginning of the third node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 14, 27 ),
+			'output': [
+				{ 'node': g, 'range': new es.Range( 3, 8 ) },
+				{ 'node': h, 'range': new es.Range( 0, 6 ) }
+			],
+			'desc': 'Range starting in the middle of the second node and ending in the middle of the third node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 14, 29 ),
+			'output': [
+				{ 'node': g, 'range': new es.Range( 3, 8 ) },
+				{ 'node': h, 'range': new es.Range( 0, 8 ) }
+			],
+			'desc': 'Range starting in the middle of the second node and ending at the end of the third node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 14, 30 ),
+			'output': [
+				{ 'node': g, 'range': new es.Range( 3, 8 ) },
+				{ 'node': h }
+			],
+			'desc': 'Range starting in the middle of the second node and ending past the end of the third node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 19, 21 ),
+			'output': [
+				{ 'node': g, 'range': new es.Range( 8, 8 ) },
+				{ 'node': h, 'range': new es.Range( 0, 0 ) }
+			],
+			'desc': 'Range starting at the end of the second node and ending at the beginning of the third node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 19, 27 ),
+			'output': [
+				{ 'node': g, 'range': new es.Range( 8, 8 ) },
+				{ 'node': h, 'range': new es.Range( 0, 6 ) }
+			],
+			'desc': 'Range starting at the end of the second node and ending in the middle of the third node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 19, 29 ),
+			'output': [
+				{ 'node': g, 'range': new es.Range( 8, 8 ) },
+				{ 'node': h, 'range': new es.Range( 0, 8 ) }
+			],
+			'desc': 'Range starting at the end of the second node and ending at the end of the third node'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 19, 30 ),
+			'output': [
+				{ 'node': g, 'range': new es.Range( 8, 8 ) },
+				{ 'node': h }
+			],
+			'desc': 'Range starting at the end of the second node and ending past the end of the third node'
+		},
+		// Tests for childless nodes
+		{
+			'node': g,
+			'input': new es.Range( 1, 3 ),
+			'output': [
+				{ 'node': g, 'range': new es.Range( 1, 3 ) }
+			],
+			'desc': 'Childless node given, range not out of bounds'
+		},
+		{
+			'node': g,
+			'input': new es.Range( 0, 8 ),
+			'output': [
+				{ 'node': g, 'range': new es.Range( 0, 8 ) }
+			],
+			'desc': 'Childless node given, range covers entire node'
+		},
+		// Tests for out-of-bounds cases
+		{
+			'node': g,
+			'input': new es.Range( -1, 3 ),
+			'exception': /^The start offset of the range is negative$/,
+			'desc': 'Childless node given, range start out of bounds'
+		},
+		{
+			'node': g,
+			'input': new es.Range( 1, 9 ),
+			'exception': /^The end offset of the range is past the end of the node$/,
+			'desc': 'Childless node given, range end out of bounds'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 31, 35 ),
+			'exception': /^The start offset of the range is past the end of the node$/,
+			'desc': 'Node with children given, range start out of bounds'
+		},
+		{
+			'node': root2,
+			'input': new es.Range( 30, 35 ),
+			'exception': /^The end offset of the range is past the end of the node$/,
+			'desc': 'Node with children given, range end out of bounds'
+		},
+		// Tests for recursion cases
+		{
+			'node': big,
+			'input': new es.Range( 2, 10 ),
+			'output': [
+				{ 'node': big.children[0], 'range': new es.Range( 1, 3 ) },
+				{ 'node': big.children[1], 'range': new es.Range( 0, 4 ) }
+			],
+			'desc': 'Select from before the b to after the d'
+		},
+		{
+			'node': big,
+			'input': new es.Range( 3, 27 ),
+			'output': [
+				{ 'node': big.children[0], 'range': new es.Range( 2, 3 ) },
+				{ 'node': big.children[1] },
+				{ 'node': big.children[2], 'range': new es.Range( 0, 1 ) }
+			],
+			'desc': 'Select from before the c to after the h'
+		},
+		{
+			'node': big,
+			'input': new es.Range( 9, 17 ),
+			'output': [
+				{ 'node': big.children[1].children[0].children[0].children[0], 'range': new es.Range( 0, 1 ) },
+				{ 'node': big.children[1].children[0].children[0].children[1], 'range': new es.Range( 0, 5 ) }
+			],
+			'desc': 'Select from before the d to after the f, with recursion'
+		},
+		{
+			'node': big,
+			'input': new es.Range( 9, 17 ),
+			'shallow': true,
+			'output': [
+				{ 'node': big.children[1], 'range': new es.Range( 3, 11 ) }
+			],
+			'desc': 'Select from before the d to after the f, without recursion'
 		}
 	];
+	
 	for ( var i = 0; i < selectNodesTests.length; i++ ) {
-		deepEqual(
-			root2.selectNodes( selectNodesTests[i].input ),
-			selectNodesTests[i].output,
-			selectNodesTests[i].desc
-		);
+		if ( 'output' in selectNodesTests[i] ) {
+			deepEqual(
+				selectNodesTests[i].node.selectNodes( selectNodesTests[i].input, selectNodesTests[i].shallow ),
+				selectNodesTests[i].output,
+				selectNodesTests[i].desc
+			);
+		} else if ( 'exception' in selectNodesTests[i] ) {
+			raises(
+				function() {
+					selectNodesTests[i].node.selectNodes( selectNodesTests[i].input, selectNodesTests[i].shallow );
+				},
+				selectNodesTests[i].exception,
+				selectNodesTests[i].desc
+			);
+		}
 	}
 } );

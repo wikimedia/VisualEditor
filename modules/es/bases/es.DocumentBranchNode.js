@@ -168,24 +168,6 @@ es.DocumentBranchNode.prototype.selectNodes = function( range, shallow ) {
 			// Empty range outside of any node
 			return [];
 		}
-		if ( start == left - 1 && end == right + 1 ) {
-			// The range covers the entire node, including its opening and closing elements
-			return [ { 'node': this.children[i] } ];
-		}
-		if ( start == left - 1 ) {
-			// start is between this.children[i-1] and this.children[i], move it to left for
-			// convenience
-			// We don't need to check for start < end here because we already have start != end and
-			// start <= end
-			start = left;
-		}
-		if ( end == right + 1 ) {
-			// end is between this.children[i] and this.children[i+1], move it to right for
-			// convenience
-			// We don't need to check for start < end here because we already have start != end and
-			// start <= end
-			end = right;
-		}
 		
 		startInside = start >= left && start <= right; // is the start inside this.children[i]?
 		endInside = end >= left && end <= right; // is the end inside this.children[i]?
@@ -215,6 +197,18 @@ es.DocumentBranchNode.prototype.selectNodes = function( range, shallow ) {
 			nodes.push( { 'node': this.children[i], 'range': new es.Range( 0, end - left ) } );
 			// We've found the end, so we're done
 			return nodes;
+		} else if ( end == right + 1 ) {
+			// end is between this.children[i] and this.children[i+1]
+			// start is not inside this.children[i], so the selection covers
+			// all of this.children[i], then ends
+			nodes.push( { 'node': this.children[i] } );
+			// We've reached the end so we're done
+			return nodes;
+		} else if ( start == left - 1 ) {
+			// start is between this.children[i-1] and this.children[i]
+			// end is not inside this.children[i], so the selection covers
+			// all of this.children[i] and more
+			nodes.push( { 'node': this.children[i] } );
 		} else if ( nodes.length > 0 ) {
 			// Neither the start nor the end is inside this.children[i], but nodes is non-empty,
 			// so this.children[i] must be between the start and the end
@@ -226,11 +220,15 @@ es.DocumentBranchNode.prototype.selectNodes = function( range, shallow ) {
 		// We use +2 because we need to jump over the offset between this.children[i] and
 		// this.children[i+1]
 		left = right + 2;
+		if ( end < left ) {
+			// We've skipped over the end, so we're done
+			return nodes;
+		}
 	}
 	
 	// If we got here, that means that at least some part of the range is out of bounds
 	// This is an error
-	if ( nodes.length === 0 ) {
+	if ( start > right + 1 ) {
 		throw 'The start offset of the range is past the end of the node';
 	} else {
 		// Apparently the start was inside this node, but the end wasn't
