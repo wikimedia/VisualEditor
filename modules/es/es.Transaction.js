@@ -15,6 +15,26 @@ es.Transaction.prototype.getOperations = function() {
 	return this.operations;	
 };
 
+es.Transaction.prototype.optimize = function() {
+	for ( var i = 0; i < this.operations.length - 1; i++ ) {
+		var a = this.operations[i];
+		var b = this.operations[i + 1];
+		if ( a.type === b.type ) {
+			switch ( a.type ) {
+				case 'retain':
+					a.length += b.length;
+					this.operations.splice( i + 1, 1 );
+					break;
+				case 'insert':
+				case 'remove':
+					a.content = a.content.concat( b.content );
+					this.operations.splice( i + 1, 1 );
+					break;
+			}
+		}
+	}
+};
+
 es.Transaction.prototype.pushRetain = function( length ) {
 	this.operations.push( {
 		'type': 'retain',

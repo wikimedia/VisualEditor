@@ -301,7 +301,7 @@ test( 'es.DocumentModel.prepareContentAnnotation', 1, function() {
 	);
 } );
 
-test( 'es.DocumentModel.prepareRemoval', 3, function() {
+test( 'es.DocumentModel.prepareRemoval', 4, function() {
 	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
 
 	// Test 1
@@ -355,6 +355,22 @@ test( 'es.DocumentModel.prepareRemoval', 3, function() {
 			{ 'type': 'retain', 'length': 9 }
 		],
 		'prepareRemoval merges two list items'
+	);
+
+	// Test 4
+	deepEqual(
+		documentModel.prepareRemoval( new es.Range( 3, 9 ) ).getOperations(),
+		[
+			{ 'type': 'retain', 'length': 3 },
+			{
+				'type': 'remove',
+				'data': [
+					['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }]
+				]
+			},
+			{ 'type': 'retain', 'length': 24 }
+		],
+		'prepareRemoval works across structural nodes'
 	);
 } );
 
