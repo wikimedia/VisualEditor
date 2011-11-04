@@ -28,7 +28,6 @@ es.SurfaceView = function( $container, model ) {
 	this.cursor = {
 		$: $( '<div class="es-surfaceView-cursor"></div>' ).appendTo( this.$ ),
 		interval: null,
-		offset: null,
 		initialLeft: null,
 		initialBias: false
 	};
@@ -108,22 +107,24 @@ es.SurfaceView = function( $container, model ) {
 	this.$window.scroll( function() {
 		surfaceView.dimensions.scrollTop = surfaceView.$window.scrollTop();
 	} );
+	
+	this.documentView.on('update', function() {alert(1);});
 };
 
 es.SurfaceView.prototype.onMouseDown = function( e ) {
 	if ( e.button === 0 /* left mouse button */ ) {
 		this.mouse.selecting = true;
 		this.selection.to = this.documentView.getOffsetFromEvent( e );
-
+		
 		if ( this.keyboard.keys.shift ) {
-			this.drawSelection();
+			this.documentView.drawSelection( this.selection );
 			this.hideCursor();
 		} else {
 			this.documentView.clearSelection();
 			this.selection.from = this.selection.to;
 			var	position = es.Position.newFromEventPagePosition( e ),
 				nodeView = this.documentView.getNodeFromOffset( this.selection.to, false );
-			this.showCursor( this.selection.to, position.left > nodeView.$.offset().left );
+			this.showCursor( position.left > nodeView.$.offset().left );
 		}
 	}
 	if ( !this.$input.is( ':focus' ) ) {
@@ -295,25 +296,20 @@ es.SurfaceView.prototype.moveCursor = function( instruction ) {
  * @method
  * @param offset {Integer} Position to show the cursor at
  */
-es.SurfaceView.prototype.showCursor = function( offset, leftBias ) {	
-	if ( typeof offset !== 'undefined' ) {
-		this.cursor.initialBias = leftBias ? true : false;
-		this.selection.to = offset;
-		var position = this.documentView.getRenderedPositionFromOffset(
-			this.selection.to, leftBias
-		);
-		this.cursor.$.css( {
-			'left': position.left,
-			'top': position.top,
-			'height': position.bottom - position.top
-		} );
-		this.$input.css({
-			'top': position.top,
-			'height': position.bottom - position.top
-		});
-	}
-	
-	this.cursor.$.show();
+es.SurfaceView.prototype.showCursor = function( leftBias ) {	
+	this.cursor.initialBias = leftBias ? true : false;
+	var position = this.documentView.getRenderedPositionFromOffset(
+		this.selection.to, leftBias
+	);
+	this.cursor.$.css( {
+		'left': position.left,
+		'top': position.top,
+		'height': position.bottom - position.top
+	} ).show();
+	this.$input.css({
+		'top': position.top,
+		'height': position.bottom - position.top
+	});
 
 	// cursor blinking
 	if ( this.cursor.interval ) {
