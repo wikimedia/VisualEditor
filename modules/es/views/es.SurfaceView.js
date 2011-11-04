@@ -281,7 +281,13 @@ es.SurfaceView.prototype.moveCursor = function( instruction ) {
 				top = this.$.position().top;
 			do {
 				fakePosition.top += ++i * step;
-				if ( fakePosition.top < top || fakePosition.top > top + this.dimensions.height ) {
+				if ( fakePosition.top < top ) {
+					this.cursor.initialLeft = null;
+					fakePosition.top = fakePosition.left = 0;
+					break;
+				} else if ( fakePosition.top > top + this.dimensions.height ) {
+					this.cursor.initialLeft = null;
+					fakePosition.left = this.dimensions.width;
 					break;
 				}
 				fakePosition = this.documentView.getRenderedPositionFromOffset(
