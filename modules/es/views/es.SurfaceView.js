@@ -56,7 +56,7 @@ es.SurfaceView = function( $container, model ) {
 	} );
 	
 	// Hidden input
-	this.$input = $( '<input class="es-surfaceView-input" />' )
+	this.$input = $( '<textarea class="es-surfaceView-textarea" />' )
 		.prependTo( this.$ )
 		.on( {
 			'focus' : function() {
@@ -199,9 +199,27 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 		case 46: // Delete
 			break;
 		default: // Insert content (maybe)
+			if ( this.keyboard.keydownTimeout ) {
+				clearTimeout( this.keyboard.keydownTimeout );
+			}
+			var surface = this;
+			this.keyboard.keydownTimeout = setTimeout( function () {
+				surface.insertFromInput();
+			}, 10 );
 			break;
 	}
-	return false;
+	return true;
+};
+
+es.SurfaceView.prototype.insertFromInput = function() {
+	var val = this.$input.val();
+	this.$input.val( '' );
+	if ( val.length > 0 ) {
+		var transaction = this.documentView.model.prepareInsertion( this.selection.to, val.split('') );
+		this.documentView.model.commit ( transaction );
+		this.selection.to += val.length;
+		this.showCursor();
+	}
 };
 
 es.SurfaceView.prototype.onKeyUp = function( e ) {
