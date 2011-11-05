@@ -151,6 +151,9 @@ es.SurfaceView.prototype.onMouseUp = function( e ) {
 	}
 };
 
+var transactionStack = [];
+var undoCounter = 0;
+
 es.SurfaceView.prototype.onKeyDown = function( e ) {
 	switch ( e.keyCode ) {
 		case 16: // Shift
@@ -196,22 +199,50 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 			break;
 		case 8: // Backspace
 			var transaction = this.documentView.model.prepareRemoval( new es.Range( this.selection.to, this.selection.to - 1 ) );
+			transactionStack.push ( transaction );
+			
 			this.documentView.model.commit ( transaction );
 			this.selection.from = this.selection.to -= 1;
 			this.showCursor();
 			break;
 		case 46: // Delete
 			var transaction = this.documentView.model.prepareRemoval( new es.Range( this.selection.to, this.selection.to + 1 ) );
+			transactionStack.push ( transaction );
 			this.documentView.model.commit ( transaction );
 			break;
+		case 89: // Y
+			if ( this.keyboard.keys.control ) {
+				if ( transactionStack.length > 0 && undoCounter > 0) {
+					this.documentView.model.commit ( transactionStack[ transactionStack.length - undoCounter ] );
+					undoCounter--;
+					this.selection.from = this.selection.to += 1;
+					this.showCursor();
+				}
+			}
+			break;
+		case 90: // Z
+			if ( this.keyboard.keys.control ) {
+				if ( transactionStack.length > 0 ) {
+					this.documentView.model.rollback ( transactionStack[ transactionStack.length - 1 - undoCounter ] );
+					undoCounter++;
+					this.selection.from = this.selection.to -= 1;
+					this.showCursor();
+				}
+			}
+			break;
 		default: // Insert content (maybe)
+			if (undoCounter) {
+				transactionStack = transactionStack.slice(0, transactionStack.length - undoCounter);
+				undoCounter = 0;
+			}
+			
 			if ( this.keyboard.keydownTimeout ) {
 				clearTimeout( this.keyboard.keydownTimeout );
 			}
 			var surface = this;
 			this.keyboard.keydownTimeout = setTimeout( function () {
 				surface.insertFromInput();
-			}, 10 );
+			}, 0 );
 			break;
 	}
 	return true;
@@ -222,6 +253,7 @@ es.SurfaceView.prototype.insertFromInput = function() {
 	this.$input.val( '' );
 	if ( val.length > 0 ) {
 		var transaction = this.documentView.model.prepareInsertion( this.selection.to, val.split('') );
+		transactionStack.push ( transaction );
 		this.documentView.model.commit ( transaction );
 		this.selection.from = this.selection.to += val.length;
 		this.showCursor();
