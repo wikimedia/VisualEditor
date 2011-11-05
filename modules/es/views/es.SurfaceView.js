@@ -195,8 +195,14 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 			this.moveCursor( 'down' );
 			break;
 		case 8: // Backspace
+			var transaction = this.documentView.model.prepareRemoval( new es.Range( this.selection.to, this.selection.to - 1 ) );
+			this.documentView.model.commit ( transaction );
+			this.selection.from = this.selection.to -= 1;
+			this.showCursor();
 			break;
 		case 46: // Delete
+			var transaction = this.documentView.model.prepareRemoval( new es.Range( this.selection.to, this.selection.to + 1 ) );
+			this.documentView.model.commit ( transaction );
 			break;
 		default: // Insert content (maybe)
 			if ( this.keyboard.keydownTimeout ) {
@@ -217,7 +223,7 @@ es.SurfaceView.prototype.insertFromInput = function() {
 	if ( val.length > 0 ) {
 		var transaction = this.documentView.model.prepareInsertion( this.selection.to, val.split('') );
 		this.documentView.model.commit ( transaction );
-		this.selection.to += val.length;
+		this.selection.from = this.selection.to += val.length;
 		this.showCursor();
 	}
 };
