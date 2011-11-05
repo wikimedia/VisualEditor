@@ -285,7 +285,7 @@ es.SurfaceView.prototype.moveCursor = function( instruction ) {
 					this.cursor.initialLeft = null;
 					fakePosition.top = fakePosition.left = 0;
 					break;
-				} else if ( fakePosition.top > top + this.dimensions.height ) {
+				} else if ( fakePosition.top > top + this.dimensions.height + this.dimensions.scrollTop ) {
 					this.cursor.initialLeft = null;
 					fakePosition.left = this.dimensions.width;
 					break;
