@@ -98,30 +98,31 @@ es.HtmlSerializer.prototype.paragraph = function( node, raw ) {
 
 es.HtmlSerializer.prototype.list = function( node ) {
 	var out = [],    // List of list nodes
-	    bstack = [], // Bullet stack, previous element's listStyles
-	    bnext  = [], // Next element's listStyles
-	    closeTags  = []; // Stack of close tags for currently active lists
+		bstack = [], // Bullet stack, previous element's listStyles
+		bnext  = [], // Next element's listStyles
+		closeTags  = []; // Stack of close tags for currently active lists
 
 	function commonPrefixLength( x, y ) {
 		var minLength = Math.min(x.length, y.length);
 		for(var i = 0; i < minLength; i++) {
 			if (x[i] !== y[i]) {
-			    // Both definitiondescription and definitionterm are
-			    // inside dls, so consider them equivalent here.
-			    var diffs =  [x[i], y[i]].sort();
-			    if (diffs[0] !== 'definitiondescription' && diffs[1] !== 'definitionterm' ) { 
+				// Both definitiondescription and definitionterm are
+				// inside dls, so consider them equivalent here.
+				var diffs =  [x[i], y[i]].sort();
+				if (diffs[0] !== 'definitiondescription' &&
+					diffs[1] !== 'definitionterm' ) {
 					break;
-			    }
+				}
 			}
 		}
 		return i;
-	}
+	};
 
 	function popTags( n ) {
 		for (var i = 0; i < n; i++ ) {
 			out.push(closeTags.pop());
 		}
-	}
+	};
 
 	function openLists( bs, bn, attribs ) {
 		var prefix = commonPrefixLength (bs, bn);
@@ -147,7 +148,7 @@ es.HtmlSerializer.prototype.list = function( node ) {
 					throw("Unknown node prefix " + c);
 			}
 		}
-	}
+	};
 
 	for (var i = 0, length = node.children.length; i < length; i++) {
 		var e = node.children[i];
@@ -164,8 +165,8 @@ es.HtmlSerializer.prototype.list = function( node ) {
 				tag = 'li'; break;
 		}
 		out.push( es.Html.makeTag(tag, e.attributes, 
-					  this.content(e.content)
-			  )
+						this.content(e.content)
+					)
 			);
 		bstack = bnext;
 	}
