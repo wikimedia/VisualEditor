@@ -41,9 +41,9 @@ es.ContentView = function( $container, model ) {
 	if ( model ) {
 		// Events
 		var _this = this;
-		this.model.on( 'update', function( args ) {
+		this.model.on( 'update', function( offset ) {
 			_this.scanBoundaries();
-			_this.render( args ? args.offset : 0 );
+			_this.render( offset || 0 );
 		} );
 
 		// DOM Changes

@@ -111,7 +111,8 @@ es.DocumentModel.operations = ( function() {
 				es.insertIntoArray( this.data, this.cursor, op.data );
 				annotate.call( this, this.cursor + op.data.length );
 				// Update model tree
-				node.adjustContentLength( op.data.length );
+				node.adjustContentLength( op.data.length, true );
+				node.emit( update, this.cursor );
 			}
 		}
 		this.cursor += op.data.length;
@@ -131,7 +132,8 @@ es.DocumentModel.operations = ( function() {
 				// Remove content from linear data model
 				this.data.splice( this.cursor, op.data.length );
 				// Update model tree
-				node.adjustContentLength( -op.data.length );
+				node.adjustContentLength( -op.data.length, true );
+				node.emit( update, this.cursor );
 			}
 		}
 	}
