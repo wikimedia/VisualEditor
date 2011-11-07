@@ -88,7 +88,7 @@
 }
 
 start
-  = e:block* { 
+  = e:block* newline* { 
       var es = [];
       // flatten sub-arrays, as a list block can contain multiple lists
       for(var i = 0, length = e.length; i < length; i++) {
@@ -116,17 +116,16 @@ space
 
 
 // Start of line
-sol = (newline / & { return pos === 0; } { return true; }) comment?
+sol = (newline / & { return pos === 0; } { return true; }) (comment newline?)?
 
 newline
   = '\n' / '\r\n'
 
 block
-  = block_lines
+  = (sol space* &newline)? block_lines
   / para
-  / br
-  / newline &newline
   / comment
+  / sol
 
 block_lines
   = h
@@ -138,72 +137,114 @@ block_lines
 /* Headings */
 h = h1 / h2 / h3 / h4 / h5 / h6
 
-h1 = sol
-     '=' c:heading_text '=' &newline {
+h1 = sol '=' 
+    (
+     & { setFlag('h'); return setFlag('h1') }
+     c:inlineline '=' &newline {
+         clearFlag('h');
+         clearFlag('h1');
          return {
              type: 'heading',
              attributes: {level: 1},
              text: c
          }
-     }
+      }
+    / { clearFlag('h'); clearFlag('h1'); return null }
+    )
 
-h2 = sol
-    '==' c:heading_text '==' &newline {
+h2 = sol '==' 
+    (
+     & { setFlag('h'); return setFlag('h2') }
+     c:inlineline '==' &newline {
+         clearFlag('h');
+         clearFlag('h2');
          return {
              type: 'heading',
              attributes: {level: 2},
              content: c
          }
-     }
+      }
+    / { clearFlag('h'); clearFlag('h2'); return null }
+    )
 
-h3 = sol
-     '===' c:heading_text '===' &newline {
+h3 = sol '===' 
+    (
+     & { setFlag('h'); return setFlag('h3') }
+     c:inlineline '===' &newline {
+         clearFlag('h');
+         clearFlag('h3');
          return {
              type: 'heading',
              attributes: {level: 3},
              content: c
          }
      }
+    / { clearFlag('h'); clearFlag('h3'); return null }
+    )
 
-h4 = sol
-     '====' c:heading_text '====' &newline {
+h4 = sol '====' 
+    (
+     & { setFlag('h'); return setFlag('h4') }
+     c:inlineline '====' &newline {
+         clearFlag('h');
+         clearFlag('h4');
          return {
              type: 'heading',
              attributes: {level: 4},
              content: c
          }
      }
+    / { clearFlag('h'); clearFlag('h4'); return null }
+    )
 
-h5 = sol
-     '=====' c:heading_text '=====' &newline {
+h5 = sol '=====' 
+    (& { setFlag('h'); return setFlag('h5') }
+     c:inlineline '=====' &newline {
+         clearFlag('h');
+         clearFlag('h5');
          return {
              type: 'heading',
              attributes: {level: 5},
              content: c
          }
      }
+    / { clearFlag('h'); clearFlag('h5'); return null }
+    )
 
-h6 = sol
-     '======' c:heading_text '======' &newline {
+h6 = sol '======' 
+    (& { setFlag('h'); return setFlag('h6') }
+     c:inlineline '======' &newline {
+         clearFlag('h');
+         clearFlag('h6');
          return {
              type: 'heading',
              attributes: {level: 6},
              content: c
          }
      }
+    / { clearFlag('h'); clearFlag('h6'); return null }
+    )
 
 heading_marker
   = '=' '='*
 
 heading_text
-  = h:( !heading_marker x:(inlineline) { return x } )* { return h.join(''); }
+  = h:( !(heading_marker newline) x:inlineline { return x } )* { return h.join(''); }
 
-br
-  = newline !newline { return {type: 'br'} }
 
 // TODO: convert inline content to annotations!
 para
-  = sol c:inlineline cs:(!block_lines para)* { return {type: 'paragraph', content: c[0] } }
+  = (sol br)? para_lines
+
+para_lines
+  = sol c:inlineline cs:(!block_lines para_lines)* { 
+      return {
+          type: 'paragraph', 
+          content: c[0] // XXX Hack alarm!
+      } 
+  }
+
+br = space* &newline { return {type: 'br'} }
 
 pre_indent 
   = l:pre_indent_line+ {
@@ -222,6 +263,15 @@ inline_breaks
   / & { return syntaxFlags['italic']; } italic_marker { return true; }
   / & { return syntaxFlags['bold']; } bold_marker { return true; }
   / & { return syntaxFlags['linkdesc']; } link_end { return true; }
+  / & { return syntaxFlags['h']; } 
+        ( & { return syntaxFlags['h1'] } '=' newline { return true; }
+        / & { return syntaxFlags['h2'] } '==' newline { return true; }
+        / & { return syntaxFlags['h3'] } '===' newline { return true; }
+        / & { return syntaxFlags['h4'] } '====' newline { return true; }
+        / & { return syntaxFlags['h5'] } '=====' newline { return true; }
+        / & { return syntaxFlags['h6'] } '======' newline { return true; }
+        )
+
 
 
 inline
@@ -292,12 +342,13 @@ inline_element
   / italic
 
 comment
-  = '<!--' c:comment_chars+ '-->' {
-    return {
-        type: 'comment',
-        text: c.join('')
+  = '<!--' c:comment_chars* '-->' 
+    (space* newline space* comment)* {
+        return {
+            type: 'comment',
+            text: c.join('')
+        }
     }
-}
 
 comment_chars
   = c:[^-] { return c; }
