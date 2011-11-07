@@ -133,7 +133,7 @@ es.DocumentModel.operations = ( function() {
 				this.data.splice( this.cursor, op.data.length );
 				// Update model tree
 				node.adjustContentLength( -op.data.length, true );
-				node.emit( update, this.cursor );
+				node.emit( 'update', this.cursor );
 			}
 		}
 	}
