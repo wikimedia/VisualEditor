@@ -3,6 +3,10 @@ $(document).ready( function() {
 		'type': 'document',
 		'children': [
 			{
+				'type': 'pre',
+				'content': { 'text': 'A lot of text goes here... and at some point it wraps.. A lot of text goes here... and at some point it wraps.. A lot of text goes here... and at some point it wraps.. A lot of text goes here... and at some point it wraps.. A lot of text goes here... and at some point it wraps..' }
+			},
+			{
 				'type': 'heading',
 				'attributes': { 'level': 1 },
 				'content': {

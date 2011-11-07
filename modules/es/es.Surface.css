@@ -41,6 +41,7 @@
 .es-headingView,
 .es-tableView,
 .es-listView,
+.es-preView,
 .es-paragraphView {
 	margin: 1em;
 	margin-top: 0;
@@ -55,6 +56,14 @@
 }
 .es-listItemView > .es-viewBranchNode-firstChild {
 	margin: 0;
+}
+
+.es-preView {
+	padding: 1em;
+	border: 1px dashed #2F6FAB;
+}
+.es-preView > * {
+	font-family: monospace,"Courier New";
 }
 
 .es-headingView-level1,
