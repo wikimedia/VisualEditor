@@ -48,8 +48,10 @@ es.DocumentViewBranchNode.prototype.onAfterPush = function( childModel ) {
 	this.children.push( childView );
 	// Update DOM
 	this.$.append( childView.$ );
+	// TODO: adding and deleting classes has to be implemented for unshift, shift, splice, sort
+	// and reverse as well
 	if ( this.children.length === 1 ) {
-		childView.$.addClass('es-ViewBranchNode-firstChild');
+		childView.$.addClass('es-viewBranchNode-firstChild');
 	}
 	this.emit( 'afterPush', childView );
 	this.emit( 'update' );
