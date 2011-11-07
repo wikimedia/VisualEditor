@@ -38,18 +38,6 @@ es.HtmlSerializer.getHtmlAttributes = function( attributes ) {
 	return count ? htmlAttributes : null;
 };
 
-es.HtmlSerializer.getExpandedListItems = function( node ) {
-	var childNode,
-		styles,
-		tree = [];
-	for ( var i = 0; i < node.children.length; i++ ) {
-		childNode = node.children[i];
-		styles = childNode.attributes.styles;
-		// TODO: Build tree from items
-	}
-	return [];
-};
-
 /* Methods */
 
 es.HtmlSerializer.prototype.document = function( node, rawFirstParagraph ) {
