@@ -48,6 +48,9 @@ es.DocumentViewBranchNode.prototype.onAfterPush = function( childModel ) {
 	this.children.push( childView );
 	// Update DOM
 	this.$.append( childView.$ );
+	if ( this.children.length === 1 ) {
+		childView.$.addClass('es-ViewBranchNode-firstChild');
+	}
 	this.emit( 'afterPush', childView );
 	this.emit( 'update' );
 };
