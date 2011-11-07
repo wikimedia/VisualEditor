@@ -112,7 +112,7 @@ es.DocumentModel.operations = ( function() {
 				annotate.call( this, this.cursor + op.data.length );
 				// Update model tree
 				node.adjustContentLength( op.data.length, true );
-				node.emit( update, this.cursor );
+				node.emit( 'update', this.cursor );
 			}
 		}
 		this.cursor += op.data.length;
