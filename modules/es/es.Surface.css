@@ -50,6 +50,10 @@
 }
 
 .es-listItemView > .es-paragraphView {
+	margin-left: 0;
+	margin-right: 0;
+}
+.es-listItemView > .es-viewBranchNode-firstChild {
 	margin: 0;
 }
 
