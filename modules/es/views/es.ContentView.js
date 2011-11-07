@@ -94,8 +94,8 @@ es.ContentView.annotationRenderers = {
 		'open': '<span class="es-contentView-format-textStyle-strong">',
 		'close': '</span>'
 	},
-	'textStyle/emphasis': {
-		'open': '<span class="es-contentView-format-textStyle-emphasis">',
+	'textStyle/emphasize': {
+		'open': '<span class="es-contentView-format-textStyle-emphasize">',
 		'close': '</span>'
 	},
 	'textStyle/big': {

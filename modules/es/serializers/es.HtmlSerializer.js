@@ -232,7 +232,7 @@ es.HtmlSerializer.prototype.content = function( node ) {
 				'textStyle/bold': 'b',
 				'textStyle/italic': 'i',
 				'textStyle/strong': 'strong',
-				'textStyle/emphasis': 'em',
+				'textStyle/emphasize': 'em',
 				'textStyle/big': 'big',
 				'textStyle/small': 'small',
 				'textStyle/superScript': 'sup',

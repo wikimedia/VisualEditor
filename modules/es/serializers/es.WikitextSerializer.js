@@ -162,7 +162,7 @@ es.WikitextSerializer.prototype.content = function( node ) {
 		var annotationSerializer = new es.AnnotationSerializer(),
 			tagTable = {
 				'textStyle/strong': 'strong',
-				'textStyle/emphasis': 'em',
+				'textStyle/emphasize': 'em',
 				'textStyle/big': 'big',
 				'textStyle/small': 'small',
 				'textStyle/superScript': 'sup',
