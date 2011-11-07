@@ -49,6 +49,10 @@
 	font-size: 1em;
 }
 
+.es-listItemView > .es-paragraphView {
+	margin: 0;
+}
+
 .es-headingView-level1,
 .es-headingView-level2 {
 	border-bottom: 1px solid #AAA;

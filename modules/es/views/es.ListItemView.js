@@ -8,7 +8,7 @@
  */
 es.ListItemView = function( model ) {
 	// Inheritance
-	es.DocumentViewLeafNode.call( this, model );
+	es.DocumentViewBranchNode.call( this, model );
 
 	// Properties
 	this.$icon = $( '<div class="es-listItemView-icon"></div>' ).prependTo( this.$ );
@@ -22,6 +22,7 @@ es.ListItemView = function( model ) {
 	// Initialization
 	this.setClasses();
 };
+
 
 es.ListItemView.prototype.setClasses = function() {
 	var classes = this.$.attr( 'class' ),
@@ -46,4 +47,4 @@ es.ListItemView.prototype.setNumber = function( number ) {
 
 /* Inheritance */
 
-es.extendClass( es.ListItemView, es.DocumentViewLeafNode );
+es.extendClass( es.ListItemView, es.DocumentViewBranchNode );

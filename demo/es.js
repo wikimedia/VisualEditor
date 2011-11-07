@@ -132,63 +132,84 @@ $(document).ready( function() {
 						'attributes': {
 							'styles': ['bullet']
 						},
-						'content': {
-							'text': 'Test 4444'
-						}
+						'children' : [
+							{
+								'type': 'paragraph',
+								'content': { 'text': 'Test 4444' }
+							}
+						]
 					},
 					{
 						'type': 'listItem',
 						'attributes': {
 							'styles': ['bullet', 'bullet']
 						},
-						'content': {
-							'text': 'Test 55555'
-						}
+						'children' : [
+							{
+								'type': 'paragraph',
+								'content': { 'text': 'Test 55555' }
+							}
+						]
 					},
 					{
 						'type': 'listItem',
 						'attributes': {
 							'styles': ['bullet', 'bullet', 'bullet']
 						},
-						'content': {
-							'text': 'Test 666666'
-						}
+						'children' : [
+							{
+								'type': 'paragraph',
+								'content': { 'text': 'Test 666666' }
+							}
+						]
 					},
 					{
 						'type': 'listItem',
 						'attributes': {
 							'styles': ['number']
 						},
-						'content': {
-							'text': 'Test 7777777'
-						}
+						'children' : [
+							{
+								'type': 'paragraph',
+								'content': { 'text': 'Test 7777777' }
+							}
+						]
 					},
 					{
 						'type': 'listItem',
 						'attributes': {
 							'styles': ['number', 'number']
 						},
-						'content': {
-							'text': 'Test 88888888'
-						}
+						'children' : [
+							{
+								'type': 'paragraph',
+								'content': { 'text': 'Test 88888888' }
+							}
+						]
 					},
 					{
 						'type': 'listItem',
 						'attributes': {
 							'styles': ['term']
 						},
-						'content': {
-							'text': 'Test 999999999'
-						}
+						'children' : [
+							{
+								'type': 'paragraph',
+								'content': { 'text': 'Test 999999999' }
+							}
+						]
 					},
 					{
 						'type': 'listItem',
 						'attributes': {
 							'styles': ['definition']
 						},
-						'content': {
-							'text': 'Test 0000000000'
-						}
+						'children' : [
+							{
+								'type': 'paragraph',
+								'content': { 'text': 'Test 0000000000' }
+							}
+						]
 					}
 				]
 			},
@@ -215,27 +236,36 @@ $(document).ready( function() {
 												'attributes': {
 													'styles': ['bullet']
 												},
-												'content': {
-													'text': 'Test 4444'
-												}
+												'children' : [
+													{
+														'type': 'paragraph',
+														'content': { 'text': 'Test 4444' }
+													}
+												]												
 											},
 											{
 												'type': 'listItem',
 												'attributes': {
 													'styles': ['bullet', 'bullet']
 												},
-												'content': {
-													'text': 'Test 55555'
-												}
+												'children' : [
+													{
+														'type': 'paragraph',
+														'content': { 'text': 'Test 55555' }
+													}
+												]												
 											},
 											{
 												'type': 'listItem',
 												'attributes': {
 													'styles': ['number']
 												},
-												'content': {
-													'text': 'Test 666666'
-												}
+												'children' : [
+													{
+														'type': 'paragraph',
+														'content': { 'text': 'Test 666666' }
+													}
+												]												
 											}
 										]
 									}
