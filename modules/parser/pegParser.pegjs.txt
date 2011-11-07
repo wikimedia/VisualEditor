@@ -89,20 +89,20 @@
 
 start
   = e:block* { 
-        var es = [];
-        // flatten sub-arrays, as a list block can contain multiple lists
-        for(var i = 0, length = e.length; i < length; i++) {
-            var ei = e[i];
-            if ($.isArray(ei))
-                es = es.concat(ei);
-            else
-                es.push(ei);
-        };
-        return {
-            type: 'page', 
-            children: es
-        } 
-    }
+      var es = [];
+      // flatten sub-arrays, as a list block can contain multiple lists
+      for(var i = 0, length = e.length; i < length; i++) {
+          var ei = e[i];
+          if ($.isArray(ei))
+              es = es.concat(ei);
+          else
+              es.push(ei);
+      };
+      return {
+          type: 'page', 
+              children: es
+      } 
+  }
 
 anyblock = block / inline
 anyblockline = block / inlineline
@@ -140,57 +140,57 @@ h = h1 / h2 / h3 / h4 / h5 / h6
 
 h1 = sol
      '=' c:heading_text '=' &newline {
-    return {
-      type: 'heading',
-      attributes: {level: 1},
-      text: c
-    }
-}
+         return {
+             type: 'heading',
+             attributes: {level: 1},
+             text: c
+         }
+     }
 
 h2 = sol
-     '==' c:heading_text '==' &newline {
-    return {
-      type: 'heading',
-      attributes: {level: 2},
-      content: c
-    }
-}
+    '==' c:heading_text '==' &newline {
+         return {
+             type: 'heading',
+             attributes: {level: 2},
+             content: c
+         }
+     }
 
 h3 = sol
      '===' c:heading_text '===' &newline {
-    return {
-      type: 'heading',
-      attributes: {level: 3},
-      content: c
-    }
-}
+         return {
+             type: 'heading',
+             attributes: {level: 3},
+             content: c
+         }
+     }
 
 h4 = sol
      '====' c:heading_text '====' &newline {
-    return {
-      type: 'heading',
-      attributes: {level: 4},
-      content: c
-    }
-}
+         return {
+             type: 'heading',
+             attributes: {level: 4},
+             content: c
+         }
+     }
 
 h5 = sol
      '=====' c:heading_text '=====' &newline {
-    return {
-      type: 'heading',
-      attributes: {level: 5},
-      content: c
-    }
-}
+         return {
+             type: 'heading',
+             attributes: {level: 5},
+             content: c
+         }
+     }
 
 h6 = sol
      '======' c:heading_text '======' &newline {
-    return {
-      type: 'heading',
-      attributes: {level: 6},
-      content: c
-    }
-}
+         return {
+             type: 'heading',
+             attributes: {level: 6},
+             content: c
+         }
+     }
 
 heading_marker
   = '=' '='*
@@ -209,7 +209,7 @@ pre_indent
   = l:pre_indent_line+ {
       return { 
           type: 'pre',
-          children: l 
+              children: l 
       }
   }
 pre_indent_line = sol space l:inlineline { return l }
@@ -226,57 +226,57 @@ inline_breaks
 
 inline
   = c:(text / inline_element / (!inline_breaks ch:. { return ch; }))+ {
-    var out = [];
-    var text = '';
-    for (var i = 0; i < c.length; i++) {
-      if (typeof c[i] == 'string') {
-        text += c[i];
-      } else {
-        if (text.length) {
-          out.push({
-            type: 'text',
-            text: text
-          });
-          text = '';
-        }
-        out.push(c[i]);
+      var out = [];
+      var text = '';
+      for (var i = 0; i < c.length; i++) {
+          if (typeof c[i] == 'string') {
+              text += c[i];
+          } else {
+              if (text.length) {
+                  out.push({
+                      type: 'text',
+                      text: text
+                  });
+                  text = '';
+              }
+              out.push(c[i]);
+          }
       }
-    }
-    if (text.length) {
-      out.push({
-        type: 'text',
-        text: text
-      });
-    }
-    return out;
+      if (text.length) {
+          out.push({
+              type: 'text',
+              text: text
+          });
+      }
+      return out;
 }
 
 inlineline
   = c:(text / !inline_breaks (inline_element / [^\n]))+ {
-    var out = [];
-    var text = '';
-    dp("inlineline: " + print_r(c));
-    for (var i = 0; i < c.length; i++) {
-      if (typeof c[i] == 'string') {
-        text += c[i];
-      } else {
-        if (text.length) {
-          out.push({
-            type: 'text',
-            text: text
-          });
-          text = '';
-        }
-        out.push(c[i]);
+      var out = [];
+      var text = '';
+      dp("inlineline: " + print_r(c));
+      for (var i = 0; i < c.length; i++) {
+          if (typeof c[i] == 'string') {
+              text += c[i];
+          } else {
+              if (text.length) {
+                  out.push({
+                      type: 'text',
+                      text: text
+                  });
+                  text = '';
+              }
+              out.push(c[i]);
+          }
       }
-    }
-    if (text.length) {
-      out.push({
-        text: text,
-        //annotations: []
-      });
-    }
-    return out;
+      if (text.length) {
+          out.push({
+              text: text,
+              //annotations: []
+          });
+      }
+      return out;
 }
 
 /* TODO: convert all these to annotations!
@@ -293,10 +293,10 @@ inline_element
 
 comment
   = '<!--' c:comment_chars+ '-->' {
-	return {
-		type: 'comment',
-		text: c.join('')
-	}
+    return {
+        type: 'comment',
+        text: c.join('')
+    }
 }
 
 comment_chars
@@ -305,12 +305,12 @@ comment_chars
 
 extlink
   = "[" target:url " " text:extlink_text "]" {
-    return {
-      type: 'extlink',
-      target: target,
-      text: text
-    }
-}
+      return {
+          type: 'extlink',
+              target: target,
+              text: text
+      }
+  }
 
 //  = "[" target:url text:extlink_text "]" { return { type: 'extlink', target: target, text: text } }
 
@@ -322,38 +322,39 @@ extlink_text
 
 template
   = "{{" target:link_target params:("|" p:template_param { return p })* "}}" {
-    var obj = {
-      type: 'template',
-      target: target
-    };
-    if (params && params.length) {
-      obj.params = params;
-    }
-    return obj;
-}
+      var obj = {
+          type: 'template',
+          target: target
+      };
+      if (params && params.length) {
+          obj.params = params;
+      }
+      return obj;
+  }
 
 template_param
   = name:template_param_name "=" c:template_param_text {
-  return {
-    name: name,
-    content: c
-  };
-} / c:template_param_text {
-  return {
-    content: c
-  };
-}
+      return {
+          name: name,
+              content: c
+      };
+  } / c:template_param_text {
+      return {
+          content: c
+      };
+  }
 
-tplarg = "{{{" name:link_target params:("|" p:template_param { return p })* "}}}" {
-    var obj = {
-      type: 'tplarg',
-      name: name
-    };
-    if (params && params.length) {
-      obj.params = params;
-    }
-    return obj;
-}
+tplarg 
+  = "{{{" name:link_target params:("|" p:template_param { return p })* "}}}" {
+      var obj = {
+          type: 'tplarg',
+          name: name
+      };
+      if (params && params.length) {
+          obj.params = params;
+      }
+      return obj;
+  }
 
 template_param_name
   = h:( !"}}" x:([^=|]) { return x } )* { return h.join(''); }
@@ -374,25 +375,25 @@ template_param_text_chunk
 
 link
   = "[[" target:link_target text:("|" link_text)* "]]" {
-    var obj = {
-      type: 'link',
-      target: target
-    };
-    if (text && text.length) {
-      obj.text = text[0][1]; // ehhhh
-    }
-    return obj;
-}
+      var obj = {
+          type: 'link',
+          target: target
+      };
+      if (text && text.length) {
+          obj.text = text[0][1]; // ehhhh
+      }
+      return obj;
+  }
 
 link_target
   = h:( !"]]" x:([^|]) { return x } )* { return h.join(''); }
 
 link_text
   = h:( & { return setFlag('linkdesc'); }
-        x:inlineline { return x } 
+          x:inlineline { return x } 
       )* { 
           clearFlag('linkdesc')
-          return h.join(''); 
+              return h.join(''); 
       }
   / & { clearFlag('linkdesc') } { return null; }
 
@@ -418,8 +419,8 @@ bold_marker
 italic
   = italic_marker 
     & { dp('ienter:' + pos); return setFlag('italic'); }
-        c:inlineline 
-        italic_marker {
+    c:inlineline 
+    italic_marker {
             clearFlag('italic');
             dp('ileave:' + pos);
             return {
@@ -435,42 +436,40 @@ italic_marker
 /* Will need to check anything xmlish agains known/allowed HTML tags and
  * registered extensions, otherwise fail the match. Should ref be treated as a
  * regular extension? */
-xmlish_tag =
-    ref /
-    references
+xmlish_tag = ref / references
 
 ref = ref_full / ref_empty
 
 /* Can we do backreferences to genericize this? */
 ref_full
   = start:ref_start ">" content:ref_content* close:ref_end {
-    return {
-        type: 'ext',
-        name: 'ref',
-        params: start.params,
-		ws: start.ws,
-        content: content,
-        close: close
-    }
+      return {
+          type: 'ext',
+              name: 'ref',
+              params: start.params,
+              ws: start.ws,
+              content: content,
+              close: close
+      }
 }
 
 ref_empty
   = start:ref_start close:(space* "/>") {
-    return {
-        type: 'ext',
-        name: 'ref',
-		ws: start.ws,
-        params: start.params,
-		close: close
-    }
+      return {
+          type: 'ext',
+          name: 'ref',
+          ws: start.ws,
+          params: start.params,
+          close: close
+      }
 }
 
 ref_start
   = "<ref" params:ext_param* ws:space* {
-  return {
-	params: params,
-	ws: ws
-  };
+      return {
+          params: params,
+          ws: ws
+      };
 }
 
 ref_end
@@ -488,51 +487,51 @@ references = references_full / references_empty
 
 references_full
   = start:references_start ">" content:references_content* close:references_end {
-    return {
-        type: 'ext',
-        name: 'references',
-        params: start.params,
-		ws: start.ws,
-        content: content,
-        close: close
-    }
-}
+      return {
+          type: 'ext',
+          name: 'references',
+          params: start.params,
+          ws: start.ws,
+          content: content,
+          close: close
+      }
+  }
 
 references_empty
   = start:references_start close:(space* "/>") {
-    return {
-        type: 'ext',
-        name: 'references',
-		ws: start.ws,
-        params: start.params,
-		close: close
-    }
-}
+      return {
+          type: 'ext',
+          name: 'references',
+          ws: start.ws,
+          params: start.params,
+          close: close
+      }
+  }
 
 references_start
   = "<references" params:ext_param* ws:space* {
-  return {
-	params: params,
-	ws: ws
-  };
-}
+      return {
+          params: params,
+          ws: ws
+      };
+  }
 
 references_end
   = all:("</references" space* ">") {
-  return all.join('');
-}
+      return all.join('');
+  }
 
 references_content
   = !references_end a:(inline) {
-  return a;
-}
+      return a;
+  }
 
 
 ext_param
   = space* name:ext_param_name "=" val:ext_param_val {
-  val.name = name;
-  return val;
-}
+      val.name = name;
+      return val;
+  }
 
 ext_param_name
   = name:[a-zA-Z0-9-]+ {
@@ -545,7 +544,7 @@ ext_param_val
   / '"' t:[^">]+ '"' { return { quote: '"', text: t.join('') } }
 
 lists = es:(dtdd / li)+
-{  
+{
     // Flatten es
     var esLen = es.length;
     var flatEs = [];
@@ -559,7 +558,7 @@ lists = es:(dtdd / li)+
     }
     return {
         type: 'list',
-        children: flatEs
+            children: flatEs
     }
 }
 
@@ -589,16 +588,16 @@ dtdd = sol
         return null;
     } else {
         return [
-            {
-                type: 'listItem',
-                    attributes: {styles: bulletsToTypes(bullets)},
-                    content: {text: c.join('')}
-            }, {
-                type: 'listItem',
-                    attributes: {styles: bulletsToTypes(
-                            bullets.slice(0, bullets.length - 1) + ':')},
-                    content: {text: d.join('')}
-            }
+        {
+            type: 'listItem',
+                attributes: {styles: bulletsToTypes(bullets)},
+                content: {text: c.join('')}
+        }, {
+            type: 'listItem',
+                attributes: {styles: bulletsToTypes(
+                        bullets.slice(0, bullets.length - 1) + ':')},
+                content: {text: d.join('')}
+        }
         ]
     }
 }
@@ -643,11 +642,11 @@ table_attribs
 table_caption 
   = newline
     "|+" c:inline* { 
-      return {
-          type: 'tableCaption',
-          content: c[0]
-      }
-  }
+        return {
+            type: 'tableCaption',
+                content: c[0]
+        }
+    }
 
 table_body 
   = & { dp("table_body enter"); return true; }
@@ -673,11 +672,11 @@ table_row
   = & { dp("table row enter"); return true; }
     newline
     "|-" thtd_attribs? space* td:(table_data / table_header)* { 
-      return {
-          type: 'tableRow',
-          children: td
-      };
-  }
+        return {
+            type: 'tableRow',
+                children: td
+        };
+    }
 
 table_data 
   = & { dp("table_data enter, pos=" + pos); return true; }
@@ -685,13 +684,13 @@ table_data
     ! [}+-]
     a:thtd_attribs? 
     td:(!inline_breaks anyblock)* { 
-      dp("table data result: " + print_r(td) + ", attribts: " + print_r(a));
-      return {
-          type: 'tableCell',
-          attributes: { unparsed: a },
-          children: td
-      };
-  }
+        dp("table data result: " + print_r(td) + ", attribts: " + print_r(a));
+        return {
+            type: 'tableCell',
+                attributes: { unparsed: a },
+                children: td
+        };
+    }
 
 table_header
   = ("!!" / newline "!") 
@@ -699,16 +698,16 @@ table_header
      c:inline {
          return { 
              type: 'tableHeading',
-             attributes: { unparsed: a },
-             children: c
+                 attributes: { unparsed: a },
+                 children: c
          }
      }
 
 thtd_attribs
   // In particular, do not match [|\n]
   = a:(text / ! inline_breaks [="':;/,.-] )+ "|" ! [|}+-] {
-        return a;
-    }
+  return a;
+  }
 
 
 table_end = newline? "|}" { clearFlag('table'); }
@@ -719,3 +718,6 @@ table_end = newline? "|}" { clearFlag('table'); }
  * convert inlines into annotations
  * change contents into children
  */
+
+/* Tabs do not mix well with the hybrid production syntax */
+/* vim: et:ts=4:sw=4:cindent */

@@ -110,9 +110,9 @@ es.HtmlSerializer.prototype.list = function( node ) {
 				// inside dls, so consider them equivalent here.
 				var diffs =  [x[i], y[i]].sort();
 				if (diffs[0] !== 'description' &&
-					diffs[1] !== 'term' ) {
-					break;
-				}
+						diffs[1] !== 'term' ) {
+							break;
+						}
 			}
 		}
 		return i;
