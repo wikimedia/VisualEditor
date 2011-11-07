@@ -78,9 +78,9 @@
                 case '#': 
                     bTypes.push('number'); break;
                 case ';':
-                    bTypes.push('definitionterm'); break;
+                    bTypes.push('term'); break;
                 case ':':
-                    bTypes.push('definitiondescription'); break;
+                    bTypes.push('description'); break;
             }
         }
         return bTypes;
