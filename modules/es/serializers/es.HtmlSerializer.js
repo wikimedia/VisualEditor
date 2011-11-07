@@ -102,29 +102,28 @@ es.HtmlSerializer.prototype.list = function( node ) {
 	    bnext  = [], // Next element's listStyles
 	    closeTags  = []; // Stack of close tags for currently active lists
 
-	var commonPrefixLength = function (x, y) {
+	function commonPrefixLength( x, y ) {
 		var minLength = Math.min(x.length, y.length);
 		for(var i = 0; i < minLength; i++) {
 			if (x[i] !== y[i]) {
 			    // Both definitiondescription and definitionterm are
 			    // inside dls, so consider them equivalent here.
 			    var diffs =  [x[i], y[i]].sort();
-			    if (diffs[0] !== 'definitiondescription'
-				&& diffs[1] !== 'definitionterm' ) { 
-				break;
+			    if (diffs[0] !== 'definitiondescription' && diffs[1] !== 'definitionterm' ) { 
+					break;
 			    }
 			}
 		}
 		return i;
 	}
 
-	var popTags = function ( n ) {
+	function popTags( n ) {
 		for (var i = 0; i < n; i++ ) {
 			out.push(closeTags.pop());
 		}
 	}
 
-	var openLists = function ( bs, bn, attribs ) {
+	function openLists( bs, bn, attribs ) {
 		var prefix = commonPrefixLength (bs, bn);
 		// pop close tags from stack
 		popTags(closeTags.length - prefix);
@@ -147,13 +146,13 @@ es.HtmlSerializer.prototype.list = function( node ) {
 				default:
 					throw("Unknown node prefix " + c);
 			}
-		};
+		}
 	}
 
 	for (var i = 0, length = node.children.length; i < length; i++) {
 		var e = node.children[i];
 		bnext = e.attributes.styles;
-		delete e.attributes['styles'];
+		delete e.attributes.styles;
 		openLists( bstack, bnext, e.attributes );
 		var tag;
 		switch(bnext[bnext.length - 1]) {
@@ -169,7 +168,7 @@ es.HtmlSerializer.prototype.list = function( node ) {
 			  )
 			);
 		bstack = bnext;
-	};
+	}
 	popTags(closeTags.length);
 	return out.join("\n");
 };
