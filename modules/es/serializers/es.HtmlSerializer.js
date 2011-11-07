@@ -69,7 +69,13 @@ es.HtmlSerializer.prototype.document = function( node, rawFirstParagraph ) {
 };
 
 es.HtmlSerializer.prototype.comment = function( node ) {
-	return '<!--' + node.text + '-->';
+	return '<!--(' + node.text + ')-->';
+};
+
+es.HtmlSerializer.prototype.pre = function( node ) {
+	return es.Html.makeTag(
+		'pre', {}, this.document( node, true )
+	);
 };
 
 es.HtmlSerializer.prototype.horizontalRule = function( node ) {
