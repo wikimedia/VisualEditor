@@ -80,8 +80,8 @@ es.WikitextSerializer.prototype.list = function( node ) {
 	var symbolTable = {
 		'bullet': '*',
 		'number': '#',
-		'definitionterm': ';',
-		'definitiondescription': ':'
+		'term': ';',
+		'description': ':'
 	};
 	function convertStyles( styles ) {
 		var symbols = '';
