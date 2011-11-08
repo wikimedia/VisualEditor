@@ -62,7 +62,7 @@ es.HtmlSerializer.prototype.comment = function( node ) {
 
 es.HtmlSerializer.prototype.pre = function( node ) {
 	return es.Html.makeTag(
-		'pre', {}, this.document( node, true )
+		'pre', {}, this.content( node.content, true )
 	);
 };
 

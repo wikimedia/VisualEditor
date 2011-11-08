@@ -84,7 +84,39 @@
             }
         }
         return bTypes;
-    }
+    };
+
+    var extractInline = function ( node ) {
+        return { text: extractText(node)
+        }
+    };
+
+
+    var extractText = function ( node ) {
+        dp("extract: " + print_r(node));
+        if (typeof node === 'string') {
+            return node;
+        } else if ($.isArray(node)) {
+            var texts = [];
+            for (var i = 0, length = node.length; i < length; i++) {
+                texts.push(extractText(node[i]));
+            }
+            return texts.join('');
+        } else if ( 'text' in node ) {
+            return extractText(node.text);
+        } else if ( 'content' in node ) {
+            return extractText(node.content);
+        } else if ( 'children' in node ) {
+            var texts = [];
+            for (var i = 0, length = node.children.length; i < length; i++) {
+                texts.push(extractText(node.children[i]));
+            }
+            return texts.join('');
+        } else {
+            console.log("extract failed!" + print_r(node));
+            throw ("extract failed: " + print_r(node));
+        }
+    };
 }
 
 start
@@ -116,7 +148,11 @@ space
 
 
 // Start of line
-sol = (newline / & { return pos === 0; } { return true; }) (comment newline?)?
+sol = (newline / & { return pos === 0; } { return true; }) 
+      cn:(comment n:newline? { return n })? {
+          return cn;
+      }
+
 
 newline
   = '\n' / '\r\n'
@@ -146,7 +182,7 @@ h1 = sol '='
          return {
              type: 'heading',
              attributes: {level: 1},
-             text: c
+             content: extractInline(c)
          }
       }
     / { clearFlag('h'); clearFlag('h1'); return null }
@@ -161,7 +197,7 @@ h2 = sol '=='
          return {
              type: 'heading',
              attributes: {level: 2},
-             content: c
+             content: extractInline(c)
          }
       }
     / { clearFlag('h'); clearFlag('h2'); return null }
@@ -176,7 +212,7 @@ h3 = sol '==='
          return {
              type: 'heading',
              attributes: {level: 3},
-             content: c
+             content: extractInline(c)
          }
      }
     / { clearFlag('h'); clearFlag('h3'); return null }
@@ -191,7 +227,7 @@ h4 = sol '===='
          return {
              type: 'heading',
              attributes: {level: 4},
-             content: c
+             content: extractInline(c)
          }
      }
     / { clearFlag('h'); clearFlag('h4'); return null }
@@ -205,7 +241,7 @@ h5 = sol '====='
          return {
              type: 'heading',
              attributes: {level: 5},
-             content: c
+             content: extractInline(c)
          }
      }
     / { clearFlag('h'); clearFlag('h5'); return null }
@@ -219,7 +255,7 @@ h6 = sol '======'
          return {
              type: 'heading',
              attributes: {level: 6},
-             content: c
+             content: extractInline(c)
          }
      }
     / { clearFlag('h'); clearFlag('h6'); return null }
@@ -237,10 +273,10 @@ para
   = (sol br)? para_lines
 
 para_lines
-  = sol c:inlineline cs:(!block_lines para_lines)* { 
+  = s:sol c:inlineline cs:(!block_lines para_lines)* { 
       return {
           type: 'paragraph', 
-          content: c[0] // XXX Hack alarm!
+          content: extractInline([s].concat([c]).concat(cs))
       } 
   }
 
@@ -250,7 +286,7 @@ pre_indent
   = l:pre_indent_line+ {
       return { 
           type: 'pre',
-              children: l 
+              content: extractInline(l) 
       }
   }
 pre_indent_line = sol space l:inlineline { return l }
@@ -305,7 +341,7 @@ inlineline
   = c:(text / !inline_breaks (inline_element / [^\n]))+ {
       var out = [];
       var text = '';
-      dp("inlineline: " + print_r(c));
+      //dp("inlineline: " + print_r(c));
       for (var i = 0; i < c.length; i++) {
           if (typeof c[i] == 'string') {
               text += c[i];
@@ -458,7 +494,7 @@ bold
         clearFlag('bold');
         return {
             type: 'b',
-                text: c,
+            content: {text: c}
         }
     }
   / bold_marker { clearFlag('bold'); return null }
@@ -476,7 +512,7 @@ italic
             dp('ileave:' + pos);
             return {
                 type: 'i',
-                    text: c
+                content: {text: c}
             }
         }
   / italic_marker { clearFlag('italic'); return null }
@@ -623,7 +659,7 @@ li = sol
         attributes: {
             styles: bulletsToTypes(bullets)
         },
-        content: c[0]
+        content: extractInline(c)
     };
 }
 
@@ -642,12 +678,12 @@ dtdd = sol
         {
             type: 'listItem',
                 attributes: {styles: bulletsToTypes(bullets)},
-                content: {text: c.join('')}
+                content: extractInline(c)
         }, {
             type: 'listItem',
                 attributes: {styles: bulletsToTypes(
                         bullets.slice(0, bullets.length - 1) + ':')},
-                content: {text: d.join('')}
+                content: extractInline(d)
         }
         ]
     }
