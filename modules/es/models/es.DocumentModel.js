@@ -92,12 +92,12 @@ es.DocumentModel.operations = ( function() {
 			if ( !node ) {
 				throw 'Missing node error. A node could not not be found at the cursor.';
 			}
+			var offset = this.tree.getOffsetFromNode( node );
 			if ( es.DocumentModel.containsElementData( op.data ) ) {
 				// Perform insert on linear data model
 				es.insertIntoArray( this.data, this.cursor, op.data );
 				annotate.call( this, this.cursor + op.data.length );
 				// Synchronize model tree
-				var offset = this.tree.getOffsetFromNode( node );
 				if ( offset === -1 ) {
 					throw 'Invalid offset error. Node is not in model tree';
 				}
@@ -112,7 +112,7 @@ es.DocumentModel.operations = ( function() {
 				annotate.call( this, this.cursor + op.data.length );
 				// Update model tree
 				node.adjustContentLength( op.data.length, true );
-				node.emit( 'update', this.cursor );
+				node.emit( 'update', this.cursor - offset );
 			}
 		}
 		this.cursor += op.data.length;
@@ -133,7 +133,7 @@ es.DocumentModel.operations = ( function() {
 				this.data.splice( this.cursor, op.data.length );
 				// Update model tree
 				node.adjustContentLength( -op.data.length, true );
-				node.emit( 'update', this.cursor );
+				node.emit( 'update', this.cursor - this.tree.getOffsetFromNode( node ) );
 			}
 		}
 	}
