@@ -35,11 +35,13 @@ es.Transaction.prototype.optimize = function() {
 				case 'retain':
 					a.length += b.length;
 					this.operations.splice( i + 1, 1 );
+					i--;
 					break;
 				case 'insert':
 				case 'remove':
 					a.content = a.content.concat( b.content );
 					this.operations.splice( i + 1, 1 );
+					i--;
 					break;
 			}
 		}
