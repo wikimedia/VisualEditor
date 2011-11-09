@@ -18,12 +18,10 @@ es.SurfaceView = function( $container, model ) {
 	// Interaction state
 	this.mouse = {
 		selecting: false,
-		clicks: 0,
-		clickDelay: 500,
-		clickTimeout: null,
-		clickPosition: null,
-		hotSpotRadius: 1,
-		lastMovePosition: null
+		timer: null,
+		delta: 0,
+		clickTime: 0,
+		clickPosition: null
 	};
 	this.cursor = {
 		$: $( '<div class="es-surfaceView-cursor"></div>' ).appendTo( this.$ ),
@@ -48,10 +46,29 @@ es.SurfaceView = function( $container, model ) {
 	var	surfaceView = this,
 		$document = $( document );
 
-	// MouseDown on surface
+	// MouseDown and DoubleClick on surface
 	this.$.on( {
 		'mousedown' : function(e) {
-			return surfaceView.onMouseDown( e );
+			if ( e.button === 0 ) {
+				if ( surfaceView.mouse.timer && surfaceView.mouse.clickPosition.near( es.Position.newFromEventScreenPosition( e ), 2 ) ) {
+					clearTimeout( surfaceView.mouse.timer );
+					surfaceView.mouse.timer = null;
+					return surfaceView.onMouseDown( e, 3 );
+				} else {
+					surfaceView.mouse.delta = new Date().getTime() - surfaceView.mouse.clickTime; 
+					surfaceView.mouse.clickTime += surfaceView.mouse.delta;
+			        return surfaceView.onMouseDown( e, 1 );
+				}
+			}
+		},
+		'dblclick' : function(e) {
+			if ( e.button === 0 ) {
+				surfaceView.mouse.timer = setTimeout( function () {
+					surfaceView.mouse.timer = null;
+				}, surfaceView.mouse.delta * 1.25 );
+				surfaceView.mouse.clickPosition = es.Position.newFromEventScreenPosition( e );
+				return surfaceView.onMouseDown( e, 2 );
+			}
 		}
 	} );
 	
@@ -111,23 +128,42 @@ es.SurfaceView = function( $container, model ) {
 	this.documentView.on('update', function() {alert(1);});
 };
 
-es.SurfaceView.prototype.onMouseDown = function( e ) {
-	if ( e.button === 0 /* left mouse button */ ) {
-		this.mouse.selecting = true;
-		this.selection.to = this.documentView.getOffsetFromEvent( e );
-		
-		if ( this.keyboard.keys.shift ) {
+es.SurfaceView.prototype.onMouseDown = function( e, clicks ) {
+	switch ( clicks ) {
+		case 1:
+			this.mouse.selecting = true;
+			this.selection.to = this.documentView.getOffsetFromEvent( e );
+
+			if ( this.keyboard.keys.shift ) {
+				this.documentView.drawSelection( this.selection );
+				this.hideCursor();
+			} else {
+				this.documentView.clearSelection();
+				this.selection.from = this.selection.to;
+				var	position = es.Position.newFromEventPagePosition( e ),
+					nodeView = this.documentView.getNodeFromOffset( this.selection.to, false );
+				this.cursor.initialBias = position.left > nodeView.$.offset().left;
+				this.showCursor();
+			}
+			break;
+		case 2:
+			this.selection = this.documentView.model.getWordBoundaries(
+				this.documentView.getOffsetFromEvent( e )
+			);
 			this.documentView.drawSelection( this.selection );
 			this.hideCursor();
-		} else {
-			this.documentView.clearSelection();
-			this.selection.from = this.selection.to;
-			var	position = es.Position.newFromEventPagePosition( e ),
-				nodeView = this.documentView.getNodeFromOffset( this.selection.to, false );
-			this.cursor.initialBias = position.left > nodeView.$.offset().left;
-			this.showCursor();
-		}
+			break;
+		case 3:
+			var node = this.documentView.getNodeFromOffset(
+				this.documentView.getOffsetFromEvent( e )
+			);
+			this.selection.from = this.documentView.getOffsetFromNode( node, false );
+			this.selection.to = this.selection.from + node.getElementLength();
+			this.documentView.drawSelection( this.selection );
+			this.hideCursor();
+			break;
 	}
+
 	if ( !this.$input.is( ':focus' ) ) {
 		this.$input.focus().select();
 	}
