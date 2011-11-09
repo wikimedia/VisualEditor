@@ -49,26 +49,7 @@ es.SurfaceView = function( $container, model ) {
 	// MouseDown and DoubleClick on surface
 	this.$.on( {
 		'mousedown' : function(e) {
-			if ( e.button === 0 ) {
-				if ( surfaceView.mouse.timer && surfaceView.mouse.clickPosition.near( es.Position.newFromEventScreenPosition( e ), 2 ) ) {
-					clearTimeout( surfaceView.mouse.timer );
-					surfaceView.mouse.timer = null;
-					return surfaceView.onMouseDown( e, 3 );
-				} else {
-					surfaceView.mouse.delta = new Date().getTime() - surfaceView.mouse.clickTime; 
-					surfaceView.mouse.clickTime += surfaceView.mouse.delta;
-			        return surfaceView.onMouseDown( e, 1 );
-				}
-			}
-		},
-		'dblclick' : function(e) {
-			if ( e.button === 0 ) {
-				surfaceView.mouse.timer = setTimeout( function () {
-					surfaceView.mouse.timer = null;
-				}, surfaceView.mouse.delta * 1.25 );
-				surfaceView.mouse.clickPosition = es.Position.newFromEventScreenPosition( e );
-				return surfaceView.onMouseDown( e, 2 );
-			}
+			return surfaceView.onMouseDown( e );
 		}
 	} );
 	
@@ -128,42 +109,43 @@ es.SurfaceView = function( $container, model ) {
 	this.documentView.on('update', function() {alert(1);});
 };
 
-es.SurfaceView.prototype.onMouseDown = function( e, clicks ) {
-	switch ( clicks ) {
-		case 1:
-			this.mouse.selecting = true;
-			this.selection.to = this.documentView.getOffsetFromEvent( e );
-
-			if ( this.keyboard.keys.shift ) {
+es.SurfaceView.prototype.onMouseDown = function( e ) {
+	if ( e.button === 0 ) {
+		switch ( e.originalEvent.detail ) {
+			case 1: // single click
+				this.mouse.selecting = true;
+				this.selection.to = this.documentView.getOffsetFromEvent( e );
+				if ( this.keyboard.keys.shift ) {
+					this.documentView.drawSelection( this.selection );
+					this.hideCursor();
+				} else {
+					this.documentView.clearSelection();
+					this.selection.from = this.selection.to;
+					var	position = es.Position.newFromEventPagePosition( e ),
+						nodeView = this.documentView.getNodeFromOffset( this.selection.to, false );
+					this.cursor.initialBias = position.left > nodeView.$.offset().left;
+					this.showCursor();
+				}
+				break;
+			case 2: // double click
+				this.selection = this.documentView.model.getWordBoundaries(
+					this.documentView.getOffsetFromEvent( e )
+				);
 				this.documentView.drawSelection( this.selection );
 				this.hideCursor();
-			} else {
-				this.documentView.clearSelection();
-				this.selection.from = this.selection.to;
-				var	position = es.Position.newFromEventPagePosition( e ),
-					nodeView = this.documentView.getNodeFromOffset( this.selection.to, false );
-				this.cursor.initialBias = position.left > nodeView.$.offset().left;
-				this.showCursor();
-			}
-			break;
-		case 2:
-			this.selection = this.documentView.model.getWordBoundaries(
-				this.documentView.getOffsetFromEvent( e )
-			);
-			this.documentView.drawSelection( this.selection );
-			this.hideCursor();
-			break;
-		case 3:
-			var node = this.documentView.getNodeFromOffset(
-				this.documentView.getOffsetFromEvent( e )
-			);
-			this.selection.from = this.documentView.getOffsetFromNode( node, false );
-			this.selection.to = this.selection.from + node.getElementLength();
-			this.documentView.drawSelection( this.selection );
-			this.hideCursor();
-			break;
+				break;
+				break;
+			default: // 3 and more
+				var node = this.documentView.getNodeFromOffset(
+					this.documentView.getOffsetFromEvent( e )
+				);
+				this.selection.from = this.documentView.getOffsetFromNode( node, false );
+				this.selection.to = this.selection.from + node.getElementLength() - 1;
+				this.documentView.drawSelection( this.selection );
+				this.hideCursor();			
+				break;
+		}
 	}
-
 	if ( !this.$input.is( ':focus' ) ) {
 		this.$input.focus().select();
 	}
