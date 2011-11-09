@@ -101,11 +101,17 @@ es.DocumentBranchNode.prototype.getOffsetFromNode = function( node, shallow ) {
  * @returns {es.DocumentNode|null} Node at offset, or null if non was found
  */
 es.DocumentBranchNode.prototype.getNodeFromOffset = function( offset, shallow ) {
+	// TODO a lot of logic is duplicated in selectNodes(), abstract that into a traverser or something
 	if ( this.children.length ) {
 		var nodeOffset = 0,
 			nodeLength,
 			isBranch;
 		for ( var i = 0, length = this.children.length; i < length; i++ ) {
+			if ( offset == nodeOffset ) {
+				// The requested offset is right before this.children[i],
+				// so it's not inside any of this's children, but inside this
+				return this;
+			}
 			nodeLength = this.children[i].getElementLength();
 			if ( offset >= nodeOffset && offset < nodeOffset + nodeLength ) {
 				isBranch = typeof this.children[i].getChildren === 'function';
@@ -116,6 +122,11 @@ es.DocumentBranchNode.prototype.getNodeFromOffset = function( offset, shallow ) 
 				}
 			}
 			nodeOffset += nodeLength;
+		}
+		if ( offset == nodeOffset ) {
+			// The requested offset is right before this.children[i],
+			// so it's not inside any of this's children, but inside this
+			return this;
 		}
 	}
 	return null;
