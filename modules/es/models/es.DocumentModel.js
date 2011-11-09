@@ -1029,14 +1029,26 @@ es.DocumentModel.prototype.prepareRemoval = function( range ) {
 	*/
 	function canMerge( range ) {
 		var node1 = doc.getNodeFromOffset( range.start );
-		var node2 = doc.getNodeFromOffset( range.end - 1 );
+		var node2 = doc.getNodeFromOffset( range.end );
 		// This is the simple rule we are following for now -- same type & same parent = can merge.
 		// So you can merge adjacent paragraphs, or listitems. And you can't merge a paragraph into
 		// a table row. There may be other rules we will want in here later, for instance, special
 		// casing merging a listitem into a paragraph.
 		return (
-			( ( node1 && node2 ) && ( node1.getElementType() === node2.getElementType() ) )  &&
-			( node1.getParent() === node2.getParent() )
+			//  [<p>a</p><p>b</p>]
+			(
+				node1 &&
+				node2 &&
+				node1.getElementType() === node2.getElementType() &&
+				node1.getParent() === node2.getParent()
+			) ||
+			//  [<p>a</p>]<p>b</p>
+			(
+				node1 &&
+				node2 &&
+				node1 === node2 &&
+				range.start < range.end
+			)
 		);
 	}
 	
@@ -1105,7 +1117,6 @@ es.DocumentModel.prototype.prepareRemoval = function( range ) {
 	if ( range.end < doc.data.length ) {
 		tx.pushRetain( doc.data.length - range.end );
 	}
-	
 	tx.optimize();
 	return tx;
 };
