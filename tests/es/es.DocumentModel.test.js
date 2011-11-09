@@ -547,9 +547,13 @@ test( 'es.DocumentModel.prepareInsertion', 11, function() {
 	);
 } );
 
-test( 'es.DocumentModel.commit, es.DocumentModel.rollback', 12, function() {
+test( 'es.DocumentModel.commit, es.DocumentModel.rollback', /*18*/ 15, function() {
 	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
 
+	// FIXME: These tests shouldn't use prepareFoo() because those functions
+	// normalize the transactions they create and are tested separately.
+	// We should be creating transactions directly and feeding those into
+	// commit()/rollback() --Roan
 	var elementAttributeChange = documentModel.prepareElementAttributeChange(
 		0, 'set', 'test', 1
 	);
@@ -717,4 +721,73 @@ test( 'es.DocumentModel.commit, es.DocumentModel.rollback', 12, function() {
 		],
 		'rollback keeps model tree up to date with removals'
 	);
+	
+	var paragraphBreak = documentModel.prepareInsertion( 2, [ { 'type': '/paragraph' }, { 'type': 'paragraph' } ] );
+	
+	// Test 13
+	documentModel.commit( paragraphBreak );
+	deepEqual(
+		documentModel.getData( new es.Range( 0, 7 ) ),
+		[
+			{ 'type': 'paragraph' },
+			'a',
+			{ 'type': '/paragraph' },
+			{ 'type': 'paragraph' },
+			['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
+			['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }],
+			{ 'type': '/paragraph' }
+		],
+		'commit applies an insertion transaction that splits the paragraph'
+	);
+
+	// Test 14
+	deepEqual(
+		documentModel.getChildren()[0].getContent(),
+		['a'],
+		'commit keeps model tree up to date with paragraph split (paragraph 1)'
+	);
+	
+	// Test 15
+	deepEqual(
+		documentModel.getChildren()[1].getContent(),
+		[
+			['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
+			['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }]
+		],
+		'commit keeps model tree up to date with paragraph split (paragraph 2)'
+	);
+
+	/* FIXME broken
+	// Test 16
+	documentModel.rollback( paragraphBreak );
+	deepEqual(
+		documentModel.getData( new es.Range( 0, 5 ) ),
+		[
+			{ 'type': 'paragraph' },
+			'a',
+			['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
+			['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }],
+			{ 'type': '/paragraph' }
+		],
+		'rollback reverses the effect of a paragraph split on the content'
+	);
+
+	// Test 17
+	deepEqual(
+		documentModel.getChildren()[0].getContent(),
+		[
+			'a',
+			['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
+			['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }]
+		],
+		'rollback keeps model tree up to date with paragraph split (paragraphs are merged back)'
+	);
+	
+	// Test 18
+	deepEqual(
+		documentModel.getChildren()[1].getElementType(),
+		'table',
+		'rollback keeps model tree up to date with paragraph split (table follows the paragraph)'
+	);
+	*/
 } );
