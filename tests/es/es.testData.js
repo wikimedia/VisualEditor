@@ -67,27 +67,42 @@ esTest.obj = {
 											'attributes': {
 												'styles': ['bullet']
 											},
-											'content': {
-												'text': 'e'
-											}
+											'children': [
+												{
+													'type': 'paragraph',
+													'content': {
+														'text': 'e'
+													}
+												}
+											]
 										},
 										{
 											'type': 'listItem',
 											'attributes': {
 												'styles': ['bullet', 'bullet']
 											},
-											'content': {
-												'text': 'f'
-											}
+											'children': [
+												{
+													'type': 'paragraph',
+													'content': {
+														'text': 'f'
+													}
+												}
+											]
 										},
 										{
 											'type': 'listItem',
 											'attributes': {
 												'styles': ['number']
 											},
-											'content': {
-												'text': 'g'
-											}
+											'children': [
+												{
+													'type': 'paragraph',
+													'content': {
+														'text': 'g'
+													}
+												}
+											]
 										}
 									]
 								}
@@ -150,35 +165,47 @@ esTest.data = [
 	{ 'type': 'list' },
 	// 12 - Beginning of bullet list item
 	{ 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } },
-	// 13 - Plain content
-	'e',
-	// 14 - End of item
-	{ 'type': '/listItem' },
-	// 15 - Beginning of nested bullet list item
-	{ 'type': 'listItem', 'attributes': { 'styles': ['bullet', 'bullet'] } },
-	// 16 - Plain content
-	'f',
-	// 17 - End of item
-	{ 'type': '/listItem' },
-	// 18 - Beginning of numbered list item
-	{ 'type': 'listItem', 'attributes': { 'styles': ['number'] } },
-	// 19 - Plain content
-	'g',
-	// 20 - End of item
-	{ 'type': '/listItem' },
-	// 21 - End of list
-	{ 'type': '/list' },
-	// 22 - End of cell
-	{ 'type': '/tableCell' },
-	// 23 - End of row
-	{ 'type': '/tableRow' },
-	// 24 - End of table
-	{ 'type': '/table' },
-	// 25 - Beginning of paragraph
+	// 13 - Beginning of paragraph
 	{ 'type': 'paragraph' },
-	// 26 - Plain content
+	// 14 - Plain content
+	'e',
+	// 15 - End of paragraph
+	{ 'type': '/paragraph' },
+	// 16 - End of item
+	{ 'type': '/listItem' },
+	// 17 - Beginning of nested bullet list item
+	{ 'type': 'listItem', 'attributes': { 'styles': ['bullet', 'bullet'] } },
+	// 18 - Beginning of paragraph
+	{ 'type': 'paragraph' },
+	// 19 - Plain content
+	'f',
+	// 20 - End of paragraph
+	{ 'type': '/paragraph' },
+	// 21 - End of item
+	{ 'type': '/listItem' },
+	// 22 - Beginning of numbered list item
+	{ 'type': 'listItem', 'attributes': { 'styles': ['number'] } },
+	// 23 - Beginning of paragraph
+	{ 'type': 'paragraph' },
+	// 24 - Plain content
+	'g',
+	// 25 - End of paragraph
+	{ 'type': '/paragraph' },
+	// 26 - End of item
+	{ 'type': '/listItem' },
+	// 27 - End of list
+	{ 'type': '/list' },
+	// 28 - End of cell
+	{ 'type': '/tableCell' },
+	// 29 - End of row
+	{ 'type': '/tableRow' },
+	// 30 - End of table
+	{ 'type': '/table' },
+	// 31 - Beginning of paragraph
+	{ 'type': 'paragraph' },
+	// 32 - Plain content
 	'h',
-	// 27 - End of paragraph
+	// 33 - End of paragraph
 	{ 'type': '/paragraph' }
 ];
 
@@ -195,12 +222,18 @@ esTest.tree = [
 			new es.TableCellModel( esTest.data[7], [
 				new es.ParagraphModel( esTest.data[8], 1 ),
 				new es.ListModel( esTest.data[11], [
-					new es.ListItemModel( esTest.data[12], 1 ),
-					new es.ListItemModel( esTest.data[15], 1 ),
-					new es.ListItemModel( esTest.data[18], 1 )
+					new es.ListItemModel( esTest.data[12], [
+						new es.ParagraphModel( esTest.data[13], 1 )
+					] ),
+					new es.ListItemModel( esTest.data[17], [
+						new es.ParagraphModel( esTest.data[18], 1 )
+					] ),
+					new es.ListItemModel( esTest.data[22], [
+						new es.ParagraphModel( esTest.data[23], 1 )
+					] )
 				] )
 			] )
 		] )
 	] ),
-	new es.ParagraphModel( esTest.data[25], 1 )
+	new es.ParagraphModel( esTest.data[31], 1 )
 ];

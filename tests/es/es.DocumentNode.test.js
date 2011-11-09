@@ -60,37 +60,62 @@ test( 'es.DocumentBranchNode.getRangeFromNode', 6, function() {
 	}
 } );
 
-test( 'es.DocumentBranchNode.getNodeFromOffset', 22, function() {
+test( 'es.DocumentBranchNode.getNodeFromOffset', 23, function() {
 	// Tests 1 .. 22
 	var getNodeFromOffsetTests = [
+		// Test 1 - |[<a></a><b> </b><c>  </c><d>   </d><e>    </e>]
 		{ 'input': -1, 'output': null },
-		{ 'input': 0, 'output': a },
+		// Test 2 - [|<a></a><b> </b><c>  </c><d>   </d><e>    </e>]
+		{ 'input': 0, 'output': root1 },
+		// Test 3 - [<a>|</a><b> </b><c>  </c><d>   </d><e>    </e>]
 		{ 'input': 1, 'output': a },
-		{ 'input': 2, 'output': b },
+		// Test 4 - [<a></a>|<b> </b><c>  </c><d>   </d><e>    </e>]
+		{ 'input': 2, 'output': root1 },
+		// Test 5 - [<a></a><b>| </b><c>  </c><d>   </d><e>    </e>]
 		{ 'input': 3, 'output': b },
+		// Test 6 - [<a></a><b> |</b><c>  </c><d>   </d><e>    </e>]
 		{ 'input': 4, 'output': b },
-		{ 'input': 5, 'output': c },
+		// Test 7 - [<a></a><b> </b>|<c>  </c><d>   </d><e>    </e>]
+		{ 'input': 5, 'output': root1 },
+		// Test 8 - [<a></a><b> </b><c>|  </c><d>   </d><e>    </e>]
 		{ 'input': 6, 'output': c },
+		// Test 9 - [<a></a><b> </b><c> | </c><d>   </d><e>    </e>]
 		{ 'input': 7, 'output': c },
+		// Test 10 - [<a></a><b> </b><c>  |</c><d>   </d><e>    </e>]
 		{ 'input': 8, 'output': c },
-		{ 'input': 9, 'output': d },
+		// Test 11 - [<a></a><b> </b><c>  </c>|<d>   </d><e>    </e>]
+		{ 'input': 9, 'output': root1 },
+		// Test 12 - [<a></a><b> </b><c>  </c><d>|   </d><e>    </e>]
 		{ 'input': 10, 'output': d },
+		// Test 13 - [<a></a><b> </b><c>  </c><d> |  </d><e>    </e>]
 		{ 'input': 11, 'output': d },
+		// Test 14 - [<a></a><b> </b><c>  </c><d>  | </d><e>    </e>]
 		{ 'input': 12, 'output': d },
+		// Test 15 - [<a></a><b> </b><c>  </c><d>   |</d><e>    </e>]
 		{ 'input': 13, 'output': d },
-		{ 'input': 14, 'output': e },
+		// Test 16 - [<a></a><b> </b><c>  </c><d>   </d>|<e>    </e>]
+		{ 'input': 14, 'output': root1 },
+		// Test 17 - [<a></a><b> </b><c>  </c><d>   </d><e>|    </e>]
 		{ 'input': 15, 'output': e },
+		// Test 18 - [<a></a><b> </b><c>  </c><d>   </d><e> |   </e>]
 		{ 'input': 16, 'output': e },
+		// Test 19 - [<a></a><b> </b><c>  </c><d>   </d><e>  |  </e>]
 		{ 'input': 17, 'output': e },
+		// Test 20 - [<a></a><b> </b><c>  </c><d>   </d><e>   | </e>]
 		{ 'input': 18, 'output': e },
+		// Test 21 - [<a></a><b> </b><c>  </c><d>   </d><e>    |</e>]
 		{ 'input': 19, 'output': e },
-		{ 'input': 20, 'output': null }
+		// Test 22 - [<a></a><b> </b><c>  </c><d>   </d><e>    </e>|]
+		{ 'input': 20, 'output': root1 },
+		// Test 22 - [<a></a><b> </b><c>  </c><d>   </d><e>    </e>]|
+		{ 'input': 21, 'output': null }
 	];
 	for ( var i = 0; i < getNodeFromOffsetTests.length; i++ ) {
-		strictEqual(
-			root1.getNodeFromOffset( getNodeFromOffsetTests[i].input ),
+		ok(
+			root1.getNodeFromOffset( getNodeFromOffsetTests[i].input ) ===
 			getNodeFromOffsetTests[i].output,
-			'getNodeFromOffset finds the right item or returns null when out of range'
+			'getNodeFromOffset finds the right item or returns null when out of range ' +
+				'(' + getNodeFromOffsetTests[i].input + ')'
 		);
 	}
 } );
@@ -137,109 +162,130 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 	// * past end
 	var selectNodesTests = [
 		// Complete set of combinations within the same node:
+
+		// Test 1
 		{
 			'node': root2,
 			'input': new es.Range( 0, 0 ),
 			'output': [],
 			'desc': 'Zero-length range before the beginning of a node'
 		},
+		// Test 2
 		{
 			'node': root2,
 			'input': new es.Range( 0, 1 ),
 			'output': [{ 'node': f, 'range': new es.Range( 0, 0 ) }],
 			'desc': 'Range starting before the beginning of a node and ending at the beginning'
 		},
+		// Test 3
 		{
 			'node': root2,
 			'input': new es.Range( 10, 15 ),
 			'output': [{ 'node': g, 'range': new es.Range( 0, 4 ) }],
 			'desc': 'Range starting before the beginning of a node and ending in the middle'
 		},
+		// Test 4
 		{
 			'node': root2,
 			'input': new es.Range( 20, 29 ),
 			'output': [{ 'node': h, 'range': new es.Range( 0, 8 ) }],
 			'desc': 'Range starting before the beginning of a node and ending at the end'
 		},
+		// Test 5
 		{
 			'node': root2,
 			'input': new es.Range( 0, 10 ),
 			'output': [{ 'node': f } ],
 			'desc': 'Range starting before the beginning of a node and ending past the end'
 		},
+		// Test 6
 		{
 			'node': root2,
 			'input': new es.Range( 11, 11 ),
 			'output': [{ 'node': g, 'range': new es.Range( 0, 0 ) }],
 			'desc': 'Zero-length range at the beginning of a node'
 		},
+		// Test 7
 		{
 			'node': root2,
 			'input': new es.Range( 21, 26 ),
 			'output': [{ 'node': h, 'range': new es.Range( 0, 5 ) }],
 			'desc': 'Range starting at the beginning of a node and ending in the middle'
 		},
+		// Test 8
 		{
 			'node': root2,
 			'input': new es.Range( 1, 9 ),
 			'output': [{ 'node': f, 'range': new es.Range( 0, 8 ) }],
 			'desc': 'Range starting at the beginning of a node and ending at the end'
 		},
+		// Test 9
 		{
 			'node': root2,
 			'input': new es.Range( 11, 20 ),
 			'output': [{ 'node': g, 'range': new es.Range( 0, 8 ) }],
 			'desc': 'Range starting at the beginning of a node and ending past the end'
 		},
+		// Test 10
 		{
 			'node': root2,
 			'input': new es.Range( 22, 22 ),
 			'output': [{ 'node': h, 'range': new es.Range( 1, 1 ) }],
 			'desc': 'Zero-length range in the middle of a node'
 		},
+		// Test 11
 		{
 			'node': root2,
 			'input': new es.Range( 2, 7 ),
 			'output': [{ 'node': f, 'range': new es.Range( 1, 6 ) }],
 			'desc': 'Range starting and ending in the middle of the same node'
 		},
+		// Test 12
 		{
 			'node': root2,
 			'input': new es.Range( 13, 19 ),
 			'output': [{ 'node': g, 'range': new es.Range( 2, 8 ) }],
 			'desc': 'Range starting in the middle of a node and ending at the end'
 		},
+		// Test 13
 		{
 			'node': root2,
 			'input': new es.Range( 24, 30 ),
 			'output': [{ 'node': h, 'range': new es.Range( 3, 8 ) }],
 			'desc': 'Range starting in the middle of a node and ending past the end'
 		},
+		// Test 14
 		{
 			'node': root2,
 			'input': new es.Range( 9, 9 ),
 			'output': [{ 'node': f, 'range': new es.Range( 8, 8 ) }],
 			'desc': 'Zero-length range at the end of a node'
 		},
+		// Test 15
 		{
 			'node': root2,
 			'input': new es.Range( 19, 20 ),
 			'output': [{ 'node': g, 'range': new es.Range( 8, 8 ) }],
 			'desc': 'Range starting at the end of a node and ending past the end'
 		},
+		// Test 16
 		{
 			'node': root2,
 			'input': new es.Range( 30, 30 ),
 			'output': [],
 			'desc': 'Zero-length range past the end of a node'
 		},
+		// Test 17
 		{
 			'node': root2,
 			'input': new es.Range( 20, 20 ),
 			'output': [],
 			'desc': 'Zero-length range between two nodes'
 		},
+
 		// Complete set of combinations for cross-node selections. Generated with help of a script
+
+		// Test 18
 		{
 			'node': root2,
 			'input': new es.Range( 0, 11 ),
@@ -249,6 +295,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting before the beginning of the first node and ending at the beginning of the second node'
 		},
+		// Test 19
 		{
 			'node': root2,
 			'input': new es.Range( 0, 14 ),
@@ -258,6 +305,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting before the beginning of the first node and ending in the middle of the second node'
 		},
+		// Test 20
 		{
 			'node': root2,
 			'input': new es.Range( 0, 19 ),
@@ -267,6 +315,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting before the beginning of the first node and ending at the end of the second node'
 		},
+		// Test 21
 		{
 			'node': root2,
 			'input': new es.Range( 0, 20 ),
@@ -276,6 +325,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting before the beginning of the first node and ending between the second and the third node'
 		},
+		// Test 22
 		{
 			'node': root2,
 			'input': new es.Range( 0, 21 ),
@@ -286,6 +336,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting before the beginning of the first node and ending at the beginning of the third node'
 		},
+		// Test 23
 		{
 			'node': root2,
 			'input': new es.Range( 0, 27 ),
@@ -296,6 +347,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting before the beginning of the first node and ending in the middle of the third node'
 		},
+		// Test 24
 		{
 			'node': root2,
 			'input': new es.Range( 0, 29 ),
@@ -306,6 +358,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting before the beginning of the first node and ending at the end of the third node'
 		},
+		// Test 25
 		{
 			'node': root2,
 			'input': new es.Range( 0, 30 ),
@@ -316,6 +369,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting before the beginning of the first node and ending past the end of the third node'
 		},
+		// Test 26
 		{
 			'node': root2,
 			'input': new es.Range( 1, 11 ),
@@ -325,6 +379,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting at the beginning of the first node and ending at the beginning of the second node'
 		},
+		// Test 27
 		{
 			'node': root2,
 			'input': new es.Range( 1, 14 ),
@@ -334,6 +389,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting at the beginning of the first node and ending in the middle of the second node'
 		},
+		// Test 28
 		{
 			'node': root2,
 			'input': new es.Range( 1, 19 ),
@@ -343,6 +399,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting at the beginning of the first node and ending at the end of the second node'
 		},
+		// Test 29
 		{
 			'node': root2,
 			'input': new es.Range( 1, 20 ),
@@ -352,6 +409,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting at the beginning of the first node and ending between the second and the third node'
 		},
+		// Test 30
 		{
 			'node': root2,
 			'input': new es.Range( 1, 21 ),
@@ -362,6 +420,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting at the beginning of the first node and ending at the beginning of the third node'
 		},
+		// Test 31
 		{
 			'node': root2,
 			'input': new es.Range( 1, 27 ),
@@ -372,6 +431,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting at the beginning of the first node and ending in the middle of the third node'
 		},
+		// Test 32
 		{
 			'node': root2,
 			'input': new es.Range( 1, 29 ),
@@ -382,6 +442,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting at the beginning of the first node and ending at the end of the third node'
 		},
+		// Test 33
 		{
 			'node': root2,
 			'input': new es.Range( 1, 30 ),
@@ -392,6 +453,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting at the beginning of the first node and ending past the end of the third node'
 		},
+		// Test 34
 		{
 			'node': root2,
 			'input': new es.Range( 5, 11 ),
@@ -401,6 +463,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting in the middle of the first node and ending at the beginning of the second node'
 		},
+		// Test 35
 		{
 			'node': root2,
 			'input': new es.Range( 5, 14 ),
@@ -410,6 +473,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting in the middle of the first node and ending in the middle of the second node'
 		},
+		// Test 36
 		{
 			'node': root2,
 			'input': new es.Range( 5, 19 ),
@@ -419,6 +483,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting in the middle of the first node and ending at the end of the second node'
 		},
+		// Test 37
 		{
 			'node': root2,
 			'input': new es.Range( 5, 20 ),
@@ -428,6 +493,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting in the middle of the first node and ending between the second and the third node'
 		},
+		// Test 38
 		{
 			'node': root2,
 			'input': new es.Range( 5, 21 ),
@@ -438,6 +504,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting in the middle of the first node and ending at the beginning of the third node'
 		},
+		// Test 39
 		{
 			'node': root2,
 			'input': new es.Range( 5, 27 ),
@@ -448,6 +515,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting in the middle of the first node and ending in the middle of the third node'
 		},
+		// Test 40
 		{
 			'node': root2,
 			'input': new es.Range( 5, 29 ),
@@ -458,6 +526,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting in the middle of the first node and ending at the end of the third node'
 		},
+		// Test 41
 		{
 			'node': root2,
 			'input': new es.Range( 5, 30 ),
@@ -468,6 +537,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting in the middle of the first node and ending past the end of the third node'
 		},
+		// Test 42
 		{
 			'node': root2,
 			'input': new es.Range( 9, 11 ),
@@ -477,6 +547,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting at the end of the first node and ending at the beginning of the second node'
 		},
+		// Test 43
 		{
 			'node': root2,
 			'input': new es.Range( 9, 14 ),
@@ -486,6 +557,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting at the end of the first node and ending in the middle of the second node'
 		},
+		// Test 44
 		{
 			'node': root2,
 			'input': new es.Range( 9, 19 ),
@@ -495,6 +567,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting at the end of the first node and ending at the end of the second node'
 		},
+		// Test 45
 		{
 			'node': root2,
 			'input': new es.Range( 9, 20 ),
@@ -504,6 +577,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting at the end of the first node and ending between the second and the third node'
 		},
+		// Test 46
 		{
 			'node': root2,
 			'input': new es.Range( 9, 21 ),
@@ -514,6 +588,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting at the end of the first node and ending at the beginning of the third node'
 		},
+		// Test 47
 		{
 			'node': root2,
 			'input': new es.Range( 9, 27 ),
@@ -524,6 +599,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting at the end of the first node and ending in the middle of the third node'
 		},
+		// Test 48
 		{
 			'node': root2,
 			'input': new es.Range( 9, 29 ),
@@ -534,6 +610,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting at the end of the first node and ending at the end of the third node'
 		},
+		// Test 49
 		{
 			'node': root2,
 			'input': new es.Range( 9, 30 ),
@@ -544,6 +621,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting at the end of the first node and ending past the end of the third node'
 		},
+		// Test 50
 		{
 			'node': root2,
 			'input': new es.Range( 10, 21 ),
@@ -553,6 +631,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting between the first and the second node and ending at the beginning of the third node'
 		},
+		// Test 51
 		{
 			'node': root2,
 			'input': new es.Range( 10, 27 ),
@@ -562,6 +641,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting between the first and the second node and ending in the middle of the third node'
 		},
+		// Test 56
 		{
 			'node': root2,
 			'input': new es.Range( 10, 29 ),
@@ -571,6 +651,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting between the first and the second node and ending at the end of the third node'
 		},
+		// Test 57
 		{
 			'node': root2,
 			'input': new es.Range( 10, 30 ),
@@ -580,6 +661,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting between the first and the second node and ending past the end of the third node'
 		},
+		// Test 58
 		{
 			'node': root2,
 			'input': new es.Range( 11, 21 ),
@@ -589,6 +671,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting at the beginning of the second node and ending at the beginning of the third node'
 		},
+		// Test 59
 		{
 			'node': root2,
 			'input': new es.Range( 11, 27 ),
@@ -598,6 +681,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting at the beginning of the second node and ending in the middle of the third node'
 		},
+		// Test 60
 		{
 			'node': root2,
 			'input': new es.Range( 11, 29 ),
@@ -607,6 +691,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting at the beginning of the second node and ending at the end of the third node'
 		},
+		// Test 61
 		{
 			'node': root2,
 			'input': new es.Range( 11, 30 ),
@@ -616,6 +701,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting at the beginning of the second node and ending past the end of the third node'
 		},
+		// Test 62
 		{
 			'node': root2,
 			'input': new es.Range( 14, 21 ),
@@ -625,6 +711,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting in the middle of the second node and ending at the beginning of the third node'
 		},
+		// Test 63
 		{
 			'node': root2,
 			'input': new es.Range( 14, 27 ),
@@ -634,6 +721,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting in the middle of the second node and ending in the middle of the third node'
 		},
+		// Test 64
 		{
 			'node': root2,
 			'input': new es.Range( 14, 29 ),
@@ -643,6 +731,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting in the middle of the second node and ending at the end of the third node'
 		},
+		// Test 65
 		{
 			'node': root2,
 			'input': new es.Range( 14, 30 ),
@@ -652,6 +741,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting in the middle of the second node and ending past the end of the third node'
 		},
+		// Test 66
 		{
 			'node': root2,
 			'input': new es.Range( 19, 21 ),
@@ -661,6 +751,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting at the end of the second node and ending at the beginning of the third node'
 		},
+		// Test 67
 		{
 			'node': root2,
 			'input': new es.Range( 19, 27 ),
@@ -670,6 +761,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting at the end of the second node and ending in the middle of the third node'
 		},
+		// Test 68
 		{
 			'node': root2,
 			'input': new es.Range( 19, 29 ),
@@ -679,6 +771,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Range starting at the end of the second node and ending at the end of the third node'
 		},
+		// Test 69
 		{
 			'node': root2,
 			'input': new es.Range( 19, 30 ),
@@ -689,6 +782,8 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			'desc': 'Range starting at the end of the second node and ending past the end of the third node'
 		},
 		// Tests for childless nodes
+
+		// Test 70
 		{
 			'node': g,
 			'input': new es.Range( 1, 3 ),
@@ -697,6 +792,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Childless node given, range not out of bounds'
 		},
+		// Test 72
 		{
 			'node': g,
 			'input': new es.Range( 0, 8 ),
@@ -706,24 +802,29 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			'desc': 'Childless node given, range covers entire node'
 		},
 		// Tests for out-of-bounds cases
+
+		// Test 73
 		{
 			'node': g,
 			'input': new es.Range( -1, 3 ),
 			'exception': /^The start offset of the range is negative$/,
 			'desc': 'Childless node given, range start out of bounds'
 		},
+		// Test 74
 		{
 			'node': g,
 			'input': new es.Range( 1, 9 ),
 			'exception': /^The end offset of the range is past the end of the node$/,
 			'desc': 'Childless node given, range end out of bounds'
 		},
+		// Test 75
 		{
 			'node': root2,
 			'input': new es.Range( 31, 35 ),
 			'exception': /^The start offset of the range is past the end of the node$/,
 			'desc': 'Node with children given, range start out of bounds'
 		},
+		// Test 76
 		{
 			'node': root2,
 			'input': new es.Range( 30, 35 ),
@@ -731,6 +832,8 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			'desc': 'Node with children given, range end out of bounds'
 		},
 		// Tests for recursion cases
+
+		// Test 77
 		{
 			'node': big,
 			'input': new es.Range( 2, 10 ),
@@ -740,16 +843,18 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Select from before the b to after the d'
 		},
+		// Test 78
 		{
 			'node': big,
-			'input': new es.Range( 3, 27 ),
+			'input': new es.Range( 3, 29 ),
 			'output': [
-				{ 'node': big.children[0], 'range': new es.Range( 2, 3 ) },
+				{ 'node': big.children[0], 'range': new es.Range( 2, 8 ) },
 				{ 'node': big.children[1] },
-				{ 'node': big.children[2], 'range': new es.Range( 0, 1 ) }
+				{ 'node': big.children[2], 'range': new es.Range( 0, 8 ) }
 			],
 			'desc': 'Select from before the c to after the h'
 		},
+		// Test 79
 		{
 			'node': big,
 			'input': new es.Range( 9, 17 ),
@@ -759,6 +864,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			],
 			'desc': 'Select from before the d to after the f, with recursion'
 		},
+		// Test 80
 		{
 			'node': big,
 			'input': new es.Range( 9, 17 ),
@@ -769,18 +875,53 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			'desc': 'Select from before the d to after the f, without recursion'
 		}
 	];
-	
+
+	function compare( a, b ) {
+		if ( $.isArray( a ) && $.isArray( b ) && a.length === b.length ) {
+			for ( var i = 0; i < a.length; i++ ) {
+				if (
+					a[i].node !== b[i].node ||
+					(
+						( typeof a[i].range !== typeof b[i].range ) ||
+						(
+							a[i].range !== undefined &&
+							(
+								a[i].range.start !== b[i].range.start ||
+								a[i].range.end !== b[i].range.end
+							)
+						)
+					)
+				) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	function select( input, shallow ) {
+		return function() {
+			selectNodesTests[i].node.selectNodes( input, shallow );
+		};
+	}
+
 	for ( var i = 0; i < selectNodesTests.length; i++ ) {
 		if ( 'output' in selectNodesTests[i] ) {
-			deepEqual(
-				selectNodesTests[i].node.selectNodes( selectNodesTests[i].input, selectNodesTests[i].shallow ),
-				selectNodesTests[i].output,
-				selectNodesTests[i].desc
+			var result = selectNodesTests[i].node.selectNodes(
+					selectNodesTests[i].input, selectNodesTests[i].shallow
+				);
+			ok(
+				compare( result, selectNodesTests[i].output ),
+				selectNodesTests[i].desc +
+					' (from ' + selectNodesTests[i].input.start +
+					' to ' + selectNodesTests[i].input.end + ')'
 			);
 		} else if ( 'exception' in selectNodesTests[i] ) {
 			raises(
 				function() {
-					selectNodesTests[i].node.selectNodes( selectNodesTests[i].input, selectNodesTests[i].shallow );
+					selectNodesTests[i].node.selectNodes(
+						selectNodesTests[i].input,
+						selectNodesTests[i].shallow
+					);
 				},
 				selectNodesTests[i].exception,
 				selectNodesTests[i].desc

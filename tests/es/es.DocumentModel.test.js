@@ -67,8 +67,8 @@ test( 'es.DocumentModel.getRelativeContentOffset', 7, function() {
 	);
 	// Test 4
 	equal(
-		documentModel.getRelativeContentOffset( 27, 1 ),
-		27,
+		documentModel.getRelativeContentOffset( 32, 1 ),
+		32,
 		'getRelativeContentOffset treats the end a document as a non-content offset'
 	);
 	// Test 5
@@ -79,8 +79,8 @@ test( 'es.DocumentModel.getRelativeContentOffset', 7, function() {
 	);
 	// Test 6
 	equal(
-		documentModel.getRelativeContentOffset( 26, -1 ),
-		20,
+		documentModel.getRelativeContentOffset( 32, -1 ),
+		25,
 		'getRelativeContentOffset advances backwards between elements'
 	);
 } );
@@ -221,7 +221,7 @@ test( 'es.DocumentModel.prepareElementAttributeChange', 4, function() {
 		documentModel.prepareElementAttributeChange( 0, 'set', 'test', 1234 ).getOperations(),
 		[
 			{ 'type': 'attribute', 'method': 'set', 'key': 'test', 'value': 1234  },
-			{ 'type': 'retain', 'length': 28 }
+			{ 'type': 'retain', 'length': 34 }
 		],
 		'prepareElementAttributeChange retains data after attribute change for first element'
 	);
@@ -232,7 +232,7 @@ test( 'es.DocumentModel.prepareElementAttributeChange', 4, function() {
 		[
 			{ 'type': 'retain', 'length': 5 },
 			{ 'type': 'attribute', 'method': 'set', 'key': 'test', 'value': 1234 },
-			{ 'type': 'retain', 'length': 23 }
+			{ 'type': 'retain', 'length': 29 }
 		],
 		'prepareElementAttributeChange retains data before and after attribute change'
 	);
@@ -295,7 +295,7 @@ test( 'es.DocumentModel.prepareContentAnnotation', 1, function() {
 				'bias': 'stop',
 				'annotation': { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }
 			},
-			{ 'type': 'retain', 'length': 24 }
+			{ 'type': 'retain', 'length': 30 }
 		],
 		'prepareContentAnnotation skips over content that is already set or cleared'
 	);
@@ -317,34 +317,36 @@ test( 'es.DocumentModel.prepareRemoval', 4, function() {
 					['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }]
 				]
 			},
-			{ 'type': 'retain', 'length': 24 }
+			{ 'type': 'retain', 'length': 30 }
 		],
 		'prepareRemoval includes the content being removed'
 	);
 	
 	// Test 2
 	deepEqual(
-		documentModel.prepareRemoval( new es.Range( 15, 18 ) ).getOperations(),
+		documentModel.prepareRemoval( new es.Range( 17, 22 ) ).getOperations(),
 		[
-			{ 'type': 'retain', 'length': 15 },
+			{ 'type': 'retain', 'length': 17 },
 			{
 				'type': 'remove',
 				'data': [
 					{ 'type': 'listItem', 'attributes': { 'styles': ['bullet', 'bullet'] } },
+					{ 'type': 'paragraph' },
 					'f',
+					{ 'type': '/paragraph' },
 					{ 'type': '/listItem' }
 				]
 			},
-			{ 'type': 'retain', 'length': 10 }
+			{ 'type': 'retain', 'length': 12 }
 		],
 		'prepareRemoval removes entire elements'
 	);
 	
 	// Test 3
 	deepEqual(
-		documentModel.prepareRemoval( new es.Range( 17, 19 ) ).getOperations(),
+		documentModel.prepareRemoval( new es.Range( 21, 23 ) ).getOperations(),
 		[
-			{ 'type': 'retain', 'length': 17 },
+			{ 'type': 'retain', 'length': 21 },
 			{
 				'type': 'remove',
 				'data': [
@@ -352,7 +354,7 @@ test( 'es.DocumentModel.prepareRemoval', 4, function() {
 					{ 'type': 'listItem', 'attributes': { 'styles': ['number'] } }
 				]
 			},
-			{ 'type': 'retain', 'length': 9 }
+			{ 'type': 'retain', 'length': 11 }
 		],
 		'prepareRemoval merges two list items'
 	);
@@ -368,7 +370,7 @@ test( 'es.DocumentModel.prepareRemoval', 4, function() {
 					['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }]
 				]
 			},
-			{ 'type': 'retain', 'length': 24 }
+			{ 'type': 'retain', 'length': 30 }
 		],
 		'prepareRemoval works across structural nodes'
 	);
@@ -383,7 +385,7 @@ test( 'es.DocumentModel.prepareInsertion', 11, function() {
 		[
 			{ 'type': 'retain', 'length': 1 },
 			{ 'type': 'insert', 'data': ['d', 'e', 'f'] },
-			{ 'type': 'retain', 'length': 27 }
+			{ 'type': 'retain', 'length': 33 }
 		],
 		'prepareInsertion retains data up to the offset and includes the content being inserted'
 	);
@@ -399,7 +401,7 @@ test( 'es.DocumentModel.prepareInsertion', 11, function() {
 				'type': 'insert',
 				'data': [{ 'type': 'paragraph' }, 'd', 'e', 'f', { 'type': '/paragraph' }]
 			},
-			{ 'type': 'retain', 'length': 23 }
+			{ 'type': 'retain', 'length': 29 }
 		],
 		'prepareInsertion inserts a paragraph between two structural elements'
 	);
@@ -413,7 +415,7 @@ test( 'es.DocumentModel.prepareInsertion', 11, function() {
 				'type': 'insert',
 				'data': [{ 'type': 'paragraph' }, 'd', 'e', 'f', { 'type': '/paragraph' }]
 			},
-			{ 'type': 'retain', 'length': 23 }
+			{ 'type': 'retain', 'length': 29 }
 		],
 		'prepareInsertion wraps unstructured content inserted between elements in a paragraph'
 	);
@@ -429,7 +431,7 @@ test( 'es.DocumentModel.prepareInsertion', 11, function() {
 				'type': 'insert',
 				'data': [{ 'type': 'paragraph' }, 'd', 'e', 'f', { 'type': '/paragraph' }]
 			},
-			{ 'type': 'retain', 'length': 23 }
+			{ 'type': 'retain', 'length': 29 }
 		],
 		'prepareInsertion completes opening elements in inserted content'
 	);
@@ -450,7 +452,7 @@ test( 'es.DocumentModel.prepareInsertion', 11, function() {
 					{ 'type': 'paragraph' }
 				]
 			},
-			{ 'type': 'retain', 'length': 26 }
+			{ 'type': 'retain', 'length': 32 }
 		],
 		'prepareInsertion splits up paragraph when inserting a table in the middle'
 	);
@@ -475,7 +477,7 @@ test( 'es.DocumentModel.prepareInsertion', 11, function() {
 					'r'
 				]
 			},
-			{ 'type': 'retain', 'length': 26 }
+			{ 'type': 'retain', 'length': 32 }
 		],
 		'prepareInsertion splits paragraph when inserting a paragraph closing and opening inside it'
 	);
@@ -490,7 +492,7 @@ test( 'es.DocumentModel.prepareInsertion', 11, function() {
 				'type': 'insert',
 				'data': [ { 'type': 'paragraph' }, 'f', 'o', 'o', { 'type': '/paragraph' } ]
 			},
-			{ 'type': 'retain', 'length': 28 }
+			{ 'type': 'retain', 'length': 34 }
 		],
 		'prepareInsertion inserts at the beginning, then retains up to the end'
 	);
@@ -498,10 +500,10 @@ test( 'es.DocumentModel.prepareInsertion', 11, function() {
 	// Test 8
 	deepEqual(
 		documentModel.prepareInsertion(
-			28, [ { 'type': 'paragraph' }, 'f', 'o', 'o', { 'type': '/paragraph' } ]
+			34, [ { 'type': 'paragraph' }, 'f', 'o', 'o', { 'type': '/paragraph' } ]
 		).getOperations(),
 		[
-			{ 'type': 'retain', 'length': 28 },
+			{ 'type': 'retain', 'length': 34 },
 			{
 				'type': 'insert',
 				'data': [ { 'type': 'paragraph' }, 'f', 'o', 'o', { 'type': '/paragraph' } ]
@@ -526,11 +528,11 @@ test( 'es.DocumentModel.prepareInsertion', 11, function() {
 	raises(
 		function() {
 			documentModel.prepareInsertion(
-				29,
+				35,
 				[ { 'type': 'paragraph' }, 'f', 'o', 'o', { 'type': '/paragraph' } ]
 			);
 		},
-		/^Offset 29 out of bounds/,
+		/^Offset 35 out of bounds/,
 		'prepareInsertion throws exception for offset past the end'
 	);
 	
