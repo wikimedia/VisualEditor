@@ -130,49 +130,44 @@ es.SurfaceView = function( $container, model ) {
 };
 
 es.SurfaceView.prototype.onMouseDown = function( e ) {
-	if ( e.button === 0 /* left mouse button */ ) {
-		switch ( e.originalEvent.detail ) {
-			case 1: // single click
-				this.mouse.selectingMode = 1;
-
-				this.selection.to = this.documentView.getOffsetFromEvent( e );
-				//console.log(this.selection.to);
-				if ( this.keyboard.keys.shift ) {
-					this.documentView.drawSelection( this.selection );
-					this.hideCursor();
-				} else {
+	if ( e.button === 0 ) { // left mouse button
+		var offset = this.documentView.getOffsetFromEvent( e );
+		if ( e.originalEvent.detail === 1 ) { // single click
+			this.mouse.selectingMode = 1; // used in mouseMove handler
+			if ( this.keyboard.keys.shift && offset !== this.selection.from ) {
+				this.selection.to = offset;
+			} else {
+				if ( this.selection.to !== this.selection.from ) {
 					this.documentView.clearSelection();
-					this.selection.from = this.selection.to;
-					var	position = es.Position.newFromEventPagePosition( e ),
-						nodeView = this.documentView.getNodeFromOffset( this.selection.to, false );
-					this.cursor.initialBias = position.left > nodeView.$.offset().left;
-					this.showCursor();
 				}
-				break;
-			case 2: // double click
-				this.mouse.selectingMode = 2;
+				this.selection.from = this.selection.to = offset;
+				var	position = es.Position.newFromEventPagePosition( e ),
+					nodeView = this.documentView.getNodeFromOffset( offset, false );
+				this.cursor.initialBias = position.left > nodeView.contentView.$.offset().left;
+			}
+		} else if ( e.originalEvent.detail === 2 ) { // double click
+			this.mouse.selectingMode = 2; // used in mouseMove handler
+			var wordRange = this.documentView.model.getWordBoundaries( offset );
+			if( wordRange ) {
+				this.selection = wordRange;
+				this.mouse.selectedRange = this.selection.clone();
+			}
+		} else if ( e.originalEvent.detail >= 3 ) { // triple click
+			this.mouse.selectingMode = 3; // used in mouseMove handler
+			var node = this.documentView.getNodeFromOffset( offset );
+			this.selection.from = this.documentView.getOffsetFromNode( node, false );
+			this.selection.to = this.selection.from + node.getElementLength() - 1;
+			this.mouse.selectedRange = this.selection.clone();
+		}
 
-				this.selection = this.documentView.model.getWordBoundaries(
-					this.documentView.getOffsetFromEvent( e )
-				);
-				this.documentView.drawSelection( this.selection );
-				this.hideCursor();
-				this.mouse.selectedRange = new es.Range( this.selection.from, this.selection.to );
-				break;
-			default: // 3 and more
-				this.mouse.selectingMode = 3;
-				
-				var node = this.documentView.getNodeFromOffset(
-					this.documentView.getOffsetFromEvent( e )
-				);
-				this.selection.from = this.documentView.getOffsetFromNode( node, false );
-				this.selection.to = this.selection.from + node.getElementLength() - 1;
-				this.documentView.drawSelection( this.selection );
-				this.hideCursor();
-				this.mouse.selectedRange = new es.Range( this.selection.from, this.selection.to );
-				break;
+		if ( this.selection.from === this.selection.to ) {
+			this.showCursor();
+		} else {
+			this.hideCursor();
+			this.documentView.drawSelection( this.selection );
 		}
 	}
+
 	if ( !this.$input.is( ':focus' ) ) {
 		this.$input.focus().select();
 	}
@@ -182,80 +177,45 @@ es.SurfaceView.prototype.onMouseDown = function( e ) {
 };
 
 es.SurfaceView.prototype.onMouseMove = function( e ) {
-	var wordBoundaries;
-	if ( e.button === 0 /* left mouse button */ && this.mouse.selectingMode ) {
-		if ( this.mouse.selectingMode === 1 ) {
-			this.selection.to = this.documentView.getOffsetFromEvent( e );
-		} else if ( this.mouse.selectingMode === 2 ) {
-			wordBoundaries = this.documentView.model.getWordBoundaries(
-				this.documentView.getOffsetFromEvent( e )
-			);
-			if ( wordBoundaries.to <= this.mouse.selectedRange.from ) {
-				this.selection.to = wordBoundaries.from;
-				this.selection.from = this.mouse.selectedRange.to;
-			} else {
-				this.selection.from = this.mouse.selectedRange.from;
-				this.selection.to = wordBoundaries.to;
-			}			
-		} else if ( this.mouse.selectingMode === 3 ) {
-			var node = this.documentView.getNodeFromOffset(
-				this.documentView.getOffsetFromEvent( e )
-			);
-			var nodeBoundaries = new es.Range();
-			nodeBoundaries.from = this.documentView.getOffsetFromNode( node, false );
-			nodeBoundaries.to = nodeBoundaries.from + node.getElementLength() - 1;
-				
-			if ( nodeBoundaries.to <= this.mouse.selectedRange.from ) {
-				this.selection.to = nodeBoundaries.from;
-				this.selection.from = this.mouse.selectedRange.to;
-			} else {
-				this.selection.from = this.mouse.selectedRange.from;
-				this.selection.to = nodeBoundaries.to;
-			}			
-		}		
-		this.documentView.drawSelection( this.selection );
-		if ( this.selection.getLength() ) {
-			this.hideCursor();
-		}	
-	}
-	
-	if ( e.button === 0 /* left mouse button */ && this.mouse.selected ) {
-		
+	if ( e.button === 0 && this.mouse.selectingMode ) { // left mouse button and in selecting mode
 		var offset = this.documentView.getOffsetFromEvent( e );
-		if ( this.mouse.selected.containsOffset( offset ) ) {
-			//return;
+		if ( this.mouse.selectingMode === 1 ) {
+			this.selection.to = offset;
+		} else if ( this.mouse.selectingMode === 2 ) {
+			var wordRange = this.documentView.model.getWordBoundaries( offset );
+			if ( wordRange ) {
+				if ( wordRange.to <= this.mouse.selectedRange.from ) {
+					this.selection.to = wordRange.from;
+					this.selection.from = this.mouse.selectedRange.to;
+				} else {
+					this.selection.from = this.mouse.selectedRange.from;
+					this.selection.to = wordRange.to;
+				}
+			} else {
+				this.selection.to = offset;
+			}
+		} else if ( this.mouse.selectingMode === 3 ) {
+			var node = this.documentView.getNodeFromOffset( offset );
+			var nodeRange = new es.Range();
+			nodeRange.from = this.documentView.getOffsetFromNode( node, false );
+			nodeRange.to = nodeRange.from + node.getElementLength() - 1;
+			if ( nodeRange.to <= this.mouse.selectedRange.from ) {
+				this.selection.to = nodeRange.from;
+				this.selection.from = this.mouse.selectedRange.to;
+			} else {
+				this.selection.from = this.mouse.selectedRange.from;
+				this.selection.to = nodeRange.to;
+			}	
 		}
-		wordBoundaries = this.documentView.model.getWordBoundaries( offset );
-		if ( wordBoundaries.to <= this.mouse.selected.from ) {
-			this.selection.to = wordBoundaries.from;
-			this.selection.from = this.mouse.selected.to;
-		} else {
-			this.selection.from = this.mouse.selected.from;
-			this.selection.to = wordBoundaries.to;
-		}
-		
-		/*
-		var to = this.documentView.getOffsetFromEvent( e );
-		
-		if ( to <= this.mouse.selected.from ) {
-			this.selection.to = to;
-			this.selection.from = this.mouse.selected.to; 
-		} else if ( to >= this.mouse.selected.to ) {
-			this.selection.from = this.mouse.selected.from;
-			this.selection.to = to;
-		}
-		*/
-		
 		this.documentView.drawSelection( this.selection );
-		
-	} else if ( e.button === 0 /* left mouse button */ && this.mouse.selecting ) {
-		this.selection.to = this.documentView.getOffsetFromEvent( e );
+		if ( this.selection.from !== this.selection.to ) {
+			this.hideCursor();
+		}
 	}
-	this.emitSelect();
 };
 
 es.SurfaceView.prototype.onMouseUp = function( e ) {
-	if ( e.button === 0 /* left mouse button */ ) {
+	if ( e.button === 0 ) { // left mouse button 
 		this.mouse.selectingMode = this.mouse.selectedRange = null;
 	}
 };
@@ -396,10 +356,10 @@ es.SurfaceView.prototype.moveCursor = function( instruction ) {
 				if ( instruction === 'left' ) {
 					newTo = wordBoundaries.from;
 
-			newTo = this.documentView.getModel().getRelativeContentOffset(
-				newTo,
-				instruction === 'left' ? -1 : 1
-			);					
+					newTo = this.documentView.getModel().getRelativeContentOffset(
+						newTo,
+						-1
+					);
 					
 				} else {
 					newTo = wordBoundaries.to;
