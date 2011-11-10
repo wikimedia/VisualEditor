@@ -4,7 +4,7 @@
  * @class
  * @abstract
  * @constructor
- * @extends {es.EventEmitter}
+ * @extends {es.DocumentNode}
  * @param {String} type Symbolic name of node type
  * @param {Object} element Element object in document data
  * @param {Integer} [length] Length of content data in document
