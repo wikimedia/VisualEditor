@@ -17,11 +17,8 @@ es.SurfaceView = function( $container, model ) {
 
 	// Interaction state
 	this.mouse = {
-		selecting: false,
-		timer: null,
-		delta: 0,
-		clickTime: 0,
-		clickPosition: null
+		selectingMode: null,
+		selectedRange: null
 	};
 	this.cursor = {
 		$: $( '<div class="es-surfaceView-cursor"></div>' ).appendTo( this.$ ),
@@ -110,11 +107,13 @@ es.SurfaceView = function( $container, model ) {
 };
 
 es.SurfaceView.prototype.onMouseDown = function( e ) {
-	if ( e.button === 0 ) {
+	if ( e.button === 0 /* left mouse button */ ) {
 		switch ( e.originalEvent.detail ) {
 			case 1: // single click
-				this.mouse.selecting = true;
+				this.mouse.selectingMode = 1;
+
 				this.selection.to = this.documentView.getOffsetFromEvent( e );
+				console.log(this.selection.to);
 				if ( this.keyboard.keys.shift ) {
 					this.documentView.drawSelection( this.selection );
 					this.hideCursor();
@@ -128,21 +127,26 @@ es.SurfaceView.prototype.onMouseDown = function( e ) {
 				}
 				break;
 			case 2: // double click
+				this.mouse.selectingMode = 2;
+
 				this.selection = this.documentView.model.getWordBoundaries(
 					this.documentView.getOffsetFromEvent( e )
 				);
 				this.documentView.drawSelection( this.selection );
 				this.hideCursor();
-				break;
+				this.mouse.selectedRange = new es.Range( this.selection.from, this.selection.to );
 				break;
 			default: // 3 and more
+				this.mouse.selectingMode = 3;
+				
 				var node = this.documentView.getNodeFromOffset(
 					this.documentView.getOffsetFromEvent( e )
 				);
 				this.selection.from = this.documentView.getOffsetFromNode( node, false );
 				this.selection.to = this.selection.from + node.getElementLength() - 1;
 				this.documentView.drawSelection( this.selection );
-				this.hideCursor();			
+				this.hideCursor();
+				this.mouse.selectedRange = new es.Range( this.selection.from, this.selection.to );
 				break;
 		}
 	}
@@ -154,18 +158,81 @@ es.SurfaceView.prototype.onMouseDown = function( e ) {
 };
 
 es.SurfaceView.prototype.onMouseMove = function( e ) {
-	if ( e.button === 0 /* left mouse button */ && this.mouse.selecting ) {
-		this.selection.to = this.documentView.getOffsetFromEvent( e );
+	if ( e.button === 0 /* left mouse button */ && this.mouse.selectingMode ) {
+		if ( this.mouse.selectingMode === 1 ) {
+			this.selection.to = this.documentView.getOffsetFromEvent( e );
+		} else if ( this.mouse.selectingMode === 2 ) {
+			var wordBoundaries  = this.documentView.model.getWordBoundaries(
+				this.documentView.getOffsetFromEvent( e )
+			);
+			if ( wordBoundaries.to <= this.mouse.selectedRange.from ) {
+				this.selection.to = wordBoundaries.from;
+				this.selection.from = this.mouse.selectedRange.to;
+			} else {
+				this.selection.from = this.mouse.selectedRange.from;
+				this.selection.to = wordBoundaries.to;
+			}			
+		} else if ( this.mouse.selectingMode === 3 ) {
+			var node = this.documentView.getNodeFromOffset(
+				this.documentView.getOffsetFromEvent( e )
+			);
+			var nodeBoundaries = new es.Range();
+			nodeBoundaries.from = this.documentView.getOffsetFromNode( node, false );
+			nodeBoundaries.to = nodeBoundaries.from + node.getElementLength() - 1;
+				
+			if ( nodeBoundaries.to <= this.mouse.selectedRange.from ) {
+				this.selection.to = nodeBoundaries.from;
+				this.selection.from = this.mouse.selectedRange.to;
+			} else {
+				this.selection.from = this.mouse.selectedRange.from;
+				this.selection.to = nodeBoundaries.to;
+			}			
+		}		
 		this.documentView.drawSelection( this.selection );
 		if ( this.selection.getLength() ) {
 			this.hideCursor();
+		}	
+	}
+	return;
+	
+	if ( e.button === 0 /* left mouse button */ && this.mouse.selected ) {
+		
+		var offset = this.documentView.getOffsetFromEvent( e );
+		if ( this.mouse.selected.containsOffset( offset ) ) {
+			//return;
 		}
+		var wordBoundaries  = this.documentView.model.getWordBoundaries( offset );
+		if ( wordBoundaries.to <= this.mouse.selected.from ) {
+			this.selection.to = wordBoundaries.from;
+			this.selection.from = this.mouse.selected.to;
+		} else {
+			this.selection.from = this.mouse.selected.from;
+			this.selection.to = wordBoundaries.to;
+		}
+		
+		/*
+		var to = this.documentView.getOffsetFromEvent( e );
+		
+		if ( to <= this.mouse.selected.from ) {
+			this.selection.to = to;
+			this.selection.from = this.mouse.selected.to; 
+		} else if ( to >= this.mouse.selected.to ) {
+			this.selection.from = this.mouse.selected.from;
+			this.selection.to = to;
+		}
+		*/
+		
+		this.documentView.drawSelection( this.selection );
+		
+	} else if ( e.button === 0 /* left mouse button */ && this.mouse.selecting ) {
+		this.selection.to = this.documentView.getOffsetFromEvent( e );
+
 	}
 };
 
 es.SurfaceView.prototype.onMouseUp = function( e ) {
 	if ( e.button === 0 /* left mouse button */ ) {
-		this.mouse.selecting = false;
+		this.mouse.selectingMode = this.mouse.selectedRange = null;
 	}
 };
 
