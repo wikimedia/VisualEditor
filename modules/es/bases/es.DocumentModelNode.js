@@ -197,7 +197,12 @@ es.DocumentModelNode.prototype.getElement = function() {
  * @returns {String} Symbolic name of element type
  */
 es.DocumentModelNode.prototype.getElementType = function() {
-	return this.element.type;
+	//return this.element.type;
+	// We can't use this.element.type because this.element may be null
+	// So this function now returns this.type and should really be called
+	// getType()
+	// TODO: Do we care?
+	return this.type;
 };
 
 /**
