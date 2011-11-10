@@ -138,7 +138,7 @@ es.DocumentBranchNode.prototype.getNodeFromOffset = function( offset, shallow ) 
  * @method
  * @param {es.Range} range Range to select nodes within
  * @param {Boolean} [shallow] Do not recurse into child nodes of child nodes
- * @returns {Array} List of objects with 'node' and 'range' properties describing nodes which are
+ * @returns {Array} List of objects with 'node', 'range' and 'globalRange' properties describing nodes which are
  * covered by the range and the range within the node that is covered
  */
 es.DocumentBranchNode.prototype.selectNodes = function( range, shallow ) {
@@ -149,6 +149,7 @@ es.DocumentBranchNode.prototype.selectNodes = function( range, shallow ) {
 	}
 	var nodes = [],
 		i,
+		j,
 		left,
 		right,
 		start = range.start,
@@ -166,7 +167,7 @@ es.DocumentBranchNode.prototype.selectNodes = function( range, shallow ) {
 		if ( end > this.getContentLength() ) {
 			throw 'The end offset of the range is past the end of the node';
 		}
-		return [{ 'node': this, 'range': new es.Range( start, end ) }];
+		return [{ 'node': this, 'range': new es.Range( start, end ), 'globalRange': new es.Range( start, end ) }];
 	}
 	
 	// This node has children, loop over them
@@ -187,11 +188,21 @@ es.DocumentBranchNode.prototype.selectNodes = function( range, shallow ) {
 			// The range is entirely inside this.children[i]
 			if ( shallow ) {
 				nodes = [
-					{ 'node': this.children[i], 'range': new es.Range( start - left, end - left ) }
+					{
+						'node': this.children[i],
+						'range': new es.Range( start - left, end - left ),
+						'globalRange': new es.Range( start, end )
+					}
 				];
 			} else {
 				// Recurse into this.children[i]
 				nodes = this.children[i].selectNodes( new es.Range( start - left, end - left ) );
+				// Adjust globalRange
+				for ( j = 0; j < nodes.length; j++ ) {
+					if ( nodes[j].globalRange !== undefined ) {
+						nodes[j].globalRange = es.Range.newFromTranslatedRange( nodes[j].globalRange, left );
+					}
+				}
 			}
 			// Since the start and end are both inside this.children[i], we know for sure that we're
 			// done, so return
@@ -199,13 +210,19 @@ es.DocumentBranchNode.prototype.selectNodes = function( range, shallow ) {
 		} else if ( startInside ) {
 			// The start is inside this.children[i] but the end isn't
 			// Add a range from the start of the range to the end of this.children[i]
-			nodes.push(
-				{ 'node': this.children[i], 'range': new es.Range( start - left, right - left ) }
-			);
+			nodes.push( {
+				'node': this.children[i],
+				'range': new es.Range( start - left, right - left ),
+				'globalRange': new es.Range( start, right )
+			} );
 		} else if ( endInside ) {
 			// The end is inside this.children[i] but the start isn't
 			// Add a range from the start of this.children[i] to the end of the range
-			nodes.push( { 'node': this.children[i], 'range': new es.Range( 0, end - left ) } );
+			nodes.push( {
+				'node': this.children[i],
+				'range': new es.Range( 0, end - left ),
+				'globalRange': new es.Range( left, end )
+			} );
 			// We've found the end, so we're done
 			return nodes;
 		} else if ( end == right + 1 ) {
