@@ -4,16 +4,16 @@
  * @class
  * @abstract
  * @constructor
- * @extends {es.DocumentModelNode}
  * @extends {es.DocumentBranchNode}
+ * @extends {es.DocumentModelNode}
  * @param {String} type Symbolic name of node type
  * @param {Object} element Element object in document data
  * @param {es.DocumentModelBranchNode[]} [contents] List of child nodes to append
  */
 es.DocumentModelBranchNode = function( type, element, contents ) {
 	// Inheritance
-	es.DocumentModelNode.call( this, type, element, 0 );
 	es.DocumentBranchNode.call( this );
+	es.DocumentModelNode.call( this, type, element, 0 );
 
 	// Child nodes
 	if ( es.isArray( contents ) ) {
@@ -240,5 +240,5 @@ es.DocumentModelBranchNode.prototype.clearRoot = function() {
 
 /* Inheritance */
 
-es.extendClass( es.DocumentModelBranchNode, es.DocumentModelNode );
 es.extendClass( es.DocumentModelBranchNode, es.DocumentBranchNode );
+es.extendClass( es.DocumentModelBranchNode, es.DocumentModelNode );

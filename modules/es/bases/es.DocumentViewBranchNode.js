@@ -4,15 +4,15 @@
  * @class
  * @abstract
  * @constructor
- * @extends {es.DocumentViewNode}
  * @extends {es.DocumentBranchNode}
+ * @extends {es.DocumentViewNode}
  * @param model {es.ModelNode} Model to observe
  * @param {jQuery} [$element] Element to use as a container
  */
 es.DocumentViewBranchNode = function( model, $element, horizontal ) {
 	// Inheritance
-	es.DocumentViewNode.call( this, model, $element );
 	es.DocumentBranchNode.call( this );
+	es.DocumentViewNode.call( this, model, $element );
 
 	// Properties
 	this.horizontal = horizontal || false;
@@ -243,5 +243,5 @@ es.DocumentViewBranchNode.prototype.getRenderedLineRangeFromOffset = function( o
 
 /* Inheritance */
 
-es.extendClass( es.DocumentViewBranchNode, es.DocumentViewNode );
 es.extendClass( es.DocumentViewBranchNode, es.DocumentBranchNode );
+es.extendClass( es.DocumentViewBranchNode, es.DocumentViewNode );

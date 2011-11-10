@@ -13,6 +13,17 @@ es.DocumentBranchNode = function( nodes ) {
 /* Methods */
 
 /**
+ * Checks if this node has child nodes.
+ * 
+ * @method
+ * @see {es.DocumentNode.prototype.hasChildren}
+ * @returns {Boolean} Whether this node has children
+ */
+es.DocumentBranchNode.prototype.hasChildren = function() {
+	return true;
+};
+
+/**
  * Gets a list of child nodes.
  * 
  * @abstract
@@ -33,21 +44,21 @@ es.DocumentBranchNode.prototype.getChildren = function() {
  */
 es.DocumentBranchNode.prototype.getRangeFromNode = function( node, shallow ) {
 	if ( this.children.length ) {
-		var isBranch;
+		var childNode;
 		for ( var i = 0, length = this.children.length, left = 0; i < length; i++ ) {
-			if ( this.children[i] === node ) {
-				return new es.Range( left, left + this.children[i].getElementLength() );
+			childNode = this.children[i];
+			if ( childNode === node ) {
+				return new es.Range( left, left + childNode.getElementLength() );
 			}
-			isBranch = typeof this.children[i].getChildren === 'function';
-			if ( !shallow && isBranch && this.children[i].getChildren().length ) {
-				var range = this.children[i].getRangeFromNode( node );
+			if ( !shallow && childNode.hasChildren() && childNode.getChildren().length ) {
+				var range = childNode.getRangeFromNode( node );
 				if ( range !== null ) {
 					// Include opening of parent
 					left++;
 					return es.Range.newFromTranslatedRange( range, left );
 				}
 			}
-			left += this.children[i].getElementLength();
+			left += childNode.getElementLength();
 		}
 	}
 	return null;
@@ -69,19 +80,19 @@ es.DocumentBranchNode.prototype.getRangeFromNode = function( node, shallow ) {
 es.DocumentBranchNode.prototype.getOffsetFromNode = function( node, shallow ) {
 	if ( this.children.length ) {
 		var offset = 0,
-			isBranch;
+			childNode;
 		for ( var i = 0, length = this.children.length; i < length; i++ ) {
-			if ( this.children[i] === node ) {
+			childNode = this.children[i];
+			if ( childNode === node ) {
 				return offset;
 			}
-			isBranch = typeof this.children[i].getChildren === 'function';
-			if ( !shallow && isBranch && this.children[i].getChildren().length ) {
-				var childOffset = this.getOffsetFromNode.call( this.children[i], node );
+			if ( !shallow && childNode.hasChildren() && childNode.getChildren().length ) {
+				var childOffset = this.getOffsetFromNode.call( childNode, node );
 				if ( childOffset !== -1 ) {
 					return offset + 1 + childOffset;
 				}
 			}
-			offset += this.children[i].getElementLength();
+			offset += childNode.getElementLength();
 		}
 	}
 	return -1;
@@ -105,20 +116,20 @@ es.DocumentBranchNode.prototype.getNodeFromOffset = function( offset, shallow ) 
 	if ( this.children.length ) {
 		var nodeOffset = 0,
 			nodeLength,
-			isBranch;
+			childNode;
 		for ( var i = 0, length = this.children.length; i < length; i++ ) {
+			childNode = this.children[i];
 			if ( offset == nodeOffset ) {
-				// The requested offset is right before this.children[i],
+				// The requested offset is right before childNode,
 				// so it's not inside any of this's children, but inside this
 				return this;
 			}
-			nodeLength = this.children[i].getElementLength();
+			nodeLength = childNode.getElementLength();
 			if ( offset >= nodeOffset && offset < nodeOffset + nodeLength ) {
-				isBranch = typeof this.children[i].getChildren === 'function';
-				if ( !shallow && isBranch && this.children[i].getChildren().length ) {
-					return this.getNodeFromOffset.call( this.children[i], offset - nodeOffset - 1 );
+				if ( !shallow && childNode.hasChildren() && childNode.getChildren().length ) {
+					return this.getNodeFromOffset.call( childNode, offset - nodeOffset - 1 );
 				} else {
-					return this.children[i];
+					return childNode;
 				}
 			}
 			nodeOffset += nodeLength;
@@ -155,7 +166,8 @@ es.DocumentBranchNode.prototype.selectNodes = function( range, shallow ) {
 		start = range.start,
 		end = range.end,
 		startInside,
-		endInside;
+		endInside,
+		childNode;
 	
 	if ( start < 0 ) {
 		throw 'The start offset of the range is negative';
@@ -173,20 +185,21 @@ es.DocumentBranchNode.prototype.selectNodes = function( range, shallow ) {
 	// This node has children, loop over them
 	left = 1; // First offset inside the first child. Offset 0 is before the first child
 	for ( i = 0; i < this.children.length; i++ ) {
-		// left <= any offset inside this.children[i] <= right
-		right = left + this.children[i].getContentLength();
+		childNode = this.children[i];
+		// left <= any offset inside childNode <= right
+		right = left + childNode.getContentLength();
 		
 		if ( start == end && ( start == left - 1 || start == right + 1 ) ) {
 			// Empty range outside of any node
 			return [];
 		}
 		
-		startInside = start >= left && start <= right; // is the start inside this.children[i]?
-		endInside = end >= left && end <= right; // is the end inside this.children[i]?
+		startInside = start >= left && start <= right; // is the start inside childNode?
+		endInside = end >= left && end <= right; // is the end inside childNode?
 		
 		if ( startInside && endInside ) {
-			// The range is entirely inside this.children[i]
-			if ( shallow || !this.children[i].children ) {
+			// The range is entirely inside childNode
+			if ( shallow || !childNode.children ) {
 				// For leaf nodes, use the same behavior as for shallow calls.
 				// A proper recursive function would let the recursion handle this,
 				// but the leaves don't have .selectNodes() because they're not DocumentBranchNodes
@@ -194,14 +207,14 @@ es.DocumentBranchNode.prototype.selectNodes = function( range, shallow ) {
 				// TODO should probably rewrite this recursive function as an iterative function anyway, probably faster
 				nodes = [
 					{
-						'node': this.children[i],
+						'node': childNode,
 						'range': new es.Range( start - left, end - left ),
 						'globalRange': new es.Range( start, end )
 					}
 				];
 			} else {
-				// Recurse into this.children[i]
-				nodes = this.children[i].selectNodes( new es.Range( start - left, end - left ) );
+				// Recurse into childNode
+				nodes = childNode.selectNodes( new es.Range( start - left, end - left ) );
 				// Adjust globalRange
 				for ( j = 0; j < nodes.length; j++ ) {
 					if ( nodes[j].globalRange !== undefined ) {
@@ -209,48 +222,48 @@ es.DocumentBranchNode.prototype.selectNodes = function( range, shallow ) {
 					}
 				}
 			}
-			// Since the start and end are both inside this.children[i], we know for sure that we're
+			// Since the start and end are both inside childNode, we know for sure that we're
 			// done, so return
 			return nodes;
 		} else if ( startInside ) {
-			// The start is inside this.children[i] but the end isn't
-			// Add a range from the start of the range to the end of this.children[i]
+			// The start is inside childNode but the end isn't
+			// Add a range from the start of the range to the end of childNode
 			nodes.push( {
-				'node': this.children[i],
+				'node': childNode,
 				'range': new es.Range( start - left, right - left ),
 				'globalRange': new es.Range( start, right )
 			} );
 		} else if ( endInside ) {
-			// The end is inside this.children[i] but the start isn't
-			// Add a range from the start of this.children[i] to the end of the range
+			// The end is inside childNode but the start isn't
+			// Add a range from the start of childNode to the end of the range
 			nodes.push( {
-				'node': this.children[i],
+				'node': childNode,
 				'range': new es.Range( 0, end - left ),
 				'globalRange': new es.Range( left, end )
 			} );
 			// We've found the end, so we're done
 			return nodes;
 		} else if ( end == right + 1 ) {
-			// end is between this.children[i] and this.children[i+1]
-			// start is not inside this.children[i], so the selection covers
-			// all of this.children[i], then ends
-			nodes.push( { 'node': this.children[i] } );
+			// end is between childNode and this.children[i+1]
+			// start is not inside childNode, so the selection covers
+			// all of childNode, then ends
+			nodes.push( { 'node': childNode } );
 			// We've reached the end so we're done
 			return nodes;
 		} else if ( start == left - 1 ) {
-			// start is between this.children[i-1] and this.children[i]
-			// end is not inside this.children[i], so the selection covers
-			// all of this.children[i] and more
-			nodes.push( { 'node': this.children[i] } );
+			// start is between this.children[i-1] and childNode
+			// end is not inside childNode, so the selection covers
+			// all of childNode and more
+			nodes.push( { 'node': childNode } );
 		} else if ( nodes.length > 0 ) {
-			// Neither the start nor the end is inside this.children[i], but nodes is non-empty,
-			// so this.children[i] must be between the start and the end
+			// Neither the start nor the end is inside childNode, but nodes is non-empty,
+			// so childNode must be between the start and the end
 			// Add the entire node, so no range property
-			nodes.push( { 'node': this.children[i] } );
+			nodes.push( { 'node': childNode } );
 		}
 		
 		// Move left to the start of this.children[i+1] for the next iteration
-		// We use +2 because we need to jump over the offset between this.children[i] and
+		// We use +2 because we need to jump over the offset between childNode and
 		// this.children[i+1]
 		left = right + 2;
 		if ( end < left ) {

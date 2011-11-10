@@ -23,6 +23,7 @@ es.DocumentNode = function() {
  * Gets the content length.
  * 
  * @method
+ * @abstract
  * @returns {Integer} Length of content
  */
 es.DocumentNode.prototype.getContentLength = function() {
@@ -33,10 +34,22 @@ es.DocumentNode.prototype.getContentLength = function() {
  * Gets the element length.
  * 
  * @method
+ * @abstract
  * @returns {Integer} Length of content
  */
 es.DocumentNode.prototype.getElementLength = function() {
 	throw 'DocumentNode.getElementLength not implemented in this subclass:' + this.constructor;
+};
+
+/**
+ * Checks if this node has child nodes.
+ * 
+ * @method
+ * @abstract
+ * @returns {Boolean} Whether this node has children
+ */
+es.DocumentNode.prototype.hasChildren = function() {
+	throw 'DocumentNode.hasChildren not implemented in this subclass:' + this.constructor;
 };
 
 /* Inheritance */

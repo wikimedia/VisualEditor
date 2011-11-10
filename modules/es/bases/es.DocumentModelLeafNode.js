@@ -4,14 +4,15 @@
  * @class
  * @abstract
  * @constructor
+ * @extends {es.DocumentLeafNode}
  * @extends {es.DocumentModelNode}
- * @extends {es.DocumentNode}
  * @param {String} type Symbolic name of node type
  * @param {Object} element Element object in document data
  * @param {Integer} [length] Length of content data in document
  */
 es.DocumentModelLeafNode = function( type, element, length ) {
 	// Inheritance
+	es.DocumentLeafNode.call( this );
 	es.DocumentModelNode.call( this, type, element, length );
 
 	// Properties
@@ -80,4 +81,5 @@ es.DocumentModelLeafNode.prototype.getText = function( range ) {
 
 /* Inheritance */
 
+es.extendClass( es.DocumentModelLeafNode, es.DocumentLeafNode );
 es.extendClass( es.DocumentModelLeafNode, es.DocumentModelNode );

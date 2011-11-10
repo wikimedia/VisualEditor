@@ -4,12 +4,14 @@
  * @class
  * @abstract
  * @constructor
+ * @extends {es.DocumentLeafNode}
  * @extends {es.DocumentViewNode}
  * @param model {es.ModelNode} Model to observe
  * @param {jQuery} [$element] Element to use as a container
  */
 es.DocumentViewLeafNode = function( model, $element ) {
 	// Inheritance
+	es.DocumentLeafNode.call( this );
 	es.DocumentViewNode.call( this, model, $element );
 
 	// Properties
@@ -80,4 +82,5 @@ es.DocumentViewLeafNode.prototype.getRenderedLineRangeFromOffset = function( off
 
 /* Inheritance */
 
+es.extendClass( es.DocumentViewLeafNode, es.DocumentLeafNode );
 es.extendClass( es.DocumentViewLeafNode, es.DocumentViewNode );
