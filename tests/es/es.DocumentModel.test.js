@@ -549,7 +549,7 @@ test( 'es.DocumentModel.prepareInsertion', 11, function() {
 	);
 } );
 
-test( 'es.DocumentModel.commit, es.DocumentModel.rollback', /*18*/ 15, function() {
+test( 'es.DocumentModel.commit, es.DocumentModel.rollback', 18, function() {
 	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
 
 	// FIXME: These tests shouldn't use prepareFoo() because those functions
@@ -759,7 +759,6 @@ test( 'es.DocumentModel.commit, es.DocumentModel.rollback', /*18*/ 15, function(
 		'commit keeps model tree up to date with paragraph split (paragraph 2)'
 	);
 
-	/* FIXME broken
 	// Test 16
 	documentModel.rollback( paragraphBreak );
 	deepEqual(
@@ -791,5 +790,4 @@ test( 'es.DocumentModel.commit, es.DocumentModel.rollback', /*18*/ 15, function(
 		'table',
 		'rollback keeps model tree up to date with paragraph split (table follows the paragraph)'
 	);
-	*/
 } );

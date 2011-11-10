@@ -108,6 +108,7 @@ es.DocumentModel.operations = ( function() {
 				);
 			} else {
 				// Perform insert on linear data model
+				// TODO this is duplicated from above
 				es.insertIntoArray( this.data, this.cursor, op.data );
 				annotate.call( this, this.cursor + op.data.length );
 				// Update model tree
@@ -119,23 +120,55 @@ es.DocumentModel.operations = ( function() {
 	}
 
 	function remove( op ) {
-		var elementLeft = es.DocumentModel.isElementData( this.data, this.cursor ),
-			elementRight = es.DocumentModel.isElementData( this.cursor + op.data.length );
-		if ( elementLeft && elementRight ) {
-			// TODO: Support tree updates when removing whole elements
-		} else {
-			if ( es.DocumentModel.containsElementData( op.data ) ) {
-				// TODO: Support tree updates when removing partial elements
-			} else {
-				// Get the node we are removing content from
-				var node = this.tree.getNodeFromOffset( this.cursor );
-				// Remove content from linear data model
-				this.data.splice( this.cursor, op.data.length );
-				// Update model tree
-				node.adjustContentLength( -op.data.length, true );
-				node.emit( 'update', this.cursor - this.tree.getOffsetFromNode( node ) );
+		if ( es.DocumentModel.containsElementData( op.data ) ) {
+			// Figure out which nodes are covered by the removal
+			var ranges = this.tree.selectNodes( new es.Range( this.cursor, this.cursor + op.data.length ) );
+			var oldNodes = [], newData = [], firstKeptNode = true, lastElement;
+			for ( var i = 0; i < ranges.length; i++ ) {
+				oldNodes.push( ranges[i].node );
+				if ( ranges[i].globalRange !== undefined ) {
+					// We have to keep part of this node
+					if ( firstKeptNode ) {
+						// This is the first node we're keeping
+						// Keep its opening as well
+						newData.push( ranges[i].node.getElement() );
+						firstKeptNode = false;
+					}
+					
+						// Compute the start and end offset of this node
+						// We could do that with getOffsetFromNode() but
+						// we already have all the numbers we need so why would we
+					var	startOffset = ranges[i].globalRange.start - ranges[i].range.start,
+						endOffset = startOffset + ranges[i].node.getContentLength(),
+						// Get this node's data
+						nodeData = this.data.slice( startOffset, endOffset );
+					// Remove data covered by the range from nodeData
+					nodeData.splice( ranges[i].range.start, ranges[i].range.end - ranges[i].range.start );
+					// What remains in nodeData is the data we need to keep
+					// Append it to newData
+					newData = newData.concat( nodeData );
+					
+					lastElement = ranges[i].node.getElementType();
+				}
 			}
+			if ( lastElement !== undefined ) {
+				// Keep the closing of the last element that was partially kept
+				newData.push( { 'type': '/' + lastElement } );
+			}
+			
+			// Perform the rebuild. This updates the model tree
+			rebuild( newData, oldNodes );
+		} else {
+			// We're removing content only. Take a shortcut
+			// Get the node we are removing content from
+			var node = this.tree.getNodeFromOffset( this.cursor );
+			// Update model tree
+			node.adjustContentLength( -op.data.length, true );
+			node.emit( 'update', this.cursor - this.tree.getOffsetFromNode( node ) );
 		}
+		
+		// Update the linear model
+		this.data.splice( this.cursor, op.data.length );
 	}
 	
 	function attribute( op, invert ) {
