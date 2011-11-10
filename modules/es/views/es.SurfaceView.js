@@ -7,10 +7,34 @@
  * @param {es.SurfaceModel} model Surface model to view
  */
 es.SurfaceView = function( $container, model ) {
+	var _this = this;
+
+	es.EventEmitter.call( this );
+
 	this.$ = $container.addClass( 'es-surfaceView' );
 	this.$window = $( window );
 	this.model = model;
-	
+	this.selection = new es.Range();
+	this.previousSelection = null;
+
+	this.model.getDocument().on( 'update', function() {
+		_this.emit( 'update' );
+	} );
+	this.emitSelect = function() {
+		if ( _this.previousSelection ) {
+			if (
+				_this.previousSelection.from !== _this.selection.from || 
+				_this.previousSelection.to !== _this.selection.to
+			) {
+				_this.emit( 'select', _this.selection.clone() );
+				_this.previousSelection = _this.selection.clone();
+			}
+			// Mouse movement that doesn't change selection points will terminate here
+		} else {
+			_this.previousSelection = _this.selection.clone();
+		}
+	};
+
 	// Initialize document view
 	this.documentView = new es.DocumentView( this.model.getDocument(), this );
 	this.$.append( this.documentView.$ );
@@ -37,7 +61,6 @@ es.SurfaceView = function( $container, model ) {
 			alt: false
 		}
 	};
-	this.selection = new es.Range();
 
 	// References for use in closures
 	var	surfaceView = this,
@@ -113,7 +136,7 @@ es.SurfaceView.prototype.onMouseDown = function( e ) {
 				this.mouse.selectingMode = 1;
 
 				this.selection.to = this.documentView.getOffsetFromEvent( e );
-				console.log(this.selection.to);
+				//console.log(this.selection.to);
 				if ( this.keyboard.keys.shift ) {
 					this.documentView.drawSelection( this.selection );
 					this.hideCursor();
@@ -154,15 +177,17 @@ es.SurfaceView.prototype.onMouseDown = function( e ) {
 		this.$input.focus().select();
 	}
 	this.cursor.initialLeft = null;
+	this.emitSelect();
 	return false;
 };
 
 es.SurfaceView.prototype.onMouseMove = function( e ) {
+	var wordBoundaries;
 	if ( e.button === 0 /* left mouse button */ && this.mouse.selectingMode ) {
 		if ( this.mouse.selectingMode === 1 ) {
 			this.selection.to = this.documentView.getOffsetFromEvent( e );
 		} else if ( this.mouse.selectingMode === 2 ) {
-			var wordBoundaries  = this.documentView.model.getWordBoundaries(
+			wordBoundaries = this.documentView.model.getWordBoundaries(
 				this.documentView.getOffsetFromEvent( e )
 			);
 			if ( wordBoundaries.to <= this.mouse.selectedRange.from ) {
@@ -193,7 +218,6 @@ es.SurfaceView.prototype.onMouseMove = function( e ) {
 			this.hideCursor();
 		}	
 	}
-	return;
 	
 	if ( e.button === 0 /* left mouse button */ && this.mouse.selected ) {
 		
@@ -201,7 +225,7 @@ es.SurfaceView.prototype.onMouseMove = function( e ) {
 		if ( this.mouse.selected.containsOffset( offset ) ) {
 			//return;
 		}
-		var wordBoundaries  = this.documentView.model.getWordBoundaries( offset );
+		wordBoundaries = this.documentView.model.getWordBoundaries( offset );
 		if ( wordBoundaries.to <= this.mouse.selected.from ) {
 			this.selection.to = wordBoundaries.from;
 			this.selection.from = this.mouse.selected.to;
@@ -226,8 +250,8 @@ es.SurfaceView.prototype.onMouseMove = function( e ) {
 		
 	} else if ( e.button === 0 /* left mouse button */ && this.mouse.selecting ) {
 		this.selection.to = this.documentView.getOffsetFromEvent( e );
-
 	}
+	this.emitSelect();
 };
 
 es.SurfaceView.prototype.onMouseUp = function( e ) {
@@ -237,6 +261,7 @@ es.SurfaceView.prototype.onMouseUp = function( e ) {
 };
 
 es.SurfaceView.prototype.onKeyDown = function( e ) {
+	var tx;
 	switch ( e.keyCode ) {
 		case 16: // Shift
 			this.keyboard.keys.shift = true;
@@ -280,14 +305,18 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 			this.moveCursor( 'down' );
 			break;
 		case 8: // Backspace
-			var transaction = this.documentView.model.prepareRemoval( new es.Range( this.selection.to, this.selection.to - 1 ) );
-			this.documentView.model.commit ( transaction );
+			tx = this.documentView.model.prepareRemoval(
+				new es.Range( this.selection.to, this.selection.to - 1 )
+			);
+			this.documentView.model.commit( tx );
 			this.selection.from = this.selection.to -= 1;
 			this.showCursor();
 			break;
 		case 46: // Delete
-			var transaction = this.documentView.model.prepareRemoval( new es.Range( this.selection.to, this.selection.to + 1 ) );
-			this.documentView.model.commit ( transaction );
+			tx = this.documentView.model.prepareRemoval(
+				new es.Range( this.selection.to, this.selection.to + 1 )
+			);
+			this.documentView.model.commit( tx );
 			break;
 		default: // Insert content (maybe)
 			if ( this.keyboard.keydownTimeout ) {
@@ -445,6 +474,7 @@ es.SurfaceView.prototype.moveCursor = function( instruction ) {
 		this.selection.from = this.selection.to = newTo;
 		this.showCursor();
 	}
+	this.emitSelect();
 };
 
 /**
@@ -489,3 +519,7 @@ es.SurfaceView.prototype.hideCursor = function() {
 	}
 	this.cursor.$.hide();
 };
+
+/* Inheritance */
+
+es.extendClass( es.SurfaceView, es.EventEmitter );

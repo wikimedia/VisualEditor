@@ -16,7 +16,6 @@ es.Range = function( from, to ) {
 	this.normalize();
 };
 
-
 /**
  * Creates a new es.Range object that's a translated version of another.
  * 
@@ -30,6 +29,16 @@ es.Range.newFromTranslatedRange = function( range, distance ) {
 };
 
 /* Methods */
+
+/**
+ * Gets a clone of this object.
+ * 
+ * @method
+ * @returns {es.Range} Clone of range
+ */
+es.Range.prototype.clone = function() {
+	return new es.Range( this.from, this.to );
+};
 
 /**
  * Checks if an offset is within this range.

@@ -294,4 +294,24 @@ $(document).ready( function() {
 	window.doc = es.DocumentModel.newFromPlainObject( window.wikiDom );
 	window.surfaceModel = new es.SurfaceModel( window.doc );
 	window.surfaceView = new es.SurfaceView( $( '#es-editor' ), window.surfaceModel );
+
+	var tools = {
+		'textStyle/bold': $( '#es-toolbar-bold' ),
+		'textStyle/italic': $( '#es-toolbar-italic' )
+	};
+	surfaceView.on( 'select', function( range ) {
+		for ( var key in tools ) {
+			tools[key].removeClass( 'es-toolbarTool-down' );
+		}
+		if ( range.start == range.end ) {
+			var annotations = doc.getAnnotationsFromOffset( range.start );
+			if ( annotations.length ) {
+				for ( var i = 0; i < annotations.length; i++ ) {
+					if ( annotations[i].type in tools ) {
+						tools[annotations[i].type].addClass( 'es-toolbarTool-down' );
+					}
+				}
+			}
+		}
+	} );
 } );
