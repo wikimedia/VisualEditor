@@ -822,10 +822,13 @@ es.DocumentModel.prototype.getAnnotationsFromOffset = function( offset ) {
  * @returns {es.Range|null} Range of content making up a whole word or null if offset is not content
  */
 es.DocumentModel.prototype.getWordBoundaries = function( offset ) {
-	if ( es.DocumentModel.isStructuralOffset( this.data, offset ) ) {
+	if ( es.DocumentModel.isStructuralOffset( this.data, offset ) ||
+		es.DocumentModel.isElementData( this.data, offset ) ) {
 		return null;
 	}
-	var start = offset,
+
+	var	regex = this.data[offset].match( /\B/ ) ? /\b/ : /\B/,
+		start = offset,
 		end = offset,
 		item;
 	while ( start > 0 ) {
@@ -835,7 +838,7 @@ es.DocumentModel.prototype.getWordBoundaries = function( offset ) {
 			break;
 		}
 		item = typeof this.data[start] === 'string' ? this.data[start] : this.data[start][0];
-		if ( item.match( /\B/ ) ) {
+		if ( item.match( regex ) ) {
 			start++;
 			break;
 		}
@@ -845,7 +848,7 @@ es.DocumentModel.prototype.getWordBoundaries = function( offset ) {
 			break;
 		}
 		item = typeof this.data[end] === 'string' ? this.data[end] : this.data[end][0];
-		if ( item.match( /\B/ ) ) {
+		if ( item.match( regex ) ) {
 			break;
 		}
 		end++;
