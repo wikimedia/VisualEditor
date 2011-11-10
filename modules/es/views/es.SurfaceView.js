@@ -362,6 +362,20 @@ es.SurfaceView.prototype.moveCursor = function( instruction ) {
 				offset,
 				instruction === 'left' ? -1 : 1
 			);
+			if ( this.keyboard.keys.control || this.keyboard.keys.alt ) {
+				var wordBoundaries  = this.documentView.model.getWordBoundaries( newTo );
+				if ( instruction === 'left' ) {
+					newTo = wordBoundaries.from;
+
+			newTo = this.documentView.getModel().getRelativeContentOffset(
+				newTo,
+				instruction === 'left' ? -1 : 1
+			);					
+					
+				} else {
+					newTo = wordBoundaries.to;
+				}
+			}
 			break;
 		case 'home' :
 		case 'end' :
