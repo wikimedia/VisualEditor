@@ -186,7 +186,12 @@ es.DocumentBranchNode.prototype.selectNodes = function( range, shallow ) {
 		
 		if ( startInside && endInside ) {
 			// The range is entirely inside this.children[i]
-			if ( shallow ) {
+			if ( shallow || !this.children[i].children ) {
+				// For leaf nodes, use the same behavior as for shallow calls.
+				// A proper recursive function would let the recursion handle this,
+				// but the leaves don't have .selectNodes() because they're not DocumentBranchNodes
+				// FIXME get rid of this crazy branch-specificity
+				// TODO should probably rewrite this recursive function as an iterative function anyway, probably faster
 				nodes = [
 					{
 						'node': this.children[i],
