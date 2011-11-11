@@ -827,7 +827,8 @@ es.DocumentModel.prototype.getWordBoundaries = function( offset ) {
 		return null;
 	}
 
-	var	regex = this.data[offset].match( /\B/ ) ? /\b/ : /\B/,
+	var	offsetItem = typeof this.data[offset] === 'string' ? this.data[offset] : this.data[offset][0],
+		regex = offsetItem.match( /\B/ ) ? /\b/ : /\B/,
 		start = offset,
 		end = offset,
 		item;
