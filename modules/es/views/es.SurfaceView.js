@@ -350,7 +350,7 @@ es.SurfaceView.prototype.moveCursor = function( instruction ) {
 				instruction === 'left' ? -1 : 1	
 			);
 			
-			if ( this.keyboard.keys.shift && ( this.keyboard.keys.control || this.keyboard.keys.alt ) ) {
+			if ( this.keyboard.keys.control || this.keyboard.keys.alt ) {
 				var wordRange = this.documentView.model.getWordBoundaries(
 						instruction === 'left' ? newTo : offset
 				);
