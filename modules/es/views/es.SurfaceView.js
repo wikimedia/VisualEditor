@@ -340,31 +340,25 @@ es.SurfaceView.prototype.moveCursor = function( instruction ) {
 		case 'left' :
 		case 'right' :
 			var offset;
-			if ( this.keyboard.keys.shift ) {
+			if ( this.keyboard.keys.shift || this.selection.from === this.selection.to ) {
 				offset = this.selection.to;
 			} else {
-				offset = this.selection.from === this.selection.to ?
-					this.selection.to :
-						instruction === 'left' ? this.selection.start : this.selection.end;
+				offset = instruction === 'left' ? this.selection.start : this.selection.end;
 			}
 			newTo = this.documentView.getModel().getRelativeContentOffset(
 				offset,
-				instruction === 'left' ? -1 : 1
+				instruction === 'left' ? -1 : 1	
 			);
-			if ( this.keyboard.keys.control || this.keyboard.keys.alt ) {
-				var wordBoundaries  = this.documentView.model.getWordBoundaries( newTo );
-				if ( instruction === 'left' ) {
-					newTo = wordBoundaries.from;
-
-					newTo = this.documentView.getModel().getRelativeContentOffset(
-						newTo,
-						-1
-					);
-					
-				} else {
-					newTo = wordBoundaries.to;
+			
+			if ( this.keyboard.keys.shift && ( this.keyboard.keys.control || this.keyboard.keys.alt ) ) {
+				var wordRange = this.documentView.model.getWordBoundaries(
+						instruction === 'left' ? newTo : offset
+				);
+				if ( wordRange ) {
+					newTo = instruction === 'left' ? wordRange.from : wordRange.to;
 				}
 			}
+
 			break;
 		case 'home' :
 		case 'end' :
