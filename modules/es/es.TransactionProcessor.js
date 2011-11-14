@@ -227,10 +227,9 @@ es.TransactionProcessor.prototype.remove = function( op ) {
 					newData.push( ranges[i].node.getElement() );
 					firstKeptNode = false;
 				}
-				
-					// Compute the start and end offset of this node
-					// We could do that with getOffsetFromNode() but
-					// we already have all the numbers we need so why would we
+				// Compute the start and end offset of this node
+				// We could do that with getOffsetFromNode() but
+				// we already have all the numbers we need so why would we
 				var	startOffset = ranges[i].globalRange.start - ranges[i].range.start,
 					endOffset = startOffset + ranges[i].node.getContentLength(),
 					// Get this node's data
@@ -248,7 +247,8 @@ es.TransactionProcessor.prototype.remove = function( op ) {
 			// Keep the closing of the last element that was partially kept
 			newData.push( { 'type': '/' + lastElement } );
 		}
-		
+		// Update the linear model
+		this.model.data.splice( this.cursor, op.data.length );
 		// Perform the rebuild. This updates the model tree
 		this.rebuildNodes( newData, oldNodes );
 	} else {
@@ -257,11 +257,11 @@ es.TransactionProcessor.prototype.remove = function( op ) {
 		var node = this.model.getNodeFromOffset( this.cursor );
 		// Update model tree
 		node.adjustContentLength( -op.data.length, true );
-		node.emit( 'update', this.cursor - this.model.getOffsetFromNode( node ) );
+		// Update the linear model
+		this.model.data.splice( this.cursor, op.data.length );
+		// Emit an update so things sync up
+		node.emit( 'update', this.cursor );
 	}
-	
-	// Update the linear model
-	this.model.data.splice( this.cursor, op.data.length );
 };
 
 es.TransactionProcessor.prototype.attribute = function( op, invert ) {

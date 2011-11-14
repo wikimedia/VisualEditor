@@ -18,6 +18,16 @@ es.DocumentView = function( model, surfaceView ) {
 	this.$.addClass( 'es-documentView' );
 };
 
+/* Static Members */
+
+/**
+ * 
+ * 
+ */
+es.DocumentView.splitRules = {};
+
+/* Methods */
+
 /**
  * Get the document offset of a position created from passed DOM event
  * 

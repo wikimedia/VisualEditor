@@ -136,6 +136,8 @@ es.SurfaceView = function( $container, model ) {
 	} );
 };
 
+/* Methods */
+
 es.SurfaceView.prototype.onMouseDown = function( e ) {
 	if ( e.button === 0 ) { // left mouse button
 		var offset = this.documentView.getOffsetFromEvent( e );

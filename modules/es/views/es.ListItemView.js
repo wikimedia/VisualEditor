@@ -23,6 +23,7 @@ es.ListItemView = function( model ) {
 	this.setClasses();
 };
 
+/* Methods */
 
 es.ListItemView.prototype.setClasses = function() {
 	var classes = this.$.attr( 'class' ),

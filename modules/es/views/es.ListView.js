@@ -20,6 +20,8 @@ es.ListView = function( model ) {
 	this.enumerate();
 };
 
+/* Methods */
+
 /**
  * Set the number labels of all ordered list items.
  * 
