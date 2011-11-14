@@ -78,6 +78,9 @@ es.DocumentBranchNode.prototype.getRangeFromNode = function( node, shallow ) {
  * @returns {Integer} Offset of node or -1 of node was not found
  */
 es.DocumentBranchNode.prototype.getOffsetFromNode = function( node, shallow ) {
+	if ( node === this ) {
+		return 0;
+	}
 	if ( this.children.length ) {
 		var offset = 0,
 			childNode;
@@ -112,6 +115,9 @@ es.DocumentBranchNode.prototype.getOffsetFromNode = function( node, shallow ) {
  * @returns {es.DocumentNode|null} Node at offset, or null if non was found
  */
 es.DocumentBranchNode.prototype.getNodeFromOffset = function( offset, shallow ) {
+	if ( offset === 0 ) {
+		return this;
+	}
 	// TODO a lot of logic is duplicated in selectNodes(), abstract that into a traverser or something
 	if ( this.children.length ) {
 		var nodeOffset = 0,
