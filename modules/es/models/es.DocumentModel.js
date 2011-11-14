@@ -65,10 +65,8 @@ es.DocumentModel.nodeRules = {};
  * Each function is called in the context of a state, and takes an operation object as a parameter.
  */
 es.DocumentModel.operations = ( function() {
-	function retain( op ) {
-		annotate.call( this, this.cursor + op.length );
-		this.cursor += op.length;
-	}
+
+	// Pure functions
 
 	function rebuild( newData, oldNodes ) {
 		var parent = oldNodes[0].getParent(),
@@ -81,15 +79,43 @@ es.DocumentModel.operations = ( function() {
 		parent.splice.apply( parent, [index, 0].concat( newNodes ) );
 	}
 
+	function scope( node, data ) {
+		var i,
+			length,
+			level = 0,
+			maxDepth = 0;
+		for ( i = 0, length = data.length; i < length; i++ ) {
+			if ( typeof data[i].type === 'string' ) {
+				level += data[i].type.charAt( 0 ) === '/' ? -1 : 1;
+				maxDepth = Math.max( maxDepth, -level );
+			}
+		}
+		if ( maxDepth > 0 ) {
+			for ( i = 0; i < maxDepth; i++ ) {
+				node = node.getParent();
+			}
+		}
+		return node;
+	}
+
+	// Methods (call in context of state)
+	
+	function retain( op ) {
+		annotate.call( this, this.cursor + op.length );
+		this.cursor += op.length;
+	}
+
 	function insert( op ) {
 		if ( es.DocumentModel.isStructuralOffset( this.data, this.cursor ) ) {
 			// TODO: Support tree updates when inserting between elements
 		} else {
-			// Get the node we are about to insert into
-			var node = this.tree.getNodeFromOffset( this.cursor );
+			// Get the node we are about to insert into at the lowest depth possible
+			var node = scope( this.tree.getNodeFromOffset( this.cursor ), op.data );
 			if ( !node ) {
-				throw 'Missing node error. A node could not not be found at the cursor.';
+				throw 'Missing node error. Scope could not be resolved';
 			}
+			// Figure out how deep the data goes
+			
 			var offset = this.tree.getOffsetFromNode( node );
 			if ( es.DocumentModel.containsElementData( op.data ) ) {
 				// Perform insert on linear data model
@@ -99,8 +125,7 @@ es.DocumentModel.operations = ( function() {
 				if ( offset === -1 ) {
 					throw 'Invalid offset error. Node is not in model tree';
 				}
-				rebuild.call(
-					this,
+				rebuild(
 					this.data.slice( offset, offset + node.getElementLength() + op.data.length ),
 					[node]
 				);

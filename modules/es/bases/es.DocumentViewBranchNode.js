@@ -117,13 +117,14 @@ es.DocumentViewBranchNode.prototype.onAfterSplice = function( index, howmany ) {
 	if ( args.length >= 3 ) {
 		var $target;
 		if ( index ) {
-			$target = this.$.children().eq( index );
+			// Get the element before the insertion point
+			$anchor = this.$.children().eq( index - 1 );
 		}
 		for ( i = args.length - 1; i >= 2; i-- ) {
 			args[i].attach( this );
 			args[i].on( 'update', this.emitUpdate );
 			if ( index ) {
-				$target.after( args[i].$ );
+				$anchor.after( args[i].$ );
 			} else {
 				this.$.prepend( args[i].$ );
 			}
