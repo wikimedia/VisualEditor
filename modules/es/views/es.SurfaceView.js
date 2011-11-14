@@ -134,8 +134,6 @@ es.SurfaceView = function( $container, model ) {
 	this.$window.scroll( function() {
 		surfaceView.dimensions.scrollTop = surfaceView.$window.scrollTop();
 	} );
-	
-	this.documentView.on('update', function() {alert(1);});
 };
 
 es.SurfaceView.prototype.onMouseDown = function( e ) {
