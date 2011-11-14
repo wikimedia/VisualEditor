@@ -153,20 +153,21 @@ es.DocumentModelBranchNode.prototype.splice = function( index, howmany ) {
 	this.emit.apply( this, ['beforeSplice'].concat( args ) );
 	if ( args.length >= 3 ) {
 		for ( i = 2, length = args.length; i < length; i++ ) {
-			diff += args[i].getElementLength();
 			args[i].attach( this );
+			args[i].on( 'update', this.emitUpdate );
+			diff += args[i].getElementLength();
 		}
 	}
-	var removed = this.children.splice.apply( this.children, args );
-	for ( i = 0, length = removed.length; i < length; i++ ) {
-		diff -= removed[i].getElementLength();
-		removed[i].detach();
-		removed[i].removeListener( 'update', this.emitUpdate );
+	var removals = this.children.splice.apply( this.children, args );
+	for ( i = 0, length = removals.length; i < length; i++ ) {
+		removals[i].detach();
+		removals[i].removeListener( 'update', this.emitUpdate );
+		diff -= removals[i].getElementLength();
 	}
 	this.adjustContentLength( diff, true );
 	this.emit.apply( this, ['afterSplice'].concat( args ) );
 	this.emit( 'update' );
-	return removed;
+	return removals;
 };
 
 /**
