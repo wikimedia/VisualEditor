@@ -82,7 +82,6 @@ es.DocumentViewBranchNode.prototype.onAfterPop = function() {
 	childView.$.detach();
 	this.emit( 'afterPop' );
 	this.emit( 'update' );
-	childView.renderContent();
 };
 
 es.DocumentViewBranchNode.prototype.onAfterShift = function() {
@@ -95,7 +94,6 @@ es.DocumentViewBranchNode.prototype.onAfterShift = function() {
 	childView.$.detach();
 	this.emit( 'afterShift' );
 	this.emit( 'update' );
-	childView.renderContent();
 };
 
 es.DocumentViewBranchNode.prototype.onAfterSplice = function( index, howmany ) {
