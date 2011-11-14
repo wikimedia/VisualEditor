@@ -25,7 +25,7 @@ es.DocumentViewBranchNode = function( model, $element, horizontal ) {
 		}
 
 		// Observe and mimic changes on model
-		this.addListenerMethods( this, {
+		this.model.addListenerMethods( this, {
 			'afterPush': 'onAfterPush',
 			'afterUnshift': 'onAfterUnshift',
 			'afterPop': 'onAfterPop',
@@ -55,6 +55,7 @@ es.DocumentViewBranchNode.prototype.onAfterPush = function( childModel ) {
 	}
 	this.emit( 'afterPush', childView );
 	this.emit( 'update' );
+	this.renderContent();
 };
 
 es.DocumentViewBranchNode.prototype.onAfterUnshift = function( childModel ) {
@@ -68,6 +69,7 @@ es.DocumentViewBranchNode.prototype.onAfterUnshift = function( childModel ) {
 	this.$.prepend( childView.$ );
 	this.emit( 'afterUnshift', childView );
 	this.emit( 'update' );
+	this.renderContent();
 };
 
 es.DocumentViewBranchNode.prototype.onAfterPop = function() {
@@ -80,6 +82,7 @@ es.DocumentViewBranchNode.prototype.onAfterPop = function() {
 	childView.$.detach();
 	this.emit( 'afterPop' );
 	this.emit( 'update' );
+	this.renderContent();
 };
 
 es.DocumentViewBranchNode.prototype.onAfterShift = function() {
@@ -92,26 +95,44 @@ es.DocumentViewBranchNode.prototype.onAfterShift = function() {
 	childView.$.detach();
 	this.emit( 'afterShift' );
 	this.emit( 'update' );
+	this.renderContent();
 };
 
 es.DocumentViewBranchNode.prototype.onAfterSplice = function( index, howmany ) {
-	var args = Array.prototype.slice( arguments, 0 );
-	this.emit.apply( ['beforeSplice'].concat( args ) );
-	// Update children
-	this.splice.apply( this, args );
-	// Update DOM
-	this.$.children()
-		// Removals
-		.slice( index, index + howmany )
-			.detach()
-			.end()
-		// Insertions
-		.get( index )
-			.after( $.map( args.slice( 2 ), function( childView ) {
-				return childView.$;
-			} ) );
-	this.emit.apply( ['afterSplice'].concat( args ) );
-	this.emit( 'update' );
+	var i,
+		length,
+		args = Array.prototype.slice.call( arguments, 0 );
+	// Convert models to views and attach them to this node
+	if ( args.length >= 3 ) {
+		for ( i = 2, length = args.length; i < length; i++ ) {
+			args[i] = args[i].createView();
+		}
+	}
+	this.emit.apply( this, ['beforeSplice'].concat( args ) );
+	var removals = this.children.splice.apply( this.children, args );
+	for ( i = 0, length = removals.length; i < length; i++ ) {
+		removals[i].detach();
+		removals[i].removeListener( 'update', this.emitUpdate );
+		// Update DOM
+		removals[i].$.detach();
+	}
+	if ( args.length >= 3 ) {
+		var $target;
+		if ( index ) {
+			$target = this.$.children().eq( index );
+		}
+		for ( i = args.length - 1; i >= 2; i-- ) {
+			args[i].attach( this );
+			args[i].on( 'update', this.emitUpdate );
+			if ( index ) {
+				$target.after( args[i].$ );
+			} else {
+				this.$.prepend( args[i].$ );
+			}
+		}
+	}
+	this.emit.apply( this, ['afterSplice'].concat( args ) );
+	this.renderContent();
 };
 
 es.DocumentViewBranchNode.prototype.onAfterSort = function() {
@@ -131,6 +152,7 @@ es.DocumentViewBranchNode.prototype.onAfterSort = function() {
 	}
 	this.emit( 'afterSort' );
 	this.emit( 'update' );
+	this.renderContent();
 };
 
 es.DocumentViewBranchNode.prototype.onAfterReverse = function() {
@@ -143,6 +165,7 @@ es.DocumentViewBranchNode.prototype.onAfterReverse = function() {
 	} );
 	this.emit( 'afterReverse' );
 	this.emit( 'update' );
+	this.renderContent();
 };
 
 /**
