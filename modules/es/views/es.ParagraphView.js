@@ -14,6 +14,13 @@ es.ParagraphView = function( model ) {
 	this.$.addClass( 'es-paragraphView' );
 };
 
+/* Registration */
+
+es.DocumentModel.nodeRules.paragraph = {
+	'self': true,
+	'children': null
+};
+
 /* Inheritance */
 
 es.extendClass( es.ParagraphView, es.DocumentViewLeafNode );

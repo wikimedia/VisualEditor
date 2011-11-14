@@ -16,6 +16,13 @@ es.TableCellView = function( model ) {
 		.addClass( 'es-tableCellView' );
 };
 
+/* Registration */
+
+es.DocumentModel.nodeRules.tableCell = {
+	'self': false,
+	'children': true
+};
+
 /* Inheritance */
 
 es.extendClass( es.TableCellView, es.DocumentViewBranchNode );

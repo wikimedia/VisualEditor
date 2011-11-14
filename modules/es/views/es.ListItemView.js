@@ -46,6 +46,13 @@ es.ListItemView.prototype.setNumber = function( number ) {
 	this.$icon.text( number + '.' );
 };
 
+/* Registration */
+
+es.DocumentModel.nodeRules.listItem = {
+	'self': true,
+	'children': false
+};
+
 /* Inheritance */
 
 es.extendClass( es.ListItemView, es.DocumentViewBranchNode );

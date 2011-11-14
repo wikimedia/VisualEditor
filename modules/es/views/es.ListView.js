@@ -42,6 +42,13 @@ es.ListView.prototype.enumerate = function() {
 	}
 };
 
+/* Registration */
+
+es.DocumentModel.nodeRules.list = {
+	'self': false,
+	'children': true
+};
+
 /* Inheritance */
 
 es.extendClass( es.ListView, es.DocumentViewBranchNode );

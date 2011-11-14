@@ -32,6 +32,13 @@ es.HeadingView.prototype.setClasses = function() {
 		.addClass( 'es-headingView-level' + level );
 };
 
+/* Registration */
+
+es.DocumentModel.nodeRules.heading = {
+	'self': true,
+	'children': null
+};
+
 /* Inheritance */
 
 es.extendClass( es.HeadingView, es.DocumentViewLeafNode );

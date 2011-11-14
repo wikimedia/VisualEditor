@@ -20,9 +20,30 @@ es.DocumentView = function( model, surfaceView ) {
 
 /* Static Members */
 
+
 /**
+ * Mapping of symbolic names and splitting rules.
  * 
+ * Each rule is an object with a self and children property. Each of these properties may contain
+ * one of two possible values:
+ *     Boolean - Whether a split is allowed
+ *     Null - Node is a leaf, so there's nothing to split
  * 
+ * @example Paragraph rules
+ *     {
+ *         'self': true
+ *         'children': null
+ *     }
+ * @example List rules
+ *     {
+ *         'self': false,
+ *         'children': true
+ *     }
+ * @example ListItem rules
+ *     {
+ *         'self': true,
+ *         'children': false
+ *     }
  */
 es.DocumentView.splitRules = {};
 

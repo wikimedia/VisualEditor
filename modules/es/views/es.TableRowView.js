@@ -16,6 +16,13 @@ es.TableRowView = function( model ) {
 		.addClass( 'es-tableRowView' );
 };
 
+/* Registration */
+
+es.DocumentModel.nodeRules.tableRow = {
+	'self': false,
+	'children': false
+};
+
 /* Inheritance */
 
 es.extendClass( es.TableRowView, es.DocumentViewBranchNode );

@@ -14,6 +14,13 @@ es.PreView = function( model ) {
 	this.$.addClass( 'es-preView' );
 };
 
+/* Registration */
+
+es.DocumentModel.nodeRules.pre = {
+	'self': true,
+	'children': null
+};
+
 /* Inheritance */
 
 es.extendClass( es.PreView, es.DocumentViewLeafNode );
