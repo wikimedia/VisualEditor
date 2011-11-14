@@ -51,8 +51,7 @@ es.DocumentModelLeafNode.prototype.getPlainObject = function() {
  */
 es.DocumentModelLeafNode.prototype.getContent = function( range ) {
 	// Find root
-	var root = this.data ? this : ( this.root.data ? this.root : null );
-
+	var root = this.data ? this : ( this.root && this.root.data ? this.root : null );
 	if ( root ) {
 		return root.getContentFromNode( this, range );
 	}
