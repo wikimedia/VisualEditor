@@ -78,9 +78,7 @@ es.DocumentModel.operations = ( function() {
 		// Regenerate nodes for the data we've affected
 		var newNodes = es.DocumentModel.createNodesFromData( newData );
 		// Insert new elements into the tree where the old ones used to be
-		for ( var i = newNodes.length - 1; i >= 0; i-- ) {
-			parent.splice( index, 0, newNodes[i] );
-		}
+		parent.splice.apply( parent, [index, 0].concat( newNodes ) );
 	}
 
 	function insert( op ) {
