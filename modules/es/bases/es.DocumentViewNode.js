@@ -4,7 +4,7 @@
  * @class
  * @abstract
  * @constructor
- * @extends {es.EventEmitter}
+ * @extends {es.DocumentNode}
  * @param {es.DocumentModelNode} model Model to observe
  * @param {jQuery} [$element=$( '<div></div>' )] Element to use as a container
  */
