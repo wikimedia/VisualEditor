@@ -40,10 +40,19 @@ es.SurfaceView = function( $container, model ) {
 	this.$.append( this.documentView.$ );
 
 	// Interaction state
+	
+	// There are three different selection modes available for mouse. Selection of:
+	// * 1 - chars
+	// * 2 - words
+	// * 3 - nodes (e.g. paragraph, listitem)
+	//
+	// In case of 2 and 3 selectedRange stores the range of original selection caused by double
+	// or triple mousedowns.
 	this.mouse = {
 		selectingMode: null,
 		selectedRange: null
 	};
+	
 	this.cursor = {
 		$: $( '<div class="es-surfaceView-cursor"></div>' ).appendTo( this.$ ),
 		interval: null,
