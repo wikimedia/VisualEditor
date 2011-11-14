@@ -69,7 +69,7 @@ es.DocumentViewBranchNode.prototype.onAfterUnshift = function( childModel ) {
 	this.$.prepend( childView.$ );
 	this.emit( 'afterUnshift', childView );
 	this.emit( 'update' );
-	this.renderContent();
+	childView.renderContent();
 };
 
 es.DocumentViewBranchNode.prototype.onAfterPop = function() {
@@ -82,7 +82,7 @@ es.DocumentViewBranchNode.prototype.onAfterPop = function() {
 	childView.$.detach();
 	this.emit( 'afterPop' );
 	this.emit( 'update' );
-	this.renderContent();
+	childView.renderContent();
 };
 
 es.DocumentViewBranchNode.prototype.onAfterShift = function() {
@@ -95,7 +95,7 @@ es.DocumentViewBranchNode.prototype.onAfterShift = function() {
 	childView.$.detach();
 	this.emit( 'afterShift' );
 	this.emit( 'update' );
-	this.renderContent();
+	childView.renderContent();
 };
 
 es.DocumentViewBranchNode.prototype.onAfterSplice = function( index, howmany ) {
@@ -132,7 +132,11 @@ es.DocumentViewBranchNode.prototype.onAfterSplice = function( index, howmany ) {
 		}
 	}
 	this.emit.apply( this, ['afterSplice'].concat( args ) );
-	this.renderContent();
+	if ( args.length >= 3 ) {
+		for ( i = 2, length = args.length; i < length; i++ ) {
+			args[i] = args[i].renderContent();
+		}
+	}
 };
 
 es.DocumentViewBranchNode.prototype.onAfterSort = function() {
