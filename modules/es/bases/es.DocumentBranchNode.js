@@ -45,7 +45,18 @@ es.DocumentBranchNode.prototype.getChildren = function() {
  * @param {Boolean} [reverse] Whether to iterate backwards
  */
 es.DocumentBranchNode.prototype.traverseLeafNodes = function( callback, from, reverse ) {
-	var indexStack = [], index = 0, node = this, childNode, callbackResult, n, p, i;
+		// Stack of indices that lead from this to node
+	var	indexStack = [],
+		// Node whose children we're currently traversing
+		node = this,
+		// Index of the child node we're currently visiting
+		index = reverse ? node.children.length - 1 : 0,
+		// Shortcut for node.children[index]
+		childNode,
+		// Result of the last invocation of the callback
+		callbackResult,
+		// Variables for the loop that builds indexStack if from is specified
+		n, p, i;
 	
 	if ( from !== undefined ) {
 		// Reverse-engineer the index stack by starting at from and
@@ -74,6 +85,13 @@ es.DocumentBranchNode.prototype.traverseLeafNodes = function( callback, from, re
 		// Set up the variables such that from will be visited next
 		index = indexStack.pop();
 		node = from.getParent(); // from is a descendant of this so its parent exists
+		
+		// If we're going in reverse, then we still need to visit from if it's
+		// a leaf node, but we should not descend into it
+		// So if from is not a leaf node, skip it now
+		if ( reverse && from.hasChildren() ) {
+			index--;
+		}
 	}
 	
 	while ( true ) {
@@ -84,7 +102,7 @@ es.DocumentBranchNode.prototype.traverseLeafNodes = function( callback, from, re
 				node = node.getParent();
 				index = indexStack.pop();
 				// Move to the next child
-				index++;
+				reverse ? index-- : index++;
 				continue;
 			} else {
 				// We can't move up any more, so we're done
@@ -97,8 +115,8 @@ es.DocumentBranchNode.prototype.traverseLeafNodes = function( callback, from, re
 			node = childNode;
 			// Push our current index onto the stack
 			indexStack.push( index );
-			// Set the current index to zero
-			index = 0;
+			// Set the current index to the first element we're visiting
+			index = reverse ? node.children.length - 1 : 0;
 		} else {
 			// This is a leaf node, visit it
 			callbackResult = callback( childNode ); // TODO what is index?
@@ -107,7 +125,7 @@ es.DocumentBranchNode.prototype.traverseLeafNodes = function( callback, from, re
 				return;
 			}
 			// Move to the next child
-			index++;
+			reverse ? index-- : index++;
 		}
 	}
 };
