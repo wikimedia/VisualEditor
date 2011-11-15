@@ -140,29 +140,41 @@ es.SurfaceView = function( $container, model ) {
 
 es.SurfaceView.prototype.onMouseDown = function( e ) {
 	if ( e.button === 0 ) { // left mouse button
+
 		var offset = this.documentView.getOffsetFromEvent( e );
+		
+		console.log('onMouseDown; offset: ' + offset);
+
 		if ( e.originalEvent.detail === 1 ) { // single click
 			this.mouse.selectingMode = 1; // used in mouseMove handler
+
 			if ( this.keyboard.keys.shift && offset !== this.selection.from ) {
+				// extend current or create new selection
 				this.selection.to = offset;
 			} else {
 				if ( this.selection.to !== this.selection.from ) {
+					// clear the selection if there was any
 					this.documentView.clearSelection();
 				}
 				this.selection.from = this.selection.to = offset;
+
 				var	position = es.Position.newFromEventPagePosition( e ),
 					nodeView = this.documentView.getNodeFromOffset( offset, false );
 				this.cursor.initialBias = position.left > nodeView.contentView.$.offset().left;
 			}
+
 		} else if ( e.originalEvent.detail === 2 ) { // double click
 			this.mouse.selectingMode = 2; // used in mouseMove handler
+			
 			var wordRange = this.documentView.model.getWordBoundaries( offset );
 			if( wordRange ) {
 				this.selection = wordRange;
 				this.mouse.selectedRange = this.selection.clone();
 			}
+
 		} else if ( e.originalEvent.detail >= 3 ) { // triple click
 			this.mouse.selectingMode = 3; // used in mouseMove handler
+			
 			var node = this.documentView.getNodeFromOffset( offset );
 			this.selection.from = this.documentView.getOffsetFromNode( node, false );
 			this.selection.to = this.selection.from + node.getElementLength() - 1;
@@ -187,35 +199,37 @@ es.SurfaceView.prototype.onMouseDown = function( e ) {
 
 es.SurfaceView.prototype.onMouseMove = function( e ) {
 	if ( e.button === 0 && this.mouse.selectingMode ) { // left mouse button and in selecting mode
+
 		var offset = this.documentView.getOffsetFromEvent( e );
-		if ( this.mouse.selectingMode === 1 ) {
+
+		if ( this.mouse.selectingMode === 1 ) { // selection of chars
 			this.selection.to = offset;
-		} else if ( this.mouse.selectingMode === 2 ) {
+		} else if ( this.mouse.selectingMode === 2 ) { // selection of words
 			var wordRange = this.documentView.model.getWordBoundaries( offset );
 			if ( wordRange ) {
 				if ( wordRange.to <= this.mouse.selectedRange.from ) {
 					this.selection.to = wordRange.from;
 					this.selection.from = this.mouse.selectedRange.to;
 				} else {
-					this.selection.from = this.mouse.selectedRange.from;
 					this.selection.to = wordRange.to;
+					this.selection.from = this.mouse.selectedRange.from;
 				}
 			} else {
 				this.selection.to = offset;
 			}
 		} else if ( this.mouse.selectingMode === 3 ) {
-			var node = this.documentView.getNodeFromOffset( offset );
-			var nodeRange = new es.Range();
-			nodeRange.from = this.documentView.getOffsetFromNode( node, false );
-			nodeRange.to = nodeRange.from + node.getElementLength() - 1;
+			var nodeRange = this.documentView.getRangeFromNode(
+				this.documentView.getNodeFromOffset( offset )
+			);
 			if ( nodeRange.to <= this.mouse.selectedRange.from ) {
 				this.selection.to = nodeRange.from;
 				this.selection.from = this.mouse.selectedRange.to;
 			} else {
-				this.selection.from = this.mouse.selectedRange.from;
 				this.selection.to = nodeRange.to;
+				this.selection.from = this.mouse.selectedRange.from;
 			}	
 		}
+
 		this.documentView.drawSelection( this.selection );
 		if ( this.selection.from !== this.selection.to ) {
 			this.hideCursor();
@@ -248,44 +262,47 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 			this.keyboard.keys.command = true;
 			break;
 		case 36: // Home
-			this.moveCursor( 'home' );
+			this.moveCursor( 'left', 'line' );
 			break;
 		case 35: // End
-			this.moveCursor( 'end' );
+			this.moveCursor( 'right', 'line' );
 			break;
 		case 37: // Left arrow
 			if ( this.keyboard.keys.command ) {
-				this.moveCursor( 'home' );
-			} else { 
-				this.moveCursor( 'left' );
+				this.moveCursor( 'left', 'line' );
+			} else if ( this.keyboard.keys.control || this.keyboard.keys.alt ) {
+				this.moveCursor( 'left', 'word' );
+			} else {
+				this.moveCursor( 'left', 'char' );
 			}
 			break;
 		case 38: // Up arrow
-			this.moveCursor( 'up' );
+			if ( this.keyboard.keys.control || this.keyboard.keys.alt ) {
+				this.moveCursor( 'up', 'unit' );
+			} else {
+				this.moveCursor( 'up', 'char' );
+			}
+
 			break;
 		case 39: // Right arrow
 			if ( this.keyboard.keys.command ) {
-				this.moveCursor( 'end' );
-			} else { 
-				this.moveCursor( 'right' );
+				this.moveCursor( 'right', 'line' );
+			} else if ( this.keyboard.keys.control || this.keyboard.keys.alt ) {
+				this.moveCursor( 'right', 'word' );
+			} else {
+				this.moveCursor( 'right', 'char' );
 			}
 			break;
 		case 40: // Down arrow
-			this.moveCursor( 'down' );
+			if ( this.keyboard.keys.control || this.keyboard.keys.alt ) {
+				this.moveCursor( 'down', 'unit' );
+			} else {
+				this.moveCursor( 'down', 'char' );
+			}
 			break;
 		case 8: // Backspace
-			tx = this.documentView.model.prepareRemoval(
-				new es.Range( this.selection.to, this.selection.to - 1 )
-			);
-			this.documentView.model.commit( tx );
-			this.selection.from = this.selection.to -= 1;
-			this.showCursor();
 			break;
 		case 46: // Delete
-			tx = this.documentView.model.prepareRemoval(
-				new es.Range( this.selection.to, this.selection.to + 1 )
-			);
-			this.documentView.model.commit( tx );
 			break;
 		default: // Insert content (maybe)
 			if ( this.keyboard.keydownTimeout ) {
@@ -336,108 +353,109 @@ es.SurfaceView.prototype.onKeyUp = function( e ) {
 	return true;
 };
 
-es.SurfaceView.prototype.moveCursor = function( instruction ) {
-	this.selection.normalize();
+/**
+ * @param {String} direction up | down | left | right
+ * @param {String} unit char | word | line | node | page
+ */
+es.SurfaceView.prototype.moveCursor = function( direction, unit ) {
+	console.log('moveCursor; direction: ' + direction + ', unit: ' + unit);
 
-	if ( instruction !== 'up' && instruction !== 'down' ) {
+	if ( direction !== 'up' && direction !== 'down' ) {
 		this.cursor.initialLeft = null;
 	}
+
+	this.selection.normalize();
 	
-	var newTo;
+	var to;
 
-	switch ( instruction ) {
-		case 'left' :
-		case 'right' :
-			var offset;
-			if ( this.keyboard.keys.shift || this.selection.from === this.selection.to ) {
-				offset = this.selection.to;
-			} else {
-				offset = instruction === 'left' ? this.selection.start : this.selection.end;
+	switch ( direction ) {
+		case 'left':
+		case 'right':
+			switch ( unit ) {
+				case 'char':
+				case 'word':
+					var offset;
+					if ( this.keyboard.keys.shift || this.selection.from === this.selection.to ) {
+						offset = this.selection.to;
+					} else {
+						offset = direction === 'left' ? this.selection.start : this.selection.end;
+					}
+					to = this.documentView.getModel().getRelativeContentOffset(
+							offset,
+							direction === 'left' ? -1 : 1
+					);
+					if ( unit === 'word' ) {
+						var wordRange = this.documentView.model.getWordBoundaries(
+							direction === 'left' ? to : offset
+						);
+						if ( wordRange ) {
+							to = direction === 'left' ? wordRange.start : wordRange.end;
+						}
+					}
+					break;
+				case 'line':
+					var offset = this.cursor.initialBias ?
+						this.documentView.getModel().getRelativeContentOffset(
+							this.selection.to,
+							-1) :
+								this.selection.to;
+					var range = this.documentView.getRenderedLineRangeFromOffset( offset );
+					to = direction === 'left' ? range.start : range.end;
+					break;
 			}
-			newTo = this.documentView.getModel().getRelativeContentOffset(
-				offset,
-				instruction === 'left' ? -1 : 1	
-			);
-			
-			if ( this.keyboard.keys.control || this.keyboard.keys.alt ) {
-				var wordRange = this.documentView.model.getWordBoundaries(
-						instruction === 'left' ? newTo : offset
-				);
-				if ( wordRange ) {
-					newTo = instruction === 'left' ? wordRange.from : wordRange.to;
-				}
-			}
-
 			break;
-		case 'home' :
-		case 'end' :
-			var range = this.documentView.getRenderedLineRangeFromOffset(
-				this.cursor.initialBias ?
-					this.documentView.getModel().getRelativeContentOffset( this.selection.to, -1 ) :
+		case 'up':
+		case 'down':
+			switch ( unit ) {
+				case 'unit':
+				case 'char':
+					/*
+					 * Looks for the in-document character position that would match up with the
+					 * same horizontal position - jumping a few pixels up/down at a time until we
+					 * reach the next/previous line
+					 */
+					var position = this.documentView.getRenderedPositionFromOffset(
 						this.selection.to
-			);
-			newTo = instruction === 'home' ? range.start : range.end;
-			break;
-		case 'up' :
-		case 'down' :
-			/*
-			 * Looks for the in-document character position that would match up with the same
-			 * horizontal position - jumping a few pixels up/down at a time until we reach
-			 * the next/previous line
-			 */
-
-			var position = this.documentView.getRenderedPositionFromOffset( this.selection.to );
-			if ( this.cursor.initialLeft === null ) {
-				this.cursor.initialLeft = position.left;
+					);
+					if ( this.cursor.initialLeft === null ) {
+						this.cursor.initialLeft = position.left;
+					}
+					var	fakePosition = new es.Position( this.cursor.initialLeft, position.top ),
+						i = 0,
+						step = direction === 'up' ? -5 : 5,
+						top = this.$.position().top;
+					do {
+						fakePosition.top += ++i * step;
+						if ( fakePosition.top < top ) {
+							break;
+						} else if (fakePosition.top > top + this.dimensions.height + this.dimensions.scrollTop ) {
+							break;
+						}
+						fakePosition = this.documentView.getRenderedPositionFromOffset(
+							this.documentView.getOffsetFromRenderedPosition( fakePosition )
+						);
+						fakePosition.left = this.cursor.initialLeft;
+					} while ( position.top === fakePosition.top );
+					to = this.documentView.getOffsetFromRenderedPosition( fakePosition );
+					break;
 			}
-			var	fakePosition = new es.Position( this.cursor.initialLeft, position.top ),
-				i = 0,
-				step = instruction === 'up' ? -5 : 5,
-				top = this.$.position().top;
-			do {
-				fakePosition.top += ++i * step;
-				if ( fakePosition.top < top ) {
-					this.cursor.initialLeft = null;
-					fakePosition.top = fakePosition.left = 0;
-					break;
-				} else if ( fakePosition.top > top + this.dimensions.height + this.dimensions.scrollTop ) {
-					this.cursor.initialLeft = null;
-					fakePosition.left = this.dimensions.width;
-					break;
-				}
-				fakePosition = this.documentView.getRenderedPositionFromOffset(
-					this.documentView.getOffsetFromRenderedPosition( fakePosition )
-				);
-				fakePosition.left = this.cursor.initialLeft;
-			} while ( position.top === fakePosition.top );
-			newTo = this.documentView.getOffsetFromRenderedPosition( fakePosition );
-			break;
+			break;		
 	}
 
+	this.cursor.initialBias =  direction === 'right' && unit === 'line' ? true : false;
 	
-	if( instruction === 'end' ) {
-		this.cursor.initialBias = true;
-	} else {
-		this.cursor.initialBias = false;
-	} 
-	
-	if ( this.keyboard.keys.shift ) {
-		this.selection.to = newTo;
-		if ( this.selection.from !== this.selection.to ) {
-			this.documentView.drawSelection( this.selection );
-			this.hideCursor();
-		} else {
-			this.documentView.clearSelection();
-			this.showCursor();
-		}
+	if ( this.keyboard.keys.shift && this.selection.from !== to) {
+		this.selection.to = to;
+		this.documentView.drawSelection( this.selection );
+		this.hideCursor();
 	} else {
 		if ( this.selection.from !== this.selection.to ) { 
 			this.documentView.clearSelection();
 		}
-		this.selection.from = this.selection.to = newTo;
+		this.selection.from = this.selection.to = to;
 		this.showCursor();
 	}
-	this.emitSelect();
+	this.emitSelect();	
 };
 
 /**
