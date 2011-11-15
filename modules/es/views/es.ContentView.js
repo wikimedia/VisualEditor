@@ -180,7 +180,7 @@ es.ContentView.renderAnnotation = function( bias, annotation, stack ) {
 					renderers[type].close( annotation.data ) : renderers[type].close;
 			} else {
 				// Find the annotation in the stack
-				var depth = stack.indexOf( annotation ),
+				var depth = es.arrayIndexOf( stack, annotation ),
 					i;
 				if ( depth === -1 ) {
 					throw 'Invalid stack error. An element is missing from the stack.';
