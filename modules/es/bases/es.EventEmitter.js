@@ -148,7 +148,7 @@ es.EventEmitter.prototype.removeListener = function( type, listener ) {
 	if ( handlers.length === 1 && handlers[0] === listener ) {
 		delete this.events[type];
 	} else {
-		var i = handlers.indexOf( listener );
+		var i = es.arrayIndexOf( handlers, listener );
 		if ( i < 0 ) {
 			return this;
 		}

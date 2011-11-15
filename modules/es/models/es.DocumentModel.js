@@ -474,7 +474,8 @@ es.DocumentModel.prototype.getData = function( range, deep ) {
 		start = Math.max( 0, Math.min( this.data.length, range.start ) );
 		end = Math.max( 0, Math.min( this.data.length, range.end ) );
 	}
-	var data = this.data.slice( start, end );
+	// Work around IE bug: arr.slice( 0, undefined ) returns [] while arr.slice( 0 ) behaves correctly
+	var data = end === undefined ? this.data.slice( start ) : this.data.slice( start, end );
 	return deep ? es.copyArray( data ) : data;
 };
 

@@ -209,7 +209,7 @@ es.DocumentModelBranchNode.prototype.reverse = function() {
  * @returns {Integer} Index of child node or -1 if node was not found
  */
 es.DocumentModelBranchNode.prototype.indexOf = function( node ) {
-	return this.children.indexOf( node );
+	return es.arrayIndexOf( this.children, node );
 };
 
 /**
