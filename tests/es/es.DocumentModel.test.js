@@ -376,6 +376,7 @@ test( 'es.DocumentModel.prepareRemoval', 5, function() {
 	);
 
 	// Test 4
+	// FIXME this test fails
 	deepEqual(
 		documentModel.prepareRemoval( new es.Range( 3, 24 ) ).getOperations(),
 		[
@@ -407,7 +408,7 @@ test( 'es.DocumentModel.prepareRemoval', 5, function() {
 			},
 			{ 'type': 'retain', 'length': 13 }
 		],
-		'prepareRemoval strips and drops correctly when working accross structural nodes'
+		'prepareRemoval strips and drops correctly when working across structural nodes'
 	);
 } );
 
