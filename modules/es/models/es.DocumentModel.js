@@ -36,25 +36,36 @@ es.DocumentModel.nodeModels = {};
 /**
  * Mapping of symbolic names and nesting rules.
  * 
- * Each rule is an object with a parents and children property. Each of these properties may contain
- * one of two possible values:
- *     Array - List of allowed element types (if empty, no elements will be allowed)
- *     Null - Any element type is allowed (as long as the other element also allows it)
+ * Each rule is an object with the follwing properties:
+ *     parents and children properties may contain one of two possible values:
+ *         {Array} List symbolic names of allowed element types (if empty, none will be allowed)
+ *         {Null} Any element type is allowed (as long as the other element also allows it)
+ *     droppable:
+ *         {Boolean} Whether the node can be dropped from it's parent (false for table cells)
  * 
  * @example Paragraph rules
  *     {
  *         'parents': null,
- *         'children': []
+ *         'children': [],
+ *         'droppable': true
  *     }
  * @example List rules
  *     {
  *         'parents': null,
- *         'children': ['listItem']
+ *         'children': ['listItem'],
+ *         'droppable': true
  *     }
  * @example ListItem rules
  *     {
  *         'parents': ['list'],
- *         'children': []
+ *         'children': null,
+ *         'droppable': true
+ *     }
+ * @example TableCell rules
+ *     {
+ *         'parents': ['tableRow'],
+ *         'children': null,
+ *         'droppable': false
  *     }
  */
 es.DocumentModel.nodeRules = {};
@@ -862,7 +873,8 @@ es.DocumentModel.prototype.prepareRemoval = function( range ) {
 	/**
 	 * Remove content data only, retaining structure
 	 * 
-	 * TODO: Nodes that are completely covered should be dropped, not stripped
+	 * TODO: Nodes that are completely covered and are droppable should be dropped, not stripped
+	 * @see {es.DocumentModel.nodeRules} for obtaining the 'droppable' bit for a given node
 	 * 
 	 * @param {es.Range} range Range of data to delete
 	 * @param {es.Transaction} tx Transaction to push to
