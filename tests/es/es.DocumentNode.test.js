@@ -939,7 +939,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 	}
 } );
 
-test( 'es.DocumentBranchNode.traverseLeafNodes', 6, function() {
+test( 'es.DocumentBranchNode.traverseLeafNodes', 10, function() {
 	var root3 = es.DocumentModel.newFromPlainObject( esTest.obj );
 	
 	// Test 1
@@ -1014,5 +1014,56 @@ test( 'es.DocumentBranchNode.traverseLeafNodes', 6, function() {
 	ok(
 		es.compareArrays( realLeaves, expectedLeaves ),
 		'Starting at a non-leaf node returns all leaf nodes before it and none inside (in reverse)'
+	);
+	
+	// Test 7
+	realLeaves = [];
+	expectedLeaves = [
+		root3.children[1].children[0].children[0].children[0],
+		root3.children[1].children[0].children[0].children[1].children[0].children[0],
+		root3.children[1].children[0].children[0].children[1].children[1].children[0],
+		root3.children[1].children[0].children[0].children[1].children[2].children[0]
+	];
+	root3.children[1].traverseLeafNodes( function( node ) { realLeaves.push( node ); } );
+	ok(
+		es.compareArrays( realLeaves, expectedLeaves ),
+		'Calling traverseLeafNodes() on a non-root node only returns leaf nodes inside that node'
+	);
+	// Test 8
+	realLeaves = [];
+	expectedLeaves = expectedLeaves.reverse();
+	root3.children[1].traverseLeafNodes( function( node ) { realLeaves.push( node ); }, undefined, true );
+	ok(
+		es.compareArrays( realLeaves, expectedLeaves ),
+		'Calling traverseLeafNodes() on a non-root node only returns leaf nodes inside that node (in reverse)'
+	);
+	
+	// Test 9
+	realLeaves = [];
+	raises(
+		function() {
+			root3.children[1].traverseLeafNodes( function( node ) { realLeaves.push( node ); }, root3.children[2] );
+		},
+		/^from parameter passed to traverseLeafNodes\(\) must be a descendant$/,
+	       'Passing a sibling for from results in an exception'
+	);
+	
+	// Test 10
+	// TODO this should be after test 1
+	realLeaves = [];
+	expectedLeaves = [
+		root3.children[0],
+		root3.children[1].children[0].children[0].children[0],
+		root3.children[1].children[0].children[0].children[1].children[0].children[0]
+	];
+	root3.traverseLeafNodes( function( node ) {
+		realLeaves.push( node );
+		if ( node === root3.children[1].children[0].children[0].children[1].children[0].children[0] ) {
+			return false;
+		}
+	} );
+	ok(
+		es.compareArrays( realLeaves, expectedLeaves ),
+		'Returning false from the callback stops the traversal'
 	);
 } );
