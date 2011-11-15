@@ -175,7 +175,9 @@ test( 'es.TransactionProcessor', 18, function() {
 		'rollback keeps model tree up to date with removals'
 	);
 	
-	var paragraphBreak = documentModel.prepareInsertion( 2, [ { 'type': '/paragraph' }, { 'type': 'paragraph' } ] );
+	var paragraphBreak = documentModel.prepareInsertion(
+		2, [{ 'type': '/paragraph' }, { 'type': 'paragraph' }]
+	);
 	
 	// Test 13
 	es.TransactionProcessor.commit( documentModel, paragraphBreak );
@@ -192,7 +194,7 @@ test( 'es.TransactionProcessor', 18, function() {
 		],
 		'commit applies an insertion transaction that splits the paragraph'
 	);
-
+	
 	// Test 14
 	deepEqual(
 		documentModel.getChildren()[0].getContent(),
@@ -223,7 +225,7 @@ test( 'es.TransactionProcessor', 18, function() {
 		],
 		'rollback reverses the effect of a paragraph split on the content'
 	);
-
+	
 	// Test 17
 	deepEqual(
 		documentModel.getChildren()[0].getContent(),

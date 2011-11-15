@@ -42,7 +42,7 @@ es.DocumentBranchNode.prototype.getChildren = function() {
  * @returns {Integer} Index of child node or -1 if node was not found
  */
 es.DocumentBranchNode.prototype.indexOf = function( node ) {
-	return es.arrayIndexOf( this.children, node );
+	return es.inArray( node, this.children );
 };
 
 /**

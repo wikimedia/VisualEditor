@@ -51,11 +51,12 @@ es.isArray = $.isArray;
 /**
  * Wrapper for Array.prototype.indexOf
  * 
- * @param arr {Array} Array to search in
- * @param elem {Mixed} Element to search for
- * @return {Number} Index of elem in arr, or -1 if not found. Comparisons are done with ===
+ * @param {Mixed} value Element to search for
+ * @param {Array} array Array to search in
+ * @param {Integer} [fromIndex=0] Index to being searching from
+ * @return {Number} Index of value in array, or -1 if not found. Comparisons are done with ===
  */
-es.arrayIndexOf = $.inArray;
+es.inArray = $.inArray;
 
 /**
  * Recursively compares string and number property between two objects.
