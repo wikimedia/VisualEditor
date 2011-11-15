@@ -55,15 +55,7 @@ es.isArray = $.isArray;
  * @param elem {Mixed} Element to search for
  * @return {Number} Index of elem in arr, or -1 if not found. Comparisons are done with ===
  */
-es.arrayIndexOf = Array.prototype.indexOf ? function( arr, elem ) { return arr.indexOf( elem ); } : function( arr, elem ) {
-	var i;
-	for ( i = 0; i < arr.length; i++ ) {
-		if ( arr[i] === elem ) {
-			return i;
-		}
-	}
-	return -1;
-};
+es.arrayIndexOf = $.inArray;
 
 /**
  * Recursively compares string and number property between two objects.

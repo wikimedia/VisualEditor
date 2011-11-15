@@ -41,7 +41,7 @@ es.DocumentBranchNode.prototype.getChildren = function() {
  * @param {es.DocumentModelNode} node Child node to find index of
  * @returns {Integer} Index of child node or -1 if node was not found
  */
-es.DocumentModelBranchNode.prototype.indexOf = function( node ) {
+es.DocumentBranchNode.prototype.indexOf = function( node ) {
 	return es.arrayIndexOf( this.children, node );
 };
 
