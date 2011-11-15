@@ -35,6 +35,20 @@ es.DocumentBranchNode.prototype.getChildren = function() {
 };
 
 /**
+ * Traverse leaf nodes depth first.
+ * 
+ * Callback functions are expected to accept a node and index argument. If a callback returns false,
+ * iteration will stop.
+ * 
+ * @param {Function} callback Function to execute for each leaf node
+ * @param {es.DocumentNode} [from] Leaf node to start at
+ * @param {Boolean} [reverse] Whether to iterate backwards
+ */
+es.DocumentBranchNode.prototype.traverseLeafNodes = function( callback, from, reverse ) {
+	// TODO: Implement me!
+};
+
+/**
  * Gets the range within this node that a given child node covers.
  * 
  * @method
