@@ -81,6 +81,36 @@ es.compareObjects = function( a, b, asymmetrical ) {
 };
 
 /**
+ * Recursively compare two arrays.
+ * 
+ * @static
+ * @method
+ * @param {Array} a First array to compare
+ * @param {Array} b Second array to compare
+ * @param {Boolean} [compareObjects] If true, use es.compareObjects() to compare objects, otherwise use ===
+ */
+es.compareArrays = function( a, b, compareObjects ) {
+	var i, aValue, bValue, aType, bType;
+	if ( a.length !== b.length ) {
+		return false;
+	}
+	for ( i = 0; i < a.length; i++ ) {
+		aValue = a[i];
+		bValue = b[i];
+		aType = typeof aValue;
+		bType = typeof bValue;
+		if ( aType !== bType || !(
+			( es.isArray( aValue ) && es.isArray( bValue ) && es.compareArrays( aValue, bValue ) ) ||
+			( compareObjects && es.isPlainObject( aValue ) && es.compareObjects( aValue, bValue ) ) ||
+			aValue === bValue
+		) ) {
+			return false;
+		}
+	}
+	return true;
+};
+
+/**
  * Gets a deep copy of an array's string, number, array and plain-object contents.
  * 
  * @static
