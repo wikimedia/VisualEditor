@@ -113,7 +113,7 @@ es.DocumentBranchNode.prototype.traverseLeafNodes = function( callback, from, re
 				node = node.getParent();
 				index = indexStack.pop();
 				// Move to the next child
-				reverse ? index-- : index++;
+				index += reverse ? -1 : 1;
 				continue;
 			} else {
 				// We can't move up any more, so we're done
@@ -136,7 +136,7 @@ es.DocumentBranchNode.prototype.traverseLeafNodes = function( callback, from, re
 				return;
 			}
 			// Move to the next child
-			reverse ? index-- : index++;
+			index += reverse ? -1 : 1;
 		}
 	}
 };
