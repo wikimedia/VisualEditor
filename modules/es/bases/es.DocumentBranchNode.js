@@ -35,6 +35,17 @@ es.DocumentBranchNode.prototype.getChildren = function() {
 };
 
 /**
+ * Gets the index of a given child node.
+ * 
+ * @method
+ * @param {es.DocumentModelNode} node Child node to find index of
+ * @returns {Integer} Index of child node or -1 if node was not found
+ */
+es.DocumentModelBranchNode.prototype.indexOf = function( node ) {
+	return es.arrayIndexOf( this.children, node );
+};
+
+/**
  * Traverse leaf nodes depth first.
  * 
  * Callback functions are expected to accept a node and index argument. If a callback returns false,
@@ -70,7 +81,7 @@ es.DocumentBranchNode.prototype.traverseLeafNodes = function( callback, from, re
 				throw "from parameter passed to traverseLeafNodes() must be a descendant";
 			}
 			// Find the index of n in p
-			i = es.arrayIndexOf( p.getChildren(), n );
+			i = p.getChildren().indexOf( n );
 			if ( i === -1 ) {
 				// This isn't supposed to be possible
 				throw "Tree corruption detected: node isn't in its parent's children array";
