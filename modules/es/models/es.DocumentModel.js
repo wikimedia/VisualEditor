@@ -811,16 +811,16 @@ es.DocumentModel.prototype.prepareInsertion = function( offset, data ) {
  */
 es.DocumentModel.prototype.prepareRemoval = function( range ) {
 	var doc = this;
-	//debugger;
 
 	/**
 	 * Return true if can merge the remaining contents of the elements after a selection is deleted
 	 * across them. For instance, if a selection is painted across two paragraphs, and then the text
 	 * is deleted, the two paragraphs can become one paragraph. However, if the selection crosses
 	 * into a table, those cannot be merged.
+	 * 
 	 * @param {Number} integer offset
 	 * @param {Number} integer offset
-	 * @return {Boolean}
+	 * @returns {Boolean}
 	*/
 	function canMerge( range ) {
 		var node1 = doc.getNodeFromOffset( range.start );
@@ -847,22 +847,33 @@ es.DocumentModel.prototype.prepareRemoval = function( range ) {
 		);
 	}
 	
+	/**
+	 * Remove all data in a given range.
+	 * 
+	 * @param {es.Range} range Range of data to delete
+	 * @param {es.Transaction} tx Transaction to push to
+	 */
 	function mergeDelete( range, tx ) {	
-		// yay, content can be removed in one fell swoop
 		var removed = doc.data.slice( range.start, range.end );
 		tx.pushRemove( removed );
 	}
 
-	// remove string content only, retain structure
+	/**
+	 * Remove content data only, retaining structure
+	 * 
+	 * TODO: Nodes that are completely covered should be dropped, not stripped
+	 * 
+	 * @param {es.Range} range Range of data to delete
+	 * @param {es.Transaction} tx Transaction to push to
+	 */
 	function stripDelete( range, tx ) { 
-		var lastOperation, operationStart;
-
-		var ops = [],
-			op;
-		//debugger;
-
-		// get a list of operations, with 0-based indexes
-		for (var i = range.start; i < range.end; i++ ) {
+		var lastOperation, operationStart,
+			ops = [],
+			op,
+			i,
+			length;
+		// Get a list of operations, with 0-based indexes
+		for (i = range.start; i < range.end; i++ ) {
 			var neededOp = doc.data[i].type === undefined ? 'remove' : 'retain';
 			op = ops[ ops.length - 1 ];
 			if ( op === undefined || op.type !== neededOp ) {
@@ -870,27 +881,23 @@ es.DocumentModel.prototype.prepareRemoval = function( range ) {
 			} else {
 				op.end = i;
 			}
-		}					
-
-		//debugger;
-		// insert operations as transactions (end must be adjusted)
-		for (var j = 0; j < ops.length; j++ ) {
-			op = ops[j];
+		}
+		// Insert operations as transactions (end must be adjusted)
+		for (i = 0, length = ops.length; i < length; i++ ) {
+			op = ops[i];
 			if ( op.type === 'retain' ) {
-				// we add one because retain(3,3) really means retain 1 char at pos 3
+				// We add one because retain(3,3) really means retain 1 char at pos 3
 				tx.pushRetain( op.end - op.start + 1 );
 			} else if ( op.type === 'remove' ) {
-				// we add one because to remove(3,5) we need to slice(3,6), the ending is last
+				// We add one because to remove(3,5) we need to slice(3,6), the ending is last
 				// subscript removed + 1.
 				tx.pushRemove( doc.data.slice( op.start, op.end + 1 ) );
 			} else {
-				console.log( "this is impossible" );
+				throw 'Impossible code path reached.';
 			}
 		}
-
 	}
 
-	
 	var tx = new es.Transaction();
 	range.normalize();
 	
@@ -898,9 +905,8 @@ es.DocumentModel.prototype.prepareRemoval = function( range ) {
 	if ( range.start > 0 ) {
 		tx.pushRetain( range.start );
 	}
-
 	
-	// choose a deletion strategy; merging nodes together, or stripping content from existing
+	// Choose a deletion strategy; merging nodes together, or stripping content from existing
 	// structure.
 	if ( canMerge( range ) ) {
 		mergeDelete( range, tx );
@@ -908,10 +914,11 @@ es.DocumentModel.prototype.prepareRemoval = function( range ) {
 		stripDelete( range, tx );
 	}
 
-	// Retain up to the end of the document. Why do we do this?
+	// Retain up to the end of the document. Why do we do this? Because Trevor said so!
 	if ( range.end < doc.data.length ) {
 		tx.pushRetain( doc.data.length - range.end );
 	}
+
 	tx.optimize();
 	return tx;
 };

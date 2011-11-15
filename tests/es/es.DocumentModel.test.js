@@ -301,7 +301,7 @@ test( 'es.DocumentModel.prepareContentAnnotation', 1, function() {
 	);
 } );
 
-test( 'es.DocumentModel.prepareRemoval', 4, function() {
+test( 'es.DocumentModel.prepareRemoval', 5, function() {
 	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
 
 	// Test 1
