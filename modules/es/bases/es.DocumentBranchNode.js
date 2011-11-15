@@ -45,21 +45,69 @@ es.DocumentBranchNode.prototype.getChildren = function() {
  * @param {Boolean} [reverse] Whether to iterate backwards
  */
 es.DocumentBranchNode.prototype.traverseLeafNodes = function( callback, from, reverse ) {
-	// TODO: Implement from and reverse
-	// TODO: We'll need an iterative rather than recursive implementation for from, probably
-	var i, childNode, callbackResult;
-	for ( i = reverse ? this.children.length - 1 : 0; reverse ? i >= 0 : i < this.children.length; reverse ? i-- : i++ ) {
-		childNode = this.children[i];
+	var indexStack = [], index = 0, node = this, childNode, callbackResult, n, p, i;
+	
+	if ( from !== undefined ) {
+		// Reverse-engineer the index stack by starting at from and
+		// working our way up until we reach this
+		n = from;
+		while ( n !== this ) {
+			p = n.getParent();
+			if ( !p ) {
+				// n is a root node and we haven't reached this
+				// That means from isn't a descendant of this
+				throw "from parameter passed to traverseLeafNodes() must be a descendant";
+			}
+			// Find the index of n in p
+			i = es.arrayIndexOf( p.getChildren(), n );
+			if ( i === -1 ) {
+				// This isn't supposed to be possible
+				throw "Tree corruption detected: node isn't in its parent's children array";
+			}
+			indexStack.push( i );
+			// Move up
+			n = p;
+		}
+		// We've built the indexStack in reverse order, so reverse it
+		indexStack = indexStack.reverse();
+		
+		// Set up the variables such that from will be visited next
+		index = indexStack.pop();
+		node = from.getParent(); // from is a descendant of this so its parent exists
+	}
+	
+	while ( true ) {
+		childNode = node.children[index];
+		if ( childNode === undefined ) {
+			if ( indexStack.length > 0 ) {
+				// We're done traversing the current node, move back out of it
+				node = node.getParent();
+				index = indexStack.pop();
+				// Move to the next child
+				index++;
+				continue;
+			} else {
+				// We can't move up any more, so we're done
+				return;
+			}
+		}
+		
 		if ( childNode.hasChildren() ) {
-			// Recurse
-			childNode.traverseLeafNodes( callback, from, reverse );
+			// Descend into this node
+			node = childNode;
+			// Push our current index onto the stack
+			indexStack.push( index );
+			// Set the current index to zero
+			index = 0;
 		} else {
-			// It's a leaf node
-			callbackResult = callback( childNode /*, TODO what is index? */ );
+			// This is a leaf node, visit it
+			callbackResult = callback( childNode ); // TODO what is index?
 			if ( callbackResult === false ) {
 				// The callback is telling us to stop
 				return;
 			}
+			// Move to the next child
+			index++;
 		}
 	}
 };
