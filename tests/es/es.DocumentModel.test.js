@@ -374,6 +374,41 @@ test( 'es.DocumentModel.prepareRemoval', 4, function() {
 		],
 		'prepareRemoval works across structural nodes'
 	);
+
+	// Test 4
+	deepEqual(
+		documentModel.prepareRemoval( new es.Range( 3, 24 ) ).getOperations(),
+		[
+			{ 'type': 'retain', 'length': 3 },
+			{
+				'type': 'remove',
+				'data': ['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }]
+			},
+			{ 'type': 'retain', 'length': 4 },
+			{
+				'type': 'remove',
+				'data': [{ 'type': 'paragraph' }, 'd', { 'type': '/paragraph' }]
+			},
+			{ 'type': 'retain', 'length': 1 },
+			{
+				'type': 'remove',
+				'data': [
+					{ 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } },
+					{ 'type': 'paragraph' },
+					'e',
+					{ 'type': '/paragraph' },
+					{ 'type': '/listItem' },
+					{ 'type': 'listItem', 'attributes': { 'styles': ['bullet', 'bullet'] } },
+					{ 'type': 'paragraph' },
+					'f',
+					{ 'type': '/paragraph' },
+					{ 'type': '/listItem' }
+				]
+			},
+			{ 'type': 'retain', 'length': 13 }
+		],
+		'prepareRemoval strips and drops correctly when working accross structural nodes'
+	);
 } );
 
 test( 'es.DocumentModel.prepareInsertion', 11, function() {
