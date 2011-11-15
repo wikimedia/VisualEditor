@@ -41,11 +41,27 @@ es.DocumentBranchNode.prototype.getChildren = function() {
  * iteration will stop.
  * 
  * @param {Function} callback Function to execute for each leaf node
- * @param {es.DocumentNode} [from] Leaf node to start at
+ * @param {es.DocumentNode} [from] Node to start at. Must be a descendant of this node
  * @param {Boolean} [reverse] Whether to iterate backwards
  */
 es.DocumentBranchNode.prototype.traverseLeafNodes = function( callback, from, reverse ) {
-	// TODO: Implement me!
+	// TODO: Implement from and reverse
+	// TODO: We'll need an iterative rather than recursive implementation for from, probably
+	var i, childNode, callbackResult;
+	for ( i = reverse ? this.children.length - 1 : 0; reverse ? i >= 0 : i < this.children.length; reverse ? i-- : i++ ) {
+		childNode = this.children[i];
+		if ( childNode.hasChildren() ) {
+			// Recurse
+			childNode.traverseLeafNodes( callback, from, reverse );
+		} else {
+			// It's a leaf node
+			callbackResult = callback( childNode /*, TODO what is index? */ );
+			if ( callbackResult === false ) {
+				// The callback is telling us to stop
+				return;
+			}
+		}
+	}
 };
 
 /**

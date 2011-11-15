@@ -938,3 +938,81 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 		}
 	}
 } );
+
+test( 'es.DocumentBranchNode.traverseLeafNodes', 6, function() {
+	var root3 = es.DocumentModel.newFromPlainObject( esTest.obj );
+	
+	// Test 1
+	var realLeaves = [], expectedLeaves = [
+		root3.children[0],
+		root3.children[1].children[0].children[0].children[0],
+		root3.children[1].children[0].children[0].children[1].children[0].children[0],
+		root3.children[1].children[0].children[0].children[1].children[1].children[0],
+		root3.children[1].children[0].children[0].children[1].children[2].children[0],
+		root3.children[2]
+	];
+	root3.traverseLeafNodes( function( node ) { realLeaves.push( node ); } );
+	ok(
+		es.compareArrays( realLeaves, expectedLeaves ),
+		'Traversing the entire document returns all leaf nodes'
+	);
+	// Test 2
+	realLeaves = [];
+	expectedLeaves = expectedLeaves.reverse();
+	root3.traverseLeafNodes( function( node ) { realLeaves.push( node ) }, undefined, true );
+	ok(
+		es.compareArrays( realLeaves, expectedLeaves ),
+		'Traversing the entire document returns all leaf nodes (in reverse)'
+	);
+	
+	// Test 3
+	realLeaves = [];
+	expectedLeaves = [
+		root3.children[1].children[0].children[0].children[1].children[1].children[0],
+		root3.children[1].children[0].children[0].children[1].children[2].children[0],
+		root3.children[2]
+	];
+	root3.traverseLeafNodes( function( node ) { realLeaves.push( node ); }, root3.children[1].children[0].children[0].children[1].children[1].children[0] );
+	ok(
+		es.compareArrays( realLeaves, expectedLeaves ),
+		'Starting at a leaf node returns that leaf node and everything after it'
+	);
+	// Test 4
+	realLeaves = [];
+	expectedLeaves = [
+		root3.children[0],
+		root3.children[1].children[0].children[0].children[0],
+		root3.children[1].children[0].children[0].children[1].children[0].children[0],
+		root3.children[1].children[0].children[0].children[1].children[1].children[0],
+	].reverse();
+	root3.traverseLeafNodes( function( node ) { realLeaves.push( node ); }, root3.children[1].children[0].children[0].children[1].children[1].children[0], true );
+	ok(
+		es.compareArrays( realLeaves, expectedLeaves ),
+		'Starting at a leaf node returns that leaf node and everything before it (in reverse)'
+	);
+
+	// Test 5
+	realLeaves = [];
+	expectedLeaves = [
+		root3.children[1].children[0].children[0].children[0],
+		root3.children[1].children[0].children[0].children[1].children[0].children[0],
+		root3.children[1].children[0].children[0].children[1].children[1].children[0],
+		root3.children[1].children[0].children[0].children[1].children[2].children[0],
+		root3.children[2]
+	];
+	root3.traverseLeafNodes( function( node ) { realLeaves.push( node ); }, root3.children[1] );
+	ok(
+		es.compareArrays( realLeaves, expectedLeaves ),
+		'Starting at a non-leaf node returns all leaf nodes inside and after it'
+	);
+	// Test 6
+	realLeaves = [];
+	expectedLeaves = [
+		root3.children[0]
+	];
+	root3.traverseLeafNodes( function( node ) { realLeaves.push( node ); }, root3.children[1], true );
+	ok(
+		es.compareArrays( realLeaves, expectedLeaves ),
+		'Starting at a non-leaf node returns all leaf nodes before it and none inside (in reverse)'
+	);
+} );
