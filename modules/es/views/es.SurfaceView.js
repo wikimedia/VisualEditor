@@ -143,7 +143,7 @@ es.SurfaceView.prototype.onMouseDown = function( e ) {
 	if ( e.button === 0 ) { // left mouse button
 
 		var offset = this.documentView.getOffsetFromEvent( e );
-		
+
 		console.log('onMouseDown; offset: ' + offset);
 
 		if ( e.originalEvent.detail === 1 ) { // single click
@@ -355,6 +355,40 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 				this.showCursor();
 			}
 
+			break;
+		case 13: // Enter
+			if ( this.selection.from === this.selection.to ) {
+				var	node = this.documentView.getNodeFromOffset( this.selection.to, false ).model,
+					nodeType,
+					stack = [];
+
+				while ( node ) {
+					nodeType = node.getElementType();
+					stack.push(nodeType);
+					node = node.getParent();
+
+					if ( es.DocumentView.splitRules[ nodeType ].self === true ) {
+						nodeType = node.getElementType();
+						if ( es.DocumentView.splitRules[ nodeType ].children === true) {
+							break;
+						}
+					}
+				}
+				
+				var temp = [];
+				for ( var i = 0; i < stack.length; i++ ) {
+					temp.push( { 'type' : '/' + stack[i] } );
+				}
+				for ( var i = stack.length - 1; i >= 0; i-- ) {
+					temp.push( { 'type' : stack[i] } );
+				}
+
+				var tx = this.documentView.model.prepareInsertion( this.selection.to, temp );
+				this.documentView.model.commit( tx );
+				
+				//this.selection.from = this.selection.to = this.documentView.getModel().getRelativeContentOffset( this.selection.to+1, 1 );
+				//this.showCursor();
+			}
 			break;
 		default: // Insert content (maybe)
 			if ( this.keyboard.keydownTimeout ) {
