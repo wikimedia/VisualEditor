@@ -366,7 +366,7 @@ es.DocumentModel.getExpandedContentData = function( data ) {
 		end( i - offset );
 	}
 	if ( stack.length ) {
-		obj.annotation = stack;
+		obj.annotations = stack;
 	}
 	// Copy attributes if there are any set
 	if ( !es.isEmptyObject( this.attributes ) ) {
