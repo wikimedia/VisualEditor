@@ -219,7 +219,7 @@ es.TransactionProcessor.prototype.remove = function( op ) {
 		var oldNodes = [], newData = [], firstKeptNode = true, lastElement;
 		for ( var i = 0; i < ranges.length; i++ ) {
 			oldNodes.push( ranges[i].node );
-			if ( ranges[i].globalRange !== undefined ) {
+			if ( ranges[i].range !== undefined ) {
 				// We have to keep part of this node
 				if ( firstKeptNode ) {
 					// This is the first node we're keeping
