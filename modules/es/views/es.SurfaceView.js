@@ -345,6 +345,16 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 
 			break;
 		case 46: // Delete
+			this.selection.normalize();
+
+			if ( this.selection.from != this.selection.to ) { // delete selection
+				var tx = this.documentView.model.prepareRemoval( this.selection );
+				this.documentView.model.commit ( tx );
+				this.documentView.clearSelection();
+				this.selection.from = this.selection.to = this.selection.start;
+				this.showCursor();
+			}
+
 			break;
 		default: // Insert content (maybe)
 			if ( this.keyboard.keydownTimeout ) {
