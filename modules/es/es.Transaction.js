@@ -39,7 +39,7 @@ es.Transaction.prototype.optimize = function() {
 					break;
 				case 'insert':
 				case 'remove':
-					a.content = a.content.concat( b.content );
+					a.data = a.data.concat( b.data );
 					this.operations.splice( i + 1, 1 );
 					i--;
 					break;
