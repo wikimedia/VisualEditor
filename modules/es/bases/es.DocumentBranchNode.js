@@ -263,7 +263,8 @@ es.DocumentBranchNode.prototype.getNodeFromOffset = function( offset, shallow ) 
  * @param {es.Range} range Range to select nodes within
  * @param {Boolean} [shallow] Do not recurse into child nodes of child nodes
  * @returns {Array} List of objects with 'node', 'range' and 'globalRange' properties describing nodes which are
- * covered by the range and the range within the node that is covered
+ * covered by the range and the range within the node that is covered. If an entire node is covered, 'range' is
+ * absent but 'globalRange' is still set
  */
 es.DocumentBranchNode.prototype.selectNodes = function( range, shallow ) {
 	if ( typeof range === 'undefined' ) {
@@ -360,19 +361,19 @@ es.DocumentBranchNode.prototype.selectNodes = function( range, shallow ) {
 			// end is between childNode and this.children[i+1]
 			// start is not inside childNode, so the selection covers
 			// all of childNode, then ends
-			nodes.push( { 'node': childNode } );
+			nodes.push( { 'node': childNode, 'globalRange': new es.Range( left - 1, right + 1 ) } );
 			// We've reached the end so we're done
 			return nodes;
 		} else if ( start == left - 1 ) {
 			// start is between this.children[i-1] and childNode
 			// end is not inside childNode, so the selection covers
 			// all of childNode and more
-			nodes.push( { 'node': childNode } );
+			nodes.push( { 'node': childNode, 'globalRange': new es.Range( left - 1, right + 1 ) } );
 		} else if ( nodes.length > 0 ) {
 			// Neither the start nor the end is inside childNode, but nodes is non-empty,
 			// so childNode must be between the start and the end
 			// Add the entire node, so no range property
-			nodes.push( { 'node': childNode } );
+			nodes.push( { 'node': childNode, 'globalRange': new es.Range( left - 1, right + 1 ) } );
 		}
 		
 		// Move left to the start of this.children[i+1] for the next iteration
