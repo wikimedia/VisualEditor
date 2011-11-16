@@ -16,6 +16,7 @@ es.SurfaceView = function( $container, model ) {
 	this.model = model;
 	this.selection = new es.Range();
 	this.previousSelection = null;
+	this.mac = navigator.userAgent.match(/mac/i) ? true : false;
 
 	this.model.getDocument().on( 'update', function() {
 		_this.emit( 'update' );
@@ -65,9 +66,9 @@ es.SurfaceView = function( $container, model ) {
 		keydownTimeout: null,
 		keys: {
 			shift: false,
-			control: false,
-			command: false,
-			alt: false
+			//control: false,
+			//command: false,
+			//alt: false
 		}
 	};
 
@@ -251,15 +252,15 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 			this.keyboard.selecting = true;
 			break;
 		case 17: // Control
-			this.keyboard.keys.control = true;
+			//this.keyboard.keys.control = true;
 			break;
 		case 18: // Alt
-			this.keyboard.keys.alt = true;
+			//this.keyboard.keys.alt = true;
 			break;
 		case 91: // Left Command in WebKit
 		case 93: // Right Command in WebKit
 		case 224: // Command in FireFox
-			this.keyboard.keys.command = true;
+			//this.keyboard.keys.command = true;
 			break;
 		case 36: // Home
 			this.moveCursor( 'left', 'line' );
@@ -268,36 +269,67 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 			this.moveCursor( 'right', 'line' );
 			break;
 		case 37: // Left arrow
-			if ( this.keyboard.keys.command ) {
-				this.moveCursor( 'left', 'line' );
-			} else if ( this.keyboard.keys.control || this.keyboard.keys.alt ) {
-				this.moveCursor( 'left', 'word' );
+			if ( !this.mac ) {
+				if ( e.ctrlKey ) {
+					this.moveCursor( 'left', 'word' );
+				} else {
+					this.moveCursor( 'left', 'char' );
+				}
 			} else {
-				this.moveCursor( 'left', 'char' );
+				if ( e.metaKey || e.ctrlKey ) {
+					this.moveCursor( 'left', 'line' );
+				} else  if ( e.altKey ) {
+					this.moveCursor( 'left', 'word' );
+				} else {
+					this.moveCursor( 'left', 'char' );
+				}
 			}
 			break;
 		case 38: // Up arrow
-			if ( this.keyboard.keys.control || this.keyboard.keys.alt ) {
-				this.moveCursor( 'up', 'unit' );
+			if ( !this.mac ) {
+				if ( e.ctrlKey ) {
+					this.moveCursor( 'up', 'unit' );
+				} else {
+					this.moveCursor( 'up', 'char' );
+				}
 			} else {
-				this.moveCursor( 'up', 'char' );
+				if ( e.altKey ) {
+					this.moveCursor( 'up', 'unit' );
+				} else {
+					this.moveCursor( 'up', 'char' );
+				}
 			}
-
 			break;
 		case 39: // Right arrow
-			if ( this.keyboard.keys.command ) {
-				this.moveCursor( 'right', 'line' );
-			} else if ( this.keyboard.keys.control || this.keyboard.keys.alt ) {
-				this.moveCursor( 'right', 'word' );
+			if ( !this.mac ) {
+				if ( e.ctrlKey ) {
+					this.moveCursor( 'right', 'word' );
+				} else {
+					this.moveCursor( 'right', 'char' );
+				}
 			} else {
-				this.moveCursor( 'right', 'char' );
+				if ( e.metaKey || e.ctrlKey ) {
+					this.moveCursor( 'right', 'line' );
+				} else  if ( e.altKey ) {
+					this.moveCursor( 'right', 'word' );
+				} else {
+					this.moveCursor( 'right', 'char' );
+				}
 			}
 			break;
 		case 40: // Down arrow
-			if ( this.keyboard.keys.control || this.keyboard.keys.alt ) {
-				this.moveCursor( 'down', 'unit' );
+			if ( !this.mac ) {
+				if ( e.ctrlKey ) {
+					this.moveCursor( 'down', 'unit' );
+				} else {
+					this.moveCursor( 'down', 'char' );
+				}
 			} else {
-				this.moveCursor( 'down', 'char' );
+				if ( e.altKey ) {
+					this.moveCursor( 'down', 'unit' );
+				} else {
+					this.moveCursor( 'down', 'char' );
+				}
 			}
 			break;
 		case 8: // Backspace
@@ -347,15 +379,15 @@ es.SurfaceView.prototype.onKeyUp = function( e ) {
 			}
 			break;
 		case 17: // Control
-			this.keyboard.keys.control = false;
+			//this.keyboard.keys.control = false;
 			break;
 		case 18: // Alt
-			this.keyboard.keys.alt = false;
+			//this.keyboard.keys.alt = false;
 			break;
 		case 91: // Left Command in WebKit
 		case 93: // Right Command in WebKit
 		case 224: // Command in FireFox
-			this.keyboard.keys.command = false;
+			//this.keyboard.keys.command = false;
 			break;
 		default:
 			break;
