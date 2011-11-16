@@ -81,7 +81,7 @@ es.DocumentBranchNode.prototype.traverseLeafNodes = function( callback, from, re
 				throw "from parameter passed to traverseLeafNodes() must be a descendant";
 			}
 			// Find the index of n in p
-			i = p.getChildren().indexOf( n );
+			i = p.indexOf( n );
 			if ( i === -1 ) {
 				// This isn't supposed to be possible
 				throw "Tree corruption detected: node isn't in its parent's children array";
