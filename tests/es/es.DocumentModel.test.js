@@ -301,7 +301,7 @@ test( 'es.DocumentModel.prepareContentAnnotation', 1, function() {
 	);
 } );
 
-test( 'es.DocumentModel.prepareRemoval', 5, function() {
+test( 'es.DocumentModel.prepareRemoval', 8, function() {
 	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
 
 	// Test 1
@@ -408,6 +408,106 @@ test( 'es.DocumentModel.prepareRemoval', 5, function() {
 			{ 'type': 'retain', 'length': 12 }
 		],
 		'prepareRemoval strips and drops correctly when working across structural nodes'
+	);
+	
+	// Test 6
+	deepEqual(
+		documentModel.prepareRemoval( new es.Range( 3, 25 ) ).getOperations(),
+		[
+			{ 'type': 'retain', 'length': 3 },
+			{
+				'type': 'remove',
+				'data': [['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }]]
+			},
+			{ 'type': 'retain', 'length': 4 },
+			{
+				'type': 'remove',
+				'data': [{ 'type': 'paragraph' }, 'd', { 'type': '/paragraph' }]
+			},
+			{ 'type': 'retain', 'length': 1 },
+			{
+				'type': 'remove',
+				'data': [
+					{ 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } },
+					{ 'type': 'paragraph' },
+					'e',
+					{ 'type': '/paragraph' },
+					{ 'type': '/listItem' },
+					{ 'type': 'listItem', 'attributes': { 'styles': ['bullet', 'bullet'] } },
+					{ 'type': 'paragraph' },
+					'f',
+					{ 'type': '/paragraph' },
+					{ 'type': '/listItem' }
+				]
+			},
+			{ 'type': 'retain', 'length': 2 },
+			{
+				'type': 'remove',
+				'data': [ 'g' ]
+			},
+			{ 'type': 'retain', 'length': 9 }
+		],
+		'prepareRemoval strips and drops correctly when working across structural nodes (2)'
+	);
+	
+	// Test 7
+	deepEqual(
+		documentModel.prepareRemoval( new es.Range( 9, 17 ) ).getOperations(),
+		[
+			{ 'type': 'retain', 'length': 9 },
+			{
+				'type': 'remove',
+				'data': [ 'd' ]
+			},
+			{ 'type': 'retain', 'length': 2 },
+			{
+				'type': 'remove',
+				'data': [
+					{ 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } },
+					{ 'type': 'paragraph' },
+					'e',
+					{ 'type': '/paragraph' },
+					{ 'type': '/listItem' }
+				]
+			},
+			{ 'type': 'retain', 'length': 17 }
+		],
+		'prepareRemoval will not merge items of unequal types'
+	);
+	
+	// Test 8
+	deepEqual(
+		documentModel.prepareRemoval( new es.Range( 9, 27 ) ).getOperations(),
+		[
+			{ 'type': 'retain', 'length': 9 },
+			{
+				'type': 'remove',
+				'data': [ 'd' ]
+			},
+			{ 'type': 'retain', 'length': 2 },
+			{
+				'type': 'remove',
+				'data': [
+					{ 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } },
+					{ 'type': 'paragraph' },
+					'e',
+					{ 'type': '/paragraph' },
+					{ 'type': '/listItem' },
+					{ 'type': 'listItem', 'attributes': { 'styles': ['bullet', 'bullet'] } },
+					{ 'type': 'paragraph' },
+					'f',
+					{ 'type': '/paragraph' },
+					{ 'type': '/listItem' },
+					{ 'type': 'listItem', 'attributes': { 'styles': ['number'] } },
+					{ 'type': 'paragraph' },
+					'g',
+					{ 'type': '/paragraph' },
+					{ 'type': '/listItem' }
+				]
+			},
+			{ 'type': 'retain', 'length': 7 }
+		],
+		'prepareRemoval blanks a paragraph and a list'
 	);
 } );
 
