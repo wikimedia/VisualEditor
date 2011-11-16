@@ -17,6 +17,9 @@ es.DocumentViewLeafNode = function( model, $element ) {
 	// Properties
 	this.$content = $( '<div class="es-contentView"></div>' ).appendTo( this.$ );
 	this.contentView = new es.ContentView( this.$content, model );
+
+	// Events
+	this.contentView.on( 'update', this.emitUpdate );
 };
 
 /* Methods */
