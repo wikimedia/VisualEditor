@@ -364,9 +364,13 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 
 				while ( node ) {
 					nodeType = node.getElementType();
-					stack.push(nodeType);
+					stack.splice(
+						stack.length / 2,
+						0,
+						{ 'type': '/' + nodeType },
+						{ 'type': nodeType, 'attributes': es.copyObject( node.element.attributes ) }
+					);
 					node = node.getParent();
-
 					if ( es.DocumentView.splitRules[ nodeType ].self === true ) {
 						nodeType = node.getElementType();
 						if ( es.DocumentView.splitRules[ nodeType ].children === true) {
@@ -374,16 +378,8 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 						}
 					}
 				}
-				
-				var temp = [];
-				for ( var i = 0; i < stack.length; i++ ) {
-					temp.push( { 'type' : '/' + stack[i] } );
-				}
-				for ( var i = stack.length - 1; i >= 0; i-- ) {
-					temp.push( { 'type' : stack[i] } );
-				}
 
-				var tx = this.documentView.model.prepareInsertion( this.selection.to, temp );
+				var tx = this.documentView.model.prepareInsertion( this.selection.to, stack );
 				this.documentView.model.commit( tx );
 				
 				this.selection.from = this.selection.to = this.documentView.getModel().getRelativeContentOffset( this.selection.to, 1 );
