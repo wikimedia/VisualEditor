@@ -257,6 +257,26 @@ es.DocumentBranchNode.prototype.getNodeFromOffset = function( offset, shallow ) 
 };
 
 /**
+ * Gets the index of a child node from a given offset.
+ * 
+ * @method
+ * @param {Integer} offset Offset to find index of
+ * @returns {Integer} Index of child node at offset or -1 if offset was out of range
+ */
+es.DocumentBranchNode.prototype.getIndexFromOffset = function( offset ) {
+	var left = 0,
+		elementLength;
+	for ( var i = 0; i < this.children.length; i++ ) {
+		elementLength = this.children[i].getElementLength();
+		if ( offset >= left && offset < left + elementLength ) {
+			return i;
+		}
+		left += elementLength;
+	}
+	return -1;
+};
+
+/**
  * Gets a list of nodes and their sub-ranges which are covered by a given range.
  * 
  * @method

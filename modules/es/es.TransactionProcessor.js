@@ -101,6 +101,10 @@ es.TransactionProcessor.prototype.rebuildNodes = function( newData, oldNodes ) {
 		// Remove the node we are about to insert into from the model tree
 		parent.splice( index, oldNodes.length );
 	}
+	this.buildNodes( newData, parent, index );
+};
+
+es.TransactionProcessor.prototype.buildNodes = function( newData, parent, index ) {
 	// Regenerate nodes for the data we've affected
 	var newNodes = es.DocumentModel.createNodesFromData( newData );
 	// Insert new elements into the tree where the old ones used to be
@@ -177,7 +181,12 @@ es.TransactionProcessor.prototype.retain = function( op ) {
 
 es.TransactionProcessor.prototype.insert = function( op ) {
 	if ( es.DocumentModel.isStructuralOffset( this.model.data, this.cursor ) ) {
-		// TODO: Support tree updates when inserting between elements
+		es.insertIntoArray( this.model.data, this.cursor, op.data );
+		this.applyAnnotations( this.cursor + op.data.length );
+		var parent = this.model.getNodeFromOffset( this.cursor ),
+			index = parent.getIndexFromOffset( this.cursor );
+		console.log( parent, index );
+		this.buildNodes( op.data, parent, index );
 	} else {
 		// Get the node we are about to insert into at the lowest depth possible
 		var node = this.getScope( this.model.getNodeFromOffset( this.cursor ), op.data );
