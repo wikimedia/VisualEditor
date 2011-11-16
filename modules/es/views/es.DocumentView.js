@@ -61,6 +61,11 @@ es.DocumentView.prototype.getOffsetFromEvent = function( e ) {
 	return this.getOffsetFromRenderedPosition( position );
 };
 
+es.DocumentView.splitRules.document = {
+	'self': false,
+	'children': true
+};
+
 /* Inheritance */
 
 es.extendClass( es.DocumentView, es.DocumentViewBranchNode );
