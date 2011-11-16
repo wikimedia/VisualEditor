@@ -28,7 +28,7 @@ es.TableRowModel.prototype.createView = function() {
 
 es.DocumentModel.nodeModels.tableRow = es.TableRowModel;
 
-es.DocumentModel.nodeRules.listItem = {
+es.DocumentModel.nodeRules.tableRow = {
 	'parents': ['table'],
 	'children': ['tableCell'],
 	'droppable': true
