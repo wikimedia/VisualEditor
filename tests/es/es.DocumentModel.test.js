@@ -19,8 +19,8 @@ test( 'es.DocumentModel.getChildren', 1, function() {
 				console.log( 'mismatched content lengths', a[i], b[i] );
 				return false;
 			}
-			aIsBranch = typeof a[i].getChildren === 'function';
-			bIsBranch = typeof b[i].getChildren === 'function';
+			var aIsBranch = typeof a[i].getChildren === 'function';
+			var bIsBranch = typeof b[i].getChildren === 'function';
 			if ( aIsBranch !== bIsBranch ) {
 				return false;
 			}

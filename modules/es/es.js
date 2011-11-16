@@ -131,8 +131,8 @@ es.compareArrays = function( a, b, compareObjects ) {
 es.copyArray = function( source ) {
 	var destination = [];
 	for ( var i = 0; i < source.length; i++ ) {
-		sourceValue = source[i];
-		sourceType = typeof sourceValue;
+		var sourceValue = source[i],
+			sourceType = typeof sourceValue;
 		if ( sourceType === 'string' || sourceType === 'number' ) {
 			destination.push( sourceValue );
 		} else if ( es.isPlainObject( sourceValue ) ) {
@@ -155,8 +155,8 @@ es.copyArray = function( source ) {
 es.copyObject = function( source ) {
 	var destination = {};
 	for ( var key in source ) {
-		sourceValue = source[key];
-		sourceType = typeof sourceValue;
+		var sourceValue = source[key],
+			sourceType = typeof sourceValue;
 		if ( sourceType === 'string' || sourceType === 'number' ) {
 			destination[key] = sourceValue;
 		} else if ( es.isPlainObject( sourceValue ) ) {
