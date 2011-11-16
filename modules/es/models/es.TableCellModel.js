@@ -30,8 +30,7 @@ es.DocumentModel.nodeModels.tableCell = es.TableCellModel;
 
 es.DocumentModel.nodeRules.tableCell = {
 	'parents': ['tableRow'],
-	'children': null,
-	'droppable': false
+	'children': null
 };
 
 /* Inheritance */

@@ -30,8 +30,7 @@ es.DocumentModel.nodeModels.pre = es.PreModel;
 
 es.DocumentModel.nodeRules.pre = {
 	'parents': null,
-	'children': [],
-	'droppable': true
+	'children': []
 };
 
 /* Inheritance */

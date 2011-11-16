@@ -30,8 +30,7 @@ es.DocumentModel.nodeModels.heading = es.HeadingModel;
 
 es.DocumentModel.nodeRules.heading = {
 	'parents': null,
-	'children': [],
-	'droppable': true
+	'children': []
 };
 
 /* Inheritance */

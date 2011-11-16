@@ -30,8 +30,7 @@ es.DocumentModel.nodeModels.listItem = es.ListItemModel;
 
 es.DocumentModel.nodeRules.listItem = {
 	'parents': ['list'],
-	'children': null,
-	'droppable': true
+	'children': null
 };
 
 /* Inheritance */

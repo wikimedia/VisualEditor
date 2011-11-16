@@ -30,8 +30,7 @@ es.DocumentModel.nodeModels.paragraph = es.ParagraphModel;
 
 es.DocumentModel.nodeRules.paragraph = {
 	'parents': null,
-	'children': [],
-	'droppable': true
+	'children': []
 };
 
 /* Inheritance */

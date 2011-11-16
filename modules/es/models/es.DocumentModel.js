@@ -40,32 +40,26 @@ es.DocumentModel.nodeModels = {};
  *     parents and children properties may contain one of two possible values:
  *         {Array} List symbolic names of allowed element types (if empty, none will be allowed)
  *         {Null} Any element type is allowed (as long as the other element also allows it)
- *     droppable:
- *         {Boolean} Whether the node can be dropped from it's parent (false for table cells)
  * 
  * @example Paragraph rules
  *     {
  *         'parents': null,
- *         'children': [],
- *         'droppable': true
+ *         'children': []
  *     }
  * @example List rules
  *     {
  *         'parents': null,
- *         'children': ['listItem'],
- *         'droppable': true
+ *         'children': ['listItem']
  *     }
  * @example ListItem rules
  *     {
  *         'parents': ['list'],
- *         'children': null,
- *         'droppable': true
+ *         'children': null
  *     }
  * @example TableCell rules
  *     {
  *         'parents': ['tableRow'],
- *         'children': null,
- *         'droppable': false
+ *         'children': null
  *     }
  */
 es.DocumentModel.nodeRules = {};
@@ -848,7 +842,7 @@ es.DocumentModel.prototype.prepareRemoval = function( range ) {
 					// Handle selected nodes
 					if ( !selectedNode.range ) {
 						// Drop whole nodes
-						if ( rules[selectedNode.node.getElementType()].droppable ) {
+						if ( /*rules[selectedNode.node.getElementType()].droppable*/ true ) {
 							tx.pushRemove( doc.data.slice( left, right ) );
 						} else {
 							tx.pushRetain( 1 );
