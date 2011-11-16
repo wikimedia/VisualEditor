@@ -375,15 +375,14 @@ test( 'es.DocumentModel.prepareRemoval', 5, function() {
 		'prepareRemoval works across structural nodes'
 	);
 
-	// Test 4
-	// FIXME this test fails
+	// Test 5
 	deepEqual(
 		documentModel.prepareRemoval( new es.Range( 3, 24 ) ).getOperations(),
 		[
 			{ 'type': 'retain', 'length': 3 },
 			{
 				'type': 'remove',
-				'data': ['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }]
+				'data': [['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }]]
 			},
 			{ 'type': 'retain', 'length': 4 },
 			{
@@ -406,7 +405,7 @@ test( 'es.DocumentModel.prepareRemoval', 5, function() {
 					{ 'type': '/listItem' }
 				]
 			},
-			{ 'type': 'retain', 'length': 13 }
+			{ 'type': 'retain', 'length': 12 }
 		],
 		'prepareRemoval strips and drops correctly when working across structural nodes'
 	);

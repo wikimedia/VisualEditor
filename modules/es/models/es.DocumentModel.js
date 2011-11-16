@@ -823,113 +823,112 @@ es.DocumentModel.prototype.prepareInsertion = function( offset, data ) {
  */
 es.DocumentModel.prototype.prepareRemoval = function( range ) {
 	var doc = this;
-
-	/**
-	 * Return true if can merge the remaining contents of the elements after a selection is deleted
-	 * across them. For instance, if a selection is painted across two paragraphs, and then the text
-	 * is deleted, the two paragraphs can become one paragraph. However, if the selection crosses
-	 * into a table, those cannot be merged.
-	 * 
-	 * @param {Number} integer offset
-	 * @param {Number} integer offset
-	 * @returns {Boolean}
-	*/
-	function canMerge( range ) {
-		var node1 = doc.getNodeFromOffset( range.start );
-		var node2 = doc.getNodeFromOffset( range.end );
-		// This is the simple rule we are following for now -- same type & same parent = can merge.
-		// So you can merge adjacent paragraphs, or listitems. And you can't merge a paragraph into
-		// a table row. There may be other rules we will want in here later, for instance, special
-		// casing merging a listitem into a paragraph.
-		return (
-			//  [<p>a</p><p>b</p>]
-			(
-				node1 &&
-				node2 &&
-				node1.getElementType() === node2.getElementType() &&
-				node1.getParent() === node2.getParent()
-			) ||
-			//  [<p>a</p>]<p>b</p>
-			(
-				node1 &&
-				node2 &&
-				node1 === node2 &&
-				range.start < range.end
-			)
-		);
-	}
 	
 	/**
-	 * Remove all data in a given range.
+	 * Remove content only, and completely covered droppable nodes drop the nodes entirely.
 	 * 
-	 * @param {es.Range} range Range of data to delete
-	 * @param {es.Transaction} tx Transaction to push to
+	 * @param {es.DocumentModelNode} node Node to strip from
+	 * @param {es.Range} range Range of data to strip
 	 */
-	function mergeDelete( range, tx ) {	
-		var removed = doc.data.slice( range.start, range.end );
-		tx.pushRemove( removed );
-	}
-
-	/**
-	 * Remove content data only, retaining structure
-	 * 
-	 * TODO: Nodes that are completely covered and are droppable should be dropped, not stripped
-	 * @see {es.DocumentModel.nodeRules} for obtaining the 'droppable' bit for a given node
-	 * 
-	 * @param {es.Range} range Range of data to delete
-	 * @param {es.Transaction} tx Transaction to push to
-	 */
-	function stripDelete( range, tx ) { 
-		var lastOperation, operationStart,
-			ops = [],
-			op,
-			i,
-			length;
-		// Get a list of operations, with 0-based indexes
-		for (i = range.start; i < range.end; i++ ) {
-			var neededOp = doc.data[i].type === undefined ? 'remove' : 'retain';
-			op = ops[ ops.length - 1 ];
-			if ( op === undefined || op.type !== neededOp ) {
-				ops.push( { type: neededOp, start: i, end: i } );
+	function strip( tx, node, range, offset ) {
+		var childNodes = node.getChildren(),
+			selectedNodes = node.selectNodes( range ),
+			rules = es.DocumentModel.nodeRules,
+			left = offset || 0,
+			right,
+			elementLength,
+			selectedNode;
+		for ( var i = 0; i < childNodes.length; i++ ) {
+			if ( selectedNodes.length && childNodes[i] === selectedNodes[0].node ) {
+				for ( var j = 0; j < selectedNodes.length; j++ ) {
+					selectedNode = selectedNodes[j];
+					elementLength = selectedNode.node.getElementLength();
+					right = left + elementLength;
+					// Handle selected nodes
+					if ( !selectedNode.range ) {
+						// Drop whole nodes
+						if ( rules[selectedNode.node.getElementType()].droppable ) {
+							tx.pushRemove( doc.data.slice( left, right ) );
+						} else {
+							tx.pushRetain( 1 );
+							strip(
+								tx, selectedNode.node, new es.Range( 0, elementLength ), left + 1
+							);
+							tx.pushRetain( 1 );
+						}
+					} else {
+						if ( selectedNode.node.hasChildren() ) {
+							tx.pushRetain( 1 );
+							strip( tx, selectedNode.node, selectedNode.range, left + 1 );
+							tx.pushRetain( 1 );
+						} else {
+							// Strip content
+							tx.pushRetain( 1 + selectedNode.range.start );
+							if ( selectedNode.globalRange.getLength() ) {
+								tx.pushRemove(
+									doc.data.slice(
+										selectedNode.globalRange.start,
+										selectedNode.globalRange.end
+									)
+								);
+							}
+							tx.pushRetain( elementLength - selectedNode.range.end - 1 );
+						}
+					}
+					left = right;
+				}
+				i += selectedNodes.length - 1;
 			} else {
-				op.end = i;
+				elementLength = childNodes[i].getElementLength();
+				right = left + elementLength;
+				// Handle non-selected nodes
+				tx.pushRetain( elementLength );
 			}
-		}
-		// Insert operations as transactions (end must be adjusted)
-		for (i = 0, length = ops.length; i < length; i++ ) {
-			op = ops[i];
-			if ( op.type === 'retain' ) {
-				// We add one because retain(3,3) really means retain 1 char at pos 3
-				tx.pushRetain( op.end - op.start + 1 );
-			} else if ( op.type === 'remove' ) {
-				// We add one because to remove(3,5) we need to slice(3,6), the ending is last
-				// subscript removed + 1.
-				tx.pushRemove( doc.data.slice( op.start, op.end + 1 ) );
-			} else {
-				throw 'Impossible code path reached.';
-			}
+			left = right;
 		}
 	}
 
 	var tx = new es.Transaction();
 	range.normalize();
 	
-	// Retain to the start of the range
-	if ( range.start > 0 ) {
-		tx.pushRetain( range.start );
-	}
-	
-	// Choose a deletion strategy; merging nodes together, or stripping content from existing
-	// structure.
-	if ( canMerge( range ) ) {
-		mergeDelete( range, tx );
-	} else {
-		stripDelete( range, tx );
-	}
+	var node1 = this.getNodeFromOffset( range.start );
+	var node2 = this.getNodeFromOffset( range.end );
 
-	// Retain up to the end of the document. Why do we do this? Because Trevor said so!
-	if ( range.end < doc.data.length ) {
-		tx.pushRetain( doc.data.length - range.end );
+	// If a selection is painted across two paragraphs, and then the text is deleted, the two
+	// paragraphs can become one paragraph. However, if the selection crosses into a table, those
+	// cannot be merged. To make this simple, we are follow a basic rule:
+	//     can merge = ( same type ) && ( same parent )
+	// So you can merge adjacent paragraphs, or listitems. And you can't merge a paragraph into
+	// a table row. There may be other rules we will want in here later, for instance, special
+	// casing merging a listitem into a paragraph.
+	if (
+		//  [<p>a</p><p>b</p>]
+		(
+			node1 &&
+			node2 &&
+			node1.getElementType() === node2.getElementType() &&
+			node1.getParent() === node2.getParent()
+		) ||
+		//  [<p>a</p>]<p>b</p>
+		(
+			node1 &&
+			node2 &&
+			node1 === node2 &&
+			range.start < range.end
+		)
+	) {
+		// Retain to the start of the range
+		if ( range.start > 0 ) {
+			tx.pushRetain( range.start );
+		}
+		// Remove all data in a given range.
+		tx.pushRemove( this.data.slice( range.start, range.end ) );
+		// Retain up to the end of the document. Why do we do this? Because Trevor said so!
+		if ( range.end < this.data.length ) {
+			tx.pushRetain( this.data.length - range.end );
+		}
+	} else {
+		strip( tx, this, range );
 	}
 
 	tx.optimize();
