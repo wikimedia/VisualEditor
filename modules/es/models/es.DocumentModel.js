@@ -429,6 +429,9 @@ es.DocumentModel.isStructuralOffset = function( data, offset ) {
 	}
 	// Structual offsets will have elements on each side
 	if ( data[offset - 1].type !== undefined && data[offset].type !== undefined ) {
+		if ( '/' + data[offset - 1].type === data[offset].type ) {
+			return false;
+		}
 		return true;
 	}
 	return false;
@@ -630,9 +633,7 @@ es.DocumentModel.prototype.getWordBoundaries = function( offset ) {
  * @param {Integer} Offset a given distance from the given offset
  */
 es.DocumentModel.prototype.getRelativeContentOffset = function( offset, distance ) {
-	if ( es.DocumentModel.isStructuralOffset( this.data, offset ) ) {
-		throw 'Invalid offset error. Can not get relative content offset from non-content offset.';
-	}
+	console.log(offset);
 	if ( distance === 0 ) {
 		return offset;
 	}
