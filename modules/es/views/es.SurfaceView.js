@@ -408,6 +408,21 @@ es.SurfaceView.prototype.moveCursor = function( direction, unit ) {
 		case 'down':
 			switch ( unit ) {
 				case 'unit':
+					var toNode = null;
+					this.documentView.model.traverseLeafNodes(
+						function( node  ) {
+							if ( toNode === null) {
+								toNode = node;
+							} else {
+								toNode = node;
+								return false;
+							}
+						},
+						this.documentView.getNodeFromOffset( this.selection.to, false ).getModel(),
+						direction === 'up' ? true : false
+					);
+					to = this.documentView.model.getOffsetFromNode( toNode, false ) + 1;
+					break;
 				case 'char':
 					/*
 					 * Looks for the in-document character position that would match up with the
