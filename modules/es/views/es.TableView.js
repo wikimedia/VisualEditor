@@ -18,7 +18,7 @@ es.TableView = function( model ) {
 
 /* Registration */
 
-es.DocumentModel.nodeRules.table = {
+es.DocumentView.splitRules.table = {
 	'self': false,
 	'children': false
 };

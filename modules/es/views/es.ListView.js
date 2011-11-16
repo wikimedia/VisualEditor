@@ -44,7 +44,7 @@ es.ListView.prototype.enumerate = function() {
 
 /* Registration */
 
-es.DocumentModel.nodeRules.list = {
+es.DocumentView.splitRules.list = {
 	'self': false,
 	'children': true
 };

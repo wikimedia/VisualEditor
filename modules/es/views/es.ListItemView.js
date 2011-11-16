@@ -48,7 +48,7 @@ es.ListItemView.prototype.setNumber = function( number ) {
 
 /* Registration */
 
-es.DocumentModel.nodeRules.listItem = {
+es.DocumentView.splitRules.listItem = {
 	'self': true,
 	'children': false
 };

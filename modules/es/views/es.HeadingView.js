@@ -34,7 +34,7 @@ es.HeadingView.prototype.setClasses = function() {
 
 /* Registration */
 
-es.DocumentModel.nodeRules.heading = {
+es.DocumentView.splitRules.heading = {
 	'self': true,
 	'children': null
 };

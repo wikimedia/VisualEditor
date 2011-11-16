@@ -16,7 +16,7 @@ es.ParagraphView = function( model ) {
 
 /* Registration */
 
-es.DocumentModel.nodeRules.paragraph = {
+es.DocumentView.splitRules.paragraph = {
 	'self': true,
 	'children': null
 };

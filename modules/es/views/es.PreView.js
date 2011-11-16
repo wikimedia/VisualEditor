@@ -16,7 +16,7 @@ es.PreView = function( model ) {
 
 /* Registration */
 
-es.DocumentModel.nodeRules.pre = {
+es.DocumentView.splitRules.pre = {
 	'self': true,
 	'children': null
 };
