@@ -386,8 +386,9 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 				var tx = this.documentView.model.prepareInsertion( this.selection.to, temp );
 				this.documentView.model.commit( tx );
 				
-				//this.selection.from = this.selection.to = this.documentView.getModel().getRelativeContentOffset( this.selection.to+1, 1 );
-				//this.showCursor();
+				this.selection.from = this.selection.to = this.documentView.getModel().getRelativeContentOffset( this.selection.to, 1 );
+				this.showCursor();
+				e.preventDefault();
 			}
 			break;
 		default: // Insert content (maybe)
