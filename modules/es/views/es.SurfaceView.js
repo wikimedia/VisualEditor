@@ -144,7 +144,7 @@ es.SurfaceView.prototype.onMouseDown = function( e ) {
 
 		var offset = this.documentView.getOffsetFromEvent( e );
 
-		console.log('onMouseDown; offset: ' + offset);
+		//console.log('onMouseDown; offset: ' + offset);
 
 		if ( e.originalEvent.detail === 1 ) { // single click
 			this.mouse.selectingMode = 1; // used in mouseMove handler
@@ -458,7 +458,7 @@ es.SurfaceView.prototype.onKeyUp = function( e ) {
  * @param {String} unit char | word | line | node | page
  */
 es.SurfaceView.prototype.moveCursor = function( direction, unit ) {
-	console.log('moveCursor; direction: ' + direction + ', unit: ' + unit);
+	//console.log('moveCursor; direction: ' + direction + ', unit: ' + unit);
 
 	if ( direction !== 'up' && direction !== 'down' ) {
 		this.cursor.initialLeft = null;
