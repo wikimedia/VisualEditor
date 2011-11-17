@@ -925,6 +925,11 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 					' (from ' + selectNodesTests[i].input.start +
 					' to ' + selectNodesTests[i].input.end + ')'
 			);
+			if ( console && console.log && !compare( result, selectNodesTests[i].output ) ) {
+				console.log("Test " + (i+1) + " FAILED");
+				console.log( result );
+				console.log( selectNodesTests[i].output );
+			}
 		} else if ( 'exception' in selectNodesTests[i] ) {
 			raises(
 				function() {
