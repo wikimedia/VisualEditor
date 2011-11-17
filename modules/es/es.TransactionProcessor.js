@@ -190,7 +190,7 @@ es.TransactionProcessor.prototype.insert = function( op ) {
 		this.applyAnnotations( this.cursor + op.data.length );
 		node = this.model.getNodeFromOffset( this.cursor );
 		offset = this.model.getOffsetFromNode( node );
-		index = node.getIndexFromOffset( this.cursor + offset );
+		index = node.getIndexFromOffset( this.cursor - offset );
 		this.rebuildNodes( op.data, null, node, index );
 	} else {
 		node = this.model.getNodeFromOffset( this.cursor );
