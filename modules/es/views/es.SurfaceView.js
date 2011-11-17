@@ -334,27 +334,43 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 			break;
 		case 8: // Backspace
 			this.selection.normalize();
+			
+			var range;
 
-			if ( this.selection.from != this.selection.to ) { // delete selection
-				var tx = this.documentView.model.prepareRemoval( this.selection );
-				this.documentView.model.commit ( tx );
+			if ( this.selection.from === this.selection.to ) {
+				range = new es.Range(
+					this.documentView.getModel().getRelativeContentOffset( this.selection.from, -1 ),
+					this.selection.from
+				);
+			} else {
 				this.documentView.clearSelection();
-				this.selection.from = this.selection.to = this.selection.start;
-				this.showCursor();
+				range = this.selection;				
 			}
 
+			var tx = this.documentView.model.prepareRemoval( range );
+			this.documentView.model.commit ( tx );
+			this.selection.from = this.selection.to = range.start;
+			this.showCursor();
 			break;
 		case 46: // Delete
 			this.selection.normalize();
 
-			if ( this.selection.from != this.selection.to ) { // delete selection
-				var tx = this.documentView.model.prepareRemoval( this.selection );
-				this.documentView.model.commit ( tx );
+			var range;
+
+			if ( this.selection.from === this.selection.to ) {
+				range = new es.Range(
+					this.documentView.getModel().getRelativeContentOffset( this.selection.from, 1 ),
+					this.selection.from
+				);
+			} else {
 				this.documentView.clearSelection();
-				this.selection.from = this.selection.to = this.selection.start;
-				this.showCursor();
+				range = this.selection;				
 			}
 
+			var tx = this.documentView.model.prepareRemoval( range );
+			this.documentView.model.commit ( tx );
+			this.selection.from = this.selection.to = range.start;
+			this.showCursor();
 			break;
 		case 13: // Enter
 			if ( this.selection.from === this.selection.to ) {
@@ -385,6 +401,7 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 				this.selection.from = this.selection.to = this.documentView.getModel().getRelativeContentOffset( this.selection.to, 1 );
 				this.showCursor();
 				e.preventDefault();
+				return false;
 			}
 			break;
 		default: // Insert content (maybe)
