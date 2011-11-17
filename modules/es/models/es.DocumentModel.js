@@ -665,7 +665,7 @@ es.DocumentModel.prototype.getRelativeContentOffset = function( offset, distance
  * @method
  * @param {Integer} offset
  * @param {Array} data
- * @returns {es.Transaction}
+ * @returns {es.TransactionModel}
  */
 es.DocumentModel.prototype.prepareInsertion = function( offset, data ) {
 	/**
@@ -719,7 +719,7 @@ es.DocumentModel.prototype.prepareInsertion = function( offset, data ) {
 		return workingData || data;
 	}
 	
-	var tx = new es.Transaction(),
+	var tx = new es.TransactionModel(),
 		insertedData = data, // may be cloned and modified
 		isStructuralLoc,
 		wrappingElementType;
@@ -823,7 +823,7 @@ es.DocumentModel.prototype.prepareInsertion = function( offset, data ) {
  * 
  * @method
  * @param {es.Range} range
- * @returns {es.Transaction}
+ * @returns {es.TransactionModel}
  */
 
 es.DocumentModel.prototype.prepareRemoval = function( range ) {
@@ -857,7 +857,7 @@ es.DocumentModel.prototype.prepareRemoval = function( range ) {
 		return true;
 	}
 	
-	var tx = new es.Transaction(), selectedNodes, selectedNode, startNode, endNode, i;
+	var tx = new es.TransactionModel(), selectedNodes, selectedNode, startNode, endNode, i;
 	range.normalize();
 	if ( range.start === range.end ) {
 		// Empty range, nothing to do
@@ -920,10 +920,10 @@ es.DocumentModel.prototype.prepareRemoval = function( range ) {
  * Generates a transaction which annotates content within a given range.
  * 
  * @method
- * @returns {es.Transaction}
+ * @returns {es.TransactionModel}
  */
 es.DocumentModel.prototype.prepareContentAnnotation = function( range, method, annotation ) {
-	var tx = new es.Transaction();
+	var tx = new es.TransactionModel();
 	range.normalize();
 	if ( annotation.hash === undefined ) {
 		annotation.hash = es.DocumentModel.getAnnotationHash( annotation );
@@ -983,10 +983,10 @@ es.DocumentModel.prototype.prepareContentAnnotation = function( range, method, a
  * Generates a transaction which changes attributes on an element at a given offset.
  * 
  * @method
- * @returns {es.Transaction}
+ * @returns {es.TransactionModel}
  */
 es.DocumentModel.prototype.prepareElementAttributeChange = function( offset, method, key, value ) {
-	var tx = new es.Transaction();
+	var tx = new es.TransactionModel();
 	if ( offset ) {
 		tx.pushRetain( offset );
 	}
@@ -1008,7 +1008,7 @@ es.DocumentModel.prototype.prepareElementAttributeChange = function( offset, met
  * Applies a transaction to the content data.
  * 
  * @method
- * @param {es.Transaction}
+ * @param {es.TransactionModel}
  */
 es.DocumentModel.prototype.commit = function( transaction ) {
 	es.TransactionProcessor.commit( this, transaction );
@@ -1018,7 +1018,7 @@ es.DocumentModel.prototype.commit = function( transaction ) {
  * Reverses a transaction's effects on the content data.
  * 
  * @method
- * @param {es.Transaction}
+ * @param {es.TransactionModel}
  */
 es.DocumentModel.prototype.rollback = function( transaction ) {
 	es.TransactionProcessor.rollback( this, transaction );

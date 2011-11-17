@@ -1,12 +1,13 @@
 /**
- * Creates an es.Transaction object.
+ * Creates an es.TransactionModel object.
  * 
  * @class
  * @constructor
  * @param {Object[]} operations List of operations
  */
-es.Transaction = function( operations ) {
+es.TransactionModel = function( operations ) {
 	this.operations = es.isArray( operations ) ? operations : [];
+	this.lengthDiff = 0;
 };
 
 /* Methods */
@@ -17,8 +18,18 @@ es.Transaction = function( operations ) {
  * @method
  * @returns {Object[]} List of operations
  */
-es.Transaction.prototype.getOperations = function() {
+es.TransactionModel.prototype.getOperations = function() {
 	return this.operations;
+};
+
+/**
+ * Gets the difference in content length this transaction will cause if applied.
+ * 
+ * @method
+ * @returns {Integer} Difference in content length
+ */
+es.TransactionModel.prototype.getLengthDiff = function() {
+	return this.lengthDiff;
 };
 
 /**
@@ -26,7 +37,7 @@ es.Transaction.prototype.getOperations = function() {
  * 
  * @method
  */
-es.Transaction.prototype.optimize = function() {
+es.TransactionModel.prototype.optimize = function() {
 	for ( var i = 0; i < this.operations.length - 1; i++ ) {
 		var a = this.operations[i];
 		var b = this.operations[i + 1];
@@ -54,7 +65,7 @@ es.Transaction.prototype.optimize = function() {
  * @method
  * @param {Integer} length Length of content data to retain
  */
-es.Transaction.prototype.pushRetain = function( length ) {
+es.TransactionModel.prototype.pushRetain = function( length ) {
 	this.operations.push( {
 		'type': 'retain',
 		'length': length
@@ -67,11 +78,12 @@ es.Transaction.prototype.pushRetain = function( length ) {
  * @method
  * @param {Array} data Data to retain
  */
-es.Transaction.prototype.pushInsert = function( data ) {
+es.TransactionModel.prototype.pushInsert = function( data ) {
 	this.operations.push( {
 		'type': 'insert',
 		'data': data
 	} );
+	this.lengthDiff += data.length;
 };
 
 /**
@@ -80,11 +92,12 @@ es.Transaction.prototype.pushInsert = function( data ) {
  * @method
  * @param {Array} data Data to remove
  */
-es.Transaction.prototype.pushRemove = function( data ) {
+es.TransactionModel.prototype.pushRemove = function( data ) {
 	this.operations.push( {
 		'type': 'remove',
 		'data': data
 	} );
+	this.lengthDiff -= data.length;
 };
 
 /**
@@ -95,7 +108,7 @@ es.Transaction.prototype.pushRemove = function( data ) {
  * @param {String} key Name of attribute to change
  * @param {Mixed} value Value to set attribute to, or value of attribute being cleared
  */
-es.Transaction.prototype.pushChangeElementAttribute = function( method, key, value ) {
+es.TransactionModel.prototype.pushChangeElementAttribute = function( method, key, value ) {
 	this.operations.push( {
 		'type': 'attribute',
 		'method': method,
@@ -111,7 +124,7 @@ es.Transaction.prototype.pushChangeElementAttribute = function( method, key, val
  * @param {String} method Method to use, either "set" or "clear"
  * @param {Object} annotation Annotation object to start setting or clearing from content data
  */
-es.Transaction.prototype.pushStartAnnotating = function( method, annotation ) {
+es.TransactionModel.prototype.pushStartAnnotating = function( method, annotation ) {
 	this.operations.push( {
 		'type': 'annotate',
 		'method': method,
@@ -127,7 +140,7 @@ es.Transaction.prototype.pushStartAnnotating = function( method, annotation ) {
  * @param {String} method Method to use, either "set" or "clear"
  * @param {Object} annotation Annotation object to stop setting or clearing from content data
  */
-es.Transaction.prototype.pushStopAnnotating = function( method, annotation ) {
+es.TransactionModel.prototype.pushStopAnnotating = function( method, annotation ) {
 	this.operations.push( {
 		'type': 'annotate',
 		'method': method,
