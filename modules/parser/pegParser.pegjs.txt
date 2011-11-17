@@ -327,6 +327,7 @@ inline
   = c:(text / inline_element / (!inline_breaks ch:. { return ch; }))+ {
       var out = [];
       var text = '';
+      c = flatten(c);
       for (var i = 0; i < c.length; i++) {
           if (typeof c[i] == 'string') {
               text += c[i];
@@ -348,7 +349,7 @@ inlineline
   = c:(text / !inline_breaks (inline_element / [^\n]))+ {
       var out = [];
       var text = '';
-      //dp("inlineline: " + print_r(c));
+      c = flatten(c);
       for (var i = 0; i < c.length; i++) {
           if (typeof c[i] == 'string') {
               text += c[i];
