@@ -904,8 +904,9 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 					return false;
 				}
 			}
+			return true;
 		}
-		return true;
+		return false;
 	}
 	function select( input, shallow ) {
 		return function() {
