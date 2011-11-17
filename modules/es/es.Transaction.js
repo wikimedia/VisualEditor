@@ -18,7 +18,7 @@ es.Transaction = function( operations ) {
  * @returns {Object[]} List of operations
  */
 es.Transaction.prototype.getOperations = function() {
-	return this.operations;	
+	return this.operations;
 };
 
 /**
