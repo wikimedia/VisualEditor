@@ -325,7 +325,7 @@ es.DocumentBranchNode.prototype.selectNodes = function( range, shallow ) {
 		
 		if ( start == end && ( start == left - 1 || start == right + 1 ) ) {
 			// Empty range outside of any node
-			return [];
+			return [{ 'node': this, 'range': new es.Range( start, end ), 'globalRange': new es.Range( start, end ) }];
 		}
 		
 		startInside = start >= left && start <= right; // is the start inside childNode?

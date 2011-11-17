@@ -167,7 +167,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 		{
 			'node': root2,
 			'input': new es.Range( 0, 0 ),
-			'output': [],
+			'output': [{ 'node': root2, 'range': new es.Range( 0, 0 ), 'globalRange': new es.Range( 0, 0 ) }],
 			'desc': 'Zero-length range before the beginning of a node'
 		},
 		// Test 2
@@ -272,14 +272,14 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 		{
 			'node': root2,
 			'input': new es.Range( 30, 30 ),
-			'output': [],
+			'output': [{ 'node': root2, 'range': new es.Range( 30, 30 ), 'globalRange': new es.Range( 30, 30 ) }],
 			'desc': 'Zero-length range past the end of a node'
 		},
 		// Test 17
 		{
 			'node': root2,
 			'input': new es.Range( 20, 20 ),
-			'output': [],
+			'output': [{ 'node': root2, 'range': new es.Range( 20, 20 ), 'globalRange': new es.Range( 20, 20 ) }],
 			'desc': 'Zero-length range between two nodes'
 		},
 
