@@ -275,7 +275,8 @@ es.TransactionProcessor.prototype.remove = function( op ) {
 		// Update the linear model
 		this.model.data.splice( this.cursor, op.data.length );
 		// Emit an update so things sync up
-		node.emit( 'update', this.cursor );
+		var offset = this.model.getOffsetFromNode( node );
+		node.emit( 'update', this.cursor - offset );
 	}
 };
 
