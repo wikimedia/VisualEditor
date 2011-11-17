@@ -62,7 +62,12 @@ es.DocumentModel.nodeModels = {};
  *         'children': null
  *     }
  */
-es.DocumentModel.nodeRules = {};
+es.DocumentModel.nodeRules = {
+	'document': {
+		'parents': null,
+		'children': null
+	}
+};
 
 /* Static Methods */
 

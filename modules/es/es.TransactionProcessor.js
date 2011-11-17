@@ -88,27 +88,22 @@ es.TransactionProcessor.prototype.process = function( method ) {
 	}
 };
 
-es.TransactionProcessor.prototype.rebuildNodes = function( newData, oldNodes ) {
-	var parent,
-		index;
-	if ( oldNodes[0] === oldNodes[0].getRoot() ) {
-		parent = oldNodes[0];
-		parent.splice( 0, parent.getChildren().length );
-		index = 0;
-	} else {
-		parent = oldNodes[0].getParent();
-		index = parent.indexOf( oldNodes[0] );
-		// Remove the node we are about to insert into from the model tree
-		parent.splice( index, oldNodes.length );
+es.TransactionProcessor.prototype.rebuildNodes = function( newData, oldNodes, parent, index ) {
+	var remove = 0;
+	if ( oldNodes ) {
+		if ( oldNodes[0] === oldNodes[0].getRoot() ) {
+			parent = oldNodes[0];
+			index = 0;
+			remove = parent.getChildren().length;
+		} else {
+			parent = oldNodes[0].getParent();
+			index = parent.indexOf( oldNodes[0] );
+			remove = oldNodes.length;
+		}
 	}
-	this.buildNodes( newData, parent, index );
-};
-
-es.TransactionProcessor.prototype.buildNodes = function( newData, parent, index ) {
-	// Regenerate nodes for the data we've affected
-	var newNodes = es.DocumentModel.createNodesFromData( newData );
-	// Insert new elements into the tree where the old ones used to be
-	parent.splice.apply( parent, [index, 0].concat( newNodes ) );
+	parent.splice.apply(
+		parent, [index, remove].concat( es.DocumentModel.createNodesFromData( newData ) )
+	);
 };
 
 es.TransactionProcessor.prototype.getScope = function( node, data ) {
@@ -123,7 +118,7 @@ es.TransactionProcessor.prototype.getScope = function( node, data ) {
 		}
 	}
 	if ( maxDepth > 0 ) {
-		for ( i = 0; i < maxDepth; i++ ) {
+		for ( i = 1; i < maxDepth; i++ ) {
 			node = node.getParent();
 		}
 	}
@@ -180,22 +175,25 @@ es.TransactionProcessor.prototype.retain = function( op ) {
 };
 
 es.TransactionProcessor.prototype.insert = function( op ) {
+	var node,
+		index,
+		offset;
 	if ( es.DocumentModel.isStructuralOffset( this.model.data, this.cursor ) ) {
 		es.insertIntoArray( this.model.data, this.cursor, op.data );
 		this.applyAnnotations( this.cursor + op.data.length );
-		var parent = this.model.getNodeFromOffset( this.cursor ),
-			index = parent.getIndexFromOffset( this.cursor );
-		console.log( parent, index );
-		this.buildNodes( op.data, parent, index );
+		node = this.model.getNodeFromOffset( this.cursor );
+		index = node.getIndexFromOffset( this.cursor );
+		this.rebuildNodes( op.data, null, node, index );
 	} else {
-		// Get the node we are about to insert into at the lowest depth possible
-		var node = this.getScope( this.model.getNodeFromOffset( this.cursor ), op.data );
-		if ( !node ) {
-			throw 'Missing node error. Scope could not be resolved';
+		node = this.model.getNodeFromOffset( this.cursor );
+		if ( node.getParent() === this.model ) {
+			offset = this.model.getOffsetFromNode( node );
+			index = this.model.getIndexFromOffset( this.cursor - offset );
+		} else {
+			node = this.getScope( node, op.data );
+			offset = this.model.getOffsetFromNode( node );
+			index = node.getIndexFromOffset( this.cursor - offset );
 		}
-		// Figure out how deep the data goes
-		
-		var offset = this.model.getOffsetFromNode( node );
 		if ( es.DocumentModel.containsElementData( op.data ) ) {
 			// Perform insert on linear data model
 			es.insertIntoArray( this.model.data, this.cursor, op.data );
