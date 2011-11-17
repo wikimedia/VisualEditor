@@ -827,6 +827,36 @@ es.DocumentModel.prototype.prepareInsertion = function( offset, data ) {
  */
 
 es.DocumentModel.prototype.prepareRemoval = function( range ) {
+	// If a selection is painted across two paragraphs, and then the text is deleted, the two
+	// paragraphs can become one paragraph. However, if the selection crosses into a table, those
+	// cannot be merged. To make this simple, we follow rule #2 in the comment above for deciding
+	// whether two elements can be merged.
+	// So you can merge adjacent paragraphs, or list items. And you can't merge a paragraph into
+	// a table row. There may be other rules we will want in here later, for instance, special
+	// casing merging a listitem into a paragraph.
+	function canMerge( node1, node2 ) {
+		var n1 = node1, n2 = node2;
+		// Simultaneously walk upwards from node1 and node2
+		// until we reach the common ancestor.
+		while ( n1 !== n2 ) {
+			if ( n1.getElementType() !== n2.getElementType() ) {
+				// Not the same type
+				return false;
+			}
+			n1 = n1.getParent();
+			n2 = n2.getParent();
+			if ( n1 === null || n2 === null ) {
+				// Reached a root, so no common ancestor
+				// or different depth
+				return false;
+			}
+		}
+		// We've reached the common ancestor using simultaneous traversal,
+		// so we know node1 and node2 have the same depth. We also haven't
+		// seen any nodes with mismatching types along the way, so we're good.
+		return true;
+	}
+	
 	var tx = new es.Transaction(), selectedNodes, selectedNode, startNode, endNode, i;
 	range.normalize();
 	if ( range.start === range.end ) {
@@ -840,17 +870,7 @@ es.DocumentModel.prototype.prepareRemoval = function( range ) {
 	startNode = selectedNodes[0].node;
 	endNode = selectedNodes[selectedNodes.length - 1].node;
 	
-	// If a selection is painted across two paragraphs, and then the text is deleted, the two
-	// paragraphs can become one paragraph. However, if the selection crosses into a table, those
-	// cannot be merged. To make this simple, we are follow a basic rule:
-	//     can merge = ( same type ) && ( same parent )
-	// So you can merge adjacent paragraphs, or listitems. And you can't merge a paragraph into
-	// a table row. There may be other rules we will want in here later, for instance, special
-	// casing merging a listitem into a paragraph.
-	if ( startNode && endNode &&
-			startNode.getParent() === endNode.getParent() &&
-			startNode.getElementType() === endNode.getElementType()
-	) {
+	if ( startNode && endNode && canMerge( startNode, endNode ) ) {
 		// This is the simple case. node1 and node2 are either the same node, or can be merged
 		// So we can just remove all the data in the range and call it a day, no fancy
 		// processing necessary

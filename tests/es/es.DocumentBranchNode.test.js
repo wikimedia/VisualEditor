@@ -948,7 +948,7 @@ test( 'es.DocumentBranchNode.selectNodes', 77, function() {
 					' to ' + selectNodesTests[i].input.end + ')'
 			);
 			if ( console && console.log && !compare( result, selectNodesTests[i].output ) ) {
-				console.log("Test " + (i+1) + " FAILED");
+				console.log( "Test " + (i+1) + " FAILED" );
 				console.log( result );
 				console.log( selectNodesTests[i].output );
 			}

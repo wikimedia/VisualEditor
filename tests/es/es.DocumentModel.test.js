@@ -301,7 +301,7 @@ test( 'es.DocumentModel.prepareContentAnnotation', 1, function() {
 	);
 } );
 
-test( 'es.DocumentModel.prepareRemoval', 8, function() {
+test( 'es.DocumentModel.prepareRemoval', 11, function() {
 	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
 
 	// Test 1
@@ -341,25 +341,8 @@ test( 'es.DocumentModel.prepareRemoval', 8, function() {
 		],
 		'prepareRemoval removes entire elements'
 	);
-	
-	// Test 3
-	deepEqual(
-		documentModel.prepareRemoval( new es.Range( 21, 23 ) ).getOperations(),
-		[
-			{ 'type': 'retain', 'length': 21 },
-			{
-				'type': 'remove',
-				'data': [
-					{ 'type': '/listItem' },
-					{ 'type': 'listItem', 'attributes': { 'styles': ['number'] } }
-				]
-			},
-			{ 'type': 'retain', 'length': 11 }
-		],
-		'prepareRemoval merges two list items'
-	);
 
-	// Test 4
+	// Test 3
 	deepEqual(
 		documentModel.prepareRemoval( new es.Range( 3, 9 ) ).getOperations(),
 		[
@@ -375,7 +358,7 @@ test( 'es.DocumentModel.prepareRemoval', 8, function() {
 		'prepareRemoval works across structural nodes'
 	);
 
-	// Test 5
+	// Test 4
 	deepEqual(
 		documentModel.prepareRemoval( new es.Range( 3, 24 ) ).getOperations(),
 		[
@@ -410,7 +393,7 @@ test( 'es.DocumentModel.prepareRemoval', 8, function() {
 		'prepareRemoval strips and drops correctly when working across structural nodes'
 	);
 	
-	// Test 6
+	// Test 5
 	deepEqual(
 		documentModel.prepareRemoval( new es.Range( 3, 25 ) ).getOperations(),
 		[
@@ -450,7 +433,7 @@ test( 'es.DocumentModel.prepareRemoval', 8, function() {
 		'prepareRemoval strips and drops correctly when working across structural nodes (2)'
 	);
 	
-	// Test 7
+	// Test 6
 	deepEqual(
 		documentModel.prepareRemoval( new es.Range( 9, 17 ) ).getOperations(),
 		[
@@ -475,7 +458,7 @@ test( 'es.DocumentModel.prepareRemoval', 8, function() {
 		'prepareRemoval will not merge items of unequal types'
 	);
 	
-	// Test 8
+	// Test 7
 	deepEqual(
 		documentModel.prepareRemoval( new es.Range( 9, 27 ) ).getOperations(),
 		[
@@ -509,6 +492,76 @@ test( 'es.DocumentModel.prepareRemoval', 8, function() {
 		],
 		'prepareRemoval blanks a paragraph and a list'
 	);
+	
+	// Test 8
+	deepEqual(
+		documentModel.prepareRemoval( new es.Range( 21, 23 ) ).getOperations(),
+		[
+			{ 'type': 'retain', 'length': 21 },
+			{
+				'type': 'remove',
+				'data': [
+					{ 'type': '/listItem' },
+					{ 'type': 'listItem', 'attributes': { 'styles': ['number'] } }
+				]
+			},
+			{ 'type': 'retain', 'length': 11 }
+		],
+		'prepareRemoval merges two list items'
+	);
+	
+	// Test 9
+	deepEqual(
+		documentModel.prepareRemoval( new es.Range( 20, 24 ) ).getOperations(),
+		[
+			{ 'type': 'retain', 'length': 20 },
+			{
+				'type': 'remove',
+				'data': [
+					{ 'type': '/paragraph' },
+					{ 'type': '/listItem' },
+					{ 'type': 'listItem', 'attributes': { 'styles': ['number'] } },
+					{ 'type': 'paragraph' }
+				]
+			},
+			{ 'type': 'retain', 'length': 10 }
+		],
+		'prepareRemoval merges two list items and the paragraphs inside them'
+	);
+	
+	// Test 10
+	deepEqual(
+		documentModel.prepareRemoval( new es.Range( 20, 23 ) ).getOperations(),
+		[
+			{ 'type': 'retain', 'length': 34 }
+		],
+		'prepareRemoval returns a null transaction when attempting an unbalanced merge'
+	);
+	
+	// Test 11
+	deepEqual(
+		documentModel.prepareRemoval( new es.Range( 15, 24 ) ).getOperations(),
+		[
+			{ 'type': 'retain', 'length': 15 },
+			{
+				'type': 'remove',
+				'data': [
+					{ 'type': '/paragraph' },
+					{ 'type': '/listItem' },
+					{ 'type': 'listItem', 'attributes': { 'styles': ['bullet', 'bullet'] } },
+					{ 'type': 'paragraph' },
+					'f',
+					{ 'type': '/paragraph' },
+					{ 'type': '/listItem' },
+					{ 'type': 'listItem', 'attributes': { 'styles': ['number'] } },
+					{ 'type': 'paragraph' }
+				]
+			},
+			{ 'type': 'retain', 'length': 10 }
+		],
+		'prepareRemoval merges two list items and the paragraphs inside them'
+	);
+	
 } );
 
 test( 'es.DocumentModel.prepareInsertion', 11, function() {
