@@ -101,9 +101,16 @@ es.TransactionProcessor.prototype.rebuildNodes = function( newData, oldNodes, pa
 			remove = oldNodes.length;
 		}
 	}
-	parent.splice.apply(
-		parent, [index, remove].concat( es.DocumentModel.createNodesFromData( newData ) )
-	);
+	// Try to perform this in a single operation if possible, this reduces the number of UI updates
+	// TODO: Introduce a global for max argument length - 1024 is also assumed in es.insertIntoArray
+	var newNodes = es.DocumentModel.createNodesFromData( newData );
+	if ( newNodes.length < 1024 ) {
+		parent.splice.apply( parent, [index, remove].concat( newNodes ) );
+	} else {
+		parent.splice.apply( parent, [index, remove] );
+		// Safe to call with arbitrary length of newNodes
+		es.insertIntoArray( parent, index, newNodes );
+	}
 };
 
 es.TransactionProcessor.prototype.getScope = function( node, data ) {
