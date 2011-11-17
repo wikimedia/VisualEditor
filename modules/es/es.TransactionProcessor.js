@@ -113,19 +113,30 @@ es.TransactionProcessor.prototype.rebuildNodes = function( newData, oldNodes, pa
 	}
 };
 
+/**
+ * Get the parent node that would be affected by inserting given data into it's child.
+ * 
+ * This is used when inserting data that closes and reopens one or more parent nodes into a child
+ * node, which requires rebuilding at a higher level.
+ * 
+ * @method
+ * @param {es.DocumentNode} node Child node to start from
+ * @param {Array} data Data to inspect for closings
+ * @returns {es.DocumentNode} Lowest level parent node being affected
+ */
 es.TransactionProcessor.prototype.getScope = function( node, data ) {
 	var i,
 		length,
 		level = 0,
-		maxDepth = 0;
+		max = 0;
 	for ( i = 0, length = data.length; i < length; i++ ) {
 		if ( typeof data[i].type === 'string' ) {
-			level += data[i].type.charAt( 0 ) === '/' ? -1 : 1;
-			maxDepth = Math.max( maxDepth, -level );
+			level += data[i].type.charAt( 0 ) === '/' ? 1 : -1;
+			max = Math.max( max, level );
 		}
 	}
-	if ( maxDepth > 0 ) {
-		for ( i = 0; i < maxDepth - 1; i++ ) {
+	if ( max > 0 ) {
+		for ( i = 0; i < max - 1; i++ ) {
 			node = node.getParent();
 		}
 	}
