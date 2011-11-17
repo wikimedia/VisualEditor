@@ -821,132 +821,14 @@ es.DocumentModel.prototype.prepareInsertion = function( offset, data ) {
  * @param {es.Range} range
  * @returns {es.Transaction}
  */
+
 es.DocumentModel.prototype.prepareRemoval = function( range ) {
-	var doc = this;
-	
-	/**
-	 * Remove content only, and completely covered droppable nodes drop the nodes entirely.
-	 * 
-	 * @param {es.DocumentModelNode} node Node to strip from
-	 * @param {es.Range} range Range of data to strip
-	 */
-	function strip( tx, node, range, offset ) {
-		var childNodes = node.getChildren(),
-			selectedNodes = node.selectNodes( range, true ),
-			rules = es.DocumentModel.nodeRules,
-			left = offset || 0,
-			right,
-			elementLength,
-			selectedNode;
-		offset = offset || 0;
-		for ( var i = 0; i < childNodes.length; i++ ) {
-			if ( selectedNodes.length && childNodes[i] === selectedNodes[0].node ) {
-				for ( var j = 0; j < selectedNodes.length; j++ ) {
-					selectedNode = selectedNodes[j];
-					elementLength = selectedNode.node.getElementLength();
-					right = left + elementLength;
-					// Handle selected nodes
-					if ( !selectedNode.range ) {
-						// Drop whole nodes
-						if ( /*rules[selectedNode.node.getElementType()].droppable*/ true ) {
-							tx.pushRemove( doc.data.slice( left, right ) );
-						} else {
-							tx.pushRetain( 1 );
-							strip(
-								tx, selectedNode.node, new es.Range( 0, elementLength ), left + 1
-							);
-							tx.pushRetain( 1 );
-						}
-					} else {
-						if ( selectedNode.node.hasChildren() ) {
-							tx.pushRetain( 1 );
-							strip( tx, selectedNode.node, selectedNode.range, left + 1 );
-							tx.pushRetain( 1 );
-						} else {
-							// Strip content
-							tx.pushRetain( 1 + selectedNode.range.start );
-							if ( selectedNode.globalRange.getLength() ) {
-								tx.pushRemove(
-									doc.data.slice(
-										selectedNode.globalRange.start + offset,
-										selectedNode.globalRange.end + offset
-									)
-								);
-							}
-							tx.pushRetain( elementLength - selectedNode.range.end - 1 );
-						}
-					}
-					left = right;
-				}
-				i += selectedNodes.length - 1;
-			} else {
-				elementLength = childNodes[i].getElementLength();
-				right = left + elementLength;
-				// Handle non-selected nodes
-				tx.pushRetain( elementLength );
-			}
-			left = right;
-		}
-	}
-
-	var tx = new es.Transaction();
-	range.normalize();
-	
-	var node1 = this.getNodeFromOffset( range.start );
-	var node2 = this.getNodeFromOffset( range.end );
-
-	// If a selection is painted across two paragraphs, and then the text is deleted, the two
-	// paragraphs can become one paragraph. However, if the selection crosses into a table, those
-	// cannot be merged. To make this simple, we are follow a basic rule:
-	//     can merge = ( same type ) && ( same parent )
-	// So you can merge adjacent paragraphs, or listitems. And you can't merge a paragraph into
-	// a table row. There may be other rules we will want in here later, for instance, special
-	// casing merging a listitem into a paragraph.
-	if ( node1 && node2 &&
-		node1.getElementType() === node2.getElementType() &&
-		node1.getParent() === node2.getParent()
-	) {
-		// Retain to the start of the range
-		if ( range.start > 0 ) {
-			tx.pushRetain( range.start );
-		}
-		// Remove all data in a given range.
-		tx.pushRemove( this.data.slice( range.start, range.end ) );
-		// Retain up to the end of the document. Why do we do this? Because Trevor said so!
-		if ( range.end < this.data.length ) {
-			tx.pushRetain( this.data.length - range.end );
-		}
-	} else {
-		strip( tx, this, range );
-	}
-
-	tx.optimize();
-	return tx;
-};
-
-/**
- * Generates a transaction which removes data from a given range.
- * 
- * When removing data inside an element, the data is simply discarded and the node's length is
- * adjusted accordingly. When removing data across elements, there are two situations that can cause
- * added complexity:
- *     1. A range spans between nodes of different levels or types
- *     2. A range only partially covers one or two nodes
- * 
- * To resolve these issues in a predictable way the following rules must be obeyed:
- *     1. Structural elements are retained unless the range being removed covers the entire element
- *     2. Elements can only be merged if they are of the same time and share a common parent
- * 
- * @method
- * @param {es.Range} range
- * @returns {es.Transaction}
- */
-/*
-es.DocumentModel.prototype.prepareRemovalRoan = function( range ) {
 	var tx = new es.Transaction(), selectedNodes, selectedNode, startNode, endNode, i;
 	range.normalize();
 	if ( range.start === range.end ) {
-		// Empty range, return empty transaction
+		// Empty range, nothing to do
+		// Retain up to the end of the document. Why do we do this? Because Trevor said so!
+		tx.pushRetain( this.data.length );
 		return tx;
 	}
 	
@@ -968,7 +850,6 @@ es.DocumentModel.prototype.prepareRemovalRoan = function( range ) {
 		// This is the simple case. node1 and node2 are either the same node, or can be merged
 		// So we can just remove all the data in the range and call it a day, no fancy
 		// processing necessary
-		// FIXME we're not accounting for droppability here, should we?
 		
 		// Retain to the start of the range
 		if ( range.start > 0 ) {
@@ -981,43 +862,35 @@ es.DocumentModel.prototype.prepareRemovalRoan = function( range ) {
 			tx.pushRetain( this.data.length - range.end );
 		}
 	} else {
-		//if ( range.start > 0 ) {
-		//	tx.pushRetain( range.start );
-		//}
-		
+		var index = 0;
 		for ( i = 0; i < selectedNodes.length; i++ ) {
 			selectedNode = selectedNodes[i];
-			if ( !selectedNode.range ) {
-				// Remove the entire node
-				// TODO accounting for droppability will suck
-				tx.pushRemove( this.data.slice( selectedNode.globalRange.start, selectedNode.globalRange.end ) );
-			} else {
-				// Remove part of the node
-				// TODO account for droppability
-				// TODO need to descend, rawr
-				tx.pushRetain( 1 + selectedNode.range.start );
-				if ( selectedNode.globalRange.getLength() ) {
-					tx.pushRemove(
-						this.data.slice(
-							selectedNode.globalRange.start,
-							selectedNode.globalRange.end
-						)
-					);
-				}
-				tx.pushRetain( selectedNode.node.getElementLength() - selectedNode.range.end - 1 );
+			// Retain up to where the next removal starts
+			if ( selectedNode.globalRange.start > index ) {
+				tx.pushRetain( selectedNode.globalRange.start - index );
 			}
+			
+			// Remove stuff
+			if ( selectedNode.globalRange.getLength() ) {
+				tx.pushRemove(
+					this.data.slice(
+						selectedNode.globalRange.start,
+						selectedNode.globalRange.end
+					)
+				);
+			}
+			index = selectedNode.globalRange.end;
 		}
 		
 		// Retain up to the end of the document. Why do we do this? Because Trevor said so!
-		if ( range.end < this.data.length ) {
-			tx.pushRetain( this.data.length - range.end );
+		if ( index < this.data.length ) {
+			tx.pushRetain( this.data.length - index );
 		}
 	}
 	
 	tx.optimize();
 	return tx;
 };
-*/
 
 /**
  * Generates a transaction which annotates content within a given range.
