@@ -579,7 +579,9 @@ es.ContentView.prototype.renderIteration = function( limit ) {
 	if ( rs.wordOffset >= wordCount - 1 ) {
 		// Cleanup
 		rs.$ruler.remove();
-		this.lines = rs.lines;
+		if ( rs.line < this.lines.length ) {
+			this.lines.splice( rs.line, this.lines.length - rs.line );
+		}
 		this.$.find( '.es-contentView-line[line-index=' + ( this.lines.length - 1 ) + ']' )
 			.nextAll()
 			.remove();
@@ -660,7 +662,7 @@ es.ContentView.prototype.render = function( offset ) {
 				currentLine = i;
 			}
 			if ( ( line.range.end < offset && !line.fractional ) || i === 0 ) {
-				rs.lines = this.lines.slice( 0, i );
+				rs.line = i;
 				rs.wordOffset = line.wordOffset;
 				gap = currentLine - i;
 				break;
@@ -668,7 +670,7 @@ es.ContentView.prototype.render = function( offset ) {
 		}
 		this.renderIteration( 2 + gap );
 	} else {
-		rs.lines = [];
+		rs.line = 0;
 		rs.wordOffset = 0;
 		this.renderIteration( 3 );
 	}
@@ -686,24 +688,23 @@ es.ContentView.prototype.render = function( offset ) {
  */
 es.ContentView.prototype.appendLine = function( range, wordOffset, fractional ) {
 	var rs = this.renderState,
-		lineCount = rs.lines.length,
-		$line = this.$.children( '[line-index=' + lineCount + ']' );
+		$line = this.$.children( '[line-index=' + rs.line + ']' );
 	if ( !$line.length ) {
 		$line = $(
-			'<div class="es-contentView-line" line-index="' + lineCount + '"></div>'
+			'<div class="es-contentView-line" line-index="' + rs.line + '"></div>'
 		);
 		this.$.append( $line );
 	}
 	$line[0].innerHTML = this.getHtml( range );
-	// Collect line information
-	rs.lines.push({
+	// Overwrite/append line information
+	this.lines[rs.line] = {
 		'text': this.model.getText( range ),
 		'range': range,
 		'width': $line.outerWidth(),
 		'height': $line.outerHeight(),
 		'wordOffset': wordOffset,
 		'fractional': fractional
-	});
+	};
 	// Disable links within rendered content
 	$line.find( '.es-contentView-format-object a' )
 		.mousedown( function( e ) {
@@ -712,6 +713,7 @@ es.ContentView.prototype.appendLine = function( range, wordOffset, fractional ) 
 		.click( function( e ) {
 			e.preventDefault();
 		} );
+	rs.line++;
 };
 
 /**
