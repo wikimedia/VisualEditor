@@ -1,11 +1,10 @@
 /* Produces output more or less compatible with FakeParser; plug it into FP's output and see */
-
 {
     var dp = function ( msg ) {
         if ( false ) {
             console.log(msg);
         }
-    }
+    };
 
     /*
      * Flags for specific parse environments (inside tables, links etc). Flags
@@ -23,10 +22,10 @@
             syntaxFlags[flag] = 1;
         }
         return true;
-    }
+    };
     var clearFlag = function(flag) {
         syntaxFlags[flag]--;
-    }
+    };
 
 
 
@@ -65,7 +64,7 @@
 
         return dumped_text;
 
-    }
+    };
 
     // Convert list prefixes to a list of WikiDom list styles
     var bulletsToTypes = function (bullets) {
@@ -86,26 +85,35 @@
         return bTypes;
     };
 
-    var extractInline = function ( node ) {
-        return { text: extractText(node)
-        }
+    /*var extractInline = function ( node ) {
+        return { text: extractText(node, 0) };
     };
 
 
-    var extractText = function ( node ) {
+    // return [text [annotations]]
+    var extractText = function ( node, offset ) {
         dp("extract: " + print_r(node));
         if (typeof node === 'string') {
-            return node;
+            return [node, []];
         } else if ($.isArray(node)) {
-            var texts = [];
+            var texts = [],
+                annotations = [];
             for (var i = 0, length = node.length; i < length; i++) {
-                texts.push(extractText(node[i]));
+                var res = extractText(node[i], offset);
+                texts.push(res[0]);
+                annotations.concat(res[1]);
+                offset += res[0].length;
             }
-            return texts.join('');
+            return [texts.join(''), annotations];
         } else if ( 'text' in node ) {
-            return extractText(node.text);
+            var res = extractText(node, offset);
+            if ('annotations' in node) {
+                return [res[0], node.annotations.concat(res[1])];
+            } else {
+                return res;
+            }
         } else if ( 'content' in node ) {
-            return extractText(node.content);
+            return extractText(node.content, offset);
         } else if ( 'children' in node ) {
             var texts = [];
             for (var i = 0, length = node.children.length; i < length; i++) {
@@ -113,27 +121,35 @@
             }
             return texts.join('');
         } else {
-            console.log("extract failed!" + print_r(node));
             throw ("extract failed: " + print_r(node));
         }
+    };
+    */
+
+    // Start position of top-level block
+    var blockStart = 0;
+
+    var unquote = function (quotec, text) {
+        return text.replace('\\' + quotec, quotec);
+    };
+
+    var flatten = function ( e ) {
+        var es = [];
+        // flatten sub-arrays
+        for(var i = 0, length = e.length; i < length; i++) {
+            var ei = e[i];
+            if ($.isArray(ei))
+                es = es.concat(flatten(ei));
+            else
+                es.push(ei);
+        };
+        return es;
     };
 }
 
 start
-  = e:block* newline* { 
-      var es = [];
-      // flatten sub-arrays, as a list block can contain multiple lists
-      for(var i = 0, length = e.length; i < length; i++) {
-          var ei = e[i];
-          if ($.isArray(ei))
-              es = es.concat(ei);
-          else
-              es.push(ei);
-      };
-      return {
-          type: 'page', 
-              children: es
-      } 
+  = e:toplevelblock* newline* { 
+      return flatten(e);
   }
 
 anyblock = block / inline
@@ -157,12 +173,26 @@ sol = (newline / & { return pos === 0; } { return true; })
 newline
   = '\n' / '\r\n'
 
+toplevelblock 
+  = & { blockStart = pos; return true; } b:block {
+    b = flatten(b);
+    var bs = b[0];
+    dp('toplevelblock:' + print_r(b) + bs);
+    if (bs.attribs === undefined) {
+        bs.attribs = [];
+    }
+    bs.attribs.push(['startPos', blockStart]);
+    bs.attribs.push(['endPos', pos]);
+    return b;
+  }
+
 block
-  = (sol space* &newline)? block_lines
+  = (sol space* &newline)? bl:block_lines { return bl; }
   / para
   / comment
-  / sol
+  / (s:sol { return [{type: 'TEXT', value: s}]; })
 
+// Block structures with start-of-line wiki syntax
 block_lines
   = h
   / table
@@ -176,14 +206,11 @@ h = h1 / h2 / h3 / h4 / h5 / h6
 h1 = sol '=' 
     (
      & { setFlag('h'); return setFlag('h1') }
-     c:inlineline '=' &newline {
+     c:inlineline '=' comment? &newline {
          clearFlag('h');
          clearFlag('h1');
-         return {
-             type: 'heading',
-             attributes: {level: 1},
-             content: extractInline(c)
-         }
+         return [{type: 'TAG', name: 'h1'}]
+                    .concat(c, [{type: 'ENDTAG', name: 'h1'}]);
       }
     / { clearFlag('h'); clearFlag('h1'); return null }
     )
@@ -191,14 +218,11 @@ h1 = sol '='
 h2 = sol '==' 
     (
      & { setFlag('h'); return setFlag('h2') }
-     c:inlineline '==' &newline {
+     c:inlineline '==' comment?  &newline {
          clearFlag('h');
          clearFlag('h2');
-         return {
-             type: 'heading',
-             attributes: {level: 2},
-             content: extractInline(c)
-         }
+         return [{type: 'TAG', name: 'h2'}]
+                    .concat(c, [{type: 'ENDTAG', name: 'h2'}]);
       }
     / { clearFlag('h'); clearFlag('h2'); return null }
     )
@@ -206,57 +230,45 @@ h2 = sol '=='
 h3 = sol '===' 
     (
      & { setFlag('h'); return setFlag('h3') }
-     c:inlineline '===' &newline {
+     c:inlineline '===' comment? &newline {
          clearFlag('h');
          clearFlag('h3');
-         return {
-             type: 'heading',
-             attributes: {level: 3},
-             content: extractInline(c)
-         }
-     }
+         return [{type: 'TAG', name: 'h3'}]
+                    .concat(c, [{type: 'ENDTAG', name: 'h3'}]);
+      }
     / { clearFlag('h'); clearFlag('h3'); return null }
     )
 
 h4 = sol '====' 
     (
      & { setFlag('h'); return setFlag('h4') }
-     c:inlineline '====' &newline {
+     c:inlineline '====' comment? &newline {
          clearFlag('h');
          clearFlag('h4');
-         return {
-             type: 'heading',
-             attributes: {level: 4},
-             content: extractInline(c)
-         }
-     }
+         return [{type: 'TAG', name: 'h4'}]
+                    .concat(c, [{type: 'ENDTAG', name: 'h4'}]);
+      }
     / { clearFlag('h'); clearFlag('h4'); return null }
     )
 
 h5 = sol '=====' 
     (& { setFlag('h'); return setFlag('h5') }
-     c:inlineline '=====' &newline {
+     c:inlineline '=====' comment? &newline {
          clearFlag('h');
          clearFlag('h5');
-         return {
-             type: 'heading',
-             attributes: {level: 5},
-             content: extractInline(c)
-         }
+         return [{type: 'TAG', name: 'h5'}]
+                    .concat(c, [{type: 'ENDTAG', name: 'h5'}]);
      }
     / { clearFlag('h'); clearFlag('h5'); return null }
     )
 
 h6 = sol '======' 
     (& { setFlag('h'); return setFlag('h6') }
-     c:inlineline '======' &newline {
+     c:inlineline '======' comment? &newline {
          clearFlag('h');
          clearFlag('h6');
-         return {
-             type: 'heading',
-             attributes: {level: 6},
-             content: extractInline(c)
-         }
+         return [{type: 'TAG', name: 'h6'}]
+                    .concat(c, [{type: 'ENDTAG', name: 'h6'}]);
      }
     / { clearFlag('h'); clearFlag('h6'); return null }
     )
@@ -270,24 +282,25 @@ heading_text
 
 // TODO: convert inline content to annotations!
 para
-  = (sol br)? para_lines
+  = (sol br)? pl:para_lines { return pl; }
 
 para_lines
   = s:sol c:inlineline cs:(!block_lines para_lines)* { 
-      return {
-          type: 'paragraph', 
-          content: extractInline([s].concat([c]).concat(cs))
-      } 
+      var res = [{type: 'TAG', name: 'p'}];
+      if (s !== '') {
+          res.push(s)
+      }
+      //console.log('paralines' + print_r(res.concat(c, cs, [{type: 'ENDTAG', name: 'p'}])));
+      return res.concat(c, cs, [{type: 'ENDTAG', name: 'p'}]);
   }
 
-br = space* &newline { return {type: 'br'} }
+br = space* &newline { return {type: 'SELFCLOSINGTAG', name: 'br'} }
 
 pre_indent 
   = l:pre_indent_line+ {
-      return { 
-          type: 'pre',
-              content: extractInline(l) 
-      }
+      return [{type: 'TAG', name: 'pre'}]
+                    .concat( l
+                           , [{type: 'ENDTAG', name: 'pre'}]);
   }
 pre_indent_line = sol space l:inlineline { return l }
 
@@ -319,20 +332,14 @@ inline
               text += c[i];
           } else {
               if (text.length) {
-                  out.push({
-                      type: 'text',
-                      text: text
-                  });
+                  out.push({ type: "TEXT", value: text });
                   text = '';
               }
-              out.push(c[i]);
+              out.concat(c[i]);
           }
       }
       if (text.length) {
-          out.push({
-              type: 'text',
-              text: text
-          });
+          out.push({ type: 'TEXT', value: text });
       }
       return out;
 }
@@ -347,21 +354,16 @@ inlineline
               text += c[i];
           } else {
               if (text.length) {
-                  out.push({
-                      type: 'text',
-                      text: text
-                  });
+                  out.push({type: 'TEXT', value: text});
                   text = '';
               }
               out.push(c[i]);
           }
       }
       if (text.length) {
-          out.push({
-              text: text,
-              //annotations: []
-          });
+          out.push({type: 'TEXT', value: text});
       }
+      //dp('inlineline out:', print_r(out));
       return out;
 }
 
@@ -380,10 +382,7 @@ inline_element
 comment
   = '<!--' c:comment_chars* '-->' 
     (space* newline space* comment)* {
-        return {
-            type: 'comment',
-            text: c.join('')
-        }
+        return { type: 'COMMENT', value: c.join('') };
     }
 
 comment_chars
@@ -392,11 +391,11 @@ comment_chars
 
 extlink
   = "[" target:url " " text:extlink_text "]" {
-      return {
-          type: 'extlink',
-              target: target,
-              text: text
-      }
+      return [ { type: 'TAG', 
+                 name: 'a',
+                 attribs: [['href', target]] }
+             , {type: 'TEXT', value: text}
+             , {type: 'ENDTAG', name: 'a'}];
   }
 
 //  = "[" target:url text:extlink_text "]" { return { type: 'extlink', target: target, text: text } }
@@ -409,36 +408,29 @@ extlink_text
 
 template
   = "{{" target:link_target params:("|" p:template_param { return p })* "}}" {
-      var obj = {
-          type: 'template',
-          target: target
-      };
+      var obj = { type: 'SELFCLOSINGTAG', name: 'template', attribs: [['target', target]] }
       if (params && params.length) {
-          obj.params = params;
+          obj.attribs.push(params);
       }
       return obj;
   }
 
 template_param
   = name:template_param_name "=" c:template_param_text {
-      return {
-          name: name,
-              content: c
-      };
+      return [name, c];
   } / c:template_param_text {
-      return {
-          content: c
-      };
+      return [null, c];
   }
 
 tplarg 
   = "{{{" name:link_target params:("|" p:template_param { return p })* "}}}" {
-      var obj = {
-          type: 'tplarg',
-          name: name
+      var obj = { 
+            type: 'SELFCLOSINGTAG', 
+            name: 'templatearg', 
+            attribs: [['argname', name]]
       };
       if (params && params.length) {
-          obj.params = params;
+          obj.attribs.push(params);
       }
       return obj;
   }
@@ -463,13 +455,14 @@ template_param_text_chunk
 link
   = "[[" target:link_target text:("|" link_text)* "]]" {
       var obj = {
-          type: 'link',
-          target: target
+          type: 'TAG',
+          name: 'a',
+          attribs: [['data-type', 'internal']]
       };
       if (text && text.length) {
-          obj.text = text[0][1]; // ehhhh
+          obj.attribs.push(['href', text[0][1]]); // ehhhh
       }
-      return obj;
+      return [obj, {type: 'ENDTAG', name: 'a'}];
   }
 
 link_target
@@ -492,10 +485,8 @@ bold
     c:inlineline
     bold_marker {
         clearFlag('bold');
-        return {
-            type: 'b',
-            content: {text: c}
-        }
+        return [{ type: 'TAG', name: 'b' }]
+                .concat(c, [{type: 'ENDTAG', name: 'b'}]);
     }
   / bold_marker { clearFlag('bold'); return null }
 
@@ -510,11 +501,9 @@ italic
     italic_marker {
             clearFlag('italic');
             dp('ileave:' + pos);
-            return {
-                type: 'i',
-                content: {text: c}
-            }
-        }
+            return [{ type: 'TAG', name: 'i' }]
+                    .concat(c, [{ type: 'ENDTAG', name: 'i'}]);
+    }
   / italic_marker { clearFlag('italic'); return null }
 
 italic_marker
@@ -530,25 +519,24 @@ ref = ref_full / ref_empty
 /* Can we do backreferences to genericize this? */
 ref_full
   = start:ref_start ">" content:ref_content* close:ref_end {
-      return {
-          type: 'ext',
-              name: 'ref',
-              params: start.params,
-              ws: start.ws,
-              content: content,
-              close: close
-      }
+      return [
+        { type: 'TAG',
+          name: 'ext',
+          attribs: [['data-extname', 'ref']]
+              .concat(start.params, [['data-startws', start.ws]])}, 
+        content, 
+        {type: 'ENDTAG', name: 'ref'}
+      ];
 }
 
 ref_empty
   = start:ref_start close:(space* "/>") {
-      return {
-          type: 'ext',
-          name: 'ref',
-          ws: start.ws,
-          params: start.params,
-          close: close
-      }
+      return [{ type: 'SELFCLOSINGTAG',
+               name: 'ext',
+               attribs: [['data-extname', 'ref']]
+                          .concat(start.params
+                                 ,[['data-startws', start.ws]])
+      }];
 }
 
 ref_start
@@ -565,7 +553,7 @@ ref_end
 }
 
 ref_content
-  = !ref_end a:(inline) {
+  = !ref_end a:inline { // XXX: ineffective syntactic stop
   return a;
 }
 
@@ -574,25 +562,27 @@ references = references_full / references_empty
 
 references_full
   = start:references_start ">" content:references_content* close:references_end {
-      return {
-          type: 'ext',
-          name: 'references',
-          params: start.params,
-          ws: start.ws,
-          content: content,
-          close: close
-      }
+      return [ 
+          { type: 'TAG',
+            name: 'ext',
+            attribs: [['data-extname', 'references']]
+                        .concat(start.params
+                               ,[['data-startws', start.ws]])
+          },
+          content,
+          { type: 'ENDTAG', name: 'ext' }
+      ];
   }
 
 references_empty
   = start:references_start close:(space* "/>") {
-      return {
-          type: 'ext',
-          name: 'references',
-          ws: start.ws,
-          params: start.params,
-          close: close
-      }
+      return
+          [{ type: 'SELFCLOSINGTAG',
+             name: 'ext',
+             attribs: [['data-extname', 'references']]
+                        .concat(start.params
+                               ,[['data-startws', start.ws]])
+          }];
   }
 
 references_start
@@ -609,14 +599,14 @@ references_end
   }
 
 references_content
-  = !references_end a:(inline) {
+  = !references_end a:inline {
       return a;
   }
 
 
 ext_param
   = space* name:ext_param_name "=" val:ext_param_val {
-      val.name = name;
+      val[0] = name;
       return val;
   }
 
@@ -626,9 +616,9 @@ ext_param_name
 }
 
 ext_param_val
-  = t:[0-9A-Za-z]+ { return {text: t.join('') } }
-  / "'" t:[^'>]+ "'" { return { quote: "'", text: t.join('') } }
-  / '"' t:[^">]+ '"' { return { quote: '"', text: t.join('') } }
+  = t:[0-9A-Za-z]+ { return [null, t.join('')]; }
+  / "'" t:[^'>]+ "'" { return [null, unquote("'", t.join(''))]; }
+  / '"' t:[^">]+ '"' { return [null, unquote('"', t.join(''))]; }
 
 lists = es:(dtdd / li)+
 {
@@ -643,10 +633,10 @@ lists = es:(dtdd / li)+
             flatEs.push(ei);
         }
     }
-    return {
-        type: 'list',
-            children: flatEs
-    }
+    return [ { type: 'TAG',
+               name: 'ul'} ] // XXX!!
+                .concat(flatEs
+                       ,[{ type: 'ENDTAG', name: 'ul' }]);
 }
 
 li = sol
@@ -654,38 +644,33 @@ li = sol
      c:inlineline
      &newline 
 {
-    return {
-        type: 'listItem',
-        attributes: {
-            styles: bulletsToTypes(bullets)
-        },
-        content: extractInline(c)
-    };
+    return [ { type: 'TAG', 
+               name: 'li', 
+               attribs: [['data-styles', bullets]] }
+           , c
+           , { type: 'ENDTAG', name: 'li' }
+           ];
 }
 
 dtdd = sol
        bullets:list_char+
-       c:(inline_element / [^:\n])+
+       c:(inline_element / (n:[^:\n] { return {type: 'TEXT', value: n}; }))+
        ":"
-       d:(inline_element / [^\n])+
+       d:(inline_element / (n:[^\n] { return {type: 'TEXT', value: n}; }))+
        &newline 
 {
     // reject rule if bullets do not end in semicolon
     if (bullets[bullets.length - 1] != ';') {
         return null;
     } else {
-        return [
-        {
-            type: 'listItem',
-                attributes: {styles: bulletsToTypes(bullets)},
-                content: extractInline(c)
-        }, {
-            type: 'listItem',
-                attributes: {styles: bulletsToTypes(
-                        bullets.slice(0, bullets.length - 1) + ':')},
-                content: extractInline(d)
-        }
-        ]
+        return [ { type: 'TAG', name: 'dl', attribs: [['data-styles', bullets]] }
+               , { type: 'TAG', name: 'dt' } ]
+                .concat( c
+                       , [ {type: 'ENDTAG', name: 'dt'}
+                         , {type: 'TAG', name: 'dd'} ]
+                       , d 
+                       , [ {type: 'ENDTAG', name: 'dd'}
+                         , {type: 'ENDTAG', name: 'dl'} ]);
     }
 }
 
@@ -697,19 +682,23 @@ list_char = [*#:;]
 
 table 
   = tas:table_start c:table_caption? b:table_body? table_end { 
-      var res = {type: 'table'}
+      var res = {type: 'TAG', name: 'table'}
       var body = b !== '' ? b : [];
-      if (c !== '') {
-          res.children = [c].concat(body); 
-      } else { 
-          res.children = body;
-      }
       if (tas.length > 0) {
           // FIXME: actually parse and build structure
-          res.attributes = { unparsed: tas } 
+          res.attribs = [['data-unparsed', tas.join('')]];
       }
+
+      if (c !== '') {
+          var caption = [{type: 'TAG', name: 'caption'}]
+                        .concat(c, [{type: 'ENDTAG', name: 'caption'}]);
+      } else {
+          var caption = [];
       //dp(print_r(res));
-      return res;
+
+          return [res].concat(caption, body,
+                [{type: 'ENDTAG', name: 'table'}]);
+      }
   }
 
 table_start 
@@ -729,10 +718,7 @@ table_attribs
 table_caption 
   = newline
     "|+" c:inline* { 
-        return {
-            type: 'tableCaption',
-                content: c[0]
-        }
+        return c;
     }
 
 table_body 
@@ -749,20 +735,16 @@ table_body
 
 table_firstrow 
   = td:table_data+ { 
-      return {
-          type: 'tableRow',
-          children: td
-      };
+      return [{ type: 'TAG', name: 'tr' }]
+             .concat(td, [{type: 'ENDTAG', name: 'tr'}]);
   }
 
 table_row 
   = & { dp("table row enter"); return true; }
     newline
     "|-" thtd_attribs? space* td:(table_data / table_header)* { 
-        return {
-            type: 'tableRow',
-                children: td
-        };
+        return [{type: 'TAG', name: 'tr'}]
+               .concat(td, [{type: 'ENDTAG', name: 'tr'}]);
     }
 
 table_data 
@@ -772,22 +754,16 @@ table_data
     a:thtd_attribs? 
     td:(!inline_breaks anyblock)* { 
         dp("table data result: " + print_r(td) + ", attribts: " + print_r(a));
-        return {
-            type: 'tableCell',
-                attributes: { unparsed: a },
-                children: td
-        };
+        return [{ type: 'TAG', name: 'td', attribs: [['data-unparsed', a]]}]
+               .concat(td, [{type: 'ENDTAG', name: 'td'}]);
     }
 
 table_header
   = ("!!" / newline "!") 
      a:thtd_attribs?
      c:inline {
-         return { 
-             type: 'tableHeading',
-                 attributes: { unparsed: a },
-                 children: c
-         }
+         return [{type: 'TAG', name: 'th', attribs: [['data-unparsed', a]]}]
+                .concat(c, [{type: 'ENDTAG', name: 'th'}]);
      }
 
 thtd_attribs
@@ -804,7 +780,34 @@ table_end = newline? "|}" { clearFlag('table'); }
  * split off text into content nodes
  * convert inlines into annotations
  * change contents into children
+ *
+ * { text: text, 
+ *   annotations: [(normal annotations)], 
+ *   maybeannotations: [
+ *      { type: 'something', 
+ *        side: MA_START, 
+ *        tag: { start: x, length: y } 
+ *      }
+ *   ]
+ * }
+ *  offsets in annotations: presume maybeannotations are actually text
+ *  -> need to transform annotations if match found
+ *  -> format annotations, comments can run to the end (re-opened after
+ *     block-level tags); only closed on table cells, object,?
+ *  -> other annotations (images, templates etc) are limited by block-level
+ *     elements, tightly bound
+ *  
+ *  Block-level elements
+ *  --------------------
+ *  - Need some early clean-up to provide structure and offsets
+ *  - Establish scope limits for some inlines
+ *  - Line-based balanced by construction
+ *  - HTML tags need balancing/ matching / implicit close
+ *  - content in illegal places (e.g. between table and td tags) needs foster
+ *    parenting
+ *  - grammar will match outermost pair if unmatched pairs are recognized as
+ *    tokens (or as text)
+ *  - post-processing needed, but has to be limited by scope
  */
-
 /* Tabs do not mix well with the hybrid production syntax */
 /* vim: et:ts=4:sw=4:cindent */

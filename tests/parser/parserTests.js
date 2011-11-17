@@ -109,6 +109,42 @@ function processArticle(item) {
 function nodeToHtml(node) {
 	return $('<div>').append(node).html();
 }
+    /* Temporary debugging help. Is there anything similar in JS or a library? */
+    var print_r = function (arr, level) {
+
+        var dumped_text = "";
+        if (!level) level = 0;
+
+        //The padding given at the beginning of the line.
+        var level_padding = "";
+        var bracket_level_padding = "";
+
+        for (var j = 0; j < level + 1; j++) level_padding += "  ";
+        for (var b = 0; b < level; b++) bracket_level_padding += "  ";
+
+        if (typeof(arr) == 'object') { //Array/Hashes/Objects 
+            dumped_text += "Array\n";
+            dumped_text += bracket_level_padding + "(\n";
+            for (var item in arr) {
+
+                var value = arr[item];
+
+                if (typeof(value) == 'object') { //If it is an array,
+                    dumped_text += level_padding + "[" + item + "] => ";
+                    dumped_text += print_r(value, level + 2);
+                } else {
+                    dumped_text += level_padding + "[" + item + "] => '" + value + "'\n";
+                }
+
+            }
+            dumped_text += bracket_level_padding + ")\n\n";
+        } else { //Strings/Chars/Numbers etc.
+            dumped_text = "=>" + arr + "<=(" + typeof(arr) + ")";
+        }
+
+        return dumped_text;
+
+    };
 
 function processTest(item) {
 	if (!('title' in item)) {
@@ -137,16 +173,16 @@ function processTest(item) {
 					'references': MWReferencesTagHook
 				}
 			});
-			var res = es.HtmlSerializer.stringify(tree,environment);
-                        if (err) {
-                            console.log('RENDER FAIL', err);
-                        } else {
-                            console.log('EXPECTED:');
-                            console.log(item.result + "\n");
+			//var res = es.HtmlSerializer.stringify(tree,environment);
+			if (err) {
+				console.log('RENDER FAIL', err);
+			} else {
+				console.log('EXPECTED:');
+				console.log(item.result + "\n");
 
-                            console.log('RENDERED:');
-                            console.log(res + "\n");
-                        }
+				console.log('RENDERED:');
+				console.log(print_r(tree));
+			}
 		}
 	});
 }

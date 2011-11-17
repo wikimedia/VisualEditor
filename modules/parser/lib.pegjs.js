@@ -3823,6 +3823,7 @@ PEG.compiler = {
     }
 
     var source = this.emitter(ast);
+	//console.log(source);
     var result = eval(source);
     result._source = source;
 
