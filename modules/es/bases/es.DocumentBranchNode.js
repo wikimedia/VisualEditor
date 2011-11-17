@@ -282,11 +282,12 @@ es.DocumentBranchNode.prototype.getIndexFromOffset = function( offset ) {
  * @method
  * @param {es.Range} range Range to select nodes within
  * @param {Boolean} [shallow] Do not recurse into child nodes of child nodes
+ * @param {Number} [offset] Used for recursive invocations. Callers should not pass this parameter
  * @returns {Array} List of objects with 'node', 'range' and 'globalRange' properties describing nodes which are
  * covered by the range and the range within the node that is covered. If an entire node is covered, 'range' is
  * absent but 'globalRange' is still set
  */
-es.DocumentBranchNode.prototype.selectNodes = function( range, shallow ) {
+es.DocumentBranchNode.prototype.selectNodes = function( range, shallow, offset ) {
 	if ( typeof range === 'undefined' ) {
 		range = new es.Range( 0, this.model.getContentLength() );
 	} else {
@@ -301,8 +302,8 @@ es.DocumentBranchNode.prototype.selectNodes = function( range, shallow ) {
 		end = range.end,
 		startInside,
 		endInside,
-		childNode,
-		result;
+		childNode;
+	offset = offset || 0;
 	
 	if ( start < 0 ) {
 		throw 'The start offset of the range is negative';
@@ -314,7 +315,7 @@ es.DocumentBranchNode.prototype.selectNodes = function( range, shallow ) {
 		if ( end > this.getContentLength() ) {
 			throw 'The end offset of the range is past the end of the node';
 		}
-		return [{ 'node': this, 'range': new es.Range( start, end ), 'globalRange': new es.Range( start, end ) }];
+		return [{ 'node': this, 'range': new es.Range( start, end ), 'globalRange': new es.Range( start + offset, end + offset ) }];
 	}
 	
 	// This node has children, loop over them
@@ -326,7 +327,7 @@ es.DocumentBranchNode.prototype.selectNodes = function( range, shallow ) {
 		
 		if ( start == end && ( start == left - 1 || start == right + 1 ) ) {
 			// Empty range outside of any node
-			return [{ 'node': this, 'range': new es.Range( start, end ), 'globalRange': new es.Range( start, end ) }];
+			return [{ 'node': this, 'range': new es.Range( start, end ), 'globalRange': new es.Range( start + offset, end + offset ) }];
 		}
 		
 		startInside = start >= left && start <= right; // is the start inside childNode?
@@ -344,19 +345,12 @@ es.DocumentBranchNode.prototype.selectNodes = function( range, shallow ) {
 					{
 						'node': childNode,
 						'range': new es.Range( start - left, end - left ),
-						'globalRange': new es.Range( start, end )
+						'globalRange': new es.Range( start + offset, end + offset )
 					}
 				];
 			} else {
 				// Recurse into childNode
-				nodes = childNode.selectNodes( new es.Range( start - left, end - left ) );
-				// Adjust globalRange
-				// TODO: do this with an extra parameter
-				for ( j = 0; j < nodes.length; j++ ) {
-					if ( nodes[j].globalRange !== undefined ) {
-						nodes[j].globalRange = es.Range.newFromTranslatedRange( nodes[j].globalRange, left );
-					}
-				}
+				nodes = childNode.selectNodes( new es.Range( start - left, end - left ), false, left + offset );
 			}
 			// Since the start and end are both inside childNode, we know for sure that we're
 			// done, so return
@@ -368,18 +362,10 @@ es.DocumentBranchNode.prototype.selectNodes = function( range, shallow ) {
 				nodes.push( {
 					'node': childNode,
 					'range': new es.Range( start - left, right - left ),
-					'globalRange': new es.Range( start, right )
+					'globalRange': new es.Range( start + offset, right + offset )
 				} );
 			} else {
-				result = childNode.selectNodes( new es.Range( start - left, right - left ) );
-				// Adjust globalRange
-				// TODO: do this with an extra parameter
-				for ( j = 0; j < result.length; j++ ) {
-					if ( result[j].globalRange !== undefined ) {
-						result[j].globalRange = es.Range.newFromTranslatedRange( result[j].globalRange, left );
-					}
-				}
-				nodes = nodes.concat( result );
+				nodes = nodes.concat( childNode.selectNodes( new es.Range( start - left, right - left ), false, left + offset ) );
 			}
 		} else if ( endInside ) {
 			// The end is inside childNode but the start isn't
@@ -388,18 +374,10 @@ es.DocumentBranchNode.prototype.selectNodes = function( range, shallow ) {
 				nodes.push( {
 					'node': childNode,
 					'range': new es.Range( 0, end - left ),
-					'globalRange': new es.Range( left, end )
+					'globalRange': new es.Range( left + offset, end + offset )
 				} );
 			} else {
-				result = childNode.selectNodes( new es.Range( 0, end - left ) );
-				// Adjust globalRange
-				// TODO: do this with an extra parameter
-				for ( j = 0; j < result.length; j++ ) {
-					if ( result[j].globalRange !== undefined ) {
-						result[j].globalRange = es.Range.newFromTranslatedRange( result[j].globalRange, left );
-					}
-				}
-				nodes = nodes.concat( result );
+				nodes = nodes.concat( childNode.selectNodes( new es.Range( 0, end - left ), false, left + offset ) );
 			}
 			// We've found the end, so we're done
 			return nodes;
@@ -407,19 +385,19 @@ es.DocumentBranchNode.prototype.selectNodes = function( range, shallow ) {
 			// end is between childNode and this.children[i+1]
 			// start is not inside childNode, so the selection covers
 			// all of childNode, then ends
-			nodes.push( { 'node': childNode, 'globalRange': new es.Range( left - 1, right + 1 ) } );
+			nodes.push( { 'node': childNode, 'globalRange': new es.Range( left - 1 + offset, right + 1 + offset ) } );
 			// We've reached the end so we're done
 			return nodes;
 		} else if ( start == left - 1 ) {
 			// start is between this.children[i-1] and childNode
 			// end is not inside childNode, so the selection covers
 			// all of childNode and more
-			nodes.push( { 'node': childNode, 'globalRange': new es.Range( left - 1, right + 1 ) } );
+			nodes.push( { 'node': childNode, 'globalRange': new es.Range( left - 1 + offset, right + 1 + offset ) } );
 		} else if ( nodes.length > 0 ) {
 			// Neither the start nor the end is inside childNode, but nodes is non-empty,
 			// so childNode must be between the start and the end
 			// Add the entire node, so no range property
-			nodes.push( { 'node': childNode, 'globalRange': new es.Range( left - 1, right + 1 ) } );
+			nodes.push( { 'node': childNode, 'globalRange': new es.Range( left - 1 + offset, right + 1 + offset ) } );
 		}
 		
 		// Move left to the start of this.children[i+1] for the next iteration
