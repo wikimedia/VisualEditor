@@ -139,7 +139,7 @@ test( 'es.DocumentBranchNode.getOffsetFromNode', 6, function() {
 	}
 } );
 
-test( 'es.DocumentBranchNode.selectNodes', 75, function() {
+test( 'es.DocumentBranchNode.selectNodes', 77, function() {
 
 	// selectNodes tests
 
@@ -839,7 +839,7 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			'input': new es.Range( 2, 10 ),
 			'output': [
 				{ 'node': big.children[0], 'range': new es.Range( 1, 3 ), 'globalRange': new es.Range( 2, 4 ) },
-				{ 'node': big.children[1], 'range': new es.Range( 0, 4 ), 'globalRange': new es.Range( 6, 10 ) }
+				{ 'node': big.children[1].children[0].children[0].children[0], 'range': new es.Range( 0, 1 ), 'globalRange': new es.Range( 9, 10 ) }
 			],
 			'desc': 'Select from before the b to after the d'
 		},
@@ -860,7 +860,8 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 			'input': new es.Range( 9, 20 ),
 			'output': [
 				{ 'node': big.children[1].children[0].children[0].children[0], 'range': new es.Range( 0, 1 ), 'globalRange': new es.Range( 9, 10 ) },
-				{ 'node': big.children[1].children[0].children[0].children[1], 'range': new es.Range( 0, 8 ), 'globalRange': new es.Range( 12, 20 ) }
+				{ 'node': big.children[1].children[0].children[0].children[1].children[0], 'globalRange': new es.Range( 12, 17 ) },
+				{ 'node': big.children[1].children[0].children[0].children[1].children[1].children[0], 'range': new es.Range( 0, 1 ), 'globalRange': new es.Range( 19, 20 ) }
 			],
 			'desc': 'Select from before the d to after the f, with recursion'
 		},
@@ -873,6 +874,27 @@ test( 'es.DocumentBranchNode.selectNodes', 75, function() {
 				{ 'node': big.children[1], 'range': new es.Range( 3, 14 ), 'globalRange': new es.Range( 9, 20 ) }
 			],
 			'desc': 'Select from before the d to after the f, without recursion'
+		},
+		// Test 76
+		{
+			'node': big,
+			'input': new es.Range( 3, 9 ),
+			'output': [
+				{ 'node': big.children[0], 'range': new es.Range( 2, 3 ), 'globalRange': new es.Range( 3, 4 ) },
+				{ 'node': big.children[1].children[0].children[0].children[0], 'range': new es.Range( 0, 0 ), 'globalRange': new es.Range( 9, 9 ) }
+			],
+			'desc': 'Select from before the c to before the d'
+		},
+		// Test 77
+		{
+			'node': big,
+			'input': new es.Range( 3, 9 ),
+			'shallow': true,
+			'output': [
+				{ 'node': big.children[0], 'range': new es.Range( 2, 3 ), 'globalRange': new es.Range( 3, 4 ) },
+				{ 'node': big.children[1], 'range': new es.Range( 0, 3 ), 'globalRange': new es.Range( 6, 9 ) }
+			],
+			'desc': 'Select from before the c to before the d, without recursion'
 		}
 	];
 

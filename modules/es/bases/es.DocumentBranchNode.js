@@ -301,7 +301,8 @@ es.DocumentBranchNode.prototype.selectNodes = function( range, shallow ) {
 		end = range.end,
 		startInside,
 		endInside,
-		childNode;
+		childNode,
+		result;
 	
 	if ( start < 0 ) {
 		throw 'The start offset of the range is negative';
@@ -350,6 +351,7 @@ es.DocumentBranchNode.prototype.selectNodes = function( range, shallow ) {
 				// Recurse into childNode
 				nodes = childNode.selectNodes( new es.Range( start - left, end - left ) );
 				// Adjust globalRange
+				// TODO: do this with an extra parameter
 				for ( j = 0; j < nodes.length; j++ ) {
 					if ( nodes[j].globalRange !== undefined ) {
 						nodes[j].globalRange = es.Range.newFromTranslatedRange( nodes[j].globalRange, left );
@@ -361,20 +363,44 @@ es.DocumentBranchNode.prototype.selectNodes = function( range, shallow ) {
 			return nodes;
 		} else if ( startInside ) {
 			// The start is inside childNode but the end isn't
-			// Add a range from the start of the range to the end of childNode
-			nodes.push( {
-				'node': childNode,
-				'range': new es.Range( start - left, right - left ),
-				'globalRange': new es.Range( start, right )
-			} );
+			if ( shallow || !childNode.children ) {
+				// Add a range from the start of the range to the end of childNode
+				nodes.push( {
+					'node': childNode,
+					'range': new es.Range( start - left, right - left ),
+					'globalRange': new es.Range( start, right )
+				} );
+			} else {
+				result = childNode.selectNodes( new es.Range( start - left, right - left ) );
+				// Adjust globalRange
+				// TODO: do this with an extra parameter
+				for ( j = 0; j < result.length; j++ ) {
+					if ( result[j].globalRange !== undefined ) {
+						result[j].globalRange = es.Range.newFromTranslatedRange( result[j].globalRange, left );
+					}
+				}
+				nodes = nodes.concat( result );
+			}
 		} else if ( endInside ) {
 			// The end is inside childNode but the start isn't
-			// Add a range from the start of childNode to the end of the range
-			nodes.push( {
-				'node': childNode,
-				'range': new es.Range( 0, end - left ),
-				'globalRange': new es.Range( left, end )
-			} );
+			if ( shallow || !childNode.children ) {
+				// Add a range from the start of childNode to the end of the range
+				nodes.push( {
+					'node': childNode,
+					'range': new es.Range( 0, end - left ),
+					'globalRange': new es.Range( left, end )
+				} );
+			} else {
+				result = childNode.selectNodes( new es.Range( 0, end - left ) );
+				// Adjust globalRange
+				// TODO: do this with an extra parameter
+				for ( j = 0; j < result.length; j++ ) {
+					if ( result[j].globalRange !== undefined ) {
+						result[j].globalRange = es.Range.newFromTranslatedRange( result[j].globalRange, left );
+					}
+				}
+				nodes = nodes.concat( result );
+			}
 			// We've found the end, so we're done
 			return nodes;
 		} else if ( end == right + 1 ) {
