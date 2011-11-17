@@ -816,11 +816,10 @@ es.DocumentModel.prototype.prepareInsertion = function( offset, data ) {
  * To resolve these issues in a predictable way the following rules must be obeyed:
  *     1. Structural elements are retained unless the range being removed covers the entire element
  *     2. Elements can only be merged if they are
- *        2a. of the same type
- *        2b. of the same depth 
- *        2c. share at least one ancestor fo the same type
- *     3. Merge takes place at the highest ancestor that both nodes share when each ancestral step
- *        has the same type and depth 
+ *        2a. Same type
+ *        2b. Same depth 
+ *        2c. Types match at each level up to a common ancestor 
+ *     3. Merge takes place at the highest common ancestor
  * 
  * @method
  * @param {es.Range} range
