@@ -125,7 +125,7 @@ es.TransactionProcessor.prototype.getScope = function( node, data ) {
 		}
 	}
 	if ( maxDepth > 0 ) {
-		for ( i = 1; i < maxDepth; i++ ) {
+		for ( i = 0; i < maxDepth - 1; i++ ) {
 			node = node.getParent();
 		}
 	}
