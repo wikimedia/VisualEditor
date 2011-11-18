@@ -23,6 +23,7 @@ PegParser.prototype.parseToTree = function(text, callback) {
 			out = parser.parse(text);
 		} catch (e) {
 			err = e;
+			console.trace();
 		} finally {
 			callback(out, err);
 		}

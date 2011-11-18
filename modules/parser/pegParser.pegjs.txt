@@ -28,43 +28,7 @@
     };
 
 
-
-    /* Temporary debugging help. Is there anything similar in JS or a library? */
-    var print_r = function (arr, level) {
-
-        var dumped_text = "";
-        if (!level) level = 0;
-
-        //The padding given at the beginning of the line.
-        var level_padding = "";
-        var bracket_level_padding = "";
-
-        for (var j = 0; j < level + 1; j++) level_padding += "  ";
-        for (var b = 0; b < level; b++) bracket_level_padding += "  ";
-
-        if (typeof(arr) == 'object') { //Array/Hashes/Objects 
-            dumped_text += "Array\n";
-            dumped_text += bracket_level_padding + "(\n";
-            for (var item in arr) {
-
-                var value = arr[item];
-
-                if (typeof(value) == 'object') { //If it is an array,
-                    dumped_text += level_padding + "[" + item + "] => ";
-                    dumped_text += print_r(value, level + 2);
-                } else {
-                    dumped_text += level_padding + "[" + item + "] => '" + value + "'\n";
-                }
-
-            }
-            dumped_text += bracket_level_padding + ")\n\n";
-        } else { //Strings/Chars/Numbers etc.
-            dumped_text = "=>" + arr + "<=(" + typeof(arr) + ")";
-        }
-
-        return dumped_text;
-
-    };
+    var pp = function ( s ) { return JSON.stringify(s, null, 2); }
 
     // Convert list prefixes to a list of WikiDom list styles
     var bulletsToTypes = function (bullets) {
@@ -92,7 +56,7 @@
 
     // return [text [annotations]]
     var extractText = function ( node, offset ) {
-        dp("extract: " + print_r(node));
+        dp("extract: " + pp(node));
         if (typeof node === 'string') {
             return [node, []];
         } else if ($.isArray(node)) {
@@ -121,7 +85,7 @@
             }
             return texts.join('');
         } else {
-            throw ("extract failed: " + print_r(node));
+            throw ("extract failed: " + pp(node));
         }
     };
     */
@@ -165,7 +129,7 @@ space
 
 // Start of line
 sol = (newline / & { return pos === 0; } { return true; }) 
-      cn:(comment n:newline? { return n })? {
+      cn:(c:comment n:newline? { return [c, n] })? {
           return cn;
       }
 
@@ -177,7 +141,7 @@ toplevelblock
   = & { blockStart = pos; return true; } b:block {
     b = flatten(b);
     var bs = b[0];
-    dp('toplevelblock:' + print_r(b) + bs);
+    dp('toplevelblock:' + pp(b));
     if (bs.attribs === undefined) {
         bs.attribs = [];
     }
@@ -190,7 +154,15 @@ block
   = (sol space* &newline)? bl:block_lines { return bl; }
   / para
   / comment
-  / (s:sol { return [{type: 'TEXT', value: s}]; })
+  / (s:sol { 
+      if (s) {
+        return [s, {type: 'NEWLINE'}]; 
+      } else {
+        return [{type: 'NEWLINE'}]; 
+      }
+    }
+  )
+
 
 // Block structures with start-of-line wiki syntax
 block_lines
@@ -290,7 +262,7 @@ para_lines
       if (s !== '') {
           res.push(s)
       }
-      //console.log('paralines' + print_r(res.concat(c, cs, [{type: 'ENDTAG', name: 'p'}])));
+      //console.log('paralines' + pp(res.concat(c, cs, [{type: 'ENDTAG', name: 'p'}])));
       return res.concat(c, cs, [{type: 'ENDTAG', name: 'p'}]);
   }
 
@@ -306,9 +278,9 @@ pre_indent_line = sol space l:inlineline { return l }
 
 // Syntax that stops inline expansion
 inline_breaks
-  = //& { console.log(print_r(syntaxFlags)); return true; }
+  = //& { console.log(pp(syntaxFlags)); return true; }
     & { return syntaxFlags['table']; } 
-    a:(newline [!|] / '||' / '!!' / '|}') { dp("table break" + print_r(a)); return true; }
+    a:(newline [!|] / '||' / '!!' / '|}') { dp("table break" + pp(a)); return true; }
   / & { return syntaxFlags['italic']; } italic_marker { return true; }
   / & { return syntaxFlags['bold']; } bold_marker { return true; }
   / & { return syntaxFlags['linkdesc']; } link_end { return true; }
@@ -326,21 +298,21 @@ inline_breaks
 inline
   = c:(text / inline_element / (!inline_breaks ch:. { return ch; }))+ {
       var out = [];
-      var text = '';
+      var text = [];
       c = flatten(c);
       for (var i = 0; i < c.length; i++) {
           if (typeof c[i] == 'string') {
-              text += c[i];
+              text.push(c[i]);
           } else {
               if (text.length) {
-                  out.push({ type: "TEXT", value: text });
-                  text = '';
+                  out.push({ type: "TEXT", value: text.join('') });
+                  text = [];
               }
               out.concat(c[i]);
           }
       }
       if (text.length) {
-          out.push({ type: 'TEXT', value: text });
+          out.push({ type: 'TEXT', value: text.join('') });
       }
       return out;
 }
@@ -348,23 +320,23 @@ inline
 inlineline
   = c:(text / !inline_breaks (inline_element / [^\n]))+ {
       var out = [];
-      var text = '';
+      var text = [];
       c = flatten(c);
       for (var i = 0; i < c.length; i++) {
           if (typeof c[i] == 'string') {
-              text += c[i];
+              text.push(c[i]);
           } else {
               if (text.length) {
-                  out.push({type: 'TEXT', value: text});
-                  text = '';
+                  out.push({type: 'TEXT', value: text.join('')});
+                  text = [];
               }
               out.push(c[i]);
           }
       }
       if (text.length) {
-          out.push({type: 'TEXT', value: text});
+          out.push({type: 'TEXT', value: text.join('')});
       }
-      //dp('inlineline out:', print_r(out));
+      //dp('inlineline out:', pp(out));
       return out;
 }
 
@@ -383,7 +355,7 @@ inline_element
 comment
   = '<!--' c:comment_chars* '-->' 
     (space* newline space* comment)* {
-        return { type: 'COMMENT', value: c.join('') };
+        return [{ type: 'COMMENT', value: c.join('') }];
     }
 
 comment_chars
@@ -623,20 +595,9 @@ ext_param_val
 
 lists = es:(dtdd / li)+
 {
-    // Flatten es
-    var esLen = es.length;
-    var flatEs = [];
-    for (var i = 0; i < esLen; i++) {
-        var ei = es[i];
-        if ($.isArray(ei)) {
-            flatEs = flatEs.concat(ei);
-        } else {
-            flatEs.push(ei);
-        }
-    }
     return [ { type: 'TAG',
                name: 'ul'} ] // XXX!!
-                .concat(flatEs
+                .concat(flatten(es)
                        ,[{ type: 'ENDTAG', name: 'ul' }]);
 }
 
@@ -685,21 +646,22 @@ table
   = tas:table_start c:table_caption? b:table_body? table_end { 
       var res = {type: 'TAG', name: 'table'}
       var body = b !== '' ? b : [];
+      dp("body: " + pp(body));
       if (tas.length > 0) {
           // FIXME: actually parse and build structure
           res.attribs = [['data-unparsed', tas.join('')]];
       }
 
-      if (c !== '') {
+      if (c != '') {
           var caption = [{type: 'TAG', name: 'caption'}]
                         .concat(c, [{type: 'ENDTAG', name: 'caption'}]);
       } else {
           var caption = [];
-      //dp(print_r(res));
-
-          return [res].concat(caption, body,
-                [{type: 'ENDTAG', name: 'table'}]);
       }
+      //dp(pp(res));
+
+      return [res].concat(caption, body,
+              [{type: 'ENDTAG', name: 'table'}]);
   }
 
 table_start 
@@ -708,7 +670,7 @@ table_start
      & { setFlag('table'); return true; }
      ta:table_attribs* 
      space* { 
-         //dp("table_start " + print_r(ta) + ", pos:" + pos);
+         //dp("table_start " + pp(ta) + ", pos:" + pos);
          return ta;
      }
   / sol "{|" { clearFlag('table'); return null; }
@@ -726,11 +688,11 @@ table_body
   = & { dp("table_body enter"); return true; }
     firstrow:table_firstrow otherrows:table_row* { 
       /* dp('table first and otherrows: ' 
-       * + print_r([firstrow].concat(otherrows))); */
+       * + pp([firstrow].concat(otherrows))); */
       return [firstrow].concat(otherrows); 
   }
   / otherrows:table_row* {
-      //dp('table otherrows: ' + print_r(otherrows));
+      //dp('table otherrows: ' + pp(otherrows));
       return otherrows;
   }
 
@@ -754,7 +716,7 @@ table_data
     ! [}+-]
     a:thtd_attribs? 
     td:(!inline_breaks anyblock)* { 
-        dp("table data result: " + print_r(td) + ", attribts: " + print_r(a));
+        dp("table data result: " + pp(td) + ", attribts: " + pp(a));
         return [{ type: 'TAG', name: 'td', attribs: [['data-unparsed', a]]}]
                .concat(td, [{type: 'ENDTAG', name: 'td'}]);
     }

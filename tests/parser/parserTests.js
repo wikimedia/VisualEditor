@@ -10,6 +10,8 @@
  * 2011-07-20 <brion@pobox.com>
  */
 
+"use strict";
+
 var fs = require('fs'),
 	path = require('path');
 
@@ -29,6 +31,9 @@ function _import(filename, symbols) {
 	})
 }
 
+// needed for html5 parser adapter
+//var events = require('events');
+
 // For now most modules only need this for $.extend and $.each :)
 global.$ = require('jquery');
 
@@ -40,10 +45,13 @@ var pj = path.join;
 // Local CommonJS-friendly libs
 global.PEG = _require(pj('parser', 'lib.pegjs.js'));
 
+
 // Our code...
 _import(pj('parser', 'mediawiki.parser.peg.js'), ['PegParser']);
 _import(pj('parser', 'mediawiki.parser.environment.js'), ['MWParserEnvironment']);
 _import(pj('parser', 'ext.cite.taghook.ref.js'), ['MWRefTagHook']);
+
+_require(pj('parser', 'mediawiki.html5TokenEmitter.js'));
 
 // WikiDom and serializers
 _require(pj('es', 'es.js'));
@@ -109,44 +117,10 @@ function processArticle(item) {
 function nodeToHtml(node) {
 	return $('<div>').append(node).html();
 }
-    /* Temporary debugging help. Is there anything similar in JS or a library? */
-    var print_r = function (arr, level) {
 
-        var dumped_text = "";
-        if (!level) level = 0;
-
-        //The padding given at the beginning of the line.
-        var level_padding = "";
-        var bracket_level_padding = "";
-
-        for (var j = 0; j < level + 1; j++) level_padding += "  ";
-        for (var b = 0; b < level; b++) bracket_level_padding += "  ";
-
-        if (typeof(arr) == 'object') { //Array/Hashes/Objects 
-            dumped_text += "Array\n";
-            dumped_text += bracket_level_padding + "(\n";
-            for (var item in arr) {
-
-                var value = arr[item];
-
-                if (typeof(value) == 'object') { //If it is an array,
-                    dumped_text += level_padding + "[" + item + "] => ";
-                    dumped_text += print_r(value, level + 2);
-                } else {
-                    dumped_text += level_padding + "[" + item + "] => '" + value + "'\n";
-                }
-
-            }
-            dumped_text += bracket_level_padding + ")\n\n";
-        } else { //Strings/Chars/Numbers etc.
-            dumped_text = "=>" + arr + "<=(" + typeof(arr) + ")";
-        }
-
-        return dumped_text;
-
-    };
 
 function processTest(item) {
+	var tokenizer = new FauxHTML5.Tokenizer();
 	if (!('title' in item)) {
 		console.log(item);
 		throw new Error('Missing title from test case.');
@@ -163,6 +137,7 @@ function processTest(item) {
         console.log("INPUT:");
         console.log(item.input + "\n");
 
+
 	parser.parseToTree(item.input + "\n", function(tree, err) {
 		if (err) {
 			console.log('PARSE FAIL', err);
@@ -174,6 +149,7 @@ function processTest(item) {
 				}
 			});
 			//var res = es.HtmlSerializer.stringify(tree,environment);
+			processTokens(tree, tokenizer);
 			if (err) {
 				console.log('RENDER FAIL', err);
 			} else {
@@ -181,11 +157,23 @@ function processTest(item) {
 				console.log(item.result + "\n");
 
 				console.log('RENDERED:');
-				console.log(print_r(tree));
+				//console.log(JSON.stringify(tree, null, 2));
+				console.log(tokenizer.parser.document.innerHTML);
 			}
 		}
 	});
 }
+
+function processTokens ( tokens, tokenizer ) {
+	tokenizer.processToken({type: 'TAG', name: 'body'});
+	// Process all tokens
+	for (var i = 0, length = tokens.length; i < length; i++) {
+		tokenizer.processToken(tokens[i]);
+	}
+	// And signal the end
+	tokenizer.processToken({type: 'END'});
+}
+
 
 cases.forEach(function(item) {
 	if (typeof item == 'object') {
