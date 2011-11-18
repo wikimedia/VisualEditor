@@ -323,6 +323,7 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 			}
 			break;
 		case 8: // Backspace
+			this.cursor.initialBias = this.cursor.initialLeft = null;
 			if ( this.selection.from === this.selection.to ) {
 				var	sourceOffset = this.selection.to,
 					targetOffset = this.documentView.getModel().getRelativeContentOffset( sourceOffset, -1),
@@ -369,6 +370,7 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 			}
 			break;
 		case 46: // Delete
+			this.cursor.initialBias = this.cursor.initialLeft = null;
 			if ( this.selection.from === this.selection.to ) {
 				var	sourceOffset = this.documentView.getModel().getRelativeContentOffset( this.selection.to, 1),
 					targetOffset = this.selection.to,
@@ -413,6 +415,7 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 			}
 			break;
 		case 13: // Enter
+			this.cursor.initialBias = this.cursor.initialLeft = null;
 			if ( this.selection.from === this.selection.to ) {
 				var node = this.documentView.getNodeFromOffset( this.selection.to, false ),
 					nodeOffset = this.documentView.getOffsetFromNode( node, false );
@@ -451,6 +454,7 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 			e.preventDefault();
 			break;
 		default: // Insert content (maybe)
+			this.cursor.initialBias = this.cursor.initialLeft = null;
 			if ( this.keyboard.keydownTimeout ) {
 				clearTimeout( this.keyboard.keydownTimeout );
 			}
