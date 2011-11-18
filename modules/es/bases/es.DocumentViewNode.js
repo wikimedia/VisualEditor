@@ -86,6 +86,19 @@ es.DocumentViewNode.prototype.getModel = function() {
 	return this.model;
 };
 
+es.DocumentViewNode.getSplitableNode = function( node ) {
+	var splitableNode = null;
+
+	es.DocumentNode.traverseUpstream( node, function( node ) {
+		var elementType = node.model.getElementType();
+		if ( splitableNode != null && es.DocumentView.splitRules[ elementType ].children === true ) {
+			return false;
+		}
+		splitableNode = es.DocumentView.splitRules[ elementType ].self ? node : null
+	} );
+	return splitableNode;
+};
+
 /* Inheritance */
 
 es.extendClass( es.DocumentViewNode, es.DocumentNode );
