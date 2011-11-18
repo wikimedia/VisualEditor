@@ -602,8 +602,8 @@ es.SurfaceView.prototype.moveCursor = function( direction, unit ) {
 
 	this.cursor.initialBias = (
 		( direction === 'right' && unit === 'line' ) ||
-		( direction === 'down' && unit === 'char' ) ||
-		( direction === 'up' && unit === 'char' ) ) ?
+		( this.cursor.initialBias && direction === 'down' && unit === 'char' ) ||
+		( this.cursor.initialBias && direction === 'up' && unit === 'char' ) ) ?
 			true :
 				false;
 
