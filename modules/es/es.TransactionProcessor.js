@@ -89,7 +89,8 @@ es.TransactionProcessor.prototype.process = function( method ) {
 };
 
 es.TransactionProcessor.prototype.rebuildNodes = function( newData, oldNodes, parent, index ) {
-	var remove = 0;
+	var newNodes = es.DocumentModel.createNodesFromData( newData ),
+		remove = 0;
 	if ( oldNodes ) {
 		if ( oldNodes[0] === oldNodes[0].getRoot() ) {
 			parent = oldNodes[0];
@@ -100,13 +101,34 @@ es.TransactionProcessor.prototype.rebuildNodes = function( newData, oldNodes, pa
 			index = parent.indexOf( oldNodes[0] );
 			remove = oldNodes.length;
 		}
+		// Try to preserve the first node
+		if (
+			// There must be an old and new node to preserve
+			newNodes.length &&
+			oldNodes.length &&
+			// Node types need to match
+			newNodes[0].type === oldNodes[0].type &&
+			// Only for leaf nodes
+			!newNodes[0].hasChildren()
+		) {
+			var newNode = newNodes.shift(),
+				oldNode = oldNodes.shift();
+			// Let's just leave this first node in place and adjust it's length
+			var newAttributes = newNode.getElement().attributes,
+				oldAttributes = oldNode.getElement().attributes;
+			if ( oldAttributes || newAttributes ) {
+				oldNode.getElement().attributes = newAttributes;
+			}
+			oldNode.adjustContentLength( newNode.getContentLength() - oldNode.getContentLength() );
+			index++;
+			remove--;
+		}
 	}
 	// Try to perform this in a single operation if possible, this reduces the number of UI updates
 	// TODO: Introduce a global for max argument length - 1024 is also assumed in es.insertIntoArray
-	var newNodes = es.DocumentModel.createNodesFromData( newData );
 	if ( newNodes.length < 1024 ) {
 		parent.splice.apply( parent, [index, remove].concat( newNodes ) );
-	} else {
+	} else if ( newNodes.length ) {
 		parent.splice.apply( parent, [index, remove] );
 		// Safe to call with arbitrary length of newNodes
 		es.insertIntoArray( parent, index, newNodes );
