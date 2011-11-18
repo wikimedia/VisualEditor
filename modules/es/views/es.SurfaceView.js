@@ -322,6 +322,42 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 		case 46: // Delete
 			break;
 		case 13: // Enter
+			if ( this.selection.from === this.selection.to ) {
+				var node = this.documentView.getNodeFromOffset( this.selection.to, false ),
+					nodeOffset = this.documentView.getOffsetFromNode( node, false );
+
+				if ( nodeOffset + node.getContentLength() + 1 === this.selection.to && node ===  es.DocumentViewNode.getSplitableNode( node ) ) {
+					var tx = this.documentView.model.prepareInsertion(
+						nodeOffset + node.getElementLength(),
+						[ { 'type': 'paragraph' }, { 'type': '/paragraph' } ]
+					);
+					this.documentView.model.commit( tx );
+					this.selection.from = this.selection.to = nodeOffset + node.getElementLength() + 1;
+					this.showCursor();					
+				} else {
+					var	stack = [],
+						splitable = false;
+	
+					es.DocumentNode.traverseUpstream( node, function( node ) {
+						var elementType = node.model.getElementType();
+						if ( splitable === true && es.DocumentView.splitRules[ elementType ].children === true ) {
+							return false;
+						}
+						stack.splice(
+							stack.length / 2,
+							0,
+							{ 'type': '/' + elementType },
+							{ 'type': elementType, 'attributes': es.copyObject( node.model.element.attributes ) }
+						);
+						splitable = es.DocumentView.splitRules[ elementType ].self;
+					} );
+					var tx = this.documentView.model.prepareInsertion( this.selection.to, stack );
+					this.documentView.model.commit( tx );
+					this.selection.from = this.selection.to = this.documentView.getModel().getRelativeContentOffset( this.selection.to, 1 );
+					this.showCursor();
+				}
+			}
+			e.preventDefault();
 			break;
 		default: // Insert content (maybe)
 			if ( this.keyboard.keydownTimeout ) {
