@@ -7,7 +7,9 @@
  * @param {es.SurfaceModel} model Surface model to view
  */
 es.SurfaceView = function( $container, model ) {
-	var _this = this;
+	// References for use in closures
+	var	_this = this,
+		$document = $( document );
 
 	es.EventEmitter.call( this );
 
@@ -15,12 +17,15 @@ es.SurfaceView = function( $container, model ) {
 	this.$window = $( window );
 	this.model = model;
 	this.selection = new es.Range();
-	this.previousSelection = null;
+
+	// Mac uses different mapping for keyboard shortcuts	
 	this.mac = navigator.userAgent.match(/mac/i) ? true : false;
 
 	this.model.getDocument().on( 'update', function() {
 		_this.emit( 'update' );
 	} );
+
+	this.previousSelection = null;
 	this.emitSelect = function() {
 		if ( _this.previousSelection ) {
 			if (
@@ -53,65 +58,55 @@ es.SurfaceView = function( $container, model ) {
 		selectingMode: null,
 		selectedRange: null
 	};
-	
+
 	this.cursor = {
 		$: $( '<div class="es-surfaceView-cursor"></div>' ).appendTo( this.$ ),
 		interval: null,
 		initialLeft: null,
 		initialBias: false
 	};
+
 	this.keyboard = {
 		selecting: false,
 		cursorAnchor: null,
 		keydownTimeout: null,
-		keys: {
-			shift: false,
-			//control: false,
-			//command: false,
-			//alt: false
-		}
+		keys: { shift: false }
 	};
-
-	// References for use in closures
-	var	surfaceView = this,
-		$document = $( document );
 
 	// MouseDown and DoubleClick on surface
 	this.$.on( {
 		'mousedown' : function(e) {
-			return surfaceView.onMouseDown( e );
+			return _this.onMouseDown( e );
 		}
 	} );
-	
+
 	// Hidden input
 	this.$input = $( '<textarea class="es-surfaceView-textarea" />' )
 		.prependTo( this.$ )
 		.on( {
 			'focus' : function() {
-				//console.log("focus");
 				$document.off( '.es-surfaceView' );
 				$document.on({
 					'mousemove.es-surfaceView': function(e) {
-						return surfaceView.onMouseMove( e );
+						return _this.onMouseMove( e );
 					},
 					'mouseup.es-surfaceView': function(e) {
-						return surfaceView.onMouseUp( e );
+						return _this.onMouseUp( e );
 					},
 					'keydown.es-surfaceView': function( e ) {
-						return surfaceView.onKeyDown( e );			
+						return _this.onKeyDown( e );			
 					},
 					'keyup.es-surfaceView': function( e ) {
-						return surfaceView.onKeyUp( e );		
+						return _this.onKeyUp( e );		
 					}
 				});
 			},
 			'blur': function( e ) {
-				//console.log("blur");
 				$document.off( '.es-surfaceView' );
-				surfaceView.hideCursor();
+				_this.hideCursor();
 			}
 		} ).focus();
-	
+
 	// First render
 	this.documentView.renderContent();
 
@@ -122,18 +117,20 @@ es.SurfaceView = function( $container, model ) {
 	};
 	
 	// Re-render when resizing horizontally
+	// TODO: Instead of re-rendering on every single 'resize' event wait till user is done with
+	// resizing - can be implemented with setTimeout
 	this.$window.resize( function() {
-		surfaceView.hideCursor();
-		surfaceView.dimensions.height = surfaceView.$window.height();
-		var width = surfaceView.$.width();
-		if ( surfaceView.dimensions.width !== width ) {
-			surfaceView.dimensions.width = width;
-			surfaceView.documentView.renderContent();
+		_this.hideCursor();
+		_this.dimensions.height = _this.$window.height();
+		var width = _this.$.width();
+		if ( _this.dimensions.width !== width ) {
+			_this.dimensions.width = width;
+			_this.documentView.renderContent();
 		}
 	} );
-	
+
 	this.$window.scroll( function() {
-		surfaceView.dimensions.scrollTop = surfaceView.$window.scrollTop();
+		_this.dimensions.scrollTop = _this.$window.scrollTop();
 	} );
 };
 
@@ -143,8 +140,6 @@ es.SurfaceView.prototype.onMouseDown = function( e ) {
 	if ( e.button === 0 ) { // left mouse button
 
 		var offset = this.documentView.getOffsetFromEvent( e );
-
-		//console.log('onMouseDown; offset: ' + offset);
 
 		if ( e.originalEvent.detail === 1 ) { // single click
 			this.mouse.selectingMode = 1; // used in mouseMove handler
@@ -245,22 +240,12 @@ es.SurfaceView.prototype.onMouseUp = function( e ) {
 };
 
 es.SurfaceView.prototype.onKeyDown = function( e ) {
-	var tx;
+	this.selection.normalize();
+
 	switch ( e.keyCode ) {
 		case 16: // Shift
 			this.keyboard.keys.shift = true;
 			this.keyboard.selecting = true;
-			break;
-		case 17: // Control
-			//this.keyboard.keys.control = true;
-			break;
-		case 18: // Alt
-			//this.keyboard.keys.alt = true;
-			break;
-		case 91: // Left Command in WebKit
-		case 93: // Right Command in WebKit
-		case 224: // Command in FireFox
-			//this.keyboard.keys.command = true;
 			break;
 		case 36: // Home
 			this.moveCursor( 'left', 'line' );
@@ -333,76 +318,10 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 			}
 			break;
 		case 8: // Backspace
-			this.selection.normalize();
-			
-			var range;
-
-			if ( this.selection.from === this.selection.to ) {
-				range = new es.Range(
-					this.documentView.getModel().getRelativeContentOffset( this.selection.from, -1 ),
-					this.selection.from
-				);
-			} else {
-				this.documentView.clearSelection();
-				range = this.selection;				
-			}
-
-			var tx = this.documentView.model.prepareRemoval( range );
-			this.documentView.model.commit ( tx );
-			this.selection.from = this.selection.to = range.start;
-			this.showCursor();
 			break;
 		case 46: // Delete
-			this.selection.normalize();
-
-			var range;
-
-			if ( this.selection.from === this.selection.to ) {
-				range = new es.Range(
-					this.documentView.getModel().getRelativeContentOffset( this.selection.from, 1 ),
-					this.selection.from
-				);
-			} else {
-				this.documentView.clearSelection();
-				range = this.selection;				
-			}
-
-			var tx = this.documentView.model.prepareRemoval( range );
-			this.documentView.model.commit ( tx );
-			this.selection.from = this.selection.to = range.start;
-			this.showCursor();
 			break;
 		case 13: // Enter
-			if ( this.selection.from === this.selection.to ) {
-				var	node = this.documentView.getNodeFromOffset( this.selection.to, false ).model,
-					nodeType,
-					stack = [];
-
-				while ( node ) {
-					nodeType = node.getElementType();
-					stack.splice(
-						stack.length / 2,
-						0,
-						{ 'type': '/' + nodeType },
-						{ 'type': nodeType, 'attributes': es.copyObject( node.element.attributes ) }
-					);
-					node = node.getParent();
-					if ( es.DocumentView.splitRules[ nodeType ].self === true ) {
-						nodeType = node.getElementType();
-						if ( es.DocumentView.splitRules[ nodeType ].children === true) {
-							break;
-						}
-					}
-				}
-
-				var tx = this.documentView.model.prepareInsertion( this.selection.to, stack );
-				this.documentView.model.commit( tx );
-				
-				this.selection.from = this.selection.to = this.documentView.getModel().getRelativeContentOffset( this.selection.to, 1 );
-				this.showCursor();
-				e.preventDefault();
-				return false;
-			}
 			break;
 		default: // Insert content (maybe)
 			if ( this.keyboard.keydownTimeout ) {
@@ -412,6 +331,20 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 			this.keyboard.keydownTimeout = setTimeout( function () {
 				surface.insertFromInput();
 			}, 10 );
+			break;
+	}
+	return true;
+};
+
+es.SurfaceView.prototype.onKeyUp = function( e ) {
+	switch ( e.keyCode ) {
+		case 16: // Shift
+			this.keyboard.keys.shift = false;
+			if ( this.keyboard.selecting ) {
+				this.keyboard.selecting = false;
+			}
+			break;
+		default:
 			break;
 	}
 	return true;
@@ -428,44 +361,17 @@ es.SurfaceView.prototype.insertFromInput = function() {
 	}
 };
 
-es.SurfaceView.prototype.onKeyUp = function( e ) {
-	switch ( e.keyCode ) {
-		case 16: // Shift
-			this.keyboard.keys.shift = false;
-			if ( this.keyboard.selecting ) {
-				this.keyboard.selecting = false;
-			}
-			break;
-		case 17: // Control
-			//this.keyboard.keys.control = false;
-			break;
-		case 18: // Alt
-			//this.keyboard.keys.alt = false;
-			break;
-		case 91: // Left Command in WebKit
-		case 93: // Right Command in WebKit
-		case 224: // Command in FireFox
-			//this.keyboard.keys.command = false;
-			break;
-		default:
-			break;
-	}
-	return true;
-};
+
 
 /**
  * @param {String} direction up | down | left | right
  * @param {String} unit char | word | line | node | page
  */
 es.SurfaceView.prototype.moveCursor = function( direction, unit ) {
-	//console.log('moveCursor; direction: ' + direction + ', unit: ' + unit);
-
 	if ( direction !== 'up' && direction !== 'down' ) {
 		this.cursor.initialLeft = null;
 	}
 
-	this.selection.normalize();
-	
 	var to;
 
 	switch ( direction ) {
