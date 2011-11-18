@@ -366,7 +366,7 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 					sourceSplitableNode = es.DocumentViewNode.getSplitableNode( sourceNode ),
 					targetSplitableNode = es.DocumentViewNode.getSplitableNode( targetNode );
 
-				if ( sourceNode === targetNode || ( sourceNode.model.getElementType() === targetNode.model.getElementType() && sourceSplitableNode.getParent() === targetSplitableNode.getParent() ) ) {
+				if ( sourceNode === targetNode /*|| ( sourceNode.model.getElementType() === targetNode.model.getElementType() && sourceSplitableNode.getParent() === targetSplitableNode.getParent() ) */) {
 					var tx = this.documentView.model.prepareRemoval(
 						new es.Range( targetOffset, sourceOffset )
 					);
