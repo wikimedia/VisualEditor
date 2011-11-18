@@ -172,8 +172,8 @@ es.SurfaceView.prototype.onMouseDown = function( e ) {
 			this.mouse.selectingMode = 3; // used in mouseMove handler
 			
 			var node = this.documentView.getNodeFromOffset( offset );
-			this.selection.from = this.documentView.getOffsetFromNode( node, false );
-			this.selection.to = this.selection.from + node.getElementLength() - 1;
+			this.selection.from = this.documentView.getOffsetFromNode( node, false ) + 1;
+			this.selection.to = this.selection.from + node.getElementLength() - 2;
 			this.mouse.selectedRange = this.selection.clone();
 		}
 
@@ -355,6 +355,12 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 					tx = this.documentView.model.prepareRemoval( range );
 					this.documentView.model.commit ( tx );
 				}
+			} else {
+				var tx = this.documentView.model.prepareRemoval( this.selection );
+				this.documentView.model.commit( tx );
+				this.documentView.clearSelection();
+				this.selection.to = this.selection.from;
+				this.showCursor();
 			}
 			break;
 		case 46: // Delete
@@ -393,6 +399,12 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 					tx = this.documentView.model.prepareRemoval( range );
 					this.documentView.model.commit ( tx );
 				}
+			} else {
+				var tx = this.documentView.model.prepareRemoval( this.selection );
+				this.documentView.model.commit( tx );
+				this.documentView.clearSelection();
+				this.selection.to = this.selection.from;
+				this.showCursor();
 			}
 			break;
 		case 13: // Enter
