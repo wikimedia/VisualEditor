@@ -233,7 +233,7 @@ es.TransactionProcessor.prototype.insert = function( op ) {
 		} else {
 			node = this.getScope( node, op.data );
 			offset = this.model.getOffsetFromNode( node );
-			index = node.getIndexFromOffset( this.cursor - offset );
+			//index = node.getIndexFromOffset( this.cursor - offset );
 		}
 		if ( es.DocumentModel.containsElementData( op.data ) ) {
 			// Perform insert on linear data model
