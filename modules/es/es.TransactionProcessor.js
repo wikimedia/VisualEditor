@@ -88,17 +88,23 @@ es.TransactionProcessor.prototype.process = function( method ) {
 	}
 };
 
+// TODO: document this. Various arguments are optional or nonoptional in different cases, that's confusing
+// so it needs to be documented well.
 es.TransactionProcessor.prototype.rebuildNodes = function( newData, oldNodes, parent, index ) {
 	var newNodes = es.DocumentModel.createNodesFromData( newData ),
 		remove = 0;
 	if ( oldNodes ) {
+		// Determine parent and index if not given
 		if ( oldNodes[0] === oldNodes[0].getRoot() ) {
+			// We know the values for parent and index in this case
+			// and don't have to compute them. Override any parent
+			// or index parameter passed.
 			parent = oldNodes[0];
 			index = 0;
 			remove = parent.getChildren().length;
 		} else {
-			parent = oldNodes[0].getParent();
-			index = parent.indexOf( oldNodes[0] );
+			parent = parent || oldNodes[0].getParent();
+			index = index || parent.indexOf( oldNodes[0] );
 			remove = oldNodes.length;
 		}
 		// Try to preserve the first node
@@ -264,16 +270,16 @@ es.TransactionProcessor.prototype.remove = function( op ) {
 	if ( es.DocumentModel.containsElementData( op.data ) ) {
 		// Figure out which nodes are covered by the removal
 		var ranges = this.model.selectNodes( new es.Range( this.cursor, this.cursor + op.data.length ) );
-		var oldNodes = [], newData = [], firstKeptNode = true, lastElement;
+		
+		// Build the list of nodes to rebuild and the data to keep
+		var oldNodes = [], newData = [], parent = null, index = null, firstKeptNode, lastKeptNode;
 		for ( var i = 0; i < ranges.length; i++ ) {
 			oldNodes.push( ranges[i].node );
 			if ( ranges[i].range !== undefined ) {
 				// We have to keep part of this node
-				if ( firstKeptNode ) {
+				if ( firstKeptNode === undefined ) {
 					// This is the first node we're keeping
-					// Keep its opening as well
-					newData.push( ranges[i].node.getElement() );
-					firstKeptNode = false;
+					firstKeptNode = ranges[i].node;
 				}
 				// Compute the start and end offset of this node
 				// We could do that with getOffsetFromNode() but
@@ -288,17 +294,76 @@ es.TransactionProcessor.prototype.remove = function( op ) {
 				// Append it to newData
 				newData = newData.concat( nodeData );
 				
-				lastElement = ranges[i].node.getElementType();
+				lastKeptNode = ranges[i].node;
 			}
 		}
-		if ( lastElement !== undefined ) {
-			// Keep the closing of the last element that was partially kept
-			newData.push( { 'type': '/' + lastElement } );
+		
+		// Surround newData with the right openings and closings if needed
+		if ( firstKeptNode !== undefined ) {
+			// There are a number of conceptually different cases here,
+			// but the algorithm for dealing with them is the same.
+			// 1. Removal within one node: firstKeptNode === lastKeptNode
+			// 2. Merge of siblings: firstKeptNode.getParent() === lastKeptNode.getParent()
+			// 3. Merge of arbitrary depth: firstKeptNode and lastKeptNode have a common ancestor
+			// Because #1 and #2 are special cases of #3 (merges with depth=0 and depth=1, respectively),
+			// the code below that deals with the general case (#3) and automatically covers
+			// #1 and #2 that way as well.
+			
+			// Simultaneously traverse upwards from firstKeptNode and lastKeptNode
+			// to find the common ancestor. On our way up, keep the element of each
+			// node we visit and verify that the transaction is a valid merge (i.e. it satisfies
+			// the merge criteria in prepareRemoval()'s canMerge()).
+			// FIXME: The code is essentially the same as canMerge(), merge these algorithms
+			var	n1 = firstKeptNode, n2 = lastKeptNode,
+				prevN1 = null, prevN2 = null,
+				openings = [], closings = [];
+			while ( n1 !== n2 ) {
+				// Verify the element types are equal
+				if ( n1.getElementType() !== n2.getElementType() ) {
+					throw 'Removal is not a valid merge: corresponding parents have different types ( ' +
+						n1.getElementType() + ' vs ' + n2.getElementType() + ' )';
+				}
+				// Record the opening of n1 and the closing of n2
+				openings.push( n1.getElement() );
+				closings.push( { 'type': '/' + n2.getElementType() } );
+				// Move up
+				prevN1 = n1;
+				prevN2 = n2;
+				n1 = n1.getParent();
+				n2 = n2.getParent();
+				if ( n1 === null || n2 === null ) {
+					// Reached a root, so no common ancestor or different depth
+					throw 'Removal is not a valid merge: nodes do not have a common ancestor or are not at the same depth';
+				}
+			}
+			
+			// Surround newData with the openings and closings
+			newData = openings.reverse().concat( newData, closings );
+			
+			// Rebuild oldNodes if needed
+			// This only happens for merges with depth > 1
+			if ( prevN1 !== oldNodes[0] ) {
+				oldNodes = [ prevN1 ];
+				parent = n1;
+				index = n1.indexOf( prevN1 ); // Pass to rebuildNodes() so it's not recomputed
+				if ( index === -1 ) {
+					throw "Tree corruption detected: node isn't in its parent's children array";
+				}
+				var foundPrevN2 = false;
+				for ( var j = index + 1; !foundPrevN2 && j < n1.getChildren().length; j++ ) {
+					oldNodes.push( n1.getChildren()[j] );
+					foundPrevN2 = n1.getChildren()[j] === prevN2;
+				}
+				if ( !foundPrevN2 ) {
+					throw "Tree corruption detected: node isn't in its parent's children array";
+				}
+			}
 		}
+		
 		// Update the linear model
 		this.model.data.splice( this.cursor, op.data.length );
 		// Perform the rebuild. This updates the model tree
-		this.rebuildNodes( newData, oldNodes );
+		this.rebuildNodes( newData, oldNodes, parent, index );
 	} else {
 		// We're removing content only. Take a shortcut
 		// Get the node we are removing content from

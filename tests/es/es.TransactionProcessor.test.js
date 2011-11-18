@@ -1,6 +1,6 @@
 module( 'es' );
 
-test( 'es.TransactionProcessor', 18, function() {
+test( 'es.TransactionProcessor', 29, function() {
 	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
 
 	// FIXME: These tests shouldn't use prepareFoo() because those functions
@@ -243,4 +243,109 @@ test( 'es.TransactionProcessor', 18, function() {
 		'table',
 		'rollback keeps model tree up to date with paragraph split (table follows the paragraph)'
 	);
+	
+	var listItemMerge = documentModel.prepareRemoval( new es.Range( 14, 19 ) );
+	
+	// Test 19
+	es.TransactionProcessor.commit( documentModel, listItemMerge );
+	deepEqual(
+		documentModel.getData( new es.Range( 12, 22 ) ),
+		[
+			{ 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } },
+			{ 'type': 'paragraph' },
+			'f',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': 'listItem', 'attributes': { 'styles': ['number'] } },
+			{ 'type': 'paragraph' },
+			'g',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' }
+		],
+		'removal merges two list items with paragraphs'
+	);
+	
+	// Test 20
+	deepEqual( documentModel.children[1].children[0].children[0].children[1].children.length, 2,
+		'removal keeps model tree up to date with list item merge (number of children)'
+	);
+	
+	// Test 21
+	deepEqual(
+		documentModel.children[1].children[0].children[0].children[1].children[0].children[0].getContent(),
+		[ 'f' ],
+		'removal keeps model tree up to date with list item merge (first list item)'
+	);
+	
+	// Test 22
+	deepEqual(
+		documentModel.children[1].children[0].children[0].children[1].children[1].children[0].getContent(),
+		[ 'g' ],
+		'removal keeps model tree up to date with list item merge (second list item)'
+	);
+	
+	// Test 23
+	deepEqual(
+		documentModel.children[2].getContent(),
+		[ 'h' ],
+		'rollback keeps model tree up to date with list item split (final paragraph)'
+	);
+	
+	// Test 24
+	es.TransactionProcessor.rollback( documentModel, listItemMerge );
+	deepEqual(
+		documentModel.getData( new es.Range( 12, 27 ) ),
+		[
+			{ 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } },
+			{ 'type': 'paragraph' },
+			'e',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': 'listItem', 'attributes': { 'styles': ['bullet', 'bullet'] } },
+			{ 'type': 'paragraph' },
+			'f',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': 'listItem', 'attributes': { 'styles': ['number'] } },
+			{ 'type': 'paragraph' },
+			'g',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' }
+		],
+		'rollback reverses list item merge (splits the list items)'
+	);
+	
+	// Test 25
+	deepEqual( documentModel.children[1].children[0].children[0].children[1].children.length, 3,
+		'rollback keeps model tree up to date with list item split (number of children)'
+	);
+	
+	// Test 26
+	deepEqual(
+		documentModel.children[1].children[0].children[0].children[1].children[0].children[0].getContent(),
+		[ 'e' ],
+		'rollback keeps model tree up to date with list item split (first list item)'
+	);
+	
+	// Test 27
+	deepEqual(
+		documentModel.children[1].children[0].children[0].children[1].children[1].children[0].getContent(),
+		[ 'f' ],
+		'rollback keeps model tree up to date with list item split (second list item)'
+	);
+	
+	// Test 28
+	deepEqual(
+		documentModel.children[1].children[0].children[0].children[1].children[2].children[0].getContent(),
+		[ 'g' ],
+		'rollback keeps model tree up to date with list item split (third list item)'
+	);
+	
+	// Test 29
+	deepEqual(
+		documentModel.children[2].getContent(),
+		[ 'h' ],
+		'rollback keeps model tree up to date with list item split (final paragraph)'
+	);
+	
 } );
