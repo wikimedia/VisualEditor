@@ -145,8 +145,8 @@ toplevelblock
     if (bs.attribs === undefined) {
         bs.attribs = [];
     }
-    bs.attribs.push(['startPos', blockStart]);
-    bs.attribs.push(['endPos', pos]);
+    bs.attribs.push(['data-startPos', blockStart]);
+    bs.attribs.push(['data-endPos', pos]);
     return b;
   }
 
@@ -432,10 +432,13 @@ link
           name: 'a',
           attribs: [['data-type', 'internal']]
       };
+      obj.attribs.push(['href', target]);
       if (text && text.length) {
-          obj.attribs.push(['href', text[0][1]]); // ehhhh
+          var textTokens = text[0][1]; // XXX
+      } else {
+          var textTokens = [{type: 'TEXT', value: target}];
       }
-      return [obj, {type: 'ENDTAG', name: 'a'}];
+      return [obj].concat(textTokens, [{type: 'ENDTAG', name: 'a'}]);
   }
 
 link_target
@@ -446,7 +449,7 @@ link_text
           x:inlineline { return x } 
       )* { 
           clearFlag('linkdesc')
-              return h.join(''); 
+              return h; 
       }
   / & { clearFlag('linkdesc') } { return null; }
 
