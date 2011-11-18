@@ -592,10 +592,29 @@ es.SurfaceView.prototype.moveCursor = function( direction, unit ) {
 						} else if (fakePosition.top > top + this.dimensions.height + this.dimensions.scrollTop ) {
 							break;
 						}
-						fakePosition = this.documentView.getRenderedPositionFromOffset(
-							this.documentView.getOffsetFromRenderedPosition( fakePosition ),
-							this.cursor.initialBias
+						offset = this.documentView.getOffsetFromRenderedPosition( fakePosition );
+						fakePosition1 = this.documentView.getRenderedPositionFromOffset(
+							offset,
+							false
 						);
+						fakePosition2 = this.documentView.getRenderedPositionFromOffset(
+							offset,
+							true
+						);
+						
+						if(this.cursor.initialBias) {
+							if(fakePosition1.top != fakePosition2.top) {
+								fakePosition = fakePosition2;
+								newBias = true;
+							} else {
+								fakePosition = fakePosition1;
+								//newBias = true;
+							}
+						} else {
+							fakePosition = fakePosition1;
+							newBias = false;
+						}
+						
 						fakePosition.left = this.cursor.initialLeft;
 					} while ( position.top === fakePosition.top );
 					to = this.documentView.getOffsetFromRenderedPosition( fakePosition );
@@ -604,12 +623,13 @@ es.SurfaceView.prototype.moveCursor = function( direction, unit ) {
 			break;		
 	}
 
-	this.cursor.initialBias = (
-		( direction === 'right' && unit === 'line' ) ||
-		( this.cursor.initialBias && direction === 'down' && unit === 'char' ) ||
-		( this.cursor.initialBias && direction === 'up' && unit === 'char' ) ) ?
-			true :
-				false;
+	if(typeof newBias !== 'undefined') {
+		this.cursor.initialBias = newBias;
+	}
+	
+	if( direction != 'up' && direction != 'down' ) {
+		this.cursor.initialBias = direction === 'right' && unit === 'line'  ? true : false;
+	}
 
 	if ( this.keyboard.keys.shift && this.selection.from !== to) {
 		this.selection.to = to;
