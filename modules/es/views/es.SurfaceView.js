@@ -571,7 +571,8 @@ es.SurfaceView.prototype.moveCursor = function( direction, unit ) {
 					 * reach the next/previous line
 					 */
 					var position = this.documentView.getRenderedPositionFromOffset(
-						this.selection.to
+						this.selection.to,
+						this.cursor.initialBias
 					);
 					if ( this.cursor.initialLeft === null ) {
 						this.cursor.initialLeft = position.left;
@@ -588,7 +589,8 @@ es.SurfaceView.prototype.moveCursor = function( direction, unit ) {
 							break;
 						}
 						fakePosition = this.documentView.getRenderedPositionFromOffset(
-							this.documentView.getOffsetFromRenderedPosition( fakePosition )
+							this.documentView.getOffsetFromRenderedPosition( fakePosition ),
+							this.cursor.initialBias
 						);
 						fakePosition.left = this.cursor.initialLeft;
 					} while ( position.top === fakePosition.top );
@@ -598,8 +600,13 @@ es.SurfaceView.prototype.moveCursor = function( direction, unit ) {
 			break;		
 	}
 
-	this.cursor.initialBias =  direction === 'right' && unit === 'line' ? true : false;
-	
+	this.cursor.initialBias = (
+		( direction === 'right' && unit === 'line' ) ||
+		( direction === 'down' && unit === 'char' ) ||
+		( direction === 'up' && unit === 'char' ) ) ?
+			true :
+				false;
+
 	if ( this.keyboard.keys.shift && this.selection.from !== to) {
 		this.selection.to = to;
 		this.documentView.drawSelection( this.selection );
