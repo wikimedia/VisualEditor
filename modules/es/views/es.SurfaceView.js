@@ -170,10 +170,12 @@ es.SurfaceView.prototype.onMouseDown = function( e ) {
 
 		} else if ( e.originalEvent.detail >= 3 ) { // triple click
 			this.mouse.selectingMode = 3; // used in mouseMove handler
-			
-			var node = this.documentView.getNodeFromOffset( offset );
-			this.selection.from = this.documentView.getOffsetFromNode( node, false ) + 1;
-			this.selection.to = this.selection.from + node.getElementLength() - 2;
+
+			var node = this.documentView.getNodeFromOffset( offset ),
+				nodeOffset = this.documentView.getOffsetFromNode( node, false );
+
+			this.selection.from = this.documentView.getModel().getRelativeContentOffset( nodeOffset, 1 );
+			this.selection.to = this.documentView.getModel().getRelativeContentOffset( nodeOffset + node.getElementLength(), -1 );
 			this.mouse.selectedRange = this.selection.clone();
 		}
 
@@ -214,14 +216,17 @@ es.SurfaceView.prototype.onMouseMove = function( e ) {
 				this.selection.to = offset;
 			}
 		} else if ( this.mouse.selectingMode === 3 ) {
+
+			this.mouse.selectingMode = 3; // used in mouseMove handler
+
 			var nodeRange = this.documentView.getRangeFromNode(
 				this.documentView.getNodeFromOffset( offset )
 			);
 			if ( nodeRange.to <= this.mouse.selectedRange.from ) {
-				this.selection.to = nodeRange.from;
+				this.selection.to = this.documentView.getModel().getRelativeContentOffset( nodeRange.from, 1 );
 				this.selection.from = this.mouse.selectedRange.to;
 			} else {
-				this.selection.to = nodeRange.to;
+				this.selection.to = this.documentView.getModel().getRelativeContentOffset( nodeRange.to, -1 );
 				this.selection.from = this.mouse.selectedRange.from;
 			}	
 		}
@@ -359,7 +364,7 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 				var tx = this.documentView.model.prepareRemoval( this.selection );
 				this.documentView.model.commit( tx );
 				this.documentView.clearSelection();
-				this.selection.to = this.selection.from;
+				this.selection.from = this.selection.to = Math.min( this.selection.from, this.selection.to );
 				this.showCursor();
 			}
 			break;
@@ -403,7 +408,7 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 				var tx = this.documentView.model.prepareRemoval( this.selection );
 				this.documentView.model.commit( tx );
 				this.documentView.clearSelection();
-				this.selection.to = this.selection.from;
+				this.selection.from = this.selection.to = Math.min( this.selection.from, this.selection.to );
 				this.showCursor();
 			}
 			break;
@@ -480,11 +485,13 @@ es.SurfaceView.prototype.insertFromInput = function() {
 			var tx = this.documentView.model.prepareRemoval( this.selection );
 			this.documentView.model.commit( tx );
 			this.documentView.clearSelection();
+			this.selection.from = this.selection.to = Math.min( this.selection.from, this.selection.to );
 		}
 
 		var tx = this.documentView.model.prepareInsertion( this.selection.from, val.split('') );
 		this.documentView.model.commit ( tx );
-		this.selection.to = this.selection.from += val.length;
+		this.selection.from += val.length;
+		this.selection.to += val.length;
 		this.showCursor();
 	}
 };
