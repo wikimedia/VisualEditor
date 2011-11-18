@@ -354,9 +354,15 @@ es.SurfaceView.prototype.insertFromInput = function() {
 	var val = this.$input.val();
 	this.$input.val( '' );
 	if ( val.length > 0 ) {
-		var transaction = this.documentView.model.prepareInsertion( this.selection.to, val.split('') );
-		this.documentView.model.commit ( transaction );
-		this.selection.from = this.selection.to += val.length;
+		if ( this.selection.from != this.selection.to ) {
+			var tx = this.documentView.model.prepareRemoval( this.selection );
+			this.documentView.model.commit( tx );
+			this.documentView.clearSelection();
+		}
+
+		var tx = this.documentView.model.prepareInsertion( this.selection.from, val.split('') );
+		this.documentView.model.commit ( tx );
+		this.selection.to = this.selection.from += val.length;
 		this.showCursor();
 	}
 };
