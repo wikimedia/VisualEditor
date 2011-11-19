@@ -323,7 +323,6 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 			}
 			break;
 		case 8: // Backspace
-			this.cursor.initialBias = this.cursor.initialLeft = null;
 			if ( this.selection.from === this.selection.to ) {
 				var	sourceOffset = this.selection.to,
 					targetOffset = this.documentView.getModel().getRelativeContentOffset( sourceOffset, -1),
@@ -370,7 +369,6 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 			}
 			break;
 		case 46: // Delete
-			this.cursor.initialBias = this.cursor.initialLeft = null;
 			if ( this.selection.from === this.selection.to ) {
 				var	sourceOffset = this.documentView.getModel().getRelativeContentOffset( this.selection.to, 1),
 					targetOffset = this.selection.to,
@@ -415,7 +413,6 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 			}
 			break;
 		case 13: // Enter
-			this.cursor.initialBias = this.cursor.initialLeft = null;
 			if ( this.selection.from === this.selection.to ) {
 				var node = this.documentView.getNodeFromOffset( this.selection.to, false ),
 					nodeOffset = this.documentView.getOffsetFromNode( node, false );
@@ -454,7 +451,6 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 			e.preventDefault();
 			break;
 		default: // Insert content (maybe)
-			this.cursor.initialBias = this.cursor.initialLeft = null;
 			if ( this.keyboard.keydownTimeout ) {
 				clearTimeout( this.keyboard.keydownTimeout );
 			}
@@ -578,6 +574,7 @@ es.SurfaceView.prototype.moveCursor = function( direction, unit ) {
 						this.selection.to,
 						this.cursor.initialBias
 					);
+					
 					if ( this.cursor.initialLeft === null ) {
 						this.cursor.initialLeft = position.left;
 					}
@@ -585,6 +582,9 @@ es.SurfaceView.prototype.moveCursor = function( direction, unit ) {
 						i = 0,
 						step = direction === 'up' ? -5 : 5,
 						top = this.$.position().top;
+
+					this.cursor.initialBias = position.left > this.documentView.getNodeFromOffset( this.selection.to, false ).contentView.$.offset().left;
+
 					do {
 						fakePosition.top += ++i * step;
 						if ( fakePosition.top < top ) {
@@ -592,29 +592,10 @@ es.SurfaceView.prototype.moveCursor = function( direction, unit ) {
 						} else if (fakePosition.top > top + this.dimensions.height + this.dimensions.scrollTop ) {
 							break;
 						}
-						offset = this.documentView.getOffsetFromRenderedPosition( fakePosition );
-						fakePosition1 = this.documentView.getRenderedPositionFromOffset(
-							offset,
-							false
+						fakePosition = this.documentView.getRenderedPositionFromOffset(
+							this.documentView.getOffsetFromRenderedPosition( fakePosition ),
+							this.cursor.initialBias
 						);
-						fakePosition2 = this.documentView.getRenderedPositionFromOffset(
-							offset,
-							true
-						);
-						
-						if(this.cursor.initialBias) {
-							if(fakePosition1.top != fakePosition2.top) {
-								fakePosition = fakePosition2;
-								newBias = true;
-							} else {
-								fakePosition = fakePosition1;
-								//newBias = true;
-							}
-						} else {
-							fakePosition = fakePosition1;
-							newBias = false;
-						}
-						
 						fakePosition.left = this.cursor.initialLeft;
 					} while ( position.top === fakePosition.top );
 					to = this.documentView.getOffsetFromRenderedPosition( fakePosition );
@@ -623,12 +604,8 @@ es.SurfaceView.prototype.moveCursor = function( direction, unit ) {
 			break;		
 	}
 
-	if(typeof newBias !== 'undefined') {
-		this.cursor.initialBias = newBias;
-	}
-	
 	if( direction != 'up' && direction != 'down' ) {
-		this.cursor.initialBias = direction === 'right' && unit === 'line'  ? true : false;
+		this.cursor.initialBias = direction === 'right' && unit === 'line' ? true : false;
 	}
 
 	if ( this.keyboard.keys.shift && this.selection.from !== to) {
