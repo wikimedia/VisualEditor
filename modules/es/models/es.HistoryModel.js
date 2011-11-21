@@ -78,10 +78,10 @@ es.HistoryModel.prototype.commit = function( transaction, accumulate ) {
 	var absLengthDiff = Math.abs( transaction.getLengthDiff() );
 	// Unless we should intentionally accumulate transactions or this is the first one for this
 	// state, automatically push state
-	if ( !accumulate && !this.transactions.length ) {
+	if ( !accumulate && this.transactions.length ) {
 		if (
 			// If the transactions are of a different type
-			this.transactions[this.transactions.length].type !== transaction.type ||
+			this.transactions[this.transactions.length - 1].type !== transaction.type ||
 			// This transaction would make the state longer than the maximum length
 			this.transactionsDiff + absLengthDiff > this.maxTransactionsDiff
 		) {
@@ -168,3 +168,7 @@ es.HistoryModel.prototype.redo = function( steps ) {
 		}
 	}
 };
+
+/* Inheritance */
+
+es.extendClass( es.HistoryModel, es.EventEmitter );

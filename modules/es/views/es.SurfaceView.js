@@ -45,6 +45,9 @@ es.SurfaceView = function( $container, model ) {
 	this.documentView = new es.DocumentView( this.model.getDocument(), this );
 	this.$.append( this.documentView.$ );
 
+	// History
+	this.history = new es.HistoryModel( this.documentView.getModel() );
+
 	// Interaction state
 	
 	// There are three different selection modes available for mouse. Selection of:
@@ -164,7 +167,7 @@ es.SurfaceView.prototype.onMouseDown = function( e ) {
 		} else if ( e.originalEvent.detail === 2 ) { // double click
 			this.mouse.selectingMode = 2; // used in mouseMove handler
 			
-			var wordRange = this.documentView.model.getWordBoundaries( offset );
+			var wordRange = this.documentView.getModel().getWordBoundaries( offset );
 			if( wordRange ) {
 				this.selection = wordRange;
 				this.mouse.selectedRange = this.selection.clone();
@@ -211,7 +214,7 @@ es.SurfaceView.prototype.onMouseMove = function( e ) {
 		if ( this.mouse.selectingMode === 1 ) { // selection of chars
 			this.selection.to = offset;
 		} else if ( this.mouse.selectingMode === 2 ) { // selection of words
-			var wordRange = this.documentView.model.getWordBoundaries( offset );
+			var wordRange = this.documentView.getModel().getWordBoundaries( offset );
 			if ( wordRange ) {
 				if ( wordRange.to <= this.mouse.selectedRange.from ) {
 					this.selection.from = wordRange.from;
@@ -410,15 +413,15 @@ es.SurfaceView.prototype.handleDelete = function( backspace ) {
 		if ( sourceNode === targetNode ||
 			( typeof sourceSplitableNode !== 'undefined' &&
 			sourceSplitableNode.getParent()  === targetSplitableNode.getParent() ) ) {
-			tx = this.documentView.model.prepareRemoval(
+			tx = this.documentView.getModel().prepareRemoval(
 				new es.Range( targetOffset, sourceOffset )
 			);
-			this.documentView.model.commit ( tx );
+			this.history.commit( tx );
 		} else {
-			tx = this.documentView.model.prepareInsertion(
+			tx = this.documentView.getModel().prepareInsertion(
 				targetOffset, sourceNode.model.getContent()
 			);
-			this.documentView.model.commit( tx );
+			this.history.commit( tx );
 			
 			var nodeToDelete = sourceNode;
 			es.DocumentNode.traverseUpstream( nodeToDelete, function( node ) {
@@ -431,13 +434,13 @@ es.SurfaceView.prototype.handleDelete = function( backspace ) {
 			var range = new es.Range();
 			range.from = this.documentView.getOffsetFromNode( nodeToDelete, false );
 			range.to = range.from + nodeToDelete.getElementLength();
-			tx = this.documentView.model.prepareRemoval( range );
-			this.documentView.model.commit ( tx );
+			tx = this.documentView.getModel().prepareRemoval( range );
+			this.history.commit( tx );
 		}
 	} else {
 		// selection removal
-		tx = this.documentView.model.prepareRemoval( this.selection );
-		this.documentView.model.commit( tx );
+		tx = this.documentView.getModel().prepareRemoval( this.selection );
+		this.history.commit( tx );
 		this.documentView.clearSelection();
 		this.selection.from = this.selection.to = this.selection.start;
 		this.showCursor();
@@ -499,14 +502,14 @@ es.SurfaceView.prototype.insertFromInput = function() {
 	if ( val.length > 0 ) {
 		var tx;
 		if ( this.selection.from != this.selection.to ) {
-			tx = this.documentView.model.prepareRemoval( this.selection );
-			this.documentView.model.commit( tx );
+			tx = this.documentView.getModel().prepareRemoval( this.selection );
+			this.history.commit( tx );
 			this.documentView.clearSelection();
 			this.selection.from = this.selection.to =
 				Math.min( this.selection.from, this.selection.to );
 		}
-		tx = this.documentView.model.prepareInsertion( this.selection.from, val.split('') );
-		this.documentView.model.commit ( tx );
+		tx = this.documentView.getModel().prepareInsertion( this.selection.from, val.split('') );
+		this.history.commit( tx );
 		this.selection.from += val.length;
 		this.selection.to += val.length;
 		this.showCursor();
@@ -541,7 +544,7 @@ es.SurfaceView.prototype.moveCursor = function( direction, unit ) {
 							direction === 'left' ? -1 : 1
 					);
 					if ( unit === 'word' ) {
-						var wordRange = this.documentView.model.getWordBoundaries(
+						var wordRange = this.documentView.getModel().getWordBoundaries(
 							direction === 'left' ? to : offset
 						);
 						if ( wordRange ) {
@@ -565,7 +568,7 @@ es.SurfaceView.prototype.moveCursor = function( direction, unit ) {
 			switch ( unit ) {
 				case 'unit':
 					var toNode = null;
-					this.documentView.model.traverseLeafNodes(
+					this.documentView.getModel().traverseLeafNodes(
 						function( node  ) {
 							if ( toNode === null) {
 								toNode = node;
@@ -577,7 +580,7 @@ es.SurfaceView.prototype.moveCursor = function( direction, unit ) {
 						this.documentView.getNodeFromOffset( this.selection.to, false ).getModel(),
 						direction === 'up' ? true : false
 					);
-					to = this.documentView.model.getOffsetFromNode( toNode, false ) + 1;
+					to = this.documentView.getModel().getOffsetFromNode( toNode, false ) + 1;
 					break;
 				case 'char':
 					/*
