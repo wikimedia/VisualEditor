@@ -423,7 +423,8 @@ $(document).ready( function() {
 
 	var tools = {
 		'textStyle/bold': $( '#es-toolbar-bold' ),
-		'textStyle/italic': $( '#es-toolbar-italic' )
+		'textStyle/italic': $( '#es-toolbar-italic' ),
+		'link/internal': $( '#es-toolbar-link' )
 	};
 	surfaceView.on( 'select', function( range ) {
 		for ( var key in tools ) {
