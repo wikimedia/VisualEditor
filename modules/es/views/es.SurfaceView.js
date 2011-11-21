@@ -345,54 +345,7 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 			this.handleDelete();
 			break;
 		case 13: // Enter
-			if ( this.selection.from === this.selection.to ) {
-				var tx,
-					node = this.documentView.getNodeFromOffset( this.selection.to, false ),
-					nodeOffset = this.documentView.getOffsetFromNode( node, false );
-				
-				if (
-					nodeOffset + node.getContentLength() + 1 === this.selection.to &&
-					node ===  es.DocumentViewNode.getSplitableNode( node )
-				) {
-					tx = this.documentView.model.prepareInsertion(
-						nodeOffset + node.getElementLength(),
-						[ { 'type': 'paragraph' }, { 'type': '/paragraph' } ]
-					);
-					this.documentView.model.commit( tx );
-					this.selection.from = this.selection.to =
-						nodeOffset + node.getElementLength() + 1;
-					this.showCursor();					
-				} else {
-					var	stack = [],
-						splitable = false;
-	
-					es.DocumentNode.traverseUpstream( node, function( node ) {
-						var elementType = node.model.getElementType();
-						if (
-							splitable === true &&
-							es.DocumentView.splitRules[ elementType ].children === true
-						) {
-							return false;
-						}
-						stack.splice(
-							stack.length / 2,
-							0,
-							{ 'type': '/' + elementType },
-							{
-								'type': elementType,
-								'attributes': es.copyObject( node.model.element.attributes )
-							}
-						);
-						splitable = es.DocumentView.splitRules[ elementType ].self;
-					} );
-					tx = this.documentView.model.prepareInsertion( this.selection.to, stack );
-					this.documentView.model.commit( tx );
-					this.selection.from = this.selection.to =
-						this.documentView.getModel()
-							.getRelativeContentOffset( this.selection.to, 1 );
-					this.showCursor();
-				}
-			}
+			this.handleEnter();
 			e.preventDefault();
 			break;
 		default: // Insert content (maybe)
@@ -491,6 +444,55 @@ es.SurfaceView.prototype.handleDelete = function( backspace ) {
 	}
 };
 
+es.SurfaceView.prototype.handleEnter = function() {
+	if ( this.selection.from !== this.selection.to ) {
+		this.handleDelete();
+	}
+	var	node = this.documentView.getNodeFromOffset( this.selection.to, false ),
+		nodeOffset = this.documentView.getOffsetFromNode( node, false );
+
+	if (
+		nodeOffset + node.getContentLength() + 1 === this.selection.to &&
+		node ===  es.DocumentViewNode.getSplitableNode( node )
+	) {
+		var tx = this.documentView.model.prepareInsertion(
+			nodeOffset + node.getElementLength(),
+			[ { 'type': 'paragraph' }, { 'type': '/paragraph' } ]
+		);
+		this.documentView.model.commit( tx );
+		this.selection.from = this.selection.to = nodeOffset + node.getElementLength() + 1;
+		this.showCursor();		
+	} else {
+		var	stack = [],
+			splitable = false;
+
+		es.DocumentNode.traverseUpstream( node, function( node ) {
+			var elementType = node.model.getElementType();
+			if (
+				splitable === true &&
+				es.DocumentView.splitRules[ elementType ].children === true
+			) {
+				return false;
+			}
+			stack.splice(
+				stack.length / 2,
+				0,
+				{ 'type': '/' + elementType },
+				{
+					'type': elementType,
+					'attributes': es.copyObject( node.model.element.attributes )
+				}
+			);
+			splitable = es.DocumentView.splitRules[ elementType ].self;
+		} );
+		var tx = this.documentView.model.prepareInsertion( this.selection.to, stack );
+		this.documentView.model.commit( tx );
+		this.selection.from = this.selection.to =
+			this.documentView.getModel().getRelativeContentOffset( this.selection.to, 1 );
+		this.showCursor();
+	}
+};
+
 es.SurfaceView.prototype.insertFromInput = function() {
 	var val = this.$input.val();
 	this.$input.val( '' );
@@ -510,8 +512,6 @@ es.SurfaceView.prototype.insertFromInput = function() {
 		this.showCursor();
 	}
 };
-
-
 
 /**
  * @param {String} direction up | down | left | right
@@ -661,6 +661,15 @@ es.SurfaceView.prototype.showCursor = function() {
 		'top': position.top,
 		'height': position.bottom - position.top
 	});
+
+	// Auto scroll to cursor
+	var inputTop = this.$input.offset().top,
+		inputBottom = inputTop + position.bottom - position.top;	
+	if ( inputTop < this.dimensions.scrollTop ) {
+		this.$window.scrollTop( inputTop );
+	} else if ( inputBottom > ( this.dimensions.scrollTop + this.dimensions.height ) ) {
+		this.$window.scrollTop( inputBottom - this.dimensions.height );
+	}
 
 	// cursor blinking
 	if ( this.cursor.interval ) {
