@@ -354,13 +354,13 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 		case 90: // z (undo)
 			if ( e.ctrlKey ) {
 				this.history.undo();
-				break;
 			}
+			break;
 		case 89: // y (redo)
 			if ( e.ctrlKey ) {
 				this.history.redo();
-				break;
 			}
+			break;
 		default: // Insert content (maybe)
 			if ( this.keyboard.keydownTimeout ) {
 				clearTimeout( this.keyboard.keydownTimeout );
