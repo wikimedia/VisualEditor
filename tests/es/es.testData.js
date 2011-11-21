@@ -144,9 +144,9 @@ esTest.data = [
 	//  1 - Plain content
 	'a',
 	//  2 - Annotated content
-	['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
+	['b', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }],
 	//  3 - Annotated content
-	['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }],
+	['c', { 'type': 'textStyle/italic', 'hash': '{"type":"textStyle/italic"}' }],
 	//  4 - End of paragraph
 	{ 'type': '/paragraph' },
 	//  5 - Beginning of table

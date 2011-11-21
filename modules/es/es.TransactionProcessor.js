@@ -182,7 +182,7 @@ es.TransactionProcessor.prototype.applyAnnotations = function( to ) {
 			annotation = this.set[i];
 			// Auto-build annotation hash
 			if ( annotation.hash === undefined ) {
-				annotation.hash = es.DocumentModel.getAnnotationHash( annotation );
+				annotation.hash = es.DocumentModel.getHash( annotation );
 			}
 			for ( j = this.cursor; j < to; j++ ) {
 				// Auto-convert to array
@@ -199,7 +199,7 @@ es.TransactionProcessor.prototype.applyAnnotations = function( to ) {
 			annotation = this.clear[i];
 			// Auto-build annotation hash
 			if ( annotation.hash === undefined ) {
-				annotation.hash = es.DocumentModel.getAnnotationHash( annotation );
+				annotation.hash = es.DocumentModel.getHash( annotation );
 			}
 			for ( j = this.cursor; j < to; j++ ) {
 				var index = es.DocumentModel.getIndexOfAnnotation( this.model.data[j], annotation );

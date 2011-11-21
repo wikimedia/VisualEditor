@@ -18,8 +18,8 @@ test( 'es.TransactionProcessor', 29, function() {
 		[
 			{ 'type': 'paragraph', 'attributes': { 'test': 1 } },
 			'a',
-			['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
-			['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }],
+			['b', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }],
+			['c', { 'type': 'textStyle/italic', 'hash': '{"type":"textStyle/italic"}' }],
 			{ 'type': '/paragraph' }
 		],
 		'commit applies an element attribute change transaction to the content'
@@ -32,8 +32,8 @@ test( 'es.TransactionProcessor', 29, function() {
 		[
 			{ 'type': 'paragraph' },
 			'a',
-			['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
-			['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }],
+			['b', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }],
+			['c', { 'type': 'textStyle/italic', 'hash': '{"type":"textStyle/italic"}' }],
 			{ 'type': '/paragraph' }
 		],
 		'rollback reverses the effect of an element attribute change transaction on the content'
@@ -49,12 +49,12 @@ test( 'es.TransactionProcessor', 29, function() {
 		documentModel.getData( new es.Range( 0, 5 ) ),
 		[
 			{ 'type': 'paragraph' },
-			['a', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
-			['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
+			['a', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }],
+			['b', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }],
 			[
 				'c',
-				{ 'type': 'textStyle/italic', 'hash': '#textStyle/italic' },
-				{ 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }
+				{ 'type': 'textStyle/italic', 'hash': '{"type":"textStyle/italic"}' },
+				{ 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }
 			],
 			{ 'type': '/paragraph' }
 		],
@@ -68,8 +68,8 @@ test( 'es.TransactionProcessor', 29, function() {
 		[
 			{ 'type': 'paragraph' },
 			'a',
-			['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
-			['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }],
+			['b', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }],
+			['c', { 'type': 'textStyle/italic', 'hash': '{"type":"textStyle/italic"}' }],
 			{ 'type': '/paragraph' }
 		],
 		'rollback reverses the effect of a content annotation transaction on the content'
@@ -84,9 +84,9 @@ test( 'es.TransactionProcessor', 29, function() {
 		[
 			{ 'type': 'paragraph' },
 			'a',
-			['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
+			['b', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }],
 			'd',
-			['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }],
+			['c', { 'type': 'textStyle/italic', 'hash': '{"type":"textStyle/italic"}' }],
 			{ 'type': '/paragraph' }
 		],
 		'commit applies an insertion transaction to the content'
@@ -97,9 +97,9 @@ test( 'es.TransactionProcessor', 29, function() {
 		documentModel.getChildren()[0].getContent(),
 		[
 			'a',
-			['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
+			['b', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }],
 			'd',
-			['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }]
+			['c', { 'type': 'textStyle/italic', 'hash': '{"type":"textStyle/italic"}' }]
 		],
 		'commit keeps model tree up to date with insertions'
 	);
@@ -111,8 +111,8 @@ test( 'es.TransactionProcessor', 29, function() {
 		[
 			{ 'type': 'paragraph' },
 			'a',
-			['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
-			['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }],
+			['b', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }],
+			['c', { 'type': 'textStyle/italic', 'hash': '{"type":"textStyle/italic"}' }],
 			{ 'type': '/paragraph' }
 		],
 		'rollback reverses the effect of an insertion transaction on the content'
@@ -123,8 +123,8 @@ test( 'es.TransactionProcessor', 29, function() {
 		documentModel.getChildren()[0].getContent(),
 		[
 			'a',
-			['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
-			['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }]
+			['b', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }],
+			['c', { 'type': 'textStyle/italic', 'hash': '{"type":"textStyle/italic"}' }]
 		],
 		'rollback keeps model tree up to date with insertions'
 	);
@@ -157,8 +157,8 @@ test( 'es.TransactionProcessor', 29, function() {
 		[
 			{ 'type': 'paragraph' },
 			'a',
-			['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
-			['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }],
+			['b', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }],
+			['c', { 'type': 'textStyle/italic', 'hash': '{"type":"textStyle/italic"}' }],
 			{ 'type': '/paragraph' }
 		],
 		'rollback reverses the effect of a removal transaction on the content'
@@ -169,8 +169,8 @@ test( 'es.TransactionProcessor', 29, function() {
 		documentModel.getChildren()[0].getContent(),
 		[
 			'a',
-			['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
-			['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }]
+			['b', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }],
+			['c', { 'type': 'textStyle/italic', 'hash': '{"type":"textStyle/italic"}' }]
 		],
 		'rollback keeps model tree up to date with removals'
 	);
@@ -188,8 +188,8 @@ test( 'es.TransactionProcessor', 29, function() {
 			'a',
 			{ 'type': '/paragraph' },
 			{ 'type': 'paragraph' },
-			['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
-			['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }],
+			['b', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }],
+			['c', { 'type': 'textStyle/italic', 'hash': '{"type":"textStyle/italic"}' }],
 			{ 'type': '/paragraph' }
 		],
 		'commit applies an insertion transaction that splits the paragraph'
@@ -206,8 +206,8 @@ test( 'es.TransactionProcessor', 29, function() {
 	deepEqual(
 		documentModel.getChildren()[1].getContent(),
 		[
-			['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
-			['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }]
+			['b', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }],
+			['c', { 'type': 'textStyle/italic', 'hash': '{"type":"textStyle/italic"}' }]
 		],
 		'commit keeps model tree up to date with paragraph split (paragraph 2)'
 	);
@@ -219,8 +219,8 @@ test( 'es.TransactionProcessor', 29, function() {
 		[
 			{ 'type': 'paragraph' },
 			'a',
-			['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
-			['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }],
+			['b', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }],
+			['c', { 'type': 'textStyle/italic', 'hash': '{"type":"textStyle/italic"}' }],
 			{ 'type': '/paragraph' }
 		],
 		'rollback reverses the effect of a paragraph split on the content'
@@ -231,8 +231,8 @@ test( 'es.TransactionProcessor', 29, function() {
 		documentModel.getChildren()[0].getContent(),
 		[
 			'a',
-			['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
-			['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }]
+			['b', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }],
+			['c', { 'type': 'textStyle/italic', 'hash': '{"type":"textStyle/italic"}' }]
 		],
 		'rollback keeps model tree up to date with paragraph split (paragraphs are merged back)'
 	);

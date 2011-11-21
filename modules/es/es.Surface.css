@@ -1,5 +1,6 @@
 .es-surfaceView {
 	overflow: hidden;
+	font-size: 1em; /* to look more like MediaWiki use: 0.8em */;
 }
 
 .es-surfaceView-textarea {
@@ -47,7 +48,6 @@
 	margin-top: 0;
 	position: relative;
 	min-height: 1.5em;
-	font-size: 1em;
 }
 
 .es-listItemView > .es-paragraphView {
@@ -240,7 +240,8 @@
 .es-contentView-format-object a:link,
 .es-contentView-format-object a:visited,
 .es-contentView-format-object a:active {
-	color: blue;
+	color: #0645AD;
+	text-decoration: none;
 }
 
 .es-contentView-format-textStyle-italic,
@@ -254,7 +255,7 @@
 }
 
 .es-contentView-format-link {
-	color: blue;
+	color: #0645AD;
 	text-decoration: underline;
 }
 

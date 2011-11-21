@@ -93,8 +93,8 @@ test( 'es.DocumentModel.getContent', 6, function() {
 	deepEqual(
 		childNodes[0].getContent( new es.Range( 1, 3 ) ),
 		[
-			['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
-			['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }]
+			['b', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }],
+			['c', { 'type': 'textStyle/italic', 'hash': '{"type":"textStyle/italic"}' }]
 		],
 		'getContent can return an ending portion of the content'
 	);
@@ -102,14 +102,14 @@ test( 'es.DocumentModel.getContent', 6, function() {
 	// Test 2
 	deepEqual(
 		childNodes[0].getContent( new es.Range( 0, 2 ) ),
-		['a', ['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }]],
+		['a', ['b', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }]],
 		'getContent can return a beginning portion of the content'
 	);
 	
 	// Test 3
 	deepEqual(
 		childNodes[0].getContent( new es.Range( 1, 2 ) ),
-		[['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }]],
+		[['b', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }]],
 		'getContent can return a middle portion of the content'
 	);
 	
@@ -134,9 +134,9 @@ test( 'es.DocumentModel.getContent', 6, function() {
 test( 'es.DocumentModel.getIndexOfAnnotation', 3, function() {
 	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
 	
-	var bold = { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' },
-		italic = { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' },
-		nothing = { 'type': 'nothing', 'hash': '#nothing' },
+	var bold = { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' },
+		italic = { 'type': 'textStyle/italic', 'hash': '{"type":"textStyle/italic"}' },
+		nothing = { 'type': 'nothing', 'hash': '{"type":"nothing"}' },
 		character = ['a', bold, italic];
 	
 	// Test 1
@@ -198,12 +198,12 @@ test( 'es.DocumentModel.getAnnotationsFromOffset', 4, function() {
 	);
 	deepEqual(
 		documentModel.getAnnotationsFromOffset( 2 ),
-		[{ 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
+		[{ 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }],
 		'getAnnotationsFromOffset returns annotations of annotated content correctly'
 	);
 	deepEqual(
 		documentModel.getAnnotationsFromOffset( 3 ),
-		[{ 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }],
+		[{ 'type': 'textStyle/italic', 'hash': '{"type":"textStyle/italic"}' }],
 		'getAnnotationsFromOffset returns annotations of annotated content correctly'
 	);
 	deepEqual(
@@ -272,28 +272,28 @@ test( 'es.DocumentModel.prepareContentAnnotation', 1, function() {
 				'type': 'annotate',
 				'method': 'set',
 				'bias': 'start',
-				'annotation': { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }
+				'annotation': { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }
 			},
 			{ 'type': 'retain', 'length': 1 },
 			{
 				'type': 'annotate',
 				'method': 'set',
 				'bias': 'stop',
-				'annotation': { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }
+				'annotation': { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }
 			},
 			{ 'type': 'retain', 'length': 1 },
 			{
 				'type': 'annotate',
 				'method': 'set',
 				'bias': 'start',
-				'annotation': { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }
+				'annotation': { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }
 			},
 			{ 'type': 'retain', 'length': 1 },
 			{
 				'type': 'annotate',
 				'method': 'set',
 				'bias': 'stop',
-				'annotation': { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }
+				'annotation': { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }
 			},
 			{ 'type': 'retain', 'length': 30 }
 		],
@@ -313,8 +313,8 @@ test( 'es.DocumentModel.prepareRemoval', 11, function() {
 				'type': 'remove',
 				'data': [
 					'a',
-					['b', { 'type': 'textStyle/bold', 'hash': '#textStyle/bold' }],
-					['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }]
+					['b', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }],
+					['c', { 'type': 'textStyle/italic', 'hash': '{"type":"textStyle/italic"}' }]
 				]
 			},
 			{ 'type': 'retain', 'length': 30 }
@@ -350,7 +350,7 @@ test( 'es.DocumentModel.prepareRemoval', 11, function() {
 			{
 				'type': 'remove',
 				'data': [
-					['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }]
+					['c', { 'type': 'textStyle/italic', 'hash': '{"type":"textStyle/italic"}' }]
 				]
 			},
 			{ 'type': 'retain', 'length': 30 }
@@ -365,7 +365,7 @@ test( 'es.DocumentModel.prepareRemoval', 11, function() {
 			{ 'type': 'retain', 'length': 3 },
 			{
 				'type': 'remove',
-				'data': [['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }]]
+				'data': [['c', { 'type': 'textStyle/italic', 'hash': '{"type":"textStyle/italic"}' }]]
 			},
 			{ 'type': 'retain', 'length': 4 },
 			{
@@ -400,7 +400,7 @@ test( 'es.DocumentModel.prepareRemoval', 11, function() {
 			{ 'type': 'retain', 'length': 3 },
 			{
 				'type': 'remove',
-				'data': [['c', { 'type': 'textStyle/italic', 'hash': '#textStyle/italic' }]]
+				'data': [['c', { 'type': 'textStyle/italic', 'hash': '{"type":"textStyle/italic"}' }]]
 			},
 			{ 'type': 'retain', 'length': 4 },
 			{

@@ -144,26 +144,25 @@ es.DocumentModel.newFromPlainObject = function( obj ) {
 /**
  * Generates a hash of an annotation object based on it's name and data.
  * 
- * TODO: Add support for deep hashing of array and object properties of annotation data.
- * 
  * @static
  * @method
  * @param {Object} annotation Annotation object to generate hash for
  * @returns {String} Hash of annotation
  */
-es.DocumentModel.getAnnotationHash = function( annotation ) {
-	var hash = '#' + annotation.type;
-	if ( annotation.data ) {
-		var keys = [];
-		for ( var key in annotation.data ) {
-			keys.push( key + ':' + annotation.data );
-		}
-		keys.sort();
-		hash += '|' + keys.join( '|' );
-	}
-	return hash;
-};
+es.DocumentModel.getHash = typeof JSON.stringify === 'function' ?
+	JSON.stringify : es.JsonSerializer.stringify;
 
+/**
+ * Gets the index of the first instance of a given annotation.
+ * 
+ * This method differs from es.inArray because it compares hashes instead of references.
+ * 
+ * @static
+ * @method
+ * @param {Array} annotations Annotations to search through
+ * @param {Object} annotation Annotation to search for
+ * @returns {Integer} Index of annotation in annotations, or -1 if annotation was not found
+ */
 es.DocumentModel.getIndexOfAnnotation = function( annotations, annotation ) {
 	if ( annotation === undefined || annotation.type === undefined ) {
 		throw 'Invalid annotation error. Can not find non-annotation data in character.';
@@ -181,6 +180,83 @@ es.DocumentModel.getIndexOfAnnotation = function( annotations, annotation ) {
 		}
 	}
 	return -1;
+};
+
+/**
+ * Sorts annotations of a character.
+ * 
+ * This method modifies data in place. The string portion of the annotation character will always
+ * remain at the beginning.
+ * 
+ * @static
+ * @method
+ * @param {Array} character Annotated character to be sorted
+ */
+es.DocumentModel.sortCharacterAnnotations = function( character ) {
+	if ( !es.isArray( character ) ) {
+		return;
+	}
+	character.sort( function( a, b ) {
+		var aHash = a.hash || es.DocumentModel.getHash( a ),
+			bHash = b.hash || es.DocumentModel.getHash( b );
+		return typeof a === 'string' ? -1 :
+			( typeof b === 'string' ? 1 : ( aHash == bHash ? 0 : ( aHash < bHash ? -1 : 1 ) ) );
+	} );
+};
+
+/**
+ * Adds annotation hashes to content data.
+ * 
+ * This method modifies data in place.
+ * 
+ * @method
+ * @param {Array} data Data to add annotation hashes to
+ */
+es.DocumentModel.addAnnotationHashesToData = function( data ) {
+	for ( var i = 0; i < data.length; i++ ) {
+		if ( es.isArray( data[i] ) ) {
+			for ( var j = 1; j < data.length; j++ ) {
+				if ( data[i][j].hash === undefined ) {
+					data[i][j].hash = es.DocumentModel.getHash( data[i][j] );
+				}
+			}
+		}
+	}
+};
+
+/**
+ * Applies annotations to content data.
+ * 
+ * This method modifies data in place.
+ * 
+ * @method
+ * @param {Array} data Data to remove annotations from
+ * @param {Array} annotations Annotations to apply
+ */
+es.DocumentModel.addAnnotationsToData = function( data, annotations ) {
+	for ( var i = 0; i < data.length; i++ ) {
+		if ( es.isArray( data[i] ) ) {
+			data[i] = [data[i]];
+		}
+		data[i] = [data[i]].concat( annotations );
+	}
+};
+
+/**
+ * Removes annotations from content data.
+ * 
+ * This method modifies data in place.
+ * 
+ * @method
+ * @param {Array} data Data to remove annotations from
+ * @param {Array} [annotations] Annotations to remove (all will be removed if undefined)
+ */
+es.DocumentModel.removeAnnotationsFromData = function( data, annotations ) {
+	for ( var i = 0; i < data.length; i++ ) {
+		if ( es.isArray( data[i] ) ) {
+			data[i] = data[i][0];
+		}
+	}
 };
 
 /**
@@ -228,7 +304,7 @@ es.DocumentModel.flattenPlainObjectContentNode = function( obj ) {
 					dst.data = es.copyObject( src.data );
 				}
 				// Add a hash to the annotation for faster comparison
-				dst.hash = es.DocumentModel.getAnnotationHash( dst );
+				dst.hash = es.DocumentModel.getHash( dst );
 				// Apply annotation to range
 				if ( src.range.start < 0 ) {
 					// TODO: The start can not be lower than 0! Throw error?
@@ -487,7 +563,8 @@ es.DocumentModel.prototype.getData = function( range, deep ) {
 		start = Math.max( 0, Math.min( this.data.length, range.start ) );
 		end = Math.max( 0, Math.min( this.data.length, range.end ) );
 	}
-	// Work around IE bug: arr.slice( 0, undefined ) returns [] while arr.slice( 0 ) behaves correctly
+	// Work around IE bug: arr.slice( 0, undefined ) returns [] while arr.slice( 0 ) behaves
+	// correctly
 	var data = end === undefined ? this.data.slice( start ) : this.data.slice( start, end );
 	return deep ? es.copyArray( data ) : data;
 };
@@ -548,7 +625,7 @@ es.DocumentModel.prototype.getContentFromNode = function( node, range ) {
  */
 es.DocumentModel.prototype.getAnnotationBoundaries = function( offset, annotation ) {
 	if ( annotation.hash === undefined ) {
-		annotation.hash = es.DocumentModel.getAnnotationHash( annotation );
+		annotation.hash = es.DocumentModel.getHash( annotation );
 	}
 	if ( es.DocumentModel.getIndexOfAnnotation( this.data[offset], annotation ) === -1 ) {
 		return null;
@@ -587,6 +664,51 @@ es.DocumentModel.prototype.getAnnotationsFromOffset = function( offset ) {
 };
 
 /**
+ * Gets a list of annotations that a given range is covered by.
+ * 
+ * @method
+ * @param {es.Range} range Range to get annotations for
+ * @returns {Object[]} A copy of all annotation objects offset is covered by
+ */
+es.DocumentModel.prototype.getAnnotationsFromRange = function( range ) {
+	range.normalize();
+	// First pass - check that [0] and [n) characters are annotated
+	if ( !es.isArray( this.data[range.start] ) || !es.isArray( this.data[range.end - 1] ) ) {
+		// Range starts/ends on a non-annotated character, range can not have any common annotations
+		return [];
+	}
+	// Second pass - check that [1..n-1) characters are annotated
+	var i;
+	for ( i = range.start + 1, end = range.end - 1; i < end; i++ ) {
+		if ( !es.isArray( this.data[i] ) ) {
+			return [];
+		}
+	}
+	// Third pass - collect annotations common amung all characters
+	var map = {},
+		j,
+		hash;
+	for ( i = range.start, end = range.end; i < end; i++ ) {
+		for ( j = 1; j < this.data[i].length; j++ ) {
+			hash = this.data[i][j].hash;
+			if ( hash in map ) {
+				map[hash][1]++;
+			} else {
+				map[hash] = [this.data[i][j], 1];
+			}
+		}
+	}
+	var length = range.getLength(),
+		annotations = [];
+	for ( hash in map ) {
+		if ( map[hash][1] === length ) {
+			annotations.push( map[hash][0] );
+		}
+	}
+	return es.copyArray( annotations );
+};
+
+/**
  * Gets the range of content surrounding a given offset that makes up a whole word.
  * 
  * @method
@@ -599,7 +721,8 @@ es.DocumentModel.prototype.getWordBoundaries = function( offset ) {
 		return null;
 	}
 
-	var	offsetItem = typeof this.data[offset] === 'string' ? this.data[offset] : this.data[offset][0],
+	var	offsetItem = typeof this.data[offset] === 'string' ?
+			this.data[offset] : this.data[offset][0],
 		regex = offsetItem.match( /\B/ ) ? /\b/ : /\B/,
 		start = offset,
 		end = offset,
@@ -697,8 +820,8 @@ es.DocumentModel.prototype.prepareInsertion = function( offset, data ) {
 						// Closing doesn't match what's expected
 						// This means the input is malformed and cannot possibly
 						// have been a fragment taken from well-formed data
-						throw 'Input is malformed: expected /' + element + ' but got ' + data[i].type +
-							' at index ' + i;
+						throw 'Input is malformed: expected /' + element + ' but got ' +
+							data[i].type + ' at index ' + i;
 					}
 				}
 			}
@@ -728,7 +851,8 @@ es.DocumentModel.prototype.prepareInsertion = function( offset, data ) {
 		throw 'Offset ' + offset + ' out of bounds [0..' + this.data.length + ']';
 	}
 	
-	// Has to be after the bounds check, because isStructuralOffset doesn't like out-of-bounds offsets
+	// Has to be after the bounds check, because isStructuralOffset doesn't like out-of-bounds
+	// offsets
 	isStructuralLoc = es.DocumentModel.isStructuralOffset( this.data, offset );
 	
 	if ( offset > 0 ) {
@@ -745,7 +869,7 @@ es.DocumentModel.prototype.prepareInsertion = function( offset, data ) {
 				// We're inserting structure at a content location,
 				// so we need to split up the wrapping element
 				wrappingElementType = this.getNodeFromOffset( offset ).getElementType();
-				var arr = [ { 'type': '/' + wrappingElementType }, { 'type': wrappingElementType } ];
+				var arr = [{ 'type': '/' + wrappingElementType }, { 'type': wrappingElementType }];
 				es.insertIntoArray( arr, 1, insertedData );
 				insertedData = arr;
 			}
@@ -926,7 +1050,7 @@ es.DocumentModel.prototype.prepareContentAnnotation = function( range, method, a
 	var tx = new es.TransactionModel();
 	range.normalize();
 	if ( annotation.hash === undefined ) {
-		annotation.hash = es.DocumentModel.getAnnotationHash( annotation );
+		annotation.hash = es.DocumentModel.getHash( annotation );
 	}
 	var i = range.start,
 		span = i,
