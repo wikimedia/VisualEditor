@@ -352,12 +352,12 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 			e.preventDefault();
 			break;
 		case 90: // z (undo)
-			if ( e.ctrlKey ) {
+			if ( e.metaKey || e.ctrlKey ) {
 				this.history.undo();
 			}
 			break;
 		case 89: // y (redo)
-			if ( e.ctrlKey ) {
+			if ( e.metaKey || e.ctrlKey ) {
 				this.history.redo();
 			}
 			break;
