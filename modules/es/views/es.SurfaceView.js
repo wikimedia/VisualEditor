@@ -346,16 +346,21 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 			break;
 		case 13: // Enter
 			if ( this.selection.from === this.selection.to ) {
-				var node = this.documentView.getNodeFromOffset( this.selection.to, false ),
+				var tx,
+					node = this.documentView.getNodeFromOffset( this.selection.to, false ),
 					nodeOffset = this.documentView.getOffsetFromNode( node, false );
-
-				if ( nodeOffset + node.getContentLength() + 1 === this.selection.to && node ===  es.DocumentViewNode.getSplitableNode( node ) ) {
-					var tx = this.documentView.model.prepareInsertion(
+				
+				if (
+					nodeOffset + node.getContentLength() + 1 === this.selection.to &&
+					node ===  es.DocumentViewNode.getSplitableNode( node )
+				) {
+					tx = this.documentView.model.prepareInsertion(
 						nodeOffset + node.getElementLength(),
 						[ { 'type': 'paragraph' }, { 'type': '/paragraph' } ]
 					);
 					this.documentView.model.commit( tx );
-					this.selection.from = this.selection.to = nodeOffset + node.getElementLength() + 1;
+					this.selection.from = this.selection.to =
+						nodeOffset + node.getElementLength() + 1;
 					this.showCursor();					
 				} else {
 					var	stack = [],
@@ -363,20 +368,28 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 	
 					es.DocumentNode.traverseUpstream( node, function( node ) {
 						var elementType = node.model.getElementType();
-						if ( splitable === true && es.DocumentView.splitRules[ elementType ].children === true ) {
+						if (
+							splitable === true &&
+							es.DocumentView.splitRules[ elementType ].children === true
+						) {
 							return false;
 						}
 						stack.splice(
 							stack.length / 2,
 							0,
 							{ 'type': '/' + elementType },
-							{ 'type': elementType, 'attributes': es.copyObject( node.model.element.attributes ) }
+							{
+								'type': elementType,
+								'attributes': es.copyObject( node.model.element.attributes )
+							}
 						);
 						splitable = es.DocumentView.splitRules[ elementType ].self;
 					} );
-					var tx = this.documentView.model.prepareInsertion( this.selection.to, stack );
+					tx = this.documentView.model.prepareInsertion( this.selection.to, stack );
 					this.documentView.model.commit( tx );
-					this.selection.from = this.selection.to = this.documentView.getModel().getRelativeContentOffset( this.selection.to, 1 );
+					this.selection.from = this.selection.to =
+						this.documentView.getModel()
+							.getRelativeContentOffset( this.selection.to, 1 );
 					this.showCursor();
 				}
 			}
@@ -410,27 +423,32 @@ es.SurfaceView.prototype.onKeyUp = function( e ) {
 };
 
 es.SurfaceView.prototype.handleDelete = function( backspace ) {
+	var	sourceOffset,
+		targetOffset,
+		sourceSplitableNode,
+		targetSplitableNode,
+		tx;
 	if ( this.selection.from === this.selection.to ) {
 		if ( backspace ) {
-			var	sourceOffset = this.selection.to,
-				targetOffset = this.documentView.getModel().getRelativeContentOffset(
-					sourceOffset,
-					-1
-				);
+			sourceOffset = this.selection.to;
+			targetOffset = this.documentView.getModel().getRelativeContentOffset(
+				sourceOffset,
+				-1
+			);
 		} else {
-			var	sourceOffset = this.documentView.getModel().getRelativeContentOffset(
-					this.selection.to,
-					1
-				),
-				targetOffset = this.selection.to;
+			sourceOffset = this.documentView.getModel().getRelativeContentOffset(
+				this.selection.to,
+				1
+			);
+			targetOffset = this.selection.to;
 		}
 
 		var	sourceNode = this.documentView.getNodeFromOffset( sourceOffset, false ),
 			targetNode = this.documentView.getNodeFromOffset( targetOffset, false );
 	
 		if ( sourceNode.model.getElementType() === targetNode.model.getElementType() ) {
-			var	sourceSplitableNode = es.DocumentViewNode.getSplitableNode( sourceNode ),
-				targetSplitableNode = es.DocumentViewNode.getSplitableNode( targetNode );
+			sourceSplitableNode = es.DocumentViewNode.getSplitableNode( sourceNode );
+			targetSplitableNode = es.DocumentViewNode.getSplitableNode( targetNode );
 		}
 	
 		this.selection.from = this.selection.to = targetOffset;
@@ -439,12 +457,12 @@ es.SurfaceView.prototype.handleDelete = function( backspace ) {
 		if ( sourceNode === targetNode ||
 			( typeof sourceSplitableNode !== 'undefined' &&
 			sourceSplitableNode.getParent()  === targetSplitableNode.getParent() ) ) {
-			var tx = this.documentView.model.prepareRemoval(
+			tx = this.documentView.model.prepareRemoval(
 				new es.Range( targetOffset, sourceOffset )
 			);
 			this.documentView.model.commit ( tx );
 		} else {
-			var tx = this.documentView.model.prepareInsertion(
+			tx = this.documentView.model.prepareInsertion(
 				targetOffset, sourceNode.model.getContent()
 			);
 			this.documentView.model.commit( tx );
@@ -465,7 +483,7 @@ es.SurfaceView.prototype.handleDelete = function( backspace ) {
 		}
 	} else {
 		// selection removal
-		var tx = this.documentView.model.prepareRemoval( this.selection );
+		tx = this.documentView.model.prepareRemoval( this.selection );
 		this.documentView.model.commit( tx );
 		this.documentView.clearSelection();
 		this.selection.from = this.selection.to = this.selection.start;
@@ -477,14 +495,15 @@ es.SurfaceView.prototype.insertFromInput = function() {
 	var val = this.$input.val();
 	this.$input.val( '' );
 	if ( val.length > 0 ) {
+		var tx;
 		if ( this.selection.from != this.selection.to ) {
-			var tx = this.documentView.model.prepareRemoval( this.selection );
+			tx = this.documentView.model.prepareRemoval( this.selection );
 			this.documentView.model.commit( tx );
 			this.documentView.clearSelection();
-			this.selection.from = this.selection.to = Math.min( this.selection.from, this.selection.to );
+			this.selection.from = this.selection.to =
+				Math.min( this.selection.from, this.selection.to );
 		}
-
-		var tx = this.documentView.model.prepareInsertion( this.selection.from, val.split('') );
+		tx = this.documentView.model.prepareInsertion( this.selection.from, val.split('') );
 		this.documentView.model.commit ( tx );
 		this.selection.from += val.length;
 		this.selection.to += val.length;
@@ -503,7 +522,8 @@ es.SurfaceView.prototype.moveCursor = function( direction, unit ) {
 		this.cursor.initialLeft = null;
 	}
 
-	var to;
+	var to,
+		offset;
 
 	switch ( direction ) {
 		case 'left':
@@ -511,7 +531,6 @@ es.SurfaceView.prototype.moveCursor = function( direction, unit ) {
 			switch ( unit ) {
 				case 'char':
 				case 'word':
-					var offset;
 					if ( this.keyboard.keys.shift || this.selection.from === this.selection.to ) {
 						offset = this.selection.to;
 					} else {
@@ -531,7 +550,7 @@ es.SurfaceView.prototype.moveCursor = function( direction, unit ) {
 					}
 					break;
 				case 'line':
-					var offset = this.cursor.initialBias ?
+					offset = this.cursor.initialBias ?
 						this.documentView.getModel().getRelativeContentOffset(
 							this.selection.to,
 							-1) :
@@ -579,13 +598,18 @@ es.SurfaceView.prototype.moveCursor = function( direction, unit ) {
 						step = direction === 'up' ? -5 : 5,
 						top = this.$.position().top;
 
-					this.cursor.initialBias = position.left > this.documentView.getNodeFromOffset( this.selection.to, false ).contentView.$.offset().left;
+					this.cursor.initialBias = position.left > this.documentView.getNodeFromOffset(
+						this.selection.to, false
+					).contentView.$.offset().left;
 
 					do {
 						fakePosition.top += ++i * step;
 						if ( fakePosition.top < top ) {
 							break;
-						} else if (fakePosition.top > top + this.dimensions.height + this.dimensions.scrollTop ) {
+						} else if (
+							fakePosition.top > top + this.dimensions.height +
+								this.dimensions.scrollTop
+						) {
 							break;
 						}
 						fakePosition = this.documentView.getRenderedPositionFromOffset(
