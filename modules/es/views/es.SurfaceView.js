@@ -351,6 +351,16 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 			this.handleEnter();
 			e.preventDefault();
 			break;
+		case 90: // z (undo)
+			if ( e.ctrlKey ) {
+				this.history.undo();
+				break;
+			}
+		case 89: // y (redo)
+			if ( e.ctrlKey ) {
+				this.history.redo();
+				break;
+			}
 		default: // Insert content (maybe)
 			if ( this.keyboard.keydownTimeout ) {
 				clearTimeout( this.keyboard.keydownTimeout );
@@ -462,7 +472,7 @@ es.SurfaceView.prototype.handleEnter = function() {
 			nodeOffset + node.getElementLength(),
 			[ { 'type': 'paragraph' }, { 'type': '/paragraph' } ]
 		);
-		this.documentView.model.commit( tx );
+		this.history.commit( tx );
 		this.selection.from = this.selection.to = nodeOffset + node.getElementLength() + 1;
 		this.showCursor();		
 	} else {
@@ -489,7 +499,7 @@ es.SurfaceView.prototype.handleEnter = function() {
 			splitable = es.DocumentView.splitRules[ elementType ].self;
 		} );
 		var tx = this.documentView.model.prepareInsertion( this.selection.to, stack );
-		this.documentView.model.commit( tx );
+		this.history.commit( tx );
 		this.selection.from = this.selection.to =
 			this.documentView.getModel().getRelativeContentOffset( this.selection.to, 1 );
 		this.showCursor();
