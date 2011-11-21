@@ -245,6 +245,8 @@ es.SurfaceView.prototype.onMouseMove = function( e ) {
 			}	
 		}
 
+		this.emitSelect();
+		
 		this.documentView.drawSelection( this.selection );
 		if ( this.selection.from !== this.selection.to ) {
 			this.hideCursor();
