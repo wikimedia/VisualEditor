@@ -91,6 +91,7 @@
     */
 
     // Start position of top-level block
+    // Could also provide positions for lower-level blocks using a stack.
     var blockStart = 0;
 
     var unquote = function (quotec, text) {
@@ -145,8 +146,7 @@ toplevelblock
     if (bs.attribs === undefined) {
         bs.attribs = [];
     }
-    bs.attribs.push(['data-startPos', blockStart]);
-    bs.attribs.push(['data-endPos', pos]);
+    bs.attribs.push(['data-sourcePos', blockStart + ':' + pos]);
     return b;
   }
 

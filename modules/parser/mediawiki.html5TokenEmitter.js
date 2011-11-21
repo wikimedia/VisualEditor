@@ -48,7 +48,7 @@ FauxHTML5.Tokenizer.prototype.processToken = function (token) {
 				data: att(token.attribs)});
 			break;
 		case "COMMENT":
-			this.emit('token', {type: 'EmptyTag', 
+			this.emit('token', {type: 'Comment', 
 				data: token.value});
 			break;
 		case "END":

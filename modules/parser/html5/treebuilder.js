@@ -2,9 +2,9 @@
 
 var HTML5 = require('../html5');
 var assert = require('assert');
-//if(!Array.prototype.last) {
-//	Array.prototype.last = function() { return this[this.length - 1] };
-//}
+if(!Array.prototype.last) {
+	Array.prototype.last = function() { return this[this.length - 1] };
+}
 
 HTML5.TreeBuilder = function TreeBuilder(document) {
 	this.open_elements = [];

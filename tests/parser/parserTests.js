@@ -158,7 +158,9 @@ function processTest(item) {
 
 				console.log('RENDERED:');
 				//console.log(JSON.stringify(tree, null, 2));
-				console.log(tokenizer.parser.document.innerHTML);
+				console.log(tokenizer.parser.document
+								.getElementsByTagName('body')[0]
+								.innerHTML);
 			}
 		}
 	});
