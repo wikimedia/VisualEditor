@@ -432,7 +432,6 @@ $(document).ready( function() {
 		}
 		var annotations = range.getLength() ?
 			doc.getAnnotationsFromRange( range ) : doc.getAnnotationsFromOffset( range.start );
-		console.log( es.DocumentModel.getHash( annotations ) );
 		if ( annotations.length ) {
 			for ( var i = 0; i < annotations.length; i++ ) {
 				if ( annotations[i].type in tools ) {
