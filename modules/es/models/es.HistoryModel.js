@@ -138,7 +138,9 @@ es.HistoryModel.prototype.undo = function( steps ) {
 	if ( previousStateIndex > this.currentStateIndex ) {
 		for ( var i = previousStateIndex; i > this.currentStateIndex; i-- ) {
 			// Apply transaction to the document
-			this.doc.rollback( this.states[i] );
+			for ( var j = this.states[i].length - 1; j >= 0; j-- ) {
+				this.doc.rollback( this.states[i][j] );
+			}
 			// Emit an undo event with the state to be rolled back
 			this.emit( 'undo', this.states[i] );
 		}
