@@ -12,13 +12,13 @@ es.HistoryModel = function( doc ) {
 
 	// Properties
 	this.doc = doc;
-	this.states = [];
-	this.currentStateIndex = -1;
-	this.transactions = [];
-	this.transactionsDiff = 0;
+	this.currentState = new es.HistoryStateModel();
+	this.currentStateIndex = 0;
+	this.states = [this.currentState];
+	this.currentStateDiff = 0;
 
 	// Configuration
-	this.maxTransactionsDiff = 24;
+	this.maxStateDiff = 24;
 };
 
 /* Methods */
@@ -30,6 +30,15 @@ es.HistoryModel = function( doc ) {
  */
 es.HistoryModel.prototype.getCurrentStateIndex = function() {
 	return this.currentStateIndex;
+};
+
+/**
+ * Gets the index of the current state.
+ * 
+ * 
+ */
+es.HistoryModel.prototype.getCurrentStateSelection = function() {
+	return this.currentState.getSelection();
 };
 
 /**
@@ -72,24 +81,26 @@ es.HistoryModel.prototype.getTransactions = function( deep ) {
  * 
  * @method
  * @param {es.TransactionModel} transaction Transaction to commit
- * @param {Boolean} accumulate Prevent automatic state pushing
+ * @param {es.Range} [selection] Selection to use after the transaction has been applied
+ * @param {Boolean} [accumulate] Prevent automatic state pushing
  */
-es.HistoryModel.prototype.commit = function( transaction, accumulate ) {
-	var absLengthDiff = Math.abs( transaction.getLengthDiff() );
+es.HistoryModel.prototype.commit = function( transaction, selection, accumulate ) {
+	var transactionDiff = Math.abs( transaction.getLengthDiff() );
 	// Unless we should intentionally accumulate transactions or this is the first one for this
 	// state, automatically push state
-	if ( !accumulate && this.transactions.length ) {
+	var transactionCount = this.currentState.getTransactionCount();
+	if ( !accumulate && transactionCount ) {
 		if (
 			// If the transactions are of a different type
-			this.transactions[this.transactions.length - 1].type !== transaction.type ||
+			this.currentState.getTransactions()[transactionCount - 1].type !== transaction.type ||
 			// This transaction would make the state longer than the maximum length
-			this.transactionsDiff + absLengthDiff > this.maxTransactionsDiff
+			this.currentStateDiff + transactionDiff > this.maxStateDiff
 		) {
 			this.pushState();
 		}
 	}
-	this.transactions.push( transaction );
-	this.transactionsDiff += absLengthDiff;
+	this.currentState.pushTransaction( transaction );
+	this.currentStateDiff += transactionDiff;
 	// Apply transaction to the document
 	this.doc.commit( transaction );
 	// Emit a do event with the transaction that was just committed
@@ -103,7 +114,7 @@ es.HistoryModel.prototype.commit = function( transaction, accumulate ) {
  */
 es.HistoryModel.prototype.pushState = function() {
 	// If any transactions have been pushed since the last state push
-	if ( this.transactions.length ) {
+	if ( this.currentState.getTransactionCount() ) {
 		// If the current state is not the most recently added state
 		if ( this.currentStateIndex < this.states.length - 1 ) {
 			// Forget about states newer than the current one
@@ -111,14 +122,17 @@ es.HistoryModel.prototype.pushState = function() {
 				this.currentStateIndex, this.states.length - this.currentStateIndex
 			);
 		}
-		// Add accumulated transactions as a state
-		this.states.push( this.transactions );
-		// Clear the transaction buffer
-		this.transactions = [];
-		this.transactionsDiff = 0;
-		// Move the current state forward
-		this.currentStateIndex++;
+		// Create a new current state
+		this.currentState = new es.HistoryStateModel();
+		// Add the new current state to the stack
+		this.states.push( this.currentState );
+		// Reset the state diff counter
+		this.currentStateDiff = 0;
+		// Move the current state index to the end (should be equivilant of ++)
+		this.currentStateIndex = this.states.length - 1;
 	}
+	// Emit the completed
+	this.emit( 'pushState', this.states[this.states.length - 1] );
 };
 
 /**
@@ -130,16 +144,15 @@ es.HistoryModel.prototype.undo = function( steps ) {
 	if ( steps === undefined ) {
 		steps = 1; 
 	}
-	// Apply transactions in the buffer
-	this.pushState();
 	// Stop undo just before the first state
 	var previousStateIndex = this.currentStateIndex;
 	this.currentStateIndex = Math.max( -1, this.currentStateIndex - steps );
 	if ( previousStateIndex > this.currentStateIndex ) {
 		for ( var i = previousStateIndex; i > this.currentStateIndex; i-- ) {
 			// Apply transaction to the document
-			for ( var j = this.states[i].length - 1; j >= 0; j-- ) {
-				this.doc.rollback( this.states[i][j] );
+			var transactions = this.states[i].getTransactions();
+			for ( var j = transactions.length - 1; j >= 0; j-- ) {
+				this.doc.rollback( transactions[j] );
 			}
 			// Emit an undo event with the state to be rolled back
 			this.emit( 'undo', this.states[i] );
@@ -156,15 +169,16 @@ es.HistoryModel.prototype.redo = function( steps ) {
 	if ( steps === undefined ) {
 		steps = 1; 
 	}
-	// Apply transactions in the buffer
-	this.pushState();
 	// Stop redo at the last state
 	var previousStateIndex = this.currentStateIndex;
 	this.currentStateIndex = Math.min( this.states.length - 1, this.currentStateIndex + steps );
 	if ( previousStateIndex < this.currentStateIndex ) {
 		for ( var i = previousStateIndex + 1; i >= this.currentStateIndex; i++ ) {
 			// Apply transaction to the document
-			this.doc.rollback( this.states[i] );
+			var transactions = this.states[i].getTransactions();
+			for ( var j = 0; j < transactions.length; j++ ) {
+				this.doc.commit( transactions[j] );
+			}
 			// Emit an undo event with the state to be rolled back
 			this.emit( 'redo', this.states[i] );
 		}
