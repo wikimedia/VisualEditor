@@ -18,12 +18,13 @@ body {
 	-o-border-radius: 0.5em;
 	border-radius: 0.5em;
 }
-#es-toolbar,
 #es-panes {
 	border: solid 1px #dddddd;
+	border-top: none;
 }
 #es-toolbar {
-	border-bottom: none;
+	border: solid 1px #dddddd;
+	position: relative;
 	-webkit-border-top-right-radius: 0.25em;
 	-moz-border-top-right-radius: 0.25em;
 	-o-border-top-right-radius: 0.25em;
@@ -57,13 +58,18 @@ body {
 	background-position: top left;
 	background-repeat: repeat-x;
 	position: absolute;
-	bottom: -8px;
-	height: 8px;
+	bottom: -10px;
+	height: 9px;
 	width: 100%;
-	display: none;
+	pointer-events: none;
+	-webkit-transition: opacity 500ms ease-in-out;
+	-moz-transition: opacity 500ms ease-in-out;
+	-o-transition: opacity 500ms ease-in-out;
+	transition: opacity 500ms ease-in-out;
+	opacity: 0.125;
 }
 #es-toolbar.float #es-toolbar-shadow {
-	display: block;
+	opacity: 0.5;
 }
 .es-showData #es-visual,
 .es-showData #es-previews {
