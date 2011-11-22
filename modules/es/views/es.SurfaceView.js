@@ -348,9 +348,9 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 			this.handleEnter();
 			e.preventDefault();
 			break;
+		/*
 		case 90: // z (undo/redo)
 			if ( e.metaKey || e.ctrlKey ) {
-				/*
 				if ( this.keyboard.keys.shift ) {
 					this.history.redo();
 				} else {
@@ -361,9 +361,10 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 					this.selection = selection.clone();
 					this.showCursor();
 				}
-				*/
+				break;
 			}
-			break;
+			// Fall through to default so the z key still otherwise works
+		*/
 		default: // Insert content (maybe)
 			if ( this.keyboard.keydownTimeout ) {
 				clearTimeout( this.keyboard.keydownTimeout );
