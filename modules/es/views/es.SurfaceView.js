@@ -220,8 +220,6 @@ es.SurfaceView.prototype.onMouseMove = function( e ) {
 					this.selection.from = this.mouse.selectedRange.from;
 					this.selection.to = wordRange.to;
 				}
-			} else {
-				this.selection.to = offset;
 			}
 		} else if ( this.mouse.selectingMode === 3 ) {
 
