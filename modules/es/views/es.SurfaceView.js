@@ -45,9 +45,6 @@ es.SurfaceView = function( $container, model ) {
 	this.documentView = new es.DocumentView( this.model.getDocument(), this );
 	this.$.append( this.documentView.$ );
 
-	// History
-	this.history = new es.HistoryModel( this.documentView.getModel() );
-
 	// Interaction state
 	
 	// There are three different selection modes available for mouse. Selection of:
@@ -351,14 +348,20 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 			this.handleEnter();
 			e.preventDefault();
 			break;
-		case 90: // z (undo)
+		case 90: // z (undo/redo)
 			if ( e.metaKey || e.ctrlKey ) {
-				this.history.undo();
-			}
-			break;
-		case 89: // y (redo)
-			if ( e.metaKey || e.ctrlKey ) {
-				this.history.redo();
+				/*
+				if ( this.keyboard.keys.shift ) {
+					this.history.redo();
+				} else {
+					this.history.undo();
+				}
+				var selection = this.history.getCurrentStateSelection();
+				if ( selection ) {
+					this.selection = selection.clone();
+					this.showCursor();
+				}
+				*/
 			}
 			break;
 		default: // Insert content (maybe)
@@ -426,12 +429,12 @@ es.SurfaceView.prototype.handleDelete = function( backspace ) {
 			tx = this.documentView.getModel().prepareRemoval(
 				new es.Range( targetOffset, sourceOffset )
 			);
-			this.history.commit( tx );
+			this.documentView.getModel().commit( tx );
 		} else {
 			tx = this.documentView.getModel().prepareInsertion(
 				targetOffset, sourceNode.model.getContent()
 			);
-			this.history.commit( tx );
+			this.documentView.getModel().commit( tx );
 			
 			var nodeToDelete = sourceNode;
 			es.DocumentNode.traverseUpstream( nodeToDelete, function( node ) {
@@ -445,12 +448,12 @@ es.SurfaceView.prototype.handleDelete = function( backspace ) {
 			range.from = this.documentView.getOffsetFromNode( nodeToDelete, false );
 			range.to = range.from + nodeToDelete.getElementLength();
 			tx = this.documentView.getModel().prepareRemoval( range );
-			this.history.commit( tx );
+			this.documentView.getModel().commit( tx );
 		}
 	} else {
 		// selection removal
 		tx = this.documentView.getModel().prepareRemoval( this.selection );
-		this.history.commit( tx );
+		this.documentView.getModel().commit( tx );
 		this.documentView.clearSelection();
 		this.selection.from = this.selection.to = this.selection.start;
 		this.showCursor();
@@ -472,7 +475,7 @@ es.SurfaceView.prototype.handleEnter = function() {
 			nodeOffset + node.getElementLength(),
 			[ { 'type': 'paragraph' }, { 'type': '/paragraph' } ]
 		);
-		this.history.commit( tx );
+		this.documentView.getModel().commit( tx );
 		this.selection.from = this.selection.to = nodeOffset + node.getElementLength() + 1;
 		this.showCursor();		
 	} else {
@@ -499,7 +502,7 @@ es.SurfaceView.prototype.handleEnter = function() {
 			splitable = es.DocumentView.splitRules[ elementType ].self;
 		} );
 		var tx = this.documentView.model.prepareInsertion( this.selection.to, stack );
-		this.history.commit( tx );
+		this.documentView.getModel().commit( tx );
 		this.selection.from = this.selection.to =
 			this.documentView.getModel().getRelativeContentOffset( this.selection.to, 1 );
 		this.showCursor();
@@ -513,13 +516,13 @@ es.SurfaceView.prototype.insertFromInput = function() {
 		var tx;
 		if ( this.selection.from != this.selection.to ) {
 			tx = this.documentView.getModel().prepareRemoval( this.selection );
-			this.history.commit( tx );
+			this.documentView.getModel().commit( tx );
 			this.documentView.clearSelection();
 			this.selection.from = this.selection.to =
 				Math.min( this.selection.from, this.selection.to );
 		}
 		tx = this.documentView.getModel().prepareInsertion( this.selection.from, val.split('') );
-		this.history.commit( tx );
+		this.documentView.getModel().commit( tx );
 		this.selection.from += val.length;
 		this.selection.to += val.length;
 		this.showCursor();
