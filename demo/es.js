@@ -67,7 +67,7 @@ $(document).ready( function() {
 						{
 							'type': 'object/hook',
 							'data': {
-								'html': '<sup><small><a href="#">[1]</a></small><sup>'
+								'html': '<sup><small><a href="#">[1]</a></small></sup>'
 							},
 							'range': {
 								'start': 118,
@@ -77,7 +77,7 @@ $(document).ready( function() {
 						{
 							'type': 'object/template',
 							'data': {
-								'html': '<sup><small>[<a href="#">citation needed</a>]</small><sup>'
+								'html': '<sup><small>[<a href="#">citation needed</a>]</small></sup>'
 							},
 							'range': {
 								'start': 456,
