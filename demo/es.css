@@ -52,6 +52,19 @@ body {
 	-o-border-top-left-radius: 0;
 	border-top-left-radius: 0;
 }
+#es-toolbar-shadow {
+	background-image: url(images/toolbar-shadow.png);
+	background-position: top left;
+	background-repeat: repeat-x;
+	position: absolute;
+	bottom: -8px;
+	height: 8px;
+	width: 100%;
+	display: none;
+}
+#es-toolbar.float #es-toolbar-shadow {
+	display: block;
+}
 .es-showData #es-visual,
 .es-showData #es-previews {
 	width: 50%;
