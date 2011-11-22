@@ -66,7 +66,7 @@ PegParser.src = fs.readFileSync(path.join(basePath, 'parser', 'pegParser.pegjs.t
 
 var parser = new PegParser();
 
-var testFileName = '../../../../../tests/parser/parserTests.txt'; // default
+var testFileName = '../../../../phase3/tests/parser/parserTests.txt'; // default
 if (process.argv.length > 2) {
 	// hack :D
 	testFileName = process.argv[2];
@@ -167,6 +167,7 @@ function processTest(item) {
 }
 
 function processTokens ( tokens, tokenizer ) {
+	// push a body element, just to be sure to have one
 	tokenizer.processToken({type: 'TAG', name: 'body'});
 	// Process all tokens
 	for (var i = 0, length = tokens.length; i < length; i++) {
