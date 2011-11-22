@@ -427,7 +427,7 @@ es.SurfaceView.prototype.handleDelete = function( backspace ) {
 			sourceSplitableNode = es.DocumentViewNode.getSplitableNode( sourceNode );
 			targetSplitableNode = es.DocumentViewNode.getSplitableNode( targetNode );
 		}
-	
+
 		this.selection.from = this.selection.to = targetOffset;
 		this.showCursor();
 	
@@ -699,11 +699,13 @@ es.SurfaceView.prototype.showCursor = function() {
 	if ( this.cursor.interval ) {
 		clearInterval( this.cursor.interval );
 	}
+
+	var _this = this;
 	this.cursor.interval = setInterval( function( surface ) {
-		surface.cursor.$.css( 'display', function( index, value ) {
+		_this.cursor.$.css( 'display', function( index, value ) {
 			return value === 'block' ? 'none' : 'block';
 		} );
-	}, 500, this );
+	}, 500 );
 };
 
 /**
