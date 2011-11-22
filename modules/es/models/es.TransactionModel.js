@@ -7,7 +7,7 @@
  */
 es.TransactionModel = function( operations ) {
 	this.operations = es.isArray( operations ) ? operations : [];
-	this.lengthDiff = 0;
+	this.lengthDifference = 0;
 };
 
 /* Methods */
@@ -28,8 +28,8 @@ es.TransactionModel.prototype.getOperations = function() {
  * @method
  * @returns {Integer} Difference in content length
  */
-es.TransactionModel.prototype.getLengthDiff = function() {
-	return this.lengthDiff;
+es.TransactionModel.prototype.getLengthDifference = function() {
+	return this.lengthDifference;
 };
 
 /**
@@ -83,7 +83,7 @@ es.TransactionModel.prototype.pushInsert = function( data ) {
 		'type': 'insert',
 		'data': data
 	} );
-	this.lengthDiff += data.length;
+	this.lengthDifference += data.length;
 };
 
 /**
@@ -97,7 +97,7 @@ es.TransactionModel.prototype.pushRemove = function( data ) {
 		'type': 'remove',
 		'data': data
 	} );
-	this.lengthDiff -= data.length;
+	this.lengthDifference -= data.length;
 };
 
 /**
