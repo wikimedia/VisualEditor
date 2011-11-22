@@ -447,7 +447,7 @@ es.SurfaceView.prototype.handleDelete = function( backspace ) {
 			var nodeToDelete = sourceNode;
 			es.DocumentNode.traverseUpstream( nodeToDelete, function( node ) {
 				if ( node.getParent().children.length === 1 ) {
-					nodeToDelete = sourceNode.getParent();
+					nodeToDelete = node.getParent();
 				} else {
 					return false;
 				}
