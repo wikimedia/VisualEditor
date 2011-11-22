@@ -36,6 +36,22 @@ body {
 	background-position: bottom left;
 	background-repeat: repeat-x;
 }
+#es-toolbar.float {
+	position: fixed;
+	left: 2em;
+	right: 2em;
+	top: 0;
+	z-index: 100;
+	border-top: none;
+	-webkit-border-top-right-radius: 0;
+	-moz-border-top-right-radius: 0;
+	-o-border-top-right-radius: 0;
+	border-top-right-radius: 0;
+	-webkit-border-top-left-radius: 0;
+	-moz-border-top-left-radius: 0;
+	-o-border-top-left-radius: 0;
+	border-top-left-radius: 0;
+}
 .es-showData #es-visual,
 .es-showData #es-previews {
 	width: 50%;

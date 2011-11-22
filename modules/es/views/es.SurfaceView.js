@@ -113,7 +113,9 @@ es.SurfaceView = function( $container, model ) {
 	this.dimensions = {
 		width: this.$.width(),
 		height: this.$window.height(),
-		scrollTop: this.$window.scrollTop()
+		scrollTop: this.$window.scrollTop(),
+		toolbarTop: $( '#es-toolbar' ).offset().top,
+		toolbarHeight: $( '#es-toolbar' ).height()
 	};
 	
 	// Re-render when resizing horizontally
@@ -131,6 +133,13 @@ es.SurfaceView = function( $container, model ) {
 
 	this.$window.scroll( function() {
 		_this.dimensions.scrollTop = _this.$window.scrollTop();
+		if ( _this.dimensions.scrollTop >= _this.dimensions.toolbarTop ) {
+			$( '#es-toolbar' ).addClass( 'float' );
+			$( '#es-panes' ).css( 'padding-top', _this.dimensions.toolbarHeight );
+		} else {
+			$( '#es-toolbar' ).removeClass( 'float' );
+			$( '#es-panes' ).css( 'padding-top', 0 );
+		}
 	} );
 };
 
@@ -680,8 +689,8 @@ es.SurfaceView.prototype.showCursor = function() {
 	// Auto scroll to cursor
 	var inputTop = this.$input.offset().top,
 		inputBottom = inputTop + position.bottom - position.top;	
-	if ( inputTop < this.dimensions.scrollTop ) {
-		this.$window.scrollTop( inputTop );
+	if ( inputTop - this.dimensions.toolbarHeight < this.dimensions.scrollTop ) {
+		this.$window.scrollTop( inputTop - this.dimensions.toolbarHeight );
 	} else if ( inputBottom > ( this.dimensions.scrollTop + this.dimensions.height ) ) {
 		this.$window.scrollTop( inputBottom - this.dimensions.height );
 	}
