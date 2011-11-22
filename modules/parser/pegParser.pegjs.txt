@@ -1,10 +1,46 @@
 /* Produces output more or less compatible with FakeParser; plug it into FP's output and see */
 {
+	/* Fixme: use static functions to separate module! Unfortunately, this
+	 * does not work:
+	 * var tu = require('./mediawiki.tokenizer.utils.js');
+	 * console.log(tu.flatten([]));
+	 * Using exports in the module gets a bit further, but accesses to
+	 * tu.flatten in productions still fail. Thus, I just moved the functions
+	 * here until a solution is found:
+	 */
+	
+	/* Static utilities */
+
+	// Flatten a list of lists.
+	var flatten = function ( e ) {
+		var es = [];
+		// flatten sub-arrays
+		for(var i = 0, length = e.length; i < length; i++) {
+			var ei = e[i];
+			if ($.isArray(ei))
+				es = es.concat(flatten(ei));
+			else
+				es.push(ei);
+		};
+		return es;
+	};
+
+	// Remove escaped quotes from attributes etc
+	var unquote = function (quotec, text) {
+		return text.replace('\\' + quotec, quotec);
+	};
+	
+
+	// Debug print with global switch
     var dp = function ( msg ) {
         if ( false ) {
             console.log(msg);
         }
     };
+
+    var pp = function ( s ) { return JSON.stringify(s, null, 2); }
+
+	/* End static utilities */
 
     /*
      * Flags for specific parse environments (inside tables, links etc). Flags
@@ -27,89 +63,9 @@
         syntaxFlags[flag]--;
     };
 
-
-    var pp = function ( s ) { return JSON.stringify(s, null, 2); }
-
-    // Convert list prefixes to a list of WikiDom list styles
-    var bulletsToTypes = function (bullets) {
-        var bTypes = [];
-        var blen = bullets.length;
-        for (var i = 0; i < bullets.length; i++) {
-            switch (bullets[i]) {
-                case '*': 
-                    bTypes.push('bullet'); break;
-                case '#': 
-                    bTypes.push('number'); break;
-                case ';':
-                    bTypes.push('term'); break;
-                case ':':
-                    bTypes.push('description'); break;
-            }
-        }
-        return bTypes;
-    };
-
-    /*var extractInline = function ( node ) {
-        return { text: extractText(node, 0) };
-    };
-
-
-    // return [text [annotations]]
-    var extractText = function ( node, offset ) {
-        dp("extract: " + pp(node));
-        if (typeof node === 'string') {
-            return [node, []];
-        } else if ($.isArray(node)) {
-            var texts = [],
-                annotations = [];
-            for (var i = 0, length = node.length; i < length; i++) {
-                var res = extractText(node[i], offset);
-                texts.push(res[0]);
-                annotations.concat(res[1]);
-                offset += res[0].length;
-            }
-            return [texts.join(''), annotations];
-        } else if ( 'text' in node ) {
-            var res = extractText(node, offset);
-            if ('annotations' in node) {
-                return [res[0], node.annotations.concat(res[1])];
-            } else {
-                return res;
-            }
-        } else if ( 'content' in node ) {
-            return extractText(node.content, offset);
-        } else if ( 'children' in node ) {
-            var texts = [];
-            for (var i = 0, length = node.children.length; i < length; i++) {
-                texts.push(extractText(node.children[i]));
-            }
-            return texts.join('');
-        } else {
-            throw ("extract failed: " + pp(node));
-        }
-    };
-    */
-
     // Start position of top-level block
     // Could also provide positions for lower-level blocks using a stack.
     var blockStart = 0;
-
-    var unquote = function (quotec, text) {
-        return text.replace('\\' + quotec, quotec);
-    };
-
-    var flatten = function ( e ) {
-        var es = [];
-        // flatten sub-arrays
-        for(var i = 0, length = e.length; i < length; i++) {
-            var ei = e[i];
-            if ($.isArray(ei))
-                es = es.concat(flatten(ei));
-            else
-                es.push(ei);
-        };
-        return es;
-    };
 }
 
 start
@@ -455,26 +411,33 @@ link_text
 
 link_end = "]]"
 
+/* This implementation of bold and italic is very basic so far, and misses the
+ * finer points of doQuotes in the parser. A rough plan to get closer:
+ * - '''' -> ' '''
+ * - last ''''' in a row of ' is used
+ * - if *both* italics and bolds are unbalanced, check for prefix
+ *   - convert single-letter or multi-letter non-space prefixed tick back to
+ *     text
+ */
 bold
   = bold_marker 
     & { dp('benter:' + pos); return setFlag('bold'); }
     c:inlineline
-    bold_marker {
+    (bold_marker / &newline) {
         clearFlag('bold');
         return [{ type: 'TAG', name: 'b' }]
                 .concat(c, [{type: 'ENDTAG', name: 'b'}]);
     }
   / bold_marker { clearFlag('bold'); return null }
 
-bold_marker
-  = "'''"
+bold_marker = "'''"
 
 
 italic
   = italic_marker 
     & { dp('ienter:' + pos); return setFlag('italic'); }
     c:inlineline 
-    italic_marker {
+    (italic_marker / &newline) {
             clearFlag('italic');
             dp('ileave:' + pos);
             return [{ type: 'TAG', name: 'i' }]
@@ -482,8 +445,7 @@ italic
     }
   / italic_marker { clearFlag('italic'); return null }
 
-italic_marker
-  = "''"
+italic_marker = "''"
 
 /* Will need to check anything xmlish agains known/allowed HTML tags and
  * registered extensions, otherwise fail the match. Should ref be treated as a
