@@ -258,7 +258,7 @@ test( 'es.DocumentModel.prepareElementAttributeChange', 4, function() {
 	}
 } );
 
-test( 'es.DocumentModel.prepareContentAnnotation', 1, function() {
+test( 'es.DocumentModel.prepareContentAnnotation', 2, function() {
 	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
 
 	// Test 1
@@ -298,6 +298,45 @@ test( 'es.DocumentModel.prepareContentAnnotation', 1, function() {
 			{ 'type': 'retain', 'length': 30 }
 		],
 		'prepareContentAnnotation skips over content that is already set or cleared'
+	);
+
+	// Test 2
+	deepEqual(
+		documentModel.prepareContentAnnotation(
+			new es.Range( 3, 10 ), 'set', { 'type': 'textStyle/bold' }
+		).getOperations(),
+		[
+			{ 'type': 'retain', 'length': 3 },
+			{
+				'type': 'annotate',
+				'method': 'set',
+				'bias': 'start',
+				'annotation': { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }
+			},
+			{ 'type': 'retain', 'length': 1 },
+			{
+				'type': 'annotate',
+				'method': 'set',
+				'bias': 'stop',
+				'annotation': { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }
+			},
+			{ 'type': 'retain', 'length': 5 },
+			{
+				'type': 'annotate',
+				'method': 'set',
+				'bias': 'start',
+				'annotation': { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }
+			},
+			{ 'type': 'retain', 'length': 1 },
+			{
+				'type': 'annotate',
+				'method': 'set',
+				'bias': 'stop',
+				'annotation': { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }
+			},
+			{ 'type': 'retain', 'length': 24 }
+		],
+		'prepareContentAnnotation works across element boundaries'
 	);
 } );
 
