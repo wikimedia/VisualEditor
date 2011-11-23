@@ -146,6 +146,10 @@ body {
 	line-height: 1.5em;
 	padding-top: 0;
 }
+.es-history {
+	line-height: 1.5em;
+	padding: 0;
+}
 
 /* General MediaWiki Styles */
 
