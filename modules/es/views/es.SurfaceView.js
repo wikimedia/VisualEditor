@@ -70,10 +70,11 @@ es.SurfaceView = function( $container, model ) {
 		// Respond to selection changes
 		if ( selection.from !== selection.to ) {
 			_this.hideCursor();
+			_this.documentView.drawSelection( selection );
 		} else {
 			_this.showCursor();
+			_this.documentView.clearSelection( selection );
 		}
-		_this.documentView.drawSelection( selection );
 	} );
 	this.model.getDocument().on( 'update', function() {
 		_this.emit( 'update' );
@@ -156,10 +157,6 @@ es.SurfaceView.prototype.onMouseDown = function( e ) {
 				// Extend current or create new selection
 				selection.to = offset;
 			} else {
-				if ( selection.to !== selection.from ) {
-					// Clear the selection if there was any
-					this.documentView.clearSelection();
-				}
 				selection.from = selection.to = offset;
 
 				var	position = es.Position.newFromEventPagePosition( e ),
@@ -371,9 +368,9 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 		case 85:
 			if ( e.metaKey || e.ctrlKey ) {
 				if ( this.keyboard.keys.shift ) {
-					this.model.redo( 1 );
+					this.model.redo( 1, true );
 				} else {
-					this.model.undo( 1 );
+					this.model.undo( 1, true );
 				}
 				return false;
 			}
@@ -383,9 +380,9 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 		case 90:
 			if ( e.metaKey || e.ctrlKey ) {
 				if ( this.keyboard.keys.shift ) {
-					this.model.redo( 1, true );
+					this.model.redo( 1 );
 				} else {
-					this.model.undo( 1, true );
+					this.model.undo( 1 );
 				}
 				return false;
 			}
@@ -444,7 +441,7 @@ es.SurfaceView.prototype.handleDelete = function( backspace ) {
 		}
 		
 		selection.from = selection.to = targetOffset;
-		this.model.select( selection );
+		this.model.select( selection, true );
 		
 		if ( sourceNode === targetNode ||
 			( typeof sourceSplitableNode !== 'undefined' &&
@@ -452,12 +449,12 @@ es.SurfaceView.prototype.handleDelete = function( backspace ) {
 			tx = this.model.getDocument().prepareRemoval(
 				new es.Range( targetOffset, sourceOffset )
 			);
-			this.model.transact( tx );
+			this.model.transact( tx, true );
 		} else {
 			tx = this.model.getDocument().prepareInsertion(
 				targetOffset, sourceNode.model.getContent()
 			);
-			this.model.transact( tx );
+			this.model.transact( tx, true );
 			
 			var nodeToDelete = sourceNode;
 			es.DocumentNode.traverseUpstream( nodeToDelete, function( node ) {
@@ -471,15 +468,14 @@ es.SurfaceView.prototype.handleDelete = function( backspace ) {
 			range.from = this.documentView.getOffsetFromNode( nodeToDelete, false );
 			range.to = range.from + nodeToDelete.getElementLength();
 			tx = this.model.getDocument().prepareRemoval( range );
-			this.model.transact( tx );
+			this.model.transact( tx, true );
 		}
 	} else {
 		// selection removal
 		tx = this.model.getDocument().prepareRemoval( selection );
-		this.model.transact( tx );
-		this.documentView.clearSelection();
+		this.model.transact( tx, true );
 		selection.from = selection.to = selection.start;
-		this.model.select( selection );
+		this.model.select( selection, true );
 	}
 };
 
@@ -500,7 +496,7 @@ es.SurfaceView.prototype.handleEnter = function() {
 			nodeOffset + node.getElementLength(),
 			[ { 'type': 'paragraph' }, { 'type': '/paragraph' } ]
 		);
-		this.model.transact( tx );
+		this.model.transact( tx, true );
 		selection.from = selection.to = nodeOffset + node.getElementLength() + 1;	
 	} else {
 		var	stack = [],
@@ -526,11 +522,11 @@ es.SurfaceView.prototype.handleEnter = function() {
 			splitable = es.DocumentView.splitRules[ elementType ].self;
 		} );
 		tx = this.documentView.model.prepareInsertion( selection.to, stack );
-		this.model.transact( tx );
+		this.model.transact( tx, true );
 		selection.from = selection.to =
 			this.model.getDocument().getRelativeContentOffset( selection.to, 1 );
 	}
-	this.model.select( selection );
+	this.model.select( selection, true );
 };
 
 es.SurfaceView.prototype.insertFromInput = function() {
@@ -541,16 +537,15 @@ es.SurfaceView.prototype.insertFromInput = function() {
 		var tx;
 		if ( selection.from != selection.to ) {
 			tx = this.model.getDocument().prepareRemoval( selection );
-			this.model.transact( tx );
-			this.documentView.clearSelection();
+			this.model.transact( tx, true );
 			selection.from = selection.to =
 				Math.min( selection.from, selection.to );
 		}
 		tx = this.model.getDocument().prepareInsertion( selection.from, val.split('') );
-		this.model.transact( tx );
+		this.model.transact( tx, true );
 		selection.from += val.length;
 		selection.to += val.length;
-		this.model.select( selection );
+		this.model.select( selection, true );
 	}
 };
 
@@ -671,9 +666,6 @@ es.SurfaceView.prototype.moveCursor = function( direction, unit ) {
 	if ( this.keyboard.keys.shift && selection.from !== to) {
 		selection.to = to;
 	} else {
-		if ( selection.from !== selection.to ) { 
-			this.documentView.clearSelection();
-		}
 		selection.from = selection.to = to;
 	}
 	this.model.select( selection );
