@@ -263,6 +263,15 @@ es.SurfaceView.prototype.onMouseUp = function( e ) {
 };
 
 es.SurfaceView.prototype.onKeyDown = function( e ) {
+	var _this = this;
+	function handleInsert() {
+		if ( _this.keyboard.keydownTimeout ) {
+			clearTimeout( _this.keyboard.keydownTimeout );
+		}
+		_this.keyboard.keydownTimeout = setTimeout( function () {
+			_this.insertFromInput();
+		}, 10 );
+	}
 	switch ( e.keyCode ) {
 		// Shift
 		case 16:
@@ -358,25 +367,33 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 			this.handleEnter();
 			e.preventDefault();
 			break;
+		// U (soft undo/soft redo)
+		case 85:
+			if ( e.metaKey || e.ctrlKey ) {
+				if ( this.keyboard.keys.shift ) {
+					this.model.redo( 1 );
+				} else {
+					this.model.undo( 1 );
+				}
+				return false;
+			}
+			handleInsert();
+			break;
 		// Z (undo/redo)
 		case 90:
 			if ( e.metaKey || e.ctrlKey ) {
 				if ( this.keyboard.keys.shift ) {
-					this.model.redo();
+					this.model.redo( 1, true );
 				} else {
-					this.model.undo();
+					this.model.undo( 1, true );
 				}
-				break;
+				return false;
 			}
+			handleInsert();
+			break;
 		// Insert content (maybe)
 		default:
-			if ( this.keyboard.keydownTimeout ) {
-				clearTimeout( this.keyboard.keydownTimeout );
-			}
-			var surface = this;
-			this.keyboard.keydownTimeout = setTimeout( function () {
-				surface.insertFromInput();
-			}, 10 );
+			handleInsert();
 			break;
 	}
 	return true;
