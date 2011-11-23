@@ -59,25 +59,25 @@ test( 'es.DocumentModel.getRelativeContentOffset', 7, function() {
 		4,
 		'getRelativeContentOffset uses the offset after the last character in an element'
 	);
-	// Test 3
+	// Test 4
 	equal(
 		documentModel.getRelativeContentOffset( 1, -1 ),
 		1,
-		'getRelativeContentOffset treats the begining a document as a non-content offset'
-	);
-	// Test 4
-	equal(
-		documentModel.getRelativeContentOffset( 32, 1 ),
-		32,
-		'getRelativeContentOffset treats the end a document as a non-content offset'
+		'getRelativeContentOffset does not allow moving before the content of the first node'
 	);
 	// Test 5
+	equal(
+		documentModel.getRelativeContentOffset( 33, 1 ),
+		33,
+		'getRelativeContentOffset does not allow moving after the content of the last node'
+	);
+	// Test 6
 	equal(
 		documentModel.getRelativeContentOffset( 4, 1 ),
 		9,
 		'getRelativeContentOffset advances forwards between elements'
 	);
-	// Test 6
+	// Test 7
 	equal(
 		documentModel.getRelativeContentOffset( 32, -1 ),
 		25,
