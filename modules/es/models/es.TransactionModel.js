@@ -33,43 +33,21 @@ es.TransactionModel.prototype.getLengthDifference = function() {
 };
 
 /**
- * Merges consecutive operations of the same type.
- * 
- * @method
- */
-es.TransactionModel.prototype.optimize = function() {
-	for ( var i = 0; i < this.operations.length - 1; i++ ) {
-		var a = this.operations[i];
-		var b = this.operations[i + 1];
-		if ( a.type === b.type ) {
-			switch ( a.type ) {
-				case 'retain':
-					a.length += b.length;
-					this.operations.splice( i + 1, 1 );
-					i--;
-					break;
-				case 'insert':
-				case 'remove':
-					a.data = a.data.concat( b.data );
-					this.operations.splice( i + 1, 1 );
-					i--;
-					break;
-			}
-		}
-	}
-};
-
-/**
  * Adds a retain operation.
  * 
  * @method
  * @param {Integer} length Length of content data to retain
  */
 es.TransactionModel.prototype.pushRetain = function( length ) {
-	this.operations.push( {
-		'type': 'retain',
-		'length': length
-	} );
+	var end = this.operations.length - 1;
+	if ( this.operations.length && this.operations[end].type === 'retain' ) {
+		this.operations[end].length += length;
+	} else {
+		this.operations.push( {
+			'type': 'retain',
+			'length': length
+		} );
+	}
 };
 
 /**
@@ -79,10 +57,15 @@ es.TransactionModel.prototype.pushRetain = function( length ) {
  * @param {Array} data Data to retain
  */
 es.TransactionModel.prototype.pushInsert = function( data ) {
-	this.operations.push( {
-		'type': 'insert',
-		'data': data
-	} );
+	var end = this.operations.length - 1;
+	if ( this.operations.length && this.operations[end].type === 'insert' ) {
+		this.operations[end].data = this.operations[end].data.concat( data );
+	} else {
+		this.operations.push( {
+			'type': 'insert',
+			'data': data
+		} );
+	}
 	this.lengthDifference += data.length;
 };
 
@@ -93,10 +76,15 @@ es.TransactionModel.prototype.pushInsert = function( data ) {
  * @param {Array} data Data to remove
  */
 es.TransactionModel.prototype.pushRemove = function( data ) {
-	this.operations.push( {
-		'type': 'remove',
-		'data': data
-	} );
+	var end = this.operations.length - 1;
+	if ( this.operations.length && this.operations[end].type === 'remove' ) {
+		this.operations[end].data = this.operations[end].data.concat( data );
+	} else {
+		this.operations.push( {
+			'type': 'remove',
+			'data': data
+		} );
+	}
 	this.lengthDifference -= data.length;
 };
 

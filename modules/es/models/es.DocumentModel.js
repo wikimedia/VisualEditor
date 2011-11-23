@@ -894,7 +894,6 @@ es.DocumentModel.prototype.prepareInsertion = function( offset, data ) {
 		tx.pushRetain( this.data.length - offset );
 	}
 	
-	tx.optimize();
 	return tx;
 	
 	/*
@@ -1036,7 +1035,6 @@ es.DocumentModel.prototype.prepareRemoval = function( range ) {
 		}
 	}
 	
-	tx.optimize();
 	return tx;
 };
 
@@ -1099,7 +1097,7 @@ es.DocumentModel.prototype.prepareContentAnnotation = function( range, method, a
 	if ( range.end < this.data.length ) {
 		tx.pushRetain( this.data.length - range.end );
 	}
-	tx.optimize();
+
 	return tx;
 };
 
@@ -1124,7 +1122,7 @@ es.DocumentModel.prototype.prepareElementAttributeChange = function( offset, met
 	if ( offset < this.data.length ) {
 		tx.pushRetain( this.data.length - offset );
 	}
-	tx.optimize();
+	
 	return tx;
 };
 
