@@ -171,7 +171,7 @@ es.TransactionProcessor.prototype.getScope = function( node, data ) {
 	return node;
 };
 
-es.TransactionProcessor.prototype.applyAnnotations = function( to ) {
+es.TransactionProcessor.prototype.applyAnnotations = function( to, update ) {
 	var i,
 		j,
 		length,
@@ -213,10 +213,16 @@ es.TransactionProcessor.prototype.applyAnnotations = function( to ) {
 			}
 		}
 	}
+	if ( update ) {
+		var updates = this.model.selectNodes( new es.Range( this.cursor, to ) );
+		for ( i = 0; i < updates.length; i++ ) {
+			updates[i].node.emit( 'update' );
+		}
+	}
 };
 
 es.TransactionProcessor.prototype.retain = function( op ) {
-	this.applyAnnotations( this.cursor + op.length );
+	this.applyAnnotations( this.cursor + op.length, true );
 	this.cursor += op.length;
 };
 

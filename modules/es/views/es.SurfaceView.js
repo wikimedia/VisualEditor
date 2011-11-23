@@ -26,6 +26,7 @@ es.SurfaceView = function( $container, model ) {
 		.prependTo( this.$ );
 	this.$cursor = $( '<div class="es-surfaceView-cursor"></div>' )
 		.appendTo( this.$ );
+	this.updateSelectionTimeout = undefined;
 
 	// Interaction states
 	
@@ -68,16 +69,12 @@ es.SurfaceView = function( $container, model ) {
 		// Keep a copy of the current selection on hand
 		_this.currentSelection = selection.clone();
 		// Respond to selection changes
-		if ( selection.from !== selection.to ) {
-			_this.hideCursor();
-			_this.documentView.drawSelection( selection );
-		} else {
-			_this.showCursor();
-			_this.documentView.clearSelection( selection );
-		}
+		_this.updateSelection( 0 );
 	} );
 	this.model.getDocument().on( 'update', function() {
 		_this.emit( 'update' );
+		// Respond to layout changes
+		_this.updateSelection( 50 );
 	} );
 	this.$.mousedown( function(e) {
 		return _this.onMouseDown( e );
@@ -142,12 +139,28 @@ es.SurfaceView = function( $container, model ) {
 
 /* Methods */
 
+es.SurfaceView.prototype.updateSelection = function( delay ) {
+	if ( this.updateSelectionTimeout !== undefined ) {
+		return;
+	}
+	var _this = this;
+	this.updateSelectionTimeout = setTimeout( function() {
+		if ( _this.currentSelection.from !== _this.currentSelection.to ) {
+			_this.hideCursor();
+			_this.documentView.drawSelection( _this.currentSelection );
+		} else {
+			_this.showCursor();
+			_this.documentView.clearSelection( _this.currentSelection );
+		}
+		_this.updateSelectionTimeout = undefined;
+	}, delay );
+};
+
 es.SurfaceView.prototype.onMouseDown = function( e ) {
 	// Only for left mouse button
 	if ( e.button === 0 ) {
 		var selection = this.currentSelection.clone(),
 			offset = this.documentView.getOffsetFromEvent( e );
-
 		// Single click
 		if ( e.originalEvent.detail === 1 ) {
 			// @see {es.SurfaceView.prototype.onMouseMove}
@@ -163,7 +176,6 @@ es.SurfaceView.prototype.onMouseDown = function( e ) {
 					nodeView = this.documentView.getNodeFromOffset( offset, false );
 				this.cursor.initialBias = position.left > nodeView.contentView.$.offset().left;
 			}
-
 		}
 		// Double click
 		else if ( e.originalEvent.detail === 2 ) {
@@ -175,7 +187,6 @@ es.SurfaceView.prototype.onMouseDown = function( e ) {
 				selection = wordRange;
 				this.mouse.selectedRange = selection.clone();
 			}
-
 		}
 		// Triple click
 		else if ( e.originalEvent.detail >= 3 ) {
@@ -191,7 +202,6 @@ es.SurfaceView.prototype.onMouseDown = function( e ) {
 			);
 			this.mouse.selectedRange = selection.clone();
 		}
-
 		// Reset the initial left position
 		this.cursor.initialLeft = null;
 		// Apply new selection
