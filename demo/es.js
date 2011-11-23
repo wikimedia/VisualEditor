@@ -420,8 +420,9 @@ $(document).ready( function() {
 	window.doc = es.DocumentModel.newFromPlainObject( window.wikiDom );
 	window.surfaceModel = new es.SurfaceModel( window.doc );
 	window.surfaceView = new es.SurfaceView( $( '#es-editor' ), window.surfaceModel );
-	window.toolbarView = new es.ToolbarView( $( '#es-toolbar' ), window.surfaceModel );
+	window.toolbarView = new es.ToolbarView( $( '#es-toolbar' ), window.surfaceView );
 
+	/*
 	var tools = {
 		'textStyle/bold': $( '#es-toolbar-bold' ),
 		'textStyle/italic': $( '#es-toolbar-italic' ),
@@ -441,4 +442,5 @@ $(document).ready( function() {
 			}
 		}
 	} );
+	*/
 } );
