@@ -769,7 +769,7 @@ es.DocumentModel.prototype.getRelativeContentOffset = function( offset, distance
 		i = offset + direction,
 		steps = 0;
 	distance = Math.abs( distance );
-	while ( i > 0 && i < this.data.length - 1 ) {
+	while ( i > 0 && i < this.data.length ) {
 		if ( !es.DocumentModel.isStructuralOffset( this.data, i ) ) {
 			steps++;
 			offset = i;
