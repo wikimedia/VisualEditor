@@ -70,7 +70,7 @@ es.SurfaceView = function( $container, model ) {
 		// Keep a copy of the current selection on hand
 		_this.currentSelection = selection.clone();
 		// Respond to selection changes
-		_this.updateSelection( 0 );
+		_this.updateSelection();
 	} );
 	this.model.getDocument().on( 'update', function() {
 		_this.emitUpdate( 25 );
@@ -141,31 +141,45 @@ es.SurfaceView = function( $container, model ) {
 /* Methods */
 
 es.SurfaceView.prototype.updateSelection = function( delay ) {
-	if ( this.updateSelectionTimeout !== undefined ) {
-		return;
-	}
-	var _this = this;
-	this.updateSelectionTimeout = setTimeout( function() {
-		if ( _this.currentSelection.from !== _this.currentSelection.to ) {
-			_this.hideCursor();
-			_this.documentView.drawSelection( _this.currentSelection );
-		} else {
-			_this.showCursor();
-			_this.documentView.clearSelection( _this.currentSelection );
+	if ( delay ) {
+		if ( this.updateSelectionTimeout !== undefined ) {
+			return;
 		}
-		_this.updateSelectionTimeout = undefined;
-	}, delay || 0 );
+		var _this = this;
+		this.updateSelectionTimeout = setTimeout( function() {
+			if ( _this.currentSelection.from !== _this.currentSelection.to ) {
+				_this.hideCursor();
+				_this.documentView.drawSelection( _this.currentSelection );
+			} else {
+				_this.showCursor();
+				_this.documentView.clearSelection( _this.currentSelection );
+			}
+			_this.updateSelectionTimeout = undefined;
+		}, delay || 0 );
+	} else {
+		if ( this.currentSelection.from !== this.currentSelection.to ) {
+			this.hideCursor();
+			this.documentView.drawSelection( this.currentSelection );
+		} else {
+			this.showCursor();
+			this.documentView.clearSelection( this.currentSelection );
+		}
+	}
 };
 
 es.SurfaceView.prototype.emitUpdate = function( delay ) {
-	if ( this.emitUpdateTimeout !== undefined ) {
-		return;
+	if ( delay ) {
+		if ( this.emitUpdateTimeout !== undefined ) {
+			return;
+		}
+		var _this = this;
+		this.emitUpdateTimeout = setTimeout( function() {
+			_this.emit( 'update' );	
+			_this.emitUpdateTimeout = undefined;
+		}, delay || 0 );
+	} else {
+		this.emit( 'update' );	
 	}
-	var _this = this;
-	this.emitUpdateTimeout = setTimeout( function() {
-		_this.emit( 'update' );	
-		_this.emitUpdateTimeout = undefined;
-	}, delay || 0 );
 };
 
 es.SurfaceView.prototype.onMouseDown = function( e ) {
