@@ -27,6 +27,7 @@ es.SurfaceView = function( $container, model ) {
 	this.$cursor = $( '<div class="es-surfaceView-cursor"></div>' )
 		.appendTo( this.$ );
 	this.updateSelectionTimeout = undefined;
+	this.emitUpdateTimeoue = undefined;
 
 	// Interaction states
 	
@@ -72,9 +73,9 @@ es.SurfaceView = function( $container, model ) {
 		_this.updateSelection( 0 );
 	} );
 	this.model.getDocument().on( 'update', function() {
-		_this.emit( 'update' );
+		_this.emitUpdate( 25 );
 		// Respond to layout changes
-		_this.updateSelection( 50 );
+		_this.updateSelection( 25 );
 	} );
 	this.$.mousedown( function(e) {
 		return _this.onMouseDown( e );
@@ -153,7 +154,18 @@ es.SurfaceView.prototype.updateSelection = function( delay ) {
 			_this.documentView.clearSelection( _this.currentSelection );
 		}
 		_this.updateSelectionTimeout = undefined;
-	}, delay );
+	}, delay || 0 );
+};
+
+es.SurfaceView.prototype.emitUpdate = function( delay ) {
+	if ( this.emitUpdateTimeout !== undefined ) {
+		return;
+	}
+	var _this = this;
+	this.emitUpdateTimeout = setTimeout( function() {
+		_this.emit( 'update' );	
+		_this.emitUpdateTimeout = undefined;
+	}, delay || 0 );
 };
 
 es.SurfaceView.prototype.onMouseDown = function( e ) {
