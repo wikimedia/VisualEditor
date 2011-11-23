@@ -33,8 +33,8 @@ es.ListItemView.prototype.setClasses = function() {
 		.attr(
 			'class',
 			classes
-				.replace( /es-listItemView-level[0-9]+/, '' )
-				.replace( /es-listItemView-(bullet|number)/, '' )
+				.replace( / ?es-listItemView-level[0-9]+/, '' )
+				.replace( / ?es-listItemView-(bullet|number)/, '' )
 		)
 		// Set the list style class from the style on top of the stack
 		.addClass( 'es-listItemView-' + styles[styles.length - 1] )
