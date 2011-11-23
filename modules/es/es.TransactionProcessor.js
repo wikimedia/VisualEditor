@@ -217,10 +217,14 @@ es.TransactionProcessor.prototype.applyAnnotations = function( to, update ) {
 		changes++;
 	}
 	if ( update && changes ) {
-		var from = this.model.getNodeFromOffset( this.cursor );
+		var fromNode = this.model.getNodeFromOffset( this.cursor ),
+			toNode = this.model.getNodeFromOffset( to );
 		this.model.traverseLeafNodes( function( node ) {
 			node.emit( 'update' );
-		}, from );
+			if ( node === toNode ) {
+				return false;
+			}
+		}, fromNode );
 	}
 };
 
