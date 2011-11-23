@@ -4,53 +4,68 @@ es.ToolbarView = function( $container, model ) {
 	
 	this.config = [
 		{
-			name: 'Text',
+			name: 'text',
 			items: [
-				{
-					'type' : 'bold',
-					'annotation': 'textStyle/bold'
-				},
-				{
-					'type' : 'italic',
-					'annotation': 'textStyle/italic'
-				},
-				{
-					'type' : 'link',
-					'annotation': 'link/internal'
-				},
-				'small',
-				'big',
-				'sub',
-				'super',
-				'clear'
+				{ 'name': 'bold', 'annotation': 'textStyle/bold' },
+				{ 'name': 'italic', 'annotation': 'textStyle/italic' },
+				{ 'name': 'link', 'annotation': 'link/internal' },
+				{ 'name': 'small' },
+				{ 'name': 'big' },
+				{ 'name': 'sub' },
+				{ 'name': 'super' },
+				{ 'name': 'clear' }
 			]
 		},
 		'/',
 		{
-			name: 'Lists',
-			items: [ 'bullet', 'number', 'indent', 'outdent' ]
+			name: 'list',
+			items: [
+				{ 'name': 'bullet' },
+				{ 'name': 'number' },
+				{ 'name': 'indent' },
+				{ 'name': 'outdent' }
+			]
 		},
-		'/',
 		{
-			name: 'Preview',
-			items: [ 'json', 'wikitext', 'html', 'render' ]
+			name: 'preview',
+			items: [
+				{ 'name': 'json' },
+				{ 'name': 'wikitext' },
+				{ 'name': 'html' },
+				{ 'name': 'render' }
+			]
 		}
 	];
 	
-	for( var i = this.config.length - 1; i >= 0; i-- ) {
-		if ( es.isPlainObject( this.config[i] ) ) {
-			var $group = $( '<div class="es-toolbarGroup">' );
-			$( '<div class="es-toolbarLabel">' ).html( this.config[i].name ).appendTo( $group );
-			for ( var j = 0; j < this.config[i].items.length; j++ ) {
-				var toolName = es.isPlainObject( this.config[i].items[j] ) ? this.config[i].items[j].type : this.config[i].items[j];  
-				$( '<div class="es-toolbarTool" id="' + toolName + '"><img src="images/' + toolName + '.png" /></div>' ).appendTo( $group );
-			}
-			this.$.prepend( $group );
-		} else {
+	for ( var i = this.config.length - 1; i >= 0; i-- ) {
+		if ( !es.isPlainObject( this.config[i] ) ) {
 			if ( this.config[i] === '/' ) {
 				 this.$.prepend( '<div class="es-toolbarDivider">' );
 			}
+		} else {
+			var $group = $( '<div>' )
+				.addClass( 'es-toolbarGroup' )
+				.addClass( 'es-toolbarGroup-' + this.config[i].name );
+
+			$( '<div>' )
+				.addClass( 'es-toolbarLabel' )
+				.html( this.config[i].name )
+				.appendTo( $group );
+
+			for ( var j = 0; j < this.config[i].items.length; j++ ) {
+				var $tool = $('<div>')
+					.addClass( 'es-toolbarTool' )
+					.attr( 'id', 'es-toolbar-' + this.config[i].items[j].name );
+				
+				$( '<img>' )
+					.attr( 'src', 'images/' + this.config[i].items[j].name + '.png')
+					.appendTo( $tool );
+
+				$group.append( $tool );
+			}
+
+			this.$.prepend( $group );
 		}
-		
 	}
+
 };
