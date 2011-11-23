@@ -12,6 +12,7 @@ es.ListItemView = function( model ) {
 
 	// Properties
 	this.$icon = $( '<div class="es-listItemView-icon"></div>' ).prependTo( this.$ );
+	this.currentStylesHash = null;
 	
 	// DOM Changes
 	this.$.addClass( 'es-listItemView' );
@@ -26,20 +27,24 @@ es.ListItemView = function( model ) {
 /* Methods */
 
 es.ListItemView.prototype.setClasses = function() {
-	var classes = this.$.attr( 'class' ),
-		styles = this.model.getElementAttribute( 'styles' );
-	this.$
-		// Remove any existing level classes
-		.attr(
-			'class',
-			classes
-				.replace( / ?es-listItemView-level[0-9]+/, '' )
-				.replace( / ?es-listItemView-(bullet|number)/, '' )
-		)
-		// Set the list style class from the style on top of the stack
-		.addClass( 'es-listItemView-' + styles[styles.length - 1] )
-		// Set the list level class from the length of the stack
-		.addClass( 'es-listItemView-level' + ( styles.length - 1 ) );
+	var styles = this.model.getElementAttribute( 'styles' ),
+		stylesHash = styles.join( '|' );
+	if ( this.currentStylesHash !== stylesHash ) {
+		this.currentStylesHash = stylesHash;
+		var classes = this.$.attr( 'class' );
+		this.$
+			// Remove any existing level classes
+			.attr(
+				'class',
+				classes
+					.replace( / ?es-listItemView-level[0-9]+/, '' )
+					.replace( / ?es-listItemView-(bullet|number)/, '' )
+			)
+			// Set the list style class from the style on top of the stack
+			.addClass( 'es-listItemView-' + styles[styles.length - 1] )
+			// Set the list level class from the length of the stack
+			.addClass( 'es-listItemView-level' + ( styles.length - 1 ) );
+	}
 };
 
 es.ListItemView.prototype.setNumber = function( number ) {
