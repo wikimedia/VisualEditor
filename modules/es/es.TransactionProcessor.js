@@ -175,7 +175,8 @@ es.TransactionProcessor.prototype.applyAnnotations = function( to, update ) {
 	var i,
 		j,
 		length,
-		annotation;
+		annotation,
+		changes = 0;
 	// Handle annotations
 	if ( this.set.length ) {
 		for ( i = 0, length = this.set.length; i < length; i++ ) {
@@ -193,6 +194,7 @@ es.TransactionProcessor.prototype.applyAnnotations = function( to, update ) {
 				}
 			}
 		}
+		changes++;
 	}
 	if ( this.clear.length ) {
 		for ( i = 0, length = this.clear.length; i < length; i++ ) {
@@ -212,12 +214,13 @@ es.TransactionProcessor.prototype.applyAnnotations = function( to, update ) {
 				}
 			}
 		}
+		changes++;
 	}
-	if ( update ) {
-		var updates = this.model.selectNodes( new es.Range( this.cursor, to ) );
-		for ( i = 0; i < updates.length; i++ ) {
-			updates[i].node.emit( 'update' );
-		}
+	if ( update && changes ) {
+		var from = this.model.getNodeFromOffset( this.cursor );
+		this.model.traverseLeafNodes( function( node ) {
+			node.emit( 'update' );
+		}, from );
 	}
 };
 
