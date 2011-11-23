@@ -7,86 +7,86 @@
  * @param {es.SurfaceModel} model Surface model to view
  */
 es.SurfaceView = function( $container, model ) {
-	// References for use in closures
-	var	_this = this,
-		$document = $( document );
-
+	// Inheritance
 	es.EventEmitter.call( this );
 
-	this.$ = $container.addClass( 'es-surfaceView' );
-	this.$window = $( window );
-	this.model = model;
-	this.selection = new es.Range();
-
-	// Mac uses different mapping for keyboard shortcuts	
-	this.mac = navigator.userAgent.match(/mac/i) ? true : false;
-
-	this.model.getDocument().on( 'update', function() {
-		_this.emit( 'update' );
-	} );
-
-	this.previousSelection = null;
-	this.emitSelect = function() {
-		if ( _this.previousSelection ) {
-			if (
-				_this.previousSelection.from !== _this.selection.from || 
-				_this.previousSelection.to !== _this.selection.to
-			) {
-				_this.emit( 'select', _this.selection.clone() );
-				_this.previousSelection = _this.selection.clone();
-			}
-			// Mouse movement that doesn't change selection points will terminate here
-		} else {
-			_this.previousSelection = _this.selection.clone();
-		}
-	};
-
-	// Initialize document view
-	this.documentView = new es.DocumentView( this.model.getDocument(), this );
-	this.$.append( this.documentView.$ );
-
-	// Interaction state
+	// References for use in closures
+	var	_this = this,
+		$document = $( document ),
+		$window = $( window );
 	
-	// There are three different selection modes available for mouse. Selection of:
-	// * 1 - chars
-	// * 2 - words
-	// * 3 - nodes (e.g. paragraph, listitem)
-	//
-	// In case of 2 and 3 selectedRange stores the range of original selection caused by double
-	// or triple mousedowns.
+	// Properties
+	this.model = model;
+	this.currentSelection = new es.Range();
+	this.documentView = new es.DocumentView( this.model.getDocument(), this );
+	this.$ = $container
+		.addClass( 'es-surfaceView' )
+		.append( this.documentView.$ );
+	this.$input = $( '<textarea class="es-surfaceView-textarea" />' )
+		.prependTo( this.$ );
+	this.$cursor = $( '<div class="es-surfaceView-cursor"></div>' )
+		.appendTo( this.$ );
+
+	// Interaction states
+	
+	/*
+	 * There are three different selection modes available for mouse. Selection of:
+	 *     1 - chars
+	 *     2 - words
+	 *     3 - nodes (e.g. paragraph, listitem)
+	 *
+	 * In case of 2 and 3 selectedRange stores the range of original selection caused by double
+	 * or triple mousedowns.
+	 */
 	this.mouse = {
 		selectingMode: null,
 		selectedRange: null
 	};
-
 	this.cursor = {
-		$: $( '<div class="es-surfaceView-cursor"></div>' ).appendTo( this.$ ),
 		interval: null,
 		initialLeft: null,
 		initialBias: false
 	};
-
 	this.keyboard = {
 		selecting: false,
 		cursorAnchor: null,
 		keydownTimeout: null,
 		keys: { shift: false }
 	};
+	this.dimensions = {
+		width: this.$.width(),
+		height: $window.height(),
+		scrollTop: $window.scrollTop(),
+		// XXX: This is a dirty hack!
+		toolbarTop: $( '#es-toolbar' ).offset().top,
+		toolbarHeight: $( '#es-toolbar' ).height()
+	};
 
-	// MouseDown and DoubleClick on surface
-	this.$.on( {
-		'mousedown' : function(e) {
-			return _this.onMouseDown( e );
+	// Events
+
+	this.model.on( 'select', function( selection ) {
+		// Keep a copy of the current selection on hand
+		_this.currentSelection = selection.clone();
+		// Respond to selection changes
+		if ( selection.from !== selection.to ) {
+			_this.hideCursor();
+		} else {
+			_this.showCursor();
 		}
+		_this.documentView.drawSelection( selection );
 	} );
-
-	// Hidden input
-	this.$input = $( '<textarea class="es-surfaceView-textarea" />' )
-		.prependTo( this.$ )
-		.on( {
-			'focus' : function() {
+	this.model.getDocument().on( 'update', function() {
+		_this.emit( 'update' );
+	} );
+	this.$.mousedown( function(e) {
+		return _this.onMouseDown( e );
+	} );
+	this.$input.on( {
+			'focus': function() {
+				// Make sure we aren't double-binding
 				$document.off( '.es-surfaceView' );
-				$document.on({
+				// Bind mouse and key events to the document to ensure we don't miss anything
+				$document.on( {
 					'mousemove.es-surfaceView': function(e) {
 						return _this.onMouseMove( e );
 					},
@@ -99,40 +99,29 @@ es.SurfaceView = function( $container, model ) {
 					'keyup.es-surfaceView': function( e ) {
 						return _this.onKeyUp( e );		
 					}
-				});
+				} );
 			},
 			'blur': function( e ) {
+				// Release our event handlers when not focused
 				$document.off( '.es-surfaceView' );
 				_this.hideCursor();
 			}
-		} ).focus();
-
-	// First render
-	this.documentView.renderContent();
-
-	this.dimensions = {
-		width: this.$.width(),
-		height: this.$window.height(),
-		scrollTop: this.$window.scrollTop(),
-		toolbarTop: $( '#es-toolbar' ).offset().top,
-		toolbarHeight: $( '#es-toolbar' ).height()
-	};
-	
-	// Re-render when resizing horizontally
-	// TODO: Instead of re-rendering on every single 'resize' event wait till user is done with
-	// resizing - can be implemented with setTimeout
-	this.$window.resize( function() {
+		} );
+	$window.resize( function() {
+		// Re-render when resizing horizontally
+		// TODO: Instead of re-rendering on every single 'resize' event wait till user is done with
+		// resizing - can be implemented with setTimeout
 		_this.hideCursor();
-		_this.dimensions.height = _this.$window.height();
+		_this.dimensions.height = $window.height();
 		var width = _this.$.width();
 		if ( _this.dimensions.width !== width ) {
 			_this.dimensions.width = width;
 			_this.documentView.renderContent();
 		}
 	} );
-
-	this.$window.scroll( function() {
-		_this.dimensions.scrollTop = _this.$window.scrollTop();
+	$window.scroll( function() {
+		// FIXME: Is this code in the right place?
+		_this.dimensions.scrollTop = $window.scrollTop();
 		if ( _this.dimensions.scrollTop >= _this.dimensions.toolbarTop ) {
 			$( '#es-toolbar' ).addClass( 'float' );
 			$( '#es-panes' ).css( 'padding-top', _this.dimensions.toolbarHeight );
@@ -141,147 +130,155 @@ es.SurfaceView = function( $container, model ) {
 			$( '#es-panes' ).css( 'padding-top', 0 );
 		}
 	} );
+
+	// Configuration
+	this.mac = navigator.userAgent.match(/mac/i) ? true : false; // (yes it's evil, for keys only!)
+
+	// Initialization
+	this.$input.focus();
+	this.documentView.renderContent();
 };
 
 /* Methods */
 
 es.SurfaceView.prototype.onMouseDown = function( e ) {
-	if ( e.button === 0 ) { // left mouse button
+	// Only for left mouse button
+	if ( e.button === 0 ) {
+		var selection = this.currentSelection.clone(),
+			offset = this.documentView.getOffsetFromEvent( e );
 
-		this.selection.normalize();
+		// Single click
+		if ( e.originalEvent.detail === 1 ) {
+			// @see {es.SurfaceView.prototype.onMouseMove}
+			this.mouse.selectingMode = 1;
 
-		var offset = this.documentView.getOffsetFromEvent( e );
-
-		if ( e.originalEvent.detail === 1 ) { // single click
-			this.mouse.selectingMode = 1; // used in mouseMove handler
-
-			if ( this.keyboard.keys.shift && offset !== this.selection.from ) {
-				// extend current or create new selection
-				this.selection.to = offset;
+			if ( this.keyboard.keys.shift && offset !== selection.from ) {
+				// Extend current or create new selection
+				selection.to = offset;
 			} else {
-				if ( this.selection.to !== this.selection.from ) {
-					// clear the selection if there was any
+				if ( selection.to !== selection.from ) {
+					// Clear the selection if there was any
 					this.documentView.clearSelection();
 				}
-				this.selection.from = this.selection.to = offset;
+				selection.from = selection.to = offset;
 
 				var	position = es.Position.newFromEventPagePosition( e ),
 					nodeView = this.documentView.getNodeFromOffset( offset, false );
 				this.cursor.initialBias = position.left > nodeView.contentView.$.offset().left;
 			}
 
-		} else if ( e.originalEvent.detail === 2 ) { // double click
-			this.mouse.selectingMode = 2; // used in mouseMove handler
+		}
+		// Double click
+		else if ( e.originalEvent.detail === 2 ) {
+			// @see {es.SurfaceView.prototype.onMouseMove}
+			this.mouse.selectingMode = 2;
 			
 			var wordRange = this.model.getDocument().getWordBoundaries( offset );
 			if( wordRange ) {
-				this.selection = wordRange;
-				this.mouse.selectedRange = this.selection.clone();
+				selection = wordRange;
+				this.mouse.selectedRange = selection.clone();
 			}
 
-		} else if ( e.originalEvent.detail >= 3 ) { // triple click
-			this.mouse.selectingMode = 3; // used in mouseMove handler
+		}
+		// Triple click
+		else if ( e.originalEvent.detail >= 3 ) {
+			// @see {es.SurfaceView.prototype.onMouseMove}
+			this.mouse.selectingMode = 3;
 
 			var node = this.documentView.getNodeFromOffset( offset ),
 				nodeOffset = this.documentView.getOffsetFromNode( node, false );
 
-			this.selection.from = this.model.getDocument().getRelativeContentOffset(
-				nodeOffset,
-				1
+			selection.from = this.model.getDocument().getRelativeContentOffset( nodeOffset, 1 );
+			selection.to = this.model.getDocument().getRelativeContentOffset(
+				nodeOffset + node.getElementLength(), -1
 			);
-			this.selection.to = this.model.getDocument().getRelativeContentOffset(
-				nodeOffset + node.getElementLength(),
-				-1
-			);
-			this.mouse.selectedRange = this.selection.clone();
+			this.mouse.selectedRange = selection.clone();
 		}
 
-		if ( this.selection.from === this.selection.to ) {
-			this.showCursor();
-		} else {
-			this.hideCursor();
-			this.documentView.drawSelection( this.selection );
-		}
+		// Reset the initial left position
+		this.cursor.initialLeft = null;
+		// Apply new selection
+		this.model.select( selection );
 	}
-
+	// If the inut isn't already focused, focus it and select it's contents
 	if ( !this.$input.is( ':focus' ) ) {
 		this.$input.focus().select();
 	}
-	this.cursor.initialLeft = null;
-	this.emitSelect();
 	return false;
 };
 
 es.SurfaceView.prototype.onMouseMove = function( e ) {
-	if ( e.button === 0 && this.mouse.selectingMode ) { // left mouse button and in selecting mode
+	// Only with the left mouse button while in selecting mode
+	if ( e.button === 0 && this.mouse.selectingMode ) {
+		var selection = this.currentSelection.clone(),
+			offset = this.documentView.getOffsetFromEvent( e );
 
-		var offset = this.documentView.getOffsetFromEvent( e );
-
-		if ( this.mouse.selectingMode === 1 ) { // selection of chars
-			this.selection.to = offset;
-		} else if ( this.mouse.selectingMode === 2 ) { // selection of words
+		// Character selection
+		if ( this.mouse.selectingMode === 1 ) {
+			selection.to = offset;
+		}
+		// Word selection
+		else if ( this.mouse.selectingMode === 2 ) {
 			var wordRange = this.model.getDocument().getWordBoundaries( offset );
 			if ( wordRange ) {
 				if ( wordRange.to <= this.mouse.selectedRange.from ) {
-					this.selection.from = wordRange.from;
-					this.selection.to = this.mouse.selectedRange.to;
+					selection.from = wordRange.from;
+					selection.to = this.mouse.selectedRange.to;
 				} else {
-					this.selection.from = this.mouse.selectedRange.from;
-					this.selection.to = wordRange.to;
+					selection.from = this.mouse.selectedRange.from;
+					selection.to = wordRange.to;
 				}
 			}
-		} else if ( this.mouse.selectingMode === 3 ) {
-
-			this.mouse.selectingMode = 3; // used in mouseMove handler
+		}
+		// Node selection
+		else if ( this.mouse.selectingMode === 3 ) {
+			// @see {es.SurfaceView.prototype.onMouseMove}
+			this.mouse.selectingMode = 3;
 
 			var nodeRange = this.documentView.getRangeFromNode(
 				this.documentView.getNodeFromOffset( offset )
 			);
 			if ( nodeRange.to <= this.mouse.selectedRange.from ) {
-				this.selection.from = this.model.getDocument().getRelativeContentOffset(
-					nodeRange.from,
-					1
+				selection.from = this.model.getDocument().getRelativeContentOffset(
+					nodeRange.from, 1
 				);
-				this.selection.to = this.mouse.selectedRange.to;
+				selection.to = this.mouse.selectedRange.to;
 			} else {
-				this.selection.from = this.mouse.selectedRange.from;
-				this.selection.to = this.model.getDocument().getRelativeContentOffset(
-					nodeRange.to,
-					-1
+				selection.from = this.mouse.selectedRange.from;
+				selection.to = this.model.getDocument().getRelativeContentOffset(
+					nodeRange.to, -1
 				);
 			}	
 		}
-
-		this.emitSelect();
-		
-		this.documentView.drawSelection( this.selection );
-		if ( this.selection.from !== this.selection.to ) {
-			this.hideCursor();
-		}
+		// Apply new selection
+		this.model.select( selection, true );
 	}
 };
 
 es.SurfaceView.prototype.onMouseUp = function( e ) {
 	if ( e.button === 0 ) { // left mouse button 
 		this.mouse.selectingMode = this.mouse.selectedRange = null;
+		this.model.select( this.currentSelection );
 	}
 };
 
 es.SurfaceView.prototype.onKeyDown = function( e ) {
-	this.selection.normalize();
-
 	switch ( e.keyCode ) {
-		case 16: // Shift
+		// Shift
+		case 16:
 			this.keyboard.keys.shift = true;
 			this.keyboard.selecting = true;
 			break;
-		case 36: // Home
+		// Home
+		case 36:
 			this.moveCursor( 'left', 'line' );
 			break;
-		case 35: // End
+		// End
+		case 35:
 			this.moveCursor( 'right', 'line' );
 			break;
-		case 37: // Left arrow
+		// Left arrow
+		case 37:
 			if ( !this.mac ) {
 				if ( e.ctrlKey ) {
 					this.moveCursor( 'left', 'word' );
@@ -298,7 +295,8 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 				}
 			}
 			break;
-		case 38: // Up arrow
+		// Up arrow
+		case 38:
 			if ( !this.mac ) {
 				if ( e.ctrlKey ) {
 					this.moveCursor( 'up', 'unit' );
@@ -313,7 +311,8 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 				}
 			}
 			break;
-		case 39: // Right arrow
+		// Right arrow
+		case 39:
 			if ( !this.mac ) {
 				if ( e.ctrlKey ) {
 					this.moveCursor( 'right', 'word' );
@@ -330,7 +329,8 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 				}
 			}
 			break;
-		case 40: // Down arrow
+		// Down arrow
+		case 40:
 			if ( !this.mac ) {
 				if ( e.ctrlKey ) {
 					this.moveCursor( 'down', 'unit' );
@@ -345,34 +345,31 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 				}
 			}
 			break;
-		case 8: // Backspace
+		// Backspace
+		case 8:
 			this.handleDelete( true );
 			break;
-		case 46: // Delete
+		// Delete
+		case 46:
 			this.handleDelete();
 			break;
-		case 13: // Enter
+		// Enter
+		case 13:
 			this.handleEnter();
 			e.preventDefault();
 			break;
-		/*
-		case 90: // z (undo/redo)
+		// Z (undo/redo)
+		case 90:
 			if ( e.metaKey || e.ctrlKey ) {
 				if ( this.keyboard.keys.shift ) {
-					this.history.redo();
+					this.model.redo();
 				} else {
-					this.history.undo();
-				}
-				var selection = this.history.getCurrentStateSelection();
-				if ( selection ) {
-					this.selection = selection.clone();
-					this.showCursor();
+					this.model.undo();
 				}
 				break;
 			}
-			// Fall through to default so the z key still otherwise works
-		*/
-		default: // Insert content (maybe)
+		// Insert content (maybe)
+		default:
 			if ( this.keyboard.keydownTimeout ) {
 				clearTimeout( this.keyboard.keydownTimeout );
 			}
@@ -400,24 +397,25 @@ es.SurfaceView.prototype.onKeyUp = function( e ) {
 };
 
 es.SurfaceView.prototype.handleDelete = function( backspace ) {
-	var	sourceOffset,
+	var selection = this.currentSelection.clone(),
+		sourceOffset,
 		targetOffset,
 		sourceSplitableNode,
 		targetSplitableNode,
 		tx;
-	if ( this.selection.from === this.selection.to ) {
+	if ( selection.from === selection.to ) {
 		if ( backspace ) {
-			sourceOffset = this.selection.to;
+			sourceOffset = selection.to;
 			targetOffset = this.model.getDocument().getRelativeContentOffset(
 				sourceOffset,
 				-1
 			);
 		} else {
 			sourceOffset = this.model.getDocument().getRelativeContentOffset(
-				this.selection.to,
+				selection.to,
 				1
 			);
-			targetOffset = this.selection.to;
+			targetOffset = selection.to;
 		}
 
 		var	sourceNode = this.documentView.getNodeFromOffset( sourceOffset, false ),
@@ -428,8 +426,8 @@ es.SurfaceView.prototype.handleDelete = function( backspace ) {
 			targetSplitableNode = es.DocumentViewNode.getSplitableNode( targetNode );
 		}
 		
-		this.selection.from = this.selection.to = targetOffset;
-		this.showCursor();
+		selection.from = selection.to = targetOffset;
+		this.model.select( selection );
 		
 		if ( sourceNode === targetNode ||
 			( typeof sourceSplitableNode !== 'undefined' &&
@@ -460,32 +458,33 @@ es.SurfaceView.prototype.handleDelete = function( backspace ) {
 		}
 	} else {
 		// selection removal
-		tx = this.model.getDocument().prepareRemoval( this.selection );
+		tx = this.model.getDocument().prepareRemoval( selection );
 		this.model.transact( tx );
 		this.documentView.clearSelection();
-		this.selection.from = this.selection.to = this.selection.start;
-		this.showCursor();
+		selection.from = selection.to = selection.start;
+		this.model.select( selection );
 	}
 };
 
 es.SurfaceView.prototype.handleEnter = function() {
-	if ( this.selection.from !== this.selection.to ) {
+	var selection = this.currentSelection.clone(),
+		tx;
+	if ( selection.from !== selection.to ) {
 		this.handleDelete();
 	}
-	var	node = this.documentView.getNodeFromOffset( this.selection.to, false ),
+	var	node = this.documentView.getNodeFromOffset( selection.to, false ),
 		nodeOffset = this.documentView.getOffsetFromNode( node, false );
 
 	if (
-		nodeOffset + node.getContentLength() + 1 === this.selection.to &&
+		nodeOffset + node.getContentLength() + 1 === selection.to &&
 		node ===  es.DocumentViewNode.getSplitableNode( node )
 	) {
-		var tx = this.documentView.model.prepareInsertion(
+		tx = this.documentView.model.prepareInsertion(
 			nodeOffset + node.getElementLength(),
 			[ { 'type': 'paragraph' }, { 'type': '/paragraph' } ]
 		);
 		this.model.transact( tx );
-		this.selection.from = this.selection.to = nodeOffset + node.getElementLength() + 1;
-		this.showCursor();		
+		selection.from = selection.to = nodeOffset + node.getElementLength() + 1;	
 	} else {
 		var	stack = [],
 			splitable = false;
@@ -509,31 +508,32 @@ es.SurfaceView.prototype.handleEnter = function() {
 			);
 			splitable = es.DocumentView.splitRules[ elementType ].self;
 		} );
-		var tx = this.documentView.model.prepareInsertion( this.selection.to, stack );
+		tx = this.documentView.model.prepareInsertion( selection.to, stack );
 		this.model.transact( tx );
-		this.selection.from = this.selection.to =
-			this.model.getDocument().getRelativeContentOffset( this.selection.to, 1 );
-		this.showCursor();
+		selection.from = selection.to =
+			this.model.getDocument().getRelativeContentOffset( selection.to, 1 );
 	}
+	this.model.select( selection );
 };
 
 es.SurfaceView.prototype.insertFromInput = function() {
-	var val = this.$input.val();
+	var selection = this.currentSelection.clone(),
+		val = this.$input.val();
 	this.$input.val( '' );
 	if ( val.length > 0 ) {
 		var tx;
-		if ( this.selection.from != this.selection.to ) {
-			tx = this.model.getDocument().prepareRemoval( this.selection );
+		if ( selection.from != selection.to ) {
+			tx = this.model.getDocument().prepareRemoval( selection );
 			this.model.transact( tx );
 			this.documentView.clearSelection();
-			this.selection.from = this.selection.to =
-				Math.min( this.selection.from, this.selection.to );
+			selection.from = selection.to =
+				Math.min( selection.from, selection.to );
 		}
-		tx = this.model.getDocument().prepareInsertion( this.selection.from, val.split('') );
+		tx = this.model.getDocument().prepareInsertion( selection.from, val.split('') );
 		this.model.transact( tx );
-		this.selection.from += val.length;
-		this.selection.to += val.length;
-		this.showCursor();
+		selection.from += val.length;
+		selection.to += val.length;
+		this.model.select( selection );
 	}
 };
 
@@ -545,20 +545,19 @@ es.SurfaceView.prototype.moveCursor = function( direction, unit ) {
 	if ( direction !== 'up' && direction !== 'down' ) {
 		this.cursor.initialLeft = null;
 	}
-
-	var to,
+	var selection = this.currentSelection.clone(),
+		to,
 		offset;
-
 	switch ( direction ) {
 		case 'left':
 		case 'right':
 			switch ( unit ) {
 				case 'char':
 				case 'word':
-					if ( this.keyboard.keys.shift || this.selection.from === this.selection.to ) {
-						offset = this.selection.to;
+					if ( this.keyboard.keys.shift || selection.from === selection.to ) {
+						offset = selection.to;
 					} else {
-						offset = direction === 'left' ? this.selection.start : this.selection.end;
+						offset = direction === 'left' ? selection.start : selection.end;
 					}
 					to = this.model.getDocument().getRelativeContentOffset(
 							offset,
@@ -576,9 +575,9 @@ es.SurfaceView.prototype.moveCursor = function( direction, unit ) {
 				case 'line':
 					offset = this.cursor.initialBias ?
 						this.model.getDocument().getRelativeContentOffset(
-							this.selection.to,
+							selection.to,
 							-1) :
-								this.selection.to;
+								selection.to;
 					var range = this.documentView.getRenderedLineRangeFromOffset( offset );
 					to = direction === 'left' ? range.start : range.end;
 					break;
@@ -598,7 +597,7 @@ es.SurfaceView.prototype.moveCursor = function( direction, unit ) {
 								return false;
 							}
 						},
-						this.documentView.getNodeFromOffset( this.selection.to, false ).getModel(),
+						this.documentView.getNodeFromOffset( selection.to, false ).getModel(),
 						direction === 'up' ? true : false
 					);
 					to = this.model.getDocument().getOffsetFromNode( toNode, false ) + 1;
@@ -610,7 +609,7 @@ es.SurfaceView.prototype.moveCursor = function( direction, unit ) {
 					 * reach the next/previous line
 					 */
 					var position = this.documentView.getRenderedPositionFromOffset(
-						this.selection.to,
+						selection.to,
 						this.cursor.initialBias
 					);
 					
@@ -623,7 +622,7 @@ es.SurfaceView.prototype.moveCursor = function( direction, unit ) {
 						top = this.$.position().top;
 
 					this.cursor.initialBias = position.left > this.documentView.getNodeFromOffset(
-						this.selection.to, false
+						selection.to, false
 					).contentView.$.offset().left;
 
 					do {
@@ -652,18 +651,15 @@ es.SurfaceView.prototype.moveCursor = function( direction, unit ) {
 		this.cursor.initialBias = direction === 'right' && unit === 'line' ? true : false;
 	}
 
-	if ( this.keyboard.keys.shift && this.selection.from !== to) {
-		this.selection.to = to;
-		this.documentView.drawSelection( this.selection );
-		this.hideCursor();
+	if ( this.keyboard.keys.shift && selection.from !== to) {
+		selection.to = to;
 	} else {
-		if ( this.selection.from !== this.selection.to ) { 
+		if ( selection.from !== selection.to ) { 
 			this.documentView.clearSelection();
 		}
-		this.selection.from = this.selection.to = to;
-		this.showCursor();
+		selection.from = selection.to = to;
 	}
-	this.emitSelect();	
+	this.model.select( selection );
 };
 
 /**
@@ -673,10 +669,12 @@ es.SurfaceView.prototype.moveCursor = function( direction, unit ) {
  * @param offset {Integer} Position to show the cursor at
  */
 es.SurfaceView.prototype.showCursor = function() {	
-	var position = this.documentView.getRenderedPositionFromOffset(
-		this.selection.to, this.cursor.initialBias
-	);
-	this.cursor.$.css( {
+	var $window = $( window ),
+		position = this.documentView.getRenderedPositionFromOffset(
+			this.currentSelection.to, this.cursor.initialBias
+		);
+	
+	this.$cursor.css( {
 		'left': position.left,
 		'top': position.top,
 		'height': position.bottom - position.top
@@ -690,9 +688,9 @@ es.SurfaceView.prototype.showCursor = function() {
 	var inputTop = this.$input.offset().top,
 		inputBottom = inputTop + position.bottom - position.top;	
 	if ( inputTop - this.dimensions.toolbarHeight < this.dimensions.scrollTop ) {
-		this.$window.scrollTop( inputTop - this.dimensions.toolbarHeight );
+		$window.scrollTop( inputTop - this.dimensions.toolbarHeight );
 	} else if ( inputBottom > ( this.dimensions.scrollTop + this.dimensions.height ) ) {
-		this.$window.scrollTop( inputBottom - this.dimensions.height );
+		$window.scrollTop( inputBottom - this.dimensions.height );
 	}
 
 	// cursor blinking
@@ -702,7 +700,7 @@ es.SurfaceView.prototype.showCursor = function() {
 
 	var _this = this;
 	this.cursor.interval = setInterval( function( surface ) {
-		_this.cursor.$.css( 'display', function( index, value ) {
+		_this.$cursor.css( 'display', function( index, value ) {
 			return value === 'block' ? 'none' : 'block';
 		} );
 	}, 500 );
@@ -717,7 +715,7 @@ es.SurfaceView.prototype.hideCursor = function() {
 	if( this.cursor.interval ) {
 		clearInterval( this.cursor.interval );
 	}
-	this.cursor.$.hide();
+	this.$cursor.hide();
 };
 
 /* Inheritance */

@@ -13,6 +13,7 @@ es.SurfaceModel = function( doc ) {
 	// Properties
 	this.doc = doc;
 	this.selection = new es.Range();
+	this.previousSelection = null;
 	this.states = [[]];
 	this.initializeState( this.states.length - 1 );
 
@@ -67,15 +68,25 @@ es.SurfaceModel.prototype.select = function( selection, combine ) {
 	if ( !combine && this.shouldPushState( selection ) ) {
 		this.pushState();
 	}
-	var lastAction = this.states[this.states.length - 1];
-	if ( lastAction instanceof es.Range ) {
-		this.currentStateDistance += Math.abs(
-			selection.from - this.states[this.states.length - 1].from
-		);
-	}
+	// Filter out calls to select if they do not change the selection values
 	this.selection = selection;
-	this.currentState.push( selection );
-	this.emit( 'select', selection );
+	if (
+		!combine ||
+		!this.previousSelection || (
+			this.previousSelection.from !== this.selection.from || 
+			this.previousSelection.to !== this.selection.to
+		)
+	) {
+		var lastAction = this.states[this.states.length - 1];
+		if ( lastAction instanceof es.Range ) {
+			this.currentStateDistance += Math.abs(
+				selection.from - this.states[this.states.length - 1].from
+			);
+		}
+		this.currentState.push( selection );
+		this.emit( 'select', this.selection.clone() );
+	}
+	this.previousSelection = this.selection.clone();
 };
 
 /**
@@ -199,9 +210,23 @@ es.SurfaceModel.prototype.pushState = function() {
 		}
 	}
 	// Push a new state to the stack
+	this.optimizeState( this.states.length - 1 );
 	this.states.push( [] );
 	this.initializeState( this.states.length - 1 );
 	this.emit( 'pushState' );
+};
+
+es.SurfaceModel.prototype.optimizeState = function( stateIndex ) {
+	var skipSelects = false,
+		newState = [];
+	for ( var i = this.states[stateIndex].length - 1; i >= 0; i-- ) {
+		var action = this.states[stateIndex][i];
+		if ( !( action instanceof es.Range && skipSelects ) ) {
+			newState.push( action );
+			skipSelects = true;
+		}
+	}
+	this.states[stateIndex] = newState;
 };
 
 /* Inheritance */
