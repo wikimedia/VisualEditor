@@ -958,25 +958,18 @@ es.DocumentModel.prototype.prepareRemoval = function( range ) {
 	// a table row. There may be other rules we will want in here later, for instance, special
 	// casing merging a listitem into a paragraph.
 	function canMerge( node1, node2 ) {
-		var n1 = node1, n2 = node2;
-		// Simultaneously walk upwards from node1 and node2
-		// until we reach the common ancestor.
-		while ( n1 !== n2 ) {
-			if ( n1.getElementType() !== n2.getElementType() ) {
-				// Not the same type
-				return false;
-			}
-			n1 = n1.getParent();
-			n2 = n2.getParent();
-			if ( n1 === null || n2 === null ) {
-				// Reached a root, so no common ancestor
-				// or different depth
+		var result = es.DocumentNode.getCommonAncestorPaths( node1, node2 );
+		if ( !result ) {
+			return false;
+		}
+		
+		// Check that corresponding nodes in the paths have the same type
+		for ( var i = 0; i < result.node1Path.length; i++ ) {
+			if ( result.node1Path[i].getElementType() !== result.node2Path[i].getElementType() ) {
 				return false;
 			}
 		}
-		// We've reached the common ancestor using simultaneous traversal,
-		// so we know node1 and node2 have the same depth. We also haven't
-		// seen any nodes with mismatching types along the way, so we're good.
+		
 		return true;
 	}
 	

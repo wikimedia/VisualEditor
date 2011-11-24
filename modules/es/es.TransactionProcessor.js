@@ -326,27 +326,22 @@ es.TransactionProcessor.prototype.remove = function( op ) {
 			// node we visit and verify that the transaction is a valid merge (i.e. it satisfies
 			// the merge criteria in prepareRemoval()'s canMerge()).
 			// FIXME: The code is essentially the same as canMerge(), merge these algorithms
-			var	n1 = firstKeptNode, n2 = lastKeptNode,
-				prevN1 = null, prevN2 = null,
-				openings = [], closings = [];
-			while ( n1 !== n2 ) {
+			var	openings = [], closings = [],
+				paths = es.DocumentNode.getCommonAncestorPaths( firstKeptNode, lastKeptNode ),
+				i, prevN1, prevN2;
+			
+			if ( !paths ) {
+				throw 'Removal is not a valid merge: nodes do not have a common ancestor or are not at the same depth';
+			}
+			for ( i = 0; i < paths.node1Path.length; i++ ) { 
 				// Verify the element types are equal
-				if ( n1.getElementType() !== n2.getElementType() ) {
+				if ( paths.node1Path[i].getElementType() !== paths.node2Path[i].getElementType() ) {
 					throw 'Removal is not a valid merge: corresponding parents have different types ( ' +
-						n1.getElementType() + ' vs ' + n2.getElementType() + ' )';
+						paths.node1Path[i].getElementType() + ' vs ' + paths.node2Path[i].getElementType() + ' )';
 				}
 				// Record the opening of n1 and the closing of n2
-				openings.push( n1.getElement() );
-				closings.push( { 'type': '/' + n2.getElementType() } );
-				// Move up
-				prevN1 = n1;
-				prevN2 = n2;
-				n1 = n1.getParent();
-				n2 = n2.getParent();
-				if ( n1 === null || n2 === null ) {
-					// Reached a root, so no common ancestor or different depth
-					throw 'Removal is not a valid merge: nodes do not have a common ancestor or are not at the same depth';
-				}
+				openings.push( paths.node1Path[i].getElement() );
+				closings.push( { 'type': '/' + paths.node2Path[i].getElementType() } );
 			}
 			
 			// Surround newData with the openings and closings
@@ -354,17 +349,19 @@ es.TransactionProcessor.prototype.remove = function( op ) {
 			
 			// Rebuild oldNodes if needed
 			// This only happens for merges with depth > 1
-			if ( prevN1 !== oldNodes[0] ) {
+			prevN1 = paths.node1Path.length ? paths.node1Path[paths.node1Path.length - 1] : null;
+			prevN2 = paths.node2Path.length ? paths.node2Path[paths.node2Path.length - 1] : null;
+			if ( prevN1 && prevN1 !== oldNodes[0] ) {
 				oldNodes = [ prevN1 ];
-				parent = n1;
-				index = n1.indexOf( prevN1 ); // Pass to rebuildNodes() so it's not recomputed
+				parent = paths.commonAncestor;
+				index = parent.indexOf( prevN1 ); // Pass to rebuildNodes() so it's not recomputed
 				if ( index === -1 ) {
 					throw "Tree corruption detected: node isn't in its parent's children array";
 				}
 				var foundPrevN2 = false;
-				for ( var j = index + 1; !foundPrevN2 && j < n1.getChildren().length; j++ ) {
-					oldNodes.push( n1.getChildren()[j] );
-					foundPrevN2 = n1.getChildren()[j] === prevN2;
+				for ( var j = index + 1; !foundPrevN2 && j < parent.getChildren().length; j++ ) {
+					oldNodes.push( parent.getChildren()[j] );
+					foundPrevN2 = parent.getChildren()[j] === prevN2;
 				}
 				if ( !foundPrevN2 ) {
 					throw "Tree corruption detected: node isn't in its parent's children array";
