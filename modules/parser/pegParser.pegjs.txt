@@ -517,8 +517,6 @@ inline_breaks
   = //& { console.log(pp(syntaxFlags)); return true; }
     & { return syntaxFlags['table']; } 
     a:(newline [!|] / '||' / '!!' / '|}') { dp("table break" + pp(a)); return true; }
-  / & { return syntaxFlags['italic']; } italic_marker { return true; }
-  / & { return syntaxFlags['bold']; } bold_marker { return true; }
   / & { return syntaxFlags['linkdesc']; } link_end { return true; }
   / & { return syntaxFlags['h']; } 
         ( & { return syntaxFlags['h1'] } '=' newline { return true; }
@@ -586,8 +584,6 @@ inline_element
   / template
   / link
   / quote
-//  / bold
-//  / italic
 
 comment
   = '<!--' c:comment_chars* '-->' 
@@ -658,8 +654,7 @@ template_param_text_chunk
   / extlink
   / template
   / link
-  / bold
-  / italic
+  / quote
   / !"}}" x:([^|]) { return x }
 
 link
@@ -692,47 +687,19 @@ link_text
 
 link_end = "]]"
 
-/* This implementation of bold and italic is very basic so far, and misses the
- * finer points of doQuotes in the parser. A rough plan to get closer:
- * - '''' -> ' '''
- * - last ''''' in a row of ' is used
- * - if *both* italics and bolds are unbalanced, check for prefix
- *   - convert single-letter or multi-letter non-space prefixed tick back to
- *     text
- */
-bold
-  = bold_marker 
-    & { dp('benter:' + pos); return setFlag('bold'); }
-    c:inlineline
-    (bold_marker / &newline) {
-        clearFlag('bold');
-        return [{ type: 'TAG', name: 'b' }]
-                .concat(c, [{type: 'ENDTAG', name: 'b'}]);
-    }
-  / bold_marker { clearFlag('bold'); return null }
-
-bold_marker = "'''"
-
+/* Generic quote production for italic and bold, further processed in a token
+ * stream transformation in doQuotes. Relies on NEWLINE tokens being emitted
+ * for each line of text to balance quotes per line.
+ * 
+ * We are not using a simple pair rule here as we need to support mis-nested
+ * bolds/italics and MediaWiki's special heuristics for apostrophes, which are
+ * all not context free. */
 quote = "''" x:"'"* {
 	return { 
 		type : 'QUOTE',
 		value: "''" + x.join('')
 	}
 }
-
-italic
-  = italic_marker 
-    & { dp('ienter:' + pos); return setFlag('italic'); }
-    c:inlineline 
-    (italic_marker / &newline) {
-            clearFlag('italic');
-            dp('ileave:' + pos);
-            return [{ type: 'TAG', name: 'i' }]
-                    .concat(c, [{ type: 'ENDTAG', name: 'i'}]);
-    }
-  / italic_marker { clearFlag('italic'); return null }
-
-italic_marker = "''"
 
 /* Will need to check anything xmlish agains known/allowed HTML tags and
  * registered extensions, otherwise fail the match. Should ref be treated as a
