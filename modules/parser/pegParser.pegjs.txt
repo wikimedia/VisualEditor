@@ -165,6 +165,157 @@
 		return out;
 	};
 
+	/*
+	 * Italic/Bold handling.
+	 *
+	 * - list of tokens
+	 *   - NEWLINE
+	 *   - ticks (2+) -> list with link in line token list?
+	 *   - process on newline
+	 *   - need access to text nodes before/after for conversion back to text
+	 */
+	var doQuotes = function ( tokens ) {
+
+		var italics = [],
+			bolds = [],
+			out = [],
+			inserted = 0;
+
+		var convertBold = function ( i ) {
+			var index = bolds[i];
+			var txt = out[index - 1];
+			txt.value += "'";
+			bolds = bolds.slice(0, i)
+				.concat(bolds.slice(i + 1, bolds.length - i - 1));
+			italics.push(index);
+			italics.sort();
+		};
+
+		// convert italics/bolds into tags
+		var quotesToTags = function ( offsets, name ) {
+			var toggle = true;
+			for (var j = 0; j < offsets.length; j++) {
+				var t = out[offsets[j]];
+				if(toggle) {
+					t.type = 'TAG';
+				} else {
+					t.type = 'ENDTAG';
+				}
+				t.name = name;
+				delete t.value;
+				toggle = !toggle;
+			}
+			if (!toggle) {
+				// add end tag
+				out.push({type: 'ENDTAG', name: name});
+				inserted++;
+			}
+			toggle = true;
+		};
+
+		for (var i = 0, length = tokens.length; i < length; i++) {
+			var token = tokens[i];
+			switch (token.type) {
+				case 'QUOTE':
+					// depending on length, add starting 's to preceding text node
+					// (if any)
+					// add token index to italic/bold lists
+					// add placeholder for token
+					var qlen = token.value.length;
+					switch (qlen) {
+						case 2: italics.push(i + inserted); out.push(token); break;
+						case 3: bolds.push(i + inserted); out.push(token); break;
+						case 4: 
+								token.value = "'''";
+								if (i > 0 && tokens[i-1].type === 'TEXT') {
+									tokens[i-1].value += "'";
+								} else {
+									out.push({type: 'TEXT', value: "'"});
+									inserted++;
+								}
+								bolds.push(i + inserted); 
+								out.push(token);
+								break;
+						case 5:
+								// order does not matter here, will be fixed
+								// by HTML parser backend
+								bolds.push(i + inserted);
+								out.push({type: 'QUOTE', value: "'''"}); 
+								inserted++;
+								italics.push(i + inserted); 
+								out.push({type: 'QUOTE', value: "''"}); 
+								break;
+						default: // longer than 5, only use the last 5 ticks
+								token.value = "'''''";
+								var newvalue = token.value.substr(0, qlen - 5 );
+								if (i > 0 && tokens[i-1].type === 'TEXT') {
+									tokens[i-1].value += newvalue;
+								} else {
+									out.push({type: 'TEXT', value: newvalue});
+									inserted++;
+								}
+								bolds.push(i + inserted);
+								out.push({type: 'QUOTE', value: "'''"}); 
+								inserted++;
+								italics.push(i + inserted); 
+								out.push({type: 'QUOTE', value: "''"}); 
+								break;
+					}
+					break;
+
+				case 'NEWLINE':
+					// balance out tokens, convert placeholders into tags
+					if (italics.length % 2 && bolds.length % 2) {
+						dp("balancing!");
+						var firstsingleletterword = -1,
+							firstmultiletterword = -1,
+							firstspace = -1;
+						for (var j = 0; j < bolds.length; j++) {
+							var ticki = bolds[j];
+							if (ticki > 0 && out[ticki - 1].type === 'TEXT') {
+								var txt = out[ticki - 1],
+									lastchar = txt.value[txt.value.length - 1],
+									secondtolastchar = txt.value[txt.value.length - 2];
+								dp('txt: ' + pp(txt));
+								if (lastchar === ' ' && firstspace === -1) {
+									firstspace = j;
+								} else if (lastchar !== ' ') {
+									if ( secondtolastchar === ' ' && 
+											firstsingleletterword === -1) {
+												firstsingleletterword = j;
+											} else if ( secondtolastchar && 
+													secondtolastchar !== ' ') {
+														firstmultiletterword = j;
+													}
+								}
+							}
+						}
+
+
+						// now see if we can convert a bold to an italic and
+						// an apostrophe
+						if (firstsingleletterword > -1) {
+							convertBold(firstsingleletterword);
+						} else if (firstmultiletterword > -1) {
+							convertBold(firstmultiletterword);
+						} else if (firstspace > -1) {
+							convertBold(firstspace);
+						}
+					}
+
+					quotesToTags(bolds, 'b');
+					quotesToTags(italics, 'i');
+					bolds = [];
+					italics = [];
+					out.push(token);
+					break;
+				default:
+					out.push(token);
+			}
+		}
+		return out;
+	};
+
 
 	/* End static utilities */
 
@@ -213,7 +364,7 @@ space
 // Start of line
 sol = (newline / & { return pos === 0; } { return true; }) 
       cn:(c:comment n:newline? { return [c, n] })? {
-          return cn;
+          return [{type: 'NEWLINE'}].concat(cn);
       }
 
 
@@ -229,11 +380,14 @@ toplevelblock
         bs.attribs = [];
     }
     bs.attribs.push(['data-sourcePos', blockStart + ':' + pos]);
+	// XXX: only run this for lines that actually need it!
+	b.push({type: 'NEWLINE'});
+	b = doQuotes(b);
     return b;
   }
 
 block
-  = (sol space* &newline)? bl:block_lines { return bl; }
+  = (sol space* &newline)? bl:block_lines { return [{type: 'NEWLINE'}].concat(bl); }
   / para
   / comment
   / (s:sol { 
@@ -431,8 +585,9 @@ inline_element
   / extlink
   / template
   / link
-  / bold
-  / italic
+  / quote
+//  / bold
+//  / italic
 
 comment
   = '<!--' c:comment_chars* '-->' 
@@ -558,6 +713,12 @@ bold
 
 bold_marker = "'''"
 
+quote = "''" x:"'"* {
+	return { 
+		type : 'QUOTE',
+		value: "''" + x.join('')
+	}
+}
 
 italic
   = italic_marker 
@@ -691,18 +852,18 @@ lists = es:(dtdd / li)+
 								,[{ type: 'ENDTAG', name: 'list' }]));
 }
 
-li = sol
+li = s:sol
      bullets:list_char+ 
      c:inlineline
      &newline 
 {
-    return [ { type: 'TAG', 
+    return s.concat([ { type: 'TAG', 
                name: 'listItem', 
                bullets: bullets }
-           , c ];
+           , c ]);
 }
 
-dtdd = sol
+dtdd = s:sol
        bullets:list_char+
        c:(inline_element / (n:[^:\n] { return {type: 'TEXT', value: n}; }))+
        ":"
@@ -715,7 +876,7 @@ dtdd = sol
     } else {
 		var dtbullets = bullets.slice(0, bullets.length - 1);
 		dtbullets.push(':');
-        return [ { type: 'TAG', name: 'listItem', bullets: bullets } ]
+        return s.concat([ { type: 'TAG', name: 'listItem', bullets: bullets } ])
                 .concat( c
 					,[{ type: 'TAG', name: 'listItem', bullets: dtbullets } ]
                     , d );
