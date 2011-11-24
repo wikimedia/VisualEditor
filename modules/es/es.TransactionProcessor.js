@@ -240,6 +240,7 @@ es.TransactionProcessor.prototype.insert = function( op ) {
 	if ( es.DocumentModel.isStructuralOffset( this.model.data, this.cursor ) ) {
 		es.insertIntoArray( this.model.data, this.cursor, op.data );
 		this.applyAnnotations( this.cursor + op.data.length );
+		
 		node = this.model.getNodeFromOffset( this.cursor );
 		offset = this.model.getOffsetFromNode( node );
 		index = node.getIndexFromOffset( this.cursor - offset );
@@ -248,11 +249,9 @@ es.TransactionProcessor.prototype.insert = function( op ) {
 		node = this.model.getNodeFromOffset( this.cursor );
 		if ( node.getParent() === this.model ) {
 			offset = this.model.getOffsetFromNode( node );
-			index = this.model.getIndexFromOffset( this.cursor - offset );
 		} else {
 			node = this.getScope( node, op.data );
 			offset = this.model.getOffsetFromNode( node );
-			//index = node.getIndexFromOffset( this.cursor - offset );
 		}
 		if ( es.DocumentModel.containsElementData( op.data ) ) {
 			// Perform insert on linear data model
