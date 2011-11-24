@@ -155,7 +155,7 @@ es.SurfaceView.prototype.updateSelection = function( delay ) {
 				_this.documentView.clearSelection( _this.currentSelection );
 			}
 			_this.updateSelectionTimeout = undefined;
-		}, delay || 0 );
+		}, delay );
 	} else {
 		if ( this.currentSelection.from !== this.currentSelection.to ) {
 			this.hideCursor();
@@ -176,7 +176,7 @@ es.SurfaceView.prototype.emitUpdate = function( delay ) {
 		this.emitUpdateTimeout = setTimeout( function() {
 			_this.emit( 'update' );	
 			_this.emitUpdateTimeout = undefined;
-		}, delay || 0 );
+		}, delay );
 	} else {
 		this.emit( 'update' );	
 	}
