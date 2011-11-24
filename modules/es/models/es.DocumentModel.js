@@ -1050,6 +1050,9 @@ es.DocumentModel.prototype.prepareContentAnnotation = function( range, method, a
 		if ( this.data[i].type !== undefined ) {
 			// Don't annotate structural elements
 			if ( on ) {
+				if ( span ) {
+					tx.pushRetain( span );
+				}
 				tx.pushStopAnnotating( method, annotation );
 				span = 0;
 				on = false;
