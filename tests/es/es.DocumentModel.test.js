@@ -258,7 +258,7 @@ test( 'es.DocumentModel.prepareElementAttributeChange', 4, function() {
 	}
 } );
 
-test( 'es.DocumentModel.prepareContentAnnotation', 2, function() {
+test( 'es.DocumentModel.prepareContentAnnotation', 3, function() {
 	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
 
 	// Test 1
@@ -337,6 +337,31 @@ test( 'es.DocumentModel.prepareContentAnnotation', 2, function() {
 			{ 'type': 'retain', 'length': 24 }
 		],
 		'prepareContentAnnotation works across element boundaries'
+	);
+	
+	// Test 3
+	deepEqual(
+		documentModel.prepareContentAnnotation(
+			new es.Range( 4, 11 ), 'set', { 'type': 'textStyle/bold' }
+		).getOperations(),
+		[
+			{ 'type': 'retain', 'length': 9 },
+			{
+				'type': 'annotate',
+				'method': 'set',
+				'bias': 'start',
+				'annotation': { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }
+			},
+			{ 'type': 'retain', 'length': 1 },
+			{
+				'type': 'annotate',
+				'method': 'set',
+				'bias': 'stop',
+				'annotation': { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }
+			},
+			{ 'type': 'retain', 'length': 24 }
+		],
+		'prepareContentAnnotation works when given structural offsets'
 	);
 } );
 

@@ -1045,7 +1045,7 @@ es.DocumentModel.prototype.prepareContentAnnotation = function( range, method, a
 	}
 	var i = range.start,
 		span = i,
-		on = this.data[i].type !== undefined;
+		on = false;
 	while ( i < range.end ) {
 		if ( this.data[i].type !== undefined ) {
 			// Don't annotate structural elements
@@ -1059,7 +1059,7 @@ es.DocumentModel.prototype.prepareContentAnnotation = function( range, method, a
 			}
 		} else {
 			var covered = es.DocumentModel.getIndexOfAnnotation( this.data[i], annotation ) !== -1;
-			if ( covered && method === 'set' || !covered && method === 'clear' ) {
+			if ( ( covered && method === 'set' ) || ( !covered  && method === 'clear' ) ) {
 				// Don't set/clear annotations on content that's already set/cleared
 				if ( on ) {
 					if ( span ) {
@@ -1084,10 +1084,10 @@ es.DocumentModel.prototype.prepareContentAnnotation = function( range, method, a
 		span++;
 		i++;
 	}
+	if ( span ) {
+		tx.pushRetain( span );
+	}
 	if ( on ) {
-		if ( span ) {
-			tx.pushRetain( span );
-		}
 		tx.pushStopAnnotating( method, annotation );
 	}
 	if ( range.end < this.data.length ) {
