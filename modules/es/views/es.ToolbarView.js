@@ -1,162 +1,129 @@
+var i18nDictionary = {
+	'text': 'Text',
+	'list': 'Lists'
+};
+
+var i18n = function( key ) {
+	if ( i18nDictionary[key] ) {
+		return i18nDictionary[key];
+	} else {
+		return key;
+	}
+	
+};
+
 es.ToolbarView = function( $container, surfaceView ) {
 	// Reference for use in closures
 	var	_this = this;
 	
 	this.$ = $container;
 	this.surfaceView = surfaceView;
+
 	this.tools = [
 		{
-			type: 'text',
+			name: 'text',
 			items: [
 				{
-					type: 'bold',
-					execute: function( toolbarView, tool ) {
-						var tx;
-						if ( tool.$.hasClass( 'es-toolbarTool-down' ) ) {
-							tx = toolbarView.surfaceView.model.getDocument().prepareContentAnnotation(
-								toolbarView.currentSelection,
-								'clear',
-								{ 'type': 'textStyle/bold' }
-							);
-						} else {
-							tx = toolbarView.surfaceView.model.getDocument().prepareContentAnnotation(
-								toolbarView.currentSelection,
-								'set',
-								{ 'type': 'textStyle/bold' }
-							);
-						}
-						toolbarView.surfaceView.model.transact( tx );
-					},
-					active: function( annotations ) {
-						for ( var i = 0; i < annotations.length; i++ ) {
-							if ( annotations[i].type === 'textStyle/bold' ) {
-								return true;
-							}
-						}
-						return false;
+					type: 'select',
+					name: 'formatting',
+					items: [
+						'',
+						'paragraph',
+						'preformatted',
+						'heading1',
+						'heading2',
+						'heading3',
+						'heading4',
+						'heading5',
+						'heading6'
+					],
+					state: function() {
+						return 'paragraph';
+						return '';
 					}
 				},
 				{
-					type: 'italic',
-					execute: function( toolbarView, tool ) {
-						var tx;
-						if ( tool.$.hasClass( 'es-toolbarTool-down' ) ) {
-							tx = toolbarView.surfaceView.model.getDocument().prepareContentAnnotation(
-								toolbarView.currentSelection,
-								'clear',
-								{ 'type': 'textStyle/italic' }
-							);
-						} else {
-							tx = toolbarView.surfaceView.model.getDocument().prepareContentAnnotation(
-								toolbarView.currentSelection,
-								'set',
-								{ 'type': 'textStyle/italic' }
-							);
-						}
-						toolbarView.surfaceView.model.transact( tx );
-					},
-					active: function( annotations ) {
-						for ( var i = 0; i < annotations.length; i++ ) {
-							if ( annotations[i].type === 'textStyle/italic' ) {
-								return true;
-							}
-						}
-						return false;
-					}
+					type: 'button',
+					name: 'bold'
+				},
+				{
+					type: 'button',
+					name: 'italic'
 				}
 			]
 		},
 		'/',
 		{
-			type: 'list',
+			name: 'list',
 			items: [
 				{
-					type: 'bullet',
-					execute: function( ) {
-					},
-					active: function( ) {
-					}
+					type: 'button',
+					name: 'bullet'
 				},
 				{
-					type: 'number',
-					execute: function( ) {
-					},
-					active: function( ) {
-					}
+					type: 'button',
+					name: 'number'
 				}
 			]
 		}
 	];
-	this.render();
-	this.currentSelection = new es.Range();
-	this.currentAnnotations = [];
+	
+	this.setup();
+
 	this.surfaceView.model.on( 'select', function( selection ) {
-		_this.onSelect( selection );
+		_this.selection = selection;
+		_this.updateToolbar();
+	} );
+	this.surfaceView.on( 'update', function(a) {
+		_this.selection = _this.surfaceView.currentSelection;
+		_this.updateToolbar();
 	} );
 };
 
-es.ToolbarView.prototype.render = function() {
-	var _this = this;
+es.ToolbarView.prototype.updateToolbar = function() {
+	if ( this.selection.from != this.selection.to ) {
+//		var nodes = this.surfaceView.documentView.selectNodes( this.selection, true);
+//		var nodes = nodes[0].node.selectNodes ( nodes[0].range, true );
+	}
+};
+
+es.ToolbarView.prototype.setup = function() {
 	for ( var i = this.tools.length - 1; i >= 0; i-- ) {
 		if ( !es.isPlainObject( this.tools[i] ) ) {
+			// divider
 			if ( this.tools[i] === '/' ) {
 				 this.$.prepend( '<div class="es-toolbarDivider">' );
 			}
 		} else {
 			var	$group = $( '<div>' )
 				.addClass( 'es-toolbarGroup' )
-				.addClass( 'es-toolbarGroup-' + this.tools[i].type )
+				.addClass( 'es-toolbarGroup-' + this.tools[i].name )
 				.append(
-					$( '<div>' ).addClass( 'es-toolbarLabel' ).html( this.tools[i].type )
+					$( '<div>' ).addClass( 'es-toolbarLabel' ).html( i18n( this.tools[i].name ) )
 				);
-
 			for ( var j = 0; j < this.tools[i].items.length; j++ ) {
-				this.tools[i].items[j].$ = $('<div>')
-					.addClass( 'es-toolbarTool' )
-					.append(
-						$( '<img>' ).attr( 'src', 'images/' + this.tools[i].items[j].type + '.png')
-					)
-					.bind(
-						'click',
-						{
-							tool: this.tools[i].items[j]
-						},
-						function( e ) {
-							_this.execute( e.data.tool );
-						}
+				var $tool = $('<div>').addClass( 'es-toolbarTool' );
+				if ( this.tools[i].items[j].type === 'button' ) {
+					// button
+					$tool.append(
+						$( '<img>' ).attr( 'src', 'images/' + this.tools[i].items[j].name + '.png')
 					);
-				$group.append( this.tools[i].items[j].$ );
-			}
-
-			this.$.prepend( $group );
-		}
-	}
-};
-
-es.ToolbarView.prototype.execute = function( tool ) {
-	tool.execute( this, tool );
-};
-
-es.ToolbarView.prototype.onSelect = function( selection ) {
-	this.currentSelection = selection;
-	
-	if( this.currentSelection.from === this.currentSelection.to ) {
-		this.currentAnnotations = 
-			this.surfaceView.documentView.model.getAnnotationsFromOffset( this.currentSelection.to );
-	} else {
-		this.currentAnnotations = 
-			this.surfaceView.documentView.model.getAnnotationsFromRange( this.currentSelection );
-	}
-	
-	for ( var i = 0; i < this.tools.length; i++ ) {
-		if ( es.isPlainObject( this.tools[i] ) ) {
-			for ( var j = 0; j < this.tools[i].items.length; j++ ) {
-				if ( this.tools[i].items[j].active( this.currentAnnotations ) ) {
-					this.tools[i].items[j].$.addClass( 'es-toolbarTool-down' );
-				} else {
-					this.tools[i].items[j].$.removeClass( 'es-toolbarTool-down' );
+				} else if ( this.tools[i].items[j].type === 'select' ) {
+					// select
+					$select = $( '<select>' );
+					for ( var h = 0; h < this.tools[i].items[j].items.length; h++ ) {
+						$select.append(
+							$( '<option>' )
+								.html( i18n ( this.tools[i].items[j].items[h] ) )
+								.val( this.tools[i].items[j].items[h] )
+						);
+					}
+					$tool.append( $select );
 				}
+				$group.append( $tool );
+				this.tools[i].items[j].$ = $tool;
 			}
+			this.$.prepend( $group ); 
 		}
-	} 
+	}
 };
