@@ -704,7 +704,57 @@ quote = "''" x:"'"* {
 /* Will need to check anything xmlish agains known/allowed HTML tags and
  * registered extensions, otherwise fail the match. Should ref be treated as a
  * regular extension? */
-xmlish_tag = ref / references
+xmlish_tag = nowiki / pre / ref / references / generic_tag
+
+nowiki = "<nowiki>" ts:(t:[^<]+ { return t.join('') } / !"</nowiki>" .)+ {
+    // return nowiki tags as well?
+    return [{type: 'TEXT', value: ts.join('')}];
+}
+
+// See http://dev.w3.org/html5/spec/Overview.html#syntax-tag-name and
+// following paragraphs
+generic_tag
+  = "<" end:"/"? name:[0-9a-zA-Z]+ 
+    attribs:generic_attribute* 
+    selfclose:"/"?
+    ">" {
+        var res = {name: name.join(''), attribs: attribs};
+        if ( end !== '' ) {
+            res.type = 'ENDTAG';
+        } else if ( selfclose !== '' ) {
+            res.type = 'SELFCLOSINGTAG';
+        } else {
+            res.type = 'TAG';
+        }
+        return res;
+    }
+
+generic_attribute
+  = s:space* 
+    name:generic_attribute_name
+    value:(space*
+          generic_attribute_value)?
+{
+    if ( value !== '' ) {
+        return [name, value[1]];
+    } else {
+        return [name,''];
+    }
+}
+
+// http://dev.w3.org/html5/spec/Overview.html#attributes-0
+generic_attribute_name
+  = n:[^ \t\0/"'>=]+ {
+        return n.join('');
+  }
+
+generic_attribute_value
+  = "=" space* v:att_value {return v}
+
+att_value
+  = t:[^ \t'"<>=']+ { return [null, t.join('')]; }
+  / "'" t:[^'>]+ "'" { return unquote("'", t.join('')); }
+  / '"' t:[^">]+ '"' { return unquote('"', t.join('')); }
 
 ref = ref_full / ref_empty
 
@@ -987,4 +1037,4 @@ table_end = newline? "|}" { clearFlag('table'); }
  *  - post-processing needed, but has to be limited by scope
  */
 /* Tabs do not mix well with the hybrid production syntax */
-/* vim: et:ts=4:sw=4:cindent */
+/* vim: expandtab:ts=4:sw=4:cindent */
