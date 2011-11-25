@@ -404,6 +404,8 @@ block
   / pre
   / comment &eolf
   / para
+  / pre
+  / block_tag
   / (s:sol { 
       if (s) {
         return [s, {type: 'NEWLINE'}]; 
@@ -424,7 +426,7 @@ block_line
   / lists
   / pre_indent
   / pre
-  / space* !nowiki generic_tag space* &eolf // XXX: only match block elements!
+  / space* block_tag space* &eolf
 
 
 /* Headings */
@@ -743,7 +745,7 @@ pre
         return [ {type: 'TAG', name: 'pre', attribs: attribs} ]
                     .concat(ts, [{type: 'ENDTAG', name: 'pre'}]);
     }
-  / "</pre>" { return {type: 'TEXT', value: "</pre>"}; }
+  /// "</pre>" { return {type: 'TEXT', value: "</pre>"}; }
 
 nowiki 
   = "<nowiki>" nc:nowiki_content "</nowiki>" { return nc }
@@ -763,6 +765,30 @@ nowiki_content
         // return nowiki tags as well?
         return [{type: 'TEXT', value: ts.join('')}];
       }
+
+// See http://dev.w3.org/html5/spec/Overview.html#syntax-tag-name and
+// following paragraphs
+block_tag
+  = "<" end:"/"? name:block_name 
+    attribs:generic_attribute* 
+    selfclose:"/"?
+    ">" {
+        var res = {name: name, attribs: attribs};
+        if ( end != '' ) {
+            res.type = 'ENDTAG';
+        } else if ( selfclose != '' ) {
+            res.type = 'SELFCLOSINGTAG';
+        } else {
+            res.type = 'TAG';
+        }
+        return res;
+    }
+
+block_name
+  = "p" / "table" / "td" / "tr" / "ul" / "ol" 
+  / "li" / "dt" / "dd" / "div" / "center"
+  / "blockquote"
+
 
 // See http://dev.w3.org/html5/spec/Overview.html#syntax-tag-name and
 // following paragraphs
