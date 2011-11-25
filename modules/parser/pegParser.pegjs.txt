@@ -344,9 +344,12 @@
     // Could also provide positions for lower-level blocks using a stack.
     var blockStart = 0;
 
+    // cache the input length
+    var inputLength = input.length;
+
+    // pseudo-production that matches at end of input
     var isEOF = function (pos) {
-        // XXX: cache the length..
-        return pos === input.length;
+        return pos === inputLength;
     };
 }
 
@@ -419,8 +422,9 @@ block_line
   = h
   / table
   / lists
-  / space* generic_tag space* &eolf
   / pre_indent
+  / pre
+  / space* !nowiki generic_tag space* &eolf // XXX: only match block elements!
 
 
 /* Headings */
@@ -505,17 +509,19 @@ heading_text
 
 // TODO: convert inline content to annotations!
 para
-  = (sol br)? pl:para_lines { return pl; }
+  = (sol br)? pl:para_line pls:(!block_lines para_line)* { 
+      return [{type: 'TAG', name: 'p'}]
+                .concat([pl], pls, [{type: 'ENDTAG', name: 'p'}]); 
+  }
 
-para_lines
-  = s:sol? c:inlineline cs:(!block_lines para_lines)* { 
+para_line
+  = s:sol? c:inlineline { 
       var res = [];
       if (s !== '') {
-          res.push(s);
+          return s.concat(c);
+      } else {
+          return c;
       }
-      res.push({type: 'TAG', name: 'p'});
-      //console.log('paralines' + pp(res.concat(c, cs, [{type: 'ENDTAG', name: 'p'}])));
-      return res.concat(c, cs, [{type: 'ENDTAG', name: 'p'}]);
   }
 
 br = space* &newline { return {type: 'SELFCLOSINGTAG', name: 'br'} }
@@ -605,8 +611,8 @@ inline_element
 
 comment
   = '<!--' c:comment_chars* ('-->' / eof)
-    (space* newline space* comment)* {
-        return [{ type: 'COMMENT', value: c.join('') }];
+    cs:(space* newline space* cn:comment { return cn })* {
+        return [{ type: 'COMMENT', value: c.join('') }].concat(cs);
     }
 
 comment_chars
@@ -728,22 +734,35 @@ pre
   = "<pre" 
     attribs:generic_attribute* 
     ">"
-    ts:(t:[^<]+ { return t.join('') } / !"</pre>" t2:. {return t2})+ 
+    ts:(t1:[^<]+ { return {type:'TEXT',value:t1.join('')} } 
+                / nowiki 
+                / !"</pre>" t2:. {return {type:'TEXT',value:t2}})+ 
     ("</pre>" / eof) {
         // return nowiki tags as well?
-        return [ {type: 'TAG', name: 'pre', attribs: attribs}
-        , {type: 'TEXT', value: ts.join('')}
-        , {type: 'ENDTAG', name: 'pre'} 
-        ];
+        //console.log('inpre');
+        return [ {type: 'TAG', name: 'pre', attribs: attribs} ]
+                    .concat(ts, [{type: 'ENDTAG', name: 'pre'}]);
     }
+  / "</pre>" { return {type: 'TEXT', value: "</pre>"}; }
 
 nowiki 
-  = "<nowiki>" 
-    ts:(t:[^<]+ { return t.join('') } / !"</nowiki>" .)+ 
-    "</nowiki>" {
+  = "<nowiki>" nc:nowiki_content "</nowiki>" { return nc }
+  / "<nowiki>" { 
+          // console.log('nowiki fallback');
+          return [{type: 'TEXT', value: '<nowiki>'}]; 
+    }
+  / "</nowiki>" { return [{type: 'TEXT', value: '</nowiki>'}]; }
+
+nowiki_content
+  = ts:( t:[^<]+ { return t.join('') } 
+       / "<pre" p0:space* p1:[^>]* ">" p2:nowiki_content "</pre>" {
+           //console.log('nested pre in nowiki');
+           return ["<pre"].concat(p0, p1, [">"], [p2[0].value], ["</pre>"]).join('');
+       }
+       / (!("</nowiki>" / "</pre>") c:. {return c}) )* {
         // return nowiki tags as well?
         return [{type: 'TEXT', value: ts.join('')}];
-    }
+      }
 
 // See http://dev.w3.org/html5/spec/Overview.html#syntax-tag-name and
 // following paragraphs
@@ -905,7 +924,7 @@ lists = e:(dtdd / li) es:(sol (dtdd / li))*
 
 li = bullets:list_char+ 
      c:inlineline
-     &newline 
+     &eolf 
 {
     return [ { type: 'TAG', 
                name: 'listItem', 
@@ -917,7 +936,7 @@ dtdd = bullets:list_char+
        c:(inline_element / (n:[^:\n] { return {type: 'TEXT', value: n}; }))+
        ":"
        d:(inline_element / (n:[^\n] { return {type: 'TEXT', value: n}; }))+
-       &newline 
+       &eolf
 {
     // reject rule if bullets do not end in semicolon
     if (bullets[bullets.length - 1] != ';') {
