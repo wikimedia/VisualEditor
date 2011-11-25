@@ -133,9 +133,10 @@ function processTest(item) {
 		console.log(item);
 		throw new Error('Missing input from test case ' + item.title);
 	}
+	console.log('=====================================================');
 	console.log(item.title);
-        console.log("INPUT:");
-        console.log(item.input + "\n");
+    console.log("INPUT:");
+    console.log(item.input + "\n");
 
 
 	parser.parseToTree(item.input + "\n", function(tree, err) {
@@ -161,7 +162,10 @@ function processTest(item) {
 				var out = tokenizer.parser.document
 								.getElementsByTagName('body')[0]
 								.innerHTML
-								.replace(/<li>/g, '\n<li>');
+								// Hack: add some line breaks for
+								// block-levels
+								.replace(/(.)<((dd|dt|li|p|table|dl|ol|ul)[^>]*)>/g, 
+										'$1\n<$2>');
 				console.log(out);
 			}
 		}

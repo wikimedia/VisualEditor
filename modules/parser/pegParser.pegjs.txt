@@ -343,12 +343,18 @@
     // Start position of top-level block
     // Could also provide positions for lower-level blocks using a stack.
     var blockStart = 0;
+
+    var isEOF = function (pos) {
+        // XXX: cache the length..
+        return pos === input.length;
+    };
 }
 
 start
   = e:toplevelblock* newline* { 
       return flatten(e);
   }
+
 
 anyblock = block / inline
 anyblockline = block / inlineline
@@ -363,13 +369,17 @@ space
 
 // Start of line
 sol = (newline / & { return pos === 0; } { return true; }) 
-      cn:(c:comment n:newline? { return [c, n] })? {
+      cn:(c:comment n:newline? { return [c, {type: 'TEXT', value: n}] })* {
           return [{type: 'NEWLINE'}].concat(cn);
       }
+
+eof = & { return isEOF(pos); } { return true; }
 
 
 newline
   = '\n' / '\r\n'
+
+eolf = newline / eof
 
 toplevelblock 
   = & { blockStart = pos; return true; } b:block {
@@ -387,9 +397,10 @@ toplevelblock
   }
 
 block
-  = (sol space* &newline)? bl:block_lines { return [{type: 'NEWLINE'}].concat(bl); }
+  = block_lines
+  / pre
+  / comment &eolf
   / para
-  / comment
   / (s:sol { 
       if (s) {
         return [s, {type: 'NEWLINE'}]; 
@@ -399,12 +410,16 @@ block
     }
   )
 
+block_lines
+  = s:sol (space* newline)? 
+    bl:block_line { return s.concat(bl); }
 
 // Block structures with start-of-line wiki syntax
-block_lines
+block_line
   = h
   / table
   / lists
+  / space* generic_tag space* &eolf
   / pre_indent
 
 
@@ -493,11 +508,12 @@ para
   = (sol br)? pl:para_lines { return pl; }
 
 para_lines
-  = s:sol c:inlineline cs:(!block_lines para_lines)* { 
-      var res = [{type: 'TAG', name: 'p'}];
+  = s:sol? c:inlineline cs:(!block_lines para_lines)* { 
+      var res = [];
       if (s !== '') {
-          res.push(s)
+          res.push(s);
       }
+      res.push({type: 'TAG', name: 'p'});
       //console.log('paralines' + pp(res.concat(c, cs, [{type: 'ENDTAG', name: 'p'}])));
       return res.concat(c, cs, [{type: 'ENDTAG', name: 'p'}]);
   }
@@ -505,12 +521,14 @@ para_lines
 br = space* &newline { return {type: 'SELFCLOSINGTAG', name: 'br'} }
 
 pre_indent 
-  = l:pre_indent_line+ {
+  = l:pre_indent_line ls:(sol pre_indent_line)* {
       return [{type: 'TAG', name: 'pre'}]
-                    .concat( l
+                    .concat( [l], ls
                            , [{type: 'ENDTAG', name: 'pre'}]);
   }
-pre_indent_line = sol space l:inlineline { return l }
+pre_indent_line = space l:inlineline { 
+    return [{type: 'TEXT', value: '\n'}].concat(l); 
+}
 
 // Syntax that stops inline expansion
 inline_breaks
@@ -586,7 +604,7 @@ inline_element
   / quote
 
 comment
-  = '<!--' c:comment_chars* '-->' 
+  = '<!--' c:comment_chars* ('-->' / eof)
     (space* newline space* comment)* {
         return [{ type: 'COMMENT', value: c.join('') }];
     }
@@ -704,12 +722,28 @@ quote = "''" x:"'"* {
 /* Will need to check anything xmlish agains known/allowed HTML tags and
  * registered extensions, otherwise fail the match. Should ref be treated as a
  * regular extension? */
-xmlish_tag = nowiki / pre / ref / references / generic_tag
+xmlish_tag = nowiki / ref / references / generic_tag
 
-nowiki = "<nowiki>" ts:(t:[^<]+ { return t.join('') } / !"</nowiki>" .)+ {
-    // return nowiki tags as well?
-    return [{type: 'TEXT', value: ts.join('')}];
-}
+pre
+  = "<pre" 
+    attribs:generic_attribute* 
+    ">"
+    ts:(t:[^<]+ { return t.join('') } / !"</pre>" t2:. {return t2})+ 
+    ("</pre>" / eof) {
+        // return nowiki tags as well?
+        return [ {type: 'TAG', name: 'pre', attribs: attribs}
+        , {type: 'TEXT', value: ts.join('')}
+        , {type: 'ENDTAG', name: 'pre'} 
+        ];
+    }
+
+nowiki 
+  = "<nowiki>" 
+    ts:(t:[^<]+ { return t.join('') } / !"</nowiki>" .)+ 
+    "</nowiki>" {
+        // return nowiki tags as well?
+        return [{type: 'TEXT', value: ts.join('')}];
+    }
 
 // See http://dev.w3.org/html5/spec/Overview.html#syntax-tag-name and
 // following paragraphs
@@ -719,9 +753,9 @@ generic_tag
     selfclose:"/"?
     ">" {
         var res = {name: name.join(''), attribs: attribs};
-        if ( end !== '' ) {
+        if ( end != '' ) {
             res.type = 'ENDTAG';
-        } else if ( selfclose !== '' ) {
+        } else if ( selfclose != '' ) {
             res.type = 'SELFCLOSINGTAG';
         } else {
             res.type = 'TAG';
@@ -862,26 +896,24 @@ ext_param_val
   / "'" t:[^'>]+ "'" { return [null, unquote("'", t.join(''))]; }
   / '"' t:[^">]+ '"' { return [null, unquote('"', t.join(''))]; }
 
-lists = es:(dtdd / li)+
+lists = e:(dtdd / li) es:(sol (dtdd / li))*
 {
     return annotateList( [ { type: 'TAG', name: 'list'} ]
-							.concat(flatten(es)
+							.concat(flatten([e].concat(es))
 								,[{ type: 'ENDTAG', name: 'list' }]));
 }
 
-li = s:sol
-     bullets:list_char+ 
+li = bullets:list_char+ 
      c:inlineline
      &newline 
 {
-    return s.concat([ { type: 'TAG', 
+    return [ { type: 'TAG', 
                name: 'listItem', 
                bullets: bullets }
-           , c ]);
+           , c ];
 }
 
-dtdd = s:sol
-       bullets:list_char+
+dtdd = bullets:list_char+
        c:(inline_element / (n:[^:\n] { return {type: 'TEXT', value: n}; }))+
        ":"
        d:(inline_element / (n:[^\n] { return {type: 'TEXT', value: n}; }))+
@@ -893,7 +925,7 @@ dtdd = s:sol
     } else {
 		var dtbullets = bullets.slice(0, bullets.length - 1);
 		dtbullets.push(':');
-        return s.concat([ { type: 'TAG', name: 'listItem', bullets: bullets } ])
+        return [ { type: 'TAG', name: 'listItem', bullets: bullets } ]
                 .concat( c
 					,[{ type: 'TAG', name: 'listItem', bullets: dtbullets } ]
                     , d );
