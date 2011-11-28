@@ -15,6 +15,7 @@
 
 var fs = require('fs'),
 	path = require('path'),
+	jsDiff = require('diff'),
 	HTML5 = require('html5').HTML5;
 
 // @fixme wrap more or this setup in a common module
@@ -199,11 +200,19 @@ function processTest(item) {
 						console.log('RAW RENDERED:');
 						console.log(formatHTML(out) + "\n");
 
+						var a = formatHTML(normalizeHTML( item.result ));
+
 						console.log('NORMALIZED EXPECTED:');
-						console.log(formatHTML(normalizeHTML( item.result )) + "\n");
+						console.log(a + "\n");
+
+						var b = formatHTML(normalizeOut( out ));
 
 						console.log('NORMALIZED RENDERED:')
 						console.log(formatHTML(normalizeOut(out)) + "\n");
+						var patch = jsDiff.createPatch('wikitext.txt', a, b, 'before', 'after');
+
+						console.log('DIFF:');
+						console.log(patch.replace(/^[^\n]*\n[^\n]*\n/, ''));
 					}
 				}
 		}
