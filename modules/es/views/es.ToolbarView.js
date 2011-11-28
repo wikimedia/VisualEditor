@@ -39,7 +39,6 @@ es.ToolbarView = function( $container, surfaceView ) {
 					],
 					state: function() {
 						return 'paragraph';
-						return '';
 					}
 				},
 				{
@@ -92,7 +91,7 @@ es.ToolbarView.prototype.setup = function() {
 		if ( !es.isPlainObject( this.tools[i] ) ) {
 			// divider
 			if ( this.tools[i] === '/' ) {
-				 this.$.prepend( '<div class="es-toolbarDivider">' );
+				this.$.prepend( '<div class="es-toolbarDivider">' );
 			}
 		} else {
 			var	$group = $( '<div>' )

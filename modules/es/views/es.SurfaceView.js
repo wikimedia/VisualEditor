@@ -80,12 +80,12 @@ es.SurfaceView = function( $container, model ) {
 	this.$.mousedown( function(e) {
 		return _this.onMouseDown( e );
 	} );
-	this.$input.on( {
+	this.$input.bind( {
 			'focus': function() {
 				// Make sure we aren't double-binding
-				$document.off( '.es-surfaceView' );
+				$document.unbind( '.es-surfaceView' );
 				// Bind mouse and key events to the document to ensure we don't miss anything
-				$document.on( {
+				$document.bind( {
 					'mousemove.es-surfaceView': function(e) {
 						return _this.onMouseMove( e );
 					},
@@ -102,7 +102,7 @@ es.SurfaceView = function( $container, model ) {
 			},
 			'blur': function( e ) {
 				// Release our event handlers when not focused
-				$document.off( '.es-surfaceView' );
+				$document.unbind( '.es-surfaceView' );
 				_this.hideCursor();
 			}
 		} );

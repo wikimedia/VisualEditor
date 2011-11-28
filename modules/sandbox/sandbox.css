@@ -1,27 +1,3 @@
-body {
-	font-family: "Arial";
-	font-size: 1em;
-	width: 100%;
-	margin: 1em 0;
-	padding: 0;
-	overflow-y: scroll;
-	-webkit-user-select: none;
-	background-color: white;
-}
-#es-base {
-	margin: 2em;
-	-webkit-box-shadow: 0 0.25em 1.5em 0 #dddddd;
-	-moz-box-shadow: 0 0.25em 1.5em 0 #dddddd;
-	box-shadow: 0 0.25em 1.5em 0 #dddddd;
-	-webkit-border-radius: 0.5em;
-	-moz-border-radius: 0.5em;
-	-o-border-radius: 0.5em;
-	border-radius: 0.5em;
-}
-#es-panes {
-	border: solid 1px #dddddd;
-	border-top: none;
-}
 #es-toolbar {
 	border: solid 1px #dddddd;
 	position: relative;
