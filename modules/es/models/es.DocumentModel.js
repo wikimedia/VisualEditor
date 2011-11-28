@@ -17,7 +17,6 @@ es.DocumentModel = function( data, attributes ) {
 	// Properties
 	this.data = es.isArray( data ) ? data : [];
 	this.attributes = es.isPlainObject( attributes ) ? attributes : {};
-	this.contentLength = this.data.length;
 
 	// Auto-generate model tree
 	var nodes = es.DocumentModel.createNodesFromData( this.data );
