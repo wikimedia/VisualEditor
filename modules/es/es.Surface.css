@@ -37,6 +37,7 @@
 
 .es-contentView {
 	position: relative;
+	z-index: 1;
 }
 
 .es-headingView,
