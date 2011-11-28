@@ -131,17 +131,24 @@ function nodeToHtml(node) {
 	return $('<div>').append(node).html();
 }
 
-// Normalize the expected parser output by parsing it using a HTML5 parser and
-// re-serializing it to HTML. Ideally, the parser would normalize inter-tag
-// whitespace for us. For now, we fake that by simply stripping all newlines.
+/* Normalize the expected parser output by parsing it using a HTML5 parser and
+ * re-serializing it to HTML. Ideally, the parser would normalize inter-tag
+ * whitespace for us. For now, we fake that by simply stripping all newlines.
+ */
 function normalizeHTML(source) {
 	var parser = new HTML5.Parser();
 	// TODO: Do not strip newlines in pre and nowiki blocks!
 	source = source.replace(/\n/g, '');
-	parser.parse('<body>' + source + '</body>');
-	return parser.document
-		.getElementsByTagName('body')[0]
-		.innerHTML;
+	try {
+		parser.parse('<body>' + source + '</body>');
+		return parser.document
+			.getElementsByTagName('body')[0]
+			.innerHTML;
+	} catch(e) {
+        console.log("normalizeHTML failed:" + e);
+		return source;
+	}
+		
 }
 
 // Specialized normalization of the parser output, mostly to ignore a few
@@ -153,14 +160,13 @@ function normalizeOut ( out ) {
 
 function formatHTML ( source ) {
 	// Quick hack to insert newlines before block level start tags!
-	return source.replace(/(.)<((dd|dt|li|p|table|dl|ol|ul)[^>]*)>/g,
-											'$1\n<$2>');
+	return source.replace(/(?!^)<((dd|dt|li|p|table|tr|td|tbody|dl|ol|ul)[^>]*)>/g,
+											'\n<$1>');
 }
 
 
 function processTest(item) {
 	var tokenizer = new FauxHTML5.Tokenizer();
-		// ordinary HTML5 parser for DOM comparison
 	if (!('title' in item)) {
 		console.log(item);
 		throw new Error('Missing title from test case.');
@@ -182,7 +188,7 @@ function processTest(item) {
 		console.log(item.input + "\n");
 	}
 
-	parser.parseToTree(item.input + "\n", function(tree, err) {
+	parser.parseToTree(item.input + "\n", function(tokens, err) {
 		if (err) {
 			printTitle();
 			console.log('PARSE FAIL', err);
@@ -193,39 +199,40 @@ function processTest(item) {
 					'references': MWReferencesTagHook
 				}
 			});
-			//var res = es.HtmlSerializer.stringify(tree,environment);
-			processTokens(tree, tokenizer);
+			//var res = es.HtmlSerializer.stringify(tokens,environment);
+			//console.log(JSON.stringify(tokens));
+			processTokens(tokens, tokenizer);
 			var out = tokenizer.parser.document
 						.getElementsByTagName('body')[0]
 						.innerHTML;
 
-			if (normalizeOut(out) !== normalizeHTML( item.result ) ||
-				err ) {
-					printTitle();
-					if (err) {
-						console.log('RENDER FAIL', err);
-					} else {
-						console.log('RAW EXPECTED:');
-						console.log(item.result + "\n");
+			if ( err ) {
+				printTitle();
+				console.log('RENDER FAIL', err);
+			} else if ( normalizeOut(out) !== normalizeHTML(item.result) ) {
+				printTitle();
+				console.log('RAW EXPECTED:');
+				console.log(item.result + "\n");
 
-						console.log('RAW RENDERED:');
-						console.log(formatHTML(out) + "\n");
+				console.log('RAW RENDERED:');
+				console.log(formatHTML(out) + "\n");
 
-						var a = formatHTML(normalizeHTML( item.result ));
+				var a = formatHTML(normalizeHTML( item.result ));
 
-						console.log('NORMALIZED EXPECTED:');
-						console.log(a + "\n");
+				console.log('NORMALIZED EXPECTED:');
+				console.log(a + "\n");
 
-						var b = formatHTML(normalizeOut( out ));
+				var b = formatHTML(normalizeOut( out ));
 
-						console.log('NORMALIZED RENDERED:')
-						console.log(formatHTML(normalizeOut(out)) + "\n");
-						var patch = jsDiff.createPatch('wikitext.txt', a, b, 'before', 'after');
+				console.log('NORMALIZED RENDERED:')
+					console.log(formatHTML(normalizeOut(out)) + "\n");
+				var patch = jsDiff.createPatch('wikitext.txt', a, b, 'before', 'after');
 
-						console.log('DIFF:');
-						console.log(patch.replace(/^[^\n]*\n[^\n]*\n[^\n]*\n[^\n]*\n/, ''));
-					}
-				}
+				console.log('DIFF:');
+				console.log(patch.replace(/^[^\n]*\n[^\n]*\n[^\n]*\n[^\n]*\n/, ''));
+			} else {
+				console.log( 'PASS: ' + item.title );
+			}
 		}
 	});
 }
