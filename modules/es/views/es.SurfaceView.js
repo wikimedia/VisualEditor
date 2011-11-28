@@ -424,6 +424,18 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 			}
 			handleInsert();
 			break;
+
+		// a (select all)
+		case 65:
+			if ( e.ctrlKey ) {
+				this.model.select( new es.Range(
+					this.model.getDocument().getRelativeContentOffset( 0, 1 ),
+					this.model.getDocument().getRelativeContentOffset(
+						this.model.getDocument().getContentLength(), -1
+					)
+				), true );
+				break;			
+			}
 		// Insert content (maybe)
 		default:
 			handleInsert();
@@ -570,6 +582,7 @@ es.SurfaceView.prototype.insertFromInput = function() {
 		val = this.$input.val();
 	this.$input.val( '' );
 	if ( val.length > 0 ) {
+		//debugger;
 		var tx;
 		if ( selection.from != selection.to ) {
 			tx = this.model.getDocument().prepareRemoval( selection );
