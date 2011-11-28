@@ -70,9 +70,11 @@ PegParser.src = fs.readFileSync(path.join(basePath, 'parser', 'pegParser.pegjs.t
 var parser = new PegParser();
 
 var testFileName = '../../../../phase3/tests/parser/parserTests.txt'; // default
+var testFileName2 = '../../../../tests/parser/parserTests.txt'; // Fallback. Not everyone fetch at phase3 level 
 if (process.argv.length > 2) {
 	// hack :D
 	testFileName = process.argv[2];
+	testFileName2 = null;
 	console.log(testFileName);
 }
 
@@ -82,8 +84,16 @@ try {
 	console.log(e);
 }
 
-var testFile = fs.readFileSync(testFileName, 'utf8');
-
+var testFile;
+try {
+	testFile = fs.readFileSync(testFileName, 'utf8');
+} catch (e) {
+	// Try opening fallback file
+	if( testFileName2 !== '' ) {
+		try { testFile = fs.readFileSync( testFileName2, 'utf8' ); }
+		catch(e) { console.log(e); }
+	}
+}
 
 try {
 	var cases = testParser.parse(testFile);
