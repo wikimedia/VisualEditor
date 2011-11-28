@@ -10,10 +10,12 @@
  * 2011-07-20 <brion@pobox.com>
  */
 
+(function() {
 "use strict";
 
 var fs = require('fs'),
-	path = require('path');
+	path = require('path'),
+	HTML5 = require('html5').HTML5;
 
 // @fixme wrap more or this setup in a common module
 
@@ -28,7 +30,7 @@ function _import(filename, symbols) {
 	var module = _require(filename);
 	symbols.forEach(function(symbol) {
 		global[symbol] = module[symbol];
-	})
+	});
 }
 
 // needed for html5 parser adapter
@@ -74,7 +76,7 @@ if (process.argv.length > 2) {
 }
 
 try {
-        var testParser = PEG.buildParser(fs.readFileSync('parserTests.pegjs', 'utf8'));
+	var testParser = PEG.buildParser(fs.readFileSync('parserTests.pegjs', 'utf8'));
 } catch (e) {
 	console.log(e);
 }
@@ -96,7 +98,7 @@ function normalizeTitle(name) {
 	}
 	name = name.replace(/[\s_]+/g, '_');
 	name = name.substr(0, 1).toUpperCase() + name.substr(1);
-	if (name == '') {
+	if (name === '') {
 		throw new Error('Invalid/empty title');
 	}
 	return name;
@@ -118,9 +120,36 @@ function nodeToHtml(node) {
 	return $('<div>').append(node).html();
 }
 
+// Normalize the expected parser output by parsing it using a HTML5 parser and
+// re-serializing it to HTML. Ideally, the parser would normalize inter-tag
+// whitespace for us. For now, we fake that by simply stripping all newlines.
+function normalizeHTML(source) {
+	var parser = new HTML5.Parser();
+	// TODO: Do not strip newlines in pre and nowiki blocks!
+	source = source.replace(/\n/g, '');
+	parser.parse('<body>' + source + '</body>');
+	return parser.document
+		.getElementsByTagName('body')[0]
+		.innerHTML;
+}
+
+// Specialized normalization of the parser output, mostly to ignore a few
+// known-ok differences.
+function normalizeOut ( out ) {
+	// TODO: Do not strip newlines in pre and nowiki blocks!
+	return out.replace(/\n| data-sourcePos="[^>]+"|<!--[^-]*-->\n?/g, '');
+}
+
+function formatHTML ( source ) {
+	// Quick hack to insert newlines before block level start tags!
+	return source.replace(/(.)<((dd|dt|li|p|table|dl|ol|ul)[^>]*)>/g,
+											'$1\n<$2>');
+}
+
 
 function processTest(item) {
 	var tokenizer = new FauxHTML5.Tokenizer();
+		// ordinary HTML5 parser for DOM comparison
 	if (!('title' in item)) {
 		console.log(item);
 		throw new Error('Missing title from test case.');
@@ -133,14 +162,17 @@ function processTest(item) {
 		console.log(item);
 		throw new Error('Missing input from test case ' + item.title);
 	}
-	console.log('=====================================================');
-	console.log(item.title);
-    console.log("INPUT:");
-    console.log(item.input + "\n");
 
+	function printTitle() {
+		console.log('=====================================================');
+		console.log(item.title);
+		console.log("INPUT:");
+		console.log(item.input + "\n");
+	}
 
 	parser.parseToTree(item.input + "\n", function(tree, err) {
 		if (err) {
+			printTitle();
 			console.log('PARSE FAIL', err);
 		} else {
 			var environment = new MWParserEnvironment({
@@ -151,23 +183,29 @@ function processTest(item) {
 			});
 			//var res = es.HtmlSerializer.stringify(tree,environment);
 			processTokens(tree, tokenizer);
-			if (err) {
-				console.log('RENDER FAIL', err);
-			} else {
-				console.log('EXPECTED:');
-				console.log(item.result + "\n");
+			var out = tokenizer.parser.document
+						.getElementsByTagName('body')[0]
+						.innerHTML;
 
-				console.log('RENDERED:');
-				//console.log(JSON.stringify(tree, null, 2));
-				var out = tokenizer.parser.document
-								.getElementsByTagName('body')[0]
-								.innerHTML
-								// Hack: add some line breaks for
-								// block-levels
-								.replace(/(.)<((dd|dt|li|p|table|dl|ol|ul)[^>]*)>/g, 
-										'$1\n<$2>');
-				console.log(out);
-			}
+			if (normalizeOut(out) !== normalizeHTML( item.result ) ||
+				err ) {
+					printTitle();
+					if (err) {
+						console.log('RENDER FAIL', err);
+					} else {
+						console.log('RAW EXPECTED:');
+						console.log(item.result + "\n");
+
+						console.log('RAW RENDERED:');
+						console.log(formatHTML(out) + "\n");
+
+						console.log('NORMALIZED EXPECTED:');
+						console.log(formatHTML(normalizeHTML( item.result )) + "\n");
+
+						console.log('NORMALIZED RENDERED:')
+						console.log(formatHTML(normalizeOut(out)) + "\n");
+					}
+				}
 		}
 	});
 }
@@ -193,3 +231,4 @@ cases.forEach(function(item) {
 		}
 	}
 });
+})();

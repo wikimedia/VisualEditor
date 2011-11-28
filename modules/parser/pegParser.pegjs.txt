@@ -1114,4 +1114,4 @@ table_end = newline? "|}" { clearFlag('table'); }
  *  - post-processing needed, but has to be limited by scope
  */
 /* Tabs do not mix well with the hybrid production syntax */
-/* vim: expandtab:ts=4:sw=4:cindent */
+/* vim: filetype=javascript:expandtabs:ts=4:sw=4:cindent */
