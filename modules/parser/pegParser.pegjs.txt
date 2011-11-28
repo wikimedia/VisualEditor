@@ -405,7 +405,7 @@ block
   / comment &eolf
   / para
   / pre
-  / block_tag
+  / block_tag // TODO: handle nesting of inline content for these!
   / (s:sol { 
       if (s) {
         return [s, {type: 'NEWLINE'}]; 
@@ -786,7 +786,7 @@ block_tag
 
 block_name
   = "p" / "table" / "td" / "tr" / "ul" / "ol" 
-  / "li" / "dt" / "dd" / "div" / "center"
+  / "li" / "dl" / "dt" / "dd" / "div" / "center"
   / "blockquote"
 
 
