@@ -156,7 +156,8 @@ function normalizeHTML(source) {
 // known-ok differences.
 function normalizeOut ( out ) {
 	// TODO: Do not strip newlines in pre and nowiki blocks!
-	return out.replace(/\n| data-sourcePos="[^>]+"|<!--[^-]*-->\n?/g, '');
+	return out.replace(/\n| data-[a-zA-Z]+="[^">]+"/g, '')
+				.replace(/<!--.*?-->\n?/gm, '');
 }
 
 function formatHTML ( source ) {
