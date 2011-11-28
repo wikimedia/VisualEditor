@@ -167,6 +167,7 @@ function processTest(item) {
 	function printTitle() {
 		console.log('=====================================================');
 		console.log(item.title);
+		console.log(item.comments.join('\n'));
 		console.log("INPUT:");
 		console.log(item.input + "\n");
 	}
@@ -212,7 +213,7 @@ function processTest(item) {
 						var patch = jsDiff.createPatch('wikitext.txt', a, b, 'before', 'after');
 
 						console.log('DIFF:');
-						console.log(patch.replace(/^[^\n]*\n[^\n]*\n/, ''));
+						console.log(patch.replace(/^[^\n]*\n[^\n]*\n[^\n]*\n[^\n]*\n/, ''));
 					}
 				}
 		}
@@ -230,13 +231,25 @@ function processTokens ( tokens, tokenizer ) {
 	tokenizer.processToken({type: 'END'});
 }
 
+var comments = [];
 
 cases.forEach(function(item) {
 	if (typeof item == 'object') {
-		if (item.type == 'article') {
-			processArticle(item);
-		} else if (item.type == 'test') {
-			processTest(item);
+		switch(item.type) {
+			case 'article':
+				//processArticle(item);
+				break;
+			case 'test':
+				// Add comments to following test.
+				item.comments = comments;
+				comments = [];
+				processTest(item);
+				break;
+			case 'comment':
+				comments.push(item.comment);
+				break;
+			default:
+				break;
 		}
 	}
 });
