@@ -1,6 +1,8 @@
 .es-surfaceView {
 	overflow: hidden;
 	font-size: 1em; /* to look more like MediaWiki use: 0.8em */;
+	margin-left: -1em;
+	margin-right: -1em;
 }
 
 .es-surfaceView-textarea {
@@ -71,32 +73,32 @@
 }
 
 .es-headingView-level1 > * {
-	font-size:188%;
+	font-size: 188%;
 	font-weight: normal;
 }
 
 .es-headingView-level2 > * {
-	font-size:150%;
+	font-size: 150%;
 	font-weight: normal;
 }
 
 .es-headingView-level3 > * {
-	font-size:132%;
+	font-size: 132%;
 	font-weight: bold;
 }
 
 .es-headingView-level4 > * {
-	font-size:116%;
+	font-size: 116%;
 	font-weight: bold;
 }
 
 .es-headingView-level5 > * {
-	font-size:100%;
+	font-size: 100%;
 	font-weight: bold;
 }
 
 .es-headingView-level6 > * {
-	font-size:80%;
+	font-size: 80%;
 	font-weight: bold;
 }
 
