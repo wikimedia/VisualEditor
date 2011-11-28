@@ -427,7 +427,7 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 
 		// a (select all)
 		case 65:
-			if ( e.ctrlKey ) {
+			if ( e.metaKey || e.ctrlKey ) {
 				this.model.select( new es.Range(
 					this.model.getDocument().getRelativeContentOffset( 0, 1 ),
 					this.model.getDocument().getRelativeContentOffset(
