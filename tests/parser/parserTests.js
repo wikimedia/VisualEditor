@@ -146,12 +146,13 @@ function normalizeHTML(source) {
 			.innerHTML;
 	} catch(e) {
         console.log("normalizeHTML failed:" + e);
+		console.trace();
 		return source;
 	}
 		
 }
 
-// Specialized normalization of the parser output, mostly to ignore a few
+// Specialized normalization of the wiki parser output, mostly to ignore a few
 // known-ok differences.
 function normalizeOut ( out ) {
 	// TODO: Do not strip newlines in pre and nowiki blocks!
@@ -159,11 +160,15 @@ function normalizeOut ( out ) {
 }
 
 function formatHTML ( source ) {
-	// Quick hack to insert newlines before block level start tags!
-	return source.replace(/(?!^)<((dd|dt|li|p|table|tr|td|tbody|dl|ol|ul)[^>]*)>/g,
+	// Quick hack to insert newlines before some block level start tags
+	return source.replace(/(?!^)<((div|dd|dt|li|p|table|tr|td|tbody|dl|ol|ul)[^>]*)>/g,
 											'\n<$1>');
 }
 
+var passedTests = 0,
+	failParseTests = 0,
+	failTreeTests = 0,
+	failOutputTests = 0;
 
 function processTest(item) {
 	var tokenizer = new FauxHTML5.Tokenizer();
@@ -191,6 +196,7 @@ function processTest(item) {
 	parser.parseToTree(item.input + "\n", function(tokens, err) {
 		if (err) {
 			printTitle();
+			failParseTests++;
 			console.log('PARSE FAIL', err);
 		} else {
 			var environment = new MWParserEnvironment({
@@ -208,9 +214,11 @@ function processTest(item) {
 
 			if ( err ) {
 				printTitle();
+				failTreeTests++;
 				console.log('RENDER FAIL', err);
 			} else if ( normalizeOut(out) !== normalizeHTML(item.result) ) {
 				printTitle();
+				failOutputTests++;
 				console.log('RAW EXPECTED:');
 				console.log(item.result + "\n");
 
@@ -231,6 +239,7 @@ function processTest(item) {
 				console.log('DIFF:');
 				console.log(patch.replace(/^[^\n]*\n[^\n]*\n[^\n]*\n[^\n]*\n/, ''));
 			} else {
+				passedTests++;
 				console.log( 'PASS: ' + item.title );
 			}
 		}
@@ -270,4 +279,14 @@ cases.forEach(function(item) {
 		}
 	}
 });
+
+console.log( "==========================================================");
+console.log( "SUMMARY: ");
+console.log( passedTests + " passed");
+console.log( failParseTests + " parse failures");
+console.log( failTreeTests + " tree build failures");
+console.log( failOutputTests + " output differences");
+console.log( "\n" + (failParseTests + failTreeTests + failOutputTests) + " total failures");
+console.log( "==========================================================");
+
 })();
