@@ -404,8 +404,9 @@ block
   / pre
   / comment &eolf
   / pre
+  / bt:block_tag { return [bt] } // avoid a paragraph if we know that the line starts with a block tag
   / para
-  / inline // includes generic tags; wrapped into paragraphs in DOM postprocessor
+  / inlineline // includes generic tags; wrapped into paragraphs in DOM postprocessor
   / (s:sol { 
       if (s) {
         return [s, {type: 'NEWLINE'}]; 
@@ -416,8 +417,13 @@ block
   )
 
 block_lines
-  = s:sol (space* newline)? 
-    bl:block_line { return s.concat(bl); }
+  = s:sol 
+    // eat an empty line before the block
+    s2:(ss:space* so:sol { return [{type: 'TEXT', value: ss.join('')}].concat(so) })? 
+    bl:block_line { 
+        var s2_ = (s2 !== '') ? s2 : [];
+        return s.concat(s2_, bl); 
+    }
 
 // Block structures with start-of-line wiki syntax
 block_line
@@ -426,7 +432,6 @@ block_line
   / lists
   / pre_indent
   / pre
-  / space* block_tag space* &eolf
 
 
 /* Headings */
@@ -513,16 +518,6 @@ heading_text
 para
   = s1:sol s2:sol c:inlineline { 
       return s1.concat(s2, [{type: 'TAG', name: 'p'}], c); 
-  }
-
-para_line
-  = s:sol? c:inlineline { 
-      var res = [];
-      if (s !== '') {
-          return s.concat(c);
-      } else {
-          return c;
-      }
   }
 
 br = space* &newline { return {type: 'SELFCLOSINGTAG', name: 'br'} }
@@ -624,9 +619,9 @@ extlink
   = "[" target:url " " text:extlink_text "]" {
       return [ { type: 'TAG', 
                  name: 'a',
-                 attribs: [['href', target]] }
-             , {type: 'TEXT', value: text}
-             , {type: 'ENDTAG', name: 'a'}];
+                 attribs: [['href', target]] } ]
+                     .concat( text 
+                            , [{type: 'ENDTAG', name: 'a'}]);
   }
 
 //  = "[" target:url text:extlink_text "]" { return { type: 'extlink', target: target, text: text } }
@@ -635,7 +630,7 @@ url
   = proto:"http:" rest:([^ \]]+) { return proto + rest.join(''); }
 
 extlink_text
-  = c:[^\]]+ { return c.join(''); }
+  = c:(inline_element / ch:[^\]] { return {type: 'TEXT', value: ch}; })+
 
 template
   = "{{" target:link_target params:("|" p:template_param { return p })* "}}" {
