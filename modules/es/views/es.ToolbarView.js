@@ -13,11 +13,41 @@ var i18n = function( key ) {
 };
 
 es.ToolbarView = function( $container, surfaceView ) {
-	// Reference for use in closures
-	var	_this = this;
-	
+	// References for use in closures
+	var	_this = this,
+		$window = $( window );	
+
 	this.$ = $container;
 	this.surfaceView = surfaceView;
+	
+	/*
+	 * This code is responsible for switching toolbar into floating mode when scrolling (with
+	 * keyboard or mouse). It assumes that original padding-top of next sibiling element is 0
+	 * (if that will be a problem in future we may introduce spacer element and set it height,
+	 * since even remembering original padding-top is not a solution because it may be set in em
+	 * instead of px).
+	 */
+	$window.scroll( function() {
+		if ( _this.surfaceView.dimensions.scrollTop >= _this.surfaceView.dimensions.toolbarTop ) {
+			if ( ! _this.$.hasClass( 'float' ) ) {
+				var	left = _this.$.offset().left,
+					right = $window.width() - _this.$.outerWidth() - left;
+
+				_this.$.css( 'right', right );
+				_this.$.css( 'left', left );
+
+				_this.$.addClass( 'float' );
+				_this.$.next().css( 'padding-top', _this.$.height() );
+			}
+		} else {
+			if ( _this.$.hasClass( 'float' ) ) {
+				_this.$.css( 'right', 0 );
+				_this.$.css( 'left', 0 );
+				_this.$.removeClass( 'float' );
+				_this.$.next().css( 'padding-top', 0 );
+			}
+		}
+	} );
 
 	this.tools = [
 		{

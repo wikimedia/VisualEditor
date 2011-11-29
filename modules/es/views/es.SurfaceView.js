@@ -119,15 +119,7 @@ es.SurfaceView = function( $container, model ) {
 		}
 	} );
 	$window.scroll( function() {
-		// FIXME: Is this code in the right place?
 		_this.dimensions.scrollTop = $window.scrollTop();
-		if ( _this.dimensions.scrollTop >= _this.dimensions.toolbarTop ) {
-			$( '#es-toolbar' ).addClass( 'float' );
-			$( '#es-panes' ).css( 'padding-top', _this.dimensions.toolbarHeight );
-		} else {
-			$( '#es-toolbar' ).removeClass( 'float' );
-			$( '#es-panes' ).css( 'padding-top', 0 );
-		}
 	} );
 
 	// Configuration

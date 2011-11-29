@@ -10,8 +10,6 @@
 	background-repeat: repeat-x;
 }
 #es-toolbar.float {
-	left: 0;
-	right: 0;
 	top: 0;
 	position: fixed;
 	-webkit-border-radius: 0;
