@@ -403,9 +403,9 @@ block
   = block_lines
   / pre
   / comment &eolf
-  / para
   / pre
-  / block_tag // TODO: handle nesting of inline content for these!
+  / para
+  / inline // includes generic tags; wrapped into paragraphs in DOM postprocessor
   / (s:sol { 
       if (s) {
         return [s, {type: 'NEWLINE'}]; 
@@ -511,9 +511,8 @@ heading_text
 
 // TODO: convert inline content to annotations!
 para
-  = (sol br)? pl:para_line pls:(!block_lines para_line)* { 
-      return [{type: 'TAG', name: 'p'}]
-                .concat([pl], pls, [{type: 'ENDTAG', name: 'p'}]); 
+  = s1:sol s2:sol c:inlineline { 
+      return s1.concat(s2, [{type: 'TAG', name: 'p'}], c); 
   }
 
 para_line
@@ -795,6 +794,7 @@ block_name
 generic_tag
   = "<" end:"/"? name:[0-9a-zA-Z]+ 
     attribs:generic_attribute* 
+    space*
     selfclose:"/"?
     ">" {
         var res = {name: name.join(''), attribs: attribs};
@@ -970,6 +970,13 @@ dtdd = bullets:list_char+
     } else {
 		var dtbullets = bullets.slice(0, bullets.length - 1);
 		dtbullets.push(':');
+
+        // convert trailing space into &nbsp;
+        var clen = c.length;
+        if (clen && c[clen - 1].type === 'TEXT' && c[clen - 1].value == ' ') {
+            c[clen - 1].value = "\u00a0";
+        }
+
         return [ { type: 'TAG', name: 'listItem', bullets: bullets } ]
                 .concat( c
 					,[{ type: 'TAG', name: 'listItem', bullets: dtbullets } ]

@@ -11,7 +11,7 @@
  */
 
 (function() {
-"use strict";
+//"use strict";
 
 var fs = require('fs'),
 	path = require('path'),
@@ -54,7 +54,8 @@ _import(pj('parser', 'mediawiki.parser.peg.js'), ['PegParser']);
 _import(pj('parser', 'mediawiki.parser.environment.js'), ['MWParserEnvironment']);
 _import(pj('parser', 'ext.cite.taghook.ref.js'), ['MWRefTagHook']);
 
-_require(pj('parser', 'mediawiki.html5TokenEmitter.js'));
+_import(pj('parser', 'mediawiki.html5TokenEmitter.js'), ['FauxHTML5']);
+_import(pj('parser', 'mediawiki.DOMPostProcessor.js'), ['DOMPostProcessor']);
 
 // WikiDom and serializers
 _require(pj('es', 'es.js'));
@@ -131,21 +132,25 @@ function nodeToHtml(node) {
 	return $('<div>').append(node).html();
 }
 
+var htmlparser = new HTML5.Parser();
+
 /* Normalize the expected parser output by parsing it using a HTML5 parser and
  * re-serializing it to HTML. Ideally, the parser would normalize inter-tag
  * whitespace for us. For now, we fake that by simply stripping all newlines.
  */
 function normalizeHTML(source) {
-	var parser = new HTML5.Parser();
 	// TODO: Do not strip newlines in pre and nowiki blocks!
 	source = source.replace(/\n/g, '');
 	try {
-		parser.parse('<body>' + source + '</body>');
-		return parser.document
+		htmlparser.parse('<body>' + source + '</body>');
+		return htmlparser.document
 			.getElementsByTagName('body')[0]
-			.innerHTML;
+			.innerHTML
+			// a few things we ignore for now..
+			.replace(/(title|class|rel)="[^"]+"/g, '');
 	} catch(e) {
-        console.log("normalizeHTML failed:" + e);
+        console.log("normalizeHTML failed on" + 
+				source + " with the following error: " + e);
 		console.trace();
 		return source;
 	}
@@ -172,7 +177,8 @@ var passedTests = 0,
 	failOutputTests = 0;
 
 function processTest(item) {
-	var tokenizer = new FauxHTML5.Tokenizer();
+	var tokenizer = new FauxHTML5.Tokenizer(),
+		postProcessor = new DOMPostProcessor();
 	if (!('title' in item)) {
 		console.log(item);
 		throw new Error('Missing title from test case.');
@@ -208,7 +214,15 @@ function processTest(item) {
 			});
 			//var res = es.HtmlSerializer.stringify(tokens,environment);
 			//console.log(JSON.stringify(tokens));
+			
+			// Build a DOM tree from tokens using the HTML tree
+			// builder/parser.
 			processTokens(tokens, tokenizer);
+
+			// Perform post-processing on DOM.
+			postProcessor.doPostProcess(tokenizer.parser.document);
+
+			// And serialize the result.
 			var out = tokenizer.parser.document
 						.getElementsByTagName('body')[0]
 						.innerHTML;
@@ -217,7 +231,12 @@ function processTest(item) {
 				printTitle();
 				failTreeTests++;
 				console.log('RENDER FAIL', err);
-			} else if ( normalizeOut(out) !== normalizeHTML(item.result) ) {
+				return;
+			}
+
+			var normalizedOut = normalizeOut(out);
+			var normalizedExpected = normalizeHTML(item.result);
+			if ( normalizedOut !== normalizedExpected ) {
 				printTitle();
 				failOutputTests++;
 				console.log('RAW EXPECTED:');
@@ -226,12 +245,12 @@ function processTest(item) {
 				console.log('RAW RENDERED:');
 				console.log(formatHTML(out) + "\n");
 
-				var a = formatHTML(normalizeHTML( item.result ));
+				var a = formatHTML(normalizedExpected);
 
 				console.log('NORMALIZED EXPECTED:');
 				console.log(a + "\n");
 
-				var b = formatHTML(normalizeOut( out ));
+				var b = formatHTML(normalizedOut);
 
 				console.log('NORMALIZED RENDERED:')
 					console.log(formatHTML(normalizeOut(out)) + "\n");
@@ -241,7 +260,7 @@ function processTest(item) {
 				console.log(patch.replace(/^[^\n]*\n[^\n]*\n[^\n]*\n[^\n]*\n/, ''));
 			} else {
 				passedTests++;
-				console.log( 'PASS: ' + item.title );
+				console.log( 'PASSED: ' + item.title );
 			}
 		}
 	});

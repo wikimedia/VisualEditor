@@ -1,4 +1,4 @@
-"use strict";
+//"use strict";
 var Phase = require('./phase').Phase;
 var HTML5 = require('../../html5');
 

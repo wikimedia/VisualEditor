@@ -3,16 +3,16 @@ var events = require('events');
 
 var HTML5 = require('./html5/index');
 
-FauxHTML5 = {}
+FauxHTML5 = {};
 
 
 FauxHTML5.Tokenizer = function ( ) {
 	this.parser = new HTML5.Parser();
 	this.parser.parse(this);
 	return this;
-}
+};
 
-FauxHTML5.Tokenizer.prototype = new events.EventEmitter;
+FauxHTML5.Tokenizer.prototype = new events.EventEmitter();
 
 FauxHTML5.Tokenizer.prototype.processToken = function (token) {
 	var att = function (maybeAttribs) {
@@ -43,7 +43,7 @@ FauxHTML5.Tokenizer.prototype.processToken = function (token) {
 				data: att(token.attribs)});
 			break;
 		case "SELFCLOSINGTAG":
-			this.emit('token', {type: 'EmptyTag', 
+			this.emit('token', {type: 'StartTag', 
 				name: token.name, 
 				data: att(token.attribs)});
 			break;
@@ -61,4 +61,8 @@ FauxHTML5.Tokenizer.prototype.processToken = function (token) {
 			console.log("Unhandled token: " + JSON.stringify(token));
 			break;
 	}
+};
+
+if (typeof module == "object") {
+	module.exports.FauxHTML5 = FauxHTML5;
 }

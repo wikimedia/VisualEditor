@@ -1,4 +1,4 @@
-"use strict";
+//"use strict";
 var Phase = require('./phase').Phase;
 
 var start_tag_handlers = {

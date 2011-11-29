@@ -1,4 +1,4 @@
-"use strict";
+//"use strict";
 var HTML5 = require('../../html5');
 var Phase = require('./phase').Phase;
 var assert = require('assert')
@@ -599,7 +599,7 @@ p.prototype.endTagListItem = function(name) {
 }
 
 p.prototype.endTagHeading = function(name) {
-	for(i in HTML5.HEADING_ELEMENTS) {
+	for(var i in HTML5.HEADING_ELEMENTS) {
 		var el = HTML5.HEADING_ELEMENTS[i];
 		if(this.inScope(el)) {
 			this.tree.generateImpliedEndTags();
@@ -610,7 +610,7 @@ p.prototype.endTagHeading = function(name) {
 	if(this.tree.open_elements[this.tree.open_elements.length - 1].tagName.toLowerCase() != name)
 		this.parse_error('end-tag-too-early', {name: name});
 
-	for(i in HTML5.HEADING_ELEMENTS) {
+	for(var i in HTML5.HEADING_ELEMENTS) {
 		var el = HTML5.HEADING_ELEMENTS[i];
 		if(this.inScope(el)) {
 			this.tree.remove_open_elements_until(function(e) {

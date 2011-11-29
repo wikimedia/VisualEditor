@@ -1,4 +1,4 @@
-"use strict";
+//"use strict";
 
 var HTML5 = exports.HTML5 = require('../html5');
 
