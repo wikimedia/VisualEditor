@@ -2,9 +2,9 @@
 	border: solid 1px #cccccc;
 	position: relative;
 	-webkit-border-radius: 0.25em;
-	-moz-border-radius: 0.25e;
-	-o-border-radius: 0.25e;
-	border-radius: 0.25e;
+	-moz-border-radius: 0.25em;
+	-o-border-radius: 0.25em;
+	border-radius: 0.25em;
 	background-image: url(images/fade-up.png);
 	background-position: bottom left;
 	background-repeat: repeat-x;

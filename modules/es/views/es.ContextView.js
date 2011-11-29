@@ -10,6 +10,21 @@ es.ContextView = function( surfaceView, $overlay ) {
 	this.$ = $( '<div class="es-contextView"></div>' ).appendTo( $overlay || $( 'body' ) );
 	this.$menu = $( '<div class="es-contextView-menu"></div>' ).appendTo( this.$ );
 	this.$icon = $( '<div class="es-contextView-icon"></div>' ).appendTo( this.$ );
+
+	// Example menu items
+	this.$menu.append(
+		'<div class="es-contextView-menuItem">Cut</div>' +
+		'<div class="es-contextView-menuItem">Copy</div>' +
+		'<div class="es-contextView-menuItem">Paste</div>' +
+		'<div class="es-contextView-menuItem">Convert</div>' +
+		'<div class="es-contextView-menuItem">Delete</div>'
+	);
+
+	// Events
+	var _this = this;
+	this.$icon.click( function() {
+		_this.$menu.toggle();
+	} );
 };
 
 /* Methods */
@@ -45,4 +60,5 @@ es.ContextView.prototype.set = function() {
 
 es.ContextView.prototype.clear = function() {
 	this.$icon.hide();
+	this.$menu.hide();
 };
