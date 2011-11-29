@@ -625,7 +625,11 @@ es.ContentView.prototype.render = function( offset ) {
 	// This is very important for lists
 	if(this.model.getContentLength() === 0) {
 		var $line = $( '<div class="es-contentView-line" line-index="0">&nbsp;</div>' );
-		this.$.remove( '.es-contentView-line' ).append( $line );
+		this.$
+			.children()
+				.remove( '.es-contentView-line' )
+				.end()
+			.append( $line );
 		this.lines = [{
 			'text': ' ',
 			'range': new es.Range( 0,0 ),
