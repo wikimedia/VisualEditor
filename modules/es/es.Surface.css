@@ -35,6 +35,46 @@
 	-webkit-user-select: none;
 }
 
+.es-contextView {
+	position: absolute;
+	z-index: 2;
+}
+
+.es-contextView-icon {
+	position: absolute;
+	background-position: top left;
+	background-repeat: no-repeat;
+	width: 31px;
+	height: 31px;
+	display: none;
+	cursor: pointer;
+}
+
+.es-contextView-position-above .es-contextView-icon {
+	background-image: url(images/context-icon-up.png);
+	top: -24px;
+	left: -15px;
+}
+
+.es-contextView-position-below .es-contextView-icon {
+	background-image: url(images/context-icon-down.png);
+	top: -7px;
+	left: -16px;
+}
+
+.es-contextView-position-above .es-contextView-icon:hover {
+	background-image: url(images/context-icon-up-hover.png);
+}
+
+.es-contextView-position-below .es-contextView-icon:hover {
+	background-image: url(images/context-icon-down-hover.png);
+}
+
+.es-contextView-menu {
+	position: absolute;
+	top: 8px;
+}
+
 .es-contentView {
 	position: relative;
 	z-index: 1;
@@ -221,7 +261,7 @@
 .es-contentView-range {
 	display: none;
 	position: absolute;
-	background-color: #bbffcc;
+	background-color: #b3d6f6;
 	cursor: text;
 	z-index: -1;
 }

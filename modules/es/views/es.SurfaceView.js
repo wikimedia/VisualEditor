@@ -19,6 +19,7 @@ es.SurfaceView = function( $container, model ) {
 	this.model = model;
 	this.currentSelection = new es.Range();
 	this.documentView = new es.DocumentView( this.model.getDocument(), this );
+	this.contextView = new es.ContextView( this );
 	this.$ = $container
 		.addClass( 'es-surfaceView' )
 		.append( this.documentView.$ );
@@ -132,6 +133,10 @@ es.SurfaceView = function( $container, model ) {
 
 /* Methods */
 
+es.SurfaceView.prototype.getModel = function() {
+	return this.model;
+};
+
 es.SurfaceView.prototype.updateSelection = function( delay ) {
 	if ( delay ) {
 		if ( this.updateSelectionTimeout !== undefined ) {
@@ -224,6 +229,8 @@ es.SurfaceView.prototype.onMouseDown = function( e ) {
 		this.cursor.initialLeft = null;
 		// Apply new selection
 		this.model.select( selection );
+		// Hide the context
+		this.contextView.clear();
 	}
 	// If the inut isn't already focused, focus it and select it's contents
 	if ( !this.$input.is( ':focus' ) ) {
@@ -284,6 +291,8 @@ es.SurfaceView.prototype.onMouseUp = function( e ) {
 	if ( e.button === 0 ) { // left mouse button 
 		this.mouse.selectingMode = this.mouse.selectedRange = null;
 		this.model.select( this.currentSelection );
+		// Show the context
+		this.contextView.set();
 	}
 };
 

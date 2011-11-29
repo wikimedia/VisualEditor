@@ -87,6 +87,7 @@ $wgResourceModules += array(
 			'es/serializers/es.HtmlSerializer.js',
 			'es/serializers/es.JsonSerializer.js',
 			'es/serializers/es.WikitextSerializer.js',
+			'es/views/es.ContextView.js',
 			'es/views/es.ContentView.js',
 			'es/views/es.DocumentView.js',
 			'es/views/es.HeadingView.js',
