@@ -1,5 +1,5 @@
 #es-toolbar {
-	border: solid 1px #dddddd;
+	border: solid 1px #cccccc;
 	position: relative;
 	-webkit-border-radius: 0.25em;
 	-moz-border-radius: 0.25e;
@@ -44,7 +44,7 @@
 	overflow: hidden;
 }
 .es-showData #es-editor {
-	border-right: solid 1px #dddddd;
+	border-right: solid 1px #cccccc;
 }
 .es-toolbarGroup {
 	float: left;
