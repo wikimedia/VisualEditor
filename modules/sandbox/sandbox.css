@@ -1,40 +1,32 @@
 #es-toolbar {
 	border: solid 1px #dddddd;
 	position: relative;
-	-webkit-border-top-right-radius: 0.25em;
-	-moz-border-top-right-radius: 0.25em;
-	-o-border-top-right-radius: 0.25em;
-	border-top-right-radius: 0.25em;
-	-webkit-border-top-left-radius: 0.25em;
-	-moz-border-top-left-radius: 0.25em;
-	-o-border-top-left-radius: 0.25em;
-	border-top-left-radius: 0.25em;
+	-webkit-border-radius: 0.25em;
+	-moz-border-radius: 0.25e;
+	-o-border-radius: 0.25e;
+	border-radius: 0.25e;
 	background-image: url(images/fade-up.png);
 	background-position: bottom left;
 	background-repeat: repeat-x;
 }
 #es-toolbar.float {
-	position: fixed;
-	left: 2em;
-	right: 2em;
+	left: 0;
+	right: 0;
 	top: 0;
+	position: fixed;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	-o-border-radius: 0;
+	border-radius: 0;
 	z-index: 100;
 	border-top: none;
-	-webkit-border-top-right-radius: 0;
-	-moz-border-top-right-radius: 0;
-	-o-border-top-right-radius: 0;
-	border-top-right-radius: 0;
-	-webkit-border-top-left-radius: 0;
-	-moz-border-top-left-radius: 0;
-	-o-border-top-left-radius: 0;
-	border-top-left-radius: 0;
 }
 #es-toolbar-shadow {
 	background-image: url(images/toolbar-shadow.png);
 	background-position: top left;
 	background-repeat: repeat-x;
 	position: absolute;
-	bottom: -10px;
+	bottom: -9px;
 	height: 9px;
 	width: 100%;
 	pointer-events: none;
