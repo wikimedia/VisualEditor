@@ -23,7 +23,7 @@ es.SurfaceView = function( $container, model ) {
 		.addClass( 'es-surfaceView' )
 		.append( this.documentView.$ );
 	this.$input = $( '<textarea class="es-surfaceView-textarea" />' )
-		.prependTo( this.$ );
+		.appendTo( 'body' );
 	this.$cursor = $( '<div class="es-surfaceView-cursor"></div>' )
 		.appendTo( 'body' );
 	this.updateSelectionTimeout = undefined;
