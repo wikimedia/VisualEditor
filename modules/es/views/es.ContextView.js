@@ -8,16 +8,16 @@
 es.ContextView = function( surfaceView, $overlay ) {
 	this.surfaceView = surfaceView;
 	this.$ = $( '<div class="es-contextView"></div>' ).appendTo( $overlay || $( 'body' ) );
-	this.$menu = $( '<div class="es-contextView-menu"></div>' ).appendTo( this.$ );
-	this.$icon = $( '<div class="es-contextView-icon"></div>' ).appendTo( this.$ );
+	this.$toolbar = $( '<div class="es-contextView-menuSection"></div>' );
+	this.$menu = $( '<div class="es-contextView-menu"></div>' )
+		.append( this.$toolbar )
+		.appendTo( this.$ );
+	this.$icon = $( '<div class="es-contextView-icon"></div>' )
+		.appendTo( this.$ );
+	this.toolbarView = new es.ToolbarView( this.$toolbar, this.surfaceView );
 
 	// Example menu items
 	this.$menu.append(
-		'<div class="es-contextView-menuSection">' +
-			'<div class="es-contextView-menuButton es-contextView-menuButton-bold"></div>' +
-			'<div class="es-contextView-menuButton es-contextView-menuButton-italic"></div>' +
-			'<div class="es-contextView-menuButton es-contextView-menuButton-clear"></div>' +
-		'</div>' +
 		'<div class="es-contextView-menuItem-break"></div>' +
 		'<div class="es-contextView-menuItem">Cut</div>' +
 		'<div class="es-contextView-menuItem">Copy</div>' +
