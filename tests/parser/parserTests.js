@@ -16,6 +16,7 @@
 var fs = require('fs'),
 	path = require('path'),
 	jsDiff = require('diff'),
+	colors = require('colors'),
 	HTML5 = require('html5').HTML5;
 
 // @fixme wrap more or this setup in a common module
@@ -197,9 +198,9 @@ function processTest(item) {
 
 	function printTitle() {
 		console.log('=====================================================');
-		console.log('FAILED: ' + item.title);
+		console.log('FAILED'.red + ': ' + item.title.yellow);
 		console.log(item.comments.join('\n'));
-		console.log("INPUT:");
+		console.log("INPUT".cyan + ":");
 		console.log(item.input + "\n");
 	}
 
@@ -242,28 +243,42 @@ function processTest(item) {
 			if ( normalizedOut !== normalizedExpected ) {
 				printTitle();
 				failOutputTests++;
-				console.log('RAW EXPECTED:');
+				console.log('RAW EXPECTED'.cyan + ':');
 				console.log(item.result + "\n");
 
-				console.log('RAW RENDERED:');
+				console.log('RAW RENDERED'.cyan + ':');
 				console.log(formatHTML(out) + "\n");
 
 				var a = formatHTML(normalizedExpected);
 
-				console.log('NORMALIZED EXPECTED:');
+				console.log('NORMALIZED EXPECTED'.magenta + ':');
 				console.log(a + "\n");
 
 				var b = formatHTML(normalizedOut);
 
-				console.log('NORMALIZED RENDERED:')
+				console.log('NORMALIZED RENDERED'.magenta + ':')
 					console.log(formatHTML(normalizeOut(out)) + "\n");
 				var patch = jsDiff.createPatch('wikitext.txt', a, b, 'before', 'after');
 
-				console.log('DIFF:');
-				console.log(patch.replace(/^[^\n]*\n[^\n]*\n[^\n]*\n[^\n]*\n/, ''));
+				console.log('DIFF'.cyan +': ');
+
+				var colored_diff = patch.split( '\n' ).map( function(line) {
+					// Add some colors to diff output
+					switch( line.charAt(0) ) {
+						case '-':
+							return line.red;
+						case '+':
+							return line.blue;
+						default:
+							return line;
+					}
+				}).join( "\n" );
+				//patch.replace(/^[^\n]*\n[^\n]*\n[^\n]*\n[^\n]*\n/, '')
+
+				console.log( colored_diff );
 			} else {
 				passedTests++;
-				console.log( 'PASSED: ' + item.title );
+				console.log( 'PASSED'.green + ': ' + item.title.yellow );
 			}
 		}
 	});
