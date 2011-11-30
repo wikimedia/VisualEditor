@@ -1,17 +1,22 @@
 // ToolbarView
 es.ToolbarView = function( $container, surfaceView, config ) {
+	// Inheritance TODO: Do we still need it?
 	es.EventEmitter.call( this );
 
 	// References for use in closures
 	var	_this = this,
 		$window = $( window );	
 
+	// Properties
 	this.surfaceView = surfaceView;
-	this.$spacer = $('<div></div>');
 	this.$ = $container;
 	this.$groups = $( '<div class="es-toolbarGroups"></div>' ).prependTo( this.$ );
+	this.$spacer = $('<div></div>');
 	this.$.after( this.$spacer );
+	this.tools = [];
 
+
+	// Events
 	/*
 	 * This code is responsible for switching toolbar into floating mode when scrolling (with
 	 * keyboard or mouse).
@@ -35,19 +40,28 @@ es.ToolbarView = function( $container, surfaceView, config ) {
 			}
 		}
 	} );
+	this.surfaceView.model.on( 'select', function() {
+		_this.updateState();
+	} );
+	this.surfaceView.on( 'update', function() {
+		_this.updateState();
+	} );
 
 	this.config = config || [
 		{ 'name': 'textStyle', 'items' : [ 'bold', 'italic', 'formatting', 'clear' ] },
 	];
+	this.setup();
+};
 
-	this.setup()
-	
-	this.surfaceView.model.on( 'select', function( selection ) {
-		_this.emit( 'update' );
-	} );
-	this.surfaceView.on( 'update', function() {
-		_this.emit( 'update' );
-	} );
+es.ToolbarView.prototype.updateState = function() {
+	var	selection = this.surfaceView.currentSelection,
+		annotations;
+
+	if( selection.from === selection.to ) {
+		annotations = this.surfaceView.documentView.model.getAnnotationsFromOffset( selection.to );
+	} else {
+		annotations = this.surfaceView.documentView.model.getAnnotationsFromRange( selection );
+	}
 };
 
 es.ToolbarView.prototype.setup = function() {
@@ -67,6 +81,7 @@ es.ToolbarView.prototype.setup = function() {
 				var tool = new toolDefintion.constructor(
 					this, toolDefintion.name, toolDefintion.data
 				);
+				this.tools.push( tool );
 				$group.append( tool.$ );
 			}
 		}
