@@ -59,6 +59,9 @@
 .es-toolbarButtonTool-clear:before {
 	background-image: url(../images/clear.png);
 }
+.es-toolbarButtonTool-disabled.es-toolbarButtonTool-clear:before {
+	background-image: url(../images/clear-disabled.png);
+}
 .es-toolbarDropdownTool {
 }
 .es-toolbarDropdownTool-formatting {
