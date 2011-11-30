@@ -107,6 +107,7 @@
 				out.push({type: 'TAG', name: newName});
 				endtags.push({type: 'ENDTAG', name: newName});
 			} else {
+                popTags(bs.length - prefixLen);
 				for(var i = prefixLen; i < bn.length; i++) {
 					switch (bn[i]) {
 						case '*':
@@ -351,6 +352,9 @@
     var isEOF = function (pos) {
         return pos === inputLength;
     };
+
+    // text start position
+    var textStart = 0;
 }
 
 start
@@ -363,8 +367,23 @@ anyblock = block / inline
 anyblockline = block / inlineline
 
 
-// All chars that cannot start syntactic structures
-text = t:[A-Za-z0-9,._ -]+ { return t.join('') }
+// All chars that cannot start syntactic structures in the middle of a line
+// XXX: ] and other end delimiters should probably only be activated inside
+// structures to avoid unnecessarily leaving the text production on plain
+// content.
+text = t:[^'<~\][\n\r{}]+ { return t.join(''); }
+//text = t:[A-Za-z0-9,._ "?!\t-]+ { return t.join('') }
+
+// Experimental tweaked version: avoid expensive single-char substrings
+// This did not bring the expected performance boost, however.
+//text = [A-Za-z0-9,._ -] { 
+//            textStart = pos;
+//
+//            var res = input.substr(textStart - 1, inputLength)
+//                        .match(/[A-Za-z0-9,._ -]+/)[0];
+//            pos = pos + (res.length - 1);
+//            return res
+//       }
 
 space
   = s:[ \t]+ { return s.join(''); }
@@ -403,18 +422,18 @@ block
   = block_lines
   / pre
   / comment &eolf
+  / nowiki
   / pre
   / bt:block_tag { return [bt] } // avoid a paragraph if we know that the line starts with a block tag
   / para
   / inlineline // includes generic tags; wrapped into paragraphs in DOM postprocessor
-  / (s:sol { 
-      if (s) {
-        return [s, {type: 'NEWLINE'}]; 
-      } else {
-        return [{type: 'NEWLINE'}]; 
+  / s:sol { 
+          if (s) {
+              return [s, {type: 'NEWLINE'}]; 
+          } else {
+              return [{type: 'NEWLINE'}]; 
+          }
       }
-    }
-  )
 
 block_lines
   = s:sol 
@@ -433,6 +452,87 @@ block_line
   / pre_indent
   / pre
 
+
+
+
+// TODO: convert inline content to annotations!
+para
+  = s1:sol s2:sol c:inlineline { 
+      return s1.concat(s2, [{type: 'TAG', name: 'p'}], c); 
+  }
+
+br = space* &newline { return {type: 'SELFCLOSINGTAG', name: 'br'} }
+
+// Syntax that stops inline expansion
+inline_breaks
+  = //& { console.log(pp(syntaxFlags)); return true; }
+    & { return syntaxFlags['table']; } 
+    a:(newline [!|] / '||' / '!!' / '|}') { dp("table break" + pp(a)); return true; }
+  / & { return syntaxFlags['linkdesc']; } link_end { return true; }
+  / & { return syntaxFlags['h']; } 
+        ( & { return syntaxFlags['h1'] } '=' newline { return true; }
+        / & { return syntaxFlags['h2'] } '==' newline { return true; }
+        / & { return syntaxFlags['h3'] } '===' newline { return true; }
+        / & { return syntaxFlags['h4'] } '====' newline { return true; }
+        / & { return syntaxFlags['h5'] } '=====' newline { return true; }
+        / & { return syntaxFlags['h6'] } '======' newline { return true; }
+        )
+
+inline
+  = c:(text / inline_element / (!inline_breaks ch:. { return ch; }))+ {
+      var out = [];
+      var text = [];
+      c = flatten(c);
+      for (var i = 0; i < c.length; i++) {
+          if (typeof c[i] == 'string') {
+              text.push(c[i]);
+          } else {
+              if (text.length) {
+                  out.push({ type: "TEXT", value: text.join('') });
+                  text = [];
+              }
+              out.concat(c[i]);
+          }
+      }
+      if (text.length) {
+          out.push({ type: 'TEXT', value: text.join('') });
+      }
+      return out;
+}
+
+inlineline
+  = c:(text / !inline_breaks (inline_element / [^\n]))+ {
+      var out = [];
+      var text = [];
+      c = flatten(c);
+      for (var i = 0; i < c.length; i++) {
+          if (typeof c[i] == 'string') {
+              text.push(c[i]);
+          } else {
+              if (text.length) {
+                  out.push({type: 'TEXT', value: text.join('')});
+                  text = [];
+              }
+              out.push(c[i]);
+          }
+      }
+      if (text.length) {
+          out.push({type: 'TEXT', value: text.join('')});
+      }
+      //dp('inlineline out:', pp(out));
+      return out;
+}
+
+/* TODO: convert all these to annotations!
+ * -> need (start, end) offsets within block
+ */
+inline_element
+  = comment
+  / xmlish_tag
+  / extlink
+  / template
+  / link
+  / quote
 
 /* Headings */
 h = h1 / h2 / h3 / h4 / h5 / h6
@@ -513,15 +613,6 @@ heading_marker
 heading_text
   = h:( !(heading_marker newline) x:inlineline { return x } )* { return h.join(''); }
 
-
-// TODO: convert inline content to annotations!
-para
-  = s1:sol s2:sol c:inlineline { 
-      return s1.concat(s2, [{type: 'TAG', name: 'p'}], c); 
-  }
-
-br = space* &newline { return {type: 'SELFCLOSINGTAG', name: 'br'} }
-
 pre_indent 
   = l:pre_indent_line ls:(sol pre_indent_line)* {
       return [{type: 'TAG', name: 'pre'}]
@@ -532,78 +623,6 @@ pre_indent_line = space l:inlineline {
     return [{type: 'TEXT', value: '\n'}].concat(l); 
 }
 
-// Syntax that stops inline expansion
-inline_breaks
-  = //& { console.log(pp(syntaxFlags)); return true; }
-    & { return syntaxFlags['table']; } 
-    a:(newline [!|] / '||' / '!!' / '|}') { dp("table break" + pp(a)); return true; }
-  / & { return syntaxFlags['linkdesc']; } link_end { return true; }
-  / & { return syntaxFlags['h']; } 
-        ( & { return syntaxFlags['h1'] } '=' newline { return true; }
-        / & { return syntaxFlags['h2'] } '==' newline { return true; }
-        / & { return syntaxFlags['h3'] } '===' newline { return true; }
-        / & { return syntaxFlags['h4'] } '====' newline { return true; }
-        / & { return syntaxFlags['h5'] } '=====' newline { return true; }
-        / & { return syntaxFlags['h6'] } '======' newline { return true; }
-        )
-
-
-
-inline
-  = c:(text / inline_element / (!inline_breaks ch:. { return ch; }))+ {
-      var out = [];
-      var text = [];
-      c = flatten(c);
-      for (var i = 0; i < c.length; i++) {
-          if (typeof c[i] == 'string') {
-              text.push(c[i]);
-          } else {
-              if (text.length) {
-                  out.push({ type: "TEXT", value: text.join('') });
-                  text = [];
-              }
-              out.concat(c[i]);
-          }
-      }
-      if (text.length) {
-          out.push({ type: 'TEXT', value: text.join('') });
-      }
-      return out;
-}
-
-inlineline
-  = c:(text / !inline_breaks (inline_element / [^\n]))+ {
-      var out = [];
-      var text = [];
-      c = flatten(c);
-      for (var i = 0; i < c.length; i++) {
-          if (typeof c[i] == 'string') {
-              text.push(c[i]);
-          } else {
-              if (text.length) {
-                  out.push({type: 'TEXT', value: text.join('')});
-                  text = [];
-              }
-              out.push(c[i]);
-          }
-      }
-      if (text.length) {
-          out.push({type: 'TEXT', value: text.join('')});
-      }
-      //dp('inlineline out:', pp(out));
-      return out;
-}
-
-/* TODO: convert all these to annotations!
- * -> need (start, end) offsets within block
- */
-inline_element
-  = comment
-  / xmlish_tag
-  / extlink
-  / template
-  / link
-  / quote
 
 comment
   = '<!--' c:comment_chars* ('-->' / eof)
@@ -633,13 +652,19 @@ extlink_text
   = c:(inline_element / ch:[^\]] { return {type: 'TEXT', value: ch}; })+
 
 template
-  = "{{" target:link_target params:("|" p:template_param { return p })* "}}" {
-      var obj = { type: 'SELFCLOSINGTAG', name: 'template', attribs: [['target', target]] }
+  = "{{" target:template_target params:("|" p:template_param { return p })* "}}" {
+      var obj = { type: 'TAG', name: 'template', attribs: [['target', target]] }
       if (params && params.length) {
           obj.attribs.push(params);
       }
-      return obj;
+      // Should actually use a self-closing tag here, but the Node HTML5
+      // parser only recognizes known self-closing tags for now, so use an
+      // explicit end tag for now.
+      return [obj, {type: 'ENDTAG', name: 'template'}];
   }
+
+template_target
+  = h:( !"}}" x:([^|]) { return x } )* { return h.join(''); }
 
 template_param
   = name:template_param_name "=" c:template_param_text {
@@ -739,26 +764,30 @@ pre
         return [ {type: 'TAG', name: 'pre', attribs: attribs} ]
                     .concat(ts, [{type: 'ENDTAG', name: 'pre'}]);
     }
-  /// "</pre>" { return {type: 'TEXT', value: "</pre>"}; }
+  / "</pre>" { return {type: 'TEXT', value: "</pre>"}; }
 
 nowiki 
-  = "<nowiki>" nc:nowiki_content "</nowiki>" { return nc }
+  = "<nowiki>" nc:nowiki_content "</nowiki>" { 
+        // console.log(pp(nc)); 
+        return nc; 
+    }
   / "<nowiki>" { 
-          // console.log('nowiki fallback');
+          //console.log('nowiki fallback');
           return [{type: 'TEXT', value: '<nowiki>'}]; 
     }
   / "</nowiki>" { return [{type: 'TEXT', value: '</nowiki>'}]; }
 
 nowiki_content
-  = ts:( t:[^<]+ { return t.join('') } 
-       / "<pre" p0:space* p1:[^>]* ">" p2:nowiki_content "</pre>" {
-           //console.log('nested pre in nowiki');
-           return ["<pre"].concat(p0, p1, [">"], [p2[0].value], ["</pre>"]).join('');
-       }
-       / (!("</nowiki>" / "</pre>") c:. {return c}) )* {
-        // return nowiki tags as well?
-        return [{type: 'TEXT', value: ts.join('')}];
-      }
+  = ts:(   t:[^<]+ { return t.join('') } 
+           / "<pre" p0:space* p1:[^>]* ">" p2:nowiki_content "</pre>" {
+                 //console.log('nested pre in nowiki');
+                 return ["<pre"].concat(p0, p1, [">"], [p2[0].value], ["</pre>"]).join('');
+               }
+           / (!("</nowiki>" / "</pre>") c:. {return c}) 
+       )* {
+            // return nowiki tags as well?
+            return [{type: 'TEXT', value: ts.join('')}];
+          }
 
 // See http://dev.w3.org/html5/spec/Overview.html#syntax-tag-name and
 // following paragraphs
@@ -953,30 +982,24 @@ li = bullets:list_char+
            , c ];
 }
 
-dtdd = bullets:list_char+
+dtdd = bullets:(!(";" !list_char) list_char)*
+       ";"
+       // XXX: convert to inline stops!
        c:(inline_element / (n:[^:\n] { return {type: 'TEXT', value: n}; }))+
        ":"
-       d:(inline_element / (n:[^\n] { return {type: 'TEXT', value: n}; }))+
+       d:inlineline
        &eolf
 {
-    // reject rule if bullets do not end in semicolon
-    if (bullets[bullets.length - 1] != ';') {
-        return null;
-    } else {
-		var dtbullets = bullets.slice(0, bullets.length - 1);
-		dtbullets.push(':');
-
-        // convert trailing space into &nbsp;
-        var clen = c.length;
-        if (clen && c[clen - 1].type === 'TEXT' && c[clen - 1].value == ' ') {
-            c[clen - 1].value = "\u00a0";
-        }
-
-        return [ { type: 'TAG', name: 'listItem', bullets: bullets } ]
-                .concat( c
-					,[{ type: 'TAG', name: 'listItem', bullets: dtbullets } ]
-                    , d );
+    // convert trailing space into &nbsp;
+    var clen = c.length;
+    if (clen && c[clen - 1].type === 'TEXT' && c[clen - 1].value == ' ') {
+        c[clen - 1].value = "\u00a0";
     }
+
+    return [ { type: 'TAG', name: 'listItem', bullets: bullets + ";" } ]
+        .concat( c
+                ,[{ type: 'TAG', name: 'listItem', bullets: bullets + ":" } ]
+                , d );
 }
 
 
@@ -1082,38 +1105,5 @@ thtd_attribs
 table_end = newline? "|}" { clearFlag('table'); }
 
 
-/* Wikidom TODO:
- * split off text into content nodes
- * convert inlines into annotations
- * change contents into children
- *
- * { text: text, 
- *   annotations: [(normal annotations)], 
- *   maybeannotations: [
- *      { type: 'something', 
- *        side: MA_START, 
- *        tag: { start: x, length: y } 
- *      }
- *   ]
- * }
- *  offsets in annotations: presume maybeannotations are actually text
- *  -> need to transform annotations if match found
- *  -> format annotations, comments can run to the end (re-opened after
- *     block-level tags); only closed on table cells, object,?
- *  -> other annotations (images, templates etc) are limited by block-level
- *     elements, tightly bound
- *  
- *  Block-level elements
- *  --------------------
- *  - Need some early clean-up to provide structure and offsets
- *  - Establish scope limits for some inlines
- *  - Line-based balanced by construction
- *  - HTML tags need balancing/ matching / implicit close
- *  - content in illegal places (e.g. between table and td tags) needs foster
- *    parenting
- *  - grammar will match outermost pair if unmatched pairs are recognized as
- *    tokens (or as text)
- *  - post-processing needed, but has to be limited by scope
- */
 /* Tabs do not mix well with the hybrid production syntax */
 /* vim: filetype=javascript:expandtabs:ts=4:sw=4:cindent */

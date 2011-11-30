@@ -147,7 +147,10 @@ function normalizeHTML(source) {
 			.getElementsByTagName('body')[0]
 			.innerHTML
 			// a few things we ignore for now..
-			.replace(/(title|class|rel)="[^"]+"/g, '');
+			.replace(/\/wiki\/Main_Page/g, 'Main Page')
+			.replace(/(title|class|rel)="[^"]+"/g, '')
+			.replace(/<a +href/g, '<a href')
+			.replace(/" +>/g, '">');
 	} catch(e) {
         console.log("normalizeHTML failed on" + 
 				source + " with the following error: " + e);

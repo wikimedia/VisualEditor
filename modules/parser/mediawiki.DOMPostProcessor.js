@@ -43,7 +43,7 @@ var process_inlines_in_p = function ( document ) {
 		var child = cnodes[i - deleted],
 			ctype = child.nodeType;
 		//console.log(child + ctype);
-		if (ctype === 3 && (haveInlines || !isElementContentWhitespace(child))) || 
+		if ((ctype === 3 && (haveInlines || !isElementContentWhitespace(child))) || 
 				(ctype !== 3 && // text
 				 ctype !== 8 && // comment
 				 !isBlock(child.nodeName))) {
