@@ -94,11 +94,11 @@
 }
 
 .es-contextView-position-left .es-contextView-menu {
-	left: 0;
+	left: -1px;
 }
 
 .es-contextView-position-right .es-contextView-menu {
-	right: 0;
+	right: -1px;
 }
 
 .es-contextView-menuItem {
