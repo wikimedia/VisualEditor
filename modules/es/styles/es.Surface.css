@@ -69,12 +69,12 @@
 }
 
 .es-contextView-position-above .es-contextView-icon {
-	background-image: url(images/arrow-up.png);
+	background-image: url(../images/arrow-up.png);
 	background-position: 4px 4px;
 }
 
 .es-contextView-position-below .es-contextView-icon {
-	background-image: url(images/arrow-down.png);
+	background-image: url(../images/arrow-down.png);
 	background-position: 4px 5px;
 }
 
@@ -141,13 +141,13 @@
 }
 
 .es-contextView-menuButton-bold {
-	background-image: url(images/bold.png);
+	background-image: url(../images/bold.png);
 }
 .es-contextView-menuButton-italic {
-	background-image: url(images/italic.png);
+	background-image: url(../images/italic.png);
 }
 .es-contextView-menuButton-clear {
-	background-image: url(images/clear.png);
+	background-image: url(../images/clear.png);
 }
 
 .es-contextView-menuButton:hover {
@@ -253,7 +253,7 @@
 }
 
 .es-listItemView-bullet .es-listItemView-icon {
-	background-image: url(images/bullet-icon.png);
+	background-image: url(../images/bullet-icon.png);
 	background-position: left 0.6em;
 	background-repeat: no-repeat;
 	width: 5px;
