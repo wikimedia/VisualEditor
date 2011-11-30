@@ -102,9 +102,18 @@
 	height: 1em;
 	padding: 0.25em;
 	border: solid 1px white;
-	text-align: center;
+	background-position: center center;
+	background-position: no-repeat;
 	cursor: pointer;
 }
+
+.es-contextView-menuButton-bold {
+	background-image: url(images/bold.png);
+}
+.es-contextView-menuButton-italic {
+	background-image: url(images/italic.png);
+}
+
 .es-contextView-menuButton:hover {
 	border-color: #b3d6f6;
 }
