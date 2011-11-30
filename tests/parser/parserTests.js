@@ -381,13 +381,49 @@ cases.forEach(function(item) {
 	}
 });
 
+/**
+ * Colorize given number if <> 0
+ *
+ * @param count Integer: a number to colorize
+ * @param color String: 'green' or 'red'
+ */
+function ColorizeCount( count, color ) {
+	if( count === 0 ) {
+		return count;
+	}
+
+	// We need a string to use colors methods 
+	count = count.toString();
+	// FIXME there must be a wait to call a method by its name
+	switch( color ) {
+		case 'green': return count.green;
+		case 'red':   return count.red;
+
+		default:      return count;
+	}
+}
+
+var failTotalTests = (failParseTests + failTreeTests + failOutputTests);
+
 console.log( "==========================================================");
 console.log( "SUMMARY: ");
-console.log( passedTests + " passed");
-console.log( failParseTests + " parse failures");
-console.log( failTreeTests + " tree build failures");
-console.log( failOutputTests + " output differences");
-console.log( "\n" + (failParseTests + failTreeTests + failOutputTests) + " total failures");
+
+if( failTotalTests !== 0 ) {
+console.log( ColorizeCount( passedTests    , 'green' ) + " passed");
+console.log( ColorizeCount( failParseTests , 'red'   ) + " parse failures");
+console.log( ColorizeCount( failTreeTests  , 'red'   ) + " tree build failures");
+console.log( ColorizeCount( failOutputTests, 'red'   ) + " output differences");
+console.log( "\n" );
+console.log( ColorizeCount( failTotalTests , 'red'   ) + " total failures");
+
+} else {
+	if( test_filter !== null ) {
+		console.log( "Passed " + passedTests + " of " + passedTests + " tests matching " + test_filter + "... " + "ALL TESTS PASSED!".green );
+	} else {
+		// Should not happen if it does: Champagne!
+		console.log( "Passed " + passedTests + " of " + passedTests + " tests... " + "ALL TESTS PASSED!".green );
+	}
+}
 console.log( "==========================================================");
 
 })();
