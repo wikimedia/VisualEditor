@@ -24,6 +24,11 @@ var fs = require('fs'),
 var optimist = require('optimist');
 
 var argv = optimist.usage( 'Usage: $0', {
+		'quick': {
+			description: 'Suppress diff output of failed tests',
+			boolean: true,
+			default: false,
+		},
 		'quiet': {
 			description: 'Suppress notification of passed tests (shows only failed tests)',
 			boolean: true,
@@ -240,7 +245,11 @@ function processTest(item) {
 		throw new Error('Missing input from test case ' + item.title);
 	}
 
-	function printTitle() {
+	function printTitle( failure_only ) {
+		if( failure_only ) {
+			console.log('FAILED'.red + ': ' + item.title.yellow);
+			return;
+		}
 		console.log('=====================================================');
 		console.log('FAILED'.red + ': ' + item.title.yellow);
 		console.log(item.comments.join('\n'));
@@ -285,8 +294,10 @@ function processTest(item) {
 			var normalizedOut = normalizeOut(out);
 			var normalizedExpected = normalizeHTML(item.result);
 			if ( normalizedOut !== normalizedExpected ) {
-				printTitle();
+				printTitle( argv.quick );
 				failOutputTests++;
+
+				if( !argv.quick ) {
 				console.log('RAW EXPECTED'.cyan + ':');
 				console.log(item.result + "\n");
 
@@ -320,6 +331,7 @@ function processTest(item) {
 				//patch.replace(/^[^\n]*\n[^\n]*\n[^\n]*\n[^\n]*\n/, '')
 
 				console.log( colored_diff );
+				}
 			} else {
 				passedTests++;
 				if( !argv.quiet ) {
