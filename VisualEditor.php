@@ -104,7 +104,9 @@ $wgResourceModules += array(
 			'es/tools/es.ButtonTool.js',
 			'es/tools/es.DropdownTool.js',
 			'es/tools/es.BoldButtonTool.js',
-			'es/tools/es.ItalicButtonTool.js'
+			'es/tools/es.ItalicButtonTool.js',
+			'es/tools/es.FormattingDropdownTool.js',
+			'es/tools/es.ClearButtonTool.js'
 		),
 		'styles' => 'es/es.Surface.css',
 		'dependencies' => array(

@@ -1,5 +1,5 @@
 es.Tool = function( toolbar ) {
-	this.$ = $( '<div>' ).addClass( 'es-toolbarTool' );
+	this.$ = $( '<div>' );
 	if ( !toolbar ) {
 		return;
 	}

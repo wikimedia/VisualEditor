@@ -36,7 +36,7 @@ es.ToolbarView = function( $container, surfaceView ) {
 	} );
 
 	this.config = [
-		{ name: 'text', items : [ 'bold', 'italic' ] },
+		{ name: 'text', items : [ 'bold', 'italic', 'formatting', 'clear' ] },
 	];
 
 	this.setup()

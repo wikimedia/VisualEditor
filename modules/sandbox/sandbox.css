@@ -67,7 +67,8 @@
 	font-size: 0.8em;
 	color: #555555;
 }
-.es-toolbarTool {
+.es-toolbarButtonTool,
+.es-toolbarDropdownTool {
 	float: left;
 	padding: 0.25em;
 	border: solid 1px transparent;
@@ -76,31 +77,40 @@
 	-moz-border-radius: 0.125em;
 	-o-border-radius: 0.125em;
 	cursor: pointer;
+}
+.es-toolbarButtonTool {
 	width: 22px;
 	height: 22px;
 }
-.es-toolbarTool:before {
+.es-toolbarButtonTool:before {
 	content: " ";
 	display: block;
 	height: 22px;
 	width: 22px;
 }
-.es-toolbarTool:hover,
-.es-toolbarTool-down:hover {
+.es-toolbarButtonTool:hover,
+.es-toolbarDropdownTool:hover {
 	border-color: #eeeeee;
 }
-.es-toolbarTool:active,
-.es-toolbarTool-down {
+.es-toolbarButtonTool:active,
+.es-toolbarButtonTool-down {
 	border-color: #dddddd;
 	background-image: url(images/fade-down.png);
 	background-position: top left;
 	background-repeat: repeat-x;
 }
-.es-toolbarTool-bold:before {
+.es-toolbarButtonTool-bold:before {
 	background-image: url(../es/images/bold.png);
 }
-.es-toolbarTool-italic:before {
+.es-toolbarButtonTool-italic:before {
 	background-image: url(../es/images/italic.png);
+}
+.es-toolbarButtonTool-clear:before {
+	background-image: url(../es/images/clear.png);
+}
+.es-toolbarDropdownTool {
+}
+.es-toolbarDropdownTool-formatting {
 }
 #es-previews {
 	display: none;

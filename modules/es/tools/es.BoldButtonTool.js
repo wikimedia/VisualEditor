@@ -5,15 +5,15 @@ es.BoldButtonTool = function( toolbar ) {
 es.BoldButtonTool.prototype.updateState = function( selection, annotations ) {
 	for ( var i = 0; i < annotations.length; i++ ) {
 		if ( annotations[i].type === 'textStyle/bold' ) {
-			this.$.addClass( 'es-toolbarTool-down' );
+			this.$.addClass( 'es-toolbarButtonTool-down' );
 			return;
 		}
 	}
-	this.$.removeClass( 'es-toolbarTool-down' );
+	this.$.removeClass( 'es-toolbarButtonTool-down' );
 };
 
 es.BoldButtonTool.prototype.onClick = function() {
-	var method = this.$.hasClass( 'es-toolbarTool-down' ) ? 'clear' : 'set';
+	var method = this.$.hasClass( 'es-toolbarButtonTool-down' ) ? 'clear' : 'set';
 	var tx = this.toolbar.surfaceView.model.getDocument().prepareContentAnnotation(
 		this.toolbar.surfaceView.currentSelection,
 		method,
