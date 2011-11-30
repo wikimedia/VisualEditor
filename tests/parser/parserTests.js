@@ -12,6 +12,7 @@
 
 (function() {
 //"use strict";
+console.log( "Starting up JS parser tests" );
 
 var fs = require('fs'),
 	path = require('path'),
@@ -97,8 +98,10 @@ try {
 	}
 }
 
+console.log( "Parsing tests case from file, this takes a few seconds ..." );
 try {
 	var cases = testParser.parse(testFile);
+	console.log( "Done parsing." );
 } catch (e) {
 	console.log(e);
 }
@@ -297,6 +300,7 @@ function processTokens ( tokens, tokenizer ) {
 
 var comments = [];
 
+console.log( "Initialisation complete. Now launching tests." );
 cases.forEach(function(item) {
 	if (typeof item == 'object') {
 		switch(item.type) {
