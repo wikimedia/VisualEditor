@@ -1,37 +1,37 @@
 /* Produces output more or less compatible with FakeParser; plug it into FP's output and see */
 {
-	/* Fixme: use static functions to separate module! Unfortunately, this
-	 * does not work:
-	 * var tu = require('./mediawiki.tokenizer.utils.js');
-	 * console.log(tu.flatten([]));
-	 * Using exports in the module gets a bit further, but accesses to
-	 * tu.flatten in productions still fail. Thus, I just moved the functions
-	 * here until a solution is found:
-	 */
-	
-	/* Static utilities */
+    /* Fixme: use static functions to separate module! Unfortunately, this
+     * does not work:
+     * var tu = require('./mediawiki.tokenizer.utils.js');
+     * console.log(tu.flatten([]));
+     * Using exports in the module gets a bit further, but accesses to
+     * tu.flatten in productions still fail. Thus, I just moved the functions
+     * here until a solution is found:
+     */
 
-	// Flatten a list of lists.
-	var flatten = function ( e ) {
-		var es = [];
-		// flatten sub-arrays
-		for(var i = 0, length = e.length; i < length; i++) {
-			var ei = e[i];
-			if ($.isArray(ei))
-				es = es.concat(flatten(ei));
-			else
-				es.push(ei);
-		};
-		return es;
-	};
+    /* Static utilities */
 
-	// Remove escaped quotes from attributes etc
-	var unquote = function (quotec, text) {
-		return text.replace('\\' + quotec, quotec);
-	};
-	
+    // Flatten a list of lists.
+    var flatten = function ( e ) {
+        var es = [];
+        // flatten sub-arrays
+        for(var i = 0, length = e.length; i < length; i++) {
+            var ei = e[i];
+            if ($.isArray(ei))
+                es = es.concat(flatten(ei));
+            else
+                es.push(ei);
+        };
+        return es;
+    };
 
-	// Debug print with global switch
+    // Remove escaped quotes from attributes etc
+    var unquote = function (quotec, text) {
+        return text.replace('\\' + quotec, quotec);
+    };
+
+
+    // Debug print with global switch
     var dp = function ( msg ) {
         if ( false ) {
             console.log(msg);
@@ -40,285 +40,285 @@
 
     var pp = function ( s ) { return JSON.stringify(s, null, 2); }
 
-	/* 
-	 * Annotate a token stream with list items with appropriate list tokens
-	 *
-	 * @static
-	 * @method
-	 * @param {[tokens]}   Token stream with li tokens 
-	 * @returns {[tokens]} Token stream, possibly with additional list tokens
-	 * */
-	var annotateList = function ( tokens ) {
-		var out = [],    // List of tokens
-			bstack = [], // Bullet stack, previous element's listStyle
-			bnext = [],  // Next element's listStyle
-			endtags = [];  // Stack of end tags
+    /* 
+     * Annotate a token stream with list items with appropriate list tokens
+     *
+     * @static
+     * @method
+     * @param {[tokens]}   Token stream with li tokens 
+     * @returns {[tokens]} Token stream, possibly with additional list tokens
+     * */
+    var annotateList = function ( tokens ) {
+        var out = [],    // List of tokens
+            bstack = [], // Bullet stack, previous element's listStyle
+            bnext = [],  // Next element's listStyle
+            endtags = [];  // Stack of end tags
 
-		var commonPrefixLength = function (x, y) {
-			var minLength = Math.min(x.length, y.length);
-			for(var i = 0; i < minLength; i++) {
-				if (x[i] != y[i])
-					break;
-			}
-			return i;
-		};
+        var commonPrefixLength = function (x, y) {
+            var minLength = Math.min(x.length, y.length);
+            for(var i = 0; i < minLength; i++) {
+                if (x[i] != y[i])
+                    break;
+            }
+            return i;
+        };
 
-		var pushList = function ( listName, itemName ) {
-			out.push({type: 'TAG', name: listName});
-			out.push({type: 'TAG', name: itemName});
-			endtags.push({type: 'ENDTAG', name: listName});
-			endtags.push({type: 'ENDTAG', name: itemName});
-		};
+        var pushList = function ( listName, itemName ) {
+            out.push({type: 'TAG', name: listName});
+            out.push({type: 'TAG', name: itemName});
+            endtags.push({type: 'ENDTAG', name: listName});
+            endtags.push({type: 'ENDTAG', name: itemName});
+        };
 
-		var popTags = function ( n ) {
-			for(;n > 0; n--) {
-				// push list item..
-				out.push(endtags.pop());
-				// and the list end tag
-				out.push(endtags.pop());
-			}
-		};
+        var popTags = function ( n ) {
+            for(;n > 0; n--) {
+                // push list item..
+                out.push(endtags.pop());
+                // and the list end tag
+                out.push(endtags.pop());
+            }
+        };
 
-		var isDlDd = function (a, b) {
-			var ab = [a,b].sort();
-			return (ab[0] === ':' && ab[1] === ';');
-		};
+        var isDlDd = function (a, b) {
+            var ab = [a,b].sort();
+            return (ab[0] === ':' && ab[1] === ';');
+        };
 
-		var doListItem = function ( bs, bn ) {
-			var prefixLen = commonPrefixLength (bs, bn);
-			var changeLen = bn.length - prefixLen;
-			var prefix = bn.slice(0, prefixLen);
-			// emit close tag tokens for closed lists
-			if (changeLen === 0) {
-				var itemToken = endtags.pop();
-				out.push(itemToken);
-				out.push({type: 'TAG', name: itemToken.name});
-				endtags.push({type: 'ENDTAG', name: itemToken.name});
-			} else if ( bs.length == bn.length
-						&& changeLen == 1
-						&& isDlDd( bs[prefixLen], bn[prefixLen] ) ) {
-				// handle dd/dt transitions
-				out.push(endtags.pop());
-				if( bn[prefixLen] == ';') {
-					var newName = 'dt';
-				} else {
-					var newName = 'dd';
-				}
-				out.push({type: 'TAG', name: newName});
-				endtags.push({type: 'ENDTAG', name: newName});
-			} else {
+        var doListItem = function ( bs, bn ) {
+            var prefixLen = commonPrefixLength (bs, bn);
+            var changeLen = bn.length - prefixLen;
+            var prefix = bn.slice(0, prefixLen);
+            // emit close tag tokens for closed lists
+            if (changeLen === 0) {
+                var itemToken = endtags.pop();
+                out.push(itemToken);
+                out.push({type: 'TAG', name: itemToken.name});
+                endtags.push({type: 'ENDTAG', name: itemToken.name});
+            } else if ( bs.length == bn.length
+                    && changeLen == 1
+                    && isDlDd( bs[prefixLen], bn[prefixLen] ) ) {
+                        // handle dd/dt transitions
+                        out.push(endtags.pop());
+                        if( bn[prefixLen] == ';') {
+                            var newName = 'dt';
+                        } else {
+                            var newName = 'dd';
+                        }
+                        out.push({type: 'TAG', name: newName});
+                        endtags.push({type: 'ENDTAG', name: newName});
+                    } else {
                 popTags(bs.length - prefixLen);
-				for(var i = prefixLen; i < bn.length; i++) {
-					switch (bn[i]) {
-						case '*':
-							pushList('ul', 'li');
-							break;
-						case '#':
-							pushList('ol', 'li');
-							break;
-						case ';':
-							pushList('dl', 'dt');
-							break;
-						case ':':
-							pushList('dl', 'dd');
-							break;
-						default:
-							throw("Unknown node prefix " + prefix[i]);
-					}
-				}
-			}
-		};
+                for(var i = prefixLen; i < bn.length; i++) {
+                    switch (bn[i]) {
+                        case '*':
+                            pushList('ul', 'li');
+                            break;
+                        case '#':
+                            pushList('ol', 'li');
+                            break;
+                        case ';':
+                            pushList('dl', 'dt');
+                            break;
+                        case ':':
+                            pushList('dl', 'dd');
+                            break;
+                        default:
+                            throw("Unknown node prefix " + prefix[i]);
+                    }
+                }
+            }
+        };
 
-		for (var i = 0, length = tokens.length; i < length; i++) {
-			var token = tokens[i];
-			switch ( token.type ) {
-				case 'TAG':
-					switch (token.name) {
-						case 'list':
-							// ignore token
-							break;
-						case 'listItem':
-							// convert listItem to list and list item tokens
-							bnext = token.bullets;
-							doListItem( bstack, bnext );
-							bstack = bnext;
-							break;
-						default:
-							// pass through all remaining start tags
-							out.push(token);
-							break;
-					}
-					break;
-				case 'ENDTAG':
-					if ( token.name == 'list' ) {
-						// pop all open list item tokens
-						popTags(bstack.length);
-						bstack = "";
-					} else {
-						out.push(token);
-					}
-					break;
-				default:
-					out.push(token);
-					break;
-			}
-		}
-		return out;
-	};
+        for (var i = 0, length = tokens.length; i < length; i++) {
+            var token = tokens[i];
+            switch ( token.type ) {
+                case 'TAG':
+                    switch (token.name) {
+                        case 'list':
+                            // ignore token
+                            break;
+                        case 'listItem':
+                            // convert listItem to list and list item tokens
+                            bnext = token.bullets;
+                            doListItem( bstack, bnext );
+                            bstack = bnext;
+                            break;
+                        default:
+                            // pass through all remaining start tags
+                            out.push(token);
+                            break;
+                    }
+                    break;
+                case 'ENDTAG':
+                    if ( token.name == 'list' ) {
+                        // pop all open list item tokens
+                        popTags(bstack.length);
+                        bstack = "";
+                    } else {
+                        out.push(token);
+                    }
+                    break;
+                default:
+                    out.push(token);
+                    break;
+            }
+        }
+        return out;
+    };
 
-	/*
-	 * Italic/Bold handling.
-	 *
-	 * - list of tokens
-	 *   - NEWLINE
-	 *   - ticks (2+) -> list with link in line token list?
-	 *   - process on newline
-	 *   - need access to text nodes before/after for conversion back to text
-	 */
-	var doQuotes = function ( tokens ) {
+    /*
+     * Italic/Bold handling.
+     *
+     * - list of tokens
+     *   - NEWLINE
+     *   - ticks (2+) -> list with link in line token list?
+     *   - process on newline
+     *   - need access to text nodes before/after for conversion back to text
+     */
+    var doQuotes = function ( tokens ) {
 
-		var italics = [],
-			bolds = [],
-			out = [],
-			inserted = 0;
+        var italics = [],
+            bolds = [],
+            out = [],
+            inserted = 0;
 
-		var convertBold = function ( i ) {
-			var index = bolds[i];
-			var txt = out[index - 1];
-			txt.value += "'";
-			bolds = bolds.slice(0, i)
-				.concat(bolds.slice(i + 1, bolds.length - i - 1));
-			italics.push(index);
-			italics.sort();
-		};
+        var convertBold = function ( i ) {
+            var index = bolds[i];
+            var txt = out[index - 1];
+            txt.value += "'";
+            bolds = bolds.slice(0, i)
+                .concat(bolds.slice(i + 1, bolds.length - i - 1));
+            italics.push(index);
+            italics.sort();
+        };
 
-		// convert italics/bolds into tags
-		var quotesToTags = function ( offsets, name ) {
-			var toggle = true;
-			for (var j = 0; j < offsets.length; j++) {
-				var t = out[offsets[j]];
-				if(toggle) {
-					t.type = 'TAG';
-				} else {
-					t.type = 'ENDTAG';
-				}
-				t.name = name;
-				delete t.value;
-				toggle = !toggle;
-			}
-			if (!toggle) {
-				// add end tag
-				out.push({type: 'ENDTAG', name: name});
-				inserted++;
-			}
-			toggle = true;
-		};
+        // convert italics/bolds into tags
+        var quotesToTags = function ( offsets, name ) {
+            var toggle = true;
+            for (var j = 0; j < offsets.length; j++) {
+                var t = out[offsets[j]];
+                if(toggle) {
+                    t.type = 'TAG';
+                } else {
+                    t.type = 'ENDTAG';
+                }
+                t.name = name;
+                delete t.value;
+                toggle = !toggle;
+            }
+            if (!toggle) {
+                // add end tag
+                out.push({type: 'ENDTAG', name: name});
+                inserted++;
+            }
+            toggle = true;
+        };
 
-		for (var i = 0, length = tokens.length; i < length; i++) {
-			var token = tokens[i];
-			switch (token.type) {
-				case 'QUOTE':
-					// depending on length, add starting 's to preceding text node
-					// (if any)
-					// add token index to italic/bold lists
-					// add placeholder for token
-					var qlen = token.value.length;
-					switch (qlen) {
-						case 2: italics.push(i + inserted); out.push(token); break;
-						case 3: bolds.push(i + inserted); out.push(token); break;
-						case 4: 
-								token.value = "'''";
-								if (i > 0 && tokens[i-1].type === 'TEXT') {
-									tokens[i-1].value += "'";
-								} else {
-									out.push({type: 'TEXT', value: "'"});
-									inserted++;
-								}
-								bolds.push(i + inserted); 
-								out.push(token);
-								break;
-						case 5:
-								// order does not matter here, will be fixed
-								// by HTML parser backend
-								bolds.push(i + inserted);
-								out.push({type: 'QUOTE', value: "'''"}); 
-								inserted++;
-								italics.push(i + inserted); 
-								out.push({type: 'QUOTE', value: "''"}); 
-								break;
-						default: // longer than 5, only use the last 5 ticks
-								token.value = "'''''";
-								var newvalue = token.value.substr(0, qlen - 5 );
-								if (i > 0 && tokens[i-1].type === 'TEXT') {
-									tokens[i-1].value += newvalue;
-								} else {
-									out.push({type: 'TEXT', value: newvalue});
-									inserted++;
-								}
-								bolds.push(i + inserted);
-								out.push({type: 'QUOTE', value: "'''"}); 
-								inserted++;
-								italics.push(i + inserted); 
-								out.push({type: 'QUOTE', value: "''"}); 
-								break;
-					}
-					break;
+        for (var i = 0, length = tokens.length; i < length; i++) {
+            var token = tokens[i];
+            switch (token.type) {
+                case 'QUOTE':
+                    // depending on length, add starting 's to preceding text node
+                    // (if any)
+                    // add token index to italic/bold lists
+                    // add placeholder for token
+                    var qlen = token.value.length;
+                    switch (qlen) {
+                        case 2: italics.push(i + inserted); out.push(token); break;
+                        case 3: bolds.push(i + inserted); out.push(token); break;
+                        case 4: 
+                                token.value = "'''";
+                                if (i > 0 && tokens[i-1].type === 'TEXT') {
+                                    tokens[i-1].value += "'";
+                                } else {
+                                    out.push({type: 'TEXT', value: "'"});
+                                    inserted++;
+                                }
+                                bolds.push(i + inserted); 
+                                out.push(token);
+                                break;
+                        case 5:
+                                // order does not matter here, will be fixed
+                                // by HTML parser backend
+                                bolds.push(i + inserted);
+                                out.push({type: 'QUOTE', value: "'''"}); 
+                                inserted++;
+                                italics.push(i + inserted); 
+                                out.push({type: 'QUOTE', value: "''"}); 
+                                break;
+                        default: // longer than 5, only use the last 5 ticks
+                                token.value = "'''''";
+                                var newvalue = token.value.substr(0, qlen - 5 );
+                                if (i > 0 && tokens[i-1].type === 'TEXT') {
+                                    tokens[i-1].value += newvalue;
+                                } else {
+                                    out.push({type: 'TEXT', value: newvalue});
+                                    inserted++;
+                                }
+                                bolds.push(i + inserted);
+                                out.push({type: 'QUOTE', value: "'''"}); 
+                                inserted++;
+                                italics.push(i + inserted); 
+                                out.push({type: 'QUOTE', value: "''"}); 
+                                break;
+                    }
+                    break;
 
-				case 'NEWLINE':
-					// balance out tokens, convert placeholders into tags
-					if (italics.length % 2 && bolds.length % 2) {
-						dp("balancing!");
-						var firstsingleletterword = -1,
-							firstmultiletterword = -1,
-							firstspace = -1;
-						for (var j = 0; j < bolds.length; j++) {
-							var ticki = bolds[j];
-							if (ticki > 0 && out[ticki - 1].type === 'TEXT') {
-								var txt = out[ticki - 1],
-									lastchar = txt.value[txt.value.length - 1],
-									secondtolastchar = txt.value[txt.value.length - 2];
-								dp('txt: ' + pp(txt));
-								if (lastchar === ' ' && firstspace === -1) {
-									firstspace = j;
-								} else if (lastchar !== ' ') {
-									if ( secondtolastchar === ' ' && 
-											firstsingleletterword === -1) {
-												firstsingleletterword = j;
-											} else if ( secondtolastchar && 
-													secondtolastchar !== ' ') {
-														firstmultiletterword = j;
-													}
-								}
-							}
-						}
-
-
-						// now see if we can convert a bold to an italic and
-						// an apostrophe
-						if (firstsingleletterword > -1) {
-							convertBold(firstsingleletterword);
-						} else if (firstmultiletterword > -1) {
-							convertBold(firstmultiletterword);
-						} else if (firstspace > -1) {
-							convertBold(firstspace);
-						}
-					}
-
-					quotesToTags(bolds, 'b');
-					quotesToTags(italics, 'i');
-					bolds = [];
-					italics = [];
-					out.push(token);
-					break;
-				default:
-					out.push(token);
-			}
-		}
-		return out;
-	};
+                case 'NEWLINE':
+                    // balance out tokens, convert placeholders into tags
+                    if (italics.length % 2 && bolds.length % 2) {
+                        dp("balancing!");
+                        var firstsingleletterword = -1,
+                            firstmultiletterword = -1,
+                            firstspace = -1;
+                        for (var j = 0; j < bolds.length; j++) {
+                            var ticki = bolds[j];
+                            if (ticki > 0 && out[ticki - 1].type === 'TEXT') {
+                                var txt = out[ticki - 1],
+                                    lastchar = txt.value[txt.value.length - 1],
+                                             secondtolastchar = txt.value[txt.value.length - 2];
+                                dp('txt: ' + pp(txt));
+                                if (lastchar === ' ' && firstspace === -1) {
+                                    firstspace = j;
+                                } else if (lastchar !== ' ') {
+                                    if ( secondtolastchar === ' ' && 
+                                            firstsingleletterword === -1) {
+                                                firstsingleletterword = j;
+                                            } else if ( secondtolastchar && 
+                                                    secondtolastchar !== ' ') {
+                                                        firstmultiletterword = j;
+                                                    }
+                                }
+                            }
+                        }
 
 
-	/* End static utilities */
+                        // now see if we can convert a bold to an italic and
+                        // an apostrophe
+                        if (firstsingleletterword > -1) {
+                            convertBold(firstsingleletterword);
+                        } else if (firstmultiletterword > -1) {
+                            convertBold(firstmultiletterword);
+                        } else if (firstspace > -1) {
+                            convertBold(firstspace);
+                        }
+                    }
+
+                    quotesToTags(bolds, 'b');
+                    quotesToTags(italics, 'i');
+                    bolds = [];
+                    italics = [];
+                    out.push(token);
+                    break;
+                default:
+                    out.push(token);
+            }
+        }
+        return out;
+    };
+
+
+    /* End static utilities */
 
     /*
      * Flags for specific parse environments (inside tables, links etc). Flags
@@ -412,9 +412,9 @@ toplevelblock
         bs.attribs = [];
     }
     bs.attribs.push(['data-sourcePos', blockStart + ':' + pos]);
-	// XXX: only run this for lines that actually need it!
-	b.push({type: 'NEWLINE'});
-	b = doQuotes(b);
+    // XXX: only run this for lines that actually need it!
+    b.push({type: 'NEWLINE'});
+    b = doQuotes(b);
     return b;
   }
 
@@ -968,8 +968,8 @@ ext_param_val
 lists = e:(dtdd / li) es:(sol (dtdd / li))*
 {
     return annotateList( [ { type: 'TAG', name: 'list'} ]
-							.concat(flatten([e].concat(es))
-								,[{ type: 'ENDTAG', name: 'list' }]));
+            .concat(flatten([e].concat(es))
+                ,[{ type: 'ENDTAG', name: 'list' }]));
 }
 
 li = bullets:list_char+ 
