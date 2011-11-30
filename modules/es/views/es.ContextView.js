@@ -66,7 +66,7 @@ es.ContextView.prototype.set = function() {
 		} else {
 			this.$.addClass( 'es-contextView-position-right' );
 		}
-		if ( position.top + this.$menu.height() < $( window ).height() ) {
+		if ( position.top + this.$menu.height() < $( window ).height() + $( window ).scrollTop() ) {
 			this.$.addClass( 'es-contextView-position-below' );
 		} else {
 			this.$.addClass( 'es-contextView-position-above' );
