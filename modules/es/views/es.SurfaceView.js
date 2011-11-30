@@ -28,7 +28,7 @@ es.SurfaceView = function( $container, model ) {
 	this.$cursor = $( '<div class="es-surfaceView-cursor"></div>' )
 		.appendTo( 'body' );
 	this.updateSelectionTimeout = undefined;
-	this.emitUpdateTimeoue = undefined;
+	this.emitUpdateTimeout = undefined;
 
 	// Interaction states
 	
