@@ -197,7 +197,7 @@ function processTest(item) {
 
 	function printTitle() {
 		console.log('=====================================================');
-		console.log(item.title);
+		console.log('FAILED: ' + item.title);
 		console.log(item.comments.join('\n'));
 		console.log("INPUT:");
 		console.log(item.input + "\n");

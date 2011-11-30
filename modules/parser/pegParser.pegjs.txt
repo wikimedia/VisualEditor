@@ -240,11 +240,11 @@
                         case 5:
                                 // order does not matter here, will be fixed
                                 // by HTML parser backend
-                                bolds.push(i + inserted);
-                                out.push({type: 'QUOTE', value: "'''"}); 
-                                inserted++;
                                 italics.push(i + inserted); 
                                 out.push({type: 'QUOTE', value: "''"}); 
+                                inserted++;
+                                bolds.push(i + inserted);
+                                out.push({type: 'QUOTE', value: "'''"}); 
                                 break;
                         default: // longer than 5, only use the last 5 ticks
                                 token.value = "'''''";
@@ -255,11 +255,11 @@
                                     out.push({type: 'TEXT', value: newvalue});
                                     inserted++;
                                 }
-                                bolds.push(i + inserted);
-                                out.push({type: 'QUOTE', value: "'''"}); 
-                                inserted++;
                                 italics.push(i + inserted); 
                                 out.push({type: 'QUOTE', value: "''"}); 
+                                inserted++;
+                                bolds.push(i + inserted);
+                                out.push({type: 'QUOTE', value: "'''"}); 
                                 break;
                     }
                     break;
