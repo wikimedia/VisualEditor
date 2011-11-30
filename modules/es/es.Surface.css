@@ -42,32 +42,45 @@
 
 .es-contextView-icon {
 	position: absolute;
-	background-position: top left;
 	background-repeat: no-repeat;
-	width: 31px;
-	height: 31px;
+	width: 15px;
+	height: 15px;
 	display: none;
 	cursor: pointer;
+	border: solid 1px #cccccc;
+	-webkit-border-radius: 1em;
+	-moz-border-radius: 1em;
+	-o-border-radius: 1em;
+	border-radius: 1em;
+	background-color: white;
+	-webkit-box-shadow: 0 0.25em 1em 0 rgba(0,0,0,0.25);
+	-moz-box-shadow: 0 0.25em 1em 0 rgba(0,0,0,0.25);
+	box-shadow: 0 0.25em 1em 0 rgba(0,0,0,0.25);
+}
+
+.es-contextView-position-start .es-contextView-icon {
+	top: -12px;
+	left: -8px;
+}
+
+.es-contextView-position-end .es-contextView-icon {
+	top: -6px;
+	left: -8px;
 }
 
 .es-contextView-position-above .es-contextView-icon {
-	background-image: url(images/context-icon-up.png);
-	top: -24px;
-	left: -15px;
+	background-image: url(images/arrow-up.png);
+	background-position: 4px 4px;
 }
 
 .es-contextView-position-below .es-contextView-icon {
-	background-image: url(images/context-icon-down.png);
-	top: -7px;
-	left: -16px;
+	background-image: url(images/arrow-down.png);
+	background-position: 4px 5px;
 }
 
-.es-contextView-position-above .es-contextView-icon:hover {
-	background-image: url(images/context-icon-up-hover.png);
-}
-
+.es-contextView-position-above .es-contextView-icon:hover,
 .es-contextView-position-below .es-contextView-icon:hover {
-	background-image: url(images/context-icon-down-hover.png);
+	border-color: #b3d6f6;
 }
 
 .es-contextView-menu {
@@ -118,10 +131,10 @@
 	height: 1em;
 	padding: 0.25em;
 	border: solid 1px white;
-	-webkit-border-radius: 0.25em;
-	-moz-border-radius: 0.25em;
-	-o-border-radius: 0.25em;
-	border-radius: 0.25em;
+	-webkit-border-radius: 0.125em;
+	-moz-border-radius: 0.125em;
+	-o-border-radius: 0.125em;
+	border-radius: 0.125em;
 	background-position: center center;
 	background-position: no-repeat;
 	cursor: pointer;

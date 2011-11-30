@@ -253,6 +253,8 @@ es.ContentView.prototype.drawSelection = function( range ) {
 				'width': toPosition.left,
 				'height': toPosition.bottom - toPosition.top
 			} ).show();
+		} else {
+			this.$rangeEnd.hide();
 		}
 		if ( fromLineIndex + 1 < toLineIndex ) {
 			this.$rangeFill.css( {

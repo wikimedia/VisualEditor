@@ -37,12 +37,12 @@ es.ContextView = function( surfaceView, $overlay ) {
 es.ContextView.prototype.set = function() {
 	this.$.removeClass(
 		'es-contextView-position-below es-contextView-position-above ' +
-		'es-contextView-position-left es-contextView-position-right'
+		'es-contextView-position-left es-contextView-position-right' +
+		'es-contextView-position-start es-contextView-position-end'
 	);
 	var selection = this.surfaceView.getModel().getSelection(),
 		position,
-		offset,
-		bias;
+		offset;
 	if ( selection.from < selection.to ) {
 		var $lastRange = this.surfaceView.$.find( '.es-contentView-range:visible:last' );
 		if ( $lastRange.length ) {
@@ -50,14 +50,14 @@ es.ContextView.prototype.set = function() {
 			position = new es.Position(
 				offset.left + $lastRange.width(), offset.top + $lastRange.height()
 			);
-			this.$.addClass( 'es-contextView-position-below' );
+			this.$.addClass( 'es-contextView-position-end' );
 		}
 	} else if ( selection.from > selection.to ) {
 		var $firstRange = this.surfaceView.$.find( '.es-contentView-range:visible:first' );
 		if ( $firstRange.length ) {
 			offset = $firstRange.offset();
 			position = new es.Position( offset.left, offset.top );
-			this.$.addClass( 'es-contextView-position-above' );
+			this.$.addClass( 'es-contextView-position-start' );
 		}
 	}
 	if ( position ) {
@@ -65,6 +65,11 @@ es.ContextView.prototype.set = function() {
 			this.$.addClass( 'es-contextView-position-left' );
 		} else {
 			this.$.addClass( 'es-contextView-position-right' );
+		}
+		if ( position.top + this.$menu.height() < $( window ).height() ) {
+			this.$.addClass( 'es-contextView-position-below' );
+		} else {
+			this.$.addClass( 'es-contextView-position-above' );
 		}
 		this.$.css( { 'left': position.left, 'top': position.top } );
 		this.$icon.fadeIn( 'fast' );
