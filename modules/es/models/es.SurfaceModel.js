@@ -13,7 +13,6 @@ es.SurfaceModel = function( doc ) {
 	// Properties
 	this.doc = doc;
 	this.selection = new es.Range();
-	this.previousSelection = null;
 	this.states = [[]];
 	this.initializeState( this.states.length - 1 );
 
@@ -69,10 +68,9 @@ es.SurfaceModel.prototype.select = function( selection, combine ) {
 		this.pushState();
 	}
 	// Filter out calls to select if they do not change the selection values
-	this.selection = selection;
-	var selectionChanged = !this.previousSelection || (
-		this.previousSelection.from !== this.selection.from || 
-		this.previousSelection.to !== this.selection.to
+	var selectionChanged = !this.selection || (
+		this.selection.from !== selection.from || 
+		this.selection.to !== selection.to
 	);
 	if ( !combine || selectionChanged ) {
 		var lastAction = this.states[this.states.length - 1];
@@ -82,11 +80,11 @@ es.SurfaceModel.prototype.select = function( selection, combine ) {
 			);
 		}
 		this.currentState.push( selection );
+		this.selection = selection;
 		if ( selectionChanged ) {
 			this.emit( 'select', this.selection.clone() );
 		}
 	}
-	this.previousSelection = this.selection.clone();
 };
 
 /**
