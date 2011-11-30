@@ -182,6 +182,35 @@ es.DocumentModel.getIndexOfAnnotation = function( annotations, annotation ) {
 };
 
 /**
+ * Gets a list of indexes of annotations that match a regular expression.
+ * 
+ * @static
+ * @method
+ * @param {Array} annotations Annotations to search through
+ * @param {RegExp} pattern Regular expression pattern to match with
+ * @returns {Integer[]} List of indexes in annotations that match
+ */
+es.DocumentModel.getMatchingAnnotations = function( annotations, pattern ) {
+	if ( !( pattern instanceof RegExp ) ) {
+		throw 'Invalid annotation error. Can not find non-annotation data in character.';
+	}
+	var matches = [];
+	if ( es.isArray( annotations ) ) {
+		// Find the index of a comparable annotation (checking for same value, not reference)
+		for ( var i = 0; i < annotations.length; i++ ) {
+			// Skip over character data - used when this is called on a content data item
+			if ( typeof annotations[i] === 'string' ) {
+				continue;
+			}
+			if ( pattern.test( annotations[i].type ) ) {
+				matches.push( annotations[i] );
+			}
+		}
+	}
+	return matches;
+};
+
+/**
  * Sorts annotations of a character.
  * 
  * This method modifies data in place. The string portion of the annotation character will always
@@ -1037,6 +1066,9 @@ es.DocumentModel.prototype.prepareRemoval = function( range ) {
  * @returns {es.TransactionModel}
  */
 es.DocumentModel.prototype.prepareContentAnnotation = function( range, method, annotation ) {
+	if ( annotation instanceof RegExp && method !== 'clear' ) {
+		throw 'Invalid annotation error. RegExp patterns can only be used with the clear method.';
+	}
 	var tx = new es.TransactionModel();
 	range.normalize();
 	if ( annotation.hash === undefined ) {
@@ -1057,7 +1089,13 @@ es.DocumentModel.prototype.prepareContentAnnotation = function( range, method, a
 				on = false;
 			}
 		} else {
-			var covered = es.DocumentModel.getIndexOfAnnotation( this.data[i], annotation ) !== -1;
+			var covered;
+			if ( annotation instanceof RegExp ) {
+				covered =
+					!!es.DocumentModel.getMatchingAnnotations( this.data[i], annotation ).length;
+			} else {
+				covered = es.DocumentModel.getIndexOfAnnotation( this.data[i], annotation ) !== -1;
+			}
 			if ( ( covered && method === 'set' ) || ( !covered  && method === 'clear' ) ) {
 				// Don't set/clear annotations on content that's already set/cleared
 				if ( on ) {

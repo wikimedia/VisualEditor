@@ -174,9 +174,11 @@ es.TransactionProcessor.prototype.getScope = function( node, data ) {
 es.TransactionProcessor.prototype.applyAnnotations = function( to, update ) {
 	var i,
 		j,
+		k,
 		length,
 		annotation,
-		changes = 0;
+		changes = 0,
+		index;
 	// Handle annotations
 	if ( this.set.length ) {
 		for ( i = 0, length = this.set.length; i < length; i++ ) {
@@ -199,18 +201,38 @@ es.TransactionProcessor.prototype.applyAnnotations = function( to, update ) {
 	if ( this.clear.length ) {
 		for ( i = 0, length = this.clear.length; i < length; i++ ) {
 			annotation = this.clear[i];
-			// Auto-build annotation hash
-			if ( annotation.hash === undefined ) {
-				annotation.hash = es.DocumentModel.getHash( annotation );
-			}
-			for ( j = this.cursor; j < to; j++ ) {
-				var index = es.DocumentModel.getIndexOfAnnotation( this.model.data[j], annotation );
-				if ( index !== -1 ) {
-					this.model.data[j].splice( index, 1 );
+			if ( annotation instanceof RegExp ) {
+				for ( j = this.cursor; j < to; j++ ) {
+					var matches = es.DocumentModel.getMatchingAnnotations(
+						this.model.data[j], annotation
+					);
+					for ( k = 0; k < matches.length; k++ ) {
+						index = this.model.data[j].indexOf( matches[k] );
+						if ( index !== -1 ) {
+							this.model.data[j].splice( index, 1 );
+						}
+					}
+					// Auto-convert to string
+					if ( this.model.data[j].length === 1 ) {
+						this.model.data[j] = this.model.data[j][0];
+					}
 				}
-				// Auto-convert to string
-				if ( this.model.data[j].length === 1 ) {
-					this.model.data[j] = this.model.data[j][0];
+			} else {
+				// Auto-build annotation hash
+				if ( annotation.hash === undefined ) {
+					annotation.hash = es.DocumentModel.getHash( annotation );
+				}
+				for ( j = this.cursor; j < to; j++ ) {
+					index = es.DocumentModel.getIndexOfAnnotation(
+						this.model.data[j], annotation
+					);
+					if ( index !== -1 ) {
+						this.model.data[j].splice( index, 1 );
+					}
+					// Auto-convert to string
+					if ( this.model.data[j].length === 1 ) {
+						this.model.data[j] = this.model.data[j][0];
+					}
 				}
 			}
 		}
@@ -428,7 +450,12 @@ es.TransactionProcessor.prototype.mark = function( op, invert ) {
 	if ( op.bias === 'start' ) {
 		target.push( op.annotation );
 	} else if ( op.bias === 'stop' ) {
-		var index = es.DocumentModel.getIndexOfAnnotation( target, op.annotation );
+		var index;
+		if ( op.annotation instanceof RegExp ) {
+			index = target.indexOf( op.annotation );
+		} else {
+			index = es.DocumentModel.getIndexOfAnnotation( target, op.annotation );
+		}
 		if ( index === -1 ) {
 			throw 'Annotation stack error. Annotation is missing.';
 		}
