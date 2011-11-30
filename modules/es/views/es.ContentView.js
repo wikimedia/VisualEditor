@@ -246,12 +246,14 @@ es.ContentView.prototype.drawSelection = function( range ) {
 			'width': contentWidth - fromPosition.left,
 			'height': fromPosition.bottom - fromPosition.top
 		} ).show();
-		this.$rangeEnd.css( {
-			'top': toPosition.top,
-			'left': 0,
-			'width': toPosition.left,
-			'height': toPosition.bottom - toPosition.top
-		} ).show();
+		if ( toPosition.left ) {
+			this.$rangeEnd.css( {
+				'top': toPosition.top,
+				'left': 0,
+				'width': toPosition.left,
+				'height': toPosition.bottom - toPosition.top
+			} ).show();
+		}
 		if ( fromLineIndex + 1 < toLineIndex ) {
 			this.$rangeFill.css( {
 				'top': fromPosition.bottom,

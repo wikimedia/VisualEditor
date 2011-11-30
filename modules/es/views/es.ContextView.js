@@ -37,7 +37,10 @@ es.ContextView = function( surfaceView, $overlay ) {
 /* Methods */
 
 es.ContextView.prototype.set = function() {
-	this.$.removeClass( 'es-contextView-position-below es-contextView-position-above' );
+	this.$.removeClass(
+		'es-contextView-position-below es-contextView-position-above ' +
+		'es-contextView-position-left es-contextView-position-right'
+	);
 	var selection = this.surfaceView.getModel().getSelection(),
 		position,
 		offset,
@@ -60,6 +63,11 @@ es.ContextView.prototype.set = function() {
 		}
 	}
 	if ( position ) {
+		if ( position.left + this.$menu.width() < $( 'body' ).width() ) {
+			this.$.addClass( 'es-contextView-position-left' );
+		} else {
+			this.$.addClass( 'es-contextView-position-right' );
+		}
 		this.$.css( { 'left': position.left, 'top': position.top } );
 		this.$icon.fadeIn( 'fast' );
 	}
