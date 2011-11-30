@@ -108,7 +108,10 @@ $wgResourceModules += array(
 			'es/tools/es.FormattingDropdownTool.js',
 			'es/tools/es.ClearButtonTool.js'
 		),
-		'styles' => 'es/styles/es.Surface.css',
+		'styles' => array(
+			'es/styles/es.Surface.css',
+			'es/styles/es.ContextView.css',
+		),
 		'dependencies' => array(
 			'jquery',
 		),
