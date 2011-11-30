@@ -9,4 +9,5 @@ Need npm modules:
 * jsdom
 * diff
 * libxmljs (requires native compilation)
+* optimist (for argument handling)
 * webworker

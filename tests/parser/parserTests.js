@@ -20,6 +20,32 @@ var fs = require('fs'),
 	colors = require('colors'),
 	HTML5 = require('html5').HTML5;
 
+// Handle options/arguments with optimist module
+var optimist = require('optimist');
+
+var argv = optimist.usage( 'Usage: $0', {
+		'filter': {
+			description: 'Only run tests whose descriptions which match given regex (option not implemented)',
+			alias: 'regex',
+		},
+		'help': {
+			description: 'Show this help message',
+			alias: 'h',
+		},
+		'disabled': {
+			description: 'Run disabled tests (default false) (option not implemented)',
+			default: false,
+			boolean: true,
+		},
+	}
+	).argv // keep that
+	;
+
+if( argv.help ) {
+	optimist.showHelp();
+	process.exit( 0 );
+}
+
 // @fixme wrap more or this setup in a common module
 
 // Fetch up some of our wacky parser bits...
@@ -74,11 +100,11 @@ var parser = new PegParser();
 
 var testFileName = '../../../../phase3/tests/parser/parserTests.txt'; // default
 var testFileName2 = '../../../../tests/parser/parserTests.txt'; // Fallback. Not everyone fetch at phase3 level 
-if (process.argv.length > 2) {
+
+if (argv._[0]) {
 	// hack :D
-	testFileName = process.argv[2];
+	testFileName = argv._[0] ;
 	testFileName2 = null;
-	console.log(testFileName);
 }
 
 try {
