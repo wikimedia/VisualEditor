@@ -24,55 +24,42 @@ var isBlock = function isBlock (name) {
 	}
 };
 
+// Wrap all top-level inline elements in paragraphs. This should also be
+// applied inside block-level elements, but in that case the first paragraph
+// usually remains plain inline.
 var process_inlines_in_p = function ( document ) {
-		// document.body does not always work in jsdom
+		// document.body does not always work in jsdom, so work around it.
 	var body = document.getElementsByTagName('body')[0],
-		children = body.cloneNode(false),
+		newP = document.createElement('p'),
 		cnodes = body.childNodes,
-		inlineStack = [];
-
-	function wrapInlines (inlines) {
-		var newp = document.createElement('p');
-		for(var i = 0, length = inlines.length; i < length; i++) {
-			newp.appendChild(inlines[i]);
-		}
-		body.appendChild(newp);
-		inlineStack = [];
-	}
-	var i,
-		length = cnodes.length;
-	// Clear body
-	for(i = 0; i < length; i++) {
-		var cnode = body.firstChild;
-		children.appendChild(cnode);
-	}
+		haveInlines = false,
+		deleted = 0;
 
 	function isElementContentWhitespace ( e ) {
 		return (e.data.match(/^[ \r\n\t]*$/) !== null);
 	}
 
-	// Now re-append all block elements and inline elements wrapped in
-	// paragraphs.
-	for(i = 0; i < length; i++) {
-		var child = children.firstChild,
+	for(var i = 0, length = cnodes.length; i < length; i++) {
+		var child = cnodes[i - deleted],
 			ctype = child.nodeType;
 		//console.log(child + ctype);
-		if ((ctype === 3 && (inlineStack.length || !isElementContentWhitespace(child))) || 
-					(ctype !== 3 && // text
-					 ctype !== 8 && // comment
-					 !isBlock(child.nodeName))) {
+		if (ctype === 3 && (haveInlines || !isElementContentWhitespace(child))) || 
+				(ctype !== 3 && // text
+				 ctype !== 8 && // comment
+				 !isBlock(child.nodeName))) {
 			// text node
-			inlineStack.push(child);
-		} else if (inlineStack.length) {
-			wrapInlines(inlineStack);
-			body.appendChild(child);
-		} else {
-			body.appendChild(child);
-		}
+			newP.appendChild(child);
+			haveInlines = true;
+			deleted++;
+		} else if (haveInlines) {
+			body.insertBefore(newP, child);
+			newP = document.createElement('p');
+			haveInlines = false;
+		}	
 	}
 
-	if (inlineStack.length) {
-		wrapInlines(inlineStack);
+	if (haveInlines) {
+		body.appendChild(newP);
 	}
 };
 
