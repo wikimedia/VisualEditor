@@ -199,6 +199,7 @@ function normalizeHTML(source) {
 			// a few things we ignore for now..
 			.replace(/\/wiki\/Main_Page/g, 'Main Page')
 			.replace(/(title|class|rel)="[^"]+"/g, '')
+			// the expected html has some extra space in tags, strip it
 			.replace(/<a +href/g, '<a href')
 			.replace(/" +>/g, '">');
 	} catch(e) {
@@ -317,6 +318,9 @@ function processTest(item) {
 
 				console.log('DIFF'.cyan +': ');
 
+				// Strip the header from the patch, we know how diffs work..
+				patch = patch.replace(/^[^\n]*\n[^\n]*\n[^\n]*\n[^\n]*\n/, '');
+
 				var colored_diff = patch.split( '\n' ).map( function(line) {
 					// Add some colors to diff output
 					switch( line.charAt(0) ) {
@@ -328,7 +332,7 @@ function processTest(item) {
 							return line;
 					}
 				}).join( "\n" );
-				//patch.replace(/^[^\n]*\n[^\n]*\n[^\n]*\n[^\n]*\n/, '')
+				
 
 				console.log( colored_diff );
 				}
