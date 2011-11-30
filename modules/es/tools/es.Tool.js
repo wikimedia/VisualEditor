@@ -23,5 +23,5 @@ es.Tool = function( toolbar ) {
 	} );
 };
 
-es.Tool.prototype.updateState = function () {
+es.Tool.prototype.updateState = function() {
 };

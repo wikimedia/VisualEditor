@@ -13,8 +13,6 @@ es.ButtonTool = function( toolbar, name ) {
 };
 
 es.ButtonTool.prototype.onClick = function( e ) {
-	console.log( this.$ );
 };
-
 
 es.extendClass( es.ButtonTool, es.Tool );
