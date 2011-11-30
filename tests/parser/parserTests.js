@@ -24,6 +24,11 @@ var fs = require('fs'),
 var optimist = require('optimist');
 
 var argv = optimist.usage( 'Usage: $0', {
+		'quiet': {
+			description: 'Suppress notification of passed tests (shows only failed tests)',
+			boolean: true,
+			default: false,
+		},
 		'filter': {
 			description: 'Only run tests whose descriptions which match given regex',
 			alias: 'regex',
@@ -317,7 +322,9 @@ function processTest(item) {
 				console.log( colored_diff );
 			} else {
 				passedTests++;
+				if( !argv.quiet ) {
 				console.log( 'PASSED'.green + ': ' + item.title.yellow );
+				}
 			}
 		}
 	});
