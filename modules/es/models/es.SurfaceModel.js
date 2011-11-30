@@ -115,9 +115,8 @@ es.SurfaceModel.prototype.transact = function( transaction, combine ) {
  * 
  * @method
  * @param {Integer} steps Number of steps to reverse
- * @param {Boolean} soft Whether to consider selection states as steps
  */
-es.SurfaceModel.prototype.undo = function( steps, soft ) {
+es.SurfaceModel.prototype.undo = function( steps ) {
 	// TODO: Implement me!
 	this.emit( 'undo'/*, transaction/selection*/ );
 };
@@ -127,9 +126,8 @@ es.SurfaceModel.prototype.undo = function( steps, soft ) {
  * 
  * @method
  * @param {Integer} steps Number of steps to repeat
- * @param {Boolean} soft Whether to consider selection states as steps
  */
-es.SurfaceModel.prototype.redo = function( steps, soft ) {
+es.SurfaceModel.prototype.redo = function( steps ) {
 	// TODO: Implement me!
 	this.emit( 'redo'/*, transaction/selection*/ );
 };

@@ -401,18 +401,6 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 			this.handleEnter();
 			e.preventDefault();
 			break;
-		// U (soft undo/soft redo)
-		case 85:
-			if ( e.metaKey || e.ctrlKey ) {
-				if ( this.keyboard.keys.shift ) {
-					this.model.redo( 1, true );
-				} else {
-					this.model.undo( 1, true );
-				}
-				return false;
-			}
-			handleInsert();
-			break;
 		// Z (undo/redo)
 		case 90:
 			if ( e.metaKey || e.ctrlKey ) {
