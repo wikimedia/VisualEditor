@@ -109,6 +109,7 @@ $wgResourceModules += array(
 			'es/styles/es.ContextView.css',
 			'es/styles/es.ContentView.css',
 			'es/styles/es.DocumentView.css',
+			'es/styles/es.ToolbarView.css',
 		),
 		'dependencies' => array(
 			'jquery',

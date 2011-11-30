@@ -1,35 +1,25 @@
-.es-toolbarGroups:after,
-.es-toolbarGroup:after {
-	content: ".";
-	display: block;
-	height: 0;
-	clear: both;
-	visibility: hidden;
-}
 .es-toolbarGroup {
-	float: left;
+	display: inline-block;
 	padding: 0.25em;
 }
-.es-toolbarGroup-preview {
-	float: right;
-}
 .es-toolbarDivider {
-	float: left;
+	display: inline-block;
 	width: 1px;
 	height: 24px;
 	margin: 0.5em 0 0.5em 0.5em;
 	background-color: #dddddd;
 }
 .es-toolbarLabel {
-	float: left;
+	display: inline-block;
 	padding: 0.5em 0.75em;
 	line-height: 22px;
 	font-size: 0.8em;
 	color: #555555;
+	vertical-align: top;
 }
 .es-toolbarButtonTool,
 .es-toolbarDropdownTool {
-	float: left;
+	display: inline-block;
 	padding: 0.25em;
 	border: solid 1px transparent;
 	border-radius: 0.125em;
@@ -44,6 +34,7 @@
 }
 .es-toolbarButtonTool:before {
 	content: " ";
+	position: absolute;
 	display: block;
 	height: 22px;
 	width: 22px;
@@ -55,18 +46,18 @@
 .es-toolbarButtonTool:active,
 .es-toolbarButtonTool-down {
 	border-color: #dddddd;
-	background-image: url(images/fade-down.png);
+	background-image: url(../images/fade-down.png);
 	background-position: top left;
 	background-repeat: repeat-x;
 }
 .es-toolbarButtonTool-bold:before {
-	background-image: url(../es/images/bold.png);
+	background-image: url(../images/bold.png);
 }
 .es-toolbarButtonTool-italic:before {
-	background-image: url(../es/images/italic.png);
+	background-image: url(../images/italic.png);
 }
 .es-toolbarButtonTool-clear:before {
-	background-image: url(../es/images/clear.png);
+	background-image: url(../images/clear.png);
 }
 .es-toolbarDropdownTool {
 }
