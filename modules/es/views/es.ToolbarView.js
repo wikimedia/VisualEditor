@@ -1,5 +1,7 @@
 // ToolbarView
 es.ToolbarView = function( $container, surfaceView ) {
+	es.EventEmitter.call( this );
+
 	// References for use in closures
 	var	_this = this,
 		$window = $( window );	
@@ -38,6 +40,13 @@ es.ToolbarView = function( $container, surfaceView ) {
 	];
 
 	this.setup()
+	
+	this.surfaceView.model.on( 'select', function( selection ) {
+		_this.emit( 'update' );
+	} );
+	this.surfaceView.on( 'update', function() {
+		_this.emit( 'update' );
+	} );
 };
 
 es.ToolbarView.tools = {};
@@ -59,3 +68,5 @@ es.ToolbarView.prototype.setup = function() {
 		this.$.prepend( $group ); 
 	}
 };
+
+es.extendClass( es.ToolbarView, es.EventEmitter );
