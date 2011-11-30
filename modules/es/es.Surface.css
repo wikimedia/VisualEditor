@@ -78,7 +78,7 @@
 	-moz-border-radius: 0.25em;
 	-o-border-radius: 0.25em;
 	border-radius: 0.25em;
-	background-color: white;
+	background-color: rgba(255,255,255,0.95);
 	-webkit-box-shadow: 0 0.25em 1em 0 rgba(0,0,0,0.25);
 	-moz-box-shadow: 0 0.25em 1em 0 rgba(0,0,0,0.25);
 	box-shadow: 0 0.25em 1em 0 rgba(0,0,0,0.25);
@@ -88,6 +88,33 @@
 .es-contextView-menuItem {
 	padding: 0.33em 1em;
 	cursor: pointer;
+	white-space: nowrap;
+}
+
+.es-contextView-menuSection {
+	padding: 0.33em 0.66em;
+	white-space: nowrap;
+}
+
+.es-contextView-menuButton {
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	padding: 0.25em;
+	border: solid 1px white;
+	text-align: center;
+	cursor: pointer;
+}
+.es-contextView-menuButton:hover {
+	border-color: #b3d6f6;
+}
+.es-contextView-menuButton:active {
+	background-color: #b3d6f6;
+}
+
+.es-contextView-menuItem-break {
+	margin: 0.33em 0;
+	border-top: solid 1px #dddddd;
 }
 
 .es-contextView-menuItem:hover {
