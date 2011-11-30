@@ -647,10 +647,11 @@ extlink
 //  = "[" target:url text:extlink_text "]" { return { type: 'extlink', target: target, text: text } }
 
 url
-  = proto:"http:" rest:([^ \]]+) { return proto + rest.join(''); }
+  = proto:"http:" rest:([^ \]\n]+) { return proto + rest.join(''); }
 
+// XXX: convert to syntax flags and generic inline!
 extlink_text
-  = c:(inline_element / ch:[^\]] { return {type: 'TEXT', value: ch}; })+
+  = c:(inline_element / ch:[^\]\n] { return {type: 'TEXT', value: ch}; })+
 
 template
   = "{{" target:template_target params:("|" p:template_param { return p })* "}}" {
@@ -665,7 +666,7 @@ template
   }
 
 template_target
-  = h:( !"}}" x:([^|]) { return x } )* { return h.join(''); }
+  = h:( !"}}" x:([^|\n]) { return x } )* { return h.join(''); }
 
 template_param
   = name:template_param_name "=" c:template_param_text {
@@ -688,7 +689,7 @@ tplarg
   }
 
 template_param_name
-  = h:( !"}}" x:([^=|]) { return x } )* { return h.join(''); }
+  = h:( !"}}" x:([^=|\n]) { return x } )* { return h.join(''); }
 
 template_param_text
   = template_param_text_chunk*
@@ -701,7 +702,7 @@ template_param_text_chunk
   / template
   / link
   / quote
-  / !"}}" x:([^|]) { return x }
+  / !"}}" x:([^|\n]) { return x }
 
 link
   = "[[" target:link_target text:("|" link_text)* "]]" {
@@ -720,7 +721,7 @@ link
   }
 
 link_target
-  = h:( !"]]" x:([^|]) { return x } )* { return h.join(''); }
+  = h:( !"]]" x:([^|\n]) { return x } )* { return h.join(''); }
 
 link_text
   = h:( & { return setFlag('linkdesc'); }
@@ -856,7 +857,7 @@ generic_attribute_value
   = "=" space* v:att_value {return v}
 
 att_value
-  = t:[^ \t'"<>=']+ { return [null, t.join('')]; }
+  = t:[^ \t'"<>='\n]+ { return [null, t.join('')]; }
   / "'" t:[^'>]+ "'" { return unquote("'", t.join('')); }
   / '"' t:[^">]+ '"' { return unquote('"', t.join('')); }
 
