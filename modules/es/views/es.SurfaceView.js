@@ -147,6 +147,8 @@ es.SurfaceView.prototype.updateSelection = function( delay ) {
 			if ( _this.currentSelection.from !== _this.currentSelection.to ) {
 				_this.hideCursor();
 				_this.documentView.drawSelection( _this.currentSelection );
+				// Update the context icon position
+				_this.contextView.update();
 			} else {
 				_this.showCursor();
 				_this.documentView.clearSelection( _this.currentSelection );
@@ -157,6 +159,8 @@ es.SurfaceView.prototype.updateSelection = function( delay ) {
 		if ( this.currentSelection.from !== this.currentSelection.to ) {
 			this.hideCursor();
 			this.documentView.drawSelection( this.currentSelection );
+			// Update the context icon position
+			this.contextView.update();
 		} else {
 			this.showCursor();
 			this.documentView.clearSelection( this.currentSelection );
