@@ -102,11 +102,7 @@ $wgResourceModules += array(
 			'es/views/es.ToolbarView.js',
 			'es/tools/es.Tool.js',
 			'es/tools/es.ButtonTool.js',
-			'es/tools/es.DropdownTool.js',
-			'es/tools/es.BoldButtonTool.js',
-			'es/tools/es.ItalicButtonTool.js',
-			'es/tools/es.FormattingDropdownTool.js',
-			'es/tools/es.ClearButtonTool.js'
+			'es/tools/es.AnnotationButtonTool.js'
 		),
 		'styles' => array(
 			'es/styles/es.SurfaceView.css',

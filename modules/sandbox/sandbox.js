@@ -233,16 +233,16 @@ $(document).ready( function() {
 				'content': {
 					'text': 'In text display, line wrap is the feature of continuing on a new line when a line is full, such that each line fits in the viewable window, allowing text to be read from top to bottom without any horizontal scrolling.\nWord wrap is the additional feature of most text editors, word processors, and web browsers, of breaking lines between and not within words, except when a single word is longer than a line.',
 					'annotations': [
-						// 'In text display' should be bold
-						{ 'type': 'textStyle/bold', 'range': { 'start': 0, 'end': 15 } },
-						// 'line wrap' should be italic
-						{ 'type': 'textStyle/italic', 'range': { 'start': 17, 'end': 26 } },
 						// 'wrap is' should be a link to '#'
 						{
 							'type': 'link/external',
 							'data': { 'href': '#' },
 							'range': { 'start': 22, 'end': 29 }
-						}
+						},
+						// 'In text display' should be bold
+						{ 'type': 'textStyle/bold', 'range': { 'start': 0, 'end': 15 } },
+						// 'line wrap' should be italic
+						{ 'type': 'textStyle/italic', 'range': { 'start': 17, 'end': 26 } }
 					]
 				}
 			},

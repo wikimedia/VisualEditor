@@ -1,5 +1,5 @@
 // ToolbarView
-es.ToolbarView = function( $container, surfaceView ) {
+es.ToolbarView = function( $container, surfaceView, config ) {
 	es.EventEmitter.call( this );
 
 	// References for use in closures
@@ -36,7 +36,7 @@ es.ToolbarView = function( $container, surfaceView ) {
 		}
 	} );
 
-	this.config = [
+	this.config = config || [
 		{ name: 'text', items : [ 'bold', 'italic', 'formatting', 'clear' ] },
 	];
 
@@ -50,8 +50,6 @@ es.ToolbarView = function( $container, surfaceView ) {
 	} );
 };
 
-es.ToolbarView.tools = {};
-
 es.ToolbarView.prototype.setup = function() {
 	for ( var i = 0; i < this.config.length; i++ ) {
 		var	$group = $( '<div>' )
@@ -62,8 +60,13 @@ es.ToolbarView.prototype.setup = function() {
 			);
 
 		for ( var j = 0; j < this.config[i].items.length; j++ ) {
-			var tool = new es.ToolbarView.tools[ this.config[i].items[j] ]( this );
-			$group.append( tool.$ );
+			var toolDefintion = es.Tool.tools[ this.config[i].items[j] ];
+			if ( toolDefintion ) {
+				var tool = new toolDefintion.constructor(
+					this, toolDefintion.name, toolDefintion.data
+				);
+				$group.append( tool.$ );
+			}
 		}
 
 		this.$groups.append( $group ); 
