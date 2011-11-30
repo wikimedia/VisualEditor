@@ -7,8 +7,9 @@ es.ToolbarView = function( $container, surfaceView ) {
 		$window = $( window );	
 
 	this.surfaceView = surfaceView;
-	this.$spacer = $('<div>');
+	this.$spacer = $('<div></div>');
 	this.$ = $container;
+	this.$groups = $( '<div class="es-toolbarGroups"></div>' ).prependTo( this.$ );
 	this.$.after( this.$spacer );
 
 	/*
@@ -52,7 +53,7 @@ es.ToolbarView = function( $container, surfaceView ) {
 es.ToolbarView.tools = {};
 
 es.ToolbarView.prototype.setup = function() {
-	for ( var i = this.config.length - 1; i >= 0; i-- ) {
+	for ( var i = 0; i < this.config.length; i++ ) {
 		var	$group = $( '<div>' )
 			.addClass( 'es-toolbarGroup' )
 			.addClass( 'es-toolbarGroup-' + this.config[i].name )
@@ -65,7 +66,7 @@ es.ToolbarView.prototype.setup = function() {
 			$group.append( tool.$ );
 		}
 
-		this.$.prepend( $group ); 
+		this.$groups.append( $group ); 
 	}
 };
 

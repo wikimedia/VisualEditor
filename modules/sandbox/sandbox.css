@@ -46,6 +46,14 @@
 .es-showData #es-editor {
 	border-right: solid 1px #cccccc;
 }
+.es-toolbarGroups:after,
+.es-toolbarGroup:after {
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
 .es-toolbarGroup {
 	float: left;
 	padding: 0.25em;
