@@ -61,11 +61,11 @@
 }
 
 .es-contextView-position-above .es-contextView-menu {
-	bottom: 7px;
+	bottom: -4px;
 }
 
 .es-contextView-position-below .es-contextView-menu {
-	top: 8px;
+	top: 3px;
 }
 
 .es-contextView-position-left .es-contextView-menu {

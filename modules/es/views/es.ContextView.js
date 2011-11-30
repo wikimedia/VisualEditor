@@ -37,7 +37,7 @@ es.ContextView = function( surfaceView, $overlay ) {
 es.ContextView.prototype.set = function() {
 	this.$.removeClass(
 		'es-contextView-position-below es-contextView-position-above ' +
-		'es-contextView-position-left es-contextView-position-right' +
+		'es-contextView-position-left es-contextView-position-right ' +
 		'es-contextView-position-start es-contextView-position-end'
 	);
 	var selection = this.surfaceView.getModel().getSelection(),
