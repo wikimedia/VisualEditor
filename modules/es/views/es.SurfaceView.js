@@ -75,7 +75,8 @@ es.SurfaceView = function( $container, model ) {
 	} );
 	this.model.getDocument().on( 'update', function() {
 		_this.emitUpdate( 25 );
-		// Respond to layout changes
+	} );
+	this.on( 'update', function() {
 		_this.updateSelection( 25 );
 	} );
 	this.$.mousedown( function(e) {
@@ -117,6 +118,7 @@ es.SurfaceView = function( $container, model ) {
 		if ( _this.dimensions.width !== width ) {
 			_this.dimensions.width = width;
 			_this.documentView.renderContent();
+			_this.emitUpdate( 25 );
 		}
 	} );
 	$window.scroll( function() {
