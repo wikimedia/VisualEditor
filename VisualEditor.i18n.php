@@ -28,6 +28,15 @@ $messages['gl'] = array(
 	'visualeditor-sandbox-title' => 'Zona de probas do editor visual',
 );
 
+/** Upper Sorbian (Hornjoserbsce)
+ * @author Michawiki
+ */
+$messages['hsb'] = array(
+	'visualeditor' => 'VisualEditor',
+	'visualeditor-desc' => 'WYSIWYG-editor za MediaWiki',
+	'visualeditor-sandbox-title' => 'WYSIWYG-editor - hrajkanišćo',
+);
+
 /** Macedonian (Македонски)
  * @author Bjankuloski06
  */
@@ -35,5 +44,14 @@ $messages['mk'] = array(
 	'visualeditor' => 'Визуелен уредник',
 	'visualeditor-desc' => 'Визуелен уредник за МедијаВики',
 	'visualeditor-sandbox-title' => 'Песочник — Визуелен уредник',
+);
+
+/** Dutch (Nederlands)
+ * @author Siebrand
+ */
+$messages['nl'] = array(
+	'visualeditor' => 'Vereenvoudigde tekstverwerker',
+	'visualeditor-desc' => 'Vereenvoudigde tekstverwerker voor MediaWiki',
+	'visualeditor-sandbox-title' => 'Testruimte voor Vereenvoudigde tekstverwerker',
 );
 
