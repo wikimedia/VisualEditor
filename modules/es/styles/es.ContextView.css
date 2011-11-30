@@ -87,41 +87,6 @@
 	white-space: nowrap;
 }
 
-.es-contextView-menuButton {
-	display: inline-block;
-	width: 1em;
-	height: 1em;
-	padding: 0.25em;
-	border: solid 1px white;
-	-webkit-border-radius: 0.125em;
-	-moz-border-radius: 0.125em;
-	-o-border-radius: 0.125em;
-	border-radius: 0.125em;
-	background-position: center center;
-	background-position: no-repeat;
-	cursor: pointer;
-}
-
-.es-contextView-menuButton-bold {
-	background-image: url(../images/bold.png);
-}
-
-.es-contextView-menuButton-italic {
-	background-image: url(../images/italic.png);
-}
-
-.es-contextView-menuButton-clear {
-	background-image: url(../images/clear.png);
-}
-
-.es-contextView-menuButton:hover {
-	border-color: #b3d6f6;
-}
-
-.es-contextView-menuButton:active {
-	background-color: #b3d6f6;
-}
-
 .es-contextView-menuItem-break {
 	margin: 0.33em 0;
 	border-top: solid 1px #dddddd;
