@@ -20,7 +20,7 @@
 	border-top: none;
 }
 #es-toolbar-shadow {
-	background-image: url(images/toolbar-shadow.png);
+	background-image: url(../es/images/toolbar-shadow.png);
 	background-position: top left;
 	background-repeat: repeat-x;
 	position: absolute;
@@ -76,6 +76,14 @@
 	-moz-border-radius: 0.125em;
 	-o-border-radius: 0.125em;
 	cursor: pointer;
+	width: 22px;
+	height: 22px;
+}
+.es-toolbarTool:before {
+	content: " ";
+	display: block;
+	height: 22px;
+	width: 22px;
 }
 .es-toolbarTool:hover,
 .es-toolbarTool-down:hover {
@@ -88,10 +96,11 @@
 	background-position: top left;
 	background-repeat: repeat-x;
 }
-.es-toolbarTool img {
-	display: block;
-	width: 22px;
-	height: 22px;
+.es-toolbarTool-bold:before {
+	background-image: url(../es/images/bold.png);
+}
+.es-toolbarTool-italic:before {
+	background-image: url(../es/images/italic.png);
 }
 #es-previews {
 	display: none;

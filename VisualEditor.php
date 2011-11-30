@@ -100,6 +100,11 @@ $wgResourceModules += array(
 			'es/views/es.TableRowView.js',
 			'es/views/es.TableView.js',
 			'es/views/es.ToolbarView.js',
+			'es/tools/es.Tool.js',
+			'es/tools/es.ButtonTool.js',
+			'es/tools/es.DropdownTool.js',
+			'es/tools/es.BoldButtonTool.js',
+			'es/tools/es.ItalicButtonTool.js'
 		),
 		'styles' => 'es/es.Surface.css',
 		'dependencies' => array(
