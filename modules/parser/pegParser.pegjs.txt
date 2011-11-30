@@ -371,7 +371,7 @@ anyblockline = block / inlineline
 // XXX: ] and other end delimiters should probably only be activated inside
 // structures to avoid unnecessarily leaving the text production on plain
 // content.
-text = t:[^'<~\][\n\r{}]+ { return t.join(''); }
+text = t:[^'<~\][\n\r{}:]+ { return t.join(''); }
 //text = t:[A-Za-z0-9,._ "?!\t-]+ { return t.join('') }
 
 // Experimental tweaked version: avoid expensive single-char substrings
@@ -469,6 +469,7 @@ inline_breaks
     & { return syntaxFlags['table']; } 
     a:(newline [!|] / '||' / '!!' / '|}') { dp("table break" + pp(a)); return true; }
   / & { return syntaxFlags['linkdesc']; } link_end { return true; }
+  / & { return syntaxFlags['colon']; } ":" { return true; }
   / & { return syntaxFlags['h']; } 
         ( & { return syntaxFlags['h1'] } '=' newline { return true; }
         / & { return syntaxFlags['h2'] } '==' newline { return true; }
@@ -984,16 +985,23 @@ li = bullets:list_char+
 
 dtdd = bullets:(!(";" !list_char) list_char)*
        ";"
-       // XXX: convert to inline stops!
-       c:(inline_element / (n:[^:\n] { return {type: 'TEXT', value: n}; }))+
+       & {return setFlag('colon');}
+       c:inlineline
        ":"
+       // Fortunately dtdds cannot be nested, so we can simply set the flag
+       // back to 0 to disable it.
+       & {syntaxFlags['colon'] = 0; return true;}
        d:inlineline
        &eolf
 {
-    // convert trailing space into &nbsp;
+    // Convert trailing space into &nbsp;
+    // XXX: This should be moved to a serializer
     var clen = c.length;
-    if (clen && c[clen - 1].type === 'TEXT' && c[clen - 1].value == ' ') {
-        c[clen - 1].value = "\u00a0";
+    if (clen && c[clen - 1].type === 'TEXT') {
+        var val = c[clen - 1].value;
+        if(val.length && val[val.length - 1] == ' ') {
+            c[clen - 1].value = val.substr(0, val.length - 1) + "\u00a0";
+        }
     }
 
     return [ { type: 'TAG', name: 'listItem', bullets: bullets + ";" } ]
@@ -1001,6 +1009,10 @@ dtdd = bullets:(!(";" !list_char) list_char)*
                 ,[{ type: 'TAG', name: 'listItem', bullets: bullets + ":" } ]
                 , d );
 }
+
+/  bullets:(!(";" !list_char) list_char)*
+   ";"
+   {syntaxFlags['colon'] = 0; return null; }
 
 
 list_char = [*#:;]
