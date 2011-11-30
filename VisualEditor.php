@@ -109,8 +109,10 @@ $wgResourceModules += array(
 			'es/tools/es.ClearButtonTool.js'
 		),
 		'styles' => array(
-			'es/styles/es.Surface.css',
+			'es/styles/es.SurfaceView.css',
 			'es/styles/es.ContextView.css',
+			'es/styles/es.ContentView.css',
+			'es/styles/es.DocumentView.css',
 		),
 		'dependencies' => array(
 			'jquery',
