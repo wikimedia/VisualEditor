@@ -4,7 +4,9 @@ es.DropdownTool = function( toolbar, name ) {
 		return;
 	}
 
-	this.$.addClass( 'es-toolbarDropdownTool' ).addClass( 'es-toolbarDropdownTool-' + name );
+	this.$.addClass( 'es-toolbarDropdownTool' )
+		.addClass( 'es-toolbarDropdownTool-' + name )
+		.attr( 'title', name );
 };
 
 es.extendClass( es.DropdownTool, es.Tool );

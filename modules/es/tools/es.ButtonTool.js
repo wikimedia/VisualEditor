@@ -5,7 +5,9 @@ es.ButtonTool = function( toolbar, name ) {
 	}
 	var _this = this;
 	
-	this.$.addClass( 'es-toolbarButtonTool' ).addClass( 'es-toolbarButtonTool-' + name );
+	this.$.addClass( 'es-toolbarButtonTool' )
+		.addClass( 'es-toolbarButtonTool-' + name )
+		.attr( 'title', name );
 	
 	this.$.click( function ( e ) {
 		_this.onClick( e );
