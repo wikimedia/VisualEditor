@@ -25,7 +25,7 @@ var optimist = require('optimist');
 
 var argv = optimist.usage( 'Usage: $0', {
 		'filter': {
-			description: 'Only run tests whose descriptions which match given regex (option not implemented)',
+			description: 'Only run tests whose descriptions which match given regex',
 			alias: 'regex',
 		},
 		'help': {
@@ -38,12 +38,22 @@ var argv = optimist.usage( 'Usage: $0', {
 			boolean: true,
 		},
 	}
+	).check( function(argv) {
+		if( argv.filter === true ) {
+			throw "--filter need an argument";
+		}
+	}
 	).argv // keep that
 	;
 
 if( argv.help ) {
 	optimist.showHelp();
 	process.exit( 0 );
+}
+var test_filter = null;
+if( argv.filter ) { // null is the default by definition
+	test_filter = new RegExp( argv.filter );
+	console.log( "Filtering title test using Regexp " + test_filter );
 }
 
 // @fixme wrap more or this setup in a common module
@@ -334,6 +344,10 @@ cases.forEach(function(item) {
 				//processArticle(item);
 				break;
 			case 'test':
+				if( test_filter && -1 === item.title.search( test_filter ) ) {
+					// Skip test whose title does not match --filter
+					break;
+				}
 				// Add comments to following test.
 				item.comments = comments;
 				comments = [];
