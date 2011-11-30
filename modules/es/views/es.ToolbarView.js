@@ -37,7 +37,7 @@ es.ToolbarView = function( $container, surfaceView, config ) {
 	} );
 
 	this.config = config || [
-		{ name: 'text', items : [ 'bold', 'italic', 'formatting', 'clear' ] },
+		{ 'name': 'textStyle', 'items' : [ 'bold', 'italic', 'formatting', 'clear' ] },
 	];
 
 	this.setup()
@@ -54,10 +54,12 @@ es.ToolbarView.prototype.setup = function() {
 	for ( var i = 0; i < this.config.length; i++ ) {
 		var	$group = $( '<div>' )
 			.addClass( 'es-toolbarGroup' )
-			.addClass( 'es-toolbarGroup-' + this.config[i].name )
-			.append(
-				$( '<div>' ).addClass( 'es-toolbarLabel' ).html( this.config[i].name )
+			.addClass( 'es-toolbarGroup-' + this.config[i].name );
+		if ( this.config[i].label ) {
+			$group.append(
+				$( '<div>' ).addClass( 'es-toolbarLabel' ).html( this.config[i].label )
 			);
+		}
 
 		for ( var j = 0; j < this.config[i].items.length; j++ ) {
 			var toolDefintion = es.Tool.tools[ this.config[i].items[j] ];

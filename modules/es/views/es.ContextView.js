@@ -14,7 +14,11 @@ es.ContextView = function( surfaceView, $overlay ) {
 		.appendTo( this.$ );
 	this.$icon = $( '<div class="es-contextView-icon"></div>' )
 		.appendTo( this.$ );
-	this.toolbarView = new es.ToolbarView( this.$toolbar, this.surfaceView );
+	this.toolbarView = new es.ToolbarView(
+		this.$toolbar,
+		this.surfaceView,
+		[{ 'name': 'textStyle', 'items' : [ 'bold', 'italic', 'formatting', 'clear' ] }]
+	);
 
 	// Example menu items
 	this.$menu.append(
