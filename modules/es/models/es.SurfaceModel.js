@@ -70,13 +70,11 @@ es.SurfaceModel.prototype.select = function( selection, combine ) {
 	}
 	// Filter out calls to select if they do not change the selection values
 	this.selection = selection;
-	if (
-		!combine ||
-		!this.previousSelection || (
-			this.previousSelection.from !== this.selection.from || 
-			this.previousSelection.to !== this.selection.to
-		)
-	) {
+	var selectionChanged = !this.previousSelection || (
+		this.previousSelection.from !== this.selection.from || 
+		this.previousSelection.to !== this.selection.to
+	);
+	if ( !combine || selectionChanged ) {
 		var lastAction = this.states[this.states.length - 1];
 		if ( lastAction instanceof es.Range ) {
 			this.currentStateDistance += Math.abs(
@@ -84,7 +82,9 @@ es.SurfaceModel.prototype.select = function( selection, combine ) {
 			);
 		}
 		this.currentState.push( selection );
-		this.emit( 'select', this.selection.clone() );
+		if ( selectionChanged ) {
+			this.emit( 'select', this.selection.clone() );
+		}
 	}
 	this.previousSelection = this.selection.clone();
 };
