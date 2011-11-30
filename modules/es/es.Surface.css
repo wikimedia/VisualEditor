@@ -102,6 +102,10 @@
 	height: 1em;
 	padding: 0.25em;
 	border: solid 1px white;
+	-webkit-border-radius: 0.25em;
+	-moz-border-radius: 0.25em;
+	-o-border-radius: 0.25em;
+	border-radius: 0.25em;
 	background-position: center center;
 	background-position: no-repeat;
 	cursor: pointer;
@@ -112,6 +116,9 @@
 }
 .es-contextView-menuButton-italic {
 	background-image: url(images/italic.png);
+}
+.es-contextView-menuButton-clear {
+	background-image: url(images/clear.png);
 }
 
 .es-contextView-menuButton:hover {

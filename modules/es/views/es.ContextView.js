@@ -16,6 +16,7 @@ es.ContextView = function( surfaceView, $overlay ) {
 		'<div class="es-contextView-menuSection">' +
 			'<div class="es-contextView-menuButton es-contextView-menuButton-bold"></div>' +
 			'<div class="es-contextView-menuButton es-contextView-menuButton-italic"></div>' +
+			'<div class="es-contextView-menuButton es-contextView-menuButton-clear"></div>' +
 		'</div>' +
 		'<div class="es-contextView-menuItem-break"></div>' +
 		'<div class="es-contextView-menuItem">Cut</div>' +
