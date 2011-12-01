@@ -129,7 +129,7 @@ es.SurfaceView = function( $container, model ) {
 	} );
 	$window.scroll( function() {
 		_this.dimensions.scrollTop = $window.scrollTop();
-		if ( _this.currentSelection.from !== _this.currentSelection.to ) {
+		if ( _this.currentSelection.getLength() && !_this.mouse.selectingMode ) {
 			_this.contextView.set();
 		} else {
 			_this.contextView.clear();
@@ -188,14 +188,17 @@ es.SurfaceView.prototype.getModel = function() {
 es.SurfaceView.prototype.updateSelection = function( delay ) {
 	var _this = this;
 	function update() {
-		if ( _this.currentSelection.from !== _this.currentSelection.to ) {
+		if ( _this.currentSelection.getLength() ) {
 			_this.clearInsertionAnnotations();
 			_this.hideCursor();
 			_this.documentView.drawSelection( _this.currentSelection );
-			_this.contextView.set();
 		} else {
 			_this.showCursor();
 			_this.documentView.clearSelection( _this.currentSelection );
+		}
+		if ( _this.currentSelection.getLength() && !_this.mouse.selectingMode ) {
+			_this.contextView.set();
+		} else {
 			_this.contextView.clear();
 		}
 		_this.updateSelectionTimeout = undefined;
@@ -335,6 +338,9 @@ es.SurfaceView.prototype.onMouseUp = function( e ) {
 	if ( e.button === 0 ) { // left mouse button 
 		this.mouse.selectingMode = this.mouse.selectedRange = null;
 		this.model.select( this.currentSelection );
+		// We have to manually call this because the selection will not have changed between the
+		// most recent mousemove and this mouseup
+		this.contextView.set();
 	}
 };
 
