@@ -1194,8 +1194,6 @@ es.DocumentModel.prototype.prepareLeafConversion = function( range, type, attrib
 		}
 	}, fromNode );
 
-	attributes = attributes || {}; // or maybe should be null instead of empty collection
-
 	// TODO: skip nodes which have the same type and attributes as the target
 
 	for ( var i = 0; i < nodes.length; i++ ) {

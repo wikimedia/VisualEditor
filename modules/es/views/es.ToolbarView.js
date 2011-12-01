@@ -48,7 +48,7 @@ es.ToolbarView = function( $container, surfaceView, config ) {
 	} );
 
 	this.config = config || [
-		{ 'name': 'textStyle', 'items' : [ 'bold', 'italic', 'link', 'clear' ] },
+		{ 'name': 'textStyle', 'items' : [ 'bold', 'italic', 'link', 'clear', 'format' ] },
 		{ 'name': 'history', 'items' : [ 'undo', 'redo' ] }
 	];
 	this.setup();
