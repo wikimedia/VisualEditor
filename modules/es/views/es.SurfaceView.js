@@ -129,6 +129,11 @@ es.SurfaceView = function( $container, model ) {
 	} );
 	$window.scroll( function() {
 		_this.dimensions.scrollTop = $window.scrollTop();
+		if ( _this.currentSelection.from !== _this.currentSelection.to ) {
+			_this.contextView.set();
+		} else {
+			_this.contextView.clear();
+		}
 	} );
 
 	// Configuration
@@ -187,11 +192,11 @@ es.SurfaceView.prototype.updateSelection = function( delay ) {
 			_this.clearInsertionAnnotations();
 			_this.hideCursor();
 			_this.documentView.drawSelection( _this.currentSelection );
-			// Update the context icon position
-			_this.contextView.update();
+			_this.contextView.set();
 		} else {
 			_this.showCursor();
 			_this.documentView.clearSelection( _this.currentSelection );
+			_this.contextView.clear();
 		}
 		_this.updateSelectionTimeout = undefined;
 	}
@@ -270,8 +275,6 @@ es.SurfaceView.prototype.onMouseDown = function( e ) {
 		this.cursor.initialLeft = null;
 		// Apply new selection
 		this.model.select( selection );
-		// Hide the context
-		this.contextView.clear();
 	}
 	// If the inut isn't already focused, focus it and select it's contents
 	if ( !this.$input.is( ':focus' ) ) {
@@ -332,8 +335,6 @@ es.SurfaceView.prototype.onMouseUp = function( e ) {
 	if ( e.button === 0 ) { // left mouse button 
 		this.mouse.selectingMode = this.mouse.selectedRange = null;
 		this.model.select( this.currentSelection );
-		// Show the context
-		this.contextView.set();
 	}
 };
 

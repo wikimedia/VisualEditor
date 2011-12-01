@@ -63,12 +63,6 @@ es.ContextView = function( surfaceView, $overlay ) {
 
 /* Methods */
 
-es.ContextView.prototype.update = function() {
-	if ( this.$icon.is( ':visible' ) ) {
-		this.set();
-	}
-};
-
 es.ContextView.prototype.set = function() {
 
 	this.$.removeClass(
