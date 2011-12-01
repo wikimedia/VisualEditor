@@ -537,6 +537,7 @@ es.SurfaceView.prototype.handleDelete = function( backspace ) {
 			es.DocumentNode.traverseUpstream( nodeToDelete, function( node ) {
 				if ( node.getParent().children.length === 1 ) {
 					nodeToDelete = node.getParent();
+					return true;
 				} else {
 					return false;
 				}
@@ -597,6 +598,7 @@ es.SurfaceView.prototype.handleEnter = function() {
 				}
 			);
 			splitable = es.DocumentView.splitRules[ elementType ].self;
+			return true;
 		} );
 		tx = this.documentView.model.prepareInsertion( selection.to, stack );
 		this.model.transact( tx, true );
@@ -675,6 +677,9 @@ es.SurfaceView.prototype.moveCursor = function( direction, unit ) {
 					var range = this.documentView.getRenderedLineRangeFromOffset( offset );
 					to = direction === 'left' ? range.start : range.end;
 					break;
+				default:
+					throw new Error( 'unrecognized cursor movement unit' );
+					break;
 			}
 			break;
 		case 'up':
@@ -683,13 +688,10 @@ es.SurfaceView.prototype.moveCursor = function( direction, unit ) {
 				case 'unit':
 					var toNode = null;
 					this.model.getDocument().traverseLeafNodes(
-						function( node  ) {
-							if ( toNode === null) {
-								toNode = node;
-							} else {
-								toNode = node;
-								return false;
-							}
+						function( node ) {
+							var doNextChild = toNode === null;
+							toNode = node;
+							return doNextChild;
 						},
 						this.documentView.getNodeFromOffset( selection.to, false ).getModel(),
 						direction === 'up' ? true : false
@@ -720,7 +722,8 @@ es.SurfaceView.prototype.moveCursor = function( direction, unit ) {
 					).contentView.$.offset().left;
 
 					do {
-						fakePosition.top += ++i * step;
+						i++;
+						fakePosition.top += i * step;
 						if ( fakePosition.top < top ) {
 							break;
 						} else if (
@@ -737,8 +740,14 @@ es.SurfaceView.prototype.moveCursor = function( direction, unit ) {
 					} while ( position.top === fakePosition.top );
 					to = this.documentView.getOffsetFromRenderedPosition( fakePosition );
 					break;
+				default:
+					throw new Error( 'unrecognized cursor movement unit' );
+					break;
 			}
-			break;		
+			break;	
+		default:
+			throw new Error( 'unrecognized cursor direction' );
+			break;
 	}
 
 	if( direction != 'up' && direction != 'down' ) {
