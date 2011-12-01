@@ -1179,6 +1179,38 @@ es.DocumentModel.prototype.rollback = function( transaction ) {
 	es.TransactionProcessor.rollback( this, transaction );
 };
 
+es.DocumentModel.prototype.convertLeafs = function( range, type ) {
+	var	nodes = this.selectNodes( range, false ),
+		nodeOffset,
+		content,
+		tx = [];
+
+	type = 'paragraph'
+
+	for ( var i = 0; i < nodes.length; i++ ) {
+		if ( !nodes[i].node.hasChildren() ) {
+			if ( nodes[i].node.getElementType() !== type ) {
+				nodeOffset = this.getOffsetFromNode( nodes[i].node, false );
+				content = nodes[i].node.getContent();
+
+				tx.push( this.prepareRemoval(
+					new es.Range( nodeOffset, nodeOffset+  nodes[i].node.getElementLength() )
+				) );
+
+				tx.push( this.prepareInsertion(
+					nodeOffset, [ { 'type': 'paragraph' }, { 'type': '/paragraph' } ]
+				) );
+				
+				tx.push( this.prepareInsertion( nodeOffset + 1, content ) );
+			}
+		}
+	}
+
+	for ( var i = 0; i < tx.length; i++ ) {
+		this.commit( tx[i] );
+	}
+};
+
 /* Inheritance */
 
 es.extendClass( es.DocumentModel, es.DocumentModelBranchNode );
