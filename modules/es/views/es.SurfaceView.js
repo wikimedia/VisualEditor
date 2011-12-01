@@ -144,6 +144,18 @@ es.SurfaceView.prototype.addInsertionAnnotation = function( annotation ) {
 	this.insertionAnnotations.push( annotation );
 };
 
+es.SurfaceView.prototype.loadInsertionAnnotations = function( annotation ) {
+	this.insertionAnnotations =
+		this.model.getDocument().getAnnotationsFromOffset( _this.currentSelection.to );
+	// Filter out annotations that aren't textStyles or links
+	for ( var i = 0; i < this.insertionAnnotations.length; i++ ) {
+		if ( !this.insertionAnnotations[i].type.match( /(textStyle\/|link\/)/ ) ) {
+			this.insertionAnnotations.splice( i, 1 );
+			i--;
+		}
+	}
+};
+
 es.SurfaceView.prototype.removeInsertionAnnotation = function( annotation ) {
 	var index = es.DocumentView.getIndexOfAnnotation( this.insertionAnnotations, annotation );
 	if ( index !== -1 ) {
@@ -163,18 +175,15 @@ es.SurfaceView.prototype.updateSelection = function( delay ) {
 	var _this = this;
 	function update() {
 		if ( _this.currentSelection.from !== _this.currentSelection.to ) {
+			_this.clearInsertionAnnotations();
 			_this.hideCursor();
 			_this.documentView.drawSelection( _this.currentSelection );
 			// Update the context icon position
 			_this.contextView.update();
-			// Clear insertion annotations
-			_this.insertionAnnotations = [];
 		} else {
+			_this.loadInsertionAnnotations();
 			_this.showCursor();
 			_this.documentView.clearSelection( _this.currentSelection );
-			// Load new insertion annotations
-			_this.insertionAnnotations =
-				_this.model.getDocument().getAnnotationsFromOffset( _this.currentSelection.to );
 		}
 		_this.updateSelectionTimeout = undefined;
 	}
