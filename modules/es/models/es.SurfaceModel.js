@@ -64,6 +64,7 @@ es.SurfaceModel.prototype.getSelection = function() {
  * @param {Boolean} combine Whether to prevent this transaction from causing a state push
  */
 es.SurfaceModel.prototype.select = function( selection, combine ) {
+	selection.normalize();
 	if ( !combine && this.shouldPushState( selection ) ) {
 		this.pushState();
 	}
