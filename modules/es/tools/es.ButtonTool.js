@@ -10,8 +10,18 @@ es.ButtonTool = function( toolbar, name ) {
 
 	var _this = this;
 
-	this.$.click( function ( e ) {
-		_this.onClick( e );
+	this.$.bind( {
+		'mousedown': function( e ) {
+			if ( e.button === 0 ) {
+				e.preventDefault();
+				return false;
+			}
+		},
+		'mouseup': function ( e ) {
+			if ( e.button === 0 ) {
+				_this.onClick( e );
+			}
+		}
 	} );
 
 };
