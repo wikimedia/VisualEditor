@@ -118,12 +118,12 @@ es.SurfaceModel.prototype.transact = function( transaction, combine ) {
  * @param {Integer} Number of document-changing states to reverse
  */
 es.SurfaceModel.prototype.undo = function( transactionsToUndo ) {
-	/**
-	 * Undo a state.
-	 * @return {Boolean} whether visible change was undone.
-	 */
-	function undoState( state ) {
+
+	while ( transactionsToUndo ) {
 		var hadTransaction = false;
+
+		var state = this.currentState;
+
 		var i = state.length - 1;
 		while ( i-- ) {
 			if ( state[i] instanceof es.TransactionModel ) {
@@ -132,11 +132,7 @@ es.SurfaceModel.prototype.undo = function( transactionsToUndo ) {
 			}
 		}
 		this.emit( 'undo', state );
-		return hadTransaction;
-	}
 
-	while ( transactionsToUndo ) {
-		var hadTransaction = undoState( this.currentState );
 		if ( hadTransaction ) { 
 			transactionsToUndo--;
 		}
