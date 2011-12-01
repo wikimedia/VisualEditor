@@ -34,6 +34,11 @@ var argv = optimist.usage( 'Usage: $0', {
 			boolean: true,
 			default: false,
 		},
+		'color': {
+			description: 'Enable color output Ex: --no-color',
+			boolean: true,
+			default: true,
+		},
 		'filter': {
 			description: 'Only run tests whose descriptions which match given regex',
 			alias: 'regex',
@@ -48,7 +53,7 @@ var argv = optimist.usage( 'Usage: $0', {
 			alias: 'h',
 		},
 		'disabled': {
-			description: 'Run disabled tests (default false) (option not implemented)',
+			description: 'Run disabled tests (option not implemented)',
 			default: false,
 			boolean: true,
 		},
@@ -66,6 +71,7 @@ var argv = optimist.usage( 'Usage: $0', {
 	).argv // keep that
 	;
 
+
 if( argv.help ) {
 	optimist.showHelp();
 	process.exit( 0 );
@@ -74,6 +80,9 @@ var test_filter = null;
 if( argv.filter ) { // null is the default by definition
 	test_filter = new RegExp( argv.filter );
 	console.log( "Filtering title test using Regexp " + test_filter );
+}
+if( !argv.color ) {
+	colors.mode = 'none';
 }
 
 // @fixme wrap more or this setup in a common module
