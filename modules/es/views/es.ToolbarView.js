@@ -43,7 +43,7 @@ es.ToolbarView = function( $container, surfaceView, config ) {
 	this.surfaceView.model.on( 'select', function() {
 		_this.updateState();
 	} );
-	this.surfaceView.on( 'update', function() {
+	this.surfaceView.on( 'cursor', function() {
 		_this.updateState();
 	} );
 
