@@ -23,10 +23,9 @@ es.ContextView = function( surfaceView, $overlay ) {
 	// Example menu items
 	this.$menu.append(
 		'<div class="es-contextView-menuItem-break"></div>' +
-		'<div class="es-contextView-menuItem">Cut</div>' +
 		'<div class="es-contextView-menuItem">Copy</div>' +
-		'<div class="es-contextView-menuItem">Paste</div>' +
-		'<div class="es-contextView-menuItem">Delete</div>'
+		'<div class="es-contextView-menuItem">Cut</div>' +
+		'<div class="es-contextView-menuItem">Paste</div>'
 	);
 
 	// Events
