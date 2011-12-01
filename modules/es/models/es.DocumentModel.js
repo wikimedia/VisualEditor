@@ -1179,36 +1179,40 @@ es.DocumentModel.prototype.rollback = function( transaction ) {
 	es.TransactionProcessor.rollback( this, transaction );
 };
 
-es.DocumentModel.prototype.convertLeafs = function( range, type ) {
-	var	nodes = this.selectNodes( range, false ),
+es.DocumentModel.prototype.prepareLeafConversion = function( range, type, attributes ) {
+	range.normalize();
+	var	fromNode = this.getNodeFromOffset( range.start ),
+		toNode =  this.getNodeFromOffset( range.end ),
+		nodes = [],
 		nodeOffset,
-		content,
-		tx = [];
+		txs = [];
 
-	type = 'paragraph'
+	this.traverseLeafNodes( function( node ) {
+		nodes.push( node );
+		if( node === toNode ) {
+			return false;
+		}
+	}, fromNode );
+
+	attributes = attributes || {}; // or maybe should be null instead of empty collection
+
+	// TODO: skip nodes which have the same type and attributes as the target
 
 	for ( var i = 0; i < nodes.length; i++ ) {
-		if ( !nodes[i].node.hasChildren() ) {
-			if ( nodes[i].node.getElementType() !== type ) {
-				nodeOffset = this.getOffsetFromNode( nodes[i].node, false );
-				content = nodes[i].node.getContent();
+		nodeOffset = this.getOffsetFromNode( nodes[i], false );
 
-				tx.push( this.prepareRemoval(
-					new es.Range( nodeOffset, nodeOffset+  nodes[i].node.getElementLength() )
-				) );
-
-				tx.push( this.prepareInsertion(
-					nodeOffset, [ { 'type': 'paragraph' }, { 'type': '/paragraph' } ]
-				) );
-				
-				tx.push( this.prepareInsertion( nodeOffset + 1, content ) );
-			}
-		}
+		txs.push( this.prepareRemoval(
+			new es.Range( nodeOffset, nodeOffset + nodes[i].getElementLength() )
+		) );
+		txs.push( this.prepareInsertion(
+			nodeOffset,
+			[ { 'type': type, 'attributes': attributes } ]
+				.concat( nodes[i].getContent() )
+				.concat( [ { 'type': '/' + type } ] )
+		) );
 	}
 
-	for ( var i = 0; i < tx.length; i++ ) {
-		this.commit( tx[i] );
-	}
+	return txs;
 };
 
 /* Inheritance */
