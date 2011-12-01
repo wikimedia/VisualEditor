@@ -110,14 +110,39 @@ es.SurfaceModel.prototype.transact = function( transaction, combine ) {
 };
 
 /**
- * Reverses one or more selections and transactions.
+ * Reverses one or more states.
+ * We assume the user wants to undo some visible change to the document, so we only count
+ * states that contain at least one transaction that changed the document somehow.
  * 
  * @method
- * @param {Integer} steps Number of steps to reverse
+ * @param {Integer} Number of document-changing states to reverse
  */
-es.SurfaceModel.prototype.undo = function( steps ) {
-	// TODO: Implement me!
-	this.emit( 'undo'/*, transaction/selection*/ );
+es.SurfaceModel.prototype.undo = function( transactionsToUndo ) {
+	/**
+	 * Undo a state.
+	 * @return {Boolean} whether visible change was undone.
+	 */
+	function undoState( state ) {
+		var hasTransaction = false;
+		var i = state.length - 1;
+		while ( i-- ) {
+			if ( state[i] instanceof es.TransactionModel ) {
+				hasTransaction = true;
+				this.doc.rollback( state[i] );
+			}
+		}
+		this.emit( 'undo', state );
+		return hasTransaction;
+	}
+
+	while ( transactionsToUndo ) {
+		var hadTransaction = undoState( this.currentState );
+		if ( hadTransaction ) { 
+			transactionsToUndo--;
+		}
+		// do we also want all the effects of initializeState? currentStateDistance to be 0, currentStateLengthDifference?
+		this.initializeState( this.currentStateIndex - 1 );
+	}
 };
 
 /**
@@ -213,6 +238,12 @@ es.SurfaceModel.prototype.pushState = function() {
 	this.emit( 'pushState' );
 };
 
+/**
+ * Remove irrelevant selection actions from a given state
+ * TODO: replace this with code to remove irrelevant selections as they are pushed
+ * (for instance, between two insertions).
+ * @param {Integer}
+ */
 es.SurfaceModel.prototype.optimizeState = function( stateIndex ) {
 	var skipSelects = false,
 		newState = [];
