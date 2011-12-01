@@ -73,6 +73,11 @@ es.SurfaceView = function( $container, model ) {
 		_this.currentSelection = selection.clone();
 		// Respond to selection changes
 		_this.updateSelection();
+		if ( selection.getLength() ) {
+			_this.clearInsertionAnnotations();
+		} else {
+			_this.loadInsertionAnnotations();
+		}
 	} );
 	this.model.getDocument().on( 'update', function() {
 		_this.emitUpdate( 25 );
@@ -184,7 +189,6 @@ es.SurfaceView.prototype.updateSelection = function( delay ) {
 			// Update the context icon position
 			_this.contextView.update();
 		} else {
-			_this.loadInsertionAnnotations();
 			_this.showCursor();
 			_this.documentView.clearSelection( _this.currentSelection );
 		}
