@@ -47,6 +47,11 @@ var argv = optimist.usage( 'Usage: $0', {
 			default: false,
 			boolean: true,
 		},
+		'jsonout': {
+			description: 'Print out a JSON serialization (default false) of parser output.',
+			default: false,
+			boolean: true,
+		},
 	}
 	).check( function(argv) {
 		if( argv.filter === true ) {
@@ -98,6 +103,9 @@ global.PEG = _require(pj('parser', 'lib.pegjs.js'));
 
 
 // Our code...
+
+var testWhiteList = require('./parserTests-whitelist.js').testWhiteList;
+
 _import(pj('parser', 'mediawiki.parser.peg.js'), ['PegParser']);
 _import(pj('parser', 'mediawiki.parser.environment.js'), ['MWParserEnvironment']);
 _import(pj('parser', 'ext.cite.taghook.ref.js'), ['MWRefTagHook']);
@@ -226,6 +234,7 @@ function formatHTML ( source ) {
 }
 
 var passedTests = 0,
+	passedTestsManual = 0,
 	failParseTests = 0,
 	failTreeTests = 0,
 	failOutputTests = 0;
@@ -295,6 +304,14 @@ function processTest(item) {
 			var normalizedOut = normalizeOut(out);
 			var normalizedExpected = normalizeHTML(item.result);
 			if ( normalizedOut !== normalizedExpected ) {
+				if (item.title in testWhiteList &&
+					 normalizeOut(testWhiteList[item.title]) ===  normalizedOut) {
+						 if( !argv.quiet ) {
+							 console.log( 'PASSED (whiteList)'.green + ': ' + item.title.yellow );
+						 }
+						 passedTestsManual++;
+						 return;
+				}
 				printTitle( argv.quick );
 				failOutputTests++;
 
@@ -335,6 +352,11 @@ function processTest(item) {
 				
 
 				console.log( colored_diff );
+				
+				if(argv.jsonout) {
+					console.log("JSON of parser output:");
+					console.log(JSON.stringify(out));
+				}
 				}
 			} else {
 				passedTests++;
@@ -414,15 +436,18 @@ console.log( "SUMMARY: ");
 
 if( failTotalTests !== 0 ) {
 console.log( ColorizeCount( passedTests    , 'green' ) + " passed");
+console.log( ColorizeCount( passedTestsManual , 'green' ) + " passed from whitelist");
 console.log( ColorizeCount( failParseTests , 'red'   ) + " parse failures");
 console.log( ColorizeCount( failTreeTests  , 'red'   ) + " tree build failures");
 console.log( ColorizeCount( failOutputTests, 'red'   ) + " output differences");
 console.log( "\n" );
-console.log( ColorizeCount( failTotalTests , 'red'   ) + " total failures");
+console.log( ColorizeCount( passedTests + passedTestsManual , 'green'   ) + 
+		' total passed tests, ' +
+		ColorizeCount( failTotalTests , 'red'   ) + " total failures");
 
 } else {
 	if( test_filter !== null ) {
-		console.log( "Passed " + passedTests + " of " + passedTests + " tests matching " + test_filter + "... " + "ALL TESTS PASSED!".green );
+		console.log( "Passed " + passedTests + passedTestsManual + " of " + passedTests + " tests matching " + test_filter + "... " + "ALL TESTS PASSED!".green );
 	} else {
 		// Should not happen if it does: Champagne!
 		console.log( "Passed " + passedTests + " of " + passedTests + " tests... " + "ALL TESTS PASSED!".green );
