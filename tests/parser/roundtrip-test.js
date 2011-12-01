@@ -20,8 +20,8 @@ module.exports.init = function(worker) {
 	// For now most modules only need this for $.extend and $.each :)
 	global.$ = require('jquery');
 
-	// Local CommonJS-friendly libs
-	global.PEG = _require('lib.pegjs.js');
+	// XXX: Avoid a global here!
+	global.PEG = require('pegjs');
 
 	// Our code...
 	_import('ext.parserPlayground.serializer.js', ['MWTreeSerializer']);

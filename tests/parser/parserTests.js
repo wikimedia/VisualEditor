@@ -20,6 +20,9 @@ var fs = require('fs'),
 	colors = require('colors'),
 	HTML5 = require('html5').HTML5;
 
+// XXX: avoid a global here!
+global.PEG = require('pegjs');
+
 // Handle options/arguments with optimist module
 var optimist = require('optimist');
 
@@ -112,8 +115,6 @@ global.document = $('<div>')[0].ownerDocument;
 
 var pj = path.join;
 
-// Local CommonJS-friendly libs
-global.PEG = _require(pj('parser', 'lib.pegjs.js'));
 
 
 // Our code...
