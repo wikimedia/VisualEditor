@@ -142,6 +142,7 @@ es.SurfaceView.prototype.getInsertionAnnotations = function() {
 
 es.SurfaceView.prototype.addInsertionAnnotation = function( annotation ) {
 	this.insertionAnnotations.push( annotation );
+	this.emitUpdate();
 };
 
 es.SurfaceView.prototype.loadInsertionAnnotations = function( annotation ) {
@@ -161,10 +162,12 @@ es.SurfaceView.prototype.removeInsertionAnnotation = function( annotation ) {
 	if ( index !== -1 ) {
 		this.insertionAnnotations.splice( index, 1 );
 	}
+	this.emitUpdate();
 };
 
 es.SurfaceView.prototype.clearInsertionAnnotations = function() {
 	this.insertionAnnotations = [];
+	this.emitUpdate();
 };
 
 es.SurfaceView.prototype.getModel = function() {

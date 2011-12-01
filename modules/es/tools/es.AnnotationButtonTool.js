@@ -4,12 +4,7 @@ es.AnnotationButtonTool = function( toolbar, name, data ) {
 };
 
 es.AnnotationButtonTool.prototype.onClick = function() {
-	var method;
-	if ( this.name === 'clear') {
-		method = 'clear';
-	} else {
-		method = this.$.hasClass( 'es-toolbarButtonTool-down' ) ? 'clear' : 'set';
-	}
+	var method = this.$.hasClass( 'es-toolbarButtonTool-down' ) ? 'clear' : 'set';
 
 	var tx = this.toolbar.surfaceView.model.getDocument().prepareContentAnnotation(
 		this.toolbar.surfaceView.currentSelection,
@@ -17,6 +12,17 @@ es.AnnotationButtonTool.prototype.onClick = function() {
 		this.data
 	);
 	this.toolbar.surfaceView.model.transact( tx );
+	return false;
+};
+
+es.AnnotationButtonTool.prototype.updateState = function( annotations ) {
+	for ( var i = 0; i < annotations.length; i++ ) {
+		if ( annotations[i].type === this.data.type ) {
+			this.$.addClass( 'es-toolbarButtonTool-down' );
+			return;
+		}
+	}
+	this.$.removeClass( 'es-toolbarButtonTool-down' );
 };
 
 es.Tool.tools.bold = {
@@ -31,10 +37,5 @@ es.Tool.tools.italic = {
 	data: { 'type': 'textStyle/italic' }
 };
 
-es.Tool.tools.clear = {
-	constructor: es.AnnotationButtonTool,
-	name: 'clear',
-	data: /.*/
-};
 
 es.extendClass( es.AnnotationButtonTool, es.ButtonTool );

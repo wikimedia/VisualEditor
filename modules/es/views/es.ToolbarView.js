@@ -58,9 +58,13 @@ es.ToolbarView.prototype.updateState = function() {
 		annotations;
 
 	if( selection.from === selection.to ) {
-		annotations = this.surfaceView.documentView.model.getAnnotationsFromOffset( selection.to );
+		annotations = this.surfaceView.getInsertionAnnotations();
 	} else {
 		annotations = this.surfaceView.documentView.model.getAnnotationsFromRange( selection );
+	}
+
+	for( var i = 0; i < this.tools.length; i++ ) {
+		this.tools[i].updateState( annotations );
 	}
 };
 
