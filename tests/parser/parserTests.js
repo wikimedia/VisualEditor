@@ -309,7 +309,7 @@ function processTest(item) {
 			var normalizedOut = normalizeOut(out);
 			var normalizedExpected = normalizeHTML(item.result);
 			if ( normalizedOut !== normalizedExpected ) {
-				if (args.whiteList &&
+				if (argv.whiteList &&
 						item.title in testWhiteList &&
 						normalizeOut(testWhiteList[item.title]) ===  normalizedOut) {
 						 if( !argv.quiet ) {
