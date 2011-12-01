@@ -229,23 +229,29 @@ es.ContentView.prototype.drawSelection = function( range ) {
 
 	if ( fromLineIndex === toLineIndex ) {
 		// Single line selection
-		this.$rangeStart.css( {
-			'top': fromPosition.top,
-			'left': fromPosition.left,
-			'width': toPosition.left - fromPosition.left,
-			'height': fromPosition.bottom - fromPosition.top
-		} ).show();
+		if ( toPosition.left - fromPosition.left ) {
+			this.$rangeStart.css( {
+				'top': fromPosition.top,
+				'left': fromPosition.left,
+				'width': toPosition.left - fromPosition.left,
+				'height': fromPosition.bottom - fromPosition.top
+			} ).show();
+		}
 		this.$rangeFill.hide();
 		this.$rangeEnd.hide();
 	} else {
 		// Multiple line selection
 		var contentWidth = this.$.width();
-		this.$rangeStart.css( {
-			'top': fromPosition.top,
-			'left': fromPosition.left,
-			'width': contentWidth - fromPosition.left,
-			'height': fromPosition.bottom - fromPosition.top
-		} ).show();
+		if ( contentWidth - fromPosition.left ) {
+			this.$rangeStart.css( {
+				'top': fromPosition.top,
+				'left': fromPosition.left,
+				'width': contentWidth - fromPosition.left,
+				'height': fromPosition.bottom - fromPosition.top
+			} ).show();
+		} else {
+			this.$rangeStart.hide();
+		}
 		if ( toPosition.left ) {
 			this.$rangeEnd.css( {
 				'top': toPosition.top,

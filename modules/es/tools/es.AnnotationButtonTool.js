@@ -43,5 +43,11 @@ es.Tool.tools.italic = {
 	data: { 'type': 'textStyle/italic' }
 };
 
+es.Tool.tools.link = {
+	constructor: es.AnnotationButtonTool,
+	name: 'link',
+	data: { 'type': 'link/internal', 'data': { 'title': '' } }
+};
+
 
 es.extendClass( es.AnnotationButtonTool, es.ButtonTool );

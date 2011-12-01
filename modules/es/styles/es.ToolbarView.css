@@ -67,6 +67,9 @@
 .es-toolbarButtonTool-italic:before {
 	background-image: url(../images/italic.png);
 }
+.es-toolbarButtonTool-link:before {
+	background-image: url(../images/link.png);
+}
 .es-toolbarButtonTool-clear:before {
 	background-image: url(../images/clear.png);
 }
@@ -74,6 +77,8 @@
 	-moz-opacity: 0.25;
 	filter:alpha(opacity=25);
 	opacity: 0.25;
+.es-toolbarButtonTool-clear:before {
+	background-image: url(../images/clear.png);
 }
 .es-toolbarDropdownTool {
 }
