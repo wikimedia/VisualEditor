@@ -63,11 +63,8 @@ es.SurfaceModel.prototype.getSelection = function() {
  * @param {es.Range} selection
  * @param {Boolean} combine Whether to prevent this transaction from causing a state push
  */
-es.SurfaceModel.prototype.select = function( selection, combine ) {
+es.SurfaceModel.prototype.select = function( selection ) {
 	selection.normalize();
-	if ( !combine && this.shouldPushState( selection ) ) {
-		this.pushState();
-	}
 	// Filter out calls to select if they do not change the selection values
 	var selectionChanged = !this.selection || (
 		this.selection.from !== selection.from || 
@@ -80,7 +77,6 @@ es.SurfaceModel.prototype.select = function( selection, combine ) {
 				selection.from - this.states[this.states.length - 1].from
 			);
 		}
-		this.currentState.push( selection );
 		this.selection = selection;
 		if ( selectionChanged ) {
 			this.emit( 'select', this.selection.clone() );
