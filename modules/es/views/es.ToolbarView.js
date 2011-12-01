@@ -49,6 +49,7 @@ es.ToolbarView = function( $container, surfaceView, config ) {
 
 	this.config = config || [
 		{ 'name': 'textStyle', 'items' : [ 'bold', 'italic', 'formatting', 'clear' ] },
+		{ 'name': 'history', 'items' : [ 'undo', 'redo' ] }
 	];
 	this.setup();
 };

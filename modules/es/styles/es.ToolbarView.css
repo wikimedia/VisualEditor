@@ -50,6 +50,12 @@
 	background-position: top left;
 	background-repeat: repeat-x;
 }
+.es-toolbarButtonTool-undo:before {
+	background-image: url(../images/undo.png);
+}
+.es-toolbarButtonTool-redo:before {
+	background-image: url(../images/redo.png);
+}
 .es-toolbarButtonTool-bold:before {
 	background-image: url(../images/bold.png);
 }
