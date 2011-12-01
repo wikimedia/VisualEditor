@@ -81,7 +81,13 @@ if( argv.help ) {
 }
 var test_filter = null;
 if( argv.filter ) { // null is the default by definition
-	test_filter = new RegExp( argv.filter );
+	try {
+		test_filter = new RegExp( argv.filter );
+	} catch(e) {
+		console.error( "\nERROR> --filter was given an invalid regular expression.");
+		console.error( "ERROR> See below for JS engine error:\n" + e + "\n" );
+		process.exit( 1 );
+	}
 	console.log( "Filtering title test using Regexp " + test_filter );
 }
 if( !argv.color ) {
