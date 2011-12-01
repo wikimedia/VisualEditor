@@ -163,7 +163,7 @@ es.SurfaceView.prototype.loadInsertionAnnotations = function( annotation ) {
 };
 
 es.SurfaceView.prototype.removeInsertionAnnotation = function( annotation ) {
-	var index = es.DocumentView.getIndexOfAnnotation( this.insertionAnnotations, annotation );
+	var index = es.DocumentModel.getIndexOfAnnotation( this.insertionAnnotations, annotation );
 	if ( index !== -1 ) {
 		this.insertionAnnotations.splice( index, 1 );
 	}
@@ -619,8 +619,12 @@ es.SurfaceView.prototype.insertFromInput = function() {
 			selection.from = selection.to =
 				Math.min( selection.from, selection.to );
 		}
-		tx = this.model.getDocument().prepareInsertion( selection.from, val.split('') );
+		var data = val.split('');
+		es.DocumentModel.addAnnotationsToData( data, this.getInsertionAnnotations() );
+		
+		tx = this.model.getDocument().prepareInsertion( selection.from, data );
 		this.model.transact( tx, true );
+
 		selection.from += val.length;
 		selection.to += val.length;
 		this.model.select( selection, true );

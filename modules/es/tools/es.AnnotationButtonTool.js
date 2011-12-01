@@ -7,7 +7,7 @@ es.AnnotationButtonTool.prototype.onClick = function() {
 	var method;
 	if ( this.$.hasClass( 'es-toolbarButtonTool-down' ) ) {
 		method = 'clear';
-		this.toolbar.surfaceView.clearInsertionAnnotations( this.data );
+		this.toolbar.surfaceView.removeInsertionAnnotation( this.data );
 	} else {
 		method = 'set';
 		this.toolbar.surfaceView.addInsertionAnnotation( this.data );
