@@ -355,6 +355,8 @@
 
     // text start position
     var textStart = 0;
+
+    var linkCount = 1;
 }
 
 start
@@ -363,15 +365,60 @@ start
   }
 
 
-anyblock = block / inline
-anyblockline = block / inlineline
+/* All chars that cannot start syntactic structures in the middle of a line
+ * XXX: ] and other end delimiters should probably only be activated inside
+ * structures to avoid unnecessarily leaving the text production on plain
+ * content. */
 
+text_char = [^'<~[{\n\r:\]}]
 
-// All chars that cannot start syntactic structures in the middle of a line
-// XXX: ] and other end delimiters should probably only be activated inside
-// structures to avoid unnecessarily leaving the text production on plain
-// content.
-text = t:[^'<~\][\n\r{}:]+ { return t.join(''); }
+text = t:text_char+ { return t.join(''); }
+
+/* Explanation of chars
+ * '    quotes (italic/bold)
+ * <    start of xmlish_tag
+ * ~    signatures/dates
+ * [    start of links
+ * {    start of parser functions, transclusion and template args
+ * \n   all sort of block-level markup at start of line
+ * \r   ditto
+ * h    http(s) urls
+ * n    nntp(s) urls
+ * m    mailto urls
+ *
+ * The following chars are also included for now, but only apply in some
+ * contexts and should probably be enabled only in those:
+ * :    separate definition in ; term : definition
+ * ]    end of link
+ * }    end of parser func/transclusion/template arg
+ */
+
+urltext = ( t:[^'<~[{\n\rfghimnstw:\]} ]+ { return t.join(''); }
+          / urllink
+          // Convert trailing space into &nbsp;
+          // XXX: This should be moved to a serializer
+          / ' ' & ':' { return "\u00a0"; }
+          / t:text_char )+
+
+/*
+	'//', // for protocol-relative URLs, but not in text!
+	'ftp://',
+	'git://',
+	'gopher://',
+	'http://',
+	'https://',
+	'irc://',
+	'ircs://',  // @bug 28503
+	'mailto:',
+	'mms://',
+	'news:',
+	'nntp://', // @bug 3808 RFC 1738
+	'svn://',
+	'telnet://', // Well if we're going to support the above.. -ævar
+	'worldwind://',
+*/
+
+// Old version
 //text = t:[A-Za-z0-9,._ "?!\t-]+ { return t.join('') }
 
 // Experimental tweaked version: avoid expensive single-char substrings
@@ -463,13 +510,16 @@ para
 
 br = space* &newline { return {type: 'SELFCLOSINGTAG', name: 'br'} }
 
-// Syntax that stops inline expansion
+// Syntax stops to limit inline expansion defending on syntactic context
 inline_breaks
   = //& { console.log(pp(syntaxFlags)); return true; }
     & { return syntaxFlags['table']; } 
     a:(newline [!|] / '||' / '!!' / '|}') { dp("table break" + pp(a)); return true; }
+  / & { return (syntaxFlags['colon'] && 
+          ! syntaxFlags.extlink &&
+          ! syntaxFlags.linkdesk); } ":" { return true; }
+  / & { return syntaxFlags['extlink']; } "]" { return true; }
   / & { return syntaxFlags['linkdesc']; } link_end { return true; }
-  / & { return syntaxFlags['colon']; } ":" { return true; }
   / & { return syntaxFlags['h']; } 
         ( & { return syntaxFlags['h1'] } '=' newline { return true; }
         / & { return syntaxFlags['h2'] } '==' newline { return true; }
@@ -480,7 +530,7 @@ inline_breaks
         )
 
 inline
-  = c:(text / inline_element / (!inline_breaks ch:. { return ch; }))+ {
+  = c:(urltext / inline_element / (!inline_breaks ch:. { return ch; }))+ {
       var out = [];
       var text = [];
       c = flatten(c);
@@ -502,7 +552,7 @@ inline
 }
 
 inlineline
-  = c:(text / !inline_breaks (inline_element / [^\n]))+ {
+  = c:(urltext / !inline_breaks (inline_element / [^\n]))+ {
       var out = [];
       var text = [];
       c = flatten(c);
@@ -529,10 +579,13 @@ inlineline
  */
 inline_element
   = comment
-  / xmlish_tag
-  / extlink
+  // Can actually also be block-level elements, we don't really try to enforce
+  // a content model in the tokenizer. The HTML tree builder and DOM
+  // transformations are better equipped to deal with it.
+  / xmlish_tag 
   / template
-  / link
+  / wikilink
+  / extlink
   / quote
 
 /* Headings */
@@ -635,23 +688,67 @@ comment_chars
   = c:[^-] { return c; }
   / c:'-' !'->' { return c; }
 
-extlink
-  = "[" target:url " " text:extlink_text "]" {
+
+urllink
+  = target:url {
       return [ { type: 'TAG', 
                  name: 'a',
-                 attribs: [['href', target]] } ]
-                     .concat( text 
-                            , [{type: 'ENDTAG', name: 'a'}]);
+                 attribs: [['href', target]] }
+             , {type: 'TEXT', value: target}
+             , {type: 'ENDTAG', name: 'a'} 
+             ];
   }
 
-//  = "[" target:url text:extlink_text "]" { return { type: 'extlink', target: target, text: text } }
+extlink
+  = "[" 
+    & { return setFlag('extlink'); }
+    target:url 
+    space*
+    text:inlineline?
+    "]" {
+        clearFlag('extlink');
+        if ( text == '' ) {
+            // XXX: Link numbering should be implemented in post-processor.
+            text = [{type: 'TEXT', value: "[" + linkCount + "]"}];
+            linkCount++;
+        }
+        return [ { type: 'TAG', 
+            name: 'a',
+            attribs: [['href', target]] } ]
+                .concat( text 
+                        , [{type: 'ENDTAG', name: 'a'}]);
+    }
+  / "[" & { clearFlag('extlink'); return false; }
+
+/* Defaul URL protocols in MediaWiki (see DefaultSettings). Normally these can
+ * be configured dynamically. */
+url_protocol
+  = '//' // for protocol-relative URLs
+  / 'ftp://'
+  / 'git://'
+  / 'gopher://'
+  / 'http://'
+  / 'https://'
+  / 'irc://'
+  / 'ircs://'  // @bug 28503
+  / 'mailto:'
+  / 'mms://'
+  / 'news:'
+  / 'nntp://' // @bug 3808 RFC 1738
+  / 'svn://'
+  / 'telnet://' // Well if we're going to support the above.. -ævar
+  / 'worldwind://'
+
+unicode_separator_space = [ \u00A0\u1680\u180E\u2000-\u200A\u202F\u205F\u3000]
 
 url
-  = proto:"http:" rest:([^ \]\n]+) { return proto + rest.join(''); }
-
-// XXX: convert to syntax flags and generic inline!
-extlink_text
-  = c:(inline_element / ch:[^\]\n] { return {type: 'TEXT', value: ch}; })+
+  = proto:url_protocol 
+    rest:( [^ :\]\[\n<>\x00-\x20\x7f,.] 
+            / s:[.:,] !(space / eolf) { return s } )+ 
+{ 
+    return proto + rest.join(''); 
+}
+//[^][<>"\\x00-\\x20\\x7F\p{Zs}]
 
 template
   = "{{" target:template_target params:("|" p:template_param { return p })* "}}" {
@@ -700,11 +797,11 @@ template_param_text_chunk
   / xmlish_tag
   / extlink
   / template
-  / link
+  / wikilink
   / quote
   / !"}}" x:([^|\n]) { return x }
 
-link
+wikilink
   = "[[" target:link_target text:("|" link_text)* "]]" {
       var obj = {
           type: 'TAG',
@@ -984,36 +1081,34 @@ li = bullets:list_char+
            , c ];
 }
 
-dtdd = bullets:(!(";" !list_char) list_char)*
-       ";"
-       & {return setFlag('colon');}
-       c:inlineline
-       ":"
-       // Fortunately dtdds cannot be nested, so we can simply set the flag
-       // back to 0 to disable it.
-       & {syntaxFlags['colon'] = 0; return true;}
-       d:inlineline
-       &eolf
-{
-    // Convert trailing space into &nbsp;
-    // XXX: This should be moved to a serializer
-    var clen = c.length;
-    if (clen && c[clen - 1].type === 'TEXT') {
-        var val = c[clen - 1].value;
-        if(val.length && val[val.length - 1] == ' ') {
-            c[clen - 1].value = val.substr(0, val.length - 1) + "\u00a0";
-        }
+dtdd 
+  = bullets:(!(";" !list_char) list_char)*
+    ";"
+    & {return setFlag('colon');}
+    c:inlineline
+    ":"
+    // Fortunately dtdds cannot be nested, so we can simply set the flag
+    // back to 0 to disable it.
+    & {syntaxFlags['colon'] = 0; return true;}
+    d:inlineline
+    &eolf {
+        // Convert trailing space into &nbsp;
+        // XXX: This should be moved to a serializer
+        //var clen = c.length;
+        //if (clen && c[clen - 1].type === 'TEXT') {
+        //    var val = c[clen - 1].value;
+        //    if(val.length && val[val.length - 1] == ' ') {
+        //        c[clen - 1].value = val.substr(0, val.length - 1) + "\u00a0";
+        //    }
+        //}
+
+        return [ { type: 'TAG', name: 'listItem', bullets: bullets + ";" } ]
+            .concat( c
+                    ,[{ type: 'TAG', name: 'listItem', bullets: bullets + ":" } ]
+                    , d );
     }
-
-    return [ { type: 'TAG', name: 'listItem', bullets: bullets + ";" } ]
-        .concat( c
-                ,[{ type: 'TAG', name: 'listItem', bullets: bullets + ":" } ]
-                , d );
-}
-
-/  bullets:(!(";" !list_char) list_char)*
-   ";"
-   {syntaxFlags['colon'] = 0; return null; }
+  // Fall-back case to clear the colon flag
+  / & { return true; } { syntaxFlags['colon'] = 0; return null; }
 
 
 list_char = [*#:;]
@@ -1094,7 +1189,7 @@ table_data
     ("||" / newline "|") 
     ! [}+-]
     a:thtd_attribs? 
-    td:(!inline_breaks anyblock)* { 
+    td:(!inline_breaks block)* { 
         dp("table data result: " + pp(td) + ", attribts: " + pp(a));
         return [{ type: 'TAG', name: 'td', attribs: [['data-unparsed', a]]}]
                .concat(td, [{type: 'ENDTAG', name: 'td'}]);

@@ -44,7 +44,7 @@ var argv = optimist.usage( 'Usage: $0', {
 			alias: 'regex',
 		},
 		'whitelist': {
-			description: 'Alternatively compare against manually verified parser output from whitelist (default true)',
+			description: 'Alternatively compare against manually verified parser output from whitelist',
 			default: true,
 			boolean: true,
 		},
@@ -57,8 +57,8 @@ var argv = optimist.usage( 'Usage: $0', {
 			default: false,
 			boolean: true,
 		},
-		'jsonout': {
-			description: 'Print out a JSON serialization (default false) of parser output.',
+		'printwhitelist': {
+			description: 'Print out a whitelist entry for failing tests. Default false.',
 			default: false,
 			boolean: true,
 		},
@@ -318,7 +318,7 @@ function processTest(item) {
 			var normalizedOut = normalizeOut(out);
 			var normalizedExpected = normalizeHTML(item.result);
 			if ( normalizedOut !== normalizedExpected ) {
-				if (argv.whiteList &&
+				if (argv.whitelist &&
 						item.title in testWhiteList &&
 						normalizeOut(testWhiteList[item.title]) ===  normalizedOut) {
 						 if( !argv.quiet ) {
@@ -368,9 +368,12 @@ function processTest(item) {
 
 				console.log( colored_diff );
 				
-				if(argv.jsonout) {
-					console.log("JSON of parser output:");
-					console.log(JSON.stringify(out));
+				if(argv.printwhitelist) {
+					console.log("Whitelist entry:");
+					console.log("testWhiteList[" + 
+							JSON.stringify(item.title) + "] = " + 
+							JSON.stringify(out) +
+							";");
 				}
 				}
 			} else {
