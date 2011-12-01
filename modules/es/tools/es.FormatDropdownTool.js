@@ -33,8 +33,31 @@ es.FormatDropdownTool.prototype.onChange = function() {
 	}
 };
 
-es.FormatDropdownTool.prototype.updateState = function( annotations ) {
-	// ...
+es.FormatDropdownTool.prototype.updateState = function( annotations, nodes ) {
+	var format = {
+		'type': nodes[0].getElementType(),
+		'attributes': nodes[0].element.attributes
+	};
+
+	for( var i = 1; i < nodes.length; i++ ) {
+		if ( nodes[i].getElementType() != format.type
+			|| !es.compareObjects( nodes[0].element.attributes, format.attributes ) ) {
+			format = null;
+			break;
+		}
+	}
+
+	if ( format === null ) {
+		this.$select.val( null );
+	} else {
+		for ( var i = 0; i < this.formats.length; i++ ) {
+			if ( this.formats[i].type === format.type
+				&& es.compareObjects( this.formats[i].attributes, format.attributes ) ) {
+					this.$select.val( i );
+					break;
+			}
+		}
+	}
 };
 
 es.Tool.tools.format = {
