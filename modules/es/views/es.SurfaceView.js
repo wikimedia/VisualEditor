@@ -146,7 +146,7 @@ es.SurfaceView.prototype.addInsertionAnnotation = function( annotation ) {
 
 es.SurfaceView.prototype.loadInsertionAnnotations = function( annotation ) {
 	this.insertionAnnotations =
-		this.model.getDocument().getAnnotationsFromOffset( _this.currentSelection.to );
+		this.model.getDocument().getAnnotationsFromOffset( this.currentSelection.to );
 	// Filter out annotations that aren't textStyles or links
 	for ( var i = 0; i < this.insertionAnnotations.length; i++ ) {
 		if ( !this.insertionAnnotations[i].type.match( /(textStyle\/|link\/)/ ) ) {
