@@ -700,24 +700,14 @@ es.DocumentModel.prototype.getAnnotationsFromOffset = function( offset ) {
  */
 es.DocumentModel.prototype.getAnnotationsFromRange = function( range ) {
 	range.normalize();
-	// First pass - check that [0] and [n) characters are annotated
-	if ( !es.isArray( this.data[range.start] ) || !es.isArray( this.data[range.end - 1] ) ) {
-		// Range starts/ends on a non-annotated character, range can not have any common annotations
-		return [];
-	}
-	// Second pass - check that [1..n-1) characters are annotated
-	var i;
-	for ( i = range.start + 1, end = range.end - 1; i < end; i++ ) {
-		if ( !es.isArray( this.data[i] ) ) {
-			return [];
-		}
-	}
-	// Third pass - collect annotations common amung all characters
-	var map = {},
-		j,
-		hash;
-	for ( i = range.start, end = range.end; i < end; i++ ) {
-		for ( j = 1; j < this.data[i].length; j++ ) {
+	var annotations = {
+			'full': [],
+			'partial': [],
+			'all': []
+		},
+		map = {};
+	for ( var i = range.start; i < range.end; i++ ) {
+		for ( var j = 1; j < this.data[i].length; j++ ) {
 			hash = this.data[i][j].hash;
 			if ( hash in map ) {
 				map[hash][1]++;
@@ -726,14 +716,16 @@ es.DocumentModel.prototype.getAnnotationsFromRange = function( range ) {
 			}
 		}
 	}
-	var length = range.getLength(),
-		annotations = [];
-	for ( hash in map ) {
+	var length = range.getLength();
+	for ( var hash in map ) {
 		if ( map[hash][1] === length ) {
-			annotations.push( map[hash][0] );
+			annotations.full.push( map[hash][0] );
+		} else {
+			annotations.partial.push( map[hash][0] );
 		}
+		annotations.all.push( map[hash][0] );
 	}
-	return es.copyArray( annotations );
+	return annotations;
 };
 
 /**

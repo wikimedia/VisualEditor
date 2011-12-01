@@ -22,8 +22,8 @@ es.AnnotationButtonTool.prototype.onClick = function() {
 };
 
 es.AnnotationButtonTool.prototype.updateState = function( annotations ) {
-	for ( var i = 0; i < annotations.length; i++ ) {
-		if ( annotations[i].type === this.data.type ) {
+	for ( var i = 0; i < annotations.full.length; i++ ) {
+		if ( annotations.full[i].type === this.data.type ) {
 			this.$.addClass( 'es-toolbarButtonTool-down' );
 			return;
 		}

@@ -15,7 +15,9 @@ es.ClearButtonTool.prototype.onClick = function() {
 };
 
 es.ClearButtonTool.prototype.updateState = function( annotations ) {
-	var matchingAnnotations = es.DocumentModel.getMatchingAnnotations( annotations, this.pattern );
+	var matchingAnnotations = es.DocumentModel.getMatchingAnnotations(
+		annotations.all, this.pattern
+	);
 	if ( matchingAnnotations.length === 0 ) {
 		this.$.addClass( 'es-toolbarButtonTool-disabled' );
 	} else {

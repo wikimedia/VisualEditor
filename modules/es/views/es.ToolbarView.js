@@ -59,7 +59,12 @@ es.ToolbarView.prototype.updateState = function() {
 		annotations;
 
 	if( selection.from === selection.to ) {
-		annotations = this.surfaceView.getInsertionAnnotations();
+		var insertionAnnotations = this.surfaceView.getInsertionAnnotations();
+		annotations = {
+			'full': insertionAnnotations,
+			'partial': [],
+			'all': insertionAnnotations
+		};
 	} else {
 		annotations = this.surfaceView.documentView.model.getAnnotationsFromRange( selection );
 	}
