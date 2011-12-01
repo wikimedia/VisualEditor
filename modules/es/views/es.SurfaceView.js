@@ -27,6 +27,7 @@ es.SurfaceView = function( $container, model ) {
 		.appendTo( 'body' );
 	this.$cursor = $( '<div class="es-surfaceView-cursor"></div>' )
 		.appendTo( 'body' );
+	this.insertionAnnotations = [];
 	this.updateSelectionTimeout = undefined;
 	this.emitUpdateTimeout = undefined;
 
@@ -135,38 +136,55 @@ es.SurfaceView = function( $container, model ) {
 
 /* Methods */
 
+es.SurfaceView.prototype.getInsertionAnnotations = function() {
+	return this.insertionAnnotations;
+};
+
+es.SurfaceView.prototype.addInsertionAnnotation = function( annotation ) {
+	this.insertionAnnotations.push( annotation );
+};
+
+es.SurfaceView.prototype.removeInsertionAnnotation = function( annotation ) {
+	var index = es.DocumentView.getIndexOfAnnotation( this.insertionAnnotations, annotation );
+	if ( index !== -1 ) {
+		this.insertionAnnotations.splice( index, 1 );
+	}
+};
+
+es.SurfaceView.prototype.clearInsertionAnnotations = function() {
+	this.insertionAnnotations = [];
+};
+
 es.SurfaceView.prototype.getModel = function() {
 	return this.model;
 };
 
 es.SurfaceView.prototype.updateSelection = function( delay ) {
+	var _this = this;
+	function update() {
+		if ( _this.currentSelection.from !== _this.currentSelection.to ) {
+			_this.hideCursor();
+			_this.documentView.drawSelection( _this.currentSelection );
+			// Update the context icon position
+			_this.contextView.update();
+			// Clear insertion annotations
+			_this.insertionAnnotations = [];
+		} else {
+			_this.showCursor();
+			_this.documentView.clearSelection( _this.currentSelection );
+			// Load new insertion annotations
+			_this.insertionAnnotations =
+				_this.model.getDocument().getAnnotationsFromOffset( _this.currentSelection.to );
+		}
+		_this.updateSelectionTimeout = undefined;
+	}
 	if ( delay ) {
 		if ( this.updateSelectionTimeout !== undefined ) {
 			return;
 		}
-		var _this = this;
-		this.updateSelectionTimeout = setTimeout( function() {
-			if ( _this.currentSelection.from !== _this.currentSelection.to ) {
-				_this.hideCursor();
-				_this.documentView.drawSelection( _this.currentSelection );
-				// Update the context icon position
-				_this.contextView.update();
-			} else {
-				_this.showCursor();
-				_this.documentView.clearSelection( _this.currentSelection );
-			}
-			_this.updateSelectionTimeout = undefined;
-		}, delay );
+		this.updateSelectionTimeout = setTimeout( update, delay );
 	} else {
-		if ( this.currentSelection.from !== this.currentSelection.to ) {
-			this.hideCursor();
-			this.documentView.drawSelection( this.currentSelection );
-			// Update the context icon position
-			this.contextView.update();
-		} else {
-			this.showCursor();
-			this.documentView.clearSelection( this.currentSelection );
-		}
+		update();
 	}
 };
 
