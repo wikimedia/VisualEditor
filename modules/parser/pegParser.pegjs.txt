@@ -393,7 +393,9 @@ text = t:text_char+ { return t.join(''); }
  * }    end of parser func/transclusion/template arg
  */
 
-urltext = ( t:[^'<~[{\n\rfghimnstw:\]} ]+ { return t.join(''); }
+urltext = ( t:[^'<~[{\n\rfghimnstw:\]} &]+ { return t.join(''); }
+            // XXX: use general entity decode!
+          / "&amp;" { return "&"; } // decode ampersand in text
           / urllink
           // Convert trailing space into &nbsp;
           // XXX: This should be moved to a serializer
@@ -743,8 +745,11 @@ unicode_separator_space = [ \u00A0\u1680\u180E\u2000-\u200A\u202F\u205F\u3000]
 
 url
   = proto:url_protocol 
-    rest:( [^ :\]\[\n<>\x00-\x20\x7f,.] 
-            / s:[.:,] !(space / eolf) { return s } )+ 
+    rest:( [^ :\]\[\n<>\x00-\x20\x7f,.&] 
+            / s:[.:,] !(space / eolf) { return s } 
+            // XXX: use general entity decode!
+            / '&amp;' { return '&' } 
+            / '&' )+ 
 { 
     return proto + rest.join(''); 
 }
