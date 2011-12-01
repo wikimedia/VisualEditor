@@ -38,6 +38,11 @@ var argv = optimist.usage( 'Usage: $0', {
 			description: 'Only run tests whose descriptions which match given regex',
 			alias: 'regex',
 		},
+		'whitelist': {
+			description: 'Alternatively compare against manually verified parser output from whitelist (default true)',
+			default: true,
+			boolean: true,
+		},
 		'help': {
 			description: 'Show this help message',
 			alias: 'h',
@@ -304,8 +309,9 @@ function processTest(item) {
 			var normalizedOut = normalizeOut(out);
 			var normalizedExpected = normalizeHTML(item.result);
 			if ( normalizedOut !== normalizedExpected ) {
-				if (item.title in testWhiteList &&
-					 normalizeOut(testWhiteList[item.title]) ===  normalizedOut) {
+				if (args.whiteList &&
+						item.title in testWhiteList &&
+						normalizeOut(testWhiteList[item.title]) ===  normalizedOut) {
 						 if( !argv.quiet ) {
 							 console.log( 'PASSED (whiteList)'.green + ': ' + item.title.yellow );
 						 }
