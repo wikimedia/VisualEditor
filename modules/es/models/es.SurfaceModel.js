@@ -123,16 +123,16 @@ es.SurfaceModel.prototype.undo = function( transactionsToUndo ) {
 	 * @return {Boolean} whether visible change was undone.
 	 */
 	function undoState( state ) {
-		var hasTransaction = false;
+		var hadTransaction = false;
 		var i = state.length - 1;
 		while ( i-- ) {
 			if ( state[i] instanceof es.TransactionModel ) {
-				hasTransaction = true;
+				hadTransaction = true;
 				this.doc.rollback( state[i] );
 			}
 		}
 		this.emit( 'undo', state );
-		return hasTransaction;
+		return hadTransaction;
 	}
 
 	while ( transactionsToUndo ) {
