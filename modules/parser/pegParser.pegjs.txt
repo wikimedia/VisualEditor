@@ -1219,4 +1219,4 @@ table_end = newline? "|}" { clearFlag('table'); }
 
 
 /* Tabs do not mix well with the hybrid production syntax */
-/* vim: filetype=javascript:expandtabs:ts=4:sw=4:cindent */
+/* vim: set filetype=javascript expandtab ts=4 sw=4 cindent: */
