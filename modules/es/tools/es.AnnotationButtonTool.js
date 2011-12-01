@@ -4,7 +4,14 @@ es.AnnotationButtonTool = function( toolbar, name, data ) {
 };
 
 es.AnnotationButtonTool.prototype.onClick = function() {
-	var method = this.$.hasClass( 'es-toolbarButtonTool-down' ) ? 'clear' : 'set';
+	var method;
+	if ( this.$.hasClass( 'es-toolbarButtonTool-down' ) ) {
+		method = 'clear';
+		this.toolbar.surfaceView.clearInsertionAnnotations( this.data );
+	} else {
+		method = 'set';
+		this.toolbar.surfaceView.addInsertionAnnotation( this.data );
+	}
 
 	var tx = this.toolbar.surfaceView.model.getDocument().prepareContentAnnotation(
 		this.toolbar.surfaceView.currentSelection,
@@ -12,7 +19,6 @@ es.AnnotationButtonTool.prototype.onClick = function() {
 		this.data
 	);
 	this.toolbar.surfaceView.model.transact( tx );
-	return false;
 };
 
 es.AnnotationButtonTool.prototype.updateState = function( annotations ) {
