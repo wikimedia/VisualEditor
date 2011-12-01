@@ -73,7 +73,7 @@ es.SurfaceModel.prototype.select = function( selection, combine ) {
 		this.selection.from !== selection.from || 
 		this.selection.to !== selection.to
 	);
-	if ( !combine || selectionChanged ) {
+	if ( selectionChanged ) {
 		var lastAction = this.states[this.states.length - 1];
 		if ( lastAction instanceof es.Range ) {
 			this.currentStateDistance += Math.abs(
