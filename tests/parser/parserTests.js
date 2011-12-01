@@ -20,6 +20,9 @@ var fs = require('fs'),
 	colors = require('colors'),
 	HTML5 = require('html5').HTML5;
 
+// Name of file used to cache the parser tests cases
+var cache_file = "parserTests.cache";
+
 // XXX: avoid a global here!
 global.PEG = require('pegjs');
 
@@ -41,6 +44,11 @@ var argv = optimist.usage( 'Usage: $0', {
 			description: 'Enable color output Ex: --no-color',
 			boolean: true,
 			default: true,
+		},
+		'cache': {
+			description: 'Get tests cases from cache file ' + cache_file,
+			boolean: true,
+			default: false,
 		},
 		'filter': {
 			description: 'Only run tests whose descriptions which match given regex',
@@ -96,11 +104,16 @@ if( !argv.color ) {
 
 // @fixme wrap more or this setup in a common module
 
+// track files imported / required
+var fileDependencies = [];
+
 // Fetch up some of our wacky parser bits...
 
 var basePath = path.join(path.dirname(path.dirname(process.cwd())), 'modules');
 function _require(filename) {
-	return require(path.join(basePath, filename));
+	var fullpath = path.join( basePath, filename );
+	fileDependencies.push( fullpath );
+	return require( fullpath );
 }
 
 function _import(filename, symbols) {
@@ -109,6 +122,7 @@ function _import(filename, symbols) {
 		global[symbol] = module[symbol];
 	});
 }
+
 
 // needed for html5 parser adapter
 //var events = require('events');
@@ -162,24 +176,87 @@ try {
 	console.log(e);
 }
 
-var testFile;
-try {
-	testFile = fs.readFileSync(testFileName, 'utf8');
-} catch (e) {
-	// Try opening fallback file
-	if( testFileName2 !== '' ) {
-		try { testFile = fs.readFileSync( testFileName2, 'utf8' ); }
-		catch(e) { console.log(e); }
+
+/**
+ * Get an object holding our tests cases. Eventually from a cache file
+ */
+function getTests() {
+
+	// Startup by loading .txt test file
+	var testFile;
+	try {
+		testFile = fs.readFileSync(testFileName, 'utf8');
+		fileDependencies.push( testFileName );
+	} catch (e) {
+		// Try opening fallback file
+		if( testFileName2 !== '' ) {
+			try {
+				testFile = fs.readFileSync( testFileName2, 'utf8' );
+				fileDependencies.push( testFileName2 );
+			}
+			catch(e) { console.log(e); }
+		}
+	}
+	if( !argv.cache ) {
+		// Cache not wanted, parse file and return object 
+		return parseTestCase( testFile );
+	}
+
+	// Find out modification time of all files depencies and then hashes those
+	// as a unique value using sha1.
+	var mtimes = '';
+	fileDependencies.sort().forEach( function (file) {
+		mtimes += fs.statSync( file )['mtime'];
+	});
+	var sha1 = require('crypto').createHash('sha1')
+		.update( mtimes ).digest( 'hex' );
+
+	// Look for a cache_file 
+	var cache_content;
+	var cache_file_digest;
+	try {
+		console.log( "Looking for cache file " + cache_file );
+		cache_content = fs.readFileSync( cache_file, 'utf8' );
+		// Fetch previous digest
+		cache_file_digest = cache_content.match( /^CACHE: (\w+)\n/ )[1];
+	} catch(e) {
+		// cache file does not exist
+	}
+
+	if( cache_file_digest === sha1 ) {
+		// cache file match our digest.
+		console.log( "Loaded tests cases from cache file" );
+		// Return contained object after removing first line (CACHE: <sha1>)
+		return JSON.parse( cache_content.replace( /.*\n/, '' ) );
+	} else {
+		// Write new file cache, content preprended with current digest
+		console.log( "Cache file either inexistant or outdated" );
+		var parse = parseTestCase( testFile )
+		console.log( "Writing parse result to " +cache_file );
+		fs.writeFileSync( cache_file,
+			"CACHE: " + sha1 + "\n" + JSON.stringify( parse ),
+			'utf8'
+		);
+
+		// We can now return the parsed object
+		return parse; 
 	}
 }
 
-console.log( "Parsing tests case from file, this takes a few seconds ..." );
-try {
-	var cases = testParser.parse(testFile);
-	console.log( "Done parsing." );
-} catch (e) {
-	console.log(e);
+/**
+ * Parse given tests cases given as plaintext
+ */
+function parseTestCase( content ) {
+	console.log( "Parsing tests case from file, this takes a few seconds ..." );
+	try {
+		return testParser.parse(content);
+		console.log( "Done parsing." );
+	} catch (e) {
+		console.log(e);
+	}
 }
+
+var cases = getTests(); 
 
 var articles = {};
 
