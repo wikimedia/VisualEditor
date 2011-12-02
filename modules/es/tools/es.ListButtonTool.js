@@ -7,7 +7,8 @@ es.ListButtonTool.prototype.onClick = function() {
 };
 
 es.ListButtonTool.prototype.updateState = function( annotations, nodes ) {
-	function areSameTypeAndStyle( nodes, style ) {
+	// checks if all passed nodes are listItems of passed style
+	function check( nodes, style ) {
 		for( var i = 0; i < nodes.length; i++ ) {
 			parent = nodes[i].getParent();
 			if ( parent.getElementType() !== 'listItem' ) {
@@ -21,7 +22,7 @@ es.ListButtonTool.prototype.updateState = function( annotations, nodes ) {
 		return true;
 	}
 	
-	if ( areSameTypeAndStyle( nodes, this.name ) ) {
+	if ( check( nodes, this.name ) ) {
 		this.$.addClass( 'es-toolbarButtonTool-down' );
 	} else {
 		this.$.removeClass( 'es-toolbarButtonTool-down' );	
