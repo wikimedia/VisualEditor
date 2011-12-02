@@ -64,7 +64,7 @@ es.MenuView.prototype.addItem = function( item, before ) {
 			item.$ = $( '<div class="es-menuView-item"></div>' )
 				.attr( 'rel', item.name )
 				// TODO: i18n time!
-				.text( item.label );
+				.append( $( '<span></span>' ).text( item.label ) );
 		} else {
 			// No label, must be a break
 			item.$ = $( '<div class="es-menuView-break"></div>' )

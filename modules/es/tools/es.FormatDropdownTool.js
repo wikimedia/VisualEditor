@@ -96,7 +96,7 @@ es.FormatDropdownTool.prototype.updateState = function( annotations, nodes ) {
 	}
 	
 	if ( format === null ) {
-		this.$.text( '' );
+		this.$.html( '&nbsp;' );
 	} else {
 		var items = this.menuView.getItems();
 		for ( i = 0; i < items.length; i++ ) {
