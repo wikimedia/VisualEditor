@@ -40,11 +40,11 @@ es.ToolbarView = function( $container, surfaceView, config ) {
 			}
 		}
 	} );
-	this.surfaceView.model.on( 'select', function() {
-		_this.updateState();
-	} );
-	this.surfaceView.on( 'cursor', function() {
-		_this.updateState();
+
+	this.surfaceView.on( 'cursor', function( annotations, nodes ) {
+		for( var i = 0; i < _this.tools.length; i++ ) {
+			_this.tools[i].updateState( annotations, nodes );
+		}
 	} );
 
 	this.config = config || [
@@ -54,40 +54,6 @@ es.ToolbarView = function( $container, surfaceView, config ) {
 		{ 'name': 'list', 'items' : ['number', 'bullet'] }
 	];
 	this.setup();
-};
-
-es.ToolbarView.prototype.updateState = function() {
-	var	selection = this.surfaceView.currentSelection,
-		annotations,
-		nodes = [];
-
-	if( selection.from === selection.to ) {
-		var insertionAnnotations = this.surfaceView.getInsertionAnnotations();
-		annotations = {
-			'full': insertionAnnotations,
-			'partial': [],
-			'all': insertionAnnotations
-		};
-		nodes.push( this.surfaceView.documentView.model.getNodeFromOffset( selection.from ) );
-	} else {
-		annotations = this.surfaceView.documentView.model.getAnnotationsFromRange( selection );
-		var	startNode = this.surfaceView.documentView.model.getNodeFromOffset( selection.start ),
-			endNode = this.surfaceView.documentView.model.getNodeFromOffset( selection.end );
-		if ( startNode === endNode ) {
-			nodes.push( startNode );
-		} else {
-			this.surfaceView.documentView.model.traverseLeafNodes( function( node ) {
-				nodes.push( node );
-				if( node === endNode ) {
-					return false;
-				}
-			}, startNode );			
-		}
-	}
-
-	for( var i = 0; i < this.tools.length; i++ ) {
-		this.tools[i].updateState( annotations, nodes );
-	}
 };
 
 es.ToolbarView.prototype.setup = function() {

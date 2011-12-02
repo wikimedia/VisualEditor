@@ -30,6 +30,7 @@ es.SurfaceView = function( $container, model ) {
 	this.insertionAnnotations = [];
 	this.updateSelectionTimeout = undefined;
 	this.emitUpdateTimeout = undefined;
+	this.emitCursorTimeout = undefined;
 
 	// Interaction states
 	
@@ -145,6 +146,42 @@ es.SurfaceView = function( $container, model ) {
 };
 
 /* Methods */
+es.SurfaceView.prototype.emitCursor = function() {
+	if ( this.emitCursorTimeout ) {
+		clearTimeout( this.emitCursorTimeout );
+	}
+	var _this = this;
+	this.emitCursorTimeout = setTimeout( function() {
+		var	annotations,
+			nodes = [],
+			model = _this.documentView.model;
+	
+		if( _this.currentSelection.from === _this.currentSelection.to ) {
+			var insertionAnnotations = _this.getInsertionAnnotations();
+			annotations = {
+				'full': insertionAnnotations,
+				'partial': [],
+				'all': insertionAnnotations
+			};
+			nodes.push( model.getNodeFromOffset( _this.currentSelection.from ) );
+		} else {
+			annotations = model.getAnnotationsFromRange( _this.currentSelection );
+			var	startNode = model.getNodeFromOffset( _this.currentSelection.start ),
+				endNode = model.getNodeFromOffset( _this.currentSelection.end );
+			if ( startNode === endNode ) {
+				nodes.push( startNode );
+			} else {
+				model.traverseLeafNodes( function( node ) {
+					nodes.push( node );
+					if( node === endNode ) {
+						return false;
+					}
+				}, startNode );			
+			}
+		}
+		_this.emit( 'cursor', annotations, nodes );
+	}, 50 );
+};
 
 es.SurfaceView.prototype.getInsertionAnnotations = function() {
 	return this.insertionAnnotations;
@@ -152,7 +189,7 @@ es.SurfaceView.prototype.getInsertionAnnotations = function() {
 
 es.SurfaceView.prototype.addInsertionAnnotation = function( annotation ) {
 	this.insertionAnnotations.push( annotation );
-	this.emit( 'cursor' );
+	this.emitCursor();
 };
 
 es.SurfaceView.prototype.loadInsertionAnnotations = function( annotation ) {
@@ -165,7 +202,7 @@ es.SurfaceView.prototype.loadInsertionAnnotations = function( annotation ) {
 			i--;
 		}
 	}
-	this.emit( 'cursor' );
+	this.emitCursor();
 };
 
 es.SurfaceView.prototype.removeInsertionAnnotation = function( annotation ) {
@@ -173,12 +210,12 @@ es.SurfaceView.prototype.removeInsertionAnnotation = function( annotation ) {
 	if ( index !== -1 ) {
 		this.insertionAnnotations.splice( index, 1 );
 	}
-	this.emit( 'cursor' );
+	this.emitCursor();
 };
 
 es.SurfaceView.prototype.clearInsertionAnnotations = function() {
 	this.insertionAnnotations = [];
-	this.emit( 'cursor' );
+	this.emitCursor();
 };
 
 es.SurfaceView.prototype.getModel = function() {
