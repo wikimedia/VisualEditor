@@ -73,10 +73,17 @@
 .es-toolbarButtonTool-clear:before {
 	background-image: url(../images/clear.png);
 }
+.es-toolbarButtonTool-number:before {
+	background-image: url(../images/number.png);
+}
+.es-toolbarButtonTool-bullet:before {
+	background-image: url(../images/bullet.png);
+}
 .es-toolbarButtonTool-disabled.es-toolbarButtonTool-clear:before {
 	-moz-opacity: 0.25;
 	filter:alpha(opacity=25);
 	opacity: 0.25;
+}
 .es-toolbarButtonTool-clear:before {
 	background-image: url(../images/clear.png);
 }
