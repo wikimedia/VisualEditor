@@ -24,8 +24,13 @@ es.ContextView = function( surfaceView, $overlay ) {
 		'-',
 		{ 'name': 'link', 'label': 'Link to...', 'callback': function() {
 			_this.menu.hide();
-			_this.$panels.find( '[rel="link"]' ).show();
-			_this.$panels.find( '[rel="link"] input:first' ).focus();
+			_this.$panels
+				.show()
+				.find( '[rel="link"]' )
+					.show()
+					.end()
+				.find( '[rel="link"] input:first' )
+					.focus();
 		} },
 		'-',
 		{ 'name': 'copy', 'label': 'Copy' },
