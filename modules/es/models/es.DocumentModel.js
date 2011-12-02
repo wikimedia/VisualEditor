@@ -1173,18 +1173,18 @@ es.DocumentModel.prototype.rollback = function( transaction ) {
 
 es.DocumentModel.prototype.prepareLeafConversion = function( range, type, attributes ) {
 	range.normalize();
-	var	fromNode = this.getNodeFromOffset( range.start ),
-		toNode =  this.getNodeFromOffset( range.end ),
+	var	startNode = this.getNodeFromOffset( range.start ),
+		endNode =  this.getNodeFromOffset( range.end ),
 		nodes = [],
 		nodeOffset,
 		txs = [];
 
 	this.traverseLeafNodes( function( node ) {
 		nodes.push( node );
-		if( node === toNode ) {
+		if( node === endNode ) {
 			return false;
 		}
-	}, fromNode );
+	}, startNode );
 
 	// TODO: skip nodes which have the same type and attributes as the target
 

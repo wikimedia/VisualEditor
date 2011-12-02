@@ -56,7 +56,8 @@ es.ToolbarView = function( $container, surfaceView, config ) {
 
 es.ToolbarView.prototype.updateState = function() {
 	var	selection = this.surfaceView.currentSelection,
-		annotations;
+		annotations,
+		nodes = [];
 
 	if( selection.from === selection.to ) {
 		var insertionAnnotations = this.surfaceView.getInsertionAnnotations();
@@ -65,12 +66,25 @@ es.ToolbarView.prototype.updateState = function() {
 			'partial': [],
 			'all': insertionAnnotations
 		};
+		nodes.push( this.surfaceView.documentView.model.getNodeFromOffset( selection.from ) );
 	} else {
 		annotations = this.surfaceView.documentView.model.getAnnotationsFromRange( selection );
+		var	startNode = this.surfaceView.documentView.model.getNodeFromOffset( selection.start ),
+			endNode = this.surfaceView.documentView.model.getNodeFromOffset( selection.end );
+		if ( startNode === endNode ) {
+			nodes.push( startNode );
+		} else {
+			this.surfaceView.documentView.model.traverseLeafNodes( function( node ) {
+				nodes.push( node );
+				if( node === endNode ) {
+					return false;
+				}
+			}, startNode );			
+		}
 	}
 
 	for( var i = 0; i < this.tools.length; i++ ) {
-		this.tools[i].updateState( annotations );
+		this.tools[i].updateState( annotations, nodes );
 	}
 };
 
