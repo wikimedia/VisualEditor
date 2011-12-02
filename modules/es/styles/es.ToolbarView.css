@@ -1,6 +1,7 @@
 .es-toolbarGroup {
 	display: inline-block;
-	padding: 0.125em;
+	padding: 0.25em;
+	border-right: solid 1px #f0f3f5;
 }
 .es-toolbarDivider {
 	display: inline-block;
