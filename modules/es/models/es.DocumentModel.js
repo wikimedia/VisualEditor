@@ -705,8 +705,13 @@ es.DocumentModel.prototype.getAnnotationsFromRange = function( range ) {
 			'partial': [],
 			'all': []
 		},
-		map = {};
+		map = {},
+		elementsCount = 0;
 	for ( var i = range.start; i < range.end; i++ ) {
+		if ( es.DocumentModel.isElementData( this.data, i ) ) {
+			elementsCount++;
+			continue;
+		}
 		for ( var j = 1; j < this.data[i].length; j++ ) {
 			hash = this.data[i][j].hash;
 			if ( hash in map ) {
@@ -718,13 +723,14 @@ es.DocumentModel.prototype.getAnnotationsFromRange = function( range ) {
 	}
 	var length = range.getLength();
 	for ( var hash in map ) {
-		if ( map[hash][1] === length ) {
+		if ( map[hash][1] === length - elementsCount ) {
 			annotations.full.push( map[hash][0] );
 		} else {
 			annotations.partial.push( map[hash][0] );
 		}
 		annotations.all.push( map[hash][0] );
 	}
+	console.log(annotations);
 	return annotations;
 };
 
