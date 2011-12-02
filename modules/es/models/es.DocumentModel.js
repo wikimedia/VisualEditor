@@ -730,7 +730,6 @@ es.DocumentModel.prototype.getAnnotationsFromRange = function( range ) {
 		}
 		annotations.all.push( map[hash][0] );
 	}
-	console.log(annotations);
 	return annotations;
 };
 
@@ -787,7 +786,6 @@ es.DocumentModel.prototype.getWordBoundaries = function( offset ) {
  * @param {Integer} Offset a given distance from the given offset
  */
 es.DocumentModel.prototype.getRelativeContentOffset = function( offset, distance ) {
-	//console.log(offset);
 	if ( distance === 0 ) {
 		return offset;
 	}
