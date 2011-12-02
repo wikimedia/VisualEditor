@@ -6,65 +6,55 @@
  * @param {jQuery} $overlay DOM selection to add nodes to
  */
 es.ContextView = function( surfaceView, $overlay ) {
+	var _this = this;
+
+	// Properties
 	this.surfaceView = surfaceView;
 	this.$ = $( '<div class="es-contextView"></div>' ).appendTo( $overlay || $( 'body' ) );
-	this.$toolbar = $( '<div class="es-contextView-menuSection"></div>' );
-	this.$container = $( '<div class="es-contextView-container"></div>' )
-		.appendTo( this.$ );
-	this.$menu = $( '<div class="es-contextView-menu"></div>' )
-		.append( this.$toolbar )
-		.appendTo( this.$container );
-	this.$panels = $( '<div class="es-contextView-panels"></div>' )
-		.appendTo( this.$container );
-	this.$icon = $( '<div class="es-contextView-icon"></div>' )
-		.appendTo( this.$ );
+	this.$panels = $( '<div class="es-contextView-panels"></div>' ).appendTo( this.$ );
+	this.$toolbar = $( '<div class="es-contextView-toolbar"></div>' );
 	this.toolbarView = new es.ToolbarView(
 		this.$toolbar,
 		this.surfaceView,
 		[{ 'name': 'textStyle', 'items' : [ 'bold', 'italic', 'formatting', 'clear' ] }]
 	);
+	this.menu = new es.MenuView( [
+		// Example menu items
+		{ 'name': 'tools', '$': this.$toolbar },
+		'-',
+		{ 'name': 'link', 'label': 'Link to...', 'callback': function() {
+			_this.menu.hide();
+			_this.$panels.find( '[rel="link"]' ).show();
+			_this.$panels.find( '[rel="link"] input:first' ).focus();
+		} },
+		'-',
+		{ 'name': 'copy', 'label': 'Copy' },
+		{ 'name': 'cut', 'label': 'Cut' },
+		{ 'name': 'paste', 'label': 'Paste' }
+	] );
+	this.$.append( this.menu.$ );
+	this.$icon = $( '<div class="es-contextView-icon"></div>' ).appendTo( this.$ );
 
-	// Example menu items
-	this.$menu.append(
-		'<div class="es-contextView-menuItem-break"></div>' +
-		'<div class="es-contextView-menuItem" rel="link">Link to...</div>' +
-		'<div class="es-contextView-menuItem-break"></div>' +
-		'<div class="es-contextView-menuItem">Copy</div>' +
-		'<div class="es-contextView-menuItem">Cut</div>' +
-		'<div class="es-contextView-menuItem">Paste</div>'
-	);
-
+	// Example panel
 	this.$panels.append(
 		'<div class="es-contextView-panel" rel="link">' +
 			'<div><label>Page title or URL <input type="text"></label></div>' +
 			'<div><a href="#cancel">Cancel</a> <button>Change</button></div>' +
 		'</div>'
 	);
+	this.$panels.find( '[href="#cancel"]' ).click( function() {
+		_this.$panels.children().hide();
+	} );
 
 	// Events
-	var _this = this;
 	this.$icon.click( function() {
-		_this.$container.toggle();
-	} );
-
-	this.$menu.find( '[rel="link"]' ).click( function() {
-		_this.$menu.hide();
-		_this.$panels.find( '[rel="link"]' ).show();
-		_this.$panels.find( '[rel="link"] input:first' ).focus();
-	} );
-	this.$panels.find( 'button, [href="#cancel"]' ).click( function() {
-		_this.$menu.show();
-		_this.$panels.children().hide();
-		_this.$container.toggle();
-		_this.surfaceView.$input.focus();
-		return false;
+		_this.menu.toggle();
 	} );
 };
 
 /* Methods */
 
 es.ContextView.prototype.set = function() {
-
 	this.$.removeClass(
 		'es-contextView-position-below es-contextView-position-above ' +
 		'es-contextView-position-left es-contextView-position-right ' +
@@ -91,12 +81,12 @@ es.ContextView.prototype.set = function() {
 		}
 	}
 	if ( position ) {
-		if ( position.left + this.$container.width() < $( 'body' ).width() ) {
+		if ( position.left + this.menu.$.width() < $( 'body' ).width() ) {
 			this.$.addClass( 'es-contextView-position-left' );
 		} else {
 			this.$.addClass( 'es-contextView-position-right' );
 		}
-		if ( position.top + this.$container.height() < $( window ).height() + $( window ).scrollTop() ) {
+		if ( position.top + this.menu.$.height() < $( window ).height() + $( window ).scrollTop() ) {
 			this.$.addClass( 'es-contextView-position-below' );
 		} else {
 			this.$.addClass( 'es-contextView-position-above' );
@@ -107,6 +97,7 @@ es.ContextView.prototype.set = function() {
 };
 
 es.ContextView.prototype.clear = function() {
+	this.$panels.hide().children().hide();
 	this.$icon.hide();
-	this.$container.hide();
+	this.menu.hide();
 };

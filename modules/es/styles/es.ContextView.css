@@ -45,7 +45,23 @@
 	border-color: #b3d6f6;
 }
 
-.es-contextView-container {
+.es-contextView-position-above .es-contextView-menu {
+	bottom: -4px;
+}
+
+.es-contextView-position-below .es-contextView-menu {
+	top: 3px;
+}
+
+.es-contextView-position-left .es-contextView-menu {
+	left: -1px;
+}
+
+.es-contextView-position-right .es-contextView-menu {
+	right: -1px;
+}
+
+.es-contextView-panels {
 	position: absolute;
 	border: solid 1px #cccccc;
 	-webkit-border-radius: 0.25em;
@@ -59,50 +75,12 @@
 	padding: 0.33em 0;
 }
 
-.es-contextView-container {
-	display: none;
-}
-
-.es-contextView-position-above .es-contextView-container {
-	bottom: -4px;
-}
-
-.es-contextView-position-below .es-contextView-container {
-	top: 3px;
-}
-
-.es-contextView-position-left .es-contextView-container {
-	left: -1px;
-}
-
-.es-contextView-position-right .es-contextView-container {
-	right: -1px;
-}
-
-.es-contextView-menuItem {
-	padding: 0.33em 1em;
-	cursor: pointer;
-	white-space: nowrap;
-}
-
-.es-contextView-menuSection {
-	padding: 0.33em 0.66em;
-	white-space: nowrap;
-}
-
-.es-contextView-menuItem-break {
-	margin: 0.33em 0;
-	border-top: solid 1px #dddddd;
-}
-
-.es-contextView-menuItem:hover {
-	background-color: #b3d6f6;
-}
-
-.es-contextView-panels {
-}
-
 .es-contextView-panel {
 	display: none;
 	padding: 1em;
+}
+
+.es-contextView-toolbar {
+	padding: 0.33em 0.66em;
+	white-space: nowrap;
 }

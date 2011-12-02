@@ -93,6 +93,7 @@ $wgResourceModules += array(
 			'es/views/es.HeadingView.js',
 			'es/views/es.ListItemView.js',
 			'es/views/es.ListView.js',
+			'es/views/es.MenuView.js',
 			'es/views/es.ParagraphView.js',
 			'es/views/es.PreView.js',
 			'es/views/es.SurfaceView.js',
@@ -115,6 +116,7 @@ $wgResourceModules += array(
 			'es/styles/es.ContentView.css',
 			'es/styles/es.DocumentView.css',
 			'es/styles/es.ToolbarView.css',
+			'es/styles/es.MenuView.css',
 		),
 		'dependencies' => array(
 			'jquery',
