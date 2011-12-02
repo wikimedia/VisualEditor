@@ -18,28 +18,30 @@ es.ContextView = function( surfaceView, $overlay ) {
 		this.surfaceView,
 		[{ 'name': 'textStyle', 'items' : [ 'bold', 'italic', 'formatting', 'clear' ] }]
 	);
-	this.menu = new es.MenuView( [
-		// Example menu items
-		{ 'name': 'tools', '$': this.$toolbar },
-		'-',
-		{ 'name': 'link', 'label': 'Link to...', 'callback': function() {
-			_this.menu.hide();
-			_this.$panels
-				.show()
-				.find( '[rel="link"]' )
+	this.menuView = new es.MenuView( [
+			// Example menu items
+			{ 'name': 'tools', '$': this.$toolbar },
+			'-',
+			{ 'name': 'link', 'label': 'Link to...', 'callback': function( item ) {
+				_this.menuView.hide();
+				_this.$panels
 					.show()
-					.end()
-				.find( '[rel="link"] input:first' )
-					.focus();
-		} },
-		'-',
-		{ 'name': 'copy', 'label': 'Copy' },
-		{ 'name': 'cut', 'label': 'Cut' },
-		{ 'name': 'paste', 'label': 'Paste' }
-	] );
-	this.$.append( this.menu.$ );
+					.find( '[rel="link"]' )
+						.show()
+						.end()
+					.find( '[rel="link"] input:first' )
+						.focus();
+			} },
+			'-',
+			{ 'name': 'copy', 'label': 'Copy' },
+			{ 'name': 'cut', 'label': 'Cut' },
+			{ 'name': 'paste', 'label': 'Paste' }
+		],
+		null,
+		this.$
+	);
 	this.$icon = $( '<div class="es-contextView-icon"></div>' ).appendTo( this.$ );
-
+	
 	// Example panel
 	this.$panels.append(
 		'<div class="es-contextView-panel" rel="link">' +
@@ -52,8 +54,18 @@ es.ContextView = function( surfaceView, $overlay ) {
 	} );
 
 	// Events
-	this.$icon.click( function() {
-		_this.menu.toggle();
+	this.$icon.bind( {
+		'mousedown': function( e ) {
+			if ( e.button === 0 ) {
+				e.preventDefault();
+				return false;
+			}
+		},
+		'mouseup': function( e ) {
+			if ( e.button === 0 ) {
+				_this.menuView.toggle();
+			}
+		}
 	} );
 };
 
@@ -86,12 +98,13 @@ es.ContextView.prototype.set = function() {
 		}
 	}
 	if ( position ) {
-		if ( position.left + this.menu.$.width() < $( 'body' ).width() ) {
+		if ( position.left + this.menuView.$.width() < $( 'body' ).width() ) {
 			this.$.addClass( 'es-contextView-position-left' );
 		} else {
 			this.$.addClass( 'es-contextView-position-right' );
 		}
-		if ( position.top + this.menu.$.height() < $( window ).height() + $( window ).scrollTop() ) {
+		var $window = $( window );
+		if ( position.top + this.menuView.$.height() < $window.height() + $window.scrollTop() ) {
 			this.$.addClass( 'es-contextView-position-below' );
 		} else {
 			this.$.addClass( 'es-contextView-position-above' );
@@ -104,5 +117,5 @@ es.ContextView.prototype.set = function() {
 es.ContextView.prototype.clear = function() {
 	this.$panels.hide().children().hide();
 	this.$icon.hide();
-	this.menu.hide();
+	this.menuView.hide();
 };

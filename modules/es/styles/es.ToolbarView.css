@@ -88,6 +88,19 @@
 	background-image: url(../images/clear.png);
 }
 .es-toolbarDropdownTool {
+	border-color: #dddddd;
+	-webkit-border-radius: 0.25em;
+	-moz-border-radius: 0.25em;
+	-o-border-radius: 0.25em;
+	background-color: white;
+	font-size: 0.8em;
+	line-height: 24px;
+	padding-left: 0.75em;
+	padding-right: 24px;
+	background-image: url(../images/arrow-down.png);
+	background-position: 9em center;
+	background-repeat: no-repeat;
 }
-.es-toolbarDropdownTool-formatting {
+.es-toolbarDropdownTool-format {
+	width: 8em;
 }

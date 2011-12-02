@@ -1,28 +1,35 @@
-es.DropdownTool = function( toolbar, name ) {
+es.DropdownTool = function( toolbar, name, items ) {
+	// Inheritance
 	es.Tool.call( this, toolbar, name );
 
-	// for es.extendClass
+	// Early exit when extending via es.extendClass
 	if ( !name ) {
 		return;
 	}
-
-	this.$.addClass( 'es-toolbarDropdownTool' ).addClass( 'es-toolbarDropdownTool-' + name );
 	
-	this.$select = $( '<select>' );
-	this.$.append( this.$select );
-
+	// Properties
 	var _this = this;
+	this.menuView = new es.MenuView( items, function( item ) {
+		_this.onSelect( item );
+		_this.$.text( item.label );
+	} );
 
-	this.$.bind( {
-		'change': function( e ) {
-			_this.onChange( e );
+	$( document ).add( this.toolbar.surfaceView.$ ).mousedown( function( e ) {
+		if ( e.button === 0 ) {
+			_this.menuView.hide();
 		}
 	} );
 
+	// DOM Changes
+	this.$.addClass( 'es-toolbarDropdownTool' ).addClass( 'es-toolbarDropdownTool-' + name );
 };
 
-es.DropdownTool.prototype.onChange = function() {
-	throw 'DropdownTool.onChange not implemented in this subclass:' + this.constructor;
+/* Methods */
+
+es.DropdownTool.prototype.onSelect = function( item ) {
+	throw 'DropdownTool.onSelect not implemented in this subclass:' + this.constructor;
 };
+
+/* Inheritance */
 
 es.extendClass( es.DropdownTool, es.Tool );

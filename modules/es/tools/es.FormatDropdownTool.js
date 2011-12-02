@@ -1,101 +1,123 @@
 es.FormatDropdownTool = function( toolbar, name ) {
-	es.DropdownTool.call( this, toolbar, name );
-
-	this.formats = [
+	// Inheritance
+	es.DropdownTool.call( this, toolbar, name, [
 		{ 
-			'name': 'Paragraph',
+			'name': 'paragraph',
+			'label': 'Paragraph',
 			'type' : 'paragraph'
 		},
 		{
-			'name': 'Heading Level 1',
+			'name': 'heading-1',
+			'label': 'Heading Level 1',
 			'type' : 'heading',
 			'attributes': { 'level': 1 }
 		},
 		{
-			'name': 'Heading Level 2',
+			'name': 'heading-2',
+			'label': 'Heading Level 2',
 			'type' : 'heading',
 			'attributes': { 'level': 2 }
 		},
 		{
-			'name': 'Heading Level 3',
+			'name': 'heading-3',
+			'label': 'Heading Level 3',
 			'type' : 'heading',
 			'attributes': { 'level': 3 }
 		},
 		{
-			'name': 'Heading Level 4',
+			'name': 'heading-4',
+			'label': 'Heading Level 4',
 			'type' : 'heading',
 			'attributes': { 'level': 4 }
 		},
 		{
-			'name': 'Heading Level 5',
+			'name': 'heading-5',
+			'label': 'Heading Level 5',
 			'type' : 'heading',
 			'attributes': { 'level': 5 }
 		},
 		{
-			'name': 'Heading Level 6',
+			'name': 'heading-6',
+			'label': 'Heading Level 6',
 			'type' : 'heading',
 			'attributes': { 'level': 6 }
 		},
 		{
-			'name': 'Preformatted',
+			'name': 'pre',
+			'label': 'Preformatted',
 			'type' : 'pre'
 		}
-	];
-	
-	this.$select.append( '<option>' );
+	] );
 
-	for ( var i = 0; i < this.formats.length; i++ ) {
-		$( '<option>' )
-			.val( i )
-			.html( this.formats[i].name )
-			.appendTo( this.$select );
-	}
+	var _this = this;
+	this.$.bind( {
+		'mousedown': function( e ) {
+			if ( e.button === 0 ) {
+				e.preventDefault();
+				return false;
+			}
+		},
+		'mouseup': function( e ) {
+			if ( e.button === 0 ) {
+				_this.menuView.setPosition( es.Position.newFromElementPagePosition( _this.$ ) );
+				_this.menuView.toggle();
+			}
+		}
+	} );
 };
 
-es.FormatDropdownTool.prototype.onChange = function() {
-	var index = this.$select.val();
-	if ( index in this.formats ) {
-		var txs = this.toolbar.surfaceView.model.getDocument().prepareLeafConversion(
-			this.toolbar.surfaceView.currentSelection,
-			this.formats[index].type,
-			this.formats[index].attributes
-		)
-		for ( var i = 0; i < txs.length; i++ ) {
-			this.toolbar.surfaceView.model.transact( txs[i] );
-		}
+/* Methods */
+
+es.FormatDropdownTool.prototype.onSelect = function( item ) {
+	var txs = this.toolbar.surfaceView.model.getDocument().prepareLeafConversion(
+		this.toolbar.surfaceView.currentSelection,
+		item.type,
+		item.attributes
+	);
+	for ( var i = 0; i < txs.length; i++ ) {
+		this.toolbar.surfaceView.model.transact( txs[i] );
 	}
 };
 
 es.FormatDropdownTool.prototype.updateState = function( annotations, nodes ) {
-	var format = {
-		'type': nodes[0].getElementType(),
-		'attributes': nodes[0].getElement().attributes
-	};
-
-	for( var i = 1; i < nodes.length; i++ ) {
-		if ( format.type != nodes[i].getElementType()
-			|| !es.compareObjects( format.attributes, nodes[i].element.attributes ) ) {
+	// Get type and attributes of the first node
+	var i,
+		format = {
+			'type': nodes[0].getElementType(),
+			'attributes': nodes[0].getElement().attributes
+		};
+	// Look for mismatches, in which case format should be null
+	for ( i = 1; i < nodes.length; i++ ) {
+		if ( format.type != nodes[i].getElementType() ||
+			!es.compareObjects( format.attributes, nodes[i].element.attributes ) ) {
 			format = null;
 			break;
 		}
 	}
 	
 	if ( format === null ) {
-		this.$select.val( null );
+		this.$.text( '' );
 	} else {
-		for ( var i = 0; i < this.formats.length; i++ ) {
-			if ( format.type === this.formats[i].type
-				&& es.compareObjects( format.attributes, this.formats[i].attributes ) ) {
-					this.$select.val( i );
-					break;
+		var items = this.menuView.getItems();
+		for ( i = 0; i < items.length; i++ ) {
+			if (
+				format.type === items[i].type &&
+				es.compareObjects( format.attributes, items[i].attributes )
+			) {
+				this.$.text( items[i].label );
+				break;
 			}
 		}
 	}
 };
 
+/* Registration */
+
 es.Tool.tools.format = {
-	constructor: es.FormatDropdownTool,
-	name: 'format'
+	'constructor': es.FormatDropdownTool,
+	'name': 'format'
 };
+
+/* Inheritance */
 
 es.extendClass( es.FormatDropdownTool, es.DropdownTool );

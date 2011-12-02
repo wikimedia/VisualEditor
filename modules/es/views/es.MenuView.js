@@ -3,13 +3,16 @@
  * 
  * @class
  * @constructor
- * @param {jQuery} $overlay DOM selection to add nodes to
+ * @param {Object[]} items List of items to append initially
+ * @param {Function} callback Function to call if an item doesn't have it's own callback
+ * @param {jQuery} [$overlay=$( 'body' )] DOM selection to add nodes to
  */
-es.MenuView = function( items, $overlay ) {
+es.MenuView = function( items, callback, $overlay ) {
 	// Properties
 	this.$ = $( '<div class="es-menuView"></div>' ).appendTo( $overlay || $( 'body' ) );
 	this.items = [];
 	this.autoNamedBreaks = 0;
+	this.callback = callback;
 	
 	// Items
 	if ( es.isArray( items ) ) {
@@ -91,6 +94,14 @@ es.MenuView.prototype.removeItem = function( name ) {
 	}
 };
 
+es.MenuView.prototype.getItems = function() {
+	return this.items;
+};
+
+es.MenuView.prototype.setPosition = function( position ) {
+	return this.$.css( { 'top': position.top, 'left': position.left } );
+};
+
 es.MenuView.prototype.show = function() {
 	this.$.show();
 };
@@ -105,7 +116,9 @@ es.MenuView.prototype.hide = function() {
 
 es.MenuView.prototype.onSelect = function( item, event ) {
 	if ( typeof item.callback === 'function' ) {
-		item.callback();
+		item.callback( item );
+	} else if ( typeof this.callback === 'function' ) {
+		this.callback( item );
 	}
 	this.hide();
 };
