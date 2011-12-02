@@ -45,19 +45,19 @@
 	border-color: #b3d6f6;
 }
 
-.es-contextView-position-above .es-contextView-menu {
+.es-contextView-position-above .es-menuView {
 	bottom: -4px;
 }
 
-.es-contextView-position-below .es-contextView-menu {
+.es-contextView-position-below .es-menuView {
 	top: 3px;
 }
 
-.es-contextView-position-left .es-contextView-menu {
+.es-contextView-position-left .es-menuView {
 	left: -1px;
 }
 
-.es-contextView-position-right .es-contextView-menu {
+.es-contextView-position-right .es-menuView {
 	right: -1px;
 }
 
