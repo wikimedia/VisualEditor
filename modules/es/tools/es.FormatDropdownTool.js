@@ -8,37 +8,37 @@ es.FormatDropdownTool = function( toolbar, name ) {
 		},
 		{
 			'name': 'heading-1',
-			'label': 'Heading Level 1',
+			'label': 'Heading 1',
 			'type' : 'heading',
 			'attributes': { 'level': 1 }
 		},
 		{
 			'name': 'heading-2',
-			'label': 'Heading Level 2',
+			'label': 'Heading 2',
 			'type' : 'heading',
 			'attributes': { 'level': 2 }
 		},
 		{
 			'name': 'heading-3',
-			'label': 'Heading Level 3',
+			'label': 'Heading 3',
 			'type' : 'heading',
 			'attributes': { 'level': 3 }
 		},
 		{
 			'name': 'heading-4',
-			'label': 'Heading Level 4',
+			'label': 'Heading 4',
 			'type' : 'heading',
 			'attributes': { 'level': 4 }
 		},
 		{
 			'name': 'heading-5',
-			'label': 'Heading Level 5',
+			'label': 'Heading 5',
 			'type' : 'heading',
 			'attributes': { 'level': 5 }
 		},
 		{
 			'name': 'heading-6',
-			'label': 'Heading Level 6',
+			'label': 'Heading 6',
 			'type' : 'heading',
 			'attributes': { 'level': 6 }
 		},
