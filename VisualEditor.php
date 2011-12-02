@@ -34,6 +34,7 @@ $wgExtensionCredits['other'][] = array(
 );
 $dir = dirname( __FILE__ ) . '/';
 $wgExtensionMessagesFiles['VisualEditor'] = $dir . 'VisualEditor.i18n.php';
+$wgExtensionMessagesFiles['VisualEditorAliases'] = $dir . 'VisualEditor.alias.php';
 $wgAutoloadClasses['SpecialVisualEditorSandbox'] = $dir . 'SpecialVisualEditorSandbox.php';
 $wgSpecialPages['VisualEditorSandbox'] = 'SpecialVisualEditorSandbox';
 $wgSpecialPageGroups['VisualEditorSandbox'] = 'other';
