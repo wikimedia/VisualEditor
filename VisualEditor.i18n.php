@@ -37,6 +37,15 @@ $messages['hsb'] = array(
 	'visualeditor-sandbox-title' => 'WYSIWYG-editor - hrajkanišćo',
 );
 
+/** Interlingua (Interlingua)
+ * @author McDutchie
+ */
+$messages['ia'] = array(
+	'visualeditor' => 'Editor visual',
+	'visualeditor-desc' => 'Editor visual pro MediaWiki',
+	'visualeditor-sandbox-title' => 'Cassa a sablo del editor visual',
+);
+
 /** Macedonian (Македонски)
  * @author Bjankuloski06
  */
