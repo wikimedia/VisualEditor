@@ -70,13 +70,18 @@ es.SurfaceView = function( $container, model ) {
 	// Events
 
 	this.model.on( 'select', function( selection ) {
+
+		
+
 		// Keep a copy of the current selection on hand
 		_this.currentSelection = selection.clone();
 		// Respond to selection changes
 		_this.updateSelection();
 		if ( selection.getLength() ) {
+			_this.$input.val('#COPY#').select();
 			_this.clearInsertionAnnotations();
 		} else {
+			_this.$input.val('').select();
 			_this.loadInsertionAnnotations();
 		}
 	} );
@@ -113,6 +118,11 @@ es.SurfaceView = function( $container, model ) {
 				// Release our event handlers when not focused
 				$document.unbind( '.es-surfaceView' );
 				_this.hideCursor();
+			},
+			'paste': function() {
+				setTimeout( function() {
+					_this.insertFromInput();
+				}, 0 );
 			}
 		} );
 	$window.resize( function() {
@@ -397,6 +407,9 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 			this.keyboard.keys.shift = true;
 			this.keyboard.selecting = true;
 			break;
+		// Ctrl
+		case 17:
+			break;
 		// Home
 		case 36:
 			this.moveCursor( 'left', 'line' );
@@ -512,7 +525,9 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 			}
 		// Insert content (maybe)
 		default:
-			handleInsert();
+			if ( !e.ctrlKey || ( e.ctrlKey && e.keyCode === 86 ) ) {
+				handleInsert();
+			}
 			break;
 	}
 	return true;
