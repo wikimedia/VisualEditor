@@ -18,6 +18,12 @@ var isBlock = function isBlock (name) {
 		case 'pre':
 		case 'center':
 		case 'blockquote':
+		case 'h1':
+		case 'h2':
+		case 'h3':
+		case 'h4':
+		case 'h5':
+		case 'h6':
 			return true;
 		default:
 			return false;

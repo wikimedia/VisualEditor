@@ -321,13 +321,14 @@ function normalizeHTML(source) {
 // known-ok differences.
 function normalizeOut ( out ) {
 	// TODO: Do not strip newlines in pre and nowiki blocks!
-	return out.replace(/\n| data-[a-zA-Z]+="[^">]+"/g, '')
+	return out.replace(/\n| data-[a-zA-Z]+="[^">]*"/g, '')
 				.replace(/<!--.*?-->\n?/gm, '');
 }
 
 function formatHTML ( source ) {
 	// Quick hack to insert newlines before some block level start tags
-	return source.replace(/(?!^)<((div|dd|dt|li|p|table|tr|td|tbody|dl|ol|ul)[^>]*)>/g,
+	return source.replace(
+			/(?!^)<((div|dd|dt|li|p|table|tr|td|tbody|dl|ol|ul|h1|h2|h3|h4|h5|h6)[^>]*)>/g,
 											'\n<$1>');
 }
 
