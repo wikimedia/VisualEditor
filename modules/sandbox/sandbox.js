@@ -252,6 +252,31 @@ $(document).ready( function() {
 			},
 			{
 				'type': 'paragraph',
+				'content': { 'text': 'Test 22' }
+			},
+			{
+				'type': 'paragraph',
+				'content': { 'text': 'Test 22' }
+			},
+			{
+				'type': 'list',
+				'children': [
+					{
+						'type': 'listItem',
+						'attributes': {
+							'styles': ['bullet']
+						},
+						'children' : [
+							{
+								'type': 'paragraph',
+								'content': { 'text': 'Test 22/333' }
+							}
+						]
+					}
+				]
+			},
+			{
+				'type': 'paragraph',
 				'content': { 'text': 'Test 333' }
 			},
 			{

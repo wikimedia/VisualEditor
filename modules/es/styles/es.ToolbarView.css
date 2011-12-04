@@ -80,7 +80,15 @@
 .es-toolbarButtonTool-bullet:before {
 	background-image: url(../images/bullet.png);
 }
-.es-toolbarButtonTool-disabled.es-toolbarButtonTool-clear:before {
+.es-toolbarButtonTool-indent:before {
+	background-image: url(../images/indent.png);
+}
+.es-toolbarButtonTool-outdent:before {
+	background-image: url(../images/outdent.png);
+}
+.es-toolbarButtonTool-disabled.es-toolbarButtonTool-clear:before,
+.es-toolbarButtonTool-disabled.es-toolbarButtonTool-indent:before,
+.es-toolbarButtonTool-disabled.es-toolbarButtonTool-outdent:before {
 	-moz-opacity: 0.25;
 	filter:alpha(opacity=25);
 	opacity: 0.25;

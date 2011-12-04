@@ -108,6 +108,7 @@ $wgResourceModules += array(
 			'es/tools/es.ClearButtonTool.js',
 			'es/tools/es.HistoryButtonTool.js',
 			'es/tools/es.ListButtonTool.js',
+			'es/tools/es.IndentationButtonTool.js',
 			'es/tools/es.DropdownTool.js',
 			'es/tools/es.FormatDropdownTool.js'
 			
