@@ -268,7 +268,7 @@ es.DocumentModelNode.prototype.getContentText = function( range ) {
 	var text = '',
 		element = false;
 	for ( var i = 0, length = content.length; i < length; i++ ) {
-		if ( typeof content[i] === 'object' ) {
+		if ( typeof content[i].type === 'string' ) {
 			if ( i ) {
 				element = true;
 			}
