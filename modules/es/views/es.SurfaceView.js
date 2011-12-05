@@ -671,9 +671,25 @@ es.SurfaceView.prototype.handleEnter = function() {
 es.SurfaceView.prototype.insertFromInput = function() {
 	var selection = this.currentSelection.clone(),
 		val = this.$input.val();
-	this.$input.val( '' );
 	if ( val.length > 0 ) {
-		//debugger;
+		// Check if there was any effective input
+		var input = this.$input[0],
+			// Internet Explorer
+			range = document.selection && document.selection.createRange();
+		if (
+			// DOM 3.0
+			( 'selectionStart' in input && input.selectionEnd - input.selectionStart ) ||
+			// Internet Explorer
+			( range && range.text.length )
+		) {
+			// The input is still selected, so the key must not have inserted anything
+			return;
+		}
+
+		// Clear the value for more input
+		this.$input.val( '' );
+
+		// Prepare and process a transaction
 		var tx;
 		if ( selection.from != selection.to ) {
 			tx = this.model.getDocument().prepareRemoval( selection );
@@ -683,10 +699,10 @@ es.SurfaceView.prototype.insertFromInput = function() {
 		}
 		var data = val.split('');
 		es.DocumentModel.addAnnotationsToData( data, this.getInsertionAnnotations() );
-		
 		tx = this.model.getDocument().prepareInsertion( selection.from, data );
 		this.model.transact( tx, true );
 
+		// Move the selection
 		selection.from += val.length;
 		selection.to += val.length;
 		this.model.select( selection );
