@@ -274,7 +274,7 @@ es.SurfaceView.prototype.emitUpdate = function( delay ) {
 
 es.SurfaceView.prototype.onMouseDown = function( e ) {
 	// Only for left mouse button
-	if ( e.button === 0 ) {
+	if ( e.which === 1 ) {
 		var selection = this.currentSelection.clone(),
 			offset = this.documentView.getOffsetFromEvent( e );
 		// Single click
@@ -332,7 +332,7 @@ es.SurfaceView.prototype.onMouseDown = function( e ) {
 
 es.SurfaceView.prototype.onMouseMove = function( e ) {
 	// Only with the left mouse button while in selecting mode
-	if ( e.button === 0 && this.mouse.selectingMode ) {
+	if ( e.which === 1 && this.mouse.selectingMode ) {
 		var selection = this.currentSelection.clone(),
 			offset = this.documentView.getOffsetFromEvent( e );
 
@@ -379,7 +379,7 @@ es.SurfaceView.prototype.onMouseMove = function( e ) {
 };
 
 es.SurfaceView.prototype.onMouseUp = function( e ) {
-	if ( e.button === 0 ) { // left mouse button 
+	if ( e.which === 1 ) { // left mouse button 
 		this.mouse.selectingMode = this.mouse.selectedRange = null;
 		this.model.select( this.currentSelection );
 		// We have to manually call this because the selection will not have changed between the

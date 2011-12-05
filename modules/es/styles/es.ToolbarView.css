@@ -2,6 +2,7 @@
 	display: inline-block;
 	padding: 0.25em;
 	border-right: solid 1px #f0f3f5;
+	vertical-align: middle;
 }
 .es-toolbarDivider {
 	display: inline-block;
