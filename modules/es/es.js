@@ -175,12 +175,13 @@ es.copyObject = function( source ) {
  * @static
  * @method
  * @param {Array} dst Array to splice insertion into. Will be modified
- * @param {Number} offset Offset in arr to splice insertion in at. May be negative; see the 'index' parameter for Array.prototype.splice()
+ * @param {Number} offset Offset in arr to splice insertion in at. May be negative; see the 'index'
+ * parameter for Array.prototype.splice()
  * @param {Array} src Array of items to insert
  */
 es.insertIntoArray = function( dst, offset, src ) {
-	// We need to splice insertion in in batches, because of parameter list length limits which vary cross-browser.
-	// 1024 seems to be a safe batch size on all browsers.
+	// We need to splice insertion in in batches, because of parameter list length limits which vary
+	// cross-browser - 1024 seems to be a safe batch size on all browsers
 	var index = 0, batchSize = 1024;
 	while ( index < src.length ) {
 		// Call arr.splice( offset, 0, i0, i1, i2, ..., i1023 );
