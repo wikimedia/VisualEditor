@@ -89,3 +89,7 @@
 .es-render li {
 	margin-bottom: .1em;
 }
+
+.mediawiki .es-menuView {
+	font-size: 0.8em;
+}
