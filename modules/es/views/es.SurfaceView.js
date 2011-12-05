@@ -70,9 +70,6 @@ es.SurfaceView = function( $container, model ) {
 	// Events
 
 	this.model.on( 'select', function( selection ) {
-
-		
-
 		// Keep a copy of the current selection on hand
 		_this.currentSelection = selection.clone();
 		// Respond to selection changes
