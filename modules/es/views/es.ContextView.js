@@ -49,8 +49,10 @@ es.ContextView = function( surfaceView, $overlay ) {
 			'<div><a href="#cancel">Cancel</a> <button>Change</button></div>' +
 		'</div>'
 	);
-	this.$panels.find( '[href="#cancel"]' ).click( function() {
+	this.$panels.find( '[href="#cancel"]' ).click( function( e ) {
 		_this.$panels.children().hide();
+		e.preventDefault();
+		return false;
 	} );
 
 	// Events
