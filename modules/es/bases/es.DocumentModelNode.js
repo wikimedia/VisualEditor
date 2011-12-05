@@ -218,6 +218,71 @@ es.DocumentModelNode.prototype.getElementAttribute = function( key ) {
 	return null;
 };
 
+/**
+ * Gets all element data, including the element opening, closing and it's contents.
+ * 
+ * @method
+ * @returns {Array} Element data
+ */
+es.DocumentModelNode.prototype.getElementData = function() {
+	// Get reference to the document, which might be this node but otherwise should be this.root
+	var root = this.type === 'document' ?
+		this : ( this.root && this.root.type === 'document' ? this.root : null );
+	if ( root ) {
+		return root.getElementDataFromNode( this );
+	}
+	return [];
+};
+
+/**
+ * Gets content data within a given range.
+ * 
+ * @method
+ * @param {es.Range} [range] Range of content to get
+ * @returns {Array} Content data
+ */
+es.DocumentModelNode.prototype.getContentData = function( range ) {
+	// Get reference to the document, which might be this node but otherwise should be this.root
+	var root = this.type === 'document' ?
+		this : ( this.root && this.root.type === 'document' ? this.root : null );
+	if ( root ) {
+		return root.getContentDataFromNode( this, range );
+	}
+	return [];
+};
+
+/**
+ * Gets plain text version of the content within a specific range.
+ * 
+ * Two newlines are inserted between leaf nodes.
+ * 
+ * TODO: Maybe do something more adaptive with newlines
+ * 
+ * @method
+ * @param {es.Range} [range] Range of text to get
+ * @returns {String} Text within given range
+ */
+es.DocumentModelNode.prototype.getContentText = function( range ) {
+	var content = this.getContentData( range );
+	// Copy characters
+	var text = '',
+		element = false;
+	for ( var i = 0, length = content.length; i < length; i++ ) {
+		if ( typeof content[i] === 'object' ) {
+			if ( i ) {
+				element = true;
+			}
+		} else {
+			if ( element ) {
+				text += '\n\n';
+				element = false;
+			}
+			text += typeof content[i] === 'string' ? content[i] : content[i][0];
+		}
+	}
+	return text;
+};
+
 /* Inheritance */
 
 es.extendClass( es.DocumentModelNode, es.DocumentNode );

@@ -500,7 +500,7 @@ es.ContentView.prototype.scanBoundaries = function() {
 	 * the words.
 	 */
 	// Get and cache a copy of all content, the make a plain-text version of the cached content
-	var data = this.contentCache = this.model.getContent(),
+	var data = this.contentCache = this.model.getContentData(),
 		text = '';
 	for ( var i = 0, length = data.length; i < length; i++ ) {
 		text += typeof data[i] === 'string' ? data[i] : data[i][0];
@@ -712,7 +712,7 @@ es.ContentView.prototype.appendLine = function( range, wordOffset, fractional ) 
 	$line[0].innerHTML = this.getHtml( range );
 	// Overwrite/append line information
 	this.lines[rs.line] = {
-		'text': this.model.getText( range ),
+		'text': this.model.getContentText( range ),
 		'range': range,
 		'width': $line.outerWidth(),
 		'height': $line.outerHeight(),

@@ -589,7 +589,7 @@ es.SurfaceView.prototype.handleDelete = function( backspace ) {
 			this.model.transact( tx, true );
 		} else {
 			tx = this.model.getDocument().prepareInsertion(
-				targetOffset, sourceNode.model.getContent()
+				targetOffset, sourceNode.model.getContentData()
 			);
 			this.model.transact( tx, true );
 			

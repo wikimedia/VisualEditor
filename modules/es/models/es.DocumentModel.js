@@ -613,13 +613,28 @@ es.DocumentModel.prototype.getElementFromNode = function( node ) {
 };
 
 /**
+ * Gets the element data of a node.
+ * 
+ * @method
+ * @param {es.DocumentModelNode} node Node to get element data for
+ */
+es.DocumentModel.prototype.getContentDataFromNode = function( node ) {
+	var length = node.getElementLength();
+	var offset = this.getOffsetFromNode( node );
+	if ( offset !== -1 ) {
+		return this.data.slice( offset, offset + length );
+	}
+	return null;
+};
+
+/**
  * Gets the content data of a node.
  * 
  * @method
  * @param {es.DocumentModelNode} node Node to get content data for
  * @returns {Array|null} List of content and elements inside node or null if node is not found
  */
-es.DocumentModel.prototype.getContentFromNode = function( node, range ) {
+es.DocumentModel.prototype.getContentDataFromNode = function( node, range ) {
 	var length = node.getContentLength();
 	if ( range ) {
 		range.normalize();
@@ -1201,7 +1216,7 @@ es.DocumentModel.prototype.prepareLeafConversion = function( range, type, attrib
 		txs.push( this.prepareInsertion(
 			nodeOffset,
 			[ { 'type': type, 'attributes': attributes } ]
-				.concat( nodes[i].getContent() )
+				.concat( nodes[i].getContentData() )
 				.concat( [ { 'type': '/' + type } ] )
 		) );
 	}

@@ -85,50 +85,50 @@ test( 'es.DocumentModel.getRelativeContentOffset', 7, function() {
 	);
 } );
 
-test( 'es.DocumentModel.getContent', 6, function() {
+test( 'es.DocumentModel.getContentData', 6, function() {
 	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj ),
 		childNodes = documentModel.getChildren();
 
 	// Test 1
 	deepEqual(
-		childNodes[0].getContent( new es.Range( 1, 3 ) ),
+		childNodes[0].getContentData( new es.Range( 1, 3 ) ),
 		[
 			['b', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }],
 			['c', { 'type': 'textStyle/italic', 'hash': '{"type":"textStyle/italic"}' }]
 		],
-		'getContent can return an ending portion of the content'
+		'getContentData can return an ending portion of the content'
 	);
 
 	// Test 2
 	deepEqual(
-		childNodes[0].getContent( new es.Range( 0, 2 ) ),
+		childNodes[0].getContentData( new es.Range( 0, 2 ) ),
 		['a', ['b', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }]],
-		'getContent can return a beginning portion of the content'
+		'getContentData can return a beginning portion of the content'
 	);
 	
 	// Test 3
 	deepEqual(
-		childNodes[0].getContent( new es.Range( 1, 2 ) ),
+		childNodes[0].getContentData( new es.Range( 1, 2 ) ),
 		[['b', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }]],
-		'getContent can return a middle portion of the content'
+		'getContentData can return a middle portion of the content'
 	);
 	
 	// Test 4
 	try {
-		childNodes[0].getContent( new es.Range( -1, 3 ) );
+		childNodes[0].getContentData( new es.Range( -1, 3 ) );
 	} catch ( negativeIndexError ) {
-		ok( true, 'getContent throws exceptions when given a range with start < 0' );
+		ok( true, 'getContentData throws exceptions when given a range with start < 0' );
 	}
 	
 	// Test 5
 	try {
-		childNodes[0].getContent( new es.Range( 0, 4 ) );
+		childNodes[0].getContentData( new es.Range( 0, 4 ) );
 	} catch ( outOfRangeError ) {
-		ok( true, 'getContent throws exceptions when given a range with end > length' );
+		ok( true, 'getContentData throws exceptions when given a range with end > length' );
 	}
 	
 	// Test 6
-	deepEqual( childNodes[2].getContent(), ['h'], 'Content can be extracted from nodes' );
+	deepEqual( childNodes[2].getContentData(), ['h'], 'Content can be extracted from nodes' );
 } );
 
 test( 'es.DocumentModel.getIndexOfAnnotation', 3, function() {

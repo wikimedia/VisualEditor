@@ -94,7 +94,7 @@ test( 'es.TransactionProcessor', 29, function() {
 
 	// Test 6
 	deepEqual(
-		documentModel.getChildren()[0].getContent(),
+		documentModel.getChildren()[0].getContentData(),
 		[
 			'a',
 			['b', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }],
@@ -120,7 +120,7 @@ test( 'es.TransactionProcessor', 29, function() {
 
 	// Test 8
 	deepEqual(
-		documentModel.getChildren()[0].getContent(),
+		documentModel.getChildren()[0].getContentData(),
 		[
 			'a',
 			['b', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }],
@@ -145,7 +145,7 @@ test( 'es.TransactionProcessor', 29, function() {
 
 	// Test 10
 	deepEqual(
-		documentModel.getChildren()[0].getContent(),
+		documentModel.getChildren()[0].getContentData(),
 		['a'],
 		'commit keeps model tree up to date with removals'
 	);
@@ -166,7 +166,7 @@ test( 'es.TransactionProcessor', 29, function() {
 
 	// Test 12
 	deepEqual(
-		documentModel.getChildren()[0].getContent(),
+		documentModel.getChildren()[0].getContentData(),
 		[
 			'a',
 			['b', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }],
@@ -197,14 +197,14 @@ test( 'es.TransactionProcessor', 29, function() {
 	
 	// Test 14
 	deepEqual(
-		documentModel.getChildren()[0].getContent(),
+		documentModel.getChildren()[0].getContentData(),
 		['a'],
 		'commit keeps model tree up to date with paragraph split (paragraph 1)'
 	);
 	
 	// Test 15
 	deepEqual(
-		documentModel.getChildren()[1].getContent(),
+		documentModel.getChildren()[1].getContentData(),
 		[
 			['b', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }],
 			['c', { 'type': 'textStyle/italic', 'hash': '{"type":"textStyle/italic"}' }]
@@ -228,7 +228,7 @@ test( 'es.TransactionProcessor', 29, function() {
 	
 	// Test 17
 	deepEqual(
-		documentModel.getChildren()[0].getContent(),
+		documentModel.getChildren()[0].getContentData(),
 		[
 			'a',
 			['b', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }],
@@ -272,21 +272,21 @@ test( 'es.TransactionProcessor', 29, function() {
 	
 	// Test 21
 	deepEqual(
-		documentModel.children[1].children[0].children[0].children[1].children[0].children[0].getContent(),
+		documentModel.children[1].children[0].children[0].children[1].children[0].children[0].getContentData(),
 		[ 'f' ],
 		'removal keeps model tree up to date with list item merge (first list item)'
 	);
 	
 	// Test 22
 	deepEqual(
-		documentModel.children[1].children[0].children[0].children[1].children[1].children[0].getContent(),
+		documentModel.children[1].children[0].children[0].children[1].children[1].children[0].getContentData(),
 		[ 'g' ],
 		'removal keeps model tree up to date with list item merge (second list item)'
 	);
 	
 	// Test 23
 	deepEqual(
-		documentModel.children[2].getContent(),
+		documentModel.children[2].getContentData(),
 		[ 'h' ],
 		'rollback keeps model tree up to date with list item split (final paragraph)'
 	);
@@ -322,28 +322,28 @@ test( 'es.TransactionProcessor', 29, function() {
 	
 	// Test 26
 	deepEqual(
-		documentModel.children[1].children[0].children[0].children[1].children[0].children[0].getContent(),
+		documentModel.children[1].children[0].children[0].children[1].children[0].children[0].getContentData(),
 		[ 'e' ],
 		'rollback keeps model tree up to date with list item split (first list item)'
 	);
 	
 	// Test 27
 	deepEqual(
-		documentModel.children[1].children[0].children[0].children[1].children[1].children[0].getContent(),
+		documentModel.children[1].children[0].children[0].children[1].children[1].children[0].getContentData(),
 		[ 'f' ],
 		'rollback keeps model tree up to date with list item split (second list item)'
 	);
 	
 	// Test 28
 	deepEqual(
-		documentModel.children[1].children[0].children[0].children[1].children[2].children[0].getContent(),
+		documentModel.children[1].children[0].children[0].children[1].children[2].children[0].getContentData(),
 		[ 'g' ],
 		'rollback keeps model tree up to date with list item split (third list item)'
 	);
 	
 	// Test 29
 	deepEqual(
-		documentModel.children[2].getContent(),
+		documentModel.children[2].getContentData(),
 		[ 'h' ],
 		'rollback keeps model tree up to date with list item split (final paragraph)'
 	);
