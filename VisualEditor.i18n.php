@@ -19,6 +19,13 @@ $messages['de'] = array(
 	'visualeditor-sandbox-title' => 'WYSIWYG-Editor - Spielwiese',
 );
 
+/** French (Français)
+ * @author Crochet.david
+ */
+$messages['fr'] = array(
+	'visualeditor-desc' => 'Éditeur visuel pour MediaWiki',
+);
+
 /** Galician (Galego)
  * @author Toliño
  */
@@ -44,6 +51,15 @@ $messages['ia'] = array(
 	'visualeditor' => 'Editor visual',
 	'visualeditor-desc' => 'Editor visual pro MediaWiki',
 	'visualeditor-sandbox-title' => 'Cassa a sablo del editor visual',
+);
+
+/** Luxembourgish (Lëtzebuergesch)
+ * @author Robby
+ */
+$messages['lb'] = array(
+	'visualeditor' => 'WYSIWYG-Editeur',
+	'visualeditor-desc' => 'WYSIWYG-Editeur fir MediaWiki',
+	'visualeditor-sandbox-title' => 'WYSIWYG-Editeur - Sandkëscht',
 );
 
 /** Macedonian (Македонски)
