@@ -78,7 +78,7 @@ es.SurfaceView = function( $container, model ) {
 		// Respond to selection changes
 		_this.updateSelection();
 		if ( selection.getLength() ) {
-			_this.$input.val('#COPY#').select();
+			_this.$input.val( _this.documentView.model.getContentText( selection ) ).select();
 			_this.clearInsertionAnnotations();
 		} else {
 			_this.$input.val('').select();
