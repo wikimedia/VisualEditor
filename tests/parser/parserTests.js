@@ -305,6 +305,8 @@ function normalizeHTML(source) {
 			// a few things we ignore for now..
 			.replace(/\/wiki\/Main_Page/g, 'Main Page')
 			.replace(/(title|class|rel)="[^"]+"/g, '')
+			// strip red link markup, we do not check if a page exists yet
+			.replace(/\/index.php\?title=|&amp;action=edit&amp;redlink=1/g, '')
 			// the expected html has some extra space in tags, strip it
 			.replace(/<a +href/g, '<a href')
 			.replace(/" +>/g, '">');
