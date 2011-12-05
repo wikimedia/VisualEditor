@@ -356,7 +356,25 @@
     // text start position
     var textStart = 0;
 
+    // hack to support numbered external links ([http://example.com]).
+    // XXX: Move to token stream transform after templates are expanded!
     var linkCount = 1;
+
+    // Define block-level tags in JS, so we can use toLowerCase to match tags
+    // case-independently. This would be quite ugly (and possibly slower) if
+    // done manually in the grammar.
+    var block_names = (function () {
+        var names = [ "p", "table", "td", "tr", "ul", "ol"
+                    , "li", "dl", "dt", "dd", "div", "center"
+                    , "blockquote" ];
+        var bnames = {};
+        for(var i = 0, l = names.length; i < l; i++) {
+            bnames[names[i]] = true;
+        }
+        return bnames;
+    })();
+
+        
 }
 
 start
@@ -920,10 +938,14 @@ nowiki_content
 // See http://dev.w3.org/html5/spec/Overview.html#syntax-tag-name and
 // following paragraphs
 block_tag
-  = "<" end:"/"? name:block_name 
+  = "<" end:"/"? name:(cs:[a-zA-Z]+ { return cs.join('') })
     attribs:generic_attribute* 
     selfclose:"/"?
     ">" {
+        if (block_names[name.toLowerCase()] !== true) {
+            // abort match if tag is not block-level
+            return null;
+        }
         var res = {name: name, attribs: attribs};
         if ( end != '' ) {
             res.type = 'ENDTAG';
@@ -934,11 +956,6 @@ block_tag
         }
         return res;
     }
-
-block_name
-  = "p" / "table" / "td" / "tr" / "ul" / "ol" 
-  / "li" / "dl" / "dt" / "dd" / "div" / "center"
-  / "blockquote"
 
 
 // See http://dev.w3.org/html5/spec/Overview.html#syntax-tag-name and
@@ -1101,9 +1118,11 @@ lists = e:(dtdd / li) es:(sol (dtdd / li))*
 }
 
 li = bullets:list_char+ 
-     c:inlineline
+     c:inlineline?
      &eolf 
 {
+    if ( c == '' )
+        c = [];
     return [ { type: 'TAG', 
                name: 'listItem', 
                bullets: bullets }

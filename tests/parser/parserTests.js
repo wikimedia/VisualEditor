@@ -307,6 +307,10 @@ function normalizeHTML(source) {
 			.replace(/(title|class|rel)="[^"]+"/g, '')
 			// strip red link markup, we do not check if a page exists yet
 			.replace(/\/index.php\?title=|&amp;action=edit&amp;redlink=1/g, '')
+			// do not expect a toc for now
+			.replace(/<table id="toc>.*?<\/table>/g, '')
+			// do not expect section editing for now
+			.replace(/<h[1-6]> <span>[.*?<\/span><span.*?]<\/span>/g, '')
 			// the expected html has some extra space in tags, strip it
 			.replace(/<a +href/g, '<a href')
 			.replace(/" +>/g, '">');
