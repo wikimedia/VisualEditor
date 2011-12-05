@@ -775,22 +775,25 @@ template
   = "{{" target:template_target params:("|" p:template_param { return p })* "}}" {
       var obj = { type: 'TAG', name: 'template', attribs: [['target', target]] }
       if (params && params.length) {
-          obj.attribs.push(params);
+          obj.attribs = obj.attribs.concat(params);
       }
       // Should actually use a self-closing tag here, but the Node HTML5
       // parser only recognizes known self-closing tags for now, so use an
       // explicit end tag for now.
+      //console.log(pp(obj));
       return [obj, {type: 'ENDTAG', name: 'template'}];
   }
 
 template_target
   = h:( !"}}" x:([^|\n]) { return x } )* { return h.join(''); }
 
+/* XXX: pass these as convenient js structures to later stages, but serialize
+ * (to json) before passing remaining args to the tree builder */
 template_param
   = name:template_param_name "=" c:template_param_text {
-      return [name, c];
+      return ['data-k-' + name, c];
   } / c:template_param_text {
-      return [null, c];
+      return ['data-p-', c];
   }
 
 tplarg 
@@ -801,7 +804,7 @@ tplarg
             attribs: [['argname', name]]
       };
       if (params && params.length) {
-          obj.attribs.push(params);
+          obj.attribs = obj.attribs.concat(params);
       }
       return obj;
   }
@@ -810,8 +813,9 @@ template_param_name
   = h:( !"}}" x:([^=|\n]) { return x } )* { return h.join(''); }
 
 template_param_text
-  = template_param_text_chunk*
-/*  = h:( !"}}" x:([^|]) { return x } )* { return h.join(''); }*/
+  = tcs:template_param_text_chunk* { return JSON.stringify(tcs); }
+  //= h:( !"}}" x:([^|]) { return x } )* { return h.join(''); }
+
 
 template_param_text_chunk
   = comment
@@ -820,7 +824,8 @@ template_param_text_chunk
   / template
   / wikilink
   / quote
-  / !"}}" x:([^|\n]) { return x }
+  / c:[^}|\n]+ {return {type: 'TEXT', value: c.join('')}}
+  / !"}}" x:([^|\n]) { return {type: 'TEXT', value: x} }
 
 wikilink
   = "[[" target:link_target text:("|" lt:link_text { return lt })* "]]" suffix:text? {
