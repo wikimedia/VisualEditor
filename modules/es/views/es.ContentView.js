@@ -878,6 +878,7 @@ es.ContentView.prototype.getHtml = function( range, options ) {
 		leftPlain,
 		rightPlain,
 		stack = [],
+		chr,
 		i,
 		j;
 	for ( i = 0; i < data.length; i++ ) {
@@ -897,18 +898,19 @@ es.ContentView.prototype.getHtml = function( range, options ) {
 		} else if ( !leftPlain && !rightPlain ) {
 			// [formatted][formatted] pair, open/close any differences
 			for ( j = 1; j < left.length; j++ ) {
-				if ( right.indexOf( left[j] ) === -1 ) {
+				if ( es.inArray( left[j], right ) ) {
 					out += render( 'close', left[j], stack );
 				}
 			}
 			for ( j = 1; j < right.length; j++ ) {
-				if ( left.indexOf( right[j] ) === -1 ) {
+				if ( es.inArray( right[j], left ) ) {
 					out += render( 'open', right[j], stack );
 				}
 			}
 		}
-		out += right[0] in htmlChars ? htmlChars[right[0]] : right[0];
-		left = right;		
+		chr = rightPlain ? right : right[0];
+		out += chr in htmlChars ? htmlChars[chr] : chr;
+		left = right;
 	}
 	// Close all remaining tags at the end of the content
 	if ( !rightPlain && right ) {

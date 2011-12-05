@@ -84,7 +84,7 @@ es.DocumentModel.createNodesFromData = function( data ) {
 			// It's an element, figure out it's type
 			var element = data[i],
 				type = element.type,
-				open = type[0] !== '/';
+				open = type.charAt( 0 ) !== '/';
 			// Trim the "/" off the beginning of closing tag types
 			if ( !open ) {
 				type = type.substr( 1 );
@@ -148,7 +148,7 @@ es.DocumentModel.newFromPlainObject = function( obj ) {
  * @param {Object} annotation Annotation object to generate hash for
  * @returns {String} Hash of annotation
  */
-es.DocumentModel.getHash = typeof JSON.stringify === 'function' ?
+es.DocumentModel.getHash = ( window.JSON && typeof JSON.stringify === 'function' ) ?
 	JSON.stringify : es.JsonSerializer.stringify;
 
 /**
