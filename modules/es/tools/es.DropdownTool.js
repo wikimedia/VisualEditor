@@ -1,12 +1,19 @@
+/**
+ * Creates an es.DropdownTool object.
+ * 
+ * @class
+ * @constructor
+ * @param {es.ToolbarView} toolbar
+ * @param {String} name
+ * @param {Object[]} items
+ */
 es.DropdownTool = function( toolbar, name, items ) {
 	// Inheritance
 	es.Tool.call( this, toolbar, name );
-
-	// Early exit when extending via es.extendClass
 	if ( !name ) {
 		return;
 	}
-	
+
 	// Properties
 	var _this = this;
 	this.menuView = new es.MenuView( items, function( item ) {
@@ -14,11 +21,14 @@ es.DropdownTool = function( toolbar, name, items ) {
 		_this.$.text( item.label );
 	} );
 
-	$( document ).add( this.toolbar.surfaceView.$ ).mousedown( function( e ) {
-		if ( e.button === 0 ) {
-			_this.menuView.hide();
-		}
-	} );
+	// Events
+	$( document )
+		.add( this.toolbar.surfaceView.$ )
+			.mousedown( function( e ) {
+				if ( e.button === 0 ) {
+					_this.menuView.hide();
+				}
+			} );
 
 	// DOM Changes
 	this.$.addClass( 'es-toolbarDropdownTool' ).addClass( 'es-toolbarDropdownTool-' + name );

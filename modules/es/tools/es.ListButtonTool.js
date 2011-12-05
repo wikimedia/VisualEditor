@@ -1,8 +1,22 @@
-es.ListButtonTool = function( toolbar, name, data ) {
+/**
+ * Creates an es.ListButtonTool object.
+ * 
+ * @class
+ * @constructor
+ * @extends {es.ButtonTool}
+ * @param {es.ToolbarView} toolbar
+ * @param {String} name
+ */
+ es.ListButtonTool = function( toolbar, name, data ) {
+	// Inheritance
 	es.ButtonTool.call( this, toolbar, name );
+
+	// Properties
 	this.data = data;
 	this.nodes = [];
 };
+
+/* Methods */
 
 es.ListButtonTool.prototype.onClick = function() {
 	/*
@@ -41,6 +55,8 @@ es.ListButtonTool.prototype.updateState = function( annotations, nodes ) {
 	}
 };
 
+/* Registration */
+
 es.Tool.tools.number = {
 	constructor: es.ListButtonTool,
 	name: 'number'
@@ -50,5 +66,7 @@ es.Tool.tools.bullet = {
 	constructor: es.ListButtonTool,
 	name: 'bullet'
 };
+
+/* Inheritance */
 
 es.extendClass( es.ListButtonTool, es.ButtonTool );

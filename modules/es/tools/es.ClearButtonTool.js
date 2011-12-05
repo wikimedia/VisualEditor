@@ -1,8 +1,22 @@
+/**
+ * Creates an es.ClearButtonTool object.
+ * 
+ * @class
+ * @constructor
+ * @extends {es.ButtonTool}
+ * @param {es.ToolbarView} toolbar
+ * @param {String} name
+ */
 es.ClearButtonTool = function( toolbar, name ) {
+	// Inheritance
 	es.ButtonTool.call( this, toolbar, name );
+
+	// Properties
 	this.$.addClass( 'es-toolbarButtonTool-disabled' );
 	this.pattern = /(textStyle\/|link\/).*/;
 };
+
+/* Methods */
 
 es.ClearButtonTool.prototype.onClick = function() {
 	var tx = this.toolbar.surfaceView.model.getDocument().prepareContentAnnotation(
@@ -25,9 +39,13 @@ es.ClearButtonTool.prototype.updateState = function( annotations ) {
 	}
 };
 
+/* Registration */
+
 es.Tool.tools.clear = {
 	constructor: es.ClearButtonTool,
 	name: 'clear'
 };
+
+/* Inheritance */
 
 es.extendClass( es.ClearButtonTool, es.ButtonTool );

@@ -1,3 +1,13 @@
+/**
+ * Creates an es.FormatDropdownTool object.
+ * 
+ * @class
+ * @constructor
+ * @extends {es.DropdownTool}
+ * @param {es.ToolbarView} toolbar
+ * @param {String} name
+ * @param {Object[]} items
+ */
 es.FormatDropdownTool = function( toolbar, name ) {
 	// Inheritance
 	es.DropdownTool.call( this, toolbar, name, [
@@ -49,6 +59,7 @@ es.FormatDropdownTool = function( toolbar, name ) {
 		}
 	] );
 
+	// Events
 	var _this = this;
 	this.$.bind( {
 		'mousedown': function( e ) {

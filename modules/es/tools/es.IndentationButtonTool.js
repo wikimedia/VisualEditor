@@ -1,9 +1,21 @@
-es.IndentationButtonTool = function( toolbar, name, data ) {
+/**
+ * Creates an es.IndentationButtonTool object.
+ * 
+ * @class
+ * @constructor
+ * @extends {es.ButtonTool}
+ * @param {es.ToolbarView} toolbar
+ * @param {String} name
+ */
+ es.IndentationButtonTool = function( toolbar, name, data ) {
 	es.ButtonTool.call( this, toolbar, name );
 	this.data = data;
 };
 
+/* Methods */
+
 es.IndentationButtonTool.prototype.onClick = function() {
+	//
 };
 
 es.IndentationButtonTool.prototype.updateState = function( annotations, nodes ) {
@@ -25,6 +37,8 @@ es.IndentationButtonTool.prototype.updateState = function( annotations, nodes ) 
 	}
 };
 
+/* Registration */
+
 es.Tool.tools.indent = {
 	constructor: es.IndentationButtonTool,
 	name: 'indent'
@@ -34,5 +48,7 @@ es.Tool.tools.outdent = {
 	constructor: es.IndentationButtonTool,
 	name: 'outdent'
 };
+
+/* Inheritance */
 
 es.extendClass( es.IndentationButtonTool, es.ButtonTool );
