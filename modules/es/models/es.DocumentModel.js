@@ -618,7 +618,7 @@ es.DocumentModel.prototype.getElementFromNode = function( node ) {
  * @method
  * @param {es.DocumentModelNode} node Node to get element data for
  */
-es.DocumentModel.prototype.getContentDataFromNode = function( node ) {
+es.DocumentModel.prototype.getElementDataFromNode = function( node ) {
 	var length = node.getElementLength();
 	var offset = this.getOffsetFromNode( node );
 	if ( offset !== -1 ) {
@@ -652,7 +652,9 @@ es.DocumentModel.prototype.getContentDataFromNode = function( node, range ) {
 	}
 	var offset = this.getOffsetFromNode( node );
 	if ( offset !== -1 ) {
-		offset++;
+		if ( node.type !== 'document' ) {
+			offset++;
+		}
 		return this.data.slice( offset + range.start, offset + range.end );
 	}
 	return null;
