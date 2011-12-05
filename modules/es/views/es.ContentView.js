@@ -898,12 +898,12 @@ es.ContentView.prototype.getHtml = function( range, options ) {
 		} else if ( !leftPlain && !rightPlain ) {
 			// [formatted][formatted] pair, open/close any differences
 			for ( j = 1; j < left.length; j++ ) {
-				if ( es.inArray( left[j], right ) ) {
+				if ( es.inArray( left[j], right ) === -1 ) {
 					out += render( 'close', left[j], stack );
 				}
 			}
 			for ( j = 1; j < right.length; j++ ) {
-				if ( es.inArray( right[j], left ) ) {
+				if ( es.inArray( right[j], left ) === -1 ) {
 					out += render( 'open', right[j], stack );
 				}
 			}
