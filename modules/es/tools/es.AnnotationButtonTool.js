@@ -8,12 +8,12 @@
  * @param {String} name
  * @param {Object} annotation
  */
-es.AnnotationButtonTool = function( toolbar, name, annotation ) {
+es.AnnotationButtonTool = function( toolbar, name, data ) {
 	// Inheritance
 	es.ButtonTool.call( this, toolbar, name );
 
 	// Properties
-	this.annotation = annotation;
+	this.annotation = data;
 };
 
 /* Methods */
@@ -51,19 +51,19 @@ es.AnnotationButtonTool.prototype.updateState = function( annotations ) {
 es.Tool.tools.bold = {
 	constructor: es.AnnotationButtonTool,
 	name: 'bold',
-	annotation: { 'type': 'textStyle/bold' }
+	data: { 'type': 'textStyle/bold' }
 };
 
 es.Tool.tools.italic = {
 	constructor: es.AnnotationButtonTool,
 	name: 'italic',
-	annotation: { 'type': 'textStyle/italic' }
+	data: { 'type': 'textStyle/italic' }
 };
 
 es.Tool.tools.link = {
 	constructor: es.AnnotationButtonTool,
 	name: 'link',
-	annotation: { 'type': 'link/internal', 'data': { 'title': '' } }
+	data: { 'type': 'link/internal', 'data': { 'title': '' } }
 };
 
 /* Inheritance */
