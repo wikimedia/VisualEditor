@@ -14,36 +14,23 @@ es.AnnotationButtonTool = function( toolbar, name, data ) {
 
 	// Properties
 	this.annotation = data;
+	this.active = false;
 };
 
 /* Methods */
 
 es.AnnotationButtonTool.prototype.onClick = function() {
-	var method;
-	if ( this.$.hasClass( 'es-toolbarButtonTool-down' ) ) {
-		method = 'clear';
-		this.toolbar.surfaceView.removeInsertionAnnotation( this.annotation );
-	} else {
-		method = 'set';
-		this.toolbar.surfaceView.addInsertionAnnotation( this.annotation );
-	}
-
-	var tx = this.toolbar.surfaceView.model.getDocument().prepareContentAnnotation(
-		this.toolbar.surfaceView.currentSelection,
-		method,
-		this.annotation
-	);
-	this.toolbar.surfaceView.model.transact( tx );
+	this.toolbar.getSurfaceView().annotate( this.active ? 'clear' : 'set', this.annotation );
 };
 
-es.AnnotationButtonTool.prototype.updateState = function( annotations ) {
-	for ( var i = 0; i < annotations.full.length; i++ ) {
-		if ( annotations.full[i].type === this.annotation.type ) {
-			this.$.addClass( 'es-toolbarButtonTool-down' );
-			return;
-		}
+es.AnnotationButtonTool.prototype.updateState = function( annotations, nodes ) {
+	if ( es.DocumentModel.getIndexOfAnnotation( annotations.full, this.annotation ) !== -1 ) {
+		this.$.addClass( 'es-toolbarButtonTool-down' );
+		this.active = true;
+		return;
 	}
 	this.$.removeClass( 'es-toolbarButtonTool-down' );
+	this.active = false;
 };
 
 /* Registration */

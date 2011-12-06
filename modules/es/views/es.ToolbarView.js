@@ -56,6 +56,12 @@ es.ToolbarView = function( $container, surfaceView, config ) {
 	this.setup();
 };
 
+/* Methods */
+
+es.ToolbarView.prototype.getSurfaceView = function() {
+	return this.surfaceView;
+};
+
 es.ToolbarView.prototype.setup = function() {
 	for ( var i = 0; i < this.config.length; i++ ) {
 		var	$group = $( '<div>' )

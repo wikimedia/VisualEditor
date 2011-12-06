@@ -173,7 +173,7 @@ es.DocumentModel.getIndexOfAnnotation = function( annotations, annotation ) {
 			if ( typeof annotations[i] === 'string' ) {
 				continue;
 			}
-			if ( annotations[i].hash === annotation.hash ) {
+			if ( annotations[i].hash === ( annotation.hash || es.DocumentModel.getHash( annotation ) ) ) {
 				return i;
 			}
 		}

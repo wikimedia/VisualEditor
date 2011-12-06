@@ -153,26 +153,52 @@ es.SurfaceView = function( $container, model ) {
 };
 
 /* Methods */
+
+es.SurfaceView.prototype.annotate = function( method, annotation ) {
+	if ( method === 'toggle' ) {
+		var annotations = this.getAnnotations();
+		if ( es.DocumentModel.getIndexOfAnnotation( annotations.full, annotation ) !== -1 ) {
+			method = 'clear';
+		} else {
+			method = 'set';
+		}
+	}
+	if ( this.currentSelection.getLength() ) {
+		var tx = this.model.getDocument().prepareContentAnnotation(
+			this.currentSelection, method, annotation
+		);
+		this.model.transact( tx );
+	} else {
+		if ( method === 'set' ) {
+			this.addInsertionAnnotation( annotation );
+		} else if ( method === 'clear' ) {
+			this.removeInsertionAnnotation( annotation );
+		}
+	}
+};
+
+es.SurfaceView.prototype.getAnnotations = function() {
+	return this.currentSelection.getLength() ?
+		this.model.getDocument().getAnnotationsFromRange( this.currentSelection ) :
+		{
+			'full': this.insertionAnnotations,
+			'partial': [],
+			'all': this.insertionAnnotations
+		};
+};
+
 es.SurfaceView.prototype.emitCursor = function() {
 	if ( this.emitCursorTimeout ) {
 		clearTimeout( this.emitCursorTimeout );
 	}
 	var _this = this;
 	this.emitCursorTimeout = setTimeout( function() {
-		var	annotations,
+		var	annotations = _this.getAnnotations(),
 			nodes = [],
 			model = _this.documentView.model;
-	
-		if( _this.currentSelection.from === _this.currentSelection.to ) {
-			var insertionAnnotations = _this.getInsertionAnnotations();
-			annotations = {
-				'full': insertionAnnotations,
-				'partial': [],
-				'all': insertionAnnotations
-			};
+		if ( _this.currentSelection.from === _this.currentSelection.to ) {
 			nodes.push( model.getNodeFromOffset( _this.currentSelection.from ) );
 		} else {
-			annotations = model.getAnnotationsFromRange( _this.currentSelection );
 			var	startNode = model.getNodeFromOffset( _this.currentSelection.start ),
 				endNode = model.getNodeFromOffset( _this.currentSelection.end );
 			if ( startNode === endNode ) {
@@ -496,52 +522,52 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 			this.handleEnter();
 			e.preventDefault();
 			break;
-		// Z (undo/redo)
-		case 90:
-			if ( e.metaKey || e.ctrlKey ) {
-				if ( this.keyboard.keys.shift ) {
-					this.model.redo( 1 );
-				} else {
-					this.model.undo( 1 );
-				}
-				return false;
-			}
-			handleInsert();
-			break;
-
-		// a (select all)
-		case 65:
-			if ( e.metaKey || e.ctrlKey ) {
-				this.model.select( new es.Range(
-					this.model.getDocument().getRelativeContentOffset( 0, 1 ),
-					this.model.getDocument().getRelativeContentOffset(
-						this.model.getDocument().getContentLength(), -1
-					)
-				), true );
-				break;			
-			}
 		// Insert content (maybe)
 		default:
-			if ( !e.ctrlKey || ( e.ctrlKey && e.keyCode === 86 ) ) {
-				handleInsert();
+			// Control/command + character combos
+			if ( e.metaKey || e.ctrlKey ) {
+				switch ( e.keyCode ) {
+					// z (undo/redo)
+					case 90:
+						if ( this.keyboard.keys.shift ) {
+							this.model.redo( 1 );
+						} else {
+							this.model.undo( 1 );
+						}
+						return false;
+					// a (select all)
+					case 65:
+						this.model.select( new es.Range(
+							this.model.getDocument().getRelativeContentOffset( 0, 1 ),
+							this.model.getDocument().getRelativeContentOffset(
+								this.model.getDocument().getContentLength(), -1
+							)
+						), true );
+						return false;
+					// b (bold)
+					case 66:
+						this.annotate( 'toggle', {'type': 'textStyle/bold' } );
+						return false;
+					// i (italic)
+					case 73:
+						this.annotate( 'toggle', {'type': 'textStyle/italic' } );
+						return false;
+				}
 			}
+			// Regular text insertion
+			handleInsert();
 			break;
 	}
 	return true;
 };
 
 es.SurfaceView.prototype.onKeyUp = function( e ) {
-	switch ( e.keyCode ) {
-		case 16: // Shift
-			this.keyboard.keys.shift = false;
-			if ( this.keyboard.selecting ) {
-				this.keyboard.selecting = false;
-			}
-			break;
-		default:
-			break;
+	if ( e.keyCode === 16 ) {
+		this.keyboard.keys.shift = false;
+		if ( this.keyboard.selecting ) {
+			this.keyboard.selecting = false;
+		}
 	}
-	return true;
 };
 
 es.SurfaceView.prototype.handleDelete = function( backspace, isPartial ) {
@@ -815,12 +841,10 @@ es.SurfaceView.prototype.moveCursor = function( direction, unit ) {
 					break;
 				default:
 					throw new Error( 'unrecognized cursor movement unit' );
-					break;
 			}
 			break;	
 		default:
 			throw new Error( 'unrecognized cursor direction' );
-			break;
 	}
 
 	if( direction != 'up' && direction != 'down' ) {
