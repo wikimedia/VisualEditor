@@ -80,3 +80,10 @@ $messages['nl'] = array(
 	'visualeditor-sandbox-title' => 'Testruimte voor Vereenvoudigde tekstverwerker',
 );
 
+/** Simplified Chinese (‪中文(简体)‬)
+ * @author Shizhao
+ */
+$messages['zh-hans'] = array(
+	'visualeditor-sandbox-title' => 'VisualEditor沙盒',
+);
+
