@@ -18,6 +18,7 @@ var fs = require('fs'),
 	path = require('path'),
 	jsDiff = require('diff'),
 	colors = require('colors'),
+	util = require( 'util' ),
 	HTML5 = require('html5').HTML5;
 
 // Name of file used to cache the parser tests cases
@@ -386,7 +387,9 @@ function processTest(item) {
 			});
 			//var res = es.HtmlSerializer.stringify(tokens,environment);
 			//console.log(JSON.stringify(tokens));
-			
+			//Slightly better token output debugging:
+			//console.log( util.inspect( tokens, false, null ).yellow);	
+
 			// Build a DOM tree from tokens using the HTML tree
 			// builder/parser.
 			processTokens(tokens, tokenizer);
