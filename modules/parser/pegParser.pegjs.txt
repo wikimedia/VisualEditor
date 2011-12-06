@@ -550,14 +550,7 @@ inline_breaks
           ! syntaxFlags.linkdesk); } ":" { return true; }
   / & { return syntaxFlags['extlink']; } "]" { return true; }
   / & { return syntaxFlags['linkdesc']; } link_end { return true; }
-  / & { return syntaxFlags['h']; } 
-        ( & { return syntaxFlags['h1'] } '=' space* newline { return true; }
-        / & { return syntaxFlags['h2'] } '==' space* newline { return true; }
-        / & { return syntaxFlags['h3'] } '===' space* newline { return true; }
-        / & { return syntaxFlags['h4'] } '====' space* newline { return true; }
-        / & { return syntaxFlags['h5'] } '=====' space* newline { return true; }
-        / & { return syntaxFlags['h6'] } '======' space* newline { return true; }
-        )
+  / & { return syntaxFlags['h']; } '='+ space* newline { return true; }
 
 inline
   = c:(urltext / inline_element / (!inline_breaks ch:. { return ch; }))+ {
@@ -620,85 +613,43 @@ inline_element
   / extlink
   / quote
 
-/* Headings 
- *
- * Listed in reverse order on purpose ;) */
-h = h6 / h5 / h4 / h3 / h2 / h1
+/* Headings  */
 
-/* We might want to consider using a single rule for all headings, and
- * figuring out the level in the action. This saves quite some backtracking,
- * and the conversion of equal signs into text should not be a problem as
- * equals are not part of other syntax. */
-h1 = '=' 
-   r:(
-     & { setFlag('h'); return setFlag('h1') }
-     c:inlineline '=' (space / comment)*
+h = & "=" // guard, to make sure '='+ will match. 
+          // XXX: Also check to end to avoid inline parsing?
+    r:(
+     s:'='+ // moved in here to make s accessible to inner action
+     & { return setFlag('h'); }
+     c:inlineline 
+     e:'='+ 
+     spc:(space / comment)*
      &eolf 
      {
-         clearFlag('h');
-         clearFlag('h1');
-         return [{type: 'TAG', name: 'h1'}]
-                    .concat(c, [{type: 'ENDTAG', name: 'h1'}]);
+        clearFlag('h');
+        var level = Math.min(s.length, e.length);
+        // convert surplus equals into text
+        if(s.length > level) {
+            var extras = s.substr(0, s.length - level);
+            if(c[0].type == 'TEXT') {
+                c[0].value = extras + c[0].value;
+            } else {
+                c.unshift({type: 'TEXT', value: extras});
+            }
+        }
+        if(e.length > level) {
+            var extras = e.substr(0, s.length - level),
+                lastElem = c[c.length - 1];
+            if(lastElem.type == 'TEXT') {
+                lastElem.value = lastElem.value + extras;
+            } else {
+                c.push({type: 'TEXT', value: extras});
+            }
+        }
+
+        return [{type: 'TAG', name: 'h' + level}]
+                .concat(c, [{type: 'ENDTAG', name: 'h' + level}]);
       }
-    / & { dp('nomatch exit h1'); clearFlag('h'); clearFlag('h1'); return false } { return null }
-    ) { return r }
-
-h2 = '==' 
-   r:(
-     & { setFlag('h'); return setFlag('h2') }
-     c:inlineline '==' (space / comment)*  &newline {
-         clearFlag('h');
-         clearFlag('h2');
-         return [{type: 'TAG', name: 'h2'}]
-                    .concat(c, [{type: 'ENDTAG', name: 'h2'}]);
-      }
-    / & { clearFlag('h'); clearFlag('h2'); return false }
-    ) { return r }
-
-h3 = '===' 
-   r:(
-     & { setFlag('h'); return setFlag('h3') }
-     c:inlineline '===' comment? &newline {
-         clearFlag('h');
-         clearFlag('h3');
-         return [{type: 'TAG', name: 'h3'}]
-                    .concat(c, [{type: 'ENDTAG', name: 'h3'}]);
-      }
-    / & { clearFlag('h'); clearFlag('h3'); return false }
-    ) { return r }
-
-h4 = '====' 
-   r:(
-     & { setFlag('h'); return setFlag('h4') }
-     c:inlineline '====' comment? &newline {
-         clearFlag('h');
-         clearFlag('h4');
-         return [{type: 'TAG', name: 'h4'}]
-                    .concat(c, [{type: 'ENDTAG', name: 'h4'}]);
-      }
-    / & { clearFlag('h'); clearFlag('h4'); return false }
-    ) { return r }
-
-h5 = '=====' 
-   r:(& { setFlag('h'); return setFlag('h5') }
-     c:inlineline '=====' comment? &newline {
-         clearFlag('h');
-         clearFlag('h5');
-         return [{type: 'TAG', name: 'h5'}]
-                    .concat(c, [{type: 'ENDTAG', name: 'h5'}]);
-     }
-    / & { clearFlag('h'); clearFlag('h5'); return false }
-    ) { return r }
-
-h6 = '======' 
-   r:(& { setFlag('h'); return setFlag('h6') }
-     c:inlineline '======' comment? &newline {
-         clearFlag('h');
-         clearFlag('h6');
-         return [{type: 'TAG', name: 'h6'}]
-                    .concat(c, [{type: 'ENDTAG', name: 'h6'}]);
-     }
-    / & { clearFlag('h'); clearFlag('h6'); return false }
+    / & { dp('nomatch exit h'); clearFlag('h'); return false } { return null }
     ) { return r }
 
 
