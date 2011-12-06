@@ -1,6 +1,6 @@
 module( 'es' );
 
-test( 'es.TransactionProcessor', 30, function() {
+test( 'es.TransactionProcessor', 31, function() {
 	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
 
 	// FIXME: These tests shouldn't use prepareFoo() because those functions
@@ -349,7 +349,7 @@ test( 'es.TransactionProcessor', 30, function() {
 	);
 	
 	var listSplit = documentModel.prepareInsertion( 17, [{ 'type': '/list' }, { 'type': 'list' }] );
-	
+
 	// Test 30
 	es.TransactionProcessor.commit( documentModel, listSplit );
 	deepEqual(
