@@ -374,7 +374,7 @@ es.SurfaceView.prototype.onMouseMove = function( e ) {
 			}	
 		}
 		// Apply new selection
-		this.model.select( selection );
+		this.model.select( selection, true );
 	}
 };
 
@@ -517,7 +517,7 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 					this.model.getDocument().getRelativeContentOffset(
 						this.model.getDocument().getContentLength(), -1
 					)
-				) );
+				), true );
 				break;			
 			}
 		// Insert content (maybe)
@@ -575,7 +575,7 @@ es.SurfaceView.prototype.handleDelete = function( backspace ) {
 		}
 		
 		selection.from = selection.to = targetOffset;
-		this.model.select( selection );
+		this.model.select( selection, true );
 		
 		if ( sourceNode === targetNode ||
 			( typeof sourceSplitableNode !== 'undefined' &&
@@ -610,7 +610,7 @@ es.SurfaceView.prototype.handleDelete = function( backspace ) {
 		tx = this.model.getDocument().prepareRemoval( selection );
 		this.model.transact( tx, true );
 		selection.from = selection.to = selection.start;
-		this.model.select( selection );
+		this.model.select( selection, true );
 	}
 };
 
@@ -662,7 +662,7 @@ es.SurfaceView.prototype.handleEnter = function() {
 		selection.from = selection.to =
 			this.model.getDocument().getRelativeContentOffset( selection.to, 1 );
 	}
-	this.model.select( selection );
+	this.model.select( selection, true );
 };
 
 es.SurfaceView.prototype.insertFromInput = function() {
@@ -702,7 +702,7 @@ es.SurfaceView.prototype.insertFromInput = function() {
 		// Move the selection
 		selection.from += val.length;
 		selection.to += val.length;
-		this.model.select( selection );
+		this.model.select( selection, true );
 	}
 };
 
