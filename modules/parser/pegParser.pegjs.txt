@@ -622,7 +622,7 @@ h = & "=" // guard, to make sure '='+ will match.
      & { return setFlag('h'); }
      c:inlineline 
      e:'='+ 
-     spc:(space / comment)*
+     spc:(sp:space+ { return {type: 'TEXT', value: sp.join('') } } / comment)*
      &eolf 
      {
         clearFlag('h');
@@ -637,7 +637,7 @@ h = & "=" // guard, to make sure '='+ will match.
             }
         }
         if(e.length > level) {
-            var extras = e.substr(0, s.length - level),
+            var extras = e.substr(0, e.length - level),
                 lastElem = c[c.length - 1];
             if(lastElem.type == 'TEXT') {
                 lastElem.value = lastElem.value + extras;
@@ -647,7 +647,7 @@ h = & "=" // guard, to make sure '='+ will match.
         }
 
         return [{type: 'TAG', name: 'h' + level}]
-                .concat(c, [{type: 'ENDTAG', name: 'h' + level}]);
+                .concat(c, [{type: 'ENDTAG', name: 'h' + level}, spc]);
       }
     / & { dp('nomatch exit h'); clearFlag('h'); return false } { return null }
     ) { return r }
