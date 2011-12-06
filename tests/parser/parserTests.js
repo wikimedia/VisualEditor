@@ -464,7 +464,7 @@ function processTest(item) {
 				console.log( colored_diff );
 				
 				if(argv.printwhitelist) {
-					console.log("Whitelist entry:");
+					console.log("WHITELIST ENTRY:".cyan);
 					console.log("testWhiteList[" + 
 							JSON.stringify(item.title) + "] = " + 
 							JSON.stringify(out) +
