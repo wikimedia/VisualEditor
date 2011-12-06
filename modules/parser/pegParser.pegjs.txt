@@ -971,18 +971,19 @@ generic_attribute
   = s:space* 
     name:generic_attribute_name
     value:(space*
-          generic_attribute_value)?
+          v:generic_attribute_value { return v })?
 {
     if ( value !== '' ) {
-        return [name, value[1]];
+        return [name, value];
     } else {
         return [name,''];
     }
 }
 
-// http://dev.w3.org/html5/spec/Overview.html#attributes-0
+// http://dev.w3.org/html5/spec/Overview.html#attributes-0, and we also
+// disallow newlines and |.
 generic_attribute_name
-  = n:[^ \t\0/"'>=]+ {
+  = n:[^ \t\0/"'>=\n|]+ {
         return n.join('');
   }
 
@@ -990,7 +991,8 @@ generic_attribute_value
   = "=" space* v:att_value {return v}
 
 att_value
-  = t:[^ \t'"<>='\n]+ { return [null, t.join('')]; }
+  = t:[^ \t'"<>='\n]+ { return t.join(''); }
+    // XXX: is "\"" also valid html? or just Wikitext?
   / "'" t:[^'>]* "'" { return unquote("'", t.join('')); }
   / '"' t:[^">]* '"' { return unquote('"', t.join('')); }
 
@@ -1050,13 +1052,14 @@ list_char = [*#:;]
 
 /* Tables */
 table 
-  = tas:table_start c:table_caption? b:table_body? table_end { 
+  = tas:table_start space* c:table_caption? b:table_body? table_end { 
       var res = {type: 'TAG', name: 'table'}
       var body = b !== '' ? b : [];
       dp("body: " + pp(body));
       if (tas.length > 0) {
           // FIXME: actually parse and build structure
-          res.attribs = [['data-unparsed', tas.join('')]];
+          //res.attribs = [['data-unparsed', tas.join('')]];
+          res.attribs = tas;
       }
 
       if (c != '') {
@@ -1075,7 +1078,7 @@ table_start
   = "{|"
     res:(
         & { setFlag('table'); return true; }
-        ta:table_attribs* 
+        ta:generic_attribute* 
         { 
             dp("table_start " + pp(ta) + ", pos:" + pos);
             return ta;
@@ -1093,7 +1096,7 @@ table_caption
     }
 
 table_body 
-  = & { dp("table_body enter"); return true; }
+  = //& { dp("table_body enter"); return true; }
     firstrow:table_firstrow otherrows:table_row* { 
       /* dp('table first and otherrows: ' 
        * + pp([firstrow].concat(otherrows))); */
@@ -1106,12 +1109,13 @@ table_body
 
 table_firstrow 
   = td:table_data+ { 
+      //dp('firstrow: ' + pp(td));
       return [{ type: 'TAG', name: 'tr' }]
              .concat(td, [{type: 'ENDTAG', name: 'tr'}]);
   }
 
 table_row 
-  = & { dp("table row enter"); return true; }
+  = //& { dp("table row enter"); return true; }
     newline
     "|-" thtd_attribs? space* td:(table_data / table_header)* { 
         return [{type: 'TAG', name: 'tr'}]
@@ -1119,24 +1123,32 @@ table_row
     }
 
 table_data 
-  = & { dp("table_data enter, pos=" + pos + input.substr(pos,10)); return true; }
+  = //& { dp("table_data enter, pos=" + pos + input.substr(pos,10)); return true; }
     ("||" / newline "|") 
     ! [}+-]
-    a:thtd_attribs? 
+    //& { dp('before attrib, pos=' + pos); return true; }
+    a:(as:generic_attribute+ space* "|" !"|" { console.log('bla'); return as } )?
+    //& { dp('past attrib, pos=' + pos); return true; }
     // use inline_breaks to break on tr etc
     td:(!inline_breaks 
-        & { dp("table_data 2, pos=" + pos + input.substr(pos,10)); return true; }
+        //& { dp("table_data 2, pos=" + pos + input.substr(pos,10)); return true; }
             b:block { return b })* { 
-        dp("table data result: " + pp(td) + ", attribts: " + pp(a));
-        return [{ type: 'TAG', name: 'td', attribs: [['data-unparsed', a]]}]
+        if ( a == '' ) {
+            a = [];
+        }
+        //dp("table data result: " + pp(td) + ", attribts: " + pp(a));
+        return [{ type: 'TAG', name: 'td', attribs: a}]
                .concat(td, [{type: 'ENDTAG', name: 'td'}]);
     }
 
 table_header
   = ("!!" / newline "!") 
-     a:thtd_attribs?
+    a:(as:generic_attribute+ "!" !"!" { return as } )?
      c:inline {
-         return [{type: 'TAG', name: 'th', attribs: [['data-unparsed', a]]}]
+         if ( a == '' ) {
+             a = [];
+         }
+         return [{type: 'TAG', name: 'th', attribs: a}]
                 .concat(c, [{type: 'ENDTAG', name: 'th'}]);
      }
 
@@ -1147,7 +1159,9 @@ thtd_attribs
   }
 
 
-table_end = newline? "|}" { clearFlag('table'); }
+table_end 
+  = newline? "|}" { clearFlag('table'); }
+  / newline? eof
 
 
 /* Tabs do not mix well with the hybrid production syntax */
