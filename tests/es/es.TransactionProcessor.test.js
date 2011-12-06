@@ -1,6 +1,6 @@
 module( 'es' );
 
-test( 'es.TransactionProcessor', 29, function() {
+test( 'es.TransactionProcessor', 30, function() {
 	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
 
 	// FIXME: These tests shouldn't use prepareFoo() because those functions
@@ -348,4 +348,33 @@ test( 'es.TransactionProcessor', 29, function() {
 		'rollback keeps model tree up to date with list item split (final paragraph)'
 	);
 	
+	var listSplit = documentModel.prepareInsertion( 17, [{ 'type': '/list' }, { 'type': 'list' }] );
+	
+	// Test 30
+	es.TransactionProcessor.commit( documentModel, listSplit );
+	deepEqual(
+		documentModel.getData( new es.Range( 15, 21 ) ),
+		[
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': '/list' },
+			{ 'type': 'list' },
+			{ 'type': 'listItem', 'attributes': { 'styles': ['bullet', 'bullet'] } },
+			{ 'type': 'paragraph' }
+		],
+		'commit splits list into two lists'
+	);
+	
+	// Test 31
+	es.TransactionProcessor.rollback( documentModel, listSplit );
+	deepEqual(
+		documentModel.getData( new es.Range( 15, 19 ) ),
+		[
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': 'listItem', 'attributes': { 'styles': ['bullet', 'bullet'] } },
+			{ 'type': 'paragraph' }
+		],
+		'rollback reverses list split'
+	);
 } );
