@@ -61,15 +61,21 @@ es.SurfaceModel.prototype.getSelection = function() {
  */
 es.SurfaceModel.prototype.select = function( selection, isManual ) {
 	selection.normalize();
-
-	this.selection = selection;	
-
-	if ( isManual ) {
-		// check if the last thing is a selection, if so, swap it.
-		this.pushSelection( selection );
+	if (
+		// First selection
+		!this.selection ||
+		// From changed
+		selection.from !== this.selection.from ||
+		// To changed
+		selection.to !== this.selection.to
+	) {
+		this.selection = selection;	
+		if ( isManual ) {
+			// check if the last thing is a selection, if so, swap it.
+			this.pushSelection( selection );
+		}
+		this.emit( 'select', this.selection.clone() );
 	}
-
-	this.emit( 'select', this.selection.clone() );
 };
 
 /**
