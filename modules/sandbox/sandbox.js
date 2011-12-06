@@ -129,10 +129,6 @@ $(document).ready( function() {
 				}
 			},
 			{
-				'type': 'pre',
-				'content': { 'text': 'A lot of text goes here... and at some point it wraps.. A lot of text goes here... and at some point it wraps.. A lot of text goes here... and at some point it wraps.. A lot of text goes here... and at some point it wraps.. A lot of text goes here... and at some point it wraps..' }
-			},
-			{
 				'type': 'heading',
 				'attributes': { 'level': 1 },
 				'content': {
@@ -147,6 +143,10 @@ $(document).ready( function() {
 						}
 					]	
 				}
+			},
+			{
+				'type': 'paragraph',
+				'content': { 'text': 'Paragraph' }
 			},
 			{
 				'type': 'heading',
@@ -165,6 +165,10 @@ $(document).ready( function() {
 				}
 			},
 			{
+				'type': 'paragraph',
+				'content': { 'text': 'Paragraph' }
+			},
+			{
 				'type': 'heading',
 				'attributes': { 'level': 3 },
 				'content': {
@@ -179,6 +183,10 @@ $(document).ready( function() {
 						}
 					]	
 				}
+			},
+			{
+				'type': 'paragraph',
+				'content': { 'text': 'Paragraph' }
 			},
 			{
 				'type': 'heading',
@@ -197,6 +205,10 @@ $(document).ready( function() {
 				}
 			},
 			{
+				'type': 'paragraph',
+				'content': { 'text': 'Paragraph' }
+			},
+			{
 				'type': 'heading',
 				'attributes': { 'level': 5 },
 				'content': {
@@ -211,6 +223,10 @@ $(document).ready( function() {
 						}
 					]	
 				}
+			},
+			{
+				'type': 'paragraph',
+				'content': { 'text': 'Paragraph' }
 			},
 			{
 				'type': 'heading',
@@ -230,33 +246,7 @@ $(document).ready( function() {
 			},
 			{
 				'type': 'paragraph',
-				'content': {
-					'text': 'In text display, line wrap is the feature of continuing on a new line when a line is full, such that each line fits in the viewable window, allowing text to be read from top to bottom without any horizontal scrolling.\nWord wrap is the additional feature of most text editors, word processors, and web browsers, of breaking lines between and not within words, except when a single word is longer than a line.',
-					'annotations': [
-						// 'wrap is' should be a link to '#'
-						{
-							'type': 'link/external',
-							'data': { 'href': '#' },
-							'range': { 'start': 22, 'end': 29 }
-						},
-						// 'In text display' should be bold
-						{ 'type': 'textStyle/bold', 'range': { 'start': 0, 'end': 15 } },
-						// 'line wrap' should be italic
-						{ 'type': 'textStyle/italic', 'range': { 'start': 17, 'end': 26 } }
-					]
-				}
-			},
-			{
-				'type': 'paragraph',
-				'content': { 'text': 'Test 22' }
-			},
-			{
-				'type': 'paragraph',
-				'content': { 'text': 'Test 22' }
-			},
-			{
-				'type': 'paragraph',
-				'content': { 'text': 'Test 22' }
+				'content': { 'text': 'Paragraph' }
 			},
 			{
 				'type': 'list',
@@ -269,7 +259,7 @@ $(document).ready( function() {
 						'children' : [
 							{
 								'type': 'paragraph',
-								'content': { 'text': 'Test 22/333' }
+								'content': { 'text': 'Bullet' }
 							}
 						]
 					}
@@ -277,7 +267,7 @@ $(document).ready( function() {
 			},
 			{
 				'type': 'paragraph',
-				'content': { 'text': 'Test 333' }
+				'content': { 'text': 'Paragraph' }
 			},
 			{
 				'type': 'list',
@@ -290,7 +280,7 @@ $(document).ready( function() {
 						'children' : [
 							{
 								'type': 'paragraph',
-								'content': { 'text': 'Test 4444' }
+								'content': { 'text': 'Bullet' }
 							}
 						]
 					},
@@ -302,7 +292,7 @@ $(document).ready( function() {
 						'children' : [
 							{
 								'type': 'paragraph',
-								'content': { 'text': 'Test 55555' }
+								'content': { 'text': 'Bullet bullet' }
 							}
 						]
 					},
@@ -314,7 +304,7 @@ $(document).ready( function() {
 						'children' : [
 							{
 								'type': 'paragraph',
-								'content': { 'text': 'Test 666666' }
+								'content': { 'text': 'Bullet bullet bullet' }
 							}
 						]
 					},
@@ -326,7 +316,7 @@ $(document).ready( function() {
 						'children' : [
 							{
 								'type': 'paragraph',
-								'content': { 'text': 'Test 7777777' }
+								'content': { 'text': 'Number' }
 							}
 						]
 					},
@@ -338,7 +328,7 @@ $(document).ready( function() {
 						'children' : [
 							{
 								'type': 'paragraph',
-								'content': { 'text': 'Test 88888888' }
+								'content': { 'text': 'Number number' }
 							}
 						]
 					},
@@ -350,7 +340,7 @@ $(document).ready( function() {
 						'children' : [
 							{
 								'type': 'paragraph',
-								'content': { 'text': 'Test 999999999' }
+								'content': { 'text': 'Term' }
 							}
 						]
 					},
@@ -362,12 +352,16 @@ $(document).ready( function() {
 						'children' : [
 							{
 								'type': 'paragraph',
-								'content': { 'text': 'Test 0000000000' }
+								'content': { 'text': 'Definition' }
 							}
 						]
 					}
 				]
 			},
+			{
+				'type': 'pre',
+				'content': { 'text': 'A lot of text goes here... and at some point it wraps.. A lot of text goes here... and at some point it wraps.. A lot of text goes here... and at some point it wraps.. A lot of text goes here... and at some point it wraps.. A lot of text goes here... and at some point it wraps..' }
+			}/*,
 			{
 				'type': 'table',
 				'attributes': { 'html/style': 'width: 600px; border: solid 1px;' },
@@ -440,6 +434,7 @@ $(document).ready( function() {
 					}
 				]
 			}
+			*/
 		]
 	};
 	window.doc = es.DocumentModel.newFromPlainObject( window.wikiDom );
