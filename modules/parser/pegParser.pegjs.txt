@@ -350,6 +350,9 @@
     // Could also provide positions for lower-level blocks using a stack.
     var blockStart = 0;
 
+    // Start position of generic tag production
+    var tagStartPos = 0;
+
     // cache the input length
     var inputLength = input.length;
 
@@ -818,7 +821,7 @@ wikilink
       };
       obj.attribs.push(['href', target]);
       if (text && text.length) {
-          var textTokens = text; // XXX
+          var textTokens = text;
       } else {
           if (suffix !== '') {
               target += suffix;
@@ -856,10 +859,16 @@ quote = "''" x:"'"* {
 	}
 }
 
-/* Will need to check anything xmlish agains known/allowed HTML tags and
- * registered extensions, otherwise fail the match. Should ref be treated as a
- * regular extension? */
-xmlish_tag = nowiki / ref / references / generic_tag
+/* XXX: Extension tags can require a change in the tokenizer mode, which
+ * returns any text between extension tags verbatim. For now, we simply
+ * continue to parse the contained text and return the tokens. The original
+ * input source can be recovered from the source positions added on tag
+ * tokens. This won't however work in all cases. For example, a comment start
+ * (<!--) between extension tags would cause the remaining text to be consumed
+ * as a comment. To avoid this, we might need to look ahead for the end tag
+ * and limit the content parsing to this section. */
+
+xmlish_tag = nowiki / generic_tag
 
 pre
   = "<pre" 
@@ -921,11 +930,19 @@ block_tag
         return res;
     }
 
+/* Generic XML-like tags
+ * 
+ * These also cover extensions (including Cite), which will hook into the
+ * token stream for further processing. The content of extension tags is
+ * parsed as regular inline, but the source positions of the tag are added 
+ * to allow reconstructing the unparsed text from the input. */
 
 // See http://dev.w3.org/html5/spec/Overview.html#syntax-tag-name and
 // following paragraphs
 generic_tag
-  = "<" end:"/"? name:[0-9a-zA-Z]+ 
+  = "<" 
+    & { tagStartPos = pos; return true; } // remember the start position of this tag
+    end:"/"? name:[0-9a-zA-Z]+ 
     attribs:generic_attribute* 
     space*
     selfclose:"/"?
@@ -938,6 +955,7 @@ generic_tag
         } else {
             res.type = 'TAG';
         }
+        res.attribs.push(['data-sourceTagPos', (tagStartPos - 1) + ":" + pos]);
         return res;
     }
 
@@ -968,112 +986,8 @@ att_value
   / "'" t:[^'>]* "'" { return unquote("'", t.join('')); }
   / '"' t:[^">]* '"' { return unquote('"', t.join('')); }
 
-ref = ref_full / ref_empty
 
-/* Can we do backreferences to genericize this? */
-ref_full
-  = start:ref_start ">" content:ref_content* close:ref_end {
-      return [
-        { type: 'TAG',
-          name: 'ext',
-          attribs: [['data-extname', 'ref']]
-              .concat(start.params, [['data-startws', start.ws]])}, 
-        content, 
-        {type: 'ENDTAG', name: 'ref'}
-      ];
-}
-
-ref_empty
-  = start:ref_start close:(space* "/>") {
-      return [{ type: 'SELFCLOSINGTAG',
-               name: 'ext',
-               attribs: [['data-extname', 'ref']]
-                          .concat(start.params
-                                 ,[['data-startws', start.ws]])
-      }];
-}
-
-ref_start
-  = "<ref" params:ext_param* ws:space* {
-      return {
-          params: params,
-          ws: ws
-      };
-}
-
-ref_end
-  = all:("</ref" space* ">") {
-  return all.join('');
-}
-
-ref_content
-  = !ref_end a:inline { // XXX: ineffective syntactic stop
-  return a;
-}
-
-/* fixme probably have to programatically add these */
-references = references_full / references_empty
-
-references_full
-  = start:references_start ">" content:references_content* close:references_end {
-      return [ 
-          { type: 'TAG',
-            name: 'ext',
-            attribs: [['data-extname', 'references']]
-                        .concat(start.params
-                               ,[['data-startws', start.ws]])
-          },
-          content,
-          { type: 'ENDTAG', name: 'ext' }
-      ];
-  }
-
-references_empty
-  = start:references_start close:(space* "/>") {
-      return
-          [{ type: 'SELFCLOSINGTAG',
-             name: 'ext',
-             attribs: [['data-extname', 'references']]
-                        .concat(start.params
-                               ,[['data-startws', start.ws]])
-          }];
-  }
-
-references_start
-  = "<references" params:ext_param* ws:space* {
-      return {
-          params: params,
-          ws: ws
-      };
-  }
-
-references_end
-  = all:("</references" space* ">") {
-      return all.join('');
-  }
-
-references_content
-  = !references_end a:inline {
-      return a;
-  }
-
-
-ext_param
-  = space* name:ext_param_name "=" val:ext_param_val {
-      val[0] = name;
-      return val;
-  }
-
-ext_param_name
-  = name:[a-zA-Z0-9-]+ {
-  return name.join('');
-}
-
-ext_param_val
-  = t:[0-9A-Za-z]+ { return [null, t.join('')]; }
-  / "'" t:[^'>]+ "'" { return [null, unquote("'", t.join(''))]; }
-  / '"' t:[^">]+ '"' { return [null, unquote('"', t.join(''))]; }
-
+/* Lists */
 lists = e:(dtdd / li) es:(sol (dtdd / li))*
 {
     return annotateList( [ { type: 'TAG', name: 'list'} ]
