@@ -468,7 +468,7 @@ function processTest(item) {
 					console.log("testWhiteList[" + 
 							JSON.stringify(item.title) + "] = " + 
 							JSON.stringify(out) +
-							";");
+							";\n");
 				}
 				}
 			} else {
