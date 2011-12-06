@@ -797,7 +797,9 @@ template_param_text_chunk
   / !"}}" x:([^|\n]) { return {type: 'TEXT', value: x} }
 
 wikilink
-  = "[[" target:link_target text:("|" lt:link_text { return lt })* "]]" suffix:text? {
+  = "[[" 
+    ! url
+    target:link_target text:("|" lt:link_text { return lt })* "]]" suffix:text? {
       var obj = {
           type: 'TAG',
           name: 'a',
