@@ -321,7 +321,7 @@ es.SurfaceView.prototype.onMouseDown = function( e ) {
 		// Reset the initial left position
 		this.cursor.initialLeft = null;
 		// Apply new selection
-		this.model.select( selection );
+		this.model.select( selection, true );
 	}
 	// If the inut isn't already focused, focus it and select it's contents
 	if ( !this.$input.is( ':focus' ) ) {
@@ -381,7 +381,7 @@ es.SurfaceView.prototype.onMouseMove = function( e ) {
 es.SurfaceView.prototype.onMouseUp = function( e ) {
 	if ( e.which === 1 ) { // left mouse button 
 		this.mouse.selectingMode = this.mouse.selectedRange = null;
-		this.model.select( this.currentSelection );
+		this.model.select( this.currentSelection, true );
 		// We have to manually call this because the selection will not have changed between the
 		// most recent mousemove and this mouseup
 		this.contextView.set();
@@ -544,7 +544,7 @@ es.SurfaceView.prototype.onKeyUp = function( e ) {
 	return true;
 };
 
-es.SurfaceView.prototype.handleDelete = function( backspace ) {
+es.SurfaceView.prototype.handleDelete = function( backspace, isPartial ) {
 	var selection = this.currentSelection.clone(),
 		sourceOffset,
 		targetOffset,
@@ -575,7 +575,7 @@ es.SurfaceView.prototype.handleDelete = function( backspace ) {
 		}
 		
 		selection.from = selection.to = targetOffset;
-		this.model.select( selection, true );
+		this.model.select( selection );
 		
 		if ( sourceNode === targetNode ||
 			( typeof sourceSplitableNode !== 'undefined' &&
@@ -583,12 +583,12 @@ es.SurfaceView.prototype.handleDelete = function( backspace ) {
 			tx = this.model.getDocument().prepareRemoval(
 				new es.Range( targetOffset, sourceOffset )
 			);
-			this.model.transact( tx, true );
+			this.model.transact( tx, isPartial );
 		} else {
 			tx = this.model.getDocument().prepareInsertion(
 				targetOffset, sourceNode.model.getContentData()
 			);
-			this.model.transact( tx, true );
+			this.model.transact( tx, isPartial );
 			
 			var nodeToDelete = sourceNode;
 			es.DocumentNode.traverseUpstream( nodeToDelete, function( node ) {
@@ -603,14 +603,14 @@ es.SurfaceView.prototype.handleDelete = function( backspace ) {
 			range.from = this.documentView.getOffsetFromNode( nodeToDelete, false );
 			range.to = range.from + nodeToDelete.getElementLength();
 			tx = this.model.getDocument().prepareRemoval( range );
-			this.model.transact( tx, true );
+			this.model.transact( tx, isPartial );
 		}
 	} else {
 		// selection removal
 		tx = this.model.getDocument().prepareRemoval( selection );
-		this.model.transact( tx, true );
+		this.model.transact( tx, isPartial );
 		selection.from = selection.to = selection.start;
-		this.model.select( selection, true );
+		this.model.select( selection );
 	}
 };
 
@@ -618,7 +618,7 @@ es.SurfaceView.prototype.handleEnter = function() {
 	var selection = this.currentSelection.clone(),
 		tx;
 	if ( selection.from !== selection.to ) {
-		this.handleDelete();
+		this.handleDelete( false, true );
 	}
 	var	node = this.documentView.getNodeFromOffset( selection.to, false ),
 		nodeOffset = this.documentView.getOffsetFromNode( node, false );
@@ -631,7 +631,7 @@ es.SurfaceView.prototype.handleEnter = function() {
 			nodeOffset + node.getElementLength(),
 			[ { 'type': 'paragraph' }, { 'type': '/paragraph' } ]
 		);
-		this.model.transact( tx, true );
+		this.model.transact( tx );
 		selection.from = selection.to = nodeOffset + node.getElementLength() + 1;	
 	} else {
 		var	stack = [],
@@ -658,11 +658,11 @@ es.SurfaceView.prototype.handleEnter = function() {
 			return true;
 		} );
 		tx = this.documentView.model.prepareInsertion( selection.to, stack );
-		this.model.transact( tx, true );
+		this.model.transact( tx );
 		selection.from = selection.to =
 			this.model.getDocument().getRelativeContentOffset( selection.to, 1 );
 	}
-	this.model.select( selection, true );
+	this.model.select( selection );
 };
 
 es.SurfaceView.prototype.insertFromInput = function() {
@@ -697,12 +697,12 @@ es.SurfaceView.prototype.insertFromInput = function() {
 		var data = val.split('');
 		es.DocumentModel.addAnnotationsToData( data, this.getInsertionAnnotations() );
 		tx = this.model.getDocument().prepareInsertion( selection.from, data );
-		this.model.transact( tx, true );
+		this.model.transact( tx );
 
 		// Move the selection
 		selection.from += val.length;
 		selection.to += val.length;
-		this.model.select( selection, true );
+		this.model.select( selection );
 	}
 };
 
@@ -832,7 +832,7 @@ es.SurfaceView.prototype.moveCursor = function( direction, unit ) {
 	} else {
 		selection.from = selection.to = to;
 	}
-	this.model.select( selection );
+	this.model.select( selection, true );
 };
 
 /**
