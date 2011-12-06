@@ -75,16 +75,18 @@ es.ListButtonTool.prototype.onClick = function() {
 		}
 		data = data.concat( [ { 'type': '/list' } ] );
 
-		tx = this.toolbar.surfaceView.model.getDocument().prepareRemoval(
-			new es.Range( insertAt, insertAt+removeLength)
-		);
-		this.toolbar.surfaceView.model.transact( tx );
-
 		tx = this.toolbar.surfaceView.model.getDocument().prepareInsertion(
 			insertAt,
 			data
 		);
 		this.toolbar.surfaceView.model.transact( tx );
+
+		tx = this.toolbar.surfaceView.model.getDocument().prepareRemoval(
+			new es.Range( insertAt+data.length, insertAt+removeLength+data.length)
+		);
+		this.toolbar.surfaceView.model.transact( tx );
+
+		
 	}
 };
 
