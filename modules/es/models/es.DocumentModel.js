@@ -262,11 +262,13 @@ es.DocumentModel.addAnnotationHashesToData = function( data ) {
  * @param {Array} annotations Annotations to apply
  */
 es.DocumentModel.addAnnotationsToData = function( data, annotations ) {
-	for ( var i = 0; i < data.length; i++ ) {
-		if ( es.isArray( data[i] ) ) {
-			data[i] = [data[i]];
+	if ( annotations && annotations.length ) {
+		for ( var i = 0; i < data.length; i++ ) {
+			if ( es.isArray( data[i] ) ) {
+				data[i] = [data[i]];
+			}
+			data[i] = [data[i]].concat( annotations );
 		}
-		data[i] = [data[i]].concat( annotations );
 	}
 };
 
