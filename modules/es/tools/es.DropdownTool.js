@@ -18,17 +18,33 @@ es.DropdownTool = function( toolbar, name, items ) {
 	var _this = this;
 	this.menuView = new es.MenuView( items, function( item ) {
 		_this.onSelect( item );
-		_this.$.text( item.label );
-	} );
+		_this.$label.text( item.label );
+	}, this.$ );
+	this.$label = $( '<div class="es-toolbarDropdownTool-label"></div>' ).appendTo( this.$ );
 
 	// Events
 	$( document )
 		.add( this.toolbar.surfaceView.$ )
 			.mousedown( function( e ) {
-				if ( e.button === 0 ) {
+				if ( e.which === 1 ) {
 					_this.menuView.hide();
 				}
 			} );
+	this.$.bind( {
+		'mousedown': function( e ) {
+			if ( e.which === 1 ) {
+				e.preventDefault();
+				return false;
+			}
+		},
+		'mouseup': function( e ) {
+			// Don't respond to menu clicks
+			var $item = $( e.target ).closest( '.es-menuView' );
+			if ( e.which === 1 && $item.length === 0 ) {
+				_this.menuView.toggle();
+			}
+		}
+	} );
 
 	// DOM Changes
 	this.$.addClass( 'es-toolbarDropdownTool' ).addClass( 'es-toolbarDropdownTool-' + name );

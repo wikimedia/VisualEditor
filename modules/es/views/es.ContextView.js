@@ -58,13 +58,13 @@ es.ContextView = function( surfaceView, $overlay ) {
 	// Events
 	this.$icon.bind( {
 		'mousedown': function( e ) {
-			if ( e.button === 0 ) {
+			if ( e.which === 1 ) {
 				e.preventDefault();
 				return false;
 			}
 		},
 		'mouseup': function( e ) {
-			if ( e.button === 0 ) {
+			if ( e.which === 1 ) {
 				_this.menuView.toggle();
 			}
 		}

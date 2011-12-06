@@ -58,23 +58,6 @@ es.FormatDropdownTool = function( toolbar, name ) {
 			'type' : 'pre'
 		}
 	] );
-
-	// Events
-	var _this = this;
-	this.$.bind( {
-		'mousedown': function( e ) {
-			if ( e.button === 0 ) {
-				e.preventDefault();
-				return false;
-			}
-		},
-		'mouseup': function( e ) {
-			if ( e.button === 0 ) {
-				_this.menuView.setPosition( es.Position.newFromElementPagePosition( _this.$ ) );
-				_this.menuView.toggle();
-			}
-		}
-	} );
 };
 
 /* Methods */
@@ -107,7 +90,7 @@ es.FormatDropdownTool.prototype.updateState = function( annotations, nodes ) {
 	}
 	
 	if ( format === null ) {
-		this.$.html( '&nbsp;' );
+		this.$label.html( '&nbsp;' );
 	} else {
 		var items = this.menuView.getItems();
 		for ( i = 0; i < items.length; i++ ) {
@@ -115,7 +98,7 @@ es.FormatDropdownTool.prototype.updateState = function( annotations, nodes ) {
 				format.type === items[i].type &&
 				es.compareObjects( format.attributes, items[i].attributes )
 			) {
-				this.$.text( items[i].label );
+				this.$label.text( items[i].label );
 				break;
 			}
 		}

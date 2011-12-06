@@ -13,7 +13,7 @@ es.MenuView = function( items, callback, $overlay ) {
 	this.items = [];
 	this.autoNamedBreaks = 0;
 	this.callback = callback;
-	
+
 	// Items
 	if ( es.isArray( items ) ) {
 		for ( var i = 0; i < items.length; i++ ) {
@@ -25,13 +25,13 @@ es.MenuView = function( items, callback, $overlay ) {
 	var _this = this;
 	this.$.bind( {
 		'mousedown': function( e ) {
-			if ( e.button === 0 ) {
+			if ( e.which === 1 ) {
 				e.preventDefault();
 				return false;
 			}
 		},
 		'mouseup': function( e ) {
-			if ( e.button === 0 ) {
+			if ( e.which === 1 ) {
 				var $item = $( e.target ).closest( '.es-menuView-item' );
 				if ( $item.length ) {
 					var name = $item.attr( 'rel' );
