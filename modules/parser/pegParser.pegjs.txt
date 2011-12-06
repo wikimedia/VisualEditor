@@ -91,7 +91,7 @@
 
         var doListItem = function ( bs, bn ) {
             var prefixLen = commonPrefixLength (bs, bn);
-            var changeLen = bn.length - prefixLen;
+            var changeLen = Math.max(bs.length, bn.length) - prefixLen;
             var prefix = bn.slice(0, prefixLen);
             // emit close tag tokens for closed lists
             if (changeLen === 0) {
@@ -111,8 +111,16 @@
                         }
                         out.push({type: 'TAG', name: newName});
                         endtags.push({type: 'ENDTAG', name: newName});
-                    } else {
+            } else {
                 popTags(bs.length - prefixLen);
+
+                if (prefixLen > 0 && bn.length == prefixLen ) {
+                    var itemToken = endtags.pop();
+                    out.push(itemToken);
+                    out.push({type: 'TAG', name: itemToken.name});
+                    endtags.push({type: 'ENDTAG', name: itemToken.name});
+                }
+
                 for(var i = prefixLen; i < bn.length; i++) {
                     switch (bn[i]) {
                         case '*':
@@ -158,7 +166,7 @@
                     if ( token.name == 'list' ) {
                         // pop all open list item tokens
                         popTags(bstack.length);
-                        bstack = "";
+                        bstack = [];
                     } else {
                         out.push(token);
                     }
@@ -607,20 +615,12 @@ inlineline
       return out;
 }
 
-/* TODO: convert all these to annotations!
- * -> need (start, end) offsets within block
- */
 inline_element
-  = & { dp('inline_element enter' + input.substr(pos, 10)); return true; }
-    comment
-  // Can actually also be block-level elements, we don't really try to enforce
-  // a content model in the tokenizer. The HTML tree builder and DOM
-  // transformations are better equipped to deal with it.
-  / xmlish_tag 
-  / template
-  / wikilink
-  / extlink
-  / quote
+  = //& { dp('inline_element enter' + input.substr(pos, 10)); return true; }
+      & '<' ( comment / xmlish_tag )
+    / & '{' ( template / tplarg )
+    / & '[' ( wikilink / extlink )
+    / & "'" quote
 
 /* Headings  */
 
@@ -805,6 +805,7 @@ template_param_text_chunk
   / xmlish_tag
   / extlink
   / template
+  / tplarg
   / wikilink
   / quote
   / c:[^}|\n]+ {return {type: 'TEXT', value: c.join('')}}
@@ -832,7 +833,14 @@ wikilink
   }
 
 link_target
-  = h:( !"]]" x:([^|\n]) { return x } )* { return decodeURI(h.join('')); }
+  = h:( c:[^|%\n\]]+ { return c.join('') } // quickly eat anything unsuspicious
+      / !"]]" 
+        hi:(
+              [^|%\n]
+            / urlencoded_char
+            / '%'
+           ) { return hi }
+      )* { return h.join(''); }
 
 link_text
   = h:( & { return setFlag('linkdesc'); }
