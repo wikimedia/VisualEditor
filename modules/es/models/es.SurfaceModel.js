@@ -22,8 +22,8 @@ es.SurfaceModel = function( doc ) {
 	this.lengthDifferenceLimit = 24;
 
 	// DEBUG don't commit
-	var _this = this;
-	this.addListener( 'transact', function() { console.log( _this.history ); } );
+	//var _this = this;
+	//this.addListener( 'transact', function() { console.log( _this.history ); } );
 };
 
 /* Methods */
@@ -100,8 +100,8 @@ es.SurfaceModel.prototype.pushSelection = function( selection ) {
  *					(such as when replacing - delete, then insert)
  */
 es.SurfaceModel.prototype.transact = function( transaction, isPartial ) {
-	console.log( 'tx:' + $.map( transaction.getOperations(), function(tx) { return tx.type; } ).join(",") 
-					+ ' isPartial:' + isPartial ); 
+	// console.log( 'tx:' + $.map( transaction.getOperations(), function(tx) { return tx.type; } ).join(",") 
+	//				+ ' isPartial:' + isPartial ); 
 	this.doc.commit( transaction );
 
 	// if we have changed the kind of operation (delete -> insert or insert -> delete or annotations )
