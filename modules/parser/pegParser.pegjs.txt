@@ -30,6 +30,11 @@
         return text.replace('\\' + quotec, quotec);
     };
 
+    // Decode html entities. In a browser, this should only be fed the entity,
+    // not untrusted html! XXX: replace with safer version.
+    var unentity = function ( entity ) {
+        return $("<div/>").html(entity).text();
+    };
 
     // Debug print with global switch
     var dp = function ( msg ) {
@@ -415,8 +420,7 @@ text = t:text_char+ { return t.join(''); }
  */
 
 urltext = ( t:[^'<~[{\n\rfghimnstw|!:\]} &=]+ { return t.join(''); }
-            // XXX: use general entity decode!
-          / "&amp;" { return "&"; } // decode ampersand in text
+          / htmlentity 
           / urllink
           // Convert trailing space into &nbsp;
           // XXX: This should be moved to a serializer
@@ -454,6 +458,8 @@ urltext = ( t:[^'<~[{\n\rfghimnstw|!:\]} &=]+ { return t.join(''); }
 //            pos = pos + (res.length - 1);
 //            return res
 //       }
+
+htmlentity = "&" c:[#0-9a-zA-Z]+ ";" { return unentity("&" + c.join('') + ";") }
 
 space
   = s:[ \t]+ { return s.join(''); }
@@ -728,13 +734,18 @@ url_protocol
 // javascript does not support unicode features..
 unicode_separator_space = [ \u00A0\u1680\u180E\u2000-\u200A\u202F\u205F\u3000]
 
+
+urlencoded_char = "%" c0:[0-9a-fA-F] c1:[0-9a-fA-F] { 
+    return decodeURI("%" + c0 + c1) 
+}
+
 url
   = proto:url_protocol 
-    rest:( [^ :\]\[\n"'<>\x00-\x20\x7f,.&\u00A0\u1680\u180E\u2000-\u200A\u202F\u205F\u3000] 
+    rest:( [^ :\]\[\n"'<>\x00-\x20\x7f,.&%\u00A0\u1680\u180E\u2000-\u200A\u202F\u205F\u3000] 
             / s:[.:,] !(space / eolf) { return s } 
-            // XXX: use general entity decode!
-            / '&amp;' { return '&' } 
-            / '&' )+ 
+            / htmlentity
+            / urlencoded_char
+            / [&%] )+ 
 { 
     return proto + rest.join(''); 
 }
@@ -818,7 +829,7 @@ wikilink
   }
 
 link_target
-  = h:( !"]]" x:([^|\n]) { return x } )* { return h.join(''); }
+  = h:( !"]]" x:([^|\n]) { return x } )* { return decodeURI(h.join('')); }
 
 link_text
   = h:( & { return setFlag('linkdesc'); }
@@ -954,8 +965,8 @@ generic_attribute_value
 
 att_value
   = t:[^ \t'"<>='\n]+ { return [null, t.join('')]; }
-  / "'" t:[^'>]+ "'" { return unquote("'", t.join('')); }
-  / '"' t:[^">]+ '"' { return unquote('"', t.join('')); }
+  / "'" t:[^'>]* "'" { return unquote("'", t.join('')); }
+  / '"' t:[^">]* '"' { return unquote('"', t.join('')); }
 
 ref = ref_full / ref_empty
 
