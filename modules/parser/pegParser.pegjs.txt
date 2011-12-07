@@ -200,7 +200,7 @@
             var txt = out[index - 1];
             txt.value += "'";
             if ( i > 0 ) {
-                bolds = bolds.slice(0, i-1)
+                bolds = bolds.slice(0, i)
                     .concat(bolds.slice(i + 1, bolds.length - i - 1));
             } else {
                 bolds.shift();
