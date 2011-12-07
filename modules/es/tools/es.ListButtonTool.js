@@ -62,17 +62,19 @@ es.ListButtonTool.prototype.list = function( nodes, style ) {
 		selection.from += 2;
 		selection.to += 2;
 	} else {
-		if ( nodes[0].getParent().getElementType() != 'listItem' ) {
-			if ( selection.from < selection.to ) {
-				selection.from += 2;
-			} else {
-				selection.to += 2;
+		if ( stacks.length > 0 ) {
+			if ( nodes[0].getParent().getElementType() != 'listItem' ) {
+				if ( selection.from < selection.to ) {
+					selection.from += 2;
+				} else {
+					selection.to += 2;
+				}
 			}
-		}
-		if ( selection.from < selection.to ) {
-			selection.to += (stacks.length * 2) + (nodes.length - listItems.length - 1) * 2;
-		} else {
-			selection.from += (stacks.length * 2) + (nodes.length - listItems.length - 1) * 2;
+			if ( selection.from < selection.to ) {
+				selection.to += (stacks.length * 2) + (nodes.length - listItems.length - 1) * 2;
+			} else {
+				selection.from += (stacks.length * 2) + (nodes.length - listItems.length - 1) * 2;
+			}
 		}
 	}
 
