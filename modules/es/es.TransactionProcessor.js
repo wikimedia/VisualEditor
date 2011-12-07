@@ -256,41 +256,43 @@ es.TransactionProcessor.prototype.retain = function( op ) {
 };
 
 es.TransactionProcessor.prototype.insert = function( op ) {
-	var node;
-	// If the cursor is on the left of a structural offset, it's going to the the parent node of
-	// the element we want to be inserting into
-	if ( es.DocumentModel.isStructuralOffset( this.model.data, this.cursor ) ) {
-		node = this.model.getNodeFromOffset( this.cursor + 1 );
-	} else {
-		node = this.model.getNodeFromOffset( this.cursor );
-	}
-	var offset;
-	if ( node.getParent() === this.model ) {
-		offset = this.model.getOffsetFromNode( node );
-	} else {
-		node = this.getScope( node, op.data );
-		offset = this.model.getOffsetFromNode( node );
-	}
-	if ( es.DocumentModel.containsElementData( op.data ) ) {
-		// Perform insert on linear data model
-		es.insertIntoArray( this.model.data, this.cursor, op.data );
-		this.applyAnnotations( this.cursor + op.data.length );
-		// Synchronize model tree
-		if ( offset === -1 ) {
-			throw 'Invalid offset error. Node is not in model tree';
-		}
+	var node = this.model.getNodeFromOffset( this.cursor ),
+		offset;
+	// Perform insert on linear data model
+	es.insertIntoArray( this.model.data, this.cursor, op.data );
+	this.applyAnnotations( this.cursor + op.data.length );
+	if (
+		es.DocumentModel.isStructuralOffset( this.model.data, this.cursor ) &&
+		( typeof op.data[0].type === 'string' && op.data[0].type.charAt( 0 ) !== '/' )
+	) {
+		offset = node === this.model ? 0 : this.model.getOffsetFromNode( node );
 		this.rebuildNodes(
-			this.model.data.slice( offset, offset + node.getElementLength() + op.data.length ),
-			[node]
+			this.model.data.slice( this.cursor, op.data.length ),
+			null,
+			node,
+			node.getIndexFromOffset( this.cursor - offset )
 		);
 	} else {
-		// Perform insert on linear data model
-		// TODO this is duplicated from above
-		es.insertIntoArray( this.model.data, this.cursor, op.data );
-		this.applyAnnotations( this.cursor + op.data.length );
-		// Update model tree
-		node.adjustContentLength( op.data.length, true );
-		node.emit( 'update', this.cursor - offset );
+		if ( node.getParent() === this.model ) {
+			offset = this.model.getOffsetFromNode( node );
+		} else {
+			node = this.getScope( node, op.data );
+			offset = this.model.getOffsetFromNode( node );
+		}
+		if ( es.DocumentModel.containsElementData( op.data ) ) {
+			// Synchronize model tree
+			if ( offset === -1 ) {
+				throw 'Invalid offset error. Node is not in model tree';
+			}
+			this.rebuildNodes(
+				this.model.data.slice( offset, offset + node.getElementLength() + op.data.length ),
+				[node]
+			);
+		} else {
+			// Update model tree
+			node.adjustContentLength( op.data.length, true );
+			node.emit( 'update', this.cursor - offset );
+		}
 	}
 	this.cursor += op.data.length;
 };
