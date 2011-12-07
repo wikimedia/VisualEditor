@@ -47,10 +47,6 @@ es.ListItemView.prototype.setClasses = function() {
 	}
 };
 
-es.ListItemView.prototype.setNumber = function( number ) {
-	this.$icon.text( number + '.' );
-};
-
 /* Registration */
 
 es.DocumentView.splitRules.listItem = {
