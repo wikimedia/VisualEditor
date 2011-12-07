@@ -307,8 +307,14 @@ es.TransactionProcessor.prototype.remove = function( op ) {
 		var ranges = this.model.selectNodes( new es.Range( this.cursor, this.cursor + op.data.length ) );
 		
 		// Build the list of nodes to rebuild and the data to keep
-		var oldNodes = [], newData = [], parent = null, index = null, firstKeptNode, lastKeptNode;
-		for ( var i = 0; i < ranges.length; i++ ) {
+		var oldNodes = [],
+			newData = [],
+			parent = null,
+			index = null,
+			firstKeptNode,
+			lastKeptNode,
+			i;
+		for ( i = 0; i < ranges.length; i++ ) {
 			oldNodes.push( ranges[i].node );
 			if ( ranges[i].range !== undefined ) {
 				// We have to keep part of this node
@@ -349,9 +355,11 @@ es.TransactionProcessor.prototype.remove = function( op ) {
 			// node we visit and verify that the transaction is a valid merge (i.e. it satisfies
 			// the merge criteria in prepareRemoval()'s canMerge()).
 			// FIXME: The code is essentially the same as canMerge(), merge these algorithms
-			var	openings = [], closings = [],
+			var	openings = [],
+				closings = [],
 				paths = es.DocumentNode.getCommonAncestorPaths( firstKeptNode, lastKeptNode ),
-				i, prevN1, prevN2;
+				prevN1,
+				prevN2;
 			
 			if ( !paths ) {
 				throw 'Removal is not a valid merge: nodes do not have a common ancestor or are not at the same depth';
