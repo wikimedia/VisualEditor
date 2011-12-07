@@ -256,8 +256,15 @@ es.TransactionProcessor.prototype.retain = function( op ) {
 };
 
 es.TransactionProcessor.prototype.insert = function( op ) {
-	var node = this.model.getNodeFromOffset( this.cursor ),
-		offset;
+	var node;
+	// If the cursor is on the left of a structural offset, it's going to the the parent node of
+	// the element we want to be inserting into
+	if ( es.DocumentModel.isStructuralOffset( this.model.data, this.cursor ) ) {
+		node = this.model.getNodeFromOffset( this.cursor + 1 );
+	} else {
+		node = this.model.getNodeFromOffset( this.cursor );
+	}
+	var offset;
 	if ( node.getParent() === this.model ) {
 		offset = this.model.getOffsetFromNode( node );
 	} else {
