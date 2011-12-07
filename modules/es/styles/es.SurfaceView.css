@@ -3,6 +3,11 @@
 	font-size: 1em; /* to look more like MediaWiki use: 0.8em */;
 	margin-left: -1em;
 	margin-right: -1em;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select;
+	user-select: none;
 }
 
 .es-surfaceView-textarea {

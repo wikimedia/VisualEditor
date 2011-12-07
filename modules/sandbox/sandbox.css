@@ -8,6 +8,11 @@
 	background-image: url(../es/images/fade-up.png);
 	background-position: bottom left;
 	background-repeat: repeat-x;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select;
+	user-select: none;
 }
 #es-toolbar.float {
 	top: 0;
