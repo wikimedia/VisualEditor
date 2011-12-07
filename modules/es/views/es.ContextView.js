@@ -105,7 +105,7 @@ es.ContextView.prototype.set = function() {
 		}
 		$menu.css( 'left', menuLeft );
 		// Position menu on top or bottom depending on viewport
-		if ( position.top + menuHeight < windowHeight + windowScrollTop ) {
+		if ( position.top + menuHeight + ( menuMargin * 2 ) < windowHeight + windowScrollTop ) {
 			this.$.addClass( 'es-contextView-position-below' );
 		} else {
 			this.$.addClass( 'es-contextView-position-above' );
