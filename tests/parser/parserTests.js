@@ -370,6 +370,10 @@ function processTest(item) {
 		console.log('=====================================================');
 		console.log('FAILED'.red + ': ' + item.title.yellow);
 		console.log(item.comments.join('\n'));
+		if (item.options) {
+			console.log("OPTIONS".cyan + ":");
+			console.log(item.options + '\n');
+		}
 		console.log("INPUT".cyan + ":");
 		console.log(item.input + "\n");
 	}
@@ -500,6 +504,7 @@ cases.forEach(function(item) {
 		switch(item.type) {
 			case 'article':
 				//processArticle(item);
+				comments = [];
 				break;
 			case 'test':
 				if( test_filter && -1 === item.title.search( test_filter ) ) {
@@ -515,6 +520,7 @@ cases.forEach(function(item) {
 				comments.push(item.comment);
 				break;
 			default:
+				comments = [];
 				break;
 		}
 	}
