@@ -424,6 +424,8 @@ es.TransactionProcessor.prototype.attribute = function( op, invert ) {
 	} else {
 		throw 'Invalid method error. Can not operate attributes this way: ' + method;
 	}
+	var node = this.model.getNodeFromOffset( this.cursor + 1 );
+	node.emit( 'update' );
 };
 
 es.TransactionProcessor.prototype.mark = function( op, invert ) {
