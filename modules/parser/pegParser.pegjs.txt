@@ -588,26 +588,29 @@ inline_breaks
   / & { return syntaxFlags['extlink']; } "]" { return true; }
   / & { return syntaxFlags['linkdesc']; } link_end { return true; }
   / & { return syntaxFlags['h']; } '='+ space* newline { return true; }
+  / & { return syntaxFlags['template']; } ('|' / '}}') { return true; }
 
 inline
-  = c:(urltext / inline_element / (!inline_breaks ch:. { return ch; }))+ {
+  = c:(urltext / (! inline_breaks (inline_element / . )))+ {
       var out = [];
       var text = [];
       c = flatten(c);
-      for (var i = 0; i < c.length; i++) {
-          if (typeof c[i] == 'string') {
-              text.push(c[i]);
+      for (var i = 0, l = c.length; i < l; i++) {
+          var ci = c[i];
+          if (typeof ci == 'string') {
+              text.push(ci);
           } else {
               if (text.length) {
                   out.push({ type: "TEXT", value: text.join('') });
                   text = [];
               }
-              out.concat(c[i]);
+              out.push(ci);
           }
       }
       if (text.length) {
           out.push({ type: 'TEXT', value: text.join('') });
       }
+      //dp('inline out:' + pp(out));
       return out;
 }
 
@@ -618,20 +621,21 @@ inlineline
       var text = [];
       c = flatten(c);
       for (var i = 0; i < c.length; i++) {
-          if (typeof c[i] == 'string') {
-              text.push(c[i]);
+          var ci = c[i]
+          if (typeof ci == 'string') {
+              text.push(ci);
           } else {
               if (text.length) {
                   out.push({type: 'TEXT', value: text.join('')});
                   text = [];
               }
-              out.push(c[i]);
+              out.push(ci);
           }
       }
       if (text.length) {
           out.push({type: 'TEXT', value: text.join('')});
       }
-      dp('inlineline out:', pp(out));
+      //dp('inlineline out:' + pp(out));
       return out;
 }
 
@@ -775,7 +779,9 @@ url
 //[^][<>"\\x00-\\x20\\x7F\p{Zs}]
 
 template
-  = "{{" target:template_target params:("|" p:template_param { return p })* "}}" {
+  = "{{" target:template_target 
+    params:(newline? "|" newline? p:template_param { return p })* 
+    "}}" {
       var obj = { type: 'TAG', name: 'template', 
                   attribs: [['target', target]],
                   args: {}}
@@ -798,29 +804,28 @@ template
       // parser only recognizes known self-closing tags for now, so use an
       // explicit end tag for now.
       //console.log(pp(obj));
-      return [obj, {type: 'ENDTAG', name: 'template'}];
+      return obj;
   }
 
 template_target
   = h:( !"}}" x:([^|\n]) { return x } )* { return h.join(''); }
 
-/* XXX: pass these as convenient js structures to later stages, but serialize
- * (to json) before passing remaining args to the tree builder */
 template_param
-  = name:template_param_name "=" c:template_param_text {
+  = name:template_param_name space* "=" space* c:template_param_text {
       return [name, c];
   } / c:template_param_text {
       return [null, c];
   }
 
 tplarg 
-  = "{{{" name:link_target params:("|" ! "}}}" p:template_param { return p })* "}}}" {
+  = "{{{" name:link_target params:("|" p:template_param { return p })* "}}}" {
       var obj = { 
             type: 'SELFCLOSINGTAG', 
             name: 'templatearg', 
             attribs: [['argname', name]]
       };
       if (params && params.length) {
+          // HACK, not final.
           obj.attribs.push(['data-args', JSON.stringify(params)]);
       }
       return obj;
@@ -829,22 +834,23 @@ tplarg
 template_param_name
   = h:( !"}}" x:([^=|\n]) { return x } )* { return h.join(''); }
 
-template_param_text
-  = tcs:template_param_text_chunk* { return JSON.stringify(tcs); }
-  //= h:( !"}}" x:([^|]) { return x } )* { return h.join(''); }
-
-
 // XXX: convert to inlineline with syntactic stop on "}}"
-template_param_text_chunk
-  = comment
-  / xmlish_tag
-  / extlink
-  / template
-  / tplarg
-  / wikilink
-  / quote
-  / c:[^}|\n]+ {return {type: 'TEXT', value: c.join('')}}
-  / !"}}" x:([^|\n]) { return {type: 'TEXT', value: x} }
+template_param_text
+  = & { return setFlag('template') }
+    il:inline+ {
+        clearFlag('template');
+        return il;
+    }
+  / & { clearFlag('template'); return false; }
+//  urltext
+//  / xmlish_tag
+//  / extlink
+//  / template
+//  / tplarg
+//  / wikilink
+//  / quote
+//  / c:[^}|\n]+ {return {type: 'TEXT', value: c.join('')}}
+//  / !"}}" x:([^|\n]) { return {type: 'TEXT', value: x} }
 
 wikilink
   = "[[" 
