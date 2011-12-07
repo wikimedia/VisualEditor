@@ -25,6 +25,13 @@ class SpecialVisualEditorSandbox extends SpecialPage {
 <!-- VisualEditor Sandbox -->
 <div id="es-base">
 	<div id="es-toolbar" class="es-toolbar">
+		<div id="es-modes" class="es-modes">
+			<div id="es-mode-wikitext" class="es-modes-button"></div>
+			<div id="es-mode-json" class="es-modes-button"></div>
+			<div id="es-mode-html" class="es-modes-button"></div>
+			<div id="es-mode-render" class="es-modes-button"></div>
+			<div id="es-mode-history" class="es-modes-button"></div>
+		</div>
 		<div style="clear:both"></div>
 		<div id="es-toolbar-shadow"></div>
 	</div>
@@ -32,12 +39,12 @@ class SpecialVisualEditorSandbox extends SpecialPage {
 		<div id="es-visual">
 			<div id="es-editor"></div>
 		</div>
-		<div id="es-previews">
-			<div id="es-preview-wikitext" class="es-preview es-code"></div>
-			<div id="es-preview-json" class="es-preview es-code"></div>
-			<div id="es-preview-html" class="es-preview es-code"></div>
-			<div id="es-preview-render" class="es-preview es-render"></div>
-			<div id="es-preview-history" class="es-preview es-history"></div>
+		<div id="es-panels">
+			<div id="es-panel-wikitext" class="es-panel es-code"></div>
+			<div id="es-panel-json" class="es-panel es-code"></div>
+			<div id="es-panel-html" class="es-panel es-code"></div>
+			<div id="es-panel-render" class="es-panel es-render"></div>
+			<div id="es-panel-history" class="es-panel es-code"></div>
 		</div>
 		<div style="clear:both"></div>
 	</div>

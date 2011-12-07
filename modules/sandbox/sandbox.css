@@ -39,11 +39,16 @@
 }
 .es-showData #es-editor {
 	border-right: solid 1px #cccccc;
+	margin: 0;
+	padding: 0;
 }
 .es-showData #es-visual {
+	margin: 0;
+	padding: 0;
 	float: left;
-	width: 49%;
+	width: 50%;
 	overflow: hidden;
+	margin-left: -1px;
 }
 #es-panels {
 	display: none;
@@ -51,7 +56,7 @@
 .es-showData #es-panels {
 	display: block;
 	float: right;
-	width: 48%;
+	width: 50%;
 	overflow: hidden;
 }
 .es-panel {
@@ -95,10 +100,12 @@
 .mediawiki .es-menuView {
 	font-size: 0.8em;
 }
+
+#es-toolbar .es-toolbarGroups {
+	float: left;
+}
 .es-modes {
-	position: absolute;
-	right: 0;
-	top: 0;
+	float: right;
 	padding: 0.25em;
 }
 .es-modes-button {
