@@ -583,8 +583,8 @@ inline_breaks
     & { return syntaxFlags['table']; } 
     a:(newline [!|] / '||' / '!!' / '|}') { dp("table break" + pp(a) + pos); return true; }
   / & { return (syntaxFlags['colon'] && 
-          ! syntaxFlags.extlink &&
-          ! syntaxFlags.linkdesk); } ":" { return true; }
+          ! syntaxFlags.extlink && // example: ; [[Link:Term]] : Definition
+          ! syntaxFlags.linkdesc); } ":" { return true; }
   / & { return syntaxFlags['extlink']; } "]" { return true; }
   / & { return syntaxFlags['linkdesc']; } link_end { return true; }
   / & { return syntaxFlags['h']; } '='+ space* newline { return true; }
