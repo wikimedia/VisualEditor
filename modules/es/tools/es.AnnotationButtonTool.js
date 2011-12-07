@@ -24,7 +24,7 @@ es.AnnotationButtonTool.prototype.onClick = function() {
 };
 
 es.AnnotationButtonTool.prototype.updateState = function( annotations, nodes ) {
-	if ( es.DocumentModel.getIndexOfAnnotation( annotations.full, this.annotation ) !== -1 ) {
+	if ( es.DocumentModel.getIndexOfAnnotation( annotations.full, this.annotation, true ) !== -1 ) {
 		this.$.addClass( 'es-toolbarButtonTool-down' );
 		this.active = true;
 		return;

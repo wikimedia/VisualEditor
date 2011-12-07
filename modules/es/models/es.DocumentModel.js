@@ -160,9 +160,10 @@ es.DocumentModel.getHash = ( window.JSON && typeof JSON.stringify === 'function'
  * @method
  * @param {Array} annotations Annotations to search through
  * @param {Object} annotation Annotation to search for
+ * @param {Boolean} typeOnly Whether to only consider the type
  * @returns {Integer} Index of annotation in annotations, or -1 if annotation was not found
  */
-es.DocumentModel.getIndexOfAnnotation = function( annotations, annotation ) {
+es.DocumentModel.getIndexOfAnnotation = function( annotations, annotation, typeOnly ) {
 	if ( annotation === undefined || annotation.type === undefined ) {
 		throw 'Invalid annotation error. Can not find non-annotation data in character.';
 	}
@@ -173,7 +174,18 @@ es.DocumentModel.getIndexOfAnnotation = function( annotations, annotation ) {
 			if ( typeof annotations[i] === 'string' ) {
 				continue;
 			}
-			if ( annotations[i].hash === ( annotation.hash || es.DocumentModel.getHash( annotation ) ) ) {
+			if (
+				(
+					typeOnly && 
+					annotations[i].type === annotation.type
+				) ||
+				(
+					!typeOnly &&
+					annotations[i].hash === (
+						annotation.hash || es.DocumentModel.getHash( annotation )
+					)
+				)
+			) {
 				return i;
 			}
 		}

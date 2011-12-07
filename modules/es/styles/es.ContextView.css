@@ -54,14 +54,6 @@
 	top: 3px;
 }
 
-.es-contextView-position-left .es-menuView {
-	left: -1px;
-}
-
-.es-contextView-position-right .es-menuView {
-	right: -1px;
-}
-
 .es-contextView-panels {
 	position: absolute;
 	border: solid 1px #cccccc;
@@ -84,4 +76,8 @@
 .es-contextView-toolbar {
 	padding: 0.33em 0.66em;
 	white-space: nowrap;
+}
+
+.es-contextView .es-toolbarGroup {
+	border: none;
 }

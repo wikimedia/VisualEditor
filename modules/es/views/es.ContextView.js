@@ -16,26 +16,11 @@ es.ContextView = function( surfaceView, $overlay ) {
 	this.toolbarView = new es.ToolbarView(
 		this.$toolbar,
 		this.surfaceView,
-		[{ 'name': 'textStyle', 'items' : [ 'bold', 'italic', 'formatting', 'clear' ] }]
+		[{ 'name': 'textStyle', 'items' : [ 'bold', 'italic', 'link', 'clear' ] }]
 	);
 	this.menuView = new es.MenuView( [
 			// Example menu items
-			{ 'name': 'tools', '$': this.$toolbar },
-			'-',
-			{ 'name': 'link', 'label': 'Link to...', 'callback': function( item ) {
-				_this.menuView.hide();
-				_this.$panels
-					.show()
-					.find( '[rel="link"]' )
-						.show()
-						.end()
-					.find( '[rel="link"] input:first' )
-						.focus();
-			} },
-			'-',
-			{ 'name': 'copy', 'label': 'Copy' },
-			{ 'name': 'cut', 'label': 'Cut' },
-			{ 'name': 'paste', 'label': 'Paste' }
+			{ 'name': 'tools', '$': this.$toolbar }
 		],
 		null,
 		this.$
@@ -100,13 +85,27 @@ es.ContextView.prototype.set = function() {
 		}
 	}
 	if ( position ) {
-		if ( position.left + this.menuView.$.width() < $( 'body' ).width() ) {
-			this.$.addClass( 'es-contextView-position-left' );
-		} else {
-			this.$.addClass( 'es-contextView-position-right' );
+		var $menu = this.menuView.$,
+			menuMargin = 5,
+			menuWidth = $menu.width(),
+			menuHeight = $menu.height(),
+			$window = $( window ),
+			windowWidth = $window.width(),
+			windowHeight = $window.height(),
+			windowScrollTop = $window.scrollTop();
+		// Center align menu
+		var menuLeft = -Math.round( menuWidth / 2 );
+		// Adjust menu left or right depending on viewport
+		if ( ( position.left - menuMargin ) + menuLeft < 0 ) {
+			// Move right a bit past center
+			menuLeft -= position.left + menuLeft - menuMargin;
+		} else if ( ( menuMargin + position.left ) - menuLeft > windowWidth ) {
+			// Move left a bit past center
+			menuLeft += windowWidth - menuMargin - ( position.left - menuLeft );
 		}
-		var $window = $( window );
-		if ( position.top + this.menuView.$.height() < $window.height() + $window.scrollTop() ) {
+		$menu.css( 'left', menuLeft );
+		// Position menu on top or bottom depending on viewport
+		if ( position.top + menuHeight < windowHeight + windowScrollTop ) {
 			this.$.addClass( 'es-contextView-position-below' );
 		} else {
 			this.$.addClass( 'es-contextView-position-above' );
