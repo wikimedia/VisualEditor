@@ -22,8 +22,8 @@ es.SurfaceModel = function( doc ) {
 	this.lengthDifferenceLimit = 24;
 
 	// DEBUG don't commit
-	//var _this = this;
-	//this.addListener( 'transact', function() { console.log( _this.history ); } );
+	var _this = this;
+	this.addListener( 'transact', function() { console.log( _this.history ); } );
 };
 
 /* Methods */
@@ -57,22 +57,17 @@ es.SurfaceModel.prototype.getSelection = function() {
  * 
  * @method
  * @param {es.Range} selection
- * @param {Boolean} combine Whether to prevent this transaction from causing a history push
+ * @param {Boolean} isManual Whether this selection was the result of a user action, and thus should be recorded in history...?
  */
 es.SurfaceModel.prototype.select = function( selection, isManual ) {
 	selection.normalize();
 	if (
-		// First selection
-		!this.selection ||
-		// From changed
-		selection.from !== this.selection.from ||
-		// To changed
-		selection.to !== this.selection.to
+		( ! this.selection ) || ( ! this.selection.equals( selection ) )
 	) {
+		// check if the last thing is a selection, if so, swap it.
 		this.selection = selection;	
 		if ( isManual ) {
-			// check if the last thing is a selection, if so, swap it.
-			this.pushSelection( selection );
+			this.historyPush( selection );
 		}
 		this.emit( 'select', this.selection.clone() );
 	}
@@ -83,8 +78,26 @@ es.SurfaceModel.prototype.select = function( selection, isManual ) {
  * For the history, selections are just markers, so we don't want to record many of them in a row.
  * 
  * @method
- * @param {es.Range} selection
+ * @param {es.Range|es.Transaction} historyItem
  */
+
+
+/**
+ * TODO docs
+ */
+es.SurfaceModel.prototype.historyPush = function ( historyItem ) {
+	// truncate anything past our current history position
+	this.history.splice( this.historyIndex );
+
+	// push the next item. Could be combined with above splice given sufficient cleverness
+	this.history.push( historyItem );
+	
+	// get ready to insert at the end
+	this.historyIndex = this.history.length;
+
+};
+
+/*
 es.SurfaceModel.prototype.pushSelection = function( selection ) {
 	if ( this.history[ this.history.length - 1 ] instanceof es.Range ) {
 		this.history[ this.history.length - 1 ] = selection;
@@ -92,6 +105,7 @@ es.SurfaceModel.prototype.pushSelection = function( selection ) {
 		this.history.push( selection );
 	}
 };
+*/
 
 /**
  * Applies a series of transactions to the content data.
@@ -122,14 +136,12 @@ es.SurfaceModel.prototype.transact = function( transaction, isPartial ) {
 			( Math.abs( this.currentLengthDifference ) > this.lengthDifferenceLimit ) 
 		)
 	) {
-		this.currentLengthDifference = d;
-		this.history.push( this.selection );
-	} else {
-		this.currentLengthDifference += d;
+		this.currentLengthDifference = 0;
+		this.historyPush( this.selection );
 	}
 
-	this.history.push( transaction );
-	
+	this.currentLengthDifference += d;
+	this.historyPush( transaction );
 	this.emit( 'transact', transaction );
 };
 
@@ -138,40 +150,38 @@ es.SurfaceModel.prototype.transact = function( transaction, isPartial ) {
  * Reverses one or more history items.
  * 
  * @method
- * @param {Integer} Number of history items to roll back
+ * @param {Integer} n Number of history items to roll back
  */
-es.SurfaceModel.prototype.undo = function( statesToUndo ) {
+es.SurfaceModel.prototype.undo = function( n ) {
 	
+	console.log( this.history );
 	console.log( 'about to undo...' );
-	console.log( this.states );
-	console.log( 'currentState: ' + this.currentState );
-	console.log( 'currentStateIndex: ' + this.currentStateIndex );
+	console.log( "historyIndex: " + this.historyIndex );
 
 	lengthDifference = 0;
+	var finalSelection = null;
 
-	while ( statesToUndo ) {
-		statesToUndo--;
+	while ( n ) {
+		n--;
 
-		if ( this.currentState.length ) {
-			for (var i = this.currentState.length - 1; i >= 0; i-- ) {
-				lengthDifference += this.currentState[i].getLengthDifference();
-				this.doc.rollback( this.currentState[i] );
+		if ( this.history.length ) {
+			for (var i = this.history.length - 1; i >= 0; i-- ) {
+				this.historyIndex = i;
+				if ( this.history[i] instanceof es.Range ) {
+					finalSelection = this.history[i];
+					break;
+				} else {
+					this.doc.rollback( this.history[i] );
+				}
 			}
 			this.emit( 'undo', this.currentState );
-		}
-
-		// do we also want all the effects of initializeState? currentStateDistance to be 0, currentStateLengthDifference?
-		if ( this.currentStateIndex > 0 ) { 
-			this.initializeState( this.currentStateIndex - 1 );
 		}
 	}
 
 	console.log( 'after undo...' );
-	console.log( this.states );
-	console.log( 'currentState: ' + this.currentState );
-	console.log( 'currentStateIndex: ' + this.currentStateIndex );
+	console.log( "historyIndex: " + this.historyIndex );
 
-	// TODO - make the appropriate selection now
+	this.select( finalSelection	);
 };
 
 /**

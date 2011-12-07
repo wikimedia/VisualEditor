@@ -79,3 +79,14 @@ es.Range.prototype.normalize = function() {
 		this.end = this.from;
 	}
 };
+
+/**
+ * Determines if two Ranges are equal. Direction counts.
+ *
+ * @method
+ * @param {es.Range}
+ * @returns {Boolean}
+ */
+es.Range.prototype.equals = function( other ) {
+	return this.from === other.from && this.to === other.to;
+};
