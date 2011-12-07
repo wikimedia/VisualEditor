@@ -105,7 +105,10 @@ es.ListButtonTool.prototype.list = function( nodes, style ) {
 					'type': 'listItem',
 					'attributes' : { 'styles': [ this.name ] }
 				} ] )
-				.concat( stacks[i][j].getElementData() )
+				//.concat( stacks[i][j].getElementData() )
+				.concat( [ { 'type': 'paragraph' } ] )
+				.concat( stacks[i][j].getContentData() )
+				.concat( [ { 'type': '/paragraph' } ] )
 				.concat( [ { 'type': '/listItem' } ] );
 		}
 		data = data.concat( [ { 'type': '/list' } ] );
