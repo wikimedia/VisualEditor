@@ -18,7 +18,10 @@ es.ListItemView = function( model ) {
 	this.$.addClass( 'es-listItemView' );
 
 	// Events
-	this.on( 'update', this.setClasses );
+	var _this = this;
+	this.model.on( 'update', function() {
+		_this.setClasses();
+	} );
 
 	// Initialization
 	this.setClasses();

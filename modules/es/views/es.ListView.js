@@ -14,7 +14,10 @@ es.ListView = function( model ) {
 	this.$.addClass( 'es-listView' );
 
 	// Events
-	this.on( 'update', this.enumerate );
+	var _this = this;
+	this.model.on( 'update', function() {
+		_this.enumerate();
+	} );
 
 	// Initialization
 	this.enumerate();

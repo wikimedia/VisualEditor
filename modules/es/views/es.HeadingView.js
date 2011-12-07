@@ -17,7 +17,10 @@ es.HeadingView = function( model ) {
 	this.$.addClass( 'es-headingView' );
 
 	// Events
-	this.on( 'update', this.setClasses );
+	var _this = this;
+	this.model.on( 'update', function() {
+		_this.setClasses();
+	} );
 
 	// Initialization
 	this.setClasses();
