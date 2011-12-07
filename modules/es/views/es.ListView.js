@@ -37,7 +37,7 @@ es.ListView.prototype.enumerate = function() {
 			if ( !levels[styles.length - 1] ) {
 				levels[styles.length - 1] = 0;
 			}
-			this.children[i].$icon.text( number + '.' );
+			this.children[i].$icon.text( ++levels[styles.length - 1] + '.' );
 		} else {
 			this.children[i].$icon.text( '' );
 		}
