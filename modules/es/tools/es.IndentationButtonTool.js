@@ -15,13 +15,13 @@
 /* Methods */
 
 es.IndentationButtonTool.prototype.onClick = function() {
-	//
+	if ( !this.$.hasClass( 'es-toolbarButtonTool-disabled' ) ) {
+		alert( 'This functionality is not yet supported.' );
+	}
 };
 
 es.IndentationButtonTool.prototype.updateState = function( annotations, nodes ) {
-	// checks if all passed nodes are listItems
-	function check( nodes, style ) {
-		var parent, styles;
+	function areListItems( nodes ) {
 		for( var i = 0; i < nodes.length; i++ ) {
 			if ( nodes[i].getParent().getElementType() !== 'listItem' ) {
 				return false;
@@ -30,10 +30,10 @@ es.IndentationButtonTool.prototype.updateState = function( annotations, nodes ) 
 		return true;
 	}
 
-	if ( check( nodes, this.name ) ) {
+	if ( areListItems( nodes ) ) {
 		this.$.removeClass( 'es-toolbarButtonTool-disabled' );
 	} else {
-		this.$.addClass( 'es-toolbarButtonTool-disabled' );			
+		this.$.addClass( 'es-toolbarButtonTool-disabled' );
 	}
 };
 
