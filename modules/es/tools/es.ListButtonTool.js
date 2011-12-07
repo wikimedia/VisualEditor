@@ -18,88 +18,112 @@
 
 /* Methods */
 
-es.ListButtonTool.prototype.onClick = function() {
-	if ( !this.$.hasClass( 'es-toolbarButtonTool-down' ) ) {
+es.ListButtonTool.prototype.list = function( nodes, style ) {
+	var	surface = this.toolbar.surfaceView,
+		selection = surface.currentSelection.clone(),
+		stack = [],
+		stacks = [],
+		listItems = [],
+		parent,
+		styles,
+		insertAt,
+		removeLength,
+		data,
+		tx,
+		i,
+		j;
 
-		var	surface = this.toolbar.surfaceView,
-			stack = [],
-			stacks = [],
-			listItems = [],
-			parent,
-			styles,
-			insertAt,
-			removeLength,
-			data,
-			tx,
-			i,
-			j;
-
-		for( i = 0; i < this.nodes.length; i++ ) {
-			parent = this.nodes[i].getParent();
-			if ( parent.getElementType() === 'listItem' ) {
-				if ( stack.length > 0 ) {
-					stacks.push( stack );
-					stack = [];
-				}
-				listItems.push( parent );
-			} else {
-				if( stack.length > 0 ) {
-					if ( parent === stack[stack.length - 1].getParent() ) {
-						stack.push( this.nodes[i] );
-					} else {
-						stacks.push( stack );
-						stack = [this.nodes[i]];
-					}
+	for( i = 0; i < nodes.length; i++ ) {
+		parent = nodes[i].getParent();
+		if ( parent.getElementType() === 'listItem' ) {
+			if ( stack.length > 0 ) {
+				stacks.push( stack );
+				stack = [];
+			}
+			listItems.push( parent );
+		} else {
+			if( stack.length > 0 ) {
+				if ( parent === stack[stack.length - 1].getParent() ) {
+					stack.push( nodes[i] );
 				} else {
-					stack.push( this.nodes[i] );
+					stacks.push( stack );
+					stack = [ nodes[i] ];
 				}
+			} else {
+				stack.push( nodes[i] );
 			}
 		}
-		if( stack.length > 0 ) {
-			stacks.push( stack );
-		}
-
-		for( i = 0; i < listItems.length; i++ ) {
-			styles = listItems[i].getElementAttribute( 'styles' );
-			if ( styles[styles.length - 1] !== this.name ) {
-				styles.splice( styles.length - 1, 1, this.name );
-				tx = surface.model.getDocument().prepareElementAttributeChange(
-					surface.documentView.model.getOffsetFromNode( listItems[i], false ),
-					'set',
-					'styles',
-					styles
-				);
-				surface.model.transact( tx );
+	}
+	if( stack.length > 0 ) {
+		stacks.push( stack );
+	}
+	
+	if ( selection.from === selection.to ) {
+		selection.from += 2;
+		selection.to += 2;
+	} else {
+		if ( nodes[0].getParent().getElementType() != 'listItem' ) {
+			if ( selection.from < selection.to ) {
+				selection.from += 2;
+			} else {
+				selection.to += 2;
 			}
 		}
+		if ( selection.from < selection.to ) {
+			selection.to += (stacks.length * 2) + (nodes.length - listItems.length - 1) * 2;
+		} else {
+			selection.from += (stacks.length * 2) + (nodes.length - listItems.length - 1) * 2;
+		}
+	}
 
-		for( i = 0; i < stacks.length; i++ ) {
-			removeLength = 0;
-			insertAt = surface.documentView.model.getOffsetFromNode( stacks[i][0], false );
-			data = [ { 'type': 'list' } ];
-			for( j = 0; j < stacks[i].length; j++ ) {
-				removeLength += stacks[i][j].getElementLength();
-				data = data
-					.concat( [ {
-						'type': 'listItem',
-						'attributes' : { 'styles': [ this.name ] }
-					} ] )
-					.concat( stacks[i][j].getElementData() )
-					.concat( [ { 'type': '/listItem' } ] );
-			}
-			data = data.concat( [ { 'type': '/list' } ] );
-
-			tx = surface.model.getDocument().prepareInsertion( insertAt, data );
-			surface.model.transact( tx );
-
-			tx = surface.model.getDocument().prepareRemoval(
-				new es.Range( insertAt + data.length, insertAt + removeLength + data.length )
+	for( i = 0; i < listItems.length; i++ ) {
+		styles = listItems[i].getElementAttribute( 'styles' );
+		if ( styles[styles.length - 1] !== style ) {
+			styles.splice( styles.length - 1, 1, style );
+			tx = surface.model.getDocument().prepareElementAttributeChange(
+				surface.documentView.model.getOffsetFromNode( listItems[i], false ),
+				'set',
+				'styles',
+				styles
 			);
 			surface.model.transact( tx );
 		}
+	}
 
-	} else {
-/*
+	for( i = 0; i < stacks.length; i++ ) {
+		removeLength = 0;
+		insertAt = surface.documentView.model.getOffsetFromNode( stacks[i][0], false );
+
+		data = [ { 'type': 'list' } ];
+		for( j = 0; j < stacks[i].length; j++ ) {
+			removeLength += stacks[i][j].getElementLength();
+
+			data = data
+				.concat( [ {
+					'type': 'listItem',
+					'attributes' : { 'styles': [ this.name ] }
+				} ] )
+				.concat( stacks[i][j].getElementData() )
+				.concat( [ { 'type': '/listItem' } ] );
+		}
+		data = data.concat( [ { 'type': '/list' } ] );
+
+		tx = surface.model.getDocument().prepareInsertion( insertAt, data );
+		surface.model.transact( tx );
+
+		tx = surface.model.getDocument().prepareRemoval(
+			new es.Range( insertAt + data.length, insertAt + removeLength + data.length )
+		);
+		surface.model.transact( tx );
+
+	}
+
+	surface.model.select( selection, true );
+};
+
+es.ListButtonTool.prototype.unlist = function() {
+	alert( 'This functionality is not yet supported.' );
+	/*
 		// unlist
 		//
 		// Step 1
@@ -174,12 +198,18 @@ es.ListButtonTool.prototype.onClick = function() {
 			}
 		}
 */
+};
+
+es.ListButtonTool.prototype.onClick = function() {
+	if ( !this.$.hasClass( 'es-toolbarButtonTool-down' ) ) {
+		this.list( this.nodes, this.name );
+	} else {
+		this.unlist( this.nodes );
 	}
 };
 
 es.ListButtonTool.prototype.updateState = function( annotations, nodes ) {
-	// checks if all passed nodes are listItems of passed style
-	function check( nodes, style ) {
+	function areListItemsOfStyle( nodes, style ) {
 		var parent, styles;
 		for( var i = 0; i < nodes.length; i++ ) {
 			parent = nodes[i].getParent();
@@ -193,12 +223,12 @@ es.ListButtonTool.prototype.updateState = function( annotations, nodes ) {
 		}
 		return true;
 	}
-	
+
 	this.nodes = nodes;
-	if ( check( this.nodes, this.name ) ) {
+	if ( areListItemsOfStyle( this.nodes, this.name ) ) {
 		this.$.addClass( 'es-toolbarButtonTool-down' );
 	} else {
-		this.$.removeClass( 'es-toolbarButtonTool-down' );	
+		this.$.removeClass( 'es-toolbarButtonTool-down' );
 	}
 };
 
