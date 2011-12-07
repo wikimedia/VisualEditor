@@ -199,10 +199,15 @@
             var index = bolds[i];
             var txt = out[index - 1];
             txt.value += "'";
-            bolds = bolds.slice(0, i)
-                .concat(bolds.slice(i + 1, bolds.length - i - 1));
+            if ( i > 0 ) {
+                bolds = bolds.slice(0, i-1)
+                    .concat(bolds.slice(i + 1, bolds.length - i - 1));
+            } else {
+                bolds.shift();
+            }
+
             italics.push(index);
-            italics.sort();
+            italics.sort(function(a,b) { return a - b });
         };
 
         // convert italics/bolds into tags
@@ -295,12 +300,12 @@
                                     firstspace = j;
                                 } else if (lastchar !== ' ') {
                                     if ( secondtolastchar === ' ' && 
-                                            firstsingleletterword === -1) {
-                                                firstsingleletterword = j;
-                                            } else if ( secondtolastchar && 
-                                                    secondtolastchar !== ' ') {
-                                                        firstmultiletterword = j;
-                                                    }
+                                            firstsingleletterword === -1) 
+                                    {
+                                        firstsingleletterword = j;
+                                    } else if ( firstmultiletterword == -1) {
+                                        firstmultiletterword = j;
+                                    }
                                 }
                             }
                         }
@@ -475,6 +480,15 @@ htmlentity = "&" c:[#0-9a-zA-Z]+ ";" { return unentity("&" + c.join('') + ";") }
 space
   = s:[ \t]+ { return s.join(''); }
 
+spaceTokenList
+  = s:space* {
+      if ( s.length ) {
+          return [{type: 'TEXT', value: s.join('')}];
+      } else {
+          return [];
+      }
+  }
+
 
 // Start of line
 sol = (newline / & { return pos === 0; } { return true; }) 
@@ -537,7 +551,11 @@ block_line
   / table
   / lists
   // tag-only lines should not trigger pre
-  / space* bt:block_tag space* &eolf { return bt }
+  / st:spaceTokenList 
+    bt:(bts:block_tag stl:spaceTokenList { return bts.concat(stl) })+ 
+    &eolf { 
+        return st.concat(bt); 
+    }
   / pre_indent
   / pre
 
@@ -935,7 +953,7 @@ block_tag
         } else {
             res.type = 'TAG';
         }
-        return res;
+        return [res];
     }
 
 /* Generic XML-like tags
@@ -1127,7 +1145,7 @@ table_data
     ("||" / newline "|") 
     ! [}+-]
     //& { dp('before attrib, pos=' + pos); return true; }
-    a:(as:generic_attribute+ space* "|" !"|" { console.log('bla'); return as } )?
+    a:(as:generic_attribute+ space* "|" !"|" { return as } )?
     //& { dp('past attrib, pos=' + pos); return true; }
     // use inline_breaks to break on tr etc
     td:(!inline_breaks 
