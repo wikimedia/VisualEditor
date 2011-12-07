@@ -492,7 +492,7 @@ $(document).ready( function() {
 					while ( --i >= end ) {
 						action = surfaceModel.history[i];
 						if ( action instanceof es.Range ) {
-							events += '<div>select( ' + action.from + ', ' + action.to + ' )</div>';
+							events += '<div>sel( ' + action.from + ', ' + action.to + ' )</div>';
 						} else {
 							ops = action.getOperations().slice( 0 );
 							for ( var j = 0; j < ops.length; j++ ) {
@@ -506,7 +506,7 @@ $(document).ready( function() {
 								if ( typeof data !== 'string' && typeof data !== 'number' ) {
 									data = '-';
 								}
-								ops[j] = ops[j].type + '( ' + data + ' )';
+								ops[j] = ops[j].type.substr( 0, 3 ) + '( ' + data + ' )';
 							}
 							events += '<div>' + ops.join( ', ' ) + '</div>';
 						}
@@ -539,6 +539,7 @@ $(document).ready( function() {
 			}
 		} );
 	} );
+
 
 	surfaceModel.on( 'transact', function() {
 		if ( currentMode ) {
