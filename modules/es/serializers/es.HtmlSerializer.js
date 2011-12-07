@@ -104,13 +104,13 @@ es.HtmlSerializer.prototype.list = function( node ) {
 			}
 		}
 		return i;
-	};
+	}
 
 	function popTags( n ) {
 		for (var i = 0; i < n; i++ ) {
 			out.push(closeTags.pop());
 		}
-	};
+	}
 
 	function openLists( bs, bn, attribs ) {
 		var prefix = commonPrefixLength (bs, bn);
@@ -136,7 +136,7 @@ es.HtmlSerializer.prototype.list = function( node ) {
 					throw("Unknown node prefix " + c);
 			}
 		}
-	};
+	}
 
 	for (var i = 0, length = node.children.length; i < length; i++) {
 		var e = node.children[i];
@@ -152,10 +152,7 @@ es.HtmlSerializer.prototype.list = function( node ) {
 			default:
 				tag = 'li'; break;
 		}
-		out.push( es.Html.makeTag(tag, e.attributes, 
-						this.content(e.content)
-					)
-			);
+		out.push( es.Html.makeTag(tag, e.attributes, this.document( e ) ) );
 		bstack = bnext;
 	}
 	popTags(closeTags.length);

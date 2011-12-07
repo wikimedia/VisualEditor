@@ -443,25 +443,111 @@ $(document).ready( function() {
 	window.toolbarView = new es.ToolbarView( $( '#es-toolbar' ), window.surfaceView );
 	window.surfaceModel.select( new es.Range( 1, 1 ) );
 
-	/*
-	var tools = {
-		'textStyle/bold': $( '#es-toolbar-bold' ),
-		'textStyle/italic': $( '#es-toolbar-italic' ),
-		'link/internal': $( '#es-toolbar-link' )
-	};
-	surfaceView.on( 'select', function( range ) {
-		for ( var key in tools ) {
-			tools[key].removeClass( 'es-toolbarTool-down' );
-		}
-		var annotations = range.getLength() ?
-			doc.getAnnotationsFromRange( range ) : doc.getAnnotationsFromOffset( range.start );
-		if ( annotations.length ) {
-			for ( var i = 0; i < annotations.length; i++ ) {
-				if ( annotations[i].type in tools ) {
-					tools[annotations[i].type].addClass( 'es-toolbarTool-down' );
+	var $modeButtons = $( '.es-modes-button' ),
+		$panels = $( '.es-panel' ),
+		$base = $( '#es-base' ),
+		$window = $(window),
+		currentMode = null,
+		modes = {
+			'wikitext': {
+				'$': $( '#es-mode-wikitext' ),
+				'$panel': $( '#es-panel-wikitext' ),
+				'update': function() {
+					this.$panel.text( es.WikitextSerializer.stringify( doc.getPlainObject() ) );
+				}
+			},
+			'json': {
+				'$': $( '#es-mode-json' ),
+				'$panel': $( '#es-panel-json' ),
+				'update': function() {
+					this.$panel.text( es.JsonSerializer.stringify( doc.getPlainObject(), {
+						'indentWith': '  '
+					} ) );
+				}
+			},
+			'html': {
+				'$': $( '#es-mode-html' ),
+				'$panel': $( '#es-panel-html' ),
+				'update': function() {
+					this.$panel.text( es.HtmlSerializer.stringify( doc.getPlainObject() ) );
+				}
+			},
+			'render': {
+				'$': $( '#es-mode-render' ),
+				'$panel': $( '#es-panel-render' ),
+				'update': function() {
+					this.$panel.html( es.HtmlSerializer.stringify( doc.getPlainObject() ) );
+				}
+			},
+			'history': {
+				'$': $( '#es-mode-history' ),
+				'$panel': $( '#es-panel-history' ),
+				'update': function() {
+					var events = '',
+						i = surfaceModel.history.length,
+						end = Math.max( 0, i - 25 ),
+						action,
+						ops,
+						data;
+					while ( --i >= end ) {
+						action = surfaceModel.history[i];
+						if ( action instanceof es.Range ) {
+							events += '<div>select( ' + action.from + ', ' + action.to + ' )</div>';
+						} else {
+							ops = action.getOperations().slice( 0 );
+							for ( var j = 0; j < ops.length; j++ ) {
+								data = ops[j].data || ops[j].length;
+								if ( es.isArray( data ) ) {
+									data = data[0];
+									if ( es.isArray( data ) ) {
+										data = data[0];
+									}
+								}
+								if ( typeof data !== 'string' && typeof data !== 'number' ) {
+									data = '-';
+								}
+								ops[j] = ops[j].type + '( ' + data + ' )';
+							}
+							events += '<div>' + ops.join( ', ' ) + '</div>';
+						}
+					}
+					this.$panel.html( events );
 				}
 			}
+		};
+	$.each( modes, function( name, mode ) {
+		mode.$.click( function() {
+			var disable = $(this).hasClass( 'es-modes-button-down' );
+			var visible = $base.hasClass( 'es-showData' );
+			$modeButtons.removeClass( 'es-modes-button-down' );
+			$panels.hide();
+			if ( disable ) {
+				if ( visible ) {
+					$base.removeClass( 'es-showData' );
+					$window.resize();
+				}
+				currentMode = null;
+			} else {
+				$(this).addClass( 'es-modes-button-down' );
+				mode.$panel.show();
+				if ( !visible ) {
+					$base.addClass( 'es-showData' );
+					$window.resize();
+				}
+				mode.update.call( mode );
+				currentMode = mode;
+			}
+		} );
+	} );
+
+	surfaceModel.on( 'transact', function() {
+		if ( currentMode ) {
+			currentMode.update.call( currentMode );
 		}
 	} );
-	*/
+	surfaceModel.on( 'select', function() {
+		if ( currentMode === modes.history ) {
+			currentMode.update.call( currentMode );
+		}
+	} );
 } );

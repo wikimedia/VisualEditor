@@ -76,6 +76,10 @@ es.WikitextSerializer.prototype.paragraph = function( node ) {
 	return this.content( node.content );
 };
 
+es.WikitextSerializer.prototype.pre = function( node ) {
+	return ' ' + this.content( node.content ).replace( '\n', '\n ' );
+};
+
 es.WikitextSerializer.prototype.list = function( node ) {
 	var symbolTable = {
 		'bullet': '*',
@@ -95,7 +99,7 @@ es.WikitextSerializer.prototype.list = function( node ) {
 		var childNode = node.children[i];
 		lines.push(
 			convertStyles( childNode.attributes.styles ) + ' ' +
-				this.content( childNode.content )
+				this.document( childNode )
 		);
 	}
 	return lines.join( '\n' );
