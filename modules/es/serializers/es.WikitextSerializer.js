@@ -99,7 +99,7 @@ es.WikitextSerializer.prototype.list = function( node ) {
 		var childNode = node.children[i];
 		lines.push(
 			convertStyles( childNode.attributes.styles ) + ' ' +
-				this.document( childNode )
+				this.document( childNode ) + '\n'
 		);
 	}
 	return lines.join( '\n' );
