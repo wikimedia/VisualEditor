@@ -256,23 +256,20 @@ es.TransactionProcessor.prototype.retain = function( op ) {
 };
 
 es.TransactionProcessor.prototype.insert = function( op ) {
-	var node = this.model.getNodeFromOffset( this.cursor ),
+	var node,
+		index,
 		offset;
-	// Perform insert on linear data model
-	es.insertIntoArray( this.model.data, this.cursor, op.data );
-	this.applyAnnotations( this.cursor + op.data.length );
-	if (
-		es.DocumentModel.isStructuralOffset( this.model.data, this.cursor ) &&
-		( typeof op.data[0].type === 'string' && op.data[0].type.charAt( 0 ) !== '/' )
-	) {
-		offset = node === this.model ? 0 : this.model.getOffsetFromNode( node );
-		this.rebuildNodes(
-			this.model.data.slice( this.cursor, op.data.length ),
-			null,
-			node,
-			node.getIndexFromOffset( this.cursor - offset )
-		);
+	if ( es.DocumentModel.isStructuralOffset( this.model.data, this.cursor ) ) {
+		// FIXME: This fails when inserting something like </list><list> between 2 list items
+		// @see test #30 in es.TransactionProcessor.test.js
+		es.insertIntoArray( this.model.data, this.cursor, op.data );
+		this.applyAnnotations( this.cursor + op.data.length );
+		node = this.model.getNodeFromOffset( this.cursor );
+		offset = this.model.getOffsetFromNode( node );
+		index = node.getIndexFromOffset( this.cursor - offset );
+		this.rebuildNodes( op.data, null, node, index );
 	} else {
+		node = this.model.getNodeFromOffset( this.cursor );
 		if ( node.getParent() === this.model ) {
 			offset = this.model.getOffsetFromNode( node );
 		} else {
@@ -280,6 +277,9 @@ es.TransactionProcessor.prototype.insert = function( op ) {
 			offset = this.model.getOffsetFromNode( node );
 		}
 		if ( es.DocumentModel.containsElementData( op.data ) ) {
+			// Perform insert on linear data model
+			es.insertIntoArray( this.model.data, this.cursor, op.data );
+			this.applyAnnotations( this.cursor + op.data.length );
 			// Synchronize model tree
 			if ( offset === -1 ) {
 				throw 'Invalid offset error. Node is not in model tree';
@@ -289,6 +289,10 @@ es.TransactionProcessor.prototype.insert = function( op ) {
 				[node]
 			);
 		} else {
+			// Perform insert on linear data model
+			// TODO this is duplicated from above
+			es.insertIntoArray( this.model.data, this.cursor, op.data );
+			this.applyAnnotations( this.cursor + op.data.length );
 			// Update model tree
 			node.adjustContentLength( op.data.length, true );
 			node.emit( 'update', this.cursor - offset );
