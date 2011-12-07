@@ -108,6 +108,15 @@ es.SurfaceView = function( $container, model ) {
 					},
 					'keyup.es-surfaceView': function( e ) {
 						return _this.onKeyUp( e );		
+					},
+					'copy.es-surfaceView': function( e ) {
+						return _this.onCopy( e );		
+					},
+					'cut.es-surfaceView': function( e ) {
+						return _this.onCut( e );		
+					},
+					'paste.es-surfaceView': function( e ) {
+						return _this.onPaste( e );		
 					}
 				} );
 			},
@@ -414,16 +423,26 @@ es.SurfaceView.prototype.onMouseUp = function( e ) {
 	}
 };
 
+es.SurfaceView.prototype.onCopy = function( e ) {
+	// TODO: Keep a data copy around
+	return true;
+};
+
+es.SurfaceView.prototype.onCut = function( e ) {
+	var _this = this;
+	setTimeout( function() {
+		_this.handleDelete();
+	}, 10 );
+	return true;
+};
+
+es.SurfaceView.prototype.onPaste = function( e ) {
+	// TODO: Check if the data copy is the same as what got pasted, and use that instead if so
+	return true;
+};
+
 es.SurfaceView.prototype.onKeyDown = function( e ) {
 	var _this = this;
-	function handleInsert() {
-		if ( _this.keyboard.keydownTimeout ) {
-			clearTimeout( _this.keyboard.keydownTimeout );
-		}
-		_this.keyboard.keydownTimeout = setTimeout( function () {
-			_this.insertFromInput();
-		}, 10 );
-	}
 	switch ( e.keyCode ) {
 		// Shift
 		case 16:
@@ -555,7 +574,7 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 				}
 			}
 			// Regular text insertion
-			handleInsert();
+			this.handleInsert();
 			break;
 	}
 	return true;
@@ -568,6 +587,16 @@ es.SurfaceView.prototype.onKeyUp = function( e ) {
 			this.keyboard.selecting = false;
 		}
 	}
+};
+
+es.SurfaceView.prototype.handleInsert = function() {
+	var _this = this;
+	if ( _this.keyboard.keydownTimeout ) {
+		clearTimeout( _this.keyboard.keydownTimeout );
+	}
+	_this.keyboard.keydownTimeout = setTimeout( function () {
+		_this.insertFromInput();
+	}, 10 );
 };
 
 es.SurfaceView.prototype.handleDelete = function( backspace, isPartial ) {
