@@ -42,7 +42,7 @@
 }
 .es-showData #es-visual {
 	float: left;
-	width: 48%;
+	width: 49%;
 	overflow: hidden;
 }
 #es-panels {
@@ -158,4 +158,11 @@
 #es-panel-history div {
 	border-bottom: solid 1px #dddddd;
 	padding: 0.5em 0;
+	color: #666666;
+	background-color: #f3f3f3;
+}
+
+#es-panel-history div.es-panel-history-active {
+	color: #000000;
+	background-color: white;
 }
