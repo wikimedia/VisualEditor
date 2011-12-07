@@ -442,8 +442,16 @@ es.SurfaceView.prototype.onPaste = function( e ) {
 };
 
 es.SurfaceView.prototype.onKeyDown = function( e ) {
-	var _this = this;
 	switch ( e.keyCode ) {
+		// Tab
+		case 9:
+			if ( !e.metaKey && !e.ctrlKey && !e.altKey ) {
+				this.$input.val( '\t' );
+				this.handleInsert();
+				e.preventDefault();
+				return false;
+			}
+			return true;
 		// Shift
 		case 16:
 			this.keyboard.keys.shift = true;
@@ -538,6 +546,12 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 			break;
 		// Enter
 		case 13:
+			if ( this.keyboard.keys.shift ) {
+				this.$input.val( '\n' );
+				this.handleInsert();
+				e.preventDefault();
+				return false;
+			}
 			this.handleEnter();
 			e.preventDefault();
 			break;
