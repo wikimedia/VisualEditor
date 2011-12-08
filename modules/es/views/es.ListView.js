@@ -43,6 +43,7 @@ es.ListView.prototype.enumerate = function() {
 			this.children[i].$icon.text( ++levels[styles.length - 1] + '.' );
 		} else {
 			this.children[i].$icon.text( '' );
+			levels = [];
 		}
 	}
 };
