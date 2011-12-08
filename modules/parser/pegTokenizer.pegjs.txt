@@ -401,7 +401,8 @@
 
 start
   = e:toplevelblock* newline* { 
-      return flatten(e);
+	  // XXX: move doQuotes out to general token stream transformer
+      return doQuotes(flatten(e));
   }
 
 
@@ -505,6 +506,8 @@ eof = & { return isEOF(pos); } { return true; }
 newline
   = '\n' / '\r\n'
 
+newlineToken = newline { return [{type: 'NEWLINE'}] }
+
 eolf = newline / eof
 
 toplevelblock 
@@ -517,8 +520,8 @@ toplevelblock
     }
     bs.attribs.push(['data-sourcePos', blockStart + ':' + pos]);
     // XXX: only run this for lines that actually need it!
-    b.push({type: 'NEWLINE'});
-    b = doQuotes(b);
+    //b.push({type: 'NEWLINE'});
+	// Move this to a token stream transform!
     return b;
   }
 
@@ -1084,7 +1087,7 @@ list_char = [*#:;]
 
 /* Tables */
 table 
-  = tas:table_start space* c:table_caption? b:table_body? table_end { 
+  = tas:table_start space* c:table_caption? b:table_body? te:table_end { 
       var res = {type: 'TAG', name: 'table'}
       var body = b !== '' ? b : [];
       dp("body: " + pp(body));
@@ -1096,7 +1099,7 @@ table
 
       if (c != '') {
           var caption = [{type: 'TAG', name: 'caption'}]
-                        .concat(c, [{type: 'ENDTAG', name: 'caption'}]);
+                        .concat(c, [{type: 'ENDTAG', name: 'caption'}], te);
       } else {
           var caption = [];
       }
@@ -1122,9 +1125,9 @@ table_attribs
  = text / ! inline_breaks !newline ![|] c:. { return c }
 
 table_caption 
-  = newline
+  = n:newlineToken
     "|+" c:inline* { 
-        return c;
+        return n.concat(c);
     }
 
 table_body 
@@ -1148,15 +1151,15 @@ table_firstrow
 
 table_row 
   = //& { dp("table row enter"); return true; }
-    newline
+  n:newlineToken
     "|-" thtd_attribs? space* td:(table_data / table_header)* { 
-        return [{type: 'TAG', name: 'tr'}]
-               .concat(td, [{type: 'ENDTAG', name: 'tr'}]);
+        return n.concat([{type: 'TAG', name: 'tr'}]
+					   , td, [{type: 'ENDTAG', name: 'tr'}]);
     }
 
 table_data 
   = //& { dp("table_data enter, pos=" + pos + input.substr(pos,10)); return true; }
-    ("||" / newline "|") 
+	n:("||" { return [] } / nt:newlineToken "|" { return nt }) 
     ! [}+-]
     //& { dp('before attrib, pos=' + pos); return true; }
     a:(as:generic_attribute+ space* "|" !"|" { return as } )?
@@ -1169,19 +1172,19 @@ table_data
             a = [];
         }
         //dp("table data result: " + pp(td) + ", attribts: " + pp(a));
-        return [{ type: 'TAG', name: 'td', attribs: a}]
-               .concat(td, [{type: 'ENDTAG', name: 'td'}]);
+        return n.concat( [{ type: 'TAG', name: 'td', attribs: a}]
+					   , td, [{type: 'ENDTAG', name: 'td'}] );
     }
 
 table_header
-  = ("!!" / newline "!") 
+  = n:("!!" { return [] } / nl:newlineToken "!" { return nl }) 
     a:(as:generic_attribute+ "!" !"!" { return as } )?
      c:inline {
          if ( a == '' ) {
              a = [];
          }
-         return [{type: 'TAG', name: 'th', attribs: a}]
-                .concat(c, [{type: 'ENDTAG', name: 'th'}]);
+         return n.concat( [{type: 'TAG', name: 'th', attribs: a}]
+						, c, [{type: 'ENDTAG', name: 'th'}]);
      }
 
 thtd_attribs
@@ -1192,8 +1195,13 @@ thtd_attribs
 
 
 table_end 
-  = newline? "|}" { clearFlag('table'); }
-  / newline? eof
+  = nt:newlineToken? ( "|}" / eof ) { 
+	  clearFlag('table'); 
+	  if(nt) 
+		  return nt;
+	  else
+		  return [];
+  }
 
 
 /* Tabs do not mix well with the hybrid production syntax */
