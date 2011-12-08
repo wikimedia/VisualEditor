@@ -126,83 +126,121 @@ es.ListButtonTool.prototype.list = function( nodes, style ) {
 	surface.model.select( selection, true );
 };
 
-es.ListButtonTool.prototype.unlist = function() {
-	alert( 'This functionality is not yet supported.' );
-	/*
-		// unlist
-		//
-		// Step 1
-		//
-		
-		var	listItems = [],
-			listItem,
-			i,
-			j;
-		
-		for( i = 0; i < this.nodes.length; i++ ) {
-			listItem = this.nodes[i].getParent();
-			if ( listItems.length > 0 ) {
-				if (listItem != listItems[listItems.length - 1]) {
-					listItems.push( listItem );
-				}
-			} else {
+es.ListButtonTool.prototype.unlist = function( nodes ) {
+	var	listItems = [],
+		listItem,
+		i;
+
+	for( i = 0; i < nodes.length; i++ ) {
+		listItem = nodes[i].getParent();
+		if ( listItems.length > 0 ) {
+			if (listItem != listItems[listItems.length - 1]) {
 				listItems.push( listItem );
 			}
+		} else {
+			listItems.push( listItem );
 		}
-		
-		var stacks = [];
-		var stack = { first: false, last: false, nodes: [], offset: -1, length: 0 };
-		for( i = 0; i < listItems.length; i++ ) {
-			if( stack.nodes.length > 0 ) {
-				if ( stack.nodes[stack.nodes.length - 1].getParent() != listItems[i].getParent() ) {
-					stacks.push(stack);
-					stack = { first: false, last: false, nodes: [], offset: -1, length: 0 };
-				}
-			}
-			
-			if ( listItems[i].getParent().indexOf( listItems[i] ) === 0 ) {
-				stack.first = true;
-			}
-			if ( listItems[i].getParent().indexOf( listItems[i] ) === listItems[i].getParent().children.length - 1 ) {
-				stack.last = true;
-			}
-			if( stack.nodes.length === 0 ){
-				stack.offset = this.toolbar.surfaceView.documentView.model.getOffsetFromNode(listItems[i], false);
-			}
-			stack.length += listItems[i].getElementLength();
-			stack.nodes.push( listItems[i] );
-			
-		}
+	}
+
+	var	stacks = [],
+		stack = {
+			first: false,
+			last: false,
+			nodes: [],
+			offset: 0,
+			length: 0
+		},
+		surface = this.toolbar.surfaceView;
+
+	for( i = 0; i < listItems.length; i++ ) {
 		if( stack.nodes.length > 0 ) {
-			stacks.push(stack);
-		}
-
-		//
-		// Step 2
-		//
-		var data;
-		
-		for( i = 0; i < stacks.length; i++ ) {
-			stack = stacks[i];
-			if( stack.first === false && stack.last === false ) {
-
-
-				tx = this.toolbar.surfaceView.model.getDocument().prepareRemoval(
-					new es.Range( stack.offset, stack.offset+stack.length )
-				);
-				this.toolbar.surfaceView.model.transact( tx );
-
-				data = [ { 'type': '/list' }, { 'type': 'list' } ];
-				tx = this.toolbar.surfaceView.model.getDocument().prepareInsertion(
-					stack.offset,
-					data
-				);
-				console.log(tx);
-				this.toolbar.surfaceView.model.transact( tx );
-
+			if ( stack.nodes[stack.nodes.length - 1].getParent() != listItems[i].getParent() ) {
+				stacks.push( stack );
+				stack = {
+					first: false,
+					last: false,
+					nodes: [],
+					offset: 0,
+					length: 0
+				};
 			}
 		}
-*/
+		if ( listItems[i].getParent().indexOf( listItems[i] ) === 0 ) {
+			stack.first = true;
+		}
+		if ( listItems[i].getParent().indexOf( listItems[i] ) === listItems[i].getParent().children.length - 1 ) {
+			stack.last = true;
+		}
+		if( stack.nodes.length === 0 ){
+			stack.offset = surface.documentView.model.getOffsetFromNode(listItems[i], false);
+		}
+		stack.length += listItems[i].getElementLength();
+		stack.nodes.push( listItems[i] );
+	}
+	if( stack.nodes.length > 0 ) {
+		stacks.push(stack);
+	}
+
+	var	tx,
+		j,
+		extra,
+		data;
+
+	for( i = stacks.length - 1; i >= 0; i-- ) {
+		stack = stacks[i];
+
+		data = [];
+		for( j = 0; j < stack.nodes.length; j++ ) {
+			data = data.concat( stack.nodes[j].getContentData() );
+		}
+
+		if ( stack.first === true && stack.last === true ) {
+			tx = surface.model.getDocument().prepareRemoval(
+				new es.Range( stack.offset - 1 /* list */, stack.offset + stack.length + 1 /* /list */ )
+			);
+			surface.model.transact( tx );
+			tx = surface.model.getDocument().prepareInsertion( stack.offset - 1, data );
+			surface.model.transact( tx );
+		} else  if ( stack.first === true && stack.last === false ) {
+			tx = surface.model.getDocument().prepareRemoval(
+				new es.Range( stack.offset, stack.offset + stack.length )
+			);
+			surface.model.transact( tx );
+			tx = surface.model.getDocument().prepareInsertion( stack.offset - 1, data );
+			surface.model.transact( tx );
+		} else  if ( stack.first === false && stack.last === true ) {
+			tx = surface.model.getDocument().prepareRemoval(
+				new es.Range( stack.offset, stack.offset + stack.length )
+			);
+			surface.model.transact( tx );
+			tx = surface.model.getDocument().prepareInsertion( stack.offset + 1, data );
+			surface.model.transact( tx );
+		} else  if ( stack.first === false && stack.last === false ) {
+			var parent = stack.nodes[0].getParent();
+			var parentOffset = surface.documentView.model.getOffsetFromNode( parent, false );
+			var parentLength = parent.getElementLength();
+			
+			tx = surface.model.getDocument().prepareRemoval(
+				new es.Range( stack.offset, stack.offset + stack.length )
+			);
+			surface.model.transact( tx );
+
+			var remainingRange = new es.Range( stack.offset, parentOffset + parentLength - stack.length - 1 );
+			var remainingData = surface.model.getDocument().getData( remainingRange );
+
+			tx = surface.model.getDocument().prepareRemoval( remainingRange );
+			surface.model.transact( tx );
+
+			tx = surface.model.getDocument().prepareInsertion(
+				stack.offset + 1,
+				[ { 'type': 'list' } ].concat( remainingData ).concat( [ { 'type': '/list' } ] )
+			);
+			surface.model.transact( tx );
+
+			tx = surface.model.getDocument().prepareInsertion( stack.offset + 1, data );
+			surface.model.transact( tx );
+		}
+	}
 };
 
 es.ListButtonTool.prototype.onClick = function() {
