@@ -120,14 +120,6 @@ es.SurfaceModel.prototype.pushSelection = function( selection ) {
  *					(such as when replacing - delete, then insert)
  */
 es.SurfaceModel.prototype.transact = function( transaction, isPartial ) {
-	
-	if(es.isArray(transaction)) {
-		for( var i = 0; i < transaction.length; i++ ) {
-			this.transact( transaction[i] );
-		}
-		return;
-	}
-	
 	// console.log( 'tx:' + $.map( transaction.getOperations(), function(tx) { return tx.type; } ).join(",") 
 	//				+ ' isPartial:' + isPartial ); 
 	this.doc.commit( transaction );

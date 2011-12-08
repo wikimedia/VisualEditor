@@ -613,15 +613,13 @@ es.SurfaceView.prototype.handleInsert = function() {
 	}, 10 );
 };
 
-es.SurfaceView.prototype.handleDelete = function( backspace, notExecute ) {
+es.SurfaceView.prototype.handleDelete = function( backspace, isPartial ) {
 	var selection = this.currentSelection.clone(),
 		sourceOffset,
 		targetOffset,
 		sourceSplitableNode,
 		targetSplitableNode,
-		tx,
-		txs = [];
-
+		tx;
 	if ( selection.from === selection.to ) {
 		if ( backspace ) {
 			sourceOffset = selection.to;
@@ -651,13 +649,15 @@ es.SurfaceView.prototype.handleDelete = function( backspace, notExecute ) {
 		if ( sourceNode === targetNode ||
 			( typeof sourceSplitableNode !== 'undefined' &&
 			sourceSplitableNode.getParent()  === targetSplitableNode.getParent() ) ) {
-			txs.push( this.model.getDocument().prepareRemoval(
+			tx = this.model.getDocument().prepareRemoval(
 				new es.Range( targetOffset, sourceOffset )
-			) );
+			);
+			this.model.transact( tx, isPartial );
 		} else {
-			txs.push( this.model.getDocument().prepareInsertion(
+			tx = this.model.getDocument().prepareInsertion(
 				targetOffset, sourceNode.model.getContentData()
-			) );
+			);
+			this.model.transact( tx, isPartial );
 			
 			var nodeToDelete = sourceNode;
 			es.DocumentNode.traverseUpstream( nodeToDelete, function( node ) {
@@ -671,31 +671,23 @@ es.SurfaceView.prototype.handleDelete = function( backspace, notExecute ) {
 			var range = new es.Range();
 			range.from = this.documentView.getOffsetFromNode( nodeToDelete, false );
 			range.to = range.from + nodeToDelete.getElementLength();
-			txs.push( this.model.getDocument().prepareRemoval( range ) );
-		}
-		if ( notExecute ) {
-			return txs;
-		} else {
-			this.model.transact( txs );
+			tx = this.model.getDocument().prepareRemoval( range );
+			this.model.transact( tx, isPartial );
 		}
 	} else {
 		// selection removal
 		tx = this.model.getDocument().prepareRemoval( selection );
+		this.model.transact( tx, isPartial );
 		selection.from = selection.to = selection.start;
 		this.model.select( selection );
-		if ( notExecute ) {
-			return [tx];
-		} else {
-			this.model.transact( tx );
-		}
 	}
 };
 
 es.SurfaceView.prototype.handleEnter = function() {
 	var selection = this.currentSelection.clone(),
-		txs = [];
+		tx;
 	if ( selection.from !== selection.to ) {
-		txs.concat( this.handleDelete( false, true ) );
+		this.handleDelete( false, true );
 	}
 	var	node = this.documentView.getNodeFromOffset( selection.to, false ),
 		nodeOffset = this.documentView.getOffsetFromNode( node, false );
@@ -704,11 +696,11 @@ es.SurfaceView.prototype.handleEnter = function() {
 		nodeOffset + node.getContentLength() + 1 === selection.to &&
 		node ===  es.DocumentViewNode.getSplitableNode( node )
 	) {
-		txs.push( this.documentView.model.prepareInsertion(
+		tx = this.documentView.model.prepareInsertion(
 			nodeOffset + node.getElementLength(),
 			[ { 'type': 'paragraph' }, { 'type': '/paragraph' } ]
-		) );
-		this.model.transact( txs );
+		);
+		this.model.transact( tx );
 		selection.from = selection.to = nodeOffset + node.getElementLength() + 1;	
 	} else {
 		var	stack = [],
@@ -734,8 +726,8 @@ es.SurfaceView.prototype.handleEnter = function() {
 			splitable = es.DocumentView.splitRules[ elementType ].self;
 			return true;
 		} );
-		txs.push( this.documentView.model.prepareInsertion( selection.to, stack ) );
-		this.model.transact( txs );
+		tx = this.documentView.model.prepareInsertion( selection.to, stack );
+		this.model.transact( tx );
 		selection.from = selection.to =
 			this.model.getDocument().getRelativeContentOffset( selection.to, 1 );
 	}
@@ -764,15 +756,17 @@ es.SurfaceView.prototype.insertFromInput = function() {
 		this.$input.val( '' );
 
 		// Prepare and process a transaction
-		var txs = [];
+		var tx;
 		if ( selection.from != selection.to ) {
-			txs.push( this.model.getDocument().prepareRemoval( selection ) );
-			selection.from = selection.to = Math.min( selection.from, selection.to );
+			tx = this.model.getDocument().prepareRemoval( selection );
+			this.model.transact( tx, true );
+			selection.from = selection.to =
+				Math.min( selection.from, selection.to );
 		}
 		var data = val.split('');
 		es.DocumentModel.addAnnotationsToData( data, this.getInsertionAnnotations() );
-		txs.push( this.model.getDocument().prepareInsertion( selection.from, data ) );
-		this.model.transact( txs );
+		tx = this.model.getDocument().prepareInsertion( selection.from, data );
+		this.model.transact( tx );
 
 		// Move the selection
 		selection.from += val.length;
