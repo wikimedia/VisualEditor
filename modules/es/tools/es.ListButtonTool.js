@@ -57,12 +57,12 @@ es.ListButtonTool.prototype.list = function( nodes, style ) {
 	if( stack.length > 0 ) {
 		stacks.push( stack );
 	}
-	
-	if ( selection.from === selection.to ) {
-		selection.from += 2;
-		selection.to += 2;
-	} else {
-		if ( stacks.length > 0 ) {
+
+	if ( stacks.length > 0 ) {
+		if ( selection.from === selection.to ) {
+			selection.from += 2;
+			selection.to += 2;
+		} else {
 			if ( nodes[0].getParent().getElementType() != 'listItem' ) {
 				if ( selection.from < selection.to ) {
 					selection.from += 2;
