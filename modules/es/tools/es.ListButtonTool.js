@@ -124,6 +124,7 @@ es.ListButtonTool.prototype.list = function( nodes, style ) {
 	}
 
 	surface.model.select( selection, true );
+	surface.emitCursor();
 };
 
 es.ListButtonTool.prototype.unlist = function( nodes ) {
@@ -265,6 +266,7 @@ es.ListButtonTool.prototype.unlist = function( nodes ) {
 		}
 	}
 	surface.model.select( selection, true );
+	surface.emitCursor();
 };
 
 es.ListButtonTool.prototype.onClick = function() {
