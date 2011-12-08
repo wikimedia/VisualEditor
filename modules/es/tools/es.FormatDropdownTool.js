@@ -68,9 +68,7 @@ es.FormatDropdownTool.prototype.onSelect = function( item ) {
 		item.type,
 		item.attributes
 	);
-	for ( var i = 0; i < txs.length; i++ ) {
-		this.toolbar.surfaceView.model.transact( txs[i] );
-	}
+	this.toolbar.surfaceView.model.transact( txs );
 };
 
 es.FormatDropdownTool.prototype.updateState = function( annotations, nodes ) {

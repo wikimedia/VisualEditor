@@ -29,7 +29,7 @@ es.ListButtonTool.prototype.list = function( nodes, style ) {
 		insertAt,
 		removeLength,
 		data,
-		tx,
+		txs = [],
 		i,
 		j;
 
@@ -82,13 +82,12 @@ es.ListButtonTool.prototype.list = function( nodes, style ) {
 		styles = listItems[i].getElementAttribute( 'styles' );
 		if ( styles[styles.length - 1] !== style ) {
 			styles.splice( styles.length - 1, 1, style );
-			tx = surface.model.getDocument().prepareElementAttributeChange(
+			txs.push( surface.model.getDocument().prepareElementAttributeChange(
 				surface.documentView.model.getOffsetFromNode( listItems[i], false ),
 				'set',
 				'styles',
 				styles
-			);
-			surface.model.transact( tx );
+			) );
 		}
 	}
 
@@ -113,16 +112,12 @@ es.ListButtonTool.prototype.list = function( nodes, style ) {
 		}
 		data = data.concat( [ { 'type': '/list' } ] );
 
-		tx = surface.model.getDocument().prepareInsertion( insertAt, data );
-		surface.model.transact( tx );
-
-		tx = surface.model.getDocument().prepareRemoval(
+		txs.push( surface.model.getDocument().prepareInsertion( insertAt, data ) );
+		txs.push( surface.model.getDocument().prepareRemoval(
 			new es.Range( insertAt + data.length, insertAt + removeLength + data.length )
-		);
-		surface.model.transact( tx );
-
+		) );
 	}
-
+	surface.model.transact( txs );
 	surface.model.select( selection, true );
 };
 
