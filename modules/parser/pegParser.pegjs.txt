@@ -766,6 +766,7 @@ urlencoded_char = "%" c0:[0-9a-fA-F] c1:[0-9a-fA-F] {
     return decodeURI("%" + c0 + c1) 
 }
 
+//[^][<>"\\x00-\\x20\\x7F\p{Zs}]
 url
   = proto:url_protocol 
     rest:( [^ :\]\[\n"'<>\x00-\x20\x7f,.&%\u00A0\u1680\u180E\u2000-\u200A\u202F\u205F\u3000] 
@@ -776,7 +777,6 @@ url
 { 
     return proto + rest.join(''); 
 }
-//[^][<>"\\x00-\\x20\\x7F\p{Zs}]
 
 template
   = "{{" target:template_target 
@@ -834,7 +834,6 @@ tplarg
 template_param_name
   = h:( !"}}" x:([^=|\n]) { return x } )* { return h.join(''); }
 
-// XXX: convert to inlineline with syntactic stop on "}}"
 template_param_text
   = & { return setFlag('template') }
     il:inline+ {
@@ -842,15 +841,6 @@ template_param_text
         return il;
     }
   / & { clearFlag('template'); return false; }
-//  urltext
-//  / xmlish_tag
-//  / extlink
-//  / template
-//  / tplarg
-//  / wikilink
-//  / quote
-//  / c:[^}|\n]+ {return {type: 'TEXT', value: c.join('')}}
-//  / !"}}" x:([^|\n]) { return {type: 'TEXT', value: x} }
 
 wikilink
   = "[[" 
