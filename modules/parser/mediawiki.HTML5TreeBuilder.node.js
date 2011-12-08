@@ -1,6 +1,9 @@
+/* Front-end/Wrapper for a particular tree builder, in this case the
+ * parser/tree builder from the node 'html5' module. Feed it tokens using
+ * processToken, and it will build you a DOM tree retrievable using .document
+ * or .body(). */
+
 var events = require('events');
-
-
 var HTML5 = require('./html5/index');
 
 FauxHTML5 = {};

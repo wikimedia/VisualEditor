@@ -9,17 +9,17 @@
  * to point at the MW page name containing the parser peg definition; default
  * is 'MediaWiki:Gadget-ParserPlayground-PegParser.pegjs'.
  */
-function PegParser(env) {
+function PegTokenizer(env) {
 	this.env = env || {};
 }
 
-PegParser.src = false;
+PegTokenizer.src = false;
 
-PegParser.prototype.parseToTree = function(text, callback) {
+PegTokenizer.prototype.tokenize = function(text, callback) {
 	this.initSource(function() {
 		var out, err;
 		try {
-			var parser = PEG.buildParser(PegParser.src);
+			var parser = PEG.buildParser(PegTokenizer.src);
 			out = parser.parse(text);
 		} catch (e) {
 			err = e;
@@ -34,7 +34,7 @@ PegParser.prototype.parseToTree = function(text, callback) {
  * @param {object} tree
  * @param {function(tree, error)} callback
  */
-PegParser.prototype.expandTree = function(tree, callback) {
+PegTokenizer.prototype.expandTree = function(tree, callback) {
 	var self = this;
 	var subParseArray = function(listOfTrees) {
 		var content = [];
@@ -89,8 +89,8 @@ PegParser.prototype.expandTree = function(tree, callback) {
 	callback(out);
 };
 
-PegParser.prototype.initSource = function(callback) {
-	if (PegParser.src) {
+PegTokenizer.prototype.initSource = function(callback) {
+	if (PegTokenizer.src) {
 		callback();
 	} else {
 		if ( typeof parserPlaygroundPegPage !== 'undefined' ) {
@@ -106,7 +106,7 @@ PegParser.prototype.initSource = function(callback) {
 				success: function(data, xhr) {
 					$.each(data.query.pages, function(i, page) {
 						if (page.revisions && page.revisions.length) {
-							PegParser.src = page.revisions[0]['*'];
+							PegTokenizer.src = page.revisions[0]['*'];
 						}
 					});
 					callback()
@@ -118,7 +118,7 @@ PegParser.prototype.initSource = function(callback) {
 			$.ajax({
 				url: mw.config.get('wgParserPlaygroundAssetsPath', mw.config.get('wgExtensionAssetsPath')) + '/ParserPlayground/modules/pegParser.pegjs.txt',
 				success: function(data) {
-					PegParser.src = data;
+					PegTokenizer.src = data;
 					callback();
 				},
 				dataType: 'text',
@@ -129,5 +129,5 @@ PegParser.prototype.initSource = function(callback) {
 };
 
 if (typeof module == "object") {
-	module.exports.PegParser = PegParser;
+	module.exports.PegTokenizer = PegTokenizer;
 }

@@ -142,7 +142,7 @@ var pj = path.join;
 
 var testWhiteList = require('./parserTests-whitelist.js').testWhiteList;
 
-_import(pj('parser', 'mediawiki.parser.peg.js'), ['PegParser']);
+_import(pj('parser', 'mediawiki.tokenizer.peg.js'), ['PegTokenizer']);
 _import(pj('parser', 'mediawiki.parser.environment.js'), ['MWParserEnvironment']);
 _import(pj('parser', 'ext.cite.taghook.ref.js'), ['MWRefTagHook']);
 
@@ -158,9 +158,9 @@ _require(pj('es', 'serializers', 'es.WikitextSerializer.js'));
 _require(pj('es', 'serializers', 'es.JsonSerializer.js'));
 
 // Preload the grammar file...
-PegParser.src = fs.readFileSync(path.join(basePath, 'parser', 'pegParser.pegjs.txt'), 'utf8');
+PegTokenizer.src = fs.readFileSync(path.join(basePath, 'parser', 'pegTokenizer.pegjs.txt'), 'utf8');
 
-var parser = new PegParser();
+var wikiTokenizer = new PegTokenizer();
 
 var testFileName = '../../../../phase3/tests/parser/parserTests.txt'; // default
 var testFileName2 = '../../../../tests/parser/parserTests.txt'; // Fallback. Not everyone fetch at phase3 level 
@@ -378,7 +378,7 @@ function processTest(item) {
 		console.log(item.input + "\n");
 	}
 
-	parser.parseToTree(item.input + "\n", function(tokens, err) {
+	wikiTokenizer.tokenize(item.input + "\n", function(tokens, err) {
 		if (err) {
 			printTitle();
 			failParseTests++;
