@@ -1,13 +1,9 @@
 /**
- * Parser for wikitext to provisional temp structure, using PEG.js and
- * a separate PEG grammar file (pegParser.pegjs.txt)
+ * Tokenizer for wikitext, using PEG.js and a separate PEG grammar file
+ * (pegTokenizer.pegjs.txt)
  *
- * Use along with the MWTreeRenderer and MWTreeSerializer classes for
- * HTML output and source round-tripping.
- *
- * If installed as a user script or to customize, set parserPlaygroundPegPage
- * to point at the MW page name containing the parser peg definition; default
- * is 'MediaWiki:Gadget-ParserPlayground-PegParser.pegjs'.
+ * Use along with a HTML5TreeBuilder and the DOMPostProcessor(s) for HTML
+ * output.
  */
 function PegTokenizer(env) {
 	this.env = env || {};

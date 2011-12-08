@@ -1,4 +1,5 @@
-/* Produces output more or less compatible with FakeParser; plug it into FP's output and see */
+/* Combined Wiki (MediaWiki) and HTML tokenizer. Produces a token stream
+** (actually a list of tokens for now) suitable for a HTML5TreeBuilder. */
 {
     /* Fixme: use static functions to separate module! Unfortunately, this
      * does not work:
@@ -1196,4 +1197,4 @@ table_end
 
 
 /* Tabs do not mix well with the hybrid production syntax */
-/* vim: set filetype=javascript expandtab ts=4 sw=4 cindent: */
+/* vim: set filetype=javascript expandtab ts=4 sw=4 cindent : */

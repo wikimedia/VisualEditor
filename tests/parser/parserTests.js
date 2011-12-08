@@ -384,32 +384,33 @@ function processTest(item) {
 			failParseTests++;
 			console.log('PARSE FAIL', err);
 		} else {
-			var environment = new MWParserEnvironment({
-				tagHooks: {
-					'ref': MWRefTagHook,
-					'references': MWReferencesTagHook
-				}
-			});
+			//var environment = new MWParserEnvironment({
+			//	tagHooks: {
+			//		'ref': MWRefTagHook,
+			//		'references': MWReferencesTagHook
+			//	}
+			//});
 			//var res = es.HtmlSerializer.stringify(tokens,environment);
+
 			//console.log(JSON.stringify(tokens));
 			//Slightly better token output debugging:
 			//console.log( util.inspect( tokens, false, null ).yellow);	
 
-			// Build a DOM tree from tokens using the HTML tree
-			// builder/parser.
-			processTokens(tokens, treeBuilder);
+			try {
+				// Build a DOM tree from tokens using the HTML tree
+				// builder/parser.
+				processTokens(tokens, treeBuilder);
 
-			// Perform post-processing on DOM.
-			postProcessor.doPostProcess(treeBuilder.parser.document);
+				// Perform post-processing on DOM.
+				postProcessor.doPostProcess(treeBuilder.parser.document);
 
-			// And serialize the result.
-			var out = treeBuilder.body()
-						.innerHTML;
-
-			if ( err ) {
+				// And serialize the result.
+				var out = treeBuilder.body()
+							.innerHTML;
+			} catch ( e ) {
 				printTitle();
 				failTreeTests++;
-				console.log('RENDER FAIL', err);
+				console.log('RENDER FAIL', e);
 				return;
 			}
 
