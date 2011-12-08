@@ -150,7 +150,10 @@ es.ListButtonTool.prototype.unlist = function( nodes ) {
 			offset: 0,
 			length: 0
 		},
-		surface = this.toolbar.surfaceView;
+		surface = this.toolbar.surfaceView,
+		selection = surface.currentSelection.clone(),
+		from = 0,
+		to = 0;
 
 	for( i = 0; i < listItems.length; i++ ) {
 		if( stack.nodes.length > 0 ) {
@@ -201,6 +204,8 @@ es.ListButtonTool.prototype.unlist = function( nodes ) {
 			surface.model.transact( tx );
 			tx = surface.model.getDocument().prepareInsertion( stack.offset - 1, data );
 			surface.model.transact( tx );
+			from = -2;
+			to += -(stack.nodes.length * 2);
 		} else  if ( stack.first === true && stack.last === false ) {
 			tx = surface.model.getDocument().prepareRemoval(
 				new es.Range( stack.offset, stack.offset + stack.length )
@@ -208,6 +213,8 @@ es.ListButtonTool.prototype.unlist = function( nodes ) {
 			surface.model.transact( tx );
 			tx = surface.model.getDocument().prepareInsertion( stack.offset - 1, data );
 			surface.model.transact( tx );
+			from = -2;
+			to += -(stack.nodes.length * 2);
 		} else  if ( stack.first === false && stack.last === true ) {
 			tx = surface.model.getDocument().prepareRemoval(
 				new es.Range( stack.offset, stack.offset + stack.length )
@@ -215,6 +222,8 @@ es.ListButtonTool.prototype.unlist = function( nodes ) {
 			surface.model.transact( tx );
 			tx = surface.model.getDocument().prepareInsertion( stack.offset + 1, data );
 			surface.model.transact( tx );
+			to += -(stack.nodes.length * 2);
+			to += 2;
 		} else  if ( stack.first === false && stack.last === false ) {
 			var parent = stack.nodes[0].getParent();
 			var parentOffset = surface.documentView.model.getOffsetFromNode( parent, false );
@@ -239,8 +248,23 @@ es.ListButtonTool.prototype.unlist = function( nodes ) {
 
 			tx = surface.model.getDocument().prepareInsertion( stack.offset + 1, data );
 			surface.model.transact( tx );
+			to += -(stack.nodes.length * 2);
+			to += 2;
 		}
 	}
+	if ( selection.from === selection.to ) {
+		selection.from += from;
+		selection.to += from;
+	} else {
+		if ( selection.to > selection.from ) {
+			selection.from += from;
+			selection.to += to;
+		} else {
+			selection.to += from;
+			selection.from += to;
+		}
+	}
+	surface.model.select( selection, true );
 };
 
 es.ListButtonTool.prototype.onClick = function() {
