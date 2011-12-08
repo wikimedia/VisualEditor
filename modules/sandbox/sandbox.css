@@ -71,12 +71,15 @@
 }
 .es-code {
 	white-space: pre-wrap;
-	font-family: "Droid Sans Mono", "Courier New", monospace;
+	font-family: monospace, "Courier New";
 	font-size: 0.8em;
+}
+.mediawiki .es-code {
+	font-size: 1em;
 }
 .es-render {
 	line-height: 1.5em;
-	padding-top: 0;
+	padding: 1em;
 }
 .es-history {
 	line-height: 1.5em;
@@ -103,7 +106,7 @@
 }
 
 .mediawiki .es-menuView {
-	font-size: 0.8em;
+	font-size: 0.9em;
 }
 
 #es-toolbar .es-toolbarGroups {
