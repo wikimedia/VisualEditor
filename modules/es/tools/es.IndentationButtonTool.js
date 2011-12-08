@@ -65,7 +65,6 @@ es.IndentationButtonTool.prototype.outdent = function( listItems ) {
 
 	for ( i = 0; i < listItems.length; i++ ) {
 		styles = listItems[i].getElementAttribute( 'styles' );
-		console.log(styles);
 		if ( styles.length > 1 ) {
 			styles.splice( styles.length - 1, 1);
 			tx = surface.model.getDocument().prepareElementAttributeChange(
