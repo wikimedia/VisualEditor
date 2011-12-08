@@ -6,15 +6,21 @@ var HTML5 = require('./html5/index');
 FauxHTML5 = {};
 
 
-FauxHTML5.Tokenizer = function ( ) {
+FauxHTML5.TreeBuilder = function ( ) {
+	// The parser we are going to emit our tokens to
 	this.parser = new HTML5.Parser();
+
+	// Sets up the parser
 	this.parser.parse(this);
+	this.document = this.parser.document;
 	return this;
 };
 
-FauxHTML5.Tokenizer.prototype = new events.EventEmitter();
+FauxHTML5.TreeBuilder.prototype = new events.EventEmitter();
 
-FauxHTML5.Tokenizer.prototype.processToken = function (token) {
+// Adapt the token format to internal HTML tree builder format, call the actual
+// html tree builder by emitting the token.
+FauxHTML5.TreeBuilder.prototype.processToken = function (token) {
 	var att = function (maybeAttribs) {
 		if ( $.isArray(maybeAttribs) ) {
 			var atts = [];
@@ -62,6 +68,11 @@ FauxHTML5.Tokenizer.prototype.processToken = function (token) {
 			break;
 	}
 };
+
+FauxHTML5.TreeBuilder.prototype.body = function () {
+	return this.parser.document.getElementsByTagName('body')[0];
+}
+
 
 if (typeof module == "object") {
 	module.exports.FauxHTML5 = FauxHTML5;

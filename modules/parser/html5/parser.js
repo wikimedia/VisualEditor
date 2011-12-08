@@ -5,7 +5,7 @@ var HTML5 = exports.HTML5 = require('../html5');
 var events = require('events');
 
 require('./treebuilder');
-require('../mediawiki.html5TokenEmitter');
+require('../mediawiki.HTML5TreeBuilder.node');
 
 var Phase = require('./parser/phase').Phase;
 

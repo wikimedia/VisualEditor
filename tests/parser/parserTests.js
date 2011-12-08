@@ -146,7 +146,7 @@ _import(pj('parser', 'mediawiki.parser.peg.js'), ['PegParser']);
 _import(pj('parser', 'mediawiki.parser.environment.js'), ['MWParserEnvironment']);
 _import(pj('parser', 'ext.cite.taghook.ref.js'), ['MWRefTagHook']);
 
-_import(pj('parser', 'mediawiki.html5TokenEmitter.js'), ['FauxHTML5']);
+_import(pj('parser', 'mediawiki.HTML5TreeBuilder.node.js'), ['FauxHTML5']);
 _import(pj('parser', 'mediawiki.DOMPostProcessor.js'), ['DOMPostProcessor']);
 
 // WikiDom and serializers
@@ -346,9 +346,9 @@ var passedTests = 0,
 	failTreeTests = 0,
 	failOutputTests = 0;
 
+var postProcessor = new DOMPostProcessor();
 function processTest(item) {
-	var tokenizer = new FauxHTML5.Tokenizer(),
-		postProcessor = new DOMPostProcessor();
+	var treeBuilder = new FauxHTML5.TreeBuilder();
 	if (!('title' in item)) {
 		console.log(item);
 		throw new Error('Missing title from test case.');
@@ -397,14 +397,13 @@ function processTest(item) {
 
 			// Build a DOM tree from tokens using the HTML tree
 			// builder/parser.
-			processTokens(tokens, tokenizer);
+			processTokens(tokens, treeBuilder);
 
 			// Perform post-processing on DOM.
-			postProcessor.doPostProcess(tokenizer.parser.document);
+			postProcessor.doPostProcess(treeBuilder.parser.document);
 
 			// And serialize the result.
-			var out = tokenizer.parser.document
-						.getElementsByTagName('body')[0]
+			var out = treeBuilder.body()
 						.innerHTML;
 
 			if ( err ) {
@@ -485,15 +484,15 @@ function processTest(item) {
 	});
 }
 
-function processTokens ( tokens, tokenizer ) {
+function processTokens ( tokens, treeBuilder ) {
 	// push a body element, just to be sure to have one
-	tokenizer.processToken({type: 'TAG', name: 'body'});
+	treeBuilder.processToken({type: 'TAG', name: 'body'});
 	// Process all tokens
 	for (var i = 0, length = tokens.length; i < length; i++) {
-		tokenizer.processToken(tokens[i]);
+		treeBuilder.processToken(tokens[i]);
 	}
 	// And signal the end
-	tokenizer.processToken({type: 'END'});
+	treeBuilder.processToken({type: 'END'});
 }
 
 var comments = [];
