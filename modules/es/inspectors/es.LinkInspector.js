@@ -26,7 +26,9 @@ es.LinkInspector = function( toolbar, context ) {
 				/link\/.*/
 			);
 		surfaceModel.transact( tx );
+		_this.$locationInput.val( '' );
 		_this.context.closeInspector();
+		return false;
 	} );
 };
 
