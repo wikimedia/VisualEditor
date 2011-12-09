@@ -42,6 +42,8 @@ es.DropdownTool = function( toolbar, name, items ) {
 			var $item = $( e.target ).closest( '.es-menuView' );
 			if ( e.which === 1 && $item.length === 0 ) {
 				_this.menuView.open();
+			} else {
+				_this.menuView.close();
 			}
 		}
 	} );
