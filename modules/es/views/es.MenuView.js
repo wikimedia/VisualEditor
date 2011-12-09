@@ -120,5 +120,5 @@ es.MenuView.prototype.onSelect = function( item, event ) {
 	} else if ( typeof this.callback === 'function' ) {
 		this.callback( item );
 	}
-	this.hide();
+	this.close();
 };
