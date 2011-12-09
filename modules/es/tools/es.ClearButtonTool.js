@@ -19,13 +19,16 @@ es.ClearButtonTool = function( toolbar, name ) {
 /* Methods */
 
 es.ClearButtonTool.prototype.onClick = function() {
-	var tx = this.toolbar.surfaceView.model.getDocument().prepareContentAnnotation(
-		this.toolbar.surfaceView.currentSelection,
-		'clear',
-		this.pattern
-	);
-	this.toolbar.surfaceView.model.transact( tx );
-	this.toolbar.surfaceView.clearInsertionAnnotations();
+	var surfaceView = this.toolbar.getSurfaceView(),
+		surfaceModel = surfaceView.getModel(),
+		tx =surfaceModel.getDocument().prepareContentAnnotation(
+			surfaceView.currentSelection,
+			'clear',
+			this.pattern
+		);
+	surfaceModel.transact( tx );
+	surfaceView.clearInsertionAnnotations();
+	surfaceView.getContextView().closeInspector();
 };
 
 es.ClearButtonTool.prototype.updateState = function( annotations ) {

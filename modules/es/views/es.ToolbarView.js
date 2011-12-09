@@ -2,6 +2,9 @@
 es.ToolbarView = function( $container, surfaceView, config ) {
 	// Inheritance TODO: Do we still need it?
 	es.EventEmitter.call( this );
+	if ( !surfaceView ) {
+		return;
+	}
 
 	// References for use in closures
 	var	_this = this,
@@ -14,7 +17,6 @@ es.ToolbarView = function( $container, surfaceView, config ) {
 	this.$spacer = $('<div></div>');
 	this.$.after( this.$spacer );
 	this.tools = [];
-
 
 	// Events
 	/*

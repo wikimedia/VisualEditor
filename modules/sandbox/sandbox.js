@@ -441,6 +441,7 @@ $(document).ready( function() {
 	window.surfaceModel = new es.SurfaceModel( window.doc );
 	window.surfaceView = new es.SurfaceView( $( '#es-editor' ), window.surfaceModel );
 	window.toolbarView = new es.ToolbarView( $( '#es-toolbar' ), window.surfaceView );
+	window.contextView = new es.ContextView( window.surfaceView );
 	window.surfaceModel.select( new es.Range( 1, 1 ) );
 
 	var $modeButtons = $( '.es-modes-button' ),

@@ -19,7 +19,7 @@ es.SurfaceView = function( $container, model ) {
 	this.model = model;
 	this.currentSelection = new es.Range();
 	this.documentView = new es.DocumentView( this.model.getDocument(), this );
-	this.contextView = new es.ContextView( this );
+	this.contextView = null;
 	this.$ = $container
 		.addClass( 'es-surfaceView' )
 		.append( this.documentView.$ );
@@ -146,10 +146,12 @@ es.SurfaceView = function( $container, model ) {
 	} );
 	$window.scroll( function() {
 		_this.dimensions.scrollTop = $window.scrollTop();
-		if ( _this.currentSelection.getLength() && !_this.mouse.selectingMode ) {
-			_this.contextView.set();
-		} else {
-			_this.contextView.clear();
+		if ( _this.contextView ) {
+			if ( _this.currentSelection.getLength() && !_this.mouse.selectingMode ) {
+				_this.contextView.set();
+			} else {
+				_this.contextView.clear();
+			}
 		}
 	} );
 
@@ -162,6 +164,14 @@ es.SurfaceView = function( $container, model ) {
 };
 
 /* Methods */
+
+es.SurfaceView.prototype.attachContextView = function( contextView ) {
+	this.contextView = contextView;
+};
+
+es.SurfaceView.prototype.getContextView = function() {
+	return this.contextView ;
+};
 
 es.SurfaceView.prototype.annotate = function( method, annotation ) {
 	if ( method === 'toggle' ) {
@@ -275,10 +285,12 @@ es.SurfaceView.prototype.updateSelection = function( delay ) {
 			_this.showCursor();
 			_this.documentView.clearSelection( _this.currentSelection );
 		}
-		if ( _this.currentSelection.getLength() && !_this.mouse.selectingMode ) {
-			_this.contextView.set();
-		} else {
-			_this.contextView.clear();
+		if ( _this.contextView ) {
+			if ( _this.currentSelection.getLength() && !_this.mouse.selectingMode ) {
+				_this.contextView.set();
+			} else {
+				_this.contextView.clear();
+			}
 		}
 		_this.updateSelectionTimeout = undefined;
 	}
@@ -417,9 +429,11 @@ es.SurfaceView.prototype.onMouseUp = function( e ) {
 	if ( e.which === 1 ) { // left mouse button 
 		this.mouse.selectingMode = this.mouse.selectedRange = null;
 		this.model.select( this.currentSelection, true );
-		// We have to manually call this because the selection will not have changed between the
-		// most recent mousemove and this mouseup
-		this.contextView.set();
+		if ( this.contextView ) {
+			// We have to manually call this because the selection will not have changed between the
+			// most recent mousemove and this mouseup
+			this.contextView.set();
+		}
 	}
 };
 

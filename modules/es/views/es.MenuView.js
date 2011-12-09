@@ -102,16 +102,16 @@ es.MenuView.prototype.setPosition = function( position ) {
 	return this.$.css( { 'top': position.top, 'left': position.left } );
 };
 
-es.MenuView.prototype.show = function() {
+es.MenuView.prototype.open = function() {
 	this.$.show();
 };
 
-es.MenuView.prototype.toggle = function() {
-	this.$.toggle();
+es.MenuView.prototype.close = function() {
+	this.$.hide();
 };
 
-es.MenuView.prototype.hide = function() {
-	this.$.hide();
+es.MenuView.prototype.isOpen = function() {
+	return this.$.is( ':visible' );
 };
 
 es.MenuView.prototype.onSelect = function( item, event ) {

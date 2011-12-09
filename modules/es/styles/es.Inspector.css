@@ -1,0 +1,104 @@
+.es-inspector {
+	display: none;
+	position: absolute;
+	border: solid 1px #cccccc;
+	-webkit-border-radius: 0.25em;
+	-moz-border-radius: 0.25em;
+	-o-border-radius: 0.25em;
+	border-radius: 0.25em;
+	background-color: rgba(255,255,255,0.95);
+	-webkit-box-shadow: 0 0.25em 1em 0 rgba(0,0,0,0.25);
+	-moz-box-shadow: 0 0.25em 1em 0 rgba(0,0,0,0.25);
+	box-shadow: 0 0.25em 1em 0 rgba(0,0,0,0.25);
+	padding: 0.75em;
+	padding-top: 2.5em;
+	min-width: 15em;
+	z-index: 3;
+}
+
+.es-inspector-closeButton,
+.es-inspector-clearButton {
+	position: absolute;
+	top: 0.25em;
+	width: 2em;
+	height: 2em;
+	background-position: center center;
+	background-repeat: no-repeat;
+	cursor: pointer;
+	-moz-opacity: 0.25;
+	filter:alpha(opacity=25);
+	opacity: 0.25;
+}
+
+.es-inspector-closeButton {
+	right: 0.25em;
+	background-image: url(../images/close.png);
+}
+
+.es-inspector-clearButton {
+	right: 2.25em;
+	background-image: url(../images/clear.png);
+}
+
+.es-inspector-closeButton:hover,
+.es-inspector-clearButton:hover {
+	-moz-opacity: 1;
+	filter:alpha(opacity=100);
+	opacity: 1;
+}
+
+.es-inspector-doneButton {
+	float: right;
+	margin: 0.5em 0 0 0;
+	padding: 0.5em 0.75em;
+	font-size: 1em;
+	border: solid 1px #cccccc;
+	-webkit-border-radius: 0.5em;
+	-moz-border-radius: 0.5em;
+	-o-border-radius: 0.5em;
+	border-radius: 0.5em;
+	cursor: pointer;
+	background: #f7fbff; /* Old browsers */
+	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2Y3ZmJmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkZGYyZmYiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top,  #f7fbff 0%, #ddf2ff 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f7fbff), color-stop(100%,#ddf2ff)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #f7fbff 0%,#ddf2ff 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #f7fbff 0%,#ddf2ff 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #f7fbff 0%,#ddf2ff 100%); /* IE10+ */
+	background: linear-gradient(top,  #f7fbff 0%,#ddf2ff 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7fbff', endColorstr='#ddf2ff',GradientType=0 ); /* IE6-8 */
+}
+
+.es-inspector-doneButton:hover {
+	border-color: #dddddd;
+}
+
+.es-inspector form {
+	margin: 0;
+	padding: 0.75em 0 0 0;
+	border-top: solid 1px #dddddd;
+	white-space: nowrap;
+}
+
+.es-inspector form input {
+	display: inline-block;
+	width: 14em;
+	font-size: 1em;
+	padding: 0.25em;
+}
+
+.es-inspector form label {
+	display: inline-block;
+	width: 6em;
+}
+
+.es-inspector-title {
+	position: absolute;
+	top: 0;
+	left: 0.75em;
+	height: 2.5em;
+	line-height: 2.5em;
+	font-weight: bold;
+	color: #666666;
+}

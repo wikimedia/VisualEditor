@@ -6,13 +6,21 @@
  * @param {jQuery} $overlay DOM selection to add nodes to
  */
 es.ContextView = function( surfaceView, $overlay ) {
-	var _this = this;
+	// Inheritance
+	if ( !surfaceView ) {
+		return;
+	}
 
 	// Properties
 	this.surfaceView = surfaceView;
+	this.surfaceView.attachContextView( this );
+	this.inspectors = {};
+	this.inspector = null;
+	this.position = null;
 	this.$ = $( '<div class="es-contextView"></div>' ).appendTo( $overlay || $( 'body' ) );
-	this.$panels = $( '<div class="es-contextView-panels"></div>' ).appendTo( this.$ );
 	this.$toolbar = $( '<div class="es-contextView-toolbar"></div>' );
+	this.$inspectors = $( '<div class="es-contextView-inspectors"></div>' ).appendTo( this.$ );
+	this.$icon = $( '<div class="es-contextView-icon"></div>' ).appendTo( this.$ );
 	this.toolbarView = new es.ToolbarView(
 		this.$toolbar,
 		this.surfaceView,
@@ -25,22 +33,9 @@ es.ContextView = function( surfaceView, $overlay ) {
 		null,
 		this.$
 	);
-	this.$icon = $( '<div class="es-contextView-icon"></div>' ).appendTo( this.$ );
 	
-	// Example panel
-	this.$panels.append(
-		'<div class="es-contextView-panel" rel="link">' +
-			'<div><label>Page title or URL <input type="text"></label></div>' +
-			'<div><a href="#cancel">Cancel</a> <button>Change</button></div>' +
-		'</div>'
-	);
-	this.$panels.find( '[href="#cancel"]' ).click( function( e ) {
-		_this.$panels.children().hide();
-		e.preventDefault();
-		return false;
-	} );
-
 	// Events
+	var _this = this;
 	this.$icon.bind( {
 		'mousedown': function( e ) {
 			if ( e.which === 1 ) {
@@ -50,13 +45,40 @@ es.ContextView = function( surfaceView, $overlay ) {
 		},
 		'mouseup': function( e ) {
 			if ( e.which === 1 ) {
-				_this.menuView.toggle();
+				if ( _this.inspector ) {
+					_this.closeInspector();
+				} else {
+					if ( _this.isMenuOpen() ) {
+						_this.closeMenu();
+					} else {
+						_this.openMenu();
+					}
+				}
 			}
 		}
 	} );
+
+	// Intitialization
+	this.addInspector( 'link', new es.LinkInspector( this.toolbarView, this ) );
 };
 
 /* Methods */
+
+es.ContextView.prototype.getSurfaceView = function() {
+	return this.surfaceView;
+};
+
+es.ContextView.prototype.openMenu = function() {
+	this.menuView.open();
+};
+
+es.ContextView.prototype.closeMenu = function() {
+	this.menuView.close();
+};
+
+es.ContextView.prototype.isMenuOpen = function() {
+	return this.menuView.isOpen();
+};
 
 es.ContextView.prototype.set = function() {
 	this.$.removeClass(
@@ -64,14 +86,24 @@ es.ContextView.prototype.set = function() {
 		'es-contextView-position-left es-contextView-position-right ' +
 		'es-contextView-position-start es-contextView-position-end'
 	);
+	this.positionIcon();
+	if ( this.position ) {
+		this.positionOverlay( this.menuView.$ );
+		if ( this.inspector ) {
+			this.positionOverlay( this.inspectors[this.inspector].$ );
+		}
+	}
+};
+
+es.ContextView.prototype.positionIcon = function() {
 	var selection = this.surfaceView.getModel().getSelection(),
-		position,
 		offset;
+	this.position = null;
 	if ( selection.from < selection.to ) {
 		var $lastRange = this.surfaceView.$.find( '.es-contentView-range:visible:last' );
 		if ( $lastRange.length ) {
 			offset = $lastRange.offset();
-			position = new es.Position(
+			this.position = new es.Position(
 				offset.left + $lastRange.width(), offset.top + $lastRange.height()
 			);
 			this.$.addClass( 'es-contextView-position-end' );
@@ -80,43 +112,91 @@ es.ContextView.prototype.set = function() {
 		var $firstRange = this.surfaceView.$.find( '.es-contentView-range:visible:first' );
 		if ( $firstRange.length ) {
 			offset = $firstRange.offset();
-			position = new es.Position( offset.left, offset.top );
+			this.position = new es.Position( offset.left, offset.top );
 			this.$.addClass( 'es-contextView-position-start' );
 		}
 	}
-	if ( position ) {
-		var $menu = this.menuView.$,
-			menuMargin = 5,
-			menuWidth = $menu.width(),
-			menuHeight = $menu.height(),
-			$window = $( window ),
-			windowWidth = $window.width(),
-			windowHeight = $window.height(),
-			windowScrollTop = $window.scrollTop();
-		// Center align menu
-		var menuLeft = -Math.round( menuWidth / 2 );
-		// Adjust menu left or right depending on viewport
-		if ( ( position.left - menuMargin ) + menuLeft < 0 ) {
-			// Move right a bit past center
-			menuLeft -= position.left + menuLeft - menuMargin;
-		} else if ( ( menuMargin + position.left ) - menuLeft > windowWidth ) {
-			// Move left a bit past center
-			menuLeft += windowWidth - menuMargin - ( position.left - menuLeft );
-		}
-		$menu.css( 'left', menuLeft );
-		// Position menu on top or bottom depending on viewport
-		if ( position.top + menuHeight + ( menuMargin * 2 ) < windowHeight + windowScrollTop ) {
-			this.$.addClass( 'es-contextView-position-below' );
-		} else {
-			this.$.addClass( 'es-contextView-position-above' );
-		}
-		this.$.css( { 'left': position.left, 'top': position.top } );
+	if ( this.position ) {
+		this.$.css( { 'left': this.position.left, 'top': this.position.top } );
 		this.$icon.fadeIn( 'fast' );
+	} else {
+		this.$icon.hide();
+	}
+};
+
+es.ContextView.prototype.positionOverlay = function( $overlay ) {
+	var overlayMargin = 5,
+		overlayWidth = $overlay.outerWidth(),
+		overlayHeight = $overlay.outerHeight(),
+		$window = $( window ),
+		windowWidth = $window.width(),
+		windowHeight = $window.height(),
+		windowScrollTop = $window.scrollTop();
+	// Center align overlay
+	var overlayLeft = -Math.round( overlayWidth / 2 );
+	// Adjust overlay left or right depending on viewport
+	if ( ( this.position.left - overlayMargin ) + overlayLeft < 0 ) {
+		// Move right a bit past center
+		overlayLeft -= this.position.left + overlayLeft - overlayMargin;
+	} else if ( ( overlayMargin + this.position.left ) - overlayLeft > windowWidth ) {
+		// Move left a bit past center
+		overlayLeft += windowWidth - overlayMargin - ( this.position.left - overlayLeft );
+	}
+	$overlay.css( 'left', overlayLeft );
+	// Position overlay on top or bottom depending on viewport
+	if ( this.position.top + overlayHeight + ( overlayMargin * 2 ) < windowHeight + windowScrollTop ) {
+		this.$.addClass( 'es-contextView-position-below' );
+	} else {
+		this.$.addClass( 'es-contextView-position-above' );
 	}
 };
 
 es.ContextView.prototype.clear = function() {
-	this.$panels.hide().children().hide();
+	if ( this.inspector ) {
+		this.closeInspector();
+	}
 	this.$icon.hide();
-	this.menuView.hide();
+	this.menuView.close();
+};
+
+es.ContextView.prototype.openInspector = function( name ) {
+	if ( !( name in this.inspectors ) ) {
+		throw 'Missing inspector error. Can not open nonexistent inspector: ' + name;
+	}
+	this.inspectors[name].open();
+	this.$inspectors.show();
+	this.positionOverlay( this.inspectors[name].$ );
+	this.inspector = name;
+};
+
+es.ContextView.prototype.closeInspector = function() {
+	if ( this.inspector ) {
+		this.inspectors[this.inspector].close();
+		this.$inspectors.hide();
+		this.inspector = null;
+	}
+};
+
+es.ContextView.prototype.getInspector = function( name ) {
+	if ( name in this.inspectors ) {
+		return this.inspectors[name];
+	}
+	return null;
+};
+
+es.ContextView.prototype.addInspector = function( name, inspector ) {
+	if ( name in this.inspectors ) {
+		throw 'Duplicate inspector error. Previous registration with the same name: ' + name;
+	}
+	this.inspectors[name] = inspector;
+	this.$inspectors.append( inspector.$ );
+};
+
+es.ContextView.prototype.removeInspector = function( name ) {
+	if ( name in this.inspectors ) {
+		throw 'Missing inspector error. Can not remove nonexistent inspector: ' + name;
+	}
+	this.inspectors[name].detach();
+	delete this.inspectors[name];
+	this.inspector = null;
 };

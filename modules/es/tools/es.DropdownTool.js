@@ -27,7 +27,7 @@ es.DropdownTool = function( toolbar, name, items ) {
 		.add( this.toolbar.surfaceView.$ )
 			.mousedown( function( e ) {
 				if ( e.which === 1 ) {
-					_this.menuView.hide();
+					_this.menuView.close();
 				}
 			} );
 	this.$.bind( {
@@ -41,7 +41,7 @@ es.DropdownTool = function( toolbar, name, items ) {
 			// Don't respond to menu clicks
 			var $item = $( e.target ).closest( '.es-menuView' );
 			if ( e.which === 1 && $item.length === 0 ) {
-				_this.menuView.toggle();
+				_this.menuView.open();
 			}
 		}
 	} );
