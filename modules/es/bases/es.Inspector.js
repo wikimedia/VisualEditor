@@ -42,9 +42,9 @@ es.Inspector = function( toolbar, context ) {
 		// Escape
 		if ( e.which === 27 ) {
 			_this.context.closeInspector( false );
+			e.preventDefault();
+			return false;
 		}
-		e.preventDefault();
-		return false;
 	} );
 };
 
