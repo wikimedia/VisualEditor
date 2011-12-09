@@ -21,9 +21,12 @@ $messages['de'] = array(
 
 /** French (Français)
  * @author Crochet.david
+ * @author Gomoko
  */
 $messages['fr'] = array(
+	'visualeditor' => 'VisualEditor',
 	'visualeditor-desc' => 'Éditeur visuel pour MediaWiki',
+	'visualeditor-sandbox-title' => 'Bac à sable de VisualEditor',
 );
 
 /** Galician (Galego)
@@ -42,6 +45,15 @@ $messages['hsb'] = array(
 	'visualeditor' => 'VisualEditor',
 	'visualeditor-desc' => 'WYSIWYG-editor za MediaWiki',
 	'visualeditor-sandbox-title' => 'WYSIWYG-editor - hrajkanišćo',
+);
+
+/** Hungarian (Magyar)
+ * @author Dj
+ */
+$messages['hu'] = array(
+	'visualeditor' => 'VisualEditor',
+	'visualeditor-desc' => 'Vizuális szerkesztő a MediaWikihez',
+	'visualeditor-sandbox-title' => 'VisualEditor homokozó',
 );
 
 /** Interlingua (Interlingua)
