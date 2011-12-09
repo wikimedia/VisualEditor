@@ -49,6 +49,7 @@ es.Inspector.prototype.close = function() {
 		this.onClose();
 	}
 	this.emit( 'close' );
+	surfaceView.$input.focus();
 };
 
 /* Inheritance */

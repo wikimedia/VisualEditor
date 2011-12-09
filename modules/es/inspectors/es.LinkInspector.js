@@ -78,7 +78,6 @@ es.LinkInspector.prototype.onClose = function() {
 		{ 'type': 'link/internal', 'data': { 'title': title } }
 	);
 	surfaceModel.transact( set );
-	surfaceView.$input.focus();
 };
 
 /* Inheritance */
