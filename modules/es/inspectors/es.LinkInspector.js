@@ -15,6 +15,7 @@ es.LinkInspector = function( toolbar, context ) {
 	this.$.prepend( '<div class="es-inspector-title">Link inspector</div>' );
 	this.$locationLabel = $( '<label>Page title</label>' ).appendTo( this.$form );
 	this.$locationInput = $( '<input type="text">' ).appendTo( this.$form );
+	this.initialValue = null;
 
 	// Events
 	var _this = this;
@@ -32,6 +33,15 @@ es.LinkInspector = function( toolbar, context ) {
 		surfaceModel.transact( tx );
 		_this.$locationInput.val( '' );
 		_this.context.closeInspector();
+	} );
+	this.$locationInput.bind( 'mousedown keydown cut paste', function() {
+		setTimeout( function() {
+			if ( _this.$locationInput.val() !== _this.initialValue ) {
+				_this.$acceptButton.removeClass( 'es-inspector-button-disabled' );
+			} else {
+				_this.$acceptButton.addClass( 'es-inspector-button-disabled' );
+			}
+		}, 0 );
 	} );
 };
 
@@ -63,6 +73,8 @@ es.LinkInspector.prototype.onOpen = function() {
 		this.$locationInput.val( '' );
 		this.$clearButton.addClass( 'es-inspector-button-disabled' );
 	}
+	this.$acceptButton.addClass( 'es-inspector-button-disabled' );
+	this.initialValue = this.$locationInput.val();
 	var _this = this;
 	setTimeout( function() {
 		_this.$locationInput.focus().select();

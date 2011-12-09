@@ -29,7 +29,9 @@ es.Inspector = function( toolbar, context ) {
 		_this.context.closeInspector( false );
 	} );
 	this.$acceptButton.click( function() {
-		_this.context.closeInspector( true );
+		if ( !$(this).is( '.es-inspector-button-disabled' ) ) {
+			_this.context.closeInspector( true );
+		}
 	} );
 	this.$form.submit( function( e ) {
 		_this.context.closeInspector( true );
