@@ -472,30 +472,6 @@ $(document).ready( function() {
 	window.contextView = new es.ContextView( window.surfaceView );
 	window.surfaceModel.select( new es.Range( 1, 1 ) );
 
-	var $docsList = $( '#es-docs-list' );
-	$.each( wikidoms, function( title, wikidom ) {
-		$docsList.append(
-			$( '<li class="es-docs-listItem"></li>' )
-				.append(
-					$( '<a href="#"></a>' )
-						.text( title )
-						.click( function() {
-							var newDocumentModel = es.DocumentModel.newFromPlainObject( wikidom );
-							documentModel.data.splice( 0, documentModel.data.length );
-							es.insertIntoArray( documentModel.data, 0, newDocumentModel.data );
-							surfaceModel.select( new es.Range( 1, 1 ) );
-							documentModel.splice.apply(
-								documentModel,
-								[0, documentModel.getChildren().length]
-									.concat( newDocumentModel.getChildren() )
-							);
-							surfaceModel.purgeHistory();
-							return false;
-						} )
-				)
-		);
-	} );
-
 	var $modeButtons = $( '.es-modes-button' ),
 		$panels = $( '.es-panel' ),
 		$base = $( '#es-base' ),
@@ -603,6 +579,33 @@ $(document).ready( function() {
 		} );
 	} );
 
+	var $docsList = $( '#es-docs-list' );
+	$.each( wikidoms, function( title, wikidom ) {
+		$docsList.append(
+			$( '<li class="es-docs-listItem"></li>' )
+				.append(
+					$( '<a href="#"></a>' )
+						.text( title )
+						.click( function() {
+							var newDocumentModel = es.DocumentModel.newFromPlainObject( wikidom );
+							documentModel.data.splice( 0, documentModel.data.length );
+							es.insertIntoArray( documentModel.data, 0, newDocumentModel.data );
+							surfaceModel.select( new es.Range( 1, 1 ) );
+							documentModel.splice.apply(
+								documentModel,
+								[0, documentModel.getChildren().length]
+									.concat( newDocumentModel.getChildren() )
+							);
+							surfaceModel.purgeHistory();
+							
+							if ( currentMode ) {
+								currentMode.update.call( currentMode );
+							}
+							return false;
+						} )
+				)
+		);
+	} );
 
 	surfaceModel.on( 'transact', function() {
 		if ( currentMode ) {
