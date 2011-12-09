@@ -54,6 +54,7 @@ es.LinkInspector.prototype.onOpen = function() {
 	if ( title !== null ) {
 		this.$locationInput.val( title );
 	}
+	this.$locationInput.focus();
 };
 
 es.LinkInspector.prototype.onClose = function() {
@@ -75,6 +76,7 @@ es.LinkInspector.prototype.onClose = function() {
 		{ 'type': 'link/internal', 'data': { 'title': title } }
 	);
 	surfaceModel.transact( set );
+	surfaceView.$input.focus();
 };
 
 /* Inheritance */
