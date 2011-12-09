@@ -617,7 +617,9 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 						return false;
 					// k (hyperlink)
 					case 75:
-						this.contextView.openInspector( 'link' );
+						if ( this.currentSelection.getLength() ) {
+							this.contextView.openInspector( 'link' );
+						}
 						return false;
 				}
 			}
