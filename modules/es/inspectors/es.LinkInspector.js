@@ -56,7 +56,10 @@ es.LinkInspector.prototype.onOpen = function() {
 	} else {
 		this.$locationInput.val( '' );
 	}
-	this.$locationInput.focus();
+	var _this = this;
+	setTimeout( function() {
+		_this.$locationInput.focus().select();
+	}, 0 );
 };
 
 es.LinkInspector.prototype.onClose = function() {
