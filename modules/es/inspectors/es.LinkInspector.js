@@ -53,6 +53,8 @@ es.LinkInspector.prototype.onOpen = function() {
 	var title = this.getTitleFromSelection();
 	if ( title !== null ) {
 		this.$locationInput.val( title );
+	} else {
+		this.$locationInput.val( '' );
 	}
 	this.$locationInput.focus();
 };
