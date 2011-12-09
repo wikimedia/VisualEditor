@@ -38,6 +38,14 @@ es.Inspector = function( toolbar, context ) {
 		e.preventDefault();
 		return false;
 	} );
+	this.$form.keydown( function( e ) {
+		// Escape
+		if ( e.which === 27 ) {
+			_this.context.closeInspector( false );
+		}
+		e.preventDefault();
+		return false;
+	} );
 };
 
 /* Methods */
