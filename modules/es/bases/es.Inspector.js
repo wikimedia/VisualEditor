@@ -18,11 +18,17 @@ es.Inspector = function( toolbar, context ) {
 	this.context = context;
 	this.$ = $( '<div class="es-inspector"></div>' );
 	this.$closeButton = $( '<div class="es-inspector-closeButton"></div>' ).appendTo( this.$ );
+	this.$form = $( '<form></form>' ).appendTo( this.$ );
 
 	// Events
 	var _this = this;
 	this.$closeButton.click( function() {
 		_this.context.closeInspector();
+	} );
+	this.$form.submit( function( e ) {
+		_this.context.closeInspector();
+		e.preventDefault();
+		return false;
 	} );
 };
 
