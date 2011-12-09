@@ -181,3 +181,25 @@
 	color: #000000;
 	background-color: white;
 }
+
+#es-docs {
+	margin-bottom: 1em;
+}
+
+#es-docs-label {
+	display: inline-block;
+}
+
+#es-docs-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: inline-block;
+}
+
+.es-docs-listItem {
+	list-style: none;
+	margin: 0 0.75em 0 0;
+	padding: 0;
+	display: inline-block;
+}

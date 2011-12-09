@@ -28,6 +28,12 @@ es.SurfaceModel = function( doc ) {
 
 /* Methods */
 
+es.SurfaceModel.prototype.purgeHistory = function() {
+	this.selection = null;
+	this.history = [];
+	this.historyIndex = 0;
+	this.currentLengthDifference = 0;
+};
 
 /**
  * Gets the document model of the surface.

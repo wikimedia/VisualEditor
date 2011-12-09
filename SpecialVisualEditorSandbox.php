@@ -23,6 +23,10 @@ class SpecialVisualEditorSandbox extends SpecialPage {
 
 		$out = <<<HTML
 <!-- VisualEditor Sandbox -->
+<div id="es-docs">
+	<div id="es-docs-label">Example documents:</div>
+	<ul id="es-docs-list" ></ul>
+</div>
 <div id="es-base">
 	<div id="es-toolbar" class="es-toolbar">
 		<div id="es-modes" class="es-modes">
