@@ -15,8 +15,6 @@ es.LinkInspector = function( toolbar, context ) {
 	this.$form = $( '<form></form>' ).appendTo( this.$ );
 	this.$locationLabel = $( '<label>Page title</label>' ).appendTo( this.$form );
 	this.$locationInput = $( '<input type="text">' ).appendTo( this.$form );
-	this.$doneButton = $( '<div class="es-inspector-doneButton">Done</div>' )
-		.appendTo( this.$ );
 
 	// Events
 	var _this = this;
@@ -30,9 +28,6 @@ es.LinkInspector = function( toolbar, context ) {
 			);
 		surfaceModel.transact( tx );
 		_this.context.closeInspector();
-	} );
-	this.$doneButton.click( function() {
-		_this.close();
 	} );
 };
 
@@ -48,7 +43,7 @@ es.LinkInspector.prototype.getTitleFromSelection = function() {
 		if ( annotation.length ) {
 			annotation = annotation[0];
 		}
-		if ( annotation ) {
+		if ( annotation && annotation.data && annotation.data.title ) {
 			return annotation.data.title;
 		}
 	}
@@ -64,7 +59,7 @@ es.LinkInspector.prototype.onOpen = function() {
 
 es.LinkInspector.prototype.onClose = function() {
 	var title = this.$locationInput.val();
-	if ( title === this.getTitleFromSelection() ) {
+	if ( title === this.getTitleFromSelection() || !title ) {
 		return;
 	}
 	var surfaceView = this.context.getSurfaceView(),
