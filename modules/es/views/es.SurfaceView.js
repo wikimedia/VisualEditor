@@ -157,6 +157,7 @@ es.SurfaceView = function( $container, model ) {
 
 	// Configuration
 	this.mac = navigator.userAgent.match(/mac/i) ? true : false; // (yes it's evil, for keys only!)
+	this.ie8 = $.browser.msie && $.browser.version === "8.0";
 
 	// Initialization
 	this.$input.focus();
@@ -325,7 +326,7 @@ es.SurfaceView.prototype.onMouseDown = function( e ) {
 		var selection = this.currentSelection.clone(),
 			offset = this.documentView.getOffsetFromEvent( e );
 		// Single click
-		if ( e.originalEvent.detail === 1 ) {
+		if ( this.ie8 || e.originalEvent.detail === 1 ) {
 			// @see {es.SurfaceView.prototype.onMouseMove}
 			this.mouse.selectingMode = 1;
 
@@ -365,15 +366,30 @@ es.SurfaceView.prototype.onMouseDown = function( e ) {
 			);
 			this.mouse.selectedRange = selection.clone();
 		}
-		// Reset the initial left position
-		this.cursor.initialLeft = null;
-		// Apply new selection
-		this.model.select( selection, true );
 	}
-	// If the inut isn't already focused, focus it and select it's contents
-	if ( !this.$input.is( ':focus' ) ) {
-		this.$input.focus().select();
+	
+	var _this = this;
+	
+	function select() {
+		if ( e.which === 1 ) {
+			// Reset the initial left position
+			_this.cursor.initialLeft = null;
+			// Apply new selection
+			_this.model.select( selection, true );
+		}
+
+		// If the inut isn't already focused, focus it and select it's contents
+		if ( !_this.$input.is( ':focus' ) ) {
+			_this.$input.focus().select();
+		}
 	}
+
+	if ( this.ie8 ) {
+		setTimeout( select, 0 );
+	} else {
+		select();
+	}
+
 	return false;
 };
 
