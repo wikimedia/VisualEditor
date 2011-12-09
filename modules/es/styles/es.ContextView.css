@@ -54,6 +54,18 @@
 	top: 2px;
 }
 
+.es-contextView-inspectors {
+	position: absolute;	
+}
+
+.es-contextView-position-above .es-inspector {
+	bottom: -4px;
+}
+
+.es-contextView-position-below .es-inspector {
+	top: 2px;
+}
+
 .es-contextView-panels {
 	position: absolute;
 	border: solid 1px #cccccc;

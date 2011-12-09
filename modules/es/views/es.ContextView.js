@@ -81,11 +81,6 @@ es.ContextView.prototype.isMenuOpen = function() {
 };
 
 es.ContextView.prototype.set = function() {
-	this.$.removeClass(
-		'es-contextView-position-below es-contextView-position-above ' +
-		'es-contextView-position-left es-contextView-position-right ' +
-		'es-contextView-position-start es-contextView-position-end'
-	);
 	this.positionIcon();
 	if ( this.position ) {
 		this.positionOverlay( this.menuView.$ );
@@ -96,6 +91,7 @@ es.ContextView.prototype.set = function() {
 };
 
 es.ContextView.prototype.positionIcon = function() {
+	this.$.removeClass( 'es-contextView-position-start es-contextView-position-end' );
 	var selection = this.surfaceView.getModel().getSelection(),
 		offset;
 	this.position = null;
@@ -125,6 +121,7 @@ es.ContextView.prototype.positionIcon = function() {
 };
 
 es.ContextView.prototype.positionOverlay = function( $overlay ) {
+	this.$.removeClass( 'es-contextView-position-below es-contextView-position-above' );
 	var overlayMargin = 5,
 		overlayWidth = $overlay.outerWidth(),
 		overlayHeight = $overlay.outerHeight(),
