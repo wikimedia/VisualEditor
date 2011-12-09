@@ -10,7 +10,8 @@ es.LinkInspector = function( toolbar, context ) {
 	es.Inspector.call( this, toolbar, context );
 
 	// Properties
-	this.$clearButton = $( '<div class="es-inspector-clearButton"></div>' ).prependTo( this.$ );
+	this.$clearButton = $( '<div class="es-inspector-button es-inspector-clearButton"></div>' )
+		.prependTo( this.$ );
 	this.$.prepend( '<div class="es-inspector-title">Link inspector</div>' );
 	this.$locationLabel = $( '<label>Page title</label>' ).appendTo( this.$form );
 	this.$locationInput = $( '<input type="text">' ).appendTo( this.$form );
@@ -18,6 +19,9 @@ es.LinkInspector = function( toolbar, context ) {
 	// Events
 	var _this = this;
 	this.$clearButton.click( function() {
+		if ( $(this).is( '.es-inspector-button-disabled' ) ) {
+			return;
+		}
 		var surfaceView = _this.context.getSurfaceView(),
 			surfaceModel = surfaceView.getModel(),
 			tx = surfaceModel.getDocument().prepareContentAnnotation(
@@ -28,7 +32,6 @@ es.LinkInspector = function( toolbar, context ) {
 		surfaceModel.transact( tx );
 		_this.$locationInput.val( '' );
 		_this.context.closeInspector();
-		return false;
 	} );
 };
 
@@ -48,15 +51,17 @@ es.LinkInspector.prototype.getTitleFromSelection = function() {
 			return annotation.data.title;
 		}
 	}
-	return null;	
+	return null;
 };
 
 es.LinkInspector.prototype.onOpen = function() {
 	var title = this.getTitleFromSelection();
 	if ( title !== null ) {
 		this.$locationInput.val( title );
+		this.$clearButton.removeClass( 'es-inspector-button-disabled' );
 	} else {
 		this.$locationInput.val( '' );
+		this.$clearButton.addClass( 'es-inspector-button-disabled' );
 	}
 	var _this = this;
 	setTimeout( function() {
@@ -64,25 +69,27 @@ es.LinkInspector.prototype.onOpen = function() {
 	}, 0 );
 };
 
-es.LinkInspector.prototype.onClose = function() {
-	var title = this.$locationInput.val();
-	if ( title === this.getTitleFromSelection() || !title ) {
-		return;
+es.LinkInspector.prototype.onClose = function( accept ) {
+	if ( accept ) {
+		var title = this.$locationInput.val();
+		if ( title === this.getTitleFromSelection() || !title ) {
+			return;
+		}
+		var surfaceView = this.context.getSurfaceView(),
+			surfaceModel = surfaceView.getModel();
+		var clear = surfaceModel.getDocument().prepareContentAnnotation(
+			surfaceView.currentSelection,
+			'clear',
+			/link\/.*/
+		);
+		surfaceModel.transact( clear );
+		var set = surfaceModel.getDocument().prepareContentAnnotation(
+			surfaceView.currentSelection,
+			'set',
+			{ 'type': 'link/internal', 'data': { 'title': title } }
+		);
+		surfaceModel.transact( set );
 	}
-	var surfaceView = this.context.getSurfaceView(),
-		surfaceModel = surfaceView.getModel();
-	var clear = surfaceModel.getDocument().prepareContentAnnotation(
-		surfaceView.currentSelection,
-		'clear',
-		/link\/.*/
-	);
-	surfaceModel.transact( clear );
-	var set = surfaceModel.getDocument().prepareContentAnnotation(
-		surfaceView.currentSelection,
-		'set',
-		{ 'type': 'link/internal', 'data': { 'title': title } }
-	);
-	surfaceModel.transact( set );
 };
 
 /* Inheritance */

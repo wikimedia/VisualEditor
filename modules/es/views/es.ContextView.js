@@ -169,9 +169,9 @@ es.ContextView.prototype.openInspector = function( name ) {
 	this.inspector = name;
 };
 
-es.ContextView.prototype.closeInspector = function() {
+es.ContextView.prototype.closeInspector = function( accept ) {
 	if ( this.inspector ) {
-		this.inspectors[this.inspector].close();
+		this.inspectors[this.inspector].close( accept );
 		this.$inspectors.hide();
 		this.inspector = null;
 	}
