@@ -43,7 +43,9 @@ es.ListView.prototype.enumerate = function() {
 			this.children[i].$icon.text( ++levels[styles.length - 1] + '.' );
 		} else {
 			this.children[i].$icon.text( '' );
-			levels = [];
+			if ( levels[styles.length - 1] ) {
+				levels[styles.length - 1] = 0;
+			}
 		}
 	}
 };
