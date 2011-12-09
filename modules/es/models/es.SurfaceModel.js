@@ -13,26 +13,21 @@ es.SurfaceModel = function( doc ) {
 	// Properties
 	this.doc = doc;
 	this.selection = null;
-	this.history = [];
-	this.historyIndex = 0;
-	this.currentLengthDifference = 0;
 
-	// TODO magic number move to configuration 
-	// Configuration
-	this.lengthDifferenceLimit = 24;
+	this.smallStack = [];
+	this.bigStack = [];
+	this.undoIndex = 0;
 
-	// DEBUG don't commit
 	var _this = this;
-	this.addListener( 'transact', function() { console.log( _this.history ); } );
+	setInterval( function () {
+		_this.breakpoint();
+	}, 750 );
 };
 
 /* Methods */
 
 es.SurfaceModel.prototype.purgeHistory = function() {
 	this.selection = null;
-	this.history = [];
-	this.historyIndex = 0;
-	this.currentLengthDifference = 0;
 };
 
 /**
@@ -72,46 +67,9 @@ es.SurfaceModel.prototype.select = function( selection, isManual ) {
 	) {
 		// check if the last thing is a selection, if so, swap it.
 		this.selection = selection;	
-		if ( isManual ) {
-			this.historyPush( selection );
-		}
 		this.emit( 'select', this.selection.clone() );
 	}
 };
-
-/**
- * Adds a selection (which is really just a marker for when we stop undo/redo) to the history.
- * For the history, selections are just markers, so we don't want to record many of them in a row.
- * 
- * @method
- * @param {es.Range|es.Transaction} historyItem
- */
-
-
-/**
- * TODO docs
- */
-es.SurfaceModel.prototype.historyPush = function ( historyItem ) {
-	// truncate anything past our current history position
-	this.history.splice( this.historyIndex );
-
-	// push the next item. Could be combined with above splice given sufficient cleverness
-	this.history.push( historyItem );
-	
-	// get ready to insert at the end
-	this.historyIndex = this.history.length;
-
-};
-
-/*
-es.SurfaceModel.prototype.pushSelection = function( selection ) {
-	if ( this.history[ this.history.length - 1 ] instanceof es.Range ) {
-		this.history[ this.history.length - 1 ] = selection;
-	} else {
-		this.history.push( selection );
-	}
-};
-*/
 
 /**
  * Applies a series of transactions to the content data.
@@ -125,80 +83,58 @@ es.SurfaceModel.prototype.pushSelection = function( selection ) {
  * @param {boolean} isPartial whether this transaction is part of a larger logical grouping of transactions 
  *					(such as when replacing - delete, then insert)
  */
-es.SurfaceModel.prototype.transact = function( transaction, isPartial ) {
-	// console.log( 'tx:' + $.map( transaction.getOperations(), function(tx) { return tx.type; } ).join(",") 
-	//				+ ' isPartial:' + isPartial ); 
+es.SurfaceModel.prototype.transact = function( transaction ) {
+	this.undoIndex = 0;
+	this.smallStack.push( transaction );
 	this.doc.commit( transaction );
-
-	// if we have changed the kind of operation (delete -> insert or insert -> delete or annotations )
-	// then push a new selection onto the history, to mark where the undo/redo should end.
-	var d = transaction.getLengthDifference();
-	if ( 
-		!isPartial &&
-		(
-			( d === 0 ) ||
-			( this.currentLengthDifference < 0 && d > 0 ) ||
-			( this.currentLengthDifference > 0 && d < 0 ) ||
-			( Math.abs( this.currentLengthDifference ) > this.lengthDifferenceLimit ) 
-		)
-	) {
-		this.currentLengthDifference = 0;
-		this.historyPush( this.selection );
-	}
-
-	this.currentLengthDifference += d;
-	this.historyPush( transaction );
 	this.emit( 'transact', transaction );
 };
 
+es.SurfaceModel.prototype.breakpoint = function( selection ) {
+	if( this.smallStack.length > 0 ) {
+		console.log("SurfaceModel.breakpoint", selection);
+		this.bigStack.push( {
+			stack: this.smallStack,
+			selection: selection || this.selection.clone()
+		} );
+		this.smallStack = [];
+	}};
 
-/**
- * Reverses one or more history items.
- * 
- * @method
- * @param {Integer} n Number of history items to roll back
- */
-es.SurfaceModel.prototype.undo = function( n ) {
-	
-	console.log( this.history );
-	console.log( 'about to undo...' );
-	console.log( "historyIndex: " + this.historyIndex );
-
-	lengthDifference = 0;
-	var finalSelection = null;
-
-	while ( n ) {
-		n--;
-
-		if ( this.history.length ) {
-			for (var i = this.history.length - 1; i >= 0; i-- ) {
-				this.historyIndex = i;
-				if ( this.history[i] instanceof es.Range ) {
-					finalSelection = this.history[i];
-					break;
-				} else {
-					this.doc.rollback( this.history[i] );
-				}
-			}
-			this.emit( 'undo', this.currentState );
+es.SurfaceModel.prototype.undo = function() {
+	this.breakpoint();
+	this.undoIndex++
+	if ( this.bigStack[this.bigStack.length - this.undoIndex] ) {
+		var diff = 0;
+		var item = this.bigStack[this.bigStack.length - this.undoIndex];
+		for( var i = item.stack.length - 1; i >= 0; i-- ) {
+			this.doc.rollback( item.stack[i] );
+			diff += item.stack[i].lengthDifference;
 		}
+		var selection = item.selection;
+		selection.from -= diff;
+		selection.to -= diff;
+		this.select( selection );
 	}
-
-	console.log( 'after undo...' );
-	console.log( "historyIndex: " + this.historyIndex );
-
-	this.select( finalSelection	);
 };
 
-/**
- * Repeats one or more selections and transactions.
- * 
- * @method
- * @param {Integer} steps Number of steps to repeat
- */
-es.SurfaceModel.prototype.redo = function( steps ) {
-	// TODO: Implement me!
-	this.emit( 'redo'/*, transaction/selection*/ );
+es.SurfaceModel.prototype.redo = function() {
+	this.breakpoint();
+	if ( this.undoIndex > 0 ) {
+		if ( this.bigStack[this.bigStack.length - this.undoIndex] ) {
+			var diff = 0;
+			var item = this.bigStack[this.bigStack.length - this.undoIndex];
+			for( var i = 0; i < item.stack.length; i++ ) {
+				this.doc.commit( item.stack[i] );
+				diff += item.stack[i].lengthDifference;
+			}
+			var selection = item.selection;
+			selection.from += diff;
+			selection.to += diff;
+			this.selection = null;
+			this.select( selection );
+		}
+		this.undoIndex--;
+	}
 };
 
 /* Inheritance */
