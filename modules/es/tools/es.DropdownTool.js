@@ -7,9 +7,9 @@
  * @param {String} name
  * @param {Object[]} items
  */
-es.DropdownTool = function( toolbar, name, items ) {
+es.DropdownTool = function( toolbar, name, title, items ) {
 	// Inheritance
-	es.Tool.call( this, toolbar, name );
+	es.Tool.call( this, toolbar, name, title );
 	if ( !name ) {
 		return;
 	}

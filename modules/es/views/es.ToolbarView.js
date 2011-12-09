@@ -79,7 +79,7 @@ es.ToolbarView.prototype.setup = function() {
 			var toolDefintion = es.Tool.tools[ this.config[i].items[j] ];
 			if ( toolDefintion ) {
 				var tool = new toolDefintion.constructor(
-					this, toolDefintion.name, toolDefintion.data
+					this, toolDefintion.name, toolDefintion.title, toolDefintion.data
 				);
 				this.tools.push( tool );
 				$group.append( tool.$ );

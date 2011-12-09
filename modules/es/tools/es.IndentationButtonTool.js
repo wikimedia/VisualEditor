@@ -7,8 +7,8 @@
  * @param {es.ToolbarView} toolbar
  * @param {String} name
  */
- es.IndentationButtonTool = function( toolbar, name, data ) {
-	es.ButtonTool.call( this, toolbar, name );
+ es.IndentationButtonTool = function( toolbar, name, title, data ) {
+	es.ButtonTool.call( this, toolbar, name, title );
 	this.data = data;
 };
 
@@ -100,13 +100,15 @@ es.IndentationButtonTool.prototype.updateState = function( annotations, nodes ) 
 /* Registration */
 
 es.Tool.tools.indent = {
-	constructor: es.IndentationButtonTool,
-	name: 'indent'
+	'constructor': es.IndentationButtonTool,
+	'name': 'indent',
+	'title': 'Increase indentation'
 };
 
 es.Tool.tools.outdent = {
-	constructor: es.IndentationButtonTool,
-	name: 'outdent'
+	'constructor': es.IndentationButtonTool,
+	'name': 'outdent',
+	'title': 'Reduce indentation'
 };
 
 /* Inheritance */

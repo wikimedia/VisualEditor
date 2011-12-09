@@ -8,9 +8,9 @@
  * @param {String} name
  * @param {Object[]} items
  */
-es.FormatDropdownTool = function( toolbar, name ) {
+es.FormatDropdownTool = function( toolbar, name, title ) {
 	// Inheritance
-	es.DropdownTool.call( this, toolbar, name, [
+	es.DropdownTool.call( this, toolbar, name, title, [
 		{ 
 			'name': 'paragraph',
 			'label': 'Paragraph',
@@ -109,7 +109,8 @@ es.FormatDropdownTool.prototype.updateState = function( annotations, nodes ) {
 
 es.Tool.tools.format = {
 	'constructor': es.FormatDropdownTool,
-	'name': 'format'
+	'name': 'format',
+	'title': 'Change format'
 };
 
 /* Inheritance */

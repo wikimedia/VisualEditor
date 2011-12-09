@@ -7,9 +7,9 @@
  * @param {es.ToolbarView} toolbar
  * @param {String} name
  */
-es.ClearButtonTool = function( toolbar, name ) {
+es.ClearButtonTool = function( toolbar, name, title ) {
 	// Inheritance
-	es.ButtonTool.call( this, toolbar, name );
+	es.ButtonTool.call( this, toolbar, name, title );
 
 	// Properties
 	this.$.addClass( 'es-toolbarButtonTool-disabled' );
@@ -45,8 +45,9 @@ es.ClearButtonTool.prototype.updateState = function( annotations ) {
 /* Registration */
 
 es.Tool.tools.clear = {
-	constructor: es.ClearButtonTool,
-	name: 'clear'
+	'constructor': es.ClearButtonTool,
+	'name': 'clear',
+	'title': 'Clear formatting'
 };
 
 /* Inheritance */

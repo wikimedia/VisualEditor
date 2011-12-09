@@ -6,9 +6,9 @@
  * @param {es.ToolbarView} toolbar
  * @param {String} name
  */
-es.ButtonTool = function( toolbar, name ) {
+es.ButtonTool = function( toolbar, name, title ) {
 	// Inheritance
-	es.Tool.call( this, toolbar, name );
+	es.Tool.call( this, toolbar, name, title );
 	if ( !name ) {
 		return;
 	}

@@ -8,9 +8,9 @@
  * @param {String} name
  * @param {Object} annotation
  */
-es.AnnotationButtonTool = function( toolbar, name, data ) {
+es.AnnotationButtonTool = function( toolbar, name, title, data ) {
 	// Inheritance
-	es.ButtonTool.call( this, toolbar, name );
+	es.ButtonTool.call( this, toolbar, name, title );
 
 	// Properties
 	this.annotation = data.annotation;
@@ -50,6 +50,7 @@ es.AnnotationButtonTool.prototype.updateState = function( annotations, nodes ) {
 es.Tool.tools.bold = {
 	'constructor': es.AnnotationButtonTool,
 	'name': 'bold',
+	'title': 'Bold (ctrl/cmd + B)',
 	'data': {
 		'annotation': { 'type': 'textStyle/bold' }
 	}
@@ -58,6 +59,7 @@ es.Tool.tools.bold = {
 es.Tool.tools.italic = {
 	'constructor': es.AnnotationButtonTool,
 	'name': 'italic',
+	'title': 'Italic (ctrl/cmd + I)',
 	'data': {
 		'annotation': { 'type': 'textStyle/italic' }
 	}
@@ -66,6 +68,7 @@ es.Tool.tools.italic = {
 es.Tool.tools.link = {
 	'constructor': es.AnnotationButtonTool,
 	'name': 'link',
+	'title': 'Link (ctrl/cmd + K)',
 	'data': {
 		'annotation': { 'type': 'link/internal', 'data': { 'title': '' } },
 		'inspector': 'link'

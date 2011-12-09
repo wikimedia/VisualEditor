@@ -6,10 +6,11 @@
  * @param {es.ToolbarView} toolbar
  * @param {String} name
  */
-es.Tool = function( toolbar, name ) {
+es.Tool = function( toolbar, name, title ) {
 	this.toolbar = toolbar;
 	this.name = name;
-	this.$ = $( '<div class="es-tool"></div>' ).attr( 'title', this.name );
+	this.title = title;
+	this.$ = $( '<div class="es-tool"></div>' ).attr( 'title', this.title );
 };
 
 /* Static Members */

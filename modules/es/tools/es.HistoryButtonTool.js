@@ -7,9 +7,9 @@
  * @param {es.ToolbarView} toolbar
  * @param {String} name
  */
-es.HistoryButtonTool = function( toolbar, name, data ) {
+es.HistoryButtonTool = function( toolbar, name, title, data ) {
 	// Inheritance
-	es.ButtonTool.call( this, toolbar, name );
+	es.ButtonTool.call( this, toolbar, name, title );
 
 	// Properties
 	this.data = data;
@@ -35,13 +35,15 @@ es.HistoryButtonTool.prototype.updateState = function( annotations ) {
 /* Registration */
 
 es.Tool.tools.undo = {
-	constructor: es.HistoryButtonTool,
-	name: 'undo'
+	'constructor': es.HistoryButtonTool,
+	'name': 'undo',
+	'title': 'Undo (ctrl/cmd + Z)'
 };
 
 es.Tool.tools.redo = {
-	constructor: es.HistoryButtonTool,
-	name: 'redo'
+	'constructor': es.HistoryButtonTool,
+	'name': 'redo',
+	'title': 'Redo (ctrl/cmd + shift + Z)'
 };
 
 /* Inhertiance */

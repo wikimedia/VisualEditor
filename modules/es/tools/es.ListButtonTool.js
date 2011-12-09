@@ -7,9 +7,9 @@
  * @param {es.ToolbarView} toolbar
  * @param {String} name
  */
- es.ListButtonTool = function( toolbar, name, data ) {
+ es.ListButtonTool = function( toolbar, name, title, data ) {
 	// Inheritance
-	es.ButtonTool.call( this, toolbar, name );
+	es.ButtonTool.call( this, toolbar, name, title );
 
 	// Properties
 	this.data = data;
@@ -304,13 +304,15 @@ es.ListButtonTool.prototype.updateState = function( annotations, nodes ) {
 /* Registration */
 
 es.Tool.tools.number = {
-	constructor: es.ListButtonTool,
-	name: 'number'
+	'constructor': es.ListButtonTool,
+	'name': 'number',
+	'title': 'Numbered list'
 };
 
 es.Tool.tools.bullet = {
-	constructor: es.ListButtonTool,
-	name: 'bullet'
+	'constructor': es.ListButtonTool,
+	'name': 'bullet',
+	'title': 'Bulleted list'
 };
 
 /* Inheritance */

@@ -615,6 +615,10 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 					case 73:
 						this.annotate( 'toggle', {'type': 'textStyle/italic' } );
 						return false;
+					// k (hyperlink)
+					case 75:
+						this.contextView.openInspector( 'link' );
+						return false;
 				}
 			}
 			// Regular text insertion
