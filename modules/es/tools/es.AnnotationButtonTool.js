@@ -23,10 +23,13 @@ es.AnnotationButtonTool = function( toolbar, name, data ) {
 es.AnnotationButtonTool.prototype.onClick = function() {
 	var surfaceView = this.toolbar.getSurfaceView();
 	if ( this.inspector ) {
-		if ( !this.active && surfaceView.getModel().getSelection().getLength() ) {
+		if ( surfaceView.getModel().getSelection().getLength() ) {
+			this.toolbar.getSurfaceView().getContextView().openInspector( this.inspector );
+		} else {
+			if ( !this.active ) {
 				surfaceView.annotate( 'set', this.annotation );
+			}
 		}
-		this.toolbar.getSurfaceView().getContextView().openInspector( this.inspector );
 	} else {
 		surfaceView.annotate( this.active ? 'clear' : 'set', this.annotation );
 	}
