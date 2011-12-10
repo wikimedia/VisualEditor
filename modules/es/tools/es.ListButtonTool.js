@@ -270,11 +270,13 @@ es.ListButtonTool.prototype.unlist = function( nodes ) {
 };
 
 es.ListButtonTool.prototype.onClick = function() {
+	this.toolbar.surfaceView.model.breakpoint();
 	if ( !this.$.hasClass( 'es-toolbarButtonTool-down' ) ) {
 		this.list( this.nodes, this.name );
 	} else {
 		this.unlist( this.nodes );
 	}
+	this.toolbar.surfaceView.model.breakpoint();
 };
 
 es.ListButtonTool.prototype.updateState = function( annotations, nodes ) {

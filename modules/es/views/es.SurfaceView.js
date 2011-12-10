@@ -127,7 +127,9 @@ es.SurfaceView = function( $container, model ) {
 			},
 			'paste': function() {
 				setTimeout( function() {
+					_this.model.breakpoint();
 					_this.insertFromInput();
+					_this.model.breakpoint();
 				}, 0 );
 			}
 		} );
