@@ -259,7 +259,8 @@ es.TransactionProcessor.prototype.insert = function( op ) {
 	var node,
 		index,
 		offset;
-	if ( es.DocumentModel.isStructuralOffset( this.model.data, this.cursor ) ) {
+
+	if ( es.DocumentModel.isStructuralOffset( this.model.data, this.cursor ) && this.cursor != this.model.data.length ) {
 		// FIXME: This fails when inserting something like </list><list> between 2 list items
 		// @see test #30 in es.TransactionProcessor.test.js
 		es.insertIntoArray( this.model.data, this.cursor, op.data );
