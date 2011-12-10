@@ -12,7 +12,7 @@ es.LinkInspector = function( toolbar, context ) {
 	// Properties
 	this.$clearButton = $( '<div class="es-inspector-button es-inspector-clearButton"></div>' )
 		.prependTo( this.$ );
-	this.$.prepend( '<div class="es-inspector-title">Link inspector</div>' );
+	this.$.prepend( '<div class="es-inspector-title">Edit link</div>' );
 	this.$locationLabel = $( '<label>Page title</label>' ).appendTo( this.$form );
 	this.$locationInput = $( '<input type="text">' ).appendTo( this.$form );
 	this.initialValue = null;
