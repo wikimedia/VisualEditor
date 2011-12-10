@@ -65,6 +65,9 @@ es.SurfaceModel.prototype.select = function( selection, isManual ) {
 	if (
 		( ! this.selection ) || ( ! this.selection.equals( selection ) )
 	) {
+		if ( isManual ) {
+			this.breakpoint();
+		}
 		// check if the last thing is a selection, if so, swap it.
 		this.selection = selection;	
 		this.emit( 'select', this.selection.clone() );
@@ -84,6 +87,7 @@ es.SurfaceModel.prototype.select = function( selection, isManual ) {
  *					(such as when replacing - delete, then insert)
  */
 es.SurfaceModel.prototype.transact = function( transaction ) {
+	this.bigStack = this.bigStack.slice( 0, this.bigStack.length - this.undoIndex + 1 );
 	this.undoIndex = 0;
 	this.smallStack.push( transaction );
 	this.doc.commit( transaction );
@@ -92,7 +96,6 @@ es.SurfaceModel.prototype.transact = function( transaction ) {
 
 es.SurfaceModel.prototype.breakpoint = function( selection ) {
 	if( this.smallStack.length > 0 ) {
-		console.log("SurfaceModel.breakpoint", selection);
 		this.bigStack.push( {
 			stack: this.smallStack,
 			selection: selection || this.selection.clone()

@@ -590,12 +590,16 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 			// Control/command + character combos
 			if ( e.metaKey || e.ctrlKey ) {
 				switch ( e.keyCode ) {
+					// y (redo)
+					case 89:
+						this.model.redo();
+						return false;
 					// z (undo/redo)
 					case 90:
 						if ( this.keyboard.keys.shift ) {
-							this.model.redo( 1 );
+							this.model.redo();
 						} else {
-							this.model.undo( 1 );
+							this.model.undo();
 						}
 						return false;
 					// a (select all)
