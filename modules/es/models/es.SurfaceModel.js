@@ -62,16 +62,16 @@ es.SurfaceModel.prototype.getSelection = function() {
  */
 es.SurfaceModel.prototype.select = function( selection, isManual ) {
 	selection.normalize();
-	if (
+	/*if (
 		( ! this.selection ) || ( ! this.selection.equals( selection ) )
-	) {
+	) {*/
 		if ( isManual ) {
 			this.breakpoint();
 		}
 		// check if the last thing is a selection, if so, swap it.
 		this.selection = selection;	
 		this.emit( 'select', this.selection.clone() );
-	}
+	//}
 };
 
 /**
