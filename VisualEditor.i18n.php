@@ -20,7 +20,7 @@ $messages['en'] = array(
  * @author Erik Moeller
  */
 $messages['qqq'] = array(
-	'visualeditor-mode-wikitext' => 'Tooltip for a toolbar button which activates or deactivates a split view, with the visual editor on the left-hand side, and a dynamically updating but read-only wikitext view on the right-hand side.',
+	'visualeditor-tooltip-wikitext' => 'Tooltip for a toolbar button which activates or deactivates a split view, with the visual editor on the left-hand side, and a dynamically updating but read-only wikitext view on the right-hand side.',
 	'visualeditor-tooltip-json' => 'Tooltip for a toolbar button which activates or deactivates a split view, with the visual editor on the left-hand side, and a dynamically updating but read-only JSON representation of the document on the right-hand side. This view is primarily useful for debugging purposes.',
 	'visualeditor-tooltip-html' => 'Tooltip for a toolbar button which activates or deactivates a split view, with the visual editor on the left-hand side, and a dyanmically updating but read-only raw HTML view on the right-hand side. This view is primarily useful for debugging purposes.',
 	'visualeditor-tooltip-render' => 'Tooltip for a toolbar button which activates or deactivates a split view, with the visual editor on the left-hand side, and a dynamically updating preview on the right-hand side. This view is primarily useful for debugging purposes.',
