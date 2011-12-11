@@ -10,6 +10,14 @@ $messages['en'] = array(
 	'visualeditor-sandbox-title' => 'VisualEditor Sandbox',
 );
 
+/** Breton (Brezhoneg)
+ * @author Y-M D
+ */
+$messages['br'] = array(
+	'visualeditor' => 'VisualEditor',
+	'visualeditor-sandbox-title' => 'Poull-traezh VisualEditor',
+);
+
 /** German (Deutsch)
  * @author Kghbln
  */
