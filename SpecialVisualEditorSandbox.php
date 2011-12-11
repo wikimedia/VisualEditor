@@ -20,7 +20,11 @@ class SpecialVisualEditorSandbox extends SpecialPage {
 		$wgOut->addModules( 'ext.visualEditor.sandbox' );
 		$this->setHeaders();
 		$wgOut->setPageTitle( wfMsg( 'visualeditor-sandbox-title' )  );
-
+		$modeWikitext = wfMsgHtml( 'visualeditor-tooltip-wikitext' );
+		$modeJson = wfMsgHtml( 'visualeditor-tooltip-json' );
+		$modeHtml = wfMsgHtml( 'visualeditor-tooltip-html' );
+		$modeRender = wfMsgHtml( 'visualeditor-tooltip-render' );
+		$modeHistory = wfMsgHtml( 'visualeditor-tooltip-history' );
 		$out = <<<HTML
 <!-- VisualEditor Sandbox -->
 <div id="es-docs">
@@ -30,11 +34,11 @@ class SpecialVisualEditorSandbox extends SpecialPage {
 <div id="es-base">
 	<div id="es-toolbar" class="es-toolbar">
 		<div id="es-modes" class="es-modes">
-			<div id="es-mode-wikitext" class="es-modes-button"></div>
-			<div id="es-mode-json" class="es-modes-button"></div>
-			<div id="es-mode-html" class="es-modes-button"></div>
-			<div id="es-mode-render" class="es-modes-button"></div>
-			<div id="es-mode-history" class="es-modes-button"></div>
+			<div id="es-mode-wikitext" class="es-modes-button" title="$modeWikitext"></div>
+			<div id="es-mode-json" class="es-modes-button" title="$modeJson"></div>
+			<div id="es-mode-html" class="es-modes-button" title="$modeHtml"></div>
+			<div id="es-mode-render" class="es-modes-button" title="$modeRender"></div>
+			<div id="es-mode-history" class="es-modes-button" title="$modeHistory"></div>
 		</div>
 		<div style="clear:both"></div>
 		<div id="es-toolbar-shadow"></div>

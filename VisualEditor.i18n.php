@@ -8,6 +8,23 @@ $messages['en'] = array(
 	'visualeditor' => 'VisualEditor',
 	'visualeditor-desc' => 'Visual editor for MediaWiki',
 	'visualeditor-sandbox-title' => 'VisualEditor Sandbox',
+	'visualeditor-tooltip-wikitext' => 'Toggle wikitext view',
+	'visualeditor-tooltip-json' => 'Toggle JSON view',
+	'visualeditor-tooltip-html' => 'Toggle HTML view',
+	'visualeditor-tooltip-render' => 'Toggle preview',	
+	'visualeditor-tooltip-history' => 'Toggle transaction history view',
+);
+
+/** Message documentation
+ * @author Trevor Parscal
+ * @author Erik Moeller
+ */
+$messages['qqq'] = array(
+	'visualeditor-mode-wikitext' => 'Tooltip for a toolbar button which activates or deactivates a split view, with the visual editor on the left-hand side, and a dynamically updating but read-only wikitext view on the right-hand side.',
+	'visualeditor-tooltip-json' => 'Tooltip for a toolbar button which activates or deactivates a split view, with the visual editor on the left-hand side, and a dynamically updating but read-only JSON representation of the document on the right-hand side. This view is primarily useful for debugging purposes.',
+	'visualeditor-tooltip-html' => 'Tooltip for a toolbar button which activates or deactivates a split view, with the visual editor on the left-hand side, and a dyanmically updating but read-only raw HTML view on the right-hand side. This view is primarily useful for debugging purposes.',
+	'visualeditor-tooltip-render' => 'Tooltip for a toolbar button which activates or deactivates a split view, with the visual editor on the left-hand side, and a dynamically updating preview on the right-hand side. This view is primarily useful for debugging purposes.',
+	'visualeditor-tooltip-history' => 'Tooltip for a toolbar button which activates or deactivates a split view, with the visual editor on the left-hand side, and a history of the user\'s edit transactions on the right-hand side. This view is primarily useful for debugging purposes.',
 );
 
 /** Breton (Brezhoneg)
