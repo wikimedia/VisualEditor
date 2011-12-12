@@ -14,6 +14,9 @@
 
     // Flatten a list of lists.
     var flatten = function ( e ) {
+        // Fast single-level flatten:
+        //return [].concat.apply([], e);
+        
         var es = [];
         // flatten sub-arrays
         for(var i = 0, length = e.length; i < length; i++) {
@@ -1016,15 +1019,16 @@ generic_attribute
 }
 
 // http://dev.w3.org/html5/spec/Overview.html#attributes-0, and we also
-// disallow newlines and |.
+// disallow newlines, | and {.
 generic_attribute_name
-  = n:[^ \t\0/"'>=\n|]+ {
+  = n:[^ \t\0/"'>=\n|{]+ {
         return n.join('');
   }
 
 generic_attribute_value
   = "=" space* v:att_value {return v}
 
+// XXX: attributes can contain templates and template args!!
 att_value
   = t:[^ \t'"<>='\n]+ { return t.join(''); }
     // XXX: is "\"" also valid html? or just Wikitext?

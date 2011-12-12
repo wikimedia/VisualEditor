@@ -347,7 +347,9 @@ var passedTests = 0,
 	failOutputTests = 0;
 
 var postProcessor = new DOMPostProcessor();
+
 function processTest(item) {
+	// Create a new tree builder, which also creates a new document.
 	var treeBuilder = new FauxHTML5.TreeBuilder();
 	if (!('title' in item)) {
 		console.log(item);

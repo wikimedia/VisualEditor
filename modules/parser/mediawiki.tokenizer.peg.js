@@ -15,8 +15,10 @@ PegTokenizer.prototype.tokenize = function(text, callback) {
 	this.initSource(function() {
 		var out, err;
 		try {
-			var parser = PEG.buildParser(PegTokenizer.src);
-			out = parser.parse(text);
+			if ( !this.parser ) {
+				this.parser = PEG.buildParser(PegTokenizer.src);
+			}
+			out = this.parser.parse(text);
 		} catch (e) {
 			err = e;
 			console.trace();
