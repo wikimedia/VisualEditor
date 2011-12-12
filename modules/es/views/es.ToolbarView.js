@@ -14,34 +14,7 @@ es.ToolbarView = function( $container, surfaceView, config ) {
 	this.surfaceView = surfaceView;
 	this.$ = $container;
 	this.$groups = $( '<div class="es-toolbarGroups"></div>' ).prependTo( this.$ );
-	this.$spacer = $('<div></div>');
-	this.$.after( this.$spacer );
 	this.tools = [];
-
-	// Events
-	/*
-	 * This code is responsible for switching toolbar into floating mode when scrolling (with
-	 * keyboard or mouse).
-	 */
-	$window.scroll( function() {
-		if ( _this.surfaceView.dimensions.scrollTop > _this.surfaceView.dimensions.toolbarTop ) {
-			if ( !_this.$.hasClass( 'float' ) ) {
-				var	left = _this.$.offset().left,
-					right = $window.width() - _this.$.outerWidth() - left;
-				_this.$.css( 'right', right );
-				_this.$.css( 'left', left );
-				_this.$spacer.height( _this.$.height() );
-				_this.$.addClass( 'float' );
-			}
-		} else {
-			if ( _this.$.hasClass( 'float' ) ) {
-				_this.$.css( 'right', 0 );
-				_this.$.css( 'left', 0 );
-				_this.$spacer.height(0);
-				_this.$.removeClass( 'float' );
-			}
-		}
-	} );
 
 	this.surfaceView.on( 'cursor', function( annotations, nodes ) {
 		for( var i = 0; i < _this.tools.length; i++ ) {

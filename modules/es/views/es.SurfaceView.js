@@ -63,7 +63,6 @@ es.SurfaceView = function( $container, model ) {
 		height: $window.height(),
 		scrollTop: $window.scrollTop(),
 		// XXX: This is a dirty hack!
-		toolbarTop: $( '#es-toolbar' ).offset().top,
 		toolbarHeight: $( '#es-toolbar' ).height()
 	};
 
@@ -139,6 +138,8 @@ es.SurfaceView = function( $container, model ) {
 		// resizing - can be implemented with setTimeout
 		_this.hideCursor();
 		_this.dimensions.height = $window.height();
+		// XXX: This is a dirty hack!
+		_this.dimensions.toolbarHeight = $( '#es-toolbar' ).height();
 		var width = _this.$.width();
 		if ( _this.dimensions.width !== width ) {
 			_this.dimensions.width = width;

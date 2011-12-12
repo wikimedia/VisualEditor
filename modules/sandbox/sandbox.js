@@ -566,10 +566,33 @@ $(document).ready( function() {
 	window.contextView = new es.ContextView( window.surfaceView );
 	window.surfaceModel.select( new es.Range( 1, 1 ) );
 
+	/*
+	 * This code is responsible for switching toolbar into floating mode when scrolling (with
+	 * keyboard or mouse).
+	 */
+	var $toolbarWrapper = $( '#es-toolbar-wrapper' ),
+		$toolbar = $( '#es-toolbar' ),
+		$window = $( window );
+	$window.scroll( function() {
+		var toolbarWrapperOffset = $toolbarWrapper.offset();
+		if ( $window.scrollTop() > toolbarWrapperOffset.top ) {
+			if ( !$toolbarWrapper.hasClass( 'float' ) ) {
+				var	left = toolbarWrapperOffset.left,
+					right = $window.width() - $toolbarWrapper.outerWidth() - left;
+				$toolbarWrapper.css( 'height', $toolbarWrapper.height() ).addClass( 'float' );
+				$toolbar.css( { 'left': left, 'right': right } );
+			}
+		} else {
+			if ( $toolbarWrapper.hasClass( 'float' ) ) {
+				$toolbarWrapper.css( 'height', 'auto' ).removeClass( 'float' );
+				$toolbar.css( { 'left': 0, 'right': 0 } );
+			}
+		}
+	} );
+
 	var $modeButtons = $( '.es-modes-button' ),
 		$panels = $( '.es-panel' ),
 		$base = $( '#es-base' ),
-		$window = $(window),
 		currentMode = null,
 		modes = {
 			'wikitext': {

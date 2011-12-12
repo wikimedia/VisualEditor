@@ -33,17 +33,19 @@ class SpecialVisualEditorSandbox extends SpecialPage {
 	<ul id="es-docs-list" ></ul>
 </div>
 <div id="es-base">
-	<div id="es-toolbar" class="es-toolbar">
-		<div id="es-modes" class="es-modes">
-			<div id="es-mode-wikitext" class="es-modes-button" title="$modeWikitext"></div>
-			<div id="es-mode-json" class="es-modes-button" title="$modeJson"></div>
-			<div id="es-mode-html" class="es-modes-button" title="$modeHtml"></div>
-			<div id="es-mode-render" class="es-modes-button" title="$modeRender"></div>
-			<div id="es-mode-history" class="es-modes-button" title="$modeHistory"></div>
-			<div id="es-mode-help" class="es-modes-button" title="$modeHelp"></div>
+	<div id="es-toolbar-wrapper">
+		<div id="es-toolbar" class="es-toolbar">
+			<div id="es-modes" class="es-modes">
+				<div id="es-mode-wikitext" class="es-modes-button" title="$modeWikitext"></div>
+				<div id="es-mode-json" class="es-modes-button" title="$modeJson"></div>
+				<div id="es-mode-html" class="es-modes-button" title="$modeHtml"></div>
+				<div id="es-mode-render" class="es-modes-button" title="$modeRender"></div>
+				<div id="es-mode-history" class="es-modes-button" title="$modeHistory"></div>
+				<div id="es-mode-help" class="es-modes-button" title="$modeHelp"></div>
+			</div>
+			<div style="clear:both"></div>
+			<div id="es-toolbar-shadow"></div>
 		</div>
-		<div style="clear:both"></div>
-		<div id="es-toolbar-shadow"></div>
 	</div>
 	<div id="es-panes">
 		<div id="es-visual">
