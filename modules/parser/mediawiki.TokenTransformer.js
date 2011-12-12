@@ -150,7 +150,7 @@ TokenTransformer.prototype.transformTokens = function ( tokens, accum ) {
 		// Prepare to replace the last token in the current accumulator.
 		accum.pop();
 	}
-	var tokenCTX = TokenContext(undefined, accum, this, undefined);
+	var tokenCTX = new TokenContext(undefined, accum, this, undefined);
 	for ( var i = 0, l = tokens.length; i < l; i++ ) {
 		tokenCTX.lastToken = tokenCTX.token;
 		tokenCTX.token = tokens[i];
