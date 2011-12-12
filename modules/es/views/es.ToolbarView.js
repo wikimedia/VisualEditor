@@ -24,21 +24,21 @@ es.ToolbarView = function( $container, surfaceView, config ) {
 	 * keyboard or mouse).
 	 */
 	$window.scroll( function() {
-		if ( _this.surfaceView.dimensions.scrollTop >= _this.surfaceView.dimensions.toolbarTop ) {
-			if ( ! _this.$.hasClass( 'float' ) ) {
+		if ( _this.surfaceView.dimensions.scrollTop > _this.surfaceView.dimensions.toolbarTop ) {
+			if ( !_this.$.hasClass( 'float' ) ) {
 				var	left = _this.$.offset().left,
 					right = $window.width() - _this.$.outerWidth() - left;
 				_this.$.css( 'right', right );
 				_this.$.css( 'left', left );
-				_this.$.addClass( 'float' );
 				_this.$spacer.height( _this.$.height() );
+				_this.$.addClass( 'float' );
 			}
 		} else {
 			if ( _this.$.hasClass( 'float' ) ) {
 				_this.$.css( 'right', 0 );
 				_this.$.css( 'left', 0 );
-				_this.$.removeClass( 'float' );
 				_this.$spacer.height(0);
+				_this.$.removeClass( 'float' );
 			}
 		}
 	} );
