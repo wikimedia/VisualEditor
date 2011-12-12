@@ -28,6 +28,9 @@ es.SurfaceModel = function( doc ) {
 
 es.SurfaceModel.prototype.purgeHistory = function() {
 	this.selection = null;
+	this.smallStack = [];
+	this.bigStack = [];
+	this.undoIndex = 0;	
 };
 
 /**
@@ -87,7 +90,7 @@ es.SurfaceModel.prototype.select = function( selection, isManual ) {
  *					(such as when replacing - delete, then insert)
  */
 es.SurfaceModel.prototype.transact = function( transaction ) {
-	this.bigStack = this.bigStack.slice( 0, this.bigStack.length - this.undoIndex + 1 );
+	this.bigStack = this.bigStack.slice( 0, this.bigStack.length - this.undoIndex );
 	this.undoIndex = 0;
 	this.smallStack.push( transaction );
 	this.doc.commit( transaction );
