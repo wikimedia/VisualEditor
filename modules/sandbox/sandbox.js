@@ -549,7 +549,7 @@ $(document).ready( function() {
 						}
 					}
 
-					var events = '';
+					var	events = '',
 						i = surfaceModel.bigStack.length,
 						j = 0,
 						end;
