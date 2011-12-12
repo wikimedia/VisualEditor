@@ -128,7 +128,101 @@ $(document).ready( function() {
 							}
 						]
 					}
-				}
+				},
+				{
+					'type': 'heading',
+					'attributes': { 'level': 2 },
+					'content': { 'text': 'In point of sale graphic interfaces' }
+				},
+				{
+					'type': 'paragraph',
+					'content': {
+						'text': 'The ViewTouch graphic touchscreen POS (point of sale) GUI developed by Gene Mosher on the Atari ST computer and first installed in restaurants in 1986 is an early example of an application specific GUI that manifests all of the characteristics of direct manipulation.'
+					}
+				},				
+				{
+					'type': 'paragraph',
+					'content': {
+						'text': 'Mosher\'s POS touchscreen GUI has been widely copied and is in universal use on virtually all modern point of sale displays. Even in its earliest form it contained such features as \'lighting up\' both selected \'buttons\' (i.e., widgets) and \'tab\' buttons which indicated the user\'s current position in the transaction as the user navigated among the application\'s pages.'
+					}
+				},				
+				{
+					'type': 'paragraph',
+					'content': {
+						'text': 'In 1995 the ViewTouch GUI was developed into an X Window System window manager, extending the usefulness of the direct manipulation interface to users equipped with no other equipment than networked displays relying on the X network display protocol. This application is a practical and useful example of the benefit of the direct manipulation interface. Users are freed from the requirement of making use of keyboards, mice and even local computers themselves while they are simultaneously empowered to work in collaborative fashion with each other in world wide virtual workgroups by merely interacting with the framework of graphical symbols on the networked touchscreen.'
+					}
+				},				
+				{
+					'type': 'heading',
+					'attributes': { 'level': 2 },
+					'content': { 'text': 'In computer graphics' }
+				},
+				{
+					'type': 'paragraph',
+					'content': {
+						'text': 'Because of the difficulty of visualizing and manipulating various aspects of computer graphics, including geometry creation and editing, animation, layout of objects and cameras, light placement, and other effects, direct manipulation is an extremely important part of 3D computer graphics. There are standard direct manipulation widgets as well as many unique widgets that are developed either as a better solution to an old problem or as a solution for a new and/or unique problem. The widgets attempt to allow the user to modify an object in any possible direction while also providing easy guides or constraints to allow the user to easily modify an object in the most common directions, while also attempting to be as intuitive as to the function of the widget as possible. The three most ubiquitous transformation widgets are mostly standardized and are:'
+					}
+				},				
+				{
+					'type': 'list',
+					'children': [
+						{
+							'type': 'listItem',
+							'attributes': {
+								'styles': ['bullet']
+							},
+							'children' : [
+								{
+									'type': 'paragraph',
+									'content': { 'text': 'the translation widget, which usually consists of three arrows aligned with the orthogonal axes centered on the object to be translated. Dragging the center of the widget translates the object directly underneath the mouse pointer in the plane parallel to the camera plane, while dragging any of the three arrows translates the object along the appropriate axis. The axes may be aligned with the world-space axes, the object-space axes, or some other space.' }
+								}
+							]
+						},
+						{
+							'type': 'listItem',
+							'attributes': {
+								'styles': ['bullet']
+							},
+							'children' : [
+								{
+									'type': 'paragraph',
+									'content': { 'text': 'the rotation widget, which usually consists of three circles aligned with the three orthogonal axes, and one circle aligned with the camera plane. Dragging any of the circles rotates the object around the appropriate axis, while dragging elsewhere will freely rotate the object (virtual trackball rotation).' }
+								}
+							]
+						},
+						{
+							'type': 'listItem',
+							'attributes': {
+								'styles': ['bullet']
+							},
+							'children' : [
+								{
+									'type': 'paragraph',
+									'content': { 'text': 'the scale widget, which usually consists of three short lines aligned with the orthogonal axes terminating in boxes, and one box in the center of the widget. Dragging any of the three axis-aligned boxes effects a non-uniform scale along solely that axis, while dragging the center box effects a uniform scale on all three axes at once.' }
+								}
+							]
+						}
+
+					]
+				},
+				{
+					'type': 'paragraph',
+					'content': {
+						'text': 'Depending on the specific common uses of an object, different kinds of widgets may be used. For example, a light in computer graphics is, like any other object, also defined by a transformation (translation and rotation), but it is sometimes positioned and directed simply with its endpoint positions because it may be more intuitive to define the position of the light source and then define the light\'s target, rather than rotating it around the coordinate axes in order to point it at a known position.'
+					}
+				},				
+				{
+					'type': 'paragraph',
+					'content': {
+						'text': 'Other widgets may be unique for a particular tool, such as edge controls to change the cone of a spotlight, points and handles to define the position and tangent vector for a spline control point, circles of variable size to define a blur filter width or paintbrush size, IK targets for hands and feet, or color wheels and swatches for quickly choosing colors. Complex widgets may even incorporate some techniques from scientific visualization to efficiently present relevant data (such as vector fields for particle effects or false color images to display vertex maps).'
+					}
+				},				
+				{
+					'type': 'paragraph',
+					'content': {
+						'text': 'Direct manipulation, as well as user interface design in general, for 3D computer graphics tasks, is still an active area of invention and innovation, as the process of generating CG images is generally not considered to be intuitive or easy in comparison to the difficulty of what the user wants to do, especially for complex tasks. The user interface for word processing, for example, is easy to learn for new users and is sufficient for most word processing tasks, so it is a mostly solved and standardized UI, while the user interfaces for 3D computer graphics are usually either difficult to learn and use and not sufficiently powerful for complex tasks, or sufficiently powerful but extremely difficult to learn and use, so direct manipulation and user interfaces will vary wildly from application to application.'
+					}
+				}				
 			]
 		},
 		'Headings and paragraphs': {
