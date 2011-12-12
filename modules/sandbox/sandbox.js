@@ -518,24 +518,17 @@ $(document).ready( function() {
 				'$': $( '#es-mode-history' ),
 				'$panel': $( '#es-panel-history' ),
 				'update': function() {
-					var events = '',
-						i = surfaceModel.history.length,
-						end = Math.max( 0, i - 25 ),
-						action,
-						ops,
-						data,
-						attr;
-					while ( --i >= end ) {
-						attr = i === surfaceModel.historyIndex ?
-							' class="es-panel-history-active"' : '';
-						action = surfaceModel.history[i];
-						if ( action instanceof es.Range ) {
-							events += '<div' + attr + '>sel(' + action.from + ', ' + action.to +
-								')</div>';
-						} else {
-							ops = action.getOperations().slice( 0 );
-							for ( var j = 0; j < ops.length; j++ ) {
-								data = ops[j].data || ops[j].length;
+					function oneStack( stack, active ) {
+						var	operations,
+							i,
+							j,
+							events = [],
+							data;
+						
+						for ( i = 0; i < stack.length; i++) {
+							operations = stack[i].getOperations().slice(0);
+							for ( j = 0; j < operations.length; j++ ) {
+								data = operations[j].data || operations[j].length;
 								if ( es.isArray( data ) ) {
 									data = data[0];
 									if ( es.isArray( data ) ) {
@@ -545,12 +538,37 @@ $(document).ready( function() {
 								if ( typeof data !== 'string' && typeof data !== 'number' ) {
 									data = '-';
 								}
-								ops[j] = ops[j].type.substr( 0, 3 ) + '(' + data + ')';
+								operations[j] = operations[j].type.substr( 0, 3 ) + '(' + data + ')';
 							}
-							events += '<div' + attr + '>' + ops.join( ', ' ) + '</div>';
+							events.push( '[' + operations.join( ', ' ) + ']' );
+						}
+						if ( active) {
+							return '<div class="es-panel-history-active">' + events.join( ', ' ) + '</div>';
+						} else {
+							return '<div>' + events.join( ', ' ) + '</div>';
 						}
 					}
+
+					var events = '';
+						i = surfaceModel.bigStack.length,
+						j = 0,
+						end;
+
+					if ( surfaceModel.smallStack.length > 0 ) {
+						events += oneStack( surfaceModel.smallStack );
+						end = Math.max( 0, i - 24 );
+					} else {
+						end = Math.max( 0, i - 25 );
+					}
+					
+					
+					while ( --i >= end ) {
+						j++;
+						events += oneStack( surfaceModel.bigStack[i].stack, surfaceModel.undoIndex === j);
+					}
+					
 					this.$panel.html( events );
+					return;
 				}
 			},
 			'help': {
