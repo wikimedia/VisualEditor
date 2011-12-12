@@ -19,8 +19,6 @@
 
 function TokenTransformer( callback ) {
 	this.cb = callback;	// Called with transformed token list when done
-	this.accum = new TokenAccumulator();
-	this.firstaccum = this.accum;
 	this.transformers = {
 		tag: {}, // for TAG, ENDTAG, SELFCLOSINGTAG, keyed on name
 		text: [],
@@ -29,10 +27,16 @@ function TokenTransformer( callback ) {
 		end: [], // eof
 		martian: [] // none of the above
 	};
-	this.outstanding = 1;	// Number of outstanding processing steps 
-							// (e.g., async template fetches/expansions)
+	this.reset();
 	return this;
 }
+
+TokenTransformer.prototype.reset = function () {
+	this.accum = new TokenAccumulator();
+	this.firstaccum = this.accum;
+	this.outstanding = 1;	// Number of outstanding processing steps 
+							// (e.g., async template fetches/expansions)
+};
 
 TokenTransformer.prototype.appendListener = function ( listener, type, name ) {
 	if ( type === 'tag' ) {
@@ -97,7 +101,7 @@ function TokenContext ( token, accum, transformer, lastToken ) {
  * @returns {TokenContext} Context with updated token and/or accum.
  */
 TokenTransformer.prototype._transformTagToken = function ( tokenCTX ) {
-	var ts = this.transformers.tag[token.name];
+	var ts = this.transformers.tag[tokenCTX.token.name];
 	if ( ts ) {
 		for (var i = 0, l = ts.length; i < l; i++ ) {
 			// Transform token with side effects
@@ -145,6 +149,7 @@ TokenTransformer.prototype._transformToken = function ( tokenCTX, ts ) {
  * */
 TokenTransformer.prototype.transformTokens = function ( tokens, accum ) {
 	if ( accum === undefined ) {
+		this.reset();
 		accum = this.accum;
 	} else {
 		// Prepare to replace the last token in the current accumulator.
@@ -199,13 +204,13 @@ TokenTransformer.prototype.finish = function ( ) {
 	if ( this.outstanding === 0 ) {
 		// Join the token accumulators back into a single token list
 		var a = this.firstaccum;
-		var accums = [a.accum];
+		var tokens = a.accum;
 		while ( a.next !== undefined ) {
 			a = a.next;
-			accums.concat(a.accum);
+			tokens.concat(a.accum);
 		}
 		// Call our callback with the flattened token list
-		this.cb(accums);
+		this.cb(tokens);
 	}
 };
 
@@ -237,3 +242,7 @@ TokenAccumulator.prototype.insertAccumulator = function ( ) {
 	this.next = new TokenAccumulator(this.next, tokens);
 	return this.next;
 };
+
+if (typeof module == "object") {
+	module.exports.TokenTransformer = TokenTransformer;
+}

@@ -5,27 +5,28 @@
  * Use along with a HTML5TreeBuilder and the DOMPostProcessor(s) for HTML
  * output.
  */
+
+var PEG = require('pegjs');
+
 function PegTokenizer(env) {
 	this.env = env || {};
 }
 
 PegTokenizer.src = false;
 
-PegTokenizer.prototype.tokenize = function(text, callback) {
-	this.initSource(function() {
-		var out, err;
-		try {
-			if ( !this.parser ) {
-				this.parser = PEG.buildParser(PegTokenizer.src);
-			}
-			out = this.parser.parse(text);
-		} catch (e) {
-			err = e;
-			console.trace();
-		} finally {
-			callback(out, err);
-		}
-	});
+PegTokenizer.prototype.tokenize = function( text ) {
+	var out, err;
+	if ( !this.parser ) {
+		this.parser = PEG.buildParser(PegTokenizer.src);
+	}
+	try {
+		out = this.parser.parse(text);
+	} catch (e) {
+		err = e;
+		console.trace();
+	} finally {
+		return {tokens: out, err: err};
+	}
 }
 
 /**
