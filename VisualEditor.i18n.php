@@ -6,6 +6,7 @@ $messages = array();
  */
 $messages['en'] = array(
 	'visualeditor' => 'VisualEditor',
+	'visualeditorsandbox' => 'Visual editor sandbox',
 	'visualeditor-desc' => 'Visual editor for MediaWiki',
 	'visualeditor-sandbox-title' => 'Visual editor sandbox',
 	'visualeditor-tooltip-wikitext' => 'Toggle wikitext view',
