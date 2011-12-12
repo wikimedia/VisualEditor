@@ -552,6 +552,11 @@ $(document).ready( function() {
 					}
 					this.$panel.html( events );
 				}
+			},
+			'help': {
+				'$': $( '#es-mode-help' ),
+				'$panel': $( '#es-panel-help' ),
+				'update': function() {}
 			}
 		};
 	$.each( modes, function( name, mode ) {

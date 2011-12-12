@@ -170,6 +170,10 @@
 	background-image: url(../es/images/history.png);
 }
 
+#es-mode-help:before {
+	background-image: url(../es/images/help.png);
+}
+
 #es-panel-history div {
 	border-bottom: solid 1px #dddddd;
 	padding: 0.5em 0;
@@ -202,4 +206,48 @@
 	margin: 0 0.75em 0 0;
 	padding: 0;
 	display: inline-block;
+}
+
+.es-help-title {
+	font-size: 1.5em;
+}
+
+.es-help-shortcuts-title {
+	margin: 1em 0 0.5em 0;
+	padding: 0;
+	font-size: 1.25em;
+}
+
+.es-help-shortcut {
+	margin-bottom: 1em;
+	font-size: 0.8em;
+}
+
+.es-help-keys {
+	display: inline-block;
+	margin-right: 0.5em;
+}
+
+.es-help-key {
+	display: inline-block;
+	padding: 0.33em 0.5em;
+	min-width: 1em;
+	text-align: center;
+	cursor: default;
+	border: solid 1px #333333;
+	border-top-color: #666666;
+	border-bottom-color: #000000;
+	background-color: #333333;
+	color: #ffffff;
+	-webkit-border-radius: 0.25em;
+	-moz-border-radius: 0.25em;
+	-o-border-radius: 0.25em;
+	border-radius: 0.25em;
+	-webkit-box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.5);
+	box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.5);
+}
+
+.es-help-key-or {
+	color: #999999;
 }

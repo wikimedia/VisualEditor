@@ -14,6 +14,7 @@ $messages['en'] = array(
 	'visualeditor-tooltip-html' => 'Toggle HTML view',
 	'visualeditor-tooltip-render' => 'Toggle preview',	
 	'visualeditor-tooltip-history' => 'Toggle transaction history view',
+	'visualeditor-tooltip-help' => 'Toggle help view',
 );
 
 /** Message documentation
