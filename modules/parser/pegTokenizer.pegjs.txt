@@ -183,162 +183,6 @@
         return out;
     };
 
-    /*
-     * Italic/Bold handling.
-     *
-     * - list of tokens
-     *   - NEWLINE
-     *   - ticks (2+) -> list with link in line token list?
-     *   - process on newline
-     *   - need access to text nodes before/after for conversion back to text
-     */
-    var doQuotes = function ( tokens ) {
-
-        var italics = [],
-            bolds = [],
-            out = [],
-            inserted = 0;
-
-        var convertBold = function ( i ) {
-            var index = bolds[i];
-            var txt = out[index - 1];
-            txt.value += "'";
-            if ( i > 0 ) {
-                bolds = bolds.slice(0, i)
-                    .concat(bolds.slice(i + 1, bolds.length - i - 1));
-            } else {
-                bolds.shift();
-            }
-
-            italics.push(index);
-            italics.sort(function(a,b) { return a - b });
-        };
-
-        // convert italics/bolds into tags
-        var quotesToTags = function ( offsets, name ) {
-            var toggle = true;
-            for (var j = 0; j < offsets.length; j++) {
-                var t = out[offsets[j]];
-                if(toggle) {
-                    t.type = 'TAG';
-                } else {
-                    t.type = 'ENDTAG';
-                }
-                t.name = name;
-                delete t.value;
-                toggle = !toggle;
-            }
-            if (!toggle) {
-                // add end tag
-                out.push({type: 'ENDTAG', name: name});
-                inserted++;
-            }
-            toggle = true;
-        };
-
-        for (var i = 0, length = tokens.length; i < length; i++) {
-            var token = tokens[i];
-            switch (token.type) {
-                case 'QUOTE':
-                    // depending on length, add starting 's to preceding text node
-                    // (if any)
-                    // add token index to italic/bold lists
-                    // add placeholder for token
-                    var qlen = token.value.length;
-                    switch (qlen) {
-                        case 2: italics.push(i + inserted); out.push(token); break;
-                        case 3: bolds.push(i + inserted); out.push(token); break;
-                        case 4: 
-                                token.value = "'''";
-                                if (i > 0 && tokens[i-1].type === 'TEXT') {
-                                    tokens[i-1].value += "'";
-                                } else {
-                                    out.push({type: 'TEXT', value: "'"});
-                                    inserted++;
-                                }
-                                bolds.push(i + inserted); 
-                                out.push(token);
-                                break;
-                        case 5:
-                                // order does not matter here, will be fixed
-                                // by HTML parser backend
-                                italics.push(i + inserted); 
-                                out.push({type: 'QUOTE', value: "''"}); 
-                                inserted++;
-                                bolds.push(i + inserted);
-                                out.push({type: 'QUOTE', value: "'''"}); 
-                                break;
-                        default: // longer than 5, only use the last 5 ticks
-                                token.value = "'''''";
-                                var newvalue = token.value.substr(0, qlen - 5 );
-                                if (i > 0 && tokens[i-1].type === 'TEXT') {
-                                    tokens[i-1].value += newvalue;
-                                } else {
-                                    out.push({type: 'TEXT', value: newvalue});
-                                    inserted++;
-                                }
-                                italics.push(i + inserted); 
-                                out.push({type: 'QUOTE', value: "''"}); 
-                                inserted++;
-                                bolds.push(i + inserted);
-                                out.push({type: 'QUOTE', value: "'''"}); 
-                                break;
-                    }
-                    break;
-
-                case 'NEWLINE':
-                    // balance out tokens, convert placeholders into tags
-                    if (italics.length % 2 && bolds.length % 2) {
-                        dp("balancing!");
-                        var firstsingleletterword = -1,
-                            firstmultiletterword = -1,
-                            firstspace = -1;
-                        for (var j = 0; j < bolds.length; j++) {
-                            var ticki = bolds[j];
-                            if (ticki > 0 && out[ticki - 1].type === 'TEXT') {
-                                var txt = out[ticki - 1],
-                                    lastchar = txt.value[txt.value.length - 1],
-                                             secondtolastchar = txt.value[txt.value.length - 2];
-                                dp('txt: ' + pp(txt));
-                                if (lastchar === ' ' && firstspace === -1) {
-                                    firstspace = j;
-                                } else if (lastchar !== ' ') {
-                                    if ( secondtolastchar === ' ' && 
-                                            firstsingleletterword === -1) 
-                                    {
-                                        firstsingleletterword = j;
-                                    } else if ( firstmultiletterword == -1) {
-                                        firstmultiletterword = j;
-                                    }
-                                }
-                            }
-                        }
-
-
-                        // now see if we can convert a bold to an italic and
-                        // an apostrophe
-                        if (firstsingleletterword > -1) {
-                            convertBold(firstsingleletterword);
-                        } else if (firstmultiletterword > -1) {
-                            convertBold(firstmultiletterword);
-                        } else if (firstspace > -1) {
-                            convertBold(firstspace);
-                        }
-                    }
-
-                    quotesToTags(bolds, 'b');
-                    quotesToTags(italics, 'i');
-                    bolds = [];
-                    italics = [];
-                    out.push(token);
-                    break;
-                default:
-                    out.push(token);
-            }
-        }
-        return out;
-    };
-
 
     /* End static utilities */
 
@@ -404,8 +248,7 @@
 
 start
   = e:toplevelblock* newline* { 
-	  // XXX: move doQuotes out to general token stream transformer
-      return doQuotes(flatten(e));
+      return flatten(e);
   }
 
 
@@ -499,7 +342,14 @@ optionalSpaceToken
 
 // Start of line
 sol = (newline / & { return pos === 0; } { return true; }) 
-      cn:(c:comment n:newline? { return [c, {type: 'TEXT', value: n}] })* {
+      cn:(c:comment n:newline? { 
+                if ( n !== '' ) {
+                    return [c, {type: 'TEXT', value: n}];
+                } else {
+                    return [c];
+                }
+      }
+      )* {
           return [{type: 'NEWLINE'}].concat(cn);
       }
 
@@ -548,7 +398,7 @@ block
 block_lines
   = s:sol 
     // eat an empty line before the block
-    s2:(ss:space* so:sol { return [{type: 'TEXT', value: ss.join('')}].concat(so) })? 
+    s2:(os:optionalSpaceToken so:sol { return os.concat(so) })? 
     bl:block_line { 
         var s2_ = (s2 !== '') ? s2 : [];
         return s.concat(s2_, bl); 
@@ -605,7 +455,9 @@ inline
       for (var i = 0, l = c.length; i < l; i++) {
           var ci = c[i];
           if (typeof ci == 'string') {
-              text.push(ci);
+              if(ci !== '') {
+                text.push(ci);
+              }
           } else {
               if (text.length) {
                   out.push({ type: "TEXT", value: text.join('') });
@@ -630,7 +482,9 @@ inlineline
       for (var i = 0; i < c.length; i++) {
           var ci = c[i]
           if (typeof ci == 'string') {
-              text.push(ci);
+              if(ci !== '') {
+                text.push(ci);
+              }
           } else {
               if (text.length) {
                   out.push({type: 'TEXT', value: text.join('')});
@@ -900,7 +754,8 @@ link_end = "]]"
  * all not context free. */
 quote = "''" x:"'"* {
 	return { 
-		type : 'QUOTE',
+        type: 'TAG',
+		name : 'QUOTE',
 		value: "''" + x.join('')
 	}
 }

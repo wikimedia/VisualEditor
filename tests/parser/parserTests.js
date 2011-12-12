@@ -63,6 +63,8 @@ _import(pj('parser', 'ext.cite.taghook.ref.js'), ['MWRefTagHook']);
 _import(pj('parser', 'mediawiki.HTML5TreeBuilder.node.js'), ['FauxHTML5']);
 _import(pj('parser', 'mediawiki.DOMPostProcessor.js'), ['DOMPostProcessor']);
 
+_import(pj('parser', 'ext.core.QuoteTransformer.js'), ['QuoteTransformer']);
+
 // WikiDom and serializers
 _require(pj('es', 'es.js'));
 _require(pj('es', 'es.Html.js'));
@@ -178,13 +180,17 @@ function ParserTests () {
 	this.postProcessor = new DOMPostProcessor();
 
 	var pt = this;
+
+	// Set up the TokenTransformer with a callback for the remaining
+	// processing.
 	this.tokenTransformer = new TokenTransformer ( function ( tokens ) {
+		
 		//console.log("TOKENS: " + JSON.stringify(tokens, null, 2));
+		
 		// Create a new tree builder, which also creates a new document.
 		var treeBuilder = new FauxHTML5.TreeBuilder();
 
-		// Build a DOM tree from tokens using the HTML tree
-		// builder/parser.
+		// Build a DOM tree from tokens using the HTML tree builder/parser.
 		pt.buildTree( tokens, treeBuilder );
 
 		// Perform post-processing on DOM.
@@ -193,8 +199,13 @@ function ParserTests () {
 		// And serialize the result.
 		var out = treeBuilder.body().innerHTML;
 
+		// Finally, check the result vs. the expected result.
 		pt.checkResult( pt.currentItem, out );
 	});
+
+	// Add token transformations..
+	var qt = new QuoteTransformer();
+	qt.register(this.tokenTransformer);
 
 	// Test statistics
 	this.passedTests = 0;
@@ -610,9 +621,8 @@ ParserTests.prototype.main = function () {
 	this.reportSummary();
 };
 
-var pt = new ParserTests();
-console.log(pt.processArticle);
-pt.main();
+// Construct the ParserTests object and run the parser tests
+new ParserTests().main();
 
 
 })();

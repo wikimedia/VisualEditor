@@ -32,7 +32,7 @@ function TokenTransformer( callback ) {
 }
 
 TokenTransformer.prototype.reset = function () {
-	this.accum = new TokenAccumulator();
+	this.accum = new TokenAccumulator(null);
 	this.firstaccum = this.accum;
 	this.outstanding = 1;	// Number of outstanding processing steps 
 							// (e.g., async template fetches/expansions)
@@ -147,18 +147,21 @@ TokenTransformer.prototype._transformToken = function ( tokenCTX, ts ) {
  * @returns nothing: Calls back registered callback if there are no more
  *					outstanding asynchronous expansions.
  * */
-TokenTransformer.prototype.transformTokens = function ( tokens, accum ) {
+TokenTransformer.prototype.transformTokens = function ( tokens, accum, delta ) {
 	if ( accum === undefined ) {
 		this.reset();
 		accum = this.accum;
-	} else {
-		// Prepare to replace the last token in the current accumulator.
-		accum.pop();
 	}
+
+	//console.log('transformTokens: ' + JSON.stringify(tokens) + JSON.stringify(accum.accum) );
+
 	var tokenCTX = new TokenContext(undefined, accum, this, undefined);
-	for ( var i = 0, l = tokens.length; i < l; i++ ) {
-		tokenCTX.lastToken = tokenCTX.token;
+	var origLen = tokens.length;
+	for ( var i = 0; i < tokens.length; i++ ) {
+		tokenCTX.lastToken = tokenCTX.token; // XXX: Fix for re-entrant case!
 		tokenCTX.token = tokens[i];
+		tokenCTX.pos = i;
+		tokenCTX.accum = accum;
 		var ts;
 		switch(tokenCTX.token.type) {
 			case 'TAG':
@@ -186,52 +189,67 @@ TokenTransformer.prototype.transformTokens = function ( tokens, accum ) {
 			// Splice in the returned tokens (while replacing the original
 			// token), and process them next.
 			[].splice.apply(tokens, [i, 1].concat(tokenCTX.token));
-			l += res.token.length - 1;
+			//l += tokenCTX.token.length - 1;
 			i--; // continue at first inserted token
 		} else if (tokenCTX.token) {
-			// push to accumulator (not necessarily the last one)
+			// push to accumulator
 			accum.push(tokenCTX.token);
 		}
 		// Update current accum, in case a new one was spliced in by a
 		// transformation starting asynch work.
 		accum = tokenCTX.accum;
 	}
-	this.finish();
+
+	if ( delta === undefined ) {
+		delta = 1;
+	}
+
+	this.finish( delta );
 };
 
-TokenTransformer.prototype.finish = function ( ) {
-	this.outstanding--;
+TokenTransformer.prototype.finish = function ( delta ) {
+	this.outstanding -= delta;
 	if ( this.outstanding === 0 ) {
 		// Join the token accumulators back into a single token list
 		var a = this.firstaccum;
 		var tokens = a.accum;
-		while ( a.next !== undefined ) {
+		while ( a.next !== null ) {
 			a = a.next;
-			tokens.concat(a.accum);
+			tokens = tokens.concat(a.accum);
 		}
+		//console.log('TOKENS: ' + JSON.stringify(tokens, null, 2));
 		// Call our callback with the flattened token list
 		this.cb(tokens);
 	}
 };
 
 /* Start a new accumulator for asynchronous work. */
-TokenTransformer.prototype.newAccumulator = function ( ) {
-	this.outstanding++;
-	return this.accum.insertAccumulator( );
+TokenTransformer.prototype.newAccumulator = function ( accum, count ) {
+	if ( count !== undefined ) {
+		this.outstanding += count;
+	} else {
+		this.outstanding++;
+	}
+	if ( accum === undefined ) {
+		accum = this.accum;
+	}
+	return accum.insertAccumulator( );
 };
 
 // Token accumulators in a linked list. Using a linked list simplifies async
 // callbacks for template expansions.
 function TokenAccumulator ( next, tokens ) {
 	this.next = next;
-	if ( tokens )
+	if ( tokens ) {
 		this.accum = tokens;
-	else
+	} else {
 		this.accum = [];
+	}
+	return this;
 }
 
 TokenAccumulator.prototype.push = function ( token ) {
-	this.accum.push(token);
+	return this.accum.push(token);
 };
 
 TokenAccumulator.prototype.pop = function ( ) {
@@ -239,7 +257,7 @@ TokenAccumulator.prototype.pop = function ( ) {
 };
 
 TokenAccumulator.prototype.insertAccumulator = function ( ) {
-	this.next = new TokenAccumulator(this.next, tokens);
+	this.next = new TokenAccumulator(this.next);
 	return this.next;
 };
 
