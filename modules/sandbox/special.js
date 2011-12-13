@@ -3,18 +3,11 @@
 	$(document).ready( setupSpecial );
 
 	function setupSpecial() {
-	
-		var api = new mw.Api( {
-			url: mw.config.get( 'wgServer' ) + mw.config.get( 'wgScriptPath' ) + '/api.php'
+
+		var feedback = new mw.Feedback( {
+			'title': new mw.Title( 'Visual editor/Feedback' ),
+			'dialogTitleMessageKey': 'visualeditor-feedback-dialog-title' 
 		} );
-
-		var title = new mw.Title( 'Visual editor/Feedback' );
-
-		var feedback = new mw.Feedback( 
-			api, 
-			title, 
-			'visualeditor-feedback-dialog-title' 
-		);
 
 		$feedbackLink = $( '<a></a>' )
 			.attr( { 'href': '#' } )
