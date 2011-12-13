@@ -1,16 +1,20 @@
 /**
- * The ref / references tags don't do any fancy HTML, so we can actually
- * implement this in terms of parse tree manipulations, skipping the need
- * for renderer-specific plugins as well.
+ * Simple token transform version of the Cite extension.
  *
- * Pretty neat huh!
+ * @class
+ * @constructor
  */
-
 function Cite () {
 	this.refGroups = {};
 	this.refTokens = [];
 }
 
+/**
+ * Register with dispatcher.
+ *
+ * @method
+ * @param {Object} TokenTransformDispatcher to register to
+ */
 Cite.prototype.register = function ( dispatcher ) {
 	// Register for ref and references tag tokens
 	var self = this;
@@ -27,9 +31,17 @@ Cite.prototype.register = function ( dispatcher ) {
 };
 
 
-// Convert list of key-value pairs to object, with first entry for a key
-// winning.
-// XXX: Move to general util module
+/**
+ * Convert list of key-value pairs to object, with first entry for a
+ * key.
+ *
+ * XXX: Move to general utils
+ *
+ * @static
+ * @method
+ * @param {Array} List of [key, value] pairs
+ * @returns {Object} Object with key/values set, first entry wins.
+ */
 Cite.prototype.attribsToObject = function ( attribs ) {
 	if ( attribs === undefined ) {
 		return {};
@@ -44,7 +56,13 @@ Cite.prototype.attribsToObject = function ( attribs ) {
 	return obj;
 };
 
-
+/**
+ * Handle ref tag tokens.
+ *
+ * @method
+ * @param {Object} TokenContext
+ * @returns {Object} TokenContext
+ */
 Cite.prototype.onRef = function ( tokenCTX ) {
 
 	var refGroups = this.refGroups;
@@ -131,19 +149,21 @@ Cite.prototype.onRef = function ( tokenCTX ) {
 	{
 		type: 'TAG', 
 		name: 'span',
-		attribs:	[['id', linkback],
-					['class', 'reference'],
-					// ignore element when serializing back to wikitext
-					['data-nosource', '']]
+		attribs: [
+			['id', linkback],
+			['class', 'reference'],
+			// ignore element when serializing back to wikitext
+			['data-nosource', '']
+		]
 	},
 	{
 		type: 'TAG', 
 		name: 'a', 
-		attribs:
-			[['data-type', 'hashlink'],
+		attribs: [
+			['data-type', 'hashlink'],
 			['href', '#' + ref.target]
 			// XXX: Add round-trip info here?
-			]
+		]
 	},
 	{
 		type: 'TEXT',
@@ -161,6 +181,13 @@ Cite.prototype.onRef = function ( tokenCTX ) {
 	return tokenCTX;
 };
 
+/**
+ * Handle references tag tokens.
+ *
+ * @method
+ * @param {Object} TokenContext
+ * @returns {Object} TokenContext
+ */
 Cite.prototype.onReferences = function ( tokenCTX ) {
 
 	var refGroups = this.refGroups;
@@ -174,36 +201,41 @@ Cite.prototype.onReferences = function ( tokenCTX ) {
 					attribs: [['id', ref.target]]
 			}];
 		if (ref.linkbacks.length == 1) {
-			out = out.concat([{
-				type: 'TAG',
-				name: 'a',
-				attribs: 
-					[['data-type', 'hashlink'],
-					['href', '#' + ref.linkbacks[0]]
-					]
-			},
-			{type: 'TEXT', value: arrow},
-			{type: 'ENDTAG', name: 'a'}
-			],
-			ref.tokens // The original content tokens
+			out = out.concat([
+					{
+						type: 'TAG',
+						name: 'a',
+						attribs: [
+							['data-type', 'hashlink'],
+							['href', '#' + ref.linkbacks[0]]
+						]
+					},
+					{type: 'TEXT', value: arrow},
+					{type: 'ENDTAG', name: 'a'}
+				],
+				ref.tokens // The original content tokens
 			);
 		} else {
 			out.content.push({type: 'TEXT', value: arrow});
 			$.each(ref.linkbacks, function(i, linkback) {
-				out = out.concat([{
-					type: 'TAG',
-					name: 'a',
-					attribs: 
-						[['data-type', 'hashlink'],
-						['href', '#' + ref.linkbacks[0]]
-						]
-				},
-				// XXX: make formatNum available!
-				//{type: 'TEXT', value: env.formatNum( ref.groupIndex + '.' + i)},
-				{type: 'TEXT', value: ref.groupIndex + '.' + i},
-				{type: 'ENDTAG', name: 'a'}
-				],
-				ref.tokens // The original content tokens
+				out = out.concat([
+						{
+							type: 'TAG',
+							name: 'a',
+							attribs: [
+								['data-type', 'hashlink'],
+								['href', '#' + ref.linkbacks[0]]
+							]
+						},
+						// XXX: make formatNum available!
+						//{
+						//	type: 'TEXT', 
+						//	value: env.formatNum( ref.groupIndex + '.' + i)
+						//},
+						{type: 'TEXT', value: ref.groupIndex + '.' + i},
+						{type: 'ENDTAG', name: 'a'}
+					],
+					ref.tokens // The original content tokens
 				);
 			});
 		}
@@ -220,22 +252,35 @@ Cite.prototype.onReferences = function ( tokenCTX ) {
 	if (options.group in refGroups) {
 		var group = refGroups[options.group];
 		var listItems = $.map(group.refs, renderLine);
-		tokenCTX.token = [{
-			type: 'TAG',
-			name: 'ol',
-			attribs: [['class', 'references']]
-		}].concat(listItems, {type: 'ENDTAG', name: 'ol'});
+		tokenCTX.token = [
+			{
+				type: 'TAG',
+				name: 'ol',
+				attribs: [
+					['class', 'references']
+				]
+			}
+		].concat( listItems, { type: 'ENDTAG', name: 'ol' } );
 	} else {
 		tokenCTX.token = {
 			type: 'SELFCLOSINGTAG',
 			name: 'placeholder',
-			attribs: [['data-origNode', JSON.stringify(token)]]
+			attribs: [
+				['data-origNode', JSON.stringify(token)]
+			]
 		};
 	}
 
 	return tokenCTX;
 };
 
+/**
+ * Handle end token.
+ *
+ * @method
+ * @param {Object} TokenContext
+ * @returns {Object} TokenContext
+ */
 Cite.prototype.onEnd = function ( tokenCTX ) {
 	// XXX: Emit error messages if references tag was missing!
 	// Clean up
