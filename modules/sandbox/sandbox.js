@@ -635,17 +635,23 @@ $(document).ready( function() {
 				'$': $( '#es-mode-history' ),
 				'$panel': $( '#es-panel-history' ),
 				'update': function() {
-					function oneStack( stack, active ) {
-						var	operations,
-							i,
-							j,
-							events = [],
-							data;
+					var	history = surfaceModel.getHistory(),
+						i = history.length,
+						end = Math.max( 0, i - 25 ),
+						j,
+						k,
+						ops,
+						events = '',
+						z = 0,
+						operations;
 						
-						for ( i = 0; i < stack.length; i++) {
-							operations = stack[i].getOperations().slice(0);
-							for ( j = 0; j < operations.length; j++ ) {
-								data = operations[j].data || operations[j].length;
+					while ( --i >= end ) {
+						z++;
+						operations = [];
+						for ( j = 0; j < history[i].stack.length; j++) {
+							ops = history[i].stack[j].getOperations().slice(0);
+							for ( k = 0; k < ops.length; k++ ) {
+								data = ops[k].data || ops[k].length;
 								if ( es.isArray( data ) ) {
 									data = data[0];
 									if ( es.isArray( data ) ) {
@@ -655,37 +661,14 @@ $(document).ready( function() {
 								if ( typeof data !== 'string' && typeof data !== 'number' ) {
 									data = '-';
 								}
-								operations[j] = operations[j].type.substr( 0, 3 ) + '(' + data + ')';
+								ops[k] = ops[k].type.substr( 0, 3 ) + '(' + data + ')';
 							}
-							events.push( '[' + operations.join( ', ' ) + ']' );
+							operations.push('[' + ops.join( ', ' ) + ']');
 						}
-						if ( active) {
-							return '<div class="es-panel-history-active">' + events.join( ', ' ) + '</div>';
-						} else {
-							return '<div>' + events.join( ', ' ) + '</div>';
-						}
-					}
-
-					var	events = '',
-						i = surfaceModel.bigStack.length,
-						j = 0,
-						end;
-
-					if ( surfaceModel.smallStack.length > 0 ) {
-						events += oneStack( surfaceModel.smallStack );
-						end = Math.max( 0, i - 24 );
-					} else {
-						end = Math.max( 0, i - 25 );
-					}
-					
-					
-					while ( --i >= end ) {
-						j++;
-						events += oneStack( surfaceModel.bigStack[i].stack, surfaceModel.undoIndex === j);
+						events += '<div' + (z === surfaceModel.undoIndex ? ' class="es-panel-history-active"' : '') + '>' + operations.join(', ') + '</div>';
 					}
 					
 					this.$panel.html( events );
-					return;
 				}
 			},
 			'help': {

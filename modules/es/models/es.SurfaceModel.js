@@ -33,6 +33,14 @@ es.SurfaceModel.prototype.purgeHistory = function() {
 	this.undoIndex = 0;	
 };
 
+es.SurfaceModel.prototype.getHistory = function() {
+	if ( this.smallStack.length > 0 ) {
+		return this.bigStack.slice(0).concat([{stack:this.smallStack.slice(0)}]); 
+	} else {
+		return this.bigStack.slice(0);
+	}
+};
+
 /**
  * Gets the document model of the surface.
  * 
