@@ -26,15 +26,9 @@ QuoteTransformer.prototype.register = function ( tokenTransformer ) {
 	}, 'tag', 'QUOTE' );
 };
 
-// Extract a copy of the token context with the info we need
-// XXX: Should probably use a generic shallow object copy
+// Make a copy of the token context
 QuoteTransformer.prototype.ctx = function ( tokenCTX ) {
-	return {  
-		accum: tokenCTX.accum,
-		token: tokenCTX.token,
-		lastToken: tokenCTX.lastToken,
-		pos: tokenCTX.pos
-	};
+	return $.extend({}, tokenCTX);
 };
 
 // Handle QUOTE tags. These are collected in italic/bold lists depending on
