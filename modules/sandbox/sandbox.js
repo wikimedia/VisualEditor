@@ -1,6 +1,6 @@
 $(document).ready( function() {
 	var wikidoms = {
-		'Direct manipulation interface': {
+		'Wikipedia article': {
 			'type': 'document',
 			'children': [
 				{
@@ -225,7 +225,7 @@ $(document).ready( function() {
 				}				
 			]
 		},
-		'Headings and paragraphs': {
+		'Formatting': {
 			'type': 'document',
 			'children': [
 				{
@@ -351,12 +351,7 @@ $(document).ready( function() {
 				{
 				'type': 'pre',
 				'content': { 'text': 'A lot of text goes here... and at some point it wraps.. A lot of text goes here... and at some point it wraps.. A lot of text goes here... and at some point it wraps.. A lot of text goes here... and at some point it wraps.. A lot of text goes here... and at some point it wraps..' }
-				}
-			]
-		},
-		'Lists': {
-			'type': 'document',
-			'children': [
+				},
 				{
 					'type': 'heading',
 					'attributes': { 'level': 1 },
@@ -474,6 +469,7 @@ $(document).ready( function() {
 				}
 			]
 		},
+		/*
 		'Tables': {
 			'type': 'document',
 			'children': [
@@ -555,7 +551,7 @@ $(document).ready( function() {
 					]
 				}
 			]
-		},
+		},*/
 		'New document': {
 			'type': 'document',
 			'children': [
@@ -566,9 +562,7 @@ $(document).ready( function() {
 			]
 		}
 	};
-	window.documentModel = es.DocumentModel.newFromPlainObject(
-		wikidoms['Direct manipulation interface']
-	);
+	window.documentModel = es.DocumentModel.newFromPlainObject( wikidoms['Wikipedia article'] );
 	window.surfaceModel = new es.SurfaceModel( window.documentModel );
 	window.surfaceView = new es.SurfaceView( $( '#es-editor' ), window.surfaceModel );
 	window.toolbarView = new es.ToolbarView( $( '#es-toolbar' ), window.surfaceView );
