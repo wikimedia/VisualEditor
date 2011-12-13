@@ -29,7 +29,7 @@ $wgExtensionCredits['other'][] = array(
 		'Brion Vibber',
 	),
 	'version' => '0.1.0',
-	'url' => 'http://www.mediawiki.org/wiki/Extension:VisualEditor',
+	'url' => 'https://www.mediawiki.org/wiki/Extension:VisualEditor',
 	'descriptionmsg' => 'visualeditor-desc',
 );
 $dir = dirname( __FILE__ ) . '/';
