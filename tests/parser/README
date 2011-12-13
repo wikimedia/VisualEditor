@@ -1,7 +1,7 @@
 Work in progress. :)
 
 Please see https://www.mediawiki.org/wiki/Future/Parser_development for some
-information on how to get started with these tests and the curren parser
+information on how to get started with these tests and the current parser
 architecture.
 
 Needed npm modules:
