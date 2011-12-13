@@ -132,29 +132,34 @@ es.SurfaceView = function( $container, model ) {
 				}, 0 );
 			}
 		} );
-	$window.resize( function() {
-		// Re-render when resizing horizontally
-		// TODO: Instead of re-rendering on every single 'resize' event wait till user is done with
-		// resizing - can be implemented with setTimeout
-		_this.hideCursor();
-		_this.dimensions.height = $window.height();
-		// XXX: This is a dirty hack!
-		_this.dimensions.toolbarHeight = $( '#es-toolbar' ).height();
-		var width = _this.$.width();
-		if ( _this.dimensions.width !== width ) {
-			_this.dimensions.width = width;
-			_this.documentView.renderContent();
-			_this.emitUpdate( 25 );
-		}
-	} );
-	$window.scroll( function() {
-		_this.dimensions.scrollTop = $window.scrollTop();
-		if ( _this.contextView ) {
-			if ( _this.currentSelection.getLength() && !_this.mouse.selectingMode ) {
-				_this.contextView.set();
-			} else {
-				_this.contextView.clear();
+	$window.bind( {
+		'resize': function() {
+			// Re-render when resizing horizontally
+			// TODO: Instead of re-rendering on every single 'resize' event wait till user is done
+			// with resizing - can be implemented with setTimeout
+			_this.hideCursor();
+			_this.dimensions.height = $window.height();
+			// XXX: This is a dirty hack!
+			_this.dimensions.toolbarHeight = $( '#es-toolbar' ).height();
+			var width = _this.$.width();
+			if ( _this.dimensions.width !== width ) {
+				_this.dimensions.width = width;
+				_this.documentView.renderContent();
+				_this.emitUpdate( 25 );
 			}
+		},
+		'scroll': function() {
+			_this.dimensions.scrollTop = $window.scrollTop();
+			if ( _this.contextView ) {
+				if ( _this.currentSelection.getLength() && !_this.mouse.selectingMode ) {
+					_this.contextView.set();
+				} else {
+					_this.contextView.clear();
+				}
+			}
+		},
+		'blur': function() {
+			_this.keyboard.keys.shift = false;
 		}
 	} );
 
