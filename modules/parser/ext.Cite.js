@@ -33,7 +33,7 @@ Cite.prototype.register = function ( dispatcher ) {
 
 /**
  * Convert list of key-value pairs to object, with first entry for a
- * key.
+ * key winning.
  *
  * XXX: Move to general utils
  *
