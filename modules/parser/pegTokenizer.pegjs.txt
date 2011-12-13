@@ -755,7 +755,7 @@ link_end = "]]"
 quote = "''" x:"'"* {
 	return { 
         type: 'TAG',
-		name : 'QUOTE',
+		name : 'mw-quote', // Will be consumed in token transforms
 		value: "''" + x.join('')
 	}
 }

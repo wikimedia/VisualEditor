@@ -65,6 +65,8 @@ _import(pj('parser', 'mediawiki.DOMPostProcessor.js'), ['DOMPostProcessor']);
 
 _import(pj('parser', 'ext.core.QuoteTransformer.js'), ['QuoteTransformer']);
 
+_import(pj('parser', 'ext.Cite.js'), ['Cite']);
+
 // WikiDom and serializers
 //_require(pj('es', 'es.js'));
 //_require(pj('es', 'es.Html.js'));
@@ -206,6 +208,9 @@ function ParserTests () {
 	// Add token transformations..
 	var qt = new QuoteTransformer();
 	qt.register(this.tokenDispatcher);
+
+	var citeExtension = new Cite();
+	citeExtension.register(this.tokenDispatcher);
 
 	// Test statistics
 	this.passedTests = 0;
@@ -437,6 +442,9 @@ ParserTests.prototype.processTest = function (item) {
 		// Transform tokens using the TokenTransformDispatcher. When done, the
 		// TokenTransformDispatcher calls buildTree() and checkResult() with the
 		// transformed tokens.
+
+		// Append the end
+		res.tokens.push({type: 'END'});
 		this.tokenDispatcher.transformTokens( res.tokens );
 	}
 };
@@ -519,8 +527,6 @@ ParserTests.prototype.buildTree = function ( tokens, treeBuilder ) {
 	for (var i = 0, length = tokens.length; i < length; i++) {
 		treeBuilder.processToken(tokens[i]);
 	}
-	// And signal the end
-	treeBuilder.processToken({type: 'END'});
 };
 
 /**

@@ -25,8 +25,8 @@ function TokenTransformDispatcher( callback ) {
 		newline: [],
 		comment: [],
 		end: [], // eof
-		martian: [] // none of the above
-		// XXX: Add an any registration that always matches?
+		martian: [], // none of the above
+		any: []	// all tokens, before more specific handlers are run
 	};
 	this.reset();
 	return this;
@@ -41,6 +41,7 @@ TokenTransformDispatcher.prototype.reset = function () {
 
 TokenTransformDispatcher.prototype.appendListener = function ( listener, type, name ) {
 	if ( type === 'tag' ) {
+		name = name.toLowerCase();
 		if ( $.isArray(this.transformers.tag.name) ) {
 			this.transformers.tag[name].push(listener);
 		} else {
@@ -53,6 +54,7 @@ TokenTransformDispatcher.prototype.appendListener = function ( listener, type, n
 
 TokenTransformDispatcher.prototype.prependListener = function ( listener, type, name ) {
 	if ( type === 'tag' ) {
+		name = name.toLowerCase();
 		if ( $.isArray(this.transformers.tag.name) ) {
 			this.transformers.tag[name].unshift(listener);
 		} else {
@@ -67,6 +69,7 @@ TokenTransformDispatcher.prototype.removeListener = function ( listener, type, n
 	var i = -1;
 	var ts;
 	if ( type === 'tag' ) {
+		name = name.toLowerCase();
 		if ( $.isArray(this.transformers.tag.name) ) {
 			ts = this.transformers.tag[name];
 			i = ts.indexOf(listener);
@@ -102,7 +105,13 @@ function TokenContext ( token, accum, dispatcher, lastToken ) {
  * @returns {TokenContext} Context with updated token and/or accum.
  */
 TokenTransformDispatcher.prototype._transformTagToken = function ( tokenCTX ) {
-	var ts = this.transformers.tag[tokenCTX.token.name];
+	// prepend 'any' transformers
+	var ts = this.transformers.any;
+	var tagts = this.transformers.tag[tokenCTX.token.name.toLowerCase()];
+	if ( tagts ) {
+		ts = ts.concat(tagts);
+	}
+	//console.log(JSON.stringify(ts, null, 2));
 	if ( ts ) {
 		for (var i = 0, l = ts.length; i < l; i++ ) {
 			// Transform token with side effects
@@ -123,8 +132,11 @@ TokenTransformDispatcher.prototype._transformTagToken = function ( tokenCTX ) {
  * @returns {TokenContext} Context with updated token and/or accum.
  */
 TokenTransformDispatcher.prototype._transformToken = function ( tokenCTX, ts ) {
+	// prepend 'any' transformers
+	ts = this.transformers.any.concat(ts);
 	if ( ts ) {
 		for (var i = 0, l = ts.length; i < l; i++ ) {
+			// Transform token with side effects
 			tokenCTX = ts[i]( tokenCTX );
 			if ( tokenCTX.token === null || $.isArray(tokenCTX.token) ) {
 				break;
@@ -163,7 +175,6 @@ TokenTransformDispatcher.prototype.transformTokens = function ( tokens, accum, d
 		tokenCTX.token = tokens[i];
 		tokenCTX.pos = i;
 		tokenCTX.accum = accum;
-		var ts;
 		switch(tokenCTX.token.type) {
 			case 'TAG':
 			case 'ENDTAG':

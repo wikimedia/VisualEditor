@@ -24,7 +24,7 @@ QuoteTransformer.prototype.register = function ( dispatcher ) {
 	}, 'newline' );
 	dispatcher.appendListener( function (ctx) { 
 		return self.onQuote(ctx);
-	}, 'tag', 'QUOTE' );
+	}, 'tag', 'mw-quote' );
 };
 
 // Make a copy of the token context
