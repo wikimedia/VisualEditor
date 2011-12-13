@@ -555,6 +555,15 @@ $(document).ready( function() {
 					]
 				}
 			]
+		},
+		'New document': {
+			'type': 'document',
+			'children': [
+				{
+					'type': 'paragraph',
+					'content': { 'text': '' }
+				}
+			]
 		}
 	};
 	window.documentModel = es.DocumentModel.newFromPlainObject(
