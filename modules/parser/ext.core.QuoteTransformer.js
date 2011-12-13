@@ -14,6 +14,7 @@ function QuoteTransformer ( ) {
 	this.inserted = 0;
 }
 
+// Register this transformer with the TokenTransformer
 QuoteTransformer.prototype.register = function ( tokenTransformer ) {
 	// Register for NEWLINE and QUOTE tag tokens
 	var self = this;
@@ -26,6 +27,7 @@ QuoteTransformer.prototype.register = function ( tokenTransformer ) {
 };
 
 // Extract a copy of the token context with the info we need
+// XXX: Should probably use a generic shallow object copy
 QuoteTransformer.prototype.ctx = function ( tokenCTX ) {
 	return {  
 		accum: tokenCTX.accum,
@@ -35,11 +37,11 @@ QuoteTransformer.prototype.ctx = function ( tokenCTX ) {
 	};
 };
 
+// Handle QUOTE tags. These are collected in italic/bold lists depending on
+// the length of quote string. Actual analysis and conversion to the
+// appropriate tag tokens is deferred until the next NEWLINE token triggers
+// onNewLine.
 QuoteTransformer.prototype.onQuote = function ( tokenCTX ) {
-	// depending on length, add starting 's to preceding text node
-	// (if any)
-	// add token index to italic/bold lists
-	// add placeholder for token
 	var token = tokenCTX.token,
 		qlen = token.value.length,
 		out = null,
@@ -47,8 +49,12 @@ QuoteTransformer.prototype.onQuote = function ( tokenCTX ) {
 		ctx = this.ctx(tokenCTX),
 		ctx2,
 		accum = tokenCTX.accum;
+
 	switch (qlen) {
 		case 2: 
+			// Start a new accumulator, so we can later go back using the
+			// reference to this accumulator and append our tags at the end of
+			// it.
 			accum = tokenCTX.transformer.newAccumulator(accum);
 			this.italics.push(ctx);
 			break;
@@ -66,8 +72,11 @@ QuoteTransformer.prototype.onQuote = function ( tokenCTX ) {
 			this.bolds.push(ctx); 
 			break;
 		case 5:
-			// order does not matter here, will be fixed
-			// by HTML tree builder
+			// The order of italic vs. bold does not matter. Those are
+			// processed in a fixed order, and any nesting issues are fixed up
+			// by the HTML 5 tree builder. This does not always result in the
+			// prettiest result, but at least it is always correct and very
+			// convenient.
 			accum = tokenCTX.transformer.newAccumulator(accum, 2);
 			this.italics.push(ctx); 
 			ctx2 = this.ctx(tokenCTX);
@@ -88,11 +97,14 @@ QuoteTransformer.prototype.onQuote = function ( tokenCTX ) {
 			this.bolds.push(ctx2); 
 			break;
 	}
+	
 	tokenCTX.token = out;
 	tokenCTX.accum = accum;
 	return tokenCTX;
 };
 
+// Handle NEWLINE tokens, which trigger the actual quote analysis on the
+// collected quote tokens so far.
 QuoteTransformer.prototype.onNewLine = function ( tokenCTX ) {
 	if(!this.bolds && !this.italics) {
 		// Nothing to do, quick abort.
@@ -124,7 +136,11 @@ QuoteTransformer.prototype.onNewLine = function ( tokenCTX ) {
 					}
 				} else if ( ( ctx.lastToken.type === 'NEWLINE' ||
 								ctx.lastToken.type === 'TAG' ) &&
-								firstspace == -1 ) {
+								firstmultiletterword == -1 ) {
+					// This is an approximation, as the original doQuotes
+					// operates on the source and just looks at space vs.
+					// non-space. At least some tags are thus recognized as
+					// words in the original implementation.
 					firstmultiletterword = j;
 				}
 			}
@@ -152,6 +168,8 @@ QuoteTransformer.prototype.onNewLine = function ( tokenCTX ) {
 	return tokenCTX;
 };
 
+// Convert a bold token to italic to balance an uneven number of both bold and
+// italic tags. In the process, one quote needs to be converted back to text.
 QuoteTransformer.prototype.convertBold = function ( i ) {
 	var ctx = this.bolds[i];
 	//console.log('convertbold!');
@@ -170,7 +188,7 @@ QuoteTransformer.prototype.convertBold = function ( i ) {
 	//console.log(this.bolds.map(function(a) { return a.pos }));
 };
 
-// convert italics/bolds into tags
+// Convert italics/bolds into tags
 QuoteTransformer.prototype.quotesToTags = function ( contexts, name, transformer ) {
 	var toggle = true,
 		t,
@@ -179,7 +197,8 @@ QuoteTransformer.prototype.quotesToTags = function ( contexts, name, transformer
 		t = contexts[j].token;
 
 		if ( $.isArray(t) ) {
-			// Slip in a text token from bold to italic rebalancing
+			// Slip in a text token from bold to italic rebalancing. Don't
+			// count this callback towards completion.
 			var realToken = t.pop();
 			transformer.transformTokens( t, contexts[j].accum, 0 );
 			t = realToken;
@@ -193,16 +212,19 @@ QuoteTransformer.prototype.quotesToTags = function ( contexts, name, transformer
 		t.name = name;
 		delete t.value;
 		toggle = !toggle;
-		// Re-add and process the new token with the original accumulator
+		// Re-add and process the new token with the original accumulator, but
+		// don't yet count this callback towards callback completion.
 		transformer.transformTokens( [t], contexts[j].accum, 0 );
 	}
 	var l = contexts.length;
 	if (!toggle) {
-		// add end tag, but don't count it towards the finish
+		// Add end tag, but don't count it towards completion.
 		transformer.transformTokens( [{type: 'ENDTAG', name: name}], 
 				contexts[contexts.length - 1].accum, 0 );
 	}
-	// now allow the transformer to finish
+	// Now finally count the number of contexts towards completion, which
+	// causes the transformer to call its own callback if no more asynch
+	// callbacks are outstanding.
 	transformer.finish( contexts.length );
 };
 
