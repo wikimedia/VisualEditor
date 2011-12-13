@@ -682,11 +682,11 @@ es.DocumentModel.prototype.getContentDataFromNode = function( node, range ) {
  * @param {Object} annotation Annotation to test for coverage with
  * @returns {es.Range|null} Range of content covered by annotation, or null if offset is not covered
  */
-es.DocumentModel.prototype.getAnnotationBoundaries = function( offset, annotation ) {
+es.DocumentModel.prototype.getAnnotationBoundaries = function( offset, annotation, typeOnly ) {
 	if ( annotation.hash === undefined ) {
 		annotation.hash = es.DocumentModel.getHash( annotation );
 	}
-	if ( es.DocumentModel.getIndexOfAnnotation( this.data[offset], annotation ) === -1 ) {
+	if ( es.DocumentModel.getIndexOfAnnotation( this.data[offset], annotation, typeOnly ) === -1 ) {
 		return null;
 	}
 	var start = offset,
@@ -694,13 +694,13 @@ es.DocumentModel.prototype.getAnnotationBoundaries = function( offset, annotatio
 		item;
 	while ( start > 0 ) {
 		start--;
-		if ( es.DocumentModel.getIndexOfAnnotation( this.data[start], annotation ) === -1 ) {
+		if ( es.DocumentModel.getIndexOfAnnotation( this.data[start], annotation, typeOnly ) === -1 ) {
 			start++;
 			break;
 		}
 	}
 	while ( end < this.data.length ) {
-		if ( es.DocumentModel.getIndexOfAnnotation( this.data[end], annotation ) === -1 ) {
+		if ( es.DocumentModel.getIndexOfAnnotation( this.data[end], annotation, typeOnly ) === -1 ) {
 			break;
 		}
 		end++;

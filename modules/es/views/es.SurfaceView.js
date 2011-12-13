@@ -626,6 +626,14 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 					case 75:
 						if ( this.currentSelection.getLength() ) {
 							this.contextView.openInspector( 'link' );
+						} else {
+							var range = this.model.getDocument().getAnnotationBoundaries(
+									this.currentSelection.from, { 'type': 'link/internal' }, true
+								);
+							if ( range ) {
+								this.model.select( range );
+								this.contextView.openInspector( 'link' );
+							}
 						}
 						return false;
 				}
