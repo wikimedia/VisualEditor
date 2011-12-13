@@ -27,9 +27,6 @@ class SpecialVisualEditorSandbox extends SpecialPage {
 		$modeHistory = wfMsgHtml( 'visualeditor-tooltip-history' );
 		$modeHelp = wfMsgHtml( 'visualeditor-tooltip-help' );
 
-		$feedbackPrompt = wfMsgHtml( 'visualeditor-feedback-prompt' );
-		$feedbackDialogTitle = wfMsgHtml( 'visualeditor-feedback-dialog-title' );
-
 		$dir = dirname( __FILE__ );
 		ob_start();
 		include( 'modules/sandbox/base.php' );
