@@ -15,6 +15,8 @@ $messages['en'] = array(
 	'visualeditor-tooltip-render' => 'Toggle preview',	
 	'visualeditor-tooltip-history' => 'Toggle transaction history view',
 	'visualeditor-tooltip-help' => 'Toggle help view',
+	'visualeditor-feedback-prompt' => 'Leave feedback',
+	'visualeditor-feedback-dialog-title' => 'Leave feedback about VisualEditor Sandbox',
 );
 
 /** Message documentation

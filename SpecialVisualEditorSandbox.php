@@ -17,7 +17,7 @@ class SpecialVisualEditorSandbox extends SpecialPage {
 	public function execute( $par ) {
 		global $wgOut;
 
-		$wgOut->addModules( 'ext.visualEditor.sandbox' );
+		$wgOut->addModules( 'ext.visualEditor.special.sandbox' );
 		$this->setHeaders();
 		$wgOut->setPageTitle( wfMsg( 'visualeditor-sandbox-title' )  );
 		$modeWikitext = wfMsgHtml( 'visualeditor-tooltip-wikitext' );
@@ -26,6 +26,10 @@ class SpecialVisualEditorSandbox extends SpecialPage {
 		$modeRender = wfMsgHtml( 'visualeditor-tooltip-render' );
 		$modeHistory = wfMsgHtml( 'visualeditor-tooltip-history' );
 		$modeHelp = wfMsgHtml( 'visualeditor-tooltip-help' );
+
+		$feedbackPrompt = wfMsgHtml( 'visualeditor-feedback-prompt' );
+		$feedbackDialogTitle = wfMsgHtml( 'visualeditor-feedback-dialog-title' );
+
 		$out = <<<HTML
 <!-- VisualEditor Sandbox -->
 <div id="es-docs">

@@ -46,6 +46,19 @@ $wgVisualEditorResourceTemplate = array(
 );
 
 $wgResourceModules += array(
+	'ext.visualEditor.special.sandbox' => $wgVisualEditorResourceTemplate + array(
+		'scripts' => array(
+			'sandbox/special.js',
+		),
+		'messages' => array(
+			'visualeditor-feedback-prompt',
+			'visualeditor-feedback-dialog-title',
+		),
+		'dependencies' => array( 
+			'ext.visualEditor.sandbox',
+			'mediawiki.feedback',
+		)
+	),
 	'ext.visualEditor.sandbox' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
 			'sandbox/sandbox.js',
