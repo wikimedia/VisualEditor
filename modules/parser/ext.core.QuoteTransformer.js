@@ -9,19 +9,20 @@
  */
 
 function QuoteTransformer ( ) {
+	// Bold and italic tokens are collected in these lists, and then processed
+	// in onNewLine.
 	this.italics = [];
 	this.bolds = [];
-	this.inserted = 0;
 }
 
 // Register this transformer with the TokenTransformer
-QuoteTransformer.prototype.register = function ( tokenTransformer ) {
+QuoteTransformer.prototype.register = function ( dispatcher ) {
 	// Register for NEWLINE and QUOTE tag tokens
 	var self = this;
-	tokenTransformer.appendListener( function (ctx) { 
+	dispatcher.appendListener( function (ctx) { 
 		return self.onNewLine(ctx);
 	}, 'newline' );
-	tokenTransformer.appendListener( function (ctx) { 
+	dispatcher.appendListener( function (ctx) { 
 		return self.onQuote(ctx);
 	}, 'tag', 'QUOTE' );
 };
@@ -49,11 +50,11 @@ QuoteTransformer.prototype.onQuote = function ( tokenCTX ) {
 			// Start a new accumulator, so we can later go back using the
 			// reference to this accumulator and append our tags at the end of
 			// it.
-			accum = tokenCTX.transformer.newAccumulator(accum);
+			accum = tokenCTX.dispatcher.newAccumulator(accum);
 			this.italics.push(ctx);
 			break;
 		case 3: 
-			accum = tokenCTX.transformer.newAccumulator(accum);
+			accum = tokenCTX.dispatcher.newAccumulator(accum);
 			this.bolds.push(ctx);
 			break;
 		case 4: 
@@ -62,7 +63,7 @@ QuoteTransformer.prototype.onQuote = function ( tokenCTX ) {
 			} else {
 				out = {type: 'TEXT', value: "'"};
 			}
-			accum = tokenCTX.transformer.newAccumulator(accum);
+			accum = tokenCTX.dispatcher.newAccumulator(accum);
 			this.bolds.push(ctx); 
 			break;
 		case 5:
@@ -71,7 +72,7 @@ QuoteTransformer.prototype.onQuote = function ( tokenCTX ) {
 			// by the HTML 5 tree builder. This does not always result in the
 			// prettiest result, but at least it is always correct and very
 			// convenient.
-			accum = tokenCTX.transformer.newAccumulator(accum, 2);
+			accum = tokenCTX.dispatcher.newAccumulator(accum, 2);
 			this.italics.push(ctx); 
 			ctx2 = this.ctx(tokenCTX);
 			ctx2.token = {attribs: ctx.token.attribs};
@@ -84,7 +85,7 @@ QuoteTransformer.prototype.onQuote = function ( tokenCTX ) {
 			} else {
 				out = {type: 'TEXT', value: newvalue};
 			}
-			accum = tokenCTX.transformer.newAccumulator(accum, 2);
+			accum = tokenCTX.dispatcher.newAccumulator(accum, 2);
 			this.italics.push(ctx); 
 			ctx2 = this.ctx(tokenCTX);
 			ctx2.token = {attribs: ctx.token.attribs};
@@ -152,8 +153,8 @@ QuoteTransformer.prototype.onNewLine = function ( tokenCTX ) {
 		}
 	}
 
-	this.quotesToTags(this.italics, 'i', tokenCTX.transformer);
-	this.quotesToTags(this.bolds, 'b', tokenCTX.transformer);
+	this.quotesToTags(this.italics, 'i', tokenCTX.dispatcher);
+	this.quotesToTags(this.bolds, 'b', tokenCTX.dispatcher);
 
 	this.bolds = [];
 	this.italics = [];
@@ -183,7 +184,7 @@ QuoteTransformer.prototype.convertBold = function ( i ) {
 };
 
 // Convert italics/bolds into tags
-QuoteTransformer.prototype.quotesToTags = function ( contexts, name, transformer ) {
+QuoteTransformer.prototype.quotesToTags = function ( contexts, name, dispatcher ) {
 	var toggle = true,
 		t,
 		out = [];
@@ -194,7 +195,7 @@ QuoteTransformer.prototype.quotesToTags = function ( contexts, name, transformer
 			// Slip in a text token from bold to italic rebalancing. Don't
 			// count this callback towards completion.
 			var realToken = t.pop();
-			transformer.transformTokens( t, contexts[j].accum, 0 );
+			dispatcher.transformTokens( t, contexts[j].accum, 0 );
 			t = realToken;
 		}
 
@@ -208,18 +209,18 @@ QuoteTransformer.prototype.quotesToTags = function ( contexts, name, transformer
 		toggle = !toggle;
 		// Re-add and process the new token with the original accumulator, but
 		// don't yet count this callback towards callback completion.
-		transformer.transformTokens( [t], contexts[j].accum, 0 );
+		dispatcher.transformTokens( [t], contexts[j].accum, 0 );
 	}
 	var l = contexts.length;
 	if (!toggle) {
 		// Add end tag, but don't count it towards completion.
-		transformer.transformTokens( [{type: 'ENDTAG', name: name}], 
+		dispatcher.transformTokens( [{type: 'ENDTAG', name: name}], 
 				contexts[contexts.length - 1].accum, 0 );
 	}
 	// Now finally count the number of contexts towards completion, which
-	// causes the transformer to call its own callback if no more asynch
+	// causes the dispatcher to call its own callback if no more asynch
 	// callbacks are outstanding.
-	transformer.finish( contexts.length );
+	dispatcher.finish( contexts.length );
 };
 
 if (typeof module == "object") {

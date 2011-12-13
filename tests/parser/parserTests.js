@@ -57,7 +57,7 @@ var testWhiteList = require('./parserTests-whitelist.js').testWhiteList;
 
 _import(pj('parser', 'mediawiki.tokenizer.peg.js'), ['PegTokenizer']);
 _import(pj('parser', 'mediawiki.parser.environment.js'), ['MWParserEnvironment']);
-_import(pj('parser', 'mediawiki.TokenTransformer.js'), ['TokenTransformer']);
+_import(pj('parser', 'mediawiki.TokenTransformDispatcher.js'), ['TokenTransformDispatcher']);
 _import(pj('parser', 'ext.cite.taghook.ref.js'), ['MWRefTagHook']);
 
 _import(pj('parser', 'mediawiki.HTML5TreeBuilder.node.js'), ['FauxHTML5']);
@@ -181,9 +181,9 @@ function ParserTests () {
 
 	var pt = this;
 
-	// Set up the TokenTransformer with a callback for the remaining
+	// Set up the TokenTransformDispatcher with a callback for the remaining
 	// processing.
-	this.tokenTransformer = new TokenTransformer ( function ( tokens ) {
+	this.tokenDispatcher = new TokenTransformDispatcher ( function ( tokens ) {
 		
 		//console.log("TOKENS: " + JSON.stringify(tokens, null, 2));
 		
@@ -205,7 +205,7 @@ function ParserTests () {
 
 	// Add token transformations..
 	var qt = new QuoteTransformer();
-	qt.register(this.tokenTransformer);
+	qt.register(this.tokenDispatcher);
 
 	// Test statistics
 	this.passedTests = 0;
@@ -434,10 +434,10 @@ ParserTests.prototype.processTest = function (item) {
 		//Slightly better token output debugging:
 		//console.log( util.inspect( tokens, false, null ).yellow);	
 
-		// Transform tokens using the TokenTransformer. When done, the
-		// TokenTransformer calls buildTree() and checkResult() with the
+		// Transform tokens using the TokenTransformDispatcher. When done, the
+		// TokenTransformDispatcher calls buildTree() and checkResult() with the
 		// transformed tokens.
-		this.tokenTransformer.transformTokens( res.tokens );
+		this.tokenDispatcher.transformTokens( res.tokens );
 	}
 };
 

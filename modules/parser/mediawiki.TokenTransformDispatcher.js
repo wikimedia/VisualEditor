@@ -17,7 +17,7 @@
  * insert tokens in front of other ongoing expansion tasks.
  * */
 
-function TokenTransformer( callback ) {
+function TokenTransformDispatcher( callback ) {
 	this.cb = callback;	// Called with transformed token list when done
 	this.transformers = {
 		tag: {}, // for TAG, ENDTAG, SELFCLOSINGTAG, keyed on name
@@ -26,19 +26,20 @@ function TokenTransformer( callback ) {
 		comment: [],
 		end: [], // eof
 		martian: [] // none of the above
+		// XXX: Add an any registration that always matches?
 	};
 	this.reset();
 	return this;
 }
 
-TokenTransformer.prototype.reset = function () {
+TokenTransformDispatcher.prototype.reset = function () {
 	this.accum = new TokenAccumulator(null);
 	this.firstaccum = this.accum;
 	this.outstanding = 1;	// Number of outstanding processing steps 
 							// (e.g., async template fetches/expansions)
 };
 
-TokenTransformer.prototype.appendListener = function ( listener, type, name ) {
+TokenTransformDispatcher.prototype.appendListener = function ( listener, type, name ) {
 	if ( type === 'tag' ) {
 		if ( $.isArray(this.transformers.tag.name) ) {
 			this.transformers.tag[name].push(listener);
@@ -50,7 +51,7 @@ TokenTransformer.prototype.appendListener = function ( listener, type, name ) {
 	}
 };
 
-TokenTransformer.prototype.prependListener = function ( listener, type, name ) {
+TokenTransformDispatcher.prototype.prependListener = function ( listener, type, name ) {
 	if ( type === 'tag' ) {
 		if ( $.isArray(this.transformers.tag.name) ) {
 			this.transformers.tag[name].unshift(listener);
@@ -62,7 +63,7 @@ TokenTransformer.prototype.prependListener = function ( listener, type, name ) {
 	}
 };
 
-TokenTransformer.prototype.removeListener = function ( listener, type, name ) {
+TokenTransformDispatcher.prototype.removeListener = function ( listener, type, name ) {
 	var i = -1;
 	var ts;
 	if ( type === 'tag' ) {
@@ -83,14 +84,14 @@ TokenTransformer.prototype.removeListener = function ( listener, type, name ) {
  *
  * @param token The token to precess
  * @param accum {TokenAccumulator} The active TokenAccumulator.
- * @param processor {TokenTransformer} The TokenTransformer object.
+ * @param processor {TokenTransformDispatcher} The TokenTransformDispatcher object.
  * @param lastToken Last returned token or {undefined}.
  * @returns {TokenContext}.
  */
-function TokenContext ( token, accum, transformer, lastToken ) {
+function TokenContext ( token, accum, dispatcher, lastToken ) {
 	this.token = token;
 	this.accum = accum;
-	this.transformer = transformer;
+	this.dispatcher = dispatcher;
 	this.lastToken = lastToken;
 	return this;
 }
@@ -100,7 +101,7 @@ function TokenContext ( token, accum, transformer, lastToken ) {
  * @param {TokenContext} The current token and its context.
  * @returns {TokenContext} Context with updated token and/or accum.
  */
-TokenTransformer.prototype._transformTagToken = function ( tokenCTX ) {
+TokenTransformDispatcher.prototype._transformTagToken = function ( tokenCTX ) {
 	var ts = this.transformers.tag[tokenCTX.token.name];
 	if ( ts ) {
 		for (var i = 0, l = ts.length; i < l; i++ ) {
@@ -121,7 +122,7 @@ TokenTransformer.prototype._transformTagToken = function ( tokenCTX ) {
  * @param ts List of token transformers for this token type.
  * @returns {TokenContext} Context with updated token and/or accum.
  */
-TokenTransformer.prototype._transformToken = function ( tokenCTX, ts ) {
+TokenTransformDispatcher.prototype._transformToken = function ( tokenCTX, ts ) {
 	if ( ts ) {
 		for (var i = 0, l = ts.length; i < l; i++ ) {
 			tokenCTX = ts[i]( tokenCTX );
@@ -147,7 +148,7 @@ TokenTransformer.prototype._transformToken = function ( tokenCTX, ts ) {
  * @returns nothing: Calls back registered callback if there are no more
  *					outstanding asynchronous expansions.
  * */
-TokenTransformer.prototype.transformTokens = function ( tokens, accum, delta ) {
+TokenTransformDispatcher.prototype.transformTokens = function ( tokens, accum, delta ) {
 	if ( accum === undefined ) {
 		this.reset();
 		accum = this.accum;
@@ -207,7 +208,7 @@ TokenTransformer.prototype.transformTokens = function ( tokens, accum, delta ) {
 	this.finish( delta );
 };
 
-TokenTransformer.prototype.finish = function ( delta ) {
+TokenTransformDispatcher.prototype.finish = function ( delta ) {
 	this.outstanding -= delta;
 	if ( this.outstanding === 0 ) {
 		// Join the token accumulators back into a single token list
@@ -224,7 +225,7 @@ TokenTransformer.prototype.finish = function ( delta ) {
 };
 
 /* Start a new accumulator for asynchronous work. */
-TokenTransformer.prototype.newAccumulator = function ( accum, count ) {
+TokenTransformDispatcher.prototype.newAccumulator = function ( accum, count ) {
 	if ( count !== undefined ) {
 		this.outstanding += count;
 	} else {
@@ -262,5 +263,5 @@ TokenAccumulator.prototype.insertAccumulator = function ( ) {
 };
 
 if (typeof module == "object") {
-	module.exports.TokenTransformer = TokenTransformer;
+	module.exports.TokenTransformDispatcher = TokenTransformDispatcher;
 }
