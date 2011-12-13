@@ -740,4 +740,7 @@ $(document).ready( function() {
 			currentMode.update.call( currentMode );
 		}
 	} );
+
+	$( '#es-docs' ).css( { 'visibility': 'visible' } );
+	$( '#es-base' ).css( { 'visibility': 'visible' } );
 } );
