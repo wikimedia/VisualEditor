@@ -1,8 +1,10 @@
 Work in progress. :)
 
-Batch-testing tools loading the parsing code into node.js, and going through a MediaWiki XML export dump to run round-trip tests over it. Currently not much will succeed as there's bad handling of newlines. ;)
+Please see https://www.mediawiki.org/wiki/Future/Parser_development for some
+information on how to get started with these tests and the curren parser
+architecture.
 
-Need npm modules:
+Needed npm modules:
 * pegjs
 * colors
 * html5
@@ -11,4 +13,26 @@ Need npm modules:
 * diff
 * libxmljs (requires native compilation)
 * optimist (for argument handling)
-* webworker
+* webworker (not needed for parserTests)
+
+== Running parserTests.js ==
+
+For parserTests, you also need MediaWiki's parser test cases (parserTests.txt)
+either in a phase3 checkout parallel to extensions (tried by default). You can
+also specify a test case file as an argument.
+
+Then, in this directory, try:
+
+node ./parserTests.js
+
+Several options are available for parserTests:
+
+node ./parserTests.js --help
+
+Enjoy!
+
+== Running roundtrip tests ==
+
+Round-trip tests are not yet ported to the current parser architecture. The
+focus so far has been on parserTests and getting the parser architecture in
+shape, but we'll get back to round-trip tests eventually.
