@@ -8,7 +8,7 @@
 			url: mw.config.get( 'wgServer' ) + mw.config.get( 'wgScriptPath' ) + '/api.php'
 		} );
 
-		var title = new mw.Title( 'VisualEditorFeedback' );
+		var title = new mw.Title( 'Visual editor/Feedback' );
 
 		var feedback = new mw.Feedback( 
 			api, 
