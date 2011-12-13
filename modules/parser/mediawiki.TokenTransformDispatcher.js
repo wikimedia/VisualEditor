@@ -17,6 +17,14 @@
  * insert tokens in front of other ongoing expansion tasks.
  * */
 
+/**
+ * Central dispatcher for potentially asynchronous token transformations.
+ *
+ * @class
+ * @constructor
+ * @param {Function} callback, a callback function accepting a token list as
+ * its only argument.
+ */
 function TokenTransformDispatcher( callback ) {
 	this.cb = callback;	// Called with transformed token list when done
 	this.transformers = {
@@ -29,9 +37,14 @@ function TokenTransformDispatcher( callback ) {
 		any: []	// all tokens, before more specific handlers are run
 	};
 	this.reset();
-	return this;
 }
 
+/**
+ * Reset the internal token and callback state of the
+ * TokenTransformDispatcher, but keep registrations untouched.
+ *
+ * @method
+ */
 TokenTransformDispatcher.prototype.reset = function () {
 	this.accum = new TokenAccumulator(null);
 	this.firstaccum = this.accum;
@@ -39,6 +52,17 @@ TokenTransformDispatcher.prototype.reset = function () {
 							// (e.g., async template fetches/expansions)
 };
 
+/**
+ * Append a listener registration. The new listener will be executed after
+ * other listeners for the same token have been called.
+ *
+ * @method
+ * @param {Function} listener, a function accepting a TokenContext and
+ * returning a TokenContext.
+ * @param {String} type, one of 'tag', 'text', 'newline', 'comment', 'end',
+ * 'martian' (unknown token), 'any' (any token, matched before other matches).
+ * @param {String} tag name for tags, omitted for non-tags
+ */
 TokenTransformDispatcher.prototype.appendListener = function ( listener, type, name ) {
 	if ( type === 'tag' ) {
 		name = name.toLowerCase();
@@ -52,6 +76,17 @@ TokenTransformDispatcher.prototype.appendListener = function ( listener, type, n
 	}
 };
 
+/**
+ * Prepend a listener registration. The new listener will be called before
+ * other listeners for the same token have been called.
+ *
+ * @method
+ * @param {Function} listener, a function accepting a TokenContext and
+ * returning a TokenContext.
+ * @param {String} type, one of 'tag', 'text', 'newline', 'comment', 'end',
+ * 'martian' (unknown token), 'any' (any token, matched before other matches).
+ * @param {String} tag name for tags, omitted for non-tags
+ */
 TokenTransformDispatcher.prototype.prependListener = function ( listener, type, name ) {
 	if ( type === 'tag' ) {
 		name = name.toLowerCase();
@@ -65,6 +100,19 @@ TokenTransformDispatcher.prototype.prependListener = function ( listener, type, 
 	}
 };
 
+/**
+ * Remove a listener registration
+ *
+ * XXX: matching the function for equality is not ideal. Use a string key
+ * instead?
+ *
+ * @method
+ * @param {Function} listener, a function accepting a TokenContext and
+ * returning a TokenContext.
+ * @param {String} type, one of 'tag', 'text', 'newline', 'comment', 'end',
+ * 'martian' (unknown token), 'any' (any token, matched before other matches).
+ * @param {String} tag name for tags, omitted for non-tags
+ */
 TokenTransformDispatcher.prototype.removeListener = function ( listener, type, name ) {
 	var i = -1;
 	var ts;
@@ -146,20 +194,23 @@ TokenTransformDispatcher.prototype._transformToken = function ( tokenCTX, ts ) {
 	return tokenCTX;
 };
 
-/* Transform and expand tokens.
+/**
+ * Transform and expand tokens.
  *
  * Normally called with undefined accum. Asynchronous expansions will call
  * this with their known accum, which allows expanded tokens to be spliced in
  * at the appropriate location in the token list, which is always at the tail
- * end of the current accumulator.
+ * end of the current accumulator. Calls back registered callback if there are
+ * no more outstanding asynchronous expansions.
  *
- * @param tokens {List of tokens} Tokens to process.
- * @param accum {TokenAccumulator} object. Undefined for first call, set to
- *				accumulator with expanded token at tail for asynchronous 
- *				expansions.
- * @returns nothing: Calls back registered callback if there are no more
- *					outstanding asynchronous expansions.
- * */
+ * @param {Array} Tokens to process.
+ * @param {Object} TokenAccumulator object. Undefined for first call, set to
+ * accumulator with expanded token at tail for asynchronous expansions.
+ * @param {Int} delta, default 1. Decrement the outstanding async callback
+ * count by this much to determine when all outstanding actions are done.
+ * Main use of this argument is to avoid counting some extra callbacks from
+ * actions before they are done.
+ */
 TokenTransformDispatcher.prototype.transformTokens = function ( tokens, accum, delta ) {
 	if ( accum === undefined ) {
 		this.reset();
@@ -219,6 +270,14 @@ TokenTransformDispatcher.prototype.transformTokens = function ( tokens, accum, d
 	this.finish( delta );
 };
 
+/**
+ * Decrement the number of outstanding async actions by delta and call the
+ * callback with a list of tokens if none are remaining.
+ *
+ * @method
+ * @param {Int} delta, how much to decrement the number of outstanding async
+ * actions.
+ */
 TokenTransformDispatcher.prototype.finish = function ( delta ) {
 	this.outstanding -= delta;
 	if ( this.outstanding === 0 ) {
@@ -235,7 +294,14 @@ TokenTransformDispatcher.prototype.finish = function ( delta ) {
 	}
 };
 
-/* Start a new accumulator for asynchronous work. */
+/**
+ * Start a new accumulator for asynchronous work. 
+ *
+ * @param {Object} TokenAccumulator object after which to insert a new
+ * accumulator
+ * @count {Int} (optional, default 1) The number of callbacks to expect before
+ * considering the asynch work on the new accumulator done.
+ * */
 TokenTransformDispatcher.prototype.newAccumulator = function ( accum, count ) {
 	if ( count !== undefined ) {
 		this.outstanding += count;
@@ -248,8 +314,15 @@ TokenTransformDispatcher.prototype.newAccumulator = function ( accum, count ) {
 	return accum.insertAccumulator( );
 };
 
-// Token accumulators in a linked list. Using a linked list simplifies async
-// callbacks for template expansions.
+/**
+ * Token accumulators in a linked list. Using a linked list simplifies async
+ * callbacks for template expansions as it avoids stable references to chunks.
+ *
+ * @class
+ * @constructor
+ * @param {Object} next TokenAccumulator to link to
+ * @param {Array} (optional) tokens, init accumulator with tokens or []
+ */
 function TokenAccumulator ( next, tokens ) {
 	this.next = next;
 	if ( tokens ) {
@@ -260,14 +333,32 @@ function TokenAccumulator ( next, tokens ) {
 	return this;
 }
 
+/**
+ * Push a token into the accumulator
+ *
+ * @method
+ * @param {Object} token
+ */
 TokenAccumulator.prototype.push = function ( token ) {
 	return this.accum.push(token);
 };
 
+/**
+ * Pop a token from the accumulator
+ *
+ * @method
+ * @returns {Object} token
+ */
 TokenAccumulator.prototype.pop = function ( ) {
 	return this.accum.pop();
 };
 
+/**
+ * Insert an accumulator after this one.
+ *
+ * @method
+ * @returns {Object} created TokenAccumulator
+ */
 TokenAccumulator.prototype.insertAccumulator = function ( ) {
 	this.next = new TokenAccumulator(this.next);
 	return this.next;
