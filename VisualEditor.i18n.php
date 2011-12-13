@@ -44,8 +44,17 @@ $messages['br'] = array(
  */
 $messages['de'] = array(
 	'visualeditor' => 'WYSIWYG-Editor',
+	'visualeditorsandbox' => 'WYSIWYG-Editor - Spielwiese',
 	'visualeditor-desc' => 'Ermöglicht einen WYSIWYG-Editor',
-	'visualeditor-sandbox-title' => 'WYSIWYG-Editor - Spielwiese',
+	'visualeditor-sandbox-title' => 'Spielwiese für den WYSIWYG-Editor',
+	'visualeditor-tooltip-wikitext' => 'Von und zur Ansicht in Wikitext umschalten',
+	'visualeditor-tooltip-json' => 'Von und zur Ansicht in JSON umschalten',
+	'visualeditor-tooltip-html' => 'Von und zur Ansicht in HTML umschalten',
+	'visualeditor-tooltip-render' => 'Von und zur Vorschau umschalten',
+	'visualeditor-tooltip-history' => 'Transaktionsverlauf ein- und ausblenden',
+	'visualeditor-tooltip-help' => 'Hilfen ein- und ausblenden',
+	'visualeditor-feedback-prompt' => 'Rückmeldung geben',
+	'visualeditor-feedback-dialog-title' => 'Rückmeldung zur Spielwiese für den WYSIWYG-Editor geben',
 );
 
 /** French (Français)
@@ -63,8 +72,17 @@ $messages['fr'] = array(
  */
 $messages['gl'] = array(
 	'visualeditor' => 'Editor visual',
+	'visualeditorsandbox' => 'Zona de probas do editor visual',
 	'visualeditor-desc' => 'Editor visual para MediaWiki',
 	'visualeditor-sandbox-title' => 'Zona de probas do editor visual',
+	'visualeditor-tooltip-wikitext' => 'Alternar a vista en texto wiki',
+	'visualeditor-tooltip-json' => 'Alternar a vista en JSON',
+	'visualeditor-tooltip-html' => 'Alternar a vista en HTML',
+	'visualeditor-tooltip-render' => 'Alternar a vista previa',
+	'visualeditor-tooltip-history' => 'Alternar a vista en historial de transaccións',
+	'visualeditor-tooltip-help' => 'Alternar a vista de axuda',
+	'visualeditor-feedback-prompt' => 'Deixe un comentario',
+	'visualeditor-feedback-dialog-title' => 'Deixe un comentario sobre a zona de probas do editor visual',
 );
 
 /** Upper Sorbian (Hornjoserbsce)
@@ -90,8 +108,17 @@ $messages['hu'] = array(
  */
 $messages['ia'] = array(
 	'visualeditor' => 'Editor visual',
+	'visualeditorsandbox' => 'Cassa a sablo del editor visual',
 	'visualeditor-desc' => 'Editor visual pro MediaWiki',
 	'visualeditor-sandbox-title' => 'Cassa a sablo del editor visual',
+	'visualeditor-tooltip-wikitext' => 'Alternar vista wikitexto',
+	'visualeditor-tooltip-json' => 'Alternar vista JSON',
+	'visualeditor-tooltip-html' => 'Alternar vista HTML',
+	'visualeditor-tooltip-render' => 'Alternar previsualisation',
+	'visualeditor-tooltip-history' => 'Alternar vista historia de transactiones',
+	'visualeditor-tooltip-help' => 'Alternar adjuta',
+	'visualeditor-feedback-prompt' => 'Lassar retroaction',
+	'visualeditor-feedback-dialog-title' => 'Lassar retroaction super le cassa a sablo del editor visual',
 );
 
 /** Luxembourgish (Lëtzebuergesch)
@@ -108,8 +135,17 @@ $messages['lb'] = array(
  */
 $messages['mk'] = array(
 	'visualeditor' => 'Визуелен уредник',
+	'visualeditorsandbox' => 'Песочник — Визуелен уредник',
 	'visualeditor-desc' => 'Визуелен уредник за МедијаВики',
 	'visualeditor-sandbox-title' => 'Песочник — Визуелен уредник',
+	'visualeditor-tooltip-wikitext' => 'Поглед на викитекст',
+	'visualeditor-tooltip-json' => 'Поглед на JSON',
+	'visualeditor-tooltip-html' => 'Поглед на HTML',
+	'visualeditor-tooltip-render' => 'Поглед на преглед',
+	'visualeditor-tooltip-history' => 'Поглед на историја на преносот',
+	'visualeditor-tooltip-help' => 'Поглед на помош',
+	'visualeditor-feedback-prompt' => 'Дајте мислење',
+	'visualeditor-feedback-dialog-title' => 'Дајте мислење за Песочникот на ВизуеленУредник',
 );
 
 /** Dutch (Nederlands)
