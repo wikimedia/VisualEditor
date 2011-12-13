@@ -66,12 +66,12 @@ _import(pj('parser', 'mediawiki.DOMPostProcessor.js'), ['DOMPostProcessor']);
 _import(pj('parser', 'ext.core.QuoteTransformer.js'), ['QuoteTransformer']);
 
 // WikiDom and serializers
-_require(pj('es', 'es.js'));
-_require(pj('es', 'es.Html.js'));
-_require(pj('es', 'serializers', 'es.AnnotationSerializer.js'));
-_require(pj('es', 'serializers', 'es.HtmlSerializer.js'));
-_require(pj('es', 'serializers', 'es.WikitextSerializer.js'));
-_require(pj('es', 'serializers', 'es.JsonSerializer.js'));
+//_require(pj('es', 'es.js'));
+//_require(pj('es', 'es.Html.js'));
+//_require(pj('es', 'serializers', 'es.AnnotationSerializer.js'));
+//_require(pj('es', 'serializers', 'es.HtmlSerializer.js'));
+//_require(pj('es', 'serializers', 'es.WikitextSerializer.js'));
+//_require(pj('es', 'serializers', 'es.JsonSerializer.js'));
 
 
 function ParserTests () {
