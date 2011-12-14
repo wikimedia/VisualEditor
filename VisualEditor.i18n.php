@@ -57,14 +57,41 @@ $messages['de'] = array(
 	'visualeditor-feedback-dialog-title' => 'Rückmeldung zur Spielwiese für den WYSIWYG-Editor geben',
 );
 
+/** Lower Sorbian (Dolnoserbski)
+ * @author Michawiki
+ */
+$messages['dsb'] = array(
+	'visualeditor' => 'VisualEditor',
+	'visualeditorsandbox' => 'WYSIWYG-editor - grajkanišćo',
+	'visualeditor-desc' => 'WYSIWYG-editor za MediaWiki',
+	'visualeditor-sandbox-title' => 'WYSIWYG-editor - grajkanišćo',
+	'visualeditor-tooltip-wikitext' => 'Wikitekstowy naglěd pśešaltowaś',
+	'visualeditor-tooltip-json' => 'JSON-naglěd pśešaltowaś',
+	'visualeditor-tooltip-html' => 'HTML-naglěd pśešaltowaś',
+	'visualeditor-tooltip-render' => 'Naglěd pśešaltowaś',
+	'visualeditor-tooltip-history' => 'Naglěd transakciskeje historije pśešaltowaś',
+	'visualeditor-tooltip-help' => 'Pomoc pokazaś a schowaś',
+	'visualeditor-feedback-prompt' => 'Komentar zawóstajiś',
+	'visualeditor-feedback-dialog-title' => 'Komentar wó grajkanišću VisualEditora zawóstajiś',
+);
+
 /** French (Français)
  * @author Crochet.david
  * @author Gomoko
  */
 $messages['fr'] = array(
 	'visualeditor' => 'VisualEditor',
+	'visualeditorsandbox' => "Bac à sable de l'éditeur visuel",
 	'visualeditor-desc' => 'Éditeur visuel pour MediaWiki',
 	'visualeditor-sandbox-title' => 'Bac à sable de VisualEditor',
+	'visualeditor-tooltip-wikitext' => 'Basculer la vue en wikitexte',
+	'visualeditor-tooltip-json' => 'Basculer la vue en JSON',
+	'visualeditor-tooltip-html' => 'Basculer la vue en HTML',
+	'visualeditor-tooltip-render' => 'Basculer en prévisualisation',
+	'visualeditor-tooltip-history' => "Basculer en vue d'historique des transactions",
+	'visualeditor-tooltip-help' => "Basculer la vue d'aide",
+	'visualeditor-feedback-prompt' => 'Laisser un commentaire',
+	'visualeditor-feedback-dialog-title' => "Laissez un commentaire sur le bac à sable de l'éditeur visuel",
 );
 
 /** Galician (Galego)
@@ -85,13 +112,40 @@ $messages['gl'] = array(
 	'visualeditor-feedback-dialog-title' => 'Deixe un comentario sobre a zona de probas do editor visual',
 );
 
+/** Hebrew (עברית)
+ * @author Amire80
+ */
+$messages['he'] = array(
+	'visualeditor' => 'עורך חזותי',
+	'visualeditorsandbox' => 'ארגז חול לבדיקות עורך חזותי',
+	'visualeditor-desc' => 'עורך חזותי למדיה־ויקי',
+	'visualeditor-sandbox-title' => 'ארגז חול לבדיקות עורך חזותי',
+	'visualeditor-tooltip-wikitext' => 'הפעלת תצוגת קוד ויקי',
+	'visualeditor-tooltip-json' => 'הפעלת תצוגת JSON',
+	'visualeditor-tooltip-html' => 'הפעלת תצוגת HTML',
+	'visualeditor-tooltip-render' => 'הפעלת תצוגה מקדימה',
+	'visualeditor-tooltip-history' => 'הפעלת תצוגת גרסאות קודמות',
+	'visualeditor-tooltip-help' => 'הפעלת תצוגת עזרה',
+	'visualeditor-feedback-prompt' => 'שליחת משוב',
+	'visualeditor-feedback-dialog-title' => 'שליחת משוב על ארגז החול של העורך החזותי',
+);
+
 /** Upper Sorbian (Hornjoserbsce)
  * @author Michawiki
  */
 $messages['hsb'] = array(
 	'visualeditor' => 'VisualEditor',
+	'visualeditorsandbox' => 'WYSIWYG-editor - hrajkanišćo',
 	'visualeditor-desc' => 'WYSIWYG-editor za MediaWiki',
 	'visualeditor-sandbox-title' => 'WYSIWYG-editor - hrajkanišćo',
+	'visualeditor-tooltip-wikitext' => 'Wikitekstowy napohlad přepinać',
+	'visualeditor-tooltip-json' => 'JSON-napohlad přepinać',
+	'visualeditor-tooltip-html' => 'HTML-napohlad přepinać',
+	'visualeditor-tooltip-render' => 'Napohlad přepinać',
+	'visualeditor-tooltip-history' => 'Napohlad transakciskeje historije přepinać',
+	'visualeditor-tooltip-help' => 'Pomoc pokazać a schować',
+	'visualeditor-feedback-prompt' => 'Komentar zawostajić',
+	'visualeditor-feedback-dialog-title' => 'Zawostaj komentar wo hrajkanišću VisualEditora',
 );
 
 /** Hungarian (Magyar)
@@ -148,13 +202,60 @@ $messages['mk'] = array(
 	'visualeditor-feedback-dialog-title' => 'Дајте мислење за Песочникот на ВизуеленУредник',
 );
 
+/** Malay (Bahasa Melayu)
+ * @author Anakmalaysia
+ */
+$messages['ms'] = array(
+	'visualeditor' => 'VisualEditor',
+	'visualeditorsandbox' => 'Kotak pasir editor visual',
+	'visualeditor-desc' => 'Alat penyuntingan visual untuk MediaWiki',
+	'visualeditor-sandbox-title' => 'Kotak Pasir VisualEditor',
+	'visualeditor-tooltip-wikitext' => 'Togol paparan teks wiki',
+	'visualeditor-tooltip-json' => 'Togol paparan JSON',
+	'visualeditor-tooltip-html' => 'Togol paparan HTML',
+	'visualeditor-tooltip-render' => 'Togol pralihat',
+	'visualeditor-tooltip-history' => 'Togol paparan sejarah transaksi',
+	'visualeditor-tooltip-help' => 'Togol paparan bantuan',
+	'visualeditor-feedback-prompt' => 'Tinggalkan maklum balas',
+	'visualeditor-feedback-dialog-title' => 'Tinggalkan maklum balas tentang Kotak Pasir VisualEditor',
+);
+
 /** Dutch (Nederlands)
+ * @author SPQRobin
  * @author Siebrand
  */
 $messages['nl'] = array(
 	'visualeditor' => 'Vereenvoudigde tekstverwerker',
+	'visualeditorsandbox' => 'Testruimte voor Vereenvoudigde tekstverwerker',
 	'visualeditor-desc' => 'Vereenvoudigde tekstverwerker voor MediaWiki',
 	'visualeditor-sandbox-title' => 'Testruimte voor Vereenvoudigde tekstverwerker',
+	'visualeditor-feedback-prompt' => 'Terugkoppeling achterlaten',
+);
+
+/** Polish (Polski)
+ * @author Mikołka
+ */
+$messages['pl'] = array(
+	'visualeditor' => 'VisualEditor',
+	'visualeditorsandbox' => 'Brudnopis edytora graficznego',
+	'visualeditor-desc' => 'Edytor graficzny MediaWiki',
+	'visualeditor-sandbox-title' => 'Brudnopis edytora graficznego',
+	'visualeditor-tooltip-wikitext' => 'Przełącz podgląd wikitekstu',
+	'visualeditor-tooltip-json' => 'Przełącz podgląd formatu JSON',
+	'visualeditor-tooltip-html' => 'Przełącz podgląd kodu HTML',
+	'visualeditor-tooltip-render' => 'Przełącz podgląd tekstu',
+	'visualeditor-tooltip-history' => 'Przełącz podgląd historii operacji',
+	'visualeditor-tooltip-help' => 'Przełącz podgląd pomocy',
+	'visualeditor-feedback-prompt' => 'Prześlij opinię',
+	'visualeditor-feedback-dialog-title' => 'Prześlij swoją opinię na temat brudnopisu VisualEditor',
+);
+
+/** Russian (Русский)
+ * @author Amire80
+ */
+$messages['ru'] = array(
+	'visualeditor' => 'VisualEditor',
+	'visualeditorsandbox' => 'Песочница для визуального редактора',
 );
 
 /** Simplified Chinese (‪中文(简体)‬)
