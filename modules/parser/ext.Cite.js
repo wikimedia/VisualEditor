@@ -133,7 +133,7 @@ Cite.prototype.onRef = function ( tokenCTX ) {
 		// fall through for further processing!
 	} else {
 		// Inside ref block: Collect all other tokens in refTokens and abort
-		console.log(JSON.stringify(tokenCTX.token, null, 2));
+		//console.log(JSON.stringify(tokenCTX.token, null, 2));
 		this.refTokens.push(tokenCTX.token);
 		tokenCTX.token = null;
 		return tokenCTX;
