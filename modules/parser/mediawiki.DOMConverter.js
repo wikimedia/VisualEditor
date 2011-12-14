@@ -31,6 +31,26 @@ DOMConverter.prototype.getHTMLHandlerInfo = function ( nodeName ) {
 				handler: this._convertHTMLLeaf, 
 				type: 'paragraph'
 			};
+		case 'h1':
+		case 'h2':
+		case 'h3':
+		case 'h4':
+		case 'h5':
+		case 'h6':
+			var res = {
+				handler: this._convertHTMLLeaf, 
+				type: 'heading',
+				attribs: { }
+			};
+			switch ( nodeName.toLowerCase() ) {
+				case 'h1': res.attribs.level = 1; break;
+				case 'h2': res.attribs.level = 2; break;
+				case 'h3': res.attribs.level = 3; break;
+				case 'h4': res.attribs.level = 4; break;
+				case 'h5': res.attribs.level = 5; break;
+				case 'h6': res.attribs.level = 6; break;
+			}
+			return res;
 		case 'li':
 		case 'dl':
 		case 'dd':
@@ -99,6 +119,9 @@ DOMConverter.prototype.HTMLtoWiki = function ( node ) {
 				// Call a handler for the particular node type
 				var hi = this.getHTMLHandlerInfo( cnode.nodeName );
 				var res = hi.handler.call(this, cnode, 0, hi.type );
+				if ( hi.attribs ) {
+					$.extend( res.node.attributes, hi.attribs );
+				}
 				out.children.push( res.node );
 				break;
 			case Node.TEXT_NODE:
@@ -170,6 +193,9 @@ DOMConverter.prototype._convertHTMLBranch = function ( node, offset, type ) {
 					// Call a handler for the particular node type
 					var hi = this.getHTMLHandlerInfo( cnode.nodeName );
 					var res = hi.handler.call(this, cnode, offset + 1, hi.type );
+					if ( hi.attribs ) {
+						$.extend( res.node.attributes, hi.attribs );
+					}
 					wnode.children.push( res.node );
 					offset = res.offset;
 					break;
