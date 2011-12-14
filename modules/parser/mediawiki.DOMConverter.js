@@ -35,7 +35,7 @@ DOMConverter.prototype.getHTMLHandlerInfo = function ( nodeName ) {
 		case 'dl':
 		case 'dd':
 			return {
-				handler: this._convertHTMLLeaf, 
+				handler: this._convertHTMLBranch, 
 				type: 'listItem'
 			};
 		case 'pre':
@@ -57,11 +57,10 @@ DOMConverter.prototype.getHTMLHandlerInfo = function ( nodeName ) {
 				handler: this._convertHTMLBranch, 
 				type: nodeName.toLowerCase()
 			};
-			break;
 	}
 };
 
-DOMConverter.prototype.getHTMLAnnotationType = function ( nodeName ) {
+DOMConverter.prototype.getHTMLAnnotationType = function ( nodeName, warn ) {
 	switch ( nodeName.toLowerCase() ) {
 		case 'i':
 			return 'textStyle/italic';
@@ -72,10 +71,11 @@ DOMConverter.prototype.getHTMLAnnotationType = function ( nodeName ) {
 		case 'a':
 			return 'link/unknown'; // XXX: distinguish internal / external etc
 		default:
-			console.log( 'HTML to Wiki DOM conversion error. Unsupported html annotation ' +
-					nodeName );
+			if ( warn ) {
+				console.log( 'HTML to Wiki DOM conversion error. Unsupported html annotation ' +
+						nodeName );
+			}
 			return undefined;
-			break;
 	}
 };
 
@@ -132,18 +132,54 @@ DOMConverter.prototype._convertHTMLBranch = function ( node, offset, type ) {
 			attributes: this._HTMLPropertiesToWikiAttributes( node ),
 			children: [] 
 		};
+	
+	var parNode = null;
+
+	function newPara () {
+		parNode = { 
+			type: 'paragraph', 
+			content: {
+				text: '',
+				annotations: []
+			}
+		};
+		wnode.children.push( parNode );
+	}
+
 	for ( var i = 0, l = children.length; i < l; i++ ) {
 		var cnode = children[i];
 		switch ( cnode.nodeType ) {
 			case Node.ELEMENT_NODE:
-				// Call a handler for the particular node type
-				var hi = this.getHTMLHandlerInfo( cnode.nodeName );
-				var res = hi.handler.call(this, cnode, offset + 1, hi.type );
-				wnode.children.push( res.node );
-				offset = res.offset;
-				break;
+				// Check if element type is an annotation
+				var annotationtype = this.getHTMLAnnotationType( cnode.nodeName );
+				if ( annotationtype ) {
+					if ( !parNode ) {
+						newPara()
+					}
+					var res = this._convertHTMLAnnotation( cnode, offset, annotationtype );
+					//console.log( 'res leaf: ' + JSON.stringify(res, null, 2));
+					offset += res.text.length;
+					parNode.content.text += res.text;
+					//console.log( 'res annotations: ' + JSON.stringify(res, null, 2));
+					parNode.content.annotations = parNode.content.annotations
+														.concat( res.annotations );
+					break;
+				} else {
+					// Close last paragraph, if still open.
+					parNode = null;
+					// Call a handler for the particular node type
+					var hi = this.getHTMLHandlerInfo( cnode.nodeName );
+					var res = hi.handler.call(this, cnode, offset + 1, hi.type );
+					wnode.children.push( res.node );
+					offset = res.offset;
+					break;
+				}
 			case Node.TEXT_NODE:
-				// Create a paragraph and add it to children?
+				if ( !parNode ) {
+					newPara();
+				}
+				parNode.content.text += cnode.data;
+				offset += cnode.data.length;
 				break;
 			case Node.COMMENT_NODE:
 				// add a comment node.
@@ -183,7 +219,7 @@ DOMConverter.prototype._convertHTMLLeaf = function ( node, offset, type ) {
 		switch ( cnode.nodeType ) {
 			case Node.ELEMENT_NODE:
 				// Call a handler for the particular annotation node type
-				var annotationtype = this.getHTMLAnnotationType( cnode.nodeName );
+				var annotationtype = this.getHTMLAnnotationType( cnode.nodeName, true );
 				if ( annotationtype ) {
 					var res = this._convertHTMLAnnotation( cnode, offset, annotationtype );
 					//console.log( 'res leaf: ' + JSON.stringify(res, null, 2));
@@ -232,7 +268,7 @@ DOMConverter.prototype._convertHTMLAnnotation = function ( node, offset, type ) 
 		switch ( cnode.nodeType ) {
 			case Node.ELEMENT_NODE:
 				// Call a handler for the particular annotation node type
-				var annotationtype = this.getHTMLAnnotationType(cnode.nodeName);
+				var annotationtype = this.getHTMLAnnotationType(cnode.nodeName, true);
 				if ( annotationtype ) {
 					var res = this._convertHTMLAnnotation( cnode, offset, annotationtype );
 					//console.log( 'res annotations 2: ' + JSON.stringify(res, null, 2));
