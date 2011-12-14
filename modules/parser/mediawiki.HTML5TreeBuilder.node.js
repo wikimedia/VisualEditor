@@ -55,6 +55,9 @@ FauxHTML5.TreeBuilder.prototype.processToken = function (token) {
 			this.emit('token', {type: 'StartTag', 
 				name: token.name, 
 				data: att(token.attribs)});
+			this.emit('token', {type: 'EndTag', 
+				name: token.name, 
+				data: att(token.attribs)});
 			break;
 		case "COMMENT":
 			this.emit('token', {type: 'Comment', 
@@ -62,7 +65,6 @@ FauxHTML5.TreeBuilder.prototype.processToken = function (token) {
 			break;
 		case "END":
 			this.emit('end');
-			console.log("at end..");
 			this.document = this.parser.document;
 			if ( ! this.document.body ) {
 				// HACK: This should not be needed really.

@@ -7,6 +7,8 @@
 function Cite () {
 	this.refGroups = {};
 	this.refTokens = [];
+	// Within ref block
+	this.isActive = false;
 }
 
 /**
@@ -111,17 +113,27 @@ Cite.prototype.onRef = function ( tokenCTX ) {
 
 	var token = tokenCTX.token;
 	// Collect all tokens between ref start and endtag
-	if ( token.type === 'TAG' && token.name.toLowerCase() === 'ref' ) {
+	if ( ! this.isActive &&
+			token.type === 'TAG' &&
+			token.name.toLowerCase() === 'ref' ) {
 		this.curRef = tokenCTX.token;
 		// Prepend self for 'any' token type
 		tokenCTX.dispatcher.prependListener(this.onRefCB, 'any' );
 		tokenCTX.token = null;
+		this.isActive = true;
 		return tokenCTX;
-	} else if ( token.type === 'ENDTAG' && token.name.toLowerCase() === 'ref' ) {
+	} else if ( this.isActive && 
+			// Also accept really broken ref close tags..
+			['TAG', 'ENDTAG', 'SELFCLOSINGTAG'].indexOf(token.type) >= 0 &&
+			token.name.toLowerCase() === 'ref' 
+			) 
+	{
+		this.isActive = false;
 		tokenCTX.dispatcher.removeListener(this.onRefCB, 'any' );
 		// fall through for further processing!
 	} else {
 		// Inside ref block: Collect all other tokens in refTokens and abort
+		console.log(JSON.stringify(tokenCTX.token, null, 2));
 		this.refTokens.push(tokenCTX.token);
 		tokenCTX.token = null;
 		return tokenCTX;
@@ -287,8 +299,9 @@ Cite.prototype.onEnd = function ( tokenCTX ) {
 	// Clean up
 	this.refGroups = {};
 	this.refTokens = [];
+	this.isActive = false;
 	return tokenCTX;
-}
+};
 
 if (typeof module == "object") {
 	module.exports.Cite = Cite;

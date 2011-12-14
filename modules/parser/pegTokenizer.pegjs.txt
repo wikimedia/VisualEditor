@@ -643,9 +643,12 @@ template
   = "{{" target:template_target 
     params:(newline? "|" newline? p:template_param { return p })* 
     "}}" {
-      var obj = { type: 'TAG', name: 'template', 
-                  attribs: [['data-target', target]],
-                  args: {}}
+      var obj = { 
+            type: 'SELFCLOSINGTAG', 
+            name: 'template', 
+            attribs: [['data-target', target]],
+            args: {}
+      };
       if (params && params.length) {
           var position = 1;
           for ( var i = 0, l = params.length; i < l; i++ ) {
@@ -706,18 +709,19 @@ template_param_text
 wikilink
   = "[[" 
     ! url
-    target:link_target text:("|" lt:link_text { return lt })* "]]" suffix:text? {
+    target:link_target ltext:("|" lt:link_text { return lt })* "]]" 
+    suffix:(![ \]] text_char)* {
       var obj = {
           type: 'TAG',
           name: 'a',
           attribs: [['data-type', 'internal']]
       };
       obj.attribs.push(['href', target]);
-      if (text && text.length) {
-          var textTokens = text;
+      if (ltext && ltext.length) {
+          var textTokens = ltext;
       } else {
-          if (suffix !== '') {
-              target += suffix;
+          if (suffix) {
+              target += suffix.join('');
           }
           var textTokens = [{type: 'TEXT', value: target}];
       }
@@ -735,13 +739,13 @@ link_target
       )* { return h.join(''); }
 
 link_text
-  = h:( & { return setFlag('linkdesc'); }
-          x:inlineline { return x } 
-      )* { 
-          clearFlag('linkdesc')
-              return h; 
-      }
-  / & { clearFlag('linkdesc') } { return null; }
+  = & { return setFlag('linkdesc'); }
+    h:inlineline
+    { 
+        clearFlag('linkdesc');
+        return h; 
+    }
+  / & { clearFlag('linkdesc'); return false }
 
 link_end = "]]"
 
@@ -1002,7 +1006,7 @@ table_body
   }
 
 table_firstrow 
-  = td:table_data+ { 
+  = td:(table_data / table_header)+ { 
       //dp('firstrow: ' + pp(td));
       return [{ type: 'TAG', name: 'tr' }]
              .concat(td, [{type: 'ENDTAG', name: 'tr'}]);

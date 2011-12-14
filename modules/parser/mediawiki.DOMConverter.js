@@ -178,7 +178,7 @@ DOMConverter.prototype.HTMLtoWiki = function ( node ) {
 			case Node.ELEMENT_NODE:
 				// Call a handler for the particular node type
 				var hi = this.getHTMLHandlerInfo( cnode.nodeName );
-				var res = hi.handler.call(this, cnode, 0, hi.type );
+				var res = hi.handler.call(this, cnode, hi.type );
 				if ( hi.attribs ) {
 					$.extend( res.node.attributes, hi.attribs );
 				}
@@ -208,15 +208,17 @@ DOMConverter.prototype.HTMLtoWiki = function ( node ) {
  * @param {Int} WikiDom offset within a block
  * @returns {Object} WikiDom object
  */
-DOMConverter.prototype._convertHTMLBranch = function ( node, offset, type ) {
+DOMConverter.prototype._convertHTMLBranch = function ( node, type ) {
+
 	var children = node.childNodes,
 		wnode = {
 			type: type,
 			attributes: this._HTMLPropertiesToWikiAttributes( node ),
 			children: [] 
-		};
-	
-	var parNode = null;
+		},
+		parNode = null,
+		offset = 0,
+		res;
 
 	function newPara () {
 		offset = 0;
@@ -238,29 +240,29 @@ DOMConverter.prototype._convertHTMLBranch = function ( node, offset, type ) {
 				var annotationtype = this.getHTMLAnnotationType( cnode.nodeName );
 				if ( annotationtype ) {
 					if ( !parNode ) {
-						newPara()
+						newPara();
 					}
-					var res = this._convertHTMLAnnotation( cnode, offset, annotationtype );
+					offset = 0;
+					res = this._convertHTMLAnnotation( cnode, 0, annotationtype );
 					//console.log( 'res leaf: ' + JSON.stringify(res, null, 2));
 					offset += res.text.length;
 					parNode.content.text += res.text;
 					//console.log( 'res annotations: ' + JSON.stringify(res, null, 2));
 					parNode.content.annotations = parNode.content.annotations
 														.concat( res.annotations );
-					break;
 				} else {
 					// Close last paragraph, if still open.
 					parNode = null;
 					// Call a handler for the particular node type
 					var hi = this.getHTMLHandlerInfo( cnode.nodeName );
-					var res = hi.handler.call(this, cnode, 0, hi.type );
+					res = hi.handler.call(this, cnode, hi.type );
 					if ( hi.attribs ) {
 						$.extend( res.node.attributes, hi.attribs );
 					}
 					wnode.children.push( res.node );
 					offset = res.offset;
-					break;
 				}
+				break;
 			case Node.TEXT_NODE:
 				if ( !parNode ) {
 					newPara();
@@ -290,9 +292,8 @@ DOMConverter.prototype._convertHTMLBranch = function ( node, offset, type ) {
  * @param {Int} WikiDom offset within a block
  * @returns {Object} WikiDom object
  */
-DOMConverter.prototype._convertHTMLLeaf = function ( node, offset, type ) {
-	// XXX Does the offset in every leaf start at zero?
-	offset = 0;
+DOMConverter.prototype._convertHTMLLeaf = function ( node, type ) {
+	var offset = 0;
 
 	var children = node.childNodes,
 		wnode = {
@@ -394,7 +395,6 @@ DOMConverter.prototype._HTMLPropertiesToWikiAttributes = function ( elem ) {
 	for ( var i = 0, l = attribs.length; i < l; i++ ) {
 		var attrib = attribs.item(i),
 			key = attrib.name;
-		console.log('key: ' + key);
 		if ( key.match( /^data-json-/ ) ) {
 			// strip data- prefix from data-*
 			out[key.replace( /^data-json-/, '' )] = JSON.parse(attrib.value);
@@ -426,6 +426,9 @@ DOMConverter.prototype._HTMLPropertiesToWikiData = function ( elem ) {
 			// XXX: This subsets html DOM
 			if ( ['title'].indexOf(key) != -1 ) {
 				out[key] = attrib.value;
+			} else {
+				// prefix key with 'html/'
+				out['html/' + key] = attrib.value;
 			}
 		}
 	}

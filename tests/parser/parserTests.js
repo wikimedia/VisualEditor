@@ -63,7 +63,7 @@ _import(pj('parser', 'ext.cite.taghook.ref.js'), ['MWRefTagHook']);
 _import(pj('parser', 'mediawiki.HTML5TreeBuilder.node.js'), ['FauxHTML5']);
 _import(pj('parser', 'mediawiki.DOMPostProcessor.js'), ['DOMPostProcessor']);
 
-_import(pj('parser', 'mediawiki.DOMConverter'), ['DOMConverter']);
+_import(pj('parser', 'mediawiki.DOMConverter.js'), ['DOMConverter']);
 
 _import(pj('parser', 'ext.core.QuoteTransformer.js'), ['QuoteTransformer']);
 
