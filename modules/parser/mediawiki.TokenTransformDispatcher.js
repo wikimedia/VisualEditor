@@ -2,7 +2,8 @@
  * expansion. Individual transformations register for the token types they are
  * interested in and are called on each matching token. 
  *
- * A transformer might return null, a single token, or an array of tokens.
+ * A transformer might set TokenContext.token to null, a single token, or an
+ * array of tokens before returning it.
  * - Null removes the token and stops further processing for this token. 
  * - A single token is further processed using the remaining transformations
  *   registered for this token, and finally placed in the output token list. 
@@ -15,6 +16,10 @@
  * token last in its internal accumulator. This setup avoids the need to apply
  * operational-transform-like index transformations when parallel expansions
  * insert tokens in front of other ongoing expansion tasks.
+ *
+ * XXX: I am not completely happy with the mutable TokenContext construct. At
+ * least the token should probably be passed as a separate argument. Also,
+ * integrate the general environment (configuration, cache etc). (gwicke)
  * */
 
 /**
@@ -33,14 +38,14 @@ function TokenTransformDispatcher( callback ) {
 		newline: [],
 		comment: [],
 		end: [], // eof
-		martian: [], // none of the above
+		martian: [], // none of the above (unknown token type)
 		any: []	// all tokens, before more specific handlers are run
 	};
 	this.reset();
 }
 
 /**
- * Reset the internal token and callback state of the
+ * Reset the internal token and outstanding-callback state of the
  * TokenTransformDispatcher, but keep registrations untouched.
  *
  * @method
