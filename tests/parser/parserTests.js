@@ -63,6 +63,8 @@ _import(pj('parser', 'ext.cite.taghook.ref.js'), ['MWRefTagHook']);
 _import(pj('parser', 'mediawiki.HTML5TreeBuilder.node.js'), ['FauxHTML5']);
 _import(pj('parser', 'mediawiki.DOMPostProcessor.js'), ['DOMPostProcessor']);
 
+_import(pj('parser', 'mediawiki.DOMConverter'), ['DOMConverter']);
+
 _import(pj('parser', 'ext.core.QuoteTransformer.js'), ['QuoteTransformer']);
 
 _import(pj('parser', 'ext.Cite.js'), ['Cite']);
@@ -119,6 +121,11 @@ function ParserTests () {
 		},
 		'printwhitelist': {
 			description: 'Print out a whitelist entry for failing tests. Default false.',
+			default: false,
+			boolean: true
+		},
+		'wikidom': {
+			description: 'Print out a WikiDom conversion of the HTML DOM',
 			default: false,
 			boolean: true
 		}
@@ -181,6 +188,8 @@ function ParserTests () {
 
 	this.postProcessor = new DOMPostProcessor();
 
+	this.DOMConverter = new DOMConverter();
+
 	var pt = this;
 
 	// Set up the TokenTransformDispatcher with a callback for the remaining
@@ -196,13 +205,18 @@ function ParserTests () {
 		pt.buildTree( tokens, treeBuilder );
 
 		// Perform post-processing on DOM.
-		pt.postProcessor.doPostProcess(treeBuilder.parser.document);
+		pt.postProcessor.doPostProcess(treeBuilder.document);
 
 		// And serialize the result.
 		var out = treeBuilder.document.body.innerHTML;
 
 		// Finally, check the result vs. the expected result.
 		pt.checkResult( pt.currentItem, out );
+
+		if ( pt.argv.wikidom ) {
+			// Test HTML DOM -> WikiDOM conversion
+			pt.printWikiDom( treeBuilder.document.body );
+		}
 	});
 
 	// Add token transformations..
@@ -223,8 +237,6 @@ function ParserTests () {
 
 	return this;
 }
-
-
 
 
 /**
@@ -517,6 +529,21 @@ ParserTests.prototype.checkResult = function ( item, out ) {
 			console.log( 'PASSED'.green + ': ' + item.title.yellow );
 		}
 	}
+};
+
+
+/**
+ * Print out a WikiDom conversion of the HTML DOM
+ */
+ParserTests.prototype.printWikiDom = function ( body ) {
+	console.log('WikiDom'.cyan + ':');
+	console.log(
+			JSON.stringify(
+				this.DOMConverter.HTMLtoWiki(body),
+				null, 
+				2
+			) + "\n"
+	);
 };
 
 

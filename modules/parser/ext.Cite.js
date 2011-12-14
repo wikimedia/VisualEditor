@@ -257,7 +257,8 @@ Cite.prototype.onReferences = function ( tokenCTX ) {
 				type: 'TAG',
 				name: 'ol',
 				attribs: [
-					['class', 'references']
+					['class', 'references'],
+					['data-object', 'references'] // Object type
 				]
 			}
 		].concat( listItems, { type: 'ENDTAG', name: 'ol' } );

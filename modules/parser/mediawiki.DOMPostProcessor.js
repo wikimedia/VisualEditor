@@ -30,12 +30,18 @@ var isBlock = function isBlock (name) {
 	}
 };
 
+// Quick HACK: define Node constants
+// https://developer.mozilla.org/en/nodeType
+var Node = {
+	TEXT_NODE: 3,
+	COMMENT_NODE: 8
+};
+
 // Wrap all top-level inline elements in paragraphs. This should also be
 // applied inside block-level elements, but in that case the first paragraph
 // usually remains plain inline.
 var process_inlines_in_p = function ( document ) {
-		// document.body does not always work in jsdom, so work around it.
-	var body = document.getElementsByTagName('body')[0],
+	var body = document.body,
 		newP = document.createElement('p'),
 		cnodes = body.childNodes,
 		haveInlines = false,
@@ -50,8 +56,8 @@ var process_inlines_in_p = function ( document ) {
 			ctype = child.nodeType;
 		//console.log(child + ctype);
 		if ((ctype === 3 && (haveInlines || !isElementContentWhitespace(child))) || 
-				(ctype !== 3 && // text
-				 ctype !== 8 && // comment
+				(ctype !== Node.TEXT_NODE &&
+				 ctype !== Node.COMMENT_NODE &&
 				 !isBlock(child.nodeName))) {
 			// text node
 			newP.appendChild(child);
