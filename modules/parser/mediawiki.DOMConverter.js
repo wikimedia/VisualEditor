@@ -52,7 +52,7 @@ DOMConverter.prototype.getHTMLHandlerInfo = function ( nodeName ) {
 			}
 			return res;
 		case 'li':
-		case 'dl':
+		case 'dt':
 		case 'dd':
 			return {
 				handler: this._convertHTMLBranch, 
@@ -63,12 +63,66 @@ DOMConverter.prototype.getHTMLHandlerInfo = function ( nodeName ) {
 				handler: this._convertHTMLLeaf, 
 				type: 'pre'
 			};
+		case 'table':
+			return {
+				handler: this._convertHTMLBranch, 
+				type: 'table'
+			};
+		case 'tbody':
+			return {
+				handler: this._convertHTMLBranch, 
+				type: 'tbody' // not in WikiDom!
+			};
+		case 'tr':
+			return {
+				handler: this._convertHTMLBranch, 
+				type: 'tableRow'
+			};
+		case 'th':
+			return {
+				handler: this._convertHTMLBranch, 
+				type: 'tableHeading'
+			};
+		case 'td':
+			return {
+				handler: this._convertHTMLBranch, 
+				type: 'tableCell'
+			};
+		case 'caption':
+			return {
+				handler: this._convertHTMLBranch, 
+				type: 'caption'
+			};
+		case 'table':
+			return {
+				handler: this._convertHTMLBranch, 
+				type: 'table'
+			};
+		case 'hr':
+			return {
+				handler: this._convertHTMLLeaf, 
+				type: 'horizontalRule' // XXX?
+			};
 		case 'ul':
 		case 'ol':
 		case 'dl':
 			return {
 				handler: this._convertHTMLBranch, 
 				type: 'list'
+			};
+		case 'center':
+			//XXX: center is block-level in HTML, not sure what it should be
+			//in WikiDOM..
+			return {
+				handler: this._convertHTMLBranch, 
+				type: 'center'
+			};
+		case 'blockquote':
+			//XXX: blockquote is block-level in HTML, not sure what it should be
+			//in WikiDOM..
+			return {
+				handler: this._convertHTMLBranch, 
+				type: 'blockquote'
 			};
 		default:
 			console.log( 'HTML to Wiki DOM conversion error. Unsupported node name ' +
@@ -90,6 +144,12 @@ DOMConverter.prototype.getHTMLAnnotationType = function ( nodeName, warn ) {
 			return 'textStyle/span';
 		case 'a':
 			return 'link/unknown'; // XXX: distinguish internal / external etc
+		case 'template':
+			return 'object/template';
+		case 'ref':
+			return 'object/hook';
+		case 'includeonly':
+			return 'object/includeonly'; // XXX
 		default:
 			if ( warn ) {
 				console.log( 'HTML to Wiki DOM conversion error. Unsupported html annotation ' +
@@ -159,6 +219,7 @@ DOMConverter.prototype._convertHTMLBranch = function ( node, offset, type ) {
 	var parNode = null;
 
 	function newPara () {
+		offset = 0;
 		parNode = { 
 			type: 'paragraph', 
 			content: {
@@ -192,7 +253,7 @@ DOMConverter.prototype._convertHTMLBranch = function ( node, offset, type ) {
 					parNode = null;
 					// Call a handler for the particular node type
 					var hi = this.getHTMLHandlerInfo( cnode.nodeName );
-					var res = hi.handler.call(this, cnode, offset + 1, hi.type );
+					var res = hi.handler.call(this, cnode, 0, hi.type );
 					if ( hi.attribs ) {
 						$.extend( res.node.attributes, hi.attribs );
 					}
@@ -230,6 +291,9 @@ DOMConverter.prototype._convertHTMLBranch = function ( node, offset, type ) {
  * @returns {Object} WikiDom object
  */
 DOMConverter.prototype._convertHTMLLeaf = function ( node, offset, type ) {
+	// XXX Does the offset in every leaf start at zero?
+	offset = 0;
+
 	var children = node.childNodes,
 		wnode = {
 			type: type,
