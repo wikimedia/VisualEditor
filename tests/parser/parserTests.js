@@ -199,7 +199,7 @@ function ParserTests () {
 		pt.postProcessor.doPostProcess(treeBuilder.parser.document);
 
 		// And serialize the result.
-		var out = treeBuilder.body().innerHTML;
+		var out = treeBuilder.document.body.innerHTML;
 
 		// Finally, check the result vs. the expected result.
 		pt.checkResult( pt.currentItem, out );

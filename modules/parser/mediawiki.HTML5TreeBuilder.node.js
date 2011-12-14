@@ -62,6 +62,9 @@ FauxHTML5.TreeBuilder.prototype.processToken = function (token) {
 			break;
 		case "END":
 			this.emit('end');
+			// HACK: This should not be needed really.
+			this.document = this.parser.document;
+			this.document.body = this.document.getElementsByTagName('body')[0];
 			break;
 		case "NEWLINE":
 			//this.emit('end');
@@ -72,9 +75,6 @@ FauxHTML5.TreeBuilder.prototype.processToken = function (token) {
 	}
 };
 
-FauxHTML5.TreeBuilder.prototype.body = function () {
-	return this.parser.document.getElementsByTagName('body')[0];
-}
 
 
 if (typeof module == "object") {
