@@ -23,7 +23,7 @@ es.SurfaceView = function( $container, model ) {
 	this.$ = $container
 		.addClass( 'es-surfaceView' )
 		.append( this.documentView.$ );
-	this.$input = $( '<textarea class="es-surfaceView-textarea" />' )
+	this.$input = $( '<textarea class="es-surfaceView-textarea" autocapitalize="off" />' )
 		.appendTo( 'body' );
 	this.$cursor = $( '<div class="es-surfaceView-cursor"></div>' )
 		.appendTo( 'body' );
