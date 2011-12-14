@@ -33,21 +33,21 @@
 				<div class="es-help-shortcuts-title">Clipboard</div>
 				<div class="es-help-shortcut">
 					<span class="es-help-keys">
-						<span class="es-help-key">Ctl <span class="es-help-key-or">or</span> &#8984;</span> +
+						<span class="es-help-key">Ctrl <span class="es-help-key-or">or</span> &#8984;</span> +
 						<span class="es-help-key">C</span>
 					</span>
 					Copy selected text
 				</div>
 				<div class="es-help-shortcut">
 					<span class="es-help-keys">
-						<span class="es-help-key">Ctl <span class="es-help-key-or">or</span> &#8984;</span> +
+						<span class="es-help-key">Ctrl <span class="es-help-key-or">or</span> &#8984;</span> +
 						<span class="es-help-key">X</span>
 					</span>
 					Cut selected text
 				</div>
 				<div class="es-help-shortcut">
 					<span class="es-help-keys">
-						<span class="es-help-key">Ctl <span class="es-help-key-or">or</span> &#8984;</span> +
+						<span class="es-help-key">Ctrl <span class="es-help-key-or">or</span> &#8984;</span> +
 						<span class="es-help-key">V</span>
 					</span>
 					Paste text at the cursor
@@ -55,21 +55,21 @@
 				<div class="es-help-shortcuts-title">History navigation</div>
 				<div class="es-help-shortcut">
 					<span class="es-help-keys">
-						<span class="es-help-key">Ctl <span class="es-help-key-or">or</span> &#8984;</span> +
+						<span class="es-help-key">Ctrl <span class="es-help-key-or">or</span> &#8984;</span> +
 						<span class="es-help-key">Z</span>
 					</span>
 					Undo
 				</div>
 				<div class="es-help-shortcut">
 					<span class="es-help-keys">
-						<span class="es-help-key">Ctl <span class="es-help-key-or">or</span> &#8984;</span> +
+						<span class="es-help-key">Ctrl <span class="es-help-key-or">or</span> &#8984;</span> +
 						<span class="es-help-key">Y</span>
 					</span>
 					Redo
 				</div>
 				<div class="es-help-shortcut">
 					<span class="es-help-keys">
-						<span class="es-help-key">Ctl <span class="es-help-key-or">or</span> &#8984;</span> +
+						<span class="es-help-key">Ctrl <span class="es-help-key-or">or</span> &#8984;</span> +
 						<span class="es-help-key">&#8679;</span> +
 						<span class="es-help-key">Z</span>
 					</span>
@@ -78,21 +78,21 @@
 				<div class="es-help-shortcuts-title">Formatting</div>
 				<div class="es-help-shortcut">
 					<span class="es-help-keys">
-						<span class="es-help-key">Ctl <span class="es-help-key-or">or</span> &#8984;</span> +
+						<span class="es-help-key">Ctrl <span class="es-help-key-or">or</span> &#8984;</span> +
 						<span class="es-help-key">B</span>
 					</span>
 					Make selected text bold
 				</div>
 				<div class="es-help-shortcut">
 					<span class="es-help-keys">
-						<span class="es-help-key">Ctl <span class="es-help-key-or">or</span> &#8984;</span> +
+						<span class="es-help-key">Ctrl <span class="es-help-key-or">or</span> &#8984;</span> +
 						<span class="es-help-key">I</span>
 					</span>
 					Make selected text italic
 				</div>
 				<div class="es-help-shortcut">
 					<span class="es-help-keys">
-						<span class="es-help-key">Ctl <span class="es-help-key-or">or</span> &#8984;</span> +
+						<span class="es-help-key">Ctrl <span class="es-help-key-or">or</span> &#8984;</span> +
 						<span class="es-help-key">K</span>
 					</span>
 					Make selected text a link
@@ -107,14 +107,14 @@
 				</div>
 				<div class="es-help-shortcut">
 					<span class="es-help-keys">
-						<span class="es-help-key">Alt</span> +
+						<span class="es-help-key">Ctrl <span class="es-help-key-or">or</span> &#x2325;</span> +
 						<span class="es-help-key">Arrow</span>
 					</span>
 					Move cursor by words or blocks
 				</div>
 				<div class="es-help-shortcut">
 					<span class="es-help-keys">
-						<span class="es-help-key">Alt</span> +
+						<span class="es-help-key">Ctrl <span class="es-help-key-or">or</span> &#x2325;</span> +
 						<span class="es-help-key">&#8679;</span> +
 						<span class="es-help-key">Arrow</span>
 					</span>
