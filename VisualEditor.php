@@ -57,6 +57,7 @@ $wgResourceModules += array(
 		'dependencies' => array( 
 			'ext.visualEditor.sandbox',
 			'mediawiki.feedback',
+			'mediawiki.Uri',
 		)
 	),
 	'ext.visualEditor.sandbox' => $wgVisualEditorResourceTemplate + array(
