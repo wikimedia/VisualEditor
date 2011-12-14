@@ -203,7 +203,7 @@ function ParserTests () {
 
 		// Build a DOM tree from tokens using the HTML tree builder/parser.
 		pt.buildTree( tokens, treeBuilder );
-
+		
 		// Perform post-processing on DOM.
 		pt.postProcessor.doPostProcess(treeBuilder.document);
 
@@ -447,9 +447,8 @@ ParserTests.prototype.processTest = function (item) {
 		//});
 		//var res = es.HtmlSerializer.stringify(tokens,environment);
 
-		//console.log(JSON.stringify(tokens));
 		//Slightly better token output debugging:
-		//console.log( util.inspect( tokens, false, null ).yellow);	
+		//console.log( util.inspect( res.tokens, false, null ).yellow);	
 
 		// Transform tokens using the TokenTransformDispatcher. When done, the
 		// TokenTransformDispatcher calls buildTree() and checkResult() with the
@@ -457,6 +456,9 @@ ParserTests.prototype.processTest = function (item) {
 
 		// Append the end
 		res.tokens.push({type: 'END'});
+
+		//console.log(JSON.stringify(res.tokens, null, 2));
+		
 		this.tokenDispatcher.transformTokens( res.tokens );
 	}
 };
@@ -554,6 +556,12 @@ ParserTests.prototype.buildTree = function ( tokens, treeBuilder ) {
 	for (var i = 0, length = tokens.length; i < length; i++) {
 		treeBuilder.processToken(tokens[i]);
 	}
+	
+	// FIXME HACK: For some reason the end token is not processed sometimes,
+	// which normally fixes the body reference up.
+	treeBuilder.document.body = treeBuilder.parser
+		.document.getElementsByTagName('body')[0];
+
 };
 
 /**

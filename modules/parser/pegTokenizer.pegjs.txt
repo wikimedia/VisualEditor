@@ -644,7 +644,7 @@ template
     params:(newline? "|" newline? p:template_param { return p })* 
     "}}" {
       var obj = { type: 'TAG', name: 'template', 
-                  attribs: [['target', target]],
+                  attribs: [['data-target', target]],
                   args: {}}
       if (params && params.length) {
           var position = 1;
@@ -659,7 +659,7 @@ template
           }
           // HACK: temporarily also push the args into an attribute
           // (just for debugging)
-          obj.attribs.push(['data-args', JSON.stringify(obj.args)]);
+          obj.attribs.push(['data-json-args', JSON.stringify(obj.args)]);
       }
       // Should actually use a self-closing tag here, but the Node HTML5
       // parser only recognizes known self-closing tags for now, so use an
@@ -687,7 +687,7 @@ tplarg
       };
       if (params && params.length) {
           // HACK, not final.
-          obj.attribs.push(['data-args', JSON.stringify(params)]);
+          obj.attribs.push(['data-json-args', JSON.stringify(params)]);
       }
       return obj;
   }

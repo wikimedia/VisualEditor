@@ -395,7 +395,10 @@ DOMConverter.prototype._HTMLPropertiesToWikiAttributes = function ( elem ) {
 		var attrib = attribs.item(i),
 			key = attrib.name;
 		console.log('key: ' + key);
-		if ( key.match( /^data-/ ) ) {
+		if ( key.match( /^data-json-/ ) ) {
+			// strip data- prefix from data-*
+			out[key.replace( /^data-json-/, '' )] = JSON.parse(attrib.value);
+		} else if ( key.match( /^data-/ ) ) {
 			// strip data- prefix from data-*
 			out[key.replace( /^data-/, '' )] = attrib.value;
 		} else {
@@ -412,7 +415,10 @@ DOMConverter.prototype._HTMLPropertiesToWikiData = function ( elem ) {
 	for ( var i = 0, l = attribs.length; i < l; i++ ) {
 		var attrib = attribs.item(i),
 			key = attrib.name;
-		if ( key.match( /^data-/ ) ) {
+		if ( key.match( /^data-json-/ ) ) {
+			// strip data- prefix from data-*
+			out[key.replace( /^data-json-/, '' )] = JSON.parse(attrib.value);
+		} else if ( key.match( /^data-/ ) ) {
 			// strip data- prefix from data-*
 			out[key.replace( /^data-/, '' )] = attrib.value;
 		} else {

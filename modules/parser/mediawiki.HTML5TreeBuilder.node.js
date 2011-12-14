@@ -25,7 +25,7 @@ FauxHTML5.TreeBuilder.prototype = new events.EventEmitter();
 // html tree builder by emitting the token.
 FauxHTML5.TreeBuilder.prototype.processToken = function (token) {
 	var att = function (maybeAttribs) {
-		if ( $.isArray(maybeAttribs) ) {
+		if ( $.isArray( maybeAttribs ) ) {
 			var atts = [];
 			for(var i = 0, length = maybeAttribs.length; i < length; i++) {
 				var att = maybeAttribs[i];
@@ -62,12 +62,16 @@ FauxHTML5.TreeBuilder.prototype.processToken = function (token) {
 			break;
 		case "END":
 			this.emit('end');
+			console.log("at end..");
 			this.document = this.parser.document;
-			// HACK: This should not be needed really.
-			this.document.body = this.document.getElementsByTagName('body')[0];
+			if ( ! this.document.body ) {
+				// HACK: This should not be needed really.
+				this.document.body = this.parser.document.getElementsByTagName('body')[0];
+			}
 			break;
 		case "NEWLINE":
 			//this.emit('end');
+			this.emit('token', {type: 'Characters', data: "\n"});
 			break;
 		default:
 			console.log("Unhandled token: " + JSON.stringify(token));
