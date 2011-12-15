@@ -709,8 +709,10 @@ template_param_text
 wikilink
   = "[[" 
     ! url
-    target:link_target ltext:("|" lt:link_text { return lt })* "]]" 
-    suffix:(![ \]] text_char)* {
+    target:link_target 
+    ltext:( "|" lt:link_text { return lt } )* 
+    "]]" 
+    suffix:(![ \]] tc:text_char { return tc })* {
       var obj = {
           type: 'TAG',
           name: 'a',
