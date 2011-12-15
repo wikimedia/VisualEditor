@@ -52,7 +52,7 @@ DOMConverter.prototype._getHTMLtoWikiDomHandlerInfo = function ( nodeName ) {
 			return {
 				handler: this._convertHTMLLeaf, 
 				type: 'heading',
-				attribs: nodeName.substr(1)
+				attribs: { level: nodeName.substr(1) }
 			};
 		case 'li':
 		case 'dt':
@@ -434,8 +434,9 @@ DOMConverter.prototype._HTMLPropertiesToWikiData = function ( elem ) {
 	}
 	return out;
 };
-// Attribute map html (tagName, attributeName) pairs to WikiDom names for the
-// same element
+
+// Map HTML (tagName, attributeName) pairs to WikiDom names for the same
+// element
 DOMConverter.prototype._HTMLPropertiesToWikiAttributesMap = {
 	a: { 
 		href: 'title'
