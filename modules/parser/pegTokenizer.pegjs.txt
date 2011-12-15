@@ -630,7 +630,10 @@ urlencoded_char = "%" c0:[0-9a-fA-F] c1:[0-9a-fA-F] {
 //[^][<>"\\x00-\\x20\\x7F\p{Zs}]
 url
   = proto:url_protocol 
-    rest:( [^ :\]\[\n"'<>\x00-\x20\x7f,.&%\u00A0\u1680\u180E\u2000-\u200A\u202F\u205F\u3000] 
+    rest:(  ( !inline_breaks 
+              c:[^ :\]\[\n"'<>\x00-\x20\x7f,.&%\u00A0\u1680\u180E\u2000-\u200A\u202F\u205F\u3000]
+              { return c }
+            )
             / s:[.:,] !(space / eolf) { return s } 
             / htmlentity
             / urlencoded_char
