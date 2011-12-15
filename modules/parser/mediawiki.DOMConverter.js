@@ -37,20 +37,11 @@ DOMConverter.prototype.getHTMLHandlerInfo = function ( nodeName ) {
 		case 'h4':
 		case 'h5':
 		case 'h6':
-			var res = {
+			return {
 				handler: this._convertHTMLLeaf, 
 				type: 'heading',
-				attribs: { }
+				attribs: nodeName.substr(1)
 			};
-			switch ( nodeName.toLowerCase() ) {
-				case 'h1': res.attribs.level = 1; break;
-				case 'h2': res.attribs.level = 2; break;
-				case 'h3': res.attribs.level = 3; break;
-				case 'h4': res.attribs.level = 4; break;
-				case 'h5': res.attribs.level = 5; break;
-				case 'h6': res.attribs.level = 6; break;
-			}
-			return res;
 		case 'li':
 		case 'dt':
 		case 'dd':
@@ -92,11 +83,6 @@ DOMConverter.prototype.getHTMLHandlerInfo = function ( nodeName ) {
 			return {
 				handler: this._convertHTMLBranch, 
 				type: 'caption'
-			};
-		case 'table':
-			return {
-				handler: this._convertHTMLBranch, 
-				type: 'table'
 			};
 		case 'hr':
 			return {
