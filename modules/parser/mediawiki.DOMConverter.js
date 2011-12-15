@@ -35,7 +35,9 @@ DOMConverter.prototype.HTMLtoWiki = function ( node ) {
  * and optionally 'attribs', WikiDom-specific attributes implied by the element name.
  */
 DOMConverter.prototype._getHTMLtoWikiDomHandlerInfo = function ( nodeName ) {
+	var wikiName = '';
 	switch ( nodeName.toLowerCase() ) {
+		// leaf nodes first, with fall-through to last leaf..
 		case 'p':
 			return {
 				handler: this._convertHTMLLeaf, 
@@ -121,7 +123,7 @@ DOMConverter.prototype._getHTMLtoWikiDomHandlerInfo = function ( nodeName ) {
 				type: 'blockquote'
 			};
 		default:
-			console.log( 'HTML to Wiki DOM conversion error. Unsupported node name ' +
+			console.log( 'HTML to Wiki DOM conversion warning: Unknown node name ' +
 					nodeName );
 			return {
 				handler: this._convertHTMLBranch, 
@@ -139,8 +141,9 @@ DOMConverter.prototype._getHTMLtoWikiDomHandlerInfo = function ( nodeName ) {
  * @returns {String} WikiDom annotation type or undefined if element name does
  * not map to an annotation.
  */
-DOMConverter.prototype._getWikiDomAnnotationType = function ( nodeName, warn ) {
-	switch ( nodeName.toLowerCase() ) {
+DOMConverter.prototype._getWikiDomAnnotationType = function ( node, warn ) {
+	var name = node.nodeName.toLowerCase();
+	switch ( name ) {
 		case 'i':
 			return 'textStyle/italic';
 		case 'b':
@@ -148,7 +151,13 @@ DOMConverter.prototype._getWikiDomAnnotationType = function ( nodeName, warn ) {
 		case 'span':
 			return 'textStyle/span';
 		case 'a':
-			return 'link/unknown'; // XXX: distinguish internal / external etc
+			var atype = node.getAttribute( 'data-type' );
+			if ( atype ) {
+				return 'link/' + atype;
+			} else {
+				return 'link/unknown';
+			}
+			break; // make JSHint happy
 		case 'template':
 			return 'object/template';
 		case 'ref':
@@ -157,7 +166,7 @@ DOMConverter.prototype._getWikiDomAnnotationType = function ( nodeName, warn ) {
 			return 'object/includeonly'; // XXX
 		default:
 			if ( warn ) {
-				console.log( 'HTML to Wiki DOM conversion error. Unsupported html annotation ' +
+				console.log( 'HTML to Wiki DOM conversion warning: Unsupported html annotation ' +
 						nodeName );
 			}
 			return undefined;
@@ -201,7 +210,7 @@ DOMConverter.prototype._convertHTMLBranch = function ( node, type ) {
 		switch ( cnode.nodeType ) {
 			case Node.ELEMENT_NODE:
 				// Check if element type is an annotation
-				var annotationtype = this._getWikiDomAnnotationType( cnode.nodeName );
+				var annotationtype = this._getWikiDomAnnotationType( cnode );
 				if ( annotationtype ) {
 					if ( !parNode ) {
 						newPara();
@@ -274,7 +283,7 @@ DOMConverter.prototype._convertHTMLLeaf = function ( node, type ) {
 		switch ( cnode.nodeType ) {
 			case Node.ELEMENT_NODE:
 				// Call a handler for the particular annotation node type
-				var annotationtype = this._getWikiDomAnnotationType( cnode.nodeName, true );
+				var annotationtype = this._getWikiDomAnnotationType( cnode, true );
 				if ( annotationtype ) {
 					var res = this._convertHTMLAnnotation( cnode, offset, annotationtype );
 					//console.log( 'res leaf: ' + JSON.stringify(res, null, 2));
@@ -332,7 +341,7 @@ DOMConverter.prototype._convertHTMLAnnotation = function ( node, offset, type ) 
 		switch ( cnode.nodeType ) {
 			case Node.ELEMENT_NODE:
 				// Call a handler for the particular annotation node type
-				var annotationtype = this._getWikiDomAnnotationType(cnode.nodeName, true);
+				var annotationtype = this._getWikiDomAnnotationType(cnode, true);
 				if ( annotationtype ) {
 					var res = this._convertHTMLAnnotation( cnode, offset, annotationtype );
 					//console.log( 'res annotations 2: ' + JSON.stringify(res, null, 2));
@@ -389,13 +398,24 @@ DOMConverter.prototype._HTMLPropertiesToWikiAttributes = function ( elem ) {
 	return out;
 };
 
+/**
+ * Convert HTML element attributes into WikiDom annotation data attributes.
+ *
+ * @param {Object} DOM node
+ * @return {Object} data object
+ */
 DOMConverter.prototype._HTMLPropertiesToWikiData = function ( elem ) {
 	var attribs = elem.attributes,
+		name = elem.tagName.toLowerCase();
 		out = {};
 	for ( var i = 0, l = attribs.length; i < l; i++ ) {
 		var attrib = attribs.item(i),
 			key = attrib.name;
-		if ( key.match( /^data-json-/ ) ) {
+		
+		if ( this._HTMLPropertiesToWikiAttributesMap[name] &&
+				this._HTMLPropertiesToWikiAttributesMap[name][key] ) {
+			out[this._HTMLPropertiesToWikiAttributesMap[name][key]] = attrib.value;
+		} else if ( key.match( /^data-json-/ ) ) {
 			// strip data-json- prefix and decode
 			out[key.replace( /^data-json-/, '' )] = JSON.parse(attrib.value);
 		} else if ( key.match( /^data-/ ) ) {
@@ -414,6 +434,14 @@ DOMConverter.prototype._HTMLPropertiesToWikiData = function ( elem ) {
 	}
 	return out;
 };
+// Attribute map html (tagName, attributeName) pairs to WikiDom names for the
+// same element
+DOMConverter.prototype._HTMLPropertiesToWikiAttributesMap = {
+	a: { 
+		href: 'title'
+	}
+};
+
 
 // Quick HACK: define Node constants locally
 // https://developer.mozilla.org/en/nodeType

@@ -592,11 +592,17 @@ extlink
             text = [{type: 'TEXT', value: "[" + linkCount + "]"}];
             linkCount++;
         }
-        return [ { type: 'TAG', 
-            name: 'a',
-            attribs: [['href', target]] } ]
-                .concat( text 
-                        , [{type: 'ENDTAG', name: 'a'}]);
+        return [ 
+            { 
+                type: 'TAG', 
+                    name: 'a',
+                    attribs: [
+                        ['href', target],
+                        ['data-type', 'external']
+                    ], 
+            } 
+        ].concat( text 
+                , [{type: 'ENDTAG', name: 'a'}]);
     }
   / "[" & { clearFlag('extlink'); return false; }
 
@@ -719,7 +725,9 @@ wikilink
       var obj = {
           type: 'TAG',
           name: 'a',
-          attribs: [['data-type', 'internal']]
+          attribs: [
+              ['data-type', 'internal']
+          ]
       };
       obj.attribs.push(['href', target]);
       if (ltext && ltext.length) {
