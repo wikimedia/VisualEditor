@@ -8,7 +8,7 @@ function DOMConverter () {
 }
 
 /**
- * Convert a HTML DOM to WikiDom
+ * Convert HTML DOM to WikiDom
  *
  * @method
  * @param {Object} root of HTML DOM (usually the body element)
@@ -355,6 +355,13 @@ DOMConverter.prototype._convertHTMLAnnotation = function ( node, offset, type ) 
 				break;
 		}
 	}
+	// Insert one char if no text was returned to satisfy WikiDom's
+	// 1-char-minimum width for annotations. Feels a bit icky, but likely
+	// simplifies editor internals.
+	if ( text === '' ) {
+		text = ' ';
+		offset++;
+	}
 	annotations[0].range.end = offset;
 	return	{
 		text: text,
@@ -369,10 +376,10 @@ DOMConverter.prototype._HTMLPropertiesToWikiAttributes = function ( elem ) {
 		var attrib = attribs.item(i),
 			key = attrib.name;
 		if ( key.match( /^data-json-/ ) ) {
-			// strip data- prefix from data-*
+			// strip data- prefix and decode
 			out[key.replace( /^data-json-/, '' )] = JSON.parse(attrib.value);
 		} else if ( key.match( /^data-/ ) ) {
-			// strip data- prefix from data-*
+			// strip data- prefix
 			out[key.replace( /^data-/, '' )] = attrib.value;
 		} else {
 			// prefix html properties with html/
@@ -389,10 +396,10 @@ DOMConverter.prototype._HTMLPropertiesToWikiData = function ( elem ) {
 		var attrib = attribs.item(i),
 			key = attrib.name;
 		if ( key.match( /^data-json-/ ) ) {
-			// strip data- prefix from data-*
+			// strip data-json- prefix and decode
 			out[key.replace( /^data-json-/, '' )] = JSON.parse(attrib.value);
 		} else if ( key.match( /^data-/ ) ) {
-			// strip data- prefix from data-*
+			// strip data- prefix
 			out[key.replace( /^data-/, '' )] = attrib.value;
 		} else {
 			// pass through a few whitelisted keys
@@ -408,7 +415,7 @@ DOMConverter.prototype._HTMLPropertiesToWikiData = function ( elem ) {
 	return out;
 };
 
-// Quick HACK: define Node constants
+// Quick HACK: define Node constants locally
 // https://developer.mozilla.org/en/nodeType
 var Node = {
 	ELEMENT_NODE: 1,
