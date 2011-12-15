@@ -1027,7 +1027,7 @@ table_row
 
 table_data 
   = //& { dp("table_data enter, pos=" + pos + input.substr(pos,10)); return true; }
-	n:("||" { return [] } / nt:newlineToken "|" { return nt }) 
+	n:("||" { return [] } / nt:newlineToken ("|" / !'!') { return nt }) 
     ! [}+-]
     //& { dp('before attrib, pos=' + pos); return true; }
     a:(as:generic_attribute+ space* "|" !"|" { return as } )?
