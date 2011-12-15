@@ -7,24 +7,34 @@
 function DOMConverter () {
 }
 
-// Quick HACK: define Node constants
-// https://developer.mozilla.org/en/nodeType
-var Node = {
-	ELEMENT_NODE: 1,
-    ATTRIBUTE_NODE: 2,
-    TEXT_NODE: 3,
-    CDATA_SECTION_NODE: 4,
-    ENTITY_REFERENCE_NODE: 5,
-    ENTITY_NODE: 6,
-    PROCESSING_INSTRUCTION_NODE: 7,
-    COMMENT_NODE: 8,
-    DOCUMENT_NODE: 9,
-    DOCUMENT_TYPE_NODE: 10,
-    DOCUMENT_FRAGMENT_NODE: 11,
-    NOTATION_NODE: 12
+/**
+ * Convert a HTML DOM to WikiDom
+ *
+ * @method
+ * @param {Object} root of HTML DOM (usually the body element)
+ * @returns {Object} WikiDom representation
+ */
+DOMConverter.prototype.HTMLtoWiki = function ( node ) {
+	return this._convertHTMLBranch( node, 'document' ).node;
 };
 
-DOMConverter.prototype.getHTMLHandlerInfo = function ( nodeName ) {
+
+/* Private stuff */
+
+/**
+ * Map an HTML node name to (handler, wikiDomName [, attribs]). Only
+ * non-annotation html elements are handled here. The conversion should thus
+ * use this._getWikiDomAnnotationType first to check if the element is actually
+ * an annotation.
+ *
+ * @static
+ * @method
+ * @param {String} nodeName, the element's nodeName.
+ * @returns {Object} with keys 'handler' (one of the _convertHTMLLeaf and
+ * _convertHTMLBranch functions), 'type' (the name of this element in WikiDom)
+ * and optionally 'attribs', WikiDom-specific attributes implied by the element name.
+ */
+DOMConverter.prototype._getHTMLtoWikiDomHandlerInfo = function ( nodeName ) {
 	switch ( nodeName.toLowerCase() ) {
 		case 'p':
 			return {
@@ -120,7 +130,16 @@ DOMConverter.prototype.getHTMLHandlerInfo = function ( nodeName ) {
 	}
 };
 
-DOMConverter.prototype.getHTMLAnnotationType = function ( nodeName, warn ) {
+/**
+ * Map HTML element names to WikiDom annotation types or undefined.
+ *
+ * @param {String} nodeName, the HTML element name
+ * @param {Boolean} warn (optional), enable warnings for non-annotation
+ * element types
+ * @returns {String} WikiDom annotation type or undefined if element name does
+ * not map to an annotation.
+ */
+DOMConverter.prototype._getWikiDomAnnotationType = function ( nodeName, warn ) {
 	switch ( nodeName.toLowerCase() ) {
 		case 'i':
 			return 'textStyle/italic';
@@ -145,47 +164,6 @@ DOMConverter.prototype.getHTMLAnnotationType = function ( nodeName, warn ) {
 	}
 };
 
-/**
- * Convert a HTML DOM to WikiDom
- *
- * @method
- * @param {Object} root of HTML DOM (usually the body element)
- * @returns {Object} WikiDom version
- */
-DOMConverter.prototype.HTMLtoWiki = function ( node ) {
-	var children = node.childNodes,
-		out = {
-			type: 'document',
-			children: []
-		};
-	for ( var i = 0, l = children.length; i < l; i++ ) {
-		var cnode = children[i];
-		switch ( cnode.nodeType ) {
-			case Node.ELEMENT_NODE:
-				// Call a handler for the particular node type
-				var hi = this.getHTMLHandlerInfo( cnode.nodeName );
-				var res = hi.handler.call(this, cnode, hi.type );
-				if ( hi.attribs ) {
-					$.extend( res.node.attributes, hi.attribs );
-				}
-				out.children.push( res.node );
-				break;
-			case Node.TEXT_NODE:
-				// Add text as content, and increment offset
-				// BUT: Should not appear at toplevel!
-				break;
-			case Node.COMMENT_NODE:
-				// Add a comment annotation to which text? Not clear how this
-				// can be represented in WikiDom.
-				break;
-			default:
-				console.log( "HTML to Wiki DOM conversion error. Unhandled node type " + 
-						cnode.innerHTML );
-				break;
-		}
-	}
-	return out;
-};
 
 /**
  * Private HTML branch node handler
@@ -223,7 +201,7 @@ DOMConverter.prototype._convertHTMLBranch = function ( node, type ) {
 		switch ( cnode.nodeType ) {
 			case Node.ELEMENT_NODE:
 				// Check if element type is an annotation
-				var annotationtype = this.getHTMLAnnotationType( cnode.nodeName );
+				var annotationtype = this._getWikiDomAnnotationType( cnode.nodeName );
 				if ( annotationtype ) {
 					if ( !parNode ) {
 						newPara();
@@ -240,7 +218,7 @@ DOMConverter.prototype._convertHTMLBranch = function ( node, type ) {
 					// Close last paragraph, if still open.
 					parNode = null;
 					// Call a handler for the particular node type
-					var hi = this.getHTMLHandlerInfo( cnode.nodeName );
+					var hi = this._getHTMLtoWikiDomHandlerInfo( cnode.nodeName );
 					res = hi.handler.call(this, cnode, hi.type );
 					if ( hi.attribs ) {
 						$.extend( res.node.attributes, hi.attribs );
@@ -296,7 +274,7 @@ DOMConverter.prototype._convertHTMLLeaf = function ( node, type ) {
 		switch ( cnode.nodeType ) {
 			case Node.ELEMENT_NODE:
 				// Call a handler for the particular annotation node type
-				var annotationtype = this.getHTMLAnnotationType( cnode.nodeName, true );
+				var annotationtype = this._getWikiDomAnnotationType( cnode.nodeName, true );
 				if ( annotationtype ) {
 					var res = this._convertHTMLAnnotation( cnode, offset, annotationtype );
 					//console.log( 'res leaf: ' + JSON.stringify(res, null, 2));
@@ -327,6 +305,15 @@ DOMConverter.prototype._convertHTMLLeaf = function ( node, type ) {
 	};
 };
 
+/**
+ * Private: Convert an HTML element to an annotation
+ *
+ * @param {Object} HTML element node
+ * @offset {Int} plain-text offset within leaf node
+ * @type {String} type of annotation returned by _getWikiDomAnnotationType
+ * @return {Object} {text: extracted plain text, annotations: {Array} of
+ * annotation nodes}
+ */
 DOMConverter.prototype._convertHTMLAnnotation = function ( node, offset, type ) {
 	var children = node.childNodes,
 		text = '',
@@ -345,7 +332,7 @@ DOMConverter.prototype._convertHTMLAnnotation = function ( node, offset, type ) 
 		switch ( cnode.nodeType ) {
 			case Node.ELEMENT_NODE:
 				// Call a handler for the particular annotation node type
-				var annotationtype = this.getHTMLAnnotationType(cnode.nodeName, true);
+				var annotationtype = this._getWikiDomAnnotationType(cnode.nodeName, true);
 				if ( annotationtype ) {
 					var res = this._convertHTMLAnnotation( cnode, offset, annotationtype );
 					//console.log( 'res annotations 2: ' + JSON.stringify(res, null, 2));
@@ -419,6 +406,23 @@ DOMConverter.prototype._HTMLPropertiesToWikiData = function ( elem ) {
 		}
 	}
 	return out;
+};
+
+// Quick HACK: define Node constants
+// https://developer.mozilla.org/en/nodeType
+var Node = {
+	ELEMENT_NODE: 1,
+    ATTRIBUTE_NODE: 2,
+    TEXT_NODE: 3,
+    CDATA_SECTION_NODE: 4,
+    ENTITY_REFERENCE_NODE: 5,
+    ENTITY_NODE: 6,
+    PROCESSING_INSTRUCTION_NODE: 7,
+    COMMENT_NODE: 8,
+    DOCUMENT_NODE: 9,
+    DOCUMENT_TYPE_NODE: 10,
+    DOCUMENT_FRAGMENT_NODE: 11,
+    NOTATION_NODE: 12
 };
 
 
