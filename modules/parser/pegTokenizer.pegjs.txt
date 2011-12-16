@@ -1054,7 +1054,7 @@ table_data
 
 table_header
   = n:("!!" { return [] } / nl:newlineToken "!" { return nl }) 
-    a:(as:generic_attribute+ "!" !"!" { return as } )?
+    a:(as:generic_attribute+ "|" !"|" { return as } )?
      c:inline {
          if ( a == '' ) {
              a = [];
