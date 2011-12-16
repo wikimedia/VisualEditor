@@ -1019,7 +1019,7 @@ table_body
   }
 
 table_firstrow 
-  = td:(table_data / table_header)+ { 
+  = td:(table_data / table_heading)+ { 
       //dp('firstrow: ' + pp(td));
       return [{ type: 'TAG', name: 'tr' }]
              .concat(td, [{type: 'ENDTAG', name: 'tr'}]);
@@ -1028,7 +1028,7 @@ table_firstrow
 table_row 
   = //& { dp("table row enter"); return true; }
   n:newlineToken
-    "|-" thtd_attribs? space* td:(table_data / table_header)* { 
+    "|-" thtd_attribs? space* td:(table_data / table_heading)* { 
         return n.concat([{type: 'TAG', name: 'tr'}]
 					   , td, [{type: 'ENDTAG', name: 'tr'}]);
     }
@@ -1052,7 +1052,7 @@ table_data
 					   , td, [{type: 'ENDTAG', name: 'td'}] );
     }
 
-table_header
+table_heading
   = n:("!!" { return [] } / nl:newlineToken "!" { return nl }) 
     a:(as:generic_attribute+ "|" !"|" { return as } )?
      c:inline {
