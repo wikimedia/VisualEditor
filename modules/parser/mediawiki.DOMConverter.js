@@ -215,8 +215,7 @@ DOMConverter.prototype._convertHTMLBranch = function ( node, type ) {
 					if ( !parNode ) {
 						newPara();
 					}
-					offset = 0;
-					res = this._convertHTMLAnnotation( cnode, 0, annotationtype );
+					res = this._convertHTMLAnnotation( cnode, offset, annotationtype );
 					//console.log( 'res leaf: ' + JSON.stringify(res, null, 2));
 					offset += res.text.length;
 					parNode.content.text += res.text;
