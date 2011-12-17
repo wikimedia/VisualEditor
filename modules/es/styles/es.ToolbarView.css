@@ -94,6 +94,9 @@
 	filter:alpha(opacity=25);
 	opacity: 0.25;
 }
+.es-toolbarButtonTool-disabled:hover {
+        border-color: transparent !important;
+}
 .es-toolbarButtonTool-clear:before {
 	background-image: url(../images/clear.png);
 }
