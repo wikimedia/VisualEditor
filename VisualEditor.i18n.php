@@ -222,6 +222,7 @@ $messages['ms'] = array(
 
 /** Dutch (Nederlands)
  * @author SPQRobin
+ * @author Saruman
  * @author Siebrand
  */
 $messages['nl'] = array(
@@ -229,6 +230,10 @@ $messages['nl'] = array(
 	'visualeditorsandbox' => 'Testruimte voor Vereenvoudigde tekstverwerker',
 	'visualeditor-desc' => 'Vereenvoudigde tekstverwerker voor MediaWiki',
 	'visualeditor-sandbox-title' => 'Testruimte voor Vereenvoudigde tekstverwerker',
+	'visualeditor-tooltip-wikitext' => 'Omschakelen van wikitekst-view',
+	'visualeditor-tooltip-json' => 'Omschakelen van JSON-view',
+	'visualeditor-tooltip-html' => 'Omschakelen van HTML-view',
+	'visualeditor-tooltip-render' => 'Omschakelen van voorvertoning',
 	'visualeditor-feedback-prompt' => 'Terugkoppeling achterlaten',
 );
 
@@ -256,6 +261,24 @@ $messages['pl'] = array(
 $messages['ru'] = array(
 	'visualeditor' => 'VisualEditor',
 	'visualeditorsandbox' => 'Песочница для визуального редактора',
+);
+
+/** Vietnamese (Tiếng Việt)
+ * @author Minh Nguyen
+ */
+$messages['vi'] = array(
+	'visualeditor' => 'Trình soạn thị giác',
+	'visualeditorsandbox' => 'Chỗ thử Trình soạn thị giác',
+	'visualeditor-desc' => 'Trình soạn thị giác MediaWiki',
+	'visualeditor-sandbox-title' => 'Chỗ thử Trình soạn thị giác',
+	'visualeditor-tooltip-wikitext' => 'Bật/tắt chế độ văn bản wiki',
+	'visualeditor-tooltip-json' => 'Bật/tắt chế độ JSON',
+	'visualeditor-tooltip-html' => 'Bật/tắt chế độ HTML',
+	'visualeditor-tooltip-render' => 'Bật/tắt xem thử',
+	'visualeditor-tooltip-history' => 'Bật/tắt lịch sử thay đổi',
+	'visualeditor-tooltip-help' => 'Bật/tắt trợ giúp',
+	'visualeditor-feedback-prompt' => 'Gửi phản hồi',
+	'visualeditor-feedback-dialog-title' => 'Gửi phản hồi về chỗ thử Trình soạn thị giác',
 );
 
 /** Simplified Chinese (‪中文(简体)‬)
