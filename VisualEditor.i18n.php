@@ -234,7 +234,10 @@ $messages['nl'] = array(
 	'visualeditor-tooltip-json' => 'Omschakelen van JSON-view',
 	'visualeditor-tooltip-html' => 'Omschakelen van HTML-view',
 	'visualeditor-tooltip-render' => 'Omschakelen van voorvertoning',
+	'visualeditor-tooltip-history' => 'Transactiegeschiedenis weergeven of verbergen',
+	'visualeditor-tooltip-help' => 'Hulp weergeven of verbergen',
 	'visualeditor-feedback-prompt' => 'Terugkoppeling achterlaten',
+	'visualeditor-feedback-dialog-title' => 'Terugkoppeling geven over de visuele tekstverwerker',
 );
 
 /** Polish (Polski)
