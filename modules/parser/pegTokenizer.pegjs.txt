@@ -342,6 +342,8 @@ optionalSpaceToken
 
 // Start of line
 sol = (newline / & { return pos === 0; } { return true; }) 
+      // Eat multi-line comments, so that syntax after still matches as if it
+      // was actually preceded by a newline
       cn:(c:comment n:newline? { 
                 if ( n !== '' ) {
                     return [c, {type: 'TEXT', value: n}];
@@ -349,8 +351,21 @@ sol = (newline / & { return pos === 0; } { return true; })
                     return [c];
                 }
       }
-      )* {
-          return [{type: 'NEWLINE'}].concat(cn);
+      )*
+      // Eat includeonly/noinclude at start of line, so that start-of-line
+      // syntax after it still matches
+      ni:(space* "<" c:"/"? t:("includeonly" / "noinclude") ">" {return [c, t]} )?
+      {
+          var niToken = [];
+          if ( ni !== '') {
+              if ( ni[0] === '/' ) {
+                  niToken = [{type: 'ENDTAG', name: ni[1]}];
+              } else {
+                  niToken = [{type: 'TAG', name: ni[1]}];
+              }
+          }
+                  
+          return [{type: 'NEWLINE'}].concat(cn, niToken);
       }
 
 eof = & { return isEOF(pos); } { return true; }
@@ -419,9 +434,6 @@ block_line
   / pre
 
 
-
-
-// TODO: convert inline content to annotations!
 para
   = s1:sol s2:sol c:inlineline { 
       return s1.concat(s2, [{type: 'TAG', name: 'p'}], c); 
