@@ -205,6 +205,7 @@
     };
     var clearFlag = function(flag) {
         syntaxFlags[flag]--;
+        return false;
     };
 
     // Start position of top-level block
@@ -341,16 +342,16 @@ optionalSpaceToken
 
 
 // Start of line
-sol = (newline / & { return pos === 0; } { return true; }) 
+sol = nl:(newlineToken / & { return pos === 0; } { return [] }) 
       // Eat multi-line comments, so that syntax after still matches as if it
       // was actually preceded by a newline
-      cn:(c:comment n:newline? { 
+      cn:( c:comment n:newline? { 
                 if ( n !== '' ) {
                     return [c, {type: 'TEXT', value: n}];
                 } else {
                     return [c];
                 }
-      }
+            }
       )*
       // Eat includeonly/noinclude at start of line, so that start-of-line
       // syntax after it still matches
@@ -365,7 +366,7 @@ sol = (newline / & { return pos === 0; } { return true; })
               }
           }
                   
-          return [{type: 'NEWLINE'}].concat(cn, niToken);
+          return nl.concat(cn, niToken);
       }
 
 eof = & { return isEOF(pos); } { return true; }
@@ -402,13 +403,13 @@ block
   / bt:block_tag { return [bt] } // avoid a paragraph if we know that the line starts with a block tag
   / para
   / inlineline // includes generic tags; wrapped into paragraphs in DOM postprocessor
-  / s:sol { 
+  / s:sol /*{ 
           if (s) {
               return [s, {type: 'NEWLINE'}]; 
           } else {
               return [{type: 'NEWLINE'}]; 
           }
-      }
+      }*/
 
 block_lines
   = s:sol 
@@ -422,7 +423,8 @@ block_lines
 // Block structures with start-of-line wiki syntax
 block_line
   = h
-  / table
+  /// table
+  / & [{}|] tl:table_lines { return tl; }
   / lists
   // tag-only lines should not trigger pre
   / st:optionalSpaceToken
@@ -450,7 +452,10 @@ inline_breaks
         return true; 
       }
     & { return syntaxFlags['table']; } 
-    a:(newline [!|] / '||' / '!!' / '|}') { dp("table break" + pp(a) + pos); return true; }
+    ( a:(newline [!|] / '||' / '!!' / '|}') { dp("table break" + pp(a) + pos); return true; }
+      / & { return syntaxFlags['tableCellArg'] }
+        "|" { return true }
+    )
   / & { return (syntaxFlags['colon'] && 
           ! syntaxFlags.extlink && // example: ; [[Link:Term]] : Definition
           ! syntaxFlags.linkdesc); } ":" { return true; }
@@ -910,11 +915,15 @@ generic_attribute_name
   }
 
 generic_attribute_value
-  = "=" space* v:att_value {return v}
+  = "=" space* v:att_value { 
+      return v; 
+  }
 
 // XXX: attributes can contain templates and template args!!
 att_value
-  = t:[^ \t'"<>='\n]+ { return t.join(''); }
+  = t:(!inline_breaks c:[^ \t'"<>='\n] { return c } )+ { 
+        return t.join(''); 
+    }
     // XXX: is "\"" also valid html? or just Wikitext?
   / "'" t:[^'>]* "'" { return unquote("'", t.join('')); }
   / '"' t:[^">]* '"' { return unquote('"', t.join('')); }
@@ -972,8 +981,125 @@ dtdd
 
 list_char = [*#:;]
 
+/* split up table handling into individual tokens */
 
-/* Tables */
+table_lines
+  = & { return setFlag('table'); }
+    tl:table_line 
+    tls:( s:sol tl2:table_line { return s.concat(tl2); } )* {
+        clearFlag('table');
+        //console.log('table_lines: ' + pp(tl.concat(tls)));
+        return tl.concat( tls );
+    }
+  / & { return clearFlag('table'); }
+
+// Make sure this is only active at start-of-line!
+table_line
+  = table_start_tag
+  / table_row_tag
+  / table_data_tags
+  / table_heading_tags
+  / table_caption_tag
+  / table_end_tag
+
+table_start_tag
+  = "{|"
+    ta:generic_attribute* 
+    space*
+    te:table_end_tag? // can occur somewhere in the middle of the line too
+    { 
+        var tok = [{type: 'TAG', name: 'table'}];
+        if ( ta )
+            tok[0].attribs = ta;
+        if ( te )
+            tok = tok.concat(te);
+        return tok;
+    }
+
+table_caption_tag
+  = "|+" 
+    c:inline* { 
+        return [{type: 'TAG', name: 'caption'}]
+                    .concat( c, [{type: 'ENDTAG', name: 'caption'}]);
+    }
+
+
+// Only add table rows directly to start-of-line productions, so we get
+// implicit rows!
+table_row_tag
+  = //& { console.log("table row enter"); return true; }
+    "|-"
+    a:generic_attribute*
+    space*
+    { 
+        // We rely on our tree builder to close the row as needed. This is
+        // needed to support building tables from fragment templates with
+        // individual cells or rows.
+        return [{type: 'TAG', name: 'tr', attribs: a}];
+    }
+
+table_data_tags
+  = //("|" / !'!') // move the missing-'|' case to table_row_tag!
+    "|"
+    td:table_data_tag
+    tds:( "||" tdt:table_data_tag { return tdt } )* {
+        return td.concat(tds);
+    }
+
+table_data_tag
+  = //& { dp("table_data enter, pos=" + pos + input.substr(pos,10)); return true; }
+    ! [}+-]
+    //& { dp('before attrib, pos=' + pos); return true; }
+    a:table_cell_args?
+    //& { dp('past attrib, pos=' + pos); return true; }
+    //& { console.log("past attrib, pos=" + pos + input.substr(pos,10)); return true; }
+    // use inline_breaks to break on tr etc
+    td:( !inline_breaks 
+         //& { dp("table_data 2, pos=" + pos + input.substr(pos,10)); return true; }
+         b:block { return b } )* 
+    { 
+        if ( a == '' ) {
+            a = [];
+        }
+        //dp("table data result: " + pp(td) + ", attribts: " + pp(a));
+        return [{ type: 'TAG', name: 'td', attribs: a}]
+                    .concat( td, [{type: 'ENDTAG', name: 'td'}] );
+    }
+
+table_heading_tags
+  = "!"
+    th:table_heading_tag
+    ths:( "!!" tht:table_heading_tag  { return tht } )* {
+        return th.concat(ths);
+    }
+
+table_heading_tag
+  = a:table_cell_args?
+    c:inline {
+         if ( a == '' ) {
+             a = [];
+         }
+         return [{type: 'TAG', name: 'th', attribs: a}]
+						.concat( c, [{type: 'ENDTAG', name: 'th'}] );
+     }
+
+table_end_tag
+  = "|}" { 
+      var tok = [{type: 'ENDTAG', name: 'table'}];
+	  return tok;
+  }
+
+table_cell_args
+  = & { return setFlag('tableCellArg'); }
+    as:generic_attribute+ space* "|" !"|" { 
+        clearFlag('tableCellArg');
+        return as;
+    }
+    / & { return clearFlag('tableCellArg'); }
+
+
+
+/* Tables, full-table version (no support for table fragments from templates) */
 table 
   = tas:table_start space* c:table_caption? b:table_body? te:table_end { 
       var res = {type: 'TAG', name: 'table'}
@@ -1009,9 +1135,6 @@ table_start
         / & { clearFlag('table'); return false; } { return null; }
     ) { return res }
 
-table_attribs 
- = text / ! inline_breaks !newline ![|] c:. { return c }
-
 table_caption 
   = n:newlineToken
     "|+" c:inline* { 
@@ -1040,7 +1163,10 @@ table_firstrow
 table_row 
   = //& { dp("table row enter"); return true; }
   n:newlineToken
-    "|-" thtd_attribs? space* td:(table_data / table_heading)* { 
+    "|-" 
+    a:(as:generic_attribute+ space* "|" !"|" { return as } )?
+    space* 
+    td:(table_data / table_heading)* { 
         return n.concat([{type: 'TAG', name: 'tr'}]
 					   , td, [{type: 'ENDTAG', name: 'tr'}]);
     }

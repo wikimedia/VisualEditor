@@ -29,6 +29,13 @@ testWhiteList["Multiplication table"] = "<table border=\"1\" cellpadding=\"2\"><
 
 testWhiteList["Nested table"] = "<table border=\"1\"><tbody><tr><td> α</td><td><table bgcolor=\"#ABCDEF\" border=\"2\"><tbody><tr><td>nested</td></tr><tr><td>table</td></tr></tbody></table></td><td>the original table again</td></tr></tbody></table>";
 
+// Very minor whitespace difference at end of cell (MediaWiki inserts a
+// newline before the close tag even if there was no trailing space in the cell)
+testWhiteList["Table rowspan"] = "<table border=\"1\" data-sourcePos=\"0:121\"><tbody><tr><td> Cell 1, row 1 </td><td rowspan=\"2\"> Cell 2, row 1 (and 2) </td><td> Cell 3, row 1 </td></tr><tr><td> Cell 1, row 2 </td><td> Cell 3, row 2 </td></tr></tbody></table>";
+
+// Inter-element whitespace only
+testWhiteList["Indented table markup mixed with indented pre content (proposed in bug 6200)"] = "   \n\n<table><tbody><tr><td><pre>\nText that should be rendered preformatted\n</pre></td></tr></tbody></table>";
+
 
 
 /* Missing token transform functionality */

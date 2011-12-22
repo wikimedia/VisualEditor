@@ -178,7 +178,7 @@ TokenTransformDispatcher.prototype._transformTagToken = function ( tokenCTX ) {
 	return tokenCTX;
 };
 
-/* Call all transformers on other token types.
+/* Call all transformers on non-tag token types.
  *
  * @param tokenCTX {TokenContext} The current token and its context.
  * @param ts List of token transformers for this token type.
@@ -227,7 +227,7 @@ TokenTransformDispatcher.prototype.transformTokens = function ( tokens, accum, d
 	var tokenCTX = new TokenContext(undefined, accum, this, undefined);
 	var origLen = tokens.length;
 	for ( var i = 0; i < tokens.length; i++ ) {
-		tokenCTX.lastToken = tokenCTX.token; // XXX: Fix for re-entrant case!
+		tokenCTX.lastToken = tokenCTX.token; // FIXME: Fix re-entrant case!
 		tokenCTX.token = tokens[i];
 		tokenCTX.pos = i;
 		tokenCTX.accum = accum;
@@ -253,6 +253,7 @@ TokenTransformDispatcher.prototype.transformTokens = function ( tokens, accum, d
 				tokenCTX = this._transformToken( tokenCTX, this.transformers.martian );
 				break;
 		}
+		// add special DELAYED value
 		if( $.isArray(tokenCTX.token) ) {
 			// Splice in the returned tokens (while replacing the original
 			// token), and process them next.
@@ -372,3 +373,4 @@ TokenAccumulator.prototype.insertAccumulator = function ( ) {
 if (typeof module == "object") {
 	module.exports.TokenTransformDispatcher = TokenTransformDispatcher;
 }
+

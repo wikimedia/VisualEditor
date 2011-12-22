@@ -73,7 +73,7 @@ FauxHTML5.TreeBuilder.prototype.processToken = function (token) {
 			break;
 		case "NEWLINE":
 			//this.emit('end');
-			this.emit('token', {type: 'Characters', data: "\n"});
+			//this.emit('token', {type: 'Characters', data: "\n"});
 			break;
 		default:
 			console.log("Unhandled token: " + JSON.stringify(token));

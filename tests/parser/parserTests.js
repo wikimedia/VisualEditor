@@ -351,7 +351,7 @@ ParserTests.prototype.processArticle = function(item) {
  */
 ParserTests.prototype.normalizeHTML = function (source) {
 	// TODO: Do not strip newlines in pre and nowiki blocks!
-	source = source.replace(/\n/g, '');
+	source = source.replace(/[\r\n]/g, '');
 	try {
 		this.htmlparser.parse('<body>' + source + '</body>');
 		return this.htmlparser.document
@@ -383,7 +383,7 @@ ParserTests.prototype.normalizeHTML = function (source) {
 // known-ok differences.
 ParserTests.prototype.normalizeOut = function ( out ) {
 	// TODO: Do not strip newlines in pre and nowiki blocks!
-	return out.replace(/\n| data-[a-zA-Z]+="[^">]*"/g, '')
+	return out.replace(/[\r\n]| data-[a-zA-Z]+="[^">]*"/g, '')
 				.replace(/<!--.*?-->\n?/gm, '');
 };
 
