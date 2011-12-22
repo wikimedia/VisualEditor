@@ -1032,7 +1032,7 @@ table_row_tag
     a:generic_attribute*
     space*
     // handle tables with missing table cells after a row
-    td:( s:sol !'!' tdt:table_data_tag { return s.concat(tdt); } )?
+    td:( s:sol ![|!] tdt:table_data_tag { return s.concat(tdt); } )?
     { 
         // We rely on our tree builder to close the row as needed. This is
         // needed to support building tables from fragment templates with
