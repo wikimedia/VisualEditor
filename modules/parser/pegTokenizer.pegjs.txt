@@ -1031,16 +1031,22 @@ table_row_tag
     "|-"
     a:generic_attribute*
     space*
+    // handle tables with missing table cells after a row
+    td:( s:sol !'!' tdt:table_data_tag { return s.concat(tdt); } )?
     { 
         // We rely on our tree builder to close the row as needed. This is
         // needed to support building tables from fragment templates with
         // individual cells or rows.
-        return [{type: 'TAG', name: 'tr', attribs: a}];
+        var trToken = [{type: 'TAG', name: 'tr', attribs: a}];
+        if ( !td ) {
+            return trToken;
+        } else {
+            return trToken.concat(td);
+        }
     }
 
 table_data_tags
-  = //("|" / !'!') // move the missing-'|' case to table_row_tag!
-    "|"
+  = "|"
     td:table_data_tag
     tds:( "||" tdt:table_data_tag { return tdt } )* {
         return td.concat(tds);
@@ -1049,9 +1055,7 @@ table_data_tags
 table_data_tag
   = //& { dp("table_data enter, pos=" + pos + input.substr(pos,10)); return true; }
     ! [}+-]
-    //& { dp('before attrib, pos=' + pos); return true; }
     a:table_cell_args?
-    //& { dp('past attrib, pos=' + pos); return true; }
     //& { console.log("past attrib, pos=" + pos + input.substr(pos,10)); return true; }
     // use inline_breaks to break on tr etc
     td:( !inline_breaks 
