@@ -981,7 +981,18 @@ dtdd
 
 list_char = [*#:;]
 
-/* split up table handling into individual tokens */
+/**
+ * Tables 
+ *
+ * Table productions are geared to support independent parsing of fragments in
+ * templates (the common table start / row / table end use case). The tokens
+ * produced by these fragments then match up to a table while building the
+ * DOM tree. For similar reasons, table rows do not emit explicit end tag
+ * tokens.
+ *
+ * The separate table_lines production is faster than moving those productions
+ * directly to block_lines.
+ * */
 
 table_lines
   = & { return setFlag('table'); }
@@ -993,7 +1004,7 @@ table_lines
     }
   / & { return clearFlag('table'); }
 
-// Make sure this is only active at start-of-line!
+// This production assumes start-of-line position!
 table_line
   = table_start_tag
   / table_row_tag
@@ -1024,8 +1035,6 @@ table_caption_tag
     }
 
 
-// Only add table rows directly to start-of-line productions, so we get
-// implicit rows!
 table_row_tag
   = //& { console.log("table row enter"); return true; }
     "|-"
@@ -1103,7 +1112,9 @@ table_cell_args
 
 
 
-/* Tables, full-table version (no support for table fragments from templates) */
+/* Tables, full-table version (no support for table fragments from templates) 
+ * Only left here for comparison purposes with the above productions. Remove
+ * when those work as intended! */
 table 
   = tas:table_start space* c:table_caption? b:table_body? te:table_end { 
       var res = {type: 'TAG', name: 'table'}
