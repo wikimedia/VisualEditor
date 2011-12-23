@@ -230,8 +230,8 @@ $messages['nl'] = array(
 	'visualeditorsandbox' => 'Testruimte voor Vereenvoudigde tekstverwerker',
 	'visualeditor-desc' => 'Vereenvoudigde tekstverwerker voor MediaWiki',
 	'visualeditor-sandbox-title' => 'Testruimte voor Vereenvoudigde tekstverwerker',
-	'visualeditor-tooltip-wikitext' => 'Omschakelen van wikitekst-view',
-	'visualeditor-tooltip-json' => 'Omschakelen van JSON-view',
+	'visualeditor-tooltip-wikitext' => 'Omschakelen van wikitekst-weergave',
+	'visualeditor-tooltip-json' => 'Omschakelen van JSON-weergave',
 	'visualeditor-tooltip-html' => 'Omschakelen van HTML-weergave',
 	'visualeditor-tooltip-render' => 'Omschakelen van voorvertoning',
 	'visualeditor-tooltip-history' => 'Transactiegeschiedenis weergeven of verbergen',
@@ -260,10 +260,21 @@ $messages['pl'] = array(
 
 /** Russian (Русский)
  * @author Amire80
+ * @author Eugrus
  */
 $messages['ru'] = array(
 	'visualeditor' => 'VisualEditor',
 	'visualeditorsandbox' => 'Песочница для визуального редактора',
+	'visualeditor-desc' => 'Визуальный редактор для MediaWiki',
+	'visualeditor-sandbox-title' => 'Песочница для визуального редактора',
+	'visualeditor-tooltip-wikitext' => 'Переключить на викитекст',
+	'visualeditor-tooltip-json' => 'Переключить на вид JSON',
+	'visualeditor-tooltip-html' => 'Переключить на HTML-вид',
+	'visualeditor-tooltip-render' => 'Предварительный просмотр переключения',
+	'visualeditor-tooltip-history' => 'Переключить на вид истории действий',
+	'visualeditor-tooltip-help' => 'Переключить на вид представления справки',
+	'visualeditor-feedback-prompt' => 'Оставить отзыв',
+	'visualeditor-feedback-dialog-title' => 'Оставить отзыв о песочнице с VisualEditor',
 );
 
 /** Vietnamese (Tiếng Việt)
@@ -285,9 +296,35 @@ $messages['vi'] = array(
 );
 
 /** Simplified Chinese (‪中文(简体)‬)
+ * @author Liangent
  * @author Shizhao
  */
 $messages['zh-hans'] = array(
-	'visualeditor-sandbox-title' => 'VisualEditor沙盒',
+	'visualeditor' => '可视化编辑器',
+	'visualeditorsandbox' => '可视化编辑器沙盒',
+	'visualeditor-desc' => 'MediaWiki的可视化编辑器',
+	'visualeditor-sandbox-title' => '可视化编辑器沙盒',
+	'visualeditor-tooltip-wikitext' => '切换wikitext视图',
+	'visualeditor-tooltip-json' => '切换JSON视图',
+	'visualeditor-tooltip-html' => '切换HTML视图',
+	'visualeditor-tooltip-render' => '切换预览',
+	'visualeditor-tooltip-help' => '切换帮助视图',
+	'visualeditor-feedback-prompt' => '留下反馈',
+	'visualeditor-feedback-dialog-title' => '留下关于可视化编辑器的反馈',
+);
+
+/** Traditional Chinese (‪中文(繁體)‬) */
+$messages['zh-hant'] = array(
+	'visualeditor' => '可視化編輯器',
+	'visualeditorsandbox' => '可視化編輯器沙盒',
+	'visualeditor-desc' => 'MediaWiki的可視化編輯器',
+	'visualeditor-sandbox-title' => '可視化編輯器沙盒',
+	'visualeditor-tooltip-wikitext' => '切換wikitext視圖',
+	'visualeditor-tooltip-json' => '切換JSON視圖',
+	'visualeditor-tooltip-html' => '切換HTML視圖',
+	'visualeditor-tooltip-render' => '切換預覽',
+	'visualeditor-tooltip-help' => '切換幫助視圖',
+	'visualeditor-feedback-prompt' => '留下反饋',
+	'visualeditor-feedback-dialog-title' => '留下關於可視化編輯器的反饋',
 );
 
