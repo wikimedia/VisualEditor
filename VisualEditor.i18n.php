@@ -175,6 +175,13 @@ $messages['ia'] = array(
 	'visualeditor-feedback-dialog-title' => 'Lassar retroaction super le cassa a sablo del editor visual',
 );
 
+/** Italian (Italiano)
+ * @author F. Cosoleto
+ */
+$messages['it'] = array(
+	'visualeditor-feedback-prompt' => 'Lascia feedback',
+);
+
 /** Luxembourgish (Lëtzebuergesch)
  * @author Robby
  */
@@ -296,6 +303,7 @@ $messages['vi'] = array(
 );
 
 /** Simplified Chinese (‪中文(简体)‬)
+ * @author Anakmalaysia
  * @author Liangent
  * @author Shizhao
  */
@@ -308,6 +316,7 @@ $messages['zh-hans'] = array(
 	'visualeditor-tooltip-json' => '切换JSON视图',
 	'visualeditor-tooltip-html' => '切换HTML视图',
 	'visualeditor-tooltip-render' => '切换预览',
+	'visualeditor-tooltip-history' => '切换交易历史观',
 	'visualeditor-tooltip-help' => '切换帮助视图',
 	'visualeditor-feedback-prompt' => '留下反馈',
 	'visualeditor-feedback-dialog-title' => '留下关于可视化编辑器的反馈',
