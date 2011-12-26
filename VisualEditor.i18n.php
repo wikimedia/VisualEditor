@@ -75,6 +75,24 @@ $messages['dsb'] = array(
 	'visualeditor-feedback-dialog-title' => 'Komentar wó grajkanišću VisualEditora zawóstajiś',
 );
 
+/** Finnish (Suomi)
+ * @author Olli
+ */
+$messages['fi'] = array(
+	'visualeditor' => 'VisualEditor',
+	'visualeditorsandbox' => 'Visuaalisen editorin hiekkalaatikko',
+	'visualeditor-desc' => 'Visuaalinen muokkain MediaWikille',
+	'visualeditor-sandbox-title' => 'Visuaalisen muokkaimen hiekkalaatikko',
+	'visualeditor-tooltip-wikitext' => 'Vaihda wikitekstinäkymään',
+	'visualeditor-tooltip-json' => 'Vaihda JSON-näkymään',
+	'visualeditor-tooltip-html' => 'Vaihda HTML-näkymään',
+	'visualeditor-tooltip-render' => 'Vaihda esikatseluun',
+	'visualeditor-tooltip-history' => 'Vaihda historianäkymään',
+	'visualeditor-tooltip-help' => 'Vaihda ohjenäkymään',
+	'visualeditor-feedback-prompt' => 'Jätä palautetta',
+	'visualeditor-feedback-dialog-title' => 'Jätä palautetta VisualEditor Sandboxista',
+);
+
 /** French (Français)
  * @author Crochet.david
  * @author Gomoko
@@ -189,6 +207,7 @@ $messages['lb'] = array(
 	'visualeditor' => 'WYSIWYG-Editeur',
 	'visualeditor-desc' => 'WYSIWYG-Editeur fir MediaWiki',
 	'visualeditor-sandbox-title' => 'WYSIWYG-Editeur - Sandkëscht',
+	'visualeditor-feedback-prompt' => 'Gitt Äre Feedback',
 );
 
 /** Macedonian (Македонски)
@@ -282,6 +301,14 @@ $messages['ru'] = array(
 	'visualeditor-tooltip-help' => 'Переключить на вид представления справки',
 	'visualeditor-feedback-prompt' => 'Оставить отзыв',
 	'visualeditor-feedback-dialog-title' => 'Оставить отзыв о песочнице с VisualEditor',
+);
+
+/** Ukrainian (Українська)
+ * @author Тест
+ */
+$messages['uk'] = array(
+	'visualeditor-tooltip-wikitext' => 'Переключити перегляд вікі-тексту',
+	'visualeditor-tooltip-render' => 'Переключити попередній перегляд',
 );
 
 /** Vietnamese (Tiếng Việt)
