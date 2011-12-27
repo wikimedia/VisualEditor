@@ -75,6 +75,13 @@ $messages['dsb'] = array(
 	'visualeditor-feedback-dialog-title' => 'Komentar wó grajkanišću VisualEditora zawóstajiś',
 );
 
+/** Spanish (Español)
+ * @author Imre
+ */
+$messages['es'] = array(
+	'visualeditor' => 'VisualEditor',
+);
+
 /** Finnish (Suomi)
  * @author Olli
  */
@@ -303,6 +310,13 @@ $messages['ru'] = array(
 	'visualeditor-feedback-dialog-title' => 'Оставить отзыв о песочнице с VisualEditor',
 );
 
+/** Sinhala (සිංහල)
+ * @author පසිඳු කාවින්ද
+ */
+$messages['si'] = array(
+	'visualeditor-feedback-prompt' => 'ප්‍රතිචාරය ලබා දෙන්න',
+);
+
 /** Ukrainian (Українська)
  * @author Тест
  */
@@ -349,7 +363,9 @@ $messages['zh-hans'] = array(
 	'visualeditor-feedback-dialog-title' => '留下关于可视化编辑器的反馈',
 );
 
-/** Traditional Chinese (‪中文(繁體)‬) */
+/** Traditional Chinese (‪中文(繁體)‬)
+ * @author Anakmalaysia
+ */
 $messages['zh-hant'] = array(
 	'visualeditor' => '可視化編輯器',
 	'visualeditorsandbox' => '可視化編輯器沙盒',
@@ -359,6 +375,7 @@ $messages['zh-hant'] = array(
 	'visualeditor-tooltip-json' => '切換JSON視圖',
 	'visualeditor-tooltip-html' => '切換HTML視圖',
 	'visualeditor-tooltip-render' => '切換預覽',
+	'visualeditor-tooltip-history' => '切換交易歷史觀',
 	'visualeditor-tooltip-help' => '切換幫助視圖',
 	'visualeditor-feedback-prompt' => '留下反饋',
 	'visualeditor-feedback-dialog-title' => '留下關於可視化編輯器的反饋',
