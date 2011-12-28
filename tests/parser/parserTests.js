@@ -404,7 +404,7 @@ ParserTests.prototype.processTest = function (item, pThingy) {
 		pThingy.tokenDispatcher.transformTokens( res.tokens );
 
 		// XXX make this NOT a property
-		var out = pThingy.out;
+		var out = pThingy.document.body.innerHTML;
 
 		// Finally, check the result vs. the expected result.
 		this.checkResult( this.currentItem, out );

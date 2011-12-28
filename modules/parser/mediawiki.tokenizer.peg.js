@@ -6,11 +6,13 @@
  * output.
  */
 
-var PEG = require('pegjs');
+var PEG = require('pegjs'),
+	path = require('path'),
+	fs = require('fs');
 
-function PegTokenizer(env, src) {
-	this.env = env || {};
-	this.src = src;
+function PegTokenizer() {
+	var pegSrcPath = path.join( __dirname, 'pegTokenizer.pegjs.txt' );
+	this.src = fs.readFileSync( pegSrcPath, 'utf8' );
 }
 
 PegTokenizer.src = false;

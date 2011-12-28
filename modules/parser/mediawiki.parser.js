@@ -25,14 +25,8 @@ function ParseThingy( config ) {
 		config = {};
 	}
 
-	if ( !config.peg ) {
-		// n.b. __dirname is relative to the module.
-		var pegSrcPath = path.join( __dirname, 'pegTokenizer.pegjs.txt' );
-		config.peg = fs.readFileSync( pegSrcPath, 'utf8' );
-	}
 
-
-	this.wikiTokenizer = new PegTokenizer(config.parserEnv, config.peg);
+	this.wikiTokenizer = new PegTokenizer();
 
 	this.postProcessor = new DOMPostProcessor();
 
@@ -68,6 +62,9 @@ function ParseThingy( config ) {
 		// XXX: convert to event listener (listening on treeBuilder 'finished'
 		// event)
 		pthingy.postProcessor.doPostProcess(treeBuilder.document);
+
+		// FIXME: move HTML serialization to separate pipeline!
+		pthingy.document = treeBuilder.document;
 
 		// XXX: emit event with result
 		pthingy.getWikiDom = function() {
