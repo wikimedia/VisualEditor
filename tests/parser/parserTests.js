@@ -14,83 +14,6 @@
 
 (function() {
 
-// temporary
-function ParseThingy( config ) {
-	// create tokenizer
-	// Preload the grammar file...
-	var peg = fs.readFileSync( config.pegSrcPath, 'utf8' );
-	var parserEnv = {};
-	//var parserEnv = new MWParserEnvironment({
-	//	tagHooks: {
-	//		'ref': MWRefTagHook,
-	//		'references': MWReferencesTagHook
-	//	}
-	//});
-	this.wikiTokenizer = new PegTokenizer(parserEnv, peg);
-
-
-	this.postProcessor = new DOMPostProcessor();
-
-	this.DOMConverter = new DOMConverter();
-
-	var pthingy = this;
-
-	// Set up the TokenTransformDispatcher with a callback for the remaining
-	// processing.
-	this.tokenDispatcher = new TokenTransformDispatcher ( function ( tokens ) {
-		
-		//console.log("TOKENS: " + JSON.stringify(tokens, null, 2));
-		
-		// Create a new tree builder, which also creates a new document.
-		var treeBuilder = new FauxHTML5.TreeBuilder();
-
-		// Build a DOM tree from tokens using the HTML tree builder/parser.
-		pthingy.buildTree( tokens, treeBuilder );
-		
-		// Perform post-processing on DOM.
-		pthingy.postProcessor.doPostProcess(treeBuilder.document);
-
-		// And serialize the result.
-		// XXX fix this -- make it a method
-		pthingy.out = treeBuilder.document.body.innerHTML;
-
-		// XXX fix this -- make it a method
-		pthingy.getWikiDom = function() {
-			return JSON.stringify(
-				pthingy.DOMConverter.HTMLtoWiki( treeBuilder.document.body ),
-				null, 
-				2
-			) + "\n";
-		};
-
-	});
-
-	// Add token transformations..
-	var qt = new QuoteTransformer();
-	qt.register(this.tokenDispatcher);
-
-	var citeExtension = new Cite();
-	citeExtension.register(this.tokenDispatcher);
-
-}
-
-ParseThingy.prototype = {
-	buildTree: function ( tokens, treeBuilder ) {
-		// push a body element, just to be sure to have one
-		treeBuilder.processToken({type: 'TAG', name: 'body'});
-		// Process all tokens
-		for (var i = 0, length = tokens.length; i < length; i++) {
-			treeBuilder.processToken(tokens[i]);
-		}
-		
-		// FIXME HACK: For some reason the end token is not processed sometimes,
-		// which normally fixes the body reference up.
-		treeBuilder.document.body = treeBuilder.parser
-			.document.getElementsByTagName('body')[0];
-
-	}
-};
-
 
 
 console.log( "Starting up JS parser tests" );
@@ -100,12 +23,10 @@ var fs = require('fs'),
 	jsDiff = require('diff'),
 	colors = require('colors'),
 	util = require( 'util' ),
-	HTML5 = require('html5').HTML5,
+	HTML5 = require('html5').HTML5,  //TODO is this fixup for tests only, or part of real parsing...
 	PEG = require('pegjs'),
 	// Handle options/arguments with optimist module
 	optimist = require('optimist');
-
-// @fixme wrap more or this setup in a common module
 
 // track files imported / required
 var fileDependencies = [];
@@ -137,19 +58,8 @@ var pj = path.join;
 
 var testWhiteList = require('./parserTests-whitelist.js').testWhiteList;
 
-_import(pj('parser', 'mediawiki.tokenizer.peg.js'), ['PegTokenizer']);
 _import(pj('parser', 'mediawiki.parser.environment.js'), ['MWParserEnvironment']);
-_import(pj('parser', 'mediawiki.TokenTransformDispatcher.js'), ['TokenTransformDispatcher']);
-_import(pj('parser', 'ext.cite.taghook.ref.js'), ['MWRefTagHook']);
-
-_import(pj('parser', 'mediawiki.HTML5TreeBuilder.node.js'), ['FauxHTML5']);
-_import(pj('parser', 'mediawiki.DOMPostProcessor.js'), ['DOMPostProcessor']);
-
-_import(pj('parser', 'mediawiki.DOMConverter.js'), ['DOMConverter']);
-
-_import(pj('parser', 'ext.core.QuoteTransformer.js'), ['QuoteTransformer']);
-
-_import(pj('parser', 'ext.Cite.js'), ['Cite']);
+_import(pj('parser', 'mediawiki.parser.js'), ['ParseThingy']);
 
 // WikiDom and serializers
 //_require(pj('es', 'es.js'));
@@ -653,10 +563,16 @@ ParserTests.prototype.reportSummary = function () {
 
 ParserTests.prototype.main = function () {
 	console.log( "Initialisation complete. Now launching tests." );
+	//var parserEnv = new MWParserEnvironment({
+	//	tagHooks: {
+	//		'ref': MWRefTagHook,
+	//		'references': MWReferencesTagHook
+	//	}
+	//});
 
 	// move this config out of here
 	var config = {
-		pegSrcPath: path.join(basePath, 'parser', 'pegTokenizer.pegjs.txt')
+		parserEnv: {}
 	};
 	var pThingy = new ParseThingy(config);
 

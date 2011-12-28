@@ -22,6 +22,8 @@
  * integrate the general environment (configuration, cache etc). (gwicke)
  * */
 
+$ = require('jquery');
+
 /**
  * Central dispatcher for potentially asynchronous token transformations.
  *
