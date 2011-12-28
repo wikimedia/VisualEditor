@@ -18,6 +18,8 @@ var fs = require('fs'),
 	FauxHTML5                   = require('./mediawiki.HTML5TreeBuilder.node.js').FauxHTML5;
 
 function ParseThingy( config ) {
+	// XXX: move the actual parsing to separate method, only perform pipeline
+	// setup in the constructor!
 
 	if ( !config ) {
 		config = {};
@@ -29,7 +31,6 @@ function ParseThingy( config ) {
 		config.peg = fs.readFileSync( pegSrcPath, 'utf8' );
 	}
 
-	// XXX parser environment? Will be needed for fetching templates, etc.
 
 	this.wikiTokenizer = new PegTokenizer(config.parserEnv, config.peg);
 
@@ -41,24 +42,34 @@ function ParseThingy( config ) {
 
 	// Set up the TokenTransformDispatcher with a callback for the remaining
 	// processing.
+	// XXX: convert to event listener (listening for token chunks from
+	// tokenizer) and event emitter (emitting token chunks)
+	// XXX: A parser environment and configuration will be added here to the
+	// token transform dispatcher.
 	this.tokenDispatcher = new TokenTransformDispatcher ( function ( tokens ) {
 		
 		//console.log("TOKENS: " + JSON.stringify(tokens, null, 2));
 		
-		// Create a new tree builder, which also creates a new document.
+		// Create a new tree builder, which also creates a new document.  
+		// XXX: implicitly clean up old state after processing end token, so
+		// that we can reuse the tree builder.
+		// XXX: convert to event listener listening for token chunks from the
+		// token transformer and and emitting an additional 'done' event after
+		// processing the 'end' token.
 		var treeBuilder = new FauxHTML5.TreeBuilder();
 
 		// Build a DOM tree from tokens using the HTML tree builder/parser.
+		// XXX: convert to event listener (token chunks from
+		// TokenTransformDispatcher) and event emitter (DOM tree to
+		// DOMPostProcessor)
 		pthingy.buildTree( tokens, treeBuilder );
 		
 		// Perform post-processing on DOM.
+		// XXX: convert to event listener (listening on treeBuilder 'finished'
+		// event)
 		pthingy.postProcessor.doPostProcess(treeBuilder.document);
 
-		// And serialize the result.
-		// XXX fix this -- make it a method
-		pthingy.out = treeBuilder.document.body.innerHTML;
-
-		// XXX fix this -- make it a method
+		// XXX: emit event with result
 		pthingy.getWikiDom = function() {
 			return JSON.stringify(
 				pthingy.DOMConverter.HTMLtoWiki( treeBuilder.document.body ),
@@ -66,9 +77,6 @@ function ParseThingy( config ) {
 				2
 			) + "\n";
 		};
-
-		// XXX  pull HTML5 htmlparser fixups into this module? Or leave in tests?
-		
 
 	});
 
@@ -83,6 +91,8 @@ function ParseThingy( config ) {
 
 
 ParseThingy.prototype = {
+	//XXX: This will be moved to the treeBuilder event listener callback,
+	//where it will process each received chunk.
 	buildTree: function ( tokens, treeBuilder ) {
 		// push a body element, just to be sure to have one
 		treeBuilder.processToken({type: 'TAG', name: 'body'});
