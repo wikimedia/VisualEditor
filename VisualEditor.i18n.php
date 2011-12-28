@@ -317,6 +317,13 @@ $messages['si'] = array(
 	'visualeditor-feedback-prompt' => 'ප්‍රතිචාරය ලබා දෙන්න',
 );
 
+/** Swedish (Svenska)
+ * @author WikiPhoenix
+ */
+$messages['sv'] = array(
+	'visualeditor-feedback-prompt' => 'Lämna feedback',
+);
+
 /** Ukrainian (Українська)
  * @author Тест
  */
