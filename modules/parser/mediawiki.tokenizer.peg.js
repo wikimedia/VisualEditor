@@ -32,6 +32,12 @@ PegTokenizer.prototype.tokenize = function( text ) {
 		err = e;
 		console.trace();
 	} finally {
+
+		// Append the end (for obvious reasons this should not
+		// be part of a stream, only when tokenizing complete
+		// texts)
+		out.push({type: 'END'});
+
 		return {tokens: out, err: err};
 	}
 }

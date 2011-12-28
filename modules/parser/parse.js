@@ -32,14 +32,11 @@
 	 * @param {String} text
 	 */
 	function getOutput( parser, input ) {
-		var res = parser.wikiTokenizer.tokenize(input + "\n");
+		var res = parser.wikiTokenizer.tokenize(input);
 		if (res.err) {
 			console.log('PARSE FAIL', res.err);
 			process.exit(1);
 		} 
-
-		// Append the end
-		res.tokens.push({type: 'END'});
 
 		parser.tokenDispatcher.transformTokens( res.tokens );
 

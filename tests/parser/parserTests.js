@@ -399,9 +399,6 @@ ParserTests.prototype.processTest = function (item, pThingy) {
 		// TokenTransformDispatcher calls buildTree() and checkResult() with the
 		// transformed tokens.
 
-		// Append the end
-		res.tokens.push({type: 'END'});
-
 		//console.log(JSON.stringify(res.tokens, null, 2));
 		
 		pThingy.tokenDispatcher.transformTokens( res.tokens );

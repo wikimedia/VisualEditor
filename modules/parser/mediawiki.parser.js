@@ -8,7 +8,6 @@
 
 var fs = require('fs'),
 	path = require('path'),
-	$ = require('jquery'),
 	PegTokenizer                = require('./mediawiki.tokenizer.peg.js').PegTokenizer,
 	TokenTransformDispatcher    = require('./mediawiki.TokenTransformDispatcher.js').TokenTransformDispatcher,
 	DOMPostProcessor            = require('./mediawiki.DOMPostProcessor.js').DOMPostProcessor,
