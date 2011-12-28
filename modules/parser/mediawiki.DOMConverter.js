@@ -166,8 +166,7 @@ DOMConverter.prototype._getWikiDomAnnotationType = function ( node, warn ) {
 			return 'object/includeonly'; // XXX
 		default:
 			if ( warn ) {
-				console.log( 'HTML to Wiki DOM conversion warning: Unsupported html annotation ' +
-						nodeName );
+				console.log( 'HTML to Wiki DOM conversion warning: Unsupported html annotation ' + name );
 			}
 			return undefined;
 	}
