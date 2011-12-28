@@ -34,6 +34,9 @@ var fileDependencies = [];
 // Fetch up some of our wacky parser bits...
 
 var basePath = path.join(path.dirname(path.dirname(process.cwd())), 'modules');
+
+pegSrcPath = path.join(basePath, 'parser', 'pegTokenizer.pegjs.txt');
+
 function _require(filename) {
 	var fullpath = path.join( basePath, filename );
 	fileDependencies.push( fullpath );
@@ -162,8 +165,10 @@ function ParserTests () {
 	// Name of file used to cache the parser tests cases
 	this.cache_file = "parserTests.cache";
 
+	// create tokenizer
 	// Preload the grammar file...
-	var peg = fs.readFileSync(path.join(basePath, 'parser', 'pegTokenizer.pegjs.txt'), 'utf8');
+	// DEPENDS ON BASEPATH
+	var peg = fs.readFileSync( pegSrcPath, 'utf8' );
 	var parserEnv = {};
 	//var parserEnv = new MWParserEnvironment({
 	//	tagHooks: {
