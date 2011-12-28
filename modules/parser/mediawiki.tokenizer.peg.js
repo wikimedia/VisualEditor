@@ -8,8 +8,9 @@
 
 var PEG = require('pegjs');
 
-function PegTokenizer(env) {
+function PegTokenizer(env, src) {
 	this.env = env || {};
+	this.src = src;
 }
 
 PegTokenizer.src = false;
@@ -17,7 +18,7 @@ PegTokenizer.src = false;
 PegTokenizer.prototype.tokenize = function( text ) {
 	var out, err;
 	if ( !this.parser ) {
-		this.parser = PEG.buildParser(PegTokenizer.src);
+		this.parser = PEG.buildParser(this.src);
 	}
 	try {
 		out = this.parser.parse(text);

@@ -7,11 +7,13 @@
  *
  * Needs smarter compare, as well as search-y helpers.
  *
- * 2011-07-20 <brion@pobox.com>
+ * @author Brion Vibber <brion@pobox.com>
+ * @author Gabriel Wicke <gwicke@wikimedia.org>
+ * @author Neil Kandalgaonkar <neilk@wikimedia.org>
  */
 
 (function() {
-//"use strict";
+
 console.log( "Starting up JS parser tests" );
 
 var fs = require('fs'),
@@ -161,9 +163,15 @@ function ParserTests () {
 	this.cache_file = "parserTests.cache";
 
 	// Preload the grammar file...
-	PegTokenizer.src = fs.readFileSync(path.join(basePath, 'parser', 'pegTokenizer.pegjs.txt'), 'utf8');
-
-	this.wikiTokenizer = new PegTokenizer();
+	var peg = fs.readFileSync(path.join(basePath, 'parser', 'pegTokenizer.pegjs.txt'), 'utf8');
+	var parserEnv = {};
+	//var parserEnv = new MWParserEnvironment({
+	//	tagHooks: {
+	//		'ref': MWRefTagHook,
+	//		'references': MWReferencesTagHook
+	//	}
+	//});
+	this.wikiTokenizer = new PegTokenizer(parserEnv, peg);
 
 	this.testFileName = '../../../../phase3/tests/parser/parserTests.txt'; // default
 	this.testFileName2 = '../../../../tests/parser/parserTests.txt'; // Fallback. Not everyone fetch at phase3 level 
@@ -439,13 +447,7 @@ ParserTests.prototype.processTest = function (item) {
 		this.failParseTests++;
 		console.log('PARSE FAIL', res.err);
 	} else {
-		//var environment = new MWParserEnvironment({
-		//	tagHooks: {
-		//		'ref': MWRefTagHook,
-		//		'references': MWReferencesTagHook
-		//	}
-		//});
-		//var res = es.HtmlSerializer.stringify(tokens,environment);
+				//var res = es.HtmlSerializer.stringify(tokens,environment);
 
 		//Slightly better token output debugging:
 		//console.log( util.inspect( res.tokens, false, null ).yellow);	
