@@ -14,6 +14,85 @@
 
 (function() {
 
+// temporary
+function ParseThingy( config ) {
+	// create tokenizer
+	// Preload the grammar file...
+	var peg = fs.readFileSync( config.pegSrcPath, 'utf8' );
+	var parserEnv = {};
+	//var parserEnv = new MWParserEnvironment({
+	//	tagHooks: {
+	//		'ref': MWRefTagHook,
+	//		'references': MWReferencesTagHook
+	//	}
+	//});
+	this.wikiTokenizer = new PegTokenizer(parserEnv, peg);
+
+
+	this.postProcessor = new DOMPostProcessor();
+
+	this.DOMConverter = new DOMConverter();
+
+	var pthingy = this;
+
+	// Set up the TokenTransformDispatcher with a callback for the remaining
+	// processing.
+	this.tokenDispatcher = new TokenTransformDispatcher ( function ( tokens ) {
+		
+		//console.log("TOKENS: " + JSON.stringify(tokens, null, 2));
+		
+		// Create a new tree builder, which also creates a new document.
+		var treeBuilder = new FauxHTML5.TreeBuilder();
+
+		// Build a DOM tree from tokens using the HTML tree builder/parser.
+		pthingy.buildTree( tokens, treeBuilder );
+		
+		// Perform post-processing on DOM.
+		pthingy.postProcessor.doPostProcess(treeBuilder.document);
+
+		// And serialize the result.
+		// XXX fix this -- make it a method
+		pthingy.out = treeBuilder.document.body.innerHTML;
+
+		// XXX fix this -- make it a method
+		pthingy.getWikiDom = function() {
+			return JSON.stringify(
+				pthingy.DOMConverter.HTMLtoWiki( treeBuilder.document.body ),
+				null, 
+				2
+			) + "\n";
+		};
+
+	});
+
+	// Add token transformations..
+	var qt = new QuoteTransformer();
+	qt.register(this.tokenDispatcher);
+
+	var citeExtension = new Cite();
+	citeExtension.register(this.tokenDispatcher);
+
+}
+
+ParseThingy.prototype = {
+	buildTree: function ( tokens, treeBuilder ) {
+		// push a body element, just to be sure to have one
+		treeBuilder.processToken({type: 'TAG', name: 'body'});
+		// Process all tokens
+		for (var i = 0, length = tokens.length; i < length; i++) {
+			treeBuilder.processToken(tokens[i]);
+		}
+		
+		// FIXME HACK: For some reason the end token is not processed sometimes,
+		// which normally fixes the body reference up.
+		treeBuilder.document.body = treeBuilder.parser
+			.document.getElementsByTagName('body')[0];
+
+	}
+};
+
+
+
 console.log( "Starting up JS parser tests" );
 
 var fs = require('fs'),
@@ -34,8 +113,6 @@ var fileDependencies = [];
 // Fetch up some of our wacky parser bits...
 
 var basePath = path.join(path.dirname(path.dirname(process.cwd())), 'modules');
-
-pegSrcPath = path.join(basePath, 'parser', 'pegTokenizer.pegjs.txt');
 
 function _require(filename) {
 	var fullpath = path.join( basePath, filename );
@@ -88,23 +165,23 @@ function ParserTests () {
 	this.argv = optimist.usage( 'Usage: $0', {
 		'quick': {
 			description: 'Suppress diff output of failed tests',
-			boolean: true,
-			default: false
+			'boolean': true,
+			'default': false
 		},
 		'quiet': {
 			description: 'Suppress notification of passed tests (shows only failed tests)',
-			boolean: true,
-			default: false
+			'boolean': true,
+			'default': false
 		},
 		'color': {
 			description: 'Enable color output Ex: --no-color',
-			boolean: true,
-			default: true
+			'boolean': true,
+			'default': true
 		},
 		'cache': {
 			description: 'Get tests cases from cache file ' + this.cache_file,
-			boolean: true,
-			default: false
+			'boolean': true,
+			'default': false
 		},
 		'filter': {
 			description: 'Only run tests whose descriptions which match given regex',
@@ -112,8 +189,8 @@ function ParserTests () {
 		},
 		'whitelist': {
 			description: 'Alternatively compare against manually verified parser output from whitelist',
-			default: true,
-			boolean: true
+			'default': true,
+			'boolean': true
 		},
 		'help': {
 			description: 'Show this help message',
@@ -121,18 +198,18 @@ function ParserTests () {
 		},
 		'disabled': {
 			description: 'Run disabled tests (option not implemented)',
-			default: false,
-			boolean: true
+			'default': false,
+			'boolean': true
 		},
 		'printwhitelist': {
 			description: 'Print out a whitelist entry for failing tests. Default false.',
-			default: false,
-			boolean: true
+			'default': false,
+			'boolean': true
 		},
 		'wikidom': {
 			description: 'Print out a WikiDom conversion of the HTML DOM',
-			default: false,
-			boolean: true
+			'default': false,
+			'boolean': true
 		}
 	}
 	).check( function(argv) {
@@ -148,7 +225,7 @@ function ParserTests () {
 		process.exit( 0 );
 	}
 	this.test_filter = null;
-	if( this.argv.filter ) { // null is the default by definition
+	if( this.argv.filter ) { // null is the 'default' by definition
 		try {
 			this.test_filter = new RegExp( this.argv.filter );
 		} catch(e) {
@@ -165,20 +242,9 @@ function ParserTests () {
 	// Name of file used to cache the parser tests cases
 	this.cache_file = "parserTests.cache";
 
-	// create tokenizer
-	// Preload the grammar file...
-	// DEPENDS ON BASEPATH
-	var peg = fs.readFileSync( pegSrcPath, 'utf8' );
-	var parserEnv = {};
-	//var parserEnv = new MWParserEnvironment({
-	//	tagHooks: {
-	//		'ref': MWRefTagHook,
-	//		'references': MWReferencesTagHook
-	//	}
-	//});
-	this.wikiTokenizer = new PegTokenizer(parserEnv, peg);
 
-	this.testFileName = '../../../../phase3/tests/parser/parserTests.txt'; // default
+
+	this.testFileName = '../../../../phase3/tests/parser/parserTests.txt'; // 'default'
 	this.testFileName2 = '../../../../tests/parser/parserTests.txt'; // Fallback. Not everyone fetch at phase3 level 
 
 	if (this.argv._[0]) {
@@ -198,46 +264,6 @@ function ParserTests () {
 	this.articles = {};
 
 	this.htmlparser = new HTML5.Parser();
-
-	this.postProcessor = new DOMPostProcessor();
-
-	this.DOMConverter = new DOMConverter();
-
-	var pt = this;
-
-	// Set up the TokenTransformDispatcher with a callback for the remaining
-	// processing.
-	this.tokenDispatcher = new TokenTransformDispatcher ( function ( tokens ) {
-		
-		//console.log("TOKENS: " + JSON.stringify(tokens, null, 2));
-		
-		// Create a new tree builder, which also creates a new document.
-		var treeBuilder = new FauxHTML5.TreeBuilder();
-
-		// Build a DOM tree from tokens using the HTML tree builder/parser.
-		pt.buildTree( tokens, treeBuilder );
-		
-		// Perform post-processing on DOM.
-		pt.postProcessor.doPostProcess(treeBuilder.document);
-
-		// And serialize the result.
-		var out = treeBuilder.document.body.innerHTML;
-
-		// Finally, check the result vs. the expected result.
-		pt.checkResult( pt.currentItem, out );
-
-		if ( pt.argv.wikidom ) {
-			// Test HTML DOM -> WikiDOM conversion
-			pt.printWikiDom( treeBuilder.document.body );
-		}
-	});
-
-	// Add token transformations..
-	var qt = new QuoteTransformer();
-	qt.register(this.tokenDispatcher);
-
-	var citeExtension = new Cite();
-	citeExtension.register(this.tokenDispatcher);
 
 	// Test statistics
 	this.passedTests = 0;
@@ -307,12 +333,13 @@ ParserTests.prototype.getTests = function () {
 		// Write new file cache, content preprended with current digest
 		console.log( "Cache file either inexistant or outdated" );
 		var parse = this.parseTestCase( testFile );
-		console.log( "Writing parse result to " + this.cache_file );
-		fs.writeFileSync( this.cache_file,
-			"CACHE: " + sha1 + "\n" + JSON.stringify( parse ),
-			'utf8'
-		);
-
+		if ( parse !== undefined ) {
+			console.log( "Writing parse result to " + this.cache_file );
+			fs.writeFileSync( this.cache_file,
+				"CACHE: " + sha1 + "\n" + JSON.stringify( parse ),
+				'utf8'
+			);
+		}
 		// We can now return the parsed object
 		return parse; 
 	}
@@ -329,6 +356,7 @@ ParserTests.prototype.parseTestCase = function ( content ) {
 	} catch (e) {
 		console.log(e);
 	}
+	return undefined;
 };
 
 
@@ -427,7 +455,7 @@ ParserTests.prototype.printTitle = function( item, failure_only ) {
 
 
 
-ParserTests.prototype.processTest = function (item) {
+ParserTests.prototype.processTest = function (item, pThingy) {
 	if (!('title' in item)) {
 		console.log(item);
 		throw new Error('Missing title from test case.');
@@ -444,7 +472,7 @@ ParserTests.prototype.processTest = function (item) {
 	this.currentItem = item;
 
 	// Tokenize the input
-	var res = this.wikiTokenizer.tokenize(item.input + "\n");
+	var res = pThingy.wikiTokenizer.tokenize(item.input + "\n");
 
 	// Check for errors
 	if (res.err) {
@@ -466,7 +494,19 @@ ParserTests.prototype.processTest = function (item) {
 
 		//console.log(JSON.stringify(res.tokens, null, 2));
 		
-		this.tokenDispatcher.transformTokens( res.tokens );
+		pThingy.tokenDispatcher.transformTokens( res.tokens );
+
+		// XXX make this NOT a property
+		var out = pThingy.out;
+
+		// Finally, check the result vs. the expected result.
+		this.checkResult( this.currentItem, out );
+
+		if ( this.argv.wikidom ) {
+			// Test HTML DOM -> WikiDOM conversion
+			this.printWikiDom( pThingy.getWikiDom() );
+		}
+
 	}
 };
 
@@ -546,30 +586,9 @@ ParserTests.prototype.checkResult = function ( item, out ) {
  */
 ParserTests.prototype.printWikiDom = function ( body ) {
 	console.log('WikiDom'.cyan + ':');
-	console.log(
-			JSON.stringify(
-				this.DOMConverter.HTMLtoWiki(body),
-				null, 
-				2
-			) + "\n"
-	);
+	console.log( body );
 };
 
-
-ParserTests.prototype.buildTree = function ( tokens, treeBuilder ) {
-	// push a body element, just to be sure to have one
-	treeBuilder.processToken({type: 'TAG', name: 'body'});
-	// Process all tokens
-	for (var i = 0, length = tokens.length; i < length; i++) {
-		treeBuilder.processToken(tokens[i]);
-	}
-	
-	// FIXME HACK: For some reason the end token is not processed sometimes,
-	// which normally fixes the body reference up.
-	treeBuilder.document.body = treeBuilder.parser
-		.document.getElementsByTagName('body')[0];
-
-};
 
 /**
  * Colorize given number if <> 0
@@ -635,6 +654,12 @@ ParserTests.prototype.reportSummary = function () {
 ParserTests.prototype.main = function () {
 	console.log( "Initialisation complete. Now launching tests." );
 
+	// move this config out of here
+	var config = {
+		pegSrcPath: path.join(basePath, 'parser', 'pegTokenizer.pegjs.txt')
+	};
+	var pThingy = new ParseThingy(config);
+
 	var comments = [],
 		pt = this;
 	this.cases.forEach(function(item) {
@@ -653,7 +678,7 @@ ParserTests.prototype.main = function () {
 					// Add comments to following test.
 					item.comments = comments;
 					comments = [];
-					pt.processTest(item);
+					pt.processTest(item, pThingy);
 					break;
 				case 'comment':
 					comments.push(item.comment);
