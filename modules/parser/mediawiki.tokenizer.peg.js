@@ -20,6 +20,12 @@ PegTokenizer.prototype.tokenize = function( text ) {
 	if ( !this.parser ) {
 		this.parser = PEG.buildParser(this.src);
 	}
+
+	// some normalization
+	if ( text.substr(-1) !== "\n" ) {
+		text += "\n";
+	}
+
 	try {
 		out = this.parser.parse(text);
 	} catch (e) {

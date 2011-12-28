@@ -382,7 +382,7 @@ ParserTests.prototype.processTest = function (item, pThingy) {
 	this.currentItem = item;
 
 	// Tokenize the input
-	var res = pThingy.wikiTokenizer.tokenize(item.input + "\n");
+	var res = pThingy.wikiTokenizer.tokenize(item.input);
 
 	// Check for errors
 	if (res.err) {
