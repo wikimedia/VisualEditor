@@ -217,6 +217,13 @@ $messages['lb'] = array(
 	'visualeditor-feedback-prompt' => 'Gitt Äre Feedback',
 );
 
+/** Lithuanian (Lietuvių)
+ * @author Eitvys200
+ */
+$messages['lt'] = array(
+	'visualeditor-feedback-prompt' => 'Palikti atsiliepimą',
+);
+
 /** Macedonian (Македонски)
  * @author Bjankuloski06
  */
