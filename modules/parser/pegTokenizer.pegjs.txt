@@ -30,6 +30,8 @@
     };
 
     // Remove escaped quotes from attributes etc
+    // This was in the original PEG parser, but could not find anything in
+    // MediaWiki that supports \' and \"-style escaping. So remove? -- gwicke
     var unquote = function (quotec, text) {
         return text.replace('\\' + quotec, quotec);
     };
@@ -683,6 +685,7 @@ template
                   obj.args[position] = param[1];
                   position++;
               } else {
+                  // Last value wins for duplicates.
                   obj.args[param[0]] = param[1];
               }
           }
@@ -736,7 +739,7 @@ wikilink
   = "[[" 
     ! url
     target:link_target 
-    ltext:( "|" lt:link_text { return lt } )* 
+    lcontent:( "|" lt:link_text { return lt } )* 
     "]]" 
     suffix:(![ \]] tc:text_char { return tc })* {
       var obj = {
@@ -745,17 +748,22 @@ wikilink
           attribs: [
               ['data-type', 'internal']
           ]
-      };
+      },
+          suffixTokens = [],
+          textTokens = [];
       obj.attribs.push(['href', target]);
-      if (ltext && ltext.length) {
-          var textTokens = ltext;
+      if (lcontent && lcontent.length) {
+          textTokens = lcontent;
+          if (suffix) {
+              suffixTokens = [{ type: 'TEXT', value: suffix.join('') }];
+          }
       } else {
           if (suffix) {
               target += suffix.join('');
           }
-          var textTokens = [{type: 'TEXT', value: target}];
+          textTokens = [{type: 'TEXT', value: target}];
       }
-      return [obj].concat(textTokens, [{type: 'ENDTAG', name: 'a'}]);
+      return [obj].concat(textTokens, [{type: 'ENDTAG', name: 'a'}], suffixTokens);
   }
 
 link_target
