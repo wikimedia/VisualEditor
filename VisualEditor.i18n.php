@@ -19,16 +19,18 @@ $messages['en'] = array(
 	'visualeditor-feedback-dialog-title' => 'Leave feedback about VisualEditor Sandbox',
 );
 
-/** Message documentation
- * @author Trevor Parscal
+/** Message documentation (Message documentation)
  * @author Erik Moeller
+ * @author Nike
+ * @author Trevor Parscal
  */
 $messages['qqq'] = array(
 	'visualeditor-tooltip-wikitext' => 'Tooltip for a toolbar button which activates or deactivates a split view, with the visual editor on the left-hand side, and a dynamically updating but read-only wikitext view on the right-hand side.',
 	'visualeditor-tooltip-json' => 'Tooltip for a toolbar button which activates or deactivates a split view, with the visual editor on the left-hand side, and a dynamically updating but read-only JSON representation of the document on the right-hand side. This view is primarily useful for debugging purposes.',
 	'visualeditor-tooltip-html' => 'Tooltip for a toolbar button which activates or deactivates a split view, with the visual editor on the left-hand side, and a dyanmically updating but read-only raw HTML view on the right-hand side. This view is primarily useful for debugging purposes.',
 	'visualeditor-tooltip-render' => 'Tooltip for a toolbar button which activates or deactivates a split view, with the visual editor on the left-hand side, and a dynamically updating preview on the right-hand side. This view is primarily useful for debugging purposes.',
-	'visualeditor-tooltip-history' => 'Tooltip for a toolbar button which activates or deactivates a split view, with the visual editor on the left-hand side, and a history of the user\'s edit transactions on the right-hand side. This view is primarily useful for debugging purposes.',
+	'visualeditor-tooltip-history' => "Tooltip for a toolbar button which activates or deactivates a split view, with the visual editor on the left-hand side, and a history of the user's edit transactions on the right-hand side. This view is primarily useful for debugging purposes.",
+	'visualeditor-feedback-prompt' => 'A link that opens feedback form in http://www.mediawiki.org/wiki/Special:VisualEditorSandbox',
 );
 
 /** Breton (Brezhoneg)
@@ -83,11 +85,12 @@ $messages['es'] = array(
 );
 
 /** Finnish (Suomi)
+ * @author Nike
  * @author Olli
  */
 $messages['fi'] = array(
-	'visualeditor' => 'VisualEditor',
-	'visualeditorsandbox' => 'Visuaalisen editorin hiekkalaatikko',
+	'visualeditor' => 'Visuaalinen muokkain',
+	'visualeditorsandbox' => 'Visuaalisen muokkaimen hiekkalaatikko',
 	'visualeditor-desc' => 'Visuaalinen muokkain MediaWikille',
 	'visualeditor-sandbox-title' => 'Visuaalisen muokkaimen hiekkalaatikko',
 	'visualeditor-tooltip-wikitext' => 'Vaihda wikitekstinäkymään',
@@ -97,7 +100,7 @@ $messages['fi'] = array(
 	'visualeditor-tooltip-history' => 'Vaihda historianäkymään',
 	'visualeditor-tooltip-help' => 'Vaihda ohjenäkymään',
 	'visualeditor-feedback-prompt' => 'Jätä palautetta',
-	'visualeditor-feedback-dialog-title' => 'Jätä palautetta VisualEditor Sandboxista',
+	'visualeditor-feedback-dialog-title' => 'Jätä palautetta visuaalisen muokkaimen hiekkalaatikosta.',
 );
 
 /** French (Français)
@@ -117,6 +120,13 @@ $messages['fr'] = array(
 	'visualeditor-tooltip-help' => "Basculer la vue d'aide",
 	'visualeditor-feedback-prompt' => 'Laisser un commentaire',
 	'visualeditor-feedback-dialog-title' => "Laissez un commentaire sur le bac à sable de l'éditeur visuel",
+);
+
+/** Franco-Provençal (Arpetan)
+ * @author ChrisPtDe
+ */
+$messages['frp'] = array(
+	'visualeditor-feedback-prompt' => 'Balyér voutron avis',
 );
 
 /** Galician (Galego)
