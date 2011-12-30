@@ -653,10 +653,13 @@ urlencoded_char = "%" c0:[0-9a-fA-F] c1:[0-9a-fA-F] {
 }
 
 //[^][<>"\\x00-\\x20\\x7F\p{Zs}]
+
+no_punctuation_char = [^ :\]\[\n"'<>\x00-\x20\x7f,.&%\u00A0\u1680\u180E\u2000-\u200A\u202F\u205F\u3000]
+
 url
   = proto:url_protocol 
     rest:(  ( !inline_breaks 
-              c:[^ :\]\[\n"'<>\x00-\x20\x7f,.&%\u00A0\u1680\u180E\u2000-\u200A\u202F\u205F\u3000]
+              c:no_punctuation_char
               { return c }
             )
             / s:[.:,] !(space / eolf) { return s } 
@@ -735,13 +738,16 @@ template_param_text
     }
   / & { clearFlag('template'); return false; }
 
+// TODO: handle link prefixes as in al[[Razi]]
 wikilink
   = "[[" 
     ! url
     target:link_target 
     lcontent:( "|" lt:link_text { return lt } )* 
     "]]" 
-    suffix:(![ \]] tc:text_char { return tc })* {
+    // XXX In real MediaWiki, this is a language-dependent positive character
+    // class. Can we work out a static negative class instead?
+    trail:(! [ \t(),.:-] tc:text_char { return tc })* {
       var obj = {
           type: 'TAG',
           name: 'a',
@@ -749,21 +755,20 @@ wikilink
               ['data-type', 'internal']
           ]
       },
-          suffixTokens = [],
           textTokens = [];
       obj.attribs.push(['href', target]);
       if (lcontent && lcontent.length) {
           textTokens = lcontent;
-          if (suffix) {
-              suffixTokens = [{ type: 'TEXT', value: suffix.join('') }];
+          if (trail) {
+            textTokens.push( { type: 'TEXT', value: trail.join('') } );
           }
       } else {
-          if (suffix) {
-              target += suffix.join('');
+          if (trail) {
+              target += trail.join('');
           }
           textTokens = [{type: 'TEXT', value: target}];
       }
-      return [obj].concat(textTokens, [{type: 'ENDTAG', name: 'a'}], suffixTokens);
+      return [obj].concat(textTokens, [{type: 'ENDTAG', name: 'a'}]);
   }
 
 link_target

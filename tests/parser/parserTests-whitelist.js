@@ -23,6 +23,7 @@ testWhiteList["5 quotes, code coverage +1 line"] = "<p><i>'</i></p>";
 // empty table tags / with only a caption are legal in HTML5.
 testWhiteList["A table with no data."] = "<table></table>";
 testWhiteList["A table with nothing but a caption"] = "<table><caption> caption</caption></table>";
+testWhiteList["Fuzz testing: Parser22"] = "<p data-sourcePos=\"0:23\"><a href=\"http://===r:::https://b\">http://===r:::https://b</a></p><table></table>";
 
 // MediaWiki changes the order of attributes in tables, ignore that
 testWhiteList["Multiplication table"] = "<table border=\"1\" cellpadding=\"2\"><caption>Multiplication table</caption><tbody><tr><th> × </th><th> 1 </th><th> 2 </th><th> 3</th></tr><tr><th> 1</th><td> 1 </td><td> 2 </td><td> 3</td></tr><tr><th> 2</th><td> 2 </td><td> 4 </td><td> 6</td></tr><tr><th> 3</th><td> 3 </td><td> 6 </td><td> 9</td></tr><tr><th> 4</th><td> 4 </td><td> 8 </td><td> 12</td></tr><tr><th> 5</th><td> 5 </td><td> 10 </td><td> 15</td></tr></tbody></table>";
@@ -51,7 +52,7 @@ testWhiteList["Invalid attributes in table cell (bug 1830)"] = "<table><tbody><t
 testWhiteList["Table security: embedded pipes (http://lists.wikimedia.org/mailman/htdig/wikitech-l/2006-April/022293.html)"] = "<table><tbody><tr><td> |<a href=\"ftp://|x||\">[1]</a>\" onmouseover=\"alert(document.cookie)\"&gt;test</td></tr></tbody></table>";
 
 // Sanitizer, but UTF8 in link might actually be ok in HTML5
-testWhiteList["External link containing double-single-quotes with no space separating the url from text in italics"] = "<p><a href=\"http://www.musee-picasso.fr/pages/page_id18528_u1l2.htm\"><i>La muerte de Casagemas</i> (1901) en el sitio de </a><a data-type=\"internal\" href=\"Museo Picasso (París)\">Museo Picasso</a></p>";
+testWhiteList["External link containing double-single-quotes with no space separating the url from text in italics"] = "<p><a href=\"http://www.musee-picasso.fr/pages/page_id18528_u1l2.htm\"><i>La muerte de Casagemas</i> (1901) en el sitio de </a><a data-type=\"internal\" href=\"Museo Picasso (París)\">Museo Picasso</a>.</p>";
 
 
 if (typeof module == "object") {
