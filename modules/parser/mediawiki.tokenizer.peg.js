@@ -24,7 +24,7 @@ PegTokenizer.prototype.tokenize = function( text ) {
 	}
 
 	// some normalization
-	if ( text.substr(-1) !== "\n" ) {
+	if ( text.substring(text.length - 1) !== "\n" ) {
 		text += "\n";
 	}
 
