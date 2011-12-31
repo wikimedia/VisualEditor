@@ -13,6 +13,7 @@ es.HistoryButtonTool = function( toolbar, name, title, data ) {
 
 	// Properties
 	this.data = data;
+	this.enabled = false;
 };
 
 /* Methods */
@@ -29,8 +30,19 @@ es.HistoryButtonTool.prototype.onClick = function() {
 };
 
 es.HistoryButtonTool.prototype.updateState = function( annotations ) {
-	//
-};
+	var surfaceModel = this.toolbar.surfaceView.model;
+	switch( this.name ) {
+		case 'undo':
+			this.enabled = surfaceModel.bigStack.length - surfaceModel.undoIndex > 0; 
+			break;
+		case 'redo':
+			this.enabled = surfaceModel.undoIndex > 0;
+			break;
+	}
+
+	this.updateEnabled();
+}
+
 
 /* Registration */
 

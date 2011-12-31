@@ -39,6 +39,15 @@ es.ButtonTool.prototype.onClick = function() {
 	throw 'ButtonTool.onClick not implemented in this subclass:' + this.constructor;
 };
 
+es.ButtonTool.prototype.updateEnabled = function() {
+	if ( this.enabled ) {
+		this.$.removeClass( 'es-toolbarButtonTool-disabled' );
+	} else {
+		this.$.addClass( 'es-toolbarButtonTool-disabled' );
+	}
+};
+
+
 /* Inheritance */
 
 es.extendClass( es.ButtonTool, es.Tool );

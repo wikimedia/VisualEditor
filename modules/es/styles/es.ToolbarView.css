@@ -87,6 +87,11 @@
 .es-toolbarButtonTool-outdent:before {
 	background-image: url(../images/outdent.png);
 }
+.es-toolbarButtonTool-disabled {
+	-moz-opacity: 0.25;
+	filter:alpha(opacity=25);
+	opacity: 0.25;
+}
 .es-toolbarButtonTool-disabled.es-toolbarButtonTool-clear:before,
 .es-toolbarButtonTool-disabled.es-toolbarButtonTool-indent:before,
 .es-toolbarButtonTool-disabled.es-toolbarButtonTool-outdent:before {
