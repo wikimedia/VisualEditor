@@ -126,7 +126,18 @@ $messages['fr'] = array(
  * @author ChrisPtDe
  */
 $messages['frp'] = array(
+	'visualeditor' => 'Èditor visuâl',
+	'visualeditorsandbox' => 'Bouèta de sabla de l’èditor visuâl',
+	'visualeditor-desc' => 'Èditor visuâl por MediaWiki',
+	'visualeditor-sandbox-title' => 'Bouèta de sabla de l’èditor visuâl',
+	'visualeditor-tooltip-wikitext' => 'Bascular la vua en vouiquitèxto',
+	'visualeditor-tooltip-json' => 'Bascular la vua en JSON',
+	'visualeditor-tooltip-html' => 'Bascular la vua en HTML',
+	'visualeditor-tooltip-render' => 'Bascular la prèvisualisacion',
+	'visualeditor-tooltip-history' => 'Bascular la vua d’historico de les transaccions',
+	'visualeditor-tooltip-help' => 'Bascular la vua d’éde',
 	'visualeditor-feedback-prompt' => 'Balyér voutron avis',
+	'visualeditor-feedback-dialog-title' => 'Balyér voutron avis sur la bouèta de sabla de l’èditor visuâl',
 );
 
 /** Galician (Galego)
@@ -331,7 +342,18 @@ $messages['ru'] = array(
  * @author පසිඳු කාවින්ද
  */
 $messages['si'] = array(
+	'visualeditor' => 'දෘශ්‍යසංස්කාරක',
+	'visualeditorsandbox' => 'දෘශ්‍යසංස්කරණ වැලිපිල්ල',
+	'visualeditor-desc' => 'මාධ්‍යවිකි සඳහා දෘශ්‍යසංස්කාරක',
+	'visualeditor-sandbox-title' => 'දෘශ්‍යසංස්කරණ වැලිපිල්ල',
+	'visualeditor-tooltip-wikitext' => 'පුරුක්මය විකිපාඨ දසුන',
+	'visualeditor-tooltip-json' => 'පුරුක්මය JSON දසුන',
+	'visualeditor-tooltip-html' => 'පුරුක්මය එච්ටීඑම්එල් දසුන',
+	'visualeditor-tooltip-render' => 'පුරුක්මය පෙරදසුන',
+	'visualeditor-tooltip-history' => 'පුරුක්මය වාර්තා ඉතිහාස දසුන',
+	'visualeditor-tooltip-help' => 'පුරුක්මය උපකාරක දසුන',
 	'visualeditor-feedback-prompt' => 'ප්‍රතිචාරය ලබා දෙන්න',
+	'visualeditor-feedback-dialog-title' => 'දෘශ්‍යසංස්කරණ වැලිපිල්ල ගැන ප්‍රතිචාරය ලබාදෙන්න',
 );
 
 /** Swedish (Svenska)
