@@ -8,12 +8,16 @@
 
 var PEG = require('pegjs'),
 	path = require('path'),
-	fs = require('fs');
+	fs = require('fs'),
+	events = require('events');
 
 function PegTokenizer() {
 	var pegSrcPath = path.join( __dirname, 'pegTokenizer.pegjs.txt' );
 	this.src = fs.readFileSync( pegSrcPath, 'utf8' );
 }
+
+// Inherit from EventEmitter
+PegTokenizer.prototype = new events.EventEmitter();
 
 PegTokenizer.src = false;
 
@@ -21,6 +25,8 @@ PegTokenizer.prototype.tokenize = function( text ) {
 	var out, err;
 	if ( !this.parser ) {
 		this.parser = PEG.buildParser(this.src);
+		// add reference to this for event emission
+		this.parser._tokenizer = this;
 	}
 
 	// some normalization
@@ -28,21 +34,30 @@ PegTokenizer.prototype.tokenize = function( text ) {
 		text += "\n";
 	}
 
-	try {
+	// XXX: Commented out exception handling during development to get
+	// reasonable traces. Calling a trace on the extension does not really cut
+	// it.
+	//try {
 		out = this.parser.parse(text);
-	} catch (e) {
-		err = e;
-		console.trace();
-	} finally {
+		// emit tokens here until we get that to work per toplevelblock in the
+		// actual tokenizer
+		this.emit('chunk', out);
+		this.emit('end');
+	//} catch (e) {
+		//err = e;
+		//console.trace();
+	//} finally {
+		return { err: err };
+	//}
+};
 
-		// Append the end (for obvious reasons this should not
-		// be part of a stream, only when tokenizing complete
-		// texts)
-		out.push({type: 'END'});
+/*****************************************************************************
+ * LEGACY stuff
+ *
+ * This is kept around as a template for the ongoing template expansion work!
+ * It won't work with the token infrastructure.
+ */
 
-		return {tokens: out, err: err};
-	}
-}
 
 /**
  * @param {object} tree
@@ -91,7 +106,7 @@ PegTokenizer.prototype.expandTree = function(tree, callback) {
 						content: self.env.expandTemplateArgs( templateTree, tree.params )
 					});
 				}
-			})
+			});
 		} );
 		// Wait for async...
 		return;
@@ -123,7 +138,7 @@ PegTokenizer.prototype.initSource = function(callback) {
 							PegTokenizer.src = page.revisions[0]['*'];
 						}
 					});
-					callback()
+					callback();
 				},
 				dataType: 'json',
 				cache: false

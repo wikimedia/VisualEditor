@@ -15,11 +15,37 @@ FauxHTML5.TreeBuilder = function ( ) {
 
 	// Sets up the parser
 	this.parser.parse(this);
-	this.document = this.parser.document;
-	return this;
+
+	// implicitly start a new document
+	this.processToken({type: 'TAG', name: 'body'});
 };
 
 FauxHTML5.TreeBuilder.prototype = new events.EventEmitter();
+
+FauxHTML5.TreeBuilder.prototype.subscribeToTokenEmitter = function ( emitter ) {
+	emitter.addListener('chunk', this.onChunk.bind( this ) );
+	emitter.addListener('end', this.onEnd.bind( this ) );
+};
+
+FauxHTML5.TreeBuilder.prototype.onChunk = function ( tokens ) {
+	for (var i = 0, length = tokens.length; i < length; i++) {
+		this.processToken(tokens[i]);
+	}
+};
+
+FauxHTML5.TreeBuilder.prototype.onEnd = function ( ) {
+	//console.log('Fauxhtml5 onEnd');
+	// FIXME HACK: For some reason the end token is not processed sometimes,
+	// which normally fixes the body reference up.
+	this.document = this.parser.document;
+	this.document.body = this.parser
+		.document.getElementsByTagName('body')[0];
+
+	// XXX: more clean up to allow reuse.
+	this.parser.setup();
+	this.processToken({type: 'TAG', name: 'body'});
+};
+
 
 // Adapt the token format to internal HTML tree builder format, call the actual
 // html tree builder by emitting the token.
@@ -65,6 +91,7 @@ FauxHTML5.TreeBuilder.prototype.processToken = function (token) {
 			break;
 		case "END":
 			this.emit('end');
+			this.emit('token', { type: 'EOF' } );
 			this.document = this.parser.document;
 			if ( ! this.document.body ) {
 				// HACK: This should not be needed really.

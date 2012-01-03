@@ -382,32 +382,17 @@ ParserTests.prototype.processTest = function (item, pThingy) {
 	this.currentItem = item;
 
 	// Tokenize the input
-	var res = pThingy.wikiTokenizer.tokenize(item.input);
+	pThingy.parse(item.input);
+	var doc = pThingy.document;
 
 	// Check for errors
-	if (res.err) {
+	if (doc.err) {
 		this.printTitle(item);
 		this.failParseTests++;
 		console.log('PARSE FAIL', res.err);
 	} else {
-				//var res = es.HtmlSerializer.stringify(tokens,environment);
-
-		//Slightly better token output debugging:
-		//console.log( util.inspect( res.tokens, false, null ).yellow);	
-
-		// Transform tokens using the TokenTransformDispatcher. When done, the
-		// TokenTransformDispatcher calls buildTree() and checkResult() with the
-		// transformed tokens.
-
-		//console.log(JSON.stringify(res.tokens, null, 2));
-		
-		pThingy.tokenDispatcher.transformTokens( res.tokens );
-
-		// XXX make this NOT a property
-		var out = pThingy.document.body.innerHTML;
-
-		// Finally, check the result vs. the expected result.
-		this.checkResult( this.currentItem, out );
+		// Check the result vs. the expected result.
+		this.checkResult( this.currentItem, doc.body.innerHTML );
 
 		if ( this.argv.wikidom ) {
 			// Test HTML DOM -> WikiDOM conversion

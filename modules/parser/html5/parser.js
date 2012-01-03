@@ -44,6 +44,14 @@ Parser.prototype = new events.EventEmitter;
 
 Parser.prototype.parse = function(tokenizer) {
 	this.tokenizer = tokenizer;
+	
+	this.tokenizer.addListener('token', function(t) { 
+		return function(token) { t.do_token(token); };
+	}(this));
+	this.tokenizer.addListener('end', function(t) { 
+		return function() { t.emit('end'); };
+	}(this));
+
 	this.setup();
 	//this.tokenizer.tokenize();
 }
@@ -116,12 +124,6 @@ Parser.prototype.do_token = function(token) {
 }
 
 Parser.prototype.setup = function(container, encoding) {
-	this.tokenizer.addListener('token', function(t) { 
-		return function(token) { t.do_token(token); };
-	}(this));
-	this.tokenizer.addListener('end', function(t) { 
-		return function() { t.emit('end'); };
-	}(this));
 	this.emit('setup', this);
 
 	var inner_html = !!container;

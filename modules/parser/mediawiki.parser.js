@@ -10,103 +10,73 @@ var fs = require('fs'),
 	path = require('path'),
 	PegTokenizer                = require('./mediawiki.tokenizer.peg.js').PegTokenizer,
 	TokenTransformDispatcher    = require('./mediawiki.TokenTransformDispatcher.js').TokenTransformDispatcher,
-	DOMPostProcessor            = require('./mediawiki.DOMPostProcessor.js').DOMPostProcessor,
-	DOMConverter                = require('./mediawiki.DOMConverter.js').DOMConverter,
 	QuoteTransformer            = require('./ext.core.QuoteTransformer.js').QuoteTransformer,
 	Cite                        = require('./ext.Cite.js').Cite,
-	MWRefTagHook                = require('./ext.cite.taghook.ref.js').MWRefTagHook,
-	FauxHTML5                   = require('./mediawiki.HTML5TreeBuilder.node.js').FauxHTML5;
+	FauxHTML5                   = require('./mediawiki.HTML5TreeBuilder.node.js').FauxHTML5,
+	DOMPostProcessor            = require('./mediawiki.DOMPostProcessor.js').DOMPostProcessor,
+	DOMConverter                = require('./mediawiki.DOMConverter.js').DOMConverter;
 
 function ParseThingy( config ) {
-	// XXX: move the actual parsing to separate method, only perform pipeline
-	// setup in the constructor!
+	// Set up a simple parser pipeline.
 
 	if ( !config ) {
 		config = {};
 	}
 
-
 	this.wikiTokenizer = new PegTokenizer();
 
-	this.postProcessor = new DOMPostProcessor();
-
-	this.DOMConverter = new DOMConverter();
-
-	var pthingy = this;
-
-	// Set up the TokenTransformDispatcher with a callback for the remaining
-	// processing.
-	// XXX: convert to event listener (listening for token chunks from
-	// tokenizer) and event emitter (emitting token chunks)
-	// XXX: A parser environment and configuration will be added here to the
-	// token transform dispatcher.
-	this.tokenDispatcher = new TokenTransformDispatcher ( function ( tokens ) {
-		
-		//console.log("TOKENS: " + JSON.stringify(tokens, null, 2));
-		
-		// Create a new tree builder, which also creates a new document.  
-		// XXX: implicitly clean up old state after processing end token, so
-		// that we can reuse the tree builder.
-		// XXX: convert to event listener listening for token chunks from the
-		// token transformer and and emitting an additional 'done' event after
-		// processing the 'end' token.
-		var treeBuilder = new FauxHTML5.TreeBuilder();
-
-		// Build a DOM tree from tokens using the HTML tree builder/parser.
-		// XXX: convert to event listener (token chunks from
-		// TokenTransformDispatcher) and event emitter (DOM tree to
-		// DOMPostProcessor)
-		pthingy.buildTree( tokens, treeBuilder );
-		
-		// Perform post-processing on DOM.
-		// XXX: convert to event listener (listening on treeBuilder 'finished'
-		// event)
-		pthingy.postProcessor.doPostProcess(treeBuilder.document);
-
-		// FIXME: move HTML serialization to separate pipeline!
-		pthingy.document = treeBuilder.document;
-
-		// XXX: emit event with result
-		pthingy.getWikiDom = function() {
-			return JSON.stringify(
-				pthingy.DOMConverter.HTMLtoWiki( treeBuilder.document.body ),
-				null, 
-				2
-			) + "\n";
-		};
-
-	});
+	this.tokenDispatcher = new TokenTransformDispatcher ();
 
 	// Add token transformations..
 	var qt = new QuoteTransformer();
 	qt.register(this.tokenDispatcher);
 
-	var citeExtension = new Cite();
-	citeExtension.register(this.tokenDispatcher);
+	//var citeExtension = new Cite();
+	//citeExtension.register(this.tokenDispatcher);
 
+	this.tokenDispatcher.subscribeToTokenEmitter( this.wikiTokenizer );
+
+	// Create a new tree builder, which also creates a new document.  
+	// XXX: implicitly clean up old state after processing end token, so
+	// that we can reuse the tree builder.
+	// XXX: convert to event listener listening for token chunks from the
+	// token transformer and and emitting an additional 'done' event after
+	// processing the 'end' token.
+	this.treeBuilder = new FauxHTML5.TreeBuilder();
+	this.treeBuilder.subscribeToTokenEmitter( this.tokenDispatcher );
+
+	// Prepare these two, but only call them from parse and getWikiDom for
+	// now. These will be called in a callback later, when the full pipeline
+	// is used asynchronously.
+	this.postProcessor = new DOMPostProcessor();
+
+	this.DOMConverter = new DOMConverter();
 }
 
+ParseThingy.prototype.parse = function ( text ) {
+	// Set the pipeline in motion by feeding the tokenizer
+	this.wikiTokenizer.tokenize( text );
 
-ParseThingy.prototype = {
-	//XXX: This will be moved to the treeBuilder event listener callback,
-	//where it will process each received chunk.
-	buildTree: function ( tokens, treeBuilder ) {
-		// push a body element, just to be sure to have one
-		treeBuilder.processToken({type: 'TAG', name: 'body'});
-		// Process all tokens
-		for (var i = 0, length = tokens.length; i < length; i++) {
-			treeBuilder.processToken(tokens[i]);
-		}
-		
-		// FIXME HACK: For some reason the end token is not processed sometimes,
-		// which normally fixes the body reference up.
-		treeBuilder.document.body = treeBuilder.parser
-			.document.getElementsByTagName('body')[0];
+	// XXX: this will have to happen in a callback!
+	this.document = this.treeBuilder.document;
 
-	}
+	//console.log(this.document.body.innerHTML);
+
+	// Perform synchronous post-processing on DOM.
+	// XXX: convert to event listener (listening on treeBuilder 'finished'
+	// event)
+	this.postProcessor.doPostProcess( this.document );
 };
+
+ParseThingy.prototype.getWikiDom = function () {
+	return JSON.stringify(
+				pthingy.DOMConverter.HTMLtoWiki( this.document.body ),
+				null,
+				2
+			);
+};
+
 
 if (typeof module == "object") {
 	module.exports.ParseThingy = ParseThingy;
 }
-

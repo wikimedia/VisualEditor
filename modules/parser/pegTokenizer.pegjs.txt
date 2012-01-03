@@ -246,11 +246,22 @@
         return bnames;
     })();
 
+    var self = this;
+
         
 }
 
 start
   = e:toplevelblock* newline* { 
+      // end is passed inline as a token, as well as a separate event for now.
+      
+      // this does not work yet.
+      //console.log('about to emit' + pp(self));
+	  //self._tokenizer.emit('chunk', [ { type: 'END' } ] );
+      //self._tokenizer.emit('end');
+		// Append the end (for obvious reasons this should not
+		// be part of a stream, only when tokenizing complete
+		// texts)
       return flatten(e);
   }
 
@@ -393,6 +404,10 @@ toplevelblock
     // XXX: only run this for lines that actually need it!
     //b.push({type: 'NEWLINE'});
 	// Move this to a token stream transform!
+    //console.log('about to emit' + pp(self));
+    //self._tokenizer.emit('chunk', b);
+    //console.log('emitted chunk' + pp(b));
+    //return [];
     return b;
   }
 
