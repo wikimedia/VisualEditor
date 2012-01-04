@@ -100,7 +100,7 @@
 	opacity: 0.25;
 }
 .es-toolbarButtonTool-disabled:hover {
-        border-color: transparent !important;
+        border-color: transparent;
 }
 .es-toolbarButtonTool-clear:before {
 	background-image: url(../images/clear.png);
