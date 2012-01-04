@@ -12,7 +12,8 @@
 var events = require('events');
 
 /**
- * Central dispatcher for potentially asynchronous token transformations.
+ * Central dispatcher and manager for potentially asynchronous token
+ * transformations.
  *
  * @class
  * @constructor
@@ -44,7 +45,7 @@ function TokenTransformDispatcher( ) {
 			any: []	// all tokens, before more specific handlers are run
 		}
 	};
-	this.reset();
+	this._reset();
 }
 
 // Inherit from EventEmitter
@@ -69,9 +70,9 @@ TokenTransformDispatcher.prototype.subscribeToTokenEmitter = function ( tokenEmi
  *
  * @method
  */
-TokenTransformDispatcher.prototype.reset = function ( env ) {
+TokenTransformDispatcher.prototype._reset = function ( env ) {
 	this.tailAccumulator = undefined;
-	this.phase2TailCB = this.returnTokens01.bind( this );
+	this.phase2TailCB = this._returnTokens01.bind( this );
 	this.accum = new TokenAccumulator(null);
 	this.firstaccum = this.accum;
 	this.prevToken = undefined;
@@ -82,7 +83,7 @@ TokenTransformDispatcher.prototype.reset = function ( env ) {
 	// Should be as static as possible re this and frame 
 	// This is circular, but that should not really matter for non-broken GCs
 	// that handle pure JS ref loops.
-	this.frame.transformPhase = this.transformPhase01.bind( this, this.frame );
+	this.frame.transformPhase = this._transformPhase01.bind( this, this.frame );
 };
 
 TokenTransformDispatcher.prototype._rankToPhase  = function ( rank ) {
@@ -101,6 +102,8 @@ TokenTransformDispatcher.prototype._rankToPhase  = function ( rank ) {
  *
  * @method
  * @param {Function} transform.
+ * @param {Number} rank, [0,3) with [0,1) in-order on input token stream,
+ * [1,2) out-of-order and [2,3) in-order on output token stream
  * @param {String} type, one of 'tag', 'text', 'newline', 'comment', 'end',
  * 'martian' (unknown token), 'any' (any token, matched before other matches).
  * @param {String} tag name for tags, omitted for non-tags
@@ -130,7 +133,9 @@ TokenTransformDispatcher.prototype.addTransform = function ( transformation, ran
  * Remove a transform registration
  *
  * @method
- * @param {Number} rank, the numeric rank of the handler.
+ * @param {Function} transform.
+ * @param {Number} rank, [0,3) with [0,1) in-order on input token stream,
+ * [1,2) out-of-order and [2,3) in-order on output token stream
  * @param {String} type, one of 'tag', 'text', 'newline', 'comment', 'end',
  * 'martian' (unknown token), 'any' (any token, matched before other matches).
  * @param {String} tag name for tags, omitted for non-tags
@@ -255,10 +260,10 @@ TokenTransformDispatcher.prototype._transformToken = function ( token, cb, phase
 				// skip transformation, was already applied.
 				continue;
 			}
-			// Transform token with side effects
-			// XXX: it should be a better idea to move the token.rank out of
-			// token and into a wrapper object to ensure that transformations
-			// don't mess with it!
+			// Transform the token.
+			// XXX: consider moving the rank out of the token itself to avoid
+			// transformations messing with it in broken ways. Not sure if
+			// some transformations need to manipulate it though. gwicke
 			res = transformer.transform( res.token, cb, frame, this.prevToken );
 			if ( !res.token ||
 					res.token.type !== token.type ) {
@@ -284,7 +289,7 @@ TokenTransformDispatcher.prototype._transformToken = function ( token, cb, phase
  */
 TokenTransformDispatcher.prototype.transformTokens = function ( tokens ) {
 	//console.log('TokenTransformDispatcher transformTokens');
-	var res = this.transformPhase01 ( this.frame, tokens, this.phase2TailCB );
+	var res = this._transformPhase01 ( this.frame, tokens, this.phase2TailCB );
 	this.phase2TailCB( tokens, true );
 	if ( res.async ) {
 		this.tailAccumulator = res.async;
@@ -293,9 +298,10 @@ TokenTransformDispatcher.prototype.transformTokens = function ( tokens ) {
 };
 
 /**
- * Callback for the event emitted from the tokenizer.
- * 
- * This simply decrements the outstanding counter on the top-level 
+ * Callback for the end event emitted from the tokenizer.
+ * Either signals the end of input to the tail of an ongoing asynchronous
+ * processing pipeline, or directly emits 'end' if the processing was fully
+ * synchronous.
  */
 TokenTransformDispatcher.prototype.onEndEvent = function () {
 	if ( this.tailAccumulator ) {
@@ -303,23 +309,23 @@ TokenTransformDispatcher.prototype.onEndEvent = function () {
 	} else {
 		// nothing was asynchronous, so we'll have to emit end here.
 		this.emit('end');
+		this._reset();
 	}
 };
 
+
 /**
- * add parent, parentref args
- *	return
- *		{tokens: [tokens], async: true}: async expansion -> outstanding++ in parent
- *		{tokens: [tokens], async: false}: fully expanded
- *		{token: {token}}: single-token return
- *	child after first expand (example: template expanded)
- *		return some finished tokens, reuse parent accumulator
- *		if new accumulator: set parent, ref
+ * Run transformations from phases 0 and 1. This includes starting and
+ * managing asynchronous transformations.
+ *
+ * return protocol for transform*Token:
+ *		{ tokens: [tokens], async: true }: async expansion -> outstanding++ in parent
+ *		{ tokens: [tokens] }: fully expanded, tokens will be reprocessed
+ *		{ token: token }: single-token return
  */
+TokenTransformDispatcher.prototype._transformPhase01 = function ( frame, tokens, parentCB ) {
 
-TokenTransformDispatcher.prototype.transformPhase01 = function ( frame, tokens, parentCB ) {
-
-	//console.log('transformPhase01: ' + JSON.stringify(tokens) );
+	//console.log('_transformPhase01: ' + JSON.stringify(tokens) );
 	
 	var res,
 		phaseEndRank = 2,
@@ -401,30 +407,30 @@ TokenTransformDispatcher.prototype.transformPhase01 = function ( frame, tokens, 
  * Callback from tokens fully processed for phase 0 and 1, which are now ready
  * for synchronous and globally in-order phase 2 processing.
  */
-TokenTransformDispatcher.prototype.returnTokens01 = function ( tokens, notYetDone ) {
+TokenTransformDispatcher.prototype._returnTokens01 = function ( tokens, notYetDone ) {
 	// FIXME: store frame in object?
-	tokens = this.transformPhase2( this.frame, tokens, this.parentCB );
-	//console.log('returnTokens01, after transformPhase2.');
+	tokens = this._transformPhase2( this.frame, tokens, this.parentCB );
+	//console.log('_returnTokens01, after _transformPhase2.');
 
 	this.emit( 'chunk', tokens );
 
 	if ( ! notYetDone ) {
-		console.log('returnTokens01 done.');
+		console.log('_returnTokens01 done.');
 		// signal our done-ness to consumers.
 		this.emit( 'end' );
 		// and reset internal state.
-		this.reset();
+		this._reset();
 	}
 };
 
 
 /**
- * Phase 2
+ * Phase 3 (rank [2,3))
  *
  * Global in-order traversal on expanded token stream (after async phase 1).
- * Very similar to transformPhase01, but without async handling.
+ * Very similar to _transformPhase01, but without async handling.
  */
-TokenTransformDispatcher.prototype.transformPhase2 = function ( frame, tokens, cb ) {
+TokenTransformDispatcher.prototype._transformPhase2 = function ( frame, tokens, cb ) {
 	var res,
 		phaseEndRank = 3,
 		localAccum = [],
@@ -513,7 +519,7 @@ function TokenAccumulator ( parentCB ) {
  * @returns {Function}
  */
 TokenAccumulator.prototype.getParentCB = function ( reference ) {
-	return this.returnTokens01.bind( this, reference );
+	return this._returnTokens01.bind( this, reference );
 };
 
 /**
@@ -522,7 +528,7 @@ TokenAccumulator.prototype.getParentCB = function ( reference ) {
  * @method
  * @param {Object} token
  */
-TokenAccumulator.prototype.returnTokens01 = function ( reference, tokens, notYetDone ) {
+TokenAccumulator.prototype._returnTokens01 = function ( reference, tokens, notYetDone ) {
 	var res,
 		cb,
 		returnTokens = [];
@@ -534,7 +540,7 @@ TokenAccumulator.prototype.returnTokens01 = function ( reference, tokens, notYet
 	if ( reference === 'child' ) {
 		// XXX: Use some marker to avoid re-transforming token chunks several
 		// times?
-		res = this.transformPhase01( this.frame, tokens, this.parentCB );
+		res = this._transformPhase01( this.frame, tokens, this.parentCB );
 
 		if ( res.async ) {
 			// new asynchronous expansion started, chain of accumulators
@@ -582,7 +588,7 @@ TokenAccumulator.prototype.returnTokens01 = function ( reference, tokens, notYet
  * Mark the sibling as done (normally at the tail of a chain).
  */
 TokenAccumulator.prototype.siblingDone = function () {
-	this.returnTokens01 ( 'sibling', [], false );
+	this._returnTokens01 ( 'sibling', [], false );
 };
 
 
@@ -596,24 +602,6 @@ TokenAccumulator.prototype.push = function ( token ) {
 	return this.accum.push(token);
 };
 
-
-
-/* TODO list
- *
- * transformPhase01 called first for phase 0-1 (in-order per source file)
- * then only phase 2 (order independent, if 2 <= token phase < 3, 3 ~ done)
- *	-> don't execute order-dependent transforms in this phase!
- *	* enforce phase on tokens, but not priority within phase
- *    -> cycles possible in async phase
- * final transform (phase 2) globally in-order and synchronous in root returnTokens01
- *
- *
- * Transformation phases
- * [0,2)
- * [2,3] (and 1..2 in templates etc, but clamp phase on *returned* tokens to 2)
- * 3
- *
- */
 
 
 if (typeof module == "object") {
