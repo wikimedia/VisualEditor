@@ -50,6 +50,7 @@ function TokenTransformDispatcher( ) {
 
 // Inherit from EventEmitter
 TokenTransformDispatcher.prototype = new events.EventEmitter();
+TokenTransformDispatcher.prototype.constructor = TokenTransformDispatcher;
 
 /**
  * Register to a token source, normally the tokenizer.
@@ -187,6 +188,7 @@ TokenTransformDispatcher.prototype._resetTokenRank = function ( res, transformer
 
 /* Call all transformers on a tag.
  *
+ * @method
  * @param {Object} The current token.
  * @param {Function} Completion callback for async processing.
  * @param {Number} Rank of phase end, both key for transforms and rank for
@@ -239,6 +241,7 @@ TokenTransformDispatcher.prototype._transformTagToken = function ( token, cb, ph
 
 /* Call all transformers on non-tag token types.
  *
+ * @method
  * @param {Object} The current token.
  * @param {Function} Completion callback for async processing.
  * @param {Number} Rank of phase end, both key for transforms and rank for
@@ -514,6 +517,7 @@ function TokenAccumulator ( parentCB ) {
 /**
  * Curry a parentCB with the object and reference.
  *
+ * @method
  * @param {Object} TokenAccumulator
  * @param {misc} Reference / key for callback
  * @returns {Function}

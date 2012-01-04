@@ -66,7 +66,7 @@ function ParserPipeline( config ) {
 
 	/** 
 	* Conversion from HTML DOM to WikiDOM.  This is not needed if plain HTML
-	* DOM output is needed, so it should only be registered to the
+	* DOM output is desired, so it should only be registered to the
 	* DOMPostProcessor 'document' event if WikiDom output is requested. We
 	* could emit events for 'dom', 'wikidom', 'html' and so on, but only
 	* actually set up the needed pipeline stages if a listener is registered.

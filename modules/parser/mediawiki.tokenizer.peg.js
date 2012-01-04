@@ -19,6 +19,7 @@ function PegTokenizer() {
 
 // Inherit from EventEmitter
 PegTokenizer.prototype = new events.EventEmitter();
+PegTokenizer.prototype.constructor = PegTokenizer;
 
 PegTokenizer.src = false;
 

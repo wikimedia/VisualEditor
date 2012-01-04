@@ -201,7 +201,6 @@ QuoteTransformer.prototype.onNewLine = function (  token, cb, frame, prevToken )
 	this.dispatcher.removeTransform( this.anyRank, 'any' );
 
 	return res;
-
 };
 
 // Convert a bold token to italic to balance an uneven number of both bold and

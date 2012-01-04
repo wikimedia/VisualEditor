@@ -20,7 +20,9 @@ FauxHTML5.TreeBuilder = function ( ) {
 	this.processToken({type: 'TAG', name: 'body'});
 };
 
+// Inherit from EventEmitter
 FauxHTML5.TreeBuilder.prototype = new events.EventEmitter();
+FauxHTML5.TreeBuilder.prototype.constructor = FauxHTML5.TreeBuilder;
 
 /**
  * Register for (token) 'chunk' and 'end' events from a token emitter,

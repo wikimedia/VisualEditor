@@ -83,6 +83,7 @@ function DOMPostProcessor () {
 
 // Inherit from EventEmitter
 DOMPostProcessor.prototype = new events.EventEmitter();
+DOMPostProcessor.prototype.constructor = DOMPostProcessor;
 
 DOMPostProcessor.prototype.doPostProcess = function ( document ) {
 	for(var i = 0; i < this.processors.length; i++) {
