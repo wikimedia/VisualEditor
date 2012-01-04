@@ -5,20 +5,25 @@
  */
 
 function QuoteTransformer ( ) {
-	// Bold and italic tokens are collected in these lists, and then processed
-	// in onNewLine.
 	this.quoteAndNewlineRank = 2.1;
 	this.anyRank = 2.101; // Just after regular quote and newline
 	this.reset();
 }
 
 QuoteTransformer.prototype.reset = function ( ) {
-	this.italics = [];
-	this.bolds = [];
+	// A chunk starts with a token context around a quote token and is
+	// (optionally) followed by non-quote tokens. The quote token and its
+	// context is later replaced with the actual tag token for italic or bold.
 	this.currentChunk = [];
 	// List of chunks, each starting with a (potentially) bold or italic token
 	// and followed by plain tokens.
 	this.chunks = [];
+	// References to chunks in which the first token context / quote token
+	// should be converted to italic or bold tokens.
+	this.italics = [];
+	this.bolds = [];
+
+	this.isActive = false;
 };
 
 
@@ -37,19 +42,15 @@ QuoteTransformer.prototype.register = function ( dispatcher ) {
 
 // Make a copy of the token context
 QuoteTransformer.prototype._startNewChunk = function ( ) {
-	this.currentChunk.pos = this.chunks.length;
 	this.chunks.push( this.currentChunk );
 	this.currentChunk = [];
+	this.currentChunk.pos = this.chunks.length - 1;
 };
 
 // Handle QUOTE tags. These are collected in italic/bold lists depending on
 // the length of quote string. Actual analysis and conversion to the
 // appropriate tag tokens is deferred until the next NEWLINE token triggers
 // onNewLine.
-// 
-// XXX: Cannot use async stuff here, need to buffer things locally instead!
-// FIXME: Convert to internal buffering! -> return all tokens with rank set to
-// own rank to avoid reprocessing
 QuoteTransformer.prototype.onQuote = function ( token, cb, frame, prevToken ) {
 	var qlen = token.value.length,
 		tokens = [], // output tokens
@@ -66,9 +67,10 @@ QuoteTransformer.prototype.onQuote = function ( token, cb, frame, prevToken ) {
 		};
 	
 
-	if ( this.chunks.length === 0 ) {
+	if ( ! this.isActive ) {
 		// register for any token if not yet active
-		this.dispatcher.addTransform( this.onAny.bind(this), this.anyRank, 'tag', 'mw-quote' );
+		this.dispatcher.addTransform( this.onAny.bind(this), this.anyRank, 'any' );
+		this.isActive = true;
 	}
 
 	this._startNewChunk();
@@ -114,7 +116,7 @@ QuoteTransformer.prototype.onQuote = function ( token, cb, frame, prevToken ) {
 			break;
 	}
 	
-	return { token: null };
+	return {};
 };
 
 QuoteTransformer.prototype.onAny = function ( token, cb, frame, prevToken ) {
@@ -128,28 +130,28 @@ QuoteTransformer.prototype.onAny = function ( token, cb, frame, prevToken ) {
 QuoteTransformer.prototype.onNewLine = function (  token, cb, frame, prevToken ) {
 	var res;
 
-	if( ! this.chunks.length ) {
+	if( ! this.isActive ) {
 		// Nothing to do, quick abort.
 		return { token: token };
 	}
 
 
 	token.rank = this.quoteAndNewlineRank;
-	this.currentChunk.push( token );
-	this._startNewChunk();
 
-	//console.log("onNewLine: " + this.italics + this.bolds);
+	//console.log('chunks: ' + JSON.stringify( this.chunks, null, 2 ) );
+
+	//console.log("onNewLine: " + this.italics.length + 'i/b' + this.bolds.length);
 	// balance out tokens, convert placeholders into tags
 	if (this.italics.length % 2 && this.bolds.length % 2) {
 		var firstsingleletterword = -1,
 			firstmultiletterword = -1,
 			firstspace = -1;
 		for (var j = 0; j < this.bolds.length; j++) {
-			var ctx = this.bolds[j];
+			var ctx = this.bolds[j][0];
 			//console.log("balancing!" + JSON.stringify(ctx.prevToken, null, 2));
 			if (ctx.prevToken) {
 				if (ctx.prevToken.type === 'TEXT') {
-					var lastchar = ctx.prevToken.value[ctx.prevToken.value.length - 1],
+					var lastchar = prevToken.value[ctx.prevToken.value.length - 1],
 						secondtolastchar = ctx.prevToken.value[ctx.prevToken.value.length - 2];
 					if (lastchar === ' ' && firstspace === -1) {
 						firstspace = j;
@@ -189,12 +191,15 @@ QuoteTransformer.prototype.onNewLine = function (  token, cb, frame, prevToken )
 	this.quotesToTags( this.italics, 'i' );
 	this.quotesToTags( this.bolds, 'b' );
 
+	this.currentChunk.push( token );
+	this._startNewChunk();
+
 	//console.log('chunks: ' + JSON.stringify( this.chunks, null, 2 ) );
 
 	// return all collected tokens including the newline
 	res = { tokens: [].concat.apply([], this.chunks) };
 
-	// prepare for next session
+	// prepare for next line
 	this.reset();
 
 	// remove 'any' registration
@@ -246,7 +251,7 @@ QuoteTransformer.prototype.quotesToTags = function ( chunks, name ) {
 		toggle = !toggle;
 	}
 	if (!toggle) {
-		// Add end tag, but don't count it towards completion.
+		// Add end tag
 		this.currentChunk.push( {type: 'ENDTAG', name: name} );
 	}
 };

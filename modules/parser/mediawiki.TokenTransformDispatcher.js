@@ -127,7 +127,7 @@ TokenTransformDispatcher.prototype.addTransform = function ( transformation, ran
 	}
 	transArr.push(transformer);
 	// sort ascending by rank
-	transArr.sort( function ( t1, t2 ) { return t1.rank - t2.rank; } );
+	transArr.sort( this._cmpTransformations );
 };
 
 /**
@@ -185,6 +185,12 @@ TokenTransformDispatcher.prototype._resetTokenRank = function ( res, transformer
 	}
 };
 
+/**
+ * Comparison for sorting transformations by ascending rank.
+ */
+TokenTransformDispatcher.prototype._cmpTransformations = function ( a, b ) {
+	return a.rank - b.rank;
+};
 
 /* Call all transformers on a tag.
  *
@@ -206,8 +212,10 @@ TokenTransformDispatcher.prototype._transformTagToken = function ( token, cb, ph
 		tName = token.name.toLowerCase(),
 		tagts = this.transformers[phaseEndRank].tag[tName];
 
-	if ( tagts ) {
+	if ( tagts && tagts.length ) {
+		// could cache this per tag type to avoid re-sorting each time
 		ts = ts.concat(tagts);
+		ts.sort( this._cmpTransformations );
 	}
 	//console.log(JSON.stringify(ts, null, 2));
 	if ( ts ) {
@@ -252,7 +260,11 @@ TokenTransformDispatcher.prototype._transformTagToken = function ( token, cb, ph
  */
 TokenTransformDispatcher.prototype._transformToken = function ( token, cb, phaseEndRank, frame, ts ) {
 	// prepend 'any' transformers
-	ts = this.transformers[phaseEndRank].any.concat(ts);
+	var anyTrans = this.transformers[phaseEndRank].any;
+	if ( anyTrans.length ) {
+		ts = this.transformers[phaseEndRank].any.concat(ts);
+		ts.sort( this._cmpTransformations );
+	}
 	var transformer,
 		res = { token: token },
 		aborted = false;

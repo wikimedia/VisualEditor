@@ -10,14 +10,15 @@ testWhiteList["Italics and bold"] = "<ul><li> plain</li><li> plain<i>italic</i>p
 
 testWhiteList["Bug 2702: Mismatched <i>, <b> and <a> tags are invalid"] = "<p><i><a href=\"http://example.com\">text</a></i><a href=\"http://example.com\" data-sourcePos=\"30:61\"><b>text</b></a><i data-sourcePos=\"62:106\">Something <a href=\"http://example.com\">in italic</a></i><i data-sourcePos=\"107:164\">Something <a href=\"http://example.com\">mixed</a></i><a href=\"http://example.com\"><b>, even bold</b></a><i data-sourcePos=\"165:204\"><b data-sourcePos=\"165:204\">Now <a href=\"http://example.com\">both</a></b></i></p>";
 
-testWhiteList["Unclosed and unmatched quotes"] = "<p><i><b>Bold italic text </b>with bold deactivated<b> in between.</b></i></p><p><i><b>Bold italic text </b></i><b>with italic deactivated<i> in between.</i></b></p><p><b></b>Bold text..</p><p>..spanning two paragraphs (should not work).<b></b></p><p><b></b>Bold tag left open</p><p><i></i>Italic tag left open</p><p>Normal text.<!-- Unmatching number of opening, closing tags: -->\n</p><p><b>This year'</b>s election <i>should</i> beat <b>last year'</b>s.</p><p><i>Tom<b>s car is bigger than </b></i><b>Susan</b>s.</p>";
+testWhiteList["Unclosed and unmatched quotes"] = "<p data-sourcePos=\"0:66\"><i><b>Bold italic text </b>with bold deactivated<b> in between.</b></i></p><p><i><b>Bold italic text </b></i><b>with italic deactivated<i> in between.</i></b></p><p><b>Bold text..</b></p><p>..spanning two paragraphs (should not work).<b></b></p><p><b>Bold tag left open</b></p><p><i>Italic tag left open</i></p><p>Normal text.<!-- Unmatching number of opening, closing tags: -->\n</p><p><b>This year'</b>s election <i>should</i> beat <b>last year'</b>s.</p><p><i>Tom<b>s car is bigger than </b></i><b>Susan</b>s.</p>";
 
-testWhiteList["Link containing double-single-quotes '' in text embedded in italics (bug 4598 sanity check)"] = "<p><i>Some <a data-type=\"internal\" href=\"Link\">pretty </a></i><a data-type=\"internal\" href=\"Link\">italics<i></i> and stuff</a>!</p>";
+// The expected result for this test is really broken html.
+testWhiteList["Link containing double-single-quotes '' in text embedded in italics (bug 4598 sanity check)"] = "<p data-sourcePos=\"0:45\"><i>Some <a data-type=\"internal\" href=\"Link\">pretty </a></i><a data-type=\"internal\" href=\"Link\">italics<i> and stuff</i></a><i>!</i></p>";
 
 testWhiteList["External link containing double-single-quotes in text embedded in italics (bug 4598 sanity check)"] = "<p><i>Some <a href=\"http://example.com/\">pretty </a></i><a href=\"http://example.com/\">italics<i> and stuff</i></a><i>!</i></p>";
 
 // This is a rare edge case, and the new behavior is arguably more consistent
-testWhiteList["5 quotes, code coverage +1 line"] = "<p><i>'</i></p>";
+testWhiteList["5 quotes, code coverage +1 line"] = "<p>'<i></i></p>";
 
 
 // empty table tags / with only a caption are legal in HTML5.
