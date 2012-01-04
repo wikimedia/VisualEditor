@@ -30,10 +30,10 @@ function ParserPipeline( config ) {
 	this.wikiTokenizer = new PegTokenizer();
 
 	/**
-	 * Token stream transformations.
-	 * This is where all the wiki functionality is implemented.
-	 * See https://www.mediawiki.org/wiki/Future/Parser_development/Token_stream_transformations
-	 */
+	* Token stream transformations.
+	* This is where all the wiki-specific functionality is implemented.
+	* See https://www.mediawiki.org/wiki/Future/Parser_development/Token_stream_transformations
+	*/
 	this.tokenTransformer = new TokenTransformDispatcher ();
 
 	// Add token transformations..
@@ -46,15 +46,15 @@ function ParserPipeline( config ) {
 	this.tokenTransformer.listenForTokensFrom( this.wikiTokenizer );
 
 	/**
-	 * The tree builder creates a DOM tree from the token soup emitted from
-	 * the TokenTransformDispatcher.
-	 */
+	* The tree builder creates a DOM tree from the token soup emitted from
+	* the TokenTransformDispatcher.
+	*/
 	this.treeBuilder = new FauxHTML5.TreeBuilder();
 	this.treeBuilder.listenForTokensFrom( this.tokenTransformer );
 
 	/**
-	 * Final processing on the HTML DOM.
-	 */
+	* Final processing on the HTML DOM.
+	*/
 
 	// Generic DOM transformer.
 	// This currently performs minor tree-dependent clean up like wrapping
@@ -65,13 +65,13 @@ function ParserPipeline( config ) {
 
 
 	/** 
-	 * Conversion from HTML DOM to WikiDOM.  This is not needed if plain HTML
-	 * DOM output is needed, so it should only be registered to the
-	 * DOMPostProcessor 'document' event if WikiDom output is requested. We
-	 * could emit events for 'dom', 'wikidom', 'html' and so on, but only
-	 * actually set up the needed pipeline stages if a listener is registered.
-	 * Overriding the addListener method should make this possible.
-	 */
+	* Conversion from HTML DOM to WikiDOM.  This is not needed if plain HTML
+	* DOM output is needed, so it should only be registered to the
+	* DOMPostProcessor 'document' event if WikiDom output is requested. We
+	* could emit events for 'dom', 'wikidom', 'html' and so on, but only
+	* actually set up the needed pipeline stages if a listener is registered.
+	* Overriding the addListener method should make this possible.
+	*/
 	this.DOMConverter = new DOMConverter();
 
 
@@ -89,7 +89,7 @@ ParserPipeline.prototype.parse = function ( text ) {
 // and convert parser tests etc to listen on it! See comments above for ideas.
 ParserPipeline.prototype.setDocumentProperty = function ( document ) {
 	this.document = document;
-}
+};
 
 
 // XXX: remove JSON serialization here, that should only be performed when
