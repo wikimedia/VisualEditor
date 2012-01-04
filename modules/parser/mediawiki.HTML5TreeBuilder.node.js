@@ -22,7 +22,11 @@ FauxHTML5.TreeBuilder = function ( ) {
 
 FauxHTML5.TreeBuilder.prototype = new events.EventEmitter();
 
-FauxHTML5.TreeBuilder.prototype.subscribeToTokenEmitter = function ( emitter ) {
+/**
+ * Register for (token) 'chunk' and 'end' events from a token emitter,
+ * normally the TokenTransformDispatcher.
+ */
+FauxHTML5.TreeBuilder.prototype.listenForTokensFrom = function ( emitter ) {
 	emitter.addListener('chunk', this.onChunk.bind( this ) );
 	emitter.addListener('end', this.onEnd.bind( this ) );
 };
@@ -40,6 +44,8 @@ FauxHTML5.TreeBuilder.prototype.onEnd = function ( ) {
 	this.document = this.parser.document;
 	this.document.body = this.parser
 		.document.getElementsByTagName('body')[0];
+
+	this.emit( 'document', this.document );
 
 	// XXX: more clean up to allow reuse.
 	this.parser.setup();
@@ -97,6 +103,8 @@ FauxHTML5.TreeBuilder.prototype.processToken = function (token) {
 				// HACK: This should not be needed really.
 				this.document.body = this.parser.document.getElementsByTagName('body')[0];
 			}
+			// Emit the document to consumers
+			this.emit('document', this.document);
 			break;
 		case "NEWLINE":
 			//this.emit('end');

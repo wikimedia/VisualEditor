@@ -53,12 +53,12 @@ TokenTransformDispatcher.prototype = new events.EventEmitter();
 
 /**
  * Register to a token source, normally the tokenizer.
- * The event emitter emits an 'tokens' event which contains a chunk of tokens,
+ * The event emitter emits a 'chunk' event with a chunk of tokens,
  * and signals the end of tokens by triggering the 'end' event.
  *
  * @param {Object} EventEmitter token even emitter.
  */
-TokenTransformDispatcher.prototype.subscribeToTokenEmitter = function ( tokenEmitter ) {
+TokenTransformDispatcher.prototype.listenForTokensFrom = function ( tokenEmitter ) {
 	tokenEmitter.addListener('chunk', this.transformTokens.bind( this ) );
 	tokenEmitter.addListener('end', this.onEndEvent.bind( this ) );
 };

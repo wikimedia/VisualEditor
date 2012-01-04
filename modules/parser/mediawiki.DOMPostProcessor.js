@@ -1,5 +1,7 @@
 /* Perform post-processing steps on an already-built HTML DOM. */
 
+var events = require('events');
+
 var isBlock = function isBlock (name) {
 	switch (name.toLowerCase()) {
 		case 'div':
@@ -79,12 +81,24 @@ function DOMPostProcessor () {
 	this.processors = [process_inlines_in_p];
 }
 
+// Inherit from EventEmitter
+DOMPostProcessor.prototype = new events.EventEmitter();
+
 DOMPostProcessor.prototype.doPostProcess = function ( document ) {
 	for(var i = 0; i < this.processors.length; i++) {
 		this.processors[i](document);
 	}
+	this.emit( 'document', document );
 };
 
+
+/**
+ * Register for the 'document' event, normally emitted form the HTML5 tree
+ * builder.
+ */
+DOMPostProcessor.prototype.listenForDocumentFrom = function ( emitter ) {
+	emitter.addListener( 'document', this.doPostProcess.bind( this ) );
+}
 
 if (typeof module == "object") {
 	module.exports.DOMPostProcessor = DOMPostProcessor;

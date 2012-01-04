@@ -29,52 +29,71 @@ function ParserPipeline( config ) {
 
 	this.wikiTokenizer = new PegTokenizer();
 
-	this.tokenDispatcher = new TokenTransformDispatcher ();
+	/**
+	 * Token stream transformations.
+	 * This is where all the wiki functionality is implemented.
+	 * See https://www.mediawiki.org/wiki/Future/Parser_development/Token_stream_transformations
+	 */
+	this.tokenTransformer = new TokenTransformDispatcher ();
 
 	// Add token transformations..
 	var qt = new QuoteTransformer();
-	qt.register(this.tokenDispatcher);
+	qt.register(this.tokenTransformer);
 
 	//var citeExtension = new Cite();
 	//citeExtension.register(this.tokenDispatcher);
 
-	this.tokenDispatcher.subscribeToTokenEmitter( this.wikiTokenizer );
+	this.tokenTransformer.listenForTokensFrom( this.wikiTokenizer );
 
-	// Create a new tree builder, which also creates a new document.  
-	// XXX: implicitly clean up old state after processing end token, so
-	// that we can reuse the tree builder.
-	// XXX: convert to event listener listening for token chunks from the
-	// token transformer and and emitting an additional 'done' event after
-	// processing the 'end' token.
+	/**
+	 * The tree builder creates a DOM tree from the token soup emitted from
+	 * the TokenTransformDispatcher.
+	 */
 	this.treeBuilder = new FauxHTML5.TreeBuilder();
-	this.treeBuilder.subscribeToTokenEmitter( this.tokenDispatcher );
+	this.treeBuilder.listenForTokensFrom( this.tokenTransformer );
 
-	// Prepare these two, but only call them from parse and getWikiDom for
-	// now. These will be called in a callback later, when the full pipeline
-	// is used asynchronously.
+	/**
+	 * Final processing on the HTML DOM.
+	 */
+
+	// Generic DOM transformer.
+	// This currently performs minor tree-dependent clean up like wrapping
+	// plain text in paragraphs. For HTML output, it would also be configured
+	// to perform more aggressive nesting cleanup.
 	this.postProcessor = new DOMPostProcessor();
+	this.postProcessor.listenForDocumentFrom( this.treeBuilder ); 
 
+
+	/** 
+	 * Conversion from HTML DOM to WikiDOM.  This is not needed if plain HTML
+	 * DOM output is needed, so it should only be registered to the
+	 * DOMPostProcessor 'document' event if WikiDom output is requested. We
+	 * could emit events for 'dom', 'wikidom', 'html' and so on, but only
+	 * actually set up the needed pipeline stages if a listener is registered.
+	 * Overriding the addListener method should make this possible.
+	 */
 	this.DOMConverter = new DOMConverter();
+
+
+	// Lame hack for now, see above for an idea for the external async
+	// interface and pipeline setup
+	this.postProcessor.addListener( 'document', this.setDocumentProperty.bind( this ) );
 }
 
 ParserPipeline.prototype.parse = function ( text ) {
 	// Set the pipeline in motion by feeding the tokenizer
 	this.wikiTokenizer.tokenize( text );
-
-	// XXX: Convert parse to an async pipeline as well!
-	// The remaining processing below will have to happen in a callback,
-	// triggered on the treeBuilder 'end' event, followed by an event emission
-	// or callback calling instead of returning.
-	this.document = this.treeBuilder.document;
-
-	//console.log(this.document.body.innerHTML);
-
-	// Perform synchronous post-processing on DOM.
-	// XXX: convert to event listener (listening on treeBuilder 'end'
-	// event)
-	this.postProcessor.doPostProcess( this.document );
 };
 
+// XXX: Lame hack: set document property. Instead, emit events
+// and convert parser tests etc to listen on it! See comments above for ideas.
+ParserPipeline.prototype.setDocumentProperty = function ( document ) {
+	this.document = document;
+}
+
+
+// XXX: remove JSON serialization here, that should only be performed when
+// needed.
 ParserPipeline.prototype.getWikiDom = function () {
 	return JSON.stringify(
 				this.DOMConverter.HTMLtoWiki( this.document.body ),
