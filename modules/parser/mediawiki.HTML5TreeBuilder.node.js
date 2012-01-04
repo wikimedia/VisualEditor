@@ -3,8 +3,8 @@
  * processToken, and it will build you a DOM tree retrievable using .document
  * or .body(). */
 
-var events = require('events');
-var HTML5 = require('./html5/index');
+var events = require('events'),
+	HTML5 = require('./html5/index');
 
 FauxHTML5 = {};
 

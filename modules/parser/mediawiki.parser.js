@@ -6,6 +6,10 @@
  * @author Neil Kandalgaonkar <neilk@wikimedia.org>
  */
 
+// make this global for now
+// XXX: figure out a way to get away without a global for PEG actions!
+$ = require('jquery');
+
 var fs = require('fs'),
 	path = require('path'),
 	PegTokenizer                = require('./mediawiki.tokenizer.peg.js').PegTokenizer,
@@ -16,7 +20,7 @@ var fs = require('fs'),
 	DOMPostProcessor            = require('./mediawiki.DOMPostProcessor.js').DOMPostProcessor,
 	DOMConverter                = require('./mediawiki.DOMConverter.js').DOMConverter;
 
-function ParseThingy( config ) {
+function ParserPipeline( config ) {
 	// Set up a simple parser pipeline.
 
 	if ( !config ) {
@@ -53,24 +57,27 @@ function ParseThingy( config ) {
 	this.DOMConverter = new DOMConverter();
 }
 
-ParseThingy.prototype.parse = function ( text ) {
+ParserPipeline.prototype.parse = function ( text ) {
 	// Set the pipeline in motion by feeding the tokenizer
 	this.wikiTokenizer.tokenize( text );
 
-	// XXX: this will have to happen in a callback!
+	// XXX: Convert parse to an async pipeline as well!
+	// The remaining processing below will have to happen in a callback,
+	// triggered on the treeBuilder 'end' event, followed by an event emission
+	// or callback calling instead of returning.
 	this.document = this.treeBuilder.document;
 
 	//console.log(this.document.body.innerHTML);
 
 	// Perform synchronous post-processing on DOM.
-	// XXX: convert to event listener (listening on treeBuilder 'finished'
+	// XXX: convert to event listener (listening on treeBuilder 'end'
 	// event)
 	this.postProcessor.doPostProcess( this.document );
 };
 
-ParseThingy.prototype.getWikiDom = function () {
+ParserPipeline.prototype.getWikiDom = function () {
 	return JSON.stringify(
-				pthingy.DOMConverter.HTMLtoWiki( this.document.body ),
+				this.DOMConverter.HTMLtoWiki( this.document.body ),
 				null,
 				2
 			);
@@ -78,5 +85,5 @@ ParseThingy.prototype.getWikiDom = function () {
 
 
 if (typeof module == "object") {
-	module.exports.ParseThingy = ParseThingy;
+	module.exports.ParserPipeline = ParserPipeline;
 }

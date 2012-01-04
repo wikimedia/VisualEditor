@@ -9,6 +9,7 @@
 var PEG = require('pegjs'),
 	path = require('path'),
 	fs = require('fs'),
+	$ = require('jquery'),
 	events = require('events');
 
 function PegTokenizer() {

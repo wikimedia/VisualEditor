@@ -58,8 +58,8 @@ var pj = path.join;
 
 var testWhiteList = require('./parserTests-whitelist.js').testWhiteList;
 
-_import(pj('parser', 'mediawiki.parser.environment.js'), ['MWParserEnvironment']);
-_import(pj('parser', 'mediawiki.parser.js'), ['ParseThingy']);
+//_import(pj('parser', 'mediawiki.parser.environment.js'), ['MWParserEnvironment']);
+_import(pj('parser', 'mediawiki.parser.js'), ['ParserPipeline']);
 
 // WikiDom and serializers
 //_require(pj('es', 'es.js'));
@@ -365,7 +365,7 @@ ParserTests.prototype.printTitle = function( item, failure_only ) {
 
 
 
-ParserTests.prototype.processTest = function (item, pThingy) {
+ParserTests.prototype.processTest = function (item, parserPipeline) {
 	if (!('title' in item)) {
 		console.log(item);
 		throw new Error('Missing title from test case.');
@@ -382,8 +382,8 @@ ParserTests.prototype.processTest = function (item, pThingy) {
 	this.currentItem = item;
 
 	// Tokenize the input
-	pThingy.parse(item.input);
-	var doc = pThingy.document;
+	parserPipeline.parse(item.input);
+	var doc = parserPipeline.document;
 
 	// Check for errors
 	if (doc.err) {
@@ -396,7 +396,7 @@ ParserTests.prototype.processTest = function (item, pThingy) {
 
 		if ( this.argv.wikidom ) {
 			// Test HTML DOM -> WikiDOM conversion
-			this.printWikiDom( pThingy.getWikiDom() );
+			this.printWikiDom( parserPipeline.getWikiDom() );
 		}
 
 	}
@@ -556,7 +556,7 @@ ParserTests.prototype.main = function () {
 	var config = {
 		parserEnv: {}
 	};
-	var pThingy = new ParseThingy(config);
+	var parserPipeline = new ParserPipeline( config );
 
 	var comments = [],
 		pt = this;
@@ -576,7 +576,7 @@ ParserTests.prototype.main = function () {
 					// Add comments to following test.
 					item.comments = comments;
 					comments = [];
-					pt.processTest(item, pThingy);
+					pt.processTest(item, parserPipeline);
 					break;
 				case 'comment':
 					comments.push(item.comment);

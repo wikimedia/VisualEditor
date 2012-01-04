@@ -6,10 +6,10 @@
 
 ( function() { 
 
-	var ParseThingy = require('./mediawiki.parser.js').ParseThingy,
+	var ParserPipeline = require('./mediawiki.parser.js').ParserPipeline,
 		optimist = require('optimist');
 
-	var parser = new ParseThingy();
+	var parser = new ParserPipeline();
 
 
 	process.stdin.resume();
@@ -22,25 +22,10 @@
 
 	process.stdin.on( 'end', function() { 
 		var input = inputChunks.join('');
-		var output = getOutput(parser, input);
+		parser.parse( input );
+		var output = parser.getWikiDom();
 		process.stdout.write( output );
 		process.exit(0);
 	} );
-
-	/**
-	 * @param {ParseThingy} parser
-	 * @param {String} text
-	 */
-	function getOutput( parser, input ) {
-		var res = parser.wikiTokenizer.tokenize(input);
-		if (res.err) {
-			console.log('PARSE FAIL', res.err);
-			process.exit(1);
-		} 
-
-		parser.tokenDispatcher.transformTokens( res.tokens );
-
-		return parser.getWikiDom();
-	}
 
 } )();
