@@ -25,6 +25,8 @@
 		parser.parse( input );
 		var output = parser.getWikiDom();
 		process.stdout.write( output );
+		// add a trailing newline for shell user's benefit
+		process.stdout.write( "\n" );
 		process.exit(0);
 	} );
 
