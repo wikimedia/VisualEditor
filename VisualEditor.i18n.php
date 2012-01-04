@@ -176,6 +176,13 @@ $messages['he'] = array(
 	'visualeditor-feedback-dialog-title' => 'שליחת משוב על ארגז החול של העורך החזותי',
 );
 
+/** Hindi (हिन्दी)
+ * @author Ansumang
+ */
+$messages['hi'] = array(
+	'visualeditor-feedback-prompt' => 'प्रतिक्रिया छोड़ें',
+);
+
 /** Upper Sorbian (Hornjoserbsce)
  * @author Michawiki
  */
