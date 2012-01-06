@@ -405,7 +405,7 @@ toplevelblock
     //b.push({type: 'NEWLINE'});
 	// Move this to a token stream transform!
     //console.log('about to emit' + pp(self));
-    //self._tokenizer.emit('chunk', b);
+    console.log( pp( result._tokenizer ));
     //console.log('emitted chunk' + pp(b));
     //return [];
     return b;
@@ -718,6 +718,7 @@ template
       return obj;
   }
 
+// XXX: support template and args in target!
 template_target
   = h:( !"}}" x:([^|\n]) { return x } )* { return h.join(''); }
 
@@ -742,6 +743,7 @@ tplarg
       return obj;
   }
 
+// FIXME: handle template args and templates in key! (or even parser functions?)
 template_param_name
   = h:( !"}}" x:([^=|\n]) { return x } )* { return h.join(''); }
 
