@@ -33,6 +33,24 @@ $messages['qqq'] = array(
 	'visualeditor-feedback-prompt' => 'A link that opens feedback form in http://www.mediawiki.org/wiki/Special:VisualEditorSandbox',
 );
 
+/** Belarusian (Taraškievica orthography) (‪Беларуская (тарашкевіца)‬)
+ * @author Wizardist
+ */
+$messages['be-tarask'] = array(
+	'visualeditor' => 'VisualEditor',
+	'visualeditorsandbox' => 'Пясочніца візуальнага рэдактара',
+	'visualeditor-desc' => 'Візуальны рэдактар для MediaWiki',
+	'visualeditor-sandbox-title' => 'Пясочніца візуальнага рэдактара',
+	'visualeditor-tooltip-wikitext' => 'Пабачыць вікітэкст',
+	'visualeditor-tooltip-json' => 'Пабачыць JSON',
+	'visualeditor-tooltip-html' => 'Пабачыць HTML',
+	'visualeditor-tooltip-render' => 'Пабачыць папярэдні выгляд',
+	'visualeditor-tooltip-history' => 'Пабачыць гісторыю дзеяньняў',
+	'visualeditor-tooltip-help' => 'Пабачыць даведку',
+	'visualeditor-feedback-prompt' => 'Пакінуць водгук',
+	'visualeditor-feedback-dialog-title' => 'Пакіньце водгук пра пясочніцу з VisualEditor',
+);
+
 /** Breton (Brezhoneg)
  * @author Y-M D
  */
