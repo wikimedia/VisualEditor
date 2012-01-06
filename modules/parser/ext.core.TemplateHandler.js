@@ -2,7 +2,10 @@
  * Template and template argument handling.
  *
  * @author Gabriel Wicke <gwicke@wikimedia.org>
+ * @author Brion Vibber <brion@wikimedia.org>
  */
+var $ = require('jquery');
+
 
 function TemplateHandler () {
 	this.reset();
@@ -129,14 +132,62 @@ TemplateHandler.prototype._expandTemplate = function ( frame ) {
 };
 
 
+/**
+ * Fetch a template
+ */
+TemplateHandler.prototype._fetchTemplateAndTitle = function( title, frame, callback ) {
+	// @fixme normalize name?
+	if (title in this.pageCache) {
+		// @fixme should this be forced to run on next event?
+		callback( this.pageCache[title], title );
+	} else {
+		// whee fun hack!
+		console.log(title);
+		console.log(this.pageCache);
+		$.ajax({
+			url: frame.env.wgScriptPath + '/api' + frame.env.wgScriptExtension,
+			data: {
+				format: 'json',
+			action: 'query',
+			prop: 'revisions',
+			rvprop: 'content',
+			titles: name
+			},
+			success: function(data, xhr) {
+				var src = null, title = null;
+				$.each(data.query.pages, function(i, page) {
+					if (page.revisions && page.revisions.length) {
+						src = page.revisions[0]['*'];
+						title = page.title;
+					}
+				});
+				if (typeof src !== 'string') {
+					callback(null, null, 'Page not found');
+				} else {
+					callback(src, title);
+				}
+			},
+			error: function(msg) {
+				callback(null, null, 'Page/template fetch failure');
+			},
+			dataType: 'json',
+			cache: false // @fixme caching, versions etc?
+		}, 'json');
+	}
+};
+
+
 TemplateHandler.prototype.onTemplateArg = function ( token, cb, frame ) {
 	var argName = token.attribs[0][1]; // XXX: do this properly!
 	if ( argName in frame.args ) {
 		// return tokens for argument
 		return { tokens: frame.args[argName] };
 	} else {
-		// FIXME: support default value!
-		return { token: { type: 'TEXT', value: '' } };
+		if ( token.attribs.length > 1 ) {
+			return token.attribs[1][1]; // default value, XXX: use key
+		} else {
+			return { token: { type: 'TEXT', value: '{{{' + argName + '}}}' } };
+		}
 	}
 };
 

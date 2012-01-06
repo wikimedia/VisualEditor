@@ -405,7 +405,7 @@ toplevelblock
     //b.push({type: 'NEWLINE'});
 	// Move this to a token stream transform!
     //console.log('about to emit' + pp(self));
-    console.log( pp( result._tokenizer ));
+    //console.log( pp( result._tokenizer ));
     //console.log('emitted chunk' + pp(b));
     //return [];
     return b;
@@ -738,6 +738,7 @@ tplarg
       };
       if (params && params.length) {
           // HACK, not final.
+          obj.attribs.push(['data-defaultvalue', params[0][1]]);
           obj.attribs.push(['data-json-args', JSON.stringify(params)]);
       }
       return obj;

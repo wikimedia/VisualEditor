@@ -5,10 +5,12 @@
  */
 
 function QuoteTransformer ( ) {
-	this.quoteAndNewlineRank = 2.1;
-	this.anyRank = 2.101; // Just after regular quote and newline
 	this.reset();
 }
+
+// constants
+QuoteTransformer.prototype.quoteAndNewlineRank = 2.1;
+QuoteTransformer.prototype.anyRank = 2.101; // Just after regular quote and newline
 
 QuoteTransformer.prototype.reset = function ( ) {
 	// A chunk starts with a token context around a quote token and is

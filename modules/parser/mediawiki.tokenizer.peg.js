@@ -29,6 +29,8 @@ PegTokenizer.prototype.tokenize = function( text ) {
 		this.parser = PEG.buildParser(this.src);
 		// add reference to this for event emission
 		this.parser._tokenizer = this;
+		// Print the generated parser source
+		//console.log(this.parser.toSource());
 	}
 
 	// some normalization
