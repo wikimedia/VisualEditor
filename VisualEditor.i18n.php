@@ -34,21 +34,22 @@ $messages['qqq'] = array(
 );
 
 /** Belarusian (Taraškievica orthography) (‪Беларуская (тарашкевіца)‬)
+ * @author EugeneZelenko
  * @author Wizardist
  */
 $messages['be-tarask'] = array(
-	'visualeditor' => 'VisualEditor',
+	'visualeditor' => 'Візуальны рэдактар',
 	'visualeditorsandbox' => 'Пясочніца візуальнага рэдактара',
 	'visualeditor-desc' => 'Візуальны рэдактар для MediaWiki',
 	'visualeditor-sandbox-title' => 'Пясочніца візуальнага рэдактара',
-	'visualeditor-tooltip-wikitext' => 'Пабачыць вікітэкст',
-	'visualeditor-tooltip-json' => 'Пабачыць JSON',
-	'visualeditor-tooltip-html' => 'Пабачыць HTML',
-	'visualeditor-tooltip-render' => 'Пабачыць папярэдні выгляд',
-	'visualeditor-tooltip-history' => 'Пабачыць гісторыю дзеяньняў',
-	'visualeditor-tooltip-help' => 'Пабачыць даведку',
+	'visualeditor-tooltip-wikitext' => 'Паказаць вікітэкст',
+	'visualeditor-tooltip-json' => 'Паказаць JSON',
+	'visualeditor-tooltip-html' => 'Паказаць HTML',
+	'visualeditor-tooltip-render' => 'Паказаць папярэдні прагляд',
+	'visualeditor-tooltip-history' => 'Паказаць гісторыю дзеяньняў',
+	'visualeditor-tooltip-help' => 'Паказаць даведку',
 	'visualeditor-feedback-prompt' => 'Пакінуць водгук',
-	'visualeditor-feedback-dialog-title' => 'Пакіньце водгук пра пясочніцу з VisualEditor',
+	'visualeditor-feedback-dialog-title' => 'Пакіньце водгук пра пясочніцу візуальнага рэдактара',
 );
 
 /** Breton (Brezhoneg)
