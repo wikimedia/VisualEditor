@@ -20,19 +20,35 @@ var fs = require('fs'),
 	DOMPostProcessor            = require('./mediawiki.DOMPostProcessor.js').DOMPostProcessor,
 	DOMConverter                = require('./mediawiki.DOMConverter.js').DOMConverter;
 
-function ParserPipeline( env ) {
-	// Set up a simple parser pipeline.
+/**
+ * Set up a simple parser pipeline. There will be a single pipeline overall,
+ * but there can be multiple sub-pipelines for template expansions etc, which
+ * in turn differ by input type. The main input type will be fixed at
+ * construction time though.
+ *
+ * @class
+ * @constructor
+ * @param {Object} Environment.
+ */
+function ParserPipeline( env, inputType ) {
 
-	// XXX: create a full-fledged environment
+	if ( ! inputType ) {
+		// Actually the only one supported for now, but could also create
+		// others for serialized tokens etc
+		inputType = 'text/wiki';
+	}
+
+
+	// XXX: create a full-fledged environment based on
+	// mediawiki.parser.environment.js.
 	if ( !env ) {
 		this.env = {};
 	} else {
 		this.env = env;
 	}
 
-	// Create an input pipeline for the given input (for now fixed to
-	// text/wiki).
-	this.inputPipeline = this.makeInputPipeline( 'text/wiki', {} );
+	// Create an input pipeline for the given input type.
+	this.inputPipeline = this.makeInputPipeline ( inputType );
 
 
 	this.tokenPostProcessor = new TokenTransformManager.SyncTokenTransformManager ( env );
@@ -56,10 +72,11 @@ function ParserPipeline( env ) {
 	* Final processing on the HTML DOM.
 	*/
 
-	// Generic DOM transformer.
-	// This currently performs minor tree-dependent clean up like wrapping
-	// plain text in paragraphs. For HTML output, it would also be configured
-	// to perform more aggressive nesting cleanup.
+	/* Generic DOM transformer.
+	* This currently performs minor tree-dependent clean up like wrapping
+	* plain text in paragraphs. For HTML output, it would also be configured
+	* to perform more aggressive nesting cleanup.
+	*/
 	this.postProcessor = new DOMPostProcessor();
 	this.postProcessor.listenForDocumentFrom( this.treeBuilder ); 
 
@@ -80,6 +97,20 @@ function ParserPipeline( env ) {
 	this.postProcessor.addListener( 'document', this.setDocumentProperty.bind( this ) );
 }
 
+/**
+ * Factory method for the input (up to async token transforms / phase two)
+ * parts of the parser pipeline.
+ *
+ * @method
+ * @param {String} Input type. Try 'text/wiki'.
+ * @param {Object} Expanded template arguments to pass to the
+ * AsyncTokenTransformManager.
+ * @returns {Object} { first: <first stage>, last: AsyncTokenTransformManager }
+ * First stage is supposed to implement a process() function
+ * that can accept all input at once. The wikitext tokenizer for example
+ * accepts the wiki text this way. The last stage of the input pipeline is
+ * always an AsyncTokenTransformManager, which emits its output in events.
+ */
 ParserPipeline.prototype.makeInputPipeline = function ( inputType, args ) {
 	if ( inputType === 'text/wiki' ) {
 		var wikiTokenizer = new PegTokenizer();
@@ -100,11 +131,21 @@ ParserPipeline.prototype.makeInputPipeline = function ( inputType, args ) {
 	} else {
 		throw "ParserPipeline.makeInputPipeline: Unsupported input type " + inputType;
 	}
-}
+};
 
-ParserPipeline.prototype.parse = function ( text ) {
-	// Set the pipeline in motion by feeding the tokenizer
-	this.inputPipeline.first.tokenize( text );
+
+/**
+ * Parse an input
+ *
+ * @method
+ * @param {Mixed} All arguments are passed through to the underlying input
+ * pipeline's first element's process() method. For a wikitext pipeline (the
+ * default), this would be the wikitext to tokenize.
+ */
+ParserPipeline.prototype.parse = function ( ) {
+	// Set the pipeline in motion by feeding the first element with the given
+	// arguments.
+	this.inputPipeline.first.process.apply( this.inputPipeline.first , arguments );
 };
 
 // XXX: Lame hack: set document property. Instead, emit events
@@ -115,7 +156,7 @@ ParserPipeline.prototype.setDocumentProperty = function ( document ) {
 
 
 // XXX: remove JSON serialization here, that should only be performed when
-// needed.
+// needed (and normally without pretty-printing).
 ParserPipeline.prototype.getWikiDom = function () {
 	return JSON.stringify(
 				this.DOMConverter.HTMLtoWiki( this.document.body ),

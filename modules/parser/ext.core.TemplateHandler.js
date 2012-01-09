@@ -1,5 +1,10 @@
 /**
- * Template and template argument handling.
+ * Template and template argument handling, first cut.
+ *
+ * AsyncTokenTransformManager objects provide preprocessor-frame-like
+ * functionality once template args etc are fully expanded, and isolate
+ * individual transforms from concurrency issues. Template argument expansion
+ * is performed using a structure managed in this extension.
  *
  * @author Gabriel Wicke <gwicke@wikimedia.org>
  * @author Brion Vibber <brion@wikimedia.org>
@@ -45,11 +50,7 @@ TemplateHandler.prototype.onTemplate = function ( token, cb ) {
 	// check for msg, msgnw, raw magics
 	// check for parser functions
 
-	// create a new frame
-	// XXX FIXME: create a new AsyncTokenTransformManager with default
-	// transformations!
-	// 
-	// nestedAsyncTokenTransformManager = this.manager.newChildPipeline( inputType, args );
+	// create a new frame for argument and title expansions
 	var newFrame = {
 			args: {},
 			env: frame.env,
@@ -118,6 +119,13 @@ TemplateHandler.prototype._returnArgValue = function ( ref, tokens, notYetDone )
  * target were expanded in frame.
  */
 TemplateHandler.prototype._expandTemplate = function ( frame ) {
+	// Create a new nested transformation pipeline for the input type
+	// (includes the tokenizer and synchronous stage-1 transforms for
+	// 'text/wiki' input). 
+	// Returned pipe (for now):
+	// { first: tokenizer, last: AsyncTokenTransformManager }
+	var pipe = this.manager.newChildPipeline( inputType, args );
+
 	// Set up a pipeline:
 	// fetch template source -> tokenizer 
 	// getInputPipeline( inputType )
