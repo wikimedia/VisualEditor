@@ -26,9 +26,13 @@ PegTokenizer.src = false;
 PegTokenizer.prototype.tokenize = function( text ) {
 	var out, err;
 	if ( !this.parser ) {
-		this.parser = PEG.buildParser(this.src);
+		// Only create a single parser, as it is fully static.
+		PegTokenizer.prototype.parser = PEG.buildParser(this.src);
 		// add reference to this for event emission
-		this.parser._tokenizer = this;
+		// XXX: pass a cb into parse() instead, but need to modify pegjs a bit
+		// for that.
+		//PegTokenizer.prototype.parser._tokenizer = undefined;
+
 		// Print the generated parser source
 		//console.log(this.parser.toSource());
 	}

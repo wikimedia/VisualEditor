@@ -18,16 +18,16 @@ TemplateHandler.prototype.reset = function () {
 // constants
 TemplateHandler.prototype.rank = 1.1;
 
-TemplateHandler.prototype.register = function ( dispatcher ) {
-	this.dispatcher = dispatcher;
+TemplateHandler.prototype.register = function ( manager ) {
+	this.manager = manager;
 	// Register for template and templatearg tag tokens
-	dispatcher.addTransform( this.onTemplate.bind(this), 
+	manager.addTransform( this.onTemplate.bind(this), 
 			this.rank, 'tag', 'template' );
-	dispatcher.addTransform( this.onTemplateArg.bind(this), 
+	manager.addTransform( this.onTemplateArg.bind(this), 
 			this.rank, 'tag', 'templatearg' );
 
 	// Reset internal state when the parser pipeline is done
-	dispatcher.addTransform( this.reset.bind(this), 
+	manager.addTransform( this.reset.bind(this), 
 			this.rank, 'end' );
 };
 
@@ -39,13 +39,17 @@ TemplateHandler.prototype.register = function ( dispatcher ) {
  * calls or sets up the callback to _expandTemplate, which then fetches and
  * processes the template.
  */
-TemplateHandler.prototype.onTemplate = function ( token, cb, frame ) {
+TemplateHandler.prototype.onTemplate = function ( token, cb ) {
 	// check for 'subst:'
 	// check for variable magic names
 	// check for msg, msgnw, raw magics
 	// check for parser functions
 
 	// create a new frame
+	// XXX FIXME: create a new AsyncTokenTransformManager with default
+	// transformations!
+	// 
+	// nestedAsyncTokenTransformManager = this.manager.newChildPipeline( inputType, args );
 	var newFrame = {
 			args: {},
 			env: frame.env,
@@ -69,7 +73,7 @@ TemplateHandler.prototype.onTemplate = function ( token, cb, frame ) {
 			kv = { key: [], value: [] };
 			// transform the value
 			argCB = this._returnArgValue.bind( this, { index: i, frame: newFrame } );
-			res = frame.transformPhase( frame, args[key], argCB );
+			res = frame.transformTokens( frame, args[key], argCB );
 			if ( res.async ) {
 				newFrame.outstanding++;
 			}
@@ -116,6 +120,12 @@ TemplateHandler.prototype._returnArgValue = function ( ref, tokens, notYetDone )
 TemplateHandler.prototype._expandTemplate = function ( frame ) {
 	// Set up a pipeline:
 	// fetch template source -> tokenizer 
+	// getInputPipeline( inputType )
+	//     normally tokenizer -> transforms 1/2
+	//     encapsulation by default, generic de-encapsulation in phase 3
+	//     { type: 'object', name: 'template', value: [tokens] }
+	//     -> then un-wrap and replace with contents in phase 3 if for-viewing
+	//        mode
 	// -> TokenTransformDispatcher (phase 1/2 only, with frame passed in)
 	// -> frame.cb( tokens )
 	
@@ -177,6 +187,9 @@ TemplateHandler.prototype._fetchTemplateAndTitle = function( title, frame, callb
 };
 
 
+/**
+ * Expand template arguments with tokens from the containing frame.
+ */
 TemplateHandler.prototype.onTemplateArg = function ( token, cb, frame ) {
 	var argName = token.attribs[0][1]; // XXX: do this properly!
 	if ( argName in frame.args ) {

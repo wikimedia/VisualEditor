@@ -4,11 +4,12 @@
  * @class
  * @constructor
  */
-function Cite () {
+function Cite ( dispatcher ) {
 	this.refGroups = {};
 	this.refTokens = [];
 	// Within ref block
 	this.isActive = false;
+	this.register( dispatcher );
 }
 
 /**

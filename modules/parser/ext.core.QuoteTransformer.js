@@ -4,8 +4,9 @@
  * @author Gabriel Wicke <gwicke@wikimedia.org>
  */
 
-function QuoteTransformer ( ) {
+function QuoteTransformer ( dispatcher ) {
 	this.reset();
+	this.register( dispatcher );
 }
 
 // constants

@@ -13,44 +13,44 @@ $ = require('jquery');
 var fs = require('fs'),
 	path = require('path'),
 	PegTokenizer                = require('./mediawiki.tokenizer.peg.js').PegTokenizer,
-	TokenTransformDispatcher    = require('./mediawiki.TokenTransformDispatcher.js').TokenTransformDispatcher,
+	TokenTransformManager    = require('./mediawiki.TokenTransformManager.js'),
 	QuoteTransformer            = require('./ext.core.QuoteTransformer.js').QuoteTransformer,
 	Cite                        = require('./ext.Cite.js').Cite,
 	FauxHTML5                   = require('./mediawiki.HTML5TreeBuilder.node.js').FauxHTML5,
 	DOMPostProcessor            = require('./mediawiki.DOMPostProcessor.js').DOMPostProcessor,
 	DOMConverter                = require('./mediawiki.DOMConverter.js').DOMConverter;
 
-function ParserPipeline( config ) {
+function ParserPipeline( env ) {
 	// Set up a simple parser pipeline.
 
-	if ( !config ) {
-		config = {};
+	// XXX: create a full-fledged environment
+	if ( !env ) {
+		this.env = {};
+	} else {
+		this.env = env;
 	}
 
-	this.wikiTokenizer = new PegTokenizer();
+	// Create an input pipeline for the given input (for now fixed to
+	// text/wiki).
+	this.inputPipeline = this.makeInputPipeline( 'text/wiki', {} );
 
-	/**
-	* Token stream transformations.
-	* This is where all the wiki-specific functionality is implemented.
-	* See https://www.mediawiki.org/wiki/Future/Parser_development/Token_stream_transformations
-	*/
-	this.tokenTransformer = new TokenTransformDispatcher ();
+
+	this.tokenPostProcessor = new TokenTransformManager.SyncTokenTransformManager ( env );
+	this.tokenPostProcessor.listenForTokensFrom ( this.inputPipeline.last );
+
 
 	// Add token transformations..
-	var qt = new QuoteTransformer();
-	qt.register(this.tokenTransformer);
+	var qt = new QuoteTransformer( this.tokenPostProcessor );
 
-	//var citeExtension = new Cite();
-	//citeExtension.register(this.tokenDispatcher);
+	//var citeExtension = new Cite( this.tokenTransformer );
 
-	this.tokenTransformer.listenForTokensFrom( this.wikiTokenizer );
 
 	/**
 	* The tree builder creates a DOM tree from the token soup emitted from
 	* the TokenTransformDispatcher.
 	*/
 	this.treeBuilder = new FauxHTML5.TreeBuilder();
-	this.treeBuilder.listenForTokensFrom( this.tokenTransformer );
+	this.treeBuilder.listenForTokensFrom( this.tokenPostProcessor );
 
 	/**
 	* Final processing on the HTML DOM.
@@ -80,9 +80,31 @@ function ParserPipeline( config ) {
 	this.postProcessor.addListener( 'document', this.setDocumentProperty.bind( this ) );
 }
 
+ParserPipeline.prototype.makeInputPipeline = function ( inputType, args ) {
+	if ( inputType === 'text/wiki' ) {
+		var wikiTokenizer = new PegTokenizer();
+
+		/**
+		* Token stream transformations.
+		* This is where all the wiki-specific functionality is implemented.
+		* See https://www.mediawiki.org/wiki/Future/Parser_development/Token_stream_transformations
+		*/
+		var tokenPreProcessor = new TokenTransformManager.SyncTokenTransformManager ( this.env );
+		tokenPreProcessor.listenForTokensFrom ( wikiTokenizer );
+
+		var tokenExpander = new TokenTransformManager.AsyncTokenTransformManager (
+				this.makeInputPipeline.bind( this ), args, this.env );
+		tokenExpander.listenForTokensFrom ( tokenPreProcessor );
+		
+		return { first: wikiTokenizer, last: tokenExpander };
+	} else {
+		throw "ParserPipeline.makeInputPipeline: Unsupported input type " + inputType;
+	}
+}
+
 ParserPipeline.prototype.parse = function ( text ) {
 	// Set the pipeline in motion by feeding the tokenizer
-	this.wikiTokenizer.tokenize( text );
+	this.inputPipeline.first.tokenize( text );
 };
 
 // XXX: Lame hack: set document property. Instead, emit events
