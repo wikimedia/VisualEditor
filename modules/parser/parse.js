@@ -7,9 +7,10 @@
 ( function() { 
 
 	var ParserPipeline = require('./mediawiki.parser.js').ParserPipeline,
+		ParserEnv = require('./mediawiki.parser.environment.js').MWParserEnvironment,
 		optimist = require('optimist');
 
-	var parser = new ParserPipeline();
+	var parser = new ParserPipeline( new ParserEnv({}) );
 
 
 	process.stdin.resume();

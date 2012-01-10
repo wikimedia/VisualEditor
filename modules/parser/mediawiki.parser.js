@@ -112,35 +112,64 @@ function ParserPipeline( env, inputType ) {
  * always an AsyncTokenTransformManager, which emits its output in events.
  */
 ParserPipeline.prototype.makeInputPipeline = function ( inputType, args ) {
-	if ( inputType === 'text/wiki' ) {
-		var wikiTokenizer = new PegTokenizer();
+	switch ( inputType ) {
+		case 'text/wiki':
+			var wikiTokenizer = new PegTokenizer();
 
-		/**
-		* Token stream transformations.
-		* This is where all the wiki-specific functionality is implemented.
-		* See https://www.mediawiki.org/wiki/Future/Parser_development/Token_stream_transformations
-		*/
-		var tokenPreProcessor = new TokenTransformManager.SyncTokenTransformManager ( this.env );
-		tokenPreProcessor.listenForTokensFrom ( wikiTokenizer );
+			/**
+			* Token stream transformations.
+			* This is where all the wiki-specific functionality is implemented.
+			* See https://www.mediawiki.org/wiki/Future/Parser_development/Token_stream_transformations
+			*/
+			// XXX: Use this.env.config.transforms['inputType'][stage] or
+			// somesuch to set up the transforms by input type
+			var tokenPreProcessor = new TokenTransformManager.SyncTokenTransformManager ( this.env );
+			tokenPreProcessor.listenForTokensFrom ( wikiTokenizer );
 
-		var tokenExpander = new TokenTransformManager.AsyncTokenTransformManager (
-				this.makeInputPipeline.bind( this ), args, this.env );
-		tokenExpander.listenForTokensFrom ( tokenPreProcessor );
-		
-		return { first: wikiTokenizer, last: tokenExpander };
-	} else {
-		throw "ParserPipeline.makeInputPipeline: Unsupported input type " + inputType;
+			var tokenExpander = new TokenTransformManager.AsyncTokenTransformManager (
+						{
+							'input': this.makeInputPipeline.bind( this ),
+							'attributes': this.makeAttributePipeline.bind( this )
+						},
+						args, this.env 
+					);
+			tokenExpander.listenForTokensFrom ( tokenPreProcessor );
+			
+			return { first: wikiTokenizer, last: tokenExpander };
+
+		default:
+			throw "ParserPipeline.makeInputPipeline: Unsupported input type " + inputType;
 	}
 };
 
 
 /**
- * Parse an input
+ * Factory for attribute transformations, with input type implicit in the
+ * environment.
+ */
+ParserPipeline.prototype.makeAttributePipeline = function ( args ) {
+	/**
+	 * Token stream transformations.
+	 * This is where all the wiki-specific functionality is implemented.
+	 * See https://www.mediawiki.org/wiki/Future/Parser_development/Token_stream_transformations
+	 */
+	var tokenPreProcessor = new TokenTransformManager.SyncTokenTransformManager ( this.env );
+	var tokenExpander = new TokenTransformManager.AsyncTokenTransformManager (
+			this.makeInputPipeline.bind( this ), args, this.env );
+	tokenExpander.listenForTokensFrom ( tokenPreProcessor );
+
+	return { first: tokenPreProcessor, last: tokenExpander };
+};
+
+
+/**
+ * Feed the parser pipeline with some input, the output is emitted in events.
  *
  * @method
  * @param {Mixed} All arguments are passed through to the underlying input
  * pipeline's first element's process() method. For a wikitext pipeline (the
- * default), this would be the wikitext to tokenize.
+ * default), this would be the wikitext to tokenize:
+ * pipeline.parse ( wikiText );
  */
 ParserPipeline.prototype.parse = function ( ) {
 	// Set the pipeline in motion by feeding the first element with the given

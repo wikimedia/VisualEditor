@@ -45,36 +45,44 @@ TemplateHandler.prototype.register = function ( manager ) {
  * processes the template.
  */
 TemplateHandler.prototype.onTemplate = function ( token, cb ) {
+	
+	this.parentCB = cb;
+	this.origToken = token;
+
 	// check for 'subst:'
 	// check for variable magic names
 	// check for msg, msgnw, raw magics
 	// check for parser functions
 
-	// create a new frame for argument and title expansions
-	var newFrame = {
+	// create a new temporary frame for argument and title expansions
+	var templateExpandData = {
 			args: {},
 			env: frame.env,
-			target: token.attribs[0][1], // XXX: use data-target key instead!
-										// Also handle templates and args in
-										// target!
 			outstanding: 0,
-			cb: cb
+			cb: cb,
+			origToken: token
 		},
-		argcb,
+		transformCB,
 		i = 0,
 		kvs = [],
 		res,
 		kv;
 	// XXX: transform the target
+	transformCB = this._returnArgValue.bind( this, { frame: templateExpandData } );
+	res = this.manager.transformTokens( token.target, transformCB );
+	if ( res.async ) {
+		newFrame.outstanding++;
+	}
+    newFrame.target = res.tokens;
 	
-	
+
 	// transform each argument (key and value), and handle asynchronous returns
 	for ( var key in token.args ) {
 		if ( token.hasOwnProperty( key ) ) {
 			kv = { key: [], value: [] };
 			// transform the value
-			argCB = this._returnArgValue.bind( this, { index: i, frame: newFrame } );
-			res = frame.transformTokens( frame, args[key], argCB );
+			transformCB = this._returnArgValue.bind( this, { frame: templateExpandData, index: i }  );
+			res = this.manager.transformTokens( args[key], transformCB );
 			if ( res.async ) {
 				newFrame.outstanding++;
 			}
@@ -90,6 +98,9 @@ TemplateHandler.prototype.onTemplate = function ( token, cb ) {
 			i++;
 		}
 	}
+
+	// Move the above to AttributeTransformer class
+
 	
 	if ( newFrame.outstanding === 0 ) {
 		return this._expandTemplate ( newFrame );
@@ -102,9 +113,38 @@ TemplateHandler.prototype.onTemplate = function ( token, cb ) {
  * Callback for async argument value expansions
  */
 TemplateHandler.prototype._returnArgValue = function ( ref, tokens, notYetDone ) {
-	var frame = ref.frame,
-		res;
-	frame.args[ref.index].push( tokens );
+	var frame = ref.frame;
+	frame.args[ref.index].value.push( tokens );
+	if ( ! notYetDone ) {
+		frame.outstanding--;
+		if ( frame.outstanding === 0 ) {
+			// this calls back to frame.cb, so no return here.
+			this._expandTemplate( frame );
+		}
+	}
+};
+
+/**
+ * Callback for async argument key expansions
+ */
+TemplateHandler.prototype._returnArgKey = function ( ref, tokens, notYetDone ) {
+	var frame = ref.frame;
+	frame.args[ref.index].key.push( tokens );
+	if ( ! notYetDone ) {
+		frame.outstanding--;
+		if ( frame.outstanding === 0 ) {
+			// this calls back to frame.cb, so no return here.
+			this._expandTemplate( frame );
+		}
+	}
+};
+
+/**
+ * Callback for async target expansion
+ */
+TemplateHandler.prototype._returnTarget = function ( ref, tokens, notYetDone ) {
+	var frame = ref.frame;
+	frame.target.push( tokens );
 	if ( ! notYetDone ) {
 		frame.outstanding--;
 		if ( frame.outstanding === 0 ) {
@@ -119,12 +159,25 @@ TemplateHandler.prototype._returnArgValue = function ( ref, tokens, notYetDone )
  * target were expanded in frame.
  */
 TemplateHandler.prototype._expandTemplate = function ( frame ) {
+	// First, check the target for loops
+	this.manager.loopCheck.check( frame.target );
+
 	// Create a new nested transformation pipeline for the input type
 	// (includes the tokenizer and synchronous stage-1 transforms for
 	// 'text/wiki' input). 
 	// Returned pipe (for now):
 	// { first: tokenizer, last: AsyncTokenTransformManager }
-	var pipe = this.manager.newChildPipeline( inputType, args );
+	this.inputPipeline = this.manager.newChildPipeline( inputType, args );
+
+	// Hook up the AsyncTokenTransformManager output events to call back our
+	// parentCB.
+	this.inputPipeline.last.addListener( 'chunk', this._onChunk.bind ( this ) );
+	this.inputPipeline.last.addListener( 'end', this._onEnd.bind ( this ) );
+	
+
+	// Resolve a possibly relative link
+	var templateName = this.env.resolveTitle( this.target, 'Template' );
+	this._fetchTemplateAndTitle( templateName, this._processTemplateAndTitle.bind( this ) );
 
 	// Set up a pipeline:
 	// fetch template source -> tokenizer 
@@ -151,9 +204,45 @@ TemplateHandler.prototype._expandTemplate = function ( frame ) {
 
 
 /**
+ * Convert AsyncTokenTransformManager output chunks to parent callbacks
+ */
+TemplateHandler.prototype._onChunk = function( chunk ) {
+	// We encapsulate the output by default, so collect tokens here.
+	this.resultTokens = this.resultTokens.concat( chunk );
+};
+
+/**
+ * Handle the end event by calling our parentCB with notYetDone set to false.
+ */
+TemplateHandler.prototype._onEnd = function( ) {
+	// Encapsulate the template in a single token, which contains all the
+	// information needed for the editor.
+	var res = {
+		type: 'container',
+		tokens: this.resultTokens, // The editor needs HTML serialization instead
+		args: this.manager.args, // Here, the editor needs wikitext.
+		attribs: this.origToken.attribs // Hmm..
+
+	};
+	this.parentCB( res, false );
+};
+
+
+
+/**
+ * Process a fetched template source
+ */
+TemplateHandler.prototype._processTemplateAndTitle = function( src, title ) {
+	// Feed the pipeline. XXX: Support different formats.
+	this.inputPipeline.process ( src );
+};
+
+
+
+/**
  * Fetch a template
  */
-TemplateHandler.prototype._fetchTemplateAndTitle = function( title, frame, callback ) {
+TemplateHandler.prototype._fetchTemplateAndTitle = function( title, callback ) {
 	// @fixme normalize name?
 	if (title in this.pageCache) {
 		// @fixme should this be forced to run on next event?
@@ -163,7 +252,7 @@ TemplateHandler.prototype._fetchTemplateAndTitle = function( title, frame, callb
 		console.log(title);
 		console.log(this.pageCache);
 		$.ajax({
-			url: frame.env.wgScriptPath + '/api' + frame.env.wgScriptExtension,
+			url: this.manager.env.wgScriptPath + '/api' + this.manager.env.wgScriptExtension,
 			data: {
 				format: 'json',
 			action: 'query',

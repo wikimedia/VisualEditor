@@ -303,12 +303,12 @@ TokenTransformManager.prototype._transformToken = function ( token, cb, phaseEnd
  * @param {Object} args, the argument map for templates
  * @param {Object} env, the environment.
  */
-function AsyncTokenTransformManager ( childFactory, args, env ) {
+function AsyncTokenTransformManager ( childFactories, args, env ) {
 	// Factory function for new AsyncTokenTransformManager creation with
 	// default transforms enabled
 	// Also sets up a tokenizer and phase-1-transform depending on the input format
 	// nestedAsyncTokenTransformManager = manager.newChildPipeline( inputType, args );
-	this.childFactory = childFactory;
+	this.childFactories = childFactories;
 	this._construct();
 	this._reset( args, env );
 }
@@ -326,9 +326,30 @@ AsyncTokenTransformManager.prototype.constructor = AsyncTokenTransformManager;
  * @returns {Object} Pipeline, which is an object with 'first' pointing to the
  * first stage of the pipeline, and 'last' pointing to the last stage.
  */
-AsyncTokenTransformManager.prototype.newChildPipeline = function ( inputType, args ) {
-	var pipe = this.childFactory( inputType, args );
+AsyncTokenTransformManager.prototype.newChildPipeline = function ( inputType, args, title ) {
+	var pipe = this.childFactories.input( inputType, args );
+
+	// now set up a few things on the child AsyncTokenTransformManager.
+	var child = pipe.last;
+	// We assume that the title was already checked against this.loopCheck
+	// before!
+	child.loopCheck = new LoopCheck ( this.loopCheck, title );
+	// Same for depth!
+	child.depth = this.depth + 1;
 	return pipe;
+};
+
+/**
+ * Create a pipeline for attribute transformations.
+ *
+ * @method
+ * @param {String} Input type, currently only support 'text/wiki'.
+ * @param {Object} Template arguments
+ * @returns {Object} Pipeline, which is an object with 'first' pointing to the
+ * first stage of the pipeline, and 'last' pointing to the last stage.
+ */
+AsyncTokenTransformManager.prototype.newAttributePipeline = function ( inputType, args ) {
+	return this.childFactories.attributes( inputType, args );
 };
 
 /**
@@ -547,7 +568,7 @@ SyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 		localAccum = [],
 		localAccumLength = 0,
 		tokensLength = tokens.length,
-		cb = undefined, // XXX: not meaningful for purely synchronous processing!
+		cb, // XXX: not meaningful for purely synchronous processing!
 		token,
 		// Top-level frame only in phase 3, as everything is already expanded.
 		ts = this.transformers;
@@ -613,6 +634,39 @@ SyncTokenTransformManager.prototype.onEndEvent = function () {
 };
 
 
+/********************** AttributeTransformManager *************************/
+
+/**
+ * Utility transformation manager for attributes, using an attribute
+ * transformation pipeline (normally phase1 SyncTokenTransformManager and
+ * phase2 AsyncTokenTransformManager). This pipeline needs to be independent
+ * of the containing TokenTransformManager to isolate transforms from each
+ * other.
+ *
+ * @class
+ * @constructor
+ * @param {Object} Containing TokenTransformManager
+ */
+function AttributeTransformManager ( manager, callback ) {
+	this.callback = callback;
+	var pipe = manager.newAttributePipeline( manager.args );
+	pipe.addListener( 'chunk', this.onChunk.bind( this ) );
+	pipe.addListener( 'end', this.onEnd.bind( this ) );
+}
+
+/**
+ * Collect chunks returned from the pipeline
+ */
+AttributeTransformManager.prototype.onChunk = function ( chunk ) {
+	this.callback( chunk, true );
+};
+
+/**
+ * Empty the pipeline by returning to the parent
+ */
+AttributeTransformManager.prototype.onEnd = function ( ) {
+	this.callback( [], false );
+};
 
 
 
@@ -729,6 +783,43 @@ TokenAccumulator.prototype.push = function ( token ) {
 	return this.accum.push(token);
 };
 
+
+/**
+ * Loop check helper class for AsyncTokenTransformManager.
+ *
+ * We use a bottom-up linked list to allow sharing of paths between async
+ * expansions.
+ *
+ * @class
+ * @constructor
+ */
+function LoopCheck ( parent, title ) {
+	if ( parent ) {
+		this.parent = parent;
+	} else {
+		this.parent = null;
+	}
+	this.title = title;
+}
+
+/**
+ * Check if expanding <title> would lead to a loop.
+ *
+ * @method
+ * @param {String} Title to check.
+ */
+LoopCheck.prototype.check = function ( title ) {
+	var elem = this;
+	do {
+		if ( elem.title === title ) {
+			// Loop detected
+			return true;
+		}
+		elem = elem.parent;
+	} while ( elem );
+	// No loop detected.
+	return false;
+};
 
 if (typeof module == "object") {
 	module.exports.AsyncTokenTransformManager = AsyncTokenTransformManager;

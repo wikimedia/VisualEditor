@@ -58,7 +58,7 @@ var pj = path.join;
 
 var testWhiteList = require('./parserTests-whitelist.js').testWhiteList;
 
-//_import(pj('parser', 'mediawiki.parser.environment.js'), ['MWParserEnvironment']);
+_import(pj('parser', 'mediawiki.parser.environment.js'), ['MWParserEnvironment']);
 _import(pj('parser', 'mediawiki.parser.js'), ['ParserPipeline']);
 
 // WikiDom and serializers
@@ -552,11 +552,8 @@ ParserTests.prototype.main = function () {
 	//	}
 	//});
 
-	// move this config out of here
-	var config = {
-		parserEnv: {}
-	};
-	var parserPipeline = new ParserPipeline( config );
+	var env = new MWParserEnvironment({});
+	var parserPipeline = new ParserPipeline( env );
 
 	var comments = [],
 		pt = this;
