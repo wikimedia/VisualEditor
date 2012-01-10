@@ -346,6 +346,7 @@ $messages['pl'] = array(
 );
 
 /** Piedmontese (Piemontèis)
+ * @author Borichèt
  * @author Dragonòt
  */
 $messages['pms'] = array(
@@ -353,12 +354,12 @@ $messages['pms'] = array(
 	'visualeditorsandbox' => "Ambient ëd preuva dl'editor visual",
 	'visualeditor-desc' => 'Editor visual për MediaWiki',
 	'visualeditor-sandbox-title' => "Ambient ëd preuva dl'editor visual",
-	'visualeditor-tooltip-wikitext' => 'Ativa la vista ëd test wiki',
-	'visualeditor-tooltip-json' => 'Ativa la vista ëd JSON',
-	'visualeditor-tooltip-html' => 'Ativa la vista ëd HTML',
-	'visualeditor-tooltip-render' => 'Ativa le preuva',
-	'visualeditor-tooltip-history' => 'Ativa la vista dla stòria dle transassion',
-	'visualeditor-tooltip-help' => "Ativa la vista d'agiut",
+	'visualeditor-tooltip-wikitext' => 'Ativé la visualisassion an test wiki',
+	'visualeditor-tooltip-json' => 'Ativé la visualisassion an JSON',
+	'visualeditor-tooltip-html' => 'Ativé la visualisassion an HTML',
+	'visualeditor-tooltip-render' => 'Ativé la previsualisassion',
+	'visualeditor-tooltip-history' => 'Ativé la visualisassion dla stòria dle transassion',
+	'visualeditor-tooltip-help' => "Ativé la visualisassion d'agiut",
 	'visualeditor-feedback-prompt' => "Lassé n'opinion",
 	'visualeditor-feedback-dialog-title' => "Lassé n'opinion a propòsit dl'Ambient ëd preuva ëd VisualEditor",
 );
