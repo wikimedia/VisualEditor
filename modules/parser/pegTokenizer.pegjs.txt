@@ -693,7 +693,9 @@ template
             type: 'SELFCLOSINGTAG', 
             name: 'template', 
             attribs: [['data-target', target]],
-            args: {}
+            orderedArgs: params,
+            args: {},
+            target: target
       };
       if (params && params.length) {
           var position = 1;
@@ -720,13 +722,13 @@ template
 
 // XXX: support template and args in target!
 template_target
-  = h:( !"}}" x:([^|\n]) { return x } )* { return h.join(''); }
+  = h:( !"}}" x:([^|\n]) { return x } )* { return { type: 'TEXT', value: h.join('') } }
 
 template_param
   = name:template_param_name space* "=" space* c:template_param_text {
-      return [name, c];
+      return [{ type: 'TEXT', value: name }, { type: 'TEXT', value: c }];
   } / c:template_param_text {
-      return [null, c];
+      return [[], { type: 'TEXT', value: c }];
   }
 
 tplarg 

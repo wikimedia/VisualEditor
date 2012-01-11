@@ -9,11 +9,13 @@
  * @author Gabriel Wicke <gwicke@wikimedia.org>
  * @author Brion Vibber <brion@wikimedia.org>
  */
-var $ = require('jquery');
+var $ = require('jquery'),
+	AttributeTransformManager = require('./mediawiki.TokenTransformManager.js').AttributeTransformManager;
 
 
-function TemplateHandler () {
+function TemplateHandler ( manager ) {
 	this.reset();
+	this.register( manager );
 }
 
 TemplateHandler.prototype.reset = function () {
@@ -45,6 +47,7 @@ TemplateHandler.prototype.register = function ( manager ) {
  * processes the template.
  */
 TemplateHandler.prototype.onTemplate = function ( token, cb ) {
+	console.log('onTemplate!');
 	
 	// check for 'subst:'
 	// check for variable magic names
@@ -54,7 +57,7 @@ TemplateHandler.prototype.onTemplate = function ( token, cb ) {
 	// create a new temporary frame for argument and title expansions
 	var templateTokenTransformData = {
 			args: {},
-			env: frame.env,
+			manager: this.manager,
 			outstanding: 0,
 			cb: cb,
 			origToken: token,
@@ -66,13 +69,14 @@ TemplateHandler.prototype.onTemplate = function ( token, cb ) {
 		res,
 		kv;
 
-	var attributes = [['', token.target]].concat( token.args );
+	var attributes = [['', token.target]].concat( token.orderedArgs );
 
-	new AttributeTransformer( this.manager, 
+	new AttributeTransformManager( this.manager, 
 			this._returnAttributes.bind( this, templateTokenTransformData ) 
 			).process( attributes );
 
-	if ( templateExpandData.outstanding === 0 ) {
+	if ( templateTokenTransformData.outstanding === 0 ) {
+		console.log( 'direct call');
 		return this._expandTemplate ( templateTokenTransformData );
 	} else {
 		templateTokenTransformData.isAsync = true;
@@ -81,6 +85,7 @@ TemplateHandler.prototype.onTemplate = function ( token, cb ) {
 };
 
 TemplateHandler.prototype._returnAttributes = function ( templateTokenTransformData, attributes ) {
+	console.log( '_returnAttributes' + JSON.stringify(attributes) );
 	// Remove the target from the attributes
 	templateTokenTransformData.target = attributes[0][1];
 	attributes.shift();
@@ -95,6 +100,8 @@ TemplateHandler.prototype._returnAttributes = function ( templateTokenTransformD
  * target were expanded in frame.
  */
 TemplateHandler.prototype._expandTemplate = function ( templateTokenTransformData ) {
+	console.log('TemplateHandler.expandTemplate: ' +
+			JSON.stringify( templateTokenTransformData, null, 2 ) );
 	// First, check the target for loops
 	this.manager.loopCheck.check( templateTokenTransformData.target );
 
@@ -103,16 +110,19 @@ TemplateHandler.prototype._expandTemplate = function ( templateTokenTransformDat
 	// 'text/wiki' input). 
 	// Returned pipe (for now):
 	// { first: tokenizer, last: AsyncTokenTransformManager }
-	this.inputPipeline = this.manager.newChildPipeline( inputType, args );
+	this.inputPipeline = this.manager.newChildPipeline( 
+			this.manager.inputType, 
+			templateTokenTransformData.expandedArgs 
+			);
 
 	// Hook up the AsyncTokenTransformManager output events to call back our
 	// parentCB.
-	this.inputPipeline.last.addListener( 'chunk', this._onChunk.bind ( this ) );
-	this.inputPipeline.last.addListener( 'end', this._onEnd.bind ( this ) );
+	this.inputPipeline.addListener( 'chunk', this._onChunk.bind ( this ) );
+	this.inputPipeline.addListener( 'end', this._onEnd.bind ( this ) );
 	
 
 	// Resolve a possibly relative link
-	var templateName = this.env.resolveTitle( this.target, 'Template' );
+	var templateName = this.manager.env.resolveTitle( this.manager.env.tokensToString( this.target ), 'Template' );
 	this._fetchTemplateAndTitle( templateName, this._processTemplateAndTitle.bind( this ) );
 
 	// Set up a pipeline:

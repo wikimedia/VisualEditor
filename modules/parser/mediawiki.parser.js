@@ -16,6 +16,7 @@ var fs = require('fs'),
 	PegTokenizer                = require('./mediawiki.tokenizer.peg.js').PegTokenizer,
 	TokenTransformManager    = require('./mediawiki.TokenTransformManager.js'),
 	QuoteTransformer            = require('./ext.core.QuoteTransformer.js').QuoteTransformer,
+	TemplateHandler             = require('./ext.core.TemplateHandler.js').TemplateHandler,
 	Cite                        = require('./ext.Cite.js').Cite,
 	FauxHTML5                   = require('./mediawiki.HTML5TreeBuilder.node.js').FauxHTML5,
 	DOMPostProcessor            = require('./mediawiki.DOMPostProcessor.js').DOMPostProcessor,
@@ -58,15 +59,16 @@ function ParserPipeline( env, inputType ) {
 
 	// Create an input pipeline for the given input type.
 	this.inputPipeline = this.makeInputPipeline ( inputType );
+	this.inputPipeline.atTopLevel = true;
 
 
 	this.tokenPostProcessor = new TokenTransformManager.SyncTokenTransformManager ( env );
-	this.tokenPostProcessor.listenForTokensFrom ( this.inputPipeline.last );
+	this.tokenPostProcessor.listenForTokensFrom ( this.inputPipeline );
 
 
 	// Add token transformations..
-	var qt = new QuoteTransformer( this.tokenPostProcessor );
-
+	new QuoteTransformer( this.tokenPostProcessor );
+	
 	//var citeExtension = new Cite( this.tokenTransformer );
 
 
@@ -126,7 +128,7 @@ ParserPipeline.prototype.makeInputPipeline = function ( inputType, args ) {
 	switch ( inputType ) {
 		case 'text/wiki':
 			if ( this.pipelineCache['text/wiki'].input.length ) {
-				return this.pipelineCache['text/wiki'].attribute.pop();
+				return this.pipelineCache['text/wiki'].input.pop();
 			} else {
 				var wikiTokenizer = new PegTokenizer();
 
@@ -147,7 +149,13 @@ ParserPipeline.prototype.makeInputPipeline = function ( inputType, args ) {
 							},
 							args, this.env 
 						);
+
+				// Register template expansion extension
+				//new TemplateHandler( tokenExpander );
+
 				tokenExpander.listenForTokensFrom ( tokenPreProcessor );
+				// XXX: hack.
+				tokenExpander.inputType = inputType;
 			
 				return new CachedTokenPipeline( 
 						this.cachePipeline.bind( this, 'text/wiki', 'input' ),
@@ -158,6 +166,7 @@ ParserPipeline.prototype.makeInputPipeline = function ( inputType, args ) {
 			break;
 
 		default:
+			console.trace();
 			throw "ParserPipeline.makeInputPipeline: Unsupported input type " + inputType;
 	}
 };
@@ -179,7 +188,13 @@ ParserPipeline.prototype.makeAttributePipeline = function ( args ) {
 		*/
 		var tokenPreProcessor = new TokenTransformManager.SyncTokenTransformManager ( this.env );
 		var tokenExpander = new TokenTransformManager.AsyncTokenTransformManager (
-				this.makeInputPipeline.bind( this ), args, this.env );
+				{
+					'input': this.makeInputPipeline.bind( this ),
+					'attributes': this.makeAttributePipeline.bind( this )
+				},
+				args, this.env 
+				);
+		//new TemplateHandler( tokenExpander );
 		tokenExpander.listenForTokensFrom ( tokenPreProcessor );
 
 		return new CachedTokenPipeline( 
@@ -211,7 +226,7 @@ ParserPipeline.prototype.cachePipeline = function ( inputType, pipelinePart, pip
 ParserPipeline.prototype.parse = function ( ) {
 	// Set the pipeline in motion by feeding the first element with the given
 	// arguments.
-	this.inputPipeline.first.process.apply( this.inputPipeline.first , arguments );
+	this.inputPipeline.process.apply( this.inputPipeline , arguments );
 };
 
 // XXX: Lame hack: set document property. Instead, emit events
@@ -254,6 +269,16 @@ function CachedTokenPipeline ( returnToCacheCB, first, last ) {
 CachedTokenPipeline.prototype = new events.EventEmitter();
 CachedTokenPipeline.prototype.constructor = CachedTokenPipeline;
 
+
+/**
+ * Feed input tokens to the first pipeline stage
+ */
+CachedTokenPipeline.prototype.process = function ( chunk ) {
+	//console.log( 'CachedTokenPipeline::process: ' + chunk );
+	this.first.process( chunk );
+};
+
+
 /**
  * Forward chunks to our listeners
  */
@@ -270,9 +295,11 @@ CachedTokenPipeline.prototype.forwardEndAndRecycleSelf = function ( ) {
 	// first, forward the event
 	this.emit( 'end' );
 	// now recycle self
-	this.removeAllListeners( 'end' );
-	this.removeAllListeners( 'chunk' );
-	this.returnToCacheCB ( this );
+	if ( ! this.atTopLevel ) {
+		this.removeAllListeners( 'end' );
+		this.removeAllListeners( 'chunk' );
+		this.returnToCacheCB ( this );
+	}
 };
 
 

@@ -70,6 +70,27 @@ MWParserEnvironment.prototype.resolveTitle = function( name, namespace ) {
 	return name;
 };
 
+MWParserEnvironment.prototype.tokensToString = function ( tokens ) {
+	var out = [];
+	// XXX: quick hack, track down non-array sources later!
+	if ( ! $.isArray( tokens ) ) {
+		tokens = [ tokens ];
+	}
+	for ( var i = 0, l = tokens.length; i < l; i++ ) {
+		console.log( 'MWParserEnvironment.tokensToString: ' + token );
+		var token = tokens[i];
+		if ( token.type === 'TEXT' ) {
+			out.push( token.value );
+		} else {
+			var tstring = JSON.stringify( token );
+			console.log ( 'MWParserEnvironment::tokensToString: ' + tstring );
+			out.push( tstring );
+		}
+	}
+	return out.join('');
+};
+
+
 
 if (typeof module == "object") {
 	module.exports.MWParserEnvironment = MWParserEnvironment;

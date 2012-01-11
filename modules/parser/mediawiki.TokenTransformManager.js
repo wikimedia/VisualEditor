@@ -206,7 +206,8 @@ TokenTransformManager.prototype._transformTagToken = function ( token, cb, phase
 	if ( ts ) {
 		for ( i = 0, l = ts.length; i < l; i++ ) {
 			transformer = ts[i];
-			if ( res.token.rank && transformer.rank <= res.token.rank ) {
+			if ( res.token.rank && transformer.rank < res.token.rank ) {
+				//console.log( 'SKIPPING' + JSON.stringify( token, null, 2 ) + JSON.stringify( transformer, null, 2 ) );
 				// skip transformation, was already applied.
 				continue;
 			}
@@ -311,6 +312,8 @@ function AsyncTokenTransformManager ( childFactories, args, env ) {
 	this.childFactories = childFactories;
 	this._construct();
 	this._reset( args, env );
+	// FIXME: pass actual title?
+	this.loopCheck = new LoopCheck ( null );
 }
 
 // Inherit from TokenTransformManager, and thus also from EventEmitter.
@@ -333,7 +336,7 @@ AsyncTokenTransformManager.prototype.newChildPipeline = function ( inputType, ar
 	var child = pipe.last;
 	// We assume that the title was already checked against this.loopCheck
 	// before!
-	child.loopCheck = new LoopCheck ( this.loopCheck, title );
+	child.loopCheck = new LoopCheck ( title, this.loopCheck );
 	// Same for depth!
 	child.depth = this.depth + 1;
 	return pipe;
@@ -382,6 +385,16 @@ AsyncTokenTransformManager.prototype._reset = function ( args, env ) {
 	}
 };
 
+/**
+ * Simplified wrapper that processes all tokens passed in
+ */
+AsyncTokenTransformManager.prototype.process = function ( tokens ) {
+	if ( ! $.isArray ( tokens ) ) {
+		tokens = [tokens];
+	}
+	this.onChunk( tokens );
+	this.onEndEvent();
+};
 
 /**
  * Transform and expand tokens. Transformed token chunks will be emitted in
@@ -421,6 +434,7 @@ AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parent
 		tokensLength = tokens.length,
 		token,
 		ts = this.transformers;
+
 
 	for ( var i = 0; i < tokensLength; i++ ) {
 		token = tokens[i];
@@ -555,6 +569,15 @@ SyncTokenTransformManager.prototype = new TokenTransformManager();
 SyncTokenTransformManager.prototype.constructor = SyncTokenTransformManager;
 
 
+SyncTokenTransformManager.prototype.process = function ( tokens ) {
+	if ( ! $.isArray ( tokens ) ) {
+		tokens = [tokens];
+	}
+	this.onChunk( tokens );
+	this.onEndEvent();
+};
+
+
 /**
  * Global in-order and synchronous traversal on token stream. Emits
  * transformed chunks of tokens in the 'chunk' event.
@@ -649,13 +672,14 @@ SyncTokenTransformManager.prototype.onEndEvent = function () {
  * @param {Object} Containing TokenTransformManager
  */
 function AttributeTransformManager ( manager, callback ) {
+	this.manager = manager;
 	this.callback = callback;
 	this.outstanding = 0;
 	this.kvs = [];
-	this.pipe = manager.newAttributePipeline( manager.args );
+	this.pipe = manager.getAttributePipeline( manager.args );
 }
 
-AttributeTransformManager.prototype.transformAttributes = function ( attributes ) {
+AttributeTransformManager.prototype.process = function ( attributes ) {
 	// Potentially need to use multiple pipelines to support concurrent async expansion
 	//this.pipe.process( 
 	var pipe,
@@ -664,30 +688,28 @@ AttributeTransformManager.prototype.transformAttributes = function ( attributes 
 	// transform each argument (key and value), and handle asynchronous returns
 	for ( var i = 0, l = attributes.length; i < l; i++ ) {
 		kv = { key: [], value: [] };
-		kvs.push( kv );
-
-		ref = { frame: templateExpandData, index: i };
+		this.kvs.push( kv );
 
 		// Assume that the return is async, will be decremented in callback
 		this.outstanding += 2;
 
 		// transform the key
-		pipe = manager.getAttributePipeline( manager.args );
-		pipe.last.addListener( 'chunk', 
-				this.onChunk.bind( this, this._returnAttributeKey, ref ) 
+		pipe = this.manager.getAttributePipeline( this.manager.args );
+		pipe.addListener( 'chunk', 
+				this.onChunk.bind( this, this._returnAttributeKey.bind( this, i ) ) 
 				);
-		pipe.last.addListener( 'end', 
-				this.onEnd.bind( this, this._returnAttributeKey, ref ) 
+		pipe.addListener( 'end', 
+				this.onEnd.bind( this, this._returnAttributeKey.bind( this, i ) ) 
 				);
 		pipe.process( attributes[i][0] );
 
 		// transform the value
-		pipe = manager.getAttributePipeline( manager.args );
-		pipe.last.addListener( 'chunk', 
-				this.onChunk.bind( this, this._returnAttributeValue, ref ) 
+		pipe = this.manager.getAttributePipeline( this.manager.args );
+		pipe.addListener( 'chunk', 
+				this.onChunk.bind( this, this._returnAttributeValue.bind( this, i ) ) 
 				);
-		pipe.last.addListener( 'end', 
-				this.onEnd.bind( this, this._returnAttributeKey, ref ) 
+		pipe.addListener( 'end', 
+				this.onEnd.bind( this, this._returnAttributeValue.bind( this, i ) ) 
 				);
 		pipe.process( attributes[i][1] );
 	}
@@ -697,7 +719,8 @@ AttributeTransformManager.prototype._returnAttributes = function ( ) {
 	// convert attributes
 	var out = [];
 	for ( var i = 0, l = this.kvs.length; i < l; i++ ) {
-		out.push( [this.kvs.key, this.kvs.value] );
+		var kv = this.kvs[i];
+		out.push( [kv.key, kv.value] );
 	}
 
 	// and call the callback with the result
@@ -708,14 +731,14 @@ AttributeTransformManager.prototype._returnAttributes = function ( ) {
  * Collect chunks returned from the pipeline
  */
 AttributeTransformManager.prototype.onChunk = function ( callback, ref, chunk ) {
-	callback.call( this, ref, chunk, true );
+	callback.call( ref, chunk, true );
 };
 
 /**
  * Empty the pipeline by returning to the parent
  */
 AttributeTransformManager.prototype.onEnd = function ( callback, ref ) {
-	callback.call(this, ref, [], false );
+	callback.call( ref, [], false );
 };
 
 
@@ -723,16 +746,12 @@ AttributeTransformManager.prototype.onEnd = function ( callback, ref ) {
  * Callback for async argument value expansions
  */
 AttributeTransformManager.prototype._returnAttributeValue = function ( ref, tokens, notYetDone ) {
-	var frame = ref.frame;
-	this.kvs[ref.index].value.push( tokens );
+	this.kvs[ref].value.push( tokens );
 	if ( ! notYetDone ) {
-		frame.outstanding--;
-		if ( frame.outstanding === 0 ) {
+		this.outstanding--;
+		if ( this.outstanding === 0 ) {
 			// this calls back to frame.cb, so no return here.
-			this.outstanding--;
-			if ( this.outstanding === 0 ) {
-				this._returnAttributes();
-			}
+			this._returnAttributes();
 		}
 	}
 };
@@ -741,16 +760,12 @@ AttributeTransformManager.prototype._returnAttributeValue = function ( ref, toke
  * Callback for async argument key expansions
  */
 AttributeTransformManager.prototype._returnAttributeKey = function ( ref, tokens, notYetDone ) {
-	var frame = ref.frame;
-	this.kvs[ref.index].key.push( tokens );
+	this.kvs[ref].key.push( tokens );
 	if ( ! notYetDone ) {
-		frame.outstanding--;
-		if ( frame.outstanding === 0 ) {
+		this.outstanding--;
+		if ( this.outstanding === 0 ) {
 			// this calls back to frame.cb, so no return here.
-			this.outstanding--;
-			if ( this.outstanding === 0 ) {
-				this._returnAttributes();
-			}
+			this._returnAttributes();
 		}
 	}
 };
@@ -878,7 +893,7 @@ TokenAccumulator.prototype.push = function ( token ) {
  * @class
  * @constructor
  */
-function LoopCheck ( parent, title ) {
+function LoopCheck ( title, parent ) {
 	if ( parent ) {
 		this.parent = parent;
 	} else {
@@ -909,4 +924,5 @@ LoopCheck.prototype.check = function ( title ) {
 if (typeof module == "object") {
 	module.exports.AsyncTokenTransformManager = AsyncTokenTransformManager;
 	module.exports.SyncTokenTransformManager = SyncTokenTransformManager;
+	module.exports.AttributeTransformManager = AttributeTransformManager;
 }
