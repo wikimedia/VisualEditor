@@ -46,121 +46,57 @@ TemplateHandler.prototype.register = function ( manager ) {
  */
 TemplateHandler.prototype.onTemplate = function ( token, cb ) {
 	
-	this.parentCB = cb;
-	this.origToken = token;
-
 	// check for 'subst:'
 	// check for variable magic names
 	// check for msg, msgnw, raw magics
 	// check for parser functions
 
 	// create a new temporary frame for argument and title expansions
-	var templateExpandData = {
+	var templateTokenTransformData = {
 			args: {},
 			env: frame.env,
 			outstanding: 0,
 			cb: cb,
-			origToken: token
+			origToken: token,
+			isAsync: false
 		},
 		transformCB,
 		i = 0,
 		kvs = [],
 		res,
 		kv;
-	// XXX: transform the target
-	transformCB = this._returnArgValue.bind( this, { frame: templateExpandData } );
-	res = this.manager.transformTokens( token.target, transformCB );
-	if ( res.async ) {
-		newFrame.outstanding++;
-	}
-    newFrame.target = res.tokens;
-	
 
-	// transform each argument (key and value), and handle asynchronous returns
-	for ( var key in token.args ) {
-		if ( token.hasOwnProperty( key ) ) {
-			kv = { key: [], value: [] };
-			// transform the value
-			transformCB = this._returnArgValue.bind( this, { frame: templateExpandData, index: i }  );
-			res = this.manager.transformTokens( args[key], transformCB );
-			if ( res.async ) {
-				newFrame.outstanding++;
-			}
-			kv.value = res.tokens;
+	var attributes = [['', token.target]].concat( token.args );
 
-			// XXX: transform key too, and store it in the token's value for
-			// the original key
-			// For now, we assume the key to be a string.
-			kv.key = key;
+	new AttributeTransformer( this.manager, 
+			this._returnAttributes.bind( this, templateTokenTransformData ) 
+			).process( attributes );
 
-			// finally, append to kvs
-			kvs.push( kv );
-			i++;
-		}
-	}
-
-	// Move the above to AttributeTransformer class
-
-	
-	if ( newFrame.outstanding === 0 ) {
-		return this._expandTemplate ( newFrame );
+	if ( templateExpandData.outstanding === 0 ) {
+		return this._expandTemplate ( templateTokenTransformData );
 	} else {
+		templateTokenTransformData.isAsync = true;
 		return { async: true };
 	}
 };
 
-/**
- * Callback for async argument value expansions
- */
-TemplateHandler.prototype._returnArgValue = function ( ref, tokens, notYetDone ) {
-	var frame = ref.frame;
-	frame.args[ref.index].value.push( tokens );
-	if ( ! notYetDone ) {
-		frame.outstanding--;
-		if ( frame.outstanding === 0 ) {
-			// this calls back to frame.cb, so no return here.
-			this._expandTemplate( frame );
-		}
+TemplateHandler.prototype._returnAttributes = function ( templateTokenTransformData, attributes ) {
+	// Remove the target from the attributes
+	templateTokenTransformData.target = attributes[0][1];
+	attributes.shift();
+	templateTokenTransformData.expandedArgs = attributes;
+	if ( templateTokenTransformData.isAsync ) {
+		this._expandTemplate ( templateTokenTransformData );
 	}
-};
-
-/**
- * Callback for async argument key expansions
- */
-TemplateHandler.prototype._returnArgKey = function ( ref, tokens, notYetDone ) {
-	var frame = ref.frame;
-	frame.args[ref.index].key.push( tokens );
-	if ( ! notYetDone ) {
-		frame.outstanding--;
-		if ( frame.outstanding === 0 ) {
-			// this calls back to frame.cb, so no return here.
-			this._expandTemplate( frame );
-		}
-	}
-};
-
-/**
- * Callback for async target expansion
- */
-TemplateHandler.prototype._returnTarget = function ( ref, tokens, notYetDone ) {
-	var frame = ref.frame;
-	frame.target.push( tokens );
-	if ( ! notYetDone ) {
-		frame.outstanding--;
-		if ( frame.outstanding === 0 ) {
-			// this calls back to frame.cb, so no return here.
-			this._expandTemplate( frame );
-		}
-	}
-};
+}
 
 /**
  * Fetch, tokenize and token-transform a template after all arguments and the
  * target were expanded in frame.
  */
-TemplateHandler.prototype._expandTemplate = function ( frame ) {
+TemplateHandler.prototype._expandTemplate = function ( templateTokenTransformData ) {
 	// First, check the target for loops
-	this.manager.loopCheck.check( frame.target );
+	this.manager.loopCheck.check( templateTokenTransformData.target );
 
 	// Create a new nested transformation pipeline for the input type
 	// (includes the tokenizer and synchronous stage-1 transforms for
@@ -198,8 +134,6 @@ TemplateHandler.prototype._expandTemplate = function ( frame ) {
 	// recursion depth check
 	// fetch from DB or interwiki
 	// infinte loop check
-	//
-	// TODO: template fetching is already implemented there, copy this over!
 };
 
 

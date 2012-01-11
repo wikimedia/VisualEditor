@@ -9,6 +9,7 @@
 // make this global for now
 // XXX: figure out a way to get away without a global for PEG actions!
 $ = require('jquery');
+var events = require( 'events' );
 
 var fs = require('fs'),
 	path = require('path'),
@@ -46,6 +47,14 @@ function ParserPipeline( env, inputType ) {
 	} else {
 		this.env = env;
 	}
+
+	// set up a sub-pipeline cache
+	this.pipelineCache = { 
+		'text/wiki': { 
+			'input': [], 
+			'attribute': [] 
+		} 
+	};
 
 	// Create an input pipeline for the given input type.
 	this.inputPipeline = this.makeInputPipeline ( inputType );
@@ -95,6 +104,8 @@ function ParserPipeline( env, inputType ) {
 	// Lame hack for now, see above for an idea for the external async
 	// interface and pipeline setup
 	this.postProcessor.addListener( 'document', this.setDocumentProperty.bind( this ) );
+
+
 }
 
 /**
@@ -114,28 +125,37 @@ function ParserPipeline( env, inputType ) {
 ParserPipeline.prototype.makeInputPipeline = function ( inputType, args ) {
 	switch ( inputType ) {
 		case 'text/wiki':
-			var wikiTokenizer = new PegTokenizer();
+			if ( this.pipelineCache['text/wiki'].input.length ) {
+				return this.pipelineCache['text/wiki'].attribute.pop();
+			} else {
+				var wikiTokenizer = new PegTokenizer();
 
-			/**
-			* Token stream transformations.
-			* This is where all the wiki-specific functionality is implemented.
-			* See https://www.mediawiki.org/wiki/Future/Parser_development/Token_stream_transformations
-			*/
-			// XXX: Use this.env.config.transforms['inputType'][stage] or
-			// somesuch to set up the transforms by input type
-			var tokenPreProcessor = new TokenTransformManager.SyncTokenTransformManager ( this.env );
-			tokenPreProcessor.listenForTokensFrom ( wikiTokenizer );
+				/**
+				* Token stream transformations.
+				* This is where all the wiki-specific functionality is implemented.
+				* See https://www.mediawiki.org/wiki/Future/Parser_development/Token_stream_transformations
+				*/
+				// XXX: Use this.env.config.transforms['inputType'][stage] or
+				// somesuch to set up the transforms by input type
+				var tokenPreProcessor = new TokenTransformManager.SyncTokenTransformManager ( this.env );
+				tokenPreProcessor.listenForTokensFrom ( wikiTokenizer );
 
-			var tokenExpander = new TokenTransformManager.AsyncTokenTransformManager (
-						{
-							'input': this.makeInputPipeline.bind( this ),
-							'attributes': this.makeAttributePipeline.bind( this )
-						},
-						args, this.env 
-					);
-			tokenExpander.listenForTokensFrom ( tokenPreProcessor );
+				var tokenExpander = new TokenTransformManager.AsyncTokenTransformManager (
+							{
+								'input': this.makeInputPipeline.bind( this ),
+								'attributes': this.makeAttributePipeline.bind( this )
+							},
+							args, this.env 
+						);
+				tokenExpander.listenForTokensFrom ( tokenPreProcessor );
 			
-			return { first: wikiTokenizer, last: tokenExpander };
+				return new CachedTokenPipeline( 
+						this.cachePipeline.bind( this, 'text/wiki', 'input' ),
+						wikiTokenizer,
+						tokenExpander
+						);
+			}
+			break;
 
 		default:
 			throw "ParserPipeline.makeInputPipeline: Unsupported input type " + inputType;
@@ -143,23 +163,40 @@ ParserPipeline.prototype.makeInputPipeline = function ( inputType, args ) {
 };
 
 
+
 /**
  * Factory for attribute transformations, with input type implicit in the
  * environment.
  */
 ParserPipeline.prototype.makeAttributePipeline = function ( args ) {
-	/**
-	 * Token stream transformations.
-	 * This is where all the wiki-specific functionality is implemented.
-	 * See https://www.mediawiki.org/wiki/Future/Parser_development/Token_stream_transformations
-	 */
-	var tokenPreProcessor = new TokenTransformManager.SyncTokenTransformManager ( this.env );
-	var tokenExpander = new TokenTransformManager.AsyncTokenTransformManager (
-			this.makeInputPipeline.bind( this ), args, this.env );
-	tokenExpander.listenForTokensFrom ( tokenPreProcessor );
+	if ( this.pipelineCache['text/wiki'].attribute.length ) {
+		return this.pipelineCache['text/wiki'].attribute.pop();
+	} else {
+		/**
+		* Token stream transformations.
+		* This is where all the wiki-specific functionality is implemented.
+		* See https://www.mediawiki.org/wiki/Future/Parser_development/Token_stream_transformations
+		*/
+		var tokenPreProcessor = new TokenTransformManager.SyncTokenTransformManager ( this.env );
+		var tokenExpander = new TokenTransformManager.AsyncTokenTransformManager (
+				this.makeInputPipeline.bind( this ), args, this.env );
+		tokenExpander.listenForTokensFrom ( tokenPreProcessor );
 
-	return { first: tokenPreProcessor, last: tokenExpander };
+		return new CachedTokenPipeline( 
+				this.cachePipeline.bind( this, 'text/wiki', 'attribute' ),
+				tokenPreProcessor,
+				tokenExpander
+				);
+	}
 };
+
+ParserPipeline.prototype.cachePipeline = function ( inputType, pipelinePart, pipe ) {
+	var cache = this.pipelineCache[inputType][pipelinePart];
+	if ( cache && cache.length < 50 ) {
+		cache.push( pipe );
+	}
+};
+
 
 
 /**
@@ -193,6 +230,52 @@ ParserPipeline.prototype.getWikiDom = function () {
 				2
 			);
 };
+
+
+/************************ CachedTokenPipeline ********************************/
+
+/**
+ * Manage a part of a pipeline, that emits 'end' and 'chunk' events from its
+ * last stage.
+ *
+ * @class
+ * @constructor
+ * @param {
+ */
+function CachedTokenPipeline ( returnToCacheCB, first, last ) {
+	this.returnToCacheCB = returnToCacheCB;
+	this.first = first;
+	this.last = last;
+	this.last.addListener( 'end', this.forwardEndAndRecycleSelf.bind( this ) );
+	this.last.addListener( 'chunk', this.forwardChunk.bind( this ) );
+}
+
+// Inherit from EventEmitter
+CachedTokenPipeline.prototype = new events.EventEmitter();
+CachedTokenPipeline.prototype.constructor = CachedTokenPipeline;
+
+/**
+ * Forward chunks to our listeners
+ */
+CachedTokenPipeline.prototype.forwardChunk = function ( chunk ) {
+	this.emit( 'chunk', chunk );
+};
+
+
+/**
+ * Chunk and end event consumer and emitter, that removes all listeners from
+ * the given pipeline stage and returns it to a cache.
+ */
+CachedTokenPipeline.prototype.forwardEndAndRecycleSelf = function ( ) {
+	// first, forward the event
+	this.emit( 'end' );
+	// now recycle self
+	this.removeAllListeners( 'end' );
+	this.removeAllListeners( 'chunk' );
+	this.returnToCacheCB ( this );
+};
+
+
 
 
 if (typeof module == "object") {

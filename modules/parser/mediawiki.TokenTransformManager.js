@@ -348,7 +348,7 @@ AsyncTokenTransformManager.prototype.newChildPipeline = function ( inputType, ar
  * @returns {Object} Pipeline, which is an object with 'first' pointing to the
  * first stage of the pipeline, and 'last' pointing to the last stage.
  */
-AsyncTokenTransformManager.prototype.newAttributePipeline = function ( inputType, args ) {
+AsyncTokenTransformManager.prototype.getAttributePipeline = function ( inputType, args ) {
 	return this.childFactories.attributes( inputType, args );
 };
 
@@ -641,7 +641,8 @@ SyncTokenTransformManager.prototype.onEndEvent = function () {
  * transformation pipeline (normally phase1 SyncTokenTransformManager and
  * phase2 AsyncTokenTransformManager). This pipeline needs to be independent
  * of the containing TokenTransformManager to isolate transforms from each
- * other.
+ * other. The AttributeTransformManager returns its result by calling the
+ * supplied callback.
  *
  * @class
  * @constructor
@@ -649,26 +650,110 @@ SyncTokenTransformManager.prototype.onEndEvent = function () {
  */
 function AttributeTransformManager ( manager, callback ) {
 	this.callback = callback;
-	var pipe = manager.newAttributePipeline( manager.args );
-	pipe.addListener( 'chunk', this.onChunk.bind( this ) );
-	pipe.addListener( 'end', this.onEnd.bind( this ) );
+	this.outstanding = 0;
+	this.kvs = [];
+	this.pipe = manager.newAttributePipeline( manager.args );
 }
+
+AttributeTransformManager.prototype.transformAttributes = function ( attributes ) {
+	// Potentially need to use multiple pipelines to support concurrent async expansion
+	//this.pipe.process( 
+	var pipe,
+		ref;
+
+	// transform each argument (key and value), and handle asynchronous returns
+	for ( var i = 0, l = attributes.length; i < l; i++ ) {
+		kv = { key: [], value: [] };
+		kvs.push( kv );
+
+		ref = { frame: templateExpandData, index: i };
+
+		// Assume that the return is async, will be decremented in callback
+		this.outstanding += 2;
+
+		// transform the key
+		pipe = manager.getAttributePipeline( manager.args );
+		pipe.last.addListener( 'chunk', 
+				this.onChunk.bind( this, this._returnAttributeKey, ref ) 
+				);
+		pipe.last.addListener( 'end', 
+				this.onEnd.bind( this, this._returnAttributeKey, ref ) 
+				);
+		pipe.process( attributes[i][0] );
+
+		// transform the value
+		pipe = manager.getAttributePipeline( manager.args );
+		pipe.last.addListener( 'chunk', 
+				this.onChunk.bind( this, this._returnAttributeValue, ref ) 
+				);
+		pipe.last.addListener( 'end', 
+				this.onEnd.bind( this, this._returnAttributeKey, ref ) 
+				);
+		pipe.process( attributes[i][1] );
+	}
+};
+
+AttributeTransformManager.prototype._returnAttributes = function ( ) {
+	// convert attributes
+	var out = [];
+	for ( var i = 0, l = this.kvs.length; i < l; i++ ) {
+		out.push( [this.kvs.key, this.kvs.value] );
+	}
+
+	// and call the callback with the result
+	this.callback( out );
+};
 
 /**
  * Collect chunks returned from the pipeline
  */
-AttributeTransformManager.prototype.onChunk = function ( chunk ) {
-	this.callback( chunk, true );
+AttributeTransformManager.prototype.onChunk = function ( callback, ref, chunk ) {
+	callback.call( this, ref, chunk, true );
 };
 
 /**
  * Empty the pipeline by returning to the parent
  */
-AttributeTransformManager.prototype.onEnd = function ( ) {
-	this.callback( [], false );
+AttributeTransformManager.prototype.onEnd = function ( callback, ref ) {
+	callback.call(this, ref, [], false );
 };
 
 
+/**
+ * Callback for async argument value expansions
+ */
+AttributeTransformManager.prototype._returnAttributeValue = function ( ref, tokens, notYetDone ) {
+	var frame = ref.frame;
+	this.kvs[ref.index].value.push( tokens );
+	if ( ! notYetDone ) {
+		frame.outstanding--;
+		if ( frame.outstanding === 0 ) {
+			// this calls back to frame.cb, so no return here.
+			this.outstanding--;
+			if ( this.outstanding === 0 ) {
+				this._returnAttributes();
+			}
+		}
+	}
+};
+
+/**
+ * Callback for async argument key expansions
+ */
+AttributeTransformManager.prototype._returnAttributeKey = function ( ref, tokens, notYetDone ) {
+	var frame = ref.frame;
+	this.kvs[ref.index].key.push( tokens );
+	if ( ! notYetDone ) {
+		frame.outstanding--;
+		if ( frame.outstanding === 0 ) {
+			// this calls back to frame.cb, so no return here.
+			this.outstanding--;
+			if ( this.outstanding === 0 ) {
+				this._returnAttributes();
+			}
+		}
+	}
+};
 
 
 /******************************* TokenAccumulator *************************/
