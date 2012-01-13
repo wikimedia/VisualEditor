@@ -19,7 +19,7 @@ function TemplateHandler ( manager ) {
 }
 
 TemplateHandler.prototype.reset = function () {
-	this.outstanding = 0;
+	this.resultTokens = [];
 };
 
 // constants
@@ -47,7 +47,9 @@ TemplateHandler.prototype.register = function ( manager ) {
  * processes the template.
  */
 TemplateHandler.prototype.onTemplate = function ( token, cb ) {
-	console.log('onTemplate!');
+	//console.log('onTemplate!');
+
+	this.parentCB = cb;
 	
 	// check for 'subst:'
 	// check for variable magic names
@@ -58,7 +60,7 @@ TemplateHandler.prototype.onTemplate = function ( token, cb ) {
 	var templateTokenTransformData = {
 			args: {},
 			manager: this.manager,
-			outstanding: 0,
+			outstanding: 1, // Avoid premature finish
 			cb: cb,
 			origToken: token,
 			isAsync: false
@@ -69,14 +71,18 @@ TemplateHandler.prototype.onTemplate = function ( token, cb ) {
 		res,
 		kv;
 
-	var attributes = [['', token.target]].concat( token.orderedArgs );
+	var attributes = [[{ type: 'TEXT', value: '' } , token.target ]].concat( token.orderedArgs );
 
-	new AttributeTransformManager( this.manager, 
-			this._returnAttributes.bind( this, templateTokenTransformData ) 
+	//console.log( 'before AttributeTransformManager: ' + JSON.stringify( attributes, null, 2 ) );
+	new AttributeTransformManager( 
+				this.manager, 
+				this._returnAttributes.bind( this, templateTokenTransformData ) 
 			).process( attributes );
 
+	// Unblock finish
+	templateTokenTransformData.outstanding--;
 	if ( templateTokenTransformData.outstanding === 0 ) {
-		console.log( 'direct call');
+		//console.log( 'direct call');
 		return this._expandTemplate ( templateTokenTransformData );
 	} else {
 		templateTokenTransformData.isAsync = true;
@@ -85,7 +91,7 @@ TemplateHandler.prototype.onTemplate = function ( token, cb ) {
 };
 
 TemplateHandler.prototype._returnAttributes = function ( templateTokenTransformData, attributes ) {
-	console.log( '_returnAttributes' + JSON.stringify(attributes) );
+	//console.log( 'TemplateHandler._returnAttributes: ' + JSON.stringify(attributes) );
 	// Remove the target from the attributes
 	templateTokenTransformData.target = attributes[0][1];
 	attributes.shift();
@@ -100,8 +106,8 @@ TemplateHandler.prototype._returnAttributes = function ( templateTokenTransformD
  * target were expanded in frame.
  */
 TemplateHandler.prototype._expandTemplate = function ( templateTokenTransformData ) {
-	console.log('TemplateHandler.expandTemplate: ' +
-			JSON.stringify( templateTokenTransformData, null, 2 ) );
+	//console.log('TemplateHandler.expandTemplate: ' +
+	//		JSON.stringify( templateTokenTransformData, null, 2 ) );
 	// First, check the target for loops
 	this.manager.loopCheck.check( templateTokenTransformData.target );
 
@@ -115,14 +121,16 @@ TemplateHandler.prototype._expandTemplate = function ( templateTokenTransformDat
 			templateTokenTransformData.expandedArgs 
 			);
 
-	// Hook up the AsyncTokenTransformManager output events to call back our
-	// parentCB.
+	// Hook up the inputPipeline output events to call back our parentCB.
 	this.inputPipeline.addListener( 'chunk', this._onChunk.bind ( this ) );
 	this.inputPipeline.addListener( 'end', this._onEnd.bind ( this ) );
 	
 
 	// Resolve a possibly relative link
-	var templateName = this.manager.env.resolveTitle( this.manager.env.tokensToString( this.target ), 'Template' );
+	var templateName = this.manager.env.resolveTitle( 
+			this.manager.env.tokensToString( templateTokenTransformData.target ),
+			'Template' 
+		);
 	this._fetchTemplateAndTitle( templateName, this._processTemplateAndTitle.bind( this ) );
 
 	// Set up a pipeline:
@@ -144,6 +152,13 @@ TemplateHandler.prototype._expandTemplate = function ( templateTokenTransformDat
 	// recursion depth check
 	// fetch from DB or interwiki
 	// infinte loop check
+
+	// Always asynchronous..
+	if ( this.isAsync ) {
+		return {};
+	} else {
+		return this.result;
+	}
 };
 
 
@@ -161,14 +176,27 @@ TemplateHandler.prototype._onChunk = function( chunk ) {
 TemplateHandler.prototype._onEnd = function( ) {
 	// Encapsulate the template in a single token, which contains all the
 	// information needed for the editor.
-	var res = {
-		type: 'container',
-		tokens: this.resultTokens, // The editor needs HTML serialization instead
-		args: this.manager.args, // Here, the editor needs wikitext.
-		attribs: this.origToken.attribs // Hmm..
+	var res =  
+		[{
+			type: 'TAG',
+			name: 'div',
+			attribs: [['data-source', 'template']],
+			args: this.manager.args // Here, the editor needs wikitext.
+		}].concat( 
+					// XXX: Mark source in attribute on result tokens, so that
+					// the visual editor can detect structures from templates!
+					this.resultTokens, 
+					[{ type: 'ENDTAG', name: 'div' }] 
+				);
+	//console.log( 'TemplateHandler._onEnd: ' + JSON.stringify( res, null, 2 ) );
 
-	};
-	this.parentCB( res, false );
+	if ( this.isAsync ) {
+		this.parentCB( res, false );
+		this.reset();
+	} else {
+		this.result = { tokens: res };
+		this.reset();
+	}
 };
 
 
@@ -178,6 +206,7 @@ TemplateHandler.prototype._onEnd = function( ) {
  */
 TemplateHandler.prototype._processTemplateAndTitle = function( src, title ) {
 	// Feed the pipeline. XXX: Support different formats.
+	//console.log( 'TemplateHandler._processTemplateAndTitle: ' + src );
 	this.inputPipeline.process ( src );
 };
 
@@ -188,13 +217,13 @@ TemplateHandler.prototype._processTemplateAndTitle = function( src, title ) {
  */
 TemplateHandler.prototype._fetchTemplateAndTitle = function( title, callback ) {
 	// @fixme normalize name?
-	if (title in this.pageCache) {
+	if (title in this.manager.env.pageCache) {
 		// @fixme should this be forced to run on next event?
-		callback( this.pageCache[title], title );
+		callback( this.env.manager.pageCache[title], title );
 	} else {
 		// whee fun hack!
-		console.log(title);
-		console.log(this.pageCache);
+		//console.log(title);
+		//console.log(this.manager.env.pageCache);
 		$.ajax({
 			url: this.manager.env.wgScriptPath + '/api' + this.manager.env.wgScriptExtension,
 			data: {
@@ -202,7 +231,7 @@ TemplateHandler.prototype._fetchTemplateAndTitle = function( title, callback ) {
 			action: 'query',
 			prop: 'revisions',
 			rvprop: 'content',
-			titles: name
+			titles: title
 			},
 			success: function(data, xhr) {
 				var src = null, title = null;
@@ -213,13 +242,15 @@ TemplateHandler.prototype._fetchTemplateAndTitle = function( title, callback ) {
 					}
 				});
 				if (typeof src !== 'string') {
-					callback(null, null, 'Page not found');
+					//console.log( 'Page ' + title + 'not found!' );
+					callback( 'Page ' + title + ' not found' );
 				} else {
 					callback(src, title);
 				}
 			},
 			error: function(msg) {
-				callback(null, null, 'Page/template fetch failure');
+				//console.log( 'Page/template fetch failure for title ' + title );
+				callback('Page/template fetch failure for title ' + title);
 			},
 			dataType: 'json',
 			cache: false // @fixme caching, versions etc?

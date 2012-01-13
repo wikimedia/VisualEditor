@@ -151,7 +151,7 @@ ParserPipeline.prototype.makeInputPipeline = function ( inputType, args ) {
 						);
 
 				// Register template expansion extension
-				//new TemplateHandler( tokenExpander );
+				new TemplateHandler( tokenExpander );
 
 				tokenExpander.listenForTokensFrom ( tokenPreProcessor );
 				// XXX: hack.
@@ -194,7 +194,7 @@ ParserPipeline.prototype.makeAttributePipeline = function ( args ) {
 				},
 				args, this.env 
 				);
-		//new TemplateHandler( tokenExpander );
+		new TemplateHandler( tokenExpander );
 		tokenExpander.listenForTokensFrom ( tokenPreProcessor );
 
 		return new CachedTokenPipeline( 
@@ -250,12 +250,16 @@ ParserPipeline.prototype.getWikiDom = function () {
 /************************ CachedTokenPipeline ********************************/
 
 /**
- * Manage a part of a pipeline, that emits 'end' and 'chunk' events from its
- * last stage.
+ * Wrap a part of a pipeline. The last member of the pipeline is supposed to
+ * emit 'end' and 'chunk' events, while the first is supposed to support a
+ * process() method that sets the pipeline in motion.
  *
  * @class
  * @constructor
- * @param {
+ * @param {Function} returnToCacheCB: Callback to return the
+ * CachedTokenPipeline to a cache when processing has finished
+ * @param {Object} first: First stage of the pipeline
+ * @param {Object} last: Last stage of the pipeline
  */
 function CachedTokenPipeline ( returnToCacheCB, first, last ) {
 	this.returnToCacheCB = returnToCacheCB;
@@ -283,6 +287,10 @@ CachedTokenPipeline.prototype.process = function ( chunk ) {
  * Forward chunks to our listeners
  */
 CachedTokenPipeline.prototype.forwardChunk = function ( chunk ) {
+	//console.log( 'CachedTokenPipeline.forwardChunk: ' +
+	//			JSON.stringify( chunk, null, 2 )
+	//		);
+
 	this.emit( 'chunk', chunk );
 };
 
@@ -292,6 +300,8 @@ CachedTokenPipeline.prototype.forwardChunk = function ( chunk ) {
  * the given pipeline stage and returns it to a cache.
  */
 CachedTokenPipeline.prototype.forwardEndAndRecycleSelf = function ( ) {
+	//console.log( 'CachedTokenPipeline.forwardEndAndRecycleSelf: ' + 
+	//		JSON.stringify( this.listeners( 'chunk' ), null, 2 ) );
 	// first, forward the event
 	this.emit( 'end' );
 	// now recycle self

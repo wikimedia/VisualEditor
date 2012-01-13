@@ -207,7 +207,8 @@ TokenTransformManager.prototype._transformTagToken = function ( token, cb, phase
 		for ( i = 0, l = ts.length; i < l; i++ ) {
 			transformer = ts[i];
 			if ( res.token.rank && transformer.rank < res.token.rank ) {
-				//console.log( 'SKIPPING' + JSON.stringify( token, null, 2 ) + JSON.stringify( transformer, null, 2 ) );
+				//console.log( 'SKIPPING' + JSON.stringify( token, null, 2 ) + 
+				//		'\ntransform:\n' + JSON.stringify( transformer, null, 2 ) );
 				// skip transformation, was already applied.
 				continue;
 			}
@@ -404,15 +405,15 @@ AsyncTokenTransformManager.prototype.process = function ( tokens ) {
  * @param {Array} chunk of tokens
  */
 AsyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
-	//console.log('TokenTransformManager onChunk');
 	// Set top-level callback to next transform phase
 	var res = this.transformTokens ( tokens, this.tokenCB );
 	this.tailAccumulator = res.async;
-	this.emit( 'chunk', tokens );
+	//console.log('AsyncTokenTransformManager onChunk ', tokens);
 	//this.phase2TailCB( tokens, true );
 	if ( res.async ) {
 		this.tokenCB = res.async.getParentCB ( 'sibling' );
 	}
+	this.emit( 'chunk', res.tokens );
 };
 
 /**
@@ -422,10 +423,10 @@ AsyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
  */
 AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parentCB ) {
 
-	//console.log('_transformPhase01: ' + JSON.stringify(tokens) );
+	//console.log('AsyncTokenTransformManager.transformTokens: ' + JSON.stringify(tokens) );
 	
 	var res,
-		phaseEndRank = 2, // parametrize!
+		phaseEndRank = 2, // XXX: parametrize!
 		// Prepare a new accumulator, to be used by async children (if any)
 		localAccum = [],
 		accum = new TokenAccumulator( parentCB ),
@@ -478,7 +479,7 @@ AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parent
 					// If there is no accumulator yet, then directly return the
 					// token to the parent. Collect them in localAccum for this
 					// purpose.
-					localAccum.push(res.token);
+					localAccum.push( res.token );
 				}
 			} else {
 				// re-process token.
@@ -486,6 +487,7 @@ AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parent
 				i--;
 			}
 		} else if ( res.async ) {
+			//console.log( 'tokens returned' );
 			// The child now switched to activeAccum, we have to create a new
 			// accumulator for the next potential child.
 			activeAccum = accum;
@@ -511,15 +513,15 @@ AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parent
  * (everything is done), or a truish value if not yet done.
  */
 AsyncTokenTransformManager.prototype._returnTokens = function ( tokens, notYetDone ) {
-	// FIXME: store frame in object?
-	this.emit('chunk', tokens);
 	//tokens = this._transformPhase2( this.frame, tokens, this.parentCB );
 	//console.log('AsyncTokenTransformManager._returnTokens, after _transformPhase2.');
 
-	//this.emit( 'chunk', tokens );
+	this.emit( 'chunk', tokens );
 
 	if ( ! notYetDone ) {
-		console.log('AsyncTokenTransformManager._returnTokens done.');
+		//console.log('AsyncTokenTransformManager._returnTokens done. tokens:' + 
+		//		JSON.stringify( tokens, null, 2 ) + ', listeners: ' +
+		//		JSON.stringify( this.listeners( 'chunk' ), null, 2 ) );
 		// signal our done-ness to consumers.
 		this.emit( 'end' );
 		// and reset internal state.
@@ -557,9 +559,10 @@ AsyncTokenTransformManager.prototype.onEndEvent = function () {
  * @constructor
  * @param {Object} environment.
  */
-function SyncTokenTransformManager ( env ) {
+function SyncTokenTransformManager ( env, phaseEndRank ) {
 	// both inherited
 	this._construct();
+	this.phaseEndRank = phaseEndRank;
 	this.args = {}; // no arguments at the top level
 	this.env = env;
 }
@@ -586,8 +589,9 @@ SyncTokenTransformManager.prototype.process = function ( tokens ) {
  * @param {Array} Token chunk.
  */
 SyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
+	//console.log('SyncTokenTransformManager.onChunk: ' +
+	//		JSON.stringify( tokens, null, 2 ) );
 	var res,
-		phaseEndRank = 3,
 		localAccum = [],
 		localAccumLength = 0,
 		tokensLength = tokens.length,
@@ -603,23 +607,23 @@ SyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 			case 'TAG':
 			case 'ENDTAG':
 			case 'SELFCLOSINGTAG':
-				res = this._transformTagToken( token, cb, phaseEndRank );
+				res = this._transformTagToken( token, cb, this.phaseEndRank );
 				break;
 			case 'TEXT':
-				res = this._transformToken( token, cb, phaseEndRank, 
+				res = this._transformToken( token, cb, this.phaseEndRank, 
 						ts.text );
 				break;
 			case 'COMMENT':
-				res = this._transformToken( token, cb, phaseEndRank, ts.comment );
+				res = this._transformToken( token, cb, this.phaseEndRank, ts.comment );
 				break;
 			case 'NEWLINE':
-				res = this._transformToken( token, cb, phaseEndRank, ts.newline );
+				res = this._transformToken( token, cb, this.phaseEndRank, ts.newline );
 				break;
 			case 'END':
-				res = this._transformToken( token, cb, phaseEndRank, ts.end );
+				res = this._transformToken( token, cb, this.phaseEndRank, ts.end );
 				break;
 			default:
-				res = this._transformToken( token, cb, phaseEndRank, ts.martian );
+				res = this._transformToken( token, cb, this.phaseEndRank, ts.martian );
 				break;
 		}
 
@@ -630,7 +634,7 @@ SyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 			tokensLength = tokens.length;
 			i--; // continue at first inserted token
 		} else if ( res.token ) {
-			if ( res.token.rank === phaseEndRank ) {
+			if ( res.token.rank === this.phaseEndRank ) {
 				// token is done.
 				localAccum.push(res.token);
 				this.prevToken = res.token;
@@ -684,6 +688,7 @@ AttributeTransformManager.prototype.process = function ( attributes ) {
 	//this.pipe.process( 
 	var pipe,
 		ref;
+	//console.log( 'AttributeTransformManager.process: ' + JSON.stringify( attributes ) );
 
 	// transform each argument (key and value), and handle asynchronous returns
 	for ( var i = 0, l = attributes.length; i < l; i++ ) {
@@ -711,6 +716,7 @@ AttributeTransformManager.prototype.process = function ( attributes ) {
 		pipe.addListener( 'end', 
 				this.onEnd.bind( this, this._returnAttributeValue.bind( this, i ) ) 
 				);
+		//console.log('starting attribute transform of ' + JSON.stringify( attributes[i][1] ) );
 		pipe.process( attributes[i][1] );
 	}
 };
@@ -724,21 +730,22 @@ AttributeTransformManager.prototype._returnAttributes = function ( ) {
 	}
 
 	// and call the callback with the result
+	//console.log('AttributeTransformManager._returnAttributes: ' + out );
 	this.callback( out );
 };
 
 /**
  * Collect chunks returned from the pipeline
  */
-AttributeTransformManager.prototype.onChunk = function ( callback, ref, chunk ) {
-	callback.call( ref, chunk, true );
+AttributeTransformManager.prototype.onChunk = function ( cb, chunk ) {
+	cb( chunk, true );
 };
 
 /**
  * Empty the pipeline by returning to the parent
  */
-AttributeTransformManager.prototype.onEnd = function ( callback, ref ) {
-	callback.call( ref, [], false );
+AttributeTransformManager.prototype.onEnd = function ( cb ) {
+	cb( [], false );
 };
 
 
@@ -746,7 +753,8 @@ AttributeTransformManager.prototype.onEnd = function ( callback, ref ) {
  * Callback for async argument value expansions
  */
 AttributeTransformManager.prototype._returnAttributeValue = function ( ref, tokens, notYetDone ) {
-	this.kvs[ref].value.push( tokens );
+	//console.log( 'check _returnAttributeValue: ' + JSON.stringify( tokens ) );
+	this.kvs[ref].value = this.kvs[ref].value.concat( tokens );
 	if ( ! notYetDone ) {
 		this.outstanding--;
 		if ( this.outstanding === 0 ) {
@@ -760,7 +768,7 @@ AttributeTransformManager.prototype._returnAttributeValue = function ( ref, toke
  * Callback for async argument key expansions
  */
 AttributeTransformManager.prototype._returnAttributeKey = function ( ref, tokens, notYetDone ) {
-	this.kvs[ref].key.push( tokens );
+	this.kvs[ref].key = this.kvs[ref].key.concat( tokens );
 	if ( ! notYetDone ) {
 		this.outstanding--;
 		if ( this.outstanding === 0 ) {
@@ -818,32 +826,38 @@ TokenAccumulator.prototype._returnTokens = function ( reference, tokens, notYetD
 		this.outstanding--;
 	}
 
+	//console.log( 'TokenAccumulator._returnTokens' );
 	if ( reference === 'child' ) {
+		tokens = tokens.concat( this.accum );
+		//console.log('TokenAccumulator._returnTokens: ' + 
+		//		JSON.stringify( tokens, null, 2 ) 
+		//		);
+		this.accum = [];
 		// XXX: Use some marker to avoid re-transforming token chunks several
 		// times?
-		res = this.transformTokens( tokens, this.parentCB );
+		//res = this.transformTokens( tokens, this.parentCB );
 
-		if ( res.async ) {
-			// new asynchronous expansion started, chain of accumulators
-			// created
-			if ( this.outstanding === 0 ) {
-				// Last accum in chain should only wait for child
-				res.async.outstanding--;
-				cb = this.parentCB;
-			} else {
-				cb = this.parentCB;
-				// set own callback to new sibling, the end of accumulator chain
-				this.parentCB = res.async.getParentCB( 'sibling' );
-			}
-		}
-		if ( ! notYetDone ) {
-			// Child is done, return accumulator from sibling. Siblings
-			// process tokens themselves, so we concat those to the result of
-			// processing tokens from the child.
-			tokens = res.tokens.concat( this.accum );
-			this.accum = [];
-		}
-		this.cb( res.tokens, res.async );
+		//if ( res.async ) {
+		//	// new asynchronous expansion started, chain of accumulators
+		//	// created
+		//	if ( this.outstanding === 0 ) {
+		//		// Last accum in chain should only wait for child
+		//		res.async.outstanding--;
+		//		cb = this.parentCB;
+		//	} else {
+		//		cb = this.parentCB;
+		//		// set own callback to new sibling, the end of accumulator chain
+		//		this.parentCB = res.async.getParentCB( 'sibling' );
+		//	}
+		//}
+		//if ( ! notYetDone ) {
+		//	// Child is done, return accumulator from sibling. Siblings
+		//	// process tokens themselves, so we concat those to the result of
+		//	// processing tokens from the child.
+		//	tokens = res.tokens.concat( this.accum );
+		//	this.accum = [];
+		//}
+		this.parentCB( tokens, false );
 		return null;
 	} else {
 		// sibling
@@ -869,7 +883,8 @@ TokenAccumulator.prototype._returnTokens = function ( reference, tokens, notYetD
  * Mark the sibling as done (normally at the tail of a chain).
  */
 TokenAccumulator.prototype.siblingDone = function () {
-	this._returnTokens01 ( 'sibling', [], false );
+	//console.log( 'TokenAccumulator.siblingDone: ' );
+	this._returnTokens ( 'sibling', [], false );
 };
 
 
