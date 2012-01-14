@@ -314,7 +314,7 @@ function AsyncTokenTransformManager ( childFactories, args, env ) {
 	this._construct();
 	this._reset( args, env );
 	// FIXME: pass actual title?
-	this.loopCheck = new LoopCheck ( null );
+	this.loopCheck = new LoopCheck( null );
 }
 
 // Inherit from TokenTransformManager, and thus also from EventEmitter.
@@ -337,7 +337,10 @@ AsyncTokenTransformManager.prototype.newChildPipeline = function ( inputType, ar
 	var child = pipe.last;
 	// We assume that the title was already checked against this.loopCheck
 	// before!
-	child.loopCheck = new LoopCheck ( title, this.loopCheck );
+	child.loopCheck = new LoopCheck ( 
+				this.env.normalizeTitle( this.env.tokensToString ( title ) ), 
+				this.loopCheck 
+			);
 	// Same for depth!
 	child.depth = this.depth + 1;
 	return pipe;
@@ -926,6 +929,7 @@ function LoopCheck ( title, parent ) {
 LoopCheck.prototype.check = function ( title ) {
 	var elem = this;
 	do {
+		//console.log( 'loop check: ' + title + ' vs ' + elem.title );
 		if ( elem.title === title ) {
 			// Loop detected
 			return true;

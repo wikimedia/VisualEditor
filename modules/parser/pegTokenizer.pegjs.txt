@@ -455,7 +455,7 @@ block_line
 
 para
   = s1:sol s2:sol c:inlineline { 
-      return s1.concat(s2, [{type: 'TAG', name: 'p'}], c); 
+      return s1.concat(s2, /* [{type: 'TAG', name: 'p'}],*/ c); 
   }
 
 br = space* &newline { return {type: 'SELFCLOSINGTAG', name: 'br'} }
@@ -488,7 +488,7 @@ inline
       c = flatten(c);
       for (var i = 0, l = c.length; i < l; i++) {
           var ci = c[i];
-          if (typeof ci == 'string') {
+          if (typeof ci === 'string') {
               if(ci !== '') {
                 text.push(ci);
               }
@@ -686,13 +686,14 @@ url
 }
 
 template
-  = "{{" target:template_target 
+  = "{{" target:template_param_text
     params:(newline? "|" newline? p:template_param { return p })* 
     "}}" {
+      target = flatten( target );
       var obj = { 
             type: 'SELFCLOSINGTAG', 
             name: 'template', 
-            attribs: [['data-target', target]],
+            attribs: [['data-target', JSON.stringify(target)]],
             orderedArgs: params,
             args: {},
             target: target

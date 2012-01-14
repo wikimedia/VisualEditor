@@ -46,7 +46,7 @@ var process_inlines_in_p = function ( document ) {
 	var body = document.body,
 		newP = document.createElement('p'),
 		cnodes = body.childNodes,
-		haveInlines = false,
+		inParagraph = false,
 		deleted = 0;
 
 	function isElementContentWhitespace ( e ) {
@@ -57,22 +57,26 @@ var process_inlines_in_p = function ( document ) {
 		var child = cnodes[i - deleted],
 			ctype = child.nodeType;
 		//console.log(child + ctype);
-		if ((ctype === 3 && (haveInlines || !isElementContentWhitespace(child))) || 
-				(ctype !== Node.TEXT_NODE &&
-				 ctype !== Node.COMMENT_NODE &&
-				 !isBlock(child.nodeName))) {
-			// text node
+		if ((ctype === 3 && (inParagraph || !isElementContentWhitespace( child ))) || 
+			(ctype === Node.COMMENT_NODE && inParagraph ) ||
+			(ctype !== Node.TEXT_NODE && 
+				ctype !== Node.COMMENT_NODE &&
+				!isBlock(child.nodeName))
+			) 
+		{
+			// wrap in paragraph
 			newP.appendChild(child);
-			haveInlines = true;
+			inParagraph = true;
 			deleted++;
-		} else if (haveInlines) {
+		} else if (inParagraph) {
 			body.insertBefore(newP, child);
+			deleted--;
 			newP = document.createElement('p');
-			haveInlines = false;
-		}	
+			inParagraph = false;
+		}
 	}
 
-	if (haveInlines) {
+	if (inParagraph) {
 		body.appendChild(newP);
 	}
 };

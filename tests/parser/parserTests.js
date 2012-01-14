@@ -184,7 +184,8 @@ function ParserTests () {
 
 	this.currentItem = undefined;
 
-	return this;
+	// Create a new parser environment
+	this.env = new MWParserEnvironment({});
 }
 
 
@@ -269,29 +270,17 @@ ParserTests.prototype.parseTestCase = function ( content ) {
 	return undefined;
 };
 
-
-ParserTests.prototype.normalizeTitle = function(name) {
-	if (typeof name !== 'string') {
-		throw new Error('nooooooooo not a string');
-	}
-	name = name.replace(/[\s_]+/g, '_');
-	name = name.substr(0, 1).toUpperCase() + name.substr(1);
-	if (name === '') {
-		throw new Error('Invalid/empty title');
-	}
-	return name;
-};
-
 ParserTests.prototype.fetchArticle = function(name) {
 	// very simple for now..
-	var norm = normalizeTitle(name);
+	var norm = this.env.normalizeTitle(name);
 	if (norm in this.articles) {
 		return this.articles[norm];
 	}
 };
 
 ParserTests.prototype.processArticle = function(item) {
-	var norm = this.normalizeTitle(item.title);
+	var norm = this.env.normalizeTitle(item.title);
+	//console.log( 'processArticle ' + norm );
 	this.articles[norm] = item.text;
 };
 
@@ -552,8 +541,8 @@ ParserTests.prototype.main = function () {
 	//	}
 	//});
 
-	var env = new MWParserEnvironment({});
-	var parserPipeline = new ParserPipeline( env );
+	this.env.pageCache = this.articles;
+	var parserPipeline = new ParserPipeline( this.env );
 
 	var comments = [],
 		pt = this;

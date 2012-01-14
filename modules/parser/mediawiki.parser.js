@@ -156,6 +156,7 @@ ParserPipeline.prototype.makeInputPipeline = function ( inputType, args ) {
 				tokenExpander.listenForTokensFrom ( tokenPreProcessor );
 				// XXX: hack.
 				tokenExpander.inputType = inputType;
+				tokenPreProcessor.inputType = inputType;
 			
 				return new CachedTokenPipeline( 
 						this.cachePipeline.bind( this, 'text/wiki', 'input' ),

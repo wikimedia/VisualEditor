@@ -47,7 +47,7 @@ TemplateHandler.prototype.register = function ( manager ) {
  * processes the template.
  */
 TemplateHandler.prototype.onTemplate = function ( token, cb ) {
-	//console.log('onTemplate!');
+	//console.log('onTemplate! ' + JSON.stringify( token, null, 2 ) );
 
 	this.parentCB = cb;
 	
@@ -71,7 +71,8 @@ TemplateHandler.prototype.onTemplate = function ( token, cb ) {
 		res,
 		kv;
 
-	var attributes = [[{ type: 'TEXT', value: '' } , token.target ]].concat( token.orderedArgs );
+	var attributes = [[[{ type: 'TEXT', value: '' }] , token.target ]]
+			.concat( token.orderedArgs );
 
 	//console.log( 'before AttributeTransformManager: ' + JSON.stringify( attributes, null, 2 ) );
 	new AttributeTransformManager( 
@@ -109,7 +110,20 @@ TemplateHandler.prototype._expandTemplate = function ( templateTokenTransformDat
 	//console.log('TemplateHandler.expandTemplate: ' +
 	//		JSON.stringify( templateTokenTransformData, null, 2 ) );
 	// First, check the target for loops
-	this.manager.loopCheck.check( templateTokenTransformData.target );
+	var target = this.manager.env.normalizeTitle(
+			this.manager.env.tokensToString( templateTokenTransformData.target )
+		);
+	if( this.manager.loopCheck.check( target ) ) {
+		// Loop detected, abort!
+		return {
+			tokens: [
+				{ 
+					type: 'TEXT', 
+					value: 'Template expansion loop detected!' 
+				}
+			]
+		};
+	}
 
 	// Create a new nested transformation pipeline for the input type
 	// (includes the tokenizer and synchronous stage-1 transforms for
@@ -117,8 +131,9 @@ TemplateHandler.prototype._expandTemplate = function ( templateTokenTransformDat
 	// Returned pipe (for now):
 	// { first: tokenizer, last: AsyncTokenTransformManager }
 	this.inputPipeline = this.manager.newChildPipeline( 
-			this.manager.inputType, 
-			templateTokenTransformData.expandedArgs 
+				this.manager.inputType || 'text/wiki', 
+				templateTokenTransformData.expandedArgs,
+				templateTokenTransformData.target
 			);
 
 	// Hook up the inputPipeline output events to call back our parentCB.
@@ -128,7 +143,7 @@ TemplateHandler.prototype._expandTemplate = function ( templateTokenTransformDat
 
 	// Resolve a possibly relative link
 	var templateName = this.manager.env.resolveTitle( 
-			this.manager.env.tokensToString( templateTokenTransformData.target ),
+			target,
 			'Template' 
 		);
 	this._fetchTemplateAndTitle( templateName, this._processTemplateAndTitle.bind( this ) );
@@ -176,7 +191,8 @@ TemplateHandler.prototype._onChunk = function( chunk ) {
 TemplateHandler.prototype._onEnd = function( ) {
 	// Encapsulate the template in a single token, which contains all the
 	// information needed for the editor.
-	var res =  
+	var res = this.resultTokens;
+		/*
 		[{
 			type: 'TAG',
 			name: 'div',
@@ -188,6 +204,7 @@ TemplateHandler.prototype._onEnd = function( ) {
 					this.resultTokens, 
 					[{ type: 'ENDTAG', name: 'div' }] 
 				);
+				*/
 	//console.log( 'TemplateHandler._onEnd: ' + JSON.stringify( res, null, 2 ) );
 
 	if ( this.isAsync ) {
@@ -219,7 +236,7 @@ TemplateHandler.prototype._fetchTemplateAndTitle = function( title, callback ) {
 	// @fixme normalize name?
 	if (title in this.manager.env.pageCache) {
 		// @fixme should this be forced to run on next event?
-		callback( this.env.manager.pageCache[title], title );
+		callback( this.manager.env.pageCache[title], title );
 	} else {
 		// whee fun hack!
 		//console.log(title);

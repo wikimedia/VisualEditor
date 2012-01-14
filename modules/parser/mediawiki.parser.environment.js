@@ -58,6 +58,19 @@ MWParserEnvironment.prototype.getTagHook = function( name ) {
 	}
 };
 
+MWParserEnvironment.prototype.normalizeTitle = function( name ) {
+	if (typeof name !== 'string') {
+		throw new Error('nooooooooo not a string');
+	}
+	name = name.replace(/[\s_]+/g, '_');
+	function upperFirst( s ) { return s.substr(0, 1).toUpperCase() + s.substr(1); }
+	name = name.split(':').map( upperFirst ).join(':');
+	//if (name === '') {
+	//	throw new Error('Invalid/empty title');
+	//}
+	return name;
+};
+
 /**
  * @fixme do this for real eh
  */
@@ -65,28 +78,30 @@ MWParserEnvironment.prototype.resolveTitle = function( name, namespace ) {
 	// hack!
 	if (name.indexOf(':') == -1 && typeof namespace ) {
 		// hack hack hack
-		name = namespace + ':' + name;
+		name = namespace + ':' + this.normalizeTitle( name );
 	}
 	return name;
 };
 
 MWParserEnvironment.prototype.tokensToString = function ( tokens ) {
 	var out = [];
+	//console.log( 'MWParserEnvironment.tokensToString, tokens: ' + JSON.stringify( tokens ) );
 	// XXX: quick hack, track down non-array sources later!
 	if ( ! $.isArray( tokens ) ) {
 		tokens = [ tokens ];
 	}
 	for ( var i = 0, l = tokens.length; i < l; i++ ) {
-		console.log( 'MWParserEnvironment.tokensToString: ' + token );
 		var token = tokens[i];
+		//console.log( 'MWParserEnvironment.tokensToString, token: ' + JSON.stringify( token ) );
 		if ( token.type === 'TEXT' ) {
 			out.push( token.value );
 		} else {
 			var tstring = JSON.stringify( token );
-			console.log ( 'MWParserEnvironment::tokensToString: ' + tstring );
-			out.push( tstring );
+			//console.log ( 'MWParserEnvironment.tokensToString, non-text token: ' + tstring );
+			//out.push( tstring );
 		}
 	}
+	//console.log( 'MWParserEnvironment.tokensToString result: ' + out.join('') );
 	return out.join('');
 };
 
