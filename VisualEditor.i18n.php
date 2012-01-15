@@ -53,11 +53,13 @@ $messages['be-tarask'] = array(
 );
 
 /** Breton (Brezhoneg)
+ * @author Fulup
  * @author Y-M D
  */
 $messages['br'] = array(
 	'visualeditor' => 'VisualEditor',
 	'visualeditor-sandbox-title' => 'Poull-traezh VisualEditor',
+	'visualeditor-feedback-prompt' => 'Lezel un evezhiadenn',
 );
 
 /** German (Deutsch)
