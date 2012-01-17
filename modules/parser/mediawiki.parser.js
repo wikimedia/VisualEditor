@@ -130,8 +130,11 @@ function ParserPipeline( env, inputType ) {
 ParserPipeline.prototype.makeInputPipeline = function ( inputType, args ) {
 	switch ( inputType ) {
 		case 'text/wiki':
+			//console.log( 'makeInputPipeline ' + JSON.stringify( args ) );
 			if ( this.pipelineCache['text/wiki'].input.length ) {
-				return this.pipelineCache['text/wiki'].input.pop();
+				var pipe = this.pipelineCache['text/wiki'].input.pop();
+				pipe.last.args = args;
+				return pipe;
 			} else {
 				var wikiTokenizer = new PegTokenizer();
 

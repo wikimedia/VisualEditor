@@ -31,6 +31,8 @@ TemplateHandler.prototype.register = function ( manager ) {
 	// Register for template and templatearg tag tokens
 	manager.addTransform( this.onTemplate.bind(this), 
 			this.rank, 'tag', 'template' );
+
+	// Template argument expansion
 	manager.addTransform( this.onTemplateArg.bind(this), 
 			this.rank, 'tag', 'templatearg' );
 
@@ -73,7 +75,7 @@ TemplateHandler.prototype.onTemplate = function ( token, cb ) {
 		kv;
 
 	var attributes = [[[{ type: 'TEXT', value: '' }] , token.target ]]
-			.concat( token.orderedArgs );
+			.concat( this._nameArgs( token.orderedArgs ) );
 
 	//console.log( 'before AttributeTransformManager: ' + JSON.stringify( attributes, null, 2 ) );
 	new AttributeTransformManager( 
@@ -92,6 +94,21 @@ TemplateHandler.prototype.onTemplate = function ( token, cb ) {
 	}
 };
 
+TemplateHandler.prototype._nameArgs = function ( orderedArgs ) {
+	var n = 1,
+		out = [];
+	for ( var i = 0, l = orderedArgs.length; i < l; i++ ) {
+		if ( ! orderedArgs[i][0].length ) {
+			out.push( [[{ type: 'TEXT', value: n }], orderedArgs[i][1]]);
+			n++;
+		} else {
+			out.push( orderedArgs[i] );
+		}
+	}
+	//console.log( '_nameArgs: ' + JSON.stringify( out ) );
+	return out;
+};
+
 TemplateHandler.prototype._returnAttributes = function ( templateTokenTransformData, attributes ) {
 	//console.log( 'TemplateHandler._returnAttributes: ' + JSON.stringify(attributes) );
 	// Remove the target from the attributes
@@ -101,7 +118,7 @@ TemplateHandler.prototype._returnAttributes = function ( templateTokenTransformD
 	if ( templateTokenTransformData.isAsync ) {
 		this._expandTemplate ( templateTokenTransformData );
 	}
-}
+};
 
 /**
  * Fetch, tokenize and token-transform a template after all arguments and the
@@ -144,9 +161,12 @@ TemplateHandler.prototype._expandTemplate = function ( templateTokenTransformDat
 	// 'text/wiki' input). 
 	// Returned pipe (for now):
 	// { first: tokenizer, last: AsyncTokenTransformManager }
+	//console.log( 'expanded args: ' + 
+	//		JSON.stringify( this.manager.env.KVtoHash( templateTokenTransformData.expandedArgs ) ) );
+
 	this.inputPipeline = this.manager.newChildPipeline( 
 				this.manager.inputType || 'text/wiki', 
-				templateTokenTransformData.expandedArgs,
+				this.manager.env.KVtoHash( templateTokenTransformData.expandedArgs ),
 				templateTokenTransformData.target
 			);
 
@@ -299,19 +319,54 @@ TemplateHandler.prototype._fetchTemplateAndTitle = function( title, callback ) {
  * Expand template arguments with tokens from the containing frame.
  */
 TemplateHandler.prototype.onTemplateArg = function ( token, cb, frame ) {
-	var argName = token.attribs[0][1]; // XXX: do this properly!
-	if ( argName in frame.args ) {
-		// return tokens for argument
-		return { tokens: frame.args[argName] };
+	
+	var attributes = [[token.argname, token.defaultvalue]];
+
+	token.resultTokens = false;
+
+	new AttributeTransformManager( 
+				this.manager, 
+				this._returnArgAttributes.bind( this, token, cb, frame ) 
+			).process( attributes );
+
+	if ( token.resultTokens !== false ) {
+		// synchronous return
+		//console.log( 'synchronous attribute expand: ' + JSON.stringify( token.resultTokens ) );
+
+		return { tokens: token.resultTokens };
 	} else {
-		if ( token.attribs.length > 1 ) {
-			return token.attribs[1][1]; // default value, XXX: use key
-		} else {
-			return { token: { type: 'TEXT', value: '{{{' + argName + '}}}' } };
-		}
+		//console.log( 'asynchronous attribute expand: ' + JSON.stringify( token, null, 2 ) );
+		// asynchronous return
+		token.resultTokens = [];
+		return { async: true };
 	}
 };
 
+TemplateHandler.prototype._returnArgAttributes = function ( token, cb, frame, attributes ) {
+	//console.log( '_returnArgAttributes: ' + JSON.stringify( attributes ));
+	var argName = this.manager.env.tokensToString( attributes[0][0] ),
+		defaultValue = attributes[0][1],
+		res;
+	if ( argName in frame.args ) {
+		// return tokens for argument
+		//console.log( 'templateArg found: ' + argName + 
+		//		' vs. ' + JSON.stringify( frame.args ) ); 
+		res = frame.args[argName];
+	} else {
+		//console.log( 'templateArg not found: ' + argName + 
+		//		' vs. ' + JSON.stringify( frame.args ) );
+		if ( token.attribs.length > 1 ) {
+			res = defaultValue;
+		} else {
+			res = [{ type: 'TEXT', value: '{{{' + argName + '}}}' }];
+		}
+	}
+	if ( token.resultTokens !== false ) {
+		cb( res );
+	} else {
+		token.resultTokens =  res;
+	}
+};
 
 if (typeof module == "object") {
 	module.exports.TemplateHandler = TemplateHandler;

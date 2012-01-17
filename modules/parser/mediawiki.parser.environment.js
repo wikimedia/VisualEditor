@@ -26,6 +26,18 @@ MWParserEnvironment.prototype.lookupKV = function ( kvs, key ) {
 	return null;
 };
 
+MWParserEnvironment.prototype.KVtoHash = function ( kvs ) {
+	var res = {};
+	for ( var i = 0, l = kvs.length; i < l; i++ ) {
+		var kv = kvs[i],
+			key = this.tokensToString( kv[0] );
+		if( res[key] === undefined ) {
+			res[key] = kv[1];
+		}
+	}
+	//console.log( 'KVtoHash: ' + JSON.stringify( res ));
+	return res;
+}
 
 // Does this need separate UI/content inputs?
 MWParserEnvironment.prototype.formatNum = function( num ) {

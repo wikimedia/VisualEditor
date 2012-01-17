@@ -331,6 +331,7 @@ AsyncTokenTransformManager.prototype.constructor = AsyncTokenTransformManager;
  * first stage of the pipeline, and 'last' pointing to the last stage.
  */
 AsyncTokenTransformManager.prototype.newChildPipeline = function ( inputType, args, title ) {
+	//console.log( 'newChildPipeline: ' + JSON.stringify( args ) );
 	var pipe = this.childFactories.input( inputType, args );
 
 	// now set up a few things on the child AsyncTokenTransformManager.
@@ -375,6 +376,7 @@ AsyncTokenTransformManager.prototype._reset = function ( args, env ) {
 	this.accum = new TokenAccumulator(null);
 	this.firstaccum = this.accum;
 	this.prevToken = undefined;
+	//console.log( 'AsyncTokenTransformManager args ' + JSON.stringify( args ) );
 	if ( ! args ) {
 		this.args = {}; // no arguments at the top level
 	} else {
