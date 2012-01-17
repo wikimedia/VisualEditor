@@ -227,8 +227,17 @@ $messages['hsb'] = array(
  */
 $messages['hu'] = array(
 	'visualeditor' => 'VisualEditor',
+	'visualeditorsandbox' => 'Vizuális szerkesztő homokozó',
 	'visualeditor-desc' => 'Vizuális szerkesztő a MediaWikihez',
 	'visualeditor-sandbox-title' => 'VisualEditor homokozó',
+	'visualeditor-tooltip-wikitext' => 'Wikiszöveg nézet kapcsolása',
+	'visualeditor-tooltip-json' => 'JSON nézet kapcsolása',
+	'visualeditor-tooltip-html' => 'HTML nézet kapcsolása',
+	'visualeditor-tooltip-render' => 'Előnézet kapcsolása',
+	'visualeditor-tooltip-history' => 'Tranzakció történet nézet kapcsolása',
+	'visualeditor-tooltip-help' => 'Súgó nézet kapcsolása',
+	'visualeditor-feedback-prompt' => 'Visszajelzés',
+	'visualeditor-feedback-dialog-title' => 'Visszajelzés készítése a VisualEditor homokozójáról',
 );
 
 /** Interlingua (Interlingua)
