@@ -1,36 +1,8 @@
 /* Perform post-processing steps on an already-built HTML DOM. */
 
-var events = require('events');
-
-var isBlock = function isBlock (name) {
-	switch (name.toLowerCase()) {
-		case 'div':
-		case 'table':
-		case 'td':
-		case 'tr':
-		case 'tbody':
-		case 'p':
-		case 'ul':
-		case 'ol':
-		case 'li':
-		case 'dl':
-		case 'dt':
-		case 'dd':
-		case 'img': // hmm!
-		case 'pre':
-		case 'center':
-		case 'blockquote':
-		case 'h1':
-		case 'h2':
-		case 'h3':
-		case 'h4':
-		case 'h5':
-		case 'h6':
-			return true;
-		default:
-			return false;
-	}
-};
+var events = require('events'),
+	util = require('./ext.Util.js'),
+	Util = new util.Util();
 
 // Quick HACK: define Node constants
 // https://developer.mozilla.org/en/nodeType
@@ -61,7 +33,7 @@ var process_inlines_in_p = function ( document ) {
 			(ctype === Node.COMMENT_NODE && inParagraph ) ||
 			(ctype !== Node.TEXT_NODE && 
 				ctype !== Node.COMMENT_NODE &&
-				!isBlock(child.nodeName))
+				!Util.isBlockTag(child.nodeName.toLowerCase()))
 			) 
 		{
 			// wrap in paragraph

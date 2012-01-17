@@ -14,39 +14,51 @@ function Util () {
  * @param {Object} token: The token to check
  * @returns {Boolean}: True if token is block-level, false otherwise.
  */
-Util.prototype.isBlock = function ( token ) {
+Util.prototype.isBlockToken = function ( token ) {
 	if ( token.type === 'TAG' || 
 			token.type === 'ENDTAG' || 
 			token.type === 'SELFCLOSINGTAG' ) {
-		switch (token.name.toLowerCase()) {
-			case 'div':
-			case 'table':
-			case 'td':
-			case 'tr':
-			case 'tbody':
-			case 'p':
-			case 'ul':
-			case 'ol':
-			case 'li':
-			case 'dl':
-			case 'dt':
-			case 'dd':
-			case 'img': // hmm!
-			case 'pre':
-			case 'center':
-			case 'blockquote':
-			case 'h1':
-			case 'h2':
-			case 'h3':
-			case 'h4':
-			case 'h5':
-			case 'h6':
-				return true;
-			default:
-				return false;
-		}
+		return this.isBlockTag( token.name.toLowerCase() );
 	} else {
 		return false;
+	}
+};
+
+/**
+ * Determine if a tag name is block-level or not
+ *
+ * @static
+ * @method
+ * @param {String} name: Lower-case tag name
+ * @returns {Boolean}: True if tag is block-level, false otherwise.
+ */
+Util.prototype.isBlockTag = function ( name ) {
+	switch ( name ) {
+		case 'div':
+		case 'table':
+		case 'td':
+		case 'tr':
+		case 'tbody':
+		case 'p':
+		case 'ul':
+		case 'ol':
+		case 'li':
+		case 'dl':
+		case 'dt':
+		case 'dd':
+		case 'img': // hmm!
+		case 'pre':
+		case 'center':
+		case 'blockquote':
+		case 'h1':
+		case 'h2':
+		case 'h3':
+		case 'h4':
+		case 'h5':
+		case 'h6':
+			return true;
+		default:
+			return false;
 	}
 };
 
