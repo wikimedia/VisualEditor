@@ -1,5 +1,6 @@
 /**
  * General utilities for token transforms
+ * XXX: move this to MWParserEnvironment?
  */
 
 function Util () {

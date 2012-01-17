@@ -769,7 +769,8 @@ wikilink
     "]]" 
     // XXX In real MediaWiki, this is a language-dependent positive character
     // class. Can we work out a static negative class instead?
-    trail:(! [ \t(),.:-] tc:text_char { return tc })* {
+    // XXX: Exclude uppercase chars from non-latin languages too!
+    trail:(! [A-Z \t(),.:-] tc:text_char { return tc })* {
       var obj = {
           type: 'TAG',
           name: 'a',

@@ -18,8 +18,9 @@ function TemplateHandler ( manager ) {
 	this.register( manager );
 }
 
-TemplateHandler.prototype.reset = function () {
+TemplateHandler.prototype.reset = function ( token ) {
 	this.resultTokens = [];
+	return {token: token};
 };
 
 // constants
@@ -34,8 +35,8 @@ TemplateHandler.prototype.register = function ( manager ) {
 			this.rank, 'tag', 'templatearg' );
 
 	// Reset internal state when the parser pipeline is done
-	manager.addTransform( this.reset.bind(this), 
-			this.rank, 'end' );
+	//manager.addTransform( this.reset.bind(this), 
+	//		this.rank, 'end' );
 };
 
 
@@ -119,7 +120,20 @@ TemplateHandler.prototype._expandTemplate = function ( templateTokenTransformDat
 			tokens: [
 				{ 
 					type: 'TEXT', 
-					value: 'Template expansion loop detected!' 
+					value: 'Template loop detected: ' 
+				},
+				{
+					type: 'TAG',
+					name: 'a',
+					attrib: [['href', target]]
+				},
+				{
+					type: 'TEXT',
+					value: target
+				},
+				{
+					type: 'ENDTAG',
+					name: 'a'
 				}
 			]
 		};
@@ -186,12 +200,18 @@ TemplateHandler.prototype._onChunk = function( chunk ) {
 };
 
 /**
- * Handle the end event by calling our parentCB with notYetDone set to false.
+ * Handle the end event emitted by the parser pipeline by calling our parentCB
+ * with notYetDone set to false.
  */
-TemplateHandler.prototype._onEnd = function( ) {
+TemplateHandler.prototype._onEnd = function( token ) {
 	// Encapsulate the template in a single token, which contains all the
 	// information needed for the editor.
 	var res = this.resultTokens;
+	// Remove 'end' token from end
+	if ( res.length && res[res.length - 1].type === 'END' ) {
+		res.pop();
+	}
+
 		/*
 		[{
 			type: 'TAG',
@@ -209,7 +229,6 @@ TemplateHandler.prototype._onEnd = function( ) {
 
 	if ( this.isAsync ) {
 		this.parentCB( res, false );
-		this.reset();
 	} else {
 		this.result = { tokens: res };
 		this.reset();

@@ -49,7 +49,7 @@ PegTokenizer.prototype.process = function( text ) {
 		out = this.parser.parse(text);
 		// emit tokens here until we get that to work per toplevelblock in the
 		// actual tokenizer
-		this.emit('chunk', out);
+		this.emit('chunk', out.concat( [{ type: 'END' }] ) );
 		this.emit('end');
 	//} catch (e) {
 		//err = e;

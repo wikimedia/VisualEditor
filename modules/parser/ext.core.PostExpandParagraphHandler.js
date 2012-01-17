@@ -32,7 +32,7 @@ PostExpandParagraphHandler.prototype.register = function ( dispatcher ) {
 };
 
 PostExpandParagraphHandler.prototype.reset = function ( token, cb, frame, prevToken ) {
-	//console.log( 'PostExpandParagraphHandler.reset' );
+	//console.log( 'PostExpandParagraphHandler.reset ' + JSON.stringify( this.tokens ) );
 	if ( this.newLines ) {
 		return { tokens: this._finish() };
 	} else {

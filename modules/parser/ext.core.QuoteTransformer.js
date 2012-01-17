@@ -38,8 +38,8 @@ QuoteTransformer.prototype.register = function ( dispatcher ) {
 			this.quoteAndNewlineRank, 'newline' );
 	dispatcher.addTransform( this.onQuote.bind(this), 
 			this.quoteAndNewlineRank, 'tag', 'mw-quote' );
-	// Reset internal state when we are done
-	dispatcher.addTransform( this.reset.bind(this), 
+	// Treat end-of-input just the same as a newline
+	dispatcher.addTransform( this.onNewLine.bind(this), 
 			this.quoteAndNewlineRank, 'end' );
 };
 

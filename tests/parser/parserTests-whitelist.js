@@ -20,6 +20,10 @@ testWhiteList["External link containing double-single-quotes in text embedded in
 // This is a rare edge case, and the new behavior is arguably more consistent
 testWhiteList["5 quotes, code coverage +1 line"] = "<p>'<i></i></p>";
 
+// The comment in the test already suggests this result as correct, but
+// supplies the old result without preformatting.
+testWhiteList["Bug 6200: Preformatted in <blockquote>"] = "<blockquote data-sourcePos=\"0:12\"><pre>\nBlah</pre></blockquote>";
+
 
 // empty table tags / with only a caption are legal in HTML5.
 testWhiteList["A table with no data."] = "<table></table>";
