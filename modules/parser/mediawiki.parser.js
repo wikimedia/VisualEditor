@@ -14,8 +14,10 @@ var events = require( 'events' );
 var fs = require('fs'),
 	path = require('path'),
 	PegTokenizer                = require('./mediawiki.tokenizer.peg.js').PegTokenizer,
-	TokenTransformManager    = require('./mediawiki.TokenTransformManager.js'),
+	TokenTransformManager       = require('./mediawiki.TokenTransformManager.js'),
 	QuoteTransformer            = require('./ext.core.QuoteTransformer.js').QuoteTransformer,
+	PostExpandParagraphHandler  = require('./ext.core.PostExpandParagraphHandler.js')
+																.PostExpandParagraphHandler,
 	TemplateHandler             = require('./ext.core.TemplateHandler.js').TemplateHandler,
 	Cite                        = require('./ext.Cite.js').Cite,
 	FauxHTML5                   = require('./mediawiki.HTML5TreeBuilder.node.js').FauxHTML5,
@@ -68,6 +70,7 @@ function ParserPipeline( env, inputType ) {
 
 	// Add token transformations..
 	new QuoteTransformer( this.tokenPostProcessor );
+	new PostExpandParagraphHandler( this.tokenPostProcessor );
 	
 	//var citeExtension = new Cite( this.tokenTransformer );
 

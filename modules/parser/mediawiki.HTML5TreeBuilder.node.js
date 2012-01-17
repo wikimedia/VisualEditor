@@ -89,9 +89,13 @@ FauxHTML5.TreeBuilder.prototype.processToken = function (token) {
 			this.emit('token', {type: 'StartTag', 
 				name: token.name, 
 				data: att(token.attribs)});
-			this.emit('token', {type: 'EndTag', 
-				name: token.name, 
-				data: att(token.attribs)});
+			if ( HTML5.VOID_ELEMENTS.indexOf( token.name.toLowerCase() ) < 0 ) {
+				// VOID_ELEMENTS are automagically treated as self-closing by
+				// the tree builder
+				this.emit('token', {type: 'EndTag', 
+					name: token.name, 
+					data: att(token.attribs)});
+			}
 			break;
 		case "COMMENT":
 			this.emit('token', {type: 'Comment', 

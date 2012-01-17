@@ -262,6 +262,7 @@ start
 		// Append the end (for obvious reasons this should not
 		// be part of a stream, only when tokenizing complete
 		// texts)
+      //console.log( pp( flatten ( e ) ) );
       return flatten(e);
   }
 
