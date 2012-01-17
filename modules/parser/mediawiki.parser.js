@@ -186,7 +186,9 @@ ParserPipeline.prototype.makeInputPipeline = function ( inputType, args ) {
  */
 ParserPipeline.prototype.makeAttributePipeline = function ( args ) {
 	if ( this.pipelineCache['text/wiki'].attribute.length ) {
-		return this.pipelineCache['text/wiki'].attribute.pop();
+		var pipe = this.pipelineCache['text/wiki'].attribute.pop();
+		pipe.last.args = args;
+		return pipe;
 	} else {
 		/**
 		* Token stream transformations.

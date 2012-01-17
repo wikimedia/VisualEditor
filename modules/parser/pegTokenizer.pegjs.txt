@@ -538,7 +538,7 @@ inlineline
 inline_element
   = //& { dp('inline_element enter' + input.substr(pos, 10)); return true; }
       & '<' ( comment / xmlish_tag )
-    / & '{' ( tplarg / template )
+    / & '{' ( & '{{{{{' template / tplarg / template )
     / & '[' ( wikilink / extlink )
     / & "'" quote
 

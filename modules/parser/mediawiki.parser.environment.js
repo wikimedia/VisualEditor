@@ -30,7 +30,7 @@ MWParserEnvironment.prototype.KVtoHash = function ( kvs ) {
 	var res = {};
 	for ( var i = 0, l = kvs.length; i < l; i++ ) {
 		var kv = kvs[i],
-			key = this.tokensToString( kv[0] );
+			key = this.tokensToString( kv[0] ).trim();
 		if( res[key] === undefined ) {
 			res[key] = kv[1];
 		}
@@ -74,7 +74,7 @@ MWParserEnvironment.prototype.normalizeTitle = function( name ) {
 	if (typeof name !== 'string') {
 		throw new Error('nooooooooo not a string');
 	}
-	name = name.replace(/[\s_]+/g, '_');
+	name = name.trim().replace(/[\s_]+/g, '_');
 	function upperFirst( s ) { return s.substr(0, 1).toUpperCase() + s.substr(1); }
 	name = name.split(':').map( upperFirst ).join(':');
 	//if (name === '') {

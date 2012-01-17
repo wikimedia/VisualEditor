@@ -50,7 +50,8 @@ TemplateHandler.prototype.register = function ( manager ) {
  * processes the template.
  */
 TemplateHandler.prototype.onTemplate = function ( token, cb ) {
-	//console.log('onTemplate! ' + JSON.stringify( token, null, 2 ) );
+	//console.log('onTemplate! ' + JSON.stringify( token, null, 2 ) + 
+	//		' args: ' + JSON.stringify( this.manager.args ));
 
 	this.parentCB = cb;
 	
@@ -162,17 +163,18 @@ TemplateHandler.prototype._expandTemplate = function ( templateTokenTransformDat
 	// Returned pipe (for now):
 	// { first: tokenizer, last: AsyncTokenTransformManager }
 	//console.log( 'expanded args: ' + 
-	//		JSON.stringify( this.manager.env.KVtoHash( templateTokenTransformData.expandedArgs ) ) );
+	//		JSON.stringify( this.manager.env.KVtoHash( 
+	//				templateTokenTransformData.expandedArgs ) ) );
 
-	this.inputPipeline = this.manager.newChildPipeline( 
+	var inputPipeline = this.manager.newChildPipeline( 
 				this.manager.inputType || 'text/wiki', 
 				this.manager.env.KVtoHash( templateTokenTransformData.expandedArgs ),
 				templateTokenTransformData.target
 			);
 
 	// Hook up the inputPipeline output events to call back our parentCB.
-	this.inputPipeline.addListener( 'chunk', this._onChunk.bind ( this ) );
-	this.inputPipeline.addListener( 'end', this._onEnd.bind ( this ) );
+	inputPipeline.addListener( 'chunk', this._onChunk.bind ( this ) );
+	inputPipeline.addListener( 'end', this._onEnd.bind ( this ) );
 	
 
 	// Resolve a possibly relative link
@@ -180,7 +182,7 @@ TemplateHandler.prototype._expandTemplate = function ( templateTokenTransformDat
 			target,
 			'Template' 
 		);
-	this._fetchTemplateAndTitle( templateName, this._processTemplateAndTitle.bind( this ) );
+	this._fetchTemplateAndTitle( templateName, this._processTemplateAndTitle.bind( this, inputPipeline ) );
 
 	// Set up a pipeline:
 	// fetch template source -> tokenizer 
@@ -260,10 +262,10 @@ TemplateHandler.prototype._onEnd = function( token ) {
 /**
  * Process a fetched template source
  */
-TemplateHandler.prototype._processTemplateAndTitle = function( src, title ) {
+TemplateHandler.prototype._processTemplateAndTitle = function( pipeline, src, title ) {
 	// Feed the pipeline. XXX: Support different formats.
 	//console.log( 'TemplateHandler._processTemplateAndTitle: ' + src );
-	this.inputPipeline.process ( src );
+	pipeline.process ( src );
 };
 
 
@@ -344,17 +346,17 @@ TemplateHandler.prototype.onTemplateArg = function ( token, cb, frame ) {
 
 TemplateHandler.prototype._returnArgAttributes = function ( token, cb, frame, attributes ) {
 	//console.log( '_returnArgAttributes: ' + JSON.stringify( attributes ));
-	var argName = this.manager.env.tokensToString( attributes[0][0] ),
+	var argName = this.manager.env.tokensToString( attributes[0][0] ).trim(),
 		defaultValue = attributes[0][1],
 		res;
-	if ( argName in frame.args ) {
+	if ( argName in this.manager.args ) {
 		// return tokens for argument
 		//console.log( 'templateArg found: ' + argName + 
-		//		' vs. ' + JSON.stringify( frame.args ) ); 
-		res = frame.args[argName];
+		//		' vs. ' + JSON.stringify( this.manager.args ) ); 
+		res = this.manager.args[argName];
 	} else {
 		//console.log( 'templateArg not found: ' + argName + 
-		//		' vs. ' + JSON.stringify( frame.args ) );
+		//		' vs. ' + JSON.stringify( this.manager.args ) );
 		if ( token.attribs.length > 1 ) {
 			res = defaultValue;
 		} else {
