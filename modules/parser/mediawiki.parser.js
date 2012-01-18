@@ -18,6 +18,7 @@ var fs = require('fs'),
 	QuoteTransformer            = require('./ext.core.QuoteTransformer.js').QuoteTransformer,
 	PostExpandParagraphHandler  = require('./ext.core.PostExpandParagraphHandler.js')
 																.PostExpandParagraphHandler,
+	Sanitizer                   = require('./ext.core.Sanitizer.js').Sanitizer,
 	TemplateHandler             = require('./ext.core.TemplateHandler.js').TemplateHandler,
 	Cite                        = require('./ext.Cite.js').Cite,
 	FauxHTML5                   = require('./mediawiki.HTML5TreeBuilder.node.js').FauxHTML5,
@@ -71,6 +72,7 @@ function ParserPipeline( env, inputType ) {
 	// Add token transformations..
 	new QuoteTransformer( this.tokenPostProcessor );
 	new PostExpandParagraphHandler( this.tokenPostProcessor );
+	new Sanitizer( this.tokenPostProcessor );
 	
 	//var citeExtension = new Cite( this.tokenTransformer );
 

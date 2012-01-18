@@ -14,12 +14,15 @@ var MWParserEnvironment = function(opts) {
 };
 
 MWParserEnvironment.prototype.lookupKV = function ( kvs, key ) {
+	if ( ! kvs ) {
+		return null;
+	}
 	var kv;
 	for ( var i = 0, l = kvs.length; i < l; i++ ) {
 		kv = kvs[i];
 		if ( kv[0] === key ) {
 			// found, return it.
-			return kv[1];
+			return kv;
 		}
 	}
 	// nothing found!
