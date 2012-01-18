@@ -3,14 +3,13 @@ var MWParserEnvironment = function(opts) {
 		tagHooks: {},
 		parserFunctions: {},
 		pageCache: {}, // @fixme use something with managed space
-		domCache: {}
+		debug: false,
+		wgScriptPath: "http://en.wikipedia.org/w",
+		wgScriptExtension: ".php",
+		fetchTemplates: false
 	};
 	$.extend(options, opts);
-	this.debug = false;
-	this.tagHooks = options.tagHooks;
-	this.parserFunctions = options.parserFunctions;
-	this.pageCache = options.pageCache;
-	this.domCache = options.domCache;
+	$.extend(this, options);
 };
 
 MWParserEnvironment.prototype.lookupKV = function ( kvs, key ) {

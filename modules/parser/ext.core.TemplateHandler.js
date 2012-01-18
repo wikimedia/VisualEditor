@@ -10,7 +10,10 @@
  * @author Brion Vibber <brion@wikimedia.org>
  */
 var $ = require('jquery'),
-	AttributeTransformManager = require('./mediawiki.TokenTransformManager.js').AttributeTransformManager;
+	request = require('request'),
+	qs = require('querystring'),
+	AttributeTransformManager = require('./mediawiki.TokenTransformManager.js')
+									.AttributeTransformManager;
 
 
 function TemplateHandler ( manager ) {
@@ -78,7 +81,8 @@ TemplateHandler.prototype.onTemplate = function ( token, cb ) {
 	var attributes = [[[{ type: 'TEXT', value: '' }] , token.target ]]
 			.concat( this._nameArgs( token.orderedArgs ) );
 
-	//console.log( 'before AttributeTransformManager: ' + JSON.stringify( attributes, null, 2 ) );
+	//console.log( 'before AttributeTransformManager: ' + 
+	//					JSON.stringify( attributes, null, 2 ) );
 	new AttributeTransformManager( 
 				this.manager, 
 				this._returnAttributes.bind( this, templateTokenTransformData ) 
@@ -88,6 +92,7 @@ TemplateHandler.prototype.onTemplate = function ( token, cb ) {
 	templateTokenTransformData.outstanding--;
 	if ( templateTokenTransformData.outstanding === 0 ) {
 		//console.log( 'direct call');
+		// All attributes are fully expanded synchronously (no IO was needed)
 		return this._expandTemplate ( templateTokenTransformData );
 	} else {
 		templateTokenTransformData.isAsync = true;
@@ -110,7 +115,9 @@ TemplateHandler.prototype._nameArgs = function ( orderedArgs ) {
 	return out;
 };
 
-TemplateHandler.prototype._returnAttributes = function ( templateTokenTransformData, attributes ) {
+TemplateHandler.prototype._returnAttributes = function ( templateTokenTransformData, 
+															attributes ) 
+{
 	//console.log( 'TemplateHandler._returnAttributes: ' + JSON.stringify(attributes) );
 	// Remove the target from the attributes
 	templateTokenTransformData.target = attributes[0][1];
@@ -182,7 +189,9 @@ TemplateHandler.prototype._expandTemplate = function ( templateTokenTransformDat
 			target,
 			'Template' 
 		);
-	this._fetchTemplateAndTitle( templateName, this._processTemplateAndTitle.bind( this, inputPipeline ) );
+	this._fetchTemplateAndTitle( templateName, 
+				this._processTemplateAndTitle.bind( this, inputPipeline ) 
+			);
 
 	// Set up a pipeline:
 	// fetch template source -> tokenizer 
@@ -204,7 +213,6 @@ TemplateHandler.prototype._expandTemplate = function ( templateTokenTransformDat
 	// fetch from DB or interwiki
 	// infinte loop check
 
-	// Always asynchronous..
 	if ( this.isAsync ) {
 		return {};
 	} else {
@@ -275,23 +283,81 @@ TemplateHandler.prototype._processTemplateAndTitle = function( pipeline, src, ti
  */
 TemplateHandler.prototype._fetchTemplateAndTitle = function( title, callback ) {
 	// @fixme normalize name?
+	var self = this;
 	if (title in this.manager.env.pageCache) {
 		// @fixme should this be forced to run on next event?
 		callback( this.manager.env.pageCache[title], title );
+	} else if ( ! this.manager.env.fetchTemplates ) {
+		callback('Page/template fetching disabled, and no cache for ' + title);
 	} else {
 		// whee fun hack!
-		//console.log(title);
+
+		this.isAsync = true;
+		console.log( 'trying to fetch ' + title );
 		//console.log(this.manager.env.pageCache);
+		var url = this.manager.env.wgScriptPath + '/api' + 
+			this.manager.env.wgScriptExtension +
+			'?format=json&action=query&prop=revisions&rvprop=content&titles=' + title;
+
+		request({
+			method: 'GET',
+			//followRedirect: false,
+			url: url,
+			headers: { 
+				'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:9.0.1) Gecko/20100101 Firefox/9.0.1 Iceweasel/9.0.1' 
+			}
+		}, 
+		function (error, response, body) {
+			console.log( 'response for ' + title + ': ' + body );
+			if(error) {
+				console.log(error);	
+				callback('Page/template fetch failure for title ' + title);
+				return ;
+			}
+
+			if(response.statusCode ==  200) {
+				try{
+					console.log( 'body: ' + body );
+					data = JSON.parse(body);
+					var src = null;
+					$.each(data.query.pages, function(i, page) {
+						if (page.revisions && page.revisions.length) {
+							src = page.revisions[0]['*'];
+							title = page.title;
+						}
+					});
+					console.log( 'Page ' + title + ': got ' + src );
+					self.manager.env.pageCache[title] = src;
+					callback(src, title);
+				} catch(e) {
+					console.log("Error: while parsing result. Error was: ");
+					console.log(e);
+					console.log("Response that didn't parse was:\n" + body);
+
+					data = {
+						error: '',
+						errorWfMsg: 'chat-err-communicating-with-mediawiki',
+						errorMsgParams: []
+					};
+				}
+				console.log(data);
+			}
+		});
+
+		/*
+		 * XXX: The jQuery version does not quite work with node, but we keep
+		 * it around for now.
 		$.ajax({
-			url: this.manager.env.wgScriptPath + '/api' + this.manager.env.wgScriptExtension,
+			url: url,
 			data: {
 				format: 'json',
-			action: 'query',
-			prop: 'revisions',
-			rvprop: 'content',
-			titles: title
+				action: 'query',
+				prop: 'revisions',
+				rvprop: 'content',
+				titles: title
 			},
-			success: function(data, xhr) {
+			success: function(data, statusString, xhr) {
+				console.log( 'Page ' + title + ' success ' + JSON.stringify( data ) );
 				var src = null, title = null;
 				$.each(data.query.pages, function(i, page) {
 					if (page.revisions && page.revisions.length) {
@@ -300,19 +366,25 @@ TemplateHandler.prototype._fetchTemplateAndTitle = function( title, callback ) {
 					}
 				});
 				if (typeof src !== 'string') {
-					//console.log( 'Page ' + title + 'not found!' );
+					console.log( 'Page ' + title + 'not found! Got ' + src );
 					callback( 'Page ' + title + ' not found' );
 				} else {
+					// Add to cache
+					console.log( 'Page ' + title + ': got ' + src );
+					this.manager.env.pageCache[title] = src;
 					callback(src, title);
 				}
 			},
-			error: function(msg) {
-				//console.log( 'Page/template fetch failure for title ' + title );
+			error: function(xhr, msg, err) {
+				console.log( 'Page/template fetch failure for title ' + 
+						title + ', url=' + url + JSON.stringify(xhr) + ', err=' + err );
 				callback('Page/template fetch failure for title ' + title);
 			},
 			dataType: 'json',
-			cache: false // @fixme caching, versions etc?
-		}, 'json');
+			cache: false, // @fixme caching, versions etc?
+			crossDomain: true
+		});
+		*/
 	}
 };
 
