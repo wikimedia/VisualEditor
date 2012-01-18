@@ -539,6 +539,8 @@ inline_element
   = //& { dp('inline_element enter' + input.substr(pos, 10)); return true; }
       & '<' ( comment / xmlish_tag )
     / & '{' ( & '{{{{{' template / tplarg / template )
+     // Eat three opening brackets as text.
+    / '[[[' { return { type: 'TEXT', value: '[[[' } }
     / & '[' ( wikilink / extlink )
     / & "'" quote
 
