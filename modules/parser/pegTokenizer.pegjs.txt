@@ -674,6 +674,7 @@ no_punctuation_char = [^ :\]\[\n"'<>\x00-\x20\x7f,.&%\u00A0\u1680\u180E\u2000-\u
 
 url
   = proto:url_protocol 
+    addr:( ipv6_address / ipv4_address )?
     rest:(  ( !inline_breaks 
               c:no_punctuation_char
               { return c }
@@ -683,7 +684,19 @@ url
             / urlencoded_char
             / [&%] )+ 
 { 
-    return proto + rest.join(''); 
+    return proto + addr + rest.join(''); 
+}
+
+ipv4_address 
+  = a:([0-9]* '.' [0-9]* '.' [0-9]* '.' [0-9]*)
+{
+    return flatten( a ).join('');
+}
+
+ipv6_address 
+  = a:('[' [0-9]* ':' [0-9]* ':' [0-9]* ':' [0-9]* ':' [0-9]* ':' [0-9]* ':' [0-9]* ']')
+{
+    return flatten( a ).join('');
 }
 
 template
