@@ -108,12 +108,16 @@ function ParserPipeline( env, inputType ) {
 	this.DOMConverter = new DOMConverter();
 
 
-	// Lame hack for now, see above for an idea for the external async
+	// Lame version for now, see above for an idea for the external async
 	// interface and pipeline setup
-	this.postProcessor.addListener( 'document', this.setDocumentProperty.bind( this ) );
+	this.postProcessor.addListener( 'document', this.forwardDocument.bind( this ) );
 
 
 }
+
+// Inherit from EventEmitter
+ParserPipeline.prototype = new events.EventEmitter();
+ParserPipeline.prototype.constructor = ParserPipeline;
 
 /**
  * Factory method for the input (up to async token transforms / phase two)
@@ -240,10 +244,9 @@ ParserPipeline.prototype.parse = function ( ) {
 	this.inputPipeline.process.apply( this.inputPipeline , arguments );
 };
 
-// XXX: Lame hack: set document property. Instead, emit events
-// and convert parser tests etc to listen on it! See comments above for ideas.
-ParserPipeline.prototype.setDocumentProperty = function ( document ) {
-	this.document = document;
+// Just bubble up the document event from the pipeline
+ParserPipeline.prototype.forwardDocument = function ( document ) {
+	this.emit( 'document', document );
 };
 
 

@@ -182,10 +182,8 @@ function ParserTests () {
 	this.failTreeTests = 0;
 	this.failOutputTests = 0;
 
-	this.currentItem = undefined;
-
 	// Create a new parser environment
-	this.env = new MWParserEnvironment({});
+	this.env = new MWParserEnvironment({ fetchTemplates: false });
 }
 
 
@@ -270,18 +268,11 @@ ParserTests.prototype.parseTestCase = function ( content ) {
 	return undefined;
 };
 
-ParserTests.prototype.fetchArticle = function(name) {
-	// very simple for now..
-	var norm = this.env.normalizeTitle(name);
-	if (norm in this.articles) {
-		return this.articles[norm];
-	}
-};
-
-ParserTests.prototype.processArticle = function(item) {
+ParserTests.prototype.processArticle = function( index, item ) {
 	var norm = this.env.normalizeTitle(item.title);
 	//console.log( 'processArticle ' + norm );
 	this.articles[norm] = item.text;
+	process.nextTick( this.processCase.bind( this, index + 1 ) );
 };
 
 
@@ -354,7 +345,8 @@ ParserTests.prototype.printTitle = function( item, failure_only ) {
 
 
 
-ParserTests.prototype.processTest = function (item, parserPipeline) {
+ParserTests.prototype.processTest = function ( index, item ) {
+
 	if (!('title' in item)) {
 		console.log(item);
 		throw new Error('Missing title from test case.');
@@ -368,12 +360,16 @@ ParserTests.prototype.processTest = function (item, parserPipeline) {
 		throw new Error('Missing input from test case ' + item.title);
 	}
 
-	this.currentItem = item;
+	this.parserPipeline.once( 'document', 
+				this.processResult.bind( this, index, item ) 
+			);
 
-	// Tokenize the input
-	parserPipeline.parse(item.input);
-	var doc = parserPipeline.document;
+	// Start the pipeline by feeding it the input
+	this.parserPipeline.parse( item.input );
 
+};
+
+ParserTests.prototype.processResult = function ( index, item, doc ) {
 	// Check for errors
 	if (doc.err) {
 		this.printTitle(item);
@@ -381,7 +377,7 @@ ParserTests.prototype.processTest = function (item, parserPipeline) {
 		console.log('PARSE FAIL', res.err);
 	} else {
 		// Check the result vs. the expected result.
-		this.checkResult( this.currentItem, doc.body.innerHTML );
+		this.checkResult( item, doc.body.innerHTML );
 
 		if ( this.argv.wikidom ) {
 			// Test HTML DOM -> WikiDOM conversion
@@ -389,6 +385,8 @@ ParserTests.prototype.processTest = function (item, parserPipeline) {
 		}
 
 	}
+	// Now call schedule the next test, if any
+	process.nextTick( this.processCase.bind( this, index + 1 ) );
 };
 
 ParserTests.prototype.checkResult = function ( item, out ) {
@@ -542,40 +540,51 @@ ParserTests.prototype.main = function () {
 	//});
 
 	this.env.pageCache = this.articles;
-	var parserPipeline = new ParserPipeline( this.env );
+	this.parserPipeline = new ParserPipeline( this.env );
 
-	var comments = [],
-		pt = this;
-	this.cases.forEach(function(item) {
-		if (typeof item == 'object') {
+	this.comments = [];
+
+	this.processCase( 0 );
+};
+
+ParserTests.prototype.processCase = function ( i ) {
+	if ( i < this.cases.length ) {
+		var item = this.cases[i];
+		//console.log( 'processCase ' + i + JSON.stringify( item )  );
+		if ( typeof item == 'object' ) {
 			switch(item.type) {
 				case 'article':
-					pt.processArticle(item);
-					comments = [];
+					this.comments = [];
+					this.processArticle( i, item );
 					break;
 				case 'test':
-					if( pt.test_filter && 
-						-1 === item.title.search( pt.test_filter ) ) {
+					if( this.test_filter && 
+						-1 === item.title.search( this.test_filter ) ) {
 						// Skip test whose title does not match --filter
+						process.nextTick( this.processCase.bind( this, i + 1 ) );
 						break;
 					}
 					// Add comments to following test.
-					item.comments = comments;
-					comments = [];
-					pt.processTest(item, parserPipeline);
+					item.comments = this.comments;
+					this.comments = [];
+					this.processTest( i, item );
 					break;
 				case 'comment':
-					comments.push(item.comment);
+					this.comments.push( item.comment );
+					process.nextTick( this.processCase.bind( this, i + 1 ) );
 					break;
 				default:
-					comments = [];
+					this.comments = [];
+					process.nextTick( this.processCase.bind( this, i + 1 ) );
 					break;
 			}
+		} else {
+			process.nextTick( this.processCase.bind( this, i + 1 ) );
 		}
-	});
-
-	// print out the summary
-	this.reportSummary();
+	} else {
+		// print out the summary
+		this.reportSummary();
+	}
 };
 
 // Construct the ParserTests object and run the parser tests

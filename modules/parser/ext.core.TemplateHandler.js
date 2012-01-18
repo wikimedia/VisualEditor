@@ -214,7 +214,7 @@ TemplateHandler.prototype._expandTemplate = function ( templateTokenTransformDat
 	// infinte loop check
 
 	if ( this.isAsync ) {
-		return {};
+		return { async: true };
 	} else {
 		return this.result;
 	}
@@ -317,7 +317,7 @@ TemplateHandler.prototype._fetchTemplateAndTitle = function( title, callback ) {
 
 			if(response.statusCode ==  200) {
 				try{
-					console.log( 'body: ' + body );
+					//console.log( 'body: ' + body );
 					data = JSON.parse(body);
 					var src = null;
 					$.each(data.query.pages, function(i, page) {

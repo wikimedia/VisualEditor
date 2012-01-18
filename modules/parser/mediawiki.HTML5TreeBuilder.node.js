@@ -34,6 +34,7 @@ FauxHTML5.TreeBuilder.prototype.listenForTokensFrom = function ( emitter ) {
 };
 
 FauxHTML5.TreeBuilder.prototype.onChunk = function ( tokens ) {
+	//console.log( 'chunk: ' + JSON.stringify( tokens, null, 2 ) );
 	for (var i = 0, length = tokens.length; i < length; i++) {
 		this.processToken(tokens[i]);
 	}
@@ -43,11 +44,12 @@ FauxHTML5.TreeBuilder.prototype.onEnd = function ( ) {
 	//console.log('Fauxhtml5 onEnd');
 	// FIXME HACK: For some reason the end token is not processed sometimes,
 	// which normally fixes the body reference up.
-	this.document = this.parser.document;
-	this.document.body = this.parser
-		.document.getElementsByTagName('body')[0];
+	var document = this.parser.document;
+	document.body = document.getElementsByTagName('body')[0];
 
-	this.emit( 'document', this.document );
+	//console.log( 'onEnd: ' + document.body.innerHTML );
+
+	this.emit( 'document', document );
 
 	// XXX: more clean up to allow reuse.
 	this.parser.setup();
@@ -110,7 +112,7 @@ FauxHTML5.TreeBuilder.prototype.processToken = function (token) {
 				this.document.body = this.parser.document.getElementsByTagName('body')[0];
 			}
 			// Emit the document to consumers
-			this.emit('document', this.document);
+			//this.emit('document', this.document);
 			break;
 		case "NEWLINE":
 			//this.emit('end');
