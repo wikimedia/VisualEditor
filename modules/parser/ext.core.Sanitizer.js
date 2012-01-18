@@ -66,7 +66,7 @@ Sanitizer.prototype._IDNRegexp = new RegExp(
 		"\u180d|" + // 180d MONGOLIAN FREE VARIATION SELECTOR THREE
 		"\u200c|" + // 200c ZERO WIDTH NON-JOINER
 		"\u200d|" + // 200d ZERO WIDTH JOINER
-		"[\ufe00-\ufe0f]" // fe00-fe00f VARIATION SELECTOR-1-16
+		"[\ufe00-\ufe0f]" // fe00-fe0f VARIATION SELECTOR-1-16
 		, 'g' 
 		);
 
