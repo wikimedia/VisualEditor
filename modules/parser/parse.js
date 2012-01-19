@@ -11,7 +11,8 @@
 		DOMConverter = require('./mediawiki.DOMConverter.js').DOMConverter,
 		optimist = require('optimist');
 
-	var parser = new ParserPipeline( new ParserEnv({ fetchTemplates: true }) );
+	var env = new ParserEnv( { fetchTemplates: true } ),
+		parser = new ParserPipeline( env );
 
 
 	process.stdin.resume();
@@ -33,6 +34,12 @@
 			process.stdout.write( output );
 			// add a trailing newline for shell user's benefit
 			process.stdout.write( "\n" );
+			
+			if ( env.debug ) {
+				// Also print out the html
+				process.stderr.write( document.body.innerHTML );
+				process.stderr.write( "\n" );
+			}
 			process.exit(0);
 		});
 		// Kick off the pipeline by feeding the input into the parser pipeline

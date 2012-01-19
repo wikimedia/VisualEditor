@@ -22,7 +22,6 @@ function TemplateHandler ( manager ) {
 }
 
 TemplateHandler.prototype.reset = function ( token ) {
-	this.resultTokens = [];
 	return {token: token};
 };
 
@@ -56,8 +55,6 @@ TemplateHandler.prototype.onTemplate = function ( token, cb ) {
 	//console.log('onTemplate! ' + JSON.stringify( token, null, 2 ) + 
 	//		' args: ' + JSON.stringify( this.manager.args ));
 
-	this.parentCB = cb;
-	
 	// check for 'subst:'
 	// check for variable magic names
 	// check for msg, msgnw, raw magics
@@ -67,10 +64,12 @@ TemplateHandler.prototype.onTemplate = function ( token, cb ) {
 	var templateTokenTransformData = {
 			args: {},
 			manager: this.manager,
-			outstanding: 1, // Avoid premature finish
 			cb: cb,
 			origToken: token,
-			isAsync: false
+			resultTokens: [],
+			attribsAsync: true,
+			overallAsync: false,
+			expandDone: false
 		},
 		transformCB,
 		i = 0,
@@ -89,17 +88,22 @@ TemplateHandler.prototype.onTemplate = function ( token, cb ) {
 			).process( attributes );
 
 	// Unblock finish
-	templateTokenTransformData.outstanding--;
-	if ( templateTokenTransformData.outstanding === 0 ) {
-		//console.log( 'direct call');
+	if ( ! templateTokenTransformData.attribsAsync ) {
+		// Attributes were transformed synchronously
+		this.manager.env.dp( 'sync attribs for ' + JSON.stringify( token ));
 		// All attributes are fully expanded synchronously (no IO was needed)
 		return this._expandTemplate ( templateTokenTransformData );
 	} else {
-		templateTokenTransformData.isAsync = true;
+		// Async attribute expansion is going on
+		this.manager.env.dp( 'async return for ' + JSON.stringify( token ));
+		templateTokenTransformData.overallAsync = true;
 		return { async: true };
 	}
 };
 
+/**
+ * Create positional (number) keys for arguments without explicit keys
+ */
 TemplateHandler.prototype._nameArgs = function ( orderedArgs ) {
 	var n = 1,
 		out = [];
@@ -115,37 +119,49 @@ TemplateHandler.prototype._nameArgs = function ( orderedArgs ) {
 	return out;
 };
 
+/**
+ * Callback for argument (including target) expansion in AttributeTransformManager
+ */
 TemplateHandler.prototype._returnAttributes = function ( templateTokenTransformData, 
 															attributes ) 
 {
-	//console.log( 'TemplateHandler._returnAttributes: ' + JSON.stringify(attributes) );
+	this.manager.env.dp( 'TemplateHandler._returnAttributes: ' + JSON.stringify(attributes) );
 	// Remove the target from the attributes
+	templateTokenTransformData.attribsAsync = false;
 	templateTokenTransformData.target = attributes[0][1];
 	attributes.shift();
 	templateTokenTransformData.expandedArgs = attributes;
-	if ( templateTokenTransformData.isAsync ) {
+	if ( templateTokenTransformData.overallAsync ) {
 		this._expandTemplate ( templateTokenTransformData );
 	}
 };
 
 /**
  * Fetch, tokenize and token-transform a template after all arguments and the
- * target were expanded in frame.
+ * target were expanded.
  */
 TemplateHandler.prototype._expandTemplate = function ( templateTokenTransformData ) {
 	//console.log('TemplateHandler.expandTemplate: ' +
 	//		JSON.stringify( templateTokenTransformData, null, 2 ) );
+	
+	if ( ! templateTokenTransformData.target ) {
+		this.manager.env.dp( 'No target! ' + 
+				JSON.stringify( templateTokenTransformData, null, 2 ) );
+		console.trace();
+	}
+
 	// First, check the target for loops
 	var target = this.manager.env.normalizeTitle(
 			this.manager.env.tokensToString( templateTokenTransformData.target )
 		);
-	if( this.manager.loopCheck.check( target ) ) {
+	var checkRes = this.manager.loopAndDepthCheck.check( target );
+	if( checkRes ) {
 		// Loop detected, abort!
 		return {
 			tokens: [
 				{ 
 					type: 'TEXT', 
-					value: 'Template loop detected: ' 
+					value: checkRes
 				},
 				{
 					type: 'TAG',
@@ -172,6 +188,8 @@ TemplateHandler.prototype._expandTemplate = function ( templateTokenTransformDat
 	//console.log( 'expanded args: ' + 
 	//		JSON.stringify( this.manager.env.KVtoHash( 
 	//				templateTokenTransformData.expandedArgs ) ) );
+	//console.log( 'templateTokenTransformData: ' + 
+	//		JSON.stringify( templateTokenTransformData , null ,2 ) );
 
 	var inputPipeline = this.manager.newChildPipeline( 
 				this.manager.inputType || 'text/wiki', 
@@ -179,9 +197,10 @@ TemplateHandler.prototype._expandTemplate = function ( templateTokenTransformDat
 				templateTokenTransformData.target
 			);
 
-	// Hook up the inputPipeline output events to call back our parentCB.
-	inputPipeline.addListener( 'chunk', this._onChunk.bind ( this ) );
-	inputPipeline.addListener( 'end', this._onEnd.bind ( this ) );
+	// Hook up the inputPipeline output events to call back the parent
+	// callback.
+	inputPipeline.addListener( 'chunk', this._onChunk.bind ( this, templateTokenTransformData ) );
+	inputPipeline.addListener( 'end', this._onEnd.bind ( this, templateTokenTransformData ) );
 	
 
 	// Resolve a possibly relative link
@@ -189,9 +208,11 @@ TemplateHandler.prototype._expandTemplate = function ( templateTokenTransformDat
 			target,
 			'Template' 
 		);
-	this._fetchTemplateAndTitle( templateName, 
-				this._processTemplateAndTitle.bind( this, inputPipeline ) 
-			);
+	this._fetchTemplateAndTitle( 
+			templateName, 
+			this._processTemplateAndTitle.bind( this, inputPipeline ),
+			templateTokenTransformData
+		);
 
 	// Set up a pipeline:
 	// fetch template source -> tokenizer 
@@ -213,30 +234,41 @@ TemplateHandler.prototype._expandTemplate = function ( templateTokenTransformDat
 	// fetch from DB or interwiki
 	// infinte loop check
 
-	if ( this.isAsync ) {
+	if ( templateTokenTransformData.overallAsync || 
+			! templateTokenTransformData.expandDone ) {
+		templateTokenTransformData.overallAsync = true;
+		this.manager.env.dp( 'Async return from _expandTemplate for ' + 
+				JSON.stringify ( templateTokenTransformData.target ) );
 		return { async: true };
 	} else {
-		return this.result;
+		this.manager.env.dp( 'Sync return from _expandTemplate for ' + 
+				JSON.stringify( templateTokenTransformData.target ) + ' : ' +
+				JSON.stringify( templateTokenTransformData.result ) 
+				);
+		return templateTokenTransformData.result;
 	}
 };
 
 
 /**
- * Convert AsyncTokenTransformManager output chunks to parent callbacks
+ * Handle chunk emitted from the input pipeline after feeding it a template
  */
-TemplateHandler.prototype._onChunk = function( chunk ) {
+TemplateHandler.prototype._onChunk = function( data, chunk ) {
 	// We encapsulate the output by default, so collect tokens here.
-	this.resultTokens = this.resultTokens.concat( chunk );
+	this.manager.env.dp( 'TemplateHandler._onChunk' + JSON.stringify( chunk ) );
+	data.resultTokens = data.resultTokens.concat( chunk );
 };
 
 /**
- * Handle the end event emitted by the parser pipeline by calling our parentCB
- * with notYetDone set to false.
+ * Handle the end event emitted by the parser pipeline after fully processing
+ * the template source.
  */
-TemplateHandler.prototype._onEnd = function( token ) {
+TemplateHandler.prototype._onEnd = function( data, token ) {
 	// Encapsulate the template in a single token, which contains all the
 	// information needed for the editor.
-	var res = this.resultTokens;
+	this.manager.env.dp( 'TemplateHandler._onEnd' + JSON.stringify( data.resultTokens ) );
+	data.expandDone = true;
+	var res = data.resultTokens;
 	// Remove 'end' token from end
 	if ( res.length && res[res.length - 1].type === 'END' ) {
 		res.pop();
@@ -257,11 +289,14 @@ TemplateHandler.prototype._onEnd = function( token ) {
 				*/
 	//console.log( 'TemplateHandler._onEnd: ' + JSON.stringify( res, null, 2 ) );
 
-	if ( this.isAsync ) {
-		this.parentCB( res, false );
+	if ( data.overallAsync ) {
+		this.manager.env.dp( 'TemplateHandler._onEnd: calling back with res:' +
+				JSON.stringify( res ) );
+		data.cb( res, false );
 	} else {
-		this.result = { tokens: res };
-		this.reset();
+		this.manager.env.dp( 'TemplateHandler._onEnd: synchronous return!' );
+		data.result = { tokens: res };
+		//data.reset();
 	}
 };
 
@@ -272,7 +307,7 @@ TemplateHandler.prototype._onEnd = function( token ) {
  */
 TemplateHandler.prototype._processTemplateAndTitle = function( pipeline, src, title ) {
 	// Feed the pipeline. XXX: Support different formats.
-	//console.log( 'TemplateHandler._processTemplateAndTitle: ' + src );
+	this.manager.env.dp( 'TemplateHandler._processTemplateAndTitle: ' + src );
 	pipeline.process ( src );
 };
 
@@ -281,7 +316,7 @@ TemplateHandler.prototype._processTemplateAndTitle = function( pipeline, src, ti
 /**
  * Fetch a template
  */
-TemplateHandler.prototype._fetchTemplateAndTitle = function( title, callback ) {
+TemplateHandler.prototype._fetchTemplateAndTitle = function( title, callback, data ) {
 	// @fixme normalize name?
 	var self = this;
 	if (title in this.manager.env.pageCache) {
@@ -292,8 +327,8 @@ TemplateHandler.prototype._fetchTemplateAndTitle = function( title, callback ) {
 	} else {
 		// whee fun hack!
 
-		this.isAsync = true;
-		console.log( 'trying to fetch ' + title );
+		data.overallAsync = true;
+		this.manager.env.dp( 'trying to fetch ' + title );
 		//console.log(this.manager.env.pageCache);
 		var url = this.manager.env.wgScriptPath + '/api' + 
 			this.manager.env.wgScriptExtension +
@@ -301,46 +336,48 @@ TemplateHandler.prototype._fetchTemplateAndTitle = function( title, callback ) {
 
 		request({
 			method: 'GET',
-			//followRedirect: false,
+			followRedirect: true,
 			url: url,
 			headers: { 
 				'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:9.0.1) Gecko/20100101 Firefox/9.0.1 Iceweasel/9.0.1' 
 			}
 		}, 
 		function (error, response, body) {
-			console.log( 'response for ' + title + ': ' + body );
+			//console.log( 'response for ' + title + ' :' + body + ':' );
 			if(error) {
-				console.log(error);	
-				callback('Page/template fetch failure for title ' + title);
+				self.manager.env.dp(error);	
+				callback('Page/template fetch failure for title ' + title, title);
 				return ;
 			}
 
 			if(response.statusCode ==  200) {
-				try{
+				var src = '';
+				try {
 					//console.log( 'body: ' + body );
-					data = JSON.parse(body);
-					var src = null;
+					var data = JSON.parse( body );
+				} catch(e) {
+					console.log( "Error: while parsing result. Error was: " );
+					console.log( e );
+					console.log( "Response that didn't parse was:");
+					console.log( "------------------------------------------\n" + body );
+					console.log( "------------------------------------------" );
+				}
+				try {
 					$.each(data.query.pages, function(i, page) {
 						if (page.revisions && page.revisions.length) {
 							src = page.revisions[0]['*'];
 							title = page.title;
 						}
 					});
-					console.log( 'Page ' + title + ': got ' + src );
-					self.manager.env.pageCache[title] = src;
-					callback(src, title);
-				} catch(e) {
-					console.log("Error: while parsing result. Error was: ");
-					console.log(e);
-					console.log("Response that didn't parse was:\n" + body);
-
-					data = {
-						error: '',
-						errorWfMsg: 'chat-err-communicating-with-mediawiki',
-						errorMsgParams: []
-					};
+				} catch ( e ) {
+					console.log( 'Did not find page revisions in the returned body:' + body );
+					src = '';
 				}
-				console.log(data);
+				//console.log( 'Page ' + title + ': got ' + src );
+				self.manager.env.dp( 'Success for ' + title + ' :' + body + ':' );
+				self.manager.env.pageCache[title] = src;
+				callback(src, title);
+				self.manager.env.dp(data);
 			}
 		});
 
@@ -388,6 +425,8 @@ TemplateHandler.prototype._fetchTemplateAndTitle = function( title, callback ) {
 	}
 };
 
+
+/*********************** Template argument expansion *******************/
 
 /**
  * Expand template arguments with tokens from the containing frame.

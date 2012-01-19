@@ -29,6 +29,10 @@ MWParserEnvironment.prototype.lookupKV = function ( kvs, key ) {
 };
 
 MWParserEnvironment.prototype.KVtoHash = function ( kvs ) {
+	if ( ! kvs ) {
+		console.log( "Invalid kvs!: " + JSON.stringify( kvs, null, 2 ) );
+		return {};
+	}
 	var res = {};
 	for ( var i = 0, l = kvs.length; i < l; i++ ) {
 		var kv = kvs[i],
@@ -106,17 +110,35 @@ MWParserEnvironment.prototype.tokensToString = function ( tokens ) {
 	}
 	for ( var i = 0, l = tokens.length; i < l; i++ ) {
 		var token = tokens[i];
-		//console.log( 'MWParserEnvironment.tokensToString, token: ' + JSON.stringify( token ) );
+		if ( ! token ) {
+			console.trace();
+			console.log( 'MWParserEnvironment.tokensToString, invalid token: ' + 
+							JSON.stringify( token ) );
+			continue;
+		}
 		if ( token.type === 'TEXT' ) {
 			out.push( token.value );
+		} else if ( token.type === 'COMMENT' || token.type === 'NEWLINE' ) {
+			// strip comments and newlines
 		} else {
 			var tstring = JSON.stringify( token );
-			//console.log ( 'MWParserEnvironment.tokensToString, non-text token: ' + tstring );
-			//out.push( tstring );
+			console.log ( 'MWParserEnvironment.tokensToString, non-text token: ' + 
+					tstring + JSON.stringify( tokens, null, 2 ) );
+			out.push( tstring );
 		}
 	}
 	//console.log( 'MWParserEnvironment.tokensToString result: ' + out.join('') );
 	return out.join('');
+};
+
+
+/**
+ * Simple debug helper
+ */
+MWParserEnvironment.prototype.dp = function ( ) {
+	if ( this.debug ) {
+		console.log( JSON.stringify( arguments, null, 2 ) );
+	}
 };
 
 

@@ -314,7 +314,7 @@ function AsyncTokenTransformManager ( childFactories, args, env ) {
 	this._construct();
 	this._reset( args, env );
 	// FIXME: pass actual title?
-	this.loopCheck = new LoopCheck( null );
+	this.loopAndDepthCheck = new LoopAndDepthCheck( null );
 }
 
 // Inherit from TokenTransformManager, and thus also from EventEmitter.
@@ -336,14 +336,12 @@ AsyncTokenTransformManager.prototype.newChildPipeline = function ( inputType, ar
 
 	// now set up a few things on the child AsyncTokenTransformManager.
 	var child = pipe.last;
-	// We assume that the title was already checked against this.loopCheck
+	// We assume that the title was already checked against this.loopAndDepthCheck
 	// before!
-	child.loopCheck = new LoopCheck ( 
-				this.env.normalizeTitle( this.env.tokensToString ( title ) ), 
-				this.loopCheck 
+	child.loopAndDepthCheck = new LoopAndDepthCheck ( 
+				this.loopAndDepthCheck,
+				this.env.normalizeTitle( this.env.tokensToString ( title ) )
 			);
-	// Same for depth!
-	child.depth = this.depth + 1;
 	return pipe;
 };
 
@@ -357,7 +355,10 @@ AsyncTokenTransformManager.prototype.newChildPipeline = function ( inputType, ar
  * first stage of the pipeline, and 'last' pointing to the last stage.
  */
 AsyncTokenTransformManager.prototype.getAttributePipeline = function ( inputType, args ) {
-	return this.childFactories.attributes( inputType, args );
+	var pipe = this.childFactories.attributes( inputType, args );
+	var child = pipe.last;
+	child.loopAndDepthCheck = new LoopAndDepthCheck ( this.loopAndDepthCheck, '' );
+	return pipe;
 };
 
 /**
@@ -373,8 +374,6 @@ AsyncTokenTransformManager.prototype._reset = function ( args, env ) {
 	this.tailAccumulator = undefined;
 	// eventize: bend to event emitter callback
 	this.tokenCB = this._returnTokens.bind( this );
-	this.accum = new TokenAccumulator(null);
-	this.firstaccum = this.accum;
 	this.prevToken = undefined;
 	//console.log( 'AsyncTokenTransformManager args ' + JSON.stringify( args ) );
 	if ( ! args ) {
@@ -412,13 +411,24 @@ AsyncTokenTransformManager.prototype.process = function ( tokens ) {
 AsyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 	// Set top-level callback to next transform phase
 	var res = this.transformTokens ( tokens, this.tokenCB );
-	this.tailAccumulator = res.async;
-	//console.log('AsyncTokenTransformManager onChunk ', tokens);
-	//this.phase2TailCB( tokens, true );
+
+	if ( ! this.tailAccumulator ) {
+		this.emit( 'chunk', res.tokens );
+	} else {
+		this.tailAccumulator.push( res.tokens );
+	}
+	
 	if ( res.async ) {
+		this.tailAccumulator = res.async;
 		this.tokenCB = res.async.getParentCB ( 'sibling' );
 	}
-	this.emit( 'chunk', res.tokens );
+	this.env.dp('AsyncTokenTransformManager onChunk ' + res.async);
+	//this.phase2TailCB( tokens, true );
+
+	// The next processed chunk should call back as a sibling to last
+	// accumulator, if any.
+	if ( res.async ) {
+	}
 };
 
 /**
@@ -519,7 +529,8 @@ AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parent
  */
 AsyncTokenTransformManager.prototype._returnTokens = function ( tokens, notYetDone ) {
 	//tokens = this._transformPhase2( this.frame, tokens, this.parentCB );
-	//console.log('AsyncTokenTransformManager._returnTokens, after _transformPhase2.');
+	this.env.dp('AsyncTokenTransformManager._returnTokens, emitting chunk: ' +
+			JSON.stringify( tokens ) );
 
 	this.emit( 'chunk', tokens );
 
@@ -542,9 +553,11 @@ AsyncTokenTransformManager.prototype._returnTokens = function ( tokens, notYetDo
  */
 AsyncTokenTransformManager.prototype.onEndEvent = function () {
 	if ( this.tailAccumulator ) {
+		this.env.dp( 'AsyncTokenTransformManager.onEndEvent: calling siblingDone' );
 		this.tailAccumulator.siblingDone();
 	} else {
 		// nothing was asynchronous, so we'll have to emit end here.
+		this.env.dp( 'AsyncTokenTransformManager.onEndEvent: synchronous done' );
 		this.emit('end');
 		this._reset();
 	}
@@ -650,6 +663,8 @@ SyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 			}
 		}
 	}
+	this.env.dp( 'SyncTokenTransformManager.onChunk: emitting ' + 
+			JSON.stringify( localAccum ) );
 	this.emit( 'chunk', localAccum );
 };
 
@@ -685,7 +700,7 @@ function AttributeTransformManager ( manager, callback ) {
 	this.callback = callback;
 	this.outstanding = 0;
 	this.kvs = [];
-	this.pipe = manager.getAttributePipeline( manager.args );
+	//this.pipe = manager.getAttributePipeline( manager.args );
 }
 
 AttributeTransformManager.prototype.process = function ( attributes ) {
@@ -834,8 +849,9 @@ TokenAccumulator.prototype._returnTokens = function ( reference, tokens, notYetD
 	//console.log( 'TokenAccumulator._returnTokens' );
 	if ( reference === 'child' ) {
 		tokens = tokens.concat( this.accum );
-		//console.log('TokenAccumulator._returnTokens: ' + 
-		//		JSON.stringify( tokens, null, 2 ) 
+		//console.log('TokenAccumulator._returnTokens child: ' + 
+		//		JSON.stringify( tokens, null, 2 ) + 
+		//		' outstanding: ' + this.outstanding
 		//		);
 		this.accum = [];
 		// XXX: Use some marker to avoid re-transforming token chunks several
@@ -862,7 +878,7 @@ TokenAccumulator.prototype._returnTokens = function ( reference, tokens, notYetD
 		//	tokens = res.tokens.concat( this.accum );
 		//	this.accum = [];
 		//}
-		this.parentCB( tokens, false );
+		this.parentCB( tokens, this.outstanding !== 0 );
 		return null;
 	} else {
 		// sibling
@@ -870,14 +886,22 @@ TokenAccumulator.prototype._returnTokens = function ( reference, tokens, notYetD
 			tokens = this.accum.concat( tokens );
 			// A sibling will transform tokens, so we don't have to do this
 			// again.
-			this.parentCB( res.tokens, false );
+			//console.log( 'TokenAccumulator._returnTokens: sibling done and parentCB ' +
+			//		JSON.stringify( tokens ) );
+			this.parentCB( tokens, false );
 			return null;
 		} else if ( this.outstanding === 1 && notYetDone ) {
+			//console.log( 'TokenAccumulator._returnTokens: sibling done and parentCB but notYetDone ' +
+			//		JSON.stringify( tokens ) );
 			// Sibling is not yet done, but child is. Return own parentCB to
 			// allow the sibling to go direct, and call back parent with
 			// tokens. The internal accumulator is empty at this stage, as its
 			// tokens are passed to the parent when the child is done.
 			return this.parentCB( tokens, true);
+		} else {
+			this.accum  = this.accum.concat( tokens );
+			//console.log( 'TokenAccumulator._returnTokens: sibling done, but not overall ' +
+			//		JSON.stringify( tokens ) );
 		}
 
 
@@ -913,10 +937,12 @@ TokenAccumulator.prototype.push = function ( token ) {
  * @class
  * @constructor
  */
-function LoopCheck ( title, parent ) {
+function LoopAndDepthCheck ( parent, title ) {
 	if ( parent ) {
+		this.depth = parent.depth + 1;
 		this.parent = parent;
 	} else {
+		this.depth = 0;
 		this.parent = null;
 	}
 	this.title = title;
@@ -928,13 +954,19 @@ function LoopCheck ( title, parent ) {
  * @method
  * @param {String} Title to check.
  */
-LoopCheck.prototype.check = function ( title ) {
+LoopAndDepthCheck.prototype.check = function ( title ) {
+	// XXX: set limit really low for testing!
+	if ( this.depth > 6 ) {
+		// too deep
+		//console.log( 'Loopcheck: ' + JSON.stringify( this, null, 2 ) );
+		return 'Template expansion depth limit exceeded at ';
+	}
 	var elem = this;
 	do {
 		//console.log( 'loop check: ' + title + ' vs ' + elem.title );
 		if ( elem.title === title ) {
 			// Loop detected
-			return true;
+			return 'Template expansion loop detected at ';
 		}
 		elem = elem.parent;
 	} while ( elem );
