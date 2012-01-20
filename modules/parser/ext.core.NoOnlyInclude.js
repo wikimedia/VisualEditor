@@ -11,7 +11,7 @@ function NoInclude( manager ) {
 	new TokenCollector( 
 			manager,
 			function ( tokens ) { 
-				//manager.env.dp( 'noinclude stripping', tokens );
+				manager.env.dp( 'noinclude stripping', tokens );
 				return {};
 			}, // just strip it all..
 			true, // match the end-of-input if </noinclude> is missing

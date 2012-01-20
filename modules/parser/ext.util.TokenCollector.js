@@ -51,28 +51,39 @@ TokenCollector.prototype._anyDelta = 0.00001;
  * XXX: Adjust to sync phase callback when that is modified!
  */
 TokenCollector.prototype._onDelimiterToken = function ( token, cb, frame ) {
-	this.manager.addTransform( this._onAnyToken.bind ( this ), 
-			this.rank + this._anyDelta, 'any' );
-	this.tokens.push ( token );
-	if ( ! this.isActive ) {
-		this.isActive = true;
-		this.cb = cb;
-		return { async: true };
-	} else if ( token.type !== 'end' || this.toEnd ) {
-		// end token
-		var res = this.transformation ( this.tokens, this.cb, this.manager );
-		this.tokens = [];
-		this.manager.removeTransform( this.rank + this._anyDelta, 'any' );
+	var res;
+	if ( this.isActive ) {
+		// finish processing
+		this.tokens.push ( token );
 		this.isActive = false;
-		// Transformation can be either sync or async, but receives all collected
-		// tokens instead of a single token.
-		return res;
-		// XXX sync version: return tokens
-	} else if ( token.type === 'end' && ! this.toEnd ) {
+		this.manager.removeTransform( this.rank + this._anyDelta, 'any' );
+		if ( token.type !== 'END' || this.toEnd ) {
+			// end token
+			res = this.transformation ( this.tokens, this.cb, this.manager );
+			this.tokens = [];
+			// Transformation can be either sync or async, but receives all collected
+			// tokens instead of a single token.
+			return res;
+			// XXX sync version: return tokens
+		} else {
+			// just return collected tokens
+			res = this.tokens;
+			this.tokens = [];
+			return { tokens: res };
+		}
+	} else if ( token.type !== 'END' ) {
+		this.manager.env.dp( 'starting collection on ', token );
+		// start collection
+		this.tokens.push ( token );
+		this.manager.addTransform( this._onAnyToken.bind ( this ), 
+				this.rank + this._anyDelta, 'any' );
 		// Did not encounter a matching end token before the end, and are not
 		// supposed to collect to the end. So just return the tokens verbatim.
-		this.isActive = false;
-		return { tokens: this.tokens };
+		this.isActive = true;
+		return { };
+	} else {
+		// pass through end token
+		return { token: token };
 	}
 };
 

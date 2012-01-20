@@ -16,8 +16,9 @@ var fs = require('fs'),
 	PegTokenizer                = require('./mediawiki.tokenizer.peg.js').PegTokenizer,
 	TokenTransformManager       = require('./mediawiki.TokenTransformManager.js'),
 
-	NoInclude					= require('./ext.core.NoOnlyInclude.js').NoInclude,
-	OnlyInclude					= require('./ext.core.NoOnlyInclude.js').OnlyInclude,
+	NoOnlyInclude				= require('./ext.core.NoOnlyInclude.js'),
+	OnlyInclude					= NoOnlyInclude.OnlyInclude,
+	NoInclude					= NoOnlyInclude.NoInclude,
 	QuoteTransformer            = require('./ext.core.QuoteTransformer.js').QuoteTransformer,
 	PostExpandParagraphHandler  = require('./ext.core.PostExpandParagraphHandler.js')
 																.PostExpandParagraphHandler,

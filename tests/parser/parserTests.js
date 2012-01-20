@@ -183,7 +183,10 @@ function ParserTests () {
 	this.failOutputTests = 0;
 
 	// Create a new parser environment
-	this.env = new MWParserEnvironment({ fetchTemplates: false });
+	this.env = new MWParserEnvironment({ 
+		fetchTemplates: false,
+		debug: false
+	});
 }
 
 

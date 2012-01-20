@@ -291,15 +291,15 @@ TemplateHandler.prototype._processTemplateAndTitle = function( pipeline, src, ti
 TemplateHandler.prototype._fetchTemplateAndTitle = function ( title, callback, tplExpandData ) {
 	// @fixme normalize name?
 	var self = this;
-	if (this.manager.env.pageCache[title]) {
-		// Unroll the stack here
+	if ( title in this.manager.env.pageCache ) {
+		// Unwind the stack
 		process.nextTick(
 				function () {
 					callback( self.manager.env.pageCache[title], title )
 				} 
 		);
 	} else if ( ! this.manager.env.fetchTemplates ) {
-		callback('Page/template fetching disabled, and no cache for ' + title);
+		callback( 'Page/template fetching disabled, and no cache for ' + title, title );
 	} else {
 		
 		// We are about to start an async request for a template, so mark this
@@ -406,11 +406,8 @@ function TemplateRequest ( manager, title ) {
 		//console.log( 'response for ' + title + ' :' + body + ':' );
 		if(error) {
 			manager.env.dp(error);	
-			callback('Page/template fetch failure for title ' + title, title);
-			return ;
-		}
-
-		if(response.statusCode ==  200) {
+			self.emit('src', 'Page/template fetch failure for title ' + title, title);
+		} else if(response.statusCode ==  200) {
 			var src = '';
 			try {
 				//console.log( 'body: ' + body );
@@ -438,9 +435,11 @@ function TemplateRequest ( manager, title ) {
 			manager.env.pageCache[title] = src;
 			manager.env.dp(data);
 			self.emit( 'src', src, title );
-			// Remove self from request queue
-			delete manager.env.requestQueue[title];
 		}
+		// XXX: handle other status codes
+
+		// Remove self from request queue
+		delete manager.env.requestQueue[title];
 	});
 }
 
