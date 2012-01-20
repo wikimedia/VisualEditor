@@ -12,6 +12,7 @@
  */
 var $ = require('jquery'),
 	request = require('request'),
+	events = require('events'),
 	qs = require('querystring'),
 	AttributeTransformManager = require('./mediawiki.TokenTransformManager.js')
 									.AttributeTransformManager;
@@ -290,7 +291,7 @@ TemplateHandler.prototype._processTemplateAndTitle = function( pipeline, src, ti
 TemplateHandler.prototype._fetchTemplateAndTitle = function ( title, callback, tplExpandData ) {
 	// @fixme normalize name?
 	var self = this;
-	if (title in this.manager.env.pageCache) {
+	if (this.manager.env.pageCache[title]) {
 		// Unroll the stack here
 		process.nextTick(
 				function () {
@@ -300,115 +301,20 @@ TemplateHandler.prototype._fetchTemplateAndTitle = function ( title, callback, t
 	} else if ( ! this.manager.env.fetchTemplates ) {
 		callback('Page/template fetching disabled, and no cache for ' + title);
 	} else {
-		// Not found in the pageCache, so go fetch the source using the
-		// MediaWiki API.
-
+		
 		// We are about to start an async request for a template, so mark this
 		// template expansion as such.
 		tplExpandData.overallAsync = true;
 		this.manager.env.dp( 'trying to fetch ' + title );
-		//console.log(this.manager.env.pageCache);
-		var url = this.manager.env.wgScriptPath + '/api' + 
-			this.manager.env.wgScriptExtension +
-			'?' + 
-			qs.stringify( {
-				format: 'json',
-				action: 'query',
-				prop: 'revisions',
-				rvprop: 'content',
-				titles: title
-			} );
-			//'?format=json&action=query&prop=revisions&rvprop=content&titles=' + title;
 
-		request({
-			method: 'GET',
-			followRedirect: true,
-			url: url,
-			headers: { 
-				'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:9.0.1) ' +
-								'Gecko/20100101 Firefox/9.0.1 Iceweasel/9.0.1' 
-			}
-		}, 
-		function (error, response, body) {
-			//console.log( 'response for ' + title + ' :' + body + ':' );
-			if(error) {
-				self.manager.env.dp(error);	
-				callback('Page/template fetch failure for title ' + title, title);
-				return ;
-			}
+		// Start a new request if none is outstanding
+		this.manager.env.dp( 'requestQueue: ', this.manager.env.requestQueue)
+		if ( this.manager.env.requestQueue[title] === undefined ) {
+			this.manager.env.requestQueue[title] = new TemplateRequest( this.manager, title );
+		}
+		// Append a listener to the request
+		this.manager.env.requestQueue[title].addListener( 'src', callback );
 
-			if(response.statusCode ==  200) {
-				var src = '';
-				try {
-					//console.log( 'body: ' + body );
-					var data = JSON.parse( body );
-				} catch(e) {
-					console.log( "Error: while parsing result. Error was: " );
-					console.log( e );
-					console.log( "Response that didn't parse was:");
-					console.log( "------------------------------------------\n" + body );
-					console.log( "------------------------------------------" );
-				}
-				try {
-					$.each(data.query.pages, function(i, page) {
-						if (page.revisions && page.revisions.length) {
-							src = page.revisions[0]['*'];
-							title = page.title;
-						}
-					});
-				} catch ( e ) {
-					console.log( 'Did not find page revisions in the returned body:' + body );
-					src = '';
-				}
-				//console.log( 'Page ' + title + ': got ' + src );
-				self.manager.env.dp( 'Success for ' + title + ' :' + body + ':' );
-				self.manager.env.pageCache[title] = src;
-				callback(src, title);
-				self.manager.env.dp(data);
-			}
-		});
-
-		/*
-		 * XXX: The jQuery version does not quite work with node, but we keep
-		 * it around for now.
-		$.ajax({
-			url: url,
-			data: {
-				format: 'json',
-				action: 'query',
-				prop: 'revisions',
-				rvprop: 'content',
-				titles: title
-			},
-			success: function(data, statusString, xhr) {
-				console.log( 'Page ' + title + ' success ' + JSON.stringify( data ) );
-				var src = null, title = null;
-				$.each(data.query.pages, function(i, page) {
-					if (page.revisions && page.revisions.length) {
-						src = page.revisions[0]['*'];
-						title = page.title;
-					}
-				});
-				if (typeof src !== 'string') {
-					console.log( 'Page ' + title + 'not found! Got ' + src );
-					callback( 'Page ' + title + ' not found' );
-				} else {
-					// Add to cache
-					console.log( 'Page ' + title + ': got ' + src );
-					this.manager.env.pageCache[title] = src;
-					callback(src, title);
-				}
-			},
-			error: function(xhr, msg, err) {
-				console.log( 'Page/template fetch failure for title ' + 
-						title + ', url=' + url + JSON.stringify(xhr) + ', err=' + err );
-				callback('Page/template fetch failure for title ' + title);
-			},
-			dataType: 'json',
-			cache: false, // @fixme caching, versions etc?
-			crossDomain: true
-		});
-		*/
 	}
 };
 
@@ -467,6 +373,123 @@ TemplateHandler.prototype._returnArgAttributes = function ( token, cb, frame, at
 		token.resultTokens =  res;
 	}
 };
+
+
+/***************** Template fetch request helper class ********/
+
+function TemplateRequest ( manager, title ) {
+	// Increase the number of maximum listeners a bit..
+	this.setMaxListeners( 1000 );
+	var self = this,
+		url = manager.env.wgScriptPath + '/api' + 
+		manager.env.wgScriptExtension +
+		'?' + 
+		qs.stringify( {
+			format: 'json',
+			action: 'query',
+			prop: 'revisions',
+			rvprop: 'content',
+			titles: title
+		} );
+		//'?format=json&action=query&prop=revisions&rvprop=content&titles=' + title;
+
+	request({
+		method: 'GET',
+		followRedirect: true,
+		url: url,
+		headers: { 
+			'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:9.0.1) ' +
+							'Gecko/20100101 Firefox/9.0.1 Iceweasel/9.0.1' 
+		}
+	}, 
+	function (error, response, body) {
+		//console.log( 'response for ' + title + ' :' + body + ':' );
+		if(error) {
+			manager.env.dp(error);	
+			callback('Page/template fetch failure for title ' + title, title);
+			return ;
+		}
+
+		if(response.statusCode ==  200) {
+			var src = '';
+			try {
+				//console.log( 'body: ' + body );
+				var data = JSON.parse( body );
+			} catch(e) {
+				console.log( "Error: while parsing result. Error was: " );
+				console.log( e );
+				console.log( "Response that didn't parse was:");
+				console.log( "------------------------------------------\n" + body );
+				console.log( "------------------------------------------" );
+			}
+			try {
+				$.each(data.query.pages, function(i, page) {
+					if (page.revisions && page.revisions.length) {
+						src = page.revisions[0]['*'];
+						title = page.title;
+					}
+				});
+			} catch ( e ) {
+				console.log( 'Did not find page revisions in the returned body:' + body );
+				src = '';
+			}
+			//console.log( 'Page ' + title + ': got ' + src );
+			manager.env.dp( 'Success for ' + title + ' :' + body + ':' );
+			manager.env.pageCache[title] = src;
+			manager.env.dp(data);
+			self.emit( 'src', src, title );
+			// Remove self from request queue
+			delete manager.env.requestQueue[title];
+		}
+	});
+}
+
+		/*
+		 * XXX: The jQuery version does not quite work with node, but we keep
+		 * it around for now.
+		$.ajax({
+			url: url,
+			data: {
+				format: 'json',
+				action: 'query',
+				prop: 'revisions',
+				rvprop: 'content',
+				titles: title
+			},
+			success: function(data, statusString, xhr) {
+				console.log( 'Page ' + title + ' success ' + JSON.stringify( data ) );
+				var src = null, title = null;
+				$.each(data.query.pages, function(i, page) {
+					if (page.revisions && page.revisions.length) {
+						src = page.revisions[0]['*'];
+						title = page.title;
+					}
+				});
+				if (typeof src !== 'string') {
+					console.log( 'Page ' + title + 'not found! Got ' + src );
+					callback( 'Page ' + title + ' not found' );
+				} else {
+					// Add to cache
+					console.log( 'Page ' + title + ': got ' + src );
+					this.manager.env.pageCache[title] = src;
+					callback(src, title);
+				}
+			},
+			error: function(xhr, msg, err) {
+				console.log( 'Page/template fetch failure for title ' + 
+						title + ', url=' + url + JSON.stringify(xhr) + ', err=' + err );
+				callback('Page/template fetch failure for title ' + title);
+			},
+			dataType: 'json',
+			cache: false, // @fixme caching, versions etc?
+			crossDomain: true
+		});
+		*/
+
+// Inherit from EventEmitter
+TemplateRequest.prototype = new events.EventEmitter();
+TemplateHandler.prototype.constructor = TemplateRequest;
+
 
 if (typeof module == "object") {
 	module.exports.TemplateHandler = TemplateHandler;

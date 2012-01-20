@@ -1,6 +1,9 @@
 /**
  * Command line wikidom parse utility.
  * Read from STDIN, write to STDOUT.
+ *
+ * @author Neil Kandalgaonkar <neilk@wikimedia.org>
+ * @author Gabriel Wicke <gwicke@wikimedia.org>
  */
 
 
@@ -12,7 +15,11 @@
 		optimist = require('optimist');
 
 	var env = new ParserEnv( { 
+						// fetch templates from enwiki by default..
+						wgScriptPath: "http://en.wikipedia.org/w",
+						wgScriptExtension: ".php",
 						fetchTemplates: true,
+						// enable/disable debug output using this switch	
 						debug: false
 					} ),
 		parser = new ParserPipeline( env );

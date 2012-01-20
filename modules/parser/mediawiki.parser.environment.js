@@ -12,6 +12,10 @@ var MWParserEnvironment = function(opts) {
 	$.extend(this, options);
 };
 
+// Outstanding page requests (for templates etc)
+// Class-static
+MWParserEnvironment.prototype.requestQueue = {};
+
 MWParserEnvironment.prototype.lookupKV = function ( kvs, key ) {
 	if ( ! kvs ) {
 		return null;

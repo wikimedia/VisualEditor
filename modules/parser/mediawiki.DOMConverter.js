@@ -1,5 +1,7 @@
 /**
  * Conversions between HTML DOM and WikiDom
+ *
+ * @author Gabriel Wicke <gwicke@wikimedia.org>
  * 
  * @class
  * @constructor
