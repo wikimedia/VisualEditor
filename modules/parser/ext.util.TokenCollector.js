@@ -5,6 +5,8 @@
  * stages (SyncTokenTransformManager), as async out-of-order expansions
  * would wreak havoc with this kind of collector.
  *
+ * @author Gabriel Wicke <gwicke@wikimedia.org>
+ *
  * Calls the passed-in callback with the collected tokens.
  *
  * @class
@@ -14,7 +16,7 @@
  *   transform( tokens, cb, manager ) with 
  *      tokens: chunk of tokens
  *      cb: function, returnTokens ( tokens, notYetDone ) with notYetDone
- *	    indicating the last chunk of an async return.
+ *      indicating the last chunk of an async return.
  *      manager: TokenTransformManager, provides the args etc.
  * @param {Boolean} Match the 'end' tokens as closing tag as well (accept
  * unclosed sections).
@@ -23,8 +25,8 @@
  * @param {String} (optional, only for token type 'tag'): tag name.
  */
 
-function TokenCollector ( manager, transformer, toEnd, rank, type, name ) {
-	this.transformer = transformer;
+function TokenCollector ( manager, transformation, toEnd, rank, type, name ) {
+	this.transformation = transformation;
 	this.manager = manager;
 	this.rank = rank;
 	this.type = type;
@@ -48,8 +50,9 @@ TokenCollector.prototype._anyDelta = 0.00001;
  * Handle the delimiter token.
  * XXX: Adjust to sync phase callback when that is modified!
  */
-TokenCollector.prototype._onDelimiterToken ( token, cb, frame ) {
-	this.manager.addTransform( this._anyToken.bind ( this ), rank + this._anyDelta, 'any' );
+TokenCollector.prototype._onDelimiterToken = function ( token, cb, frame ) {
+	this.manager.addTransform( this._onAnyToken.bind ( this ), 
+			this.rank + this._anyDelta, 'any' );
 	this.tokens.push ( token );
 	if ( ! this.isActive ) {
 		this.isActive = true;
@@ -57,12 +60,13 @@ TokenCollector.prototype._onDelimiterToken ( token, cb, frame ) {
 		return { async: true };
 	} else if ( token.type !== 'end' || this.toEnd ) {
 		// end token
+		var res = this.transformation ( this.tokens, this.cb, this.manager );
 		this.tokens = [];
 		this.manager.removeTransform( this.rank + this._anyDelta, 'any' );
 		this.isActive = false;
-		// Transformer can be either sync or async, but receives all collected
+		// Transformation can be either sync or async, but receives all collected
 		// tokens instead of a single token.
-		return this.transformer ( this.tokens, this.cb, this.manager );
+		return res;
 		// XXX sync version: return tokens
 	} else if ( token.type === 'end' && ! this.toEnd ) {
 		// Did not encounter a matching end token before the end, and are not
@@ -78,10 +82,13 @@ TokenCollector.prototype._onDelimiterToken ( token, cb, frame ) {
  * encountering the delimiter token, and collects all tokens until the end
  * token is reached.
  */
-TokenCollector.prototype._onAnyToken ( token, cb, frame ) {
+TokenCollector.prototype._onAnyToken = function ( token, cb, frame ) {
 	// Simply collect anything ordinary in between
 	this.tokens.push( token );
 	return { };
+};
+
+
+if (typeof module == "object") {
+	module.exports.TokenCollector = TokenCollector;
 }
-
-

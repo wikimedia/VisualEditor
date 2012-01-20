@@ -956,17 +956,17 @@ function LoopAndDepthCheck ( parent, title ) {
  */
 LoopAndDepthCheck.prototype.check = function ( title ) {
 	// XXX: set limit really low for testing!
-	if ( this.depth > 6 ) {
+	if ( this.depth > 40 ) {
 		// too deep
 		//console.log( 'Loopcheck: ' + JSON.stringify( this, null, 2 ) );
-		return 'Template expansion depth limit exceeded at ';
+		return 'Expansion depth limit exceeded at ';
 	}
 	var elem = this;
 	do {
 		//console.log( 'loop check: ' + title + ' vs ' + elem.title );
 		if ( elem.title === title ) {
 			// Loop detected
-			return 'Template expansion loop detected at ';
+			return 'Expansion loop detected at ';
 		}
 		elem = elem.parent;
 	} while ( elem );

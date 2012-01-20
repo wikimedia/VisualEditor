@@ -137,7 +137,11 @@ MWParserEnvironment.prototype.tokensToString = function ( tokens ) {
  */
 MWParserEnvironment.prototype.dp = function ( ) {
 	if ( this.debug ) {
-		console.log( JSON.stringify( arguments, null, 2 ) );
+		if ( arguments.length > 1 ) {
+			console.log( JSON.stringify( arguments, null, 2 ) );
+		} else {
+			console.log( arguments[0] );
+		}
 	}
 };
 

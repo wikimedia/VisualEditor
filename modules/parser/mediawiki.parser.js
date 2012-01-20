@@ -15,6 +15,9 @@ var fs = require('fs'),
 	path = require('path'),
 	PegTokenizer                = require('./mediawiki.tokenizer.peg.js').PegTokenizer,
 	TokenTransformManager       = require('./mediawiki.TokenTransformManager.js'),
+
+	NoInclude					= require('./ext.core.NoOnlyInclude.js').NoInclude,
+	OnlyInclude					= require('./ext.core.NoOnlyInclude.js').OnlyInclude,
 	QuoteTransformer            = require('./ext.core.QuoteTransformer.js').QuoteTransformer,
 	PostExpandParagraphHandler  = require('./ext.core.PostExpandParagraphHandler.js')
 																.PostExpandParagraphHandler,
@@ -154,6 +157,9 @@ ParserPipeline.prototype.makeInputPipeline = function ( inputType, args ) {
 				var tokenPreProcessor = new TokenTransformManager.SyncTokenTransformManager ( this.env );
 				tokenPreProcessor.listenForTokensFrom ( wikiTokenizer );
 
+				// Add noinclude transform for now
+				new NoInclude( tokenPreProcessor );
+
 				var tokenExpander = new TokenTransformManager.AsyncTokenTransformManager (
 							{
 								'input': this.makeInputPipeline.bind( this ),
@@ -202,6 +208,8 @@ ParserPipeline.prototype.makeAttributePipeline = function ( args ) {
 		* See https://www.mediawiki.org/wiki/Future/Parser_development/Token_stream_transformations
 		*/
 		var tokenPreProcessor = new TokenTransformManager.SyncTokenTransformManager ( this.env );
+		new NoInclude( tokenPreProcessor );
+
 		var tokenExpander = new TokenTransformManager.AsyncTokenTransformManager (
 				{
 					'input': this.makeInputPipeline.bind( this ),
