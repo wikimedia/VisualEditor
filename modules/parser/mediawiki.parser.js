@@ -16,9 +16,9 @@ var fs = require('fs'),
 	PegTokenizer                = require('./mediawiki.tokenizer.peg.js').PegTokenizer,
 	TokenTransformManager       = require('./mediawiki.TokenTransformManager.js'),
 
-	NoOnlyInclude				= require('./ext.core.NoOnlyInclude.js'),
-	OnlyInclude					= NoOnlyInclude.OnlyInclude,
-	NoInclude					= NoOnlyInclude.NoInclude,
+	NoIncludeOnly				= require('./ext.core.NoIncludeOnly.js'),
+	IncludeOnly					= NoIncludeOnly.IncludeOnly,
+	NoInclude					= NoIncludeOnly.NoInclude,
 	QuoteTransformer            = require('./ext.core.QuoteTransformer.js').QuoteTransformer,
 	PostExpandParagraphHandler  = require('./ext.core.PostExpandParagraphHandler.js')
 																.PostExpandParagraphHandler,
@@ -65,7 +65,7 @@ function ParserPipeline( env, inputType ) {
 	};
 
 	// Create an input pipeline for the given input type.
-	this.inputPipeline = this.makeInputPipeline ( inputType );
+	this.inputPipeline = this.makeInputPipeline ( inputType, {}, true );
 	this.inputPipeline.atTopLevel = true;
 
 
@@ -137,7 +137,7 @@ ParserPipeline.prototype.constructor = ParserPipeline;
  * accepts the wiki text this way. The last stage of the input pipeline is
  * always an AsyncTokenTransformManager, which emits its output in events.
  */
-ParserPipeline.prototype.makeInputPipeline = function ( inputType, args ) {
+ParserPipeline.prototype.makeInputPipeline = function ( inputType, args, isNoInclude ) {
 	switch ( inputType ) {
 		case 'text/wiki':
 			//console.log( 'makeInputPipeline ' + JSON.stringify( args ) );
@@ -158,8 +158,9 @@ ParserPipeline.prototype.makeInputPipeline = function ( inputType, args ) {
 				var tokenPreProcessor = new TokenTransformManager.SyncTokenTransformManager ( this.env );
 				tokenPreProcessor.listenForTokensFrom ( wikiTokenizer );
 
+				new IncludeOnly( tokenPreProcessor, ! isNoInclude );
 				// Add noinclude transform for now
-				new NoInclude( tokenPreProcessor );
+				new NoInclude( tokenPreProcessor, ! isNoInclude );
 
 				var tokenExpander = new TokenTransformManager.AsyncTokenTransformManager (
 							{

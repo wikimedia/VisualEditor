@@ -7,12 +7,21 @@
 
 var TokenCollector = require( './ext.util.TokenCollector.js' ).TokenCollector;
 
-function NoInclude( manager ) {
+function NoInclude( manager, isInclude ) {
 	new TokenCollector( 
 			manager,
 			function ( tokens ) { 
-				manager.env.dp( 'noinclude stripping', tokens );
-				return {};
+				if ( isInclude ) {
+					manager.env.dp( 'noinclude stripping', tokens );
+					return {};
+				} else {
+					tokens.shift();
+					if ( tokens.length &&
+						tokens[tokens.length - 1].type !== 'END' ) {
+						tokens.pop();
+					}
+					return { tokens: tokens };
+				}
 			}, // just strip it all..
 			true, // match the end-of-input if </noinclude> is missing
 			0.01, // very early in stage 1, to avoid any further processing.
@@ -21,19 +30,30 @@ function NoInclude( manager ) {
 			);
 }
 
-function OnlyInclude( manager ) {
+function IncludeOnly( manager, isInclude ) {
 	new TokenCollector( 
 			manager,
-			function ( ) { return {} }, // just strip it all..
+			function ( tokens ) { 
+				if ( isInclude ) {
+					tokens.shift();
+					if ( tokens.length &&
+						tokens[tokens.length - 1].type !== 'END' ) {
+							tokens.pop();
+					}
+					return { tokens: tokens };
+				} else {
+					return {};
+				}
+			},
 			true, // match the end-of-input if </noinclude> is missing
 			0.01, // very early in stage 1, to avoid any further processing.
 			'tag',
-			'onlyinclude'
+			'includeonly'
 			);
 }
 
 
 if (typeof module == "object") {
 	module.exports.NoInclude = NoInclude;
-	module.exports.OnlyInclude = OnlyInclude;
+	module.exports.IncludeOnly = IncludeOnly;
 }

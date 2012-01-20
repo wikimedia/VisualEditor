@@ -664,7 +664,7 @@ SyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 		}
 	}
 	this.env.dp( 'SyncTokenTransformManager.onChunk: emitting ' + 
-			JSON.stringify( localAccum ) );
+			JSON.stringify( localAccum, null, 2 ) );
 	this.emit( 'chunk', localAccum );
 };
 
@@ -698,7 +698,7 @@ SyncTokenTransformManager.prototype.onEndEvent = function () {
 function AttributeTransformManager ( manager, callback ) {
 	this.manager = manager;
 	this.callback = callback;
-	this.outstanding = 0;
+	this.outstanding = 1;
 	this.kvs = [];
 	//this.pipe = manager.getAttributePipeline( manager.args );
 }
@@ -726,7 +726,7 @@ AttributeTransformManager.prototype.process = function ( attributes ) {
 		pipe.addListener( 'end', 
 				this.onEnd.bind( this, this._returnAttributeKey.bind( this, i ) ) 
 				);
-		pipe.process( attributes[i][0] );
+		pipe.process( attributes[i][0].concat([{type:'END'}]) );
 
 		// transform the value
 		pipe = this.manager.getAttributePipeline( this.manager.args );
@@ -737,7 +737,11 @@ AttributeTransformManager.prototype.process = function ( attributes ) {
 				this.onEnd.bind( this, this._returnAttributeValue.bind( this, i ) ) 
 				);
 		//console.log('starting attribute transform of ' + JSON.stringify( attributes[i][1] ) );
-		pipe.process( attributes[i][1] );
+		pipe.process( attributes[i][1].concat([{type:'END'}]) );
+	}
+	this.outstanding--;
+	if ( this.outstanding == 0 ) {
+		this._returnAttributes();
 	}
 };
 
@@ -758,6 +762,9 @@ AttributeTransformManager.prototype._returnAttributes = function ( ) {
  * Collect chunks returned from the pipeline
  */
 AttributeTransformManager.prototype.onChunk = function ( cb, chunk ) {
+	if ( chunk.length && chunk[chunk.length - 1].type === 'END' ) {
+		chunk.pop();
+	}
 	cb( chunk, true );
 };
 
@@ -773,7 +780,8 @@ AttributeTransformManager.prototype.onEnd = function ( cb ) {
  * Callback for async argument value expansions
  */
 AttributeTransformManager.prototype._returnAttributeValue = function ( ref, tokens, notYetDone ) {
-	//console.log( 'check _returnAttributeValue: ' + JSON.stringify( tokens ) );
+	//console.log( 'check _returnAttributeValue: ' + JSON.stringify( tokens ) + 
+	//		' notYetDone:' + notYetDone );
 	this.kvs[ref].value = this.kvs[ref].value.concat( tokens );
 	if ( ! notYetDone ) {
 		this.outstanding--;
@@ -788,6 +796,8 @@ AttributeTransformManager.prototype._returnAttributeValue = function ( ref, toke
  * Callback for async argument key expansions
  */
 AttributeTransformManager.prototype._returnAttributeKey = function ( ref, tokens, notYetDone ) {
+	//console.log( 'check _returnAttributeKey: ' + JSON.stringify( tokens ) + 
+	//		' notYetDone:' + notYetDone );
 	this.kvs[ref].key = this.kvs[ref].key.concat( tokens );
 	if ( ! notYetDone ) {
 		this.outstanding--;

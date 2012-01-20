@@ -75,8 +75,8 @@ TemplateHandler.prototype.onTemplate = function ( token, cb ) {
 	var attributes = [[[{ type: 'TEXT', value: '' }] , token.target ]]
 			.concat( this._nameArgs( token.orderedArgs ) );
 
-	//console.log( 'before AttributeTransformManager: ' + 
-	//					JSON.stringify( attributes, null, 2 ) );
+	this.manager.env.dp( 'before AttributeTransformManager: ' + 
+						JSON.stringify( attributes, null, 2 ) );
 	new AttributeTransformManager( 
 				this.manager, 
 				this._returnAttributes.bind( this, tplExpandData ) 
@@ -85,7 +85,10 @@ TemplateHandler.prototype.onTemplate = function ( token, cb ) {
 	// Unblock finish
 	if ( ! tplExpandData.attribsAsync ) {
 		// Attributes were transformed synchronously
-		this.manager.env.dp( 'sync attribs for ' + JSON.stringify( token ));
+		this.manager.env.dp ( 
+				'sync attribs for ' + JSON.stringify( tplExpandData.target ),
+				tplExpandData.expandedArgs
+		);
 		// All attributes are fully expanded synchronously (no IO was needed)
 		return this._expandTemplate ( tplExpandData );
 	} else {
@@ -110,7 +113,7 @@ TemplateHandler.prototype._nameArgs = function ( orderedArgs ) {
 			out.push( orderedArgs[i] );
 		}
 	}
-	//console.log( '_nameArgs: ' + JSON.stringify( out ) );
+	this.manager.env.dp( '_nameArgs: ' + JSON.stringify( out ) );
 	return out;
 };
 
@@ -190,6 +193,7 @@ TemplateHandler.prototype._expandTemplate = function ( tplExpandData ) {
 				this.manager.env.KVtoHash( tplExpandData.expandedArgs ),
 				tplExpandData.target
 			);
+	this.manager.env.dp( 'argHash:', this.manager.env.KVtoHash( tplExpandData.expandedArgs ) );
 
 	// Hook up the inputPipeline output events to our handlers
 	inputPipeline.addListener( 'chunk', this._onChunk.bind ( this, tplExpandData ) );
@@ -359,8 +363,8 @@ TemplateHandler.prototype._returnArgAttributes = function ( token, cb, frame, at
 		//		' vs. ' + JSON.stringify( this.manager.args ) ); 
 		res = this.manager.args[argName];
 	} else {
-		//console.log( 'templateArg not found: ' + argName + 
-		//		' vs. ' + JSON.stringify( this.manager.args ) );
+		console.log( 'templateArg not found: ' + argName + 
+				' vs. ' + JSON.stringify( this.manager.args ) );
 		if ( token.attribs.length > 1 ) {
 			res = defaultValue;
 		} else {

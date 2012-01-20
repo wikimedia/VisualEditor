@@ -480,7 +480,11 @@ inline_breaks
   / & { return syntaxFlags['extlink']; } "]" { return true; }
   / & { return syntaxFlags['linkdesc']; } link_end { return true; }
   / & { return syntaxFlags['h']; } '='+ space* newline { return true; }
-  / & { return syntaxFlags['template']; } ('|' / '}}') { return true; }
+  / & { return syntaxFlags['template']; } ('|' / '}}' ) { return true; }
+  / & { return syntaxFlags['equal']; } '=' { 
+                    //console.log( 'equal stop!' );
+                    return true; 
+                }
 
 inline
   = c:(urltext / (! inline_breaks (inline_element / . )))+ {
@@ -539,6 +543,7 @@ inline_element
   = //& { dp('inline_element enter' + input.substr(pos, 10)); return true; }
       & '<' ( comment / xmlish_tag )
     / & '{' ( & '{{{{{' template / tplarg / template )
+    /// & '{' ( tplarg / template )
      // Eat three opening brackets as text.
     / '[[[' { return { type: 'TEXT', value: '[[[' } }
     / & '[' ( wikilink / extlink )
@@ -711,25 +716,26 @@ template
             name: 'template', 
             attribs: [['data-target', JSON.stringify(target)]],
             orderedArgs: params,
-            args: {},
+            //args: {},
             target: target
       };
-      if (params && params.length) {
-          var position = 1;
-          for ( var i = 0, l = params.length; i < l; i++ ) {
-              var param = params[i];
-              if ( param[0] === null ) {
-                  obj.args[position] = param[1];
-                  position++;
-              } else {
-                  // Last value wins for duplicates.
-                  obj.args[param[0]] = param[1];
-              }
-          }
-          // HACK: temporarily also push the args into an attribute
-          // (just for debugging)
-          obj.attribs.push(['data-json-args', JSON.stringify(obj.args)]);
-      }
+      // XXX: this is kind of broken, as arg keys need to be expanded
+      //if (params && params.length) {
+      //    var position = 1;
+      //    for ( var i = 0, l = params.length; i < l; i++ ) {
+      //        var param = params[i];
+      //        if ( param[0] === null ) {
+      //            obj.args[position] = param[1];
+      //            position++;
+      //        } else {
+      //            // Last value wins for duplicates.
+      //            obj.args[param[0]] = param[1];
+      //        }
+      //    }
+      //    // HACK: temporarily also push the args into an attribute
+      //    // (just for debugging)
+      //    obj.attribs.push(['data-json-args', JSON.stringify(obj.args)]);
+      //}
       // Should actually use a self-closing tag here, but the Node HTML5
       // parser only recognizes known self-closing tags for now, so use an
       // explicit end tag for now.
@@ -738,18 +744,14 @@ template
   }
 
 // XXX: support template and args in target!
-template_target
-  = h:( !"}}" x:([^|\n]) { return x } )* { return { type: 'TEXT', value: h.join('') } }
-
-template_param
-  = name:template_param_name space* "=" space* c:template_param_text {
-      return [[{ type: 'TEXT', value: name }], flatten( c )];
-  } / c:template_param_text {
-      return [[], flatten( c ) ];
-  }
+//template_target
+//  = h:( !"}}" x:([^|\n]) { return x } )* { return { type: 'TEXT', value: h.join('') } }
 
 tplarg 
-  = "{{{" name:template_param_text params:("|" p:template_param { return p })* "}}}" {
+  = "{{{" 
+    name:template_param_text 
+    params:( newline? "|" newline? p:template_param { return p })* 
+    "}}}" {
       name = flatten( name );
       var obj = { 
             type: 'SELFCLOSINGTAG', 
@@ -764,21 +766,39 @@ tplarg
           obj.attribs.push(['data-json-args', JSON.stringify(params)]);
           obj.defaultvalue = params[0][1];
       }
-      //console.log( 'tokenizer templatearg ' + JSON.stringify( obj ));
+      console.log( 'tokenizer tplarg ' + JSON.stringify( obj ));
       return obj;
   }
 
+template_param
+  = name:template_param_name space* "=" space* c:template_param_text {
+      //console.log( 'named template_param matched' + pp([name, flatten( c )]) );
+      return [name, flatten( c )];
+  } / c:template_param_text {
+      return [[], flatten( c ) ];
+  }
+
+
 // FIXME: handle template args and templates in key! (or even parser functions?)
 template_param_name
-  = h:( !"}}" x:([^=|\n]) { return x } )* { return h.join(''); }
+  = & { return setFlag( 'equal' ) }
+    tpt:template_param_text
+    & { clearFlag( 'equal' ); return true; }
+    {
+        //console.log( 'template param name matched: ' + pp( tpt ) );
+        return tpt;
+    }
+
+  / & { return clearFlag( 'equal' ) }
+  //= h:( !"}}" x:([^=|\n]) { return x } )* { return h.join(''); }
 
 template_param_text
   = & { return setFlag('template') }
-    il:inline+ {
+    il:inline {
         clearFlag('template');
         return il;
     }
-  / & { clearFlag('template'); return false; }
+  / & { return clearFlag('template'); }
 
 // TODO: handle link prefixes as in al[[Razi]]
 wikilink
