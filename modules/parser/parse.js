@@ -11,7 +11,10 @@
 		DOMConverter = require('./mediawiki.DOMConverter.js').DOMConverter,
 		optimist = require('optimist');
 
-	var env = new ParserEnv( { fetchTemplates: true } ),
+	var env = new ParserEnv( { 
+						fetchTemplates: true,
+						debug: false
+					} ),
 		parser = new ParserPipeline( env );
 
 
