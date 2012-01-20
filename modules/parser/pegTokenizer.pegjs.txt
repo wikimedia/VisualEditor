@@ -766,7 +766,7 @@ tplarg
           obj.attribs.push(['data-json-args', JSON.stringify(params)]);
           obj.defaultvalue = params[0][1];
       }
-      console.log( 'tokenizer tplarg ' + JSON.stringify( obj ));
+      //console.log( 'tokenizer tplarg ' + JSON.stringify( obj ));
       return obj;
   }
 
