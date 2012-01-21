@@ -75,8 +75,8 @@ TemplateHandler.prototype.onTemplate = function ( token, cb ) {
 	var attributes = [[[{ type: 'TEXT', value: '' }] , token.target ]]
 			.concat( this._nameArgs( token.orderedArgs ) );
 
-	this.manager.env.dp( 'before AttributeTransformManager: ' + 
-						JSON.stringify( attributes, null, 2 ) );
+	//this.manager.env.dp( 'before AttributeTransformManager: ' + 
+	//					JSON.stringify( attributes, null, 2 ) );
 	new AttributeTransformManager( 
 				this.manager, 
 				this._returnAttributes.bind( this, tplExpandData ) 
@@ -106,6 +106,7 @@ TemplateHandler.prototype._nameArgs = function ( orderedArgs ) {
 	var n = 1,
 		out = [];
 	for ( var i = 0, l = orderedArgs.length; i < l; i++ ) {
+		// FIXME: Also check for whitespace-only named args!
 		if ( ! orderedArgs[i][0].length ) {
 			out.push( [[{ type: 'TEXT', value: n }], orderedArgs[i][1]]);
 			n++;
@@ -257,6 +258,7 @@ TemplateHandler.prototype._onEnd = function( tplExpandData, token ) {
 	var res = tplExpandData.resultTokens;
 	// Remove 'end' token from end
 	if ( res.length && res[res.length - 1].type === 'END' ) {
+		this.manager.env.dp( 'TemplateHandler, stripping end ' );
 		res.pop();
 	}
 
@@ -365,7 +367,7 @@ TemplateHandler.prototype._returnArgAttributes = function ( token, cb, frame, at
 	} else {
 		console.log( 'templateArg not found: ' + argName + 
 				' vs. ' + JSON.stringify( this.manager.args ) );
-		if ( token.attribs.length > 1 ) {
+		if ( false && defaultValue.length ) {
 			res = defaultValue;
 		} else {
 			res = [{ type: 'TEXT', value: '{{{' + argName + '}}}' }];

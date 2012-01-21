@@ -764,19 +764,25 @@ tplarg
           // HACK, not final.
           obj.attribs.push(['data-defaultvalue', params[0][1]]);
           obj.attribs.push(['data-json-args', JSON.stringify(params)]);
-          obj.defaultvalue = params[0][1];
+          obj.defaultvalue = params[0][1].length ? params[0][1] : 
+                                                    [{type: 'TEXT', value: ''}];
       }
       //console.log( 'tokenizer tplarg ' + JSON.stringify( obj ));
       return obj;
   }
 
 template_param
-  = name:template_param_name space* "=" space* c:template_param_text {
+  = name:template_param_name space* "=" space* c:template_param_text? {
       //console.log( 'named template_param matched' + pp([name, flatten( c )]) );
-      return [name, flatten( c )];
+      if ( c !== '' ) {
+        return [name, flatten( c )];
+      } else {
+        return [name, []];
+      }
   } / c:template_param_text {
-      return [[], flatten( c ) ];
+        return [[], flatten( c ) ];
   }
+  / & '|' { return [[], []]; }
 
 
 // FIXME: handle template args and templates in key! (or even parser functions?)

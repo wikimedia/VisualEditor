@@ -67,6 +67,7 @@ function ParserPipeline( env, inputType ) {
 	// Create an input pipeline for the given input type.
 	this.inputPipeline = this.makeInputPipeline ( inputType, {}, true );
 	this.inputPipeline.atTopLevel = true;
+	this.inputPipeline.last.atTopLevel = true;
 
 
 	this.tokenPostProcessor = new TokenTransformManager.SyncTokenTransformManager ( env );

@@ -422,7 +422,7 @@ AsyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 		this.tailAccumulator = res.async;
 		this.tokenCB = res.async.getParentCB ( 'sibling' );
 	}
-	this.env.dp('AsyncTokenTransformManager onChunk ' + res.async);
+	this.env.dp('AsyncTokenTransformManager onChunk res.async=' + res.async);
 	//this.phase2TailCB( tokens, true );
 
 	// The next processed chunk should call back as a sibling to last
@@ -529,6 +529,12 @@ AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parent
  */
 AsyncTokenTransformManager.prototype._returnTokens = function ( tokens, notYetDone ) {
 	//tokens = this._transformPhase2( this.frame, tokens, this.parentCB );
+	
+	//if ( tokens.length && tokens[tokens.length - 1].type === 'END' ) {
+	//	this.env.dp( 'AsyncTokenTransformManager, stripping end ' );
+	//	tokens.pop();
+	//}
+
 	this.env.dp('AsyncTokenTransformManager._returnTokens, emitting chunk: ' +
 			JSON.stringify( tokens ) );
 
@@ -539,6 +545,9 @@ AsyncTokenTransformManager.prototype._returnTokens = function ( tokens, notYetDo
 		//		JSON.stringify( tokens, null, 2 ) + ', listeners: ' +
 		//		JSON.stringify( this.listeners( 'chunk' ), null, 2 ) );
 		// signal our done-ness to consumers.
+		//if ( this.atTopLevel ) {
+		//	this.emit( 'chunk', [{type: 'END'}]);
+		//}
 		this.emit( 'end' );
 		// and reset internal state.
 		this._reset();
@@ -553,11 +562,13 @@ AsyncTokenTransformManager.prototype._returnTokens = function ( tokens, notYetDo
  */
 AsyncTokenTransformManager.prototype.onEndEvent = function () {
 	if ( this.tailAccumulator ) {
-		this.env.dp( 'AsyncTokenTransformManager.onEndEvent: calling siblingDone' );
+		this.env.dp( 'AsyncTokenTransformManager.onEndEvent: calling siblingDone',
+				this.loopAndDepthCheck );
 		this.tailAccumulator.siblingDone();
 	} else {
 		// nothing was asynchronous, so we'll have to emit end here.
-		this.env.dp( 'AsyncTokenTransformManager.onEndEvent: synchronous done' );
+		this.env.dp( 'AsyncTokenTransformManager.onEndEvent: synchronous done',
+				this.loopAndDepthCheck  );
 		this.emit('end');
 		this._reset();
 	}
@@ -607,8 +618,8 @@ SyncTokenTransformManager.prototype.process = function ( tokens ) {
  * @param {Array} Token chunk.
  */
 SyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
-	//console.log('SyncTokenTransformManager.onChunk: ' +
-	//		JSON.stringify( tokens, null, 2 ) );
+	this.env.dp('SyncTokenTransformManager.onChunk, input: ' +
+			JSON.stringify( tokens, null, 2 ) );
 	var res,
 		localAccum = [],
 		localAccumLength = 0,
@@ -859,36 +870,12 @@ TokenAccumulator.prototype._returnTokens = function ( reference, tokens, notYetD
 	//console.log( 'TokenAccumulator._returnTokens' );
 	if ( reference === 'child' ) {
 		tokens = tokens.concat( this.accum );
-		//console.log('TokenAccumulator._returnTokens child: ' + 
-		//		JSON.stringify( tokens, null, 2 ) + 
-		//		' outstanding: ' + this.outstanding
-		//		);
+		console.log('TokenAccumulator._returnTokens child: ' + 
+				JSON.stringify( tokens, null, 2 ) + 
+				' outstanding: ' + this.outstanding
+				);
 		this.accum = [];
-		// XXX: Use some marker to avoid re-transforming token chunks several
-		// times?
-		//res = this.transformTokens( tokens, this.parentCB );
-
-		//if ( res.async ) {
-		//	// new asynchronous expansion started, chain of accumulators
-		//	// created
-		//	if ( this.outstanding === 0 ) {
-		//		// Last accum in chain should only wait for child
-		//		res.async.outstanding--;
-		//		cb = this.parentCB;
-		//	} else {
-		//		cb = this.parentCB;
-		//		// set own callback to new sibling, the end of accumulator chain
-		//		this.parentCB = res.async.getParentCB( 'sibling' );
-		//	}
-		//}
-		//if ( ! notYetDone ) {
-		//	// Child is done, return accumulator from sibling. Siblings
-		//	// process tokens themselves, so we concat those to the result of
-		//	// processing tokens from the child.
-		//	tokens = res.tokens.concat( this.accum );
-		//	this.accum = [];
-		//}
-		this.parentCB( tokens, this.outstanding !== 0 );
+		this.parentCB( tokens, this.outstanding );
 		return null;
 	} else {
 		// sibling
@@ -896,13 +883,13 @@ TokenAccumulator.prototype._returnTokens = function ( reference, tokens, notYetD
 			tokens = this.accum.concat( tokens );
 			// A sibling will transform tokens, so we don't have to do this
 			// again.
-			//console.log( 'TokenAccumulator._returnTokens: sibling done and parentCB ' +
-			//		JSON.stringify( tokens ) );
+			console.log( 'TokenAccumulator._returnTokens: sibling done and parentCB ' +
+					JSON.stringify( tokens ) );
 			this.parentCB( tokens, false );
 			return null;
 		} else if ( this.outstanding === 1 && notYetDone ) {
-			//console.log( 'TokenAccumulator._returnTokens: sibling done and parentCB but notYetDone ' +
-			//		JSON.stringify( tokens ) );
+			console.log( 'TokenAccumulator._returnTokens: sibling done and parentCB but notYetDone ' +
+					JSON.stringify( tokens ) );
 			// Sibling is not yet done, but child is. Return own parentCB to
 			// allow the sibling to go direct, and call back parent with
 			// tokens. The internal accumulator is empty at this stage, as its
@@ -910,8 +897,10 @@ TokenAccumulator.prototype._returnTokens = function ( reference, tokens, notYetD
 			return this.parentCB( tokens, true);
 		} else {
 			this.accum  = this.accum.concat( tokens );
-			//console.log( 'TokenAccumulator._returnTokens: sibling done, but not overall ' +
-			//		JSON.stringify( tokens ) );
+			console.log( 'TokenAccumulator._returnTokens: sibling done, but not overall. notYetDone=' + 
+					notYetDone + ', this.outstanding=' + this.outstanding +
+					', this.accum=' + 
+					JSON.stringify( this.accum, null, 2 ) );
 		}
 
 
@@ -966,7 +955,7 @@ function LoopAndDepthCheck ( parent, title ) {
  */
 LoopAndDepthCheck.prototype.check = function ( title ) {
 	// XXX: set limit really low for testing!
-	if ( this.depth > 40 ) {
+	if ( this.depth > 5 ) {
 		// too deep
 		//console.log( 'Loopcheck: ' + JSON.stringify( this, null, 2 ) );
 		return 'Expansion depth limit exceeded at ';
