@@ -14,6 +14,7 @@ var $ = require('jquery'),
 	request = require('request'),
 	events = require('events'),
 	qs = require('querystring'),
+	ParserFunctions = require('./ext.core.ParserFunctions.js').ParserFunctions,
 	AttributeTransformManager = require('./mediawiki.TokenTransformManager.js')
 									.AttributeTransformManager;
 
@@ -21,6 +22,7 @@ var $ = require('jquery'),
 function TemplateHandler ( manager ) {
 	this.reset();
 	this.register( manager );
+	this.parserFunctions = new ParserFunctions( manager );
 }
 
 TemplateHandler.prototype.reset = function ( token ) {
@@ -160,6 +162,30 @@ TemplateHandler.prototype._expandTemplate = function ( tplExpandData ) {
 	var target = this.manager.env.normalizeTitle(
 			this.manager.env.tokensToString( tplExpandData.target )
 		);
+	var args = this.manager.env.KVtoHash( tplExpandData.expandedArgs );
+
+	this.manager.env.dp( 'argHash: ', args );
+
+	var prefix = target.split(':', 1)[0].toLowerCase();
+	if ( prefix && 'pf_' + prefix in this.parserFunctions ) {
+		var funcArg = target.substr( prefix.length + 1 );
+		this.manager.env.dp( 'entering prefix', funcArg, args  );
+		var res = this.parserFunctions[ 'pf_' + prefix ]( funcArg, 
+				tplExpandData.expandDone, args );
+
+		// XXX: support async parser functions!
+		if ( tplExpandData.overallAsync ) {
+			this.manager.env.dp( 'TemplateHandler._expandTemplate: calling back ' +
+					'after parser func ' + prefix + ' with res:' + JSON.stringify( res ) );
+			return tplExpandData.cb( res, false );
+		} else {
+			this.manager.env.dp( 'TemplateHandler._expandTemplate: sync return ' +
+					'after parser func ' + prefix + ' with res:' + JSON.stringify( res ) );
+			return { tokens: res };
+			//data.reset();
+		}
+	}
+
 	var checkRes = this.manager.loopAndDepthCheck.check( target );
 	if( checkRes ) {
 		// Loop detected, abort!
@@ -191,10 +217,9 @@ TemplateHandler.prototype._expandTemplate = function ( tplExpandData ) {
 	// 'text/wiki' input and asynchronous stage-2 transforms). 
 	var inputPipeline = this.manager.newChildPipeline( 
 				this.manager.inputType || 'text/wiki', 
-				this.manager.env.KVtoHash( tplExpandData.expandedArgs ),
+				args,
 				tplExpandData.target
 			);
-	this.manager.env.dp( 'argHash:', this.manager.env.KVtoHash( tplExpandData.expandedArgs ) );
 
 	// Hook up the inputPipeline output events to our handlers
 	inputPipeline.addListener( 'chunk', this._onChunk.bind ( this, tplExpandData ) );
@@ -301,7 +326,7 @@ TemplateHandler.prototype._fetchTemplateAndTitle = function ( title, callback, t
 		// Unwind the stack
 		process.nextTick(
 				function () {
-					callback( self.manager.env.pageCache[title], title )
+					callback( self.manager.env.pageCache[title], title );
 				} 
 		);
 	} else if ( ! this.manager.env.fetchTemplates ) {
@@ -314,7 +339,7 @@ TemplateHandler.prototype._fetchTemplateAndTitle = function ( title, callback, t
 		this.manager.env.dp( 'trying to fetch ' + title );
 
 		// Start a new request if none is outstanding
-		this.manager.env.dp( 'requestQueue: ', this.manager.env.requestQueue)
+		this.manager.env.dp( 'requestQueue: ', this.manager.env.requestQueue);
 		if ( this.manager.env.requestQueue[title] === undefined ) {
 			this.manager.env.requestQueue[title] = new TemplateRequest( this.manager, title );
 		}
@@ -365,9 +390,9 @@ TemplateHandler.prototype._returnArgAttributes = function ( token, cb, frame, at
 		//		' vs. ' + JSON.stringify( this.manager.args ) ); 
 		res = this.manager.args[argName];
 	} else {
-		console.log( 'templateArg not found: ' + argName + 
+		this.manager.env.dp( 'templateArg not found: ' + argName + 
 				' vs. ' + JSON.stringify( this.manager.args ) );
-		if ( false && defaultValue.length ) {
+		if ( defaultValue.length ) {
 			res = defaultValue;
 		} else {
 			res = [{ type: 'TEXT', value: '{{{' + argName + '}}}' }];
@@ -414,10 +439,12 @@ function TemplateRequest ( manager, title ) {
 			manager.env.dp(error);	
 			self.emit('src', 'Page/template fetch failure for title ' + title, title);
 		} else if(response.statusCode ==  200) {
-			var src = '';
+			var src = '',
+				data,
+				normalizedTitle;
 			try {
 				//console.log( 'body: ' + body );
-				var data = JSON.parse( body );
+				data = JSON.parse( body );
 			} catch(e) {
 				console.log( "Error: while parsing result. Error was: " );
 				console.log( e );
@@ -426,13 +453,13 @@ function TemplateRequest ( manager, title ) {
 				console.log( "------------------------------------------" );
 			}
 			try {
-				$.each(data.query.pages, function(i, page) {
+				$.each( data.query.pages, function(i, page) {
 					if (page.revisions && page.revisions.length) {
 						src = page.revisions[0]['*'];
-						title = page.title;
+						normalizeTitle = page.title;
 					}
 				});
-			} catch ( e ) {
+			} catch ( e2 ) {
 				console.log( 'Did not find page revisions in the returned body:' + body );
 				src = '';
 			}
@@ -445,13 +472,15 @@ function TemplateRequest ( manager, title ) {
 		// XXX: handle other status codes
 
 		// Remove self from request queue
+		manager.env.dp( 'trying to remove ' + title + ' from requestQueue' );
 		delete manager.env.requestQueue[title];
+		manager.env.dp( 'after deletion:', manager.env.requestQueue );
 	});
 }
 
 		/*
-		 * XXX: The jQuery version does not quite work with node, but we keep
-		 * it around for now.
+		* XXX: The jQuery version does not quite work with node, but we keep
+		* it around for now.
 		$.ajax({
 			url: url,
 			data: {

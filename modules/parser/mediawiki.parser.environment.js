@@ -116,7 +116,7 @@ MWParserEnvironment.prototype.tokensToString = function ( tokens ) {
 		var token = tokens[i];
 		if ( ! token ) {
 			console.trace();
-			console.log( 'MWParserEnvironment.tokensToString, invalid token: ' + 
+			this.dp( 'MWParserEnvironment.tokensToString, invalid token: ' + 
 							JSON.stringify( token ) );
 			continue;
 		}
@@ -126,7 +126,7 @@ MWParserEnvironment.prototype.tokensToString = function ( tokens ) {
 			// strip comments and newlines
 		} else {
 			var tstring = JSON.stringify( token );
-			console.log ( 'MWParserEnvironment.tokensToString, non-text token: ' + 
+			this.dp ( 'MWParserEnvironment.tokensToString, non-text token: ' + 
 					tstring + JSON.stringify( tokens, null, 2 ) );
 			out.push( tstring );
 		}

@@ -782,7 +782,7 @@ template_param
   } / c:template_param_text {
         return [[], flatten( c ) ];
   }
-  / & '|' { return [[], []]; }
+  / & [|}] { return [[], []]; }
 
 
 // FIXME: handle template args and templates in key! (or even parser functions?)

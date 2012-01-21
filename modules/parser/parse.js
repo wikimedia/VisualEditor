@@ -20,7 +20,7 @@
 						wgScriptExtension: ".php",
 						fetchTemplates: true,
 						// enable/disable debug output using this switch	
-						debug: true
+						debug: false
 					} ),
 		parser = new ParserPipeline( env );
 

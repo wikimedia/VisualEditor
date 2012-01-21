@@ -444,7 +444,7 @@ AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parent
 		phaseEndRank = 2, // XXX: parametrize!
 		// Prepare a new accumulator, to be used by async children (if any)
 		localAccum = [],
-		accum = new TokenAccumulator( parentCB ),
+		accum = new TokenAccumulator( this, parentCB ),
 		cb = accum.getParentCB( 'child' ),
 		activeAccum = null,
 		tokensLength = tokens.length,
@@ -506,7 +506,7 @@ AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parent
 			// The child now switched to activeAccum, we have to create a new
 			// accumulator for the next potential child.
 			activeAccum = accum;
-			accum = new TokenAccumulator( activeAccum.getParentCB( 'sibling' ) );
+			accum = new TokenAccumulator( this, activeAccum.getParentCB( 'sibling' ) );
 			cb = accum.getParentCB( 'child' );
 		}
 	}
@@ -831,7 +831,8 @@ AttributeTransformManager.prototype._returnAttributeKey = function ( ref, tokens
  * @param {Object} next TokenAccumulator to link to
  * @param {Array} (optional) tokens, init accumulator with tokens or []
  */
-function TokenAccumulator ( parentCB ) {
+function TokenAccumulator ( manager, parentCB ) {
+	this.manager = manager;
 	this.parentCB = parentCB;
 	this.accum = [];
 	// Wait for child and sibling by default
@@ -870,7 +871,7 @@ TokenAccumulator.prototype._returnTokens = function ( reference, tokens, notYetD
 	//console.log( 'TokenAccumulator._returnTokens' );
 	if ( reference === 'child' ) {
 		tokens = tokens.concat( this.accum );
-		console.log('TokenAccumulator._returnTokens child: ' + 
+		this.manager.env.dp('TokenAccumulator._returnTokens child: ' + 
 				JSON.stringify( tokens, null, 2 ) + 
 				' outstanding: ' + this.outstanding
 				);
@@ -883,12 +884,12 @@ TokenAccumulator.prototype._returnTokens = function ( reference, tokens, notYetD
 			tokens = this.accum.concat( tokens );
 			// A sibling will transform tokens, so we don't have to do this
 			// again.
-			console.log( 'TokenAccumulator._returnTokens: sibling done and parentCB ' +
+			this.manager.env.dp( 'TokenAccumulator._returnTokens: sibling done and parentCB ' +
 					JSON.stringify( tokens ) );
 			this.parentCB( tokens, false );
 			return null;
 		} else if ( this.outstanding === 1 && notYetDone ) {
-			console.log( 'TokenAccumulator._returnTokens: sibling done and parentCB but notYetDone ' +
+			this.manager.env.dp( 'TokenAccumulator._returnTokens: sibling done and parentCB but notYetDone ' +
 					JSON.stringify( tokens ) );
 			// Sibling is not yet done, but child is. Return own parentCB to
 			// allow the sibling to go direct, and call back parent with
@@ -897,7 +898,7 @@ TokenAccumulator.prototype._returnTokens = function ( reference, tokens, notYetD
 			return this.parentCB( tokens, true);
 		} else {
 			this.accum  = this.accum.concat( tokens );
-			console.log( 'TokenAccumulator._returnTokens: sibling done, but not overall. notYetDone=' + 
+			this.manager.env.dp( 'TokenAccumulator._returnTokens: sibling done, but not overall. notYetDone=' + 
 					notYetDone + ', this.outstanding=' + this.outstanding +
 					', this.accum=' + 
 					JSON.stringify( this.accum, null, 2 ) );
@@ -955,7 +956,7 @@ function LoopAndDepthCheck ( parent, title ) {
  */
 LoopAndDepthCheck.prototype.check = function ( title ) {
 	// XXX: set limit really low for testing!
-	if ( this.depth > 5 ) {
+	if ( this.depth > 40 ) {
 		// too deep
 		//console.log( 'Loopcheck: ' + JSON.stringify( this, null, 2 ) );
 		return 'Expansion depth limit exceeded at ';
