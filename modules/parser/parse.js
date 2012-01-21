@@ -6,13 +6,25 @@
  * @author Gabriel Wicke <gwicke@wikimedia.org>
  */
 
+var ParserPipeline = require('./mediawiki.parser.js').ParserPipeline,
+	ParserEnv = require('./mediawiki.parser.environment.js').MWParserEnvironment,
+	DOMConverter = require('./mediawiki.DOMConverter.js').DOMConverter,
+	optimist = require('optimist');
 
 ( function() { 
+	var argv = optimist.usage( 'Usage: $0', {
+		'html': {
+			description: 'Produce html output instead of WikiDom',
+			'boolean': true,
+			'default': false
+		},
+		'debug': {
+			description: 'Debug mode',
+			'boolean': true,
+			'default': false
+		}
+	}).argv;
 
-	var ParserPipeline = require('./mediawiki.parser.js').ParserPipeline,
-		ParserEnv = require('./mediawiki.parser.environment.js').MWParserEnvironment,
-		DOMConverter = require('./mediawiki.DOMConverter.js').DOMConverter,
-		optimist = require('optimist');
 
 	var env = new ParserEnv( { 
 						// fetch templates from enwiki by default..
@@ -20,7 +32,7 @@
 						wgScriptExtension: ".php",
 						fetchTemplates: true,
 						// enable/disable debug output using this switch	
-						debug: false
+						debug: argv.debug
 					} ),
 		parser = new ParserPipeline( env );
 
@@ -38,18 +50,17 @@
 	process.stdin.on( 'end', function() { 
 		var input = inputChunks.join('');
 		parser.on('document', function ( document ) {
-			var wikiDom = new DOMConverter().HTMLtoWiki( document.body ),
+			if ( ! argv.html ) {
+				var wikiDom = new DOMConverter().HTMLtoWiki( document.body ),
 				// Serialize the WikiDom with indentation
 				output = JSON.stringify( wikiDom, null, 2 );
-			process.stdout.write( output );
+				process.stdout.write( output );
+			} else {
+				// Print out the html
+				process.stdout.write( document.body.innerHTML );
+			}
 			// add a trailing newline for shell user's benefit
 			process.stdout.write( "\n" );
-			
-			if ( env.debug ) {
-				// Also print out the html
-				process.stderr.write( document.body.innerHTML );
-				process.stderr.write( "\n" );
-			}
 			process.exit(0);
 		});
 		// Kick off the pipeline by feeding the input into the parser pipeline
