@@ -964,14 +964,14 @@ LoopAndDepthCheck.prototype.check = function ( title ) {
 	if ( this.depth > 40 ) {
 		// too deep
 		//console.log( 'Loopcheck: ' + JSON.stringify( this, null, 2 ) );
-		return 'Expansion depth limit exceeded at ';
+		return 'Error: Expansion depth limit exceeded at ';
 	}
 	var elem = this;
 	do {
 		//console.log( 'loop check: ' + title + ' vs ' + elem.title );
 		if ( elem.title === title ) {
 			// Loop detected
-			return 'Expansion loop detected at ';
+			return 'Error: Expansion loop detected at ';
 		}
 		elem = elem.parent;
 	} while ( elem );

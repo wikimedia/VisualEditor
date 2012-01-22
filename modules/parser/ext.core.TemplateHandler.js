@@ -160,9 +160,8 @@ TemplateHandler.prototype._expandTemplate = function ( tplExpandData ) {
 	// check for parser functions
 
 	// First, check the target for loops
-	var target = this.manager.env.normalizeTitle(
-			this.manager.env.tokensToString( tplExpandData.target )
-		);
+	var target = this.manager.env.tokensToString( tplExpandData.target );
+
 	var args = this.manager.env.KVtoHash( tplExpandData.expandedArgs );
 
 	this.manager.env.dp( 'argHash: ', args );
@@ -172,7 +171,7 @@ TemplateHandler.prototype._expandTemplate = function ( tplExpandData ) {
 		var funcArg = target.substr( prefix.length + 1 );
 		this.manager.env.dp( 'entering prefix', funcArg, args  );
 		res = this.parserFunctions[ 'pf_' + prefix ]( funcArg, 
-				tplExpandData.expandDone, args );
+				tplExpandData.expandedArgs, args );
 
 		// XXX: support async parser functions!
 		if ( tplExpandData.overallAsync ) {
@@ -186,6 +185,9 @@ TemplateHandler.prototype._expandTemplate = function ( tplExpandData ) {
 			//data.reset();
 		}
 	}
+
+	// now normalize the target before template processing
+	target = this.manager.env.normalizeTitle( target );
 
 	var checkRes = this.manager.loopAndDepthCheck.check( target );
 	if( checkRes ) {
@@ -334,13 +336,14 @@ TemplateHandler.prototype._fetchTemplateAndTitle = function ( title, callback, t
 				} 
 		);
 	} else if ( ! this.manager.env.fetchTemplates ) {
-		callback( 'Page/template fetching disabled, and no cache for ' + title, title );
+		callback( 'Warning: Page/template fetching disabled, and no cache for ' + 
+				title, title );
 	} else {
 		
 		// We are about to start an async request for a template, so mark this
 		// template expansion as such.
 		tplExpandData.overallAsync = true;
-		this.manager.env.dp( 'trying to fetch ' + title );
+		this.manager.env.dp( 'Note: trying to fetch ' + title );
 
 		// Start a new request if none is outstanding
 		this.manager.env.dp( 'requestQueue: ', this.manager.env.requestQueue);
