@@ -417,7 +417,7 @@ AsyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 	if ( ! this.tailAccumulator ) {
 		this.emit( 'chunk', res.tokens );
 	} else {
-		this.tailAccumulator.push( res.tokens );
+		this.tailAccumulator.append( res.tokens );
 	}
 	
 	if ( res.async ) {
@@ -930,6 +930,16 @@ TokenAccumulator.prototype.siblingDone = function () {
  */
 TokenAccumulator.prototype.push = function ( token ) {
 	return this.accum.push(token);
+};
+
+/**
+ * Append tokens to an accumulator
+ *
+ * @method
+ * @param {Object} token
+ */
+TokenAccumulator.prototype.append = function ( token ) {
+	this.accum = this.accum.concat( token );
 };
 
 

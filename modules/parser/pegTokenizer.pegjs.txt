@@ -263,7 +263,8 @@ start
 		// be part of a stream, only when tokenizing complete
 		// texts)
       //console.log( pp( flatten ( e ) ) );
-      return flatten(e);
+      __parseArgs[2]( [ { type: 'END' } ] );
+      return []; //flatten(e);
   }
 
 
@@ -397,19 +398,21 @@ toplevelblock
   = & { blockStart = pos; return true; } b:block {
     b = flatten(b);
     var bs = b[0];
-    //dp('toplevelblock:' + pp(b));
-    if (bs.attribs === undefined) {
-        bs.attribs = [];
+    if ( b.length ) {
+        //dp('toplevelblock:' + pp(b));
+        if (bs.attribs === undefined) {
+            bs.attribs = [];
+        }
+        bs.attribs.push(['data-sourcePos', blockStart + ':' + pos]);
     }
-    bs.attribs.push(['data-sourcePos', blockStart + ':' + pos]);
     // XXX: only run this for lines that actually need it!
     //b.push({type: 'NEWLINE'});
 	// Move this to a token stream transform!
     //console.log('about to emit' + pp(self));
-    //console.log( pp( result._tokenizer ));
-    //console.log('emitted chunk' + pp(b));
+    //console.log( '__parseArgs call: ' +  pp( b ));
+    __parseArgs[2]( flatten( b ) );
     //return [];
-    return b;
+    return true;
   }
 
 block

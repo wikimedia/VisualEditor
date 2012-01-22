@@ -27,7 +27,11 @@ PegTokenizer.prototype.process = function( text ) {
 	var out, err;
 	if ( !this.parser ) {
 		// Only create a single parser, as parse() is a static method.
-		PegTokenizer.prototype.parser = PEG.buildParser(this.src);
+		var parserSource = PEG.buildParser(this.src).toSource();
+		parserSource = parserSource.replace( 'parse: function(input, startRule) {',
+					'parse: function(input, startRule) { var __parseArgs = arguments;' );
+		//console.log( parserSource );
+		PegTokenizer.prototype.parser = eval( parserSource );
 		// add reference to this for event emission
 		// XXX: pass a cb into parse() instead, but need to modify pegjs a bit
 		// for that.
@@ -46,10 +50,10 @@ PegTokenizer.prototype.process = function( text ) {
 	// reasonable traces. Calling a trace on the extension does not really cut
 	// it.
 	//try {
-		out = this.parser.parse(text);
+		this.parser.parse(text, 'start', this.emit.bind( this, 'chunk' ));
 		// emit tokens here until we get that to work per toplevelblock in the
 		// actual tokenizer
-		this.emit('chunk', out.concat( [{ type: 'END' }] ) );
+		//this.emit('chunk', out.concat( [{ type: 'END' }] ) );
 		this.emit('end');
 	//} catch (e) {
 		//err = e;
