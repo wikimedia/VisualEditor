@@ -342,6 +342,7 @@ AsyncTokenTransformManager.prototype.newChildPipeline = function ( inputType, ar
 				this.loopAndDepthCheck,
 				this.env.normalizeTitle( this.env.tokensToString ( title ) )
 			);
+	child.title = title;
 	return pipe;
 };
 
@@ -357,6 +358,7 @@ AsyncTokenTransformManager.prototype.newChildPipeline = function ( inputType, ar
 AsyncTokenTransformManager.prototype.getAttributePipeline = function ( inputType, args ) {
 	var pipe = this.childFactories.attributes( inputType, args );
 	var child = pipe.last;
+	child.title = this.title;
 	child.loopAndDepthCheck = new LoopAndDepthCheck ( this.loopAndDepthCheck, '' );
 	return pipe;
 };
@@ -884,12 +886,14 @@ TokenAccumulator.prototype._returnTokens = function ( reference, tokens, notYetD
 			tokens = this.accum.concat( tokens );
 			// A sibling will transform tokens, so we don't have to do this
 			// again.
-			this.manager.env.dp( 'TokenAccumulator._returnTokens: sibling done and parentCB ' +
+			this.manager.env.dp( 'TokenAccumulator._returnTokens: ' +
+					'sibling done and parentCB ' +
 					JSON.stringify( tokens ) );
 			this.parentCB( tokens, false );
 			return null;
 		} else if ( this.outstanding === 1 && notYetDone ) {
-			this.manager.env.dp( 'TokenAccumulator._returnTokens: sibling done and parentCB but notYetDone ' +
+			this.manager.env.dp( 'TokenAccumulator._returnTokens: ' +
+					'sibling done and parentCB but notYetDone ' +
 					JSON.stringify( tokens ) );
 			// Sibling is not yet done, but child is. Return own parentCB to
 			// allow the sibling to go direct, and call back parent with
@@ -901,7 +905,8 @@ TokenAccumulator.prototype._returnTokens = function ( reference, tokens, notYetD
 			this.manager.env.dp( 'TokenAccumulator._returnTokens: sibling done, but not overall. notYetDone=' + 
 					notYetDone + ', this.outstanding=' + this.outstanding +
 					', this.accum=' + 
-					JSON.stringify( this.accum, null, 2 ) );
+					JSON.stringify( this.accum, null, 2 ) +
+					' manager.title=', this.manager.title );
 		}
 
 

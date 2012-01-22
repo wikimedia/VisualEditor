@@ -1,5 +1,8 @@
 /**
- * Some parser functions
+ * Some parser functions, and quite a bunch of stubs of parser functions.
+ * Instantiated and called by the TemplateHandler extension.
+ *
+ * @author Gabriel Wicke <gwicke@wikimedia.org>
  */
 
 function ParserFunctions ( manager ) {
@@ -53,9 +56,11 @@ ParserFunctions.prototype['pf_#ifeq'] = function ( target, argList, argDict ) {
 ParserFunctions.prototype['pf_lc'] = function ( target, argList, argDict ) {
 	return [{type: 'TEXT', value: target.toLowerCase()}];
 };
+
 ParserFunctions.prototype['pf_uc'] = function ( target, argList, argDict ) {
 	return [{type: 'TEXT', value: target.toUpperCase()}];
 };
+
 ParserFunctions.prototype['pf_ucfirst'] = function ( target, argList, argDict ) {
 	if ( target ) {
 		return [{
@@ -66,6 +71,7 @@ ParserFunctions.prototype['pf_ucfirst'] = function ( target, argList, argDict ) 
 		return [];
 	}
 };
+
 ParserFunctions.prototype['pf_lcfirst'] = function ( target, argList, argDict ) {
 	if ( target ) {
 		return [{
@@ -81,6 +87,11 @@ ParserFunctions.prototype['pf_#tag'] = function ( target, argList, argDict ) {
 	return [{type: 'TAG', name: target, attribs: argList}];
 };
 
+
+/**
+ * Stub section: Pick any of these and actually implement them!
+ */
+
 // FIXME
 ParserFunctions.prototype['pf_#ifexpr'] = function ( target, argList, argDict ) {
 	return [];
@@ -94,8 +105,6 @@ ParserFunctions.prototype['pf_#expr'] = function ( target, argList, argDict ) {
 ParserFunctions.prototype['pf_#ifexist'] = function ( target, argList, argDict ) {
 	return [];
 };
-
-// pure fake..
 ParserFunctions.prototype['pf_formatnum'] = function ( target, argList, argDict ) {
 	return [{type: 'TEXT', value: target}];
 };
@@ -124,21 +133,10 @@ ParserFunctions.prototype['pf_namespace'] = function ( target, argList, argDict 
 	return [{type: 'TEXT', value: 'Main'}];
 };
 
-// FIXME! This is just fake.
 ParserFunctions.prototype['pf_#time'] = function ( target, argList, argDict ) {
 	return [{type: 'TEXT', value: new Date().toString()}];
 };
 
-// #time
-// #ifexp
-// PAGENAME
-// #expr
-// NAMESPACE
-// #iferror
-//
-
-//ParserFunctions.prototype['pf_FORMATNUM'] = function ( target, argList, argDict ) {
-//};
 
 if (typeof module == "object") {
 	module.exports.ParserFunctions = ParserFunctions;

@@ -144,6 +144,7 @@ TemplateHandler.prototype._returnAttributes = function ( tplExpandData,
 TemplateHandler.prototype._expandTemplate = function ( tplExpandData ) {
 	//console.log('TemplateHandler.expandTemplate: ' +
 	//		JSON.stringify( tplExpandData, null, 2 ) );
+	var res;
 
 	
 	if ( ! tplExpandData.target ) {
@@ -170,7 +171,7 @@ TemplateHandler.prototype._expandTemplate = function ( tplExpandData ) {
 	if ( prefix && 'pf_' + prefix in this.parserFunctions ) {
 		var funcArg = target.substr( prefix.length + 1 );
 		this.manager.env.dp( 'entering prefix', funcArg, args  );
-		var res = this.parserFunctions[ 'pf_' + prefix ]( funcArg, 
+		res = this.parserFunctions[ 'pf_' + prefix ]( funcArg, 
 				tplExpandData.expandDone, args );
 
 		// XXX: support async parser functions!
@@ -188,9 +189,8 @@ TemplateHandler.prototype._expandTemplate = function ( tplExpandData ) {
 
 	var checkRes = this.manager.loopAndDepthCheck.check( target );
 	if( checkRes ) {
-		// Loop detected, abort!
-		return {
-			tokens: [
+		// Loop detected or depth limit exceeded, abort!
+		res = [
 				{ 
 					type: 'TEXT', 
 					value: checkRes
@@ -208,8 +208,12 @@ TemplateHandler.prototype._expandTemplate = function ( tplExpandData ) {
 					type: 'ENDTAG',
 					name: 'a'
 				}
-			]
-		};
+			];
+		if ( tplExpandData.overallAsync ) {
+			return tplExpandData.cb( res, false );
+		} else {
+			return { tokens: res };
+		}
 	}
 
 	// Get a nested transformation pipeline for the input type. The input
