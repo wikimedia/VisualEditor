@@ -6,7 +6,8 @@ var MWParserEnvironment = function(opts) {
 		debug: false,
 		wgScriptPath: "http://en.wikipedia.org/w",
 		wgScriptExtension: ".php",
-		fetchTemplates: false
+		fetchTemplates: false,
+		maxDepth: 40
 	};
 	$.extend(options, opts);
 	$.extend(this, options);

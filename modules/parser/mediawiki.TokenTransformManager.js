@@ -959,9 +959,9 @@ function LoopAndDepthCheck ( parent, title ) {
  * @method
  * @param {String} Title to check.
  */
-LoopAndDepthCheck.prototype.check = function ( title ) {
+LoopAndDepthCheck.prototype.check = function ( title, maxDepth ) {
 	// XXX: set limit really low for testing!
-	if ( this.depth > 40 ) {
+	if ( this.depth > maxDepth ) {
 		// too deep
 		//console.log( 'Loopcheck: ' + JSON.stringify( this, null, 2 ) );
 		return 'Error: Expansion depth limit exceeded at ';

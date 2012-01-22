@@ -22,6 +22,11 @@ var ParserPipeline = require('./mediawiki.parser.js').ParserPipeline,
 			description: 'Debug mode',
 			'boolean': true,
 			'default': false
+		},
+		'maxdepth': {
+			description: 'Maximum expansion depth',
+			'boolean': false,
+			'default': 40
 		}
 	}).argv;
 
@@ -32,7 +37,8 @@ var ParserPipeline = require('./mediawiki.parser.js').ParserPipeline,
 						wgScriptExtension: ".php",
 						fetchTemplates: true,
 						// enable/disable debug output using this switch	
-						debug: argv.debug
+						debug: argv.debug,
+						maxDepth: argv.maxdepth
 					} ),
 		parser = new ParserPipeline( env );
 

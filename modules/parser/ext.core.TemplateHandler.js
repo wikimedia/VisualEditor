@@ -189,7 +189,7 @@ TemplateHandler.prototype._expandTemplate = function ( tplExpandData ) {
 	// now normalize the target before template processing
 	target = this.manager.env.normalizeTitle( target );
 
-	var checkRes = this.manager.loopAndDepthCheck.check( target );
+	var checkRes = this.manager.loopAndDepthCheck.check( target, this.manager.env.maxDepth );
 	if( checkRes ) {
 		// Loop detected or depth limit exceeded, abort!
 		res = [
