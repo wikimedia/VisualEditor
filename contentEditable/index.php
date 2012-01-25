@@ -4,6 +4,17 @@
 	<head>
 		<title>EditSurface + ContentEditable Demo</title>
 		<style>
+/* Mozilla based browsers */
+::-moz-selection {
+       background-color: #b3d6f6;
+       color: #000;
+}
+
+/* Works in Safari */
+::selection {
+       background-color: #b3d6f6;
+       color: #000;
+}
 .es-contentView-ruler {
 	position: absolute;
 	top: 0;
