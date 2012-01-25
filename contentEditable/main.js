@@ -5,7 +5,7 @@ $(document).ready( function() {
 			{
 				'type': 'paragraph',
 				'content': {
-					'text': 'Barack Hussein Obama II is the 44th  and current President of the United States. He is the first African American to hold the office. Obama previously served as a United States Senator from Illinois, from January 2005 until he resigned following his victory in the 2008 presidential election.',
+					'text': 'Barack Hussein Obama II is the 44th   and current President of the United States. He is the first African American to hold the office. Obama previously served as a United States Senator from Illinois, from January 2005 until he resigned following his victory in the 2008 presidential election.',
 					'annotations': [
 						{
 							'type': 'textStyle/bold',
