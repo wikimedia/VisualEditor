@@ -28,6 +28,7 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 		if ( range.start === range.end ) {
 			var tx = this.model.getDocument().prepareInsertion( range.start, [ { 'type': '/paragraph' }, { 'type': 'paragraph' } ]);
 			this.model.transact( tx );
+			this.showCursorAt( range.start );
 		}
 	} else if ( e.which === 8 ) {
 		console.log("A");
@@ -38,6 +39,55 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 			this.model.transact( tx );
 		}
 	}
+};
+
+es.SurfaceView.prototype.showCursorAt = function( offset ) {
+	var $node = this.documentView.getNodeFromOffset( offset ).$;
+	var current = [$node.contents(), 0];
+	var stack = [current];
+	var node;
+	var localOffset;
+	
+	var index = 1 + this.documentView.getOffsetFromNode( $node.data('view') );
+	
+	while ( stack.length > 0 ) {
+		if ( current[1] >= current[0].length ) {
+			stack.pop();
+			current = stack[ stack.length - 1 ];
+			continue;
+		}
+		var item = current[0][current[1]];
+		var $item = current[0].eq( current[1] );
+		
+		if ( item.nodeType === 3 ) {
+			var length = item.textContent.length;
+			if ( offset > index && offset <= index + length ) {
+				node = item;
+				localOffset = offset - index;
+			} else {
+				index += length;
+			}
+		} else if ( item.nodeType === 1 ) {
+			if ( $( item ).attr('contentEditable') === "false" ) {
+				index += 1;
+			} else {
+				stack.push( [$item.contents(), 0] );
+				current[1]++;
+				current = stack[stack.length-1];
+				continue;
+			}
+		}
+		current[1]++;
+	}
+	var range = document.createRange();
+	range.collapsed = true;
+	range.setStart(node, localOffset);
+
+	var sel = window.getSelection();
+	sel.removeAllRanges();
+	sel.addRange(range);
+	
+	
 };
 
 es.SurfaceView.prototype.getOffset = function( localNode, localOffset ) {
@@ -69,7 +119,6 @@ es.SurfaceView.prototype.getOffset = function( localNode, localOffset ) {
 			}
 		} else if ( item.nodeType === 1 ) {
 			if ( $( item ).attr('contentEditable') === "false" ) {
-				console.log("in");
 				offset += 1;
 			} else {
 				stack.push( [$item.contents(), 0] );
