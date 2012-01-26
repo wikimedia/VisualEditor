@@ -22,11 +22,19 @@ es.SurfaceView = function( $container, model ) {
 };
 
 es.SurfaceView.prototype.onKeyDown = function( e ) {
-	if ( e.which == 13 ) {
+	if ( e.which === 13 ) {
 		e.preventDefault();
 		var range = this.getSelection();
 		if ( range.start === range.end ) {
 			var tx = this.model.getDocument().prepareInsertion( range.start, [ { 'type': '/paragraph' }, { 'type': 'paragraph' } ]);
+			this.model.transact( tx );
+		}
+	} else if ( e.which === 8 ) {
+		console.log("A");
+		e.preventDefault();
+		var range = this.getSelection();
+		if ( range.start != range.end ) {
+			var tx = this.model.getDocument().prepareRemoval( range );
 			this.model.transact( tx );
 		}
 	}
