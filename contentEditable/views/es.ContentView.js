@@ -5,6 +5,14 @@ es.ContentView = function( $container, model ) {
 	// Properties
 	this.$ = $container;
 	this.model = model;
+	
+	if ( model ) {
+		// Events
+		var _this = this;
+		this.model.on( 'update', function( offset ) {
+			_this.render( offset || 0 );
+		} );
+	}
 }
 
 

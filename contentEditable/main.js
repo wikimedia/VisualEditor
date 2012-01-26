@@ -15,6 +15,13 @@ $(document).ready( function() {
 							}
 						},
 						{
+							'type': 'textStyle/italic',
+							'range': {
+								'start': 10,
+								'end': 17
+							}
+						},
+						{
 							'type': 'object/template',
 							'data': {
 								'html': '<sup><small>[<a href="#">citation needed</a>]</small></sup>'
@@ -38,7 +45,7 @@ $(document).ready( function() {
 	window.surfaceModel = new es.SurfaceModel( window.documentModel );
 	window.surfaceView = new es.SurfaceView( $( '#es-editor' ), window.surfaceModel );
 
-
+	/*
 	$('#es-editor')[0].addEventListener("DOMSubtreeModified", function() {
 		var selection = rangy.getSelection();
 		console.log(selection);
@@ -51,6 +58,7 @@ $(document).ready( function() {
 			console.log(selection);
 		}
 	});
+	*/
 
 
 	/*
