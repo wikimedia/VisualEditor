@@ -46,56 +46,42 @@ es.SurfaceView.prototype.getOffset = function( localNode, localOffset ) {
 		$node = $node.parent();
 	}
 	
-	var traverse = function( data, callback ) {
-		var current = [ data, 0 ];
-		var stack = [ current ];
+	var current = [$node.contents(), 0];
+	var stack = [current];
+	
+	var offset = 0;
+	
+	while ( stack.length > 0 ) {
+		if ( current[1] >= current[0].length ) {
+			stack.pop();
+			current = stack[ stack.length - 1 ];
+			continue;
+		}
+		var item = current[0][current[1]];
+		var $item = current[0].eq( current[1] );
 		
-		while ( stack.length > 0 ) {
-			if ( current[1] >= current[0].length ) {
-				stack.pop();
-				current = stack[ stack.length - 1 ];
-				continue;
+		if ( item.nodeType === 3 ) {
+			if ( item === localNode ) {
+				offset += localOffset;
+				break;
+			} else {
+				offset += item.textContent.length;
 			}
-			var item = current[0][current[1]];
-			var out = callback( item );
-			/*
-			 *	-1 = stop traversing
-			 *	 1 = deep traverse
-			 *	 0 = skip deep traverse 
-			 */
-			if ( out === -1 ) {
-				return;
-			} else if ( out === 1 && item.nodeType === 1 ) {
-				stack.push( [ $(item).contents() , 0 ] );
+		} else if ( item.nodeType === 1 ) {
+			if ( $( item ).attr('contentEditable') === "false" ) {
+				console.log("in");
+				offset += 1;
+			} else {
+				stack.push( [$item.contents(), 0] );
 				current[1]++;
 				current = stack[stack.length-1];
 				continue;
 			}
-			current[1]++;
 		}
-	};
-	
-	var offset = 0;
-	
-	traverse( $node.contents(), function( item ) {
-		if ( item.nodeType === 3 ) {
-			if ( item === localNode ) {
-				offset += localOffset;
-				return -1;
-			} else {
-				offset += item.textContent.length;
-				
-			}
-		} else {
-			if ( $( item ).attr('contentEditable') === "false" ) {
-				offset += 1;
-				return 0;
-			}
-		}
-		return 1;
-	} );
+		current[1]++;
+	}
 
-	return offset + 1 + this.documentView.getOffsetFromNode( $node.data('view') );
+	return this.documentView.getOffsetFromNode( $node.data('view') ) + 1 + offset;
 }
 
 es.SurfaceView.prototype.getSelection = function() {
