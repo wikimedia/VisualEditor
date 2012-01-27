@@ -56,22 +56,20 @@ FauxHTML5.TreeBuilder.prototype.onEnd = function ( ) {
 	this.processToken({type: 'TAG', name: 'body'});
 };
 
+FauxHTML5.TreeBuilder.prototype._att = function (maybeAttribs) {
+	var atts = [];
+	if ( maybeAttribs && $.isArray( maybeAttribs ) ) {
+		for(var i = 0, length = maybeAttribs.length; i < length; i++) {
+			var att = maybeAttribs[i];
+			atts.push({nodeName: att[0], nodeValue: att[1]});
+		}
+	}
+	return atts;
+};
 
 // Adapt the token format to internal HTML tree builder format, call the actual
 // html tree builder by emitting the token.
 FauxHTML5.TreeBuilder.prototype.processToken = function (token) {
-	var att = function (maybeAttribs) {
-		if ( $.isArray( maybeAttribs ) ) {
-			var atts = [];
-			for(var i = 0, length = maybeAttribs.length; i < length; i++) {
-				var att = maybeAttribs[i];
-				atts.push({nodeName: att[0], nodeValue: att[1]});
-			}
-			return atts;
-		} else {
-			return [];
-		}
-	};
 
 	switch (token.type) {
 		case "TEXT":
@@ -80,23 +78,23 @@ FauxHTML5.TreeBuilder.prototype.processToken = function (token) {
 		case "TAG":
 			this.emit('token', {type: 'StartTag', 
 				name: token.name, 
-				data: att(token.attribs)});
+				data: this._att(token.attribs)});
 			break;
 		case "ENDTAG":
 			this.emit('token', {type: 'EndTag', 
 				name: token.name, 
-				data: att(token.attribs)});
+				data: this._att(token.attribs)});
 			break;
 		case "SELFCLOSINGTAG":
 			this.emit('token', {type: 'StartTag', 
 				name: token.name, 
-				data: att(token.attribs)});
+				data: this._att(token.attribs)});
 			if ( HTML5.VOID_ELEMENTS.indexOf( token.name.toLowerCase() ) < 0 ) {
 				// VOID_ELEMENTS are automagically treated as self-closing by
 				// the tree builder
 				this.emit('token', {type: 'EndTag', 
 					name: token.name, 
-					data: att(token.attribs)});
+					data: this._att(token.attribs)});
 			}
 			break;
 		case "COMMENT":

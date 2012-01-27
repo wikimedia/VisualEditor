@@ -28,6 +28,7 @@ PegTokenizer.prototype.process = function( text ) {
 	if ( !this.parser ) {
 		// Only create a single parser, as parse() is a static method.
 		var parserSource = PEG.buildParser(this.src).toSource();
+		//console.log( parserSource );
 		parserSource = parserSource.replace( 'parse: function(input, startRule) {',
 					'parse: function(input, startRule) { var __parseArgs = arguments;' );
 		//console.log( parserSource );

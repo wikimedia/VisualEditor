@@ -23,6 +23,7 @@ var fs = require('fs'),
 	jsDiff = require('diff'),
 	colors = require('colors'),
 	util = require( 'util' ),
+	jsdom = require( 'jsdom' ),
 	HTML5 = require('html5').HTML5,  //TODO is this fixup for tests only, or part of real parsing...
 	PEG = require('pegjs'),
 	// Handle options/arguments with optimist module
@@ -165,14 +166,16 @@ function ParserTests () {
 
 	try {
 		this.testParser = PEG.buildParser(fs.readFileSync('parserTests.pegjs', 'utf8'));
-	} catch (e) {
-		console.log(e);
+	} catch (e2) {
+		console.log(e2);
 	}
 
 	this.cases = this.getTests(); 
 
 	this.articles = {};
 
+	//this.htmlwindow = jsdom.jsdom(null, null, {parser: HTML5}).createWindow();
+	//this.htmlparser = new HTML5.Parser({document: this.htmlwindow.document});
 	this.htmlparser = new HTML5.Parser();
 
 	// Test statistics
@@ -207,7 +210,7 @@ ParserTests.prototype.getTests = function () {
 				testFile = fs.readFileSync( this.testFileName2, 'utf8' );
 				fileDependencies.push( this.testFileName2 );
 			}
-			catch(e) { console.log(e); }
+			catch( e3 ) { console.log( e3 ); }
 		}
 	}
 	if( !this.argv.cache ) {
@@ -232,7 +235,7 @@ ParserTests.prototype.getTests = function () {
 		cache_content = fs.readFileSync( this.cache_file, 'utf8' );
 		// Fetch previous digest
 		cache_file_digest = cache_content.match( /^CACHE: (\w+)\n/ )[1];
-	} catch(e) {
+	} catch( e4 ) {
 		// cache file does not exist
 	}
 
@@ -288,8 +291,7 @@ ParserTests.prototype.normalizeHTML = function (source) {
 	source = source.replace(/[\r\n]/g, '');
 	try {
 		this.htmlparser.parse('<body>' + source + '</body>');
-		return this.htmlparser.document
-			.getElementsByTagName('body')[0]
+		return this.htmlparser.document.getElementsByTagName('body')[0]
 			.innerHTML
 			// a few things we ignore for now..
 			.replace(/\/wiki\/Main_Page/g, 'Main Page')

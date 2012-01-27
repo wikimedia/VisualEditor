@@ -263,6 +263,7 @@ start
 		// be part of a stream, only when tokenizing complete
 		// texts)
       //console.log( pp( flatten ( e ) ) );
+      cache = {};
       __parseArgs[2]( [ { type: 'END' } ] );
       return []; //flatten(e);
   }
@@ -300,8 +301,8 @@ text = t:text_char+ { return t.join(''); }
  */
 
 urltext = ( t:[^'<~[{\n\rfghimnstw|!:\]} &=]+ { return t.join(''); }
+          / & url_chars urllink
           / htmlentity 
-          / urllink
           // Convert trailing space into &nbsp;
           // XXX: This should be moved to a serializer
           / ' ' & ':' { return "\u00a0"; }
@@ -411,6 +412,7 @@ toplevelblock
     //console.log('about to emit' + pp(self));
     //console.log( '__parseArgs call: ' +  pp( b ));
     __parseArgs[2]( flatten( b ) );
+
     //return [];
     return true;
   }
@@ -653,6 +655,9 @@ extlink
 
 /* Defaul URL protocols in MediaWiki (see DefaultSettings). Normally these can
  * be configured dynamically. */
+
+url_chars = [/fghimnstw]
+
 url_protocol
   = '//' // for protocol-relative URLs
   / 'ftp://'

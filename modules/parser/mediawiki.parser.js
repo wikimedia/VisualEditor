@@ -233,7 +233,7 @@ ParserPipeline.prototype.makeAttributePipeline = function ( args ) {
 
 ParserPipeline.prototype.cachePipeline = function ( inputType, pipelinePart, pipe ) {
 	var cache = this.pipelineCache[inputType][pipelinePart];
-	if ( cache && cache.length < 50 ) {
+	if ( cache && cache.length < 5 ) {
 		cache.push( pipe );
 	}
 };
