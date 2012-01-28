@@ -184,15 +184,15 @@ $messages['gl'] = array(
  */
 $messages['he'] = array(
 	'visualeditor' => 'עורך חזותי',
-	'visualeditorsandbox' => 'ארגז חול לבדיקות עורך חזותי',
+	'visualeditorsandbox' => 'ארגז חול לבדיקות העורך החזותי',
 	'visualeditor-desc' => 'עורך חזותי למדיה־ויקי',
-	'visualeditor-sandbox-title' => 'ארגז חול לבדיקות עורך חזותי',
-	'visualeditor-tooltip-wikitext' => 'הפעלת תצוגת קוד ויקי',
-	'visualeditor-tooltip-json' => 'הפעלת תצוגת JSON',
-	'visualeditor-tooltip-html' => 'הפעלת תצוגת HTML',
-	'visualeditor-tooltip-render' => 'הפעלת תצוגה מקדימה',
-	'visualeditor-tooltip-history' => 'הפעלת תצוגת גרסאות קודמות',
-	'visualeditor-tooltip-help' => 'הפעלת תצוגת עזרה',
+	'visualeditor-sandbox-title' => 'ארגז חול לבדיקות העורך החזותי',
+	'visualeditor-tooltip-wikitext' => 'תצוגת קוד ויקי',
+	'visualeditor-tooltip-json' => 'תצוגת JSON',
+	'visualeditor-tooltip-html' => 'תצוגת HTML',
+	'visualeditor-tooltip-render' => 'תצוגה מקדימה',
+	'visualeditor-tooltip-history' => 'תצוגת גרסאות קודמות',
+	'visualeditor-tooltip-help' => 'תצוגת עזרה',
 	'visualeditor-feedback-prompt' => 'שליחת משוב',
 	'visualeditor-feedback-dialog-title' => 'שליחת משוב על ארגז החול של העורך החזותי',
 );
