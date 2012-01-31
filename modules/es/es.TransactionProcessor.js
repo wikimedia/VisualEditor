@@ -262,10 +262,32 @@ es.TransactionProcessor.prototype.insert = function( op ) {
 		scope;
 
 	node = this.model.getNodeFromOffset( this.cursor );
+	
+	// Shortcut 1: we're inserting content. We don't need to bother with any structural stuff
+	if ( !es.DocumentModel.containsElementData( op.data ) ) {
+		// TODO should we check whether we're at a structural offset, and throw an exception
+		// if that's the case? Or can we assume that the transaction is valid at this point?
+		
+		// Insert data into linear model
+		es.insertIntoArray( this.model.data, this.cursor, op.data );
+		this.applyAnnotations( this.cursor + op.data.length );
+		// Update the length of the containing node
+		node.adjustContentLength( op.data.length, true );
+		node.emit( 'update', this.cursor - offset );
+		// Move the cursor
+		this.cursor += op.data.length;
+		// All done
+		return;
+	}
+	
+	// Determine the scope of the inserted data. If the data is an enclosed piece of structure,
+	// this will return node. Otherwise, the data closes one or more nodes, and this will return
+	// the first ancestor of node that isn't closed, which is the node that will contain the
+	// inserted data entirely.
 	scope = this.getScope( node, op.data );
-	// We can take a shortcut if we're inserting an enclosed piece of structural data at a structural offset
-	// that isn't at the end of the document. Check for scope == node to ensure the inserted data doesn't try
-	// to close its containing element
+	
+	// Shortcut 2: we're inserting an enclosed piece of structural data at a structural offset
+	// that isn't the end of the document.
 	if ( es.DocumentModel.isStructuralOffset( this.model.data, this.cursor ) && this.cursor != this.model.data.length
 		&& scope == node
 	) {
@@ -277,30 +299,22 @@ es.TransactionProcessor.prototype.insert = function( op ) {
 		index = node.getIndexFromOffset( this.cursor - offset );
 		this.rebuildNodes( op.data, null, node, index );
 	} else {
+		// This is the non-shortcut case
+		
 		// Rebuild scope, which is the node that encloses everything we might have to rebuild
 		node = scope;
 		offset = this.model.getOffsetFromNode( node );
-		if ( es.DocumentModel.containsElementData( op.data ) ) {
-			// Perform insert on linear data model
-			es.insertIntoArray( this.model.data, this.cursor, op.data );
-			this.applyAnnotations( this.cursor + op.data.length );
-			// Synchronize model tree
-			if ( offset === -1 ) {
-				throw 'Invalid offset error. Node is not in model tree';
-			}
-			this.rebuildNodes(
-				this.model.data.slice( offset, offset + node.getElementLength() + op.data.length ),
-				[node]
-			);
-		} else {
-			// Perform insert on linear data model
-			// TODO this is duplicated from above
-			es.insertIntoArray( this.model.data, this.cursor, op.data );
-			this.applyAnnotations( this.cursor + op.data.length );
-			// Update model tree
-			node.adjustContentLength( op.data.length, true );
-			node.emit( 'update', this.cursor - offset );
+		if ( offset === -1 ) {
+			throw 'Invalid offset error. Node is not in model tree';
 		}
+		// Perform insert on linear data model
+		es.insertIntoArray( this.model.data, this.cursor, op.data );
+		this.applyAnnotations( this.cursor + op.data.length );
+		// Synchronize model tree
+		this.rebuildNodes(
+			this.model.data.slice( offset, offset + node.getElementLength() + op.data.length ),
+			[node]
+		);
 	}
 	this.cursor += op.data.length;
 };
