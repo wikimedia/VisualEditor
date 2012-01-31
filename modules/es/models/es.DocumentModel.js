@@ -103,6 +103,9 @@ es.DocumentModel.createNodesFromData = function( data ) {
 			} else {
 				// Return to the parent node
 				currentNode = currentNode.getParent();
+				if ( currentNode == null ) {
+					throw 'createNodesFromData() received unbalanced data: found closing without matching opening at index ' + i;
+				}
 			}
 		} else {
 			// It's content, let's start tracking the length

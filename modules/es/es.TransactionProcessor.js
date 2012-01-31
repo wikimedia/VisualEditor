@@ -164,8 +164,8 @@ es.TransactionProcessor.prototype.getScope = function( node, data ) {
 		}
 	}
 	if ( max > 0 ) {
-		for ( i = 0; i < max - 1; i++ ) {
-			node = node.getParent();
+		for ( i = 0; i < max; i++ ) {
+			node = node.getParent() || node;
 		}
 	}
 	return node;
@@ -258,25 +258,28 @@ es.TransactionProcessor.prototype.retain = function( op ) {
 es.TransactionProcessor.prototype.insert = function( op ) {
 	var node,
 		index,
-		offset;
+		offset,
+		scope;
 
-	if ( es.DocumentModel.isStructuralOffset( this.model.data, this.cursor ) && this.cursor != this.model.data.length ) {
-		// FIXME: This fails when inserting something like </list><list> between 2 list items
-		// @see test #30 in es.TransactionProcessor.test.js
+	node = this.model.getNodeFromOffset( this.cursor );
+	scope = this.getScope( node, op.data );
+	// We can take a shortcut if we're inserting an enclosed piece of structural data at a structural offset
+	// that isn't at the end of the document. Check for scope == node to ensure the inserted data doesn't try
+	// to close its containing element
+	if ( es.DocumentModel.isStructuralOffset( this.model.data, this.cursor ) && this.cursor != this.model.data.length
+		&& scope == node
+	) {
+		// We're inserting an enclosed element into something else, so we don't have to rebuild
+		// the parent node. Just build a node from the inserted data and stick it in
 		es.insertIntoArray( this.model.data, this.cursor, op.data );
 		this.applyAnnotations( this.cursor + op.data.length );
-		node = this.model.getNodeFromOffset( this.cursor );
 		offset = this.model.getOffsetFromNode( node );
 		index = node.getIndexFromOffset( this.cursor - offset );
 		this.rebuildNodes( op.data, null, node, index );
 	} else {
-		node = this.model.getNodeFromOffset( this.cursor );
-		if ( node.getParent() === this.model ) {
-			offset = this.model.getOffsetFromNode( node );
-		} else {
-			node = this.getScope( node, op.data );
-			offset = this.model.getOffsetFromNode( node );
-		}
+		// Rebuild scope, which is the node that encloses everything we might have to rebuild
+		node = scope;
+		offset = this.model.getOffsetFromNode( node );
 		if ( es.DocumentModel.containsElementData( op.data ) ) {
 			// Perform insert on linear data model
 			es.insertIntoArray( this.model.data, this.cursor, op.data );
