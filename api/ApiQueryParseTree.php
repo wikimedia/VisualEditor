@@ -102,7 +102,7 @@ class ApiQueryParseTree extends ApiQueryBase {
 
 			$errors = self::readFilehandle( $pipes[$parserErr] );
 			if ( $errors != '' and $errors != null ) {
-				$ret['errors'] = $cmd . ' --> ' . $errors;
+				$ret['errors'] = $errors;
 			}
 
 			$retval = proc_close( $process );
