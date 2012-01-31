@@ -1,7 +1,7 @@
 /**
  * Command line wikidom parse utility.
  * Read from STDIN, write to STDOUT.
- *
+ * 
  * @author Neil Kandalgaonkar <neilk@wikimedia.org>
  * @author Gabriel Wicke <gwicke@wikimedia.org>
  */
@@ -27,21 +27,34 @@ var ParserPipeline = require('./mediawiki.parser.js').ParserPipeline,
 			description: 'Maximum expansion depth',
 			'boolean': false,
 			'default': 40
+		},
+		'wgScriptPath': {
+			description: 'http path to remote API, e.g. http://wiki.sample.com/w',
+			'boolean': false,
+			'default': 'http://en.wikipedia.org/w'
+		},
+		'wgScriptExtension': {
+			description: 'Extension for PHP files on remote API server, if any. Include the period, e.g. ".php"',
+			'boolean': false,
+			'default': '.php'
+		},
+		'fetchTemplates': {
+			description: 'Whether to fetch included templates recursively',
+			'boolean': true,
+			'default': true
 		}
 	}).argv;
 
-
 	var env = new ParserEnv( { 
 						// fetch templates from enwiki by default..
-						wgScriptPath: "http://en.wikipedia.org/w",
-						wgScriptExtension: ".php",
-						fetchTemplates: true,
+						wgScriptPath: argv.wgScriptPath,
+						wgScriptExtension: argv.wgScriptExtension,
+						fetchTemplates: argv.fetchTemplates,
 						// enable/disable debug output using this switch	
 						debug: argv.debug,
 						maxDepth: argv.maxdepth
 					} ),
 		parser = new ParserPipeline( env );
-
 
 	process.stdin.resume();
 	process.stdin.setEncoding('utf8');

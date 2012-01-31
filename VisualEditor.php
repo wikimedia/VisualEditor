@@ -143,3 +143,12 @@ $wgResourceModules += array(
 		),
 	)
 );
+
+
+// API for retrieving wikidom parse results
+$wgAutoloadClasses['ApiQueryParseTree'] = $dir . 'api/ApiQueryParseTree.php';
+$wgAPIPropModules['parsetree'] = 'ApiQueryParseTree';
+
+// external cmd, accepts wikitext and returns parse tree in JSON. Also set environment variables needed by script here.
+putenv('NODE_PATH=/usr/local/bin/node_modules' );
+$wgVisualEditorParserCmd = '/usr/local/bin/node ' . $dir . 'modules/parser/parse.js';
