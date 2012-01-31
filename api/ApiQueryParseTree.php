@@ -42,7 +42,7 @@ class ApiQueryParseTree extends ApiQueryBase {
 					$results = array( 'errors' => 'Could not get revision' );
 				} else {
 					$text = $rev->getText();
-					$results = $this->getParseTree( $text );
+					$results['contents'] = $this->getParseTree( $text );
 				}
 			}
 			foreach ( $results as $elementName => $item ) {
