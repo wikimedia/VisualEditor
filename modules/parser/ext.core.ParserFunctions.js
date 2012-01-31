@@ -14,10 +14,10 @@ ParserFunctions.prototype.fun = {};
 
 ParserFunctions.prototype['pf_#if'] = function ( target, argList, argDict ) {
 	if ( target.trim() !== '' ) {
-		this.manager.env.dp('#if, first branch', argDict[1] );
+		this.manager.env.dp('#if, first branch', target.trim(), argDict[1] );
 		return argDict[1] || [];
 	} else {
-		this.manager.env.dp('#if, second branch', argDict[2] );
+		this.manager.env.dp('#if, second branch', target.trim(), argDict[2] );
 		return argDict[2] || [];
 	}
 };
@@ -25,10 +25,11 @@ ParserFunctions.prototype['pf_#if'] = function ( target, argList, argDict ) {
 ParserFunctions.prototype['pf_#switch'] = function ( target, argList, argDict ) {
 	this.manager.env.dp( 'switch enter: ' + target.trim() +
 			' looking in ', argDict );
-	if ( target.trim() in argDict ) {
-		this.manager.env.dp( 'switch found: ' + target.trim() +
-				' res=', argDict[target.trim()] );
-		return argDict[target.trim()];
+	target = target.trim();
+	if ( target in argDict ) {
+		this.manager.env.dp( 'switch found: ' + target +
+				' res=', argDict[target] );
+		return argDict[target];
 	} else if ( '#default' in argDict ) {
 		return argDict['#default'];
 	} else { 
@@ -149,9 +150,9 @@ Date.replaceChars = {
     m: function() { return (this.getMonth() < 9 ? '0' : '') + (this.getMonth() + 1); },
     M: function() { return Date.replaceChars.shortMonths[this.getMonth()]; },
     n: function() { return this.getMonth() + 1; },
-    t: function() { var d = new Date(); return new Date(d.getFullYear(), d.getMonth(), 0).getDate() }, // Fixed now, gets #days of date
+    t: function() { var d = new Date(); return new Date(d.getFullYear(), d.getMonth(), 0).getDate(); }, // Fixed now, gets #days of date
     // Year
-    L: function() { var year = this.getFullYear(); return (year % 400 == 0 || (year % 100 != 0 && year % 4 == 0)); },   // Fixed now
+    L: function() { var year = this.getFullYear(); return (year % 400 === 0 || (year % 100 !== 0 && year % 4 === 0)); },   // Fixed now
     o: function() { var d  = new Date(this.valueOf());  d.setDate(d.getDate() - ((this.getDay() + 6) % 7) + 3); return d.getFullYear();}, //Fixed now
     Y: function() { return this.getFullYear(); },
     y: function() { return ('' + this.getFullYear()).substr(2); },
@@ -180,6 +181,39 @@ Date.replaceChars = {
     U: function() { return this.getTime() / 1000; }
 };
 
+ParserFunctions.prototype['pf_#ifexpr'] = function ( target, argList, argDict ) {
+	this.manager.env.dp( '#ifexp: ' + JSON.stringify( argList ) );
+	var res;
+	try {
+		var f = new Function ( 'return (' + target + ')' );
+		res = f();
+	} catch ( e ) {
+		return [{type: 'TEXT', value: 'class="error" in expression ' + target }];
+	}
+	if ( res ) {
+		return ( argList[0] && argList[0][1] ) || [];
+	} else {
+		return ( argList[1] && argList[1][1] ) || [];
+	}
+};
+ParserFunctions.prototype['pf_#iferror'] = function ( target, argList, argDict ) {
+	if ( target.indexOf( 'class="error"' ) >= 0 ) {
+		return ( argList[0] && argList[0][1] ) || [];
+	} else {
+		return ( argList[1] && argList[1][1] ) || [];
+	}
+};
+ParserFunctions.prototype['pf_#expr'] = function ( target, argList, argDict ) {
+	var res;
+	try {
+		var f = new Function ( 'return (' + target + ')' );
+		res = f();
+	} catch ( e ) {
+		return [{type: 'TEXT', value: 'class="error" in expression ' + target }];
+	}
+	return [{type: 'TEXT', value: res.toString()}];
+};
+
 
 
 /**
@@ -187,16 +221,6 @@ Date.replaceChars = {
  */
 
 // FIXME
-ParserFunctions.prototype['pf_#ifexpr'] = function ( target, argList, argDict ) {
-	this.manager.env.dp( '#ifexp: ' + JSON.stringify( argList ) );
-	return ( argList[0] && argList[0][1] ) || [];
-};
-ParserFunctions.prototype['pf_#iferror'] = function ( target, argList, argDict ) {
-	return ( argList[0] && argList[0][1] ) || [];
-};
-ParserFunctions.prototype['pf_#expr'] = function ( target, argList, argDict ) {
-	return ( argList[0] && argList[0][1] ) || [];
-};
 ParserFunctions.prototype['pf_#ifexist'] = function ( target, argList, argDict ) {
 	return ( argList[0] && argList[0][1] ) || [];
 };
@@ -225,12 +249,28 @@ ParserFunctions.prototype['pf_fullurl'] = function ( target, argList, argDict ) 
 	return [{type: 'TEXT', value: target}];
 };
 ParserFunctions.prototype['pf_urlencode'] = function ( target, argList, argDict ) {
+	this.manager.env.tp( 'urlencode: ' + target  );
+	return [{type: 'TEXT', value: target.trim()}];
+};
+ParserFunctions.prototype['pf_anchorencode'] = function ( target, argList, argDict ) {
 	return [{type: 'TEXT', value: target}];
 };
 ParserFunctions.prototype['pf_namespace'] = function ( target, argList, argDict ) {
 	return [{type: 'TEXT', value: 'Main'}];
 };
+ParserFunctions.prototype['pf_protectionlevel'] = function ( target, argList, argDict ) {
+	return [{type: 'TEXT', value: ''}];
+};
+ParserFunctions.prototype['pf_ns'] = function ( target, argList, argDict ) {
+	return [{type: 'TEXT', value: target}];
+};
 
+ParserFunctions.prototype['pf_subjectspace'] = function ( target, argList, argDict ) {
+	return [{type: 'TEXT', value: 'Main'}];
+};
+ParserFunctions.prototype['pf_talkspace'] = function ( target, argList, argDict ) {
+	return [{type: 'TEXT', value: 'Talk'}];
+};
 
 if (typeof module == "object") {
 	module.exports.ParserFunctions = ParserFunctions;

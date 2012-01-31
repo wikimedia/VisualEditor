@@ -12,7 +12,7 @@ function NoInclude( manager, isInclude ) {
 			manager,
 			function ( tokens ) { 
 				if ( isInclude ) {
-					manager.env.dp( 'noinclude stripping', tokens );
+					manager.env.tp( 'noinclude stripping' );
 					return {};
 				} else {
 					tokens.shift();
@@ -42,6 +42,7 @@ function IncludeOnly( manager, isInclude ) {
 					}
 					return { tokens: tokens };
 				} else {
+					manager.env.tp( 'includeonly stripping' );
 					return {};
 				}
 			},

@@ -214,6 +214,11 @@ TokenTransformManager.prototype._transformTagToken = function ( token, cb, phase
 			}
 			// Transform token with side effects
 			res = transformer.transform( res.token, cb, this, this.prevToken );
+			// XXX: Sync transform:
+			// res = transformer.transform( res.token, this, this.prevToken );
+			// XXX: Async transform:
+			// res = transformer.transform( res.token, this, cb );
+
 			// if multiple tokens or null token: process returned tokens (in parent)
 			if ( !res.token ||  // async implies tokens instead of token, so no
 								// need to check explicitly
@@ -725,7 +730,7 @@ AttributeTransformManager.prototype.process = function ( attributes ) {
 
 	// transform each argument (key and value), and handle asynchronous returns
 	for ( var i = 0, l = attributes.length; i < l; i++ ) {
-		kv = { key: [], value: [] };
+		var kv = { key: [], value: [] };
 		this.kvs.push( kv );
 
 		// Assume that the return is async, will be decremented in callback

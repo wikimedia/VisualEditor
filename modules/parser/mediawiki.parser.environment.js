@@ -4,6 +4,7 @@ var MWParserEnvironment = function(opts) {
 		parserFunctions: {},
 		pageCache: {}, // @fixme use something with managed space
 		debug: false,
+		trace: false,
 		wgScriptPath: "http://en.wikipedia.org/w",
 		wgScriptExtension: ".php",
 		fetchTemplates: false,
@@ -129,7 +130,7 @@ MWParserEnvironment.prototype.tokensToString = function ( tokens ) {
 			var tstring = JSON.stringify( token );
 			this.dp ( 'MWParserEnvironment.tokensToString, non-text token: ' + 
 					tstring + JSON.stringify( tokens, null, 2 ) );
-			out.push( tstring );
+			//out.push( tstring );
 		}
 	}
 	//console.log( 'MWParserEnvironment.tokensToString result: ' + out.join('') );
@@ -150,6 +151,18 @@ MWParserEnvironment.prototype.dp = function ( ) {
 	}
 };
 
+/**
+ * Simple debug helper, trace-only
+ */
+MWParserEnvironment.prototype.tp = function ( ) {
+	if ( this.debug || this.trace ) {
+		if ( arguments.length > 1 ) {
+			console.log( JSON.stringify( arguments, null, 2 ) );
+		} else {
+			console.log( arguments[0] );
+		}
+	}
+};
 
 
 if (typeof module == "object") {

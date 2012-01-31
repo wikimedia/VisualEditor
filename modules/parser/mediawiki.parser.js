@@ -88,6 +88,9 @@ function ParserPipeline( env, inputType ) {
 	*/
 	this.treeBuilder = new FauxHTML5.TreeBuilder();
 	this.treeBuilder.listenForTokensFrom( this.tokenPostProcessor );
+	//this.tokenPostProcessor.on('chunk', function( c ) {
+	//	console.log( JSON.stringify( c, null, 2 ));
+	//} );
 
 	/**
 	* Final processing on the HTML DOM.
@@ -233,7 +236,7 @@ ParserPipeline.prototype.makeAttributePipeline = function ( args ) {
 
 ParserPipeline.prototype.cachePipeline = function ( inputType, pipelinePart, pipe ) {
 	var cache = this.pipelineCache[inputType][pipelinePart];
-	if ( cache && cache.length < 5 ) {
+	if ( cache && cache.length < 2 ) {
 		cache.push( pipe );
 	}
 };

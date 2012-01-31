@@ -629,7 +629,7 @@ urllink
 extlink
   = "[" 
     & { return setFlag('extlink'); }
-    target:url 
+    target:(url / tplarg / template)
     space*
     text:inlineline?
     "]" {
@@ -722,7 +722,7 @@ template
       var obj = { 
             type: 'SELFCLOSINGTAG', 
             name: 'template', 
-            attribs: [['data-target', JSON.stringify(target)]],
+            attribs: [], //[['data-target', JSON.stringify(target)]],
             orderedArgs: params,
             //args: {},
             target: target
@@ -748,6 +748,7 @@ template
       // parser only recognizes known self-closing tags for now, so use an
       // explicit end tag for now.
       //console.log(pp(obj));
+      //console.log( 'tokenizer template ' + JSON.stringify( target ));
       return obj;
   }
 
@@ -770,12 +771,13 @@ tplarg
       };
       if (params && params.length) {
           // HACK, not final.
-          obj.attribs.push(['data-defaultvalue', params[0][1]]);
-          obj.attribs.push(['data-json-args', JSON.stringify(params)]);
+          //obj.attribs.push(['data-defaultvalue', params[0][1]]);
+          //console.log(JSON.stringify(params, null, 2));
+          //obj.attribs.push(['data-json-args', JSON.stringify(params)]);
           obj.defaultvalue = params[0][1].length ? params[0][1] : 
                                                     [{type: 'TEXT', value: ''}];
       }
-      //console.log( 'tokenizer tplarg ' + JSON.stringify( obj ));
+      //console.log( 'tokenizer tplarg ' + JSON.stringify( obj, null, 2 ));
       return obj;
   }
 

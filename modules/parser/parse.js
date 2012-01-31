@@ -23,6 +23,11 @@ var ParserPipeline = require('./mediawiki.parser.js').ParserPipeline,
 			'boolean': true,
 			'default': false
 		},
+		'trace': {
+			description: 'Trace mode (light debugging), implied by --debug',
+			'boolean': true,
+			'default': false
+		},
 		'maxdepth': {
 			description: 'Maximum expansion depth',
 			'boolean': false,
@@ -52,6 +57,7 @@ var ParserPipeline = require('./mediawiki.parser.js').ParserPipeline,
 						fetchTemplates: argv.fetchTemplates,
 						// enable/disable debug output using this switch	
 						debug: argv.debug,
+						trace: argv.trace,
 						maxDepth: argv.maxdepth
 					} ),
 		parser = new ParserPipeline( env );

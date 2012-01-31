@@ -160,16 +160,17 @@ TemplateHandler.prototype._expandTemplate = function ( tplExpandData ) {
 	// check for parser functions
 
 	// First, check the target for loops
-	var target = this.manager.env.tokensToString( tplExpandData.target );
+	var target = this.manager.env.tokensToString( tplExpandData.target ).trim();
 
 	var args = this.manager.env.KVtoHash( tplExpandData.expandedArgs );
 
 	this.manager.env.dp( 'argHash: ', args );
 
-	var prefix = target.split(':', 1)[0].toLowerCase();
+	var prefix = target.split(':', 1)[0].toLowerCase().trim();
 	if ( prefix && 'pf_' + prefix in this.parserFunctions ) {
 		var funcArg = target.substr( prefix.length + 1 );
-		this.manager.env.dp( 'entering prefix', funcArg, args  );
+		this.manager.env.tp( 'func prefix: ' + prefix + ' arg=' + funcArg );
+		//this.manager.env.dp( 'entering prefix', funcArg, args  );
 		res = this.parserFunctions[ 'pf_' + prefix ]( funcArg, 
 				tplExpandData.expandedArgs, args );
 
@@ -185,6 +186,7 @@ TemplateHandler.prototype._expandTemplate = function ( tplExpandData ) {
 			//data.reset();
 		}
 	}
+	this.manager.env.tp( 'template target: ' + target );
 
 	// now normalize the target before template processing
 	target = this.manager.env.normalizeTitle( target );
@@ -348,10 +350,11 @@ TemplateHandler.prototype._fetchTemplateAndTitle = function ( title, callback, t
 		// Start a new request if none is outstanding
 		this.manager.env.dp( 'requestQueue: ', this.manager.env.requestQueue);
 		if ( this.manager.env.requestQueue[title] === undefined ) {
+			this.manager.env.tp( 'Note: Starting new request for ' + title );
 			this.manager.env.requestQueue[title] = new TemplateRequest( this.manager, title );
 		}
 		// Append a listener to the request
-		this.manager.env.requestQueue[title].addListener( 'src', callback );
+		this.manager.env.requestQueue[title].once( 'src', callback );
 
 	}
 };
@@ -368,7 +371,7 @@ TemplateHandler.prototype.onTemplateArg = function ( token, cb, frame ) {
 
 	token.resultTokens = false;
 
-	new AttributeTransformManager( 
+	new AttributeTransformManager ( 
 				this.manager, 
 				this._returnArgAttributes.bind( this, token, cb, frame ) 
 			).process( attributes );
@@ -471,9 +474,8 @@ function TemplateRequest ( manager, title ) {
 				src = '';
 			}
 			//console.log( 'Page ' + title + ': got ' + src );
-			manager.env.dp( 'Success for ' + title + ' :' + body + ':' );
+			manager.env.tp( 'Retrieved ' + title );
 			manager.env.pageCache[title] = src;
-			manager.env.dp(data);
 			self.emit( 'src', src, title );
 		}
 		// XXX: handle other status codes
