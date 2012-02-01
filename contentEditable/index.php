@@ -2,45 +2,81 @@
 
 <html>
 	<head>
-		<title>EditSurface + ContentEditable Demo</title>
+		<title>EditSurface Demo</title>
+		<link rel="stylesheet" href="../modules/es/styles/es.SurfaceView.css">
+		<link rel="stylesheet" href="../modules/es/styles/es.ContextView.css">
+		<link rel="stylesheet" href="../modules/es/styles/es.ContentView.css">
+		<link rel="stylesheet" href="../modules/es/styles/es.DocumentView.css">
+		<link rel="stylesheet" href="../modules/es/styles/es.Inspector.css">
+		<link rel="stylesheet" href="../modules/es/styles/es.ToolbarView.css">
+		<link rel="stylesheet" href="../modules/es/styles/es.MenuView.css">
+		<link rel="stylesheet" href="../modules/sandbox/sandbox.css">
 		<style>
-/* Mozilla based browsers */
-::-moz-selection {
-       background-color: #b3d6f6;
-       color: #000;
-}
-
-/* Works in Safari */
-::selection {
-       background-color: #b3d6f6;
-       color: #000;
-}
-.es-contentView-ruler {
-	position: absolute;
-	top: 0;
-	left: 0;
-	display: inline-block;
-	z-index: -1000;
-}
-.es-paragraphView {
-	margin-bottom: 20px;
-}
-#es-preview {
-	font-family: monospace,"Courier New";
-	white-space: pre-wrap;
-}
-.es-contentView-format-textStyle-italic,
-.es-contentView-format-textStyle-emphasize {
-	font-style: italic;
-}
-
-.es-contentView-format-textStyle-bold,
-.es-contentView-format-textStyle-strong {
-	font-weight: bold;
-}
+			body {
+				font-family: "Arial";
+				font-size: 1em;
+				width: 100%;
+				margin: 1em 0;
+				padding: 0;
+				overflow-y: scroll;
+				background-color: white;
+			}
+			#es-base {
+				margin: 2em;
+				margin-top: 0em;
+				-webkit-box-shadow: 0 0.25em 1.5em 0 #dddddd;
+				-moz-box-shadow: 0 0.25em 1.5em 0 #dddddd;
+				box-shadow: 0 0.25em 1.5em 0 #dddddd;
+				-webkit-border-radius: 0.5em;
+				-moz-border-radius: 0.5em;
+				-o-border-radius: 0.5em;
+				border-radius: 0.5em;
+			}
+			#es-panes {
+				border: solid 1px #cccccc;
+				border-top: none;
+			}
+			#es-visual {
+				padding-left: 1em;
+				padding-right: 1em;
+			}
+			#es-toolbar {
+				-webkit-border-radius: 0;
+				-moz-border-radius: 0;
+				-o-border-radius: 0;
+				border-radius: 0;
+				-webkit-border-top-right-radius: 0.25em;
+				-moz-border-top-right-radius: 0.25em;
+				-o-border-top-right-radius: 0.25em;
+				border-top-right-radius: 0.25em;
+				-webkit-border-top-left-radius: 0.25em;
+				-moz-border-top-left-radius: 0.25em;
+				-o-border-top-left-radius: 0.25em;
+				border-top-left-radius: 0.25em;
+			}
+			#es-toolbar.float {
+				left: 2em;
+				right: 2em;
+				top: 0;
+			}
+			#es-docs {
+				margin-left: 2.5em;
+			}
 		</style>
 	</head>
 	<body>
+<?php
+$modeWikitext = "Toggle wikitext view";
+$modeJson = "Toggle JSON view";
+$modeHtml = "Toggle HTML view";
+$modeRender = "Toggle preview";
+$modeHistory = "Toggle transaction history view";
+$modeHelp = "Toggle help view";
+
+include( '../modules/sandbox/base.php' );
+
+?>
+
 		<script src="diff_match_patch.js"></script>
 		
 		<!-- Rangy -->
@@ -128,22 +164,10 @@
 		<script src="views/es.ContentView.js"></script>
 		<script src="views/es.DocumentView.js"></script>
 		<script src="views/es.ParagraphView.js"></script>
+		<script src="views/es.ToolbarView.js"></script>
 		
 
 		<!-- Demo -->
 		<script src="main.js"></script>
-		
-		<table style="margin: auto; width: 1000px; border: solid 1px;">
-			<tr>
-				<td style="width: 500px; vertical-align: top; padding: 10px;">
-					<div id="es-editor"></div>
-				</td>
-				<td style="width: 500px; vertical-align: top; padding: 10px;">
-					<div id="es-preview"></div>
-				</td>
-			</tr>
-		</table>
-		
-		
 	</body>
 </html>

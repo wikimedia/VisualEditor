@@ -75,74 +75,31 @@ $(document).ready( function() {
 	window.documentModel = es.DocumentModel.newFromPlainObject( window.wikiDom );
 	window.surfaceModel = new es.SurfaceModel( window.documentModel );
 	window.surfaceView = new es.SurfaceView( $( '#es-editor' ), window.surfaceModel );
+	window.toolbarView = new es.ToolbarView( $( '#es-toolbar' ), window.surfaceView );
 
 	/*
-	$('#es-editor')[0].addEventListener("DOMSubtreeModified", function() {
-		var selection = rangy.getSelection();
-		console.log(selection);
-		if(selection.anchorNode === selection.focusNode && selection.anchorOffset === selection.focusOffset) {
-			$node = $(selection.anchorNode);
-			while(!$node.hasClass('es-paragraphView')) {
-				$node = $node.parent();
+	 * This code is responsible for switching toolbar into floating mode when scrolling (with
+	 * keyboard or mouse).
+	 */
+	var $toolbarWrapper = $( '#es-toolbar-wrapper' ),
+		$toolbar = $( '#es-toolbar' ),
+		$window = $( window );
+	$window.scroll( function() {
+		var toolbarWrapperOffset = $toolbarWrapper.offset();
+		if ( $window.scrollTop() > toolbarWrapperOffset.top ) {
+			if ( !$toolbarWrapper.hasClass( 'float' ) ) {
+				var	left = toolbarWrapperOffset.left,
+					right = $window.width() - $toolbarWrapper.outerWidth() - left;
+				$toolbarWrapper.css( 'height', $toolbarWrapper.height() ).addClass( 'float' );
+				$toolbar.css( { 'left': left, 'right': right } );
 			}
-			console.log($node.data('view'));
-			console.log(selection);
-		}
-	});
-	*/
-
-
-	/*
-	$('#es-editor')[0].addEventListener("DOMSubtreeModified", function() {
-		var selection = rangy.getSelection();
-		console.log(selection);
-		if(selection.anchorNode === selection.focusNode && selection.anchorOffset === selection.focusOffset) {
-			$node = $(selection.anchorNode);
-			while(!$node.hasClass('es-paragraphView')) {
-				$node = $node.parent();
-			}
-			var newText = $node[0].textContent;
-			var view = $node.data('view');
-			var offset = surfaceView.documentView.getOffsetFromNode(view);
-			var oldText = documentModel.getContentText(new es.Range(offset, offset + 1 + view.getContentLength()));
-
-			newText = newText.replace(/\xA0/g,' ');
-			oldText = oldText.replace(/\xA0/g,' ');
-
-			if(newText.length > oldText.length) {
-				for( var i = 0; i < oldText.length; i++ ) {
-					if(newText[i] !== oldText[i]) {
-						var differenceStart = i;
-						break;
-					}
-				}
-
-				for( var i = oldText.length - 1; i >= 0; i--) {
-					if(newText[i + newText.length - oldText.length] !== oldText[i]) {
-						var differenceStop = i;
-						break;
-					}
-				}
-				
-				var tx = documentModel.prepareRemoval(new es.Range(1+differenceStart,1+1+differenceStop));
-				documentModel.commit(tx);
-				var difference = newText.substring(differenceStart, 1+differenceStop + newText.length - oldText.length);
-				var tx = documentModel.prepareInsertion(differenceStart+1, difference.split());
-				documentModel.commit(tx);
-
-
-				
+		} else {
+			if ( $toolbarWrapper.hasClass( 'float' ) ) {
+				$toolbarWrapper.css( 'height', 'auto' ).removeClass( 'float' );
+				$toolbar.css( { 'left': 0, 'right': 0 } );
 			}
 		}
-	});
+	} );
 
-	$('#es-editor')[0].addEventListener("DOMCharacterDataModified", function() {
-	});
-	*/
-	refreshPreview();
-	setInterval(refreshPreview, 500);
+	$( '#es-docs, #es-base' ).css( { 'visibility': 'visible' } );
 } );
-
-function refreshPreview() {
-	$('#es-preview').text( es.WikitextSerializer.stringify( window.documentModel.getPlainObject() ) );
-}
