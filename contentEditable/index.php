@@ -3,15 +3,21 @@
 <html>
 	<head>
 		<title>EditSurface Demo</title>
-		<link rel="stylesheet" href="../modules/es/styles/es.SurfaceView.css">
+		<link rel="stylesheet" href="styles/es.SurfaceView.css">
 		<link rel="stylesheet" href="../modules/es/styles/es.ContextView.css">
 		<link rel="stylesheet" href="../modules/es/styles/es.ContentView.css">
-		<link rel="stylesheet" href="../modules/es/styles/es.DocumentView.css">
+		<link rel="stylesheet" href="styles/es.DocumentView.css">
 		<link rel="stylesheet" href="../modules/es/styles/es.Inspector.css">
 		<link rel="stylesheet" href="../modules/es/styles/es.ToolbarView.css">
 		<link rel="stylesheet" href="../modules/es/styles/es.MenuView.css">
 		<link rel="stylesheet" href="../modules/sandbox/sandbox.css">
 		<style>
+			::-moz-selection {
+			       background-color: #b3d6f6;
+			}
+			::selection {
+			       background-color: #b3d6f6;
+			}
 			body {
 				font-family: "Arial";
 				font-size: 1em;

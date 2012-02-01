@@ -8,8 +8,10 @@ es.SurfaceView = function( $container, model ) {
 	// Properties
 	this.model = model;
 	this.documentView = new es.DocumentView( this.model.getDocument(), this );
-	this.$ = $container.append( this.documentView.$ );
-	
+	this.$ = $container
+		.addClass( 'es-surfaceView' )
+		.append( this.documentView.$ );
+
 	this.$.keydown( function(e) {
 		return _this.onKeyDown( e );
 	} );
