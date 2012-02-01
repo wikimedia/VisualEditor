@@ -90,6 +90,8 @@ ParserFunctions.prototype['pf_#tag'] = function ( target, argList, argDict ) {
 };
 
 // A first approximation, anyway..
+// Based on http://jacwright.com/projects/javascript/date_format/ for now, MIT
+// licensed.
 ParserFunctions.prototype['pf_#time'] = function ( target, argList, argDict ) {
 	//return [{type: 'TEXT', value: 'January 22, 2012'}];
 	var res,
