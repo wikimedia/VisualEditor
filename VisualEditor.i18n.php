@@ -318,6 +318,24 @@ $messages['ms'] = array(
 	'visualeditor-feedback-dialog-title' => 'Tinggalkan maklum balas tentang Kotak Pasir VisualEditor',
 );
 
+/** Nepali (नेपाली)
+ * @author RajeshPandey
+ */
+$messages['ne'] = array(
+	'visualeditor' => 'दृष्टि सम्पादक',
+	'visualeditorsandbox' => 'दृष्टि सम्पादक प्रयोगस्थल',
+	'visualeditor-desc' => 'मेडियाविकिको लागि दृष्टि सम्पादक',
+	'visualeditor-sandbox-title' => 'दृष्टि सम्पादक प्रयोगस्थल',
+	'visualeditor-tooltip-wikitext' => 'विकिपाठ दृष्यहरू फेर्ने',
+	'visualeditor-tooltip-json' => 'जेशन(JSON) दृष्य फेर्ने',
+	'visualeditor-tooltip-html' => 'एच टि एम एल(HTML ) दृष्य फेर्ने(Toggle)',
+	'visualeditor-tooltip-render' => 'पुर्वावलोकन फेर्ने(Toggle)',
+	'visualeditor-tooltip-history' => 'कृयाकलाप को इतिहाँस दृष्यहरू फेर्ने',
+	'visualeditor-tooltip-help' => 'मद्दतको दृष्य फेर्ने',
+	'visualeditor-feedback-prompt' => 'प्रतिकृया दिने',
+	'visualeditor-feedback-dialog-title' => 'दृष्टि सम्पादक प्रयोगस्थल को बारेमा प्रतिकृया दिने',
+);
+
 /** Dutch (Nederlands)
  * @author SPQRobin
  * @author Saruman
