@@ -13,6 +13,7 @@ es.TableView = function( model ) {
 	// DOM Changes
 	this.$
 		.attr( 'style', model.getElementAttribute( 'html/style' ) )
+		.attr( 'contenteditable', false )
 		.addClass( 'es-tableView' );
 };
 
