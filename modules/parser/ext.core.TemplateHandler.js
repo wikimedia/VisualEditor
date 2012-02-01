@@ -16,7 +16,8 @@ var $ = require('jquery'),
 	qs = require('querystring'),
 	ParserFunctions = require('./ext.core.ParserFunctions.js').ParserFunctions,
 	AttributeTransformManager = require('./mediawiki.TokenTransformManager.js')
-									.AttributeTransformManager;
+									.AttributeTransformManager,
+	defines = require('./mediawiki.parser.defines.js');
 
 
 function TemplateHandler ( manager ) {
@@ -70,11 +71,9 @@ TemplateHandler.prototype.onTemplate = function ( token, cb ) {
 		},
 		transformCB,
 		i = 0,
-		kvs = [],
-		res,
-		kv;
+		res;
 
-	var attributes = [[[{ type: 'TEXT', value: '' }] , token.target ]]
+	var attributes = [ {k: [''] , v: token.target} ]
 			.concat( this._nameArgs( token.orderedArgs ) );
 
 	//this.manager.env.dp( 'before AttributeTransformManager: ' + 
@@ -109,8 +108,8 @@ TemplateHandler.prototype._nameArgs = function ( orderedArgs ) {
 		out = [];
 	for ( var i = 0, l = orderedArgs.length; i < l; i++ ) {
 		// FIXME: Also check for whitespace-only named args!
-		if ( ! orderedArgs[i][0].length ) {
-			out.push( [[{ type: 'TEXT', value: n }], orderedArgs[i][1]]);
+		if ( ! orderedArgs[i].k.length ) {
+			out.push( {k: [ n.toString() ], v: orderedArgs[i].v } );
 			n++;
 		} else {
 			out.push( orderedArgs[i] );
@@ -129,7 +128,7 @@ TemplateHandler.prototype._returnAttributes = function ( tplExpandData,
 	this.manager.env.dp( 'TemplateHandler._returnAttributes: ' + JSON.stringify(attributes) );
 	// Remove the target from the attributes
 	tplExpandData.attribsAsync = false;
-	tplExpandData.target = attributes[0][1];
+	tplExpandData.target = attributes[0].v;
 	attributes.shift();
 	tplExpandData.expandedArgs = attributes;
 	if ( tplExpandData.overallAsync ) {
@@ -195,23 +194,10 @@ TemplateHandler.prototype._expandTemplate = function ( tplExpandData ) {
 	if( checkRes ) {
 		// Loop detected or depth limit exceeded, abort!
 		res = [
-				{ 
-					type: 'TEXT', 
-					value: checkRes
-				},
-				{
-					type: 'TAG',
-					name: 'a',
-					attrib: [['href', target]]
-				},
-				{
-					type: 'TEXT',
-					value: target
-				},
-				{
-					type: 'ENDTAG',
-					name: 'a'
-				}
+				checkRes,
+				new TagTk( 'a', [{k: 'href', v: target}] ),
+				target,
+				new EndTagTk( 'a' )
 			];
 		if ( tplExpandData.overallAsync ) {
 			return tplExpandData.cb( res, false );
@@ -367,7 +353,7 @@ TemplateHandler.prototype._fetchTemplateAndTitle = function ( title, callback, t
  */
 TemplateHandler.prototype.onTemplateArg = function ( token, cb, frame ) {
 	
-	var attributes = [[token.argname, token.defaultvalue]];
+	var attributes = [{k: token.argname, v: token.defaultvalue}];
 
 	token.resultTokens = false;
 
@@ -391,8 +377,8 @@ TemplateHandler.prototype.onTemplateArg = function ( token, cb, frame ) {
 
 TemplateHandler.prototype._returnArgAttributes = function ( token, cb, frame, attributes ) {
 	//console.log( '_returnArgAttributes: ' + JSON.stringify( attributes ));
-	var argName = this.manager.env.tokensToString( attributes[0][0] ).trim(),
-		defaultValue = attributes[0][1],
+	var argName = this.manager.env.tokensToString( attributes[0].k ).trim(),
+		defaultValue = attributes[0].v,
 		res;
 	if ( argName in this.manager.args ) {
 		// return tokens for argument
@@ -405,7 +391,7 @@ TemplateHandler.prototype._returnArgAttributes = function ( token, cb, frame, at
 		if ( defaultValue.length ) {
 			res = defaultValue;
 		} else {
-			res = [{ type: 'TEXT', value: '{{{' + argName + '}}}' }];
+			res = [ '{{{' + argName + '}}}' ];
 		}
 	}
 	if ( token.resultTokens !== false ) {

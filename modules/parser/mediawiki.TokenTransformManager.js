@@ -151,9 +151,16 @@ TokenTransformManager.prototype.removeTransform = function ( rank, type, name ) 
  * fully processed). The token type change case still needs to be covered
  * though.
  */
+TokenTransformManager.prototype._setTokenRank = function ( token ) {
+};
 TokenTransformManager.prototype._resetTokenRank = function ( res, transformer ) {
 	if ( res.token ) {
 		// reset rank after type or name change
+
+		// Convert String literal to String object
+		if ( res.token.constructor === String && res.token.rank === undefined ) {
+			res.token = new String( res.token );
+		}
 		if ( transformer.rank < 1 ) {
 			res.token.rank = 0;
 		} else {
@@ -161,6 +168,11 @@ TokenTransformManager.prototype._resetTokenRank = function ( res, transformer ) 
 		}
 	} else if ( res.tokens && transformer.rank > 2 ) {
 		for ( var i = 0; i < res.tokens.length; i++ ) {
+			var token = res.tokens[i];
+			// convert string literal to string object
+			if ( token.constructor === String && token.rank === undefined ) {
+				res.tokens[i] = new String( token );
+			}
 			if ( res.tokens[i].rank === undefined ) {
 				// Do not run phase 0 on newly created tokens from
 				// phase 1.
@@ -229,10 +241,16 @@ TokenTransformManager.prototype._transformTagToken = function ( token, cb, phase
 				break;
 			}
 			// track progress on token
+			if ( res.token.rank === undefined && res.token.constructor === String ) {
+				res.token = new String ( res.token );
+			}
 			res.token.rank = transformer.rank;
 		}
 		if ( ! aborted ) {
 			// Mark token as fully processed.
+			if ( res.token.rank === undefined && res.token.constructor === String ) {
+				res.token = new String ( res.token );
+			}
 			res.token.rank = phaseEndRank;
 		}
 	}
@@ -279,10 +297,16 @@ TokenTransformManager.prototype._transformToken = function ( token, cb, phaseEnd
 				aborted = true;
 				break;
 			}
+			if ( res.token.rank === undefined && res.token.constructor === String ) {
+				res.token = new String ( res.token );
+			}
 			res.token.rank = transformer.rank;
 		}
 		if ( ! aborted ) {
 			// mark token as completely processed
+			if ( res.token.rank === undefined && res.token.constructor === String ) {
+				res.token = new String ( res.token );
+			}
 			res.token.rank = phaseEndRank; // need phase passed in!
 		}
 
@@ -418,6 +442,8 @@ AsyncTokenTransformManager.prototype.process = function ( tokens ) {
 AsyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 	// Set top-level callback to next transform phase
 	var res = this.transformTokens ( tokens, this.tokenCB );
+	this.env.dp('AsyncTokenTransformManager onChunk res.async=' + res.async +
+			' tokens=' + JSON.stringify( tokens ) );
 
 	if ( ! this.tailAccumulator ) {
 		this.emit( 'chunk', res.tokens );
@@ -429,7 +455,6 @@ AsyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 		this.tailAccumulator = res.async;
 		this.tokenCB = res.async.getParentCB ( 'sibling' );
 	}
-	this.env.dp('AsyncTokenTransformManager onChunk res.async=' + res.async);
 	//this.phase2TailCB( tokens, true );
 
 	// The next processed chunk should call back as a sibling to last
@@ -462,27 +487,29 @@ AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parent
 	for ( var i = 0; i < tokensLength; i++ ) {
 		token = tokens[i];
 
-		switch( token.type ) {
-			case 'TAG':
-			case 'ENDTAG':
-			case 'SELFCLOSINGTAG':
-				res = this._transformTagToken( token, cb, phaseEndRank );
-				break;
-			case 'TEXT':
-				res = this._transformToken( token, cb, phaseEndRank, ts.text );
-				break;
-			case 'COMMENT':
-				res = this._transformToken( token, cb, phaseEndRank, ts.comment);
-				break;
-			case 'NEWLINE':
-				res = this._transformToken( token, cb, phaseEndRank, ts.newline );
-				break;
-			case 'END':
-				res = this._transformToken( token, cb, phaseEndRank, ts.end );
-				break;
-			default:
-				res = this._transformToken( token, cb, phaseEndRank, ts.martian );
-				break;
+		if ( token.constructor === String ) {
+			res = this._transformToken( token, cb, phaseEndRank, ts.text );
+			//console.log( 'transform string ' + token + ' res:' + JSON.stringify( res ) );
+		} else {
+			switch( token.type ) {
+				case 'TAG':
+				case 'ENDTAG':
+				case 'SELFCLOSINGTAG':
+					res = this._transformTagToken( token, cb, phaseEndRank );
+					break;
+				case 'COMMENT':
+					res = this._transformToken( token, cb, phaseEndRank, ts.comment);
+					break;
+				case 'NEWLINE':
+					res = this._transformToken( token, cb, phaseEndRank, ts.newline );
+					break;
+				case 'END':
+					res = this._transformToken( token, cb, phaseEndRank, ts.end );
+					break;
+				default:
+					res = this._transformToken( token, cb, phaseEndRank, ts.martian );
+					break;
+			}
 		}
 
 		if( res.tokens ) {
@@ -638,29 +665,31 @@ SyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 
 	for ( var i = 0; i < tokensLength; i++ ) {
 		token = tokens[i];
-
-		switch( token.type ) {
-			case 'TAG':
-			case 'ENDTAG':
-			case 'SELFCLOSINGTAG':
-				res = this._transformTagToken( token, cb, this.phaseEndRank );
-				break;
-			case 'TEXT':
-				res = this._transformToken( token, cb, this.phaseEndRank, 
+		
+		if ( token.constructor === String ) {
+			res = this._transformToken( token, cb, this.phaseEndRank, 
 						ts.text );
-				break;
-			case 'COMMENT':
-				res = this._transformToken( token, cb, this.phaseEndRank, ts.comment );
-				break;
-			case 'NEWLINE':
-				res = this._transformToken( token, cb, this.phaseEndRank, ts.newline );
-				break;
-			case 'END':
-				res = this._transformToken( token, cb, this.phaseEndRank, ts.end );
-				break;
-			default:
-				res = this._transformToken( token, cb, this.phaseEndRank, ts.martian );
-				break;
+		} else {
+
+			switch( token.type ) {
+				case 'TAG':
+				case 'ENDTAG':
+				case 'SELFCLOSINGTAG':
+					res = this._transformTagToken( token, cb, this.phaseEndRank );
+					break;
+				case 'COMMENT':
+					res = this._transformToken( token, cb, this.phaseEndRank, ts.comment );
+					break;
+				case 'NEWLINE':
+					res = this._transformToken( token, cb, this.phaseEndRank, ts.newline );
+					break;
+				case 'END':
+					res = this._transformToken( token, cb, this.phaseEndRank, ts.end );
+					break;
+				default:
+					res = this._transformToken( token, cb, this.phaseEndRank, ts.martian );
+					break;
+			}
 		}
 
 		if( res.tokens ) {
@@ -744,7 +773,7 @@ AttributeTransformManager.prototype.process = function ( attributes ) {
 		pipe.addListener( 'end', 
 				this.onEnd.bind( this, this._returnAttributeKey.bind( this, i ) ) 
 				);
-		pipe.process( attributes[i][0].concat([{type:'END'}]) );
+		pipe.process( attributes[i].k.concat([{type:'END'}]) );
 
 		// transform the value
 		pipe = this.manager.getAttributePipeline( this.manager.args );
@@ -754,11 +783,11 @@ AttributeTransformManager.prototype.process = function ( attributes ) {
 		pipe.addListener( 'end', 
 				this.onEnd.bind( this, this._returnAttributeValue.bind( this, i ) ) 
 				);
-		//console.log('starting attribute transform of ' + JSON.stringify( attributes[i][1] ) );
-		pipe.process( attributes[i][1].concat([{type:'END'}]) );
+		//console.log('starting attribute transform of ' + JSON.stringify( attributes[i].v ) );
+		pipe.process( attributes[i].v.concat([{type:'END'}]) );
 	}
 	this.outstanding--;
-	if ( this.outstanding == 0 ) {
+	if ( this.outstanding === 0 ) {
 		this._returnAttributes();
 	}
 };
@@ -768,7 +797,7 @@ AttributeTransformManager.prototype._returnAttributes = function ( ) {
 	var out = [];
 	for ( var i = 0, l = this.kvs.length; i < l; i++ ) {
 		var kv = this.kvs[i];
-		out.push( [kv.key, kv.value] );
+		out.push( new KV(kv.key, kv.value) );
 	}
 
 	// and call the callback with the result

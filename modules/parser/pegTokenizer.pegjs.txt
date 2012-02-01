@@ -75,10 +75,10 @@
         };
 
         var pushList = function ( listName, itemName ) {
-            out.push({type: 'TAG', name: listName});
-            out.push({type: 'TAG', name: itemName});
-            endtags.push({type: 'ENDTAG', name: listName});
-            endtags.push({type: 'ENDTAG', name: itemName});
+            out.push( new TagTk( listName ));
+            out.push( new TagTk( itemName ));
+            endtags.push( new EndTagTk( listName ));
+            endtags.push( new EndTagTk( itemName ));
         };
 
         var popTags = function ( n ) {
@@ -103,8 +103,8 @@
             if (changeLen === 0) {
                 var itemToken = endtags.pop();
                 out.push(itemToken);
-                out.push({type: 'TAG', name: itemToken.name});
-                endtags.push({type: 'ENDTAG', name: itemToken.name});
+                out.push(new TagTk( itemToken.name ));
+                endtags.push(new EndTagTk( itemToken.name ));
             } else if ( bs.length == bn.length
                     && changeLen == 1
                     && isDlDd( bs[prefixLen], bn[prefixLen] ) ) {
@@ -115,16 +115,16 @@
                         } else {
                             var newName = 'dd';
                         }
-                        out.push({type: 'TAG', name: newName});
-                        endtags.push({type: 'ENDTAG', name: newName});
+                        out.push(new TagTk( newName ));
+                        endtags.push(new EndTagTk( newName ));
             } else {
                 popTags(bs.length - prefixLen);
 
                 if (prefixLen > 0 && bn.length == prefixLen ) {
                     var itemToken = endtags.pop();
                     out.push(itemToken);
-                    out.push({type: 'TAG', name: itemToken.name});
-                    endtags.push({type: 'ENDTAG', name: itemToken.name});
+                    out.push(new TagTk( itemToken.name ));
+                    endtags.push(new EndTagTk( itemToken.name ));
                 }
 
                 for(var i = prefixLen; i < bn.length; i++) {
@@ -264,7 +264,7 @@ start
 		// texts)
       //console.log( pp( flatten ( e ) ) );
       cache = {};
-      __parseArgs[2]( [ { type: 'END' } ] );
+      __parseArgs[2]( [ new EOFTk( ) ] );
       return []; //flatten(e);
   }
 
@@ -350,7 +350,7 @@ space
 optionalSpaceToken
   = s:space* {
       if ( s.length ) {
-          return [{type: 'TEXT', value: s.join('')}];
+          return [s.join('')];
       } else {
           return [];
       }
@@ -363,7 +363,7 @@ sol = nl:(newlineToken / & { return pos === 0; } { return [] })
       // was actually preceded by a newline
       cn:( c:comment n:newline? { 
                 if ( n !== '' ) {
-                    return [c, {type: 'TEXT', value: n}];
+                    return [c, n];
                 } else {
                     return [c];
                 }
@@ -376,9 +376,9 @@ sol = nl:(newlineToken / & { return pos === 0; } { return [] })
           var niToken = [];
           if ( ni !== '') {
               if ( ni[0] === '/' ) {
-                  niToken = [{type: 'ENDTAG', name: ni[1]}];
+                  niToken = [new EndTagTk( ni[1] )];
               } else {
-                  niToken = [{type: 'TAG', name: ni[1]}];
+                  niToken = [new TagTk( ni[1] )];
               }
           }
                   
@@ -391,20 +391,25 @@ eof = & { return isEOF(pos); } { return true; }
 newline
   = '\n' / '\r\n'
 
-newlineToken = newline { return [{type: 'NEWLINE'}] }
+newlineToken = newline { return [new NlTk()] }
 
 eolf = newline / eof
 
 toplevelblock 
   = & { blockStart = pos; return true; } b:block {
     b = flatten(b);
-    var bs = b[0];
     if ( b.length ) {
+        var bs = b[0];
+        if ( bs.constructor === String && bs.attribs === undefined ) {
+            b[0] = new String( bs );
+            bs = b[0];
+        }
         //dp('toplevelblock:' + pp(b));
         if (bs.attribs === undefined) {
             bs.attribs = [];
         }
-        bs.attribs.push(['data-sourcePos', blockStart + ':' + pos]);
+        bs.attribs.push(new KV('data-sourcePos', blockStart + ':' + pos));
+        //console.log( 'toplevelblock: ' +  pp( bs ));
     }
     // XXX: only run this for lines that actually need it!
     //b.push({type: 'NEWLINE'});
@@ -461,10 +466,10 @@ block_line
 
 para
   = s1:sol s2:sol c:inlineline { 
-      return s1.concat(s2, /* [{type: 'TAG', name: 'p'}],*/ c); 
+      return s1.concat(s2, /* [new TagTk('p')],*/ c); 
   }
 
-br = space* &newline { return {type: 'SELFCLOSINGTAG', name: 'br'} }
+br = space* &newline { return new SelfclosingTagTk( 'br' ) }
 
 // Syntax stops to limit inline expansion defending on syntactic context
 inline_breaks
@@ -504,14 +509,14 @@ inline
               }
           } else {
               if (text.length) {
-                  out.push({ type: "TEXT", value: text.join('') });
+                  out.push( text.join('') );
                   text = [];
               }
               out.push(ci);
           }
       }
       if (text.length) {
-          out.push({ type: 'TEXT', value: text.join('') });
+          out.push( text.join('') );
       }
       //dp('inline out:' + pp(out));
       return out;
@@ -531,14 +536,14 @@ inlineline
               }
           } else {
               if (text.length) {
-                  out.push({type: 'TEXT', value: text.join('')});
+                  out.push( text.join('') );
                   text = [];
               }
               out.push(ci);
           }
       }
       if (text.length) {
-          out.push({type: 'TEXT', value: text.join('')});
+          out.push( text.join('') );
       }
       //dp('inlineline out:' + pp(out));
       return out;
@@ -550,7 +555,7 @@ inline_element
     / & '{' ( & '{{{{{' template / tplarg / template )
     /// & '{' ( tplarg / template )
      // Eat three opening brackets as text.
-    / '[[[' { return { type: 'TEXT', value: '[[[' } }
+    / '[[[' { return '[[[' }
     / & '[' ( wikilink / extlink )
     / & "'" quote
 
@@ -563,7 +568,7 @@ h = & "=" // guard, to make sure '='+ will match.
      & { return setFlag('h'); }
      c:inlineline 
      e:'='+ 
-     spc:(sp:space+ { return {type: 'TEXT', value: sp.join('') } } / comment)*
+     spc:(sp:space+ { return sp.join('') } / comment)*
      &eolf 
      {
         clearFlag('h');
@@ -571,24 +576,24 @@ h = & "=" // guard, to make sure '='+ will match.
         // convert surplus equals into text
         if(s.length > level) {
             var extras = s.substr(0, s.length - level);
-            if(c[0].type == 'TEXT') {
-                c[0].value = extras + c[0].value;
+            if(c[0].constructor === String) {
+                c[0] = extras + c[0];
             } else {
-                c.unshift({type: 'TEXT', value: extras});
+                c.unshift( extras );
             }
         }
         if(e.length > level) {
             var extras = e.substr(0, e.length - level),
                 lastElem = c[c.length - 1];
-            if(lastElem.type == 'TEXT') {
-                lastElem.value = lastElem.value + extras;
+            if(lastElem.constructor === String) {
+                lastElem += extras;
             } else {
-                c.push({type: 'TEXT', value: extras});
+                c.push( extras );
             }
         }
 
-        return [{type: 'TAG', name: 'h' + level}]
-                .concat(c, [{type: 'ENDTAG', name: 'h' + level}, spc]);
+        return [new TagTk( 'h' + level )]
+                .concat(c, [new EndTagTk( 'h' + level ), spc]);
       }
     / & { dp('nomatch exit h'); clearFlag('h'); return false } { return null }
     ) { return r }
@@ -596,12 +601,12 @@ h = & "=" // guard, to make sure '='+ will match.
 
 pre_indent 
   = l:pre_indent_line ls:(sol pre_indent_line)* {
-      return [{type: 'TAG', name: 'pre'}]
+      return [new TagTk( 'pre' )]
                     .concat( [l], ls
-                           , [{type: 'ENDTAG', name: 'pre'}]);
+                           , [new EndTagTk( 'pre' )]);
   }
 pre_indent_line = space l:inlineline { 
-    return [{type: 'TEXT', value: '\n'}].concat(l); 
+    return [ '\n' ].concat(l); 
 }
 
 
@@ -618,11 +623,9 @@ comment_chars
 
 urllink
   = target:url {
-      return [ { type: 'TAG', 
-                 name: 'a',
-                 attribs: [['href', target]] }
-             , {type: 'TEXT', value: target}
-             , {type: 'ENDTAG', name: 'a'} 
+      return [ new TagTk( 'a', [new KV('href', target)] )
+             , target
+             , new EndTagTk( 'a' )
              ];
   }
 
@@ -636,20 +639,16 @@ extlink
         clearFlag('extlink');
         if ( text == '' ) {
             // XXX: Link numbering should be implemented in post-processor.
-            text = [{type: 'TEXT', value: "[" + linkCount + "]"}];
+            text = [ "[" + linkCount + "]" ];
             linkCount++;
         }
         return [ 
-            { 
-                type: 'TAG', 
-                    name: 'a',
-                    attribs: [
-                        ['href', target],
-                        ['data-type', 'external']
-                    ], 
-            } 
+            new TagTk( 'a', [
+                        new KV('href', target),
+                        new KV('data-type', 'external')
+                    ] ),
         ].concat( text 
-                , [{type: 'ENDTAG', name: 'a'}]);
+                , [ new EndTagTk( 'a' )]);
     }
   / "[" & { clearFlag('extlink'); return false; }
 
@@ -719,42 +718,16 @@ template
     params:(newline? "|" newline? p:template_param { return p })* 
     "}}" {
       target = flatten( target );
-      var obj = { 
-            type: 'SELFCLOSINGTAG', 
-            name: 'template', 
-            attribs: [], //[['data-target', JSON.stringify(target)]],
-            orderedArgs: params,
-            //args: {},
-            target: target
-      };
-      // XXX: this is kind of broken, as arg keys need to be expanded
-      //if (params && params.length) {
-      //    var position = 1;
-      //    for ( var i = 0, l = params.length; i < l; i++ ) {
-      //        var param = params[i];
-      //        if ( param[0] === null ) {
-      //            obj.args[position] = param[1];
-      //            position++;
-      //        } else {
-      //            // Last value wins for duplicates.
-      //            obj.args[param[0]] = param[1];
-      //        }
-      //    }
-      //    // HACK: temporarily also push the args into an attribute
-      //    // (just for debugging)
-      //    obj.attribs.push(['data-json-args', JSON.stringify(obj.args)]);
-      //}
-      // Should actually use a self-closing tag here, but the Node HTML5
-      // parser only recognizes known self-closing tags for now, so use an
-      // explicit end tag for now.
-      //console.log(pp(obj));
+      var obj = new SelfclosingTagTk( 'template' );
+      obj.orderedArgs = params;
+      obj.target = target;
       //console.log( 'tokenizer template ' + JSON.stringify( target ));
       return obj;
   }
 
 // XXX: support template and args in target!
 //template_target
-//  = h:( !"}}" x:([^|\n]) { return x } )* { return { type: 'TEXT', value: h.join('') } }
+//  = h:( !"}}" x:([^|\n]) { return x } )* { return h.join('') }
 
 tplarg 
   = "{{{" 
@@ -762,20 +735,17 @@ tplarg
     params:( newline? "|" newline? p:template_param { return p })* 
     "}}}" {
       name = flatten( name );
-      var obj = { 
-            type: 'SELFCLOSINGTAG', 
-            name: 'templatearg', 
-            attribs: [],
-            argname: name,
-            defaultvalue: []
-      };
+      var obj = new SelfclosingTagTk( 'templatearg', [] );
+      obj.argname= name;
       if (params && params.length) {
           // HACK, not final.
-          //obj.attribs.push(['data-defaultvalue', params[0][1]]);
+          //obj.attribs.push(new KV('data-defaultvalue', params[0][1]));
           //console.log(JSON.stringify(params, null, 2));
-          //obj.attribs.push(['data-json-args', JSON.stringify(params)]);
-          obj.defaultvalue = params[0][1].length ? params[0][1] : 
-                                                    [{type: 'TEXT', value: ''}];
+          //obj.attribs.push(new KV('data-json-args', JSON.stringify(params)));
+          obj.defaultvalue = params[0].v.length ? params[0].v : 
+                                                    [ '' ];
+      } else {
+        obj.defaultvalue = [];
       }
       //console.log( 'tokenizer tplarg ' + JSON.stringify( obj, null, 2 ));
       return obj;
@@ -785,14 +755,14 @@ template_param
   = name:template_param_name space* "=" space* c:template_param_text? {
       //console.log( 'named template_param matched' + pp([name, flatten( c )]) );
       if ( c !== '' ) {
-        return [name, flatten( c )];
+        return new KV(name, flatten( c ));
       } else {
-        return [name, []];
+        return new KV(name, []);
       }
   } / c:template_param_text {
-        return [[], flatten( c ) ];
+        return new KV([], flatten( c ) );
   }
-  / & [|}] { return [[], []]; }
+  / & [|}] { return new KV([], []); }
 
 
 // FIXME: handle template args and templates in key! (or even parser functions?)
@@ -827,27 +797,24 @@ wikilink
     // class. Can we work out a static negative class instead?
     // XXX: Exclude uppercase chars from non-latin languages too!
     trail:(! [A-Z \t(),.:-] tc:text_char { return tc })* {
-      var obj = {
-          type: 'TAG',
-          name: 'a',
-          attribs: [
-              ['data-type', 'internal']
-          ]
-      },
+      var obj = new TagTk( 'a', 
+                [
+                    new KV('data-type', 'internal')
+                ] ),
           textTokens = [];
-      obj.attribs.push(['href', target]);
+      obj.attribs.push( new KV('href', target) );
       if (lcontent && lcontent.length) {
           textTokens = lcontent;
           if (trail) {
-            textTokens.push( { type: 'TEXT', value: trail.join('') } );
+            textTokens.push( trail.join('') );
           }
       } else {
           if (trail) {
               target += trail.join('');
           }
-          textTokens = [{type: 'TEXT', value: target}];
+          textTokens = [ target ];
       }
-      return [obj].concat(textTokens, [{type: 'ENDTAG', name: 'a'}]);
+      return [obj].concat(textTokens, [new EndTagTk( 'a' )]);
   }
 
 link_target
@@ -872,18 +839,16 @@ link_text
 link_end = "]]"
 
 /* Generic quote production for italic and bold, further processed in a token
- * stream transformation in doQuotes. Relies on NEWLINE tokens being emitted
+ * stream transformation in doQuotes. Relies on NlTk tokens being emitted
  * for each line of text to balance quotes per line.
  * 
  * We are not using a simple pair rule here as we need to support mis-nested
  * bolds/italics and MediaWiki's special heuristics for apostrophes, which are
  * all not context free. */
 quote = "''" x:"'"* {
-	return { 
-        type: 'TAG',
-		name : 'mw-quote', // Will be consumed in token transforms
-		value: "''" + x.join('')
-	}
+	var res = new TagTk( 'mw-quote' ); // Will be consumed in token transforms
+    res.value = "''" + x.join('');
+    return res;
 }
 
 /* XXX: Extension tags can require a change in the tokenizer mode, which
@@ -901,16 +866,16 @@ pre
   = "<pre" 
     attribs:generic_attribute* 
     ">"
-    ts:(t1:[^<]+ { return {type:'TEXT',value:t1.join('')} } 
+    ts:(t1:[^<]+ { return t1.join('') } 
                 / nowiki 
-                / !"</pre>" t2:. {return {type:'TEXT',value:t2}})+ 
+                / !"</pre>" t2:. { return t2 })+ 
     ("</pre>" / eof) {
         // return nowiki tags as well?
         //console.log('inpre');
-        return [ {type: 'TAG', name: 'pre', attribs: attribs} ]
-                    .concat(ts, [{type: 'ENDTAG', name: 'pre'}]);
+        return [ new TagTk( 'pre', attribs ) ]
+                    .concat(ts, [ new EndTagTk( 'pre' ) ]);
     }
-  / "</pre>" { return {type: 'TEXT', value: "</pre>"}; }
+  / "</pre>" { return "</pre>"; }
 
 nowiki 
   = "<nowiki>" nc:nowiki_content "</nowiki>" { 
@@ -919,9 +884,9 @@ nowiki
     }
   / "<nowiki>" { 
           //console.log('nowiki fallback');
-          return [{type: 'TEXT', value: '<nowiki>'}]; 
+          return ['<nowiki>']; 
     }
-  / "</nowiki>" { return [{type: 'TEXT', value: '</nowiki>'}]; }
+  / "</nowiki>" { return ['</nowiki>']; }
 
 nowiki_content
   = ts:(   t:[^<]+ { return t.join('') } 
@@ -932,7 +897,7 @@ nowiki_content
            / (!("</nowiki>" / "</pre>") c:. {return c}) 
        )* {
             // return nowiki tags as well?
-            return [{type: 'TEXT', value: ts.join('')}];
+            return [ts.join('')];
           }
 
 // See http://dev.w3.org/html5/spec/Overview.html#syntax-tag-name and
@@ -946,13 +911,13 @@ block_tag
             // abort match if tag is not block-level
             return null;
         }
-        var res = {name: name, attribs: attribs};
+        var res;
         if ( end != '' ) {
-            res.type = 'ENDTAG';
+            res = new EndTagTk( name, attribs );
         } else if ( selfclose != '' ) {
-            res.type = 'SELFCLOSINGTAG';
+            res = new SelfclosingTagTk( name, attribs );
         } else {
-            res.type = 'TAG';
+            res = new TagTk( name, attribs );
         }
         return [res];
     }
@@ -974,15 +939,16 @@ generic_tag
     space*
     selfclose:"/"?
     ">" {
-        var res = {name: name.join(''), attribs: attribs};
+        name = name.join('');
+        var res;
         if ( end != '' ) {
-            res.type = 'ENDTAG';
+            res = new EndTagTk( name, attribs );
         } else if ( selfclose != '' ) {
-            res.type = 'SELFCLOSINGTAG';
+            res = new SelfclosingTagTk( name, attribs );
         } else {
-            res.type = 'TAG';
+            res = new TagTk( name, attribs );
         }
-        res.attribs.push(['data-sourceTagPos', (tagStartPos - 1) + ":" + pos]);
+        res.attribs.push(new KV('data-sourceTagPos', (tagStartPos - 1) + ":" + pos));
         return res;
     }
 
@@ -993,9 +959,9 @@ generic_attribute
           v:generic_attribute_value { return v })?
 {
     if ( value !== '' ) {
-        return [name, value];
+        return new KV( name, value );
     } else {
-        return [name,''];
+        return new KV( name, '' );
     }
 }
 
@@ -1024,9 +990,9 @@ att_value
 /* Lists */
 lists = e:(dtdd / li) es:(sol (dtdd / li))*
 {
-    return annotateList( [ { type: 'TAG', name: 'list'} ]
+    return annotateList( [ new TagTk( 'list' ) ]
             .concat(flatten([e].concat(es))
-                ,[{ type: 'ENDTAG', name: 'list' }]));
+                ,[ new EndTagTk( 'list' ) ]));
 }
 
 li = bullets:list_char+ 
@@ -1035,10 +1001,9 @@ li = bullets:list_char+
 {
     if ( c == '' )
         c = [];
-    return [ { type: 'TAG', 
-               name: 'listItem', 
-               bullets: bullets }
-           , c ];
+    var li = new TagTk( 'listItem' );
+    li.bullets = bullets;
+    return [ li, c ];
 }
 
 dtdd 
@@ -1055,17 +1020,18 @@ dtdd
         // Convert trailing space into &nbsp;
         // XXX: This should be moved to a serializer
         //var clen = c.length;
-        //if (clen && c[clen - 1].type === 'TEXT') {
+        //if (clen && c[clen - 1].constructor === String) {
         //    var val = c[clen - 1].value;
         //    if(val.length && val[val.length - 1] == ' ') {
         //        c[clen - 1].value = val.substr(0, val.length - 1) + "\u00a0";
         //    }
         //}
 
-        return [ { type: 'TAG', name: 'listItem', bullets: bullets + ";" } ]
-            .concat( c
-                    ,[{ type: 'TAG', name: 'listItem', bullets: bullets + ":" } ]
-                    , d );
+        var li = new TagTk( 'listItem' );
+        li.bullets = bullets + ";";
+        var li2 = new TagTk( 'listItem' );
+        li2.bullets = bullets + ":";
+        return [ li ].concat( c, [ li2 ], d );
     }
   // Fall-back case to clear the colon flag
   / & { return true; } { syntaxFlags['colon'] = 0; return null; }
@@ -1111,19 +1077,19 @@ table_start_tag
     space*
     te:table_end_tag? // can occur somewhere in the middle of the line too
     { 
-        var tok = [{type: 'TAG', name: 'table'}];
+        var toks = [ new TagTk( 'table' ) ];
         if ( ta )
-            tok[0].attribs = ta;
+            toks[0].attribs = ta;
         if ( te )
-            tok = tok.concat(te);
-        return tok;
+            toks = toks.concat( te );
+        return toks;
     }
 
 table_caption_tag
   = "|+" 
     c:inline* { 
-        return [{type: 'TAG', name: 'caption'}]
-                    .concat( c, [{type: 'ENDTAG', name: 'caption'}]);
+        return [ new TagTk( 'caption' )]
+                    .concat( c, [ new EndTagTk( 'caption' ) ]);
     }
 
 
@@ -1138,7 +1104,7 @@ table_row_tag
         // We rely on our tree builder to close the row as needed. This is
         // needed to support building tables from fragment templates with
         // individual cells or rows.
-        var trToken = [{type: 'TAG', name: 'tr', attribs: a}];
+        var trToken = [ new TagTk( 'tr', a ) ];
         if ( !td ) {
             return trToken;
         } else {
@@ -1167,8 +1133,8 @@ table_data_tag
             a = [];
         }
         //dp("table data result: " + pp(td) + ", attribts: " + pp(a));
-        return [{ type: 'TAG', name: 'td', attribs: a}]
-                    .concat( td, [{type: 'ENDTAG', name: 'td'}] );
+        return [ new TagTk( 'td', a )]
+                    .concat( td, [ new EndTagTk ( 'td' ) ] );
     }
 
 table_heading_tags
@@ -1184,13 +1150,13 @@ table_heading_tag
          if ( a == '' ) {
              a = [];
          }
-         return [{type: 'TAG', name: 'th', attribs: a}]
-						.concat( c, [{type: 'ENDTAG', name: 'th'}] );
+         return [ new TagTk( 'th', a ) ]
+						.concat( c, [new EndTagTk( 'th' )] );
      }
 
 table_end_tag
   = "|}" { 
-      var tok = [{type: 'ENDTAG', name: 'table'}];
+      var tok = [new EndTagTk( 'table' )];
 	  return tok;
   }
 
@@ -1209,25 +1175,24 @@ table_cell_args
  * when those work as intended! */
 table 
   = tas:table_start space* c:table_caption? b:table_body? te:table_end { 
-      var res = {type: 'TAG', name: 'table'}
+      var res = new TagTk( 'table' );
       var body = b !== '' ? b : [];
       dp("body: " + pp(body));
       if (tas.length > 0) {
           // FIXME: actually parse and build structure
-          //res.attribs = [['data-unparsed', tas.join('')]];
+          //res.attribs = [new KV('data-unparsed', tas.join(''))];
           res.attribs = tas;
       }
 
       if (c != '') {
-          var caption = [{type: 'TAG', name: 'caption'}]
-                        .concat(c, [{type: 'ENDTAG', name: 'caption'}], te);
+          var caption = [ new TagTk( 'caption' ) ]
+                        .concat(c, [new EndTagTk( 'caption' )], te);
       } else {
           var caption = [];
       }
       //dp(pp(res));
 
-      return [res].concat(caption, body,
-              [{type: 'ENDTAG', name: 'table'}]);
+      return [res].concat(caption, body, [new EndTagTk( 'table' )]);
   }
 
 table_start 
@@ -1263,8 +1228,8 @@ table_body
 table_firstrow 
   = td:(table_data / table_heading)+ { 
       //dp('firstrow: ' + pp(td));
-      return [{ type: 'TAG', name: 'tr' }]
-             .concat(td, [{type: 'ENDTAG', name: 'tr'}]);
+      return [ new TagTk( 'tr' )]
+             .concat(td, [ new EndTagTk( 'tr' )]);
   }
 
 table_row 
@@ -1274,8 +1239,8 @@ table_row
     a:(as:generic_attribute+ space* "|" !"|" { return as } )?
     space* 
     td:(table_data / table_heading)* { 
-        return n.concat([{type: 'TAG', name: 'tr'}]
-					   , td, [{type: 'ENDTAG', name: 'tr'}]);
+        return n.concat([ new TagTk( 'tr' )]
+					   , td, [ new EndTagTk( 'tr' )]);
     }
 
 table_data 
@@ -1293,8 +1258,8 @@ table_data
             a = [];
         }
         //dp("table data result: " + pp(td) + ", attribts: " + pp(a));
-        return n.concat( [{ type: 'TAG', name: 'td', attribs: a}]
-					   , td, [{type: 'ENDTAG', name: 'td'}] );
+        return n.concat( [ new TagTk( 'td',  a ) ]
+					   , td, [ new EndTagTk( 'td' ) ] );
     }
 
 table_heading
@@ -1304,8 +1269,8 @@ table_heading
          if ( a == '' ) {
              a = [];
          }
-         return n.concat( [{type: 'TAG', name: 'th', attribs: a}]
-						, c, [{type: 'ENDTAG', name: 'th'}]);
+         return n.concat( [ new TagTk( 'th', a )]
+						, c, [ new EndTagTk( 'th' ) ]);
      }
 
 thtd_attribs

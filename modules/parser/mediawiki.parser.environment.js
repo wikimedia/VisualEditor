@@ -25,7 +25,7 @@ MWParserEnvironment.prototype.lookupKV = function ( kvs, key ) {
 	var kv;
 	for ( var i = 0, l = kvs.length; i < l; i++ ) {
 		kv = kvs[i];
-		if ( kv[0] === key ) {
+		if ( kv.k === key ) {
 			// found, return it.
 			return kv;
 		}
@@ -42,9 +42,9 @@ MWParserEnvironment.prototype.KVtoHash = function ( kvs ) {
 	var res = {};
 	for ( var i = 0, l = kvs.length; i < l; i++ ) {
 		var kv = kvs[i],
-			key = this.tokensToString( kv[0] ).trim();
+			key = this.tokensToString( kv.k ).trim();
 		if( res[key] === undefined ) {
-			res[key] = kv[1];
+			res[key] = kv.v;
 		}
 	}
 	//console.log( 'KVtoHash: ' + JSON.stringify( res ));
@@ -122,8 +122,8 @@ MWParserEnvironment.prototype.tokensToString = function ( tokens ) {
 							JSON.stringify( token ) );
 			continue;
 		}
-		if ( token.type === 'TEXT' ) {
-			out.push( token.value );
+		if ( token.constructor === String ) {
+			out.push( token );
 		} else if ( token.type === 'COMMENT' || token.type === 'NEWLINE' ) {
 			// strip comments and newlines
 		} else {

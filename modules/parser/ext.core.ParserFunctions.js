@@ -56,19 +56,16 @@ ParserFunctions.prototype['pf_#ifeq'] = function ( target, argList, argDict ) {
 };
 
 ParserFunctions.prototype['pf_lc'] = function ( target, argList, argDict ) {
-	return [{type: 'TEXT', value: target.toLowerCase()}];
+	return [ target.toLowerCase() ];
 };
 
 ParserFunctions.prototype['pf_uc'] = function ( target, argList, argDict ) {
-	return [{type: 'TEXT', value: target.toUpperCase()}];
+	return [ target.toUpperCase() ];
 };
 
 ParserFunctions.prototype['pf_ucfirst'] = function ( target, argList, argDict ) {
 	if ( target ) {
-		return [{
-			type: 'TEXT', 
-			value: target[0].toUpperCase() + target.substr(1)
-		}];
+		return [ target[0].toUpperCase() + target.substr(1) ];
 	} else {
 		return [];
 	}
@@ -76,10 +73,7 @@ ParserFunctions.prototype['pf_ucfirst'] = function ( target, argList, argDict ) 
 
 ParserFunctions.prototype['pf_lcfirst'] = function ( target, argList, argDict ) {
 	if ( target ) {
-		return [{
-			type: 'TEXT', 
-			value: target[0].toLowerCase() + target.substr(1)
-		}];
+		return [ target[0].toLowerCase() + target.substr(1) ];
 	} else {
 		return [];
 	}
@@ -93,20 +87,19 @@ ParserFunctions.prototype['pf_#tag'] = function ( target, argList, argDict ) {
 // Based on http://jacwright.com/projects/javascript/date_format/ for now, MIT
 // licensed.
 ParserFunctions.prototype['pf_#time'] = function ( target, argList, argDict ) {
-	//return [{type: 'TEXT', value: 'January 22, 2012'}];
 	var res,
 		tpl = target.trim();
 	//try {
 	//	var date = new Date( this.manager.env.tokensToString( argList[0][1] ) );
-	//	res = [{type: 'TEXT', value: date.format( target ) }];
+	//	res = [ date.format( target ) ];
 	//} catch ( e ) {
 	//	this.manager.env.dp( 'ERROR: #time ' + e );
 	
 		try {
-			res = [{type: 'TEXT', value: new Date().format ( tpl ) }];
+			res = [ new Date().format ( tpl ) ];
 		} catch ( e2 ) {
 			this.manager.env.dp( 'ERROR: #time ' + e2 );
-			res = [{type: 'TEXT', value: new Date().toString() }];
+			res = [ new Date().toString() ];
 		}
 	//}
 	return res;
@@ -130,6 +123,7 @@ Date.prototype.format = function(format) {
     return returnStr;
 };
 
+// XXX: support localization
 Date.replaceChars = {
     shortMonths: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     longMonths: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
@@ -190,7 +184,7 @@ ParserFunctions.prototype['pf_#ifexpr'] = function ( target, argList, argDict ) 
 		var f = new Function ( 'return (' + target + ')' );
 		res = f();
 	} catch ( e ) {
-		return [{type: 'TEXT', value: 'class="error" in expression ' + target }];
+		return [ 'class="error" in expression ' + target ];
 	}
 	if ( res ) {
 		return ( argList[0] && argList[0][1] ) || [];
@@ -211,9 +205,9 @@ ParserFunctions.prototype['pf_#expr'] = function ( target, argList, argDict ) {
 		var f = new Function ( 'return (' + target + ')' );
 		res = f();
 	} catch ( e ) {
-		return [{type: 'TEXT', value: 'class="error" in expression ' + target }];
+		return [ 'class="error" in expression ' + target ];
 	}
-	return [{type: 'TEXT', value: res.toString()}];
+	return [ res.toString() ];
 };
 
 
@@ -227,51 +221,51 @@ ParserFunctions.prototype['pf_#ifexist'] = function ( target, argList, argDict )
 	return ( argList[0] && argList[0][1] ) || [];
 };
 ParserFunctions.prototype['pf_formatnum'] = function ( target, argList, argDict ) {
-	return [{type: 'TEXT', value: target}];
+	return [ target ];
 };
 ParserFunctions.prototype['pf_currentpage'] = function ( target, argList, argDict ) {
-	return [{type: 'TEXT', value: target}];
+	return [ target ];
 };
 ParserFunctions.prototype['pf_pagename'] = function ( target, argList, argDict ) {
-	return [{type: 'TEXT', value: target}];
+	return [ target ];
 };
 ParserFunctions.prototype['pf_pagesize'] = function ( target, argList, argDict ) {
-	return [{type: 'TEXT', value: '100'}];
+	return [ '100' ];
 };
 ParserFunctions.prototype['pf_pagename'] = function ( target, argList, argDict ) {
-	return [{type: 'TEXT', value: target}];
+	return [ target ];
 };
 ParserFunctions.prototype['pf_fullpagename'] = function ( target, argList, argDict ) {
-	return [{type: 'TEXT', value: target}];
+	return [target];
 };
 ParserFunctions.prototype['pf_fullpagenamee'] = function ( target, argList, argDict ) {
-	return [{type: 'TEXT', value: target}];
+	return [target];
 };
 ParserFunctions.prototype['pf_fullurl'] = function ( target, argList, argDict ) {
-	return [{type: 'TEXT', value: target}];
+	return [target];
 };
 ParserFunctions.prototype['pf_urlencode'] = function ( target, argList, argDict ) {
 	this.manager.env.tp( 'urlencode: ' + target  );
-	return [{type: 'TEXT', value: target.trim()}];
+	return [target.trim()];
 };
 ParserFunctions.prototype['pf_anchorencode'] = function ( target, argList, argDict ) {
-	return [{type: 'TEXT', value: target}];
+	return [target];
 };
 ParserFunctions.prototype['pf_namespace'] = function ( target, argList, argDict ) {
-	return [{type: 'TEXT', value: 'Main'}];
+	return ['Main'];
 };
 ParserFunctions.prototype['pf_protectionlevel'] = function ( target, argList, argDict ) {
-	return [{type: 'TEXT', value: ''}];
+	return [''];
 };
 ParserFunctions.prototype['pf_ns'] = function ( target, argList, argDict ) {
-	return [{type: 'TEXT', value: target}];
+	return [target];
 };
 
 ParserFunctions.prototype['pf_subjectspace'] = function ( target, argList, argDict ) {
-	return [{type: 'TEXT', value: 'Main'}];
+	return ['Main'];
 };
 ParserFunctions.prototype['pf_talkspace'] = function ( target, argList, argDict ) {
-	return [{type: 'TEXT', value: 'Talk'}];
+	return ['Talk'];
 };
 
 if (typeof module == "object") {

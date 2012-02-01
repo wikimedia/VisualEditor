@@ -178,10 +178,7 @@ Cite.prototype.onRef = function ( tokenCTX ) {
 			// XXX: Add round-trip info here?
 		]
 	},
-	{
-		type: 'TEXT',
-		value: '[' + bits.join(' ')  + ']'
-	},
+	'[' + bits.join(' ')  + ']',
 	{
 		type: 'ENDTAG', 
 		name: 'a'

@@ -10,12 +10,15 @@ var PEG = require('pegjs'),
 	path = require('path'),
 	fs = require('fs'),
 	$ = require('jquery'),
-	events = require('events');
+	events = require('events'),
+	defines = require('./mediawiki.parser.defines.js');
 
 function PegTokenizer() {
 	var pegSrcPath = path.join( __dirname, 'pegTokenizer.pegjs.txt' );
 	this.src = fs.readFileSync( pegSrcPath, 'utf8' );
 }
+
+
 
 // Inherit from EventEmitter
 PegTokenizer.prototype = new events.EventEmitter();

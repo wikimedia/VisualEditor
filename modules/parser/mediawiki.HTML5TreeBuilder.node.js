@@ -61,7 +61,7 @@ FauxHTML5.TreeBuilder.prototype._att = function (maybeAttribs) {
 	if ( maybeAttribs && $.isArray( maybeAttribs ) ) {
 		for(var i = 0, length = maybeAttribs.length; i < length; i++) {
 			var att = maybeAttribs[i];
-			atts.push({nodeName: att[0], nodeValue: att[1]});
+			atts.push({nodeName: att.k, nodeValue: att.v});
 		}
 	}
 	return atts;
@@ -71,54 +71,55 @@ FauxHTML5.TreeBuilder.prototype._att = function (maybeAttribs) {
 // html tree builder by emitting the token.
 FauxHTML5.TreeBuilder.prototype.processToken = function (token) {
 
-	switch (token.type) {
-		case "TEXT":
-			this.emit('token', {type: 'Characters', data: token.value});
-			break;
-		case "TAG":
-			this.emit('token', {type: 'StartTag', 
-				name: token.name, 
-				data: this._att(token.attribs)});
-			break;
-		case "ENDTAG":
-			this.emit('token', {type: 'EndTag', 
-				name: token.name, 
-				data: this._att(token.attribs)});
-			break;
-		case "SELFCLOSINGTAG":
-			this.emit('token', {type: 'StartTag', 
-				name: token.name, 
-				data: this._att(token.attribs)});
-			if ( HTML5.VOID_ELEMENTS.indexOf( token.name.toLowerCase() ) < 0 ) {
-				// VOID_ELEMENTS are automagically treated as self-closing by
-				// the tree builder
+	if ( token.constructor === String ) {
+		this.emit('token', {type: 'Characters', data: token});
+	} else {
+		switch (token.type) {
+			case "TAG":
+				this.emit('token', {type: 'StartTag', 
+					name: token.name, 
+					data: this._att(token.attribs)});
+				break;
+			case "ENDTAG":
 				this.emit('token', {type: 'EndTag', 
 					name: token.name, 
 					data: this._att(token.attribs)});
-			}
-			break;
-		case "COMMENT":
-			this.emit('token', {type: 'Comment', 
-				data: token.value});
-			break;
-		case "END":
-			this.emit('end');
-			this.emit('token', { type: 'EOF' } );
-			this.document = this.parser.document;
-			if ( ! this.document.body ) {
-				// HACK: This should not be needed really.
-				this.document.body = this.parser.document.getElementsByTagName('body')[0];
-			}
-			// Emit the document to consumers
-			//this.emit('document', this.document);
-			break;
-		case "NEWLINE":
-			//this.emit('end');
-			//this.emit('token', {type: 'Characters', data: "\n"});
-			break;
-		default:
-			console.log("Unhandled token: " + JSON.stringify(token));
-			break;
+				break;
+			case "SELFCLOSINGTAG":
+				this.emit('token', {type: 'StartTag', 
+					name: token.name, 
+					data: this._att(token.attribs)});
+				if ( HTML5.VOID_ELEMENTS.indexOf( token.name.toLowerCase() ) < 0 ) {
+					// VOID_ELEMENTS are automagically treated as self-closing by
+					// the tree builder
+					this.emit('token', {type: 'EndTag', 
+						name: token.name, 
+						data: this._att(token.attribs)});
+				}
+				break;
+			case "COMMENT":
+				this.emit('token', {type: 'Comment', 
+					data: token.value});
+				break;
+			case "END":
+				this.emit('end');
+				this.emit('token', { type: 'EOF' } );
+				this.document = this.parser.document;
+				if ( ! this.document.body ) {
+					// HACK: This should not be needed really.
+					this.document.body = this.parser.document.getElementsByTagName('body')[0];
+				}
+				// Emit the document to consumers
+				//this.emit('document', this.document);
+				break;
+			case "NEWLINE":
+				//this.emit('end');
+				//this.emit('token', {type: 'Characters', data: "\n"});
+				break;
+			default:
+				console.log("Unhandled token: " + JSON.stringify(token));
+				break;
+		}
 	}
 };
 

@@ -88,7 +88,7 @@ QuoteTransformer.prototype.onQuote = function ( token, cb, frame, prevToken ) {
 			this.bolds.push(this.currentChunk);
 			break;
 		case 4: 
-			this.currentChunk.push( {type: 'TEXT', value: "'"} );
+			this.currentChunk.push( "'" );
 			this._startNewChunk();
 			this.currentChunk.push(ctx);
 			this.bolds.push(this.currentChunk);
@@ -108,7 +108,7 @@ QuoteTransformer.prototype.onQuote = function ( token, cb, frame, prevToken ) {
 			break;
 		default: // longer than 5, only use the last 5 ticks
 			var newvalue = token.value.substr(0, qlen - 5 );
-			this.currentChunk.push ( {type: 'TEXT', value: newvalue} );
+			this.currentChunk.push ( newvalue );
 			this._startNewChunk();
 			this.currentChunk.push(ctx);
 			this.italics.push(this.currentChunk); 
@@ -153,9 +153,9 @@ QuoteTransformer.prototype.onNewLine = function (  token, cb, frame, prevToken )
 			var ctx = this.bolds[j][0];
 			//console.log("balancing!" + JSON.stringify(ctx.prevToken, null, 2));
 			if (ctx.prevToken) {
-				if (ctx.prevToken.type === 'TEXT') {
-					var lastchar = prevToken.value[ctx.prevToken.value.length - 1],
-						secondtolastchar = ctx.prevToken.value[ctx.prevToken.value.length - 2];
+				if (ctx.prevToken.constructor === String) {
+					var lastchar = prevToken[ctx.prevToken.length - 1],
+						secondtolastchar = ctx.prevToken[ctx.prevToken.length - 2];
 					if (lastchar === ' ' && firstspace === -1) {
 						firstspace = j;
 					} else if (lastchar !== ' ') {
@@ -215,7 +215,7 @@ QuoteTransformer.prototype.onNewLine = function (  token, cb, frame, prevToken )
 // italic tags. In the process, one quote needs to be converted back to text.
 QuoteTransformer.prototype.convertBold = function ( i ) {
 	var chunk = this.bolds[i],
-		textToken = { type: 'TEXT', value: "'" };
+		textToken = "'";
 	//console.log('convertbold!');
 	if ( chunk.pos ) {
 		this.chunks[chunk.pos - 1].push( textToken );

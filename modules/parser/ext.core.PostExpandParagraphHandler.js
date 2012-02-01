@@ -74,7 +74,7 @@ PostExpandParagraphHandler.prototype.onAny = function ( token, cb, frame, prevTo
 	//console.log( 'PostExpandParagraphHandler.onAny' );
 	this.tokens.push( token );
 	if ( token.type === 'COMMENT' || 
-			( token.type === 'TEXT' && token.value.match( /^[\t ]+$/ ) ) 
+			( token.constructor === String && token.match( /^[\t ]+$/ ) ) 
 	)
 	{
 		// Continue with collection..

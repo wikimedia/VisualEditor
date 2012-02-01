@@ -34,7 +34,7 @@ Sanitizer.prototype.onAnchor = function ( token ) {
 	}
 	var hrefKV = this.manager.env.lookupKV( token.attribs, 'href' );
 	if ( hrefKV !== null ) {
-		var bits = hrefKV[1].match( /(.*?\/\/)([^\/]+)(\/?.*)/ );
+		var bits = hrefKV.v.match( /(.*?\/\/)([^\/]+)(\/?.*)/ );
 		if ( bits ) {
 			proto = bits[1];
 			host = bits[2];
@@ -42,10 +42,10 @@ Sanitizer.prototype.onAnchor = function ( token ) {
 		} else {
 			proto = '';
 			host = '';
-			path = hrefKV[1];
+			path = hrefKV.v;
 		}
 		host = this._stripIDNs( host );
-		hrefKV[1] = proto + host + path;
+		hrefKV.v = proto + host + path;
 	}
 	return { token: token };
 };
