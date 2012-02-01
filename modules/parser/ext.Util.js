@@ -16,9 +16,9 @@ function Util () {
  * @returns {Boolean}: True if token is block-level, false otherwise.
  */
 Util.prototype.isBlockToken = function ( token ) {
-	if ( token.type === 'TAG' || 
-			token.type === 'ENDTAG' || 
-			token.type === 'SELFCLOSINGTAG' ) {
+	if ( token.constructor === TagTk || 
+			token.constructor === EndTagTk || 
+			token.constructor === SelfclosingTagTk ) {
 		return this.isBlockTag( token.name.toLowerCase() );
 	} else {
 		return false;

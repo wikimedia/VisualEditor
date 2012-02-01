@@ -494,13 +494,13 @@ AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parent
 			case NlTk:
 				res = this._transformToken( token, cb, phaseEndRank, ts.newline );
 				break;
+			case TagTk:
+			case EndTagTk:
+			case SelfclosingTagTk:
+				res = this._transformTagToken( token, cb, phaseEndRank );
+				break;
 			default:
 				switch( token.type ) {
-					case 'TAG':
-					case 'ENDTAG':
-					case 'SELFCLOSINGTAG':
-						res = this._transformTagToken( token, cb, phaseEndRank );
-						break;
 					case 'COMMENT':
 						res = this._transformToken( token, cb, phaseEndRank, ts.comment);
 						break;
@@ -676,13 +676,13 @@ SyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 			case NlTk:
 				res = this._transformToken( token, cb, this.phaseEndRank, ts.newline );
 				break;
+			case TagTk:
+			case EndTagTk:
+			case SelfclosingTagTk:
+				res = this._transformTagToken( token, cb, this.phaseEndRank );
+				break;
 			default:
 				switch( token.type ) {
-					case 'TAG':
-					case 'ENDTAG':
-					case 'SELFCLOSINGTAG':
-						res = this._transformTagToken( token, cb, this.phaseEndRank );
-						break;
 					case 'COMMENT':
 						res = this._transformToken( token, cb, this.phaseEndRank, ts.comment );
 						break;

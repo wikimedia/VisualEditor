@@ -150,8 +150,8 @@
 
         for (var i = 0, length = tokens.length; i < length; i++) {
             var token = tokens[i];
-            switch ( token.type ) {
-                case 'TAG':
+            switch ( token.constructor ) {
+                case TagTk:
                     switch (token.name) {
                         case 'list':
                             // ignore token
@@ -168,7 +168,7 @@
                             break;
                     }
                     break;
-                case 'ENDTAG':
+                case EndTagTk:
                     if ( token.name == 'list' ) {
                         // pop all open list item tokens
                         popTags(bstack.length);

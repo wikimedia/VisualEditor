@@ -3,18 +3,18 @@
  * strings or String objects (if attributes are needed).
  */
 function TagTk( name, attribs ) { 
-	this.type = 'TAG';
+	//this.type = 'TAG';
 	this.name = name;
 	this.attribs = attribs || [];
 }
 
 function EndTagTk( name, attribs ) { 
-	this.type = 'ENDTAG';
+	//this.type = 'ENDTAG';
 	this.name = name;
 	this.attribs = attribs || [];
 }
 function SelfclosingTagTk( name, attribs ) { 
-	this.type = 'SELFCLOSINGTAG';
+	//this.type = 'SELFCLOSINGTAG';
 	this.name = name;
 	this.attribs = attribs || [];
 }

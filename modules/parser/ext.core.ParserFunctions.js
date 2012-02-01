@@ -80,7 +80,7 @@ ParserFunctions.prototype['pf_lcfirst'] = function ( target, argList, argDict ) 
 };
 
 ParserFunctions.prototype['pf_#tag'] = function ( target, argList, argDict ) {
-	return [{type: 'TAG', name: target, attribs: argList}];
+	return [new TagTk(target, argList)];
 };
 
 // A first approximation, anyway..

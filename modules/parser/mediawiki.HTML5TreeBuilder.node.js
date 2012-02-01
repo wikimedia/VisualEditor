@@ -17,7 +17,7 @@ FauxHTML5.TreeBuilder = function ( ) {
 	this.parser.parse(this);
 
 	// implicitly start a new document
-	this.processToken({type: 'TAG', name: 'body'});
+	this.processToken(new TagTk( 'body' ));
 };
 
 // Inherit from EventEmitter
@@ -53,7 +53,7 @@ FauxHTML5.TreeBuilder.prototype.onEnd = function ( ) {
 
 	// XXX: more clean up to allow reuse.
 	this.parser.setup();
-	this.processToken({type: 'TAG', name: 'body'});
+	this.processToken(new TagTk( 'body' ));
 };
 
 FauxHTML5.TreeBuilder.prototype._att = function (maybeAttribs) {
@@ -77,30 +77,30 @@ FauxHTML5.TreeBuilder.prototype.processToken = function (token) {
 			break;
 		case NlTk:
 			break;
+		case TagTk:
+			this.emit('token', {type: 'StartTag', 
+				name: token.name, 
+				data: this._att(token.attribs)});
+			break;
+		case SelfclosingTagTk:
+			this.emit('token', {type: 'StartTag', 
+				name: token.name, 
+				data: this._att(token.attribs)});
+			if ( HTML5.VOID_ELEMENTS.indexOf( token.name.toLowerCase() ) < 0 ) {
+				// VOID_ELEMENTS are automagically treated as self-closing by
+				// the tree builder
+				this.emit('token', {type: 'EndTag', 
+					name: token.name, 
+					data: this._att(token.attribs)});
+			}
+			break;
+		case EndTagTk:
+			this.emit('token', {type: 'EndTag', 
+				name: token.name, 
+				data: this._att(token.attribs)});
+			break;
 		default:
 			switch (token.type) {
-				case "TAG":
-					this.emit('token', {type: 'StartTag', 
-						name: token.name, 
-						data: this._att(token.attribs)});
-					break;
-				case "ENDTAG":
-					this.emit('token', {type: 'EndTag', 
-						name: token.name, 
-						data: this._att(token.attribs)});
-					break;
-				case "SELFCLOSINGTAG":
-					this.emit('token', {type: 'StartTag', 
-						name: token.name, 
-						data: this._att(token.attribs)});
-					if ( HTML5.VOID_ELEMENTS.indexOf( token.name.toLowerCase() ) < 0 ) {
-						// VOID_ELEMENTS are automagically treated as self-closing by
-						// the tree builder
-						this.emit('token', {type: 'EndTag', 
-							name: token.name, 
-							data: this._att(token.attribs)});
-					}
-					break;
 				case "COMMENT":
 					this.emit('token', {type: 'Comment', 
 						data: token.value});

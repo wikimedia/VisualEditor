@@ -29,7 +29,7 @@ Sanitizer.prototype.register = function ( manager ) {
 
 Sanitizer.prototype.onAnchor = function ( token ) {
 	// perform something similar to Sanitizer::cleanUrl
-	if ( token.type === 'ENDTAG' ) {
+	if ( token.constructor === EndTagTk ) {
 		return { token: token };
 	}
 	var hrefKV = this.manager.env.lookupKV( token.attribs, 'href' );

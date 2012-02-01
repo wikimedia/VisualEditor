@@ -168,7 +168,7 @@ QuoteTransformer.prototype.onNewLine = function (  token, cb, frame, prevToken )
 						}
 					}
 				} else if ( ( ctx.prevToken.constructor === NlTk ||
-								ctx.prevToken.type === 'TAG' ) &&
+								ctx.prevToken.constructor === TagTk ) &&
 								firstmultiletterword == -1 ) {
 					// This is an approximation, as the original doQuotes
 					// operates on the source and just looks at space vs.
@@ -244,18 +244,15 @@ QuoteTransformer.prototype.quotesToTags = function ( chunks, name ) {
 		//console.log( 'quotesToTags t: ' + JSON.stringify( t, null, 2));
 
 		if(toggle) {
-			t.type = 'TAG';
+			chunks[j][0] = new TagTk( name, t.attribs );
 		} else {
-			t.type = 'ENDTAG';
+			chunks[j][0] = new EndTagTk( name, t.attribs );
 		}
-		t.name = name;
-		delete t.value;
-		chunks[j][0] = t;
 		toggle = !toggle;
 	}
 	if (!toggle) {
 		// Add end tag
-		this.currentChunk.push( {type: 'ENDTAG', name: name} );
+		this.currentChunk.push( new EndTagTk( name ) );
 	}
 };
 
