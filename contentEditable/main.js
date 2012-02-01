@@ -33,6 +33,37 @@ $(document).ready( function() {
 						}
 					]
 				}
+			},			
+			{
+				'type': 'table',
+				'attributes': { 'html/style': 'width: 600px; border: solid 1px;' },
+				'children': [
+					{
+						'type': 'tableRow',
+						'children': [
+							{
+								'type': 'tableCell',
+								'attributes': { 'html/style': 'border: solid 1px;' },
+								'children': [
+									{
+										'type': 'paragraph',
+										'content': { 'text': 'row 1 & cell 1' }
+									}
+								]
+							},
+							{
+								'type': 'tableCell',
+								'attributes': { 'html/style': 'border: solid 1px;' },
+								'children': [
+									{
+										'type': 'paragraph',
+										'content': { 'text': 'row 1 & cell 2' }
+									}
+								]
+							}
+						]
+					}
+				]
 			},
 			{
 				'type': 'paragraph',
