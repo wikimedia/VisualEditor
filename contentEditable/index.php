@@ -149,17 +149,17 @@ include( '../modules/sandbox/base.php' );
 		<script src="../modules/es/views/es.ToolbarView.js"></script>
 		<script src="../modules/es/views/es.ContentView.js"></script>
 		<script src="../modules/es/views/es.ContextView.js"></script>
-		<script src="../modules/es/views/es.DocumentView.js"></script>
 		<script src="../modules/es/views/es.ParagraphView.js"></script>
 		<script src="../modules/es/views/es.PreView.js"></script>
 		<script src="../modules/es/views/es.ListView.js"></script>
 		<script src="../modules/es/views/es.MenuView.js"></script>
 		<script src="../modules/es/views/es.ListItemView.js"></script>
-		<script src="../modules/es/views/es.TableView.js"></script>
-		<script src="../modules/es/views/es.TableRowView.js"></script>
-		<script src="../modules/es/views/es.TableCellView.js"></script>
 		<script src="../modules/es/views/es.HeadingView.js"></script>
 		-->
+		<script src="views/es.DocumentView.js"></script>
+		<script src="views/es.TableView.js"></script>
+		<script src="views/es.TableRowView.js"></script>
+		<script src="views/es.TableCellView.js"></script>
 		<script src="views/es.SurfaceView.js"></script>
 		<script src="views/es.ContentView.js"></script>
 		<script src="views/es.DocumentView.js"></script>
