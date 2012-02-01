@@ -8,7 +8,7 @@
  */
 es.ParagraphView = function( model ) {
 	// Inheritance
-	es.DocumentViewLeafNode.call( this, model );
+	es.DocumentViewLeafNode.call( this, model, $( '<p>' ) );
 
 	// DOM Changes
 	this.$.addClass( 'es-paragraphView' );
