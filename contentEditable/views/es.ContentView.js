@@ -102,7 +102,7 @@ es.ContentView.htmlCharacters = {
 	'"': '&quot;',
 	'\n': '<span class="es-contentView-whitespace">&#182;</span>',
 	'\t': '<span class="es-contentView-whitespace">&#8702;</span>',
-	' ': '&nbsp;'
+	//' ': '&nbsp;'
 };
 
 /* Static Methods */
