@@ -121,6 +121,16 @@ function ParserTests () {
 			description: 'Print out a WikiDom conversion of the HTML DOM',
 			'default': false,
 			'boolean': true
+		},
+		'debug': {
+			description: 'Print debugging information',
+			'default': false,
+			'boolean': true
+		},
+		'trace': {
+			description: 'Print trace information (light debugging)',
+			'default': false,
+			'boolean': true
 		}
 	}
 	).check( function(argv) {
@@ -188,7 +198,8 @@ function ParserTests () {
 	// Create a new parser environment
 	this.env = new MWParserEnvironment({ 
 		fetchTemplates: false,
-		debug: false
+		debug: this.argv.debug,
+		trace: this.argv.trace
 	});
 }
 
