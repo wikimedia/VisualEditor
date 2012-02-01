@@ -46,6 +46,7 @@
 		<!-- Rangy -->
 		<script src="rangy/rangy-core.js"></script>
 		<script src="rangy/rangy-position.js"></script>
+		
 		<!--
 		<script src="rangy/rangy-cssclassapplier.js"></script>
 		<script src="rangy/rangy-selectionsaverestore.js"></script>
