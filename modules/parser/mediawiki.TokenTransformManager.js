@@ -487,29 +487,31 @@ AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parent
 	for ( var i = 0; i < tokensLength; i++ ) {
 		token = tokens[i];
 
-		if ( token.constructor === String ) {
-			res = this._transformToken( token, cb, phaseEndRank, ts.text );
-			//console.log( 'transform string ' + token + ' res:' + JSON.stringify( res ) );
-		} else {
-			switch( token.type ) {
-				case 'TAG':
-				case 'ENDTAG':
-				case 'SELFCLOSINGTAG':
-					res = this._transformTagToken( token, cb, phaseEndRank );
-					break;
-				case 'COMMENT':
-					res = this._transformToken( token, cb, phaseEndRank, ts.comment);
-					break;
-				case 'NEWLINE':
-					res = this._transformToken( token, cb, phaseEndRank, ts.newline );
-					break;
-				case 'END':
-					res = this._transformToken( token, cb, phaseEndRank, ts.end );
-					break;
-				default:
-					res = this._transformToken( token, cb, phaseEndRank, ts.martian );
-					break;
-			}
+		switch ( token.constructor ) {
+			case String:
+				res = this._transformToken( token, cb, phaseEndRank, ts.text );
+				break;
+			case NlTk:
+				res = this._transformToken( token, cb, phaseEndRank, ts.newline );
+				break;
+			default:
+				switch( token.type ) {
+					case 'TAG':
+					case 'ENDTAG':
+					case 'SELFCLOSINGTAG':
+						res = this._transformTagToken( token, cb, phaseEndRank );
+						break;
+					case 'COMMENT':
+						res = this._transformToken( token, cb, phaseEndRank, ts.comment);
+						break;
+					case 'END':
+						res = this._transformToken( token, cb, phaseEndRank, ts.end );
+						break;
+					default:
+						res = this._transformToken( token, cb, phaseEndRank, ts.martian );
+						break;
+				}
+				break;
 		}
 
 		if( res.tokens ) {
@@ -666,30 +668,31 @@ SyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 	for ( var i = 0; i < tokensLength; i++ ) {
 		token = tokens[i];
 		
-		if ( token.constructor === String ) {
-			res = this._transformToken( token, cb, this.phaseEndRank, 
-						ts.text );
-		} else {
-
-			switch( token.type ) {
-				case 'TAG':
-				case 'ENDTAG':
-				case 'SELFCLOSINGTAG':
-					res = this._transformTagToken( token, cb, this.phaseEndRank );
-					break;
-				case 'COMMENT':
-					res = this._transformToken( token, cb, this.phaseEndRank, ts.comment );
-					break;
-				case 'NEWLINE':
-					res = this._transformToken( token, cb, this.phaseEndRank, ts.newline );
-					break;
-				case 'END':
-					res = this._transformToken( token, cb, this.phaseEndRank, ts.end );
-					break;
-				default:
-					res = this._transformToken( token, cb, this.phaseEndRank, ts.martian );
-					break;
-			}
+		switch( token.constructor ) {
+			case String:
+				res = this._transformToken( token, cb, this.phaseEndRank, 
+							ts.text );
+				break;
+			case NlTk:
+				res = this._transformToken( token, cb, this.phaseEndRank, ts.newline );
+				break;
+			default:
+				switch( token.type ) {
+					case 'TAG':
+					case 'ENDTAG':
+					case 'SELFCLOSINGTAG':
+						res = this._transformTagToken( token, cb, this.phaseEndRank );
+						break;
+					case 'COMMENT':
+						res = this._transformToken( token, cb, this.phaseEndRank, ts.comment );
+						break;
+					case 'END':
+						res = this._transformToken( token, cb, this.phaseEndRank, ts.end );
+						break;
+					default:
+						res = this._transformToken( token, cb, this.phaseEndRank, ts.martian );
+						break;
+				}
 		}
 
 		if( res.tokens ) {

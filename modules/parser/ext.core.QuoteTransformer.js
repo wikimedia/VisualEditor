@@ -167,7 +167,7 @@ QuoteTransformer.prototype.onNewLine = function (  token, cb, frame, prevToken )
 							firstmultiletterword = j;
 						}
 					}
-				} else if ( ( ctx.prevToken.type === 'NEWLINE' ||
+				} else if ( ( ctx.prevToken.constructor === NlTk ||
 								ctx.prevToken.type === 'TAG' ) &&
 								firstmultiletterword == -1 ) {
 					// This is an approximation, as the original doQuotes
