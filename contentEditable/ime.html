@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="../modules/jquery/jquery.js"></script>
+        <script>
+            $( function() {
+                console.log("start");
+
+                $('textarea').bind('keypress', function(e) {
+                   console.log('keypress', e);
+                });
+
+                $('textarea').bind('keydown', function(e) {
+                   console.log(e.which, e);
+                });
+
+                $('textarea').bind('keyup', function(e) {
+                   console.log($('textarea').val());
+                });
+
+            } );
+        </script>
+    </head>
+    <body>
+        <textarea></textarea>
+        
+    </body>
+</html>
