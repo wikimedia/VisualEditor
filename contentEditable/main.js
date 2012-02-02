@@ -36,7 +36,7 @@ $(document).ready( function() {
 			},			
 			{
 				'type': 'table',
-				'attributes': { 'html/style': 'width: 600px; border: solid 1px;' },
+				'attributes': { 'html/style': 'width: 500px; float: left; margin: 0 1em 1em 0; border: solid 1px;' },
 				'children': [
 					{
 						'type': 'tableRow',
