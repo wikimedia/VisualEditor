@@ -1,6 +1,5 @@
 .es-documentView {
 	cursor: text;
-	margin-top: 1em;
 	overflow: hidden;
 	/*-webkit-user-select: none;*/
 }
@@ -11,7 +10,6 @@
 .es-preView,
 .es-paragraphView {
 	margin: 1em 0;
-	margin-top: 0;
 	min-height: 1.5em;
 }
 
