@@ -60,7 +60,72 @@ $(document).ready( function() {
 										'content': { 'text': 'row 1 & cell 2' }
 									}
 								]
-							}
+							},
+							{
+								'type': 'tableCell',
+								'attributes': { 'html/style': 'border: solid 1px;' },
+								'children': [
+									{
+										'type': 'paragraph',
+										'content': { 'text': 'row 1 & cell 3' }
+									}
+								]
+							},
+							{
+								'type': 'tableCell',
+								'attributes': { 'html/style': 'border: solid 1px;' },
+								'children': [
+									{
+										'type': 'paragraph',
+										'content': { 'text': 'row 1 & cell 4' }
+									}
+								]
+							}							
+						]
+					},
+					{
+						'type': 'tableRow',
+						'children': [
+							{
+								'type': 'tableCell',
+								'attributes': { 'html/style': 'border: solid 1px;' },
+								'children': [
+									{
+										'type': 'paragraph',
+										'content': { 'text': 'row 2 & cell 1' }
+									}
+								]
+							},
+							{
+								'type': 'tableCell',
+								'attributes': { 'html/style': 'border: solid 1px;' },
+								'children': [
+									{
+										'type': 'paragraph',
+										'content': { 'text': 'row 2 & cell 2' }
+									}
+								]
+							},
+							{
+								'type': 'tableCell',
+								'attributes': { 'html/style': 'border: solid 1px;' },
+								'children': [
+									{
+										'type': 'paragraph',
+										'content': { 'text': 'row 2 & cell 3' }
+									}
+								]
+							},
+							{
+								'type': 'tableCell',
+								'attributes': { 'html/style': 'border: solid 1px;' },
+								'children': [
+									{
+										'type': 'paragraph',
+										'content': { 'text': 'row 2 & cell 4' }
+									}
+								]
+							}							
 						]
 					}
 				]
