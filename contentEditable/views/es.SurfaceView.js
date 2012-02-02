@@ -12,6 +12,11 @@ es.SurfaceView = function( $container, model ) {
 		.addClass( 'es-surfaceView' )
 		.append( this.documentView.$ );
 
+	// Don't render table editing controls
+	document.execCommand("enableInlineTableEditing", false, false);
+	// Don't render controls to resize objects
+	document.execCommand("enableObjectResizing", false, false);
+
 	this.$.keydown( function(e) {
 		return _this.onKeyDown( e );
 	} );

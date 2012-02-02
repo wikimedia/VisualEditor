@@ -2,7 +2,7 @@
 
 <html>
 	<head>
-		<title>EditSurface Demo</title>
+		<title>HybridSurface Demo</title>
 		<link rel="stylesheet" href="styles/es.SurfaceView.css">
 		<link rel="stylesheet" href="../modules/es/styles/es.ContextView.css">
 		<link rel="stylesheet" href="../modules/es/styles/es.ContentView.css">
