@@ -35,7 +35,7 @@ es.SurfaceView.prototype.onKeyDown = function( e ) {
 		if ( range.start === range.end ) {
 			var tx = this.model.getDocument().prepareInsertion( range.start, [ { 'type': '/paragraph' }, { 'type': 'paragraph' } ]);
 			this.model.transact( tx );
-			this.showCursorAt( range.start );
+			this.showCursorAt( range.start + 2 );
 		}
 	} else if ( e.which === 8 ) {
 		console.log("A");
@@ -57,6 +57,11 @@ es.SurfaceView.prototype.showCursorAt = function( offset ) {
 	
 	var index = 1 + this.documentView.getOffsetFromNode( $node.data('view') );
 	
+	if(offset === index) {
+		//localOffset = 0;
+		//node = current[0].eq(0)[0];
+	}
+	
 	while ( stack.length > 0 ) {
 		if ( current[1] >= current[0].length ) {
 			stack.pop();
@@ -68,7 +73,7 @@ es.SurfaceView.prototype.showCursorAt = function( offset ) {
 		
 		if ( item.nodeType === 3 ) {
 			var length = item.textContent.length;
-			if ( offset > index && offset <= index + length ) {
+			if ( offset >= index && offset <= index + length ) {
 				node = item;
 				localOffset = offset - index;
 			} else {
@@ -99,7 +104,7 @@ es.SurfaceView.prototype.showCursorAt = function( offset ) {
 
 es.SurfaceView.prototype.getOffset = function( localNode, localOffset ) {
 	var $node = $( localNode );
-	while( !$node.hasClass( 'es-paragraphView' ) ) {
+	while( !$node.hasClass( 'ce-leafNode' ) ) {
 		$node = $node.parent();
 	}
 	
