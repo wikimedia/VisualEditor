@@ -15,6 +15,7 @@ es.DocumentViewLeafNode = function( model, $element ) {
 	es.DocumentViewNode.call( this, model, $element );
 
 	this.$.data('view', this);
+	this.$.addClass('ce-leafNode');
 
 	// Properties
 	this.$content = this.$;
