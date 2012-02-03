@@ -4,8 +4,14 @@
         <script src="../modules/jquery/jquery.js"></script>
         <script>
             $( function() {
-                console.log("start");
+                //console.log("start");
 
+                $(document).bind('DOMCharacterDataModified', function(e) {
+                   //console.log('DOMCharacterDataModified', e);
+                   //console.log($('div').html());
+                });
+
+                /*
                 $('textarea').bind('keypress', function(e) {
                    console.log('keypress', e);
                 });
@@ -17,12 +23,12 @@
                 $('textarea').bind('keyup', function(e) {
                    console.log($('textarea').val());
                 });
+                */
 
             } );
         </script>
     </head>
     <body>
-        <textarea></textarea>
-        
+        <div style="width: 500px; height: 200px; border: solid 1px;" contenteditable="true">Lorem ipsum</div>
     </body>
 </html>
