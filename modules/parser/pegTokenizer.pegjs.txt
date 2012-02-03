@@ -879,24 +879,31 @@ pre
 
 nowiki 
   = "<nowiki>" nc:nowiki_content "</nowiki>" { 
-        // console.log(pp(nc)); 
+        //console.log( 'full nowiki return: ' + pp(nc)); 
         return nc; 
     }
   / "<nowiki>" { 
           //console.log('nowiki fallback');
           return ['<nowiki>']; 
     }
-  / "</nowiki>" { return ['</nowiki>']; }
+  / "</nowiki>" { 
+      //console.log('nowiki end fallback');
+      return ['</nowiki>']; 
+  }
 
 nowiki_content
   = ts:(   t:[^<]+ { return t.join('') } 
            / "<pre" p0:space* p1:[^>]* ">" p2:nowiki_content "</pre>" {
                  //console.log('nested pre in nowiki');
-                 return ["<pre"].concat(p0, p1, [">"], [p2[0].value], ["</pre>"]).join('');
+                 return ["<pre"].concat(p0, p1, [">"], p2, ["</pre>"]).join('');
                }
-           / (!("</nowiki>" / "</pre>") c:. {return c}) 
+           / (!("</"( "nowiki>" / "pre>")) c:. {
+               //console.log('nowiki: single char' + c);
+               return c;
+           }) 
        )* {
             // return nowiki tags as well?
+            //console.log('nowiki_content: return' + pp(ts));
             return [ts.join('')];
           }
 
