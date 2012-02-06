@@ -562,12 +562,12 @@ $(document).ready( function() {
 			]
 		}
 	};
-	window.documentModel = es.DocumentModel.newFromPlainObject( wikidoms['Wikipedia article'] );
-	window.surfaceModel = new es.SurfaceModel( window.documentModel );
-	window.surfaceView = new es.SurfaceView( $( '#es-editor' ), window.surfaceModel );
-	window.toolbarView = new es.ToolbarView( $( '#es-toolbar' ), window.surfaceView );
-	window.contextView = new es.ContextView( window.surfaceView );
-	window.surfaceModel.select( new es.Range( 1, 1 ) );
+	window.documentModel = ve.dm.DocumentNode.newFromPlainObject( wikidoms['Wikipedia article'] );
+	window.surfaceModel = new ve.dm.Surface( window.documentModel );
+	window.surfaceView = new ve.es.Surface( $( '#es-editor' ), window.surfaceModel );
+	window.toolbarView = new ve.ui.Toolbar( $( '#es-toolbar' ), window.surfaceView );
+	window.contextView = new ve.ui.Context( window.surfaceView );
+	window.surfaceModel.select( new ve.Range( 1, 1 ) );
 
 	/*
 	 * This code is responsible for switching toolbar into floating mode when scrolling (with
@@ -603,7 +603,7 @@ $(document).ready( function() {
 				'$panel': $( '#es-panel-wikitext' ),
 				'update': function() {
 					this.$panel.text(
-						es.WikitextSerializer.stringify( documentModel.getPlainObject() )
+						ve.dm.WikitextSerializer.stringify( documentModel.getPlainObject() )
 					);
 				}
 			},
@@ -611,7 +611,7 @@ $(document).ready( function() {
 				'$': $( '#es-mode-json' ),
 				'$panel': $( '#es-panel-json' ),
 				'update': function() {
-					this.$panel.text( es.JsonSerializer.stringify( documentModel.getPlainObject(), {
+					this.$panel.text( ve.dm.JsonSerializer.stringify( documentModel.getPlainObject(), {
 						'indentWith': '  '
 					} ) );
 				}
@@ -621,7 +621,7 @@ $(document).ready( function() {
 				'$panel': $( '#es-panel-html' ),
 				'update': function() {
 					this.$panel.text(
-						es.HtmlSerializer.stringify( documentModel.getPlainObject() )
+						ve.dm.HtmlSerializer.stringify( documentModel.getPlainObject() )
 					);
 				}
 			},
@@ -630,7 +630,7 @@ $(document).ready( function() {
 				'$panel': $( '#es-panel-render' ),
 				'update': function() {
 					this.$panel.html(
-						es.HtmlSerializer.stringify( documentModel.getPlainObject() )
+						ve.dm.HtmlSerializer.stringify( documentModel.getPlainObject() )
 					);
 				}
 			},
@@ -655,9 +655,9 @@ $(document).ready( function() {
 							ops = history[i].stack[j].getOperations().slice(0);
 							for ( k = 0; k < ops.length; k++ ) {
 								data = ops[k].data || ops[k].length;
-								if ( es.isArray( data ) ) {
+								if ( ve.isArray( data ) ) {
 									data = data[0];
-									if ( es.isArray( data ) ) {
+									if ( ve.isArray( data ) ) {
 										data = data[0];
 									}
 								}
@@ -713,10 +713,10 @@ $(document).ready( function() {
 					$( '<a href="#"></a>' )
 						.text( title )
 						.click( function() {
-							var newDocumentModel = es.DocumentModel.newFromPlainObject( wikidom );
+							var newDocumentModel = ve.dm.DocumentNode.newFromPlainObject( wikidom );
 							documentModel.data.splice( 0, documentModel.data.length );
-							es.insertIntoArray( documentModel.data, 0, newDocumentModel.data );
-							surfaceModel.select( new es.Range( 1, 1 ) );
+							ve.insertIntoArray( documentModel.data, 0, newDocumentModel.data );
+							surfaceModel.select( new ve.Range( 1, 1 ) );
 							documentModel.splice.apply(
 								documentModel,
 								[0, documentModel.getChildren().length]
