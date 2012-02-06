@@ -5,7 +5,7 @@
 	-moz-border-radius: 0.25em;
 	-o-border-radius: 0.25em;
 	border-radius: 0.25em;
-	background-image: url(../es/images/fade-up.png);
+	background-image: url(../ve/ui/styles/images/fade-up.png);
 	background-position: bottom left;
 	background-repeat: repeat-x;
 	-webkit-user-select: none;
@@ -25,7 +25,7 @@
 	border-top: none;
 }
 #es-toolbar-shadow {
-	background-image: url(../es/images/toolbar-shadow.png);
+	background-image: url(../ve/ui/styles/images/toolbar-shadow.png);
 	background-position: top left;
 	background-repeat: repeat-x;
 	position: absolute;
@@ -93,7 +93,7 @@
 	list-style-type: square;
 	margin: .3em 0 0 1.5em;
 	padding: 0;
-	list-style-image: url(../es/images/bullet-icon.png);
+	list-style-image: url(../ve/es/styles/images/bullet-icon.png);
 }
 .es-render ol {
 	line-height: 1.5em;
@@ -143,7 +143,7 @@
 .es-modes-button:active,
 .es-modes-button-down {
 	border-color: #dddddd;
-	background-image: url(../es/images/fade-down.png);
+	background-image: url(../ve/ui/styles/images/fade-down.png);
 	background-position: top left;
 	background-repeat: repeat-x;
 	-webkit-box-shadow: inset 0px 1px 4px 0px rgba(0, 0, 0, 0.07);
@@ -151,27 +151,27 @@
 	box-shadow: inset 0px 1px 4px 0px rgba(0, 0, 0, 0.07);
 }
 #es-mode-wikitext:before {
-	background-image: url(../es/images/wikitext.png);
+	background-image: url(../ve/ui/styles/images/wikitext.png);
 }
 
 #es-mode-json:before {
-	background-image: url(../es/images/json.png);
+	background-image: url(../ve/ui/styles/images/json.png);
 }
 
 #es-mode-html:before {
-	background-image: url(../es/images/html.png);
+	background-image: url(../ve/ui/styles/images/html.png);
 }
 
 #es-mode-render:before {
-	background-image: url(../es/images/render.png);
+	background-image: url(../ve/ui/styles/images/render.png);
 }
 
 #es-mode-history:before {
-	background-image: url(../es/images/history.png);
+	background-image: url(../ve/ui/styles/images/history.png);
 }
 
 #es-mode-help:before {
-	background-image: url(../es/images/help.png);
+	background-image: url(../ve/ui/styles/images/help.png);
 }
 
 #es-panel-history div {
