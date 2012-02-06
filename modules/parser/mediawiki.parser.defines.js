@@ -9,11 +9,7 @@ function TagTk( name, attribs ) {
 }
 
 TagTk.prototype.toJSON = function () {
-	return {
-		type: 'TagTk',
-		name: this.name,
-		attribs: this.attribs
-	};
+	return $.extend( { type: 'TagTk' }, this );
 };
 
 function EndTagTk( name, attribs ) { 
@@ -22,11 +18,7 @@ function EndTagTk( name, attribs ) {
 	this.attribs = attribs || [];
 }
 EndTagTk.prototype.toJSON = function () {
-	return {
-		type: 'EndTagTk',
-		name: this.name,
-		attribs: this.attribs
-	};
+	return $.extend( { type: 'EndTagTk' }, this );
 };
 
 function SelfclosingTagTk( name, attribs ) { 
@@ -35,18 +27,14 @@ function SelfclosingTagTk( name, attribs ) {
 	this.attribs = attribs || [];
 }
 SelfclosingTagTk.prototype.toJSON = function () {
-	return {
-		type: 'SelfclosingTagTk',
-		name: this.name,
-		attribs: this.attribs
-	};
+	return $.extend( { type: 'SelfclosingTagTk' }, this );
 };
 
 function NlTk( ) {
 	//this.type = 'NEWLINE';
 }
 NlTk.prototype.toJSON = function () {
-	return { type: 'NlTk' };
+	return $.extend( { type: 'NlTk' }, this );
 };
 
 function CommentTk( value ) { 
@@ -54,16 +42,13 @@ function CommentTk( value ) {
 	this.value = value;
 }
 CommentTk.prototype.toJSON = function () {
-	return {
-		type: 'COMMENT',
-		value: this.value
-	};
+	return $.extend( { type: 'COMMENT' }, this );
 };
 function EOFTk( ) {
 	this.type = 'END';
 }
 EOFTk.prototype.toJSON = function () {
-	return { type: 'EOFTk' };
+	return $.extend( { type: 'EOFTk' }, this );
 };
 
 // A key-value pair
