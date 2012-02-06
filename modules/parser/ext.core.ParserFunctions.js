@@ -44,7 +44,7 @@ ParserFunctions.prototype['pf_#switch'] = function ( target, argList, argDict ) 
 
 // #ifeq
 ParserFunctions.prototype['pf_#ifeq'] = function ( target, argList, argDict ) {
-	if ( ! argList.length ) {
+	if ( argList.length < 2 ) {
 		return [];
 	} else {
 		if ( target.trim() === this.manager.env.tokensToString( argList[0][1] ).trim() ) {
@@ -80,7 +80,9 @@ ParserFunctions.prototype['pf_lcfirst'] = function ( target, argList, argDict ) 
 };
 
 ParserFunctions.prototype['pf_#tag'] = function ( target, argList, argDict ) {
-	return [new TagTk(target, argList)];
+	return [ new TagTk( target ), 
+			 argList[0].v, 
+			 new EndTagTk( target ) ];
 };
 
 // A first approximation, anyway..

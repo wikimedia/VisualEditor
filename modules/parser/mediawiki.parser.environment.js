@@ -116,10 +116,11 @@ MWParserEnvironment.prototype.tokensToString = function ( tokens ) {
 	}
 	for ( var i = 0, l = tokens.length; i < l; i++ ) {
 		var token = tokens[i];
-		if ( ! token ) {
+		if ( token === undefined ) {
 			console.trace();
-			this.dp( 'MWParserEnvironment.tokensToString, invalid token: ' + 
-							JSON.stringify( token ) );
+			this.tp( 'MWParserEnvironment.tokensToString, invalid token: ' + 
+							JSON.stringify( token ) +
+							' tokens:' + JSON.stringify( tokens, null, 2 ));
 			continue;
 		}
 		if ( token.constructor === String ) {

@@ -77,7 +77,7 @@ function ParserPipeline( env, inputType ) {
 	// Add token transformations..
 	new QuoteTransformer( this.tokenPostProcessor );
 	new PostExpandParagraphHandler( this.tokenPostProcessor );
-	new Sanitizer( this.tokenPostProcessor );
+	//new Sanitizer( this.tokenPostProcessor );
 	
 	//var citeExtension = new Cite( this.tokenTransformer );
 

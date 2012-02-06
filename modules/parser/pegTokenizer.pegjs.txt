@@ -29,6 +29,36 @@
         return es;
     };
 
+    
+    var flatten_string = function ( c ) {
+        var out = [],
+            text = [];
+        c = flatten(c);
+        for (var i = 0, l = c.length; i < l; i++) {
+            var ci = c[i];
+            if (ci.constructor === String) {
+                if(ci !== '') {
+                    text.push(ci);
+                }
+            } else {
+                if (text.length) {
+                    out.push( text.join('') );
+                    text = [];
+                }
+                out.push(ci);
+            }
+        }
+        if (text.length) {
+            out.push( text.join('') );
+        }
+
+        if ( out.length === 1 && out[0].constructor === String ) {
+            return out[0];
+        } else {
+            return out;
+        }
+    };
+
     // Remove escaped quotes from attributes etc
     // This was in the original PEG parser, but could not find anything in
     // MediaWiki that supports \' and \"-style escaping. So remove? -- gwicke
@@ -308,6 +338,40 @@ urltext = ( t:[^'<~[{\n\rfghimnstw|!:\]} &=]+ { return t.join(''); }
           / ' ' & ':' { return "\u00a0"; }
           / t:text_char )+
 
+directive
+  = comment
+  / tplarg_or_template
+  / htmlentity 
+
+spaceless_preprocessor_text
+  = r:( t:[^'<~[{\n\r|!\]}\t &=]+ { return t.join(''); }
+  / directive
+  / !inline_breaks !' ' text_char )+ {
+      return flatten_string ( r );
+  }
+
+link_preprocessor_text
+  = r:( t:[^'<~[{\n\r|!\]}\t &=]+ { return t.join(''); }
+  / directive
+  / !inline_breaks no_punctuation_char
+  / s:[.:,] !(space / eolf) { return s } 
+  / urlencoded_char
+  / [&%] )+ {
+      return flatten_string ( r );
+  }
+
+// Plain text, but can contain templates, template arguments, comments etc-
+// all stuff that is normally handled by the preprocessor
+// Returns either a list of tokens, or a plain string (if nothing is to be
+// processed).
+preprocessor_text 
+  = r:( t:[^'<~[{\n\r\t|!\]} &=]+ { return t.join(''); }
+  / directive
+  / !inline_breaks text_char )+ {
+      return flatten_string ( r );
+  }
+
+
 /*
 	'//', // for protocol-relative URLs, but not in text!
 	'ftp://',
@@ -553,6 +617,7 @@ inline_element
   = //& { dp('inline_element enter' + input.substr(pos, 10)); return true; }
       & '<' ( comment / xmlish_tag )
     / & '{' ( & '{{{{{' template / tplarg / template )
+    / & '{' tplarg_or_template 
     /// & '{' ( tplarg / template )
      // Eat three opening brackets as text.
     / '[[[' { return '[[[' }
@@ -632,9 +697,9 @@ urllink
 extlink
   = "[" 
     & { return setFlag('extlink'); }
-    target:(url / tplarg / template)
-    space*
-    text:inlineline?
+    //target:urllink
+    target:link_preprocessor_text
+    text:(space* t:inlineline { return t } )?
     "]" {
         clearFlag('extlink');
         if ( text == '' ) {
@@ -642,13 +707,15 @@ extlink
             text = [ "[" + linkCount + "]" ];
             linkCount++;
         }
-        return [ 
+        var res = [ 
             new TagTk( 'a', [
                         new KV('href', target),
                         new KV('data-type', 'external')
                     ] ),
         ].concat( text 
                 , [ new EndTagTk( 'a' )]);
+        //console.log( JSON.stringify( res, null, 2 ) );
+        return res;
     }
   / "[" & { clearFlag('extlink'); return false; }
 
@@ -712,6 +779,8 @@ ipv6_address
 {
     return flatten( a ).join('');
 }
+
+tplarg_or_template = & '{{{{{' template / tplarg / template
 
 template
   = "{{" target:template_param_text

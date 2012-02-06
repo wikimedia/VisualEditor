@@ -168,7 +168,9 @@ TemplateHandler.prototype._expandTemplate = function ( tplExpandData ) {
 	var prefix = target.split(':', 1)[0].toLowerCase().trim();
 	if ( prefix && 'pf_' + prefix in this.parserFunctions ) {
 		var funcArg = target.substr( prefix.length + 1 );
-		this.manager.env.tp( 'func prefix: ' + prefix + ' arg=' + funcArg );
+		this.manager.env.tp( 'func prefix: ' + prefix + 
+				' args=' + JSON.stringify( tplExpandData.expandedArgs, null, 2) +
+				' funcArg=' + funcArg);
 		//this.manager.env.dp( 'entering prefix', funcArg, args  );
 		res = this.parserFunctions[ 'pf_' + prefix ]( funcArg, 
 				tplExpandData.expandedArgs, args );
