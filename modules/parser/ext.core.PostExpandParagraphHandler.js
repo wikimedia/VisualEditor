@@ -31,7 +31,7 @@ PostExpandParagraphHandler.prototype.register = function ( dispatcher ) {
 			this.newlineRank, 'end' );
 };
 
-PostExpandParagraphHandler.prototype.reset = function ( token, cb, frame, prevToken ) {
+PostExpandParagraphHandler.prototype.reset = function ( token, frame, cb ) {
 	//console.log( 'PostExpandParagraphHandler.reset ' + JSON.stringify( this.tokens ) );
 	if ( this.newLines ) {
 		return { tokens: this._finish() };
@@ -55,7 +55,7 @@ PostExpandParagraphHandler.prototype._finish = function ( ) {
 
 // Handle NEWLINE tokens, which trigger the actual quote analysis on the
 // collected quote tokens so far.
-PostExpandParagraphHandler.prototype.onNewLine = function (  token, cb, frame, prevToken ) {
+PostExpandParagraphHandler.prototype.onNewLine = function (  token, frame, cb ) {
 	//console.log( 'PostExpandParagraphHandler.onNewLine: ' + JSON.stringify( token, null , 2 ) );
 	var res;
 	this.tokens.push( token );
@@ -70,7 +70,7 @@ PostExpandParagraphHandler.prototype.onNewLine = function (  token, cb, frame, p
 };
 
 
-PostExpandParagraphHandler.prototype.onAny = function ( token, cb, frame, prevToken ) {
+PostExpandParagraphHandler.prototype.onAny = function ( token, frame, cb ) {
 	//console.log( 'PostExpandParagraphHandler.onAny' );
 	this.tokens.push( token );
 	if ( token.type === 'COMMENT' || 

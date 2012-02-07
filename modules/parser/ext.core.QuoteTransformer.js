@@ -54,17 +54,15 @@ QuoteTransformer.prototype._startNewChunk = function ( ) {
 // the length of quote string. Actual analysis and conversion to the
 // appropriate tag tokens is deferred until the next NEWLINE token triggers
 // onNewLine.
-QuoteTransformer.prototype.onQuote = function ( token, cb, frame, prevToken ) {
+QuoteTransformer.prototype.onQuote = function ( token, frame, prevToken ) {
 	var qlen = token.value.length,
 		tokens = [], // output tokens
 		ctx = { 
 			token: token, 
-			cb: cb, 
 			frame: frame, 
 			prevToken: prevToken
 		},
 		ctx2 = { 
-			cb: cb, 
 			frame: frame, 
 			prevToken: prevToken
 		};
@@ -122,7 +120,7 @@ QuoteTransformer.prototype.onQuote = function ( token, cb, frame, prevToken ) {
 	return {};
 };
 
-QuoteTransformer.prototype.onAny = function ( token, cb, frame, prevToken ) {
+QuoteTransformer.prototype.onAny = function ( token, frame, prevToken ) {
 	//console.log('qt onAny: ' + JSON.stringify(token, null, 2));
 	this.currentChunk.push( token );
 	return {};
@@ -130,7 +128,7 @@ QuoteTransformer.prototype.onAny = function ( token, cb, frame, prevToken ) {
 
 // Handle NEWLINE tokens, which trigger the actual quote analysis on the
 // collected quote tokens so far.
-QuoteTransformer.prototype.onNewLine = function (  token, cb, frame, prevToken ) {
+QuoteTransformer.prototype.onNewLine = function (  token, frame, prevToken ) {
 	var res;
 
 	if( ! this.isActive ) {

@@ -50,7 +50,7 @@ TokenCollector.prototype._anyDelta = 0.00001;
  * Handle the delimiter token.
  * XXX: Adjust to sync phase callback when that is modified!
  */
-TokenCollector.prototype._onDelimiterToken = function ( token, cb, frame ) {
+TokenCollector.prototype._onDelimiterToken = function ( token, frame, cb ) {
 	var res;
 	if ( this.isActive ) {
 		// finish processing
@@ -93,7 +93,7 @@ TokenCollector.prototype._onDelimiterToken = function ( token, cb, frame ) {
  * encountering the delimiter token, and collects all tokens until the end
  * token is reached.
  */
-TokenCollector.prototype._onAnyToken = function ( token, cb, frame ) {
+TokenCollector.prototype._onAnyToken = function ( token, frame, cb ) {
 	// Simply collect anything ordinary in between
 	this.tokens.push( token );
 	return { };

@@ -53,7 +53,7 @@ TemplateHandler.prototype.register = function ( manager ) {
  * calls or sets up the callback to _expandTemplate, which then fetches and
  * processes the template.
  */
-TemplateHandler.prototype.onTemplate = function ( token, cb ) {
+TemplateHandler.prototype.onTemplate = function ( token, frame, cb ) {
 	//console.log('onTemplate! ' + JSON.stringify( token, null, 2 ) + 
 	//		' args: ' + JSON.stringify( this.manager.args ));
 
@@ -353,7 +353,7 @@ TemplateHandler.prototype._fetchTemplateAndTitle = function ( title, callback, t
 /**
  * Expand template arguments with tokens from the containing frame.
  */
-TemplateHandler.prototype.onTemplateArg = function ( token, cb, frame ) {
+TemplateHandler.prototype.onTemplateArg = function ( token, frame, cb ) {
 	
 	var attributes = [{k: token.argname, v: token.defaultvalue}];
 
