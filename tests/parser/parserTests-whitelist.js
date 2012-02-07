@@ -59,6 +59,13 @@ testWhiteList["Table security: embedded pipes (http://lists.wikimedia.org/mailma
 // Sanitizer, but UTF8 in link might actually be ok in HTML5
 testWhiteList["External link containing double-single-quotes with no space separating the url from text in italics"] = "<p><a href=\"http://www.musee-picasso.fr/pages/page_id18528_u1l2.htm\"><i>La muerte de Casagemas</i> (1901) en el sitio de </a><a data-type=\"internal\" href=\"Museo Picasso (París)\">Museo Picasso</a>.</p>";
 
+// plain percent sign is also valid in HTML5
+testWhiteList["Bug 4781, 5267: %28, %29 in URL"] = "<p><a href=\"http://www.example.com/?title=Ben-Hur_(1959_film)\" data-sourcePos=\"0:53\">http://www.example.com/?title=Ben-Hur_(1959_film)</a></p>";
+
+testWhiteList["External links: wiki links within external link (Bug 3695)"] = "<p><a href=\"http://example.com\" data-type=\"external\" data-sourcePos=\"0:54\"></a><a data-type=\"internal\" href=\"wikilink\">wikilink</a> embedded in ext link</p>";
+
+testWhiteList["Bug 4781, 5267: %25 in URL"] = "<p><a href=\"http://www.example.com/?title=100%_Bran\" data-sourcePos=\"0:41\">http://www.example.com/?title=100%_Bran</a></p>";
+
 
 if (typeof module == "object") {
 	module.exports.testWhiteList = testWhiteList;

@@ -199,7 +199,8 @@ function ParserTests () {
 	this.env = new MWParserEnvironment({ 
 		fetchTemplates: false,
 		debug: this.argv.debug,
-		trace: this.argv.trace
+		trace: this.argv.trace,
+		wgScriptPath: ''
 	});
 }
 
@@ -313,7 +314,7 @@ ParserTests.prototype.normalizeHTML = function (source) {
 			// general class and titles, typically on links
 			.replace(/(title|class|rel)="[^"]+"/g, '')
 			// strip red link markup, we do not check if a page exists yet
-			.replace(/\/index.php\?title=|&amp;action=edit&amp;redlink=1/g, '')
+			.replace(/\/index.php\?title=([^']+)&amp;action=edit&amp;redlink=1/g, '$1')
 			// the expected html has some extra space in tags, strip it
 			.replace(/<a +href/g, '<a href')
 			.replace(/" +>/g, '">');

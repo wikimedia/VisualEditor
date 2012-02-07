@@ -212,6 +212,18 @@ ParserFunctions.prototype['pf_#expr'] = function ( target, argList, argDict ) {
 	return [ res.toString() ];
 };
 
+ParserFunctions.prototype['pf_localurl'] = function ( target, argList, argDict ) {
+	return ( this.manager.env.wgScriptPath + '/index' +
+				this.manager.env.wgScriptExtension + '?title=' +
+				target + '&' +
+				argList.map( 
+					function( kv ) { 
+						//console.log( JSON.stringify( kv ) );
+						return (kv.v !== '' && kv.k + '=' + kv.v ) || kv.k;
+					} 
+				).join('&') 
+		   );
+};
 
 
 /**

@@ -351,11 +351,11 @@ spaceless_preprocessor_text
   }
 
 link_preprocessor_text
-  = r:( t:[^'<~[{\n\r|!\]}\t &=]+ { return t.join(''); }
+  = r:( t:[^'<~[{\n\r|!\]}\t &="']+ { return t.join(''); }
   / directive
+  / urlencoded_char
   / !inline_breaks no_punctuation_char
   / s:[.:,] !(space / eolf) { return s } 
-  / urlencoded_char
   / [&%] )+ {
       return flatten_string ( r );
   }
@@ -687,7 +687,8 @@ comment_chars
 
 
 urllink
-  = target:url {
+  = ! { return syntaxFlags['extlink'] }
+    target:url {
       return [ new TagTk( 'a', [new KV('href', target)] )
              , target
              , new EndTagTk( 'a' )
