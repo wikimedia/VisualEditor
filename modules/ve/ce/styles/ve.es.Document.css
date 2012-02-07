@@ -156,3 +156,7 @@
 .es-listItemView-level6.es-listItemView-number {
 	margin-left: 22em;
 }
+
+[contenteditable="true"] {
+	outline: none;
+}
