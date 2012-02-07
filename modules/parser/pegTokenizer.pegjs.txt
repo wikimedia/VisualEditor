@@ -695,29 +695,32 @@ urllink
   }
 
 extlink
-  = "[" 
-    & { return setFlag('extlink'); }
-    //target:urllink
-    target:link_preprocessor_text
-    text:(space* t:inlineline { return t } )?
-    "]" {
-        clearFlag('extlink');
-        if ( text == '' ) {
-            // XXX: Link numbering should be implemented in post-processor.
-            text = [ "[" + linkCount + "]" ];
-            linkCount++;
+  = ! { return syntaxFlags['extlink'] } // extlink cannot be nested
+    (
+        "[" 
+        & { return setFlag('extlink'); }
+        //target:urllink
+        target:link_preprocessor_text
+        text:(space* t:inlineline { return t } )?
+        "]" {
+            clearFlag('extlink');
+            if ( text === '' ) {
+                // XXX: Link numbering should be implemented in post-processor.
+                text = [ "[" + linkCount + "]" ];
+                linkCount++;
+            }
+            var res = [ 
+                new TagTk( 'a', [
+                            new KV('href', target),
+                            new KV('data-type', 'external')
+                        ] ),
+            ].concat( text 
+                    , [ new EndTagTk( 'a' )]);
+            //console.log( JSON.stringify( res, null, 2 ) );
+            return res;
         }
-        var res = [ 
-            new TagTk( 'a', [
-                        new KV('href', target),
-                        new KV('data-type', 'external')
-                    ] ),
-        ].concat( text 
-                , [ new EndTagTk( 'a' )]);
-        //console.log( JSON.stringify( res, null, 2 ) );
-        return res;
-    }
-  / "[" & { clearFlag('extlink'); return false; }
+      / "[" & { clearFlag('extlink'); return false; }
+    )
 
 /* Defaul URL protocols in MediaWiki (see DefaultSettings). Normally these can
  * be configured dynamically. */
