@@ -91,10 +91,10 @@ ve.es.Node.getSplitableNode = function( node ) {
 
 	ve.Node.traverseUpstream( node, function( node ) {
 		var elementType = node.model.getElementType();
-		if ( splitableNode != null && ve.es.Node.splitRules[ elementType ].children === true ) {
+		if ( splitableNode != null && ve.es.DocumentNode.splitRules[ elementType ].children === true ) {
 			return false;
 		}
-		splitableNode = ve.es.Node.splitRules[ elementType ].self ? node : null
+		splitableNode = ve.es.DocumentNode.splitRules[ elementType ].self ? node : null
 	} );
 	return splitableNode;
 };
