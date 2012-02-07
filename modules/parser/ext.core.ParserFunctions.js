@@ -215,7 +215,7 @@ ParserFunctions.prototype['pf_#expr'] = function ( target, argList, argDict ) {
 ParserFunctions.prototype['pf_localurl'] = function ( target, argList, argDict ) {
 	return ( this.manager.env.wgScriptPath + '/index' +
 				this.manager.env.wgScriptExtension + '?title=' +
-				target + '&' +
+				this.manager.env.normalizeTitle( target ) + '&' +
 				argList.map( 
 					function( kv ) { 
 						//console.log( JSON.stringify( kv ) );
