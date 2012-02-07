@@ -9,7 +9,7 @@ $(function() {
 			paste = {};
 			paste[key] = 'some wikidom';
 		})
-		.on('paste', function(event) {
+		.on('beforepaste paste', function(event) {
 			$('#paste').html('');
 			$('#paste').focus();
 			
