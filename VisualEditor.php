@@ -53,6 +53,7 @@ $wgResourceModules += array(
 		'messages' => array(
 			'visualeditor-feedback-prompt',
 			'visualeditor-feedback-dialog-title',
+			'visualeditor-sandbox-title',
 		),
 		'dependencies' => array( 
 			'ext.visualEditor.sandbox',
@@ -64,8 +65,10 @@ $wgResourceModules += array(
 		'scripts' => array(
 			'sandbox/sandbox.js',
 		),
+		'messages' => array(
+			'visualeditorsandbox',
+		),
 		'styles' => 'sandbox/sandbox.css',
-		'messages' => array(),
 		'dependencies' => array(
 			'ext.visualEditor.ve',
 		),
@@ -147,6 +150,15 @@ $wgResourceModules += array(
 		),
 		'dependencies' => array(
 			'jquery',
+		),
+		'messages' => array(
+			'visualeditor-tooltip-wikitext',
+			'visualeditor-tooltip-json',
+			'visualeditor-tooltip-html',
+			'visualeditor-tooltip-render',
+			'visualeditor-tooltip-history',
+			'visualeditor-tooltip-help',
+			'visualeditor',
 		),
 	)
 );
