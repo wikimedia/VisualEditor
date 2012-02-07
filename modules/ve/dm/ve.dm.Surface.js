@@ -35,9 +35,9 @@ ve.dm.Surface.prototype.purgeHistory = function() {
 
 ve.dm.Surface.prototype.getHistory = function() {
 	if ( this.smallStack.length > 0 ) {
-		return this.bigStack.slice(0).concat([{stack:this.smallStack.slice(0)}]); 
+		return this.bigStack.slice( 0 ).concat( [{ 'stack': this.smallStack.slice(0) }] ); 
 	} else {
-		return this.bigStack.slice(0);
+		return this.bigStack.slice( 0 );
 	}
 };
 
@@ -69,7 +69,8 @@ ve.dm.Surface.prototype.getSelection = function() {
  * 
  * @method
  * @param {ve.Range} selection
- * @param {Boolean} isManual Whether this selection was the result of a user action, and thus should be recorded in history...?
+ * @param {Boolean} isManual Whether this selection was the result of a user action, and thus should
+ * be recorded in history...?
  */
 ve.dm.Surface.prototype.select = function( selection, isManual ) {
 	selection.normalize();
@@ -89,13 +90,13 @@ ve.dm.Surface.prototype.select = function( selection, isManual ) {
  * Applies a series of transactions to the content data.
  * 
  * If committing multiple transactions which are the result of a single user action and need to be
- * part of a single history item, use the isPartial argument for all but the last one to avoid them being
- * split up into multple history items.
+ * part of a single history item, use the isPartial argument for all but the last one to avoid them
+ * being split up into multple history items.
  * 
  * @method
  * @param {ve.dm.Transaction} transactions Tranasction to apply to the document
- * @param {boolean} isPartial whether this transaction is part of a larger logical grouping of transactions 
- *					(such as when replacing - delete, then insert)
+ * @param {boolean} isPartial whether this transaction is part of a larger logical grouping of
+ * transactions (such as when replacing - delete, then insert)
  */
 ve.dm.Surface.prototype.transact = function( transaction ) {
 	this.bigStack = this.bigStack.slice( 0, this.bigStack.length - this.undoIndex );

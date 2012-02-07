@@ -1,8 +1,8 @@
 /**
  * Creates an ve.dm.DocumentNode object.
  * 
- * ve.dm.DocumentNode objects extend the native Array object, so it's contents are directly accessible
- * through the typical methods.
+ * ve.dm.DocumentNode objects extend the native Array object, so it's contents are directly
+ * accessible through the typical methods.
  * 
  * @class
  * @constructor
@@ -103,8 +103,9 @@ ve.dm.DocumentNode.createNodesFromData = function( data ) {
 			} else {
 				// Return to the parent node
 				currentNode = currentNode.getParent();
-				if ( currentNode == null ) {
-					throw 'createNodesFromData() received unbalanced data: found closing without matching opening at index ' + i;
+				if ( currentNode === null ) {
+					throw 'createNodesFromData() received unbalanced data: ' +
+						'found closing without matching opening at index ' + i;
 				}
 			}
 		} else {
@@ -136,7 +137,9 @@ ve.dm.DocumentNode.newFromPlainObject = function( obj ) {
 		var data = [],
 			attributes = ve.isPlainObject( obj.attributes ) ? ve.copyObject( obj.attributes ) : {};
 		for ( var i = 0; i < obj.children.length; i++ ) {
-			data = data.concat( ve.dm.DocumentNode.flattenPlainObjectElementNode( obj.children[i] ) );
+			data = data.concat(
+				ve.dm.DocumentNode.flattenPlainObjectElementNode( obj.children[i] )
+			);
 		}
 		return new ve.dm.DocumentNode( data, attributes );
 	}
@@ -686,10 +689,12 @@ ve.dm.DocumentNode.prototype.getContentDataFromNode = function( node, range ) {
  * @returns {ve.Range|null} Range of content covered by annotation, or null if offset is not covered
  */
 ve.dm.DocumentNode.prototype.getAnnotationBoundaries = function( offset, annotation, typeOnly ) {
+	// Alias to reduce hash table lookups
+	var DocumentNode = ve.dm.DocumentNode;
 	if ( annotation.hash === undefined ) {
-		annotation.hash = ve.dm.DocumentNode.getHash( annotation );
+		annotation.hash = DocumentNode.getHash( annotation );
 	}
-	if ( ve.dm.DocumentNode.getIndexOfAnnotation( this.data[offset], annotation, typeOnly ) === -1 ) {
+	if ( DocumentNode.getIndexOfAnnotation( this.data[offset], annotation, typeOnly ) === -1 ) {
 		return null;
 	}
 	var start = offset,
@@ -697,13 +702,13 @@ ve.dm.DocumentNode.prototype.getAnnotationBoundaries = function( offset, annotat
 		item;
 	while ( start > 0 ) {
 		start--;
-		if ( ve.dm.DocumentNode.getIndexOfAnnotation( this.data[start], annotation, typeOnly ) === -1 ) {
+		if ( DocumentNode.getIndexOfAnnotation( this.data[start], annotation, typeOnly ) === -1 ) {
 			start++;
 			break;
 		}
 	}
 	while ( end < this.data.length ) {
-		if ( ve.dm.DocumentNode.getIndexOfAnnotation( this.data[end], annotation, typeOnly ) === -1 ) {
+		if ( DocumentNode.getIndexOfAnnotation( this.data[end], annotation, typeOnly ) === -1 ) {
 			break;
 		}
 		end++;

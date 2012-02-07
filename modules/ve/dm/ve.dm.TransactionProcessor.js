@@ -88,8 +88,8 @@ ve.dm.TransactionProcessor.prototype.process = function( method ) {
 	}
 };
 
-// TODO: document this. Various arguments are optional or nonoptional in different cases, that's confusing
-// so it needs to be documented well.
+// TODO: document this. Various arguments are optional or nonoptional in different cases, that's
+// confusing so it needs to be documented well.
 ve.dm.TransactionProcessor.prototype.rebuildNodes = function( newData, oldNodes, parent, index ) {
 	var newNodes = ve.dm.DocumentNode.createNodesFromData( newData ),
 		remove = 0;
@@ -288,8 +288,10 @@ ve.dm.TransactionProcessor.prototype.insert = function( op ) {
 	
 	// Shortcut 2: we're inserting an enclosed piece of structural data at a structural offset
 	// that isn't the end of the document.
-	if ( ve.dm.DocumentNode.isStructuralOffset( this.model.data, this.cursor ) && this.cursor != this.model.data.length
-		&& scope == node
+	if (
+		ve.dm.DocumentNode.isStructuralOffset( this.model.data, this.cursor ) &&
+		this.cursor != this.model.data.length &&
+		scope == node
 	) {
 		// We're inserting an enclosed element into something else, so we don't have to rebuild
 		// the parent node. Just build a node from the inserted data and stick it in
@@ -322,7 +324,9 @@ ve.dm.TransactionProcessor.prototype.insert = function( op ) {
 ve.dm.TransactionProcessor.prototype.remove = function( op ) {
 	if ( ve.dm.DocumentNode.containsElementData( op.data ) ) {
 		// Figure out which nodes are covered by the removal
-		var ranges = this.model.selectNodes( new ve.Range( this.cursor, this.cursor + op.data.length ) );
+		var ranges = this.model.selectNodes(
+			new ve.Range( this.cursor, this.cursor + op.data.length )
+		);
 		
 		// Build the list of nodes to rebuild and the data to keep
 		var oldNodes = [],
@@ -348,7 +352,9 @@ ve.dm.TransactionProcessor.prototype.remove = function( op ) {
 					// Get this node's data
 					nodeData = this.model.data.slice( startOffset, endOffset );
 				// Remove data covered by the range from nodeData
-				nodeData.splice( ranges[i].range.start, ranges[i].range.end - ranges[i].range.start );
+				nodeData.splice(
+					ranges[i].range.start, ranges[i].range.end - ranges[i].range.start
+				);
 				// What remains in nodeData is the data we need to keep
 				// Append it to newData
 				newData = newData.concat( nodeData );
@@ -364,9 +370,9 @@ ve.dm.TransactionProcessor.prototype.remove = function( op ) {
 			// 1. Removal within one node: firstKeptNode === lastKeptNode
 			// 2. Merge of siblings: firstKeptNode.getParent() === lastKeptNode.getParent()
 			// 3. Merge of arbitrary depth: firstKeptNode and lastKeptNode have a common ancestor
-			// Because #1 and #2 are special cases of #3 (merges with depth=0 and depth=1, respectively),
-			// the code below that deals with the general case (#3) and automatically covers
-			// #1 and #2 that way as well.
+			// Because #1 and #2 are special cases of #3 (merges with depth=0 and depth=1,
+			// respectively), the code below that deals with the general case (#3) and automatically
+			// covers #1 and #2 that way as well.
 			
 			// Simultaneously traverse upwards from firstKeptNode and lastKeptNode
 			// to find the common ancestor. On our way up, keep the element of each
@@ -380,13 +386,16 @@ ve.dm.TransactionProcessor.prototype.remove = function( op ) {
 				prevN2;
 			
 			if ( !paths ) {
-				throw 'Removal is not a valid merge: nodes do not have a common ancestor or are not at the same depth';
+				throw 'Removal is not a valid merge: ' +
+					'nodes do not have a common ancestor or are not at the same depth';
 			}
 			for ( i = 0; i < paths.node1Path.length; i++ ) { 
 				// Verify the element types are equal
 				if ( paths.node1Path[i].getElementType() !== paths.node2Path[i].getElementType() ) {
-					throw 'Removal is not a valid merge: corresponding parents have different types ( ' +
-						paths.node1Path[i].getElementType() + ' vs ' + paths.node2Path[i].getElementType() + ' )';
+					throw 'Removal is not a valid merge: ' +
+						'corresponding parents have different types ( ' +
+						paths.node1Path[i].getElementType() + ' vs ' +
+						paths.node2Path[i].getElementType() + ' )';
 				}
 				// Record the opening of n1 and the closing of n2
 				openings.push( paths.node1Path[i].getElement() );
