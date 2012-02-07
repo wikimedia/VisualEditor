@@ -8,6 +8,7 @@ es.SurfaceView = function( $container, model ) {
 	// Properties
 	this.model = model;
 	this.documentView = new es.DocumentView( this.model.getDocument(), this );
+	this.paste = {};
 	this.$ = $container
 		.addClass( 'es-surfaceView' )
 		.append( this.documentView.$ );
@@ -26,7 +27,40 @@ es.SurfaceView = function( $container, model ) {
 	} );
 
 	this.documentView.renderContent();
+
+	this.$.bind('cut copy', function(event) {
+		var range = rangy.getSelection().getRangeAt(0);
+		var key = range.toString().replace(/ /g,"");
+
+		console.log(es.copyArray(_this.documentView.model.getData(_this.getSelection())));
+		_this.paste[key] = es.copyArray(_this.documentView.model.getData(_this.getSelection()));
+		
+		if (event.type == 'cut') {
+			event.preventDefault();
+			console.log('need to tell the model to cut');
+			var range = _this.getSelection();
+			if ( range.start != range.end ) {
+				var tx = _this.model.getDocument().prepareRemoval( range );
+				_this.model.transact( tx );
+			}
+		}
+	});
+	this.$.bind('paste', function(event) {
+		event.preventDefault();
+		console.log(event);
+		//console.log(event.originalEvent.clipboardData.getData('Text'));
+		var key = event.originalEvent.clipboardData.getData('text/plain').replace(/( |\r\n|\n|\r)/gm,"");
+
+		if (_this.paste[key]) {
+			console.log(_this.paste[key]);
+			var tx = _this.documentView.model.prepareInsertion( _this.getSelection().to, _this.paste[key]);
+			_this.documentView.model.commit(tx);
+		} else {
+			console.log('copied from external source');
+		}
+	});
 };
+
 
 es.SurfaceView.prototype.onKeyDown = function( e ) {
 	if ( e.which === 13 ) {
