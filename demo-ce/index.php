@@ -5,7 +5,7 @@
 		<title>ContentEditable Demo</title>
 		<!-- es -->
 		<link rel="stylesheet" href="../modules/ve/ce/styles/ve.es.Document.css">
-		<link rel="stylesheet" href="../modules/ve/es/styles/ve.es.Content.css">
+		<link rel="stylesheet" href="../modules/ve/ce/styles/ve.es.Content.css">
 		<link rel="stylesheet" href="../modules/ve/ce/styles/ve.es.Surface.css">
 		<!-- ui -->
 		<link rel="stylesheet" href="../modules/ve/ui/styles/ve.ui.Context.css">
