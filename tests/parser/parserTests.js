@@ -533,8 +533,8 @@ ParserTests.prototype.reportSummary = function () {
 
 	} else {
 		if( this.test_filter !== null ) {
-			console.log( "Passed " + this.passedTests + pthis.assedTestsManual + 
-					" of " + passedTests + " tests matching " + this.test_filter + 
+			console.log( "Passed " + ( this.passedTests + this.passedTestsManual ) + 
+					" of " + this.passedTests + " tests matching " + this.test_filter + 
 					"... " + "ALL TESTS PASSED!".green );
 		} else {
 			// Should not happen if it does: Champagne!
