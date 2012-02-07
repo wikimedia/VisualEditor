@@ -1,14 +1,14 @@
-module( 'es/models' );
+module( 've/dm' );
 
-test( 'es.DocumentModel.getData', 1, function() {
-	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
+test( 've.dm.DocumentNode.getData', 1, function() {
+	var documentModel = ve.dm.DocumentNode.newFromPlainObject( veTest.obj );
 	
 	// Test 1
-	deepEqual( documentModel.getData(), esTest.data, 'Flattening plain objects results in correct data' );
+	deepEqual( documentModel.getData(), veTest.data, 'Flattening plain objects results in correct data' );
 } );
 
-test( 'es.DocumentModel.getChildren', 1, function() {
-	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
+test( 've.dm.DocumentNode.getChildren', 1, function() {
+	var documentModel = ve.dm.DocumentNode.newFromPlainObject( veTest.obj );
 
 	function equalLengths( a, b ) {
 		if ( a.length !== b.length ) {
@@ -33,13 +33,13 @@ test( 'es.DocumentModel.getChildren', 1, function() {
 	
 	// Test 1
 	ok(
-		equalLengths( documentModel.getChildren(), esTest.tree ),
+		equalLengths( documentModel.getChildren(), veTest.tree ),
 		'Nodes in the model tree contain correct lengths'
 	);
 } );
 
-test( 'es.DocumentModel.getRelativeContentOffset', 7, function() {
-	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
+test( 've.dm.DocumentNode.getRelativeContentOffset', 7, function() {
+	var documentModel = ve.dm.DocumentNode.newFromPlainObject( veTest.obj );
 	
 	// Test 1
 	equal(
@@ -85,13 +85,13 @@ test( 'es.DocumentModel.getRelativeContentOffset', 7, function() {
 	);
 } );
 
-test( 'es.DocumentModel.getContentData', 6, function() {
-	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj ),
+test( 've.dm.DocumentNode.getContentData', 6, function() {
+	var documentModel = ve.dm.DocumentNode.newFromPlainObject( veTest.obj ),
 		childNodes = documentModel.getChildren();
 
 	// Test 1
 	deepEqual(
-		childNodes[0].getContentData( new es.Range( 1, 3 ) ),
+		childNodes[0].getContentData( new ve.Range( 1, 3 ) ),
 		[
 			['b', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }],
 			['c', { 'type': 'textStyle/italic', 'hash': '{"type":"textStyle/italic"}' }]
@@ -101,28 +101,28 @@ test( 'es.DocumentModel.getContentData', 6, function() {
 
 	// Test 2
 	deepEqual(
-		childNodes[0].getContentData( new es.Range( 0, 2 ) ),
+		childNodes[0].getContentData( new ve.Range( 0, 2 ) ),
 		['a', ['b', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }]],
 		'getContentData can return a beginning portion of the content'
 	);
 	
 	// Test 3
 	deepEqual(
-		childNodes[0].getContentData( new es.Range( 1, 2 ) ),
+		childNodes[0].getContentData( new ve.Range( 1, 2 ) ),
 		[['b', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }]],
 		'getContentData can return a middle portion of the content'
 	);
 	
 	// Test 4
 	try {
-		childNodes[0].getContentData( new es.Range( -1, 3 ) );
+		childNodes[0].getContentData( new ve.Range( -1, 3 ) );
 	} catch ( negativeIndexError ) {
 		ok( true, 'getContentData throws exceptions when given a range with start < 0' );
 	}
 	
 	// Test 5
 	try {
-		childNodes[0].getContentData( new es.Range( 0, 4 ) );
+		childNodes[0].getContentData( new ve.Range( 0, 4 ) );
 	} catch ( outOfRangeError ) {
 		ok( true, 'getContentData throws exceptions when given a range with end > length' );
 	}
@@ -131,8 +131,8 @@ test( 'es.DocumentModel.getContentData', 6, function() {
 	deepEqual( childNodes[2].getContentData(), ['h'], 'Content can be extracted from nodes' );
 } );
 
-test( 'es.DocumentModel.getIndexOfAnnotation', 3, function() {
-	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
+test( 've.dm.DocumentNode.getIndexOfAnnotation', 3, function() {
+	var documentModel = ve.dm.DocumentNode.newFromPlainObject( veTest.obj );
 	
 	var bold = { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' },
 		italic = { 'type': 'textStyle/italic', 'hash': '{"type":"textStyle/italic"}' },
@@ -141,31 +141,31 @@ test( 'es.DocumentModel.getIndexOfAnnotation', 3, function() {
 	
 	// Test 1
 	equal(
-		es.DocumentModel.getIndexOfAnnotation( character, bold ),
+		ve.dm.DocumentNode.getIndexOfAnnotation( character, bold ),
 		1,
 		'getIndexOfAnnotation get the correct index'
 	);
 	
 	// Test 2
 	equal(
-		es.DocumentModel.getIndexOfAnnotation( character, italic ),
+		ve.dm.DocumentNode.getIndexOfAnnotation( character, italic ),
 		2,
 		'getIndexOfAnnotation get the correct index'
 	);
 	
 	// Test 3
 	equal(
-		es.DocumentModel.getIndexOfAnnotation( character, nothing ),
+		ve.dm.DocumentNode.getIndexOfAnnotation( character, nothing ),
 		-1,
 		'getIndexOfAnnotation returns -1 if the annotation was not found'
 	);
 } );
 
-test( 'es.DocumentModel.getWordBoundaries', 2, function() {
-	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
+test( 've.dm.DocumentNode.getWordBoundaries', 2, function() {
+	var documentModel = ve.dm.DocumentNode.newFromPlainObject( veTest.obj );
 	deepEqual(
 		documentModel.getWordBoundaries( 2 ),
-		new es.Range( 1, 4 ),
+		new ve.Range( 1, 4 ),
 		'getWordBoundaries returns range around nearest whole word'
 	);
 	strictEqual(
@@ -175,11 +175,11 @@ test( 'es.DocumentModel.getWordBoundaries', 2, function() {
 	);
 } );
 
-test( 'es.DocumentModel.getAnnotationBoundaries', 2, function() {
-	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
+test( 've.dm.DocumentNode.getAnnotationBoundaries', 2, function() {
+	var documentModel = ve.dm.DocumentNode.newFromPlainObject( veTest.obj );
 	deepEqual(
 		documentModel.getAnnotationBoundaries( 2, { 'type': 'textStyle/bold' } ),
-		new es.Range( 2, 3 ),
+		new ve.Range( 2, 3 ),
 		'getWordBoundaries returns range around content covered by annotation'
 	);
 	strictEqual(
@@ -189,8 +189,8 @@ test( 'es.DocumentModel.getAnnotationBoundaries', 2, function() {
 	);
 } );
 
-test( 'es.DocumentModel.getAnnotationsFromOffset', 4, function() {
-	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
+test( 've.dm.DocumentNode.getAnnotationsFromOffset', 4, function() {
+	var documentModel = ve.dm.DocumentNode.newFromPlainObject( veTest.obj );
 	deepEqual(
 		documentModel.getAnnotationsFromOffset( 1 ),
 		[],
@@ -213,8 +213,8 @@ test( 'es.DocumentModel.getAnnotationsFromOffset', 4, function() {
 	);
 } );
 
-test( 'es.DocumentModel.prepareElementAttributeChange', 4, function() {
-	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
+test( 've.dm.DocumentNode.prepareElementAttributeChange', 4, function() {
+	var documentModel = ve.dm.DocumentNode.newFromPlainObject( veTest.obj );
 
 	// Test 1
 	deepEqual(
@@ -258,13 +258,13 @@ test( 'es.DocumentModel.prepareElementAttributeChange', 4, function() {
 	}
 } );
 
-test( 'es.DocumentModel.prepareContentAnnotation', 3, function() {
-	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
+test( 've.dm.DocumentNode.prepareContentAnnotation', 3, function() {
+	var documentModel = ve.dm.DocumentNode.newFromPlainObject( veTest.obj );
 
 	// Test 1
 	deepEqual(
 		documentModel.prepareContentAnnotation(
-			new es.Range( 1, 4 ), 'set', { 'type': 'textStyle/bold' }
+			new ve.Range( 1, 4 ), 'set', { 'type': 'textStyle/bold' }
 		).getOperations(),
 		[
 			{ 'type': 'retain', 'length': 1 },
@@ -303,7 +303,7 @@ test( 'es.DocumentModel.prepareContentAnnotation', 3, function() {
 	// Test 2
 	deepEqual(
 		documentModel.prepareContentAnnotation(
-			new es.Range( 3, 10 ), 'set', { 'type': 'textStyle/bold' }
+			new ve.Range( 3, 10 ), 'set', { 'type': 'textStyle/bold' }
 		).getOperations(),
 		[
 			{ 'type': 'retain', 'length': 3 },
@@ -342,7 +342,7 @@ test( 'es.DocumentModel.prepareContentAnnotation', 3, function() {
 	// Test 3
 	deepEqual(
 		documentModel.prepareContentAnnotation(
-			new es.Range( 4, 11 ), 'set', { 'type': 'textStyle/bold' }
+			new ve.Range( 4, 11 ), 'set', { 'type': 'textStyle/bold' }
 		).getOperations(),
 		[
 			{ 'type': 'retain', 'length': 9 },
@@ -365,12 +365,12 @@ test( 'es.DocumentModel.prepareContentAnnotation', 3, function() {
 	);
 } );
 
-test( 'es.DocumentModel.prepareRemoval', 11, function() {
-	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
+test( 've.dm.DocumentNode.prepareRemoval', 11, function() {
+	var documentModel = ve.dm.DocumentNode.newFromPlainObject( veTest.obj );
 
 	// Test 1
 	deepEqual(
-		documentModel.prepareRemoval( new es.Range( 1, 4 ) ).getOperations(),
+		documentModel.prepareRemoval( new ve.Range( 1, 4 ) ).getOperations(),
 		[
 			{ 'type': 'retain', 'length': 1 },
 			{
@@ -388,7 +388,7 @@ test( 'es.DocumentModel.prepareRemoval', 11, function() {
 	
 	// Test 2
 	deepEqual(
-		documentModel.prepareRemoval( new es.Range( 17, 22 ) ).getOperations(),
+		documentModel.prepareRemoval( new ve.Range( 17, 22 ) ).getOperations(),
 		[
 			{ 'type': 'retain', 'length': 17 },
 			{
@@ -408,7 +408,7 @@ test( 'es.DocumentModel.prepareRemoval', 11, function() {
 
 	// Test 3
 	deepEqual(
-		documentModel.prepareRemoval( new es.Range( 3, 9 ) ).getOperations(),
+		documentModel.prepareRemoval( new ve.Range( 3, 9 ) ).getOperations(),
 		[
 			{ 'type': 'retain', 'length': 3 },
 			{
@@ -424,7 +424,7 @@ test( 'es.DocumentModel.prepareRemoval', 11, function() {
 
 	// Test 4
 	deepEqual(
-		documentModel.prepareRemoval( new es.Range( 3, 24 ) ).getOperations(),
+		documentModel.prepareRemoval( new ve.Range( 3, 24 ) ).getOperations(),
 		[
 			{ 'type': 'retain', 'length': 3 },
 			{
@@ -459,7 +459,7 @@ test( 'es.DocumentModel.prepareRemoval', 11, function() {
 	
 	// Test 5
 	deepEqual(
-		documentModel.prepareRemoval( new es.Range( 3, 25 ) ).getOperations(),
+		documentModel.prepareRemoval( new ve.Range( 3, 25 ) ).getOperations(),
 		[
 			{ 'type': 'retain', 'length': 3 },
 			{
@@ -499,7 +499,7 @@ test( 'es.DocumentModel.prepareRemoval', 11, function() {
 	
 	// Test 6
 	deepEqual(
-		documentModel.prepareRemoval( new es.Range( 9, 17 ) ).getOperations(),
+		documentModel.prepareRemoval( new ve.Range( 9, 17 ) ).getOperations(),
 		[
 			{ 'type': 'retain', 'length': 9 },
 			{
@@ -524,7 +524,7 @@ test( 'es.DocumentModel.prepareRemoval', 11, function() {
 	
 	// Test 7
 	deepEqual(
-		documentModel.prepareRemoval( new es.Range( 9, 27 ) ).getOperations(),
+		documentModel.prepareRemoval( new ve.Range( 9, 27 ) ).getOperations(),
 		[
 			{ 'type': 'retain', 'length': 9 },
 			{
@@ -559,7 +559,7 @@ test( 'es.DocumentModel.prepareRemoval', 11, function() {
 	
 	// Test 8
 	deepEqual(
-		documentModel.prepareRemoval( new es.Range( 21, 23 ) ).getOperations(),
+		documentModel.prepareRemoval( new ve.Range( 21, 23 ) ).getOperations(),
 		[
 			{ 'type': 'retain', 'length': 21 },
 			{
@@ -576,7 +576,7 @@ test( 'es.DocumentModel.prepareRemoval', 11, function() {
 	
 	// Test 9
 	deepEqual(
-		documentModel.prepareRemoval( new es.Range( 20, 24 ) ).getOperations(),
+		documentModel.prepareRemoval( new ve.Range( 20, 24 ) ).getOperations(),
 		[
 			{ 'type': 'retain', 'length': 20 },
 			{
@@ -595,7 +595,7 @@ test( 'es.DocumentModel.prepareRemoval', 11, function() {
 	
 	// Test 10
 	deepEqual(
-		documentModel.prepareRemoval( new es.Range( 20, 23 ) ).getOperations(),
+		documentModel.prepareRemoval( new ve.Range( 20, 23 ) ).getOperations(),
 		[
 			{ 'type': 'retain', 'length': 34 }
 		],
@@ -604,7 +604,7 @@ test( 'es.DocumentModel.prepareRemoval', 11, function() {
 	
 	// Test 11
 	deepEqual(
-		documentModel.prepareRemoval( new es.Range( 15, 24 ) ).getOperations(),
+		documentModel.prepareRemoval( new ve.Range( 15, 24 ) ).getOperations(),
 		[
 			{ 'type': 'retain', 'length': 15 },
 			{
@@ -628,8 +628,8 @@ test( 'es.DocumentModel.prepareRemoval', 11, function() {
 	
 } );
 
-test( 'es.DocumentModel.prepareInsertion', 11, function() {
-	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
+test( 've.dm.DocumentNode.prepareInsertion', 11, function() {
+	var documentModel = ve.dm.DocumentNode.newFromPlainObject( veTest.obj );
 
 	// Test 1
 	deepEqual(

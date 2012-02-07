@@ -1,6 +1,6 @@
-module( 'es' );
+module( 've' );
 
-test( 'es.insertIntoArray', 1, function() {
+test( 've.insertIntoArray', 1, function() {
 	var insert = [], i, arr = ['foo', 'bar'], expected = [];
 	expected[0] = 'foo';
 	for ( i = 0; i < 3000; i++ ) {
@@ -9,6 +9,6 @@ test( 'es.insertIntoArray', 1, function() {
 	}
 	expected[3001] = 'bar';
 	
-	es.insertIntoArray( arr, 1, insert );
+	ve.insertIntoArray( arr, 1, insert );
 	deepEqual( arr, expected, 'splicing 3000 elements into the middle of a 2-element array' );
 } );

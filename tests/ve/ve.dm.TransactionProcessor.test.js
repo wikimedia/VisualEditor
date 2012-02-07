@@ -1,7 +1,7 @@
-module( 'es' );
+module( 've/dm' );
 
-test( 'es.TransactionProcessor', 31, function() {
-	var documentModel = es.DocumentModel.newFromPlainObject( esTest.obj );
+test( 've.dm.TransactionProcessor', 31, function() {
+	var documentModel = ve.dm.DocumentNode.newFromPlainObject( veTest.obj );
 
 	// FIXME: These tests shouldn't use prepareFoo() because those functions
 	// normalize the transactions they create and are tested separately.
@@ -12,9 +12,9 @@ test( 'es.TransactionProcessor', 31, function() {
 	);
 
 	// Test 1
-	es.TransactionProcessor.commit( documentModel, elementAttributeChange );
+	ve.dm.TransactionProcessor.commit( documentModel, elementAttributeChange );
 	deepEqual(
-		documentModel.getData( new es.Range( 0, 5 ) ),
+		documentModel.getData( new ve.Range( 0, 5 ) ),
 		[
 			{ 'type': 'paragraph', 'attributes': { 'test': 1 } },
 			'a',
@@ -26,9 +26,9 @@ test( 'es.TransactionProcessor', 31, function() {
 	);
 
 	// Test 2
-	es.TransactionProcessor.rollback( documentModel, elementAttributeChange );
+	ve.dm.TransactionProcessor.rollback( documentModel, elementAttributeChange );
 	deepEqual(
-		documentModel.getData( new es.Range( 0, 5 ) ),
+		documentModel.getData( new ve.Range( 0, 5 ) ),
 		[
 			{ 'type': 'paragraph' },
 			'a',
@@ -40,13 +40,13 @@ test( 'es.TransactionProcessor', 31, function() {
 	);
 
 	var contentAnnotation = documentModel.prepareContentAnnotation(
-		new es.Range( 1, 4 ), 'set', { 'type': 'textStyle/bold' }
+		new ve.Range( 1, 4 ), 'set', { 'type': 'textStyle/bold' }
 	);
 
 	// Test 3
-	es.TransactionProcessor.commit( documentModel, contentAnnotation );
+	ve.dm.TransactionProcessor.commit( documentModel, contentAnnotation );
 	deepEqual(
-		documentModel.getData( new es.Range( 0, 5 ) ),
+		documentModel.getData( new ve.Range( 0, 5 ) ),
 		[
 			{ 'type': 'paragraph' },
 			['a', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }],
@@ -62,9 +62,9 @@ test( 'es.TransactionProcessor', 31, function() {
 	);
 
 	// Test 4
-	es.TransactionProcessor.rollback( documentModel, contentAnnotation );
+	ve.dm.TransactionProcessor.rollback( documentModel, contentAnnotation );
 	deepEqual(
-		documentModel.getData( new es.Range( 0, 5 ) ),
+		documentModel.getData( new ve.Range( 0, 5 ) ),
 		[
 			{ 'type': 'paragraph' },
 			'a',
@@ -78,9 +78,9 @@ test( 'es.TransactionProcessor', 31, function() {
 	var insertion = documentModel.prepareInsertion( 3, ['d'] );
 
 	// Test 5
-	es.TransactionProcessor.commit( documentModel, insertion );
+	ve.dm.TransactionProcessor.commit( documentModel, insertion );
 	deepEqual(
-		documentModel.getData( new es.Range( 0, 6 ) ),
+		documentModel.getData( new ve.Range( 0, 6 ) ),
 		[
 			{ 'type': 'paragraph' },
 			'a',
@@ -105,9 +105,9 @@ test( 'es.TransactionProcessor', 31, function() {
 	);
 
 	// Test 7
-	es.TransactionProcessor.rollback( documentModel, insertion );
+	ve.dm.TransactionProcessor.rollback( documentModel, insertion );
 	deepEqual(
-		documentModel.getData( new es.Range( 0, 5 ) ),
+		documentModel.getData( new ve.Range( 0, 5 ) ),
 		[
 			{ 'type': 'paragraph' },
 			'a',
@@ -129,12 +129,12 @@ test( 'es.TransactionProcessor', 31, function() {
 		'rollback keeps model tree up to date with insertions'
 	);
 
-	var removal = documentModel.prepareRemoval( new es.Range( 2, 4 ) );
+	var removal = documentModel.prepareRemoval( new ve.Range( 2, 4 ) );
 
 	// Test 9
-	es.TransactionProcessor.commit( documentModel, removal );
+	ve.dm.TransactionProcessor.commit( documentModel, removal );
 	deepEqual(
-		documentModel.getData( new es.Range( 0, 3 ) ),
+		documentModel.getData( new ve.Range( 0, 3 ) ),
 		[
 			{ 'type': 'paragraph' },
 			'a',
@@ -151,9 +151,9 @@ test( 'es.TransactionProcessor', 31, function() {
 	);
 
 	// Test 11
-	es.TransactionProcessor.rollback( documentModel, removal );
+	ve.dm.TransactionProcessor.rollback( documentModel, removal );
 	deepEqual(
-		documentModel.getData( new es.Range( 0, 5 ) ),
+		documentModel.getData( new ve.Range( 0, 5 ) ),
 		[
 			{ 'type': 'paragraph' },
 			'a',
@@ -180,9 +180,9 @@ test( 'es.TransactionProcessor', 31, function() {
 	);
 	
 	// Test 13
-	es.TransactionProcessor.commit( documentModel, paragraphBreak );
+	ve.dm.TransactionProcessor.commit( documentModel, paragraphBreak );
 	deepEqual(
-		documentModel.getData( new es.Range( 0, 7 ) ),
+		documentModel.getData( new ve.Range( 0, 7 ) ),
 		[
 			{ 'type': 'paragraph' },
 			'a',
@@ -213,9 +213,9 @@ test( 'es.TransactionProcessor', 31, function() {
 	);
 
 	// Test 16
-	es.TransactionProcessor.rollback( documentModel, paragraphBreak );
+	ve.dm.TransactionProcessor.rollback( documentModel, paragraphBreak );
 	deepEqual(
-		documentModel.getData( new es.Range( 0, 5 ) ),
+		documentModel.getData( new ve.Range( 0, 5 ) ),
 		[
 			{ 'type': 'paragraph' },
 			'a',
@@ -244,12 +244,12 @@ test( 'es.TransactionProcessor', 31, function() {
 		'rollback keeps model tree up to date with paragraph split (table follows the paragraph)'
 	);
 	
-	var listItemMerge = documentModel.prepareRemoval( new es.Range( 14, 19 ) );
+	var listItemMerge = documentModel.prepareRemoval( new ve.Range( 14, 19 ) );
 	
 	// Test 19
-	es.TransactionProcessor.commit( documentModel, listItemMerge );
+	ve.dm.TransactionProcessor.commit( documentModel, listItemMerge );
 	deepEqual(
-		documentModel.getData( new es.Range( 12, 22 ) ),
+		documentModel.getData( new ve.Range( 12, 22 ) ),
 		[
 			{ 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } },
 			{ 'type': 'paragraph' },
@@ -292,9 +292,9 @@ test( 'es.TransactionProcessor', 31, function() {
 	);
 	
 	// Test 24
-	es.TransactionProcessor.rollback( documentModel, listItemMerge );
+	ve.dm.TransactionProcessor.rollback( documentModel, listItemMerge );
 	deepEqual(
-		documentModel.getData( new es.Range( 12, 27 ) ),
+		documentModel.getData( new ve.Range( 12, 27 ) ),
 		[
 			{ 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } },
 			{ 'type': 'paragraph' },
@@ -351,9 +351,9 @@ test( 'es.TransactionProcessor', 31, function() {
 	var listSplit = documentModel.prepareInsertion( 17, [{ 'type': '/list' }, { 'type': 'list' }] );
 
 	// Test 30
-	es.TransactionProcessor.commit( documentModel, listSplit );
+	ve.dm.TransactionProcessor.commit( documentModel, listSplit );
 	deepEqual(
-		documentModel.getData( new es.Range( 15, 21 ) ),
+		documentModel.getData( new ve.Range( 15, 21 ) ),
 		[
 			{ 'type': '/paragraph' },
 			{ 'type': '/listItem' },
@@ -366,9 +366,9 @@ test( 'es.TransactionProcessor', 31, function() {
 	);
 	
 	// Test 31
-	es.TransactionProcessor.rollback( documentModel, listSplit );
+	ve.dm.TransactionProcessor.rollback( documentModel, listSplit );
 	deepEqual(
-		documentModel.getData( new es.Range( 15, 19 ) ),
+		documentModel.getData( new ve.Range( 15, 19 ) ),
 		[
 			{ 'type': '/paragraph' },
 			{ 'type': '/listItem' },

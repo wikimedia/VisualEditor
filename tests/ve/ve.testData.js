@@ -1,4 +1,4 @@
-esTest = {};
+veTest = {};
 
 /*
  * Sample plain object (WikiDom).
@@ -19,7 +19,7 @@ esTest = {};
  *             end: {Integer} Offset within text to end annotation
  *             [data]: {Object} Additional information, only used by more complex annotations
  */
-esTest.obj = {
+veTest.obj = {
 	'type': 'document',
 	'children': [
 		{
@@ -138,7 +138,7 @@ esTest.obj = {
  *         node: {Object} Reference to model tree node
  *         [attributes]: {Object} List of symbolic attribute name and literal value pairs
  */
-esTest.data = [
+veTest.data = [
 	//  0 - Beginning of paragraph
 	{ 'type': 'paragraph' },
 	//  1 - Plain content
@@ -213,27 +213,27 @@ esTest.data = [
  * Sample content data index.
  * 
  * This is a node tree that describes each partition within the document's content data. This is
- * what is automatically built by the es.DocumentModel constructor.
+ * what is automatically built by the ve.DocumentNode constructor.
  */
-esTest.tree = [
-	new es.ParagraphModel( esTest.data[0], 3 ),
-	new es.TableModel( esTest.data[5], [
-		new es.TableRowModel( esTest.data[6], [
-			new es.TableCellModel( esTest.data[7], [
-				new es.ParagraphModel( esTest.data[8], 1 ),
-				new es.ListModel( esTest.data[11], [
-					new es.ListItemModel( esTest.data[12], [
-						new es.ParagraphModel( esTest.data[13], 1 )
+veTest.tree = [
+	new ve.dm.ParagraphNode( veTest.data[0], 3 ),
+	new ve.dm.TableNode( veTest.data[5], [
+		new ve.dm.TableRowNode( veTest.data[6], [
+			new ve.dm.TableCellNode( veTest.data[7], [
+				new ve.dm.ParagraphNode( veTest.data[8], 1 ),
+				new ve.dm.ListNode( veTest.data[11], [
+					new ve.dm.ListItemNode( veTest.data[12], [
+						new ve.dm.ParagraphNode( veTest.data[13], 1 )
 					] ),
-					new es.ListItemModel( esTest.data[17], [
-						new es.ParagraphModel( esTest.data[18], 1 )
+					new ve.dm.ListItemNode( veTest.data[17], [
+						new ve.dm.ParagraphNode( veTest.data[18], 1 )
 					] ),
-					new es.ListItemModel( esTest.data[22], [
-						new es.ParagraphModel( esTest.data[23], 1 )
+					new ve.dm.ListItemNode( veTest.data[22], [
+						new ve.dm.ParagraphNode( veTest.data[23], 1 )
 					] )
 				] )
 			] )
 		] )
 	] ),
-	new es.ParagraphModel( esTest.data[31], 1 )
+	new ve.dm.ParagraphNode( veTest.data[31], 1 )
 ];

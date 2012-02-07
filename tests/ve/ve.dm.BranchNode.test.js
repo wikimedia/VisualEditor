@@ -1,18 +1,18 @@
-module( 'es/bases' );
+module( 've/dm' );
 
-test( 'es.DocumentModelBranchNode', 20, function() {
+test( 've.dm.BranchNode', 20, function() {
 	// Example data (integers) is used for simplicity of testing
-	var node1 = new es.DocumentModelBranchNode( '1' ),
-		node2 = new es.DocumentModelBranchNode( '2' ),
-		node3 = new es.DocumentModelBranchNode(
+	var node1 = new ve.dm.BranchNode( '1' ),
+		node2 = new ve.dm.BranchNode( '2' ),
+		node3 = new ve.dm.BranchNode(
 			'3',
 			null,
-			[new es.DocumentModelBranchNode( '3a' )]
+			[new ve.dm.BranchNode( '3a' )]
 		),
-		node4 = new es.DocumentModelBranchNode(
+		node4 = new ve.dm.BranchNode(
 			'4',
 			null,
-			[new es.DocumentModelBranchNode( '4a' ), new es.DocumentModelBranchNode( '4b' )]
+			[new ve.dm.BranchNode( '4a' ), new ve.dm.BranchNode( '4b' )]
 		);
 	
 	// Event triggering is detected using a callback that increments a counter
@@ -107,11 +107,11 @@ test( 'es.DocumentModelBranchNode', 20, function() {
 	
 	// Test 15, 16
 	node1.shift();
-	equal( updates, 7, 'es.ModelNode emits update events on shift' );
+	equal( updates, 7, 've.ModelNode emits update events on shift' );
 	strictArrayValueEqual(
 		node1.getChildren(),
 		[node3],
-		'es.ModelNode removes first Node on shift'
+		've.ModelNode removes first Node on shift'
 	);
 	
 	// Test 17
