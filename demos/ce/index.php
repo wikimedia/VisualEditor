@@ -117,13 +117,13 @@ include( '../../modules/sandbox/base.php' );
 		<script src="../../modules/ve/es/ve.es.js"></script>
 		<script src="../../modules/ve/es/ve.es.Node.js"></script>
 		<script src="../../modules/ve/es/ve.es.BranchNode.js"></script>
-		<script src="../../modules/ve/es/ve.es.LeafNode.js"></script>
+		<script src="../../modules/ve/ce/ve.es.LeafNode.js"></script>
 		<script src="../../modules/ve/ce/ve.es.Content.js"></script>
 		<script src="../../modules/ve/ce/ve.es.Surface.js"></script>
 
 		<script src="../../modules/ve/ce/nodes/ve.es.DocumentNode.js"></script>
 		<script src="../../modules/ve/es/nodes/ve.es.HeadingNode.js"></script>
-		<script src="../../modules/ve/es/nodes/ve.es.ParagraphNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.es.ParagraphNode.js"></script>
 		<script src="../../modules/ve/es/nodes/ve.es.PreNode.js"></script>
 		<script src="../../modules/ve/es/nodes/ve.es.ListItemNode.js"></script>
 		<script src="../../modules/ve/es/nodes/ve.es.ListNode.js"></script>
