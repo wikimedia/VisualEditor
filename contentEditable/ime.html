@@ -4,31 +4,58 @@
         <script src="../modules/jquery/jquery.js"></script>
         <script>
             $( function() {
-                //console.log("start");
+                
+                var $editor = $('#ce-editor');
+                var editorInterval = null;
+                var sel = {
+                            from: 0,
+                            to: 0
+                };
+                var prevInput = ''; 
 
-                $(document).bind('DOMCharacterDataModified', function(e) {
-                   //console.log('DOMCharacterDataModified', e);
-                   //console.log($('div').html());
+                $editor.blur(function() {
+                    if ( editorInterval !== null ) {
+                        clearInterval( editorInterval );
+                    }
                 });
 
-                /*
-                $('textarea').bind('keypress', function(e) {
-                   console.log('keypress', e);
+                $editor.focus(function() {
+                    prevInput = $editor.html();
+                    editorInterval = setInterval( readInput, 100 ); 
+                    sel.from = sel.to =  window.getSelection().getRangeAt(0).startOffset;
                 });
+                
+                var readInput = function() {
+                    var text = $editor.html();
+                    if (text === prevInput) {
+                        return false;
+                    }
+                    var same = 0,
+                        l = Math.min(prevInput.length, text.length);
+                    while ( same < l && prevInput[same] === text[same] ) {
+                        ++same;
+                    }
 
-                $('textarea').bind('keydown', function(e) {
-                   console.log(e.which, e);
-                });
+                    sel.from = sel.to =  window.getSelection().getRangeAt(0).startOffset - 1;
 
-                $('textarea').bind('keyup', function(e) {
-                   console.log($('textarea').val());
-                });
-                */
+
+                    if (same < prevInput.length) {
+                        console.log(prevInput.length - same);
+                    }
+                    
+
+                    var newText = text.slice(same);
+
+                    console.log(sel);
+                    console.log(newText);
+
+                    prevInput = text;
+                }
 
             } );
         </script>
     </head>
     <body>
-        <div style="width: 500px; height: 200px; border: solid 1px;" contenteditable="true">Lorem ipsum</div>
+        <div style="width: 500px; height: 200px; border: solid 1px;" contenteditable="true" id="ce-editor"></div>
     </body>
 </html>

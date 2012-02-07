@@ -166,5 +166,53 @@ $(document).ready( function() {
 		}
 	} );
 
+	var $modeButtons = $( '.es-modes-button' ),
+		$panels = $( '.es-panel' ),
+		$base = $( '#es-base' ),
+		currentMode = null,
+		modes = {
+			'wikitext': {
+				'$': $( '#es-mode-wikitext' ),
+				'$panel': $( '#es-panel-wikitext' ),
+				'update': function() {
+					this.$panel.text(
+						es.WikitextSerializer.stringify( documentModel.getPlainObject() )
+					);
+				}
+			}
+		};
+
+	$.each( modes, function( name, mode ) {
+		mode.$.click( function() {
+			var disable = $(this).hasClass( 'es-modes-button-down' );
+			var visible = $base.hasClass( 'es-showData' );
+			$modeButtons.removeClass( 'es-modes-button-down' );
+			$panels.hide();
+			if ( disable ) {
+				if ( visible ) {
+					$base.removeClass( 'es-showData' );
+					$window.resize();
+				}
+				currentMode = null;
+			} else {
+				$(this).addClass( 'es-modes-button-down' );
+				mode.$panel.show();
+				if ( !visible ) {
+					$base.addClass( 'es-showData' );
+					$window.resize();
+				}
+				mode.update.call( mode );
+				currentMode = mode;
+			}
+		} );
+	} );
+
+	window.surfaceModel.on( 'transact', function() {
+console.log("123");
+		if ( currentMode ) {
+			currentMode.update.call( currentMode );
+		}
+	} );
+
 	$( '#es-docs, #es-base' ).css( { 'visibility': 'visible' } );
 } );
