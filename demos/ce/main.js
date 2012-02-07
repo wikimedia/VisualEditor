@@ -565,7 +565,7 @@ $(document).ready( function() {
 	window.documentModel = ve.dm.DocumentNode.newFromPlainObject( wikidoms['Wikipedia article'] );
 	window.surfaceModel = new ve.dm.Surface( window.documentModel );
 	window.surfaceView = new ve.es.Surface( $( '#es-editor' ), window.surfaceModel );
-	window.toolbarView = new ve.ui.Toolbar( $( '#es-toolbar' ), window.surfaceView );
+	window.toolbarView = new ve.ui.Toolbar( $( '#es-toolbar' ), window.surfaceView, [] );
 	window.contextView = new ve.ui.Context( window.surfaceView );
 	window.surfaceModel.select( new ve.Range( 1, 1 ) );
 
