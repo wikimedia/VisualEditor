@@ -163,9 +163,7 @@ ve.es.Surface.prototype.getSelection = function() {
 		var offset1 = this.getOffset( selection.anchorNode, selection.anchorOffset );
 		var offset2 = this.getOffset( selection.focusNode, selection.focusOffset );
 
-		var blah = this.model.getDocument().getRelativeContentOffset( offset2, -1 );
-
-		return new ve.Range( offset1, blah );
+		return new ve.Range( offset1, offset2 );
 	}
 };
 
