@@ -80,9 +80,11 @@ ParserFunctions.prototype['pf_lcfirst'] = function ( target, argList, argDict ) 
 };
 
 ParserFunctions.prototype['pf_#tag'] = function ( target, argList, argDict ) {
-	return [ new TagTk( target ), 
-			 argList[0].v, 
-			 new EndTagTk( target ) ];
+	// XXX: handle things like {{#tag:nowiki|{{{input1|[[shouldnotbelink]]}}}}}
+	// https://www.mediawiki.org/wiki/Future/Parser_development#Token_stream_transforms
+	return [ new TagTk( target ) ] 
+		.concat( argList[0].v, 
+			 [ new EndTagTk( target ) ] );
 };
 
 // A first approximation, anyway..

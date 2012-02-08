@@ -365,7 +365,7 @@ link_preprocessor_text
 // Returns either a list of tokens, or a plain string (if nothing is to be
 // processed).
 preprocessor_text 
-  = r:( t:[^'<~[{\n\r\t|!\]} &=]+ { return t.join(''); }
+  = r:( t:[^<~[{\n\r\t|!\]} &=]+ { return t.join(''); }
   / directive
   / !inline_breaks text_char )+ {
       return flatten_string ( r );
@@ -790,10 +790,11 @@ template
   = "{{" target:template_param_text
     params:(newline? "|" newline? p:template_param { return p })* 
     "}}" {
-      target = flatten( target );
-      var obj = new SelfclosingTagTk( 'template' );
-      obj.orderedArgs = params;
-      obj.target = target;
+      // Insert target as first positional attribute, so that it can be
+      // generically expanded. The TemplateHandler then needs to shift it out
+      // again.
+      params.unshift( { k: '', v: flatten( target ) } );
+      var obj = new SelfclosingTagTk( 'template', params );
       //console.log( 'tokenizer template ' + JSON.stringify( target ));
       return obj;
   }
@@ -808,18 +809,8 @@ tplarg
     params:( newline? "|" newline? p:template_param { return p })* 
     "}}}" {
       name = flatten( name );
-      var obj = new SelfclosingTagTk( 'templatearg', [] );
-      obj.argname= name;
-      if (params && params.length) {
-          // HACK, not final.
-          //obj.attribs.push(new KV('data-defaultvalue', params[0][1]));
-          //console.log(JSON.stringify(params, null, 2));
-          //obj.attribs.push(new KV('data-json-args', JSON.stringify(params)));
-          obj.defaultvalue = params[0].v.length ? params[0].v : 
-                                                    [ '' ];
-      } else {
-        obj.defaultvalue = [];
-      }
+      params.unshift( { k: '', v: name } );
+      var obj = new SelfclosingTagTk( 'templatearg', params );
       //console.log( 'tokenizer tplarg ' + JSON.stringify( obj, null, 2 ));
       return obj;
   }
@@ -863,7 +854,8 @@ template_param_text
 wikilink
   = "[[" 
     ! url
-    target:link_target 
+    //target:link_target 
+    target:preprocessor_text
     lcontent:( "|" lt:link_text { return lt } )* 
     "]]" 
     // XXX In real MediaWiki, this is a language-dependent positive character

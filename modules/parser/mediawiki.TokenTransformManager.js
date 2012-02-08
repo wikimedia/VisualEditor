@@ -486,6 +486,27 @@ AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parent
 
 	for ( var i = 0; i < tokensLength; i++ ) {
 		token = tokens[i];
+		
+		if ( token.attribs ) {
+			// TODO: Transform token attributes (that need it) before general token processing.
+			//   Sync return -> continue as-is.
+			//   Async return -> return with async
+			//   per-item callback: function ( res ) { 
+			var atm = new AttributeTransformManager ( 
+							this, 
+							this._returnAttributes.bind( this, token, cb ) 
+						);
+
+			if ( atm.process( token.attribs ) ) {
+				// async attribute expansion ongoing
+				activeAccum = accum;
+				accum = new TokenAccumulator( this, activeAccum.getParentCB( 'sibling' ) );
+				cb = accum.getParentCB( 'child' );
+				// Only transform token once attributes are fully processed
+				// _returnAttributes will call transformTokens if sync flag is not set
+				continue;
+			}
+		}
 
 		switch ( token.constructor ) {
 			case String:
@@ -545,6 +566,8 @@ AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parent
 			accum = new TokenAccumulator( this, activeAccum.getParentCB( 'sibling' ) );
 			cb = accum.getParentCB( 'child' );
 		}
+
+
 	}
 
 	// Return finished tokens directly to caller, and indicate if further
@@ -589,6 +612,36 @@ AsyncTokenTransformManager.prototype._returnTokens = function ( tokens, notYetDo
 		this._reset();
 	}
 };
+
+AsyncTokenTransformManager.prototype._returnAttributes 
+	= function ( token, cb, attributes, async ) 
+{
+	this.env.dp( 'AsyncTokenTransformManager._returnAttributes: ' + 
+			JSON.stringify( token, null, 2 ) +
+			JSON.stringify( attributes, null, 2 ) );
+	token.attribs = attributes;
+	
+
+	if ( async ) {
+		// Attributes were expanded asynchronously, so now we still need to
+		// process the token.
+		var res = this.transformTokens( [token], cb );
+		if ( res.async ) {
+			// Token transformation is again asynchronous. There is already a
+			// TokenAccumulator associated with this token, so we only need to
+			// be concerned with synchronously returned tokens.
+			if ( res.tokens ) {
+				// Pass on already-returned tokens to the cb
+				cb( res.tokens, true );
+			}
+		} else if ( res.token ) {
+			cb ( [res.token], false );
+		} else {
+			cb ( res.tokens, false );
+		}
+	}
+};
+
 
 /**
  * Callback for the end event emitted from the tokenizer.
@@ -764,34 +817,52 @@ AttributeTransformManager.prototype.process = function ( attributes ) {
 	for ( var i = 0, l = attributes.length; i < l; i++ ) {
 		var kv = { key: [], value: [] };
 		this.kvs.push( kv );
+		var cur = attributes[i];
 
-		// Assume that the return is async, will be decremented in callback
-		this.outstanding += 2;
+		if ( cur.k.constructor !== String ) {
+			// Assume that the return is async, will be decremented in callback
+			this.outstanding++;
 
-		// transform the key
-		pipe = this.manager.getAttributePipeline( this.manager.args );
-		pipe.addListener( 'chunk', 
-				this.onChunk.bind( this, this._returnAttributeKey.bind( this, i ) ) 
-				);
-		pipe.addListener( 'end', 
-				this.onEnd.bind( this, this._returnAttributeKey.bind( this, i ) ) 
-				);
-		pipe.process( attributes[i].k.concat([{type:'END'}]) );
+			// transform the key
+			pipe = this.manager.getAttributePipeline( this.manager.args );
+			pipe.addListener( 'chunk', 
+					this.onChunk.bind( this, this._returnAttributeKey.bind( this, i ) ) 
+					);
+			pipe.addListener( 'end', 
+					this.onEnd.bind( this, this._returnAttributeKey.bind( this, i ) ) 
+					);
+			pipe.process( attributes[i].k.concat([{type:'END'}]) );
+		} else {
+			kv.key = cur.k;
+		}
 
-		// transform the value
-		pipe = this.manager.getAttributePipeline( this.manager.args );
-		pipe.addListener( 'chunk', 
-				this.onChunk.bind( this, this._returnAttributeValue.bind( this, i ) ) 
-				);
-		pipe.addListener( 'end', 
-				this.onEnd.bind( this, this._returnAttributeValue.bind( this, i ) ) 
-				);
-		//console.log('starting attribute transform of ' + JSON.stringify( attributes[i].v ) );
-		pipe.process( attributes[i].v.concat([{type:'END'}]) );
+		if ( cur.v.constructor !== String ) {
+			// Assume that the return is async, will be decremented in callback
+			this.outstanding++;
+
+			// transform the value
+			pipe = this.manager.getAttributePipeline( this.manager.args );
+			pipe.addListener( 'chunk', 
+					this.onChunk.bind( this, this._returnAttributeValue.bind( this, i ) ) 
+					);
+			pipe.addListener( 'end', 
+					this.onEnd.bind( this, this._returnAttributeValue.bind( this, i ) ) 
+					);
+			//console.log('starting attribute transform of ' + JSON.stringify( attributes[i].v ) );
+			pipe.process( cur.v.concat([{type:'END'}]) );
+		} else {
+			kv.value = cur.v;
+		}
 	}
 	this.outstanding--;
 	if ( this.outstanding === 0 ) {
 		this._returnAttributes();
+		// synchronous / done
+		return false;
+	} else {
+		// async, will call back
+		this.async = true;
+		return true;
 	}
 };
 
@@ -805,7 +876,7 @@ AttributeTransformManager.prototype._returnAttributes = function ( ) {
 
 	// and call the callback with the result
 	//console.log('AttributeTransformManager._returnAttributes: ' + out );
-	this.callback( out );
+	this.callback( out, this.async );
 };
 
 /**

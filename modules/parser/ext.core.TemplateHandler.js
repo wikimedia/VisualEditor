@@ -65,7 +65,6 @@ TemplateHandler.prototype.onTemplate = function ( token, frame, cb ) {
 			cb: cb,
 			origToken: token,
 			resultTokens: [],
-			attribsAsync: true,
 			overallAsync: false,
 			expandDone: false
 		},
@@ -73,68 +72,37 @@ TemplateHandler.prototype.onTemplate = function ( token, frame, cb ) {
 		i = 0,
 		res;
 
-	var attributes = [ {k: [''] , v: token.target} ]
-			.concat( this._nameArgs( token.orderedArgs ) );
+	tplExpandData.target = token.attribs.shift().v;
+	tplExpandData.expandedArgs = this._nameArgs( token.attribs );
 
-	//this.manager.env.dp( 'before AttributeTransformManager: ' + 
-	//					JSON.stringify( attributes, null, 2 ) );
-	new AttributeTransformManager( 
-				this.manager, 
-				this._returnAttributes.bind( this, tplExpandData ) 
-			).process( attributes );
-
-	// Unblock finish
-	if ( ! tplExpandData.attribsAsync ) {
-		// Attributes were transformed synchronously
-		this.manager.env.dp ( 
-				'sync attribs for ' + JSON.stringify( tplExpandData.target ),
-				tplExpandData.expandedArgs
-		);
-		// All attributes are fully expanded synchronously (no IO was needed)
-		return this._expandTemplate ( tplExpandData );
-	} else {
-		// Async attribute expansion is going on
-		this.manager.env.dp( 'async return for ' + JSON.stringify( token ));
-		tplExpandData.overallAsync = true;
-		return { async: true };
-	}
+	// Attributes were transformed synchronously
+	//this.manager.env.dp ( 
+	//		'sync attribs for ' + JSON.stringify( tplExpandData.target ),
+	//		tplExpandData.expandedArgs
+	//);
+	// All attributes are fully expanded synchronously (no IO was needed)
+	return this._expandTemplate ( tplExpandData );
 };
 
 /**
  * Create positional (number) keys for arguments without explicit keys
  */
-TemplateHandler.prototype._nameArgs = function ( orderedArgs ) {
+TemplateHandler.prototype._nameArgs = function ( attribs ) {
 	var n = 1,
 		out = [];
-	for ( var i = 0, l = orderedArgs.length; i < l; i++ ) {
+	for ( var i = 0, l = attribs.length; i < l; i++ ) {
 		// FIXME: Also check for whitespace-only named args!
-		if ( ! orderedArgs[i].k.length ) {
-			out.push( {k: [ n.toString() ], v: orderedArgs[i].v } );
+		if ( ! attribs[i].k.length ) {
+			out.push( {k: [ n.toString() ], v: attribs[i].v } );
 			n++;
 		} else {
-			out.push( orderedArgs[i] );
+			out.push( attribs[i] );
 		}
 	}
 	this.manager.env.dp( '_nameArgs: ' + JSON.stringify( out ) );
 	return out;
 };
 
-/**
- * Callback for argument (including target) expansion in AttributeTransformManager
- */
-TemplateHandler.prototype._returnAttributes = function ( tplExpandData, 
-															attributes ) 
-{
-	this.manager.env.dp( 'TemplateHandler._returnAttributes: ' + JSON.stringify(attributes) );
-	// Remove the target from the attributes
-	tplExpandData.attribsAsync = false;
-	tplExpandData.target = attributes[0].v;
-	attributes.shift();
-	tplExpandData.expandedArgs = attributes;
-	if ( tplExpandData.overallAsync ) {
-		this._expandTemplate ( tplExpandData );
-	}
-};
 
 /**
  * Fetch, tokenize and token-transform a template after all arguments and the
@@ -246,9 +214,10 @@ TemplateHandler.prototype._expandTemplate = function ( tplExpandData ) {
 	// expandDone is set to true in our _onEnd handler.
 	if ( tplExpandData.overallAsync || 
 			! tplExpandData.expandDone ) {
-		tplExpandData.overallAsync = true;
 		this.manager.env.dp( 'Async return from _expandTemplate for ' + 
-				JSON.stringify ( tplExpandData.target ) );
+				JSON.stringify ( tplExpandData.target ) +
+				JSON.stringify( tplExpandData, null, 2 ));
+		tplExpandData.overallAsync = true;
 		return { async: true };
 	} else {
 		this.manager.env.dp( 'Sync return from _expandTemplate for ' + 
@@ -319,12 +288,13 @@ TemplateHandler.prototype._fetchTemplateAndTitle = function ( title, callback, t
 	// @fixme normalize name?
 	var self = this;
 	if ( title in this.manager.env.pageCache ) {
-		// Unwind the stack
-		process.nextTick(
-				function () {
-					callback( self.manager.env.pageCache[title], title );
-				} 
-		);
+		callback( self.manager.env.pageCache[title], title );
+		//// Unwind the stack
+		//process.nextTick(
+		//		function () {
+		//			callback( self.manager.env.pageCache[title], title );
+		//		} 
+		//);
 	} else if ( ! this.manager.env.fetchTemplates ) {
 		callback( 'Warning: Page/template fetching disabled, and no cache for ' + 
 				title, title );
@@ -354,53 +324,26 @@ TemplateHandler.prototype._fetchTemplateAndTitle = function ( title, callback, t
  * Expand template arguments with tokens from the containing frame.
  */
 TemplateHandler.prototype.onTemplateArg = function ( token, frame, cb ) {
-	
-	var attributes = [{k: token.argname, v: token.defaultvalue}];
-
-	token.resultTokens = false;
-
-	new AttributeTransformManager ( 
-				this.manager, 
-				this._returnArgAttributes.bind( this, token, cb, frame ) 
-			).process( attributes );
-
-	if ( token.resultTokens !== false ) {
-		// synchronous return
-		//console.log( 'synchronous attribute expand: ' + JSON.stringify( token.resultTokens ) );
-
-		return { tokens: token.resultTokens };
-	} else {
-		//console.log( 'asynchronous attribute expand: ' + JSON.stringify( token, null, 2 ) );
-		// asynchronous return
-		token.resultTokens = [];
-		return { async: true };
-	}
-};
-
-TemplateHandler.prototype._returnArgAttributes = function ( token, cb, frame, attributes ) {
-	//console.log( '_returnArgAttributes: ' + JSON.stringify( attributes ));
-	var argName = this.manager.env.tokensToString( attributes[0].k ).trim(),
-		defaultValue = attributes[0].v,
+	var argName = this.manager.env.tokensToString( token.attribs.shift().v ).trim(),
 		res;
+
 	if ( argName in this.manager.args ) {
 		// return tokens for argument
 		//console.log( 'templateArg found: ' + argName + 
 		//		' vs. ' + JSON.stringify( this.manager.args ) ); 
 		res = this.manager.args[argName];
 	} else {
+		var defaultValue = token.attribs[0];
 		this.manager.env.dp( 'templateArg not found: ' + argName + 
-				' vs. ' + JSON.stringify( this.manager.args ) );
-		if ( defaultValue.length ) {
-			res = defaultValue;
+				' vs. ' + JSON.stringify( defaultValue ) );
+		if ( defaultValue && ! defaultValue.k.length && defaultValue.v.length ) {
+			res = defaultValue.v;
 		} else {
 			res = [ '{{{' + argName + '}}}' ];
 		}
 	}
-	if ( token.resultTokens !== false ) {
-		cb( res );
-	} else {
-		token.resultTokens =  res;
-	}
+	return { tokens: res };
+
 };
 
 

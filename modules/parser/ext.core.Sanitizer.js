@@ -13,6 +13,7 @@ var Util = require('./ext.Util.js').Util,
 
 
 function Sanitizer ( manager ) {
+	this.manager = manager;
 	this.register( manager );
 }
 
@@ -33,7 +34,11 @@ Sanitizer.prototype.onAnchor = function ( token ) {
 		return { token: token };
 	}
 	var hrefKV = this.manager.env.lookupKV( token.attribs, 'href' );
+	// FIXME: Should the flattening of attributes to text be performed as part
+	// of the AttributeTransformManager processing? This certainly is not the
+	// right place!
 	if ( hrefKV !== null ) {
+		hrefKV.v = this.manager.env.tokensToString( hrefKV.v );
 		var bits = hrefKV.v.match( /(.*?\/\/)([^\/]+)(\/?.*)/ );
 		if ( bits ) {
 			proto = bits[1];
