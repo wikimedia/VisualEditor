@@ -79,6 +79,10 @@ $modeHelp = "Toggle help view";
 include( '../../modules/sandbox/base.php' );
 
 ?>
+		<!-- Rangy -->
+		<script src="../../modules/rangy/rangy-core.js"></script>
+		<script src="../../modules/rangy/rangy-position.js"></script>
+
 		<!-- ve -->
 		<script src="../../modules/jquery/jquery.js"></script>
 		<script src="../../modules/ve/ve.js"></script>
