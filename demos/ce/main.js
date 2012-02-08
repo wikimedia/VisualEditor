@@ -602,4 +602,5 @@ $(document).ready( function() {
 
 	$( '#es-docs' ).css( { 'visibility': 'visible' } );
 	$( '#es-base' ).css( { 'visibility': 'visible' } );
+	$( '#es-mode-wikitext' ).click();
 } );
