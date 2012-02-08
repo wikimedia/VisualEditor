@@ -39,7 +39,7 @@
 				border: solid 1px #cccccc;
 				border-top: none;
 			}
-			#es-visual {
+			#es-editor, .es-showData #es-editor {
 				padding-left: 1em;
 				padding-right: 1em;
 			}
