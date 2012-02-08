@@ -55,19 +55,15 @@ ve.es.Surface = function( $container, model ) {
 			var insertionPoint = _this.getSelection().start;
 			console.log(_this.clipboard);
 			
-			var scrollTop = $(window).scrollTop();
-			
-			$('#paste').html('');
-			$('#paste').focus();
+			$('#paste').html('').show().css('top', $(window).scrollTop()).css('left', $(window).scrollLeft()).focus();
 			
 			setTimeout(function() {
-				var key = $('#paste').text().replace(/( |\r\n|\n|\r|\t)/gm,"");
+				var key = $('#paste').hide().text().replace(/( |\r\n|\n|\r|\t)/gm,"");
 
 				if (_this.clipboard[key]) {
 					var tx = _this.documentView.model.prepareInsertion( insertionPoint, _this.clipboard[key]);
 					_this.documentView.model.commit(tx);
 					_this.showCursorAt(insertionPoint + _this.clipboard[key].length);
-					$(window).scrollTop(scrollTop);
 				} else {
 					alert('i can only handle copy/paste from hybrid surface. sorry. :(');
 				}
