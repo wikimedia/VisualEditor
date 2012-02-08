@@ -53,6 +53,8 @@ ve.es.Surface = function( $container, model ) {
 			var insertionPoint = _this.getSelection().start;
 			console.log(_this.clipboard);
 			
+			var scrollTop = $(window).scrollTop();
+			
 			$('#paste').html('');
 			$('#paste').focus();
 			
@@ -63,6 +65,7 @@ ve.es.Surface = function( $container, model ) {
 					var tx = _this.documentView.model.prepareInsertion( insertionPoint, _this.clipboard[key]);
 					_this.documentView.model.commit(tx);
 					_this.showCursorAt(insertionPoint + _this.clipboard[key].length);
+					$(window).scrollTop(scrollTop);
 				} else {
 					alert('i can only handle copy/paste from hybrid surface. sorry. :(');
 				}
