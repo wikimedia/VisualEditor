@@ -19,7 +19,7 @@ ve.es.Surface = function( $container, model ) {
 	this.model = model;
 	this.documentView = new ve.es.DocumentNode( this.model.getDocument(), this );
 	this.contextView = null;
-	this.paste = {};
+	this.clipboard = {};
 	this.$ = $container
 		.addClass( 'es-surfaceView' )
 		.append( this.documentView.$ );
@@ -34,8 +34,10 @@ ve.es.Surface = function( $container, model ) {
 		.on('cut copy', function(event) {
 			var key = rangy.getSelection().getRangeAt(0).toString().replace(/( |\r\n|\n|\r|\t)/gm,"");
 
-			_this.paste[key] = ve.copyArray( _this.documentView.model.getData( _this.getSelection() ) );
-			
+			_this.clipboard[key] = ve.copyArray( _this.documentView.model.getData( _this.getSelection() ) );
+
+			console.log(_this.clipboard);
+
 			if (event.type == 'cut') {
 				var selection = _this.getSelection();
 
@@ -49,6 +51,7 @@ ve.es.Surface = function( $container, model ) {
 		})
 		.on('beforepaste paste', function(event) {
 			var insertionPoint = _this.getSelection().start;
+			console.log(_this.clipboard);
 			
 			$('#paste').html('');
 			$('#paste').focus();
@@ -56,10 +59,10 @@ ve.es.Surface = function( $container, model ) {
 			setTimeout(function() {
 				var key = $('#paste').text().replace(/( |\r\n|\n|\r|\t)/gm,"");
 
-				if (_this.paste[key]) {
-					var tx = _this.documentView.model.prepareInsertion( insertionPoint, _this.paste[key]);
+				if (_this.clipboard[key]) {
+					var tx = _this.documentView.model.prepareInsertion( insertionPoint, _this.clipboard[key]);
 					_this.documentView.model.commit(tx);
-					_this.showCursorAt(insertionPoint + _this.paste[key].length);
+					_this.showCursorAt(insertionPoint + _this.clipboard[key].length);
 				} else {
 					alert('i can only handle copy/paste from hybrid surface. sorry. :(');
 				}
@@ -129,6 +132,13 @@ ve.es.Surface.prototype.getOffset = function( localNode, localOffset ) {
 			if ( $( item ).attr('contentEditable') === "false" ) {
 				offset += 1;
 			} else {
+				console.log(item);
+				console.log(localNode);
+				if ( item === localNode ) {
+					offset += localOffset;
+					break;
+				}
+			
 				stack.push( [$item.contents(), 0] );
 				current[1]++;
 				current = stack[stack.length-1];
@@ -143,16 +153,19 @@ ve.es.Surface.prototype.getOffset = function( localNode, localOffset ) {
 
 ve.es.Surface.prototype.getSelection = function() {
 	var selection = rangy.getSelection();
-	
+
 	if ( selection.anchorNode === selection.focusNode && selection.anchorOffset === selection.focusOffset ) {
 		// only one offset
 		var offset = this.getOffset( selection.anchorNode, selection.anchorOffset );
 		return new ve.Range( offset, offset );
 	} else {
-		// two offsets
+		// two offsets		
 		var offset1 = this.getOffset( selection.anchorNode, selection.anchorOffset );
 		var offset2 = this.getOffset( selection.focusNode, selection.focusOffset );
-		return new ve.Range( offset1, offset2 );
+
+		var blah = this.model.getDocument().getRelativeContentOffset( offset2, -1 );
+
+		return new ve.Range( offset1, blah );
 	}
 };
 
