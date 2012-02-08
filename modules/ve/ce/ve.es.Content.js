@@ -1,28 +1,3 @@
-/**
- * Creates an ve.es.Content object.
- * 
- * A content view flows text into a DOM element and provides methods to get information about the
- * rendered output. HTML serialized specifically for rendering into and editing surface.
- * 
- * Rendering occurs automatically when content is modified, by responding to "update" events from
- * the model. Rendering is iterative and interruptable to reduce user feedback latency.
- * 
- * TODO: Cleanup code and comments
- * 
- * @class
- * @constructor
- * @param {jQuery} $container Element to render into
- * @param {ve.ModelNode} model Model to produce view for
- * @property {jQuery} $
- * @property {ve.ContentModel} model
- * @property {Array} boundaries
- * @property {Array} lines
- * @property {Integer} width
- * @property {RegExp} bondaryTest
- * @property {Object} widthCache
- * @property {Object} renderState
- * @property {Object} contentCache
- */
 ve.es.Content = function( $container, model ) {
 	// Inheritance
 	ve.EventEmitter.call( this );
@@ -30,13 +5,6 @@ ve.es.Content = function( $container, model ) {
 	// Properties
 	this.$ = $container;
 	this.model = model;
-	this.boundaries = [];
-	this.lines = [];
-	this.width = null;
-	this.boundaryTest = /([ \-\t\r\n\f])/g;
-	this.widthCache = {};
-	this.renderState = {};
-	this.contentCache = null;
 
 	if ( model ) {
 		// Events
@@ -44,9 +12,6 @@ ve.es.Content = function( $container, model ) {
 		this.model.on( 'update', function( offset ) {
 			_this.render( offset || 0 );
 		} );
-
-		// Initialization
-		this.scanBoundaries();
 	}
 };
 
@@ -202,50 +167,6 @@ ve.es.Content.renderAnnotation = function( bias, annotation, stack ) {
 
 /* Methods */
 
-/**
- * Updates the word boundary cache, which is used for word fitting.
- * 
- * @method
- */
-ve.es.Content.prototype.scanBoundaries = function() {
-	/*
-	 * Word boundary scan
-	 * 
-	 * To perform binary-search on words, rather than characters, we need to collect word boundary
-	 * offsets into an array. The offset of the right side of the breaking character is stored, so
-	 * the gaps between stored offsets always include the breaking character at the end.
-	 * 
-	 * To avoid encoding the same words as HTML over and over while fitting text to lines, we also
-	 * build a list of HTML escaped strings for each gap between the offsets stored in the
-	 * "boundaries" array. Slices of the "words" array can be joined, producing the escaped HTML of
-	 * the words.
-	 */
-	// Get and cache a copy of all content, the make a plain-text version of the cached content
-	var data = this.contentCache = this.model.getContentData(),
-		text = '';
-	for ( var i = 0, length = data.length; i < length; i++ ) {
-		text += typeof data[i] === 'string' ? data[i] : data[i][0];
-	}
-	// Purge "boundaries" and "words" arrays
-	this.boundaries = [0];
-	// Reset RegExp object's state
-	this.boundaryTest.lastIndex = 0;
-	// Iterate over each word+boundary sequence, capturing offsets and encoding text as we go
-	var match,
-		end;
-	while ( ( match = this.boundaryTest.exec( text ) ) ) {
-		// Include the boundary character in the range
-		end = match.index + 1;
-		// Store the boundary offset
-		this.boundaries.push( end );
-	}
-	// If the last character is not a boundary character, we need to append the final range to the
-	// "boundaries" and "words" arrays
-	if ( end < text.length || this.boundaries.length === 1 ) {
-		this.boundaries.push( text.length );
-	}
-};
-
 ve.es.Content.prototype.render = function( offset ) {
 	this.$.html( this.getHtml( 0, this.model.getContentLength() ) );
 };
@@ -263,7 +184,7 @@ ve.es.Content.prototype.getHtml = function( range, options ) {
 	} else {
 		range = { 'start': 0, 'end': undefined };
 	}
-	var data = this.contentCache.slice( range.start, range.end ),
+	var data = this.model.getContentData(),
 		render = ve.es.Content.renderAnnotation,
 		htmlChars = ve.es.Content.htmlCharacters;
 	var out = '',
