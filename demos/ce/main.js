@@ -8,12 +8,76 @@ $(document).ready( function() {
 					'content': { 'text': 'Having real-world metaphors for objects and actions can make it easier for a user to learn and use an interface (some might say that the interface is more natural or intuitive), and rapid, incremental feedback allows a user to make fewer errors and complete tasks in less time, because they can see the results of an action before completing the action, thus evaluating the output and compensating for mistakes.' }
 				},
 				{
+					'type': 'table',
+					'attributes': { 'html/style': 'width: 300px; float: left; margin: 0 1em 1em 0; border: solid 1px;' },
+					'children': [
+						{
+							'type': 'tableRow',
+							'children': [
+								{
+									'type': 'tableCell',
+									'attributes': { 'html/style': 'border: solid 1px;' },
+									'children': [
+										{
+											'type': 'paragraph',
+											'content': { 'text': 'row 1 & cell 1' }
+										}
+									]
+								},
+								{
+									'type': 'tableCell',
+									'attributes': { 'html/style': 'border: solid 1px;' },
+									'children': [
+										{
+											'type': 'paragraph',
+											'content': { 'text': 'row 1 & cell 2' }
+										}
+									]
+								}
+							]
+						},
+						{
+							'type': 'tableRow',
+							'children': [
+								{
+									'type': 'tableCell',
+									'attributes': { 'html/style': 'border: solid 1px;' },
+									'children': [
+										{
+											'type': 'paragraph',
+											'content': { 'text': 'row 2 & cell 1' }
+										}
+									]
+								},
+								{
+									'type': 'tableCell',
+									'attributes': { 'html/style': 'border: solid 1px;' },
+									'children': [
+										{
+											'type': 'paragraph',
+											'content': { 'text': 'row 2 & cell 2' }
+										}
+									]
+								}
+							]
+						}
+					]
+				},				
+				{
 					'type': 'paragraph',
 					'content': { 'text': 'Test 1' }
 				},
 				{
 					'type': 'paragraph',
 					'content': { 'text': 'Test 2' }
+				},
+				{
+					'type': 'paragraph',
+					'content': { 'text': 'Having real-world metaphors for objects and actions can make it easier for a user to learn and use an interface (some might say that the interface is more natural or intuitive), and rapid, incremental feedback allows a user to make fewer errors and complete tasks in less time, because they can see the results of an action before completing the action, thus evaluating the output and compensating for mistakes.' }
+				},
+				{
+					'type': 'paragraph',
+					'content': { 'text': 'Having real-world metaphors for objects and actions can make it easier for a user to learn and use an interface (some might say that the interface is more natural or intuitive), and rapid, incremental feedback allows a user to make fewer errors and complete tasks in less time, because they can see the results of an action before completing the action, thus evaluating the output and compensating for mistakes.' }
 				}
 			]
 		},

@@ -37,27 +37,25 @@ ve.es.Surface = function( $container, model ) {
 			_this.paste[key] = ve.copyArray( _this.documentView.model.getData( _this.getSelection() ) );
 			
 			if (event.type == 'cut') {
-				//not supported yet
-				return;
-				
-				var range = _this.getSelection();
-				if ( range.start != range.end ) {
-					event.preventDefault();
-					var tx = _this.model.getDocument().prepareRemoval( range );
-					_this.model.transact( tx );
-				}
+				var selection = _this.getSelection();
 
+				setTimeout(function() {
+					var tx = _this.model.getDocument().prepareRemoval( selection );
+					_this.model.transact( tx );
+					_this.showCursorAt(selection.start);
+				}, 1);
 			}
+			
 		})
 		.on('beforepaste paste', function(event) {
-			var insertionPoint = _this.getSelection().to;
+			var insertionPoint = _this.getSelection().start;
 			
 			$('#paste').html('');
 			$('#paste').focus();
 			
 			setTimeout(function() {
 				var key = $('#paste').text().replace(/( |\r\n|\n|\r|\t)/gm,"");
-				
+
 				if (_this.paste[key]) {
 					var tx = _this.documentView.model.prepareInsertion( insertionPoint, _this.paste[key]);
 					_this.documentView.model.commit(tx);
