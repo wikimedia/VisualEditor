@@ -19,6 +19,7 @@ ve.es.Surface = function( $container, model ) {
 	this.model = model;
 	this.documentView = new ve.es.DocumentNode( this.model.getDocument(), this );
 	this.contextView = null;
+	this.paste = {};
 	this.$ = $container
 		.addClass( 'es-surfaceView' )
 		.append( this.documentView.$ );
@@ -28,6 +29,47 @@ ve.es.Surface = function( $container, model ) {
 	this.model.getDocument().on( 'update', function() {
 		_this.emitUpdate( 25 );
 	} );
+
+	this.$	
+		.on('cut copy', function(event) {
+			var key = rangy.getSelection().getRangeAt(0).toString().replace(/( |\r\n|\n|\r|\t)/gm,"");
+
+			_this.paste[key] = ve.copyArray( _this.documentView.model.getData( _this.getSelection() ) );
+			
+			if (event.type == 'cut') {
+				//not supported yet
+				return;
+				
+				var range = _this.getSelection();
+				if ( range.start != range.end ) {
+					event.preventDefault();
+					var tx = _this.model.getDocument().prepareRemoval( range );
+					_this.model.transact( tx );
+				}
+
+			}
+		})
+		.on('beforepaste paste', function(event) {
+			var insertionPoint = _this.getSelection().to;
+			
+			$('#paste').html('');
+			$('#paste').focus();
+			
+			setTimeout(function() {
+				var key = $('#paste').text().replace(/( |\r\n|\n|\r|\t)/gm,"");
+				
+				if (_this.paste[key]) {
+					var tx = _this.documentView.model.prepareInsertion( insertionPoint, _this.paste[key]);
+					_this.documentView.model.commit(tx);
+					_this.showCursorAt(insertionPoint + _this.paste[key].length);
+				} else {
+					alert('i can only handle copy/paste from hybrid surface. sorry. :(');
+				}
+				
+			}, 1);
+		});
+		
+	
 
 	// Initialization
 	this.documentView.renderContent();

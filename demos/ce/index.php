@@ -156,5 +156,7 @@ include( '../../modules/sandbox/base.php' );
 
 		<!-- sandbox -->
 		<script src="main.js"></script>
+		
+		<div id="paste" contenteditable="true" style="height: 1px; width: 1px; position: absolute; left: -20000px;"></div>
 	</body>
 </html>
