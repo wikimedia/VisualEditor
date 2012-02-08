@@ -38,10 +38,12 @@ ve.es.Surface = function( $container, model ) {
 
 			console.log(_this.clipboard);
 
-			if (event.type == 'cut') {
-				var selection = _this.getSelection();
 
+			if (event.type == 'cut') {
 				setTimeout(function() {
+					document.execCommand('undo', false, false);
+				
+					var selection = _this.getSelection();
 					var tx = _this.model.getDocument().prepareRemoval( selection );
 					_this.model.transact( tx );
 					_this.showCursorAt(selection.start);
