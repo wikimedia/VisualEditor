@@ -368,7 +368,7 @@ preprocessor_text
   = r:( t:[^<~[{\n\r\t|!\]} &=]+ { return t.join(''); }
   / directive
   / !inline_breaks text_char )+ {
-      return flatten_string ( r );
+      return flatten ( r );
   }
 
 
@@ -875,10 +875,11 @@ wikilink
           }
       } else {
           if (trail) {
-              target += trail.join('');
+              target = target.concat( [ trail.join('') ] );
           }
-          textTokens = [ target ];
+          textTokens = target;
       }
+      //console.log( "XXX:" + pp(obj) );
       return [obj].concat(textTokens, [new EndTagTk( 'a' )]);
   }
 
