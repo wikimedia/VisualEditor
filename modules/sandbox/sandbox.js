@@ -654,7 +654,7 @@ $(document).ready( function() {
 						for ( j = 0; j < history[i].stack.length; j++) {
 							ops = history[i].stack[j].getOperations().slice(0);
 							for ( k = 0; k < ops.length; k++ ) {
-								data = ops[k].data || ops[k].length;
+								var data = ops[k].data || ops[k].length;
 								if ( ve.isArray( data ) ) {
 									data = data[0];
 									if ( ve.isArray( data ) ) {
