@@ -52,7 +52,7 @@ ve.es.Surface = function( $container, model ) {
 			}
 			
 		})
-		.on('beforepaste paste', function(event) {
+		.on('paste', function(event) {
 			var insertionPoint = _this.getSelection().start;
 			
 			$('#paste').html('').show().css('top', $(window).scrollTop()).css('left', $(window).scrollLeft()).focus();
