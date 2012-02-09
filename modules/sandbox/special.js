@@ -7,8 +7,8 @@
 		var feedback = new mw.Feedback( {
 			'title': new mw.Title( 'Visual editor/Feedback' ),
 			'dialogTitleMessageKey': 'visualeditor-feedback-dialog-title',
-			'bugsLink': new mw.Uri( '//bugzilla.wikimedia.org/enter_bug.cgi?product=MediaWiki%20extensions&component=VisualEditor' ),
-			'bugsListLink': new mw.Uri( '//bugzilla.wikimedia.org/buglist.cgi?query_format=advanced&component=VisualEditor&resolution=---&resolution=LATER&resolution=DUPLICATE&product=MediaWiki%20extensions' )
+			'bugsLink': new mw.Uri( 'https://bugzilla.wikimedia.org/enter_bug.cgi?product=MediaWiki%20extensions&component=VisualEditor' ),
+			'bugsListLink': new mw.Uri( 'https://bugzilla.wikimedia.org/buglist.cgi?query_format=advanced&component=VisualEditor&resolution=---&resolution=LATER&resolution=DUPLICATE&product=MediaWiki%20extensions' )
 		} );
 
 		$feedbackLink = $( '<a></a>' )
