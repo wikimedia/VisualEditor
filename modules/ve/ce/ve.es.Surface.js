@@ -40,24 +40,20 @@ ve.es.Surface = function( $container, model ) {
 
 			_this.clipboard[key] = ve.copyArray( _this.documentView.model.getData( _this.getSelection() ) );
 
-			console.log(_this.clipboard);
-
-
 			if (event.type == 'cut') {
 				setTimeout(function() {
 					document.execCommand('undo', false, false);
 				
 					var selection = _this.getSelection();
 					var tx = _this.model.getDocument().prepareRemoval( selection );
-					//_this.model.transact( tx );
-					//_this.showCursorAt(selection.start);
+					_this.model.transact( tx );
+					_this.showCursorAt(selection.start);
 				}, 1);
 			}
 			
 		})
 		.on('beforepaste paste', function(event) {
 			var insertionPoint = _this.getSelection().start;
-			console.log(_this.clipboard);
 			
 			$('#paste').html('').show().css('top', $(window).scrollTop()).css('left', $(window).scrollLeft()).focus();
 			
@@ -66,7 +62,7 @@ ve.es.Surface = function( $container, model ) {
 
 				if (_this.clipboard[key]) {
 					var tx = _this.documentView.model.prepareInsertion( insertionPoint, _this.clipboard[key]);
-					_this.documentView.model.commit(tx);
+					_this.model.transact( tx );
 					_this.showCursorAt(insertionPoint + _this.clipboard[key].length);
 				} else {
 					alert('i can only handle copy/paste from hybrid surface. sorry. :(');
