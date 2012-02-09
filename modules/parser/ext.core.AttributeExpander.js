@@ -1,8 +1,7 @@
 /**
- * Geniric attribute expansion handler.
+ * Generic attribute expansion handler.
  *
  * @author Gabriel Wicke <gwicke@wikimedia.org>
- * @author Brion Vibber <brion@wikimedia.org>
  */
 var $ = require('jquery'),
 	request = require('request'),
@@ -77,7 +76,8 @@ AttributeExpander.prototype.onToken = function ( token, frame, cb ) {
 AttributeExpander.prototype._returnAttributes = function ( expandData, 
 															attributes ) 
 {
-	this.manager.env.dp( 'AttributeExpander._returnAttributes: ' + JSON.stringify(attributes) );
+	this.manager.env.dp( 'AttributeExpander._returnAttributes: ' + 
+			JSON.stringify(attributes) );
 	// Remove the target from the attributes
 	expandData.token.attribs = attributes;
 	if ( expandData.async ) {

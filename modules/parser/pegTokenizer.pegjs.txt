@@ -338,59 +338,7 @@ urltext = ( t:[^'<~[{\n\rfghimnstw|!:\]} &=]+ { return t.join(''); }
           / ' ' & ':' { return "\u00a0"; }
           / t:text_char )+
 
-directive
-  = comment
-  / tplarg_or_template
-  / htmlentity 
 
-spaceless_preprocessor_text
-  = r:( t:[^'<~[{\n\r|!\]}\t &=]+ { return t.join(''); }
-  / directive
-  / !inline_breaks !' ' text_char )+ {
-      return flatten_string ( r );
-  }
-
-link_preprocessor_text
-  = r:( t:[^'<~[{\n\r|!\]}\t &="']+ { return t.join(''); }
-  / directive
-  / urlencoded_char
-  / !inline_breaks no_punctuation_char
-  / s:[.:,] !(space / eolf) { return s } 
-  / [&%] )+ {
-      return flatten_string ( r );
-  }
-
-attribute_preprocessor_text
-  = r:( ts:(!inline_breaks t:[^=<>{\n\r&'"\t ] {return t})+ { return ts.join(''); }
-  / directive
-  / !inline_breaks [&%] )* {
-      //console.log('prep');
-      return flatten_string ( r );
-  }
-attribute_preprocessor_text_single
-  = r:( t:[^>{\n\r&']+ { return t.join(''); }
-  / directive
-  / !inline_breaks [&%] )* {
-      return flatten_string ( r );
-  }
-attribute_preprocessor_text_double
-  = r:( t:[^>{\n\r&"]+ { return t.join(''); }
-  / directive
-  / !inline_breaks [&%] )* {
-      //console.log( 'double:' + pp(r) );
-      return flatten_string ( r );
-  }
-
-// Plain text, but can contain templates, template arguments, comments etc-
-// all stuff that is normally handled by the preprocessor
-// Returns either a list of tokens, or a plain string (if nothing is to be
-// processed).
-preprocessor_text 
-  = r:( t:[^<~[{\n\r\t|!\]} &=]+ { return t.join(''); }
-  / directive
-  / !inline_breaks text_char )+ {
-      return flatten ( r );
-  }
 
 
 /*
@@ -480,6 +428,67 @@ newlineToken = newline { return [new NlTk()] }
 
 eolf = newline / eof
 
+
+// 'Preprocessor' directive- higher-level things that can occur in otherwise
+// plain-text content.
+directive
+  = comment
+  / tplarg_or_template
+  / htmlentity 
+
+// Plain text, but can contain templates, template arguments, comments etc-
+// all stuff that is normally handled by the preprocessor
+// Returns either a list of tokens, or a plain string (if nothing is to be
+// processed).
+preprocessor_text 
+  = r:( t:[^<~[{\n\r\t|!\]} &=]+ { return t.join(''); }
+  / directive
+  / !inline_breaks text_char )+ {
+      return flatten ( r );
+  }
+
+spaceless_preprocessor_text
+  = r:( t:[^'<~[{\n\r|!\]}\t &=]+ { return t.join(''); }
+  / directive
+  / !inline_breaks !' ' text_char )+ {
+      return flatten_string ( r );
+  }
+
+link_preprocessor_text
+  = r:( t:[^'<~[{\n\r|!\]}\t &="']+ { return t.join(''); }
+  / directive
+  / urlencoded_char
+  / !inline_breaks no_punctuation_char
+  / s:[.:,] !(space / eolf) { return s } 
+  / [&%] )+ {
+      return flatten_string ( r );
+  }
+
+// Attribute values with preprocessor support
+attribute_preprocessor_text
+  = r:( ts:(!inline_breaks t:[^=<>{\n\r&'"\t ] {return t})+ { return ts.join(''); }
+  / directive
+  / !inline_breaks [&%] )* {
+      //console.log('prep');
+      return flatten_string ( r );
+  }
+attribute_preprocessor_text_single
+  = r:( t:[^{&']+ { return t.join(''); }
+  / directive
+  / !inline_breaks [{&] )* {
+      return flatten_string ( r );
+  }
+attribute_preprocessor_text_double
+  = r:( t:[^{&"]+ { return t.join(''); }
+  / directive
+  / !inline_breaks [{&] )* {
+      //console.log( 'double:' + pp(r) );
+      return flatten_string ( r );
+  }
+
+
+// A document (start production) is a sequence of toplevelblocks. Tokens are
+// emitted in chunks per toplevelblock to avoid buffering the full document.
 toplevelblock 
   = & { blockStart = pos; return true; } b:block {
     b = flatten(b);
@@ -496,14 +505,13 @@ toplevelblock
         bs.attribs.push(new KV('data-sourcePos', blockStart + ':' + pos));
         //console.log( 'toplevelblock: ' +  pp( bs ));
     }
-    // XXX: only run this for lines that actually need it!
-    //b.push({type: 'NEWLINE'});
-	// Move this to a token stream transform!
-    //console.log('about to emit' + pp(self));
-    //console.log( '__parseArgs call: ' +  pp( b ));
+
+    // Emit tokens for this toplevelblock. This feeds a chunk to the parser
+    // pipeline.
     __parseArgs[2]( flatten( b ) );
 
-    //return [];
+    // We don't return any tokens to the start production to save memory. We
+    // just emitted them already to our consumers.
     return true;
   }
 
@@ -549,6 +557,9 @@ block_line
   / pre
 
 
+// A paragraph. We don't emit 'p' tokens to avoid issues with template
+// transclusions, <p> tags in the source and the like. Instead, we perform
+// some paragraph wrapping on the DOM.
 para
   = s1:sol s2:sol c:inlineline { 
       return s1.concat(s2, /* [new TagTk('p')],*/ c); 
@@ -896,13 +907,13 @@ wikilink
           }
       } else {
           if (trail) {
-              textTokens = target.concat( [ trail.join('') ] );
+              textTokens = $.extend(true, [], target).concat( [ trail.join('') ] );
           } else {
               // copy list
-              textTokens = target.concat([]);
+              textTokens = $.extend(true, [], target);
           }
       }
-      //console.log( "XXX:" + pp(obj) );
+      //console.log( "XXX:" + pp([obj].concat(textTokens, [new EndTagTk( 'a' )])) );
       return [obj].concat(textTokens, [new EndTagTk( 'a' )]);
   }
 
