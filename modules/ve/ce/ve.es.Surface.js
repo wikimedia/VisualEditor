@@ -30,48 +30,18 @@ ve.es.Surface = function( $container, model ) {
 		_this.emitUpdate( 25 );
 	} );
 
-	this.$.mousedown( function(e) {
+	this.$.mousedown( function( e ) {
 		return _this.onMouseDown( e );
 	} );
 
-	this.$	
-		.on('cut copy', function(event) {
-			var key = rangy.getSelection().getRangeAt(0).toString().replace(/( |\r\n|\n|\r|\t)/gm,"");
+	this.$.on('cut copy', function( e ) {
+		_this.onCutCopy( e );
+	} );
 
-			_this.clipboard[key] = ve.copyArray( _this.documentView.model.getData( _this.getSelection() ) );
+	this.$.on('paste', function( e ) {
+		_this.onPaste( e );
+	} );
 
-			if (event.type == 'cut') {
-				setTimeout(function() {
-					document.execCommand('undo', false, false);
-				
-					var selection = _this.getSelection();
-					var tx = _this.model.getDocument().prepareRemoval( selection );
-					_this.model.transact( tx );
-					_this.showCursorAt(selection.start);
-				}, 1);
-			}
-			
-		})
-		.on('paste', function(event) {
-			var insertionPoint = _this.getSelection().start;
-			
-			$('#paste').html('').show().css('top', $(window).scrollTop()).css('left', $(window).scrollLeft()).focus();
-			
-			setTimeout(function() {
-				var key = $('#paste').hide().text().replace(/( |\r\n|\n|\r|\t)/gm,"");
-
-				if (_this.clipboard[key]) {
-					var tx = _this.documentView.model.prepareInsertion( insertionPoint, _this.clipboard[key]);
-					_this.model.transact( tx );
-					_this.showCursorAt(insertionPoint + _this.clipboard[key].length);
-				} else {
-					alert('i can only handle copy/paste from hybrid surface. sorry. :(');
-				}
-				
-			}, 1);
-		});
-		
-	
 
 	// Initialization
 	this.documentView.renderContent();
@@ -82,6 +52,44 @@ ve.es.Surface = function( $container, model ) {
 
 /* Methods */
 
+ve.es.Surface.prototype.onCutCopy = function( e ) {
+	var _this = this,
+		key = rangy.getSelection().getRangeAt(0).toString().replace(/( |\r\n|\n|\r|\t)/gm,"");
+
+	_this.clipboard[key] = ve.copyArray( _this.documentView.model.getData( _this.getSelection() ) );
+
+	if ( event.type == 'cut' ) {
+		setTimeout( function() {
+			document.execCommand('undo', false, false);
+		
+			var selection = _this.getSelection();
+			var tx = _this.model.getDocument().prepareRemoval( selection );
+			_this.model.transact( tx );
+			_this.showCursorAt( selection.start );
+		}, 1 );
+	}
+};
+
+ve.es.Surface.prototype.onPaste = function( e ) {
+	var _this = this,
+		insertionPoint = _this.getSelection().start;
+	
+	$('#paste').html('').show().css('top', $(window).scrollTop()).css('left', $(window).scrollLeft()).focus();
+	
+	setTimeout( function() {
+		var key = $('#paste').hide().text().replace(/( |\r\n|\n|\r|\t)/gm,"");
+
+		if ( _this.clipboard[key] ) {
+			var tx = _this.documentView.model.prepareInsertion( insertionPoint, _this.clipboard[key]);
+			_this.model.transact( tx );
+			_this.showCursorAt(insertionPoint + _this.clipboard[key].length);
+		} else {
+			alert('i can only handle copy/paste from hybrid surface. sorry. :(');
+		}
+		
+	}, 1 );
+};
+		
 ve.es.Surface.prototype.onMouseDown = function( e ) {
 	if ( this.worker !== null ) {
 		clearInterval( this.worker );
