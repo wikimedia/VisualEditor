@@ -24,6 +24,7 @@ var fs = require('fs'),
 																.PostExpandParagraphHandler,
 	Sanitizer                   = require('./ext.core.Sanitizer.js').Sanitizer,
 	TemplateHandler             = require('./ext.core.TemplateHandler.js').TemplateHandler,
+	AttributeExpander            = require('./ext.core.AttributeExpander.js').AttributeExpander,
 	Cite                        = require('./ext.Cite.js').Cite,
 	FauxHTML5                   = require('./mediawiki.HTML5TreeBuilder.node.js').FauxHTML5,
 	DOMPostProcessor            = require('./mediawiki.DOMPostProcessor.js').DOMPostProcessor,
@@ -176,6 +177,7 @@ ParserPipeline.prototype.makeInputPipeline = function ( inputType, args, isNoInc
 
 				// Register template expansion extension
 				new TemplateHandler( tokenExpander );
+				new AttributeExpander( tokenExpander );
 
 				tokenExpander.listenForTokensFrom ( tokenPreProcessor );
 				// XXX: hack.
@@ -224,6 +226,7 @@ ParserPipeline.prototype.makeAttributePipeline = function ( args ) {
 				args, this.env 
 				);
 		new TemplateHandler( tokenExpander );
+		new AttributeExpander( tokenExpander );
 		tokenExpander.listenForTokensFrom ( tokenPreProcessor );
 
 		return new CachedTokenPipeline( 
