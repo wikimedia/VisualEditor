@@ -43,7 +43,7 @@ AttributeExpander.prototype.register = function ( manager ) {
  * processes the template.
  */
 AttributeExpander.prototype.onToken = function ( token, frame, cb ) {
-	if ( token.constructor === TagTk && token.attributes ) {
+	if ( token.constructor === TagTk && token.attribs && token.attribs.length ) {
 		var expandData = {
 			token: token,
 			cb: cb
@@ -55,8 +55,7 @@ AttributeExpander.prototype.onToken = function ( token, frame, cb ) {
 		if( atm.process( token.attribs ) ) {
 			// Attributes were transformed synchronously
 			this.manager.env.dp ( 
-					'sync attribs for ' + JSON.stringify( tplExpandData.target ),
-					tplExpandData.expandedArgs
+					'sync attribs for ' + JSON.stringify( token )
 			);
 			// All attributes are fully expanded synchronously (no IO was needed)
 			return { token: token };

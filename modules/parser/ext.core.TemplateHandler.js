@@ -73,7 +73,10 @@ TemplateHandler.prototype.onTemplate = function ( token, frame, cb ) {
 		i = 0,
 		res;
 
-	var attributes = [token.attribs.shift()].concat( this._nameArgs( token.attribs ) );
+	var attributes = [token.attribs.shift()];
+	if( token.attribs.length ) {
+		attributes = attributes.concat( this._nameArgs( token.attribs ) );
+	}
 
 	this.manager.env.dp( 'before AttributeTransformManager: ' + 
 						JSON.stringify( attributes, null, 2 ) );

@@ -360,6 +360,27 @@ link_preprocessor_text
       return flatten_string ( r );
   }
 
+attribute_preprocessor_text
+  = r:( ts:(!inline_breaks t:[^=<>{\n\r&'"\t ] {return t})+ { return ts.join(''); }
+  / directive
+  / !inline_breaks [&%] )* {
+      //console.log('prep');
+      return flatten_string ( r );
+  }
+attribute_preprocessor_text_single
+  = r:( t:[^>{\n\r&']+ { return t.join(''); }
+  / directive
+  / !inline_breaks [&%] )* {
+      return flatten_string ( r );
+  }
+attribute_preprocessor_text_double
+  = r:( t:[^>{\n\r&"]+ { return t.join(''); }
+  / directive
+  / !inline_breaks [&%] )* {
+      //console.log( 'double:' + pp(r) );
+      return flatten_string ( r );
+  }
+
 // Plain text, but can contain templates, template arguments, comments etc-
 // all stuff that is normally handled by the preprocessor
 // Returns either a list of tokens, or a plain string (if nothing is to be
@@ -875,9 +896,11 @@ wikilink
           }
       } else {
           if (trail) {
-              target = target.concat( [ trail.join('') ] );
+              textTokens = target.concat( [ trail.join('') ] );
+          } else {
+              // copy list
+              textTokens = target.concat([]);
           }
-          textTokens = target;
       }
       //console.log( "XXX:" + pp(obj) );
       return [obj].concat(textTokens, [new EndTagTk( 'a' )]);
@@ -1008,8 +1031,8 @@ generic_tag
   = "<" 
     & { tagStartPos = pos; return true; } // remember the start position of this tag
     end:"/"? name:[0-9a-zA-Z]+ 
-    attribs:generic_attribute* 
-    space*
+    attribs:generic_newline_attribute* 
+    ( space / newline ) *
     selfclose:"/"?
     ">" {
         name = name.join('');
@@ -1024,6 +1047,19 @@ generic_tag
         res.attribs.push(new KV('data-sourceTagPos', (tagStartPos - 1) + ":" + pos));
         return res;
     }
+
+generic_newline_attribute
+  = s:( space / newline )* 
+    name:generic_attribute_name
+    value:(( space / newline )*
+          v:generic_attribute_newline_value { return v })?
+{
+    if ( value !== '' ) {
+        return new KV( name, value );
+    } else {
+        return new KV( name, '' );
+    }
+}
 
 generic_attribute
   = s:space* 
@@ -1045,20 +1081,29 @@ generic_attribute_name
         return n.join('');
   }
 
+generic_attribute_newline_value
+  = "=" (space / newline )* v:xml_att_value { 
+      return v; 
+  }
 generic_attribute_value
   = "=" space* v:att_value { 
       return v; 
   }
 
 // XXX: attributes can contain templates and template args!!
+xml_att_value
+  = "'" t:attribute_preprocessor_text_single "'" { return t; }
+  / '"' t:attribute_preprocessor_text_double '"' { return t; }
+  / attribute_preprocessor_text
+
+// XXX: attributes can contain templates and template args!!
 att_value
   = t:(!inline_breaks c:[^ \t'"<>='\n] { return c } )+ { 
         return t.join(''); 
     }
-    // XXX: is "\"" also valid html? or just Wikitext?
+  // XXX: is "\"" also valid html? or just Wikitext?
   / "'" t:[^'>]* "'" { return unquote("'", t.join('')); }
   / '"' t:[^">]* '"' { return unquote('"', t.join('')); }
-
 
 /* Lists */
 lists = e:(dtdd / li) es:(sol (dtdd / li))*

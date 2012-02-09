@@ -766,6 +766,12 @@ AttributeTransformManager.prototype.process = function ( attributes ) {
 		this.kvs.push( kv );
 		var cur = attributes[i];
 
+		if ( ! cur ) {
+			console.log( JSON.stringify( attributes ) );
+			console.trace();
+			continue;
+		}
+
 		if ( cur.k.constructor !== String ) {
 			// Assume that the return is async, will be decremented in callback
 			this.outstanding++;
