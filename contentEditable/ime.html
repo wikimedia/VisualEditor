@@ -53,6 +53,41 @@
                 }
 
             } );
+
+            var oldText = 'Test';
+            var newText = 'Teeeeeest';
+            
+            var sameFromLeft = 0,
+                sameFromRight = 0,
+                l = oldText.length;
+
+            while ( sameFromLeft < l && oldText[sameFromLeft] == newText[sameFromLeft] ) {
+                ++sameFromLeft;
+            }
+            if ( oldText.length > sameFromLeft ) {
+                l = l - sameFromLeft;
+                while ( sameFromRight < l && oldText[oldText.length - 1 - sameFromRight] == newText[newText.length - 1 - sameFromRight] ) {
+                    ++sameFromRight;
+                }
+            }
+            
+            console.log('sameFromLeft: ' + sameFromLeft);
+            console.log('sameFromRight: ' + sameFromRight);
+            
+            if ( sameFromLeft + sameFromRight !== oldText.length ) {
+                var toDelete = oldText.split('');
+                console.log(toDelete.slice(sameFromLeft,oldText.length - sameFromRight).join(''));
+            }
+            
+            if ( sameFromLeft + sameFromRight !== newText.length ) {
+                var toAdd = newText.split('');
+                console.log(toAdd.slice(sameFromLeft, newText.length - sameFromRight).join(''));
+            }
+            
+            
+            
+                        
+
         </script>
     </head>
     <body>

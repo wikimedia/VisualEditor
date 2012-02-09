@@ -30,6 +30,10 @@ ve.es.Surface = function( $container, model ) {
 		_this.emitUpdate( 25 );
 	} );
 
+	this.$.mousedown( function(e) {
+		return _this.onMouseDown( e );
+	} );
+
 	this.$	
 		.on('cut copy', function(event) {
 			var key = rangy.getSelection().getRangeAt(0).toString().replace(/( |\r\n|\n|\r|\t)/gm,"");
@@ -45,8 +49,8 @@ ve.es.Surface = function( $container, model ) {
 				
 					var selection = _this.getSelection();
 					var tx = _this.model.getDocument().prepareRemoval( selection );
-					_this.model.transact( tx );
-					_this.showCursorAt(selection.start);
+					//_this.model.transact( tx );
+					//_this.showCursorAt(selection.start);
 				}, 1);
 			}
 			
@@ -75,9 +79,76 @@ ve.es.Surface = function( $container, model ) {
 
 	// Initialization
 	this.documentView.renderContent();
+	
+	this.worker = null;
+	this.node = null;
 };
 
 /* Methods */
+
+ve.es.Surface.prototype.onMouseDown = function( e ) {
+	if ( this.worker !== null ) {
+		clearInterval( this.worker );
+	}
+
+	var _this = this;
+	
+	setTimeout( function() {
+		_this.node = rangy.getSelection().anchorNode;
+		var prevText = _this.node.textContent;
+		_this.worker = setInterval( function() {
+			var text = _this.node.textContent;
+
+			if ( text === prevText ) {
+				return;
+			}
+			
+			var nodeOffset = _this.getOffset( _this.node, 0 );
+
+            var sameFromLeft = 0,
+                sameFromRight = 0,
+                l = prevText.length;
+
+            while ( sameFromLeft < l && prevText[sameFromLeft] == text[sameFromLeft] ) {
+                ++sameFromLeft;
+			}
+			if ( prevText.length > sameFromLeft ) {
+				l = l - sameFromLeft;
+	            while ( sameFromRight < l && prevText[prevText.length - 1 - sameFromRight] == text[text.length - 1 - sameFromRight] ) {
+	                ++sameFromRight;
+				}
+			}
+			
+            if ( sameFromLeft + sameFromRight !== prevText.length ) {
+            	// delete
+            	var range = new ve.Range( nodeOffset + sameFromLeft, nodeOffset + prevText.length - sameFromRight );
+            	var tx = _this.model.getDocument().prepareRemoval( range );
+            	_this.model.transact( tx );
+            }
+            
+            if ( sameFromLeft + sameFromRight !== text.length ) {
+				// insert
+            	var data = text.split('').slice(sameFromLeft, text.length - sameFromRight);
+            	var tx = _this.documentView.model.prepareInsertion( nodeOffset + sameFromLeft, data);
+            	_this.model.transact( tx );
+            }			
+
+			prevText = text;
+		}, 50 );
+	}, 1 );
+	
+	
+	/*
+
+	var sel = rangy.getSelection();
+
+
+	if ( sel.anchorOffset === sel.focusOffset && sel.anchorNode === sel.focusNode ) {
+		console.log("123");
+	}
+	
+	*/
+};
 
 ve.es.Surface.prototype.attachContextView = function( contextView ) {
 	this.contextView = contextView;
@@ -104,6 +175,11 @@ ve.es.Surface.prototype.emitUpdate = function( delay ) {
 
 ve.es.Surface.prototype.getOffset = function( localNode, localOffset ) {
 	var $node = $( localNode );
+	
+	if ( $node.hasClass( 'ce-leafNode' ) ) {
+		return this.documentView.getOffsetFromNode( $node.data('view') ) + 1;
+	}
+	
 	while( !$node.hasClass( 'ce-leafNode' ) ) {
 		$node = $node.parent();
 	}

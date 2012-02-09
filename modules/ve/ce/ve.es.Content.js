@@ -10,7 +10,7 @@ ve.es.Content = function( $container, model ) {
 		// Events
 		var _this = this;
 		this.model.on( 'update', function( offset ) {
-			_this.render( offset || 0 );
+			//_this.render( offset || 0 );
 		} );
 	}
 };
