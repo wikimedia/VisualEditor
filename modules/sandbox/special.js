@@ -11,7 +11,7 @@
 			'bugsListLink': new mw.Uri( 'https://bugzilla.wikimedia.org/buglist.cgi?query_format=advanced&component=VisualEditor&resolution=---&resolution=LATER&resolution=DUPLICATE&product=MediaWiki%20extensions' )
 		} );
 
-		$feedbackLink = $( '<a></a>' )
+		var $feedbackLink = $( '<a></a>' )
 			.attr( { 'href': '#' } )
 			.text( mw.msg( 'visualeditor-feedback-prompt' ) )	
 			.click( function() { feedback.launch(); } );
