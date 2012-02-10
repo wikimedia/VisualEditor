@@ -53,8 +53,6 @@ ve.es.Surface = function( $container, model ) {
 		
 		var index = 1 + _this.documentView.getOffsetFromNode( $node.data('view') );
 
-		console.log(index);
-
 		while ( stack.length > 0 ) {
 			if ( current[1] >= current[0].length ) {
 				stack.pop();
@@ -85,10 +83,6 @@ ve.es.Surface = function( $container, model ) {
 			}
 			current[1]++;
 		}
-		
-		console.log(node);
-		console.log(localOffset);		
-
 
 		setTimeout(function() {
 			var sel = rangy.getSelection();
