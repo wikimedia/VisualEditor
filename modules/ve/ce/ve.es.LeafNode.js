@@ -35,6 +35,10 @@ ve.es.LeafNode.prototype.renderContent = function() {
 	this.contentView.render();
 };
 
+ve.es.LeafNode.prototype.getDOMText = function() {
+	return ve.ce.getDOMText( this.$[0] );
+};
+
 /* Inheritance */
 
 ve.extendClass( ve.es.LeafNode, ve.LeafNode );

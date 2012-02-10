@@ -118,6 +118,7 @@ include( '../../modules/sandbox/base.php' );
 		<script src="../../modules/ve/dm/serializers/ve.dm.WikitextSerializer.js"></script>
 
 		<!-- es -->
+		<script src="../../modules/ve/ce/ve.ce.js"></script>
 		<script src="../../modules/ve/es/ve.es.js"></script>
 		<script src="../../modules/ve/es/ve.es.Node.js"></script>
 		<script src="../../modules/ve/es/ve.es.BranchNode.js"></script>
