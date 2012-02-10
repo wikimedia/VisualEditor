@@ -272,6 +272,7 @@ ve.es.Surface.prototype.showCursorAt = function( offset ) {
 			if ( offset >= index && offset <= index + length ) {
 				node = item;
 				localOffset = offset - index;
+				break;
 			} else {
 				index += length;
 			}
