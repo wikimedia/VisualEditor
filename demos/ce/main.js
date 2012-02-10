@@ -4,8 +4,46 @@ $(document).ready( function() {
 			'type': 'document',
 			'children': [
 				{
-					'type': 'paragraph',
-					'content': { 'text': 'Having real-world metaphors for objects and actions can make it easier for a user to learn and use an interface (some might say that the interface is more natural or intuitive), and rapid, incremental feedback allows a user to make fewer errors and complete tasks in less time, because they can see the results of an action before completing the action, thus evaluating the output and compensating for mistakes.' }
+					"type": "paragraph",
+					"content": {
+						"text": "In computer science, direct manipulation is a human-computer interaction style which involves continuous representation of objects of interest, and rapid, reversible, incremental actions and feedback. The intention is to allow a user to directly manipulate objects presented to them, using actions that correspond at least loosely to the physical world. An example of direct-manipulation is resizing a graphical shape, such as a rectangle, by dragging its corners or edges with a mouse.",
+						"annotations": [
+							{
+								"type": "link/internal",
+								"range": {
+									"start": 3,
+									"end": 19
+								},
+								"data": {
+									"title": "Computer_science"
+								}
+							},
+							{
+								"type": "link/internal",
+								"range": {
+									"start": 46,
+									"end": 72
+								},
+								"data": {
+									"title": "Human-computer interaction"
+								}
+							},
+							{
+								"type": "textStyle/bold",
+								"range": {
+									"start": 21,
+									"end": 40
+								}
+							},
+							{
+								"type": "textStyle/italic",
+								"range": {
+									"start": 28,
+									"end": 40
+								}
+							}
+						]
+					}
 				},
 				{
 					'type': 'table',
@@ -72,12 +110,26 @@ $(document).ready( function() {
 					'content': { 'text': 'Test 2' }
 				},
 				{
-					'type': 'paragraph',
-					'content': { 'text': 'Having real-world metaphors for objects and actions can make it easier for a user to learn and use an interface (some might say that the interface is more natural or intuitive), and rapid, incremental feedback allows a user to make fewer errors and complete tasks in less time, because they can see the results of an action before completing the action, thus evaluating the output and compensating for mistakes.' }
-				},
-				{
-					'type': 'paragraph',
-					'content': { 'text': 'Having real-world metaphors for objects and actions can make it easier for a user to learn and use an interface (some might say that the interface is more natural or intuitive), and rapid, incremental feedback allows a user to make fewer errors and complete tasks in less time, because they can see the results of an action before completing the action, thus evaluating the output and compensating for mistakes.' }
+					"type": "paragraph",
+					"content": {
+						"text": "The ViewTouch graphic touchscreen POS (point of sale) GUI developed by Gene Mosher on the Atari ST computer and first installed in restaurants in 1986 is an early example of an application specific GUI that manifests all of the characteristics of direct manipulation.",
+						"annotations": [
+							{
+								"type": "textStyle/bold",
+								"range": {
+									"start": 0,
+									"end": 13
+								}
+							},
+							{
+								"type": "textStyle/italic",
+								"range": {
+									"start": 34,
+									"end": 37
+								}
+							}
+						]
+					}
 				}
 			]
 		},
