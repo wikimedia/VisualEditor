@@ -42,7 +42,7 @@ ve.es.Surface = function( $container, model ) {
 		_this.onPaste( e );
 	} );
 
-	this.$.on('mouseup', function( e ) {
+	this.$.on('m---ouseup', function( e ) {
 		var offset = _this.getSelection().start;
 
 		var $node = _this.documentView.getNodeFromOffset( offset ).$;
@@ -177,6 +177,16 @@ ve.es.Surface.prototype.onMouseDown = function( e ) {
 		_this.node = rangy.getSelection().anchorNode;
 		var prevText = _this.node.textContent;
 		_this.worker = setInterval( function() {
+
+			if ( ( _this.node.previousSibling !== null && _this.node.previousSibling.nodeType === 3 ) || ( _this.node.nextSibling !== null && _this.node.nextSibling.nodeType === 3 ) ) {
+				console.log("!");
+				var start = _this.getSelection().start;
+				_this.node.parentNode.normalize();
+				_this.showCursorAt( start );
+				_this.node = rangy.getSelection().anchorNode;
+			}
+			
+			
 			var text = _this.node.textContent;
 
 			if ( text === prevText ) {
@@ -209,6 +219,8 @@ ve.es.Surface.prototype.onMouseDown = function( e ) {
             if ( sameFromLeft + sameFromRight !== text.length ) {
 				// insert
             	var data = text.split('').slice(sameFromLeft, text.length - sameFromRight);
+            	var annotations = _this.model.getDocument().getAnnotationsFromOffset( nodeOffset + sameFromLeft - 1 );
+            	ve.dm.DocumentNode.addAnnotationsToData( data, annotations );
             	var tx = _this.documentView.model.prepareInsertion( nodeOffset + sameFromLeft, data);
             	_this.model.transact( tx );
             }			
@@ -216,18 +228,6 @@ ve.es.Surface.prototype.onMouseDown = function( e ) {
 			prevText = text;
 		}, 50 );
 	}, 1 );
-	
-	
-	/*
-
-	var sel = rangy.getSelection();
-
-
-	if ( sel.anchorOffset === sel.focusOffset && sel.anchorNode === sel.focusNode ) {
-		console.log("123");
-	}
-	
-	*/
 };
 
 ve.es.Surface.prototype.attachContextView = function( contextView ) {
