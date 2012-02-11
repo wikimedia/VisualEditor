@@ -254,8 +254,8 @@ $messages['ia'] = array(
 	'visualeditor-tooltip-render' => 'Alternar previsualisation',
 	'visualeditor-tooltip-history' => 'Alternar vista historia de transactiones',
 	'visualeditor-tooltip-help' => 'Alternar adjuta',
-	'visualeditor-feedback-prompt' => 'Lassar retroaction',
-	'visualeditor-feedback-dialog-title' => 'Lassar retroaction super le cassa a sablo del editor visual',
+	'visualeditor-feedback-prompt' => 'Lassar commentario',
+	'visualeditor-feedback-dialog-title' => 'Lassar commentario super le cassa a sablo del editor visual',
 );
 
 /** Italian (Italiano)
