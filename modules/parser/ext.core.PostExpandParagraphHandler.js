@@ -85,6 +85,7 @@ PostExpandParagraphHandler.prototype.onAny = function ( token, frame, cb ) {
 		// None of the tokens we are interested in, so abort processing..
 		//console.log( 'PostExpandParagraphHandler.onAny: ' + JSON.stringify( this.tokens, null , 2 ) );
 		if ( this.newLines >= 2 && ! u.isBlockToken( token ) ) {
+			//console.log( 'insert p:' + JSON.stringify( token, null, 2 ) );
 			return { tokens: [ new TagTk( 'p' ) ].concat( this._finish() ) };
 		} else {
 			return { tokens: this._finish() };

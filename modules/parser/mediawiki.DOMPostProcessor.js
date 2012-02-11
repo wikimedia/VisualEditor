@@ -11,6 +11,10 @@ var Node = {
 	COMMENT_NODE: 8
 };
 
+var isElementContentWhitespace = function ( e ) {
+	return (e.data.match(/^[ \r\n\t]*$/) !== null);
+};
+
 // Wrap all top-level inline elements in paragraphs. This should also be
 // applied inside block-level elements, but in that case the first paragraph
 // usually remains plain inline.
@@ -20,10 +24,6 @@ var process_inlines_in_p = function ( document ) {
 		cnodes = body.childNodes,
 		inParagraph = false,
 		deleted = 0;
-
-	function isElementContentWhitespace ( e ) {
-		return (e.data.match(/^[ \r\n\t]*$/) !== null);
-	}
 
 	for(var i = 0, length = cnodes.length; i < length; i++) {
 		var child = cnodes[i - deleted],

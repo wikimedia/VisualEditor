@@ -22,6 +22,8 @@ ParserFunctions.prototype['pf_#if'] = function ( target, argList, argDict ) {
 	}
 };
 
+// XXX: Implement 
+// http://www.mediawiki.org/wiki/Help:Extension:ParserFunctions#Grouping_results
 ParserFunctions.prototype['pf_#switch'] = function ( target, argList, argDict ) {
 	this.manager.env.dp( 'switch enter: ' + target.trim() +
 			' looking in ', argDict );
@@ -318,6 +320,9 @@ ParserFunctions.prototype['pf_talkspace'] = function ( target, argList, argDict 
 };
 ParserFunctions.prototype['pf_numberofarticles'] = function ( target, argList, argDict ) {
 	return ["1"];
+};
+ParserFunctions.prototype['pf_#language'] = function ( target, argList, argDict ) {
+	return [target];
 };
 
 if (typeof module == "object") {

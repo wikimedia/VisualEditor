@@ -7,6 +7,7 @@
 
 var TokenCollector = require( './ext.util.TokenCollector.js' ).TokenCollector;
 
+
 function NoInclude( manager, isInclude ) {
 	new TokenCollector( 
 			manager,
@@ -30,6 +31,8 @@ function NoInclude( manager, isInclude ) {
 			);
 }
 
+// XXX: Preserve includeonly content in meta tag (data attribute) for
+// round-tripping!
 function IncludeOnly( manager, isInclude ) {
 	new TokenCollector( 
 			manager,

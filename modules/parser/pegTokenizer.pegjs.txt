@@ -499,10 +499,10 @@ toplevelblock
             bs = b[0];
         }
         //dp('toplevelblock:' + pp(b));
-        if (bs.attribs === undefined) {
-            bs.attribs = [];
+        if (bs.dataAttribs === undefined) {
+            bs.dataAttribs = {};
         }
-        bs.attribs.push(new KV('data-sourcePos', blockStart + ':' + pos));
+        bs.dataAttribs.sourcePos = [blockStart, pos];
         //console.log( 'toplevelblock: ' +  pp( bs ));
     }
 
@@ -1055,7 +1055,10 @@ generic_tag
         } else {
             res = new TagTk( name, attribs );
         }
-        res.attribs.push(new KV('data-sourceTagPos', (tagStartPos - 1) + ":" + pos));
+        if ( res.dataAttribs === undefined ) {
+            res.dataAttribs = {};
+        }
+        res.dataAttribs.sourceTagPos = [tagStartPos - 1, pos];
         return res;
     }
 

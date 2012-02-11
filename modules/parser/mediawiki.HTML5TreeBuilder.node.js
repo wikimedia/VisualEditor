@@ -70,6 +70,17 @@ FauxHTML5.TreeBuilder.prototype._att = function (maybeAttribs) {
 // Adapt the token format to internal HTML tree builder format, call the actual
 // html tree builder by emitting the token.
 FauxHTML5.TreeBuilder.prototype.processToken = function (token) {
+	if ( token.dataAttribs ) {
+		if ( ! token.attribs ) {
+			token.attribs = [];
+		}
+		token.attribs.push( 
+				{
+					// 'Mediawiki round-trip' information
+					k: 'data-mw-rt', 
+					v: JSON.stringify( token.dataAttribs ) 
+				} );
+	}
 
 	switch( token.constructor ) {
 		case String:
