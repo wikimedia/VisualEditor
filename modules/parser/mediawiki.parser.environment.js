@@ -87,6 +87,17 @@ MWParserEnvironment.prototype.normalizeTitle = function( name ) {
 		throw new Error('nooooooooo not a string');
 	}
 	name = name.trim().replace(/[\s_]+/g, '_');
+
+	// Implement int: as alias for MediaWiki:
+	if ( name.substr( 0, 4 ) === 'int:' ) {
+		name = 'MediaWiki:' + name.substr( 4 );
+	}
+
+	// FIXME: Generalize namespace case normalization
+	if ( name.substr( 0, 10 ).toLowerCase() === 'mediawiki:' ) {
+		name = 'MediaWiki:' + name.substr( 10 );
+	}
+	
 	function upperFirst( s ) { return s.substr(0, 1).toUpperCase() + s.substr(1); }
 	name = name.split(':').map( upperFirst ).join(':');
 	//if (name === '') {

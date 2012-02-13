@@ -455,7 +455,7 @@ spaceless_preprocessor_text
   }
 
 link_preprocessor_text
-  = r:( t:[^'<~[{\n\r|!\]}\t &="']+ { return t.join(''); }
+  = r:( t:[^'<~[{\n\r|!\]}\t&="' \u00A0\u1680\u180E\u2000-\u200A\u202F\u205F\u3000]+ { return t.join(''); }
   / directive
   / urlencoded_char
   / !inline_breaks no_punctuation_char
@@ -734,7 +734,8 @@ extlink
         & { return setFlag('extlink'); }
         //target:urllink
         target:link_preprocessor_text
-        text:(space* t:inlineline { return t } )?
+        text:(( space / [\u00A0\u1680\u180E\u2000-\u200A\u202F\u205F\u3000] )* 
+              t:inlineline { return t } )?
         "]" {
             clearFlag('extlink');
             if ( text === '' ) {
