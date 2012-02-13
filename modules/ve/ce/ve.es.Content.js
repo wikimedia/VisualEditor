@@ -40,12 +40,12 @@ ve.es.Content.annotationRenderers = {
 		'close': '</span>'
 	},
 	'textStyle/bold': {
-		'open': '<span class="es-contentView-format-textStyle-bold">',
-		'close': '</span>'
+		'open': '<b>',
+		'close': '</b>'
 	},
 	'textStyle/italic': {
-		'open': '<span class="es-contentView-format-textStyle-italic">',
-		'close': '</span>'
+		'open': '<i>',
+		'close': '</i>'
 	},
 	'textStyle/strong': {
 		'open': '<span class="es-contentView-format-textStyle-strong">',
