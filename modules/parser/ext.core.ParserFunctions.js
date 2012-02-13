@@ -321,11 +321,11 @@ ParserFunctions.prototype['pf_formatnum'] = function ( target, argList, argDict 
 ParserFunctions.prototype['pf_currentpage'] = function ( target, argList, argDict ) {
 	return [ target ];
 };
-ParserFunctions.prototype['pf_pagename'] = function ( target, argList, argDict ) {
-	return [ target ];
-};
 ParserFunctions.prototype['pf_pagesize'] = function ( target, argList, argDict ) {
 	return [ '100' ];
+};
+ParserFunctions.prototype['pf_sitename'] = function ( target, argList, argDict ) {
+	return [ "MediaWiki" ];
 };
 ParserFunctions.prototype['pf_pagename'] = function ( target, argList, argDict ) {
 	return [ target ];
@@ -370,6 +370,9 @@ ParserFunctions.prototype['pf_numberofarticles'] = function ( target, argList, a
 };
 ParserFunctions.prototype['pf_#language'] = function ( target, argList, argDict ) {
 	return [target];
+};
+ParserFunctions.prototype['pf_contentlang'] = function ( target, argList, argDict ) {
+	return ['en'];
 };
 
 if (typeof module == "object") {

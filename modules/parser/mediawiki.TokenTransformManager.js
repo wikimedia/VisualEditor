@@ -824,11 +824,12 @@ AttributeTransformManager.prototype._returnAttributes = function ( ) {
 	var out = [];
 	for ( var i = 0, l = this.kvs.length; i < l; i++ ) {
 		var kv = this.kvs[i];
-		out.push( new KV(kv.key, kv.value) );
+		out.push( new KV( kv.key, kv.value ) );
 	}
 
 	// and call the callback with the result
-	//console.log('AttributeTransformManager._returnAttributes: ' + out );
+	//this.manager.env.dp('AttributeTransformManager._returnAttributes: ' +
+	//	JSON.stringify( out ) );
 	this.callback( out, this.async );
 };
 

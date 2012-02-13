@@ -26,6 +26,7 @@ Sanitizer.prototype.anyRank = 2.9901;
 Sanitizer.prototype.register = function ( manager ) {
 	this.manager = manager;
 	manager.addTransform( this.onAnchor.bind(this), this.handledRank, 'tag', 'a' );
+	manager.addTransform( this.onAny.bind(this), this.anyRank, 'any' );
 };
 
 Sanitizer.prototype.onAnchor = function ( token ) {
@@ -71,8 +72,8 @@ Sanitizer.prototype._IDNRegexp = new RegExp(
 		"\u180d|" + // 180d MONGOLIAN FREE VARIATION SELECTOR THREE
 		"\u200c|" + // 200c ZERO WIDTH NON-JOINER
 		"\u200d|" + // 200d ZERO WIDTH JOINER
-		"[\ufe00-\ufe0f]" // fe00-fe0f VARIATION SELECTOR-1-16
-		, 'g' 
+		"[\ufe00-\ufe0f]", // fe00-fe0f VARIATION SELECTOR-1-16
+		'g' 
 		);
 
 Sanitizer.prototype._stripIDNs = function ( host ) {
@@ -81,6 +82,28 @@ Sanitizer.prototype._stripIDNs = function ( host ) {
 	
 	
 
+/**
+ * Sanitize any tag.
+ */
+Sanitizer.prototype.onAny = function ( token ) {
+	// XXX: validate token type according to whitelist and convert non-ok ones
+	// back to text.
+
+	// Convert attributes to string, if necessary.
+	if ( token.attribs ) {
+		for ( var i = 0, l = token.attribs.length; i < l; i++ ) {
+			var kv = token.attribs[i];
+			if ( kv.k.constructor === Array ) {
+				kv.k = this.manager.env.tokensToString ( kv.k );
+			}
+			if ( kv.v.constructor === Array ) {
+				kv.v = this.manager.env.tokensToString ( kv.v );
+			}
+		}
+	}
+	// XXX: Validate attributes
+	return { token: token };
+};
 
 if (typeof module == "object") {
 	module.exports.Sanitizer = Sanitizer;

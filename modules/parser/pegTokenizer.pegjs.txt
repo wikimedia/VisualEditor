@@ -1132,7 +1132,7 @@ li = bullets:list_char+
      c:inlineline?
      &eolf 
 {
-    if ( c == '' )
+    if ( c === '' )
         c = [];
     var li = new TagTk( 'listItem' );
     li.bullets = bullets;
