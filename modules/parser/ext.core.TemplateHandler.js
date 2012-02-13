@@ -279,10 +279,15 @@ TemplateHandler.prototype._onEnd = function( tplExpandData, token ) {
 	this.manager.env.dp( 'TemplateHandler._onEnd' + JSON.stringify( tplExpandData.resultTokens ) );
 	tplExpandData.expandDone = true;
 	var res = tplExpandData.resultTokens;
-	// Remove 'end' token from end
-	if ( res.length && res[res.length - 1].type === 'END' ) {
-		this.manager.env.dp( 'TemplateHandler, stripping end ' );
+	// Strip 'end' tokens and trailing newlines
+	var l = res[res.length - 1];
+	while ( res.length &&
+			(	l.type === 'END'  || l.constructor === NlTk ) 
+	) 
+	{
+		this.manager.env.dp( 'TemplateHandler, stripping end or whitespace tokens' );
 		res.pop();
+		l = res[res.length - 1];
 	}
 
 	// Could also encapsulate the template tokens here, if that turns out
