@@ -35,11 +35,11 @@ ve.es.Surface = function( $container, model ) {
 	} );
 
 	this.$.mouseup( function( e ) {
-		var selection = _this.getSelection();
-		_this.showFakeCursorAt(selection.start);
+		//var selection = _this.getSelection();
+		//_this.showFakeCursorAt(selection.start);
 	} );
 
-	this.$.paste( function( e ) {
+	this.$.on('paste', function( e ) {
 		_this.onPaste( e );
 	} );
 
