@@ -746,7 +746,7 @@ extlink
             var res = [ 
                 new TagTk( 'a', [
                             new KV('href', target),
-                            new KV('data-type', 'external')
+                            new KV('data-mw-type', 'external')
                         ] ),
             ].concat( text 
                     , [ new EndTagTk( 'a' )]);
@@ -897,7 +897,7 @@ wikilink
     trail:(! [A-Z \t(),.:-] tc:text_char { return tc })* {
       var obj = new TagTk( 'a', 
                 [
-                    new KV('data-type', 'internal')
+                    new KV('data-mw-type', 'internal')
                 ] ),
           textTokens = [];
       obj.attribs.push( new KV('href', target) );
