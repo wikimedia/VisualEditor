@@ -99,10 +99,22 @@ $messages['dsb'] = array(
 );
 
 /** Spanish (Español)
+ * @author Armando-Martin
  * @author Imre
  */
 $messages['es'] = array(
 	'visualeditor' => 'VisualEditor',
+	'visualeditorsandbox' => "Zona segura (''sandbox'') del editor visual",
+	'visualeditor-desc' => 'Editor visual para MediaWiki',
+	'visualeditor-sandbox-title' => "Zona segura (''sandbox'') del editor visual",
+	'visualeditor-tooltip-wikitext' => 'Conmutar a vista de texto wiki',
+	'visualeditor-tooltip-json' => 'Conmutar a vista JSON',
+	'visualeditor-tooltip-html' => 'Alternar a vista HTML',
+	'visualeditor-tooltip-render' => 'Alternar a vista previa',
+	'visualeditor-tooltip-history' => 'Alternar a vista de historial de transacciones',
+	'visualeditor-tooltip-help' => 'Conmutar a vista de ayuda',
+	'visualeditor-feedback-prompt' => 'Comentar',
+	'visualeditor-feedback-dialog-title' => "Comentar sobre la zona segura (''sandbox'') del Editor Visual",
 );
 
 /** Finnish (Suomi)
