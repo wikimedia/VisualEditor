@@ -1,5 +1,12 @@
-/* Combined Wiki (MediaWiki) and HTML tokenizer. Produces a token stream
-** (actually a list of tokens for now) suitable for a HTML5TreeBuilder. */
+/**
+ * Combined Wiki (MediaWiki) and HTML tokenizer based on pegjs. Emits several
+ * chunks of tokens (one chunk per top-level block matched) and eventually an
+ * end event. Tokens map to HTML tags as far as possible, with custom tokens
+ * used where further processing on the token stream is needed.
+ *
+ * @author Gabriel Wicke <gwicke@wikimedia.org>
+ * @author Brion Vibber <brion@wikimedia.org>
+ */
 {
     /* Fixme: use static functions to separate module! Unfortunately, this
      * does not work:
@@ -586,9 +593,12 @@ inline_breaks
   / & { return syntaxFlags['extlink']; } "]" { return true; }
   / & { return syntaxFlags['linkdesc']; } link_end { return true; }
   / & { return syntaxFlags['h']; } '='+ space* newline { return true; }
-  / & { return syntaxFlags['template']; } ('|' / '}}' ) { return true; }
+  / & { return syntaxFlags['template']; } ('|' / '}}' ) { 
+      //console.log( 'template break @' + pos + input.substr(pos-1, 4) );
+      return true; 
+  }
   / & { return syntaxFlags['equal']; } '=' { 
-                    //console.log( 'equal stop!' );
+                    //console.log( 'equal stop @' + pos + input.substr(pos-1, 4) );
                     return true; 
                 }
 
@@ -614,7 +624,7 @@ inline
       if (text.length) {
           out.push( text.join('') );
       }
-      //dp('inline out:' + pp(out));
+      //console.log('inline out:' + pp(out));
       return out;
 }
 
@@ -648,7 +658,7 @@ inlineline
 inline_element
   = //& { dp('inline_element enter' + input.substr(pos, 10)); return true; }
       & '<' ( comment / xmlish_tag )
-    / & '{' ( & '{{{{{' template / tplarg / template )
+    /// & '{' ( & '{{{{{' template / tplarg / template )
     / & '{' tplarg_or_template 
     /// & '{' ( tplarg / template )
      // Eat three opening brackets as text.
@@ -849,16 +859,18 @@ tplarg
   }
 
 template_param
-  = name:template_param_name space* "=" space* c:template_param_text? {
-      //console.log( 'named template_param matched' + pp([name, flatten( c )]) );
-      if ( c !== '' ) {
-        return new KV(name, flatten( c ));
+  = name:template_param_name space* 
+    value:(  s0:"=" s1:space*
+             //& { console.log( 'entering value' ); return true }
+             s2:template_param_text { return [s0, s1, s2] } )? {
+      //console.log( 'named template_param matched' + pp([name, value ]) );
+      if ( value !== '' ) {
+        return new KV(name, flatten( value[2] ) || []);
       } else {
-        return new KV(name, []);
+        return new KV([], flatten(name));
       }
-  } / c:template_param_text {
-        return new KV([], flatten( c ) );
-  }
+    } 
+  // empty parameter
   / & [|}] { return new KV([], []); }
 
 
@@ -866,8 +878,8 @@ template_param
 template_param_name
   = & { return setFlag( 'equal' ) }
     tpt:template_param_text
-    & { clearFlag( 'equal' ); return true; }
     {
+        clearFlag( 'equal' );
         //console.log( 'template param name matched: ' + pp( tpt ) );
         return tpt;
     }
@@ -879,6 +891,7 @@ template_param_text
   = & { return setFlag('template') }
     il:inline {
         clearFlag('template');
+        //console.log( 'tpt match: ' + pp (il));
         return il;
     }
   / & { return clearFlag('template'); }
@@ -930,12 +943,20 @@ link_target
 
 link_text
   = & { return setFlag('linkdesc'); }
-    h:inlineline
+    h:inline 
+    // 'equal' syntaxFlag is set for links in template parameters. Consume the
+    // '=' here.
+    hs:( '=' inline)?
     { 
+        //console.log('link_text' + pp(h) + pp(hs));
         clearFlag('linkdesc');
-        return h; 
+        if( hs !== '' ) {
+            return h.concat(hs);
+        } else {
+            return h;
+        }
     }
-  / & { clearFlag('linkdesc'); return false }
+  / & { return clearFlag('linkdesc'); }
 
 link_end = "]]"
 
