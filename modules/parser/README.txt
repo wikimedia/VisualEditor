@@ -11,7 +11,7 @@ optimist
 pegjs
 querystring
 html5
-request (implied by jsdom?)
+request (also required and automatically installed by jsdom)
 assert
 
 The following additional modules are used in parserTests:
