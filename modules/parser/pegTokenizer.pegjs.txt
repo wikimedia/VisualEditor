@@ -461,7 +461,15 @@ spaceless_preprocessor_text
       return flatten_string ( r );
   }
 
-link_preprocessor_text
+wikilink_preprocessor_text 
+  = r:( t:[^%<~[{\n\r\t|!\]} &=]+ { return t.join(''); }
+  / urlencoded_char
+  / directive
+  / !inline_breaks !"]]" text_char )+ {
+      return flatten ( r );
+  }
+
+extlink_preprocessor_text
   = r:( t:[^'<~[{\n\r|!\]}\t&="' \u00A0\u1680\u180E\u2000-\u200A\u202F\u205F\u3000]+ { return t.join(''); }
   / directive
   / urlencoded_char
@@ -743,7 +751,7 @@ extlink
         "[" 
         & { return setFlag('extlink'); }
         //target:urllink
-        target:link_preprocessor_text
+        target:extlink_preprocessor_text
         text:(( space / [\u00A0\u1680\u180E\u2000-\u200A\u202F\u205F\u3000] )* 
               t:inlineline { return t } )?
         "]" {
@@ -901,7 +909,7 @@ wikilink
   = "[[" 
     ! url
     //target:link_target 
-    target:preprocessor_text
+    target:wikilink_preprocessor_text
     lcontent:( "|" lt:link_text { return lt } )* 
     "]]" 
     // XXX In real MediaWiki, this is a language-dependent positive character
@@ -930,16 +938,6 @@ wikilink
       //console.warn( "XXX:" + pp([obj].concat(textTokens, [new EndTagTk( 'a' )])) );
       return [obj].concat(textTokens, [new EndTagTk( 'a' )]);
   }
-
-link_target
-  = h:( c:[^|%\n\]]+ { return c.join('') } // quickly eat anything unsuspicious
-      / !"]]" 
-        hi:(
-              [^|%\n]
-            / urlencoded_char
-            / '%'
-           ) { return hi }
-      )* { return h.join(''); }
 
 link_text
   = & { return setFlag('linkdesc'); }
