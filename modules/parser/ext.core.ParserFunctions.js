@@ -107,7 +107,7 @@ ParserFunctions.prototype['pf_currentmonth'] = function ( target, argList, argDi
 	return this['pf_#time']( 'm', [], {} );
 };
 ParserFunctions.prototype['pf_currentmonthname'] = function ( target, argList, argDict ) {
-	return this['pf_#time']( 'J', [], {} );
+	return this['pf_#time']( 'F', [], {} );
 };
 ParserFunctions.prototype['pf_currentmonthabbrev'] = function ( target, argList, argDict ) {
 	return this['pf_#time']( 'M', [], {} );
@@ -299,7 +299,7 @@ ParserFunctions.prototype['pf_localurl'] = function ( target, argList, argDict )
 				this.manager.env.normalizeTitle( target ) + '&' +
 				argList.map( 
 					function( kv ) { 
-						//console.log( JSON.stringify( kv ) );
+						//console.warn( JSON.stringify( kv ) );
 						return (kv.v !== '' && kv.k + '=' + kv.v ) || kv.k;
 					} 
 				).join('&') 

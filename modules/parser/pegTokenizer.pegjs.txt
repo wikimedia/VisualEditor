@@ -11,7 +11,7 @@
     /* Fixme: use static functions to separate module! Unfortunately, this
      * does not work:
      * var tu = require('./mediawiki.tokenizer.utils.js');
-     * console.log(tu.flatten([]));
+     * console.warn(tu.flatten([]));
      * Using exports in the module gets a bit further, but accesses to
      * tu.flatten in productions still fail. Thus, I just moved the functions
      * here until a solution is found:
@@ -82,7 +82,7 @@
     // Debug print with global switch
     var dp = function ( msg ) {
         if ( false ) {
-            console.log(msg);
+            console.warn(msg);
         }
     };
 
@@ -293,13 +293,13 @@ start
       // end is passed inline as a token, as well as a separate event for now.
       
       // this does not work yet.
-      //console.log('about to emit' + pp(self));
+      //console.warn('about to emit' + pp(self));
 	  //self._tokenizer.emit('chunk', [ { type: 'END' } ] );
       //self._tokenizer.emit('end');
 		// Append the end (for obvious reasons this should not
 		// be part of a stream, only when tokenizing complete
 		// texts)
-      //console.log( pp( flatten ( e ) ) );
+      //console.warn( pp( flatten ( e ) ) );
       cache = {};
       __parseArgs[2]( [ new EOFTk( ) ] );
       return []; //flatten(e);
@@ -476,7 +476,7 @@ attribute_preprocessor_text
   = r:( ts:(!inline_breaks t:[^=<>{\n\r&'"\t ] {return t})+ { return ts.join(''); }
   / directive
   / !inline_breaks [&%] )* {
-      //console.log('prep');
+      //console.warn('prep');
       return flatten_string ( r );
   }
 attribute_preprocessor_text_single
@@ -489,7 +489,7 @@ attribute_preprocessor_text_double
   = r:( t:[^{&"]+ { return t.join(''); }
   / directive
   / !inline_breaks [{&] )* {
-      //console.log( 'double:' + pp(r) );
+      //console.warn( 'double:' + pp(r) );
       return flatten_string ( r );
   }
 
@@ -510,7 +510,7 @@ toplevelblock
             bs.dataAttribs = {};
         }
         bs.dataAttribs.sourcePos = [blockStart, pos];
-        //console.log( 'toplevelblock: ' +  pp( bs ));
+        //console.warn( 'toplevelblock: ' +  pp( bs ));
     }
 
     // Emit tokens for this toplevelblock. This feeds a chunk to the parser
@@ -594,11 +594,11 @@ inline_breaks
   / & { return syntaxFlags['linkdesc']; } link_end { return true; }
   / & { return syntaxFlags['h']; } '='+ space* newline { return true; }
   / & { return syntaxFlags['template']; } ('|' / '}}' ) { 
-      //console.log( 'template break @' + pos + input.substr(pos-1, 4) );
+      //console.warn( 'template break @' + pos + input.substr(pos-1, 4) );
       return true; 
   }
   / & { return syntaxFlags['equal']; } '=' { 
-                    //console.log( 'equal stop @' + pos + input.substr(pos-1, 4) );
+                    //console.warn( 'equal stop @' + pos + input.substr(pos-1, 4) );
                     return true; 
                 }
 
@@ -624,7 +624,7 @@ inline
       if (text.length) {
           out.push( text.join('') );
       }
-      //console.log('inline out:' + pp(out));
+      //console.warn('inline out:' + pp(out));
       return out;
 }
 
@@ -760,7 +760,7 @@ extlink
                         ] ),
             ].concat( text 
                     , [ new EndTagTk( 'a' )]);
-            //console.log( JSON.stringify( res, null, 2 ) );
+            //console.warn( JSON.stringify( res, null, 2 ) );
             return res;
         }
       / "[" & { clearFlag('extlink'); return false; }
@@ -838,7 +838,7 @@ template
       // again.
       params.unshift( { k: '', v: flatten( target ) } );
       var obj = new SelfclosingTagTk( 'template', params );
-      //console.log( 'tokenizer template ' + JSON.stringify( target ));
+      //console.warn( 'tokenizer template ' + JSON.stringify( target ));
       return obj;
   }
 
@@ -854,16 +854,16 @@ tplarg
       name = flatten( name );
       params.unshift( { k: '', v: name } );
       var obj = new SelfclosingTagTk( 'templatearg', params );
-      //console.log( 'tokenizer tplarg ' + JSON.stringify( obj, null, 2 ));
+      //console.warn( 'tokenizer tplarg ' + JSON.stringify( obj, null, 2 ));
       return obj;
   }
 
 template_param
   = name:template_param_name space* 
     value:(  s0:"=" s1:space*
-             //& { console.log( 'entering value' ); return true }
+             //& { console.warn( 'entering value' ); return true }
              s2:template_param_text { return [s0, s1, s2] } )? {
-      //console.log( 'named template_param matched' + pp([name, value ]) );
+      //console.warn( 'named template_param matched' + pp([name, value ]) );
       if ( value !== '' ) {
         return new KV(name, flatten( value[2] ) || []);
       } else {
@@ -880,7 +880,7 @@ template_param_name
     tpt:template_param_text
     {
         clearFlag( 'equal' );
-        //console.log( 'template param name matched: ' + pp( tpt ) );
+        //console.warn( 'template param name matched: ' + pp( tpt ) );
         return tpt;
     }
 
@@ -891,7 +891,7 @@ template_param_text
   = & { return setFlag('template') }
     il:inline {
         clearFlag('template');
-        //console.log( 'tpt match: ' + pp (il));
+        //console.warn( 'tpt match: ' + pp (il));
         return il;
     }
   / & { return clearFlag('template'); }
@@ -927,7 +927,7 @@ wikilink
               textTokens = $.extend(true, [], target);
           }
       }
-      //console.log( "XXX:" + pp([obj].concat(textTokens, [new EndTagTk( 'a' )])) );
+      //console.warn( "XXX:" + pp([obj].concat(textTokens, [new EndTagTk( 'a' )])) );
       return [obj].concat(textTokens, [new EndTagTk( 'a' )]);
   }
 
@@ -948,7 +948,7 @@ link_text
     // '=' here.
     hs:( '=' inline)?
     { 
-        //console.log('link_text' + pp(h) + pp(hs));
+        console.warn('link_text' + pp(h) + pp(hs));
         clearFlag('linkdesc');
         if( hs !== '' ) {
             return h.concat(hs);
@@ -993,7 +993,7 @@ pre
                 / !"</pre>" t2:. { return t2 })+ 
     ("</pre>" / eof) {
         // return nowiki tags as well?
-        //console.log('inpre');
+        //console.warn('inpre');
         return [ new TagTk( 'pre', attribs ) ]
                     .concat(ts, [ new EndTagTk( 'pre' ) ]);
     }
@@ -1001,31 +1001,31 @@ pre
 
 nowiki 
   = "<nowiki>" nc:nowiki_content "</nowiki>" { 
-        //console.log( 'full nowiki return: ' + pp(nc)); 
+        //console.warn( 'full nowiki return: ' + pp(nc)); 
         return nc; 
     }
   / "<nowiki>" { 
-          //console.log('nowiki fallback');
+          //console.warn('nowiki fallback');
           return ['<nowiki>']; 
     }
   / "</nowiki>" { 
-      //console.log('nowiki end fallback');
+      //console.warn('nowiki end fallback');
       return ['</nowiki>']; 
   }
 
 nowiki_content
   = ts:(   t:[^<]+ { return t.join('') } 
            / "<pre" p0:space* p1:[^>]* ">" p2:nowiki_content "</pre>" {
-                 //console.log('nested pre in nowiki');
+                 //console.warn('nested pre in nowiki');
                  return ["<pre"].concat(p0, p1, [">"], p2, ["</pre>"]).join('');
                }
            / (!("</"( "nowiki>" / "pre>")) c:. {
-               //console.log('nowiki: single char' + c);
+               //console.warn('nowiki: single char' + c);
                return c;
            }) 
        )* {
             // return nowiki tags as well?
-            //console.log('nowiki_content: return' + pp(ts));
+            //console.warn('nowiki_content: return' + pp(ts));
             return [ts.join('')];
           }
 
@@ -1211,7 +1211,7 @@ table_lines
     tl:table_line 
     tls:( s:sol tl2:table_line { return s.concat(tl2); } )* {
         clearFlag('table');
-        //console.log('table_lines: ' + pp(tl.concat(tls)));
+        //console.warn('table_lines: ' + pp(tl.concat(tls)));
         return tl.concat( tls );
     }
   / & { return clearFlag('table'); }
@@ -1248,7 +1248,7 @@ table_caption_tag
 
 
 table_row_tag
-  = //& { console.log("table row enter"); return true; }
+  = //& { console.warn("table row enter"); return true; }
     "|-"
     a:generic_attribute*
     space*
@@ -1277,7 +1277,7 @@ table_data_tag
   = //& { dp("table_data enter, pos=" + pos + input.substr(pos,10)); return true; }
     ! [}+-]
     a:table_cell_args?
-    //& { console.log("past attrib, pos=" + pos + input.substr(pos,10)); return true; }
+    //& { console.warn("past attrib, pos=" + pos + input.substr(pos,10)); return true; }
     // use inline_breaks to break on tr etc
     td:( !inline_breaks 
          //& { dp("table_data 2, pos=" + pos + input.substr(pos,10)); return true; }

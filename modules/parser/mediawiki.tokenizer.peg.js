@@ -31,10 +31,10 @@ PegTokenizer.prototype.process = function( text ) {
 	if ( !this.parser ) {
 		// Only create a single parser, as parse() is a static method.
 		var parserSource = PEG.buildParser(this.src).toSource();
-		//console.log( parserSource );
+		//console.warn( parserSource );
 		parserSource = parserSource.replace( 'parse: function(input, startRule) {',
 					'parse: function(input, startRule) { var __parseArgs = arguments;' );
-		//console.log( parserSource );
+		//console.warn( parserSource );
 		PegTokenizer.prototype.parser = eval( parserSource );
 		// add reference to this for event emission
 		// XXX: pass a cb into parse() instead, but need to modify pegjs a bit
@@ -42,7 +42,7 @@ PegTokenizer.prototype.process = function( text ) {
 		//PegTokenizer.prototype.parser._tokenizer = undefined;
 
 		// Print the generated parser source
-		//console.log(this.parser.toSource());
+		//console.warn(this.parser.toSource());
 	}
 
 	// some normalization

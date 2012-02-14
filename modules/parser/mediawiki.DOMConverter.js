@@ -125,7 +125,7 @@ DOMConverter.prototype._getHTMLtoWikiDomHandlerInfo = function ( nodeName ) {
 				type: 'blockquote'
 			};
 		default:
-			console.log( 'HTML to Wiki DOM conversion warning: Unknown node name ' +
+			console.warn( 'HTML to Wiki DOM conversion warning: Unknown node name ' +
 					nodeName );
 			return {
 				handler: this._convertHTMLBranch, 
@@ -168,7 +168,7 @@ DOMConverter.prototype._getWikiDomAnnotationType = function ( node, warn ) {
 			return 'object/includeonly'; // XXX
 		default:
 			if ( warn ) {
-				console.log( 'HTML to Wiki DOM conversion warning: Unsupported html annotation ' + name );
+				console.warn( 'HTML to Wiki DOM conversion warning: Unsupported html annotation ' + name );
 			}
 			return undefined;
 	}
@@ -217,10 +217,10 @@ DOMConverter.prototype._convertHTMLBranch = function ( node, type ) {
 						newPara();
 					}
 					res = this._convertHTMLAnnotation( cnode, offset, annotationtype );
-					//console.log( 'res leaf: ' + JSON.stringify(res, null, 2));
+					//console.warn( 'res leaf: ' + JSON.stringify(res, null, 2));
 					offset += res.text.length;
 					parNode.content.text += res.text;
-					//console.log( 'res annotations: ' + JSON.stringify(res, null, 2));
+					//console.warn( 'res annotations: ' + JSON.stringify(res, null, 2));
 					parNode.content.annotations = parNode.content.annotations
 														.concat( res.annotations );
 				} else {
@@ -247,7 +247,7 @@ DOMConverter.prototype._convertHTMLBranch = function ( node, type ) {
 				// add a comment node.
 				break;
 			default:
-				console.log( "HTML to Wiki DOM conversion error. Unhandled node " + 
+				console.warn( "HTML to Wiki DOM conversion error. Unhandled node " + 
 						cnode.innerHTML );
 				break;
 		}
@@ -277,7 +277,7 @@ DOMConverter.prototype._convertHTMLLeaf = function ( node, type ) {
 				annotations: []
 			}
 		};
-	//console.log( 'res wnode: ' + JSON.stringify(wnode, null, 2));
+	//console.warn( 'res wnode: ' + JSON.stringify(wnode, null, 2));
 	for ( var i = 0, l = children.length; i < l; i++ ) {
 		var cnode = children[i];
 		switch ( cnode.nodeType ) {
@@ -286,10 +286,10 @@ DOMConverter.prototype._convertHTMLLeaf = function ( node, type ) {
 				var annotationtype = this._getWikiDomAnnotationType( cnode, true );
 				if ( annotationtype ) {
 					var res = this._convertHTMLAnnotation( cnode, offset, annotationtype );
-					//console.log( 'res leaf: ' + JSON.stringify(res, null, 2));
+					//console.warn( 'res leaf: ' + JSON.stringify(res, null, 2));
 					offset += res.text.length;
 					wnode.content.text += res.text;
-					//console.log( 'res annotations: ' + JSON.stringify(res, null, 2));
+					//console.warn( 'res annotations: ' + JSON.stringify(res, null, 2));
 					wnode.content.annotations = wnode.content.annotations
 														.concat( res.annotations );
 				}
@@ -303,7 +303,7 @@ DOMConverter.prototype._convertHTMLLeaf = function ( node, type ) {
 				// add a comment annotation?
 				break;
 			default:
-				console.log( "HTML to Wiki DOM conversion error. Unhandled node " + 
+				console.warn( "HTML to Wiki DOM conversion error. Unhandled node " + 
 						cnode.innerHTML );
 				break;
 		}
@@ -344,7 +344,7 @@ DOMConverter.prototype._convertHTMLAnnotation = function ( node, offset, type ) 
 				var annotationtype = this._getWikiDomAnnotationType(cnode, true);
 				if ( annotationtype ) {
 					var res = this._convertHTMLAnnotation( cnode, offset, annotationtype );
-					//console.log( 'res annotations 2: ' + JSON.stringify(res, null, 2));
+					//console.warn( 'res annotations 2: ' + JSON.stringify(res, null, 2));
 					text += res.text;
 					offset += res.text.length;
 					annotations = annotations.concat( res.annotations );
@@ -359,7 +359,7 @@ DOMConverter.prototype._convertHTMLAnnotation = function ( node, offset, type ) 
 				// add a comment annotation?
 				break;
 			default:
-				console.log( "HTML to Wiki DOM conversion error. Unhandled node " + 
+				console.warn( "HTML to Wiki DOM conversion error. Unhandled node " + 
 						cnode.innerHTML );
 				break;
 		}

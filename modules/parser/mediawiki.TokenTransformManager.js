@@ -214,12 +214,12 @@ TokenTransformManager.prototype._transformTagToken = function ( token, phaseEndR
 		ts = ts.concat(tagts);
 		ts.sort( this._cmpTransformations );
 	}
-	//console.log(JSON.stringify(ts, null, 2));
+	//console.warn(JSON.stringify(ts, null, 2));
 	if ( ts ) {
 		for ( i = 0, l = ts.length; i < l; i++ ) {
 			transformer = ts[i];
 			if ( res.token.rank && transformer.rank < res.token.rank ) {
-				//console.log( 'SKIPPING' + JSON.stringify( token, null, 2 ) + 
+				//console.warn( 'SKIPPING' + JSON.stringify( token, null, 2 ) + 
 				//		'\ntransform:\n' + JSON.stringify( transformer, null, 2 ) );
 				// skip transformation, was already applied.
 				continue;
@@ -360,7 +360,7 @@ AsyncTokenTransformManager.prototype.constructor = AsyncTokenTransformManager;
  * first stage of the pipeline, and 'last' pointing to the last stage.
  */
 AsyncTokenTransformManager.prototype.newChildPipeline = function ( inputType, args, title ) {
-	//console.log( 'newChildPipeline: ' + JSON.stringify( args ) );
+	//console.warn( 'newChildPipeline: ' + JSON.stringify( args ) );
 	var pipe = this.childFactories.input( inputType, args );
 
 	// now set up a few things on the child AsyncTokenTransformManager.
@@ -406,7 +406,7 @@ AsyncTokenTransformManager.prototype._reset = function ( args, env ) {
 	// eventize: bend to event emitter callback
 	this.tokenCB = this._returnTokens.bind( this );
 	this.prevToken = undefined;
-	//console.log( 'AsyncTokenTransformManager args ' + JSON.stringify( args ) );
+	//console.warn( 'AsyncTokenTransformManager args ' + JSON.stringify( args ) );
 	if ( ! args ) {
 		this.args = {}; // no arguments at the top level
 	} else {
@@ -470,7 +470,7 @@ AsyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
  */
 AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parentCB ) {
 
-	//console.log('AsyncTokenTransformManager.transformTokens: ' + JSON.stringify(tokens) );
+	//console.warn('AsyncTokenTransformManager.transformTokens: ' + JSON.stringify(tokens) );
 	
 	var res,
 		phaseEndRank = 2, // XXX: parametrize!
@@ -538,7 +538,7 @@ AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parent
 				i--;
 			}
 		} else if ( res.async ) {
-			//console.log( 'tokens returned' );
+			//console.warn( 'tokens returned' );
 			// The child now switched to activeAccum, we have to create a new
 			// accumulator for the next potential child.
 			activeAccum = accum;
@@ -577,7 +577,7 @@ AsyncTokenTransformManager.prototype._returnTokens = function ( tokens, notYetDo
 	this.emit( 'chunk', tokens );
 
 	if ( ! notYetDone ) {
-		//console.log('AsyncTokenTransformManager._returnTokens done. tokens:' + 
+		//console.warn('AsyncTokenTransformManager._returnTokens done. tokens:' + 
 		//		JSON.stringify( tokens, null, 2 ) + ', listeners: ' +
 		//		JSON.stringify( this.listeners( 'chunk' ), null, 2 ) );
 		// signal our done-ness to consumers.
@@ -758,7 +758,7 @@ AttributeTransformManager.prototype.process = function ( attributes ) {
 	//this.pipe.process( 
 	var pipe,
 		ref;
-	//console.log( 'AttributeTransformManager.process: ' + JSON.stringify( attributes ) );
+	//console.warn( 'AttributeTransformManager.process: ' + JSON.stringify( attributes ) );
 
 	// transform each argument (key and value), and handle asynchronous returns
 	for ( var i = 0, l = attributes.length; i < l; i++ ) {
@@ -767,7 +767,7 @@ AttributeTransformManager.prototype.process = function ( attributes ) {
 		var cur = attributes[i];
 
 		if ( ! cur ) {
-			console.log( JSON.stringify( attributes ) );
+			console.warn( JSON.stringify( attributes ) );
 			console.trace();
 			continue;
 		}
@@ -801,7 +801,7 @@ AttributeTransformManager.prototype.process = function ( attributes ) {
 			pipe.addListener( 'end', 
 					this.onEnd.bind( this, this._returnAttributeValue.bind( this, i ) ) 
 					);
-			//console.log('starting attribute transform of ' + JSON.stringify( attributes[i].v ) );
+			//console.warn('starting attribute transform of ' + JSON.stringify( attributes[i].v ) );
 			pipe.process( cur.v.concat([{type:'END'}]) );
 		} else {
 			kv.value = cur.v;
@@ -855,7 +855,7 @@ AttributeTransformManager.prototype.onEnd = function ( cb ) {
  * Callback for async argument value expansions
  */
 AttributeTransformManager.prototype._returnAttributeValue = function ( ref, tokens, notYetDone ) {
-	//console.log( 'check _returnAttributeValue: ' + JSON.stringify( tokens ) + 
+	//console.warn( 'check _returnAttributeValue: ' + JSON.stringify( tokens ) + 
 	//		' notYetDone:' + notYetDone );
 	this.kvs[ref].value = this.kvs[ref].value.concat( tokens );
 	if ( ! notYetDone ) {
@@ -871,7 +871,7 @@ AttributeTransformManager.prototype._returnAttributeValue = function ( ref, toke
  * Callback for async argument key expansions
  */
 AttributeTransformManager.prototype._returnAttributeKey = function ( ref, tokens, notYetDone ) {
-	//console.log( 'check _returnAttributeKey: ' + JSON.stringify( tokens ) + 
+	//console.warn( 'check _returnAttributeKey: ' + JSON.stringify( tokens ) + 
 	//		' notYetDone:' + notYetDone );
 	this.kvs[ref].key = this.kvs[ref].key.concat( tokens );
 	if ( ! notYetDone ) {
@@ -932,7 +932,7 @@ TokenAccumulator.prototype._returnTokens = function ( reference, tokens, notYetD
 		this.outstanding--;
 	}
 
-	//console.log( 'TokenAccumulator._returnTokens' );
+	//console.warn( 'TokenAccumulator._returnTokens' );
 	if ( reference === 'child' ) {
 		tokens = tokens.concat( this.accum );
 		this.manager.env.dp('TokenAccumulator._returnTokens child: ' + 
@@ -979,7 +979,7 @@ TokenAccumulator.prototype._returnTokens = function ( reference, tokens, notYetD
  * Mark the sibling as done (normally at the tail of a chain).
  */
 TokenAccumulator.prototype.siblingDone = function () {
-	//console.log( 'TokenAccumulator.siblingDone: ' );
+	//console.warn( 'TokenAccumulator.siblingDone: ' );
 	this._returnTokens ( 'sibling', [], false );
 };
 
@@ -1035,12 +1035,12 @@ LoopAndDepthCheck.prototype.check = function ( title, maxDepth ) {
 	// XXX: set limit really low for testing!
 	if ( this.depth > maxDepth ) {
 		// too deep
-		//console.log( 'Loopcheck: ' + JSON.stringify( this, null, 2 ) );
+		//console.warn( 'Loopcheck: ' + JSON.stringify( this, null, 2 ) );
 		return 'Error: Expansion depth limit exceeded at ';
 	}
 	var elem = this;
 	do {
-		//console.log( 'loop check: ' + title + ' vs ' + elem.title );
+		//console.warn( 'loop check: ' + title + ' vs ' + elem.title );
 		if ( elem.title === title ) {
 			// Loop detected
 			return 'Error: Expansion loop detected at ';

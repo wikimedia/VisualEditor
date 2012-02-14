@@ -134,7 +134,7 @@ Cite.prototype.onRef = function ( tokenCTX ) {
 		// fall through for further processing!
 	} else {
 		// Inside ref block: Collect all other tokens in refTokens and abort
-		//console.log(JSON.stringify(tokenCTX.token, null, 2));
+		//console.warn(JSON.stringify(tokenCTX.token, null, 2));
 		this.refTokens.push(tokenCTX.token);
 		tokenCTX.token = null;
 		return tokenCTX;
@@ -204,7 +204,7 @@ Cite.prototype.onReferences = function ( tokenCTX ) {
 	
 	var arrow = '↑';
 	var renderLine = function( ref ) {
-		//console.log('reftokens: ' + JSON.stringify(ref.tokens, null, 2));
+		//console.warn('reftokens: ' + JSON.stringify(ref.tokens, null, 2));
 		var out = [{
 					type: 'TAG', 
 					name: 'li',

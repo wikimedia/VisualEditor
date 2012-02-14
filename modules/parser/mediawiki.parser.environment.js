@@ -36,7 +36,7 @@ MWParserEnvironment.prototype.lookupKV = function ( kvs, key ) {
 
 MWParserEnvironment.prototype.KVtoHash = function ( kvs ) {
 	if ( ! kvs ) {
-		console.log( "Invalid kvs!: " + JSON.stringify( kvs, null, 2 ) );
+		console.warn( "Invalid kvs!: " + JSON.stringify( kvs, null, 2 ) );
 		return {};
 	}
 	var res = {};
@@ -47,7 +47,7 @@ MWParserEnvironment.prototype.KVtoHash = function ( kvs ) {
 			res[key] = kv.v;
 		}
 	}
-	//console.log( 'KVtoHash: ' + JSON.stringify( res ));
+	//console.warn( 'KVtoHash: ' + JSON.stringify( res ));
 	return res;
 }
 
@@ -120,7 +120,7 @@ MWParserEnvironment.prototype.resolveTitle = function( name, namespace ) {
 
 MWParserEnvironment.prototype.tokensToString = function ( tokens ) {
 	var out = [];
-	//console.log( 'MWParserEnvironment.tokensToString, tokens: ' + JSON.stringify( tokens ) );
+	//console.warn( 'MWParserEnvironment.tokensToString, tokens: ' + JSON.stringify( tokens ) );
 	// XXX: quick hack, track down non-array sources later!
 	if ( ! $.isArray( tokens ) ) {
 		tokens = [ tokens ];
@@ -145,7 +145,7 @@ MWParserEnvironment.prototype.tokensToString = function ( tokens ) {
 			//out.push( tstring );
 		}
 	}
-	//console.log( 'MWParserEnvironment.tokensToString result: ' + out.join('') );
+	//console.warn( 'MWParserEnvironment.tokensToString result: ' + out.join('') );
 	return out.join('');
 };
 
@@ -156,9 +156,9 @@ MWParserEnvironment.prototype.tokensToString = function ( tokens ) {
 MWParserEnvironment.prototype.dp = function ( ) {
 	if ( this.debug ) {
 		if ( arguments.length > 1 ) {
-			console.log( JSON.stringify( arguments, null, 2 ) );
+			console.warn( JSON.stringify( arguments, null, 2 ) );
 		} else {
-			console.log( arguments[0] );
+			console.warn( arguments[0] );
 		}
 	}
 };
@@ -169,9 +169,9 @@ MWParserEnvironment.prototype.dp = function ( ) {
 MWParserEnvironment.prototype.tp = function ( ) {
 	if ( this.debug || this.trace ) {
 		if ( arguments.length > 1 ) {
-			console.log( JSON.stringify( arguments, null, 2 ) );
+			console.warn( JSON.stringify( arguments, null, 2 ) );
 		} else {
-			console.log( arguments[0] );
+			console.warn( arguments[0] );
 		}
 	}
 };

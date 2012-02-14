@@ -54,7 +54,7 @@ TemplateHandler.prototype.register = function ( manager ) {
  * processes the template.
  */
 TemplateHandler.prototype.onTemplate = function ( token, frame, cb ) {
-	//console.log('onTemplate! ' + JSON.stringify( token, null, 2 ) + 
+	//console.warn('onTemplate! ' + JSON.stringify( token, null, 2 ) + 
 	//		' args: ' + JSON.stringify( this.manager.args ));
 
 
@@ -143,7 +143,7 @@ TemplateHandler.prototype._returnAttributes = function ( tplExpandData,
  * target were expanded.
  */
 TemplateHandler.prototype._expandTemplate = function ( tplExpandData ) {
-	//console.log('TemplateHandler.expandTemplate: ' +
+	//console.warn('TemplateHandler.expandTemplate: ' +
 	//		JSON.stringify( tplExpandData, null, 2 ) );
 	var res;
 
@@ -293,7 +293,7 @@ TemplateHandler.prototype._onEnd = function( tplExpandData, token ) {
 	// Could also encapsulate the template tokens here, if that turns out
 	// better for the editor.
 
-	//console.log( 'TemplateHandler._onEnd: ' + JSON.stringify( res, null, 2 ) );
+	//console.warn( 'TemplateHandler._onEnd: ' + JSON.stringify( res, null, 2 ) );
 
 	if ( tplExpandData.overallAsync ) {
 		this.manager.env.dp( 'TemplateHandler._onEnd: calling back with res:' +
@@ -371,11 +371,11 @@ TemplateHandler.prototype.onTemplateArg = function ( token, frame, cb ) {
 
 	if ( token.resultTokens !== false ) {
 		// synchronous return
-		//console.log( 'synchronous attribute expand: ' + JSON.stringify( token.resultTokens ) );
+		//console.warn( 'synchronous attribute expand: ' + JSON.stringify( token.resultTokens ) );
 
 		return { tokens: token.resultTokens };
 	} else {
-		//console.log( 'asynchronous attribute expand: ' + JSON.stringify( token, null, 2 ) );
+		//console.warn( 'asynchronous attribute expand: ' + JSON.stringify( token, null, 2 ) );
 		// asynchronous return
 		token.resultTokens = [];
 		return { async: true };
@@ -383,12 +383,12 @@ TemplateHandler.prototype.onTemplateArg = function ( token, frame, cb ) {
 };
 
 TemplateHandler.prototype._returnArgAttributes = function ( token, cb, frame, attributes ) {
-	//console.log( '_returnArgAttributes: ' + JSON.stringify( attributes ));
+	//console.warn( '_returnArgAttributes: ' + JSON.stringify( attributes ));
 	var argName = this.manager.env.tokensToString( attributes[0].v ).trim(),
 		res;
 	if ( argName in this.manager.args ) {
 		// return tokens for argument
-		//console.log( 'templateArg found: ' + argName + 
+		//console.warn( 'templateArg found: ' + argName + 
 		//		' vs. ' + JSON.stringify( this.manager.args ) ); 
 		res = this.manager.args[argName];
 	} else {
@@ -437,7 +437,7 @@ function TemplateRequest ( manager, title ) {
 		}
 	}, 
 	function (error, response, body) {
-		//console.log( 'response for ' + title + ' :' + body + ':' );
+		//console.warn( 'response for ' + title + ' :' + body + ':' );
 		if(error) {
 			manager.env.dp(error);	
 			self.emit('src', 'Page/template fetch failure for title ' + title, title);
@@ -446,14 +446,14 @@ function TemplateRequest ( manager, title ) {
 				data,
 				normalizedTitle;
 			try {
-				//console.log( 'body: ' + body );
+				//console.warn( 'body: ' + body );
 				data = JSON.parse( body );
 			} catch(e) {
-				console.log( "Error: while parsing result. Error was: " );
-				console.log( e );
-				console.log( "Response that didn't parse was:");
-				console.log( "------------------------------------------\n" + body );
-				console.log( "------------------------------------------" );
+				console.warn( "Error: while parsing result. Error was: " );
+				console.warn( e );
+				console.warn( "Response that didn't parse was:");
+				console.warn( "------------------------------------------\n" + body );
+				console.warn( "------------------------------------------" );
 			}
 			try {
 				$.each( data.query.pages, function(i, page) {
@@ -463,10 +463,10 @@ function TemplateRequest ( manager, title ) {
 					}
 				});
 			} catch ( e2 ) {
-				console.log( 'Did not find page revisions in the returned body:' + body );
+				console.warn( 'Did not find page revisions in the returned body:' + body );
 				src = '';
 			}
-			//console.log( 'Page ' + title + ': got ' + src );
+			//console.warn( 'Page ' + title + ': got ' + src );
 			manager.env.tp( 'Retrieved ' + title );
 			manager.env.pageCache[title] = src;
 			self.emit( 'src', src, title );
@@ -493,7 +493,7 @@ function TemplateRequest ( manager, title ) {
 				titles: title
 			},
 			success: function(data, statusString, xhr) {
-				console.log( 'Page ' + title + ' success ' + JSON.stringify( data ) );
+				console.warn( 'Page ' + title + ' success ' + JSON.stringify( data ) );
 				var src = null, title = null;
 				$.each(data.query.pages, function(i, page) {
 					if (page.revisions && page.revisions.length) {
@@ -502,17 +502,17 @@ function TemplateRequest ( manager, title ) {
 					}
 				});
 				if (typeof src !== 'string') {
-					console.log( 'Page ' + title + 'not found! Got ' + src );
+					console.warn( 'Page ' + title + 'not found! Got ' + src );
 					callback( 'Page ' + title + ' not found' );
 				} else {
 					// Add to cache
-					console.log( 'Page ' + title + ': got ' + src );
+					console.warn( 'Page ' + title + ': got ' + src );
 					this.manager.env.pageCache[title] = src;
 					callback(src, title);
 				}
 			},
 			error: function(xhr, msg, err) {
-				console.log( 'Page/template fetch failure for title ' + 
+				console.warn( 'Page/template fetch failure for title ' + 
 						title + ', url=' + url + JSON.stringify(xhr) + ', err=' + err );
 				callback('Page/template fetch failure for title ' + title);
 			},

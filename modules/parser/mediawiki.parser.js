@@ -90,7 +90,7 @@ function ParserPipeline( env, inputType ) {
 	this.treeBuilder = new FauxHTML5.TreeBuilder();
 	this.treeBuilder.listenForTokensFrom( this.tokenPostProcessor );
 	//this.tokenPostProcessor.on('chunk', function( c ) {
-	//	console.log( JSON.stringify( c, null, 2 ));
+	//	console.warn( JSON.stringify( c, null, 2 ));
 	//} );
 
 	/**
@@ -145,7 +145,7 @@ ParserPipeline.prototype.constructor = ParserPipeline;
 ParserPipeline.prototype.makeInputPipeline = function ( inputType, args, isNoInclude ) {
 	switch ( inputType ) {
 		case 'text/wiki':
-			//console.log( 'makeInputPipeline ' + JSON.stringify( args ) );
+			//console.warn( 'makeInputPipeline ' + JSON.stringify( args ) );
 			if ( this.pipelineCache['text/wiki'].input.length ) {
 				var pipe = this.pipelineCache['text/wiki'].input.pop();
 				pipe.last.args = args;
@@ -309,7 +309,7 @@ CachedTokenPipeline.prototype.constructor = CachedTokenPipeline;
  * Feed input tokens to the first pipeline stage
  */
 CachedTokenPipeline.prototype.process = function ( chunk ) {
-	//console.log( 'CachedTokenPipeline::process: ' + chunk );
+	//console.warn( 'CachedTokenPipeline::process: ' + chunk );
 	this.first.process( chunk );
 };
 
@@ -318,7 +318,7 @@ CachedTokenPipeline.prototype.process = function ( chunk ) {
  * Forward chunks to our listeners
  */
 CachedTokenPipeline.prototype.forwardChunk = function ( chunk ) {
-	//console.log( 'CachedTokenPipeline.forwardChunk: ' +
+	//console.warn( 'CachedTokenPipeline.forwardChunk: ' +
 	//			JSON.stringify( chunk, null, 2 )
 	//		);
 
@@ -331,7 +331,7 @@ CachedTokenPipeline.prototype.forwardChunk = function ( chunk ) {
  * the given pipeline stage and returns it to a cache.
  */
 CachedTokenPipeline.prototype.forwardEndAndRecycleSelf = function ( ) {
-	//console.log( 'CachedTokenPipeline.forwardEndAndRecycleSelf: ' + 
+	//console.warn( 'CachedTokenPipeline.forwardEndAndRecycleSelf: ' + 
 	//		JSON.stringify( this.listeners( 'chunk' ), null, 2 ) );
 	// first, forward the event
 	this.emit( 'end' );

@@ -32,7 +32,7 @@ PostExpandParagraphHandler.prototype.register = function ( dispatcher ) {
 };
 
 PostExpandParagraphHandler.prototype.reset = function ( token, frame, cb ) {
-	//console.log( 'PostExpandParagraphHandler.reset ' + JSON.stringify( this.tokens ) );
+	//console.warn( 'PostExpandParagraphHandler.reset ' + JSON.stringify( this.tokens ) );
 	if ( this.newLines ) {
 		return { tokens: this._finish() };
 	} else {
@@ -56,7 +56,7 @@ PostExpandParagraphHandler.prototype._finish = function ( ) {
 // Handle NEWLINE tokens, which trigger the actual quote analysis on the
 // collected quote tokens so far.
 PostExpandParagraphHandler.prototype.onNewLine = function (  token, frame, cb ) {
-	//console.log( 'PostExpandParagraphHandler.onNewLine: ' + JSON.stringify( token, null , 2 ) );
+	//console.warn( 'PostExpandParagraphHandler.onNewLine: ' + JSON.stringify( token, null , 2 ) );
 	var res;
 	this.tokens.push( token );
 
@@ -71,7 +71,7 @@ PostExpandParagraphHandler.prototype.onNewLine = function (  token, frame, cb ) 
 
 
 PostExpandParagraphHandler.prototype.onAny = function ( token, frame, cb ) {
-	//console.log( 'PostExpandParagraphHandler.onAny' );
+	//console.warn( 'PostExpandParagraphHandler.onAny' );
 	this.tokens.push( token );
 	if ( token.type === 'COMMENT' || 
 			( token.constructor === String && token.match( /^[\t ]+$/ ) ) 
@@ -83,9 +83,9 @@ PostExpandParagraphHandler.prototype.onAny = function ( token, frame, cb ) {
 		// XXX: Only open paragraph if inline token follows!
 
 		// None of the tokens we are interested in, so abort processing..
-		//console.log( 'PostExpandParagraphHandler.onAny: ' + JSON.stringify( this.tokens, null , 2 ) );
+		//console.warn( 'PostExpandParagraphHandler.onAny: ' + JSON.stringify( this.tokens, null , 2 ) );
 		if ( this.newLines >= 2 && ! u.isBlockToken( token ) ) {
-			//console.log( 'insert p:' + JSON.stringify( token, null, 2 ) );
+			//console.warn( 'insert p:' + JSON.stringify( token, null, 2 ) );
 			return { tokens: [ new TagTk( 'p' ) ].concat( this._finish() ) };
 		} else {
 			return { tokens: this._finish() };

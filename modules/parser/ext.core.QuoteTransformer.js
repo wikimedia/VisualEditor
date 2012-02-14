@@ -121,7 +121,7 @@ QuoteTransformer.prototype.onQuote = function ( token, frame, prevToken ) {
 };
 
 QuoteTransformer.prototype.onAny = function ( token, frame, prevToken ) {
-	//console.log('qt onAny: ' + JSON.stringify(token, null, 2));
+	//console.warn('qt onAny: ' + JSON.stringify(token, null, 2));
 	this.currentChunk.push( token );
 	return {};
 };
@@ -139,9 +139,9 @@ QuoteTransformer.prototype.onNewLine = function (  token, frame, prevToken ) {
 
 	token.rank = this.quoteAndNewlineRank;
 
-	//console.log('chunks: ' + JSON.stringify( this.chunks, null, 2 ) );
+	//console.warn('chunks: ' + JSON.stringify( this.chunks, null, 2 ) );
 
-	//console.log("onNewLine: " + this.italics.length + 'i/b' + this.bolds.length);
+	//console.warn("onNewLine: " + this.italics.length + 'i/b' + this.bolds.length);
 	// balance out tokens, convert placeholders into tags
 	if (this.italics.length % 2 && this.bolds.length % 2) {
 		var firstsingleletterword = -1,
@@ -149,7 +149,7 @@ QuoteTransformer.prototype.onNewLine = function (  token, frame, prevToken ) {
 			firstspace = -1;
 		for (var j = 0; j < this.bolds.length; j++) {
 			var ctx = this.bolds[j][0];
-			//console.log("balancing!" + JSON.stringify(ctx.prevToken, null, 2));
+			//console.warn("balancing!" + JSON.stringify(ctx.prevToken, null, 2));
 			if (ctx.prevToken) {
 				if (ctx.prevToken.constructor === String) {
 					var lastchar = prevToken[ctx.prevToken.length - 1],
@@ -195,7 +195,7 @@ QuoteTransformer.prototype.onNewLine = function (  token, frame, prevToken ) {
 	this.currentChunk.push( token );
 	this._startNewChunk();
 
-	//console.log('chunks: ' + JSON.stringify( this.chunks, null, 2 ) );
+	//console.warn('chunks: ' + JSON.stringify( this.chunks, null, 2 ) );
 
 	// return all collected tokens including the newline
 	res = { tokens: [].concat.apply([], this.chunks) };
@@ -214,7 +214,7 @@ QuoteTransformer.prototype.onNewLine = function (  token, frame, prevToken ) {
 QuoteTransformer.prototype.convertBold = function ( i ) {
 	var chunk = this.bolds[i],
 		textToken = "'";
-	//console.log('convertbold!');
+	//console.warn('convertbold!');
 	if ( chunk.pos ) {
 		this.chunks[chunk.pos - 1].push( textToken );
 	} else {
@@ -237,9 +237,9 @@ QuoteTransformer.prototype.quotesToTags = function ( chunks, name ) {
 		out = [];
 
 	for (j = 0; j < chunks.length; j++) {
-		//console.log( 'quotesToTags ' + name + ': ' + JSON.stringify( chunks, null, 2 ) );
+		//console.warn( 'quotesToTags ' + name + ': ' + JSON.stringify( chunks, null, 2 ) );
 		t = chunks[j][0].token;
-		//console.log( 'quotesToTags t: ' + JSON.stringify( t, null, 2));
+		//console.warn( 'quotesToTags t: ' + JSON.stringify( t, null, 2));
 
 		if(toggle) {
 			chunks[j][0] = new TagTk( name, t.attribs );

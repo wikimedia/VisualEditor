@@ -34,20 +34,20 @@ FauxHTML5.TreeBuilder.prototype.listenForTokensFrom = function ( emitter ) {
 };
 
 FauxHTML5.TreeBuilder.prototype.onChunk = function ( tokens ) {
-	//console.log( 'chunk: ' + JSON.stringify( tokens, null, 2 ) );
+	//console.warn( 'chunk: ' + JSON.stringify( tokens, null, 2 ) );
 	for (var i = 0, length = tokens.length; i < length; i++) {
 		this.processToken(tokens[i]);
 	}
 };
 
 FauxHTML5.TreeBuilder.prototype.onEnd = function ( ) {
-	//console.log('Fauxhtml5 onEnd');
+	//console.warn('Fauxhtml5 onEnd');
 	// FIXME HACK: For some reason the end token is not processed sometimes,
 	// which normally fixes the body reference up.
 	var document = this.parser.document;
 	document.body = document.getElementsByTagName('body')[0];
 
-	//console.log( 'onEnd: ' + document.body.innerHTML );
+	//console.warn( 'onEnd: ' + document.body.innerHTML );
 
 	this.emit( 'document', document );
 
@@ -128,7 +128,7 @@ FauxHTML5.TreeBuilder.prototype.processToken = function (token) {
 					//this.emit('document', this.document);
 					break;
 				default:
-					console.log("Unhandled token: " + JSON.stringify(token));
+					console.warn("Unhandled token: " + JSON.stringify(token));
 					break;
 			}
 			break;

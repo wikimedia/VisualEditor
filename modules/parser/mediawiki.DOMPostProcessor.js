@@ -28,7 +28,7 @@ var process_inlines_in_p = function ( document ) {
 	for(var i = 0, length = cnodes.length; i < length; i++) {
 		var child = cnodes[i - deleted],
 			ctype = child.nodeType;
-		//console.log(child + ctype);
+		//console.warn(child + ctype);
 		if ((ctype === 3 && (inParagraph || !isElementContentWhitespace( child ))) || 
 			(ctype === Node.COMMENT_NODE && inParagraph ) ||
 			(ctype !== Node.TEXT_NODE && 
