@@ -4,19 +4,27 @@
 }
 
 .es-contentView-line,
-.es-contentView-ruler {
+.es-contentView-ruler-line {
 	line-height: 1.5em;
 	cursor: text;
 	white-space: nowrap;
 	color: #000000;
 }
 
-.es-contentView-ruler {
+.es-contentView-ruler-line {
 	position: absolute;
 	top: 0;
 	left: 0;
 	display: inline-block;
 	z-index: -1000;
+}
+
+.es-contentView-ruler-right {
+	float: right;
+}
+
+.es-contentView-ruler-left {
+	float: left;
 }
 
 .es-contentView-line.empty {

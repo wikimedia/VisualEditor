@@ -52,6 +52,18 @@ ve.es.Content = function( $container, model ) {
 		this.$rangeFill = $( '<div class="es-contentView-range"></div>' );
 		this.$rangeEnd = $( '<div class="es-contentView-range"></div>' );
 		this.$.prepend( this.$ranges.append( this.$rangeStart, this.$rangeFill, this.$rangeEnd ) );
+		this.$rulers = $( '<div class="es-contentView-rulers"></div>' );
+		this.$rulerLeft = $( '<div class="es-contentView-ruler-left"></div>' );
+		this.$rulerRight = $( '<div class="es-contentView-ruler-right"></div>' );
+		this.$rulerLine = $( '<div class="es-contentView-ruler-line"></div>' );
+		this.$.append( this.$rulers.append( this.$rulerLeft, this.$rulerRight, this.$rulerLine ) );
+
+		// Shortcuts to DOM elements
+		this.rulers = {
+			'left': this.$rulerLeft[0],
+			'right': this.$rulerRight[0],
+			'line': this.$rulerLine[0]
+		};
 
 		// Initialization
 		this.scanBoundaries();
@@ -387,19 +399,19 @@ ve.es.Content.prototype.getOffsetFromRenderedPosition = function( position ) {
 	 * TODO: The offset needs to be chosen based on nearest offset to the cursor, not offset before
 	 * the cursor.
 	 */
-	var $ruler = $( '<div class="es-contentView-ruler"></div>' ).appendTo( this.$ ),
-		ruler = $ruler[0],
-		fit = this.fitCharacters( line.range, ruler, position.left ),
+	var lineRuler = this.rulers.line,
+		fit = this.fitCharacters( line.range, position.left ),
 		center;
-	ruler.innerHTML = this.getHtml( new ve.Range( line.range.start, fit.end ) );
+	lineRuler.innerHTML = this.getHtml( new ve.Range( line.range.start, fit.end ) );
 	if ( fit.end < this.model.getContentLength() ) {
-		var left = ruler.clientWidth;
-		ruler.innerHTML = this.getHtml( new ve.Range( line.range.start, fit.end + 1 ) );
-		center = Math.round( left + ( ( ruler.clientWidth - left ) / 2 ) );
+		var left = lineRuler.clientWidth;
+		lineRuler.innerHTML = this.getHtml( new ve.Range( line.range.start, fit.end + 1 ) );
+		center = Math.round( left + ( ( lineRuler.clientWidth - left ) / 2 ) );
 	} else {
-		center = ruler.clientWidth;
+		center = lineRuler.clientWidth;
 	}
-	$ruler.remove();
+	// Cleanup ruler contents
+	lineRuler.innerHTML = '';
 	// Reset RegExp object's state
 	this.boundaryTest.lastIndex = 0;
 	return Math.min(
@@ -472,11 +484,11 @@ ve.es.Content.prototype.getRenderedPositionFromOffset = function( offset, leftBi
 	 * measuring for those cases.
 	 */
 	if ( line.range.start < offset ) {
-		var $ruler = $( '<div class="es-contentView-ruler"></div>' ).appendTo( this.$ ),
-			ruler = $ruler[0];
-		ruler.innerHTML = this.getHtml( new ve.Range( line.range.start, offset ) );
-		position.left = ruler.clientWidth;
-		$ruler.remove();
+		var lineRuler = this.rulers.line;
+		lineRuler.innerHTML = this.getHtml( new ve.Range( line.range.start, offset ) );
+		position.left = lineRuler.clientWidth;
+		// Cleanup ruler contents
+		lineRuler.innerHTML = '';
 	}
 	return position;
 };
@@ -546,7 +558,10 @@ ve.es.Content.prototype.renderIteration = function( limit ) {
 		charFit = null,
 		wordCount = this.boundaries.length;
 	while ( ++iteration <= limit && rs.wordOffset < wordCount - 1 ) {
-		wordFit = this.fitWords( new ve.Range( rs.wordOffset, wordCount - 1 ), rs.ruler, rs.width );
+		// Get the width from the edges of left and right floated DIV elements in the container
+		rs.width = rs.rulers.right.offsetLeft - rs.rulers.left.offsetLeft;
+		// Fit words on the line
+		wordFit = this.fitWords( new ve.Range( rs.wordOffset, wordCount - 1 ), rs.width );
 		fractional = false;
 		if ( wordFit.width > rs.width ) {
 			// The first word didn't fit, we need to split it up
@@ -555,15 +570,12 @@ ve.es.Content.prototype.renderIteration = function( limit ) {
 			rs.wordOffset++;
 			lineEnd = this.boundaries[rs.wordOffset];
 			do {
-				charFit = this.fitCharacters(
-					new ve.Range( charOffset, lineEnd ), rs.ruler, rs.width
-				);
+				charFit = this.fitCharacters( new ve.Range( charOffset, lineEnd ), rs.width );
 				// If we were able to get the rest of the characters on the line OK
 				if ( charFit.end === lineEnd) {
 					// Try to fit more words on the line
 					wordFit = this.fitWords(
 						new ve.Range( rs.wordOffset, wordCount - 1 ),
-						rs.ruler,
 						rs.width - charFit.width
 					);
 					if ( wordFit.end > rs.wordOffset ) {
@@ -587,18 +599,20 @@ ve.es.Content.prototype.renderIteration = function( limit ) {
 	}
 	// Only perform on actual last iteration
 	if ( rs.wordOffset >= wordCount - 1 ) {
-		// Cleanup
-		rs.$ruler.remove();
+		// Cleanup ruler contents
+		rs.rulers.line.innerHTML = '';
+		// Cleanup line meta data
 		if ( rs.line < this.lines.length ) {
 			this.lines.splice( rs.line, this.lines.length - rs.line );
 		}
+		// Cleanup unused lines in the DOM
 		this.$.find( '.es-contentView-line[line-index=' + ( this.lines.length - 1 ) + ']' )
-			.nextAll()
+			.nextAll( '.es-contentView-line' )
 			.remove();
 		rs.timeout = undefined;
 		this.emit( 'update' );
 	} else {
-		rs.ruler.innerHTML = '';
+		rs.rulers.line.innerHTML = '';
 		var that = this;
 		rs.timeout = setTimeout( function() {
 			that.renderIteration( 3 );
@@ -626,20 +640,19 @@ ve.es.Content.prototype.render = function( offset ) {
 	if ( rs.timeout !== undefined ) {
 		// Cancel the active rendering process
 		clearTimeout( rs.timeout );
-		// Cleanup
-		rs.$ruler.remove();
 	}
 	// Clear caches that were specific to the previous render
 	this.widthCache = {};
 	// In case of empty content model we still want to display empty with non-breaking space inside
 	// This is very important for lists
 	if(this.model.getContentLength() === 0) {
+		// Remove all lines
+		this.$.children().remove( '.es-contentView-line' );
+		// Create a new line
 		var $line = $( '<div class="es-contentView-line" line-index="0">&nbsp;</div>' );
-		this.$
-			.children()
-				.remove( '.es-contentView-line' )
-				.end()
-			.append( $line );
+		// Insert the new line between ranges and rulers
+		this.$rulers.before( $line );
+		// Store meta data about the line for later
 		this.lines = [{
 			'text': ' ',
 			'range': new ve.Range( 0,0 ),
@@ -655,12 +668,17 @@ ve.es.Content.prototype.render = function( offset ) {
 	 * Container measurement
 	 * 
 	 * To get an accurate measurement of the inside of the container, without having to deal with
-	 * inconsistencies between browsers and box models, we can just create an element inside the
-	 * container and measure it.
+	 * inconsistencies between browsers and box models, we can just create elements inside the
+	 * container and measure them. There are three rulers, a line ruler used for checking if a line
+	 * of text fits or not, and a set of left and right boundary rulers which are floated left and
+	 * right respectively and get the effective width of a line after the browser has done it's
+	 * job with laying out floating content.
 	 */
-	rs.$ruler = $( '<div>&nbsp;</div>' ).appendTo( this.$ );
-	rs.width = rs.$ruler.innerWidth();
-	rs.ruler = rs.$ruler.addClass('es-contentView-ruler')[0];
+	rs.rulers = this.rulers;
+
+	// TODO: Re-implement render-from offset in a way that will take into consideration that not all
+	// lines are the same width. This is a very important optimization.
+	/*
 	// Ignore offset optimization if the width has changed or the text has never been flowed before
 	if (this.width !== rs.width) {
 		offset = undefined;
@@ -684,10 +702,11 @@ ve.es.Content.prototype.render = function( offset ) {
 		}
 		this.renderIteration( 2 + gap );
 	} else {
+	*/
 		rs.line = 0;
 		rs.wordOffset = 0;
 		this.renderIteration( 3 );
-	}
+	//}
 };
 
 /**
@@ -704,10 +723,8 @@ ve.es.Content.prototype.appendLine = function( range, wordOffset, fractional ) {
 	var rs = this.renderState,
 		$line = this.$.children( '[line-index=' + rs.line + ']' );
 	if ( !$line.length ) {
-		$line = $(
-			'<div class="es-contentView-line" line-index="' + rs.line + '"></div>'
-		);
-		this.$.append( $line );
+		$line = $( '<div class="es-contentView-line" line-index="' + rs.line + '"></div>' );
+		this.$rulers.before( $line );
 	}
 	$line[0].innerHTML = this.getHtml( range );
 	// Overwrite/append line information
@@ -748,11 +765,10 @@ ve.es.Content.prototype.appendLine = function( range, wordOffset, fractional ) {
  * 
  * @method
  * @param {ve.Range} range Range of data within content model to try to fit
- * @param {HTMLElement} ruler Element to take measurements with
  * @param {Integer} width Maximum width to allow the line to extend to
  * @returns {Integer} Last index within "words" that contains a word that fits
  */
-ve.es.Content.prototype.fitWords = function( range, ruler, width ) {
+ve.es.Content.prototype.fitWords = function( range, width ) {
 	var offset = range.start,
 		start = range.start,
 		end = range.end,
@@ -768,9 +784,9 @@ ve.es.Content.prototype.fitWords = function( range, ruler, width ) {
 		// Measure and cache width of substring
 		cacheKey = charOffset + ':' + charMiddle;
 		// Prepare the line for measurement using pre-escaped HTML
-		ruler.innerHTML = this.getHtml( new ve.Range( charOffset, charMiddle ) );
+		this.rulers.line.innerHTML = this.getHtml( new ve.Range( charOffset, charMiddle ) );
 		// Test for over/under using width of the rendered line
-		this.widthCache[cacheKey] = lineWidth = ruler.clientWidth;
+		this.widthCache[cacheKey] = lineWidth = this.rulers.line.clientWidth;
 		// Test for over/under using width of the rendered line
 		if ( lineWidth > width ) {
 			// Detect impossible fit (the first word won't fit by itself)
@@ -789,8 +805,8 @@ ve.es.Content.prototype.fitWords = function( range, ruler, width ) {
 	if ( end === middle - 1 ) {
 		// A final measurement is required
 		var charStart = this.boundaries[start];
-		ruler.innerHTML = this.getHtml( new ve.Range( charOffset, charStart ) );
-		lineWidth = this.widthCache[charOffset + ':' + charStart] = ruler.clientWidth;
+		this.rulers.line.innerHTML = this.getHtml( new ve.Range( charOffset, charStart ) );
+		lineWidth = this.widthCache[charOffset + ':' + charStart] = this.rulers.line.clientWidth;
 	}
 	return { 'end': start, 'width': lineWidth };
 };
@@ -804,11 +820,10 @@ ve.es.Content.prototype.fitWords = function( range, ruler, width ) {
  * 
  * @method
  * @param {ve.Range} range Range of data within content model to try to fit
- * @param {HTMLElement} ruler Element to take measurements with
  * @param {Integer} width Maximum width to allow the line to extend to
  * @returns {Integer} Last index within "text" that contains a character that fits
  */
-ve.es.Content.prototype.fitCharacters = function( range, ruler, width ) {
+ve.es.Content.prototype.fitCharacters = function( range, width ) {
 	var offset = range.start,
 		start = range.start,
 		end = range.end,
@@ -824,9 +839,9 @@ ve.es.Content.prototype.fitCharacters = function( range, ruler, width ) {
 			lineWidth = this.widthCache[cacheKey];
 		} else {
 			// Fill the line with a portion of the text, escaped as HTML
-			ruler.innerHTML = this.getHtml( new ve.Range( offset, middle ) );
+			this.rulers.line.innerHTML = this.getHtml( new ve.Range( offset, middle ) );
 			// Test for over/under using width of the rendered line
-			this.widthCache[cacheKey] = lineWidth = ruler.clientWidth;
+			this.widthCache[cacheKey] = lineWidth = this.rulers.line.clientWidth;
 		}
 		if ( lineWidth > width ) {
 			// Detect impossible fit (the first character won't fit by itself)
@@ -849,8 +864,8 @@ ve.es.Content.prototype.fitCharacters = function( range, ruler, width ) {
 			lineWidth = this.widthCache[cacheKey];
 		} else {
 			// A final measurement is required
-			ruler.innerHTML = this.getHtml( new ve.Range( offset, start ) );
-			lineWidth = this.widthCache[cacheKey] = ruler.clientWidth;
+			this.rulers.line.innerHTML = this.getHtml( new ve.Range( offset, start ) );
+			lineWidth = this.widthCache[cacheKey] = this.rulers.line.clientWidth;
 		}
 	}
 	return { 'end': start, 'width': lineWidth };
