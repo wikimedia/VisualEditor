@@ -461,6 +461,7 @@ spaceless_preprocessor_text
       return flatten_string ( r );
   }
 
+
 wikilink_preprocessor_text 
   = r:( t:[^%<~[{\n\r\t|!\]} &=]+ { return t.join(''); }
   / urlencoded_char
@@ -501,6 +502,27 @@ attribute_preprocessor_text_double
       return flatten_string ( r );
   }
 
+// Variants with the entire attribute on a single line
+attribute_preprocessor_text_line
+  = r:( ts:(!inline_breaks t:[^=<>{\n\r&'"\t ] {return t})+ { return ts.join(''); }
+  / directive
+  / !inline_breaks !'\n' [&%] )* {
+      //console.warn('prep');
+      return flatten_string ( r );
+  }
+attribute_preprocessor_text_single_line
+  = r:( t:[^{&']+ { return t.join(''); }
+  / directive
+  / !inline_breaks !'\n' [{&] )* {
+      return flatten_string ( r );
+  }
+attribute_preprocessor_text_double_line
+  = r:( t:[^{&"]+ { return t.join(''); }
+  / directive
+  / !inline_breaks !'\n' [{&] )* {
+      //console.warn( 'double:' + pp(r) );
+      return flatten_string ( r );
+  }
 
 // A document (start production) is a sequence of toplevelblocks. Tokens are
 // emitted in chunks per toplevelblock to avoid buffering the full document.
@@ -946,7 +968,7 @@ link_text
     // '=' here.
     hs:( '=' inline)?
     { 
-        console.warn('link_text' + pp(h) + pp(hs));
+        //console.warn('link_text' + pp(h) + pp(hs));
         clearFlag('linkdesc');
         if( hs !== '' ) {
             return h.concat(hs);
@@ -1132,12 +1154,15 @@ xml_att_value
 
 // XXX: attributes can contain templates and template args!!
 att_value
-  = t:(!inline_breaks c:[^ \t'"<>='\n] { return c } )+ { 
-        return t.join(''); 
-    }
-  // XXX: is "\"" also valid html? or just Wikitext?
-  / "'" t:[^'>]* "'" { return unquote("'", t.join('')); }
-  / '"' t:[^">]* '"' { return unquote('"', t.join('')); }
+  = "'" t:attribute_preprocessor_text_single_line "'" { return t; }
+  / '"' t:attribute_preprocessor_text_double_line '"' { return t; }
+  / attribute_preprocessor_text_line
+//  = t:(!inline_breaks c:[^ \t'"<>='\n] { return c } )+ { 
+//        return t.join(''); 
+//    }
+//  // XXX: is "\"" also valid html? or just Wikitext?
+//  / "'" t:[^'>]* "'" { return unquote("'", t.join('')); }
+//  / '"' t:[^">]* '"' { return unquote('"', t.join('')); }
 
 /* Lists */
 lists = e:(dtdd / li) es:(sol (dtdd / li))*
