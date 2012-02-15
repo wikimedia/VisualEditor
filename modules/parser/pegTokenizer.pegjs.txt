@@ -854,13 +854,18 @@ tplarg
   }
 
 template_param
-  = name:template_param_name space* 
-    value:(  s0:"=" s1:space*
-             //& { console.warn( 'entering value' ); return true }
-             s2:template_param_text { return [s0, s1, s2] } )? {
+  = name:template_param_name 
+    s0:space* 
+    eq:"="?
+    s1:space*
+    value:template_param_text?
+
+    {
       //console.warn( 'named template_param matched' + pp([name, value ]) );
       if ( value !== '' ) {
-        return new KV(name, flatten( value[2] ) || []);
+        return new KV( name, flatten( value ) );
+      } else if ( eq !== '' ) {
+        return new KV(flatten( name ), []);
       } else {
         return new KV([], flatten(name));
       }
@@ -1107,7 +1112,7 @@ generic_attribute_plain_name
 
 generic_attribute_name
   = & { return setFlag( 'equal' ) }
-  ! '/'
+  ! '/>'
   name:attribute_preprocessor_text_line
     {
         clearFlag( 'equal' );
