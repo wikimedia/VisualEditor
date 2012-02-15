@@ -38,6 +38,15 @@
 
     
     var flatten_string = function ( c ) {
+        var out = flatten_stringlist( c );
+        if ( out.length === 1 && out[0].constructor === String ) {
+            return out[0];
+        } else {
+            return out;
+        }
+    };
+
+    var flatten_stringlist = function ( c ) {
         var out = [],
             text = [];
         c = flatten(c);
@@ -58,13 +67,8 @@
         if (text.length) {
             out.push( text.join('') );
         }
-
-        if ( out.length === 1 && out[0].constructor === String ) {
-            return out[0];
-        } else {
-            return out;
-        }
-    };
+        return out;
+    }
 
     // Remove escaped quotes from attributes etc
     // This was in the original PEG parser, but could not find anything in
@@ -467,7 +471,7 @@ wikilink_preprocessor_text
   / urlencoded_char
   / directive
   / !inline_breaks !"]]" text_char )+ {
-      return flatten ( r );
+      return flatten_stringlist ( r );
   }
 
 extlink_preprocessor_text
@@ -484,7 +488,7 @@ extlink_preprocessor_text
 attribute_preprocessor_text
   = r:( ts:(!inline_breaks t:[^=<>{\n\r&'"\t ] {return t})+ { return ts.join(''); }
   / directive
-  / !inline_breaks [&%] )* {
+  / !inline_breaks [&%] )+ {
       //console.warn('prep');
       return flatten_string ( r );
   }
@@ -506,7 +510,7 @@ attribute_preprocessor_text_double
 attribute_preprocessor_text_line
   = r:( ts:(!inline_breaks t:[^=<>{\n\r&'"\t ] {return t})+ { return ts.join(''); }
   / directive
-  / !inline_breaks !'\n' [&%] )* {
+  / !inline_breaks !'\n' [&%] )+ {
       //console.warn('prep');
       return flatten_string ( r );
   }
@@ -1123,6 +1127,9 @@ generic_attribute
     value:(space*
           v:generic_attribute_value { return v })?
 {
+    //console.warn( 'generic attribute: ' + pp([name, value]));
+    // FIXME: name might just be a template, which can expand to a key-value
+    // pair later. We'll need to handle that in the AttributeTransformManager.
     if ( value !== '' ) {
         return new KV( name, value );
     } else {
@@ -1132,10 +1139,20 @@ generic_attribute
 
 // http://dev.w3.org/html5/spec/Overview.html#attributes-0, and we also
 // disallow newlines, | and {.
-generic_attribute_name
+generic_attribute_plain_name
   = n:[^ \t\0/"'>=\n|{]+ {
         return n.join('');
   }
+
+generic_attribute_name
+  = & { return setFlag( 'equal' ) }
+  name:attribute_preprocessor_text_line
+    {
+        clearFlag( 'equal' );
+        //console.warn( 'generic attribute name: ' + pp( name ) );
+        return name;
+    }
+  / & { return clearFlag( 'equal' ) }
 
 generic_attribute_newline_value
   = "=" (space / newline )* v:xml_att_value { 
@@ -1309,7 +1326,7 @@ table_data_tag
         if ( a == '' ) {
             a = [];
         }
-        //dp("table data result: " + pp(td) + ", attribts: " + pp(a));
+        console.warn("table data result: " + pp(td) + ", attribts: " + pp(a));
         return [ new TagTk( 'td', a )]
                     .concat( td, [ new EndTagTk ( 'td' ) ] );
     }
