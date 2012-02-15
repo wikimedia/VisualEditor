@@ -17,6 +17,7 @@ ve.es.DocumentNode = function( model, surfaceView ) {
 	// DOM Changes
 	this.$.addClass( 'es-documentView' );
 	this.$.attr('contentEditable', 'true');
+	this.$.attr('spellcheck', 'false');
 };
 
 /* Static Members */
