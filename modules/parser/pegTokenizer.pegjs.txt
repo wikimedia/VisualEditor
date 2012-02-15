@@ -557,7 +557,8 @@ toplevelblock
   }
 
 block
-  = block_lines
+  = !inline_breaks 
+  r:( block_lines
   / pre
   / comment &eolf
   / nowiki
@@ -572,6 +573,7 @@ block
               return [{type: 'NEWLINE'}]; 
           }
       }*/
+  ) { return r }
 
 block_lines
   = s:sol 
@@ -638,55 +640,14 @@ inline_breaks
 
 inline
   = c:(urltext / (! inline_breaks (inline_element / . )))+ {
-      var out = [];
-      var text = [];
-      c = flatten(c);
-      for (var i = 0, l = c.length; i < l; i++) {
-          var ci = c[i];
-          if (typeof ci === 'string') {
-              if(ci !== '') {
-                text.push(ci);
-              }
-          } else {
-              if (text.length) {
-                  out.push( text.join('') );
-                  text = [];
-              }
-              out.push(ci);
-          }
-      }
-      if (text.length) {
-          out.push( text.join('') );
-      }
       //console.warn('inline out:' + pp(out));
-      return out;
+      return flatten_stringlist( c );
 }
 
 
 inlineline
   = c:(urltext / !inline_breaks (inline_element / [^\n]))+ {
-      var out = [];
-      var text = [];
-      c = flatten(c);
-      for (var i = 0; i < c.length; i++) {
-          var ci = c[i]
-          if (typeof ci == 'string') {
-              if(ci !== '') {
-                text.push(ci);
-              }
-          } else {
-              if (text.length) {
-                  out.push( text.join('') );
-                  text = [];
-              }
-              out.push(ci);
-          }
-      }
-      if (text.length) {
-          out.push( text.join('') );
-      }
-      //dp('inlineline out:' + pp(out));
-      return out;
+      return flatten_stringlist( c );
 }
 
 inline_element
@@ -1307,7 +1268,7 @@ table_row_tag
     }
 
 table_data_tags
-  = "|"
+  = pipe
     td:table_data_tag
     tds:( "||" tdt:table_data_tag { return tdt } )* {
         return td.concat(tds);
@@ -1326,7 +1287,7 @@ table_data_tag
         if ( a == '' ) {
             a = [];
         }
-        console.warn("table data result: " + pp(td) + ", attribts: " + pp(a));
+        //console.warn("table data result: " + pp(td) + ", attribts: " + pp(a));
         return [ new TagTk( 'td', a )]
                     .concat( td, [ new EndTagTk ( 'td' ) ] );
     }
@@ -1390,7 +1351,7 @@ table
   }
 
 table_start 
-  = "{|"
+  = "{" pipe
     res:(
         & { setFlag('table'); return true; }
         ta:generic_attribute* 
@@ -1403,7 +1364,7 @@ table_start
 
 table_caption 
   = n:newlineToken
-    "|+" c:inline* { 
+    pipe "+" c:inline* { 
         return n.concat(c);
     }
 
@@ -1429,8 +1390,8 @@ table_firstrow
 table_row 
   = //& { dp("table row enter"); return true; }
   n:newlineToken
-    "|-" 
-    a:(as:generic_attribute+ space* "|" !"|" { return as } )?
+    pipe "-" 
+    a:(as:generic_attribute+ space* pipe !pipe { return as } )?
     space* 
     td:(table_data / table_heading)* { 
         return n.concat([ new TagTk( 'tr' )]
@@ -1439,10 +1400,10 @@ table_row
 
 table_data 
   = //& { dp("table_data enter, pos=" + pos + input.substr(pos,10)); return true; }
-	n:("||" { return [] } / nt:newlineToken ("|" / !'!') { return nt }) 
+	n:("||" { return [] } / nt:newlineToken (pipe / !'!') { return nt }) 
     ! [}+-]
     //& { dp('before attrib, pos=' + pos); return true; }
-    a:(as:generic_attribute+ space* "|" !"|" { return as } )?
+    a:(as:generic_attribute+ space* pipe !pipe { return as } )?
     //& { dp('past attrib, pos=' + pos); return true; }
     // use inline_breaks to break on tr etc
     td:(!inline_breaks 
@@ -1458,7 +1419,7 @@ table_data
 
 table_heading
   = n:("!!" { return [] } / nl:newlineToken "!" { return nl }) 
-    a:(as:generic_attribute+ "|" !"|" { return as } )?
+    a:(as:generic_attribute+ pipe !pipe { return as } )?
      c:inline {
          if ( a == '' ) {
              a = [];
@@ -1469,13 +1430,13 @@ table_heading
 
 thtd_attribs
   // In particular, do not match [|\n]
-  = a:(text / ! inline_breaks c:[="':;/,. -] { return c } )+ "|" ! "|" {
+  = a:(text / ! inline_breaks c:[="':;/,. -] { return c } )+ pipe ! pipe {
     return a;
   }
 
 
 table_end 
-  = nt:newlineToken? ( "|}" / eof ) { 
+  = nt:newlineToken? ( pipe "}" / eof ) { 
 	  clearFlag('table'); 
 	  if(nt) 
 		  return nt;
@@ -1483,6 +1444,9 @@ table_end
 		  return [];
   }
 
+
+// Special-case support for those pipe templates
+pipe = "|" / "{{!}}"
 
 /* Tabs do not mix well with the hybrid production syntax */
 /* vim: set filetype=javascript expandtab ts=4 sw=4 cindent : */
