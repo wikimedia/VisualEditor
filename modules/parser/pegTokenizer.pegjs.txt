@@ -1107,6 +1107,7 @@ generic_attribute_plain_name
 
 generic_attribute_name
   = & { return setFlag( 'equal' ) }
+  ! '/'
   name:attribute_preprocessor_text_line
     {
         clearFlag( 'equal' );
