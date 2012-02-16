@@ -788,7 +788,13 @@ unicode_separator_space = [ \u00A0\u1680\u180E\u2000-\u200A\u202F\u205F\u3000]
 
 
 urlencoded_char = "%" c0:[0-9a-fA-F] c1:[0-9a-fA-F] { 
-    return decodeURI("%" + c0 + c1) 
+    try {
+        return decodeURI("%" + c0 + c1) 
+    } catch ( e ) {
+        // Reject the match, and allow other fall-back productions to have a
+        // go at it.
+        return null;
+    }
 }
 
 //[^][<>"\\x00-\\x20\\x7F\p{Zs}]

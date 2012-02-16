@@ -142,6 +142,7 @@ ParserFunctions.prototype['pf_#time'] = function ( target, argList, argDict ) {
 };
 
 // Simulates PHP's date function
+// XXX: don't patch Date.prototype?
 Date.prototype.format = function(format) {
     var returnStr = '';
     var replace = Date.replaceChars;
