@@ -1,6 +1,11 @@
 /**
  * Some parser functions, and quite a bunch of stubs of parser functions.
- * Instantiated and called by the TemplateHandler extension.
+ * There are still quite a few missing, see
+ * http://www.mediawiki.org/wiki/Help:Magic_words and
+ * http://www.mediawiki.org/wiki/Help:Extension:ParserFunctions.
+ * Instantiated and called by the TemplateHandler extension. Any pf_<prefix>
+ * matching a lower-cased template name prefix up to the first colon will
+ * override that template.
  *
  * @author Gabriel Wicke <gwicke@wikimedia.org>
  */
@@ -22,7 +27,7 @@ ParserFunctions.prototype['pf_#if'] = function ( target, argList, argDict ) {
 	}
 };
 
-// XXX: Implement 
+// TODO: Implement 
 // http://www.mediawiki.org/wiki/Help:Extension:ParserFunctions#Grouping_results
 ParserFunctions.prototype['pf_#switch'] = function ( target, argList, argDict ) {
 	this.manager.env.dp( 'switch enter: ' + target.trim() +
@@ -93,13 +98,14 @@ ParserFunctions.prototype['pf_padleft'] = function ( target, argList, argDict ) 
 };
 
 ParserFunctions.prototype['pf_#tag'] = function ( target, argList, argDict ) {
-	// XXX: handle things like {{#tag:nowiki|{{{input1|[[shouldnotbelink]]}}}}}
+	// TODO: handle things like {{#tag:nowiki|{{{input1|[[shouldnotbelink]]}}}}}
 	// https://www.mediawiki.org/wiki/Future/Parser_development#Token_stream_transforms
 	return [ new TagTk( target ) ] 
 		.concat( argList[0].v, 
 			 [ new EndTagTk( target ) ] );
 };
 
+// TODO: These are just quick wrappers for now, optimize!
 ParserFunctions.prototype['pf_currentyear'] = function ( target, argList, argDict ) {
 	return this['pf_#time']( 'Y', [], {} );
 };
@@ -119,8 +125,9 @@ ParserFunctions.prototype['pf_currentdayname'] = function ( target, argList, arg
 	return this['pf_#time']( 'l', [], {} );
 };
 
-// A first approximation, anyway..
-// Based on http://jacwright.com/projects/javascript/date_format/ for now, MIT
+// A first approximation of time stuff.
+// TODO: Implement time spec (+ 1 day etc), check if formats are complete etc.
+// Based on http://jacwright.com/projects/javascript/date_format/, MIT
 // licensed.
 ParserFunctions.prototype['pf_#time'] = function ( target, argList, argDict ) {
 	var res,
@@ -312,23 +319,12 @@ ParserFunctions.prototype['pf_localurl'] = function ( target, argList, argDict )
  * Stub section: Pick any of these and actually implement them!
  */
 
-// FIXME
-ParserFunctions.prototype['pf_#ifexist'] = function ( target, argList, argDict ) {
-	return ( argList[0] && argList[0].v ) || [];
-};
+// The page name and similar information should be carried around in
+// this.manager.env
 ParserFunctions.prototype['pf_formatnum'] = function ( target, argList, argDict ) {
 	return [ target ];
 };
 ParserFunctions.prototype['pf_currentpage'] = function ( target, argList, argDict ) {
-	return [ target ];
-};
-ParserFunctions.prototype['pf_pagesize'] = function ( target, argList, argDict ) {
-	return [ '100' ];
-};
-ParserFunctions.prototype['pf_sitename'] = function ( target, argList, argDict ) {
-	return [ "MediaWiki" ];
-};
-ParserFunctions.prototype['pf_pagename'] = function ( target, argList, argDict ) {
 	return [ target ];
 };
 ParserFunctions.prototype['pf_pagenamee'] = function ( target, argList, argDict ) {
@@ -340,12 +336,32 @@ ParserFunctions.prototype['pf_fullpagename'] = function ( target, argList, argDi
 ParserFunctions.prototype['pf_fullpagenamee'] = function ( target, argList, argDict ) {
 	return [target];
 };
+// This should be doable with the information in the envirionment
+// (this.manager.env) already.
 ParserFunctions.prototype['pf_fullurl'] = function ( target, argList, argDict ) {
 	return [target];
 };
 ParserFunctions.prototype['pf_urlencode'] = function ( target, argList, argDict ) {
 	this.manager.env.tp( 'urlencode: ' + target  );
 	return [target.trim()];
+};
+
+
+// The following items all depends on information from the Wiki, so are hard
+// to implement independently. Some might require using action=parse in the
+// API to get the value. See
+// http://www.mediawiki.org/wiki/Parsoid#Token_stream_transforms,
+// http://etherpad.wikimedia.org/ParserNotesExtensions and
+// http://www.mediawiki.org/wiki/Wikitext_parser/Environment.
+// There might be better solutions for some of these.
+ParserFunctions.prototype['pf_#ifexist'] = function ( target, argList, argDict ) {
+	return ( argList[0] && argList[0].v ) || [];
+};
+ParserFunctions.prototype['pf_pagesize'] = function ( target, argList, argDict ) {
+	return [ '100' ];
+};
+ParserFunctions.prototype['pf_sitename'] = function ( target, argList, argDict ) {
+	return [ "MediaWiki" ];
 };
 ParserFunctions.prototype['pf_anchorencode'] = function ( target, argList, argDict ) {
 	return [target];
@@ -359,7 +375,6 @@ ParserFunctions.prototype['pf_protectionlevel'] = function ( target, argList, ar
 ParserFunctions.prototype['pf_ns'] = function ( target, argList, argDict ) {
 	return [target];
 };
-
 ParserFunctions.prototype['pf_subjectspace'] = function ( target, argList, argDict ) {
 	return ['Main'];
 };
