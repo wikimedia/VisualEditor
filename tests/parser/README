@@ -14,6 +14,7 @@ Needed npm modules:
 * libxmljs (requires native compilation)
 * optimist (for argument handling)
 * webworker (not needed for parserTests)
+* coffee-script (if you'd like to modify .coffee files)
 
 == Running parserTests.js ==
 
@@ -21,7 +22,8 @@ For parserTests, you also need MediaWiki's parser test cases (parserTests.txt)
 either in a phase3 checkout parallel to extensions (tried by default). You can
 also specify a test case file as an argument.
 
-Then, in this directory, try:
+The "make test" target in this directory downloads parserTests.txt and specifies
+it as the test case automatically.  Of course, you may also run tests manually:
 
 node ./parserTests.js
 
