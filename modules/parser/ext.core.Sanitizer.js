@@ -103,6 +103,9 @@ Sanitizer.prototype.onAny = function ( token ) {
 				kv.v = this.checkCss(kv.v);
 			}
 		}
+		token.attribs.sort(function(a, b) {
+			return a.k.localeCompare(b.k);
+		});
 	}
 	// XXX: Validate attributes
 	return { token: token };
