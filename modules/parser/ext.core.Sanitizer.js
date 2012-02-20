@@ -84,12 +84,18 @@ Sanitizer.prototype._stripIDNs = function ( host ) {
 
 /**
  * Sanitize any tag.
+ *
+ * XXX: Make attribute sanitation reversible by storing round-trip info in
+ * token.dataAttribs object (which is serialized as JSON in a data-mw-rt
+ * attribute in the DOM).
  */
 Sanitizer.prototype.onAny = function ( token ) {
 	// XXX: validate token type according to whitelist and convert non-ok ones
 	// back to text.
 
 	// Convert attributes to string, if necessary.
+	// XXX: Likely better done in AttributeTransformManager when processing is
+	// complete
 	if ( token.attribs ) {
 		for ( var i = 0, l = token.attribs.length; i < l; i++ ) {
 			var kv = token.attribs[i];
