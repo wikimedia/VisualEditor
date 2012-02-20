@@ -66,6 +66,7 @@ testWhiteList["External links: wiki links within external link (Bug 3695)"] = "<
 
 testWhiteList["Bug 4781, 5267: %25 in URL"] = "<p><a href=\"http://www.example.com/?title=100%_Bran\" data-mw-sourcePos=\"0:41\">http://www.example.com/?title=100%_Bran</a></p>";
 
+testWhiteList["<pre> with forbidden attribute values (bug 3202)"] = "<pre width=\"8\" style=\"\">Narrow screen goodies</pre>";
 
 if (typeof module == "object") {
 	module.exports.testWhiteList = testWhiteList;
