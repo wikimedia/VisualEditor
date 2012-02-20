@@ -82,7 +82,7 @@ TemplateHandler.prototype.onTemplate = function ( token, frame, cb ) {
 						JSON.stringify( attributes, null, 2 ) );
 	new AttributeTransformManager( 
 				this.manager, 
-				this._returnAttributes.bind( this, tplExpandData ) 
+				this._returnAttributes.bind( this, tplExpandData )
 			).process( attributes );
 
 	// Unblock finish

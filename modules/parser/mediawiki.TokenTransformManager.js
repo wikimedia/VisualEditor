@@ -334,11 +334,12 @@ TokenTransformManager.prototype._transformToken = function ( token, phaseEndRank
  * @param {Object} args, the argument map for templates
  * @param {Object} env, the environment.
  */
-function AsyncTokenTransformManager ( childFactories, args, env ) {
+function AsyncTokenTransformManager ( childFactories, args, env, inputType ) {
 	// Factory function for new AsyncTokenTransformManager creation with
 	// default transforms enabled
 	// Also sets up a tokenizer and phase-1-transform depending on the input format
 	// nestedAsyncTokenTransformManager = manager.newChildPipeline( inputType, args );
+	this.inputType = inputType;
 	this.childFactories = childFactories;
 	this._construct();
 	this._reset( args, env );
@@ -624,12 +625,13 @@ AsyncTokenTransformManager.prototype.onEndEvent = function () {
  * @constructor
  * @param {Object} environment.
  */
-function SyncTokenTransformManager ( env, phaseEndRank ) {
+function SyncTokenTransformManager ( env, phaseEndRank, inputType ) {
 	// both inherited
 	this._construct();
 	this.phaseEndRank = phaseEndRank;
 	this.args = {}; // no arguments at the top level
 	this.env = env;
+	this.inputType = inputType;
 }
 
 // Inherit from TokenTransformManager, and thus also from EventEmitter.
@@ -777,13 +779,14 @@ AttributeTransformManager.prototype.process = function ( attributes ) {
 			this.outstanding++;
 
 			// transform the key
-			pipe = this.manager.getAttributePipeline( this.manager.args );
-			pipe.addListener( 'chunk', 
+			pipe = this.manager.getAttributePipeline( this.manager.inputType,
+																this.manager.args );
+			pipe.addListener( 'chunk',
 					this.onChunk.bind( this, this._returnAttributeKey.bind( this, i ) ) 
-					);
+				);
 			pipe.addListener( 'end', 
 					this.onEnd.bind( this, this._returnAttributeKey.bind( this, i ) ) 
-					);
+				);
 			pipe.process( attributes[i].k.concat([{type:'END'}]) );
 		} else {
 			kv.key = cur.k;
@@ -794,7 +797,8 @@ AttributeTransformManager.prototype.process = function ( attributes ) {
 			this.outstanding++;
 
 			// transform the value
-			pipe = this.manager.getAttributePipeline( this.manager.args );
+			pipe = this.manager.getAttributePipeline( this.manager.inputType,
+																this.manager.args );
 			pipe.addListener( 'chunk', 
 					this.onChunk.bind( this, this._returnAttributeValue.bind( this, i ) ) 
 					);
