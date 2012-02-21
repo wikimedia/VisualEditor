@@ -489,7 +489,7 @@ h = & "=" // guard, to make sure '='+ will match.
         return [new TagTk( 'h' + level )]
                 .concat(c, [new EndTagTk( 'h' + level ), spc]);
       }
-    / & { dp('nomatch exit h'); clearFlag('h'); return false } { return null }
+    / & { /* dp('nomatch exit h'); */ clearFlag('h'); return false } { return null }
     ) { return r }
 
 comment
@@ -1239,7 +1239,7 @@ table
   = tas:table_start space* c:table_caption? b:table_body? te:table_end { 
       var res = new TagTk( 'table' );
       var body = b !== '' ? b : [];
-      dp("body: " + pp(body));
+      //dp("body: " + pp(body));
       if (tas.length > 0) {
           // FIXME: actually parse and build structure
           //res.attribs = [new KV('data-unparsed', tas.join(''))];
@@ -1263,7 +1263,7 @@ table_start
         & { setFlag('table'); return true; }
         ta:generic_attribute* 
         { 
-            dp("table_start " + pp(ta) + ", pos:" + pos);
+            //dp("table_start " + pp(ta) + ", pos:" + pos);
             return ta;
         }
         / & { clearFlag('table'); return false; } { return null; }

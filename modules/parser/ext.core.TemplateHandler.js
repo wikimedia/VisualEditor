@@ -78,8 +78,8 @@ TemplateHandler.prototype.onTemplate = function ( token, frame, cb ) {
 		attributes = attributes.concat( this._nameArgs( token.attribs ) );
 	}
 
-	this.manager.env.dp( 'before AttributeTransformManager: ' + 
-						JSON.stringify( attributes, null, 2 ) );
+	this.manager.env.dp( 'before AttributeTransformManager: ', 
+						attributes );
 	new AttributeTransformManager( 
 				this.manager, 
 				this._returnAttributes.bind( this, tplExpandData )
@@ -88,15 +88,14 @@ TemplateHandler.prototype.onTemplate = function ( token, frame, cb ) {
 	// Unblock finish
 	if ( ! tplExpandData.attribsAsync ) {
 		// Attributes were transformed synchronously
-		this.manager.env.dp ( 
-				'sync attribs for ' + JSON.stringify( tplExpandData.target ),
+		this.manager.env.dp ( 'sync attribs for ', tplExpandData.target,
 				tplExpandData.expandedArgs
 		);
 		// All attributes are fully expanded synchronously (no IO was needed)
 		return this._expandTemplate ( tplExpandData );
 	} else {
 		// Async attribute expansion is going on
-		this.manager.env.dp( 'async return for ' + JSON.stringify( token ));
+		this.manager.env.dp( 'async return for ', token );
 		tplExpandData.overallAsync = true;
 		return { async: true };
 	}
@@ -117,7 +116,7 @@ TemplateHandler.prototype._nameArgs = function ( attribs ) {
 			out.push( attribs[i] );
 		}
 	}
-	this.manager.env.dp( '_nameArgs: ' + JSON.stringify( out ) );
+	this.manager.env.dp( '_nameArgs: ', out );
 	return out;
 };
 
@@ -127,7 +126,7 @@ TemplateHandler.prototype._nameArgs = function ( attribs ) {
 TemplateHandler.prototype._returnAttributes = function ( tplExpandData, 
 															attributes ) 
 {
-	this.manager.env.dp( 'TemplateHandler._returnAttributes: ' + JSON.stringify(attributes) );
+	this.manager.env.dp( 'TemplateHandler._returnAttributes: ', attributes );
 	// Remove the target from the attributes
 	tplExpandData.attribsAsync = false;
 	tplExpandData.target = attributes[0].v;
@@ -149,8 +148,7 @@ TemplateHandler.prototype._expandTemplate = function ( tplExpandData ) {
 
 	
 	if ( ! tplExpandData.target ) {
-		this.manager.env.dp( 'No target! ' + 
-				JSON.stringify( tplExpandData, null, 2 ) );
+		this.manager.env.dp( 'No target! ', tplExpandData );
 		console.trace();
 	}
 
@@ -179,12 +177,12 @@ TemplateHandler.prototype._expandTemplate = function ( tplExpandData ) {
 
 		// XXX: support async parser functions!
 		if ( tplExpandData.overallAsync ) {
-			this.manager.env.dp( 'TemplateHandler._expandTemplate: calling back ' +
-					'after parser func ' + prefix + ' with res:' + JSON.stringify( res ) );
+			this.manager.env.dp( 'TemplateHandler._expandTemplate: calling back ',
+					'after parser func ', prefix, ' with res:', res );
 			return tplExpandData.cb( res, false );
 		} else {
-			this.manager.env.dp( 'TemplateHandler._expandTemplate: sync return ' +
-					'after parser func ' + prefix + ' with res:' + JSON.stringify( res ) );
+			this.manager.env.dp( 'TemplateHandler._expandTemplate: sync return ',
+					'after parser func ', prefix, ' with res:', res );
 			return { tokens: res };
 			//data.reset();
 		}
@@ -249,13 +247,13 @@ TemplateHandler.prototype._expandTemplate = function ( tplExpandData ) {
 	if ( tplExpandData.overallAsync || 
 			! tplExpandData.expandDone ) {
 		tplExpandData.overallAsync = true;
-		this.manager.env.dp( 'Async return from _expandTemplate for ' + 
-				JSON.stringify ( tplExpandData.target ) );
+		this.manager.env.dp( 'Async return from _expandTemplate for ', 
+				tplExpandData.target );
 		return { async: true };
 	} else {
-		this.manager.env.dp( 'Sync return from _expandTemplate for ' + 
-				JSON.stringify( tplExpandData.target ) + ' : ' +
-				JSON.stringify( tplExpandData.result ) 
+		this.manager.env.dp( 'Sync return from _expandTemplate for ',
+				tplExpandData.target, ' : ',
+				tplExpandData.result
 				);
 		return tplExpandData.result;
 	}
@@ -267,7 +265,7 @@ TemplateHandler.prototype._expandTemplate = function ( tplExpandData ) {
  */
 TemplateHandler.prototype._onChunk = function( tplExpandData, chunk ) {
 	// We encapsulate the output by default, so collect tokens here.
-	this.manager.env.dp( 'TemplateHandler._onChunk' + JSON.stringify( chunk ) );
+	this.manager.env.dp( 'TemplateHandler._onChunk', chunk );
 	tplExpandData.resultTokens = tplExpandData.resultTokens.concat( chunk );
 };
 
@@ -276,7 +274,7 @@ TemplateHandler.prototype._onChunk = function( tplExpandData, chunk ) {
  * the template source.
  */
 TemplateHandler.prototype._onEnd = function( tplExpandData, token ) {
-	this.manager.env.dp( 'TemplateHandler._onEnd' + JSON.stringify( tplExpandData.resultTokens ) );
+	this.manager.env.dp( 'TemplateHandler._onEnd', tplExpandData.resultTokens );
 	tplExpandData.expandDone = true;
 	var res = tplExpandData.resultTokens;
 	// Strip 'end' tokens and trailing newlines
@@ -296,8 +294,7 @@ TemplateHandler.prototype._onEnd = function( tplExpandData, token ) {
 	//console.warn( 'TemplateHandler._onEnd: ' + JSON.stringify( res, null, 2 ) );
 
 	if ( tplExpandData.overallAsync ) {
-		this.manager.env.dp( 'TemplateHandler._onEnd: calling back with res:' +
-				JSON.stringify( res ) );
+		this.manager.env.dp( 'TemplateHandler._onEnd: calling back with res:', res );
 		tplExpandData.cb( res, false );
 	} else {
 		this.manager.env.dp( 'TemplateHandler._onEnd: synchronous return!' );
@@ -313,7 +310,7 @@ TemplateHandler.prototype._onEnd = function( tplExpandData, token ) {
  */
 TemplateHandler.prototype._processTemplateAndTitle = function( pipeline, src, title ) {
 	// Feed the pipeline. XXX: Support different formats.
-	this.manager.env.dp( 'TemplateHandler._processTemplateAndTitle: ' + src );
+	this.manager.env.dp( 'TemplateHandler._processTemplateAndTitle: ', src );
 	pipeline.process ( src );
 };
 
@@ -340,10 +337,10 @@ TemplateHandler.prototype._fetchTemplateAndTitle = function ( title, callback, t
 		// We are about to start an async request for a template, so mark this
 		// template expansion as such.
 		tplExpandData.overallAsync = true;
-		this.manager.env.dp( 'Note: trying to fetch ' + title );
+		this.manager.env.dp( 'Note: trying to fetch ', title );
 
 		// Start a new request if none is outstanding
-		this.manager.env.dp( 'requestQueue: ', this.manager.env.requestQueue);
+		this.manager.env.dp( 'requestQueue: ', this.manager.env.requestQueue );
 		if ( this.manager.env.requestQueue[title] === undefined ) {
 			this.manager.env.tp( 'Note: Starting new request for ' + title );
 			this.manager.env.requestQueue[title] = new TemplateRequest( this.manager, title );
@@ -393,8 +390,8 @@ TemplateHandler.prototype._returnArgAttributes = function ( token, cb, frame, at
 		res = this.manager.args[argName];
 	} else {
 		var defaultValue = (attributes[1] && ! attributes[1].k.length && attributes[1].v) || false;
-		this.manager.env.dp( 'templateArg not found: ' + argName + 
-				' vs. ' + JSON.stringify( defaultValue ) );
+		this.manager.env.dp( 'templateArg not found: ', argName,
+				' vs. ', defaultValue );
 		if ( defaultValue ) {
 			res = defaultValue;
 		} else {
@@ -474,7 +471,7 @@ function TemplateRequest ( manager, title ) {
 		// XXX: handle other status codes
 
 		// Remove self from request queue
-		manager.env.dp( 'trying to remove ' + title + ' from requestQueue' );
+		manager.env.dp( 'trying to remove ', title, ' from requestQueue' );
 		delete manager.env.requestQueue[title];
 		manager.env.dp( 'after deletion:', manager.env.requestQueue );
 	});

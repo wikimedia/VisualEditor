@@ -443,8 +443,8 @@ AsyncTokenTransformManager.prototype.process = function ( tokens ) {
 AsyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 	// Set top-level callback to next transform phase
 	var res = this.transformTokens ( tokens, this.tokenCB );
-	this.env.dp('AsyncTokenTransformManager onChunk res.async=' + res.async +
-			' tokens=' + JSON.stringify( tokens ) );
+	this.env.dp( 'AsyncTokenTransformManager onChunk res.async=', 
+			res.async, ' tokens=', tokens );
 
 	if ( ! this.tailAccumulator ) {
 		this.emit( 'chunk', res.tokens );
@@ -574,8 +574,8 @@ AsyncTokenTransformManager.prototype._returnTokens = function ( tokens, notYetDo
 	//	tokens.pop();
 	//}
 
-	this.env.dp('AsyncTokenTransformManager._returnTokens, emitting chunk: ' +
-			JSON.stringify( tokens ) );
+	this.env.dp( 'AsyncTokenTransformManager._returnTokens, emitting chunk: ',
+				tokens );
 
 	this.emit( 'chunk', tokens );
 
@@ -607,7 +607,7 @@ AsyncTokenTransformManager.prototype.onEndEvent = function () {
 	} else {
 		// nothing was asynchronous, so we'll have to emit end here.
 		this.env.dp( 'AsyncTokenTransformManager.onEndEvent: synchronous done',
-				this.loopAndDepthCheck  );
+				this.loopAndDepthCheck );
 		this.emit('end');
 		this._reset();
 	}
@@ -658,8 +658,7 @@ SyncTokenTransformManager.prototype.process = function ( tokens ) {
  * @param {Array} Token chunk.
  */
 SyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
-	this.env.dp('SyncTokenTransformManager.onChunk, input: ' +
-			JSON.stringify( tokens, null, 2 ) );
+	this.env.dp( 'SyncTokenTransformManager.onChunk, input: ', tokens );
 	var res,
 		localAccum = [],
 		localAccumLength = 0,
@@ -717,8 +716,7 @@ SyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 			}
 		}
 	}
-	this.env.dp( 'SyncTokenTransformManager.onChunk: emitting ' + 
-			JSON.stringify( localAccum, null, 2 ) );
+	this.env.dp( 'SyncTokenTransformManager.onChunk: emitting ', localAccum );
 	this.emit( 'chunk', localAccum );
 };
 
@@ -941,10 +939,8 @@ TokenAccumulator.prototype._returnTokens = function ( reference, tokens, notYetD
 	//console.warn( 'TokenAccumulator._returnTokens' );
 	if ( reference === 'child' ) {
 		tokens = tokens.concat( this.accum );
-		this.manager.env.dp('TokenAccumulator._returnTokens child: ' + 
-				JSON.stringify( tokens, null, 2 ) + 
-				' outstanding: ' + this.outstanding
-				);
+		this.manager.env.dp( 'TokenAccumulator._returnTokens child: ',
+				tokens, ' outstanding: ', this.outstanding );
 		this.accum = [];
 		this.parentCB( tokens, this.outstanding );
 		return null;
@@ -954,15 +950,15 @@ TokenAccumulator.prototype._returnTokens = function ( reference, tokens, notYetD
 			tokens = this.accum.concat( tokens );
 			// A sibling will transform tokens, so we don't have to do this
 			// again.
-			this.manager.env.dp( 'TokenAccumulator._returnTokens: ' +
-					'sibling done and parentCB ' +
-					JSON.stringify( tokens ) );
+			this.manager.env.dp( 'TokenAccumulator._returnTokens: ',
+					'sibling done and parentCB ',
+					tokens );
 			this.parentCB( tokens, false );
 			return null;
 		} else if ( this.outstanding === 1 && notYetDone ) {
-			this.manager.env.dp( 'TokenAccumulator._returnTokens: ' +
-					'sibling done and parentCB but notYetDone ' +
-					JSON.stringify( tokens ) );
+			this.manager.env.dp( 'TokenAccumulator._returnTokens: ',
+					'sibling done and parentCB but notYetDone ',
+					tokens );
 			// Sibling is not yet done, but child is. Return own parentCB to
 			// allow the sibling to go direct, and call back parent with
 			// tokens. The internal accumulator is empty at this stage, as its
@@ -970,11 +966,9 @@ TokenAccumulator.prototype._returnTokens = function ( reference, tokens, notYetD
 			return this.parentCB( tokens, true);
 		} else {
 			this.accum  = this.accum.concat( tokens );
-			this.manager.env.dp( 'TokenAccumulator._returnTokens: sibling done, but not overall. notYetDone=' + 
-					notYetDone + ', this.outstanding=' + this.outstanding +
-					', this.accum=' + 
-					JSON.stringify( this.accum, null, 2 ) +
-					' manager.title=', this.manager.title );
+			this.manager.env.dp( 'TokenAccumulator._returnTokens: sibling done, but not overall. notYetDone=',
+					notYetDone, ', this.outstanding=', this.outstanding, 
+					', this.accum=', this.accum, ' manager.title=', this.manager.title );
 		}
 
 

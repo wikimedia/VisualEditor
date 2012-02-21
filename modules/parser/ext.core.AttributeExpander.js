@@ -54,13 +54,13 @@ AttributeExpander.prototype.onToken = function ( token, frame, cb ) {
 		if( atm.process( token.attribs ) ) {
 			// Attributes were transformed synchronously
 			this.manager.env.dp ( 
-					'sync attribs for ' + JSON.stringify( token )
+					'sync attribs for ', token
 			);
 			// All attributes are fully expanded synchronously (no IO was needed)
 			return { token: token };
 		} else {
 			// Async attribute expansion is going on
-			this.manager.env.dp( 'async return for ' + JSON.stringify( token ));
+			this.manager.env.dp( 'async return for ', token );
 			expandData.async = true;
 			return { async: true };
 		}
@@ -76,8 +76,7 @@ AttributeExpander.prototype.onToken = function ( token, frame, cb ) {
 AttributeExpander.prototype._returnAttributes = function ( expandData, 
 															attributes ) 
 {
-	this.manager.env.dp( 'AttributeExpander._returnAttributes: ' + 
-			JSON.stringify(attributes) );
+	this.manager.env.dp( 'AttributeExpander._returnAttributes: ',attributes );
 	// Remove the target from the attributes
 	expandData.token.attribs = attributes;
 	if ( expandData.async ) {
