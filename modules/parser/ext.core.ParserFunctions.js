@@ -15,8 +15,6 @@ function ParserFunctions ( manager ) {
 	this.manager = manager;
 }
 
-ParserFunctions.prototype.fun = {};
-
 ParserFunctions.prototype['pf_#if'] = function ( target, argList, argDict ) {
 	if ( target.trim() !== '' ) {
 		this.manager.env.dp('#if, first branch', target.trim(), argDict[1] );
@@ -127,8 +125,11 @@ ParserFunctions.prototype['pf_currentdayname'] = function ( target, argList, arg
 
 // A first approximation of time stuff.
 // TODO: Implement time spec (+ 1 day etc), check if formats are complete etc.
-// Based on http://jacwright.com/projects/javascript/date_format/, MIT
-// licensed.
+// See http://www.mediawiki.org/wiki/Help:Extension:ParserFunctions#.23time
+// for the full list of requirements!
+//
+// First (very rough) approximation below based on
+// http://jacwright.com/projects/javascript/date_format/, MIT licensed.
 ParserFunctions.prototype['pf_#time'] = function ( target, argList, argDict ) {
 	var res,
 		tpl = target.trim();

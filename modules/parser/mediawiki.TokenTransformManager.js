@@ -557,7 +557,9 @@ AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parent
 
 /**
  * Callback from tokens fully processed for phase 0 and 1, which are now ready
- * for synchronous and globally in-order phase 2 processing.
+ * for synchronous and globally in-order phase 2 processing. Thus each async
+ * transform is responsible for fully processing its returned tokens to the
+ * end of phase2.
  *
  * @method
  * @param {Array} chunk of tokens

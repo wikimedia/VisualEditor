@@ -142,13 +142,15 @@ ParserPipeline.prototype._transformers = {
 		sync01: 
 			[ 
 				IncludeOnly, 
-				NoInclude 
+				NoInclude
 			],
 		// Asynchronous out-of-order per input
 		async12: 
 			[ 
+				// Insert TokenCollector for extensions here (don't expand
+				// templates in extension contents)
 				TemplateHandler,
-				AttributeExpander 
+				AttributeExpander // After templates to avoid expanding unused branches
 			],
 		// Synchronous in-order on fully expanded token stream (including
 		// expanded templates etc).
