@@ -101,14 +101,13 @@ PegTokenizer.prototype.breakMap = {
 	},
 	"\r": function ( input, pos, syntaxFlags ) {
 		return syntaxFlags.table &&
-			input[pos + 1] !== '!' &&
-			input[pos + 1] !== '|' ||
+			input.substr(pos, 4).match(/\r\n?[!|]/) !== null ||
 			null;
 	},
 	"\n": function ( input, pos, syntaxFlags ) {
 		return syntaxFlags.table &&
-			input[pos + 1] !== '!' &&
-			input[pos + 1] !== '|' ||
+			input[pos + 1] === '!' ||
+			input[pos + 1] === '|' ||
 			null;
 	},
 	"]": function ( input, pos, syntaxFlags ) {
@@ -121,11 +120,55 @@ PegTokenizer.prototype.breakMap = {
 	}
 };
 
-PegTokenizer.prototype.inline_breaks = function (input, pos, syntaxFlags ) {
-	var res = this.breakMap[ input[pos] ]( input, pos, syntaxFlags);
-	console.warn( 'ilb res: ' + JSON.stringify( [ res, input.substr( pos, 4 ) ] ) );
-	return res;
+PegTokenizer.prototype.inline_breaks_ = function (input, pos, syntaxFlags ) {
+	return this.breakMap[ input[pos] ]( input, pos, syntaxFlags);
+	//console.warn( 'ilbn res: ' + JSON.stringify( [ res, input.substr( pos, 4 ) ] ) );
+	//return res;
 };
+
+PegTokenizer.prototype.inline_breaks = function (input, pos, syntaxFlags ) {
+	switch( input[pos] ) {
+		case '=':
+			return syntaxFlags.equal ||
+				( syntaxFlags.h &&
+				  input.substr( pos + 1, 200)
+				  .match(/[ \t]*[\r\n]/) !== null ) || null;
+		case '|':
+			return syntaxFlags.template ||
+				( syntaxFlags.table &&
+				  ( input[pos + 1].match(/[|}]/) !== null ||
+					syntaxFlags.tableCellArg
+				  ) 
+				) || null;
+		case "!":
+			return syntaxFlags.table && input[pos + 1] === "!" ||
+				null;
+		case "}":
+			return syntaxFlags.template && input[pos + 1] === "}" || null;
+		case ":":
+			return syntaxFlags.colon &&
+				! syntaxFlags.extlink &&
+				! syntaxFlags.linkdesc || null;
+		case "\r":
+			return syntaxFlags.table &&
+				input.substr(pos, 4).match(/\r\n?[!|]/) !== null ||
+				null;
+		case "\n":
+			return syntaxFlags.table &&
+				input[pos + 1] === '!' ||
+				input[pos + 1] === '|' ||
+				null;
+		case "]":
+			return syntaxFlags.extlink ||
+				( syntaxFlags.linkdesc && input[pos + 1] === ']' ) ||
+				null;
+		case "<":
+			return syntaxFlags.pre &&  input.substr( pos, 6 ) === '</pre>' || null;
+		default:
+			return null;
+	}
+};
+
 
 /*****************************************************************************
  * LEGACY stuff

@@ -415,13 +415,24 @@ br = space* &newline { return new SelfclosingTagTk( 'br' ) }
  *
  * XXX: Repeated testing of flags is not terribly efficient.
  */
-inline_breaks
+
+inline_breaks_ = 
+    & [=|!}:\r\n\]<]
+    & { cacheKey = ''; ilbpos = pos; return true; }
+    res:inline_breaks_o 
+{ 
+	console.warn( 'ilbo res: ' + JSON.stringify( [ res, input.substr( ilbpos, 4 ) ] ) );
+    return res;
+}
+
+
+inline_breaks_o
   = & [=|!}:\r\n\]<] // don't check further if char cannot match
     res:(
         & { // Important hack: disable caching for this production, as the default
             // cache key does not take into account flag states!
             cacheKey = ''; 
-            console.warn('ilb: ' + input.substr(pos, 5) );
+            //console.warn('ilb: ' + input.substr(pos, 5) );
             return true; 
           }
 
@@ -453,16 +464,14 @@ inline_breaks
                     }
         ) { return res }
 
-inline_breaks_experiment
+inline_breaks
   = & [=|!}:\r\n\]<]
     & { // Important hack: disable caching for this production, as the default
         // cache key does not take into account flag states!
         cacheKey = ''; 
         //console.warn('ilbf: ' + input.substr(pos, 5) );
-        return true; 
+        return null !== __parseArgs[3].inline_breaks( input, pos, syntaxFlags )
       } 
-    .
-    { return __parseArgs[3].inline_breaks( input, pos - 1, syntaxFlags ) && true || null ; }
 
 inline
   = c:(urltext / (! inline_breaks (inline_element / . )))+ {
