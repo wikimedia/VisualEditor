@@ -319,7 +319,7 @@ text_char = [^'<~[{\n\r:\]}|!=]
 
 text = t:text_char+ { return t.join(''); }
 
-/* Explanation of chars
+/* Legend
  * '    quotes (italic/bold)
  * <    start of xmlish_tag
  * ~    signatures/dates
@@ -562,7 +562,6 @@ block
   / pre
   / comment &eolf
   / nowiki
-  / pre
   / bt:block_tag { return [bt] } // avoid a paragraph if we know that the line starts with a block tag
   / para
   / inlineline // includes generic tags; wrapped into paragraphs in DOM postprocessor
@@ -637,6 +636,10 @@ inline_breaks
                     //console.warn( 'equal stop @' + pos + input.substr(pos-1, 4) );
                     return true; 
                 }
+  / & { return syntaxFlags['pre']; } '</pre>' { 
+                    //console.warn( 'pre stop @' + pos + input.substr(pos-1, 4) );
+                    return true; 
+                }
 
 inline
   = c:(urltext / (! inline_breaks (inline_element / . )))+ {
@@ -702,11 +705,31 @@ h = & "=" // guard, to make sure '='+ will match.
 
 
 pre_indent 
-  = l:pre_indent_line ls:(sol pre_indent_line)* {
+  = pre_indent_in_tags
+  / l:pre_indent_line ls:(sol pre_indent_line)* {
       return [new TagTk( 'pre' )]
                     .concat( [l], ls
                            , [new EndTagTk( 'pre' )]);
   }
+
+// An indented pre block that is surrounded with pre tags. The pre tags are
+// used directly.
+pre_indent_in_tags
+  = space+ // XXX: capture space for round-tripping
+    "<pre" 
+    attribs:generic_attribute* 
+    ">"
+    & { return setFlag('pre'); }
+    l:inlineline
+    ls:(sol pre_indent_line)*
+    "</pre>"
+  {   
+    clearFlag('pre');
+    return [ new TagTk( 'pre', attribs ) ]
+        .concat( l, flatten( ls ), [ new EndTagTk( 'pre' ) ] );
+  }
+  / & { return clearFlag('pre'); }
+
 pre_indent_line = space l:inlineline { 
     return [ '\n' ].concat(l); 
 }
@@ -984,6 +1007,8 @@ pre
   = "<pre" 
     attribs:generic_attribute* 
     ">"
+    // MediaWiki <pre> is special in that it converts all pre content to plain
+    // text.
     ts:(t1:[^<]+ { return t1.join('') } 
                 / nowiki 
                 / !"</pre>" t2:. { return t2 })+ 
@@ -1046,6 +1071,40 @@ block_tag
         }
         return [res];
     }
+
+// The list of HTML5 tags, mainly used for the identification of non-html
+// tags. These terminate otherwise tag-eating productions (see list below) in
+// order to support potential extension tags:
+// * comment
+// * pre
+// * nowiki
+html5_tagnames 
+  = "a" / "abbr" / "address" / "area" / "article" 
+    / "aside" / "audio" / "b" / "base" / "bdi" / "bdo" / "blockquote" 
+    / "body" / "br" / "button" / "canvas" / "caption" / "cite" / "code" 
+    / "col" / "colgroup" / "command" / "data" / "datalist" / "dd" / "del" 
+    / "details" / "dfn" / "div" / "dl" / "dt" / "em" / "embed" / "fieldset" 
+    / "figcaption" / "figure" / "footer" / "form" 
+    / "h1" / "h2" / "h3" / "h4" / "h5" / "h6" / "head" / "header" / "hgroup" 
+    / "hr" / "html" / "i" / "iframe" / "img" / "input" / "ins" / "kbd" / "keygen" 
+    / "label" / "legend" / "li" / "link" / "map" / "mark" / "menu" / "meta" 
+    / "meter" / "nav" / "noscript" / "object" / "ol" / "optgroup" / "option" 
+    / "output" / "p" / "param" / "pre" / "progress" / "q" / "rp" / "rt" 
+    / "ruby" / "s" / "samp" / "script" / "section" / "select" / "small" 
+    / "source" / "span" / "strong" / "style" / "sub" / "summary" / "sup" 
+    / "table" / "tbody" / "td" / "textarea" / "tfoot" / "th" / "thead" / "time" 
+    / "title" / "tr" / "track" / "u" / "ul" / "var" / "video" / "wbr"
+
+html_oldnames = "center" / "font" / "tt"
+
+// Simple match on non-html endtags, for use in inline_breaks
+nonhtml_endtag
+  = '</' 
+    ! ( html5_tagnames / html_oldnames )
+    [^ >]+
+    ( space / newline ) *
+    [^>]*
+    '>'
 
 /* Generic XML-like tags
  * 
