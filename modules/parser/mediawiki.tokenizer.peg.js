@@ -4,6 +4,7 @@
  *
  * Use along with a HTML5TreeBuilder and the DOMPostProcessor(s) for HTML
  * output.
+ *
  */
 
 var PEG = require('pegjs'),
@@ -26,6 +27,11 @@ PegTokenizer.prototype.constructor = PegTokenizer;
 
 PegTokenizer.src = false;
 
+/*
+ * The main worker. Sets up event emission ('chunk' and 'end' events).
+ * Consumers are supposed to register with PegTokenizer before calling
+ * process().
+ */
 PegTokenizer.prototype.process = function( text ) {
 	var out, err;
 	if ( !this.parser ) {
@@ -36,23 +42,15 @@ PegTokenizer.prototype.process = function( text ) {
 					'parse: function(input, startRule) { var __parseArgs = arguments;' );
 		//console.warn( parserSource );
 		PegTokenizer.prototype.parser = eval( parserSource );
-		// add reference to this for event emission
-		// XXX: pass a cb into parse() instead, but need to modify pegjs a bit
-		// for that.
-		//PegTokenizer.prototype.parser._tokenizer = undefined;
-
-		// Print the generated parser source
-		//console.warn(this.parser.toSource());
 	}
 
-	// some normalization
+	// Some input normalization: force a trailing newline
 	if ( text.substring(text.length - 1) !== "\n" ) {
 		text += "\n";
 	}
 
 	// XXX: Commented out exception handling during development to get
-	// reasonable traces. Calling a trace on the extension does not really cut
-	// it.
+	// reasonable traces.
 	//try {
 		this.parser.parse(text, 'start', 
 				// callback
@@ -60,9 +58,6 @@ PegTokenizer.prototype.process = function( text ) {
 				// inline break test
 				this
 				);
-		// emit tokens here until we get that to work per toplevelblock in the
-		// actual tokenizer
-		//this.emit('chunk', out.concat( [{ type: 'END' }] ) );
 		this.emit('end');
 	//} catch (e) {
 		//err = e;
@@ -72,6 +67,58 @@ PegTokenizer.prototype.process = function( text ) {
 	//}
 };
 
+
+/*
+ * Inline breaks, flag-enabled production which detects end positions for
+ * active higher-level productions in inline and other nested productions.
+ * Those inner productions are then exited, so that the outer production can
+ * handle the end marker.
+ */
+PegTokenizer.prototype.inline_breaks = function (input, pos, syntaxFlags ) {
+	switch( input[pos] ) {
+		case '=':
+			return syntaxFlags.equal ||
+				( syntaxFlags.h &&
+				  input.substr( pos + 1, 200)
+				  .match(/[ \t]*[\r\n]/) !== null ) || null;
+		case '|':
+			return syntaxFlags.template ||
+				( syntaxFlags.table &&
+				  ( input[pos + 1].match(/[|}]/) !== null ||
+					syntaxFlags.tableCellArg
+				  ) 
+				) || null;
+		case "!":
+			return syntaxFlags.table && input[pos + 1] === "!" ||
+				null;
+		case "}":
+			return syntaxFlags.template && input[pos + 1] === "}" || null;
+		case ":":
+			return syntaxFlags.colon &&
+				! syntaxFlags.extlink &&
+				! syntaxFlags.linkdesc || null;
+		case "\r":
+			return syntaxFlags.table &&
+				input.substr(pos, 4).match(/\r\n?[!|]/) !== null ||
+				null;
+		case "\n":
+			return syntaxFlags.table &&
+				input[pos + 1] === '!' ||
+				input[pos + 1] === '|' ||
+				null;
+		case "]":
+			return syntaxFlags.extlink ||
+				( syntaxFlags.linkdesc && input[pos + 1] === ']' ) ||
+				null;
+		case "<":
+			return syntaxFlags.pre &&  input.substr( pos, 6 ) === '</pre>' || null;
+		default:
+			return null;
+	}
+};
+
+// Alternate version of the above. The hash is likely faster, but the nested
+// function calls seem to cancel that out.
 PegTokenizer.prototype.breakMap = {
 	'=': function(input, pos, syntaxFlags) { 
 		return syntaxFlags.equal ||
@@ -120,161 +167,12 @@ PegTokenizer.prototype.breakMap = {
 	}
 };
 
-PegTokenizer.prototype.inline_breaks_ = function (input, pos, syntaxFlags ) {
+PegTokenizer.prototype.inline_breaks_hash = function (input, pos, syntaxFlags ) {
 	return this.breakMap[ input[pos] ]( input, pos, syntaxFlags);
 	//console.warn( 'ilbn res: ' + JSON.stringify( [ res, input.substr( pos, 4 ) ] ) );
 	//return res;
 };
 
-PegTokenizer.prototype.inline_breaks = function (input, pos, syntaxFlags ) {
-	switch( input[pos] ) {
-		case '=':
-			return syntaxFlags.equal ||
-				( syntaxFlags.h &&
-				  input.substr( pos + 1, 200)
-				  .match(/[ \t]*[\r\n]/) !== null ) || null;
-		case '|':
-			return syntaxFlags.template ||
-				( syntaxFlags.table &&
-				  ( input[pos + 1].match(/[|}]/) !== null ||
-					syntaxFlags.tableCellArg
-				  ) 
-				) || null;
-		case "!":
-			return syntaxFlags.table && input[pos + 1] === "!" ||
-				null;
-		case "}":
-			return syntaxFlags.template && input[pos + 1] === "}" || null;
-		case ":":
-			return syntaxFlags.colon &&
-				! syntaxFlags.extlink &&
-				! syntaxFlags.linkdesc || null;
-		case "\r":
-			return syntaxFlags.table &&
-				input.substr(pos, 4).match(/\r\n?[!|]/) !== null ||
-				null;
-		case "\n":
-			return syntaxFlags.table &&
-				input[pos + 1] === '!' ||
-				input[pos + 1] === '|' ||
-				null;
-		case "]":
-			return syntaxFlags.extlink ||
-				( syntaxFlags.linkdesc && input[pos + 1] === ']' ) ||
-				null;
-		case "<":
-			return syntaxFlags.pre &&  input.substr( pos, 6 ) === '</pre>' || null;
-		default:
-			return null;
-	}
-};
-
-
-/*****************************************************************************
- * LEGACY stuff
- *
- * This is kept around as a template for the ongoing template expansion work!
- * It won't work with the token infrastructure.
- */
-
-
-/**
- * @param {object} tree
- * @param {function(tree, error)} callback
- */
-PegTokenizer.prototype.expandTree = function(tree, callback) {
-	var self = this;
-	var subParseArray = function(listOfTrees) {
-		var content = [];
-		$.each(listOfTrees, function(i, subtree) {
-			self.expandTree(subtree, function(substr, err) {
-				content.push(tree);
-			});
-		});
-		return content;
-	};
-	var src;
-	if (typeof tree === "string") {
-		callback(tree);
-		return;
-	}
-	if (tree.type == 'template') {
-		// expand a template node!
-		
-		// Resolve a possibly relative link
-		var templateName = this.env.resolveTitle( tree.target, 'Template' );
-		this.env.fetchTemplate( tree.target, tree.params || {}, function( templateSrc, error ) {
-			// @fixme should pre-parse/cache these too?
-			self.parseToTree( templateSrc, function( templateTree, error ) {
-				if ( error ) {
-					callback({
-						type: 'placeholder',
-						orig: tree,
-						content: [
-							{
-								// @fixme broken link?
-								type: 'link',
-								target: templateName
-							}
-						]
-					});
-				} else {
-					callback({
-						type: 'placeholder',
-						orig: tree,
-						content: self.env.expandTemplateArgs( templateTree, tree.params )
-					});
-				}
-			});
-		} );
-		// Wait for async...
-		return;
-	}
-	var out = $.extend( tree ); // @fixme prefer a deep copy?
-	if (tree.content) {
-		out.content = subParseArray(tree.content);
-	}
-	callback(out);
-};
-
-PegTokenizer.prototype.initSource = function(callback) {
-	if (PegTokenizer.src) {
-		callback();
-	} else {
-		if ( typeof parserPlaygroundPegPage !== 'undefined' ) {
-			$.ajax({
-				url: wgScriptPath + '/api' + wgScriptExtension,
-				data: {
-					format: 'json',
-					action: 'query',
-					prop: 'revisions',
-					rvprop: 'content',
-					titles: parserPlaygroundPegPage
-				},
-				success: function(data, xhr) {
-					$.each(data.query.pages, function(i, page) {
-						if (page.revisions && page.revisions.length) {
-							PegTokenizer.src = page.revisions[0]['*'];
-						}
-					});
-					callback();
-				},
-				dataType: 'json',
-				cache: false
-			}, 'json');
-		} else {
-			$.ajax({
-				url: mw.config.get('wgParserPlaygroundAssetsPath', mw.config.get('wgExtensionAssetsPath')) + '/ParserPlayground/modules/pegParser.pegjs.txt',
-				success: function(data) {
-					PegTokenizer.src = data;
-					callback();
-				},
-				dataType: 'text',
-				cache: false
-			});
-		}
-	}
-};
 
 
 if (typeof module == "object") {

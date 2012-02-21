@@ -413,57 +413,14 @@ br = space* &newline { return new SelfclosingTagTk( 'br' ) }
  * Syntax stops: Avoid eating significant tokens for higher-level productions
  * in nested inline productions.
  *
- * XXX: Repeated testing of flags is not terribly efficient.
+ * Repeated testing of flags is not terribly efficient. See new and faster
+ * version below.
  */
 
-inline_breaks_ = 
-    & [=|!}:\r\n\]<]
-    & { cacheKey = ''; ilbpos = pos; return true; }
-    res:inline_breaks_o 
-{ 
-	console.warn( 'ilbo res: ' + JSON.stringify( [ res, input.substr( ilbpos, 4 ) ] ) );
-    return res;
-}
-
-
-inline_breaks_o
-  = & [=|!}:\r\n\]<] // don't check further if char cannot match
-    res:(
-        & { // Important hack: disable caching for this production, as the default
-            // cache key does not take into account flag states!
-            cacheKey = ''; 
-            //console.warn('ilb: ' + input.substr(pos, 5) );
-            return true; 
-          }
-
-        & { return syntaxFlags['table']; } 
-        ( a:(newline [!|] / '||' / '!!' / '|}') { 
-            //console.warn("table break" + pp(a) + pos); 
-            return true; 
-          }
-          / & { return syntaxFlags['tableCellArg'] }
-            "|" { return true }
-        )
-      / & { return (syntaxFlags['colon'] && 
-              ! syntaxFlags.extlink && // example: ; [[Link:Term]] : Definition
-              ! syntaxFlags.linkdesc); } ":" { return true; }
-      / & { return syntaxFlags['extlink']; } "]" { return true; }
-      / & { return syntaxFlags['linkdesc']; } link_end { return true; }
-      / & { return syntaxFlags['h']; } '='+ space* newline { return true; }
-      / & { return syntaxFlags['template']; } ('|' / '}}' ) { 
-          //console.warn( 'template break @' + pos + input.substr(pos-1, 4) );
-          return true; 
-      }
-      / & { return syntaxFlags['equal']; } '=' { 
-                        //console.warn( 'equal stop @' + pos + input.substr(pos-1, 4) );
-                        return true; 
-                    }
-      / & { return syntaxFlags['pre']; } '</pre>' { 
-                        //console.warn( 'pre stop @' + pos + input.substr(pos-1, 4) );
-                        return true; 
-                    }
-        ) { return res }
-
+/*
+ * Syntax stops: Avoid eating significant tokens for higher-level productions
+ * in nested inline productions.
+ */
 inline_breaks
   = & [=|!}:\r\n\]<]
     & { // Important hack: disable caching for this production, as the default
@@ -661,6 +618,14 @@ ipv6_address
  * Templates, -arguments and wikilinks
  **************************************************************/
 
+/*
+ * Precedence: template arguments win over templates. See 
+ * http://www.mediawiki.org/wiki/Preprocessor_ABNF#Ideal_precedence
+ * 4: {{{{·}}}} → {·{{{·}}}·}
+ * 5: {{{{{·}}}}} → {{·{{{·}}}·}}
+ * 6: {{{{{{·}}}}}} → {{{·{{{·}}}·}}}
+ * 7: {{{{{{{·}}}}}}} → {·{{{·{{{·}}}·}}}·}
+ */
 tplarg_or_template = & '{{{{{' template / tplarg / template
 
 template
