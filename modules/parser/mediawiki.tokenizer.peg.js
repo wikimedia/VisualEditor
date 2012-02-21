@@ -54,7 +54,12 @@ PegTokenizer.prototype.process = function( text ) {
 	// reasonable traces. Calling a trace on the extension does not really cut
 	// it.
 	//try {
-		this.parser.parse(text, 'start', this.emit.bind( this, 'chunk' ));
+		this.parser.parse(text, 'start', 
+				// callback
+				this.emit.bind( this, 'chunk' ),
+				// inline break test
+				this
+				);
 		// emit tokens here until we get that to work per toplevelblock in the
 		// actual tokenizer
 		//this.emit('chunk', out.concat( [{ type: 'END' }] ) );
@@ -65,6 +70,61 @@ PegTokenizer.prototype.process = function( text ) {
 	//} finally {
 		return { err: err };
 	//}
+};
+
+PegTokenizer.prototype.breakMap = {
+	'=': function(input, pos, syntaxFlags) { 
+		return syntaxFlags.equal ||
+			( syntaxFlags.h &&
+			  input.substr( pos + 1, 200)
+			  .match(/[ \t]*[\r\n]/) !== null ) || null;
+	},
+	'|': function ( input, pos, syntaxFlags ) {
+		return syntaxFlags.template ||
+			( syntaxFlags.table &&
+			  ( input[pos + 1].match(/[|}]/) !== null ||
+				syntaxFlags.tableCellArg
+			  ) 
+			) || null;
+	},
+	"!": function ( input, pos, syntaxFlags ) {
+		return syntaxFlags.table && input[pos + 1] === "!" ||
+			null;
+	},
+	"}": function ( input, pos, syntaxFlags ) {
+		return syntaxFlags.template && input[pos + 1] === "}" || null;
+	},
+	":": function ( input, pos, syntaxFlags ) {
+		return syntaxFlags.colon &&
+			! syntaxFlags.extlink &&
+			! syntaxFlags.linkdesc || null;
+	},
+	"\r": function ( input, pos, syntaxFlags ) {
+		return syntaxFlags.table &&
+			input[pos + 1] !== '!' &&
+			input[pos + 1] !== '|' ||
+			null;
+	},
+	"\n": function ( input, pos, syntaxFlags ) {
+		return syntaxFlags.table &&
+			input[pos + 1] !== '!' &&
+			input[pos + 1] !== '|' ||
+			null;
+	},
+	"]": function ( input, pos, syntaxFlags ) {
+		return syntaxFlags.extlink ||
+			( syntaxFlags.linkdesc && input[pos + 1] === ']' ) ||
+			null;
+	},
+	"<": function ( input, pos, syntaxFlags ) {
+		return syntaxFlags.pre &&  input.substr( pos, 6 ) === '</pre>' || null;
+	}
+};
+
+PegTokenizer.prototype.inline_breaks = function (input, pos, syntaxFlags ) {
+	var res = this.breakMap[ input[pos] ]( input, pos, syntaxFlags);
+	console.warn( 'ilb res: ' + JSON.stringify( [ res, input.substr( pos, 4 ) ] ) );
+	return res;
 };
 
 /*****************************************************************************
@@ -172,6 +232,7 @@ PegTokenizer.prototype.initSource = function(callback) {
 		}
 	}
 };
+
 
 if (typeof module == "object") {
 	module.exports.PegTokenizer = PegTokenizer;

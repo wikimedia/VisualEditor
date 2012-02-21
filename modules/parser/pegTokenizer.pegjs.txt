@@ -292,6 +292,10 @@
         
 }
 
+/*********************************************************
+ * The top-level production
+ *********************************************************/
+
 start
   = e:toplevelblock* newline* { 
       // end is passed inline as a token, as well as a separate event for now.
@@ -309,6 +313,1076 @@ start
       return []; //flatten(e);
   }
 
+
+/*
+ * A document (start production) is a sequence of toplevelblocks. Tokens are
+ * emitted in chunks per toplevelblock to avoid buffering the full document.
+ */
+toplevelblock 
+  = & { blockStart = pos; return true; } b:block {
+    b = flatten(b);
+
+    // Add source offsets for round-tripping. XXX: Add these not just for
+    // toplevelblocks!
+    if ( b.length ) {
+        var bs = b[0];
+        if ( bs.constructor === String && bs.attribs === undefined ) {
+            b[0] = new String( bs );
+            bs = b[0];
+        }
+        if (bs.dataAttribs === undefined) {
+            bs.dataAttribs = {};
+        }
+        bs.dataAttribs.sourcePos = [blockStart, pos];
+    }
+
+    // Emit tokens for this toplevelblock. This feeds a chunk to the parser
+    // pipeline.
+    __parseArgs[2]( flatten( b ) );
+
+    // We don't return any tokens to the start production to save memory. We
+    // just emitted them already to our consumers.
+    return true;
+  }
+
+/*
+ * The actual contents of each block.
+ */
+block
+  =   block_lines
+    / & '<' r:( pre // tag variant can start anywhere
+            / comment &eolf
+            / nowiki
+            // avoid a paragraph if we know that the line starts with a block tag
+            / bt:block_tag { return [bt] } 
+            ) { return r; }
+    / para
+    // Inlineline includes generic tags; wrapped into paragraphs in token
+    // transform and DOM postprocessor
+    / inlineline 
+    / sol
+
+/*
+ * A block nested in other constructs. Avoid eating end delimiters for other
+ * constructs by checking against inline_breaks first.
+ */
+nested_block = !inline_breaks b:block { return b }
+
+/*
+ * Line-based block constructs.
+ */
+block_lines
+  = s:sol 
+    // eat an empty line before the block
+    s2:(os:optionalSpaceToken so:sol { return os.concat(so) })? 
+    bl:block_line { 
+        var s2_ = (s2 !== '') ? s2 : [];
+        return s.concat(s2_, bl); 
+    }
+
+/*
+ * Block structures with start-of-line wiki syntax
+ */
+block_line
+  = h
+  / & [{}|] tl:table_lines { return tl; }
+  / lists
+  // tag-only lines should not trigger pre
+  / st:optionalSpaceToken
+    bt:(bts:block_tag stl:optionalSpaceToken { return bts.concat(stl) })+ 
+    &eolf { 
+        return st.concat(bt); 
+    }
+  / pre_indent
+  / pre
+
+
+/*
+ * A paragraph. We don't emit 'p' tokens to avoid issues with template
+ * transclusions, <p> tags in the source and the like. Instead, we perform
+ * some paragraph wrapping on the DOM.
+ */
+para
+  = s1:sol s2:sol c:inlineline { 
+      return s1.concat(s2, /* [new TagTk('p')],*/ c); 
+  }
+
+br = space* &newline { return new SelfclosingTagTk( 'br' ) }
+
+/*
+ * Syntax stops: Avoid eating significant tokens for higher-level productions
+ * in nested inline productions.
+ *
+ * XXX: Repeated testing of flags is not terribly efficient.
+ */
+inline_breaks
+  = & [=|!}:\r\n\]<] // don't check further if char cannot match
+    res:(
+        & { // Important hack: disable caching for this production, as the default
+            // cache key does not take into account flag states!
+            cacheKey = ''; 
+            console.warn('ilb: ' + input.substr(pos, 5) );
+            return true; 
+          }
+
+        & { return syntaxFlags['table']; } 
+        ( a:(newline [!|] / '||' / '!!' / '|}') { 
+            //console.warn("table break" + pp(a) + pos); 
+            return true; 
+          }
+          / & { return syntaxFlags['tableCellArg'] }
+            "|" { return true }
+        )
+      / & { return (syntaxFlags['colon'] && 
+              ! syntaxFlags.extlink && // example: ; [[Link:Term]] : Definition
+              ! syntaxFlags.linkdesc); } ":" { return true; }
+      / & { return syntaxFlags['extlink']; } "]" { return true; }
+      / & { return syntaxFlags['linkdesc']; } link_end { return true; }
+      / & { return syntaxFlags['h']; } '='+ space* newline { return true; }
+      / & { return syntaxFlags['template']; } ('|' / '}}' ) { 
+          //console.warn( 'template break @' + pos + input.substr(pos-1, 4) );
+          return true; 
+      }
+      / & { return syntaxFlags['equal']; } '=' { 
+                        //console.warn( 'equal stop @' + pos + input.substr(pos-1, 4) );
+                        return true; 
+                    }
+      / & { return syntaxFlags['pre']; } '</pre>' { 
+                        //console.warn( 'pre stop @' + pos + input.substr(pos-1, 4) );
+                        return true; 
+                    }
+        ) { return res }
+
+inline_breaks_experiment
+  = & [=|!}:\r\n\]<]
+    & { // Important hack: disable caching for this production, as the default
+        // cache key does not take into account flag states!
+        cacheKey = ''; 
+        //console.warn('ilbf: ' + input.substr(pos, 5) );
+        return true; 
+      } 
+    .
+    { return __parseArgs[3].inline_breaks( input, pos - 1, syntaxFlags ) && true || null ; }
+
+inline
+  = c:(urltext / (! inline_breaks (inline_element / . )))+ {
+      //console.warn('inline out:' + pp(out));
+      return flatten_stringlist( c );
+}
+
+
+inlineline
+  = c:(urltext / !inline_breaks (inline_element / [^\n]))+ {
+      return flatten_stringlist( c );
+}
+
+inline_element
+  = //& { dp('inline_element enter' + input.substr(pos, 10)); return true; }
+      & '<' ( comment / xmlish_tag )
+    /// & '{' ( & '{{{{{' template / tplarg / template )
+    / & '{' tplarg_or_template 
+    /// & '{' ( tplarg / template )
+     // Eat three opening brackets as text.
+    / '[[[' { return '[[[' }
+    / & '[' ( wikilink / extlink )
+    / & "'" quote
+
+/* Headings  */
+
+h = & "=" // guard, to make sure '='+ will match. 
+          // XXX: Also check to end to avoid inline parsing?
+    r:(
+     s:'='+ // moved in here to make s accessible to inner action
+     & { return setFlag('h'); }
+     c:inlineline 
+     e:'='+ 
+     spc:(sp:space+ { return sp.join('') } / comment)*
+     &eolf 
+     {
+        clearFlag('h');
+        var level = Math.min(s.length, e.length);
+        // convert surplus equals into text
+        if(s.length > level) {
+            var extras = s.substr(0, s.length - level);
+            if(c[0].constructor === String) {
+                c[0] = extras + c[0];
+            } else {
+                c.unshift( extras );
+            }
+        }
+        if(e.length > level) {
+            var extras = e.substr(0, e.length - level),
+                lastElem = c[c.length - 1];
+            if(lastElem.constructor === String) {
+                lastElem += extras;
+            } else {
+                c.push( extras );
+            }
+        }
+
+        return [new TagTk( 'h' + level )]
+                .concat(c, [new EndTagTk( 'h' + level ), spc]);
+      }
+    / & { dp('nomatch exit h'); clearFlag('h'); return false } { return null }
+    ) { return r }
+
+comment
+  = '<!--' c:comment_chars* ('-->' / eof)
+    cs:(space* newline space* cn:comment { return cn })* {
+        return [{ type: 'COMMENT', value: c.join('') }].concat(cs);
+    }
+
+comment_chars
+  = c:[^-] { return c; }
+  / c:'-' !'->' { return c; }
+
+
+
+/**************************************************************
+ * External (bracketed and autolinked) links
+ **************************************************************/
+
+urllink
+  = ! { return syntaxFlags['extlink'] }
+    target:url {
+      return [ new TagTk( 'a', [new KV('href', target)] )
+             , target
+             , new EndTagTk( 'a' )
+             ];
+  }
+
+extlink
+  = ! { return syntaxFlags['extlink'] } // extlink cannot be nested
+    (
+        "[" 
+        & { return setFlag('extlink'); }
+        //target:urllink
+        target:extlink_preprocessor_text
+        text:(( space / [\u00A0\u1680\u180E\u2000-\u200A\u202F\u205F\u3000] )* 
+              t:inlineline { return t } )?
+        "]" {
+            clearFlag('extlink');
+            if ( text === '' ) {
+                // XXX: Link numbering should be implemented in post-processor.
+                text = [ "[" + linkCount + "]" ];
+                linkCount++;
+            }
+            var res = [ 
+                new TagTk( 'a', [
+                            new KV('href', target),
+                            new KV('data-mw-type', 'external')
+                        ] ),
+            ].concat( text 
+                    , [ new EndTagTk( 'a' )]);
+            //console.warn( JSON.stringify( res, null, 2 ) );
+            return res;
+        }
+      / "[" & { clearFlag('extlink'); return false; }
+    )
+
+/* Defaul URL protocols in MediaWiki (see DefaultSettings). Normally these can
+ * be configured dynamically. */
+
+url_chars = [/fghimnstw]
+
+url_protocol
+  = '//' // for protocol-relative URLs
+  / 'ftp://'
+  / 'git://'
+  / 'gopher://'
+  / 'http://'
+  / 'https://'
+  / 'irc://'
+  / 'ircs://'  // @bug 28503
+  / 'mailto:'
+  / 'mms://'
+  / 'news:'
+  / 'nntp://' // @bug 3808 RFC 1738
+  / 'svn://'
+  / 'telnet://' // Well if we're going to support the above.. -ævar
+  / 'worldwind://'
+
+// javascript does not support unicode features..
+unicode_separator_space = [ \u00A0\u1680\u180E\u2000-\u200A\u202F\u205F\u3000]
+
+
+urlencoded_char = "%" c0:[0-9a-fA-F] c1:[0-9a-fA-F] { 
+    try {
+        return decodeURI("%" + c0 + c1) 
+    } catch ( e ) {
+        // Reject the match, and allow other fall-back productions to have a
+        // go at it.
+        return null;
+    }
+}
+
+//[^][<>"\\x00-\\x20\\x7F\p{Zs}]
+
+no_punctuation_char = [^ :\]\[\n"'<>\x00-\x20\x7f,.&%\u00A0\u1680\u180E\u2000-\u200A\u202F\u205F\u3000]
+
+url
+  = proto:url_protocol 
+    addr:( ipv6_address / ipv4_address )?
+    rest:(  ( !inline_breaks 
+              c:no_punctuation_char
+              { return c }
+            )
+            / s:[.:,] !(space / eolf) { return s } 
+            / htmlentity
+            / urlencoded_char
+            / [&%] )+ 
+{ 
+    return proto + addr + rest.join(''); 
+}
+
+ipv4_address 
+  = a:([0-9]* '.' [0-9]* '.' [0-9]* '.' [0-9]*)
+{
+    return flatten( a ).join('');
+}
+
+ipv6_address 
+  = a:('[' [0-9]* ':' [0-9]* ':' [0-9]* ':' [0-9]* ':' [0-9]* ':' [0-9]* ':' [0-9]* ']')
+{
+    return flatten( a ).join('');
+}
+
+
+/**************************************************************
+ * Templates, -arguments and wikilinks
+ **************************************************************/
+
+tplarg_or_template = & '{{{{{' template / tplarg / template
+
+template
+  = "{{" target:template_param_text
+    params:(newline? "|" newline? p:template_param { return p })* 
+    "}}" {
+      // Insert target as first positional attribute, so that it can be
+      // generically expanded. The TemplateHandler then needs to shift it out
+      // again.
+      params.unshift( { k: '', v: flatten( target ) } );
+      var obj = new SelfclosingTagTk( 'template', params );
+      //console.warn( 'tokenizer template ' + JSON.stringify( target ));
+      return obj;
+  }
+
+// XXX: support template and args in target!
+//template_target
+//  = h:( !"}}" x:([^|\n]) { return x } )* { return h.join('') }
+
+tplarg 
+  = "{{{" 
+    name:template_param_text 
+    params:( newline? "|" newline? p:template_param { return p })* 
+    "}}}" {
+      name = flatten( name );
+      params.unshift( { k: '', v: name } );
+      var obj = new SelfclosingTagTk( 'templatearg', params );
+      //console.warn( 'tokenizer tplarg ' + JSON.stringify( obj, null, 2 ));
+      return obj;
+  }
+
+template_param
+  = name:template_param_name 
+    s0:space* 
+    eq:"="?
+    s1:space*
+    value:template_param_text?
+
+    {
+      //console.warn( 'named template_param matched' + pp([name, value ]) );
+      if ( value !== '' ) {
+        return new KV( name, flatten( value ) );
+      } else if ( eq !== '' ) {
+        return new KV(flatten( name ), []);
+      } else {
+        return new KV([], flatten(name));
+      }
+    } 
+  // empty parameter
+  / & [|}] { return new KV([], []); }
+
+
+// FIXME: handle template args and templates in key! (or even parser functions?)
+template_param_name
+  = & { return setFlag( 'equal' ) }
+    tpt:template_param_text
+    {
+        clearFlag( 'equal' );
+        //console.warn( 'template param name matched: ' + pp( tpt ) );
+        return tpt;
+    }
+
+  / & { return clearFlag( 'equal' ) }
+  //= h:( !"}}" x:([^=|\n]) { return x } )* { return h.join(''); }
+
+template_param_text
+  = & { return setFlag('template') }
+    il:inline {
+        clearFlag('template');
+        //console.warn( 'tpt match: ' + pp (il));
+        return il;
+    }
+  / & { return clearFlag('template'); }
+
+// TODO: handle link prefixes as in al[[Razi]]
+wikilink
+  = "[[" 
+    ! url
+    //target:link_target 
+    target:wikilink_preprocessor_text
+    lcontent:( "|" lt:link_text { return lt } )* 
+    "]]" 
+    // XXX In real MediaWiki, this is a language-dependent positive character
+    // class. Can we work out a static negative class instead?
+    // XXX: Exclude uppercase chars from non-latin languages too!
+    trail:(! [A-Z \t(),.:-] tc:text_char { return tc })* {
+      var obj = new TagTk( 'a', 
+                [
+                    new KV('data-mw-type', 'internal')
+                ] ),
+          textTokens = [];
+      obj.attribs.push( new KV('href', target) );
+      if (lcontent && lcontent.length) {
+          textTokens = lcontent;
+          if (trail) {
+            textTokens.push( trail.join('') );
+          }
+      } else {
+          if (trail) {
+              textTokens = $.extend(true, [], target).concat( [ trail.join('') ] );
+          } else {
+              // copy list
+              textTokens = $.extend(true, [], target);
+          }
+      }
+      //console.warn( "XXX:" + pp([obj].concat(textTokens, [new EndTagTk( 'a' )])) );
+      return [obj].concat(textTokens, [new EndTagTk( 'a' )]);
+  }
+
+link_text
+  = & { return setFlag('linkdesc'); }
+    h:inline 
+    // 'equal' syntaxFlag is set for links in template parameters. Consume the
+    // '=' here.
+    hs:( '=' inline)?
+    { 
+        //console.warn('link_text' + pp(h) + pp(hs));
+        clearFlag('linkdesc');
+        if( hs !== '' ) {
+            return h.concat(hs);
+        } else {
+            return h;
+        }
+    }
+  / & { return clearFlag('linkdesc'); }
+
+link_end = "]]"
+
+/* Generic quote production for italic and bold, further processed in a token
+ * stream transformation in doQuotes. Relies on NlTk tokens being emitted
+ * for each line of text to balance quotes per line.
+ * 
+ * We are not using a simple pair rule here as we need to support mis-nested
+ * bolds/italics and MediaWiki's special heuristics for apostrophes, which are
+ * all not context free. */
+quote = "''" x:"'"* {
+	var res = new TagTk( 'mw-quote' ); // Will be consumed in token transforms
+    res.value = "''" + x.join('');
+    return res;
+}
+
+
+
+/***********************************************************
+ * Pre and xmlish tags
+ ***********************************************************/
+
+// Indented pre blocks differ from their non-indented (purely tag-based)
+// cousins by having their contents parsed.
+pre_indent 
+  = pre_indent_in_tags
+  / l:pre_indent_line ls:(sol pre_indent_line)* {
+      return [new TagTk( 'pre' )]
+                    .concat( [l], ls
+                           , [new EndTagTk( 'pre' )]);
+  }
+
+// An indented pre block that is surrounded with pre tags. The pre tags are
+// used directly.
+pre_indent_in_tags
+  = space+ // XXX: capture space for round-tripping
+    "<pre" 
+    attribs:generic_attribute* 
+    ">"
+    & { return setFlag('pre'); }
+    l:inlineline
+    ls:(sol pre_indent_line)*
+    "</pre>"
+  {   
+    clearFlag('pre');
+    return [ new TagTk( 'pre', attribs ) ]
+        .concat( l, flatten( ls ), [ new EndTagTk( 'pre' ) ] );
+  }
+  / & { return clearFlag('pre'); }
+
+pre_indent_line = space l:inlineline { 
+    return [ '\n' ].concat(l); 
+}
+
+/*
+ * Pre blocks defined using non-indented HTML tags only parse nowiki tags
+ * inside them, and convert other content to verbatim text. Nowiki inside pre
+ * is not functionally needed, but supported for backwards compatibility.
+ */
+pre
+  = "<pre" 
+    attribs:generic_attribute* 
+    ">"
+    // MediaWiki <pre> is special in that it converts all pre content to plain
+    // text.
+    ts:(t1:[^<]+ { return t1.join('') } 
+                / nowiki 
+                / !"</pre>" t2:. { return t2 })+ 
+    ("</pre>" / eof) {
+        // return nowiki tags as well?
+        //console.warn('inpre');
+        return [ new TagTk( 'pre', attribs ) ]
+                    .concat(ts, [ new EndTagTk( 'pre' ) ]);
+    }
+  / "</pre>" { return "</pre>"; }
+
+/* XXX: Extension tags can require a change in the tokenizer mode, which
+ * returns any text between extension tags verbatim. For now, we simply
+ * continue to parse the contained text and return the tokens. The original
+ * input source can be recovered from the source positions added on tag
+ * tokens. This won't however work in all cases. For example, a comment start
+ * (<!--) between extension tags would cause the remaining text to be consumed
+ * as a comment. To avoid this, we might need to look ahead for the end tag
+ * and limit the content parsing to this section. */
+
+xmlish_tag = nowiki / generic_tag
+
+/*
+ * Nowiki treats anything inside it as plain text. It could thus also be
+ * defined as an extension that returns its raw input text, possibly wrapped
+ * in a span for round-trip information. The special treatment for nowiki in
+ * pre blocks would still remain in the grammar though, so overall handling it
+ * all here is cleaner.
+ */
+nowiki 
+  = "<nowiki>" nc:nowiki_content "</nowiki>" { 
+        //console.warn( 'full nowiki return: ' + pp(nc)); 
+        return nc; 
+    }
+  / "<nowiki>" { 
+          //console.warn('nowiki fallback');
+          return ['<nowiki>']; 
+    }
+  / "</nowiki>" { 
+      //console.warn('nowiki end fallback');
+      return ['</nowiki>']; 
+  }
+
+nowiki_content
+  = ts:(   t:[^<]+ { return t.join('') } 
+           / "<pre" p0:space* p1:[^>]* ">" p2:nowiki_content "</pre>" {
+                 //console.warn('nested pre in nowiki');
+                 return ["<pre"].concat(p0, p1, [">"], p2, ["</pre>"]).join('');
+               }
+           / (!("</"( "nowiki>" / "pre>")) c:. {
+               //console.warn('nowiki: single char' + c);
+               return c;
+           }) 
+       )* {
+            // return nowiki tags as well?
+            //console.warn('nowiki_content: return' + pp(ts));
+            return [ts.join('')];
+          }
+
+
+// The list of HTML5 tags, mainly used for the identification of non-html
+// tags. These terminate otherwise tag-eating productions (see list below) in
+// order to support potential extension tags:
+// * comment
+// * pre
+// * nowiki
+html5_tagnames 
+  = "a" / "abbr" / "address" / "area" / "article" 
+    / "aside" / "audio" / "b" / "base" / "bdi" / "bdo" / "blockquote" 
+    / "body" / "br" / "button" / "canvas" / "caption" / "cite" / "code" 
+    / "col" / "colgroup" / "command" / "data" / "datalist" / "dd" / "del" 
+    / "details" / "dfn" / "div" / "dl" / "dt" / "em" / "embed" / "fieldset" 
+    / "figcaption" / "figure" / "footer" / "form" 
+    / "h1" / "h2" / "h3" / "h4" / "h5" / "h6" / "head" / "header" / "hgroup" 
+    / "hr" / "html" / "i" / "iframe" / "img" / "input" / "ins" / "kbd" / "keygen" 
+    / "label" / "legend" / "li" / "link" / "map" / "mark" / "menu" / "meta" 
+    / "meter" / "nav" / "noscript" / "object" / "ol" / "optgroup" / "option" 
+    / "output" / "p" / "param" / "pre" / "progress" / "q" / "rp" / "rt" 
+    / "ruby" / "s" / "samp" / "script" / "section" / "select" / "small" 
+    / "source" / "span" / "strong" / "style" / "sub" / "summary" / "sup" 
+    / "table" / "tbody" / "td" / "textarea" / "tfoot" / "th" / "thead" / "time" 
+    / "title" / "tr" / "track" / "u" / "ul" / "var" / "video" / "wbr"
+
+html_oldnames = "center" / "font" / "tt"
+
+// Simple match on non-html endtags, for use in inline_breaks
+nonhtml_endtag
+  = '</' 
+    ! ( html5_tagnames / html_oldnames )
+    [^ >]+
+    ( space / newline ) *
+    [^>]*
+    '>'
+
+/* Generic XML-like tags
+ * 
+ * These also cover extensions (including Cite), which will hook into the
+ * token stream for further processing. The content of extension tags is
+ * parsed as regular inline, but the source positions of the tag are added 
+ * to allow reconstructing the unparsed text from the input. */
+
+// See http://dev.w3.org/html5/spec/Overview.html#syntax-tag-name and
+// following paragraphs
+generic_tag
+  = "<" 
+    & { tagStartPos = pos; return true; } // remember the start position of this tag
+    end:"/"? name:[0-9a-zA-Z]+ 
+    attribs:generic_newline_attribute* 
+    ( space / newline ) *
+    selfclose:"/"?
+    ">" {
+        name = name.join('');
+        var res;
+        if ( end != '' ) {
+            res = new EndTagTk( name, attribs );
+        } else if ( selfclose != '' ) {
+            res = new SelfclosingTagTk( name, attribs );
+        } else {
+            res = new TagTk( name, attribs );
+        }
+        if ( res.dataAttribs === undefined ) {
+            res.dataAttribs = {};
+        }
+        res.dataAttribs.sourceTagPos = [tagStartPos - 1, pos];
+        return res;
+    }
+
+// A generic attribute that can span multiple lines.
+generic_newline_attribute
+  = s:( space / newline )* 
+    name:generic_attribute_name
+    value:(( space / newline )*
+          v:generic_attribute_newline_value { return v })?
+{
+    if ( value !== '' ) {
+        return new KV( name, value );
+    } else {
+        return new KV( name, '' );
+    }
+}
+
+// A single-line attribute.
+generic_attribute
+  = s:space* 
+    name:generic_attribute_name
+    value:(space*
+          v:generic_attribute_value { return v })?
+{
+    //console.warn( 'generic attribute: ' + pp([name, value]));
+    // FIXME: name might just be a template, which can expand to a key-value
+    // pair later. We'll need to handle that in the AttributeTransformManager.
+    if ( value !== '' ) {
+        return new KV( name, value );
+    } else {
+        return new KV( name, '' );
+    }
+}
+
+// ( Replaced by generic_attribute_name for template / parameter support. )
+//// http://dev.w3.org/html5/spec/Overview.html#attributes-0, and we also
+//// disallow newlines, | and {.
+//generic_attribute_plain_name
+//  = n:[^ \t\0/"'>=\n|{]+ {
+//        return n.join('');
+//  }
+
+generic_attribute_name
+  = & { return setFlag( 'equal' ) }
+  ! '/>'
+  name:attribute_preprocessor_text_line
+    {
+        clearFlag( 'equal' );
+        //console.warn( 'generic attribute name: ' + pp( name ) );
+        return name;
+    }
+  / & { return clearFlag( 'equal' ) }
+
+// A generic attribute, possibly spanning multiple lines.
+generic_attribute_newline_value
+  = "=" (space / newline )* v:xml_att_value { 
+      return v; 
+  }
+// A generic but single-line attribute.
+generic_attribute_value
+  = "=" space* v:att_value { 
+      return v; 
+  }
+
+// Attribute value, quoted variants can span multiple lines.
+xml_att_value
+  = "'" t:attribute_preprocessor_text_single "'" { return t; }
+  / '"' t:attribute_preprocessor_text_double '"' { return t; }
+  / attribute_preprocessor_text
+
+// Attribute value, restricted to a single line.
+att_value
+  = "'" t:attribute_preprocessor_text_single_line "'" { return t; }
+  / '"' t:attribute_preprocessor_text_double_line '"' { return t; }
+  / attribute_preprocessor_text_line
+
+/*
+ * A variant of generic_tag, but also checks if the tag name is a block-level
+ * tag as defined in
+ * http://dev.w3.org/html5/spec/Overview.html#syntax-tag-name and following
+ * paragraphs.
+ */
+block_tag
+  = "<" end:"/"? 
+    name:(cs:[a-zA-Z]+ { return cs.join('') })
+    attribs:generic_newline_attribute* 
+    ( space / newline ) *
+    selfclose:"/"?
+    ">" {
+        if (block_names[name.toLowerCase()] !== true) {
+            // abort match if tag is not block-level
+            return null;
+        }
+        var res;
+        if ( end != '' ) {
+            res = new EndTagTk( name, attribs );
+        } else if ( selfclose != '' ) {
+            res = new SelfclosingTagTk( name, attribs );
+        } else {
+            res = new TagTk( name, attribs );
+        }
+        return [res];
+    }
+
+
+/*********************************************************
+ *   Lists 
+ *********************************************************/
+lists = e:(dtdd / li) es:(sol (dtdd / li))*
+{
+    return annotateList( [ new TagTk( 'list' ) ]
+            .concat(flatten([e].concat(es))
+                ,[ new EndTagTk( 'list' ) ]));
+}
+
+li = bullets:list_char+ 
+     c:inlineline?
+     &eolf 
+{
+    if ( c === '' )
+        c = [];
+    var li = new TagTk( 'listItem' );
+    li.bullets = bullets;
+    return [ li, c ];
+}
+
+dtdd 
+  = bullets:(!(";" !list_char) list_char)*
+    ";"
+    & {return setFlag('colon');}
+    c:inlineline
+    ":"
+    // Fortunately dtdds cannot be nested, so we can simply set the flag
+    // back to 0 to disable it.
+    & {syntaxFlags['colon'] = 0; return true;}
+    d:inlineline
+    &eolf {
+        // Convert trailing space into &nbsp;
+        // XXX: This should be moved to a serializer
+        //var clen = c.length;
+        //if (clen && c[clen - 1].constructor === String) {
+        //    var val = c[clen - 1].value;
+        //    if(val.length && val[val.length - 1] == ' ') {
+        //        c[clen - 1].value = val.substr(0, val.length - 1) + "\u00a0";
+        //    }
+        //}
+
+        var li = new TagTk( 'listItem' );
+        li.bullets = bullets + ";";
+        var li2 = new TagTk( 'listItem' );
+        li2.bullets = bullets + ":";
+        return [ li ].concat( c, [ li2 ], d );
+    }
+  // Fall-back case to clear the colon flag
+  / & { return true; } { syntaxFlags['colon'] = 0; return null; }
+
+
+list_char = [*#:;]
+
+
+
+/*********************************************************************
+ * Tables 
+ *
+ * Table productions are geared to support independent parsing of fragments in
+ * templates (the common table start / row / table end use case). The tokens
+ * produced by these fragments then match up to a table while building the
+ * DOM tree. For similar reasons, table rows do not emit explicit end tag
+ * tokens.
+ *
+ * The separate table_lines production is faster than moving those productions
+ * directly to block_lines.
+ *********************************************************************/
+
+table_lines
+  = & { return setFlag('table'); }
+    tl:table_line 
+    tls:( s:sol tl2:table_line { return s.concat(tl2); } )* {
+        clearFlag('table');
+        //console.warn('table_lines: ' + pp(tl.concat(tls)));
+        return tl.concat( tls );
+    }
+  / & { return clearFlag('table'); }
+
+// This production assumes start-of-line position!
+table_line
+  = table_start_tag
+  / table_row_tag
+  / table_data_tags
+  / table_heading_tags
+  / table_caption_tag
+  / table_end_tag
+
+table_start_tag
+  = "{|"
+    ta:generic_attribute* 
+    space*
+    te:table_end_tag? // can occur somewhere in the middle of the line too
+    { 
+        var toks = [ new TagTk( 'table' ) ];
+        if ( ta )
+            toks[0].attribs = ta;
+        if ( te )
+            toks = toks.concat( te );
+        return toks;
+    }
+
+table_caption_tag
+  = "|+" 
+    c:inline* { 
+        return [ new TagTk( 'caption' )]
+                    .concat( c, [ new EndTagTk( 'caption' ) ]);
+    }
+
+
+table_row_tag
+  = //& { console.warn("table row enter"); return true; }
+    "|-"
+    a:generic_attribute*
+    space*
+    // handle tables with missing table cells after a row
+    td:( s:sol ![|!] tdt:table_data_tag { return s.concat(tdt); } )?
+    { 
+        // We rely on our tree builder to close the row as needed. This is
+        // needed to support building tables from fragment templates with
+        // individual cells or rows.
+        var trToken = [ new TagTk( 'tr', a ) ];
+        if ( !td ) {
+            return trToken;
+        } else {
+            return trToken.concat(td);
+        }
+    }
+
+table_data_tags
+  = pipe
+    td:table_data_tag
+    tds:( "||" tdt:table_data_tag { return tdt } )* {
+        return td.concat(tds);
+    }
+
+table_data_tag
+  = //& { dp("table_data enter, pos=" + pos + input.substr(pos,10)); return true; }
+    ! [}+-]
+    a:table_cell_args?
+    //& { console.warn("past attrib, pos=" + pos + input.substr(pos,10)); return true; }
+    // use inline_breaks to break on tr etc
+    td:( //& { dp("table_data 2, pos=" + pos + input.substr(pos,10)); return true; }
+         b:nested_block { return b } 
+       )* 
+    { 
+        if ( a == '' ) {
+            a = [];
+        }
+        //console.warn("table data result: " + pp(td) + ", attribts: " + pp(a));
+        return [ new TagTk( 'td', a )]
+                    .concat( td, [ new EndTagTk ( 'td' ) ] );
+    }
+
+table_heading_tags
+  = "!"
+    th:table_heading_tag
+    ths:( "!!" tht:table_heading_tag  { return tht } )* {
+        return th.concat(ths);
+    }
+
+table_heading_tag
+  = a:table_cell_args?
+    c:inline {
+         if ( a == '' ) {
+             a = [];
+         }
+         return [ new TagTk( 'th', a ) ]
+						.concat( c, [new EndTagTk( 'th' )] );
+     }
+
+table_end_tag
+  = "|}" { 
+      var tok = [new EndTagTk( 'table' )];
+	  return tok;
+  }
+
+table_cell_args
+  = & { return setFlag('tableCellArg'); }
+    as:generic_attribute+ space* "|" !"|" { 
+        clearFlag('tableCellArg');
+        return as;
+    }
+    / & { return clearFlag('tableCellArg'); }
+
+
+
+/* Tables, full-table version (no support for table fragments from templates) 
+ * Only left here for comparison purposes with the above productions. Remove
+ * when those work as intended! */
+table 
+  = tas:table_start space* c:table_caption? b:table_body? te:table_end { 
+      var res = new TagTk( 'table' );
+      var body = b !== '' ? b : [];
+      dp("body: " + pp(body));
+      if (tas.length > 0) {
+          // FIXME: actually parse and build structure
+          //res.attribs = [new KV('data-unparsed', tas.join(''))];
+          res.attribs = tas;
+      }
+
+      if (c != '') {
+          var caption = [ new TagTk( 'caption' ) ]
+                        .concat(c, [new EndTagTk( 'caption' )], te);
+      } else {
+          var caption = [];
+      }
+      //dp(pp(res));
+
+      return [res].concat(caption, body, [new EndTagTk( 'table' )]);
+  }
+
+table_start 
+  = "{" pipe
+    res:(
+        & { setFlag('table'); return true; }
+        ta:generic_attribute* 
+        { 
+            dp("table_start " + pp(ta) + ", pos:" + pos);
+            return ta;
+        }
+        / & { clearFlag('table'); return false; } { return null; }
+    ) { return res }
+
+table_caption 
+  = n:newlineToken
+    pipe "+" c:inline* { 
+        return n.concat(c);
+    }
+
+table_body 
+  = //& { dp("table_body enter"); return true; }
+    firstrow:table_firstrow otherrows:table_row* { 
+      /* dp('table first and otherrows: ' 
+       * + pp([firstrow].concat(otherrows))); */
+      return [firstrow].concat(otherrows); 
+  }
+  / otherrows:table_row* {
+      //dp('table otherrows: ' + pp(otherrows));
+      return otherrows;
+  }
+
+table_firstrow 
+  = td:(table_data / table_heading)+ { 
+      //dp('firstrow: ' + pp(td));
+      return [ new TagTk( 'tr' )]
+             .concat(td, [ new EndTagTk( 'tr' )]);
+  }
+
+table_row 
+  = //& { dp("table row enter"); return true; }
+  n:newlineToken
+    pipe "-" 
+    a:(as:generic_attribute+ space* pipe !pipe { return as } )?
+    space* 
+    td:(table_data / table_heading)* { 
+        return n.concat([ new TagTk( 'tr' )]
+					   , td, [ new EndTagTk( 'tr' )]);
+    }
+
+table_data 
+  = //& { dp("table_data enter, pos=" + pos + input.substr(pos,10)); return true; }
+	n:("||" { return [] } / nt:newlineToken (pipe / !'!') { return nt }) 
+    ! [}+-]
+    //& { dp('before attrib, pos=' + pos); return true; }
+    a:(as:generic_attribute+ space* pipe !pipe { return as } )?
+    //& { dp('past attrib, pos=' + pos); return true; }
+    // use inline_breaks to break on tr etc
+    td:(
+        //& { dp("table_data 2, pos=" + pos + input.substr(pos,10)); return true; }
+        b:nested_block { return b }
+       )* { 
+        if ( a == '' ) {
+            a = [];
+        }
+        //dp("table data result: " + pp(td) + ", attribts: " + pp(a));
+        return n.concat( [ new TagTk( 'td',  a ) ]
+					   , td, [ new EndTagTk( 'td' ) ] );
+    }
+
+table_heading
+  = n:("!!" { return [] } / nl:newlineToken "!" { return nl }) 
+    a:(as:generic_attribute+ pipe !pipe { return as } )?
+     c:inline {
+         if ( a == '' ) {
+             a = [];
+         }
+         return n.concat( [ new TagTk( 'th', a )]
+						, c, [ new EndTagTk( 'th' ) ]);
+     }
+
+thtd_attribs
+  // In particular, do not match [|\n]
+  = a:(text / ! inline_breaks c:[="':;/,. -] { return c } )+ pipe ! pipe {
+    return a;
+  }
+
+
+table_end 
+  = nt:newlineToken? ( pipe "}" / eof ) { 
+	  clearFlag('table'); 
+	  if(nt) 
+		  return nt;
+	  else
+		  return [];
+  }
+
+
+
+/*******************************************************************
+ * Text variants and other general productions
+ *******************************************************************/
 
 /* All chars that cannot start syntactic structures in the middle of a line
  * XXX: ] and other end delimiters should probably only be activated inside
@@ -348,9 +1422,6 @@ urltext = ( t:[^'<~[{\n\rfghimnstw|!:\]} &=]+ { return t.join(''); }
           // XXX: This should be moved to a serializer
           / ' ' & ':' { return "\u00a0"; }
           / t:text_char )+
-
-
-
 
 /*
 	'//', // for protocol-relative URLs, but not in text!
@@ -527,994 +1598,6 @@ attribute_preprocessor_text_double_line
       //console.warn( 'double:' + pp(r) );
       return flatten_string ( r );
   }
-
-// A document (start production) is a sequence of toplevelblocks. Tokens are
-// emitted in chunks per toplevelblock to avoid buffering the full document.
-toplevelblock 
-  = & { blockStart = pos; return true; } b:block {
-    b = flatten(b);
-    if ( b.length ) {
-        var bs = b[0];
-        if ( bs.constructor === String && bs.attribs === undefined ) {
-            b[0] = new String( bs );
-            bs = b[0];
-        }
-        //dp('toplevelblock:' + pp(b));
-        if (bs.dataAttribs === undefined) {
-            bs.dataAttribs = {};
-        }
-        bs.dataAttribs.sourcePos = [blockStart, pos];
-        //console.warn( 'toplevelblock: ' +  pp( bs ));
-    }
-
-    // Emit tokens for this toplevelblock. This feeds a chunk to the parser
-    // pipeline.
-    __parseArgs[2]( flatten( b ) );
-
-    // We don't return any tokens to the start production to save memory. We
-    // just emitted them already to our consumers.
-    return true;
-  }
-
-block
-  = !inline_breaks 
-  r:( block_lines
-  / pre
-  / comment &eolf
-  / nowiki
-  / bt:block_tag { return [bt] } // avoid a paragraph if we know that the line starts with a block tag
-  / para
-  / inlineline // includes generic tags; wrapped into paragraphs in DOM postprocessor
-  / s:sol /*{ 
-          if (s) {
-              return [s, {type: 'NEWLINE'}]; 
-          } else {
-              return [{type: 'NEWLINE'}]; 
-          }
-      }*/
-  ) { return r }
-
-block_lines
-  = s:sol 
-    // eat an empty line before the block
-    s2:(os:optionalSpaceToken so:sol { return os.concat(so) })? 
-    bl:block_line { 
-        var s2_ = (s2 !== '') ? s2 : [];
-        return s.concat(s2_, bl); 
-    }
-
-// Block structures with start-of-line wiki syntax
-block_line
-  = h
-  /// table
-  / & [{}|] tl:table_lines { return tl; }
-  / lists
-  // tag-only lines should not trigger pre
-  / st:optionalSpaceToken
-    bt:(bts:block_tag stl:optionalSpaceToken { return bts.concat(stl) })+ 
-    &eolf { 
-        return st.concat(bt); 
-    }
-  / pre_indent
-  / pre
-
-
-// A paragraph. We don't emit 'p' tokens to avoid issues with template
-// transclusions, <p> tags in the source and the like. Instead, we perform
-// some paragraph wrapping on the DOM.
-para
-  = s1:sol s2:sol c:inlineline { 
-      return s1.concat(s2, /* [new TagTk('p')],*/ c); 
-  }
-
-br = space* &newline { return new SelfclosingTagTk( 'br' ) }
-
-// Syntax stops to limit inline expansion defending on syntactic context
-inline_breaks
-  = 
-    & { // Important hack: disable caching for this production, as the default
-        // cache key does not take into account flag states!
-        cacheKey = ''; 
-        return true; 
-      }
-    & { return syntaxFlags['table']; } 
-    ( a:(newline [!|] / '||' / '!!' / '|}') { dp("table break" + pp(a) + pos); return true; }
-      / & { return syntaxFlags['tableCellArg'] }
-        "|" { return true }
-    )
-  / & { return (syntaxFlags['colon'] && 
-          ! syntaxFlags.extlink && // example: ; [[Link:Term]] : Definition
-          ! syntaxFlags.linkdesc); } ":" { return true; }
-  / & { return syntaxFlags['extlink']; } "]" { return true; }
-  / & { return syntaxFlags['linkdesc']; } link_end { return true; }
-  / & { return syntaxFlags['h']; } '='+ space* newline { return true; }
-  / & { return syntaxFlags['template']; } ('|' / '}}' ) { 
-      //console.warn( 'template break @' + pos + input.substr(pos-1, 4) );
-      return true; 
-  }
-  / & { return syntaxFlags['equal']; } '=' { 
-                    //console.warn( 'equal stop @' + pos + input.substr(pos-1, 4) );
-                    return true; 
-                }
-  / & { return syntaxFlags['pre']; } '</pre>' { 
-                    //console.warn( 'pre stop @' + pos + input.substr(pos-1, 4) );
-                    return true; 
-                }
-
-inline
-  = c:(urltext / (! inline_breaks (inline_element / . )))+ {
-      //console.warn('inline out:' + pp(out));
-      return flatten_stringlist( c );
-}
-
-
-inlineline
-  = c:(urltext / !inline_breaks (inline_element / [^\n]))+ {
-      return flatten_stringlist( c );
-}
-
-inline_element
-  = //& { dp('inline_element enter' + input.substr(pos, 10)); return true; }
-      & '<' ( comment / xmlish_tag )
-    /// & '{' ( & '{{{{{' template / tplarg / template )
-    / & '{' tplarg_or_template 
-    /// & '{' ( tplarg / template )
-     // Eat three opening brackets as text.
-    / '[[[' { return '[[[' }
-    / & '[' ( wikilink / extlink )
-    / & "'" quote
-
-/* Headings  */
-
-h = & "=" // guard, to make sure '='+ will match. 
-          // XXX: Also check to end to avoid inline parsing?
-    r:(
-     s:'='+ // moved in here to make s accessible to inner action
-     & { return setFlag('h'); }
-     c:inlineline 
-     e:'='+ 
-     spc:(sp:space+ { return sp.join('') } / comment)*
-     &eolf 
-     {
-        clearFlag('h');
-        var level = Math.min(s.length, e.length);
-        // convert surplus equals into text
-        if(s.length > level) {
-            var extras = s.substr(0, s.length - level);
-            if(c[0].constructor === String) {
-                c[0] = extras + c[0];
-            } else {
-                c.unshift( extras );
-            }
-        }
-        if(e.length > level) {
-            var extras = e.substr(0, e.length - level),
-                lastElem = c[c.length - 1];
-            if(lastElem.constructor === String) {
-                lastElem += extras;
-            } else {
-                c.push( extras );
-            }
-        }
-
-        return [new TagTk( 'h' + level )]
-                .concat(c, [new EndTagTk( 'h' + level ), spc]);
-      }
-    / & { dp('nomatch exit h'); clearFlag('h'); return false } { return null }
-    ) { return r }
-
-
-pre_indent 
-  = pre_indent_in_tags
-  / l:pre_indent_line ls:(sol pre_indent_line)* {
-      return [new TagTk( 'pre' )]
-                    .concat( [l], ls
-                           , [new EndTagTk( 'pre' )]);
-  }
-
-// An indented pre block that is surrounded with pre tags. The pre tags are
-// used directly.
-pre_indent_in_tags
-  = space+ // XXX: capture space for round-tripping
-    "<pre" 
-    attribs:generic_attribute* 
-    ">"
-    & { return setFlag('pre'); }
-    l:inlineline
-    ls:(sol pre_indent_line)*
-    "</pre>"
-  {   
-    clearFlag('pre');
-    return [ new TagTk( 'pre', attribs ) ]
-        .concat( l, flatten( ls ), [ new EndTagTk( 'pre' ) ] );
-  }
-  / & { return clearFlag('pre'); }
-
-pre_indent_line = space l:inlineline { 
-    return [ '\n' ].concat(l); 
-}
-
-
-comment
-  = '<!--' c:comment_chars* ('-->' / eof)
-    cs:(space* newline space* cn:comment { return cn })* {
-        return [{ type: 'COMMENT', value: c.join('') }].concat(cs);
-    }
-
-comment_chars
-  = c:[^-] { return c; }
-  / c:'-' !'->' { return c; }
-
-
-urllink
-  = ! { return syntaxFlags['extlink'] }
-    target:url {
-      return [ new TagTk( 'a', [new KV('href', target)] )
-             , target
-             , new EndTagTk( 'a' )
-             ];
-  }
-
-extlink
-  = ! { return syntaxFlags['extlink'] } // extlink cannot be nested
-    (
-        "[" 
-        & { return setFlag('extlink'); }
-        //target:urllink
-        target:extlink_preprocessor_text
-        text:(( space / [\u00A0\u1680\u180E\u2000-\u200A\u202F\u205F\u3000] )* 
-              t:inlineline { return t } )?
-        "]" {
-            clearFlag('extlink');
-            if ( text === '' ) {
-                // XXX: Link numbering should be implemented in post-processor.
-                text = [ "[" + linkCount + "]" ];
-                linkCount++;
-            }
-            var res = [ 
-                new TagTk( 'a', [
-                            new KV('href', target),
-                            new KV('data-mw-type', 'external')
-                        ] ),
-            ].concat( text 
-                    , [ new EndTagTk( 'a' )]);
-            //console.warn( JSON.stringify( res, null, 2 ) );
-            return res;
-        }
-      / "[" & { clearFlag('extlink'); return false; }
-    )
-
-/* Defaul URL protocols in MediaWiki (see DefaultSettings). Normally these can
- * be configured dynamically. */
-
-url_chars = [/fghimnstw]
-
-url_protocol
-  = '//' // for protocol-relative URLs
-  / 'ftp://'
-  / 'git://'
-  / 'gopher://'
-  / 'http://'
-  / 'https://'
-  / 'irc://'
-  / 'ircs://'  // @bug 28503
-  / 'mailto:'
-  / 'mms://'
-  / 'news:'
-  / 'nntp://' // @bug 3808 RFC 1738
-  / 'svn://'
-  / 'telnet://' // Well if we're going to support the above.. -ævar
-  / 'worldwind://'
-
-// javascript does not support unicode features..
-unicode_separator_space = [ \u00A0\u1680\u180E\u2000-\u200A\u202F\u205F\u3000]
-
-
-urlencoded_char = "%" c0:[0-9a-fA-F] c1:[0-9a-fA-F] { 
-    try {
-        return decodeURI("%" + c0 + c1) 
-    } catch ( e ) {
-        // Reject the match, and allow other fall-back productions to have a
-        // go at it.
-        return null;
-    }
-}
-
-//[^][<>"\\x00-\\x20\\x7F\p{Zs}]
-
-no_punctuation_char = [^ :\]\[\n"'<>\x00-\x20\x7f,.&%\u00A0\u1680\u180E\u2000-\u200A\u202F\u205F\u3000]
-
-url
-  = proto:url_protocol 
-    addr:( ipv6_address / ipv4_address )?
-    rest:(  ( !inline_breaks 
-              c:no_punctuation_char
-              { return c }
-            )
-            / s:[.:,] !(space / eolf) { return s } 
-            / htmlentity
-            / urlencoded_char
-            / [&%] )+ 
-{ 
-    return proto + addr + rest.join(''); 
-}
-
-ipv4_address 
-  = a:([0-9]* '.' [0-9]* '.' [0-9]* '.' [0-9]*)
-{
-    return flatten( a ).join('');
-}
-
-ipv6_address 
-  = a:('[' [0-9]* ':' [0-9]* ':' [0-9]* ':' [0-9]* ':' [0-9]* ':' [0-9]* ':' [0-9]* ']')
-{
-    return flatten( a ).join('');
-}
-
-tplarg_or_template = & '{{{{{' template / tplarg / template
-
-template
-  = "{{" target:template_param_text
-    params:(newline? "|" newline? p:template_param { return p })* 
-    "}}" {
-      // Insert target as first positional attribute, so that it can be
-      // generically expanded. The TemplateHandler then needs to shift it out
-      // again.
-      params.unshift( { k: '', v: flatten( target ) } );
-      var obj = new SelfclosingTagTk( 'template', params );
-      //console.warn( 'tokenizer template ' + JSON.stringify( target ));
-      return obj;
-  }
-
-// XXX: support template and args in target!
-//template_target
-//  = h:( !"}}" x:([^|\n]) { return x } )* { return h.join('') }
-
-tplarg 
-  = "{{{" 
-    name:template_param_text 
-    params:( newline? "|" newline? p:template_param { return p })* 
-    "}}}" {
-      name = flatten( name );
-      params.unshift( { k: '', v: name } );
-      var obj = new SelfclosingTagTk( 'templatearg', params );
-      //console.warn( 'tokenizer tplarg ' + JSON.stringify( obj, null, 2 ));
-      return obj;
-  }
-
-template_param
-  = name:template_param_name 
-    s0:space* 
-    eq:"="?
-    s1:space*
-    value:template_param_text?
-
-    {
-      //console.warn( 'named template_param matched' + pp([name, value ]) );
-      if ( value !== '' ) {
-        return new KV( name, flatten( value ) );
-      } else if ( eq !== '' ) {
-        return new KV(flatten( name ), []);
-      } else {
-        return new KV([], flatten(name));
-      }
-    } 
-  // empty parameter
-  / & [|}] { return new KV([], []); }
-
-
-// FIXME: handle template args and templates in key! (or even parser functions?)
-template_param_name
-  = & { return setFlag( 'equal' ) }
-    tpt:template_param_text
-    {
-        clearFlag( 'equal' );
-        //console.warn( 'template param name matched: ' + pp( tpt ) );
-        return tpt;
-    }
-
-  / & { return clearFlag( 'equal' ) }
-  //= h:( !"}}" x:([^=|\n]) { return x } )* { return h.join(''); }
-
-template_param_text
-  = & { return setFlag('template') }
-    il:inline {
-        clearFlag('template');
-        //console.warn( 'tpt match: ' + pp (il));
-        return il;
-    }
-  / & { return clearFlag('template'); }
-
-// TODO: handle link prefixes as in al[[Razi]]
-wikilink
-  = "[[" 
-    ! url
-    //target:link_target 
-    target:wikilink_preprocessor_text
-    lcontent:( "|" lt:link_text { return lt } )* 
-    "]]" 
-    // XXX In real MediaWiki, this is a language-dependent positive character
-    // class. Can we work out a static negative class instead?
-    // XXX: Exclude uppercase chars from non-latin languages too!
-    trail:(! [A-Z \t(),.:-] tc:text_char { return tc })* {
-      var obj = new TagTk( 'a', 
-                [
-                    new KV('data-mw-type', 'internal')
-                ] ),
-          textTokens = [];
-      obj.attribs.push( new KV('href', target) );
-      if (lcontent && lcontent.length) {
-          textTokens = lcontent;
-          if (trail) {
-            textTokens.push( trail.join('') );
-          }
-      } else {
-          if (trail) {
-              textTokens = $.extend(true, [], target).concat( [ trail.join('') ] );
-          } else {
-              // copy list
-              textTokens = $.extend(true, [], target);
-          }
-      }
-      //console.warn( "XXX:" + pp([obj].concat(textTokens, [new EndTagTk( 'a' )])) );
-      return [obj].concat(textTokens, [new EndTagTk( 'a' )]);
-  }
-
-link_text
-  = & { return setFlag('linkdesc'); }
-    h:inline 
-    // 'equal' syntaxFlag is set for links in template parameters. Consume the
-    // '=' here.
-    hs:( '=' inline)?
-    { 
-        //console.warn('link_text' + pp(h) + pp(hs));
-        clearFlag('linkdesc');
-        if( hs !== '' ) {
-            return h.concat(hs);
-        } else {
-            return h;
-        }
-    }
-  / & { return clearFlag('linkdesc'); }
-
-link_end = "]]"
-
-/* Generic quote production for italic and bold, further processed in a token
- * stream transformation in doQuotes. Relies on NlTk tokens being emitted
- * for each line of text to balance quotes per line.
- * 
- * We are not using a simple pair rule here as we need to support mis-nested
- * bolds/italics and MediaWiki's special heuristics for apostrophes, which are
- * all not context free. */
-quote = "''" x:"'"* {
-	var res = new TagTk( 'mw-quote' ); // Will be consumed in token transforms
-    res.value = "''" + x.join('');
-    return res;
-}
-
-/* XXX: Extension tags can require a change in the tokenizer mode, which
- * returns any text between extension tags verbatim. For now, we simply
- * continue to parse the contained text and return the tokens. The original
- * input source can be recovered from the source positions added on tag
- * tokens. This won't however work in all cases. For example, a comment start
- * (<!--) between extension tags would cause the remaining text to be consumed
- * as a comment. To avoid this, we might need to look ahead for the end tag
- * and limit the content parsing to this section. */
-
-xmlish_tag = nowiki / generic_tag
-
-pre
-  = "<pre" 
-    attribs:generic_attribute* 
-    ">"
-    // MediaWiki <pre> is special in that it converts all pre content to plain
-    // text.
-    ts:(t1:[^<]+ { return t1.join('') } 
-                / nowiki 
-                / !"</pre>" t2:. { return t2 })+ 
-    ("</pre>" / eof) {
-        // return nowiki tags as well?
-        //console.warn('inpre');
-        return [ new TagTk( 'pre', attribs ) ]
-                    .concat(ts, [ new EndTagTk( 'pre' ) ]);
-    }
-  / "</pre>" { return "</pre>"; }
-
-nowiki 
-  = "<nowiki>" nc:nowiki_content "</nowiki>" { 
-        //console.warn( 'full nowiki return: ' + pp(nc)); 
-        return nc; 
-    }
-  / "<nowiki>" { 
-          //console.warn('nowiki fallback');
-          return ['<nowiki>']; 
-    }
-  / "</nowiki>" { 
-      //console.warn('nowiki end fallback');
-      return ['</nowiki>']; 
-  }
-
-nowiki_content
-  = ts:(   t:[^<]+ { return t.join('') } 
-           / "<pre" p0:space* p1:[^>]* ">" p2:nowiki_content "</pre>" {
-                 //console.warn('nested pre in nowiki');
-                 return ["<pre"].concat(p0, p1, [">"], p2, ["</pre>"]).join('');
-               }
-           / (!("</"( "nowiki>" / "pre>")) c:. {
-               //console.warn('nowiki: single char' + c);
-               return c;
-           }) 
-       )* {
-            // return nowiki tags as well?
-            //console.warn('nowiki_content: return' + pp(ts));
-            return [ts.join('')];
-          }
-
-// See http://dev.w3.org/html5/spec/Overview.html#syntax-tag-name and
-// following paragraphs
-block_tag
-  = "<" end:"/"? name:(cs:[a-zA-Z]+ { return cs.join('') })
-    attribs:generic_attribute* 
-    selfclose:"/"?
-    ">" {
-        if (block_names[name.toLowerCase()] !== true) {
-            // abort match if tag is not block-level
-            return null;
-        }
-        var res;
-        if ( end != '' ) {
-            res = new EndTagTk( name, attribs );
-        } else if ( selfclose != '' ) {
-            res = new SelfclosingTagTk( name, attribs );
-        } else {
-            res = new TagTk( name, attribs );
-        }
-        return [res];
-    }
-
-// The list of HTML5 tags, mainly used for the identification of non-html
-// tags. These terminate otherwise tag-eating productions (see list below) in
-// order to support potential extension tags:
-// * comment
-// * pre
-// * nowiki
-html5_tagnames 
-  = "a" / "abbr" / "address" / "area" / "article" 
-    / "aside" / "audio" / "b" / "base" / "bdi" / "bdo" / "blockquote" 
-    / "body" / "br" / "button" / "canvas" / "caption" / "cite" / "code" 
-    / "col" / "colgroup" / "command" / "data" / "datalist" / "dd" / "del" 
-    / "details" / "dfn" / "div" / "dl" / "dt" / "em" / "embed" / "fieldset" 
-    / "figcaption" / "figure" / "footer" / "form" 
-    / "h1" / "h2" / "h3" / "h4" / "h5" / "h6" / "head" / "header" / "hgroup" 
-    / "hr" / "html" / "i" / "iframe" / "img" / "input" / "ins" / "kbd" / "keygen" 
-    / "label" / "legend" / "li" / "link" / "map" / "mark" / "menu" / "meta" 
-    / "meter" / "nav" / "noscript" / "object" / "ol" / "optgroup" / "option" 
-    / "output" / "p" / "param" / "pre" / "progress" / "q" / "rp" / "rt" 
-    / "ruby" / "s" / "samp" / "script" / "section" / "select" / "small" 
-    / "source" / "span" / "strong" / "style" / "sub" / "summary" / "sup" 
-    / "table" / "tbody" / "td" / "textarea" / "tfoot" / "th" / "thead" / "time" 
-    / "title" / "tr" / "track" / "u" / "ul" / "var" / "video" / "wbr"
-
-html_oldnames = "center" / "font" / "tt"
-
-// Simple match on non-html endtags, for use in inline_breaks
-nonhtml_endtag
-  = '</' 
-    ! ( html5_tagnames / html_oldnames )
-    [^ >]+
-    ( space / newline ) *
-    [^>]*
-    '>'
-
-/* Generic XML-like tags
- * 
- * These also cover extensions (including Cite), which will hook into the
- * token stream for further processing. The content of extension tags is
- * parsed as regular inline, but the source positions of the tag are added 
- * to allow reconstructing the unparsed text from the input. */
-
-// See http://dev.w3.org/html5/spec/Overview.html#syntax-tag-name and
-// following paragraphs
-generic_tag
-  = "<" 
-    & { tagStartPos = pos; return true; } // remember the start position of this tag
-    end:"/"? name:[0-9a-zA-Z]+ 
-    attribs:generic_newline_attribute* 
-    ( space / newline ) *
-    selfclose:"/"?
-    ">" {
-        name = name.join('');
-        var res;
-        if ( end != '' ) {
-            res = new EndTagTk( name, attribs );
-        } else if ( selfclose != '' ) {
-            res = new SelfclosingTagTk( name, attribs );
-        } else {
-            res = new TagTk( name, attribs );
-        }
-        if ( res.dataAttribs === undefined ) {
-            res.dataAttribs = {};
-        }
-        res.dataAttribs.sourceTagPos = [tagStartPos - 1, pos];
-        return res;
-    }
-
-generic_newline_attribute
-  = s:( space / newline )* 
-    name:generic_attribute_name
-    value:(( space / newline )*
-          v:generic_attribute_newline_value { return v })?
-{
-    if ( value !== '' ) {
-        return new KV( name, value );
-    } else {
-        return new KV( name, '' );
-    }
-}
-
-generic_attribute
-  = s:space* 
-    name:generic_attribute_name
-    value:(space*
-          v:generic_attribute_value { return v })?
-{
-    //console.warn( 'generic attribute: ' + pp([name, value]));
-    // FIXME: name might just be a template, which can expand to a key-value
-    // pair later. We'll need to handle that in the AttributeTransformManager.
-    if ( value !== '' ) {
-        return new KV( name, value );
-    } else {
-        return new KV( name, '' );
-    }
-}
-
-// http://dev.w3.org/html5/spec/Overview.html#attributes-0, and we also
-// disallow newlines, | and {.
-generic_attribute_plain_name
-  = n:[^ \t\0/"'>=\n|{]+ {
-        return n.join('');
-  }
-
-generic_attribute_name
-  = & { return setFlag( 'equal' ) }
-  ! '/>'
-  name:attribute_preprocessor_text_line
-    {
-        clearFlag( 'equal' );
-        //console.warn( 'generic attribute name: ' + pp( name ) );
-        return name;
-    }
-  / & { return clearFlag( 'equal' ) }
-
-generic_attribute_newline_value
-  = "=" (space / newline )* v:xml_att_value { 
-      return v; 
-  }
-generic_attribute_value
-  = "=" space* v:att_value { 
-      return v; 
-  }
-
-// XXX: attributes can contain templates and template args!!
-xml_att_value
-  = "'" t:attribute_preprocessor_text_single "'" { return t; }
-  / '"' t:attribute_preprocessor_text_double '"' { return t; }
-  / attribute_preprocessor_text
-
-// XXX: attributes can contain templates and template args!!
-att_value
-  = "'" t:attribute_preprocessor_text_single_line "'" { return t; }
-  / '"' t:attribute_preprocessor_text_double_line '"' { return t; }
-  / attribute_preprocessor_text_line
-//  = t:(!inline_breaks c:[^ \t'"<>='\n] { return c } )+ { 
-//        return t.join(''); 
-//    }
-//  // XXX: is "\"" also valid html? or just Wikitext?
-//  / "'" t:[^'>]* "'" { return unquote("'", t.join('')); }
-//  / '"' t:[^">]* '"' { return unquote('"', t.join('')); }
-
-/* Lists */
-lists = e:(dtdd / li) es:(sol (dtdd / li))*
-{
-    return annotateList( [ new TagTk( 'list' ) ]
-            .concat(flatten([e].concat(es))
-                ,[ new EndTagTk( 'list' ) ]));
-}
-
-li = bullets:list_char+ 
-     c:inlineline?
-     &eolf 
-{
-    if ( c === '' )
-        c = [];
-    var li = new TagTk( 'listItem' );
-    li.bullets = bullets;
-    return [ li, c ];
-}
-
-dtdd 
-  = bullets:(!(";" !list_char) list_char)*
-    ";"
-    & {return setFlag('colon');}
-    c:inlineline
-    ":"
-    // Fortunately dtdds cannot be nested, so we can simply set the flag
-    // back to 0 to disable it.
-    & {syntaxFlags['colon'] = 0; return true;}
-    d:inlineline
-    &eolf {
-        // Convert trailing space into &nbsp;
-        // XXX: This should be moved to a serializer
-        //var clen = c.length;
-        //if (clen && c[clen - 1].constructor === String) {
-        //    var val = c[clen - 1].value;
-        //    if(val.length && val[val.length - 1] == ' ') {
-        //        c[clen - 1].value = val.substr(0, val.length - 1) + "\u00a0";
-        //    }
-        //}
-
-        var li = new TagTk( 'listItem' );
-        li.bullets = bullets + ";";
-        var li2 = new TagTk( 'listItem' );
-        li2.bullets = bullets + ":";
-        return [ li ].concat( c, [ li2 ], d );
-    }
-  // Fall-back case to clear the colon flag
-  / & { return true; } { syntaxFlags['colon'] = 0; return null; }
-
-
-list_char = [*#:;]
-
-/**
- * Tables 
- *
- * Table productions are geared to support independent parsing of fragments in
- * templates (the common table start / row / table end use case). The tokens
- * produced by these fragments then match up to a table while building the
- * DOM tree. For similar reasons, table rows do not emit explicit end tag
- * tokens.
- *
- * The separate table_lines production is faster than moving those productions
- * directly to block_lines.
- * */
-
-table_lines
-  = & { return setFlag('table'); }
-    tl:table_line 
-    tls:( s:sol tl2:table_line { return s.concat(tl2); } )* {
-        clearFlag('table');
-        //console.warn('table_lines: ' + pp(tl.concat(tls)));
-        return tl.concat( tls );
-    }
-  / & { return clearFlag('table'); }
-
-// This production assumes start-of-line position!
-table_line
-  = table_start_tag
-  / table_row_tag
-  / table_data_tags
-  / table_heading_tags
-  / table_caption_tag
-  / table_end_tag
-
-table_start_tag
-  = "{|"
-    ta:generic_attribute* 
-    space*
-    te:table_end_tag? // can occur somewhere in the middle of the line too
-    { 
-        var toks = [ new TagTk( 'table' ) ];
-        if ( ta )
-            toks[0].attribs = ta;
-        if ( te )
-            toks = toks.concat( te );
-        return toks;
-    }
-
-table_caption_tag
-  = "|+" 
-    c:inline* { 
-        return [ new TagTk( 'caption' )]
-                    .concat( c, [ new EndTagTk( 'caption' ) ]);
-    }
-
-
-table_row_tag
-  = //& { console.warn("table row enter"); return true; }
-    "|-"
-    a:generic_attribute*
-    space*
-    // handle tables with missing table cells after a row
-    td:( s:sol ![|!] tdt:table_data_tag { return s.concat(tdt); } )?
-    { 
-        // We rely on our tree builder to close the row as needed. This is
-        // needed to support building tables from fragment templates with
-        // individual cells or rows.
-        var trToken = [ new TagTk( 'tr', a ) ];
-        if ( !td ) {
-            return trToken;
-        } else {
-            return trToken.concat(td);
-        }
-    }
-
-table_data_tags
-  = pipe
-    td:table_data_tag
-    tds:( "||" tdt:table_data_tag { return tdt } )* {
-        return td.concat(tds);
-    }
-
-table_data_tag
-  = //& { dp("table_data enter, pos=" + pos + input.substr(pos,10)); return true; }
-    ! [}+-]
-    a:table_cell_args?
-    //& { console.warn("past attrib, pos=" + pos + input.substr(pos,10)); return true; }
-    // use inline_breaks to break on tr etc
-    td:( !inline_breaks 
-         //& { dp("table_data 2, pos=" + pos + input.substr(pos,10)); return true; }
-         b:block { return b } )* 
-    { 
-        if ( a == '' ) {
-            a = [];
-        }
-        //console.warn("table data result: " + pp(td) + ", attribts: " + pp(a));
-        return [ new TagTk( 'td', a )]
-                    .concat( td, [ new EndTagTk ( 'td' ) ] );
-    }
-
-table_heading_tags
-  = "!"
-    th:table_heading_tag
-    ths:( "!!" tht:table_heading_tag  { return tht } )* {
-        return th.concat(ths);
-    }
-
-table_heading_tag
-  = a:table_cell_args?
-    c:inline {
-         if ( a == '' ) {
-             a = [];
-         }
-         return [ new TagTk( 'th', a ) ]
-						.concat( c, [new EndTagTk( 'th' )] );
-     }
-
-table_end_tag
-  = "|}" { 
-      var tok = [new EndTagTk( 'table' )];
-	  return tok;
-  }
-
-table_cell_args
-  = & { return setFlag('tableCellArg'); }
-    as:generic_attribute+ space* "|" !"|" { 
-        clearFlag('tableCellArg');
-        return as;
-    }
-    / & { return clearFlag('tableCellArg'); }
-
-
-
-/* Tables, full-table version (no support for table fragments from templates) 
- * Only left here for comparison purposes with the above productions. Remove
- * when those work as intended! */
-table 
-  = tas:table_start space* c:table_caption? b:table_body? te:table_end { 
-      var res = new TagTk( 'table' );
-      var body = b !== '' ? b : [];
-      dp("body: " + pp(body));
-      if (tas.length > 0) {
-          // FIXME: actually parse and build structure
-          //res.attribs = [new KV('data-unparsed', tas.join(''))];
-          res.attribs = tas;
-      }
-
-      if (c != '') {
-          var caption = [ new TagTk( 'caption' ) ]
-                        .concat(c, [new EndTagTk( 'caption' )], te);
-      } else {
-          var caption = [];
-      }
-      //dp(pp(res));
-
-      return [res].concat(caption, body, [new EndTagTk( 'table' )]);
-  }
-
-table_start 
-  = "{" pipe
-    res:(
-        & { setFlag('table'); return true; }
-        ta:generic_attribute* 
-        { 
-            dp("table_start " + pp(ta) + ", pos:" + pos);
-            return ta;
-        }
-        / & { clearFlag('table'); return false; } { return null; }
-    ) { return res }
-
-table_caption 
-  = n:newlineToken
-    pipe "+" c:inline* { 
-        return n.concat(c);
-    }
-
-table_body 
-  = //& { dp("table_body enter"); return true; }
-    firstrow:table_firstrow otherrows:table_row* { 
-      /* dp('table first and otherrows: ' 
-       * + pp([firstrow].concat(otherrows))); */
-      return [firstrow].concat(otherrows); 
-  }
-  / otherrows:table_row* {
-      //dp('table otherrows: ' + pp(otherrows));
-      return otherrows;
-  }
-
-table_firstrow 
-  = td:(table_data / table_heading)+ { 
-      //dp('firstrow: ' + pp(td));
-      return [ new TagTk( 'tr' )]
-             .concat(td, [ new EndTagTk( 'tr' )]);
-  }
-
-table_row 
-  = //& { dp("table row enter"); return true; }
-  n:newlineToken
-    pipe "-" 
-    a:(as:generic_attribute+ space* pipe !pipe { return as } )?
-    space* 
-    td:(table_data / table_heading)* { 
-        return n.concat([ new TagTk( 'tr' )]
-					   , td, [ new EndTagTk( 'tr' )]);
-    }
-
-table_data 
-  = //& { dp("table_data enter, pos=" + pos + input.substr(pos,10)); return true; }
-	n:("||" { return [] } / nt:newlineToken (pipe / !'!') { return nt }) 
-    ! [}+-]
-    //& { dp('before attrib, pos=' + pos); return true; }
-    a:(as:generic_attribute+ space* pipe !pipe { return as } )?
-    //& { dp('past attrib, pos=' + pos); return true; }
-    // use inline_breaks to break on tr etc
-    td:(!inline_breaks 
-        //& { dp("table_data 2, pos=" + pos + input.substr(pos,10)); return true; }
-            b:block { return b })* { 
-        if ( a == '' ) {
-            a = [];
-        }
-        //dp("table data result: " + pp(td) + ", attribts: " + pp(a));
-        return n.concat( [ new TagTk( 'td',  a ) ]
-					   , td, [ new EndTagTk( 'td' ) ] );
-    }
-
-table_heading
-  = n:("!!" { return [] } / nl:newlineToken "!" { return nl }) 
-    a:(as:generic_attribute+ pipe !pipe { return as } )?
-     c:inline {
-         if ( a == '' ) {
-             a = [];
-         }
-         return n.concat( [ new TagTk( 'th', a )]
-						, c, [ new EndTagTk( 'th' ) ]);
-     }
-
-thtd_attribs
-  // In particular, do not match [|\n]
-  = a:(text / ! inline_breaks c:[="':;/,. -] { return c } )+ pipe ! pipe {
-    return a;
-  }
-
-
-table_end 
-  = nt:newlineToken? ( pipe "}" / eof ) { 
-	  clearFlag('table'); 
-	  if(nt) 
-		  return nt;
-	  else
-		  return [];
-  }
-
 
 // Special-case support for those pipe templates
 pipe = "|" / "{{!}}"
