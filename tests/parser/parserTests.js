@@ -180,7 +180,7 @@ function ParserTests () {
 		console.log(e2);
 	}
 
-	this.cases = this.getTests(); 
+	this.cases = this.getTests() || []; 
 
 	this.articles = {};
 
@@ -592,6 +592,11 @@ ParserTests.prototype.processCase = function ( i ) {
 					this.comments.push( item.comment );
 					process.nextTick( this.processCase.bind( this, i + 1 ) );
 					break;
+				case 'hooks':
+					console.warn('parserTests: Unhandled hook ' + JSON.stringify( item ) );
+				case 'functionhooks':
+					console.warn('parserTests: Unhandled functionhook ' 
+							+ JSON.stringify( item ) );
 				default:
 					this.comments = [];
 					process.nextTick( this.processCase.bind( this, i + 1 ) );

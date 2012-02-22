@@ -7,6 +7,13 @@
  * matching a lower-cased template name prefix up to the first colon will
  * override that template.
  *
+ * TODO: Implement these more thoroughly, and test against
+ * extensions/ParserFunction/
+ *     convertTests.txt
+ *     exprTests.txt
+ *     funcsParserTests.txt
+ *     stringFunctionTests.txt
+ *
  * @author Gabriel Wicke <gwicke@wikimedia.org>
  */
 
@@ -34,7 +41,7 @@ ParserFunctions.prototype._switchLookupFallback = function ( kvs, key ) {
 		kv = kvs[i];
 		// XXX: tokensToString actually strips too much here! Anything
 		// non-stringish should not match at all.
-		if ( this.manager.env.tokensToString( kv.v ) === key ) {
+		if ( this.manager.env.tokensToString( kv.v ).trim() === key ) {
 			// found. now look for the next entry with a non-empty key.
 			for ( var j = i; j < l; j++) {
 				kv = kvs[j];
@@ -304,11 +311,15 @@ Date.replaceChars = {
 ParserFunctions.prototype['pf_#ifexpr'] = function ( target, argList, argDict ) {
 	this.manager.env.dp( '#ifexp: ' + JSON.stringify( argList ) );
 	var res;
-	try {
-		var f = new Function ( 'return (' + target + ')' );
-		res = f();
-	} catch ( e ) {
-		return [ 'class="error" in expression ' + target ];
+	if ( target ) {
+		try {
+			var f = new Function ( 'return (' + target + ')' );
+			res = f();
+		} catch ( e ) {
+			return [ 'class="error" in expression ' + target ];
+		}
+	} else {
+		res = target;
 	}
 	if ( res ) {
 		return ( argList[0] && argList[0].v ) || [];
@@ -320,16 +331,20 @@ ParserFunctions.prototype['pf_#iferror'] = function ( target, argList, argDict )
 	if ( target.indexOf( 'class="error"' ) >= 0 ) {
 		return ( argList[0] && argList[0].v ) || [];
 	} else {
-		return ( argList[1] && argList[1].v ) || [];
+		return argList[1] && argList[1].v || [ target ] ;
 	}
 };
 ParserFunctions.prototype['pf_#expr'] = function ( target, argList, argDict ) {
 	var res;
-	try {
-		var f = new Function ( 'return (' + target + ')' );
-		res = f();
-	} catch ( e ) {
-		return [ 'class="error" in expression ' + target ];
+	if ( target ) {
+		try {
+			var f = new Function ( 'return (' + target + ')' );
+			res = f();
+		} catch ( e ) {
+			return [ 'class="error" in expression ' + target ];
+		}
+	} else { 
+		res = '';
 	}
 	return [ res.toString() ];
 };

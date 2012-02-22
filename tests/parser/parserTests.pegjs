@@ -34,7 +34,8 @@ chunk =
     article /
     test /
     line /
-    hooks
+    hooks /
+    functionhooks
 
 
 
@@ -77,6 +78,24 @@ start_text =
 end_article =
     "!!" ws? "endarticle" ws? eol
 
+// function hooks
+
+functionhooks = start_functionhooks text:text end_functionhooks
+{
+    return {
+        type: 'functionhooks',
+        text: text
+    }
+}
+
+start_functionhooks =
+    "!!" ws? "functionhooks" ":"? ws? eol
+
+end_functionhooks =
+    "!!" ws? "endfunctionhooks" ":"? ws? eol
+
+end_test =
+    "!!" ws? "end" ws? eol
 
 test =
     start_test
