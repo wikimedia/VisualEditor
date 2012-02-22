@@ -25,6 +25,8 @@ app = function () {
 	// Set initial content for the "editor"
 	this.$editor.html("<b>Lorem Ipsum is simply dummy text</b> of the printing and typesetting industry. <b>Lorem Ipsum has been the <i>industry's</i> standard</b> dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it <u>to <b>make <i>a type</i> specimen</b> book.</u>");
 
+	this.keydown = false;
+	this.mousedown = false;
 	this.prevText = app.getDOMText(this.$editor[0]);
 	
 	setInterval(function() {
@@ -33,21 +35,32 @@ app = function () {
 };
 
 app.prototype.onKeyDown = function() {
-	console.log("onKeyDown");
+	this.keydown = true;
+	//console.log("onKeyDown");
 };
 
 app.prototype.onMouseDown = function() {
-	console.log("onMouseDown");
+	this.mousedown = true;
+	//console.log("onMouseDown");
 };
 
 app.prototype.loopFunc = function() {
 	var text = app.getDOMText(this.$editor[0]);
 	
 	if(text != this.prevText) {
-		console.log(text);
+		//console.log(text);
+		
+		if(this.keydown) {
+			console.log("change from keyboard");
+		} else {
+			console.log("change not from keyboard");
+		}
 		
 		this.prevText = text;
 	}
+	
+	this.keydown = false;
+	this.mousedown = false;
 };
 
 app.getDOMText = function( elem ) {
