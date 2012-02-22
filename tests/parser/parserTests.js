@@ -202,7 +202,7 @@ function ParserTests () {
 		fetchTemplates: false,
 		debug: this.argv.debug,
 		trace: this.argv.trace,
-		wgScriptPath: ''
+		wgScriptPath: '/'
 	});
 }
 
