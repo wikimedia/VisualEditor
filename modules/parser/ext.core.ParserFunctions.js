@@ -25,24 +25,56 @@ ParserFunctions.prototype['pf_#if'] = function ( target, argList, argDict ) {
 	}
 };
 
+ParserFunctions.prototype._switchLookupFallback = function ( kvs, key ) {
+	if ( ! kvs ) {
+		return null;
+	}
+	var kv;
+	for ( var i = 0, l = kvs.length; i < l; i++ ) {
+		kv = kvs[i];
+		// XXX: tokensToString actually strips too much here! Anything
+		// non-stringish should not match at all.
+		if ( this.manager.env.tokensToString( kv.v ) === key ) {
+			// found. now look for the next entry with a non-empty key.
+			for ( var j = i; j < l; j++) {
+				kv = kvs[j];
+				// XXX: make sure the key is always one of these!
+				if ( kv.k !== '' && kv.k !== [] ) {
+					return kv;
+				}
+			}
+			// no fall-through found, return.
+			return null;
+		}
+	}
+	// value not found!
+	return null;
+};
+
 // TODO: Implement 
 // http://www.mediawiki.org/wiki/Help:Extension:ParserFunctions#Grouping_results
-ParserFunctions.prototype['pf_#switch'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype['pf_#switch'] = function ( target, argList, argDict, unnamedArgs ) {
 	this.manager.env.dp( 'switch enter: ' + target.trim() +
 			' looking in ', argDict );
 	target = target.trim();
-	if ( target in argDict ) {
+	if ( argDict[target] !== undefined ) {
 		this.manager.env.dp( 'switch found: ' + target +
 				' res=', argDict[target] );
 		return argDict[target];
-	} else if ( '#default' in argDict ) {
-		return argDict['#default'];
-	} else { 
-		var lastKV = argList[argList.length - 1];
-		if ( lastKV && ! lastKV.v.length ) {
-			return lastKV.v;
-		} else {
-			return [];
+	} else {
+		var fallThrough = this._switchLookupFallback( unnamedArgs, target );
+		//console.warn( 'fallThrough: ' + JSON.stringify( [ unnamedArgs, fallThrough ] ) );
+		if ( fallThrough !== null ) {
+			return fallThrough.v;
+		} else if ( '#default' in argDict ) {
+			return argDict['#default'];
+		} else { 
+			var lastKV = argList[argList.length - 1];
+			if ( lastKV && ! lastKV.v.length ) {
+				return lastKV.v;
+			} else {
+				return [];
+			}
 		}
 	}
 };

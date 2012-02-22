@@ -277,6 +277,8 @@ TokenTransformManager.prototype._transformToken = function ( token, phaseEndRank
 				aborted = true;
 				break;
 			}
+			// XXX: factor the conversion to String out into a generic _setRank
+			// method? Would need to add to the string prototype for that..
 			if ( res.token.rank === undefined && res.token.constructor === String ) {
 				res.token = new String ( res.token );
 			}

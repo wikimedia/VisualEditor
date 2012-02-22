@@ -34,6 +34,22 @@ MWParserEnvironment.prototype.lookupKV = function ( kvs, key ) {
 	return null;
 };
 
+MWParserEnvironment.prototype.lookupValue = function ( kvs, key ) {
+	if ( ! kvs ) {
+		return null;
+	}
+	var kv;
+	for ( var i = 0, l = kvs.length; i < l; i++ ) {
+		kv = kvs[i];
+		if ( kv.v === key ) {
+			// found, return it.
+			return kv;
+		}
+	}
+	// nothing found!
+	return null;
+};
+
 MWParserEnvironment.prototype.KVtoHash = function ( kvs ) {
 	if ( ! kvs ) {
 		console.warn( "Invalid kvs!: " + JSON.stringify( kvs, null, 2 ) );
