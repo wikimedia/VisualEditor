@@ -41,7 +41,7 @@ ParserFunctions.prototype._switchLookupFallback = function ( kvs, key ) {
 		kv = kvs[i];
 		// XXX: tokensToString actually strips too much here! Anything
 		// non-stringish should not match at all.
-		if ( this.manager.env.tokensToString( kv.v ).trim() === key ) {
+		if ( this.manager.env.tokensToString( kv.v ) === key ) {
 			// found. now look for the next entry with a non-empty key.
 			for ( var j = i; j < l; j++) {
 				kv = kvs[j];
@@ -152,14 +152,30 @@ ParserFunctions.prototype['pf_currentmonth'] = function ( target, argList, argDi
 ParserFunctions.prototype['pf_currentmonthname'] = function ( target, argList, argDict ) {
 	return this['pf_#time']( 'F', [], {} );
 };
+// XXX Actually use genitive form!
+ParserFunctions.prototype['pf_currentmonthnamegen'] = function ( target, argList, argDict ) {
+	return this['pf_#time']( 'F', [], {} );
+};
 ParserFunctions.prototype['pf_currentmonthabbrev'] = function ( target, argList, argDict ) {
 	return this['pf_#time']( 'M', [], {} );
+};
+ParserFunctions.prototype['pf_currentweek'] = function ( target, argList, argDict ) {
+	return this['pf_#time']( 'W', [], {} );
+};
+ParserFunctions.prototype['pf_currentdow'] = function ( target, argList, argDict ) {
+	return this['pf_#time']( 'w', [], {} );
 };
 ParserFunctions.prototype['pf_currentday'] = function ( target, argList, argDict ) {
 	return this['pf_#time']( 'j', [], {} );
 };
+ParserFunctions.prototype['pf_currentday2'] = function ( target, argList, argDict ) {
+	return this['pf_#time']( 'd', [], {} );
+};
 ParserFunctions.prototype['pf_currentdayname'] = function ( target, argList, argDict ) {
 	return this['pf_#time']( 'l', [], {} );
+};
+ParserFunctions.prototype['pf_currenttime'] = function ( target, argList, argDict ) {
+	return this['pf_#time']( 'H:i', [], {} );
 };
 
 // A first approximation of time stuff.
@@ -350,7 +366,7 @@ ParserFunctions.prototype['pf_#expr'] = function ( target, argList, argDict ) {
 };
 
 ParserFunctions.prototype['pf_localurl'] = function ( target, argList, argDict ) {
-	return ( this.manager.env.wgScriptPath + '/index' +
+	return ( this.manager.env.wgScriptPath + 'index' +
 				this.manager.env.wgScriptExtension + '?title=' +
 				this.manager.env.normalizeTitle( target ) + '&' +
 				argList.map( 
@@ -394,7 +410,6 @@ ParserFunctions.prototype['pf_urlencode'] = function ( target, argList, argDict 
 	return [target.trim()];
 };
 
-
 // The following items all depends on information from the Wiki, so are hard
 // to implement independently. Some might require using action=parse in the
 // API to get the value. See
@@ -413,9 +428,6 @@ ParserFunctions.prototype['pf_sitename'] = function ( target, argList, argDict )
 };
 ParserFunctions.prototype['pf_anchorencode'] = function ( target, argList, argDict ) {
 	return [target];
-};
-ParserFunctions.prototype['pf_namespace'] = function ( target, argList, argDict ) {
-	return ['Main'];
 };
 ParserFunctions.prototype['pf_protectionlevel'] = function ( target, argList, argDict ) {
 	return [''];
@@ -438,6 +450,22 @@ ParserFunctions.prototype['pf_#language'] = function ( target, argList, argDict 
 ParserFunctions.prototype['pf_contentlang'] = function ( target, argList, argDict ) {
 	return ['en'];
 };
+ParserFunctions.prototype['pf_numberoffiles'] = function ( target, argList, argDict ) {
+	return ['2'];
+};
+ParserFunctions.prototype['pf_namespace'] = function ( target, argList, argDict ) {
+	return [target.split(':').pop() || 'Main'];
+};
+ParserFunctions.prototype['pf_namespacee'] = function ( target, argList, argDict ) {
+	return [target.split(':').pop() || 'Main'];
+};
+ParserFunctions.prototype['pf_pagename'] = function ( target, argList, argDict ) {
+	return ['Main page'];
+};
+ParserFunctions.prototype['pf_scriptpath'] = function ( target, argList, argDict ) {
+	return [this.manager.env.wgScriptPath];
+};
+
 
 if (typeof module == "object") {
 	module.exports.ParserFunctions = ParserFunctions;
