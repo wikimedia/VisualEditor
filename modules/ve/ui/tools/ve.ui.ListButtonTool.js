@@ -78,21 +78,19 @@ ve.ui.ListButtonTool.prototype.list = function( nodes, style ) {
 		}
 	}
 
-	for( i = 0; i < listItems.length; i++ ) {
+	for ( i = 0; i < listItems.length; i++ ) {
 		styles = listItems[i].getElementAttribute( 'styles' );
 		if ( styles[styles.length - 1] !== style ) {
-			styles.splice( styles.length - 1, 1, style );
 			tx = surface.model.getDocument().prepareElementAttributeChange(
 				surface.documentView.model.getOffsetFromNode( listItems[i], false ),
-				'set',
 				'styles',
-				styles
+				styles.slice( 0, styles.length - 1 ).concat( style )
 			);
 			surface.model.transact( tx );
 		}
 	}
 
-	for( i = 0; i < stacks.length; i++ ) {
+	for ( i = 0; i < stacks.length; i++ ) {
 		removeLength = 0;
 		insertAt = surface.documentView.model.getOffsetFromNode( stacks[i][0], false );
 

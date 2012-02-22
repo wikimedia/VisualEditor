@@ -94,14 +94,15 @@ ve.dm.Transaction.prototype.pushRemove = function( data ) {
  * @method
  * @param {String} method Method to use, either "set" or "clear"
  * @param {String} key Name of attribute to change
- * @param {Mixed} value Value to set attribute to, or value of attribute being cleared
+ * @param {Mixed} from Value change attribute from
+ * @param {Mixed} to Value to change attribute to
  */
-ve.dm.Transaction.prototype.pushChangeElementAttribute = function( method, key, value ) {
+ve.dm.Transaction.prototype.pushReplaceElementAttribute = function( key, from, to ) {
 	this.operations.push( {
 		'type': 'attribute',
-		'method': method,
 		'key': key,
-		'value': value
+		'from': from,
+		'to': to
 	} );
 };
 

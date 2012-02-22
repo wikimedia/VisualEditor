@@ -45,12 +45,10 @@ ve.ui.IndentationButtonTool.prototype.indent = function( listItems ) {
 	for ( i = 0; i < listItems.length; i++ ) {
 		styles = listItems[i].getElementAttribute( 'styles' );
 		if ( styles.length < 6 ) {
-			styles.push( styles[styles.length - 1] );
 			tx = surface.model.getDocument().prepareElementAttributeChange(
 				surface.documentView.model.getOffsetFromNode( listItems[i], false ),
-				'set',
 				'styles',
-				styles
+				styles.concat( styles[styles.length - 1] )
 			);
 			surface.model.transact( tx );
 		}
@@ -66,12 +64,10 @@ ve.ui.IndentationButtonTool.prototype.outdent = function( listItems ) {
 	for ( i = 0; i < listItems.length; i++ ) {
 		styles = listItems[i].getElementAttribute( 'styles' );
 		if ( styles.length > 1 ) {
-			styles.splice( styles.length - 1, 1);
 			tx = surface.model.getDocument().prepareElementAttributeChange(
 				surface.documentView.model.getOffsetFromNode( listItems[i], false ),
-				'set',
 				'styles',
-				styles
+				styles.slice( 0, styles.length - 1 )
 			);
 			surface.model.transact( tx );
 		}

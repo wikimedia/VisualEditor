@@ -1175,7 +1175,7 @@ ve.dm.DocumentNode.prototype.prepareContentAnnotation = function( range, method,
  * @method
  * @returns {ve.dm.Transaction}
  */
-ve.dm.DocumentNode.prototype.prepareElementAttributeChange = function( offset, method, key, value ) {
+ve.dm.DocumentNode.prototype.prepareElementAttributeChange = function( offset, key, to ) {
 	var tx = new ve.dm.Transaction();
 	if ( offset ) {
 		tx.pushRetain( offset );
@@ -1186,7 +1186,8 @@ ve.dm.DocumentNode.prototype.prepareElementAttributeChange = function( offset, m
 	if ( this.data[offset].type[0] === '/' ) {
 		throw 'Invalid element offset error. Can not set attributes on closing element.';
 	}
-	tx.pushChangeElementAttribute( method, key, value );
+	var from = 'attributes' in this.data[offset] ? this.data[offset].attributes[key] : undefined;
+	tx.pushReplaceElementAttribute( key, from, to );
 	if ( offset < this.data.length ) {
 		tx.pushRetain( this.data.length - offset );
 	}

@@ -450,13 +450,9 @@ ve.dm.TransactionProcessor.prototype.attribute = function( op, invert ) {
 	if ( element.type === undefined ) {
 		throw 'Invalid element error. Can not set attributes on non-element data.';
 	}
-	if ( ( op.method === 'set' && !invert ) || ( op.method === 'clear' && invert ) ) {
-		// Automatically initialize attributes object
-		if ( !element.attributes ) {
-			element.attributes = {};
-		}
-		element.attributes[op.key] = op.value;
-	} else if ( ( op.method === 'clear' && !invert ) || ( op.method === 'set' && invert ) ) {
+	var to = invert ? op.from : op.to;
+	if ( to === undefined ) {
+		// Clear
 		if ( element.attributes ) {
 			delete element.attributes[op.key];
 		}
@@ -470,7 +466,12 @@ ve.dm.TransactionProcessor.prototype.attribute = function( op, invert ) {
 			delete element.attributes;
 		}
 	} else {
-		throw 'Invalid method error. Can not operate attributes this way: ' + method;
+		// Automatically initialize attributes object
+		if ( !element.attributes ) {
+			element.attributes = {};
+		}
+		// Set
+		element.attributes[op.key] = to;
 	}
 	var node = this.model.getNodeFromOffset( this.cursor + 1 );
 	if ( node.hasChildren() ) {
