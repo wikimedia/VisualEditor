@@ -62,24 +62,6 @@ TokenTransformManager.prototype.listenForTokensFrom = function ( tokenEmitter ) 
 };
 
 
-
-/**
- * Map a rank to a phase.
- *
- * XXX: Might not be needed anymore, as phases are now subclassed and
- * registrations are separated.
- */
-TokenTransformManager.prototype._rankToPhase  = function ( rank ) {
-	if ( rank < 0 || rank > 3 ) {
-		throw "TransformManager error: Invalid transformation rank " + rank;
-	}
-	if ( rank <= 2 ) {
-		return 2;
-	} else {
-		return 3;
-	}
-};
-
 /**
  * Add a transform registration.
  *
@@ -151,8 +133,6 @@ TokenTransformManager.prototype.removeTransform = function ( rank, type, name ) 
  * fully processed). The token type change case still needs to be covered
  * though.
  */
-TokenTransformManager.prototype._setTokenRank = function ( token ) {
-};
 TokenTransformManager.prototype._resetTokenRank = function ( res, transformer ) {
 	if ( res.token ) {
 		// reset rank after type or name change

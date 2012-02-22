@@ -135,6 +135,9 @@ ParserPipeline.prototype.constructor = ParserPipeline;
  * Token stream transformations to register by type and per phase. The
  * possible ranks for individual transformation registrations are [0,1)
  * (excluding 1.0) for sync01, [1,2) for async12 and [2,3) for sync23.
+ *
+ * Should perhaps be moved to mediawiki.parser.environment.js, so that all
+ * configuration can be found in a single place.
  */
 ParserPipeline.prototype._transformers = {
 	'text/wiki': {
@@ -143,14 +146,26 @@ ParserPipeline.prototype._transformers = {
 			[ 
 				IncludeOnly, 
 				NoInclude
+				// Insert TokenCollectors for extensions here (don't expand
+				// templates in extension contents); wrap collected tokens in
+				// special extension token.
+				/* Extension1, */
+				/* Extension2, */
 			],
-		// Asynchronous out-of-order per input
+		/* 
+		* Asynchronous out-of-order per input. Output of transforms is *not*
+		* processed by other async transforms. Transforms are expected to
+		* apply any additional async transformations themselves.
+		*/
 		async12: 
 			[ 
-				// Insert TokenCollector for extensions here (don't expand
-				// templates in extension contents)
 				TemplateHandler,
-				AttributeExpander // After templates to avoid expanding unused branches
+				// Expand attributes after templates to avoid expanding unused branches
+				// XXX: Should we support further processing after attribute
+				// expansion?
+				AttributeExpander
+				/* ExtensionHandler1, */
+				/* ExtensionHandler2, */
 			],
 		// Synchronous in-order on fully expanded token stream (including
 		// expanded templates etc).
@@ -159,6 +174,7 @@ ParserPipeline.prototype._transformers = {
 				QuoteTransformer, 
 				PostExpandParagraphHandler,
 				/* Cite, */
+				/* ListHandler, */
 				Sanitizer 
 			]
 	}

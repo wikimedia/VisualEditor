@@ -126,6 +126,9 @@
     /* 
      * Annotate a token stream with list items with appropriate list tokens
      *
+     * XXX: Move this to a token handler in phase sync23! That way we can
+     * support list items from templates too.
+     *
      * @static
      * @method
      * @param {[tokens]}   Token stream with li tokens 
