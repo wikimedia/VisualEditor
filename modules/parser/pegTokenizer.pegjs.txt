@@ -20,20 +20,51 @@
     /* Static utilities */
 
     // Flatten a list of lists.
+    //var simple_flatten = function ( e ) {
+    //    // Fast single-level flatten:
+    //    //return [].concat.apply([], e);
+    //    
+    //    var es = [];
+    //    // flatten sub-arrays
+    //    for(var i = 0, length = e.length; i < length; i++) {
+    //        var ei = e[i];
+    //        if ($.isArray(ei))
+    //            es = es.concat(flatten(ei));
+    //        else
+    //            es.push(ei);
+    //    };
+    //    return es;
+    //};
+
     var flatten = function ( e ) {
         // Fast single-level flatten:
         //return [].concat.apply([], e);
         
         var es = [];
         // flatten sub-arrays
-        for(var i = 0, length = e.length; i < length; i++) {
-            var ei = e[i];
-            if ($.isArray(ei))
-                es = es.concat(flatten(ei));
-            else
-                es.push(ei);
+        var chunkStart = null,
+            modified = false;
+        for(var i = 0, l = e.length; i < l; i++) {
+            if ( e[i].constructor === Array ) {
+                if ( chunkStart !== null ) {
+                    es = es.concat( e.slice( chunkStart, i ), flatten( e[i] ) );
+                    chunkStart = null;
+                } else {
+                    es = es.concat(flatten(e[i]));
+                }
+                modified = true;
+            } else if ( chunkStart === null ) {
+                chunkStart = i;
+            }
         };
-        return es;
+        if ( modified ) {
+            if ( chunkStart !== null ) {
+                es = es.concat( e.slice( chunkStart, e.length ) );
+            }
+            return es;
+        } else {
+            return e;
+        }
     };
 
     
@@ -48,24 +79,24 @@
 
     var flatten_stringlist = function ( c ) {
         var out = [],
-            text = [];
+            text = '';
         c = flatten(c);
         for (var i = 0, l = c.length; i < l; i++) {
             var ci = c[i];
             if (ci.constructor === String) {
                 if(ci !== '') {
-                    text.push(ci);
+                    text += ci;
                 }
             } else {
-                if (text.length) {
-                    out.push( text.join('') );
-                    text = [];
+                if (text !== '') {
+                    out.push( text );
+                    text = '';
                 }
                 out.push(ci);
             }
         }
-        if (text.length) {
-            out.push( text.join('') );
+        if (text !== '' ) {
+            out.push( text );
         }
         return out;
     }
