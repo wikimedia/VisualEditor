@@ -32,6 +32,8 @@ app = function () {
 	this.$editor.html("<b>Lorem Ipsum is simply dummy text</b> of the printing and typesetting industry. <b>Lorem Ipsum has been the <i>industry's</i> standard</b> dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it <u>to <b>make <i>a type</i> specimen</b> book.</u>");
 	this.$editor.addClass('leafNode');
 
+	this.keypress = false;
+	this.keyup = false;
 	this.keydown = false;
 	this.mousedown = false;
 	this.inime = false;
@@ -44,62 +46,74 @@ app = function () {
 
 app.prototype.onKeyPress = function() {
 	//console.log("onKeyPress");
+	this.keypress = true;
+	if ( e.which === 229 ) {
+		this.inime = true;
+	}	
 };
 
 app.prototype.onKeyUp = function() {
 	//console.log("onKeyUp");
+	this.keyup = true;
 	if ( this.inime ) {
 		this.inime = false;
-		//console.log("inime = false");
 	}
 };
 
 app.prototype.onKeyDown = function( e ) {
-	this.keydown = true;
 	//console.log("onKeyDown");
+	this.keydown = true;
 	if ( e.which === 229 ) {
 		this.inime = true;
-		//console.log("inime = true");
 	}
 };
 
 app.prototype.onMouseDown = function() {
 	this.mousedown = true;
-	//console.log("onMouseDown");
+
 	if ( this.inime ) {
 		this.inime = false;
-		console.log("inime = false");
-	}	
+	}
 };
 
 app.prototype.loopFunc = function() {
 	var text = app.getDOMText(this.$editor[0]);
-	
-	if(text != this.prevText) {
-		//console.log(text);
-		
-		if(this.keydown || this.inime) {
-			console.log("change from keyboard");
-			// we are going to need a cursor position
-			var selection = rangy.getSelection();
-			var offset = this.getOffset( selection.anchorNode, selection.anchorOffset );
-			var diffLength = text.length - this.prevText.length;
-			//console.log("diffLength: " + diffLength);
-			
-			if ( diffLength > 0 ) {
-				//console.log( text.substring(offset - diffLength, offset) );	
-			} else if ( diffLength === 0 ) {
-				//console.log( text.substring(offset - 1, offset) );
-			}
 
-		} else {
-			console.log("change not from keyboard");
-			// find a change and commit to the model
+	if(text != this.prevText) {
+
+		var selection = rangy.getSelection();
+
+
+
+		// keyup in IE
+		// keypress and keydown in FF and Chrome
+		if ( (($.browser.msie && !this.keyup) || (!$.browser.msie && !this.keypress && !this.mousedown)) && !this.inime ) {
+			console.log(this.inime);
+			console.log('SPELLCHECK');
+			this.prevText = text;
+			this.keypress = false;
+			this.keyup = false;
+			this.mousedown = false;
+			return;
 		}
+
+		console.log("keyboard");
+		// we are going to need a cursor position
+		var offset = this.getOffset( selection.anchorNode, selection.anchorOffset );
+		var diffLength = text.length - this.prevText.length;
+		//console.log("diffLength: " + diffLength);
+		
+		if ( diffLength > 0 ) {
+			//console.log( text.substring(offset - diffLength, offset) );	
+		} else if ( diffLength === 0 ) {
+			//console.log( text.substring(offset - 1, offset) );
+		}
+
 		
 		this.prevText = text;
 	}
-	
+	this.keypress = false;
+	this.keyup = false;
 	this.keydown = false;
 	this.mousedown = false;
 };
