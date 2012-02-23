@@ -8,7 +8,7 @@
  */
 ve.es.PreNode = function( model ) {
 	// Inheritance
-	ve.es.LeafNode.call( this, model );
+	ve.es.LeafNode.call( this, model, undefined, { 'pre': true } );
 
 	// DOM Changes
 	this.$.addClass( 'es-preView' );

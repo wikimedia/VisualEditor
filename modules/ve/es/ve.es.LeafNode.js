@@ -9,14 +9,14 @@
  * @param model {ve.ModelNode} Model to observe
  * @param {jQuery} [$element] Element to use as a container
  */
-ve.es.LeafNode = function( model, $element ) {
+ve.es.LeafNode = function( model, $element, options ) {
 	// Inheritance
 	ve.LeafNode.call( this );
 	ve.es.Node.call( this, model, $element );
 
 	// Properties
 	this.$content = $( '<div class="es-contentView"></div>' ).appendTo( this.$ );
-	this.contentView = new ve.es.Content( this.$content, model );
+	this.contentView = new ve.es.Content( this.$content, model, options );
 
 	// Events
 	this.contentView.on( 'update', this.emitUpdate );

@@ -13,6 +13,8 @@
  * @constructor
  * @param {jQuery} $container Element to render into
  * @param {ve.ModelNode} model Model to produce view for
+ * @param {Object} options List of options
+ * @param {Boolean} options.pre Line breaks should be respected
  * @property {jQuery} $
  * @property {ve.ContentModel} model
  * @property {Array} boundaries
@@ -23,7 +25,7 @@
  * @property {Object} renderState
  * @property {Object} contentCache
  */
-ve.es.Content = function( $container, model ) {
+ve.es.Content = function( $container, model, options ) {
 	// Inheritance
 	ve.EventEmitter.call( this );
 
@@ -31,12 +33,14 @@ ve.es.Content = function( $container, model ) {
 	this.$ = $container;
 	this.model = model;
 	this.boundaries = [];
+	this.breaks = {};
 	this.lines = [];
 	this.width = null;
 	this.boundaryTest = /([ \-\t\r\n\f])/g;
 	this.widthCache = {};
 	this.renderState = {};
 	this.contentCache = null;
+	this.options = options || {};
 
 	if ( model ) {
 		// Events
@@ -517,11 +521,14 @@ ve.es.Content.prototype.scanBoundaries = function() {
 	for ( var i = 0, length = data.length; i < length; i++ ) {
 		text += typeof data[i] === 'string' ? data[i] : data[i][0];
 	}
-	// Purge "boundaries" and "words" arrays
+	// Reset boundaries
 	this.boundaries = [0];
-	// Reset RegExp object's state
 	this.boundaryTest.lastIndex = 0;
-	// Iterate over each word+boundary sequence, capturing offsets and encoding text as we go
+	// Reset breaks
+	if ( this.options.pre ) {
+		this.breaks = {};
+	}
+	// Iterate over each word+boundary sequence, capturing offsets in this.boundaries
 	var match,
 		end;
 	while ( ( match = this.boundaryTest.exec( text ) ) ) {
@@ -529,6 +536,10 @@ ve.es.Content.prototype.scanBoundaries = function() {
 		end = match.index + 1;
 		// Store the boundary offset
 		this.boundaries.push( end );
+		// Check for break at boundary and store it
+		if ( this.options.pre && text[match.index] === '\n' ) {
+			this.breaks[end] = true;
+		}
 	}
 	// If the last character is not a boundary character, we need to append the final range to the
 	// "boundaries" and "words" arrays
@@ -777,6 +788,15 @@ ve.es.Content.prototype.fitWords = function( range, width ) {
 		charMiddle,
 		lineWidth,
 		cacheKey;
+	// Look ahead for line breaks and adjust end accordingly
+	if ( this.options.pre ) {
+		for ( var i = start + 1; i < end; i++ ) {
+			if ( this.boundaries[i] in this.breaks ) {
+				end = i;
+				break;
+			}
+		}
+	}
 	do {
 		// Place "middle" directly in the center of "start" and "end"
 		middle = Math.ceil( ( start + end ) / 2 );
