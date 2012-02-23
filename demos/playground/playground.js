@@ -32,9 +32,9 @@ app = function () {
 	this.$editor.html("<b>Lorem Ipsum is simply dummy text</b> of the printing and typesetting industry. <b>Lorem Ipsum has been the <i>industry's</i> standard</b> dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it <u>to <b>make <i>a type</i> specimen</b> book.</u>");
 	this.$editor.addClass('leafNode');
 
-	this.keypress = false;
-	this.keyup = false;
 	this.keydown = false;
+	this.keyup = false;
+	this.keypress = false;
 	this.mousedown = false;
 	this.inime = false;
 	this.prevText = app.getDOMText(this.$editor[0]);
@@ -44,7 +44,23 @@ app = function () {
 	}, 100);
 };
 
-app.prototype.onKeyPress = function() {
+app.prototype.onKeyDown = function( e ) {
+	console.log("onKeyDown");
+	this.keydown = true;
+	if ( e.which === 229 ) {
+		this.inime = true;
+	}
+};
+
+app.prototype.onKeyUp = function( e ) {
+	console.log("onKeyUp");
+	this.keyup = true;
+	if ( this.inime ) {
+		this.inime = false;
+	}
+};
+
+app.prototype.onKeyPress = function( e ) {
 	//console.log("onKeyPress");
 	this.keypress = true;
 	if ( e.which === 229 ) {
@@ -52,23 +68,7 @@ app.prototype.onKeyPress = function() {
 	}	
 };
 
-app.prototype.onKeyUp = function() {
-	//console.log("onKeyUp");
-	this.keyup = true;
-	if ( this.inime ) {
-		this.inime = false;
-	}
-};
-
-app.prototype.onKeyDown = function( e ) {
-	//console.log("onKeyDown");
-	this.keydown = true;
-	if ( e.which === 229 ) {
-		this.inime = true;
-	}
-};
-
-app.prototype.onMouseDown = function() {
+app.prototype.onMouseDown = function( e ) {
 	this.mousedown = true;
 
 	if ( this.inime ) {
@@ -80,6 +80,24 @@ app.prototype.loopFunc = function() {
 	var text = app.getDOMText(this.$editor[0]);
 
 	if(text != this.prevText) {
+
+		console.log("text is different");
+		
+		if(this.keydown) {
+			console.log("keyboard");
+		} else {
+			console.log("not keyboard");
+		}
+
+		this.prevText = text;
+	}
+	
+	this.keypress = false;
+	this.keyup = false;
+	this.keydown = false;
+	this.mousedown = false;
+
+	/*
 
 		var selection = rangy.getSelection();
 
@@ -116,6 +134,7 @@ app.prototype.loopFunc = function() {
 	this.keyup = false;
 	this.keydown = false;
 	this.mousedown = false;
+	*/
 };
 
 app.getDOMText = function( elem ) {
