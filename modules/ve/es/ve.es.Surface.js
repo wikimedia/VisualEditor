@@ -1,6 +1,6 @@
 /**
  * Creates an ve.es.Surface object.
- * 
+ *
  * @class
  * @constructor
  * @param {jQuery} $container DOM Container to render surface into
@@ -56,7 +56,11 @@ ve.es.Surface = function( $container, model ) {
 		selecting: false,
 		cursorAnchor: null,
 		keydownTimeout: null,
-		keys: { shift: false }
+		keys: { shift: false },
+		readInterval: null,
+		prevInput: '',
+		undoCount: 0,
+		chunkSize: 3
 	};
 	this.dimensions = {
 		width: this.$.width(),
@@ -77,7 +81,6 @@ ve.es.Surface = function( $container, model ) {
 			_this.$input.val( _this.documentView.model.getContentText( selection ) ).select();
 			_this.clearInsertionAnnotations();
 		} else {
-			_this.$input.val('').select();
 			_this.loadInsertionAnnotations();
 		}
 	} );
@@ -90,39 +93,42 @@ ve.es.Surface = function( $container, model ) {
 	this.$.mousedown( function(e) {
 		return _this.onMouseDown( e );
 	} );
+
 	this.$input.bind( {
-			'focus': function() {
+			'focus': function( e ) {
 				// Make sure we aren't double-binding
 				$document.unbind( '.es-surfaceView' );
 				// Bind mouse and key events to the document to ensure we don't miss anything
 				$document.bind( {
-					'mousemove.es-surfaceView': function(e) {
+					'mousemove.es-surfaceView': function( e ) {
 						return _this.onMouseMove( e );
 					},
-					'mouseup.es-surfaceView': function(e) {
+					'mouseup.es-surfaceView': function( e ) {
 						return _this.onMouseUp( e );
 					},
 					'keydown.es-surfaceView': function( e ) {
-						return _this.onKeyDown( e );			
+						return _this.onKeyDown( e );
 					},
 					'keyup.es-surfaceView': function( e ) {
-						return _this.onKeyUp( e );		
+						return _this.onKeyUp( e );
 					},
 					'copy.es-surfaceView': function( e ) {
-						return _this.onCopy( e );		
+						return _this.onCopy( e );
 					},
 					'cut.es-surfaceView': function( e ) {
-						return _this.onCut( e );		
+						return _this.onCut( e );
 					},
 					'paste.es-surfaceView': function( e ) {
-						return _this.onPaste( e );		
+						return _this.onPaste( e );
 					}
 				} );
+				return _this.onFocus( e );
 			},
 			'blur': function( e ) {
 				// Release our event handlers when not focused
 				$document.unbind( '.es-surfaceView' );
 				_this.hideCursor();
+				return _this.onBlur( e );
 			},
 			'paste': function() {
 				setTimeout( function() {
@@ -237,7 +243,7 @@ ve.es.Surface.prototype.emitCursor = function() {
 					if( node === endNode ) {
 						return false;
 					}
-				}, startNode );			
+				}, startNode );
 			}
 		}
 		_this.emit( 'cursor', annotations, nodes );
@@ -320,11 +326,11 @@ ve.es.Surface.prototype.emitUpdate = function( delay ) {
 		}
 		var _this = this;
 		this.emitUpdateTimeout = setTimeout( function() {
-			_this.emit( 'update' );	
+			_this.emit( 'update' );
 			_this.emitUpdateTimeout = undefined;
 		}, delay );
 	} else {
-		this.emit( 'update' );	
+		this.emit( 'update' );
 	}
 };
 
@@ -374,6 +380,9 @@ ve.es.Surface.prototype.onMouseDown = function( e ) {
 			);
 			this.mouse.selectedRange = selection.clone();
 		}
+		//cancel ime mode by losing focus
+		this.$input.blur();
+		this.$input.focus();
 	}
 	
 	var _this = this;
@@ -442,7 +451,7 @@ ve.es.Surface.prototype.onMouseMove = function( e ) {
 				selection.to = this.model.getDocument().getRelativeContentOffset(
 					nodeRange.to, -1
 				);
-			}	
+			}
 		}
 		// Apply new selection
 		this.model.select( selection, true );
@@ -450,7 +459,7 @@ ve.es.Surface.prototype.onMouseMove = function( e ) {
 };
 
 ve.es.Surface.prototype.onMouseUp = function( e ) {
-	if ( e.which === 1 ) { // left mouse button 
+	if ( e.which === 1 ) { // left mouse button
 		this.mouse.selectingMode = this.mouse.selectedRange = null;
 		this.model.select( this.currentSelection, true );
 		if ( this.contextView ) {
@@ -479,6 +488,41 @@ ve.es.Surface.prototype.onPaste = function( e ) {
 	return true;
 };
 
+ve.es.Surface.prototype.onFocus = function( e ) {
+	var _this = this;
+	this.keyboard.prevInput = _this.$input.val();
+	//start polling
+	this.keyboard.readInterval = setInterval( function(){
+		_this.readInput( _this );
+	}, 10 );
+};
+
+ve.es.Surface.prototype.onBlur = function( e ) {
+	//stop polling
+	if ( this.keyboard.readInterval ) {
+		clearInterval( this.readInterval );
+	}
+};
+
+ve.es.Surface.prototype.readInput = function( _this ) {
+	var		selection = _this.currentSelection.clone(),
+			text = _this.$input.val();
+	
+	//Do nothing if the text is the same.
+	if ( text == _this.keyboard.prevInput ) {
+		return false;
+	}
+
+	//transfer text
+	_this.keyboard.prevInput = text;
+	_this.handleInsert();
+};
+
+ve.es.Surface.prototype.resetText = function( e ) {
+	this.$input.val( '' );
+	this.keyboard.undoCount = 0;
+};
+
 ve.es.Surface.prototype.onKeyDown = function( e ) {
 	switch ( e.keyCode ) {
 		// Tab
@@ -486,6 +530,7 @@ ve.es.Surface.prototype.onKeyDown = function( e ) {
 			if ( !e.metaKey && !e.ctrlKey && !e.altKey ) {
 				this.$input.val( '\t' );
 				this.handleInsert();
+				this.resetText();
 				e.preventDefault();
 				return false;
 			}
@@ -587,10 +632,12 @@ ve.es.Surface.prototype.onKeyDown = function( e ) {
 			if ( this.keyboard.keys.shift ) {
 				this.$input.val( '\n' );
 				this.handleInsert();
+				this.resetText();
 				e.preventDefault();
 				return false;
 			}
 			this.handleEnter();
+			this.resetText();
 			e.preventDefault();
 			break;
 		// Insert content (maybe)
@@ -608,6 +655,7 @@ ve.es.Surface.prototype.onKeyDown = function( e ) {
 							this.model.redo();
 						} else {
 							this.model.undo();
+							this.resetText();
 						}
 						return false;
 					// a (select all)
@@ -643,8 +691,11 @@ ve.es.Surface.prototype.onKeyDown = function( e ) {
 						return false;
 				}
 			}
-			// Regular text insertion
-			this.handleInsert();
+			// Ignore chrome 229 IME event.
+			if (e.which !== 229) {
+				// Chunked insert
+				this.handleInsert( this.keyboard.chunkSize ); //three character chunk
+			}
 			break;
 	}
 	return true;
@@ -659,13 +710,13 @@ ve.es.Surface.prototype.onKeyUp = function( e ) {
 	}
 };
 
-ve.es.Surface.prototype.handleInsert = function() {
+ve.es.Surface.prototype.handleInsert = function( chunkSize ) {
 	var _this = this;
 	if ( _this.keyboard.keydownTimeout ) {
 		clearTimeout( _this.keyboard.keydownTimeout );
 	}
 	_this.keyboard.keydownTimeout = setTimeout( function () {
-		_this.insertFromInput();
+		_this.insertFromInput( chunkSize );
 	}, 10 );
 };
 
@@ -676,6 +727,7 @@ ve.es.Surface.prototype.handleDelete = function( backspace, isPartial ) {
 		sourceSplitableNode,
 		targetSplitableNode,
 		tx;
+	this.resetText();
 	if ( selection.from === selection.to ) {
 		if ( backspace ) {
 			sourceOffset = selection.to;
@@ -757,7 +809,7 @@ ve.es.Surface.prototype.handleEnter = function() {
 			[ { 'type': 'paragraph' }, { 'type': '/paragraph' } ]
 		);
 		this.model.transact( tx );
-		selection.from = selection.to = nodeOffset + node.getElementLength() + 1;	
+		selection.from = selection.to = nodeOffset + node.getElementLength() + 1;
 	} else {
 		var	stack = [],
 			splitable = false;
@@ -790,44 +842,88 @@ ve.es.Surface.prototype.handleEnter = function() {
 	this.model.select( selection );
 };
 
-ve.es.Surface.prototype.insertFromInput = function() {
-	var selection = this.currentSelection.clone(),
-		val = this.$input.val();
+ve.es.Surface.prototype.insertFromInput = function( chunkSize ) {
+	var		selection = this.currentSelection.clone(),
+			val = this.$input.val(),
+			chunkThis = '',
+			chunked = [],
+			slice,
+			data,
+			tx;
+
 	if ( val.length > 0 ) {
 		// Check if there was any effective input
 		var input = this.$input[0],
 			// Internet Explorer
 			range = document.selection && document.selection.createRange();
 		if (
+			// Be sure text is being selected so IME updates are not blocked
+			( this.mouse.selectingMode || this.keyboard.selection ) &&
 			// DOM 3.0
-			( 'selectionStart' in input && input.selectionEnd - input.selectionStart ) ||
+			(( 'selectionStart' in input && input.selectionEnd - input.selectionStart ) ||
 			// Internet Explorer
-			( range && range.text.length )
+			( range && range.text.length ))
 		) {
 			// The input is still selected, so the key must not have inserted anything
 			return;
 		}
 
-		// Clear the value for more input
-		this.$input.val( '' );
+		//process undo count
+		while ( this.keyboard.undoCount > 0 ) {
+			this.keyboard.undoCount--;
+			this.model.undo();
+		}
+		//reset selection
+		selection = this.currentSelection.clone();
 
-		// Prepare and process a transaction
-		var tx;
+		// Prepare and process a selection removal.
 		if ( selection.from != selection.to ) {
 			tx = this.model.getDocument().prepareRemoval( selection );
 			this.model.transact( tx, true );
 			selection.from = selection.to =
 				Math.min( selection.from, selection.to );
 		}
-		var data = val.split('');
-		ve.dm.DocumentNode.addAnnotationsToData( data, this.getInsertionAnnotations() );
-		tx = this.model.getDocument().prepareInsertion( selection.from, data );
-		this.model.transact( tx );
+		//Chunking text only on keyDown.
+		if (chunkSize !== null && val.length > chunkSize && chunkSize > 1) {
+			chunkThis = val;
+			//build a chunked array
+			while ( chunkThis.length > 0 ) {
+				slice = chunkThis.substring( 0, chunkSize );
+				chunkThis = chunkThis.substring( chunkSize );
+				chunked.push( slice );
+			}
+			//chunked transactions
+			for ( var chunk in chunked ) {
+				this.model.breakpoint();
+				data = chunked[chunk].split('');
+				selection = this.currentSelection.clone();
+				ve.dm.DocumentNode.addAnnotationsToData( data, this.getInsertionAnnotations() );
+				tx = this.model.getDocument().prepareInsertion( selection.from, data );
+				this.model.transact( tx );
+				// Move the selection
+				selection.from += chunked[chunk].length;
+				selection.to += chunked[chunk].length;
+				this.model.select( selection );
+				this.model.breakpoint();
+			}
 
-		// Move the selection
-		selection.from += val.length;
-		selection.to += val.length;
-		this.model.select( selection );
+			//set the working text to the last chunk
+			this.$input.val( chunked[chunked.length - 1] );
+			this.keyboard.undoCount = 1;
+		} else {
+			this.model.breakpoint();
+			data = val.split('');
+			ve.dm.DocumentNode.addAnnotationsToData( data, this.getInsertionAnnotations() );
+			tx = this.model.getDocument().prepareInsertion( selection.from, data );
+			this.model.transact( tx );
+			// Move the selection
+			selection.from += val.length;
+			selection.to += val.length;
+			this.model.select( selection );
+			this.keyboard.undoCount++;
+			this.model.breakpoint();
+		}
+
 	}
 };
 
@@ -877,7 +973,6 @@ ve.es.Surface.prototype.moveCursor = function( direction, unit ) {
 					break;
 				default:
 					throw new Error( 'unrecognized cursor movement unit' );
-					break;
 			}
 			break;
 		case 'up':
@@ -941,7 +1036,7 @@ ve.es.Surface.prototype.moveCursor = function( direction, unit ) {
 				default:
 					throw new Error( 'unrecognized cursor movement unit' );
 			}
-			break;	
+			break;
 		default:
 			throw new Error( 'unrecognized cursor direction' );
 	}
@@ -956,15 +1051,16 @@ ve.es.Surface.prototype.moveCursor = function( direction, unit ) {
 		selection.from = selection.to = to;
 	}
 	this.model.select( selection, true );
+	this.resetText();
 };
 
 /**
  * Shows the cursor in a new position.
- * 
+ *
  * @method
  * @param offset {Integer} Position to show the cursor at
  */
-ve.es.Surface.prototype.showCursor = function() {	
+ve.es.Surface.prototype.showCursor = function() {
 	var $window = $( window ),
 		position = this.documentView.getRenderedPositionFromOffset(
 			this.currentSelection.to, this.cursor.initialBias
@@ -982,7 +1078,7 @@ ve.es.Surface.prototype.showCursor = function() {
 
 	// Auto scroll to cursor
 	var inputTop = this.$input.offset().top,
-		inputBottom = inputTop + position.bottom - position.top;	
+		inputBottom = inputTop + position.bottom - position.top;
 	if ( inputTop - this.dimensions.toolbarHeight < this.dimensions.scrollTop ) {
 		$window.scrollTop( inputTop - this.dimensions.toolbarHeight );
 	} else if ( inputBottom > ( this.dimensions.scrollTop + this.dimensions.height ) ) {
@@ -1004,7 +1100,7 @@ ve.es.Surface.prototype.showCursor = function() {
 
 /**
  * Hides the cursor.
- * 
+ *
  * @method
  */
 ve.es.Surface.prototype.hideCursor = function() {
