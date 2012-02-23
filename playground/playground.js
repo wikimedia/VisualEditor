@@ -43,14 +43,14 @@ app = function () {
 };
 
 app.prototype.onKeyPress = function() {
-	console.log("onKeyPress");
+	//console.log("onKeyPress");
 };
 
 app.prototype.onKeyUp = function() {
 	//console.log("onKeyUp");
 	if ( this.inime ) {
 		this.inime = false;
-		console.log("inime = false");
+		//console.log("inime = false");
 	}
 };
 
@@ -59,7 +59,7 @@ app.prototype.onKeyDown = function( e ) {
 	//console.log("onKeyDown");
 	if ( e.which === 229 ) {
 		this.inime = true;
-		console.log("inime = true");
+		//console.log("inime = true");
 	}
 };
 
@@ -79,7 +79,7 @@ app.prototype.loopFunc = function() {
 		//console.log(text);
 		
 		if(this.keydown || this.inime) {
-			//console.log("change from keyboard");
+			console.log("change from keyboard");
 			// we are going to need a cursor position
 			var selection = rangy.getSelection();
 			var offset = this.getOffset( selection.anchorNode, selection.anchorOffset );
@@ -87,14 +87,11 @@ app.prototype.loopFunc = function() {
 			//console.log("diffLength: " + diffLength);
 			
 			if ( diffLength > 0 ) {
-				console.log( text.substring(offset - diffLength, offset) );	
+				//console.log( text.substring(offset - diffLength, offset) );	
 			} else if ( diffLength === 0 ) {
-				console.log( text.substring(offset - 1, offset) );
+				//console.log( text.substring(offset - 1, offset) );
 			}
-			
-			
-			
-			
+
 		} else {
 			console.log("change not from keyboard");
 			// find a change and commit to the model
