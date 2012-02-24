@@ -501,7 +501,7 @@ ve.es.Surface.prototype.onFocus = function( e ) {
 ve.es.Surface.prototype.onBlur = function( e ) {
 	//stop polling
 	if ( this.keyboard.readInterval ) {
-		clearInterval( this.readInterval );
+		clearInterval( this.keyboard.readInterval );
 	}
 };
 
@@ -695,7 +695,7 @@ ve.es.Surface.prototype.onKeyDown = function( e ) {
 			// Ignore chrome 229 IME event.
 			if (e.which !== 229) {
 				// Chunked insert
-				this.handleInsert( this.keyboard.chunkSize ); //three character chunk
+				this.handleInsert( this.keyboard.chunkSize );
 			}
 			break;
 	}
