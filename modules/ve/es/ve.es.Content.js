@@ -16,7 +16,7 @@
  * @param {Object} options List of options
  * @param {Boolean} options.pre Line breaks should be respected
  * @property {jQuery} $
- * @property {ve.ContentModel} model
+ * @property {ve.ModelNode} model
  * @property {Array} boundaries
  * @property {Array} lines
  * @property {Integer} width
