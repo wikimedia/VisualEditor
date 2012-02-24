@@ -32,37 +32,46 @@ app = function () {
 	this.$editor.html("<b>Lorem Ipsum is simply dummy text</b> of the printing and typesetting industry. <b>Lorem Ipsum has been the <i>industry's</i> standard</b> dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it <u>to <b>make <i>a type</i> specimen</b> book.</u>");
 	this.$editor.addClass('leafNode');
 
-	this.lastKeydown = null;
 	this.keydown = false;
 	this.keyup = false;
 	this.keypress = false;
 	this.mousedown = false;
-	this.diff = false;
-	this.prevText = app.getDOMText(this.$editor[0]);
-	this.prevOffset = null;
+
 	this.loop = false;
-	
 	this.logkey = false;
+
+	this.prevText = app.getDOMText(this.$editor[0]).replace(String.fromCharCode(32), " ").replace(String.fromCharCode(160), " ");
+	
+	this.prevHash = app.getDOMHash(this.$editor[0]);
+	console.log("Initial hash", this.prevHash);
+	
 };
 
 app.prototype.onKeyDown = function( e ) {
-	if(this.logkey) console.log("onKeyDown", e.which);
+	if ( this.logkey ) {
+		console.log("onKeyDown", e.which);
+	}
 	this.keydown = true;
-	this.lastKeydown = e.which;
 };
 
 app.prototype.onKeyUp = function( e ) {
-	if(this.logkey) console.log("onKeyUp", e.which);
+	if ( this.logkey ) {
+		console.log("onKeyUp", e.which);
+	}
 	this.keyup = true;
 };
 
 app.prototype.onKeyPress = function( e ) {
-	if(this.logkey) console.log("onKeyPress");
+	if ( this.logkey ) {
+		console.log("onKeyPress");
+	}
 	this.keypress = true;
 };
 
 app.prototype.onMouseDown = function( e ) {
-	if(this.logkey) console.log("onMouseDown");
+	if ( this.logkey ) {
+		console.log("onMouseDown");
+	}
 	this.mousedown = true;
 
 	if(this.loop == false) {
@@ -75,76 +84,26 @@ app.prototype.onMouseDown = function( e ) {
 
 app.prototype.loopFunc = function() {
 	var text = app.getDOMText(this.$editor[0]).replace(String.fromCharCode(32), " ").replace(String.fromCharCode(160), " ");
+	var hash = app.getDOMHash(this.$editor[0]);
+
 	var selection = rangy.getSelection();
+
 	if ( !selection.anchorNode ) {
-		console.log("och");
 		return;
 	}
+
 	var offset = this.getOffset(selection.anchorNode, selection.anchorOffset);
 
 	if(text != this.prevText) {
-		var textDiffLength = text.length - this.prevText.length;
-		var offsetDiff = offset - this.prevOffset;
-		var sameFromLeft = 0;
-		var l = text.length;
-		while ( sameFromLeft < l && this.prevText[sameFromLeft] == text[sameFromLeft] ) {
-			++sameFromLeft;
-		}
-		
-
-		if(false) {
-			console.log("change start", sameFromLeft, offset);		
-			console.log("different content", textDiffLength);
-			console.log("different offset", offsetDiff);
-		}
-
-		if ( sameFromLeft != offset - textDiffLength ) {
-			console.log('spell');
-		}
-
-
-
-		
-		/*
-		else if(textDiffLength === -1 && offsetDiff === -1 && offset === sameFromLeft ) {
-			console.log("IME.1");
-		} else if(textDiffLength === 0 && offsetDiff === 0 && offset-1 === sameFromLeft ) {
-			console.log("IME.2");
-		} else if ( textDiffLength < 0 || ( offset - textDiffLength ) !== sameFromLeft ) {
-			console.log("SPELLCHECK");
-		} else {
-			console.log("!");
-		}
-		*/
-		
-		
-		
-		if ( textDiffLength !== offsetDiff ) {
-			//console.log("!!!!#####!!!!!");
-		}
-
-		if(!this.keydown) {
-			//console.log("## not keyboard");
-		} else {
-			//console.log("@@ keyboard");
-		}
-
-
-
-/*
-		if((this.keydown || this.keyup) && this.lastKeydown !== 229) {
-			console.log("");
-		} else {
-			console.log("Do NOT re-render");
-		}
-*/
+		console.log("new text");
 		this.prevText = text;
-		this.diff = true;
-	} else {
-		this.diff = false;
 	}
 	
-	this.prevOffset = offset;
+	if(hash != this.prevHash) {
+		console.log("new DOM", hash);
+		this.prevHash = hash;
+	}
+
 	this.keypress = false;
 	this.keyup = false;
 	this.keydown = false;
@@ -173,6 +132,23 @@ app.getDOMText = function( elem ) {
     }
 
     return ret;
+};
+
+app.getDOMHash = function( elem ) {
+    var nodeType = elem.nodeType,
+    	nodeName = elem.nodeName,
+        ret = '';
+
+	if ( nodeType === 3 || nodeType === 4 ) {
+		return '#';
+	} else if ( nodeType === 1 || nodeType === 9 ) {
+		ret += '<' + nodeName + '>';
+		for ( elem = elem.firstChild; elem; elem = elem.nextSibling) {
+        	ret += app.getDOMHash( elem );
+        }
+        ret += '</' + nodeName + '>';
+	}
+	return ret;
 };
 
 app.prototype.getOffset = function( localNode, localOffset ) {
