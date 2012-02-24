@@ -32,109 +32,123 @@ app = function () {
 	this.$editor.html("<b>Lorem Ipsum is simply dummy text</b> of the printing and typesetting industry. <b>Lorem Ipsum has been the <i>industry's</i> standard</b> dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it <u>to <b>make <i>a type</i> specimen</b> book.</u>");
 	this.$editor.addClass('leafNode');
 
+	this.lastKeydown = null;
 	this.keydown = false;
 	this.keyup = false;
 	this.keypress = false;
 	this.mousedown = false;
-	this.inime = false;
+	this.diff = false;
 	this.prevText = app.getDOMText(this.$editor[0]);
+	this.prevOffset = null;
+	this.loop = false;
 	
-	setInterval(function() {
-		_this.loopFunc();
-	}, 100);
+	this.logkey = false;
 };
 
 app.prototype.onKeyDown = function( e ) {
-	console.log("onKeyDown");
+	if(this.logkey) console.log("onKeyDown", e.which);
 	this.keydown = true;
-	if ( e.which === 229 ) {
-		this.inime = true;
-	}
+	this.lastKeydown = e.which;
 };
 
 app.prototype.onKeyUp = function( e ) {
-	console.log("onKeyUp");
+	if(this.logkey) console.log("onKeyUp", e.which);
 	this.keyup = true;
-	if ( this.inime ) {
-		this.inime = false;
-	}
 };
 
 app.prototype.onKeyPress = function( e ) {
-	//console.log("onKeyPress");
+	if(this.logkey) console.log("onKeyPress");
 	this.keypress = true;
-	if ( e.which === 229 ) {
-		this.inime = true;
-	}	
 };
 
 app.prototype.onMouseDown = function( e ) {
+	if(this.logkey) console.log("onMouseDown");
 	this.mousedown = true;
 
-	if ( this.inime ) {
-		this.inime = false;
+	if(this.loop == false) {
+		var _this = this;
+		setInterval(function() {
+			_this.loopFunc();
+		}, 100);		
 	}
 };
 
 app.prototype.loopFunc = function() {
-	var text = app.getDOMText(this.$editor[0]);
+	var text = app.getDOMText(this.$editor[0]).replace(String.fromCharCode(32), " ").replace(String.fromCharCode(160), " ");
+	var selection = rangy.getSelection();
+	if ( !selection.anchorNode ) {
+		console.log("och");
+		return;
+	}
+	var offset = this.getOffset(selection.anchorNode, selection.anchorOffset);
 
 	if(text != this.prevText) {
-
-		console.log("text is different");
+		var textDiffLength = text.length - this.prevText.length;
+		var offsetDiff = offset - this.prevOffset;
+		var sameFromLeft = 0;
+		var l = text.length;
+		while ( sameFromLeft < l && this.prevText[sameFromLeft] == text[sameFromLeft] ) {
+			++sameFromLeft;
+		}
 		
-		if(this.keydown) {
-			console.log("keyboard");
-		} else {
-			console.log("not keyboard");
+
+		if(false) {
+			console.log("change start", sameFromLeft, offset);		
+			console.log("different content", textDiffLength);
+			console.log("different offset", offsetDiff);
 		}
 
+		if ( sameFromLeft != offset - textDiffLength ) {
+			console.log('spell');
+		}
+
+
+
+		
+		/*
+		else if(textDiffLength === -1 && offsetDiff === -1 && offset === sameFromLeft ) {
+			console.log("IME.1");
+		} else if(textDiffLength === 0 && offsetDiff === 0 && offset-1 === sameFromLeft ) {
+			console.log("IME.2");
+		} else if ( textDiffLength < 0 || ( offset - textDiffLength ) !== sameFromLeft ) {
+			console.log("SPELLCHECK");
+		} else {
+			console.log("!");
+		}
+		*/
+		
+		
+		
+		if ( textDiffLength !== offsetDiff ) {
+			//console.log("!!!!#####!!!!!");
+		}
+
+		if(!this.keydown) {
+			//console.log("## not keyboard");
+		} else {
+			//console.log("@@ keyboard");
+		}
+
+
+
+/*
+		if((this.keydown || this.keyup) && this.lastKeydown !== 229) {
+			console.log("");
+		} else {
+			console.log("Do NOT re-render");
+		}
+*/
 		this.prevText = text;
+		this.diff = true;
+	} else {
+		this.diff = false;
 	}
 	
+	this.prevOffset = offset;
 	this.keypress = false;
 	this.keyup = false;
 	this.keydown = false;
 	this.mousedown = false;
-
-	/*
-
-		var selection = rangy.getSelection();
-
-
-
-		// keyup in IE
-		// keypress and keydown in FF and Chrome
-		if ( (($.browser.msie && !this.keyup) || (!$.browser.msie && !this.keypress && !this.mousedown)) && !this.inime ) {
-			console.log(this.inime);
-			console.log('SPELLCHECK');
-			this.prevText = text;
-			this.keypress = false;
-			this.keyup = false;
-			this.mousedown = false;
-			return;
-		}
-
-		console.log("keyboard");
-		// we are going to need a cursor position
-		var offset = this.getOffset( selection.anchorNode, selection.anchorOffset );
-		var diffLength = text.length - this.prevText.length;
-		//console.log("diffLength: " + diffLength);
-		
-		if ( diffLength > 0 ) {
-			//console.log( text.substring(offset - diffLength, offset) );	
-		} else if ( diffLength === 0 ) {
-			//console.log( text.substring(offset - 1, offset) );
-		}
-
-		
-		this.prevText = text;
-	}
-	this.keypress = false;
-	this.keyup = false;
-	this.keydown = false;
-	this.mousedown = false;
-	*/
 };
 
 app.getDOMText = function( elem ) {
@@ -158,7 +172,7 @@ app.getDOMText = function( elem ) {
         return elem.nodeValue;
     }
 
-    return ret; 
+    return ret;
 };
 
 app.prototype.getOffset = function( localNode, localOffset ) {
