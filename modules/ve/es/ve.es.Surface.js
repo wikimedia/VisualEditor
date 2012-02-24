@@ -380,9 +380,6 @@ ve.es.Surface.prototype.onMouseDown = function( e ) {
 			);
 			this.mouse.selectedRange = selection.clone();
 		}
-		//cancel ime mode by losing focus
-		this.$input.blur();
-		this.$input.focus();
 	}
 	
 	var _this = this;
@@ -407,6 +404,12 @@ ve.es.Surface.prototype.onMouseDown = function( e ) {
 		select();
 	}
 
+	//cancel input modes
+	this.resetText();
+	//end ime
+	this.$input.blur();
+	this.$input.focus();
+	this.showCursor();
 	return false;
 };
 
