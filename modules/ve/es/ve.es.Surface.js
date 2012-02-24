@@ -380,6 +380,7 @@ ve.es.Surface.prototype.onMouseDown = function( e ) {
 			);
 			this.mouse.selectedRange = selection.clone();
 		}
+		this.resetText();
 	}
 	
 	var _this = this;
@@ -403,9 +404,6 @@ ve.es.Surface.prototype.onMouseDown = function( e ) {
 	} else {
 		select();
 	}
-
-	//cancel input modes
-	this.resetText();
 	//end ime
 	this.$input.blur();
 	this.$input.focus();
