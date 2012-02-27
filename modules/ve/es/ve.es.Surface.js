@@ -1074,6 +1074,7 @@ ve.es.Surface.prototype.showCursor = function() {
 	} ).show();
 	this.$input.css({
 		'top': position.top,
+		'left': position.left,
 		'height': position.bottom - position.top
 	});
 
