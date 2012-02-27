@@ -23,91 +23,125 @@ app = function () {
 			$document.unbind( '.surfaceView' );
 		}
 	} );
+	
+	document.addEventListener( 'compositionstart', function( e ) {
+		_this.onCompositionStart( e );
+	} );
+	document.addEventListener( 'compositionend', function( e ) {
+		_this.onCompositionEnd( e );
+	} );
 
 	this.$editor.mousedown( function(e) {
 		return _this.onMouseDown( e );
 	} );
 
 	// Set initial content for the "editor"
-	this.$editor.html("<b>Lorem Ipsum is simply dummy text</b> of the printing and typesetting industry. <b>Lorem Ipsum has been the <i>industry's</i> standard</b> dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it <u>to <b>make <i>a type</i> specimen</b> book.</u>");
+//	this.$editor.html("<b>Lorem Ipsum is simply dummy text</b> of the printing and typesetting industry. <b>Lorem Ipsum has been the <i>industry's</i> standard</b> dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it <u>to <b>make <i>a type</i> specimen</b> book.</u>... New text...");
+	this.$editor.html("New book is good");
+//	this.$editor.html("... <b>w</b>");
 	this.$editor.addClass('leafNode');
 
-	this.keydown = false;
-	this.keyup = false;
-	this.keypress = false;
-	this.mousedown = false;
-
-	this.loop = false;
-	this.logkey = false;
-
-	this.prevText = app.getDOMText(this.$editor[0]).replace(String.fromCharCode(32), " ").replace(String.fromCharCode(160), " ");
-	
+	this.prevText = app.getDOMText2(this.$editor[0]);
 	this.prevHash = app.getDOMHash(this.$editor[0]);
-	console.log("Initial hash", this.prevHash);
-	
+	this.prevOffset = null;
+	this.inIME = false;
+
+	setInterval(function() {
+		_this.loopFunc();
+	}, 100);		
+};
+
+app.prototype.onCompositionStart = function( e ) {
+	console.log('inIME', true);
+	this.inIME = true;
+};
+
+app.prototype.onCompositionEnd = function( e ) {
+	console.log('inIME', false);
+	this.inIME = false;
 };
 
 app.prototype.onKeyDown = function( e ) {
-	if ( this.logkey ) {
-		console.log("onKeyDown", e.which);
-	}
-	this.keydown = true;
 };
 
 app.prototype.onKeyUp = function( e ) {
-	if ( this.logkey ) {
-		console.log("onKeyUp", e.which);
-	}
-	this.keyup = true;
 };
 
 app.prototype.onKeyPress = function( e ) {
-	if ( this.logkey ) {
-		console.log("onKeyPress");
-	}
-	this.keypress = true;
 };
 
 app.prototype.onMouseDown = function( e ) {
-	if ( this.logkey ) {
-		console.log("onMouseDown");
-	}
-	this.mousedown = true;
-
-	if(this.loop == false) {
-		var _this = this;
-		setInterval(function() {
-			_this.loopFunc();
-		}, 100);		
-	}
 };
 
 app.prototype.loopFunc = function() {
-	var text = app.getDOMText(this.$editor[0]).replace(String.fromCharCode(32), " ").replace(String.fromCharCode(160), " ");
-	var hash = app.getDOMHash(this.$editor[0]);
-
 	var selection = rangy.getSelection();
 
-	if ( !selection.anchorNode ) {
+	if ( !selection.anchorNode || selection.anchorNode.nodeName === 'BODY' ) {
+		return;
+	}
+	
+	if ( this.inIME === true ) {
 		return;
 	}
 
-	var offset = this.getOffset(selection.anchorNode, selection.anchorOffset);
+	var	text = app.getDOMText2( this.$editor[0] ),
+		hash = app.getDOMHash( this.$editor[0] ),
+		offset = this.getOffset( selection.anchorNode, selection.anchorOffset );
 
-	if(text != this.prevText) {
-		console.log("new text");
+	if ( text !== this.prevText ) {	
+		var	textDiffLength = text.length - this.prevText.length,
+			offsetDiff = offset - this.prevOffset,
+			sameFromLeft = 0,
+			sameFromRight = 0,
+			l = Math.max( this.prevText.length, text.length);
+
+		while ( sameFromLeft < l && this.prevText[sameFromLeft] == text[sameFromLeft] ) {
+			++sameFromLeft;
+		}
+		//if ( this.prevText.length > sameFromLeft ) {
+			//l = l - sameFromLeft;
+			console.log( this.prevText.charCodeAt(8));
+			console.log( text.charCodeAt(8));
+            while ( sameFromRight < l && this.prevText[this.prevText.length - 1 - sameFromRight] == text[text.length - 1 - sameFromRight] ) {
+                ++sameFromRight;
+			}
+		//}
+		
+		
+		
+		
+		if ( textDiffLength === offsetDiff && this.prevText.substring( 0, this.prevOffset ) === text.substring( 0, this.prevOffset ) ) {
+			console.log("keyboard", text.substring( this.prevOffset, offset ), this.prevOffset);
+		} else {
+			//console.log("spellcheck / autocorrect", text.substring( sameFromLeft, offset ) );
+			console.log('to delete', this.prevText.substring( sameFromLeft, this.prevText.length - sameFromRight), sameFromLeft );
+			console.log('to insert', text.substring( sameFromLeft, text.length - sameFromRight ), sameFromLeft );
+			
+		}
+		
+
+
+		console.log('textDiffLength', textDiffLength);
+		console.log('offsetDiff', offsetDiff);
+		console.log('prevOffset', this.prevOffset);
+		console.log('offset', offset);
+		console.log('sameFromLeft', sameFromLeft);
+		console.log('sameFromRight', sameFromRight);
+
 		this.prevText = text;
 	}
 	
-	if(hash != this.prevHash) {
-		console.log("new DOM", hash);
+	if ( hash !== this.prevHash ) {
 		this.prevHash = hash;
 	}
+	
+	this.prevOffset = offset;
 
-	this.keypress = false;
-	this.keyup = false;
-	this.keydown = false;
-	this.mousedown = false;
+};
+
+app.getDOMText2 = function( elem ) {
+	var regex = new RegExp("[" + String.fromCharCode(32) + String.fromCharCode(160) + "]", "g");		
+	return app.getDOMText( elem ).replace( regex, " " );
 };
 
 app.getDOMText = function( elem ) {
