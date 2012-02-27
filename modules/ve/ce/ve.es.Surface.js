@@ -46,6 +46,11 @@ ve.es.Surface = function( $container, model ) {
 		return _this.onMouseDown( e );
 	} );
 
+	// Prevent dragging text
+	this.$.bind('dragover drop', function(e) {
+		e.preventDefault();
+	});
+
 	/*
 	this.model.getDocument().on( 'update', function() {
 		_this.emitUpdate( 25 );
