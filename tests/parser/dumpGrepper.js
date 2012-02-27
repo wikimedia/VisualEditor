@@ -29,8 +29,6 @@ if (module === require.main) {
 		}
 	} ).argv;
 	
-	console.log( argv );
-
 	var flags = '';
 	if(argv.i) {
 		flags += 'i';
