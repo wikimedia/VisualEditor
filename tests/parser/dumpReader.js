@@ -4,6 +4,7 @@ var events = require('events'),
 
 function DumpReader() {
 	events.EventEmitter.call(this);
+	this.makeParser();
 }
 
 util.inherits(DumpReader, events.EventEmitter);
@@ -11,7 +12,8 @@ util.inherits(DumpReader, events.EventEmitter);
 /**
  * @param {Stream} stream input stream to read XML from
  */
-DumpReader.prototype.read = function(stream) {
+DumpReader.prototype.makeParser = function() {
+
 	var self = this;
 	var complete = false;
 
@@ -30,79 +32,74 @@ DumpReader.prototype.read = function(stream) {
 		boolNodes = flip(['minor', 'redirect']),
 		ignoreNodes = flip(['mediawiki', 'siteinfo', 'upload', 'thread']);
 
-	var parser = new libxml.SaxPushParser(function(cb) {
-		cb.onStartElementNS(function(elem, attrs, prefix, uri, namespaces) {
-			if (elem in ignoreNodes) {
-				// ...
-			} else if (elem == 'page') {
-				stack = [];
-				workspace = {};
-			} else if (elem == 'revision') {
-				stack.push(workspace);
-				workspace = {
-					page: workspace
-				};
-			} else if (elem in textNodes || elem in boolNodes) {
-				buffer = '';
-			} else {
-				stack.push(workspace);
-				workspace = {};
-			}
-		});
-
-		cb.onEndElementNS(function(elem, prefix, uri) {
-			// ping something!
-			if (elem == 'mediawiki') {
-				self.complete = true;
-				stream.pause();
-				self.emit('end', {});
-			} else if (elem == 'page') {
-				self.emit('page', workspace);
-				workspace = stack.pop();
-			} else if (elem == 'revision') {
-				self.emit('revision', workspace);
-				workspace = stack.pop();
-			} else if (elem in textNodes) {
-				workspace[elem] = buffer;
-			} else if (elem in boolNodes) {
-				workspace[elem] = true;
-			} else {
-				var current = workspace;
-				workspace = stack.pop();
-				workspace[elem] = current;
-			}
-		});
-		cb.onCharacters(function(chars) {
-			buffer += chars;
-		});
-		cb.onCdata(function(cdata) {
-			buffer += cdata;
-		});
-		cb.onEndDocument(function() {
-			// This doesn't seem to run...?
-			self.complete = true;
-			stream.pause();
-			self.emit('end', {});
-		})
-		cb.onError(function(err) {
-			self.emit('error', err);
-			// Should we.... stop reading now or what?
-		});
-
-		// Now, start reading the file in :D
-		stream.on('data', function(buffer) {
-			parser.push(buffer); // @fixme does this want bytes or chars?
-		});
-		stream.on('end', function() {
-			if (!complete) {
-				// uh-oh!
-				//self.emit('error', 'End of file before end of XML stream.');
-			}
-		});
-		stream.on('error', function(err) {
-			self.emit('error', err);
-		});
+	var parser = new libxml.SaxPushParser();
+	this.parser = parser;
+	parser.on('startElementNS', function(elem, attrs, prefix, uri, namespaces) {
+		//console.warn( 'elem: ' + elem );
+		if (elem in ignoreNodes) {
+			// ...
+		} else if (elem == 'page') {
+			//console.warn( 'starting page' );
+			stack = [];
+			workspace = {};
+		} else if (elem == 'revision') {
+			stack.push(workspace);
+			workspace = {
+				page: workspace
+			};
+		} else if (elem in textNodes || elem in boolNodes) {
+			buffer = '';
+		} else {
+			stack.push(workspace);
+			workspace = {};
+		}
 	});
+
+	parser.on( 'endElementNS', function(elem, prefix, uri) {
+		// ping something!
+		if (elem == 'mediawiki') {
+			self.complete = true;
+			//stream.pause();
+			self.emit('end', {});
+		} else if (elem == 'page') {
+			self.emit('page', workspace);
+			workspace = stack.pop();
+		} else if (elem == 'revision') {
+			self.emit('revision', workspace);
+			workspace = stack.pop();
+		} else if (elem in textNodes) {
+			workspace[elem] = buffer;
+		} else if (elem in boolNodes) {
+			workspace[elem] = true;
+		} else {
+			var current = workspace;
+			workspace = stack.pop();
+			workspace[elem] = current;
+		}
+	});
+
+	parser.on( 'characters', function(chars) {
+		buffer += chars;
+	});
+	parser.on( 'cdata', function(cdata) {
+		buffer += cdata;
+	});
+	parser.on( 'endDocument', function() {
+		// This doesn't seem to run...?
+		self.complete = true;
+		//stream.pause();
+		self.emit('end', {});
+	});
+	parser.on( 'error', function(err) {
+		self.emit('error', err);
+		// Should we.... stop reading now or what?
+	});
+
+};
+
+DumpReader.prototype.push = function( chunk ) {
+	//console.log( 'dr read' + chunk );
+	this.parser.push( chunk );
 };
 
 
@@ -127,6 +124,7 @@ if (module === require.main) {
 	});
 	console.log('Reading!');
 	process.stdin.setEncoding('utf8');
+
+	process.stdin.on('data', reader.push.bind(reader) );
 	process.stdin.resume();
-	reader.read(process.stdin);
 }
