@@ -27,6 +27,11 @@ if (module === require.main) {
 			description: 'Case-insensitive matching',
 			'boolean': true,
 			'default': false
+		},
+		'color': {
+			description: 'Highlight matched substring using color',
+			'boolean': true,
+			'default': true
 		}
 	} ).argv;
 	
@@ -43,12 +48,14 @@ if (module === require.main) {
 	reader.on( 'revision', grepper.grepRev.bind( grepper ) );
 	grepper.on( 'match', function ( revision, bits ) {
 		console.log( 'Match:' + revision.page.title );
-		for ( var i = 0, l = bits.length; i < l-1; i++ ) {
-			var m = bits[i+1].match( re )[0];
-			console.log( 'm: ' + m );
-			console.log( bits[i].substr(-40) + m.green + bits[i+1].substr( m.length, 40 ) );
+		for ( var i = 0, l = bits.length; i < l-1; i += 2 ) {
+			var m = bits[i+1];
+			if ( argv.color ) {
+				console.log( bits[i].substr(-40) + m.green + bits[i+2].substr( 0, 40 ) );
+			} else {
+				console.log( bits[i].substr(-40) + m + bits[i+2].substr( 0, 40 ) );
+			}
 		}
-		//console.log( bits.map( function ( s ) { return s.substr(0, 40) } ) );
 	} );
 	process.stdin.setEncoding('utf8');
 	process.stdin.on('data', reader.push.bind(reader) );
