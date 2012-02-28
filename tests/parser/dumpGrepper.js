@@ -47,8 +47,8 @@ if (module === require.main) {
 
 	reader.on( 'revision', grepper.grepRev.bind( grepper ) );
 	grepper.on( 'match', function ( revision, bits ) {
-		console.log( 'Match:' + revision.page.title );
 		for ( var i = 0, l = bits.length; i < l-1; i += 2 ) {
+			console.log( '== Match: [[' + revision.page.title + ']] ==' );
 			var m = bits[i+1];
 			if ( argv.color ) {
 				console.log( bits[i].substr(-40) + m.green + bits[i+2].substr( 0, 40 ) );

@@ -14,7 +14,7 @@ normaltags="$exts|$wiki|$html5s|$htmlold"
 
 #regexp="<(?!\/|$exts|$htmls)[^>]*>.*?<!--([^<]+|<(\/|$exts|$htmls)[^>]*>)*<\/(?!$exts|$htmls)[^>]*>"
 #regexp="&lt;(?!/|$normaltags)[^&]+&gt;[^&]+&lt;!--[^&-]*&lt;/(?!$normaltags)((?!&gt;).)+&gt;"
-regexp="</(?=[a-z])(?!$normaltags)[^&]+>"
+regexp="</(?=[a-z])(?!$normaltags)[^>]+>"
 #regexp="<(?!\/|$exts|$htmls)[^>]*>"
 
 #echo $regexp
