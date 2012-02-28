@@ -1,3 +1,9 @@
+/**
+ * A simple dump grepper based on the DumpReader module.
+ *
+ * @author Gabriel Wicke <gwicke@wikimedia.org>
+ */
+
 var dumpReader = require('./dumpReader.js'),
 	events = require('events'),
 	optimist = require('optimist'),
@@ -22,18 +28,23 @@ DumpGrepper.prototype.grepRev = function ( revision ) {
 module.exports.DumpGrepper = DumpGrepper;
 
 if (module === require.main) {
-	var argv = optimist.usage( 'Usage: $0 <regexp>', {
+	var argv = optimist.usage( 'Usage: zcat dump.xml.gz | $0 <regexp>', {
 		'i': {
 			description: 'Case-insensitive matching',
 			'boolean': true,
 			'default': false
 		},
 		'color': {
-			description: 'Highlight matched substring using color',
+			description: 'Highlight matched substring using color. Use --no-color to disable.',
 			'boolean': true,
 			'default': true
 		}
 	} ).argv;
+
+	if( argv.help ) {
+		optimist.showHelp();
+		process.exit( 0 );
+	}
 	
 	var flags = '';
 	if(argv.i) {
