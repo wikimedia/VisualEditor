@@ -37,7 +37,7 @@ app = function () {
 
 	// Set initial content for the "editor"
 //	this.$editor.html("<b>Lorem Ipsum is simply dummy text</b> of the printing and typesetting industry. <b>Lorem Ipsum has been the <i>industry's</i> standard</b> dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it <u>to <b>make <i>a type</i> specimen</b> book.</u>... New text...");
-	this.$editor.html("Ipsum <b>New book me<i>ss</i>age is good</b> Lorem");
+	this.$editor.html("This is a <span style='direction: rtl; unicode-bidi: bidi-override;'>bidirectional text</span> page. Let's see if this damn thing works!");
 //	this.$editor.html("... <b>w</b>");
 	this.$editor.addClass('leafNode');
 
