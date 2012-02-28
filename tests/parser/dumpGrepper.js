@@ -1,6 +1,7 @@
 var dumpReader = require('./dumpReader.js'),
 	events = require('events'),
-	optimist = require('optimist');
+	optimist = require('optimist'),
+	colors = require('colors');
 
 function DumpGrepper ( regexp ) {
 	// inherit from EventEmitter
@@ -16,7 +17,7 @@ DumpGrepper.prototype.grepRev = function ( revision ) {
 	if ( bits.length > 1 ) {
 		this.emit( 'match', revision, bits );
 	}
-}
+};
 
 module.exports.DumpGrepper = DumpGrepper;
 
@@ -34,14 +35,20 @@ if (module === require.main) {
 		flags += 'i';
 	}
 
+	var re = new RegExp( '(' + argv._[0] + ')', flags );
+
 	var reader = new dumpReader.DumpReader(),
-		grepper = new DumpGrepper( new RegExp( '(' + argv._[0] + ')', flags ) );
+		grepper = new DumpGrepper( re );
 
 	reader.on( 'revision', grepper.grepRev.bind( grepper ) );
 	grepper.on( 'match', function ( revision, bits ) {
-		console
-		console.log( 'Match:' + revision.page.title )
-		console.log( bits.map( function ( s ) { return s.substr(0, 40) } ) );
+		console.log( 'Match:' + revision.page.title );
+		for ( var i = 0, l = bits.length; i < l-1; i++ ) {
+			var m = bits[i+1].match( re )[0];
+			console.log( 'm: ' + m );
+			console.log( bits[i].substr(-40) + m.green + bits[i+1].substr( m.length, 40 ) );
+		}
+		//console.log( bits.map( function ( s ) { return s.substr(0, 40) } ) );
 	} );
 	process.stdin.setEncoding('utf8');
 	process.stdin.on('data', reader.push.bind(reader) );
