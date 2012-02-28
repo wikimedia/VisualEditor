@@ -19,6 +19,7 @@ var fs = require('fs'),
 	NoIncludeOnly				= require('./ext.core.NoIncludeOnly.js'),
 	IncludeOnly					= NoIncludeOnly.IncludeOnly,
 	NoInclude					= NoIncludeOnly.NoInclude,
+	OnlyInclude					= NoIncludeOnly.OnlyInclude,
 	QuoteTransformer            = require('./ext.core.QuoteTransformer.js').QuoteTransformer,
 	PostExpandParagraphHandler  = require('./ext.core.PostExpandParagraphHandler.js')
 																.PostExpandParagraphHandler,
@@ -144,6 +145,7 @@ ParserPipeline.prototype._transformers = {
 		// Synchronous in-order per input
 		sync01: 
 			[ 
+				OnlyInclude,
 				IncludeOnly, 
 				NoInclude
 				// Insert TokenCollectors for extensions here (don't expand

@@ -1523,6 +1523,7 @@ eolf = newline / eof
 // plain-text content.
 directive
   = comment
+  / nowiki
   / tplarg_or_template
   / htmlentity 
 

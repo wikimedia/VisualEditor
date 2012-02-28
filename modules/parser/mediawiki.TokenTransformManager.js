@@ -162,6 +162,18 @@ TokenTransformManager.prototype._resetTokenRank = function ( res, transformer ) 
 	}
 };
 
+TokenTransformManager.prototype.setTokensRank = function ( tokens, rank ) {
+	for ( var i = 0, l = tokens.length; i < l; i++ ) {
+		var token = tokens[i];
+		// convert string literal to string object
+		if ( token.constructor === String && token.rank === undefined ) {
+			tokens[i] = new String( token );
+			token = tokens[i];
+		}
+		token.rank = rank;
+	}
+};
+
 /**
  * Comparison for sorting transformations by ascending rank.
  */
@@ -251,6 +263,7 @@ TokenTransformManager.prototype._transformTagToken = function ( token, phaseEndR
  */
 TokenTransformManager.prototype._transformToken = function ( token, phaseEndRank, ts, cbOrPrevToken ) {
 	// prepend 'any' transformers
+	//this.env.dp('_transformToken', token);
 	var anyTrans = this.transformers.any;
 	if ( anyTrans.length ) {
 		ts = this.transformers.any.concat(ts);
@@ -264,6 +277,7 @@ TokenTransformManager.prototype._transformToken = function ( token, phaseEndRank
 			transformer = ts[i];
 			if ( res.token.rank && transformer.rank <= res.token.rank ) {
 				// skip transformation, was already applied.
+				//console.warn( 'skipping transform');
 				continue;
 			}
 			// Transform the token.
@@ -291,6 +305,9 @@ TokenTransformManager.prototype._transformToken = function ( token, phaseEndRank
 			}
 			res.token.rank = phaseEndRank; // need phase passed in!
 		}
+		//else {
+		//	this.env.dp( '_transformToken aborted', res );
+		//}
 
 	}
 	return res;

@@ -9,6 +9,10 @@
  *
  * Calls the passed-in callback with the collected tokens.
  *
+ * XXX: optionally support nested delimiters using a stack?
+ */
+
+/**
  * @class
  * @constructor
  * @param {Object} SyncTokenTransformManager to register with
