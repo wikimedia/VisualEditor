@@ -937,7 +937,7 @@ ve.es.Surface.prototype.insertFromInput = function( chunkSize ) {
 				1) Create method to detect end of RTL and move cursor the the right
 				2) moveCursor is breaking IME for the RTL language, need to add mode switching
 			 */
-			if( this.isRTL( val.charAt( val.length-1 ) ) ) {
+			if( this.isTextRTL( val.charAt( val.length-1 ) ) ) {
 				this.moveCursor('left', 'char');
 			}
 		}
