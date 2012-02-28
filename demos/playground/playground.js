@@ -37,7 +37,7 @@ app = function () {
 
 	// Set initial content for the "editor"
 //	this.$editor.html("<b>Lorem Ipsum is simply dummy text</b> of the printing and typesetting industry. <b>Lorem Ipsum has been the <i>industry's</i> standard</b> dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it <u>to <b>make <i>a type</i> specimen</b> book.</u>... New text...");
-	this.$editor.html("New book is good");
+	this.$editor.html("Ipsum <b>New book me<i>ss</i>age is good</b> Lorem");
 //	this.$editor.html("... <b>w</b>");
 	this.$editor.addClass('leafNode');
 
@@ -98,7 +98,7 @@ app.prototype.loopFunc = function() {
 		} else {
 			var	sameFromLeft = 0,
 				sameFromRight = 0,
-				l = Math.max( this.prevText.length, text.length );
+				l = text.length > this.prevText.length ? this.prevText.length : text.length; 
 
 			while ( sameFromLeft < l && this.prevText[sameFromLeft] == text[sameFromLeft] ) {
 				++sameFromLeft;
@@ -107,6 +107,8 @@ app.prototype.loopFunc = function() {
             while ( sameFromRight < l && this.prevText[this.prevText.length - 1 - sameFromRight] == text[text.length - 1 - sameFromRight] ) {
                 ++sameFromRight;
 			}
+			console.log('sameFromLeft', sameFromLeft);
+			console.log('sameFromRight', sameFromRight);
 			console.log('to delete', this.prevText.substring( sameFromLeft, this.prevText.length - sameFromRight), sameFromLeft );
 			console.log('to insert', text.substring( sameFromLeft, text.length - sameFromRight ), sameFromLeft );			
 		}
@@ -114,6 +116,7 @@ app.prototype.loopFunc = function() {
 	}
 	
 	if ( hash !== this.prevHash ) {
+		console.log("DOM hash is different");
 		this.prevHash = hash;
 	}
 	
