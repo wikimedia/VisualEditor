@@ -86,48 +86,30 @@ app.prototype.loopFunc = function() {
 
 	var	text = app.getDOMText2( this.$editor[0] ),
 		hash = app.getDOMHash( this.$editor[0] ),
-		offset = this.getOffset( selection.anchorNode, selection.anchorOffset );
+		offset = ( selection.anchorNode === selection.focusNode && selection.anchorOffset === selection.focusOffset ) ?  this.getOffset( selection.anchorNode, selection.anchorOffset ) : null;
 
-	if ( text !== this.prevText ) {	
-		var	textDiffLength = text.length - this.prevText.length,
-			offsetDiff = offset - this.prevOffset,
-			sameFromLeft = 0,
-			sameFromRight = 0,
-			l = Math.max( this.prevText.length, text.length);
+	if ( text !== this.prevText ) {
 
-		while ( sameFromLeft < l && this.prevText[sameFromLeft] == text[sameFromLeft] ) {
-			++sameFromLeft;
-		}
-		//if ( this.prevText.length > sameFromLeft ) {
-			//l = l - sameFromLeft;
-			console.log( this.prevText.charCodeAt(8));
-			console.log( text.charCodeAt(8));
+		var	lengthDiff = text.length - this.prevText.length,
+			offsetDiff = offset - this.prevOffset;
+
+		if ( lengthDiff === offsetDiff && offset !== null && this.prevOffset !== null ) {
+			console.log("new text", text.substring( this.prevOffset, offset ), this.prevOffset);
+		} else {
+			var	sameFromLeft = 0,
+				sameFromRight = 0,
+				l = Math.max( this.prevText.length, text.length );
+
+			while ( sameFromLeft < l && this.prevText[sameFromLeft] == text[sameFromLeft] ) {
+				++sameFromLeft;
+			}
+			l = l - sameFromLeft;
             while ( sameFromRight < l && this.prevText[this.prevText.length - 1 - sameFromRight] == text[text.length - 1 - sameFromRight] ) {
                 ++sameFromRight;
 			}
-		//}
-		
-		
-		
-		
-		if ( textDiffLength === offsetDiff && this.prevText.substring( 0, this.prevOffset ) === text.substring( 0, this.prevOffset ) ) {
-			console.log("keyboard", text.substring( this.prevOffset, offset ), this.prevOffset);
-		} else {
-			//console.log("spellcheck / autocorrect", text.substring( sameFromLeft, offset ) );
 			console.log('to delete', this.prevText.substring( sameFromLeft, this.prevText.length - sameFromRight), sameFromLeft );
-			console.log('to insert', text.substring( sameFromLeft, text.length - sameFromRight ), sameFromLeft );
-			
+			console.log('to insert', text.substring( sameFromLeft, text.length - sameFromRight ), sameFromLeft );			
 		}
-		
-
-
-		console.log('textDiffLength', textDiffLength);
-		console.log('offsetDiff', offsetDiff);
-		console.log('prevOffset', this.prevOffset);
-		console.log('offset', offset);
-		console.log('sameFromLeft', sameFromLeft);
-		console.log('sameFromRight', sameFromRight);
-
 		this.prevText = text;
 	}
 	
