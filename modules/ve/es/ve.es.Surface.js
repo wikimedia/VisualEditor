@@ -523,7 +523,6 @@ ve.es.Surface.prototype.readInput = function( _this ) {
 	Currently have Hebrew & and all Arabic except numbers
  */
 ve.es.Surface.prototype.isTextRTL = function( text ) {
-	//hebrew, and arabic
 	return /[\u0590–\u05FF\u0600-\u06FF\u0750—\u077F\u08A0—\u08FF\uFB50—\uFDFF\uFE70—\uFEFF]/.test( text );
 };
 
@@ -934,8 +933,9 @@ ve.es.Surface.prototype.insertFromInput = function( chunkSize ) {
 
 			
 			/*	Move the cursor left if RTL
-				TODO:	1) Create method to detect end of RTL and move cursor the the right
-						2) moveCursor is breaking IME for the RTL language, need to add mode switching
+				TODO:
+				1) Create method to detect end of RTL and move cursor the the right
+				2) moveCursor is breaking IME for the RTL language, need to add mode switching
 			 */
 			if( this.isRTL( val.charAt( val.length-1 ) ) ) {
 				this.moveCursor('left', 'char');
