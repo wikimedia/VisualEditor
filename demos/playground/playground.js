@@ -93,7 +93,7 @@ app.prototype.loopFunc = function() {
 		var	lengthDiff = text.length - this.prevText.length,
 			offsetDiff = offset - this.prevOffset;
 
-		if ( lengthDiff === offsetDiff && offset !== null && this.prevOffset !== null ) {
+		if ( lengthDiff === offsetDiff && offset !== null && this.prevOffset !== null && this.prevText.substring( 0, this.prevOffset ) === text.substring( 0, this.prevOffset ) ) {
 			console.log("new text", text.substring( this.prevOffset, offset ), this.prevOffset);
 		} else {
 			var	sameFromLeft = 0,
