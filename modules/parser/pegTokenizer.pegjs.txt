@@ -746,12 +746,11 @@ wikilink
     // class. Can we work out a static negative class instead?
     // XXX: Exclude uppercase chars from non-latin languages too!
     trail:(! [A-Z \t(),.:-] tc:text_char { return tc })* {
-      var obj = new TagTk( 'a', 
-                [
-                    new KV('data-mw-type', 'internal')
-                ] ),
+      var obj = new SelfclosingTagTk( 'wikilink' ),
           textTokens = [];
       obj.attribs.push( new KV('href', target) );
+
+      // Deal with content. XXX: Properly support pipe-trick etc
       if (lcontent && lcontent.length) {
           textTokens = lcontent;
           if (trail) {
@@ -765,8 +764,10 @@ wikilink
               textTokens = $.extend(true, [], target);
           }
       }
+
+      obj.attribs.push( new KV( 'content', flatten( textTokens ) ) );
       //console.warn( "XXX:" + pp([obj].concat(textTokens, [new EndTagTk( 'a' )])) );
-      return [obj].concat(textTokens, [new EndTagTk( 'a' )]);
+      return [obj];
   }
 
 link_text

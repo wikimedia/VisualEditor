@@ -26,6 +26,7 @@ var fs = require('fs'),
 	Sanitizer                   = require('./ext.core.Sanitizer.js').Sanitizer,
 	TemplateHandler             = require('./ext.core.TemplateHandler.js').TemplateHandler,
 	AttributeExpander            = require('./ext.core.AttributeExpander.js').AttributeExpander,
+	WikiLinkHandler             = require('./ext.core.LinkHandler.js').WikiLinkHandler,
 	Cite                        = require('./ext.Cite.js').Cite,
 	FauxHTML5                   = require('./mediawiki.HTML5TreeBuilder.node.js').FauxHTML5,
 	DOMPostProcessor            = require('./mediawiki.DOMPostProcessor.js').DOMPostProcessor,
@@ -165,7 +166,8 @@ ParserPipeline.prototype._transformers = {
 				// Expand attributes after templates to avoid expanding unused branches
 				// XXX: Should we support further processing after attribute
 				// expansion?
-				AttributeExpander
+				AttributeExpander,
+				WikiLinkHandler
 				/* ExtensionHandler1, */
 				/* ExtensionHandler2, */
 			],

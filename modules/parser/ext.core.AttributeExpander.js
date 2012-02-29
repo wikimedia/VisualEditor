@@ -65,6 +65,7 @@ AttributeExpander.prototype.onToken = function ( token, frame, cb ) {
 			return { async: true };
 		}
 	} else {
+		token.rank = this.rank;
 		return { token: token };
 	}
 };
@@ -80,6 +81,7 @@ AttributeExpander.prototype._returnAttributes = function ( expandData,
 	// Remove the target from the attributes
 	expandData.token.attribs = attributes;
 	if ( expandData.async ) {
+		expandData.token.rank = this.rank;
 		expandData.cb( [expandData.token], false );
 	}
 };
