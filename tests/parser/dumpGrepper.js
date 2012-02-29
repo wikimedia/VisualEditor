@@ -56,7 +56,7 @@ if (module === require.main) {
 		flags += 'i';
 	}
 
-	var re = new RegExp( '(' + argv._[0] + ')', flags );
+	var re = new RegExp( argv._[0], flags );
 
 	var reader = new dumpReader.DumpReader(),
 		grepper = new DumpGrepper( re );
