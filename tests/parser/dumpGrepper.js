@@ -19,9 +19,14 @@ DumpGrepper.prototype = new events.EventEmitter();
 DumpGrepper.prototype.constructor = DumpGrepper;
 
 DumpGrepper.prototype.grepRev = function ( revision ) {
-	var bits = revision.text.split( this.re );
-	if ( bits.length > 1 ) {
-		this.emit( 'match', revision, bits );
+	var result = this.re.exec( revision.text ),
+		matches = [];
+	while ( result ) {
+		matches.push( result );
+		result = this.re.exec( revision.text );
+	}
+	if ( matches.length ) {
+		this.emit( 'match', revision, matches );
 	}
 };
 
@@ -46,7 +51,7 @@ if (module === require.main) {
 		process.exit( 0 );
 	}
 	
-	var flags = '';
+	var flags = 'g';
 	if(argv.i) {
 		flags += 'i';
 	}
@@ -57,14 +62,21 @@ if (module === require.main) {
 		grepper = new DumpGrepper( re );
 
 	reader.on( 'revision', grepper.grepRev.bind( grepper ) );
-	grepper.on( 'match', function ( revision, bits ) {
-		for ( var i = 0, l = bits.length; i < l-1; i += 2 ) {
+	grepper.on( 'match', function ( revision, matches ) {
+		for ( var i = 0, l = matches.length; i < l; i++ ) {
 			console.log( '== Match: [[' + revision.page.title + ']] ==' );
-			var m = bits[i+1];
+			var m = matches[i];
+			//console.warn( JSON.stringify( m.index, null, 2 ) );
 			if ( argv.color ) {
-				console.log( bits[i].substr(-40) + m.green + bits[i+2].substr( 0, 40 ) );
+				console.log( 
+					revision.text.substr( m.index - 40, 40 ) + 
+					m[0].green + 
+					revision.text.substr( m.index + m[0].length, 40 ) );
 			} else {
-				console.log( bits[i].substr(-40) + m + bits[i+2].substr( 0, 40 ) );
+				console.log( 
+					revision.text.substr( m.index, -40 ) + 
+					m[0] + 
+					revision.text.substr( m.index + m[0].length, 40 ) );
 			}
 		}
 	} );
