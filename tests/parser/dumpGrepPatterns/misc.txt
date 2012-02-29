@@ -1,0 +1,4 @@
+# A collection of misc interesting regexps
+
+# Multi-line ISBN links (https://bugzilla.wikimedia.org/show_bug.cgi?id=29025)
+(?:(?:RFC|PMID)[ \t\n\r\f]*[\n\f\r]+[ \t\n\r\f]*([0-9]+)|ISBN[ \t\n\r\f]*[\n\f\r]+[ \t\n\r\f]*(\b(?:97[89][ -]?)?(?:[0-9][ -]?){9}[0-9Xx]\b))
