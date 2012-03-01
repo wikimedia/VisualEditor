@@ -123,11 +123,13 @@ ve.es.Surface.prototype.stopPolling = function() {
 
 ve.es.Surface.prototype.pollContent = function() {
 	if ( this.poll.compositionStart !== null && this.poll.compositionEnd !== null ) {
+
 		var	text = ve.es.Surface.getDOMText2( this.poll.node ),
 			hash = ve.es.Surface.getDOMHash( this.poll.node ),
 			localOffset = this.poll.compositionEnd;
 		this.poll.compositionStart = null;
 		this.poll.compositionEnd = null;
+
 	} else {
 		var rangySel = rangy.getSelection();
 
@@ -183,7 +185,7 @@ ve.es.Surface.prototype.pollContent = function() {
 				nodeOffset + 1 + this.poll.prevText.length - sameFromRight
 			) ) );
 			var newData = text.substring( sameFromLeft, text.length - sameFromRight ).split( '' ); 
-			var annotations = this.model.getDocument().getAnnotationsFromOffset( nodeOffset + 1 + sameFromLeft - 1 );
+			var annotations = this.model.getDocument().getAnnotationsFromOffset( nodeOffset + 1 + sameFromLeft );
 			ve.dm.DocumentNode.addAnnotationsToData( newData, annotations );
 			this.model.transact( this.documentView.model.prepareInsertion(
 				nodeOffset + 1 + sameFromLeft,
@@ -293,6 +295,20 @@ ve.es.Surface.prototype.showCursorAt = function( offset ) {
 	var sel = window.getSelection();
 	sel.removeAllRanges();
 	sel.addRange(range);
+};
+
+ve.es.Surface.prototype.getSelection = function() {
+	var selection = rangy.getSelection();
+
+	if ( selection.anchorNode === selection.focusNode && selection.anchorOffset === selection.focusOffset ) {
+		var offset = this.getOffset( selection.anchorNode, selection.anchorOffset );
+		return new ve.Range( offset, offset );
+	} else {
+		return new ve.Range(
+			this.getOffset( selection.anchorNode, selection.anchorOffset ),
+			this.getOffset( selection.focusNode, selection.focusOffset )
+		);
+	}
 };
 
 ve.es.Surface.prototype.getLeafNode = function( elem ) {
