@@ -298,15 +298,15 @@ ve.es.Surface.prototype.showCursorAt = function( offset ) {
 };
 
 ve.es.Surface.prototype.getSelection = function() {
-	var selection = rangy.getSelection();
+	var rangySel = rangy.getSelection();
 
-	if ( selection.anchorNode === selection.focusNode && selection.anchorOffset === selection.focusOffset ) {
-		var offset = this.getOffset( selection.anchorNode, selection.anchorOffset );
+	if ( rangySel.anchorNode === rangySel.focusNode && rangySel.anchorOffset === rangySel.focusOffset ) {
+		var offset = this.getOffset( rangySel.anchorNode, rangySel.anchorOffset, true );
 		return new ve.Range( offset, offset );
 	} else {
 		return new ve.Range(
-			this.getOffset( selection.anchorNode, selection.anchorOffset ),
-			this.getOffset( selection.focusNode, selection.focusOffset )
+			this.getOffset( rangySel.anchorNode, rangySel.anchorOffset, true ),
+			this.getOffset( rangySel.focusNode, rangySel.focusOffset, true )
 		);
 	}
 };
