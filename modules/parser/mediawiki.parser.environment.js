@@ -1,3 +1,7 @@
+var title = require('./mediawiki.Title.js'),
+	Title = title.Title,
+	Namespace = title.Namespace;
+
 var MWParserEnvironment = function(opts) {
 	var options = {
 		tagHooks: {},
@@ -10,6 +14,7 @@ var MWParserEnvironment = function(opts) {
 		fetchTemplates: false,
 		maxDepth: 40
 	};
+	// XXX: this should be namespaced
 	$.extend(options, opts);
 	$.extend(this, options);
 };
@@ -65,7 +70,7 @@ MWParserEnvironment.prototype.KVtoHash = function ( kvs ) {
 	}
 	//console.warn( 'KVtoHash: ' + JSON.stringify( res ));
 	return res;
-}
+};
 
 // Does this need separate UI/content inputs?
 MWParserEnvironment.prototype.formatNum = function( num ) {
@@ -98,10 +103,38 @@ MWParserEnvironment.prototype.getTagHook = function( name ) {
 	}
 };
 
+
+MWParserEnvironment.prototype.makeTitleFromPrefixedText = function ( text ) {
+	text = this.normalizeTitle( text );
+	var nsText = text.split( ':', 1 )[0];
+	if ( nsText && nsText !== text ) {
+		var _ns = new Namespace(0);
+		var ns = _ns._defaultNamespaceIDs[ nsText.toLowerCase() ];
+		console.warn( JSON.stringify( [ nsText, ns ] ) );
+		if ( ns !== undefined ) {
+			return new Title( text.substr( nsText.length + 1 ), ns, nsText, this );
+		} else {
+			return new Title( text, 0, '', this );
+		}
+	} else {
+		return new Title( text, 0, this );
+	}
+};
+
+
+// XXX: move to Title!
 MWParserEnvironment.prototype.normalizeTitle = function( name ) {
 	if (typeof name !== 'string') {
 		throw new Error('nooooooooo not a string');
 	}
+	var forceNS;
+	if ( name.substr( 0, 1 ) === ':' ) {
+		forceNS = ':';
+		name = name.substr(1);
+	} else {
+		forceNS = '';
+	}
+
 	name = name.trim().replace(/[\s_]+/g, '_');
 
 	// Implement int: as alias for MediaWiki:
@@ -115,11 +148,18 @@ MWParserEnvironment.prototype.normalizeTitle = function( name ) {
 	}
 	
 	function upperFirst( s ) { return s.substr(0, 1).toUpperCase() + s.substr(1); }
-	name = name.split(':').map( upperFirst ).join(':');
+	// XXX: Do not uppercase all bits!
+	var ns = name.split(':', 1)[0];
+	if( ns !== '' && ns !== name ) {
+		name = upperFirst( ns ) + ':' + upperFirst( name.substr( ns.length + 1 ) );
+	} else {
+		name = upperFirst( name );
+	}
+	//name = name.split(':').map( upperFirst ).join(':');
 	//if (name === '') {
 	//	throw new Error('Invalid/empty title');
 	//}
-	return name;
+	return forceNS + name;
 };
 
 /**
