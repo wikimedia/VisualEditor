@@ -11,6 +11,7 @@ optimist
 pegjs
 querystring
 html5
+jshashes
 request (also required and automatically installed by jsdom)
 assert
 

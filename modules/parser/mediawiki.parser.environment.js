@@ -110,7 +110,7 @@ MWParserEnvironment.prototype.makeTitleFromPrefixedText = function ( text ) {
 	if ( nsText && nsText !== text ) {
 		var _ns = new Namespace(0);
 		var ns = _ns._defaultNamespaceIDs[ nsText.toLowerCase() ];
-		console.warn( JSON.stringify( [ nsText, ns ] ) );
+		//console.warn( JSON.stringify( [ nsText, ns ] ) );
 		if ( ns !== undefined ) {
 			return new Title( text.substr( nsText.length + 1 ), ns, nsText, this );
 		} else {

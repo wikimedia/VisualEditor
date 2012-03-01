@@ -8,10 +8,11 @@ function Title ( key, ns, nskey, env ) {
 }
 
 Title.prototype.makeLink = function () {
-	if ( this.nskey ) {
+	// XXX: links always point to the canonical namespace name.
+	if ( false && this.nskey ) {
 		return this.env.wgScriptPath + this.nskey + ':' + this.key;
 	} else {
-		return this.env.wgScriptPath + [this.ns.getDefaultName(), this.name].join(':');
+		return this.env.wgScriptPath + [this.ns.getDefaultName(), this.key].join(':');
 	}
 };
 
@@ -46,7 +47,7 @@ Namespace.prototype.getDefaultName = function ( ) {
 	if ( this.id == this._defaultNamespaceIDs.main ) {
 		return '';
 	} else {
-		return this._defaultNamespaceNames[this.id];
+		return this._defaultNamespaceNames[this.id.toString()];
 	}
 };
 

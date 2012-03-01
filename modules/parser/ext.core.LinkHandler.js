@@ -19,6 +19,8 @@
  * + noinclude etc handled automatically by having all tokens on content level
  */
 
+var jshashes = require('jshashes');
+
 function WikiLinkHandler( manager, isInclude ) {
 	this.manager = manager;
 	this.manager.addTransform( this.onWikiLink.bind( this ), this.rank, 'tag', 'wikilink' );
@@ -55,10 +57,23 @@ WikiLinkHandler.prototype.onWikiLink = function ( token, manager, cb ) {
 WikiLinkHandler.prototype.renderFile = function ( token, manager, cb, title ) {
 	// distinguish media types
 	// if image: parse options
-	var a = new TagTk( 'a', [ new KV( 'href', title.makeLink() ) ] );
-	a.attribs.push( new KV('data-mw-type', 'internal') );
-	var img = new SelfclosingTagTk( 'img', [ new KV( 'src', 
-				title.makeLink() ) ] );
+	// XXX: get /wiki from config!
+	var a = new TagTk( 'a', [ new KV( 'href', '/wiki' + title.makeLink() ) ] );
+
+	var MD5 = new jshashes.MD5,
+		hash = MD5.hex( title.key ),
+		path = 'http://example.com/images/' + 
+			[ hash[0], hash.substr(0, 2) ].join('/') + '/' + title.key;
+	
+	
+	var img = new SelfclosingTagTk( 'img', 
+			[ 
+				new KV( 'height', '220' ),
+				new KV( 'width', '1941' ),
+				new KV( 'src', path ),
+				new KV( 'alt', title.key ),
+
+			] );
 	return { tokens: [ a, img, new EndTagTk( 'a' )] };
 };
 
