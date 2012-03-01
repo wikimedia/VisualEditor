@@ -23,6 +23,7 @@ ve.es.Surface = function( $container, model ) {
 		.addClass( 'es-surfaceView' )
 		.append( this.documentView.$ );
 	this.emitUpdateTimeout = undefined;
+	this.clipboard = {};
 
 	// Events
 	this.documentView.$.bind( {
@@ -40,6 +41,15 @@ ve.es.Surface = function( $container, model ) {
 			$document.unbind( '.ce-surfaceView' );
 		}
 	} );
+
+
+	this.$.on('cut copy', function( e ) {
+ 		_this.onCutCopy( e );
+ 	} );
+
+	this.$.on('paste', function( e ) {
+ 		_this.onPaste( e );
+ 	} );
 
 	this.$.mousedown( function(e) {
 //		return _this.onMouseDown( e );
@@ -73,6 +83,62 @@ ve.es.Surface = function( $container, model ) {
 };
 
 /* Methods */
+
+ve.es.Surface.prototype.onCutCopy = function( e ) {
+	console.log('cut/copy');
+	var _this = this,
+	rangySel = rangy.getSelection(),
+	key = rangySel.getRangeAt(0).toString().replace(/( |\r\n|\n|\r|\t)/gm,"");
+
+	_this.clipboard[key] = ve.copyArray( _this.documentView.model.getData( _this.getSelection() ) );
+
+	if ( event.type == 'cut' ) {
+		setTimeout( function() {
+			document.execCommand('undo', false, false);
+			var selection = _this.getSelection();
+			var tx = _this.model.getDocument().prepareRemoval( selection );
+			_this.model.transact( tx );
+			_this.showCursorAt( selection.start );
+		}, 1 );
+	}
+};
+
+ve.es.Surface.prototype.onPaste = function( e ) {
+	var _this = this,
+	insertionPoint = _this.getSelection().start,
+	node = rangy.getSelection().anchorNode;
+
+	$('#paste').html('').show().css( 'top', $(window).scrollTop() ).css(' left', $(window).scrollLeft() ).focus();
+
+	_this.stopPolling();
+
+	setTimeout( function() {
+
+		console.log('key is: ');
+		console.log(_this.clipboard);
+		console.log('paste is: ');
+		console.log( $('#paste').hide().text().replace(/( |\r\n|\n|\r|\t)/gm,"") );
+
+
+		var key = $('#paste').hide().text().replace(/( |\r\n|\n|\r|\t)/gm,"");
+
+		if ( _this.clipboard[key] ) {
+			// transact
+			var tx = _this.documentView.model.prepareInsertion( insertionPoint, _this.clipboard[key]);
+			_this.model.transact( tx );
+
+			// re-render
+			_this.getLeafNode( node ).data( 'view' ).renderContent();
+
+			// place cursor
+			_this.showCursorAt( insertionPoint + _this.clipboard[key].length );
+
+			_this.startPolling();
+		} else {
+			alert('i can only handle copy/paste from hybrid surface. sorry. :(');
+		}
+	}, 1 );
+};
 
 ve.es.Surface.prototype.onCompositionStart = function( e ) {
 	this.stopPolling();
