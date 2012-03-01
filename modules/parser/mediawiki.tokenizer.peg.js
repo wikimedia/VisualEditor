@@ -15,8 +15,6 @@ var PEG = require('pegjs'),
 	defines = require('./mediawiki.parser.defines.js');
 
 function PegTokenizer() {
-	var pegSrcPath = path.join( __dirname, 'pegTokenizer.pegjs.txt' );
-	this.src = fs.readFileSync( pegSrcPath, 'utf8' );
 }
 
 
@@ -35,6 +33,8 @@ PegTokenizer.src = false;
 PegTokenizer.prototype.process = function( text ) {
 	var out, err;
 	if ( !this.parser ) {
+		var pegSrcPath = path.join( __dirname, 'pegTokenizer.pegjs.txt' );
+		this.src = fs.readFileSync( pegSrcPath, 'utf8' );
 		// Only create a single parser, as parse() is a static method.
 		var parserSource = PEG.buildParser(this.src).toSource();
 		//console.warn( parserSource );

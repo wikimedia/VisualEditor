@@ -803,6 +803,78 @@ quote = "''" x:"'"* {
 }
 
 
+/**
+ * Image option productions, only called from the LinkHandler token stream
+ * transformer, and only for images.
+ */
+img_options = os:img_option* c:img_caption {
+	var options = {};
+    os = flatten( os );
+	for ( var i = 0, l = options.length; i < l; i++ ) {
+		var o = os[i];
+		options[o.k] = o.v;
+	}
+	options.options = os;
+	options.caption = c;
+	return options;
+}
+
+img_option 
+  = space*
+  (  
+      img_format
+    / img_dimensions
+    / img_halign
+    / img_valign
+    / img_link
+    / img_attribute
+  )
+  ("|" /  eof)
+
+img_format
+  = f:( 'border' / 'frameless' / 'frame' / 'thumb' / 'thumbnail' ) {
+      return new KV( 'format', f );
+  }
+
+img_dimensions 
+  = x:([0-9]+)? y:('x' [0-9]+)? 'px' {
+      if ( x === '' && y ) {
+          return new KV( 'height', y );
+      } else if ( y === '' && x ) {
+          return new KV( 'width', x );
+      } else {
+          return [ new KV( 'width', x ), new KV( 'height', y ) ];
+      }
+  }
+  / 'upright' { return [ new KV( 'width', 'upright' ) ] }
+
+img_halign
+  = a:( 'left' / 'right' / 'center' / 'none' ) {
+      return new KV( 'halign', a );
+  }
+
+img_valign
+  = a:( 'baseline' / 'sub' / 'super' / 'top' / 'text-top' 
+          / 'middle' / 'bottom' / 'text-bottom' ) {
+      return new KV( 'valign', a );
+  }
+
+// External link targets are already parsed as link tokens. If we can make
+// sure that those cleanly convert back to the original text, then we could
+// re-parse them here.
+img_link
+  = 'link=' t:urltext {
+      return new KV( 'link', t );
+  }
+
+img_attribute
+  = k:( 'page' / 'alt' / 'thumb' ) '=' t:preprocessor_text {
+      return new KV( k, t );
+  }
+
+// catch-all
+img_caption = .*
+
 
 /***********************************************************
  * Pre and xmlish tags
