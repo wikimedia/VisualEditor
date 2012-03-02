@@ -60,16 +60,18 @@ if (module === require.main) {
 
 	var reader = new dumpReader.DumpReader(),
 		grepper = new DumpGrepper( re ),
-		revisions = 0,
-		matches = 0;
+		stats = {
+			revisions: 0,
+			matches: 0
+		};
 
 	reader.on( 'revision', function ( revision ) {
-		revisions++;
+		stats.revisions++;
 		grepper.grepRev( revision );
 	} );
 
 	grepper.on( 'match', function ( revision, matches ) {
-		matches++;
+		stats.matches++;
 		for ( var i = 0, l = matches.length; i < l; i++ ) {
 			console.log( '== Match: [[' + revision.page.title + ']] ==' );
 			var m = matches[i];
@@ -91,14 +93,14 @@ if (module === require.main) {
 	process.stdin.on ( 'end' , function() {
 		// Print some stats
 		console.log( '################################################' );
-		console.log( 'Total revisions: ' + revisions );
-		console.log( 'Total matches: ' + matches );
-		console.log( 'Ratio: ' + (matches / revisions * 100) + '%' );
+		console.log( 'Total revisions: ' + stats.revisions );
+		console.log( 'Total matches: ' + stats.matches );
+		console.log( 'Ratio: ' + (stats.matches / stats.revisions * 100) + '%' );
 		console.log( '################################################' );
 	} );
 
-	process.stdin.setEncoding('utf8');
 	process.stdin.on('data', reader.push.bind(reader) );
+	process.stdin.setEncoding('utf8');
 	process.stdin.resume();
 
 
