@@ -58,6 +58,7 @@ WikiLinkHandler.prototype.renderFile = function ( token, manager, cb, title ) {
 
 	// XXX: get /wiki from config!
 	var a = new TagTk( 'a', [ new KV( 'href', '/wiki' + title.makeLink() ) ] );
+	a.dataAttribs = token.dataAttribs;
 
 	var MD5 = new jshashes.MD5(),
 		hash = MD5.hex( title.key ),
@@ -70,6 +71,8 @@ WikiLinkHandler.prototype.renderFile = function ( token, manager, cb, title ) {
 	var contentPos = token.dataAttribs.contentPos;
 	var optionSource = token.source.substr( contentPos[0], contentPos[1] - contentPos[0] );
 	console.log( 'optionSource: ' + optionSource );
+	// XXX: The trouble with re-parsing is the need to re-expand templates.
+	// Figure out often non-image links contain image-like parameters!
 	var options = this.imageParser.processImageOptions( optionSource );
 	//console.log( JSON.stringify( options, null, 2 ) );
 	// XXX: check if the file exists, generate thumbnail
@@ -77,10 +80,10 @@ WikiLinkHandler.prototype.renderFile = function ( token, manager, cb, title ) {
 	var img = new SelfclosingTagTk( 'img', 
 			[ 
 				// FIXME!
-				new KV( 'height', '220' ),
-				new KV( 'width', '1941' ),
+				new KV( 'height', options.height || '220' ),
+				new KV( 'width', options.width || '1941' ),
 				new KV( 'src', path ),
-				new KV( 'alt', title.key )
+				new KV( 'alt', options.alt || title.key )
 			] );
 
 	return { tokens: [ a, img, new EndTagTk( 'a' )] };
