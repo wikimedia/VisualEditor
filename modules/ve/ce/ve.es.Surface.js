@@ -69,7 +69,7 @@ ve.es.Surface = function( $container, model ) {
 
 	this.poll = {
 		interval: null,
-		frequency: 100,
+		frequency: 75,
 		node: null,
 		prevText: null,
 		prevHash: null,
@@ -217,6 +217,7 @@ ve.es.Surface.prototype.pollContent = function() {
 		}
 
 		if ( node !== this.poll.node ) {
+			// TODO: Read content from old node one more time
 			this.poll.node = node;
 			this.poll.prevText = text;
 			this.poll.prevHash = hash;
@@ -266,15 +267,7 @@ ve.es.Surface.prototype.pollContent = function() {
 		this.poll.prevText = text;
 	}
 	if ( hash !== this.poll.prevHash ) {
-		console.log("hash mismatch", text, hash);
 		// TODO: redisplay cursor in correct position (with setTimeout)
-		/*
-		this.stopPolling();
-		var _this = this;
-		setTimeout(function() {
-			_this.startPolling();
-		}, 500);
-		*/
 		this.getLeafNode( this.poll.node ).data( 'view' ).renderContent();
 		this.poll.prevHash = hash;
 	}
@@ -284,6 +277,21 @@ ve.es.Surface.prototype.pollContent = function() {
 
 ve.es.Surface.prototype.onKeyDown = function( e ) {
 	switch ( e.keyCode ) {
+		// Enter
+		case 13:
+			this.handleEnter();
+			e.preventDefault();
+			break;
+		// Backspace
+		case 8:
+			this.handleDelete( true );
+			e.preventDefault();
+			break;
+		// Delete
+		case 46:
+			this.handleDelete( false );
+			e.preventDefault();
+			break;
 		// Left arrow
 		case 37:
 			var rangySel = rangy.getSelection();
@@ -313,6 +321,12 @@ ve.es.Surface.prototype.onKeyDown = function( e ) {
 			}
 			break;
 	}
+	/*
+	var range = this.getSelection();
+	if ( range.getLength() !== 0 ) {
+		e.preventDefault();
+	}
+	*/
 };
 
 ve.es.Surface.prototype.getOffset = function( elem, offset, global ) {
@@ -408,17 +422,20 @@ ve.es.Surface.prototype.showCursorAt = function( offset ) {
 };
 
 ve.es.Surface.prototype.getSelection = function() {
-	var rangySel = rangy.getSelection();
+	var rangySel = rangy.getSelection(),
+		range;
 
 	if ( rangySel.anchorNode === rangySel.focusNode && rangySel.anchorOffset === rangySel.focusOffset ) {
 		var offset = this.getOffset( rangySel.anchorNode, rangySel.anchorOffset, true );
-		return new ve.Range( offset, offset );
+		range = new ve.Range( offset, offset );
 	} else {
-		return new ve.Range(
+		range = new ve.Range(
 			this.getOffset( rangySel.anchorNode, rangySel.anchorOffset, true ),
 			this.getOffset( rangySel.focusNode, rangySel.focusOffset, true )
 		);
 	}
+	range.normalize();
+	return range;
 };
 
 ve.es.Surface.prototype.getLeafNode = function( elem ) {
@@ -475,6 +492,143 @@ ve.es.Surface.getDOMHash = function( elem ) {
         ret += '</' + nodeName + '>';
 	}
 	return ret;
+};
+
+ve.es.Surface.prototype.handleDelete = function( backspace, isPartial ) {
+	this.stopPolling();
+	var selection = this.getSelection().clone(),
+		sourceOffset,
+		targetOffset,
+		sourceSplitableNode,
+		targetSplitableNode,
+		tx,
+		cursorAt;
+//	this.resetText();
+	if ( selection.from === selection.to ) {
+		if ( backspace ) {
+			sourceOffset = selection.to;
+			targetOffset = this.model.getDocument().getRelativeContentOffset(
+				sourceOffset,
+				-1
+			);
+		} else {
+			sourceOffset = this.model.getDocument().getRelativeContentOffset(
+				selection.to,
+				1
+			);
+			targetOffset = selection.to;
+		}
+
+		var	sourceNode = this.documentView.getNodeFromOffset( sourceOffset, false ),
+			targetNode = this.documentView.getNodeFromOffset( targetOffset, false );
+	
+		if ( sourceNode.model.getElementType() === targetNode.model.getElementType() ) {
+			sourceSplitableNode = ve.es.Node.getSplitableNode( sourceNode );
+			targetSplitableNode = ve.es.Node.getSplitableNode( targetNode );
+		}
+
+		cursorAt = targetOffset;
+		
+		if ( sourceNode === targetNode ||
+			( typeof sourceSplitableNode !== 'undefined' &&
+			sourceSplitableNode.getParent()  === targetSplitableNode.getParent() ) ) {
+			tx = this.model.getDocument().prepareRemoval(
+				new ve.Range( targetOffset, sourceOffset )
+			);
+			this.model.transact( tx );
+		} else {
+			tx = this.model.getDocument().prepareInsertion(
+				targetOffset, sourceNode.model.getContentData()
+			);
+			this.model.transact( tx );
+			
+			var nodeToDelete = sourceNode;
+			ve.Node.traverseUpstream( nodeToDelete, function( node ) {
+				if ( node.getParent().children.length === 1 ) {
+					nodeToDelete = node.getParent();
+					return true;
+				} else {
+					return false;
+				}
+			} );
+			var range = new ve.Range();
+			range.from = this.documentView.getOffsetFromNode( nodeToDelete, false );
+			range.to = range.from + nodeToDelete.getElementLength();
+			tx = this.model.getDocument().prepareRemoval( range );
+			this.model.transact( tx  );
+		}
+	} else {
+		// selection removal
+		tx = this.model.getDocument().prepareRemoval( selection );
+		this.model.transact( tx );
+		cursorAt = selection.start;
+	}
+	this.documentView.renderContent();
+	this.showCursorAt(cursorAt);
+	var _this = this;
+	setTimeout( function() {
+		_this.poll.prevText = _this.poll.prevHash = _this.poll.prevOffset = _this.poll.node = null;
+		_this.startPolling();
+	}, 0 );
+	
+};
+
+ve.es.Surface.prototype.handleEnter = function() {
+	this.stopPolling();
+	var selection = this.getSelection().clone(),
+		tx;
+	if ( selection.from !== selection.to ) {
+		this.handleDelete( false, true );
+	}
+	var	node = this.documentView.getNodeFromOffset( selection.to, false ),
+		nodeOffset = this.documentView.getOffsetFromNode( node, false );
+
+	if (
+		nodeOffset + node.getContentLength() + 1 === selection.to &&
+		node ===  ve.es.Node.getSplitableNode( node )
+	) {
+		tx = this.documentView.model.prepareInsertion(
+			nodeOffset + node.getElementLength(),
+			[ { 'type': 'paragraph' }, { 'type': '/paragraph' } ]
+		);
+		this.model.transact( tx );
+		selection.from = selection.to = nodeOffset + node.getElementLength() + 1;
+	} else {
+		var	stack = [],
+			splitable = false;
+
+		ve.Node.traverseUpstream( node, function( node ) {
+			var elementType = node.model.getElementType();
+			if (
+				splitable === true &&
+				ve.es.DocumentNode.splitRules[ elementType ].children === true
+			) {
+				return false;
+			}
+			stack.splice(
+				stack.length / 2,
+				0,
+				{ 'type': '/' + elementType },
+				{
+					'type': elementType,
+					'attributes': ve.copyObject( node.model.element.attributes )
+				}
+			);
+			splitable = ve.es.DocumentNode.splitRules[ elementType ].self;
+			return true;
+		} );
+		tx = this.documentView.model.prepareInsertion( selection.to, stack );
+		this.model.transact( tx );
+		selection.from = selection.to =
+			this.model.getDocument().getRelativeContentOffset( selection.to, 1 );
+	}
+	this.documentView.renderContent();
+	this.showCursorAt(selection.to);
+	var _this = this;
+	setTimeout( function() {
+		_this.poll.prevText = _this.poll.prevHash = _this.poll.prevOffset = _this.poll.node = null;
+		_this.startPolling();
+	}, 0 );
 };
 
 /* Inheritance */
