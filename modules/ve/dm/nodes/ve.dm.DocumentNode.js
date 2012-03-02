@@ -723,9 +723,13 @@ ve.dm.DocumentNode.prototype.getAnnotationBoundaries = function( offset, annotat
  * @param {Integer} offset Offset to get annotations for
  * @returns {Object[]} A copy of all annotation objects offset is covered by
  */
-ve.dm.DocumentNode.prototype.getAnnotationsFromOffset = function( offset ) {
+ve.dm.DocumentNode.prototype.getAnnotationsFromOffset = function( offset, byref ) {
 	if ( ve.isArray( this.data[offset] ) ) {
-		return ve.copyArray( this.data[offset].slice( 1 ) );
+		if ( byref === true ) {
+			return this.data[offset].slice( 1 );	
+		} else {
+			return ve.copyArray( this.data[offset].slice( 1 ) );
+		}
 	}
 	return [];
 };
