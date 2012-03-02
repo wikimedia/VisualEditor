@@ -218,9 +218,9 @@ test( 've.dm.DocumentNode.prepareElementAttributeChange', 4, function() {
 
 	// Test 1
 	deepEqual(
-		documentModel.prepareElementAttributeChange( 0, 'set', 'test', 1234 ).getOperations(),
+		documentModel.prepareElementAttributeChange( 0, 'test', 1234 ).getOperations(),
 		[
-			{ 'type': 'attribute', 'method': 'set', 'key': 'test', 'value': 1234  },
+			{ 'type': 'attribute', 'key': 'test', 'from': undefined, 'to': 1234  },
 			{ 'type': 'retain', 'length': 34 }
 		],
 		'prepareElementAttributeChange retains data after attribute change for first element'
@@ -228,10 +228,10 @@ test( 've.dm.DocumentNode.prepareElementAttributeChange', 4, function() {
 	
 	// Test 2
 	deepEqual(
-		documentModel.prepareElementAttributeChange( 5, 'set', 'test', 1234 ).getOperations(),
+		documentModel.prepareElementAttributeChange( 5, 'test', 1234 ).getOperations(),
 		[
 			{ 'type': 'retain', 'length': 5 },
-			{ 'type': 'attribute', 'method': 'set', 'key': 'test', 'value': 1234 },
+			{ 'type': 'attribute', 'key': 'test', 'from': undefined, 'to': 1234 },
 			{ 'type': 'retain', 'length': 29 }
 		],
 		'prepareElementAttributeChange retains data before and after attribute change'

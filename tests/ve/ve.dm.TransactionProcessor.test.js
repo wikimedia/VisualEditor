@@ -8,7 +8,7 @@ test( 've.dm.TransactionProcessor', 31, function() {
 	// We should be creating transactions directly and feeding those into
 	// commit()/rollback() --Roan
 	var elementAttributeChange = documentModel.prepareElementAttributeChange(
-		0, 'set', 'test', 1
+		0, 'test', 1
 	);
 
 	// Test 1
