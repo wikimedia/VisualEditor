@@ -42,26 +42,30 @@ ve.es.Surface = function( $container, model ) {
 		}
 	} );
 
-
-	this.$.on('cut copy', function( e ) {
- 		_this.onCutCopy( e );
- 	} );
-
-	this.$.on('paste', function( e ) {
- 		_this.onPaste( e );
- 	} );
-
-	this.$.mousedown( function(e) {
-//		return _this.onMouseDown( e );
-	} );
+	this.$
+		.on( 'cut copy', function( e ) {
+ 			_this.onCutCopy( e );
+ 		} )
+		.on( 'paste', function( e ) {
+	 		_this.onPaste( e );
+	 	} )
+		.on( 'mousedown', function( e ) {
+			// return _this.onMouseDown( e );
+		} )
+		.on( 'compositionstart', function( e ) {
+			console.log('comp start');
+			_this.onCompositionStart( e );
+		} )
+		.on( 'compositionend', function( e ) {
+			console.log('comp end');
+			_this.onCompositionEnd( e );
+		} )
+		.on('dragover drop', function( e ) {
+			e.preventDefault();
+		});
 
 	// Initialization
 	this.documentView.renderContent();
-
-	// Prevent dragging text
-	this.$.bind('dragover drop', function(e) {
-		e.preventDefault();
-	});
 
 	this.poll = {
 		interval: null,
@@ -73,19 +77,11 @@ ve.es.Surface = function( $container, model ) {
 		compositionStart: null,
 		compositionEnd: null
 	};
-
-	document.addEventListener( 'compositionstart', function( e ) {
-		_this.onCompositionStart( e );
-	} );
-	document.addEventListener( 'compositionend', function( e ) {
-		_this.onCompositionEnd( e );
-	} );
 };
 
 /* Methods */
 
 ve.es.Surface.prototype.onCutCopy = function( e ) {
-	console.log('cut/copy');
 	var _this = this,
 		rangySel = rangy.getSelection(),
 		key = rangySel.getRangeAt(0).toString().replace(/\s/gm,"");
