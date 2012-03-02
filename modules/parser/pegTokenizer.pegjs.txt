@@ -292,6 +292,27 @@
     // Start position of generic tag production
     var tagStartPos = 0;
 
+    // Stack of source positions
+    var posStack = {
+        positions: {},
+        push: function( key, pos ) {
+            if ( this.positions[key] === undefined ) {
+                this.positions[key] = [pos];
+            } else {
+                this.positions[key].push( pos );
+            }
+            return true;
+        }, 
+        pop: function( key, pos ) {
+            var pk = this.positions[key];
+            if ( pk === undefined || ! pk.length ) {
+                throw "Tried to pop unknown position for " + key;
+            } else {
+                return [ pk.pop(), pos ];
+            }
+        } 
+    };
+
     // cache the input length
     var inputLength = input.length;
 
@@ -736,23 +757,40 @@ template_param_text
 
 // TODO: handle link prefixes as in al[[Razi]]
 wikilink
-  = "[[" 
+  = & { return posStack.push('wikilink' , pos); }
+    "[[" 
     ! url
     //target:link_target 
+    // XXX: disallow pipe!
     target:wikilink_preprocessor_text
-    lcontent:( "|" lt:link_text { return lt } )* 
+    lcontent:( 
+               & { return posStack.push('lcontent' , pos); }
+               lcs:( "|" lt:link_text { return lt; } )+ { 
+                   return { pos: posStack.pop('lcontent' , pos), content: lcs };
+               }
+            
+             / { 
+                 return { pos: posStack.pop('lcontent' , pos), content: null };
+               }
+             )
     "]]" 
     // XXX In real MediaWiki, this is a language-dependent positive character
     // class. Can we work out a static negative class instead?
     // XXX: Exclude uppercase chars from non-latin languages too!
-    trail:(! [A-Z \t(),.:-] tc:text_char { return tc })* {
+    trail:( ![A-Z \t(),.:-] tc:text_char { return tc } )* {
       var obj = new SelfclosingTagTk( 'wikilink' ),
           textTokens = [];
       obj.attribs.push( new KV('href', target) );
+      obj.dataAttribs = { 
+          sourcePos: posStack.pop( 'wikilink', pos ),
+          contentPos: lcontent.pos
+      };
+      // XXX: Point to object with path, revision and input information
+      obj.source = input;
 
       // Deal with content. XXX: Properly support pipe-trick etc
-      if (lcontent && lcontent.length) {
-          textTokens = lcontent;
+      if (lcontent.content && lcontent.content.length) {
+          textTokens = lcontent.content;
           if (trail) {
             textTokens.push( trail.join('') );
           }
@@ -769,6 +807,7 @@ wikilink
       //console.warn( "XXX:" + pp([obj].concat(textTokens, [new EndTagTk( 'a' )])) );
       return [obj];
   }
+  / ! { return posStack.pop( 'wikilink', pos ); }
 
 link_text
   = & { return setFlag('linkdesc'); }
@@ -807,37 +846,43 @@ quote = "''" x:"'"* {
  * Image option productions, only called from the LinkHandler token stream
  * transformer, and only for images.
  */
-img_options = os:img_option* c:img_caption {
+img_options = 
+  & { return setFlag( 'pipe' ); }
+  os:img_option* {
+    clearFlag( 'pipe' );
 	var options = {};
     os = flatten( os );
-	for ( var i = 0, l = options.length; i < l; i++ ) {
+	for ( var i = 0, l = os.length; i < l; i++ ) {
 		var o = os[i];
 		options[o.k] = o.v;
 	}
-	options.options = os;
-	options.caption = c;
+	options._options = os;
 	return options;
 }
+/ & { return clearFlag( 'pipe' ); }
 
 img_option 
-  = space*
-  (  
-      img_format
+  = "|" space*
+  o:(  
+      img_attribute
+    / img_format
     / img_dimensions
     / img_halign
     / img_valign
     / img_link
-    / img_attribute
+    / lt:link_text { return new KV('caption', lt) }
   )
-  ("|" /  eof)
+  space* { 
+      return o 
+  };
 
 img_format
-  = f:( 'border' / 'frameless' / 'frame' / 'thumb' / 'thumbnail' ) {
+  = f:( 'border' / 'frameless' / 'frame' / 'thumbnail' / 'thumb' ) {
       return new KV( 'format', f );
   }
 
 img_dimensions 
-  = x:([0-9]+)? y:('x' [0-9]+)? 'px' {
+  = x:(n:[0-9]+ { return n.join('') })? y:('x' n:[0-9]+ { return n.join('') })? 'px' {
       if ( x === '' && y ) {
           return new KV( 'height', y );
       } else if ( y === '' && x ) {
@@ -863,17 +908,23 @@ img_valign
 // sure that those cleanly convert back to the original text, then we could
 // re-parse them here.
 img_link
-  = 'link=' t:urltext {
-      return new KV( 'link', t );
-  }
+  = 'link=' space* 
+    u:( 
+        t:url {
+            clearFlag( 'pipe' );
+            return t;
+        }
+        / & { return clearFlag( 'pipe' ); }
+      ) 
+{
+      return new KV( 'link', u );
+}
 
 img_attribute
-  = k:( 'page' / 'alt' / 'thumb' ) '=' t:preprocessor_text {
+  = k:( 'page' / 'alt' / 'thumbnail' / 'thumb' ) '=' t:preprocessor_text? {
       return new KV( k, t );
   }
 
-// catch-all
-img_caption = .*
 
 
 /***********************************************************

@@ -53,6 +53,9 @@ WikiLinkHandler.prototype.renderFile = function ( token, manager, cb, title ) {
 	var env = manager.env;
 	// distinguish media types
 	// if image: parse options
+	
+	var content = env.lookupKV( token.attribs, 'content' ).v;
+
 	// XXX: get /wiki from config!
 	var a = new TagTk( 'a', [ new KV( 'href', '/wiki' + title.makeLink() ) ] );
 
@@ -64,7 +67,11 @@ WikiLinkHandler.prototype.renderFile = function ( token, manager, cb, title ) {
 	
 	
 	// XXX: parse options
-	var options = this.parseImageOptions( env.lookupKV( token.attribs, 'content' ) );
+	var contentPos = token.dataAttribs.contentPos;
+	var optionSource = token.source.substr( contentPos[0], contentPos[1] - contentPos[0] );
+	console.log( 'optionSource: ' + optionSource );
+	var options = this.imageParser.processImageOptions( optionSource );
+	//console.log( JSON.stringify( options, null, 2 ) );
 	// XXX: check if the file exists, generate thumbnail
 	// XXX: render according to mode (inline, thumb, framed etc)
 	var img = new SelfclosingTagTk( 'img', 
@@ -80,8 +87,29 @@ WikiLinkHandler.prototype.renderFile = function ( token, manager, cb, title ) {
 };
 
 WikiLinkHandler.prototype.parseImageOptions = function ( tokens ) {
-	var text = this.manager.env.tokensToString( tokens );
+	var out = [],
+		s = '';
 
+	for ( var i = 0, l = tokens.length; i < l; i++ ) {
+		var token = tokens[i];
+		if ( token.constructor === String ) {
+			s += token;
+		} else if ( token.type === 'NEWLINE' ) {
+			s += '\n'; // XXX: preserve original newline
+		} else if ( token.type === 'COMMENT' ) {
+			// strip it
+		} else {
+			var res = this.imageParser.processImageOptions( s, 'img_options' ),
+				last = res.last();
+
+			if ( res.last().k !== 'caption' ) {
+				last.v.push = [last.v, token];
+			}
+			out.push( s );
+			s = '';
+			out.push(token);
+		}
+	}
 };
 
 if (typeof module == "object") {

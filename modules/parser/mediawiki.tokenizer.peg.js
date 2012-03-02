@@ -67,6 +67,9 @@ PegTokenizer.prototype.process = function( text ) {
 	//}
 };
 
+PegTokenizer.prototype.processImageOptions = function( text ) {
+		return this.parser.parse(text, 'img_options', null, this );
+};
 
 /*
  * Inline breaks, flag-enabled production which detects end positions for
@@ -82,7 +85,8 @@ PegTokenizer.prototype.inline_breaks = function (input, pos, syntaxFlags ) {
 				  input.substr( pos + 1, 200)
 				  .match(/[ \t]*[\r\n]/) !== null ) || null;
 		case '|':
-			return syntaxFlags.template ||
+			return syntaxFlags.pipe ||
+					syntaxFlags.template ||
 				( syntaxFlags.table &&
 				  ( input[pos + 1].match(/[|}]/) !== null ||
 					syntaxFlags.tableCellArg
