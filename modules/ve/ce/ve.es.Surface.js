@@ -50,7 +50,7 @@ ve.es.Surface = function( $container, model ) {
 	 		_this.onPaste( e );
 	 	} )
 		.on( 'mousedown', function( e ) {
-			// return _this.onMouseDown( e );
+			 return _this.onMouseDown( e );
 		} )
 		.on( 'compositionstart', function( e ) {
 			console.log('comp start');
@@ -275,7 +275,20 @@ ve.es.Surface.prototype.pollContent = function() {
 	this.poll.prevOffset = localOffset;
 };
 
+ve.es.Surface.prototype.onMouseDown = function( e ) {
+	if ( this.poll.interval !== null ) {
+		this.stopPolling();
+		this.pollContent();
+		this.startPolling();
+	}
+};
+
 ve.es.Surface.prototype.onKeyDown = function( e ) {
+	if ( this.poll.interval !== null ) {
+		this.stopPolling();
+		this.pollContent();
+		this.startPolling();
+	}
 	switch ( e.keyCode ) {
 		// Enter
 		case 13:
@@ -321,12 +334,10 @@ ve.es.Surface.prototype.onKeyDown = function( e ) {
 			}
 			break;
 	}
-	/*
 	var range = this.getSelection();
 	if ( range.getLength() !== 0 ) {
 		e.preventDefault();
 	}
-	*/
 };
 
 ve.es.Surface.prototype.getOffset = function( elem, offset, global ) {
