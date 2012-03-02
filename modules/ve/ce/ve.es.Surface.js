@@ -87,17 +87,30 @@ ve.es.Surface = function( $container, model ) {
 ve.es.Surface.prototype.onCutCopy = function( e ) {
 	console.log('cut/copy');
 	var _this = this,
-	rangySel = rangy.getSelection(),
-	key = rangySel.getRangeAt(0).toString().replace(/\s/gm,"");
+		rangySel = rangy.getSelection(),
+		key = rangySel.getRangeAt(0).toString().replace(/\s/gm,"");
 
 	_this.clipboard[key] = ve.copyArray( _this.documentView.model.getData( _this.getSelection() ) );
 
 	if ( event.type == 'cut' ) {
 		setTimeout( function() {
+			// we don't like how browsers cut, so let's undo it and do it ourselves.
 			document.execCommand('undo', false, false);
-			var selection = _this.getSelection();
+			
+			var selection = _this.getSelection(),
+				node = rangy.getSelection().anchorNode;
+			
+			// transact
 			var tx = _this.model.getDocument().prepareRemoval( selection );
 			_this.model.transact( tx );
+
+			// re-render
+			_this.getLeafNode( node ).data( 'view' ).renderContent();
+			
+			// clear the prev information from poll object (probably a better way to do this)
+			_this.poll.prevText = _this.poll.prevHash = _this.poll.prevOffset = _this.poll.node = null;
+
+			// place cursor
 			_this.showCursorAt( selection.start );
 		}, 1 );
 	}
