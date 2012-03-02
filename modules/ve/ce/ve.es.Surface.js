@@ -274,7 +274,6 @@ ve.es.Surface.prototype.pollContent = function() {
 };
 
 ve.es.Surface.prototype.onKeyDown = function( e ) {
-	console.log("keyDown");
 	switch ( e.keyCode ) {
 		// Left arrow
 		case 37:
@@ -283,27 +282,26 @@ ve.es.Surface.prototype.onKeyDown = function( e ) {
 				var	globalOffset = this.getOffset( rangySel.anchorNode, rangySel.anchorOffset, true ),
 					node = this.documentView.getNodeFromOffset( globalOffset ),
 					nodeOffset = surfaceView.documentView.getOffsetFromNode( node );
-					
-				
 				if ( nodeOffset + 1 === globalOffset ) {
 					var newOffset = this.documentView.model.getRelativeContentOffset( globalOffset, -1 );
-					console.log('newOffset', newOffset);
 					this.showCursorAt(newOffset);
 					e.preventDefault();
-					//return false;
 				}
-				
-				//debugger;
-				
-					
-				
 			}
-
-			console.log( 'left' );
 			break;
 		// Right arrow
 		case 39:
-			console.log( 'right' );
+			var rangySel = rangy.getSelection();
+			if ( rangySel.anchorOffset === rangySel.anchorNode.length ) {
+				var	globalOffset = this.getOffset( rangySel.anchorNode, rangySel.anchorOffset, true ),
+					node = this.documentView.getNodeFromOffset( globalOffset ),
+					nodeOffset = surfaceView.documentView.getOffsetFromNode( node );
+				if ( nodeOffset + 1 + node.getContentLength() === globalOffset ) {
+					var newOffset = this.documentView.model.getRelativeContentOffset( globalOffset, 1 );
+					this.showCursorAt(newOffset);
+					e.preventDefault();
+				}
+			}
 			break;
 	}
 };
