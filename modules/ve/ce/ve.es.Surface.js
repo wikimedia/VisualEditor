@@ -88,7 +88,7 @@ ve.es.Surface.prototype.onCutCopy = function( e ) {
 	console.log('cut/copy');
 	var _this = this,
 	rangySel = rangy.getSelection(),
-	key = rangySel.getRangeAt(0).toString().replace(/( |\r\n|\n|\r|\t)/gm,"");
+	key = rangySel.getRangeAt(0).toString().replace(/\s/gm,"");
 
 	_this.clipboard[key] = ve.copyArray( _this.documentView.model.getData( _this.getSelection() ) );
 
@@ -107,21 +107,11 @@ ve.es.Surface.prototype.onPaste = function( e ) {
 	var	_this = this,
 		insertionPoint = _this.getSelection().start,
 		node = rangy.getSelection().anchorNode;
-
-_this.stopPolling();
+	
 	$('#paste').html('').show().css( 'top', $(window).scrollTop() ).css(' left', $(window).scrollLeft() ).focus();
 
-	
-
 	setTimeout( function() {
-
-		console.log('key is: ');
-		console.log(_this.clipboard);
-		console.log('paste is: ');
-		console.log( $('#paste').hide().text().replace(/( |\r\n|\n|\r|\t)/gm,"") );
-
-
-		var key = $('#paste').hide().text().replace(/( |\r\n|\n|\r|\t)/gm,"");
+		var key = $('#paste').hide().text().replace(/\s/gm,"");
 
 		if ( _this.clipboard[key] ) {
 			// transact
@@ -130,12 +120,12 @@ _this.stopPolling();
 
 			// re-render
 			_this.getLeafNode( node ).data( 'view' ).renderContent();
+
+			// clear the prev information from poll object (probably a better way to do this)
 			_this.poll.prevText = _this.poll.prevHash = _this.poll.prevOffset = _this.poll.node = null;
 
 			// place cursor
-			//_this.showCursorAt( insertionPoint + _this.clipboard[key].length );
-
-			//_this.startPolling();
+			_this.showCursorAt( insertionPoint + _this.clipboard[key].length );
 		} else {
 			alert('i can only handle copy/paste from hybrid surface. sorry. :(');
 		}
