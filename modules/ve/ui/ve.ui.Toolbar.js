@@ -8,7 +8,7 @@ ve.ui.Toolbar = function( $container, surfaceView, config ) {
 
 	// References for use in closures
 	var	_this = this,
-		$window = $( window );	
+		$window = $( window );
 
 	// Properties
 	this.surfaceView = surfaceView;
@@ -59,7 +59,7 @@ ve.ui.Toolbar.prototype.setup = function() {
 			}
 		}
 
-		this.$groups.append( $group ); 
+		this.$groups.append( $group );
 	}
 };
 

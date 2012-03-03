@@ -1,6 +1,6 @@
 /**
  * Creates an ve.ui.HistoryButtonTool object.
- * 
+ *
  * @class
  * @constructor
  * @extends {ve.ui.ButtonTool}
@@ -33,7 +33,7 @@ ve.ui.HistoryButtonTool.prototype.updateState = function( annotations ) {
 	var surfaceModel = this.toolbar.surfaceView.model;
 	switch( this.name ) {
 		case 'undo':
-			this.enabled = surfaceModel.bigStack.length - surfaceModel.undoIndex > 0; 
+			this.enabled = surfaceModel.bigStack.length - surfaceModel.undoIndex > 0;
 			break;
 		case 'redo':
 			this.enabled = surfaceModel.undoIndex > 0;
@@ -41,7 +41,7 @@ ve.ui.HistoryButtonTool.prototype.updateState = function( annotations ) {
 	}
 
 	this.updateEnabled();
-}
+};
 
 
 /* Registration */
