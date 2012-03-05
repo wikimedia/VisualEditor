@@ -74,6 +74,8 @@ testWhiteList["Link containing % as a single hex sequence interpreted to char"] 
 
 testWhiteList["Link containing double-single-quotes '' (bug 4598)"] = "<p><a href=\"/wiki/Lista_d''e_paise_d''o_munno\" data-mw-type=\"internal\">Lista d''e paise d''o munno</a></p>";
 
+testWhiteList["Brackets in urls"] = "<p><a href=\"http://example.com/index.php?foozoid[]=bar\">http://example.com/index.php?foozoid[]=bar</a></p><p><a href=\"http://example.com/index.php?foozoid[]=bar\">http://example.com/index.php?foozoid[]=bar</a></p>";
+
 if (typeof module == "object") {
 	module.exports.testWhiteList = testWhiteList;
 }

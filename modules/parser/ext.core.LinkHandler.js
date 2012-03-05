@@ -270,7 +270,7 @@ ExternalLinkHandler.prototype.onExtLink = function ( token, manager, cb ) {
 		};
 	} else {
 		return {
-			tokens: ['[', href ].concat( content, [']'] )
+			tokens: ['[', href, ' ' ].concat( content, [']'] )
 		};
 	}
 };
