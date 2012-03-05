@@ -667,6 +667,8 @@ ve.es.Surface.prototype.onKeyDown = function( e ) {
 						}
 						return false;
 					// a (select all)
+					case 91:
+						return false;
 					case 65:
 						this.model.select( new ve.Range(
 							this.model.getDocument().getRelativeContentOffset( 0, 1 ),
