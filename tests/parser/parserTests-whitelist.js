@@ -13,7 +13,7 @@ testWhiteList["Bug 2702: Mismatched <i>, <b> and <a> tags are invalid"] = "<p><i
 testWhiteList["Unclosed and unmatched quotes"] = "<p data-mw-sourcePos=\"0:66\"><i><b>Bold italic text </b>with bold deactivated<b> in between.</b></i></p><p><i><b>Bold italic text </b></i><b>with italic deactivated<i> in between.</i></b></p><p><b>Bold text..</b></p><p>..spanning two paragraphs (should not work).<b></b></p><p><b>Bold tag left open</b></p><p><i>Italic tag left open</i></p><p>Normal text.<!-- Unmatching number of opening, closing tags: -->\n</p><p><b>This year'</b>s election <i>should</i> beat <b>last year'</b>s.</p><p><i>Tom<b>s car is bigger than </b></i><b>Susan</b>s.</p>";
 
 // The expected result for this test is really broken html.
-testWhiteList["Link containing double-single-quotes '' in text embedded in italics (bug 4598 sanity check)"] = "<p data-mw-sourcePos=\"0:45\"><i>Some <a data-mw-type=\"internal\" href=\"Link\">pretty </a></i><a data-mw-type=\"internal\" href=\"Link\">italics<i> and stuff</i></a><i>!</i></p>";
+testWhiteList["Link containing double-single-quotes '' in text embedded in italics (bug 4598 sanity check)"] = "<p data-mw-sourcePos=\"0:45\"><i>Some <a data-mw-type=\"internal\" href=\"/wiki/Link\">pretty </a></i><a data-mw-type=\"internal\" href=\"/wiki/Link\">italics<i> and stuff</i></a><i>!</i></p>";
 
 testWhiteList["External link containing double-single-quotes in text embedded in italics (bug 4598 sanity check)"] = "<p><i>Some <a href=\"http://example.com/\">pretty </a></i><a href=\"http://example.com/\">italics<i> and stuff</i></a><i>!</i></p>";
 
@@ -47,9 +47,9 @@ testWhiteList["Indented table markup mixed with indented pre content (proposed i
 /* Missing token transform functionality */
 
 // We don't implement percent encoding for URIs yet.
-testWhiteList["Link containing double-single-quotes '' (bug 4598)"] = "<p><a data-mw-type=\"internal\" href=\"Lista d''e paise d''o munno\">Lista d''e paise d''o munno</a></p>";
+testWhiteList["Link containing double-single-quotes '' (bug 4598)"] = "<p><a data-mw-type=\"internal\" href=\"/wiki/Lista d''e paise d''o munno\">Lista d''e paise d''o munno</a></p>";
 
-testWhiteList["Link containing \"<#\" and \">#\" as a hex sequences"] = "<p><a data-mw-type=\"internal\" href=\"&lt;%23\">&lt;%23</a><a data-mw-type=\"internal\" href=\"&gt;%23\">&gt;%23</a></p>";
+testWhiteList["Link containing \"<#\" and \">#\" as a hex sequences"] = "<p><a data-mw-type=\"internal\" href=\"/wiki/&lt;%23\">&lt;%23</a><a data-mw-type=\"internal\" href=\"/wiki/&gt;%23\">&gt;%23</a></p>";
 
 
 // Sanitizer
@@ -57,16 +57,22 @@ testWhiteList["Invalid attributes in table cell (bug 1830)"] = "<table><tbody><t
 testWhiteList["Table security: embedded pipes (http://lists.wikimedia.org/mailman/htdig/wikitech-l/2006-April/022293.html)"] = "<table><tbody><tr><td> |<a href=\"ftp://|x||\">[1]</a>\" onmouseover=\"alert(document.cookie)\"&gt;test</td></tr></tbody></table>";
 
 // Sanitizer, but UTF8 in link might actually be ok in HTML5
-testWhiteList["External link containing double-single-quotes with no space separating the url from text in italics"] = "<p><a href=\"http://www.musee-picasso.fr/pages/page_id18528_u1l2.htm\"><i>La muerte de Casagemas</i> (1901) en el sitio de </a><a data-mw-type=\"internal\" href=\"Museo Picasso (París)\">Museo Picasso</a>.</p>";
+testWhiteList["External link containing double-single-quotes with no space separating the url from text in italics"] = "<p><a href=\"http://www.musee-picasso.fr/pages/page_id18528_u1l2.htm\" data-mw-type=\"external\" data-mw-rt=\"{&quot;sourcePos&quot;:[0,146]}\"><i>La muerte de Casagemas</i> (1901) en el sitio de </a><a href=\"/wiki/Museo_Picasso_(París)\" data-mw-type=\"internal\">Museo Picasso</a>.</p>";
 
 // plain percent sign is also valid in HTML5
 testWhiteList["Bug 4781, 5267: %28, %29 in URL"] = "<p><a href=\"http://www.example.com/?title=Ben-Hur_(1959_film)\" data-mw-sourcePos=\"0:53\">http://www.example.com/?title=Ben-Hur_(1959_film)</a></p>";
 
-testWhiteList["External links: wiki links within external link (Bug 3695)"] = "<p><a href=\"http://example.com\" data-mw-type=\"external\" data-mw-sourcePos=\"0:54\"></a><a data-mw-type=\"internal\" href=\"wikilink\">wikilink</a> embedded in ext link</p>";
+testWhiteList["External links: wiki links within external link (Bug 3695)"] = "<p><a href=\"http://example.com\" data-mw-type=\"external\" data-mw-sourcePos=\"0:54\"></a><a data-mw-type=\"internal\" href=\"/wiki/Wikilink\">wikilink</a> embedded in ext link</p>";
 
 testWhiteList["Bug 4781, 5267: %25 in URL"] = "<p><a href=\"http://www.example.com/?title=100%_Bran\" data-mw-sourcePos=\"0:41\">http://www.example.com/?title=100%_Bran</a></p>";
 
 testWhiteList["<pre> with forbidden attribute values (bug 3202)"] = "<pre width=\"8\" style=\"\">Narrow screen goodies</pre>";
+
+testWhiteList["Link containing % (not as a hex sequence)"] = "<p><a href=\"/wiki/7%_Solution\" data-mw-type=\"internal\">7% Solution</a></p>";
+
+testWhiteList["Link containing % as a single hex sequence interpreted to char"] = "<p><a href=\"/wiki/7%_Solution\" data-mw-type=\"internal\">7% Solution</a></p>";
+
+testWhiteList["Link containing double-single-quotes '' (bug 4598)"] = "<p><a href=\"/wiki/Lista_d''e_paise_d''o_munno\" data-mw-type=\"internal\">Lista d''e paise d''o munno</a></p>";
 
 if (typeof module == "object") {
 	module.exports.testWhiteList = testWhiteList;

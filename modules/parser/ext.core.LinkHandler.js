@@ -24,12 +24,12 @@ function WikiLinkHandler( manager, isInclude ) {
 WikiLinkHandler.prototype.rank = 1.15; // after AttributeExpander
 
 WikiLinkHandler.prototype.onWikiLink = function ( token, manager, cb ) {
-	var env = this.manager.env;
+	var env = this.manager.env,
+		href = env.lookupKV( token.attribs, 'href' ).v,
+		tail = env.lookupKV( token.attribs, 'tail' ).v;
 	var title = this.manager.env.makeTitleFromPrefixedText( 
-				env.tokensToString(
-					env.lookupKV( token.attribs, 'href' ).v 
-				)
-			);
+					env.tokensToString( href )
+				);
 
 	if ( title.ns.isFile() ) {
 		return this.renderFile( token, manager, cb, title );
@@ -39,15 +39,64 @@ WikiLinkHandler.prototype.onWikiLink = function ( token, manager, cb ) {
 	} else {
 		// Check if page exists
 		// 
-		var obj = new TagTk( 'a', [ this.manager.env.lookupKV( token.attribs, 'href' ) ] );
+		//console.warn( 'title: ' + JSON.stringify( title ) );
+		var obj = new TagTk( 'a', [ new KV( 'href', title.makeLink() ) ] ),
+			content = this.manager.env.lookupKV( token.attribs, 'content' ).v;
+		//console.warn('content: ' + JSON.stringify( content, null, 2 ) );
+		// XXX: handle trail
+		if ( content.length ) {
+			var out = []
+			for ( var i = 0, l = content.length; i < l ; i++ ) {
+				out = out.concat( content[i] );
+				if ( i < l - 1 ) {
+					out.push( '|' );
+				}
+			}
+			content = out;
+		} else {
+			content = href;
+		}
+		if ( tail ) {
+			content.push( tail );
+		}
+		
 		obj.attribs.push( new KV('data-mw-type', 'internal') );
-		var out = [obj].concat( this.manager.env.lookupKV( token.attribs, 'content' ).v, 
-								new EndTagTk( 'a' ) );
+		var out = [obj].concat( content, new EndTagTk( 'a' ) );
 		//console.warn( JSON.stringify( out, null, 2 ) );
 		return { tokens: out };
 	}
 };
 
+WikiLinkHandler.prototype._simpleImageOptions = {
+	// halign
+	'left': 'halign',
+	'right': 'halign',
+	'center': 'halign',
+	'none': 'halign',
+	// valign
+	'baseline': 'valign',
+	'sub': 'valign',
+	'super': 'valign',
+	'top': 'valign',
+	'text-top': 'valign',
+	'middle': 'valign',
+	'bottom': 'valign',
+	'text-bottom': 'valign',
+	// format
+	'border': 'format',
+	'frameless': 'format',
+	'frame': 'format',
+	'thumbnail': 'format',
+	'thumb': 'format'
+};
+
+WikiLinkHandler.prototype._prefixImageOptions = {
+	'link': 'link',
+	'alt': 'alt',
+	'page': 'page',
+	'thumbnail': 'thumb',
+	'thumb': 'thumb'
+};
 
 WikiLinkHandler.prototype.renderFile = function ( token, manager, cb, title ) {
 	var env = manager.env;
@@ -67,15 +116,39 @@ WikiLinkHandler.prototype.renderFile = function ( token, manager, cb, title ) {
 			[ hash[0], hash.substr(0, 2) ].join('/') + '/' + title.key;
 	
 	
-	// XXX: parse options
-	var contentPos = token.dataAttribs.contentPos;
-	var optionSource = token.source.substr( contentPos[0], contentPos[1] - contentPos[0] );
-	console.log( 'optionSource: ' + optionSource );
+
+	// XXX: extract options
+	var options = [],
+		caption = null;
+	for( var i = 0, l = content.length; i<l; i++ ) {
+		var oContent = content[i],
+			oText = manager.env.tokensToString( oContent, true );
+		if ( oText.constructor === String ) {
+			var oText = oText.trim();
+			if ( this._simpleImageOptions[ oText ] ) {
+				options.push( new KV( this._simpleImageOptions[ oText ], 
+							oText ) );
+				continue;
+			} 
+		} else {
+			var bits = oText[0].split( '=', 2 );
+			if ( bits.length > 1 && this._prefixImageOptions[ bits[0].strip ] ) {
+				console.log('handle prefix ' + bits );
+			} else {
+				caption = oContent;
+			}
+		}
+	}
+	
+
+	//var contentPos = token.dataAttribs.contentPos;
+	//var optionSource = token.source.substr( contentPos[0], contentPos[1] - contentPos[0] );
+	//console.log( 'optionSource: ' + optionSource );
 	// XXX: The trouble with re-parsing is the need to re-expand templates.
-	// Figure out often non-image links contain image-like parameters!
-	var options = this.imageParser.processImageOptions( optionSource );
+	// Figure out how often non-image links contain image-like parameters!
+	//var options = this.imageParser.processImageOptions( optionSource );
 	//console.log( JSON.stringify( options, null, 2 ) );
-	// XXX: check if the file exists, generate thumbnail
+	// XXX: check if the file exists, generate thumbnail, get size
 	// XXX: render according to mode (inline, thumb, framed etc)
 	var img = new SelfclosingTagTk( 'img', 
 			[ 

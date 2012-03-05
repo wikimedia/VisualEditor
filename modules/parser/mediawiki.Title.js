@@ -12,7 +12,13 @@ Title.prototype.makeLink = function () {
 	if ( false && this.nskey ) {
 		return this.env.wgScriptPath + this.nskey + ':' + this.key;
 	} else {
-		return this.env.wgScriptPath + [this.ns.getDefaultName(), this.key].join(':');
+		var l = this.env.wgScriptPath,
+			ns = this.ns.getDefaultName();
+
+		if ( ns ) {
+			l += ns + ':';
+		}
+		return l + this.key;
 	}
 };
 

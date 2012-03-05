@@ -366,7 +366,11 @@ ParserFunctions.prototype['pf_#expr'] = function ( target, argList, argDict ) {
 };
 
 ParserFunctions.prototype['pf_localurl'] = function ( target, argList, argDict ) {
-	return ( this.manager.env.wgScriptPath + 'index' +
+	return ( 
+			'/' +
+			// FIXME! Figure out correct prefix to use
+			//this.manager.env.wgScriptPath + 
+			'index' +
 				this.manager.env.wgScriptExtension + '?title=' +
 				this.manager.env.normalizeTitle( target ) + '&' +
 				argList.map( 

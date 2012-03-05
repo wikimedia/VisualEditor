@@ -117,7 +117,7 @@ MWParserEnvironment.prototype.makeTitleFromPrefixedText = function ( text ) {
 			return new Title( text, 0, '', this );
 		}
 	} else {
-		return new Title( text, 0, this );
+		return new Title( text, 0, '', this );
 	}
 };
 
@@ -174,7 +174,7 @@ MWParserEnvironment.prototype.resolveTitle = function( name, namespace ) {
 	return name;
 };
 
-MWParserEnvironment.prototype.tokensToString = function ( tokens ) {
+MWParserEnvironment.prototype.tokensToString = function ( tokens, strict ) {
 	var out = [];
 	//console.warn( 'MWParserEnvironment.tokensToString, tokens: ' + JSON.stringify( tokens ) );
 	// XXX: quick hack, track down non-array sources later!
@@ -195,6 +195,9 @@ MWParserEnvironment.prototype.tokensToString = function ( tokens ) {
 		} else if ( token.type === 'COMMENT' || token.type === 'NEWLINE' ) {
 			// strip comments and newlines
 		} else {
+			if ( strict ) {
+				return [out.join(''), null];
+			}
 			var tstring = JSON.stringify( token );
 			this.dp ( 'MWParserEnvironment.tokensToString, non-text token: ' + 
 					tstring + JSON.stringify( tokens, null, 2 ) );

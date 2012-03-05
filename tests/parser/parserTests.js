@@ -202,7 +202,7 @@ function ParserTests () {
 		fetchTemplates: false,
 		debug: this.argv.debug,
 		trace: this.argv.trace,
-		wgScriptPath: '/'
+		wgScriptPath: '/wiki/'
 	});
 }
 
@@ -308,7 +308,7 @@ ParserTests.prototype.normalizeHTML = function (source) {
 		return this.htmlparser.document.getElementsByTagName('body')[0]
 			.innerHTML
 			// a few things we ignore for now..
-			.replace(/\/wiki\/Main_Page/g, 'Main Page')
+			//.replace(/\/wiki\/Main_Page/g, 'Main Page')
 			// do not expect a toc for now
 			.replace(/<table[^>]+?id="toc"[^>]*>.+?<\/table>/mg, '')
 			// do not expect section editing for now
@@ -316,7 +316,7 @@ ParserTests.prototype.normalizeHTML = function (source) {
 			// general class and titles, typically on links
 			.replace(/(title|class|rel)="[^"]+"/g, '')
 			// strip red link markup, we do not check if a page exists yet
-			.replace(/\/index.php\?title=([^']+)&amp;action=edit&amp;redlink=1/g, '$1')
+			.replace(/\/index.php\?title=([^']+?)&amp;action=edit&amp;redlink=1/g, '/wiki/$1')
 			// the expected html has some extra space in tags, strip it
 			.replace(/<a +href/g, '<a href')
 			.replace(/" +>/g, '">');

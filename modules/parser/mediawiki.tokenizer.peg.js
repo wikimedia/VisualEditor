@@ -132,6 +132,7 @@ PegTokenizer.prototype.breakMap = {
 	},
 	'|': function ( input, pos, syntaxFlags ) {
 		return syntaxFlags.template ||
+			   syntaxFlags.linkdesc ||
 			( syntaxFlags.table &&
 			  ( input[pos + 1].match(/[|}]/) !== null ||
 				syntaxFlags.tableCellArg

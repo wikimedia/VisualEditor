@@ -770,14 +770,14 @@ wikilink
                }
             
              / { 
-                 return { pos: posStack.pop('lcontent' , pos), content: null };
+                 return { pos: posStack.pop('lcontent' , pos), content: [] };
                }
              )
     "]]" 
     // XXX In real MediaWiki, this is a language-dependent positive character
     // class. Can we work out a static negative class instead?
     // XXX: Exclude uppercase chars from non-latin languages too!
-    trail:( ![A-Z \t(),.:-] tc:text_char { return tc } )* {
+    tail:( ![A-Z \t(),.:-] tc:text_char { return tc } )* {
       var obj = new SelfclosingTagTk( 'wikilink' ),
           textTokens = [];
       obj.attribs.push( new KV('href', target) );
@@ -788,22 +788,12 @@ wikilink
       // XXX: Point to object with path, revision and input information
       obj.source = input;
 
+      //console.warn('lcontent: ' + JSON.stringify( lcontent, null, 2 ) );
       // Deal with content. XXX: Properly support pipe-trick etc
-      if (lcontent.content && lcontent.content.length) {
-          textTokens = lcontent.content;
-          if (trail) {
-            textTokens.push( trail.join('') );
-          }
-      } else {
-          if (trail) {
-              textTokens = $.extend(true, [], target).concat( [ trail.join('') ] );
-          } else {
-              // copy list
-              textTokens = $.extend(true, [], target);
-          }
-      }
+      lcontent.tail = tail && tail.join('') || '';
 
-      obj.attribs.push( new KV( 'content', flatten( textTokens ) ) );
+      obj.attribs.push( new KV( 'content', lcontent.content ) );
+      obj.attribs.push( new KV( 'tail', lcontent.tail ) );
       //console.warn( "XXX:" + pp([obj].concat(textTokens, [new EndTagTk( 'a' )])) );
       return [obj];
   }
@@ -825,6 +815,24 @@ link_text
         }
     }
   / & { return clearFlag('linkdesc'); }
+
+link_option
+  = & { setFlag('pipe'); return setFlag('linkdesc'); }
+    h:inline 
+    // 'equal' syntaxFlag is set for links in template parameters. Consume the
+    // '=' here.
+    hs:( '=' inline)?
+    { 
+        //console.warn('link_text' + pp(h) + pp(hs));
+        clearFlag('pipe');
+        clearFlag('linkdesc');
+        if( hs !== '' ) {
+            return h.concat(hs);
+        } else {
+            return h;
+        }
+    }
+  / & { clearFlag('pipe'); return clearFlag('linkdesc'); }
 
 link_end = "]]"
 
@@ -1674,7 +1682,7 @@ wikilink_preprocessor_text
   = r:( t:[^%<~[{\n\r\t|!\]} &=]+ { return t.join(''); }
   / urlencoded_char
   / directive
-  / !inline_breaks !"]]" text_char )+ {
+  / !inline_breaks !"|" !"]]" text_char )+ {
       return flatten_stringlist ( r );
   }
 
