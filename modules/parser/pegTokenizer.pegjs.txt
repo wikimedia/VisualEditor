@@ -585,6 +585,7 @@ extlink
                 text = [ "[" + linkCount + "]" ];
                 linkCount++;
             }
+            //console.warn( 'extlink text: ' + pp( text ) );
             return [
                 new SelfclosingTagTk( 'extlink', [
                     new KV('href', target),

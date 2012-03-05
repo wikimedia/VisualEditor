@@ -45,7 +45,7 @@ WikiLinkHandler.prototype.onWikiLink = function ( token, manager, cb ) {
 		//console.warn('content: ' + JSON.stringify( content, null, 2 ) );
 		// XXX: handle trail
 		if ( content.length ) {
-			var out = []
+			var out = [];
 			for ( var i = 0, l = content.length; i < l ; i++ ) {
 				out = out.concat( content[i].v );
 				if ( i < l - 1 ) {
@@ -61,9 +61,9 @@ WikiLinkHandler.prototype.onWikiLink = function ( token, manager, cb ) {
 		}
 		
 		obj.attribs.push( new KV('data-mw-type', 'internal') );
-		var out = [obj].concat( content, new EndTagTk( 'a' ) );
-		//console.warn( JSON.stringify( out, null, 2 ) );
-		return { tokens: out };
+		return { 
+			tokens: [obj].concat( content, new EndTagTk( 'a' ) )
+		};
 	}
 };
 
@@ -124,7 +124,7 @@ WikiLinkHandler.prototype.renderFile = function ( token, manager, cb, title ) {
 		var oContent = content[i],
 			oText = manager.env.tokensToString( oContent, true );
 		if ( oText.constructor === String ) {
-			var oText = oText.trim();
+			oText = oText.trim();
 			if ( this._simpleImageOptions[ oText ] ) {
 				options.push( new KV( this._simpleImageOptions[ oText ], 
 							oText ) );
@@ -193,7 +193,7 @@ function ExternalLinkHandler( manager, isInclude ) {
 	this.manager = manager;
 	this.manager.addTransform( this.onUrlLink.bind( this ), this.rank, 'tag', 'urllink' );
 	this.manager.addTransform( this.onExtLink.bind( this ), 
-			this.rank, 'tag', 'extlink' );
+			this.rank - 0.001, 'tag', 'extlink' );
 	// create a new peg parser for image options..
 	if ( !this.imageParser ) {
 		// Actually the regular tokenizer, but we'll call it with the
@@ -213,7 +213,7 @@ ExternalLinkHandler.prototype._isImageLink = function ( href ) {
 	var bits = href.split( '.' );
 	return bits.length > 1 && 
 		this._imageExtensions[ bits[bits.length - 1] ] &&
-		href.substr(0, 4) === 'http';
+		href.match( /^https?:\/\// );
 };
 
 ExternalLinkHandler.prototype.onUrlLink = function ( token, manager, cb ) {
@@ -222,7 +222,7 @@ ExternalLinkHandler.prototype.onUrlLink = function ( token, manager, cb ) {
 		return { token: new SelfclosingTagTk( 'img', 
 				[ 
 					new KV( 'alt', href.split('/').last() ),
-					new KV( 'src', href ),
+					new KV( 'src', href )
 				] 
 			) 
 		};
@@ -240,9 +240,24 @@ ExternalLinkHandler.prototype.onUrlLink = function ( token, manager, cb ) {
 // Bracketed external link
 ExternalLinkHandler.prototype.onExtLink = function ( token, manager, cb ) {
 	var href = this.manager.env.lookupKV( token.attribs, 'href' ).v,
-	   content=  this.manager.env.lookupKV( token.attribs, 'content' ).v;
+		content=  this.manager.env.lookupKV( token.attribs, 'content' ).v;
+	//console.warn( 'content: ' + JSON.stringify( content, null, 2 ) );
 	// validate the href
 	if ( this.imageParser.parseURL( href ) ) {
+		if ( content.length === 1 && 
+				content[0].constructor === String &&
+				this.imageParser.parseURL( content[0] ) &&
+				this._isImageLink( content[0] ) )
+		{
+			var src = content[0];
+			content = [ new SelfclosingTagTk( 'img', 
+					[ 
+					new KV( 'alt', src.split('/').last() ),	
+					new KV( 'src', src )
+					] )
+				];
+		}
+
 		return { 
 			tokens:
 				[
@@ -250,7 +265,7 @@ ExternalLinkHandler.prototype.onExtLink = function ( token, manager, cb ) {
 					new TagTk( 'a', [
 								new KV('href', href),
 								new KV('data-mw-type', 'external')
-							] ),
+							] )
 				].concat( content, [ new EndTagTk( 'a' )])
 		};
 	} else {

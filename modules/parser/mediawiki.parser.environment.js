@@ -196,7 +196,7 @@ MWParserEnvironment.prototype.tokensToString = function ( tokens, strict ) {
 			// strip comments and newlines
 		} else {
 			if ( strict ) {
-				return [out.join(''), null];
+				return [out.join(''), tokens.slice( i )];
 			}
 			var tstring = JSON.stringify( token );
 			this.dp ( 'MWParserEnvironment.tokensToString, non-text token: ' + 
