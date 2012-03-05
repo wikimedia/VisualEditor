@@ -26,7 +26,9 @@ var fs = require('fs'),
 	Sanitizer                   = require('./ext.core.Sanitizer.js').Sanitizer,
 	TemplateHandler             = require('./ext.core.TemplateHandler.js').TemplateHandler,
 	AttributeExpander            = require('./ext.core.AttributeExpander.js').AttributeExpander,
-	WikiLinkHandler             = require('./ext.core.LinkHandler.js').WikiLinkHandler,
+	LinkHandler                 = require('./ext.core.LinkHandler.js'),
+	WikiLinkHandler				= LinkHandler.WikiLinkHandler,
+	ExternalLinkHandler			= LinkHandler.ExternalLinkHandler,
 	Cite                        = require('./ext.Cite.js').Cite,
 	FauxHTML5                   = require('./mediawiki.HTML5TreeBuilder.node.js').FauxHTML5,
 	DOMPostProcessor            = require('./mediawiki.DOMPostProcessor.js').DOMPostProcessor,
@@ -167,7 +169,8 @@ ParserPipeline.prototype._transformers = {
 				// XXX: Should we support further processing after attribute
 				// expansion?
 				AttributeExpander,
-				WikiLinkHandler
+				WikiLinkHandler,
+				ExternalLinkHandler
 				/* ExtensionHandler1, */
 				/* ExtensionHandler2, */
 			],

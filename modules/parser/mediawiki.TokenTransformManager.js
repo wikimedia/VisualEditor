@@ -780,10 +780,10 @@ AttributeTransformManager.prototype.process = function ( attributes ) {
 			// transform the key
 			pipe = this.manager.getAttributePipeline( this.manager.inputType,
 																this.manager.args );
-			pipe.addListener( 'chunk',
+			pipe.on( 'chunk',
 					this.onChunk.bind( this, this._returnAttributeKey.bind( this, i ) ) 
 				);
-			pipe.addListener( 'end', 
+			pipe.on( 'end', 
 					this.onEnd.bind( this, this._returnAttributeKey.bind( this, i ) ) 
 				);
 			pipe.process( attributes[i].k.concat([{type:'END'}]) );
@@ -798,10 +798,10 @@ AttributeTransformManager.prototype.process = function ( attributes ) {
 			// transform the value
 			pipe = this.manager.getAttributePipeline( this.manager.inputType,
 																this.manager.args );
-			pipe.addListener( 'chunk', 
+			pipe.on( 'chunk', 
 					this.onChunk.bind( this, this._returnAttributeValue.bind( this, i ) ) 
 					);
-			pipe.addListener( 'end', 
+			pipe.on( 'end', 
 					this.onEnd.bind( this, this._returnAttributeValue.bind( this, i ) ) 
 					);
 			//console.warn('starting attribute transform of ' + JSON.stringify( attributes[i].v ) );

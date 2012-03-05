@@ -47,7 +47,7 @@ Util.prototype.isBlockTag = function ( name ) {
 		case 'dl':
 		case 'dt':
 		case 'dd':
-		case 'img': // hmm!
+		//case 'img': // hmm!
 		case 'pre':
 		case 'center':
 		case 'blockquote':

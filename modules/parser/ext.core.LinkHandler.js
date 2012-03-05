@@ -25,7 +25,7 @@ WikiLinkHandler.prototype.rank = 1.15; // after AttributeExpander
 
 WikiLinkHandler.prototype.onWikiLink = function ( token, manager, cb ) {
 	var env = this.manager.env,
-		href = env.lookupKV( token.attribs, 'href' ).v,
+		href = token.attribs[0].v,
 		tail = env.lookupKV( token.attribs, 'tail' ).v;
 	var title = this.manager.env.makeTitleFromPrefixedText( 
 					env.tokensToString( href )
@@ -41,13 +41,13 @@ WikiLinkHandler.prototype.onWikiLink = function ( token, manager, cb ) {
 		// 
 		//console.warn( 'title: ' + JSON.stringify( title ) );
 		var obj = new TagTk( 'a', [ new KV( 'href', title.makeLink() ) ] ),
-			content = this.manager.env.lookupKV( token.attribs, 'content' ).v;
+			content = token.attribs.slice(1, -1);
 		//console.warn('content: ' + JSON.stringify( content, null, 2 ) );
 		// XXX: handle trail
 		if ( content.length ) {
 			var out = []
 			for ( var i = 0, l = content.length; i < l ; i++ ) {
-				out = out.concat( content[i] );
+				out = out.concat( content[i].v );
 				if ( i < l - 1 ) {
 					out.push( '|' );
 				}
@@ -103,7 +103,7 @@ WikiLinkHandler.prototype.renderFile = function ( token, manager, cb, title ) {
 	// distinguish media types
 	// if image: parse options
 	
-	var content = env.lookupKV( token.attribs, 'content' ).v;
+	var content = token.attribs.slice(1, -1);
 
 	// XXX: get /wiki from config!
 	var a = new TagTk( 'a', [ new KV( 'href', '/wiki' + title.makeLink() ) ] );
@@ -188,6 +188,80 @@ WikiLinkHandler.prototype.parseImageOptions = function ( tokens ) {
 	}
 };
 
+
+function ExternalLinkHandler( manager, isInclude ) {
+	this.manager = manager;
+	this.manager.addTransform( this.onUrlLink.bind( this ), this.rank, 'tag', 'urllink' );
+	this.manager.addTransform( this.onExtLink.bind( this ), 
+			this.rank, 'tag', 'extlink' );
+	// create a new peg parser for image options..
+	if ( !this.imageParser ) {
+		// Actually the regular tokenizer, but we'll call it with the
+		// img_options production only.
+		ExternalLinkHandler.prototype.imageParser = new PegTokenizer();
+	}
+}
+
+ExternalLinkHandler.prototype.rank = 1.15;
+ExternalLinkHandler.prototype._imageExtensions = {
+	'jpg': true,
+	'png': true,
+	'gif': true
+};
+
+ExternalLinkHandler.prototype._isImageLink = function ( href ) {
+	var bits = href.split( '.' );
+	return bits.length > 1 && 
+		this._imageExtensions[ bits[bits.length - 1] ] &&
+		href.substr(0, 4) === 'http';
+};
+
+ExternalLinkHandler.prototype.onUrlLink = function ( token, manager, cb ) {
+	var href = this.manager.env.lookupKV( token.attribs, 'href' ).v;
+	if ( this._isImageLink( href ) ) {
+		return { token: new SelfclosingTagTk( 'img', 
+				[ 
+					new KV( 'alt', href.split('/').last() ),
+					new KV( 'src', href ),
+				] 
+			) 
+		};
+	} else {
+		return { 
+			tokens: [
+				new TagTk( 'a', [ new KV( 'href', href ) ] ),
+				href,
+				new EndTagTk( 'a' )
+			] 
+		};
+	}
+};
+
+// Bracketed external link
+ExternalLinkHandler.prototype.onExtLink = function ( token, manager, cb ) {
+	var href = this.manager.env.lookupKV( token.attribs, 'href' ).v,
+	   content=  this.manager.env.lookupKV( token.attribs, 'content' ).v;
+	// validate the href
+	if ( this.imageParser.parseURL( href ) ) {
+		return { 
+			tokens:
+				[
+					
+					new TagTk( 'a', [
+								new KV('href', href),
+								new KV('data-mw-type', 'external')
+							] ),
+				].concat( content, [ new EndTagTk( 'a' )])
+		};
+	} else {
+		return {
+			tokens: ['[', href ].concat( content, [']'] )
+		};
+	}
+};
+
+
 if (typeof module == "object") {
 	module.exports.WikiLinkHandler = WikiLinkHandler;
+	module.exports.ExternalLinkHandler = ExternalLinkHandler;
 }

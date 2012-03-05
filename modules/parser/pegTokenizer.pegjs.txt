@@ -566,10 +566,7 @@ comment_chars
 urllink
   = ! { return syntaxFlags['extlink'] }
     target:url {
-      return [ new TagTk( 'a', [new KV('href', target)] )
-             , target
-             , new EndTagTk( 'a' )
-             ];
+      return [ new TagTk( 'urllink', [new KV('href', target)] ) ];
   }
 
 extlink
@@ -588,15 +585,12 @@ extlink
                 text = [ "[" + linkCount + "]" ];
                 linkCount++;
             }
-            var res = [ 
-                new TagTk( 'a', [
-                            new KV('href', target),
-                            new KV('data-mw-type', 'external')
-                        ] ),
-            ].concat( text 
-                    , [ new EndTagTk( 'a' )]);
-            //console.warn( JSON.stringify( res, null, 2 ) );
-            return res;
+            return [
+                new SelfclosingTagTk( 'extlink', [
+                    new KV('href', target),
+                    new KV('content', text)
+                ] )
+            ];
         }
       / "[" & { clearFlag('extlink'); return false; }
     )
@@ -765,7 +759,7 @@ wikilink
     target:wikilink_preprocessor_text
     lcontent:( 
                & { return posStack.push('lcontent' , pos); }
-               lcs:( "|" lt:link_text { return lt; } )+ { 
+               lcs:( "|" lt:link_text { return new KV( '', lt ); } )+ { 
                    return { pos: posStack.pop('lcontent' , pos), content: lcs };
                }
             
@@ -780,7 +774,7 @@ wikilink
     tail:( ![A-Z \t(),.:-] tc:text_char { return tc } )* {
       var obj = new SelfclosingTagTk( 'wikilink' ),
           textTokens = [];
-      obj.attribs.push( new KV('href', target) );
+      obj.attribs.push( new KV('', target) );
       obj.dataAttribs = { 
           sourcePos: posStack.pop( 'wikilink', pos ),
           contentPos: lcontent.pos
@@ -790,10 +784,10 @@ wikilink
 
       //console.warn('lcontent: ' + JSON.stringify( lcontent, null, 2 ) );
       // Deal with content. XXX: Properly support pipe-trick etc
-      lcontent.tail = tail && tail.join('') || '';
+      //lcontent.tail = tail && tail.join('') || '';
 
-      obj.attribs.push( new KV( 'content', lcontent.content ) );
-      obj.attribs.push( new KV( 'tail', lcontent.tail ) );
+      obj.attribs = obj.attribs.concat( lcontent.content );
+      obj.attribs.push( new KV( 'tail', tail && tail.join('') || '' ) );
       //console.warn( "XXX:" + pp([obj].concat(textTokens, [new EndTagTk( 'a' )])) );
       return [obj];
   }

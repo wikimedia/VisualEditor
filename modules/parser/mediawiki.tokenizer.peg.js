@@ -71,6 +71,14 @@ PegTokenizer.prototype.processImageOptions = function( text ) {
 		return this.parser.parse(text, 'img_options', null, this );
 };
 
+PegTokenizer.prototype.parseURL = function( text ) {
+	try {
+		return this.parser.parse(text, 'url', null, this );
+	} catch ( e ) {
+		return false;
+	}
+};
+
 /*
  * Inline breaks, flag-enabled production which detects end positions for
  * active higher-level productions in inline and other nested productions.
