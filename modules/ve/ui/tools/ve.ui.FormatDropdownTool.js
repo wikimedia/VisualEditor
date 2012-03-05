@@ -11,7 +11,7 @@
 ve.FormatDropdownTool = function( toolbar, name, title ) {
 	// Inheritance
 	ve.ui.DropdownTool.call( this, toolbar, name, title, [
-		{ 
+		{
 			'name': 'paragraph',
 			'label': 'Paragraph',
 			'type' : 'paragraph'

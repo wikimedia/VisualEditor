@@ -81,6 +81,36 @@ ve.es.Surface = function( $container, model ) {
 
 /* Methods */
 
+ve.es.Surface.prototype.annotate = function( method, annotation ) {
+	var range = this.getSelection();
+	if ( method === 'toggle' ) {
+		var annotations = this.getAnnotations();
+		if ( ve.dm.DocumentNode.getIndexOfAnnotation( annotations.full, annotation ) !== -1 ) {
+			method = 'clear';
+		} else {
+			method = 'set';
+		}
+	}
+	if ( range.getLength() ) {
+		var tx = this.model.getDocument().prepareContentAnnotation(
+			range, method, annotation
+		);
+		this.model.transact( tx );
+		// re-render Node
+		this.renderDomNode ( rangy.getSelection().anchorNode );
+	} else {
+		if ( method === 'set' ) {
+			this.addInsertionAnnotation( annotation );
+		} else if ( method === 'clear' ) {
+			this.removeInsertionAnnotation( annotation );
+		}
+	}
+};
+
+ve.es.Surface.prototype.renderDomNode = function ( node ) {
+	this.getLeafNode( node ).data( 'view' ).renderContent();
+};
+
 ve.es.Surface.prototype.onCutCopy = function( e ) {
 	var _this = this,
 		rangySel = rangy.getSelection(),
