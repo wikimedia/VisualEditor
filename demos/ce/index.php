@@ -4,9 +4,9 @@
 	<head>
 		<title>ContentEditable Demo</title>
 		<!-- es -->
-		<link rel="stylesheet" href="../../modules/ve/ce/styles/ve.es.Document.css">
-		<link rel="stylesheet" href="../../modules/ve/ce/styles/ve.es.Content.css">
-		<link rel="stylesheet" href="../../modules/ve/ce/styles/ve.es.Surface.css">
+		<link rel="stylesheet" href="../../modules/ve/ce/styles/ve.ce.Document.css">
+		<link rel="stylesheet" href="../../modules/ve/ce/styles/ve.ce.Content.css">
+		<link rel="stylesheet" href="../../modules/ve/ce/styles/ve.ce.Surface.css">
 		<!-- ui -->
 		<link rel="stylesheet" href="../../modules/ve/ui/styles/ve.ui.Context.css">
 		<link rel="stylesheet" href="../../modules/ve/ui/styles/ve.ui.Inspector.css">
@@ -119,22 +119,22 @@ include( '../../modules/sandbox/base.php' );
 
 		<!-- es -->
 		<script src="../../modules/ve/ce/ve.ce.js"></script>
-		<script src="../../modules/ve/ce/ve.es.js"></script>
-		<script src="../../modules/ve/ce/ve.es.Node.js"></script>
-		<script src="../../modules/ve/ce/ve.es.BranchNode.js"></script>
-		<script src="../../modules/ve/ce/ve.es.LeafNode.js"></script>
-		<script src="../../modules/ve/ce/ve.es.Content.js"></script>
-		<script src="../../modules/ve/ce/ve.es.Surface.js"></script>
+		<script src="../../modules/ve/ce/ve.ce.js"></script>
+		<script src="../../modules/ve/ce/ve.ce.Node.js"></script>
+		<script src="../../modules/ve/ce/ve.ce.BranchNode.js"></script>
+		<script src="../../modules/ve/ce/ve.ce.LeafNode.js"></script>
+		<script src="../../modules/ve/ce/ve.ce.Content.js"></script>
+		<script src="../../modules/ve/ce/ve.ce.Surface.js"></script>
 
-		<script src="../../modules/ve/ce/nodes/ve.es.DocumentNode.js"></script>
-		<script src="../../modules/ve/ce/nodes/ve.es.HeadingNode.js"></script>
-		<script src="../../modules/ve/ce/nodes/ve.es.ParagraphNode.js"></script>
-		<script src="../../modules/ve/ce/nodes/ve.es.PreNode.js"></script>
-		<script src="../../modules/ve/ce/nodes/ve.es.ListItemNode.js"></script>
-		<script src="../../modules/ve/ce/nodes/ve.es.ListNode.js"></script>
-		<script src="../../modules/ve/ce/nodes/ve.es.TableCellNode.js"></script>
-		<script src="../../modules/ve/ce/nodes/ve.es.TableNode.js"></script>
-		<script src="../../modules/ve/ce/nodes/ve.es.TableRowNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.ce.DocumentNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.ce.HeadingNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.ce.ParagraphNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.ce.PreNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.ce.ListItemNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.ce.ListNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.ce.TableCellNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.ce.TableNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.ce.TableRowNode.js"></script>
 
 		<!-- ui -->
 		<script src="../../modules/ve/ui/ve.ui.js"></script>
