@@ -222,7 +222,7 @@ MWParserEnvironment.prototype.sanitizeURI = function ( s ) {
 	var host = s.match(/^[a-zA-Z]+:\/\/[^\/]+(?:\/|$)/),
 		path = s,
 		anchor = null;
-	console.warn( 'host: ' + host );
+	//console.warn( 'host: ' + host );
 	if ( host ) {
 		path = s.substr( host[0].length );
 		host = host[0];

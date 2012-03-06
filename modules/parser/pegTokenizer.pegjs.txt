@@ -1385,7 +1385,7 @@ table_end_tag
 
 table_cell_args
   = & { return setFlag('tableCellArg'); }
-    as:generic_attribute+ space* "|" !"|" { 
+    as:generic_attribute* space* "|" !"|" { 
         clearFlag('tableCellArg');
         return as;
     }

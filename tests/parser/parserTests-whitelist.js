@@ -62,7 +62,9 @@ testWhiteList["External links: wiki links within external link (Bug 3695)"] = "<
 
 testWhiteList["<pre> with forbidden attribute values (bug 3202)"] = "<pre width=\"8\" style=\"\">Narrow screen goodies</pre>";
 
-//testWhiteList["Piped link to URL"] = "<p>Piped link to URL: [<a href=\"http://www.example.com|an\" data-mw-type=\"external\">example URL</a>]</p>";
+// This is valid, just confusing for humans. The reason for disallowing this
+// might be history by now. XXX: Check this!
+testWhiteList["Link containing % as a double hex sequence interpreted to hex sequence"] = "<p><a href=\"/wiki/7%2525_Solution\" data-mw-type=\"internal\">7%25 Solution</a></p>";
 
 if (typeof module == "object") {
 	module.exports.testWhiteList = testWhiteList;

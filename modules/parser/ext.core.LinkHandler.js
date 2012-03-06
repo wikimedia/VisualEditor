@@ -244,7 +244,7 @@ ExternalLinkHandler.prototype.onExtLink = function ( token, manager, cb ) {
 	var href = this.manager.env.lookupKV( token.attribs, 'href' ).v,
 		content=  this.manager.env.lookupKV( token.attribs, 'content' ).v;
 	href = this.manager.env.sanitizeURI( href );
-	console.warn('extlink href: ' + href );
+	//console.warn('extlink href: ' + href );
 	//console.warn( 'content: ' + JSON.stringify( content, null, 2 ) );
 	// validate the href
 	if ( this.imageParser.parseURL( href ) ) {
