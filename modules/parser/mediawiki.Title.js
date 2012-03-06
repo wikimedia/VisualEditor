@@ -10,7 +10,7 @@ function Title ( key, ns, nskey, env ) {
 Title.prototype.makeLink = function () {
 	// XXX: links always point to the canonical namespace name.
 	if ( false && this.nskey ) {
-		return this.env.wgScriptPath + this.nskey + ':' + this.key;
+		return this.env.sanitizeURI( this.env.wgScriptPath + this.nskey + ':' + this.key );
 	} else {
 		var l = this.env.wgScriptPath,
 			ns = this.ns.getDefaultName();
@@ -18,7 +18,7 @@ Title.prototype.makeLink = function () {
 		if ( ns ) {
 			l += ns + ':';
 		}
-		return l + this.key;
+		return this.env.sanitizeURI( l + this.key );
 	}
 };
 

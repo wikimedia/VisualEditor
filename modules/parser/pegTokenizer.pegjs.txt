@@ -645,7 +645,7 @@ url
             )
             / s:[.:,] !(space / eolf) { return s } 
             / htmlentity
-            / urlencoded_char
+            /// urlencoded_char
             / [&%] )+ 
 { 
     return proto + addr + rest.join(''); 
@@ -1674,17 +1674,19 @@ spaceless_preprocessor_text
 
 
 wikilink_preprocessor_text 
-  = r:( t:[^%<~[{\n\r\t|!\]} &=]+ { return t.join(''); }
-  / urlencoded_char
+  = r:( t:[^<~[{\n\r\t|!\]} &=]+ { return t.join(''); }
+  /// urlencoded_char
   / directive
   / !inline_breaks !"|" !"]]" text_char )+ {
       return flatten_stringlist ( r );
   }
 
 extlink_preprocessor_text
+  // added special separator character class inline: separates url from
+  // description / text
   = r:( t:[^'<~[{\n\r|!\]}\t&="' \u00A0\u1680\u180E\u2000-\u200A\u202F\u205F\u3000]+ { return t.join(''); }
   / directive
-  / urlencoded_char
+  /// urlencoded_char
   / !inline_breaks no_punctuation_char
   / s:[.:,] !(space / eolf) { return s } 
   / [&%] )+ {

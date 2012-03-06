@@ -54,7 +54,7 @@ WikiLinkHandler.prototype.onWikiLink = function ( token, manager, cb ) {
 			}
 			content = out;
 		} else {
-			content = href;
+			content = [ env.decodeURI( env.tokensToString( href ) ) ];
 		}
 		if ( tail ) {
 			content.push( tail );
@@ -105,19 +105,19 @@ WikiLinkHandler.prototype.renderFile = function ( token, manager, cb, title ) {
 	
 	var content = token.attribs.slice(1, -1);
 
-	// XXX: get /wiki from config!
+	// TODO: get /wiki from config!
 	var a = new TagTk( 'a', [ new KV( 'href', '/wiki' + title.makeLink() ) ] );
 	a.dataAttribs = token.dataAttribs;
 
 	var MD5 = new jshashes.MD5(),
 		hash = MD5.hex( title.key ),
-		// XXX: Hackhack..
+		// TODO: Hackhack.. Move to proper test harness setup!
 		path = 'http://example.com/images/' + 
 			[ hash[0], hash.substr(0, 2) ].join('/') + '/' + title.key;
 	
 	
 
-	// XXX: extract options
+	// extract options
 	var options = [],
 		caption = null;
 	for( var i = 0, l = content.length; i<l; i++ ) {
@@ -132,7 +132,7 @@ WikiLinkHandler.prototype.renderFile = function ( token, manager, cb, title ) {
 			} 
 		} else {
 			var bits = oText[0].split( '=', 2 );
-			if ( bits.length > 1 && this._prefixImageOptions[ bits[0].strip ] ) {
+			if ( bits.length > 1 && this._prefixImageOptions[ bits[0].trim() ] ) {
 				console.log('handle prefix ' + bits );
 			} else {
 				caption = oContent;
@@ -217,7 +217,9 @@ ExternalLinkHandler.prototype._isImageLink = function ( href ) {
 };
 
 ExternalLinkHandler.prototype.onUrlLink = function ( token, manager, cb ) {
-	var href = this.manager.env.lookupKV( token.attribs, 'href' ).v;
+	var href = this.manager.env.sanitizeURI( 
+			this.manager.env.lookupKV( token.attribs, 'href' ).v 
+			);
 	if ( this._isImageLink( href ) ) {
 		return { token: new SelfclosingTagTk( 'img', 
 				[ 
@@ -241,6 +243,8 @@ ExternalLinkHandler.prototype.onUrlLink = function ( token, manager, cb ) {
 ExternalLinkHandler.prototype.onExtLink = function ( token, manager, cb ) {
 	var href = this.manager.env.lookupKV( token.attribs, 'href' ).v,
 		content=  this.manager.env.lookupKV( token.attribs, 'content' ).v;
+	href = this.manager.env.sanitizeURI( href );
+	console.warn('extlink href: ' + href );
 	//console.warn( 'content: ' + JSON.stringify( content, null, 2 ) );
 	// validate the href
 	if ( this.imageParser.parseURL( href ) ) {

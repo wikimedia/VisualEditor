@@ -208,6 +208,44 @@ MWParserEnvironment.prototype.tokensToString = function ( tokens, strict ) {
 	return out.join('');
 };
 
+MWParserEnvironment.prototype.decodeURI = function ( s ) {
+	return s.replace( /%[0-9a-f][0-9a-f]/g, function( m ) {
+		try {
+			return decodeURI( m );
+		} catch ( e ) {
+			return m;
+		}
+	} );
+};
+
+MWParserEnvironment.prototype.sanitizeURI = function ( s ) {
+	var host = s.match(/^[a-zA-Z]+:\/\/[^\/]+(?:\/|$)/),
+		path = s,
+		anchor = null;
+	console.warn( 'host: ' + host );
+	if ( host ) {
+		path = s.substr( host[0].length );
+		host = host[0];
+	} else {
+		host = '';
+	}
+	var bits = path.split('#');
+	if ( bits.length > 1 ) {
+		anchor = bits[bits.length - 1];
+		path = path.substr(0, path.length - anchor.length - 1);
+	}
+	host = host.replace( /%(?![0-9a-fA-F][0-9a-fA-F])|[#|]/g, function ( m ) {
+		return encodeURIComponent( m );
+	} );
+	path = path.replace( /%(?![0-9a-fA-F][0-9a-fA-F])|[\[\]#|]/g, function ( m ) {
+		return encodeURIComponent( m );
+	} );
+	s = host + path;
+	if ( anchor !== null ) {
+		s += '#' + anchor;
+	}
+	return s;
+};
 
 /**
  * Simple debug helper
