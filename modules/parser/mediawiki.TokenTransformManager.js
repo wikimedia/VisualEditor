@@ -91,6 +91,7 @@ TokenTransformManager.prototype.addTransform = function ( transformation, rank, 
 	transArr.push(transformer);
 	// sort ascending by rank
 	transArr.sort( this._cmpTransformations );
+	this.env.dp( 'transforms: ', this.transformers );
 };
 
 /**
@@ -191,7 +192,7 @@ TokenTransformManager.prototype._cmpTransformations = function ( a, b ) {
  * processed tokens.
  * @returns {Object} Token(s) and async indication.
  */
-TokenTransformManager.prototype._transformTagToken = function ( token, phaseEndRank, cbOrPrevToken ) {
+TokenTransformManager.prototype._transformTagToken = function ( token, cbOrPrevToken ) {
 	// prepend 'any' transformers
 	var ts = this.transformers.any,
 		res = { token: token },
@@ -205,6 +206,7 @@ TokenTransformManager.prototype._transformTagToken = function ( token, phaseEndR
 		// could cache this per tag type to avoid re-sorting each time
 		ts = ts.concat(tagts);
 		ts.sort( this._cmpTransformations );
+		this.env.dp( 'ts: ', ts );
 	}
 	//console.warn(JSON.stringify(ts, null, 2));
 	if ( ts ) {
@@ -243,7 +245,7 @@ TokenTransformManager.prototype._transformTagToken = function ( token, phaseEndR
 			if ( res.token.rank === undefined && res.token.constructor === String ) {
 				res.token = new String ( res.token );
 			}
-			res.token.rank = phaseEndRank;
+			res.token.rank = this.phaseEndRank;
 		}
 	}
 	return res;
@@ -261,7 +263,7 @@ TokenTransformManager.prototype._transformTagToken = function ( token, phaseEndR
  * @param {Array} ts List of token transformers for this token type.
  * @returns {Object} Token(s) and async indication.
  */
-TokenTransformManager.prototype._transformToken = function ( token, phaseEndRank, ts, cbOrPrevToken ) {
+TokenTransformManager.prototype._transformToken = function ( token, ts, cbOrPrevToken ) {
 	// prepend 'any' transformers
 	//this.env.dp('_transformToken', token);
 	var anyTrans = this.transformers.any;
@@ -303,7 +305,7 @@ TokenTransformManager.prototype._transformToken = function ( token, phaseEndRank
 			if ( res.token.rank === undefined && res.token.constructor === String ) {
 				res.token = new String ( res.token );
 			}
-			res.token.rank = phaseEndRank; // need phase passed in!
+			res.token.rank = this.phaseEndRank; // need phase passed in!
 		}
 		//else {
 		//	this.env.dp( '_transformToken aborted', res );
@@ -333,7 +335,7 @@ TokenTransformManager.prototype._transformToken = function ( token, phaseEndRank
  * @param {Object} args, the argument map for templates
  * @param {Object} env, the environment.
  */
-function AsyncTokenTransformManager ( childFactories, args, env, inputType ) {
+function AsyncTokenTransformManager ( childFactories, args, env, inputType, phaseEndRank ) {
 	// Factory function for new AsyncTokenTransformManager creation with
 	// default transforms enabled
 	// Also sets up a tokenizer and phase-1-transform depending on the input format
@@ -342,6 +344,7 @@ function AsyncTokenTransformManager ( childFactories, args, env, inputType ) {
 	this.childFactories = childFactories;
 	this._construct();
 	this._reset( args, env );
+	this.phaseEndRank = phaseEndRank;
 	// FIXME: pass actual title?
 	this.loopAndDepthCheck = new LoopAndDepthCheck( null );
 }
@@ -473,7 +476,6 @@ AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parent
 	//console.warn('AsyncTokenTransformManager.transformTokens: ' + JSON.stringify(tokens) );
 	
 	var res,
-		phaseEndRank = 2, // XXX: parametrize!
 		// Prepare a new accumulator, to be used by async children (if any)
 		localAccum = [],
 		accum = new TokenAccumulator( this, parentCB ),
@@ -489,26 +491,26 @@ AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parent
 
 		switch ( token.constructor ) {
 			case String:
-				res = this._transformToken( token, phaseEndRank, ts.text, cb );
+				res = this._transformToken( token, ts.text, cb );
 				break;
 			case NlTk:
-				res = this._transformToken( token, phaseEndRank, ts.newline, cb );
+				res = this._transformToken( token, ts.newline, cb );
 				break;
 			case TagTk:
 			case EndTagTk:
 			case SelfclosingTagTk:
-				res = this._transformTagToken( token, phaseEndRank, cb );
+				res = this._transformTagToken( token, cb );
 				break;
 			default:
 				switch( token.type ) {
 					case 'COMMENT':
-						res = this._transformToken( token, phaseEndRank, ts.comment, cb );
+						res = this._transformToken( token, ts.comment, cb );
 						break;
 					case 'END':
-						res = this._transformToken( token, phaseEndRank, ts.end, cb );
+						res = this._transformToken( token, ts.end, cb );
 						break;
 					default:
-						res = this._transformToken( token, phaseEndRank, ts.martian, cb );
+						res = this._transformToken( token, ts.martian, cb );
 						break;
 				}
 				break;
@@ -626,7 +628,7 @@ AsyncTokenTransformManager.prototype.onEndEvent = function () {
  * @constructor
  * @param {Object} environment.
  */
-function SyncTokenTransformManager ( env, phaseEndRank, inputType ) {
+function SyncTokenTransformManager ( env, inputType, phaseEndRank ) {
 	// both inherited
 	this._construct();
 	this.phaseEndRank = phaseEndRank;
@@ -672,27 +674,26 @@ SyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 		
 		switch( token.constructor ) {
 			case String:
-				res = this._transformToken( token, this.phaseEndRank, 
-							ts.text, this.prevToken );
+				res = this._transformToken( token, ts.text, this.prevToken );
 				break;
 			case NlTk:
-				res = this._transformToken( token, this.phaseEndRank, ts.newline, this.prevToken );
+				res = this._transformToken( token, ts.newline, this.prevToken );
 				break;
 			case TagTk:
 			case EndTagTk:
 			case SelfclosingTagTk:
-				res = this._transformTagToken( token, this.phaseEndRank, this.prevToken );
+				res = this._transformTagToken( token, this.prevToken );
 				break;
 			default:
 				switch( token.type ) {
 					case 'COMMENT':
-						res = this._transformToken( token, this.phaseEndRank, ts.comment, this.prevToken );
+						res = this._transformToken( token, ts.comment, this.prevToken );
 						break;
 					case 'END':
-						res = this._transformToken( token, this.phaseEndRank, ts.end, this.prevToken );
+						res = this._transformToken( token, ts.end, this.prevToken );
 						break;
 					default:
-						res = this._transformToken( token, this.phaseEndRank, ts.martian, this.prevToken );
+						res = this._transformToken( token, ts.martian, this.prevToken );
 						break;
 				}
 		}

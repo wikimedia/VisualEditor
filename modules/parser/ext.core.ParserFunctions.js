@@ -399,15 +399,15 @@ ParserFunctions.prototype['pf_pagenamee'] = function ( target, argList, argDict 
 	return [ target ];
 };
 ParserFunctions.prototype['pf_fullpagename'] = function ( target, argList, argDict ) {
-	return [target];
+	return target && [target] || ["http://example.com/fixme/"];
 };
 ParserFunctions.prototype['pf_fullpagenamee'] = function ( target, argList, argDict ) {
-	return [target];
+	return target && [target] || ["http://example.com/fixme/"];
 };
 // This should be doable with the information in the envirionment
 // (this.manager.env) already.
 ParserFunctions.prototype['pf_fullurl'] = function ( target, argList, argDict ) {
-	return [target];
+	return target && [target] || ["http://example.com/fixme/"];
 };
 ParserFunctions.prototype['pf_urlencode'] = function ( target, argList, argDict ) {
 	this.manager.env.tp( 'urlencode: ' + target  );

@@ -112,8 +112,8 @@ WikiLinkHandler.prototype.renderFile = function ( token, manager, cb, title ) {
 	var MD5 = new jshashes.MD5(),
 		hash = MD5.hex( title.key ),
 		// TODO: Hackhack.. Move to proper test harness setup!
-		path = 'http://example.com/images/' + 
-			[ hash[0], hash.substr(0, 2) ].join('/') + '/' + title.key;
+		path = [ this.manager.env.wgUploadPath, hash[0],
+					hash.substr(0, 2), title.key ].join('/');
 	
 	
 
@@ -153,8 +153,8 @@ WikiLinkHandler.prototype.renderFile = function ( token, manager, cb, title ) {
 	var img = new SelfclosingTagTk( 'img', 
 			[ 
 				// FIXME!
-				new KV( 'height', options.height || '220' ),
-				new KV( 'width', options.width || '1941' ),
+				new KV( 'height', options.height || '120' ),
+				new KV( 'width', options.width || '120' ),
 				new KV( 'src', path ),
 				new KV( 'alt', options.alt || title.key )
 			] );
@@ -217,8 +217,9 @@ ExternalLinkHandler.prototype._isImageLink = function ( href ) {
 };
 
 ExternalLinkHandler.prototype.onUrlLink = function ( token, manager, cb ) {
-	var href = this.manager.env.sanitizeURI( 
-			this.manager.env.lookupKV( token.attribs, 'href' ).v 
+	var env = this.manager.env,
+		href = env.sanitizeURI( 
+				env.tokensToString( env.lookupKV( token.attribs, 'href' ).v )
 			);
 	if ( this._isImageLink( href ) ) {
 		return { token: new SelfclosingTagTk( 'img', 
@@ -241,9 +242,10 @@ ExternalLinkHandler.prototype.onUrlLink = function ( token, manager, cb ) {
 
 // Bracketed external link
 ExternalLinkHandler.prototype.onExtLink = function ( token, manager, cb ) {
-	var href = this.manager.env.lookupKV( token.attribs, 'href' ).v,
-		content=  this.manager.env.lookupKV( token.attribs, 'content' ).v;
-	href = this.manager.env.sanitizeURI( href );
+	var env = this.manager.env,
+		href = env.tokensToString( env.lookupKV( token.attribs, 'href' ).v ),
+		content=  env.lookupKV( token.attribs, 'content' ).v;
+	href = env.sanitizeURI( href );
 	//console.warn('extlink href: ' + href );
 	//console.warn( 'content: ' + JSON.stringify( content, null, 2 ) );
 	// validate the href

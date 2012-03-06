@@ -49,6 +49,8 @@ var ParserPipeline = require('./mediawiki.parser.js').ParserPipeline,
 						// fetch templates from enwiki by default..
 						wgScriptPath: argv.wgScriptPath,
 						wgScriptExtension: argv.wgScriptExtension,
+						// XXX: add options for this!
+						wgUploadPath: 'http://upload.wikimedia.org/wikipedia/commons/thumb/',
 						fetchTemplates: argv.fetchTemplates,
 						// enable/disable debug output using this switch	
 						debug: argv.debug,

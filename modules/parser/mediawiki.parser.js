@@ -76,7 +76,7 @@ function ParserPipeline( env, inputType ) {
 
 
 	this.tokenPostProcessor = new TokenTransformManager
-					.SyncTokenTransformManager ( env, inputType );
+					.SyncTokenTransformManager ( env, inputType, 3.0 );
 	this.tokenPostProcessor.listenForTokensFrom ( this.inputPipeline );
 
 
@@ -239,7 +239,7 @@ ParserPipeline.prototype.makeInputPipeline = function ( inputType, args, isNoInc
 				* https://www.mediawiki.org/wiki/Future/Parser_development/Token_stream_transformations
 				*/
 				var tokenPreProcessor = new TokenTransformManager
-								.SyncTokenTransformManager ( this.env );
+								.SyncTokenTransformManager ( this.env, 'text/wiki', 1 );
 				tokenPreProcessor.listenForTokensFrom ( wikiTokenizer );
 
 				this._addTransformers( 'text/wiki', 'sync01', 
@@ -251,7 +251,7 @@ ParserPipeline.prototype.makeInputPipeline = function ( inputType, args, isNoInc
 								'input': this.makeInputPipeline.bind( this ),
 								'attributes': this.makeAttributePipeline.bind( this )
 							},
-							args, this.env, inputType
+							args, this.env, inputType, 2.0
 						);
 
 				// Register template expansion extension
@@ -295,10 +295,10 @@ ParserPipeline.prototype.makeAttributePipeline = function ( inputType, args ) {
 		* See https://www.mediawiki.org/wiki/Future/Parser_development/Token_stream_transformations
 		*/
 		var tokenPreProcessor = new TokenTransformManager
-					.SyncTokenTransformManager ( this.env, inputType );
+					.SyncTokenTransformManager ( this.env, inputType, 1 );
 
 		// XXX: set include flag properly!
-		//this._addTransformers( inputType, 'sync01', tokenPreProcessor, false );
+		this._addTransformers( inputType, 'sync01', tokenPreProcessor, false );
 
 		new NoInclude( tokenPreProcessor );
 
@@ -307,7 +307,7 @@ ParserPipeline.prototype.makeAttributePipeline = function ( inputType, args ) {
 					'input': this.makeInputPipeline.bind( this ),
 					'attributes': this.makeAttributePipeline.bind( this )
 				},
-				args, this.env, inputType
+				args, this.env, inputType, 2
 				);
 		// Register template expansion extension
 		this._addTransformers( 'text/wiki', 'async12', 

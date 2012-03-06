@@ -42,7 +42,11 @@ AttributeExpander.prototype.register = function ( manager ) {
  * processes the template.
  */
 AttributeExpander.prototype.onToken = function ( token, frame, cb ) {
-	if ( token.constructor === TagTk && token.attribs && token.attribs.length ) {
+	this.manager.env.dp( 'AttributeExpander.onToken', token );
+	if ( token.constructor === TagTk || 
+			token.constructor === SelfclosingTagTk && 
+				token.attribs && 
+				token.attribs.length ) {
 		var expandData = {
 			token: token,
 			cb: cb

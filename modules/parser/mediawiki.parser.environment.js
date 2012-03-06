@@ -9,7 +9,9 @@ var MWParserEnvironment = function(opts) {
 		pageCache: {}, // @fixme use something with managed space
 		debug: false,
 		trace: false,
-		wgScriptPath: "http://en.wikipedia.org/w",
+		wgScriptPath: "/wiki",
+		wgScript: "/wiki/index.php",
+		wgUploadPath: "/wiki/images",
 		wgScriptExtension: ".php",
 		fetchTemplates: false,
 		maxDepth: 40
