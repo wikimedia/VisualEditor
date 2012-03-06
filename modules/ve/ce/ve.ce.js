@@ -3,11 +3,11 @@
  * 
  * All classes and functions will be attached to this object to keep the global namespace clean.
  */
-ve.es = {
+ve.ce = {
 	
 };
 
-ve.es.getDOMText = function( elem ) {
+ve.ce.getDOMText = function( elem ) {
 	var	nodeType = elem.nodeType,
 		ret = '';
 
@@ -21,7 +21,7 @@ ve.es.getDOMText = function( elem ) {
 		} else {
 			// Traverse it's children
 			for ( elem = elem.firstChild; elem; elem = elem.nextSibling) {
-				ret += ve.es.getDOMText( elem );
+				ret += ve.ce.getDOMText( elem );
 			}
 		}
 	} else if ( nodeType === 3 || nodeType === 4 ) {

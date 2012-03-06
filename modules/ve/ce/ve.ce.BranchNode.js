@@ -1,18 +1,18 @@
 /**
- * Creates an ve.es.BranchNode object.
+ * Creates an ve.ce.BranchNode object.
  * 
  * @class
  * @abstract
  * @constructor
  * @extends {ve.BranchNode}
- * @extends {ve.es.Node}
+ * @extends {ve.ce.Node}
  * @param model {ve.ModelNode} Model to observe
  * @param {jQuery} [$element] Element to use as a container
  */
-ve.es.BranchNode = function( model, $element, horizontal ) {
+ve.ce.BranchNode = function( model, $element, horizontal ) {
 	// Inheritance
 	ve.BranchNode.call( this );
-	ve.es.Node.call( this, model, $element );
+	ve.ce.Node.call( this, model, $element );
 
 	// Properties
 	this.horizontal = horizontal || false;
@@ -39,7 +39,7 @@ ve.es.BranchNode = function( model, $element, horizontal ) {
 
 /* Methods */
 
-ve.es.BranchNode.prototype.onAfterPush = function( childModel ) {
+ve.ce.BranchNode.prototype.onAfterPush = function( childModel ) {
 	var childView = childModel.createView();
 	this.emit( 'beforePush', childView );
 	childView.attach( this );
@@ -57,7 +57,7 @@ ve.es.BranchNode.prototype.onAfterPush = function( childModel ) {
 	this.emit( 'update' );
 };
 
-ve.es.BranchNode.prototype.onAfterUnshift = function( childModel ) {
+ve.ce.BranchNode.prototype.onAfterUnshift = function( childModel ) {
 	var childView = childModel.createView();
 	this.emit( 'beforeUnshift', childView );
 	childView.attach( this );
@@ -70,7 +70,7 @@ ve.es.BranchNode.prototype.onAfterUnshift = function( childModel ) {
 	this.emit( 'update' );
 };
 
-ve.es.BranchNode.prototype.onAfterPop = function() {
+ve.ce.BranchNode.prototype.onAfterPop = function() {
 	this.emit( 'beforePop' );
 	// Update children
 	var childView = this.children.pop();
@@ -82,7 +82,7 @@ ve.es.BranchNode.prototype.onAfterPop = function() {
 	this.emit( 'update' );
 };
 
-ve.es.BranchNode.prototype.onAfterShift = function() {
+ve.ce.BranchNode.prototype.onAfterShift = function() {
 	this.emit( 'beforeShift' );
 	// Update children
 	var childView = this.children.shift();
@@ -94,7 +94,7 @@ ve.es.BranchNode.prototype.onAfterShift = function() {
 	this.emit( 'update' );
 };
 
-ve.es.BranchNode.prototype.onAfterSplice = function( index, howmany ) {
+ve.ce.BranchNode.prototype.onAfterSplice = function( index, howmany ) {
 	var i,
 		length,
 		args = Array.prototype.slice.call( arguments, 0 );
@@ -137,7 +137,7 @@ ve.es.BranchNode.prototype.onAfterSplice = function( index, howmany ) {
 	this.emit( 'update' );
 };
 
-ve.es.BranchNode.prototype.onAfterSort = function() {
+ve.ce.BranchNode.prototype.onAfterSort = function() {
 	this.emit( 'beforeSort' );
 	var childModels = this.model.getChildren();
 	for ( var i = 0; i < childModels.length; i++ ) {
@@ -157,7 +157,7 @@ ve.es.BranchNode.prototype.onAfterSort = function() {
 	this.renderContent();
 };
 
-ve.es.BranchNode.prototype.onAfterReverse = function() {
+ve.ce.BranchNode.prototype.onAfterReverse = function() {
 	this.emit( 'beforeReverse' );
 	// Update children
 	this.reverse();
@@ -175,7 +175,7 @@ ve.es.BranchNode.prototype.onAfterReverse = function() {
  * 
  * @method
  */
-ve.es.BranchNode.prototype.renderContent = function() {
+ve.ce.BranchNode.prototype.renderContent = function() {
 	for ( var i = 0; i < this.children.length; i++ ) {
 		this.children[i].renderContent();
 	}
@@ -187,7 +187,7 @@ ve.es.BranchNode.prototype.renderContent = function() {
  * @method
  * @param {ve.Range} range Range of content to draw selection around
  */
-ve.es.BranchNode.prototype.drawSelection = function( range ) {
+ve.ce.BranchNode.prototype.drawSelection = function( range ) {
 	var selectedNodes = this.selectNodes( range, true );
 	for ( var i = 0; i < this.children.length; i++ ) {
 		if ( selectedNodes.length && this.children[i] === selectedNodes[0].node ) {
@@ -206,7 +206,7 @@ ve.es.BranchNode.prototype.drawSelection = function( range ) {
  * 
  * @method
  */
-ve.es.BranchNode.prototype.clearSelection = function() {
+ve.ce.BranchNode.prototype.clearSelection = function() {
 	for ( var i = 0; i < this.children.length; i++ ) {
 		this.children[i].clearSelection();
 	}
@@ -219,7 +219,7 @@ ve.es.BranchNode.prototype.clearSelection = function() {
  * @param {ve.Position} position Position to get offset for
  * @returns {Integer} Offset of position
  */
-ve.es.BranchNode.prototype.getOffsetFromRenderedPosition = function( position ) {
+ve.ce.BranchNode.prototype.getOffsetFromRenderedPosition = function( position ) {
 	if ( this.children.length === 0 ) {
 		return 0;
 	}
@@ -243,7 +243,7 @@ ve.es.BranchNode.prototype.getOffsetFromRenderedPosition = function( position ) 
  * @param {Integer} offset Offset to get position for
  * @returns {ve.Position} Position of offset
  */
-ve.es.BranchNode.prototype.getRenderedPositionFromOffset = function( offset, leftBias ) {
+ve.ce.BranchNode.prototype.getRenderedPositionFromOffset = function( offset, leftBias ) {
 	var node = this.getNodeFromOffset( offset, true );
 	if ( node !== null ) {
 		return node.getRenderedPositionFromOffset(
@@ -254,7 +254,7 @@ ve.es.BranchNode.prototype.getRenderedPositionFromOffset = function( offset, lef
 	return null;
 };
 
-ve.es.BranchNode.prototype.getRenderedLineRangeFromOffset = function( offset ) {
+ve.ce.BranchNode.prototype.getRenderedLineRangeFromOffset = function( offset ) {
 	var node = this.getNodeFromOffset( offset, true );
 	if ( node !== null ) {
 		var nodeOffset = this.getOffsetFromNode( node, true );
@@ -268,5 +268,5 @@ ve.es.BranchNode.prototype.getRenderedLineRangeFromOffset = function( offset ) {
 
 /* Inheritance */
 
-ve.extendClass( ve.es.BranchNode, ve.BranchNode );
-ve.extendClass( ve.es.BranchNode, ve.es.Node );
+ve.extendClass( ve.ce.BranchNode, ve.BranchNode );
+ve.extendClass( ve.ce.BranchNode, ve.ce.Node );

@@ -1,14 +1,14 @@
 /**
- * Creates an ve.es.ListNode object.
+ * Creates an ve.ce.ListNode object.
  * 
  * @class
  * @constructor
- * @extends {ve.es.BranchNode}
+ * @extends {ve.ce.BranchNode}
  * @param {ve.dm.ListNode} model List model to view
  */
-ve.es.ListNode = function( model ) {
+ve.ce.ListNode = function( model ) {
 	// Inheritance
-	ve.es.BranchNode.call( this, model );
+	ve.ce.BranchNode.call( this, model );
 
 	// DOM Changes
 	this.$.addClass( 'es-listView' );
@@ -30,7 +30,7 @@ ve.es.ListNode = function( model ) {
  * 
  * @method
  */
-ve.es.ListNode.prototype.enumerate = function() {
+ve.ce.ListNode.prototype.enumerate = function() {
 	var styles,
 		levels = [];
 	for ( var i = 0; i < this.children.length; i++ ) {
@@ -52,11 +52,11 @@ ve.es.ListNode.prototype.enumerate = function() {
 
 /* Registration */
 
-ve.es.DocumentNode.splitRules.list = {
+ve.ce.DocumentNode.splitRules.list = {
 	'self': false,
 	'children': true
 };
 
 /* Inheritance */
 
-ve.extendClass( ve.es.ListNode, ve.es.BranchNode );
+ve.extendClass( ve.ce.ListNode, ve.ce.BranchNode );

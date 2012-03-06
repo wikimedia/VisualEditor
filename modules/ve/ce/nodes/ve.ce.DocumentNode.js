@@ -1,15 +1,15 @@
 /**
- * Creates an ve.es.DocumentNode object.
+ * Creates an ve.ce.DocumentNode object.
  * 
  * @class
  * @constructor
- * @extends {ve.es.BranchNode}
+ * @extends {ve.ce.BranchNode}
  * @param {ve.dm.DocumentNode} documentModel Document model to view
- * @param {ve.es.Surface} surfaceView Surface view this view is a child of
+ * @param {ve.ce.Surface} surfaceView Surface view this view is a child of
  */
-ve.es.DocumentNode = function( model, surfaceView ) {
+ve.ce.DocumentNode = function( model, surfaceView ) {
 	// Inheritance
-	ve.es.BranchNode.call( this, model );
+	ve.ce.BranchNode.call( this, model );
 
 	// Properties
 	this.surfaceView = surfaceView;
@@ -47,7 +47,7 @@ ve.es.DocumentNode = function( model, surfaceView ) {
  *         'children': false
  *     }
  */
-ve.es.DocumentNode.splitRules = {};
+ve.ce.DocumentNode.splitRules = {};
 
 /* Methods */
 
@@ -58,16 +58,16 @@ ve.es.DocumentNode.splitRules = {};
  * @param e {Event} Event to create ve.Position from
  * @returns {Integer} Document offset
  */
-ve.es.DocumentNode.prototype.getOffsetFromEvent = function( e ) {
+ve.ce.DocumentNode.prototype.getOffsetFromEvent = function( e ) {
 	var position = ve.Position.newFromEventPagePosition( e );
 	return this.getOffsetFromRenderedPosition( position );
 };
 
-ve.es.DocumentNode.splitRules.document = {
+ve.ce.DocumentNode.splitRules.document = {
 	'self': false,
 	'children': true
 };
 
 /* Inheritance */
 
-ve.extendClass( ve.es.DocumentNode, ve.es.BranchNode );
+ve.extendClass( ve.ce.DocumentNode, ve.ce.BranchNode );

@@ -1,14 +1,14 @@
 /**
- * Creates an ve.es.TableCellNode object.
+ * Creates an ve.ce.TableCellNode object.
  * 
  * @class
  * @constructor
- * @extends {ve.es.BranchNode}
+ * @extends {ve.ce.BranchNode}
  * @param {ve.dm.TableCellNode} model Table cell model to view
  */
-ve.es.TableCellNode = function( model ) {
+ve.ce.TableCellNode = function( model ) {
 	// Inheritance
-	ve.es.BranchNode.call( this, model, $( '<td>' ) );
+	ve.ce.BranchNode.call( this, model, $( '<td>' ) );
 
 	// DOM Changes
 	this.$
@@ -18,11 +18,11 @@ ve.es.TableCellNode = function( model ) {
 
 /* Registration */
 
-ve.es.DocumentNode.splitRules.tableCell = {
+ve.ce.DocumentNode.splitRules.tableCell = {
 	'self': false,
 	'children': true
 };
 
 /* Inheritance */
 
-ve.extendClass( ve.es.TableCellNode, ve.es.BranchNode );
+ve.extendClass( ve.ce.TableCellNode, ve.ce.BranchNode );

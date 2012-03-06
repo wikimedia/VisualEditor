@@ -1,24 +1,24 @@
 /**
- * Creates an ve.es.LeafNode object.
+ * Creates an ve.ce.LeafNode object.
  * 
  * @class
  * @abstract
  * @constructor
  * @extends {ve.LeafNode}
- * @extends {ve.es.Node}
+ * @extends {ve.ce.Node}
  * @param model {ve.ModelNode} Model to observe
  * @param {jQuery} [$element] Element to use as a container
  */
-ve.es.LeafNode = function( model, $element ) {
+ve.ce.LeafNode = function( model, $element ) {
 	// Inheritance
 	ve.LeafNode.call( this );
-	ve.es.Node.call( this, model, $element );
+	ve.ce.Node.call( this, model, $element );
 
 	this.$.data('view', this);
 	this.$.addClass('ce-leafNode');
 
 	// Properties
-	this.contentView = new ve.es.Content( this.$, model );
+	this.contentView = new ve.ce.Content( this.$, model );
 
 	// Events
 	this.contentView.on( 'update', this.emitUpdate );
@@ -31,15 +31,15 @@ ve.es.LeafNode = function( model, $element ) {
  * 
  * @method
  */
-ve.es.LeafNode.prototype.renderContent = function() {
+ve.ce.LeafNode.prototype.renderContent = function() {
 	this.contentView.render();
 };
 
-ve.es.LeafNode.prototype.getDOMText = function() {
+ve.ce.LeafNode.prototype.getDOMText = function() {
 	return ve.ce.getDOMText( this.$[0] );
 };
 
 /* Inheritance */
 
-ve.extendClass( ve.es.LeafNode, ve.LeafNode );
-ve.extendClass( ve.es.LeafNode, ve.es.Node );
+ve.extendClass( ve.ce.LeafNode, ve.LeafNode );
+ve.extendClass( ve.ce.LeafNode, ve.ce.Node );

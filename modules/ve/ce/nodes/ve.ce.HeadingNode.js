@@ -1,14 +1,14 @@
 /**
- * Creates an ve.es.HeadingNode object.
+ * Creates an ve.ce.HeadingNode object.
  * 
  * @class
  * @constructor
- * @extends {ve.es.LeafNode}
+ * @extends {ve.ce.LeafNode}
  * @param {ve.dm.HeadingNode} model Heading model to view
  */
-ve.es.HeadingNode = function( model ) {
+ve.ce.HeadingNode = function( model ) {
 	// Inheritance
-	ve.es.LeafNode.call( this, model );
+	ve.ce.LeafNode.call( this, model );
 
 	// Properties
 	this.currentLevelHash = null;
@@ -28,7 +28,7 @@ ve.es.HeadingNode = function( model ) {
 
 /* Methods */
 
-ve.es.HeadingNode.prototype.setClasses = function() {
+ve.ce.HeadingNode.prototype.setClasses = function() {
 	var level = this.model.getElementAttribute( 'level' );
 	if ( level !== this.currentLevelHash ) {
 		this.currentLevelHash = level;
@@ -43,11 +43,11 @@ ve.es.HeadingNode.prototype.setClasses = function() {
 
 /* Registration */
 
-ve.es.DocumentNode.splitRules.heading = {
+ve.ce.DocumentNode.splitRules.heading = {
 	'self': true,
 	'children': null
 };
 
 /* Inheritance */
 
-ve.extendClass( ve.es.HeadingNode, ve.es.LeafNode );
+ve.extendClass( ve.ce.HeadingNode, ve.ce.LeafNode );

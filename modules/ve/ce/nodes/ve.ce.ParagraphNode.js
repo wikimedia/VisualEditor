@@ -1,14 +1,14 @@
 /**
- * Creates an ve.es.ParagraphNode object.
+ * Creates an ve.ce.ParagraphNode object.
  * 
  * @class
  * @constructor
- * @extends {ve.es.LeafNode}
+ * @extends {ve.ce.LeafNode}
  * @param {ve.dm.ParagraphNode} model Paragraph model to view
  */
-ve.es.ParagraphNode = function( model ) {
+ve.ce.ParagraphNode = function( model ) {
 	// Inheritance
-	ve.es.LeafNode.call( this, model, $( '<p></p>' ) );
+	ve.ce.LeafNode.call( this, model, $( '<p></p>' ) );
 
 	// DOM Changes
 	this.$.addClass( 'es-paragraphView' );
@@ -16,11 +16,11 @@ ve.es.ParagraphNode = function( model ) {
 
 /* Registration */
 
-ve.es.DocumentNode.splitRules.paragraph = {
+ve.ce.DocumentNode.splitRules.paragraph = {
 	'self': true,
 	'children': null
 };
 
 /* Inheritance */
 
-ve.extendClass( ve.es.ParagraphNode, ve.es.LeafNode );
+ve.extendClass( ve.ce.ParagraphNode, ve.ce.LeafNode );

@@ -18,10 +18,10 @@ ve.dm.ParagraphNode = function( element, length ) {
  * Creates a paragraph view for this model.
  * 
  * @method
- * @returns {ve.es.ParagraphNode}
+ * @returns {ve.ce.ParagraphNode}
  */
 ve.dm.ParagraphNode.prototype.createView = function() {
-	return new ve.es.ParagraphNode( this );
+	return new ve.ce.ParagraphNode( this );
 };
 
 /* Registration */

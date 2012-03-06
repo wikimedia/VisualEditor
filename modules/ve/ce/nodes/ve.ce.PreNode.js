@@ -1,14 +1,14 @@
 /**
- * Creates an ve.es.PreNode object.
+ * Creates an ve.ce.PreNode object.
  * 
  * @class
  * @constructor
- * @extends {ve.es.LeafNode}
+ * @extends {ve.ce.LeafNode}
  * @param {ve.dm.PreNode} model Pre model to view
  */
-ve.es.PreNode = function( model ) {
+ve.ce.PreNode = function( model ) {
 	// Inheritance
-	ve.es.LeafNode.call( this, model, undefined, { 'pre': true } );
+	ve.ce.LeafNode.call( this, model, undefined, { 'pre': true } );
 
 	// DOM Changes
 	this.$.addClass( 'es-preView' );
@@ -16,11 +16,11 @@ ve.es.PreNode = function( model ) {
 
 /* Registration */
 
-ve.es.DocumentNode.splitRules.pre = {
+ve.ce.DocumentNode.splitRules.pre = {
 	'self': true,
 	'children': null
 };
 
 /* Inheritance */
 
-ve.extendClass( ve.es.PreNode, ve.es.LeafNode );
+ve.extendClass( ve.ce.PreNode, ve.ce.LeafNode );

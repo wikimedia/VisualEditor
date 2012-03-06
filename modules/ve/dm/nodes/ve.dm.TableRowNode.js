@@ -18,10 +18,10 @@ ve.dm.TableRowNode = function( element, contents ) {
  * Creates a table row view for this model.
  * 
  * @method
- * @returns {ve.es.TableRowNode}
+ * @returns {ve.ce.TableRowNode}
  */
 ve.dm.TableRowNode.prototype.createView = function() {
-	return new ve.es.TableRowNode( this );
+	return new ve.ce.TableRowNode( this );
 };
 
 /* Registration */

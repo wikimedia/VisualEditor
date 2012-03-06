@@ -1,4 +1,4 @@
-ve.es.Content = function( $container, model ) {
+ve.ce.Content = function( $container, model ) {
 	// Inheritance
 	ve.EventEmitter.call( this );
 
@@ -26,7 +26,7 @@ ve.es.Content = function( $container, model ) {
  * @static
  * @member
  */
-ve.es.Content.annotationRenderers = {
+ve.ce.Content.annotationRenderers = {
 	'object/template': {
 		'open': function( data ) {
 			return '<span class="es-contentView-format-object">' + data.html;
@@ -91,7 +91,7 @@ ve.es.Content.annotationRenderers = {
  * @static
  * @member
  */
-ve.es.Content.htmlCharacters = {
+ve.ce.Content.htmlCharacters = {
 	'&': '&amp;',
 	'<': '&lt;',
 	'>': '&gt;',
@@ -117,8 +117,8 @@ ve.es.Content.htmlCharacters = {
  * @param {Array} stack List of currently open annotations
  * @returns {String} Rendered annotation
  */
-ve.es.Content.renderAnnotation = function( bias, annotation, stack ) {
-	var renderers = ve.es.Content.annotationRenderers,
+ve.ce.Content.renderAnnotation = function( bias, annotation, stack ) {
+	var renderers = ve.ce.Content.annotationRenderers,
 		type = annotation.type,
 		out = '';
 	if ( type in renderers ) {
@@ -167,7 +167,7 @@ ve.es.Content.renderAnnotation = function( bias, annotation, stack ) {
 
 /* Methods */
 
-ve.es.Content.prototype.render = function( offset ) {
+ve.ce.Content.prototype.render = function( offset ) {
 	this.$.html( this.getHtml( 0, this.model.getContentLength() ) );
 };
 
@@ -178,15 +178,15 @@ ve.es.Content.prototype.render = function( offset ) {
  * @param {ve.Range} range Range of content to render
  * @param {String} Rendered HTML of data within content model
  */
-ve.es.Content.prototype.getHtml = function( range, options ) {
+ve.ce.Content.prototype.getHtml = function( range, options ) {
 	if ( range ) {
 		range.normalize();
 	} else {
 		range = { 'start': 0, 'end': undefined };
 	}
 	var data = this.model.getContentData(),
-		render = ve.es.Content.renderAnnotation,
-		htmlChars = ve.es.Content.htmlCharacters;
+		render = ve.ce.Content.renderAnnotation,
+		htmlChars = ve.ce.Content.htmlCharacters;
 	var out = '',
 		left = '',
 		right,
@@ -238,4 +238,4 @@ ve.es.Content.prototype.getHtml = function( range, options ) {
 
 /* Inheritance */
 
-ve.extendClass( ve.es.Content, ve.EventEmitter );
+ve.extendClass( ve.ce.Content, ve.EventEmitter );

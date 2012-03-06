@@ -18,10 +18,10 @@ ve.dm.ListNode = function( element, contents ) {
  * Creates a list view for this model.
  * 
  * @method
- * @returns {ve.es.ListNode}
+ * @returns {ve.ce.ListNode}
  */
 ve.dm.ListNode.prototype.createView = function() {
-	return new ve.es.ListNode( this );
+	return new ve.ce.ListNode( this );
 };
 
 /* Registration */

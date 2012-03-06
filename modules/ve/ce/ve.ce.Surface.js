@@ -1,12 +1,12 @@
 /**
- * Creates an ve.es.Surface object.
+ * Creates an ve.ce.Surface object.
  * 
  * @class
  * @constructor
  * @param {jQuery} $container DOM Container to render surface into
  * @param {ve.dm.Surface} model Surface model to view
  */
-ve.es.Surface = function( $container, model ) {
+ve.ce.Surface = function( $container, model ) {
 	// Inheritance
 	ve.EventEmitter.call( this );
 
@@ -17,7 +17,7 @@ ve.es.Surface = function( $container, model ) {
 	
 	// Properties
 	this.model = model;
-	this.documentView = new ve.es.DocumentNode( this.model.getDocument(), this );
+	this.documentView = new ve.ce.DocumentNode( this.model.getDocument(), this );
 	this.contextView = null;
 	this.$ = $container
 		.addClass( 'es-surfaceView' )
@@ -81,7 +81,7 @@ ve.es.Surface = function( $container, model ) {
 
 /* Methods */
 
-ve.es.Surface.prototype.annotate = function( method, annotation ) {
+ve.ce.Surface.prototype.annotate = function( method, annotation ) {
 	var range = this.getSelection();
 	if ( method === 'toggle' ) {
 		var annotations = this.getAnnotations();
@@ -107,11 +107,11 @@ ve.es.Surface.prototype.annotate = function( method, annotation ) {
 	}
 };
 
-ve.es.Surface.prototype.renderDomNode = function ( node ) {
+ve.ce.Surface.prototype.renderDomNode = function ( node ) {
 	this.getLeafNode( node ).data( 'view' ).renderContent();
 };
 
-ve.es.Surface.prototype.onCutCopy = function( e ) {
+ve.ce.Surface.prototype.onCutCopy = function( e ) {
 	var _this = this,
 		rangySel = rangy.getSelection(),
 		key = rangySel.getRangeAt(0).toString().replace(/\s/gm,"");
@@ -142,7 +142,7 @@ ve.es.Surface.prototype.onCutCopy = function( e ) {
 	}
 };
 
-ve.es.Surface.prototype.onPaste = function( e ) {
+ve.ce.Surface.prototype.onPaste = function( e ) {
 	var	_this = this,
 		insertionPoint = _this.getSelection().start,
 		node = rangy.getSelection().anchorNode;
@@ -171,35 +171,35 @@ ve.es.Surface.prototype.onPaste = function( e ) {
 	}, 1 );
 };
 
-ve.es.Surface.prototype.onCompositionStart = function( e ) {
+ve.ce.Surface.prototype.onCompositionStart = function( e ) {
 	this.stopPolling();
 	var rangySel = rangy.getSelection();
 	this.poll.compositionStart = this.getOffset( rangySel.anchorNode, rangySel.anchorOffset, false );
 };
 
-ve.es.Surface.prototype.onCompositionEnd = function( e ) {
+ve.ce.Surface.prototype.onCompositionEnd = function( e ) {
 	var rangySel = rangy.getSelection();
 	this.poll.compositionEnd = this.getOffset( rangySel.focusNode, rangySel.focusOffset, false );
 	this.startPolling();
 };
 
-ve.es.Surface.prototype.attachContextView = function( contextView ) {
+ve.ce.Surface.prototype.attachContextView = function( contextView ) {
 	this.contextView = contextView;
 };
 
-ve.es.Surface.prototype.getModel = function() {
+ve.ce.Surface.prototype.getModel = function() {
 	return this.model;
 };
 
-ve.es.Surface.prototype.documentOnFocus = function() {
+ve.ce.Surface.prototype.documentOnFocus = function() {
 	this.startPolling();
 };
 
-ve.es.Surface.prototype.documentOnBlur = function() {
+ve.ce.Surface.prototype.documentOnBlur = function() {
 	this.stopPolling();
 };
 
-ve.es.Surface.prototype.startPolling = function() {
+ve.ce.Surface.prototype.startPolling = function() {
 	if ( this.poll.interval === null ) {
 		var _this = this;
 		setTimeout( function()  {
@@ -211,20 +211,20 @@ ve.es.Surface.prototype.startPolling = function() {
 	}
 };
 
-ve.es.Surface.prototype.stopPolling = function() {
+ve.ce.Surface.prototype.stopPolling = function() {
 	if ( this.poll.interval !== null ) {
 		clearInterval( this.poll.interval );
 		this.poll.interval = null;
 	}
 };
 
-ve.es.Surface.prototype.pollContent = function() {
+ve.ce.Surface.prototype.pollContent = function() {
 	var localOffset, text, hash;
 
 	if ( this.poll.compositionStart !== null && this.poll.compositionEnd !== null ) {
 
-		text = ve.es.Surface.getDOMText2( this.poll.node );
-		hash = ve.es.Surface.getDOMHash( this.poll.node );
+		text = ve.ce.Surface.getDOMText2( this.poll.node );
+		hash = ve.ce.Surface.getDOMHash( this.poll.node );
 		localOffset = this.poll.compositionEnd;
 		this.poll.compositionStart = null;
 		this.poll.compositionEnd = null;
@@ -237,8 +237,8 @@ ve.es.Surface.prototype.pollContent = function() {
 		}
 
 		var	node = this.getLeafNode( rangySel.anchorNode )[0];
-		text = ve.es.Surface.getDOMText2( node );
-		hash = ve.es.Surface.getDOMHash( node );
+		text = ve.ce.Surface.getDOMText2( node );
+		hash = ve.ce.Surface.getDOMHash( node );
 
 		if ( rangySel.anchorNode !== rangySel.focusNode || rangySel.anchorOffset !== rangySel.focusOffset ) {
 			localOffset = null;
@@ -305,7 +305,7 @@ ve.es.Surface.prototype.pollContent = function() {
 	this.poll.prevOffset = localOffset;
 };
 
-ve.es.Surface.prototype.onMouseDown = function( e ) {
+ve.ce.Surface.prototype.onMouseDown = function( e ) {
 	if ( this.poll.interval !== null ) {
 		this.stopPolling();
 		this.pollContent();
@@ -313,7 +313,7 @@ ve.es.Surface.prototype.onMouseDown = function( e ) {
 	}
 };
 
-ve.es.Surface.prototype.onKeyDown = function( e ) {
+ve.ce.Surface.prototype.onKeyDown = function( e ) {
 	if ( this.poll.interval !== null ) {
 		this.stopPolling();
 		this.pollContent();
@@ -370,7 +370,7 @@ ve.es.Surface.prototype.onKeyDown = function( e ) {
 	}
 };
 
-ve.es.Surface.prototype.getOffset = function( elem, offset, global ) {
+ve.ce.Surface.prototype.getOffset = function( elem, offset, global ) {
 	var	$leafNode = this.getLeafNode( elem ),
 		current = [$leafNode.contents(), 0],
 		stack = [current],
@@ -416,7 +416,7 @@ ve.es.Surface.prototype.getOffset = function( elem, offset, global ) {
 	}
 };
 
-ve.es.Surface.prototype.showCursorAt = function( offset ) {
+ve.ce.Surface.prototype.showCursorAt = function( offset ) {
 	var	$node = this.documentView.getNodeFromOffset( offset ).$,
 		current = [$node.contents(), 0],
 		stack = [current],
@@ -462,7 +462,7 @@ ve.es.Surface.prototype.showCursorAt = function( offset ) {
 	sel.addRange( range );
 };
 
-ve.es.Surface.prototype.getSelection = function() {
+ve.ce.Surface.prototype.getSelection = function() {
 	var rangySel = rangy.getSelection(),
 		range;
 
@@ -479,7 +479,7 @@ ve.es.Surface.prototype.getSelection = function() {
 	return range;
 };
 
-ve.es.Surface.prototype.getLeafNode = function( elem ) {
+ve.ce.Surface.prototype.getLeafNode = function( elem ) {
 	var	$node = $( elem );
 	while( !$node.hasClass( 'ce-leafNode' ) ) {
 		$node = $node.parent();
@@ -487,13 +487,13 @@ ve.es.Surface.prototype.getLeafNode = function( elem ) {
 	return $node;
 };
 		
-ve.es.Surface.getDOMText2 = function( elem ) {
+ve.ce.Surface.getDOMText2 = function( elem ) {
 	// TODO: there must be some better way to write this regex replace
 	var regex = new RegExp("[" + String.fromCharCode(32) + String.fromCharCode(160) + "]", "g");		
-	return ve.es.Surface.getDOMText( elem ).replace( regex, " " );
+	return ve.ce.Surface.getDOMText( elem ).replace( regex, " " );
 };
 
-ve.es.Surface.getDOMText = function( elem ) {
+ve.ce.Surface.getDOMText = function( elem ) {
     var nodeType = elem.nodeType,
         ret = '';
 
@@ -507,7 +507,7 @@ ve.es.Surface.getDOMText = function( elem ) {
         } else {
             // Traverse it's children
             for ( elem = elem.firstChild; elem; elem = elem.nextSibling) {
-                ret += ve.es.Surface.getDOMText( elem );
+                ret += ve.ce.Surface.getDOMText( elem );
             }
         }
     } else if ( nodeType === 3 || nodeType === 4 ) {
@@ -517,7 +517,7 @@ ve.es.Surface.getDOMText = function( elem ) {
     return ret;
 };
 
-ve.es.Surface.getDOMHash = function( elem ) {
+ve.ce.Surface.getDOMHash = function( elem ) {
     var nodeType = elem.nodeType,
 		nodeName = elem.nodeName,
         ret = '';
@@ -528,14 +528,14 @@ ve.es.Surface.getDOMHash = function( elem ) {
 		ret += '<' + nodeName + '>';
 		// Traverse it's children
 		for ( elem = elem.firstChild; elem; elem = elem.nextSibling) {
-			ret += ve.es.Surface.getDOMHash( elem );
+			ret += ve.ce.Surface.getDOMHash( elem );
         }
         ret += '</' + nodeName + '>';
 	}
 	return ret;
 };
 
-ve.es.Surface.prototype.handleDelete = function( backspace, isPartial ) {
+ve.ce.Surface.prototype.handleDelete = function( backspace, isPartial ) {
 	this.stopPolling();
 	var selection = this.getSelection().clone(),
 		sourceOffset,
@@ -564,8 +564,8 @@ ve.es.Surface.prototype.handleDelete = function( backspace, isPartial ) {
 			targetNode = this.documentView.getNodeFromOffset( targetOffset, false );
 	
 		if ( sourceNode.model.getElementType() === targetNode.model.getElementType() ) {
-			sourceSplitableNode = ve.es.Node.getSplitableNode( sourceNode );
-			targetSplitableNode = ve.es.Node.getSplitableNode( targetNode );
+			sourceSplitableNode = ve.ce.Node.getSplitableNode( sourceNode );
+			targetSplitableNode = ve.ce.Node.getSplitableNode( targetNode );
 		}
 
 		cursorAt = targetOffset;
@@ -614,7 +614,7 @@ ve.es.Surface.prototype.handleDelete = function( backspace, isPartial ) {
 	
 };
 
-ve.es.Surface.prototype.handleEnter = function() {
+ve.ce.Surface.prototype.handleEnter = function() {
 	this.stopPolling();
 	var selection = this.getSelection().clone(),
 		tx;
@@ -626,7 +626,7 @@ ve.es.Surface.prototype.handleEnter = function() {
 
 	if (
 		nodeOffset + node.getContentLength() + 1 === selection.to &&
-		node ===  ve.es.Node.getSplitableNode( node )
+		node ===  ve.ce.Node.getSplitableNode( node )
 	) {
 		tx = this.documentView.model.prepareInsertion(
 			nodeOffset + node.getElementLength(),
@@ -642,7 +642,7 @@ ve.es.Surface.prototype.handleEnter = function() {
 			var elementType = node.model.getElementType();
 			if (
 				splitable === true &&
-				ve.es.DocumentNode.splitRules[ elementType ].children === true
+				ve.ce.DocumentNode.splitRules[ elementType ].children === true
 			) {
 				return false;
 			}
@@ -655,7 +655,7 @@ ve.es.Surface.prototype.handleEnter = function() {
 					'attributes': ve.copyObject( node.model.element.attributes )
 				}
 			);
-			splitable = ve.es.DocumentNode.splitRules[ elementType ].self;
+			splitable = ve.ce.DocumentNode.splitRules[ elementType ].self;
 			return true;
 		} );
 		tx = this.documentView.model.prepareInsertion( selection.to, stack );
@@ -674,4 +674,4 @@ ve.es.Surface.prototype.handleEnter = function() {
 
 /* Inheritance */
 
-ve.extendClass( ve.es.Surface, ve.EventEmitter );
+ve.extendClass( ve.ce.Surface, ve.EventEmitter );

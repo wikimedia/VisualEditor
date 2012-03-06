@@ -18,10 +18,10 @@ ve.dm.TableCellNode = function( element, contents ) {
  * Creates a table cell view for this model.
  * 
  * @method
- * @returns {ve.es.TableCellNode}
+ * @returns {ve.ce.TableCellNode}
  */
 ve.dm.TableCellNode.prototype.createView = function() {
-	return new ve.es.TableCellNode( this );
+	return new ve.ce.TableCellNode( this );
 };
 
 /* Registration */

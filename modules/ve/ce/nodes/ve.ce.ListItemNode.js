@@ -1,14 +1,14 @@
 /**
- * Creates an ve.es.ListItemNode object.
+ * Creates an ve.ce.ListItemNode object.
  * 
  * @class
  * @constructor
- * @extends {ve.es.LeafNode}
+ * @extends {ve.ce.LeafNode}
  * @param {ve.dm.ListItemNode} model List item model to view
  */
-ve.es.ListItemNode = function( model ) {
+ve.ce.ListItemNode = function( model ) {
 	// Inheritance
-	ve.es.BranchNode.call( this, model );
+	ve.ce.BranchNode.call( this, model );
 
 	// Properties
 	this.$icon = $( '<div class="es-listItemView-icon"></div>' ).prependTo( this.$ );
@@ -29,7 +29,7 @@ ve.es.ListItemNode = function( model ) {
 
 /* Methods */
 
-ve.es.ListItemNode.prototype.setClasses = function() {
+ve.ce.ListItemNode.prototype.setClasses = function() {
 	var styles = this.model.getElementAttribute( 'styles' ),
 		stylesHash = styles.join( '|' );
 	if ( this.currentStylesHash !== stylesHash ) {
@@ -52,11 +52,11 @@ ve.es.ListItemNode.prototype.setClasses = function() {
 
 /* Registration */
 
-ve.es.DocumentNode.splitRules.listItem = {
+ve.ce.DocumentNode.splitRules.listItem = {
 	'self': true,
 	'children': false
 };
 
 /* Inheritance */
 
-ve.extendClass( ve.es.ListItemNode, ve.es.BranchNode );
+ve.extendClass( ve.ce.ListItemNode, ve.ce.BranchNode );

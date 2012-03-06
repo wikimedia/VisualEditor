@@ -18,10 +18,10 @@ ve.dm.PreNode = function( element, length ) {
  * Creates a pre view for this model.
  * 
  * @method
- * @returns {ve.es.PreNode}
+ * @returns {ve.ce.PreNode}
  */
 ve.dm.PreNode.prototype.createView = function() {
-	return new ve.es.PreNode( this );
+	return new ve.ce.PreNode( this );
 };
 
 /* Registration */

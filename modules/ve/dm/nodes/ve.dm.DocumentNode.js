@@ -589,10 +589,10 @@ ve.dm.DocumentNode.containsElementData = function( data ) {
  * Creates a document view for this model.
  * 
  * @method
- * @returns {ve.es.DocumentNode}
+ * @returns {ve.ce.DocumentNode}
  */
 ve.dm.DocumentNode.prototype.createView = function() {
-	return new ve.es.DocumentNode( this );
+	return new ve.ce.DocumentNode( this );
 };
 
 /**

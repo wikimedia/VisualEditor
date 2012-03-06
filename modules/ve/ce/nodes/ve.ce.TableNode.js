@@ -1,14 +1,14 @@
 /**
- * Creates an ve.es.TableNode object.
+ * Creates an ve.ce.TableNode object.
  * 
  * @class
  * @constructor
- * @extends {ve.es.BranchNode}
+ * @extends {ve.ce.BranchNode}
  * @param {ve.dm.TableNode} model Table model to view
  */
-ve.es.TableNode = function( model ) {
+ve.ce.TableNode = function( model ) {
 	// Inheritance
-	ve.es.BranchNode.call( this, model, $( '<table>' ) );
+	ve.ce.BranchNode.call( this, model, $( '<table>' ) );
 	
 	// DOM Changes
 	this.$
@@ -18,11 +18,11 @@ ve.es.TableNode = function( model ) {
 
 /* Registration */
 
-ve.es.DocumentNode.splitRules.table = {
+ve.ce.DocumentNode.splitRules.table = {
 	'self': false,
 	'children': false
 };
 
 /* Inheritance */
 
-ve.extendClass( ve.es.TableNode, ve.es.BranchNode );
+ve.extendClass( ve.ce.TableNode, ve.ce.BranchNode );
