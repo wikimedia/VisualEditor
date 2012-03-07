@@ -7,10 +7,9 @@
  * @class
  * @constructor
  */
-ve.dm.DocumentSynchronizer = function( model, transaction ) {
+ve.dm.DocumentSynchronizer = function( model ) {
 	// Properties
 	this.model = model;
-	this.transaction = transaction;
 	this.actions = [];
 };
 
