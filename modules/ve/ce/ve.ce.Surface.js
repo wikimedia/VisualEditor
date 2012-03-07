@@ -171,15 +171,14 @@ ve.ce.Surface.prototype.onCutCopy = function( e ) {
 			// we don't like how browsers cut, so let's undo it and do it ourselves.
 			document.execCommand('undo', false, false);
 			
-			var selection = _this.getSelectionRange(),
-				node = rangy.getSelection().anchorNode;
+			var selection = _this.getSelectionRange();
 			
 			// transact
 			var tx = _this.model.getDocument().prepareRemoval( selection );
+			
+			_this.autoRender = true;
 			_this.model.transact( tx );
-
-			// re-render
-			_this.getLeafNode( node ).data( 'view' ).renderContent();
+			_this.autoRender = false;
 			
 			_this.clearPollData();
 
@@ -191,8 +190,7 @@ ve.ce.Surface.prototype.onCutCopy = function( e ) {
 
 ve.ce.Surface.prototype.onPaste = function( e ) {
 	var	_this = this,
-		insertionPoint = _this.getSelectionRange().start,
-		node = rangy.getSelection().anchorNode;
+		insertionPoint = _this.getSelectionRange().start;
 	
 	$('#paste')
 		.html('')
