@@ -22,6 +22,7 @@ ve.ce.Surface = function( $container, model ) {
 	this.$ = $container
 		.addClass( 'es-surfaceView' )
 		.append( this.documentView.$ );
+	this.insertionAnnotations = [];
 	this.emitUpdateTimeout = undefined;
 	this.clipboard = {};
 	this.autoRender = false;
@@ -100,6 +101,7 @@ ve.ce.Surface.prototype.annotate = function( method, annotation ) {
 		this.autoRender = true;
 		this.model.transact( tx );
 		this.autoRender = false;
+		//TODO: Redraw selection
 				
 	} else {
 		if ( method === 'set' ) {
@@ -110,8 +112,45 @@ ve.ce.Surface.prototype.annotate = function( method, annotation ) {
 	}
 };
 
-ve.ce.Surface.prototype.renderDomNode = function ( node ) {
-	this.getLeafNode( node ).data( 'view' ).renderContent();
+ve.ce.Surface.prototype.getAnnotations = function() {
+	return this.getSelection().getLength() ?
+		this.model.getDocument().getAnnotationsFromRange( this.getSelection() ) :
+		{
+			'full': this.insertionAnnotations,
+			'partial': [],
+			'all': this.insertionAnnotations
+		};
+};
+
+ve.ce.Surface.prototype.getInsertionAnnotations = function() {
+	return this.insertionAnnotations;
+};
+
+ve.ce.Surface.prototype.addInsertionAnnotation = function( annotation ) {
+	this.insertionAnnotations.push( annotation );
+};
+
+ve.ce.Surface.prototype.loadInsertionAnnotations = function( annotation ) {
+	this.insertionAnnotations =
+		this.model.getDocument().getAnnotationsFromOffset( this.getSelection().to - 1 );
+	// Filter out annotations that aren't textStyles or links
+	for ( var i = 0; i < this.insertionAnnotations.length; i++ ) {
+		if ( !this.insertionAnnotations[i].type.match( /(textStyle\/|link\/)/ ) ) {
+			this.insertionAnnotations.splice( i, 1 );
+			i--;
+		}
+	}
+};
+
+ve.ce.Surface.prototype.removeInsertionAnnotation = function( annotation ) {
+	var index = ve.dm.DocumentNode.getIndexOfAnnotation( this.insertionAnnotations, annotation );
+	if ( index !== -1 ) {
+		this.insertionAnnotations.splice( index, 1 );
+	}
+};
+
+ve.ce.Surface.prototype.clearInsertionAnnotations = function() {
+	this.insertionAnnotations = [];
 };
 
 ve.ce.Surface.prototype.onCutCopy = function( e ) {
