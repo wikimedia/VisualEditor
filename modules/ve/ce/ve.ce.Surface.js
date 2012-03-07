@@ -84,7 +84,9 @@ ve.ce.Surface = function( $container, model ) {
 /* Methods */
 
 ve.ce.Surface.prototype.annotate = function( method, annotation ) {
-	var range = this.getSelection();
+	var range = this.getSelection(),
+		_this = this;
+
 	if ( method === 'toggle' ) {
 		var annotations = this.getAnnotations();
 		if ( ve.dm.DocumentNode.getIndexOfAnnotation( annotations.full, annotation ) !== -1 ) {
@@ -97,12 +99,16 @@ ve.ce.Surface.prototype.annotate = function( method, annotation ) {
 		var tx = this.model.getDocument().prepareContentAnnotation(
 			range, method, annotation
 		);
-		
+
+		// transact with autoRender
 		this.autoRender = true;
 		this.model.transact( tx );
 		this.autoRender = false;
-		//TODO: Redraw selection
-				
+
+		this.clearPollData();
+
+		// show cursor
+		_this.showCursorAt(range.to);
 	} else {
 		if ( method === 'set' ) {
 			this.addInsertionAnnotation( annotation );
@@ -175,11 +181,7 @@ ve.ce.Surface.prototype.onCutCopy = function( e ) {
 			// re-render
 			_this.getLeafNode( node ).data( 'view' ).renderContent();
 			
-			// clear the prev information from poll object (probably a better way to do this)
-			_this.poll.prevText =
-				_this.poll.prevHash =
-				_this.poll.prevOffset =
-				_this.poll.node = null;
+			_this.clearPollData();
 
 			// place cursor
 			_this.showCursorAt( selection.start );
@@ -196,7 +198,7 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
 		.html('')
 		.show()
 		.css( 'top', $(window).scrollTop() )
-		.css(' left', $(window).scrollLeft() )
+		.css( 'left', $(window).scrollLeft() )
 		.focus();
 
 	setTimeout( function() {
@@ -211,11 +213,7 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
 			_this.model.transact( tx );
 			_this.autoRender = false;
 
-			// clear the prev information from poll object (probably a better way to do this)
-			_this.poll.prevText =
-				_this.poll.prevHash =
-				_this.poll.prevOffset =
-				_this.poll.node = null;
+			_this.clearPollData();
 
 			// place cursor
 			_this.showCursorAt( insertionPoint + _this.clipboard[key].length );
@@ -270,6 +268,15 @@ ve.ce.Surface.prototype.stopPolling = function() {
 		clearInterval( this.poll.interval );
 		this.poll.interval = null;
 	}
+};
+
+ve.ce.Surface.prototype.clearPollData = function() {
+	this.stopPolling();
+	this.poll.prevText =
+		this.poll.prevHash =
+		this.poll.prevOffset =
+		this.poll.node = null;
+	this.startPolling();
 };
 
 ve.ce.Surface.prototype.pollContent = function() {
