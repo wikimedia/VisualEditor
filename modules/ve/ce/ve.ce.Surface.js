@@ -563,6 +563,70 @@ ve.ce.Surface.prototype.getSelectionRange = function() {
 	}
 };
 
+ve.ce.Surface.prototype.getDOMNodeAndOffset = function( offset ) {
+	var	$node = this.documentView.getNodeFromOffset( offset ).$,
+		nodeOffset = this.documentView.getOffsetFromNode( $node.data('view') ) + 1,
+		current = [$node.contents(), 0],
+		stack = [current],
+		localNode,
+		localOffset;
+
+	while ( stack.length > 0 ) {
+		if ( current[1] >= current[0].length ) {
+			stack.pop();
+			current = stack[ stack.length - 1 ];
+			continue;
+		}
+		var	item = current[0][current[1]],
+			$item = current[0].eq( current[1] );
+		
+		if ( item.nodeType === 3 ) {
+			var length = item.textContent.length;
+			if ( offset >= nodeOffset && offset <= nodeOffset + length ) {
+				return {
+					node: item,
+					offset: offset - nodeOffset
+				};
+				break;
+			} else {
+				nodeOffset += length;
+			}
+		} else if ( item.nodeType === 1 ) {
+			if ( $( item ).attr('contentEditable') === 'false' ) {
+				nodeOffset += 1;
+			} else {
+				stack.push( [$item.contents(), 0] );
+				current[1]++;
+				current = stack[stack.length-1];
+				continue;
+			}
+		}
+		current[1]++;
+	}
+	return null;
+};
+
+
+/**
+ * @method
+ */
+ve.ce.Surface.prototype.showCursor = function( offset ) {
+	this.showSelection( new ve.Range( offset ) );
+};
+
+/**
+ * @method
+ */
+ve.ce.Surface.prototype.showSelection = function( range ) {
+	var	start = this.getDOMNodeAndOffset( range.start ),
+		stop = this.getDOMNodeAndOffset( range.end ),
+		range = rangy.createRange(),
+		sel = rangy.getSelection();
+	range.setStart( start.node, start.offset );
+	range.setEnd( stop.node, stop.offset );
+	sel.setSingleRange( range );
+};
+
 ve.ce.Surface.prototype.getLeafNode = function( elem ) {
 	var	$node = $( elem );
 	while( !$node.hasClass( 'ce-leafNode' ) ) {
