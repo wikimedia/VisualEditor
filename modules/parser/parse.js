@@ -1,5 +1,5 @@
 /**
- * Command line wikidom parse utility.
+ * Command line parse utility.
  * Read from STDIN, write to STDOUT.
  * 
  * @author Neil Kandalgaonkar <neilk@wikimedia.org>

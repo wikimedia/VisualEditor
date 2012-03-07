@@ -1,6 +1,12 @@
 /**
+ * This module assembles parser pipelines from parser stages with
+ * asynchronous communnication between stages based on events. Apart from the
+ * default pipeline which converts WikiText to HTML DOM, it also provides
+ * sub-pipelines for the processing of template transclusions.
  *
- * Simple parser class. Should have lots of options for observing parse stages (or, use events).
+ * See http://www.mediawiki.org/wiki/Parsoid and 
+ * http://www.mediawiki.org/wiki/Parsoid/Token_stream_transformations
+ * for illustrations of the pipeline architecture.
  *
  * @author Gabriel Wicke <gwicke@wikimedia.org>
  * @author Neil Kandalgaonkar <neilk@wikimedia.org>
