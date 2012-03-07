@@ -18,7 +18,6 @@ TagTk.prototype.constructor = TagTk;
 TagTk.prototype.toString = toString;
 
 function EndTagTk( name, attribs ) { 
-	//this.type = 'ENDTAG';
 	this.name = name;
 	this.attribs = attribs || [];
 }
@@ -52,7 +51,6 @@ NlTk.prototype.constructor = NlTk;
 NlTk.prototype.toString = toString;
 
 function CommentTk( value ) { 
-	this.type = 'COMMENT';
 	this.value = value;
 }
 CommentTk.prototype = new Object();
@@ -62,9 +60,7 @@ CommentTk.prototype.toJSON = function () {
 CommentTk.prototype.constructor = CommentTk;
 CommentTk.prototype.toString = toString; 
 
-function EOFTk( ) {
-	this.type = 'END';
-}
+function EOFTk( ) { }
 EOFTk.prototype = new Object();
 EOFTk.prototype.toJSON = function () {
 	return $.extend( { type: 'EOFTk' }, this );

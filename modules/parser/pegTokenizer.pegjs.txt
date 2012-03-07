@@ -354,16 +354,6 @@
 start
   = e:toplevelblock* newline* { 
       // end is passed inline as a token, as well as a separate event for now.
-      
-      // this does not work yet.
-      //console.warn('about to emit' + pp(self));
-	  //self._tokenizer.emit('chunk', [ { type: 'END' } ] );
-      //self._tokenizer.emit('end');
-		// Append the end (for obvious reasons this should not
-		// be part of a stream, only when tokenizing complete
-		// texts)
-      //console.warn( pp( flatten ( e ) ) );
-      cache = {};
       __parseArgs[2]( [ new EOFTk( ) ] );
       return []; //flatten(e);
   }
@@ -550,7 +540,7 @@ h = & "=" // guard, to make sure '='+ will match.
 comment
   = '<!--' c:comment_chars* ('-->' / eof)
     cs:(space* newline space* cn:comment { return cn })* {
-        return [{ type: 'COMMENT', value: c.join('') }].concat(cs);
+        return [new CommentTk( c.join('') )].concat(cs);
     }
 
 comment_chars

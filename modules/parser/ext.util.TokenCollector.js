@@ -61,7 +61,7 @@ TokenCollector.prototype._onDelimiterToken = function ( token, frame, cb ) {
 		this.tokens.push ( token );
 		this.isActive = false;
 		this.manager.removeTransform( this.rank + this._anyDelta, 'any' );
-		if ( token.type !== 'END' || this.toEnd ) {
+		if ( token.constructor !== EOFTk || this.toEnd ) {
 			// end token
 			res = this.transformation ( this.tokens, this.cb, this.manager );
 			this.tokens = [];
@@ -75,7 +75,7 @@ TokenCollector.prototype._onDelimiterToken = function ( token, frame, cb ) {
 			this.tokens = [];
 			return { tokens: res };
 		}
-	} else if ( token.type !== 'END' ) {
+	} else if ( token.constructor !== EOFTk ) {
 		this.manager.env.dp( 'starting collection on ', token );
 		// start collection
 		this.tokens.push ( token );

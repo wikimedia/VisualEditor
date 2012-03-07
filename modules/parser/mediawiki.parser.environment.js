@@ -194,7 +194,7 @@ MWParserEnvironment.prototype.tokensToString = function ( tokens, strict ) {
 		}
 		if ( token.constructor === String ) {
 			out.push( token );
-		} else if ( token.type === 'COMMENT' || token.type === 'NEWLINE' ) {
+		} else if ( token.constructor === CommentTk || token.constructor === NlTk ) {
 			// strip comments and newlines
 		} else {
 			if ( strict ) {

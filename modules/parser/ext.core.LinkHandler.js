@@ -170,9 +170,9 @@ WikiLinkHandler.prototype.parseImageOptions = function ( tokens ) {
 		var token = tokens[i];
 		if ( token.constructor === String ) {
 			s += token;
-		} else if ( token.type === 'NEWLINE' ) {
+		} else if ( token.constructor === NlTk ) {
 			s += '\n'; // XXX: preserve original newline
-		} else if ( token.type === 'COMMENT' ) {
+		} else if ( token.constructor === CommentTk ) {
 			// strip it
 		} else {
 			var res = this.imageParser.processImageOptions( s, 'img_options' ),

@@ -73,7 +73,7 @@ PostExpandParagraphHandler.prototype.onNewLine = function (  token, frame, cb ) 
 PostExpandParagraphHandler.prototype.onAny = function ( token, frame, cb ) {
 	//console.warn( 'PostExpandParagraphHandler.onAny' );
 	this.tokens.push( token );
-	if ( token.type === 'COMMENT' || 
+	if ( token.constructor === CommentTk || 
 			( token.constructor === String && token.match( /^[\t ]+$/ ) ) 
 	)
 	{

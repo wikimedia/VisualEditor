@@ -36,7 +36,7 @@ OnlyInclude.prototype.onOnlyInclude = function ( token, manager ) {
 
 OnlyInclude.prototype.onAnyInclude = function ( token, manager ) {
 	//this.manager.env.dp( 'onAnyInclude', token, this );
-	if ( token.type === 'END' ) {
+	if ( token.constructor === EOFTk ) {
 		this.inOnlyInclude = false;
 		if ( this.accum.length && ! this.foundOnlyInclude ) {
 			var res = this.accum;
@@ -92,7 +92,7 @@ function NoInclude( manager, isInclude ) {
 				} else {
 					tokens.shift();
 					if ( tokens.length &&
-						tokens[tokens.length - 1].type !== 'END' ) {
+						tokens[tokens.length - 1].constructor !== EOFTk ) {
 						tokens.pop();
 					}
 					return { tokens: tokens };
@@ -114,7 +114,7 @@ function IncludeOnly( manager, isInclude ) {
 				if ( isInclude ) {
 					tokens.shift();
 					if ( tokens.length &&
-						tokens[tokens.length - 1].type !== 'END' ) {
+						tokens[tokens.length - 1].constructor !== EOFTk ) {
 							tokens.pop();
 					}
 					return { tokens: tokens };

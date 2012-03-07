@@ -110,27 +110,24 @@ FauxHTML5.TreeBuilder.prototype.processToken = function (token) {
 				name: token.name, 
 				data: this._att(token.attribs)});
 			break;
-		default:
-			switch (token.type) {
-				case "COMMENT":
-					this.emit('token', {type: 'Comment', 
-						data: token.value});
-					break;
-				case "END":
-					this.emit('end');
-					this.emit('token', { type: 'EOF' } );
-					this.document = this.parser.document;
-					if ( ! this.document.body ) {
-						// HACK: This should not be needed really.
-						this.document.body = this.parser.document.getElementsByTagName('body')[0];
-					}
-					// Emit the document to consumers
-					//this.emit('document', this.document);
-					break;
-				default:
-					console.warn("Unhandled token: " + JSON.stringify(token));
-					break;
+		case CommentTk:
+			this.emit('token', {type: 'Comment', 
+				data: token.value});
+			break;
+		case EOFTk:
+			this.emit('end');
+			this.emit('token', { type: 'EOF' } );
+			this.document = this.parser.document;
+			if ( ! this.document.body ) {
+				// HACK: This should not be needed really.
+				this.document.body = this.parser.document.getElementsByTagName('body')[0];
 			}
+			// Emit the document to consumers
+			//this.emit('document', this.document);
+			break;
+		default:
+			console.warn("Unhandled token: " + JSON.stringify(token));
+			break;
 			break;
 	}
 };

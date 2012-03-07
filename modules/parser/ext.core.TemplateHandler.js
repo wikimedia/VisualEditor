@@ -280,7 +280,7 @@ TemplateHandler.prototype._onEnd = function( tplExpandData, token ) {
 	// Strip 'end' tokens and trailing newlines
 	var l = res[res.length - 1];
 	while ( res.length &&
-			(	l.type === 'END'  || l.constructor === NlTk ) 
+			(	l.constructor === EOFTk  || l.constructor === NlTk ) 
 	) 
 	{
 		this.manager.env.dp( 'TemplateHandler, stripping end or whitespace tokens' );

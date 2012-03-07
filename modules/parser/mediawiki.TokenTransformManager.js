@@ -37,7 +37,7 @@ TokenTransformManager.prototype.constructor = TokenTransformManager;
 
 TokenTransformManager.prototype._construct = function () {
 	this.transformers = {
-		tag: {}, // for TAG, ENDTAG, SELFCLOSINGTAG, keyed on name
+		tag: {}, // for TagTk, EndTagTk, SelfclosingTagTk, keyed on name
 		text: [],
 		newline: [],
 		comment: [],
@@ -452,18 +452,15 @@ AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parent
 			case SelfclosingTagTk:
 				res = this._transformTagToken( token, cb );
 				break;
+			case CommentTk:
+				res = this._transformToken( token, ts.comment, cb );
+				break;
+			case EOFTk:
+				res = this._transformToken( token, ts.end, cb );
+				break;
 			default:
-				switch( token.type ) {
-					case 'COMMENT':
-						res = this._transformToken( token, ts.comment, cb );
-						break;
-					case 'END':
-						res = this._transformToken( token, ts.end, cb );
-						break;
-					default:
-						res = this._transformToken( token, ts.martian, cb );
-						break;
-				}
+				res = this._transformToken( token, ts.martian, cb );
+				break;
 				break;
 		}
 
@@ -526,14 +523,8 @@ AsyncTokenTransformManager.prototype._returnTokens =
 	function ( tokens, notYetDone, allTokensProcessed ) {
 	//tokens = this._transformPhase2( this.frame, tokens, this.parentCB );
 	
-	//if ( tokens.length && tokens[tokens.length - 1].type === 'END' ) {
-	//	this.env.dp( 'AsyncTokenTransformManager, stripping end ' );
-	//	tokens.pop();
-	//}
-
 	this.env.dp( 'AsyncTokenTransformManager._returnTokens, emitting chunk: ',
 				tokens );
-
 
 	if( !allTokensProcessed ) {
 		var res = this.transformTokens( tokens, this._returnTokens.bind(this) );
@@ -559,13 +550,7 @@ AsyncTokenTransformManager.prototype._returnTokens =
 		this.emit( 'chunk', tokens );
 
 		if ( ! notYetDone ) {
-			//console.warn('AsyncTokenTransformManager._returnTokens done. tokens:' + 
-			//		JSON.stringify( tokens, null, 2 ) + ', listeners: ' +
-			//		JSON.stringify( this.listeners( 'chunk' ), null, 2 ) );
 			// signal our done-ness to consumers.
-			//if ( this.atTopLevel ) {
-			//	this.emit( 'chunk', [{type: 'END'}]);
-			//}
 			this.emit( 'end' );
 			// and reset internal state.
 			this._reset();
@@ -663,18 +648,15 @@ SyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 			case SelfclosingTagTk:
 				res = this._transformTagToken( token, this.prevToken );
 				break;
+			case CommentTk:
+				res = this._transformToken( token, ts.comment, this.prevToken );
+				break;
+			case EOFTk:
+				res = this._transformToken( token, ts.end, this.prevToken );
+				break;
 			default:
-				switch( token.type ) {
-					case 'COMMENT':
-						res = this._transformToken( token, ts.comment, this.prevToken );
-						break;
-					case 'END':
-						res = this._transformToken( token, ts.end, this.prevToken );
-						break;
-					default:
-						res = this._transformToken( token, ts.martian, this.prevToken );
-						break;
-				}
+				res = this._transformToken( token, ts.martian, this.prevToken );
+				break;
 		}
 
 		if( res.tokens ) {
@@ -766,7 +748,7 @@ AttributeTransformManager.prototype.process = function ( attributes ) {
 			pipe.on( 'end', 
 					this.onEnd.bind( this, this._returnAttributeKey.bind( this, i ) ) 
 				);
-			pipe.process( attributes[i].k.concat([{type:'END'}]) );
+			pipe.process( attributes[i].k.concat([ new EOFTk() ]) );
 		} else {
 			kv.key = cur.k;
 		}
@@ -785,7 +767,7 @@ AttributeTransformManager.prototype.process = function ( attributes ) {
 					this.onEnd.bind( this, this._returnAttributeValue.bind( this, i ) ) 
 					);
 			//console.warn('starting attribute transform of ' + JSON.stringify( attributes[i].v ) );
-			pipe.process( cur.v.concat([{type:'END'}]) );
+			pipe.process( cur.v.concat([ new EOFTk() ]) );
 		} else {
 			kv.value = cur.v;
 		}
@@ -820,7 +802,7 @@ AttributeTransformManager.prototype._returnAttributes = function ( ) {
  * Collect chunks returned from the pipeline
  */
 AttributeTransformManager.prototype.onChunk = function ( cb, chunk ) {
-	if ( chunk.length && chunk[chunk.length - 1].type === 'END' ) {
+	if ( chunk.length && chunk[chunk.length - 1].constructor === EOFTk ) {
 		chunk.pop();
 	}
 	cb( chunk, true );

@@ -125,7 +125,7 @@ Cite.prototype.onRef = function ( tokenCTX ) {
 		return tokenCTX;
 	} else if ( this.isActive && 
 			// Also accept really broken ref close tags..
-			['TAG', 'ENDTAG', 'SELFCLOSINGTAG'].indexOf(token.type) >= 0 &&
+			[TagTk, EndTagTk, SelfclosingTagTk].indexOf(token.constructor) >= 0 &&
 			token.name.toLowerCase() === 'ref' 
 			) 
 	{
