@@ -458,11 +458,6 @@ AsyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 		this.tailAccumulator = res.async;
 		this.tokenCB = res.async.getParentCB ( 'sibling' );
 	}
-
-	// The next processed chunk should call back as a sibling to last
-	// accumulator, if any.
-	//if ( res.async ) {
-	//}
 };
 
 /**
@@ -952,9 +947,9 @@ TokenAccumulator.prototype.getParentCB = function ( reference ) {
  */
 TokenAccumulator.prototype._returnTokens = 
 	function ( reference, tokens, notYetDone, allTokensProcessed ) {
-	var res,
-		cb,
+	var cb,
 		returnTokens = [];
+
 
 	if ( ! notYetDone ) {
 		this.outstanding--;
@@ -962,11 +957,26 @@ TokenAccumulator.prototype._returnTokens =
 
 	//console.warn( 'TokenAccumulator._returnTokens' );
 	if ( reference === 'child' ) {
-		tokens = tokens.concat( this.accum );
+		var res = {};
+		if( !allTokensProcessed ) {
+			// There might be transformations missing on the returned tokens,
+			// re-transform to make sure those are applied too.
+			res = this.manager.transformTokens( tokens, this.parentCB );
+			tokens = res.tokens;
+		}
+
+		if ( !notYetDone ) {
+			// empty accum too
+			tokens = tokens.concat( this.accum );
+			this.accum = [];
+		}
 		this.manager.env.dp( 'TokenAccumulator._returnTokens child: ',
 				tokens, ' outstanding: ', this.outstanding );
-		this.accum = [];
-		this.parentCB( tokens, this.outstanding );
+		this.parentCB( tokens, this.outstanding, true );
+
+		if ( res.async ) {
+			this.parentCB = res.async.getParentCB( 'sibling' );
+		}
 		return null;
 	} else {
 		// sibling
@@ -977,7 +987,7 @@ TokenAccumulator.prototype._returnTokens =
 			this.manager.env.dp( 'TokenAccumulator._returnTokens: ',
 					'sibling done and parentCB ',
 					tokens );
-			this.parentCB( tokens, false );
+			this.parentCB( tokens, false, true );
 			return null;
 		} else if ( this.outstanding === 1 && notYetDone ) {
 			this.manager.env.dp( 'TokenAccumulator._returnTokens: ',
@@ -987,7 +997,7 @@ TokenAccumulator.prototype._returnTokens =
 			// allow the sibling to go direct, and call back parent with
 			// tokens. The internal accumulator is empty at this stage, as its
 			// tokens are passed to the parent when the child is done.
-			return this.parentCB( tokens, true);
+			return this.parentCB( tokens, true, true);
 		} else {
 			this.accum  = this.accum.concat( tokens );
 			this.manager.env.dp( 'TokenAccumulator._returnTokens: sibling done, but not overall. notYetDone=',
