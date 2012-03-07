@@ -84,7 +84,7 @@ ve.ce.Surface = function( $container, model ) {
 /* Methods */
 
 ve.ce.Surface.prototype.annotate = function( method, annotation ) {
-	var range = this.getSelection(),
+	var range = this.getSelectionRange(),
 		_this = this;
 
 	if ( method === 'toggle' ) {
@@ -164,14 +164,14 @@ ve.ce.Surface.prototype.onCutCopy = function( e ) {
 		sel = rangy.getSelection(),
 		key = sel.getRangeAt(0).toString().replace( /\s/gm, '' );
 
-	_this.clipboard[key] = ve.copyArray( _this.documentView.model.getData( _this.getSelection() ) );
+	_this.clipboard[key] = ve.copyArray( _this.documentView.model.getData( _this.getSelectionRange() ) );
 
 	if ( event.type == 'cut' ) {
 		setTimeout( function() {
 			// we don't like how browsers cut, so let's undo it and do it ourselves.
 			document.execCommand('undo', false, false);
 			
-			var selection = _this.getSelection(),
+			var selection = _this.getSelectionRange(),
 				node = rangy.getSelection().anchorNode;
 			
 			// transact
@@ -191,7 +191,7 @@ ve.ce.Surface.prototype.onCutCopy = function( e ) {
 
 ve.ce.Surface.prototype.onPaste = function( e ) {
 	var	_this = this,
-		insertionPoint = _this.getSelection().start,
+		insertionPoint = _this.getSelectionRange().start,
 		node = rangy.getSelection().anchorNode;
 	
 	$('#paste')
@@ -448,7 +448,7 @@ ve.ce.Surface.prototype.onKeyDown = function( e ) {
 			}
 			break;
 	}
-	var range = this.getSelection();
+	var range = this.getSelectionRange();
 	if ( range.getLength() !== 0 ) {
 		e.preventDefault();
 	}
@@ -546,21 +546,23 @@ ve.ce.Surface.prototype.showCursorAt = function( offset ) {
 	sel.addRange( range );
 };
 
-ve.ce.Surface.prototype.getSelection = function() {
-	var sel = rangy.getSelection(),
-		range;
 
-	if ( sel.anchorNode === sel.focusNode && sel.anchorOffset === sel.focusOffset ) {
-		var offset = this.getOffset( sel.anchorNode, sel.anchorOffset, true );
-		range = new ve.Range( offset, offset );
+/**
+ * @method
+ * @returns {ve.Range} Current selection range
+ */
+ve.ce.Surface.prototype.getSelectionRange = function() {
+	var rangySel = rangy.getSelection();
+
+	if ( rangySel.isCollapsed ) {
+		var offset = this.getOffset( rangySel.anchorNode, rangySel.anchorOffset, true );
+		return new ve.Range( offset, offset );
 	} else {
-		range = new ve.Range(
-			this.getOffset( sel.anchorNode, sel.anchorOffset, true ),
-			this.getOffset( sel.focusNode, sel.focusOffset, true )
+		return new ve.Range(
+			this.getOffset( rangySel.anchorNode, rangySel.anchorOffset, true ),
+			this.getOffset( rangySel.focusNode, rangySel.focusOffset, true )
 		);
 	}
-	range.normalize();
-	return range;
 };
 
 ve.ce.Surface.prototype.getLeafNode = function( elem ) {
@@ -621,7 +623,7 @@ ve.ce.Surface.getDOMHash = function( elem ) {
 
 ve.ce.Surface.prototype.handleDelete = function( backspace, isPartial ) {
 	this.stopPolling();
-	var selection = this.getSelection().clone(),
+	var selection = this.getSelectionRange().clone(),
 		sourceOffset,
 		targetOffset,
 		sourceSplitableNode,
@@ -700,7 +702,7 @@ ve.ce.Surface.prototype.handleDelete = function( backspace, isPartial ) {
 
 ve.ce.Surface.prototype.handleEnter = function() {
 	this.stopPolling();
-	var selection = this.getSelection().clone(),
+	var selection = this.getSelectionRange().clone(),
 		tx;
 	if ( selection.from !== selection.to ) {
 		this.handleDelete( false, true );
