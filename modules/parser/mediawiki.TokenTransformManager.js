@@ -406,7 +406,7 @@ AsyncTokenTransformManager.prototype.getAttributePipeline = function ( inputType
 AsyncTokenTransformManager.prototype._reset = function ( args, env ) {
 	// Note: Much of this is frame-like.
 	this.tailAccumulator = undefined;
-	// eventize: bend to event emitter callback
+	// initial top-level callback, emits chunks
 	this.tokenCB = this._returnTokens.bind( this );
 	this.prevToken = undefined;
 	//console.warn( 'AsyncTokenTransformManager args ' + JSON.stringify( args ) );
@@ -458,12 +458,11 @@ AsyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 		this.tailAccumulator = res.async;
 		this.tokenCB = res.async.getParentCB ( 'sibling' );
 	}
-	//this.phase2TailCB( tokens, true );
 
 	// The next processed chunk should call back as a sibling to last
 	// accumulator, if any.
-	if ( res.async ) {
-	}
+	//if ( res.async ) {
+	//}
 };
 
 /**
@@ -523,7 +522,7 @@ AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parent
 			tokensLength = tokens.length;
 			i--; // continue at first inserted token
 		} else if ( res.token ) {
-			if ( res.token.rank === 2 ) {
+			if ( res.token.rank === this.phaseEndRank ) {
 				// token is done.
 				if ( activeAccum ) {
 					// push to accumulator
@@ -557,17 +556,18 @@ AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parent
 };
 
 /**
- * Callback from tokens fully processed for phase 0 and 1, which are now ready
- * for synchronous and globally in-order phase 2 processing. Thus each async
- * transform is responsible for fully processing its returned tokens to the
- * end of phase2.
+ * Callback from tokens fully processed for phase sync01 and async12, which
+ * are now ready for synchronous and globally in-order sync23 processing. Thus
+ * each async transform is responsible for fully processing its returned
+ * tokens to the end of phase2.
  *
  * @method
  * @param {Array} chunk of tokens
  * @param {Mixed} Either a falsy value if this is the last callback
  * (everything is done), or a truish value if not yet done.
  */
-AsyncTokenTransformManager.prototype._returnTokens = function ( tokens, notYetDone ) {
+AsyncTokenTransformManager.prototype._returnTokens =
+	function ( tokens, notYetDone, allTokensProcessed ) {
 	//tokens = this._transformPhase2( this.frame, tokens, this.parentCB );
 	
 	//if ( tokens.length && tokens[tokens.length - 1].type === 'END' ) {
@@ -578,19 +578,42 @@ AsyncTokenTransformManager.prototype._returnTokens = function ( tokens, notYetDo
 	this.env.dp( 'AsyncTokenTransformManager._returnTokens, emitting chunk: ',
 				tokens );
 
-	this.emit( 'chunk', tokens );
 
-	if ( ! notYetDone ) {
-		//console.warn('AsyncTokenTransformManager._returnTokens done. tokens:' + 
-		//		JSON.stringify( tokens, null, 2 ) + ', listeners: ' +
-		//		JSON.stringify( this.listeners( 'chunk' ), null, 2 ) );
-		// signal our done-ness to consumers.
-		//if ( this.atTopLevel ) {
-		//	this.emit( 'chunk', [{type: 'END'}]);
-		//}
-		this.emit( 'end' );
-		// and reset internal state.
-		this._reset();
+	if( !allTokensProcessed ) {
+		var res = this.transformTokens( tokens, this._returnTokens.bind(this) );
+		this.emit( 'chunk', res.tokens );
+		if ( res.async ) {
+			if ( ! this.tailAccumulator ) {
+				this.tailAccumulator = res.async;
+				this.tokenCB = res.async.getParentCB ( 'sibling' );
+			}
+			if ( notYetDone ) {
+				// return sibling callback
+				return this.tokenCB;
+			} else {
+				// signal done-ness to last accum
+				res.async.siblingDone();
+			}
+		} else if ( !notYetDone ) {
+			this.emit( 'end' );
+			// and reset internal state.
+			this._reset();
+		}
+	} else {
+		this.emit( 'chunk', tokens );
+
+		if ( ! notYetDone ) {
+			//console.warn('AsyncTokenTransformManager._returnTokens done. tokens:' + 
+			//		JSON.stringify( tokens, null, 2 ) + ', listeners: ' +
+			//		JSON.stringify( this.listeners( 'chunk' ), null, 2 ) );
+			// signal our done-ness to consumers.
+			//if ( this.atTopLevel ) {
+			//	this.emit( 'chunk', [{type: 'END'}]);
+			//}
+			this.emit( 'end' );
+			// and reset internal state.
+			this._reset();
+		}
 	}
 };
 
@@ -927,7 +950,8 @@ TokenAccumulator.prototype.getParentCB = function ( reference ) {
  * @method
  * @param {Object} token
  */
-TokenAccumulator.prototype._returnTokens = function ( reference, tokens, notYetDone ) {
+TokenAccumulator.prototype._returnTokens = 
+	function ( reference, tokens, notYetDone, allTokensProcessed ) {
 	var res,
 		cb,
 		returnTokens = [];
@@ -980,7 +1004,7 @@ TokenAccumulator.prototype._returnTokens = function ( reference, tokens, notYetD
  */
 TokenAccumulator.prototype.siblingDone = function () {
 	//console.warn( 'TokenAccumulator.siblingDone: ' );
-	this._returnTokens ( 'sibling', [], false );
+	this._returnTokens ( 'sibling', [], false, true );
 };
 
 
