@@ -179,7 +179,7 @@ TemplateHandler.prototype._expandTemplate = function ( tplExpandData ) {
 		if ( tplExpandData.overallAsync ) {
 			this.manager.env.dp( 'TemplateHandler._expandTemplate: calling back ',
 					'after parser func ', prefix, ' with res:', res );
-			return tplExpandData.cb( res, false );
+			return tplExpandData.cb( res, false, true );
 		} else {
 			this.manager.env.dp( 'TemplateHandler._expandTemplate: sync return ',
 					'after parser func ', prefix, ' with res:', res );
@@ -202,7 +202,7 @@ TemplateHandler.prototype._expandTemplate = function ( tplExpandData ) {
 				new EndTagTk( 'a' )
 			];
 		if ( tplExpandData.overallAsync ) {
-			return tplExpandData.cb( res, false );
+			return tplExpandData.cb( res, false, true );
 		} else {
 			return { tokens: res };
 		}
@@ -295,7 +295,7 @@ TemplateHandler.prototype._onEnd = function( tplExpandData, token ) {
 
 	if ( tplExpandData.overallAsync ) {
 		this.manager.env.dp( 'TemplateHandler._onEnd: calling back with res:', res );
-		tplExpandData.cb( res, false );
+		tplExpandData.cb( res, false, true );
 	} else {
 		this.manager.env.dp( 'TemplateHandler._onEnd: synchronous return!' );
 		tplExpandData.result = { tokens: res };
