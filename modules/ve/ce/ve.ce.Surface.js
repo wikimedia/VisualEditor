@@ -108,7 +108,7 @@ ve.ce.Surface.prototype.annotate = function( method, annotation ) {
 		this.clearPollData();
 
 		// show cursor
-		_this.showCursorAt(range.to);
+		_this.showCursor(range.to);
 	} else {
 		if ( method === 'set' ) {
 			this.addInsertionAnnotation( annotation );
@@ -183,7 +183,7 @@ ve.ce.Surface.prototype.onCutCopy = function( e ) {
 			_this.clearPollData();
 
 			// place cursor
-			_this.showCursorAt( selection.start );
+			_this.showCursor( selection.start );
 		}, 1 );
 	}
 };
@@ -214,7 +214,7 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
 			_this.clearPollData();
 
 			// place cursor
-			_this.showCursorAt( insertionPoint + _this.clipboard[key].length );
+			_this.showCursor( insertionPoint + _this.clipboard[key].length );
 		} else {
 			alert('i can only handle copy/paste from hybrid surface. sorry. :(');
 		}
@@ -424,7 +424,7 @@ ve.ce.Surface.prototype.onKeyDown = function( e ) {
 					newOffset = this.documentView.model.getRelativeContentOffset(
 						globalOffset, -1
 					);
-					this.showCursorAt(newOffset);
+					this.showCursor(newOffset);
 					e.preventDefault();
 				}
 			}
@@ -440,7 +440,7 @@ ve.ce.Surface.prototype.onKeyDown = function( e ) {
 					newOffset = this.documentView.model.getRelativeContentOffset(
 						globalOffset, 1
 					);
-					this.showCursorAt(newOffset);
+					this.showCursor(newOffset);
 					e.preventDefault();
 				}
 			}
@@ -497,53 +497,6 @@ ve.ce.Surface.prototype.getOffset = function( elem, offset, global ) {
 		return localOffset;
 	}
 };
-
-ve.ce.Surface.prototype.showCursorAt = function( offset ) {
-	var	$node = this.documentView.getNodeFromOffset( offset ).$,
-		current = [$node.contents(), 0],
-		stack = [current],
-		node,
-		localOffset,
-		index = this.documentView.getOffsetFromNode( $node.data('view') ) + 1;
-
-	while ( stack.length > 0 ) {
-		if ( current[1] >= current[0].length ) {
-			stack.pop();
-			current = stack[ stack.length - 1 ];
-			continue;
-		}
-		var	item = current[0][current[1]],
-			$item = current[0].eq( current[1] );
-		
-		if ( item.nodeType === 3 ) {
-			var length = item.textContent.length;
-			if ( offset >= index && offset <= index + length ) {
-				node = item;
-				localOffset = offset - index;
-				break;
-			} else {
-				index += length;
-			}
-		} else if ( item.nodeType === 1 ) {
-			if ( $( item ).attr('contentEditable') === 'false' ) {
-				index += 1;
-			} else {
-				stack.push( [$item.contents(), 0] );
-				current[1]++;
-				current = stack[stack.length-1];
-				continue;
-			}
-		}
-		current[1]++;
-	}
-	var range = document.createRange();
-	range.collapsed = true;
-	range.setStart( node, localOffset );
-	var sel = window.getSelection();
-	sel.removeAllRanges();
-	sel.addRange( range );
-};
-
 
 /**
  * @method
