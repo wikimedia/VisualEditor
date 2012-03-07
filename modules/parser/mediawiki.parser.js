@@ -164,9 +164,12 @@ ParserPipeline.prototype._transformers = {
 				/* Extension2, */
 			],
 		/* 
-		* Asynchronous out-of-order per input. Output of transforms is *not*
-		* processed by other async transforms. Transforms are expected to
-		* apply any additional async transformations themselves.
+		* Asynchronous out-of-order per input. Each async transform can only
+		* operate on a single input token, but can emit multiple output
+		* tokens. If multiple tokens need to be collected per-input, then a
+		* separate collection transform in sync01 can be used to wrap the
+		* collected tokens into a single one later processed in an async12
+		* transform.
 		*/
 		async12: 
 			[ 

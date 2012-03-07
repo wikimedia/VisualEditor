@@ -10,7 +10,7 @@
  * buffering.
  *
  * See
- * https://www.mediawiki.org/wiki/Future/Parser_development/Token_stream_transformations
+ * https://www.mediawiki.org/wiki/Parsoid/Token_stream_transformations
  * for more documentation.
  *
  * @author Gabriel Wicke <gwicke@wikimedia.org>
@@ -124,44 +124,6 @@ TokenTransformManager.prototype.removeTransform = function ( rank, type, name ) 
 	}
 };
 
-/**
- * Enforce separation between phases when token types or tag names have
- * changed, or when multiple tokens were returned. Processing will restart
- * with the new rank.
- *
- * XXX: This should also be moved to the subclass (actually partially implicit if
- * _transformTagToken and _transformToken are subclassed and set the rank when
- * fully processed). The token type change case still needs to be covered
- * though.
- */
-TokenTransformManager.prototype._resetTokenRank = function ( res, transformer ) {
-	if ( res.token ) {
-		// reset rank after type or name change
-
-		// Convert String literal to String object
-		if ( res.token.constructor === String && res.token.rank === undefined ) {
-			res.token = new String( res.token );
-		}
-		if ( transformer.rank < 1 ) {
-			res.token.rank = 0;
-		} else {
-			res.token.rank = 1;
-		}
-	} else if ( res.tokens && transformer.rank > 2 ) {
-		for ( var i = 0; i < res.tokens.length; i++ ) {
-			var token = res.tokens[i];
-			// convert string literal to string object
-			if ( token.constructor === String && token.rank === undefined ) {
-				res.tokens[i] = new String( token );
-			}
-			if ( res.tokens[i].rank === undefined ) {
-				// Do not run phase 0 on newly created tokens from
-				// phase 1.
-				res.tokens[i].rank = 2;
-			}
-		}
-	}
-};
 
 TokenTransformManager.prototype.setTokensRank = function ( tokens, rank ) {
 	for ( var i = 0, l = tokens.length; i < l; i++ ) {
@@ -230,7 +192,6 @@ TokenTransformManager.prototype._transformTagToken = function ( token, cbOrPrevT
 								// need to check explicitly
 					res.token.type !== token.type || 
 					res.token.name !== token.name ) {
-				this._resetTokenRank ( res, transformer );
 				aborted = true;
 				break;
 			}
@@ -283,13 +244,9 @@ TokenTransformManager.prototype._transformToken = function ( token, ts, cbOrPrev
 				continue;
 			}
 			// Transform the token.
-			// XXX: consider moving the rank out of the token itself to avoid
-			// transformations messing with it in broken ways. Not sure if
-			// some transformations need to manipulate it though. gwicke
 			res = transformer.transform( res.token, this, cbOrPrevToken );
 			if ( !res.token ||
 					res.token.type !== token.type ) {
-				this._resetTokenRank ( res, transformer );
 				aborted = true;
 				break;
 			}
@@ -551,15 +508,19 @@ AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parent
 };
 
 /**
- * Callback from tokens fully processed for phase sync01 and async12, which
- * are now ready for synchronous and globally in-order sync23 processing. Thus
- * each async transform is responsible for fully processing its returned
- * tokens to the end of phase2.
+ * Top-level callback for tokens which are now free to be emitted iff they are
+ * indeed fully processed for sync01 and async12. If there were asynchronous
+ * expansions, then only the first TokenAccumulator has its callback set to
+ * this method. An exhausted TokenAccumulator passes its callback on to its
+ * siblings until the last accumulator is reached, so that the head
+ * accumulator will always call this method directly.
  *
  * @method
- * @param {Array} chunk of tokens
- * @param {Mixed} Either a falsy value if this is the last callback
- * (everything is done), or a truish value if not yet done.
+ * @param {Array} tokens, a chunk of tokens
+ * @param {Mixed} notYetDone, truish if more tokens will follow
+ * @param {Boolean} allTokensProcessed, set if all passed tokens are fully
+ * processed for this transformation phase (rank === this.phaseEndRank).
+ * @returns {Mixed} new parent callback for caller or falsy value.
  */
 AsyncTokenTransformManager.prototype._returnTokens =
 	function ( tokens, notYetDone, allTokensProcessed ) {
@@ -943,7 +904,12 @@ TokenAccumulator.prototype.getParentCB = function ( reference ) {
  * Pass tokens to an accumulator
  *
  * @method
- * @param {Object} token
+ * @param {String} reference, 'child' or 'sibling'.
+ * @param {Array} tokens
+ * @param {Boolean} notYetDone, truish if more tokens will follow
+ * @param {Boolean} allTokensProcessed, set if all tokens are fully
+ * transformed for this phase (rank === this.manager.phaseEndRank).
+ * @returns {Mixed} new parent callback for caller or falsy value
  */
 TokenAccumulator.prototype._returnTokens = 
 	function ( reference, tokens, notYetDone, allTokensProcessed ) {
