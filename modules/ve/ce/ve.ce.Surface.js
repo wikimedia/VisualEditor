@@ -24,6 +24,7 @@ ve.ce.Surface = function( $container, model ) {
 		.append( this.documentView.$ );
 	this.emitUpdateTimeout = undefined;
 	this.clipboard = {};
+	this.autoRender = false;
 
 	// Events
 	this.documentView.$.bind( {
@@ -95,9 +96,11 @@ ve.ce.Surface.prototype.annotate = function( method, annotation ) {
 		var tx = this.model.getDocument().prepareContentAnnotation(
 			range, method, annotation
 		);
+		
+		this.autoRender = true;		
 		this.model.transact( tx );
-		// re-render Node
-		this.renderDomNode ( rangy.getSelection().anchorNode );
+		this.autoRender = false;
+				
 	} else {
 		if ( method === 'set' ) {
 			this.addInsertionAnnotation( annotation );
@@ -160,15 +163,14 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
 	setTimeout( function() {
 		var key = $('#paste').hide().text().replace( /\s/gm, '' );
 
-		if ( _this.clipboard[key] ) {
+		if ( _this.clipboard[key] ) {			
 			// transact
 			var tx = _this.documentView.model.prepareInsertion(
 				insertionPoint, _this.clipboard[key]
 			);
+			_this.autoRender = true;
 			_this.model.transact( tx );
-
-			// re-render
-			_this.getLeafNode( node ).data( 'view' ).renderContent();
+			_this.autoRender = false;
 
 			// clear the prev information from poll object (probably a better way to do this)
 			_this.poll.prevText =

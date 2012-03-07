@@ -1,16 +1,22 @@
-ve.ce.Content = function( $container, model ) {
+ve.ce.Content = function( model, $container, parent ) {
 	// Inheritance
 	ve.EventEmitter.call( this );
 
 	// Properties
 	this.$ = $container;
 	this.model = model;
+	this.parent = parent;
 
 	if ( model ) {
 		// Events
 		var _this = this;
+		
 		this.model.on( 'update', function( offset ) {
-			//_this.render( offset || 0 );
+			var surfaceView = _this.getSurfaceView();
+
+			if (surfaceView.autoRender) {
+				_this.render( offset || 0 );
+			}
 		} );
 	}
 };
@@ -235,6 +241,14 @@ ve.ce.Content.prototype.getHtml = function( range, options ) {
 	}
 	return out;
 };
+
+ve.ce.Content.prototype.getSurfaceView = function() {
+	var view = this;
+	while(!view.surfaceView) {
+		view = view.parent;
+	}
+	return view.surfaceView;
+}
 
 /* Inheritance */
 

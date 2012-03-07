@@ -18,7 +18,7 @@ ve.ce.LeafNode = function( model, $element ) {
 	this.$.addClass('ce-leafNode');
 
 	// Properties
-	this.contentView = new ve.ce.Content( this.$, model );
+	this.contentView = new ve.ce.Content( model, this.$, this );
 
 	// Events
 	this.contentView.on( 'update', this.emitUpdate );
