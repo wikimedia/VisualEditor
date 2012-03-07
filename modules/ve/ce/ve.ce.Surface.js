@@ -1,6 +1,6 @@
 /**
  * Creates an ve.ce.Surface object.
- * 
+ *
  * @class
  * @constructor
  * @param {jQuery} $container DOM Container to render surface into
@@ -97,7 +97,7 @@ ve.ce.Surface.prototype.annotate = function( method, annotation ) {
 			range, method, annotation
 		);
 		
-		this.autoRender = true;		
+		this.autoRender = true;
 		this.model.transact( tx );
 		this.autoRender = false;
 				
@@ -163,7 +163,7 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
 	setTimeout( function() {
 		var key = $('#paste').hide().text().replace( /\s/gm, '' );
 
-		if ( _this.clipboard[key] ) {			
+		if ( _this.clipboard[key] ) {
 			// transact
 			var tx = _this.documentView.model.prepareInsertion(
 				insertionPoint, _this.clipboard[key]
@@ -316,7 +316,7 @@ ve.ce.Surface.prototype.pollContent = function() {
 				nodeOffset + 1 + sameFromLeft,
 				nodeOffset + 1 + this.poll.prevText.length - sameFromRight
 			) ) );
-			newData = text.substring( sameFromLeft, text.length - sameFromRight ).split( '' ); 
+			newData = text.substring( sameFromLeft, text.length - sameFromRight ).split( '' );
 			ve.dm.DocumentNode.addAnnotationsToData( newData, annotations );
 			this.model.transact( this.documentView.model.prepareInsertion(
 				nodeOffset + 1 + sameFromLeft,
@@ -527,7 +527,7 @@ ve.ce.Surface.prototype.getLeafNode = function( elem ) {
 		
 ve.ce.Surface.getDOMText2 = function( elem ) {
 	// TODO: there must be some better way to write this regex replace
-	var regex = new RegExp('[' + String.fromCharCode(32) + String.fromCharCode(160) + ']', 'g');		
+	var regex = new RegExp('[' + String.fromCharCode(32) + String.fromCharCode(160) + ']', 'g');
 	return ve.ce.Surface.getDOMText( elem ).replace( regex, ' ' );
 };
 
