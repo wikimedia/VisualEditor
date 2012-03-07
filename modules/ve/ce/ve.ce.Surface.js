@@ -107,8 +107,7 @@ ve.ce.Surface.prototype.annotate = function( method, annotation ) {
 
 		this.clearPollData();
 
-		// show cursor
-		_this.showCursor(range.to);
+		_this.showSelection( range );
 	} else {
 		if ( method === 'set' ) {
 			this.addInsertionAnnotation( annotation );
@@ -638,6 +637,7 @@ ve.ce.Surface.getDOMHash = function( elem ) {
 
 ve.ce.Surface.prototype.handleDelete = function( backspace, isPartial ) {
 	this.stopPolling();
+	this.clearPollData();
 	var selection = this.getSelectionRange().clone(),
 		sourceOffset,
 		targetOffset,
