@@ -1,6 +1,6 @@
 module( 've/dm' );
 
-test( 've.dm.TransactionProcessor', 33, function() {
+test( 've.dm.TransactionProcessor', 35, function() {
 	var documentModel = ve.dm.DocumentNode.newFromPlainObject( veTest.obj );
 
 	// FIXME: These tests shouldn't use prepareFoo() because those functions
@@ -403,5 +403,35 @@ test( 've.dm.TransactionProcessor', 33, function() {
 			{ 'type': '/paragraph' }
 		],
 		'rollback restores content'
+	);
+	
+	var paragraphToHeading = documentModel.prepareWrap( new ve.Range( 1, 4 ), [ { 'type': 'paragraph' } ], [ { 'type': 'heading', 'level': 2 } ], [], [] );
+	
+	// Test 33
+	ve.dm.TransactionProcessor.commit( documentModel, paragraphToHeading );
+	deepEqual(
+		documentModel.getData( new ve.Range( 0, 5 ) ),
+		[
+			{ 'type': 'heading', 'level': 2 },
+			'a',
+			['b', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }],
+			['c', { 'type': 'textStyle/italic', 'hash': '{"type":"textStyle/italic"}' }],
+			{ 'type': '/heading' }
+		],
+		'changing paragraph to heading'
+	);
+	
+	// Test 34
+	ve.dm.TransactionProcessor.rollback( documentModel, paragraphToHeading );
+	deepEqual(
+		documentModel.getData( new ve.Range( 0, 5 ) ),
+		[
+			{ 'type': 'paragraph' },
+			'a',
+			['b', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }],
+			['c', { 'type': 'textStyle/italic', 'hash': '{"type":"textStyle/italic"}' }],
+			{ 'type': '/paragraph' }
+		],
+		'rollback puts paragraph back'
 	);
 } );

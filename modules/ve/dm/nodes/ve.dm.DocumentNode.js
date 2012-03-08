@@ -1145,6 +1145,87 @@ ve.dm.DocumentNode.prototype.prepareContentReplacement = function( range, data )
  * 
  */
 ve.dm.DocumentNode.prototype.prepareWrap = function( range, unwrapOuter, wrapOuter, unwrapEach, wrapEach ) {
+	// Function to generate arrays of closing elements in reverse order
+	function closingArray( openings ) {
+		var closings = [], i, len = openings.length;
+		for ( i = 0; i < len; i++ ) {
+			closings[closings.length] = { 'type': '/' + openings[len - i - 1].type };
+		}
+		return closings;
+	}
+	
+	// TODO sanity checks:
+	// * range.start > unwrapOuter.length
+	// * unwraps actually match
+	// * result is valid
+	
+	var tx = new ve.dm.Transaction();
+	range.normalize();
+	if ( range.start > unwrapOuter.length ) {
+		// Retain up to the first thing we're unwrapping
+		// The outer unwrapping takes place *outside*
+		// the range, so compensate for that
+		tx.pushRetain ( range.start - unwrapOuter.length );
+	}
+	
+	// Replace the opening elements for the outer unwrap&wrap
+	if ( wrapOuter.length > 0 || unwrapOuter.length > 0 ) {
+		tx.pushReplace( unwrapOuter, wrapOuter );
+	}
+	
+	if ( wrapEach.length > 0 && unwrapEach.length > 0 ) {
+		var	closingUnwrapEach = closingArray( unwrapEach ),
+			closingWrapEach = closingArray( wrapEach ),
+			depth = 0,
+			startOffset,
+			i;
+		// Visit each top-level child and wrap/unwrap it
+		// TODO figure out if we should use the tree/node functions here
+		// rather than iterating over offsets, it may or may not be faster
+		for ( i = range.start; i < range.end; i++ ) {
+			if ( this.data[offset].type === undefined ) {
+				// This is a content offset, skip
+			} else {
+				// This is a structural offset
+				if ( this.data[offset].type.charAt( 0 ) != '/' ) {
+					// This is an opening element
+					if ( depth == 0 ) {
+						// We are at the start of a top-level element
+						// Replace the opening elements
+						tx.pushReplace( unwrapEach, wrapEach );
+						// Store this offset for later
+						startOffset = i;
+					}
+					depth++;
+				} else {
+					// This is a closing element
+					depth--;
+					if ( depth == 0 ) {
+						// We are at the end of a top-level element
+						// Retain the contents of what we're wrapping
+						tx.pushRetain( i - startOffset + 1 - unwrapEach.length*2 );
+						// Replace the closing elements
+						tx.pushReplace( closingUnwrapEach, closingWrapEach );
+					}
+				}
+			}
+		}
+	} else {
+		// There is no wrapEach/unwrapEach to be done, just retain
+		// up to the end of the range
+		tx.pushRetain( range.end - range.start );
+	}
+	
+	if ( wrapOuter.length > 0 || unwrapOuter.length > 0 ) {
+		tx.pushReplace( closingArray( unwrapOuter ), closingArray( wrapOuter ) );
+	}
+	
+	// Retain up to the end of the document
+	if ( range.end < this.data.length ) {
+		tx.pushRetain( this.data.length - range.end - unwrapOuter.length );
+	}
+	
+	return tx;
 };
 
 

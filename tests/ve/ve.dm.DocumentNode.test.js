@@ -800,3 +800,19 @@ test( 've.dm.DocumentNode.prepareInsertion', 11, function() {
 		'prepareInsertion throws exception for malformed input'
 	);
 } );
+
+test( 've.dm.DocumentNode.prepareWrap', 1, function() {
+	var documentModel = ve.dm.DocumentNode.newFromPlainObject( veTest.obj );
+	
+	// Test 1
+	deepEqual(
+		documentModel.prepareWrap( new ve.Range( 1, 4 ), [ { 'type': 'paragraph' } ], [ { 'type': 'heading', 'level': 2 } ], [], [] ).getOperations(),
+		[
+			{ 'type': 'replace', 'remove': [ { 'type': 'paragraph' } ], 'replacement': [ { 'type': 'heading', 'level': 2 } ] },
+			{ 'type': 'retain', 'length': 3 },
+			{ 'type': 'replace', 'remove': [ { 'type': '/paragraph' } ], 'replacement': [ { 'type': '/heading' } ] },
+			{ 'type': 'retain', 'length': 29 }
+		],
+		'prepareWrap changes a paragraph to a heading'
+	);
+} );
