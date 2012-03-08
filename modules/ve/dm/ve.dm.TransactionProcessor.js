@@ -461,7 +461,7 @@ ve.dm.TransactionProcessor.prototype.replace = function( op, invert ) {
 	
 	// Update the linear model
 	ve.batchedSplice( this.model.data, this.cursor, remove.length, replacement );
-	this.cursor += replacement.length - remove.length;
+	this.cursor += replacement.length;
 	
 	// TODO sync the tree too
 	
