@@ -249,10 +249,10 @@ ExternalLinkHandler.prototype.onExtLink = function ( token, manager, cb ) {
 	//console.warn('extlink href: ' + href );
 	//console.warn( 'content: ' + JSON.stringify( content, null, 2 ) );
 	// validate the href
-	if ( this.imageParser.parseURL( href ) ) {
+	if ( this.imageParser.tokenizeURL( href ) ) {
 		if ( content.length === 1 && 
 				content[0].constructor === String &&
-				this.imageParser.parseURL( content[0] ) &&
+				this.imageParser.tokenizeURL( content[0] ) &&
 				this._isImageLink( content[0] ) )
 		{
 			var src = content[0];

@@ -32,16 +32,31 @@ PegTokenizer.src = false;
  */
 PegTokenizer.prototype.process = function( text ) {
 	var out, err;
-	if ( !this.parser ) {
+	if ( !this.tokenizer ) {
+		// Construct a singleton static tokenizer.
 		var pegSrcPath = path.join( __dirname, 'pegTokenizer.pegjs.txt' );
 		this.src = fs.readFileSync( pegSrcPath, 'utf8' );
-		// Only create a single parser, as parse() is a static method.
-		var parserSource = PEG.buildParser(this.src).toSource();
-		//console.warn( parserSource );
-		parserSource = parserSource.replace( 'parse: function(input, startRule) {',
+		var tokenizerSource = PEG.buildParser(this.src).toSource();
+
+		/* We patch the generated source to assign the arguments array for the
+		* parse function to a function-scoped variable. We use this to pass
+		* in callbacks and other information, which can be used from actions
+		* run when matching a production. In particular, we pass in a
+		* callback called for a chunk of tokens in toplevelblock. Setting this
+		* callback per call to parse() keeps the tokenizer reentrant, so that it
+		* can be reused to expand templates while a main parse is ongoing.
+		* PEG tokenizer construction is very expensive, so having a single
+		* reentrant tokenizer is a big win.
+		*
+		* We could also make modules available to the tokenizer by prepending
+		* requires to the source.
+		*/
+		tokenizerSource = tokenizerSource.replace( 'parse: function(input, startRule) {',
 					'parse: function(input, startRule) { var __parseArgs = arguments;' );
-		//console.warn( parserSource );
-		PegTokenizer.prototype.parser = eval( parserSource );
+		//console.warn( tokenizerSource );
+		PegTokenizer.prototype.tokenizer = eval( tokenizerSource );
+		// alias the parse method
+		this.tokenizer.tokenize = this.tokenizer.parse;
 	}
 
 	// Some input normalization: force a trailing newline
@@ -52,7 +67,7 @@ PegTokenizer.prototype.process = function( text ) {
 	// XXX: Commented out exception handling during development to get
 	// reasonable traces.
 	//try {
-		this.parser.parse(text, 'start', 
+		this.tokenizer.tokenize(text, 'start', 
 				// callback
 				this.emit.bind( this, 'chunk' ),
 				// inline break test
@@ -68,12 +83,15 @@ PegTokenizer.prototype.process = function( text ) {
 };
 
 PegTokenizer.prototype.processImageOptions = function( text ) {
-		return this.parser.parse(text, 'img_options', null, this );
+		return this.tokenizer.tokenize(text, 'img_options', null, this );
 };
 
-PegTokenizer.prototype.parseURL = function( text ) {
+/**
+ * Tokenize a URL
+ */
+PegTokenizer.prototype.tokenizeURL = function( text ) {
 	try {
-		return this.parser.parse(text, 'url', null, this );
+		return this.tokenizer.tokenize(text, 'url', null, this );
 	} catch ( e ) {
 		return false;
 	}
