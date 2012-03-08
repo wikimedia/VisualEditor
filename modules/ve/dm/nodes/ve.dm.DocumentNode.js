@@ -1099,6 +1099,29 @@ ve.dm.DocumentNode.prototype.prepareRemoval = function( range ) {
 };
 
 /**
+ * Generates a transaction which removes content from a given range and
+ * replaces it with other content.
+ * 
+ * @param {ve.Range} range
+ * @param {Array} content data
+ * @returns {ve.dm.Transaction}
+ */
+ve.dm.DocumentNode.prototype.prepareContentReplacement = function( range, data ) {
+	// TODO this is way too simple and doesn't verify that there's no structural changes being snuck in
+	var tx = new ve.dm.Transaction();
+	range.normalize();
+	if ( range.start > 0 ) {
+		tx.pushRetain( range.start );
+	}
+	tx.pushReplace( this.data.slice( range.start, range.end ), data );
+	if ( range.end < this.data.length ) {
+		tx.pushRetain( this.data.length - range.end );
+	}
+	
+	return tx;
+};
+
+/**
  * Generates a transaction which annotates content within a given range.
  * 
  * @method
