@@ -15,6 +15,10 @@ ve.dm.DocumentSynchronizer = function( model ) {
 
 /* Methods */
 
+ve.dm.DocumentSynchronizer.prototype.getModel = function() {
+	return this.model;
+};
+
 /**
  * Adds an action to the synchronizer.
  * 
@@ -72,19 +76,23 @@ ve.dm.DocumentSynchronizer.prototype.synchronize = function() {
 			case 'delete':
 				// Replace original node with new node
 				parent = action.node.getParent();
-				parentNode.splice( parentNode.indexOf( action.node ), 1 );
+				parent.splice( parent.indexOf( action.node ), 1 );
 				// Adjust proceeding offsets negatively by the length of the node being deleted
 				adjustment -= action.node.getElementLength();
 				break;
 			case 'rebuild':
 				// Replace original node with new node
-				var newNode = ve.dm.DocumentNode.createNodesFromData( this.model.getData(
+				var newNodes = ve.dm.DocumentNode.createNodesFromData( this.model.getData(
 					new ve.Range( offset, action.node.getElementLength() + action.adjustment )
 				) );
 				parent = action.node.getParent();
-				parentNode.splice( parentNode.indexOf( action.node ), 1, newNode );
+				parent.splice.apply( parent, [parent.indexOf( action.node ), 1].concat( newNodes ) );
 				// Adjust proceeding offsets by the difference between the original and new nodes
-				adjustment += newNode.getElementLength() - action.node.getElementLength();
+				var newNodesLength = 0;
+				for ( var j = 0, jlen = newNodes.length; j < jlen; j++ ) {
+					newNodesLength += newNodes[j].getElementLength();
+				}
+				adjustment += newNodesLength - action.node.getElementLength();
 				break;
 			case 'resize':
 				// Adjust node length - causes update events to be emitted

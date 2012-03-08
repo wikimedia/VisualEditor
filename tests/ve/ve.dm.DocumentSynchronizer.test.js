@@ -1,62 +1,159 @@
 module( 've/dm' );
 
-test( 've.dm.TransactionSynchronizer', function() {
-	var model,
-		sync,
-		node,
-		data;
+test( 've.dm.TransactionSynchronizer', 9, function() {
+	var tests = {
+		// Test 1
+		'resize actions adjust node lengths': {
+			'actual': function( sync ) {
+				var model = sync.getModel();
+				// Delete bold "b" from first paragraph
+				model.data.splice( 2, 1 );
+				// Push resize action
+				sync.pushAction( 'resize', model.getChildren()[0], 0, -1 );
+				// Sync
+				sync.synchronize();
+				return model.getChildren()[0].getContentLength();
+			},
+			'expected': 2
+		},
+		// Test 2
+		'insert actions can add new nodes in the middle': {
+			'actual': function( sync ) {
+				var model = sync.getModel(),
+					data = [{ 'type': 'paragraph' }, 'x', { 'type': '/paragraph' }],
+					node = ve.dm.DocumentNode.createNodesFromData( data )[0];
+				// Insert element after first paragraph
+				ve.insertIntoArray( model.data, 5, data );
+				// Push insertion action
+				sync.pushAction( 'insert', node, 5 );
+				// Sync
+				sync.synchronize();
+				return model.getChildren()[1].getContentData();
+			},
+			'expected': ['x']
+		},
+		// Test 3
+		'insert actions can add new nodes at the beginning': {
+			'actual': function( sync ) {
+				var model = sync.getModel(),
+					data = [{ 'type': 'paragraph' }, 'x', { 'type': '/paragraph' }],
+					node = ve.dm.DocumentNode.createNodesFromData( data )[0];
+				// Insert element after first paragraph
+				ve.insertIntoArray( model.data, 0, data );
+				// Push insertion action
+				sync.pushAction( 'insert', node, 0 );
+				// Sync
+				sync.synchronize();
+				return model.getChildren()[0].getContentData();
+			},
+			'expected': ['x']
+		},
+		// Test 4
+		'insert actions can add new nodes at the end': {
+			'actual': function( sync ) {
+				var model = sync.getModel(),
+					data = [{ 'type': 'paragraph' }, 'x', { 'type': '/paragraph' }],
+					node = ve.dm.DocumentNode.createNodesFromData( data )[0];
+				// Insert element after first paragraph
+				ve.insertIntoArray( model.data, 34, data );
+				// Push insertion action
+				sync.pushAction( 'insert', node, 34 );
+				// Sync
+				sync.synchronize();
+				return model.getChildren()[3].getContentData();
+			},
+			'expected': ['x']
+		},
+		// Test 5
+		'delete actions can remove nodes from the middle': {
+			'actual': function( sync ) {
+				var model = sync.getModel(),
+					node = model.getChildren()[1];
+				// Delete the table
+				model.data.splice( 5, 26 );
+				// Push deletion action
+				sync.pushAction( 'delete', node, 5 );
+				// Sync
+				sync.synchronize();
+				return model.getChildren().length;
+			},
+			'expected': 2
+		},
+		// Test 6
+		'delete actions can remove nodes from the beginning': {
+			'actual': function( sync ) {
+				var model = sync.getModel(),
+					node = model.getChildren()[0];
+				// Delete the first paragraph
+				model.data.splice( 0, 5 );
+				// Push deletion action
+				sync.pushAction( 'delete', node, 0 );
+				// Sync
+				sync.synchronize();
+				return model.getChildren().length;
+			},
+			'expected': 2
+		},
+		// Test 7
+		'delete actions can remove nodes from the end': {
+			'actual': function( sync ) {
+				var model = sync.getModel(),
+					node = model.getChildren()[2];
+				// Delete the first paragraph
+				model.data.splice( 31, 3 );
+				// Push deletion action
+				sync.pushAction( 'delete', node, 31 );
+				// Sync
+				sync.synchronize();
+				return model.getChildren().length;
+			},
+			'expected': 2
+		},
+		// Test 8
+		'rebuild actions can convert element types': {
+			'actual': function( sync ) {
+				var model = sync.getModel(),
+					node = model.getChildren()[0];
+				// Convert the first paragraph to a level 1 heading
+				model.data[0].type = 'heading';
+				model.data[0].attributes = { 'level': 1 };
+				model.data[4].type = '/heading';
+				// Push rebuild action
+				sync.pushAction( 'rebuild', node, 0 );
+				// Sync
+				sync.synchronize();
+				return model.getChildren()[0].getElementType();
+			},
+			'expected': 'heading'
+		},
+		// Test 9
+		'rebuild actions can replace one node with more than one node': {
+			'actual': function( sync ) {
+				var model = sync.getModel(),
+					node = model.getChildren()[0],
+					data = [{ 'type': 'paragraph' }, 'x', { 'type': '/paragraph' }];
+				// Insert element after first paragraph
+				ve.insertIntoArray( model.data, 5, data );
+				// Push rebuild action with a length adustment of 3 to account for the new element
+				sync.pushAction( 'rebuild', node, 0, 3 );
+				// Sync
+				sync.synchronize();
+				return model.getChildren()[1].getContentData();
+			},
+			'expected': ['x']
+		}
+	};
 
-	// Test 1 - node resizing
-
-	model = ve.dm.DocumentNode.newFromPlainObject( veTest.obj );
-	sync = new ve.dm.DocumentSynchronizer( model );
-	// Delete bold "b" from first paragraph
-	model.data.splice( 2, 1 );
-	// Push resize action
-	sync.pushAction( 'resize', model.getChildren()[0], 0, -1 );
-	// Sync
-	sync.synchronize();
-	equal( model.getChildren()[0].getContentLength(), 2, 'resize actions adjust node lengths' );
-
-	// Test 2 - node insertion (in the middle)
-
-	model = ve.dm.DocumentNode.newFromPlainObject( veTest.obj );
-	sync = new ve.dm.DocumentSynchronizer( model );
-	// Insert element after first paragraph
-	data = [{ 'type': 'paragraph' }, 'x', { 'type': '/paragraph' }];
-	node = ve.dm.DocumentNode.createNodesFromData( data )[0];
-	ve.insertIntoArray( model.data, 5, data );
-	// Push insertion action
-	sync.pushAction( 'insert', node, 5 );
-	// Sync
-	sync.synchronize();
-	deepEqual( model.getChildren()[1].getContentData(), ['x'], 'insert actions add new nodes' );
-
-	// Test 3 - node insertion (at the start)
-
-	model = ve.dm.DocumentNode.newFromPlainObject( veTest.obj );
-	sync = new ve.dm.DocumentSynchronizer( model );
-	// Insert element after first paragraph
-	data = [{ 'type': 'paragraph' }, 'x', { 'type': '/paragraph' }];
-	node = ve.dm.DocumentNode.createNodesFromData( data )[0];
-	ve.insertIntoArray( model.data, 0, data );
-	// Push insertion action
-	sync.pushAction( 'insert', node, 0 );
-	// Sync
-	sync.synchronize();
-	deepEqual( model.getChildren()[0].getContentData(), ['x'], 'insert actions add new nodes' );
-
-	// Test 4 - node insertion (at the end)
-	model = ve.dm.DocumentNode.newFromPlainObject( veTest.obj );
-	sync = new ve.dm.DocumentSynchronizer( model );
-	// Insert element after first paragraph
-	data = [{ 'type': 'paragraph' }, 'x', { 'type': '/paragraph' }];
-	node = ve.dm.DocumentNode.createNodesFromData( data )[0];
-	ve.insertIntoArray( model.data, 34, data );
-	// Push insertion action
-	sync.pushAction( 'insert', node, 34 );
-	// Sync
-	sync.synchronize();
-	deepEqual( model.getChildren()[3].getContentData(), ['x'], 'insert actions add new nodes' );
+	// Run tests
+	for ( var test in tests ) {
+		deepEqual(
+			tests[test].actual(
+				new ve.dm.DocumentSynchronizer(
+					ve.dm.DocumentNode.newFromPlainObject( veTest.obj )
+				)
+			),
+			tests[test].expected,
+			test
+		);
+	}
 } );
-
