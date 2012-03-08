@@ -169,27 +169,49 @@ ve.copyObject = function( source ) {
 };
 
 /**
- * Splice one array into another. This is the equivalent of arr.splice( offset, 0, i1, i2, i3, ... )
- * except that i1, i2, i3, ... are specified as an array rather than separate parameters.
+ * Splice one array into another. This is the equivalent of arr.splice( offset, remove, d1, d2, d3, ... )
+ * except that d1, d2, d3, ... are specified as an array rather than separate parameters.
  * 
  * @static
  * @method
- * @param {Array} dst Array to splice insertion into. Will be modified
- * @param {Number} offset Offset in arr to splice insertion in at. May be negative; see the 'index'
+ * @param {Array} arr Array to remove from and insert into. Will be modified
+ * @param {Number} offset Offset in arr to splice at. May be negative; see the 'index'
  * parameter for Array.prototype.splice()
- * @param {Array} src Array of items to insert
+ * @param {Number} remove Number of elements to remove at the offset. May be zero
+ * @param {Array} data Array of items to insert at the offset
  */
-ve.insertIntoArray = function( dst, offset, src ) {
+ve.batchedSplice = function( arr, offset, remove, data ) {
 	// We need to splice insertion in in batches, because of parameter list length limits which vary
 	// cross-browser - 1024 seems to be a safe batch size on all browsers
-	var index = 0, batchSize = 1024;
-	while ( index < src.length ) {
-		// Call arr.splice( offset, 0, i0, i1, i2, ..., i1023 );
-		dst.splice.apply(
-			dst, [index + offset, 0].concat( src.slice( index, index + batchSize ) )
+	var index = 0, batchSize = 1024, toRemove = remove;
+	
+	if ( data.length == 0 ) {
+		// Special case: data is empty, so we're just doing a removal
+		// The code below won't handle that properly, so we do it here
+		arr.splice( offset, remove );
+		return;
+	}
+	
+	while ( index < data.length ) {
+		// Call arr.splice( offset, remove, i0, i1, i2, ..., i1023 );
+		// Only set remove on the first call, and set it to zero on subsequent calls
+		arr.splice.apply(
+			arr, [index + offset, toRemove].concat( data.slice( index, index + batchSize ) )
 		);
 		index += batchSize;
+		toRemove = 0;
 	}
+};
+
+/**
+ * Insert one array into another. This just calls ve.batchedSplice( dst, offset, 0, src )
+ * 
+ * @static
+ * @method
+ * @see ve.batchedSplice
+ */
+ve.insertIntoArray = function( dst, offset, src ) {
+	ve.batchedSplice( dst, offset, 0, src );
 };
 
 /**
