@@ -106,7 +106,10 @@ PegTokenizer.prototype.tokenizeURL = function( text ) {
 PegTokenizer.prototype.inline_breaks = function (input, pos, syntaxFlags ) {
 	switch( input[pos] ) {
 		case '=':
-			return syntaxFlags.equal ||
+			return ( syntaxFlags.equalAttrib && 
+					(syntaxFlags.equalTemplate || ! syntaxFlags.template ) ) ||
+				(syntaxFlags.equalTemplate && 
+				 (syntaxFlags.equalAttrib || syntaxFlags.template)) ||
 				( syntaxFlags.h &&
 				  input.substr( pos + 1, 200)
 				  .match(/[ \t]*[\r\n]/) !== null ) || null;

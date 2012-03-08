@@ -244,7 +244,7 @@ MWParserEnvironment.prototype.tokensToString = function ( tokens, strict ) {
 			this.dp ( 'MWParserEnvironment.tokensToString, non-text token: ' + 
 					tstring + JSON.stringify( tokens, null, 2 ) );
 			//console.trace();
-			out.push( tstring );
+			//out.push( tstring );
 		}
 	}
 	//console.warn( 'MWParserEnvironment.tokensToString result: ' + out.join('') );

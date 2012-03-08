@@ -669,8 +669,12 @@ ipv6_address
 tplarg_or_template = & '{{{{{' template / tplarg / template
 
 template
-  = "{{" target:template_param_text
-    params:(newline? "|" newline? p:template_param { return p })* 
+  = "{{" (newline / space)* target:template_param_text
+    params:(( newline / space )* "|"
+                r:( &"|" { return new KV( '', '') } // empty argument
+                    / newline? p:template_param { return p } 
+                  ) { return r } 
+            )* 
     "}}" {
       // Insert target as first positional attribute, so that it can be
       // generically expanded. The TemplateHandler then needs to shift it out
@@ -720,15 +724,15 @@ template_param
 
 // FIXME: handle template args and templates in key! (or even parser functions?)
 template_param_name
-  = & { return setFlag( 'equal' ) }
+  = & { return setFlag( 'equalTemplate' ) }
     tpt:template_param_text
     {
-        clearFlag( 'equal' );
+        clearFlag( 'equalTemplate' );
         //console.warn( 'template param name matched: ' + pp( tpt ) );
         return tpt;
     }
 
-  / & { return clearFlag( 'equal' ) }
+  / & { return clearFlag( 'equalTemplate' ) }
   //= h:( !"}}" x:([^=|\n]) { return x } )* { return h.join(''); }
 
 template_param_text
@@ -739,6 +743,7 @@ template_param_text
         return il;
     }
   / & { return clearFlag('template'); }
+
 
 // TODO: handle link prefixes as in al[[Razi]]
 wikilink
@@ -1101,6 +1106,7 @@ generic_newline_attribute
     value:(( space / newline )*
           v:generic_attribute_newline_value { return v })?
 {
+    //console.warn('generic_newline_attribute: ' + pp( name ))
     if ( value !== '' ) {
         return new KV( name, value );
     } else {
@@ -1134,15 +1140,15 @@ generic_attribute
 //  }
 
 generic_attribute_name
-  = & { return setFlag( 'equal' ) }
+  = & { return setFlag( 'equalAttrib' ) }
   ! '/>'
   name:attribute_preprocessor_text_line
     {
-        clearFlag( 'equal' );
+        clearFlag( 'equalAttrib' );
         //console.warn( 'generic attribute name: ' + pp( name ) );
         return name;
     }
-  / & { return clearFlag( 'equal' ) }
+  / & { return clearFlag( 'equalAttrib' ) }
 
 // A generic attribute, possibly spanning multiple lines.
 generic_attribute_newline_value
