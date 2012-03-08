@@ -39,9 +39,7 @@ ParserFunctions.prototype._switchLookupFallback = function ( kvs, key ) {
 	var kv;
 	for ( var i = 0, l = kvs.length; i < l; i++ ) {
 		kv = kvs[i];
-		// XXX: tokensToString actually strips too much here! Anything
-		// non-stringish should not match at all.
-		if ( this.manager.env.tokensToString( kv.v ) === key ) {
+		if ( this.manager.env.tokensToString( kv.v, true ) === key ) {
 			// found. now look for the next entry with a non-empty key.
 			for ( var j = i; j < l; j++) {
 				kv = kvs[j];
@@ -61,7 +59,7 @@ ParserFunctions.prototype._switchLookupFallback = function ( kvs, key ) {
 // TODO: Implement 
 // http://www.mediawiki.org/wiki/Help:Extension:ParserFunctions#Grouping_results
 ParserFunctions.prototype['pf_#switch'] = function ( target, argList, argDict, unnamedArgs ) {
-	this.manager.env.dp( 'switch enter: ' + target.trim() +
+	this.manager.env.dp( 'switch enter', target.trim(),
 			' looking in ', argDict );
 	target = target.trim();
 	if ( argDict[target] !== undefined ) {
@@ -396,7 +394,7 @@ ParserFunctions.prototype['pf_currentpage'] = function ( target, argList, argDic
 	return [ target ];
 };
 ParserFunctions.prototype['pf_pagenamee'] = function ( target, argList, argDict ) {
-	return [ target ];
+	return [ target.split(':', 2)[1] || '' ];
 };
 ParserFunctions.prototype['pf_fullpagename'] = function ( target, argList, argDict ) {
 	return target && [target] || ["http://example.com/fixme/"];

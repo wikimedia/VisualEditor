@@ -57,6 +57,46 @@ MWParserEnvironment.prototype.lookupValue = function ( kvs, key ) {
 	return null;
 };
 
+/**
+ * Trim space and newlines from leading and trailing text tokens.
+ */
+MWParserEnvironment.prototype.tokenTrim = function ( tokens ) {
+	var l = tokens.length,
+		i, token;
+	// strip leading space
+	for ( i = 0; i < l; i++ ) {
+		token = tokens[i];
+		if ( token.constructor === String ) {
+			token = token.replace( /^\s+/, '' );
+			tokens[i] = token;
+			if ( token !== '' ) {
+				break;
+			}
+		} else {
+			break;
+		}
+	}
+	// strip trailing space
+	for ( i = l - 1; i >= 0; i-- ) {
+		token = tokens[i];
+		if ( token.constructor === String ) {
+			token = token.replace( /\s+$/, '' );
+			tokens[i] = token;
+			if ( token !== '' ) {
+				break;
+			}
+		} else {
+			break;
+		}
+	}
+	return tokens;
+};
+
+
+/**
+ * Convert an array of key-value pairs into a hash of keys to values. For
+ * duplicate keys, the last entry wins.
+ */
 MWParserEnvironment.prototype.KVtoHash = function ( kvs ) {
 	if ( ! kvs ) {
 		console.warn( "Invalid kvs!: " + JSON.stringify( kvs, null, 2 ) );
@@ -66,9 +106,9 @@ MWParserEnvironment.prototype.KVtoHash = function ( kvs ) {
 	for ( var i = 0, l = kvs.length; i < l; i++ ) {
 		var kv = kvs[i],
 			key = this.tokensToString( kv.k ).trim();
-		if( res[key] === undefined ) {
-			res[key] = kv.v;
-		}
+		//if( res[key] === undefined ) {
+		res[key] = this.tokenTrim( kv.v );
+		//}
 	}
 	//console.warn( 'KVtoHash: ' + JSON.stringify( res ));
 	return res;
@@ -203,7 +243,8 @@ MWParserEnvironment.prototype.tokensToString = function ( tokens, strict ) {
 			var tstring = JSON.stringify( token );
 			this.dp ( 'MWParserEnvironment.tokensToString, non-text token: ' + 
 					tstring + JSON.stringify( tokens, null, 2 ) );
-			//out.push( tstring );
+			//console.trace();
+			out.push( tstring );
 		}
 	}
 	//console.warn( 'MWParserEnvironment.tokensToString result: ' + out.join('') );

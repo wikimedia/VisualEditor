@@ -50,7 +50,7 @@ var ParserPipeline = require('./mediawiki.parser.js').ParserPipeline,
 						wgScriptPath: argv.wgScriptPath,
 						wgScriptExtension: argv.wgScriptExtension,
 						// XXX: add options for this!
-						wgUploadPath: 'http://upload.wikimedia.org/wikipedia/commons/thumb',
+						wgUploadPath: 'http://upload.wikimedia.org/wikipedia/commons',
 						fetchTemplates: argv.fetchTemplates,
 						// enable/disable debug output using this switch	
 						debug: argv.debug,
