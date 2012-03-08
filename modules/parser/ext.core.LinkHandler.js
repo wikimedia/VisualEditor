@@ -119,17 +119,37 @@ WikiLinkHandler.prototype.renderFile = function ( token, manager, cb, title ) {
 
 	// extract options
 	var options = [],
+		oHash = {},
 		caption = null;
 	for( var i = 0, l = content.length; i<l; i++ ) {
 		var oContent = content[i],
-			oText = manager.env.tokensToString( oContent, true );
+			oText = manager.env.tokensToString( oContent.v, true );
+		//console.log( JSON.stringify( oText, null, 2 ) );
 		if ( oText.constructor === String ) {
 			oText = oText.trim();
 			if ( this._simpleImageOptions[ oText ] ) {
 				options.push( new KV( this._simpleImageOptions[ oText ], 
 							oText ) );
+				oHash[ this._simpleImageOptions[ oText ] ] = oText;
 				continue;
-			} 
+			} else {
+				var maybeSize = oText.match(/^(\d*)(?:x(\d+))?px$/);
+				//console.log( maybeSize );
+				if ( maybeSize !== null ) {
+					var x = maybeSize[1],
+						y = maybeSize[2];
+					if ( x !== undefined ) {
+						options.push(new KV( 'width', x ) );
+						oHash.width = x;
+					}
+					if ( y !== undefined ) {
+						options.push(new KV( 'height', y ) );
+						oHash.height = y;
+					}
+					//console.log( JSON.stringify( oHash ) );
+				}
+			}
+
 		} else {
 			var bits = oText[0].split( '=', 2 );
 			if ( bits.length > 1 && this._prefixImageOptions[ bits[0].trim() ] ) {
@@ -153,40 +173,15 @@ WikiLinkHandler.prototype.renderFile = function ( token, manager, cb, title ) {
 	var img = new SelfclosingTagTk( 'img', 
 			[ 
 				// FIXME!
-				new KV( 'height', options.height || '120' ),
-				new KV( 'width', options.width || '120' ),
+				new KV( 'height', oHash.height || '120' ),
+				new KV( 'width', oHash.width || '120' ),
 				new KV( 'src', path ),
-				new KV( 'alt', options.alt || title.key )
+				new KV( 'alt', oHash.alt || title.key )
 			] );
 
 	return { tokens: [ a, img, new EndTagTk( 'a' )] };
 };
 
-WikiLinkHandler.prototype.parseImageOptions = function ( tokens ) {
-	var out = [],
-		s = '';
-
-	for ( var i = 0, l = tokens.length; i < l; i++ ) {
-		var token = tokens[i];
-		if ( token.constructor === String ) {
-			s += token;
-		} else if ( token.constructor === NlTk ) {
-			s += '\n'; // XXX: preserve original newline
-		} else if ( token.constructor === CommentTk ) {
-			// strip it
-		} else {
-			var res = this.imageParser.processImageOptions( s, 'img_options' ),
-				last = res.last();
-
-			if ( res.last().k !== 'caption' ) {
-				last.v.push = [last.v, token];
-			}
-			out.push( s );
-			s = '';
-			out.push(token);
-		}
-	}
-};
 
 
 function ExternalLinkHandler( manager, isInclude ) {
