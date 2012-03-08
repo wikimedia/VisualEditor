@@ -89,6 +89,21 @@ ve.dm.Transaction.prototype.pushRemove = function( data ) {
 };
 
 /**
+ * Adds a replace operation
+ * 
+ * @method
+ * @param {Array} remove Data to remove
+ * @param {Array] replacement Data to replace 'remove' with
+ */
+ve.dm.Transaction.prototype.pushReplace = function( remove, replacement ) {
+	this.operations.push( {
+		'type': 'replace',
+		'remove': remove,
+		'replacement': replacement
+	} );
+};
+
+/**
  * Adds an element attribute change operation.
  * 
  * @method

@@ -42,6 +42,14 @@ ve.dm.TransactionProcessor.operationMap = {
 			this.insert( op );
 		}
 	},
+	'replace': {
+		'commit': function( op ) {
+			this.replace( op, false );
+		},
+		'rollback': function( op ) {
+			this.replace( op, true );
+		}
+	},
 	// Change element attributes
 	'attribute': {
 		'commit': function( op ) {
@@ -443,6 +451,10 @@ ve.dm.TransactionProcessor.prototype.remove = function( op ) {
 		var offset = this.model.getOffsetFromNode( node );
 		node.emit( 'update', this.cursor - offset );
 	}
+};
+
+ve.dm.TransactionProcessor.prototype.replace = function( op, invert ) {
+	// TODO
 };
 
 ve.dm.TransactionProcessor.prototype.attribute = function( op, invert ) {
