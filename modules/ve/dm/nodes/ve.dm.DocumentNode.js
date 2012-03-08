@@ -1122,6 +1122,33 @@ ve.dm.DocumentNode.prototype.prepareContentReplacement = function( range, data )
 };
 
 /**
+ * Generates a transaction which wraps, unwraps or replaces structure.
+ * 
+ * @param {ve.Range} range Range to wrap/unwrap/replace around
+ * @param {Array} unwrapOuter Array of opening elements to unwrap. These must be immediately *outside* the range
+ * @param {Array} wrapOuter Array of opening elements to wrap around the range.
+ * @param {Array} unwrapEach Array of opening elements to unwrap from each top-level element in the range.
+ * @param {Array} wrapEach Array of opening elements to wrap around each top-level element in the range.
+ * @returns {ve.dm.Transaction}
+ * 
+ * @example Changing a paragraph to a header:
+ *     Before: [ {'type': 'paragraph'}, 'a', 'b', 'c', {'type': '/paragraph'} ]
+ *     prepareWrap( new ve.Range( 1, 4 ), [ {'type': 'paragraph'} ], [ {'type': 'heading', 'level': 1 } ] );
+ *     After: [ {'type': 'heading', 'level': 1 }, 'a', 'b', 'c', {'type': '/heading'} ]
+ * 
+ * @example Changing a set of paragraphs to a list:
+ *     Before: [ {'type': 'paragraph'}, 'a', {'type': '/paragraph'}, {'type':'paragraph'}, 'b', {'type':'/paragraph'} ]
+ *     prepareWrap( new ve.Range( 0, 6 ), [], [ {'type': 'list' } ], [], [ {'type': 'listItem', 'attributes': {'styles': ['bullet']}} ] );
+ *     After: [ {'type': 'list'}, {'type': 'listItem', 'attributes': {'styles': ['bullet']}}, {'type':'paragraph'} 'a',
+ *              {'type': '/paragraph'}, {'type': '/listItem'}, {'type': 'listItem', 'attributes': {'styles': ['bullet']}},
+ *              {'type': 'paragraph'}, 'b', {'type': '/paragraph'}, {'type': '/listItem'}, {'type': '/list'} ]
+ * 
+ */
+ve.dm.DocumentNode.prototype.prepareWrap = function( range, unwrapOuter, wrapOuter, unwrapEach, wrapEach ) {
+};
+
+
+/**
  * Generates a transaction which annotates content within a given range.
  * 
  * @method
