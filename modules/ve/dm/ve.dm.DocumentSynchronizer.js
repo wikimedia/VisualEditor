@@ -19,12 +19,12 @@ ve.dm.DocumentSynchronizer = function( model ) {
  * Adds an action to the synchronizer.
  * 
  * @method
+ * @param {String} type Type of action, can be: "insert", "delete", "rebuild", "resize" or "update"
  * @param {ve.dm.Node} node Node this action is related to
  * @param {Integer} offset Offset of node, improves performance if this has already been calculated
- * @param {String} type Type of action, can be: "insert", "delete", "rebuild", "resize" or "update"
  * @param {Integer} adjustment Node length adjustment, if any
  */
-ve.dm.DocumentSynchronizer.prototype.pushAction = function( node, offset, type, adjustment ) {
+ve.dm.DocumentSynchronizer.prototype.pushAction = function( type, node, offset, adjustment ) {
 	if ( offset === undefined ) {
 		offset = this.model.getOffsetFromNode( node );
 	}
@@ -54,10 +54,13 @@ ve.dm.DocumentSynchronizer.prototype.synchronize = function() {
 		switch ( action.type ) {
 			case 'insert':
 				// Insert the new node at the given offset
-				var target = this.model.getNodeFromOffset( offset );
+				var target = this.model.getNodeFromOffset( offset + 1 );
 				if ( target === this.model ) {
 					// Insert at the beginning of the document
-					target.splice( 0, 0, action.node );
+					this.model.splice( 0, 0, action.node );
+				} else if ( target === null ) {
+					// Insert at the end of the document
+					this.model.splice( this.model.getElementLength(), 0, action.node );
 				} else {
 					// Insert before the element currently at the offset
 					parent = target.getParent();
@@ -85,13 +88,13 @@ ve.dm.DocumentSynchronizer.prototype.synchronize = function() {
 				break;
 			case 'resize':
 				// Adjust node length - causes update events to be emitted
-				node.adjustContentLength( adjustment );
+				action.node.adjustContentLength( action.adjustment );
 				// Adjust proceeding offsets by the amount the node is being lengthened or shortened
 				adjustment += action.adjustment;
 				break;
 			case 'update':
 				// Emit update events
-				node.emit( 'update' );
+				action.node.emit( 'update' );
 				break;
 		}
 	}
