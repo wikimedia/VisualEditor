@@ -1,6 +1,6 @@
 module( 've/dm' );
 
-test( 've.dm.TransactionProcessor', 31, function() {
+test( 've.dm.TransactionProcessor', 33, function() {
 	var documentModel = ve.dm.DocumentNode.newFromPlainObject( veTest.obj );
 
 	// FIXME: These tests shouldn't use prepareFoo() because those functions
@@ -376,5 +376,32 @@ test( 've.dm.TransactionProcessor', 31, function() {
 			{ 'type': 'paragraph' }
 		],
 		'rollback reverses list split'
+	);
+	
+	
+	var contentReplacement = documentModel.prepareContentReplacement( new ve.Range( 32, 33 ), [ 'i', 'j', 'k' ] );
+	
+	// Test 32
+	ve.dm.TransactionProcessor.commit( documentModel, contentReplacement );
+	deepEqual(
+		documentModel.getData( new ve.Range( 31, 36 ) ),
+		[
+			{ 'type': 'paragraph' },
+			'i', 'j', 'k',
+			{ 'type': '/paragraph' }
+		],
+		'replacement replaces content'
+	);
+	
+	// Test 33
+	ve.dm.TransactionProcessor.rollback( documentModel, contentReplacement );
+	deepEqual(
+		documentModel.getData( new ve.Range( 31, 34 ) ),
+		[
+			{ 'type': 'paragraph' },
+			'h',
+			{ 'type': '/paragraph' }
+		],
+		'rollback restores content'
 	);
 } );
