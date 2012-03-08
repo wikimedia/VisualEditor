@@ -1,6 +1,6 @@
 module( 've/dm' );
 
-test( 've.dm.TransactionSynchronizer', 9, function() {
+test( 've.dm.DocumentSynchronizer', 9, function() {
 	var tests = {
 		// Test 1
 		'resize actions adjust node lengths': {
