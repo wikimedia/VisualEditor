@@ -454,7 +454,17 @@ ve.dm.TransactionProcessor.prototype.remove = function( op ) {
 };
 
 ve.dm.TransactionProcessor.prototype.replace = function( op, invert ) {
-	// TODO
+	var	remove = invert ? op.replacement : op.remove,
+		replacement = invert ? op.remove : op.replacement;
+	// remove is provided only for OT / conflict resolution and for
+	// reversibility, we don't actually verify it here
+	
+	// Update the linear model
+	ve.batchedSplice( this.model.data, this.cursor, remove.length, replacement );
+	this.cursor += replacement.length - remove.length;
+	
+	// TODO sync the tree too
+	
 };
 
 ve.dm.TransactionProcessor.prototype.attribute = function( op, invert ) {
