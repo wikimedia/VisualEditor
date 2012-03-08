@@ -280,7 +280,7 @@ MWParserEnvironment.prototype.sanitizeURI = function ( s ) {
 	host = host.replace( /%(?![0-9a-fA-F][0-9a-fA-F])|[#|]/g, function ( m ) {
 		return encodeURIComponent( m );
 	} );
-	path = path.replace( /%(?![0-9a-fA-F][0-9a-fA-F])|[\[\]#|]/g, function ( m ) {
+	path = path.replace( /%(?![0-9a-fA-F][0-9a-fA-F])|[ \[\]#|]/g, function ( m ) {
 		return encodeURIComponent( m );
 	} );
 	s = host + path;
