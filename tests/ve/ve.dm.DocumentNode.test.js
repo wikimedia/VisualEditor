@@ -801,7 +801,7 @@ test( 've.dm.DocumentNode.prepareInsertion', 11, function() {
 	);
 } );
 
-test( 've.dm.DocumentNode.prepareWrap', 1, function() {
+test( 've.dm.DocumentNode.prepareWrap', 2, function() {
 	var documentModel = ve.dm.DocumentNode.newFromPlainObject( veTest.obj );
 	
 	// Test 1
@@ -814,5 +814,26 @@ test( 've.dm.DocumentNode.prepareWrap', 1, function() {
 			{ 'type': 'retain', 'length': 29 }
 		],
 		'prepareWrap changes a paragraph to a heading'
+	);
+	
+	// Test 2
+	deepEqual(
+		documentModel.prepareWrap( new ve.Range( 12, 27 ), [ { 'type': 'list' } ], [], [ { 'type': 'listItem' } ], [] ).getOperations(),
+		[
+			{ 'type': 'retain', 'length': 11 },
+			{ 'type': 'replace', 'remove': [ { 'type': 'list' } ], 'replacement': [] },
+			{ 'type': 'replace', 'remove': [ { 'type': 'listItem' } ], 'replacement': [] },
+			{ 'type': 'retain', 'length': 3 },
+			{ 'type': 'replace', 'remove': [ { 'type': '/listItem' } ], 'replacement': [] },
+			{ 'type': 'replace', 'remove': [ { 'type': 'listItem' } ], 'replacement': [] },
+			{ 'type': 'retain', 'length': 3 },
+			{ 'type': 'replace', 'remove': [ { 'type': '/listItem' } ], 'replacement': [] },
+			{ 'type': 'replace', 'remove': [ { 'type': 'listItem' } ], 'replacement': [] },
+			{ 'type': 'retain', 'length': 3 },
+			{ 'type': 'replace', 'remove': [ { 'type': '/listItem' } ], 'replacement': [] },
+			{ 'type': 'replace', 'remove': [ { 'type': '/list' } ], 'replacement': [] },
+			{ 'type': 'retain', 'length': 6 }
+		],
+		'prepareWrap unwraps a list'
 	);
 } );

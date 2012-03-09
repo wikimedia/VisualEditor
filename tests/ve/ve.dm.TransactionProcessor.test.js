@@ -1,6 +1,6 @@
 module( 've/dm' );
 
-test( 've.dm.TransactionProcessor', 35, function() {
+test( 've.dm.TransactionProcessor', 37, function() {
 	var documentModel = ve.dm.DocumentNode.newFromPlainObject( veTest.obj );
 
 	// FIXME: These tests shouldn't use prepareFoo() because those functions
@@ -407,7 +407,7 @@ test( 've.dm.TransactionProcessor', 35, function() {
 	
 	var paragraphToHeading = documentModel.prepareWrap( new ve.Range( 1, 4 ), [ { 'type': 'paragraph' } ], [ { 'type': 'heading', 'level': 2 } ], [], [] );
 	
-	// Test 33
+	// Test 34
 	ve.dm.TransactionProcessor.commit( documentModel, paragraphToHeading );
 	deepEqual(
 		documentModel.getData( new ve.Range( 0, 5 ) ),
@@ -421,7 +421,7 @@ test( 've.dm.TransactionProcessor', 35, function() {
 		'changing paragraph to heading'
 	);
 	
-	// Test 34
+	// Test 35
 	ve.dm.TransactionProcessor.rollback( documentModel, paragraphToHeading );
 	deepEqual(
 		documentModel.getData( new ve.Range( 0, 5 ) ),
@@ -433,5 +433,61 @@ test( 've.dm.TransactionProcessor', 35, function() {
 			{ 'type': '/paragraph' }
 		],
 		'rollback puts paragraph back'
+	);
+	
+	var unwrapList = documentModel.prepareWrap( new ve.Range( 12, 27 ), [ { 'type': 'list' } ], [] , [ { 'type': 'listItem' } ], [] );
+	
+	// Test 36
+	ve.dm.TransactionProcessor.commit( documentModel, unwrapList );
+	deepEqual(
+		documentModel.getData( new ve.Range( 7, 21 ) ),
+		[
+			{ 'type': 'tableCell' },
+			{ 'type': 'paragraph' },
+			'd',
+			{ 'type': '/paragraph' },
+			{ 'type': 'paragraph' },
+			'e',
+			{ 'type': '/paragraph' },
+			{ 'type': 'paragraph' },
+			'f',
+			{ 'type': '/paragraph' },
+			{ 'type': 'paragraph' },
+			'g',
+			{ 'type': '/paragraph' },
+			{ 'type': '/tableCell' }
+		],
+		'unwrapping the list produces a cell with four adjacent paragraphs'
+	);
+	
+	// Test 37
+	ve.dm.TransactionProcessor.rollback( documentModel, unwrapList );
+	deepEqual(
+		documentModel.getData( new ve.Range( 7, 29 ) ),
+		[
+			{ 'type': 'tableCell' },
+			{ 'type': 'paragraph' },
+			'd',
+			{ 'type': '/paragraph' },
+			{ 'type': 'list' },
+			{ 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } },
+			{ 'type': 'paragraph' },
+			'e',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': 'listItem', 'attributes': { 'styles': ['bullet', 'bullet'] } },
+			{ 'type': 'paragraph' },
+			'f',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': 'listItem', 'attributes': { 'styles': ['number'] } },
+			{ 'type': 'paragraph' },
+			'g',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': '/list' },
+			{ 'type': '/tableCell' }
+		],
+		'rollback puts the list back'
 	);
 } );
