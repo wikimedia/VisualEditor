@@ -1124,8 +1124,13 @@ ve.dm.DocumentNode.prototype.prepareContentReplacement = function( range, data )
 /**
  * Generates a transaction which wraps, unwraps or replaces structure.
  * 
+ * The unwrap parameters are checked against the actual model data, and
+ * an exception is thrown if the type fields don't match. This means you
+ * can omit attributes from the unwrap parameters, those are automatically
+ * picked up from the model data instead.
+ * 
  * @param {ve.Range} range Range to wrap/unwrap/replace around
- * @param {Array} unwrapOuter Array of opening elements to unwrap. These must be immediately *outside* the range
+ * @param {Array} unwrapOuter Array of opening elements to unwrap. These must be immediately *outside* the range.
  * @param {Array} wrapOuter Array of opening elements to wrap around the range.
  * @param {Array} unwrapEach Array of opening elements to unwrap from each top-level element in the range.
  * @param {Array} wrapEach Array of opening elements to wrap around each top-level element in the range.
@@ -1159,18 +1164,28 @@ ve.dm.DocumentNode.prototype.prepareWrap = function( range, unwrapOuter, wrapOut
 	// * unwraps actually match
 	// * result is valid
 	
-	var tx = new ve.dm.Transaction();
+	var tx = new ve.dm.Transaction(), i, j, unwrapOuterData;
 	range.normalize();
 	if ( range.start > unwrapOuter.length ) {
 		// Retain up to the first thing we're unwrapping
 		// The outer unwrapping takes place *outside*
 		// the range, so compensate for that
-		tx.pushRetain ( range.start - unwrapOuter.length );
+		tx.pushRetain( range.start - unwrapOuter.length );
 	}
 	
 	// Replace the opening elements for the outer unwrap&wrap
 	if ( wrapOuter.length > 0 || unwrapOuter.length > 0 ) {
-		tx.pushReplace( unwrapOuter, wrapOuter );
+		// Verify that wrapOuter matches the data at this position
+		unwrapOuterData = this.data.slice( range.start - unwrapOuter.length, range.start );
+		for ( i = 0; i < unwrapOuterData.length; i++ ) {
+			if ( unwrapOuterData[i].type !== unwrapOuter[i].type ) {
+				throw 'Element in unwrapOuter does not match: expected ' +
+					unwrapOuter[i].type + ' but found ' + unwrapOuterData[i].type;
+			}
+		}
+		// Instead of putting in unwrapOuter as given, put it in the
+		// way it appears in the mode,l so we pick up any attributes
+		tx.pushReplace( unwrapOuterData, wrapOuter );
 	}
 	
 	if ( wrapEach.length > 0 || unwrapEach.length > 0 ) {
@@ -1178,7 +1193,7 @@ ve.dm.DocumentNode.prototype.prepareWrap = function( range, unwrapOuter, wrapOut
 			closingWrapEach = closingArray( wrapEach ),
 			depth = 0,
 			startOffset,
-			i;
+			unwrapEachData;
 		// Visit each top-level child and wrap/unwrap it
 		// TODO figure out if we should use the tree/node functions here
 		// rather than iterating over offsets, it may or may not be faster
@@ -1192,7 +1207,20 @@ ve.dm.DocumentNode.prototype.prepareWrap = function( range, unwrapOuter, wrapOut
 					if ( depth == 0 ) {
 						// We are at the start of a top-level element
 						// Replace the opening elements
-						tx.pushReplace( unwrapEach, wrapEach );
+						
+						// Verify that unwrapEach matches the data at this position
+						unwrapEachData = this.data.slice( i, i + unwrapEach.length );
+						for ( j = 0; j < unwrapEachData.length; j++ ) {
+							if ( unwrapEachData[j].type !== unwrapEach[j].type ) {
+								throw 'Element in unwrapEach does not match: expected ' +
+									unwrapEach[j].type + ' but found ' +
+									unwrapEachData[j].type;
+							}
+						}
+						// Instead of putting in unwrapEach as given, put it in the
+						// way it appears in the model, so we pick up any attributes
+						tx.pushReplace( unwrapEachData, wrapEach );
+						
 						// Store this offset for later
 						startOffset = i;
 					}
