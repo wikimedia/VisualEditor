@@ -1,6 +1,6 @@
 module( 've/dm' );
 
-test( 've.dm.DocumentSynchronizer', 9, function() {
+test( 've.dm.DocumentSynchronizer', 10, function() {
 	var tests = {
 		// Test 1
 		'resize actions adjust node lengths': {
@@ -141,6 +141,34 @@ test( 've.dm.DocumentSynchronizer', 9, function() {
 				return model.getChildren()[1].getContentData();
 			},
 			'expected': ['x']
+		},
+		// Test 10
+		'multiple actions can be synchronized together': {
+			'actual': function( sync ) {
+				var model = sync.getModel(),
+					data = [{ 'type': 'paragraph' }, 'x', { 'type': '/paragraph' }],
+					node = ve.dm.DocumentNode.createNodesFromData( data )[0];
+				// Delete bold "b" from first paragraph
+				model.data.splice( 2, 1 );
+				// Push resize action
+				sync.pushAction( 'resize', model.getChildren()[0], 0, -1 );
+				// Delete the first paragraph (offset adjusted for previous action)
+				model.data.splice( 30, 3 );
+				// Push deletion action (note: using original offset)
+				sync.pushAction( 'delete', model.getChildren()[2], 31 );
+				// Insert element after last paragraph
+				ve.insertIntoArray( model.data, 30, data );
+				// Push insertion action (note: using original offset)
+				sync.pushAction( 'insert', node, 34 );
+				// Sync
+				sync.synchronize();
+				return [
+					model.getChildren()[0].getContentLength(),
+					model.getChildren().length,
+					model.getChildren()[2].getContentData()
+				];
+			},
+			'expected': [2, 3, ['x']]
 		}
 	};
 
