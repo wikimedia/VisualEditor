@@ -1,6 +1,6 @@
 module( 've/dm' );
 
-test( 've.dm.TransactionProcessor', 37, function() {
+test( 've.dm.TransactionProcessor', 39, function() {
 	var documentModel = ve.dm.DocumentNode.newFromPlainObject( veTest.obj );
 
 	// FIXME: These tests shouldn't use prepareFoo() because those functions
@@ -490,4 +490,78 @@ test( 've.dm.TransactionProcessor', 37, function() {
 		],
 		'rollback puts the list back'
 	);
+	
+	var replaceTable = documentModel.prepareWrap( new ve.Range( 8, 28 ), [ { 'type': 'table' }, { 'type': 'tableRow' }, { 'type': 'tableCell' } ],
+		[ { 'type': 'list' }, { 'type': 'listItem' } ], [], [] );
+	
+	// Test 38
+	ve.dm.TransactionProcessor.commit( documentModel, replaceTable );
+	deepEqual(
+		documentModel.getData( new ve.Range( 5, 30 ) ),
+		[
+			{ 'type': 'list' },
+			{ 'type': 'listItem' },
+			{ 'type': 'paragraph' },
+			'd',
+			{ 'type': '/paragraph' },
+			{ 'type': 'list' },
+			{ 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } },
+			{ 'type': 'paragraph' },
+			'e',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': 'listItem', 'attributes': { 'styles': ['bullet', 'bullet'] } },
+			{ 'type': 'paragraph' },
+			'f',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': 'listItem', 'attributes': { 'styles': ['number'] } },
+			{ 'type': 'paragraph' },
+			'g',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': '/list' },
+			{ 'type': '/listItem' },
+			{ 'type': '/list' },
+			{ 'type': 'paragraph' }
+		],
+		'replacing a table with the list reverses the order of the closing tags correctly'
+	);
+	
+	// Test 39
+	ve.dm.TransactionProcessor.rollback( documentModel, replaceTable );
+	deepEqual(
+		documentModel.getData( new ve.Range( 5, 32 ) ),
+		[
+			{ 'type': 'table' },
+			{ 'type': 'tableRow' },
+			{ 'type': 'tableCell' },
+			{ 'type': 'paragraph' },
+			'd',
+			{ 'type': '/paragraph' },
+			{ 'type': 'list' },
+			{ 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } },
+			{ 'type': 'paragraph' },
+			'e',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': 'listItem', 'attributes': { 'styles': ['bullet', 'bullet'] } },
+			{ 'type': 'paragraph' },
+			'f',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': 'listItem', 'attributes': { 'styles': ['number'] } },
+			{ 'type': 'paragraph' },
+			'g',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': '/list' },
+			{ 'type': '/tableCell' },
+			{ 'type': '/tableRow' },
+			{ 'type': '/table' },
+			{ 'type': 'paragraph' }
+		],
+		'rollback puts the table back'
+	);
+	
 } );

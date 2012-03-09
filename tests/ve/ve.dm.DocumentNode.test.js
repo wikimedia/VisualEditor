@@ -801,7 +801,7 @@ test( 've.dm.DocumentNode.prepareInsertion', 11, function() {
 	);
 } );
 
-test( 've.dm.DocumentNode.prepareWrap', 5, function() {
+test( 've.dm.DocumentNode.prepareWrap', 6, function() {
 	var documentModel = ve.dm.DocumentNode.newFromPlainObject( veTest.obj );
 	
 	// Test 1
@@ -838,6 +838,19 @@ test( 've.dm.DocumentNode.prepareWrap', 5, function() {
 	);
 	
 	// Test 3
+	deepEqual(
+		documentModel.prepareWrap( new ve.Range( 8, 28 ), [ { 'type': 'table' }, { 'type': 'tableRow' }, { 'type': 'tableCell' } ], [ { 'type': 'list' }, { 'type': 'listItem' } ], [], [] ).getOperations(),
+		[
+			{ 'type': 'retain', 'length': 5 },
+			{ 'type': 'replace', 'remove': [ { 'type': 'table' }, { 'type': 'tableRow' }, { 'type': 'tableCell' } ], 'replacement': [ { 'type': 'list' }, { 'type': 'listItem' } ] },
+			{ 'type': 'retain', 'length': 20 },
+			{ 'type': 'replace', 'remove': [ { 'type': '/tableCell' }, { 'type': '/tableRow' }, { 'type': '/table' } ], 'replacement': [ { 'type': '/listItem' }, { 'type': '/list' } ] },
+			{ 'type': 'retain', 'length': 3 }
+		],
+		'prepareWrap replaces a table with a list'
+	);
+	
+	// Test 4
 	raises(
 		function() {
 			documentModel.prepareWrap( new ve.Range( 12, 27 ), [ { 'type': 'table' } ], [], [], [] );
@@ -846,7 +859,7 @@ test( 've.dm.DocumentNode.prepareWrap', 5, function() {
 		'prepareWrap checks integrity of unwrapOuter parameter'
 	);
 	
-	// Test 4
+	// Test 5
 	raises(
 		function() {
 			documentModel.prepareWrap( new ve.Range( 12, 27 ), [ { 'type': 'list' } ], [], [ { 'type': 'paragraph' } ], [] );
@@ -855,7 +868,7 @@ test( 've.dm.DocumentNode.prepareWrap', 5, function() {
 		'prepareWrap checks integrity of unwrapEach parameter'
 	);
 	
-	// Test 5
+	// Test 6
 	raises(
 		function() {
 			documentModel.prepareWrap( new ve.Range( 1, 4 ), [ { 'type': 'listItem' }, { 'type': 'paragraph' } ], [], [], [] );
