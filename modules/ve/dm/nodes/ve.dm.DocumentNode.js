@@ -1173,7 +1173,7 @@ ve.dm.DocumentNode.prototype.prepareWrap = function( range, unwrapOuter, wrapOut
 		tx.pushReplace( unwrapOuter, wrapOuter );
 	}
 	
-	if ( wrapEach.length > 0 && unwrapEach.length > 0 ) {
+	if ( wrapEach.length > 0 || unwrapEach.length > 0 ) {
 		var	closingUnwrapEach = closingArray( unwrapEach ),
 			closingWrapEach = closingArray( wrapEach ),
 			depth = 0,
@@ -1183,11 +1183,11 @@ ve.dm.DocumentNode.prototype.prepareWrap = function( range, unwrapOuter, wrapOut
 		// TODO figure out if we should use the tree/node functions here
 		// rather than iterating over offsets, it may or may not be faster
 		for ( i = range.start; i < range.end; i++ ) {
-			if ( this.data[offset].type === undefined ) {
+			if ( this.data[i].type === undefined ) {
 				// This is a content offset, skip
 			} else {
 				// This is a structural offset
-				if ( this.data[offset].type.charAt( 0 ) != '/' ) {
+				if ( this.data[i].type.charAt( 0 ) != '/' ) {
 					// This is an opening element
 					if ( depth == 0 ) {
 						// We are at the start of a top-level element
