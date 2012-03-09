@@ -541,7 +541,6 @@ ve.ce.Surface.prototype.getDOMNodeAndOffset = function( offset ) {
 					node: item,
 					offset: offset - nodeOffset
 				};
-				break;
 			} else {
 				nodeOffset += length;
 			}
@@ -574,8 +573,9 @@ ve.ce.Surface.prototype.showCursor = function( offset ) {
 ve.ce.Surface.prototype.showSelection = function( range ) {
 	var	start = this.getDOMNodeAndOffset( range.start ),
 		stop = this.getDOMNodeAndOffset( range.end ),
-		range = rangy.createRange(),
 		sel = rangy.getSelection();
+	// FIXME: Shadowing range, really?
+	range = rangy.createRange();
 	range.setStart( start.node, start.offset );
 	range.setEnd( stop.node, stop.offset );
 	sel.setSingleRange( range );
