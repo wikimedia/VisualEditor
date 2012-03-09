@@ -163,7 +163,9 @@ ve.ce.Surface.prototype.onCutCopy = function( e ) {
 		sel = rangy.getSelection(),
 		key = sel.getRangeAt(0).toString().replace( /\s/gm, '' );
 
-	_this.clipboard[key] = ve.copyArray( _this.documentView.model.getData( _this.getSelectionRange() ) );
+	_this.clipboard[key] = ve.copyArray(
+		_this.documentView.model.getData( _this.getSelectionRange() )
+	);
 
 	if ( event.type == 'cut' ) {
 		setTimeout( function() {

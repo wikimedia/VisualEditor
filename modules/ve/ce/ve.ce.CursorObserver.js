@@ -14,20 +14,23 @@ ve.ce.CursorObserver.prototype.update = function() {
 
 	setTimeout( function() {
 		if ( !_this.documentView.$.is(':focus') ) {
-			if ( _this.anchorNode !== null
-					|| _this.anchorOffset !== null
-					|| _this.focusNode !== null
-					|| _this.focusOffset !== null ) {
-				_this.anchorNode = _this.anchorOffset = _this.focusNode = _this.focusOffset = null;			
-				_this.emit( 'change', null )
+			if (
+				_this.anchorNode !== null ||
+				_this.anchorOffset !== null ||
+				_this.focusNode !== null ||
+				_this.focusOffset !== null
+			) {
+				_this.anchorNode = _this.anchorOffset = _this.focusNode = _this.focusOffset = null;
+				_this.emit( 'change', null );
 			}
 		} else {
 			var	rangySel = rangy.getSelection(),
 				range;
-			if ( rangySel.anchorNode !== _this.anchorNode
-					|| rangySel.anchorOffset !== _this.anchorOffset
-					|| rangySel.focusNode !== _this.focusNode
-					|| rangySel.focusOffset !== _this.focusOffset ) {
+			if ( rangySel.anchorNode !== _this.anchorNode ||
+				rangySel.anchorOffset !== _this.anchorOffset ||
+				rangySel.focusNode !== _this.focusNode ||
+				rangySel.focusOffset !== _this.focusOffset
+			) {
 				_this.anchorNode = rangySel.anchorNode;
 				_this.anchorOffset = rangySel.anchorOffset;
 				_this.focusNode = rangySel.focusNode;
@@ -41,7 +44,7 @@ ve.ce.CursorObserver.prototype.update = function() {
 						_this.getOffset( _this.focusNode, _this.focusOffset )
 					);
 				}
-				_this.emit( 'change', range )
+				_this.emit( 'change', range );
 			}
 		}
 	}, 0 );
