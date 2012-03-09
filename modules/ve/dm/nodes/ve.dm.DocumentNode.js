@@ -1159,10 +1159,7 @@ ve.dm.DocumentNode.prototype.prepareWrap = function( range, unwrapOuter, wrapOut
 		return closings;
 	}
 	
-	// TODO sanity checks:
-	// * range.start > unwrapOuter.length
-	// * unwraps actually match
-	// * result is valid
+	// TODO: we're not checking for nesting validity. prepareInsertion also needs this
 	
 	var tx = new ve.dm.Transaction(), i, j, unwrapOuterData;
 	range.normalize();
@@ -1171,6 +1168,8 @@ ve.dm.DocumentNode.prototype.prepareWrap = function( range, unwrapOuter, wrapOut
 		// The outer unwrapping takes place *outside*
 		// the range, so compensate for that
 		tx.pushRetain( range.start - unwrapOuter.length );
+	} else if ( range.start < unwrapOuter.length ) {
+		throw 'unwrapOuter is longer than the data preceding the range';
 	}
 	
 	// Replace the opening elements for the outer unwrap&wrap

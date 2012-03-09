@@ -801,7 +801,7 @@ test( 've.dm.DocumentNode.prepareInsertion', 11, function() {
 	);
 } );
 
-test( 've.dm.DocumentNode.prepareWrap', 2, function() {
+test( 've.dm.DocumentNode.prepareWrap', 5, function() {
 	var documentModel = ve.dm.DocumentNode.newFromPlainObject( veTest.obj );
 	
 	// Test 1
@@ -835,5 +835,32 @@ test( 've.dm.DocumentNode.prepareWrap', 2, function() {
 			{ 'type': 'retain', 'length': 6 }
 		],
 		'prepareWrap unwraps a list'
+	);
+	
+	// Test 3
+	raises(
+		function() {
+			documentModel.prepareWrap( new ve.Range( 12, 27 ), [ { 'type': 'table' } ], [], [], [] );
+		},
+		/^Element in unwrapOuter does not match: expected table but found list$/,
+		'prepareWrap checks integrity of unwrapOuter parameter'
+	);
+	
+	// Test 4
+	raises(
+		function() {
+			documentModel.prepareWrap( new ve.Range( 12, 27 ), [ { 'type': 'list' } ], [], [ { 'type': 'paragraph' } ], [] );
+		},
+		/^Element in unwrapEach does not match: expected paragraph but found listItem$/,
+		'prepareWrap checks integrity of unwrapEach parameter'
+	);
+	
+	// Test 5
+	raises(
+		function() {
+			documentModel.prepareWrap( new ve.Range( 1, 4 ), [ { 'type': 'listItem' }, { 'type': 'paragraph' } ], [], [], [] );
+		},
+		/^unwrapOuter is longer than the data preceding the range$/,
+		'prepareWrap checks that unwrapOuter fits before the range'
 	);
 } );
