@@ -38,12 +38,17 @@ ve.ce.ContentObserver.prototype.start = function() {
 };
 
 ve.ce.ContentObserver.prototype.poll = function() {
-	console.log(this.$node[0]);
 	var text = ve.ce.Surface.getDOMText2( this.$node[0] );
 	var hash = ve.ce.Surface.getDOMHash( this.$node[0] );
 
 	if ( text !== this.prevText || hash !== this.prevHash ) {
-		this.emit('change');
+		this.emit('change', {
+			$node: this.$node,
+			prevText: this.prevText,
+			text: text,
+			prevHash: this.prevHash,
+			hash: hash
+		} );
 		this.prevText = text;
 		this.prevHash = hash;
 	}
