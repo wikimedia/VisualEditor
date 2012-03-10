@@ -138,15 +138,7 @@ ve.dm.TransactionProcessor.prototype.rebuildNodes = function( newData, oldNodes,
 			remove--;
 		}
 	}
-	// Try to perform this in a single operation if possible, this reduces the number of UI updates
-	// TODO: Introduce a global for max argument length - 1024 is also assumed in ve.insertIntoArray
-	if ( newNodes.length < 1024 ) {
-		parent.splice.apply( parent, [index, remove].concat( newNodes ) );
-	} else if ( newNodes.length ) {
-		parent.splice.apply( parent, [index, remove] );
-		// Safe to call with arbitrary length of newNodes
-		ve.insertIntoArray( parent, index, newNodes );
-	}
+	ve.batchedSplice( parent, index, remove, newNodes );
 };
 
 /**

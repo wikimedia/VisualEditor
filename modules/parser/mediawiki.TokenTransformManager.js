@@ -467,6 +467,8 @@ AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parent
 		if( res.tokens ) {
 			// Splice in the returned tokens (while replacing the original
 			// token), and process them next.
+			// FIXME: this should be using ve.batchedSplice(), otherwise things
+			// could explode if res.tokens is very long
 			[].splice.apply( tokens, [i, 1].concat(res.tokens) );
 			tokensLength = tokens.length;
 			i--; // continue at first inserted token
@@ -662,6 +664,8 @@ SyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 		if( res.tokens ) {
 			// Splice in the returned tokens (while replacing the original
 			// token), and process them next.
+			// FIXME: this should be using ve.batchedSplice(), otherwise things
+			// could explode if res.tokens is very long
 			[].splice.apply( tokens, [i, 1].concat(res.tokens) );
 			tokensLength = tokens.length;
 			i--; // continue at first inserted token

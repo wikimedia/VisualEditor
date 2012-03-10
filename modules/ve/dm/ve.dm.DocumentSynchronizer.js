@@ -86,7 +86,7 @@ ve.dm.DocumentSynchronizer.prototype.synchronize = function() {
 					new ve.Range( offset, action.node.getElementLength() + action.adjustment )
 				) );
 				parent = action.node.getParent();
-				parent.splice.apply( parent, [parent.indexOf( action.node ), 1].concat( newNodes ) );
+				ve.batchedSplice( parent, parent.indexOf( action.node ), 1, newNodes );
 				// Adjust proceeding offsets by the difference between the original and new nodes
 				var newNodesLength = 0;
 				for ( var j = 0, jlen = newNodes.length; j < jlen; j++ ) {

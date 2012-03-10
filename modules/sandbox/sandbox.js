@@ -717,6 +717,8 @@ $(document).ready( function() {
 							documentModel.data.splice( 0, documentModel.data.length );
 							ve.insertIntoArray( documentModel.data, 0, newDocumentModel.data );
 							surfaceModel.select( new ve.Range( 1, 1 ) );
+							// FIXME: this should be using ve.batchedSplice(), otherwise things
+							// could explode if newDocumentModel.getChildren() is very long
 							documentModel.splice.apply(
 								documentModel,
 								[0, documentModel.getChildren().length]
