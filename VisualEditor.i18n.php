@@ -425,12 +425,13 @@ $messages['ru'] = array(
 );
 
 /** Sinhala (සිංහල)
+ * @author Singhalawap
  * @author පසිඳු කාවින්ද
  */
 $messages['si'] = array(
 	'visualeditor' => 'දෘශ්‍යසංස්කාරක',
 	'visualeditorsandbox' => 'දෘශ්‍යසංස්කරණ වැලිපිල්ල',
-	'visualeditor-desc' => 'මාධ්‍යවිකි සඳහා දෘශ්‍යසංස්කාරක',
+	'visualeditor-desc' => 'මීඩියාවිකි සඳහා දෘශ්‍යසංස්කාරක',
 	'visualeditor-sandbox-title' => 'දෘශ්‍යසංස්කරණ වැලිපිල්ල',
 	'visualeditor-tooltip-wikitext' => 'පුරුක්මය විකිපාඨ දසුන',
 	'visualeditor-tooltip-json' => 'පුරුක්මය JSON දසුන',
