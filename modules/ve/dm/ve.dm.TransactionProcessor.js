@@ -98,6 +98,7 @@ ve.dm.TransactionProcessor.prototype.executeOperation = function( op ) {
 
 ve.dm.TransactionProcessor.prototype.process = function( method ) {
 	var op;
+	this.synchronizer = new ve.dm.DocumentSynchronizer( this.model );
 	// Store the method (commit or rollback) and the operations array so executeOperation()
 	// can access them easily
 	this.method = method;
@@ -109,6 +110,8 @@ ve.dm.TransactionProcessor.prototype.process = function( method ) {
 	while ( ( op = this.nextOperation() ) ) {
 		this.executeOperation( op );
 	}
+	
+	this.synchronizer.synchronize();
 };
 
 // TODO: document this. Various arguments are optional or nonoptional in different cases, that's
@@ -463,16 +466,99 @@ ve.dm.TransactionProcessor.prototype.remove = function( op ) {
 ve.dm.TransactionProcessor.prototype.replace = function( op ) {
 	var	invert = this.method == 'rollback',
 		remove = invert ? op.replacement : op.remove,
-		replacement = invert ? op.remove : op.replacement;
+		replacement = invert ? op.remove : op.replacement,
+		removeHasStructure = ve.dm.DocumentNode.containsElementData( remove ),
+		replacementHasStructure = ve.dm.DocumentNode.containsElementData( replacement ),
+		node;
 	// remove is provided only for OT / conflict resolution and for
 	// reversibility, we don't actually verify it here
 	
-	// Update the linear model
-	ve.batchedSplice( this.model.data, this.cursor, remove.length, replacement );
-	this.cursor += replacement.length;
-	
-	// TODO sync the tree too
-	
+	// Tree synchronization
+	// Figure out if this is a structural replacement or a content replacement
+	if ( !ve.dm.DocumentNode.containsElementData( remove ) && !ve.dm.DocumentNode.containsElementData( replacement ) ) {
+		// Content replacement
+		// Update the linear model
+		ve.batchedSplice( this.model.data, this.cursor, remove.length, replacement );
+		this.applyAnnotations( this.cursor + replacement.length );
+		
+		// Get the node containing the replaced content
+		node = this.model.getNodeFromOffset( this.cursor );
+		// Queue a resize for this node
+		this.synchronizer.pushResize( node, replacement.length - remove.length );
+		// Advance the cursor
+		this.cursor += replacement.length;
+	} else {
+		// Structural replacement
+		// TODO generalize for insert/remove
+		
+		// It's possible that multiple replace operations are needed before the
+		// model is back in a consistent state. This loop applies the current
+		// replace operation to the linear model, then keeps applying subsequent
+		// operations until the model is consistent. We keep track of the changes
+		// and queue a single rebuild after the loop finishes.
+		var 	operation = op, removeLevel = 0, replaceLevel = 0, startOffset = this.cursor,
+			adjustment = 0, i, type;
+		
+		while ( true ) {
+			if ( operation.type == 'replace' ) {
+				var	opRemove = invert ? operation.replacement : operation.remove,
+					opReplacement = invert ? operation.remove : operation.replacement;
+				// Update the linear model for this replacement
+				ve.batchedSplice( this.model.data, this.cursor, opRemove.length, opReplacement );
+				this.cursor += opReplacement.length;
+				adjustment += opReplacement.length - opRemove.length;
+				
+				// Walk through the remove and replacement data
+				// and keep track of the element depth change (level)
+				// for each of these two separately. The model is
+				// only consistent if both levels are zero.
+				for ( i = 0; i < opRemove.length; i++ ) {
+					type = opRemove[i].type;
+					if ( type === undefined ) {
+						// This is content, ignore
+					} else if ( type.charAt( 0 ) === '/' ) {
+						// Closing element
+						removeLevel--;
+					} else {
+						// Opening element
+						removeLevel++;
+					}
+				}
+				for ( i = 0; i < opReplacement.length; i++ ) {
+					type = opReplacement[i].type;
+					if ( type === undefined ) {
+						// This is content, ignore
+					} else if ( type.charAt( 0 ) === '/' ) {
+						// Closing element
+						replaceLevel--;
+					} else {
+						// Opening element
+						replaceLevel++;
+					}
+				}
+			} else {
+				// We're assuming that other operations will not cause
+				// adjustments.
+				// TODO actually make this the case by folding insert
+				// and delete into replace
+				this.executeOperation( operation );
+			}
+			
+			if ( removeLevel == 0 && replaceLevel == 0 ) {
+				// The model is back in a consistent state, so we're done
+				break;
+			}
+			
+			// Get the next operation
+			operation = this.nextOperation();
+			if ( !operation ) {
+				throw 'Unbalanced set of replace operations found';
+			}
+		}
+		// Queue a rebuild for the replaced node
+		this.synchronizer.pushRebuild( new ve.Range( startOffset, this.cursor - adjustment ),
+			new ve.Range( startOffset, this.cursor ) );
+	}
 };
 
 ve.dm.TransactionProcessor.prototype.attribute = function( op ) {

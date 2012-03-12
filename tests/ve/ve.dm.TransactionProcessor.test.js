@@ -1,6 +1,6 @@
 module( 've/dm' );
 
-test( 've.dm.TransactionProcessor', 47, function() {
+test( 've.dm.TransactionProcessor', 79, function() {
 	var documentModel = ve.dm.DocumentNode.newFromPlainObject( veTest.obj );
 
 	// FIXME: These tests shouldn't use prepareFoo() because those functions
@@ -506,6 +506,29 @@ test( 've.dm.TransactionProcessor', 47, function() {
 	);
 	
 	// Test 43
+	deepEqual(
+		documentModel.children[0].getElementType(), 'heading',
+		'commit keeps model tree up to date with paragraph->heading change (element type)'
+	);
+	
+	// Test 44
+	deepEqual(
+		documentModel.children[0].getElement(), { 'type': 'heading', 'level': 2 },
+		'commit keeps model tree up to date with paragraph->heading change (element)'
+	);
+	
+	// Test 45
+	deepEqual(
+		documentModel.children[0].getContentData(),
+		[
+			'a',
+			['b', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }],
+			['c', { 'type': 'textStyle/italic', 'hash': '{"type":"textStyle/italic"}' }]
+		],
+		'commit keeps model tree up to date with paragraph->heading change (content data)'
+	);
+	
+	// Test 46
 	ve.dm.TransactionProcessor.rollback( documentModel, paragraphToHeading );
 	deepEqual(
 		documentModel.getData( new ve.Range( 0, 5 ) ),
@@ -519,9 +542,32 @@ test( 've.dm.TransactionProcessor', 47, function() {
 		'rollback puts paragraph back'
 	);
 	
+	// Test 47
+	deepEqual(
+		documentModel.children[0].getElementType(), 'paragraph',
+		'rollback keeps model tree up to date with paragraph->heading change (element type)'
+	);
+	
+	// Test 48
+	deepEqual(
+		documentModel.children[0].getElement(), { 'type': 'paragraph' },
+		'rollback keeps model tree up to date with paragraph->heading change (element)'
+	);
+	
+	// Test 49
+	deepEqual(
+		documentModel.children[0].getContentData(),
+		[
+			'a',
+			['b', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' }],
+			['c', { 'type': 'textStyle/italic', 'hash': '{"type":"textStyle/italic"}' }]
+		],
+		'rollback keeps model tree up to date with paragraph->heading change (content data)'
+	);
+	
 	var unwrapList = documentModel.prepareWrap( new ve.Range( 12, 27 ), [ { 'type': 'list' } ], [] , [ { 'type': 'listItem' } ], [] );
 	
-	// Test 44
+	// Test 50
 	ve.dm.TransactionProcessor.commit( documentModel, unwrapList );
 	deepEqual(
 		documentModel.getData( new ve.Range( 7, 21 ) ),
@@ -544,7 +590,57 @@ test( 've.dm.TransactionProcessor', 47, function() {
 		'unwrapping the list produces a cell with four adjacent paragraphs'
 	);
 	
-	// Test 45
+	// Test 51
+	deepEqual(
+		documentModel.children[1].children[0].children[0].children.length, 4,
+		'commit keeps model tree up to date with list unwrap (number of children)'
+	);
+	
+	// Test 52
+	deepEqual(
+		documentModel.children[1].children[0].children[0].children[0].getElementType(), 'paragraph',
+		'commit keeps model tree up to date with list unwrap (first child is a paragraph)'
+	);
+	
+	// Test 53
+	deepEqual(
+		documentModel.children[1].children[0].children[0].children[1].getElementType(), 'paragraph',
+		'commit keeps model tree up to date with list unwrap (second child is a paragraph)'
+	);
+	
+	// Test 54
+	deepEqual(
+		documentModel.children[1].children[0].children[0].children[2].getElementType(), 'paragraph',
+		'commit keeps model tree up to date with list unwrap (third child is a paragraph)'
+	);
+	
+	// Test 55
+	deepEqual(
+		documentModel.children[1].children[0].children[0].children[3].getElementType(), 'paragraph',
+		'commit keeps model tree up to date with list unwrap (fourth child is a paragraph)'
+	);
+	
+	// Test 56
+	deepEqual(
+		documentModel.children[1].children[0].children[0].getContentData(),
+		[
+			{ 'type': 'paragraph' },
+			'd',
+			{ 'type': '/paragraph' },
+			{ 'type': 'paragraph' },
+			'e',
+			{ 'type': '/paragraph' },
+			{ 'type': 'paragraph' },
+			'f',
+			{ 'type': '/paragraph' },
+			{ 'type': 'paragraph' },
+			'g',
+			{ 'type': '/paragraph' },
+		],
+		'commit keeps model tree up to date with list unwrap (content data)'
+	);
+	
+	// Test 57
 	ve.dm.TransactionProcessor.rollback( documentModel, unwrapList );
 	deepEqual(
 		documentModel.getData( new ve.Range( 7, 29 ) ),
@@ -575,10 +671,57 @@ test( 've.dm.TransactionProcessor', 47, function() {
 		'rollback puts the list back'
 	);
 	
+	// Test 58
+	deepEqual(
+		documentModel.children[1].children[0].children[0].children.length, 2,
+		'rollback keeps model tree up to date with list unwrap (number of children)'
+	);
+	
+	// Test 59
+	deepEqual(
+		documentModel.children[1].children[0].children[0].children[0].getElementType(), 'paragraph',
+		'rollback keeps model tree up to date with list unwrap (first child is a paragraph)'
+	);
+	
+	// Test 60
+	deepEqual(
+		documentModel.children[1].children[0].children[0].children[1].getElementType(), 'list',
+		'rollback keeps model tree up to date with list unwrap (second child is a list)'
+	);
+	
+	// Test 61
+	deepEqual(
+		documentModel.children[1].children[0].children[0].getContentData(),
+		[
+			{ 'type': 'paragraph' },
+			'd',
+			{ 'type': '/paragraph' },
+			{ 'type': 'list' },
+			{ 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } },
+			{ 'type': 'paragraph' },
+			'e',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': 'listItem', 'attributes': { 'styles': ['bullet', 'bullet'] } },
+			{ 'type': 'paragraph' },
+			'f',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': 'listItem', 'attributes': { 'styles': ['number'] } },
+			{ 'type': 'paragraph' },
+			'g',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': '/list' },
+		],
+		'rollback keeps model tree up to date with list unwrap (content data)'
+	);
+	
+	
 	var replaceTable = documentModel.prepareWrap( new ve.Range( 8, 28 ), [ { 'type': 'table' }, { 'type': 'tableRow' }, { 'type': 'tableCell' } ],
 		[ { 'type': 'list' }, { 'type': 'listItem' } ], [], [] );
 	
-	// Test 46
+	// Test 62
 	ve.dm.TransactionProcessor.commit( documentModel, replaceTable );
 	deepEqual(
 		documentModel.getData( new ve.Range( 5, 30 ) ),
@@ -612,7 +755,65 @@ test( 've.dm.TransactionProcessor', 47, function() {
 		'replacing a table with the list reverses the order of the closing tags correctly'
 	);
 	
-	// Test 47
+	// Test 63
+	deepEqual(
+		documentModel.children.length, 3,
+		'commit keeps model tree up to date with table replace (number of children of root node)'
+	);
+	
+	// Test 64
+	deepEqual(
+		documentModel.children[1].getElementType(), 'list',
+		'commit keeps model tree up to date with table replace (second child of root node is a list)'
+	);
+	
+	// Test 65
+	deepEqual(
+		documentModel.children[1].children.length, 1,
+		'commit keeps model tree up to date with table replace (number of children of list)'
+	);
+	
+	// Test 66
+	deepEqual(
+		documentModel.children[1].children[0].getElementType(), 'listItem',
+		'commit keeps model tree up to date with table replace (child of list is a listItem)'
+	);
+	
+	// Test 67
+	deepEqual(
+		documentModel.children[1].children[0].children.length, 2,
+		'commit keeps model tree up to date with table replace (number of children of listItem)'
+	);
+	
+	// Test 68
+	deepEqual(
+		documentModel.children[1].children[0].getContentData(),
+		[
+			{ 'type': 'paragraph' },
+			'd',
+			{ 'type': '/paragraph' },
+			{ 'type': 'list' },
+			{ 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } },
+			{ 'type': 'paragraph' },
+			'e',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': 'listItem', 'attributes': { 'styles': ['bullet', 'bullet'] } },
+			{ 'type': 'paragraph' },
+			'f',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': 'listItem', 'attributes': { 'styles': ['number'] } },
+			{ 'type': 'paragraph' },
+			'g',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': '/list' }
+		],
+		'commit keeps model tree up to date with table replace (content data of listItem)'
+	);
+	
+	// Test 69
 	ve.dm.TransactionProcessor.rollback( documentModel, replaceTable );
 	deepEqual(
 		documentModel.getData( new ve.Range( 5, 32 ) ),
@@ -646,6 +847,105 @@ test( 've.dm.TransactionProcessor', 47, function() {
 			{ 'type': 'paragraph' }
 		],
 		'rollback puts the table back'
+	);
+	
+	// Test 70
+	deepEqual(
+		documentModel.children.length, 3,
+		'rollback keeps model tree up to date with table replace (number of children of root node)'
+	);
+	
+	// Test 71
+	deepEqual(
+		documentModel.children[1].getElementType(), 'table',
+		'rollback keeps model tree up to date with table replace (second child of root node is a table)'
+	);
+	
+	// Test 72
+	deepEqual(
+		documentModel.children[1].children.length, 1,
+		'rollback keeps model tree up to date with table replace (number of children of table)'
+	);
+	
+	// Test 73
+	deepEqual(
+		documentModel.children[1].children[0].getElementType(), 'tableRow',
+		'rollback keeps model tree up to date with table replace (child of table is a tableRow)'
+	);
+	
+	// Test 74
+	deepEqual(
+		documentModel.children[1].children[0].children.length, 1,
+		'rollback keeps model tree up to date with table replace (number of children of tableRow)'
+	);
+	
+	// Test 75
+	deepEqual(
+		documentModel.children[1].children[0].children[0].getElementType(), 'tableCell',
+		'rollback keeps model tree up to date with table replace (child of tableRow is a tableCell)'
+	);
+	
+	// Test 76
+	deepEqual(
+		documentModel.children[1].children[0].children[0].children.length, 2,
+		'rollback keeps model tree up to date with table replace (number of children of tableCell)'
+	);
+	
+	// Test 77
+	deepEqual(
+		documentModel.children[1].children[0].children[0].getContentData(),
+		[
+			{ 'type': 'paragraph' },
+			'd',
+			{ 'type': '/paragraph' },
+			{ 'type': 'list' },
+			{ 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } },
+			{ 'type': 'paragraph' },
+			'e',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': 'listItem', 'attributes': { 'styles': ['bullet', 'bullet'] } },
+			{ 'type': 'paragraph' },
+			'f',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': 'listItem', 'attributes': { 'styles': ['number'] } },
+			{ 'type': 'paragraph' },
+			'g',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': '/list' }
+		],
+		'rollback keeps model tree up to date with table replace (content data of tableCell)'
+	);
+	
+	var replacementWithAnnotations = new ve.dm.Transaction();
+	replacementWithAnnotations.pushRetain( 24 );
+	replacementWithAnnotations.pushStartAnnotating( 'set', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' } );
+	replacementWithAnnotations.pushReplace( [ 'g' ], [ 'i', 'j', 'k' ] );
+	replacementWithAnnotations.pushStopAnnotating( 'set', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' } );
+	replacementWithAnnotations.pushRetain( 10 );
+	
+	// Test 78
+	ve.dm.TransactionProcessor.commit( documentModel, replacementWithAnnotations );
+	deepEqual(
+		documentModel.getData( new ve.Range( 24, 27 ) ),
+		[
+			[ 'i', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' } ],
+			[ 'j', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' } ],
+			[ 'k', { 'type': 'textStyle/bold', 'hash': '{"type":"textStyle/bold"}' } ]
+		],
+		'replacement replaces content and applies annotations'
+	);
+	
+	// Test 79
+	ve.dm.TransactionProcessor.rollback( documentModel, replacementWithAnnotations );
+	deepEqual(
+		documentModel.getData( new ve.Range( 24, 25 ) ),
+		[
+			'g'
+		],
+		'rollback restores content and removes annotations'
 	);
 	
 } );
