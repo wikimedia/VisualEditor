@@ -80,6 +80,13 @@ ve.ce.Surface = function( $container, model ) {
 		'compositionStart': null,
 		'compositionEnd': null
 	};
+	
+	//Prevent native contentedtiable tools
+	try {
+		document.execCommand("enableInlineTableEditing", false, false);
+		document.execCommand("enableObjectResizing", false, false);
+	} catch(e) {
+	}
 
 	this.model.on( 'select', function( selection ) {
 		// Keep a copy of the current selection on hand
