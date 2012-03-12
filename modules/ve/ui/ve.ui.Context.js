@@ -93,25 +93,18 @@ ve.ui.Context.prototype.set = function() {
 ve.ui.Context.prototype.positionIcon = function() {
 	this.$.removeClass( 'es-contextView-position-start es-contextView-position-end' );
 	var selection = this.surfaceView.getModel().getSelection(),
-		offset;
+		selectionRect = this.surfaceView.getSelectionRect();
 	this.position = null;
+
 	if ( selection.from < selection.to ) {
-		var $lastRange = this.surfaceView.$.find( '.es-contentView-range:visible:last' );
-		if ( $lastRange.length ) {
-			offset = $lastRange.offset();
-			this.position = new ve.Position(
-				offset.left + $lastRange.width(), offset.top + $lastRange.height()
-			);
-			this.$.addClass( 'es-contextView-position-end' );
-		}
+		this.position = new ve.Position( selectionRect.right, selectionRect.bottom );
+		this.$.addClass( 'es-contextView-position-end' );
+		
 	} else if ( selection.from > selection.to ) {
-		var $firstRange = this.surfaceView.$.find( '.es-contentView-range:visible:first' );
-		if ( $firstRange.length ) {
-			offset = $firstRange.offset();
-			this.position = new ve.Position( offset.left, offset.top );
-			this.$.addClass( 'es-contextView-position-start' );
-		}
+		this.position = new ve.Position( selectionRect.left, selectionRect.top );
+		this.$.addClass( 'es-contextView-position-start' );
 	}
+
 	if ( this.position ) {
 		this.$.css( { 'left': this.position.left, 'top': this.position.top } );
 		this.$icon.fadeIn( 'fast' );
