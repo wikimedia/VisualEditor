@@ -118,8 +118,8 @@ ve.ce.Surface.prototype.annotate = function( method, annotation ) {
 };
 
 ve.ce.Surface.prototype.getAnnotations = function() {
-	return this.getSelection().getLength() ?
-		this.model.getDocument().getAnnotationsFromRange( this.getSelection() ) :
+	return this.getSelectionRange().getLength() ?
+		this.model.getDocument().getAnnotationsFromRange( this.getSelectionRange() ) :
 		{
 			'full': this.insertionAnnotations,
 			'partial': [],
@@ -137,7 +137,7 @@ ve.ce.Surface.prototype.addInsertionAnnotation = function( annotation ) {
 
 ve.ce.Surface.prototype.loadInsertionAnnotations = function( annotation ) {
 	this.insertionAnnotations =
-		this.model.getDocument().getAnnotationsFromOffset( this.getSelection().to - 1 );
+		this.model.getDocument().getAnnotationsFromOffset( this.getSelectionRange().to - 1 );
 	// Filter out annotations that aren't textStyles or links
 	for ( var i = 0; i < this.insertionAnnotations.length; i++ ) {
 		if ( !this.insertionAnnotations[i].type.match( /(textStyle\/|link\/)/ ) ) {
@@ -280,7 +280,7 @@ ve.ce.Surface.prototype.clearPollData = function() {
 
 ve.ce.Surface.prototype.pollContent = function() {
 	var localOffset, text, hash;
-
+	
 	if ( this.poll.compositionStart !== null && this.poll.compositionEnd !== null ) {
 
 		text = ve.ce.Surface.getDOMText2( this.poll.node );
@@ -448,7 +448,7 @@ ve.ce.Surface.prototype.onKeyDown = function( e ) {
 			break;
 	}
 	var range = this.getSelectionRange();
-	if ( range.getLength() !== 0 ) {
+	if ( range.getLength() !== 0 && this.poll.compositionStart === null) {
 		e.preventDefault();
 	}
 };
