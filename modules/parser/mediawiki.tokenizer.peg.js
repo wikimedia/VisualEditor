@@ -103,48 +103,46 @@ PegTokenizer.prototype.tokenizeURL = function( text ) {
  * Those inner productions are then exited, so that the outer production can
  * handle the end marker.
  */
-PegTokenizer.prototype.inline_breaks = function (input, pos, syntaxFlags ) {
+PegTokenizer.prototype.inline_breaks = function (input, pos, stops ) {
+	var counters = stops.counters;
 	switch( input[pos] ) {
 		case '=':
-			return ( syntaxFlags.equalAttrib && 
-					(syntaxFlags.equalTemplate || ! syntaxFlags.template ) ) ||
-				(syntaxFlags.equalTemplate && 
-				 (syntaxFlags.equalAttrib || syntaxFlags.template)) ||
-				( syntaxFlags.h &&
+			return stops.onStack( 'equal' ) ||
+				( counters.h &&
 				  input.substr( pos + 1, 200)
 				  .match(/[ \t]*[\r\n]/) !== null ) || null;
 		case '|':
-			return syntaxFlags.pipe ||
-					syntaxFlags.template ||
-				( syntaxFlags.table &&
+			return counters.pipe ||
+					counters.template ||
+				( counters.table &&
 				  ( input[pos + 1].match(/[|}]/) !== null ||
-					syntaxFlags.tableCellArg
+					counters.tableCellArg
 				  ) 
 				) || null;
 		case "!":
-			return syntaxFlags.table && input[pos + 1] === "!" ||
+			return counters.table && input[pos + 1] === "!" ||
 				null;
 		case "}":
-			return syntaxFlags.template && input[pos + 1] === "}" || null;
+			return counters.template && input[pos + 1] === "}" || null;
 		case ":":
-			return syntaxFlags.colon &&
-				! syntaxFlags.extlink &&
-				! syntaxFlags.linkdesc || null;
+			return counters.colon &&
+				! counters.extlink &&
+				! counters.linkdesc || null;
 		case "\r":
-			return syntaxFlags.table &&
+			return counters.table &&
 				input.substr(pos, 4).match(/\r\n?[!|]/) !== null ||
 				null;
 		case "\n":
-			return syntaxFlags.table &&
+			return counters.table &&
 				input[pos + 1] === '!' ||
 				input[pos + 1] === '|' ||
 				null;
 		case "]":
-			return syntaxFlags.extlink ||
-				( syntaxFlags.linkdesc && input[pos + 1] === ']' ) ||
+			return counters.extlink ||
+				( counters.linkdesc && input[pos + 1] === ']' ) ||
 				null;
 		case "<":
-			return syntaxFlags.pre &&  input.substr( pos, 6 ) === '</pre>' || null;
+			return counters.pre &&  input.substr( pos, 6 ) === '</pre>' || null;
 		default:
 			return null;
 	}

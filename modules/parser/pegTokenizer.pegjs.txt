@@ -271,19 +271,57 @@
      * productions can just be unrolled for all combinations of environments
      * at the cost of a much larger grammar.
      */
-    var syntaxFlags = {};
-    var setFlag = function(flag) {
-        if (syntaxFlags[flag] !== undefined) {
-            syntaxFlags[flag]++;
+    function SyntaxStops () {
+        this.counters = {};
+        this.stacks = {};
+    }
+    SyntaxStops.prototype.inc = function(flag) {
+        if (this.counters[flag] !== undefined) {
+            this.counters[flag]++;
         } else {
-            syntaxFlags[flag] = 1;
+            this.counters[flag] = 1;
         }
         return true;
     };
-    var clearFlag = function(flag) {
-        syntaxFlags[flag]--;
+    SyntaxStops.prototype.dec = function(flag) {
+        this.counters[flag]--;
         return false;
     };
+    SyntaxStops.prototype.onCount = function ( name ) {
+        return this.counters[name];
+    };
+
+    /**
+     * A stack for nested, but not cumulative syntactic stops.
+     * Example: '=' is allowed in values of template arguments, even if those
+     * are nested in attribute names.
+     */
+    SyntaxStops.prototype.push = function ( name, value ) {
+        if( this.stacks[name] === undefined ) {
+            this.stacks[name] = [value];
+        } else {
+            this.stacks[name].push( value );
+        }
+        return true;
+    };
+    SyntaxStops.prototype.pop = function ( name ) {
+        if( this.stacks[name] !== undefined ) {
+            this.stacks[name].pop();
+        } else {
+            throw "SyntaxStops.pop: unknown stop for " + name;
+        }
+        return false;
+    };
+    SyntaxStops.prototype.onStack = function ( name ) {
+        var stack = this.stacks[name];
+        if ( stack === undefined || stack.length === 0 ) {
+            return false;
+        } else {
+            return stack[stack.length - 1];
+        }
+    };
+
+    var stops = new SyntaxStops();
 
     // Start position of top-level block
     // Could also provide positions for lower-level blocks using a stack.
@@ -472,7 +510,7 @@ inline_breaks
         // cache key does not take into account flag states!
         cacheKey = ''; 
         //console.warn('ilbf: ' + input.substr(pos, 5) );
-        return null !== __parseArgs[3].inline_breaks( input, pos, syntaxFlags )
+        return null !== __parseArgs[3].inline_breaks( input, pos, stops )
       } 
 
 inline
@@ -504,13 +542,13 @@ h = & "=" // guard, to make sure '='+ will match.
           // XXX: Also check to end to avoid inline parsing?
     r:(
      s:'='+ // moved in here to make s accessible to inner action
-     & { return setFlag('h'); }
+     & { return stops.inc('h'); }
      c:inlineline 
      e:'='+ 
      spc:(sp:space+ { return sp.join('') } / comment)*
      &eolf 
      {
-        clearFlag('h');
+        stops.dec('h');
         var level = Math.min(s.length, e.length);
         // convert surplus equals into text
         if(s.length > level) {
@@ -534,7 +572,7 @@ h = & "=" // guard, to make sure '='+ will match.
         return [new TagTk( 'h' + level )]
                 .concat(c, [new EndTagTk( 'h' + level ), spc]);
       }
-    / & { /* dp('nomatch exit h'); */ clearFlag('h'); return false } { return null }
+    / & { /* dp('nomatch exit h'); */ stops.dec('h'); return false } { return null }
     ) { return r }
 
 comment
@@ -554,22 +592,22 @@ comment_chars
  **************************************************************/
 
 urllink
-  = ! { return syntaxFlags['extlink'] }
+  = ! { return stops.onCount('extlink') }
     target:url {
       return [ new TagTk( 'urllink', [new KV('href', target)] ) ];
   }
 
 extlink
-  = ! { return syntaxFlags['extlink'] } // extlink cannot be nested
+  = ! { return stops.onCount('extlink') } // extlink cannot be nested
     (
         "[" 
-        & { return setFlag('extlink'); }
+        & { return stops.inc('extlink'); }
         //target:urllink
         target:extlink_preprocessor_text
         text:(( space / [\u00A0\u1680\u180E\u2000-\u200A\u202F\u205F\u3000] )* 
               t:inlineline { return t } )?
         "]" {
-            clearFlag('extlink');
+            stops.dec('extlink');
             if ( text === '' ) {
                 // XXX: Link numbering should be implemented in post-processor.
                 text = [ "[" + linkCount + "]" ];
@@ -583,7 +621,7 @@ extlink
                 ] )
             ];
         }
-      / "[" & { clearFlag('extlink'); return false; }
+      / "[" & { stops.dec('extlink'); return false; }
     )
 
 /* Defaul URL protocols in MediaWiki (see DefaultSettings). Normally these can
@@ -706,7 +744,7 @@ template_param
     s0:space* 
     eq:"="?
     s1:space*
-    value:template_param_text?
+    value:template_param_value?
 
     {
       //console.warn( 'named template_param matched' + pp([name, value ]) );
@@ -724,25 +762,35 @@ template_param
 
 // FIXME: handle template args and templates in key! (or even parser functions?)
 template_param_name
-  = & { return setFlag( 'equalTemplate' ) }
+  = & { return stops.push( 'equal', true ) }
     tpt:template_param_text
     {
-        clearFlag( 'equalTemplate' );
+        stops.pop( 'equal' );
         //console.warn( 'template param name matched: ' + pp( tpt ) );
         return tpt;
     }
 
-  / & { return clearFlag( 'equalTemplate' ) }
+  / & { return stops.pop( 'equal' ) }
   //= h:( !"}}" x:([^=|\n]) { return x } )* { return h.join(''); }
 
+template_param_value
+  = & { return stops.push( 'equal', false ) }
+    tpt:template_param_text
+    {
+        stops.pop( 'equal' );
+        //console.warn( 'template param value matched: ' + pp( tpt ) );
+        return tpt;
+    }
+  / & { return stops.pop( 'equal' ) }
+
 template_param_text
-  = & { return setFlag('template') }
+  = & { return stops.inc('template') }
     il:inline {
-        clearFlag('template');
+        stops.dec('template');
         //console.warn( 'tpt match: ' + pp (il));
         return il;
     }
-  / & { return clearFlag('template'); }
+  / & { return stops.dec('template'); }
 
 
 // TODO: handle link prefixes as in al[[Razi]]
@@ -790,39 +838,39 @@ wikilink
   / ! { return posStack.pop( 'wikilink', pos ); }
 
 link_text
-  = & { return setFlag('linkdesc'); }
+  = & { return stops.inc('linkdesc'); }
     h:inline 
     // 'equal' syntaxFlag is set for links in template parameters. Consume the
     // '=' here.
     hs:( '=' inline)?
     { 
         //console.warn('link_text' + pp(h) + pp(hs));
-        clearFlag('linkdesc');
+        stops.dec('linkdesc');
         if( hs !== '' ) {
             return h.concat(hs);
         } else {
             return h;
         }
     }
-  / & { return clearFlag('linkdesc'); }
+  / & { return stops.dec('linkdesc'); }
 
 link_option
-  = & { setFlag('pipe'); return setFlag('linkdesc'); }
+  = & { stops.inc('pipe'); return stops.inc('linkdesc'); }
     h:inline 
     // 'equal' syntaxFlag is set for links in template parameters. Consume the
     // '=' here.
     hs:( '=' inline)?
     { 
         //console.warn('link_text' + pp(h) + pp(hs));
-        clearFlag('pipe');
-        clearFlag('linkdesc');
+        stops.dec('pipe');
+        stops.dec('linkdesc');
         if( hs !== '' ) {
             return h.concat(hs);
         } else {
             return h;
         }
     }
-  / & { clearFlag('pipe'); return clearFlag('linkdesc'); }
+  / & { stops.dec('pipe'); return stops.dec('linkdesc'); }
 
 link_end = "]]"
 
@@ -845,9 +893,9 @@ quote = "''" x:"'"* {
  * transformer, and only for images.
  */
 img_options = 
-  & { return setFlag( 'pipe' ); }
+  & { return stops.inc( 'pipe' ); }
   os:img_option* {
-    clearFlag( 'pipe' );
+    stops.dec( 'pipe' );
 	var options = {};
     os = flatten( os );
 	for ( var i = 0, l = os.length; i < l; i++ ) {
@@ -857,7 +905,7 @@ img_options =
 	options._options = os;
 	return options;
 }
-/ & { return clearFlag( 'pipe' ); }
+/ & { return stops.dec( 'pipe' ); }
 
 img_option 
   = "|" space*
@@ -909,10 +957,10 @@ img_link
   = 'link=' space* 
     u:( 
         t:url {
-            clearFlag( 'pipe' );
+            stops.dec( 'pipe' );
             return t;
         }
-        / & { return clearFlag( 'pipe' ); }
+        / & { return stops.dec( 'pipe' ); }
       ) 
 {
       return new KV( 'link', u );
@@ -946,16 +994,16 @@ pre_indent_in_tags
     "<pre" 
     attribs:generic_attribute* 
     ">"
-    & { return setFlag('pre'); }
+    & { return stops.inc('pre'); }
     l:inlineline
     ls:(sol pre_indent_line)*
     "</pre>"
   {   
-    clearFlag('pre');
+    stops.dec('pre');
     return [ new TagTk( 'pre', attribs ) ]
         .concat( l, flatten( ls ), [ new EndTagTk( 'pre' ) ] );
   }
-  / & { return clearFlag('pre'); }
+  / & { return stops.dec('pre'); }
 
 pre_indent_line = space l:inlineline { 
     return [ '\n' ].concat(l); 
@@ -1140,15 +1188,15 @@ generic_attribute
 //  }
 
 generic_attribute_name
-  = & { return setFlag( 'equalAttrib' ) }
+  = & { return stops.push( 'equal', true ) }
   ! '/>'
   name:attribute_preprocessor_text_line
     {
-        clearFlag( 'equalAttrib' );
+        stops.pop( 'equal' );
         //console.warn( 'generic attribute name: ' + pp( name ) );
         return name;
     }
-  / & { return clearFlag( 'equalAttrib' ) }
+  / & { return stops.pop( 'equal' ) }
 
 // A generic attribute, possibly spanning multiple lines.
 generic_attribute_newline_value
@@ -1226,12 +1274,12 @@ li = bullets:list_char+
 dtdd 
   = bullets:(!(";" !list_char) list_char)*
     ";"
-    & {return setFlag('colon');}
+    & {return stops.inc('colon');}
     c:inlineline
     ":"
     // Fortunately dtdds cannot be nested, so we can simply set the flag
     // back to 0 to disable it.
-    & {syntaxFlags['colon'] = 0; return true;}
+    & { stops.counters['colon'] = 0; return true;}
     d:inlineline
     &eolf {
         // Convert trailing space into &nbsp;
@@ -1251,7 +1299,7 @@ dtdd
         return [ li ].concat( c, [ li2 ], d );
     }
   // Fall-back case to clear the colon flag
-  / & { return true; } { syntaxFlags['colon'] = 0; return null; }
+  / & { return true; } { stops.counters['colon'] = 0; return null; }
 
 
 list_char = [*#:;]
@@ -1272,14 +1320,14 @@ list_char = [*#:;]
  *********************************************************************/
 
 table_lines
-  = & { return setFlag('table'); }
+  = & { return stops.inc('table'); }
     tl:table_line 
     tls:( s:sol tl2:table_line { return s.concat(tl2); } )* {
-        clearFlag('table');
+        stops.dec('table');
         //console.warn('table_lines: ' + pp(tl.concat(tls)));
         return tl.concat( tls );
     }
-  / & { return clearFlag('table'); }
+  / & { return stops.dec('table'); }
 
 // This production assumes start-of-line position!
 table_line
@@ -1380,12 +1428,12 @@ table_end_tag
   }
 
 table_cell_args
-  = & { return setFlag('tableCellArg'); }
+  = & { return stops.inc('tableCellArg'); }
     as:generic_attribute* space* "|" !"|" { 
-        clearFlag('tableCellArg');
+        stops.dec('tableCellArg');
         return as;
     }
-    / & { return clearFlag('tableCellArg'); }
+    / & { return stops.dec('tableCellArg'); }
 
 
 
@@ -1417,13 +1465,13 @@ table
 table_start 
   = "{" pipe
     res:(
-        & { setFlag('table'); return true; }
+        & { stops.inc('table'); return true; }
         ta:generic_attribute* 
         { 
             //dp("table_start " + pp(ta) + ", pos:" + pos);
             return ta;
         }
-        / & { clearFlag('table'); return false; } { return null; }
+        / & { stops.dec('table'); return false; } { return null; }
     ) { return res }
 
 table_caption 
@@ -1502,7 +1550,7 @@ thtd_attribs
 
 table_end 
   = nt:newlineToken? ( pipe "}" / eof ) { 
-	  clearFlag('table'); 
+	  stops.dec('table'); 
 	  if(nt) 
 		  return nt;
 	  else
