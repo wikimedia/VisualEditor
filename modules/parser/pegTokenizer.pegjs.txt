@@ -662,21 +662,25 @@ urlencoded_char = "%" c0:[0-9a-fA-F] c1:[0-9a-fA-F] {
 
 //[^][<>"\\x00-\\x20\\x7F\p{Zs}]
 
-no_punctuation_char = [^ :\]\[\n"'<>\x00-\x20\x7f,.&%\u00A0\u1680\u180E\u2000-\u200A\u202F\u205F\u3000]
+// no punctiation, and '{<' to trigger directives
+no_punctuation_char = [^ :\]\[\n"'<>\x00-\x20\x7f,.&%\u00A0\u1680\u180E\u2000-\u200A\u202F\u205F\u3000{]
 
 url
   = proto:url_protocol 
     addr:( ipv6_address / ipv4_address )?
-    rest:(  ( !inline_breaks 
+    path:(  ( !inline_breaks 
               c:no_punctuation_char
               { return c }
             )
             / s:[.:,] !(space / eolf) { return s } 
+            / comment
+            / tplarg_or_template
             / htmlentity
-            /// urlencoded_char
-            / [&%] )+ 
+            / [&%{] 
+         )+ 
 { 
-    return proto + addr + rest.join(''); 
+    //console.warn( "path: " + pp( flatten_stringlist( [proto + addr].concat( path ) ) ) );
+    return flatten_string( [proto + addr].concat( path ) ); 
 }
 
 ipv4_address 
@@ -710,9 +714,10 @@ template
   = "{{" (newline / space)* target:template_param_text
     params:(( newline / space )* "|"
                 r:( &"|" { return new KV( '', '') } // empty argument
-                    / newline? p:template_param { return p } 
+                    / ( newline / space )* p:template_param { return p } 
                   ) { return r } 
             )* 
+    ( newline / space )* 
     "}}" {
       // Insert target as first positional attribute, so that it can be
       // generically expanded. The TemplateHandler then needs to shift it out
@@ -730,7 +735,8 @@ template
 tplarg 
   = "{{{" 
     name:template_param_text 
-    params:( newline? "|" newline? p:template_param { return p })* 
+    params:( ( space / newline )* "|" ( space / newline )* p:template_param { return p })* 
+    ( space / newline )* 
     "}}}" {
       name = flatten( name );
       params.unshift( { k: '', v: name } );
@@ -741,17 +747,23 @@ tplarg
 
 template_param
   = name:template_param_name 
-    s0:space* 
-    eq:"="?
-    s1:space*
-    value:template_param_value?
+    val:(
+        s0:space* 
+        "="
+        s1:space*
+        value:template_param_value? {
+            return { s0: s0, s1: s1, value: value };
+        }
+        )?
 
     {
       //console.warn( 'named template_param matched' + pp([name, value ]) );
-      if ( value !== '' ) {
-        return new KV( name, flatten( value ) );
-      } else if ( eq !== '' ) {
-        return new KV(flatten( name ), []);
+      if ( val !== '' ) {
+          if ( val.value !== '' ) {
+            return new KV( name, flatten( val.value ) );
+          } else {
+            return new KV(flatten( name ), []);
+          }
       } else {
         return new KV([], flatten(name));
       }
