@@ -126,11 +126,6 @@ ve.dm.DocumentSynchronizer.prototype.synchronize = function() {
 				parent.splice( parent.indexOf( action.node ), 1 );
 				break;
 			case 'rebuild':
-				// Generate the new nodes
-				var newNodes = ve.dm.DocumentNode.createNodesFromData(
-					this.model.getData( action.newRange )
-				);
-				
 				// Find the node(s) contained by oldRange. This is done by repeatedly
 				// invoking selectNodes() in shallow mode until we find the right node(s).
 				// TODO this traversal could be made more efficient once we have an offset map
@@ -153,17 +148,22 @@ ve.dm.DocumentSynchronizer.prototype.synchronize = function() {
 					// Descend into this node
 					node = selection[0].node;
 					range = selection[0].range;
+
 				}
 				if ( selection[0].node == this.model ) {
 					// We got some sort of weird input, ignore it
 					break;
 				}
 				
-				// The first node we're removing is selection[0].node , and we're removing
-				// selection.length adjacent nodes
-				parent = selection[0].node.getParent();
-				// TODO selectNodes() output knows the index of selection[0].node in its parent, should expose it
-				ve.batchedSplice( parent, parent.indexOf( selection[0].node ), selection.length, newNodes );
+				// The first node we're rebuilding is selection[0].node , and we're rebuilding
+				// selection.length adjacent nodes.
+				// TODO selectNodes() discovers the index of selection[0].node in its parent,
+				// but discards it, and now we recompute it
+				this.model.rebuildNodes( selection[0].node.getParent(),
+					selection[0].node.getParent().indexOf( selection[0].node ),
+					selection.length, action.oldRange.from,
+					this.model.getData( action.newRange )
+				);
 				break;
 			case 'resize':
 				// Adjust node length - causes update events to be emitted

@@ -19,10 +19,13 @@ ve.dm.DocumentNode = function( data, attributes ) {
 	this.attributes = ve.isPlainObject( attributes ) ? attributes : {};
 
 	// Auto-generate model tree
-	var nodes = ve.dm.DocumentNode.createNodesFromData( this.data );
-	for ( var i = 0; i < nodes.length; i++ ) {
-		this.push( nodes[i] );
-	}
+	var stuff = ve.dm.DocumentNode.buildNodesAndOffsetsFromData( this.data, this );
+	ve.batchedSplice( this, 0, 0, stuff.nodes );
+	// this.offsetMap contains a reference to a node object for each
+	// offset in the linear model, such that the node at offset n is
+	// this.offsetMap[n]
+	this.offsetMap = stuff.offsets;
+	this.offsetMap.push( this ); // Add one for the offset past the end
 };
 
 /* Static Members */
@@ -71,15 +74,53 @@ ve.dm.DocumentNode.nodeRules = {
 /* Static Methods */
 
 /*
- * Create child nodes from an array of data.
+ * Helper function for rebuildNodes(), do not use this unless you know what you're doing.
  * 
- * These child nodes are used for the model tree, which is a space partitioning data structure in
- * which each node contains the length of itself (1 for opening, 1 for closing) and the lengths of
- * it's child nodes.
+ * Build nodes from linear model data. This builds two arrays, a nodes array
+ * that can be spliced into a node using .splice(), and an array mapping
+ * offsets to nodes that can be spliced into the DocumentNode's offset map.
+ * The nodes will have their parent set to an empty BranchNode.
+ * 
+ * @param {Array} data Fragment of linear model data
+ * @param {ve.BranchNode} [parent] Node that this subtree will be attached to, if known.
+ *   Only used for the offset map.
+ * @returns {Object} {'nodes': ve.dm.Node[], 'offsets': Array}
  */
-ve.dm.DocumentNode.createNodesFromData = function( data ) {
-	var currentNode = new ve.dm.BranchNode();
-	for ( var i = 0, length = data.length; i < length; i++ ) {
+ve.dm.DocumentNode.buildNodesAndOffsetsFromData = function( data, parent ) {
+		// We temporarily attach the constructed nodes to fakeNode
+		// before returning them. The caller will then attach them
+		// somewhere else.
+		// TODO if this function is rewritten to use recursion or
+		// a stack, we won't need this any more
+	var	fakeNode = new ve.dm.BranchNode(),
+		currentNode = fakeNode,
+		offsets = new Array( data.length ),
+		contentLength = 0,
+		i;
+	if ( parent ) {
+		// Set the parent's root on the fake node now
+		// Otherwise, the nodes we build all have their root pointer
+		// pointing to fakeNode, and those will all need to be updated
+		// when we attach the subtree to the main tree
+		fakeNode.setRoot( parent.getRoot() );
+	}
+	
+	for ( i = 0, length = data.length; i < length; i++ ) {
+		// Set the node reference for this offset in the offset cache
+		// This looks simple, but there are three cases that result in the same thing:
+		// 1. data[i] is an opening, so offset i is before the opening, so we
+		//    need to point to the parent of the opened element. currentNode
+		//    will be set to the opened element later, but right now it's
+		//    still set to the parent of the opened element.
+		// 2. data[i] is a closing, so offset i is before the closing, so we
+		//    need to point to the closed element. currentNode will be set to
+		//    the parent of the closed element later, but right now it's still
+		//    set to the closed element
+		// 3. data[i] is content, so offset i is in the middle of an element,
+		//    so obviously we need currentNode, which won't be changed by this
+		//    iteration
+		offsets[i] = currentNode === fakeNode ? parent : currentNode;
+		
 		if ( data[i].type !== undefined ) {
 			// It's an element, figure out it's type
 			var element = data[i],
@@ -92,36 +133,52 @@ ve.dm.DocumentNode.createNodesFromData = function( data ) {
 			if ( open ) {
 				// Validate the element type
 				if ( !( type in ve.dm.DocumentNode.nodeModels ) ) {
-					throw 'Unsuported element error. No class registered for element type: ' + type;
+					throw 'Unsupported element error. No class registered ' +
+						'for element type: ' + type;
 				}
 				// Create a model node for the element
-				var newNode = new ve.dm.DocumentNode.nodeModels[element.type]( element, 0 );
+				var newNode = new
+					ve.dm.DocumentNode.nodeModels[element.type]( element, 0 );
 				// Add the new model node as a child
+				// TODO this is inefficient because all these child and content
+				// additions bubble up and change the lengths of the parents. It
+				// might be better to rewrite this function to be recursive or use a
+				// stack that's only combined at the last minute
 				currentNode.push( newNode );
 				// Descend into the new model node
 				currentNode = newNode;
 			} else {
+				// Set the length on this node, if it's a leaf node
+				if ( contentLength > 0 ) {
+					currentNode.setContentLength( contentLength );
+					contentLength = 0;
+				}
 				// Return to the parent node
 				currentNode = currentNode.getParent();
 				if ( currentNode === null ) {
 					throw 'createNodesFromData() received unbalanced data: ' +
-						'found closing without matching opening at index ' + i;
+						'found closing without matching opening at index ' +
+						i;
 				}
 			}
 		} else {
-			// It's content, let's start tracking the length
-			var start = i;
-			// Move forward to the next object, tracking the length as we go
-			while ( data[i].type === undefined && i < length ) {
-				i++;
-			}
-			// Now we know how long the current node is
-			currentNode.setContentLength( i - start );
-			// The while loop left us 1 element to far
-			i--;
+			// It's content. Add this to the length
+			// We don't need a stack here because content is only
+			// allowed in leaf nodes, so mixing content and structure
+			// inside the same node is illegal
+			// TODO actually enforce this
+			contentLength++;
 		}
 	}
-	return currentNode.getChildren().slice( 0 );
+	return { 'nodes': fakeNode.getChildren(), 'offsets': offsets };
+};
+
+/**
+ * Exists for backwards compatibility only, do not use
+ * TODO migrate callers
+ */
+ve.dm.DocumentNode.createNodesFromData = function( data ) {
+	return ve.dm.DocumentNode.buildNodesAndOffsetsFromData( data, null ).nodes;
 };
 
 /**
@@ -847,6 +904,47 @@ ve.dm.DocumentNode.prototype.getRelativeContentOffset = function( offset, distan
 		i += direction;
 	}
 	return offset;
+};
+
+/**
+ * Rebuild one or more nodes from a linear model fragment, updating the tree and the offset map.
+ * This will remove the nodes from the tree and replace them with whatever the linear model data
+ * expands to. The data fragment may represent one node or multiple sibling nodes, but it must be
+ * balanced and valid and it may not contain any content at the top level. This function can also be
+ * used to insert nodes from linear model data by rebuilding zero nodes.
+ * 
+ * @param {ve.dm.Node} parent Parent of the node(s) to rebuild
+ * @param {Integer} index Index in parent's children array of the first node to rebuild (numNodes>1)
+ *                        or index to insert nodes at (if numNodes=0)
+ * @param {Integer} numNodes Total number of nodes to rebuild.
+ *                           If set to 1, only parent[index] will be rebuilt
+ *                           If >1, parent[index] through parent[index+numNodes-1] will be rebuilt
+ *                           If set to 0, nothing is removed or rebuilt, but the node(s) built from
+ *                           data are inserted before parent[index]. To insert nodes at the end,
+ *                           set index to one past the end (i.e. to parent.getChildren().length)
+ * @param {Integer} offset Linear model offset of the first node to rebuild (numNodes>1)
+ *                         or offset of the insertion point (if numNodes=0)
+ * @param {Array} data Linear model data fragment to rebuild the nodes from, or to construct the
+ *                     inserted nodes from
+ * @returns {ve.dm.Node[]} Array containing the rebuilt/inserted nodes
+ */
+ve.dm.DocumentNode.prototype.rebuildNodes = function( parent, index, numNodes, offset, data ) {
+	// TODO add smartness similar to that in TransactionProcessor.rebuildNodes()
+	// to avoid rebuilding if we're replacing one node with one other node of the
+	// same type
+	var rebuilt, totalLength, i;
+	// Compute the total length of the nodes
+	totalLength = 0;
+	for ( i = index; i < index + numNodes; i++ ) {
+		totalLength += parent.children[i].getElementLength();
+	}
+	// Build nodes from data
+	rebuilt = ve.dm.DocumentNode.buildNodesAndOffsetsFromData( data, parent );
+	// Replace the nodes in the model tree
+	ve.batchedSplice( parent, index, numNodes, rebuilt.nodes );
+	// Update the offsets array
+	ve.batchedSplice( this.offsetMap, offset, totalLength, rebuilt.offsets );
+	return rebuilt.nodes;
 };
 
 /**

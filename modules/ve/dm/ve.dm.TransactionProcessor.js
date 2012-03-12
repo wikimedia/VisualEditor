@@ -114,51 +114,6 @@ ve.dm.TransactionProcessor.prototype.process = function( method ) {
 	this.synchronizer.synchronize();
 };
 
-// TODO: document this. Various arguments are optional or nonoptional in different cases, that's
-// confusing so it needs to be documented well.
-ve.dm.TransactionProcessor.prototype.rebuildNodes = function( newData, oldNodes, parent, index ) {
-	var newNodes = ve.dm.DocumentNode.createNodesFromData( newData ),
-		remove = 0;
-	if ( oldNodes ) {
-		// Determine parent and index if not given
-		if ( oldNodes[0] === oldNodes[0].getRoot() ) {
-			// We know the values for parent and index in this case
-			// and don't have to compute them. Override any parent
-			// or index parameter passed.
-			parent = oldNodes[0];
-			index = 0;
-			remove = parent.getChildren().length;
-		} else {
-			parent = parent || oldNodes[0].getParent();
-			index = index || parent.indexOf( oldNodes[0] );
-			remove = oldNodes.length;
-		}
-		// Try to preserve the first node
-		if (
-			// There must be an old and new node to preserve
-			newNodes.length &&
-			oldNodes.length &&
-			// Node types need to match
-			newNodes[0].type === oldNodes[0].type &&
-			// Only for leaf nodes
-			!newNodes[0].hasChildren()
-		) {
-			var newNode = newNodes.shift(),
-				oldNode = oldNodes.shift();
-			// Let's just leave this first node in place and adjust it's length
-			var newAttributes = newNode.getElement().attributes,
-				oldAttributes = oldNode.getElement().attributes;
-			if ( oldAttributes || newAttributes ) {
-				oldNode.getElement().attributes = newAttributes;
-			}
-			oldNode.adjustContentLength( newNode.getContentLength() - oldNode.getContentLength() );
-			index++;
-			remove--;
-		}
-	}
-	ve.batchedSplice( parent, index, remove, newNodes );
-};
-
 /**
  * Get the parent node that would be affected by inserting given data into it's child.
  * 
@@ -290,8 +245,7 @@ ve.dm.TransactionProcessor.prototype.insert = function( op ) {
 		ve.insertIntoArray( this.model.data, this.cursor, op.data );
 		this.applyAnnotations( this.cursor + op.data.length );
 		// Update the length of the containing node
-		node.adjustContentLength( op.data.length, true );
-		node.emit( 'update', this.cursor - offset );
+		this.synchronizer.pushResize( node, op.data.length );
 		// Move the cursor
 		this.cursor += op.data.length;
 		// All done
@@ -306,6 +260,7 @@ ve.dm.TransactionProcessor.prototype.insert = function( op ) {
 	
 	// Shortcut 2: we're inserting an enclosed piece of structural data at a structural offset
 	// that isn't the end of the document.
+	// TODO why can't it be at the end of the document?
 	if (
 		ve.dm.DocumentNode.isStructuralOffset( this.model.data, this.cursor ) &&
 		this.cursor != this.model.data.length &&
@@ -317,12 +272,13 @@ ve.dm.TransactionProcessor.prototype.insert = function( op ) {
 		this.applyAnnotations( this.cursor + op.data.length );
 		offset = this.model.getOffsetFromNode( node );
 		index = node.getIndexFromOffset( this.cursor - offset );
-		this.rebuildNodes( op.data, null, node, index );
+		this.synchronizer.pushRebuild( new ve.Range( this.cursor, this.cursor ),
+			new ve.Range( this.cursor, this.cursor + op.data.length ) );
 	} else {
 		// This is the non-shortcut case
 		
-		// Rebuild scope, which is the node that encloses everything we might have to rebuild
-		node = scope;
+		// Rebuild all children of scope, which is the node that encloses everything we might have to rebuild
+		node = scope.getChildren()[0];
 		offset = this.model.getOffsetFromNode( node );
 		if ( offset === -1 ) {
 			throw 'Invalid offset error. Node is not in model tree';
@@ -331,16 +287,15 @@ ve.dm.TransactionProcessor.prototype.insert = function( op ) {
 		ve.insertIntoArray( this.model.data, this.cursor, op.data );
 		this.applyAnnotations( this.cursor + op.data.length );
 		// Synchronize model tree
-		this.rebuildNodes(
-			this.model.data.slice( offset, offset + node.getElementLength() + op.data.length ),
-			[node]
-		);
+		this.synchronizer.pushRebuild( new ve.Range( offset, offset + scope.getContentLength() ),
+			new ve.Range( offset, offset + scope.getContentLength() + op.data.length ) );
 	}
 	this.cursor += op.data.length;
 };
 
 ve.dm.TransactionProcessor.prototype.remove = function( op ) {
 	if ( ve.dm.DocumentNode.containsElementData( op.data ) ) {
+		// TODO rewrite all this
 		// Figure out which nodes are covered by the removal
 		var ranges = this.model.selectNodes(
 			new ve.Range( this.cursor, this.cursor + op.data.length )
@@ -423,7 +378,7 @@ ve.dm.TransactionProcessor.prototype.remove = function( op ) {
 			// Surround newData with the openings and closings
 			newData = openings.reverse().concat( newData, closings );
 			
-			// Rebuild oldNodes if needed
+			// Rebuild oldNodes' ancestors if needed
 			// This only happens for merges with depth > 1
 			prevN1 = paths.node1Path.length ? paths.node1Path[paths.node1Path.length - 1] : null;
 			prevN2 = paths.node2Path.length ? paths.node2Path[paths.node2Path.length - 1] : null;
@@ -448,18 +403,29 @@ ve.dm.TransactionProcessor.prototype.remove = function( op ) {
 		// Update the linear model
 		this.model.data.splice( this.cursor, op.data.length );
 		// Perform the rebuild. This updates the model tree
-		this.rebuildNodes( newData, oldNodes, parent, index );
+		// TODO index of oldNodes[0] in its parent should be computed
+		// on the go by selectNodes() above
+		if ( parent == null ) {
+			parent = oldNodes[0].getParent();
+		}
+		if ( index == null ) {
+			index = parent.indexOf( oldNodes[0] );
+		}
+		// TODO better offset computation
+		// TODO allow direct parameter passing in pushRebuild()
+		var startOffset = this.model.getOffsetFromNode( oldNodes[0] );
+		var endOffset = this.model.getOffsetFromNode( oldNodes[oldNodes.length-1] ) +
+			oldNodes[oldNodes.length-1].getElementLength();
+		this.synchronizer.pushRebuild( new ve.Range( startOffset, endOffset ),
+			new ve.Range( startOffset, startOffset + newData.length ) );
 	} else {
 		// We're removing content only. Take a shortcut
 		// Get the node we are removing content from
 		var node = this.model.getNodeFromOffset( this.cursor );
-		// Update model tree
-		node.adjustContentLength( -op.data.length, true );
 		// Update the linear model
 		this.model.data.splice( this.cursor, op.data.length );
-		// Emit an update so things sync up
-		var offset = this.model.getOffsetFromNode( node );
-		node.emit( 'update', this.cursor - offset );
+		// Queue a resize
+		this.synchronizer.pushResize( node, -op.data.length );
 	}
 };
 

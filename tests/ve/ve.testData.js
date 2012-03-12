@@ -237,3 +237,43 @@ veTest.tree = [
 	] ),
 	new ve.dm.ParagraphNode( veTest.data[31], 1 )
 ];
+
+veTest.getOffsets = function( documentNode ) {
+	return [
+		documentNode, // 0 - document
+		documentNode.children[0], // 1 - paragraph
+		documentNode.children[0], // 2 - paragraph
+		documentNode.children[0], // 3 - paragraph
+		documentNode.children[0], // 4 - paragraph
+		documentNode, // 5 - document
+		documentNode.children[1], // 6 - table
+		documentNode.children[1].children[0], // 7 - tableRow
+		documentNode.children[1].children[0].children[0], // 8 - tableCell
+		documentNode.children[1].children[0].children[0].children[0], // 9 - paragraph
+		documentNode.children[1].children[0].children[0].children[0], // 10 - paragraph
+		documentNode.children[1].children[0].children[0], // 11 - tableCell
+		documentNode.children[1].children[0].children[0].children[1], // 12 - list
+		documentNode.children[1].children[0].children[0].children[1].children[0], // 13 - listItem
+		documentNode.children[1].children[0].children[0].children[1].children[0].children[0], // 14 - paragraph
+		documentNode.children[1].children[0].children[0].children[1].children[0].children[0], // 15 - paragraph
+		documentNode.children[1].children[0].children[0].children[1].children[0], // 16 - listItem
+		documentNode.children[1].children[0].children[0].children[1], // 17 - list
+		documentNode.children[1].children[0].children[0].children[1].children[1], // 18 - listItem
+		documentNode.children[1].children[0].children[0].children[1].children[1].children[0], // 19 - paragraph
+		documentNode.children[1].children[0].children[0].children[1].children[1].children[0], // 20 - paragraph
+		documentNode.children[1].children[0].children[0].children[1].children[1], // 21 - listItem
+		documentNode.children[1].children[0].children[0].children[1], // 22 - list
+		documentNode.children[1].children[0].children[0].children[1].children[2], // 23 - listItem
+		documentNode.children[1].children[0].children[0].children[1].children[2].children[0], // 24 - paragraph
+		documentNode.children[1].children[0].children[0].children[1].children[2].children[0], // 25 - paragraph
+		documentNode.children[1].children[0].children[0].children[1].children[2], // 26 - listItem
+		documentNode.children[1].children[0].children[0].children[1], // 27 - list
+		documentNode.children[1].children[0].children[0], // 28 - tableCell
+		documentNode.children[1].children[0], // 29 - tableRow
+		documentNode.children[1], // 30 - table
+		documentNode, // 31 - document
+		documentNode.children[2], // 32 - paragraph
+		documentNode.children[2], // 33 - paragraph
+		documentNode // 34 - document
+	];
+};
