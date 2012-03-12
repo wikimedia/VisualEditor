@@ -17,6 +17,7 @@ ve.ce.Surface = function( $container, model ) {
 	
 	// Properties
 	this.model = model;
+	this.currentSelection = new ve.Range();
 	this.documentView = new ve.ce.DocumentNode( this.model.getDocument(), this );
 	this.contextView = null;
 	this.$ = $container
@@ -79,6 +80,18 @@ ve.ce.Surface = function( $container, model ) {
 		'compositionStart': null,
 		'compositionEnd': null
 	};
+
+	this.model.on( 'select', function( selection ) {
+		// Keep a copy of the current selection on hand
+		_this.currentSelection = selection.clone();
+		// Respond to selection changes
+		_this.updateSelection();
+		if ( selection.getLength() ) {
+			_this.clearInsertionAnnotations();
+		} else {
+			_this.loadInsertionAnnotations();
+		}
+	} );
 };
 
 /* Methods */
@@ -240,6 +253,31 @@ ve.ce.Surface.prototype.attachContextView = function( contextView ) {
 
 ve.ce.Surface.prototype.getModel = function() {
 	return this.model;
+};
+
+ve.ce.Surface.prototype.updateSelection = function( delay ) {
+	var _this = this;
+	function update() {
+		if ( _this.currentSelection.getLength() ) {
+			_this.clearInsertionAnnotations();
+		}
+		if ( _this.contextView ) {
+			if ( _this.currentSelection.getLength() ) {
+				_this.contextView.set();
+			} else {
+				_this.contextView.clear();
+			}
+		}
+		_this.updateSelectionTimeout = undefined;
+	}
+	if ( delay ) {
+		if ( this.updateSelectionTimeout !== undefined ) {
+			return;
+		}
+		this.updateSelectionTimeout = setTimeout( update, delay );
+	} else {
+		update();
+	}
 };
 
 ve.ce.Surface.prototype.documentOnFocus = function() {
@@ -517,6 +555,11 @@ ve.ce.Surface.prototype.getSelectionRange = function() {
 	}
 };
 
+ve.ce.Surface.prototype.getSelectionRect = function() {
+	var sel = rangy.getSelection();
+	return sel.getBoundingClientRect();
+};
+
 ve.ce.Surface.prototype.getDOMNodeAndOffset = function( offset ) {
 	var	$node = this.documentView.getNodeFromOffset( offset ).$,
 		nodeOffset = this.documentView.getOffsetFromNode( $node.data('view') ) + 1,
@@ -579,6 +622,8 @@ ve.ce.Surface.prototype.showSelection = function( range ) {
 	range.setStart( start.node, start.offset );
 	range.setEnd( stop.node, stop.offset );
 	sel.setSingleRange( range );
+	// Trigger select event
+	this.model.select( this.getSelectionRange() );
 };
 
 ve.ce.Surface.prototype.getLeafNode = function( elem ) {
