@@ -429,7 +429,7 @@ ParserFunctions.prototype['pf_sitename'] = function ( target, argList, argDict )
 	return [ "MediaWiki" ];
 };
 ParserFunctions.prototype['pf_anchorencode'] = function ( target, argList, argDict ) {
-	return [target];
+	return [ target.trim() ];
 };
 ParserFunctions.prototype['pf_protectionlevel'] = function ( target, argList, argDict ) {
 	return [''];

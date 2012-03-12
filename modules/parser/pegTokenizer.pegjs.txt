@@ -505,7 +505,7 @@ br = space* &newline { return new SelfclosingTagTk( 'br' ) }
  * in nested inline productions.
  */
 inline_breaks
-  = & [=|!}:\r\n\]<]
+  = & [=|!}{:\r\n\]<]
     & { // Important hack: disable caching for this production, as the default
         // cache key does not take into account flag states!
         cacheKey = ''; 
@@ -515,7 +515,7 @@ inline_breaks
 
 inline
   = c:(urltext / (! inline_breaks (inline_element / . )))+ {
-      //console.warn('inline out:' + pp(out));
+      //console.warn('inline out:' + pp(c));
       return flatten_stringlist( c );
 }
 
@@ -708,12 +708,19 @@ ipv6_address
  * 6: {{{{{{·}}}}}} → {{{·{{{·}}}·}}}
  * 7: {{{{{{{·}}}}}}} → {·{{{·{{{·}}}·}}}·}
  */
-tplarg_or_template = & '{{{{{' template / tplarg / template
+tplarg_or_template 
+    = 
+    ! '{{{{{{{' (
+        &'{{{{{{' tplarg
+        / & '{{{{{' template 
+        / tplarg 
+        / template
+    )
 
 template
   = "{{" (newline / space)* target:template_param_text
-    params:(( newline / space )* "|"
-                r:( &"|" { return new KV( '', '') } // empty argument
+    params:(( newline / space )* pipe
+                r:( &pipe { return new KV( '', '') } // empty argument
                     / ( newline / space )* p:template_param { return p } 
                   ) { return r } 
             )* 
@@ -734,8 +741,8 @@ template
 
 tplarg 
   = "{{{" 
-    name:template_param_text 
-    params:( ( space / newline )* "|" ( space / newline )* p:template_param { return p })* 
+    name:template_param_text?
+    params:( ( space / newline )* pipe ( space / newline )* p:template_param { return p })* 
     ( space / newline )* 
     "}}}" {
       name = flatten( name );
@@ -815,7 +822,7 @@ wikilink
     target:wikilink_preprocessor_text
     lcontent:( 
                & { return posStack.push('lcontent' , pos); }
-               lcs:( "|" lt:link_text { return new KV( '', lt ); } )+ { 
+               lcs:( pipe lt:link_text { return new KV( '', lt ); } )+ { 
                    return { pos: posStack.pop('lcontent' , pos), content: lcs };
                }
             
@@ -920,7 +927,7 @@ img_options =
 / & { return stops.dec( 'pipe' ); }
 
 img_option 
-  = "|" space*
+  = pipe space*
   o:(  
       img_attribute
     / img_format
@@ -1441,7 +1448,7 @@ table_end_tag
 
 table_cell_args
   = & { return stops.inc('tableCellArg'); }
-    as:generic_attribute* space* "|" !"|" { 
+    as:generic_attribute* space* pipe !pipe { 
         stops.dec('tableCellArg');
         return as;
     }
@@ -1715,35 +1722,39 @@ directive
 // Returns either a list of tokens, or a plain string (if nothing is to be
 // processed).
 preprocessor_text 
-  = r:( t:[^<~[{\n\r\t|!\]} &=]+ { return t.join(''); }
-  / directive
-  / !inline_breaks text_char )+ {
+  = r:( t:[^<~[{\n\r\t|!\]}{ &=]+ { return t.join(''); }
+  / !inline_breaks (
+      directive
+    / text_char )
+  )+ {
       return flatten ( r );
   }
 
 spaceless_preprocessor_text
-  = r:( t:[^'<~[{\n\r|!\]}\t &=]+ { return t.join(''); }
-  / directive
-  / !inline_breaks !' ' text_char )+ {
+  = r:( t:[^'<~[{\n\r|!\]}{\t &=]+ { return t.join(''); }
+  / !inline_breaks (
+      directive
+    / !' ' text_char )
+  )+ {
       return flatten_string ( r );
   }
 
 
 wikilink_preprocessor_text 
-  = r:( t:[^<~[{\n\r\t|!\]} &=]+ { return t.join(''); }
-  /// urlencoded_char
-  / directive
-  / !inline_breaks !"|" !"]]" text_char )+ {
+  = r:( t:[^<~[{\n\r\t|!\]}{ &=]+ { return t.join(''); }
+        /// urlencoded_char
+        / !inline_breaks ( directive / !"]]" text_char ) 
+    )+ {
       return flatten_stringlist ( r );
   }
 
 extlink_preprocessor_text
   // added special separator character class inline: separates url from
   // description / text
-  = r:( t:[^'<~[{\n\r|!\]}\t&="' \u00A0\u1680\u180E\u2000-\u200A\u202F\u205F\u3000]+ { return t.join(''); }
-  / directive
+  = r:( t:[^'<~[{\n\r|!\]}{\t&="' \u00A0\u1680\u180E\u2000-\u200A\u202F\u205F\u3000]+ { return t.join(''); }
+  / !inline_breaks ( directive / no_punctuation_char )
   /// urlencoded_char
-  / !inline_breaks no_punctuation_char
+  // !inline_breaks no_punctuation_char
   / s:[.:,] !(space / eolf) { return s } 
   / [&%] )+ {
       return flatten_string ( r );
@@ -1752,21 +1763,32 @@ extlink_preprocessor_text
 // Attribute values with preprocessor support
 attribute_preprocessor_text
   = r:( ts:(!inline_breaks t:[^=<>{\n\r&'"\t ] {return t})+ { return ts.join(''); }
-  / directive
-  / !inline_breaks [&%] )+ {
+  / !inline_breaks ( 
+          directive
+        / !inline_breaks [&%] 
+    )
+  )+ 
+  {
       //console.warn('prep');
       return flatten_string ( r );
   }
+
 attribute_preprocessor_text_single
   = r:( t:[^{&']+ { return t.join(''); }
-  / directive
-  / !inline_breaks [{&] )* {
+  / !inline_breaks ( 
+      directive
+    / [{&] )
+  )* 
+  {
       return flatten_string ( r );
   }
 attribute_preprocessor_text_double
   = r:( t:[^{&"]+ { return t.join(''); }
-  / directive
-  / !inline_breaks [{&] )* {
+  / !inline_breaks ( 
+      directive
+    / [{&] )
+  )* 
+  {
       //console.warn( 'double:' + pp(r) );
       return flatten_string ( r );
   }
@@ -1774,21 +1796,28 @@ attribute_preprocessor_text_double
 // Variants with the entire attribute on a single line
 attribute_preprocessor_text_line
   = r:( ts:(!inline_breaks t:[^=<>{\n\r&'"\t ] {return t})+ { return ts.join(''); }
-  / directive
-  / !inline_breaks !'\n' [&%] )+ {
+  / !inline_breaks (
+      directive
+    / !'\n' [&%] )
+  )+ {
       //console.warn('prep');
       return flatten_string ( r );
   }
+
 attribute_preprocessor_text_single_line
   = r:( t:[^{&']+ { return t.join(''); }
-  / directive
-  / !inline_breaks !'\n' [{&] )* {
+  / !inline_breaks ( 
+      directive
+    / !'\n' [{&] )
+  )* {
       return flatten_string ( r );
   }
 attribute_preprocessor_text_double_line
   = r:( t:[^{&"]+ { return t.join(''); }
-  / directive
-  / !inline_breaks !'\n' [{&] )* {
+  / !inline_breaks (
+      directive
+    / !'\n' [{&] )
+  )* {
       //console.warn( 'double:' + pp(r) );
       return flatten_string ( r );
   }

@@ -119,6 +119,12 @@ PegTokenizer.prototype.inline_breaks = function (input, pos, stops ) {
 					counters.tableCellArg
 				  ) 
 				) || null;
+		case '{':
+			return (
+					counters.pipe ||
+					counters.template				   
+				) && input.substr( pos, 5 ) === '{{!}}' 
+				|| null;
 		case "!":
 			return counters.table && input[pos + 1] === "!" ||
 				null;
