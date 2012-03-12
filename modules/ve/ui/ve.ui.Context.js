@@ -95,9 +95,6 @@ ve.ui.Context.prototype.positionIcon = function() {
 	var selection = this.surfaceView.getModel().getSelection(),
 		offset;
 	this.position = null;
-
-	console.log( this.surfaceView.getSelectionRect() );
-
 	if ( selection.from < selection.to ) {
 		var $lastRange = this.surfaceView.$.find( '.es-contentView-range:visible:last' );
 		if ( $lastRange.length ) {
