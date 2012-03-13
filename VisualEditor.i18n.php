@@ -33,6 +33,24 @@ $messages['qqq'] = array(
 	'visualeditor-feedback-prompt' => 'A link that opens feedback form in http://www.mediawiki.org/wiki/Special:VisualEditorSandbox',
 );
 
+/** Asturian (Asturianu)
+ * @author Xuacu
+ */
+$messages['ast'] = array(
+	'visualeditor' => 'VisualEditor',
+	'visualeditorsandbox' => 'Zona de pruebes del editor visual',
+	'visualeditor-desc' => 'Editor visual pa MediaWiki',
+	'visualeditor-sandbox-title' => 'Zona de pruebes del editor visual',
+	'visualeditor-tooltip-wikitext' => 'Alternar la vista de testu wiki',
+	'visualeditor-tooltip-json' => 'Alternar la vista JSON',
+	'visualeditor-tooltip-html' => 'Alternar la vista HTML',
+	'visualeditor-tooltip-render' => 'Alternar la vista previa',
+	'visualeditor-tooltip-history' => "Alternar la vista d'historial d'operaciones",
+	'visualeditor-tooltip-help' => "Alternar la vista d'ayuda",
+	'visualeditor-feedback-prompt' => 'Dexar un comentariu',
+	'visualeditor-feedback-dialog-title' => 'Dexar un comentariu tocante a la zona de pruebes del editor visual',
+);
+
 /** Belarusian (Taraškievica orthography) (‪Беларуская (тарашкевіца)‬)
  * @author EugeneZelenko
  * @author Wizardist
