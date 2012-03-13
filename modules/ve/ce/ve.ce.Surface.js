@@ -760,7 +760,7 @@ ve.ce.Surface.prototype.handleDelete = function( backspace, isPartial ) {
 		cursorAt = selection.start;
 	}
 	this.documentView.renderContent();
-	this.showCursorAt(cursorAt);
+	this.showCursor(cursorAt);
 	var _this = this;
 	setTimeout( function() {
 		_this.poll.prevText = _this.poll.prevHash = _this.poll.prevOffset = _this.poll.node = null;
@@ -819,7 +819,7 @@ ve.ce.Surface.prototype.handleEnter = function() {
 			this.model.getDocument().getRelativeContentOffset( selection.to, 1 );
 	}
 	this.documentView.renderContent();
-	this.showCursorAt(selection.to);
+	this.showCursor(selection.to);
 	var _this = this;
 	setTimeout( function() {
 		_this.poll.prevText = _this.poll.prevHash = _this.poll.prevOffset = _this.poll.node = null;
