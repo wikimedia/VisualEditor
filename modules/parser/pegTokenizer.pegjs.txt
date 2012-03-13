@@ -754,6 +754,8 @@ tplarg
 
 template_param
   = name:template_param_name 
+    // Insanity: MW accepts |foo | = bar as a single param..
+    (pipe (space / newline)* &'=')?
     val:(
         s0:space* 
         "="
@@ -1824,6 +1826,9 @@ attribute_preprocessor_text_double_line
 
 // Special-case support for those pipe templates
 pipe = "|" / "{{!}}"
+
+// Similar, for tables..
+exclam = "!" / "{{;}}"
 
 /* Tabs do not mix well with the hybrid production syntax */
 /* vim: set filetype=javascript expandtab ts=4 sw=4 cindent : */

@@ -3,37 +3,40 @@
  * strings or String objects (if attributes are needed).
  */
 
-var toString = function() { return JSON.stringify( this ); }
+var toString = function() { return JSON.stringify( this ); };
 
-function TagTk( name, attribs ) { 
+function TagTk( name, attribs, dataAttribs ) { 
 	//this.type = 'TAG';
 	this.name = name;
 	this.attribs = attribs || [];
+	this.dataAttribs = dataAttribs || {};
 }
-TagTk.prototype = new Object();
+TagTk.prototype = {};
 TagTk.prototype.toJSON = function () {
 	return $.extend( { type: 'TagTk' }, this );
 };
 TagTk.prototype.constructor = TagTk;
 TagTk.prototype.toString = toString;
 
-function EndTagTk( name, attribs ) { 
+function EndTagTk( name, attribs, dataAttribs ) { 
 	this.name = name;
 	this.attribs = attribs || [];
+	this.dataAttribs = dataAttribs || {};
 }
-EndTagTk.prototype = new Object();
+EndTagTk.prototype = {};
 EndTagTk.prototype.toJSON = function () {
 	return $.extend( { type: 'EndTagTk' }, this );
 };
 EndTagTk.prototype.constructor = EndTagTk;
 EndTagTk.prototype.toString = toString;
 
-function SelfclosingTagTk( name, attribs ) { 
+function SelfclosingTagTk( name, attribs, dataAttribs ) { 
 	//this.type = 'SELFCLOSINGTAG';
 	this.name = name;
 	this.attribs = attribs || [];
+	this.dataAttribs = dataAttribs || {};
 }
-SelfclosingTagTk.prototype = new Object();
+SelfclosingTagTk.prototype = {};
 SelfclosingTagTk.prototype.toJSON = function () {
 	return $.extend( { type: 'SelfclosingTagTk' }, this );
 };
@@ -43,7 +46,7 @@ SelfclosingTagTk.prototype.toString = toString;
 function NlTk( ) {
 	//this.type = 'NEWLINE';
 }
-NlTk.prototype = new Object();
+NlTk.prototype = {};
 NlTk.prototype.toJSON = function () {
 	return $.extend( { type: 'NlTk' }, this );
 };
@@ -53,7 +56,7 @@ NlTk.prototype.toString = toString;
 function CommentTk( value ) { 
 	this.value = value;
 }
-CommentTk.prototype = new Object();
+CommentTk.prototype = {};
 CommentTk.prototype.toJSON = function () {
 	return $.extend( { type: 'COMMENT' }, this );
 };
@@ -61,7 +64,7 @@ CommentTk.prototype.constructor = CommentTk;
 CommentTk.prototype.toString = toString; 
 
 function EOFTk( ) { }
-EOFTk.prototype = new Object();
+EOFTk.prototype = {};
 EOFTk.prototype.toJSON = function () {
 	return $.extend( { type: 'EOFTk' }, this );
 };

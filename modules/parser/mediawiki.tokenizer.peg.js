@@ -120,6 +120,7 @@ PegTokenizer.prototype.inline_breaks = function (input, pos, stops ) {
 				  ) 
 				) || null;
 		case '{':
+			// {{!}} pipe templates..
 			return (
 					counters.pipe ||
 					counters.template				   

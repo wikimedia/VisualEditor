@@ -60,7 +60,9 @@ WikiLinkHandler.prototype.onWikiLink = function ( token, manager, cb ) {
 			content.push( tail );
 		}
 		
-		obj.attribs.push( new KV('data-mw-type', 'internal') );
+		//obj.attribs.push( new KV('data-mw-type', 'internal') );
+		obj.dataAttribs = token.dataAttribs;
+		obj.dataAttribs.linkType = 'internal';
 		return { 
 			tokens: [obj].concat( content, new EndTagTk( 'a' ) )
 		};
@@ -263,10 +265,10 @@ ExternalLinkHandler.prototype.onExtLink = function ( token, manager, cb ) {
 			tokens:
 				[
 					
-					new TagTk( 'a', [
-								new KV('href', href),
-								new KV('data-mw-type', 'external')
-							] )
+					new TagTk ( 'a', 
+							[ new KV('href', href) ], 
+							token.dataAttribs
+					)
 				].concat( content, [ new EndTagTk( 'a' )])
 		};
 	} else {
