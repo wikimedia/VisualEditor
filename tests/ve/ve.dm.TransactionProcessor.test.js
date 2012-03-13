@@ -1,6 +1,6 @@
 module( 've/dm' );
 
-test( 've.dm.TransactionProcessor', 39, function() {
+test( 've.dm.TransactionProcessor', 47, function() {
 	var documentModel = ve.dm.DocumentNode.newFromPlainObject( veTest.obj );
 
 	// FIXME: These tests shouldn't use prepareFoo() because those functions
@@ -366,6 +366,55 @@ test( 've.dm.TransactionProcessor', 39, function() {
 	);
 	
 	// Test 31
+	deepEqual(
+		documentModel.children[1].children[0].children[0].children.length, 3,
+		'commit keeps model tree up to date with list split (number of children)'
+	);
+	
+	// Test 32
+	deepEqual(
+		documentModel.children[1].children[0].children[0].children[1].getElementType(), 'list',
+		'commit keeps model tree up to date with list split (first list type)'
+	);
+	
+	// Test 33
+	deepEqual(
+		documentModel.children[1].children[0].children[0].children[2].getElementType(), 'list',
+		'commit keeps model tree up to date with list split (second list type)'
+	);
+	
+	// Test 34
+	deepEqual(
+		documentModel.children[1].children[0].children[0].children[1].getContentData(),
+		[
+			{ 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } },
+			{ 'type': 'paragraph' },
+			'e',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' }
+		],
+		'commit keeps model tree up to date with list split (first list content)'
+	);
+	
+	// Test 35
+	deepEqual(
+		documentModel.children[1].children[0].children[0].children[2].getContentData(),
+		[
+			{ 'type': 'listItem', 'attributes': { 'styles': ['bullet', 'bullet'] } },
+			{ 'type': 'paragraph' },
+			'f',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': 'listItem', 'attributes': { 'styles': ['number'] } },
+			{ 'type': 'paragraph' },
+			'g',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' }
+		],
+		'commit keeps model tree up to date with list split (second list content)'
+	);
+	
+	// Test 36
 	ve.dm.TransactionProcessor.rollback( documentModel, listSplit );
 	deepEqual(
 		documentModel.getData( new ve.Range( 15, 19 ) ),
@@ -378,10 +427,45 @@ test( 've.dm.TransactionProcessor', 39, function() {
 		'rollback reverses list split'
 	);
 	
+	// Test 37
+	deepEqual(
+		documentModel.children[1].children[0].children[0].children.length, 2,
+		'rollback keeps model tree up to date with list split (number of children)'
+	);
+	
+	// Test 38
+	deepEqual(
+		documentModel.children[1].children[0].children[0].children[1].getElementType(), 'list',
+		'rollback keeps model tree up to date with list split (first list type)'
+	);
+	
+	// Test 39
+	deepEqual(
+		documentModel.children[1].children[0].children[0].children[1].getContentData(),
+		[
+			{ 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } },
+			{ 'type': 'paragraph' },
+			'e',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': 'listItem', 'attributes': { 'styles': ['bullet', 'bullet'] } },
+			{ 'type': 'paragraph' },
+			'f',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': 'listItem', 'attributes': { 'styles': ['number'] } },
+			{ 'type': 'paragraph' },
+			'g',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' }
+		],
+		'rollback keeps model tree up to date with list split (first list content)'
+	);
+	
 	
 	var contentReplacement = documentModel.prepareContentReplacement( new ve.Range( 32, 33 ), [ 'i', 'j', 'k' ] );
 	
-	// Test 32
+	// Test 40
 	ve.dm.TransactionProcessor.commit( documentModel, contentReplacement );
 	deepEqual(
 		documentModel.getData( new ve.Range( 31, 36 ) ),
@@ -393,7 +477,7 @@ test( 've.dm.TransactionProcessor', 39, function() {
 		'replacement replaces content'
 	);
 	
-	// Test 33
+	// Test 41
 	ve.dm.TransactionProcessor.rollback( documentModel, contentReplacement );
 	deepEqual(
 		documentModel.getData( new ve.Range( 31, 34 ) ),
@@ -407,7 +491,7 @@ test( 've.dm.TransactionProcessor', 39, function() {
 	
 	var paragraphToHeading = documentModel.prepareWrap( new ve.Range( 1, 4 ), [ { 'type': 'paragraph' } ], [ { 'type': 'heading', 'level': 2 } ], [], [] );
 	
-	// Test 34
+	// Test 42
 	ve.dm.TransactionProcessor.commit( documentModel, paragraphToHeading );
 	deepEqual(
 		documentModel.getData( new ve.Range( 0, 5 ) ),
@@ -421,7 +505,7 @@ test( 've.dm.TransactionProcessor', 39, function() {
 		'changing paragraph to heading'
 	);
 	
-	// Test 35
+	// Test 43
 	ve.dm.TransactionProcessor.rollback( documentModel, paragraphToHeading );
 	deepEqual(
 		documentModel.getData( new ve.Range( 0, 5 ) ),
@@ -437,7 +521,7 @@ test( 've.dm.TransactionProcessor', 39, function() {
 	
 	var unwrapList = documentModel.prepareWrap( new ve.Range( 12, 27 ), [ { 'type': 'list' } ], [] , [ { 'type': 'listItem' } ], [] );
 	
-	// Test 36
+	// Test 44
 	ve.dm.TransactionProcessor.commit( documentModel, unwrapList );
 	deepEqual(
 		documentModel.getData( new ve.Range( 7, 21 ) ),
@@ -460,7 +544,7 @@ test( 've.dm.TransactionProcessor', 39, function() {
 		'unwrapping the list produces a cell with four adjacent paragraphs'
 	);
 	
-	// Test 37
+	// Test 45
 	ve.dm.TransactionProcessor.rollback( documentModel, unwrapList );
 	deepEqual(
 		documentModel.getData( new ve.Range( 7, 29 ) ),
@@ -494,7 +578,7 @@ test( 've.dm.TransactionProcessor', 39, function() {
 	var replaceTable = documentModel.prepareWrap( new ve.Range( 8, 28 ), [ { 'type': 'table' }, { 'type': 'tableRow' }, { 'type': 'tableCell' } ],
 		[ { 'type': 'list' }, { 'type': 'listItem' } ], [], [] );
 	
-	// Test 38
+	// Test 46
 	ve.dm.TransactionProcessor.commit( documentModel, replaceTable );
 	deepEqual(
 		documentModel.getData( new ve.Range( 5, 30 ) ),
@@ -528,7 +612,7 @@ test( 've.dm.TransactionProcessor', 39, function() {
 		'replacing a table with the list reverses the order of the closing tags correctly'
 	);
 	
-	// Test 39
+	// Test 47
 	ve.dm.TransactionProcessor.rollback( documentModel, replaceTable );
 	deepEqual(
 		documentModel.getData( new ve.Range( 5, 32 ) ),
