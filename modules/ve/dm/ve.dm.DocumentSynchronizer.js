@@ -44,18 +44,20 @@ ve.dm.DocumentSynchronizer.prototype.pushDelete = function( node ) {
 };
 
 /**
- * Add a rebuild action to the queue. This rebuilds a node from data
+ * Add a rebuild action to the queue. This rebuilds one or more nodes from data
  * found in the linear model.
- * @param {ve.dm.BranchNode} node Node to rebuild
- * @param {Integer} adjustment Length adjustment to apply to the node
- * @param {Integer} offset Offset of the node, if known
+ * @param {ve.Range} oldRange Range that the old nodes used to span. This is
+ *                            used to find the old nodes in the model tree.
+ * @param {ve.Range} newRange Range that contains the new nodes. This is used
+ *                            to get the new node data from the linear model.
  */
-ve.dm.DocumentSynchronizer.prototype.pushRebuild = function( node, adjustment, offset ) {
+ve.dm.DocumentSynchronizer.prototype.pushRebuild = function( oldRange, newRange ) {
+	oldRange.normalize();
+	newRange.normalize();
 	this.actions.push( {
 		'type': 'rebuild',
-		'node': node,
-		'adjustment': adjustment,
-		'offset': offset || null
+		'oldRange': oldRange,
+		'newRange': newRange
 	} );
 };
 
@@ -124,16 +126,44 @@ ve.dm.DocumentSynchronizer.prototype.synchronize = function() {
 				parent.splice( parent.indexOf( action.node ), 1 );
 				break;
 			case 'rebuild':
-				// Compute the offset if it wasn't provided
-				if ( offset === null ) {
-					offset = this.model.getOffsetFromNode( action.node );
+				// Generate the new nodes
+				var newNodes = ve.dm.DocumentNode.createNodesFromData(
+					this.model.getData( action.newRange )
+				);
+				
+				// Find the node(s) contained by oldRange. This is done by repeatedly
+				// invoking selectNodes() in shallow mode until we find the right node(s).
+				// TODO this traversal could be made more efficient once we have an offset map
+				// TODO I need to add this recursive shallow stuff to selectNodes() as a 'siblings' mode
+				var selection, node = this.model, range = action.oldRange;
+				while ( true ) {
+					selection = node.selectNodes( range, true );
+					// We stop descending if:
+					// * we got more than one node, OR
+					// * we got a leaf node, OR
+					// * we got no range, which means the entire node is covered, OR
+					// * we got the same node back, which means we'd get in an infinite loop
+					if ( selection.length != 1 ||
+						!selection[0].node.hasChildren() ||
+						!selection[0].range ||
+						selection[0].node == node
+					) {
+						break;
+					}
+					// Descend into this node
+					node = selection[0].node;
+					range = selection[0].range;
 				}
-				// Replace original node with new node
-				var newNodes = ve.dm.DocumentNode.createNodesFromData( this.model.getData(
-					new ve.Range( offset, action.node.getElementLength() + action.adjustment )
-				) );
-				parent = action.node.getParent();
-				ve.batchedSplice( parent, parent.indexOf( action.node ), 1, newNodes );
+				if ( selection[0].node == this.model ) {
+					// We got some sort of weird input, ignore it
+					break;
+				}
+				
+				// The first node we're removing is selection[0].node , and we're removing
+				// selection.length adjacent nodes
+				parent = selection[0].node.getParent();
+				// TODO selectNodes() output knows the index of selection[0].node in its parent, should expose it
+				ve.batchedSplice( parent, parent.indexOf( selection[0].node ), selection.length, newNodes );
 				break;
 			case 'resize':
 				// Adjust node length - causes update events to be emitted

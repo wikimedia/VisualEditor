@@ -119,7 +119,7 @@ test( 've.dm.DocumentSynchronizer', 10, function() {
 				model.data[0].attributes = { 'level': 1 };
 				model.data[4].type = '/heading';
 				// Push rebuild action
-				sync.pushRebuild( node, 0 );
+				sync.pushRebuild( new ve.Range( 0, 5 ), new ve.Range( 0, 5 ) );
 				// Sync
 				sync.synchronize();
 				return model.getChildren()[0].getElementType();
@@ -135,7 +135,7 @@ test( 've.dm.DocumentSynchronizer', 10, function() {
 				// Insert element after first paragraph
 				ve.insertIntoArray( model.data, 5, data );
 				// Push rebuild action with a length adustment of 3 to account for the new element
-				sync.pushRebuild( node, 3 );
+				sync.pushRebuild( new ve.Range( 0, 5 ), new ve.Range( 0, 8 ) );
 				// Sync
 				sync.synchronize();
 				return model.getChildren()[1].getContentData();
