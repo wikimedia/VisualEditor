@@ -1,7 +1,7 @@
 /**
  * Creates an ve.dm.DocumentSynchronizer object.
  * 
- * This object is a one-time use utilitiy for collecting actions to be performed on the model tree
+ * This object is a utility for collecting actions to be performed on the model tree
  * in multiple steps and then processing those actions in a single step.
  * 
  * @class
@@ -106,4 +106,7 @@ ve.dm.DocumentSynchronizer.prototype.synchronize = function() {
 				break;
 		}
 	}
+	
+	// We've processed the queue, clear it
+	this.actions = [];
 };
