@@ -20,26 +20,72 @@ ve.dm.DocumentSynchronizer.prototype.getModel = function() {
 };
 
 /**
- * Adds an action to the synchronizer.
- * 
- * @method
- * @param {String} type Type of action, can be: "insert", "delete", "rebuild", "resize" or "update"
- * @param {ve.dm.Node} node Node this action is related to
- * @param {Integer|null} offset Offset of node, improves performance if this has already been calculated.
- *                         Only used for insert and rebuild actions
- * @param {Integer} adjustment Node length adjustment, if any
+ * Add an insert action to the queue
+ * @param {ve.dm.BranchNode} node Node to insert
+ * @param {Integer} [offset] Offset of the inserted node, if known
  */
-ve.dm.DocumentSynchronizer.prototype.pushAction = function( type, node, offset, adjustment ) {
+ve.dm.DocumentSynchronizer.prototype.pushInsert = function( node, offset ) {
 	this.actions.push( {
-		'type': type,
+		'type': 'insert',
 		'node': node,
-		'offset': offset,
-		'adjustment': adjustment || 0
+		'offset': offset || null
 	} );
 };
 
 /**
- * Applies queued actions to the model tree.
+ * Add a delete action to the queue
+ * @param {ve.dm.BranchNode} node Node to delete
+ */
+ve.dm.DocumentSynchronizer.prototype.pushDelete = function( node ) {
+	this.actions.push( {
+		'type': 'delete',
+		'node': node
+	} );
+};
+
+/**
+ * Add a rebuild action to the queue. This rebuilds a node from data
+ * found in the linear model.
+ * @param {ve.dm.BranchNode} node Node to rebuild
+ * @param {Integer} adjustment Length adjustment to apply to the node
+ * @param {Integer} offset Offset of the node, if known
+ */
+ve.dm.DocumentSynchronizer.prototype.pushRebuild = function( node, adjustment, offset ) {
+	this.actions.push( {
+		'type': 'rebuild',
+		'node': node,
+		'adjustment': adjustment,
+		'offset': offset || null
+	} );
+};
+
+/**
+ * Add a resize action to the queue. This changes the content length of a leaf node.
+ * @param {ve.dm.BranchNode} node Node to resize
+ * @param {Integer} adjustment Length adjustment to apply to the node
+ */
+ve.dm.DocumentSynchronizer.prototype.pushResize = function( node, adjustment ) {
+	this.actions.push( {
+		'type': 'resize',
+		'node': node,
+		'adjustment': adjustment
+	} );
+};
+
+/**
+ * Add an update action to the queue
+ * @param {ve.dm.BranchNode} node Node to update
+ */
+ve.dm.DocumentSynchronizer.prototype.pushUpdate = function( node ) {
+	this.actions.push( {
+		'type': 'update',
+		'node': node
+	} );
+};
+
+/**
+ * Apply queued actions to the model tree. This assumes that the linear model
+ * has already been updated, but the model tree has not yet been.
  * 
  * @method
  */
@@ -51,7 +97,7 @@ ve.dm.DocumentSynchronizer.prototype.synchronize = function() {
 		parent;
 	for ( var i = 0, len = this.actions.length; i < len; i++ ) {
 		action = this.actions[i];
-		offset = action.offset;
+		offset = action.offset || null;
 		switch ( action.type ) {
 			case 'insert':
 				// Compute the offset if it wasn't provided

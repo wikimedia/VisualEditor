@@ -9,7 +9,7 @@ test( 've.dm.DocumentSynchronizer', 10, function() {
 				// Delete bold "b" from first paragraph
 				model.data.splice( 2, 1 );
 				// Push resize action
-				sync.pushAction( 'resize', model.getChildren()[0], 0, -1 );
+				sync.pushResize( model.getChildren()[0], -1 );
 				// Sync
 				sync.synchronize();
 				return model.getChildren()[0].getContentLength();
@@ -25,7 +25,7 @@ test( 've.dm.DocumentSynchronizer', 10, function() {
 				// Insert element after first paragraph
 				ve.insertIntoArray( model.data, 5, data );
 				// Push insertion action
-				sync.pushAction( 'insert', node, 5 );
+				sync.pushInsert( node, 5 );
 				// Sync
 				sync.synchronize();
 				return model.getChildren()[1].getContentData();
@@ -41,7 +41,7 @@ test( 've.dm.DocumentSynchronizer', 10, function() {
 				// Insert element after first paragraph
 				ve.insertIntoArray( model.data, 0, data );
 				// Push insertion action
-				sync.pushAction( 'insert', node, 0 );
+				sync.pushInsert( node, 0 );
 				// Sync
 				sync.synchronize();
 				return model.getChildren()[0].getContentData();
@@ -57,7 +57,7 @@ test( 've.dm.DocumentSynchronizer', 10, function() {
 				// Insert element after first paragraph
 				ve.insertIntoArray( model.data, 34, data );
 				// Push insertion action
-				sync.pushAction( 'insert', node, 34 );
+				sync.pushInsert( node, 34 );
 				// Sync
 				sync.synchronize();
 				return model.getChildren()[3].getContentData();
@@ -72,7 +72,7 @@ test( 've.dm.DocumentSynchronizer', 10, function() {
 				// Delete the table
 				model.data.splice( 5, 26 );
 				// Push deletion action
-				sync.pushAction( 'delete', node, 5 );
+				sync.pushDelete( node );
 				// Sync
 				sync.synchronize();
 				return model.getChildren().length;
@@ -87,7 +87,7 @@ test( 've.dm.DocumentSynchronizer', 10, function() {
 				// Delete the first paragraph
 				model.data.splice( 0, 5 );
 				// Push deletion action
-				sync.pushAction( 'delete', node, 0 );
+				sync.pushDelete( node );
 				// Sync
 				sync.synchronize();
 				return model.getChildren().length;
@@ -102,7 +102,7 @@ test( 've.dm.DocumentSynchronizer', 10, function() {
 				// Delete the first paragraph
 				model.data.splice( 31, 3 );
 				// Push deletion action
-				sync.pushAction( 'delete', node, 31 );
+				sync.pushDelete( node );
 				// Sync
 				sync.synchronize();
 				return model.getChildren().length;
@@ -119,7 +119,7 @@ test( 've.dm.DocumentSynchronizer', 10, function() {
 				model.data[0].attributes = { 'level': 1 };
 				model.data[4].type = '/heading';
 				// Push rebuild action
-				sync.pushAction( 'rebuild', node, 0 );
+				sync.pushRebuild( node, 0 );
 				// Sync
 				sync.synchronize();
 				return model.getChildren()[0].getElementType();
@@ -135,7 +135,7 @@ test( 've.dm.DocumentSynchronizer', 10, function() {
 				// Insert element after first paragraph
 				ve.insertIntoArray( model.data, 5, data );
 				// Push rebuild action with a length adustment of 3 to account for the new element
-				sync.pushAction( 'rebuild', node, 0, 3 );
+				sync.pushRebuild( node, 3 );
 				// Sync
 				sync.synchronize();
 				return model.getChildren()[1].getContentData();
@@ -151,15 +151,15 @@ test( 've.dm.DocumentSynchronizer', 10, function() {
 				// Delete bold "b" from first paragraph
 				model.data.splice( 2, 1 );
 				// Push resize action
-				sync.pushAction( 'resize', model.getChildren()[0], 0, -1 );
+				sync.pushResize( model.getChildren()[0], -1 );
 				// Delete the first paragraph (offset adjusted for previous action)
 				model.data.splice( 30, 3 );
-				// Push deletion action (note: using original offset)
-				sync.pushAction( 'delete', model.getChildren()[2], 31 );
+				// Push deletion action
+				sync.pushDelete( model.getChildren()[2] );
 				// Insert element after last paragraph
 				ve.insertIntoArray( model.data, 30, data );
 				// Push insertion action (note: using original offset)
-				sync.pushAction( 'insert', node, 34 );
+				sync.pushInsert( node, 34 );
 				// Sync
 				sync.synchronize();
 				return [
