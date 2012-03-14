@@ -1,6 +1,6 @@
 module( 've/dm' );
 
-test( 've.dm.DocumentSynchronizer', 10, function() {
+test( 've.dm.DocumentSynchronizer', 11, function() {
 	var tests = {
 		// Test 1
 		'resize actions adjust node lengths': {
@@ -143,6 +143,106 @@ test( 've.dm.DocumentSynchronizer', 10, function() {
 			'expected': ['x']
 		},
 		// Test 10
+		'rebuild actions can unwrap and rewrap multiple nodes': {
+			'actual': function( sync ) {
+				var	model = sync.getModel(), retval = {}, i,
+					node = model.getChildren()[1].getChildren()[0].getChildren()[0],
+					unwrappedData = [
+						{ 'type': 'paragraph' },
+						'd',
+						{ 'type': '/paragraph' },
+						{ 'type': 'paragraph' },
+						'e',
+						{ 'type': '/paragraph' },
+						{ 'type': 'paragraph' },
+						'f',
+						{ 'type': '/paragraph' },
+						{ 'type': 'paragraph' },
+						'g',
+						{ 'type': '/paragraph' }
+					],
+					wrappedData = [
+						{ 'type': 'paragraph' },
+						'd',
+						{ 'type': '/paragraph' },
+						{ 'type': 'list' },
+						{ 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } },
+						{ 'type': 'paragraph' },
+						'e',
+						{ 'type': '/paragraph' },
+						{ 'type': '/listItem' },
+						{ 'type': 'listItem', 'attributes': { 'styles': ['bullet', 'bullet'] } },
+						{ 'type': 'paragraph' },
+						'f',
+						{ 'type': '/paragraph' },
+						{ 'type': '/listItem' },
+						{ 'type': 'listItem', 'attributes': { 'styles': ['number'] } },
+						{ 'type': 'paragraph' },
+						'g',
+						{ 'type': '/paragraph' },
+						{ 'type': '/listItem' },
+						{ 'type': '/list' }
+					];
+				
+				// Unwrap the list in the linear model
+				ve.batchedSplice( model.data, 8, wrappedData.length, unwrappedData );
+				// Rebuild it
+				sync.pushRebuild( new ve.Range( 8, 8 + wrappedData.length ), new ve.Range( 8, 8 + unwrappedData.length ) );
+				sync.synchronize();
+				retval.afterUnwrap = {
+					'numChildren': node.getChildren().length,
+					'childContents': []
+				};
+				for ( i = 0; i < node.getChildren().length; i++ ) {
+					retval.afterUnwrap.childContents[i] = node.getChildren()[i].getContentData();
+				}
+				
+				// Rewrap the list in the linear model
+				ve.batchedSplice( model.data, 8, unwrappedData.length, wrappedData );
+				// Rebuild it
+				sync.pushRebuild( new ve.Range( 8, 8 + unwrappedData.length ), new ve.Range( 8, 8 + wrappedData.length ) );
+				sync.synchronize();
+				retval.afterRewrap = {
+					'numChildren': node.getChildren().length,
+					'childContents': []
+				};
+				for ( i = 0; i < node.getChildren().length; i++ ) {
+					retval.afterRewrap.childContents[i] = node.getChildren()[i].getContentData();
+				}
+				
+				return retval;
+			},
+			'expected': {
+				'afterUnwrap': {
+					'numChildren': 4,
+					'childContents': [ ['d'], ['e'], ['f'], ['g'] ]
+				},
+				'afterRewrap': {
+					'numChildren': 2,
+					'childContents': [
+						['d'],
+						[
+							{ 'type': 'listItem', 'attributes': { 'styles': ['bullet'] } },
+							{ 'type': 'paragraph' },
+							'e',
+							{ 'type': '/paragraph' },
+							{ 'type': '/listItem' },
+							{ 'type': 'listItem', 'attributes': { 'styles': ['bullet', 'bullet'] } },
+							{ 'type': 'paragraph' },
+							'f',
+							{ 'type': '/paragraph' },
+							{ 'type': '/listItem' },
+							{ 'type': 'listItem', 'attributes': { 'styles': ['number'] } },
+							{ 'type': 'paragraph' },
+							'g',
+							{ 'type': '/paragraph' },
+							{ 'type': '/listItem' }
+						]
+					]
+				}
+			}
+		},
+		// Test 11
 		'multiple actions can be synchronized together': {
 			'actual': function( sync ) {
 				var model = sync.getModel(),
