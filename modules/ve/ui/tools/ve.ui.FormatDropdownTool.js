@@ -63,8 +63,9 @@ ve.FormatDropdownTool = function( toolbar, name, title ) {
 /* Methods */
 
 ve.FormatDropdownTool.prototype.onSelect = function( item ) {
+	this.toolbar.surfaceView.stopPolling();
 	var txs = this.toolbar.surfaceView.model.getDocument().prepareLeafConversion(
-		this.toolbar.surfaceView.currentSelection,
+		this.toolbar.surfaceView.getSelectionRange(),
 		item.type,
 		item.attributes
 	);
