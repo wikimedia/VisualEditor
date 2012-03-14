@@ -718,7 +718,8 @@ tplarg_or_template
     )
 
 template
-  = "{{" (newline / space)* target:template_param_text
+  = "{{" (newline / space)* 
+    target:template_name
     params:(( newline / space )* pipe
                 r:( &pipe { return new KV( '', '') } // empty argument
                     / ( newline / space )* p:template_param { return p } 
@@ -754,7 +755,7 @@ tplarg
 
 template_param
   = name:template_param_name 
-    // Insanity: MW accepts |foo | = bar as a single param..
+    // Insanity: MW accepts |foo | = bar | as a single param..
     (pipe (space / newline)* &'=')?
     val:(
         s0:space* 
@@ -793,6 +794,8 @@ template_param_name
 
   / & { return stops.pop( 'equal' ) }
   //= h:( !"}}" x:([^=|\n]) { return x } )* { return h.join(''); }
+
+template_name = template_param_value
 
 template_param_value
   = & { return stops.push( 'equal', false ) }
