@@ -44,28 +44,28 @@ ve.dm.TransactionProcessor.operationMap = {
 	},
 	'replace': {
 		'commit': function( op ) {
-			this.replace( op, false );
+			this.replace( op );
 		},
 		'rollback': function( op ) {
-			this.replace( op, true );
+			this.replace( op );
 		}
 	},
 	// Change element attributes
 	'attribute': {
 		'commit': function( op ) {
-			this.attribute( op, false );
+			this.attribute( op );
 		},
 		'rollback': function( op ) {
-			this.attribute( op, true );
+			this.attribute( op );
 		}
 	},
 	// Change content annotations
 	'annotate': {
 		'commit': function( op ) {
-			this.mark( op, false );
+			this.mark( op );
 		},
 		'rollback': function( op ) {
-			this.mark( op, true );
+			this.mark( op );
 		}
 	}
 };
@@ -88,9 +88,9 @@ ve.dm.TransactionProcessor.prototype.nextOperation = function() {
 	return this.operations[this.operationIndex++] || false;
 };
 
-ve.dm.TransactionProcessor.prototype.executeOperation = function( op, method ) {
+ve.dm.TransactionProcessor.prototype.executeOperation = function( op ) {
 	if ( op.type in ve.dm.TransactionProcessor.operationMap ) {
-		ve.dm.TransactionProcessor.operationMap[op.type][method].call( this, op );
+		ve.dm.TransactionProcessor.operationMap[op.type][this.method].call( this, op );
 	} else {
 		throw 'Invalid operation error. Operation type is not supported: ' + operation.type;
 	}
@@ -98,10 +98,16 @@ ve.dm.TransactionProcessor.prototype.executeOperation = function( op, method ) {
 
 ve.dm.TransactionProcessor.prototype.process = function( method ) {
 	var op;
+	// Store the method (commit or rollback) and the operations array so executeOperation()
+	// can access them easily
+	this.method = method;
 	this.operations = this.transaction.getOperations();
+	
+	// This loop is factored this way to allow operations to be skipped over or executed
+	// from within other operations
 	this.operationIndex = 0;
 	while ( ( op = this.nextOperation() ) ) {
-		this.executeOperation( op, method );
+		this.executeOperation( op );
 	}
 };
 
@@ -454,8 +460,9 @@ ve.dm.TransactionProcessor.prototype.remove = function( op ) {
 	}
 };
 
-ve.dm.TransactionProcessor.prototype.replace = function( op, invert ) {
-	var	remove = invert ? op.replacement : op.remove,
+ve.dm.TransactionProcessor.prototype.replace = function( op ) {
+	var	invert = this.method == 'rollback',
+		remove = invert ? op.replacement : op.remove,
 		replacement = invert ? op.remove : op.replacement;
 	// remove is provided only for OT / conflict resolution and for
 	// reversibility, we don't actually verify it here
@@ -468,8 +475,9 @@ ve.dm.TransactionProcessor.prototype.replace = function( op, invert ) {
 	
 };
 
-ve.dm.TransactionProcessor.prototype.attribute = function( op, invert ) {
-	var element = this.model.data[this.cursor];
+ve.dm.TransactionProcessor.prototype.attribute = function( op ) {
+	var	invert = this.method == 'rollback',
+		element = this.model.data[this.cursor];
 	if ( element.type === undefined ) {
 		throw 'Invalid element error. Can not set attributes on non-element data.';
 	}
@@ -506,8 +514,9 @@ ve.dm.TransactionProcessor.prototype.attribute = function( op, invert ) {
 	}
 };
 
-ve.dm.TransactionProcessor.prototype.mark = function( op, invert ) {
-	var target;
+ve.dm.TransactionProcessor.prototype.mark = function( op ) {
+	var	invert = this.method == 'rollback',
+		target;
 	if ( ( op.method === 'set' && !invert ) || ( op.method === 'clear' && invert ) ) {
 		target = this.set;
 	} else if ( ( op.method === 'clear' && !invert ) || ( op.method === 'set' && invert ) ) {
