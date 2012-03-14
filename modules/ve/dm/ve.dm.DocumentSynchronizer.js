@@ -25,13 +25,11 @@ ve.dm.DocumentSynchronizer.prototype.getModel = function() {
  * @method
  * @param {String} type Type of action, can be: "insert", "delete", "rebuild", "resize" or "update"
  * @param {ve.dm.Node} node Node this action is related to
- * @param {Integer} offset Offset of node, improves performance if this has already been calculated
+ * @param {Integer|null} offset Offset of node, improves performance if this has already been calculated.
+ *                         Only used for insert and rebuild actions
  * @param {Integer} adjustment Node length adjustment, if any
  */
 ve.dm.DocumentSynchronizer.prototype.pushAction = function( type, node, offset, adjustment ) {
-	if ( offset === undefined ) {
-		offset = this.model.getOffsetFromNode( node );
-	}
 	this.actions.push( {
 		'type': type,
 		'node': node,
@@ -54,9 +52,13 @@ ve.dm.DocumentSynchronizer.prototype.synchronize = function() {
 		parent;
 	for ( var i = 0, len = this.actions.length; i < len; i++ ) {
 		action = this.actions[i];
-		offset = action.offset + adjustment;
+		offset = action.offset === null ? null : ( action.offset + adjustment );
 		switch ( action.type ) {
 			case 'insert':
+				// Compute the offset if it wasn't provided
+				if ( offset === null ) {
+					offset = this.model.getOffsetFromNode( action.node );
+				}
 				// Insert the new node at the given offset
 				var target = this.model.getNodeFromOffset( offset + 1 );
 				if ( target === this.model ) {
@@ -81,6 +83,10 @@ ve.dm.DocumentSynchronizer.prototype.synchronize = function() {
 				adjustment -= action.node.getElementLength();
 				break;
 			case 'rebuild':
+				// Compute the offset if it wasn't provided
+				if ( offset === null ) {
+					offset = this.model.getOffsetFromNode( action.node );
+				}
 				// Replace original node with new node
 				var newNodes = ve.dm.DocumentNode.createNodesFromData( this.model.getData(
 					new ve.Range( offset, action.node.getElementLength() + action.adjustment )
