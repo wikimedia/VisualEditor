@@ -84,15 +84,24 @@ ve.dm.TransactionProcessor.rollback = function( doc, transaction ) {
 
 /* Methods */
 
+ve.dm.TransactionProcessor.prototype.nextOperation = function() {
+	return this.operations[this.operationIndex++] || false;
+};
+
+ve.dm.TransactionProcessor.prototype.executeOperation = function( op, method ) {
+	if ( op.type in ve.dm.TransactionProcessor.operationMap ) {
+		ve.dm.TransactionProcessor.operationMap[op.type][method].call( this, op );
+	} else {
+		throw 'Invalid operation error. Operation type is not supported: ' + operation.type;
+	}
+};
+
 ve.dm.TransactionProcessor.prototype.process = function( method ) {
-	var operations = this.transaction.getOperations();
-	for ( var i = 0, length = operations.length; i < length; i++ ) {
-		var operation = operations[i];
-		if ( operation.type in ve.dm.TransactionProcessor.operationMap ) {
-			ve.dm.TransactionProcessor.operationMap[operation.type][method].call( this, operation );
-		} else {
-			throw 'Invalid operation error. Operation type is not supported: ' + operation.type;
-		}
+	var op;
+	this.operations = this.transaction.getOperations();
+	this.operationIndex = 0;
+	while ( ( op = this.nextOperation() ) ) {
+		this.executeOperation( op, method );
 	}
 };
 
