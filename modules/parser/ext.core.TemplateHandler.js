@@ -389,12 +389,12 @@ TemplateHandler.prototype._returnArgAttributes = function ( token, cb, frame, at
 		//		' vs. ' + JSON.stringify( this.manager.args ) ); 
 		res = this.manager.args[argName];
 	} else {
-		var defaultValue = (attributes[1] && ! attributes[1].k.length && attributes[1].v) || false;
 		this.manager.env.dp( 'templateArg not found: ', argName,
-				' vs. ', defaultValue );
-		if ( defaultValue ) {
-			res = defaultValue;
+				' vs. ' );
+		if ( attributes.length > 1 ) {
+			res = attributes[1].v;
 		} else {
+			//console.warn('no default for ' + argName + JSON.stringify( attributes ));
 			res = [ '{{{' + argName + '}}}' ];
 		}
 	}

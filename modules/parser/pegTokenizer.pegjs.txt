@@ -721,8 +721,8 @@ tplarg_or_template
 template
   = "{{" (newline / space)* 
     target:template_name
-    params:(( newline / space )* pipe
-                r:( &pipe { return new KV( '', '') } // empty argument
+    params:(( newline / space )* "|"
+                r:( &"|" { return new KV( '', '') } // empty argument
                     / ( newline / space )* p:template_param { return p } 
                   ) { return r } 
             )* 
@@ -743,8 +743,14 @@ template
 
 tplarg 
   = "{{{" 
-    name:template_param_text?
-    params:( ( space / newline )* '|' ( space / newline )* p:template_param { return p })* 
+    name:template_name?
+    params:( ( space / newline )* 
+              '|' ( space / newline )*  
+               r:( 
+                    &'}}' { return new KV( '', '') }
+                    / p:template_param { return p } 
+               ) { return r }
+           )* 
     ( space / newline )* 
     "}}}" {
       name = flatten( name );
@@ -783,6 +789,8 @@ template_param
   / & [|}] { return new KV([], []); }
 
 
+template_name = template_param_value
+
 // FIXME: handle template args and templates in key! (or even parser functions?)
 template_param_name
   = & { return stops.push( 'equal', true ) }
@@ -796,8 +804,6 @@ template_param_name
   / & { return stops.pop( 'equal' ) }
   //= h:( !"}}" x:([^=|\n]) { return x } )* { return h.join(''); }
 
-template_name = template_param_value
-
 template_param_value
   = & { return stops.push( 'equal', false ) }
     tpt:template_param_text
@@ -809,13 +815,14 @@ template_param_value
   / & { return stops.pop( 'equal' ) }
 
 template_param_text
-  = & { return stops.inc('template') }
-    il:inline {
+  = & { stops.push('table', false ); return stops.inc('template') }
+    il:( inline / nested_block )+ {
+        stops.pop('table');
         stops.dec('template');
         //console.warn( 'tpt match: ' + pp (il));
-        return il;
+        return flatten( il );
     }
-  / & { return stops.dec('template'); }
+  / & { stops.pop('table'); return stops.dec('template'); }
 
 
 // TODO: handle link prefixes as in al[[Razi]]
@@ -1342,14 +1349,15 @@ list_char = [*#:;]
  *********************************************************************/
 
 table_lines
-  = & { return stops.inc('table'); }
+  = ! inline_breaks
+    & { return stops.push('table', true); }
     tl:table_line 
     tls:( s:sol tl2:table_line { return s.concat(tl2); } )* {
-        stops.dec('table');
+        stops.pop('table');
         //console.warn('table_lines: ' + pp(tl.concat(tls)));
         return tl.concat( tls );
     }
-  / & { return stops.dec('table'); }
+  / & { return stops.pop('table'); }
 
 // This production assumes start-of-line position!
 table_line
@@ -1487,13 +1495,13 @@ table
 table_start 
   = "{" pipe
     res:(
-        & { stops.inc('table'); return true; }
+        & { stops.push('table', true); return true; }
         ta:generic_attribute* 
         { 
             //dp("table_start " + pp(ta) + ", pos:" + pos);
             return ta;
         }
-        / & { stops.dec('table'); return false; } { return null; }
+        / & { stops.pop('table'); return false; } { return null; }
     ) { return res }
 
 table_caption 
@@ -1534,7 +1542,7 @@ table_row
 
 table_data 
   = //& { dp("table_data enter, pos=" + pos + input.substr(pos,10)); return true; }
-	n:("||" { return [] } / nt:newlineToken (pipe / !'!') { return nt }) 
+	n:(pipe pipe { return [] } / nt:newlineToken (pipe / !'!') { return nt }) 
     ! [}+-]
     //& { dp('before attrib, pos=' + pos); return true; }
     a:(as:generic_attribute+ space* pipe !pipe { return as } )?
@@ -1572,7 +1580,7 @@ thtd_attribs
 
 table_end 
   = nt:newlineToken? ( pipe "}" / eof ) { 
-	  stops.dec('table'); 
+	  stops.pop('table'); 
 	  if(nt) 
 		  return nt;
 	  else

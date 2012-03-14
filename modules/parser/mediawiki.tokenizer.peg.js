@@ -114,7 +114,7 @@ PegTokenizer.prototype.inline_breaks = function (input, pos, stops ) {
 		case '|':
 			return counters.pipe ||
 					counters.template ||
-				( counters.table &&
+				( stops.onStack('table') &&
 					( input[pos + 1].match(/[|}]/) !== null ||
 						counters.tableCellArg
 					) 
@@ -123,15 +123,14 @@ PegTokenizer.prototype.inline_breaks = function (input, pos, stops ) {
 			// {{!}} pipe templates..
 			return (
 						counters.pipe ||
-						counters.template || 
-						( counters.table &&
+						( stops.onStack( 'table' ) &&
 						  ( input.substr(pos, 10) === '{{!}}{{!}}' ||
 							counters.tableCellArg
 						  )
 						)
 				   ) && input.substr( pos, 5 ) === '{{!}}' || null;
 		case "!":
-			return counters.table && input[pos + 1] === "!" ||
+			return stops.onStack( 'table' ) && input[pos + 1] === "!" ||
 				null;
 		case "}":
 			return counters.template && input[pos + 1] === "}" || null;
@@ -140,11 +139,11 @@ PegTokenizer.prototype.inline_breaks = function (input, pos, stops ) {
 				! counters.extlink &&
 				! counters.linkdesc || null;
 		case "\r":
-			return counters.table &&
+			return stops.onStack( 'table' ) &&
 				input.substr(pos, 4).match(/\r\n?[!|]/) !== null ||
 				null;
 		case "\n":
-			return counters.table &&
+			return stops.onStack( 'table' ) &&
 				input[pos + 1] === '!' ||
 				input[pos + 1] === '|' ||
 				null;
