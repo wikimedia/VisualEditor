@@ -125,8 +125,7 @@ include( '../../modules/sandbox/base.php' );
 		<script src="../../modules/ve/ce/ve.ce.LeafNode.js"></script>
 		<script src="../../modules/ve/ce/ve.ce.Content.js"></script>
 		<script src="../../modules/ve/ce/ve.ce.Surface.js"></script>
-		<script src="../../modules/ve/ce/ve.ce.CursorObserver.js"></script>
-		<script src="../../modules/ve/ce/ve.ce.ContentObserver.js"></script>
+		<script src="../../modules/ve/ce/ve.ce.SurfaceObserver.js"></script>
 
 		<script src="../../modules/ve/ce/nodes/ve.ce.DocumentNode.js"></script>
 		<script src="../../modules/ve/ce/nodes/ve.ce.HeadingNode.js"></script>

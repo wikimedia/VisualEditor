@@ -28,18 +28,30 @@ ve.ce.Surface = function( $container, model ) {
 	this.clipboard = {};
 	this.autoRender = false;
 
+	// Content Observer
+	this.surfaceObserver = new ve.ce.SurfaceObserver( this.documentView );
+	this.surfaceObserver.on( 'cursor', function( info ) {
+		//console.log("cursor", info);
+	} )
+
 	// Events
 	this.documentView.$.bind( {
 		'focus': function( e ) {
+			_this.surfaceObserver.updateCursor( true );
 			_this.documentOnFocus();
 			$document.unbind( '.ce-surfaceView' );
 			$document.bind( {
 				'keydown.ce-surfaceView': function( e ) {
+					_this.surfaceObserver.updateCursor( true );
 					return _this.onKeyDown( e );
+				},
+				'mousemove.ce-surfaceView': function( e ) {
+					_this.surfaceObserver.updateCursor( true );
 				}
 			} );
 		},
 		'blur': function( e ) {
+			_this.surfaceObserver.updateCursor( true );
 			_this.documentOnBlur();
 			$document.unbind( '.ce-surfaceView' );
 		}
@@ -53,7 +65,8 @@ ve.ce.Surface = function( $container, model ) {
 			_this.onPaste( e );
 		} )
 		.on( 'mousedown', function( e ) {
-			 return _this.onMouseDown( e );
+			_this.surfaceObserver.updateCursor( true );
+			return _this.onMouseDown( e );
 		} )
 		.on( 'compositionstart', function( e ) {
 			console.log('comp start');
@@ -324,6 +337,7 @@ ve.ce.Surface.prototype.clearPollData = function() {
 };
 
 ve.ce.Surface.prototype.pollContent = function() {
+	return;
 	var localOffset, text, hash;
 	
 	if ( this.poll.compositionStart !== null && this.poll.compositionEnd !== null ) {
@@ -634,6 +648,10 @@ ve.ce.Surface.prototype.showSelection = function( range ) {
 };
 
 ve.ce.Surface.prototype.getLeafNode = function( elem ) {
+	return ve.ce.Surface.getLeafNode( elem );
+};
+
+ve.ce.Surface.getLeafNode = function( elem ) {
 	var	$node = $( elem );
 	while( !$node.hasClass( 'ce-leafNode' ) ) {
 		$node = $node.parent();
