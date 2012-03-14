@@ -46,13 +46,12 @@ ve.dm.DocumentSynchronizer.prototype.pushAction = function( type, node, offset, 
 ve.dm.DocumentSynchronizer.prototype.synchronize = function() {
 	// TODO: Normalize the actions list to clean up nested actions
 	// Perform all actions
-	var adjustment = 0,
-		action,
+	var	action,
 		offset,
 		parent;
 	for ( var i = 0, len = this.actions.length; i < len; i++ ) {
 		action = this.actions[i];
-		offset = action.offset === null ? null : ( action.offset + adjustment );
+		offset = action.offset;
 		switch ( action.type ) {
 			case 'insert':
 				// Compute the offset if it wasn't provided
@@ -72,15 +71,11 @@ ve.dm.DocumentSynchronizer.prototype.synchronize = function() {
 					parent = target.getParent();
 					parent.splice( parent.indexOf( target ), 0, action.node );
 				}
-				// Adjust proceeding offsets positively by the length of the node being inserted
-				adjustment += action.node.getElementLength();
 				break;
 			case 'delete':
 				// Replace original node with new node
 				parent = action.node.getParent();
 				parent.splice( parent.indexOf( action.node ), 1 );
-				// Adjust proceeding offsets negatively by the length of the node being deleted
-				adjustment -= action.node.getElementLength();
 				break;
 			case 'rebuild':
 				// Compute the offset if it wasn't provided
@@ -93,18 +88,10 @@ ve.dm.DocumentSynchronizer.prototype.synchronize = function() {
 				) );
 				parent = action.node.getParent();
 				ve.batchedSplice( parent, parent.indexOf( action.node ), 1, newNodes );
-				// Adjust proceeding offsets by the difference between the original and new nodes
-				var newNodesLength = 0;
-				for ( var j = 0, jlen = newNodes.length; j < jlen; j++ ) {
-					newNodesLength += newNodes[j].getElementLength();
-				}
-				adjustment += newNodesLength - action.node.getElementLength();
 				break;
 			case 'resize':
 				// Adjust node length - causes update events to be emitted
 				action.node.adjustContentLength( action.adjustment );
-				// Adjust proceeding offsets by the amount the node is being lengthened or shortened
-				adjustment += action.adjustment;
 				break;
 			case 'update':
 				// Emit update events
