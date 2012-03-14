@@ -8,7 +8,7 @@
  */
 ve.ce.HeadingNode = function( model ) {
 	// Inheritance
-	ve.ce.LeafNode.call( this, model );
+	ve.ce.LeafNode.call( this, model, $( '<h' + model.getElementAttribute( 'level' ) + '>' ) );
 
 	// Properties
 	this.currentLevelHash = null;
