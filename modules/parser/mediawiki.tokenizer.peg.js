@@ -109,23 +109,27 @@ PegTokenizer.prototype.inline_breaks = function (input, pos, stops ) {
 		case '=':
 			return stops.onStack( 'equal' ) ||
 				( counters.h &&
-				  input.substr( pos + 1, 200)
-				  .match(/[ \t]*[\r\n]/) !== null ) || null;
+					input.substr( pos + 1, 200)
+					.match(/[ \t]*[\r\n]/) !== null ) || null;
 		case '|':
 			return counters.pipe ||
 					counters.template ||
 				( counters.table &&
-				  ( input[pos + 1].match(/[|}]/) !== null ||
-					counters.tableCellArg
-				  ) 
+					( input[pos + 1].match(/[|}]/) !== null ||
+						counters.tableCellArg
+					) 
 				) || null;
 		case '{':
 			// {{!}} pipe templates..
 			return (
-					counters.pipe ||
-					counters.template				   
-				) && input.substr( pos, 5 ) === '{{!}}' 
-				|| null;
+						counters.pipe ||
+						counters.template || 
+						( counters.table &&
+						  ( input.substr(pos, 10) === '{{!}}{{!}}' ||
+							counters.tableCellArg
+						  )
+						)
+				   ) && input.substr( pos, 5 ) === '{{!}}' || null;
 		case "!":
 			return counters.table && input[pos + 1] === "!" ||
 				null;

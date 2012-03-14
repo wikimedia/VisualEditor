@@ -468,14 +468,15 @@ block_lines
  */
 block_line
   = h
-  / & [{}|] tl:table_lines { return tl; }
   / lists
-  // tag-only lines should not trigger pre
-  / st:optionalSpaceToken
-    bt:(bts:block_tag stl:optionalSpaceToken { return bts.concat(stl) })+ 
-    &eolf { 
-        return st.concat(bt); 
-    }
+  / st:optionalSpaceToken 
+    r:( & [{}|] tl:table_lines { return tl; }
+      // tag-only lines should not trigger pre either
+      / bts:(bt:block_tag stl:optionalSpaceToken { return bt.concat(stl) })+ 
+        &eolf { return bts }
+      ) { 
+          return st.concat(r); 
+      }
   / pre_indent
   / pre
 
@@ -743,7 +744,7 @@ template
 tplarg 
   = "{{{" 
     name:template_param_text?
-    params:( ( space / newline )* pipe ( space / newline )* p:template_param { return p })* 
+    params:( ( space / newline )* '|' ( space / newline )* p:template_param { return p })* 
     ( space / newline )* 
     "}}}" {
       name = flatten( name );
@@ -756,7 +757,7 @@ tplarg
 template_param
   = name:template_param_name 
     // Insanity: MW accepts |foo | = bar | as a single param..
-    (pipe (space / newline)* &'=')?
+    ('|' (space / newline)* &'=')?
     val:(
         s0:space* 
         "="
@@ -1104,12 +1105,9 @@ nowiki_content
           }
 
 
-// The list of HTML5 tags, mainly used for the identification of non-html
-// tags. These terminate otherwise tag-eating productions (see list below) in
-// order to support potential extension tags:
-// * comment
-// * pre
-// * nowiki
+// The list of HTML5 tags, mainly used for the identification of *non*-html
+// tags. Non-html tags terminate otherwise tag-eating productions (see list
+// below) in order to support potential extension tags.
 html5_tagnames 
   = "a" / "abbr" / "address" / "area" / "article" 
     / "aside" / "audio" / "b" / "base" / "bdi" / "bdo" / "blockquote" 
@@ -1363,7 +1361,7 @@ table_line
   / table_end_tag
 
 table_start_tag
-  = "{|"
+  = "{" pipe
     ta:generic_attribute* 
     space*
     te:table_end_tag? // can occur somewhere in the middle of the line too
@@ -1377,7 +1375,7 @@ table_start_tag
     }
 
 table_caption_tag
-  = "|+" 
+  = pipe "+" 
     c:inline* { 
         return [ new TagTk( 'caption' )]
                     .concat( c, [ new EndTagTk( 'caption' ) ]);
@@ -1386,11 +1384,11 @@ table_caption_tag
 
 table_row_tag
   = //& { console.warn("table row enter"); return true; }
-    "|-"
+    pipe "-"
     a:generic_attribute*
     space*
     // handle tables with missing table cells after a row
-    td:( s:sol ![|!] tdt:table_data_tag { return s.concat(tdt); } )?
+    td:( s:sol !( pipe / [!] ) tdt:table_data_tag { return s.concat(tdt); } )?
     { 
         // We rely on our tree builder to close the row as needed. This is
         // needed to support building tables from fragment templates with
@@ -1406,7 +1404,7 @@ table_row_tag
 table_data_tags
   = pipe
     td:table_data_tag
-    tds:( "||" tdt:table_data_tag { return tdt } )* {
+    tds:( pipe pipe tdt:table_data_tag { return tdt } )* {
         return td.concat(tds);
     }
 
@@ -1446,7 +1444,7 @@ table_heading_tag
      }
 
 table_end_tag
-  = "|}" { 
+  = pipe "}" { 
       var tok = [new EndTagTk( 'table' )];
 	  return tok;
   }
