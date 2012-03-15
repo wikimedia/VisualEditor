@@ -12,6 +12,7 @@ var PEG = require('pegjs'),
 	fs = require('fs'),
 	$ = require('jquery'),
 	events = require('events'),
+	//colors = require('colors'),
 	defines = require('./mediawiki.parser.defines.js');
 
 function PegTokenizer() {

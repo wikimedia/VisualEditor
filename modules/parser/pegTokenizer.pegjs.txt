@@ -432,17 +432,17 @@ toplevelblock
  * The actual contents of each block.
  */
 block
-  =   block_lines
+  = block_lines
     / & '<' r:( pre // tag variant can start anywhere
             / comment &eolf
             / nowiki
             // avoid a paragraph if we know that the line starts with a block tag
             / bt:block_tag { return [bt] } 
             ) { return r; }
-    / para
+    / paragraph
     // Inlineline includes generic tags; wrapped into paragraphs in token
     // transform and DOM postprocessor
-    / inlineline 
+    / inlineline
     / sol
 
 /*
@@ -484,9 +484,9 @@ block_line
 /*
  * A paragraph. We don't emit 'p' tokens to avoid issues with template
  * transclusions, <p> tags in the source and the like. Instead, we perform
- * some paragraph wrapping on the DOM.
+ * some paragraph wrapping on the token stream and the DOM.
  */
-para
+paragraph
   = s1:sol s2:sol c:inlineline { 
       return s1.concat(s2, /* [new TagTk('p')],*/ c); 
   }
@@ -794,7 +794,7 @@ template_name = template_param_value
 // FIXME: handle template args and templates in key! (or even parser functions?)
 template_param_name
   = & { return stops.push( 'equal', true ) }
-    tpt:template_param_text
+    tpt:(template_param_text / &'=' { return '' })
     {
         stops.pop( 'equal' );
         //console.warn( 'template param name matched: ' + pp( tpt ) );
@@ -815,8 +815,14 @@ template_param_value
   / & { return stops.pop( 'equal' ) }
 
 template_param_text
-  = & { stops.push('table', false ); return stops.inc('template') }
-    il:( inline / nested_block )+ {
+  = & { /*console.warn( 'tpt: ' + 
+          input.substr( pos - 10, 9) + 
+          input[pos].green +
+          input.substr( pos +1, 9) ); */
+        stops.push('table', false ); 
+        return stops.inc('template') 
+    }
+    il:nested_block+ {
         stops.pop('table');
         stops.dec('template');
         //console.warn( 'tpt match: ' + pp (il));
