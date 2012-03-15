@@ -28,11 +28,23 @@ ve.ce.Surface = function( $container, model ) {
 	this.clipboard = {};
 	this.autoRender = false;
 
-	// Content Observer
+	// Surface Observer
 	this.surfaceObserver = new ve.ce.SurfaceObserver( this.documentView );
-	this.surfaceObserver.on( 'cursor', function( info ) {
-		//console.log("cursor", info);
-	} )
+	this.surfaceObserver.on( 'select', function( selection ) {
+		
+		if ( selection !== null ) {
+			// Keep a copy of the current selection on hand
+			_this.currentSelection = selection.clone();
+			// Respond to selection changes
+			_this.updateSelection();
+
+			if ( selection.getLength() ) {
+				_this.clearInsertionAnnotations();
+			} else {
+				_this.loadInsertionAnnotations();
+			}
+		}
+	} );
 
 	// Events
 	this.documentView.$.bind( {
@@ -100,18 +112,6 @@ ve.ce.Surface = function( $container, model ) {
 		document.execCommand("enableObjectResizing", false, false);
 	} catch(e) {
 	}
-
-	this.model.on( 'select', function( selection ) {
-		// Keep a copy of the current selection on hand
-		_this.currentSelection = selection.clone();
-		// Respond to selection changes
-		_this.updateSelection();
-		if ( selection.getLength() ) {
-			_this.clearInsertionAnnotations();
-		} else {
-			_this.loadInsertionAnnotations();
-		}
-	} );
 };
 
 /* Methods */
@@ -278,11 +278,11 @@ ve.ce.Surface.prototype.getModel = function() {
 ve.ce.Surface.prototype.updateSelection = function( delay ) {
 	var _this = this;
 	function update() {
-		if ( _this.currentSelection.getLength() ) {
+		if ( _this.surfaceObserver.range.getLength() ) {
 			_this.clearInsertionAnnotations();
 		}
 		if ( _this.contextView ) {
-			if ( _this.currentSelection.getLength() ) {
+			if ( _this.surfaceObserver.range.getLength() ) {
 				_this.contextView.set();
 			} else {
 				_this.contextView.clear();
@@ -577,8 +577,11 @@ ve.ce.Surface.prototype.getSelectionRange = function() {
 };
 
 ve.ce.Surface.prototype.getSelectionRect = function() {
-	var sel = rangy.getSelection();
-	return sel.getBoundingClientRect();
+	var rangySel = rangy.getSelection();
+	return {
+		start: rangySel.getStartClientPos(),
+		end: rangySel.getEndClientPos()
+	};
 };
 
 ve.ce.Surface.prototype.getDOMNodeAndOffset = function( offset ) {
@@ -643,8 +646,6 @@ ve.ce.Surface.prototype.showSelection = function( range ) {
 	range.setStart( start.node, start.offset );
 	range.setEnd( stop.node, stop.offset );
 	sel.setSingleRange( range );
-	// Trigger select event
-	this.model.select( this.getSelectionRange() );
 };
 
 ve.ce.Surface.prototype.getLeafNode = function( elem ) {

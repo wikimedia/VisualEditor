@@ -16,11 +16,35 @@ ve.ui.Toolbar = function( $container, surfaceView, config ) {
 	this.$groups = $( '<div class="es-toolbarGroups"></div>' ).prependTo( this.$ );
 	this.tools = [];
 
-	this.surfaceView.on( 'cursor', function( annotations, nodes ) {
-		for( var i = 0; i < _this.tools.length; i++ ) {
-			_this.tools[i].updateState( annotations, nodes );
+	this.surfaceView.surfaceObserver.on( 'select', function ( selection ) {
+		var	annotations = _this.surfaceView.getAnnotations(),
+			nodes = [],
+			model = _this.surfaceView.documentView.model;
+	
+		if ( selection.from === selection.to ) {
+			nodes.push( model.getNodeFromOffset( selection.from ) );
+		} else {
+			var	startNode = model.getNodeFromOffset( selection.start ),
+				endNode = model.getNodeFromOffset( selection.end );
+			if ( startNode === endNode ) {
+				nodes.push( startNode );
+			} else {
+				model.traverseLeafNodes( function( node ) {
+					nodes.push( node );
+					if( node === endNode ) {
+						return false;
+					}
+				}, startNode );
+			}
 		}
-	} );
+
+		if ( selection !== null ) {
+			for( var i = 0; i < _this.tools.length; i++ ) {
+				_this.tools[i].updateState( annotations, nodes );
+			}
+		}
+		
+	});
 
 	this.config = config || [
 		{ 'name': 'history', 'items' : ['undo', 'redo'] },

@@ -92,16 +92,16 @@ ve.ui.Context.prototype.set = function() {
 
 ve.ui.Context.prototype.positionIcon = function() {
 	this.$.removeClass( 'es-contextView-position-start es-contextView-position-end' );
-	var selection = this.surfaceView.getModel().getSelection(),
+	var selection = this.surfaceView.currentSelection,
 		selectionRect = this.surfaceView.getSelectionRect();
 	this.position = null;
 
 	if ( selection.from < selection.to ) {
-		this.position = new ve.Position( selectionRect.right, selectionRect.bottom );
+		this.position = new ve.Position( selectionRect.end.x, selectionRect.end.y );
 		this.$.addClass( 'es-contextView-position-end' );
 		
 	} else if ( selection.from > selection.to ) {
-		this.position = new ve.Position( selectionRect.left, selectionRect.top );
+		this.position = new ve.Position( selectionRect.start.x, selectionRect.start.y );
 		this.$.addClass( 'es-contextView-position-start' );
 	}
 
