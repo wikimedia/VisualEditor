@@ -31,7 +31,6 @@ ve.ce.Surface = function( $container, model ) {
 	// Surface Observer
 	this.surfaceObserver = new ve.ce.SurfaceObserver( this.documentView );
 	this.surfaceObserver.on( 'select', function( selection ) {
-		
 		if ( selection !== null ) {
 			// Keep a copy of the current selection on hand
 			_this.currentSelection = selection.clone();

@@ -8,7 +8,6 @@
 ve.ui.LinkInspector = function( toolbar, context ) {
 	// Inheritance
 	ve.ui.Inspector.call( this, toolbar, context );
-
 	// Properties
 	this.$clearButton = $( '<div class="es-inspector-button es-inspector-clearButton"></div>' )
 		.prependTo( this.$ );
