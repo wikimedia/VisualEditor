@@ -25,10 +25,14 @@
 					$('#editor').attr('contenteditable', true);
 				})
 				.focus(function() {
-					console.log('thumbnail has focus. this probably shouldn't happen.');
+					console.log('thumbnail has focus. this probably should not happen.');
 				});
 			$('#editor').click(function() {
-				if ($(rangy.getSelection().anchorNode).closest('[contenteditable="false"]').length) {
+				var node = rangy.getSelection().anchorNode;
+				while (node.nodeType === 3) {
+					node = node.parentNode;
+				}
+				if (!node.isContentEditable) {
 					console.log('cursor is in the wrong place. fix it!');
 				}
 			});
@@ -36,6 +40,7 @@
 	</script>
 	<style>
 		[contenteditable="true"] {
+			cursor: text;
 			outline: 0;
 		}
 		#editor {
@@ -101,14 +106,6 @@
 			THUMB
 			<p contenteditable="true">this is the caption</p>
 		</div>
-
-		<p>This week, I was seeing a drop in average back-end performance at work, we had an average drop in page load performance from ~250ms to around 500ms. This seemed to be an intermittent problem and we searched through out graphs at NewRelic with no clear culprit.</p>
-		
-		<p>I’ve worked at several environments where most of our product was run through the JVM. I’ve always used the information available to me in Mbeans, but the overhead of exposing them to a monitoring system like Ganglia or Nagios has always been problematic.</p>
-
-		<p>This week, I was seeing a drop in average back-end performance at work, we had an average drop in page load performance from ~250ms to around 500ms. This seemed to be an intermittent problem and we searched through out graphs at NewRelic with no clear culprit.</p>
-		
-		<p>I’ve worked at several environments where most of our product was run through the JVM. I’ve always used the information available to me in Mbeans, but the overhead of exposing them to a monitoring system like Ganglia or Nagios has always been problematic.</p>
 		
 	</div>
 </body>
