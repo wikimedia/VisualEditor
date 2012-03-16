@@ -19,16 +19,11 @@ ve.ui.ClearButtonTool = function( toolbar, name, title ) {
 /* Methods */
 
 ve.ui.ClearButtonTool.prototype.onClick = function() {
-	var surfaceView = this.toolbar.getSurfaceView(),
-		surfaceModel = surfaceView.getModel(),
-		tx =surfaceModel.getDocument().prepareContentAnnotation(
-			surfaceView.currentSelection,
-			'clear',
-			this.pattern
-		);
-	surfaceModel.transact( tx );
+	var surfaceView = this.toolbar.getSurfaceView();
+		
+	surfaceView.annotate( 'clear', this.pattern );
 	surfaceView.clearInsertionAnnotations();
-	surfaceView.getContextView().closeInspector();
+	surfaceView.contextView.closeInspector();
 };
 
 ve.ui.ClearButtonTool.prototype.updateState = function( annotations ) {
