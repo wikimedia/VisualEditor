@@ -22,14 +22,10 @@ ve.ui.LinkInspector = function( toolbar, context ) {
 		if ( $(this).is( '.es-inspector-button-disabled' ) ) {
 			return;
 		}
-		var surfaceView = _this.context.getSurfaceView(),
-			surfaceModel = surfaceView.getModel(),
-			tx = surfaceModel.getDocument().prepareContentAnnotation(
-				surfaceView.currentSelection,
-				'clear',
-				/link\/.*/
-			);
-		surfaceModel.transact( tx );
+
+		var surfaceView = _this.context.getSurfaceView();
+		surfaceView.annotate( 'clear', /link\/.*/ );
+
 		_this.$locationInput.val( '' );
 		_this.context.closeInspector();
 	} );
@@ -86,20 +82,9 @@ ve.ui.LinkInspector.prototype.onClose = function( accept ) {
 		if ( title === this.getTitleFromSelection() || !title ) {
 			return;
 		}
-		var surfaceView = this.context.getSurfaceView(),
-			surfaceModel = surfaceView.getModel();
-		var clear = surfaceModel.getDocument().prepareContentAnnotation(
-			surfaceView.currentSelection,
-			'clear',
-			/link\/.*/
-		);
-		surfaceModel.transact( clear );
-		var set = surfaceModel.getDocument().prepareContentAnnotation(
-			surfaceView.currentSelection,
-			'set',
-			{ 'type': 'link/internal', 'data': { 'title': title } }
-		);
-		surfaceModel.transact( set );
+		var surfaceView = this.context.getSurfaceView();
+		surfaceView.annotate( 'clear', /link\/.*/ );
+		surfaceView.annotate( 'set', { 'type': 'link/internal', 'data': { 'title': title } } );
 	}
 };
 

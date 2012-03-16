@@ -115,7 +115,7 @@ ve.ce.Surface = function( $container, model ) {
 /* Methods */
 
 ve.ce.Surface.prototype.annotate = function( method, annotation ) {
-	var range = this.getSelectionRange(),
+	var range = this.currentSelection,
 		_this = this;
 
 	if ( method === 'toggle' ) {
@@ -511,8 +511,9 @@ ve.ce.Surface.prototype.onKeyDown = function( e ) {
 };
 
 ve.ce.Surface.prototype.getOffset = function( elem, offset, global ) {
-	var	$leafNode = this.getLeafNode( elem ),
-		current = [$leafNode.contents(), 0],
+	var	$leafNode = this.getLeafNode( elem );
+	if($leafNode === null)return;
+	var current = [$leafNode.contents(), 0],
 		stack = [current],
 		localOffset = 0;
 
