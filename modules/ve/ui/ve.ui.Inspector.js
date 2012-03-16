@@ -65,7 +65,6 @@ ve.ui.Inspector.prototype.close = function( accept ) {
 		this.onClose( accept );
 	}
 	this.emit( 'close' );
-	surfaceView.$input.focus();
 };
 
 /* Inheritance */
