@@ -46,12 +46,12 @@ ve.ce.Surface = function( $container, model ) {
 	} );
 
 	// Events
-	this.documentView.$.bind( {
+	this.documentView.$.on( {
 		'focus': function( e ) {
 			_this.surfaceObserver.updateCursor( true );
 			_this.documentOnFocus();
-			$document.unbind( '.ce-surfaceView' );
-			$document.bind( {
+			$document.off( '.ce-surfaceView' );
+			$document.on( {
 				'keydown.ce-surfaceView': function( e ) {
 					_this.surfaceObserver.updateCursor( true );
 					return _this.onKeyDown( e );
@@ -64,32 +64,31 @@ ve.ce.Surface = function( $container, model ) {
 		'blur': function( e ) {
 			_this.surfaceObserver.updateCursor( true );
 			_this.documentOnBlur();
-			$document.unbind( '.ce-surfaceView' );
+			$document.on( '.ce-surfaceView' );
 		}
 	} );
 
-	this.$
-		.on( 'cut copy', function( e ) {
+	this.$.on( {
+		'cut copy': function( e ) {
 			_this.onCutCopy( e );
-		} )
-		.on( 'paste', function( e ) {
+		},
+		'paste': function( e ) {
 			_this.onPaste( e );
-		} )
-		.on( 'mousedown', function( e ) {
+		},
+		'mousedown': function( e ) {
 			_this.surfaceObserver.updateCursor( true );
 			return _this.onMouseDown( e );
-		} )
-		.on( 'compositionstart', function( e ) {
-			console.log('comp start');
+		},
+		'compositionstart': function( e ) {
 			_this.onCompositionStart( e );
-		} )
-		.on( 'compositionend', function( e ) {
-			console.log('comp end');
+		},
+		'compositionend': function( e ) {
 			_this.onCompositionEnd( e );
-		} )
-		.on('dragover drop', function( e ) {
+		},
+		'dragover drop': function( e ) {
 			e.preventDefault();
-		} );
+		}
+	} );
 
 	// Initialization
 	this.documentView.renderContent();
