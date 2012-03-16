@@ -578,8 +578,8 @@ ve.ce.Surface.prototype.getSelectionRange = function() {
 ve.ce.Surface.prototype.getSelectionRect = function() {
 	var rangySel = rangy.getSelection();
 	return {
-		start: rangySel.getStartClientPos(),
-		end: rangySel.getEndClientPos()
+		start: rangySel.getStartDocumentPos(),
+		end: rangySel.getEndDocumentPos()
 	};
 };
 
@@ -655,6 +655,9 @@ ve.ce.Surface.getLeafNode = function( elem ) {
 	var	$node = $( elem );
 	while( !$node.hasClass( 'ce-leafNode' ) ) {
 		$node = $node.parent();
+		if ( $node.is( 'body') ) {
+			return null;
+		}
 	}
 	return $node;
 };
