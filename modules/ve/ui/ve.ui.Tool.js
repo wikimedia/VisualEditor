@@ -22,3 +22,7 @@ ve.ui.Tool.tools = {};
 ve.ui.Tool.prototype.updateState = function() {
 	throw 'Tool.updateState not implemented in this subclass:' + this.constructor;
 };
+
+ve.ui.Tool.prototype.clearState = function() {
+	this.$.removeClass( 'es-toolbarButtonTool-down' );
+}
