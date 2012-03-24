@@ -1,21 +1,12 @@
 A combined Mediawiki and html parser in JavaScript running on node.js. Please
-see https://www.mediawiki.org/wiki/Future/Parser_development for an overview
+see (https://www.mediawiki.org/wiki/Future/Parser_development) for an overview
 of the current implementation, and instructions on running the tests.
 
-npm dependencies: (This should be a proper package.json for npm to do it automatically?)
+You might need to set the NODE_PATH environment variable,
+  export NODE_PATH="node_modules"
 
-jquery
-jsdom
-buffer
-optimist
-pegjs
-querystring
-html5
-jshashes
-request (also required and automatically installed by jsdom)
-assert
+Download the dependencies:
+  npm install
 
-The following additional modules are used in parserTests:
-
-colors (for parserTests eye candy)
-diff (parserTests output diffing)
+Run tests:
+  npm test

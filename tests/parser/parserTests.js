@@ -57,7 +57,7 @@ var pj = path.join;
 
 // Our code...
 
-var testWhiteList = require('./parserTests-whitelist.js').testWhiteList;
+var testWhiteList = require(__dirname + '/parserTests-whitelist.js').testWhiteList;
 
 _import(pj('parser', 'mediawiki.parser.environment.js'), ['MWParserEnvironment']);
 _import(pj('parser', 'mediawiki.parser.js'), ['ParserPipeline']);
@@ -164,18 +164,15 @@ function ParserTests () {
 	this.cache_file = "parserTests.cache";
 
 
-
-	this.testFileName = '../../../../core/tests/parser/parserTests.txt'; // 'default'
-	this.testFileName2 = '../../../../tests/parser/parserTests.txt'; // Fallback. Not everyone fetch at core level 
+	this.testFileName = __dirname+'/parserTests.txt';
 
 	if (this.argv._[0]) {
 		// hack :D
 		this.testFileName = this.argv._[0] ;
-		this.testFileName2 = null;
 	}
 
 	try {
-		this.testParser = PEG.buildParser(fs.readFileSync('parserTests.pegjs', 'utf8'));
+		this.testParser = PEG.buildParser(fs.readFileSync(__dirname+'/parserTests.pegjs', 'utf8'));
 	} catch (e2) {
 		console.log(e2);
 	}
@@ -188,7 +185,8 @@ function ParserTests () {
 	//this.htmlparser = new HTML5.Parser({document: this.htmlwindow.document});
         //this.htmlparser = new HTML5.Parser()
         // Use a patched version until https://github.com/aredridel/html5/issues/44 is merged
-        this.htmlparser = require('./__patched-html5-parser')(HTML5);
+	require('coffee-script');
+	this.htmlparser = require(__dirname+'/__patched-html5-parser')(HTML5);
 
 	// Test statistics
 	this.passedTests = 0;
@@ -218,14 +216,7 @@ ParserTests.prototype.getTests = function () {
 		testFile = fs.readFileSync(this.testFileName, 'utf8');
 		fileDependencies.push( this.testFileName );
 	} catch (e) {
-		// Try opening fallback file
-		if( this.testFileName2 !== '' ) {
-			try {
-				testFile = fs.readFileSync( this.testFileName2, 'utf8' );
-				fileDependencies.push( this.testFileName2 );
-			}
-			catch( e3 ) { console.log( e3 ); }
-		}
+		console.log( e );
 	}
 	if( !this.argv.cache ) {
 		// Cache not wanted, parse file and return object 

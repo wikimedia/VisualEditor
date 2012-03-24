@@ -1,0 +1,28 @@
+{
+	"name": "mediawiki-parsoid",
+	"description": "Mediawiki parser for the VisualEditor.",
+	"version": "0.0.1",
+	"dependencies": {
+		"events": "0.x.x",
+		"jquery": "1.x.x",
+		"request": "2.x.x",
+		"querystring": "0.x.x",
+		"path": "0.x.x",
+		"jshashes": "0.x.x",
+		"optimist": "0.x.x",
+		"assert": "0.x.x",
+		"jsdom": "0.x.x",
+		"pegjs": "0.x.x"
+	},
+	"devDependencies": {
+		"coffee-script": "1.x.x",
+		"colors": "0.x.x",
+		"diff": "1.x.x",
+		"html5": "0.x.x"
+	},
+	"main": "mediawiki.parser.js",
+	"scripts": {
+		"pretest": "node ../../tests/parser/fetch-parserTests.txt.js",
+		"test": "node ../../tests/parser/parserTests.js"
+	}
+}

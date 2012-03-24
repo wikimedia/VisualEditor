@@ -4,19 +4,10 @@ Please see https://www.mediawiki.org/wiki/Future/Parser_development for some
 information on how to get started with these tests and the current parser
 architecture.
 
-Needed npm modules:
-* pegjs
-* colors
-* html5
-* jquery
-* jsdom
-* diff
-* libxmljs (requires native compilation)
-* optimist (for argument handling)
-* webworker (not needed for parserTests)
-* coffee-script (if you'd like to modify .coffee files)
-* request
-* jshashes
+Install dependencies and run tests:
+
+cd tests/parser
+make test
 
 == Running parserTests.js ==
 
