@@ -34,6 +34,7 @@ var fs = require('fs'),
 	Sanitizer = require('./ext.core.Sanitizer.js').Sanitizer,
 	TemplateHandler = require('./ext.core.TemplateHandler.js').TemplateHandler,
 	AttributeExpander = require('./ext.core.AttributeExpander.js').AttributeExpander,
+	ListHandler = require('./ext.core.ListHandler.js').ListHandler,
 	LinkHandler = require('./ext.core.LinkHandler.js'),
 	WikiLinkHandler	= LinkHandler.WikiLinkHandler,
 	ExternalLinkHandler	= LinkHandler.ExternalLinkHandler,
@@ -132,7 +133,7 @@ ParserPipelineFactory.prototype.recipes = {
 			[ 
 				// text/wiki-specific tokens
 				QuoteTransformer, 
-				/* ListHandler, */
+				ListHandler,
 				Cite,
 				PostExpandParagraphHandler,
 				Sanitizer 
