@@ -12,7 +12,17 @@ var ParserPipeline = require('./mediawiki.parser.js').ParserPipeline,
 	optimist = require('optimist');
 
 ( function() { 
-	var argv = optimist.usage( 'Usage: $0', {
+	var opts = optimist.usage( 'Usage: echo wikitext | $0', {
+		'help': {
+			description: 'Show this message',
+			'boolean': true,
+			'default': false
+		},
+		'linearmodel': {
+			description: 'Output linear model data instead of HTML',
+			'boolean': true,
+			'default': false
+		},
 		'debug': {
 			description: 'Debug mode',
 			'boolean': true,
@@ -43,7 +53,13 @@ var ParserPipeline = require('./mediawiki.parser.js').ParserPipeline,
 			'boolean': true,
 			'default': true
 		}
-	}).argv;
+	});
+	var argv = opts.argv;
+	
+	if ( argv.help ) {
+		optimist.showHelp();
+		return;
+	}
 
 	var env = new ParserEnv( { 
 						// fetch templates from enwiki by default..
@@ -73,7 +89,11 @@ var ParserPipeline = require('./mediawiki.parser.js').ParserPipeline,
 		var input = inputChunks.join('');
 		parser.on('document', function ( document ) {
 			// Print out the html
-			process.stdout.write( document.body.innerHTML );
+			if ( argv.linearmodel ) {
+				process.stdout.write( parser.getLinearModel( document ) );
+			} else {
+				process.stdout.write( document.body.innerHTML );
+			}
 			// add a trailing newline for shell user's benefit
 			process.stdout.write( "\n" );
 			process.exit(0);
