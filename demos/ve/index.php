@@ -2,11 +2,11 @@
 
 <html>
 	<head>
-		<title>EditSurface Demo</title>
-		<!-- es -->
-		<link rel="stylesheet" href="../../modules/ve/es/styles/ve.es.Document.css">
-		<link rel="stylesheet" href="../../modules/ve/es/styles/ve.es.Content.css">
-		<link rel="stylesheet" href="../../modules/ve/es/styles/ve.es.Surface.css">
+		<title>VisualEditor Demo</title>
+		<!-- ce -->
+		<link rel="stylesheet" href="../../modules/ve/ce/styles/ve.ce.Document.css">
+		<link rel="stylesheet" href="../../modules/ve/ce/styles/ve.ce.Content.css">
+		<link rel="stylesheet" href="../../modules/ve/ce/styles/ve.ce.Surface.css">
 		<!-- ui -->
 		<link rel="stylesheet" href="../../modules/ve/ui/styles/ve.ui.Context.css">
 		<link rel="stylesheet" href="../../modules/ve/ui/styles/ve.ui.Inspector.css">
@@ -39,7 +39,7 @@
 				border: solid 1px #cccccc;
 				border-top: none;
 			}
-			#es-visual {
+			#es-editor, .es-showData #es-editor {
 				padding-left: 1em;
 				padding-right: 1em;
 			}
@@ -79,6 +79,10 @@ $modeHelp = "Toggle help view";
 include( '../../modules/sandbox/base.php' );
 
 ?>
+		<!-- Rangy -->
+		<script src="../../modules/rangy/rangy-core.js"></script>
+		<script src="../../modules/rangy/rangy-position.js"></script>
+
 		<!-- ve -->
 		<script src="../../modules/jquery/jquery.js"></script>
 		<script src="../../modules/ve/ve.js"></script>
@@ -113,23 +117,25 @@ include( '../../modules/sandbox/base.php' );
 		<script src="../../modules/ve/dm/serializers/ve.dm.JsonSerializer.js"></script>
 		<script src="../../modules/ve/dm/serializers/ve.dm.WikitextSerializer.js"></script>
 
-		<!-- es -->
-		<script src="../../modules/ve/es/ve.es.js"></script>
-		<script src="../../modules/ve/es/ve.es.Node.js"></script>
-		<script src="../../modules/ve/es/ve.es.BranchNode.js"></script>
-		<script src="../../modules/ve/es/ve.es.LeafNode.js"></script>
-		<script src="../../modules/ve/es/ve.es.Content.js"></script>
-		<script src="../../modules/ve/es/ve.es.Surface.js"></script>
+		<!-- ce -->
+		<script src="../../modules/ve/ce/ve.ce.js"></script>
+		<script src="../../modules/ve/ce/ve.ce.js"></script>
+		<script src="../../modules/ve/ce/ve.ce.Node.js"></script>
+		<script src="../../modules/ve/ce/ve.ce.BranchNode.js"></script>
+		<script src="../../modules/ve/ce/ve.ce.LeafNode.js"></script>
+		<script src="../../modules/ve/ce/ve.ce.Content.js"></script>
+		<script src="../../modules/ve/ce/ve.ce.Surface.js"></script>
+		<script src="../../modules/ve/ce/ve.ce.SurfaceObserver.js"></script>
 
-		<script src="../../modules/ve/es/nodes/ve.es.DocumentNode.js"></script>
-		<script src="../../modules/ve/es/nodes/ve.es.HeadingNode.js"></script>
-		<script src="../../modules/ve/es/nodes/ve.es.ParagraphNode.js"></script>
-		<script src="../../modules/ve/es/nodes/ve.es.PreNode.js"></script>
-		<script src="../../modules/ve/es/nodes/ve.es.ListItemNode.js"></script>
-		<script src="../../modules/ve/es/nodes/ve.es.ListNode.js"></script>
-		<script src="../../modules/ve/es/nodes/ve.es.TableCellNode.js"></script>
-		<script src="../../modules/ve/es/nodes/ve.es.TableNode.js"></script>
-		<script src="../../modules/ve/es/nodes/ve.es.TableRowNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.ce.DocumentNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.ce.HeadingNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.ce.ParagraphNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.ce.PreNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.ce.ListItemNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.ce.ListNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.ce.TableCellNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.ce.TableNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.ce.TableRowNode.js"></script>
 
 		<!-- ui -->
 		<script src="../../modules/ve/ui/ve.ui.js"></script>

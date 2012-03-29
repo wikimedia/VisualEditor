@@ -46,6 +46,12 @@ $wgVisualEditorResourceTemplate = array(
 );
 
 $wgResourceModules += array(
+	'rangy' => $wgVisualEditorResourceTemplate + array(
+		'scripts' => array(
+			'rangy/rangy-core.js',
+			'rangy/rangy-position.js',
+		),
+	),
 	'ext.visualEditor.special.sandbox' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
 			'sandbox/special.js',
@@ -104,22 +110,23 @@ $wgResourceModules += array(
 			've/dm/serializers/ve.dm.HtmlSerializer.js',
 			've/dm/serializers/ve.dm.JsonSerializer.js',
 			've/dm/serializers/ve.dm.WikitextSerializer.js',
-			// es
-			've/es/ve.es.js',
-			've/es/ve.es.Node.js',
-			've/es/ve.es.BranchNode.js',
-			've/es/ve.es.LeafNode.js',
-			've/es/ve.es.Content.js',
-			've/es/ve.es.Surface.js',
-			've/es/nodes/ve.es.DocumentNode.js',
-			've/es/nodes/ve.es.HeadingNode.js',
-			've/es/nodes/ve.es.ParagraphNode.js',
-			've/es/nodes/ve.es.PreNode.js',
-			've/es/nodes/ve.es.ListItemNode.js',
-			've/es/nodes/ve.es.ListNode.js',
-			've/es/nodes/ve.es.TableCellNode.js',
-			've/es/nodes/ve.es.TableNode.js',
-			've/es/nodes/ve.es.TableRowNode.js',
+			// ce
+			've/ce/ve.ce.js',
+			've/ce/ve.ce.Node.js',
+			've/ce/ve.ce.BranchNode.js',
+			've/ce/ve.ce.LeafNode.js',
+			've/ce/ve.ce.Content.js',
+			've/ce/ve.ce.Surface.js',
+			've/ce/ve.ce.SurfaceObserver.js',
+			've/ce/nodes/ve.ce.DocumentNode.js',
+			've/ce/nodes/ve.ce.HeadingNode.js',
+			've/ce/nodes/ve.ce.ParagraphNode.js',
+			've/ce/nodes/ve.ce.PreNode.js',
+			've/ce/nodes/ve.ce.ListItemNode.js',
+			've/ce/nodes/ve.ce.ListNode.js',
+			've/ce/nodes/ve.ce.TableCellNode.js',
+			've/ce/nodes/ve.ce.TableNode.js',
+			've/ce/nodes/ve.ce.TableRowNode.js',
 			// ui
 			've/ui/ve.ui.js',
 			've/ui/ve.ui.Inspector.js',
@@ -139,9 +146,9 @@ $wgResourceModules += array(
 		),
 		'styles' => array(
 			// es
-			've/es/styles/ve.es.Surface.css',
-			've/es/styles/ve.es.Content.css',
-			've/es/styles/ve.es.Document.css',
+			've/ce/styles/ve.ce.Surface.css',
+			've/ce/styles/ve.ce.Content.css',
+			've/ce/styles/ve.ce.Document.css',
 			// ui
 			've/ui/styles/ve.ui.Context.css',
 			've/ui/styles/ve.ui.Inspector.css',
@@ -150,6 +157,7 @@ $wgResourceModules += array(
 		),
 		'dependencies' => array(
 			'jquery',
+			'rangy',
 		),
 		'messages' => array(
 			'visualeditor-tooltip-wikitext',
