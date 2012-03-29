@@ -470,12 +470,22 @@ $(document).ready( function() {
 			]
 		}
 	};
-	window.documentModel = ve.dm.DocumentNode.newFromPlainObject( wikidoms['Wikipedia article'] );
-	window.surfaceModel = new ve.dm.Surface( window.documentModel );
-	window.surfaceView = new ve.ce.Surface( $( '#es-editor' ), window.surfaceModel );
-	window.toolbarView = new ve.ui.Toolbar( $( '#es-toolbar' ), window.surfaceView );
-	window.contextView = new ve.ui.Context( window.surfaceView );
-	window.surfaceModel.select( new ve.Range( 1, 1 ) );
+	
+	/* TODO: Make the config better */
+	var options = {
+		toolbars: {
+			'top': [ { 'name': 'history', 'items' : ['undo', 'redo'] },
+					  { 'name': 'textStyle', 'items' : ['format'] },
+					  { 'name': 'textStyle', 'items' : ['bold', 'italic', 'link', 'clear'] },
+					  { 'name': 'list', 'items' : ['number', 'bullet', 'outdent', 'indent'] } ]
+			}
+		};
+
+	//create a new instance of VE
+	var sandboxEditor = new ve.Surface('sandbox', wikidoms['Wikipedia article'], options ),
+		surfaceModel = sandboxEditor.getSurfaceModel(),
+		documentModel = sandboxEditor.getDocumentModel(),
+		editorID = sandboxEditor.getID();
 
 	/*
 	 * This code is responsible for switching toolbar into floating mode when scrolling (with

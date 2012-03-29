@@ -3,7 +3,12 @@
  * 
  * All classes and functions will be attached to this object to keep the global namespace clean.
  */
-window.ve = {};
+window.ve = {
+	/**
+	 * List of instances of visual editors
+	 */
+	'instances': []
+};
 
 /* Functions */
 

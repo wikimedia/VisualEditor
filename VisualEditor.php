@@ -89,6 +89,7 @@ $wgResourceModules += array(
 			've/ve.Node.js',
 			've/ve.BranchNode.js',
 			've/ve.LeafNode.js',
+			've/ve.Surface.js',
 			// dm
 			've/dm/ve.dm.js',
 			've/dm/ve.dm.Node.js',
