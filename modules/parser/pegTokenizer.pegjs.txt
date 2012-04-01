@@ -526,7 +526,6 @@ block_line
   / pre_indent
   / pre
 
-
 /*
  * A paragraph. We don't emit 'p' tokens to avoid issues with template
  * transclusions, <p> tags in the source and the like. Instead, we perform
@@ -658,8 +657,12 @@ behavior_switch
     )
     '__'
 {
-    behaviors[behavior] = true;
-    return '';
+    return [
+        new TagTk(
+            'behavior-switch',
+            [new KV('word', behavior)]
+        )
+    ];
 }
 
 /**************************************************************

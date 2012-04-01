@@ -36,6 +36,7 @@ var fs = require('fs'),
 	WikiLinkHandler				= LinkHandler.WikiLinkHandler,
 	ExternalLinkHandler			= LinkHandler.ExternalLinkHandler,
 	Cite                        = require('./ext.Cite.js').Cite,
+	BehaviorSwitchHandler       = require('./ext.core.BehaviorSwitchHandler.js').BehaviorSwitchHandler,
 	FauxHTML5                   = require('./mediawiki.HTML5TreeBuilder.node.js').FauxHTML5,
 	DOMPostProcessor            = require('./mediawiki.DOMPostProcessor.js').DOMPostProcessor,
 	DOMConverter                = require('./mediawiki.DOMConverter.js').DOMConverter,
@@ -180,7 +181,8 @@ ParserPipeline.prototype._transformers = {
 				// expansion?
 				AttributeExpander,
 				WikiLinkHandler,
-				ExternalLinkHandler
+				ExternalLinkHandler,
+				BehaviorSwitchHandler,
 				/* ExtensionHandler1, */
 				/* ExtensionHandler2, */
 			],
