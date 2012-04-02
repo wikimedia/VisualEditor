@@ -34,6 +34,8 @@ ve.ce.Surface = function( $container, model ) {
 		if ( selection !== null ) {
 			// Keep a copy of the current selection on hand
 			_this.currentSelection = selection.clone();
+			// Tell the model what we have selected.
+			_this.model.select(_this.currentSelection);		
 			// Respond to selection changes
 			_this.updateSelection();
 
