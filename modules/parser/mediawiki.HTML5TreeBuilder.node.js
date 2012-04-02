@@ -76,8 +76,8 @@ FauxHTML5.TreeBuilder.prototype.processToken = function (token) {
 		}
 		token.attribs.push( 
 				{
-					// 'Mediawiki round-trip' information
-					k: 'data-mw-rt', 
+					// Mediawiki-specific round-trip / non-semantic information
+					k: 'data-mw', 
 					v: JSON.stringify( token.dataAttribs ) 
 				} );
 	}
