@@ -190,7 +190,7 @@ ve.batchedSplice = function( arr, offset, remove, data ) {
 	// cross-browser - 1024 seems to be a safe batch size on all browsers
 	var index = 0, batchSize = 1024, toRemove = remove;
 	
-	if ( data.length == 0 ) {
+	if ( data.length === 0 ) {
 		// Special case: data is empty, so we're just doing a removal
 		// The code below won't handle that properly, so we do it here
 		arr.splice( offset, remove );

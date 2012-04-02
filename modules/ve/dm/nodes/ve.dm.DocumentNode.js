@@ -1203,7 +1203,7 @@ ve.dm.DocumentNode.prototype.prepareWrap = function( range, unwrapOuter, wrapOut
 				// This is a structural offset
 				if ( this.data[i].type.charAt( 0 ) != '/' ) {
 					// This is an opening element
-					if ( depth == 0 ) {
+					if ( depth === 0 ) {
 						// We are at the start of a top-level element
 						// Replace the opening elements
 						
@@ -1227,7 +1227,7 @@ ve.dm.DocumentNode.prototype.prepareWrap = function( range, unwrapOuter, wrapOut
 				} else {
 					// This is a closing element
 					depth--;
-					if ( depth == 0 ) {
+					if ( depth === 0 ) {
 						// We are at the end of a top-level element
 						// Retain the contents of what we're wrapping
 						tx.pushRetain( i - startOffset + 1 - unwrapEach.length*2 );

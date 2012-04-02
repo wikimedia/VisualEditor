@@ -25,4 +25,4 @@ ve.ui.Tool.prototype.updateState = function() {
 
 ve.ui.Tool.prototype.clearState = function() {
 	this.$.removeClass( 'es-toolbarButtonTool-down' );
-}
+};

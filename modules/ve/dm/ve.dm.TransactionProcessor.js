@@ -496,8 +496,13 @@ ve.dm.TransactionProcessor.prototype.replace = function( op ) {
 		// replace operation to the linear model, then keeps applying subsequent
 		// operations until the model is consistent. We keep track of the changes
 		// and queue a single rebuild after the loop finishes.
-		var 	operation = op, removeLevel = 0, replaceLevel = 0, startOffset = this.cursor,
-			adjustment = 0, i, type;
+		var operation = op,
+			removeLevel = 0,
+			replaceLevel = 0,
+			startOffset = this.cursor,
+			adjustment = 0,
+			i,
+			type;
 		
 		while ( true ) {
 			if ( operation.type == 'replace' ) {
@@ -544,7 +549,7 @@ ve.dm.TransactionProcessor.prototype.replace = function( op ) {
 				this.executeOperation( operation );
 			}
 			
-			if ( removeLevel == 0 && replaceLevel == 0 ) {
+			if ( removeLevel === 0 && replaceLevel === 0 ) {
 				// The model is back in a consistent state, so we're done
 				break;
 			}

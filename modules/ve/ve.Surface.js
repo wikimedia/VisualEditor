@@ -16,11 +16,11 @@ ve.Surface = function( id, data, options ) {
 		// Default options
 	}, this.options );
 	
-	this.dm = ve.dm.DocumentNode.newFromPlainObject( data )
-	this.sm = new ve.dm.Surface( this.dm );
+	this.documentModel = ve.dm.DocumentNode.newFromPlainObject( data );
+	this.surfaceModel = new ve.dm.Surface( this.documentModel );
 	
 	//TODO: Find source of breakage when view element is not #es-editor
-	this.view = new ve.ce.Surface( $( '#es-editor' ), this.sm );
+	this.view = new ve.ce.Surface( $( '#es-editor' ), this.surfaceModel );
 	this.context = new ve.ui.Context( this.view );
 	
 	//TODO: Configure toolbar based on this.options.
@@ -30,13 +30,13 @@ ve.Surface = function( id, data, options ) {
 };
 
 ve.Surface.prototype.getSurfaceModel = function() {
-	return this.sm;
+	return this.surfaceModel;
 };
 
 ve.Surface.prototype.getDocumentModel = function() {
-	return this.dm;
+	return this.documentModel;
 };
 
 ve.Surface.prototype.getID = function() {
 	return this.id;
-}
+};

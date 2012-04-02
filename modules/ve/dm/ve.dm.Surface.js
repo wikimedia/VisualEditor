@@ -113,7 +113,8 @@ ve.dm.Surface.prototype.breakpoint = function( selection ) {
 			selection: selection || this.selection.clone()
 		} );
 		this.smallStack = [];
-	}};
+	}
+};
 
 ve.dm.Surface.prototype.undo = function() {
 	this.breakpoint();

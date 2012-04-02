@@ -17,6 +17,7 @@ ve.ui.Toolbar = function( $container, surfaceView, config ) {
 	this.tools = [];
 
 	this.surfaceView.surfaceObserver.on( 'select', function ( selection ) {
+		var i;
 		if ( selection !== null ) {
 			var	annotations = _this.surfaceView.getAnnotations(),
 				nodes = [],
@@ -39,11 +40,11 @@ ve.ui.Toolbar = function( $container, surfaceView, config ) {
 				}
 			}
 
-			for( var i = 0; i < _this.tools.length; i++ ) {
+			for ( i = 0; i < _this.tools.length; i++ ) {
 				_this.tools[i].updateState( annotations, nodes );
 			}
 		} else {
-			for( var i = 0; i < _this.tools.length; i++ ) {
+			for ( i = 0; i < _this.tools.length; i++ ) {
 				_this.tools[i].clearState();
 			}
 		}

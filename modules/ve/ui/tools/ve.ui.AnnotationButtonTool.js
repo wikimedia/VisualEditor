@@ -30,7 +30,9 @@ ve.ui.AnnotationButtonTool.prototype.onClick = function() {
 				var surfaceModel = surfaceView.getModel(),
 					documentModel = surfaceModel.getDocument(),
 					selection = surfaceModel.getSelection(),
-					range = documentModel.getAnnotationBoundaries( selection.from, this.annotation, true );
+					range = documentModel.getAnnotationBoundaries(
+						selection.from, this.annotation, true
+					);
 				surfaceModel.select( range );
 				this.toolbar.getSurfaceView().getContextView().openInspector( this.inspector );
 			}
@@ -41,7 +43,9 @@ ve.ui.AnnotationButtonTool.prototype.onClick = function() {
 };
 
 ve.ui.AnnotationButtonTool.prototype.updateState = function( annotations, nodes ) {
-	if ( ve.dm.DocumentNode.getIndexOfAnnotation( annotations.full, this.annotation, true ) !== -1 ) {
+	if (
+		ve.dm.DocumentNode.getIndexOfAnnotation( annotations.full, this.annotation, true ) !== -1
+	) {
 		this.$.addClass( 'es-toolbarButtonTool-down' );
 		this.active = true;
 		return;
