@@ -165,8 +165,8 @@ function ParserTests () {
 
 
 
-	this.testFileName = '../../../../phase3/tests/parser/parserTests.txt'; // 'default'
-	this.testFileName2 = '../../../../tests/parser/parserTests.txt'; // Fallback. Not everyone fetch at phase3 level 
+	this.testFileName = '../../../../core/tests/parser/parserTests.txt'; // 'default'
+	this.testFileName2 = '../../../../tests/parser/parserTests.txt'; // Fallback. Not everyone fetch at core level 
 
 	if (this.argv._[0]) {
 		// hack :D
