@@ -477,7 +477,7 @@ ve.ce.Surface.prototype.onKeyDown = function( e ) {
 			if (  sel.anchorOffset === 0 ) {
 				globalOffset = this.getOffset( sel.anchorNode, sel.anchorOffset, true );
 				node = this.documentView.getNodeFromOffset( globalOffset );
-				nodeOffset = surfaceView.documentView.getOffsetFromNode( node );
+				nodeOffset = this.documentView.getOffsetFromNode( node );
 				if ( nodeOffset + 1 === globalOffset ) {
 					newOffset = this.documentView.model.getRelativeContentOffset(
 						globalOffset, -1
@@ -493,7 +493,7 @@ ve.ce.Surface.prototype.onKeyDown = function( e ) {
 			if ( sel.anchorOffset === sel.anchorNode.length ) {
 				globalOffset = this.getOffset( sel.anchorNode, sel.anchorOffset, true );
 				node = this.documentView.getNodeFromOffset( globalOffset );
-				nodeOffset = surfaceView.documentView.getOffsetFromNode( node );
+				nodeOffset = this.documentView.getOffsetFromNode( node );
 				if ( nodeOffset + 1 + node.getContentLength() === globalOffset ) {
 					newOffset = this.documentView.model.getRelativeContentOffset(
 						globalOffset, 1
