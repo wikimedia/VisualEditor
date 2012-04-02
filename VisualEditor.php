@@ -95,6 +95,7 @@ $wgResourceModules += array(
 			've/dm/ve.dm.Node.js',
 			've/dm/ve.dm.BranchNode.js',
 			've/dm/ve.dm.LeafNode.js',
+			've/dm/ve.dm.DocumentSynchronizer.js',
 			've/dm/ve.dm.TransactionProcessor.js',
 			've/dm/ve.dm.Transaction.js',
 			've/dm/ve.dm.Surface.js',

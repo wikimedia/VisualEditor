@@ -99,6 +99,7 @@ include( '../../modules/sandbox/base.php' );
 		<script src="../../modules/ve/dm/ve.dm.Node.js"></script>
 		<script src="../../modules/ve/dm/ve.dm.BranchNode.js"></script>
 		<script src="../../modules/ve/dm/ve.dm.LeafNode.js"></script>
+		<script src="../../modules/ve/dm/ve.dm.DocumentSynchronizer.js"></script>
 		<script src="../../modules/ve/dm/ve.dm.TransactionProcessor.js"></script>
 		<script src="../../modules/ve/dm/ve.dm.Transaction.js"></script>
 		<script src="../../modules/ve/dm/ve.dm.Surface.js"></script>
