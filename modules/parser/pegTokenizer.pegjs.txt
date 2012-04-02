@@ -121,7 +121,15 @@
         }
     };
 
-    var pp = function ( s ) { return JSON.stringify(s, null, 2); }
+    var pp = function ( s ) { return JSON.stringify(s, null, 2); };
+
+    // Simple string formatting using '%s'
+    var sprintf = function ( format ) {
+        var args = Array.prototype.slice.call(arguments, 1);
+        return format.replace(/%s/g, function () {
+            return args.length ? args.shift() : '';
+        });
+    };
 
     /* 
      * Annotate a token stream with list items with appropriate list tokens
@@ -261,8 +269,46 @@
     };
 
 
+    /**
+     * Determine if a string represents a valid ISBN-10 or ISBN-13 identifier
+     *
+     * @static
+     * @method
+     * @param {String} isbn: The string to check
+     * @returns {Boolean}: True if valid ISBN, false otherwise.
+     */
+    var isValidISBN = function ( isbn ) {
+        var i = 0, checksum = 0;
+
+        isbn = isbn.toUpperCase().replace(/[^\dX]/g, '');
+        return [10, 13].indexOf(isbn.length) !== -1;
+
+        // XXX: The following code is short-circuited because it is stricter
+        // than the standard parser:
+
+        switch (isbn.length) {
+        case 10:
+            for (i = 0; i < 9; i++) {
+                checksum += parseInt(isbn[i], 10) * (10 - i);
+            }
+            checksum += '0123456789X'.indexOf(isbn[9]);
+            return (checksum % 11 === 0);
+        case 13:
+            for (i = 0; i < 13; i++) {
+                checksum += parseInt(isbn[i], 10) * (i & 1 ? 3 : 1);
+            }
+            return (checksum % 10 === 0) && (/^97[89]/.test(isbn));
+        }
+        return false;
+    };
+
+    
+
     /* End static utilities */
 
+    /* Behavior switches scoped to entire page */
+    var behaviors = {};
+    
     /*
      * Flags for specific parse environments (inside tables, links etc). Flags
      * trigger syntactic stops in the inline_breaks production, which
@@ -534,7 +580,7 @@ inline_element
     /// & '{' ( tplarg / template )
      // Eat three opening brackets as text.
     / '[[[' { return '[[[' }
-    / & '[' ( wikilink / extlink )
+    / & '[' ( wikilink / extlink / autolink )
     / & "'" quote
 
 /* Headings  */
@@ -588,13 +634,44 @@ comment_chars
 
 
 
+// Behavior switches
+behavior_switch
+  = '__' 
+    behavior:(
+        'NOTOC'
+      / 'FORCETOC'
+      / 'TOC'
+      / 'NOEDITSECTION'
+      / 'NEWSECTIONLINK'
+      / 'NONEWSECTIONLINK'
+      / 'NOGALLERY'
+      / 'HIDDENCAT'
+      / 'NOCONTENTCONVERT'
+      / 'NOCC'
+      / 'NOTITLECONVERT'
+      / 'NOTC'
+      / 'START'
+      / 'END'    // XXX: Removed in 19213. Should we keep this?
+      / 'INDEX'
+      / 'NOINDEX'
+      / 'STATICREDIRECT'
+    )
+    '__'
+{
+    behaviors[behavior] = true;
+    return '';
+}
+
 /**************************************************************
  * External (bracketed and autolinked) links
  **************************************************************/
 
-urllink
+autolink
   = ! { return stops.onCount('extlink') }
-    target:url {
+    (urllink / autoref / isbn)
+
+urllink
+  = target:url {
       return [ new TagTk( 'urllink', [new KV('href', target)] ) ];
   }
 
@@ -625,10 +702,51 @@ extlink
       / "[" & { stops.dec('extlink'); return false; }
     )
 
-/* Defaul URL protocols in MediaWiki (see DefaultSettings). Normally these can
- * be configured dynamically. */
+autoref
+  = ref:('RFC' / 'PMID') (newline / space)+ identifier:[0-9]+
+{
+    identifier = identifier.join('');
 
-url_chars = [/fghimnstw]
+    var base_urls = {
+            'RFC'  : '//tools.ietfs.org/html/rfc%s',
+            'PMID' : '//www.ncbi.nlm.nih.gov/pubmed/%s?dopt=Abstract'
+        },
+        url = sprintf(base_urls[ref], identifier);
+
+    return [
+        new SelfclosingTagTk( 'extlink', [
+           new KV('href', sprintf(base_urls[ref], identifier)),
+           new KV('content', [ref, identifier].join(' '))
+        ] )
+    ];
+}
+
+isbn
+  = 'ISBN' (newline / space)+
+    head:[0-9]
+    digits:([- ]? [0-9])+
+    tail:'X'?
+{
+    var isbn = [head, digits, tail].join('').replace(/,/g, '');
+
+    if (!isValidISBN(isbn)) {
+        return null;
+    }
+
+    return [
+        new SelfclosingTagTk( 'wikilink', [
+           new KV('', 'Special:BookSources/' + isbn.replace(/[^\d]/g, '')),
+           new KV('', 'ISBN ' + isbn),
+           new KV('tail', ''),
+        ] )
+    ];
+}
+
+
+/* Default URL protocols in MediaWiki (see DefaultSettings). Normally
+ * these can be configured dynamically. */
+
+url_chars = [/fghimnstwIPR]
 
 url_protocol
   = '//' // for protocol-relative URLs
@@ -1619,7 +1737,11 @@ text = t:text_char+ { return t.join(''); }
  * h    http(s) urls
  * n    nntp(s) urls
  * m    mailto urls
+ * I    start of ISBN 10/13 auto links
+ * P    start of PMID auto links
+ * R    start of RFC auto links
  *
+ * _    behavior switches (e.g., '__NOTOC__') (XXX: not URL related)
  * ! and | table cell delimiters, might be better to specialize those
  * =    headings - also specialize those!
  *
@@ -1630,8 +1752,9 @@ text = t:text_char+ { return t.join(''); }
  * }    end of parser func/transclusion/template arg
  */
 
-urltext = ( t:[^'<~[{\n\rfghimnstw|!:\]} &=]+ { return t.join(''); }
-          / & url_chars urllink
+urltext = ( t:[^'<~[{\n\rIPRfghimnstw_|!:\]} &=]+ { return t.join(''); }
+          / & url_chars autolink
+          / & ('__') behavior_switch
           / htmlentity 
           // Convert trailing space into &nbsp;
           // XXX: This should be moved to a serializer
