@@ -501,7 +501,7 @@ nested_block = !inline_breaks b:block { return b }
  * Line-based block constructs.
  */
 block_lines
-  = s:sol 
+  = s:sol
     // eat an empty line before the block
     s2:(os:optionalSpaceToken so:sol { return os.concat(so) })? 
     bl:block_line { 

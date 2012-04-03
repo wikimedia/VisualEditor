@@ -22,13 +22,25 @@ function ParserFunctions ( manager ) {
 	this.manager = manager;
 }
 
-ParserFunctions.prototype['pf_#if'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype._rejoinKV = function ( k, v ) {
+	if ( k && k.length ) {
+		return k.concat( ['='], v );
+	} else {
+		return v;
+	}
+};
+
+ParserFunctions.prototype['pf_#if'] = function ( target, argList, argDict, unnamedArgs ) {
 	if ( target.trim() !== '' ) {
 		this.manager.env.dp('#if, first branch', target.trim(), argDict[1] );
-		return argDict[1] || [];
+		return unnamedArgs[0] && 
+			this._rejoinKV( unnamedArgs[0].k, argList[0].v ) || 
+			[];
 	} else {
 		this.manager.env.dp('#if, second branch', target.trim(), argDict[2] );
-		return argDict[2] || [];
+		return unnamedArgs[1] && 
+			this._rejoinKV( unnamedArgs[1].k, argList[1] && argList[1].v ) || 
+			[];
 	}
 };
 
@@ -85,27 +97,31 @@ ParserFunctions.prototype['pf_#switch'] = function ( target, argList, argDict, u
 };
 
 // #ifeq
-ParserFunctions.prototype['pf_#ifeq'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype['pf_#ifeq'] = function ( target, argList, argDict, unnamedArgs ) {
 	if ( argList.length < 2 ) {
 		return [];
 	} else {
 		if ( target.trim() === this.manager.env.tokensToString( argList[0].v ).trim() ) {
-			return ( argList[1] && argList[1].v) || [];
+			return unnamedArgs[1] && 
+				this._rejoinKV( unnamedArgs[1].k, argList[1].v ) ||
+				[];
 		} else {
-			return ( argList[2] && argList[2].v) || [];
+			return unnamedArgs[2] &&
+				this._rejoinKV( unnamedArgs[2].k, argList[2].v ) ||
+				[];
 		}
 	}
 };
 
-ParserFunctions.prototype['pf_lc'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_lc = function ( target, argList, argDict ) {
 	return [ target.toLowerCase() ];
 };
 
-ParserFunctions.prototype['pf_uc'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_uc = function ( target, argList, argDict ) {
 	return [ target.toUpperCase() ];
 };
 
-ParserFunctions.prototype['pf_ucfirst'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_ucfirst = function ( target, argList, argDict ) {
 	if ( target ) {
 		return [ target[0].toUpperCase() + target.substr(1) ];
 	} else {
@@ -113,14 +129,14 @@ ParserFunctions.prototype['pf_ucfirst'] = function ( target, argList, argDict ) 
 	}
 };
 
-ParserFunctions.prototype['pf_lcfirst'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_lcfirst = function ( target, argList, argDict ) {
 	if ( target ) {
 		return [ target[0].toLowerCase() + target.substr(1) ];
 	} else {
 		return [];
 	}
 };
-ParserFunctions.prototype['pf_padleft'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_padleft = function ( target, argList, argDict ) {
 	if ( '1' in argDict ) {
 		var n = argDict[1];
 		while ( target.length < n ) {
@@ -137,42 +153,42 @@ ParserFunctions.prototype['pf_#tag'] = function ( target, argList, argDict ) {
 	// https://www.mediawiki.org/wiki/Future/Parser_development#Token_stream_transforms
 	return [ new TagTk( target ) ] 
 		.concat( argList[0].v, 
-			 [ new EndTagTk( target ) ] );
+			[ new EndTagTk( target ) ] );
 };
 
 // TODO: These are just quick wrappers for now, optimize!
-ParserFunctions.prototype['pf_currentyear'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_currentyear = function ( target, argList, argDict ) {
 	return this['pf_#time']( 'Y', [], {} );
 };
-ParserFunctions.prototype['pf_currentmonth'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_currentmonth = function ( target, argList, argDict ) {
 	return this['pf_#time']( 'm', [], {} );
 };
-ParserFunctions.prototype['pf_currentmonthname'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_currentmonthname = function ( target, argList, argDict ) {
 	return this['pf_#time']( 'F', [], {} );
 };
 // XXX Actually use genitive form!
-ParserFunctions.prototype['pf_currentmonthnamegen'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_currentmonthnamegen = function ( target, argList, argDict ) {
 	return this['pf_#time']( 'F', [], {} );
 };
-ParserFunctions.prototype['pf_currentmonthabbrev'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_currentmonthabbrev = function ( target, argList, argDict ) {
 	return this['pf_#time']( 'M', [], {} );
 };
-ParserFunctions.prototype['pf_currentweek'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_currentweek = function ( target, argList, argDict ) {
 	return this['pf_#time']( 'W', [], {} );
 };
-ParserFunctions.prototype['pf_currentdow'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_currentdow = function ( target, argList, argDict ) {
 	return this['pf_#time']( 'w', [], {} );
 };
-ParserFunctions.prototype['pf_currentday'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_currentday = function ( target, argList, argDict ) {
 	return this['pf_#time']( 'j', [], {} );
 };
-ParserFunctions.prototype['pf_currentday2'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_currentday2 = function ( target, argList, argDict ) {
 	return this['pf_#time']( 'd', [], {} );
 };
-ParserFunctions.prototype['pf_currentdayname'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_currentdayname = function ( target, argList, argDict ) {
 	return this['pf_#time']( 'l', [], {} );
 };
-ParserFunctions.prototype['pf_currenttime'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_currenttime = function ( target, argList, argDict ) {
 	return this['pf_#time']( 'H:i', [], {} );
 };
 
@@ -322,7 +338,7 @@ Date.replaceChars = {
     U: function() { return this.getTime() / 1000; }
 };
 
-ParserFunctions.prototype['pf_#ifexpr'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype['pf_#ifexpr'] = function ( target, argList, argDict, unnamedArgs ) {
 	this.manager.env.dp( '#ifexp: ' + JSON.stringify( argList ) );
 	var res;
 	if ( target ) {
@@ -336,9 +352,13 @@ ParserFunctions.prototype['pf_#ifexpr'] = function ( target, argList, argDict ) 
 		res = target;
 	}
 	if ( res ) {
-		return ( argList[0] && argList[0].v ) || [];
+		return unnamedArgs[0] && 
+				this._rejoinKV( unnamedArgs[0].k, argList[0].v ) ||
+				[];
 	} else {
-		return ( argList[1] && argList[1].v ) || [];
+		return unnamedArgs[1] && 
+				this._rejoinKV( unnamedArgs[1].k, argList[1].v ) ||
+				[];
 	}
 };
 ParserFunctions.prototype['pf_#iferror'] = function ( target, argList, argDict ) {
@@ -363,7 +383,7 @@ ParserFunctions.prototype['pf_#expr'] = function ( target, argList, argDict ) {
 	return [ res.toString() ];
 };
 
-ParserFunctions.prototype['pf_localurl'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_localurl = function ( target, argList, argDict ) {
 	return ( 
 			'/' +
 			// FIXME! Figure out correct prefix to use
@@ -377,7 +397,7 @@ ParserFunctions.prototype['pf_localurl'] = function ( target, argList, argDict )
 						return (kv.v !== '' && kv.k + '=' + kv.v ) || kv.k;
 					} 
 				).join('&') 
-		   );
+		);
 };
 
 
@@ -387,27 +407,27 @@ ParserFunctions.prototype['pf_localurl'] = function ( target, argList, argDict )
 
 // The page name and similar information should be carried around in
 // this.manager.env
-ParserFunctions.prototype['pf_formatnum'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_formatnum = function ( target, argList, argDict ) {
 	return [ target ];
 };
-ParserFunctions.prototype['pf_currentpage'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_currentpage = function ( target, argList, argDict ) {
 	return [ target ];
 };
-ParserFunctions.prototype['pf_pagenamee'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_pagenamee = function ( target, argList, argDict ) {
 	return [ target.split(':', 2)[1] || '' ];
 };
-ParserFunctions.prototype['pf_fullpagename'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_fullpagename = function ( target, argList, argDict ) {
 	return target && [target] || ["http://example.com/fixme/"];
 };
-ParserFunctions.prototype['pf_fullpagenamee'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_fullpagenamee = function ( target, argList, argDict ) {
 	return target && [target] || ["http://example.com/fixme/"];
 };
 // This should be doable with the information in the envirionment
 // (this.manager.env) already.
-ParserFunctions.prototype['pf_fullurl'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_fullurl = function ( target, argList, argDict ) {
 	return target && [target] || ["http://example.com/fixme/"];
 };
-ParserFunctions.prototype['pf_urlencode'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_urlencode = function ( target, argList, argDict ) {
 	this.manager.env.tp( 'urlencode: ' + target  );
 	return [target.trim()];
 };
@@ -422,49 +442,49 @@ ParserFunctions.prototype['pf_urlencode'] = function ( target, argList, argDict 
 ParserFunctions.prototype['pf_#ifexist'] = function ( target, argList, argDict ) {
 	return ( argList[0] && argList[0].v ) || [];
 };
-ParserFunctions.prototype['pf_pagesize'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_pagesize = function ( target, argList, argDict ) {
 	return [ '100' ];
 };
-ParserFunctions.prototype['pf_sitename'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_sitename = function ( target, argList, argDict ) {
 	return [ "MediaWiki" ];
 };
-ParserFunctions.prototype['pf_anchorencode'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_anchorencode = function ( target, argList, argDict ) {
 	return [ target.trim() ];
 };
-ParserFunctions.prototype['pf_protectionlevel'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_protectionlevel = function ( target, argList, argDict ) {
 	return [''];
 };
-ParserFunctions.prototype['pf_ns'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_ns = function ( target, argList, argDict ) {
 	return [target];
 };
-ParserFunctions.prototype['pf_subjectspace'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_subjectspace = function ( target, argList, argDict ) {
 	return ['Main'];
 };
-ParserFunctions.prototype['pf_talkspace'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_talkspace = function ( target, argList, argDict ) {
 	return ['Talk'];
 };
-ParserFunctions.prototype['pf_numberofarticles'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_numberofarticles = function ( target, argList, argDict ) {
 	return ["1"];
 };
 ParserFunctions.prototype['pf_#language'] = function ( target, argList, argDict ) {
 	return [target];
 };
-ParserFunctions.prototype['pf_contentlang'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_contentlang = function ( target, argList, argDict ) {
 	return ['en'];
 };
-ParserFunctions.prototype['pf_numberoffiles'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_numberoffiles = function ( target, argList, argDict ) {
 	return ['2'];
 };
-ParserFunctions.prototype['pf_namespace'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_namespace = function ( target, argList, argDict ) {
 	return [target.split(':').pop() || 'Main'];
 };
-ParserFunctions.prototype['pf_namespacee'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_namespacee = function ( target, argList, argDict ) {
 	return [target.split(':').pop() || 'Main'];
 };
-ParserFunctions.prototype['pf_pagename'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_pagename = function ( target, argList, argDict ) {
 	return ['Main page'];
 };
-ParserFunctions.prototype['pf_scriptpath'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_scriptpath = function ( target, argList, argDict ) {
 	return [this.manager.env.wgScriptPath];
 };
 
