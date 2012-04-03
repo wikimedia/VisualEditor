@@ -1536,7 +1536,7 @@ table_row_tag
 table_data_tags
   = pipe
     td:table_data_tag
-    tds:( pipe pipe tdt:table_data_tag { return tdt } )* {
+    tds:( pipe_pipe tdt:table_data_tag { return tdt } )* {
         return td.concat(tds);
     }
 
@@ -1666,10 +1666,10 @@ table_row
 
 table_data 
   = //& { dp("table_data enter, pos=" + pos + input.substr(pos,10)); return true; }
-	n:(pipe pipe { return [] } / nt:newlineToken (pipe / !'!') { return nt }) 
+	n:(pipe_pipe { return [] } / nt:newlineToken (pipe / !'!') { return nt }) 
     ! [}+-]
     //& { dp('before attrib, pos=' + pos); return true; }
-    a:(as:generic_attribute+ space* pipe !pipe { return as } )?
+    a:(as:generic_attribute+ space* end_pipe { return as } )?
     //& { dp('past attrib, pos=' + pos); return true; }
     // use inline_breaks to break on tr etc
     td:(
@@ -1686,7 +1686,7 @@ table_data
 
 table_heading
   = n:("!!" { return [] } / nl:newlineToken "!" { return nl }) 
-    a:(as:generic_attribute+ pipe !pipe { return as } )?
+    a:(as:generic_attribute+ end_pipe { return as } )?
      c:inline {
          if ( a == '' ) {
              a = [];
@@ -1697,7 +1697,7 @@ table_heading
 
 thtd_attribs
   // In particular, do not match [|\n]
-  = a:(text / ! inline_breaks c:[="':;/,. -] { return c } )+ pipe ! pipe {
+  = a:(text / ! inline_breaks c:[="':;/,. -] { return c } )+ end_pipe {
     return a;
   }
 
@@ -1964,6 +1964,11 @@ attribute_preprocessor_text_double_line
 
 // Special-case support for those pipe templates
 pipe = "|" / "{{!}}"
+
+end_pipe = "|" ! "|" / "{{!}}" ! "{{!}}"
+
+pipe_pipe = "||" / "{{!}}{{!}}"
+
 
 // Similar, for tables..
 exclam = "!" / "{{;}}"
