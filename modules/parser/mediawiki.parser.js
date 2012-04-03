@@ -38,7 +38,8 @@ var fs = require('fs'),
 	Cite                        = require('./ext.Cite.js').Cite,
 	FauxHTML5                   = require('./mediawiki.HTML5TreeBuilder.node.js').FauxHTML5,
 	DOMPostProcessor            = require('./mediawiki.DOMPostProcessor.js').DOMPostProcessor,
-	DOMConverter                = require('./mediawiki.DOMConverter.js').DOMConverter;
+	DOMConverter                = require('./mediawiki.DOMConverter.js').DOMConverter,
+	ConvertDOMToLM              = require('./mediawiki.LinearModelConverter.js').ConvertDOMToLM;
 
 /**
  * Set up a simple parser pipeline. There will be a single pipeline overall,
@@ -365,12 +366,16 @@ ParserPipeline.prototype.forwardDocument = function ( document ) {
 
 // XXX: remove JSON serialization here, that should only be performed when
 // needed (and normally without pretty-printing).
-ParserPipeline.prototype.getWikiDom = function () {
+ParserPipeline.prototype.getWikiDom = function ( document ) {
 	return JSON.stringify(
-				this.DOMConverter.HTMLtoWiki( this.document.body ),
+				this.DOMConverter.HTMLtoWiki( document.body ),
 				null,
 				2
 			);
+};
+
+ParserPipeline.prototype.getLinearModel = function( document ) {
+	return JSON.stringify( ConvertDOMToLM( document.body ), null, 2 );
 };
 
 
