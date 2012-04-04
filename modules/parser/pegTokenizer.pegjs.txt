@@ -516,7 +516,7 @@ block_line
   = h
   / lists
   / st:optionalSpaceToken 
-    r:( & [{}|] tl:table_lines { return tl; }
+    r:( & [{}|!] tl:table_lines { return tl; }
       // tag-only lines should not trigger pre either
       / bts:(bt:block_tag stl:optionalSpaceToken { return bt.concat(stl) })+ 
         &eolf { return bts }
@@ -1536,7 +1536,7 @@ table_row_tag
     a:generic_attribute*
     space*
     // handle tables with missing table cells after a row
-    td:( s:sol !( pipe / [!] ) tdt:table_data_tag { return s.concat(tdt); } )?
+    td:( s:sol !( pipe / "!" ) tdt:table_data_tag { return s.concat(tdt); } )?
     { 
         // We rely on our tree builder to close the row as needed. This is
         // needed to support building tables from fragment templates with
@@ -1563,7 +1563,7 @@ table_data_tag
     //& { console.warn("past attrib, pos=" + pos + input.substr(pos,10)); return true; }
     // use inline_breaks to break on tr etc
     td:( //& { dp("table_data 2, pos=" + pos + input.substr(pos,10)); return true; }
-         b:nested_block+ { return b } 
+         b:nested_block { return b } 
        )* 
     { 
         if ( a == '' ) {
@@ -1575,7 +1575,8 @@ table_data_tag
     }
 
 table_heading_tags
-  = "!"
+  = //& { console.warn( 'th enter @' + input.substr(pos, 10)); return true; }
+    "!"
     th:table_heading_tag
     ths:( "!!" tht:table_heading_tag  { return tht } )* {
         return th.concat(ths);
@@ -1583,12 +1584,12 @@ table_heading_tags
 
 table_heading_tag
   = a:table_cell_args?
-    c:inline {
-         if ( a == '' ) {
+    c:nested_block* {
+         if ( a === '' ) {
              a = [];
          }
          return [ new TagTk( 'th', a ) ]
-						.concat( c, [new EndTagTk( 'th' )] );
+						.concat( c );
      }
 
 table_end_tag
@@ -1646,7 +1647,7 @@ table_start
 
 table_caption 
   = n:newlineToken
-    pipe "+" c:inline* { 
+    pipe "+" c:nested_block* { 
         return n.concat(c);
     }
 
