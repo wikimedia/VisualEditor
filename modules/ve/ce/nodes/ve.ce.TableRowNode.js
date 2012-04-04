@@ -8,12 +8,12 @@
  */
 ve.ce.TableRowNode = function( model ) {
 	// Inheritance
-	ve.ce.BranchNode.call( this, model, $( '<tr>' ), true );
+	ve.ce.BranchNode.call( this, model, $( '<tr></tr>' ), true );
 	
 	// DOM Changes
 	this.$
 		.attr( 'style', model.getElementAttribute( 'html/style' ) )
-		.addClass( 'es-tableRowView' );
+		.addClass( 've-ce-tableRowNode' );
 };
 
 /* Registration */

@@ -8,36 +8,38 @@
  */
 ve.ce.HeadingNode = function( model ) {
 	// Inheritance
-	ve.ce.LeafNode.call( this, model, $( '<h' + model.getElementAttribute( 'level' ) + '>' ) );
+	var level = model.getElementAttribute( 'level' );
+	ve.ce.LeafNode.call( this, model, $( '<h' + level + '></h' + level + '>' ) );
 
 	// Properties
-	this.currentLevelHash = null;
+	this.currentLevelHash = level;
 
 	// DOM Changes
-	this.$.addClass( 'es-headingView' );
+	this.$.addClass( 've-ce-headingNode' );
 
 	// Events
 	var _this = this;
 	this.model.on( 'update', function() {
-		_this.setClasses();
+		_this.setLevel();
 	} );
-
-	// Initialization
-	this.setClasses();
 };
 
 /* Methods */
 
-ve.ce.HeadingNode.prototype.setClasses = function() {
+ve.ce.HeadingNode.prototype.setLevel = function() {
 	var level = this.model.getElementAttribute( 'level' );
 	if ( level !== this.currentLevelHash ) {
 		this.currentLevelHash = level;
-		var classes = this.$.attr( 'class' );
-		this.$
-			// Remove any existing level classes
-			.attr( 'class', classes.replace( / ?es-headingView-level[0-9]+/, '' ) )
-			// Add a new level class
-			.addClass( 'es-headingView-level' + level );
+		// Create new element
+		var $new = $( '<h' + level + '></h' + level + '>' );
+		// Copy classes
+		$new.attr( 'class', this.$.attr( 'class' ) );
+		// Swap elements
+		this.$.replaceWith( $new );
+		// Use new element from now on
+		this.$ = $new;
+		// Transplant content view
+		this.contentView.setContainer( this.$ );
 	}
 };
 

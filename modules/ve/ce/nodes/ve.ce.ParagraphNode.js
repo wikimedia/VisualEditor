@@ -11,7 +11,7 @@ ve.ce.ParagraphNode = function( model ) {
 	ve.ce.LeafNode.call( this, model, $( '<p></p>' ) );
 
 	// DOM Changes
-	this.$.addClass( 'es-paragraphView' );
+	this.$.addClass( 've-ce-paragraphNode' );
 };
 
 /* Registration */

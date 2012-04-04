@@ -123,7 +123,6 @@ ve.ce.SurfaceObserver.prototype.getOffset = function( selectionNode, selectionOf
 		current = [$leafNode.contents(), 0],
 		stack = [current],
 		offset = 0;
-
 	while ( stack.length > 0 ) {
 		if ( current[1] >= current[0].length ) {
 			stack.pop();

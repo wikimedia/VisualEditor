@@ -35,13 +35,13 @@ ve.ce.Content = function( model, $container, parent ) {
 ve.ce.Content.annotationRenderers = {
 	'object/template': {
 		'open': function( data ) {
-			return '<span class="es-contentView-format-object">' + data.html;
+			return '<span class="ve-ce-content-format-object">' + data.html;
 		},
 		'close': '</span>'
 	},
 	'object/hook': {
 		'open': function( data ) {
-			return '<span class="es-contentView-format-object">' + data.html;
+			return '<span class="ve-ce-content-format-object">' + data.html;
 		},
 		'close': '</span>'
 	},
@@ -54,38 +54,38 @@ ve.ce.Content.annotationRenderers = {
 		'close': '</i>'
 	},
 	'textStyle/strong': {
-		'open': '<span class="es-contentView-format-textStyle-strong">',
+		'open': '<span class="ve-ce-content-format-textStyle-strong">',
 		'close': '</span>'
 	},
 	'textStyle/emphasize': {
-		'open': '<span class="es-contentView-format-textStyle-emphasize">',
+		'open': '<span class="ve-ce-content-format-textStyle-emphasize">',
 		'close': '</span>'
 	},
 	'textStyle/big': {
-		'open': '<span class="es-contentView-format-textStyle-big">',
+		'open': '<span class="ve-ce-content-format-textStyle-big">',
 		'close': '</span>'
 	},
 	'textStyle/small': {
-		'open': '<span class="es-contentView-format-textStyle-small">',
+		'open': '<span class="ve-ce-content-format-textStyle-small">',
 		'close': '</span>'
 	},
 	'textStyle/superScript': {
-		'open': '<span class="es-contentView-format-textStyle-superScript">',
+		'open': '<span class="ve-ce-content-format-textStyle-superScript">',
 		'close': '</span>'
 	},
 	'textStyle/subScript': {
-		'open': '<span class="es-contentView-format-textStyle-subScript">',
+		'open': '<span class="ve-ce-content-format-textStyle-subScript">',
 		'close': '</span>'
 	},
 	'link/external': {
 		'open': function( data ) {
-			return '<span class="es-contentView-format-link" data-href="' + data.href + '">';
+			return '<span class="ve-ce-content-format-link" data-href="' + data.href + '">';
 		},
 		'close': '</span>'
 	},
 	'link/internal': {
 		'open': function( data ) {
-			return '<span class="es-contentView-format-link" data-title="wiki/' + data.title + '">';
+			return '<span class="ve-ce-content-format-link" data-title="wiki/' + data.title + '">';
 		},
 		'close': '</span>'
 	}
@@ -103,8 +103,8 @@ ve.ce.Content.htmlCharacters = {
 	'>': '&gt;',
 	'\'': '&#039;',
 	'"': '&quot;',
-	'\n': '<span class="es-contentView-whitespace">&#182;</span>',
-	'\t': '<span class="es-contentView-whitespace">&#8702;</span>'
+	'\n': '<span class="ve-ce-content-whitespace">&#182;</span>',
+	'\t': '<span class="ve-ce-content-whitespace">&#8702;</span>'
 };
 
 /* Static Methods */
@@ -174,6 +174,11 @@ ve.ce.Content.renderAnnotation = function( bias, annotation, stack ) {
 
 ve.ce.Content.prototype.render = function( offset ) {
 	this.$.html( this.getHtml( 0, this.model.getContentLength() ) );
+};
+
+ve.ce.Content.prototype.setContainer = function( $container ) {
+	this.$ = $container;
+	this.render();
 };
 
 /**

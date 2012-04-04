@@ -1,9 +1,9 @@
-.es-surfaceView {
+.ve-ce-surface {
 	overflow: hidden;
 	font-size: 1em; /* to look more like MediaWiki use: 0.8em */;
 }
 
-.es-surfaceView-textarea {
+.ve-ce-surface-textarea {
 	position: absolute;
 	z-index: -1;
 	opacity: 0;
@@ -15,11 +15,11 @@
 	width: 1px;
 }
 
-.es-surfaceView-textarea:focus {
+.ve-ce-surface-textarea:focus {
 	outline: none;
 }
 
-.es-surfaceView-cursor {
+.ve-ce-surface-cursor {
 	position: absolute;
 	background-color: black;
 	width: 1px;
