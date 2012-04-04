@@ -841,7 +841,7 @@ template
     target:template_name
     params:(( newline / space )* "|"
                 r:( &"|" { return new KV( '', '') } // empty argument
-                    / ( newline / space )* p:template_param { return p } 
+                    / p:template_param { return p } 
                   ) { return r } 
             )* 
     ( newline / space )* 
@@ -880,7 +880,7 @@ tplarg
 
 template_param
   = name:template_param_name 
-    // Insanity: MW accepts |foo | = bar | as a single param..
+    // MW accepts |foo | = bar | as a single param..
     ('|' (space / newline)* &'=')?
     val:(
         s0:space* 
@@ -937,6 +937,7 @@ template_param_text
           input.substr( pos - 10, 9) + 
           input[pos].green +
           input.substr( pos +1, 9) ); */
+        // re-enable tables within template parameters
         stops.push('table', false ); 
         return stops.inc('template') 
     }
@@ -944,7 +945,22 @@ template_param_text
         stops.pop('table');
         stops.dec('template');
         //console.warn( 'tpt match: ' + pp (il));
-        return flatten( il );
+        var r = flatten( il ),
+            firstToken = r[0];
+
+        // Strip leading newlines and space-only text tokens. 
+        // XXX: Will need to round-trip these eventually.
+        while ( 
+                firstToken !== undefined &&
+                ( firstToken.constructor === NlTk || 
+                  firstToken.constructor === String && firstToken.match( /^[\t ]+$/ ) )
+              )
+        {
+            r.shift();
+            firstToken = r[0];
+        }
+
+        return r;
     }
   / & { stops.pop('table'); return stops.dec('template'); }
 
@@ -1515,7 +1531,7 @@ table_caption_tag
 
 
 table_row_tag
-  = //& { console.warn("table row enter"); return true; }
+  = //& { console.warn("table row enter @" + input.substr(pos, 30)); return true; }
     pipe "-"
     a:generic_attribute*
     space*
@@ -1547,7 +1563,7 @@ table_data_tag
     //& { console.warn("past attrib, pos=" + pos + input.substr(pos,10)); return true; }
     // use inline_breaks to break on tr etc
     td:( //& { dp("table_data 2, pos=" + pos + input.substr(pos,10)); return true; }
-         b:nested_block { return b } 
+         b:nested_block+ { return b } 
        )* 
     { 
         if ( a == '' ) {
@@ -1555,7 +1571,7 @@ table_data_tag
         }
         //console.warn("table data result: " + pp(td) + ", attribts: " + pp(a));
         return [ new TagTk( 'td', a )]
-                    .concat( td, [ new EndTagTk ( 'td' ) ] );
+                    .concat( td );
     }
 
 table_heading_tags
@@ -1674,7 +1690,7 @@ table_data
     // use inline_breaks to break on tr etc
     td:(
         //& { dp("table_data 2, pos=" + pos + input.substr(pos,10)); return true; }
-        b:nested_block { return b }
+        b:nested_block+ { return b }
        )* { 
         if ( a == '' ) {
             a = [];

@@ -53,8 +53,7 @@ PostExpandParagraphHandler.prototype._finish = function ( ) {
 };
 
 
-// Handle NEWLINE tokens, which trigger the actual quote analysis on the
-// collected quote tokens so far.
+// Handle NEWLINE tokens
 PostExpandParagraphHandler.prototype.onNewLine = function (  token, frame, cb ) {
 	//console.warn( 'PostExpandParagraphHandler.onNewLine: ' + JSON.stringify( token, null , 2 ) );
 	var res;

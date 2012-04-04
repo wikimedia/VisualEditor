@@ -22,6 +22,7 @@ function ParserFunctions ( manager ) {
 	this.manager = manager;
 }
 
+// Temporary helper.
 ParserFunctions.prototype._rejoinKV = function ( k, v ) {
 	if ( k && k.length ) {
 		return k.concat( ['='], v );
