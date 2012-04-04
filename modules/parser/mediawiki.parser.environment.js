@@ -120,7 +120,14 @@ MWParserEnvironment.prototype.formatNum = function( num ) {
 };
 
 MWParserEnvironment.prototype.getVariable = function( varname, options ) {
-		//
+	//XXX what was the original author's intention?
+	//something like this?:
+	//  return this.options[varname];
+	return this[varname];
+};
+
+MWParserEnvironment.prototype.setVariable = function( varname, value, options ) {
+	this[varname] = value;
 };
 
 /**
