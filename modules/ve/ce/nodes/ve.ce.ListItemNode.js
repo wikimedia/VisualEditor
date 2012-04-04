@@ -11,11 +11,11 @@ ve.ce.ListItemNode = function( model ) {
 	ve.ce.BranchNode.call( this, model );
 
 	// Properties
-	this.$icon = $( '<div class="es-listItemView-icon"></div>' ).prependTo( this.$ );
+	this.$icon = $( '<div class="ve-ce-listItemNode-icon"></div>' ).prependTo( this.$ );
 	this.currentStylesHash = null;
 	
 	// DOM Changes
-	this.$.addClass( 'es-listItemView' );
+	this.$.addClass( 've-ce-listItemNode' );
 
 	// Events
 	var _this = this;
@@ -40,13 +40,13 @@ ve.ce.ListItemNode.prototype.setClasses = function() {
 			.attr(
 				'class',
 				classes
-					.replace( / ?es-listItemView-level[0-9]+/, '' )
-					.replace( / ?es-listItemView-(bullet|number|term|definition)/, '' )
+					.replace( / ?ve-ce-listItemNode-level[0-9]+/, '' )
+					.replace( / ?ve-ce-listItemNode-(bullet|number|term|definition)/, '' )
 			)
 			// Set the list style class from the style on top of the stack
-			.addClass( 'es-listItemView-' + styles[styles.length - 1] )
+			.addClass( 've-ce-listItemNode-' + styles[styles.length - 1] )
 			// Set the list level class from the length of the stack
-			.addClass( 'es-listItemView-level' + ( styles.length - 1 ) );
+			.addClass( 've-ce-listItemNode-level' + ( styles.length - 1 ) );
 	}
 };
 

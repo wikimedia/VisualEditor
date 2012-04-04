@@ -11,7 +11,7 @@ ve.ce.ListNode = function( model ) {
 	ve.ce.BranchNode.call( this, model );
 
 	// DOM Changes
-	this.$.addClass( 'es-listView' );
+	this.$.addClass( 've-ce-listNode' );
 
 	// Events
 	var _this = this;

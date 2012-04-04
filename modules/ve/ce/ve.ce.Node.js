@@ -15,7 +15,7 @@ ve.ce.Node = function( model, $element ) {
 	// Properties
 	this.model = model;
 	this.parent = null;
-	this.$ = $element || $( '<div/>' );
+	this.$ = $element || $( '<div></div>' );
 };
 
 /* Methods */

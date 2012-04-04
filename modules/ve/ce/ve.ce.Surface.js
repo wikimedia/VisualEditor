@@ -21,7 +21,7 @@ ve.ce.Surface = function( $container, model ) {
 	this.documentView = new ve.ce.DocumentNode( this.model.getDocument(), this );
 	this.contextView = null;
 	this.$ = $container
-		.addClass( 'es-surfaceView' )
+		.addClass( 've-ce-surface' )
 		.append( this.documentView.$ );
 	this.insertionAnnotations = [];
 	this.emitUpdateTimeout = undefined;
@@ -52,13 +52,13 @@ ve.ce.Surface = function( $container, model ) {
 		'focus': function( e ) {
 			_this.surfaceObserver.updateCursor( true );
 			_this.documentOnFocus();
-			$document.off( '.ce-surfaceView' );
+			$document.off( '.ve-ce-surface' );
 			$document.on( {
-				'keydown.ce-surfaceView': function( e ) {
+				'keydown.ve-ce-surface': function( e ) {
 					_this.surfaceObserver.updateCursor( true );
 					return _this.onKeyDown( e );
 				},
-				'mousemove.ce-surfaceView': function( e ) {
+				'mousemove.ve-ce-surface': function( e ) {
 					_this.surfaceObserver.updateCursor( true );
 				}
 			} );
@@ -66,7 +66,7 @@ ve.ce.Surface = function( $container, model ) {
 		'blur': function( e ) {
 			_this.surfaceObserver.updateCursor( true );
 			_this.documentOnBlur();
-			$document.on( '.ce-surfaceView' );
+			$document.on( '.ve-ce-surface' );
 		}
 	} );
 
@@ -355,7 +355,7 @@ ve.ce.Surface.prototype.pollContent = function() {
 			return;
 		}
 
-		var	node = this.getLeafNode( sel.anchorNode )[0];
+		var	node = ve.ce.Surface.getLeafNode( sel.anchorNode )[0];
 		text = ve.ce.Surface.getDOMText2( node );
 		hash = ve.ce.Surface.getDOMHash( node );
 
@@ -431,7 +431,7 @@ ve.ce.Surface.prototype.pollContent = function() {
 	}
 	if ( hash !== this.poll.prevHash ) {
 		// TODO: redisplay cursor in correct position (with setTimeout)
-		this.getLeafNode( this.poll.node ).data( 'view' ).renderContent();
+		ve.ce.Surface.getLeafNode( this.poll.node ).data( 'view' ).renderContent();
 		this.poll.prevHash = hash;
 	}
 	
@@ -513,7 +513,7 @@ ve.ce.Surface.prototype.onKeyDown = function( e ) {
 };
 
 ve.ce.Surface.prototype.getOffset = function( elem, offset, global ) {
-	var	$leafNode = this.getLeafNode( elem );
+	var	$leafNode = ve.ce.Surface.getLeafNode( elem );
 	if($leafNode === null)return;
 	var current = [$leafNode.contents(), 0],
 		stack = [current],
@@ -649,21 +649,11 @@ ve.ce.Surface.prototype.showSelection = function( range ) {
 	sel.setSingleRange( range );
 };
 
-ve.ce.Surface.prototype.getLeafNode = function( elem ) {
-	return ve.ce.Surface.getLeafNode( elem );
+ve.ce.Surface.getLeafNode = function( elem ) {
+	var $leaf = $( elem ).closest( '.ve-ce-leafNode' );
+	return $leaf.length ? $leaf : null;
 };
 
-ve.ce.Surface.getLeafNode = function( elem ) {
-	var	$node = $( elem );
-	while( !$node.hasClass( 'ce-leafNode' ) ) {
-		$node = $node.parent();
-		if ( $node.is( 'body') ) {
-			return null;
-		}
-	}
-	return $node;
-};
-		
 ve.ce.Surface.getDOMText2 = function( elem ) {
 	// TODO: there must be some better way to write this regex replace
 	var regex = new RegExp('[' + String.fromCharCode(32) + String.fromCharCode(160) + ']', 'g');

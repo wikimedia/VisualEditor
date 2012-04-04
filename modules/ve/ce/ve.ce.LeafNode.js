@@ -14,8 +14,8 @@ ve.ce.LeafNode = function( model, $element ) {
 	ve.LeafNode.call( this );
 	ve.ce.Node.call( this, model, $element );
 
-	this.$.data('view', this);
-	this.$.addClass('ce-leafNode');
+	this.$.data( 'view', this );
+	this.$.addClass( 've-ce-leafNode' );
 
 	// Properties
 	this.contentView = new ve.ce.Content( model, this.$, this );

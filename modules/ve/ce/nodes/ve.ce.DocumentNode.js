@@ -15,7 +15,7 @@ ve.ce.DocumentNode = function( model, surfaceView ) {
 	this.surfaceView = surfaceView;
 
 	// DOM Changes
-	this.$.addClass( 'es-documentView' );
+	this.$.addClass( 've-ce-documentNode' );
 	this.$.attr('contentEditable', 'true');
 	this.$.attr('spellcheck', 'true');
 };

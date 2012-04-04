@@ -8,10 +8,10 @@
  */
 ve.ce.PreNode = function( model ) {
 	// Inheritance
-	ve.ce.LeafNode.call( this, model, undefined, { 'pre': true } );
+	ve.ce.LeafNode.call( this, model, $( '<pre></pre>' ), { 'pre': true } );
 
 	// DOM Changes
-	this.$.addClass( 'es-preView' );
+	this.$.addClass( 've-ce-preNode' );
 };
 
 /* Registration */
