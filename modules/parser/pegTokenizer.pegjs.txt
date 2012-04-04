@@ -1602,6 +1602,7 @@ table_cell_args
   = & { return stops.inc('tableCellArg'); }
     as:generic_attribute* space* pipe !pipe { 
         stops.dec('tableCellArg');
+        //console.warn( 'tcargs' + JSON.stringify( as ) );
         return as;
     }
     / & { return stops.dec('tableCellArg'); }
@@ -1952,7 +1953,7 @@ attribute_preprocessor_text_double
 
 // Variants with the entire attribute on a single line
 attribute_preprocessor_text_line
-  = r:( ts:(!inline_breaks t:[^=<>{\n\r&'"\t ] {return t})+ { return ts.join(''); }
+  = r:( ts:(!inline_breaks t:[^=<>{\n\r&'"\t \[] {return t})+ { return ts.join(''); }
   / !inline_breaks (
       directive
     / !'\n' [&%] )
