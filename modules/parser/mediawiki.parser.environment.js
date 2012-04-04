@@ -300,7 +300,11 @@ MWParserEnvironment.prototype.sanitizeURI = function ( s ) {
 MWParserEnvironment.prototype.dp = function ( ) {
 	if ( this.debug ) {
 		if ( arguments.length > 1 ) {
-			console.warn( JSON.stringify( arguments, null, 2 ) );
+			try {
+				console.warn( JSON.stringify( arguments, null, 2 ) );
+			} catch ( e ) {
+				console.warn( e );
+			}
 		} else {
 			console.warn( arguments[0] );
 		}

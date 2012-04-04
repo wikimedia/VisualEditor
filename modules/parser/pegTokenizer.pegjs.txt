@@ -830,8 +830,8 @@ ipv6_address
 tplarg_or_template 
     = 
     ! '{{{{{{{' (
-        &'{{{{{{' tplarg
-        / & '{{{{{' template 
+        & ( '{{{{{{' (!'}}}' .)* '}}}}}}') tplarg
+        / & ( '{{{{{' (!'}}}' .)* '}}}}}') template 
         / tplarg 
         / template
     )
@@ -840,7 +840,7 @@ template
   = "{{" (newline / space)* 
     target:template_name
     params:(( newline / space )* "|"
-                r:( &"|" { return new KV( '', '') } // empty argument
+                r:( (newline / space )* &"|" { return new KV( '', '') } // empty argument
                     / p:template_param { return p } 
                   ) { return r } 
             )* 
