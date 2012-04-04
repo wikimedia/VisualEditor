@@ -1,5 +1,6 @@
-var fs = require('fs');
-var https = require('https');
+var fs = require('fs'),
+	path = require('path'),
+	https = require('https');
 
 var url = {
 	host: 'gerrit.wikimedia.org',
@@ -21,7 +22,7 @@ var fetch = function(url, target_name) {
 		console.error(err);
 	});
 };
-fs.exists(target_name, function(exists) {
+path.exists(target_name, function(exists) {
 	if (!exists) {
 		fetch(url, target_name);
 	}
