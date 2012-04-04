@@ -306,9 +306,6 @@
 
     /* End static utilities */
 
-    /* Behavior switches scoped to entire page */
-    var behaviors = {};
-    
     /*
      * Flags for specific parse environments (inside tables, links etc). Flags
      * trigger syntactic stops in the inline_breaks production, which
