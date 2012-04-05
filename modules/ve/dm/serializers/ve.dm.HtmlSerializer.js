@@ -11,6 +11,34 @@ ve.dm.HtmlSerializer = function( options ) {
 	}, options || {} );
 };
 
+/* Static Members */
+
+ve.dm.HtmlSerializer.headingTags = {
+	'1': 'h1',
+	'2': 'h2',
+	'3': 'h3',
+	'4': 'h4',
+	'5': 'h5',
+	'6': 'h6'
+};
+
+ve.dm.HtmlSerializer.listTags = {
+	'bullet': 'ul',
+	'number': 'ol',
+	'definition': 'dl'
+};
+
+ve.dm.HtmlSerializer.listItemTags = {
+	'item': 'li',
+	'term': 'dt',
+	'definition': 'dd'
+};
+
+ve.dm.HtmlSerializer.tableCellTags = {
+	'tableHeading': 'th',
+	'tableCell': 'td'
+};
+
 /* Static Methods */
 
 /**
@@ -40,18 +68,25 @@ ve.dm.HtmlSerializer.getHtmlAttributes = function( attributes ) {
 
 /* Methods */
 
-ve.dm.HtmlSerializer.prototype.document = function( node, rawFirstParagraph ) {
+ve.dm.HtmlSerializer.prototype.document = function( node, wrapWith, rawFirstParagraph ) {
 	var lines = [];
+	if ( wrapWith ) {
+		var htmlAttributes = ve.dm.HtmlSerializer.getHtmlAttributes( node.attributes );
+		lines.push( ve.Html.makeOpeningTag( wrapWith, htmlAttributes ) );
+	}
 	for ( var i = 0, length = node.children.length; i < length; i++ ) {
-		var childNode = node.children[i];
-		if ( childNode.type in this ) {
+		var child = node.children[i];
+		if ( child.type in this ) {
 			// Special case for paragraphs which have particular wrapping needs
-			if ( childNode.type === 'paragraph' ) {
-				lines.push( this.paragraph( childNode, rawFirstParagraph && i === 0 ) );
+			if ( child.type === 'paragraph' ) {
+				lines.push( this.paragraph( child, rawFirstParagraph && i === 0 ) );
 			} else {
-				lines.push( this[childNode.type].call( this, childNode ) );
+				lines.push( this[child.type].call( this, child ) );
 			}
 		}
+	}
+	if ( wrapWith ) {
+		lines.push( ve.Html.makeClosingTag( wrapWith ) );
 	}
 	return lines.join( '\n' );
 };
@@ -72,7 +107,7 @@ ve.dm.HtmlSerializer.prototype.horizontalRule = function( node ) {
 
 ve.dm.HtmlSerializer.prototype.heading = function( node ) {
 	return ve.Html.makeTag(
-		'h' + node.attributes.level, {}, this.content( node.content )
+		ve.dm.HtmlSerializer.headingTags[node.attributes.level], {}, this.content( node.content )
 	);
 };
 
@@ -85,115 +120,37 @@ ve.dm.HtmlSerializer.prototype.paragraph = function( node, raw ) {
 };
 
 ve.dm.HtmlSerializer.prototype.list = function( node ) {
-	var out = [],    // List of list nodes
-		bstack = [], // Bullet stack, previous element's listStyles
-		bnext  = [], // Next element's listStyles
-		closeTags  = []; // Stack of close tags for currently active lists
+	return this.document(
+		node, ve.dm.HtmlSerializer.listTags[node.attributes.style]
+	);
+};
 
-	function commonPrefixLength( x, y ) {
-		var minLength = Math.min(x.length, y.length);
-		for(var i = 0; i < minLength; i++) {
-			if (x[i] !== y[i]) {
-				// Both description and term are
-				// inside dls, so consider them equivalent here.
-				var diffs =  [x[i], y[i]].sort();
-				if (diffs[0] !== 'description' &&
-						diffs[1] !== 'term' ) {
-							break;
-						}
-			}
-		}
-		return i;
-	}
-
-	function popTags( n ) {
-		for (var i = 0; i < n; i++ ) {
-			out.push(closeTags.pop());
-		}
-	}
-
-	function openLists( bs, bn, attribs ) {
-		var prefix = commonPrefixLength (bs, bn);
-		// pop close tags from stack
-		popTags(closeTags.length - prefix);
-		for(var i = prefix; i < bn.length; i++) {
-			var c = bn[i];
-			switch (c) {
-				case 'bullet':
-					out.push(ve.Html.makeOpeningTag('ul', attribs));
-					closeTags.push(ve.Html.makeClosingTag('ul'));
-					break;
-				case 'number':
-					out.push(ve.Html.makeOpeningTag('ol', attribs));
-					closeTags.push(ve.Html.makeClosingTag('ol'));
-					break;
-				case 'term':
-				case 'description':
-					out.push(ve.Html.makeOpeningTag('dl', attribs));
-					closeTags.push(ve.Html.makeClosingTag('dl'));
-					break;
-				default:
-					throw("Unknown node prefix " + c);
-			}
-		}
-	}
-
-	for (var i = 0, length = node.children.length; i < length; i++) {
-		var e = node.children[i];
-		bnext = e.attributes.styles;
-		delete e.attributes.styles;
-		openLists( bstack, bnext, e.attributes );
-		var tag;
-		switch(bnext[bnext.length - 1]) {
-			case 'term':
-				tag = 'dt'; break;
-			case 'description':
-				tag = 'dd'; break;
-			default:
-				tag = 'li'; break;
-		}
-		out.push( ve.Html.makeTag(tag, e.attributes, this.document( e ) ) );
-		bstack = bnext;
-	}
-	popTags(closeTags.length);
-	return out.join("\n");
+ve.dm.HtmlSerializer.prototype.listItem = function( node ) {
+	return this.document(
+		node, ve.dm.HtmlSerializer.listItemTags[node.attributes.style]
+	);
 };
 
 ve.dm.HtmlSerializer.prototype.table = function( node ) {
-	var lines = [],
-		attributes = ve.dm.HtmlSerializer.getHtmlAttributes( node.attributes );
-	lines.push( ve.Html.makeOpeningTag( 'table', attributes ) );
-	for ( var i = 0, length = node.children.length; i < length; i++ ) {
-		var child = node.children[i];
-		lines.push( this[child.type]( child ) );
-	}
-	lines.push( ve.Html.makeClosingTag( 'table' ) );
-	return lines.join( '\n' );
+	return this.document( node, 'table' );
 };
 
 ve.dm.HtmlSerializer.prototype.tableRow = function( node ) {
-	var lines = [],
-		attributes = ve.dm.HtmlSerializer.getHtmlAttributes( node.attributes );
-	lines.push( ve.Html.makeOpeningTag( 'tr', attributes ) );
-	for ( var i = 0, length = node.children.length; i < length; i++ ) {
-		lines.push( this.tableCell( node.children[i] ) );
-	}
-	lines.push( ve.Html.makeClosingTag( 'tr' ) );
-	return lines.join( '\n' );
+	return this.document( node, 'tr' );
 };
 
 ve.dm.HtmlSerializer.prototype.tableCell = function( node ) {
-	var symbolTable = {
-			'tableHeading': 'th',
-			'tableCell': 'td'
-		},
-		attributes = ve.dm.HtmlSerializer.getHtmlAttributes( node.attributes );
-	return ve.Html.makeTag( symbolTable[node.type], attributes, this.document( node, true ) );
+	return this.document(
+		node, ve.dm.HtmlSerializer.tableCellTags[node.attributes.type], true
+	);
 };
 
 ve.dm.HtmlSerializer.prototype.tableCaption = function( node ) {
-	attributes = ve.dm.HtmlSerializer.getHtmlAttributes( node.attributes );
-	return ve.Html.makeTag( 'caption', attributes, this.content( node.content ) );
+	return ve.Html.makeTag(
+		'caption',
+		ve.dm.HtmlSerializer.getHtmlAttributes( node.attributes ),
+		this.content( node.content )
+	);
 };
 
 ve.dm.HtmlSerializer.prototype.transclusion = function( node ) {

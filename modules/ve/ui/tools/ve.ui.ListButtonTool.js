@@ -278,6 +278,9 @@ ve.ui.ListButtonTool.prototype.onClick = function() {
 };
 
 ve.ui.ListButtonTool.prototype.updateState = function( annotations, nodes ) {
+	/*
+	 * XXX: Disabled for now because lists work differently now (they are structured, not flat)
+	 * 
 	function areListItemsOfStyle( nodes, style ) {
 		var parent, styles;
 		for( var i = 0; i < nodes.length; i++ ) {
@@ -299,6 +302,7 @@ ve.ui.ListButtonTool.prototype.updateState = function( annotations, nodes ) {
 	} else {
 		this.$.removeClass( 'es-toolbarButtonTool-down' );
 	}
+	*/
 };
 
 /* Registration */
