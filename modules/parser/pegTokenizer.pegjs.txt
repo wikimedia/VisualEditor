@@ -1566,10 +1566,10 @@ table_data_tag
          b:nested_block { return b } 
        )* 
     { 
-        if ( a == '' ) {
+        if ( a === '' ) {
             a = [];
         }
-        //console.warn("table data result: " + pp(td) + ", attribts: " + pp(a));
+        //console.warn("table data result: " + pp(td) + ", attribs: " + pp(a));
         return [ new TagTk( 'td', a )]
                     .concat( td );
     }
@@ -1579,6 +1579,7 @@ table_heading_tags
     "!"
     th:table_heading_tag
     ths:( "!!" tht:table_heading_tag  { return tht } )* {
+        //console.warn( 'thts: ' + pp(th.concat(ths)));
         return th.concat(ths);
     }
 
@@ -1953,11 +1954,17 @@ attribute_preprocessor_text_double
 
 // Variants with the entire attribute on a single line
 attribute_preprocessor_text_line
-  = r:( ts:(!inline_breaks t:[^=<>{\n\r&'"\t \[] {return t})+ { return ts.join(''); }
-  / !inline_breaks (
-      directive
-    / !'\n' [&%] )
-  )+ {
+  = r:( ts:[^=<>{\n\r&'"\t \[\]|{]+ { return ts.join(''); }
+        /  !inline_breaks 
+            t:( 
+                directive
+              / !(newline / space / [\[>]) c:. { 
+                    //console.warn( 'aptl: ' + pp(c) ); 
+                    return c 
+                }
+            ) { return t }
+      )+ 
+  {
       //console.warn('prep');
       return flatten_string ( r );
   }
