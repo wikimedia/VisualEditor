@@ -35,7 +35,7 @@ ve.ce.ListNode.domNodeTypes = {
 
 /* Methods */
 
-ve.ce.HeadingNode.prototype.setStyle = function() {
+ve.ce.ListNode.prototype.setStyle = function() {
 	var style = this.model.getElementAttribute( 'style' ),
 		type = ve.ce.ListItemNode.domNodeTypes[style];
 	if ( type === undefined ) {
