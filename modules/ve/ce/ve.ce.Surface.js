@@ -28,6 +28,8 @@ ve.ce.Surface = function( $container, model ) {
 	this.clipboard = {};
 	this.autoRender = false;
 
+	// Test
+
 	// Surface Observer
 	this.surfaceObserver = new ve.ce.SurfaceObserver( this.documentView );
 	this.surfaceObserver.on( 'select', function( selection ) {
