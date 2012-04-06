@@ -16,6 +16,7 @@ ve.ui.Toolbar = function( $container, surfaceView, config ) {
 	this.$groups = $( '<div class="es-toolbarGroups"></div>' ).prependTo( this.$ );
 	this.tools = [];
 
+	/*
 	this.surfaceView.surfaceObserver.on( 'select', function ( selection ) {
 		var i;
 		if ( selection !== null ) {
@@ -50,6 +51,7 @@ ve.ui.Toolbar = function( $container, surfaceView, config ) {
 		}
 		
 	});
+	*/
 
 	this.config = config || [
 		{ 'name': 'history', 'items' : ['undo', 'redo'] },
