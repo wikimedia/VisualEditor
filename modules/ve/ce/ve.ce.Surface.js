@@ -95,6 +95,17 @@ ve.ce.Surface = function( $container, model ) {
 		_this.onTextChange( e );
 	} );
 
+	this.on( 'rangeChange', function( e ) {
+		if ( e.new !== null ) {
+			_this.model.setSelection( e.new );
+			if ( e.new.getLength() === 0 ) {
+				_this.loadInsertionAnnotations();
+			} else {
+				_this.clearInsertionAnnotations();
+			}
+		}
+	} );
+
 	//Prevent native contentedtiable tools
 	try {
 		document.execCommand("enableInlineTableEditing", false, false);
@@ -176,8 +187,10 @@ ve.ce.Surface.prototype.onTextChange = function( e ) {
  * @method
  */
 ve.ce.Surface.prototype.startPolling = function( async ) {
-	this.poll.polling = true;
-	this.pollChanges( async );
+	if ( this.poll.polling === false ) {
+		this.poll.polling = true;
+		this.pollChanges( async );
+	}
 };
 
 /**
@@ -289,6 +302,7 @@ ve.ce.Surface.prototype.pollChanges = function( async ) {
 	}
 
 	delay();
+	return;
 };
 
 ve.ce.Surface.prototype.annotate = function( method, annotation ) {
@@ -343,9 +357,8 @@ ve.ce.Surface.prototype.addInsertionAnnotation = function( annotation ) {
 	this.insertionAnnotations.push( annotation );
 };
 
-ve.ce.Surface.prototype.loadInsertionAnnotations = function( annotation ) {
-	this.insertionAnnotations =
-		this.model.getDocument().getAnnotationsFromOffset( this.currentSelection.to - 1 );
+ve.ce.Surface.prototype.loadInsertionAnnotations = function() {
+	this.insertionAnnotations = this.model.getDocument().getAnnotationsFromOffset( this.model.getSelection().to - 1 );
 	// Filter out annotations that aren't textStyles or links
 	for ( var i = 0; i < this.insertionAnnotations.length; i++ ) {
 		if ( !this.insertionAnnotations[i].type.match( /(textStyle\/|link\/)/ ) ) {
@@ -439,7 +452,8 @@ ve.ce.Surface.prototype.getModel = function() {
 	return this.model;
 };
 
-ve.ce.Surface.prototype.updateSelection = function( delay ) {
+ve.ce.Surface.prototype.
+Selection = function( delay ) {
 	var _this = this;
 	function update() {
 		/*
@@ -467,12 +481,10 @@ ve.ce.Surface.prototype.updateSelection = function( delay ) {
 };
 
 ve.ce.Surface.prototype.documentOnFocus = function() {
-	console.log( 'documentOnFocus' );
 	this.startPolling( true );
 };
 
 ve.ce.Surface.prototype.documentOnBlur = function() {
-	console.log( 'documentOnBlur' );
 	this.stopPolling();
 };
 
@@ -489,12 +501,12 @@ ve.ce.Surface.prototype.clearPollData = function() {
 
 ve.ce.Surface.prototype.onMouseDown = function( e ) {
 	//this.pollChanges();
-	this.pollChanges( true );
+	//this.pollChanges( true );
 	return;
 };
 
 ve.ce.Surface.prototype.onKeyDown = function( e ) {
-	this.pollChanges();
+	//this.pollChanges();
 	//this.pollChanges( true );
 	return;
 

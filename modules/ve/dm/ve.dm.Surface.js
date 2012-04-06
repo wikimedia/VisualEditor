@@ -62,6 +62,15 @@ ve.dm.Surface.prototype.getSelection = function() {
 };
 
 /**
+ * Sets the selection
+ *
+ * @method
+ */
+ve.dm.Surface.prototype.setSelection = function( selection ) {
+	this.selection = selection;
+};
+
+/**
  * Changes the selection.
  *
  * If changing the selection at a high frequency (such as while dragging) use the combine argument

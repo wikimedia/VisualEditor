@@ -16,19 +16,18 @@ ve.ui.Toolbar = function( $container, surfaceView, config ) {
 	this.$groups = $( '<div class="es-toolbarGroups"></div>' ).prependTo( this.$ );
 	this.tools = [];
 
-	/*
-	this.surfaceView.surfaceObserver.on( 'select', function ( selection ) {
-		var i;
-		if ( selection !== null ) {
+
+	this.surfaceView.on( 'rangeChange', function( e ) {
+		if ( e.new !== null ) {
 			var	annotations = _this.surfaceView.getAnnotations(),
 				nodes = [],
 				model = _this.surfaceView.documentView.model;
-	
-			if ( selection.from === selection.to ) {
-				nodes.push( model.getNodeFromOffset( selection.from ) );
+
+			if ( e.new.from === e.new.to ) {
+				nodes.push( model.getNodeFromOffset( e.new.from ) );
 			} else {
-				var	startNode = model.getNodeFromOffset( selection.start ),
-					endNode = model.getNodeFromOffset( selection.end );
+				var	startNode = model.getNodeFromOffset( e.new.start ),
+					endNode = model.getNodeFromOffset( e.new.end );
 				if ( startNode === endNode ) {
 					nodes.push( startNode );
 				} else {
@@ -49,9 +48,7 @@ ve.ui.Toolbar = function( $container, surfaceView, config ) {
 				_this.tools[i].clearState();
 			}
 		}
-		
-	});
-	*/
+	} );
 
 	this.config = config || [
 		{ 'name': 'history', 'items' : ['undo', 'redo'] },
