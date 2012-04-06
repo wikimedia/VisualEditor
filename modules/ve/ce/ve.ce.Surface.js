@@ -249,7 +249,7 @@ ve.ce.Surface.prototype.pollChanges = function( async ) {
 					this.getOffset( rangySel.focusNode, rangySel.focusOffset )
 				);
 			}
-			node = this.getLeafNode( rangySel.anchorNode )[0];
+			node = ve.ce.Surface.getLeafNode( rangySel.anchorNode )[0];
 		}
 	}
 
@@ -565,7 +565,7 @@ ve.ce.Surface.prototype.onKeyDown = function( e ) {
 
 ve.ce.Surface.prototype.getOffset = function( elem, offset, global ) {
 	var global  = true;
-	var	$leafNode = this.getLeafNode( elem );
+	var	$leafNode = ve.ce.Surface.getLeafNode( elem );
 	if ( $leafNode === null ) {
 		return;
 	}
