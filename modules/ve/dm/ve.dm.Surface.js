@@ -107,6 +107,7 @@ ve.dm.Surface.prototype.transact = function( transaction ) {
 };
 
 ve.dm.Surface.prototype.breakpoint = function( selection ) {
+	/*
 	if( this.smallStack.length > 0 ) {
 		this.bigStack.push( {
 			stack: this.smallStack,
@@ -114,6 +115,7 @@ ve.dm.Surface.prototype.breakpoint = function( selection ) {
 		} );
 		this.smallStack = [];
 	}
+	*/
 };
 
 ve.dm.Surface.prototype.undo = function() {

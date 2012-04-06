@@ -28,45 +28,20 @@ ve.ce.Surface = function( $container, model ) {
 	this.clipboard = {};
 	this.autoRender = false;
 
-	// Test
-
-	// Surface Observer
-	this.surfaceObserver = new ve.ce.SurfaceObserver( this.documentView );
-	this.surfaceObserver.on( 'select', function( selection ) {
-		if ( selection !== null ) {
-			// Keep a copy of the current selection on hand
-			_this.currentSelection = selection.clone();
-			// Tell the model what we have selected.
-			_this.model.select(_this.currentSelection);		
-			// Respond to selection changes
-			_this.updateSelection();
-
-			if ( selection.getLength() ) {
-				_this.clearInsertionAnnotations();
-			} else {
-				_this.loadInsertionAnnotations();
-			}
-		}
-	} );
-
 	// Events
 	this.documentView.$.on( {
 		'focus': function( e ) {
-			_this.surfaceObserver.updateCursor( true );
 			_this.documentOnFocus();
 			$document.off( '.ve-ce-surface' );
 			$document.on( {
-				'keydown.ve-ce-surface': function( e ) {
-					_this.surfaceObserver.updateCursor( true );
+				'keydown.ce-surfaceView': function( e ) {
 					return _this.onKeyDown( e );
 				},
-				'mousemove.ve-ce-surface': function( e ) {
-					_this.surfaceObserver.updateCursor( true );
+				'mousemove.ce-surfaceView': function( e ) {
 				}
 			} );
 		},
 		'blur': function( e ) {
-			_this.surfaceObserver.updateCursor( true );
 			_this.documentOnBlur();
 			$document.on( '.ve-ce-surface' );
 		}
@@ -80,7 +55,6 @@ ve.ce.Surface = function( $container, model ) {
 			_this.onPaste( e );
 		},
 		'mousedown': function( e ) {
-			_this.surfaceObserver.updateCursor( true );
 			return _this.onMouseDown( e );
 		},
 		'compositionstart': function( e ) {
@@ -98,16 +72,29 @@ ve.ce.Surface = function( $container, model ) {
 	this.documentView.renderContent();
 
 	this.poll = {
-		'interval': null,
-		'frequency': 75,
-		'node': null,
-		'prevText': null,
-		'prevHash': null,
-		'prevOffset': null,
-		'compositionStart': null,
-		'compositionEnd': null
+		polling: false,
+		timeout: null,
+		frequency: 100,
+		rangy: {
+			anchorNode: null,
+			anchorOffset: null,
+			focusNode: null,
+			focusOffset: null
+		},
+		range: null,
+		node: null,
+		text: null,
+		hash: null,
+		composition: {
+			start: null,
+			end: null
+		}
 	};
-	
+
+	this.on( 'textChange', function( e ) {
+		_this.onTextChange( e );
+	} );
+
 	//Prevent native contentedtiable tools
 	try {
 		document.execCommand("enableInlineTableEditing", false, false);
@@ -117,6 +104,192 @@ ve.ce.Surface = function( $container, model ) {
 };
 
 /* Methods */
+
+ve.ce.Surface.prototype.onCompositionStart = function( e ) {
+	var rangySel = rangy.getSelection();
+	this.poll.composition.start = this.getOffset( rangySel.anchorNode, rangySel.anchorOffset );
+};
+
+ve.ce.Surface.prototype.onCompositionEnd = function( e ) {
+	var rangySel = rangy.getSelection();
+	this.poll.composition.end = this.getOffset( rangySel.anchorNode, rangySel.anchorOffset );
+};
+
+ve.ce.Surface.prototype.onTextChange = function( e ) {
+	var	oldOffset = null,
+		newOffset = null;
+
+	if (
+		e.old.range !== null &&
+		e.new.range !== null &&
+		e.old.range.getLength() === 0 &&
+		e.new.range.getLength() === 0
+	) {
+		oldOffset = e.old.range.start;
+		newOffset = e.new.range.start;
+	}
+
+	var	lengthDiff = e.new.text.length - e.old.text.length,
+		offsetDiff = ( newOffset !== null && oldOffset !== null ) ? newOffset - oldOffset : null,
+		nodeOffset = this.documentView.getOffsetFromNode( $( e.node ).data( 'view' ) );
+
+	if (
+		lengthDiff === offsetDiff &&
+		e.old.text.substring( 0, oldOffset - nodeOffset - 1 ) === e.new.text.substring( 0, oldOffset - nodeOffset - 1 )
+	) {
+		var data = e.new.text.substring( oldOffset - nodeOffset - 1, newOffset - nodeOffset - 1).split( '' );
+		var	annotations = this.model.getDocument().getAnnotationsFromOffset( oldOffset - 1, true );
+		ve.dm.DocumentNode.addAnnotationsToData( data, annotations );
+		this.model.transact( this.documentView.model.prepareInsertion( oldOffset, data ) );
+	} else {
+		var	fromLeft = 0,
+			fromRight = 0,
+			len = Math.min( e.old.text.length, e.new.text.length );
+		while ( fromLeft < len && e.old.text[fromLeft] === e.new.text[fromLeft] ) {
+			++fromLeft;
+		}
+		len -= fromLeft;
+		while (
+			fromRight < len &&
+			e.old.text[e.old.text.length - 1 - fromRight] === e.new.text[e.new.text.length - 1 - fromRight]
+		) {
+			++fromRight;
+		}
+		var	annotations = this.model.getDocument().getAnnotationsFromOffset(
+			nodeOffset + 1 + fromLeft, true
+		);
+		if ( fromLeft + fromRight < e.old.text.length ) {
+			this.model.transact( this.documentView.model.prepareRemoval( new ve.Range(
+				nodeOffset + 1 + fromLeft,
+				nodeOffset + 1 + e.old.text.length - fromRight
+			) ) );
+		}
+		var data = e.new.text.substring( fromLeft, e.new.text.length - fromRight ).split( '' );
+		ve.dm.DocumentNode.addAnnotationsToData( data, annotations );
+		this.model.transact(
+			this.documentView.model.prepareInsertion( nodeOffset + 1 + fromLeft, data )
+		);
+	}
+};
+
+/**
+ * @method
+ */
+ve.ce.Surface.prototype.startPolling = function( async ) {
+	this.poll.polling = true;
+	this.pollChanges( async );
+};
+
+/**
+ * @method
+ */
+ve.ce.Surface.prototype.stopPolling = function() {
+	if ( this.poll.polling === true ) {
+		this.poll.polling = false;
+		clearTimeout( this.poll.timeout );
+	}
+};
+
+/**
+ * @method
+ */
+ve.ce.Surface.prototype.pollChanges = function( async ) {
+	var _this = this;
+	var delay = function( now ) {
+		if ( _this.poll.polling === true ) {
+			_this.poll.timeout = setTimeout(
+				function() {
+					_this.pollChanges();
+				},
+				now === true ? 0 : _this.poll.frequency
+			);
+		}
+	};
+
+	if ( async === true ) {
+		delay( true );
+		return;
+	}
+
+	if ( this.poll.composition.start !== null ) {
+		if ( this.poll.composition.end !== null ) {
+			this.poll.composition.start = this.poll.composition.end = null;
+		} else {
+			delay();
+			return;
+		}
+	}
+
+	var rangySel = rangy.getSelection(),
+		range = this.poll.range,
+		node = this.poll.node;
+
+	if (
+		rangySel.anchorNode !== this.poll.rangy.anchorNode ||
+		rangySel.anchorOffset !== this.poll.rangy.anchorOffset ||
+		rangySel.focusNode !== this.poll.rangy.focusNode ||
+		rangySel.focusOffset !== this.poll.rangy.focusOffset
+	) {
+		this.poll.rangy.anchorNode = rangySel.anchorNode;
+		this.poll.rangy.anchorOffset = rangySel.anchorOffset;
+		this.poll.rangy.focusNode = rangySel.focusNode;
+		this.poll.rangy.focusOffset = rangySel.focusOffset;
+
+		if ( !this.documentView.$.is(':focus') ) {
+			range = null;
+			node = null;
+		} else {
+			if ( rangySel.isCollapsed ) {
+				range = new ve.Range(
+					this.getOffset( rangySel.anchorNode, rangySel.anchorOffset )
+				);
+			} else {
+				range = new ve.Range(
+					this.getOffset( rangySel.anchorNode, rangySel.anchorOffset ),
+					this.getOffset( rangySel.focusNode, rangySel.focusOffset )
+				);
+			}
+			node = this.getLeafNode( rangySel.anchorNode )[0];
+		}
+	}
+
+	if ( this.poll.node !== node ) {
+		// TODO: emit nodeChange event?
+		this.poll.node = node;
+		this.poll.text = ve.ce.Surface.getDOMText2( node );
+		this.poll.hash = ve.ce.Surface.getDOMHash( node );
+	} else {
+		if ( node !== null ) {
+			var	text = ve.ce.Surface.getDOMText2( node ),
+				hash = ve.ce.Surface.getDOMHash( node );
+			if ( this.poll.text !== text || this.poll.hash !== hash ) {
+				this.emit( 'textChange', {
+					'node': node,
+					'old': {
+						'text': this.poll.text,
+						'hash': this.poll.hash,
+						'range': this.poll.range,
+					},
+					'new': {
+						'text': text,
+						'hash': hash,
+						'range': range					
+					}
+				} );
+				this.poll.text = text;
+				this.poll.hash = hash;
+			}
+		}
+	}
+
+	if ( this.poll.range !== range ) {
+		// TODO: find a proper/better name for this event
+		this.emit( 'rangeChange', { 'old': this.poll.range, 'new': range } );
+		this.poll.range = range;
+	}
+
+	delay();
+};
 
 ve.ce.Surface.prototype.annotate = function( method, annotation ) {
 	var range = this.currentSelection,
@@ -225,6 +398,7 @@ ve.ce.Surface.prototype.onCutCopy = function( e ) {
 };
 
 ve.ce.Surface.prototype.onPaste = function( e ) {
+	return;
 	var	_this = this,
 		insertionPoint = _this.getSelectionRange().start;
 	
@@ -257,18 +431,6 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
 	}, 1 );
 };
 
-ve.ce.Surface.prototype.onCompositionStart = function( e ) {
-	this.stopPolling();
-	var sel = rangy.getSelection();
-	this.poll.compositionStart = this.getOffset( sel.anchorNode, sel.anchorOffset, false );
-};
-
-ve.ce.Surface.prototype.onCompositionEnd = function( e ) {
-	var sel = rangy.getSelection();
-	this.poll.compositionEnd = this.getOffset( sel.focusNode, sel.focusOffset, false );
-	this.startPolling();
-};
-
 ve.ce.Surface.prototype.attachContextView = function( contextView ) {
 	this.contextView = contextView;
 };
@@ -280,6 +442,7 @@ ve.ce.Surface.prototype.getModel = function() {
 ve.ce.Surface.prototype.updateSelection = function( delay ) {
 	var _this = this;
 	function update() {
+		/*
 		if ( _this.surfaceObserver.range.getLength() ) {
 			_this.clearInsertionAnnotations();
 		}
@@ -291,6 +454,7 @@ ve.ce.Surface.prototype.updateSelection = function( delay ) {
 			}
 		}
 		_this.updateSelectionTimeout = undefined;
+		*/
 	}
 	if ( delay ) {
 		if ( this.updateSelectionTimeout !== undefined ) {
@@ -303,152 +467,37 @@ ve.ce.Surface.prototype.updateSelection = function( delay ) {
 };
 
 ve.ce.Surface.prototype.documentOnFocus = function() {
-	this.startPolling();
+	console.log( 'documentOnFocus' );
+	this.startPolling( true );
 };
 
 ve.ce.Surface.prototype.documentOnBlur = function() {
+	console.log( 'documentOnBlur' );
 	this.stopPolling();
 };
 
-ve.ce.Surface.prototype.startPolling = function() {
-	if ( this.poll.interval === null ) {
-		var _this = this;
-		setTimeout( function()  {
-			_this.pollContent();
-		}, 0);
-		this.poll.interval = setInterval( function() {
-			_this.pollContent();
-		}, this.poll.frequency );
-	}
-};
-
-ve.ce.Surface.prototype.stopPolling = function() {
-	if ( this.poll.interval !== null ) {
-		clearInterval( this.poll.interval );
-		this.poll.interval = null;
-	}
-};
-
 ve.ce.Surface.prototype.clearPollData = function() {
+	/*
 	this.stopPolling();
 	this.poll.prevText =
 		this.poll.prevHash =
 		this.poll.prevOffset =
 		this.poll.node = null;
 	this.startPolling();
-};
-
-ve.ce.Surface.prototype.pollContent = function() {
-	return;
-	var localOffset, text, hash;
-	
-	if ( this.poll.compositionStart !== null && this.poll.compositionEnd !== null ) {
-
-		text = ve.ce.Surface.getDOMText2( this.poll.node );
-		hash = ve.ce.Surface.getDOMHash( this.poll.node );
-		localOffset = this.poll.compositionEnd;
-		this.poll.compositionStart = null;
-		this.poll.compositionEnd = null;
-
-	} else {
-		var sel = rangy.getSelection();
-
-		if ( sel.anchorNode === null ) {
-			return;
-		}
-
-		var	node = ve.ce.Surface.getLeafNode( sel.anchorNode )[0];
-		text = ve.ce.Surface.getDOMText2( node );
-		hash = ve.ce.Surface.getDOMHash( node );
-
-		if ( sel.anchorNode !== sel.focusNode || sel.anchorOffset !== sel.focusOffset ) {
-			localOffset = null;
-		} else {
-			localOffset = this.getOffset( sel.anchorNode, sel.anchorOffset, false );
-		}
-
-		if ( node !== this.poll.node ) {
-			// TODO: Read content from old node one more time
-			this.poll.node = node;
-			this.poll.prevText = text;
-			this.poll.prevHash = hash;
-			this.poll.prevOffset = localOffset;
-			return;
-		}
-	}
-	
-	var newData, annotations;
-
-	if ( text !== this.poll.prevText ) {
-		var	nodeOffset = this.documentView.getOffsetFromNode( $( this.poll.node ).data( 'view' ) ),
-			lengthDiff = text.length - this.poll.prevText.length,
-			offsetDiff = ( localOffset !== null && this.poll.prevOffset !== null ) ?
-				localOffset - this.poll.prevOffset : null;
-
-		if (
-			lengthDiff === offsetDiff &&
-			this.poll.prevText.substring( 0, this.poll.prevOffset ) ===
-				text.substring( 0, this.poll.prevOffset )
-		) {
-			newData = text.substring( this.poll.prevOffset, localOffset ).split( '' );
-			annotations = this.model.getDocument().getAnnotationsFromOffset(
-				nodeOffset + 1 + this.poll.prevOffset - 1, true
-			);
-			ve.dm.DocumentNode.addAnnotationsToData( newData, annotations );
-			this.model.transact( this.documentView.model.prepareInsertion(
-				nodeOffset + 1 + this.poll.prevOffset,
-				newData
-			) );
-		} else {
-			var	sameFromLeft = 0,
-				sameFromRight = 0,
-				l = text.length > this.poll.prevText.length ?
-					this.poll.prevText.length : text.length;
-			while ( sameFromLeft < l && this.poll.prevText[sameFromLeft] === text[sameFromLeft] ) {
-				++sameFromLeft;
-			}
-			l = l - sameFromLeft;
-			while (
-				sameFromRight < l &&
-				this.poll.prevText[this.poll.prevText.length - 1 - sameFromRight] ===
-					text[text.length - 1 - sameFromRight]
-			) {
-				++sameFromRight;
-			}
-			annotations = this.model.getDocument().getAnnotationsFromOffset(
-				nodeOffset + 1 + sameFromLeft, true
-			);
-			this.model.transact( this.documentView.model.prepareRemoval( new ve.Range(
-				nodeOffset + 1 + sameFromLeft,
-				nodeOffset + 1 + this.poll.prevText.length - sameFromRight
-			) ) );
-			newData = text.substring( sameFromLeft, text.length - sameFromRight ).split( '' );
-			ve.dm.DocumentNode.addAnnotationsToData( newData, annotations );
-			this.model.transact( this.documentView.model.prepareInsertion(
-				nodeOffset + 1 + sameFromLeft,
-				newData
-			) );
-		}
-		this.poll.prevText = text;
-	}
-	if ( hash !== this.poll.prevHash ) {
-		// TODO: redisplay cursor in correct position (with setTimeout)
-		ve.ce.Surface.getLeafNode( this.poll.node ).data( 'view' ).renderContent();
-		this.poll.prevHash = hash;
-	}
-	
-	this.poll.prevOffset = localOffset;
+	*/
 };
 
 ve.ce.Surface.prototype.onMouseDown = function( e ) {
-	if ( this.poll.interval !== null ) {
-		this.stopPolling();
-		this.pollContent();
-		this.startPolling();
-	}
+	//this.pollChanges();
+	this.pollChanges( true );
+	return;
 };
 
 ve.ce.Surface.prototype.onKeyDown = function( e ) {
+	this.pollChanges();
+	//this.pollChanges( true );
+	return;
+
 	if ( this.poll.interval !== null ) {
 		this.stopPolling();
 		this.pollContent();
@@ -515,8 +564,11 @@ ve.ce.Surface.prototype.onKeyDown = function( e ) {
 };
 
 ve.ce.Surface.prototype.getOffset = function( elem, offset, global ) {
-	var	$leafNode = ve.ce.Surface.getLeafNode( elem );
-	if($leafNode === null)return;
+	var global  = true;
+	var	$leafNode = this.getLeafNode( elem );
+	if ( $leafNode === null ) {
+		return;
+	}
 	var current = [$leafNode.contents(), 0],
 		stack = [current],
 		localOffset = 0;
