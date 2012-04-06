@@ -8,7 +8,12 @@
  */
 ve.ce.ListNode = function( model ) {
 	// Inheritance
-	ve.ce.BranchNode.call( this, model );
+	var style = model.getElementAttribute( 'style' ),
+		type = ve.ce.ListNode.domNodeTypes[style];
+	ve.ce.BranchNode.call( this, model, $( '<' + type + '></' + type + '>' ) );
+
+	// Properties
+	this.currentStylesHash = null;
 
 	// DOM Changes
 	this.$.addClass( 've-ce-listNode' );
@@ -16,37 +21,29 @@ ve.ce.ListNode = function( model ) {
 	// Events
 	var _this = this;
 	this.model.on( 'update', function() {
-		_this.enumerate();
+		_this.setStyle();
 	} );
+};
 
-	// Initialization
-	this.enumerate();
+/* Static Members */
+
+ve.ce.ListNode.domNodeTypes = {
+	'bullet': 'ul',
+	'number': 'ol',
+	'definition': 'dl'
 };
 
 /* Methods */
 
-/**
- * Set the number labels of all ordered list items.
- * 
- * @method
- */
-ve.ce.ListNode.prototype.enumerate = function() {
-	var styles,
-		levels = [];
-	for ( var i = 0; i < this.children.length; i++ ) {
-		styles = this.children[i].model.getElementAttribute( 'styles' );
-		levels = levels.slice( 0, styles.length );
-		if ( styles[styles.length - 1] === 'number' ) {
-			if ( !levels[styles.length - 1] ) {
-				levels[styles.length - 1] = 0;
-			}
-			this.children[i].$icon.text( ++levels[styles.length - 1] + '.' );
-		} else {
-			this.children[i].$icon.text( '' );
-			if ( levels[styles.length - 1] ) {
-				levels[styles.length - 1] = 0;
-			}
-		}
+ve.ce.HeadingNode.prototype.setStyle = function() {
+	var style = this.model.getElementAttribute( 'style' ),
+		type = ve.ce.ListItemNode.domNodeTypes[style];
+	if ( type === undefined ) {
+		throw 'Invalid style attribute for heading node: ' + style;
+	}
+	if ( style !== this.currentStyleHash ) {
+		this.currentStyleHash = style;
+		this.convertDomElement( type );
 	}
 };
 

@@ -20,6 +20,19 @@ ve.ce.Node = function( model, $element ) {
 
 /* Methods */
 
+ve.ce.Node.prototype.convertDomElement = function( type ) {
+	// Create new element
+	var $new = $( '<' + type + '></' + type + '>' );
+	// Copy classes
+	$new.attr( 'class', this.$.attr( 'class' ) );
+	// Move contents
+	$new.append( this.$.contents() );
+	// Swap elements
+	this.$.replaceWith( $new );
+	// Use new element from now on
+	this.$ = $new;
+};
+
 /**
  * Gets the length of the element in the model.
  * 

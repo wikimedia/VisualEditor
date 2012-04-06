@@ -26,6 +26,12 @@ ve.ce.LeafNode = function( model, $element ) {
 
 /* Methods */
 
+ve.ce.LeafNode.prototype.convertDomElement = function( type ) {
+	ve.ce.Node.prototype.call( this, type );
+	// Transplant content view
+	this.contentView.setContainer( this.$ );
+};
+
 /**
  * Render content.
  * 

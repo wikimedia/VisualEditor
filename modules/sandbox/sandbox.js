@@ -267,12 +267,11 @@ $(document).ready( function() {
 				},
 				{
 					'type': 'list',
+					'attributes': { 'style': 'bullet' },
 					'children': [
 						{
 							'type': 'listItem',
-							'attributes': {
-								'styles': ['bullet']
-							},
+							'attributes': { 'style': 'item' },
 							'children' : [
 								{
 									'type': 'paragraph',
@@ -288,72 +287,107 @@ $(document).ready( function() {
 				},
 				{
 					'type': 'list',
+					'attributes': { 'style': 'bullet' },
 					'children': [
 						{
 							'type': 'listItem',
-							'attributes': {
-								'styles': ['bullet']
-							},
+							'attributes': { 'style': 'item' },
 							'children' : [
 								{
 									'type': 'paragraph',
 									'content': { 'text': 'Bullet' }
-								}
-							]
-						},
-						{
-							'type': 'listItem',
-							'attributes': {
-								'styles': ['bullet', 'bullet']
-							},
-							'children' : [
+								},
 								{
-									'type': 'paragraph',
-									'content': { 'text': 'Bullet bullet' }
+									'type': 'list',
+									'attributes': { 'style': 'bullet' },
+									'children': [
+										{
+											'type': 'listItem',
+											'attributes': { 'style': 'item' },
+											'children' : [
+												{
+													'type': 'paragraph',
+													'content': { 'text': 'Bullet bullet' }
+												}
+											]
+										},
+										{
+											'type': 'list',
+											'attributes': { 'style': 'bullet' },
+											'children' : [
+												{
+													'type': 'listItem',
+													'attributes': { 'style': 'item' },
+													'children' : [
+														{
+															'type': 'paragraph',
+															'content': { 'text': 'Bullet bullet bullet' }
+														}
+													]
+												}
+											]
+										}
+									]
 								}
 							]
-						},
+						}
+					]
+				},
+				{
+					'type': 'list',
+					'attributes': { 'style': 'number' },
+					'children': [
 						{
 							'type': 'listItem',
-							'attributes': {
-								'styles': ['bullet', 'bullet', 'bullet']
-							},
-							'children' : [
-								{
-									'type': 'paragraph',
-									'content': { 'text': 'Bullet bullet bullet' }
-								}
-							]
-						},
-						{
-							'type': 'listItem',
-							'attributes': {
-								'styles': ['number']
-							},
+							'attributes': { 'style': 'item' },
 							'children' : [
 								{
 									'type': 'paragraph',
 									'content': { 'text': 'Number' }
-								}
-							]
-						},
-						{
-							'type': 'listItem',
-							'attributes': {
-								'styles': ['number', 'number']
-							},
-							'children' : [
+								},
 								{
-									'type': 'paragraph',
-									'content': { 'text': 'Number number' }
+									'type': 'list',
+									'attributes': { 'style': 'number' },
+									'children': [
+										{
+											'type': 'listItem',
+											'attributes': { 'style': 'item' },
+											'children' : [
+												{
+													'type': 'paragraph',
+													'content': { 'text': 'Number number' }
+												}
+											]
+										},
+										{
+											'type': 'list',
+											'attributes': { 'style': 'number' },
+											'children' : [
+												{
+													'type': 'listItem',
+													'attributes': { 'style': 'item' },
+													'children' : [
+														{
+															'type': 'paragraph',
+															'content': { 'text': 'Number number number' }
+														}
+													]
+												}
+											]
+										}
+									]
 								}
 							]
-						},
+						}
+					]
+				},
+				{
+					'type': 'list',
+					'attributes': { 'style': 'definition' },
+					'children': [
 						{
 							'type': 'listItem',
-							'attributes': {
-								'styles': ['term']
-							},
+							'attributes': { 'style': 'term' },
 							'children' : [
 								{
 									'type': 'paragraph',
@@ -363,9 +397,7 @@ $(document).ready( function() {
 						},
 						{
 							'type': 'listItem',
-							'attributes': {
-								'styles': ['definition']
-							},
+							'attributes': { 'style': 'definition' },
 							'children' : [
 								{
 									'type': 'paragraph',

@@ -11,6 +11,34 @@ ve.dm.WikitextSerializer = function( options ) {
 	}, options || {} );
 };
 
+/* Static Members */
+
+ve.dm.HtmlSerializer.headingSymbols = {
+	'1': '=',
+	'2': '==',
+	'3': '===',
+	'4': '====',
+	'5': '=====',
+	'6': '======'
+};
+
+ve.dm.HtmlSerializer.listSymbols = {
+	'bullet': '*',
+	'number': '#',
+	'definition': ''
+};
+
+ve.dm.HtmlSerializer.listItemSymbols = {
+	'item': '',
+	'term': ':',
+	'definition': ';'
+};
+
+ve.dm.HtmlSerializer.tableCellSymbols = {
+	'tableHeading': '!',
+	'tableCell': '|'
+};
+
 /* Static Methods */
 
 /**
@@ -80,29 +108,12 @@ ve.dm.WikitextSerializer.prototype.pre = function( node ) {
 	return ' ' + this.content( node.content ).replace( '\n', '\n ' );
 };
 
-ve.dm.WikitextSerializer.prototype.list = function( node ) {
-	var symbolTable = {
-		'bullet': '*',
-		'number': '#',
-		'term': ';',
-		'description': ':'
-	};
-	function convertStyles( styles ) {
-		var symbols = '';
-		for ( var i = 0, length = styles.length; i < length; i++ ) {
-			symbols += styles[i] in symbolTable ? symbolTable[styles[i]] : '';
-		}
-		return symbols;
-	}
-	var lines = [];
-	for ( var i = 0, length = node.children.length; i < length; i++ ) {
-		var childNode = node.children[i];
-		lines.push(
-			convertStyles( childNode.attributes.styles ) + ' ' +
-				this.document( childNode )
-		);
-	}
-	return lines.join( '\n' ) + '\n';
+ve.dm.WikitextSerializer.prototype.list = function( node, lead ) {
+	return '<!-- list item -->';
+};
+
+ve.dm.WikitextSerializer.prototype.listItem = function( node, lead ) {
+	return '<!-- list item -->';
 };
 
 ve.dm.WikitextSerializer.prototype.table = function( node ) {
@@ -135,15 +146,12 @@ ve.dm.WikitextSerializer.prototype.tableRow = function( node, first ) {
 };
 
 ve.dm.WikitextSerializer.prototype.tableCell = function( node ) {
-	var symbolTable = {
-		'tableHeading': '!',
-		'tableCell': '|'
-	};
 	var attributes = ve.dm.WikitextSerializer.getHtmlAttributes( node.attributes );
 	if ( attributes ) {
 		attributes = ve.Html.makeAttributeList( attributes ) + '|';
 	}
-	return symbolTable[node.type] + attributes + this.document( node, true );
+	return ve.dm.HtmlSerializer.tableCellSymbols[node.type] + attributes +
+		this.document( node, true );
 };
 
 ve.dm.WikitextSerializer.prototype.transclusion = function( node ) {

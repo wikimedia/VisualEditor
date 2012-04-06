@@ -8,45 +8,42 @@
  */
 ve.ce.ListItemNode = function( model ) {
 	// Inheritance
-	ve.ce.BranchNode.call( this, model );
+	var style = model.getElementAttribute( 'style' ),
+		type = ve.ce.ListItemNode.domNodeTypes[style];
+	ve.ce.BranchNode.call( this, model, $( '<' + type + '></' + type + '>' ) );
 
 	// Properties
-	this.$icon = $( '<div class="ve-ce-listItemNode-icon"></div>' ).prependTo( this.$ );
 	this.currentStylesHash = null;
-	
+
 	// DOM Changes
 	this.$.addClass( 've-ce-listItemNode' );
 
 	// Events
 	var _this = this;
 	this.model.on( 'update', function() {
-		_this.setClasses();
+		_this.setStyle();
 	} );
+};
 
-	// Initialization
-	this.setClasses();
+/* Static Members */
+
+ve.ce.ListItemNode.domNodeTypes = {
+	'item': 'li',
+	'definition': 'dd',
+	'term': 'dt'
 };
 
 /* Methods */
 
-ve.ce.ListItemNode.prototype.setClasses = function() {
-	var styles = this.model.getElementAttribute( 'styles' ),
-		stylesHash = styles.join( '|' );
-	if ( this.currentStylesHash !== stylesHash ) {
-		this.currentStylesHash = stylesHash;
-		var classes = this.$.attr( 'class' );
-		this.$
-			// Remove any existing level classes
-			.attr(
-				'class',
-				classes
-					.replace( / ?ve-ce-listItemNode-level[0-9]+/, '' )
-					.replace( / ?ve-ce-listItemNode-(bullet|number|term|definition)/, '' )
-			)
-			// Set the list style class from the style on top of the stack
-			.addClass( 've-ce-listItemNode-' + styles[styles.length - 1] )
-			// Set the list level class from the length of the stack
-			.addClass( 've-ce-listItemNode-level' + ( styles.length - 1 ) );
+ve.ce.HeadingNode.prototype.setStyle = function() {
+	var style = this.model.getElementAttribute( 'style' ),
+		type = ve.ce.ListItemNode.domNodeTypes[style];
+	if ( type === undefined ) {
+		throw 'Invalid style attribute for heading node: ' + style;
+	}
+	if ( style !== this.currentStyleHash ) {
+		this.currentStyleHash = style;
+		this.convertDomElement( type );
 	}
 };
 
