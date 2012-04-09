@@ -412,7 +412,7 @@ function TemplateRequest ( manager, title ) {
 	// Increase the number of maximum listeners a bit..
 	this.setMaxListeners( 10000 );
 	var self = this,
-		url = manager.env.wgScriptPath + '/api' + 
+		url = manager.env.wgScript + '/api' + 
 		manager.env.wgScriptExtension +
 		'?' + 
 		qs.stringify( {

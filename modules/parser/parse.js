@@ -38,10 +38,15 @@ var ParserPipeline = require('./mediawiki.parser.js').ParserPipeline,
 			'boolean': false,
 			'default': 40
 		},
-		'wgScriptPath': {
+		'wgScript': {
 			description: 'http path to remote API, e.g. http://wiki.sample.com/w',
 			'boolean': false,
 			'default': 'http://en.wikipedia.org/w'
+		},
+		'wgScriptPath': {
+			description: 'http path to remote web interface, e.g. http://wiki.sample.com/wiki',
+			'boolean': false,
+			'default': 'http://en.wikipedia.org/wiki'
 		},
 		'wgScriptExtension': {
 			description: 'Extension for PHP files on remote API server, if any. Include the period, e.g. ".php"',
@@ -63,6 +68,7 @@ var ParserPipeline = require('./mediawiki.parser.js').ParserPipeline,
 
 	var env = new ParserEnv( { 
 						// fetch templates from enwiki by default..
+						wgScript: argv.wgScript,
 						wgScriptPath: argv.wgScriptPath,
 						wgScriptExtension: argv.wgScriptExtension,
 						// XXX: add options for this!

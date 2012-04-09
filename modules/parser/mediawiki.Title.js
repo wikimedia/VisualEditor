@@ -23,6 +23,20 @@ Title.prototype.makeLink = function () {
 	}
 };
 
+Title.prototype.getPrefixedText = function () {
+	// XXX: links always point to the canonical namespace name.
+	if ( this.nskey ) {
+		return this.env.sanitizeURI( this.nskey + ':' + this.key );
+	} else {
+		var ns = this.ns.getDefaultName();
+
+		if ( ns ) {
+			ns += ':';
+		}
+		return this.env.sanitizeURI( ns + this.key );
+	}
+};
+
 
 function Namespace ( id ) {
 	this.id = id;

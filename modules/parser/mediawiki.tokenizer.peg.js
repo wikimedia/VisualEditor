@@ -115,6 +115,7 @@ PegTokenizer.prototype.inline_breaks = function (input, pos, stops ) {
 		case '|':
 			return counters.pipe ||
 					counters.template ||
+					counters.linkdesc ||
 				( stops.onStack('table') &&
 					( input[pos + 1].match(/[|}]/) !== null ||
 						counters.tableCellArg

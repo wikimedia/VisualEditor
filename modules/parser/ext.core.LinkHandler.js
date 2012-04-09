@@ -107,9 +107,6 @@ WikiLinkHandler.prototype.renderFile = function ( token, manager, cb, title ) {
 	
 	var content = token.attribs.slice(1, -1);
 
-	// TODO: get /wiki from config!
-	var a = new TagTk( 'a', [ new KV( 'href', '/wiki' + title.makeLink() ) ] );
-	a.dataAttribs = token.dataAttribs;
 
 	var MD5 = new jshashes.MD5(),
 		hash = MD5.hex( title.key ),
@@ -122,7 +119,7 @@ WikiLinkHandler.prototype.renderFile = function ( token, manager, cb, title ) {
 	// extract options
 	var options = [],
 		oHash = {},
-		caption = null;
+		caption = [];
 	for( var i = 0, l = content.length; i<l; i++ ) {
 		var oContent = content[i],
 			oText = manager.env.tokensToString( oContent.v, true );
@@ -148,7 +145,9 @@ WikiLinkHandler.prototype.renderFile = function ( token, manager, cb, title ) {
 						options.push(new KV( 'height', y ) );
 						oHash.height = y;
 					}
-					//console.log( JSON.stringify( oHash ) );
+				} else {
+					// XXX: check handling of multiple captions in default MW!
+					caption = caption.concat( oContent.v );
 				}
 			}
 
@@ -157,10 +156,11 @@ WikiLinkHandler.prototype.renderFile = function ( token, manager, cb, title ) {
 			if ( bits.length > 1 && this._prefixImageOptions[ bits[0].trim() ] ) {
 				console.log('handle prefix ' + bits );
 			} else {
-				caption = oContent;
+				caption = caption.concat( oContent.v );
 			}
 		}
 	}
+	//console.warn('caption: ' + JSON.stringify( caption ) );
 	
 
 	//var contentPos = token.dataAttribs.contentPos;
@@ -172,18 +172,117 @@ WikiLinkHandler.prototype.renderFile = function ( token, manager, cb, title ) {
 	//console.log( JSON.stringify( options, null, 2 ) );
 	// XXX: check if the file exists, generate thumbnail, get size
 	// XXX: render according to mode (inline, thumb, framed etc)
-	var img = new SelfclosingTagTk( 'img', 
-			[ 
-				// FIXME!
-				new KV( 'height', oHash.height || '120' ),
-				new KV( 'width', oHash.width || '120' ),
-				new KV( 'src', path ),
-				new KV( 'alt', oHash.alt || title.key )
-			] );
+	
+	if ( oHash.format && oHash.format === 'thumb' ) {
+		return this.renderThumb( token, manager, cb, title, path, caption, oHash, options );
+	} else {
+		// TODO: get /wiki from config!
+		var a = new TagTk( 'a', [ new KV( 'href', title.makeLink() ) ] );
+		a.dataAttribs = token.dataAttribs;
 
-	return { tokens: [ a, img, new EndTagTk( 'a' )] };
+		var width, height;
+		if ( ! height in oHash && ! width in oHash ) {
+			width = '120px';
+			height = '120px';
+		} else {
+			width = oHash.width;
+			height = oHash.height;
+		}
+
+		var img = new SelfclosingTagTk( 'img', 
+				[ 
+					// FIXME!
+					new KV( 'height', height || '' ),
+					new KV( 'width', width || '' ),
+					new KV( 'src', path ),
+					new KV( 'alt', oHash.alt || title.key )
+				] );
+
+		return { tokens: [ a, img, new EndTagTk( 'a' )] };
+	}
 };
 
+WikiLinkHandler.prototype.renderThumb = function ( token, manager, cb, title, path, caption, oHash, options ) {
+	// TODO: get /wiki from config!
+	var a = new TagTk( 'a', [ new KV( 'href', title.makeLink() ) ] );
+	a.dataAttribs = token.dataAttribs;
+	a.dataAttribs.optionHash = oHash;
+	a.dataAttribs.optionList = options;
+
+	var thumb = 
+	[
+		new TagTk( 
+				'figure', 
+				[
+					new KV('class', 'thumb tright thumbinner'),
+					new KV('style', 'width: 125px'),
+					new KV('typeof', 'http://mediawiki.org/rdf/Thumb'),
+					new KV('prefix', "mw: http://mediawiki.org/rdf/terms/")
+				] 
+			),
+		new TagTk( 
+				'a', 
+				[
+					new KV('href', title.makeLink()),
+					new KV('class', 'image')
+				]
+			),
+		new SelfclosingTagTk( 
+				'img',
+				[
+					new KV('src', path),
+					new KV('width', '120px'),
+					new KV('height', '120px'),
+					new KV('class', 'thumbimage'),
+					new KV('alt', oHash.alt || title.key ),
+					new KV('resource', title.getPrefixedText())
+				]
+			),
+		new EndTagTk( 'a' ),
+		new SelfclosingTagTk ( 
+				'a',
+				[
+					new KV('href', title.makeLink()),
+					new KV('class', 'internal sprite details magnify'),
+					new KV('title', 'View photo details')
+				]
+			),
+		new TagTk( 'figcaption', 
+				[ 
+					new KV('class', 'thumbcaption'),
+					new KV('property', 'mw:thumbcaption')
+				] )
+	].concat( 
+			caption, 
+			[
+				new EndTagTk( 'figcaption' ),
+				new EndTagTk( 'figure' )
+			]
+		);
+	
+	// set round-trip information on the wrapping figure token
+	thumb[0].dataAttribs = token.dataAttribs;
+
+/*		
+ * Wikia DOM:
+<figure class="thumb tright thumbinner" style="width:270px;">
+    <a href="Delorean.jpg" class="image" data-image-name="DeLorean.jpg" id="DeLorean-jpg">
+        <img alt="" src="Delorean.jpg" width="268" height="123" class="thumbimage">
+    </a>
+    <a href="File:DeLorean.jpg" class="internal sprite details magnify" title="View photo details"></a>
+    <figcaption class="thumbcaption">
+        A DeLorean DMC-12 from the front with the gull-wing doors open
+        <table><tr><td>test</td></tr></table>
+        Continuation of the caption
+    </figcaption>
+    <div class="picture-attribution">
+        <img src="Christian-Avatar.png" width="16" height="16" class="avatar" alt="Christian">Added by <a href="User:Christian">Christian</a>
+    </div>
+</figure>
+*/
+	//console.warn( 'thumbtokens: ' + JSON.stringify( thumb, null, 2 ) );
+	return { tokens: thumb };
+};
 
 
 function ExternalLinkHandler( manager, isInclude ) {
@@ -236,6 +335,7 @@ ExternalLinkHandler.prototype.onUrlLink = function ( token, manager, cb ) {
 		};
 	}
 };
+
 
 // Bracketed external link
 ExternalLinkHandler.prototype.onExtLink = function ( token, manager, cb ) {
