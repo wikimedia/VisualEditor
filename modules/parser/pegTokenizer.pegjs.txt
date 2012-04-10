@@ -944,7 +944,7 @@ template_param_text
     il:nested_block+ {
         stops.pop('table');
         stops.dec('template');
-        //console.warn( 'tpt match: ' + pp (il));
+        //console.warn( 'tpt match: ' + pp (il) + " stops: " + pp(stops));
         var r = flatten( il ),
             firstToken = r[0];
 
@@ -1489,15 +1489,17 @@ list_char = [*#:;]
  *********************************************************************/
 
 table_lines
-  = ! inline_breaks
-    & { return stops.push('table', true); }
-    tl:table_line 
-    tls:( s:sol tl2:table_line { return s.concat(tl2); } )* {
-        stops.pop('table');
-        //console.warn('table_lines: ' + pp(tl.concat(tls)));
-        return tl.concat( tls );
-    }
-  / & { return stops.pop('table'); }
+  = //& { console.warn('enter table_lines: ' + input.substr(pos, 20)); return true; }
+    (! inline_breaks / & '{{!}}' )  r:(
+        & { return stops.push('table', true); }
+        tl:table_line 
+        tls:( s:sol tl2:table_line { return s.concat(tl2); } )* {
+            stops.pop('table');
+            //console.warn('table_lines: ' + pp(tl.concat(tls)));
+            return tl.concat( tls );
+        }
+      / & { return stops.pop('table'); }
+    ) { return r }
 
 // This production assumes start-of-line position!
 table_line
@@ -1545,6 +1547,7 @@ table_row_tag
         if ( !td ) {
             return trToken;
         } else {
+            //console.warn( 'tr result: ' + pp(trToken.concat(td)) + ' stops: ' + pp(stops));
             return trToken.concat(td);
         }
     }
@@ -1562,9 +1565,7 @@ table_data_tag
     a:table_cell_args?
     //& { console.warn("past attrib, pos=" + pos + input.substr(pos,10)); return true; }
     // use inline_breaks to break on tr etc
-    td:( //& { dp("table_data 2, pos=" + pos + input.substr(pos,10)); return true; }
-         b:nested_block { return b } 
-       )* 
+    td:nested_block* 
     { 
         if ( a === '' ) {
             a = [];
@@ -1586,6 +1587,7 @@ table_heading_tags
 table_heading_tag
   = a:table_cell_args?
     c:nested_block* {
+         //console.warn( 'th stops: ' + pp( stops ) );
          if ( a === '' ) {
              a = [];
          }
@@ -1603,7 +1605,7 @@ table_cell_args
   = & { return stops.inc('tableCellArg'); }
     as:generic_attribute* space* pipe !pipe { 
         stops.dec('tableCellArg');
-        //console.warn( 'tcargs' + JSON.stringify( as ) );
+        //console.warn( 'tcargs' + JSON.stringify( as ) + " stops: " + pp(stops) );
         return as;
     }
     / & { return stops.dec('tableCellArg'); }
@@ -1704,7 +1706,7 @@ table_data
     }
 
 table_heading
-  = n:("!!" { return [] } / nl:newlineToken "!" { return nl }) 
+  = n:("!!" { return [] } / nl:sol "!" { return nl }) 
     a:(as:generic_attribute+ end_pipe { return as } )?
      c:inline {
          if ( a == '' ) {

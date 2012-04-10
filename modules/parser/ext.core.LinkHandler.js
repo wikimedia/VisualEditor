@@ -155,7 +155,7 @@ WikiLinkHandler.prototype.renderFile = function ( token, manager, cb, title ) {
 		} else {
 			var bits = oText[0].split( '=', 2 );
 			if ( bits.length > 1 && this._prefixImageOptions[ bits[0].trim() ] ) {
-				console.log('handle prefix ' + bits );
+				console.warn('handle prefix ' + bits );
 			} else {
 				caption = caption.concat( oContent.v );
 			}
