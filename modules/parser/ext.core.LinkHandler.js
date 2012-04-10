@@ -105,6 +105,7 @@ WikiLinkHandler.prototype.renderFile = function ( token, manager, cb, title ) {
 	// distinguish media types
 	// if image: parse options
 	
+	// Slice off the target and trail
 	var content = token.attribs.slice(1, -1);
 
 
@@ -173,7 +174,7 @@ WikiLinkHandler.prototype.renderFile = function ( token, manager, cb, title ) {
 	// XXX: check if the file exists, generate thumbnail, get size
 	// XXX: render according to mode (inline, thumb, framed etc)
 	
-	if ( oHash.format && oHash.format === 'thumb' ) {
+	if ( oHash.format && ( oHash.format === 'thumb' || oHash.format === 'thumbnail') ) {
 		return this.renderThumb( token, manager, cb, title, path, caption, oHash, options );
 	} else {
 		// TODO: get /wiki from config!
@@ -209,13 +210,36 @@ WikiLinkHandler.prototype.renderThumb = function ( token, manager, cb, title, pa
 	a.dataAttribs.optionHash = oHash;
 	a.dataAttribs.optionList = options;
 
+	var figurestyle = "width: 125px;",
+		figureclass = "thumb tright thumbinner";
+	
+	// set horizontal alignment
+	if ( oHash.halign ) {
+		if ( oHash.halign === 'left' ) {
+			figurestyle += ' float: left;';
+			figureclass = "thumb tleft thumbinner";
+		} else if ( oHash.halign === 'center' ) {
+			figureclass = "thumb center thumbinner";
+		} else if ( oHash.halign === 'none' ) {
+			figureclass = "thumb thumbinner";
+		} else {
+			figurestyle += ' float: right;';
+		}
+	} else {
+		figurestyle += ' float: right;';
+	}
+
+	// XXX: set vertical alignment (valign)
+	// XXX: support other formats (border, frameless, frame)
+	// XXX: support prefixes
+
 	var thumb = 
 	[
 		new TagTk( 
 				'figure', 
 				[
-					new KV('class', 'thumb tright thumbinner'),
-					new KV('style', 'width: 125px'),
+					new KV('class', figureclass),
+					new KV('style', figurestyle),
 					new KV('typeof', 'http://mediawiki.org/rdf/Thumb'),
 					new KV('prefix', "mw: http://mediawiki.org/rdf/terms/")
 				] 
