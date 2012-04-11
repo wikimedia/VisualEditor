@@ -307,7 +307,7 @@ ve.ce.Surface.prototype.pollChanges = function( async ) {
 };
 
 ve.ce.Surface.prototype.annotate = function( method, annotation ) {
-	var range = this.getSelectionRange(),
+	var range = this.model.getSelection(),
 		_this = this;
 
 	if ( method === 'toggle' ) {
