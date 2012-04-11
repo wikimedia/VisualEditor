@@ -50,13 +50,27 @@ Util.prototype.isBlockTag = function ( name ) {
 		//case 'img': // hmm!
 		case 'pre':
 		case 'center':
-		case 'blockquote':
+		// HTML5 heading content
 		case 'h1':
 		case 'h2':
 		case 'h3':
 		case 'h4':
 		case 'h5':
 		case 'h6':
+		case 'hgroup':
+		// HTML5 sectioning content
+		case 'article':
+		case 'aside':
+		case 'nav':
+		case 'section':
+		case 'header':
+		case 'footer':
+		case 'header':
+		case 'figure':
+		case 'figcaption':
+		case 'fieldset':
+		case 'details':
+		case 'blockquote':
 			return true;
 		default:
 			return false;
