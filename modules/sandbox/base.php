@@ -127,6 +127,5 @@
 </div>
 
 <div id="paste" contenteditable="true" style="height: 1px; width: 1px; display: none; opacity: 0; position: absolute;"></div>
-<div id="fake-cursor" style="height: 20px; width: 1px; background: red; position: absolute; top: 0; left: 0;"></div>
 
 <!-- /VisualEditor Sandbox -->
