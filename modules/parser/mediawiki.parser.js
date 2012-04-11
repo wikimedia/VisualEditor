@@ -305,7 +305,7 @@ ParserPipeline.prototype.makeAttributePipeline = function ( inputType, args, isI
 		* See https://www.mediawiki.org/wiki/Future/Parser_development/Token_stream_transformations
 		*/
 		var tokenPreProcessor = new TokenTransformManager
-					.SyncTokenTransformManager ( this.env, inputType, 1 );
+					.SyncTokenTransformManager ( this.env, inputType, 1, isInclude );
 
 		this._addTransformers( inputType, 'sync01', tokenPreProcessor, isInclude );
 
@@ -316,7 +316,7 @@ ParserPipeline.prototype.makeAttributePipeline = function ( inputType, args, isI
 					'input': this.makeInputPipeline.bind( this ),
 					'attributes': this.makeAttributePipeline.bind( this )
 				},
-				args, this.env, inputType, 2
+				args, this.env, inputType, 2, isInclude
 				);
 		// Register template expansion extension
 		this._addTransformers( 'text/wiki', 'async12', 
