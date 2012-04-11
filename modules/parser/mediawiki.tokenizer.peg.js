@@ -126,11 +126,12 @@ PegTokenizer.prototype.inline_breaks = function (input, pos, stops ) {
 			return (
 						counters.pipe ||
 						( stops.onStack( 'table' ) &&
-						  ( input.substr(pos, 10) === '{{!}}{{!}}' ||
-							counters.tableCellArg
-						  )
+							( 
+								input.substr(pos, 10) === '{{!}}{{!}}' ||
+								counters.tableCellArg
+							)
 						)
-				   ) && input.substr( pos, 5 ) === '{{!}}' || null;
+					) && input.substr( pos, 5 ) === '{{!}}' || null;
 		case "!":
 			return stops.onStack( 'table' ) && input[pos + 1] === "!" ||
 				null;
@@ -154,7 +155,11 @@ PegTokenizer.prototype.inline_breaks = function (input, pos, stops ) {
 				( counters.linkdesc && input[pos + 1] === ']' ) ||
 				null;
 		case "<":
-			return counters.pre &&  input.substr( pos, 6 ) === '</pre>' || null;
+			return ( counters.pre &&  input.substr( pos, 6 ) === '<pre>' ) ||
+				( counters.noinclude && input.substr(pos, 12) === '</noinclude>' ) ||
+				( counters.includeonly && input.substr(pos, 14) === '</includeonly>' ) ||
+				( counters.onlyinclude && input.substr(pos, 14) === '</onlyinclude>' ) ||
+				null;
 		default:
 			return null;
 	}
@@ -166,16 +171,17 @@ PegTokenizer.prototype.breakMap = {
 	'=': function(input, pos, syntaxFlags) { 
 		return syntaxFlags.equal ||
 			( syntaxFlags.h &&
-			  input.substr( pos + 1, 200)
-			  .match(/[ \t]*[\r\n]/) !== null ) || null;
+				input.substr( pos + 1, 200)
+				.match(/[ \t]*[\r\n]/) !== null ) || null;
 	},
 	'|': function ( input, pos, syntaxFlags ) {
 		return syntaxFlags.template ||
-			   syntaxFlags.linkdesc ||
+			syntaxFlags.linkdesc ||
 			( syntaxFlags.table &&
-			  ( input[pos + 1].match(/[|}]/) !== null ||
-				syntaxFlags.tableCellArg
-			  ) 
+				( 
+					input[pos + 1].match(/[|}]/) !== null ||
+					syntaxFlags.tableCellArg
+				) 
 			) || null;
 	},
 	"!": function ( input, pos, syntaxFlags ) {

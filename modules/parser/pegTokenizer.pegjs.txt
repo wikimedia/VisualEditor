@@ -1859,6 +1859,55 @@ sol = nl:(newlineToken / & { return pos === 0; } { return [] })
           return nl.concat(cn, niToken);
       }
 
+/**
+ * noinclude / includeonly / onlyinclude productions. These are normally
+ * handled by the generic_tag production, except where generic tags are not
+ * allowed- for example in directives, which are allowed in various attribute
+ * names and -values.
+ *
+ * Example test case:
+ * {|
+ * |-<includeonly>
+ * foo
+ * </includeonly>
+ * |Hello
+ * |}
+ */
+include_limits = noinclude / includeonly / onlyinclude
+
+noinclude 
+  = & { return stops.inc('noinclude'); }
+    "<noinclude>"
+    i:inline
+    "</noinclude>"
+    {
+        stops.dec('noinclude');
+        return [new TagTk('noinclude')].concat(i, [new EndTagTk('noinclude')]);
+    }
+  / & { return stops.dec('noinclude'); }
+
+includeonly 
+  = & { return stops.inc('includeonly'); }
+    "<includeonly>"
+    i:inline
+    "</includeonly>"
+    {
+        stops.dec('includeonly');
+        return [new TagTk('includeonly')].concat(i, [new EndTagTk('includeonly')]);
+    }
+  / & { return stops.dec('includeonly'); }
+
+onlyinclude 
+  = & { return stops.inc('onlyinclude'); }
+    "<onlyinclude>"
+    i:inline
+    "</onlyinclude>"
+    {
+        stops.dec('onlyinclude');
+        return [new TagTk('onlyinclude')].concat(i, [new EndTagTk('onlyinclude')]);
+    }
+  / & { return stops.dec('onlyinclude'); }
+
 eof = & { return isEOF(pos); } { return true; }
 
 
@@ -1877,6 +1926,7 @@ directive
   / nowiki
   / tplarg_or_template
   / htmlentity 
+  / include_limits
 
 // Plain text, but can contain templates, template arguments, comments etc-
 // all stuff that is normally handled by the preprocessor
