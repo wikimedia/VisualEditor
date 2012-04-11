@@ -46,7 +46,7 @@ ve.ui.LinkInspector.prototype.getTitleFromSelection = function() {
 	var surfaceView = this.context.getSurfaceView(),
 		surfaceModel = surfaceView.getModel(),
 		documentModel = surfaceModel.getDocument(),
-		data = documentModel.getData( surfaceView.currentSelection );
+		data = documentModel.getData( surfaceView.getSelectionRange() );
 	if ( data.length ) {
 		var annotation = ve.dm.DocumentNode.getMatchingAnnotations( data[0], /link\/.*/ );
 		if ( annotation.length ) {

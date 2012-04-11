@@ -98,6 +98,7 @@ ve.ce.Surface = function( $container, model ) {
 	this.on( 'rangeChange', function( e ) {
 		if ( e.new !== null ) {
 			_this.model.setSelection( e.new );
+			_this.Selection();
 			if ( e.new.getLength() === 0 ) {
 				_this.loadInsertionAnnotations();
 			} else {
@@ -306,7 +307,7 @@ ve.ce.Surface.prototype.pollChanges = function( async ) {
 };
 
 ve.ce.Surface.prototype.annotate = function( method, annotation ) {
-	var range = this.currentSelection,
+	var range = this.getSelectionRange(),
 		_this = this;
 
 	if ( method === 'toggle' ) {
@@ -456,19 +457,19 @@ ve.ce.Surface.prototype.
 Selection = function( delay ) {
 	var _this = this;
 	function update() {
-		/*
-		if ( _this.surfaceObserver.range.getLength() ) {
+
+		if ( _this.getSelectionRange() ) {
 			_this.clearInsertionAnnotations();
 		}
 		if ( _this.contextView ) {
-			if ( _this.surfaceObserver.range.getLength() ) {
+			if ( _this.getSelectionRange() ) {
 				_this.contextView.set();
 			} else {
 				_this.contextView.clear();
 			}
 		}
 		_this.updateSelectionTimeout = undefined;
-		*/
+
 	}
 	if ( delay ) {
 		if ( this.updateSelectionTimeout !== undefined ) {

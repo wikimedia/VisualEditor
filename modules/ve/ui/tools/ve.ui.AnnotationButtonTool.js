@@ -23,7 +23,7 @@ ve.ui.AnnotationButtonTool = function( toolbar, name, title, data ) {
 ve.ui.AnnotationButtonTool.prototype.onClick = function() {
 	var surfaceView = this.toolbar.getSurfaceView();
 	if ( this.inspector ) {
-		if( surfaceView.surfaceObserver.range.getLength() ) {
+		if( surfaceView.getSelectionRange() ) {
 			this.toolbar.getSurfaceView().contextView.openInspector( this.inspector );
 		} else {
 			if ( this.active ) {
