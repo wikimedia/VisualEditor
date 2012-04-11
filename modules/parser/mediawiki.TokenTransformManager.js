@@ -292,7 +292,7 @@ TokenTransformManager.prototype._transformToken = function ( token, ts, cbOrPrev
  * @param {Object} args, the argument map for templates
  * @param {Object} env, the environment.
  */
-function AsyncTokenTransformManager ( childFactories, args, env, inputType, phaseEndRank ) {
+function AsyncTokenTransformManager ( childFactories, args, env, inputType, phaseEndRank, isInclude ) {
 	// Factory function for new AsyncTokenTransformManager creation with
 	// default transforms enabled
 	// Also sets up a tokenizer and phase-1-transform depending on the input format
@@ -304,6 +304,7 @@ function AsyncTokenTransformManager ( childFactories, args, env, inputType, phas
 	this.phaseEndRank = phaseEndRank;
 	// FIXME: pass actual title?
 	this.loopAndDepthCheck = new LoopAndDepthCheck( null );
+	this.isInclude = isInclude;
 }
 
 // Inherit from TokenTransformManager, and thus also from EventEmitter.
@@ -321,7 +322,7 @@ AsyncTokenTransformManager.prototype.constructor = AsyncTokenTransformManager;
  */
 AsyncTokenTransformManager.prototype.newChildPipeline = function ( inputType, args, title ) {
 	//console.warn( 'newChildPipeline: ' + JSON.stringify( args ) );
-	var pipe = this.childFactories.input( inputType, args );
+	var pipe = this.childFactories.input( inputType, args, true );
 
 	// now set up a few things on the child AsyncTokenTransformManager.
 	var child = pipe.last;
@@ -345,7 +346,7 @@ AsyncTokenTransformManager.prototype.newChildPipeline = function ( inputType, ar
  * first stage of the pipeline, and 'last' pointing to the last stage.
  */
 AsyncTokenTransformManager.prototype.getAttributePipeline = function ( inputType, args ) {
-	var pipe = this.childFactories.attributes( inputType, args );
+	var pipe = this.childFactories.attributes( inputType, args, this.isInclude );
 	var child = pipe.last;
 	child.title = this.title;
 	child.loopAndDepthCheck = new LoopAndDepthCheck ( this.loopAndDepthCheck, '' );
@@ -402,8 +403,7 @@ AsyncTokenTransformManager.prototype.process = function ( tokens ) {
 AsyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 	// Set top-level callback to next transform phase
 	var res = this.transformTokens ( tokens, this.tokenCB );
-	this.env.dp( 'AsyncTokenTransformManager onChunk res.async=', 
-			res.async, ' tokens=', tokens );
+	this.env.dp( 'AsyncTokenTransformManager onChunk tokens=', tokens );
 
 	if ( ! this.tailAccumulator ) {
 		this.emit( 'chunk', res.tokens );
@@ -594,13 +594,14 @@ AsyncTokenTransformManager.prototype.onEndEvent = function () {
  * @constructor
  * @param {Object} environment.
  */
-function SyncTokenTransformManager ( env, inputType, phaseEndRank ) {
+function SyncTokenTransformManager ( env, inputType, phaseEndRank, isInclude ) {
 	// both inherited
 	this._construct();
 	this.phaseEndRank = phaseEndRank;
 	this.args = {}; // no arguments at the top level
 	this.env = env;
 	this.inputType = inputType;
+	this.isInclude = isInclude;
 }
 
 // Inherit from TokenTransformManager, and thus also from EventEmitter.
@@ -745,7 +746,7 @@ AttributeTransformManager.prototype.process = function ( attributes ) {
 
 			// transform the key
 			pipe = this.manager.getAttributePipeline( this.manager.inputType,
-																this.manager.args );
+														this.manager.args );
 			pipe.on( 'chunk',
 					this.onChunk.bind( this, this._returnAttributeKey.bind( this, i ) ) 
 				);
@@ -763,7 +764,7 @@ AttributeTransformManager.prototype.process = function ( attributes ) {
 
 			// transform the value
 			pipe = this.manager.getAttributePipeline( this.manager.inputType,
-																this.manager.args );
+														this.manager.args );
 			pipe.on( 'chunk', 
 					this.onChunk.bind( this, this._returnAttributeValue.bind( this, i ) ) 
 					);

@@ -362,6 +362,7 @@ ParserFunctions.prototype['pf_#ifexpr'] = function ( target, argList, argDict, u
 				[];
 	}
 };
+
 ParserFunctions.prototype['pf_#iferror'] = function ( target, argList, argDict ) {
 	if ( target.indexOf( 'class="error"' ) >= 0 ) {
 		return ( argList[0] && argList[0].v ) || [];
@@ -369,6 +370,7 @@ ParserFunctions.prototype['pf_#iferror'] = function ( target, argList, argDict )
 		return argList[1] && argList[1].v || [ target ] ;
 	}
 };
+
 ParserFunctions.prototype['pf_#expr'] = function ( target, argList, argDict ) {
 	var res;
 	if ( target ) {
@@ -483,7 +485,10 @@ ParserFunctions.prototype.pf_namespacee = function ( target, argList, argDict ) 
 	return [target.split(':').pop() || 'Main'];
 };
 ParserFunctions.prototype.pf_pagename = function ( target, argList, argDict ) {
-	return ['Main page'];
+	return [this.manager.env.pageName];
+};
+ParserFunctions.prototype.pf_pagenamebase = function ( target, argList, argDict ) {
+	return [this.manager.env.pageName];
 };
 ParserFunctions.prototype.pf_scriptpath = function ( target, argList, argDict ) {
 	return [this.manager.env.wgScriptPath];

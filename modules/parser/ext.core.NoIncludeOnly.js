@@ -26,7 +26,7 @@ function OnlyInclude( manager, isInclude ) {
 	}
 }
 
-OnlyInclude.prototype.rank = 0.001;
+OnlyInclude.prototype.rank = 0.001; // Before any further processing
 
 OnlyInclude.prototype.onOnlyInclude = function ( token, manager ) {
 	var meta = new TagTk( 'meta' );

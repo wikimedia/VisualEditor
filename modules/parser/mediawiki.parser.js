@@ -78,13 +78,13 @@ function ParserPipeline( env, inputType ) {
 	};
 
 	// Create an input pipeline for the given input type.
-	this.inputPipeline = this.makeInputPipeline ( inputType, {}, true );
+	this.inputPipeline = this.makeInputPipeline ( inputType, {}, false );
 	this.inputPipeline.atTopLevel = true;
 	this.inputPipeline.last.atTopLevel = true;
 
 
 	this.tokenPostProcessor = new TokenTransformManager
-					.SyncTokenTransformManager ( env, inputType, 3.0 );
+					.SyncTokenTransformManager ( env, inputType, 3.0, false );
 	this.tokenPostProcessor.listenForTokensFrom ( this.inputPipeline );
 
 
@@ -177,8 +177,6 @@ ParserPipeline.prototype._transformers = {
 			[ 
 				TemplateHandler,
 				// Expand attributes after templates to avoid expanding unused branches
-				// XXX: Should we support further processing after attribute
-				// expansion?
 				AttributeExpander,
 				WikiLinkHandler,
 				ExternalLinkHandler,
@@ -233,11 +231,11 @@ ParserPipeline.prototype._addTransformers = function ( type, phase, manager, isI
  * accepts the wiki text this way. The last stage of the input pipeline is
  * always an AsyncTokenTransformManager, which emits its output in events.
  */
-ParserPipeline.prototype.makeInputPipeline = function ( inputType, args, isNoInclude ) {
+ParserPipeline.prototype.makeInputPipeline = function ( inputType, args, isInclude ) {
 	switch ( inputType ) {
 		case 'text/wiki':
 			//console.warn( 'makeInputPipeline ' + JSON.stringify( args ) );
-			if ( this.pipelineCache['text/wiki'].input.length ) {
+			if ( this.pipelineCache['text/wiki'].input.length && isInclude ) {
 				var pipe = this.pipelineCache['text/wiki'].input.pop();
 				pipe.last.args = args;
 				return pipe;
@@ -251,11 +249,11 @@ ParserPipeline.prototype.makeInputPipeline = function ( inputType, args, isNoInc
 				* https://www.mediawiki.org/wiki/Future/Parser_development/Token_stream_transformations
 				*/
 				var tokenPreProcessor = new TokenTransformManager
-								.SyncTokenTransformManager ( this.env, 'text/wiki', 1 );
+								.SyncTokenTransformManager ( this.env, 'text/wiki', 1, isInclude );
 				tokenPreProcessor.listenForTokensFrom ( wikiTokenizer );
 
 				this._addTransformers( 'text/wiki', 'sync01', 
-						tokenPreProcessor, ! isNoInclude );
+						tokenPreProcessor, isInclude );
 
 
 				var tokenExpander = new TokenTransformManager.AsyncTokenTransformManager (
@@ -263,12 +261,12 @@ ParserPipeline.prototype.makeInputPipeline = function ( inputType, args, isNoInc
 								'input': this.makeInputPipeline.bind( this ),
 								'attributes': this.makeAttributePipeline.bind( this )
 							},
-							args, this.env, inputType, 2.0
+							args, this.env, inputType, 2.0, isInclude
 						);
 
 				// Register template expansion extension
 				this._addTransformers( 'text/wiki', 'async12', 
-						tokenExpander, ! isNoInclude );
+						tokenExpander, isInclude );
 
 				tokenExpander.listenForTokensFrom ( tokenPreProcessor );
 				// XXX: hack.
@@ -295,8 +293,8 @@ ParserPipeline.prototype.makeInputPipeline = function ( inputType, args, isNoInc
  * Factory for attribute transformations, with input type implicit in the
  * environment.
  */
-ParserPipeline.prototype.makeAttributePipeline = function ( inputType, args ) {
-	if ( this.pipelineCache[inputType].attribute.length ) {
+ParserPipeline.prototype.makeAttributePipeline = function ( inputType, args, isInclude ) {
+	if ( this.pipelineCache[inputType].attribute.length && isInclude ) {
 		var pipe = this.pipelineCache[inputType].attribute.pop();
 		pipe.last.args = args;
 		return pipe;
@@ -309,8 +307,7 @@ ParserPipeline.prototype.makeAttributePipeline = function ( inputType, args ) {
 		var tokenPreProcessor = new TokenTransformManager
 					.SyncTokenTransformManager ( this.env, inputType, 1 );
 
-		// XXX: set include flag properly!
-		this._addTransformers( inputType, 'sync01', tokenPreProcessor, false );
+		this._addTransformers( inputType, 'sync01', tokenPreProcessor, isInclude );
 
 		new NoInclude( tokenPreProcessor );
 
@@ -323,7 +320,7 @@ ParserPipeline.prototype.makeAttributePipeline = function ( inputType, args ) {
 				);
 		// Register template expansion extension
 		this._addTransformers( 'text/wiki', 'async12', 
-				tokenExpander, false );
+				tokenExpander, isInclude );
 		//new TemplateHandler( tokenExpander );
 		//new AttributeExpander( tokenExpander );
 		tokenExpander.listenForTokensFrom ( tokenPreProcessor );

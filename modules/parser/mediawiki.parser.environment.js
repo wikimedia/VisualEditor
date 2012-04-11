@@ -14,7 +14,8 @@ var MWParserEnvironment = function(opts) {
 		wgUploadPath: "/wiki/images",
 		wgScriptExtension: ".php",
 		fetchTemplates: false,
-		maxDepth: 40
+		maxDepth: 40,
+		pageName: 'Main page'
 	};
 	// XXX: this should be namespaced
 	$.extend(options, opts);

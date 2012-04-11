@@ -57,6 +57,11 @@ var ParserPipeline = require('./mediawiki.parser.js').ParserPipeline,
 			description: 'Whether to fetch included templates recursively',
 			'boolean': true,
 			'default': true
+		},
+		'pagename': {
+			description: 'The page name, returned for {{PAGENAME}}.',
+			'boolean': false,
+			'default': 'Main page'
 		}
 	});
 	var argv = opts.argv;
@@ -77,7 +82,8 @@ var ParserPipeline = require('./mediawiki.parser.js').ParserPipeline,
 						// enable/disable debug output using this switch	
 						debug: argv.debug,
 						trace: argv.trace,
-						maxDepth: argv.maxdepth
+						maxDepth: argv.maxdepth,
+						pageName: argv.pagename
 					} ),
 		parser = new ParserPipeline( env );
 
