@@ -453,16 +453,29 @@ ve.ce.Surface.prototype.getModel = function() {
 	return this.model;
 };
 
+ve.ce.Surface.prototype.isSelection = function() {
+	var range = this.getSelectionRange();
+	//if all properties the same, assume there is no selection
+	if (	
+		range.end === range.from &&
+		range.from === range.start &&
+		range.start === range.to 
+		) {
+			return false;
+		}	else {
+			return true;
+		}
+}
+
 ve.ce.Surface.prototype.
 Selection = function( delay ) {
 	var _this = this;
 	function update() {
-
-		if ( _this.getSelectionRange() ) {
+		if ( _this.isSelection() ) {
 			_this.clearInsertionAnnotations();
 		}
 		if ( _this.contextView ) {
-			if ( _this.getSelectionRange() ) {
+			if ( _this.isSelection() ) {
 				_this.contextView.set();
 			} else {
 				_this.contextView.clear();
