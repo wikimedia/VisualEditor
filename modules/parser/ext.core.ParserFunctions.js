@@ -20,6 +20,7 @@
 
 function ParserFunctions ( manager ) {
 	this.manager = manager;
+	this.env = manager.env;
 }
 
 // Temporary helper.
@@ -33,12 +34,12 @@ ParserFunctions.prototype._rejoinKV = function ( k, v ) {
 
 ParserFunctions.prototype['pf_#if'] = function ( target, argList, argDict, unnamedArgs ) {
 	if ( target.trim() !== '' ) {
-		this.manager.env.dp('#if, first branch', target.trim(), argDict[1] );
+		this.env.dp('#if, first branch', target.trim(), argDict[1] );
 		return unnamedArgs[0] && 
 			this._rejoinKV( unnamedArgs[0].k, argList[0].v ) || 
 			[];
 	} else {
-		this.manager.env.dp('#if, second branch', target.trim(), argDict[2] );
+		this.env.dp('#if, second branch', target.trim(), argDict[2] );
 		return unnamedArgs[1] && 
 			this._rejoinKV( unnamedArgs[1].k, argList[1] && argList[1].v ) || 
 			[];
@@ -52,7 +53,7 @@ ParserFunctions.prototype._switchLookupFallback = function ( kvs, key ) {
 	var kv;
 	for ( var i = 0, l = kvs.length; i < l; i++ ) {
 		kv = kvs[i];
-		if ( this.manager.env.tokensToString( kv.v, true ) === key ) {
+		if ( this.env.tokensToString( kv.v, true ) === key ) {
 			// found. now look for the next entry with a non-empty key.
 			for ( var j = i; j < l; j++) {
 				kv = kvs[j];
@@ -72,11 +73,11 @@ ParserFunctions.prototype._switchLookupFallback = function ( kvs, key ) {
 // TODO: Implement 
 // http://www.mediawiki.org/wiki/Help:Extension:ParserFunctions#Grouping_results
 ParserFunctions.prototype['pf_#switch'] = function ( target, argList, argDict, unnamedArgs ) {
-	this.manager.env.dp( 'switch enter', target.trim(),
+	this.env.dp( 'switch enter', target.trim(),
 			' looking in ', argDict );
 	target = target.trim();
 	if ( argDict[target] !== undefined ) {
-		this.manager.env.dp( 'switch found: ' + target +
+		this.env.dp( 'switch found: ' + target +
 				' res=', argDict[target] );
 		return argDict[target];
 	} else {
@@ -102,7 +103,7 @@ ParserFunctions.prototype['pf_#ifeq'] = function ( target, argList, argDict, unn
 	if ( argList.length < 2 ) {
 		return [];
 	} else {
-		if ( target.trim() === this.manager.env.tokensToString( argList[0].v ).trim() ) {
+		if ( target.trim() === this.env.tokensToString( argList[0].v ).trim() ) {
 			return unnamedArgs[1] && 
 				this._rejoinKV( unnamedArgs[1].k, argList[1].v ) ||
 				[];
@@ -204,15 +205,15 @@ ParserFunctions.prototype['pf_#time'] = function ( target, argList, argDict ) {
 	var res,
 		tpl = target.trim();
 	//try {
-	//	var date = new Date( this.manager.env.tokensToString( argList[0].v ) );
+	//	var date = new Date( this.env.tokensToString( argList[0].v ) );
 	//	res = [ date.format( target ) ];
 	//} catch ( e ) {
-	//	this.manager.env.dp( 'ERROR: #time ' + e );
+	//	this.env.dp( 'ERROR: #time ' + e );
 	
 		try {
 			res = [ new Date().format ( tpl ) ];
 		} catch ( e2 ) {
-			this.manager.env.dp( 'ERROR: #time ' + e2 );
+			this.env.dp( 'ERROR: #time ' + e2 );
 			res = [ new Date().toString() ];
 		}
 	//}
@@ -340,7 +341,7 @@ Date.replaceChars = {
 };
 
 ParserFunctions.prototype['pf_#ifexpr'] = function ( target, argList, argDict, unnamedArgs ) {
-	this.manager.env.dp( '#ifexp: ' + JSON.stringify( argList ) );
+	this.env.dp( '#ifexp: ' + JSON.stringify( argList ) );
 	var res;
 	if ( target ) {
 		try {
@@ -390,10 +391,10 @@ ParserFunctions.prototype.pf_localurl = function ( target, argList, argDict ) {
 	return ( 
 			'/' +
 			// FIXME! Figure out correct prefix to use
-			//this.manager.env.wgScriptPath + 
+			//this.env.wgScriptPath + 
 			'index' +
-				this.manager.env.wgScriptExtension + '?title=' +
-				this.manager.env.normalizeTitle( target ) + '&' +
+				this.env.wgScriptExtension + '?title=' +
+				this.env.normalizeTitle( target ) + '&' +
 				argList.map( 
 					function( kv ) { 
 						//console.warn( JSON.stringify( kv ) );
@@ -409,7 +410,7 @@ ParserFunctions.prototype.pf_localurl = function ( target, argList, argDict ) {
  */
 
 // The page name and similar information should be carried around in
-// this.manager.env
+// this.env
 ParserFunctions.prototype.pf_formatnum = function ( target, argList, argDict ) {
 	return [ target ];
 };
@@ -426,12 +427,12 @@ ParserFunctions.prototype.pf_fullpagenamee = function ( target, argList, argDict
 	return target && [target] || ["http://example.com/fixme/"];
 };
 // This should be doable with the information in the envirionment
-// (this.manager.env) already.
+// (this.env) already.
 ParserFunctions.prototype.pf_fullurl = function ( target, argList, argDict ) {
 	return target && [target] || ["http://example.com/fixme/"];
 };
 ParserFunctions.prototype.pf_urlencode = function ( target, argList, argDict ) {
-	this.manager.env.tp( 'urlencode: ' + target  );
+	this.env.tp( 'urlencode: ' + target  );
 	return [target.trim()];
 };
 
@@ -485,13 +486,13 @@ ParserFunctions.prototype.pf_namespacee = function ( target, argList, argDict ) 
 	return [target.split(':').pop() || 'Main'];
 };
 ParserFunctions.prototype.pf_pagename = function ( target, argList, argDict ) {
-	return [this.manager.env.pageName];
+	return [this.env.pageName];
 };
 ParserFunctions.prototype.pf_pagenamebase = function ( target, argList, argDict ) {
-	return [this.manager.env.pageName];
+	return [this.env.pageName];
 };
 ParserFunctions.prototype.pf_scriptpath = function ( target, argList, argDict ) {
-	return [this.manager.env.wgScriptPath];
+	return [this.env.wgScriptPath];
 };
 
 

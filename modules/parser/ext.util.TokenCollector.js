@@ -39,7 +39,6 @@ function TokenCollector ( manager, transformation, toEnd, rank, type, name ) {
 	this.tokens = [];
 	this.isActive = false;
 	manager.addTransform( this._onDelimiterToken.bind( this ), rank, type, name );
-	manager.addTransform( this._onDelimiterToken.bind( this ), rank, 'end' );
 }
 		
 /**
@@ -55,12 +54,13 @@ TokenCollector.prototype._anyDelta = 0.00001;
  * XXX: Adjust to sync phase callback when that is modified!
  */
 TokenCollector.prototype._onDelimiterToken = function ( token, frame, cb ) {
-	var res;
 	if ( this.isActive ) {
+		var res;
 		// finish processing
 		this.tokens.push ( token );
 		this.isActive = false;
 		this.manager.removeTransform( this.rank + this._anyDelta, 'any' );
+		this.manager.removeTransform( this.rank, 'end' );
 		if ( token.constructor !== EOFTk || this.toEnd ) {
 			// end token
 			res = this.transformation ( this.tokens, this.cb, this.manager );
@@ -81,6 +81,8 @@ TokenCollector.prototype._onDelimiterToken = function ( token, frame, cb ) {
 		this.tokens.push ( token );
 		this.manager.addTransform( this._onAnyToken.bind ( this ), 
 				this.rank + this._anyDelta, 'any' );
+		this.manager.addTransform( this._onDelimiterToken.bind( this ), 
+				this.rank, 'end' );
 		// Did not encounter a matching end token before the end, and are not
 		// supposed to collect to the end. So just return the tokens verbatim.
 		this.isActive = true;

@@ -21,14 +21,9 @@ var $ = require('jquery'),
 
 
 function TemplateHandler ( manager ) {
-	this.reset();
 	this.register( manager );
 	this.parserFunctions = new ParserFunctions( manager );
 }
-
-TemplateHandler.prototype.reset = function ( token ) {
-	return {token: token};
-};
 
 // constants
 TemplateHandler.prototype.rank = 1.1;

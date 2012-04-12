@@ -320,6 +320,20 @@ MWParserEnvironment.prototype.dp = function ( ) {
 };
 
 /**
+ * Even simpler debug helper that always prints..
+ */
+MWParserEnvironment.prototype.ap = function ( ) {
+	if ( arguments.length > 1 ) {
+		try {
+			console.warn( JSON.stringify( arguments, null, 2 ) );
+		} catch ( e ) {
+			console.warn( e );
+		}
+	} else {
+		console.warn( arguments[0] );
+	}
+};
+/**
  * Simple debug helper, trace-only
  */
 MWParserEnvironment.prototype.tp = function ( ) {

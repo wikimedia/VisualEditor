@@ -26,7 +26,7 @@ function OnlyInclude( manager, isInclude ) {
 	}
 }
 
-OnlyInclude.prototype.rank = 0.001; // Before any further processing
+OnlyInclude.prototype.rank = 0.01; // Before any further processing
 
 OnlyInclude.prototype.onOnlyInclude = function ( token, manager ) {
 	var meta = new TagTk( 'meta' );
@@ -99,7 +99,7 @@ function NoInclude( manager, isInclude ) {
 				}
 			}, // just strip it all..
 			true, // match the end-of-input if </noinclude> is missing
-			0.01, // very early in stage 1, to avoid any further processing.
+			0.02, // very early in stage 1, to avoid any further processing.
 			'tag',
 			'noinclude'
 			);
@@ -124,7 +124,7 @@ function IncludeOnly( manager, isInclude ) {
 				}
 			},
 			true, // match the end-of-input if </noinclude> is missing
-			0.01, // very early in stage 1, to avoid any further processing.
+			0.03, // very early in stage 1, to avoid any further processing.
 			'tag',
 			'includeonly'
 			);

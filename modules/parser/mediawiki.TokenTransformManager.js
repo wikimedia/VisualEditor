@@ -91,7 +91,7 @@ TokenTransformManager.prototype.addTransform = function ( transformation, rank, 
 	transArr.push(transformer);
 	// sort ascending by rank
 	transArr.sort( this._cmpTransformations );
-	this.env.dp( 'transforms: ', this.transformers );
+	//this.env.dp( 'transforms: ', this.transformers );
 };
 
 /**
@@ -168,7 +168,7 @@ TokenTransformManager.prototype._transformTagToken = function ( token, cbOrPrevT
 		// could cache this per tag type to avoid re-sorting each time
 		ts = ts.concat(tagts);
 		ts.sort( this._cmpTransformations );
-		this.env.dp( 'ts: ', ts );
+		//this.env.dp( 'ts: ', ts );
 	}
 	//console.warn(JSON.stringify(ts, null, 2));
 	if ( ts ) {
@@ -614,6 +614,7 @@ SyncTokenTransformManager.prototype.process = function ( tokens ) {
 		tokens = [tokens];
 	}
 	this.onChunk( tokens );
+	//console.warn( JSON.stringify( this.transformers ) )
 	this.onEndEvent();
 };
 
@@ -740,7 +741,7 @@ AttributeTransformManager.prototype.process = function ( attributes ) {
 			continue;
 		}
 
-		if ( cur.k.constructor !== String ) {
+		if ( cur.k.constructor === Array && cur.k.length ) {
 			// Assume that the return is async, will be decremented in callback
 			this.outstanding++;
 
@@ -753,12 +754,12 @@ AttributeTransformManager.prototype.process = function ( attributes ) {
 			pipe.on( 'end', 
 					this.onEnd.bind( this, this._returnAttributeKey.bind( this, i ) ) 
 				);
-			pipe.process( attributes[i].k.concat([ new EOFTk() ]) );
+			pipe.process( cur.k.concat([ new EOFTk() ]) );
 		} else {
 			kv.key = cur.k;
 		}
 
-		if ( cur.v.constructor !== String ) {
+		if ( cur.v.constructor === Array && cur.v.length ) {
 			// Assume that the return is async, will be decremented in callback
 			this.outstanding++;
 
@@ -923,8 +924,8 @@ TokenAccumulator.prototype._returnTokens =
 			tokens = tokens.concat( this.accum );
 			this.accum = [];
 		}
-		this.manager.env.dp( 'TokenAccumulator._returnTokens child: ',
-				tokens, ' outstanding: ', this.outstanding );
+		//this.manager.env.dp( 'TokenAccumulator._returnTokens child: ',
+		//		tokens, ' outstanding: ', this.outstanding );
 		this.parentCB( tokens, this.outstanding, true );
 
 		if ( res.async ) {
@@ -937,15 +938,15 @@ TokenAccumulator.prototype._returnTokens =
 			tokens = this.accum.concat( tokens );
 			// A sibling will transform tokens, so we don't have to do this
 			// again.
-			this.manager.env.dp( 'TokenAccumulator._returnTokens: ',
-					'sibling done and parentCB ',
-					tokens );
+			//this.manager.env.dp( 'TokenAccumulator._returnTokens: ',
+			//		'sibling done and parentCB ',
+			//		tokens );
 			this.parentCB( tokens, false, true );
 			return null;
 		} else if ( this.outstanding === 1 && notYetDone ) {
-			this.manager.env.dp( 'TokenAccumulator._returnTokens: ',
-					'sibling done and parentCB but notYetDone ',
-					tokens );
+			//this.manager.env.dp( 'TokenAccumulator._returnTokens: ',
+			//		'sibling done and parentCB but notYetDone ',
+			//		tokens );
 			// Sibling is not yet done, but child is. Return own parentCB to
 			// allow the sibling to go direct, and call back parent with
 			// tokens. The internal accumulator is empty at this stage, as its
@@ -953,9 +954,9 @@ TokenAccumulator.prototype._returnTokens =
 			return this.parentCB( tokens, true, true);
 		} else {
 			this.accum  = this.accum.concat( tokens );
-			this.manager.env.dp( 'TokenAccumulator._returnTokens: sibling done, but not overall. notYetDone=',
-					notYetDone, ', this.outstanding=', this.outstanding, 
-					', this.accum=', this.accum, ' manager.title=', this.manager.title );
+			//this.manager.env.dp( 'TokenAccumulator._returnTokens: sibling done, but not overall. notYetDone=',
+			//		notYetDone, ', this.outstanding=', this.outstanding, 
+			//		', this.accum=', this.accum, ' manager.title=', this.manager.title );
 		}
 
 

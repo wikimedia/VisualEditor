@@ -62,7 +62,7 @@ function ParserPipeline( env, inputType ) {
 	this.inputType = inputType;
 
 
-	// XXX: create a full-fledged environment based on
+	// Pass in a full-fledged environment based on
 	// mediawiki.parser.environment.js.
 	if ( !env ) {
 		this.env = {};
@@ -73,12 +73,17 @@ function ParserPipeline( env, inputType ) {
 	// set up a sub-pipeline cache
 	this.pipelineCache = {};
 	this.pipelineCache[this.inputType] = { 
-		'input': [], 
-		'attribute': [] 
+		'input-toplevel': [], 
+		'input-include': [], 
+		'attribute-include': [],
+		'attribute-toplevel': [] 
 	};
 
 	// Create an input pipeline for the given input type.
 	this.inputPipeline = this.makeInputPipeline ( inputType, {}, false );
+
+	// Mark this pipeline as the top-level input pipeline, so that it is not
+	// cached and its listeners removed
 	this.inputPipeline.atTopLevel = true;
 	this.inputPipeline.last.atTopLevel = true;
 
@@ -90,12 +95,6 @@ function ParserPipeline( env, inputType ) {
 
 	// Add token transformations..
 	this._addTransformers( this.inputType, 'sync23', this.tokenPostProcessor, false );
-	//new QuoteTransformer( this.tokenPostProcessor );
-	//new PostExpandParagraphHandler( this.tokenPostProcessor );
-	//new Sanitizer( this.tokenPostProcessor );
-	
-	//var citeExtension = new Cite( this.tokenTransformer );
-
 
 	/**
 	* The tree builder creates a DOM tree from the token soup emitted from
@@ -232,11 +231,12 @@ ParserPipeline.prototype._addTransformers = function ( type, phase, manager, isI
  * always an AsyncTokenTransformManager, which emits its output in events.
  */
 ParserPipeline.prototype.makeInputPipeline = function ( inputType, args, isInclude ) {
+	var pipelinePart = isInclude ? 'input-include' : 'input-toplevel';
 	switch ( inputType ) {
 		case 'text/wiki':
 			//console.warn( 'makeInputPipeline ' + JSON.stringify( args ) );
-			if ( this.pipelineCache['text/wiki'].input.length && isInclude ) {
-				var pipe = this.pipelineCache['text/wiki'].input.pop();
+			if ( this.pipelineCache['text/wiki'][pipelinePart].length ) {
+				var pipe = this.pipelineCache['text/wiki'][pipelinePart].pop();
 				pipe.last.args = args;
 				return pipe;
 			} else {
@@ -274,7 +274,7 @@ ParserPipeline.prototype.makeInputPipeline = function ( inputType, args, isInclu
 				tokenPreProcessor.inputType = inputType;
 			
 				return new CachedTokenPipeline( 
-						this.cachePipeline.bind( this, 'text/wiki', 'input' ),
+						this.cachePipeline.bind( this, 'text/wiki', pipelinePart ),
 						wikiTokenizer,
 						tokenExpander,
 						isInclude
@@ -295,9 +295,12 @@ ParserPipeline.prototype.makeInputPipeline = function ( inputType, args, isInclu
  * environment.
  */
 ParserPipeline.prototype.makeAttributePipeline = function ( inputType, args, isInclude ) {
-	if ( this.pipelineCache[inputType].attribute.length && isInclude ) {
-		var pipe = this.pipelineCache[inputType].attribute.pop();
+	var pipelinePart = isInclude ? 'attribute-include' : 'attribute-toplevel';
+	//console.warn( 'makeAttributePipeline: ' + pipelinePart);
+	if ( this.pipelineCache[inputType][pipelinePart].length ) {
+		var pipe = this.pipelineCache[inputType][pipelinePart].pop();
 		pipe.last.args = args;
+		//console.warn( 'from cache' + JSON.stringify( pipe.last.transformers, null, 2 ) );
 		return pipe;
 	} else {
 		/**
@@ -319,15 +322,15 @@ ParserPipeline.prototype.makeAttributePipeline = function ( inputType, args, isI
 				},
 				args, this.env, inputType, 2, isInclude
 				);
-		// Register template expansion extension
+		// Add token transformers
 		this._addTransformers( 'text/wiki', 'async12', 
 				tokenExpander, isInclude );
-		//new TemplateHandler( tokenExpander );
-		//new AttributeExpander( tokenExpander );
+
 		tokenExpander.listenForTokensFrom ( tokenPreProcessor );
 
+		//console.warn( 'new pipe' + JSON.stringify( tokenExpander.transformers, null, 2 ) );
 		return new CachedTokenPipeline( 
-				this.cachePipeline.bind( this, inputType, 'attribute' ),
+				this.cachePipeline.bind( this, inputType, pipelinePart ),
 				tokenPreProcessor,
 				tokenExpander,
 				isInclude
@@ -337,7 +340,7 @@ ParserPipeline.prototype.makeAttributePipeline = function ( inputType, args, isI
 
 ParserPipeline.prototype.cachePipeline = function ( inputType, pipelinePart, pipe ) {
 	var cache = this.pipelineCache[inputType][pipelinePart];
-	if ( cache && cache.length < 2 ) {
+	if ( cache && cache.length < 5 ) {
 		cache.push( pipe );
 	}
 };
@@ -412,7 +415,7 @@ CachedTokenPipeline.prototype.constructor = CachedTokenPipeline;
  * Feed input tokens to the first pipeline stage
  */
 CachedTokenPipeline.prototype.process = function ( chunk ) {
-	//console.warn( 'CachedTokenPipeline::process: ' + chunk );
+	//console.warn( 'CachedTokenPipeline::process: ' + JSON.stringify( chunk ) );
 	this.first.process( chunk );
 };
 
@@ -439,7 +442,7 @@ CachedTokenPipeline.prototype.forwardEndAndRecycleSelf = function ( ) {
 	// first, forward the event
 	this.emit( 'end' );
 	// now recycle self
-	if ( this.isInclude ) {
+	if ( ! this.atTopLevel ) {
 		this.removeAllListeners( 'end' );
 		this.removeAllListeners( 'chunk' );
 		this.returnToCacheCB ( this );

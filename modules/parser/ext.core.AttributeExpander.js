@@ -14,25 +14,14 @@ var $ = require('jquery'),
 
 
 function AttributeExpander ( manager ) {
-	this.reset();
-	this.register( manager );
-}
-
-AttributeExpander.prototype.reset = function ( token ) {
-	return {token: token};
-};
-
-// constants
-AttributeExpander.prototype.rank = 1.11;
-
-AttributeExpander.prototype.register = function ( manager ) {
 	this.manager = manager;
 	// Register for template and templatearg tag tokens
 	manager.addTransform( this.onToken.bind(this), 
 			this.rank, 'any' );
+}
 
-};
-
+// constants
+AttributeExpander.prototype.rank = 1.11;
 
 /** 
  * Token handler
@@ -42,9 +31,9 @@ AttributeExpander.prototype.register = function ( manager ) {
  * processes the template.
  */
 AttributeExpander.prototype.onToken = function ( token, frame, cb ) {
-	this.manager.env.dp( 'AttributeExpander.onToken', token );
-	if ( token.constructor === TagTk || 
-			token.constructor === SelfclosingTagTk && 
+	//console.warn( 'AttributeExpander.onToken', JSON.stringify( token ) );
+	if ( (token.constructor === TagTk || 
+			token.constructor === SelfclosingTagTk) && 
 				token.attribs && 
 				token.attribs.length ) {
 		var expandData = {
@@ -69,6 +58,9 @@ AttributeExpander.prototype.onToken = function ( token, frame, cb ) {
 			return { async: true };
 		}
 	} else {
+		if ( ! token.rank && token.constructor === String ) {
+			token = new String( token );
+		}
 		token.rank = this.rank;
 		return { token: token };
 	}
