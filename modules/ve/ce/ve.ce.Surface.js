@@ -307,7 +307,7 @@ ve.ce.Surface.prototype.pollChanges = function( async ) {
 };
 
 ve.ce.Surface.prototype.annotate = function( method, annotation ) {
-	var range = this.model.getSelection(),
+	var selection = this.model.getSelection(),
 		_this = this;
 
 	if ( method === 'toggle' ) {
@@ -318,9 +318,9 @@ ve.ce.Surface.prototype.annotate = function( method, annotation ) {
 			method = 'set';
 		}
 	}
-	if ( range.getLength() ) {
+	if ( selection.getLength() ) {
 		var tx = this.model.getDocument().prepareContentAnnotation(
-			range, method, annotation
+			selection, method, annotation
 		);
 
 		// transact with autoRender
@@ -330,7 +330,7 @@ ve.ce.Surface.prototype.annotate = function( method, annotation ) {
 
 		this.clearPollData();
 
-		_this.showSelection( range );
+		_this.showSelection( selection );
 	} else {
 		if ( method === 'set' ) {
 			this.addInsertionAnnotation( annotation );
