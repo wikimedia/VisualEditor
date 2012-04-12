@@ -251,3 +251,10 @@
 .es-help-key-or {
 	color: #999999;
 }
+
+.es-warning {
+	color: red;
+	text-align: center;
+	margin-bottom: 1em;
+	display: none;
+}

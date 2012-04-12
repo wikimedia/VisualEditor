@@ -699,5 +699,12 @@ $(document).ready( function() {
 
 	$( '#es-docs' ).css( { 'visibility': 'visible' } );
 	$( '#es-base' ).css( { 'visibility': 'visible' } );
+	// Show the warning that this software is experimental
+	// TODO: Use a cookie to remember the warning has been dismissed
+	$( '#es-warning' ).show();
+	$( '#es-warning-dismiss' ).click( function() {
+		$(this).parent().slideUp();
+		return false;
+	} );
 	$( '#es-mode-wikitext' ).click();
 } );
