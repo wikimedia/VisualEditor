@@ -63,15 +63,19 @@ ve.FormatDropdownTool = function( toolbar, name, title ) {
 /* Methods */
 
 ve.FormatDropdownTool.prototype.onSelect = function( item ) {
+	var selection = this.toolbar.surfaceView.model.getSelection();
+	
 	this.toolbar.surfaceView.stopPolling();
 	var txs = this.toolbar.surfaceView.model.getDocument().prepareLeafConversion(
-		this.toolbar.surfaceView.getSelectionRange(),
+		selection,
 		item.type,
 		item.attributes
 	);
 	for ( var i = 0; i < txs.length; i++ ) {
 		this.toolbar.surfaceView.model.transact( txs[i] );
 	}
+	this.toolbar.surfaceView.showSelection( selection );
+	this.toolbar.surfaceView.startPolling();
 };
 
 ve.FormatDropdownTool.prototype.updateState = function( annotations, nodes ) {
