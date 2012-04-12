@@ -276,7 +276,8 @@ ParserPipeline.prototype.makeInputPipeline = function ( inputType, args, isInclu
 				return new CachedTokenPipeline( 
 						this.cachePipeline.bind( this, 'text/wiki', 'input' ),
 						wikiTokenizer,
-						tokenExpander
+						tokenExpander,
+						isInclude
 						);
 			}
 			break;
@@ -328,7 +329,8 @@ ParserPipeline.prototype.makeAttributePipeline = function ( inputType, args, isI
 		return new CachedTokenPipeline( 
 				this.cachePipeline.bind( this, inputType, 'attribute' ),
 				tokenPreProcessor,
-				tokenExpander
+				tokenExpander,
+				isInclude
 				);
 	}
 };
@@ -392,12 +394,13 @@ ParserPipeline.prototype.getLinearModel = function( document ) {
  * @param {Object} first: First stage of the pipeline
  * @param {Object} last: Last stage of the pipeline
  */
-function CachedTokenPipeline ( returnToCacheCB, first, last ) {
+function CachedTokenPipeline ( returnToCacheCB, first, last, isInclude ) {
 	this.returnToCacheCB = returnToCacheCB;
 	this.first = first;
 	this.last = last;
 	this.last.addListener( 'end', this.forwardEndAndRecycleSelf.bind( this ) );
 	this.last.addListener( 'chunk', this.forwardChunk.bind( this ) );
+	this.isInclude = isInclude;
 }
 
 // Inherit from EventEmitter
@@ -436,7 +439,7 @@ CachedTokenPipeline.prototype.forwardEndAndRecycleSelf = function ( ) {
 	// first, forward the event
 	this.emit( 'end' );
 	// now recycle self
-	if ( ! this.atTopLevel ) {
+	if ( this.isInclude ) {
 		this.removeAllListeners( 'end' );
 		this.removeAllListeners( 'chunk' );
 		this.returnToCacheCB ( this );
