@@ -470,9 +470,9 @@ function TemplateRequest ( manager, title ) {
 			// 
 			var listeners = self.listeners( 'src' );
 			var processSome = function () {
-				// Apparently dequeuing a single callback is fastest here
-				// XXX: experiment a bit with this!
-				var maxIters = Math.min(1, listeners.length);
+				// XXX: experiment a bit with the number of callback per
+				// iteration!
+				var maxIters = Math.min(4, listeners.length);
 				for ( var it = 0; it < maxIters; it++ ) {
 					var nextListener = listeners.shift();
 					nextListener( src, title );
