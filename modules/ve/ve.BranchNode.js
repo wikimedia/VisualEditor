@@ -259,6 +259,11 @@ ve.BranchNode.prototype.getNodeFromOffset = function( offset, shallow ) {
 /**
  * Gets the index of a child node from a given offset.
  * 
+ * If the offset is in between child nodes, the offset of the child node to the
+ * right will be returned. If the offset is at the very end of the node, the
+ * index past the end will be returned (note that there is no child node at this
+ * index!). If the offset is out of range, -1 will be returned.
+ * 
  * @method
  * @param {Integer} offset Offset to find index of
  * @returns {Integer} Index of child node at offset or -1 if offset was out of range
@@ -272,6 +277,10 @@ ve.BranchNode.prototype.getIndexFromOffset = function( offset ) {
 			return i;
 		}
 		left += elementLength;
+	}
+	if ( offset == left ) {
+		// One past the end
+		return i;
 	}
 	return -1;
 };

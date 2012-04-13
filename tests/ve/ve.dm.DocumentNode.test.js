@@ -213,6 +213,118 @@ test( 've.dm.DocumentNode.getAnnotationsFromOffset', 4, function() {
 	);
 } );
 
+function compareOffsets( documentModel, expectedOffsets, descPrefix, start, end ) {
+	start = start || 0;
+	end = end || expectedOffsets.length;
+	equal( documentModel.offsetMap.length, expectedOffsets.length, descPrefix + ' (offset map has the correct length)' );
+	
+	// We use a loop instead of equal( documentModel.offsetMap, expectedOffsets ); because
+	// the latter will descend into the elements and their children
+	for ( var i = start; i < end; i++ ) {
+		ok( documentModel.offsetMap[i] == expectedOffsets[i], descPrefix + ' (offset map elements point to the correct nodes (element ' + i + '))' );
+	}
+}
+
+function repeatArray( element, n ) {
+	var a = [];
+	for ( var i = 0; i < n; i++ ) {
+		a[i] = element;
+	}
+	return a;
+}
+
+test( 've.dm.DocumentNode.offsetMap', function() {
+	var documentModel = new ve.dm.DocumentNode( veTest.data );
+	var expectedOffsets = veTest.getOffsets( documentModel );
+	compareOffsets( documentModel, expectedOffsets, 'Constructor creates offset map correctly' );	
+} );
+
+test( 've.dm.DocumentNode.rebuildNodes', function() {
+	var documentModel = new ve.dm.DocumentNode( veTest.data.slice( 0 ) );
+	var originalLength = veTest.data.length;
+	var expectedOffsets = veTest.getOffsets( documentModel );
+	
+	// Make the first paragraph longer
+	documentModel.data.splice( 3, 0, 'F', 'O', 'O' );
+	documentModel.rebuildNodes( documentModel, 0, 1, 0, documentModel.data.slice( 0, 8 ) );
+	ve.batchedSplice( expectedOffsets, 1, 4, repeatArray( documentModel.children[0], 7 ) );
+	equal( documentModel.children[0].getElementType(), 'paragraph', 'rebuildNodes() makes a paragraph longer (first child is a paragraph)' );
+	equal( documentModel.children[0].getContentLength(), 6, 'rebuildNodes() rmakes a paragraph longer (content length is updated)' );
+	equal( documentModel.children.length, 3, 'rebuildNodes() makes a paragraph longer (document still has 3 children)' );
+	equal( documentModel.getContentLength(), originalLength + 3, 'rebuildNodes() makes a paragraph longer (document content length is updated)' );
+	compareOffsets( documentModel, expectedOffsets, 'rebuildNodes() makes a paragraph longer', 0, 9 );
+	
+	// Now make it shorter
+	documentModel.data.splice( 2, 4 );
+	documentModel.rebuildNodes( documentModel, 0, 1, 0, documentModel.data.slice( 0, 4 ) );
+	ve.batchedSplice( expectedOffsets, 1, 7, repeatArray( documentModel.children[0], 3 ) );
+	equal( documentModel.children[0].getElementType(), 'paragraph', 'rebuildNodes() makes a paragraph shorter (first child is a paragraph)' );
+	equal( documentModel.children[0].getContentLength(), 2, 'rebuildNodes() makes a paragraph shorter (content length is updated)' );
+	equal( documentModel.children.length, 3, 'rebuildNodes() makes a paragraph shorter (document still has 3 children)' );
+	equal( documentModel.getContentLength(), originalLength - 1, 'rebuildNodes() makes a paragraph shorter (document content length is updated)' );
+	compareOffsets( documentModel, expectedOffsets, 'rebuildNodes() makes a paragraph shorter', 0, 5 );
+	
+	// Split the first paragraph up
+	documentModel.data.splice( 2, 0, { 'type': '/paragraph' }, { 'type': 'paragraph' } );
+	documentModel.rebuildNodes( documentModel, 0, 1, 0, documentModel.data.slice( 0, 6 ) );
+	expectedOffsets.splice( 1, 3, documentModel.children[0], documentModel.children[0], documentModel, documentModel.children[1], documentModel.children[1] );
+	equal( documentModel.children[0].getElementType(), 'paragraph', 'rebuildNodes() splits a paragraph (first child is a paragraph)' );
+	equal( documentModel.children[1].getElementType(), 'paragraph', 'rebuildNodes() splits a paragraph (second child is a paragraph)' );
+	equal( documentModel.children[0].getContentLength(), 1, 'rebuildNodes() splits a paragraph (content length of first paragraph is updated)' );
+	equal( documentModel.children[1].getContentLength(), 1, 'rebuildNodes() splits a paragraph (content length of second paragraph is updated)' );
+	equal( documentModel.children.length, 4, 'rebuildNodes() splits a paragraph (document now has 4 children)' );
+	equal( documentModel.getContentLength(), originalLength + 1, 'rebuildNodes() splits a paragraph (document content length is updated)' );
+	compareOffsets( documentModel, expectedOffsets, 'rebuildNodes() splits a paragraph', 0, 7 );
+	
+	// Join it back together
+	documentModel.data.splice( 2, 2 );
+	documentModel.rebuildNodes( documentModel, 0, 2, 0, documentModel.data.slice( 0, 4 ) );
+	ve.batchedSplice( expectedOffsets, 1, 5, repeatArray( documentModel.children[0], 3 ) );
+	equal( documentModel.children[0].getElementType(), 'paragraph', 'rebuildNodes() joins two paragraphs (first child is a paragraph)' );
+	equal( documentModel.children[0].getContentLength(), 2, 'rebuildNodes() joins two paragraphs (content length is updated)' );
+	equal( documentModel.children.length, 3, 'rebuildNodes() joins two paragraphsr (document still has 3 children)' );
+	equal( documentModel.getContentLength(), originalLength - 1, 'rebuildNodes() joins two paragraphs (document content length is updated)' );
+	compareOffsets( documentModel, expectedOffsets, 'rebuildNodes() joins two paragraphs', 0, 5 );
+	
+	// Add a paragraph to the first listItem by rebuilding the listItem
+	documentModel.data.splice( 12, 0, { 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' } );
+	var list = documentModel.children[1].children[0].children[0].children[1];
+	documentModel.rebuildNodes( list, 0, 1, 11, documentModel.data.slice( 11, 21 ) );
+	var newListItem = documentModel.children[1].children[0].children[0].children[1].children[0];
+	ve.batchedSplice( expectedOffsets, 11, 5,
+		[ list, newListItem ].concat(
+		repeatArray( newListItem.children[0], 4 ) ).concat(
+		[ newListItem, newListItem.children[1], newListItem.children[1], newListItem ] )
+	);
+	equal( newListItem.getElementType(), 'listItem', 'rebuildNodes() adds a paragraph to a listItem (listItem is still a listItem)' );
+	equal( newListItem.children.length, 2, 'rebuildNodes() adds a paragraph to a listItem (listItem now has 2 children)' );
+	equal( newListItem.children[0].getElementType(), 'paragraph', 'rebuildNodes() adds a paragraph to a listItem (first child is a paragraph)' );
+	equal( newListItem.children[1].getElementType(), 'paragraph', 'rebuildNodes() adds a paragraph to a listItem (second child is a paragraph)' );
+	equal( newListItem.children[0].getContentLength(), 3, 'rebuildNodes() adds a paragraph to a listItem (first paragraph has correct content length)' );
+	equal( newListItem.children[1].getContentLength(), 1, 'rebuildNodes() adds a paragraph to a listItem (second paragraph has correct content length)' );
+	equal( newListItem.getContentLength(), 8, 'rebuildNodes() adds a paragraph to a listItem (content length of listItem is updated)' );
+	equal( documentModel.getContentLength(), originalLength + 4, 'rebuildNodes() adds a paragraph to a listItem (document content length is updated)' );
+	compareOffsets( documentModel, expectedOffsets, 'rebuildNodes() adds a paragraph to a listItem', 10, 22 );
+	
+	// Add another paragraph to the first listItem using a zero rebuild
+	documentModel.data.splice( 20, 0, { 'type': 'paragraph' }, 'B', 'A', 'Z', { 'type': '/paragraph' } );
+	documentModel.rebuildNodes( newListItem, 2, 0, 20, documentModel.data.slice( 20, 25 ) );
+	ve.batchedSplice( expectedOffsets, 20, 0,
+		[ newListItem ].concat( repeatArray( newListItem.children[2], 4 ) )
+	);
+	equal( newListItem.getElementType(), 'listItem', 'rebuildNodes() adds a paragraph to a listItem with zero rebuild (listItem is still a listItem) ');
+	equal( newListItem.children.length, 3, 'rebuildNodes() adds a paragraph to a listItem with zero rebuild (listItem now has 3 children)' );
+	equal( newListItem.children[0].getElementType(), 'paragraph', 'rebuildNodes() adds a paragraph to a listItem with zero rebuild (first child is a paragraph)' );
+	equal( newListItem.children[1].getElementType(), 'paragraph', 'rebuildNodes() adds a paragraph to a listItem with zero rebuild (second child is a paragraph)' );
+	equal( newListItem.children[2].getElementType(), 'paragraph', 'rebuildNodes() adds a paragraph to a listItem with zero rebuild (third child is a paragraph)' );
+	equal( newListItem.children[0].getContentLength(), 3, 'rebuildNodes() adds a paragraph to a listItem with zero rebuild (first paragraph has correct content length)' );
+	equal( newListItem.children[1].getContentLength(), 1, 'rebuildNodes() adds a paragraph to a listItem with zero rebuild (second paragraph has correct content length)' );
+	equal( newListItem.children[2].getContentLength(), 3, 'rebuildNodes() adds a paragraph to a listItem with zero rebuild (third paragraph has correct content length)' );
+	equal( newListItem.getContentLength(), 13, 'rebuildNodes() adds a paragraph to a listItem with zero rebuild (content length of listItem is updated)' );
+	equal( documentModel.getContentLength(), originalLength + 9, 'rebuildNodes() adds a paragraph to a listItem with zero rebuild (document content length is updated)' );
+	compareOffsets( documentModel, expectedOffsets, 'rebuildNodes() adds a paragraph to a listItem with zero rebuild', 10, 28 );
+} );
+
 test( 've.dm.DocumentNode.prepareElementAttributeChange', 4, function() {
 	var documentModel = ve.dm.DocumentNode.newFromPlainObject( veTest.obj );
 

@@ -202,13 +202,18 @@ ve.dm.BranchNode.prototype.reverse = function() {
 };
 
 /**
- * Sets the root node to this and all of it's children.
+ * Sets the root node to this and all of its descendants.
  * 
  * @method
  * @see {ve.dm.Node.prototype.setRoot}
  * @param {ve.dm.Node} root Node to use as root
  */
 ve.dm.BranchNode.prototype.setRoot = function( root ) {
+	if ( root == this.root ) {
+		// Nothing to do, don't recurse into all descendants
+		return;
+	}
+	
 	this.root = root;
 	for ( var i = 0; i < this.children.length; i++ ) {
 		this.children[i].setRoot( root );
