@@ -341,7 +341,7 @@ TemplateHandler.prototype._fetchTemplateAndTitle = function ( title, callback, t
 			this.manager.env.requestQueue[title] = new TemplateRequest( this.manager, title );
 		}
 		// Append a listener to the request
-		this.manager.env.requestQueue[title].once( 'src', callback );
+		this.manager.env.requestQueue[title].on( 'src', callback );
 
 	}
 };
@@ -460,8 +460,32 @@ function TemplateRequest ( manager, title ) {
 			}
 			//console.warn( 'Page ' + title + ': got ' + src );
 			manager.env.tp( 'Retrieved ' + title );
+
+			// Add the source to the cache
 			manager.env.pageCache[title] = src;
-			self.emit( 'src', src, title );
+
+			// Process only a few callbacks in each event loop iteration to
+			// reduce memory usage.
+			// 
+			// 
+			var listeners = self.listeners( 'src' );
+			var processSome = function () {
+				// Apparently dequeuing a single callback is fastest here
+				// XXX: experiment a bit with this!
+				var maxIters = Math.min(1, listeners.length);
+				for ( var it = 0; it < maxIters; it++ ) {
+					var nextListener = listeners.shift();
+					nextListener( src, title );
+				}
+				if ( listeners.length ) {
+					process.nextTick( processSome );
+				}
+			};
+
+			process.nextTick( processSome );
+			//processSome();
+
+			//self.emit( 'src', src, title );
 		}
 		// XXX: handle other status codes
 
