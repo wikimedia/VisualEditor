@@ -667,7 +667,7 @@ behavior_switch
  **************************************************************/
 
 autolink
-  = ! { return stops.onCount('extlink') }
+  = ! { return stops.onStack('extlink') }
     (urllink / autoref / isbn)
 
 urllink
@@ -676,16 +676,16 @@ urllink
   }
 
 extlink
-  = ! { return stops.onCount('extlink') } // extlink cannot be nested
+  = ! { return stops.onStack('extlink') } // extlink cannot be nested
     (
         "[" 
-        & { return stops.inc('extlink'); }
+        & { return stops.push('extlink', true); }
         //target:urllink
         target:extlink_preprocessor_text
         text:(( space / [\u00A0\u1680\u180E\u2000-\u200A\u202F\u205F\u3000] )* 
               t:inlineline { return t } )?
         "]" {
-            stops.dec('extlink');
+            stops.pop('extlink');
             if ( text === '' ) {
                 // XXX: Link numbering should be implemented in post-processor.
                 text = [ "[" + linkCount + "]" ];
@@ -699,7 +699,7 @@ extlink
                 ] )
             ];
         }
-      / "[" & { stops.dec('extlink'); return false; }
+      / "[" & { return stops.pop('extlink'); }
     )
 
 autoref
@@ -939,10 +939,12 @@ template_param_text
           input.substr( pos +1, 9) ); */
         // re-enable tables within template parameters
         stops.push('table', false ); 
+        stops.push('extlink', false);
         return stops.inc('template') 
     }
     il:nested_block+ {
         stops.pop('table');
+        stops.pop('extlink');
         stops.dec('template');
         //console.warn( 'tpt match: ' + pp (il) + " stops: " + pp(stops));
         var r = flatten( il ),
@@ -962,7 +964,7 @@ template_param_text
 
         return r;
     }
-  / & { stops.pop('table'); return stops.dec('template'); }
+  / & { stops.pop('table'); stops.pop('extlink'); return stops.dec('template'); }
 
 
 // TODO: handle link prefixes as in al[[Razi]]

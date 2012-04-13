@@ -139,7 +139,7 @@ PegTokenizer.prototype.inline_breaks = function (input, pos, stops ) {
 			return counters.template && input[pos + 1] === "}" || null;
 		case ":":
 			return counters.colon &&
-				! counters.extlink &&
+				! stops.onStack( 'extlink' ) &&
 				! counters.linkdesc || null;
 		case "\r":
 			return stops.onStack( 'table' ) &&
@@ -151,7 +151,7 @@ PegTokenizer.prototype.inline_breaks = function (input, pos, stops ) {
 				input[pos + 1] === '|' ||
 				null;
 		case "]":
-			return counters.extlink ||
+			return stops.onStack( 'extlink' ) ||
 				( counters.linkdesc && input[pos + 1] === ']' ) ||
 				null;
 		case "<":
