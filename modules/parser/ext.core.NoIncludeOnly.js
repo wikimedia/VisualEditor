@@ -89,7 +89,7 @@ function NoInclude( manager, isInclude ) {
 			manager,
 			function ( tokens ) { 
 				if ( isInclude ) {
-					manager.env.tp( 'noinclude stripping' );
+					//manager.env.tp( 'noinclude stripping' );
 					return {};
 				} else {
 					tokens.shift();

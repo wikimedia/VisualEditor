@@ -163,7 +163,7 @@ TemplateHandler.prototype._expandTemplate = function ( tplExpandData ) {
 	var prefix = target.split(':', 1)[0].toLowerCase().trim();
 	if ( prefix && 'pf_' + prefix in this.parserFunctions ) {
 		var funcArg = target.substr( prefix.length + 1 );
-		this.manager.env.tp( 'func prefix/args: ', prefix,
+		this.manager.env.dp( 'func prefix/args: ', prefix,
 				tplExpandData.expandedArgs,
 				'funcArg:', funcArg);
 		//this.manager.env.dp( 'entering prefix', funcArg, args  );
@@ -271,17 +271,7 @@ TemplateHandler.prototype._onChunk = function( tplExpandData, chunk ) {
 TemplateHandler.prototype._onEnd = function( tplExpandData, token ) {
 	this.manager.env.dp( 'TemplateHandler._onEnd', tplExpandData.resultTokens );
 	tplExpandData.expandDone = true;
-	var res = tplExpandData.resultTokens;
-	// Strip 'end' tokens and trailing newlines
-	var l = res[res.length - 1];
-	while ( res.length &&
-			(	l.constructor === EOFTk  || l.constructor === NlTk ) 
-	) 
-	{
-		this.manager.env.dp( 'TemplateHandler, stripping end or whitespace tokens' );
-		res.pop();
-		l = res[res.length - 1];
-	}
+	var res = this._stripEOFTk( tplExpandData.resultTokens );
 
 	// Could also encapsulate the template tokens here, if that turns out
 	// better for the editor.
@@ -298,6 +288,21 @@ TemplateHandler.prototype._onEnd = function( tplExpandData, token ) {
 	}
 };
 
+
+// Strip 'end' tokens and trailing newlines
+TemplateHandler.prototype._stripEOFTk = function ( tokens ) {
+	// Strip 'end' tokens and trailing newlines
+	var l = tokens[tokens.length - 1];
+	while ( tokens.length &&
+			(	l.constructor === EOFTk  || l.constructor === NlTk ) 
+	) 
+	{
+		this.manager.env.dp( 'TemplateHandler, stripping end or whitespace tokens' );
+		tokens.pop();
+		l = tokens[tokens.length - 1];
+	}
+	return tokens;
+};
 
 
 /**
@@ -340,8 +345,19 @@ TemplateHandler.prototype._fetchTemplateAndTitle = function ( title, callback, t
 			this.manager.env.tp( 'Note: Starting new request for ' + title );
 			this.manager.env.requestQueue[title] = new TemplateRequest( this.manager, title );
 		}
-		// Append a listener to the request
-		this.manager.env.requestQueue[title].on( 'src', callback );
+		// Append a listener to the request at the toplevel, but prepend at
+		// lower levels to enforce depth-first processing
+		if ( this.manager.isInclude ) {
+			// prepend request: deal with requests from includes first
+			this.manager.env.requestQueue[title]
+				.listeners( 'src' ).unshift( callback );
+		} else {
+			// append request, process in document order
+			this.manager.env.requestQueue[title]
+				.listeners( 'src' ).push( callback );
+		}
+
+		//this.manager.env.requestQueue[title].on( 'src', callback );
 
 	}
 };
@@ -405,7 +421,7 @@ TemplateHandler.prototype._returnArgAttributes = function ( token, cb, frame, at
 
 function TemplateRequest ( manager, title ) {
 	// Increase the number of maximum listeners a bit..
-	this.setMaxListeners( 10000 );
+	this.setMaxListeners( 100000 );
 	var self = this,
 		url = manager.env.wgScript + '/api' + 
 		manager.env.wgScriptExtension +
@@ -472,7 +488,7 @@ function TemplateRequest ( manager, title ) {
 			var processSome = function () {
 				// XXX: experiment a bit with the number of callback per
 				// iteration!
-				var maxIters = Math.min(4, listeners.length);
+				var maxIters = Math.min(1, listeners.length);
 				for ( var it = 0; it < maxIters; it++ ) {
 					var nextListener = listeners.shift();
 					nextListener( src, title );

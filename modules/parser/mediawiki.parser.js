@@ -100,7 +100,7 @@ function ParserPipeline( env, inputType ) {
 	* The tree builder creates a DOM tree from the token soup emitted from
 	* the TokenTransformDispatcher.
 	*/
-	this.treeBuilder = new FauxHTML5.TreeBuilder();
+	this.treeBuilder = new FauxHTML5.TreeBuilder( this.env );
 	this.treeBuilder.listenForTokensFrom( this.tokenPostProcessor );
 	//this.tokenPostProcessor.on('chunk', function( c ) {
 	//	console.warn( JSON.stringify( c, null, 2 ));

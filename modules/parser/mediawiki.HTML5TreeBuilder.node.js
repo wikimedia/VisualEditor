@@ -9,7 +9,7 @@ var events = require('events'),
 FauxHTML5 = {};
 
 
-FauxHTML5.TreeBuilder = function ( ) {
+FauxHTML5.TreeBuilder = function ( env ) {
 	// The parser we are going to emit our tokens to
 	this.parser = new HTML5.Parser();
 
@@ -18,6 +18,8 @@ FauxHTML5.TreeBuilder = function ( ) {
 
 	// implicitly start a new document
 	this.processToken(new TagTk( 'body' ));
+
+	this.env = env;
 };
 
 // Inherit from EventEmitter
@@ -34,7 +36,7 @@ FauxHTML5.TreeBuilder.prototype.listenForTokensFrom = function ( emitter ) {
 };
 
 FauxHTML5.TreeBuilder.prototype.onChunk = function ( tokens ) {
-	//console.warn( 'chunk: ' + JSON.stringify( tokens, null, 2 ) );
+	this.env.dp( 'chunk: ' + JSON.stringify( tokens, null, 2 ) );
 	for (var i = 0, length = tokens.length; i < length; i++) {
 		this.processToken(tokens[i]);
 	}

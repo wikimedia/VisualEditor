@@ -618,10 +618,16 @@ h = & "=" // guard, to make sure '='+ will match.
     / & { /* dp('nomatch exit h'); */ stops.dec('h'); return false } { return null }
     ) { return r }
 
-comment
+comments
   = '<!--' c:comment_chars* ('-->' / eof)
     cs:(space* newline space* cn:comment { return cn })* {
         return [new CommentTk( c.join('') )].concat(cs);
+    }
+
+comment
+  = '<!--' c:comment_chars* ('-->' / eof)
+    {
+        return [new CommentTk( c.join('') )];
     }
 
 comment_chars
@@ -1837,32 +1843,37 @@ optionalSpaceToken
 
 
 // Start of line
-sol = nl:(newlineToken / & { return pos === 0; } { return [] }) 
-      // Eat multi-line comments, so that syntax after still matches as if it
-      // was actually preceded by a newline
-      cn:( c:comment n:newline? { 
-                if ( n !== '' ) {
-                    return [c, n];
-                } else {
-                    return [c];
-                }
-            }
-      )*
-      // Eat includeonly/noinclude at start of line, so that start-of-line
-      // syntax after it still matches
-      ni:(space* "<" c:"/"? t:("includeonly" / "noinclude") ">" {return [c, t]} )?
-      {
-          var niToken = [];
-          if ( ni !== '') {
-              if ( ni[0] === '/' ) {
-                  niToken = [new EndTagTk( ni[1] )];
+sol 
+  = nl:(newlineToken / & { return pos === 0; } { return [] }) 
+    // Eat multi-line comment, so that syntax after still matches as if it
+    // was actually preceded by a newline
+    cn:( c:comment n:newline? { 
+              if ( n !== '' ) {
+                  return [c, n];
               } else {
-                  niToken = [new TagTk( ni[1] )];
+                  return [c];
               }
           }
-                  
-          return nl.concat(cn, niToken);
-      }
+    )?
+    // Eat includeonly/noinclude at start of line, so that start-of-line
+    // syntax after it still matches
+    ni:(space* "<" c:"/"? t:("includeonly" / "noinclude") ">" {return [c, t]} )?
+    {
+        var niToken = [];
+        if ( ni !== '') {
+            if ( ni[0] === '/' ) {
+                niToken = [new EndTagTk( ni[1] )];
+            } else {
+                niToken = [new TagTk( ni[1] )];
+            }
+        }
+
+        if ( cn === '' ) {
+            cn = [];
+        }
+
+        return nl.concat(cn, niToken);
+    }
 
 /**
  * noinclude / includeonly / onlyinclude productions. These are normally

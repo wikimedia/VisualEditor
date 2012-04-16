@@ -403,7 +403,9 @@ AsyncTokenTransformManager.prototype.process = function ( tokens ) {
 AsyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 	// Set top-level callback to next transform phase
 	var res = this.transformTokens ( tokens, this.tokenCB );
-	this.env.dp( 'AsyncTokenTransformManager onChunk tokens=', tokens );
+	if ( this.atTopLevel ) {
+		this.env.dp( 'AsyncTokenTransformManager onChunk res=', res );
+	}
 
 	if ( ! this.tailAccumulator ) {
 		this.emit( 'chunk', res.tokens );
@@ -525,7 +527,7 @@ AsyncTokenTransformManager.prototype._returnTokens =
 	function ( tokens, notYetDone, allTokensProcessed ) {
 	//tokens = this._transformPhase2( this.frame, tokens, this.parentCB );
 	
-	this.env.dp( 'AsyncTokenTransformManager._returnTokens, emitting chunk: ',
+	this.env.tp( 'AsyncTokenTransformManager._returnTokens, emitting chunk: ',
 				tokens );
 
 	if( !allTokensProcessed ) {
