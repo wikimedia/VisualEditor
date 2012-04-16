@@ -10,6 +10,8 @@ var TokenCollector = require( './ext.util.TokenCollector.js' ).TokenCollector;
 /**
  * OnlyInclude sadly forces synchronous template processing, as it needs to
  * hold onto all tokens in case an onlyinclude block is encountered later.
+ * This can fortunately be worked around by caching the tokens after
+ * onlyinclude processing (which is a good idea anyway).
  */
 function OnlyInclude( manager, isInclude ) {
 	this.manager = manager;
