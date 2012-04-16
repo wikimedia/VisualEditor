@@ -433,7 +433,7 @@ ParserFunctions.prototype.pf_fullurl = function ( target, argList, argDict ) {
 };
 ParserFunctions.prototype.pf_urlencode = function ( target, argList, argDict ) {
 	this.env.tp( 'urlencode: ' + target  );
-	return [target.trim()];
+	return [encodeURIComponent(target.trim())];
 };
 
 // The following items all depends on information from the Wiki, so are hard
