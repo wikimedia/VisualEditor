@@ -344,8 +344,8 @@ ExternalLinkHandler.prototype.onUrlLink = function ( token, manager, cb ) {
 	if ( this._isImageLink( href ) ) {
 		return { token: new SelfclosingTagTk( 'img', 
 				[ 
-					new KV( 'alt', href.split('/').last() ),
-					new KV( 'src', href )
+					new KV( 'src', href ),
+					new KV( 'alt', href.split('/').last() )
 				] 
 			) 
 		};
@@ -379,8 +379,8 @@ ExternalLinkHandler.prototype.onExtLink = function ( token, manager, cb ) {
 			var src = content[0];
 			content = [ new SelfclosingTagTk( 'img', 
 					[ 
-					new KV( 'alt', src.split('/').last() ),	
-					new KV( 'src', src )
+					new KV( 'src', src ),
+					new KV( 'alt', src.split('/').last() )
 					] )
 				];
 		}

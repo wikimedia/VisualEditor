@@ -30,9 +30,6 @@ testWhiteList["A table with no data."] = "<table></table>";
 testWhiteList["A table with nothing but a caption"] = "<table><caption> caption</caption></table>";
 testWhiteList["Fuzz testing: Parser22"] = "<p><a href=\"http://===r:::https://b\">http://===r:::https://b</a></p><table></table>";
 
-// MediaWiki changes the order of attributes in tables, ignore that
-testWhiteList["Multiplication table"] = "<table border=\"1\" cellpadding=\"2\"><caption>Multiplication table</caption><tbody><tr><th> × </th><th> 1 </th><th> 2 </th><th> 3</th></tr><tr><th> 1</th><td> 1 </td><td> 2 </td><td> 3</td></tr><tr><th> 2</th><td> 2 </td><td> 4 </td><td> 6</td></tr><tr><th> 3</th><td> 3 </td><td> 6 </td><td> 9</td></tr><tr><th> 4</th><td> 4 </td><td> 8 </td><td> 12</td></tr><tr><th> 5</th><td> 5 </td><td> 10 </td><td> 15</td></tr></tbody></table>";
-
 testWhiteList["Nested table"] = "<table border=\"1\"><tbody><tr><td> α</td><td><table bgcolor=\"#ABCDEF\" border=\"2\"><tbody><tr><td>nested</td></tr><tr><td>table</td></tr></tbody></table></td><td>the original table again</td></tr></tbody></table>";
 
 // Very minor whitespace difference at end of cell (MediaWiki inserts a
@@ -60,7 +57,6 @@ testWhiteList["External link containing double-single-quotes with no space separ
 
 testWhiteList["External links: wiki links within external link (Bug 3695)"] = "<p><a href=\"http://example.com\"></a><a href=\"/wiki/Wikilink\">wikilink</a> embedded in ext link</p>";
 
-testWhiteList["<pre> with forbidden attribute values (bug 3202)"] = "<pre width=\"8\" style=\"\">Narrow screen goodies</pre>";
 
 // This is valid, just confusing for humans. The reason for disallowing this
 // might be history by now. XXX: Check this!
