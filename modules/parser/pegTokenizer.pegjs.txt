@@ -794,8 +794,11 @@ url
             / s:[.:,] !(space / eolf) { return s } 
             / comment
             / tplarg_or_template
-            / htmlentity
-            / [&%{] 
+            / ! ( "&" ( [lL][tT] / [gG][tT] ) ";" ) 
+                r:(
+                    htmlentity
+                  / [&%{] 
+                ) { return r }
          )+ 
 { 
     //console.warn( "path: " + pp( flatten_stringlist( [proto + addr].concat( path ) ) ) );
