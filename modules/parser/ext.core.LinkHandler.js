@@ -127,8 +127,8 @@ WikiLinkHandler.prototype.renderFile = function ( token, manager, cb, title ) {
 		//console.log( JSON.stringify( oText, null, 2 ) );
 		if ( oText.constructor === String ) {
 			oText = oText.trim();
-			if ( this._simpleImageOptions[ oText ] ) {
-				options.push( new KV( this._simpleImageOptions[ oText ], 
+			if ( this._simpleImageOptions[ oText.toLowerCase() ] ) {
+				options.push( new KV( this._simpleImageOptions[ oText.toLowerCase() ], 
 							oText ) );
 				oHash[ this._simpleImageOptions[ oText ] ] = oText;
 				continue;
@@ -147,17 +147,18 @@ WikiLinkHandler.prototype.renderFile = function ( token, manager, cb, title ) {
 						oHash.height = y;
 					}
 				} else {
-					// XXX: check handling of multiple captions in default MW!
-					caption = caption.concat( oContent.v );
+					var bits = oText.split( '=', 2 ),
+						key = this._prefixImageOptions[ bits[0].trim().toLowerCase() ];
+					if ( bits.length > 1 && key) {
+						oHash[key] = bits[1];
+						options.push( new KV( key, bits[1] ) );
+						console.warn('handle prefix ' + bits );
+					} else {
+						// neither simple nor prefix option, add original
+						// tokens to caption.
+						caption = caption.concat( oContent.v );
+					}
 				}
-			}
-
-		} else {
-			var bits = oText[0].split( '=', 2 );
-			if ( bits.length > 1 && this._prefixImageOptions[ bits[0].trim() ] ) {
-				console.warn('handle prefix ' + bits );
-			} else {
-				caption = caption.concat( oContent.v );
 			}
 		}
 	}
