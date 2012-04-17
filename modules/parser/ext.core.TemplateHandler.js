@@ -160,6 +160,10 @@ TemplateHandler.prototype._expandTemplate = function ( tplExpandData ) {
 
 	this.manager.env.dp( 'argHash: ', args );
 
+
+	// XXX: strip subst for now..
+	target = target.replace( /^(safe)?subst:/, '' );
+
 	var prefix = target.split(':', 1)[0].toLowerCase().trim();
 	if ( prefix && 'pf_' + prefix in this.parserFunctions ) {
 		var funcArg = target.substr( prefix.length + 1 );
@@ -310,7 +314,7 @@ TemplateHandler.prototype._stripEOFTk = function ( tokens ) {
  */
 TemplateHandler.prototype._processTemplateAndTitle = function( pipeline, src, title ) {
 	// Feed the pipeline. XXX: Support different formats.
-	this.manager.env.dp( 'TemplateHandler._processTemplateAndTitle: ', src );
+	this.manager.env.dp( 'TemplateHandler._processTemplateAndTitle: ', title, src );
 	pipeline.process ( src );
 };
 
@@ -372,6 +376,7 @@ TemplateHandler.prototype.onTemplateArg = function ( token, frame, cb ) {
 	
 	token.resultTokens = false;
 
+	// XXX: get this from the cache!
 	new AttributeTransformManager ( 
 				this.manager, 
 				this._returnArgAttributes.bind( this, token, cb, frame ) 

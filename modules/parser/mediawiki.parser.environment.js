@@ -188,9 +188,6 @@ MWParserEnvironment.prototype.normalizeTitle = function( name ) {
 
 	name = name.trim().replace(/[\s_]+/g, '_');
 
-	// XXX: strip subst for now..
-	name = name.replace( /^subst:/, '' );
-
 	// Implement int: as alias for MediaWiki:
 	if ( name.substr( 0, 4 ) === 'int:' ) {
 		name = 'MediaWiki:' + name.substr( 4 );

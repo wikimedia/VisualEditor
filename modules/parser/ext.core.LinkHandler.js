@@ -74,6 +74,7 @@ WikiLinkHandler.prototype._simpleImageOptions = {
 	'left': 'halign',
 	'right': 'halign',
 	'center': 'halign',
+	'float': 'halign',
 	'none': 'halign',
 	// valign
 	'baseline': 'valign',
@@ -152,7 +153,7 @@ WikiLinkHandler.prototype.renderFile = function ( token, manager, cb, title ) {
 					if ( bits.length > 1 && key) {
 						oHash[key] = bits[1];
 						options.push( new KV( key, bits[1] ) );
-						console.warn('handle prefix ' + bits );
+						//console.warn('handle prefix ' + bits );
 					} else {
 						// neither simple nor prefix option, add original
 						// tokens to caption.
@@ -160,10 +161,10 @@ WikiLinkHandler.prototype.renderFile = function ( token, manager, cb, title ) {
 					}
 				}
 			}
+		} else {
+			caption = caption.concat( oContent.v );
 		}
 	}
-	//console.warn('caption: ' + JSON.stringify( caption ) );
-	
 
 	//var contentPos = token.dataAttribs.contentPos;
 	//var optionSource = token.source.substr( contentPos[0], contentPos[1] - contentPos[0] );
