@@ -352,7 +352,7 @@ TemplateHandler.prototype._fetchTemplateAndTitle = function ( title, callback, t
 		}
 		// Append a listener to the request at the toplevel, but prepend at
 		// lower levels to enforce depth-first processing
-		if ( this.manager.isInclude ) {
+		if ( false && this.manager.isInclude ) {
 			// prepend request: deal with requests from includes first
 			this.manager.env.requestQueue[title]
 				.listeners( 'src' ).unshift( callback );

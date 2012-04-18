@@ -36,6 +36,8 @@ AttributeExpander.prototype.onToken = function ( token, frame, cb ) {
 			token.constructor === SelfclosingTagTk) && 
 				token.attribs && 
 				token.attribs.length ) {
+		token = $.extend( {}, token );
+		token.attribs = token.attribs.slice();
 		var expandData = {
 			token: token,
 			cb: cb
@@ -68,13 +70,12 @@ AttributeExpander.prototype.onToken = function ( token, frame, cb ) {
 
 
 /**
- * Callback for argument (including target) expansion in AttributeTransformManager
+ * Callback for attribute expansion in AttributeTransformManager
  */
 AttributeExpander.prototype._returnAttributes = function ( expandData, 
 															attributes ) 
 {
 	this.manager.env.dp( 'AttributeExpander._returnAttributes: ',attributes );
-	// Remove the target from the attributes
 	expandData.token.attribs = attributes;
 	if ( expandData.async ) {
 		expandData.token.rank = this.rank;

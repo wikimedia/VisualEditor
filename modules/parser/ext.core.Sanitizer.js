@@ -96,19 +96,28 @@ Sanitizer.prototype.onAny = function ( token ) {
 	// Convert attributes to string, if necessary.
 	// XXX: Likely better done in AttributeTransformManager when processing is
 	// complete
-	if ( token.attribs ) {
-		for ( var i = 0, l = token.attribs.length; i < l; i++ ) {
-			var kv = token.attribs[i];
-			if ( kv.k.constructor === Array ) {
-				kv.k = this.manager.env.tokensToString ( kv.k );
+	if ( token.attribs && token.attribs.length ) {
+		var attribs = token.attribs.slice();
+		var newToken = $.extend( {}, token );
+		for ( var i = 0, l = attribs.length; i < l; i++ ) {
+			var kv = attribs[i],
+				k = kv.k,
+				v = kv.v;
+
+			if ( k.constructor === Array ) {
+				k = this.manager.env.tokensToString ( k );
 			}
-			if ( kv.v.constructor === Array ) {
-				kv.v = this.manager.env.tokensToString ( kv.v );
+			if ( v.constructor === Array ) {
+				v = this.manager.env.tokensToString ( v );
 			}
-			if ( kv.k === 'style' ) {
-				kv.v = this.checkCss(kv.v);
+			if ( k === 'style' ) {
+				v = this.checkCss(v);
 			}
+			attribs[i] = new KV( k, v );
 		}
+		//console.warn(JSON.stringify([attribs, token], null, 2));
+		newToken.attribs = attribs;
+		token = newToken;
 	}
 	// XXX: Validate attributes
 	return { token: token };

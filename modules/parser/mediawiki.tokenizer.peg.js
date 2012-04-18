@@ -71,7 +71,7 @@ PegTokenizer.prototype.process = function( text, cacheKey ) {
 	if ( this.canCache ) {
 		var maybeCached = this.cache.get(cacheKey);
 		if ( maybeCached ) {
-			this.env.ap( 'tokenizer cache hit for ' + cacheKey );
+			this.env.tp( 'tokenizer cache hit for ' + cacheKey );
 			//console.warn( JSON.stringify( maybeCached, null, 2 ) );
 			for ( var i = 0, l = maybeCached.length; i < l; i++ ) {
 				// emit a clone of this chunk
@@ -116,7 +116,7 @@ PegTokenizer.prototype.process = function( text, cacheKey ) {
 
 PegTokenizer.prototype.onCacheChunk = function ( chunk ) {
 	// make a deep copy of the chunk for now
-	this.cacheAccum.chunks.push( this.env.cloneTokens( chunk ) );
+	this.cacheAccum.chunks.push( chunk.slice() );
 	//console.warn( 'onCacheChunk: ' + this.cacheAccum.key + JSON.stringify( chunk, null, 2 ) );
 	this.emit('chunk', chunk);
 };

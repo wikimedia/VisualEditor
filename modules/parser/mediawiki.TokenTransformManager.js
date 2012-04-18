@@ -792,6 +792,112 @@ AttributeTransformManager.prototype.process = function ( attributes ) {
 	}
 };
 
+/**
+ * Expand only keys
+ */
+AttributeTransformManager.prototype.processKeys = function ( attributes ) {
+	// Potentially need to use multiple pipelines to support concurrent async expansion
+	//this.pipe.process( 
+	var pipe,
+		ref;
+	//console.warn( 'AttributeTransformManager.process: ' + JSON.stringify( attributes ) );
+
+	// transform each argument (key and value), and handle asynchronous returns
+	for ( var i = 0, l = attributes.length; i < l; i++ ) {
+		var kv = { key: [], value: [] };
+		this.kvs.push( kv );
+		var cur = attributes[i];
+
+		if ( ! cur ) {
+			console.warn( JSON.stringify( attributes ) );
+			console.trace();
+			continue;
+		}
+
+		if ( cur.k.constructor === Array && cur.k.length ) {
+			// Assume that the return is async, will be decremented in callback
+			this.outstanding++;
+
+			// transform the key
+			pipe = this.manager.getAttributePipeline( this.manager.inputType,
+														this.manager.args );
+			pipe.on( 'chunk',
+					this.onChunk.bind( this, this._returnAttributeKey.bind( this, i ) ) 
+				);
+			pipe.on( 'end', 
+					this.onEnd.bind( this, this._returnAttributeKey.bind( this, i ) ) 
+				);
+			pipe.process( this.manager.env.cloneTokens( cur.k ).concat([ new EOFTk() ]) );
+		} else {
+			kv.key = cur.k;
+		}
+
+		kv.value = cur.v;
+	}
+	this.outstanding--;
+	if ( this.outstanding === 0 ) {
+		this._returnAttributes();
+		// synchronous / done
+		return true;
+	} else {
+		// async, will call back
+		this.async = true;
+		return false;
+	}
+};
+
+AttributeTransformManager.prototype.processValues = function ( attributes ) {
+	// Potentially need to use multiple pipelines to support concurrent async expansion
+	//this.pipe.process( 
+	var pipe,
+		ref;
+	//console.warn( 'AttributeTransformManager.process: ' + JSON.stringify( attributes ) );
+
+	// transform each argument (key and value), and handle asynchronous returns
+	for ( var i = 0, l = attributes.length; i < l; i++ ) {
+		var kv = { key: [], value: [] };
+		this.kvs.push( kv );
+		var cur = attributes[i];
+
+		if ( ! cur ) {
+			console.warn( JSON.stringify( attributes ) );
+			console.trace();
+			continue;
+		}
+
+		kv.key = cur.k;
+
+		if ( cur.v.constructor === Array && cur.v.length ) {
+			// Assume that the return is async, will be decremented in callback
+			this.outstanding++;
+
+			// transform the value
+			pipe = this.manager.getAttributePipeline( this.manager.inputType,
+														this.manager.args );
+			pipe.on( 'chunk', 
+					this.onChunk.bind( this, this._returnAttributeValue.bind( this, i ) ) 
+					);
+			pipe.on( 'end', 
+					this.onEnd.bind( this, this._returnAttributeValue.bind( this, i ) ) 
+					);
+			//console.warn('starting attribute transform of ' + JSON.stringify( attributes[i].v ) );
+			pipe.process( this.manager.env.cloneTokens( cur.v ).concat([ new EOFTk() ]) );
+		} else {
+			kv.value = cur.v;
+		}
+	}
+	this.outstanding--;
+	if ( this.outstanding === 0 ) {
+		this._returnAttributes();
+		// synchronous / done
+		return true;
+	} else {
+		// async, will call back
+		this.async = true;
+		return false;
+	}
+};
+
 AttributeTransformManager.prototype._returnAttributes = function ( ) {
 	// convert attributes
 	var out = [];
