@@ -68,9 +68,9 @@ TemplateHandler.prototype.onTemplate = function ( token, frame, cb ) {
 		i = 0,
 		res;
 
-	var attributes = [token.attribs.shift()];
-	if( token.attribs.length ) {
-		attributes = attributes.concat( this._nameArgs( token.attribs ) );
+	var attributes = [token.attribs[0]];
+	if( token.attribs.length > 1) {
+		attributes = attributes.concat( this._nameArgs( token.attribs.slice(1) ) );
 	}
 
 	this.manager.env.dp( 'before AttributeTransformManager: ', 
@@ -125,8 +125,7 @@ TemplateHandler.prototype._returnAttributes = function ( tplExpandData,
 	// Remove the target from the attributes
 	tplExpandData.attribsAsync = false;
 	tplExpandData.target = attributes[0].v;
-	attributes.shift();
-	tplExpandData.expandedArgs = attributes;
+	tplExpandData.expandedArgs = attributes.slice(1);
 	if ( tplExpandData.overallAsync ) {
 		this._expandTemplate ( tplExpandData );
 	}
@@ -169,10 +168,12 @@ TemplateHandler.prototype._expandTemplate = function ( tplExpandData ) {
 		var funcArg = target.substr( prefix.length + 1 );
 		this.manager.env.dp( 'func prefix/args: ', prefix,
 				tplExpandData.expandedArgs,
-				'funcArg:', funcArg);
-		//this.manager.env.dp( 'entering prefix', funcArg, args  );
+				'unnamedArgs', tplExpandData.origToken.attribs,
+				'funcArg:', funcArg
+				);
+		//this.manager.env.dp( 'entering prefix', funcArg,  tplExpandData.expandedArgs  );
 		res = this.parserFunctions[ 'pf_' + prefix ]( funcArg, 
-				tplExpandData.expandedArgs, args, tplExpandData.origToken.attribs );
+				tplExpandData.expandedArgs, args, tplExpandData.origToken.attribs.slice(1) );
 
 		// XXX: support async parser functions!
 		if ( tplExpandData.overallAsync ) {
@@ -315,7 +316,7 @@ TemplateHandler.prototype._stripEOFTk = function ( tokens ) {
 TemplateHandler.prototype._processTemplateAndTitle = function( pipeline, src, title ) {
 	// Feed the pipeline. XXX: Support different formats.
 	this.manager.env.dp( 'TemplateHandler._processTemplateAndTitle: ', title, src );
-	pipeline.process ( src );
+	pipeline.process ( src, title );
 };
 
 
@@ -380,17 +381,19 @@ TemplateHandler.prototype.onTemplateArg = function ( token, frame, cb ) {
 	new AttributeTransformManager ( 
 				this.manager, 
 				this._returnArgAttributes.bind( this, token, cb, frame ) 
-			).process( token.attribs );
+			).process( token.attribs.slice() );
 
 	if ( token.resultTokens !== false ) {
 		// synchronous return
 		//console.warn( 'synchronous attribute expand: ' + JSON.stringify( token.resultTokens ) );
 
-		return { tokens: token.resultTokens };
+		var res = token.resultTokens;
+		delete token.resultTokens;
+		return { tokens: res };
 	} else {
 		//console.warn( 'asynchronous attribute expand: ' + JSON.stringify( token, null, 2 ) );
 		// asynchronous return
-		token.resultTokens = [];
+		token.resultTokens = []
 		return { async: true };
 	}
 };

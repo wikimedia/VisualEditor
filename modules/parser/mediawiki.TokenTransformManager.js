@@ -756,7 +756,7 @@ AttributeTransformManager.prototype.process = function ( attributes ) {
 			pipe.on( 'end', 
 					this.onEnd.bind( this, this._returnAttributeKey.bind( this, i ) ) 
 				);
-			pipe.process( cur.k.concat([ new EOFTk() ]) );
+			pipe.process( this.manager.env.cloneTokens( cur.k ).concat([ new EOFTk() ]) );
 		} else {
 			kv.key = cur.k;
 		}
@@ -775,7 +775,7 @@ AttributeTransformManager.prototype.process = function ( attributes ) {
 					this.onEnd.bind( this, this._returnAttributeValue.bind( this, i ) ) 
 					);
 			//console.warn('starting attribute transform of ' + JSON.stringify( attributes[i].v ) );
-			pipe.process( cur.v.concat([ new EOFTk() ]) );
+			pipe.process( this.manager.env.cloneTokens( cur.v ).concat([ new EOFTk() ]) );
 		} else {
 			kv.value = cur.v;
 		}

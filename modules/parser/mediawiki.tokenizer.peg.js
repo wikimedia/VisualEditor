@@ -9,13 +9,19 @@
 
 var PEG = require('pegjs'),
 	path = require('path'),
+	LRU = require("lru-cache"),
 	fs = require('fs'),
 	$ = require('jquery'),
 	events = require('events'),
 	//colors = require('colors'),
 	defines = require('./mediawiki.parser.defines.js');
 
-function PegTokenizer() {
+function PegTokenizer( env, canCache ) {
+	this.env = env;
+	this.canCache = canCache;
+	if ( this.canCache ) {
+		this.cacheAccum = { chunks: [] };
+	}
 }
 
 
@@ -31,7 +37,7 @@ PegTokenizer.src = false;
  * Consumers are supposed to register with PegTokenizer before calling
  * process().
  */
-PegTokenizer.prototype.process = function( text ) {
+PegTokenizer.prototype.process = function( text, cacheKey ) {
 	var out, err;
 	if ( !this.tokenizer ) {
 		// Construct a singleton static tokenizer.
@@ -58,7 +64,26 @@ PegTokenizer.prototype.process = function( text ) {
 		PegTokenizer.prototype.tokenizer = eval( tokenizerSource );
 		// alias the parse method
 		this.tokenizer.tokenize = this.tokenizer.parse;
+
+		// Also, while we are at it, create a tokenizer cache.
+		PegTokenizer.prototype.cache = LRU(20);
 	}
+	if ( this.canCache ) {
+		var maybeCached = this.cache.get(cacheKey);
+		if ( maybeCached ) {
+			this.env.ap( 'tokenizer cache hit for ' + cacheKey );
+			//console.warn( JSON.stringify( maybeCached, null, 2 ) );
+			for ( var i = 0, l = maybeCached.length; i < l; i++ ) {
+				// emit a clone of this chunk
+				this.emit('chunk', this.env.cloneTokens( maybeCached[i] ));
+			}
+			this.emit('end');
+			return;
+		} else {
+			this.cacheAccum.key = cacheKey;
+		}
+	}
+
 
 	// Some input normalization: force a trailing newline
 	if ( text.substring(text.length - 1) !== "\n" ) {
@@ -68,19 +93,42 @@ PegTokenizer.prototype.process = function( text ) {
 	// XXX: Commented out exception handling during development to get
 	// reasonable traces.
 	//try {
+		var chunkCB;
+		if ( this.canCache ) {
+			chunkCB = this.onCacheChunk.bind( this );
+		} else {
+			chunkCB = this.emit.bind( this, 'chunk' );
+		}
 		this.tokenizer.tokenize(text, 'start', 
 				// callback
-				this.emit.bind( this, 'chunk' ),
+				chunkCB,
 				// inline break test
 				this
 				);
-		this.emit('end');
+		this.onEnd();
 	//} catch (e) {
 		//err = e;
 		//console.trace();
 	//} finally {
 		return { err: err };
 	//}
+};
+
+PegTokenizer.prototype.onCacheChunk = function ( chunk ) {
+	// make a deep copy of the chunk for now
+	this.cacheAccum.chunks.push( this.env.cloneTokens( chunk ) );
+	//console.warn( 'onCacheChunk: ' + this.cacheAccum.key + JSON.stringify( chunk, null, 2 ) );
+	this.emit('chunk', chunk);
+};
+
+PegTokenizer.prototype.onEnd = function ( ) {
+	if ( this.canCache ) {
+		this.cache.set(this.cacheAccum.key, this.cacheAccum.chunks);
+		// reset cacheAccum
+		this.cacheAccum = { chunks: [] };
+	}
+
+	this.emit('end');
 };
 
 PegTokenizer.prototype.processImageOptions = function( text ) {

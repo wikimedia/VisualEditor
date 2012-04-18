@@ -260,6 +260,25 @@ MWParserEnvironment.prototype.tokensToString = function ( tokens, strict ) {
 	return out.join('');
 };
 
+/**
+ * Perform a shallow clone of a chunk of tokens
+ */
+MWParserEnvironment.prototype.cloneTokens = function ( chunk ) {
+	var out = [],
+		token, tmpToken;
+	for ( var i = 0, l = chunk.length; i < l; i++ ) {
+		token = chunk[i];
+		if ( token.constructor === String ) {
+			out.push( token );
+		} else {
+			tmpToken = $.extend( {}, token );
+			tmpToken.rank = 0;
+			out.push(tmpToken);
+		}
+	}
+	return out;
+};
+
 MWParserEnvironment.prototype.decodeURI = function ( s ) {
 	return s.replace( /%[0-9a-f][0-9a-f]/g, function( m ) {
 		try {

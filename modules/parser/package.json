@@ -12,7 +12,8 @@
 		"optimist": "0.x.x",
 		"assert": "0.x.x",
 		"jsdom": "0.x.x",
-		"pegjs": "0.x.x"
+		"pegjs": "0.x.x",
+		"lru-cache": "0.x.x"
 	},
 	"devDependencies": {
 		"coffee-script": "1.x.x",

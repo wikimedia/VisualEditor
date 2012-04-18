@@ -179,7 +179,7 @@ ParserPipeline.prototype._transformers = {
 				AttributeExpander,
 				WikiLinkHandler,
 				ExternalLinkHandler,
-				BehaviorSwitchHandler,
+				BehaviorSwitchHandler
 				/* ExtensionHandler1, */
 				/* ExtensionHandler2, */
 			],
@@ -240,7 +240,7 @@ ParserPipeline.prototype.makeInputPipeline = function ( inputType, args, isInclu
 				pipe.last.args = args;
 				return pipe;
 			} else {
-				var wikiTokenizer = new PegTokenizer();
+				var wikiTokenizer = new PegTokenizer( this.env, isInclude );
 
 				/**
 				* Token stream transformations.
@@ -414,21 +414,21 @@ CachedTokenPipeline.prototype.constructor = CachedTokenPipeline;
 /**
  * Feed input tokens to the first pipeline stage
  */
-CachedTokenPipeline.prototype.process = function ( chunk ) {
+CachedTokenPipeline.prototype.process = function ( chunk, key ) {
 	//console.warn( 'CachedTokenPipeline::process: ' + JSON.stringify( chunk ) );
-	this.first.process( chunk );
+	this.first.process( chunk, key );
 };
 
 
 /**
  * Forward chunks to our listeners
  */
-CachedTokenPipeline.prototype.forwardChunk = function ( chunk ) {
+CachedTokenPipeline.prototype.forwardChunk = function ( chunk, key ) {
 	//console.warn( 'CachedTokenPipeline.forwardChunk: ' +
 	//			JSON.stringify( chunk, null, 2 )
 	//		);
 
-	this.emit( 'chunk', chunk );
+	this.emit( 'chunk', chunk, key );
 };
 
 
