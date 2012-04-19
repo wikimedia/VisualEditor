@@ -503,18 +503,8 @@ $(document).ready( function() {
 		}
 	};
 	
-	/* TODO: Make the config better */
-	var options = {
-		toolbars: {
-			'top': [ { 'name': 'history', 'items' : ['undo', 'redo'] },
-					  { 'name': 'textStyle', 'items' : ['format'] },
-					  { 'name': 'textStyle', 'items' : ['bold', 'italic', 'link', 'clear'] },
-					  { 'name': 'list', 'items' : ['number', 'bullet', 'outdent', 'indent'] } ]
-			}
-		};
-
-	//create a new instance of VE
-	var sandboxEditor = new ve.Surface('sandbox', wikidoms['Wikipedia article'], options ),
+	/* Create a new instance of VE, optional third param for ve configuration options */
+	var sandboxEditor = new ve.Surface('sandbox', wikidoms['Wikipedia article'] /*, options  */),
 		surfaceModel = sandboxEditor.getSurfaceModel(),
 		documentModel = sandboxEditor.getDocumentModel(),
 		editorID = sandboxEditor.getID();
