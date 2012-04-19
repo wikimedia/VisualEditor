@@ -1,6 +1,10 @@
 /**
  * Mixin for branch node functionality
  * 
+ * Branch nodes are immutable, which is why there are no methods for adding or removing children.
+ * DataModel classes will add this functionality, and other subclasses will implement behavior that
+ * mimcs changes made to data model nodes.
+ * 
  * @class
  * @abstract
  * @constructor
@@ -43,23 +47,4 @@ ve.BranchNode.prototype.getChildren = function() {
  */
 ve.BranchNode.prototype.indexOf = function( node ) {
 	return ve.inArray( node, this.children );
-};
-
-/**
- * Sets the root node to this and all of its descendants, recursively.
- * 
- * @method
- * @see {ve.Node.prototype.setRoot}
- * @param {ve.Node} root Node to use as root
- */
-ve.BranchNode.prototype.setRoot = function( root ) {
-	if ( root == this.root ) {
-		// Nothing to do, don't recurse into all descendants
-		return;
-	}
-	
-	this.root = root;
-	for ( var i = 0; i < this.children.length; i++ ) {
-		this.children[i].setRoot( root );
-	}
 };

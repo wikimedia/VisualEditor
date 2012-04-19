@@ -4,7 +4,7 @@ module( 've.TwigNode' );
 
 ve.TwigNodeStub = function() {
 	// Inheritance
-	ve.TwigNode.call( this, 'stub' );
+	ve.TwigNode.call( this );
 };
 
 ve.extendClass( ve.TwigNodeStub, ve.TwigNode );

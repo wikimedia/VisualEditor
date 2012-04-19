@@ -7,16 +7,40 @@
  * @extends {ve.BranchNode}
  * @extends {ve.dm.Node}
  * @param {String} type Symbolic name of node type 
- * @param {Array} [children] Child nodes to attach
+ * @param {ve.dm.Node[]} [children] Child nodes to attach
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  */
 ve.dm.BranchNode = function( type, children, attributes ) {
 	// Inheritance
-	ve.BranchNode.call( this, children );
+	ve.BranchNode.call( this );
 	ve.dm.Node.call( this, type, 0, attributes );
+
+	if ( ve.isArray( children ) && children.length ) {
+		for ( var i = 0; i < children.length; i++ ) {
+			this.push( children[i] );
+		}
+	}
 };
 
 /* Methods */
+
+/**
+ * Sets the root node to this and all of its descendants, recursively.
+ * 
+ * @method
+ * @see {ve.Node.prototype.setRoot}
+ * @param {ve.Node} root Node to use as root
+ */
+ve.dm.BranchNode.prototype.setRoot = function( root ) {
+	if ( root == this.root ) {
+		// Nothing to do, don't recurse into all descendants
+		return;
+	}
+	this.root = root;
+	for ( var i = 0; i < this.children.length; i++ ) {
+		this.children[i].setRoot( root );
+	}
+};
 
 /**
  * Adds a node to the end of this node's children.
@@ -51,6 +75,21 @@ ve.dm.BranchNode.prototype.pop = function() {
 };
 
 /**
+ * Adds a node to the beginning of this node's children.
+ * 
+ * @method
+ * @param {ve.dm.BranchNode} childModel Item to add
+ * @returns {Integer} New number of children
+ * @emits beforeSplice (0, 0, [childModel])
+ * @emits afterSplice (0, 0, [childModel])
+ * @emits update
+ */
+ve.dm.BranchNode.prototype.unshift = function( childModel ) {
+	this.splice( 0, 0, childModel );
+	return this.children.length;
+};
+
+/**
  * Removes a node from the beginning of this node's children
  * 
  * @method
@@ -65,21 +104,6 @@ ve.dm.BranchNode.prototype.shift = function() {
 		this.splice( 0, 1 );
 		return childModel;
 	}
-};
-
-/**
- * Adds a node to the beginning of this node's children.
- * 
- * @method
- * @param {ve.dm.BranchNode} childModel Item to add
- * @returns {Integer} New number of children
- * @emits beforeSplice (0, 0, [childModel])
- * @emits afterSplice (0, 0, [childModel])
- * @emits update
- */
-ve.dm.BranchNode.prototype.unshift = function( childModel ) {
-	this.splice( 0, 0, childModel );
-	return this.children.length;
 };
 
 /**
@@ -107,16 +131,16 @@ ve.dm.BranchNode.prototype.splice = function( index, howmany ) {
 			}
 			args[i].attach( this );
 			args[i].on( 'update', this.emitUpdate );
-			diff += args[i].getElementLength();
+			diff += args[i].getLength();
 		}
 	}
 	var removals = this.children.splice.apply( this.children, args );
 	for ( i = 0, length = removals.length; i < length; i++ ) {
 		removals[i].detach();
 		removals[i].removeListener( 'update', this.emitUpdate );
-		diff -= removals[i].getElementLength();
+		diff -= removals[i].getLength();
 	}
-	this.adjustContentLength( diff, true );
+	this.adjustLength( diff, true );
 	this.emit.apply( this, ['afterSplice'].concat( args ) );
 	this.emit( 'update' );
 	return removals;

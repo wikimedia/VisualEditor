@@ -4,7 +4,7 @@ module( 've.LeafNode' );
 
 ve.LeafNodeStub = function() {
 	// Inheritance
-	ve.LeafNode.call( this, 'stub' );
+	ve.LeafNode.call( this );
 };
 
 ve.extendClass( ve.LeafNodeStub, ve.LeafNode );

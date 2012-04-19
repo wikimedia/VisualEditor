@@ -7,7 +7,7 @@
  * @extends {ve.TwigNode}
  * @extends {ve.dm.BranchNode}
  * @param {String} type Symbolic name of node type 
- * @param {Array} [children] Child nodes to attach
+ * @param {ve.dm.Node[]} [children] Child nodes to attach
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  */
 ve.dm.TwigNode = function( type, children, attributes ) {
