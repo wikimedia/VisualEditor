@@ -14,13 +14,6 @@ ve.dm.BranchNode = function( type, children, attributes ) {
 	// Inheritance
 	ve.BranchNode.call( this, children );
 	ve.dm.Node.call( this, type, 0, attributes );
-
-	// Child nodes
-	if ( ve.isArray( contents ) ) {
-		for ( var i = 0; i < contents.length; i++ ) {
-			this.push( contents[i] );
-		}
-	}
 };
 
 /* Methods */

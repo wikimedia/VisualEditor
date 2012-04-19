@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<title>VisualEditor Tests</title>
+		<link rel="stylesheet" href="../../modules/qunit/qunit.css" type="text/css" />
+	</head>
+	<body>
+		<h1 id="qunit-header">VisualEditor Tests</h1>
+		<h2 id="qunit-banner"></h2>
+		<div id="qunit-testrunner-toolbar"></div>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+		<div id="qunit-fixture">test markup</div>
+
+		<script src="../../modules/qunit/qunit.js"></script>
+		<script src="../../modules/jquery/jquery.js"></script>
+
+		<!-- VisualEditor -->
+		<script src="../../modules/ve2/ve.js"></script>
+		<script src="../../modules/ve2/ve.EventEmitter.js"></script>
+		<script src="../../modules/ve2/ve.Node.js"></script>
+		<script src="../../modules/ve2/ve.BranchNode.js"></script>
+		<script src="../../modules/ve2/ve.TwigNode.js"></script>
+		<script src="../../modules/ve2/ve.LeafNode.js"></script>
+
+		<!-- VisualEditor DataModel -->
+		<script src="../../modules/ve2/dm/ve.dm.js"></script>
+		<script src="../../modules/ve2/dm/ve.dm.Node.js"></script>
+		<script src="../../modules/ve2/dm/ve.dm.BranchNode.js"></script>
+		<script src="../../modules/ve2/dm/ve.dm.TwigNode.js"></script>
+		<script src="../../modules/ve2/dm/ve.dm.LeafNode.js"></script>
+
+		<!-- Tests -->
+		<script src="ve.Node.test.js"></script>
+		<script src="ve.BranchNode.test.js"></script>
+		<script src="ve.TwigNode.test.js"></script>
+		<script src="ve.LeafNode.test.js"></script>
+		<script src="dm/ve.dm.Node.test.js"></script>
+		<script src="dm/ve.dm.BranchNode.test.js"></script>
+		<script src="dm/ve.dm.TwigNode.test.js"></script>
+		<script src="dm/ve.dm.LeafNode.test.js"></script>
+	</body>
+</html>

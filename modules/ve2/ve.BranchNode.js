@@ -52,7 +52,7 @@ ve.BranchNode.prototype.indexOf = function( node ) {
  * @see {ve.Node.prototype.setRoot}
  * @param {ve.Node} root Node to use as root
  */
-ve.dm.BranchNode.prototype.setRoot = function( root ) {
+ve.BranchNode.prototype.setRoot = function( root ) {
 	if ( root == this.root ) {
 		// Nothing to do, don't recurse into all descendants
 		return;

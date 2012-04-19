@@ -39,7 +39,7 @@ ve.dm.Node.prototype.createView = function() {
  * @method
  * @returns {Integer} Length of the node's contents
  */
-ve.Node.prototype.getLength = function() {
+ve.dm.Node.prototype.getLength = function() {
 	return this.length;
 };
 
@@ -52,7 +52,7 @@ ve.Node.prototype.getLength = function() {
  * @method
  * @returns {Integer} Length of the entire node
  */
-ve.Node.prototype.getOuterLength = function() {
+ve.dm.Node.prototype.getOuterLength = function() {
 	return this.length;
 };
 
@@ -65,7 +65,7 @@ ve.Node.prototype.getOuterLength = function() {
  * @emits lengthChange (diff)
  * @emits update
  */
-ve.Node.prototype.setLength = function( length ) {
+ve.dm.Node.prototype.setLength = function( length ) {
 	if ( length < 0 ) {
 		throw 'Length cannot be negative';
 	}
@@ -91,7 +91,7 @@ ve.Node.prototype.setLength = function( length ) {
  * @emits lengthChange (diff)
  * @emits update
  */
-ve.Node.prototype.adjustLength = function( adjustment ) {
+ve.dm.Node.prototype.adjustLength = function( adjustment ) {
 	this.setLength( this.length + adjustment );
 };
 
