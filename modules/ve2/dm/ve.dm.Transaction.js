@@ -3,10 +3,9 @@
  * 
  * @class
  * @constructor
- * @param {Object[]} operations List of operations
  */
-ve.dm.Transaction = function( operations ) {
-	this.operations = ve.isArray( operations ) ? operations : [];
+ve.dm.Transaction = function() {
+	this.operations = [];
 	this.lengthDifference = 0;
 };
 
