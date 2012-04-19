@@ -61,6 +61,26 @@ ve.Node.prototype.getType = function() {
 	return this.type;
 };
 
+/**
+ * Gets a reference to this node's parent.
+ * 
+ * @method
+ * @returns {ve.Node} Reference to this node's parent
+ */
+ve.Node.prototype.getParent = function() {
+	return this.parent;
+};
+
+/**
+ * Gets the root node in the tree this node is currently attached to.
+ * 
+ * @method
+ * @returns {ve.Node} Root node
+ */
+ve.Node.prototype.getRoot = function() {
+	return this.root;
+};
+
 /* Inheritance */
 
 ve.extendClass( ve.Node, ve.EventEmitter );

@@ -51,16 +51,6 @@ test( 'prototype.getAttribute', 2, function() {
 	strictEqual( node.getAttribute( 'b' ), 2 );
 } );
 
-test( 'prototype.getParent', 1, function() {
-	var node = new ve.dm.NodeStub();
-	strictEqual( node.getParent(), null );
-} );
-
-test( 'prototype.getRoot', 1, function() {
-	var node = new ve.dm.NodeStub();
-	strictEqual( node.getRoot(), node );
-} );
-
 test( 'prototype.setRoot', 1, function() {
 	var node1 = new ve.dm.NodeStub(),
 		node2 = new ve.dm.NodeStub();

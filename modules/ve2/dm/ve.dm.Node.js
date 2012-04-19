@@ -106,26 +106,6 @@ ve.dm.Node.prototype.getAttribute = function( key ) {
 };
 
 /**
- * Gets a reference to this node's parent.
- * 
- * @method
- * @returns {ve.Node} Reference to this node's parent
- */
-ve.Node.prototype.getParent = function() {
-	return this.parent;
-};
-
-/**
- * Gets the root node in the tree this node is currently attached to.
- * 
- * @method
- * @returns {ve.Node} Root node
- */
-ve.Node.prototype.getRoot = function() {
-	return this.root;
-};
-
-/**
  * Sets the root node to this and all of its children.
  * 
  * This method is overridden by nodes with children.
@@ -133,7 +113,7 @@ ve.Node.prototype.getRoot = function() {
  * @method
  * @param {ve.Node} root Node to use as root
  */
-ve.Node.prototype.setRoot = function( root ) {
+ve.dm.Node.prototype.setRoot = function( root ) {
 	// TODO events?
 	this.root = root;
 };
@@ -145,7 +125,7 @@ ve.Node.prototype.setRoot = function( root ) {
  * @param {ve.Node} parent Node to attach to
  * @emits attach (parent)
  */
-ve.Node.prototype.attach = function( parent ) {
+ve.dm.Node.prototype.attach = function( parent ) {
 	this.emit( 'beforeAttach', parent );
 	this.parent = parent;
 	this.setRoot( parent.getRoot() );
@@ -158,7 +138,7 @@ ve.Node.prototype.attach = function( parent ) {
  * @method
  * @emits detach
  */
-ve.Node.prototype.detach = function() {
+ve.dm.Node.prototype.detach = function() {
 	this.emit( 'beforeDetach' );
 	this.parent = null;
 	this.setRoot( this );

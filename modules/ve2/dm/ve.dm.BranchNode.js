@@ -131,14 +131,14 @@ ve.dm.BranchNode.prototype.splice = function( index, howmany ) {
 			}
 			args[i].attach( this );
 			args[i].on( 'update', this.emitUpdate );
-			diff += args[i].getLength();
+			diff += args[i].getOuterLength();
 		}
 	}
 	var removals = this.children.splice.apply( this.children, args );
 	for ( i = 0, length = removals.length; i < length; i++ ) {
 		removals[i].detach();
 		removals[i].removeListener( 'update', this.emitUpdate );
-		diff -= removals[i].getLength();
+		diff -= removals[i].getOuterLength();
 	}
 	this.adjustLength( diff, true );
 	this.emit.apply( this, ['afterSplice'].concat( args ) );

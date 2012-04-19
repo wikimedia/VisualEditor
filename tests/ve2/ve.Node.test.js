@@ -31,3 +31,13 @@ test( 'prototype.getType', 1, function() {
 	var node = new ve.NodeStub();
 	strictEqual( node.getType(), 'stub' );
 } );
+
+test( 'prototype.getParent', 1, function() {
+	var node = new ve.dm.NodeStub();
+	strictEqual( node.getParent(), null );
+} );
+
+test( 'prototype.getRoot', 1, function() {
+	var node = new ve.dm.NodeStub();
+	strictEqual( node.getRoot(), node );
+} );
