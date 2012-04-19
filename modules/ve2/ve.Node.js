@@ -27,16 +27,6 @@ ve.Node = function( type ) {
 /* Methods */
 
 /**
- * Gets the symbolic node type name.
- * 
- * @method
- * @returns {String} Symbolic name of element type
- */
-ve.Node.prototype.getType = function() {
-	return this.type;
-};
-
-/**
  * Checks if this node can have child nodes.
  * 
  * @method
@@ -59,6 +49,16 @@ ve.Node.prototype.canHaveChildren = function() {
  */
 ve.Node.prototype.canHaveGrandchildren = function() {
 	throw 've.Node.canHaveGrandchildren not implemented in this subclass:' + this.constructor;
+};
+
+/**
+ * Gets the symbolic node type name.
+ * 
+ * @method
+ * @returns {String} Symbolic name of element type
+ */
+ve.Node.prototype.getType = function() {
+	return this.type;
 };
 
 /**
