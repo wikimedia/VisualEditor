@@ -100,6 +100,7 @@ ve.dm.Transaction.prototype.pushReplace = function( remove, replacement ) {
 		'remove': remove,
 		'replacement': replacement
 	} );
+	this.lengthDifference += replacement.length - remove.length;
 };
 
 /**
