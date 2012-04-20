@@ -27,31 +27,6 @@ ve.Node = function( type ) {
 /* Methods */
 
 /**
- * Checks if this node can have child nodes.
- * 
- * @method
- * @abstract
- * @returns {Boolean} Whether this node can have children
- */
-ve.Node.prototype.canHaveChildren = function() {
-	throw 've.Node.canHaveChildren not implemented in this subclass: ' + this.constructor;
-};
-
-/**
- * Checks if this node can have child nodes that can have child nodes.
- * 
- * If this function returns false, only nodes that can't have children can be attached to this node.
- * If canHaveChildren() returns false, this method must also return false.
- *
- * @method
- * @abstract
- * @returns {Boolean} Whether this node can have grandchildren
- */
-ve.Node.prototype.canHaveGrandchildren = function() {
-	throw 've.Node.canHaveGrandchildren not implemented in this subclass: ' + this.constructor;
-};
-
-/**
  * Gets the symbolic node type name.
  * 
  * @method

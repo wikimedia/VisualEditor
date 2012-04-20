@@ -126,13 +126,6 @@ ve.dm.BranchNode.prototype.splice = function( index, howmany ) {
 	this.emit.apply( this, ['beforeSplice'].concat( args ) );
 	if ( args.length >= 3 ) {
 		length = args.length;
-		// Check all children are valid before inserting any so we don't end up in an insane state
-		for ( i = 2; i < length; i++ ) {
-			if ( !this.canHaveGrandchildren() && args[i].canHaveChildren() ) {
-				throw 'Node that can have children can not be inserted into ' +
-					'node that can\'t have grandchildren';
-			}
-		}
 		for ( i = 2; i < length; i++ ) {
 			args[i].attach( this );
 			args[i].on( 'update', this.emitUpdate );

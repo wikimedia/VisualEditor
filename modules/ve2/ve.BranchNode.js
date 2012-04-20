@@ -15,20 +15,6 @@ ve.BranchNode = function( children ) {
 };
 
 /**
- * @see {ve.Node.prototype.canHaveChildren}
- */
-ve.BranchNode.prototype.canHaveChildren = function() {
-	return true;
-};
-
-/**
- * @see {ve.Node.prototype.canHaveGrandchildren}
- */
-ve.BranchNode.prototype.canHaveGrandchildren = function () {
-	return true;
-};
-
-/**
  * Gets a list of child nodes.
  * 
  * @method

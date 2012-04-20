@@ -11,16 +11,6 @@ ve.extendClass( ve.dm.BranchNodeStub, ve.dm.BranchNode );
 
 /* Tests */
 
-test( 'prototype.canHaveChildren', 1, function() {
-	var node = new ve.dm.BranchNodeStub();
-	strictEqual( node.canHaveChildren(), true );
-} );
-
-test( 'prototype.canHaveGrandchildren', 1, function() {
-	var node = new ve.dm.BranchNodeStub();
-	strictEqual( node.canHaveGrandchildren(), true );
-} );
-
 test( 'prototype.setRoot', 3, function() {
 	var node1 = new ve.dm.BranchNodeStub(),
 		node2 = new ve.dm.BranchNodeStub( [node1] ),
