@@ -18,6 +18,7 @@ ve.ce.Surface = function( $container, model ) {
 	// Properties
 	this.model = model;
 	this.currentSelection = new ve.Range();
+	this.selectionDirection = null;
 	this.documentView = new ve.ce.DocumentNode( this.model.getDocument(), this );
 	this.contextView = null;
 	this.$ = $container
@@ -96,9 +97,23 @@ ve.ce.Surface = function( $container, model ) {
 	} );
 
 	this.on( 'rangeChange', function( e ) {
+
+		/*	Save selection direction only
+			if selection start and end have changed */
+		if( e.new && e.old ) {
+			if( e.new.start !== e.old.start || e.new.end !== e.old.end ) {
+				this.selectionDirection = ( e.new.to < e.new.from ) ? -1 : 1;	
+			}
+		}
+
 		if ( e.new !== null ) {
+			/* Set selection in the model */
 			_this.model.setSelection( e.new );
-			_this.Selection();
+
+			/* Hide or show context view icon */
+			_this.toggleContextView();
+
+			/* Load or clear annotations */
 			if ( e.new.getLength() === 0 ) {
 				_this.loadInsertionAnnotations();
 			} else {
@@ -453,8 +468,7 @@ ve.ce.Surface.prototype.getModel = function() {
 	return this.model;
 };
 
-ve.ce.Surface.prototype.
-Selection = function( delay ) {
+ve.ce.Surface.prototype.toggleContextView = function( delay ) {
 	var _this = this,
 		selection = this.model.getSelection();
 	
@@ -710,6 +724,7 @@ ve.ce.Surface.prototype.showSelection = function( range ) {
 	var	start = this.getDOMNodeAndOffset( range.start ),
 		stop = this.getDOMNodeAndOffset( range.end ),
 		sel = rangy.getSelection();
+
 	// FIXME: Shadowing range, really?
 	range = rangy.createRange();
 	range.setStart( start.node, start.offset );
