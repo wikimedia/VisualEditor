@@ -37,7 +37,7 @@ window.ve = {
  * @param {Function} src Base class to use methods from
  */
 ve.extendClass = function( dst, src ) {
-	var base = new src();
+	var base = src.prototype;
 	for ( var method in base ) {
 		if ( typeof base[method] === 'function' && !( method in dst.prototype ) ) {
 			dst.prototype[method] = base[method];
