@@ -106,7 +106,6 @@ ve.dm.Transaction.prototype.pushReplace = function( remove, replacement ) {
  * Adds an element attribute change operation.
  * 
  * @method
- * @param {String} method Method to use, either "set" or "clear"
  * @param {String} key Name of attribute to change
  * @param {Mixed} from Value change attribute from
  * @param {Mixed} to Value to change attribute to
