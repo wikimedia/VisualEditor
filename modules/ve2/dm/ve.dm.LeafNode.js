@@ -12,8 +12,8 @@
  */
 ve.dm.LeafNode = function( type, length, attributes ) {
 	// Inheritance
-	ve.LeafNode.call( this );
 	ve.dm.Node.call( this, type, length, attributes );
+	ve.LeafNode.call( this );
 };
 
 /* Methods */

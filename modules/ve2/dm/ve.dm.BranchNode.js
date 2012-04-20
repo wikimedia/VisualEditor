@@ -125,10 +125,15 @@ ve.dm.BranchNode.prototype.splice = function( index, howmany ) {
 		diff = 0;
 	this.emit.apply( this, ['beforeSplice'].concat( args ) );
 	if ( args.length >= 3 ) {
-		for ( i = 2, length = args.length; i < length; i++ ) {
+		length = args.length;
+		// Check all children are valid before inserting any so we don't end up in an insane state
+		for ( i = 2; i < length; i++ ) {
 			if ( !this.canHaveGrandchildren() && args[i].canHaveChildren() ) {
-				throw 'Trying to attach a non-leaf node to a twig node';
+				throw 'Node that can have children can not be inserted into' +
+					'node that can not have grandchildren';
 			}
+		}
+		for ( i = 2; i < length; i++ ) {
 			args[i].attach( this );
 			args[i].on( 'update', this.emitUpdate );
 			diff += args[i].getOuterLength();

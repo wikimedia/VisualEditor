@@ -11,6 +11,22 @@ ve.extendClass( ve.dm.NodeStub, ve.dm.Node );
 
 /* Tests */
 
+test( 'prototype.canHaveChildren', 1, function() {
+	raises( function() {
+		var node = new ve.dm.NodeStub();
+		// Abstract method, must be overridden, throws exception when called
+		node.canHaveChildren();
+	}, 'throws exception when called' );
+} );
+
+test( 'prototype.canHaveGrandchildren', 1, function() {
+	raises( function() {
+		var node = new ve.dm.NodeStub();
+		// Abstract method, must be overridden, throws exception when called
+		node.canHaveGrandchildren();
+	}, 'throws exception when called' );
+} );
+
 test( 'prototype.createView', 1, function() {
 	raises( function() {
 		var node = new ve.dm.NodeStub();

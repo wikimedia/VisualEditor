@@ -12,13 +12,13 @@
  */
 ve.dm.TwigNode = function( type, children, attributes ) {
 	// Inheritance
-	ve.TwigNode.call( this );
 	ve.dm.BranchNode.call( this, type, children, attributes );
+	ve.TwigNode.call( this );
 };
 
 /* Methods */
 
 /* Inheritance */
 
-ve.extendClass( ve.dm.TwigNode, ve.dm.BranchNode );
 ve.extendClass( ve.dm.TwigNode, ve.TwigNode );
+ve.extendClass( ve.dm.TwigNode, ve.dm.BranchNode );
