@@ -28,7 +28,7 @@ ve.dm.Node = function( type, length, attributes ) {
  * @returns {ve.ce.Node} New item view associated with this model
  */
 ve.dm.Node.prototype.createView = function() {
-	throw 'DocumentModelNode.createView not implemented in this subclass:' + this.constructor;
+	throw 've.dm.Node.createView not implemented in this subclass: ' + this.constructor;
 };
 
 /* Methods */

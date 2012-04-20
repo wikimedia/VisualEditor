@@ -34,7 +34,7 @@ ve.Node = function( type ) {
  * @returns {Boolean} Whether this node can have children
  */
 ve.Node.prototype.canHaveChildren = function() {
-	throw 've.Node.canHaveChildren not implemented in this subclass:' + this.constructor;
+	throw 've.Node.canHaveChildren not implemented in this subclass: ' + this.constructor;
 };
 
 /**
@@ -48,7 +48,7 @@ ve.Node.prototype.canHaveChildren = function() {
  * @returns {Boolean} Whether this node can have grandchildren
  */
 ve.Node.prototype.canHaveGrandchildren = function() {
-	throw 've.Node.canHaveGrandchildren not implemented in this subclass:' + this.constructor;
+	throw 've.Node.canHaveGrandchildren not implemented in this subclass: ' + this.constructor;
 };
 
 /**

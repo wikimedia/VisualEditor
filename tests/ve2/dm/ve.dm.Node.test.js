@@ -12,27 +12,39 @@ ve.extendClass( ve.dm.NodeStub, ve.dm.Node );
 /* Tests */
 
 test( 'prototype.canHaveChildren', 1, function() {
-	raises( function() {
-		var node = new ve.dm.NodeStub();
-		// Abstract method, must be overridden, throws exception when called
-		node.canHaveChildren();
-	}, 'throws exception when called' );
+	raises(
+		function() {
+			var node = new ve.dm.NodeStub();
+			// Abstract method, must be overridden, throws exception when called
+			node.canHaveChildren();
+		},
+		/^ve.Node.canHaveChildren not implemented in this subclass: /,
+		'throws exception when called'
+	);
 } );
 
 test( 'prototype.canHaveGrandchildren', 1, function() {
-	raises( function() {
-		var node = new ve.dm.NodeStub();
-		// Abstract method, must be overridden, throws exception when called
-		node.canHaveGrandchildren();
-	}, 'throws exception when called' );
+	raises(
+		function() {
+			var node = new ve.dm.NodeStub();
+			// Abstract method, must be overridden, throws exception when called
+			node.canHaveGrandchildren();
+		},
+		/^ve.Node.canHaveGrandchildren not implemented in this subclass: /,
+		'throws exception when called'
+	);
 } );
 
 test( 'prototype.createView', 1, function() {
-	raises( function() {
-		var node = new ve.dm.NodeStub();
-		// Abstract method, must be overridden, throws exception when called
-		node.createView();
-	}, 'throws exception when called' );
+	raises(
+		function() {
+			var node = new ve.dm.NodeStub();
+			// Abstract method, must be overridden, throws exception when called
+			node.createView();
+		},
+		/^ve.dm.Node.createView not implemented in this subclass: /,
+		'throws exception when called'
+	);
 } );
 
 test( 'prototype.getLength', 2, function() {
@@ -49,10 +61,18 @@ test( 'prototype.getOuterLength', 2, function() {
 	strictEqual( node2.getOuterLength(), 1234 );
 } );
 
-test( 'prototype.setLength', 1, function() {
+test( 'prototype.setLength', 2, function() {
 	var node = new ve.dm.NodeStub();
 	node.setLength( 1234 );
 	strictEqual( node.getLength(), 1234 );
+	raises(
+		function() {
+			// Length can not be negative
+			node.setLength( -1 );
+		},
+		/^Length cannot be negative$/,
+		'throws exception if length is negative'
+	);
 } );
 
 test( 'prototype.adjustLength', 1, function() {

@@ -12,19 +12,27 @@ ve.extendClass( ve.NodeStub, ve.Node );
 /* Tests */
 
 test( 'prototype.canHaveChildren', 1, function() {
-	raises( function() {
-		var node = new ve.NodeStub();
-		// Abstract method, must be overridden, throws exception when called
-		node.canHaveChildren();
-	}, 'throws exception when called' );
+	raises(
+		function() {
+			var node = new ve.NodeStub();
+			// Abstract method, must be overridden, throws exception when called
+			node.canHaveChildren();
+		},
+		/^ve.Node.canHaveChildren not implemented in this subclass: /,
+		'throws exception when called'
+	);
 } );
 
 test( 'prototype.canHaveGrandchildren', 1, function() {
-	raises( function() {
-		var node = new ve.NodeStub();
-		// Abstract method, must be overridden, throws exception when called
-		node.canHaveGrandchildren();
-	}, 'throws exception when called' );
+	raises(
+		function() {
+			var node = new ve.NodeStub();
+			// Abstract method, must be overridden, throws exception when called
+			node.canHaveGrandchildren();
+		},
+		/^ve.Node.canHaveGrandchildren not implemented in this subclass: /,
+		'throws exception when called'
+	);
 } );
 
 test( 'prototype.getType', 1, function() {

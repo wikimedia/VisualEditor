@@ -34,12 +34,20 @@ test( 'prototype.splice', 8, function() {
 		// Will be called 1 time
 		ok( true, 'afterSplice was emitted' );
 	} );
-	raises( function() {
-		node4.splice( 0, 0, node1 );
-	}, 'inserting a branch into twig throws an exception' );
-	raises( function() {
-		node4.splice( 0, 0, node2 );
-	}, 'inserting a twig into another twig throws an exception' );
+	raises(
+		function() {
+			node4.splice( 0, 0, node1 );
+		},
+		/^Node that can have children can not be inserted into node that can't have grandchildren$/,
+		'inserting a branch into twig throws an exception'
+	);
+	raises(
+		function() {
+			node4.splice( 0, 0, node2 );
+		},
+		/^Node that can have children can not be inserted into node that can't have grandchildren$/,
+		'inserting a twig into another twig throws an exception'
+	);
 	// Insert leaf
 	deepEqual( node4.splice( 0, 0, node3 ), [] );
 	deepEqual( node4.getChildren(), [node3] );
