@@ -30,7 +30,7 @@ FauxHTML5.TreeBuilder.prototype.constructor = FauxHTML5.TreeBuilder;
  * Register for (token) 'chunk' and 'end' events from a token emitter,
  * normally the TokenTransformDispatcher.
  */
-FauxHTML5.TreeBuilder.prototype.listenForTokensFrom = function ( emitter ) {
+FauxHTML5.TreeBuilder.prototype.addListenersOn = function ( emitter ) {
 	emitter.addListener('chunk', this.onChunk.bind( this ) );
 	emitter.addListener('end', this.onEnd.bind( this ) );
 };

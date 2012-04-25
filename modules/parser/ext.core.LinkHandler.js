@@ -23,7 +23,7 @@ function WikiLinkHandler( manager, isInclude ) {
 
 WikiLinkHandler.prototype.rank = 1.15; // after AttributeExpander
 
-WikiLinkHandler.prototype.onWikiLink = function ( token, manager, cb ) {
+WikiLinkHandler.prototype.onWikiLink = function ( token, frame, cb ) {
 	var env = this.manager.env,
 		href = token.attribs[0].v,
 		tail = env.lookupKV( token.attribs, 'tail' ).v;
@@ -32,10 +32,10 @@ WikiLinkHandler.prototype.onWikiLink = function ( token, manager, cb ) {
 				);
 
 	if ( title.ns.isFile() ) {
-		return this.renderFile( token, manager, cb, title );
+		cb( this.renderFile( token, frame, cb, title ) );
 	} else if ( title.ns.isCategory() ) {
 		// TODO: implement
-		return [];
+		cb( { } );
 	} else {
 		// Check if page exists
 		// 
@@ -63,9 +63,9 @@ WikiLinkHandler.prototype.onWikiLink = function ( token, manager, cb ) {
 		//obj.attribs.push( new KV('data-mw-type', 'internal') );
 		obj.dataAttribs = token.dataAttribs;
 		obj.dataAttribs.linkType = 'internal';
-		return { 
+		cb ( { 
 			tokens: [obj].concat( content, new EndTagTk( 'a' ) )
-		};
+		} );
 	}
 };
 
@@ -101,8 +101,8 @@ WikiLinkHandler.prototype._prefixImageOptions = {
 	'thumb': 'thumb'
 };
 
-WikiLinkHandler.prototype.renderFile = function ( token, manager, cb, title ) {
-	var env = manager.env;
+WikiLinkHandler.prototype.renderFile = function ( token, frame, cb, title ) {
+	var env = this.manager.env;
 	// distinguish media types
 	// if image: parse options
 	
@@ -124,7 +124,7 @@ WikiLinkHandler.prototype.renderFile = function ( token, manager, cb, title ) {
 		caption = [];
 	for( var i = 0, l = content.length; i<l; i++ ) {
 		var oContent = content[i],
-			oText = manager.env.tokensToString( oContent.v, true );
+			oText = this.manager.env.tokensToString( oContent.v, true );
 		//console.log( JSON.stringify( oText, null, 2 ) );
 		if ( oText.constructor === String ) {
 			oText = oText.trim();
@@ -177,7 +177,7 @@ WikiLinkHandler.prototype.renderFile = function ( token, manager, cb, title ) {
 	// XXX: render according to mode (inline, thumb, framed etc)
 	
 	if ( oHash.format && ( oHash.format === 'thumb' || oHash.format === 'thumbnail') ) {
-		return this.renderThumb( token, manager, cb, title, path, caption, oHash, options );
+		return this.renderThumb( token, this.manager, cb, title, path, caption, oHash, options );
 	} else {
 		// TODO: get /wiki from config!
 		var a = new TagTk( 'a', [ new KV( 'href', title.makeLink() ) ] );
@@ -338,27 +338,27 @@ ExternalLinkHandler.prototype._isImageLink = function ( href ) {
 		href.match( /^https?:\/\// );
 };
 
-ExternalLinkHandler.prototype.onUrlLink = function ( token, manager, cb ) {
+ExternalLinkHandler.prototype.onUrlLink = function ( token, frame, cb ) {
 	var env = this.manager.env,
 		href = env.sanitizeURI( 
 				env.tokensToString( env.lookupKV( token.attribs, 'href' ).v )
 			);
 	if ( this._isImageLink( href ) ) {
-		return { token: new SelfclosingTagTk( 'img', 
+		cb( { token: new SelfclosingTagTk( 'img', 
 				[ 
 					new KV( 'src', href ),
 					new KV( 'alt', href.split('/').last() )
 				] 
 			) 
-		};
+		} );
 	} else {
-		return { 
+		cb( { 
 			tokens: [
 				new TagTk( 'a', [ new KV( 'href', href ) ] ),
 				href,
 				new EndTagTk( 'a' )
 			] 
-		};
+		} );
 	}
 };
 
@@ -387,7 +387,7 @@ ExternalLinkHandler.prototype.onExtLink = function ( token, manager, cb ) {
 				];
 		}
 
-		return { 
+		cb( { 
 			tokens:
 				[
 					
@@ -396,11 +396,11 @@ ExternalLinkHandler.prototype.onExtLink = function ( token, manager, cb ) {
 							token.dataAttribs
 					)
 				].concat( content, [ new EndTagTk( 'a' )])
-		};
+		} );
 	} else {
-		return {
+		cb( {
 			tokens: ['[', href, ' ' ].concat( content, [']'] )
-		};
+		} );
 	}
 };
 

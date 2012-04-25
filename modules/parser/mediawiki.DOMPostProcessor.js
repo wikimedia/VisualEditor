@@ -73,7 +73,7 @@ DOMPostProcessor.prototype.doPostProcess = function ( document ) {
  * Register for the 'document' event, normally emitted form the HTML5 tree
  * builder.
  */
-DOMPostProcessor.prototype.listenForDocumentFrom = function ( emitter ) {
+DOMPostProcessor.prototype.addListenersOn = function ( emitter ) {
 	emitter.addListener( 'document', this.doPostProcess.bind( this ) );
 }
 

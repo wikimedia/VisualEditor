@@ -60,7 +60,7 @@ var pj = path.join;
 var testWhiteList = require(__dirname + '/parserTests-whitelist.js').testWhiteList;
 
 _import(pj('parser', 'mediawiki.parser.environment.js'), ['MWParserEnvironment']);
-_import(pj('parser', 'mediawiki.parser.js'), ['ParserPipeline']);
+_import(pj('parser', 'mediawiki.parser.js'), ['ParserPipelineFactory']);
 
 // WikiDom and serializers
 //_require(pj('es', 'es.js'));
@@ -326,7 +326,8 @@ ParserTests.prototype.normalizeOut = function ( out ) {
 	// TODO: Do not strip newlines in pre and nowiki blocks!
 	return out.replace(/[\r\n]| data-mw="[^">]*"/g, '')
 				.replace(/<!--.*?-->\n?/gm, '')
-				.replace(/<\/?meta[^>]*>/g, '');
+				.replace(/<\/?meta[^>]*>/g, '')
+				.replace(/ \/>/g, '>');
 };
 
 ParserTests.prototype.formatHTML = function ( source ) {
@@ -376,7 +377,7 @@ ParserTests.prototype.processTest = function ( index, item ) {
 			);
 
 	// Start the pipeline by feeding it the input
-	this.parserPipeline.parse( item.input );
+	this.parserPipeline.process( item.input );
 
 };
 
@@ -551,7 +552,8 @@ ParserTests.prototype.main = function () {
 	//});
 
 	this.env.pageCache = this.articles;
-	this.parserPipeline = new ParserPipeline( this.env );
+	var parserPipelineFactory = new ParserPipelineFactory( this.env );
+	this.parserPipeline = parserPipelineFactory.makePipeline( 'text/wiki/full' );
 
 	this.comments = [];
 
