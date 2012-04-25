@@ -8,10 +8,9 @@
 
 var ParserPipeline = require('./mediawiki.parser.js').ParserPipeline,
 	ParserEnv = require('./mediawiki.parser.environment.js').MWParserEnvironment,
-	DOMConverter = require('./mediawiki.DOMConverter.js').DOMConverter,
 	optimist = require('optimist');
 
-( function() { 
+( function() {
 	var opts = optimist.usage( 'Usage: echo wikitext | $0', {
 		'help': {
 			description: 'Show this message',
@@ -20,6 +19,11 @@ var ParserPipeline = require('./mediawiki.parser.js').ParserPipeline,
 		},
 		'linearmodel': {
 			description: 'Output linear model data instead of HTML',
+			'boolean': true,
+			'default': false
+		},
+		'wikidom': {
+			description: 'Output WikiDOM instead of HTML',
 			'boolean': true,
 			'default': false
 		},
@@ -103,6 +107,8 @@ var ParserPipeline = require('./mediawiki.parser.js').ParserPipeline,
 			// Print out the html
 			if ( argv.linearmodel ) {
 				process.stdout.write( parser.getLinearModel( document ) );
+			} else if ( argv.wikidom ) {
+				process.stdout.write( parser.getWikiDom( document ) );
 			} else {
 				process.stdout.write( document.body.innerHTML );
 			}
