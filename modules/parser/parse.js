@@ -6,7 +6,7 @@
  * @author Gabriel Wicke <gwicke@wikimedia.org>
  */
 
-var ParserPipeline = require('./mediawiki.parser.js').ParserPipeline,
+var ParserPipelineFactory = require('./mediawiki.parser.js').ParserPipelineFactory,
 	ParserEnv = require('./mediawiki.parser.environment.js').MWParserEnvironment,
 	optimist = require('optimist');
 
@@ -88,8 +88,9 @@ var ParserPipeline = require('./mediawiki.parser.js').ParserPipeline,
 						trace: argv.trace,
 						maxDepth: argv.maxdepth,
 						pageName: argv.pagename
-					} ),
-		parser = new ParserPipeline( env );
+					} );
+	var parserPipelineFactory = new ParserPipelineFactory( env );
+	parser = parserPipelineFactory.makePipeline( 'text/wiki/full' );
 
 	process.stdin.resume();
 	process.stdin.setEncoding('utf8');
@@ -117,7 +118,7 @@ var ParserPipeline = require('./mediawiki.parser.js').ParserPipeline,
 			process.exit(0);
 		});
 		// Kick off the pipeline by feeding the input into the parser pipeline
-		parser.parse( input );
+		parser.process( input );
 	} );
 
 } )();

@@ -858,7 +858,7 @@ template
       // Insert target as first positional attribute, so that it can be
       // generically expanded. The TemplateHandler then needs to shift it out
       // again.
-      params.unshift( { k: '', v: flatten( target ) } );
+      params.unshift( { k: flatten( target ), v: [] } );
       var obj = new SelfclosingTagTk( 'template', params );
       //console.warn( 'tokenizer template ' + JSON.stringify( target ));
       return obj;
@@ -969,6 +969,9 @@ template_param_text
         {
             r.shift();
             firstToken = r[0];
+        }
+        if ( r.length === 1 && r[0].constructor === String ) {
+            r = r[0];
         }
 
         return r;

@@ -54,46 +54,18 @@ TemplateHandler.prototype.onTemplate = function ( token, frame, cb ) {
 
 
 	// create a new temporary frame for argument and title expansions
-	var tplExpandData = {
-			args: {},
-			manager: this.manager,
-			cb: cb,
-			origToken: token,
-			resultTokens: [],
-			attribsAsync: true,
-			overallAsync: false,
-			expandDone: false
-		},
-		transformCB,
-		i = 0,
-		res;
+	// XXX: only expand keys, and leave value expansion to template parameter
+	// replacement or parser functions as needed!
 
-	var attributes = [token.attribs[0]];
-	if( token.attribs.length > 1) {
-		attributes = attributes.concat( this._nameArgs( token.attribs.slice(1) ) );
-	}
-
-	this.manager.env.dp( 'before AttributeTransformManager: ', 
-						attributes );
-	new AttributeTransformManager( 
+	
+	// expand argument keys, with callback set to next processing step
+	// XXX: would likely be faster to do this in a tight loop here
+	var atm = new AttributeTransformManager( 
 				this.manager, 
-				this._returnAttributes.bind( this, tplExpandData )
-			).process( attributes );
-
-	// Unblock finish
-	if ( ! tplExpandData.attribsAsync ) {
-		// Attributes were transformed synchronously
-		this.manager.env.dp ( 'sync attribs for ', tplExpandData.target,
-				tplExpandData.expandedArgs
-		);
-		// All attributes are fully expanded synchronously (no IO was needed)
-		return this._expandTemplate ( tplExpandData );
-	} else {
-		// Async attribute expansion is going on
-		this.manager.env.dp( 'async return for ', token );
-		tplExpandData.overallAsync = true;
-		return { async: true };
-	}
+				this._expandTemplate.bind( this, token, frame, cb )
+			);
+	cb( { async: true } );
+	atm.processKeys( token.attribs );
 };
 
 /**
@@ -116,33 +88,17 @@ TemplateHandler.prototype._nameArgs = function ( attribs ) {
 };
 
 /**
- * Callback for argument (including target) expansion in AttributeTransformManager
- */
-TemplateHandler.prototype._returnAttributes = function ( tplExpandData, 
-															attributes ) 
-{
-	this.manager.env.dp( 'TemplateHandler._returnAttributes: ', attributes );
-	// Remove the target from the attributes
-	tplExpandData.attribsAsync = false;
-	tplExpandData.target = attributes[0].v;
-	tplExpandData.expandedArgs = attributes.slice(1);
-	if ( tplExpandData.overallAsync ) {
-		this._expandTemplate ( tplExpandData );
-	}
-};
-
-/**
  * Fetch, tokenize and token-transform a template after all arguments and the
  * target were expanded.
  */
-TemplateHandler.prototype._expandTemplate = function ( tplExpandData ) {
+TemplateHandler.prototype._expandTemplate = function ( token, frame, cb, attribs ) {
 	//console.warn('TemplateHandler.expandTemplate: ' +
 	//		JSON.stringify( tplExpandData, null, 2 ) );
-	var res;
+	var target = attribs[0].k;
 
 	
-	if ( ! tplExpandData.target ) {
-		this.manager.env.dp( 'No target! ', tplExpandData );
+	if ( ! target ) {
+		this.manager.env.ap( 'No target! ', attribs );
 		console.trace();
 	}
 
@@ -153,73 +109,36 @@ TemplateHandler.prototype._expandTemplate = function ( tplExpandData ) {
 	// check for parser functions
 
 	// First, check the target for loops
-	var target = this.manager.env.tokensToString( tplExpandData.target ).trim();
+	target = this.manager.env.tokensToString( target ).trim();
 
-	var args = this.manager.env.KVtoHash( tplExpandData.expandedArgs );
+	//var args = this.manager.env.KVtoHash( tplExpandData.expandedArgs );
 
-	this.manager.env.dp( 'argHash: ', args );
-
-
-	// XXX: strip subst for now..
+	// strip subst for now.
 	target = target.replace( /^(safe)?subst:/, '' );
+
+	// XXX: wrap attribs in object with .dict() and .named() methods,
+	// and each member (key/value) into object with .tokens(), .dom() and
+	// .wikitext() methods (subclass of Array)
 
 	var prefix = target.split(':', 1)[0].toLowerCase().trim();
 	if ( prefix && 'pf_' + prefix in this.parserFunctions ) {
-		var funcArg = target.substr( prefix.length + 1 );
-		this.manager.env.dp( 'func prefix/args: ', prefix,
-				tplExpandData.expandedArgs,
-				'unnamedArgs', tplExpandData.origToken.attribs,
-				'funcArg:', funcArg
-				);
+		var pfAttribs = new Params( this.manager.env, attribs );
+		pfAttribs[0] = new KV( target.substr( prefix.length + 1 ), [] );
+		//this.manager.env.dp( 'func prefix/args: ', prefix,
+		//		tplExpandData.expandedArgs,
+		//		'unnamedArgs', tplExpandData.origToken.attribs,
+		//		'funcArg:', funcArg
+		//		);
 		//this.manager.env.dp( 'entering prefix', funcArg,  tplExpandData.expandedArgs  );
-		res = this.parserFunctions[ 'pf_' + prefix ]( funcArg, 
-				tplExpandData.expandedArgs, args, tplExpandData.origToken.attribs.slice(1) );
-
-		// XXX: support async parser functions!
-		if ( tplExpandData.overallAsync ) {
-			this.manager.env.dp( 'TemplateHandler._expandTemplate: calling back ',
-					'after parser func ', prefix, ' with res:', res );
-			return tplExpandData.cb( res, false, true );
-		} else {
-			this.manager.env.dp( 'TemplateHandler._expandTemplate: sync return ',
-					'after parser func ', prefix, ' with res:', res );
-			return { tokens: res };
-			//data.reset();
-		}
+		this.parserFunctions[ 'pf_' + prefix ]
+			( token, this.manager.frame, cb, pfAttribs );
+		return;
 	}
 	this.manager.env.tp( 'template target: ' + target );
 
 	// now normalize the target before template processing
 	target = this.manager.env.normalizeTitle( target );
 
-	var checkRes = this.manager.loopAndDepthCheck.check( target, this.manager.env.maxDepth );
-	if( checkRes ) {
-		// Loop detected or depth limit exceeded, abort!
-		res = [
-				checkRes,
-				new TagTk( 'a', [{k: 'href', v: target}] ),
-				target,
-				new EndTagTk( 'a' )
-			];
-		if ( tplExpandData.overallAsync ) {
-			return tplExpandData.cb( res, false, true );
-		} else {
-			return { tokens: res };
-		}
-	}
-
-	// Get a nested transformation pipeline for the input type. The input
-	// pipeline includes the tokenizer, synchronous stage-1 transforms for
-	// 'text/wiki' input and asynchronous stage-2 transforms). 
-	var inputPipeline = this.manager.newChildPipeline( 
-				this.manager.inputType || 'text/wiki', 
-				args,
-				tplExpandData.target
-			);
-
-	// Hook up the inputPipeline output events to our handlers
-	inputPipeline.addListener( 'chunk', this._onChunk.bind ( this, tplExpandData ) );
-	inputPipeline.addListener( 'end', this._onEnd.bind ( this, tplExpandData ) );
 	
 
 	// Resolve a possibly relative link
@@ -227,6 +146,19 @@ TemplateHandler.prototype._expandTemplate = function ( tplExpandData ) {
 			target,
 			'Template' 
 		);
+
+	var checkRes = this.manager.frame.loopAndDepthCheck.check( templateName, this.manager.env.maxDepth );
+	if( checkRes ) {
+		// Loop detected or depth limit exceeded, abort!
+		res = [
+				checkRes,
+				new TagTk( 'a', [{k: 'href', v: target}] ),
+				templateName,
+				new EndTagTk( 'a' )
+			];
+		cb( { tokens: res, allTokensProcessed: true } );
+		return;
+	}
 
 	// XXX: notes from brion's mediawiki.parser.environment
 	// resolve template name
@@ -237,111 +169,68 @@ TemplateHandler.prototype._expandTemplate = function ( tplExpandData ) {
 	// processing along.
 	this._fetchTemplateAndTitle( 
 			templateName, 
-			this._processTemplateAndTitle.bind( this, inputPipeline ),
-			tplExpandData
+			cb,
+			this._processTemplateAndTitle.bind( this, token, frame, cb, templateName, attribs )
 		);
-
-	// If nothing was async so far and the template source was retrieved and
-	// fully processed without async requests (using the cache), then
-	// expandDone is set to true in our _onEnd handler.
-	if ( tplExpandData.overallAsync || 
-			! tplExpandData.expandDone ) {
-		tplExpandData.overallAsync = true;
-		this.manager.env.dp( 'Async return from _expandTemplate for ', 
-				tplExpandData.target );
-		return { async: true };
-	} else {
-		this.manager.env.dp( 'Sync return from _expandTemplate for ',
-				tplExpandData.target, ' : ',
-				tplExpandData.result
-				);
-		return tplExpandData.result;
-	}
-};
-
-
-/**
- * Handle chunk emitted from the input pipeline after feeding it a template
- */
-TemplateHandler.prototype._onChunk = function( tplExpandData, chunk ) {
-	// We encapsulate the output by default, so collect tokens here.
-	this.manager.env.dp( 'TemplateHandler._onChunk', chunk );
-	tplExpandData.resultTokens = tplExpandData.resultTokens.concat( chunk );
-};
-
-/**
- * Handle the end event emitted by the parser pipeline after fully processing
- * the template source.
- */
-TemplateHandler.prototype._onEnd = function( tplExpandData, token ) {
-	this.manager.env.dp( 'TemplateHandler._onEnd', tplExpandData.resultTokens );
-	tplExpandData.expandDone = true;
-	var res = this._stripEOFTk( tplExpandData.resultTokens );
-
-	// Could also encapsulate the template tokens here, if that turns out
-	// better for the editor.
-
-	//console.warn( 'TemplateHandler._onEnd: ' + JSON.stringify( res, null, 2 ) );
-
-	if ( tplExpandData.overallAsync ) {
-		this.manager.env.dp( 'TemplateHandler._onEnd: calling back with res:', res );
-		tplExpandData.cb( res, false, true );
-	} else {
-		this.manager.env.dp( 'TemplateHandler._onEnd: synchronous return!' );
-		tplExpandData.result = { tokens: res };
-		//data.reset();
-	}
-};
-
-
-// Strip 'end' tokens and trailing newlines
-TemplateHandler.prototype._stripEOFTk = function ( tokens ) {
-	// Strip 'end' tokens and trailing newlines
-	var l = tokens[tokens.length - 1];
-	while ( tokens.length &&
-			(	l.constructor === EOFTk  || l.constructor === NlTk ) 
-	) 
-	{
-		this.manager.env.dp( 'TemplateHandler, stripping end or whitespace tokens' );
-		tokens.pop();
-		l = tokens[tokens.length - 1];
-	}
-	return tokens;
 };
 
 
 /**
  * Process a fetched template source
  */
-TemplateHandler.prototype._processTemplateAndTitle = function( pipeline, src, title ) {
+TemplateHandler.prototype._processTemplateAndTitle = function( token, frame, cb, name, attribs, src, type ) {
+	// Get a nested transformation pipeline for the input type. The input
+	// pipeline includes the tokenizer, synchronous stage-1 transforms for
+	// 'text/wiki' input and asynchronous stage-2 transforms). 
+	var pipeline = this.manager.pipeFactory.getPipeline( 
+				type || 'text/wiki', true
+			);
+
+	pipeline.setFrame( this.manager.frame, name, attribs );
+
+	// Hook up the inputPipeline output events to our handlers
+	pipeline.addListener( 'chunk', this._onChunk.bind ( this, cb ) );
+	pipeline.addListener( 'end', this._onEnd.bind ( this, cb ) );
 	// Feed the pipeline. XXX: Support different formats.
-	this.manager.env.dp( 'TemplateHandler._processTemplateAndTitle: ', title, src );
-	pipeline.process ( src, title );
+	this.manager.env.dp( 'TemplateHandler._processTemplateAndTitle', name, src, attribs );
+	pipeline.process ( src, name );
 };
 
+/**
+ * Handle chunk emitted from the input pipeline after feeding it a template
+ */
+TemplateHandler.prototype._onChunk = function( cb, chunk ) {
+	// We encapsulate the output by default, so collect tokens here.
+	this.manager.env.stripEOFTkfromTokens( chunk );
+	this.manager.env.dp( 'TemplateHandler._onChunk', chunk );
+	cb( { tokens: chunk, async: true } );
+};
+
+/**
+ * Handle the end event emitted by the parser pipeline after fully processing
+ * the template source.
+ */
+TemplateHandler.prototype._onEnd = function( cb ) {
+	this.manager.env.dp( 'TemplateHandler._onEnd' );
+	cb( { tokens: [] } );
+};
 
 
 /**
  * Fetch a template
  */
-TemplateHandler.prototype._fetchTemplateAndTitle = function ( title, callback, tplExpandData ) {
+TemplateHandler.prototype._fetchTemplateAndTitle = function ( title, parentCB, cb ) {
 	// @fixme normalize name?
 	var self = this;
 	if ( title in this.manager.env.pageCache ) {
-		// Unwind the stack
-		process.nextTick(
-				function () {
-					callback( self.manager.env.pageCache[title], title );
-				} 
-		);
+		// XXX: store type too (and cache tokens/wiki)
+		cb( self.manager.env.pageCache[title] /* , type */ );
 	} else if ( ! this.manager.env.fetchTemplates ) {
-		callback( 'Warning: Page/template fetching disabled, and no cache for ' + 
-				title, title );
+		parentCB(  { tokens: [ 'Warning: Page/template fetching disabled, and no cache for ' + 
+				title ] } );
 	} else {
 		
-		// We are about to start an async request for a template, so mark this
-		// template expansion as such.
-		tplExpandData.overallAsync = true;
+		// We are about to start an async request for a template
 		this.manager.env.dp( 'Note: trying to fetch ', title );
 
 		// Start a new request if none is outstanding
@@ -355,15 +244,13 @@ TemplateHandler.prototype._fetchTemplateAndTitle = function ( title, callback, t
 		if ( false && this.manager.isInclude ) {
 			// prepend request: deal with requests from includes first
 			this.manager.env.requestQueue[title]
-				.listeners( 'src' ).unshift( callback );
+				.listeners( 'src' ).unshift( cb );
 		} else {
 			// append request, process in document order
 			this.manager.env.requestQueue[title]
-				.listeners( 'src' ).push( callback );
+				.listeners( 'src' ).push( cb );
 		}
-
-		//this.manager.env.requestQueue[title].on( 'src', callback );
-
+		parentCB ( { async: true } );
 	}
 };
 
@@ -374,42 +261,32 @@ TemplateHandler.prototype._fetchTemplateAndTitle = function ( title, callback, t
  * Expand template arguments with tokens from the containing frame.
  */
 TemplateHandler.prototype.onTemplateArg = function ( token, frame, cb ) {
-	
-	token.resultTokens = false;
-
-	// XXX: get this from the cache!
 	new AttributeTransformManager ( 
 				this.manager, 
 				this._returnArgAttributes.bind( this, token, cb, frame ) 
 			).process( token.attribs.slice() );
-
-	if ( token.resultTokens !== false ) {
-		// synchronous return
-		//console.warn( 'synchronous attribute expand: ' + JSON.stringify( token.resultTokens ) );
-
-		var res = token.resultTokens;
-		delete token.resultTokens;
-		return { tokens: res };
-	} else {
-		//console.warn( 'asynchronous attribute expand: ' + JSON.stringify( token, null, 2 ) );
-		// asynchronous return
-		token.resultTokens = []
-		return { async: true };
-	}
 };
 
 TemplateHandler.prototype._returnArgAttributes = function ( token, cb, frame, attributes ) {
 	//console.warn( '_returnArgAttributes: ' + JSON.stringify( attributes ));
 	var argName = this.manager.env.tokensToString( attributes[0].v ).trim(),
-		res;
-	if ( argName in this.manager.args ) {
+		res,
+		dict = this.manager.frame.args.named();
+	this.manager.env.dp( 'args', argName, dict );
+	if ( argName in dict ) {
 		// return tokens for argument
 		//console.warn( 'templateArg found: ' + argName + 
 		//		' vs. ' + JSON.stringify( this.manager.args ) ); 
-		res = this.manager.args[argName];
+		res = dict[argName];
+		if ( res.constructor === String ) {
+			cb( { tokens: [res] } );
+		} else {
+			dict[argName].to('tokens/expanded', function(chunk) { cb ( { tokens: chunk } ); });
+		}
+		return;
 	} else {
 		this.manager.env.dp( 'templateArg not found: ', argName,
-				' vs. ' );
+				' vs. ', dict );
 		if ( attributes.length > 1 ) {
 			res = attributes[1].v;
 		} else {
@@ -417,11 +294,7 @@ TemplateHandler.prototype._returnArgAttributes = function ( token, cb, frame, at
 			res = [ '{{{' + argName + '}}}' ];
 		}
 	}
-	if ( token.resultTokens !== false ) {
-		cb( res );
-	} else {
-		token.resultTokens =  res;
-	}
+	cb( { tokens: res } );
 };
 
 
@@ -429,7 +302,7 @@ TemplateHandler.prototype._returnArgAttributes = function ( token, cb, frame, at
 
 function TemplateRequest ( manager, title ) {
 	// Increase the number of maximum listeners a bit..
-	this.setMaxListeners( 100000 );
+	this.setMaxListeners( 50000 );
 	var self = this,
 		url = manager.env.wgScript + '/api' + 
 		manager.env.wgScriptExtension +
@@ -499,7 +372,8 @@ function TemplateRequest ( manager, title ) {
 				var maxIters = Math.min(1, listeners.length);
 				for ( var it = 0; it < maxIters; it++ ) {
 					var nextListener = listeners.shift();
-					nextListener( src, title );
+					// We only retrieve text/wiki source currently.
+					nextListener( src, 'text/wiki' );
 				}
 				if ( listeners.length ) {
 					process.nextTick( processSome );

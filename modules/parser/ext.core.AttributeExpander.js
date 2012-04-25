@@ -15,7 +15,7 @@ var $ = require('jquery'),
 
 function AttributeExpander ( manager ) {
 	this.manager = manager;
-	// Register for template and templatearg tag tokens
+	// XXX: only register for tag tokens?
 	manager.addTransform( this.onToken.bind(this), 
 			this.rank, 'any' );
 }
@@ -38,33 +38,14 @@ AttributeExpander.prototype.onToken = function ( token, frame, cb ) {
 				token.attribs.length ) {
 		token = $.extend( {}, token );
 		token.attribs = token.attribs.slice();
-		var expandData = {
-			token: token,
-			cb: cb
-		};
 		var atm = new AttributeTransformManager( 
 					this.manager, 
-					this._returnAttributes.bind( this, expandData ) 
+					this._returnAttributes.bind( this, token, cb ) 
 				);
-		if( atm.process( token.attribs ) ) {
-			// Attributes were transformed synchronously
-			this.manager.env.dp ( 
-					'sync attribs for ', token
-			);
-			// All attributes are fully expanded synchronously (no IO was needed)
-			return { token: token };
-		} else {
-			// Async attribute expansion is going on
-			this.manager.env.dp( 'async return for ', token );
-			expandData.async = true;
-			return { async: true };
-		}
+		cb( { async: true } );
+		atm.process( token.attribs );
 	} else {
-		if ( ! token.rank && token.constructor === String ) {
-			token = new String( token );
-		}
-		token.rank = this.rank;
-		return { token: token };
+		cb ( { token: token } );
 	}
 };
 
@@ -72,15 +53,12 @@ AttributeExpander.prototype.onToken = function ( token, frame, cb ) {
 /**
  * Callback for attribute expansion in AttributeTransformManager
  */
-AttributeExpander.prototype._returnAttributes = function ( expandData, 
+AttributeExpander.prototype._returnAttributes = function ( token, cb, 
 															attributes ) 
 {
 	this.manager.env.dp( 'AttributeExpander._returnAttributes: ',attributes );
-	expandData.token.attribs = attributes;
-	if ( expandData.async ) {
-		expandData.token.rank = this.rank;
-		expandData.cb( [expandData.token], false );
-	}
+	token.attribs = attributes;
+	cb( { token: token } );
 };
 
 if (typeof module == "object") {
