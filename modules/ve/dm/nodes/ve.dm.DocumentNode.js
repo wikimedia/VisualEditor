@@ -156,7 +156,7 @@ ve.dm.DocumentNode.buildNodesAndOffsetsFromData = function( data, parent ) {
 				// Return to the parent node
 				currentNode = currentNode.getParent();
 				if ( currentNode === null ) {
-					throw 'createNodesFromData() received unbalanced data: ' +
+					throw 'buildNodesAndOffsetsFromData() received unbalanced data: ' +
 						'found closing without matching opening at index ' +
 						i;
 				}
