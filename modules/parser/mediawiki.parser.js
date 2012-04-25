@@ -63,28 +63,28 @@ function ParserPipelineFactory ( env ) {
  */
 ParserPipelineFactory.prototype.recipes = {
 	// The full wikitext pipeline
-	'text/wiki/full': [
+	'text/x-mediawiki/full': [
 		// Input pipeline including the tokenizer
-		'text/wiki',
+		'text/x-mediawiki',
 		// Final synchronous token transforms and DOM building / processing
-		'tokens/expanded'
+		'tokens/x-mediawiki/expanded'
 	],
 
 	// A pipeline from wikitext to expanded tokens. The input pipeline for
 	// wikitext.
-	'text/wiki': [
+	'text/x-mediawiki': [
 		[ PegTokenizer, [] ],
-		'tokens/wiki'
+		'tokens/x-mediawiki'
 	],
 
 	// Synchronous per-input and async token stream transformations. Produces
 	// a fully expanded token stream ready for consumption by the
 	// tokens/expanded pipeline.
-	'tokens/wiki': [
+	'tokens/x-mediawiki': [
 		// Synchronous in-order per input
 		[
 			SyncTokenTransformManager, 
-			[ 1, 'tokens/wiki' ],
+			[ 1, 'tokens/x-mediawiki' ],
 			[ 
 				OnlyInclude,
 				IncludeOnly, 
@@ -107,7 +107,7 @@ ParserPipelineFactory.prototype.recipes = {
 		*/
 		[
 			AsyncTokenTransformManager,
-			[ 2, 'tokens/wiki' ],
+			[ 2, 'tokens/x-mediawiki' ],
 			[ 
 				TemplateHandler,
 				// Expand attributes after templates to avoid expanding unused branches
@@ -122,7 +122,7 @@ ParserPipelineFactory.prototype.recipes = {
 
 	// Final stages of main pipeline, operating on fully expanded tokens of
 	// potentially mixed origin.
-	'tokens/expanded': [
+	'tokens/x-mediawiki/expanded': [
 		// Synchronous in-order on fully expanded token stream (including
 		// expanded templates etc). In order to support mixed input (from
 		// wikitext and plain HTML, say) all applicable transforms need to be
@@ -130,7 +130,7 @@ ParserPipelineFactory.prototype.recipes = {
 		// overhead for unused transforms.
 		[
 			SyncTokenTransformManager,
-			[ 3, 'tokens/expanded' ],
+			[ 3, 'tokens/x-mediawiki/expanded' ],
 			[ 
 				// text/wiki-specific tokens
 				QuoteTransformer, 

@@ -183,7 +183,7 @@ TemplateHandler.prototype._processTemplateAndTitle = function( token, frame, cb,
 	// pipeline includes the tokenizer, synchronous stage-1 transforms for
 	// 'text/wiki' input and asynchronous stage-2 transforms). 
 	var pipeline = this.manager.pipeFactory.getPipeline( 
-				type || 'text/wiki', true
+				type || 'text/x-mediawiki', true
 			);
 
 	pipeline.setFrame( this.manager.frame, name, attribs );
@@ -223,7 +223,7 @@ TemplateHandler.prototype._fetchTemplateAndTitle = function ( title, parentCB, c
 	// @fixme normalize name?
 	var self = this;
 	if ( title in this.manager.env.pageCache ) {
-		// XXX: store type too (and cache tokens/wiki)
+		// XXX: store type too (and cache tokens/x-mediawiki)
 		cb( self.manager.env.pageCache[title] /* , type */ );
 	} else if ( ! this.manager.env.fetchTemplates ) {
 		parentCB(  { tokens: [ 'Warning: Page/template fetching disabled, and no cache for ' + 
@@ -281,7 +281,7 @@ TemplateHandler.prototype._returnArgAttributes = function ( token, cb, frame, at
 		if ( res.constructor === String ) {
 			cb( { tokens: [res] } );
 		} else {
-			dict[argName].to('tokens/expanded', function(chunk) { cb ( { tokens: chunk } ); });
+			dict[argName].to('tokens/x-mediawiki/expanded', function(chunk) { cb ( { tokens: chunk } ); });
 		}
 		return;
 	} else {
@@ -329,7 +329,8 @@ function TemplateRequest ( manager, title ) {
 		//console.warn( 'response for ' + title + ' :' + body + ':' );
 		if(error) {
 			manager.env.dp(error);	
-			self.emit('src', 'Page/template fetch failure for title ' + title, title);
+			self.emit('src', 'Page/template fetch failure for title ' + title, 
+				'text/x-mediawiki');
 		} else if(response.statusCode ==  200) {
 			var src = '',
 				data,
@@ -372,8 +373,8 @@ function TemplateRequest ( manager, title ) {
 				var maxIters = Math.min(1, listeners.length);
 				for ( var it = 0; it < maxIters; it++ ) {
 					var nextListener = listeners.shift();
-					// We only retrieve text/wiki source currently.
-					nextListener( src, 'text/wiki' );
+					// We only retrieve text/x-mediawiki source currently.
+					nextListener( src, 'text/x-mediawiki' );
 				}
 				if ( listeners.length ) {
 					process.nextTick( processSome );

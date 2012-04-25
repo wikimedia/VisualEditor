@@ -90,7 +90,7 @@ var ParserPipelineFactory = require('./mediawiki.parser.js').ParserPipelineFacto
 						pageName: argv.pagename
 					} );
 	var parserPipelineFactory = new ParserPipelineFactory( env );
-	parser = parserPipelineFactory.makePipeline( 'text/wiki/full' );
+	parser = parserPipelineFactory.makePipeline( 'text/x-mediawiki/full' );
 
 	process.stdin.resume();
 	process.stdin.setEncoding('utf8');

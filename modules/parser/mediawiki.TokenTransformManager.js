@@ -1061,9 +1061,9 @@ Frame.prototype.convertThunk = function ( chunk, format, cb ) {
 		}
 	}
 
-	if ( format === 'tokens/expanded' ) {
+	if ( format === 'tokens/x-mediawiki/expanded' ) {
 		var pipeline = this.manager.pipeFactory.getPipeline( 
-				this.manager.attributeType || 'tokens/wiki', true
+				this.manager.attributeType || 'tokens/x-mediawiki', true
 				);
 		pipeline.setFrame( this, null );
 		var accum = [];

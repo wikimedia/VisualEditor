@@ -553,7 +553,7 @@ ParserTests.prototype.main = function () {
 
 	this.env.pageCache = this.articles;
 	var parserPipelineFactory = new ParserPipelineFactory( this.env );
-	this.parserPipeline = parserPipelineFactory.makePipeline( 'text/wiki/full' );
+	this.parserPipeline = parserPipelineFactory.makePipeline( 'text/x-mediawiki/full' );
 
 	this.comments = [];
 
