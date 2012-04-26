@@ -8,6 +8,8 @@
 
 var ParserPipelineFactory = require('./mediawiki.parser.js').ParserPipelineFactory,
 	ParserEnv = require('./mediawiki.parser.environment.js').MWParserEnvironment,
+	ConvertDOMToLM = require('./mediawiki.LinearModelConverter.js').ConvertDOMToLM,
+	DOMConverter = require('./mediawiki.DOMConverter.js').DOMConverter,
 	optimist = require('optimist');
 
 ( function() {
@@ -107,9 +109,15 @@ var ParserPipelineFactory = require('./mediawiki.parser.js').ParserPipelineFacto
 		parser.on('document', function ( document ) {
 			// Print out the html
 			if ( argv.linearmodel ) {
-				process.stdout.write( parser.getLinearModel( document ) );
+				process.stdout.write( 
+					JSON.stringify( ConvertDOMToLM( document.body ), null, 2 ) );
 			} else if ( argv.wikidom ) {
-				process.stdout.write( parser.getWikiDom( document ) );
+				process.stdout.write(
+					JSON.stringify(
+						new DOMConverter().HTMLtoWiki( document.body ),
+						null,
+						2
+					));
 			} else {
 				process.stdout.write( document.body.innerHTML );
 			}

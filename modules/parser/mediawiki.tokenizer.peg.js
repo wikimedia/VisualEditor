@@ -93,7 +93,7 @@ PegTokenizer.prototype.process = function( text, cacheKey ) {
 
 	// XXX: Commented out exception handling during development to get
 	// reasonable traces.
-	try {
+	//try {
 		var chunkCB;
 		if ( this.canCache ) {
 			chunkCB = this.onCacheChunk.bind( this );
@@ -107,11 +107,11 @@ PegTokenizer.prototype.process = function( text, cacheKey ) {
 				this
 				);
 		this.onEnd();
-	} catch (e) {
+	/*} catch (e) {
 		err = e;
 		console.warn( e );
 		console.trace();
-	}
+	}*/
 };
 
 PegTokenizer.prototype.onCacheChunk = function ( chunk ) {

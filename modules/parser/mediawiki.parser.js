@@ -19,31 +19,29 @@ var events = require( 'events' );
 
 var fs = require('fs'),
 	path = require('path'),
-	PegTokenizer                = require('./mediawiki.tokenizer.peg.js').PegTokenizer,
-	TokenTransformManager       = require('./mediawiki.TokenTransformManager.js'),
-	SyncTokenTransformManager	= TokenTransformManager.SyncTokenTransformManager,
-	AsyncTokenTransformManager	= TokenTransformManager.AsyncTokenTransformManager,
+	PegTokenizer = require('./mediawiki.tokenizer.peg.js').PegTokenizer,
+	TokenTransformManager = require('./mediawiki.TokenTransformManager.js'),
+	SyncTokenTransformManager = TokenTransformManager.SyncTokenTransformManager,
+	AsyncTokenTransformManager = TokenTransformManager.AsyncTokenTransformManager,
 
-	NoIncludeOnly				= require('./ext.core.NoIncludeOnly.js'),
-	IncludeOnly					= NoIncludeOnly.IncludeOnly,
-	NoInclude					= NoIncludeOnly.NoInclude,
-	OnlyInclude					= NoIncludeOnly.OnlyInclude,
-	QuoteTransformer            = require('./ext.core.QuoteTransformer.js').QuoteTransformer,
-	PostExpandParagraphHandler  = require('./ext.core.PostExpandParagraphHandler.js')
+	NoIncludeOnly = require('./ext.core.NoIncludeOnly.js'),
+	IncludeOnly = NoIncludeOnly.IncludeOnly,
+	NoInclude = NoIncludeOnly.NoInclude,
+	OnlyInclude	= NoIncludeOnly.OnlyInclude,
+	QuoteTransformer = require('./ext.core.QuoteTransformer.js').QuoteTransformer,
+	PostExpandParagraphHandler = require('./ext.core.PostExpandParagraphHandler.js')
 																.PostExpandParagraphHandler,
-	Sanitizer                   = require('./ext.core.Sanitizer.js').Sanitizer,
-	TemplateHandler             = require('./ext.core.TemplateHandler.js').TemplateHandler,
-	AttributeExpander            = require('./ext.core.AttributeExpander.js').AttributeExpander,
-	LinkHandler                 = require('./ext.core.LinkHandler.js'),
-	WikiLinkHandler				= LinkHandler.WikiLinkHandler,
-	ExternalLinkHandler			= LinkHandler.ExternalLinkHandler,
-	Cite                        = require('./ext.Cite.js').Cite,
-	BehaviorSwitchHandler       = require('./ext.core.BehaviorSwitchHandler.js').BehaviorSwitchHandler,
-	TreeBuilder                 = require('./mediawiki.HTML5TreeBuilder.node.js')
+	Sanitizer = require('./ext.core.Sanitizer.js').Sanitizer,
+	TemplateHandler = require('./ext.core.TemplateHandler.js').TemplateHandler,
+	AttributeExpander = require('./ext.core.AttributeExpander.js').AttributeExpander,
+	LinkHandler = require('./ext.core.LinkHandler.js'),
+	WikiLinkHandler	= LinkHandler.WikiLinkHandler,
+	ExternalLinkHandler	= LinkHandler.ExternalLinkHandler,
+	Cite = require('./ext.Cite.js').Cite,
+	BehaviorSwitchHandler = require('./ext.core.BehaviorSwitchHandler.js').BehaviorSwitchHandler,
+	TreeBuilder = require('./mediawiki.HTML5TreeBuilder.node.js')
 													.FauxHTML5.TreeBuilder,
-	DOMPostProcessor            = require('./mediawiki.DOMPostProcessor.js').DOMPostProcessor,
-	DOMConverter                = require('./mediawiki.DOMConverter.js').DOMConverter,
-	ConvertDOMToLM              = require('./mediawiki.LinearModelConverter.js').ConvertDOMToLM;
+	DOMPostProcessor = require('./mediawiki.DOMPostProcessor.js').DOMPostProcessor;
 
 
 function ParserPipelineFactory ( env ) {
@@ -317,22 +315,6 @@ ParserPipeline.prototype.removeAllListeners = function ( event ) {
 		return this.last.removeAllListeners( event );
 	}
 };
-
-
-/********************* Old stuff ****************************/
-
-// XXX: Either convert these to pipeline stages, or move them elsewhere.
-//OldParserPipeline.prototype.getWikiDom = function ( document ) {
-//	return JSON.stringify(
-//				this.DOMConverter.HTMLtoWiki( document.body ),
-//				null,
-//				2
-//			);
-//};
-//
-//OldParserPipeline.prototype.getLinearModel = function( document ) {
-//	return JSON.stringify( ConvertDOMToLM( document.body ), null, 2 );
-//};
 
 if (typeof module == "object") {
 	module.exports.ParserPipeline = ParserPipeline;
