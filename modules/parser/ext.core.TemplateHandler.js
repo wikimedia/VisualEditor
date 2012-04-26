@@ -147,7 +147,7 @@ TemplateHandler.prototype._expandTemplate = function ( token, frame, cb, attribs
 			'Template' 
 		);
 
-	var checkRes = this.manager.frame.loopAndDepthCheck.check( templateName, this.manager.env.maxDepth );
+	var checkRes = this.manager.frame.loopAndDepthCheck( templateName, this.manager.env.maxDepth );
 	if( checkRes ) {
 		// Loop detected or depth limit exceeded, abort!
 		res = [

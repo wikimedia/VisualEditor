@@ -46,6 +46,7 @@ ParserFunctions.prototype['pf_#if'] = function ( token, frame, cb, args ) {
 ParserFunctions.prototype._switchLookupFallback = function ( kvs, key, dict, cb, v ) {
 	var kv,
 		l = kvs.length;
+	this.manager.env.tp('swl');
 	this.manager.env.dp('_switchLookupFallback', kvs.length, key, v );
 	if ( v && key === this.manager.env.tokensToString( v ).trim() ) {
 		// found. now look for the next entry with a non-empty key.
@@ -76,7 +77,7 @@ ParserFunctions.prototype._switchLookupFallback = function ( kvs, key, dict, cb,
 					return this._switchLookupFallback( kvs.slice(i), key, dict, cb, kv.v );
 				}
 			} else {
-				return kv.v.to('tokens/expanded', 
+				return kv.v.to('tokens/x-mediawiki/expanded', 
 						this._switchLookupFallback.bind( this, kvs.slice(i), key, dict, cb ) );
 			}
 		}

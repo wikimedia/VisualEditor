@@ -839,8 +839,8 @@ ipv6_address
 tplarg_or_template 
     = 
     ! '{{{{{{{' (
-        & ( '{{{{{{' (!'}}}' .)* '}}}}}}') tplarg
-        / & ( '{{{{{' (!'}}}' .)* '}}}}}') template 
+        & ( '{{{{{{' ([^}]+ / !'}}}' .)* '}}}}}}') tplarg
+        / & ( '{{{{{' ([^}]+ / !'}}}' .)* '}}}}}') template 
         / tplarg 
         / template
     )
@@ -860,7 +860,8 @@ template
       // again.
       params.unshift( { k: flatten( target ), v: [] } );
       var obj = new SelfclosingTagTk( 'template', params );
-      //console.warn( 'tokenizer template ' + JSON.stringify( target ));
+      //console.warn( 'tokenizer template ' + pos + );
+      //console.warn('template @' + pos + '::' + input.substr(pos, 40) );
       return obj;
   }
 
@@ -884,6 +885,7 @@ tplarg
       params.unshift( { k: '', v: name } );
       var obj = new SelfclosingTagTk( 'templatearg', params );
       //console.warn( 'tokenizer tplarg ' + JSON.stringify( obj, null, 2 ));
+      //console.warn('template arg @' + pos + '::' + input.substr(pos, 40) );
       return obj;
   }
 
@@ -970,6 +972,7 @@ template_param_text
             r.shift();
             firstToken = r[0];
         }
+        //console.warn('tpl param name' + pos + r[0] + '::' + input.substr(pos, 40) );
         if ( r.length === 1 && r[0].constructor === String ) {
             r = r[0];
         }

@@ -43,7 +43,8 @@ PegTokenizer.prototype.process = function( text, cacheKey ) {
 		// Construct a singleton static tokenizer.
 		var pegSrcPath = path.join( __dirname, 'pegTokenizer.pegjs.txt' );
 		this.src = fs.readFileSync( pegSrcPath, 'utf8' );
-		var tokenizerSource = PEG.buildParser(this.src).toSource();
+		var tokenizerSource = PEG.buildParser(this.src, 
+				{ cache: true, trackLineAndColumn: false }).toSource();
 
 		/* We patch the generated source to assign the arguments array for the
 		* parse function to a function-scoped variable. We use this to pass
@@ -92,7 +93,7 @@ PegTokenizer.prototype.process = function( text, cacheKey ) {
 
 	// XXX: Commented out exception handling during development to get
 	// reasonable traces.
-	//try {
+	try {
 		var chunkCB;
 		if ( this.canCache ) {
 			chunkCB = this.onCacheChunk.bind( this );
@@ -106,12 +107,11 @@ PegTokenizer.prototype.process = function( text, cacheKey ) {
 				this
 				);
 		this.onEnd();
-	//} catch (e) {
-		//err = e;
-		//console.trace();
-	//} finally {
-		return { err: err };
-	//}
+	} catch (e) {
+		err = e;
+		console.warn( e );
+		console.trace();
+	}
 };
 
 PegTokenizer.prototype.onCacheChunk = function ( chunk ) {

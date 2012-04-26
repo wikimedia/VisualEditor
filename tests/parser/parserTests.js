@@ -326,8 +326,7 @@ ParserTests.prototype.normalizeOut = function ( out ) {
 	// TODO: Do not strip newlines in pre and nowiki blocks!
 	return out.replace(/[\r\n]| data-mw="[^">]*"/g, '')
 				.replace(/<!--.*?-->\n?/gm, '')
-				.replace(/<\/?meta[^>]*>/g, '')
-				.replace(/ \/>/g, '>');
+				.replace(/<\/?meta[^>]*>/g, '');
 };
 
 ParserTests.prototype.formatHTML = function ( source ) {
