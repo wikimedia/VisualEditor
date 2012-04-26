@@ -306,8 +306,7 @@ function TemplateRequest ( manager, title ) {
 	this.retries = 5;
 	this.manager = manager;
 	this.title = title;
-	var self = this,
-		url = manager.env.wgScript + '/api' + 
+	var url = manager.env.wgScript + '/api' + 
 		manager.env.wgScriptExtension +
 		'?' + 
 		qs.stringify( {
@@ -319,15 +318,18 @@ function TemplateRequest ( manager, title ) {
 		} );
 		//'?format=json&action=query&prop=revisions&rvprop=content&titles=' + title;
 
-	request({
+	this.requestOptions = {
 		method: 'GET',
 		followRedirect: true,
 		url: url,
 		headers: { 
 			'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:9.0.1) ' +
 							'Gecko/20100101 Firefox/9.0.1 Iceweasel/9.0.1' 
-		}
-	}, self._handler.bind(this)); 
+		} 
+	};
+
+	// Start the request
+	request( this.requestOptions, this._handler.bind(this) ); 
 }
 
 // Inherit from EventEmitter
@@ -343,15 +345,7 @@ TemplateRequest.prototype._handler = function (error, response, body) {
 			this.manager.env.tp( 'Retrying template request for ' + this.title );
 			var self = this;
 			// retry
-			request({
-				method: 'GET',
-				followRedirect: true,
-				url: url,
-				headers: { 
-					'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:9.0.1) ' +
-				'Gecko/20100101 Firefox/9.0.1 Iceweasel/9.0.1' 
-				}
-			}, self._handler.bind(self)); 
+			request( this.requestOptions, this._handler.bind(this) ); 
 		} else {
 			this.emit('src', 'Page/template fetch failure for title ' + this.title, 
 					'text/x-mediawiki');
