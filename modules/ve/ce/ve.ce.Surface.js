@@ -35,11 +35,7 @@ ve.ce.Surface = function( $container, model ) {
 			_this.documentOnFocus();
 			$document.off( '.ve-ce-surface' );
 			$document.on( {
-				'keydown.ce-surfaceView': function( e ) {
-					return _this.onKeyDown( e );
-				},
-				'mousemove.ce-surfaceView': function( e ) {
-				}
+				'keydown.ce-surfaceView': _this.proxy( _this.onKeyDown )
 			} );
 		},
 		'blur': function( e ) {
@@ -49,23 +45,14 @@ ve.ce.Surface = function( $container, model ) {
 	} );
 
 	this.$.on( {
-		'cut copy': function( e ) {
-			_this.onCutCopy( e );
-		},
-		'paste': function( e ) {
-			_this.onPaste( e );
-		},
-		'mousedown': function( e ) {
-			return _this.onMouseDown( e );
-		},
-		'compositionstart': function( e ) {
-			_this.onCompositionStart( e );
-		},
-		'compositionend': function( e ) {
-			_this.onCompositionEnd( e );
-		},
+		'cut copy': this.proxy( this.onCutCopy ),
+		'paste': this.proxy( this.onPaste ),
+		'mousedown': this.proxy( this.onMouseDown ),
+		'compositionstart': this.proxy( this.onCompositionStart ),
+		'compositionend': this.proxy( this.onCompositionEnd ),
 		'dragover drop': function( e ) {
 			e.preventDefault();
+			return false;
 		}
 	} );
 
@@ -92,9 +79,7 @@ ve.ce.Surface = function( $container, model ) {
 		}
 	};
 
-	this.on( 'textChange', function( e ) {
-		_this.onTextChange( e );
-	} );
+	this.on( 'textChange', this.proxy( this.onTextChange ) );
 
 	this.on( 'rangeChange', function( e ) {
 
@@ -131,6 +116,13 @@ ve.ce.Surface = function( $container, model ) {
 };
 
 /* Methods */
+
+ve.ce.Surface.prototype.proxy = function( func ) {
+	var _this = this;
+	return( function() {
+		return func.apply( _this, arguments );
+	});
+};
 
 ve.ce.Surface.prototype.onCompositionStart = function( e ) {
 	var rangySel = rangy.getSelection();
