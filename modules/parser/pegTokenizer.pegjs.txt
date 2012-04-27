@@ -1030,7 +1030,7 @@ link_text
     h:inline 
     // 'equal' syntaxFlag is set for links in template parameters. Consume the
     // '=' here.
-    hs:( '=' inline)?
+    hs:( '=' inline?)?
     { 
         //console.warn('link_text' + pp(h) + pp(hs));
         stops.dec('linkdesc');
@@ -1976,7 +1976,6 @@ spaceless_preprocessor_text
 
 wikilink_preprocessor_text 
   = r:( t:[^<~[{\n\r\t|!\]}{ &=]+ { return t.join(''); }
-        /// urlencoded_char
         / !inline_breaks ( directive / !"]]" text_char ) 
     )+ {
       return flatten_stringlist ( r );
