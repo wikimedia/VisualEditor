@@ -284,15 +284,16 @@ AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parent
 	
 	var res,
 		localAccum = [],
+		activeAccum = localAccum,
 		transforming = true,
-		activeAccum = null,
+		childAccum = null,
 		accum = new TokenAccumulator( this, parentCB ),
 		token, ts, transformer, aborted,
 		maybeSyncReturn = function ( asyncCB, ret ) {
 			if ( transforming ) {
 				this.env.dp( 'maybeSyncReturn transforming', ret );
 				// transformTokens is ongoing
-				if ( false && ret.tokens && ! ret.async && ret.allTokensProcessed && ! activeAccum ) {
+				if ( false && ret.tokens && ! ret.async && ret.allTokensProcessed && ! childAccum ) {
 					localAccum.push.apply(localAccum, res.tokens );
 				} else if ( ret.tokens ) {
 					if ( res.tokens ) {
@@ -313,23 +314,23 @@ AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parent
 				asyncCB( ret );
 			}
 		},
-		cb = maybeSyncReturn.bind( this, accum.getParentCB( 'child' ) );
+		cb = maybeSyncReturn.bind( this, accum.getParentCB( 'child' ) ),
+		minRank;
 
 	for ( var i = 0, l = tokens.length; i < l; i++ ) {
 		token = tokens[i];
-
+		minRank = token.rank || 0;
 		aborted = false;
-
 		ts = this._getTransforms( token );
 
 		if ( ts.length ) {
-			res = { };
 
 			//this.env.tp( 'async trans' );
 			this.env.dp( token, ts );
 			for (var j = 0, lts = ts.length; j < lts; j++ ) {
+				res = { };
 				transformer = ts[j];
-				if ( token.rank && transformer.rank <= token.rank ) {
+				if ( minRank && transformer.rank <= minRank ) {
 					// skip transformation, was already applied.
 					//console.warn( 'skipping transform');
 					res.token = token;
@@ -337,68 +338,42 @@ AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parent
 				}
 				// Transform the token.
 				transformer.transform( token, this.frame, cb );
-				if ( res.tokens && res.tokens.length === 1 && 
-						token.constructor === res.tokens[0].constructor &&
-						token.name === res.tokens[0].name ) 
-				{
-							res.token = res.tokens[0];
-				}
+
+				// Check the result, which is changed using the
+				// maybeSyncReturn callback
 				if ( res.token === undefined ) {
-							aborted = true;
-							break;
-						}
-				// XXX: factor the conversion to String out into a generic _setRank
-				// method? Would need to add to the string prototype for that..
-				token = this.env.setTokenRank( res.token, transformer.rank );
+					if ( res.tokens && res.tokens.length === 1 && 
+						token === res.tokens[0] )
+					{
+						res.token = token;
+					} else {
+						aborted = true;
+						break;
+					}
+				}
+				minRank = transformer.rank;
+				token = res.token;
 			}
 		} else {
 			res = { token: token };
 		}
 
-		this.env.dp( 'res: ', res);
-
-		if ( ! aborted && res.token ) {
+		if ( ! aborted ) {
 			res.token = this.env.setTokenRank( res.token, this.phaseEndRank );
 			// token is done.
-			if ( activeAccum ) {
-				// push to accumulator
-				activeAccum.push( res.token );
-			} else {
-				// If there is no accumulator yet, then directly return the
-				// token to the parent. Collect them in localAccum for this
-				// purpose.
-				localAccum.push( res.token );
-			}
+			// push to accumulator
+			activeAccum.push( res.token );
 			continue;
 		} else if( res.tokens ) {
-			if ( res.tokens.length > 1 ) {
-				// Splice in the returned tokens (while replacing the original
-				// token), and process them next.
-				//if ( ! res.allTokensProcessed ) {
-					[].splice.apply( tokens, [i, 1].concat(res.tokens) );
-					l = tokens.length;
-					i--; // continue at first inserted token
-				//} else {
-					// skip fully processed tokens
-				//}
-			} else if ( res.tokens.length === 1 ) {
-				if ( res.tokens[0].rank === this.phaseEndRank ) {
-					// token is done.
-					if ( activeAccum ) {
-						// push to accumulator
-						activeAccum.push( res.tokens[0] );
-					} else {
-						// If there is no accumulator yet, then directly return the
-						// token to the parent. Collect them in localAccum for this
-						// purpose.
-						localAccum.push( res.tokens[0] );
-					}
-				} else {
-					// re-process token.
-					tokens[i] = res.tokens[0];
-					i--;
-				}
-			}
+			// Splice in the returned tokens (while replacing the original
+			// token), and process them next.
+			//if ( ! res.allTokensProcessed ) {
+			[].splice.apply( tokens, [i, 1].concat(res.tokens) );
+			l = tokens.length;
+			i--; // continue at first inserted token
+			//} else {
+			// skip fully processed tokens
+			//}
 		} 
 		
 		if ( res.async ) {
@@ -406,7 +381,8 @@ AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parent
 			// The child now switched to activeAccum, we have to create a new
 			// accumulator for the next potential child.
 			activeAccum = accum;
-			accum = new TokenAccumulator( this, activeAccum.getParentCB( 'sibling' ) );
+			childAccum = accum;
+			accum = new TokenAccumulator( this, childAccum.getParentCB( 'sibling' ) );
 			cb = maybeSyncReturn.bind( this, accum.getParentCB( 'child' ) );
 		}
 	}
@@ -416,7 +392,7 @@ AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parent
 	// async actions are outstanding. The caller needs to point a sibling to
 	// the returned accumulator, or call .siblingDone() to mark the end of a
 	// chain.
-	return { tokens: localAccum, async: activeAccum };
+	return { tokens: localAccum, async: childAccum };
 };
 
 /**
@@ -555,24 +531,19 @@ SyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 		var minRank = token.rank || 0;
 		for (var j = 0, lts = ts.length; j < lts; j++ ) {
 			transformer = ts[j];
-			if ( transformer.rank < minRank ) {
+			if ( transformer.rank <= minRank ) {
 				// skip transformation, was already applied.
 				//console.warn( 'skipping transform');
 				continue;
 			}
 			// Transform the token.
-			res = transformer.transform( res.token, this, this.prevToken );
-			if ( !res.token ||
-					res.token.constructor !== token.constructor ||
-					( token.name && res.token.name && res.token.name !== token.name ) ) {
-						aborted = true;
-						break;
-					}
+			res = transformer.transform( token, this, this.prevToken );
+			if ( res.token !== token ) {
+				aborted = true;
+				break;
+			}
 			minRank = transformer.rank;
-		}
-		
-		if ( ! aborted ) {
-			res.token = this.env.setTokenRank( res.token, this.phaseEndRank );
+			token = res.token;
 		}
 
 		if( res.tokens ) {
@@ -582,6 +553,7 @@ SyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 			l = tokens.length;
 			i--; // continue at first inserted token
 		} else if ( res.token ) {
+			res.token = this.env.setTokenRank( res.token, this.phaseEndRank );
 			if ( res.token.rank === this.phaseEndRank ) {
 				// token is done.
 				localAccum.push(res.token);
@@ -645,7 +617,7 @@ AttributeTransformManager.prototype.process = function ( attributes ) {
 	//this.pipe.process( 
 	var pipe,
 		ref,
-		idCB = function( format, cb ){ cb( this ) };
+		idCB = function( format, cb ){ cb( this ); };
 	//console.warn( 'AttributeTransformManager.process: ' + JSON.stringify( attributes ) );
 
 	// transform each argument (key and value), and handle asynchronous returns
@@ -835,7 +807,7 @@ AttributeTransformManager.prototype._returnAttributeValue = function ( ref, notY
 		if ( !res.to ) {
 			Object.defineProperty( res, 'to', 
 					{
-						value: function( format, cb )  { cb( this ) },
+						value: function( format, cb )  { cb( this ); },
 						enumerable: false
 					});
 		}
