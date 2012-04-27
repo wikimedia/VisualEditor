@@ -58,9 +58,9 @@ ve.dm.Document.prototype.rebuildNodes = function( parent, index, numNodes, offse
 	// Get generated child nodes from the document fragment
 	var nodes = fragment.getRootNode().getChildren();
 	// Replace nodes in the model tree
-	ve.batchedSplice( parent, index, numNodes, nodes );
+	ve.batchSplice( parent, index, numNodes, nodes );
 	// Update offset map
-	ve.batchedSplice( this.offsetMap, offset, oldLength, fragment.getOffsetMap() );
+	ve.batchSplice( this.offsetMap, offset, oldLength, fragment.getOffsetMap() );
 	// Return inserted nodes
 	return nodes;
 };

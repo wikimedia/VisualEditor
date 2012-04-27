@@ -185,7 +185,7 @@ ve.copyObject = function( source ) {
  * @param {Number} remove Number of elements to remove at the offset. May be zero
  * @param {Array} data Array of items to insert at the offset
  */
-ve.batchedSplice = function( arr, offset, remove, data ) {
+ve.batchSplice = function( arr, offset, remove, data ) {
 	// We need to splice insertion in in batches, because of parameter list length limits which vary
 	// cross-browser - 1024 seems to be a safe batch size on all browsers
 	var index = 0, batchSize = 1024, toRemove = remove;
@@ -209,14 +209,14 @@ ve.batchedSplice = function( arr, offset, remove, data ) {
 };
 
 /**
- * Insert one array into another. This just calls ve.batchedSplice( dst, offset, 0, src )
+ * Insert one array into another. This just calls ve.batchSplice( dst, offset, 0, src )
  * 
  * @static
  * @method
- * @see ve.batchedSplice
+ * @see ve.batchSplice
  */
 ve.insertIntoArray = function( dst, offset, src ) {
-	ve.batchedSplice( dst, offset, 0, src );
+	ve.batchSplice( dst, offset, 0, src );
 };
 
 /**

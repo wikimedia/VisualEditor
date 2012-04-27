@@ -102,7 +102,7 @@ ve.dm.DocumentFragment = function( data, parentDocument ) {
 				parentStack = stack[stack.length - 2];
 				// Attach the children to the node (but don't try and splice 0 children into a leaf)
 				if ( children.length ) {
-					ve.batchedSplice( currentNode, 0, 0, children );
+					ve.batchSplice( currentNode, 0, 0, children );
 				}
 				currentNode = parentStack[parentStack.length - 1];
 			}
@@ -110,7 +110,7 @@ ve.dm.DocumentFragment = function( data, parentDocument ) {
 	}
 	// The end state is stack = [ [this.rootNode] [ array, of, its, children ] ]
 	// so attach all nodes in stack[1] to the root node
-	ve.batchedSplice( this.rootNode, 0, 0, stack[1] );
+	ve.batchSplice( this.rootNode, 0, 0, stack[1] );
 };
 
 /* Methods */
