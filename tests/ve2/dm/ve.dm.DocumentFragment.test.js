@@ -1,4 +1,4 @@
-module( 've.dm.Document' );
+module( 've.dm.DocumentFragment' );
 
 /* Tests */
 
