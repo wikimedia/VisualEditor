@@ -4,13 +4,14 @@
  * @class
  * @constructor
  * @param {Array} data Linear model data to start with
+ * @param {ve.dm.Document} [parentDocument] Document to use as root for created nodes
  */
-ve.dm.DocumentFragment = function( parentDocument, data ) {
+ve.dm.DocumentFragment = function( data, parentDocument ) {
 	// Properties
 	this.parentDocument = parentDocument;
 	this.data = data || [];
 	this.rootNode = new ve.dm.DocumentNode();
-	this.offsets = new Array( data.length );
+	this.offsetMap = new Array( this.data.length );
 
 	// Initialization
 	var root = parentDocument ? parentDocument.getRootNode() : this.rootNode;
@@ -52,7 +53,7 @@ ve.dm.DocumentFragment = function( parentDocument, data ) {
 		// 3. data[i] is content, so offset i is in the middle of an element,
 		//    so obviously we need currentNode, which won't be changed by this
 		//    iteration
-		this.offsets[i] = currentNode;
+		this.offsetMap[i] = currentNode;
 
 		if ( this.data[i].type === undefined ) {
 			// Text node
@@ -100,14 +101,16 @@ ve.dm.DocumentFragment = function( parentDocument, data ) {
 				currentStack = parentStack;
 				parentStack = stack[stack.length - 2];
 				// Attach the children to the node
-				ve.batchedSplice( currentNode, 0, 0, children );
+				if ( children.length ) {
+					ve.batchedSplice( currentNode.children, 0, 0, children );
+				}
 				currentNode = parentStack[parentStack.length - 1];
 			}
 		}
 	}
 	// The end state is stack = [ [this.rootNode] [ array, of, its, children ] ]
 	// so attach all nodes in stack[1] to the root node
-	ve.batchedSplice( this.rootNode, 0, 0, stack[1] );
+	ve.batchedSplice( this.rootNode.children, 0, 0, stack[1] );
 };
 
 /* Methods */
@@ -120,7 +123,7 @@ ve.dm.DocumentFragment = function( parentDocument, data ) {
  * @param {Boolean} [deep=false] Whether to return a deep copy (WARNING! This may be very slow)
  * @returns {Array} Slice or copy of document data
  */
-ve.dm.DocumentNode.prototype.getData = function( range, deep ) {
+ve.dm.DocumentFragment.prototype.getData = function( range, deep ) {
 	var start = 0,
 		end;
 	if ( range !== undefined ) {

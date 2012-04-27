@@ -45,7 +45,7 @@ ve.dm.Document = function( data ) {
  * @param {Integer} newLength Length of data in linear model to rebuild or insert nodes for
  * @returns {ve.dm.Node[]} Array containing the rebuilt/inserted nodes
  */
-ve.dm.DocumentNode.prototype.rebuildNodes = function( parent, index, numNodes, offset, newLength ) {
+ve.dm.Document.prototype.rebuildNodes = function( parent, index, numNodes, offset, newLength ) {
 	// Compute the length of the old nodes (so we can splice their offsets out of the offset map)
 	var oldLength = 0;
 	for ( var i = index; i < index + numNodes; i++ ) {
@@ -58,7 +58,7 @@ ve.dm.DocumentNode.prototype.rebuildNodes = function( parent, index, numNodes, o
 	// Get generated child nodes from the document fragment
 	var nodes = fragment.getRootNode().getChildren();
 	// Replace nodes in the model tree
-	ve.batchedSplice( parent, index, numNodes, nodes );
+	ve.batchedSplice( parent.children, index, numNodes, nodes );
 	// Update offset map
 	ve.batchedSplice( this.offsetMap, offset, oldLength, fragment.getOffsetMap() );
 	// Return inserted nodes
