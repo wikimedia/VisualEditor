@@ -11,14 +11,14 @@ ve.extendClass( ve.BranchNodeStub, ve.BranchNode );
 
 /* Tests */
 
-test( 'prototype.getChildren', 2, function() {
+test( 'getChildren', 2, function() {
 	var node1 = new ve.BranchNodeStub(),
 		node2 = new ve.BranchNodeStub( [node1] );
 	deepEqual( node1.getChildren(), [] );
 	deepEqual( node2.getChildren(), [node1] );
 } );
 
-test( 'prototype.indexOf', 4, function() {
+test( 'indexOf', 4, function() {
 	var node1 = new ve.BranchNodeStub(),
 		node2 = new ve.BranchNodeStub(),
 		node3 = new ve.BranchNodeStub(),

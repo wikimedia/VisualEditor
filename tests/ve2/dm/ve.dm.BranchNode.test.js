@@ -11,7 +11,7 @@ ve.extendClass( ve.dm.BranchNodeStub, ve.dm.BranchNode );
 
 /* Tests */
 
-test( 'prototype.setRoot', 3, function() {
+test( 'setRoot', 3, function() {
 	var node1 = new ve.dm.BranchNodeStub(),
 		node2 = new ve.dm.BranchNodeStub( [node1] ),
 		node3 = new ve.dm.BranchNodeStub( [node2] ),
@@ -22,7 +22,7 @@ test( 'prototype.setRoot', 3, function() {
 	strictEqual( node1.getRoot(), node4 );
 } );
 
-test( 'prototype.push', 4, function() {
+test( 'push', 4, function() {
 	var node1 = new ve.dm.BranchNodeStub(),
 		node2 = new ve.dm.BranchNodeStub(),
 		node3 = new ve.dm.BranchNodeStub( [node1] );
@@ -38,7 +38,7 @@ test( 'prototype.push', 4, function() {
 	deepEqual( node3.getChildren(), [node1, node2] );
 } );
 
-test( 'prototype.pop', 4, function() {
+test( 'pop', 4, function() {
 	var node1 = new ve.dm.BranchNodeStub(),
 		node2 = new ve.dm.BranchNodeStub(),
 		node3 = new ve.dm.BranchNodeStub( [node1, node2] );
@@ -54,7 +54,7 @@ test( 'prototype.pop', 4, function() {
 	deepEqual( node3.getChildren(), [node1] );
 } );
 
-test( 'prototype.unshift', 4, function() {
+test( 'unshift', 4, function() {
 	var node1 = new ve.dm.BranchNodeStub(),
 		node2 = new ve.dm.BranchNodeStub(),
 		node3 = new ve.dm.BranchNodeStub( [node1] );
@@ -70,7 +70,7 @@ test( 'prototype.unshift', 4, function() {
 	deepEqual( node3.getChildren(), [node2, node1] );
 } );
 
-test( 'prototype.shift', 4, function() {
+test( 'shift', 4, function() {
 	var node1 = new ve.dm.BranchNodeStub(),
 		node2 = new ve.dm.BranchNodeStub(),
 		node3 = new ve.dm.BranchNodeStub( [node1, node2] );
@@ -86,7 +86,7 @@ test( 'prototype.shift', 4, function() {
 	deepEqual( node3.getChildren(), [node2] );
 } );
 
-test( 'prototype.splice', 12, function() {
+test( 'splice', 12, function() {
 	var node1 = new ve.dm.BranchNodeStub(),
 		node2 = new ve.dm.BranchNodeStub(),
 		node3 = new ve.dm.BranchNodeStub(),
