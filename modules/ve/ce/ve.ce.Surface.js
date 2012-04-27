@@ -78,34 +78,8 @@ ve.ce.Surface = function( $container, model ) {
 			end: null
 		}
 	};
-
 	this.on( 'textChange', this.proxy( this.onTextChange ) );
-
-	this.on( 'rangeChange', function( e ) {
-
-		/*	Save selection direction only
-			if selection start and end have changed */
-		if( e.new && e.old ) {
-			if( e.new.start !== e.old.start || e.new.end !== e.old.end ) {
-				this.selectionDirection = ( e.new.to < e.new.from ) ? -1 : 1;	
-			}
-		}
-
-		if ( e.new !== null ) {
-			/* Set selection in the model */
-			_this.model.setSelection( e.new );
-
-			/* Hide or show context view icon */
-			_this.toggleContextView();
-
-			/* Load or clear annotations */
-			if ( e.new.getLength() === 0 ) {
-				_this.loadInsertionAnnotations();
-			} else {
-				_this.clearInsertionAnnotations();
-			}
-		}
-	} );
+	this.on( 'rangeChange', this.proxy( this.onRangeChange ) );
 
 	//Prevent native contentedtiable tools
 	try {
@@ -132,6 +106,31 @@ ve.ce.Surface.prototype.onCompositionStart = function( e ) {
 ve.ce.Surface.prototype.onCompositionEnd = function( e ) {
 	var rangySel = rangy.getSelection();
 	this.poll.composition.end = this.getOffset( rangySel.anchorNode, rangySel.anchorOffset );
+};
+
+ve.ce.Surface.prototype.onRangeChange = function( e ) {
+	/*	Save selection direction only
+		if selection start and end have changed */
+	if( e.new && e.old ) {
+		if( e.new.start !== e.old.start || e.new.end !== e.old.end ) {
+			this.selectionDirection = ( e.new.to < e.new.from ) ? -1 : 1;	
+		}
+	}
+
+	if ( e.new !== null ) {
+		/* Set selection in the model */
+		this.model.setSelection( e.new );
+
+		/* Hide or show context view icon */
+		this.toggleContextView();
+
+		/* Load or clear annotations */
+		if ( e.new.getLength() === 0 ) {
+			this.loadInsertionAnnotations();
+		} else {
+			this.clearInsertionAnnotations();
+		}
+	}
 };
 
 ve.ce.Surface.prototype.onTextChange = function( e ) {
