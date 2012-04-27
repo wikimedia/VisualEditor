@@ -644,7 +644,8 @@ AttributeTransformManager.prototype.process = function ( attributes ) {
 	// Potentially need to use multiple pipelines to support concurrent async expansion
 	//this.pipe.process( 
 	var pipe,
-		ref;
+		ref,
+		idCB = function( format, cb ){ cb( this ) };
 	//console.warn( 'AttributeTransformManager.process: ' + JSON.stringify( attributes ) );
 
 	// transform each argument (key and value), and handle asynchronous returns
@@ -701,24 +702,6 @@ AttributeTransformManager.prototype.process = function ( attributes ) {
 			pipe.process( this.manager.env.cloneTokens( cur.v ).concat([ new EOFTk() ]) );
 		} else {
 			kv.v = cur.v;
-			if ( !cur.v.to ) {
-				if ( cur.v.constructor === String ) {
-					if ( ! cur.v.rank ) {
-						cur.v = new String( cur.v );
-					}
-					Object.defineProperty( cur.v, 'to', 
-							{
-								value: function() { return cur.v },
-								enumerable: false
-							});
-				} else {
-					Object.defineProperty( cur.v, 'to', 
-							{
-								value: this.manager.frame.convert,
-								enumerable: false
-							});
-				}
-			}
 		}
 	}
 	this.outstanding--;
@@ -745,20 +728,14 @@ AttributeTransformManager.prototype.processKeys = function ( attributes ) {
 		var cur = attributes[i];
 		var kv = new KV([], cur.v);
 		if ( !cur.v.to ) {
-			if ( cur.v.constructor === String ) {
-				cur.v = new String( cur.v );
-				Object.defineProperty( cur.v, 'to', 
-						{
-							value: function() { return cur.v },
-							enumerable: false
-						});
-			} else {
-				Object.defineProperty( cur.v, 'to', 
-						{
-							value: this.manager.frame.convert,
-							enumerable: false
-						});
+			if ( kv.v.constructor === String && ! kv.v.rank ) {
+				kv.v = new String( kv.v );
 			}
+			Object.defineProperty( kv.v, 'to', 
+					{
+						value: this.manager.frame.convert,
+						enumerable: false
+					});
 		}
 		this.kvs.push( kv );
 
@@ -841,7 +818,6 @@ AttributeTransformManager.prototype.processValues = function ( attributes ) {
 	}
 };
 
-
 /**
  * Callback for async argument value expansions
  */
@@ -859,8 +835,8 @@ AttributeTransformManager.prototype._returnAttributeValue = function ( ref, notY
 		if ( !res.to ) {
 			Object.defineProperty( res, 'to', 
 					{
-						value: function() { return res },
-				enumerable: false
+						value: function( format, cb )  { cb( this ) },
+						enumerable: false
 					});
 		}
 		if ( this.outstanding === 0 ) {
@@ -1064,8 +1040,8 @@ function Frame ( title, manager, args, parentFrame ) {
 		this.depth = 0;
 	}
 	var self = this;
-	this.convert = function ( format, cb ) {
-		self._convertThunk( this, format, cb );
+	this.convert = function ( format, cb, parentCB ) {
+		self._convertThunk( this, format, cb, parentCB );
 	};
 }
 
@@ -1079,9 +1055,14 @@ Frame.prototype.newChild = function ( title, manager, args ) {
 /**
  * Expand / convert a thunk (a chunk of tokens not yet fully expanded).
  */
-Frame.prototype._convertThunk = function ( chunk, format, cb ) {
+Frame.prototype._convertThunk = function ( chunk, format, cb, parentCB ) {
 	this.manager.env.dp( 'convertChunk', chunk );
 
+	if ( chunk.constructor === String ) {
+		// Plain text remains text. Nothing to do.
+		return cb( chunk );
+	}
+		
 	// Set up a conversion cache on the chunk, if it does not yet exist
 	if ( chunk.toCache === undefined ) {
 		Object.defineProperty( chunk, 'toCache', { value: {}, enumerable: false } );
@@ -1092,9 +1073,25 @@ Frame.prototype._convertThunk = function ( chunk, format, cb ) {
 		}
 	}
 
+	if ( format === 'text/plain/expanded' ) {
+		// Simply wrap normal expansion ;)
+		// XXX: Integrate this into the pipeline setup?
+		format = 'tokens/x-mediawiki/expanded';
+		var self = this,
+			origCB = cb;
+		cb = function( chunk ) { 
+			origCB( self.manager.env.tokensToString( chunk ) ); 
+		};
+	}
+
 	// XXX: Should perhaps create a generic from..to conversion map in
 	// mediawiki.parser.js, at least for forward conversions.
 	if ( format === 'tokens/x-mediawiki/expanded' ) {
+		if ( parentCB ) {
+			// Signal (potentially) asynchronous expansion to parent.
+			// If 
+			parentCB( { async: true } );
+		}
 		var pipeline = this.manager.pipeFactory.getPipeline( 
 				this.manager.attributeType || 'tokens/x-mediawiki', true
 				);
@@ -1109,12 +1106,6 @@ Frame.prototype._convertThunk = function ( chunk, format, cb ) {
 		pipeline.addListener( 'end', 
 				this.onThunkEvent.bind( this, cacheIt, accum, false, cb ) );
 		pipeline.process( chunk.concat( [new EOFTk()] ), this.title );
-	} else if ( format === 'text/plain/expanded' ) {
-		// expand, and then convert to string
-		var self = this;
-		chunk.to('tokens/x-mediawiki/expanded', function( chunk ) { 
-			cb( self.manager.env.tokensToString( chunk ) ); 
-		}); 
 	} else {
 		throw "Frame._convertThunk: Unsupported format " + format;
 	}

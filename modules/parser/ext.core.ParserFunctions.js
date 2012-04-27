@@ -43,12 +43,12 @@ ParserFunctions.prototype['pf_#if'] = function ( token, frame, cb, args ) {
 	}
 };
 
-ParserFunctions.prototype._switchLookupFallback = function ( kvs, key, dict, cb, v ) {
+ParserFunctions.prototype._switchLookupFallback = function ( frame, kvs, key, dict, cb, v ) {
 	var kv,
 		l = kvs.length;
 	this.manager.env.tp('swl');
 	this.manager.env.dp('_switchLookupFallback', kvs.length, key, v );
-	if ( v && key === this.manager.env.tokensToString( v ).trim() ) {
+	if ( v && key === v.trim() ) {
 		// found. now look for the next entry with a non-empty key.
 		this.manager.env.dp( 'switch found' );
 		for ( var j = 0; j < l; j++) {
@@ -69,16 +69,14 @@ ParserFunctions.prototype._switchLookupFallback = function ( kvs, key, dict, cb,
 			kv = kvs[i];
 			if ( kv.k.length || !kv.v.length ) {
 				continue;
-			} else if ( kv.v.constructor === String ) {
-				if ( kv.v.trim() !== key ) {
-					// Shortcut
-					continue;
-				} else {
-					return this._switchLookupFallback( kvs.slice(i), key, dict, cb, kv.v );
-				}
 			} else {
-				return kv.v.to('tokens/x-mediawiki/expanded', 
-						this._switchLookupFallback.bind( this, kvs.slice(i), key, dict, cb ) );
+				if ( ! kv.v.to ) {
+					this.manager.env.ap( kv.v );
+					console.trace();
+				}
+				return kv.v.to( 'text/plain/expanded', 
+						this._switchLookupFallback.bind( this, frame, kvs.slice(i), key, dict, cb ),
+						cb );
 			}
 		}
 		// value not found!
@@ -109,8 +107,7 @@ ParserFunctions.prototype['pf_#switch'] = function ( token, frame, cb, args ) {
 		this.env.dp( 'switch found: ', target, dict, ' res=', dict[target] );
 		cb ( {tokens: dict[target] } );
 	} else {
-		cb ( { async: true } );
-		this._switchLookupFallback( args, target, dict, cb );
+		this._switchLookupFallback( frame, args, target, dict, cb );
 	}
 };
 
@@ -120,12 +117,7 @@ ParserFunctions.prototype['pf_#ifeq'] = function ( token, frame, cb, args ) {
 		cb( {} );
 	} else {
 		var b = args[1].v;
-		if ( b.constructor === String ) {
-			this._ifeq_worker( cb, args, b );
-		} else {
-			cb( {async: true} );
-			args[1].v.to('text/plain/expanded', this._ifeq_worker.bind( this, cb, args ) );
-		}
+		b.to( 'text/plain/expanded', this._ifeq_worker.bind( this, cb, args ), cb );
 	}
 };
 
@@ -156,7 +148,7 @@ ParserFunctions.prototype['pf_#expr'] = function ( token, frame, cb, args ) {
 };
 
 ParserFunctions.prototype['pf_#ifexpr'] = function ( token, frame, cb, args ) {
-	this.env.dp( '#ifexp: ' + JSON.stringify( args ) );
+	this.env.dp( '#ifexp: ', args );
 	var res = null,
 		target = args[0].k;
 	if ( target ) {
