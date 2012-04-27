@@ -699,16 +699,20 @@ AttributeTransformManager.prototype.processKeys = function ( attributes ) {
 	for ( var i = 0, l = attributes.length; i < l; i++ ) {
 		var cur = attributes[i];
 		var kv = new KV([], cur.v);
-		if ( !cur.v.to ) {
-			if ( kv.v.constructor === String && ! kv.v.rank ) {
+		if ( kv.v.to ) {
+			if ( kv.v.constructor === String ) {
 				kv.v = new String( kv.v );
+			} else {
+				kv.v = kv.v.slice();
 			}
-			Object.defineProperty( kv.v, 'to', 
-					{
-						value: this.manager.frame.convert,
-						enumerable: false
-					});
+		} else if ( kv.v.constructor === String ) {
+			kv.v = new String( kv.v );
 		}
+		Object.defineProperty( kv.v, 'to', 
+				{
+					value: this.manager.frame.convert,
+			enumerable: false
+				});
 		this.kvs.push( kv );
 
 		if ( cur.k.constructor === Array && cur.k.length && ! cur.k.to ) {
@@ -804,13 +808,20 @@ AttributeTransformManager.prototype._returnAttributeValue = function ( ref, notY
 		// Add the 'to' conversion method to the chunk for easy conversion in
 		// later processing (parser functions and template argument
 		// processing).
-		if ( !res.to ) {
-			Object.defineProperty( res, 'to', 
-					{
-						value: function( format, cb )  { cb( this ); },
-						enumerable: false
-					});
-		}
+		if ( res.to ) {
+			if ( res.constructor === String ) {
+				res = new String( res );
+			} else {
+				res = res.slice();
+			}
+		} else if ( res.constructor === String ) {
+			res = new String( res );
+		}	
+		Object.defineProperty( res, 'to', 
+				{
+					value: function( format, cb )  { cb( this ); },
+					enumerable: false
+				});
 		if ( this.outstanding === 0 ) {
 			this.callback( this.kvs );
 		}

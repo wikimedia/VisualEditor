@@ -103,7 +103,7 @@ ParserFunctions.prototype['pf_#switch'] = function ( token, frame, cb, args ) {
 	// create a dict from the remaining args
 	args.shift();
 	var dict = args.dict();
-	if ( dict[target] !== undefined ) {
+	if ( target && dict[target] !== undefined ) {
 		this.env.dp( 'switch found: ', target, dict, ' res=', dict[target] );
 		cb ( {tokens: dict[target] } );
 	} else {
