@@ -1109,6 +1109,12 @@ Frame.prototype._convertThunk = function ( chunk, format, cb ) {
 		pipeline.addListener( 'end', 
 				this.onThunkEvent.bind( this, cacheIt, accum, false, cb ) );
 		pipeline.process( chunk.concat( [new EOFTk()] ), this.title );
+	} else if ( format === 'text/plain/expanded' ) {
+		// expand, and then convert to string
+		var self = this;
+		chunk.to('tokens/x-mediawiki/expanded', function( chunk ) { 
+			cb( self.manager.env.tokensToString( chunk ) ); 
+		}); 
 	} else {
 		throw "Frame._convertThunk: Unsupported format " + format;
 	}

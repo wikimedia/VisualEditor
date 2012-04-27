@@ -72,7 +72,7 @@ ParserFunctions.prototype._switchLookupFallback = function ( kvs, key, dict, cb,
 			} else if ( kv.v.constructor === String ) {
 				if ( kv.v.trim() !== key ) {
 					// Shortcut
-					continue
+					continue;
 				} else {
 					return this._switchLookupFallback( kvs.slice(i), key, dict, cb, kv.v );
 				}
@@ -119,13 +119,24 @@ ParserFunctions.prototype['pf_#ifeq'] = function ( token, frame, cb, args ) {
 	if ( args.length < 3 ) {
 		cb( {} );
 	} else {
-		if ( args[0].k.trim() === this.env.tokensToString( args[1].v ).trim() ) {
-			cb( { tokens: ( args[2] && this._rejoinKV( args[2] ) || [] ) } );
+		var b = args[1].v;
+		if ( b.constructor === String ) {
+			this._ifeq_worker( cb, args, b );
 		} else {
-			cb( { tokens: ( args[3] && this._rejoinKV( args[3] ) || [] ) } );
+			cb( {async: true} );
+			args[1].v.to('text/plain/expanded', this._ifeq_worker.bind( this, cb, args ) );
 		}
 	}
 };
+
+ParserFunctions.prototype._ifeq_worker = function ( cb, args, b ) {
+	if ( args[0].k.trim() === b.trim() ) {
+		cb( { tokens: ( args[2] && this._rejoinKV( args[2] ) || [] ) } );
+	} else {
+		cb( { tokens: ( args[3] && this._rejoinKV( args[3] ) || [] ) } );
+	}
+};
+
 
 ParserFunctions.prototype['pf_#expr'] = function ( token, frame, cb, args ) {
 	var res,
