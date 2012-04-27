@@ -699,20 +699,22 @@ AttributeTransformManager.prototype.processKeys = function ( attributes ) {
 	for ( var i = 0, l = attributes.length; i < l; i++ ) {
 		var cur = attributes[i];
 		var kv = new KV([], cur.v);
-		if ( kv.v.to ) {
-			if ( kv.v.constructor === String ) {
+		if ( kv.v.to !== this.manager.frame.convert ) {
+			if ( kv.v.to ) {
+				if ( kv.v.constructor === String ) {
+					kv.v = new String( kv.v );
+				} else {
+					kv.v = kv.v.slice();
+				}
+			} else if ( kv.v.constructor === String ) {
 				kv.v = new String( kv.v );
-			} else {
-				kv.v = kv.v.slice();
 			}
-		} else if ( kv.v.constructor === String ) {
-			kv.v = new String( kv.v );
+			Object.defineProperty( kv.v, 'to', 
+					{
+						value: this.manager.frame.convert,
+				enumerable: false
+					});
 		}
-		Object.defineProperty( kv.v, 'to', 
-				{
-					value: this.manager.frame.convert,
-			enumerable: false
-				});
 		this.kvs.push( kv );
 
 		if ( cur.k.constructor === Array && cur.k.length && ! cur.k.to ) {
@@ -808,20 +810,22 @@ AttributeTransformManager.prototype._returnAttributeValue = function ( ref, notY
 		// Add the 'to' conversion method to the chunk for easy conversion in
 		// later processing (parser functions and template argument
 		// processing).
-		if ( res.to ) {
-			if ( res.constructor === String ) {
+		if ( res.to !== this.manager.frame.convert ) {
+			if ( res.to ) {
+				if ( res.constructor === String ) {
+					res = new String( res );
+				} else {
+					res = res.slice();
+				}
+			} else if ( res.constructor === String ) {
 				res = new String( res );
-			} else {
-				res = res.slice();
-			}
-		} else if ( res.constructor === String ) {
-			res = new String( res );
-		}	
-		Object.defineProperty( res, 'to', 
-				{
-					value: function( format, cb )  { cb( this ); },
-					enumerable: false
-				});
+			}	
+			Object.defineProperty( res, 'to', 
+					{
+						value: function( format, cb )  { cb( this ); },
+						enumerable: false
+					});
+		}
 		if ( this.outstanding === 0 ) {
 			this.callback( this.kvs );
 		}
@@ -1062,8 +1066,11 @@ Frame.prototype._convertThunk = function ( chunk, format, cb, parentCB ) {
 		format = 'tokens/x-mediawiki/expanded';
 		var self = this,
 			origCB = cb;
-		cb = function( chunk ) { 
-			origCB( self.manager.env.tokensToString( chunk ) ); 
+		cb = function( resChunk ) { 
+			var res = self.manager.env.tokensToString( resChunk );
+			// cache the result
+			chunk.toCache['text/plain/expanded'] = res;
+			origCB( res ); 
 		};
 	}
 

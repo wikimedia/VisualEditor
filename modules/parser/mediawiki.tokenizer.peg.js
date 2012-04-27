@@ -67,7 +67,7 @@ PegTokenizer.prototype.process = function( text, cacheKey ) {
 		this.tokenizer.tokenize = this.tokenizer.parse;
 
 		// Also, while we are at it, create a tokenizer cache.
-		PegTokenizer.prototype.cache = LRU(20);
+		PegTokenizer.prototype.cache = LRU(25);
 	}
 	if ( this.canCache ) {
 		var maybeCached = this.cache.get(cacheKey);
