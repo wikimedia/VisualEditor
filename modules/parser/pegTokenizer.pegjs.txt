@@ -520,7 +520,7 @@ block_line
       ) { 
           return st.concat(r); 
       }
-  / pre_indent
+  / ! { return stops.counters.nopre } pre_indent
   / pre
 
 /*
@@ -846,14 +846,14 @@ tplarg_or_template
     )
 
 template
-  = "{{" (newline / space)* 
-    target:template_name
-    params:(( newline / space )* "|"
-                r:( (newline / space )* &"|" { return new KV( '', '') } // empty argument
+  = "{{" nl_comment_space*
+    target:template_param_value
+    params:(nl_comment_space* "|"
+                r:( nl_comment_space* &"|" { return new KV( '', '') } // empty argument
                     / p:template_param { return p } 
                   ) { return r } 
             )* 
-    ( newline / space )* 
+    nl_comment_space* 
     "}}" {
       // Insert target as first positional attribute, so that it can be
       // generically expanded. The TemplateHandler then needs to shift it out
@@ -871,15 +871,15 @@ template
 
 tplarg 
   = "{{{" 
-    name:template_name?
-    params:( ( space / newline )* 
-              '|' ( space / newline )*  
+    name:template_param_value?
+    params:( nl_comment_space* 
+              '|' nl_comment_space*  
                r:( 
                     &'}}' { return new KV( '', '') }
                     / p:template_param { return p } 
                ) { return r }
            )* 
-    ( space / newline )* 
+    nl_comment_space* 
     "}}}" {
       name = flatten( name );
       params.unshift( { k: '', v: name } );
@@ -918,8 +918,6 @@ template_param
   / & [|}] { return new KV([], []); }
 
 
-template_name = template_param_value
-
 // FIXME: handle template args and templates in key! (or even parser functions?)
 template_param_name
   = & { return stops.push( 'equal', true ) }
@@ -934,14 +932,15 @@ template_param_name
   //= h:( !"}}" x:([^=|\n]) { return x } )* { return h.join(''); }
 
 template_param_value
-  = & { return stops.push( 'equal', false ) }
+  = & { stops.inc( 'nopre' ); return stops.push( 'equal', false ) }
     tpt:template_param_text
     {
+        stops.dec( 'nopre' );
         stops.pop( 'equal' );
         //console.warn( 'template param value matched: ' + pp( tpt ) );
         return tpt;
     }
-  / & { return stops.pop( 'equal' ) }
+  / & { stops.dec( 'nopre' ); return stops.pop( 'equal' ) }
 
 template_param_text
   = & { /*console.warn( 'tpt: ' + 
@@ -1880,6 +1879,8 @@ sol
 
         return nl.concat(cn, niToken);
     }
+
+nl_comment_space = newline / comment / space
 
 /**
  * noinclude / includeonly / onlyinclude productions. These are normally

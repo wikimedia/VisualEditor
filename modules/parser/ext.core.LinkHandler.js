@@ -328,7 +328,8 @@ ExternalLinkHandler.prototype.rank = 1.15;
 ExternalLinkHandler.prototype._imageExtensions = {
 	'jpg': true,
 	'png': true,
-	'gif': true
+	'gif': true,
+	'svg': true
 };
 
 ExternalLinkHandler.prototype._isImageLink = function ( href ) {
