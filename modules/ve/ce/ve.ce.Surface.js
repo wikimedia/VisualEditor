@@ -17,8 +17,6 @@ ve.ce.Surface = function( $container, model ) {
 	
 	// Properties
 	this.model = model;
-	this.currentSelection = new ve.Range();
-	this.selectionDirection = null;
 	this.documentView = new ve.ce.DocumentNode( this.model.getDocument(), this );
 	this.contextView = null;
 	this.$ = $container
@@ -109,16 +107,9 @@ ve.ce.Surface.prototype.onCompositionEnd = function( e ) {
 };
 
 ve.ce.Surface.prototype.onRangeChange = function( e ) {
-	/*	Save selection direction only
-		if selection start and end have changed */
-	if( e.new && e.old ) {
-		if( e.new.start !== e.old.start || e.new.end !== e.old.end ) {
-			this.selectionDirection = ( e.new.to < e.new.from ) ? -1 : 1;	
-		}
-	}
-
 	if ( e.new !== null ) {
-		/* Set selection in the model */
+		/*	Set selection in the model so you can always get current selection with
+			this.model.getSelection() */
 		this.model.setSelection( e.new );
 
 		/* Hide or show context view icon */
@@ -714,13 +705,13 @@ ve.ce.Surface.prototype.showCursor = function( offset ) {
 ve.ce.Surface.prototype.showSelection = function( range ) {
 	var	start = this.getDOMNodeAndOffset( range.start ),
 		stop = this.getDOMNodeAndOffset( range.end ),
-		sel = rangy.getSelection();
+		rangySel = rangy.getSelection(),
+		rangyRange = rangy.createRange();
 
-	// FIXME: Shadowing range, really?
-	range = rangy.createRange();
-	range.setStart( start.node, start.offset );
-	range.setEnd( stop.node, stop.offset );
-	sel.setSingleRange( range );
+	rangyRange.setStart( start.node, start.offset );
+	rangyRange.setEnd( stop.node, stop.offset );
+	rangySel.removeAllRanges();
+	rangySel.addRange( rangyRange, range.start !== range.from );
 };
 
 ve.ce.Surface.getLeafNode = function( elem ) {
