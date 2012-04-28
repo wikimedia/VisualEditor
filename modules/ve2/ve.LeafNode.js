@@ -8,3 +8,7 @@
 ve.LeafNode = function() {
 	//
 };
+
+ve.LeafNode.prototype.canHaveChildren = function() {
+	return false;
+};

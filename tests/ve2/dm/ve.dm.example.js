@@ -188,7 +188,7 @@ ve.dm.example.tree = [
  * @method
  * @param {ve.dm.DocumentNode} root Document node to reference
  */
-ve.dm.example.getOffsets = function( root ) {
+ve.dm.example.getOffsetMap = function( root ) {
 	/**
 	 * Looks up a value in a node tree.
 	 * 
@@ -238,7 +238,7 @@ ve.dm.example.getOffsets = function( root ) {
 		// </p>
 		lookup( 1, 0, 0, 1, 0 ), // 16 - listItem
 		// <ul>
-		lookup( 1, 0, 0, 1 ), // 17 - list
+		lookup( 1, 0, 0, 1, 0, 1 ), // 17 - list
 		// <li>
 		lookup( 1, 0, 0, 1, 0, 1, 0 ), // 18 - listItem
 		// <p>

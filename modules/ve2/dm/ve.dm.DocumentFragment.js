@@ -31,32 +31,36 @@ ve.dm.DocumentFragment = function( data, parentDocument ) {
 	var node,
 		textLength = 0,
 		inTextNode = false,
-		// TODO document this stack of stacks
+		// Stack of stacks, each containing a
 		stack = [[this.rootNode], []],
 		children,
 		openingIndex,
 		currentStack = stack[1],
 		parentStack = stack[0],
 		currentNode = this.rootNode;
-
 	for ( var i = 0, length = this.data.length; i < length; i++ ) {
-		// Set the node reference for this offset in the offset cache
-		// This looks simple, but there are three cases that result in the same thing:
-		// 1. data[i] is an opening, so offset i is before the opening, so we
-		//    need to point to the parent of the opened element. currentNode
-		//    will be set to the opened element later, but right now it's
-		//    still set to the parent of the opened element.
-		// 2. data[i] is a closing, so offset i is before the closing, so we
-		//    need to point to the closed element. currentNode will be set to
-		//    the parent of the closed element later, but right now it's still
-		//    set to the closed element
-		// 3. data[i] is content, so offset i is in the middle of an element,
-		//    so obviously we need currentNode, which won't be changed by this
-		//    iteration
-		this.offsetMap[i] = currentNode;
-
+		/*
+		 * Set the node reference for this offset in the offset cache.
+		 * 
+		 * This looks simple, but there are three cases that result in the same thing:
+		 * 
+		 *   1. data[i] is an opening, so offset i is before the opening, so we need to point to the
+		 *      parent of the opened element. currentNode will be set to the opened element later,
+		 *      but right now its still set to the parent of the opened element.
+		 *   2. data[i] is a closing, so offset i is before the closing, so we need to point to the
+		 *      closed element. currentNode will be set to the parent of the closed element later,
+		 *      but right now it's still set to the closed element.
+		 *   3. data[i] is content, so offset i is in the middle of an element, so obviously we need
+		 *      currentNode, which won't be changed by this iteration.
+		 * 
+		 * We want to populate the offsetMap with branches only, but we've just written the actual
+		 * node that lives at this offset. So if it's a leaf node, change it to its parent.
+		 */
+		this.offsetMap[i] = currentNode.canHaveChildren() ?
+			currentNode : parentStack[parentStack.length - 1];
+		// Infer that if an item in the linear model has a type attribute than it must be an element
 		if ( this.data[i].type === undefined ) {
-			// Text node
+			// Text node opening
 			if ( !inTextNode ) {
 				// Create a lengthless text node
 				node = new ve.dm.TextNode();
@@ -71,15 +75,16 @@ ve.dm.DocumentFragment = function( data, parentDocument ) {
 			// Track the length
 			textLength++;
 		} else {
+			// Text node closing
 			if ( inTextNode ) {
 				// Finish the text node by setting the length
 				currentNode.setLength( textLength );
-				// But the state variables back as they were
+				// Put the state variables back as they were
 				currentNode = parentStack[parentStack.length - 1];
 				inTextNode = false;
 				textLength = 0;
 			}
-
+			// Element open/close
 			if ( this.data[i].type.charAt( 0 ) != '/' ) {
 				// Branch or leaf node opening
 				// Create a childless node
@@ -88,20 +93,22 @@ ve.dm.DocumentFragment = function( data, parentDocument ) {
 				node.setRoot( root );
 				// Put the childless node on the current inner stack
 				currentStack.push( node );
-				// Create a new inner stack for this node
-				parentStack = currentStack;
-				currentStack = [];
-				stack.push( currentStack );
+				if ( node.canHaveChildren() ) {
+					// Create a new inner stack for this node
+					parentStack = currentStack;
+					currentStack = [];
+					stack.push( currentStack );
+				}
 				currentNode = node;
 			} else {
 				// Branch or leaf node closing
-				// Pop this node's inner stack from the outer stack. It'll have all of the node's
-				// child nodes fully constructed 
-				children = stack.pop();
-				currentStack = parentStack;
-				parentStack = stack[stack.length - 2];
-				// Attach the children to the node (but don't try and splice 0 children into a leaf)
-				if ( children.length ) {
+				if ( currentNode.canHaveChildren() ) {
+					// Pop this node's inner stack from the outer stack. It'll have all of the node's
+					// child nodes fully constructed 
+					children = stack.pop();
+					currentStack = parentStack;
+					parentStack = stack[stack.length - 2];
+					// Attach the children to the node
 					ve.batchSplice( currentNode, 0, 0, children );
 				}
 				currentNode = parentStack[parentStack.length - 1];

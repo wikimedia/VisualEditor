@@ -34,3 +34,7 @@ ve.BranchNode.prototype.getChildren = function() {
 ve.BranchNode.prototype.indexOf = function( node ) {
 	return ve.inArray( node, this.children );
 };
+
+ve.BranchNode.prototype.canHaveChildren = function() {
+	return true;
+};
