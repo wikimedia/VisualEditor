@@ -49,7 +49,7 @@ ve.dm.Document.prototype.rebuildNodes = function( parent, index, numNodes, offse
 	// Compute the length of the old nodes (so we can splice their offsets out of the offset map)
 	var oldLength = 0;
 	for ( var i = index; i < index + numNodes; i++ ) {
-		oldLength += parent.children[i].getElementLength();
+		oldLength += parent.children[i].getOuterLength();
 	}
 	// Get a slice of the document where it's been changed
 	var data = this.data.slice( offset, offset + newLength );

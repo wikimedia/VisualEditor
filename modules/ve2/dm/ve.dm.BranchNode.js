@@ -25,6 +25,16 @@ ve.dm.BranchNode = function( type, children, attributes ) {
 /* Methods */
 
 /**
+ * Gets the outer length, including any opening/closing elements.
+ * 
+ * @method
+ * @returns {Integer} Length of the entire node
+ */
+ve.dm.BranchNode.prototype.getOuterLength = function() {
+	return this.length + 2;
+};
+
+/**
  * Sets the root node to this and all of its descendants, recursively.
  * 
  * @method
