@@ -195,6 +195,25 @@ ve.dm.example.tree = new ve.dm.DocumentNode( [
 /* Methods */
 
 /**
+ * Asserts that two node trees are equavilant.
+ * 
+ * This will perform 4 assertions on each branch node and 3 assertions on each leaf node.
+ * 
+ * @method
+ */
+ve.dm.example.nodeTreeEqual = function( a, b ) {
+	equal( a.getType(), b.getType(), 'type match (' + a.getType() + ')' );
+	equal( a.getLength(), b.getLength(), 'length match' );
+	equal( a.canHaveChildren(), b.canHaveChildren(), 'children rules match' );
+	if ( a.children ) {
+		equal( a.children.length, b.children.length, 'children count match' );
+		for ( var i = 0; i < a.children.length; i++ ) {
+			ve.dm.example.nodeTreeEqual( a.children[i], b.children[i] );
+		}
+	}
+};
+
+/**
  * Creates an offset map that references a node tree.
  * 
  * This is part of what a ve.dm.DocumentFragment generates when given linear data.

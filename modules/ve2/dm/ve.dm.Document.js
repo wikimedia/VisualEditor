@@ -54,9 +54,9 @@ ve.dm.Document.prototype.rebuildNodes = function( parent, index, numNodes, offse
 	// Get a slice of the document where it's been changed
 	var data = this.data.slice( offset, offset + newLength );
 	// Build document fragment from data
-	var fragment = new ve.dm.DocumentFragment( this, data );
+	var fragment = new ve.dm.DocumentFragment( data, this );
 	// Get generated child nodes from the document fragment
-	var nodes = fragment.getRootNode().getChildren();
+	var nodes = fragment.getDocumentNode().getChildren();
 	// Replace nodes in the model tree
 	ve.batchSplice( parent, index, numNodes, nodes );
 	// Update offset map
