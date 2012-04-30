@@ -141,7 +141,7 @@ ve.dm.example.data = [
  * 
  * This is part of what a ve.dm.DocumentFragment generates when given linear data.
  */
-ve.dm.example.tree = [
+ve.dm.example.tree = new ve.dm.DocumentNode( [
 	// Heading with "abc"
 	new ve.dm.HeadingNode( [new ve.dm.TextNode( 3 )], ve.dm.example.data[0].attributes ),
 	new ve.dm.TableNode( [
@@ -159,24 +159,24 @@ ve.dm.example.tree = [
 						new ve.dm.ListItemNode( [
 							new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] )
 						] )
-					], ve.dm.example.data[17].attributes )
+					], ve.dm.example.data[16].attributes )
 				], ve.dm.example.data[11].attributes  ),
 				new ve.dm.ListNode( [
 					// Numbered list item with "g"
 					new ve.dm.ListItemNode( [
 						new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] )
 					] )
-				], ve.dm.example.data[26].attributes )
+				], ve.dm.example.data[25].attributes )
 			] )
 		] )
 	] ),
 	// Preformatted with "h[image.png]i"
 	new ve.dm.PreformattedNode( [
 		new ve.dm.TextNode( 1 ),
-		new ve.dm.ImageNode( [], ve.dm.example.data[38].attributes ),
+		new ve.dm.ImageNode( [], ve.dm.example.data[37].attributes ),
 		new ve.dm.TextNode( 1 )
 	] )
-];
+] );
 
 /* Methods */
 
