@@ -14,6 +14,9 @@ ve.dm.ListNode = function( children, attributes ) {
 
 /* Static Members */
 
+/**
+ * @see ve.dm.NodeFactory
+ */
 ve.dm.ListNode.rules = {
 	'canHaveChildren': true,
 	'canHaveGrandchildren': true,

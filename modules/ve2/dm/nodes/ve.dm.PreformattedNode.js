@@ -14,6 +14,9 @@ ve.dm.PreformattedNode = function( children, attributes ) {
 
 /* Static Members */
 
+/**
+ * @see ve.dm.NodeFactory
+ */
 ve.dm.PreformattedNode.rules = {
 	'canHaveChildren': true,
 	'canHaveGrandchildren': false,

@@ -13,6 +13,9 @@ ve.dm.TextNode = function( length ) {
 
 /* Static Members */
 
+/**
+ * @see ve.dm.NodeFactory
+ */
 ve.dm.TextNode.rules = {
 	'canHaveChildren': false,
 	'canHaveGrandchildren': false,

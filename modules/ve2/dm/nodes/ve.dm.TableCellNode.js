@@ -14,6 +14,9 @@ ve.dm.TableCellNode = function( children, attributes ) {
 
 /* Static Members */
 
+/**
+ * @see ve.dm.NodeFactory
+ */
 ve.dm.TableCellNode.rules = {
 	'canHaveChildren': true,
 	'canHaveGrandchildren': true,
