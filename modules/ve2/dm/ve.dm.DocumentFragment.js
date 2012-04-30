@@ -10,18 +10,18 @@ ve.dm.DocumentFragment = function( data, parentDocument ) {
 	// Properties
 	this.parentDocument = parentDocument;
 	this.data = data || [];
-	this.rootNode = new ve.dm.DocumentNode();
+	this.documentNode = new ve.dm.DocumentNode();
 	this.offsetMap = new Array( this.data.length );
 
 	// Initialization
-	var root = parentDocument ? parentDocument.getRootNode() : this.rootNode;
+	var root = parentDocument ? parentDocument.getDocumentNode() : this.documentNode;
 	/*
 	 * The offsetMap is always one element longer than data because it includes a reference to the
 	 * root node at the offset just past the end. To make population work correctly, we have to
 	 * start out with that one extra reference.
 	 */
-	this.offsetMap.push( this.rootNode );
-	this.rootNode.setRoot( root );
+	this.offsetMap.push( this.documentNode );
+	this.documentNode.setRoot( root );
 	/*
 	 * Build a tree of nodes and nodes that will be added to them after a full scan is complete,
 	 * then from the bottom up add nodes to their potential parents. This avoids massive length
@@ -32,12 +32,12 @@ ve.dm.DocumentFragment = function( data, parentDocument ) {
 		textLength = 0,
 		inTextNode = false,
 		// Stack of stacks, each containing a
-		stack = [[this.rootNode], []],
+		stack = [[this.documentNode], []],
 		children,
 		openingIndex,
 		currentStack = stack[1],
 		parentStack = stack[0],
-		currentNode = this.rootNode;
+		currentNode = this.documentNode;
 	for ( var i = 0, length = this.data.length; i < length; i++ ) {
 		/*
 		 * Set the node reference for this offset in the offset cache.
@@ -115,9 +115,9 @@ ve.dm.DocumentFragment = function( data, parentDocument ) {
 			}
 		}
 	}
-	// The end state is stack = [ [this.rootNode] [ array, of, its, children ] ]
+	// The end state is stack = [ [this.documentNode] [ array, of, its, children ] ]
 	// so attach all nodes in stack[1] to the root node
-	ve.batchSplice( this.rootNode, 0, 0, stack[1] );
+	ve.batchSplice( this.documentNode, 0, 0, stack[1] );
 };
 
 /* Methods */
@@ -148,8 +148,8 @@ ve.dm.DocumentFragment.prototype.getOffsetMap = function() {
 	return this.offsetMap;
 };
 
-ve.dm.DocumentFragment.prototype.getRootNode = function() {
-	return this.rootNode;
+ve.dm.DocumentFragment.prototype.getDocumentNode = function() {
+	return this.documentNode;
 };
 
 ve.dm.DocumentFragment.prototype.getNodeFromOffset = function( offset ) {
