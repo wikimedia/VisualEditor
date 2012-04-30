@@ -28,8 +28,3 @@ test( 'indexOf', 4, function() {
 	strictEqual( node4.indexOf( node2 ), 1 );
 	strictEqual( node4.indexOf( node3 ), 2 );
 } );
-
-test( 'canHaveChildren', 1, function() {
-	var node = new ve.BranchNodeStub();
-	equal( node.canHaveChildren(), true );
-} );

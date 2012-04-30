@@ -2,39 +2,35 @@ module( 've.NodeFactory' );
 
 /* Stubs */
 
-ve.NodeStub1 = function( content, attributes ) {
-	this.content = content;
-	this.attributes = attributes;
-	this.type = 'nodestub1';
-};
-
-ve.NodeStub2 = function( content, attributes ) {
-	this.content = content;
-	this.attributes = attributes;
-	this.type = 'nodestub2';
+ve.NodeFactoryNodeStub = function( a, b ) {
+	this.a = a;
+	this.b = b;
 };
 
 /* Tests */
 
-test( 've.NodeFactory', function() {
+test( 'register', 1, function() {
 	var factory = new ve.NodeFactory();
-	
-	factory.register( 'nodestub1', ve.NodeStub1 );
-	var ns1 = factory.createNode( 'nodestub1', 42, { 'foo': 'bar' } );
-	deepEqual( ns1, new ve.NodeStub1( 42, { 'foo': 'bar' } ), 'createNode creates a node ' +
-		'using the registered constructor and passes through arguments' );
-	
-	deepEqual( factory.createNode( 'nodestub2', 23, { 'bar': 'baz' } ), null, 'createNode ' +
-		'returns null for unregistered node types' );
-	factory.register( 'nodestub2', ve.NodeStub2 );
-	var ns2 = factory.createNode( 'nodestub2', 16, { 'baz': 'quux' } );
-	deepEqual( ns2, new ve.NodeStub2( 16, { 'baz': 'quux' } ), 'createNode creates a node ' +
-		'with a previously unregistered type' );
-	
 	raises( function() {
-			factory.register( 'nodestub3', 'nodestub3' );
+			factory.register( 'stub', 'not-a-function' );
 		},
 		/^Constructor must be a function, cannot be a string$/,
-		'register throws an exception when trying to register a string as a constructor'
+		'throws an exception when trying to register a non-function value as a constructor'
+	);
+} );
+
+test( 'create', 2, function() {
+	var factory = new ve.NodeFactory();
+	raises( function() {
+			factory.createNode( 'stub', 23, { 'bar': 'baz' } );
+		},
+		/^Unknown node type: stub$/,
+		'throws an exception when trying to create a node of an unregistered type'
+	);
+	factory.register( 'stub', ve.NodeFactoryNodeStub );
+	deepEqual(
+		factory.createNode( 'stub', 16, { 'baz': 'quux' } ),
+		new ve.NodeFactoryNodeStub( 16, { 'baz': 'quux' } ),
+		'creates nodes of a registered type and passes through arguments'
 	);
 } );

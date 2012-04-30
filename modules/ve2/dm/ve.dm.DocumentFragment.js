@@ -56,7 +56,7 @@ ve.dm.DocumentFragment = function( data, parentDocument ) {
 		 * We want to populate the offsetMap with branches only, but we've just written the actual
 		 * node that lives at this offset. So if it's a leaf node, change it to its parent.
 		 */
-		this.offsetMap[i] = currentNode.canHaveChildren() ?
+		this.offsetMap[i] = ve.dm.factory.canNodeHaveChildren( currentNode.getType() ) ?
 			currentNode : parentStack[parentStack.length - 1];
 		// Infer that if an item in the linear model has a type attribute than it must be an element
 		if ( this.data[i].type === undefined ) {
@@ -93,7 +93,7 @@ ve.dm.DocumentFragment = function( data, parentDocument ) {
 				node.setRoot( root );
 				// Put the childless node on the current inner stack
 				currentStack.push( node );
-				if ( node.canHaveChildren() ) {
+				if ( ve.dm.factory.canNodeHaveChildren( node.getType() ) ) {
 					// Create a new inner stack for this node
 					parentStack = currentStack;
 					currentStack = [];
@@ -102,7 +102,7 @@ ve.dm.DocumentFragment = function( data, parentDocument ) {
 				currentNode = node;
 			} else {
 				// Branch or leaf node closing
-				if ( currentNode.canHaveChildren() ) {
+				if ( ve.dm.factory.canNodeHaveChildren( currentNode.getType() ) ) {
 					// Pop this node's inner stack from the outer stack. It'll have all of the node's
 					// child nodes fully constructed 
 					children = stack.pop();

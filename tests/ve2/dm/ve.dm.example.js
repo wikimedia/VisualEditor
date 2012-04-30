@@ -204,7 +204,11 @@ ve.dm.example.tree = new ve.dm.DocumentNode( [
 ve.dm.example.nodeTreeEqual = function( a, b ) {
 	equal( a.getType(), b.getType(), 'type match (' + a.getType() + ')' );
 	equal( a.getLength(), b.getLength(), 'length match' );
-	equal( a.canHaveChildren(), b.canHaveChildren(), 'children rules match' );
+	equal(
+		ve.dm.factory.canNodeHaveChildren( a.getType() ),
+		ve.dm.factory.canNodeHaveChildren( b.getType() ),
+		'children rules match'
+	);
 	if ( a.children ) {
 		equal( a.children.length, b.children.length, 'children count match' );
 		for ( var i = 0; i < a.children.length; i++ ) {

@@ -34,13 +34,3 @@ ve.BranchNode.prototype.getChildren = function() {
 ve.BranchNode.prototype.indexOf = function( node ) {
 	return ve.inArray( node, this.children );
 };
-
-/**
- * Checks if this node can have children.
- * 
- * @method
- * @returns {Boolean} Always true
- */
-ve.BranchNode.prototype.canHaveChildren = function() {
-	return true;
-};

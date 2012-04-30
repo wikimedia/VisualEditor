@@ -13,10 +13,12 @@ ve.NodeFactory = function() {
 /**
  * Register a node type with the factory.
  * 
- * The constructor will be called as constructor( contents, attributes ), see createNode().
+ * Arguments will be passed through directly to the constructor.
+ * @see {ve.NodeFactory.prototype.createNode}
  * 
  * @param {String} type Node type
  * @param {Function} constructor Node constructor subclassing ve.Node
+ * @throws 'Constructor must be a function, cannot be a string'
  */
 ve.NodeFactory.prototype.register = function( type, constructor ) {
 	if ( typeof constructor !== 'function' ) {
@@ -26,19 +28,24 @@ ve.NodeFactory.prototype.register = function( type, constructor ) {
 };
 
 /**
- * Create a node based on a type. type is used to look up the constructor to use, contents and
- * attributes are passed to the constructor.
+ * Create a node based on a type.
+ * 
+ * Type is used to look up the constructor to use, while all additional arguments are passed to the
+ * constructor directly, so leaving one out will pass an undefined to the constructor.
+ * 
+ * WARNING: JavaScript does not allow using new and .apply together, so we just pass through 2
+ * arguments here since we know we only need that many at this time. If we need more in the future
+ * we should change this to suit that use case. Because of undefined pass through, there's no harm
+ * in adding more.
  * 
  * @param {String} type Node type
- * @param {Array|Number} contents Either an array of child nodes (for non-leaf nodes)
- *                                or the length (for leaf nodes)
- * @param {Object} [attributes] Attribute key/value pairs
- * @returns {ve.Node|null} The node object, or null if type is not a registered node type.
+ * @param {Mixed} [...] Up to 2 additional arguments to pass through to the constructor
+ * @returns {ve.Node} The new node object
+ * @throws 'Unknown node type'
  */
-ve.NodeFactory.prototype.createNode = function( type, contents, attributes ) {
+ve.NodeFactory.prototype.createNode = function( type, a, b ) {
 	if ( type in this.registry ) {
-		return new this.registry[type]( contents, attributes );
-	} else {
-		return null;
+		return new this.registry[type]( a, b );
 	}
+	throw 'Unknown node type: ' + type;
 };
