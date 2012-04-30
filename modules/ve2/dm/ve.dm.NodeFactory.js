@@ -1,5 +1,5 @@
 /**
- * Generic node factory.
+ * DataModel node factory.
  * 
  * @class
  * @extends {ve.NodeFactory}
@@ -11,34 +11,6 @@ ve.dm.NodeFactory = function() {
 };
 
 /* Methods */
-
-/**
- * Checks if a given node type can have child nodes.
- * 
- * @param {String} type Node type
- * @returns {Boolean} The node can have children
- * @throws 'Unknown node type'
- */
-ve.dm.NodeFactory.prototype.canNodeHaveChildren = function( type ) {
-	if ( type in this.registry ) {
-		return this.registry[type].rules.canHaveChildren;
-	}
-	throw 'Unknown node type: ' + type;
-};
-
-/**
- * Checks if a given node type can have grandchild nodes.
- * 
- * @param {String} type Node type
- * @returns {Boolean} The node can have grandchildren
- * @throws 'Unknown node type'
- */
-ve.dm.NodeFactory.prototype.canNodeHaveGrandchildren = function( type ) {
-	if ( type in this.registry ) {
-		return this.registry[type].rules.canHaveGrandchildren;
-	}
-	throw 'Unknown node type: ' + type;
-};
 
 /**
  * Gets a list of allowed child node types for a given node.

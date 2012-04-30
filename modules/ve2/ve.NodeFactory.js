@@ -49,3 +49,31 @@ ve.NodeFactory.prototype.createNode = function( type, a, b ) {
 	}
 	throw 'Unknown node type: ' + type;
 };
+
+/**
+ * Checks if a given node type can have child nodes.
+ * 
+ * @param {String} type Node type
+ * @returns {Boolean} The node can have children
+ * @throws 'Unknown node type'
+ */
+ve.NodeFactory.prototype.canNodeHaveChildren = function( type ) {
+	if ( type in this.registry ) {
+		return this.registry[type].rules.canHaveChildren;
+	}
+	throw 'Unknown node type: ' + type;
+};
+
+/**
+ * Checks if a given node type can have grandchild nodes.
+ * 
+ * @param {String} type Node type
+ * @returns {Boolean} The node can have grandchildren
+ * @throws 'Unknown node type'
+ */
+ve.NodeFactory.prototype.canNodeHaveGrandchildren = function( type ) {
+	if ( type in this.registry ) {
+		return this.registry[type].rules.canHaveGrandchildren;
+	}
+	throw 'Unknown node type: ' + type;
+};
