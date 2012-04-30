@@ -84,55 +84,55 @@ ve.dm.example.data = [
 	'e',
 	// 15 - End of paragraph
 	{ 'type': '/paragraph' },
-	// 17 - Beginning of nested bullet list
+	// 16 - Beginning of nested bullet list
 	{ 'type': 'list', 'attributes': { 'styles': ['bullet'] } },
-	// 18 - Beginning of nested bullet list item
+	// 17 - Beginning of nested bullet list item
 	{ 'type': 'listItem' },
-	// 19 - Beginning of paragraph
+	// 18 - Beginning of paragraph
 	{ 'type': 'paragraph' },
-	// 20 - Plain "f"
+	// 29 - Plain "f"
 	'f',
-	// 21 - End of paragraph
+	// 20 - End of paragraph
 	{ 'type': '/paragraph' },
-	// 22 - End of nested bullet list item
+	// 21 - End of nested bullet list item
 	{ 'type': '/listItem' },
-	// 23 - End of nested bullet list
+	// 22 - End of nested bullet list
 	{ 'type': '/list' },
-	// 24 - End of bullet list item
+	// 23 - End of bullet list item
 	{ 'type': '/listItem' },
-	// 25 - End of bullet list
+	// 24 - End of bullet list
 	{ 'type': '/list' },
-	// 26 - Beginning of numbered list
+	// 25 - Beginning of numbered list
 	{ 'type': 'list', 'attributes': { 'styles': ['number'] } },
-	// 27 - Beginning of numbered list item
+	// 26 - Beginning of numbered list item
 	{ 'type': 'listItem' },
-	// 28 - Beginning of paragraph
+	// 27 - Beginning of paragraph
 	{ 'type': 'paragraph' },
-	// 29 - Plain "g"
+	// 28 - Plain "g"
 	'g',
-	// 30 - End of paragraph
+	// 29 - End of paragraph
 	{ 'type': '/paragraph' },
-	// 31 - End of item
+	// 30 - End of item
 	{ 'type': '/listItem' },
-	// 32 - End of list
+	// 31 - End of list
 	{ 'type': '/list' },
-	// 33 - End of cell
+	// 32 - End of cell
 	{ 'type': '/tableCell' },
-	// 34 - End of row
+	// 33 - End of row
 	{ 'type': '/tableRow' },
-	// 35 - End of table
+	// 34 - End of table
 	{ 'type': '/table' },
-	// 36 - Beginning of preformatted
+	// 35 - Beginning of preformatted
 	{ 'type': 'preformatted' },
-	// 37 - Plain "h"
+	// 36 - Plain "h"
 	'h',
-	// 38 - Beginning of inline image
+	// 37 - Beginning of inline image
 	{ 'type': 'image', 'attributes': { 'html/src': 'image.png' } },
-	// 39 - End of inline image
+	// 38 - End of inline image
 	{ 'type': '/image' },
-	// 40 - Plain "i"
+	// 39 - Plain "i"
 	'i',
-	// 41 - End of preformatted
+	// 40 - End of preformatted
 	{ 'type': '/preformatted' }
 ];
 
