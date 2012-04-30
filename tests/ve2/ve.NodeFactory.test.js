@@ -49,7 +49,7 @@ test( 'canNodeHaveChildren', 2, function() {
 		'throws an exception when checking if a node of an unregistered type can have children'
 	);
 	factory.register( 'stub', ve.NodeFactoryNodeStub );
-	equal(
+	strictEqual(
 		factory.canNodeHaveChildren( 'stub' ),
 		false,
 		'gets child rules for registered nodes'
@@ -65,7 +65,7 @@ test( 'canNodeHaveGrandchildren', 2, function() {
 		'throws an exception when checking if a node of an unregistered type can have grandchildren'
 	);
 	factory.register( 'stub', ve.NodeFactoryNodeStub );
-	equal(
+	strictEqual(
 		factory.canNodeHaveGrandchildren( 'stub' ),
 		false,
 		'gets grandchild rules for registered nodes'

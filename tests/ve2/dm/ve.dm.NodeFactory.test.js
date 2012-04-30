@@ -45,3 +45,7 @@ test( 'getParentNodeTypes', 2, function() {
 		'gets parent type rules for registered nodes'
 	);
 } );
+
+test( 'initialization', 1, function() {
+	ok( ve.dm.factory instanceof ve.dm.NodeFactory, 'factory is initialized at ve.dm.factory' );
+} );
