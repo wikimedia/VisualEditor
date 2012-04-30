@@ -1,5 +1,5 @@
 /**
- * Document object.
+ * DataModel document.
  * 
  * @class
  * @constructor

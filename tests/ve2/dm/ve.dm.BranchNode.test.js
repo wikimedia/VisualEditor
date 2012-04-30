@@ -22,82 +22,62 @@ test( 'setRoot', 3, function() {
 	strictEqual( node1.getRoot(), node4 );
 } );
 
-test( 'push', 4, function() {
+test( 'push', 3, function() {
 	var node1 = new ve.dm.BranchNodeStub(),
 		node2 = new ve.dm.BranchNodeStub(),
 		node3 = new ve.dm.BranchNodeStub( [node1] );
-	node3.on( 'beforeSplice', function() {
+	node3.on( 'splice', function() {
 		// Will be called 1 time
-		ok( true, 'beforeSplice was emitted' );
-	} );
-	node3.on( 'afterSplice', function() {
-		// Will be called 1 time
-		ok( true, 'afterSplice was emitted' );
+		ok( true, 'splice was emitted' );
 	} );
 	strictEqual( node3.push( node2 ), 2 );
 	deepEqual( node3.getChildren(), [node1, node2] );
 } );
 
-test( 'pop', 4, function() {
+test( 'pop', 3, function() {
 	var node1 = new ve.dm.BranchNodeStub(),
 		node2 = new ve.dm.BranchNodeStub(),
 		node3 = new ve.dm.BranchNodeStub( [node1, node2] );
-	node3.on( 'beforeSplice', function() {
+	node3.on( 'splice', function() {
 		// Will be called 1 time
-		ok( true, 'beforeSplice was emitted' );
-	} );
-	node3.on( 'afterSplice', function() {
-		// Will be called 1 time
-		ok( true, 'afterSplice was emitted' );
+		ok( true, 'splice was emitted' );
 	} );
 	strictEqual( node3.pop(), node2 );
 	deepEqual( node3.getChildren(), [node1] );
 } );
 
-test( 'unshift', 4, function() {
+test( 'unshift', 3, function() {
 	var node1 = new ve.dm.BranchNodeStub(),
 		node2 = new ve.dm.BranchNodeStub(),
 		node3 = new ve.dm.BranchNodeStub( [node1] );
-	node3.on( 'beforeSplice', function() {
+	node3.on( 'splice', function() {
 		// Will be called 1 time
-		ok( true, 'beforeSplice was emitted' );
-	} );
-	node3.on( 'afterSplice', function() {
-		// Will be called 1 time
-		ok( true, 'afterSplice was emitted' );
+		ok( true, 'splice was emitted' );
 	} );
 	strictEqual( node3.unshift( node2 ), 2 );
 	deepEqual( node3.getChildren(), [node2, node1] );
 } );
 
-test( 'shift', 4, function() {
+test( 'shift', 3, function() {
 	var node1 = new ve.dm.BranchNodeStub(),
 		node2 = new ve.dm.BranchNodeStub(),
 		node3 = new ve.dm.BranchNodeStub( [node1, node2] );
-	node3.on( 'beforeSplice', function() {
+	node3.on( 'splice', function() {
 		// Will be called 1 time
-		ok( true, 'beforeSplice was emitted' );
-	} );
-	node3.on( 'afterSplice', function() {
-		// Will be called 1 time
-		ok( true, 'afterSplice was emitted' );
+		ok( true, 'splice was emitted' );
 	} );
 	strictEqual( node3.shift(), node1 );
 	deepEqual( node3.getChildren(), [node2] );
 } );
 
-test( 'splice', 12, function() {
+test( 'splice', 9, function() {
 	var node1 = new ve.dm.BranchNodeStub(),
 		node2 = new ve.dm.BranchNodeStub(),
 		node3 = new ve.dm.BranchNodeStub(),
 		node4 = new ve.dm.BranchNodeStub( [node1, node2] );
-	node4.on( 'beforeSplice', function() {
+	node4.on( 'splice', function() {
 		// Will be called 3 times
-		ok( true, 'beforeSplice was emitted' );
-	} );
-	node4.on( 'afterSplice', function() {
-		// Will be called 3 times
-		ok( true, 'afterSplice was emitted' );
+		ok( true, 'splice was emitted' );
 	} );
 	// Insert branch
 	deepEqual( node4.splice( 1, 0, node3 ), [] );

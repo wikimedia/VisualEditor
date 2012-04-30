@@ -1,5 +1,5 @@
 /**
- * Document fragment.
+ * DataModel document fragment.
  * 
  * @class
  * @constructor

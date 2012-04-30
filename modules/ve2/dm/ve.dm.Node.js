@@ -1,5 +1,5 @@
 /**
- * Creates an ve.dm.Node object.
+ * Generic DataModel node.
  * 
  * @class
  * @abstract

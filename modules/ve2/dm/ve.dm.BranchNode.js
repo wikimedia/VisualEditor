@@ -1,5 +1,5 @@
 /**
- * Data model node that can have branch or twig children.
+ * DataModel node that can have branch or leaf children.
  * 
  * @class
  * @abstract
@@ -48,8 +48,7 @@ ve.dm.BranchNode.prototype.setRoot = function( root ) {
  * @method
  * @param {ve.dm.BranchNode} childModel Item to add
  * @returns {Integer} New number of children
- * @emits beforeSplice (index, 0, [childModel])
- * @emits afterSplice (index, 0, [childModel])
+ * @emits splice (index, 0, [childModel])
  * @emits update
  */
 ve.dm.BranchNode.prototype.push = function( childModel ) {
@@ -62,8 +61,7 @@ ve.dm.BranchNode.prototype.push = function( childModel ) {
  * 
  * @method
  * @returns {ve.dm.BranchNode} Removed childModel
- * @emits beforeSplice (index, 1, [])
- * @emits afterSplice (index, 1, [])
+ * @emits splice (index, 1, [])
  * @emits update
  */
 ve.dm.BranchNode.prototype.pop = function() {
@@ -80,8 +78,7 @@ ve.dm.BranchNode.prototype.pop = function() {
  * @method
  * @param {ve.dm.BranchNode} childModel Item to add
  * @returns {Integer} New number of children
- * @emits beforeSplice (0, 0, [childModel])
- * @emits afterSplice (0, 0, [childModel])
+ * @emits splice (0, 0, [childModel])
  * @emits update
  */
 ve.dm.BranchNode.prototype.unshift = function( childModel ) {
@@ -94,8 +91,7 @@ ve.dm.BranchNode.prototype.unshift = function( childModel ) {
  * 
  * @method
  * @returns {ve.dm.BranchNode} Removed childModel
- * @emits beforeSplice (0, 1, [])
- * @emits afterSplice (0, 1, [])
+ * @emits splice (0, 1, [])
  * @emits update
  */
 ve.dm.BranchNode.prototype.shift = function() {
@@ -114,8 +110,7 @@ ve.dm.BranchNode.prototype.shift = function() {
  * @param {Integer} howmany Number of nodes to remove
  * @param {ve.dm.BranchNode} [...] Variadic list of nodes to insert
  * @returns {ve.dm.BranchNode[]} Removed nodes
- * @emits beforeSplice (index, howmany, [...])
- * @emits afterSplice (index, howmany, [...])
+ * @emits splice (index, howmany, [...])
  * @emits update
  */
 ve.dm.BranchNode.prototype.splice = function( index, howmany ) {
@@ -123,7 +118,6 @@ ve.dm.BranchNode.prototype.splice = function( index, howmany ) {
 		length,
 		args = Array.prototype.slice.call( arguments, 0 ),
 		diff = 0;
-	this.emit.apply( this, ['beforeSplice'].concat( args ) );
 	if ( args.length >= 3 ) {
 		length = args.length;
 		for ( i = 2; i < length; i++ ) {
@@ -139,7 +133,7 @@ ve.dm.BranchNode.prototype.splice = function( index, howmany ) {
 		diff -= removals[i].getOuterLength();
 	}
 	this.adjustLength( diff, true );
-	this.emit.apply( this, ['afterSplice'].concat( args ) );
+	this.emit.apply( this, ['splice'].concat( args ) );
 	this.emit( 'update' );
 	return removals;
 };

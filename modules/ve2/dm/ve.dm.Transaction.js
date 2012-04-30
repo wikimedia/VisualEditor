@@ -1,5 +1,5 @@
 /**
- * Creates an ve.dm.Transaction object.
+ * DataModel transaction.
  * 
  * @class
  * @constructor

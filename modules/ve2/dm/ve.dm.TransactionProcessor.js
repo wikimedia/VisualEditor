@@ -1,5 +1,5 @@
 /**
- * Class that processes a transaction.
+ * DataModel transaction processor.
  * 
  * This class reads operations from a transaction and applies them one by one. It's not intended
  * to be used directly; use the static functions ve.dm.TransactionProcessor.commit() and .rollback()

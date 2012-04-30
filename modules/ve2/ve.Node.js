@@ -1,5 +1,5 @@
 /**
- * Creates an ve.Node object.
+ * Generic node.
  * 
  * @class
  * @abstract
