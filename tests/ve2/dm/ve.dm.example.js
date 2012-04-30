@@ -140,6 +140,20 @@ ve.dm.example.data = [
  * Sample content data index.
  * 
  * This is part of what a ve.dm.DocumentFragment generates when given linear data.
+ * 
+ *  (16) branch nodes
+ *     (01) document node
+ *     (01) heading node
+ *     (01) table node
+ *     (01) tableRow node
+ *     (01) tableCell node
+ *     (04) paragraph nodes
+ *     (03) list nodes
+ *     (03) listItem nodes
+ *     (01) preformatted node
+ *  (08) leaf nodes
+ *     (07) text nodes
+ *     (01) image node
  */
 ve.dm.example.tree = new ve.dm.DocumentNode( [
 	// Heading with "abc"
@@ -152,14 +166,14 @@ ve.dm.example.tree = new ve.dm.DocumentNode( [
 				new ve.dm.ListNode( [
 					// 1st level bullet list item with "e"
 					new ve.dm.ListItemNode( [
-						new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] )
-					] ),
-					new ve.dm.ListNode( [
-						// 2nd level bullet list item with "f"
-						new ve.dm.ListItemNode( [
-							new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] )
-						] )
-					], ve.dm.example.data[16].attributes )
+						new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] ),
+						new ve.dm.ListNode( [
+							// 2nd level bullet list item with "f"
+							new ve.dm.ListItemNode( [
+								new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] )
+							] )
+						], ve.dm.example.data[16].attributes )
+					] )
 				], ve.dm.example.data[11].attributes  ),
 				new ve.dm.ListNode( [
 					// Numbered list item with "g"

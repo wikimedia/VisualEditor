@@ -9,7 +9,7 @@
  */
 ve.dm.AlienNode = function( length, attributes ) {
 	// Inheritance
-	ve.dm.LeafNode.call( this, 'alien', length, attributes );
+	ve.dm.LeafNode.call( this, 'alien', 0, attributes );
 };
 
 /* Static Members */

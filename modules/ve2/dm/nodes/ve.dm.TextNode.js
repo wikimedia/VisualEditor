@@ -20,6 +20,18 @@ ve.dm.TextNode.rules = {
 	'parentNodeTypes': null
 };
 
+/* Methods */
+
+/**
+ * Gets the outer length, which for a text node is the same as the inner length.
+ * 
+ * @method
+ * @returns {Integer} Length of the entire node
+ */
+ve.dm.TextNode.prototype.getOuterLength = function() {
+	return this.length;
+};
+
 /* Registration */
 
 ve.dm.factory.register( 'text', ve.dm.TextNode );

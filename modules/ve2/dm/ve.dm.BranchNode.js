@@ -12,8 +12,8 @@
  */
 ve.dm.BranchNode = function( type, children, attributes ) {
 	// Inheritance
-	ve.BranchNode.call( this );
 	ve.dm.Node.call( this, type, 0, attributes );
+	ve.BranchNode.call( this );
 
 	if ( ve.isArray( children ) && children.length ) {
 		for ( var i = 0; i < children.length; i++ ) {
@@ -23,16 +23,6 @@ ve.dm.BranchNode = function( type, children, attributes ) {
 };
 
 /* Methods */
-
-/**
- * Gets the outer length, including any opening/closing elements.
- * 
- * @method
- * @returns {Integer} Length of the entire node
- */
-ve.dm.BranchNode.prototype.getOuterLength = function() {
-	return this.length + 2;
-};
 
 /**
  * Sets the root node to this and all of its descendants, recursively.

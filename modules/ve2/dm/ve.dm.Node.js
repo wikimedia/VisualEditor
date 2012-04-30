@@ -46,14 +46,14 @@ ve.dm.Node.prototype.getLength = function() {
 /**
  * Gets the outer length, including any opening/closing elements.
  * 
- * The default implementation is the same as getLength(). Subclasses that use opening/closing
+ * The default implementation is getLength() + 2. Subclasses that do not use opening/closing
  * elements should override this.
  * 
  * @method
  * @returns {Integer} Length of the entire node
  */
 ve.dm.Node.prototype.getOuterLength = function() {
-	return this.length;
+	return this.length + 2;
 };
 
 /**

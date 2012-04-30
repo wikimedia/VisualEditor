@@ -2,11 +2,27 @@ module( 've.dm.DocumentFragment' );
 
 /* Tests */
 
+// Test count: (3 tests x (16 branch nodes + 8 leaf nodes)) + (1 test x 16 branch nodes) = 88
+test( 'constructor', 88, function() {
+	var fragment = new ve.dm.DocumentFragment( ve.dm.example.data );
+	function check( a, b ) {
+		equal( a.getType(), b.getType(), 'type match (' + a.getType() + ')' );
+		equal( a.getLength(), b.getLength(), 'length match' );
+		equal( a.canHaveChildren(), b.canHaveChildren(), 'children rules match' );
+		if ( a.children ) {
+			equal( a.children.length, b.children.length, 'children count match' );
+			for ( var i = 0; i < a.children.length; i++ ) {
+				check( a.children[i], b.children[i] );
+			}
+		}
+	}
+	check( fragment.getDocumentNode(), ve.dm.example.tree );
+} );
+
 test( 'getData', 1, function() {
 	var fragment = new ve.dm.DocumentFragment( ve.dm.example.data );
 	deepEqual( fragment.getData(), ve.dm.example.data );
 } );
-
 
 test( 'getOffsetMap', 43, function() {
 	var fragment = new ve.dm.DocumentFragment( ve.dm.example.data ),
