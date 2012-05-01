@@ -1,5 +1,5 @@
 /**
- * Data model node for a paragraph.
+ * DataModel node for a paragraph.
  * 
  * @class
  * @constructor

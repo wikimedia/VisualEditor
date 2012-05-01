@@ -1,5 +1,5 @@
 /**
- * Data model node for a document.
+ * DataModel node for a document.
  * 
  * @class
  * @constructor

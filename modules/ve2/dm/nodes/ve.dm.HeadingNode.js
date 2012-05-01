@@ -1,5 +1,5 @@
 /**
- * Data model node for a heading.
+ * DataModel node for a heading.
  * 
  * @class
  * @constructor

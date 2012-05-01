@@ -1,5 +1,5 @@
 /**
- * Data model node for a list item.
+ * DataModel node for a list item.
  * 
  * @class
  * @constructor

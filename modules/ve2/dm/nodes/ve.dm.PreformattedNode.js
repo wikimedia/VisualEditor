@@ -1,5 +1,5 @@
 /**
- * Data model node for a preformatted.
+ * DataModel node for a preformatted.
  * 
  * @class
  * @constructor

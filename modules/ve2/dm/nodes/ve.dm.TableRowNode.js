@@ -1,5 +1,5 @@
 /**
- * Data model node for a table row.
+ * DataModel node for a table row.
  * 
  * @class
  * @constructor
