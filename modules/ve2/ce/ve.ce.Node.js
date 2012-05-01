@@ -6,13 +6,15 @@
  * @constructor
  * @extends {ve.Node}
  * @param {ve.dm.Node} model Model to observe
+ * @param {jQuery} [$element] Element to use as a container
  */
-ve.ce.Node = function( model ) {
+ve.ce.Node = function( model, $element ) {
 	// Inheritance
 	ve.Node.call( this );
 
 	// Properties
 	this.model = model;
+	this.$ = $element || $( '<div></div>' );
 	this.parent = null;
 };
 

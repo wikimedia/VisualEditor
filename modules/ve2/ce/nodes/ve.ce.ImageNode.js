@@ -8,7 +8,7 @@
  */
 ve.ce.ImageNode = function( model ) {
 	// Inheritance
-	ve.ce.LeafNode.call( this, model );
+	ve.ce.LeafNode.call( this, model, $( '<img>' ) );
 };
 
 /* Static Members */

@@ -14,14 +14,18 @@ ve.dm.DocumentFragment = function( data, parentDocument ) {
 	this.offsetMap = new Array( this.data.length );
 
 	// Initialization
-	var root = parentDocument ? parentDocument.getDocumentNode() : this.documentNode;
+	var doc = parentDocument || this;
+	this.documentNode.setDocument( doc );
+	var root = doc.getDocumentNode();
+	this.documentNode.setRoot( root );
+
 	/*
 	 * The offsetMap is always one element longer than data because it includes a reference to the
 	 * root node at the offset just past the end. To make population work correctly, we have to
 	 * start out with that one extra reference.
 	 */
 	this.offsetMap.push( this.documentNode );
-	this.documentNode.setRoot( root );
+
 	/*
 	 * Build a tree of nodes and nodes that will be added to them after a full scan is complete,
 	 * then from the bottom up add nodes to their potential parents. This avoids massive length
@@ -122,6 +126,57 @@ ve.dm.DocumentFragment = function( data, parentDocument ) {
 
 /* Methods */
 
+ve.dm.DocumentFragment.prototype.getOffsetMap = function() {
+	return this.offsetMap;
+};
+
+ve.dm.DocumentFragment.prototype.getDocumentNode = function() {
+	return this.documentNode;
+};
+
+ve.dm.DocumentFragment.prototype.getNodeFromOffset = function( offset ) {
+	return this.offsetMap[offset];
+};
+
+/**
+ * Gets the content offset of a node.
+ * 
+ * This method is pretty expensive. If you need to get different slices of the same content, get
+ * the content first, then slice it up locally.
+ * 
+ * TODO: Rewrite this method to not use recursion, because the function call overhead is expensive
+ * 
+ * @method
+ * @param {ve.Node} node Node to get offset of
+ * @returns {Integer} Offset of node or -1 of node was not found
+ */
+ve.dm.DocumentFragment.prototype.getOffsetFromNode = function( node ) {
+	if ( node === this ) {
+		return 0;
+	}
+	if ( this.children.length ) {
+		var offset = 0,
+			childNode;
+		for ( var i = 0, length = this.children.length; i < length; i++ ) {
+			childNode = this.children[i];
+			if ( childNode === node ) {
+				return offset;
+			}
+			if (
+				ve.dm.factory.canNodeHaveChildren( childNode.getType() ) &&
+				childNode.getChildren().length
+			) {
+				var childOffset = this.getOffsetFromNode.call( childNode, node );
+				if ( childOffset !== -1 ) {
+					return offset + 1 + childOffset;
+				}
+			}
+			offset += childNode.getOuterLength();
+		}
+	}
+	return -1;
+};
+
 /**
  * Gets slice or copy of the document data.
  * 
@@ -144,14 +199,25 @@ ve.dm.DocumentFragment.prototype.getData = function( range, deep ) {
 	return deep ? ve.copyArray( data ) : data;
 };
 
-ve.dm.DocumentFragment.prototype.getOffsetMap = function() {
-	return this.offsetMap;
-};
-
-ve.dm.DocumentFragment.prototype.getDocumentNode = function() {
-	return this.documentNode;
-};
-
-ve.dm.DocumentFragment.prototype.getNodeFromOffset = function( offset ) {
-	return this.offsetMap[offset];
+/**
+ * Gets the content data of a node.
+ * 
+ * @method
+ * @param {ve.dm.Node} node Node to get content data for
+ * @returns {Array|null} List of content and elements inside node or null if node is not found
+ */
+ve.dm.DocumentFragment.prototype.getDataFromNode = function( node ) {
+	var length = node.getLength(),
+		offset = this.getOffsetFromNode( node );
+	if ( offset >= 0 ) {
+		// XXX: If the node is wrapped in an element than we should incriment the offset by one so
+		// we only return the content inside the element. This is fine given that we know a node is
+		// either wrapped or not, but it's a little hacky when we code things like this, maybe there
+		// could be a better way of doing this?
+		if ( length === node.getOuterLength() - 2 ) {
+			offset++;
+		}
+		return this.data.slice( offset, offset + length );
+	}
+	return null;
 };

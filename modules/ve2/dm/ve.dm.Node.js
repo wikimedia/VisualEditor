@@ -16,6 +16,7 @@ ve.dm.Node = function( type, length, attributes ) {
 	// Properties
 	this.length = length || 0;
 	this.attributes = attributes || {};
+	this.doc = undefined;
 };
 
 /* Abstract Methods */
@@ -106,16 +107,39 @@ ve.dm.Node.prototype.getAttribute = function( key ) {
 };
 
 /**
- * Sets the root node to this and all of its children.
+ * Sets the root node this node is a descendent of.
  * 
  * This method is overridden by nodes with children.
  * 
  * @method
- * @param {ve.Node} root Node to use as root
+ * @param {ve.dm.Node} root Node to use as root
  */
 ve.dm.Node.prototype.setRoot = function( root ) {
 	// TODO events?
 	this.root = root;
+};
+
+/**
+ * Sets the document this node is a part of.
+ * 
+ * This method is overridden by nodes with children.
+ * 
+ * @method
+ * @param {ve.dm.Document} root Node to use as root
+ */
+ve.dm.Node.prototype.setDocument = function( root ) {
+	// TODO events?
+	this.doc = doc;
+};
+
+/**
+ * Gets the document this node is a part of.
+ * 
+ * @method
+ * @returns {ve.dm.Document} Document of this node
+ */
+ve.dm.Node.prototype.getDocument = function( root ) {
+	return this.doc;
 };
 
 /**
@@ -129,6 +153,7 @@ ve.dm.Node.prototype.attach = function( parent ) {
 	this.emit( 'beforeAttach', parent );
 	this.parent = parent;
 	this.setRoot( parent.getRoot() );
+	this.setDocument( parent.getDocument() );
 	this.emit( 'afterAttach', parent );
 };
 
@@ -142,6 +167,7 @@ ve.dm.Node.prototype.detach = function() {
 	this.emit( 'beforeDetach' );
 	this.parent = null;
 	this.setRoot( this );
+	this.setDocument();
 	this.emit( 'afterDetach' );
 };
 

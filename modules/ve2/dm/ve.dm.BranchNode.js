@@ -25,11 +25,11 @@ ve.dm.BranchNode = function( type, children, attributes ) {
 /* Methods */
 
 /**
- * Sets the root node to this and all of its descendants, recursively.
+ * Sets the root node this node is a descendent of.
  * 
  * @method
- * @see {ve.Node.prototype.setRoot}
- * @param {ve.Node} root Node to use as root
+ * @see {ve.dm.Node.prototype.setRoot}
+ * @param {ve.dm.Node} root Node to use as root
  */
 ve.dm.BranchNode.prototype.setRoot = function( root ) {
 	if ( root == this.root ) {
@@ -39,6 +39,24 @@ ve.dm.BranchNode.prototype.setRoot = function( root ) {
 	this.root = root;
 	for ( var i = 0; i < this.children.length; i++ ) {
 		this.children[i].setRoot( root );
+	}
+};
+
+/**
+ * Sets the document this node is a part of.
+ * 
+ * @method
+ * @see {ve.dm.Node.prototype.setDocument}
+ * @param {ve.dm.Document} root Node to use as root
+ */
+ve.dm.BranchNode.prototype.setDocument = function( doc ) {
+	if ( doc == this.doc ) {
+		// Nothing to do, don't recurse into all descendants
+		return;
+	}
+	this.doc = doc;
+	for ( var i = 0; i < this.children.length; i++ ) {
+		this.children[i].setDocument( doc );
 	}
 };
 

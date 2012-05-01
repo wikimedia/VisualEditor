@@ -90,7 +90,7 @@ ve.dm.example.data = [
 	{ 'type': 'listItem' },
 	// 18 - Beginning of paragraph
 	{ 'type': 'paragraph' },
-	// 29 - Plain "f"
+	// 19 - Plain "f"
 	'f',
 	// 20 - End of paragraph
 	{ 'type': '/paragraph' },

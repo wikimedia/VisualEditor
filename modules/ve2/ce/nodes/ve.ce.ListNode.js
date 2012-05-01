@@ -8,7 +8,7 @@
  */
 ve.ce.ListNode = function( model ) {
 	// Inheritance
-	ve.ce.BranchNode.call( this, model );
+	ve.ce.BranchNode.call( this, model, ve.ce.ListNode.getDomElement( model ) );
 };
 
 /* Static Members */
@@ -20,6 +20,23 @@ ve.ce.ListNode.rules = {
 	'canHaveChildren': true,
 	'canHaveGrandchildren': true,
 	'canBeSplit': false
+};
+
+ve.ce.ListNode.domNodeTypes = {
+	'bullet': 'ul',
+	'number': 'ol',
+	'definition': 'dl'
+};
+
+/* Static Methods */
+
+ve.ce.ListNode.getDomElement = function( model ) {
+	var style = model.getElementAttribute( 'style' ),
+		type = ve.ce.ListNode.domNodeTypes[style];
+	if ( type === undefined ) {
+		throw 'Invalid style attribute in list node model: ' + style;
+	}
+	return $( '<' + type + '></' + type + '>' );
 };
 
 /* Registration */

@@ -8,7 +8,7 @@
  */
 ve.ce.ParagraphNode = function( model ) {
 	// Inheritance
-	ve.ce.BranchNode.call( this, model );
+	ve.ce.BranchNode.call( this, model, $( '<p></p>' ) );
 };
 
 /* Static Members */

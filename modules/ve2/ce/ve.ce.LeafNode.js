@@ -7,11 +7,12 @@
  * @extends {ve.LeafNode}
  * @extends {ve.ce.Node}
  * @param model {ve.dm.LeafNode} Model to observe
+ * @param {jQuery} [$element] Element to use as a container
  */
-ve.ce.LeafNode = function( model ) {
+ve.ce.LeafNode = function( model, $element ) {
 	// Inheritance
 	ve.LeafNode.call( this );
-	ve.ce.Node.call( this, model );
+	ve.ce.Node.call( this, model, $element );
 };
 
 /* Methods */

@@ -14,14 +14,11 @@ ve.ce.BranchNode = function( model, $element ) {
 	ve.BranchNode.call( this );
 	ve.ce.Node.call( this, model, $element );
 
-	// Properties
-	this.$ = $element || $( '<div></div>' );
-
 	// Events
 	this.model.addListenerMethod( 'splice', this, 'onSplice' );
 
 	// Initialization
-	this.onAfterSplice.apply( this, [0].concat( model.getChildren() ) );
+	this.onSplice.apply( this, [0, 0].concat( model.getChildren() ) );
 };
 
 /* Methods */
@@ -49,7 +46,6 @@ ve.ce.BranchNode.prototype.onSplice = function( index, howmany ) {
 			args[i] = args[i].createView();
 		}
 	}
-	this.emit.apply( this, ['beforeSplice'].concat( args ) );
 	var removals = this.children.splice.apply( this.children, args );
 	for ( i = 0, length = removals.length; i < length; i++ ) {
 		removals[i].detach();
@@ -73,7 +69,7 @@ ve.ce.BranchNode.prototype.onSplice = function( index, howmany ) {
 			}
 		}
 	}
-	this.emit.apply( this, ['afterSplice'].concat( args ) );
+	this.emit.apply( this, ['splice'].concat( args ) );
 	if ( args.length >= 3 ) {
 		for ( i = 2, length = args.length; i < length; i++ ) {
 			args[i].render();
