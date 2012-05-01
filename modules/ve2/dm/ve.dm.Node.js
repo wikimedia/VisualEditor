@@ -150,11 +150,10 @@ ve.dm.Node.prototype.getDocument = function( root ) {
  * @emits attach (parent)
  */
 ve.dm.Node.prototype.attach = function( parent ) {
-	this.emit( 'beforeAttach', parent );
 	this.parent = parent;
 	this.setRoot( parent.getRoot() );
 	this.setDocument( parent.getDocument() );
-	this.emit( 'afterAttach', parent );
+	this.emit( 'attach', parent );
 };
 
 /**
@@ -164,11 +163,10 @@ ve.dm.Node.prototype.attach = function( parent ) {
  * @emits detach
  */
 ve.dm.Node.prototype.detach = function() {
-	this.emit( 'beforeDetach' );
 	this.parent = null;
 	this.setRoot( this );
 	this.setDocument();
-	this.emit( 'afterDetach' );
+	this.emit( 'detach' );
 };
 
 /* Inheritance */
