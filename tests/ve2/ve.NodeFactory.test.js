@@ -24,7 +24,7 @@ test( 'register', 1, function() {
 	);
 } );
 
-test( 'create', 2, function() {
+test( 'createNode', 2, function() {
 	var factory = new ve.NodeFactory();
 	raises( function() {
 			factory.createNode( 'stub', 23, { 'bar': 'baz' } );
