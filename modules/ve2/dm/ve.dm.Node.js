@@ -127,7 +127,7 @@ ve.dm.Node.prototype.setRoot = function( root ) {
  * @method
  * @param {ve.dm.Document} root Node to use as root
  */
-ve.dm.Node.prototype.setDocument = function( root ) {
+ve.dm.Node.prototype.setDocument = function( doc ) {
 	// TODO events?
 	this.doc = doc;
 };
