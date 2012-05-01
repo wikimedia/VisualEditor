@@ -5,12 +5,16 @@
  * to be used directly; use the static functions ve.dm.TransactionProcessor.commit() and .rollback()
  * instead.
  * 
+ * NOTE: Instances of this class are not recyclable: you can only call .process() on them once.
+ * 
  * @class
  * @constructor
  */
 ve.dm.TransactionProcessor = function( doc, transaction, reversed ) {
 	this.document = doc;
-	this.transaction = transaction;
+	this.operations = transaction.getOperations();
+	// TODO add DocumentSynchronizer
+	//this.synchronizer = new ve.dm.DocumentSynchronizer( this.model );
 	this.reversed = reversed;
 	
 	// Linear model offset that we're currently at
@@ -48,6 +52,30 @@ ve.dm.TransactionProcessor.rollback = function( doc, transaction ) {
 
 /* Methods */
 
+ve.dm.TransactionProcessor.prototype.nextOperation = function() {
+	return this.operations[this.operationIndex++] || false;
+};
+
+ve.dm.TransactionProcessor.prototype.executeOperation = function( op ) {
+	if ( op.type in this ) {
+		this[op.type]( op );
+	} else {
+		throw 'Invalid operation error. Operation type is not supported: ' + operation.type;
+	}
+};
+
+ve.dm.TransactionProcessor.prototype.process = function() {
+	var op;
+	// This loop is factored this way to allow operations to be skipped over or executed
+	// from within other operations
+	this.operationIndex = 0;
+	while ( ( op = this.nextOperation() ) ) {
+		this.executeOperation( op );
+	}
+	// TODO add DocumentSynchronizer
+	//this.synchronizer.synchronize();
+};
+
 /**
  * Apply the current annotation stacks. This will set all annotations in this.set and clear all
  * annotations in this.clear on the data between the offsets this.cursor and this.cursor + to
@@ -57,18 +85,29 @@ ve.dm.TransactionProcessor.rollback = function( doc, transaction ) {
 ve.dm.TransactionProcessor.prototype.applyAnnotations = function( to ) {
 	var i, hash, ann;
 	for ( i = this.cursor; i < to; i++ ) {
-		character = this.document.data[j];
-		if ( !ve.isArray( character ) ) {
-			ann = {};
-			this.document.data[j] = [ this.document.data[j], ann ];
-		} else {
-			ann = this.document.data[j][1];
-			for ( hash in this.set ) {
-				ann[hash] = this.set[hash];
-			}
+		character = this.document.data[i];
+		if ( character.type !== undefined ) {
+			// Not a character but an element, skip
+			continue;
 		}
-		for ( hash in this.clear ) {
-			delete ann[hash];
+		ann = ve.isArray( character ) ? character[1] : null;
+		
+		for ( hash in this.set ) {
+			if ( ann === null ) {
+				// Create annotations object
+				ann = {};
+				this.document.data[i] = [ character, ann ];
+			}
+			ann[hash] = this.set[hash];
+		}
+		if ( ann !== null ) {
+			for ( hash in this.clear ) {
+				delete ann[hash];
+			}
+			if ( $.isEmptyObject( ann ) ) {
+				// Clean up empty annotations object
+				this.document.data[i] = character[0];
+			}
 		}
 	}
 };
@@ -83,7 +122,7 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function( to ) {
  *                    length: Number of elements to retain
  */
 ve.dm.TransactionProcessor.prototype.retain = function( op ) {
-	this.applyAnnotations( this.cursor + op.length, true );
+	this.applyAnnotations( this.cursor + op.length );
 	this.cursor += op.length;
 };
 
@@ -113,7 +152,7 @@ ve.dm.TransactionProcessor.prototype.annotate = function( op ) {
 	} else {
 		delete target[hash];
 	}
-	// TODO emit events?
+	// TODO sync model tree
 };
 
 /**
@@ -148,7 +187,7 @@ ve.dm.TransactionProcessor.prototype.attribute = function( op ) {
 		// Set
 		element.attributes[op.key] = to;
 	}
-	// TODO emit events?
+	// TODO sync model tree
 };
 
 /**
