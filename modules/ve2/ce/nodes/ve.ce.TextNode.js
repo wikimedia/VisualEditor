@@ -197,18 +197,12 @@ ve.ce.LeafNode.prototype.render = function() {
 };
 
 /**
- * Gets an HTML rendering of a range of data within content model.
+ * Gets an HTML rendering of data within content model.
  * 
  * @method
- * @param {ve.Range} range Range of content to render
  * @param {String} Rendered HTML of data within content model
  */
-ve.ce.TextNode.prototype.getHtml = function( range ) {
-	if ( range ) {
-		range.normalize();
-	} else {
-		range = { 'start': 0, 'end': undefined };
-	}
+ve.ce.TextNode.prototype.getHtml = function() {
 	var data = this.model.getDocument().getDataFromNode( this.model ),
 		render = ve.ce.TextNode.renderAnnotation,
 		htmlChars = ve.ce.TextNode.htmlCharacters;
