@@ -24,7 +24,7 @@ test( 'replaceDomWrapper', 4, function() {
 	equal( node.$.text(), 'hello', 'contents are added to new wrapper' );
 } );
 
-test( 'onSplice', 3, function() {
+test( 'onSplice', 5, function() {
 	var modelA = new ve.dm.BranchNodeStub(),
 		modelB = new ve.dm.BranchNodeStub(),
 		modelC = new ve.dm.BranchNodeStub(),
@@ -34,4 +34,9 @@ test( 'onSplice', 3, function() {
 	equal( viewA.getChildren().length, 2 );
 	deepEqual( viewA.getChildren()[0].getModel(), modelB );
 	deepEqual( viewA.getChildren()[1].getModel(), modelC );
+
+	modelA.splice( 0, 1 );
+	equal( viewA.getChildren().length, 1 );
+	deepEqual( viewA.getChildren()[0].getModel(), modelC );
+
 } );
