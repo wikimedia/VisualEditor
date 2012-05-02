@@ -28,26 +28,27 @@ ve.ce.whitespacePattern = /[\u0020\u00A0]/g;
  * 
  * @static
  * @member
- * @param {String} Plain text of DOM element
+ * @param {DOMElement} element DOM element to get text of
+ * @returns {String} Plain text of DOM element
  */
-ve.ce.getDOMText = function( elem ) {
-	var nodeType = elem.nodeType,
+ve.ce.getDomText = function( element ) {
+	var nodeType = element.nodeType,
 		text = '';
 	if ( nodeType === 1 || nodeType === 9 ) {
 		// Use textContent || innerText for elements
-		if ( typeof elem.textContent === 'string' ) {
-			return elem.textContent;
-		} else if ( typeof elem.innerText === 'string' ) {
+		if ( typeof element.textContent === 'string' ) {
+			return element.textContent;
+		} else if ( typeof element.innerText === 'string' ) {
 			// Replace IE's carriage returns
-			return elem.innerText.replace( /\r\n/g, '' );
+			return element.innerText.replace( /\r\n/g, '' );
 		} else {
 			// Traverse it's children
-			for ( elem = elem.firstChild; elem; elem = elem.nextSibling) {
-				text += ve.ce.Surface.getDOMText( elem );
+			for ( element = element.firstChild; element; element = element.nextSibling) {
+				text += ve.ce.getDomText( element );
 			}
 		}
 	} else if ( nodeType === 3 || nodeType === 4 ) {
-		return elem.nodeValue;
+		return element.nodeValue;
 	}
 	// Return the text, replacing spaces and non-breaking spaces with spaces?
 	// TODO: Why are we replacing spaces (\u0020) with spaces (' ')
@@ -64,11 +65,12 @@ ve.ce.getDOMText = function( elem ) {
  * 
  * @static
  * @member
- * @param {String} Hash of DOM element
+ * @param {DOMElement} element DOM element to get hash of
+ * @returns {String} Hash of DOM element
  */
-ve.ce.getDOMHash = function( elem ) {
-	var nodeType = elem.nodeType,
-		nodeName = elem.nodeName,
+ve.ce.getDomHash = function( element ) {
+	var nodeType = element.nodeType,
+		nodeName = element.nodeName,
 		hash = '';
 
 	if ( nodeType === 3 || nodeType === 4 ) {
@@ -76,8 +78,8 @@ ve.ce.getDOMHash = function( elem ) {
 	} else if ( nodeType === 1 || nodeType === 9 ) {
 		hash += '<' + nodeName + '>';
 		// Traverse it's children
-		for ( elem = elem.firstChild; elem; elem = elem.nextSibling) {
-			hash += ve.ce.Surface.getDOMHash( elem );
+		for ( element = element.firstChild; element; element = element.nextSibling) {
+			hash += ve.ce.getDomHash( element );
 		}
 		hash += '</' + nodeName + '>';
 	}
