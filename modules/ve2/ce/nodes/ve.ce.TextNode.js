@@ -209,7 +209,7 @@ ve.ce.TextNode.prototype.getHtml = function( range ) {
 	} else {
 		range = { 'start': 0, 'end': undefined };
 	}
-	var data = this.doc.getDataFromNode( this ),
+	var data = this.model.getDocument().getDataFromNode( this.model ),
 		render = ve.ce.TextNode.renderAnnotation,
 		htmlChars = ve.ce.TextNode.htmlCharacters;
 	var out = '',

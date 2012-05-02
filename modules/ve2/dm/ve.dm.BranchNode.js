@@ -166,7 +166,7 @@ ve.dm.BranchNode.prototype.splice = function( index, howmany ) {
  * @param {ve.Node} node Node to get offset of
  * @returns {Integer} Offset of node or -1 of node was not found
  */
-ve.dm.DocumentFragment.prototype.getOffsetFromNode = function( node ) {
+ve.dm.BranchNode.prototype.getOffsetFromNode = function( node ) {
 	if ( node === this ) {
 		return 0;
 	}
