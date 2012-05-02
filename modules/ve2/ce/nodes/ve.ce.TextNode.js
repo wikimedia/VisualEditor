@@ -8,7 +8,7 @@
  */
 ve.ce.TextNode = function( model ) {
 	// Inheritance
-	ve.ce.LeafNode.call( this, model, $( '<span></span>' ) );
+	ve.ce.LeafNode.call( this, model, $( document.createTextNode('') ) );
 };
 
 /* Static Members */
@@ -187,7 +187,9 @@ ve.ce.TextNode.prototype.getOuterLength = function() {
  * @method
  */
 ve.ce.LeafNode.prototype.render = function() {
-	this.$.html( this.getHtml() );
+	var $new = $( $( '<span>' + this.getHtml() + '</span>' ).contents() );
+	this.$.replaceWith( $new );
+	this.$ = $new;
 };
 
 /**
