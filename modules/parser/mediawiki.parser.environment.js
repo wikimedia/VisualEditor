@@ -115,6 +115,34 @@ MWParserEnvironment.prototype.KVtoHash = function ( kvs ) {
 	return res;
 };
 
+MWParserEnvironment.prototype.setTokenRank = function ( token, rank ) {
+	// convert string literal to string object
+	if ( token.constructor === String && token.rank === undefined ) {
+		token = new String( token );
+	}
+	token.rank = rank;
+	return token;
+};
+
+// Strip 'end' tokens and trailing newlines
+MWParserEnvironment.prototype.stripEOFTkfromTokens = function ( tokens ) {
+	this.dp( 'stripping end or whitespace tokens', tokens );
+	if ( ! tokens.length ) {
+		return tokens;
+	}
+	// Strip 'end' tokens and trailing newlines
+	var l = tokens[tokens.length - 1];
+	while ( tokens.length &&
+			(	l.constructor === EOFTk  || l.constructor === NlTk ) 
+	) 
+	{
+		this.dp( 'stripping end or whitespace tokens' );
+		tokens.pop();
+		l = tokens[tokens.length - 1];
+	}
+	return tokens;
+};
+
 // Does this need separate UI/content inputs?
 MWParserEnvironment.prototype.formatNum = function( num ) {
 	return num + '';
@@ -188,9 +216,6 @@ MWParserEnvironment.prototype.normalizeTitle = function( name ) {
 
 	name = name.trim().replace(/[\s_]+/g, '_');
 
-	// XXX: strip subst for now..
-	name = name.replace( /^subst:/, '' );
-
 	// Implement int: as alias for MediaWiki:
 	if ( name.substr( 0, 4 ) === 'int:' ) {
 		name = 'MediaWiki:' + name.substr( 4 );
@@ -221,9 +246,13 @@ MWParserEnvironment.prototype.normalizeTitle = function( name ) {
  */
 MWParserEnvironment.prototype.resolveTitle = function( name, namespace ) {
 	// hack!
-	if (name.indexOf(':') == -1 && typeof namespace ) {
+	if (name.indexOf(':') == -1 && namespace ) {
 		// hack hack hack
 		name = namespace + ':' + this.normalizeTitle( name );
+	}
+	// Strip leading ':'
+	if (name[0] === ':') {
+		name = name.substr( 1 );
 	}
 	return name;
 };
@@ -238,7 +267,7 @@ MWParserEnvironment.prototype.tokensToString = function ( tokens, strict ) {
 	for ( var i = 0, l = tokens.length; i < l; i++ ) {
 		var token = tokens[i];
 		if ( token === undefined ) {
-			console.trace();
+			if ( this.debug ) { console.trace(); }
 			this.tp( 'MWParserEnvironment.tokensToString, invalid token: ' + 
 							JSON.stringify( token ) +
 							' tokens:' + JSON.stringify( tokens, null, 2 ));
@@ -255,12 +284,31 @@ MWParserEnvironment.prototype.tokensToString = function ( tokens, strict ) {
 			var tstring = JSON.stringify( token );
 			this.dp ( 'MWParserEnvironment.tokensToString, non-text token: ' + 
 					tstring + JSON.stringify( tokens, null, 2 ) );
-			//console.trace();
+			if ( this.debug ) { console.trace(); }
 			//out.push( tstring );
 		}
 	}
 	//console.warn( 'MWParserEnvironment.tokensToString result: ' + out.join('') );
 	return out.join('');
+};
+
+/**
+ * Perform a shallow clone of a chunk of tokens
+ */
+MWParserEnvironment.prototype.cloneTokens = function ( chunk ) {
+	var out = [],
+		token, tmpToken;
+	for ( var i = 0, l = chunk.length; i < l; i++ ) {
+		token = chunk[i];
+		if ( token.constructor === String ) {
+			out.push( token );
+		} else {
+			tmpToken = $.extend( {}, token );
+			tmpToken.rank = 0;
+			out.push(tmpToken);
+		}
+	}
+	return out;
 };
 
 MWParserEnvironment.prototype.decodeURI = function ( s ) {

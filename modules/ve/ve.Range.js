@@ -90,3 +90,7 @@ ve.Range.prototype.normalize = function() {
 ve.Range.prototype.equals = function( other ) {
 	return this.from === other.from && this.to === other.to;
 };
+
+ve.Range.prototype.getDirection = function() {
+	return this.from > this.to ? -1 : 1;
+};

@@ -17,7 +17,6 @@ ve.ce.Surface = function( $container, model ) {
 	
 	// Properties
 	this.model = model;
-	this.currentSelection = new ve.Range();
 	this.documentView = new ve.ce.DocumentNode( this.model.getDocument(), this );
 	this.contextView = null;
 	this.$ = $container
@@ -34,11 +33,7 @@ ve.ce.Surface = function( $container, model ) {
 			_this.documentOnFocus();
 			$document.off( '.ve-ce-surface' );
 			$document.on( {
-				'keydown.ce-surfaceView': function( e ) {
-					return _this.onKeyDown( e );
-				},
-				'mousemove.ce-surfaceView': function( e ) {
-				}
+				'keydown.ce-surfaceView': _this.proxy( _this.onKeyDown )
 			} );
 		},
 		'blur': function( e ) {
@@ -48,23 +43,14 @@ ve.ce.Surface = function( $container, model ) {
 	} );
 
 	this.$.on( {
-		'cut copy': function( e ) {
-			_this.onCutCopy( e );
-		},
-		'paste': function( e ) {
-			_this.onPaste( e );
-		},
-		'mousedown': function( e ) {
-			return _this.onMouseDown( e );
-		},
-		'compositionstart': function( e ) {
-			_this.onCompositionStart( e );
-		},
-		'compositionend': function( e ) {
-			_this.onCompositionEnd( e );
-		},
+		'cut copy': this.proxy( this.onCutCopy ),
+		'paste': this.proxy( this.onPaste ),
+		'mousedown': this.proxy( this.onMouseDown ),
+		'compositionstart': this.proxy( this.onCompositionStart ),
+		'compositionend': this.proxy( this.onCompositionEnd ),
 		'dragover drop': function( e ) {
 			e.preventDefault();
+			return false;
 		}
 	} );
 
@@ -90,22 +76,8 @@ ve.ce.Surface = function( $container, model ) {
 			end: null
 		}
 	};
-
-	this.on( 'textChange', function( e ) {
-		_this.onTextChange( e );
-	} );
-
-	this.on( 'rangeChange', function( e ) {
-		if ( e.new !== null ) {
-			_this.model.setSelection( e.new );
-			_this.Selection();
-			if ( e.new.getLength() === 0 ) {
-				_this.loadInsertionAnnotations();
-			} else {
-				_this.clearInsertionAnnotations();
-			}
-		}
-	} );
+	this.on( 'textChange', this.proxy( this.onTextChange ) );
+	this.on( 'rangeChange', this.proxy( this.onRangeChange ) );
 
 	//Prevent native contentedtiable tools
 	try {
@@ -117,6 +89,13 @@ ve.ce.Surface = function( $container, model ) {
 
 /* Methods */
 
+ve.ce.Surface.prototype.proxy = function( func ) {
+	var _this = this;
+	return( function() {
+		return func.apply( _this, arguments );
+	});
+};
+
 ve.ce.Surface.prototype.onCompositionStart = function( e ) {
 	var rangySel = rangy.getSelection();
 	this.poll.composition.start = this.getOffset( rangySel.anchorNode, rangySel.anchorOffset );
@@ -125,6 +104,24 @@ ve.ce.Surface.prototype.onCompositionStart = function( e ) {
 ve.ce.Surface.prototype.onCompositionEnd = function( e ) {
 	var rangySel = rangy.getSelection();
 	this.poll.composition.end = this.getOffset( rangySel.anchorNode, rangySel.anchorOffset );
+};
+
+ve.ce.Surface.prototype.onRangeChange = function( e ) {
+	if ( e.new !== null ) {
+		/*	Set selection in the model so you can always get current selection with
+			this.model.getSelection() */
+		this.model.setSelection( e.new );
+
+		/* Hide or show context view icon */
+		this.toggleContextView();
+
+		/* Load or clear annotations */
+		if ( e.new.getLength() === 0 ) {
+			this.loadInsertionAnnotations();
+		} else {
+			this.clearInsertionAnnotations();
+		}
+	}
 };
 
 ve.ce.Surface.prototype.onTextChange = function( e ) {
@@ -453,8 +450,7 @@ ve.ce.Surface.prototype.getModel = function() {
 	return this.model;
 };
 
-ve.ce.Surface.prototype.
-Selection = function( delay ) {
+ve.ce.Surface.prototype.toggleContextView = function( delay ) {
 	var _this = this,
 		selection = this.model.getSelection();
 	
@@ -709,12 +705,13 @@ ve.ce.Surface.prototype.showCursor = function( offset ) {
 ve.ce.Surface.prototype.showSelection = function( range ) {
 	var	start = this.getDOMNodeAndOffset( range.start ),
 		stop = this.getDOMNodeAndOffset( range.end ),
-		sel = rangy.getSelection();
-	// FIXME: Shadowing range, really?
-	range = rangy.createRange();
-	range.setStart( start.node, start.offset );
-	range.setEnd( stop.node, stop.offset );
-	sel.setSingleRange( range );
+		rangySel = rangy.getSelection(),
+		rangyRange = rangy.createRange();
+
+	rangyRange.setStart( start.node, start.offset );
+	rangyRange.setEnd( stop.node, stop.offset );
+	rangySel.removeAllRanges();
+	rangySel.addRange( rangyRange, range.start !== range.from );
 };
 
 ve.ce.Surface.getLeafNode = function( elem ) {

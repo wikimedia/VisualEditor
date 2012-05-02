@@ -1,4 +1,4 @@
-#es-toolbar {
+.es-toolbar {
 	border: solid 1px #cccccc;
 	position: relative;
 	-webkit-border-radius: 0.25em;
@@ -14,7 +14,7 @@
 	-o-user-select;
 	user-select: none;
 }
-#es-toolbar-wrapper.float #es-toolbar {
+.es-toolbar-wrapper.float .es-toolbar {
 	top: 0;
 	position: fixed;
 	-webkit-border-radius: 0;
@@ -24,7 +24,7 @@
 	z-index: 100;
 	border-top: none;
 }
-#es-toolbar-shadow {
+.es-toolbar-shadow {
 	background-image: url(../ve/ui/styles/images/toolbar-shadow.png);
 	background-position: top left;
 	background-repeat: repeat-x;
@@ -39,15 +39,15 @@
 	transition: opacity 500ms ease-in-out;
 	opacity: 0.125;
 }
-#es-toolbar.float #es-toolbar-shadow {
+.es-toolbar.float .es-toolbar-shadow {
 	opacity: 0.5;
 }
-.es-showData #es-editor {
+.es-showData .es-editor {
 	border-right: solid 1px #cccccc;
 	margin: 0;
 	padding: 0;
 }
-.es-showData #es-visual {
+.es-showData .es-visual {
 	margin: 0;
 	padding: 0;
 	float: left;
@@ -55,10 +55,10 @@
 	overflow: hidden;
 	margin-left: -1px;
 }
-#es-panels {
+.es-panels {
 	display: none;
 }
-.es-showData #es-panels {
+.es-showData .es-panels {
 	display: block;
 	float: right;
 	width: 50%;
@@ -78,7 +78,6 @@
 	font-size: 1em;
 }
 .es-render {
-	line-height: 1.5em;
 	padding: 1em;
 }
 .es-history {
@@ -109,7 +108,7 @@
 	font-size: 0.9em;
 }
 
-#es-toolbar .es-toolbarGroups {
+.es-toolbar .es-toolbarGroups {
 	float: left;
 }
 .es-modes {
@@ -150,38 +149,38 @@
 	-moz-box-shadow: inset 0px 1px 4px 0px rgba(0, 0, 0, 0.07);
 	box-shadow: inset 0px 1px 4px 0px rgba(0, 0, 0, 0.07);
 }
-#es-mode-wikitext:before {
+.es-mode-wikitext:before {
 	background-image: url(../ve/ui/styles/images/wikitext.png);
 }
 
-#es-mode-json:before {
+.es-mode-json:before {
 	background-image: url(../ve/ui/styles/images/json.png);
 }
 
-#es-mode-html:before {
+.es-mode-html:before {
 	background-image: url(../ve/ui/styles/images/html.png);
 }
 
-#es-mode-render:before {
+.es-mode-render:before {
 	background-image: url(../ve/ui/styles/images/render.png);
 }
 
-#es-mode-history:before {
+.es-mode-history:before {
 	background-image: url(../ve/ui/styles/images/history.png);
 }
 
-#es-mode-help:before {
+.es-mode-help:before {
 	background-image: url(../ve/ui/styles/images/help.png);
 }
 
-#es-panel-history div {
+.es-panel-history div {
 	border-bottom: solid 1px #dddddd;
 	padding: 0.5em 0;
 	color: #666666;
 	background-color: #f9f9f9;
 }
 
-#es-panel-history div.es-panel-history-active {
+.es-panel-history div.es-panel-history-active {
 	color: #000000;
 	background-color: white;
 }
@@ -257,4 +256,25 @@
 	text-align: center;
 	margin-bottom: 1em;
 	display: none;
+	border: solid 1px #ffbbbb;
+	padding: 0.5em 0.75em;
+	-webkit-border-radius: 0.25em;
+	-moz-border-radius: 0.25em;
+	-o-border-radius: 0.25em;
+	border-radius: 0.25em;
+}
+
+#es-warning-dismiss {
+	float: right;
+	color: white;
+}
+
+#es-warning-dismiss:hover {
+	text-decoration: none;
+	color: silver;
+}
+
+#es-warning-dismiss:after {
+	content: ' ✖';
+	color: black;
 }

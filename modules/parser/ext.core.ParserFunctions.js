@@ -24,174 +24,264 @@ function ParserFunctions ( manager ) {
 }
 
 // Temporary helper.
-ParserFunctions.prototype._rejoinKV = function ( k, v ) {
-	if ( k && k.length ) {
-		return k.concat( ['='], v );
+ParserFunctions.prototype._rejoinKV = function ( kv ) {
+	if ( kv.k && kv.k.length ) {
+		return kv.k.concat( ['='], kv.v );
 	} else {
-		return v;
+		return kv.v;
 	}
 };
 
-ParserFunctions.prototype['pf_#if'] = function ( target, argList, argDict, unnamedArgs ) {
+ParserFunctions.prototype['pf_#if'] = function ( token, frame, cb, args ) {
+	var target = args[0].k;
 	if ( target.trim() !== '' ) {
-		this.env.dp('#if, first branch', target.trim(), argDict[1] );
-		return unnamedArgs[0] && 
-			this._rejoinKV( unnamedArgs[0].k, argList[0].v ) || 
-			[];
+		//this.env.dp('#if, first branch', target.trim(), argDict[1] );
+		cb( { tokens: (args[1] && this._rejoinKV( args[1] ) || [] ) } );
 	} else {
-		this.env.dp('#if, second branch', target.trim(), argDict[2] );
-		return unnamedArgs[1] && 
-			this._rejoinKV( unnamedArgs[1].k, argList[1] && argList[1].v ) || 
-			[];
+		//this.env.dp('#if, second branch', target.trim(), argDict[2] );
+		cb( { tokens: (args[2] && this._rejoinKV( args[2] ) || [] ) } );
 	}
 };
 
-ParserFunctions.prototype._switchLookupFallback = function ( kvs, key ) {
-	if ( ! kvs ) {
-		return null;
-	}
-	var kv;
-	for ( var i = 0, l = kvs.length; i < l; i++ ) {
-		kv = kvs[i];
-		if ( this.env.tokensToString( kv.v, true ) === key ) {
-			// found. now look for the next entry with a non-empty key.
-			for ( var j = i; j < l; j++) {
-				kv = kvs[j];
-				// XXX: make sure the key is always one of these!
-				if ( kv.k !== '' && kv.k !== [] ) {
-					return kv;
-				}
+ParserFunctions.prototype._switchLookupFallback = function ( frame, kvs, key, dict, cb, v ) {
+	var kv,
+		l = kvs.length;
+	this.manager.env.tp('swl');
+	this.manager.env.dp('_switchLookupFallback', kvs.length, key, v );
+	if ( v && key === v.trim() ) {
+		// found. now look for the next entry with a non-empty key.
+		this.manager.env.dp( 'switch found' );
+		for ( var j = 0; j < l; j++) {
+			kv = kvs[j];
+			// XXX: make sure the key is always one of these!
+			if ( kv.k.length ) {
+				return cb( { tokens: kv.v } );
 			}
-			// no fall-through found, return.
-			return null;
+		}
+		// No value found, return empty string? XXX: check this
+		return cb( { } );
+	} else if ( kvs.length ) {
+		var i = 0;
+		if ( v ) {
+			i = 1;
+		}
+		for ( ; i < l; i++ ) {
+			kv = kvs[i];
+			if ( kv.k.length || !kv.v.length ) {
+				continue;
+			} else {
+				if ( ! kv.v.to ) {
+					this.manager.env.ap( kv.v );
+					console.trace();
+				}
+				return kv.v.to( 'text/plain/expanded', 
+						this._switchLookupFallback.bind( this, frame, kvs.slice(i), key, dict, cb ),
+						cb );
+			}
+		}
+		// value not found!
+		if ( '#default' in dict ) {
+			cb( { tokens: dict['#default'] } );
+		} else if ( kvs.length ) { 
+			var lastKV = kvs[kvs.length - 1];
+			if ( lastKV && ! lastKV.k.length ) {
+				cb ( { tokens: lastKV.v } );
+			} else {
+				cb ( {} );
+			}
+		} else {
+			cb ( {} );
 		}
 	}
-	// value not found!
-	return null;
 };
 
 // TODO: Implement 
 // http://www.mediawiki.org/wiki/Help:Extension:ParserFunctions#Grouping_results
-ParserFunctions.prototype['pf_#switch'] = function ( target, argList, argDict, unnamedArgs ) {
-	this.env.dp( 'switch enter', target.trim(),
-			' looking in ', argDict );
-	target = target.trim();
-	if ( argDict[target] !== undefined ) {
-		this.env.dp( 'switch found: ' + target +
-				' res=', argDict[target] );
-		return argDict[target];
+ParserFunctions.prototype['pf_#switch'] = function ( token, frame, cb, args ) {
+	target = args[0].k.trim();
+	this.env.dp( 'switch enter', target, token );
+	// create a dict from the remaining args
+	args.shift();
+	var dict = args.dict();
+	if ( target && dict[target] !== undefined ) {
+		this.env.dp( 'switch found: ', target, dict, ' res=', dict[target] );
+		cb ( {tokens: dict[target] } );
 	} else {
-		var fallThrough = this._switchLookupFallback( unnamedArgs, target );
-		//console.warn( 'fallThrough: ' + JSON.stringify( [ unnamedArgs, fallThrough ] ) );
-		if ( fallThrough !== null ) {
-			return fallThrough.v;
-		} else if ( '#default' in argDict ) {
-			return argDict['#default'];
-		} else { 
-			var lastKV = argList[argList.length - 1];
-			if ( lastKV && ! lastKV.v.length ) {
-				return lastKV.v;
-			} else {
-				return [];
-			}
-		}
+		this._switchLookupFallback( frame, args, target, dict, cb );
 	}
 };
 
 // #ifeq
-ParserFunctions.prototype['pf_#ifeq'] = function ( target, argList, argDict, unnamedArgs ) {
-	if ( argList.length < 2 ) {
-		return [];
+ParserFunctions.prototype['pf_#ifeq'] = function ( token, frame, cb, args ) {
+	if ( args.length < 3 ) {
+		cb( {} );
 	} else {
-		if ( target.trim() === this.env.tokensToString( argList[0].v ).trim() ) {
-			return unnamedArgs[1] && 
-				this._rejoinKV( unnamedArgs[1].k, argList[1].v ) ||
-				[];
+		var b = args[1].v;
+		b.to( 'text/plain/expanded', this._ifeq_worker.bind( this, cb, args ), cb );
+	}
+};
+
+ParserFunctions.prototype._ifeq_worker = function ( cb, args, b ) {
+	if ( args[0].k.trim() === b.trim() ) {
+		cb( { tokens: ( args[2] && this._rejoinKV( args[2] ) || [] ) } );
+	} else {
+		cb( { tokens: ( args[3] && this._rejoinKV( args[3] ) || [] ) } );
+	}
+};
+
+
+ParserFunctions.prototype['pf_#expr'] = function ( token, frame, cb, args ) {
+	var res,
+		target = args[0].k;
+	if ( target ) {
+		try {
+			// FIXME: make this safe and implement MW expressions!
+			var f = new Function ( 'return (' + target + ')' );
+			res = f();
+		} catch ( e ) {
+			return cb( { tokens: [ 'class="error" in expression ' + target ] } );
+		}
+	} else { 
+		res = '';
+	}
+	cb( { tokens: [ res.toString() ] } );
+};
+
+ParserFunctions.prototype['pf_#ifexpr'] = function ( token, frame, cb, args ) {
+	this.env.dp( '#ifexp: ', args );
+	var res = null,
+		target = args[0].k;
+	if ( target ) {
+		try {
+			// FIXME: make this safe, and fully implement MW expressions!
+			var f = new Function ( 'return (' + target + ')' );
+			res = f();
+		} catch ( e ) {
+			cb( { tokens: [ 'class="error" in expression ' + target ] } );
+		}
+	}
+
+	if ( res ) {
+		cb( { tokens: args[1] && this._rejoinKV( args[1] ) || [] } );
+	} else {
+		cb( { tokens: args[2] && this._rejoinKV( args[2] ) || [] } );
+	}
+};
+
+ParserFunctions.prototype['pf_#iferror'] = function ( token, frame, cb, args ) {
+	var target = args[0].k;
+	if ( target.indexOf( 'class="error"' ) >= 0 ) {
+		cb( { tokens: args[1] && args[1].v || [] } );
+	} else {
+		cb( { tokens: args[2] && args[2].v || [ target ] } );
+	}
+};
+
+
+ParserFunctions.prototype.pf_lc = function ( token, frame, cb, args ) {
+	cb( { tokens: [ args[0].k.toLowerCase() ] } );
+};
+
+ParserFunctions.prototype.pf_uc = function ( token, frame, cb, args ) {
+	cb( { tokens: [ args[0].k.toUpperCase() ] } );
+};
+
+ParserFunctions.prototype.pf_ucfirst = function ( token, frame, cb, args ) {
+	var target = args[0].k;
+	if ( target ) {
+		cb( { tokens: [ target[0].toUpperCase() + target.substr(1) ] } );
+	} else {
+		cb( {} );
+	}
+};
+
+ParserFunctions.prototype.pf_lcfirst = function ( token, frame, cb, args ) {
+	var target = args[0].k;
+	if ( target ) {
+		cb( { tokens: [ target[0].toLowerCase() + target.substr(1) ] } );
+	} else {
+		cb( {} );
+	}
+};
+ParserFunctions.prototype.pf_padleft = function ( token, frame, cb, args ) {
+	var target = args[0].k,
+		pad;
+	if ( args[1] && args[1].v > 0) {
+		if ( args[2] && args[2].v ) {
+			pad = args[2].v;
 		} else {
-			return unnamedArgs[2] &&
-				this._rejoinKV( unnamedArgs[2].k, argList[2].v ) ||
-				[];
+			pad = '0';
 		}
-	}
-};
-
-ParserFunctions.prototype.pf_lc = function ( target, argList, argDict ) {
-	return [ target.toLowerCase() ];
-};
-
-ParserFunctions.prototype.pf_uc = function ( target, argList, argDict ) {
-	return [ target.toUpperCase() ];
-};
-
-ParserFunctions.prototype.pf_ucfirst = function ( target, argList, argDict ) {
-	if ( target ) {
-		return [ target[0].toUpperCase() + target.substr(1) ];
-	} else {
-		return [];
-	}
-};
-
-ParserFunctions.prototype.pf_lcfirst = function ( target, argList, argDict ) {
-	if ( target ) {
-		return [ target[0].toLowerCase() + target.substr(1) ];
-	} else {
-		return [];
-	}
-};
-ParserFunctions.prototype.pf_padleft = function ( target, argList, argDict ) {
-	if ( '1' in argDict ) {
-		var n = argDict[1];
+		var n = args[1].v;
 		while ( target.length < n ) {
-			target = '0' + target;
+			target = pad + target;
 		}
-		return [target];
+		cb( { tokens: [target] } );
 	} else {
-		return [];
+		cb( {} );
+	}
+};
+ParserFunctions.prototype.pf_padright = function ( token, frame, cb, args ) {
+	var target = args[0].k;
+	if ( args[1] && args[1].v > 0) {
+		if ( args[2] && args[2].v ) {
+			pad = args[2].v;
+		} else {
+			pad = '0';
+		}
+		var n = args[1].v;
+		while ( target.length < n ) {
+			target = target + pad;
+		}
+		cb( { tokens: [target] } );
+	} else {
+		cb( {} );
 	}
 };
 
-ParserFunctions.prototype['pf_#tag'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype['pf_#tag'] = function ( token, frame, cb, args ) {
 	// TODO: handle things like {{#tag:nowiki|{{{input1|[[shouldnotbelink]]}}}}}
 	// https://www.mediawiki.org/wiki/Future/Parser_development#Token_stream_transforms
-	return [ new TagTk( target ) ] 
-		.concat( argList[0].v, 
-			[ new EndTagTk( target ) ] );
+	var target = args[0].k;
+	cb( { tokens: ( [ new TagTk( target ) ] 
+					.concat( args[1].v, 
+					[ new EndTagTk( target ) ] ) ) } );
 };
 
 // TODO: These are just quick wrappers for now, optimize!
-ParserFunctions.prototype.pf_currentyear = function ( target, argList, argDict ) {
-	return this['pf_#time']( 'Y', [], {} );
+ParserFunctions.prototype.pf_currentyear = function ( token, frame, cb, args ) {
+	cb( this._pf_time_tokens( 'Y', [], {} ) );
 };
-ParserFunctions.prototype.pf_currentmonth = function ( target, argList, argDict ) {
-	return this['pf_#time']( 'm', [], {} );
+ParserFunctions.prototype.pf_currentmonth = function ( token, frame, cb, args ) {
+	cb( this._pf_time_tokens( 'm', [], {} ) );
 };
-ParserFunctions.prototype.pf_currentmonthname = function ( target, argList, argDict ) {
-	return this['pf_#time']( 'F', [], {} );
+ParserFunctions.prototype.pf_currentmonthname = function ( token, frame, cb, args ) {
+	cb( this._pf_time_tokens( 'F', [], {} ) );
 };
 // XXX Actually use genitive form!
-ParserFunctions.prototype.pf_currentmonthnamegen = function ( target, argList, argDict ) {
-	return this['pf_#time']( 'F', [], {} );
+ParserFunctions.prototype.pf_currentmonthnamegen = function ( token, frame, cb, args ) {
+	cb( this._pf_time_tokens( 'F', [], {} ) );
 };
-ParserFunctions.prototype.pf_currentmonthabbrev = function ( target, argList, argDict ) {
-	return this['pf_#time']( 'M', [], {} );
+ParserFunctions.prototype.pf_currentmonthabbrev = function ( token, frame, cb, args ) {
+	cb( this._pf_time_tokens( 'M', [], {} ) );
 };
-ParserFunctions.prototype.pf_currentweek = function ( target, argList, argDict ) {
-	return this['pf_#time']( 'W', [], {} );
+ParserFunctions.prototype.pf_currentweek = function ( token, frame, cb, args ) {
+	cb( this._pf_time_tokens( 'W', [], {} ) );
 };
-ParserFunctions.prototype.pf_currentdow = function ( target, argList, argDict ) {
-	return this['pf_#time']( 'w', [], {} );
+ParserFunctions.prototype.pf_currentdow = function ( token, frame, cb, args ) {
+	cb( this._pf_time_tokens( 'w', [], {} ) );
 };
-ParserFunctions.prototype.pf_currentday = function ( target, argList, argDict ) {
-	return this['pf_#time']( 'j', [], {} );
+ParserFunctions.prototype.pf_currentday = function ( token, frame, cb, args ) {
+	cb( this._pf_time_tokens( 'j', [], {} ) );
 };
-ParserFunctions.prototype.pf_currentday2 = function ( target, argList, argDict ) {
-	return this['pf_#time']( 'd', [], {} );
+ParserFunctions.prototype.pf_currentday2 = function ( token, frame, cb, args ) {
+	cb( this._pf_time_tokens( 'd', [], {} ) );
 };
-ParserFunctions.prototype.pf_currentdayname = function ( target, argList, argDict ) {
-	return this['pf_#time']( 'l', [], {} );
+ParserFunctions.prototype.pf_currentdayname = function ( token, frame, cb, args ) {
+	cb( this._pf_time_tokens( 'l', [], {} ) );
 };
-ParserFunctions.prototype.pf_currenttime = function ( target, argList, argDict ) {
-	return this['pf_#time']( 'H:i', [], {} );
+ParserFunctions.prototype.pf_currenttime = function ( token, frame, cb, args ) {
+	cb( this._pf_time_tokens( 'H:i', [], {} ) );
 };
 
 // A first approximation of time stuff.
@@ -201,11 +291,19 @@ ParserFunctions.prototype.pf_currenttime = function ( target, argList, argDict )
 //
 // First (very rough) approximation below based on
 // http://jacwright.com/projects/javascript/date_format/, MIT licensed.
-ParserFunctions.prototype['pf_#time'] = function ( target, argList, argDict ) {
+ParserFunctions.prototype['pf_#time'] = function ( token, frame, cb, args ) {
+	cb ( { tokens: this._pf_time( args[0].k, args.slice(1) ) } );
+};
+
+ParserFunctions.prototype._pf_time_tokens = function ( target, args ) {
+	return { tokens: this._pf_time( target, args ) };
+};
+
+ParserFunctions.prototype._pf_time = function ( target, args ) {
 	var res,
 		tpl = target.trim();
 	//try {
-	//	var date = new Date( this.env.tokensToString( argList[0].v ) );
+	//	var date = new Date( this.env.tokensToString( args[1].v ) );
 	//	res = [ date.format( target ) ];
 	//} catch ( e ) {
 	//	this.env.dp( 'ERROR: #time ' + e );
@@ -216,12 +314,11 @@ ParserFunctions.prototype['pf_#time'] = function ( target, argList, argDict ) {
 			this.env.dp( 'ERROR: #time ' + e2 );
 			res = [ new Date().toString() ];
 		}
-	//}
-	return res;
+		return res;
 };
 
 // Simulates PHP's date function
-// XXX: don't patch Date.prototype?
+// FIXME: don't patch Date.prototype!
 Date.prototype.format = function(format) {
     var returnStr = '';
     var replace = Date.replaceChars;
@@ -340,68 +437,23 @@ Date.replaceChars = {
     U: function() { return this.getTime() / 1000; }
 };
 
-ParserFunctions.prototype['pf_#ifexpr'] = function ( target, argList, argDict, unnamedArgs ) {
-	this.env.dp( '#ifexp: ' + JSON.stringify( argList ) );
-	var res;
-	if ( target ) {
-		try {
-			var f = new Function ( 'return (' + target + ')' );
-			res = f();
-		} catch ( e ) {
-			return [ 'class="error" in expression ' + target ];
-		}
-	} else {
-		res = target;
-	}
-	if ( res ) {
-		return unnamedArgs[0] && 
-				this._rejoinKV( unnamedArgs[0].k, argList[0].v ) ||
-				[];
-	} else {
-		return unnamedArgs[1] && 
-				this._rejoinKV( unnamedArgs[1].k, argList[1].v ) ||
-				[];
-	}
-};
-
-ParserFunctions.prototype['pf_#iferror'] = function ( target, argList, argDict ) {
-	if ( target.indexOf( 'class="error"' ) >= 0 ) {
-		return ( argList[0] && argList[0].v ) || [];
-	} else {
-		return argList[1] && argList[1].v || [ target ] ;
-	}
-};
-
-ParserFunctions.prototype['pf_#expr'] = function ( target, argList, argDict ) {
-	var res;
-	if ( target ) {
-		try {
-			var f = new Function ( 'return (' + target + ')' );
-			res = f();
-		} catch ( e ) {
-			return [ 'class="error" in expression ' + target ];
-		}
-	} else { 
-		res = '';
-	}
-	return [ res.toString() ];
-};
-
-ParserFunctions.prototype.pf_localurl = function ( target, argList, argDict ) {
-	return ( 
+ParserFunctions.prototype.pf_localurl = function ( token, frame, cb, args ) {
+	var target = args[0].k;
+	args = args.slice(1);
+	cb( { tokens: ( 
 			'/' +
 			// FIXME! Figure out correct prefix to use
 			//this.env.wgScriptPath + 
 			'index' +
 				this.env.wgScriptExtension + '?title=' +
 				this.env.normalizeTitle( target ) + '&' +
-				argList.map( 
+				args.map( 
 					function( kv ) { 
 						//console.warn( JSON.stringify( kv ) );
 						return (kv.v !== '' && kv.k + '=' + kv.v ) || kv.k;
 					} 
 				).join('&') 
-		);
+		) } );
 };
 
 
@@ -411,29 +463,36 @@ ParserFunctions.prototype.pf_localurl = function ( target, argList, argDict ) {
 
 // The page name and similar information should be carried around in
 // this.env
-ParserFunctions.prototype.pf_formatnum = function ( target, argList, argDict ) {
-	return [ target ];
+ParserFunctions.prototype.pf_formatnum = function ( token, frame, cb, args ) {
+	var target = args[0].k;
+	cb( { tokens: [ target ] } );
 };
-ParserFunctions.prototype.pf_currentpage = function ( target, argList, argDict ) {
-	return [ target ];
+ParserFunctions.prototype.pf_currentpage = function ( token, frame, cb, args ) {
+	var target = args[0].k;
+	cb( { tokens: [ target ] } );
 };
-ParserFunctions.prototype.pf_pagenamee = function ( target, argList, argDict ) {
-	return [ target.split(':', 2)[1] || '' ];
+ParserFunctions.prototype.pf_pagenamee = function ( token, frame, cb, args ) {
+	var target = args[0].k;
+	cb( { tokens: [ target.split(':', 2)[1] || '' ] } );
 };
-ParserFunctions.prototype.pf_fullpagename = function ( target, argList, argDict ) {
-	return target && [target] || ["http://example.com/fixme/"];
+ParserFunctions.prototype.pf_fullpagename = function ( token, frame, cb, args ) {
+	var target = args[0].k;
+	cb( { tokens: target && [target] || ["http://example.com/fixme/"] } );
 };
-ParserFunctions.prototype.pf_fullpagenamee = function ( target, argList, argDict ) {
-	return target && [target] || ["http://example.com/fixme/"];
+ParserFunctions.prototype.pf_fullpagenamee = function ( token, frame, cb, args ) {
+	var target = args[0].k;
+	cb( { tokens: target && [target] || ["http://example.com/fixme/"] } );
 };
 // This should be doable with the information in the envirionment
 // (this.env) already.
-ParserFunctions.prototype.pf_fullurl = function ( target, argList, argDict ) {
-	return target && [target] || ["http://example.com/fixme/"];
+ParserFunctions.prototype.pf_fullurl = function ( token, frame, cb, args ) {
+	var target = args[0].k;
+	cb( { tokens: target && [target] || ["http://example.com/fixme/"] } );
 };
-ParserFunctions.prototype.pf_urlencode = function ( target, argList, argDict ) {
+ParserFunctions.prototype.pf_urlencode = function ( token, frame, cb, args ) {
+	var target = args[0].k;
 	this.env.tp( 'urlencode: ' + target  );
-	return [encodeURIComponent(target.trim())];
+	cb( { tokens: [encodeURIComponent(target.trim())] } );
 };
 
 // The following items all depends on information from the Wiki, so are hard
@@ -443,56 +502,61 @@ ParserFunctions.prototype.pf_urlencode = function ( target, argList, argDict ) {
 // http://etherpad.wikimedia.org/ParserNotesExtensions and
 // http://www.mediawiki.org/wiki/Wikitext_parser/Environment.
 // There might be better solutions for some of these.
-ParserFunctions.prototype['pf_#ifexist'] = function ( target, argList, argDict ) {
-	return ( argList[0] && argList[0].v ) || [];
+ParserFunctions.prototype['pf_#ifexist'] = function ( token, frame, cb, args ) {
+	cb( { tokens: ( args[1] && args[1].v ) || [] } );
 };
-ParserFunctions.prototype.pf_pagesize = function ( target, argList, argDict ) {
-	return [ '100' ];
+ParserFunctions.prototype.pf_pagesize = function ( token, frame, cb, args ) {
+	cb( { tokens: [ '100' ] } );
 };
-ParserFunctions.prototype.pf_sitename = function ( target, argList, argDict ) {
-	return [ "MediaWiki" ];
+ParserFunctions.prototype.pf_sitename = function ( token, frame, cb, args ) {
+	cb( { tokens: [ "MediaWiki" ] } );
 };
-ParserFunctions.prototype.pf_anchorencode = function ( target, argList, argDict ) {
-	return [ target.trim() ];
+ParserFunctions.prototype.pf_anchorencode = function ( token, frame, cb, args ) {
+	var target = args[0].k;
+	cb( { tokens: [ target.trim() ] } );
 };
-ParserFunctions.prototype.pf_protectionlevel = function ( target, argList, argDict ) {
-	return [''];
+ParserFunctions.prototype.pf_protectionlevel = function ( token, frame, cb, args ) {
+	cb( { tokens: [''] } );
 };
-ParserFunctions.prototype.pf_ns = function ( target, argList, argDict ) {
-	return [target];
+ParserFunctions.prototype.pf_ns = function ( token, frame, cb, args ) {
+	var target = args[0].k;
+	cb( { tokens: [target] } );
 };
-ParserFunctions.prototype.pf_subjectspace = function ( target, argList, argDict ) {
-	return ['Main'];
+ParserFunctions.prototype.pf_subjectspace = function ( token, frame, cb, args ) {
+	cb( { tokens: ['Main'] } );
 };
-ParserFunctions.prototype.pf_talkspace = function ( target, argList, argDict ) {
-	return ['Talk'];
+ParserFunctions.prototype.pf_talkspace = function ( token, frame, cb, args ) {
+	cb( { tokens: ['Talk'] } );
 };
-ParserFunctions.prototype.pf_numberofarticles = function ( target, argList, argDict ) {
-	return ["1"];
+ParserFunctions.prototype.pf_numberofarticles = function ( token, frame, cb, args ) {
+	cb( { tokens: ["1"] } );
 };
-ParserFunctions.prototype['pf_#language'] = function ( target, argList, argDict ) {
-	return [target];
+ParserFunctions.prototype['pf_#language'] = function ( token, frame, cb, args ) {
+	var target = args[0].k;
+	cb( { tokens: [target] } );
 };
-ParserFunctions.prototype.pf_contentlang = function ( target, argList, argDict ) {
-	return ['en'];
+ParserFunctions.prototype.pf_contentlang = function ( token, frame, cb, args ) {
+	cb( { tokens: ['en'] } );
 };
-ParserFunctions.prototype.pf_numberoffiles = function ( target, argList, argDict ) {
-	return ['2'];
+ParserFunctions.prototype.pf_numberoffiles = function ( token, frame, cb, args ) {
+	cb( { tokens: ['2'] } );
 };
-ParserFunctions.prototype.pf_namespace = function ( target, argList, argDict ) {
-	return [target.split(':').pop() || 'Main'];
+ParserFunctions.prototype.pf_namespace = function ( token, frame, cb, args ) {
+	var target = args[0].k;
+	cb( { tokens: [target.split(':').pop() || 'Main'] } );
 };
-ParserFunctions.prototype.pf_namespacee = function ( target, argList, argDict ) {
-	return [target.split(':').pop() || 'Main'];
+ParserFunctions.prototype.pf_namespacee = function ( token, frame, cb, args ) {
+	var target = args[0].k;
+	cb( { tokens: [target.split(':').pop() || 'Main'] } );
 };
-ParserFunctions.prototype.pf_pagename = function ( target, argList, argDict ) {
-	return [this.env.pageName];
+ParserFunctions.prototype.pf_pagename = function ( token, frame, cb, args ) {
+	cb( { tokens: [this.env.pageName] } );
 };
-ParserFunctions.prototype.pf_pagenamebase = function ( target, argList, argDict ) {
-	return [this.env.pageName];
+ParserFunctions.prototype.pf_pagenamebase = function ( token, frame, cb, args ) {
+	cb( { tokens: [this.env.pageName] } );
 };
-ParserFunctions.prototype.pf_scriptpath = function ( target, argList, argDict ) {
-	return [this.env.wgScriptPath];
+ParserFunctions.prototype.pf_scriptpath = function ( token, frame, cb, args ) {
+	cb( { tokens: [this.env.wgScriptPath] } );
 };
 
 

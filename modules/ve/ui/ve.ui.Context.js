@@ -92,25 +92,20 @@ ve.ui.Context.prototype.set = function() {
 
 ve.ui.Context.prototype.positionIcon = function() {
 	this.$.removeClass( 'es-contextView-position-start es-contextView-position-end' );
-	var selection = this.surfaceView.getSelectionRange(),
-		selectionRect = this.surfaceView.getSelectionRect();
-	this.position = null;
 
-	if ( selection.from < selection.to ) {
+	var	selection = this.surfaceView.model.getSelection(),
+		selectionRect = this.surfaceView.getSelectionRect();
+
+	if( selection.getDirection() === 1 ) {
 		this.position = new ve.Position( selectionRect.end.x, selectionRect.end.y );
 		this.$.addClass( 'es-contextView-position-end' );
-		
-	} else if ( selection.from > selection.to ) {
+	} else {
 		this.position = new ve.Position( selectionRect.start.x, selectionRect.start.y );
 		this.$.addClass( 'es-contextView-position-start' );
 	}
 
-	if ( this.position ) {
-		this.$.css( { 'left': this.position.left, 'top': this.position.top } );
-		this.$icon.fadeIn( 'fast' );
-	} else {
-		this.$icon.hide();
-	}
+	this.$.css( { 'left': this.position.left, 'top': this.position.top } );
+	this.$icon.fadeIn( 'fast' );
 };
 
 ve.ui.Context.prototype.positionOverlay = function( $overlay ) {

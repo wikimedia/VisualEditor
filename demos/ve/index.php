@@ -24,7 +24,7 @@
 				overflow-y: scroll;
 				background-color: white;
 			}
-			#es-base {
+			.es-base {
 				margin: 2em;
 				margin-top: 0em;
 				-webkit-box-shadow: 0 0.25em 1.5em 0 #dddddd;
@@ -35,15 +35,15 @@
 				-o-border-radius: 0.5em;
 				border-radius: 0.5em;
 			}
-			#es-panes {
+			.es-panes {
 				border: solid 1px #cccccc;
 				border-top: none;
 			}
-			#es-editor, .es-showData #es-editor {
+			.es-editor, .es-showData .es-editor {
 				padding-left: 1em;
 				padding-right: 1em;
 			}
-			#es-toolbar {
+			.es-toolbar {
 				-webkit-border-radius: 0;
 				-moz-border-radius: 0;
 				-o-border-radius: 0;
@@ -57,12 +57,12 @@
 				-o-border-top-left-radius: 0.25em;
 				border-top-left-radius: 0.25em;
 			}
-			#es-toolbar.float {
+			.es-toolbar.float {
 				left: 2em;
 				right: 2em;
 				top: 0;
 			}
-			#es-docs {
+			.es-docs {
 				margin-left: 2.5em;
 			}
 		</style>

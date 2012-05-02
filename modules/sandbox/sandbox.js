@@ -149,7 +149,7 @@ $(document).ready( function() {
 									'end': 17
 								}
 							}
-						]	
+						]
 					}
 				},
 				{
@@ -169,7 +169,7 @@ $(document).ready( function() {
 									'end': 17
 								}
 							}
-						]	
+						]
 					}
 				},
 				{
@@ -189,7 +189,7 @@ $(document).ready( function() {
 									'end': 17
 								}
 							}
-						]	
+						]
 					}
 				},
 				{
@@ -209,7 +209,7 @@ $(document).ready( function() {
 									'end': 17
 								}
 							}
-						]	
+						]
 					}
 				},
 				{
@@ -229,7 +229,7 @@ $(document).ready( function() {
 									'end': 17
 								}
 							}
-						]	
+						]
 					}
 				},
 				{
@@ -249,7 +249,7 @@ $(document).ready( function() {
 									'end': 17
 								}
 							}
-						]	
+						]
 					}
 				},
 				{
@@ -446,7 +446,7 @@ $(document).ready( function() {
 															'type': 'paragraph',
 															'content': { 'text': 'Test 4444' }
 														}
-													]												
+													]
 												},
 												{
 													'type': 'listItem',
@@ -458,7 +458,7 @@ $(document).ready( function() {
 															'type': 'paragraph',
 															'content': { 'text': 'Test 55555' }
 														}
-													]												
+													]
 												},
 												{
 													'type': 'listItem',
@@ -470,7 +470,7 @@ $(document).ready( function() {
 															'type': 'paragraph',
 															'content': { 'text': 'Test 666666' }
 														}
-													]												
+													]
 												}
 											]
 										}
@@ -502,160 +502,34 @@ $(document).ready( function() {
 			]
 		}
 	};
-	
-	/* TODO: Make the config better */
+
+	/* Sandbox integration hack.  Allows both MW integration and demo pages to work */
+	if ( $('#content').length === 0 ) {
+		$( 'body' ).append(
+			$( '<div />' ).attr( 'id', 'content' )
+		);
+	}
+
+	/* Sandbox config object. */
 	var options = {
 		toolbars: {
-			'top': [ { 'name': 'history', 'items' : ['undo', 'redo'] },
-					  { 'name': 'textStyle', 'items' : ['format'] },
-					  { 'name': 'textStyle', 'items' : ['bold', 'italic', 'link', 'clear'] },
-					  { 'name': 'list', 'items' : ['number', 'bullet', 'outdent', 'indent'] } ]
-			}
-		};
-
-	//create a new instance of VE
-	var sandboxEditor = new ve.Surface('sandbox', wikidoms['Wikipedia article'], options ),
-		surfaceModel = sandboxEditor.getSurfaceModel(),
-		documentModel = sandboxEditor.getDocumentModel(),
-		editorID = sandboxEditor.getID();
-
-	/*
-	 * This code is responsible for switching toolbar into floating mode when scrolling (with
-	 * keyboard or mouse).
-	 */
-	var $toolbarWrapper = $( '#es-toolbar-wrapper' ),
-		$toolbar = $( '#es-toolbar' ),
-		$window = $( window );
-	$window.scroll( function() {
-		var toolbarWrapperOffset = $toolbarWrapper.offset();
-		if ( $window.scrollTop() > toolbarWrapperOffset.top ) {
-			if ( !$toolbarWrapper.hasClass( 'float' ) ) {
-				var	left = toolbarWrapperOffset.left,
-					right = $window.width() - $toolbarWrapper.outerWidth() - left;
-				$toolbarWrapper.css( 'height', $toolbarWrapper.height() ).addClass( 'float' );
-				$toolbar.css( { 'left': left, 'right': right } );
-			}
-		} else {
-			if ( $toolbarWrapper.hasClass( 'float' ) ) {
-				$toolbarWrapper.css( 'height', 'auto' ).removeClass( 'float' );
-				$toolbar.css( { 'left': 0, 'right': 0 } );
+			top: {
+				/* What modes this toolbar will have */
+				modes: ['wikitext', 'json', 'html', 'render', 'history', 'help']
 			}
 		}
-	} );
+	};
 
-	var $modeButtons = $( '.es-modes-button' ),
-		$panels = $( '.es-panel' ),
-		$base = $( '#es-base' ),
-		currentMode = null,
-		modes = {
-			'wikitext': {
-				'$': $( '#es-mode-wikitext' ),
-				'$panel': $( '#es-panel-wikitext' ),
-				'update': function() {
-					this.$panel.text(
-						ve.dm.WikitextSerializer.stringify( documentModel.getPlainObject() )
-					);
-				}
-			},
-			'json': {
-				'$': $( '#es-mode-json' ),
-				'$panel': $( '#es-panel-json' ),
-				'update': function() {
-					this.$panel.text( ve.dm.JsonSerializer.stringify( documentModel.getPlainObject(), {
-						'indentWith': '  '
-					} ) );
-				}
-			},
-			'html': {
-				'$': $( '#es-mode-html' ),
-				'$panel': $( '#es-panel-html' ),
-				'update': function() {
-					this.$panel.text(
-						ve.dm.HtmlSerializer.stringify( documentModel.getPlainObject() )
-					);
-				}
-			},
-			'render': {
-				'$': $( '#es-mode-render' ),
-				'$panel': $( '#es-panel-render' ),
-				'update': function() {
-					this.$panel.html(
-						ve.dm.HtmlSerializer.stringify( documentModel.getPlainObject() )
-					);
-				}
-			},
-			'history': {
-				'$': $( '#es-mode-history' ),
-				'$panel': $( '#es-panel-history' ),
-				'update': function() {
-					var	history = surfaceModel.getHistory(),
-						i = history.length,
-						end = Math.max( 0, i - 25 ),
-						j,
-						k,
-						ops,
-						events = '',
-						z = 0,
-						operations,
-						data;
-						
-					while ( --i >= end ) {
-						z++;
-						operations = [];
-						for ( j = 0; j < history[i].stack.length; j++) {
-							ops = history[i].stack[j].getOperations().slice(0);
-							for ( k = 0; k < ops.length; k++ ) {
-								data = ops[k].data || ops[k].length;
-								if ( ve.isArray( data ) ) {
-									data = data[0];
-									if ( ve.isArray( data ) ) {
-										data = data[0];
-									}
-								}
-								if ( typeof data !== 'string' && typeof data !== 'number' ) {
-									data = '-';
-								}
-								ops[k] = ops[k].type.substr( 0, 3 ) + '(' + data + ')';
-							}
-							operations.push('[' + ops.join( ', ' ) + ']');
-						}
-						events += '<div' + (z === surfaceModel.undoIndex ? ' class="es-panel-history-active"' : '') + '>' + operations.join(', ') + '</div>';
-					}
-					
-					this.$panel.html( events );
-				}
-			},
-			'help': {
-				'$': $( '#es-mode-help' ),
-				'$panel': $( '#es-panel-help' ),
-				'update': function() {}
-			}
-		};
-	$.each( modes, function( name, mode ) {
-		mode.$.click( function() {
-			var disable = $(this).hasClass( 'es-modes-button-down' );
-			var visible = $base.hasClass( 'es-showData' );
-			$modeButtons.removeClass( 'es-modes-button-down' );
-			$panels.hide();
-			if ( disable ) {
-				if ( visible ) {
-					$base.removeClass( 'es-showData' );
-					$window.resize();
-				}
-				currentMode = null;
-			} else {
-				$(this).addClass( 'es-modes-button-down' );
-				mode.$panel.show();
-				if ( !visible ) {
-					$base.addClass( 'es-showData' );
-					$window.resize();
-				}
-				mode.update.call( mode );
-				currentMode = mode;
-			}
-		} );
-	} );
+	/*
+		Create Sandbox instance of VE
+		Attach to #content element
+	*/
+	var sandboxEditor = new ve.Surface( '#content', wikidoms['Wikipedia article'], options ),
+		surfaceModel = sandboxEditor.getSurfaceModel(),
+		documentModel = sandboxEditor.getDocumentModel(),
+		parent = sandboxEditor.getParent();
 
+	/* Sandbox links above the editor */
 	var $docsList = $( '#es-docs-list' );
 	$.each( wikidoms, function( title, wikidom ) {
 		$docsList.append(
@@ -677,8 +551,8 @@ $(document).ready( function() {
 							);
 							surfaceModel.purgeHistory();
 							
-							if ( currentMode ) {
-								currentMode.update.call( currentMode );
+							if ( sandboxEditor.currentMode ) {
+								sandboxEditor.currentMode.update.call( sandboxEditor.currentMode );
 							}
 							return false;
 						} )
@@ -686,19 +560,8 @@ $(document).ready( function() {
 		);
 	} );
 
-	surfaceModel.on( 'transact', function() {
-		if ( currentMode ) {
-			currentMode.update.call( currentMode );
-		}
-	} );
-	surfaceModel.on( 'select', function() {
-		if ( currentMode === modes.history ) {
-			currentMode.update.call( currentMode );
-		}
-	} );
-
+	/* Sandbox Warning Message */
 	$( '#es-docs' ).css( { 'visibility': 'visible' } );
-	$( '#es-base' ).css( { 'visibility': 'visible' } );
 	// Show the warning that this software is experimental
 	// TODO: Use a cookie to remember the warning has been dismissed
 	$( '#es-warning' ).show();
@@ -706,5 +569,5 @@ $(document).ready( function() {
 		$(this).parent().slideUp();
 		return false;
 	} );
-	$( '#es-mode-wikitext' ).click();
+	$( '.es-mode-wikitext' ).click();
 } );
