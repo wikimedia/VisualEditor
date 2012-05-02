@@ -139,45 +139,6 @@ ve.dm.DocumentFragment.prototype.getNodeFromOffset = function( offset ) {
 };
 
 /**
- * Gets the content offset of a node.
- * 
- * This method is pretty expensive. If you need to get different slices of the same content, get
- * the content first, then slice it up locally.
- * 
- * TODO: Rewrite this method to not use recursion, because the function call overhead is expensive
- * 
- * @method
- * @param {ve.Node} node Node to get offset of
- * @returns {Integer} Offset of node or -1 of node was not found
- */
-ve.dm.DocumentFragment.prototype.getOffsetFromNode = function( node ) {
-	if ( node === this ) {
-		return 0;
-	}
-	if ( this.children.length ) {
-		var offset = 0,
-			childNode;
-		for ( var i = 0, length = this.children.length; i < length; i++ ) {
-			childNode = this.children[i];
-			if ( childNode === node ) {
-				return offset;
-			}
-			if (
-				ve.dm.factory.canNodeHaveChildren( childNode.getType() ) &&
-				childNode.getChildren().length
-			) {
-				var childOffset = this.getOffsetFromNode.call( childNode, node );
-				if ( childOffset !== -1 ) {
-					return offset + 1 + childOffset;
-				}
-			}
-			offset += childNode.getOuterLength();
-		}
-	}
-	return -1;
-};
-
-/**
  * Gets slice or copy of the document data.
  * 
  * @method
@@ -208,7 +169,7 @@ ve.dm.DocumentFragment.prototype.getData = function( range, deep ) {
  */
 ve.dm.DocumentFragment.prototype.getDataFromNode = function( node ) {
 	var length = node.getLength(),
-		offset = this.getOffsetFromNode( node );
+		offset = this.documentNode.getOffsetFromNode( node );
 	if ( offset >= 0 ) {
 		// XXX: If the node is wrapped in an element than we should incriment the offset by one so
 		// we only return the content inside the element. This is fine given that we know a node is
