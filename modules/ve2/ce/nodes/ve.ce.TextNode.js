@@ -190,7 +190,7 @@ ve.ce.TextNode.prototype.getOuterLength = function() {
  * 
  * @method
  */
-ve.ce.LeafNode.prototype.render = function() {
+ve.ce.TextNode.prototype.render = function() {
 	var $new = $( $( '<span>' + this.getHtml() + '</span>' ).contents() );
 	this.$.replaceWith( $new );
 	this.$ = $new;
