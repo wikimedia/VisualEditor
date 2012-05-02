@@ -15,7 +15,11 @@ ve.dm.DocumentNode = function( children, attributes ) {
 /* Static Members */
 
 /**
+ * Node rules.
+ * 
  * @see ve.dm.NodeFactory
+ * @static
+ * @member
  */
 ve.dm.DocumentNode.rules = {
 	'canHaveChildren': true,

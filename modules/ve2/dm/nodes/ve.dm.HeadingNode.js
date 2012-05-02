@@ -15,7 +15,11 @@ ve.dm.HeadingNode = function( children, attributes ) {
 /* Static Members */
 
 /**
+ * Node rules.
+ * 
  * @see ve.dm.NodeFactory
+ * @static
+ * @member
  */
 ve.dm.HeadingNode.rules = {
 	'canHaveChildren': true,

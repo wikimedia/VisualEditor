@@ -14,7 +14,11 @@ ve.ce.TextNode = function( model ) {
 /* Static Members */
 
 /**
+ * Node rules.
+ * 
  * @see ve.ce.NodeFactory
+ * @static
+ * @member
  */
 ve.ce.TextNode.rules = {
 	'canHaveChildren': false,

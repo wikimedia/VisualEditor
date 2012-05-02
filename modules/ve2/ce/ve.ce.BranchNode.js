@@ -23,17 +23,15 @@ ve.ce.BranchNode = function( model, $element ) {
 
 /* Methods */
 
-ve.ce.BranchNode.prototype.convertDomElement = function( type ) {
-	// Create new element
-	var $new = $( '<' + type + '></' + type + '>' );
+ve.ce.BranchNode.prototype.replaceDomWrapper = function( $element ) {
 	// Copy classes
-	$new.attr( 'class', this.$.attr( 'class' ) );
+	$element.attr( 'class', this.$.attr( 'class' ) );
 	// Move contents
-	$new.append( this.$.contents() );
+	$element.append( this.$.contents() );
 	// Swap elements
-	this.$.replaceWith( $new );
+	this.$.replaceWith( $element );
 	// Use new element from now on
-	this.$ = $new;
+	this.$ = $element;
 };
 
 ve.ce.BranchNode.prototype.onSplice = function( index, howmany ) {

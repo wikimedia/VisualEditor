@@ -14,7 +14,11 @@ ve.ce.ParagraphNode = function( model ) {
 /* Static Members */
 
 /**
+ * Node rules.
+ * 
  * @see ve.ce.NodeFactory
+ * @static
+ * @member
  */
 ve.ce.ParagraphNode.rules = {
 	'canHaveChildren': true,

@@ -15,7 +15,11 @@ ve.dm.AlienNode = function( length, attributes ) {
 /* Static Members */
 
 /**
+ * Node rules.
+ * 
  * @see ve.dm.NodeFactory
+ * @static
+ * @member
  */
 ve.dm.AlienNode.rules = {
 	'canHaveChildren': false,

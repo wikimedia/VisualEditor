@@ -15,7 +15,11 @@ ve.dm.TableNode = function( children, attributes ) {
 /* Static Members */
 
 /**
+ * Node rules.
+ * 
  * @see ve.dm.NodeFactory
+ * @static
+ * @member
  */
 ve.dm.TableNode.rules = {
 	'canHaveChildren': true,

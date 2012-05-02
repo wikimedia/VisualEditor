@@ -9,12 +9,22 @@
 ve.ce.ListNode = function( model ) {
 	// Inheritance
 	ve.ce.BranchNode.call( this, model, ve.ce.ListNode.getDomElement( model ) );
+
+	// Properties
+	this.currentStyle = model.getAttribute( 'style' );
+
+	// Events
+	this.model.addListenerMethod( 'update', this, 'onUpdate' );
 };
 
 /* Static Members */
 
 /**
+ * Node rules.
+ * 
  * @see ve.ce.NodeFactory
+ * @static
+ * @member
  */
 ve.ce.ListNode.rules = {
 	'canHaveChildren': true,
@@ -22,7 +32,13 @@ ve.ce.ListNode.rules = {
 	'canBeSplit': false
 };
 
-ve.ce.ListNode.domNodeTypes = {
+/**
+ * Mapping of list style values and DOM wrapper element types.
+ * 
+ * @static
+ * @member
+ */
+ve.ce.ListNode.domWrapperElementTypes = {
 	'bullet': 'ul',
 	'number': 'ol',
 	'definition': 'dl'
@@ -30,13 +46,41 @@ ve.ce.ListNode.domNodeTypes = {
 
 /* Static Methods */
 
-ve.ce.ListNode.getDomElement = function( model ) {
-	var style = model.getElementAttribute( 'style' ),
-		type = ve.ce.ListNode.domNodeTypes[style];
+/**
+ * Gets an appropriate DOM wrapper for the model.
+ * 
+ * This method is static because it is used before the node is fully constructed. Before all parent
+ * constructors are called this.model may not be ready to be used.
+ * 
+ * @static
+ * @method
+ * @param {ve.dm.ListNode} model Model to create DOM wrapper for
+ * @returns {jQuery} Selection containing DOM wrapper
+ */
+ve.ce.ListNode.getDomWrapper = function( model ) {
+	var style = model.getAttribute( 'style' ),
+		type = ve.ce.ListNode.domWrapperElementTypes[style];
 	if ( type === undefined ) {
 		throw 'Invalid style attribute in list node model: ' + style;
 	}
 	return $( '<' + type + '></' + type + '>' );
+};
+
+/* Methods */
+
+/**
+ * Responds to model update events.
+ * 
+ * If the style changed since last update the DOM wrapper will be replaced with an appropriate one.
+ * 
+ * @method
+ */
+ve.ce.ListNode.prototype.onUpdate = function() {
+	var style = this.model.getAttribute( 'style' );
+	if ( style !== this.currentStyle ) {
+		this.currentStyle = style;
+		this.replaceDomWrapper( ve.ce.ListNode.getDomWrapper( this.model ) );
+	}
 };
 
 /* Registration */

@@ -15,7 +15,11 @@ ve.dm.ListItemNode = function( children, attributes ) {
 /* Static Members */
 
 /**
+ * Node rules.
+ * 
  * @see ve.dm.NodeFactory
+ * @static
+ * @member
  */
 ve.dm.ListItemNode.rules = {
 	'canHaveChildren': true,

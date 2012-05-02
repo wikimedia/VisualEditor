@@ -14,7 +14,11 @@ ve.ce.TableRowNode = function( model ) {
 /* Static Members */
 
 /**
+ * Node rules.
+ * 
  * @see ve.ce.NodeFactory
+ * @static
+ * @member
  */
 ve.ce.TableRowNode.rules = {
 	'canHaveChildren': true,

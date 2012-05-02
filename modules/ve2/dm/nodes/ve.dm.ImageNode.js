@@ -15,7 +15,11 @@ ve.dm.ImageNode = function( length, attributes ) {
 /* Static Members */
 
 /**
+ * Node rules.
+ * 
  * @see ve.dm.NodeFactory
+ * @static
+ * @member
  */
 ve.dm.ImageNode.rules = {
 	'canHaveChildren': false,

@@ -15,7 +15,11 @@ ve.dm.ParagraphNode = function( children, attributes ) {
 /* Static Members */
 
 /**
+ * Node rules.
+ * 
  * @see ve.dm.NodeFactory
+ * @static
+ * @member
  */
 ve.dm.ParagraphNode.rules = {
 	'canHaveChildren': true,

@@ -14,7 +14,11 @@ ve.ce.AlienNode = function( model ) {
 /* Static Members */
 
 /**
+ * Node rules.
+ * 
  * @see ve.ce.NodeFactory
+ * @static
+ * @member
  */
 ve.ce.AlienNode.rules = {
 	'canHaveChildren': false,

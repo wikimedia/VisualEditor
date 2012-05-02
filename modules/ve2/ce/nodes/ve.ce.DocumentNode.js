@@ -14,7 +14,11 @@ ve.ce.DocumentNode = function( model ) {
 /* Static Members */
 
 /**
+ * Node rules.
+ * 
  * @see ve.ce.NodeFactory
+ * @static
+ * @member
  */
 ve.ce.DocumentNode.rules = {
 	'canHaveChildren': true,

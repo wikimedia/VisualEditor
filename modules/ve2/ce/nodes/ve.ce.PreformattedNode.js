@@ -14,7 +14,11 @@ ve.ce.PreformattedNode = function( model ) {
 /* Static Members */
 
 /**
+ * Node rules.
+ * 
  * @see ve.ce.NodeFactory
+ * @static
+ * @member
  */
 ve.ce.PreformattedNode.rules = {
 	'canHaveChildren': true,
