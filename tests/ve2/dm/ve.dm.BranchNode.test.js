@@ -4,7 +4,7 @@ module( 've.dm.BranchNode' );
 
 ve.dm.BranchNodeStub = function( children ) {
 	// Inheritance
-	ve.dm.BranchNode.call( this, 'stub', children );
+	ve.dm.BranchNode.call( this, 'branch-stub', children );
 };
 
 ve.extendClass( ve.dm.BranchNodeStub, ve.dm.BranchNode );

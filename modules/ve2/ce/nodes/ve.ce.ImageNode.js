@@ -14,7 +14,7 @@ ve.ce.ImageNode = function( model ) {
 	this.currentSource = model.getAttribute( 'html/src' );
 
 	// Events
-	this.model.addListenerMethod( 'update', this, 'onUpdate' );
+	this.model.addListenerMethod( this, 'update', 'onUpdate' );
 };
 
 /* Static Members */

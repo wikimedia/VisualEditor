@@ -14,7 +14,7 @@ ve.ce.ListNode = function( model ) {
 	this.currentStyle = model.getAttribute( 'style' );
 
 	// Events
-	this.model.addListenerMethod( 'update', this, 'onUpdate' );
+	this.model.addListenerMethod( this, 'update', 'onUpdate' );
 };
 
 /* Static Members */

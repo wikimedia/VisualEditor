@@ -9,6 +9,8 @@ ve.ce.LeafNodeStub = function( model ) {
 
 ve.extendClass( ve.ce.LeafNodeStub, ve.ce.LeafNode );
 
+ve.ce.factory.register( 'leaf-stub', ve.ce.BranchNodeStub );
+
 /* Tests */
 
 /*

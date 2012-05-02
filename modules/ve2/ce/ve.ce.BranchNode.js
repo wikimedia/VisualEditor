@@ -15,10 +15,12 @@ ve.ce.BranchNode = function( model, $element ) {
 	ve.ce.Node.call( this, model, $element );
 
 	// Events
-	this.model.addListenerMethod( 'splice', this, 'onSplice' );
+	this.model.addListenerMethod( this, 'splice', 'onSplice' );
 
 	// Initialization
-	this.onSplice.apply( this, [0, 0].concat( model.getChildren() ) );
+	if ( model.getChildren().length ) {
+		this.onSplice.apply( this, [0, 0].concat( model.getChildren() ) );
+	}
 };
 
 /* Methods */
@@ -41,7 +43,7 @@ ve.ce.BranchNode.prototype.onSplice = function( index, howmany ) {
 	// Convert models to views and attach them to this node
 	if ( args.length >= 3 ) {
 		for ( i = 2, length = args.length; i < length; i++ ) {
-			args[i] = args[i].createView();
+			args[i] = ve.ce.factory.createNode( args[i].getType(), args[i] );
 		}
 	}
 	var removals = this.children.splice.apply( this.children, args );

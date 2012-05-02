@@ -14,7 +14,7 @@ ve.ce.HeadingNode = function( model ) {
 	this.currentLevel = model.getAttribute( 'level' );
 
 	// Events
-	this.model.addListenerMethod( 'update', this, 'onUpdate' );
+	this.model.addListenerMethod( this, 'update', 'onUpdate' );
 };
 
 /* Static Members */

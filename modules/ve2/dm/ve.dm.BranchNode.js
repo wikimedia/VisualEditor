@@ -16,9 +16,7 @@ ve.dm.BranchNode = function( type, children, attributes ) {
 	ve.BranchNode.call( this );
 
 	if ( ve.isArray( children ) && children.length ) {
-		for ( var i = 0; i < children.length; i++ ) {
-			this.push( children[i] );
-		}
+		this.splice.apply( this, [0, 0].concat( children ) );
 	}
 };
 
