@@ -83,7 +83,7 @@ ve.dm.TransactionProcessor.prototype.process = function() {
  * @param {Number} to Offset to stop annotating at. Annotating starts at this.cursor
  */
 ve.dm.TransactionProcessor.prototype.applyAnnotations = function( to ) {
-	var i, hash, ann;
+	var i, hash, ann, character;
 	for ( i = this.cursor; i < to; i++ ) {
 		character = this.document.data[i];
 		if ( character.type !== undefined ) {
