@@ -15,7 +15,6 @@ ve.ce.factory.register( 'leaf-stub', ve.ce.BranchNodeStub );
 
 test( 'render', 1, function() {
 	var node = new ve.ce.LeafNodeStub( new ve.dm.LeafNodeStub() );
-	console.log( node );
 	raises(
 		function() {
 			node.render();
