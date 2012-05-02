@@ -233,6 +233,19 @@ ve.repeatString = function( pattern, count ) {
 };
 
 /**
+ * Generates a hash of an object based on it's name and data.
+ * 
+ * @static
+ * @method
+ * @param {Object} obj Object to generate hash for
+ * @returns {String} Hash of object
+ */
+ve.getHash = ( window.JSON && typeof JSON.stringify === 'function' ) ?
+	JSON.stringify : function( data ) {
+		ve.Json.stringify( data );
+	};
+
+/**
  * Static object with HTML generation helpers.
  */
 ve.Html = {
