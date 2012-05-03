@@ -13,8 +13,13 @@ ve.ce.factory.register( 'leaf-stub', ve.ce.BranchNodeStub );
 
 /* Tests */
 
-/*
-test( '', 1, function() {
-	//
+test( 'render', 1, function() {
+	var node = new ve.ce.LeafNodeStub( new ve.dm.LeafNodeStub() );
+	raises(
+		function() {
+			node.render();
+		},
+		/^ve.ce.LeafNode.render not implemented in this subclass: /,
+		'throws exception if called'
+	);
 } );
-*/

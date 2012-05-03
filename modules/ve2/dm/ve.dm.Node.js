@@ -19,19 +19,6 @@ ve.dm.Node = function( type, length, attributes ) {
 	this.doc = undefined;
 };
 
-/* Abstract Methods */
-
-/**
- * Creates a view for this node.
- * 
- * @abstract
- * @method
- * @returns {ve.ce.Node} New item view associated with this model
- */
-ve.dm.Node.prototype.createView = function() {
-	throw 've.dm.Node.createView not implemented in this subclass: ' + this.constructor;
-};
-
 /* Methods */
 
 /**

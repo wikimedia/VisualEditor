@@ -64,6 +64,18 @@ ve.isArray = $.isArray;
 ve.inArray = $.inArray;
 
 /**
+ * Generates a hash of an object based on it's name and data.
+ * 
+ * This is actually an alias for jQuery.json, which falls back to window.JSON if present.
+ * 
+ * @static
+ * @method
+ * @param {Object} obj Object to generate hash for
+ * @returns {String} Hash of object
+ */
+ve.getHash = $.toJson;
+
+/**
  * Recursively compares string and number property between two objects.
  * 
  * A false result may be caused by property inequality or by properties in one object missing from
@@ -217,58 +229,4 @@ ve.batchSplice = function( arr, offset, remove, data ) {
  */
 ve.insertIntoArray = function( dst, offset, src ) {
 	ve.batchSplice( dst, offset, 0, src );
-};
-
-/**
- * Gets a string with a pattern repeated a given number of times.
- * 
- * @static
- * @method
- * @param {String} pattern Pattern to repeat
- * @param {Integer} count Number of times to repeat pattern
- * @returns {String} String of repeated pattern
- */
-ve.repeatString = function( pattern, count ) {
-	return ( new Array( count + 1 ) ).join( pattern );
-};
-
-/**
- * Static object with HTML generation helpers.
- */
-ve.Html = {
-	'escapeText': function( text ) {
-		return text
-			.replace( /&/g, '&amp;' )
-			.replace( /</g, '&lt;' )
-			.replace( />/g, '&gt;' )
-			.replace( /"/g, '&quot;' )
-			.replace( /'/g, '&#039;' );
-	},
-	'makeAttributeList': function( attributes, prespace ) {
-		var attr = [];
-		var name;
-		if ( attributes ) {
-			for ( name in attributes ) {
-				attr.push( name + '="' + attributes[name] + '"' );
-			}
-		}
-		return ( prespace && attr.length ? ' ' : '' ) + attr.join( ' ' );
-	},
-	'makeOpeningTag': function( name, attributes ) {
-		return '<' + name + ve.Html.makeAttributeList( attributes, true ) + '>';
-	},
-	'makeClosingTag': function( name ) {
-		return '</' + name + '>';
-	},
-	'makeTag': function( name, attributes, value, escape ) {
-		if ( value === false ) {
-			return '<' + name + ve.Html.makeAttributeList( attributes, true ) + ' />';
-		} else {
-			if ( escape ) {
-				value = wiki.util.xml.esc( value );
-			}
-			return '<' + name + ve.Html.makeAttributeList( attributes, true ) + '>' +
-				value + '</' + name + '>';
-		}
-	}
 };
