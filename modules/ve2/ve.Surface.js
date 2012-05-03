@@ -43,7 +43,7 @@ ve.Surface = function( parent, data, options ) {
 	this.toolbarWrapper = {};
 
 	/* Create document model object with the linear model */
-	this.documentModel = ve.dm.Document ( data );
+	this.documentModel = new ve.dm.Document ( data );
 	this.surfaceModel = new ve.dm.Surface( this.documentModel );
 	
 	// Setup VE DOM Skeleton
