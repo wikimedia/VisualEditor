@@ -104,6 +104,8 @@ include( '../../modules/sandbox/base.php' );
 		<script src="../../modules/ve2/dm/ve.dm.TransactionProcessor.js"></script>
 		<script src="../../modules/ve2/dm/ve.dm.Transaction.js"></script>
 		<script src="../../modules/ve2/dm/ve.dm.Surface.js"></script>
+		<script src="../../modules/ve2/dm/ve.dm.DocumentFragment.js"></script>
+		<script src="../../modules/ve2/dm/ve.dm.Document.js"></script>
 
 		<script src="../../modules/ve2/dm/nodes/ve.dm.DocumentNode.js"></script>
 		<script src="../../modules/ve2/dm/nodes/ve.dm.HeadingNode.js"></script>
@@ -114,6 +116,7 @@ include( '../../modules/sandbox/base.php' );
 		<script src="../../modules/ve2/dm/nodes/ve.dm.TableCellNode.js"></script>
 		<script src="../../modules/ve2/dm/nodes/ve.dm.TableNode.js"></script>
 		<script src="../../modules/ve2/dm/nodes/ve.dm.TableRowNode.js"></script>
+		<script src="../../modules/ve2/dm/nodes/ve.dm.TextNode.js"></script>
 
 		<script src="../../modules/ve/dm/serializers/ve.dm.AnnotationSerializer.js"></script>
 		<script src="../../modules/ve/dm/serializers/ve.dm.HtmlSerializer.js"></script>
@@ -138,6 +141,7 @@ include( '../../modules/sandbox/base.php' );
 		<script src="../../modules/ve2/ce/nodes/ve.ce.TableCellNode.js"></script>
 		<script src="../../modules/ve2/ce/nodes/ve.ce.TableNode.js"></script>
 		<script src="../../modules/ve2/ce/nodes/ve.ce.TableRowNode.js"></script>
+		<script src="../../modules/ve2/ce/nodes/ve.ce.TextNode.js"></script>
 
 		<!-- ui -->
 		<script src="../../modules/ve/ui/ve.ui.js"></script>

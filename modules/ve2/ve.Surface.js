@@ -42,6 +42,14 @@ ve.Surface = function( parent, data, options ) {
 	this.$surface = null;
 	this.toolbarWrapper = {};
 
+	var data = [
+		{ 'type': 'paragraph' },
+		'a',
+		'b',
+		'c',
+		{ 'type': '/paragraph' }
+	];
+
 	/* Create document model object with the linear model */
 	this.documentModel = new ve.dm.Document ( data );
 	this.surfaceModel = new ve.dm.Surface( this.documentModel );
@@ -50,17 +58,23 @@ ve.Surface = function( parent, data, options ) {
 	this.setupBaseElements();
 
 	// Setup Surface View
-	this.setupSurfaceView();
+	//this.setupSurfaceView();
+
+	this.$surface = $('<div />').attr('class', 'es-editor');
+	this.$base.find('.es-visual').append( this.$surface );
+
+	/* Instantiate surface layer */
+	this.view = new ve.ce.Surface( $( '.es-editor' ), this.getSurfaceModel() );
+	//this.context = new ve.ui.Context( this.view );
 
 	// Setup toolbars based on this.options
-	this.setupToolbars();
+	//this.setupToolbars();
 
 	// Setup various toolbar modes and panels
-	this.setupModes();
+	//this.setupModes();
 
 	// Registration
 	ve.instances.push( this );
-	console.log (this);
 };
 
 /* Setup Methods */
@@ -91,12 +105,6 @@ ve.Surface.prototype.setupBaseElements = function() {
 };
 
 ve.Surface.prototype.setupSurfaceView = function() {
-	this.$surface = $('<div />').attr('class', 'es-editor');
-	this.$base.find('.es-visual').append( this.$surface );
-
-	/* Instantiate surface layer */
-	this.view = new ve.ce.Surface( $( '.es-editor' ), this.getSurfaceModel() );
-	this.context = new ve.ui.Context( this.view );
 };
 
 ve.Surface.prototype.setupToolbars = function() {
