@@ -2,6 +2,7 @@
 
 <html>
 	<head>
+		<meta charset="UTF-8" />
 		<title>VisualEditor Demo</title>
 		<!-- ce -->
 		<link rel="stylesheet" href="../../modules/ve/ce/styles/ve.ce.Document.css">
