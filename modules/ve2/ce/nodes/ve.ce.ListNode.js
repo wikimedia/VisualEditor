@@ -8,7 +8,7 @@
  */
 ve.ce.ListNode = function( model ) {
 	// Inheritance
-	ve.ce.BranchNode.call( this, model, ve.ce.ListNode.getDomElement( model ) );
+	ve.ce.BranchNode.call( this, model, ve.ce.ListNode.getDomWrapper( model ) );
 
 	// Properties
 	this.currentStyle = model.getAttribute( 'style' );
@@ -61,6 +61,7 @@ ve.ce.ListNode.getDomWrapper = function( model ) {
 	var style = model.getAttribute( 'style' ),
 		type = ve.ce.ListNode.domWrapperElementTypes[style];
 	if ( type === undefined ) {
+		console.log(style, type);
 		throw 'Invalid style attribute in list node model: ' + style;
 	}
 	return $( '<' + type + '></' + type + '>' );

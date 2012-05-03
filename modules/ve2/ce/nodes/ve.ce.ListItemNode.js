@@ -8,7 +8,7 @@
  */
 ve.ce.ListItemNode = function( model ) {
 	// Inheritance
-	ve.ce.BranchNode.call( this, model, ve.ce.ListItemNode.getDomElement( model ) );
+	ve.ce.BranchNode.call( this, model, ve.ce.ListItemNode.getDomWrapper( model ) );
 
 	// Properties
 	this.currentStyle = model.getAttribute( 'style' );

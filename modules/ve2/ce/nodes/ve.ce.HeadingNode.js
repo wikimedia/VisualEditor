@@ -8,7 +8,7 @@
  */
 ve.ce.HeadingNode = function( model ) {
 	// Inheritance
-	ve.ce.BranchNode.call( this, model, ve.ce.HeadingNode.getDomElement( model ) );
+	ve.ce.BranchNode.call( this, model, ve.ce.HeadingNode.getDomWrapper( model ) );
 
 	// Properties
 	this.currentLevel = model.getAttribute( 'level' );

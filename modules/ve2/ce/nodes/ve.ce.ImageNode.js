@@ -12,7 +12,8 @@ ve.ce.ImageNode = function( model ) {
 
 	// Properties
 	this.currentSource = model.getAttribute( 'html/src' );
-
+	this.$.attr( 'src', this.currentSource );
+	
 	// Events
 	this.model.addListenerMethod( this, 'update', 'onUpdate' );
 };
@@ -43,10 +44,14 @@ ve.ce.ImageNode.rules = {
  */
 ve.ce.ImageNode.prototype.onUpdate = function() {
 	var source = this.model.getAttribute( 'html/src' );
+	console.log(source);
 	if ( source !== this.currentSource ) {
 		this.currentSource = source;
 		this.$.attr( 'src', source );
 	}
+};
+
+ve.ce.ImageNode.prototype.render = function() {
 };
 
 /* Registration */

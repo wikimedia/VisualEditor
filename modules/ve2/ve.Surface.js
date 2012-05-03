@@ -43,11 +43,37 @@ ve.Surface = function( parent, data, options ) {
 	this.toolbarWrapper = {};
 
 	var data = [
-		{ 'type': 'paragraph' },
+		{ 'type': 'heading', 'attributes': { 'level': 1 } },
 		'a',
 		'b',
 		'c',
-		{ 'type': '/paragraph' }
+		{ 'type': '/heading' },
+		{ 'type': 'paragraph' },
+		'a',
+		['b', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } }],
+		['c', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } }],
+		{ 'type': '/paragraph' },
+		{ 'type': 'table' },
+		{ 'type': 'tableRow' },
+		{ 'type': 'tableCell' },
+		{ 'type': 'paragraph' },
+		['a', {
+			'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
+			'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }
+		}],
+		{ 'type': '/paragraph' },
+		{ 'type': '/tableCell' },
+		{ 'type': '/tableRow' },
+		{ 'type': '/table' },
+		{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
+		{ 'type': 'listItem', 'attributes': { 'style': 'item' } },
+		{ 'type': 'paragraph' },
+		'a',
+		{ 'type': '/paragraph' },
+		{ 'type': '/listItem' },
+		{ 'type': '/list' },
+		{ 'type': 'image', 'attributes': { 'html/src': 'http://dl.dropbox.com/u/1026938/wikia.jpeg' } },
+		{ 'type': '/image' },
 	];
 
 	/* Create document model object with the linear model */
