@@ -90,9 +90,7 @@ WikiLinkHandler.prototype._simpleImageOptions = {
 	'frameless': 'format',
 	'frame': 'format',
 	'thumbnail': 'format',
-	'thumb': 'format',
-	// orientation,
-	'upright': 'orientation'
+	'thumb': 'format'
 };
 
 WikiLinkHandler.prototype._prefixImageOptions = {
@@ -100,7 +98,8 @@ WikiLinkHandler.prototype._prefixImageOptions = {
 	'alt': 'alt',
 	'page': 'page',
 	'thumbnail': 'thumb',
-	'thumb': 'thumb'
+	'thumb': 'thumb',
+	'upright': 'aspect'
 };
 
 WikiLinkHandler.prototype.renderFile = function ( token, frame, cb, title ) {
@@ -152,7 +151,7 @@ WikiLinkHandler.prototype.renderFile = function ( token, frame, cb, title ) {
 				} else {
 					var bits = oText.split( '=', 2 ),
 						key = this._prefixImageOptions[ bits[0].trim().toLowerCase() ];
-					if ( bits.length > 1 && key) {
+					if ( bits[0] && key) {
 						oHash[key] = bits[1];
 						options.push( new KV( key, bits[1] ) );
 						//console.warn('handle prefix ' + bits );
