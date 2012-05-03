@@ -90,7 +90,9 @@ WikiLinkHandler.prototype._simpleImageOptions = {
 	'frameless': 'format',
 	'frame': 'format',
 	'thumbnail': 'format',
-	'thumb': 'format'
+	'thumb': 'format',
+	// orientation,
+	'upright': 'orientation'
 };
 
 WikiLinkHandler.prototype._prefixImageOptions = {
@@ -211,7 +213,7 @@ WikiLinkHandler.prototype.renderThumb = function ( token, manager, cb, title, pa
 	a.dataAttribs.optionHash = oHash;
 	a.dataAttribs.optionList = options;
 
-	var figurestyle = "width: 125px;",
+	var figurestyle = "width: 165px;",
 		figureclass = "thumb tright thumbinner";
 	
 	// set horizontal alignment
@@ -256,8 +258,8 @@ WikiLinkHandler.prototype.renderThumb = function ( token, manager, cb, title, pa
 				'img',
 				[
 					new KV('src', path),
-					new KV('width', '120px'),
-					new KV('height', '120px'),
+					new KV('width', '160px'),
+					//new KV('height', '160px'),
 					new KV('class', 'thumbimage'),
 					new KV('alt', oHash.alt || title.key ),
 					new KV('resource', title.getPrefixedText())
