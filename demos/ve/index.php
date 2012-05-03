@@ -107,12 +107,14 @@ include( '../../modules/sandbox/base.php' );
 		<script src="../../modules/ve2/dm/ve.dm.DocumentFragment.js"></script>
 		<script src="../../modules/ve2/dm/ve.dm.Document.js"></script>
 
+		<script src="../../modules/ve2/dm/nodes/ve.dm.AlienNode.js"></script>
 		<script src="../../modules/ve2/dm/nodes/ve.dm.DocumentNode.js"></script>
 		<script src="../../modules/ve2/dm/nodes/ve.dm.HeadingNode.js"></script>
-		<script src="../../modules/ve2/dm/nodes/ve.dm.ParagraphNode.js"></script>
-		<script src="../../modules/ve2/dm/nodes/ve.dm.PreformattedNode.js"></script>
+		<script src="../../modules/ve2/dm/nodes/ve.dm.ImageNode.js"></script>
 		<script src="../../modules/ve2/dm/nodes/ve.dm.ListItemNode.js"></script>
 		<script src="../../modules/ve2/dm/nodes/ve.dm.ListNode.js"></script>
+		<script src="../../modules/ve2/dm/nodes/ve.dm.ParagraphNode.js"></script>
+		<script src="../../modules/ve2/dm/nodes/ve.dm.PreformattedNode.js"></script>
 		<script src="../../modules/ve2/dm/nodes/ve.dm.TableCellNode.js"></script>
 		<script src="../../modules/ve2/dm/nodes/ve.dm.TableNode.js"></script>
 		<script src="../../modules/ve2/dm/nodes/ve.dm.TableRowNode.js"></script>
@@ -132,12 +134,14 @@ include( '../../modules/sandbox/base.php' );
 		<script src="../../modules/ve2/ce/ve.ce.LeafNode.js"></script>
 		<script src="../../modules/ve2/ce/ve.ce.Surface.js"></script>
 
+		<script src="../../modules/ve2/ce/nodes/ve.ce.AlienNode.js"></script>
 		<script src="../../modules/ve2/ce/nodes/ve.ce.DocumentNode.js"></script>
 		<script src="../../modules/ve2/ce/nodes/ve.ce.HeadingNode.js"></script>
-		<script src="../../modules/ve2/ce/nodes/ve.ce.ParagraphNode.js"></script>
-		<script src="../../modules/ve2/ce/nodes/ve.ce.PreformattedNode.js"></script>
+		<script src="../../modules/ve2/ce/nodes/ve.ce.ImageNode.js"></script>
 		<script src="../../modules/ve2/ce/nodes/ve.ce.ListItemNode.js"></script>
 		<script src="../../modules/ve2/ce/nodes/ve.ce.ListNode.js"></script>
+		<script src="../../modules/ve2/ce/nodes/ve.ce.ParagraphNode.js"></script>
+		<script src="../../modules/ve2/ce/nodes/ve.ce.PreformattedNode.js"></script>
 		<script src="../../modules/ve2/ce/nodes/ve.ce.TableCellNode.js"></script>
 		<script src="../../modules/ve2/ce/nodes/ve.ce.TableNode.js"></script>
 		<script src="../../modules/ve2/ce/nodes/ve.ce.TableRowNode.js"></script>

@@ -510,6 +510,8 @@ $(document).ready( function() {
 		);
 	}
 
+	var linearModel = [];
+
 	/* Sandbox config object. */
 	var options = {
 		toolbars: {
@@ -524,7 +526,7 @@ $(document).ready( function() {
 		Create Sandbox instance of VE
 		Attach to #content element
 	*/
-	var sandboxEditor = new ve.Surface( '#content', wikidoms['Wikipedia article'], options ),
+	var sandboxEditor = new ve.Surface( '#content', linearModel, options ),
 		surfaceModel = sandboxEditor.getSurfaceModel(),
 		documentModel = sandboxEditor.getDocumentModel(),
 		parent = sandboxEditor.getParent();
