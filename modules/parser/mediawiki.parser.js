@@ -132,9 +132,9 @@ ParserPipelineFactory.prototype.recipes = {
 			[ 
 				// text/wiki-specific tokens
 				QuoteTransformer, 
-				PostExpandParagraphHandler,
-				/* Cite, */
 				/* ListHandler, */
+				Cite,
+				PostExpandParagraphHandler,
 				Sanitizer 
 			]
 		],

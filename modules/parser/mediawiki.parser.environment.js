@@ -115,7 +115,7 @@ MWParserEnvironment.prototype.KVtoHash = function ( kvs ) {
 	return res;
 };
 
-MWParserEnvironment.prototype.setTokenRank = function ( token, rank ) {
+MWParserEnvironment.prototype.setTokenRank = function ( rank, token ) {
 	// convert string literal to string object
 	if ( token.constructor === String && token.rank === undefined ) {
 		token = new String( token );

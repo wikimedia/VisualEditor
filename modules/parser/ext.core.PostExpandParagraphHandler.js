@@ -16,8 +16,8 @@ function PostExpandParagraphHandler ( dispatcher ) {
 }
 
 // constants
-PostExpandParagraphHandler.prototype.newlineRank = 2.2;
-PostExpandParagraphHandler.prototype.anyRank = 2.201; // Just after regular quote and newline
+PostExpandParagraphHandler.prototype.newlineRank = 2.5;
+PostExpandParagraphHandler.prototype.anyRank = 2.501; // Just after regular quote and newline
 
 
 // Register this transformer with the TokenTransformer

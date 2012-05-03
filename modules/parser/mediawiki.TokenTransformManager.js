@@ -127,7 +127,7 @@ TokenTransformManager.prototype.removeTransform = function ( rank, type, name ) 
 
 TokenTransformManager.prototype.setTokensRank = function ( tokens, rank ) {
 	for ( var i = 0, l = tokens.length; i < l; i++ ) {
-		tokens[i] = this.env.setTokenRank( tokens[i], rank );
+		tokens[i] = this.env.setTokenRank( rank, tokens[i] );
 	}
 };
 
@@ -330,7 +330,7 @@ AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parent
 			for (var j = 0, lts = ts.length; j < lts; j++ ) {
 				res = { };
 				transformer = ts[j];
-				if ( minRank && transformer.rank <= minRank ) {
+				if ( minRank && transformer.rank < minRank ) {
 					// skip transformation, was already applied.
 					//console.warn( 'skipping transform');
 					res.token = token;
@@ -359,7 +359,7 @@ AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parent
 		}
 
 		if ( ! aborted ) {
-			res.token = this.env.setTokenRank( res.token, this.phaseEndRank );
+			res.token = this.env.setTokenRank( this.phaseEndRank, res.token );
 			// token is done.
 			// push to accumulator
 			activeAccum.push( res.token );
@@ -370,10 +370,11 @@ AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parent
 			//if ( ! res.allTokensProcessed ) {
 			[].splice.apply( tokens, [i, 1].concat(res.tokens) );
 			l = tokens.length;
-			i--; // continue at first inserted token
-			//} else {
-			// skip fully processed tokens
-			//}
+			if ( res.allTokensProcessed ) {
+				i += res.tokens.length - 1;
+			} else {
+				i--; // continue at first inserted token
+			}
 		} 
 		
 		if ( res.async ) {
@@ -531,9 +532,9 @@ SyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 		var minRank = token.rank || 0;
 		for (var j = 0, lts = ts.length; j < lts; j++ ) {
 			transformer = ts[j];
-			if ( transformer.rank <= minRank ) {
+			if ( transformer.rank < minRank ) {
 				// skip transformation, was already applied.
-				//console.warn( 'skipping transform');
+				//this.env.ap( 'skipping transform', transformer);
 				continue;
 			}
 			// Transform the token.
@@ -551,9 +552,13 @@ SyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 			// token), and process them next.
 			[].splice.apply( tokens, [i, 1].concat(res.tokens) );
 			l = tokens.length;
-			i--; // continue at first inserted token
+			if ( res.allTokensProcessed ) {
+				i += res.tokens.length - 1;
+			} else {
+				i--; // continue at first inserted token
+			}
 		} else if ( res.token ) {
-			res.token = this.env.setTokenRank( res.token, this.phaseEndRank );
+			res.token = this.env.setTokenRank( this.phaseEndRank, res.token );
 			if ( res.token.rank === this.phaseEndRank ) {
 				// token is done.
 				localAccum.push(res.token);
