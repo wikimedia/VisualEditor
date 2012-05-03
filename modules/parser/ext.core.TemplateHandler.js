@@ -353,7 +353,7 @@ TemplateRequest.prototype._handler = function (error, response, body) {
 	} else if(response.statusCode ==  200) {
 		var src = '',
 			data,
-				normalizedTitle;
+			normalizedTitle;
 		try {
 			//console.warn( 'body: ' + body );
 			data = JSON.parse( body );
@@ -375,6 +375,27 @@ TemplateRequest.prototype._handler = function (error, response, body) {
 			console.warn( 'Did not find page revisions in the returned body:' + body );
 			src = '';
 		}
+		
+		// check for #REDIRECT
+		var redirMatch = src.match( /[\r\n\s]*#\s*REDIRECT\s\[\[([^\]]+)\]\]/ )
+		if ( redirMatch ) {
+			var title = redirMatch[1];
+			var url = this.manager.env.wgScript + '/api' + 
+				this.manager.env.wgScriptExtension +
+				'?' + 
+				qs.stringify( {
+					format: 'json',
+				action: 'query',
+				prop: 'revisions',
+				rvprop: 'content',
+				titles: title
+				} );
+			//'?format=json&action=query&prop=revisions&rvprop=content&titles=' + title;
+			this.requestOptions.url = url;
+			request( this.requestOptions, this._handler.bind(this) ); 
+			return;
+		}
+
 		//console.warn( 'Page ' + title + ': got ' + src );
 		this.manager.env.tp( 'Retrieved ' + this.title );
 
