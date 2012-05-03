@@ -510,7 +510,13 @@ $(document).ready( function() {
 		);
 	}
 
-	var linearModel = [];
+	var linearModel = [
+		{ 'type': 'paragraph' },
+		'a',
+		'b',
+		'c',
+		{ 'type': '/paragraph' }
+	];
 
 	/* Sandbox config object. */
 	var options = {

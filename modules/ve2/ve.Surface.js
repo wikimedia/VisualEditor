@@ -42,14 +42,6 @@ ve.Surface = function( parent, data, options ) {
 	this.$surface = null;
 	this.toolbarWrapper = {};
 
-	var data = [
-		{ 'type': 'paragraph' },
-		'a',
-		'b',
-		'c',
-		{ 'type': '/paragraph' }
-	];
-
 	/* Create document model object with the linear model */
 	this.documentModel = new ve.dm.Document ( data );
 	this.surfaceModel = new ve.dm.Surface( this.documentModel );
