@@ -199,16 +199,20 @@ ve.ce.TextNode.prototype.getHtml = function() {
 		} else if ( !leftPlain && !rightPlain ) {
 			// [formatted][formatted]
 
-			var open = {},
-				index = 1000;
+			// setting index to undefined is is necessary to it does not use value from
+			// the previous iteration
+			var	open = {},
+				index = undefined;
 
 			for ( var hash in left[1] ) {
 				if ( !( hash in right[1] ) ) {
-					index = Math.min( index, hashStack.indexOf( hash ) );
+					index = ( index === undefined )
+						? hashStack.indexOf( hash )
+						: Math.min( index, hashStack.indexOf( hash ) );
 				}
 			}
 
-			if ( index !== 1000 ) {
+			if ( index !== undefined ) {
 				var close = {};
 				for ( var j = hashStack.length - 1; j >= index; j-- ) {
 					close[hashStack[j]] = annotationStack[hashStack[j]];
