@@ -75,9 +75,9 @@ ve.dm.example.data = [
 	// 10 - End of paragraph
 	{ 'type': '/paragraph' },
 	// 11 - Beginning of bullet list
-	{ 'type': 'list', 'attributes': { 'styles': ['bullet'] } },
+	{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
 	// 12 - Beginning of list item
-	{ 'type': 'listItem' },
+	{ 'type': 'listItem', 'attributes': { 'style': 'item' } },
 	// 13 - Beginning of paragraph
 	{ 'type': 'paragraph' },
 	// 14 - Plain "e"
@@ -85,9 +85,9 @@ ve.dm.example.data = [
 	// 15 - End of paragraph
 	{ 'type': '/paragraph' },
 	// 16 - Beginning of nested bullet list
-	{ 'type': 'list', 'attributes': { 'styles': ['bullet'] } },
+	{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
 	// 17 - Beginning of nested bullet list item
-	{ 'type': 'listItem' },
+	{ 'type': 'listItem', 'attributes': { 'style': 'item' } },
 	// 18 - Beginning of paragraph
 	{ 'type': 'paragraph' },
 	// 19 - Plain "f"
@@ -103,9 +103,9 @@ ve.dm.example.data = [
 	// 24 - End of bullet list
 	{ 'type': '/list' },
 	// 25 - Beginning of numbered list
-	{ 'type': 'list', 'attributes': { 'styles': ['number'] } },
+	{ 'type': 'list', 'attributes': { 'style': 'number' } },
 	// 26 - Beginning of numbered list item
-	{ 'type': 'listItem' },
+	{ 'type': 'listItem', 'attributes': { 'style': 'item' } },
 	// 27 - Beginning of paragraph
 	{ 'type': 'paragraph' },
 	// 28 - Plain "g"
@@ -171,15 +171,15 @@ ve.dm.example.tree = new ve.dm.DocumentNode( [
 							// 2nd level bullet list item with "f"
 							new ve.dm.ListItemNode( [
 								new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] )
-							] )
+							], ve.dm.example.data[17].attributes )
 						], ve.dm.example.data[16].attributes )
-					] )
+					], ve.dm.example.data[12].attributes )
 				], ve.dm.example.data[11].attributes  ),
 				new ve.dm.ListNode( [
 					// Numbered list item with "g"
 					new ve.dm.ListItemNode( [
 						new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] )
-					] )
+					], ve.dm.example.data[26].attributes )
 				], ve.dm.example.data[25].attributes )
 			] )
 		] )
