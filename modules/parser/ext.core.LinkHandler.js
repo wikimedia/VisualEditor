@@ -184,9 +184,8 @@ WikiLinkHandler.prototype.renderFile = function ( token, frame, cb, title ) {
 		a.dataAttribs = token.dataAttribs;
 
 		var width, height;
-		if ( ! height in oHash && ! width in oHash ) {
-			width = '120px';
-			height = '120px';
+		if ( ! oHash.height && ! oHash.width ) {
+			width = '200px';
 		} else {
 			width = oHash.width;
 			height = oHash.height;
@@ -349,6 +348,7 @@ ExternalLinkHandler.prototype.onUrlLink = function ( token, frame, cb ) {
 				[ 
 					new KV( 'src', href ),
 					new KV( 'alt', href.split('/').last() )
+
 				] 
 			) 
 		} );

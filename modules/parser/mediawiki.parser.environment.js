@@ -269,8 +269,7 @@ MWParserEnvironment.prototype.tokensToString = function ( tokens, strict ) {
 		if ( token === undefined ) {
 			if ( this.debug ) { console.trace(); }
 			this.tp( 'MWParserEnvironment.tokensToString, invalid token: ' + 
-							JSON.stringify( token ) +
-							' tokens:' + JSON.stringify( tokens, null, 2 ));
+							token, ' tokens:', tokens);
 			continue;
 		}
 		if ( token.constructor === String ) {
@@ -282,8 +281,8 @@ MWParserEnvironment.prototype.tokensToString = function ( tokens, strict ) {
 				return [out.join(''), tokens.slice( i )];
 			}
 			var tstring = JSON.stringify( token );
-			this.dp ( 'MWParserEnvironment.tokensToString, non-text token: ' + 
-					tstring + JSON.stringify( tokens, null, 2 ) );
+			this.dp ( 'MWParserEnvironment.tokensToString, non-text token: ', 
+					tstring, tokens);
 			if ( this.debug ) { console.trace(); }
 			//out.push( tstring );
 		}
