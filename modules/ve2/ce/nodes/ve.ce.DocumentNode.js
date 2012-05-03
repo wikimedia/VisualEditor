@@ -9,6 +9,11 @@
 ve.ce.DocumentNode = function( model ) {
 	// Inheritance
 	ve.ce.BranchNode.call( this, model );
+
+	// DOM Changes
+	this.$.addClass( 've-ce-documentNode' );
+	this.$.attr('contentEditable', 'true');
+	this.$.attr('spellcheck', 'true');
 };
 
 /* Static Members */

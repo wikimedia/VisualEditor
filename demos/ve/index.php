@@ -25,6 +25,12 @@
 				overflow-y: scroll;
 				background-color: white;
 			}
+			#es-warning {
+				margin: 2em 2em 1em 2em;
+			}
+			#es-docs {
+				margin: 0 2em;
+			}
 			.es-base {
 				margin: 2em;
 				margin-top: 0em;
