@@ -126,18 +126,6 @@ ve.dm.DocumentFragment = function( data, parentDocument ) {
 
 /* Methods */
 
-ve.dm.DocumentFragment.prototype.getOffsetMap = function() {
-	return this.offsetMap;
-};
-
-ve.dm.DocumentFragment.prototype.getDocumentNode = function() {
-	return this.documentNode;
-};
-
-ve.dm.DocumentFragment.prototype.getNodeFromOffset = function( offset ) {
-	return this.offsetMap[offset];
-};
-
 /**
  * Gets slice or copy of the document data.
  * 
@@ -158,6 +146,18 @@ ve.dm.DocumentFragment.prototype.getData = function( range, deep ) {
 	var data = end === undefined ? this.data.slice( start ) : this.data.slice( start, end );
 	// Return either the slice or a deep copy of the slice
 	return deep ? ve.copyArray( data ) : data;
+};
+
+ve.dm.DocumentFragment.prototype.getOffsetMap = function() {
+	return this.offsetMap;
+};
+
+ve.dm.DocumentFragment.prototype.getDocumentNode = function() {
+	return this.documentNode;
+};
+
+ve.dm.DocumentFragment.prototype.getNodeFromOffset = function( offset ) {
+	return this.offsetMap[offset];
 };
 
 /**

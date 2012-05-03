@@ -94,3 +94,22 @@ test( 'getNodeFromOffset', 42, function() {
 		ok( node === fragment.getNodeFromOffset( i ), 'reference at offset ' + i );
 	}
 } );
+
+test( 'getDataFromNode', 3, function() {
+	var fragment = new ve.dm.DocumentFragment( ve.dm.example.data );
+	deepEqual(
+		fragment.getDataFromNode( fragment.getDocumentNode().getChildren()[0] ),
+		ve.dm.example.data.slice( 1, 4 ),
+		'branch with leaf children'
+	);
+	deepEqual(
+		fragment.getDataFromNode( fragment.getDocumentNode().getChildren()[1] ),
+		ve.dm.example.data.slice( 6, 34 ),
+		'branch with branch children'
+	);
+	deepEqual(
+		fragment.getDataFromNode( fragment.getDocumentNode().getChildren()[2].getChildren()[1] ),
+		[],
+		'leaf without children'
+	);
+} );
