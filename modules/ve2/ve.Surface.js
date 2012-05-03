@@ -94,7 +94,7 @@ ve.Surface = function( parent, data, options ) {
 	//this.context = new ve.ui.Context( this.view );
 
 	// Setup toolbars based on this.options
-	//this.setupToolbars();
+	this.setupToolbars();
 
 	// Setup various toolbar modes and panels
 	//this.setupModes();

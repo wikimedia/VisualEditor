@@ -275,6 +275,6 @@
 }
 
 #es-warning-dismiss:after {
-	content: ' ✖';
+	content: ' x';
 	color: black;
 }

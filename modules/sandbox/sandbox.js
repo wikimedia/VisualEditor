@@ -546,7 +546,7 @@ $(document).ready( function() {
 					$( '<a href="#"></a>' )
 						.text( title )
 						.click( function() {
-							var newDocumentModel = ve.dm.DocumentNode.newFromPlainObject( wikidom );
+							var newDocumentModel = new ve.dm.Document( [{ 'type': 'paragraph' }, '', { 'type': '/paragraph' }] );
 							documentModel.data.splice( 0, documentModel.data.length );
 							ve.insertIntoArray( documentModel.data, 0, newDocumentModel.data );
 							surfaceModel.select( new ve.Range( 1, 1 ) );
