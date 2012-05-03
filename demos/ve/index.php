@@ -29,7 +29,7 @@
 				margin: 2em 2em 1em 2em;
 			}
 			#es-docs {
-				margin: 0 2em;
+				margin: 0 2em 1em 2em;
 			}
 			.es-base {
 				margin: 2em;
