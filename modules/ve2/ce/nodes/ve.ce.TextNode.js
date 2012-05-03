@@ -163,11 +163,20 @@ ve.ce.TextNode.prototype.getHtml = function() {
 			out += typeof renderers[annotation.type].close === 'function'
 				? renderers[annotation.type].close( annotation.data )
 				: renderers[annotation.type].close;
+
+			// new version
+			hashStack.pop();
+			delete annotationStack[hash];
+
+			// old version
+			/*
 			var depth = hashStack.indexOf( hash );
 			if ( depth !== -1 ) {
+				console.log(depth, hashStack.length);
 				hashStack.splice( depth, 1 );
 				delete annotationStack[hash];
 			}
+			*/
 		}
 		return out;
 	};
