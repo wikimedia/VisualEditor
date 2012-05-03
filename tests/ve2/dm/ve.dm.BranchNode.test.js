@@ -29,6 +29,17 @@ test( 'setRoot', 3, function() {
 	strictEqual( node1.getRoot(), node4 );
 } );
 
+test( 'setDocument', 3, function() {
+	var node1 = new ve.dm.BranchNodeStub(),
+		node2 = new ve.dm.BranchNodeStub( [node1] ),
+		node3 = new ve.dm.BranchNodeStub( [node2] ),
+		node4 = new ve.dm.BranchNodeStub();
+	node3.setDocument( node4 );
+	strictEqual( node3.getDocument(), node4 );
+	strictEqual( node2.getDocument(), node4 );
+	strictEqual( node1.getDocument(), node4 );
+} );
+
 test( 'push', 3, function() {
 	var node1 = new ve.dm.BranchNodeStub(),
 		node2 = new ve.dm.BranchNodeStub(),
