@@ -3,7 +3,7 @@ module( 've.ce.TextNode' );
 
 /* Tests */
 
-test( '', 8, function() {
+test( '', 10, function() {
 
 	var getHtml = function( data ) {
 			var doc = new ve.dm.Document( data );
@@ -160,6 +160,59 @@ test( '', 8, function() {
 				{ 'type': '/paragraph' }
 			],
 			'html': 'abc<b><i><u>d</u></i></b><i><u>e<b>f</b></u></i>ghi'
+		},
+		{
+			'data': [
+				{ 'type': 'paragraph' },
+				'a',
+				'b',
+				'c',
+				['d', {
+					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
+					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
+					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
+				}],
+				['e', {
+					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
+					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
+				}],
+				['f', {
+					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
+					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
+					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
+				}],
+				'g',
+				'h',
+				'i',				
+				{ 'type': '/paragraph' }
+			],
+			'html': 'abc<i><u><b>d</b>e<b>f</b></u></i>ghi'
+		},
+		{
+			'data': [
+				{ 'type': 'paragraph' },
+				'a',
+				'b',
+				'c',
+				['d', {
+					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
+					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
+					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
+				}],
+				['e', {
+					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
+					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
+				}],
+				['f', {
+					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
+					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
+				}],
+				'g',
+				'h',
+				'i',				
+				{ 'type': '/paragraph' }
+			],
+			'html': 'abc<i><u><b>d</b></u></i><u><b>ef</b></u>ghi'
 		},
 	];
 

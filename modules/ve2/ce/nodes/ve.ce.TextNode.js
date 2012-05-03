@@ -27,6 +27,22 @@ ve.ce.TextNode.rules = {
 };
 
 /**
+ * Mapping of character and HTML entities or renderings.
+ * 
+ * @static
+ * @member
+ */
+ve.ce.TextNode.htmlCharacters = {
+	'&': '&amp;',
+	'<': '&lt;',
+	'>': '&gt;',
+	'\'': '&#039;',
+	'"': '&quot;',
+	'\n': '<span class="ve-ce-content-whitespace">&#182;</span>',
+	'\t': '<span class="ve-ce-content-whitespace">&#8702;</span>'
+};
+
+/**
  * List of annotation rendering implementations.
  * 
  * Each supported annotation renderer must have an open and close property, each either a string or
@@ -36,12 +52,6 @@ ve.ce.TextNode.rules = {
  * @member
  */
 ve.ce.TextNode.annotationRenderers = {
-	'object/template': {
-		'open': function( data ) {
-			return '<span class="ve-ce-content-format-object">' + data.html;
-		},
-		'close': '</span>'
-	},
 	'object/hook': {
 		'open': function( data ) {
 			return '<span class="ve-ce-content-format-object">' + data.html;
@@ -55,6 +65,10 @@ ve.ce.TextNode.annotationRenderers = {
 	'textStyle/italic': {
 		'open': '<i>',
 		'close': '</i>'
+	},
+	'textStyle/underline': {
+		'open': '<u>',
+		'close': '</u>'
 	},
 	'textStyle/strong': {
 		'open': '<span class="ve-ce-content-format-textStyle-strong">',
@@ -94,101 +108,7 @@ ve.ce.TextNode.annotationRenderers = {
 	}
 };
 
-/**
- * Mapping of character and HTML entities or renderings.
- * 
- * @static
- * @member
- */
-ve.ce.TextNode.htmlCharacters = {
-	'&': '&amp;',
-	'<': '&lt;',
-	'>': '&gt;',
-	'\'': '&#039;',
-	'"': '&quot;',
-	'\n': '<span class="ve-ce-content-whitespace">&#182;</span>',
-	'\t': '<span class="ve-ce-content-whitespace">&#8702;</span>'
-};
-
-/* Static Methods */
-
-/**
- * Gets a rendered opening or closing of an annotation.
- * 
- * Tag nesting is handled using a stack, which keeps track of what is currently open. A common stack
- * argument should be used while rendering content.
- * 
- * @static
- * @method
- * @param {String} bias Which side of the annotation to render, either "open" or "close"
- * @param {Object} annotation Annotation to render
- * @param {Array} stack List of currently open annotations
- * @returns {String} Rendered annotation
- */
-ve.ce.TextNode.renderAnnotation = function( bias, hash, annotation, stack, annotations ) {
-	var renderers = ve.ce.TextNode.annotationRenderers,
-		type = annotation.type,
-		out = '';
-	if ( type in renderers ) {
-		if ( bias === 'open' ) {
-			// Add annotation to the top of the stack
-			stack.push( hash );
-			annotations[hash] = annotation;
-			// Open annotation
-			out += typeof renderers[type].open === 'function' ?
-				renderers[type].open( annotation.data ) : renderers[type].open;
-		} else {
-			if ( annotations[stack[stack.length - 1]] === annotation ) {
-				// Remove annotation from top of the stack
-				delete annotations[stack[stack.length - 1]];
-				stack.pop();
-				// Close annotation
-				out += typeof renderers[type].close === 'function' ?
-					renderers[type].close( annotation.data ) : renderers[type].close;
-			} else {
-				// Find the annotation in the stack
-				var depth = ve.inArray( hash, stack ),
-					i;
-				if ( depth === -1 ) {
-					throw 'Invalid stack error. An element is missing from the stack.';
-				}
-				// Close each already opened annotation
-				for ( i = stack.length - 1; i >= depth + 1; i-- ) {
-					out += typeof renderers[annotations[stack[i]].type].close === 'function' ?
-						renderers[annotations[stack[i]].type].close( annotations[stack[i]].data ) :
-							renderers[annotations[stack[i]].type].close;
-				}
-				// Close the buried annotation
-				out += typeof renderers[type].close === 'function' ?
-					renderers[type].close( annotation.data ) : renderers[type].close;
-				// Re-open each previously opened annotation
-				for ( i = depth + 1; i < stack.length; i++ ) {
-					var aaa = typeof renderers[annotations[stack[i]].type].open === 'function' ?
-						renderers[annotations[stack[i]].type].open( annotations[stack[i]].data ) :
-							renderers[annotations[stack[i]].type].open;
-					console.log("X: " + aaa , hash);
-					out += aaa;
-				}
-				// Remove the annotation from the middle of the stack
-				stack.splice( depth, 1 );
-				delete annotations[hash];
-			}
-		}
-	}
-	return out;
-};
-
 /* Methods */
-
-/**
- * Gets the outer length, which for a text node is the same as the inner length.
- * 
- * @method
- * @returns {Integer} Length of the entire node
- */
-ve.ce.TextNode.prototype.getOuterLength = function() {
-	return this.length;
-};
 
 /**
  * Render content.
@@ -210,285 +130,109 @@ ve.ce.TextNode.prototype.render = function() {
 ve.ce.TextNode.prototype.getHtml = function() {
 	var data = this.model.getDocument().getDataFromNode( this.model ),
 		htmlChars = ve.ce.TextNode.htmlCharacters,
-		i,
+		renderers = ve.ce.TextNode.annotationRenderers,
 		out = '',
 		left = '',
 		right,
 		leftPlain,
-		rightPlain;
+		rightPlain,
+		hashStack = [],
+		annotationStack = {};
 
-	var openedArray = [];
-	var openedCollection = [];
+	var openAnnotations = function( annotations ) {
+		var out = '',
+			annotation;
 
-	var X_close = function( annotations, reverse ) {
-		if ( reverse === true ) {
-			var annArray = [];
-			for( var hash in annotations ) {
-				annArray.push( annotations[hash] );
-			}
-
-			var annCollection = {};
-			for ( var i = annArray.length - 1; i >= 0; i-- ) {
-				annCollection[JSON.stringify(annArray[i])] = annArray[i];
-			}
-
-			return X_close(annCollection)
-		}
-
-		var o = '';
 		for ( var hash in annotations ) {
-			if ( hash === '{"type":"textStyle/underline"}' ) {
-				o += '</u>';
-			}
-			if ( hash === '{"type":"textStyle/bold"}' ) {
-				o += '</b>';
-			}
-			if ( hash === '{"type":"textStyle/italic"}' ) {
-				o += '</i>';
-			}
-
-			if ( hash in openedCollection ) {
-				var depth = ve.inArray( hash, openedArray );
-				if ( depth !== -1 ) {
-					openedArray.splice( depth, 1 );
-					delete openedCollection[hash];
-				}				
-			}
+			annotation = annotations[hash];
+			out += typeof renderers[annotation.type].open === 'function'
+				? renderers[annotation.type].open( annotation.data )
+				: renderers[annotation.type].open;
+			hashStack.push( hash );
+			annotationStack[hash] = annotation;
 		}
-		return o;
+		return out;
 	};
 
-	var X_open = function( annotations ) {
-		var o = '';
+	var closeAnnotations = function( annotations ) {
+		var out = '',
+			annotation;
+
 		for ( var hash in annotations ) {
-			if ( hash === '{"type":"textStyle/underline"}' ) {
-				openedArray.push(hash);
-				openedCollection[hash] = annotations[hash];
-				o += '<u>';
-			}
-			if ( hash === '{"type":"textStyle/bold"}' ) {
-				openedArray.push(hash);
-				openedCollection[hash] = annotations[hash];
-				o += '<b>';
-			}
-			if ( hash === '{"type":"textStyle/italic"}' ) {
-				openedArray.push(hash);
-				openedCollection[hash] = annotations[hash];
-				o += '<i>';
+			annotation = annotations[hash];
+			out += typeof renderers[annotation.type].close === 'function'
+				? renderers[annotation.type].close( annotation.data )
+				: renderers[annotation.type].close;
+			var depth = hashStack.indexOf( hash );
+			if ( depth !== -1 ) {
+				hashStack.splice( depth, 1 );
+				delete annotationStack[hash];
 			}
 		}
-		return o;
+		return out;
 	};
 
-	for ( i = 0; i < data.length; i++ ) {
+	for ( var i = 0; i < data.length; i++ ) {
 		right = data[i];
 		leftPlain = typeof left === 'string';
 		rightPlain = typeof right === 'string';
 		
 		if ( !leftPlain && rightPlain ) {
-			var toclose = {};
-			for ( var j = openedArray.length - 1; j >= 0; j-- ) {
-				toclose[openedArray[j]] = openedCollection[openedArray[j]];
+			// [formatted][plain]
+			var close = {};
+			for ( var j = hashStack.length - 1; j >= 0; j-- ) {
+				close[hashStack[j]] = annotationStack[hashStack[j]];
 			}
-			out += X_close( toclose );
+			out += closeAnnotations( close );	
 		} else if ( leftPlain && !rightPlain ) {
-			out += X_open( right[1] );
+			// [plain][formatted]
+			out += openAnnotations( right[1] );
 		} else if ( !leftPlain && !rightPlain ) {
+			// [formatted][formatted]
 
-			var moreOnLeft = {};
+			var open = {},
+				index = 1000;
+
 			for ( var hash in left[1] ) {
-				if ( ! ( hash in right[1] ) ) {
-					moreOnLeft[hash] = left[1][hash];
+				if ( !( hash in right[1] ) ) {
+					index = Math.min( index, hashStack.indexOf( hash ) );
 				}
 			}
 
-			var moreOnRight = {};
-			for ( var hash in right[1] ) {
-				if ( ! ( hash in left[1] ) ) {
-					moreOnRight[hash] = right[1][hash];
+			if ( index !== 1000 ) {
+				var close = {};
+				for ( var j = hashStack.length - 1; j >= index; j-- ) {
+					close[hashStack[j]] = annotationStack[hashStack[j]];
 				}
-			}
 
-			var toopen = {};
-
-			var idx = 1000;
-			for ( var hash in moreOnLeft ) {
-				idx = Math.min( idx, openedArray.indexOf( hash ) );
-			}
-			var toclose = {};
-			if ( idx !== 1000 ) {
-				for ( var j = openedArray.length - 1; j >= idx; j-- ) {
-					toclose[openedArray[j]] = openedCollection[openedArray[j]];
-					if ( openedArray[j] in right[1] ) {
-						if ( ! ( openedArray[j] in moreOnRight)) {
-							//toopen[openedArray[j]] = openedCollection[openedArray[j]];
-						}
+				for ( var j = index; j < hashStack.length; j++ ) {
+					if ( hashStack[j] in right[1] && ( hashStack[j] in left[1])) {
+						open[hashStack[j]] = annotationStack[hashStack[j]];
 					}
 				}
-
-				for ( var j = idx; j < openedArray.length; j++ ) {
-					if ( openedArray[j] in right[1] ) {
-						if ( ! ( openedArray[j] in moreOnRight)) {
-							toopen[openedArray[j]] = openedCollection[openedArray[j]];
-						}
-					}
-				}
-
+				out += closeAnnotations( close );
 			}
-			out += X_close( toclose );
-
-			for ( var hash in moreOnRight ) {
-				toopen[hash] = moreOnRight[hash];
-			}
-
-			out += X_open( toopen );
-			
-
-			/*
-			var toopen = {};
-
-			var idx = -1;
-			for ( var hash in right[1] ) {
-				idx = Math.max( idx, openedArray.indexOf( hash ) );
-			}
-
-			var toclose = {};
-			for ( var j = idx; j >= 0; j-- ) {
-				//if ( ! ( openedArray[j] in right[1] ) ) {
-					toclose[openedArray[j]] = openedCollection[openedArray[j]];
-					toopen[openedArray[j]] = openedCollection[openedArray[j]];
-				//}
-			}
-			out += X_close( toclose );
-
 
 			for ( var hash in right[1] ) {
-				if ( ! ( hash in left[1] ) && ! ( hash in openedArray ) ) {
-					toopen[hash] = right[1][hash];
+				if ( !( hash in left[1] ) ) {
+					open[hash] = right[1][hash];
 				}
 			}
-			out += X_open( toopen );
-			*/
 
-			/*
-			var toclose = {};
-			for ( var hash in left[1] ) {
-				if ( ! ( hash in right[1] ) ) {
-					toclose[hash] = left[1][hash];
-				}
-			}
-			out += X_close( toclose, true );
-			
-			var toopen = {};
-			for ( var hash in right[1] ) {
-				if ( ! ( hash in left[1] ) ) {
-					toopen[hash] = right[1][hash];
-				}
-			}
-			out += X_open( toopen );
-			console.log(toclose, toopen);
-			*/
+			out += openAnnotations( open );
 		}
 
 		chr = rightPlain ? right : right[0];
 		out += chr in htmlChars ? htmlChars[chr] : chr;
 		left = right;
 	}
-	var toclose = {};
-	for ( var j = openedArray.length - 1; j >= 0; j-- ) {
-		toclose[openedArray[j]] = openedCollection[openedArray[j]];
+
+	var close = {};
+	for ( var j = hashStack.length - 1; j >= 0; j-- ) {
+		close[hashStack[j]] = annotationStack[hashStack[j]];
 	}
-	out += X_close( toclose );
-	return out;
+	out += closeAnnotations( close );	
 
-
-
-
-	var data = this.model.getDocument().getDataFromNode( this.model ),
-		render = ve.ce.TextNode.renderAnnotation,
-		htmlChars = ve.ce.TextNode.htmlCharacters;
-	var out = '',
-		left = '',
-		right,
-		leftPlain,
-		rightPlain,
-		stack = [],
-		annotations = {},
-		chr,
-		i,
-		j;
-	for ( i = 0; i < data.length; i++ ) {
-		right = data[i];
-		leftPlain = typeof left === 'string';
-		rightPlain = typeof right === 'string';
-		if ( !leftPlain && rightPlain ) {
-			// [formatted][plain] pair, close any annotations for left
-			for ( var hash in left[1] ) {
-				console.log("close (1): " + hash);
-				out += render(
-					'close',
-					hash,
-					left[1][hash],
-					stack,
-					annotations
-				);
-			}
-		} else if ( leftPlain && !rightPlain ) {
-			// [plain][formatted] pair, open any annotations for right
-			for ( var hash in right[1] ) {
-				console.log("open (1): " + hash);
-				out += render(
-					'open',
-					hash,
-					right[1][hash],
-					stack,
-					annotations
-				);
-			}
-		} else if ( !leftPlain && !rightPlain ) {
-			// [formatted][formatted] pair, open/close any differences
-			for ( var hash in left[1] ) {
-				if ( ! ( hash in right[1] ) ) {
-					console.log("close (2): " + hash);
-					out += render(
-						'close',
-						hash,
-						left[1][hash],
-						stack,
-						annotations
-					);
-				}
-			}
-			for ( var hash in right[1] ) {
-				if ( ! ( hash in left[1] ) ) {
-					console.log("open (2): " + hash);
-					out += render(
-						'open',
-						hash,
-						right[1][hash],
-						stack,
-						annotations
-					);
-				}
-			}
-		}
-		chr = rightPlain ? right : right[0];
-		out += chr in htmlChars ? htmlChars[chr] : chr;
-		left = right;
-	}
-	// Close all remaining tags at the end of the content
-	if ( !rightPlain && right ) {
-		for ( var hash in right[1] ) {
-			console.log("close (3): " + hash);
-			out += render(
-				'close',
-				hash,
-				right[1][hash],
-				stack,
-				annotations
-			);
-		}
-	}
 	return out;
 };
 
