@@ -206,7 +206,7 @@ ve.ce.TextNode.prototype.getHtml = function() {
 				}
 
 				for ( var j = index; j < hashStack.length; j++ ) {
-					if ( hashStack[j] in right[1] && ( hashStack[j] in left[1])) {
+					if ( hashStack[j] in right[1] && hashStack[j] in left[1] ) {
 						open[hashStack[j]] = annotationStack[hashStack[j]];
 					}
 				}
