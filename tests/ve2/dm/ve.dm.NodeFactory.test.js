@@ -17,7 +17,7 @@ ve.dm.NodeFactoryNodeStub.rules = {
 test( 'getChildNodeTypes', 2, function() {
 	var factory = new ve.dm.NodeFactory();
 	raises( function() {
-			factory.createNode( 'stub', 23, { 'bar': 'baz' } );
+			factory.create( 'stub', 23, { 'bar': 'baz' } );
 		},
 		/^Unknown node type: stub$/,
 		'throws an exception when getting allowed child nodes of a node of an unregistered type'
@@ -33,7 +33,7 @@ test( 'getChildNodeTypes', 2, function() {
 test( 'getParentNodeTypes', 2, function() {
 	var factory = new ve.dm.NodeFactory();
 	raises( function() {
-			factory.createNode( 'stub', 23, { 'bar': 'baz' } );
+			factory.create( 'stub', 23, { 'bar': 'baz' } );
 		},
 		/^Unknown node type: stub$/,
 		'throws an exception when getting allowed parent nodes of a node of an unregistered type'

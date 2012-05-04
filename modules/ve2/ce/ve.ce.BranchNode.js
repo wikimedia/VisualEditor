@@ -14,6 +14,9 @@ ve.ce.BranchNode = function( model, $element ) {
 	ve.BranchNode.call( this );
 	ve.ce.Node.call( this, model, $element );
 
+	// Properties
+	this.domWrapperElementType = this.$.get(0).nodeName.toLowerCase();
+
 	// Events
 	this.model.addListenerMethod( this, 'splice', 'onSplice' );
 
@@ -23,17 +26,40 @@ ve.ce.BranchNode = function( model, $element ) {
 	}
 };
 
+/* Static Methods */
+
+ve.ce.BranchNode.getDomWrapperType = function( model, key ) {
+	var value = model.getAttribute( key );
+	if ( value === undefined ) {
+		throw 'Undefined attribute: ' + key;
+	}
+	var types = ve.ce.factory.lookup( model.getType() ).domWrapperElementTypes;
+	if ( types[value] === undefined ) {
+		throw 'Invalid attribute value: ' + value;
+	}
+	return types[value];
+};
+
+ve.ce.BranchNode.getDomWrapper = function( model, key ) {
+	var type = ve.ce.BranchNode.getDomWrapperType( model, key );
+	return $( '<' + type + '></' + type + '>' );
+};
+
 /* Methods */
 
-ve.ce.BranchNode.prototype.replaceDomWrapper = function( $element ) {
-	// Copy classes
-	$element.attr( 'class', this.$.attr( 'class' ) );
-	// Move contents
-	$element.append( this.$.contents() );
-	// Swap elements
-	this.$.replaceWith( $element );
-	// Use new element from now on
-	this.$ = $element;
+ve.ce.BranchNode.prototype.updateDomWrapper = function( key ) {
+	var type = ve.ce.BranchNode.getDomWrapperType( this.model, key );
+	if ( type !== this.domWrapperElementType ) {
+		var $element = $( '<' + type + '></' + type + '>' );
+		// Copy classes
+		$element.attr( 'class', this.$.attr( 'class' ) );
+		// Move contents
+		$element.append( this.$.contents() );
+		// Swap elements
+		this.$.replaceWith( $element );
+		// Use new element from now on
+		this.$ = $element;
+	}
 };
 
 /**
@@ -54,7 +80,7 @@ ve.ce.BranchNode.prototype.onSplice = function( index, howmany ) {
 	// Convert models to views and attach them to this node
 	if ( args.length >= 3 ) {
 		for ( i = 2, length = args.length; i < length; i++ ) {
-			args[i] = ve.ce.factory.createNode( args[i].getType(), args[i] );
+			args[i] = ve.ce.factory.create( args[i].getType(), args[i] );
 		}
 	}
 	var removals = this.children.splice.apply( this.children, args );

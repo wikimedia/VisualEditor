@@ -2,9 +2,9 @@ module( 've.dm.BranchNode' );
 
 /* Stubs */
 
-ve.dm.BranchNodeStub = function( children ) {
+ve.dm.BranchNodeStub = function( children, attributes ) {
 	// Inheritance
-	ve.dm.BranchNode.call( this, 'branch-stub', children );
+	ve.dm.BranchNode.call( this, 'branch-stub', children, attributes );
 };
 
 ve.dm.BranchNodeStub.rules = {

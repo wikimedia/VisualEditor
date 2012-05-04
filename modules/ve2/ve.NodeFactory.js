@@ -14,8 +14,9 @@ ve.NodeFactory = function() {
  * Register a node type with the factory.
  * 
  * Arguments will be passed through directly to the constructor.
- * @see {ve.NodeFactory.prototype.createNode}
+ * @see {ve.NodeFactory.prototype.create}
  * 
+ * @method
  * @param {String} type Node type
  * @param {Function} constructor Node constructor subclassing ve.Node
  * @throws 'Constructor must be a function, cannot be a string'
@@ -38,12 +39,13 @@ ve.NodeFactory.prototype.register = function( type, constructor ) {
  * we should change this to suit that use case. Because of undefined pass through, there's no harm
  * in adding more.
  * 
+ * @method
  * @param {String} type Node type
  * @param {Mixed} [...] Up to 2 additional arguments to pass through to the constructor
  * @returns {ve.Node} The new node object
  * @throws 'Unknown node type'
  */
-ve.NodeFactory.prototype.createNode = function( type, a, b ) {
+ve.NodeFactory.prototype.create = function( type, a, b ) {
 	if ( type in this.registry ) {
 		return new this.registry[type]( a, b );
 	}
@@ -51,8 +53,20 @@ ve.NodeFactory.prototype.createNode = function( type, a, b ) {
 };
 
 /**
+ * Gets a constructor for a given type.
+ * 
+ * @method
+ * @param {String} type Node type
+ * @returns {Function|undefined} Constructor for type
+ */
+ve.NodeFactory.prototype.lookup = function( type ) {
+	return this.registry[type];
+};
+
+/**
  * Checks if a given node type can have child nodes.
  * 
+ * @method
  * @param {String} type Node type
  * @returns {Boolean} The node can have children
  * @throws 'Unknown node type'
@@ -67,6 +81,7 @@ ve.NodeFactory.prototype.canNodeHaveChildren = function( type ) {
 /**
  * Checks if a given node type can have grandchild nodes.
  * 
+ * @method
  * @param {String} type Node type
  * @returns {Boolean} The node can have grandchildren
  * @throws 'Unknown node type'

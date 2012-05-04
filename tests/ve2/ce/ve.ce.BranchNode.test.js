@@ -7,19 +7,25 @@ ve.ce.BranchNodeStub = function( model, $element ) {
 	ve.ce.BranchNode.call( this, model, $element );
 };
 
+ve.ce.BranchNodeStub.domWrapperElementTypes = {
+	'a': 'a',
+	'b': 'b'
+};
+
 ve.extendClass( ve.ce.BranchNodeStub, ve.ce.BranchNode );
 
 ve.ce.factory.register( 'branch-stub', ve.ce.BranchNodeStub );
 
 /* Tests */
 
-test( 'replaceDomWrapper', 4, function() {
-	var $oldWrapper = $( '<h1 class="test">hello</h1>' ),
-		$newWrapper = $( '<h2></h2>' ),
-		node = new ve.ce.BranchNodeStub( new ve.dm.BranchNodeStub(), $oldWrapper );
-	equal( node.$, $oldWrapper, 'this.$ references wrapper given to constructor' );
-	node.replaceDomWrapper( $newWrapper );
-	equal( node.$, $newWrapper, 'this.$ references new wrapper after replaceDomWrapper is called' );
+test( 'updateDomWrapper', 3, function() {
+	var node = new ve.ce.BranchNodeStub( new ve.dm.BranchNodeStub( [], { 'type': 'a' } ) );
+	// Add classes and content to the node
+	node.$.addClass( 'test' ).text( 'hello' );
+	// Modify attribute
+	node.getModel().attributes.type = 'b';
+	node.updateDomWrapper( 'type' );
+	equal( node.$.get( 0 ).nodeName.toLowerCase(), 'b', 'DOM element type gets converted' );
 	equal( node.$.attr( 'class' ), 'test', 'old classes are added to new wrapper' );
 	equal( node.$.text(), 'hello', 'contents are added to new wrapper' );
 } );

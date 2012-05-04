@@ -8,10 +8,7 @@
  */
 ve.ce.HeadingNode = function( model ) {
 	// Inheritance
-	ve.ce.BranchNode.call( this, model, ve.ce.HeadingNode.getDomWrapper( model ) );
-
-	// Properties
-	this.currentLevel = model.getAttribute( 'level' );
+	ve.ce.BranchNode.call( this, model, ve.ce.BranchNode.getDomWrapper( model, 'level' ) );
 
 	// Events
 	this.model.addListenerMethod( this, 'update', 'onUpdate' );
@@ -47,28 +44,6 @@ ve.ce.HeadingNode.domWrapperElementTypes = {
 	'6': 'h6'
 };
 
-/* Static Methods */
-
-/**
- * Gets an appropriate DOM wrapper for the model.
- * 
- * This method is static because it is used before the node is fully constructed. Before all parent
- * constructors are called this.model may not be ready to be used.
- * 
- * @static
- * @method
- * @param {ve.dm.HeadingNode} model Model to create DOM wrapper for
- * @returns {jQuery} Selection containing DOM wrapper
- */
-ve.ce.HeadingNode.getDomWrapper = function( model ) {
-	var level = model.getAttribute( 'level' ),
-		type = ve.ce.HeadingNode.domWrapperElementTypes[level];
-	if ( type === undefined ) {
-		throw 'Invalid level attribute in heading node model: ' + level;
-	}
-	return $( '<' + type + '></' + type + '>' );
-};
-
 /* Methods */
 
 /**
@@ -79,11 +54,7 @@ ve.ce.HeadingNode.getDomWrapper = function( model ) {
  * @method
  */
 ve.ce.HeadingNode.prototype.onUpdate = function() {
-	var level = this.model.getAttribute( 'level' );
-	if ( level !== this.currentLevel ) {
-		this.currentLevel = level;
-		this.replaceDomWrapper( ve.ce.HeadingNode.getDomWrapper( this.model ) );
-	}
+	this.updateDomWrapper( 'level' );
 };
 
 /* Registration */

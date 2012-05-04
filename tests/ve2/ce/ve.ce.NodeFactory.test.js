@@ -16,7 +16,7 @@ ve.ce.NodeFactoryNodeStub.rules = {
 test( 'canNodeBeSplit', 2, function() {
 	var factory = new ve.ce.NodeFactory();
 	raises( function() {
-			factory.createNode( 'stub', 23, { 'bar': 'baz' } );
+			factory.create( 'stub', 23, { 'bar': 'baz' } );
 		},
 		/^Unknown node type: stub$/,
 		'throws an exception when getting allowed child nodes of a node of an unregistered type'

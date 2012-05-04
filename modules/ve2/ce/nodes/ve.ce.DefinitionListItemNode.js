@@ -8,10 +8,7 @@
  */
 ve.ce.DefinitionListItemNode = function( model ) {
 	// Inheritance
-	ve.ce.BranchNode.call( this, model, ve.ce.DefinitionListItemNode.getDomWrapper( model ) );
-
-	// Properties
-	this.currentStyle = model.getAttribute( 'style' );
+	ve.ce.BranchNode.call( this, model, ve.ce.BranchNode.getDomWrapper( model, 'style' ) );
 
 	// Events
 	this.model.addListenerMethod( this, 'update', 'onUpdate' );
@@ -43,28 +40,6 @@ ve.ce.DefinitionListItemNode.domWrapperElementTypes = {
 	'term': 'dt'
 };
 
-/* Static Methods */
-
-/**
- * Gets an appropriate DOM wrapper for the model.
- * 
- * This method is static because it is used before the node is fully constructed. Before all parent
- * constructors are called this.model may not be ready to be used.
- * 
- * @static
- * @method
- * @param {ve.dm.DefinitionListItemNode} model Model to create DOM wrapper for
- * @returns {jQuery} Selection containing DOM wrapper
- */
-ve.ce.DefinitionListItemNode.getDomWrapper = function( model ) {
-	var style = model.getAttribute( 'style' ),
-		type = ve.ce.DefinitionListItemNode.domWrapperElementTypes[style];
-	if ( type === undefined ) {
-		throw 'Invalid style attribute in list item node model: ' + style;
-	}
-	return $( '<' + type + '></' + type + '>' );
-};
-
 /* Methods */
 
 /**
@@ -75,11 +50,7 @@ ve.ce.DefinitionListItemNode.getDomWrapper = function( model ) {
  * @method
  */
 ve.ce.DefinitionListItemNode.prototype.onUpdate = function() {
-	var style = this.model.getAttribute( 'style' );
-	if ( style !== this.currentStyle ) {
-		this.currentStyle = style;
-		this.replaceDomWrapper( ve.ce.DefinitionListItemNode.getDomWrapper( this.model ) );
-	}
+	this.updateDomWrapper( 'style' );
 };
 
 /* Registration */
