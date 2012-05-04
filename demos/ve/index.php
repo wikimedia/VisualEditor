@@ -76,12 +76,6 @@
 	</head>
 	<body>
 <?php
-$modeWikitext = "Toggle wikitext view";
-$modeJson = "Toggle JSON view";
-$modeHtml = "Toggle HTML view";
-$modeRender = "Toggle preview";
-$modeHistory = "Toggle transaction history view";
-$modeHelp = "Toggle help view";
 
 include( '../../modules/sandbox/base.php' );
 

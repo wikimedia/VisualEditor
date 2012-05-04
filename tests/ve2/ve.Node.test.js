@@ -8,7 +8,7 @@ ve.NodeStub = function() {
 };
 
 ve.extendClass( ve.NodeStub, ve.Node );
-
+ 
 /* Tests */
 
 test( 'getType', 1, function() {
@@ -17,11 +17,11 @@ test( 'getType', 1, function() {
 } );
 
 test( 'getParent', 1, function() {
-	var node = new ve.dm.NodeStub();
+	var node = new ve.NodeStub();
 	strictEqual( node.getParent(), null );
 } );
 
 test( 'getRoot', 1, function() {
-	var node = new ve.dm.NodeStub();
+	var node = new ve.NodeStub();
 	strictEqual( node.getRoot(), node );
 } );
