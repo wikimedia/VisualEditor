@@ -21,7 +21,7 @@ ve.dm.Surface = function( doc ) {
  * @returns {ve.dm.DocumentNode} Document model of the surface
  */
 ve.dm.Surface.prototype.getDocument = function() {
-	return this.doc;
+	return this.documentModel;
 };
 
 /**

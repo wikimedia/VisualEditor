@@ -11,7 +11,7 @@ ve.ce.Surface = function( $container, model ) {
 
 	// Properties
 	this.model = model;
-	this.documentView = new ve.ce.Document( model.documentModel );
+	this.documentView = new ve.ce.Document( model.getDocument() );
 	this.$ = $container;
 
 	// Initialization
