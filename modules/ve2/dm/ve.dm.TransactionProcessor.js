@@ -83,7 +83,7 @@ ve.dm.TransactionProcessor.prototype.process = function() {
  * @param {Number} to Offset to stop annotating at. Annotating starts at this.cursor
  */
 ve.dm.TransactionProcessor.prototype.applyAnnotations = function( to ) {
-	var i, hash, ann, character;
+	var i, hash, ann, character, changed = false;
 	for ( i = this.cursor; i < to; i++ ) {
 		character = this.document.data[i];
 		if ( character.type !== undefined ) {
@@ -110,6 +110,8 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function( to ) {
 			}
 		}
 	}
+	
+	this.synchronizer.pushAnnotation( new ve.Range( this.cursor, to ) );
 };
 
 /**
@@ -152,7 +154,8 @@ ve.dm.TransactionProcessor.prototype.annotate = function( op ) {
 	} else {
 		delete target[hash];
 	}
-	// TODO sync model tree
+	
+	// Tree sync is done by applyAnnotations()
 };
 
 /**
@@ -174,6 +177,7 @@ ve.dm.TransactionProcessor.prototype.attribute = function( op ) {
 		throw 'Invalid element error. Can not set attributes on non-element data.';
 	}
 	var to = this.reversed ? op.from : op.to;
+	var from = this.reversed ? op.to : op.from;
 	if ( to === undefined ) {
 		// Clear
 		if ( element.attributes ) {
@@ -187,7 +191,9 @@ ve.dm.TransactionProcessor.prototype.attribute = function( op ) {
 		// Set
 		element.attributes[op.key] = to;
 	}
-	// TODO sync model tree
+	
+	this.synchronizer.pushAttributeChange( this.document.getNodeFromOffset( this.cursor + 1 ),
+		op.key, from, to );
 };
 
 /**
@@ -222,7 +228,7 @@ ve.dm.TransactionProcessor.prototype.replace = function( op ) {
 		// Get the node containing the replaced content
 		node = this.document.getNodeFromOffset( this.cursor );
 		// Queue a resize for this node
-		//this.synchronizer.pushResize( node, replacement.length - remove.length );
+		this.synchronizer.pushResize( node, replacement.length - remove.length );
 		// Advance the cursor
 		this.cursor += replacement.length;
 	} else {
