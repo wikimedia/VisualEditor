@@ -127,7 +127,6 @@ ve.dm.BranchNode.prototype.shift = function() {
  * @param {ve.dm.BranchNode} [...] Variadic list of nodes to insert
  * @returns {ve.dm.BranchNode[]} Removed nodes
  * @emits splice (index, howmany, [...])
- * @emits update
  */
 ve.dm.BranchNode.prototype.splice = function( index, howmany ) {
 	var i,
@@ -138,19 +137,16 @@ ve.dm.BranchNode.prototype.splice = function( index, howmany ) {
 		length = args.length;
 		for ( i = 2; i < length; i++ ) {
 			args[i].attach( this );
-			args[i].on( 'update', this.emitUpdate );
 			diff += args[i].getOuterLength();
 		}
 	}
 	var removals = this.children.splice.apply( this.children, args );
 	for ( i = 0, length = removals.length; i < length; i++ ) {
 		removals[i].detach();
-		removals[i].removeListener( 'update', this.emitUpdate );
 		diff -= removals[i].getOuterLength();
 	}
 	this.adjustLength( diff, true );
 	this.emit.apply( this, ['splice'].concat( args ) );
-	this.emit( 'update' );
 	return removals;
 };
 

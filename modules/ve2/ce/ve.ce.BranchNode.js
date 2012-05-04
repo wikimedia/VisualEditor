@@ -36,6 +36,17 @@ ve.ce.BranchNode.prototype.replaceDomWrapper = function( $element ) {
 	this.$ = $element;
 };
 
+/**
+ * Responds to splice events on a ve.dm.BranchNode.
+ * 
+ * ve.ce.Node objects are generated from the inserted ve.dm.Node objects, producing a view that's a
+ * mirror of it's model.
+ * 
+ * @method
+ * @param {Integer} index Index to remove and or insert nodes at
+ * @param {Integer} howmany Number of nodes to remove
+ * @param {ve.dm.BranchNode} [...] Variadic list of nodes to insert
+ */
 ve.ce.BranchNode.prototype.onSplice = function( index, howmany ) {
 	var i,
 		length,
@@ -49,7 +60,6 @@ ve.ce.BranchNode.prototype.onSplice = function( index, howmany ) {
 	var removals = this.children.splice.apply( this.children, args );
 	for ( i = 0, length = removals.length; i < length; i++ ) {
 		removals[i].detach();
-		removals[i].removeListener( 'update', this.emitUpdate );
 		// Update DOM
 		removals[i].$.detach();
 	}
@@ -61,7 +71,6 @@ ve.ce.BranchNode.prototype.onSplice = function( index, howmany ) {
 		}
 		for ( i = args.length - 1; i >= 2; i-- ) {
 			args[i].attach( this );
-			args[i].on( 'update', this.emitUpdate );
 			if ( index ) {
 				$anchor.after( args[i].$ );
 			} else {
@@ -69,8 +78,6 @@ ve.ce.BranchNode.prototype.onSplice = function( index, howmany ) {
 			}
 		}
 	}
-	this.emit.apply( this, ['splice'].concat( args ) );
-	this.emit( 'update' );
 };
 
 /* Inheritance */
