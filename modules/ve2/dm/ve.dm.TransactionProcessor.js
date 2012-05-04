@@ -14,7 +14,7 @@ ve.dm.TransactionProcessor = function( doc, transaction, reversed ) {
 	this.document = doc;
 	this.operations = transaction.getOperations();
 	// TODO add DocumentSynchronizer
-	//this.synchronizer = new ve.dm.DocumentSynchronizer( this.model );
+	this.synchronizer = new ve.dm.DocumentSynchronizer( this.model );
 	this.reversed = reversed;
 	
 	// Linear model offset that we're currently at

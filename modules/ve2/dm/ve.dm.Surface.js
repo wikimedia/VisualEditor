@@ -60,7 +60,7 @@ ve.dm.Surface.prototype.setSelection = function( selection ) {
  * @param {ve.dm.Transaction} transactions Tranasction to apply to the document
  */
 ve.dm.Surface.prototype.transact = function( transaction ) {
-	this.documentModel.commit( transaction );
+	ve.dm.TransactionProcessor.commit( this.documentModel, transaction );
 	this.emit( 'transact', transaction );
 };
 
