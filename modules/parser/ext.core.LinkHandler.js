@@ -212,7 +212,18 @@ WikiLinkHandler.prototype.renderThumb = function ( token, manager, cb, title, pa
 	a.dataAttribs.optionHash = oHash;
 	a.dataAttribs.optionList = options;
 
-	var figurestyle = "width: 165px;",
+	var width = 165;
+
+	// Handle upright
+	if ( 'aspect' in oHash ) {
+		if ( oHash.aspect > 0 ) {
+			width = width * oHash.aspect;
+		} else {
+			width *= 0.75;
+		}
+	}
+
+	var figurestyle = "width: " + (width + 5) + "px;",
 		figureclass = "thumb tright thumbinner";
 	
 	// set horizontal alignment
@@ -257,7 +268,7 @@ WikiLinkHandler.prototype.renderThumb = function ( token, manager, cb, title, pa
 				'img',
 				[
 					new KV('src', path),
-					new KV('width', '160px'),
+					new KV('width', width + 'px'),
 					//new KV('height', '160px'),
 					new KV('class', 'thumbimage'),
 					new KV('alt', oHash.alt || title.key ),
