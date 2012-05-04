@@ -169,7 +169,7 @@ ve.dm.TransactionProcessor.prototype.annotate = function( op ) {
  *                    to: new attribute value, or undefined to unset
  */
 ve.dm.TransactionProcessor.prototype.attribute = function( op ) {
-	var element = this.model.data[this.cursor];
+	var element = this.document.data[this.cursor];
 	if ( element.type === undefined ) {
 		throw 'Invalid element error. Can not set attributes on non-element data.';
 	}
@@ -207,5 +207,26 @@ ve.dm.TransactionProcessor.prototype.attribute = function( op ) {
  *                    replacement: Linear model data fragment to insert
  */
 ve.dm.TransactionProcessor.prototype.replace = function( op ) {
-	// TODO
+	var	remove = this.reversed ? op.replacement : op.remove,
+		replacement = this.reversed ? op.remove : op.replacement,
+		removeHasStructure = ve.dm.Document.containsElementData( remove ),
+		replacementHasStructure = ve.dm.Document.containsElementData( replacement ),
+		node;
+	// Figure out if this is a structural replacement or a content replacement
+	if ( !removeHasStructure && !replacementHasStructure ) {
+		// Content replacement
+		// Update the linear model
+		ve.batchSplice( this.document.data, this.cursor, remove.length, replacement );
+		this.applyAnnotations( this.cursor + replacement.length );
+		
+		// Get the node containing the replaced content
+		node = this.document.getNodeFromOffset( this.cursor );
+		// Queue a resize for this node
+		//this.synchronizer.pushResize( node, replacement.length - remove.length );
+		// Advance the cursor
+		this.cursor += replacement.length;
+	} else {
+		// Structural replacement
+		// TODO implement
+	}
 };

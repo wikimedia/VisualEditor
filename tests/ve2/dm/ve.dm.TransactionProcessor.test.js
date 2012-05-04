@@ -51,3 +51,49 @@ test( 'annotate', function() {
 	deepEqual( doc.getData(), ve.dm.example.data,
 		'Complex annotation transaction rolls back correctly' );
 } );
+
+test( 'attribute', function() {
+	var doc = new ve.dm.Document( ve.dm.example.data.slice( 0 ) );
+	var tx = new ve.dm.Transaction();
+	var expectedData = ve.dm.example.data.slice( 0 );
+	tx.pushReplaceElementAttribute( 'level', 1, 2 );
+	tx.pushRetain( 11 );
+	tx.pushReplaceElementAttribute( 'styles', ['bullet'], ['number'] );
+	expectedData[0].attributes.level = 2;
+	expectedData[11].attributes.styles = ['number'];
+	
+	ve.dm.TransactionProcessor.commit( doc, tx );
+	deepEqual( doc.getData(), expectedData,
+		   'Attribute transaction replaces attributes correctly' );
+	ve.dm.TransactionProcessor.rollback( doc, tx );
+	deepEqual( doc.getData(), ve.dm.example.data,
+		   'Attribute transaction rolls back correctly' );
+	
+	// TODO test attribute addition/removal
+	
+	doc = new ve.dm.Document( ve.dm.example.data.slice( 0 ) );
+	tx = new ve.dm.Transaction();
+	tx.pushRetain( 1 );
+	tx.pushReplaceElementAttribute( 'foo', 23, 42 );
+	raises(
+		function() { ve.dm.TransactionProcessor.commit( doc, tx ); },
+		/^Invalid element error. Can not set attributes on non-element data.$/,
+		'Trying to replace attributes on content results in an exception'
+	);
+} );
+
+test( 'replace', function() {
+	var doc = new ve.dm.Document( ve.dm.example.data.slice( 0 ) );
+	var tx = new ve.dm.Transaction();
+	var expectedData = ve.dm.example.data.slice( 0 );
+	tx.pushRetain( 1 );
+	tx.pushReplace( [ 'a' ], [ 'F', 'O', 'O' ] );
+	expectedData.splice( 1, 1, 'F', 'O', 'O' );
+	
+	ve.dm.TransactionProcessor.commit( doc, tx );
+	deepEqual( doc.getData(), expectedData,
+		   'Replace transaction replaces content correctly' );
+	ve.dm.TransactionProcessor.rollback( doc, tx );
+	deepEqual( doc.getData(), ve.dm.example.data,
+		   'Replace transaction rolls back correctly' );
+} );

@@ -65,6 +65,24 @@ ve.dm.Document.prototype.rebuildNodes = function( parent, index, numNodes, offse
 	return nodes;
 };
 
+/* Static methods */
+/**
+ * Checks if elements are present within data.
+ * 
+ * @static
+ * @method
+ * @param {Array} data Data to look for elements within
+ * @returns {Boolean} If elements exist in data
+ */
+ve.dm.Document.containsElementData = function( data ) {
+	for ( var i = 0, length = data.length; i < length; i++ ) {
+		if ( data[i].type !== undefined ) {
+			return true;
+		}
+	}
+	return false;
+};
+
 /* Inheritance */
 
 ve.extendClass( ve.dm.Document, ve.dm.DocumentFragment );
