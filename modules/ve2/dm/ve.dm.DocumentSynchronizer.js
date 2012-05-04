@@ -19,7 +19,7 @@ ve.dm.DocumentSynchronizer = function( doc ) {
 	// Properties
 	this.document = doc;
 	this.actions = [];
-	this.updatedNodes = [];
+	this.eventQueue = [];
 };
 
 /* Methods */
@@ -78,32 +78,40 @@ ve.dm.DocumentSynchronizer.prototype.annotation = function( action ) {
 };
 
 ve.dm.DocumentSynchronizer.prototype.attributeChange = function( action ) {
-	action.node.emit( 'attributeChange', action.key, action.from, action.to );
-	this.markNodeUpdated( action.node );
+	this.queueEvent( action.node, 'attributeChange', action.key, action.from, action.to );
+	this.queueEvent( action.node, 'update' );
 };
 
 ve.dm.DocumentSynchronizer.prototype.resize = function( action ) {
 	action.node.adjustLength( action.adjustment );
-	this.markNodeUpdated( action.node );
+	this.queueEvent( action.node, 'update' );
 };
 
 // TODO rebuild()
 
-ve.dm.DocumentSynchronizer.prototype.markNodeUpdated = function( node ) {
-	// Skip nodes that have already been added
-	if ( !node.DSupdated ) {
-		node.DSupdated = true;
-		this.updatedNodes.push( node );
+ve.dm.DocumentSynchronizer.prototype.queueEvent = function( node, event ) {
+	// Check if this is already queued
+	var args = Array.prototype.slice.call( arguments, 1 );
+	var hash = $.toJSON( args );
+	if ( !node.DSqueuedevents ) {
+		node.DSqueuedevents = {};
 	}
+	if ( node.DSqueuedevents[hash] ) {
+		return;
+	}
+	
+	node.DSqueuedevents[hash] = true;
+	this.eventQueue.push( { 'node': node, 'args': args } );
 };
 
-ve.dm.DocumentSynchronizer.prototype.emitUpdateEvents = function() {
-	var i;
-	for ( i = 0; i < this.updatedNodes.length; i++ ) {
-		node.emit( 'update' );
-		delete node.DSupdated;
+ve.dm.DocumentSynchronizer.prototype.emitEvents = function() {
+	var i, event;
+	for ( i = 0; i < this.eventQueue.length; i++ ) {
+		event = this.eventQueue[i];
+		event.node.emit.apply( event.node, event.args );
+		delete event.node.DSqueuedevents;
 	}
-	this.updatedNodes = [];
+	this.eventQueue = [];
 };
 
 ve.dm.DocumentSynchronizer.prototype.synchronize = function() {
@@ -118,6 +126,6 @@ ve.dm.DocumentSynchronizer.prototype.synchronize = function() {
 		}
 	}
 	
-	this.emitUpdateEvents();
+	this.emitEvents();
 	this.actions = [];
 };
