@@ -2,9 +2,9 @@ module( 've.dm.DocumentFragment' );
 
 /* Tests */
 
-test( 'constructor', 88, function() {
+test( 'constructor', 114, function() {
 	var fragment = new ve.dm.DocumentFragment( ve.dm.example.data );
-	// Test count: ( ( 4 tests x 16 branch nodes ) + ( 3 tests x 8 leaf nodes ) ) = 88
+	// Test count: ( ( 4 tests x 21 branch nodes ) + ( 3 tests x 10 leaf nodes ) ) = 114
 	ve.dm.example.nodeTreeEqual( fragment.getDocumentNode(), ve.dm.example.tree );
 } );
 
@@ -13,7 +13,7 @@ test( 'getData', 1, function() {
 	deepEqual( fragment.getData(), ve.dm.example.data );
 } );
 
-test( 'getOffsetMap', 43, function() {
+test( 'getOffsetMap', 55, function() {
 	var fragment = new ve.dm.DocumentFragment( ve.dm.example.data ),
 		actual = fragment.getOffsetMap(),
 		expected = ve.dm.example.getOffsetMap( fragment.getDocumentNode() );

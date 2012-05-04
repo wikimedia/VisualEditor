@@ -1,14 +1,14 @@
 /**
- * ContentEditable node for a list.
+ * ContentEditable node for a definition list item.
  * 
  * @class
  * @constructor
  * @extends {ve.ce.BranchNode}
- * @param model {ve.dm.ListNode} Model to observe
+ * @param model {ve.dm.DefinitionListItemNode} Model to observe
  */
-ve.ce.ListNode = function( model ) {
+ve.ce.DefinitionListItemNode = function( model ) {
 	// Inheritance
-	ve.ce.BranchNode.call( this, model, ve.ce.ListNode.getDomWrapper( model ) );
+	ve.ce.BranchNode.call( this, model, ve.ce.DefinitionListItemNode.getDomWrapper( model ) );
 
 	// Properties
 	this.currentStyle = model.getAttribute( 'style' );
@@ -26,21 +26,21 @@ ve.ce.ListNode = function( model ) {
  * @static
  * @member
  */
-ve.ce.ListNode.rules = {
+ve.ce.DefinitionListItemNode.rules = {
 	'canHaveChildren': true,
 	'canHaveGrandchildren': true,
 	'canBeSplit': false
 };
 
 /**
- * Mapping of list style values and DOM wrapper element types.
+ * Mapping of list item style values and DOM wrapper element types.
  * 
  * @static
  * @member
  */
-ve.ce.ListNode.domWrapperElementTypes = {
-	'bullet': 'ul',
-	'number': 'ol'
+ve.ce.DefinitionListItemNode.domWrapperElementTypes = {
+	'definition': 'dd',
+	'term': 'dt'
 };
 
 /* Static Methods */
@@ -53,15 +53,14 @@ ve.ce.ListNode.domWrapperElementTypes = {
  * 
  * @static
  * @method
- * @param {ve.dm.ListNode} model Model to create DOM wrapper for
+ * @param {ve.dm.DefinitionListItemNode} model Model to create DOM wrapper for
  * @returns {jQuery} Selection containing DOM wrapper
  */
-ve.ce.ListNode.getDomWrapper = function( model ) {
+ve.ce.DefinitionListItemNode.getDomWrapper = function( model ) {
 	var style = model.getAttribute( 'style' ),
-		type = ve.ce.ListNode.domWrapperElementTypes[style];
+		type = ve.ce.DefinitionListItemNode.domWrapperElementTypes[style];
 	if ( type === undefined ) {
-		console.log(style, type);
-		throw 'Invalid style attribute in list node model: ' + style;
+		throw 'Invalid style attribute in list item node model: ' + style;
 	}
 	return $( '<' + type + '></' + type + '>' );
 };
@@ -75,18 +74,18 @@ ve.ce.ListNode.getDomWrapper = function( model ) {
  * 
  * @method
  */
-ve.ce.ListNode.prototype.onUpdate = function() {
+ve.ce.DefinitionListItemNode.prototype.onUpdate = function() {
 	var style = this.model.getAttribute( 'style' );
 	if ( style !== this.currentStyle ) {
 		this.currentStyle = style;
-		this.replaceDomWrapper( ve.ce.ListNode.getDomWrapper( this.model ) );
+		this.replaceDomWrapper( ve.ce.DefinitionListItemNode.getDomWrapper( this.model ) );
 	}
 };
 
 /* Registration */
 
-ve.ce.factory.register( 'list', ve.ce.ListNode );
+ve.ce.factory.register( 'definitionListItem', ve.ce.DefinitionListItemNode );
 
 /* Inheritance */
 
-ve.extendClass( ve.ce.ListNode, ve.ce.BranchNode );
+ve.extendClass( ve.ce.DefinitionListItemNode, ve.ce.BranchNode );

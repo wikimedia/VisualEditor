@@ -31,7 +31,15 @@ ve.dm.example.html =
 			'</td>' +
 		'</tr>' +
 	'</table>' +
-	'<pre>h<img src="image.png">i</pre>';
+	'<pre>h<img src="image.png">i</pre>'+
+	'<dl>' +
+		'<dt>' +
+			'<p>j</p>' +
+		'</dt>' +
+		'<dd>' +
+			'<p>k</p>' +
+		'</dd>' +
+	'</dl>';
 
 /*
  * Linear data.
@@ -133,7 +141,31 @@ ve.dm.example.data = [
 	// 39 - Plain "i"
 	'i',
 	// 40 - End of preformatted
-	{ 'type': '/preformatted' }
+	{ 'type': '/preformatted' },
+	// 41 - Beginning of definition list
+	{ 'type': 'definitionList' },
+	// 42 - Beginning of definition list term item
+	{ 'type': 'definitionListItem', 'attributes': { 'style': 'term' } },
+	// 43 - Beginning of paragraph
+	{ 'type': 'paragraph' },
+	// 44 - Plain "j"
+	'j',
+	// 45 - End of paragraph
+	{ 'type': '/paragraph' },
+	// 46 - End of definition list term item
+	{ 'type': '/definitionListItem' },
+	// 47 - Beginning of definition list definition item
+	{ 'type': 'definitionListItem', 'attributes': { 'style': 'definition' } },
+	// 48 - Beginning of paragraph
+	{ 'type': 'paragraph' },
+	// 49 - Plain "j"
+	'j',
+	// 50 - End of paragraph
+	{ 'type': '/paragraph' },
+	// 51 - End of definition list definition item
+	{ 'type': '/definitionListItem' },
+	// 52 - End of definition list
+	{ 'type': '/definitionList' }
 ];
 
 /**
@@ -141,18 +173,20 @@ ve.dm.example.data = [
  * 
  * This is part of what a ve.dm.DocumentFragment generates when given linear data.
  * 
- *  (16) branch nodes
+ *  (21) branch nodes
  *     (01) document node
  *     (01) heading node
  *     (01) table node
  *     (01) tableRow node
  *     (01) tableCell node
- *     (04) paragraph nodes
+ *     (06) paragraph nodes
  *     (03) list nodes
  *     (03) listItem nodes
  *     (01) preformatted node
- *  (08) leaf nodes
- *     (07) text nodes
+ *     (01) definitionList node
+ *     (02) definitionListItem nodes
+ *  (10) leaf nodes
+ *     (09) text nodes
  *     (01) image node
  */
 ve.dm.example.tree = new ve.dm.DocumentNode( [
@@ -171,15 +205,15 @@ ve.dm.example.tree = new ve.dm.DocumentNode( [
 							// 2nd level bullet list item with "f"
 							new ve.dm.ListItemNode( [
 								new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] )
-							], ve.dm.example.data[17].attributes )
+							] )
 						], ve.dm.example.data[16].attributes )
-					], ve.dm.example.data[12].attributes )
+					] )
 				], ve.dm.example.data[11].attributes  ),
 				new ve.dm.ListNode( [
 					// Numbered list item with "g"
 					new ve.dm.ListItemNode( [
 						new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] )
-					], ve.dm.example.data[26].attributes )
+					] )
 				], ve.dm.example.data[25].attributes )
 			] )
 		] )
@@ -189,6 +223,16 @@ ve.dm.example.tree = new ve.dm.DocumentNode( [
 		new ve.dm.TextNode( 1 ),
 		new ve.dm.ImageNode( [], ve.dm.example.data[37].attributes ),
 		new ve.dm.TextNode( 1 )
+	] ),
+	new ve.dm.DefinitionListNode( [
+		// Definition list term item with "j"
+		new ve.dm.DefinitionListItemNode( [
+			new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] )
+		], ve.dm.example.data[42].attributes ),
+		// Definition list definition item with "k"
+		new ve.dm.DefinitionListItemNode( [
+			new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] )
+		], ve.dm.example.data[47].attributes )
 	] )
 ] );
 
@@ -323,6 +367,30 @@ ve.dm.example.getOffsetMap = function( root ) {
 		// i
 		lookup( 2 ), // 40 - preformatted
 		// </pre>
-		lookup() // 41 - document
+		lookup(), // 41 - document
+		// <dl>
+		lookup( 3 ), // 42 - definitionList
+		// <dt>
+		lookup( 3, 0 ), // 43 - definitionListItem
+		// <p>
+		lookup( 3, 0, 0 ), // 44 - paragraph
+		// f
+		lookup( 3, 0, 0 ), // 45 - paragraph
+		// </p>
+		lookup( 3, 0 ), // 46 - definitionListItem
+		// </dt>
+		lookup( 3 ), // 47 - definitionList
+		// <dd>
+		lookup( 3, 1 ), // 48 - definitionListItem
+		// <p>
+		lookup( 3, 1, 0 ), // 49 - paragraph
+		// f
+		lookup( 3, 1, 0 ), // 50 - paragraph
+		// </p>
+		lookup( 3, 1 ), // 51 - definitionListItem
+		// </dd>
+		lookup( 3 ), // 52 - definitionList
+		// </dl>
+		lookup() // 53 - document
 	];
 };
