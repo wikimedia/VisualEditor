@@ -9,6 +9,12 @@
 ve.ce.TextNode = function( model ) {
 	// Inheritance
 	ve.ce.LeafNode.call( this, model, $( document.createTextNode('') ) );
+	
+	// Events
+	this.model.addListenerMethod( this, 'update', 'onUpdate' );
+
+	// Intialization
+	this.onUpdate();
 };
 
 /* Static Members */
@@ -111,11 +117,13 @@ ve.ce.TextNode.annotationRenderers = {
 /* Methods */
 
 /**
- * Render content.
+ * Responds to model update events.
+ * 
+ * If the source changed since last update the image's src attribute will be updated accordingly.
  * 
  * @method
  */
-ve.ce.TextNode.prototype.render = function() {
+ve.ce.TextNode.prototype.onUpdate = function() {
 	var $new = $( $( '<span>' + this.getHtml() + '</span>' ).contents() );
 	this.$.replaceWith( $new );
 	this.$ = $new;

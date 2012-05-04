@@ -15,19 +15,6 @@ ve.ce.LeafNode = function( model, $element ) {
 	ve.ce.Node.call( this, model, $element );
 };
 
-/* Abstract Methods */
-
-/**
- * Renders this node into this.$.
- * 
- * @abstract
- * @method
- * @throws 've.ce.LeafNode.render not implemented in this subclass'
- */
-ve.ce.LeafNode.prototype.render = function() {
-	throw 've.ce.LeafNode.render not implemented in this subclass: ' + this.constructor;
-};
-
 /* Inheritance */
 
 ve.extendClass( ve.ce.LeafNode, ve.LeafNode );

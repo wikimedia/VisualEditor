@@ -70,23 +70,7 @@ ve.ce.BranchNode.prototype.onSplice = function( index, howmany ) {
 		}
 	}
 	this.emit.apply( this, ['splice'].concat( args ) );
-	if ( args.length >= 3 ) {
-		for ( i = 2, length = args.length; i < length; i++ ) {
-			args[i].render();
-		}
-	}
 	this.emit( 'update' );
-};
-
-/**
- * Render content.
- * 
- * @method
- */
-ve.ce.BranchNode.prototype.render = function() {
-	for ( var i = 0; i < this.children.length; i++ ) {
-		this.children[i].render();
-	}
 };
 
 /* Inheritance */

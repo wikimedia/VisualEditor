@@ -11,11 +11,13 @@ ve.ce.ImageNode = function( model ) {
 	ve.ce.LeafNode.call( this, model, $( '<img>' ) );
 
 	// Properties
-	this.currentSource = model.getAttribute( 'html/src' );
-	this.$.attr( 'src', this.currentSource );
-	
+	this.currentSource = null;
+
 	// Events
 	this.model.addListenerMethod( this, 'update', 'onUpdate' );
+
+	// Intialization
+	this.onUpdate();
 };
 
 /* Static Members */
@@ -44,14 +46,10 @@ ve.ce.ImageNode.rules = {
  */
 ve.ce.ImageNode.prototype.onUpdate = function() {
 	var source = this.model.getAttribute( 'html/src' );
-	console.log(source);
 	if ( source !== this.currentSource ) {
 		this.currentSource = source;
 		this.$.attr( 'src', source );
 	}
-};
-
-ve.ce.ImageNode.prototype.render = function() {
 };
 
 /* Registration */
