@@ -107,6 +107,7 @@ include( '../../modules/sandbox/base.php' );
 		<script src="../../modules/ve2/dm/ve.dm.Surface.js"></script>
 		<script src="../../modules/ve2/dm/ve.dm.DocumentFragment.js"></script>
 		<script src="../../modules/ve2/dm/ve.dm.Document.js"></script>
+		<script src="../../modules/ve2/dm/ve.dm.HTMLConverter.js"></script>
 
 		<script src="../../modules/ve2/dm/nodes/ve.dm.AlienNode.js"></script>
 		<script src="../../modules/ve2/dm/nodes/ve.dm.DefinitionListItemNode.js"></script>
@@ -170,7 +171,7 @@ include( '../../modules/sandbox/base.php' );
 		<script src="../../modules/ve/ui/tools/ve.ui.IndentationButtonTool.js"></script>
 		<script src="../../modules/ve/ui/tools/ve.ui.DropdownTool.js"></script>
 		<script src="../../modules/ve/ui/tools/ve.ui.FormatDropdownTool.js"></script>
-
+	
 		<!-- sandbox -->
 		<script src="../../modules/sandbox/sandbox.js"></script>
 	</body>
