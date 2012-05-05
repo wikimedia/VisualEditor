@@ -8,7 +8,7 @@
  */
 ve.ce.ListNode = function( model ) {
 	// Inheritance
-	ve.ce.BranchNode.call( this, model, ve.ce.BranchNode.getDomWrapper( model, 'style' ) );
+	ve.ce.BranchNode.call( this, 'list', model, ve.ce.BranchNode.getDomWrapper( model, 'style' ) );
 
 	// Events
 	this.model.addListenerMethod( this, 'update', 'onUpdate' );

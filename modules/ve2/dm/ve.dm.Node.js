@@ -22,6 +22,26 @@ ve.dm.Node = function( type, length, attributes ) {
 /* Methods */
 
 /**
+ * Checks if this node can have child nodes.
+ * 
+ * @method
+ * @returns {Boolean} Whether this node can have children
+ */
+ve.dm.Node.prototype.canHaveChildren = function() {
+	return ve.dm.factory.canNodeHaveChildren( this.type );
+};
+
+/**
+ * Checks if this node can have child nodes which can also have child nodes.
+ * 
+ * @method
+ * @returns {Boolean} Whether this node can have grandchildren
+ */
+ve.dm.Node.prototype.canHaveGrandchildren = function() {
+	return ve.dm.factory.canNodeHaveGrandchildren( this.type );
+};
+
+/**
  * Gets the inner length.
  * 
  * @method

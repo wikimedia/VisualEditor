@@ -32,7 +32,7 @@ test('setSelection', 1, function(){
 
 test('transact', 1, function(){
 	var surface = new ve.dm.SurfaceStub();
-	var tx  = 'transaction';
+	var tx = new ve.dm.Transaction();
 	surface.on('transact', function(){
 		ok( true, 'transact was emitted');
 	});

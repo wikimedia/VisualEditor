@@ -6,13 +6,14 @@
  * @constructor
  * @extends {ve.BranchNode}
  * @extends {ve.ce.Node}
+ * @param {String} type Symbolic name of node type
  * @param model {ve.dm.BranchNode} Model to observe
  * @param {jQuery} [$element] Element to use as a container
  */
-ve.ce.BranchNode = function( model, $element ) {
+ve.ce.BranchNode = function( type, model, $element ) {
 	// Inheritance
 	ve.BranchNode.call( this );
-	ve.ce.Node.call( this, model, $element );
+	ve.ce.Node.call( this, type, model, $element );
 
 	// Properties
 	this.domWrapperElementType = this.$.get(0).nodeName.toLowerCase();

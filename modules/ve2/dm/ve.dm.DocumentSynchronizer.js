@@ -34,7 +34,7 @@ ve.dm.DocumentSynchronizer.prototype.getDocument = function() {
  * @param {ve.Range} range Range that was annotated
  */
 ve.dm.DocumentSynchronizer.prototype.pushAnnotation = function( range ) {
-	this.action.push( {
+	this.actions.push( {
 		'type': 'annotation',
 		'range': range
 	} );
@@ -49,7 +49,7 @@ ve.dm.DocumentSynchronizer.prototype.pushAnnotation = function( range ) {
  * @param to New value of the attribute
  */
 ve.dm.DocumentSynchronizer.prototype.pushAttributeChange = function( node, key, from, to ) {
-	this.action.push( {
+	this.actions.push( {
 		'type': 'attributeChange',
 		'node': node,
 		'key': key,

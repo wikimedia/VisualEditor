@@ -85,7 +85,7 @@ ve.dm.example.data = [
 	// 11 - Beginning of bullet list
 	{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
 	// 12 - Beginning of list item
-	{ 'type': 'listItem', 'attributes': { 'style': 'item' } },
+	{ 'type': 'listItem' },
 	// 13 - Beginning of paragraph
 	{ 'type': 'paragraph' },
 	// 14 - Plain "e"
@@ -95,7 +95,7 @@ ve.dm.example.data = [
 	// 16 - Beginning of nested bullet list
 	{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
 	// 17 - Beginning of nested bullet list item
-	{ 'type': 'listItem', 'attributes': { 'style': 'item' } },
+	{ 'type': 'listItem'  },
 	// 18 - Beginning of paragraph
 	{ 'type': 'paragraph' },
 	// 19 - Plain "f"
@@ -113,7 +113,7 @@ ve.dm.example.data = [
 	// 25 - Beginning of numbered list
 	{ 'type': 'list', 'attributes': { 'style': 'number' } },
 	// 26 - Beginning of numbered list item
-	{ 'type': 'listItem', 'attributes': { 'style': 'item' } },
+	{ 'type': 'listItem' },
 	// 27 - Beginning of paragraph
 	{ 'type': 'paragraph' },
 	// 28 - Plain "g"

@@ -8,7 +8,7 @@
  */
 ve.ce.TableNode = function( model ) {
 	// Inheritance
-	ve.ce.BranchNode.call( this, model, $( '<table></table>' ) );
+	ve.ce.BranchNode.call( this, 'table', model, $( '<table></table>' ) );
 };
 
 /* Static Members */

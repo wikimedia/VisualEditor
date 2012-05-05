@@ -5,12 +5,13 @@
  * @abstract
  * @constructor
  * @extends {ve.Node}
+ * @param {String} type Symbolic name of node type
  * @param {ve.dm.Node} model Model to observe
  * @param {jQuery} [$element] Element to use as a container
  */
-ve.ce.Node = function( model, $element ) {
+ve.ce.Node = function( type, model, $element ) {
 	// Inheritance
-	ve.Node.call( this );
+	ve.Node.call( this, type );
 
 	// Properties
 	this.model = model;
@@ -19,6 +20,26 @@ ve.ce.Node = function( model, $element ) {
 };
 
 /* Methods */
+
+/**
+ * Checks if this node can have child nodes.
+ * 
+ * @method
+ * @returns {Boolean} Whether this node can have children
+ */
+ve.ce.Node.prototype.canHaveChildren = function() {
+	return ve.ce.factory.canNodeHaveChildren( this.type );
+};
+
+/**
+ * Checks if this node can have child nodes which can also have child nodes.
+ * 
+ * @method
+ * @returns {Boolean} Whether this node can have grandchildren
+ */
+ve.ce.Node.prototype.canHaveGrandchildren = function() {
+	return ve.ce.factory.canNodeHaveGrandchildren( this.type );
+};
 
 /**
  * Gets a reference to the model this node observes.

@@ -8,7 +8,7 @@
  */
 ve.ce.DocumentNode = function( model ) {
 	// Inheritance
-	ve.ce.BranchNode.call( this, model );
+	ve.ce.BranchNode.call( this, 'document', model );
 
 	// DOM Changes
 	this.$.addClass( 've-ce-documentNode' );

@@ -8,7 +8,7 @@
  */
 ve.ce.TextNode = function( model ) {
 	// Inheritance
-	ve.ce.LeafNode.call( this, model, $( document.createTextNode('') ) );
+	ve.ce.LeafNode.call( this, 'text', model, $( document.createTextNode('') ) );
 	
 	// Events
 	this.model.addListenerMethod( this, 'update', 'onUpdate' );
