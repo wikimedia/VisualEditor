@@ -8,7 +8,7 @@
  */
 ve.ce.ImageNode = function( model ) {
 	// Inheritance
-	ve.ce.LeafNode.call( this, model, $( '<img>' ) );
+	ve.ce.LeafNode.call( this, 'image', model, $( '<img>' ) );
 
 	// Properties
 	this.currentSource = null;

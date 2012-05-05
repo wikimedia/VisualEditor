@@ -18,6 +18,16 @@ ve.dm.factory.register( 'branch-stub', ve.dm.BranchNodeStub );
 
 /* Tests */
 
+test( 'canHaveChildren', 1, function() {
+	var node = new ve.dm.BranchNodeStub();
+	equal( node.canHaveChildren(), true );
+} );
+
+test( 'canHaveGrandchildren', 1, function() {
+	var node = new ve.dm.BranchNodeStub();
+	equal( node.canHaveGrandchildren(), true );
+} );
+
 test( 'setRoot', 3, function() {
 	var node1 = new ve.dm.BranchNodeStub(),
 		node2 = new ve.dm.BranchNodeStub( [node1] ),

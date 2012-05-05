@@ -8,7 +8,9 @@
  */
 ve.ce.HeadingNode = function( model ) {
 	// Inheritance
-	ve.ce.BranchNode.call( this, model, ve.ce.BranchNode.getDomWrapper( model, 'level' ) );
+	ve.ce.BranchNode.call(
+		this, 'heading', model, ve.ce.BranchNode.getDomWrapper( model, 'level' )
+	);
 
 	// Events
 	this.model.addListenerMethod( this, 'update', 'onUpdate' );

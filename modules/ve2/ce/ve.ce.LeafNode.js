@@ -6,13 +6,14 @@
  * @constructor
  * @extends {ve.LeafNode}
  * @extends {ve.ce.Node}
+ * @param {String} type Symbolic name of node type
  * @param model {ve.dm.LeafNode} Model to observe
  * @param {jQuery} [$element] Element to use as a container
  */
-ve.ce.LeafNode = function( model, $element ) {
+ve.ce.LeafNode = function( type, model, $element ) {
 	// Inheritance
 	ve.LeafNode.call( this );
-	ve.ce.Node.call( this, model, $element );
+	ve.ce.Node.call( this, type, model, $element );
 };
 
 /* Inheritance */

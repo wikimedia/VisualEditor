@@ -4,10 +4,12 @@ module( 've.ce.Node' );
 
 ve.ce.NodeStub = function( model ) {
 	// Inheritance
-	ve.ce.Node.call( this, model );
+	ve.ce.Node.call( this, 'stub', model );
 };
 
 ve.extendClass( ve.ce.NodeStub, ve.ce.Node );
+
+ve.ce.factory.register( 'stub', ve.ce.NodeStub );
 
 /* Tests */
 

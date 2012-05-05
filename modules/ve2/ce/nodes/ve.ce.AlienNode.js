@@ -8,7 +8,7 @@
  */
 ve.ce.AlienNode = function( model ) {
 	// Inheritance
-	ve.ce.LeafNode.call( this, model );
+	ve.ce.LeafNode.call( this, 'alien', model );
 };
 
 /* Static Members */

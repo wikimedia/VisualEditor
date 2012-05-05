@@ -8,7 +8,7 @@
  */
 ve.ce.DefinitionListNode = function( model ) {
 	// Inheritance
-	ve.ce.BranchNode.call( this, model, $( '<dl></dl>' ) );
+	ve.ce.BranchNode.call( this, 'definitionList', model, $( '<dl></dl>' ) );
 };
 
 /* Static Members */

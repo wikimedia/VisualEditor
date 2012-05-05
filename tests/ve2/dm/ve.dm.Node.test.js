@@ -7,9 +7,26 @@ ve.dm.NodeStub = function( length, attributes ) {
 	ve.dm.Node.call( this, 'stub', length, attributes );
 };
 
+ve.dm.NodeStub.rules = {
+	'canHaveChildren': false,
+	'canHaveGrandchildren': false
+};
+
 ve.extendClass( ve.dm.NodeStub, ve.dm.Node );
 
+ve.dm.factory.register( 'stub', ve.dm.NodeStub );
+
 /* Tests */
+
+test( 'canHaveChildren', 1, function() {
+	var node = new ve.dm.NodeStub();
+	equal( node.canHaveChildren(), false );
+} );
+
+test( 'canHaveGrandchildren', 1, function() {
+	var node = new ve.dm.NodeStub();
+	equal( node.canHaveGrandchildren(), false );
+} );
 
 test( 'getLength', 2, function() {
 	var node1 = new ve.dm.NodeStub(),
