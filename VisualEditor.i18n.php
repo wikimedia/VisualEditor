@@ -295,6 +295,18 @@ $messages['it'] = array(
 	'visualeditor-feedback-prompt' => 'Lascia feedback',
 );
 
+/** Japanese (日本語)
+ * @author Shirayuki
+ */
+$messages['ja'] = array(
+	'visualeditor-tooltip-wikitext' => 'ウィキテキストの表示を切り替え',
+	'visualeditor-tooltip-json' => 'JSON 表示を切り替え',
+	'visualeditor-tooltip-html' => 'HTML 表示を切り替え',
+	'visualeditor-tooltip-render' => 'プレビューを切り替え',
+	'visualeditor-tooltip-help' => 'ヘルプ表示を切り替え',
+	'visualeditor-feedback-prompt' => 'フィードバックを残す',
+);
+
 /** Luxembourgish (Lëtzebuergesch)
  * @author Robby
  */
