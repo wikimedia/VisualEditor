@@ -3,6 +3,7 @@
  *
  * @author Roan Kattouw
  * @author Christian Williams
+ * @author Inez Korczynski
  */
 
 ve.dm.HTMLConverter = {};
@@ -296,13 +297,18 @@ ve.dm.HTMLConverter.getAnnotation = function( node ) {
  * @returns {Array} Linear model data, one element per character
  */
 ve.dm.HTMLConverter.generateAnnotatedContent = function( content, annotations ) {
-	var	i, result = [],
-		split = content.split( '' );
-	if ( !annotations || annotations.length == 0 ) {
+	var split = content.split( '' );
+	if ( !annotations || annotations.length === 0 ) {
 		return split;
 	}
-	for ( i = 0; i < split.length; i++ ) {
-		result.push( [ split[i] ].concat( annotations ) );
+	var annotationsCollection = {};
+	for ( var i = 0; i < annotations.length; i++ ) {
+		var v = annotations[i];
+		var k = JSON.stringify( v );
+		annotationsCollection[k] = v;
 	}
-	return result;
+	for ( i = 0; i < split.length; i++ ) {
+		split[i] = [ split[i], annotationsCollection ];
+	}	
+	return split;
 }
