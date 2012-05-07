@@ -18,3 +18,20 @@ test( 'rebuildNodes', 114, function() {
 	// Test count: ( ( 4 tests x 21 branch nodes ) + ( 3 tests x 10 leaf nodes ) ) = 114
 	ve.dm.example.nodeTreeEqual( documentNode, ve.dm.example.tree );
 } );
+
+test( 'selectNodes', 7, function() {
+	var doc = new ve.dm.Document( ve.dm.example.data ),
+		documentNode = doc.getDocumentNode(),
+		lookup = ve.dm.example.lookupNode;
+
+	// Test count: ( 1 test + ( 2 tests x 2 results ) + ( 2 test + 1 result with range ) ) = 7
+	ve.dm.example.nodeSelectionEqual(
+		doc.selectNodes( new ve.Range( 0, 10 ) ),
+		[
+			// heading
+			{ 'node': lookup( documentNode, 0 ) },
+			// table/row/cell/paragraph/text
+			{ 'node': lookup( documentNode, 1, 0, 0, 0, 0 ), 'range': new ve.Range( 9, 10 ) }
+		]
+	);
+} );

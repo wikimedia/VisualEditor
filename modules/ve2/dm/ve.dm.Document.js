@@ -65,9 +65,16 @@ ve.dm.Document.prototype.rebuildNodes = function( parent, index, numNodes, offse
 	return nodes;
 };
 
-// TODO needs docs
-// TODO needs more modes, probably. Current implementation is for mode=='leaf'
-// TODO needs tests
+/**
+ * Gets a list of nodes and the ranges within them that a selection of the document covers.
+ * 
+ * @method
+ * @param {ve.Range} range Range within document to select nodes
+ * @param {String} [mode='leaf'] Type of selection to perform, currently only 'leaf' is supported
+ * @returns {Array} List of objects describing nodes in the selection and the ranges therein
+ * @throws 'Invalid start offset' if range.start is out of range
+ * @throws 'Invalid end offset' if range.end is out of range
+ */
 ve.dm.Document.prototype.selectNodes = function( range, mode ) {
 	var	doc = this.getDocumentNode(),
 		retval = [],
@@ -84,19 +91,24 @@ ve.dm.Document.prototype.selectNodes = function( range, mode ) {
 		endInside,
 		startBetween,
 		endBetween;
-	
+
+	// TODO needs more modes, probably. Current implementation is only for mode == 'leaf'
+	if ( mode && mode !== 'leaf') {
+		throw 'Invalid mode: ' + mode;
+	}
+
 	if ( start < 0 || start > this.data.length ) {
-		throw 'Invalid start offset ' + start;
+		throw 'Invalid start offset: ' + start;
 	}
 	if ( end < 0 || end > this.data.length ) {
-		throw 'Invalid end offset ' + end;
+		throw 'Invalid end offset: ' + end;
 	}
-	
-	if ( !doc.children || doc.children.length == 0 ) {
+
+	if ( !doc.children || doc.children.length === 0 ) {
 		return [];
 	}
 	left = doc.children[0].isWrapped() ? 1 : 0;
-	
+
 	while ( end >= left ) {
 		node = currentFrame.node.children[currentFrame.index];
 		prevNode = currentFrame.node.children[currentFrame.index - 1];
@@ -112,7 +124,7 @@ ve.dm.Document.prototype.selectNodes = function( range, mode ) {
 		// Is the end between node and nextNode or between node and the parent's closing?
 		endBetween = end == right + 1 && node.isWrapped() &&
 			( !nextNode || nextNode.isWrapped() );
-		
+
 		if ( start == end && ( startBetween || endBetween ) ) {
 			// Empty range in the parent, outside of any child
 			return [ {
@@ -120,7 +132,7 @@ ve.dm.Document.prototype.selectNodes = function( range, mode ) {
 				'range': new ve.Range( start, end )
 			} ];
 		}
-		
+
 		if ( startInside && endInside ) {
 			if ( node.children && node.children.length ) {
 				// Descend into node
@@ -206,11 +218,10 @@ ve.dm.Document.prototype.selectNodes = function( range, mode ) {
 				( node.isWrapped() ? 1 : 0 ) +
 				// Skip over nextNode's opening, if present
 				( nextNode.isWrapped() ? 1 : 0 );
-			
 		} else {
 			// There is no next node, move up the stack
 			stack.pop();
-			if ( stack.length == 0 ) {
+			if ( stack.length === 0 ) {
 				// This shouldn't be possible
 				return retval;
 			}

@@ -262,6 +262,42 @@ ve.dm.example.nodeTreeEqual = function( a, b ) {
 };
 
 /**
+ * Asserts that two node selections are equavilant.
+ * 
+ * This will perform 1 assertion to check the number of results in the selection and then 2
+ * assertions on each result plus 2 more for each result with a range.
+ * 
+ * @method
+ */
+ve.dm.example.nodeSelectionEqual = function( a, b ) {
+	equal( a.length, b.length, 'length match' );
+	for ( var i = 0; i < a.length; i++ ) {
+		ok( a[i].node === b[i].node, 'node match' );
+		ok( 'range' in a[i] === 'range' in b[i], 'range existence match' );
+		if ( a[i].range ) {
+			strictEqual( a[i].range.from, b[i].range.from, 'range from match' );
+			strictEqual( a[i].range.to, b[i].range.to, 'range to match' );
+		}
+	}
+};
+
+/**
+ * Looks up a value in a node tree.
+ * 
+ * @method
+ * @param {ve.Node} root Root node to lookup from
+ * @param {Integer} [...] Index path
+ * @param {ve.Node} Node at given path
+ */
+ve.dm.example.lookupNode = function( root ) {
+	var node = root;
+	for ( var i = 1; i < arguments.length; i++ ) {
+		node = node.children[arguments[i]];
+	}
+	return node;
+};
+
+/**
  * Creates an offset map that references a node tree.
  * 
  * This is part of what a ve.dm.DocumentFragment generates when given linear data.
@@ -270,127 +306,114 @@ ve.dm.example.nodeTreeEqual = function( a, b ) {
  * @param {ve.dm.DocumentNode} root Document node to reference
  */
 ve.dm.example.getOffsetMap = function( root ) {
-	/**
-	 * Looks up a value in a node tree.
-	 * 
-	 * @method
-	 * @param {Integer} [...] Index path
-	 * @param {ve.Node} Node at given path
-	 */
-	function lookup() {
-		var node = root;
-		for ( var i = 0; i < arguments.length; i++ ) {
-			node = node.children[arguments[i]];
-		}
-		return node;
-	}
+	var lookup = ve.dm.example.lookupNode;
 	return [
-		lookup(), // 0 - document
+		lookup( root ), // 0 - document
 		// <h1>
-		lookup( 0 ), // 1 - heading
+		lookup( root, 0 ), // 1 - heading
 		// a
-		lookup( 0 ), // 2 - heading
+		lookup( root, 0 ), // 2 - heading
 		// b (bold)
-		lookup( 0 ), // 3 - heading
+		lookup( root, 0 ), // 3 - heading
 		// c (italic)
-		lookup( 0 ), // 4 - heading
+		lookup( root, 0 ), // 4 - heading
 		// </h1>
-		lookup(), // 5 - document
+		lookup( root ), // 5 - document
 		// <table>
-		lookup( 1 ), // 6 - table
+		lookup( root, 1 ), // 6 - table
 		// <tr>
-		lookup( 1, 0 ), // 7 - tableRow
+		lookup( root, 1, 0 ), // 7 - tableRow
 		// <td>
-		lookup( 1, 0, 0 ), // 8 - tableCell
+		lookup( root, 1, 0, 0 ), // 8 - tableCell
 		// <p>
-		lookup( 1, 0, 0, 0 ), // 9 - paragraph
+		lookup( root, 1, 0, 0, 0 ), // 9 - paragraph
 		// d
-		lookup( 1, 0, 0, 0 ), // 10 - paragraph
+		lookup( root, 1, 0, 0, 0 ), // 10 - paragraph
 		// </p>
-		lookup( 1, 0, 0 ), // 11 - tableCell
+		lookup( root, 1, 0, 0 ), // 11 - tableCell
 		// <ul>
-		lookup( 1, 0, 0, 1 ), // 12 - list
+		lookup( root, 1, 0, 0, 1 ), // 12 - list
 		// <li>
-		lookup( 1, 0, 0, 1, 0 ), // 13 - listItem
+		lookup( root, 1, 0, 0, 1, 0 ), // 13 - listItem
 		// <p>
-		lookup( 1, 0, 0, 1, 0, 0 ), // 14 - paragraph
+		lookup( root, 1, 0, 0, 1, 0, 0 ), // 14 - paragraph
 		// e
-		lookup( 1, 0, 0, 1, 0, 0 ), // 15 - paragraph
+		lookup( root, 1, 0, 0, 1, 0, 0 ), // 15 - paragraph
 		// </p>
-		lookup( 1, 0, 0, 1, 0 ), // 16 - listItem
+		lookup( root, 1, 0, 0, 1, 0 ), // 16 - listItem
 		// <ul>
-		lookup( 1, 0, 0, 1, 0, 1 ), // 17 - list
+		lookup( root, 1, 0, 0, 1, 0, 1 ), // 17 - list
 		// <li>
-		lookup( 1, 0, 0, 1, 0, 1, 0 ), // 18 - listItem
+		lookup( root, 1, 0, 0, 1, 0, 1, 0 ), // 18 - listItem
 		// <p>
-		lookup( 1, 0, 0, 1, 0, 1, 0, 0 ), // 19 - paragraph
+		lookup( root, 1, 0, 0, 1, 0, 1, 0, 0 ), // 19 - paragraph
 		// f
-		lookup( 1, 0, 0, 1, 0, 1, 0, 0 ), // 20 - paragraph
+		lookup( root, 1, 0, 0, 1, 0, 1, 0, 0 ), // 20 - paragraph
 		// </p>
-		lookup( 1, 0, 0, 1, 0, 1, 0 ), // 21 - listItem
+		lookup( root, 1, 0, 0, 1, 0, 1, 0 ), // 21 - listItem
 		// </li>
-		lookup( 1, 0, 0, 1, 0, 1 ), // 22 - list
+		lookup( root, 1, 0, 0, 1, 0, 1 ), // 22 - list
 		// </ul>
-		lookup( 1, 0, 0, 1, 0 ), // 23 - listItem
+		lookup( root, 1, 0, 0, 1, 0 ), // 23 - listItem
 		// </li>
-		lookup( 1, 0, 0, 1 ), // 24 - list
+		lookup( root, 1, 0, 0, 1 ), // 24 - list
 		// </ul>
-		lookup( 1, 0, 0 ), // 25 - tableCell
+		lookup( root, 1, 0, 0 ), // 25 - tableCell
 		// <ul>
-		lookup( 1, 0, 0, 2 ), // 26 - list
+		lookup( root, 1, 0, 0, 2 ), // 26 - list
 		// <li>
-		lookup( 1, 0, 0, 2, 0 ), // 27 - listItem
+		lookup( root, 1, 0, 0, 2, 0 ), // 27 - listItem
 		// <p>
-		lookup( 1, 0, 0, 2, 0, 0 ), // 28 - paragraph
+		lookup( root, 1, 0, 0, 2, 0, 0 ), // 28 - paragraph
 		// g
-		lookup( 1, 0, 0, 2, 0, 0 ), // 29 - paragraph
+		lookup( root, 1, 0, 0, 2, 0, 0 ), // 29 - paragraph
 		// </p>
-		lookup( 1, 0, 0, 2, 0 ), // 30 - listItem
+		lookup( root, 1, 0, 0, 2, 0 ), // 30 - listItem
 		// </li>
-		lookup( 1, 0, 0, 2 ), // 31 - list
+		lookup( root, 1, 0, 0, 2 ), // 31 - list
 		// </ul>
-		lookup( 1, 0, 0 ), // 32 - tableCell
+		lookup( root, 1, 0, 0 ), // 32 - tableCell
 		// </td>
-		lookup( 1, 0 ), // 33 - tableRow
+		lookup( root, 1, 0 ), // 33 - tableRow
 		// </tr>
-		lookup( 1 ), // 34 - table
+		lookup( root, 1 ), // 34 - table
 		// </table>
-		lookup(), // 35- document
+		lookup( root ), // 35- document
 		// <pre>
-		lookup( 2 ), // 36 - preformatted
+		lookup( root, 2 ), // 36 - preformatted
 		// h
-		lookup( 2 ), // 37 - preformatted
+		lookup( root, 2 ), // 37 - preformatted
 		// <img>
-		lookup( 2 ), // 38 - preformatted
+		lookup( root, 2 ), // 38 - preformatted
 		// </img>
-		lookup( 2 ), // 39 - preformatted
+		lookup( root, 2 ), // 39 - preformatted
 		// i
-		lookup( 2 ), // 40 - preformatted
+		lookup( root, 2 ), // 40 - preformatted
 		// </pre>
-		lookup(), // 41 - document
+		lookup( root ), // 41 - document
 		// <dl>
-		lookup( 3 ), // 42 - definitionList
+		lookup( root, 3 ), // 42 - definitionList
 		// <dt>
-		lookup( 3, 0 ), // 43 - definitionListItem
+		lookup( root, 3, 0 ), // 43 - definitionListItem
 		// <p>
-		lookup( 3, 0, 0 ), // 44 - paragraph
+		lookup( root, 3, 0, 0 ), // 44 - paragraph
 		// f
-		lookup( 3, 0, 0 ), // 45 - paragraph
+		lookup( root, 3, 0, 0 ), // 45 - paragraph
 		// </p>
-		lookup( 3, 0 ), // 46 - definitionListItem
+		lookup( root, 3, 0 ), // 46 - definitionListItem
 		// </dt>
-		lookup( 3 ), // 47 - definitionList
+		lookup( root, 3 ), // 47 - definitionList
 		// <dd>
-		lookup( 3, 1 ), // 48 - definitionListItem
+		lookup( root, 3, 1 ), // 48 - definitionListItem
 		// <p>
-		lookup( 3, 1, 0 ), // 49 - paragraph
+		lookup( root, 3, 1, 0 ), // 49 - paragraph
 		// f
-		lookup( 3, 1, 0 ), // 50 - paragraph
+		lookup( root, 3, 1, 0 ), // 50 - paragraph
 		// </p>
-		lookup( 3, 1 ), // 51 - definitionListItem
+		lookup( root, 3, 1 ), // 51 - definitionListItem
 		// </dd>
-		lookup( 3 ), // 52 - definitionList
+		lookup( root, 3 ), // 52 - definitionList
 		// </dl>
-		lookup() // 53 - document
+		lookup( root ) // 53 - document
 	];
 };
