@@ -265,7 +265,7 @@ ve.dm.example.nodeTreeEqual = function( a, b ) {
  * Asserts that two node selections are equavilant.
  * 
  * This will perform 1 assertion to check the number of results in the selection and then 2
- * assertions on each result plus 2 more for each result with a range.
+ * assertions on each result
  * 
  * @method
  */
@@ -273,10 +273,10 @@ ve.dm.example.nodeSelectionEqual = function( a, b ) {
 	equal( a.length, b.length, 'length match' );
 	for ( var i = 0; i < a.length; i++ ) {
 		ok( a[i].node === b[i].node, 'node match' );
-		ok( 'range' in a[i] === 'range' in b[i], 'range existence match' );
-		if ( a[i].range ) {
-			strictEqual( a[i].range.from, b[i].range.from, 'range from match' );
-			strictEqual( a[i].range.to, b[i].range.to, 'range to match' );
+		if ( a[i].range && b[i].range ) {
+			deepEqual( a[i].range, b[i].range, 'range match' );
+		} else {
+			strictEqual( 'range' in a[i], 'range' in b[i], 'range existence match' );
 		}
 	}
 };
