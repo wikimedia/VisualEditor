@@ -28,8 +28,8 @@ test( 'selectNodes', 7, function() {
 	ve.dm.example.nodeSelectionEqual(
 		doc.selectNodes( new ve.Range( 0, 10 ) ),
 		[
-			// heading
-			{ 'node': lookup( documentNode, 0 ) },
+			// heading/text
+			{ 'node': lookup( documentNode, 0, 0 ) },
 			// table/row/cell/paragraph/text
 			{ 'node': lookup( documentNode, 1, 0, 0, 0, 0 ), 'range': new ve.Range( 9, 10 ) }
 		]
