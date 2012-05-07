@@ -39,7 +39,7 @@ test( 'selectNodes', 14, function() {
 
 	// Test count: ( 1 test + ( 2 tests x 2 results ) ) = 5
 	ve.dm.example.nodeSelectionEqual(
-		doc.selectNodes( new ve.Range( 0, 10 ) ),
+		doc.selectNodes( new ve.Range( 0, 10 ), 'leaves' ),
 		[
 			// heading/text
 			{ 'node': lookup( documentNode, 0, 0 ) },

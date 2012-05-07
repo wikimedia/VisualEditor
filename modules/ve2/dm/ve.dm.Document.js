@@ -70,7 +70,8 @@ ve.dm.Document.prototype.rebuildNodes = function( parent, index, numNodes, offse
  * 
  * @method
  * @param {ve.Range} range Range within document to select nodes
- * @param {String} [mode='leaf'] Type of selection to perform, currently only 'leaf' is supported
+ * @param {String} [mode='leaves'] Type of selection to perform, currently only 'leaves' is supported
+ *                 'leaves': Return all leaf nodes in the given range
  * @returns {Array} List of objects describing nodes in the selection and the ranges therein
  * @throws 'Invalid start offset' if range.start is out of range
  * @throws 'Invalid end offset' if range.end is out of range
@@ -93,7 +94,7 @@ ve.dm.Document.prototype.selectNodes = function( range, mode ) {
 		endBetween;
 
 	// TODO needs more modes, probably. Current implementation is only for mode == 'leaf'
-	if ( mode && mode !== 'leaf') {
+	if ( mode && mode !== 'leaves' ) {
 		throw 'Invalid mode: ' + mode;
 	}
 
