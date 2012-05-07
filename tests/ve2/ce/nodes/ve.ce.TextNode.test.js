@@ -3,16 +3,7 @@ module( 've.ce.TextNode' );
 
 /* Tests */
 
-test( '', 10, function() {
-
-	var getHtml = function( data ) {
-			var doc = new ve.dm.Document( data );
-			var textNodeView = new ve.ce.TextNode(
-				doc.documentNode.getChildren()[0].getChildren()[0]
-			);
-			return textNodeView.getHtml();
-	}
-
+test( 'getHtml', 10, function() {
 	var cases = [
 		{
 			'data': [
@@ -50,17 +41,17 @@ test( '', 10, function() {
 				['a', {
 					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
 					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
-					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
+					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' }
 				}],
 				['b', {
 					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
 					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
-					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
+					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' }
 				}],
 				['c', {
 					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
 					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
-					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
+					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' }
 				}],
 				{ 'type': '/paragraph' }
 			],
@@ -72,17 +63,17 @@ test( '', 10, function() {
 				['a', {
 					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
 					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
-					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
+					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' }
 				}],
 				['b', {
 					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
 					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
-					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
+					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }
 				}],
 				['c', {
 					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
 					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
+					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' }
 				}],
 				{ 'type': '/paragraph' }
 			],
@@ -94,13 +85,13 @@ test( '', 10, function() {
 				['a', {
 					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
 					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
-					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
+					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' }
 				}],
 				'b',
 				['c', {
 					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
 					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
+					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' }
 				}],
 				{ 'type': '/paragraph' }
 			],
@@ -115,17 +106,17 @@ test( '', 10, function() {
 				['d', {
 					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
 					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
-					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
+					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' }
 				}],
 				['e', {
 					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
 					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
-					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
+					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }
 				}],
 				['f', {
 					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
 					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
+					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' }
 				}],
 				'g',
 				'h',
@@ -143,16 +134,16 @@ test( '', 10, function() {
 				['d', {
 					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
 					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
-					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
+					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' }
 				}],
 				['e', {
 					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
-					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
+					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' }
 				}],
 				['f', {
 					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
 					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
+					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' }
 				}],
 				'g',
 				'h',
@@ -170,16 +161,16 @@ test( '', 10, function() {
 				['d', {
 					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
 					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
-					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
+					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }
 				}],
 				['e', {
 					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
-					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
+					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' }
 				}],
 				['f', {
 					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
 					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
+					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' }
 				}],
 				'g',
 				'h',
@@ -197,15 +188,15 @@ test( '', 10, function() {
 				['d', {
 					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
 					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
-					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
+					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }
 				}],
 				['e', {
 					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
+					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' }
 				}],
 				['f', {
 					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
-					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
+					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }
 				}],
 				'g',
 				'h',
@@ -213,11 +204,15 @@ test( '', 10, function() {
 				{ 'type': '/paragraph' }
 			],
 			'html': 'abc<i><u><b>d</b></u></i><u><b>ef</b></u>ghi'
-		},
+		}
 	];
-
 	for ( var i = 0; i < cases.length; i++ ) {
-		 equal( getHtml( cases[i].data ), cases[i].html );
+		equal(
+			( new ve.ce.TextNode(
+				( new ve.dm.Document( cases[i].data ) )
+					.documentNode.getChildren()[0].getChildren()[0] )
+			).getHtml(),
+			cases[i].html
+		);
 	}
-
 } );
