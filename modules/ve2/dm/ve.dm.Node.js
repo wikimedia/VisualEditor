@@ -41,6 +41,10 @@ ve.dm.Node.prototype.canHaveGrandchildren = function() {
 	return ve.dm.factory.canNodeHaveGrandchildren( this.type );
 };
 
+ve.dm.Node.prototype.isWrapped = function() {
+	return ve.dm.factory.isNodeWrapped( this.type );
+};
+
 /**
  * Gets the inner length.
  * 
@@ -54,14 +58,11 @@ ve.dm.Node.prototype.getLength = function() {
 /**
  * Gets the outer length, including any opening/closing elements.
  * 
- * The default implementation is getLength() + 2. Subclasses that do not use opening/closing
- * elements should override this.
- * 
  * @method
  * @returns {Integer} Length of the entire node
  */
 ve.dm.Node.prototype.getOuterLength = function() {
-	return this.length + 2;
+	return this.length + ( this.isWrapped() ? 2 : 0 );
 };
 
 /**

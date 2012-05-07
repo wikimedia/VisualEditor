@@ -24,20 +24,9 @@ ve.dm.DocumentNode = function( children, attributes ) {
 ve.dm.DocumentNode.rules = {
 	'canHaveChildren': true,
 	'canHaveGrandchildren': true,
+	'isWrapped': false,
 	'childNodeTypes': null,
 	'parentNodeTypes': []
-};
-
-/* Methods */
-
-/**
- * Gets the outer length, which for a document node is the same as the inner length.
- * 
- * @method
- * @returns {Integer} Length of the entire node
- */
-ve.dm.DocumentNode.prototype.getOuterLength = function() {
-	return this.length;
 };
 
 /* Registration */

@@ -40,6 +40,21 @@ ve.dm.NodeFactory.prototype.getParentNodeTypes = function( type ) {
 	throw 'Unknown node type: ' + type;
 };
 
+/**
+ * Checks if a given node type has a wrapping element.
+ * 
+ * @method
+ * @param {String} type Node type
+ * @returns {Boolean} Whether the node has a wrapping element
+ * @throws 'Unknown node type'
+ */
+ve.dm.NodeFactory.prototype.isNodeWrapped = function( type ) {
+	if ( type in this.registry ) {
+		return this.registry[type].rules.isWrapped;
+	}
+	throw 'Unknown node type: ' + type;
+};
+
 /* Inheritance */
 
 ve.extendClass( ve.dm.NodeFactory, ve.NodeFactory );

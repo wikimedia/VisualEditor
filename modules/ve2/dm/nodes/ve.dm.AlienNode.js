@@ -24,6 +24,7 @@ ve.dm.AlienNode = function( length, attributes ) {
 ve.dm.AlienNode.rules = {
 	'canHaveChildren': false,
 	'canHaveGrandchildren': false,
+	'isWrapped': true,
 	'childNodeTypes': [],
 	'parentNodeTypes': null
 };

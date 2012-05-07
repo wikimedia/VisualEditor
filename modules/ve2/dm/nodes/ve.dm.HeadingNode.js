@@ -24,6 +24,7 @@ ve.dm.HeadingNode = function( children, attributes ) {
 ve.dm.HeadingNode.rules = {
 	'canHaveChildren': true,
 	'canHaveGrandchildren': false,
+	'isWrapped': true,
 	'childNodeTypes': null,
 	'parentNodeTypes': null
 };

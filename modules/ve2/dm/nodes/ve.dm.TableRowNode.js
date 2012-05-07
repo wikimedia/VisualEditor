@@ -24,6 +24,7 @@ ve.dm.TableRowNode = function( children, attributes ) {
 ve.dm.TableRowNode.rules = {
 	'canHaveChildren': true,
 	'canHaveGrandchildren': true,
+	'isWrapped': true,
 	'childNodeTypes': ['tableCell'],
 	'parentNodeTypes': ['table']
 };

@@ -9,7 +9,8 @@ ve.ce.LeafNodeStub = function( model ) {
 
 ve.ce.LeafNodeStub.rules = {
 	'canHaveChildren': false,
-	'canHaveGrandchildren': false
+	'canHaveGrandchildren': false,
+	'isWrapped': true
 };
 
 ve.extendClass( ve.ce.LeafNodeStub, ve.ce.LeafNode );

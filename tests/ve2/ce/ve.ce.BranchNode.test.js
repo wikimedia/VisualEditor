@@ -9,7 +9,8 @@ ve.ce.BranchNodeStub = function( model, $element ) {
 
 ve.ce.BranchNodeStub.rules = {
 	'canHaveChildren': true,
-	'canHaveGrandchildren': true
+	'canHaveGrandchildren': true,
+	'isWrapped': true
 };
 
 ve.ce.BranchNodeStub.domWrapperElementTypes = {

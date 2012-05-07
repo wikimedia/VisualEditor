@@ -24,6 +24,7 @@ ve.dm.ListItemNode = function( children, attributes ) {
 ve.dm.ListItemNode.rules = {
 	'canHaveChildren': true,
 	'canHaveGrandchildren': true,
+	'isWrapped': true,
 	'childNodeTypes': null,
 	'parentNodeTypes': ['list']
 };

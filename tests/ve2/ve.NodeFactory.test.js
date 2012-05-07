@@ -9,7 +9,8 @@ ve.NodeFactoryNodeStub = function( a, b ) {
 
 ve.NodeFactoryNodeStub.rules = {
 	'canHaveChildren': false,
-	'canHaveGrandchildren': false
+	'canHaveGrandchildren': false,
+	'isWrapped': true
 };
 
 /* Tests */

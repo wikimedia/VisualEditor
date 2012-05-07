@@ -24,6 +24,7 @@ ve.dm.PreformattedNode = function( children, attributes ) {
 ve.dm.PreformattedNode.rules = {
 	'canHaveChildren': true,
 	'canHaveGrandchildren': false,
+	'isWrapped': true,
 	'childNodeTypes': null,
 	'parentNodeTypes': null
 };

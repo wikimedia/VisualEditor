@@ -9,7 +9,8 @@ ve.dm.NodeStub = function( length, attributes ) {
 
 ve.dm.NodeStub.rules = {
 	'canHaveChildren': false,
-	'canHaveGrandchildren': false
+	'canHaveGrandchildren': false,
+	'isWrapped': true
 };
 
 ve.extendClass( ve.dm.NodeStub, ve.dm.Node );

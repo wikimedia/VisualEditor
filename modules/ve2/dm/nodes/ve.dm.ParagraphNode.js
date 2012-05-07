@@ -24,6 +24,7 @@ ve.dm.ParagraphNode = function( children, attributes ) {
 ve.dm.ParagraphNode.rules = {
 	'canHaveChildren': true,
 	'canHaveGrandchildren': false,
+	'isWrapped': true,
 	'childNodeTypes': null,
 	'parentNodeTypes': null
 };

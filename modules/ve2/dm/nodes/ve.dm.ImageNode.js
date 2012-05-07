@@ -24,6 +24,7 @@ ve.dm.ImageNode = function( length, attributes ) {
 ve.dm.ImageNode.rules = {
 	'canHaveChildren': false,
 	'canHaveGrandchildren': false,
+	'isWrapped': true,
 	'childNodeTypes': [],
 	'parentNodeTypes': null
 };

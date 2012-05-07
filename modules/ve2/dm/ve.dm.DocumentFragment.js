@@ -171,11 +171,9 @@ ve.dm.DocumentFragment.prototype.getDataFromNode = function( node ) {
 	var length = node.getLength(),
 		offset = this.documentNode.getOffsetFromNode( node );
 	if ( offset >= 0 ) {
-		// XXX: If the node is wrapped in an element than we should incriment the offset by one so
-		// we only return the content inside the element. This is fine given that we know a node is
-		// either wrapped or not, but it's a little hacky when we code things like this, maybe there
-		// could be a better way of doing this?
-		if ( length === node.getOuterLength() - 2 ) {
+		// XXX: If the node is wrapped in an element than we should increment the offset by one so
+		// we only return the content inside the element.
+		if ( node.isWrapped() ) {
 			offset++;
 		}
 		return this.data.slice( offset, offset + length );

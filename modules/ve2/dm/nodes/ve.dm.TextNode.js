@@ -23,20 +23,9 @@ ve.dm.TextNode = function( length ) {
 ve.dm.TextNode.rules = {
 	'canHaveChildren': false,
 	'canHaveGrandchildren': false,
+	'isWrapped': false,
 	'childNodeTypes': [],
 	'parentNodeTypes': null
-};
-
-/* Methods */
-
-/**
- * Gets the outer length, which for a text node is the same as the inner length.
- * 
- * @method
- * @returns {Integer} Length of the entire node
- */
-ve.dm.TextNode.prototype.getOuterLength = function() {
-	return this.length;
 };
 
 /* Registration */

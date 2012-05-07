@@ -24,6 +24,7 @@ ve.dm.DefinitionListItemNode = function( children, attributes ) {
 ve.dm.DefinitionListItemNode.rules = {
 	'canHaveChildren': true,
 	'canHaveGrandchildren': true,
+	'isWrapped': true,
 	'childNodeTypes': null,
 	'parentNodeTypes': ['definitionList']
 };
