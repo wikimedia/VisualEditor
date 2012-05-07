@@ -44,7 +44,7 @@ test( 'selectNodes', 14, function() {
 			// heading/text
 			{ 'node': lookup( documentNode, 0, 0 ) },
 			// table/tableRow/tableCell/paragraph/text
-			{ 'node': lookup( documentNode, 1, 0, 0, 0, 0 ), 'range': new ve.Range( 9, 10 ) }
+			{ 'node': lookup( documentNode, 1, 0, 0, 0, 0 ) }
 		]
 	);
 	// Test count: ( 1 test + ( 2 tests x 4 results ) ) = 9

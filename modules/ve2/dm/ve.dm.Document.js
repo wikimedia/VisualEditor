@@ -91,7 +91,8 @@ ve.dm.Document.prototype.selectNodes = function( range, mode ) {
 		startInside,
 		endInside,
 		startBetween,
-		endBetween;
+		endBetween,
+		startFound = false;
 
 	// TODO needs more modes, probably. Current implementation is only for mode == 'leaf'
 	if ( mode && mode !== 'leaves' ) {
@@ -120,11 +121,9 @@ ve.dm.Document.prototype.selectNodes = function( range, mode ) {
 		// Is the end inside node?
 		endInside = end >= left && end <= right;
 		// Is the start between prevNode and node or between the parent's opening and node?
-		startBetween = start == left - 1 && node.isWrapped() &&
-			( !prevNode || prevNode.isWrapped() );
+		startBetween = node.isWrapped() ? start == left - 1 : start == left;
 		// Is the end between node and nextNode or between node and the parent's closing?
-		endBetween = end == right + 1 && node.isWrapped() &&
-			( !nextNode || nextNode.isWrapped() );
+		endBetween = node.isWrapped() ? end == right + 1 : end == right;
 
 		if ( start == end && ( startBetween || endBetween ) ) {
 			// Empty range in the parent, outside of any child
@@ -132,9 +131,26 @@ ve.dm.Document.prototype.selectNodes = function( range, mode ) {
 				'node': currentFrame.node,
 				'range': new ve.Range( start, end )
 			} ];
-		}
-
-		if ( startInside && endInside ) {
+		} else if ( startBetween ) {
+			// start is between the previous sibling and node
+			// so the selection covers all of node and possibly more
+			
+			if ( node.children && node.children.length ) {
+				// Descend into node
+				currentFrame = { 'node': node, 'index': 0 };
+				stack.push( currentFrame );
+				if ( node.children[0].isWrapped() ) {
+					left++;
+				}
+				startFound = true;
+				continue;
+			} else {
+				// All of node is covered
+				// TODO should this have a range or not?
+				retval.push( { 'node': node } );
+				startFound = true;
+			}
+		} else if ( startInside && endInside ) {
 			if ( node.children && node.children.length ) {
 				// Descend into node
 				currentFrame = { 'node': node, 'index': 0 };
@@ -168,6 +184,27 @@ ve.dm.Document.prototype.selectNodes = function( range, mode ) {
 					'node': node,
 					'range': new ve.Range( start, right )
 				} );
+				startFound = true;
+			}
+		} else if ( endBetween ) {
+			// end is between node and the next sibling
+			// start is not inside node, so the selection covers
+			// all of node, then ends
+			//retval.push( { 'node': node } );
+			
+			if ( node.children && node.children.length ) {
+				// Descend into node
+				currentFrame = { 'node': node, 'index': 0 };
+				stack.push( currentFrame );
+				if ( node.children[0].isWrapped() ) {
+					left++;
+				}
+				continue;
+			} else {
+				// All of node is covered
+				// TODO should this have a range or not?
+				retval.push( { 'node': node } );
+				return retval;
 			}
 		} else if ( endInside ) {
 			if ( node.children && node.children.length ) {
@@ -188,23 +225,25 @@ ve.dm.Document.prototype.selectNodes = function( range, mode ) {
 				} );
 				return retval;
 			}
-		} else if ( endBetween ) {
-			// end is between node and the next sibling
-			// start is not inside node, so the selection covers
-			// all of node, then ends
-			retval.push( { 'node': node } );
-			// We've reached the end so we're done
-			return retval;
-		} else if ( startBetween ) {
-			// start is between the previous sibling and node
-			// end is not inside node, so the selection covers
-			// all of node and more
-			retval.push( { 'node': node } );
-		} else if ( retval.length > 0 ) {
-			// Neither the start nor the end is inside node, but retval is non-empty,
+		} else if ( startFound ) {
+			// Neither the start nor the end is inside node, but we found the start earlier,
 			// so node must be between the start and the end
 			// Add the entire node, so no range property
-			retval.push( { 'node': node } );
+			//retval.push( { 'node': node } );
+			
+			if ( node.children && node.children.length ) {
+				// Descend into node
+				currentFrame = { 'node': node, 'index': 0 };
+				stack.push( currentFrame );
+				if ( node.children[0].isWrapped() ) {
+					left++;
+				}
+				continue;
+			} else {
+				// All of node is covered
+				// TODO should this have a range or not?
+				retval.push( { 'node': node } );
+			}
 		}
 		
 		// Move to the next node
@@ -220,22 +259,26 @@ ve.dm.Document.prototype.selectNodes = function( range, mode ) {
 				// Skip over nextNode's opening, if present
 				( nextNode.isWrapped() ? 1 : 0 );
 		} else {
-			// There is no next node, move up the stack
-			stack.pop();
-			if ( stack.length === 0 ) {
-				// This shouldn't be possible
-				return retval;
-			}
-			currentFrame = stack[stack.length - 1];
-			currentFrame.index++;
-			nextNode = currentFrame.node.children[currentFrame.index];
-			// Advance to the first offset inside nextNode
-			left = right +
+			// There is no next node, move up the stack until there is one
+			left = right;
+			while ( !nextNode ) {
+				stack.pop();
+				if ( stack.length === 0 ) {
+					// This shouldn't be possible
+					return retval;
+				}
+				currentFrame = stack[stack.length - 1];
+				currentFrame.index++;
+				nextNode = currentFrame.node.children[currentFrame.index];
 				// Skip over the parent node's closing
 				// (this is present for sure, because the parent has children)
-				1 +
-				// Skip over nextNode's opening, if present
-				( nextNode.isWrapped() ? 1 : 0 );
+				left++;
+			}
+			
+			// Skip over nextNode's opening if present
+			if ( nextNode.isWrapped() ) {
+				left++;
+			}
 		}
 	}
 	return retval;
