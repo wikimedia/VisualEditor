@@ -65,6 +65,170 @@ ve.dm.Document.prototype.rebuildNodes = function( parent, index, numNodes, offse
 	return nodes;
 };
 
+// TODO needs docs
+// TODO needs more modes, probably. Current implementation is for mode=='leaf'
+// TODO needs tests
+ve.dm.Document.prototype.selectNodes = function( range, mode ) {
+	var	doc = this.getDocumentNode(),
+		retval = [],
+		start = range.start,
+		end = range.end,
+		stack = [ { 'node': doc, 'index': 0 } ],
+		node,
+		prevNode,
+		nextNode,
+		left,
+		right,
+		currentFrame = stack[0],
+		startInside,
+		endInside,
+		startBetween,
+		endBetween;
+	
+	if ( start < 0 || start > this.data.length ) {
+		throw 'Invalid start offset ' + start;
+	}
+	if ( end < 0 || end > this.data.length ) {
+		throw 'Invalid end offset ' + end;
+	}
+	
+	if ( !doc.children || doc.children.length == 0 ) {
+		return [];
+	}
+	left = doc.children[0].isWrapped() ? 1 : 0;
+	
+	while ( end >= left ) {
+		node = currentFrame.node.children[currentFrame.index];
+		prevNode = currentFrame.node.children[currentFrame.index - 1];
+		nextNode = currentFrame.node.children[currentFrame.index + 1];
+		right = left + node.getLength();
+		// Is the start inside node?
+		startInside = start >= left && start <= right;
+		// Is the end inside node?
+		endInside = end >= left && end <= right;
+		// Is the start between prevNode and node or between the parent's opening and node?
+		startBetween = start == left - 1 && node.isWrapped() &&
+			( !prevNode || prevNode.isWrapped() );
+		// Is the end between node and nextNode or between node and the parent's closing?
+		endBetween = end == right + 1 && node.isWrapped() &&
+			( !nextNode || nextNode.isWrapped() );
+		
+		if ( start == end && ( startBetween || endBetween ) ) {
+			// Empty range in the parent, outside of any child
+			return [ {
+				'node': currentFrame.node,
+				'range': new ve.Range( start, end )
+			} ];
+		}
+		
+		if ( startInside && endInside ) {
+			if ( node.children && node.children.length ) {
+				// Descend into node
+				currentFrame = { 'node': node, 'index': 0 };
+				stack.push( currentFrame );
+				// If the first child of node has an opening, skip over it
+				if ( node.children[0].isWrapped() ) {
+					left++;
+				}
+				continue;
+			} else {
+				// node is a leaf node and the range is entirely inside it
+				return [ {
+					'node': node,
+					'range': new ve.Range( left, right )
+				} ];
+			}
+		} else if ( startInside ) {
+			if ( node.children && node.children.length ) {
+				// node is a branch node and the start is inside it
+				// Descend into it
+				currentFrame = { 'node': node, 'index': 0 };
+				stack.push( currentFrame );
+				if ( node.children[0].isWrapped() ) {
+					left++;
+				}
+				continue;
+			} else {
+				// node is a leaf node and the start is inside it
+				// Add to retval and keep going
+				retval.push( {
+					'node': node,
+					'range': new ve.Range( start, right )
+				} );
+			}
+		} else if ( endInside ) {
+			if ( node.children && node.children.length ) {
+				// node is a branch node and the end is inside it
+				// Descend into it
+				currentFrame = { 'node': node, 'index': 0 };
+				stack.push( currentFrame );
+				if ( node.children[0].isWrapped() ) {
+					left++;
+				}
+				continue;
+			} else {
+				// node is a leaf node and the end is inside it
+				// Add to retval and return
+				retval.push( {
+					'node': node,
+					'range': new ve.Range( left, end )
+				} );
+				return retval;
+			}
+		} else if ( endBetween ) {
+			// end is between node and the next sibling
+			// start is not inside node, so the selection covers
+			// all of node, then ends
+			retval.push( { 'node': node } );
+			// We've reached the end so we're done
+			return retval;
+		} else if ( startBetween ) {
+			// start is between the previous sibling and node
+			// end is not inside node, so the selection covers
+			// all of node and more
+			retval.push( { 'node': node } );
+		} else if ( retval.length > 0 ) {
+			// Neither the start nor the end is inside node, but retval is non-empty,
+			// so node must be between the start and the end
+			// Add the entire node, so no range property
+			retval.push( { 'node': node } );
+		}
+		
+		// Move to the next node
+		if ( nextNode ) {
+			// The next node exists
+			// Advance the index; the start of the next iteration will essentially
+			// do node = nextNode;
+			currentFrame.index++;
+			// Advance to the first offset inside nextNode
+			left = right +
+				// Skip over node's closing, if present
+				( node.isWrapped() ? 1 : 0 ) +
+				// Skip over nextNode's opening, if present
+				( nextNode.isWrapped() ? 1 : 0 );
+			
+		} else {
+			// There is no next node, move up the stack
+			stack.pop();
+			if ( stack.length == 0 ) {
+				// This shouldn't be possible
+				return retval;
+			}
+			currentFrame = stack[stack.length - 1];
+			currentFrame.index++;
+			nextNode = currentFrame.node.children[currentFrame.index];
+			// Advance to the first offset inside nextNode
+			left = right +
+				// Skip over the parent node's closing
+				// (this is present for sure, because the parent has children)
+				1 +
+				// Skip over nextNode's opening, if present
+				( nextNode.isWrapped() ? 1 : 0 );
+		}
+	}
+	return retval;
+};
+
 /* Static methods */
 /**
  * Checks if elements are present within data.

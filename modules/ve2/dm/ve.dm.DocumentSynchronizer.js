@@ -74,7 +74,12 @@ ve.dm.DocumentSynchronizer.prototype.pushResize = function( node, adjustment ) {
 // TODO pushRebuild()
 
 ve.dm.DocumentSynchronizer.prototype.annotation = function( action ) {
-	// TODO needs traverseLeafNodes()
+	// Queue events for all leaf nodes covered by the range
+	// TODO test me
+	var i, selection = this.document.selectNodes( action.range, 'leaves' );
+	for ( i = 0; i < selection.length; i++ ) {
+		this.queueEvent( selection[i].node, 'annotation' );
+	}
 };
 
 ve.dm.DocumentSynchronizer.prototype.attributeChange = function( action ) {
