@@ -1,41 +1,236 @@
 /**
- * HTML DOM -> linear model converter
- *
+ * Converter between HTML DOM and VisualEditor linear data.
+ * 
+ * @author Gabriel Wicke
  * @author Roan Kattouw
  * @author Christian Williams
  * @author Inez Korczynski
+ * @author Trevor Parscal
+ * 
+ * @class
+ * @constructor
+ * @param {Object} options Conversion options
  */
+ve.dm.HTMLConverter = function( options ) {
+	this.options = options || {};
+};
 
-ve.dm.HTMLConverter = {};
+/* Static Members */
 
 /**
- * Recursively convert an HTML DOM node to a linear model array. This is the
- * main function.
+ * HTML DOM node types.
+ * 
+ * If this will be used more than once in a method, it should be aliased locally to avoid excessive
+ * lookups.
+ * 
+ * @see https://developer.mozilla.org/en/nodeType
+ */
+ve.dm.HTMLConverter.Node = {
+	'ELEMENT_NODE': 1,
+	'ATTRIBUTE_NODE': 2,
+	'TEXT_NODE': 3,
+	'CDATA_SECTION_NODE': 4,
+	'ENTITY_REFERENCE_NODE': 5,
+	'ENTITY_NODE': 6,
+	'PROCESSING_INSTRUCTION_NODE': 7,
+	'COMMENT_NODE': 8,
+	'DOCUMENT_NODE': 9,
+	'DOCUMENT_TYPE_NODE': 10,
+	'DOCUMENT_FRAGMENT_NODE': 11,
+	'NOTATION_NODE': 12
+};
+
+/**
+ * Object mapping HTML DOM node names to linear model element names.
+ * 
+ *     'leafNode': Type of model tree node used to represent this element
+ *         - If true, it's a leaf node (can not contain children)
+ *         - If false, it's a branch node (can contain children)
+ *     'type': Symbolic name of element in VisualEditor linear data.
+ *     'attributes': Additional attributes to set for this element (optional)
+ */
+ve.dm.HTMLConverter.elementTypes = {
+	'p': { 'leafNode': true, 'type': 'paragraph' },
+	'h1': { 'leafNode': true, 'type': 'heading', 'attributes': { 'level': 1 } },
+	'h2': { 'leafNode': true, 'type': 'heading', 'attributes': { 'level': 2 } },
+	'h3': { 'leafNode': true, 'type': 'heading', 'attributes': { 'level': 3 } },
+	'h4': { 'leafNode': true, 'type': 'heading', 'attributes': { 'level': 4 } },
+	'h5': { 'leafNode': true, 'type': 'heading', 'attributes': { 'level': 5 } },
+	'h6': { 'leafNode': true, 'type': 'heading', 'attributes': { 'level': 6 } },
+	'li': { 'leafNode': false, 'type': 'listItem' },
+	'dt': { 'leafNode': false, 'type': 'listItem', 'attributes': { 'style': 'term' } },
+	'dd': { 'leafNode': false, 'type': 'listItem', 'attributes': { 'style': 'definition' } },
+	'pre': { 'leafNode': true, 'type': 'preformatted' },
+	'table': { 'leafNode': false, 'type': 'table' },
+	'tr': { 'leafNode': false, 'type': 'tableRow' },
+	'th': { 'leafNode': false, 'type': 'tableHeading' },
+	'td': { 'leafNode': false, 'type': 'tableCell' },
+	'ul': { 'leafNode': false, 'type': 'list', 'attributes': { 'style': 'bullet' } },
+	'ol': { 'leafNode': false, 'type': 'list', 'attributes': { 'style': 'number' } },
+	'dl': { 'leafNode': false, 'type': 'definitionList' }
+	// Missing types that will end up being alien nodes (not a complete list):
+	// div, center, blockquote, caption, tbody, thead, tfoot, horizontalRule, br, img, video, audio
+};
+
+/**
+ * Object mapping HTML DOM node names to linear model annotation types.
+ * 
+ * The value can either be a string, or a function that takes the relevant HTML DOM node and returns
+ * a string.
+ */
+ve.dm.HTMLConverter.annotationTypes = {
+	'i': 'textStyle/italic',
+	'b': 'textStyle/bold',
+	'small': 'textStyle/small',
+	'span': 'textStyle/span',
+	'a': function( node ) {
+		// FIXME: the parser currently doesn't output this data this way
+		// Internal links get 'linkType': 'internal' in the data-mw-rt attrib, while external links
+		// currently get nothing
+		var atype = node.getAttribute( 'data-type' );
+		if ( atype ) {
+			return 'link/' + atype;
+		} else {
+			return 'link/unknown';
+		}
+	},
+	'template': 'object/template',
+	'ref': 'object/hook',
+	'includeonly': 'object/includeonly'
+};
+
+/**
+ * List of HTML DOM attributes that should be passed through verbatim by convertAttributes() rather
+ * than being prefixed with 'html/'
+ * 
+ * TODO: Add href to this list?
+ */
+ve.dm.HTMLConverter.attributeWhitelist = [ 'title' ];
+
+/* Static Methods */
+
+/**
+ * Convert the attributes of an HTML DOM node to linear model attributes.
+ * 
+ * - Attributes prefixed with data-json- will have the prefix removed and their
+ *   value JSON-decoded.
+ * - Attributes prefixed with data- will have the prefix removed.
+ * - Attributes in attributeWhitelist are passed through unchanged
+ * - All other attribuetes are prefixed with html/
+ * 
+ * @param {Object} node HTML DOM node
+ * @returns {Object} Converted attribute map
+ */
+ve.dm.HTMLConverter.convertAttributes = function( node ) {
+	var	original = node.attributes,
+		converted = {},
+		attrib,
+		name,
+		i;
+	if ( !original ) {
+		return {};
+	}
+	for ( i = 0; i < original.length; i++ ) {
+		attrib = original.item( i );
+		name = attrib.name;
+		if ( name.substr( 0, 10 ) == 'data-json-' ) {
+			// Strip data-json- prefix and decode
+			converted[name.substr( 10 )] = JSON.parse( attrib.value );
+		} else if ( name.substr( 0, 5 ) == 'data-' ) {
+			// Strip data- prefix
+			converted[name.substr( 5 )] = attrib.value;
+		} else if ( ve.dm.HTMLConverter.attributeWhitelist.indexOf( name ) != -1 ) {
+			// Pass through a few whitelisted keys
+			converted[name] = attrib.value;
+		} else {
+			// Prefix key with 'html/'
+			converted['html/' + name] = attrib.value;
+		}
+	}
+	return converted;
+};
+
+/**
+ * Check if an HTML DOM node represents an annotation, and if so, build an
+ * annotation object for it.
+ * 
+ * The annotation object looks like {'type': 'type', data: {'attrKey': 'attrValue', ...}}
+ * 
+ * @param {node} HTML DOM node
+ * @returns {Object|false} Annotation object, or false if this node is not an annotation
+ */
+ve.dm.HTMLConverter.getAnnotation = function( node ) {
+	var	name = node.nodeName.toLowerCase(),
+		type = ve.dm.HTMLConverter.annotationTypes[name];
+	if ( !type ) {
+		// Not an annotation
+		return false;
+	}
+	if ( typeof type == 'function' ) {
+		type = type( node );
+	}
+	return {
+		'type': type,
+		'data': ve.dm.HTMLConverter.convertAttributes( node )
+	};
+};
+
+/**
+ * Convert a string to (possibly annotated) linear model data
+ * 
+ * @param {String} content String to convert
+ * @param {Array} annotations Array of annotation objects to apply
+ * @returns {Array} Linear model data, one element per character
+ */
+ve.dm.HTMLConverter.generateAnnotatedContent = function( content, annotations ) {
+	var characters = content.split( '' ),
+		annoationMap = {},
+		i;
+	if ( !annotations || annotations.length === 0 ) {
+		return characters;
+	}
+	for ( i = 0; i < annotations.length; i++ ) {
+		annoationMap[JSON.stringify( annotations[i] )] = annotations[i];
+	}
+	for ( i = 0; i < characters.length; i++ ) {
+		characters[i] = [characters[i], annoationMap];
+	}	
+	return characters;
+};
+
+/**
+ * Recursively convert an HTML DOM node to a linear model array.
+ * 
+ * This is the main function.
  * 
  * @param {Object} node HTML DOM node
  * @param {Array} [annotations] Annotations to apply. Only used for recursion.
- * @param {Object} [typeData] Information about the linear model element type corresponding to this node.
- *        Only used for recursion. This data usually comes from elementTypes. All keys are optional. Keys are:
- *                type: If set, add an opening and a closing element with this type and with the DOM node's attributes
- *                attributes: If set and type is set, these attributes will be added to the element's attributes
- *                leafNode: If set and set to true, this element is supposed to be a leaf node in the linear model.
- *                          This means that any content in this node will be put in the output directly rather than
- *                          being wrapped in paragraphs, and that any child nodes that are elements will not be
- *                          descended into.
+ * @param {Object} [typeData] Information about the linear model element type corresponding to this
+ * node. Only used for recursion. This data usually comes from elementTypes. All keys are optional.
+ *     Keys are:
+ *         'type': If set, add an opening and a closing element with this type and with the DOM
+ *             node's attributes.
+ *         'attributes': If set and type is set, these attributes will be added to the element's
+ *             attributes.
+ *         'leafNode': If set and set to true, this element is supposed to be a leaf node in the
+ *             linear model. This means that any content in this node will be put in the output
+ *             directly rather than being wrapped in paragraphs, and that any child nodes that are
+ *             elements will not be descended into.
  * @returns {Array} Linear model data
  */
-ve.dm.HTMLConverter.convert = function( node, annotations, typeData ) {
-	var	data = [], 
-		i, 
-		child, 
+ve.dm.HTMLConverter.prototype.convert = function( node, annotations, typeData ) {
+	var	data = [],
+		types = ve.dm.HTMLConverter.Node,
+		i,
+		child,
 		annotation,
-		paragraphOpened = false, 
+		paragraphOpened = false,
 		element,
-		attributes, 
-		typeData, 
-		childTypeData,
-		annotations = annotations || [],
-		typeData = typeData || {};
+		attributes,
+		childTypeData;
+
+	annotations = annotations || [];
+	typeData = typeData || {};
 	
 	if ( typeData.type ) {
 		element = { 'type': typeData.type };
@@ -52,7 +247,7 @@ ve.dm.HTMLConverter.convert = function( node, annotations, typeData ) {
 	for ( i = 0; i < node.childNodes.length; i++ ) {
 		child = node.childNodes[i];
 		switch ( child.nodeType ) {
-			case ve.dm.HTMLConverter.Node.ELEMENT_NODE:
+			case types.ELEMENT_NODE:
 				// Check if this is an annotation
 				annotation = ve.dm.HTMLConverter.getAnnotation( child );
 				if ( annotation ) {
@@ -65,7 +260,7 @@ ve.dm.HTMLConverter.convert = function( node, annotations, typeData ) {
 					// Recurse into this node
 					data = data.concat( ve.dm.HTMLConverter.convert( child,
 						annotations.concat( [ annotation ] ),
-						{ leafNode: true }
+						{ 'leafNode': true }
 					) );
 				} else {
 					if ( typeData.leafNode ) {
@@ -89,14 +284,18 @@ ve.dm.HTMLConverter.convert = function( node, annotations, typeData ) {
 						// Recurse into this node
 						// Don't pass annotations through; we should never have those here
 						// anyway because only leaves can have them.
-						data = data.concat( ve.dm.HTMLConverter.convert( child, [], childTypeData ) );
+						data = data.concat(
+							ve.dm.HTMLConverter.convert( child, [], childTypeData )
+						);
 					} else {
-						console.warn( 'HTML DOM to linear model conversion error: unknown node with name ' +
-							child.nodeName + ' and content ' + child.innerHTML );
+						console.warn(
+							'HTML DOM to linear model conversion error: unknown node with name ' +
+							child.nodeName + ' and content ' + child.innerHTML
+						);
 					}
 				}
 				break;
-			case ve.dm.HTMLConverter.Node.TEXT_NODE:
+			case types.TEXT_NODE:
 				// If we have annotated text within a branch node, open a paragraph
 				// Leaf nodes don't need this because they're allowed to contain content
 				if ( !paragraphOpened && typeData && !typeData.leafNode ) {
@@ -104,14 +303,18 @@ ve.dm.HTMLConverter.convert = function( node, annotations, typeData ) {
 					paragraphOpened = true;
 				}
 				// Annotate the text and output it
-				data = data.concat( ve.dm.HTMLConverter.generateAnnotatedContent( child.data, annotations ) );
+				data = data.concat(
+					ve.dm.HTMLConverter.generateAnnotatedContent( child.data, annotations )
+				);
 				break;
-			case ve.dm.HTMLConverter.Node.COMMENT_NODE:
+			case types.COMMENT_NODE:
 				// Comment, do nothing
 				break;
 			default:
-				console.warn( 'HTML DOM to linear model conversion error: unknown node of type ' +
-					child.nodeType + ' with content ' + child.innerHTML );
+				console.warn(
+					'HTML DOM to linear model conversion error: unknown node of type ' +
+					child.nodeType + ' with content ' + child.innerHTML
+				);
 		}
 	}
 	// Close the last paragraph, if still open
@@ -123,192 +326,12 @@ ve.dm.HTMLConverter.convert = function( node, annotations, typeData ) {
 		data.push( { 'type': '/' + typeData.type } );
 	}
 	return data;
-}
+};
 
 /**
  * Recursively convert a linear model array to HTML DOM.
  * This function is not yet written.
  */
-ve.dm.HTMLConverter.unconvert = function() {
-}
-
-
-/*** Helper functions and variables ***/
-
-// Quick HACK: define Node constants locally
-// https://developer.mozilla.org/en/nodeType
-ve.dm.HTMLConverter.Node = {
-	ELEMENT_NODE: 1,
-	ATTRIBUTE_NODE: 2,
-	TEXT_NODE: 3,
-	CDATA_SECTION_NODE: 4,
-	ENTITY_REFERENCE_NODE: 5,
-	ENTITY_NODE: 6,
-	PROCESSING_INSTRUCTION_NODE: 7,
-	COMMENT_NODE: 8,
-	DOCUMENT_NODE: 9,
-	DOCUMENT_TYPE_NODE: 10,
-	DOCUMENT_FRAGMENT_NODE: 11,
-	NOTATION_NODE: 12
+ve.dm.HTMLConverter.prototype.unconvert = function() {
+	// TODO: Implement
 };
-
-/**
- * Object mapping HTML DOM node names to linear model element names.
- * 
- * leafNode: If true, the linear model element is a leaf node (can have children but no content)
- *           if false, it is a branch node (can contain content but no children),
- * type:       Element type
- * attributes: Additional attributes to set for this element (optional)
- * 
- */
-ve.dm.HTMLConverter.elementTypes = {
-	'p': { leafNode: true, type: 'paragraph' },
-	'h1': { leafNode: true, type: 'heading', attributes: { level: 1 } },
-	'h2': { leafNode: true, type: 'heading', attributes: { level: 2 } },
-	'h3': { leafNode: true, type: 'heading', attributes: { level: 3 } },
-	'h4': { leafNode: true, type: 'heading', attributes: { level: 4 } },
-	'h5': { leafNode: true, type: 'heading', attributes: { level: 5 } },
-	'h6': { leafNode: true, type: 'heading', attributes: { level: 6 } },
-	'li': { leafNode: false, type: 'listItem' },
-	'dt': { leafNode: false, type: 'listItem' },
-	'dd': { leafNode: false, type: 'listItem' },
-	'pre': { leafNode: true, type: 'pre' },
-	'table': { leafNode: false, type: 'table' },
-	'tbody': { leafNode: false, type: 'tbody' }, // not in linear model!
-	'tr': { leafNode: false, type: 'tableRow' },
-	'th': { leafNode: false, type: 'tableHeading' },
-	'td': { leafNode: false, type: 'tableCell' },
-	'caption': { leafNode: false, type: 'caption' },
-	'hr': { leafNode: true, type: 'horizontalRule' },
-	'ul': { leafNode: false, type: 'list' }, // TODO add attribute for 'bullet'
-	'ol': { leafNode: false, type: 'list' }, // TODO add attribute for 'number'
-	'dl': { leafNode: false, type: 'list' }, // TODO add attribute for ???
-	//XXX: center is block-level in HTML, not sure what it should be in the linear model...
-	'center': { leafNode: false, type: 'center' },
-	//XXX: blockquote is block-level in HTML, not sure what it should be in the linear model...
-	'blockquote': { leafNode: false, type: 'blockquote' },
-	//XXX: what should 'div' be in the linear model?
-	'div': { leafNode: false, type: 'div' }
-	// Missing types:
-	// br
-	// img
-};
-
-/**
- * Object mapping HTML DOM node names to linear model annotation types.
- * The value can either be a string, or a function that takes the relevant
- * HTML DOM node and returns a string.
- */
-ve.dm.HTMLConverter.annotationTypes = {
-	'i': 'textStyle/italic',
-	'b': 'textStyle/bold',
-	'small': 'textStyle/small',
-	'span': 'textStyle/span',
-	'a': function( node ) {
-		// FIXME the parser currently doesn't output this data this way
-		// Internal links get linkType:'internal' in the data-mw-rt attrib,
-		// external links get nothing
-		var atype = node.getAttribute( 'data-type' );
-		if ( atype ) {
-			return 'link/' + atype;
-		} else {
-			return 'link/unknown';
-		}
-	},
-	'template': 'object/template',
-	'ref': 'object/hook',
-	'includeonly': 'object/includeonly'
-};
-
-/**
- * List of HTML DOM attributes that should be passed through verbatim
- * by convertAttributes() rather than being prefixed with 'html/'
- */
-ve.dm.HTMLConverter.attributeWhitelist = [ 'title' ]; //XXX: add href?
-
-/**
- * Convert the attributes of an HTML DOM node to linear model attributes.
- * 
- * - Attributes prefixed with data-json- will have the prefix removed and their
- *   value JSON-decoded.
- * - Attributes prefixed with data- will have the prefix removed.
- * - Attributes in attributeWhitelist are passed through unchanged
- * - All other attribuetes are prefixed with html/
- * 
- * @param {Object} node HTML DOM node
- * @returns {Object} Converted attribute map
- */
-ve.dm.HTMLConverter.convertAttributes = function( node ) {
-	var	attribs = node.attributes, retval = {},
-		i, attrib, name;
-	if ( !attribs ) {
-		return {};
-	}
-	for ( i = 0; i < attribs.length; i++ ) {
-		attrib = attribs.item( i );
-		name = attrib.name;
-		if ( name.substr( 0, 10 ) == 'data-json-' ) {
-			// Strip data-json- prefix and decode
-			retval[name.substr( 10 )] = JSON.parse( attrib.value );
-		} else if ( name.substr( 0, 5 ) == 'data-' ) {
-			// Strip data- prefix
-			retval[name.substr( 5 )] = attrib.value;
-		} else if ( ve.dm.HTMLConverter.attributeWhitelist.indexOf( name ) != -1 ) {
-			// Pass through a few whitelisted keys
-			retval[name] = attrib.value;
-		} else {
-			// Prefix key with 'html/'
-			retval['html/' + name] = attrib.value;
-		}
-	}
-	return retval;
-}
-
-/**
- * Check if an HTML DOM node represents an annotation, and if so, build an
- * annotation object for it.
- * 
- * The annotation object looks like {type: 'type', data: {'attrKey': 'attrValue', ...}}
- * 
- * @param {node} HTML DOM node
- * @returns {Object|false} Annotation object, or false if this node is not an annotation
- */
-ve.dm.HTMLConverter.getAnnotation = function( node ) {
-	var	name = node.nodeName.toLowerCase(),
-		type = ve.dm.HTMLConverter.annotationTypes[name],
-		annotation = {};
-	if ( !type ) {
-		// Not an annotation
-		return false;
-	}
-	if ( typeof type == 'function' ) {
-		type = type( node );
-	}
-	annotation.type = type;
-	annotation.data = ve.dm.HTMLConverter.convertAttributes( node );
-	return annotation;
-}
-
-/**
- * Convert a string to (possibly annotated) linear model data
- * 
- * @param {String} content String to convert
- * @param {Array} annotations Array of annotation objects to apply
- * @returns {Array} Linear model data, one element per character
- */
-ve.dm.HTMLConverter.generateAnnotatedContent = function( content, annotations ) {
-	var split = content.split( '' );
-	if ( !annotations || annotations.length === 0 ) {
-		return split;
-	}
-	var annotationsCollection = {};
-	for ( var i = 0; i < annotations.length; i++ ) {
-		var v = annotations[i];
-		var k = JSON.stringify( v );
-		annotationsCollection[k] = v;
-	}
-	for ( i = 0; i < split.length; i++ ) {
-		split[i] = [ split[i], annotationsCollection ];
-	}	
-	return split;
-}
