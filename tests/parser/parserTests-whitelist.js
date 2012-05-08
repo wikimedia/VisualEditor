@@ -18,7 +18,7 @@ testWhiteList["Link containing double-single-quotes '' in text embedded in itali
 testWhiteList["External link containing double-single-quotes in text embedded in italics (bug 4598 sanity check)"] = "<p><i>Some <a href=\"http://example.com/\">pretty </a></i><a href=\"http://example.com/\">italics<i> and stuff</i></a><i>!</i></p>";
 
 // This is a rare edge case, and the new behavior is arguably more consistent
-testWhiteList["5 quotes, code coverage +1 line"] = "<p>'<i></i></p>";
+testWhiteList["5 quotes, code coverage +1 line"] = "<p><i><b></b></i></p>";
 
 // The comment in the test already suggests this result as correct, but
 // supplies the old result without preformatting.
