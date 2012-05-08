@@ -14,6 +14,7 @@
  * 
  * @class
  * @constructor
+ * @param {ve.dm.Document} doc Document to synchronize
  */
 ve.dm.DocumentSynchronizer = function( doc ) {
 	// Properties
