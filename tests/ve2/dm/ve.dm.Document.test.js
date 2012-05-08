@@ -12,7 +12,7 @@ test( 'getOuterLength', 1, function() {
 } );
 
 test( 'rebuildNodes', function() {
-	var doc = new ve.dm.Document( ve.dm.example.data ),
+	var doc = new ve.dm.Document( ve.dm.example.data.slice( 0 ) ),
 		documentNode = doc.getDocumentNode();
 	
 	// Rebuild without changes
