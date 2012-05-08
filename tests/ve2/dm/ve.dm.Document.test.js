@@ -32,30 +32,38 @@ test( 'rebuildNodes', function() {
 	ve.dm.example.nodeTreeEqual( documentNode, tree );
 } );
 
-test( 'selectNodes', 14, function() {
+test( 'selectNodes', 17, function() {
 	var doc = new ve.dm.Document( ve.dm.example.data ),
 		documentNode = doc.getDocumentNode(),
 		lookup = ve.dm.example.lookupNode;
 
+	// Test count: ( 1 test + ( 2 tests x 1 results ) ) = 3
+	ve.dm.example.nodeSelectionEqual(
+		doc.selectNodes( new ve.Range( 0, 3 ), 'leaves' ),
+		[
+			// heading/text - tests partial leaf results have ranges with global offsets
+			{ 'node': lookup( documentNode, 0, 0 ), 'range': new ve.Range( 1, 3 ) }
+		]
+	);
 	// Test count: ( 1 test + ( 2 tests x 2 results ) ) = 5
 	ve.dm.example.nodeSelectionEqual(
 		doc.selectNodes( new ve.Range( 0, 10 ), 'leaves' ),
 		[
-			// heading/text
+			// heading/text - tests full coverage leaf nodes do not have ranges
 			{ 'node': lookup( documentNode, 0, 0 ) },
-			// table/tableRow/tableCell/paragraph/text
+			// table/tableRow/tableCell/paragraph/text - tests leaf nodes from different levels
 			{ 'node': lookup( documentNode, 1, 0, 0, 0, 0 ) }
 		]
 	);
 	// Test count: ( 1 test + ( 2 tests x 4 results ) ) = 9
 	ve.dm.example.nodeSelectionEqual(
-		doc.selectNodes( new ve.Range( 28, 41 ) ),
+		doc.selectNodes( new ve.Range( 28, 41 ), 'leaves' ),
 		[
 			// table/tableRow/tableCell/list/listItem/paragraph/text
 			{ 'node': lookup( documentNode, 1, 0, 0, 2, 0, 0, 0 ) },
 			// preformatted/text
 			{ 'node': lookup( documentNode, 2, 0 ) },
-			// preformatted/image
+			// preformatted/image - tests leaf nodes that are not text nodes
 			{ 'node': lookup( documentNode, 2, 1 ) },
 			// preformatted/text
 			{ 'node': lookup( documentNode, 2, 2 ) }
