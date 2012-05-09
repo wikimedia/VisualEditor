@@ -3,9 +3,9 @@ module( 've.dm.Document' );
 /* Tests */
 
 test( 'getOuterLength', 1, function() {
-	var fragment = new ve.dm.DocumentFragment( ve.dm.example.data );
+	var doc = new ve.dm.Document( ve.dm.example.data );
 	strictEqual(
-		fragment.getDocumentNode().getOuterLength(),
+		doc.getDocumentNode().getOuterLength(),
 		ve.dm.example.data.length,
 		'document does not have elements around it'
 	);
