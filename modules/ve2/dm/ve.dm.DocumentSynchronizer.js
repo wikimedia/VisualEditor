@@ -103,7 +103,7 @@ ve.dm.DocumentSynchronizer.prototype.resize = function( action ) {
 ve.dm.DocumentSynchronizer.prototype.rebuild = function( action ) {
 	// Find the nodes contained by oldRange
 	var selection = this.document.selectNodes( action.oldRange, 'siblings' );
-	if ( selection.length == 0 ) {
+	if ( selection.length === 0 ) {
 		// WTF? Nothing to rebuild, I guess. Whatever.
 		return;
 	}
@@ -122,15 +122,13 @@ ve.dm.DocumentSynchronizer.prototype.queueEvent = function( node, event ) {
 	// Check if this is already queued
 	var args = Array.prototype.slice.call( arguments, 1 );
 	var hash = $.toJSON( args );
-	if ( !node.DSqueuedevents ) {
-		node.DSqueuedevents = {};
+	if ( !node.syncEventQueue ) {
+		node.syncEventQueue = {};
 	}
-	if ( node.DSqueuedevents[hash] ) {
-		return;
+	if ( !node.syncEventQueue[hash] ) {
+		node.syncEventQueue[hash] = true;
+		this.eventQueue.push( { 'node': node, 'args': args } );
 	}
-	
-	node.DSqueuedevents[hash] = true;
-	this.eventQueue.push( { 'node': node, 'args': args } );
 };
 
 ve.dm.DocumentSynchronizer.prototype.emitEvents = function() {
@@ -138,7 +136,7 @@ ve.dm.DocumentSynchronizer.prototype.emitEvents = function() {
 	for ( i = 0; i < this.eventQueue.length; i++ ) {
 		event = this.eventQueue[i];
 		event.node.emit.apply( event.node, event.args );
-		delete event.node.DSqueuedevents;
+		delete event.node.syncEventQueue;
 	}
 	this.eventQueue = [];
 };
