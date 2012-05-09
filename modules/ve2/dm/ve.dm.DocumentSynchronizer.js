@@ -72,7 +72,13 @@ ve.dm.DocumentSynchronizer.prototype.pushResize = function( node, adjustment ) {
 	} );
 };
 
-// TODO pushRebuild()
+ve.dm.DocumentSynchronizer.prototype.pushRebuild = function( oldRange, newRange ) {
+	this.actions.push( {
+		'type': 'rebuild',
+		'oldRange': oldRange,
+		'newRange': newRange
+	} );
+};
 
 ve.dm.DocumentSynchronizer.prototype.annotation = function( action ) {
 	// Queue events for all leaf nodes covered by the range
@@ -94,7 +100,23 @@ ve.dm.DocumentSynchronizer.prototype.resize = function( action ) {
 	this.queueEvent( action.node, 'update' );
 };
 
-// TODO rebuild()
+ve.dm.DocumentSynchronizer.prototype.rebuild = function( action ) {
+	// Find the nodes contained by oldRange
+	var selection = this.document.selectNodes( action.oldRange, 'siblings' );
+	if ( selection.length == 0 ) {
+		// WTF? Nothing to rebuild, I guess. Whatever.
+		return;
+	}
+	
+	// TODO index of firstNode in parent should be in the selectNodes result
+	var firstNode = selection[0].node,
+		parent = firstNode.getParent(),
+		index = parent.indexOf( firstNode );
+	
+	this.document.rebuildNodes( parent, index, selection.length, action.oldRange.from,
+		action.newRange.getLength()
+	);
+};
 
 ve.dm.DocumentSynchronizer.prototype.queueEvent = function( node, event ) {
 	// Check if this is already queued
