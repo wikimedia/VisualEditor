@@ -103,10 +103,10 @@ ve.dm.Document.prototype.selectNodes = function( range, mode ) {
 		throw 'Invalid mode: ' + mode;
 	}
 
-	if ( start < 0 || start > this.data.length ) {
+	if ( start < 0 || start > doc.getLength() ) {
 		throw 'Invalid start offset: ' + start;
 	}
-	if ( end < 0 || end > this.data.length ) {
+	if ( end < 0 || end > doc.getLength() ) {
 		throw 'Invalid end offset: ' + end;
 	}
 
