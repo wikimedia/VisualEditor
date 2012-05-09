@@ -80,6 +80,7 @@ ve.dm.DocumentSynchronizer.prototype.annotation = function( action ) {
 	var i, selection = this.document.selectNodes( action.range, 'leaves' );
 	for ( i = 0; i < selection.length; i++ ) {
 		this.queueEvent( selection[i].node, 'annotation' );
+		this.queueEvent( selection[i].node, 'update' );
 	}
 };
 
