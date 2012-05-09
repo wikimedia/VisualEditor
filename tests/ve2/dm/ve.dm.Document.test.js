@@ -32,7 +32,7 @@ test( 'rebuildNodes', function() {
 	ve.dm.example.nodeTreeEqual( documentNode, tree );
 } );
 
-test( 'selectNodes', 17, function() {
+test( 'selectNodes', 31, function() {
 	var doc = new ve.dm.Document( ve.dm.example.data ),
 		documentNode = doc.getDocumentNode(),
 		lookup = ve.dm.example.lookupNode;
@@ -67,6 +67,32 @@ test( 'selectNodes', 17, function() {
 			{ 'node': lookup( documentNode, 2, 1 ) },
 			// preformatted/text
 			{ 'node': lookup( documentNode, 2, 2 ) }
+		]
+	);
+	
+	// Test count: ( 1 test + ( 2 tests x 2 results ) ) = 5
+	ve.dm.example.nodeSelectionEqual(
+		doc.selectNodes( new ve.Range( 2, 15 ), 'siblings' ),
+		[
+			// heading
+			{ 'node': lookup( documentNode, 0 ), 'range': new ve.Range( 2, 4 ) },
+			// table
+			{ 'node': lookup( documentNode, 1 ), 'range': new ve.Range( 6, 15 ) }
+		]
+	);
+	
+	// Test count: ( 1 test + ( 2 tests x 4 results ) ) = 9
+	ve.dm.example.nodeSelectionEqual(
+		doc.selectNodes( new ve.Range( 2, 49 ), 'siblings' ),
+		[
+			// heading
+			{ 'node': lookup( documentNode, 0 ), 'range': new ve.Range( 2, 4 ) },
+			// table
+			{ 'node': lookup( documentNode, 1 ) },
+			// preformatted
+			{ 'node': lookup( documentNode, 2 ) },
+			// definitionList
+			{ 'node': lookup( documentNode, 3 ), 'range': new ve.Range( 42, 49 ) }
 		]
 	);
 } );

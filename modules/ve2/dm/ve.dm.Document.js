@@ -71,8 +71,12 @@ ve.dm.Document.prototype.rebuildNodes = function( parent, index, numNodes, offse
  * @method
  * @param {ve.Range} range Range within document to select nodes
  * @param {String} [mode='leaves'] Type of selection to perform
- *     'leaves': Return all leaf nodes in the given range
+ *     'leaves': Return all leaf nodes in the given range (descends all the way down)
+ *     'siblings': Return a set of adjacent siblings covered by the range (descends as long as the
+ *                    range is in a single node)
  * @returns {Array} List of objects describing nodes in the selection and the ranges therein
+ *                  'node': Reference to a ve.dm.Node
+ *                  'range': ve.Range, missing if the entire node is covered
  * @throws 'Invalid start offset' if range.start is out of range
  * @throws 'Invalid end offset' if range.end is out of range
  */
@@ -94,8 +98,8 @@ ve.dm.Document.prototype.selectNodes = function( range, mode ) {
 		endBetween,
 		startFound = false;
 
-	// TODO needs more modes, probably. Current implementation is only for mode == 'leaf'
-	if ( mode && mode !== 'leaves' ) {
+	mode = mode || 'leaves';
+	if ( mode !== 'leaves' && mode !== 'siblings' ) {
 		throw 'Invalid mode: ' + mode;
 	}
 
@@ -109,6 +113,7 @@ ve.dm.Document.prototype.selectNodes = function( range, mode ) {
 	if ( !doc.children || doc.children.length === 0 ) {
 		return [];
 	}
+	// TODO we could find the start more efficiently using the offset map
 	left = doc.children[0].isWrapped() ? 1 : 0;
 
 	while ( end >= left ) {
@@ -135,7 +140,7 @@ ve.dm.Document.prototype.selectNodes = function( range, mode ) {
 			// start is between the previous sibling and node
 			// so the selection covers all of node and possibly more
 			
-			if ( node.children && node.children.length ) {
+			if ( mode == 'leaves' && node.children && node.children.length ) {
 				// Descend into node
 				currentFrame = { 'node': node, 'index': 0 };
 				stack.push( currentFrame );
@@ -168,7 +173,7 @@ ve.dm.Document.prototype.selectNodes = function( range, mode ) {
 				} ];
 			}
 		} else if ( startInside ) {
-			if ( node.children && node.children.length ) {
+			if ( mode == 'leaves' && node.children && node.children.length ) {
 				// node is a branch node and the start is inside it
 				// Descend into it
 				currentFrame = { 'node': node, 'index': 0 };
@@ -192,7 +197,7 @@ ve.dm.Document.prototype.selectNodes = function( range, mode ) {
 			// all of node, then ends
 			//retval.push( { 'node': node } );
 			
-			if ( node.children && node.children.length ) {
+			if ( mode == 'leaves' && node.children && node.children.length ) {
 				// Descend into node
 				currentFrame = { 'node': node, 'index': 0 };
 				stack.push( currentFrame );
@@ -207,7 +212,7 @@ ve.dm.Document.prototype.selectNodes = function( range, mode ) {
 				return retval;
 			}
 		} else if ( endInside ) {
-			if ( node.children && node.children.length ) {
+			if ( mode == 'leaves' && node.children && node.children.length ) {
 				// node is a branch node and the end is inside it
 				// Descend into it
 				currentFrame = { 'node': node, 'index': 0 };
@@ -231,7 +236,7 @@ ve.dm.Document.prototype.selectNodes = function( range, mode ) {
 			// Add the entire node, so no range property
 			//retval.push( { 'node': node } );
 			
-			if ( node.children && node.children.length ) {
+			if ( mode == 'leaves' && node.children && node.children.length ) {
 				// Descend into node
 				currentFrame = { 'node': node, 'index': 0 };
 				stack.push( currentFrame );
