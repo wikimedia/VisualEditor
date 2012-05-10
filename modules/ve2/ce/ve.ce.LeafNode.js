@@ -14,6 +14,8 @@ ve.ce.LeafNode = function( type, model, $element ) {
 	// Inheritance
 	ve.LeafNode.call( this );
 	ve.ce.Node.call( this, type, model, $element );
+
+	this.$.addClass("ve-ce-leaf");
 };
 
 /* Inheritance */
