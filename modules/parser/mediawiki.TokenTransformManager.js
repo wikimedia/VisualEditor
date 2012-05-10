@@ -200,7 +200,7 @@ function AsyncTokenTransformManager ( env, isInclude, pipeFactory, phaseEndRank,
 	this.pipeFactory = pipeFactory;
 	this.phaseEndRank = phaseEndRank;
 	this.attributeType = attributeType;
-	this.setFrame( null, null, {} );
+	this.setFrame( null, null, [] );
 	this._construct();
 }
 
