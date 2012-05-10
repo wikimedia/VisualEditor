@@ -37,7 +37,7 @@ test( 'canHaveGrandchildren', 1, function() {
 test( 'updateDomWrapper', 3, function() {
 	var node = new ve.ce.BranchNodeStub( new ve.dm.BranchNodeStub( [], { 'type': 'a' } ) );
 	// Add classes and content to the node
-	node.$.addClass( 'test' ).text( 'hello' );
+	node.$.attr( 'class', 'test' ).text( 'hello' );
 	// Modify attribute
 	node.getModel().attributes.type = 'b';
 	node.updateDomWrapper( 'type' );
