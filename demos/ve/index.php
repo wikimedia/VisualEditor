@@ -95,6 +95,7 @@ include( '../../modules/sandbox/base.php' );
 		<script src="../../modules/ve2/ve.BranchNode.js"></script>
 		<script src="../../modules/ve2/ve.LeafNode.js"></script>
 		<script src="../../modules/ve2/ve.Surface.js"></script>
+		<script src="../../modules/ve2/ve.Document.js"></script>
 
 		<!-- dm -->
 		<script src="../../modules/ve2/dm/ve.dm.js"></script>
