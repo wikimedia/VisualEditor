@@ -80,7 +80,7 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 			'node': doc,
 			'range': new ve.Range( start, end ),
 			'index': 0,
-			'parentRange': new ve.Range( 0, doc.getLength() )
+			'nodeRange': new ve.Range( 0, doc.getLength() )
 		} ];
 	}
 	// TODO maybe we could find the start more efficiently using the offset map
