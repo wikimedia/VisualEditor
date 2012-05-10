@@ -23,42 +23,6 @@ ve.dm.BranchNode = function( type, children, attributes ) {
 /* Methods */
 
 /**
- * Sets the root node this node is a descendent of.
- * 
- * @method
- * @see {ve.dm.Node.prototype.setRoot}
- * @param {ve.dm.Node} root Node to use as root
- */
-ve.dm.BranchNode.prototype.setRoot = function( root ) {
-	if ( root == this.root ) {
-		// Nothing to do, don't recurse into all descendants
-		return;
-	}
-	this.root = root;
-	for ( var i = 0; i < this.children.length; i++ ) {
-		this.children[i].setRoot( root );
-	}
-};
-
-/**
- * Sets the document this node is a part of.
- * 
- * @method
- * @see {ve.dm.Node.prototype.setDocument}
- * @param {ve.dm.Document} root Node to use as root
- */
-ve.dm.BranchNode.prototype.setDocument = function( doc ) {
-	if ( doc == this.doc ) {
-		// Nothing to do, don't recurse into all descendants
-		return;
-	}
-	this.doc = doc;
-	for ( var i = 0; i < this.children.length; i++ ) {
-		this.children[i].setDocument( doc );
-	}
-};
-
-/**
  * Adds a node to the end of this node's children.
  * 
  * @method
@@ -148,45 +112,6 @@ ve.dm.BranchNode.prototype.splice = function( index, howmany ) {
 	this.adjustLength( diff, true );
 	this.emit.apply( this, ['splice'].concat( args ) );
 	return removals;
-};
-
-/**
- * Gets the content offset of a node.
- * 
- * This method is pretty expensive. If you need to get different slices of the same content, get
- * the content first, then slice it up locally.
- * 
- * TODO: Rewrite this method to not use recursion, because the function call overhead is expensive
- * 
- * @method
- * @param {ve.Node} node Node to get offset of
- * @returns {Integer} Offset of node or -1 of node was not found
- */
-ve.dm.BranchNode.prototype.getOffsetFromNode = function( node ) {
-	if ( node === this ) {
-		return 0;
-	}
-	if ( this.children.length ) {
-		var offset = 0,
-			childNode;
-		for ( var i = 0, length = this.children.length; i < length; i++ ) {
-			childNode = this.children[i];
-			if ( childNode === node ) {
-				return offset;
-			}
-			if (
-				ve.dm.factory.canNodeHaveChildren( childNode.getType() ) &&
-				childNode.getChildren().length
-			) {
-				var childOffset = this.getOffsetFromNode.call( childNode, node );
-				if ( childOffset !== -1 ) {
-					return offset + 1 + childOffset;
-				}
-			}
-			offset += childNode.getOuterLength();
-		}
-	}
-	return -1;
 };
 
 /* Inheritance */

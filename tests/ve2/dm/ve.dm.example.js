@@ -239,65 +239,6 @@ ve.dm.example.tree = new ve.dm.DocumentNode( [
 /* Methods */
 
 /**
- * Asserts that two node trees are equavilant.
- * 
- * This will perform 4 assertions on each branch node and 3 assertions on each leaf node.
- * 
- * @method
- */
-ve.dm.example.nodeTreeEqual = function( a, b ) {
-	equal( a.getType(), b.getType(), 'type match (' + a.getType() + ')' );
-	equal( a.getLength(), b.getLength(), 'length match' );
-	equal(
-		ve.dm.factory.canNodeHaveChildren( a.getType() ),
-		ve.dm.factory.canNodeHaveChildren( b.getType() ),
-		'children rules match'
-	);
-	if ( a.children ) {
-		equal( a.children.length, b.children.length, 'children count match' );
-		for ( var i = 0; i < a.children.length; i++ ) {
-			ve.dm.example.nodeTreeEqual( a.children[i], b.children[i] );
-		}
-	}
-};
-
-/**
- * Asserts that two node selections are equavilant.
- * 
- * This will perform 1 assertion to check the number of results in the selection and then 2
- * assertions on each result
- * 
- * @method
- */
-ve.dm.example.nodeSelectionEqual = function( a, b ) {
-	equal( a.length, b.length, 'length match' );
-	for ( var i = 0; i < a.length; i++ ) {
-		ok( a[i].node === b[i].node, 'node match' );
-		if ( a[i].range && b[i].range ) {
-			deepEqual( a[i].range, b[i].range, 'range match' );
-		} else {
-			strictEqual( 'range' in a[i], 'range' in b[i], 'range existence match' );
-		}
-	}
-};
-
-/**
- * Looks up a value in a node tree.
- * 
- * @method
- * @param {ve.Node} root Root node to lookup from
- * @param {Integer} [...] Index path
- * @param {ve.Node} Node at given path
- */
-ve.dm.example.lookupNode = function( root ) {
-	var node = root;
-	for ( var i = 1; i < arguments.length; i++ ) {
-		node = node.children[arguments[i]];
-	}
-	return node;
-};
-
-/**
  * Creates an offset map that references a node tree.
  * 
  * This is part of what a ve.dm.DocumentFragment generates when given linear data.
@@ -306,7 +247,7 @@ ve.dm.example.lookupNode = function( root ) {
  * @param {ve.dm.DocumentNode} root Document node to reference
  */
 ve.dm.example.getOffsetMap = function( root ) {
-	var lookup = ve.dm.example.lookupNode;
+	var lookup = ve.example.lookupNode;
 	return [
 		lookup( root ), // 0 - document
 		// <h1>

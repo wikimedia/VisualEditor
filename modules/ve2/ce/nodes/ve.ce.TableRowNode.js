@@ -21,8 +21,6 @@ ve.ce.TableRowNode = function( model ) {
  * @member
  */
 ve.ce.TableRowNode.rules = {
-	'canHaveChildren': true,
-	'canHaveGrandchildren': true,
 	'canBeSplit': false
 };
 

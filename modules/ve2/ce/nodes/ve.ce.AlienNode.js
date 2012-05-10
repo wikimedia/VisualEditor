@@ -21,8 +21,6 @@ ve.ce.AlienNode = function( model ) {
  * @member
  */
 ve.ce.AlienNode.rules = {
-	'canHaveChildren': false,
-	'canHaveGrandchildren': false,
 	'canBeSplit': false
 };
 

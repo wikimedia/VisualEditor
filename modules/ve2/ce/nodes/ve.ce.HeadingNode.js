@@ -26,8 +26,6 @@ ve.ce.HeadingNode = function( model ) {
  * @member
  */
 ve.ce.HeadingNode.rules = {
-	'canHaveChildren': true,
-	'canHaveGrandchildren': false,
 	'canBeSplit': true
 };
 

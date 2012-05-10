@@ -21,8 +21,6 @@ ve.ce.PreformattedNode = function( model ) {
  * @member
  */
 ve.ce.PreformattedNode.rules = {
-	'canHaveChildren': true,
-	'canHaveGrandchildren': false,
 	'canBeSplit': true
 };
 

@@ -22,23 +22,73 @@ ve.ce.Node = function( type, model, $element ) {
 /* Methods */
 
 /**
- * Checks if this node can have child nodes.
+ * Checks if model is for a node that can have children.
+ * 
+ * This method passes through to the model.
  * 
  * @method
- * @returns {Boolean} Whether this node can have children
+ * @returns {Boolean} Model node can have children
  */
 ve.ce.Node.prototype.canHaveChildren = function() {
-	return ve.ce.factory.canNodeHaveChildren( this.type );
+	return this.model.canHaveChildren();
 };
 
 /**
- * Checks if this node can have child nodes which can also have child nodes.
+ * Checks if model is for a node that can have grandchildren.
+ * 
+ * This method passes through to the model.
  * 
  * @method
- * @returns {Boolean} Whether this node can have grandchildren
+ * @returns {Boolean} Model node can have grandchildren
  */
 ve.ce.Node.prototype.canHaveGrandchildren = function() {
-	return ve.ce.factory.canNodeHaveGrandchildren( this.type );
+	return this.model.canHaveGrandchildren();
+};
+
+/**
+ * Checks if model is for a wrapped element.
+ * 
+ * This method passes through to the model.
+ * 
+ * @method
+ * @returns {Boolean} Model node is a wrapped element
+ */
+ve.ce.Node.prototype.isWrapped = function() {
+	return this.model.isWrapped();
+};
+
+/**
+ * Gets model length.
+ * 
+ * This method passes through to the model.
+ * 
+ * @method
+ * @returns {Integer} Model length
+ */
+ve.ce.Node.prototype.getLength = function() {
+	return this.model.getLength();
+};
+
+/**
+ * Gets model outer length.
+ * 
+ * This method passes through to the model.
+ * 
+ * @method
+ * @returns {Integer} Model outer length
+ */
+ve.ce.Node.prototype.getOuterLength = function() {
+	return this.model.getOuterLength();
+};
+
+/**
+ * Checks if this node can be split.
+ * 
+ * @method
+ * @returns {Boolean} Node can be split
+ */
+ve.ce.Node.prototype.canBeSplit = function() {
+	return ve.ce.factory.canBeSplit( this.type );
 };
 
 /**
@@ -49,16 +99,6 @@ ve.ce.Node.prototype.canHaveGrandchildren = function() {
  */
 ve.ce.Node.prototype.getModel = function() {
 	return this.model;
-};
-
-/**
- * Gets a reference to this node's parent.
- * 
- * @method
- * @returns {ve.ce.Node} Reference to this node's parent
- */
-ve.ce.Node.prototype.getParent = function() {
-	return this.parent;
 };
 
 /**

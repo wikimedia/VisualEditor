@@ -21,8 +21,6 @@ ve.ce.ParagraphNode = function( model ) {
  * @member
  */
 ve.ce.ParagraphNode.rules = {
-	'canHaveChildren': true,
-	'canHaveGrandchildren': false,
 	'canBeSplit': true
 };
 

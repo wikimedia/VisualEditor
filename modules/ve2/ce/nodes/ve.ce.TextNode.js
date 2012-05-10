@@ -27,8 +27,6 @@ ve.ce.TextNode = function( model ) {
  * @member
  */
 ve.ce.TextNode.rules = {
-	'canHaveChildren': false,
-	'canHaveGrandchildren': false,
 	'canBeSplit': true
 };
 
