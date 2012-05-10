@@ -47,7 +47,7 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 		stack = [ {
 			'node': doc,
 			'index': 0,
-			'startOffset': 0
+			'startOffset': 1
 		} ],
 		node,
 		prevNode,
@@ -117,15 +117,15 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 			
 			if ( mode == 'leaves' && node.children && node.children.length ) {
 				// Descend into node
+				if ( node.children[0].isWrapped() ) {
+					left++;
+				}
 				currentFrame = {
 					'node': node,
 					'index': 0,
 					'startOffset': left
 				};
 				stack.push( currentFrame );
-				if ( node.children[0].isWrapped() ) {
-					left++;
-				}
 				startFound = true;
 				continue;
 			} else {
@@ -141,16 +141,16 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 		} else if ( startInside && endInside ) {
 			if ( node.children && node.children.length ) {
 				// Descend into node
+				// If the first child of node has an opening, skip over it
+				if ( node.children[0].isWrapped() ) {
+					left++;
+				}
 				currentFrame = {
 					'node': node,
 					'index': 0,
 					'startOffset': left
 				};
 				stack.push( currentFrame );
-				// If the first child of node has an opening, skip over it
-				if ( node.children[0].isWrapped() ) {
-					left++;
-				}
 				continue;
 			} else {
 				// node is a leaf node and the range is entirely inside it
@@ -165,15 +165,15 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 			if ( mode == 'leaves' && node.children && node.children.length ) {
 				// node is a branch node and the start is inside it
 				// Descend into it
+				if ( node.children[0].isWrapped() ) {
+					left++;
+				}
 				currentFrame = {
 					'node': node,
 					'index': 0,
 					'startOffset': left
 				};
 				stack.push( currentFrame );
-				if ( node.children[0].isWrapped() ) {
-					left++;
-				}
 				continue;
 			} else {
 				// node is a leaf node and the start is inside it
@@ -194,15 +194,15 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 			
 			if ( mode == 'leaves' && node.children && node.children.length ) {
 				// Descend into node
+				if ( node.children[0].isWrapped() ) {
+					left++;
+				}
 				currentFrame = {
 					'node': node,
 					'index': 0,
 					'startOffset': left
 				};
 				stack.push( currentFrame );
-				if ( node.children[0].isWrapped() ) {
-					left++;
-				}
 				continue;
 			} else {
 				// All of node is covered
@@ -218,15 +218,15 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 			if ( mode == 'leaves' && node.children && node.children.length ) {
 				// node is a branch node and the end is inside it
 				// Descend into it
+				if ( node.children[0].isWrapped() ) {
+					left++;
+				}
 				currentFrame = {
 					'node': node,
 					'index': 0,
 					'startOffset': left
 				};
 				stack.push( currentFrame );
-				if ( node.children[0].isWrapped() ) {
-					left++;
-				}
 				continue;
 			} else {
 				// node is a leaf node and the end is inside it
@@ -247,15 +247,15 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 			
 			if ( mode == 'leaves' && node.children && node.children.length ) {
 				// Descend into node
+				if ( node.children[0].isWrapped() ) {
+					left++;
+				}
 				currentFrame = {
 					'node': node,
 					'index': 0,
 					'startOffset': left
 				};
 				stack.push( currentFrame );
-				if ( node.children[0].isWrapped() ) {
-					left++;
-				}
 				continue;
 			} else {
 				// All of node is covered
