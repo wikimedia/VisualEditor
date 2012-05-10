@@ -20,7 +20,7 @@ test( 'rebuildNodes', function() {
 
 	// XXX: Create a new document node tree from the old one
 	var tree = new ve.dm.DocumentNode( ve.dm.example.tree.getChildren() );
-	// Remove table from linear model
+	// Replace table with paragraph
 	doc.data.splice( 5, 30, { 'type': 'paragraph' }, 'a', 'b', 'c', { 'type': '/paragraph' } );
 	// Remove table from tree model
 	tree.splice( 1, 1, new ve.dm.ParagraphNode( [new ve.dm.TextNode( 3 )] ) );
