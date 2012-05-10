@@ -57,11 +57,13 @@ ve.dm.HTMLConverter.elementTypes = {
 	'h4': { 'leafNode': true, 'type': 'heading', 'attributes': { 'level': 4 } },
 	'h5': { 'leafNode': true, 'type': 'heading', 'attributes': { 'level': 5 } },
 	'h6': { 'leafNode': true, 'type': 'heading', 'attributes': { 'level': 6 } },
+	'img': { 'leafnode': true, 'type': 'image' },
 	'li': { 'leafNode': false, 'type': 'listItem' },
 	'dt': { 'leafNode': false, 'type': 'listItem', 'attributes': { 'style': 'term' } },
 	'dd': { 'leafNode': false, 'type': 'listItem', 'attributes': { 'style': 'definition' } },
 	'pre': { 'leafNode': true, 'type': 'preformatted' },
 	'table': { 'leafNode': false, 'type': 'table' },
+	'tbody': { }, // Ignore tbody for now, we might want it later for header/footer support though
 	'tr': { 'leafNode': false, 'type': 'tableRow' },
 	'th': { 'leafNode': false, 'type': 'tableHeading' },
 	'td': { 'leafNode': false, 'type': 'tableCell' },
@@ -122,29 +124,30 @@ ve.dm.HTMLConverter.attributeWhitelist = [ 'title' ];
  * @returns {Object} Converted attribute map
  */
 ve.dm.HTMLConverter.convertAttributes = function( node ) {
-	var	original = node.attributes,
-		converted = {},
+	var converted = {},
 		attrib,
 		name,
+		value,
 		i;
-	if ( !original ) {
+	if ( !node.length ) {
 		return {};
 	}
-	for ( i = 0; i < original.length; i++ ) {
-		attrib = original.item( i );
+	for ( i = 0; i < node.length; i++ ) {
+		attrib = node[i];
 		name = attrib.name;
+		value = attrib.value;
 		if ( name.substr( 0, 10 ) == 'data-json-' ) {
 			// Strip data-json- prefix and decode
-			converted[name.substr( 10 )] = JSON.parse( attrib.value );
-		} else if ( name.substr( 0, 5 ) == 'data-' ) {
+			converted[name.substr( 10 )] = JSON.parse( value );
+		} else if ( node[i].name.substr( 0, 5 ) == 'data-' ) {
 			// Strip data- prefix
-			converted[name.substr( 5 )] = attrib.value;
+			converted[name.substr( 5 )] = value;
 		} else if ( ve.dm.HTMLConverter.attributeWhitelist.indexOf( name ) != -1 ) {
 			// Pass through a few whitelisted keys
-			converted[name] = attrib.value;
+			converted[name] = value;
 		} else {
 			// Prefix key with 'html/'
-			converted['html/' + name] = attrib.value;
+			converted['html/' + name] = value;
 		}
 	}
 	return converted;
@@ -197,6 +200,20 @@ ve.dm.HTMLConverter.generateAnnotatedContent = function( content, annotations ) 
 	}	
 	return characters;
 };
+
+/**
+ * Get linear model from HTML DOM
+ * 
+ * @static
+ * @method
+ * @param {Object} node HTML node to recursively convert
+ * @param {Object} options Options to use
+ * @returns {Array} Linear model data
+ */
+ve.dm.HTMLConverter.getLinearModel = function( node, options ) {
+	return ( new ve.dm.HTMLConverter( options ) ).convert( node );
+}
+
 
 /**
  * Recursively convert an HTML DOM node to a linear model array.
@@ -258,7 +275,7 @@ ve.dm.HTMLConverter.prototype.convert = function( node, annotations, typeData ) 
 						paragraphOpened = true;
 					}
 					// Recurse into this node
-					data = data.concat( ve.dm.HTMLConverter.convert( child,
+					data = data.concat( ve.dm.HTMLConverter.prototype.convert( child,
 						annotations.concat( [ annotation ] ),
 						{ 'leafNode': true }
 					) );
@@ -285,7 +302,7 @@ ve.dm.HTMLConverter.prototype.convert = function( node, annotations, typeData ) 
 						// Don't pass annotations through; we should never have those here
 						// anyway because only leaves can have them.
 						data = data.concat(
-							ve.dm.HTMLConverter.convert( child, [], childTypeData )
+							ve.dm.HTMLConverter.prototype.convert( child, [], childTypeData )
 						);
 					} else {
 						console.warn(
