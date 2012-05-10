@@ -115,6 +115,20 @@ ve.example.getSelectNodesCases = function( doc ) {
 					'nodeRange': new ve.Range( 42, 52 )
 				}
 			]
+		},
+		// Zero-length range at the edge of a text node returns that text node rather than
+		// its parent
+		{
+			'actual': doc.selectNodes( new ve.Range( 1, 1 ), 'leaves' ),
+			'expected': [
+				// heading/text
+				{
+					'node': lookup( documentNode, 0, 0 ),
+					'range': new ve.Range( 1, 1 ),
+					'index': 0,
+					'nodeRange': new ve.Range( 1, 4 )
+				}
+			]
 		}
 	];
 };

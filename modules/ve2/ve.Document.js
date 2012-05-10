@@ -104,7 +104,7 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 		// Is the end between node and nextNode or between node and the parent's closing?
 		endBetween = node.isWrapped() ? end == right + 1 : end == right;
 
-		if ( start == end && ( startBetween || endBetween ) ) {
+		if ( start == end && ( startBetween || endBetween ) && node.isWrapped() ) {
 			// Empty range in the parent, outside of any child
 			parentFrame = stack[stack.length - 2];
 			return [ {
@@ -132,7 +132,7 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 				stack.push( currentFrame );
 				startFound = true;
 				continue;
-			} else {
+			} else if ( !endInside ) {
 				// All of node is covered
 				retval.push( {
 					'node': node,
@@ -141,6 +141,14 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 					'nodeRange': new ve.Range( left, right )
 				} );
 				startFound = true;
+			} else {
+				// Part of node is covered
+				return [ {
+					'node': node,
+					'range': new ve.Range( start, end ),
+					'index': currentFrame.index,
+					'nodeRange': new ve.Range( left, right )
+				} ];
 			}
 		} else if ( startInside && endInside ) {
 			if ( node.children && node.children.length ) {
