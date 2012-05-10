@@ -21,8 +21,10 @@ ve.ce.BranchNode = function( type, model, $element ) {
 	// Events
 	this.model.addListenerMethod( this, 'splice', 'onSplice' );
 
-	this.$.addClass("ve-ce-branch");
+	// DOM Changes
+	this.$.addClass( 've-ce-branchNode' );
 
+	// Initialization
 	if ( model.getChildren().length ) {
 		this.onSplice.apply( this, [0, 0].concat( model.getChildren() ) );
 	}

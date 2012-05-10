@@ -15,7 +15,10 @@ ve.ce.LeafNode = function( type, model, $element ) {
 	ve.LeafNode.call( this );
 	ve.ce.Node.call( this, type, model, $element );
 
-	this.$.addClass("ve-ce-leaf");
+	// DOM Changes
+	if ( model.isWrapped() ) {
+		this.$.addClass( 've-ce-leafNode' );
+	}
 };
 
 /* Inheritance */
