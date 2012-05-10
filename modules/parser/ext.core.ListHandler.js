@@ -44,7 +44,8 @@ ListHandler.prototype.onNewline = function ( token, frame, prevToken ) {
 };
 
 ListHandler.prototype.onEnd = function( token, frame, prevToken ) {
-	return { tokens: this.end() };
+	token.rank = this.listRank + this.delta;
+	return { tokens: this.end().concat([token]) };
 };
 
 ListHandler.prototype.end = function( ) {

@@ -33,14 +33,9 @@ QuoteTransformer.prototype.reset = function ( ) {
 // Register this transformer with the TokenTransformer
 QuoteTransformer.prototype.register = function ( dispatcher ) {
 	this.dispatcher = dispatcher;
-	// Register for NEWLINE and QUOTE tag tokens
-	dispatcher.addTransform( this.onNewLine.bind(this), 
-			this.quoteAndNewlineRank, 'newline' );
+	// Register for QUOTE tag tokens
 	dispatcher.addTransform( this.onQuote.bind(this), 
 			this.quoteAndNewlineRank, 'tag', 'mw-quote' );
-	// Treat end-of-input just the same as a newline
-	dispatcher.addTransform( this.onNewLine.bind(this), 
-			this.quoteAndNewlineRank, 'end' );
 };
 
 // Make a copy of the token context
@@ -69,6 +64,11 @@ QuoteTransformer.prototype.onQuote = function ( token, frame, prevToken ) {
 	
 
 	if ( ! this.isActive ) {
+		this.dispatcher.addTransform( this.onNewLine.bind(this), 
+				this.quoteAndNewlineRank, 'newline' );
+		// Treat end-of-input just the same as a newline
+		this.dispatcher.addTransform( this.onNewLine.bind(this), 
+				this.quoteAndNewlineRank, 'end' );
 		// register for any token if not yet active
 		this.dispatcher.addTransform( this.onAny.bind(this), this.anyRank, 'any' );
 		this.isActive = true;
@@ -203,7 +203,9 @@ QuoteTransformer.prototype.onNewLine = function (  token, frame, prevToken ) {
 	// prepare for next line
 	this.reset();
 
-	// remove 'any' registration
+	// remove 'end', 'newline' and 'any' registrations
+	this.dispatcher.removeTransform( this.quoteAndNewlineRank, 'end' );
+	this.dispatcher.removeTransform( this.quoteAndNewlineRank, 'newline' );
 	this.dispatcher.removeTransform( this.anyRank, 'any' );
 
 	return res;
