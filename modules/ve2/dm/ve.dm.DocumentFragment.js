@@ -2,15 +2,18 @@
  * DataModel document fragment.
  * 
  * @class
+ * @extends {ve.Document}
  * @constructor
  * @param {Array} data Linear model data to start with
  * @param {ve.dm.Document} [parentDocument] Document to use as root for created nodes
  */
 ve.dm.DocumentFragment = function( data, parentDocument ) {
+	// Inheritance
+	ve.Document.call( this, new ve.dm.DocumentNode() );
+
 	// Properties
 	this.parentDocument = parentDocument;
 	this.data = data || [];
-	this.documentNode = new ve.dm.DocumentNode();
 	this.offsetMap = new Array( this.data.length );
 
 	// Initialization
@@ -152,10 +155,6 @@ ve.dm.DocumentFragment.prototype.getOffsetMap = function() {
 	return this.offsetMap;
 };
 
-ve.dm.DocumentFragment.prototype.getDocumentNode = function() {
-	return this.documentNode;
-};
-
 ve.dm.DocumentFragment.prototype.getNodeFromOffset = function( offset ) {
 	return this.offsetMap[offset];
 };
@@ -180,3 +179,25 @@ ve.dm.DocumentFragment.prototype.getDataFromNode = function( node ) {
 	}
 	return null;
 };
+
+/**
+ * Gets a list of annotations that a given offset is covered by.
+ *
+ * @method
+ * @param {Integer} offset Offset to get annotations for
+ * @returns {Object[]} A copy of all annotation objects offset is covered by
+ */
+ve.dm.DocumentFragment.prototype.getAnnotationsFromOffset = function( offset, byref ) {
+	if ( ve.isArray( this.data[offset] ) ) {
+		if ( byref === true ) {
+			return this.data[offset].slice( 1 );
+		} else {
+			return ve.copyArray( this.data[offset].slice( 1 ) );
+		}
+	}
+	return [];
+};
+
+/* Inheritance */
+
+ve.extendClass( ve.dm.DocumentFragment, ve.Document );

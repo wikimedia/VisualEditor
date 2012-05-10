@@ -30,8 +30,6 @@ ve.ce.ImageNode = function( model ) {
  * @member
  */
 ve.ce.ImageNode.rules = {
-	'canHaveChildren': false,
-	'canHaveGrandchildren': false,
 	'canBeSplit': false
 };
 

@@ -41,6 +41,36 @@ ve.dm.NodeFactory.prototype.getParentNodeTypes = function( type ) {
 };
 
 /**
+ * Checks if a given node type can have child nodes.
+ * 
+ * @method
+ * @param {String} type Node type
+ * @returns {Boolean} The node can have children
+ * @throws 'Unknown node type'
+ */
+ve.dm.NodeFactory.prototype.canNodeHaveChildren = function( type ) {
+	if ( type in this.registry ) {
+		return this.registry[type].rules.canHaveChildren;
+	}
+	throw 'Unknown node type: ' + type;
+};
+
+/**
+ * Checks if a given node type can have grandchild nodes.
+ * 
+ * @method
+ * @param {String} type Node type
+ * @returns {Boolean} The node can have grandchildren
+ * @throws 'Unknown node type'
+ */
+ve.dm.NodeFactory.prototype.canNodeHaveGrandchildren = function( type ) {
+	if ( type in this.registry ) {
+		return this.registry[type].rules.canHaveGrandchildren;
+	}
+	throw 'Unknown node type: ' + type;
+};
+
+/**
  * Checks if a given node type has a wrapping element.
  * 
  * @method

@@ -5,7 +5,7 @@ module( 've.dm.DocumentFragment' );
 test( 'constructor', 114, function() {
 	var fragment = new ve.dm.DocumentFragment( ve.dm.example.data );
 	// Test count: ( ( 4 tests x 21 branch nodes ) + ( 3 tests x 10 leaf nodes ) ) = 114
-	ve.dm.example.nodeTreeEqual( fragment.getDocumentNode(), ve.dm.example.tree );
+	ve.example.nodeTreeEqual( fragment.getDocumentNode(), ve.dm.example.tree );
 } );
 
 test( 'getData', 1, function() {
@@ -21,21 +21,6 @@ test( 'getOffsetMap', 55, function() {
 	for ( var i = 0; i < actual.length; i++ ) {
 		ok( actual[i] === expected[i], 'reference at offset ' + i );
 	}
-} );
-
-test( 'getDocumentNode', 2, function() {
-	var parentDocument = new ve.dm.Document(),
-		fragment = new ve.dm.DocumentFragment( ve.dm.example.data, parentDocument );
-	notStrictEqual(
-		fragment.getDocumentNode(),
-		parentDocument.getDocumentNode(),
-		'fragment and parent documents are different'
-	);
-	strictEqual(
-		fragment.getDocumentNode().getRoot(),
-		parentDocument.getDocumentNode().getRoot(),
-		'fragment and parent documents share the same root node'
-	);
 } );
 
 test( 'getNodeFromOffset', 42, function() {
@@ -112,4 +97,16 @@ test( 'getDataFromNode', 3, function() {
 		[],
 		'leaf without children'
 	);
+} );
+
+test( 'getAnnotationsFromOffset', 2, function() {
+	var fragment = new ve.dm.DocumentFragment( ve.dm.example.data ),
+		data = fragment.getData(),
+		annotations;
+	for ( var i = 0; i < data.length; i++ ) {
+		annotations = fragment.getAnnotationsFromOffset( i );
+		if (typeof annotations[0] === 'object') {
+			ok( annotations, 'annotations at offset ' + i );
+		}
+	}
 } );

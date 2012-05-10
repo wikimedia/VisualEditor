@@ -25,7 +25,7 @@ ve.dm.Node = function( type, length, attributes ) {
  * Checks if this node can have child nodes.
  * 
  * @method
- * @returns {Boolean} Whether this node can have children
+ * @returns {Boolean} Node can have children
  */
 ve.dm.Node.prototype.canHaveChildren = function() {
 	return ve.dm.factory.canNodeHaveChildren( this.type );
@@ -35,12 +35,18 @@ ve.dm.Node.prototype.canHaveChildren = function() {
  * Checks if this node can have child nodes which can also have child nodes.
  * 
  * @method
- * @returns {Boolean} Whether this node can have grandchildren
+ * @returns {Boolean} Node can have grandchildren
  */
 ve.dm.Node.prototype.canHaveGrandchildren = function() {
 	return ve.dm.factory.canNodeHaveGrandchildren( this.type );
 };
 
+/**
+ * Checks if this node represents a wrapped element in the linear model.
+ * 
+ * @method
+ * @returns {Boolean} Node represents a wrapped element
+ */
 ve.dm.Node.prototype.isWrapped = function() {
 	return ve.dm.factory.isNodeWrapped( this.type );
 };
@@ -112,69 +118,6 @@ ve.dm.Node.prototype.adjustLength = function( adjustment ) {
  */
 ve.dm.Node.prototype.getAttribute = function( key ) {
 	return this.attributes[key];
-};
-
-/**
- * Sets the root node this node is a descendent of.
- * 
- * This method is overridden by nodes with children.
- * 
- * @method
- * @param {ve.dm.Node} root Node to use as root
- */
-ve.dm.Node.prototype.setRoot = function( root ) {
-	// TODO events?
-	this.root = root;
-};
-
-/**
- * Sets the document this node is a part of.
- * 
- * This method is overridden by nodes with children.
- * 
- * @method
- * @param {ve.dm.Document} root Node to use as root
- */
-ve.dm.Node.prototype.setDocument = function( doc ) {
-	// TODO events?
-	this.doc = doc;
-};
-
-/**
- * Gets the document this node is a part of.
- * 
- * @method
- * @returns {ve.dm.Document} Document of this node
- */
-ve.dm.Node.prototype.getDocument = function( root ) {
-	return this.doc;
-};
-
-/**
- * Attaches this node to another as a child.
- * 
- * @method
- * @param {ve.Node} parent Node to attach to
- * @emits attach (parent)
- */
-ve.dm.Node.prototype.attach = function( parent ) {
-	this.parent = parent;
-	this.setRoot( parent.getRoot() );
-	this.setDocument( parent.getDocument() );
-	this.emit( 'attach', parent );
-};
-
-/**
- * Detaches this node from its parent.
- * 
- * @method
- * @emits detach
- */
-ve.dm.Node.prototype.detach = function() {
-	this.parent = null;
-	this.setRoot( this );
-	this.setDocument();
-	this.emit( 'detach' );
 };
 
 /* Inheritance */

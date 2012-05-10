@@ -7,12 +7,6 @@ ve.NodeFactoryNodeStub = function( a, b ) {
 	this.b = b;
 };
 
-ve.NodeFactoryNodeStub.rules = {
-	'canHaveChildren': false,
-	'canHaveGrandchildren': false,
-	'isWrapped': true
-};
-
 /* Tests */
 
 test( 'register', 1, function() {
@@ -45,36 +39,4 @@ test( 'lookup', 1, function() {
 	var factory = new ve.NodeFactory();
 	factory.register( 'stub', ve.NodeFactoryNodeStub );
 	strictEqual( factory.lookup( 'stub' ), ve.NodeFactoryNodeStub );
-} );
-
-test( 'canNodeHaveChildren', 2, function() {
-	var factory = new ve.NodeFactory();
-	raises( function() {
-			factory.create( 'stub', 23, { 'bar': 'baz' } );
-		},
-		/^Unknown node type: stub$/,
-		'throws an exception when checking if a node of an unregistered type can have children'
-	);
-	factory.register( 'stub', ve.NodeFactoryNodeStub );
-	strictEqual(
-		factory.canNodeHaveChildren( 'stub' ),
-		false,
-		'gets child rules for registered nodes'
-	);
-} );
-
-test( 'canNodeHaveGrandchildren', 2, function() {
-	var factory = new ve.NodeFactory();
-	raises( function() {
-			factory.create( 'stub', 23, { 'bar': 'baz' } );
-		},
-		/^Unknown node type: stub$/,
-		'throws an exception when checking if a node of an unregistered type can have grandchildren'
-	);
-	factory.register( 'stub', ve.NodeFactoryNodeStub );
-	strictEqual(
-		factory.canNodeHaveGrandchildren( 'stub' ),
-		false,
-		'gets grandchild rules for registered nodes'
-	);
 } );

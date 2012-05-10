@@ -26,8 +26,6 @@ ve.ce.DefinitionListItemNode = function( model ) {
  * @member
  */
 ve.ce.DefinitionListItemNode.rules = {
-	'canHaveChildren': true,
-	'canHaveGrandchildren': true,
 	'canBeSplit': false
 };
 

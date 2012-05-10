@@ -26,8 +26,6 @@ ve.ce.DocumentNode = function( model ) {
  * @member
  */
 ve.ce.DocumentNode.rules = {
-	'canHaveChildren': true,
-	'canHaveGrandchildren': true,
 	'canBeSplit': false
 };
 

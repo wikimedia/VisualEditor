@@ -62,33 +62,3 @@ ve.NodeFactory.prototype.create = function( type, a, b ) {
 ve.NodeFactory.prototype.lookup = function( type ) {
 	return this.registry[type];
 };
-
-/**
- * Checks if a given node type can have child nodes.
- * 
- * @method
- * @param {String} type Node type
- * @returns {Boolean} The node can have children
- * @throws 'Unknown node type'
- */
-ve.NodeFactory.prototype.canNodeHaveChildren = function( type ) {
-	if ( type in this.registry ) {
-		return this.registry[type].rules.canHaveChildren;
-	}
-	throw 'Unknown node type: ' + type;
-};
-
-/**
- * Checks if a given node type can have grandchild nodes.
- * 
- * @method
- * @param {String} type Node type
- * @returns {Boolean} The node can have grandchildren
- * @throws 'Unknown node type'
- */
-ve.NodeFactory.prototype.canNodeHaveGrandchildren = function( type ) {
-	if ( type in this.registry ) {
-		return this.registry[type].rules.canHaveGrandchildren;
-	}
-	throw 'Unknown node type: ' + type;
-};
