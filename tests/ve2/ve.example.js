@@ -129,6 +129,31 @@ ve.example.getSelectNodesCases = function( doc ) {
 					'nodeRange': new ve.Range( 1, 4 )
 				}
 			]
+		},
+		{
+			'actual': doc.selectNodes( new ve.Range( 4, 4 ), 'leaves' ),
+			'expected': [
+				// heading/text
+				{
+					'node': lookup( documentNode, 0, 0 ),
+					'range': new ve.Range( 4, 4 ),
+					'index': 0,
+					'nodeRange': new ve.Range( 1, 4 )
+				}
+			]
+		},
+		// Range entirely within one leaf node
+		{
+			'actual': doc.selectNodes( new ve.Range( 2, 3 ), 'leaves' ),
+			'expected': [
+				// heading/text
+				{
+					'node': lookup( documentNode, 0, 0 ),
+					'range': new ve.Range( 2, 3 ),
+					'index': 0,
+					'nodeRange': new ve.Range( 1, 4 )
+				}
+			]
 		}
 	];
 };
@@ -161,8 +186,9 @@ ve.example.nodeTreeEqual = function( a, b ) {
  * @method
  */
 ve.example.nodeSelectionEqual = function( a, b ) {
+	var minLength = a.length < b.length ? a.length : b.length;
 	equal( a.length, b.length, 'length match' );
-	for ( var i = 0; i < a.length; i++ ) {
+	for ( var i = 0; i < minLength; i++ ) {
 		ok( a[i].node === b[i].node, 'node match' );
 		if ( a[i].range && b[i].range ) {
 			deepEqual( a[i].range, b[i].range, 'range match' );

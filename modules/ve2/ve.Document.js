@@ -168,7 +168,7 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 				// node is a leaf node and the range is entirely inside it
 				return [ {
 					'node': node,
-					'range': new ve.Range( left, right ),
+					'range': new ve.Range( start, end ),
 					'index': currentFrame.index,
 					'nodeRange': new ve.Range( left, right )
 				} ];
