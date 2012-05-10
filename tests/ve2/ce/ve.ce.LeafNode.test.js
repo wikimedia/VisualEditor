@@ -7,12 +7,6 @@ ve.ce.LeafNodeStub = function( model ) {
 	ve.ce.LeafNode.call( this, 'leaf-stub', model );
 };
 
-ve.ce.LeafNodeStub.rules = {
-	'canHaveChildren': false,
-	'canHaveGrandchildren': false,
-	'isWrapped': true
-};
-
 ve.extendClass( ve.ce.LeafNodeStub, ve.ce.LeafNode );
 
 ve.ce.factory.register( 'leaf-stub', ve.ce.LeafNodeStub );

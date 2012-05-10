@@ -12,58 +12,115 @@ ve.example.getSelectNodesCases = function( doc ) {
 			'actual': doc.selectNodes( new ve.Range( 0, 3 ), 'leaves' ),
 			'expected': [
 				// heading/text - partial leaf results have ranges with global offsets
-				{ 'node': lookup( documentNode, 0, 0 ), 'range': new ve.Range( 1, 3 ) }
+				{
+					'node': lookup( documentNode, 0, 0 ),
+					'range': new ve.Range( 1, 3 ),
+					'index': 0,
+					'nodeRange': new ve.Range( 1, 4 )
+				}
 			]
 		},
 		{
 			'actual': doc.selectNodes( new ve.Range( 0, 10 ), 'leaves' ),
 			'expected': [
 				// heading/text - full coverage leaf nodes do not have ranges
-				{ 'node': lookup( documentNode, 0, 0 ) },
+				{
+					'node': lookup( documentNode, 0, 0 ),
+					'index': 0,
+					'nodeRange': new ve.Range( 1, 4 )
+				},
 				// table/tableRow/tableCell/paragraph/text - leaf nodes from different levels
-				{ 'node': lookup( documentNode, 1, 0, 0, 0, 0 ) }
+				{
+					'node': lookup( documentNode, 1, 0, 0, 0, 0 ),
+					'index': 0,
+					'nodeRange': new ve.Range( 9, 10 )
+				}
 			]
 		},
 		{
 			'actual': doc.selectNodes( new ve.Range( 28, 41 ), 'leaves' ),
 			'expected': [
 				// table/tableRow/tableCell/list/listItem/paragraph/text
-				{ 'node': lookup( documentNode, 1, 0, 0, 2, 0, 0, 0 ) },
+				{
+					'node': lookup( documentNode, 1, 0, 0, 2, 0, 0, 0 ),
+					'index': 0,
+					'nodeRange': new ve.Range( 28, 29 )
+				},
 				// preformatted/text
-				{ 'node': lookup( documentNode, 2, 0 ) },
+				{
+					'node': lookup( documentNode, 2, 0 ),
+					'index': 0,
+					'nodeRange': new ve.Range( 36, 37 )
+				},
 				// preformatted/image - leaf nodes that are not text nodes
-				{ 'node': lookup( documentNode, 2, 1 ) },
+				{
+					'node': lookup( documentNode, 2, 1 ),
+					'index': 1,
+					'nodeRange': new ve.Range( 38, 38 )
+				},
 				// preformatted/text
-				{ 'node': lookup( documentNode, 2, 2 ) }
+				{
+					'node': lookup( documentNode, 2, 2 ),
+					'index': 2,
+					'nodeRange': new ve.Range( 39, 40 )
+				}
 			]
 		},
 		{
 			'actual': doc.selectNodes( new ve.Range( 2, 15 ), 'siblings' ),
 			'expected': [
 				// heading
-				{ 'node': lookup( documentNode, 0 ), 'range': new ve.Range( 2, 4 ) },
+				{
+					'node': lookup( documentNode, 0 ),
+					'range': new ve.Range( 2, 4 ),
+					'index': 0,
+					'nodeRange': new ve.Range( 1, 4 )
+				},
 				// table
-				{ 'node': lookup( documentNode, 1 ), 'range': new ve.Range( 6, 15 ) }
+				{
+					'node': lookup( documentNode, 1 ),
+					'range': new ve.Range( 6, 15 ),
+					'index': 1,
+					'nodeRange': new ve.Range( 6, 34 )
+				}
 			]
 		},
 		{
 			'actual': doc.selectNodes( new ve.Range( 2, 49 ), 'siblings' ),
 			'expected': [
 				// heading
-				{ 'node': lookup( documentNode, 0 ), 'range': new ve.Range( 2, 4 ) },
+				{
+					'node': lookup( documentNode, 0 ),
+					'range': new ve.Range( 2, 4 ),
+					'index': 0,
+					'nodeRange': new ve.Range( 1, 4 )
+				},
 				// table
-				{ 'node': lookup( documentNode, 1 ) },
+				{
+					'node': lookup( documentNode, 1 ),
+					'index': 1,
+					'nodeRange': new ve.Range( 6, 34 )
+				},
 				// preformatted
-				{ 'node': lookup( documentNode, 2 ) },
+				{
+					'node': lookup( documentNode, 2 ),
+					'index': 2,
+					'nodeRange': new ve.Range( 36, 40 )
+				},
 				// definitionList
-				{ 'node': lookup( documentNode, 3 ), 'range': new ve.Range( 42, 49 ) }
+				{
+					'node': lookup( documentNode, 3 ),
+					'range': new ve.Range( 42, 49 ),
+					'index': 3,
+					'nodeRange': new ve.Range( 42, 52 )
+				}
 			]
 		}
 	];
 };
 
 /**
- * Asserts that two node trees are equavilant.
+ * Asserts that two node trees are equivalent.
  * 
  * This will perform 4 assertions on each branch node and 3 assertions on each leaf node.
  * 
@@ -82,7 +139,7 @@ ve.example.nodeTreeEqual = function( a, b ) {
 };
 
 /**
- * Asserts that two node selections are equavilant.
+ * Asserts that two node selections are equivalent.
  * 
  * This will perform 1 assertion to check the number of results in the selection and then 2
  * assertions on each result
@@ -98,6 +155,8 @@ ve.example.nodeSelectionEqual = function( a, b ) {
 		} else {
 			strictEqual( 'range' in a[i], 'range' in b[i], 'range existence match' );
 		}
+		deepEqual( a[i].index, b[i].index, 'index match' );
+		deepEqual( a[i].nodeRange, b[i].nodeRange, 'nodeRange match' );
 	}
 };
 
