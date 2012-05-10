@@ -45,8 +45,12 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 		start = range.start,
 		end = range.end,
 		stack = [ {
+			// Node we are currently stepping through
+			// Note each iteration visits a child of node, not node itself
 			'node': doc,
+			// Index of the child in node we're visiting
 			'index': 0,
+			// First offset inside node
 			'startOffset': 1
 		} ],
 		node,
