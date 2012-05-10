@@ -101,7 +101,7 @@ ve.Surface = function( parent, data, options ) {
 	*/
 	
 	/* Define HTML5 DOM */
-	var HTML = $('<div><h1>abc</h1><p>a<b>b</b><i>c</i></p><p>Lorem ipsum and</p><table><tbody><tr><td><p><i><b>a</b></i></p></td></tr></tbody></table><ul><li><p>a</p></li></ul><img src="http://dl.dropbox.com/u/1026938/wikia.jpeg"></div>');	
+	var HTML = $('<div><alien><b>Hello world!</b> What\'s up?</alien><h1>abc</h1><p>a<b>b</b><i>c</i></p><p>Lorem ipsum and</p><table><tbody><tr><td><p><i><b>a</b></i></p></td></tr></tbody></table><ul><li><p>a</p></li></ul><img src="http://dl.dropbox.com/u/1026938/wikia.jpeg"></div>');	
 
 	/* Create linear model from HTML5 DOM */
 	var data = ve.dm.HTMLConverter.getLinearModel(HTML[0]);

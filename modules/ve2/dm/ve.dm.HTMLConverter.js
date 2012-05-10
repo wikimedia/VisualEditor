@@ -69,7 +69,9 @@ ve.dm.HTMLConverter.elementTypes = {
 	'td': { 'leafNode': false, 'type': 'tableCell' },
 	'ul': { 'leafNode': false, 'type': 'list', 'attributes': { 'style': 'bullet' } },
 	'ol': { 'leafNode': false, 'type': 'list', 'attributes': { 'style': 'number' } },
-	'dl': { 'leafNode': false, 'type': 'definitionList' }
+	'dl': { 'leafNode': false, 'type': 'definitionList' },
+	'alien': { 'leafNode': true, 'type': 'alien' }
+
 	// Missing types that will end up being alien nodes (not a complete list):
 	// div, center, blockquote, caption, tbody, thead, tfoot, horizontalRule, br, img, video, audio
 };
@@ -260,9 +262,14 @@ ve.dm.HTMLConverter.prototype.convert = function( node, annotations, typeData ) 
 		}
 		data.push( element );
 	}
-	
+
 	for ( i = 0; i < node.childNodes.length; i++ ) {
 		child = node.childNodes[i];
+		if ( child.nodeName === 'ALIEN' ) {
+			data.push( { 'type': 'alien', 'attributes': { 'html': child.innerHTML } } );
+			data.push( { 'type': '/alien' } );
+			continue;
+		}
 		switch ( child.nodeType ) {
 			case types.ELEMENT_NODE:
 				// Check if this is an annotation
