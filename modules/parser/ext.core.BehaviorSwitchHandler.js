@@ -6,7 +6,7 @@ function BehaviorSwitchHandler( manager, isInclude ) {
 	this.manager.addTransform( this.onBehaviorSwitch.bind( this ), this.rank, 'tag', 'behavior-switch' );
 }
 
-BehaviorSwitchHandler.prototype.rank = 1.14;
+BehaviorSwitchHandler.prototype.rank = 2.14;
 
 BehaviorSwitchHandler.prototype.onBehaviorSwitch = function ( token, manager, cb ) {
 	var env = this.manager.env,

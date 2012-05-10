@@ -57,7 +57,7 @@ TokenCollector.prototype._onDelimiterToken = function ( token, frame, cb ) {
 	if ( token.constructor === SelfclosingTagTk && !this.isActive ) {
 		this.manager.env.dp( 'skipping collection on ', token );
 		// just ignore it
-		return { token: token }; //this.transformation( [token, token] );
+		return { tokens: [ token ] }; //this.transformation( [token, token] );
 	} else if ( this.isActive && 
 			( token.constructor === EndTagTk || token.constructor === EOFTk ) ) {
 		this.manager.env.dp( 'finishing collection on ', token );
@@ -102,7 +102,7 @@ TokenCollector.prototype._onDelimiterToken = function ( token, frame, cb ) {
 		// pass through end token
 		this.tokens = [];
 		this.isActive = false;
-		return { token: token };
+		return { tokens: [ token ] };
 	}
 };
 

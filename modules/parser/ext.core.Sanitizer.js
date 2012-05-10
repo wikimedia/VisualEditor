@@ -115,7 +115,7 @@ Sanitizer.prototype.onAny = function ( token ) {
 			}
 			attribs[i] = new KV( k, v );
 		}
-		//console.warn(JSON.stringify([attribs, token], null, 2));
+		//console.warn( 'sanitizer: ' + JSON.stringify([attribs, token], null, 2));
 		newToken.attribs = attribs;
 		token = newToken;
 	}

@@ -29,7 +29,7 @@ ListHandler.prototype.reset = function() {
 
 ListHandler.prototype.onNewline = function ( token, frame, prevToken ) {
 	var tokens = [];
-	token.rank = this.listRank + this.delta;
+	//token.rank = this.listRank + this.delta;
 	if (!this.bstack.length) {
 		tokens.push(token);
 	}
@@ -44,7 +44,7 @@ ListHandler.prototype.onNewline = function ( token, frame, prevToken ) {
 };
 
 ListHandler.prototype.onEnd = function( token, frame, prevToken ) {
-	token.rank = this.listRank + this.delta;
+	//token.rank = this.listRank + this.delta;
 	return { tokens: this.end().concat([token]) };
 };
 

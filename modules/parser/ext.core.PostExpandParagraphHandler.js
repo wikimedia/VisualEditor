@@ -43,9 +43,6 @@ PostExpandParagraphHandler.prototype.reset = function ( token, frame, cb ) {
 PostExpandParagraphHandler.prototype._finish = function ( ) {
 	var tokens = this.tokens;
 	this.tokens = [];
-	for ( var i = 0, l = tokens.length; i < l; i++ ) {
-		tokens[ i ].rank = this.anyRank;
-	}
 	// remove 'any' registration
 	this.dispatcher.removeTransform( this.anyRank, 'any' );
 	this.newLines = 0;

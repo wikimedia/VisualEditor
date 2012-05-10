@@ -356,13 +356,13 @@ ExternalLinkHandler.prototype.onUrlLink = function ( token, frame, cb ) {
 				env.tokensToString( env.lookupKV( token.attribs, 'href' ).v )
 			);
 	if ( this._isImageLink( href ) ) {
-		cb( { token: new SelfclosingTagTk( 'img', 
-				[ 
+		cb( { tokens: [ new SelfclosingTagTk( 'img', 
+					[ 
 					new KV( 'src', href ),
 					new KV( 'alt', href.split('/').last() )
-
-				] 
-			) 
+					] 
+					) 
+				]
 		} );
 	} else {
 		cb( { 

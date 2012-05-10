@@ -744,7 +744,7 @@ tplarg
     nl_comment_space* 
     "}}}" {
       name = flatten( name );
-      params.unshift( { k: '', v: name } );
+      params.unshift( new KV( name, '' ) );
       var obj = new SelfclosingTagTk( 'templatearg', params );
       //console.warn( 'tokenizer tplarg ' + JSON.stringify( obj, null, 2 ));
       //console.warn('template arg @' + pos + '::' + input.substr(pos, 40) );
@@ -874,7 +874,7 @@ wikilink
           contentPos: lcontent.pos
       };
       // XXX: Point to object with path, revision and input information
-      obj.source = input;
+      //obj.source = input;
 
       //console.warn('lcontent: ' + JSON.stringify( lcontent, null, 2 ) );
       // Deal with content. XXX: Properly support pipe-trick etc

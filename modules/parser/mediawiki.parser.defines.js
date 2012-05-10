@@ -3,6 +3,8 @@
  * strings or String objects (if attributes are needed).
  */
 
+var async = require('async');
+
 var toString = function() { return JSON.stringify( this ); };
 
 function TagTk( name, attribs, dataAttribs ) { 
@@ -134,29 +136,115 @@ Params.prototype.named = function () {
 	return out;
 };
 
+/**
+ * Expand a slice of the parameters using the supplied get options.
+ */
+Params.prototype.getSlice = function ( options, start, end ) {
+	var args = this.slice( start, end ),
+		cb = options.cb;
+	//console.warn( JSON.stringify( args ) );
+	async.map( 
+			args,
+			function( kv, cb2 ) {
+				if ( kv.v.constructor === String ) {
+					// nothing to do
+					cb2( null, kv );
+				} else if ( kv.v.constructor === Array &&
+					// remove String from Array
+					kv.v.length === 1 && kv.v[0].constructor === String ) {
+						cb2( null, new KV( kv.k, kv.v[0] ) );
+				} else {
+					// Expand the value
+					var o2 = $.extend( {}, options );
+					// add in the key
+					o2.cb = function ( v ) {
+						cb2( null, new KV( kv.k, v ) );
+					};
+					kv.v.get( o2 );
+				}
+			},
+			function( err, res ) {
+				if ( err ) {
+					console.trace();
+					throw JSON.stringify( err );
+				}
+				//console.warn( 'getSlice res: ' + JSON.stringify( res ) );
+				cb( res );
+			});
+};
 
-function ParamValue ( chunk, manager ) {
-	this.chunk = chunk;
-	this.manager = manager;
-	this.cache = {};
+
+
+/**
+ * A chunk. Wraps a source chunk of tokens with a reference to a frame for
+ * lazy and shared transformations. Do not use directly- use
+ * frame.newParserValue instead!
+ */
+function ParserValue ( source, frame ) {
+	if ( source.constructor === ParserValue ) {
+		Object.defineProperty( this, 'source', 
+				{ value: source.source, enumerable: false } );
+	} else {
+		Object.defineProperty( this, 'source', 
+				{ value: source, enumerable: false } );
+	}
+	Object.defineProperty( this, 'frame', 
+			{ value: frame, enumerable: false } );
 }
 
-ParamValue.prototype.expanded = function ( format, cb ) {
-	if ( format === tokens ) {
-		if ( this.cache.tokens ) {
-			cb( this.cache.tokens );
+
+ParserValue.prototype._defaultTransformOptions = {
+	type: 'text/x-mediawiki/expanded'
+};
+
+ParserValue.prototype.toJSON = function() {
+	return this.source;
+};
+
+ParserValue.prototype.get = function( options, cb ) {
+	//console.trace();
+	if ( ! options ) {
+		options = $.extend({}, this._defaultTransformOptions);
+	} else if ( options.type === undefined ) {
+		options.type = this._defaultTransformOptions.type;
+	}
+
+	// convenience cb override for async-style functions that pass a cb as the
+	// last argument
+	if ( cb === undefined ) {
+		cb = options.cb;
+	}
+
+	// try the cache
+	var maybeCached = this.source.cache && this.source.cache.get( this.frame, options );
+	if ( maybeCached !== undefined ) {
+		if ( cb ) {
+			cb ( maybeCached );
 		} else {
-			var pipeline = this.manager.pipeFactory.getPipeline( 
-					this.manager.attributeType || 'tokens/wiki', true
-					);
-			pipeline.setFrame( this.manager.frame, null );
+			return maybeCached;
 		}
 	} else {
-		throw "ParamValue.expanded: Unsupported format " + format;
+		if ( ! options.cb ) {
+			console.trace();
+			throw "Chunk.get: Need to expand asynchronously, but no cb provided! " +
+				JSON.stringify( this, null, 2 );
+		}
+		options.cb = cb;
+		this.frame.expand( this.source, options );
 	}
 };
-		
 
+ParserValue.prototype.length = function () {
+	return this.source.length;
+};
+
+
+//Chunk.prototype.slice = function () {
+//	return this.source.slice.apply( this.source, arguments );
+//};
+
+
+// TODO: don't use globals!
 if (typeof module == "object") {
 	module.exports = {};
 	global.TagTk = TagTk;
@@ -167,4 +255,5 @@ if (typeof module == "object") {
 	global.EOFTk = EOFTk;
 	global.KV = KV;
 	global.Params = Params;
+	global.ParserValue = ParserValue;
 }

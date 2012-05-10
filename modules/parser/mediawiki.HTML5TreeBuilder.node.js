@@ -72,16 +72,17 @@ FauxHTML5.TreeBuilder.prototype._att = function (maybeAttribs) {
 // Adapt the token format to internal HTML tree builder format, call the actual
 // html tree builder by emitting the token.
 FauxHTML5.TreeBuilder.prototype.processToken = function (token) {
+	var attribs = token.attribs || [];
 	if ( token.dataAttribs ) {
 		if ( ! token.attribs ) {
 			token.attribs = [];
 		}
-		token.attribs.push( 
+		attribs = attribs.concat([ 
 				{
 					// Mediawiki-specific round-trip / non-semantic information
 					k: 'data-mw', 
 					v: JSON.stringify( token.dataAttribs ) 
-				} );
+				} ] );
 	}
 
 	switch( token.constructor ) {
@@ -93,24 +94,24 @@ FauxHTML5.TreeBuilder.prototype.processToken = function (token) {
 		case TagTk:
 			this.emit('token', {type: 'StartTag', 
 				name: token.name, 
-				data: this._att(token.attribs)});
+				data: this._att(attribs)});
 			break;
 		case SelfclosingTagTk:
 			this.emit('token', {type: 'StartTag', 
 				name: token.name, 
-				data: this._att(token.attribs)});
+				data: this._att(attribs)});
 			if ( HTML5.VOID_ELEMENTS.indexOf( token.name.toLowerCase() ) < 0 ) {
 				// VOID_ELEMENTS are automagically treated as self-closing by
 				// the tree builder
 				this.emit('token', {type: 'EndTag', 
 					name: token.name, 
-					data: this._att(token.attribs)});
+					data: this._att(attribs)});
 			}
 			break;
 		case EndTagTk:
 			this.emit('token', {type: 'EndTag', 
 				name: token.name, 
-				data: this._att(token.attribs)});
+				data: this._att(attribs)});
 			break;
 		case CommentTk:
 			this.emit('token', {type: 'Comment', 

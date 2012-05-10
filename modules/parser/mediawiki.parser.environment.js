@@ -33,7 +33,7 @@ MWParserEnvironment.prototype.lookupKV = function ( kvs, key ) {
 	var kv;
 	for ( var i = 0, l = kvs.length; i < l; i++ ) {
 		kv = kvs[i];
-		if ( kv.k === key ) {
+		if ( kv.k.trim() === key ) {
 			// found, return it.
 			return kv;
 		}
@@ -126,19 +126,25 @@ MWParserEnvironment.prototype.setTokenRank = function ( rank, token ) {
 
 // Strip 'end' tokens and trailing newlines
 MWParserEnvironment.prototype.stripEOFTkfromTokens = function ( tokens ) {
-	this.dp( 'stripping end or whitespace tokens', tokens );
+	this.dp( 'stripping end or whitespace tokens' );
 	if ( ! tokens.length ) {
 		return tokens;
 	}
 	// Strip 'end' tokens and trailing newlines
 	var l = tokens[tokens.length - 1];
-	while ( tokens.length &&
-			(	l.constructor === EOFTk  || l.constructor === NlTk ) 
-	) 
-	{
-		this.dp( 'stripping end or whitespace tokens' );
-		tokens.pop();
-		l = tokens[tokens.length - 1];
+	if ( l.constructor === EOFTk || l.constructor === NlTk ||
+			( l.constructor === String && l.match( /^\s+$/ ) ) ) {
+		var origTokens = tokens;
+		tokens = origTokens.slice();
+		tokens.rank = origTokens.rank;
+		while ( tokens.length &&
+				((	l.constructor === EOFTk  || l.constructor === NlTk )  ||
+			( l.constructor === String && l.match( /^\s+$/ ) ) ) )
+		{
+			this.dp( 'stripping end or whitespace tokens' );
+			tokens.pop();
+			l = tokens[tokens.length - 1];
+		}
 	}
 	return tokens;
 };
@@ -287,7 +293,7 @@ MWParserEnvironment.prototype.tokensToString = function ( tokens, strict ) {
 			//out.push( tstring );
 		}
 	}
-	//console.warn( 'MWParserEnvironment.tokensToString result: ' + out.join('') );
+	this.dp( 'MWParserEnvironment.tokensToString result: ', out );
 	return out.join('');
 };
 
@@ -358,6 +364,7 @@ MWParserEnvironment.prototype.dp = function ( ) {
 			try {
 				console.warn( JSON.stringify( arguments, null, 2 ) );
 			} catch ( e ) {
+				console.trace();
 				console.warn( e );
 			}
 		} else {
