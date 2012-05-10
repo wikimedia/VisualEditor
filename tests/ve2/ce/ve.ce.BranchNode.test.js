@@ -42,7 +42,7 @@ test( 'updateDomWrapper', 3, function() {
 	node.getModel().attributes.type = 'b';
 	node.updateDomWrapper( 'type' );
 	equal( node.$.get( 0 ).nodeName.toLowerCase(), 'b', 'DOM element type gets converted' );
-	equal( node.$.attr( 'class' ), 'test', 'old classes are added to new wrapper' );
+	equal( node.$.hasClass( 'test' ), true, 'old classes are added to new wrapper' );
 	equal( node.$.text(), 'hello', 'contents are added to new wrapper' );
 } );
 
