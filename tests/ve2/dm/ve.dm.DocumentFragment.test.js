@@ -113,3 +113,15 @@ test( 'getDataFromNode', 3, function() {
 		'leaf without children'
 	);
 } );
+
+test( 'getAnnotationsFromOffset', 2, function() {
+	var fragment = new ve.dm.DocumentFragment( ve.dm.example.data ),
+		data = fragment.getData(),
+		annotations;
+	for ( var i = 0; i < data.length; i++ ) {
+		annotations = fragment.getAnnotationsFromOffset( i );
+		if (typeof annotations[0] === 'object') {
+			ok( annotations, 'annotations at offset ' + i );
+		}
+	}
+} );

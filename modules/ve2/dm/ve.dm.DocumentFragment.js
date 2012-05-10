@@ -180,3 +180,21 @@ ve.dm.DocumentFragment.prototype.getDataFromNode = function( node ) {
 	}
 	return null;
 };
+
+/**
+ * Gets a list of annotations that a given offset is covered by.
+ *
+ * @method
+ * @param {Integer} offset Offset to get annotations for
+ * @returns {Object[]} A copy of all annotation objects offset is covered by
+ */
+ve.dm.DocumentFragment.prototype.getAnnotationsFromOffset = function( offset, byref ) {
+	if ( ve.isArray( this.data[offset] ) ) {
+		if ( byref === true ) {
+			return this.data[offset].slice( 1 );
+		} else {
+			return ve.copyArray( this.data[offset].slice( 1 ) );
+		}
+	}
+	return [];
+};
