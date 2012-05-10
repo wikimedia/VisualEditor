@@ -63,7 +63,7 @@ ve.example.getSelectNodesCases = function( doc ) {
 };
 
 /**
- * Asserts that two node trees are equavilant.
+ * Asserts that two node trees are equivalent.
  * 
  * This will perform 4 assertions on each branch node and 3 assertions on each leaf node.
  * 
@@ -82,7 +82,7 @@ ve.example.nodeTreeEqual = function( a, b ) {
 };
 
 /**
- * Asserts that two node selections are equavilant.
+ * Asserts that two node selections are equivalent.
  * 
  * This will perform 1 assertion to check the number of results in the selection and then 2
  * assertions on each result
