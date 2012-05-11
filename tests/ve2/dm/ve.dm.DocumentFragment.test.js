@@ -145,37 +145,3 @@ test( 'getAnnotationsFromOffset', 1, function() {
 	}
 } );
 
-test( 'getAnnotationsFromRange', 1, function() {
-	var fragment,
-		range,
-		cases = [
-		{
-			'msg': 'all bold',
-			'data': [['a', { '{"type:"bold"}': { 'type': 'bold' } } ], ['b', { '{"type:"bold"}': { 'type': 'bold' } } ]],
-			'expected': [ { '{"type:"bold"}': { 'type': 'bold' } } ]
-		},
-		{
-			'msg': 'all different',
-			'data': [['a', { '{"type:"bold"}': { 'type': 'bold' } } ], ['b', { '{"type:"italic"}': { 'type': 'italic' } } ]],
-			'expected': []
-		}
-	];
-
-	expect( cases.length );
-
-	for (var i=0; i<cases.length; i++) {
-		fragment = new ve.dm.DocumentFragment ( cases[i].data );
-		range = new ve.Range( 0, fragment.getData().length );
-		annotations = fragment.getAnnotationsFromRange( range );
-		
-		strictEqual(
-			annotations.all, cases[i].expected, cases[i].msg
-		);
-		//console.log (annotations.all);
-
-	}
-});
-
-
-
-
