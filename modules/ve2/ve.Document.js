@@ -34,7 +34,11 @@ ve.Document.prototype.getDocumentNode = function() {
  * @returns {Array} List of objects describing nodes in the selection and the ranges therein
  *                  'node': Reference to a ve.dm.Node
  *                  'range': ve.Range, missing if the entire node is covered
- *                  'index': Index of the node in its parent
+ *                  'index': Index of the node in its parent, missing if node has no parent
+ *                  'indexInNode': If range is a zero-length range between two children of node,
+ *                                 this is set to the index of the child following range (or to
+ *                                 node.children.length+1 if range is between the last child and
+ *                                 the end). Missing in all other cases
  *                  'nodeRange': Range covering the inside of the entire node
  * @throws 'Invalid start offset' if range.start is out of range
  * @throws 'Invalid end offset' if range.end is out of range
@@ -51,7 +55,7 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 			// Index of the child in node we're visiting
 			'index': 0,
 			// First offset inside node
-			'startOffset': 1
+			'startOffset': 0
 		} ],
 		node,
 		prevNode,
@@ -106,15 +110,18 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 
 		if ( start == end && ( startBetween || endBetween ) && node.isWrapped() ) {
 			// Empty range in the parent, outside of any child
-			parentFrame = stack[stack.length - 2];
-			return [ {
+			retval = [ {
 				'node': currentFrame.node,
+				'indexInNode': currentFrame.index + ( endBetween ? 1 : 0 ),
 				'range': new ve.Range( start, end ),
-				'index': parentFrame.index,
-				'nodeRange': new ve.Range( parentFrame.startOffset,
-					parentFrame.startOffset + currentFrame.node.getLength()
+				'nodeRange': new ve.Range( currentFrame.startOffset,
+					currentFrame.startOffset + currentFrame.node.getLength()
 				)
 			} ];
+			parentFrame = stack[stack.length - 2];
+			if ( parentFrame ) {
+				retval[0].index = parentFrame.index;
+			}
 		} else if ( startBetween ) {
 			// start is between the previous sibling and node
 			// so the selection covers all of node and possibly more

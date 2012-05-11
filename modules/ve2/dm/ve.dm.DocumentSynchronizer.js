@@ -89,12 +89,20 @@ ve.dm.DocumentSynchronizer.synchronizers = {
 			return;
 		}
 		
-		// TODO index of firstNode in parent should be in the selectNodes result
-		var firstNode = selection[0].node,
+		var firstNode, parent, index, numNodes;
+		if ( 'indexInNode' in selection[0] ) {
+			// Insertion
+			parent = selection[0].node;
+			index = selection[0].indexInNode;
+			numNodes = 0;
+		} else {
+			// Rebuild
+			firstNode = selection[0].node,
 			parent = firstNode.getParent(),
-			index = parent.indexOf( firstNode );
-		
-		this.document.rebuildNodes( parent, index, selection.length, action.oldRange.from,
+			index = selection[0].index;
+			numNodes = selection.length;
+		}
+		this.document.rebuildNodes( parent, index, numNodes, action.oldRange.from,
 			action.newRange.getLength()
 		);
 	}

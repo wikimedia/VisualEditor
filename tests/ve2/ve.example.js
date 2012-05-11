@@ -154,6 +154,20 @@ ve.example.getSelectNodesCases = function( doc ) {
 					'nodeRange': new ve.Range( 1, 4 )
 				}
 			]
+		},
+		// Zero-length range between two children of the document
+		{
+			'actual': doc.selectNodes( new ve.Range( 5, 5 ), 'leaves' ),
+			'expected': [
+				// document
+				{
+					'node': documentNode,
+					'range': new ve.Range( 5, 5 ),
+					// no 'index' because documentNode has no parent
+					'indexInNode': 1,
+					'nodeRange': new ve.Range( 0, 53 )
+				}
+			]
 		}
 	];
 };
@@ -196,6 +210,7 @@ ve.example.nodeSelectionEqual = function( a, b ) {
 			strictEqual( 'range' in a[i], 'range' in b[i], 'range existence match' );
 		}
 		deepEqual( a[i].index, b[i].index, 'index match' );
+		deepEqual( a[i].indexInNode, b[i].indexInNode, 'indexInNode match' );
 		deepEqual( a[i].nodeRange, b[i].nodeRange, 'nodeRange match' );
 	}
 };
