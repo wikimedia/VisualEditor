@@ -11,6 +11,181 @@ ve.dm.Document = function( data ) {
 	ve.dm.DocumentFragment.call( this, data );
 };
 
+/* Static methods */
+
+/**
+ * Checks if content can be inserted at an offset in document data.
+ * 
+ * This method assumes that any value that has a type property that's a string is an element object.
+ * 
+ * @example Content offsets:
+ *      <heading> a </heading> <paragraph> b c <img> </img> </paragraph>
+ *     .         ^ ^          .           ^ ^ ^     .      ^            .
+ * 
+ * @example Content offsets:
+ *      <list> <listItem> </listItem> <list>
+ *     .      .          .           .      .
+ * 
+ * @static
+ * @method
+ * @param {Array} data Document data
+ * @param {Integer} offset Document offset
+ * @returns {Boolean} Content can be inserted at offset
+ */
+ve.dm.Document.isContentOffset = function( data, offset ) {
+	// Edges are never content
+	if ( offset === 0 || offset === data.length ) {
+		return false;
+	}
+	var left = data[offset - 1],
+		right = data[offset],
+		factory = ve.dm.factory;
+	return (
+		// Data exists at offsets
+		( left !== undefined && right !== undefined ) &&
+		(
+			// If there's content on the left or the right of the offset than we are good
+			// <paragraph>|a|</paragraph>
+			( typeof left === 'string' || typeof right === 'string' ) ||
+			// Same checks but for annotated characters - isArray is slower, try it next
+			( ve.isArray( left ) || ve.isArray( right ) ) ||
+			// The most expensive test are last, these deal with elements
+			(
+				// Right of a leaf
+				// <paragraph><image></image>|</paragraph>
+				(
+					// Is an element
+					typeof left.type === 'string' &&
+					// Is a closing
+					left.type.charAt( 0 ) === '/' &&
+					// Is a leaf
+					!factory.canNodeHaveChildren( left.type.substr( 1 ) )
+				) || 
+				// Left of a leaf
+				// <paragraph>|<image></image></paragraph>
+				(
+					// Is an element
+					typeof right.type === 'string' &&
+					// Is not a closing
+					right.type.charAt( 0 ) !== '/' &&
+					// Is a leaf
+					!factory.canNodeHaveChildren( right.type )
+				) ||
+				// Inside empty content branch
+				// <paragraph>|</paragraph>
+				(
+					// Inside empty element
+					'/' + left.type === right.type &&
+					// Both are content branches (right is the same type)
+					factory.canNodeHaveChildren( left.type ) &&
+					!factory.canNodeHaveGrandchildren( left.type )
+				)
+			)
+		)
+	);
+};
+
+/**
+ * Checks if content can be inserted at an offset in document data.
+ * 
+ * This method assumes that any value that has a type property that's a string is an element object.
+ * 
+ * @example Structural offsets:
+ *      <heading> a </heading> <paragraph> b c <img> </img> </paragraph>
+ *     ^         . .          ^           . . .     .      .            ^
+ * 
+ * @static
+ * @method
+ * @param {Array} data Document data
+ * @param {Integer} offset Document offset
+ * @returns {Boolean} Structure can be inserted at offset
+ */
+ve.dm.Document.isStructuralOffset = function( data, offset ) {
+	// Edges are always structural
+	if ( offset === 0 || offset === data.length ) {
+		return true;
+	}
+	// Offsets must be within range and both sides must be elements
+	var left = data[offset - 1],
+		right = data[offset],
+		factory = ve.dm.factory;
+	return (
+		(
+			left !== undefined &&
+			right !== undefined &&
+			typeof left.type === 'string' &&
+			typeof right.type === 'string'
+		) &&
+		(
+			// Right of a branch
+			// <list><listItem><paragraph>a</paragraph>|</listItem>|</list>|
+			(
+				// Is a closing
+				left.type.charAt( 0 ) === '/' &&
+				// Is a branch
+				factory.canNodeHaveChildren( left.type.substr( 1 ) )
+			) ||
+			// Left of branch
+			// |<list>|<listItem>|<paragraph>a</paragraph></listItem></list>
+			(
+				// Is not a closing
+				right.type.charAt( 0 ) !== '/' &&
+				// Is a branch
+				factory.canNodeHaveChildren( right.type )
+			) ||
+			// Inside empty non-content branch
+			// <list>|</list> or <list><listItem>|</listItem></list>
+			(
+				// Inside empty element
+				'/' + left.type === right.type &&
+				// Both are non-content branches (right is the same type)
+				factory.canNodeHaveGrandchildren( left.type )
+			)
+		)
+	);
+};
+
+/**
+ * Checks if a data at a given offset is an element.
+ * 
+ * This method assumes that any value that has a type property that's a string is an element object.
+ * 
+ * @example Element data:
+ *      <heading> a </heading> <paragraph> b c <img></img> </paragraph>
+ *     ^         . ^          ^           . . ^     ^     ^            .
+ * 
+ * @static
+ * @method
+ * @param {Array} data Document data
+ * @param {Integer} offset Document offset
+ * @returns {Boolean} Data at offset is an element
+ */
+ve.dm.Document.isElementData = function( data, offset ) {
+	// Data exists at offset and appears to be an element
+	return data[offset] !== undefined && typeof data[offset].type === 'string';
+};
+
+/**
+ * Checks for elements in document data.
+ * 
+ * This method assumes that any value that has a type property that's a string is an element object.
+ * Elements are discovered by iterating through the entire data array (backwards).
+ * 
+ * @static
+ * @method
+ * @param {Array} data Document data
+ * @returns {Boolean} At least one elements exists in data
+ */
+ve.dm.Document.containsElementData = function( data ) {
+	var i = data.length;
+	while ( i-- ) {
+		if ( data[i].type !== undefined ) {
+			return true;
+		}
+	}
+	return false;
+};
+
 /* Methods */
 
 /**
@@ -66,22 +241,33 @@ ve.dm.Document.prototype.rebuildNodes = function( parent, index, numNodes, offse
 	return nodes;
 };
 
-/* Static methods */
 /**
- * Checks if elements are present within data.
+ * Gets a content offset a given distance forwards or backwards from another.
  * 
- * @static
  * @method
- * @param {Array} data Data to look for elements within
- * @returns {Boolean} If elements exist in data
+ * @param {Integer} offset Offset to start from
+ * @param {Integer} distance Number of content offsets to move
+ * @returns {Integer} Relative content offset
  */
-ve.dm.Document.containsElementData = function( data ) {
-	for ( var i = 0, length = data.length; i < length; i++ ) {
-		if ( data[i].type !== undefined ) {
-			return true;
-		}
+ve.dm.Document.prototype.getRelativeContentOffset = function( offset, distance ) {
+	if ( distance === 0 ) {
+		return offset;
 	}
-	return false;
+	var direction = distance > 0 ? 1 : -1,
+		i = offset + direction,
+		steps = 0;
+	distance = Math.abs( distance );
+	while ( i > 0 && i < this.data.length ) {
+		if ( !ve.dm.DocumentNode.isStructuralOffset( this.data, i ) ) {
+			steps++;
+			offset = i;
+			if ( distance === steps ) {
+				return offset;
+			}
+		}
+		i += direction;
+	}
+	return offset;
 };
 
 /* Inheritance */
