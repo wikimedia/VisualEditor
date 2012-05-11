@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Cursor</title>
+        <style>
+        	.editor {
+        		border: 1px solid #369;
+        		height: 80px;
+        		padding: 5px;
+        	}
+        	.alien {
+        		background: #9F9;
+        		display: inline;
+        	}
+        	.alien::selection {
+        		background: #CCC;
+        	}
+        </style>
+        <script src="../../modules/jquery/jquery.js"></script>
+        <script src="../../modules/rangy/rangy-core.js"></script>
+    </head>
+    <body>
+    	<h1>Only Alien</h1>
+        <div contenteditable="true" class="editor">
+        	<div contenteditable="false" spellcheck="false" class="alien">&#x2063;Alien&#x2063;</div>
+        </div>
+		<div class="monitor"></div>
+
+    	<h1>Leading Alien</h1>
+        <div contenteditable="true" class="editor">
+        	<div contenteditable="false" class="alien">&#x2063;Alien&#x2063;</div> nodes are so cool!
+        </div>
+		<div class="monitor"></div>
+
+    	<h1>Closing Alien</h1>
+        <div contenteditable="true" class="editor">
+        	I have always wanted to see an <div contenteditable="false" class="alien">&#x2063;Alien&#x2063;</div>
+        </div>
+		<div class="monitor"></div>
+
+        <script>
+        	var timer = null;
+			$('.editor').on('focus', start).on('blur', stop);
+			function start() {
+				timer = setInterval(function() {
+					var	sel = rangy.getSelection(),
+						$monitor = $(sel.anchorNode).closest('.editor').next();
+						inAlien = ($(sel.anchorNode).closest('.alien').length) ? true : false;
+						
+					$monitor.html('anchorOffset: ' + sel.anchorOffset + '<br>focusOffset: ' + sel.focusOffset + '<br>inAlien: ' + inAlien);
+				}, 100);
+			}
+			function stop() {
+				clearInterval(timer);
+			} 
+        </script>
+    </body>
+</html>
