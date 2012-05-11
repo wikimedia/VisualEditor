@@ -85,6 +85,7 @@ ve.dm.HTMLConverter.elementTypes = {
 ve.dm.HTMLConverter.annotationTypes = {
 	'i': 'textStyle/italic',
 	'b': 'textStyle/bold',
+	'u': 'textStyle/underline',
 	'small': 'textStyle/small',
 	'span': 'textStyle/span',
 	'a': function( node ) {
@@ -195,6 +196,9 @@ ve.dm.HTMLConverter.generateAnnotatedContent = function( content, annotations ) 
 		return characters;
 	}
 	for ( i = 0; i < annotations.length; i++ ) {
+		if ( annotations[i].data != undefined && Object.keys(annotations[i].data).length === 0 ) {
+			delete annotations[i].data;
+		}
 		annoationMap[JSON.stringify( annotations[i] )] = annotations[i];
 	}
 	for ( i = 0; i < characters.length; i++ ) {
