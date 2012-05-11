@@ -172,16 +172,37 @@ test( 'getAnnotationsFromRange', 1, function() {
 		{
 			'msg': 'bold and italic',
 			'data': [
-				['a', { '{"type":"bold"}': { 'type': 'bold' }, '{"type":"italic"}': { 'type': 'italic'} } ],
-				['b', { '{"type":"bold"}': { 'type': 'bold' }, '{"type":"italic"}': { 'type': 'italic'} } ]
+				['a',
+					{
+						'{"type":"bold"}': { 'type': 'bold' },
+						'{"type":"italic"}': { 'type': 'italic'}
+					}
+				],
+				['b',
+					{
+						'{"type":"bold"}': { 'type': 'bold' },
+						'{"type":"italic"}': { 'type': 'italic'}
+					}
+				]
 			],
 			'expected': [ { 'type': 'bold' }, { 'type': 'italic' } ]
 		},
 		{
 			'msg': 'bold and italic',
 			'data': [
-				['a', { '{"type":"bold"}': { 'type': 'bold' }, '{"type":"italic"}': { 'type': 'italic'} } ],
-				['b', { '{"type":"bold"}': { 'type': 'bold' }, '{"type":"italic"}': { 'type': 'italic'}, '{"type":"underline"}': { 'type': 'underline'} } ]
+				['a',
+					{
+						'{"type":"bold"}': { 'type': 'bold' },
+						'{"type":"italic"}': { 'type': 'italic'}
+					}
+				],
+				['b',
+					{
+						'{"type":"bold"}': { 'type': 'bold' },
+						'{"type":"italic"}': { 'type': 'italic'},
+						'{"type":"underline"}': { 'type': 'underline'}
+					}
+				]
 			],
 			'expected': [ { 'type': 'bold' }, { 'type': 'italic' } ]
 		},
