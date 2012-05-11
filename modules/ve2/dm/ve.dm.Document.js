@@ -186,6 +186,39 @@ ve.dm.Document.containsElementData = function( data ) {
 	return false;
 };
 
+/**
+ * Get the parent node that would be affected by inserting given data into its child.
+ *
+ * This is used when inserting data that closes and reopens one or more parent nodes into a
+ * child node, which requires rebuilding at a higher level.
+ *
+ * @param {ve.Node} node Child node to start from
+ * @param {Array} data Data to inspect for closings
+ * @returns {ve.Node} Lowest level parent node being affected
+ */
+ve.dm.Document.getScope = function( node, data ) {
+	debugger;
+	var i,
+		length,
+		level = 0,
+		max = 0;
+	for ( i = 0, length = data.length; i < length; i++ ) {
+		if ( data[i].type ) {
+			level += data[i].type.charAt( 0 ) === '/' ? 1 : -1;
+			max = level > max ? level : max;
+		}
+	}
+	for ( i = 0; i < max; i++ ) {
+		// Skip over unwrapped parents, they're not counted in the level count
+		while ( !node.isWrapped() && node.getParent() ) {
+			node = node.getParent();
+		}
+		// Go up one level
+		node = node.getParent() || node;
+	}
+	return node;
+};
+
 /* Methods */
 
 /**
