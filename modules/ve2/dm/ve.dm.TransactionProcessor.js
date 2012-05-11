@@ -13,7 +13,6 @@
 ve.dm.TransactionProcessor = function( doc, transaction, reversed ) {
 	this.document = doc;
 	this.operations = transaction.getOperations();
-	// TODO add DocumentSynchronizer
 	this.synchronizer = new ve.dm.DocumentSynchronizer( doc );
 	this.reversed = reversed;
 	
