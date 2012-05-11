@@ -1,6 +1,6 @@
 /**
  * DataModel document fragment.
- * 
+ *
  * @class
  * @extends {ve.Document}
  * @constructor
@@ -111,7 +111,7 @@ ve.dm.DocumentFragment = function( data, parentDocument ) {
 				// Branch or leaf node closing
 				if ( ve.dm.factory.canNodeHaveChildren( currentNode.getType() ) ) {
 					// Pop this node's inner stack from the outer stack. It'll have all of the node's
-					// child nodes fully constructed 
+					// child nodes fully constructed
 					children = stack.pop();
 					currentStack = parentStack;
 					parentStack = stack[stack.length - 2];
@@ -131,7 +131,7 @@ ve.dm.DocumentFragment = function( data, parentDocument ) {
 
 /**
  * Gets slice or copy of the document data.
- * 
+ *
  * @method
  * @param {ve.Range} [range] Range of data to get, all data will be given by default
  * @param {Boolean} [deep=false] Whether to return a deep copy (WARNING! This may be very slow)
@@ -161,7 +161,7 @@ ve.dm.DocumentFragment.prototype.getNodeFromOffset = function( offset ) {
 
 /**
  * Gets the content data of a node.
- * 
+ *
  * @method
  * @param {ve.dm.Node} node Node to get content data for
  * @returns {Array|null} List of content and elements inside node or null if node is not found

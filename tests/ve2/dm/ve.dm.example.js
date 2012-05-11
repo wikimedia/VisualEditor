@@ -158,8 +158,8 @@ ve.dm.example.data = [
 	{ 'type': 'definitionListItem', 'attributes': { 'style': 'definition' } },
 	// 48 - Beginning of paragraph
 	{ 'type': 'paragraph' },
-	// 49 - Plain "j"
-	'j',
+	// 49 - Plain "k"
+	'k',
 	// 50 - End of paragraph
 	{ 'type': '/paragraph' },
 	// 51 - End of definition list definition item
@@ -338,7 +338,7 @@ ve.dm.example.getOffsetMap = function( root ) {
 		lookup( root, 3, 0 ), // 43 - definitionListItem
 		// <p>
 		lookup( root, 3, 0, 0 ), // 44 - paragraph
-		// f
+		// j
 		lookup( root, 3, 0, 0 ), // 45 - paragraph
 		// </p>
 		lookup( root, 3, 0 ), // 46 - definitionListItem
@@ -348,7 +348,7 @@ ve.dm.example.getOffsetMap = function( root ) {
 		lookup( root, 3, 1 ), // 48 - definitionListItem
 		// <p>
 		lookup( root, 3, 1, 0 ), // 49 - paragraph
-		// f
+		// k
 		lookup( root, 3, 1, 0 ), // 50 - paragraph
 		// </p>
 		lookup( root, 3, 1 ), // 51 - definitionListItem

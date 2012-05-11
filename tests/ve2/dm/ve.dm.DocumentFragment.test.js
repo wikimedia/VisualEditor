@@ -99,14 +99,72 @@ test( 'getDataFromNode', 3, function() {
 	);
 } );
 
-test( 'getAnnotationsFromOffset', 2, function() {
-	var fragment = new ve.dm.DocumentFragment( ve.dm.example.data ),
-		data = fragment.getData(),
-		annotations;
-	for ( var i = 0; i < data.length; i++ ) {
-		annotations = fragment.getAnnotationsFromOffset( i );
-		if (typeof annotations[0] === 'object') {
-			ok( annotations, 'annotations at offset ' + i );
+test( 'getAnnotationsFromOffset', 1, function() {
+	var fragment,
+		range,
+		cases = [
+		{
+			'msg': ['bold #1', 'bold #2'],
+			'data': [['a', { '{"type:"bold"}': { 'type': 'bold' } } ], ['b', { '{"type:"bold"}': { 'type': 'bold' } } ]],
+			'expected': [ [ { '{"type:"bold"}': { 'type': 'bold' } } ], [ { '{"type:"bold"}': { 'type': 'bold' } } ] ]
+		},
+		{
+			'msg': ['bold #3', 'italic #1'],
+			'data': [['a', { '{"type:"bold"}': { 'type': 'bold' } } ], ['b', { '{"type:"italic"}': { 'type': 'italic' } } ] ],
+			'expected': [ [ { '{"type:"bold"}': { 'type': 'bold' } } ], [ { '{"type:"italic"}': { 'type': 'italic' } } ] ]
 		}
+	];
+	var expectCount = 0;
+
+	for (var c = 0; c < cases.length; c++) {
+		expectCount += cases[c].data.length;
+	}
+
+	expect ( expectCount );
+
+	for (var i=0; i<cases.length; i++) {
+		fragment = new ve.dm.DocumentFragment ( cases[i].data );
+		for (var j=0; j<fragment.getData().length;j++) {
+			annotations = fragment.getAnnotationsFromOffset( j );
+			strictEqual(
+				JSON.stringify(annotations), JSON.stringify(cases[i].expected[j]), cases[i].msg[j]
+			);
+		}
+
 	}
 } );
+
+test( 'getAnnotationsFromRange', 1, function() {
+	var fragment,
+		range,
+		cases = [
+		{
+			'msg': 'all bold',
+			'data': [['a', { '{"type:"bold"}': { 'type': 'bold' } } ], ['b', { '{"type:"bold"}': { 'type': 'bold' } } ]],
+			'expected': [ { '{"type:"bold"}': { 'type': 'bold' } } ]
+		},
+		{
+			'msg': 'all different',
+			'data': [['a', { '{"type:"bold"}': { 'type': 'bold' } } ], ['b', { '{"type:"italic"}': { 'type': 'italic' } } ]],
+			'expected': []
+		}
+	];
+
+	expect( cases.length );
+
+	for (var i=0; i<cases.length; i++) {
+		fragment = new ve.dm.DocumentFragment ( cases[i].data );
+		range = new ve.Range( 0, fragment.getData().length );
+		annotations = fragment.getAnnotationsFromRange( range );
+		
+		strictEqual(
+			annotations.all, cases[i].expected, cases[i].msg
+		);
+		//console.log (annotations.all);
+
+	}
+});
+
+
+
+
