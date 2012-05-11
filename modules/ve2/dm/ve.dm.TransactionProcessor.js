@@ -232,6 +232,77 @@ ve.dm.TransactionProcessor.prototype.replace = function( op ) {
 		this.cursor += replacement.length;
 	} else {
 		// Structural replacement
-		// TODO implement
+		// TODO generalize for insert/remove
+
+		// It's possible that multiple replace operations are needed before the
+		// model is back in a consistent state. This loop applies the current
+		// replace operation to the linear model, then keeps applying subsequent
+		// operations until the model is consistent. We keep track of the changes
+		// and queue a single rebuild after the loop finishes.
+		var operation = op,
+			removeLevel = 0,
+			replaceLevel = 0,
+			startOffset = this.cursor,
+			adjustment = 0,
+			i,
+			type;
+
+		while ( true ) {
+			if ( operation.type == 'replace' ) {
+				var	opRemove = this.reversed ? operation.replacement : operation.remove,
+					opReplacement = this.reversed ? operation.remove : operation.replacement;
+				// Update the linear model for this replacement
+				ve.batchSplice( this.document.data, this.cursor, opRemove.length, opReplacement );
+				this.cursor += opReplacement.length;
+				adjustment += opReplacement.length - opRemove.length;
+
+				// Walk through the remove and replacement data
+				// and keep track of the element depth change (level)
+				// for each of these two separately. The model is
+				// only consistent if both levels are zero.
+				for ( i = 0; i < opRemove.length; i++ ) {
+					type = opRemove[i].type;
+					if ( type === undefined ) {
+						// This is content, ignore
+					} else if ( type.charAt( 0 ) === '/' ) {
+						// Closing element
+						removeLevel--;
+					} else {
+						// Opening element
+						removeLevel++;
+					}
+				}
+				for ( i = 0; i < opReplacement.length; i++ ) {
+					type = opReplacement[i].type;
+					if ( type === undefined ) {
+						// This is content, ignore
+					} else if ( type.charAt( 0 ) === '/' ) {
+						// Closing element
+						replaceLevel--;
+					} else {
+						// Opening element
+						replaceLevel++;
+					}
+				}
+			} else {
+				// We know that other operations won't cause adjustments, so we
+				// don't have to update adjustment
+				this.executeOperation( operation );
+			}
+
+			if ( removeLevel === 0 && replaceLevel === 0 ) {
+				// The model is back in a consistent state, so we're done
+				break;
+			}
+
+			// Get the next operation
+			operation = this.nextOperation();
+			if ( !operation ) {
+				throw 'Unbalanced set of replace operations found';
+			}
+		}
+		// Queue a rebuild for the replaced node
+		this.synchronizer.pushRebuild( new ve.Range( startOffset, this.cursor - adjustment ),
+			new ve.Range( startOffset, this.cursor ) );
 	}
 };
