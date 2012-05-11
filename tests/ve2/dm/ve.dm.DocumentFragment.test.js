@@ -157,3 +157,60 @@ test( 'getAnnotationsFromOffset', 1, function() {
 	}
 } );
 
+test( 'getAnnotationsFromRange', 1, function() {
+	var fragment,
+		range,
+		cases = [
+		{
+			'msg': 'all bold',
+			'data': [
+				['a', { '{"type:"bold"}': { 'type': 'bold' } } ],
+				['b', { '{"type:"bold"}': { 'type': 'bold' } } ]
+			],
+			'expected': [ { 'type': 'bold' } ]
+		},
+		{
+			'msg': 'bold and italic',
+			'data': [
+				['a', { '{"type":"bold"}': { 'type': 'bold' }, '{"type":"italic"}': { 'type': 'italic'} } ],
+				['b', { '{"type":"bold"}': { 'type': 'bold' }, '{"type":"italic"}': { 'type': 'italic'} } ]
+			],
+			'expected': [ { 'type': 'bold' }, { 'type': 'italic' } ]
+		},
+		{
+			'msg': 'bold and italic',
+			'data': [
+				['a', { '{"type":"bold"}': { 'type': 'bold' }, '{"type":"italic"}': { 'type': 'italic'} } ],
+				['b', { '{"type":"bold"}': { 'type': 'bold' }, '{"type":"italic"}': { 'type': 'italic'}, '{"type":"underline"}': { 'type': 'underline'} } ]
+			],
+			'expected': [ { 'type': 'bold' }, { 'type': 'italic' } ]
+		},
+		{
+			'msg': 'all different',
+			'data': [
+				['a', { '{"type:"bold"}': { 'type': 'bold' } } ],
+				['b', { '{"type:"italic"}': { 'type': 'italic' } } ]
+			],
+			'expected': []
+		},
+		{
+			'msg': 'none',
+			'data': ['a', 'b'],
+			'expected': []
+		}
+	];
+
+	expect( cases.length );
+
+	for ( var i=0; i<cases.length; i++ ) {
+		fragment = new ve.dm.DocumentFragment ( cases[i].data );
+		range = new ve.Range( 0, fragment.getData().length );
+		annotations = fragment.getAnnotationsFromRange( range );
+		deepEqual(
+			annotations, cases[i].expected, cases[i].msg
+		);
+
+	}
+});
+
+

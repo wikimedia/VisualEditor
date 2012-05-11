@@ -202,6 +202,50 @@ ve.dm.DocumentFragment.prototype.getAnnotationsFromOffset = function( offset, by
 	return [];
 };
 
+/**
+ * Gets an array of common annnotations across a range.
+ *
+ * @method
+ * @param {Integer} offset Offset to get annotations for
+ * @returns {Object[]} A copy of all annotation objects offset is covered by
+ */
+ve.dm.DocumentFragment.prototype.getAnnotationsFromRange = function( range ) {
+	range.normalize();
+	var length = range.getLength(),
+		elementsCount = 0,
+		charAnnotationsObj,
+		annotations = [],
+		map = {},
+		aObj;
+	
+	for (var i=range.start; i<range.end;i++) {
+		if ( ve.dm.Document.isElementData( this.data, i ) ) {
+			elementsCount++;
+			continue;
+		}
+		
+		charAnnotationsObj = this.data[i][1];
+
+		for ( aObj in charAnnotationsObj ) {
+			hash = $.toJSON( aObj );
+			if ( hash in map ) {
+				// increase the count for the annotation
+				map[hash][1]++;
+			} else {
+				// save the annotation and start the count at 1
+				map[hash] = [charAnnotationsObj[aObj], 1];
+			}
+		}
+	}
+	// build array of common annotations
+	for ( var hash in map ) {
+		if ( map[hash][1] === length - elementsCount ) {
+			annotations.push( map[hash][0] );
+		}
+	}
+	return annotations;
+};
+
 /* Inheritance */
 
 ve.extendClass( ve.dm.DocumentFragment, ve.Document );
