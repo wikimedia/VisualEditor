@@ -94,15 +94,15 @@ ve.dm.Transaction.prototype.pushRemove = function( data ) {
  * 
  * @method
  * @param {Array} remove Data to remove
- * @param {Array] replacement Data to replace 'remove' with
+ * @param {Array] insert Data to replace 'remove' with
  */
-ve.dm.Transaction.prototype.pushReplace = function( remove, replacement ) {
+ve.dm.Transaction.prototype.pushReplace = function( remove, insert ) {
 	this.operations.push( {
 		'type': 'replace',
 		'remove': remove,
-		'replacement': replacement
+		'insert': insert
 	} );
-	this.lengthDifference += replacement.length - remove.length;
+	this.lengthDifference += insert.length - remove.length;
 };
 
 /**
