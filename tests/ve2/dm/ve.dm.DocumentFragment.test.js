@@ -2,10 +2,21 @@ module( 've.dm.DocumentFragment' );
 
 /* Tests */
 
-test( 'constructor', 114, function() {
+test( 'constructor', 115, function() {
 	var fragment = new ve.dm.DocumentFragment( ve.dm.example.data );
 	// Test count: ( ( 4 tests x 21 branch nodes ) + ( 3 tests x 10 leaf nodes ) ) = 114
 	ve.example.nodeTreeEqual( fragment.getDocumentNode(), ve.dm.example.tree );
+
+	raises(
+		function() {
+			fragment = new ve.dm.DocumentFragment( [
+				{ 'type': '/paragraph' },
+				{ 'type': 'paragraph' }
+			] );
+		},
+		/^Unbalanced input passed to DocumentFragment$/,
+		'unbalanced input causes exception'
+	);
 } );
 
 test( 'getData', 1, function() {

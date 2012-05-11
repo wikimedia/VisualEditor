@@ -115,6 +115,10 @@ ve.dm.DocumentFragment = function( data, parentDocument ) {
 					children = stack.pop();
 					currentStack = parentStack;
 					parentStack = stack[stack.length - 2];
+					if ( !parentStack ) {
+						// This can only happen if we got unbalanced data
+						throw 'Unbalanced input passed to DocumentFragment';
+					}
 					// Attach the children to the node
 					ve.batchSplice( currentNode, 0, 0, children );
 				}
