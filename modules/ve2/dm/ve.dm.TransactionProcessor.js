@@ -202,36 +202,36 @@ ve.dm.TransactionProcessor.prototype.attribute = function( op ) {
  * model tree needs to be synchronized, and queues this in the DocumentSynchronizer.
  * 
  * op.remove isn't checked against the actual data (instead op.remove.length things are removed
- * starting at this.cursor), but it's used instead of op.replacement in reverse mode. So if
+ * starting at this.cursor), but it's used instead of op.insert in reverse mode. So if
  * op.remove is incorrect but of the right length, the transaction will commit fine, but won't roll
  * back correctly.
  *
  * 
  * @param {Object} op Operation object
  *                    remove: Linear model data fragment to remove
- *                    replacement: Linear model data fragment to insert
+ *                    insert: Linear model data fragment to insert
  */
 ve.dm.TransactionProcessor.prototype.replace = function( op ) {
-	var	remove = this.reversed ? op.replacement : op.remove,
-		replacement = this.reversed ? op.remove : op.replacement,
+	var	remove = this.reversed ? op.insert : op.remove,
+		insert = this.reversed ? op.remove : op.insert,
 		removeHasStructure = ve.dm.Document.containsElementData( remove ),
-		replacementHasStructure = ve.dm.Document.containsElementData( replacement ),
+		insertHasStructure = ve.dm.Document.containsElementData( insert ),
 		node;
-	// Figure out if this is a structural replacement or a content replacement
-	if ( !removeHasStructure && !replacementHasStructure ) {
-		// Content replacement
+	// Figure out if this is a structural insert or a content insert
+	if ( !removeHasStructure && !insertHasStructure ) {
+		// Content insert
 		// Update the linear model
-		ve.batchSplice( this.document.data, this.cursor, remove.length, replacement );
-		this.applyAnnotations( this.cursor + replacement.length );
+		ve.batchSplice( this.document.data, this.cursor, remove.length, insert );
+		this.applyAnnotations( this.cursor + insert.length );
 		
 		// Get the node containing the replaced content
 		node = this.document.getNodeFromOffset( this.cursor );
 		// Queue a resize for this node
-		this.synchronizer.pushResize( node, replacement.length - remove.length );
+		this.synchronizer.pushResize( node, insert.length - remove.length );
 		// Advance the cursor
-		this.cursor += replacement.length;
+		this.cursor += insert.length;
 	} else {
-		// Structural replacement
+		// Structural insert
 		// TODO generalize for insert/remove
 
 		// It's possible that multiple replace operations are needed before the
@@ -249,14 +249,14 @@ ve.dm.TransactionProcessor.prototype.replace = function( op ) {
 
 		while ( true ) {
 			if ( operation.type == 'replace' ) {
-				var	opRemove = this.reversed ? operation.replacement : operation.remove,
-					opReplacement = this.reversed ? operation.remove : operation.replacement;
-				// Update the linear model for this replacement
+				var	opRemove = this.reversed ? operation.insert : operation.remove,
+					opInsert = this.reversed ? operation.remove : operation.insert;
+				// Update the linear model for this insert
 				ve.batchSplice( this.document.data, this.cursor, opRemove.length, opReplacement );
 				this.cursor += opReplacement.length;
 				adjustment += opReplacement.length - opRemove.length;
 
-				// Walk through the remove and replacement data
+				// Walk through the remove and insert data
 				// and keep track of the element depth change (level)
 				// for each of these two separately. The model is
 				// only consistent if both levels are zero.
