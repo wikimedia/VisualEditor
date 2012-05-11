@@ -35,6 +35,10 @@ ve.Document.prototype.getDocumentNode = function() {
  *                  'node': Reference to a ve.dm.Node
  *                  'range': ve.Range, missing if the entire node is covered
  *                  'index': Index of the node in its parent, missing if node has no parent
+ *                  'indexInNode': If range is a zero-length range between two children of node,
+ *                                 this is set to the index of the child following range (or to
+ *                                 node.children.length+1 if range is between the last child and
+ *                                 the end). Missing in all other cases
  *                  'nodeRange': Range covering the inside of the entire node
  * @throws 'Invalid start offset' if range.start is out of range
  * @throws 'Invalid end offset' if range.end is out of range
@@ -108,6 +112,7 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 			// Empty range in the parent, outside of any child
 			retval = [ {
 				'node': currentFrame.node,
+				'indexInNode': currentFrame.index + ( endBetween ? 1 : 0 ),
 				'range': new ve.Range( start, end ),
 				'nodeRange': new ve.Range( currentFrame.startOffset,
 					currentFrame.startOffset + currentFrame.node.getLength()
