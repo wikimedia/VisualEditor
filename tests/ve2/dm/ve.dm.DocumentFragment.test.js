@@ -116,13 +116,25 @@ test( 'getAnnotationsFromOffset', 1, function() {
 		cases = [
 		{
 			'msg': ['bold #1', 'bold #2'],
-			'data': [['a', { '{"type:"bold"}': { 'type': 'bold' } } ], ['b', { '{"type:"bold"}': { 'type': 'bold' } } ]],
-			'expected': [ [ { '{"type:"bold"}': { 'type': 'bold' } } ], [ { '{"type:"bold"}': { 'type': 'bold' } } ] ]
+			'data': [
+				['a', { '{"type:"bold"}': { 'type': 'bold' } }],
+				['b', { '{"type:"bold"}': { 'type': 'bold' } }]
+			],
+			'expected': [
+				[{ '{"type:"bold"}': { 'type': 'bold' } }],
+				[{ '{"type:"bold"}': { 'type': 'bold' } }]
+			]
 		},
 		{
 			'msg': ['bold #3', 'italic #1'],
-			'data': [['a', { '{"type:"bold"}': { 'type': 'bold' } } ], ['b', { '{"type:"italic"}': { 'type': 'italic' } } ] ],
-			'expected': [ [ { '{"type:"bold"}': { 'type': 'bold' } } ], [ { '{"type:"italic"}': { 'type': 'italic' } } ] ]
+			'data': [
+				['a', { '{"type:"bold"}': { 'type': 'bold' } }],
+				['b', { '{"type:"italic"}': { 'type': 'italic' } }]
+			],
+			'expected': [
+				[{ '{"type:"bold"}': { 'type': 'bold' } }],
+				[{ '{"type:"italic"}': { 'type': 'italic' } }]
+			]
 		}
 	];
 	var expectCount = 0;
