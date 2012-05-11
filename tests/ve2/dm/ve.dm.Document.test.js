@@ -198,11 +198,79 @@ test( 'rebuildNodes', function() {
 	ve.example.nodeTreeEqual( documentNode, tree );
 } );
 
-/*
 test( 'getRelativeContentOffset', 1, function() {
-	
+	var doc = new ve.dm.Document( ve.dm.example.data );
+	var cases = [
+		{
+			'msg': 'first content offset is farthest left',
+			'offset': 2,
+			'distance': -2,
+			'expected': 1
+		},
+		{
+			'msg': 'last content offset is farthest right',
+			'offset': 49,
+			'distance': 2,
+			'expected': 50
+		},
+		{
+			'msg': '1 right within text',
+			'offset': 1,
+			'distance': 1,
+			'expected': 2
+		},
+		{
+			'msg': '2 right within text',
+			'offset': 1,
+			'distance': 2,
+			'expected': 3
+		},
+		{
+			'msg': '1 left within text',
+			'offset': 2,
+			'distance': -1,
+			'expected': 1
+		},
+		{
+			'msg': '2 left within text',
+			'offset': 3,
+			'distance': -2,
+			'expected': 1
+		},
+		{
+			'msg': '1 right over elements',
+			'offset': 4,
+			'distance': 1,
+			'expected': 9
+		},
+		{
+			'msg': '2 right over elements',
+			'offset': 4,
+			'distance': 2,
+			'expected': 10
+		},
+		{
+			'msg': '1 left over elements',
+			'offset': 9,
+			'distance': -1,
+			'expected': 4
+		},
+		{
+			'msg': '2 left over elements',
+			'offset': 9,
+			'distance': -2,
+			'expected': 3
+		}
+	];
+	expect( cases.length );
+	for ( var i = 0; i < cases.length; i++ ) {
+		strictEqual(
+			doc.getRelativeContentOffset( cases[i].offset, cases[i].distance ),
+			cases[i].expected,
+			cases[i].msg
+		);
+	}
 } );
-*/
 
 test( 'selectNodes', function() {
 	var doc = new ve.dm.Document( ve.dm.example.data ),

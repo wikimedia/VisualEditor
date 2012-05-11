@@ -258,7 +258,7 @@ ve.dm.Document.prototype.getRelativeContentOffset = function( offset, distance )
 		steps = 0;
 	distance = Math.abs( distance );
 	while ( i > 0 && i < this.data.length ) {
-		if ( !ve.dm.DocumentNode.isStructuralOffset( this.data, i ) ) {
+		if ( !ve.dm.Document.isStructuralOffset( this.data, i ) ) {
 			steps++;
 			offset = i;
 			if ( distance === steps ) {
