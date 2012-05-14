@@ -251,9 +251,9 @@ ve.dm.TransactionProcessor.prototype.replace = function( op ) {
 				var	opRemove = this.reversed ? operation.insert : operation.remove,
 					opInsert = this.reversed ? operation.remove : operation.insert;
 				// Update the linear model for this insert
-				ve.batchSplice( this.document.data, this.cursor, opRemove.length, opReplacement );
-				this.cursor += opReplacement.length;
-				adjustment += opReplacement.length - opRemove.length;
+				ve.batchSplice( this.document.data, this.cursor, opRemove.length, opInsert );
+				this.cursor += opInsert.length;
+				adjustment += opInsert.length - opRemove.length;
 
 				// Walk through the remove and insert data
 				// and keep track of the element depth change (level)
@@ -271,8 +271,8 @@ ve.dm.TransactionProcessor.prototype.replace = function( op ) {
 						removeLevel++;
 					}
 				}
-				for ( i = 0; i < opReplacement.length; i++ ) {
-					type = opReplacement[i].type;
+				for ( i = 0; i < opInsert.length; i++ ) {
+					type = opInsert[i].type;
 					if ( type === undefined ) {
 						// This is content, ignore
 					} else if ( type.charAt( 0 ) === '/' ) {
