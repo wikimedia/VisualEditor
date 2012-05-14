@@ -191,13 +191,17 @@ ve.dm.DocumentFragment.prototype.getDataFromNode = function( node ) {
  * @param {Integer} offset Offset to get annotations for
  * @returns {Object[]} A copy of all annotation objects offset is covered by
  */
-ve.dm.DocumentFragment.prototype.getAnnotationsFromOffset = function( offset, byref ) {
+ve.dm.DocumentFragment.prototype.getAnnotationsFromOffset = function( offset ) {
+	var annotations = [],
+		aObj = {},
+		a = {};
+
 	if ( ve.isArray( this.data[offset] ) ) {
-		if ( byref === true ) {
-			return this.data[offset].slice( 1 );
-		} else {
-			return ve.copyArray( this.data[offset].slice( 1 ) );
+		aObj = this.data[offset][1];
+		for (a in aObj) {
+			annotations.push( aObj[a] );
 		}
+		return annotations;
 	}
 	return [];
 };
@@ -213,17 +217,17 @@ ve.dm.DocumentFragment.prototype.getAnnotationsFromRange = function( range ) {
 	range.normalize();
 	var length = range.getLength(),
 		elementsCount = 0,
-		charAnnotationsObj,
+		charAnnotationsObj = {},
 		annotations = [],
 		map = {},
-		aObj;
+		aObj = {};
 	
 	for (var i=range.start; i<range.end;i++) {
 		if ( ve.dm.Document.isElementData( this.data, i ) ) {
 			elementsCount++;
 			continue;
 		}
-		
+
 		charAnnotationsObj = this.data[i][1];
 
 		for ( aObj in charAnnotationsObj ) {
