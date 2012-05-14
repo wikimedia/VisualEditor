@@ -1,6 +1,6 @@
 /**
  * Generic node.
- * 
+ *
  * @class
  * @abstract
  * @constructor
@@ -29,7 +29,7 @@ ve.Node = function( type ) {
 
 /**
  * Checks if node can have children.
- * 
+ *
  * @method
  * @abstract
  * @returns {Boolean} Node can have children
@@ -41,7 +41,7 @@ ve.Node.prototype.canHaveChildren = function() {
 
 /**
  * Checks if node can have grandchildren.
- * 
+ *
  * @method
  * @abstract
  * @returns {Boolean} Node can have grandchildren
@@ -53,7 +53,7 @@ ve.Node.prototype.canHaveGrandchildren = function() {
 
 /**
  * Checks if node represents a wrapped element.
- * 
+ *
  * @method
  * @abstract
  * @returns {Boolean} Node represents a wrapped element
@@ -65,7 +65,7 @@ ve.Node.prototype.isWrapped = function() {
 
 /**
  * Gets node length.
- * 
+ *
  * @method
  * @abstract
  * @returns {Integer} Node length
@@ -77,7 +77,7 @@ ve.Node.prototype.getLength = function() {
 
 /**
  * Gets node outer length.
- * 
+ *
  * @method
  * @abstract
  * @returns {Integer} Node outer length
@@ -91,7 +91,7 @@ ve.Node.prototype.getOuterLength = function() {
 
 /**
  * Gets the symbolic node type name.
- * 
+ *
  * @method
  * @returns {String} Symbolic name of element type
  */
@@ -101,7 +101,7 @@ ve.Node.prototype.getType = function() {
 
 /**
  * Gets a reference to this node's parent.
- * 
+ *
  * @method
  * @returns {ve.Node} Reference to this node's parent
  */
@@ -111,7 +111,7 @@ ve.Node.prototype.getParent = function() {
 
 /**
  * Gets the root node in the tree this node is currently attached to.
- * 
+ *
  * @method
  * @returns {ve.Node} Root node
  */
@@ -121,9 +121,9 @@ ve.Node.prototype.getRoot = function() {
 
 /**
  * Sets the root node this node is a descendent of.
- * 
+ *
  * This method is overridden by nodes with children.
- * 
+ *
  * @method
  * @param {ve.Node} root Node to use as root
  */
@@ -133,7 +133,7 @@ ve.Node.prototype.setRoot = function( root ) {
 
 /**
  * Gets the document this node is a part of.
- * 
+ *
  * @method
  * @returns {ve.Document} Document this node is a part of
  */
@@ -143,9 +143,9 @@ ve.Node.prototype.getDocument = function( root ) {
 
 /**
  * Sets the document this node is a part of.
- * 
+ *
  * This method is overridden by nodes with children.
- * 
+ *
  * @method
  * @param {ve.Document} doc Document this node is a part of
  */
@@ -155,7 +155,7 @@ ve.Node.prototype.setDocument = function( doc ) {
 
 /**
  * Attaches this node to another as a child.
- * 
+ *
  * @method
  * @param {ve.Node} parent Node to attach to
  * @emits attach (parent)
@@ -169,7 +169,7 @@ ve.Node.prototype.attach = function( parent ) {
 
 /**
  * Detaches this node from its parent.
- * 
+ *
  * @method
  * @emits detach
  */

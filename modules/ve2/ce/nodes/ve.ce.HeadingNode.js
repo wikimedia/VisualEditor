@@ -1,6 +1,6 @@
 /**
  * ContentEditable node for a heading.
- * 
+ *
  * @class
  * @constructor
  * @extends {ve.ce.BranchNode}
@@ -20,7 +20,7 @@ ve.ce.HeadingNode = function( model ) {
 
 /**
  * Node rules.
- * 
+ *
  * @see ve.ce.NodeFactory
  * @static
  * @member
@@ -31,7 +31,7 @@ ve.ce.HeadingNode.rules = {
 
 /**
  * Mapping of heading level values and DOM wrapper element types.
- * 
+ *
  * @static
  * @member
  */
@@ -48,9 +48,9 @@ ve.ce.HeadingNode.domWrapperElementTypes = {
 
 /**
  * Responds to model update events.
- * 
+ *
  * If the level changed since last update the DOM wrapper will be replaced with an appropriate one.
- * 
+ *
  * @method
  */
 ve.ce.HeadingNode.prototype.onUpdate = function() {

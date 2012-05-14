@@ -1,6 +1,6 @@
 /**
  * ContentEditable document.
- * 
+ *
  * @class
  * @extends {ve.Document}
  * @constructor

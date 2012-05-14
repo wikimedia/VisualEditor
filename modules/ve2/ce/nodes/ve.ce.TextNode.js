@@ -1,6 +1,6 @@
 /**
  * ContentEditable node for text.
- * 
+ *
  * @class
  * @constructor
  * @extends {ve.ce.LeafNode}
@@ -21,7 +21,7 @@ ve.ce.TextNode = function( model ) {
 
 /**
  * Node rules.
- * 
+ *
  * @see ve.ce.NodeFactory
  * @static
  * @member
@@ -32,7 +32,7 @@ ve.ce.TextNode.rules = {
 
 /**
  * Mapping of character and HTML entities or renderings.
- * 
+ *
  * @static
  * @member
  */
@@ -48,10 +48,10 @@ ve.ce.TextNode.htmlCharacters = {
 
 /**
  * List of annotation rendering implementations.
- * 
+ *
  * Each supported annotation renderer must have an open and close property, each either a string or
  * a function which accepts a data argument.
- * 
+ *
  * @static
  * @member
  */
@@ -116,9 +116,9 @@ ve.ce.TextNode.annotationRenderers = {
 
 /**
  * Responds to model update events.
- * 
+ *
  * If the source changed since last update the image's src attribute will be updated accordingly.
- * 
+ *
  * @method
  */
 ve.ce.TextNode.prototype.onUpdate = function() {
@@ -129,7 +129,7 @@ ve.ce.TextNode.prototype.onUpdate = function() {
 
 /**
  * Gets an HTML rendering of data within content model.
- * 
+ *
  * @method
  * @param {String} Rendered HTML of data within content model
  */

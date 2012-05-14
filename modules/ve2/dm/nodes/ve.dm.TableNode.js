@@ -1,6 +1,6 @@
 /**
  * DataModel node for a table.
- * 
+ *
  * @class
  * @constructor
  * @extends {ve.dm.BranchNode}
@@ -16,7 +16,7 @@ ve.dm.TableNode = function( children, attributes ) {
 
 /**
  * Node rules.
- * 
+ *
  * @see ve.dm.NodeFactory
  * @static
  * @member

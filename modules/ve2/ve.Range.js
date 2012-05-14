@@ -1,6 +1,6 @@
 /**
  * Range of content.
- * 
+ *
  * @class
  * @constructor
  * @param from {Integer} Starting offset
@@ -18,7 +18,7 @@ ve.Range = function( from, to ) {
 
 /**
  * Creates a new ve.Range object that's a translated version of another.
- * 
+ *
  * @method
  * @param {ve.Range} range Range to base new range on
  * @param {Integer} distance Distance to move range by
@@ -32,7 +32,7 @@ ve.Range.newFromTranslatedRange = function( range, distance ) {
 
 /**
  * Gets a clone of this object.
- * 
+ *
  * @method
  * @returns {ve.Range} Clone of range
  */
@@ -42,7 +42,7 @@ ve.Range.prototype.clone = function() {
 
 /**
  * Checks if an offset is within this range.
- * 
+ *
  * @method
  * @param offset {Integer} Offset to check
  * @returns {Boolean} If offset is within this range
@@ -54,7 +54,7 @@ ve.Range.prototype.containsOffset = function( offset ) {
 
 /**
  * Gets the length of the range.
- * 
+ *
  * @method
  * @returns {Integer} Length of range
  */
@@ -64,10 +64,10 @@ ve.Range.prototype.getLength = function() {
 
 /**
  * Sets start and end properties, ensuring start is always before end.
- * 
+ *
  * This should always be called before using the start or end properties. Do not call this unless
  * you are about to use these properties.
- * 
+ *
  * @method
  */
 ve.Range.prototype.normalize = function() {

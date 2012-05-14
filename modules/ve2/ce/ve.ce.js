@@ -1,6 +1,6 @@
 /**
  * ContentEditable namespace.
- * 
+ *
  * All classes and functions will be attached to this object to keep the global namespace clean.
  */
 ve.ce = {
@@ -9,10 +9,10 @@ ve.ce = {
 
 /**
  * RegExp pattern for matching all whitespaces in HTML text.
- * 
+ *
  * \u0020 (32)  space
  * \u00A0 (160) non-breaking space
- * 
+ *
  * @static
  * @member
  */
@@ -20,12 +20,12 @@ ve.ce.whitespacePattern = /[\u0020\u00A0]/g;
 
 /**
  * Gets the plain text of a DOM element.
- * 
+ *
  * In the returned string only the contents of text nodes are included.
- * 
+ *
  * TODO: The idea of using this method over jQuery's .text() was that it will not traverse into
  * elements that are not contentEditable, however this appears to be missing.
- * 
+ *
  * @static
  * @member
  * @param {DOMElement} element DOM element to get text of
@@ -57,12 +57,12 @@ ve.ce.getDomText = function( element ) {
 
 /**
  * Gets a hash of a DOM element's structure.
- * 
+ *
  * In the returned string text nodes are repesented as "#" and elements are represented as "<type>"
  * and "</type>" where "type" is their element name. This effectively generates an HTML
  * serialization without any attributes or text contents. This can be used to observer structural
  * changes.
- * 
+ *
  * @static
  * @member
  * @param {DOMElement} element DOM element to get hash of

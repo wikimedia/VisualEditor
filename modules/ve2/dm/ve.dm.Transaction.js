@@ -1,6 +1,6 @@
 /**
  * DataModel transaction.
- * 
+ *
  * @class
  * @constructor
  */
@@ -13,7 +13,7 @@ ve.dm.Transaction = function() {
 
 /**
  * Gets a list of all operations.
- * 
+ *
  * @method
  * @returns {Object[]} List of operations
  */
@@ -23,7 +23,7 @@ ve.dm.Transaction.prototype.getOperations = function() {
 
 /**
  * Gets the difference in content length this transaction will cause if applied.
- * 
+ *
  * @method
  * @returns {Integer} Difference in content length
  */
@@ -33,7 +33,7 @@ ve.dm.Transaction.prototype.getLengthDifference = function() {
 
 /**
  * Adds a retain operation.
- * 
+ *
  * @method
  * @param {Integer} length Length of content data to retain
  */
@@ -51,7 +51,7 @@ ve.dm.Transaction.prototype.pushRetain = function( length ) {
 
 /**
  * Adds an insertion operation.
- * 
+ *
  * @method
  * @param {Array} data Data to retain
  */
@@ -71,7 +71,7 @@ ve.dm.Transaction.prototype.pushInsert = function( data ) {
 
 /**
  * Adds a removal operation.
- * 
+ *
  * @method
  * @param {Array} data Data to remove
  */
@@ -91,7 +91,7 @@ ve.dm.Transaction.prototype.pushRemove = function( data ) {
 
 /**
  * Adds a replace operation
- * 
+ *
  * @method
  * @param {Array} remove Data to remove
  * @param {Array] insert Data to replace 'remove' with
@@ -107,7 +107,7 @@ ve.dm.Transaction.prototype.pushReplace = function( remove, insert ) {
 
 /**
  * Adds an element attribute change operation.
- * 
+ *
  * @method
  * @param {String} key Name of attribute to change
  * @param {Mixed} from Value change attribute from
@@ -124,7 +124,7 @@ ve.dm.Transaction.prototype.pushReplaceElementAttribute = function( key, from, t
 
 /**
  * Adds a start annotating operation.
- * 
+ *
  * @method
  * @param {String} method Method to use, either "set" or "clear"
  * @param {Object} annotation Annotation object to start setting or clearing from content data
@@ -140,7 +140,7 @@ ve.dm.Transaction.prototype.pushStartAnnotating = function( method, annotation )
 
 /**
  * Adds a stop annotating operation.
- * 
+ *
  * @method
  * @param {String} method Method to use, either "set" or "clear"
  * @param {Object} annotation Annotation object to stop setting or clearing from content data

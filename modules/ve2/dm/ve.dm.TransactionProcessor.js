@@ -1,12 +1,12 @@
 /**
  * DataModel transaction processor.
- * 
+ *
  * This class reads operations from a transaction and applies them one by one. It's not intended
  * to be used directly; use the static functions ve.dm.TransactionProcessor.commit() and .rollback()
  * instead.
- * 
+ *
  * NOTE: Instances of this class are not recyclable: you can only call .process() on them once.
- * 
+ *
  * @class
  * @constructor
  */
@@ -31,7 +31,7 @@ ve.dm.TransactionProcessor = function( doc, transaction, reversed ) {
 
 /**
  * Commit a transaction to a document.
- * 
+ *
  * @param {ve.dm.Document} doc Document object to apply the transaction to
  * @param {ve.dm.Transaction} transaction Transaction to apply
  */
@@ -41,7 +41,7 @@ ve.dm.TransactionProcessor.commit = function( doc, transaction ) {
 
 /**
  * Roll back a transaction; this applies the transaction to the document in reverse.
- * 
+ *
  * @param {ve.dm.Document} doc Document object to apply the transaction to
  * @param {ve.dm.Transaction} transaction Transaction to apply
  */
@@ -77,7 +77,7 @@ ve.dm.TransactionProcessor.prototype.process = function() {
 /**
  * Apply the current annotation stacks. This will set all annotations in this.set and clear all
  * annotations in this.clear on the data between the offsets this.cursor and this.cursor + to
- * 
+ *
  * @param {Number} to Offset to stop annotating at. Annotating starts at this.cursor
  */
 ve.dm.TransactionProcessor.prototype.applyAnnotations = function( to ) {
@@ -114,10 +114,10 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function( to ) {
 
 /**
  * Execute a retain operation.
- * 
+ *
  * This moves the cursor by op.length and applies annotations to the characters that the cursor
  * moved over.
- * 
+ *
  * @param {Object} op Operation object:
  *                    length: Number of elements to retain
  */
@@ -128,9 +128,9 @@ ve.dm.TransactionProcessor.prototype.retain = function( op ) {
 
 /**
  * Execute an annotate operation.
- * 
+ *
  * This adds or removes an annotation to this.set or this.clear
- * 
+ *
  * @param {Object} op Operation object
  *                    method: 'set' to set an annotation, 'clear' to clear it
  *                    bias: 'start' to start setting or clearing, 'stop' to stop setting or clearing
@@ -158,12 +158,12 @@ ve.dm.TransactionProcessor.prototype.annotate = function( op ) {
 
 /**
  * Execute an attribute operation.
- * 
+ *
  * This sets the attribute named op.key on the element at this.cursor to op.to , or unsets it if
  * op.to === undefined . op.from is not checked against the old value, but is used instead of op.to
  * in reverse mode. So if op.from is incorrect, the transaction will commit fine, but won't roll
  * back correctly.
- * 
+ *
  * @param {Object} op Operation object
  *                    key: attribute name
  *                    from: old attribute value, or undefined if not previously set
@@ -196,16 +196,16 @@ ve.dm.TransactionProcessor.prototype.attribute = function( op ) {
 
 /**
  * Execute a replace operation.
- * 
+ *
  * This replaces one fragment of linear model data with another at this.cursor, figures out how the
  * model tree needs to be synchronized, and queues this in the DocumentSynchronizer.
- * 
+ *
  * op.remove isn't checked against the actual data (instead op.remove.length things are removed
  * starting at this.cursor), but it's used instead of op.insert in reverse mode. So if
  * op.remove is incorrect but of the right length, the transaction will commit fine, but won't roll
  * back correctly.
  *
- * 
+ *
  * @param {Object} op Operation object
  *                    remove: Linear model data fragment to remove
  *                    insert: Linear model data fragment to insert

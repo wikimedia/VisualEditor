@@ -1,6 +1,6 @@
 /**
  * ContentEditable node for a definition list item.
- * 
+ *
  * @class
  * @constructor
  * @extends {ve.ce.BranchNode}
@@ -20,7 +20,7 @@ ve.ce.DefinitionListItemNode = function( model ) {
 
 /**
  * Node rules.
- * 
+ *
  * @see ve.ce.NodeFactory
  * @static
  * @member
@@ -31,7 +31,7 @@ ve.ce.DefinitionListItemNode.rules = {
 
 /**
  * Mapping of list item style values and DOM wrapper element types.
- * 
+ *
  * @static
  * @member
  */
@@ -44,9 +44,9 @@ ve.ce.DefinitionListItemNode.domWrapperElementTypes = {
 
 /**
  * Responds to model update events.
- * 
+ *
  * If the style changed since last update the DOM wrapper will be replaced with an appropriate one.
- * 
+ *
  * @method
  */
 ve.ce.DefinitionListItemNode.prototype.onUpdate = function() {

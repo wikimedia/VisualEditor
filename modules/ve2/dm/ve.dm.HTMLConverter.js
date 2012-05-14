@@ -1,12 +1,12 @@
 /**
  * Converter between HTML DOM and VisualEditor linear data.
- * 
+ *
  * @author Gabriel Wicke
  * @author Roan Kattouw
  * @author Christian Williams
  * @author Inez Korczynski
  * @author Trevor Parscal
- * 
+ *
  * @class
  * @constructor
  * @param {Object} options Conversion options
@@ -19,10 +19,10 @@ ve.dm.HTMLConverter = function( options ) {
 
 /**
  * HTML DOM node types.
- * 
+ *
  * If this will be used more than once in a method, it should be aliased locally to avoid excessive
  * lookups.
- * 
+ *
  * @see https://developer.mozilla.org/en/nodeType
  */
 ve.dm.HTMLConverter.Node = {
@@ -42,7 +42,7 @@ ve.dm.HTMLConverter.Node = {
 
 /**
  * Object mapping HTML DOM node names to linear model element names.
- * 
+ *
  *     'leafNode': Type of model tree node used to represent this element
  *         - If true, it's a leaf node (can not contain children)
  *         - If false, it's a branch node (can contain children)
@@ -78,7 +78,7 @@ ve.dm.HTMLConverter.elementTypes = {
 
 /**
  * Object mapping HTML DOM node names to linear model annotation types.
- * 
+ *
  * The value can either be a string, or a function that takes the relevant HTML DOM node and returns
  * a string.
  */
@@ -107,7 +107,7 @@ ve.dm.HTMLConverter.annotationTypes = {
 /**
  * List of HTML DOM attributes that should be passed through verbatim by convertAttributes() rather
  * than being prefixed with 'html/'
- * 
+ *
  * TODO: Add href to this list?
  */
 ve.dm.HTMLConverter.attributeWhitelist = [ 'title' ];
@@ -116,13 +116,13 @@ ve.dm.HTMLConverter.attributeWhitelist = [ 'title' ];
 
 /**
  * Convert the attributes of an HTML DOM node to linear model attributes.
- * 
+ *
  * - Attributes prefixed with data-json- will have the prefix removed and their
  *   value JSON-decoded.
  * - Attributes prefixed with data- will have the prefix removed.
  * - Attributes in attributeWhitelist are passed through unchanged
  * - All other attribuetes are prefixed with html/
- * 
+ *
  * @param {Object} node HTML DOM node
  * @returns {Object} Converted attribute map
  */
@@ -159,9 +159,9 @@ ve.dm.HTMLConverter.convertAttributes = function( node ) {
 /**
  * Check if an HTML DOM node represents an annotation, and if so, build an
  * annotation object for it.
- * 
+ *
  * The annotation object looks like {'type': 'type', data: {'attrKey': 'attrValue', ...}}
- * 
+ *
  * @param {node} HTML DOM node
  * @returns {Object|false} Annotation object, or false if this node is not an annotation
  */
@@ -183,7 +183,7 @@ ve.dm.HTMLConverter.getAnnotation = function( node ) {
 
 /**
  * Convert a string to (possibly annotated) linear model data
- * 
+ *
  * @param {String} content String to convert
  * @param {Array} annotations Array of annotation objects to apply
  * @returns {Array} Linear model data, one element per character
@@ -209,7 +209,7 @@ ve.dm.HTMLConverter.generateAnnotatedContent = function( content, annotations ) 
 
 /**
  * Get linear model from HTML DOM
- * 
+ *
  * @static
  * @method
  * @param {Object} node HTML node to recursively convert
@@ -223,9 +223,9 @@ ve.dm.HTMLConverter.getLinearModel = function( node, options ) {
 
 /**
  * Recursively convert an HTML DOM node to a linear model array.
- * 
+ *
  * This is the main function.
- * 
+ *
  * @param {Object} node HTML DOM node
  * @param {Array} [annotations] Annotations to apply. Only used for recursion.
  * @param {Object} [typeData] Information about the linear model element type corresponding to this

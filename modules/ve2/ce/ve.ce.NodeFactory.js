@@ -1,6 +1,6 @@
 /**
  * ContentEditable node factory.
- * 
+ *
  * @class
  * @extends {ve.NodeFactory}
  * @constructor
@@ -14,7 +14,7 @@ ve.ce.NodeFactory = function() {
 
 /**
  * Checks if a given node type can be split.
- * 
+ *
  * @param {String} type Node type
  * @returns {Boolean} The node can have grandchildren
  * @throws 'Unknown node type'

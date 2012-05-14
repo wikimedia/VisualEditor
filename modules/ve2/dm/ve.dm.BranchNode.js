@@ -1,6 +1,6 @@
 /**
  * DataModel node that can have branch or leaf children.
- * 
+ *
  * @class
  * @abstract
  * @constructor
@@ -24,7 +24,7 @@ ve.dm.BranchNode = function( type, children, attributes ) {
 
 /**
  * Adds a node to the end of this node's children.
- * 
+ *
  * @method
  * @param {ve.dm.BranchNode} childModel Item to add
  * @returns {Integer} New number of children
@@ -38,7 +38,7 @@ ve.dm.BranchNode.prototype.push = function( childModel ) {
 
 /**
  * Removes a node from the end of this node's children
- * 
+ *
  * @method
  * @returns {ve.dm.BranchNode} Removed childModel
  * @emits splice (index, 1, [])
@@ -54,7 +54,7 @@ ve.dm.BranchNode.prototype.pop = function() {
 
 /**
  * Adds a node to the beginning of this node's children.
- * 
+ *
  * @method
  * @param {ve.dm.BranchNode} childModel Item to add
  * @returns {Integer} New number of children
@@ -68,7 +68,7 @@ ve.dm.BranchNode.prototype.unshift = function( childModel ) {
 
 /**
  * Removes a node from the beginning of this node's children
- * 
+ *
  * @method
  * @returns {ve.dm.BranchNode} Removed childModel
  * @emits splice (0, 1, [])
@@ -84,7 +84,7 @@ ve.dm.BranchNode.prototype.shift = function() {
 
 /**
  * Adds and removes nodes from this node's children.
- * 
+ *
  * @method
  * @param {Integer} index Index to remove and or insert nodes at
  * @param {Integer} howmany Number of nodes to remove

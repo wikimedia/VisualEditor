@@ -1,6 +1,6 @@
 /**
  * DataModel node that can not have children.
- * 
+ *
  * @class
  * @abstract
  * @constructor

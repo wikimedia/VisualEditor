@@ -1,15 +1,15 @@
 /**
  * Creates an ve.dm.DocumentSynchronizer object.
- * 
+ *
  * This object is a utility for collecting actions to be performed on the model tree in multiple
  * steps as the linear model is modified my a transaction processor and then processing those queued
  * actions when the transaction is done being processed.
- * 
+ *
  * IMPORTANT NOTE: It is assumed that:
  *   - The linear model has already been updated for the pushed actions
  *   - Actions are pushed in increasing offset order
  *   - Actions are non-overlapping
- * 
+ *
  * @class
  * @constructor
  * @param {ve.dm.Document} doc Document to synchronize
@@ -25,10 +25,10 @@ ve.dm.DocumentSynchronizer = function( doc ) {
 
 /**
  * Synchronization methods.
- * 
+ *
  * Each method is specific to a type of action. Methods are called in the context of a document
  * synchronizer, so they work similar to normal methods on the object.
- * 
+ *
  * @static
  * @member
  */
@@ -112,7 +112,7 @@ ve.dm.DocumentSynchronizer.synchronizers = {
 
 /**
  * Gets the document being synchronized.
- * 
+ *
  * @method
  * @returns {ve.dm.Document} Document being synchronized
  */
@@ -122,10 +122,10 @@ ve.dm.DocumentSynchronizer.prototype.getDocument = function() {
 
 /**
  * Add an annotation action to the queue.
- * 
+ *
  * This finds all leaf nodes covered wholly or partially by the given range, and emits annotation
  * events for all of them.
- * 
+ *
  * @method
  * @param {ve.Range} range Range that was annotated
  */
@@ -138,9 +138,9 @@ ve.dm.DocumentSynchronizer.prototype.pushAnnotation = function( range ) {
 
 /**
  * Add an attribute change to the queue.
- * 
+ *
  * This emits an attributeChange event for the given node with the provided metadata.
- * 
+ *
  * @method
  * @param {ve.dm.Node} node Node whose attribute changed
  * @param {String} key Key of the attribute that changed
@@ -159,9 +159,9 @@ ve.dm.DocumentSynchronizer.prototype.pushAttributeChange = function( node, key, 
 
 /**
  * Add a resize action to the queue.
- * 
+ *
  * This changes the length of a text node.
- * 
+ *
  * @method
  * @param {ve.dm.TextNode} node Node to resize
  * @param {Integer} adjustment Length adjustment to apply to the node
@@ -176,10 +176,10 @@ ve.dm.DocumentSynchronizer.prototype.pushResize = function( node, adjustment ) {
 
 /**
  * Add a rebuild action to the queue.
- * 
+ *
  * When a range of data has been changed arbitrarily this can be used to drop the nodes that
  * represented the original range and replace them with new nodes that represent the new range.
- * 
+ *
  * @method
  * @param {ve.Range} oldRange Range of old nodes to be dropped
  * @param {ve.Range} newRange Range for new nodes to be built from
@@ -194,12 +194,12 @@ ve.dm.DocumentSynchronizer.prototype.pushRebuild = function( oldRange, newRange 
 
 /**
  * Queue an event to be emitted on a node.
- * 
+ *
  * This method is called by methods defined in {ve.dm.DocumentSynchronizer.synchronizers}.
- * 
+ *
  * Duplicate events will be ignored only if all arguments match exactly. Hashes of each event that
  * has been queued are stored in the nodes they will eventually be fired on.
- * 
+ *
  * @method
  * @param {ve.dm.Node} node
  * @param {String} event Event name
@@ -220,15 +220,15 @@ ve.dm.DocumentSynchronizer.prototype.queueEvent = function( node, event ) {
 
 /**
  * Synchronizes node tree using queued actions.
- * 
+ *
  * This method uses the static methods defined in {ve.dm.DocumentSynchronizer.synchronizers} and
  * calls them in the context of {this}.
- * 
+ *
  * After synchronization is complete all queued events will be emitted. Hashes of queued events that
  * have been stored on nodes are removed from the nodes after the events have all been emitted.
- * 
+ *
  * This method also clears both action and event queues.
- * 
+ *
  * @method
  */
 ve.dm.DocumentSynchronizer.prototype.synchronize = function() {

@@ -1,6 +1,6 @@
 /**
  * Generic document.
- * 
+ *
  * @class
  * @constructor
  * @param model {ve.Node} Model to observe
@@ -14,7 +14,7 @@ ve.Document = function( documentNode ) {
 
 /**
  * Gets the root of the document's node tree.
- * 
+ *
  * @method
  * @returns {ve.Node} Root of node tree
  */
@@ -24,7 +24,7 @@ ve.Document.prototype.getDocumentNode = function() {
 
 /**
  * Gets a list of nodes and the ranges within them that a selection of the document covers.
- * 
+ *
  * @method
  * @param {ve.Range} range Range within document to select nodes
  * @param {String} [mode='leaves'] Type of selection to perform
