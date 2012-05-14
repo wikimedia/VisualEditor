@@ -1,6 +1,6 @@
 /**
  * DataModel document.
- * 
+ *
  * @class
  * @extends {ve.dm.DocumentFragment}
  * @constructor
@@ -15,17 +15,17 @@ ve.dm.Document = function( data ) {
 
 /**
  * Checks if content can be inserted at an offset in document data.
- * 
+ *
  * This method assumes that any value that has a type property that's a string is an element object.
- * 
+ *
  * @example Content offsets:
  *      <heading> a </heading> <paragraph> b c <img> </img> </paragraph>
  *     .         ^ ^          .           ^ ^ ^     .      ^            .
- * 
+ *
  * @example Content offsets:
  *      <list> <listItem> </listItem> <list>
  *     .      .          .           .      .
- * 
+ *
  * @static
  * @method
  * @param {Array} data Document data
@@ -87,13 +87,13 @@ ve.dm.Document.isContentOffset = function( data, offset ) {
 
 /**
  * Checks if content can be inserted at an offset in document data.
- * 
+ *
  * This method assumes that any value that has a type property that's a string is an element object.
- * 
+ *
  * @example Structural offsets:
  *      <heading> a </heading> <paragraph> b c <img> </img> </paragraph>
  *     ^         . .          ^           . . .     .      .            ^
- * 
+ *
  * @static
  * @method
  * @param {Array} data Document data
@@ -147,13 +147,13 @@ ve.dm.Document.isStructuralOffset = function( data, offset ) {
 
 /**
  * Checks if a data at a given offset is an element.
- * 
+ *
  * This method assumes that any value that has a type property that's a string is an element object.
- * 
+ *
  * @example Element data:
  *      <heading> a </heading> <paragraph> b c <img></img> </paragraph>
  *     ^         . ^          ^           . . ^     ^     ^            .
- * 
+ *
  * @static
  * @method
  * @param {Array} data Document data
@@ -167,10 +167,10 @@ ve.dm.Document.isElementData = function( data, offset ) {
 
 /**
  * Checks for elements in document data.
- * 
+ *
  * This method assumes that any value that has a type property that's a string is an element object.
  * Elements are discovered by iterating through the entire data array (backwards).
- * 
+ *
  * @static
  * @method
  * @param {Array} data Document data
@@ -197,7 +197,6 @@ ve.dm.Document.containsElementData = function( data ) {
  * @returns {ve.Node} Lowest level parent node being affected
  */
 ve.dm.Document.getScope = function( node, data ) {
-	debugger;
 	var i,
 		length,
 		level = 0,
@@ -223,22 +222,22 @@ ve.dm.Document.getScope = function( node, data ) {
 
 /**
  * Rebuild one or more nodes from a linear model fragment.
- * 
+ *
  * The data provided to this method may contain either one node or multiple sibling nodes, but it
  * must be balanced and valid. Data provided to this method also may not contain any content at the
  * top level. The tree and offset map are updated during this operation.
- * 
+ *
  * Process:
  *  1. Nodes between {index} and {index} + {numNodes} in {parent} will be removed
  *  2. Data will be retrieved from this.data using {offset} and {newLength}
  *  3. A document fragment will be generated from the retrieved data
  *  4. The document fragment's offset map will be inserted into this document at {offset}
  *  5. The document fragment's nodes will be inserted into {parent} at {index}
- * 
+ *
  * Use cases:
  *  1. Rebuild old nodes and offset data after a change to the linear model.
  *  2. Insert new nodes and offset data after a insertion in the linear model.
- * 
+ *
  * @param {ve.dm.Node} parent Parent of the node(s) being rebuilt
  * @param {Integer} index Index within parent to rebuild or insert nodes
  *   - If {numNodes} == 0: Index to insert nodes at
@@ -276,7 +275,7 @@ ve.dm.Document.prototype.rebuildNodes = function( parent, index, numNodes, offse
 
 /**
  * Gets a content offset a given distance forwards or backwards from another.
- * 
+ *
  * @method
  * @param {Integer} offset Offset to start from
  * @param {Integer} distance Number of content offsets to move

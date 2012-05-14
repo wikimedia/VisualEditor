@@ -1,6 +1,6 @@
 /**
  * ContentEditable node for a definition list.
- * 
+ *
  * @class
  * @constructor
  * @extends {ve.ce.BranchNode}
@@ -15,7 +15,7 @@ ve.ce.DefinitionListNode = function( model ) {
 
 /**
  * Node rules.
- * 
+ *
  * @see ve.ce.NodeFactory
  * @static
  * @member

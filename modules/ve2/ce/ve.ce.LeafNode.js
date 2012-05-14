@@ -1,6 +1,6 @@
 /**
  * ContentEditable node that can not have any children.
- * 
+ *
  * @class
  * @abstract
  * @constructor

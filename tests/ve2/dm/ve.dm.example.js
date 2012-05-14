@@ -4,7 +4,7 @@ ve.dm.example = {};
 
 /**
  * Serialized HTML.
- * 
+ *
  * This is what the parser will emit.
  */
 ve.dm.example.html =
@@ -43,11 +43,11 @@ ve.dm.example.html =
 
 /*
  * Linear data.
- * 
+ *
  * This is what we convert serialized HTML from the parser into so we can work with it more easily.
- * 
+ *
  * There are three types of components in content data:
- * 
+ *
  *     {String} Plain text character
  *     
  *     {Array} Annotated character
@@ -170,9 +170,9 @@ ve.dm.example.data = [
 
 /**
  * Sample content data index.
- * 
+ *
  * This is part of what a ve.dm.DocumentFragment generates when given linear data.
- * 
+ *
  *  (21) branch nodes
  *     (01) document node
  *     (01) heading node
@@ -240,9 +240,9 @@ ve.dm.example.tree = new ve.dm.DocumentNode( [
 
 /**
  * Creates an offset map that references a node tree.
- * 
+ *
  * This is part of what a ve.dm.DocumentFragment generates when given linear data.
- * 
+ *
  * @method
  * @param {ve.dm.DocumentNode} root Document node to reference
  */

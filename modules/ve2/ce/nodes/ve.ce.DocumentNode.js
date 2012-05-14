@@ -1,6 +1,6 @@
 /**
  * ContentEditable node for a document.
- * 
+ *
  * @class
  * @constructor
  * @extends {ve.ce.BranchNode}
@@ -20,7 +20,7 @@ ve.ce.DocumentNode = function( model ) {
 
 /**
  * Node rules.
- * 
+ *
  * @see ve.ce.NodeFactory
  * @static
  * @member
@@ -33,7 +33,7 @@ ve.ce.DocumentNode.rules = {
 
 /**
  * Gets the outer length, which for a document node is the same as the inner length.
- * 
+ *
  * @method
  * @returns {Integer} Length of the entire node
  */

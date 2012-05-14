@@ -1,6 +1,6 @@
 /**
  * ContentEditable node for an image.
- * 
+ *
  * @class
  * @constructor
  * @extends {ve.ce.LeafNode}
@@ -24,7 +24,7 @@ ve.ce.ImageNode = function( model ) {
 
 /**
  * Node rules.
- * 
+ *
  * @see ve.ce.NodeFactory
  * @static
  * @member
@@ -37,9 +37,9 @@ ve.ce.ImageNode.rules = {
 
 /**
  * Responds to model update events.
- * 
+ *
  * If the source changed since last update the image's src attribute will be updated accordingly.
- * 
+ *
  * @method
  */
 ve.ce.ImageNode.prototype.onUpdate = function() {

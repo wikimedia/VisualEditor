@@ -1,6 +1,6 @@
 /**
  * Mixin for leaf nodes.
- * 
+ *
  * @class
  * @abstract
  * @constructor

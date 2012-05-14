@@ -1,6 +1,6 @@
 /**
  * ContentEditable node that can have branch or leaf children.
- * 
+ *
  * @class
  * @abstract
  * @constructor
@@ -68,10 +68,10 @@ ve.ce.BranchNode.prototype.updateDomWrapper = function( key ) {
 
 /**
  * Responds to splice events on a ve.dm.BranchNode.
- * 
+ *
  * ve.ce.Node objects are generated from the inserted ve.dm.Node objects, producing a view that's a
  * mirror of it's model.
- * 
+ *
  * @method
  * @param {Integer} index Index to remove and or insert nodes at
  * @param {Integer} howmany Number of nodes to remove

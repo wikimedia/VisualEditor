@@ -174,9 +174,9 @@ ve.example.getSelectNodesCases = function( doc ) {
 
 /**
  * Asserts that two node trees are equivalent.
- * 
+ *
  * This will perform 4 assertions on each branch node and 3 assertions on each leaf node.
- * 
+ *
  * @method
  */
 ve.example.nodeTreeEqual = function( a, b ) {
@@ -193,10 +193,10 @@ ve.example.nodeTreeEqual = function( a, b ) {
 
 /**
  * Asserts that two node selections are equivalent.
- * 
+ *
  * This will perform 1 assertion to check the number of results in the selection and then 2
  * assertions on each result
- * 
+ *
  * @method
  */
 ve.example.nodeSelectionEqual = function( a, b ) {
@@ -217,7 +217,7 @@ ve.example.nodeSelectionEqual = function( a, b ) {
 
 /**
  * Looks up a value in a node tree.
- * 
+ *
  * @method
  * @param {ve.Node} root Root node to lookup from
  * @param {Integer} [...] Index path

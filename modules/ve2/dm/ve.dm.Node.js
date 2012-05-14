@@ -1,6 +1,6 @@
 /**
  * Generic DataModel node.
- * 
+ *
  * @class
  * @abstract
  * @constructor
@@ -23,7 +23,7 @@ ve.dm.Node = function( type, length, attributes ) {
 
 /**
  * Checks if this node can have child nodes.
- * 
+ *
  * @method
  * @returns {Boolean} Node can have children
  */
@@ -33,7 +33,7 @@ ve.dm.Node.prototype.canHaveChildren = function() {
 
 /**
  * Checks if this node can have child nodes which can also have child nodes.
- * 
+ *
  * @method
  * @returns {Boolean} Node can have grandchildren
  */
@@ -43,7 +43,7 @@ ve.dm.Node.prototype.canHaveGrandchildren = function() {
 
 /**
  * Checks if this node represents a wrapped element in the linear model.
- * 
+ *
  * @method
  * @returns {Boolean} Node represents a wrapped element
  */
@@ -53,7 +53,7 @@ ve.dm.Node.prototype.isWrapped = function() {
 
 /**
  * Gets the inner length.
- * 
+ *
  * @method
  * @returns {Integer} Length of the node's contents
  */
@@ -63,7 +63,7 @@ ve.dm.Node.prototype.getLength = function() {
 
 /**
  * Gets the outer length, including any opening/closing elements.
- * 
+ *
  * @method
  * @returns {Integer} Length of the entire node
  */
@@ -73,7 +73,7 @@ ve.dm.Node.prototype.getOuterLength = function() {
 
 /**
  * Sets the inner length.
- * 
+ *
  * @method
  * @param {Integer} length Length of content
  * @throws Invalid content length error if length is less than 0
@@ -99,7 +99,7 @@ ve.dm.Node.prototype.setLength = function( length ) {
 
 /**
  * Adjust the length.
- * 
+ *
  * @method
  * @param {Integer} adjustment Amount to adjust length by
  * @throws Invalid adjustment error if resulting length is less than 0
@@ -112,7 +112,7 @@ ve.dm.Node.prototype.adjustLength = function( adjustment ) {
 
 /**
  * Gets an element attribute value.
- * 
+ *
  * @method
  * @returns {Mixed} Value of attribute, or undefined if no such attribute exists
  */

@@ -1,6 +1,6 @@
 /**
  * ContentEditable node for a list.
- * 
+ *
  * @class
  * @constructor
  * @extends {ve.ce.BranchNode}
@@ -18,7 +18,7 @@ ve.ce.ListNode = function( model ) {
 
 /**
  * Node rules.
- * 
+ *
  * @see ve.ce.NodeFactory
  * @static
  * @member
@@ -29,7 +29,7 @@ ve.ce.ListNode.rules = {
 
 /**
  * Mapping of list style values and DOM wrapper element types.
- * 
+ *
  * @static
  * @member
  */
@@ -42,9 +42,9 @@ ve.ce.ListNode.domWrapperElementTypes = {
 
 /**
  * Responds to model update events.
- * 
+ *
  * If the style changed since last update the DOM wrapper will be replaced with an appropriate one.
- * 
+ *
  * @method
  */
 ve.ce.ListNode.prototype.onUpdate = function() {

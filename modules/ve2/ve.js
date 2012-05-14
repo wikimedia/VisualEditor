@@ -1,6 +1,6 @@
 /**
  * VisualEditor namespace.
- * 
+ *
  * All classes and functions will be attached to this object to keep the global namespace clean.
  */
 window.ve = {
@@ -14,10 +14,10 @@ window.ve = {
 
 /**
  * Extends a constructor with the prototype of another.
- * 
+ *
  * When using this, it's required to include a call to the constructor of the parent class as the
  * first code in the child class's constructor.
- * 
+ *
  * @example
  *     // Define parent class
  *     function Foo() {
@@ -30,7 +30,7 @@ window.ve = {
  *     }
  *     // Extend prototype
  *     ve.extendClass( Bar, Foo );
- * 
+ *
  * @static
  * @method
  * @param {Function} dst Class to extend
@@ -55,7 +55,7 @@ ve.isArray = $.isArray;
 
 /**
  * Wrapper for Array.prototype.indexOf
- * 
+ *
  * @param {Mixed} value Element to search for
  * @param {Array} array Array to search in
  * @param {Integer} [fromIndex=0] Index to being searching from
@@ -65,9 +65,9 @@ ve.inArray = $.inArray;
 
 /**
  * Generates a hash of an object based on it's name and data.
- * 
+ *
  * This is actually an alias for jQuery.json, which falls back to window.JSON if present.
- * 
+ *
  * @static
  * @method
  * @param {Object} obj Object to generate hash for
@@ -77,9 +77,9 @@ ve.getHash = $.toJson;
 
 /**
  * Gets an array of all property names in an object.
- * 
+ *
  * This falls back to the native impelentation of Object.keys if available.
- * 
+ *
  * @static
  * @method
  * @param {Object} Object to get properties from
@@ -99,7 +99,7 @@ ve.getObjectKeys = Object.keys || function( obj ) {
 
 /**
  * Gets an array of all property values in an object.
- * 
+ *
  * @static
  * @method
  * @param {Object} Object to get values from
@@ -119,11 +119,11 @@ ve.getObjectValues = function( obj ) {
 
 /**
  * Recursively compares string and number property between two objects.
- * 
+ *
  * A false result may be caused by property inequality or by properties in one object missing from
  * the other. An asymmetrical test may also be performed, which checks only that properties in the
  * first object are present in the second object, but not the inverse.
- * 
+ *
  * @static
  * @method
  * @param {Object} a First object to compare
@@ -151,7 +151,7 @@ ve.compareObjects = function( a, b, asymmetrical ) {
 
 /**
  * Recursively compare two arrays.
- * 
+ *
  * @static
  * @method
  * @param {Array} a First array to compare
@@ -181,7 +181,7 @@ ve.compareArrays = function( a, b, compareObjects ) {
 
 /**
  * Gets a deep copy of an array's string, number, array and plain-object contents.
- * 
+ *
  * @static
  * @method
  * @param {Array} source Array to copy
@@ -205,7 +205,7 @@ ve.copyArray = function( source ) {
 
 /**
  * Gets a deep copy of an object's string, number, array and plain-object properties.
- * 
+ *
  * @static
  * @method
  * @param {Object} source Object to copy
@@ -230,7 +230,7 @@ ve.copyObject = function( source ) {
 /**
  * Splice one array into another. This is the equivalent of arr.splice( offset, remove, d1, d2, d3, ... )
  * except that d1, d2, d3, ... are specified as an array rather than separate parameters.
- * 
+ *
  * @static
  * @method
  * @param {Array} arr Array to remove from and insert into. Will be modified
@@ -264,7 +264,7 @@ ve.batchSplice = function( arr, offset, remove, data ) {
 
 /**
  * Insert one array into another. This just calls ve.batchSplice( dst, offset, 0, src )
- * 
+ *
  * @static
  * @method
  * @see ve.batchSplice

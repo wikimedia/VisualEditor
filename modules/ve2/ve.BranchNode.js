@@ -1,10 +1,10 @@
 /**
  * Mixin for branch nodes.
- * 
+ *
  * Branch nodes are immutable, which is why there are no methods for adding or removing children.
  * DataModel classes will add this functionality, and other subclasses will implement behavior that
  * mimcs changes made to data model nodes.
- * 
+ *
  * @class
  * @abstract
  * @constructor
@@ -16,7 +16,7 @@ ve.BranchNode = function( children ) {
 
 /**
  * Gets a list of child nodes.
- * 
+ *
  * @method
  * @returns {ve.Node[]} List of child nodes
  */
@@ -26,7 +26,7 @@ ve.BranchNode.prototype.getChildren = function() {
 
 /**
  * Gets the index of a given child node.
- * 
+ *
  * @method
  * @param {ve.dm.Node} node Child node to find index of
  * @returns {Integer} Index of child node or -1 if node was not found
@@ -37,7 +37,7 @@ ve.BranchNode.prototype.indexOf = function( node ) {
 
 /**
  * Sets the root node this node is a descendent of.
- * 
+ *
  * @method
  * @see {ve.Node.prototype.setRoot}
  * @param {ve.Node} root Node to use as root
@@ -55,7 +55,7 @@ ve.BranchNode.prototype.setRoot = function( root ) {
 
 /**
  * Sets the document this node is a part of.
- * 
+ *
  * @method
  * @see {ve.Node.prototype.setDocument}
  * @param {ve.Document} root Node to use as root
@@ -73,9 +73,9 @@ ve.BranchNode.prototype.setDocument = function( doc ) {
 
 /**
  * Gets the content offset of a node.
- * 
+ *
  * TODO: Rewrite this method to not use recursion, because the function call overhead is expensive
- * 
+ *
  * @method
  * @param {ve.Node} node Node to get offset of
  * @returns {Integer} Offset of node or -1 of node was not found

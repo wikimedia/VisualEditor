@@ -1,6 +1,6 @@
 /**
  * ContentEditable node for a document.
- * 
+ *
  * @class
  * @constructor
  * @extends {ve.ce.LeafNode}
@@ -43,7 +43,7 @@ ve.ce.AlienNode = function( model ) {
 
 /**
  * Node rules.
- * 
+ *
  * @see ve.ce.NodeFactory
  * @static
  * @member

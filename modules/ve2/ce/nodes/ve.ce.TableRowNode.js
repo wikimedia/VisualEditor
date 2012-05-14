@@ -1,6 +1,6 @@
 /**
  * ContentEditable node for a table row.
- * 
+ *
  * @class
  * @constructor
  * @extends {ve.ce.BranchNode}
@@ -15,7 +15,7 @@ ve.ce.TableRowNode = function( model ) {
 
 /**
  * Node rules.
- * 
+ *
  * @see ve.ce.NodeFactory
  * @static
  * @member

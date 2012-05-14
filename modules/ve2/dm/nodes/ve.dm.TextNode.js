@@ -1,6 +1,6 @@
 /**
  * DataModel node for a document.
- * 
+ *
  * @class
  * @constructor
  * @extends {ve.dm.LeafNode}
@@ -15,7 +15,7 @@ ve.dm.TextNode = function( length ) {
 
 /**
  * Node rules.
- * 
+ *
  * @see ve.dm.NodeFactory
  * @static
  * @member
