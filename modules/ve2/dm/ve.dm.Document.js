@@ -197,7 +197,6 @@ ve.dm.Document.containsElementData = function( data ) {
  * @returns {ve.Node} Lowest level parent node being affected
  */
 ve.dm.Document.getScope = function( node, data ) {
-	debugger;
 	var i,
 		length,
 		level = 0,
