@@ -222,6 +222,26 @@ test( 'getAnnotationsFromRange', 1, function() {
 			'expected': [ { 'type': 'bold' }, { 'type': 'italic' } ]
 		},
 		{
+			'msg': 'none',
+			'data': [
+				['a',
+					{
+						'{"type":"bold"}': { 'type': 'bold' },
+						'{"type":"italic"}': { 'type': 'italic'}
+					}
+				],
+				['b',
+					{
+						'{"type":"bold"}': { 'type': 'bold' },
+						'{"type":"italic"}': { 'type': 'italic'},
+						'{"type":"underline"}': { 'type': 'underline'}
+					}
+				],
+				['c']
+			],
+			'expected': []
+		},
+		{
 			'msg': 'all different',
 			'data': [
 				['a', { '{"type:"bold"}': { 'type': 'bold' } } ],
