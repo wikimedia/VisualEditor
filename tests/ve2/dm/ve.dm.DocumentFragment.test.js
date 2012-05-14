@@ -121,8 +121,8 @@ test( 'getAnnotationsFromOffset', 1, function() {
 				['b', { '{"type:"bold"}': { 'type': 'bold' } }]
 			],
 			'expected': [
-				[{ '{"type:"bold"}': { 'type': 'bold' } }],
-				[{ '{"type:"bold"}': { 'type': 'bold' } }]
+				[{ 'type': 'bold' }],
+				[{ 'type': 'bold' }]
 			]
 		},
 		{
@@ -132,10 +132,25 @@ test( 'getAnnotationsFromOffset', 1, function() {
 				['b', { '{"type:"italic"}': { 'type': 'italic' } }]
 			],
 			'expected': [
-				[{ '{"type:"bold"}': { 'type': 'bold' } }],
-				[{ '{"type:"italic"}': { 'type': 'italic' } }]
+				[{ 'type': 'bold' }],
+				[{ 'type': 'italic' }]
+			]
+		},
+		{
+			'msg': ['bold, italic & underline'],
+			'data': [
+				['a',
+					{
+						'{"type":"bold"}': { 'type': 'bold' },
+						'{"type":"italic"}': { 'type': 'italic'},
+						'{"type":"underline"}': { 'type': 'underline'}
+					}]
+			],
+			'expected': [
+				[{ 'type': 'bold' }, { 'type': 'italic' }, { 'type': 'underline' }]
 			]
 		}
+
 	];
 	var expectCount = 0;
 
