@@ -76,6 +76,28 @@ ve.inArray = $.inArray;
 ve.getHash = $.toJson;
 
 /**
+ * Gets an array of all property names in an object.
+ * 
+ * This falls back to the native impelentation of Object.keys if available.
+ * 
+ * @static
+ * @method
+ * @param {Object} Object to get properties from
+ * @returns {String[]} List of object keys
+ */
+ve.getObjectKeys = Object.keys || function( obj ) {
+	var keys = [],
+		key,
+		hop = Object.prototype.hasOwnProperty;
+	for ( key in obj ) {
+		if ( hop.call( obj, key ) ) {
+			keys.push( key );
+		}
+	}
+	return keys;
+};
+
+/**
  * Recursively compares string and number property between two objects.
  * 
  * A false result may be caused by property inequality or by properties in one object missing from
