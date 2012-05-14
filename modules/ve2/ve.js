@@ -98,6 +98,26 @@ ve.getObjectKeys = Object.keys || function( obj ) {
 };
 
 /**
+ * Gets an array of all property values in an object.
+ * 
+ * @static
+ * @method
+ * @param {Object} Object to get values from
+ * @returns {Array} List of object values
+ */
+ve.getObjectValues = function( obj ) {
+	var values = [],
+		key,
+		hop = Object.prototype.hasOwnProperty;
+	for ( key in obj ) {
+		if ( hop.call( obj, key ) ) {
+			values.push( obj[key] );
+		}
+	}
+	return values;
+};
+
+/**
  * Recursively compares string and number property between two objects.
  * 
  * A false result may be caused by property inequality or by properties in one object missing from
