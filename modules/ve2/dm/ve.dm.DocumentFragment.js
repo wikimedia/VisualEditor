@@ -240,8 +240,8 @@ ve.dm.DocumentFragment.prototype.getAnnotationsFromRange = function( range ) {
 		map = currentChar;
 	}
 	// build array of annotations
-	for ( var hash in map ) {
-		annotations.push( map[hash] );
+	for ( var key in map ) {
+		annotations.push( map[key] );
 	}
 	return annotations;
 };
