@@ -149,8 +149,8 @@ test( 'getAnnotationsFromOffset', 1, function() {
 		fragment = new ve.dm.DocumentFragment ( cases[i].data );
 		for (var j=0; j<fragment.getData().length;j++) {
 			annotations = fragment.getAnnotationsFromOffset( j );
-			strictEqual(
-				JSON.stringify(annotations), JSON.stringify(cases[i].expected[j]), cases[i].msg[j]
+			deepEqual(
+				annotations, cases[i].expected[j], cases[i].msg[j]
 			);
 		}
 
