@@ -192,16 +192,8 @@ ve.dm.DocumentFragment.prototype.getDataFromNode = function( node ) {
  * @returns {Object[]} A copy of all annotation objects offset is covered by
  */
 ve.dm.DocumentFragment.prototype.getAnnotationsFromOffset = function( offset ) {
-	var annotations = [],
-		aObj = {},
-		a = {};
-
 	if ( ve.isArray( this.data[offset] ) ) {
-		aObj = this.data[offset][1];
-		for (a in aObj) {
-			annotations.push( aObj[a] );
-		}
-		return annotations;
+		return ve.getObjectValues( this.data[offset][1] );
 	}
 	return [];
 };
