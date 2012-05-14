@@ -289,10 +289,22 @@ $messages['ia'] = array(
 );
 
 /** Italian (Italiano)
+ * @author Beta16
  * @author F. Cosoleto
  */
 $messages['it'] = array(
-	'visualeditor-feedback-prompt' => 'Lascia feedback',
+	'visualeditor' => 'VisualEditor',
+	'visualeditorsandbox' => 'Prova editor visivo',
+	'visualeditor-desc' => 'Editor visivo per MediaWiki',
+	'visualeditor-sandbox-title' => "Pagina delle prove per l'editor visivo",
+	'visualeditor-tooltip-wikitext' => 'Mostra/nascondi wikitesto',
+	'visualeditor-tooltip-json' => 'Mostra/nascondi JSON',
+	'visualeditor-tooltip-html' => 'Mostra/nascondi HTML',
+	'visualeditor-tooltip-render' => 'Mostra/nascondi anteprima',
+	'visualeditor-tooltip-history' => 'Mostra/nascondi azioni',
+	'visualeditor-tooltip-help' => 'Mostra/nascondi aiuto',
+	'visualeditor-feedback-prompt' => 'Lascia un commento',
+	'visualeditor-feedback-dialog-title' => "Lascia un commento sulla pagina delle prove per l'editor visivo",
 );
 
 /** Japanese (日本語)
