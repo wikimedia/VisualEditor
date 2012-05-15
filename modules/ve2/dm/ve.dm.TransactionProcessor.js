@@ -254,16 +254,19 @@ ve.dm.TransactionProcessor.prototype.replace = function( op ) {
 		insert = this.reversed ? op.remove : op.insert,
 		removeHasStructure = ve.dm.Document.containsElementData( remove ),
 		insertHasStructure = ve.dm.Document.containsElementData( insert ),
-		node;
+		node, selection;
 	// Figure out if this is a structural insert or a content insert
 	if ( !removeHasStructure && !insertHasStructure ) {
-		// Content insert
+		// Content replacement
 		// Update the linear model
 		ve.batchSplice( this.document.data, this.cursor, remove.length, insert );
 		this.applyAnnotations( this.cursor + insert.length );
 		
 		// Get the node containing the replaced content
-		node = this.document.getNodeFromOffset( this.cursor );
+		selection = this.document.selectNodes( new ve.Range( this.cursor, this.cursor ),
+			'leaves'
+		);
+		node = selection[0].node;
 		// Queue a resize for this node
 		this.synchronizer.pushResize( node, insert.length - remove.length );
 		// Advance the cursor
