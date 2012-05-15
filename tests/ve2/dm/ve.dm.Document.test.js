@@ -256,7 +256,11 @@ test( 'rebuildNodes', function() {
 		documentNode = doc.getDocumentNode();
 	// Rebuild without changes
 	doc.rebuildNodes( documentNode, 1, 1, 5, 30 );
-	ve.example.nodeTreeEqual( documentNode, ve.dm.example.tree, 'rebuild without changes' );
+	deepEqual(
+		ve.example.getNodeTreeSummary( documentNode ),
+		ve.example.getNodeTreeSummary( ve.dm.example.tree ),
+		'rebuild without changes'
+	);
 
 	// XXX: Create a new document node tree from the old one
 	var tree = new ve.dm.DocumentNode( ve.dm.example.tree.getChildren() );
@@ -266,7 +270,11 @@ test( 'rebuildNodes', function() {
 	tree.splice( 1, 1, new ve.dm.ParagraphNode( [new ve.dm.TextNode( 3 )] ) );
 	// Rebuild with changes
 	doc.rebuildNodes( documentNode, 1, 1, 5, 5 );
-	ve.example.nodeTreeEqual( documentNode, tree, 'replace table with paragraph' );
+	deepEqual(
+		ve.example.getNodeTreeSummary( documentNode ),
+		ve.example.getNodeTreeSummary( tree ),
+		'replace table with paragraph'
+	);
 } );
 
 test( 'getRelativeContentOffset', 1, function() {
@@ -347,6 +355,10 @@ test( 'selectNodes', function() {
 	var doc = new ve.dm.Document( ve.dm.example.data ),
 		cases = ve.example.getSelectNodesCases( doc );
 	for ( var i = 0; i < cases.length; i++ ) {
-		ve.example.nodeSelectionEqual( cases[i].actual, cases[i].expected, cases[i].msg );
+		deepEqual(
+			ve.example.getNodeSelectionSummary( cases[i].actual ),
+			ve.example.getNodeSelectionSummary( cases[i].expected ),
+			cases[i].msg
+		);
 	}
 } );

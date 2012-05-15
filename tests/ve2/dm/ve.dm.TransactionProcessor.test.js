@@ -149,35 +149,42 @@ test( 'commit/rollback', function() {
 			}
 		}
 	};
+	// Generate original document
+	var originalData = ve.dm.example.data,
+		originalDoc = new ve.dm.Document( originalData );
 	// Run tests
-	var originalDoc = new ve.dm.Document( ve.dm.example.data );
 	for ( var msg in cases ) {
-		var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
+		var testDocument = new ve.dm.Document( ve.copyArray( originalData ) ),
 			tx = new ve.dm.Transaction();
 		for ( var i = 0; i < cases[msg].calls.length; i++ ) {
 			tx[cases[msg].calls[i][0]].apply( tx, cases[msg].calls[i].slice( 1 ) );
 		}
 		if ( 'expected' in cases[msg] ) {
-			ve.dm.TransactionProcessor.commit( doc, tx );
-			var expected = ve.copyArray( ve.dm.example.data );
-			cases[msg].expected( expected );
-			deepEqual( doc.getData(), expected, 'commit (data): ' + msg );
-			var expectedDoc = new ve.dm.Document( expected );
-			ve.example.nodeTreeEqual( doc.getDocumentNode(),
-				expectedDoc.getDocumentNode(),
+			// Generate expected document
+			var expectedData = ve.copyArray( originalData );
+			cases[msg].expected( expectedData );
+			var expectedDocument = new ve.dm.Document( expectedData );
+			// Commit
+			ve.dm.TransactionProcessor.commit( testDocument, tx );
+			deepEqual( testDocument.getData(), expectedData, 'commit (data): ' + msg );
+			deepEqual(
+				ve.example.getNodeTreeSummary( testDocument.getDocumentNode() ),
+				ve.example.getNodeTreeSummary( expectedDocument.getDocumentNode() ),
 				'commit (tree): ' + msg
 			);
-			ve.dm.TransactionProcessor.rollback( doc, tx );
-			deepEqual( doc.getData(), ve.dm.example.data, 'rollback (data): ' + msg );
-			ve.example.nodeTreeEqual( doc.getDocumentNode(),
-				originalDoc.getDocumentNode(),
+			// Rollback
+			ve.dm.TransactionProcessor.rollback( testDocument, tx );
+			deepEqual( testDocument.getData(), ve.dm.example.data, 'rollback (data): ' + msg );
+			deepEqual(
+				ve.example.getNodeTreeSummary( testDocument.getDocumentNode() ),
+				ve.example.getNodeTreeSummary( originalDoc.getDocumentNode() ),
 				'rollback (tree): ' + msg
 			);
 		} else if ( 'exception' in cases[msg] ) {
 			/*jshint loopfunc:true */
 			raises(
 				function() {
-					ve.dm.TransactionProcessor.commit( doc, tx );
+					ve.dm.TransactionProcessor.commit( testDocument, tx );
 				},
 				cases[msg].exception,
 				'commit: ' + msg

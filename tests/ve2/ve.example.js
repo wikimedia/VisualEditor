@@ -19,7 +19,7 @@ ve.example.getSelectNodesCases = function( doc ) {
 					'nodeRange': new ve.Range( 1, 4 )
 				}
 			],
-			'msg': 'partial leaf results have ranges with global offsets',
+			'msg': 'partial leaf results have ranges with global offsets'
 		},
 		{
 			'actual': doc.selectNodes( new ve.Range( 0, 10 ), 'leaves' ),
@@ -192,62 +192,62 @@ ve.example.getSelectNodesCases = function( doc ) {
 };
 
 /**
- * Asserts that two node trees are equivalent.
+ * Builds a summary of a node tree.
  *
- * This will perform 5 assertions on each node
+ * Generated summaries contain node types, lengths, outer lengths, attributes and summaries for
+ * each child recusively. It's simple and fast to use deepEqual on this.
  *
  * @method
+ * @param {ve.Node} node Node tree to summarize
+ * @param {Boolean} [shallow] Do not summarize each child recursively
+ * @returns {Object} Summary of node tree
  */
-ve.example.nodeTreeEqual = function( a, b, desc, typePath ) {
-	typePath = typePath ? typePath + '/' + a.getType() : a.getType();
-	var descPrefix = desc + ': (' + typePath + ') ';
-	equal( a.getType(), b.getType(), descPrefix + 'type match' );
-	equal( a.getLength(), b.getLength(), descPrefix + 'length match' );
-	equal( a.getOuterLength(), b.getOuterLength(), descPrefix + 'outer length match' );
-	deepEqual( a.attributes, b.attributes, descPrefix + 'attributes match' );
-	if ( a.children && b.children ) {
-		// Prevent crashes if a.children and b.children have different lengths
-		var minLength = a.children.length < b.children.length ? a.children.length : b.children.length;
-		equal( a.children.length, b.children.length, descPrefix + 'children count match' );
-		for ( var i = 0; i < minLength; i++ ) {
-			ve.example.nodeTreeEqual( a.children[i], b.children[i], desc, typePath );
+ve.example.getNodeTreeSummary = function( node, shallow ) {
+	var summary = {
+		'getType': node.getType(),
+		'getLength': node.getLength(),
+		'getOuterLength': node.getOuterLength(),
+		'attributes': node.attributes
+	};
+	if ( node.children !== undefined ) {
+		summary['children.length'] = node.children.length;
+		if ( !shallow ) {
+			summary.children = [];
+			for ( var i = 0; i < node.children.length; i++ ) {
+				summary.children.push( ve.example.getNodeTreeSummary( node.children[i] ) );
+			}
 		}
-	} else if ( a.children ) {
-		ok( false, descPrefix + 'children array expected but not present' );
-	} else if ( b.children ) {
-		ok( false, descPrefix + 'children array present but not expected' );
-	} else {
-		ok( true, descPrefix + 'node is childless' );
 	}
+	return summary;
 };
 
 /**
- * Asserts that two node selections are equivalent.
+ * Builds a summary of a node selection.
  *
- * This will perform 1 assertion to check the number of results in the selection and then 2
- * assertions on each result
+ * Generated summaries contain length of results as well as node summaries, ranges, indexes, indexes
+ * within parent and node ranges for each result. It's simple and fast to use deepEqual on this.
  *
  * @method
+ * @param {Object[]} selection Selection to summarize
+ * @returns {Object} Summary of selection
  */
-ve.example.nodeSelectionEqual = function( a, b, desc ) {
-	var descPrefix = desc ? desc + ': ' : '';
-	// Prevent crashes if a and b have different lengths
-	var minLength = a.length < b.length ? a.length : b.length;
-	equal( a.length, b.length, descPrefix + 'length match' );
-	for ( var i = 0; i < minLength; i++ ) {
-		ok( a[i].node === b[i].node, descPrefix + 'node match (element ' + i + ')' );
-		if ( a[i].range && b[i].range ) {
-			deepEqual( a[i].range, b[i].range, descPrefix + 'range match (element ' + i + ')' );
-		} else {
-			strictEqual( 'range' in a[i], 'range' in b[i],
-				descPrefix + 'range existence match (element ' + i + ')' );
+ve.example.getNodeSelectionSummary = function( selection ) {
+	var summary = {
+		'length': selection.length
+	};
+	if ( selection.length ) {
+		summary.results = [];
+		for ( var i = 0; i < selection.length; i++ ) {
+			summary.results.push( {
+				'node': ve.example.getNodeTreeSummary( selection[i].node, true ),
+				'range': selection[i].range,
+				'index': selection[i].index,
+				'indexInNode': selection[i].indexInNode,
+				'nodeRange': selection[i].nodeRange
+			} );
 		}
-		deepEqual( a[i].index, b[i].index, descPrefix + 'index match (element ' + i + ')' );
-		deepEqual( a[i].indexInNode, b[i].indexInNode,
-			descPrefix + 'indexInNode match (element ' + i + ')' );
-		deepEqual( a[i].nodeRange, b[i].nodeRange,
-			descPrefix + 'nodeRange match (element ' + i +')' );
 	}
+	return summary;
 };
 
 /**

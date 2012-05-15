@@ -2,13 +2,13 @@ module( 've.dm.DocumentFragment' );
 
 /* Tests */
 
-test( 'constructor', 156, function() {
+test( 'constructor', 2, function() {
 	var fragment = new ve.dm.DocumentFragment( ve.dm.example.data );
-	// Test count: 5 tests x 31 nodes = 155
-	ve.example.nodeTreeEqual( fragment.getDocumentNode(), ve.dm.example.tree,
+	deepEqual(
+		ve.example.getNodeTreeSummary( fragment.getDocumentNode() ),
+		ve.example.getNodeTreeSummary( ve.dm.example.tree ),
 		'node tree matches example data'
 	);
-
 	raises(
 		function() {
 			fragment = new ve.dm.DocumentFragment( [
