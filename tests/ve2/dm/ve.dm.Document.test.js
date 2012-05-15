@@ -256,7 +256,7 @@ test( 'rebuildNodes', function() {
 		documentNode = doc.getDocumentNode();
 	// Rebuild without changes
 	doc.rebuildNodes( documentNode, 1, 1, 5, 30 );
-	ve.example.nodeTreeEqual( documentNode, ve.dm.example.tree );
+	ve.example.nodeTreeEqual( documentNode, ve.dm.example.tree, 'rebuild without changes' );
 
 	// XXX: Create a new document node tree from the old one
 	var tree = new ve.dm.DocumentNode( ve.dm.example.tree.getChildren() );
@@ -266,7 +266,7 @@ test( 'rebuildNodes', function() {
 	tree.splice( 1, 1, new ve.dm.ParagraphNode( [new ve.dm.TextNode( 3 )] ) );
 	// Rebuild with changes
 	doc.rebuildNodes( documentNode, 1, 1, 5, 5 );
-	ve.example.nodeTreeEqual( documentNode, tree );
+	ve.example.nodeTreeEqual( documentNode, tree, 'replace table with paragraph' );
 } );
 
 test( 'getRelativeContentOffset', 1, function() {

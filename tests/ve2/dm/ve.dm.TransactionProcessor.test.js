@@ -150,6 +150,7 @@ test( 'commit/rollback', function() {
 		}
 	};
 	// Run tests
+	var originalDoc = new ve.dm.Document( ve.dm.example.data );
 	for ( var msg in cases ) {
 		var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 			tx = new ve.dm.Transaction();
@@ -160,9 +161,18 @@ test( 'commit/rollback', function() {
 			ve.dm.TransactionProcessor.commit( doc, tx );
 			var expected = ve.copyArray( ve.dm.example.data );
 			cases[msg].expected( expected );
-			deepEqual( doc.getData(), expected, 'commit: ' + msg );
+			deepEqual( doc.getData(), expected, 'commit (data): ' + msg );
+			var expectedDoc = new ve.dm.Document( expected );
+			ve.example.nodeTreeEqual( doc.getDocumentNode(),
+				expectedDoc.getDocumentNode(),
+				'commit (tree): ' + msg
+			);
 			ve.dm.TransactionProcessor.rollback( doc, tx );
-			deepEqual( doc.getData(), ve.dm.example.data, 'rollback: ' + msg );
+			deepEqual( doc.getData(), ve.dm.example.data, 'rollback (data): ' + msg );
+			ve.example.nodeTreeEqual( doc.getDocumentNode(),
+				originalDoc.getDocumentNode(),
+				'rollback (tree): ' + msg
+			);
 		} else if ( 'exception' in cases[msg] ) {
 			/*jshint loopfunc:true */
 			raises(

@@ -189,19 +189,30 @@ ve.example.getSelectNodesCases = function( doc ) {
 /**
  * Asserts that two node trees are equivalent.
  *
- * This will perform 4 assertions on each branch node and 3 assertions on each leaf node.
+ * This will perform 5 assertions on each node
  *
  * @method
  */
-ve.example.nodeTreeEqual = function( a, b ) {
-	equal( a.getType(), b.getType(), 'type match (' + a.getType() + ')' );
-	equal( a.getLength(), b.getLength(), 'length match' );
-	equal( a.getOuterLength(), b.getOuterLength(), 'outer length match' );
-	if ( a.children ) {
-		equal( a.children.length, b.children.length, 'children count match' );
-		for ( var i = 0; i < a.children.length; i++ ) {
-			ve.example.nodeTreeEqual( a.children[i], b.children[i] );
+ve.example.nodeTreeEqual = function( a, b, desc, typePath ) {
+	typePath = typePath ? typePath + '/' + a.getType() : a.getType();
+	var descPrefix = desc + ': (' + typePath + ') ';
+	equal( a.getType(), b.getType(), descPrefix + 'type match' );
+	equal( a.getLength(), b.getLength(), descPrefix + 'length match' );
+	equal( a.getOuterLength(), b.getOuterLength(), descPrefix + 'outer length match' );
+	deepEqual( a.attributes, b.attributes, descPrefix + 'attributes match' );
+	if ( a.children && b.children ) {
+		// Prevent crashes if a.children and b.children have different lengths
+		var minLength = a.children.length < b.children.length ? a.children.length : b.children.length;
+		equal( a.children.length, b.children.length, descPrefix + 'children count match' );
+		for ( var i = 0; i < minLength; i++ ) {
+			ve.example.nodeTreeEqual( a.children[i], b.children[i], desc, typePath );
 		}
+	} else if ( a.children ) {
+		ok( false, descPrefix + 'children array expected but not present' );
+	} else if ( b.children ) {
+		ok( false, descPrefix + 'children array present but not expected' );
+	} else {
+		ok( true, descPrefix + 'node is childless' );
 	}
 };
 
