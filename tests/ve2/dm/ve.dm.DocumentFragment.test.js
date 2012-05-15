@@ -222,7 +222,7 @@ test( 'getAnnotationsFromRange', 1, function() {
 			'expected': [ { 'type': 'bold' }, { 'type': 'italic' } ]
 		},
 		{
-			'msg': 'none',
+			'msg': 'none, non annotated character at end',
 			'data': [
 				['a',
 					{
@@ -242,6 +242,26 @@ test( 'getAnnotationsFromRange', 1, function() {
 			'expected': []
 		},
 		{
+			'msg': 'none common, reverse of previous',
+			'data': [
+				['a'],
+				['b',
+					{
+						'{"type":"bold"}': { 'type': 'bold' },
+						'{"type":"italic"}': { 'type': 'italic'},
+						'{"type":"underline"}': { 'type': 'underline'}
+					}
+				],
+				['c',
+					{
+						'{"type":"bold"}': { 'type': 'bold' },
+						'{"type":"italic"}': { 'type': 'italic'}
+					}
+				]
+			],
+			'expected': []
+		},
+		{
 			'msg': 'all different',
 			'data': [
 				['a', { '{"type:"bold"}': { 'type': 'bold' } } ],
@@ -250,7 +270,7 @@ test( 'getAnnotationsFromRange', 1, function() {
 			'expected': []
 		},
 		{
-			'msg': 'none',
+			'msg': 'none, no annotations',
 			'data': ['a', 'b'],
 			'expected': []
 		}
