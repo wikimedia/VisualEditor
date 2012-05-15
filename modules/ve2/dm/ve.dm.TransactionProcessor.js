@@ -347,6 +347,8 @@ ve.dm.TransactionProcessor.prototype.replace = function( op ) {
 		selection = this.document.selectNodes( new ve.Range( startOffset, startOffset ) );
 		node = selection[0].node;
 		// Figure out what the scope of the insertion is
+		// FIXME should be opInsert instead of op.insert, but the latter makes rollbacks
+		// of splits work by accident. Will fix this when implementing merges
 		scope = ve.dm.Document.getScope( node, op.insert );
 		if ( scope === node ) {
 			// Simple case: no splits occurred, we can just rebuild the affected range
