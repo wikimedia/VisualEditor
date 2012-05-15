@@ -222,7 +222,7 @@ test( 'getAnnotationsFromRange', 1, function() {
 			'expected': [ { 'type': 'bold' }, { 'type': 'italic' } ]
 		},
 		{
-			'msg': 'none, non annotated character at end',
+			'msg': 'none common, non annotated character at end',
 			'data': [
 				['a',
 					{
@@ -270,7 +270,7 @@ test( 'getAnnotationsFromRange', 1, function() {
 			'expected': []
 		},
 		{
-			'msg': 'none, no annotations',
+			'msg': 'no annotations',
 			'data': ['a', 'b'],
 			'expected': []
 		}
