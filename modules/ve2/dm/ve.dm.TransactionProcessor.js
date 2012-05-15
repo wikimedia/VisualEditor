@@ -129,7 +129,7 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function( to ) {
 			delete annotations[hash];
 		}
 		// Auto initialize/cleanup
-		if ( ve.isPlainObject( annotations ) && !annotated ) {
+		if ( !ve.isEmptyObject( annotations ) && !annotated ) {
 			if ( element ) {
 				// Initialize new element annotation
 				item.annotations = annotations;
