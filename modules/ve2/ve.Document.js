@@ -94,7 +94,7 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 	// TODO maybe we could find the start more efficiently using the offset map
 	left = doc.children[0].isWrapped() ? 1 : 0;
 
-	while ( end >= left ) {
+	do {
 		node = currentFrame.node.children[currentFrame.index];
 		prevNode = currentFrame.node.children[currentFrame.index - 1];
 		nextNode = currentFrame.node.children[currentFrame.index + 1];
@@ -321,6 +321,6 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 				left++;
 			}
 		}
-	}
+	} while ( end >= left );
 	return retval;
 };

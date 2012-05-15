@@ -168,6 +168,20 @@ ve.example.getSelectNodesCases = function( doc ) {
 					'nodeRange': new ve.Range( 0, 53 )
 				}
 			]
+		},
+		// Zero-length range at the beginning of the document
+		{
+			'actual': doc.selectNodes( new ve.Range( 0, 0 ), 'leaves' ),
+			'expected': [
+				// document
+				{
+					'node': documentNode,
+					'range': new ve.Range( 0, 0 ),
+					// no 'index' because documentNode has no parent
+					'indexInNode': 0,
+					'nodeRange': new ve.Range( 0, 53 )
+				}
+			]
 		}
 	];
 };
