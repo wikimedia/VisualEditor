@@ -11,31 +11,33 @@ ve.example.getSelectNodesCases = function( doc ) {
 		{
 			'actual': doc.selectNodes( new ve.Range( 0, 3 ), 'leaves' ),
 			'expected': [
-				// heading/text - partial leaf results have ranges with global offsets
+				// heading/text
 				{
 					'node': lookup( documentNode, 0, 0 ),
 					'range': new ve.Range( 1, 3 ),
 					'index': 0,
 					'nodeRange': new ve.Range( 1, 4 )
 				}
-			]
+			],
+			'msg': 'partial leaf results have ranges with global offsets',
 		},
 		{
 			'actual': doc.selectNodes( new ve.Range( 0, 10 ), 'leaves' ),
 			'expected': [
-				// heading/text - full coverage leaf nodes do not have ranges
+				// heading/text
 				{
 					'node': lookup( documentNode, 0, 0 ),
 					'index': 0,
 					'nodeRange': new ve.Range( 1, 4 )
 				},
-				// table/tableRow/tableCell/paragraph/text - leaf nodes from different levels
+				// table/tableRow/tableCell/paragraph/text
 				{
 					'node': lookup( documentNode, 1, 0, 0, 0, 0 ),
 					'index': 0,
 					'nodeRange': new ve.Range( 9, 10 )
 				}
-			]
+			],
+			'msg': 'leaf nodes do not have ranges, leaf nodes from different levels'
 		},
 		{
 			'actual': doc.selectNodes( new ve.Range( 28, 41 ), 'leaves' ),
@@ -52,7 +54,7 @@ ve.example.getSelectNodesCases = function( doc ) {
 					'index': 0,
 					'nodeRange': new ve.Range( 36, 37 )
 				},
-				// preformatted/image - leaf nodes that are not text nodes
+				// preformatted/image
 				{
 					'node': lookup( documentNode, 2, 1 ),
 					'index': 1,
@@ -64,7 +66,8 @@ ve.example.getSelectNodesCases = function( doc ) {
 					'index': 2,
 					'nodeRange': new ve.Range( 39, 40 )
 				}
-			]
+			],
+			'msg': 'leaf nodes that are not text nodes'
 		},
 		{
 			'actual': doc.selectNodes( new ve.Range( 2, 15 ), 'siblings' ),
@@ -83,7 +86,8 @@ ve.example.getSelectNodesCases = function( doc ) {
 					'index': 1,
 					'nodeRange': new ve.Range( 6, 34 )
 				}
-			]
+			],
+			'msg': 'siblings at the document level'
 		},
 		{
 			'actual': doc.selectNodes( new ve.Range( 2, 49 ), 'siblings' ),
@@ -114,10 +118,9 @@ ve.example.getSelectNodesCases = function( doc ) {
 					'index': 3,
 					'nodeRange': new ve.Range( 42, 52 )
 				}
-			]
+			],
+			'msg': 'more than 2 siblings at the document level'
 		},
-		// Zero-length range at the edge of a text node returns that text node rather than
-		// its parent
 		{
 			'actual': doc.selectNodes( new ve.Range( 1, 1 ), 'leaves' ),
 			'expected': [
@@ -128,7 +131,8 @@ ve.example.getSelectNodesCases = function( doc ) {
 					'index': 0,
 					'nodeRange': new ve.Range( 1, 4 )
 				}
-			]
+			],
+			'msg': 'zero-length range at the start of a text node returns text node rather than parent'
 		},
 		{
 			'actual': doc.selectNodes( new ve.Range( 4, 4 ), 'leaves' ),
@@ -140,9 +144,9 @@ ve.example.getSelectNodesCases = function( doc ) {
 					'index': 0,
 					'nodeRange': new ve.Range( 1, 4 )
 				}
-			]
+			],
+			'msg': 'zero-length range at the end of a text node returns text node rather than parent'
 		},
-		// Range entirely within one leaf node
 		{
 			'actual': doc.selectNodes( new ve.Range( 2, 3 ), 'leaves' ),
 			'expected': [
@@ -153,9 +157,9 @@ ve.example.getSelectNodesCases = function( doc ) {
 					'index': 0,
 					'nodeRange': new ve.Range( 1, 4 )
 				}
-			]
+			],
+			'msg': 'range entirely within one leaf node'
 		},
-		// Zero-length range between two children of the document
 		{
 			'actual': doc.selectNodes( new ve.Range( 5, 5 ), 'leaves' ),
 			'expected': [
@@ -167,9 +171,9 @@ ve.example.getSelectNodesCases = function( doc ) {
 					'indexInNode': 1,
 					'nodeRange': new ve.Range( 0, 53 )
 				}
-			]
+			],
+			'msg': 'zero-length range between two children of the document'
 		},
-		// Zero-length range at the beginning of the document
 		{
 			'actual': doc.selectNodes( new ve.Range( 0, 0 ), 'leaves' ),
 			'expected': [
@@ -181,7 +185,8 @@ ve.example.getSelectNodesCases = function( doc ) {
 					'indexInNode': 0,
 					'nodeRange': new ve.Range( 0, 53 )
 				}
-			]
+			],
+			'msg': 'zero-length range at the start of the document'
 		}
 	];
 };
@@ -224,19 +229,24 @@ ve.example.nodeTreeEqual = function( a, b, desc, typePath ) {
  *
  * @method
  */
-ve.example.nodeSelectionEqual = function( a, b ) {
+ve.example.nodeSelectionEqual = function( a, b, desc ) {
+	var descPrefix = desc ? desc + ': ' : '';
+	// Prevent crashes if a and b have different lengths
 	var minLength = a.length < b.length ? a.length : b.length;
-	equal( a.length, b.length, 'length match' );
+	equal( a.length, b.length, descPrefix + 'length match' );
 	for ( var i = 0; i < minLength; i++ ) {
-		ok( a[i].node === b[i].node, 'node match' );
+		ok( a[i].node === b[i].node, descPrefix + 'node match (element ' + i + ')' );
 		if ( a[i].range && b[i].range ) {
-			deepEqual( a[i].range, b[i].range, 'range match' );
+			deepEqual( a[i].range, b[i].range, descPrefix + 'range match (element ' + i + ')' );
 		} else {
-			strictEqual( 'range' in a[i], 'range' in b[i], 'range existence match' );
+			strictEqual( 'range' in a[i], 'range' in b[i],
+				descPrefix + 'range existence match (element ' + i + ')' );
 		}
-		deepEqual( a[i].index, b[i].index, 'index match' );
-		deepEqual( a[i].indexInNode, b[i].indexInNode, 'indexInNode match' );
-		deepEqual( a[i].nodeRange, b[i].nodeRange, 'nodeRange match' );
+		deepEqual( a[i].index, b[i].index, descPrefix + 'index match (element ' + i + ')' );
+		deepEqual( a[i].indexInNode, b[i].indexInNode,
+			descPrefix + 'indexInNode match (element ' + i + ')' );
+		deepEqual( a[i].nodeRange, b[i].nodeRange,
+			descPrefix + 'nodeRange match (element ' + i +')' );
 	}
 };
 
