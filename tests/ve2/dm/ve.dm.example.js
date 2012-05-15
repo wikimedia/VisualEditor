@@ -49,12 +49,12 @@ ve.dm.example.html =
  * There are three types of components in content data:
  *
  *     {String} Plain text character
- *     
+ *
  *     {Array} Annotated character
  *         0: {String} Character
  *         1: {Object} List of references to immutable annotation objects, keyed by JSON
  *            serializations of their values (hashes)
- *     
+ *
  *     {Object} Opening or closing structural element
  *         type: {String} Symbolic node type name, if closing element first character will be "/"
  *         [attributes]: {Object} List of symbolic attribute name and literal value pairs

@@ -48,9 +48,9 @@ ve.dm.DocumentFragment = function( data, parentDocument ) {
 	for ( var i = 0, length = this.data.length; i < length; i++ ) {
 		/*
 		 * Set the node reference for this offset in the offset cache.
-		 * 
+		 *
 		 * This looks simple, but there are three cases that result in the same thing:
-		 * 
+		 *
 		 *   1. data[i] is an opening, so offset i is before the opening, so we need to point to the
 		 *      parent of the opened element. currentNode will be set to the opened element later,
 		 *      but right now its still set to the parent of the opened element.
@@ -59,7 +59,7 @@ ve.dm.DocumentFragment = function( data, parentDocument ) {
 		 *      but right now it's still set to the closed element.
 		 *   3. data[i] is content, so offset i is in the middle of an element, so obviously we need
 		 *      currentNode, which won't be changed by this iteration.
-		 * 
+		 *
 		 * We want to populate the offsetMap with branches only, but we've just written the actual
 		 * node that lives at this offset. So if it's a leaf node, change it to its parent.
 		 */

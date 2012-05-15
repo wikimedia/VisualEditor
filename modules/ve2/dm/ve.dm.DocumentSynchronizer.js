@@ -38,7 +38,7 @@ ve.dm.DocumentSynchronizer.synchronizers = {
 
 	/**
 	 * Synchronizes an annotation action.
-	 * 
+	 *
 	 * @static
 	 * @method
 	 * @param {Object} action 
@@ -54,7 +54,7 @@ ve.dm.DocumentSynchronizer.synchronizers = {
 	},
 	/**
 	 * Synchronizes an attribute change action.
-	 * 
+	 *
 	 * @static
 	 * @method
 	 * @param {Object} action 
@@ -65,7 +65,7 @@ ve.dm.DocumentSynchronizer.synchronizers = {
 	},
 	/**
 	 * Synchronizes a resize action.
-	 * 
+	 *
 	 * @static
 	 * @method
 	 * @param {Object} action 
@@ -76,7 +76,7 @@ ve.dm.DocumentSynchronizer.synchronizers = {
 	},
 	/**
 	 * Synchronizes a rebuild action.
-	 * 
+	 *
 	 * @static
 	 * @method
 	 * @param {Object} action 
