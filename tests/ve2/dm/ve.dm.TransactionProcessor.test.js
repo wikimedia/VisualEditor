@@ -129,6 +129,24 @@ test( 'commit/rollback', function() {
 				delete data[0].attributes;
 				data[4].type = '/paragraph';
 			}
+		},
+		'splitting an element': {
+			'calls': [
+				['pushRetain', 2],
+				[
+					'pushReplace',
+					[],
+					[{ 'type': '/heading' }, { 'type': 'heading', 'attributes': { 'level': 1 } }]
+				]
+			],
+			'expected': function( data ) {
+				data.splice(
+					2,
+					0,
+					{ 'type': '/heading' },
+					{ 'type': 'heading', 'attributes': { 'level': 1 } }
+				);
+			}
 		}
 	};
 	// Run tests
