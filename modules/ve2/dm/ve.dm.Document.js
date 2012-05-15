@@ -197,6 +197,9 @@ ve.dm.Document.containsElementData = function( data ) {
  * @returns {ve.Node} Lowest level parent node being affected
  */
 ve.dm.Document.getScope = function( node, data ) {
+	// TODO improve this to return a set of siblings, rather than a common ancestor, that'll
+	// make for much more efficient rebuilds
+	// TODO also make it track offsets
 	var i,
 		length,
 		level = 0,

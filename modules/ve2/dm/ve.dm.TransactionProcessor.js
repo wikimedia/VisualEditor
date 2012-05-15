@@ -254,7 +254,7 @@ ve.dm.TransactionProcessor.prototype.replace = function( op ) {
 		insert = this.reversed ? op.remove : op.insert,
 		removeHasStructure = ve.dm.Document.containsElementData( remove ),
 		insertHasStructure = ve.dm.Document.containsElementData( insert ),
-		node, selection;
+		node, scope, selection;
 	// Figure out if this is a structural insert or a content insert
 	if ( !removeHasStructure && !insertHasStructure ) {
 		// Content replacement
@@ -272,8 +272,7 @@ ve.dm.TransactionProcessor.prototype.replace = function( op ) {
 		// Advance the cursor
 		this.cursor += insert.length;
 	} else {
-		// Structural insert
-		// TODO generalize for insert/remove
+		// Structural replacement
 
 		// It's possible that multiple replace operations are needed before the
 		// model is back in a consistent state. This loop applies the current
@@ -342,8 +341,29 @@ ve.dm.TransactionProcessor.prototype.replace = function( op ) {
 				throw 'Unbalanced set of replace operations found';
 			}
 		}
-		// Queue a rebuild for the replaced node
-		this.synchronizer.pushRebuild( new ve.Range( startOffset, this.cursor - adjustment ),
-			new ve.Range( startOffset, this.cursor ) );
+		
+		// TODO this handles splitting nodes but not merging nodes
+		// Figure out in which node the start was
+		selection = this.document.selectNodes( new ve.Range( startOffset, startOffset ) );
+		node = selection[0].node;
+		// Figure out what the scope of the insertion is
+		scope = ve.dm.Document.getScope( node, op.insert );
+		if ( scope === node ) {
+			// Simple case: no splits occurred, we can just rebuild the affected range
+			this.synchronizer.pushRebuild(
+				new ve.Range( startOffset, this.cursor - adjustment ),
+				new ve.Range( startOffset, this.cursor )
+			);
+		} else {
+			// A split occurred. Rebuild the entirety of scope
+			// TODO do something better to get the offset, possibly via getScope()
+			// or through whatever we have to do for deletion painting
+			var scopeStart = this.document.getDocumentNode().getOffsetFromNode( scope );
+			var scopeEnd = scopeStart + scope.getOuterLength();
+			this.synchronizer.pushRebuild(
+				new ve.Range( scopeStart, scopeEnd ),
+				new ve.Range( scopeStart, scopeEnd + adjustment )
+			);
+		}
 	}
 };
