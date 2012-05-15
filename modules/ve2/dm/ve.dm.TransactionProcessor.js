@@ -11,20 +11,23 @@
  * @constructor
  */
 ve.dm.TransactionProcessor = function( doc, transaction, reversed ) {
+	// Properties
 	this.document = doc;
 	this.operations = transaction.getOperations();
 	this.synchronizer = new ve.dm.DocumentSynchronizer( doc );
 	this.reversed = reversed;
-	
-	// Linear model offset that we're currently at
-	// The operations in the transaction are ordered, so the cursor only ever moves forward
+	/*
+	 * Linear model offset that we're currently at. Operations in the transaction are ordered, so
+	 * the cursor only ever moves forward.
+	 */
 	this.cursor = 0;
-	
-	// Annotation stacks used by the annotate operation. Any data that passes through an
-	// operation will have these annotation changes applied to them.
-	// The format is { hash: annotationObjectReference }
-	this.set = {}; // Annotations to add to data passing through
-	this.clear = {}; // Annotations to remove from data passing through
+	/*
+	 * Set and clear are lists of annotations which should be added or removed to content being
+	 * inserted or retained. The format of these objects is { hash: annotationObjectReference }
+	 * where hash is the result of ve.getHash( annotationObjectReference ).
+	 */
+	this.set = {};
+	this.clear = {};
 };
 
 /* Static methods */
@@ -55,6 +58,12 @@ ve.dm.TransactionProcessor.prototype.nextOperation = function() {
 	return this.operations[this.operationIndex++] || false;
 };
 
+/**
+ * Executes an operation.
+ *
+ * @param {Object} op Operation object to execute
+ * @throws 'Invalid operation error. Operation type is not supported'
+ */
 ve.dm.TransactionProcessor.prototype.executeOperation = function( op ) {
 	if ( op.type in this ) {
 		this[op.type]( op );
@@ -63,6 +72,11 @@ ve.dm.TransactionProcessor.prototype.executeOperation = function( op ) {
 	}
 };
 
+/**
+ * Processes all operations.
+ *
+ * When all operations are done being processed, the document will be synchronized.
+ */
 ve.dm.TransactionProcessor.prototype.process = function() {
 	var op;
 	// This loop is factored this way to allow operations to be skipped over or executed
@@ -79,36 +93,60 @@ ve.dm.TransactionProcessor.prototype.process = function() {
  * annotations in this.clear on the data between the offsets this.cursor and this.cursor + to
  *
  * @param {Number} to Offset to stop annotating at. Annotating starts at this.cursor
+ * @throws 'Invalid transaction, can not annotate a branch element'
+ * @throws 'Invalid transaction, annotation to be set is already set'
+ * @throws 'Invalid transaction, annotation to be cleared is not set'
  */
 ve.dm.TransactionProcessor.prototype.applyAnnotations = function( to ) {
-	var i, hash, ann, character, changed = false;
-	for ( i = this.cursor; i < to; i++ ) {
-		character = this.document.data[i];
-		if ( character.type !== undefined ) {
-			// Not a character but an element, skip
-			continue;
+	if ( ve.isEmptyObject( this.set ) && ve.isEmptyObject( this.clear ) ) {
+		return;
+	}
+	var item,
+		element,
+		annotated,
+		annotations,
+		hash,
+		empty;
+	for ( var i = this.cursor; i < to; i++ ) {
+		item = this.document.data[i];
+		element = item.type !== undefined;
+		if ( element && ve.dm.factory.canNodeHaveChildren( item.type ) ) {
+			throw 'Invalid transaction, can not annotate a branch element';
 		}
-		ann = ve.isArray( character ) ? character[1] : null;
-		
+		annotated = element ? 'annotations' in item : ve.isArray( item );
+		annotations = annotated ? ( element ? item.annotations : item[1] ) : {};
+		// Set and clear annotations
 		for ( hash in this.set ) {
-			if ( ann === null ) {
-				// Create annotations object
-				ann = {};
-				this.document.data[i] = [ character, ann ];
+			if ( hash in annotations ) {
+				throw 'Invalid transaction, annotation to be set is already set';
 			}
-			ann[hash] = this.set[hash];
+			annotations[hash] = this.set[hash];
 		}
-		if ( ann !== null ) {
-			for ( hash in this.clear ) {
-				delete ann[hash];
+		for ( hash in this.clear ) {
+			if ( !( hash in annotations ) ) {
+				throw 'Invalid transaction, annotation to be cleared is not set';
 			}
-			if ( $.isEmptyObject( ann ) ) {
-				// Clean up empty annotations object
-				this.document.data[i] = character[0];
+			delete annotations[hash];
+		}
+		// Auto initialize/cleanup
+		if ( ve.isPlainObject( annotations ) && !annotated ) {
+			if ( element ) {
+				// Initialize new element annotation
+				item.annotations = annotations;
+			} else {
+				// Initialize new character annotation
+				this.document.data[i] = [item, annotations];
+			}
+		} else if ( ve.isEmptyObject( annotations ) && annotated ) {
+			if ( element ) {
+				// Cleanup empty element annotation
+				delete item.annotations;
+			} else {
+				// Cleanup empty character annotation
+				this.document.data[i] = item[0];
 			}
 		}
 	}
-	
 	this.synchronizer.pushAnnotation( new ve.Range( this.cursor, to ) );
 };
 
@@ -119,7 +157,7 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function( to ) {
  * moved over.
  *
  * @param {Object} op Operation object:
- *                    length: Number of elements to retain
+ * @param {Integer} op.length Number of elements to retain
  */
 ve.dm.TransactionProcessor.prototype.retain = function( op ) {
 	this.applyAnnotations( this.cursor + op.length );
@@ -132,9 +170,10 @@ ve.dm.TransactionProcessor.prototype.retain = function( op ) {
  * This adds or removes an annotation to this.set or this.clear
  *
  * @param {Object} op Operation object
- *                    method: 'set' to set an annotation, 'clear' to clear it
- *                    bias: 'start' to start setting or clearing, 'stop' to stop setting or clearing
- *                    annotation: annotation object
+ * @param {String} op.method Annotation method, either 'set' to add or 'clear' to remove
+ * @param {String} op.bias Endpoint of marker, either 'start' to begin or 'stop' to end
+ * @param {String} op.annotation Annotation object to set or clear from content
+ * @throws 'Invalid annotation method'
  */
 ve.dm.TransactionProcessor.prototype.annotate = function( op ) {
 	var target, hash;
@@ -165,14 +204,14 @@ ve.dm.TransactionProcessor.prototype.annotate = function( op ) {
  * back correctly.
  *
  * @param {Object} op Operation object
- *                    key: attribute name
- *                    from: old attribute value, or undefined if not previously set
- *                    to: new attribute value, or undefined to unset
+ * @param {String} op.key: Attribute name
+ * @param {Mixed} op.from: Old attribute value, or undefined if not previously set
+ * @param {Mixed} op.to: New attribute value, or undefined to unset
  */
 ve.dm.TransactionProcessor.prototype.attribute = function( op ) {
 	var element = this.document.data[this.cursor];
 	if ( element.type === undefined ) {
-		throw 'Invalid element error. Can not set attributes on non-element data.';
+		throw 'Invalid element error, can not set attributes on non-element data';
 	}
 	var to = this.reversed ? op.from : op.to;
 	var from = this.reversed ? op.to : op.from;
@@ -207,8 +246,8 @@ ve.dm.TransactionProcessor.prototype.attribute = function( op ) {
  *
  *
  * @param {Object} op Operation object
- *                    remove: Linear model data fragment to remove
- *                    insert: Linear model data fragment to insert
+ * @param {Array} op.remove Linear model data fragment to remove
+ * @param {Array} op.insert Linear model data fragment to insert
  */
 ve.dm.TransactionProcessor.prototype.replace = function( op ) {
 	var	remove = this.reversed ? op.insert : op.remove,

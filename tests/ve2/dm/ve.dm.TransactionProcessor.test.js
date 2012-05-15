@@ -6,38 +6,81 @@ test( 'commit/rollback', function() {
 	var cases = {
 		'no operations': {
 			'calls': [],
-			'process': function( data ) {}
+			'expected': function( data ) {}
 		},
 		'retaining': {
 			'calls': [['pushRetain', 38]],
-			'process': function( data ) {}
+			'expected': function( data ) {}
 		},
 		'annotating content': {
 			'calls': [
+				['pushRetain', 1],
 				['pushStartAnnotating', 'set', { 'type': 'textStyle/bold' }],
-				['pushRetain', 2],
-				['pushStartAnnotating', 'clear', { 'type': 'textStyle/italic' }],
-				['pushRetain', 2],
-				['pushStopAnnotating', 'clear', { 'type': 'textStyle/italic' }],
-				['pushRetain', 8],
+				['pushRetain', 1],
 				['pushStopAnnotating', 'set', { 'type': 'textStyle/bold' }],
-				['pushRetain', 4],
+				['pushRetain', 1],
+				['pushStartAnnotating', 'clear', { 'type': 'textStyle/italic' }],
+				['pushStartAnnotating', 'set', { 'type': 'textStyle/bold' }],
 				['pushStartAnnotating', 'set', { 'type': 'textStyle/underline' }],
-				['pushRetain', 4],
-				['pushStartAnnotating', 'set', { 'type': 'textStyle/italic' }],
-				['pushRetain', 10]
+				['pushRetain', 1],
+				['pushStopAnnotating', 'clear', { 'type': 'textStyle/italic' }],
+				['pushStopAnnotating', 'set', { 'type': 'textStyle/bold' }],
+				['pushStopAnnotating', 'set', { 'type': 'textStyle/underline' }]
 			],
-			'process': function( data ) {
+			'expected': function( data ) {
 				var b = { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } },
-					u = { '{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' } },
-					i = { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } };
+					u = { '{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' } };
 				data[1] = ['a', b];
 				data[2] = ['b', b];
-				data[3] = ['c', b];
-				data[9] = ['d', b];
-				data[19] = ['f', u];
-				data[28] = ['g', ve.extendObject( {}, u, i ) ];
+				data[3] = ['c', ve.extendObject( {}, b, u )];
 			}
+		},
+		'annotating content and leaf elements': {
+			'calls': [
+				['pushRetain', 36],
+				['pushStartAnnotating', 'set', { 'type': 'textStyle/bold' }],
+				['pushRetain', 2],
+				['pushStopAnnotating', 'set', { 'type': 'textStyle/bold' }]
+			],
+			'expected': function( data ) {
+				var b = { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } };
+				data[36] = ['h', b];
+				data[37].annotations = b;
+			}
+		},
+		'using an annotation method other than set or clear throws an exception': {
+			'calls': [
+				['pushStartAnnotating', 'invalid-method', { 'type': 'textStyle/bold' }],
+				['pushRetain', 1],
+				['pushStopAnnotating', 'invalid-method', { 'type': 'textStyle/bold' }]
+			],
+			'exception': /^Invalid annotation method/
+		},
+		'annotating branch element throws an exception': {
+			'calls': [
+				['pushStartAnnotating', 'set', { 'type': 'textStyle/bold' }],
+				['pushRetain', 1],
+				['pushStopAnnotating', 'set', { 'type': 'textStyle/bold' }]
+			],
+			'exception': /^Invalid transaction, can not annotate a branch element$/
+		},
+		'setting duplicate annotations throws an exception': {
+			'calls': [
+				['pushRetain', 2],
+				['pushStartAnnotating', 'set', { 'type': 'textStyle/bold' }],
+				['pushRetain', 1],
+				['pushStopAnnotating', 'set', { 'type': 'textStyle/bold' }]
+			],
+			'exception': /^Invalid transaction, annotation to be set is already set$/
+		},
+		'removing non-existent annotations throws an exception': {
+			'calls': [
+				['pushRetain', 1],
+				['pushStartAnnotating', 'clear', { 'type': 'textStyle/bold' }],
+				['pushRetain', 1],
+				['pushStopAnnotating', 'clear', { 'type': 'textStyle/bold' }]
+			],
+			'exception': /^Invalid transaction, annotation to be cleared is not set$/
 		},
 		'changing, removing and adding attributes': {
 			'calls': [
@@ -48,7 +91,7 @@ test( 'commit/rollback', function() {
 				['pushRetain', 26],
 				['pushReplaceElementAttribute', 'html/src', 'image.png', undefined]
 			],
-			'process': function( data ) {
+			'expected': function( data ) {
 				data[0].attributes.level = 2;
 				data[11].attributes.style = 'number';
 				data[11].attributes.test = 'abcd';
@@ -60,32 +103,48 @@ test( 'commit/rollback', function() {
 				['pushRetain', 1],
 				['pushReplaceElementAttribute', 'foo', 23, 42]
 			],
-			'exception': /^Invalid element error. Can not set attributes on non-element data.$/
+			'exception': /^Invalid element error, can not set attributes on non-element data$/
 		},
 		'replacing content': {
 			'calls': [
 				['pushRetain', 1],
 				['pushReplace', ['a'], ['F', 'O', 'O']]
 			],
-			'process': function( data ) {
+			'expected': function( data ) {
 				data.splice( 1, 1, 'F', 'O', 'O' );
+			}
+		},
+		'converting an element': {
+			'calls': [
+				[
+					'pushReplace',
+					[{ 'type': 'heading', 'attributes': { 'level': 1 } }],
+					[{ 'type': 'paragraph' }]
+				],
+				['pushRetain', 3],
+				['pushReplace', [{ 'type': '/heading' }], [{ 'type': '/paragraph' }]]
+			],
+			'expected': function( data ) {
+				data[0].type = 'paragraph';
+				delete data[0].attributes;
+				data[4].type = '/paragraph';
 			}
 		}
 	};
 	// Run tests
 	for ( var msg in cases ) {
-		var doc = new ve.dm.Document( ve.dm.example.data.slice( 0 ) ),
+		var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 			tx = new ve.dm.Transaction();
 		for ( var i = 0; i < cases[msg].calls.length; i++ ) {
 			tx[cases[msg].calls[i][0]].apply( tx, cases[msg].calls[i].slice( 1 ) );
 		}
-		if ( 'process' in cases[msg] ) {
+		if ( 'expected' in cases[msg] ) {
 			ve.dm.TransactionProcessor.commit( doc, tx );
-			var processed = ve.dm.example.data.slice( 0 );
-			cases[msg].process( processed );
-			deepEqual( doc.getData(), processed, 'commit: ' + msg );
+			var expected = ve.copyArray( ve.dm.example.data );
+			cases[msg].expected( expected );
+			deepEqual( doc.getData(), expected, 'commit: ' + msg );
 			ve.dm.TransactionProcessor.rollback( doc, tx );
-			deepEqual( doc.getData(), ve.dm.example.data.slice( 0 ), 'rollback: ' + msg );
+			deepEqual( doc.getData(), ve.dm.example.data, 'rollback: ' + msg );
 		} else if ( 'exception' in cases[msg] ) {
 			/*jshint loopfunc:true */
 			raises(
@@ -95,15 +154,6 @@ test( 'commit/rollback', function() {
 				cases[msg].exception,
 				'commit: ' + msg
 			);
-			raises(
-				function() {
-					ve.dm.TransactionProcessor.rollback( doc, tx );
-				},
-				cases[msg].exception,
-				'rollback: ' + msg
-			);
 		}
 	}
-	// Calculate expected assertion count
-	expect( ve.getObjectKeys( cases ).length * 2 );
 } );
