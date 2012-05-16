@@ -26,6 +26,14 @@ test( 'convertHTML', function() {
 				{ 'type': '/paragraph' } 
 			],
 			'message': 'bold, italic, underline'
+		},
+		{
+			'html': '<img src="http://www.something.com/test.jpg">',
+			'linearModel': [
+				{ 'type': 'image', 'attributes' : { 'html/src' : 'http://www.something.com/test.jpg' } },
+				{ 'type' : '/image' }
+			],
+			'message': 'image'
 		}		
 	];
 	expect(cases.length);
@@ -40,25 +48,4 @@ test( 'convertHTML', function() {
 
 		deepEqual(convertedLinearModel, c.linearModel, c.message);
 	}
-
-
-
-/*
-	//paragraph and text
-	HTML = $('<div><p>abc</p></div>');
-	linearModel = [ { 'type': 'paragraph' }, 'a', 'b', 'c', { 'type': '/paragraph' } ];
-	convertedLinearModel = ve.dm.HTMLConverter.getLinearModel(HTML[0]);
-	strictEqual( convertedLinearModel.data, linearModel.data, 'paragraph and text' );
-	
-	//paragraph and text
-	HTML = $('<div><p><b>a</b><i>b</i><u>c</u></p></div>');
-	linearModel = [ 
-		{ 'type': 'paragraph' }, 
-		['a', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } }],
-		['b', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } }],
-		['c', { '{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' } }],
-		{ 'type': '/paragraph' } ];
-	convertedLinearModel = ve.dm.HTMLConverter.getLinearModel(HTML[0]);
-	strictEqual( convertedLinearModel.data, linearModel.data, 'bold, italic, underline' );
-*/	
 } );
