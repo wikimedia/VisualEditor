@@ -28,6 +28,31 @@ ve.Range.newFromTranslatedRange = function( range, distance ) {
 	return new ve.Range( range.from + distance, range.to + distance );
 };
 
+/**
+ * Creates a new ve.Range object that covers all of the given ranges
+ *
+ * @method
+ * @param {Array} ranges Array of ve.Range objects (at least one)
+ * @returns {ve.Range} Range that spans all of the given ranges
+ */
+ve.Range.newCoveringRange = function( ranges ) {
+	var minStart, maxEnd, i;
+	if ( !ranges || ranges.length == 0 ) {
+		throw 'newCoveringRange() requires at least one range';
+	}
+	minStart = ranges[0].start;
+	maxEnd = ranges[0].end;
+	for ( i = 1; i < ranges.length; i++ ) {
+		if ( ranges[i].start < minStart ) {
+			minStart = ranges[i].start;
+		}
+		if ( ranges[i].end > maxEnd ) {
+			maxEnd = ranges[i].end;
+		}
+	}
+	return new ve.Range( minStart, maxEnd );
+};
+
 /* Methods */
 
 /**
