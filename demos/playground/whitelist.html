@@ -55,7 +55,7 @@
 					beforeText = fullText.substring(0, sel.anchorOffset),
 					afterText = fullText.substring(sel.focusOffset),
 					newText = beforeText + 'MODEL' + 'MODEL' + afterText,
-					$element = $(sel.anchorNode.parentElement);
+					$element = $(sel.anchorNode.parentNode);
 
 				// Change the text (or DOM) based on model logic
 				$element.text(newText);
