@@ -254,7 +254,7 @@ ve.dm.TransactionProcessor.prototype.replace = function( op ) {
 		insert = this.reversed ? op.remove : op.insert,
 		removeHasStructure = ve.dm.Document.containsElementData( remove ),
 		insertHasStructure = ve.dm.Document.containsElementData( insert ),
-		node, scope, selection;
+		node, selection;
 	// Figure out if this is a structural insert or a content insert
 	if ( !removeHasStructure && !insertHasStructure ) {
 		// Content replacement
@@ -285,7 +285,12 @@ ve.dm.TransactionProcessor.prototype.replace = function( op ) {
 			startOffset = this.cursor,
 			adjustment = 0,
 			i,
-			type;
+			type,
+			prevCursor,
+			affectedRanges = [],
+			scope,
+			minInsertLevel = 0,
+			coveringRange;
 
 		while ( true ) {
 			if ( operation.type == 'replace' ) {
@@ -293,8 +298,30 @@ ve.dm.TransactionProcessor.prototype.replace = function( op ) {
 					opInsert = this.reversed ? operation.remove : operation.insert;
 				// Update the linear model for this insert
 				ve.batchSplice( this.document.data, this.cursor, opRemove.length, opInsert );
+				affectedRanges.push( new ve.Range( this.cursor, this.cursor + opRemove.length ) );
+				prevCursor = this.cursor;
 				this.cursor += opInsert.length;
-				adjustment += opInsert.length - opRemove.length;
+				
+				// Paint the removed selection, figure out which nodes were
+				// covered, and add their ranges to the affected ranges list
+				if ( opRemove.length > 0 ) {
+					selection = this.document.selectNodes( new ve.Range(
+						prevCursor - adjustment,
+						prevCursor + opRemove.length - adjustment
+					), 'siblings' );
+					for ( i = 0; i < selection.length; i++ ) {
+						// .nodeRange is the inner range, we need the
+						// outer range (including opening and closing)
+						if ( selection[i].node.isWrapped() ) {
+							affectedRanges.push( new ve.Range(
+								selection[i].nodeRange.start - 1,
+								selection[i].nodeRange.end + 1
+							) );
+						} else {
+							affectedRanges.push( selection[i].nodeRange );
+						}
+					}
+				}
 
 				// Walk through the remove and insert data
 				// and keep track of the element depth change (level)
@@ -312,6 +339,10 @@ ve.dm.TransactionProcessor.prototype.replace = function( op ) {
 						removeLevel++;
 					}
 				}
+				// Keep track of the scope of the insertion
+				// Normally this is the node we're inserting into, except if the
+				// insertion closes elements it doesn't open (i.e. splits elements),
+				// in which case it's the affected ancestor
 				for ( i = 0; i < opInsert.length; i++ ) {
 					type = opInsert[i].type;
 					if ( type === undefined ) {
@@ -319,11 +350,27 @@ ve.dm.TransactionProcessor.prototype.replace = function( op ) {
 					} else if ( type.charAt( 0 ) === '/' ) {
 						// Closing element
 						insertLevel--;
+						if ( insertLevel < minInsertLevel ) {
+							// Closing an unopened element at a higher
+							// (more negative) level than before
+							// Lazy-initialize scope
+							scope = scope || this.document.getNodeFromOffset( prevCursor );
+							// Push the full range of the old scope as an affected range
+							scopeStart = this.document.getDocumentNode().getOffsetFromNode( scope );
+							scopeEnd = scopeStart + scope.getOuterLength();
+							affectedRanges.push( new ve.Range( scopeStart, scopeEnd ) );
+							// Update scope
+							scope = scope.getParent() || scope;
+						}
+
 					} else {
 						// Opening element
 						insertLevel++;
 					}
 				}
+
+				// Update adjustment
+				adjustment += opInsert.length - opRemove.length;
 			} else {
 				// We know that other operations won't cause adjustments, so we
 				// don't have to update adjustment
@@ -342,30 +389,11 @@ ve.dm.TransactionProcessor.prototype.replace = function( op ) {
 			}
 		}
 		
-		// TODO this handles splitting nodes but not merging nodes
-		// Figure out in which node the start was
-		selection = this.document.selectNodes( new ve.Range( startOffset, startOffset ) );
-		node = selection[0].node;
-		// Figure out what the scope of the insertion is
-		// FIXME should be opInsert instead of op.insert, but the latter makes rollbacks
-		// of splits work by accident. Will fix this when implementing merges
-		scope = ve.dm.Document.getScope( node, op.insert );
-		if ( scope === node ) {
-			// Simple case: no splits occurred, we can just rebuild the affected range
-			this.synchronizer.pushRebuild(
-				new ve.Range( startOffset, this.cursor - adjustment ),
-				new ve.Range( startOffset, this.cursor )
-			);
-		} else {
-			// A split occurred. Rebuild the entirety of scope
-			// TODO do something better to get the offset, possibly via getScope()
-			// or through whatever we have to do for deletion painting
-			var scopeStart = this.document.getDocumentNode().getOffsetFromNode( scope );
-			var scopeEnd = scopeStart + scope.getOuterLength();
-			this.synchronizer.pushRebuild(
-				new ve.Range( scopeStart, scopeEnd ),
-				new ve.Range( scopeStart, scopeEnd + adjustment )
-			);
-		}
+		// From all the affected ranges we have gathered, compute a range that covers all
+		// of them, and rebuild that
+		coveringRange = ve.Range.newCoveringRange( affectedRanges );
+		this.synchronizer.pushRebuild( coveringRange, new ve.Range( coveringRange.start,
+			coveringRange.end + adjustment )
+		);
 	}
 };
