@@ -281,7 +281,7 @@ ve.dm.TransactionProcessor.prototype.replace = function( op ) {
 		// and queue a single rebuild after the loop finishes.
 		var operation = op,
 			removeLevel = 0,
-			replaceLevel = 0,
+			insertLevel = 0,
 			startOffset = this.cursor,
 			adjustment = 0,
 			i,
@@ -318,10 +318,10 @@ ve.dm.TransactionProcessor.prototype.replace = function( op ) {
 						// This is content, ignore
 					} else if ( type.charAt( 0 ) === '/' ) {
 						// Closing element
-						replaceLevel--;
+						insertLevel--;
 					} else {
 						// Opening element
-						replaceLevel++;
+						insertLevel++;
 					}
 				}
 			} else {
@@ -330,7 +330,7 @@ ve.dm.TransactionProcessor.prototype.replace = function( op ) {
 				this.executeOperation( operation );
 			}
 
-			if ( removeLevel === 0 && replaceLevel === 0 ) {
+			if ( removeLevel === 0 && insertLevel === 0 ) {
 				// The model is back in a consistent state, so we're done
 				break;
 			}
