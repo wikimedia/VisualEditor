@@ -288,9 +288,9 @@ test( 'getRelativeContentOffset', 1, function() {
 		},
 		{
 			'msg': 'last content offset is farthest right',
-			'offset': 49,
+			'offset': 57,
 			'distance': 2,
-			'expected': 50
+			'expected': 58
 		},
 		{
 			'msg': '1 right within text',

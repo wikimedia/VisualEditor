@@ -169,7 +169,7 @@ ve.example.getSelectNodesCases = function( doc ) {
 					'range': new ve.Range( 5, 5 ),
 					// no 'index' because documentNode has no parent
 					'indexInNode': 1,
-					'nodeRange': new ve.Range( 0, 53 )
+					'nodeRange': new ve.Range( 0, 59 )
 				}
 			],
 			'msg': 'zero-length range between two children of the document'
@@ -183,7 +183,7 @@ ve.example.getSelectNodesCases = function( doc ) {
 					'range': new ve.Range( 0, 0 ),
 					// no 'index' because documentNode has no parent
 					'indexInNode': 0,
-					'nodeRange': new ve.Range( 0, 53 )
+					'nodeRange': new ve.Range( 0, 59 )
 				}
 			],
 			'msg': 'zero-length range at the start of the document'
