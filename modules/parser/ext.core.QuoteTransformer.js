@@ -137,7 +137,7 @@ QuoteTransformer.prototype.onNewLine = function (  token, frame, prevToken ) {
 	}
 
 
-	token.rank = this.quoteAndNewlineRank;
+	//token.rank = this.quoteAndNewlineRank;
 
 	//console.warn('chunks: ' + JSON.stringify( this.chunks, null, 2 ) );
 

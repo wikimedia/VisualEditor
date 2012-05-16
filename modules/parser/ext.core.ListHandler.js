@@ -12,7 +12,6 @@ function ListHandler ( manager ) {
 }
 
 ListHandler.prototype.listRank = 2.49; // before PostExpandParagraphHandler
-ListHandler.prototype.delta = .001;
 
 ListHandler.prototype.bulletCharsMap = {
 	'*': { list: 'ul', item: 'li' },
@@ -22,29 +21,23 @@ ListHandler.prototype.bulletCharsMap = {
 };
 
 ListHandler.prototype.reset = function() {
-	this.newline = false;
+	this.newline = false; // flag to identify a list-less line that terminates
+						// a list block
 	this.bstack = []; // Bullet stack, previous element's listStyle
 	this.endtags = [];  // Stack of end tags
 };
 
 ListHandler.prototype.onNewline = function ( token, frame, prevToken ) {
-	var tokens = [];
-	//token.rank = this.listRank + this.delta;
-	if (!this.bstack.length) {
-		tokens.push(token);
+	var tokens = [token];
+	if (this.newline) {
+		// second newline without a list item in between, close the list
+		tokens = this.end().concat( tokens );
 	}
-	else
-	{
-		if (this.newline)
-			tokens = tokens.concat(this.end());
-
-		this.newline = true;
-	}
+	this.newline = true;
 	return { tokens: tokens };
 };
 
 ListHandler.prototype.onEnd = function( token, frame, prevToken ) {
-	//token.rank = this.listRank + this.delta;
 	return { tokens: this.end().concat([token]) };
 };
 
@@ -57,8 +50,7 @@ ListHandler.prototype.end = function( ) {
 };
 
 ListHandler.prototype.onListItem = function ( token, frame, prevToken ) {
-	if (token.constructor === TagTk)
-	{
+	if (token.constructor === TagTk){
 		// convert listItem to list and list item tokens
 		return { tokens: this.doListItem( this.bstack, token.bullets ) };
 	}
