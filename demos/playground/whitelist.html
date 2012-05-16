@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>Keypress whitelist test</title>
+		<style>
+		</style>
+		<script src="../../modules/rangy/rangy-core.js"></script>
+		<script src="../../modules/jquery/jquery.js"></script>
+	</head>
+	<body>
+		<div contenteditable="true" id="editor">
+			<p>If you just type text in this demo, nothing spectacular happens. However, if you make a selection and then press some keys, we need to know whether or not to tell the data model to remove the range.</p>
+		</div>
+		<div contenteditable="true" id="test" style="display: none;">
+			<p>test test test test</p>
+		</div>
+		<script>
+			$(function() {
+				$('#editor')
+					.on('keypress', function(e) {
+						var sel = rangy.getSelection();
+						if (!sel.isCollapsed) {
+							if (e.which != 0) {
+								// If not arrow keys							
+								transact(sel, e);
+							}
+						}
+					})
+					.on('keydown', function(e) {
+					
+						var sel = rangy.getSelection();
+						if (!sel.isCollapsed) {
+							if ( e.which == 8 || e.which == 46 ) {
+								e.preventDefault();
+								transact(sel, e);
+							}
+						}
+					});
+				$('#test')
+					.on('keydown', function(e) {
+						console.log('keydown: ', e);
+					})
+					.on('keypress', function(e) {
+						console.log('keypress: ', e);					
+					});
+			});
+			function transact(sel, e) {
+				console.log(e);
+				console.log(sel);
+				
+				// A fistful of vars
+				var	fullText = sel.anchorNode.textContent,
+					rangeText = fullText.substring(sel.anchorOffset, sel.focusOffset),
+					beforeText = fullText.substring(0, sel.anchorOffset),
+					afterText = fullText.substring(sel.focusOffset),
+					newText = beforeText + 'MODEL' + 'MODEL' + afterText,
+					$element = $(sel.anchorNode.parentElement);
+
+				// Change the text (or DOM) based on model logic
+				$element.text(newText);
+
+				// Set the cursor back to where it was				
+				var range = rangy.createRange();
+				range.setStart($element.contents()[0], sel.anchorOffset + 5); // 5 is the length of 'MODEL'.
+				rangy.getSelection().setSingleRange(range);
+				
+				// Report
+				console.log('removing: "' + rangeText + '" due to ' + e.type);				
+			}
+		</script>
+	</body>
+</html>
