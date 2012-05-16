@@ -17,7 +17,6 @@
 		"async": "0.x.x"
 	},
 	"devDependencies": {
-		"coffee-script": "1.x.x",
 		"colors": "0.x.x",
 		"diff": "1.x.x",
 		"html5": "0.x.x"

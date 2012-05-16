@@ -181,12 +181,7 @@ function ParserTests () {
 
 	this.articles = {};
 
-	//this.htmlwindow = jsdom.jsdom(null, null, {parser: HTML5}).createWindow();
-	//this.htmlparser = new HTML5.Parser({document: this.htmlwindow.document});
-        //this.htmlparser = new HTML5.Parser()
-        // Use a patched version until https://github.com/aredridel/html5/issues/44 is merged
-	require('coffee-script');
-	this.htmlparser = require(__dirname+'/__patched-html5-parser')(HTML5);
+	this.htmlparser = new HTML5.Parser();
 
 	// Test statistics
 	this.passedTests = 0;
