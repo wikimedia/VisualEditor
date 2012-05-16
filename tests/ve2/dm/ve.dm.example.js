@@ -39,7 +39,9 @@ ve.dm.example.html =
 		'<dd>' +
 			'<p>k</p>' +
 		'</dd>' +
-	'</dl>';
+	'</dl>' +
+	'<p>l</p>' +
+	'<p>m</p>';
 
 /*
  * Linear data.
@@ -165,7 +167,19 @@ ve.dm.example.data = [
 	// 51 - End of definition list definition item
 	{ 'type': '/definitionListItem' },
 	// 52 - End of definition list
-	{ 'type': '/definitionList' }
+	{ 'type': '/definitionList' },
+	// 53 - Beginning of paragraph
+	{ 'type': 'paragraph' },
+	// 54 - Plain "l"
+	'l',
+	// 55 - End of paragraph
+	{ 'type': '/paragraph' },
+	// 56 - Beginning of paragraph
+	{ 'type': 'paragraph' },
+	// 57 - Plain "m"
+	'm',
+	// 58 - End of paragraph
+	{ 'type': '/paragraph' }
 ];
 
 /**
@@ -233,7 +247,9 @@ ve.dm.example.tree = new ve.dm.DocumentNode( [
 		new ve.dm.DefinitionListItemNode( [
 			new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] )
 		], ve.dm.example.data[47].attributes )
-	] )
+	] ),
+	new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] ),
+	new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] )
 ] );
 
 /* Methods */
@@ -355,6 +371,18 @@ ve.dm.example.getOffsetMap = function( root ) {
 		// </dd>
 		lookup( root, 3 ), // 52 - definitionList
 		// </dl>
-		lookup( root ) // 53 - document
+		lookup( root ), // 53 - document
+		// <p>
+		lookup( root, 4 ), // 54 - paragraph
+		// f
+		lookup( root, 4 ), // 55 - paragraph
+		// </p>
+		lookup( root ), // 56 - document
+		// <p>
+		lookup( root, 5 ), // 57 - paragraph
+		// f
+		lookup( root, 5 ), // 58 - paragraph
+		// </p>
+		lookup( root ) // 59 - document
 	];
 };

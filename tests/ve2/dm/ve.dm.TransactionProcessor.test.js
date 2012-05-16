@@ -105,6 +105,24 @@ test( 'commit/rollback', function() {
 			],
 			'exception': /^Invalid element error, can not set attributes on non-element data$/
 		},
+		'inserting content': {
+			'calls': [
+				['pushRetain', 1],
+				['pushReplace', [], ['F', 'O', 'O']]
+			],
+			'expected': function( data ) {
+				data.splice( 1, 0, 'F', 'O', 'O' );
+			}
+		},
+		'removing content': {
+			'calls': [
+				['pushRetain', 1],
+				['pushReplace', ['a'], []]
+			],
+			'expected': function( data ) {
+				data.splice( 1, 1 );
+			}
+		},
 		'replacing content': {
 			'calls': [
 				['pushRetain', 1],
@@ -146,6 +164,19 @@ test( 'commit/rollback', function() {
 					{ 'type': '/heading' },
 					{ 'type': 'heading', 'attributes': { 'level': 1 } }
 				);
+			}
+		},
+		'merging an element': {
+			'calls': [
+				['pushRetain', 55],
+				[
+					'pushReplace',
+					[{ 'type': '/paragraph' }, { 'type': 'paragraph' }],
+					[]
+				]
+			],
+			'expected': function( data ) {
+				data.splice( 55, 2 );
 			}
 		}
 	};

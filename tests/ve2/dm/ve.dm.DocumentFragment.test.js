@@ -26,7 +26,7 @@ test( 'getData', 1, function() {
 	deepEqual( fragment.getData(), ve.dm.example.data );
 } );
 
-test( 'getOffsetMap', 55, function() {
+test( 'getOffsetMap', 61, function() {
 	var fragment = new ve.dm.DocumentFragment( ve.dm.example.data ),
 		actual = fragment.getOffsetMap(),
 		expected = ve.dm.example.getOffsetMap( fragment.getDocumentNode() );
@@ -36,7 +36,7 @@ test( 'getOffsetMap', 55, function() {
 	}
 } );
 
-test( 'getNodeFromOffset', 42, function() {
+test( 'getNodeFromOffset', 60, function() {
 	var fragment = new ve.dm.DocumentFragment( ve.dm.example.data ),
 		root = fragment.getDocumentNode().getRoot(),
 		node,
@@ -82,7 +82,25 @@ test( 'getNodeFromOffset', 42, function() {
 		[2], // 38 - preformatted
 		[2], // 39 - preformatted
 		[2], // 40 - preformatted
-		[] // 41 - document
+		[], // 41 - document
+		[3], // 42 - definitionList
+		[3, 0], // 43 - definitionListItem
+		[3, 0, 0], // 44 - paragraph
+		[3, 0, 0], // 45 - paragraph
+		[3, 0], // 46 - definitionListItem
+		[3], // 47 - definitionList
+		[3, 1], // 48 - definitionListItem
+		[3, 1, 0], // 49 - paragraph
+		[3, 1, 0], // 50 - paragraph
+		[3, 1], // 51 - definitionListItem
+		[3], // 52 - definitionList
+		[], // 53 - document
+		[4], // 54 - paragraph
+		[4], // 55 - paragraph
+		[], // 56 - document
+		[5], // 57 - paragraph
+		[5], // 58 - paragraph
+		[] // 59 - document
 	];
 	for ( var i = 0; i < expected.length; i++ ) {
 		node = root;
