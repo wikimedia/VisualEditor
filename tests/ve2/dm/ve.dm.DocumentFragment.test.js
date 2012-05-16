@@ -310,3 +310,102 @@ test( 'getAnnotationsFromRange', 1, function() {
 });
 
 
+test( 'offsetContainsAnnotation', 1, function(){
+	var cases = [
+		{
+			msg: 'contains no annotations',
+			data: [
+				['a']
+			],
+			lookFor: {'type': 'bold'},
+			expected: false
+		},
+		{
+			msg: 'contains bold',
+			data: [
+				['a', { '{"type:"bold"}': { 'type': 'bold' } } ]
+			],
+			lookFor: {'type': 'bold'},
+			expected: true
+		},
+		{
+			msg: 'contains bold',
+			data: [
+				['a', {
+					'{"type:"bold"}': { 'type': 'bold' },
+					'{"type":"italic"}': { 'type': 'italic'}
+					}
+				]
+			],
+			lookFor: {'type': 'bold'},
+			expected: true
+		}
+	],
+	fragment;
+
+	expect( cases.length );
+
+	for( var i=0;i<cases.length;i++) {
+		fragment = new ve.dm.DocumentFragment( cases[i].data );
+		
+		deepEqual(
+			fragment.offsetContainsAnnotation(0, cases[i].lookFor),
+			cases[i].expected,
+			cases[i].msg
+		);
+	}
+});
+
+test( 'getAnnotationRangeFromOffset', 1,  function(){
+	var cases = [
+		{
+			msg: 'a bold word',
+			data: [
+				['a'], //0
+				['b', { '{"type:"bold"}': { 'type': 'bold' } } ], //1
+				['o', { '{"type:"bold"}': { 'type': 'bold' } } ], //2
+				['l', { '{"type:"bold"}': { 'type': 'bold' } } ], //3
+				['d', { '{"type:"bold"}': { 'type': 'bold' } } ], //4
+				['w'], //5
+				['o'], //6
+				['r'], //7
+				['d']  //8
+			],
+			annotation: { 'type': 'bold' },
+			offset: 3,
+			expected: new ve.Range( 1, 4 )
+		},
+		{
+			msg: 'a linked',
+			data: [
+				['x'], //0
+				['x'], //1
+				['x'], //2
+				['l', { '{"type:"link/internal"}': { 'type': 'link/internal' } } ], //3
+				['i', { '{"type:"link/internal"}': { 'type': 'link/internal' } } ], //4
+				['n', { '{"type:"link/internal"}': { 'type': 'link/internal' } } ], //5
+				['k', { '{"type:"link/internal"}': { 'type': 'link/internal' } } ], //6
+				['x'], //7
+				['x'], //8
+				['x']  //9
+			],
+			annotation: { 'type': 'link/internal' },
+			offset: 3,
+			expected: new ve.Range( 3, 6 )
+		}
+	],
+	fragment;
+
+	expect( cases.length );
+
+	for( var i=0;i<cases.length;i++) {
+		fragment = new ve.dm.DocumentFragment( cases[i].data );
+		
+		deepEqual(
+			fragment.getAnnotationRangeFromOffset(cases[i].offset, cases[i].annotation),
+			cases[i].expected,
+			cases[i].msg
+		);
+	}
+});
+

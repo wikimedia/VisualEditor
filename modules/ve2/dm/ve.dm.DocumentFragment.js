@@ -199,6 +199,54 @@ ve.dm.DocumentFragment.prototype.getAnnotationsFromOffset = function( offset ) {
 };
 
 /**
+ * Does this offset contain the specified annotation
+ *
+ * @method
+ * @param {Integer} offset Offset to look at
+ * @param {Object} annotation Object to look for
+ * @returns {Boolean} Whether an offset contains the specified annotation
+ */
+ve.dm.DocumentFragment.prototype.offsetContainsAnnotation = function ( offset, annotation ) {
+	var annotations = this.getAnnotationsFromOffset( offset );
+	for (var i=0;i<annotations.length;i++){
+		if (ve.compareObjects(annotations[i], annotation)){
+			return true;
+		}
+	}
+	return false;
+};
+
+/**
+ * Gets the range of content surrounding a given offset that's covered by a given annotation.
+ *
+ * @param {Integer} offset Offset to begin looking forward and backward from
+ * @param {Object} annotation Annotation to test for coverage with
+ * @returns {ve.Range|null} Range of content covered by annotation, or null if offset is not covered
+ */
+ve.dm.DocumentFragment.prototype.getAnnotationRangeFromOffset = function ( offset, annotation ) {
+	var start = offset,
+		end = offset;
+	if ( this.offsetContainsAnnotation(offset, annotation) === false ) {
+		return null;
+	}
+	while ( start > 0 ) {
+		start--;
+		if ( this.offsetContainsAnnotation(start, annotation ) === false ) {
+			start++;
+			break;
+		}
+	}
+	while ( end < this.data.length ) {
+		end++;
+		if ( this.offsetContainsAnnotation(end, annotation ) === false ) {
+			end--;
+			break;
+		}
+	}
+	return new ve.Range( start, end );
+};
+
+/**
  * Gets an array of common annnotations across a range.
  *
  * @method
