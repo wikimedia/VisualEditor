@@ -22,11 +22,14 @@ WSP.defaultOptions = {
 var id = function( v ) { return function() { return v; }; };
 
 WSP._listHandler = function( bullet, state, token ) {
-	var res = bullet;
-	if ( ! state.listStack.length ) {
-		res = '\n' + res;
+	var bullets, res;
+	var stack = state.listStack;
+	if (stack.length === 0) {
+		bullets = "\n" + bullet;
+		res     = bullets;
 	} else {
-		var curList = state.listStack[state.listStack.length - 1];
+		var curList = stack[stack.length - 1];
+		bullets = curList.bullets + bullet;
 		curList.items++;
 		if (	// deeply nested list
 				curList.items > 2 ||
@@ -34,14 +37,12 @@ WSP._listHandler = function( bullet, state, token ) {
 				( curList.items > 1 &&
 				! ( state.lastToken.constructor === TagTk && 
 					state.lastToken.name === 'li') )) {
-			res = "\n" + 
-				state.listStack
-				.map( function ( i ) { 
-					return i.bullet;
-				}).join('') + bullet;
+			res = bullets;
+		} else {
+			res = bullet;
 		}
 	}
-	state.listStack.push({ bullet: bullet, items: 0});
+	stack.push({ items: 0, bullets: bullets});
 	return res;
 };
 
@@ -54,22 +55,15 @@ WSP._listEndHandler = function( state, token ) {
 
 WSP._listItemHandler = function ( state, token ) { 
 	//console.warn( JSON.stringify( state.listStack ) );
+	var stack = state.listStack;
 	state.needParagraphLines = true;
-	if ( ! state.listStack.length ) {
+	if (stack.length === 0) {
 		return '';
 	} else {
-		var curList = state.listStack[state.listStack.length - 1];
+		var curList = stack[stack.length - 1];
 		curList.items++;
-		if ( curList.items > 1 ) {
-			// consecutive list items
-			return "\n" + 
-				state.listStack
-				.map( function ( i ) { 
-					return i.bullet;
-				}).join('');
-		} else {
-			return '';
-		}
+		// > 1 ==> consecutive list items
+		return ( curList.items > 1 ) ? curList.bullets : '';
 	}
 };
 
