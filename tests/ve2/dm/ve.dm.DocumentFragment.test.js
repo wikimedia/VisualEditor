@@ -356,7 +356,7 @@ test( 'offsetContainsAnnotation', 1, function(){
 	}
 });
 
-test( 'getAnnotationRangeFromOffset', 1,  function(){
+test( 'getAnnotatedRangeFromOffset', 1,  function(){
 	var cases = [
 		{
 			msg: 'a bold word',
@@ -402,10 +402,117 @@ test( 'getAnnotationRangeFromOffset', 1,  function(){
 		fragment = new ve.dm.DocumentFragment( cases[i].data );
 		
 		deepEqual(
-			fragment.getAnnotationRangeFromOffset(cases[i].offset, cases[i].annotation),
+			fragment.getAnnotatedRangeFromOffset(cases[i].offset, cases[i].annotation),
 			cases[i].expected,
 			cases[i].msg
 		);
 	}
 });
 
+test('getMatchingAnnotations', 1, function(){
+	var cases = [
+		{
+			msg: 'link part: ',
+			data: [
+				['l', {
+						'{"type":"bold"}': { 'type': 'bold' },
+						'{"type":"italic"}': { 'type': 'italic'},
+						'{"type":"underline"}': { 'type': 'underline'},
+						'{"type:"link/internal"}': { 'type': 'link/internal' }
+					}
+				], //0
+				['i', {
+						'{"type":"underline"}': { 'type': 'underline'},
+						'{"type:"link/internal"}': { 'type': 'link/internal' },
+						'{"type":"bold"}': { 'type': 'bold' },
+						'{"type":"italic"}': { 'type': 'italic'}
+					}
+				], //1
+				['n', {
+						'{"type:"link/internal"}': { 'type': 'link/internal' },
+						'{"type":"underline"}': { 'type': 'underline'},
+						'{"type":"bold"}': { 'type': 'bold' },
+						'{"type":"italic"}': { 'type': 'italic'}
+					}
+				], //2
+				['k', {
+						'{"type":"bold"}': { 'type': 'bold' },
+						'{"type":"italic"}': { 'type': 'italic'},
+						'{"type:"link/internal"}': { 'type': 'link/internal' },
+						'{"type":"underline"}': { 'type': 'underline'}
+					}
+				]  //3
+			],
+			match: /link\/.*/,
+			expected: [
+						{
+							'{"type:"link/internal"}': { 'type': 'link/internal' }
+						},
+						{
+							'{"type:"link/internal"}': { 'type': 'link/internal' }
+						},
+						{
+							'{"type:"link/internal"}': { 'type': 'link/internal' }
+						},
+						{
+							'{"type:"link/internal"}': { 'type': 'link/internal' }
+						}
+					]
+		},
+		{
+			msg: 'bold test: ',
+			data: [
+				['b', {
+						'{"type":"bold"}': { 'type': 'bold' }
+					}
+				], //0
+				['o', {
+						'{"type":"bold"}': { 'type': 'bold' }
+					}
+				], //1
+				['l', {
+						'{"type":"bold"}': { 'type': 'bold' }
+					}
+				], //2
+				['d', {
+						'{"type":"italic"}': { 'type': 'italic'}
+					}
+				]  //3
+			],
+			match: /bold/,
+			expected: [
+						{
+							'{"type":"bold"}': { 'type': 'bold' }
+						},
+						{
+							'{"type":"bold"}': { 'type': 'bold' }
+						},
+						{
+							'{"type":"bold"}': { 'type': 'bold' }
+						},
+						{}
+					]
+		}
+	],
+	fragment,
+	expectCount = 0;
+	//count tests
+	for (var c = 0; c < cases.length; c++) {
+		expectCount += cases[c].data.length;
+	}
+
+	expect ( expectCount );
+
+	for( var i=0;i<cases.length;i++) {
+		fragment = new ve.dm.DocumentFragment( cases[i].data );
+		
+		for(var d=0;cases[i].data[d];d++) {
+			deepEqual(
+				fragment.getMatchingAnnotations( cases[i].data[d], cases[i].match ),
+				cases[i].expected[d],
+				cases[i].msg + d
+			);
+		}
+
+	}
+});

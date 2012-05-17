@@ -223,7 +223,7 @@ ve.dm.DocumentFragment.prototype.offsetContainsAnnotation = function ( offset, a
  * @param {Object} annotation Annotation to test for coverage with
  * @returns {ve.Range|null} Range of content covered by annotation, or null if offset is not covered
  */
-ve.dm.DocumentFragment.prototype.getAnnotationRangeFromOffset = function ( offset, annotation ) {
+ve.dm.DocumentFragment.prototype.getAnnotatedRangeFromOffset = function ( offset, annotation ) {
 	var start = offset,
 		end = offset;
 	if ( this.offsetContainsAnnotation(offset, annotation) === false ) {
@@ -244,6 +244,31 @@ ve.dm.DocumentFragment.prototype.getAnnotationRangeFromOffset = function ( offse
 		}
 	}
 	return new ve.Range( start, end );
+};
+
+/**
+ * Gets a list of annotations that match a regular expression.
+ *
+ * @static
+ * @methodng
+ * @param {Array} offsetData first index is a character, followed by an object of annotations
+ * @param {RegExp} pattern Regular expression pattern to match with
+ * @returns {Object} hashmap of annotations that match the pattern
+ */
+ve.dm.DocumentFragment.prototype.getMatchingAnnotations = function( offsetData, pattern ) {
+	if ( !( pattern instanceof RegExp ) ) {
+		throw 'Invalid Pattern. Pattern not instance of RegExp';
+	}
+	var annotations = offsetData[1],
+		annotation = {},
+		matches = {};
+
+	for (annotation in annotations) {
+		if( pattern.test( annotations[annotation].type )){
+			matches[annotation] = annotations[annotation];
+		}
+	}
+	return matches;
 };
 
 /**
