@@ -435,7 +435,7 @@ ve.dm.Document.prototype.offsetContainsMatchingAnnotations = function( offset, p
 	}
 	var annotations = ve.isArray( this.data[offset] ) ?
 		this.data[offset][1] : this.data[offset].annotations;
-	if ( annotations !== undefined ) {
+	if ( ve.isPlainObject( annotations ) ) {
 		for ( var hash in annotations ) {
 			if ( pattern.test( annotations[hash].type ) ) {
 				return true;
@@ -461,7 +461,7 @@ ve.dm.Document.prototype.getMatchingAnnotations = function( offset, pattern ) {
 	var matches = {},
 		annotations = ve.isArray( this.data[offset] ) ?
 			this.data[offset][1] : this.data[offset].annotations;
-	if ( annotations !== undefined ) {
+	if ( ve.isPlainObject( annotations ) ) {
 		for ( var hash in annotations ) {
 			if ( pattern.test( annotations[hash].type ) ){
 				matches[hash] = annotations[hash];
