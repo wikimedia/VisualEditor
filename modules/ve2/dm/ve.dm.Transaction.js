@@ -9,6 +9,28 @@ ve.dm.Transaction = function() {
 	this.lengthDifference = 0;
 };
 
+/* Static Methods */
+
+ve.dm.Transaction.newFromInsertion = function( doc, offset, data ) {
+	// Implement me!
+};
+
+ve.dm.Transaction.newFromRemoval = function( doc, range ) {
+	// Implement me!
+};
+
+ve.dm.Transaction.newFromReplacement = function( doc, range, data ) {
+	// Implement me!
+};
+
+ve.dm.Transaction.newFromAttributeChange = function( doc, offset, key, value ) {
+	// Implement me!
+};
+
+ve.dm.Transaction.newFromAnnotation = function( doc, range, method, annotation ) {
+	// Implement me!
+};
+
 /* Methods */
 
 /**
