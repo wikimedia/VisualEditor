@@ -382,7 +382,7 @@ test( 'getAnnotatedRangeFromOffset', 1,  function(){
 			],
 			'annotation': { 'type': 'bold' },
 			'offset': 3,
-			'expected': new ve.Range( 1, 4 )
+			'expected': new ve.Range( 1, 5 )
 		},
 		{
 			'msg': 'a linked',
@@ -410,7 +410,7 @@ test( 'getAnnotatedRangeFromOffset', 1,  function(){
 			],
 			'annotation': { 'type': 'link/internal' },
 			'offset': 3,
-			'expected': new ve.Range( 3, 6 )
+			'expected': new ve.Range( 3, 7 )
 		}
 	];
 

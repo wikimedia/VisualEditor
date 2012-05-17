@@ -412,11 +412,10 @@ ve.dm.Document.prototype.getAnnotatedRangeFromOffset = function ( offset, annota
 		}
 	}
 	while ( end < this.data.length ) {
-		end++;
 		if ( this.offsetContainsAnnotation(end, annotation ) === false ) {
-			end--;
 			break;
 		}
+		end++;
 	}
 	return new ve.Range( start, end );
 };
