@@ -23,12 +23,116 @@ ve.dm.Transaction.newFromReplacement = function( doc, range, data ) {
 	// Implement me!
 };
 
+/**
+ * Get a transaction that changes an attribute.
+ *
+ * @static
+ * @method
+ * @param {ve.dm.Document} doc Document to create transaction for
+ * @param {Integer} offset Offset of element
+ * @param {String} key Attribute name
+ * @param {Mixed} value New value
+ * @returns {ve.dm.Transaction} Transcation that changes an element
+ * @throws 'Can not set attributes to non-element data'
+ * @throws 'Can not set attributes on closing element'
+ */
 ve.dm.Transaction.newFromAttributeChange = function( doc, offset, key, value ) {
-	// Implement me!
+	var tx = new ve.dm.Transaction(),
+		data = doc.getData();
+	// Verify element exists at offset
+	if ( data[offset].type === undefined ) {
+		throw 'Can not set attributes to non-element data';
+	}
+	// Verify element is not a closing
+	if ( data[offset].type.charAt( 0 ) === '/' ) {
+		throw 'Can not set attributes on closing element';
+	}
+	// Retain up to element
+	if ( offset ) {
+		tx.pushRetain( offset );
+	}
+	// Change attribute
+	tx.pushReplaceElementAttribute(
+		key, 'attributes' in data[offset] ? data[offset].attributes[key] : undefined, value
+	);
+	// Retain to end of document
+	if ( offset < data.length ) {
+		tx.pushRetain( data.length - offset );
+	}
+	return tx;
 };
 
+/**
+ * Get a transaction that annotates content.
+ *
+ * @static
+ * @method
+ * @param {ve.dm.Document} doc Document to create transaction for
+ * @param {ve.Range} range Range to annotate
+ * @param {String} method Annotation mode
+ *     'set': Adds annotation to all content in range
+ *     'clear': Removes instances of annotation from content in range
+ * @param {Object} annotation Annotation to set or clear
+ * @returns {ve.dm.Transaction} Transcation that annotates content
+ */
 ve.dm.Transaction.newFromAnnotation = function( doc, range, method, annotation ) {
-	// Implement me!
+	var tx = new ve.dm.Transaction(),
+		data = doc.getData(),
+		hash = ve.getHash( annotation );
+	// Iterate over all data in range, annotating where appropriate
+	range.normalize();
+	var i = range.start,
+		span = i,
+		on = false;
+	while ( i < range.end ) {
+		if ( data[i].type !== undefined ) {
+			// Element
+			if ( on ) {
+				if ( span ) {
+					tx.pushRetain( span );
+				}
+				tx.pushStopAnnotating( method, annotation );
+				span = 0;
+				on = false;
+			}
+		} else {
+			// Content
+			var covered = doc.offsetContainsAnnotation( i, annotation );
+			if ( ( covered && method === 'set' ) || ( !covered  && method === 'clear' ) ) {
+				// Skip annotated content
+				if ( on ) {
+					if ( span ) {
+						tx.pushRetain( span );
+					}
+					tx.pushStopAnnotating( method, annotation );
+					span = 0;
+					on = false;
+				}
+			} else {
+				// Cover non-annotated content
+				if ( !on ) {
+					if ( span ) {
+						tx.pushRetain( span );
+					}
+					tx.pushStartAnnotating( method, annotation );
+					span = 0;
+					on = true;
+				}
+			}
+		}
+		span++;
+		i++;
+	}
+	if ( span ) {
+		tx.pushRetain( span );
+	}
+	if ( on ) {
+		tx.pushStopAnnotating( method, annotation );
+	}
+	if ( range.end < data.length ) {
+		tx.pushRetain( data.length - range.end );
+	}
+	return tx;
 };
 
 /* Methods */
