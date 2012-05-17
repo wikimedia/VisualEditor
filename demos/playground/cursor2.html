@@ -58,8 +58,8 @@
         		range.setStart($(this).prev('.slug')[0], 0);
         		rangy.getSelection().addRange(range);
         	});
-        	$('.editor').on('keydown', function(e) {
-        		var newParagraph = $('<p>&nsbp;</p>');
+        	$('.editor').one('keydown', function(e) {
+        		var newParagraph = $('<p>&nbsp;</p>');
         		$('.editor').eq(1).find('.slug').eq(1).replaceWith(newParagraph);
 
 				console.log(newParagraph);
