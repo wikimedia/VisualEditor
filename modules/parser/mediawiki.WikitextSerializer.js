@@ -30,10 +30,10 @@ WSP._listHandler = function( bullet, state, token ) {
 		curList.items++;
 		if (	// deeply nested list
 				curList.items > 2 ||
-				 // A nested list, not directly after the li
+				// A nested list, not directly after the li
 				( curList.items > 1 &&
-				  ! ( state.lastToken.constructor === TagTk && 
-					  state.lastToken.name === 'li') )) {
+				! ( state.lastToken.constructor === TagTk && 
+					state.lastToken.name === 'li') )) {
 			res = "\n" + 
 				state.listStack
 				.map( function ( i ) { 
@@ -166,57 +166,60 @@ WSP._serializeAttributes = function ( attribs ) {
  * Serialize a chunk of tokens
  */
 WSP.serializeTokens = function( tokens, chunkCB ) {
+	var state = $.extend({}, this.defaultOptions, this.options),
+		i, l;
 	if ( chunkCB === undefined ) {
 		var out = [];
-		this._serializeTokens( tokens, out.push.bind(out) );
+		chunkCB = out.push.bind(out);
+		for ( i = 0, l = tokens.length; i < l; i++ ) {
+			this._serializeToken( state, chunkCB, tokens[i] );
+		}
 		return out;
 	} else {
-		this._serializeTokens( tokens, chunkCB );
-	}
-};
-
-WSP._serializeTokens = function( tokens, chunkCB ) {
-	var state = $.extend({}, this.defaultOptions, this.options),
-		handler;
-	for ( var i = 0, l = tokens.length; i < l; i++ ) {
-		state.lastToken = state.curToken;
-		state.curToken = tokens[i];
-		switch( token.constructor ) {
-			case TagTk:
-			case SelfclosingTagTk:
-				handler = this.tagToWikitext[token.name];
-				if ( handler && handler.start ) {
-					chunkCB( handler.start( state, state.curToken ) );
-				} else {
-					console.warn( 'Unhandled tag token ' + JSON.stringify( token ) );
-				}
-				break;
-			case EndTagTk:
-				handler = this.tagToWikitext[token.name];
-				if ( handler && handler.end ) {
-					chunkCB( handler.end( state, state.curToken ) );
-				} else {
-					console.warn( 'Unhandled end tag token ' + JSON.stringify( token ) );
-				}
-				break;
-			case String:
-				chunkCB( token );
-				break;
-			case CommentTk:
-				chunkCB( '<!--' + token.value + '-->' );
-				break;
-			case NlTk:
-				chunkCB( '\n' );
-				break;
-			case EOFTk:
-				break;
-			default:
-				console.warn( 'Unhandled token type ' + JSON.stringify( token ) );
-				break;
+		for ( i = 0, l = tokens.length; i < l; i++ ) {
+			this._serializeToken( state, chunkCB, tokens[i] );
 		}
 	}
 };
 
+
+/**
+ * Serialize a token.
+ */
+WSP._serializeToken = function ( state, chunkCB, token ) {
+	state.lastToken = state.curToken;
+	state.curToken = token;
+	var handler;
+	switch( token.constructor ) {
+		case TagTk:
+		case SelfclosingTagTk:
+			handler = this.tagToWikitext[token.name];
+			if ( handler && handler.start ) {
+				chunkCB( handler.start( state, token ) );
+			}
+			break;
+		case EndTagTk:
+			handler = this.tagToWikitext[token.name];
+			if ( handler && handler.end ) {
+				chunkCB( handler.end( state, token ) );
+			}
+			break;
+		case String:
+			chunkCB( token );
+			break;
+		case CommentTk:
+			chunkCB( '<!--' + token.value + '-->' );
+			break;
+		case NlTk:
+			chunkCB( '\n' );
+			break;
+		case EOFTk:
+			break;
+		default:
+			console.warn( 'Unhandled token type ' + JSON.stringify( token ) );
+			break;
+	}
+};
 
 /**
  * Serialize an HTML DOM document.
@@ -233,11 +236,12 @@ WSP.serializeDOM = function( node, chunkCB ) {
 	}
 };
 
+/**
+ * Internal worker. Recursively serialize a DOM subtree by creating tokens and
+ * calling _serializeToken on each of these.
+ */
 WSP._serializeDOM = function( node, chunkCB, state ) {
 	// serialize this node
-	var token;
-	state.lastToken = state.curToken;
-	state.curToken = null;
 	switch( node.nodeType ) {
 		case Node.ELEMENT_NODE:
 			//console.warn( node.nodeName.toLowerCase() );
@@ -245,37 +249,26 @@ WSP._serializeDOM = function( node, chunkCB, state ) {
 				name = node.nodeName.toLowerCase(),
 				handler = this.tagToWikitext[name];
 			if ( handler ) {
-				var attribs = node.attributes,
-					tkAttribs = this._getDOMAttribs(attribs),
-					tkRTInfo = this._getDOMRTInfo(attribs);
-				if ( handler.start ) {
-					state.curToken = new TagTk( name, tkAttribs, tkRTInfo );
-					// serialize the start tag
-					chunkCB( handler.start( state, state.curToken ) );
-				}
+				var tkAttribs = this._getDOMAttribs(node.attributes),
+					tkRTInfo = this._getDOMRTInfo(node.attributes);
+
+				this._serializeToken( state, chunkCB, 
+						new TagTk( name, tkAttribs, tkRTInfo ) );
 				for ( var i = 0, l = children.length; i < l; i++ ) {
 					// serialize all children
 					this._serializeDOM( children[i], chunkCB, state );
 				}
-				state.lastToken = state.curToken;
-				if ( handler.end ) {
-					state.curToken = new EndTagTk( name, tkAttribs, tkRTInfo );
-					// serialize the start tag
-					chunkCB( handler.end( state, state.curToken ) );
-				} else {
-					state.curToken = null;
-				}
+				this._serializeToken( state, chunkCB, 
+						new EndTagTk( name, tkAttribs, tkRTInfo ) );
 			} else {
 				console.warn( 'Unhandled element: ' + node.innerHTML );
 			}
 			break;
 		case Node.TEXT_NODE:
-			state.curToken = node.data;
-			chunkCB( node.data );
+			this._serializeToken( state, chunkCB, node.data );
 			break;
 		case Node.COMMENT_NODE:
-			state.curToken = new CommentTk( node.data );
-			chunkCB( '<!--' + node.data + '-->' );
+			this._serializeToken( state, chunkCB, new CommentTk( node.data ) );
 			break;
 		default:
 			console.warn( "Unhandled node type: " + 
