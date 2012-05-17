@@ -421,25 +421,51 @@ ve.dm.Document.prototype.getAnnotatedRangeFromOffset = function ( offset, annota
 };
 
 /**
+ * Checks if a character has matching annotations.
+ *
+ * @static
+ * @methodng
+ * @param {Integer} offset Offset of annotated character
+ * @param {RegExp} pattern Regular expression pattern to match with
+ * @returns {Boolean} Character has matching annotations
+ */
+ve.dm.Document.prototype.offsetContainsMatchingAnnotations = function( offset, pattern ) {
+	if ( !( pattern instanceof RegExp ) ) {
+		throw 'Invalid Pattern. Pattern not instance of RegExp';
+	}
+	var annotations = ve.isArray( this.data[offset] ) ?
+		this.data[offset][1] : this.data[offset].annotations;
+	if ( annotations !== undefined ) {
+		for ( var hash in annotations ) {
+			if ( pattern.test( annotations[hash].type ) ) {
+				return true;
+			}
+		}
+	}
+	return false;
+};
+
+/**
  * Gets a list of annotations that match a regular expression.
  *
  * @static
  * @methodng
- * @param {Array} offsetData first index is a character, followed by an object of annotations
+ * @param {Integer} offset Offset of annotated character
  * @param {RegExp} pattern Regular expression pattern to match with
- * @returns {Object} hashmap of annotations that match the pattern
+ * @returns {Object} Annotations that match the pattern
  */
-ve.dm.Document.prototype.getMatchingAnnotations = function( offsetData, pattern ) {
+ve.dm.Document.prototype.getMatchingAnnotations = function( offset, pattern ) {
 	if ( !( pattern instanceof RegExp ) ) {
 		throw 'Invalid Pattern. Pattern not instance of RegExp';
 	}
-	var annotations = offsetData[1],
-		annotation = {},
-		matches = {};
-
-	for ( annotation in annotations ) {
-		if ( pattern.test( annotations[annotation].type ) ){
-			matches[annotation] = annotations[annotation];
+	var matches = {},
+		annotations = ve.isArray( this.data[offset] ) ?
+			this.data[offset][1] : this.data[offset].annotations;
+	if ( annotations !== undefined ) {
+		for ( var hash in annotations ) {
+			if ( pattern.test( annotations[hash].type ) ){
+				matches[hash] = annotations[hash];
+			}
 		}
 	}
 	return matches;

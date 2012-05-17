@@ -307,8 +307,7 @@ test( 'getAnnotationsFromRange', 1, function() {
 		);
 
 	}
-});
-
+} );
 
 test( 'offsetContainsAnnotation', 1, function(){
 	var doc,
@@ -424,99 +423,64 @@ test( 'getAnnotatedRangeFromOffset', 1,  function(){
 			cases[i].msg
 		);
 	}
-});
+} );
 
-test('getMatchingAnnotations', 1, function(){
-	var doc,
-		expectCount = 0,
-		cases = [
-		{
-			'msg': 'link part: ',
-			'data': [
-				// 0
-				['l', {
-						'{"type":"bold"}': { 'type': 'bold' },
-						'{"type":"italic"}': { 'type': 'italic' },
-						'{"type":"underline"}': { 'type': 'underline' },
-						'{"type:"link/internal"}': { 'type': 'link/internal' }
-					}
-				],
-				// 1
-				[
-					'i',
-					{
-						'{"type":"underline"}': { 'type': 'underline' },
-						'{"type:"link/internal"}': { 'type': 'link/internal' },
-						'{"type":"bold"}': { 'type': 'bold' },
-						'{"type":"italic"}': { 'type': 'italic' }
-					}
-				],
-				// 2
-				[
-					'n',
-					{
-						'{"type:"link/internal"}': { 'type': 'link/internal' },
-						'{"type":"underline"}': { 'type': 'underline' },
-						'{"type":"bold"}': { 'type': 'bold' },
-						'{"type":"italic"}': { 'type': 'italic' }
-					}
-				],
-				// 3
-				[
-					'k',
-					{
-						'{"type":"bold"}': { 'type': 'bold' },
-						'{"type":"italic"}': { 'type': 'italic' },
-						'{"type:"link/internal"}': { 'type': 'link/internal' },
-						'{"type":"underline"}': { 'type': 'underline' }
-					}
-				]
+test( 'getMatchingAnnotations', 1, function() {
+	var cases = {
+		'finds two out of three': {
+			'pattern': /textStyle\/.*/,
+			'character': [
+				'a',
+				{
+					'{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' },
+					'{"type:"textStyle/italic"}': { 'type': 'textStyle/italic' },
+					'{"type:"link/internal"}': { 'type': 'link/internal' }
+				}
 			],
-			'match': /link\/.*/,
-			'expected': [
-				{ '{"type:"link/internal"}': { 'type': 'link/internal' } },
-				{ '{"type:"link/internal"}': { 'type': 'link/internal' } },
-				{ '{"type:"link/internal"}': { 'type': 'link/internal' } },
-				{ '{"type:"link/internal"}': { 'type': 'link/internal' } }
-			]
+			'expected': {
+				'{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' },
+				'{"type:"textStyle/italic"}': { 'type': 'textStyle/italic' }
+			}
 		},
-		{
-			'msg': 'bold test: ',
-			'data': [
-				// 0
-				['b', { '{"type":"bold"}': { 'type': 'bold' } }],
-				// 1
-				['o', { '{"type":"bold"}': { 'type': 'bold' } }],
-				// 2
-				['l', { '{"type":"bold"}': { 'type': 'bold' } }],
-				// 3
-				['d', { '{"type":"italic"}': { 'type': 'italic'} }]
+		'finds 3 out of 3': {
+			'pattern': /textStyle\/.*/,
+			'character': [
+				'a',
+				{
+					'{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' },
+					'{"type:"textStyle/italic"}': { 'type': 'textStyle/italic' },
+					'{"type:"textStyle/undeline"}': { 'type': 'textStyle/undeline' }
+				}
 			],
-			'match': /bold/,
-			'expected': [
-				{ '{"type":"bold"}': { 'type': 'bold' } },
-				{ '{"type":"bold"}': { 'type': 'bold' } },
-				{ '{"type":"bold"}': { 'type': 'bold' } },
-				{}
-			]
+			'expected': {
+				'{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' },
+				'{"type:"textStyle/italic"}': { 'type': 'textStyle/italic' },
+				'{"type:"textStyle/undeline"}': { 'type': 'textStyle/undeline' }
+			}
+		},
+		'finds none': {
+			'pattern': /link\/.*/,
+			'character': [
+				'a',
+				{
+					'{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' },
+					'{"type:"textStyle/italic"}': { 'type': 'textStyle/italic' },
+					'{"type:"textStyle/undeline"}': { 'type': 'textStyle/undeline' }
+				}
+			],
+			'expected': {}
 		}
-	];
+	};
 
-	// Calculate expected assertion count
-	for ( var c = 0; c < cases.length; c++ ) {
-		expectCount += cases[c].data.length;
-	}
-	expect( expectCount );
+	expect( ve.getObjectKeys( cases ).length );
 
-	for ( var i = 0;i < cases.length; i++ ) {
-		doc = new ve.dm.Document( cases[i].data );
-		for ( var d = 0; cases[i].data[d]; d++ ) {
-			deepEqual(
-				doc.getMatchingAnnotations( cases[i].data[d], cases[i].match ),
-				cases[i].expected[d],
-				cases[i].msg + d
-			);
-		}
+	for ( var msg in cases ) {
+		deepEqual(
+			( new ve.dm.Document( [cases[msg].character] ) )
+				.getMatchingAnnotations( 0, cases[msg].pattern ),
+			cases[msg].expected,
+			msg
+		);
 	}
 } );
 
