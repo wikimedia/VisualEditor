@@ -241,7 +241,7 @@ ve.ce.TextNode.prototype.getHtml = function() {
 			out += openAnnotations( open );
 		}
 
-		chr = rightPlain ? right : right[0];
+		var chr = rightPlain ? right : right[0];
 		out += chr in htmlChars ? htmlChars[chr] : chr;
 		left = right;
 	}

@@ -228,26 +228,28 @@ ve.dm.TransactionProcessor.prototype.attribute = function( op ) {
 		// Set
 		element.attributes[op.key] = to;
 	}
-	
-	this.synchronizer.pushAttributeChange( this.document.getNodeFromOffset( this.cursor + 1 ),
-		op.key, from, to );
+
+	this.synchronizer.pushAttributeChange(
+		this.document.getNodeFromOffset( this.cursor + 1 ),
+		op.key,
+		from, to
+	);
 };
 
 /**
  * Execute a replace operation.
  *
- * This replaces one fragment of linear model data with another at this.cursor, figures out how the
- * model tree needs to be synchronized, and queues this in the DocumentSynchronizer.
+ * This replaces a range of linear model data with another at this.cursor, figures out how the model
+ * tree needs to be synchronized, and queues this in the DocumentSynchronizer.
  *
  * op.remove isn't checked against the actual data (instead op.remove.length things are removed
  * starting at this.cursor), but it's used instead of op.insert in reverse mode. So if
  * op.remove is incorrect but of the right length, the transaction will commit fine, but won't roll
  * back correctly.
  *
- *
  * @param {Object} op Operation object
- * @param {Array} op.remove Linear model data fragment to remove
- * @param {Array} op.insert Linear model data fragment to insert
+ * @param {Array} op.remove Linear model data to remove
+ * @param {Array} op.insert Linear model data to insert
  */
 ve.dm.TransactionProcessor.prototype.replace = function( op ) {
 	var	remove = this.reversed ? op.insert : op.remove,
@@ -290,7 +292,9 @@ ve.dm.TransactionProcessor.prototype.replace = function( op ) {
 			affectedRanges = [],
 			scope,
 			minInsertLevel = 0,
-			coveringRange;
+			coveringRange,
+			scopeStart,
+			scopeEnd;
 
 		while ( true ) {
 			if ( operation.type == 'replace' ) {
