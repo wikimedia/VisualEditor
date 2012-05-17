@@ -110,8 +110,8 @@ ve.dm.Document = function( data, parentDocument ) {
 			} else {
 				// Branch or leaf node closing
 				if ( ve.dm.factory.canNodeHaveChildren( currentNode.getType() ) ) {
-					// Pop this node's inner stack from the outer stack. It'll have all of the node's
-					// child nodes fully constructed
+					// Pop this node's inner stack from the outer stack. It'll have all of the
+					// node's child nodes fully constructed
 					children = stack.pop();
 					currentStack = parentStack;
 					parentStack = stack[stack.length - 2];
@@ -308,7 +308,6 @@ ve.dm.Document.containsElementData = function( data ) {
 
 /* Methods */
 
-
 /**
  * Gets slice or copy of the document data.
  *
@@ -384,8 +383,8 @@ ve.dm.Document.prototype.getAnnotationsFromOffset = function( offset ) {
  */
 ve.dm.Document.prototype.offsetContainsAnnotation = function ( offset, annotation ) {
 	var annotations = this.getAnnotationsFromOffset( offset );
-	for (var i=0;i<annotations.length;i++){
-		if (ve.compareObjects(annotations[i], annotation)){
+	for ( var i = 0; i < annotations.length; i++ ){
+		if ( ve.compareObjects( annotations[i], annotation ) ){
 			return true;
 		}
 	}
@@ -402,12 +401,12 @@ ve.dm.Document.prototype.offsetContainsAnnotation = function ( offset, annotatio
 ve.dm.Document.prototype.getAnnotatedRangeFromOffset = function ( offset, annotation ) {
 	var start = offset,
 		end = offset;
-	if ( this.offsetContainsAnnotation(offset, annotation) === false ) {
+	if ( this.offsetContainsAnnotation( offset, annotation ) === false ) {
 		return null;
 	}
 	while ( start > 0 ) {
 		start--;
-		if ( this.offsetContainsAnnotation(start, annotation ) === false ) {
+		if ( this.offsetContainsAnnotation( start, annotation ) === false ) {
 			start++;
 			break;
 		}
@@ -439,8 +438,8 @@ ve.dm.Document.prototype.getMatchingAnnotations = function( offsetData, pattern 
 		annotation = {},
 		matches = {};
 
-	for (annotation in annotations) {
-		if( pattern.test( annotations[annotation].type )){
+	for ( annotation in annotations ) {
+		if ( pattern.test( annotations[annotation].type ) ){
 			matches[annotation] = annotations[annotation];
 		}
 	}
@@ -461,7 +460,7 @@ ve.dm.Document.prototype.getAnnotationsFromRange = function( range ) {
 		map = {};
 		
 	range.normalize();
-	for (var i=range.start; i<range.end;i++) {
+	for ( var i = range.start; i < range.end; i++ ) {
 		// skip non characters
 		if ( ve.dm.Document.isElementData( this.data, i ) ) {
 			continue;
@@ -469,17 +468,17 @@ ve.dm.Document.prototype.getAnnotationsFromRange = function( range ) {
 		//current character annotations
 		currentChar = this.data[i][1];
 		// if a non annotated character, no commonality.
-		if (currentChar === undefined) {
+		if ( currentChar === undefined ) {
 			return [];
 		}
 		charCount++;
 		// if current char annotations are not the same as previous char.
-		if ( ve.compareObjects(map, currentChar) === false) {
+		if ( ve.compareObjects( map, currentChar ) === false) {
 			//retain common annotations
-			if (charCount > 1) {
+			if ( charCount > 1 ) {
 				// look for annotation in map
-				for (var a in currentChar) {
-					if(map[a] === undefined) {
+				for ( var a in currentChar ) {
+					if( map[a] === undefined ) {
 						delete currentChar[a];
 					}
 				}
