@@ -3,7 +3,6 @@ module( 've.dm.HTMLConverter' );
 // Tests
 
 test( 'convertHTML', function() {
-
 	var cases = [
 		{
 			'html': '<p>abc</p>',
@@ -19,33 +18,34 @@ test( 'convertHTML', function() {
 		{
 			'html': '<p><b>a</b><i>b</i><u>c</u></p>',
 			'linearModel': [
-				{ 'type': 'paragraph' }, 
+				{ 'type': 'paragraph' },
 				['a', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } }],
 				['b', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } }],
 				['c', { '{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' } }],
-				{ 'type': '/paragraph' } 
+				{ 'type': '/paragraph' }
 			],
 			'message': 'bold, italic, underline'
 		},
 		{
-			'html': '<img src="http://www.something.com/test.jpg">',
+			'html': '<img src="image.png">',
 			'linearModel': [
-				{ 'type': 'image', 'attributes' : { 'html/src' : 'http://www.something.com/test.jpg' } },
+				{ 'type': 'image', 'attributes' : { 'html/src' : 'image.png' } },
 				{ 'type' : '/image' }
 			],
 			'message': 'image'
-		}		
+		}
 	];
+
 	expect(cases.length);
 	
-
 	for ( var i = 0; i < cases.length; i++ ) {
-		var c = cases[i];
-		var convertedLinearModel = ve.dm.HTMLConverter.getLinearModel($('<div>' + c.html + '</div>')[0]);
+		var convertedLinearModel = ve.dm.HTMLConverter.getLinearModel(
+			$('<div>' + cases[i].html + '</div>')[0]
+		);
 
-		console.log(convertedLinearModel);
-		console.log(c.linearModel);
+		//console.log( convertedLinearModel );
+		//console.log( cases[i].linearModel );
 
-		deepEqual(convertedLinearModel, c.linearModel, c.message);
+		deepEqual( convertedLinearModel, cases[i].linearModel, cases[i].message);
 	}
 } );
