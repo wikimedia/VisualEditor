@@ -6,7 +6,7 @@
  * @constructor
  * @extends {ve.BranchNode}
  * @extends {ve.dm.Node}
- * @param {String} type Symbolic name of node type 
+ * @param {String} type Symbolic name of node type
  * @param {ve.dm.Node[]} [children] Child nodes to attach
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  */

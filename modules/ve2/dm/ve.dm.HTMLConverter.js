@@ -196,14 +196,14 @@ ve.dm.HTMLConverter.generateAnnotatedContent = function( content, annotations ) 
 		return characters;
 	}
 	for ( i = 0; i < annotations.length; i++ ) {
-		if ( annotations[i].data != undefined && Object.keys(annotations[i].data).length === 0 ) {
+		if ( annotations[i].data !== undefined && Object.keys(annotations[i].data).length === 0 ) {
 			delete annotations[i].data;
 		}
 		annoationMap[JSON.stringify( annotations[i] )] = annotations[i];
 	}
 	for ( i = 0; i < characters.length; i++ ) {
 		characters[i] = [characters[i], annoationMap];
-	}	
+	}
 	return characters;
 };
 
@@ -218,7 +218,7 @@ ve.dm.HTMLConverter.generateAnnotatedContent = function( content, annotations ) 
  */
 ve.dm.HTMLConverter.getLinearModel = function( node, options ) {
 	return ( new ve.dm.HTMLConverter( options ) ).convert( node );
-}
+};
 
 
 /**

@@ -41,9 +41,10 @@ ve.Surface = function( parent, data, options ) {
 	this.$base = null;
 	this.$surface = null;
 	this.toolbarWrapper = {};
-	
+
+	// Overwrite input data with example data
 	/*
-	var data = [
+	data = [
 		{ 'type': 'heading', 'attributes': { 'level': 1 } },
 		'a',
 		'b',
@@ -99,12 +100,10 @@ ve.Surface = function( parent, data, options ) {
 		{ 'type': '/image' },
 	];
 	*/
-	
-	/* Define HTML5 DOM */
-	var HTML = $('<div><alien><b>Hello world!</b> What\'s up?</alien><h1>abc</h1><p>a<b>b</b><i>c</i></p><p>Lorem ipsum and</p><table><tbody><tr><td><p><i><b>a</b></i></p></td></tr></tbody></table><ul><li><p>a</p></li></ul><img src="http://dl.dropbox.com/u/1026938/wikia.jpeg"></div>');	
-
-	/* Create linear model from HTML5 DOM */
-	var data = ve.dm.HTMLConverter.getLinearModel(HTML[0]);
+	// Define HTML5 DOM
+	var HTML = $( '<div><alien><b>Hello world!</b> What\'s up?</alien><h1>abc</h1><p>a<b>b</b><i>c</i></p><p>Lorem ipsum and</p><table><tbody><tr><td><p><i><b>a</b></i></p></td></tr></tbody></table><ul><li><p>a</p></li></ul><img src="http://dl.dropbox.com/u/1026938/wikia.jpeg"></div>' );
+	// Create linear model from HTML5 DOM
+	data = ve.dm.HTMLConverter.getLinearModel( HTML[0] );
 
 	/* Create document model object with the linear model */
 	this.documentModel = new ve.dm.Document ( data );

@@ -60,7 +60,7 @@ ve.dm.Document.isContentOffset = function( data, offset ) {
 					left.type.charAt( 0 ) === '/' &&
 					// Is a leaf
 					!factory.canNodeHaveChildren( left.type.substr( 1 ) )
-				) || 
+				) ||
 				// Left of a leaf
 				// <paragraph>|<image></image></paragraph>
 				(

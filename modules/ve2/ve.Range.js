@@ -37,7 +37,7 @@ ve.Range.newFromTranslatedRange = function( range, distance ) {
  */
 ve.Range.newCoveringRange = function( ranges ) {
 	var minStart, maxEnd, i;
-	if ( !ranges || ranges.length == 0 ) {
+	if ( !ranges || ranges.length === 0 ) {
 		throw 'newCoveringRange() requires at least one range';
 	}
 	minStart = ranges[0].start;

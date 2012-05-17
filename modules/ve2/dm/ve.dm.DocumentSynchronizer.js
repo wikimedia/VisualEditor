@@ -41,7 +41,7 @@ ve.dm.DocumentSynchronizer.synchronizers = {
 	 *
 	 * @static
 	 * @method
-	 * @param {Object} action 
+	 * @param {Object} action
 	 */
 	'annotation': function( action ) {
 		// Queue events for all leaf nodes covered by the range
@@ -57,7 +57,7 @@ ve.dm.DocumentSynchronizer.synchronizers = {
 	 *
 	 * @static
 	 * @method
-	 * @param {Object} action 
+	 * @param {Object} action
 	 */
 	'attributeChange': function( action ) {
 		this.queueEvent( action.node, 'attributeChange', action.key, action.from, action.to );
@@ -68,7 +68,7 @@ ve.dm.DocumentSynchronizer.synchronizers = {
 	 *
 	 * @static
 	 * @method
-	 * @param {Object} action 
+	 * @param {Object} action
 	 */
 	'resize': function( action ) {
 		action.node.adjustLength( action.adjustment );
@@ -79,7 +79,7 @@ ve.dm.DocumentSynchronizer.synchronizers = {
 	 *
 	 * @static
 	 * @method
-	 * @param {Object} action 
+	 * @param {Object} action
 	 */
 	'rebuild': function( action ) {
 		// Find the nodes contained by oldRange

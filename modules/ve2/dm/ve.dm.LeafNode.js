@@ -6,7 +6,7 @@
  * @constructor
  * @extends {ve.LeafNode}
  * @extends {ve.dm.Node}
- * @param {String} type Symbolic name of node type 
+ * @param {String} type Symbolic name of node type
  * @param {Integer} [length] Length of content data in document
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  */
