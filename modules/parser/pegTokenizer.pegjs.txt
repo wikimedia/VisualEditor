@@ -565,7 +565,8 @@ extlink
                 new SelfclosingTagTk( 'extlink', [
                     new KV('href', target),
                     new KV('content', text)
-                ] )
+                ],
+                { type: 'extlink' })
             ];
         }
       / "[" & { return stops.pop('extlink'); }

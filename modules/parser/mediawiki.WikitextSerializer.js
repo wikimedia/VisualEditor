@@ -81,6 +81,22 @@ WSP._serializeTableTag = function ( symbol, state, token ) {
 	}
 };
 
+WSP._linkHandler =  function( state, token ) {
+	return '[[';
+	// TODO: handle internal/external links etc using RDFa and dataAttribs
+	// Also convert unannotated html links to external wiki links for html
+	// import. Might want to consider converting relative links without path
+	// component and file extension to wiki links.
+	//if ( rtinfo.type === 'wikilink' ) {
+	//	return '[[' + rtinfo.target + ']]';
+	//} else {
+	//	// external link
+	//	return '[' + rtinfo.
+};
+WSP._linkEndHandler =  function( state, token ) {
+	return ']]';
+};
+
 WSP.tagToWikitext = {
 	body: {},
 	b: { start: id("'''"), end: id("'''") },
@@ -128,16 +144,8 @@ WSP.tagToWikitext = {
 	h4: { start: id("\n===="), end: id("====\n") },
 	h5: { start: id("\n====="), end: id("=====\n") },
 	h6: { start: id("\n======"), end: id("======\n") },
-	pre: { start: id("<pre>"), end: id("</pre>") }
-	/*
-	a: {
-		start: function( state, token ) {
-			if ( rtinfo.type === 'wikilink' ) {
-				return '[[' + rtinfo.target + ']]';
-			} else {
-				// external link
-				return '[' + rtinfo.
-				*/
+	pre: { start: id("<pre>"), end: id("</pre>") },
+	a: { start: WSP._linkHandler, end: WSP._linkEndHandler }
 };
 
 

@@ -40,7 +40,15 @@ WikiLinkHandler.prototype.onWikiLink = function ( token, frame, cb ) {
 		// Check if page exists
 		// 
 		//console.warn( 'title: ' + JSON.stringify( title ) );
-		var obj = new TagTk( 'a', [ new KV( 'href', title.makeLink() ) ] ),
+		var obj = new TagTk( 'a', 
+					[ 
+						new KV( 'href', title.makeLink() ),
+						new KV('typeof', 'http://mediawiki.org/rdf/wikilink'),
+						// Add resource as CURIE- needs global default prefix
+						// definition.
+						new KV('resource', '[:' + title.getPrefixedText() + ']')
+					] 
+				),
 			content = token.attribs.slice(1, -1);
 		//console.warn('content: ' + JSON.stringify( content, null, 2 ) );
 		// XXX: handle trail
@@ -254,6 +262,7 @@ WikiLinkHandler.prototype.renderThumb = function ( token, manager, cb, title, pa
 					new KV('class', figureclass),
 					new KV('style', figurestyle),
 					new KV('typeof', 'http://mediawiki.org/rdf/Thumb'),
+					// XXX: define this globally?
 					new KV('prefix', "mw: http://mediawiki.org/rdf/terms/")
 				] 
 			),
@@ -272,7 +281,9 @@ WikiLinkHandler.prototype.renderThumb = function ( token, manager, cb, title, pa
 					//new KV('height', '160px'),
 					new KV('class', 'thumbimage'),
 					new KV('alt', oHash.alt || title.key ),
-					new KV('resource', title.getPrefixedText())
+					// Add resource as CURIE- needs global default prefix
+					// definition.
+					new KV('resource', '[:' + title.getPrefixedText() + ']')
 				]
 			),
 		new EndTagTk( 'a' ),
@@ -359,15 +370,22 @@ ExternalLinkHandler.prototype.onUrlLink = function ( token, frame, cb ) {
 		cb( { tokens: [ new SelfclosingTagTk( 'img', 
 					[ 
 					new KV( 'src', href ),
-					new KV( 'alt', href.split('/').last() )
-					] 
+					new KV( 'alt', href.split('/').last() ),
+					new KV('typeof', 'http://mediawiki.org/rdf/externalImage')
+					],
+					{ type: 'urllink' }
 					) 
 				]
 		} );
 	} else {
 		cb( { 
 			tokens: [
-				new TagTk( 'a', [ new KV( 'href', href ) ] ),
+				new TagTk( 'a', 
+					[ 
+						new KV( 'href', href ),
+						new KV('typeof', 'http://mediawiki.org/rdf/externalLink')
+					],
+					{ type: 'urllink' } ),
 				href,
 				new EndTagTk( 'a' )
 			] 
@@ -396,7 +414,8 @@ ExternalLinkHandler.prototype.onExtLink = function ( token, manager, cb ) {
 					[ 
 					new KV( 'src', src ),
 					new KV( 'alt', src.split('/').last() )
-					] )
+					],
+					{ type: 'extlink' })
 				];
 		}
 
@@ -405,7 +424,11 @@ ExternalLinkHandler.prototype.onExtLink = function ( token, manager, cb ) {
 				[
 					
 					new TagTk ( 'a', 
-							[ new KV('href', href) ], 
+							[ 
+								new KV('href', href),
+								new KV('typeof', 'http://mediawiki.org/rdf/externalLink'),
+								new KV('property', 'http://mediawiki.org/rdf/terms/linkcontent')
+							], 
 							token.dataAttribs
 					)
 				].concat( content, [ new EndTagTk( 'a' )])
