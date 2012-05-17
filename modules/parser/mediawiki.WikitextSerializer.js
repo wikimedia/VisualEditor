@@ -30,11 +30,11 @@ WSP._listHandler = function( bullet, state, token ) {
 	} else {
 		var curList = stack[stack.length - 1];
 		bullets = curList.bullets + bullet;
-		curList.items++;
+		curList.itemCount++;
 		if (	// deeply nested list
-				curList.items > 2 ||
+				curList.itemCount > 2 ||
 				// A nested list, not directly after the li
-				( curList.items > 1 &&
+				( curList.itemCount > 1 &&
 				! ( state.lastToken.constructor === TagTk && 
 					state.lastToken.name === 'li') )) {
 			res = bullets;
@@ -42,7 +42,7 @@ WSP._listHandler = function( bullet, state, token ) {
 			res = bullet;
 		}
 	}
-	stack.push({ items: 0, bullets: bullets});
+	stack.push({ itemCount: 0, bullets: bullets});
 	return res;
 };
 
@@ -61,9 +61,9 @@ WSP._listItemHandler = function ( state, token ) {
 		return '';
 	} else {
 		var curList = stack[stack.length - 1];
-		curList.items++;
+		curList.itemCount++;
 		// > 1 ==> consecutive list items
-		return ( curList.items > 1 ) ? curList.bullets : '';
+		return ( curList.itemCount > 1 ) ? curList.bullets : '';
 	}
 };
 
