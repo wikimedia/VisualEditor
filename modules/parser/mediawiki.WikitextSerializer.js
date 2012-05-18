@@ -94,7 +94,7 @@ WSP._linkEndHandler =  function( state, token ) {
 WSP.tagToWikitext = {
 	body: {},
 	b: { start: id("'''"), end: id("'''") },
-	i: { start: id("''"), end: id("'''") },
+	i: { start: id("''"), end: id("''") },
 	ul: { 
 		start: WSP._listHandler.bind( null, '*' ),
 		end: WSP._listEndHandler 
