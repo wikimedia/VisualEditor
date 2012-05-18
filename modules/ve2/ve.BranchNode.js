@@ -24,6 +24,10 @@ ve.BranchNode.prototype.getChildren = function() {
 	return this.children;
 };
 
+ve.BranchNode.prototype.hasChildren = function() {
+	return this.children.length > 0 ? true : false;
+};
+
 /**
  * Gets the index of a given child node.
  *
@@ -102,4 +106,100 @@ ve.BranchNode.prototype.getOffsetFromNode = function( node ) {
 		}
 	}
 	return -1;
+};
+
+/**
+ * Traverse leaf nodes depth first.
+ *
+ * Callback functions are expected to accept a node and index argument. If a callback returns false,
+ * iteration will stop.
+ *
+ * @param {Function} callback Function to execute for each leaf node
+ * @param {ve.Node} [from] Node to start at. Must be a descendant of this node
+ * @param {Boolean} [reverse] Whether to iterate backwards
+ */
+ve.BranchNode.prototype.traverseLeafNodes = function( callback, from, reverse ) {
+		// Stack of indices that lead from this to node
+	var	indexStack = [],
+		// Node whose children we're currently traversing
+		node = this,
+		// Index of the child node we're currently visiting
+		index = reverse ? node.children.length - 1 : 0,
+		// Shortcut for node.children[index]
+		childNode,
+		// Result of the last invocation of the callback
+		callbackResult,
+		// Variables for the loop that builds indexStack if from is specified
+		n, p, i;
+	
+	if ( from !== undefined ) {
+		// Reverse-engineer the index stack by starting at from and
+		// working our way up until we reach this
+		n = from;
+		while ( n !== this ) {
+			p = n.getParent();
+			if ( !p ) {
+				// n is a root node and we haven't reached this
+				// That means from isn't a descendant of this
+				throw "from parameter passed to traverseLeafNodes() must be a descendant";
+			}
+			// Find the index of n in p
+			i = p.indexOf( n );
+			if ( i === -1 ) {
+				// This isn't supposed to be possible
+				throw "Tree corruption detected: node isn't in its parent's children array";
+			}
+			indexStack.push( i );
+			// Move up
+			n = p;
+		}
+		// We've built the indexStack in reverse order, so reverse it
+		indexStack = indexStack.reverse();
+		
+		// Set up the variables such that from will be visited next
+		index = indexStack.pop();
+		node = from.getParent(); // from is a descendant of this so its parent exists
+		
+		// If we're going in reverse, then we still need to visit from if it's
+		// a leaf node, but we should not descend into it
+		// So if from is not a leaf node, skip it now
+		if ( reverse && from.canHaveChildren() ) {
+			index--;
+		}
+	}
+	
+	while ( true ) {
+		childNode = node.children[index];
+		if ( childNode === undefined ) {
+			if ( indexStack.length > 0 ) {
+				// We're done traversing the current node, move back out of it
+				node = node.getParent();
+				index = indexStack.pop();
+				// Move to the next child
+				index += reverse ? -1 : 1;
+				continue;
+			} else {
+				// We can't move up any more, so we're done
+				return;
+			}
+		}
+		
+		if ( childNode.canHaveChildren() ) {
+			// Descend into this node
+			node = childNode;
+			// Push our current index onto the stack
+			indexStack.push( index );
+			// Set the current index to the first element we're visiting
+			index = reverse ? node.children.length - 1 : 0;
+		} else {
+			// This is a leaf node, visit it
+			callbackResult = callback( childNode ); // TODO what is index?
+			if ( callbackResult === false ) {
+				// The callback is telling us to stop
+				return;
+			}
+			// Move to the next child
+			index += reverse ? -1 : 1;
+		}
+	}
 };
