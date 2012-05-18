@@ -16,6 +16,11 @@ ve.ce.Surface = function( $container, model ) {
 
 	// Initialization
 	this.$.append( this.documentView.documentNode.$ );
+
+	try {
+		document.execCommand( "enableObjectResizing", false, false );
+		document.execCommand( "enableInlineTableEditing", false, false );		
+	} catch (e) { }
 };
 
 /* Inheritance */

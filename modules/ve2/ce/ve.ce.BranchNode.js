@@ -17,6 +17,7 @@ ve.ce.BranchNode = function( type, model, $element ) {
 
 	// Properties
 	this.domWrapperElementType = this.$.get(0).nodeName.toLowerCase();
+	this.slugs = [];
 
 	// Events
 	this.model.addListenerMethod( this, 'splice', 'onSplice' );
@@ -105,6 +106,40 @@ ve.ce.BranchNode.prototype.onSplice = function( index, howmany ) {
 				$anchor.after( args[i].$ );
 			} else {
 				this.$.prepend( args[i].$ );
+			}
+		}
+	}
+
+	var specials = ['image', 'alien', 'list', 'table'];
+
+	// Remove all slugs in this branch
+	for ( i = 0; i < this.slugs.length; i++ ) {
+		this.slugs[i].remove();
+	}
+	this.slugs = [];
+
+	var	slug = '<span class="ve-ce-slug">&#8291;</span>',
+		$slug;
+
+	for( i = 0; i < this.children.length; i++ ) {
+		if ( specials.indexOf( this.children[i].type ) !== -1 ) {
+			if ( i === 0 ) {
+				// first
+				$slug = $( slug );
+				this.slugs.push( $slug );
+				this.children[i].$.before( $slug );
+			}
+			if ( i === this.children.length - 1 ) {
+				// last
+				$slug = $( slug );
+				this.slugs.push( $slug );
+				this.children[i].$.after( $slug );
+			}
+			if ( this.children[i + 1] && specials.indexOf( this.children[i + 1].type ) !== -1 ) {
+				// special next to special
+				$slug = $( slug );
+				this.slugs.push( $slug );
+				this.children[i].$.after( $slug );
 			}
 		}
 	}
