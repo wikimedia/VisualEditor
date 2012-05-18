@@ -263,7 +263,7 @@ WSP._serializeDOM = function( node, chunkCB, state ) {
 				this._serializeToken( state, chunkCB, 
 						new EndTagTk( name, tkAttribs, tkRTInfo ) );
 			} else {
-				console.warn( 'Unhandled element: ' + node.innerHTML );
+				console.warn( 'Unhandled element: ' + node.outerHTML );
 			}
 			break;
 		case Node.TEXT_NODE:
@@ -274,7 +274,7 @@ WSP._serializeDOM = function( node, chunkCB, state ) {
 			break;
 		default:
 			console.warn( "Unhandled node type: " + 
-					node.innerHTML );
+					node.outerHTML );
 			break;
 	}
 };
