@@ -29,7 +29,7 @@ test( 'indexOf', 4, function() {
 	strictEqual( node4.indexOf( node3 ), 2 );
 } );
 
-test( 've.BranchNode.traverseLeafNodes', 1, function() {
+test( 'traverseLeafNodes', 1, function() {
 	var fragment = new ve.dm.Document( ve.dm.example.data ),
 		docNode = fragment.getDocumentNode(),
 		children = docNode.getChildren();

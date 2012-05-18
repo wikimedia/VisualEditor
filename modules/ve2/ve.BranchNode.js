@@ -24,10 +24,6 @@ ve.BranchNode.prototype.getChildren = function() {
 	return this.children;
 };
 
-ve.BranchNode.prototype.hasChildren = function() {
-	return this.children.length > 0 ? true : false;
-};
-
 /**
  * Gets the index of a given child node.
  *
