@@ -118,7 +118,7 @@ ve.ce.BranchNode.prototype.onSplice = function( index, howmany ) {
 	}
 	this.slugs = [];
 
-	var	slug = '<span class="ve-ce-slug">&#8291;</span>',
+	var	slug = '<span class="ve-ce-slug">&nbsp;</span>',
 		$slug;
 
 	for( i = 0; i < this.children.length; i++ ) {

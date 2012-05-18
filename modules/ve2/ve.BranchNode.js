@@ -15,6 +15,17 @@ ve.BranchNode = function( children ) {
 };
 
 /**
+ * Checks if this node has child nodes.
+ * 
+ * @method
+ * @see {ve.Node.prototype.hasChildren}
+ * @returns {Boolean} Whether this node has children
+ */
+ve.BranchNode.prototype.hasChildren = function() {
+	return true;
+};
+
+/**
  * Gets a list of child nodes.
  *
  * @method
@@ -69,6 +80,54 @@ ve.BranchNode.prototype.setDocument = function( doc ) {
 	for ( var i = 0; i < this.children.length; i++ ) {
 		this.children[i].setDocument( doc );
 	}
+};
+
+/**
+ * Gets the node at a given offset.
+ * 
+ * This method is pretty expensive. If you need to get different slices of the same content, get
+ * the content first, then slice it up locally.
+ * 
+ * TODO: Rewrite this method to not use recursion, because the function call overhead is expensive
+ * 
+ * @method
+ * @param {Integer} offset Offset get node for
+ * @param {Boolean} [shallow] Do not iterate into child nodes of child nodes
+ * @returns {ve.Node|null} Node at offset, or null if non was found
+ */
+ve.BranchNode.prototype.getNodeFromOffset = function( offset, shallow ) {
+	if ( offset === 0 ) {
+		return this;
+	}
+	// TODO a lot of logic is duplicated in selectNodes(), abstract that into a traverser or something
+	if ( this.children.length ) {
+		var nodeOffset = 0,
+			nodeLength,
+			childNode;
+		for ( var i = 0, length = this.children.length; i < length; i++ ) {
+			childNode = this.children[i];
+			if ( offset == nodeOffset ) {
+				// The requested offset is right before childNode,
+				// so it's not inside any of this's children, but inside this
+				return this;
+			}
+			nodeLength = childNode.getOuterLength();
+			if ( offset >= nodeOffset && offset < nodeOffset + nodeLength ) {
+				if ( !shallow && childNode.hasChildren() && childNode.getChildren().length ) {
+					return this.getNodeFromOffset.call( childNode, offset - nodeOffset - 1 );
+				} else {
+					return childNode;
+				}
+			}
+			nodeOffset += nodeLength;
+		}
+		if ( offset == nodeOffset ) {
+			// The requested offset is right before this.children[i],
+			// so it's not inside any of this's children, but inside this
+			return this;
+		}
+	}
+	return null;
 };
 
 /**
