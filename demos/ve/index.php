@@ -9,10 +9,10 @@
 		<link rel="stylesheet" href="../../modules/ve/ce/styles/ve.ce.Content.css">
 		<link rel="stylesheet" href="../../modules/ve/ce/styles/ve.ce.Surface.css">
 		<!-- ui -->
-		<link rel="stylesheet" href="../../modules/ve/ui/styles/ve.ui.Context.css">
-		<link rel="stylesheet" href="../../modules/ve/ui/styles/ve.ui.Inspector.css">
-		<link rel="stylesheet" href="../../modules/ve/ui/styles/ve.ui.Menu.css">
-		<link rel="stylesheet" href="../../modules/ve/ui/styles/ve.ui.Toolbar.css">
+		<link rel="stylesheet" href="../../modules/ve2/ui/styles/ve.ui.Context.css">
+		<link rel="stylesheet" href="../../modules/ve2/ui/styles/ve.ui.Inspector.css">
+		<link rel="stylesheet" href="../../modules/ve2/ui/styles/ve.ui.Menu.css">
+		<link rel="stylesheet" href="../../modules/ve2/ui/styles/ve.ui.Toolbar.css">
 		<!-- sandbox -->
 		<link rel="stylesheet" href="../../modules/sandbox/sandbox.css">
 		<style>
@@ -154,23 +154,23 @@ include( '../../modules/sandbox/base.php' );
 		<script src="../../modules/ve2/ce/nodes/ve.ce.TextNode.js"></script>
 
 		<!-- ui -->
-		<script src="../../modules/ve/ui/ve.ui.js"></script>
-		<script src="../../modules/ve/ui/ve.ui.Inspector.js"></script>
-		<script src="../../modules/ve/ui/ve.ui.Tool.js"></script>
-		<script src="../../modules/ve/ui/ve.ui.Toolbar.js"></script>
-		<script src="../../modules/ve/ui/ve.ui.Context.js"></script>
-		<script src="../../modules/ve/ui/ve.ui.Menu.js"></script>
+		<script src="../../modules/ve2/ui/ve.ui.js"></script>
+		<script src="../../modules/ve2/ui/ve.ui.Inspector.js"></script>
+		<script src="../../modules/ve2/ui/ve.ui.Tool.js"></script>
+		<script src="../../modules/ve2/ui/ve.ui.Toolbar.js"></script>
+		<script src="../../modules/ve2/ui/ve.ui.Context.js"></script>
+		<script src="../../modules/ve2/ui/ve.ui.Menu.js"></script>
 
-		<script src="../../modules/ve/ui/inspectors/ve.ui.LinkInspector.js"></script>
+		<script src="../../modules/ve2/ui/inspectors/ve.ui.LinkInspector.js"></script>
 
-		<script src="../../modules/ve/ui/tools/ve.ui.ButtonTool.js"></script>
-		<script src="../../modules/ve/ui/tools/ve.ui.AnnotationButtonTool.js"></script>
-		<script src="../../modules/ve/ui/tools/ve.ui.ClearButtonTool.js"></script>
-		<script src="../../modules/ve/ui/tools/ve.ui.HistoryButtonTool.js"></script>
-		<script src="../../modules/ve/ui/tools/ve.ui.ListButtonTool.js"></script>
-		<script src="../../modules/ve/ui/tools/ve.ui.IndentationButtonTool.js"></script>
-		<script src="../../modules/ve/ui/tools/ve.ui.DropdownTool.js"></script>
-		<script src="../../modules/ve/ui/tools/ve.ui.FormatDropdownTool.js"></script>
+		<script src="../../modules/ve2/ui/tools/ve.ui.ButtonTool.js"></script>
+		<script src="../../modules/ve2/ui/tools/ve.ui.AnnotationButtonTool.js"></script>
+		<script src="../../modules/ve2/ui/tools/ve.ui.ClearButtonTool.js"></script>
+		<script src="../../modules/ve2/ui/tools/ve.ui.HistoryButtonTool.js"></script>
+		<script src="../../modules/ve2/ui/tools/ve.ui.ListButtonTool.js"></script>
+		<script src="../../modules/ve2/ui/tools/ve.ui.IndentationButtonTool.js"></script>
+		<script src="../../modules/ve2/ui/tools/ve.ui.DropdownTool.js"></script>
+		<script src="../../modules/ve2/ui/tools/ve.ui.FormatDropdownTool.js"></script>
 	
 		<!-- sandbox -->
 		<script src="../../modules/sandbox/sandbox.js"></script>
