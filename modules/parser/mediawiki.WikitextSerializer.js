@@ -35,8 +35,8 @@ WSP._listHandler = function( bullet, state, token ) {
 				curList.itemCount > 2 ||
 				// A nested list, not directly after the li
 				( curList.itemCount > 1 &&
-				! ( state.lastToken.constructor === TagTk && 
-					state.lastToken.name === 'li') )) {
+				! ( state.prevToken.constructor === TagTk && 
+					state.prevToken.name === 'li') )) {
 			res = bullets;
 		} else {
 			res = bullet;
@@ -69,10 +69,10 @@ WSP._listItemHandler = function ( state, token ) {
 
 WSP._serializeTableTag = function ( symbol, optionEndSymbol, state, token ) {
 	if ( token.attribs.length ) {
-		return '\n' + symbol + ' ' + 
+		return symbol + ' ' + 
 			WSP._serializeAttributes( token.attribs ) + optionEndSymbol;
 	} else {
-		return '\n' + symbol;
+		return symbol;
 	}
 };
 
@@ -114,15 +114,39 @@ WSP.tagToWikitext = {
 	dd: { start: id(":") },
 	// XXX: handle options
 	table: { 
-		start: WSP._serializeTableTag.bind(null, "{|", ''), 
+		start: WSP._serializeTableTag.bind(null, "\n{|", ''), 
 		end: id("\n|}") 
 	},
 	tbody: {},
-	th: { start: WSP._serializeTableTag.bind(null, "!", ' |')  },
+	th: { 
+		start: function ( state, token ) {
+			if ( token.dataAttribs.t_stx === 'row' ) {
+				return WSP._serializeTableTag("!!", ' |', state, token);
+			} else {
+				return WSP._serializeTableTag("\n!", ' |', state, token);
+			}
+		}
+	},
 	// XXX: omit for first row in table.
-	tr: { start: WSP._serializeTableTag.bind(null, "|-", ' |') },
-	td: { start: WSP._serializeTableTag.bind(null, "|", ' |') },
-	caption: { start: WSP._serializeTableTag.bind(null, "|+", ' |') },
+	tr: { 
+		start: function ( state, token ) {
+			if ( state.prevToken.constructor === TagTk && state.prevToken.name === 'tbody' ) {
+				return '';
+			} else {
+				return WSP._serializeTableTag("\n|-", ' |', state, token );
+			}
+		}
+	},
+	td: { 
+		start: function ( state, token ) {
+			if ( token.dataAttribs.t_stx === 'row' ) {
+				return WSP._serializeTableTag("||", ' |', state, token);
+			} else {
+				return WSP._serializeTableTag("\n|", ' |', state, token);
+			}
+		}
+	},
+	caption: { start: WSP._serializeTableTag.bind(null, "\n|+", ' |') },
 	p: { 
 		start: function( state, token ) {
 			if (state.needParagraphLines) {
@@ -164,7 +188,15 @@ WSP._serializeAttributes = function ( attribs ) {
 	// XXX: round-trip optional whitespace / line breaks etc
 	return out.join(' ');
 };
-	
+
+WSP._eatFirstNewLine = function ( state, chunk ) {
+	while ( chunk[0] === '\n' ) {
+		chunk = chunk.substr(1);
+	}
+	state.realChunkCB( chunk );
+	state.chunkCB = state.realChunkCB;
+};
+
 
 /**
  * Serialize a chunk of tokens
@@ -172,16 +204,18 @@ WSP._serializeAttributes = function ( attribs ) {
 WSP.serializeTokens = function( tokens, chunkCB ) {
 	var state = $.extend({}, this.defaultOptions, this.options),
 		i, l;
+	state.chunkCB = WSP._eatFirstNewLine.bind( this, state );
 	if ( chunkCB === undefined ) {
 		var out = [];
-		chunkCB = out.push.bind(out);
+		state.realChunkCB = out.push.bind(out);
 		for ( i = 0, l = tokens.length; i < l; i++ ) {
-			this._serializeToken( state, chunkCB, tokens[i] );
+			this._serializeToken( state, tokens[i] );
 		}
 		return out;
 	} else {
+		state.realChunkCB = chunkCB;
 		for ( i = 0, l = tokens.length; i < l; i++ ) {
-			this._serializeToken( state, chunkCB, tokens[i] );
+			this._serializeToken( state, tokens[i] );
 		}
 	}
 };
@@ -190,8 +224,8 @@ WSP.serializeTokens = function( tokens, chunkCB ) {
 /**
  * Serialize a token.
  */
-WSP._serializeToken = function ( state, chunkCB, token ) {
-	state.lastToken = state.curToken;
+WSP._serializeToken = function ( state, token ) {
+	state.prevToken = state.curToken;
 	state.curToken = token;
 	var handler;
 	switch( token.constructor ) {
@@ -199,23 +233,23 @@ WSP._serializeToken = function ( state, chunkCB, token ) {
 		case SelfclosingTagTk:
 			handler = this.tagToWikitext[token.name];
 			if ( handler && handler.start ) {
-				chunkCB( handler.start( state, token ) );
+				state.chunkCB( handler.start( state, token ) );
 			}
 			break;
 		case EndTagTk:
 			handler = this.tagToWikitext[token.name];
 			if ( handler && handler.end ) {
-				chunkCB( handler.end( state, token ) );
+				state.chunkCB( handler.end( state, token ) );
 			}
 			break;
 		case String:
-			chunkCB( token );
+			state.chunkCB( token );
 			break;
 		case CommentTk:
-			chunkCB( '<!--' + token.value + '-->' );
+			state.chunkCB( '<!--' + token.value + '-->' );
 			break;
 		case NlTk:
-			chunkCB( '\n' );
+			state.chunkCB( '\n' );
 			break;
 		case EOFTk:
 			break;
@@ -230,13 +264,15 @@ WSP._serializeToken = function ( state, chunkCB, token ) {
  */
 WSP.serializeDOM = function( node, chunkCB ) {
 	var state = $.extend({}, this.defaultOptions, this.options);
+	state.chunkCB = this._eatFirstNewLine.bind( this, state );
 	if ( ! chunkCB ) {
 		var out = [];
-		chunkCB = out.push.bind( out );
-		this._serializeDOM( node, chunkCB, state );
+		state.realChunkCB = out.push.bind( out );
+		this._serializeDOM( node, state );
 		return out.join('');
 	} else {
-		this._serializeDOM( node, chunkCB, state );
+		state.realChunkCB = chunkCB;
+		this._serializeDOM( node, state );
 	}
 };
 
@@ -244,7 +280,7 @@ WSP.serializeDOM = function( node, chunkCB ) {
  * Internal worker. Recursively serialize a DOM subtree by creating tokens and
  * calling _serializeToken on each of these.
  */
-WSP._serializeDOM = function( node, chunkCB, state ) {
+WSP._serializeDOM = function( node, state ) {
 	// serialize this node
 	switch( node.nodeType ) {
 		case Node.ELEMENT_NODE:
@@ -256,23 +292,23 @@ WSP._serializeDOM = function( node, chunkCB, state ) {
 				var tkAttribs = this._getDOMAttribs(node.attributes),
 					tkRTInfo = this._getDOMRTInfo(node.attributes);
 
-				this._serializeToken( state, chunkCB, 
+				this._serializeToken( state, 
 						new TagTk( name, tkAttribs, tkRTInfo ) );
 				for ( var i = 0, l = children.length; i < l; i++ ) {
 					// serialize all children
-					this._serializeDOM( children[i], chunkCB, state );
+					this._serializeDOM( children[i], state );
 				}
-				this._serializeToken( state, chunkCB, 
+				this._serializeToken( state, 
 						new EndTagTk( name, tkAttribs, tkRTInfo ) );
 			} else {
 				console.warn( 'Unhandled element: ' + node.outerHTML );
 			}
 			break;
 		case Node.TEXT_NODE:
-			this._serializeToken( state, chunkCB, node.data );
+			this._serializeToken( state, node.data );
 			break;
 		case Node.COMMENT_NODE:
-			this._serializeToken( state, chunkCB, new CommentTk( node.data ) );
+			this._serializeToken( state, new CommentTk( node.data ) );
 			break;
 		default:
 			console.warn( "Unhandled node type: " + 
