@@ -82,6 +82,7 @@ $wgResourceModules += array(
 	'ext.visualEditor.ve' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
 		// ve
+			'jquery/jquery.json.js',
 			've2/ve.js',
 			've2/ve.NodeFactory.js',
 			've2/ve.Position.js',

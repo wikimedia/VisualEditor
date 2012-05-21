@@ -86,6 +86,7 @@ include( '../../modules/sandbox/base.php' );
 
 		<!-- ve -->
 		<script src="../../modules/jquery/jquery.js"></script>
+		<script src="../../modules/jquery/jquery.json.js"></script>
 		<script src="../../modules/ve2/ve.js"></script>
 		<script src="../../modules/ve2/ve.NodeFactory.js"></script>
 		<script src="../../modules/ve2/ve.Position.js"></script>
