@@ -1103,7 +1103,7 @@ xmlish_tag = nowiki / generic_tag
 nowiki 
   = "<nowiki>" nc:nowiki_content "</nowiki>" { 
         //console.warn( 'full nowiki return: ' + pp(nc)); 
-        return nc; 
+        return [ new TagTk( 'nowiki' ) ].concat( nc, [ new EndTagTk( 'nowiki' ) ] ); 
     }
   / "<nowiki>" { 
           //console.warn('nowiki fallback');

@@ -141,7 +141,8 @@ WSP.tagToWikitext = {
 	h5: { start: id("\n====="), end: id("=====\n") },
 	h6: { start: id("\n======"), end: id("======\n") },
 	pre: { start: id("<pre>"), end: id("</pre>") },
-	a: { start: WSP._linkHandler, end: WSP._linkEndHandler }
+	a: { start: WSP._linkHandler, end: WSP._linkEndHandler },
+	nowiki: { start: id("<nowiki>"), end: id("</nowiki>") }
 };
 
 
