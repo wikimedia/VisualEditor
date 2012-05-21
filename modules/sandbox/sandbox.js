@@ -510,13 +510,66 @@ $(document).ready( function() {
 		);
 	}
 
-	var linearModel = [
-		{ 'type': 'paragraph' },
+	// Overwrite input data with example data
+	/*
+	data = [
+		{ 'type': 'heading', 'attributes': { 'level': 1 } },
 		'a',
 		'b',
 		'c',
-		{ 'type': '/paragraph' }
+		{ 'type': '/heading' },
+		{ 'type': 'paragraph' },
+		'a',
+		['b', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } }],
+		['c', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } }],
+		{ 'type': '/paragraph' },
+		{ 'type': 'paragraph' },
+		{ 'type': 'image', 'attributes': { 'html/src': 'http://placekitten.com/g/120/120' } },
+		{ 'type': '/image' },
+		'L',
+		'o',
+		'r',
+		'e',
+		'm',
+		' ',
+		'i',
+		'p',
+		's',
+		'u',
+		'm',
+		' ',
+		{ 'type': 'image', 'attributes': { 'html/src': 'http://placekitten.com/g/100/100' } },
+		{ 'type': '/image' },
+		' ',
+		'a',
+		'n',
+		'd',
+		{ 'type': '/paragraph' },
+		{ 'type': 'table' },
+		{ 'type': 'tableRow' },
+		{ 'type': 'tableCell' },
+		{ 'type': 'paragraph' },
+		['a', {
+			'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
+			'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }
+		}],
+		{ 'type': '/paragraph' },
+		{ 'type': '/tableCell' },
+		{ 'type': '/tableRow' },
+		{ 'type': '/table' },
+		{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
+		{ 'type': 'listItem', 'attributes': { 'style': 'item' } },
+		{ 'type': 'paragraph' },
+		'a',
+		{ 'type': '/paragraph' },
+		{ 'type': '/listItem' },
+		{ 'type': '/list' },
+		{ 'type': 'image', 'attributes': { 'html/src': 'http://dl.dropbox.com/u/1026938/wikia.jpeg' } },
+		{ 'type': '/image' },
 	];
+	*/
+	// Define HTML5 DOM
+	var HTML = $( '<div><alien><b>Hello world!</b> What\'s up?</alien><h1>abc</h1><p>a<b>b</b><i>c</i></p><p>Lorem ipsum and</p><table><tbody><tr><td><p><i><b>a</b></i></p></td></tr></tbody></table><ul><li><p>a</p></li></ul><img src="http://dl.dropbox.com/u/1026938/wikia.jpeg"></div>' );
 
 	/* Sandbox config object. */
 	var options = {
@@ -532,7 +585,7 @@ $(document).ready( function() {
 		Create Sandbox instance of VE
 		Attach to #content element
 	*/
-	var sandboxEditor = new ve.Surface( '#content', linearModel, options ),
+	var sandboxEditor = new ve.Surface( '#content', HTML[0], options ),
 		surfaceModel = sandboxEditor.getSurfaceModel(),
 		documentModel = sandboxEditor.getDocumentModel(),
 		parent = sandboxEditor.getParent();

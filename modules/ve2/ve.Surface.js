@@ -6,10 +6,12 @@
  * @class
  * @constructor
  * @param {String} parent Selector of element to attach to
- * @param {Array} data Document data
+ * @param {Array} html Document html
  * @param {Object} options Configuration options
  */
-ve.Surface = function( parent, data, options ) {
+ve.Surface = function( parent, html, options ) {
+	// Create linear model from HTML5 DOM
+	var data = ve.dm.HTMLConverter.getLinearModel( html );
 	// Properties
 	this.parent = parent;
 	this.modes = {};
@@ -42,69 +44,6 @@ ve.Surface = function( parent, data, options ) {
 	this.$surface = null;
 	this.toolbarWrapper = {};
 
-	// Overwrite input data with example data
-	/*
-	data = [
-		{ 'type': 'heading', 'attributes': { 'level': 1 } },
-		'a',
-		'b',
-		'c',
-		{ 'type': '/heading' },
-		{ 'type': 'paragraph' },
-		'a',
-		['b', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } }],
-		['c', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } }],
-		{ 'type': '/paragraph' },
-		{ 'type': 'paragraph' },
-		{ 'type': 'image', 'attributes': { 'html/src': 'http://placekitten.com/g/120/120' } },
-		{ 'type': '/image' },
-		'L',
-		'o',
-		'r',
-		'e',
-		'm',
-		' ',
-		'i',
-		'p',
-		's',
-		'u',
-		'm',
-		' ',
-		{ 'type': 'image', 'attributes': { 'html/src': 'http://placekitten.com/g/100/100' } },
-		{ 'type': '/image' },
-		' ',
-		'a',
-		'n',
-		'd',
-		{ 'type': '/paragraph' },
-		{ 'type': 'table' },
-		{ 'type': 'tableRow' },
-		{ 'type': 'tableCell' },
-		{ 'type': 'paragraph' },
-		['a', {
-			'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
-			'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }
-		}],
-		{ 'type': '/paragraph' },
-		{ 'type': '/tableCell' },
-		{ 'type': '/tableRow' },
-		{ 'type': '/table' },
-		{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
-		{ 'type': 'listItem', 'attributes': { 'style': 'item' } },
-		{ 'type': 'paragraph' },
-		'a',
-		{ 'type': '/paragraph' },
-		{ 'type': '/listItem' },
-		{ 'type': '/list' },
-		{ 'type': 'image', 'attributes': { 'html/src': 'http://dl.dropbox.com/u/1026938/wikia.jpeg' } },
-		{ 'type': '/image' },
-	];
-	*/
-	// Define HTML5 DOM
-	var HTML = $( '<div><alien><b>Hello world!</b> What\'s up?</alien><h1>abc</h1><p>a<b>b</b><i>c</i></p><p>Lorem ipsum and</p><table><tbody><tr><td><p><i><b>a</b></i></p></td></tr></tbody></table><ul><li><p>a</p></li></ul><img src="http://dl.dropbox.com/u/1026938/wikia.jpeg"></div>' );
-	// Create linear model from HTML5 DOM
-	data = ve.dm.HTMLConverter.getLinearModel( HTML[0] );
-
 	/* Create document model object with the linear model */
 	this.documentModel = new ve.dm.Document ( data );
 	this.surfaceModel = new ve.dm.Surface( this.documentModel );
@@ -112,15 +51,11 @@ ve.Surface = function( parent, data, options ) {
 	// Setup VE DOM Skeleton
 	this.setupBaseElements();
 
-	// Setup Surface View
-	//this.setupSurfaceView();
-
 	this.$surface = $('<div />').attr('class', 'es-editor');
 	this.$base.find('.es-visual').append( this.$surface );
 
 	/* Instantiate surface layer */
 	this.view = new ve.ce.Surface( $( '.es-editor' ), this.getSurfaceModel() );
-	//this.context = new ve.ui.Context( this.view );
 
 	// Setup toolbars based on this.options
 	this.setupToolbars();
@@ -157,9 +92,6 @@ ve.Surface.prototype.setupBaseElements = function() {
 					);
 	// Attach the base the the parent
 	$( this.getParent() ).append( this.$base );
-};
-
-ve.Surface.prototype.setupSurfaceView = function() {
 };
 
 ve.Surface.prototype.setupToolbars = function() {

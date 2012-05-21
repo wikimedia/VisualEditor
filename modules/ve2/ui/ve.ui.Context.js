@@ -1,6 +1,6 @@
 /**
  * Creates an ve.ui.Context object.
- * 
+ *
  * @class
  * @constructor
  * @param {jQuery} $overlay DOM selection to add nodes to
@@ -13,7 +13,7 @@ ve.ui.Context = function( surfaceView, $overlay ) {
 
 	// Properties
 	this.surfaceView = surfaceView;
-	this.surfaceView.attachContextView( this );
+	//this.surfaceView.attachContextView( this );
 	this.inspectors = {};
 	this.inspector = null;
 	this.position = null;

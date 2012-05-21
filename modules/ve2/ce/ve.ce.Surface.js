@@ -12,6 +12,7 @@ ve.ce.Surface = function( $container, model ) {
 	// Properties
 	this.model = model;
 	this.documentView = new ve.ce.Document( model.getDocument() );
+	this.contextView = new ve.ui.Context( this );
 	this.$ = $container;
 
 	// Initialization
@@ -19,7 +20,7 @@ ve.ce.Surface = function( $container, model ) {
 
 	try {
 		document.execCommand( "enableObjectResizing", false, false );
-		document.execCommand( "enableInlineTableEditing", false, false );		
+		document.execCommand( "enableInlineTableEditing", false, false );
 	} catch (e) { }
 };
 
@@ -92,6 +93,14 @@ ve.ce.Surface.prototype.showSelection = function( range ) {
 	rangyRange.setStart( start.node, start.offset );
 	rangyRange.setEnd( stop.node, stop.offset );
 	rangySel.setSingleRange( rangyRange, range.start !== range.from );
+};
+
+ve.ce.Surface.prototype.getSelectionRect = function() {
+	var rangySel = rangy.getSelection();
+	return {
+		start: rangySel.getStartDocumentPos(),
+		end: rangySel.getEndDocumentPos()
+	};
 };
 
 /* Inheritance */
