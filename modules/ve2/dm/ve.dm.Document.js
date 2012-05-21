@@ -367,8 +367,25 @@ ve.dm.Document.prototype.getDataFromNode = function( node ) {
  * @returns {Object[]} A copy of all annotation objects offset is covered by
  */
 ve.dm.Document.prototype.getAnnotationsFromOffset = function( offset ) {
-	if ( ve.isArray( this.data[offset] ) ) {
-		return ve.getObjectValues( this.data[offset][1] );
+	var annotations;
+	// Since annotations are not stored on a closing leaf node,
+	// rewind offset by 1 to return annotations for that structure
+	if (
+		ve.isPlainObject( this.data[offset] ) && // structural offset
+		this.data[offset].hasOwnProperty('type') && // just in case
+		this.data[offset].type.charAt( 0 ) === '/' && // closing offset
+		ve.dm.factory.canNodeHaveChildren(
+			this.data[offset].type.substr( 1 )
+		) === false // leaf node
+	){
+		offset = this.getRelativeContentOffset( offset, -1 );
+	}
+
+	annotations = ve.isArray( this.data[offset] ) ?
+		this.data[offset][1] : this.data[offset].annotations;
+
+	if ( ve.isPlainObject( annotations ) ) {
+		return ve.getObjectValues( annotations );
 	}
 	return [];
 };
@@ -383,8 +400,8 @@ ve.dm.Document.prototype.getAnnotationsFromOffset = function( offset ) {
  */
 ve.dm.Document.prototype.offsetContainsAnnotation = function ( offset, annotation ) {
 	var annotations = this.getAnnotationsFromOffset( offset );
-	for ( var i = 0; i < annotations.length; i++ ){
-		if ( ve.compareObjects( annotations[i], annotation ) ){
+	for ( var a=0; a<annotations.length; a++ ) {
+		if ( ve.compareObjects( annotations[a], annotation ) ){
 			return true;
 		}
 	}
