@@ -16,8 +16,8 @@ function PostExpandParagraphHandler ( dispatcher ) {
 }
 
 // constants
-PostExpandParagraphHandler.prototype.newlineRank = 2.2;
-PostExpandParagraphHandler.prototype.anyRank = 2.201; // Just after regular quote and newline
+PostExpandParagraphHandler.prototype.newlineRank = 2.5;
+PostExpandParagraphHandler.prototype.anyRank = 2.501; // Just after regular quote and newline
 
 
 // Register this transformer with the TokenTransformer
@@ -43,9 +43,6 @@ PostExpandParagraphHandler.prototype.reset = function ( token, frame, cb ) {
 PostExpandParagraphHandler.prototype._finish = function ( ) {
 	var tokens = this.tokens;
 	this.tokens = [];
-	for ( var i = 0, l = tokens.length; i < l; i++ ) {
-		tokens[ i ].rank = this.anyRank;
-	}
 	// remove 'any' registration
 	this.dispatcher.removeTransform( this.anyRank, 'any' );
 	this.newLines = 0;

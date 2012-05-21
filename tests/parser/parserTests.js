@@ -61,6 +61,7 @@ var testWhiteList = require(__dirname + '/parserTests-whitelist.js').testWhiteLi
 
 _import(pj('parser', 'mediawiki.parser.environment.js'), ['MWParserEnvironment']);
 _import(pj('parser', 'mediawiki.parser.js'), ['ParserPipelineFactory']);
+_import(pj('parser', 'mediawiki.WikitextSerializer.js'), ['WikitextSerializer']);
 
 // WikiDom and serializers
 //_require(pj('es', 'es.js'));
@@ -119,6 +120,11 @@ function ParserTests () {
 		},
 		'wikidom': {
 			description: 'Print out a WikiDom conversion of the HTML DOM',
+			'default': false,
+			'boolean': true
+		},
+		'roundtrip': {
+			description: 'Roundtrip testing: Wikitext -> DOM -> wikitext',
 			'default': false,
 			'boolean': true
 		},
@@ -181,12 +187,7 @@ function ParserTests () {
 
 	this.articles = {};
 
-	//this.htmlwindow = jsdom.jsdom(null, null, {parser: HTML5}).createWindow();
-	//this.htmlparser = new HTML5.Parser({document: this.htmlwindow.document});
-        //this.htmlparser = new HTML5.Parser()
-        // Use a patched version until https://github.com/aredridel/html5/issues/44 is merged
-	require('coffee-script');
-	this.htmlparser = require(__dirname+'/__patched-html5-parser')(HTML5);
+	this.htmlparser = new HTML5.Parser();
 
 	// Test statistics
 	this.passedTests = 0;
@@ -324,9 +325,9 @@ ParserTests.prototype.normalizeHTML = function (source) {
 // known-ok differences.
 ParserTests.prototype.normalizeOut = function ( out ) {
 	// TODO: Do not strip newlines in pre and nowiki blocks!
-	return out.replace(/[\r\n]| data-mw="[^">]*"/g, '')
+	return out.replace(/[\r\n]| (data-mw|typeof|resource|rel|prefix|about|rev|datatype|inlist|property|vocab|content)="[^">]*"/g, '')
 				.replace(/<!--.*?-->\n?/gm, '')
-				.replace(/<\/?meta[^>]*>/g, '');
+				.replace(/<\/?(meta|nowiki)[^>]*>/g, '');
 };
 
 ParserTests.prototype.formatHTML = function ( source ) {
@@ -387,12 +388,17 @@ ParserTests.prototype.processResult = function ( index, item, doc ) {
 		this.failParseTests++;
 		console.log('PARSE FAIL', res.err);
 	} else {
-		// Check the result vs. the expected result.
-		this.checkResult( item, doc.body.innerHTML );
+		if (this.argv.roundtrip) {
+			var rt_wikiText = new WikitextSerializer().serializeDOM(doc.body);
+			this.checkRoundTripResult(item, rt_wikiText);
+		} else {
+			// Check the result vs. the expected result.
+			this.checkResult( item, doc.body.innerHTML );
 
-		if ( this.argv.wikidom ) {
-			// Test HTML DOM -> WikiDOM conversion
-			this.printWikiDom( parserPipeline.getWikiDom() );
+			if ( this.argv.wikidom ) {
+				// Test HTML DOM -> WikiDOM conversion
+				this.printWikiDom( parserPipeline.getWikiDom() );
+			}
 		}
 
 	}
@@ -461,6 +467,55 @@ ParserTests.prototype.checkResult = function ( item, out ) {
 						JSON.stringify(out) +
 						";\n");
 			}
+		}
+	} else {
+		this.passedTests++;
+		if( !this.argv.quiet ) {
+			console.log( 'PASSED'.green + ': ' + item.title.yellow );
+		}
+	}
+};
+
+ParserTests.prototype.checkRoundTripResult = function ( item, out ) {
+	var normalizedOut      = out;        // FIXME: normalization not in place yet
+	var normalizedExpected = item.input; // FIXME: normalization not in place yet
+	if ( normalizedOut !== normalizedExpected ) {
+		this.printTitle( item, this.argv.quick );
+		this.failOutputTests++;
+
+		if( !this.argv.quick ) {
+			console.log('RAW EXPECTED'.cyan + ':');
+			console.log(item.input + "\n");
+
+			console.log('RAW RENDERED'.cyan + ':');
+			console.log(out + "\n");
+
+			console.log('NORMALIZED EXPECTED'.magenta + ':');
+			console.log(normalizedExpected + "\n");
+
+			console.log('NORMALIZED RENDERED'.magenta + ':');
+			console.log(normalizedOut + "\n");
+			var patch = jsDiff.createPatch('wikitext.txt', normalizedExpected, normalizedOut, 'before', 'after');
+
+			console.log('DIFF'.cyan +': ');
+
+			// Strip the header from the patch, we know how diffs work..
+			patch = patch.replace(/^[^\n]*\n[^\n]*\n[^\n]*\n[^\n]*\n/, '');
+
+			var colored_diff = patch.split( '\n' ).map( function(line) {
+				// Add some colors to diff output
+				switch( line.charAt(0) ) {
+					case '-':
+						return line.red;
+					case '+':
+						return line.blue;
+					default:
+						return line;
+				}
+			}).join( "\n" );
+
+
+			console.log( colored_diff );
 		}
 	} else {
 		this.passedTests++;
@@ -587,9 +642,10 @@ ParserTests.prototype.processCase = function ( i ) {
 					break;
 				case 'hooks':
 					console.warn('parserTests: Unhandled hook ' + JSON.stringify( item ) );
+					break;
 				case 'functionhooks':
-					console.warn('parserTests: Unhandled functionhook ' 
-							+ JSON.stringify( item ) );
+					console.warn('parserTests: Unhandled functionhook ' + JSON.stringify( item ) );
+					break;
 				default:
 					this.comments = [];
 					process.nextTick( this.processCase.bind( this, i + 1 ) );

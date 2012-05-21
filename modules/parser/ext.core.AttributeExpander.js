@@ -36,6 +36,7 @@ AttributeExpander.prototype.onToken = function ( token, frame, cb ) {
 			token.constructor === SelfclosingTagTk) && 
 				token.attribs && 
 				token.attribs.length ) {
+		// clone the token
 		token = $.extend( {}, token );
 		token.attribs = token.attribs.slice();
 		var atm = new AttributeTransformManager( 
@@ -45,7 +46,7 @@ AttributeExpander.prototype.onToken = function ( token, frame, cb ) {
 		cb( { async: true } );
 		atm.process( token.attribs );
 	} else {
-		cb ( { token: token } );
+		cb ( { tokens: [token] } );
 	}
 };
 
@@ -58,7 +59,7 @@ AttributeExpander.prototype._returnAttributes = function ( token, cb,
 {
 	this.manager.env.dp( 'AttributeExpander._returnAttributes: ',attributes );
 	token.attribs = attributes;
-	cb( { token: token } );
+	cb( { tokens: [token] } );
 };
 
 if (typeof module == "object") {

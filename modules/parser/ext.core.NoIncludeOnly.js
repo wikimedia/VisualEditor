@@ -44,7 +44,7 @@ OnlyInclude.prototype.onAnyInclude = function ( token, manager ) {
 			var res = this.accum;
 			res.push( token );
 			this.accum = [];
-			this.manager.setTokensRank( res, this.rank + 0.001 );
+			//this.manager.setTokensRank( res, this.rank + 0.001 );
 			return { tokens: res };
 		} else {
 			this.foundOnlyInclude = false;
@@ -70,11 +70,11 @@ OnlyInclude.prototype.onAnyInclude = function ( token, manager ) {
 			meta = new TagTk( 'meta' );
 			meta.dataAttribs = { strippedTokens: [token] };
 		}
-		meta.rank = this.rank;
+		//meta.rank = this.rank;
 		return { token: meta };
 	} else {
 		if ( this.inOnlyInclude ) {
-			token.rank = this.rank;
+			//token.rank = this.rank;
 			return { token: token };
 		} else {
 			this.accum.push( token );

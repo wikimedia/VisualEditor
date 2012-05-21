@@ -54,7 +54,13 @@ TokenCollector.prototype._anyDelta = 0.00001;
  * XXX: Adjust to sync phase callback when that is modified!
  */
 TokenCollector.prototype._onDelimiterToken = function ( token, frame, cb ) {
-	if ( this.isActive ) {
+	if ( token.constructor === SelfclosingTagTk && !this.isActive ) {
+		this.manager.env.dp( 'skipping collection on ', token );
+		// just ignore it
+		return { tokens: [ token ] }; //this.transformation( [token, token] );
+	} else if ( this.isActive && 
+			( token.constructor === EndTagTk || token.constructor === EOFTk ) ) {
+		this.manager.env.dp( 'finishing collection on ', token );
 		var res;
 		// finish processing
 		this.tokens.push ( token );
@@ -63,7 +69,7 @@ TokenCollector.prototype._onDelimiterToken = function ( token, frame, cb ) {
 		this.manager.removeTransform( this.rank, 'end' );
 		if ( token.constructor !== EOFTk || this.toEnd ) {
 			// end token
-			res = this.transformation ( this.tokens, this.cb, this.manager );
+			res = this.transformation ( this.tokens );
 			this.tokens = [];
 			// Transformation can be either sync or async, but receives all collected
 			// tokens instead of a single token.
@@ -76,20 +82,27 @@ TokenCollector.prototype._onDelimiterToken = function ( token, frame, cb ) {
 			return { tokens: res };
 		}
 	} else if ( token.constructor !== EOFTk ) {
-		this.manager.env.dp( 'starting collection on ', token );
-		// start collection
+
+		if ( this.isActive ) {
+			this.manager.env.dp( 'already active: ', token );
+		} else {
+			// start collection
+			this.manager.env.dp( 'starting collection on ', token );
+			this.manager.addTransform( this._onAnyToken.bind ( this ), 
+					this.rank + this._anyDelta, 'any' );
+			this.manager.addTransform( this._onDelimiterToken.bind( this ), 
+					this.rank, 'end' );
+			this.isActive = true;
+		}
 		this.tokens.push ( token );
-		this.manager.addTransform( this._onAnyToken.bind ( this ), 
-				this.rank + this._anyDelta, 'any' );
-		this.manager.addTransform( this._onDelimiterToken.bind( this ), 
-				this.rank, 'end' );
 		// Did not encounter a matching end token before the end, and are not
 		// supposed to collect to the end. So just return the tokens verbatim.
-		this.isActive = true;
 		return { };
 	} else {
 		// pass through end token
-		return { token: token };
+		this.tokens = [];
+		this.isActive = false;
+		return { tokens: [ token ] };
 	}
 };
 

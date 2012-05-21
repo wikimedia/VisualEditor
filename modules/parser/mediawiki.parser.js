@@ -34,6 +34,7 @@ var fs = require('fs'),
 	Sanitizer = require('./ext.core.Sanitizer.js').Sanitizer,
 	TemplateHandler = require('./ext.core.TemplateHandler.js').TemplateHandler,
 	AttributeExpander = require('./ext.core.AttributeExpander.js').AttributeExpander,
+	ListHandler = require('./ext.core.ListHandler.js').ListHandler,
 	LinkHandler = require('./ext.core.LinkHandler.js'),
 	WikiLinkHandler	= LinkHandler.WikiLinkHandler,
 	ExternalLinkHandler	= LinkHandler.ExternalLinkHandler,
@@ -86,8 +87,7 @@ ParserPipelineFactory.prototype.recipes = {
 			[ 
 				OnlyInclude,
 				IncludeOnly, 
-				NoInclude,
-				BehaviorSwitchHandler
+				NoInclude
 				// Insert TokenCollectors for extensions here (don't expand
 				// templates in extension contents); wrap collected tokens in
 				// special extension token.
@@ -108,12 +108,19 @@ ParserPipelineFactory.prototype.recipes = {
 			[ 2, 'tokens/x-mediawiki' ],
 			[ 
 				TemplateHandler,
+				/* ExtensionHandler1, */ // using SFH_OBJECT_ARGS in PHP
+
 				// Expand attributes after templates to avoid expanding unused branches
+				// No expansion of quotes, paragraphs etc in attributes, as in
+				// PHP parser- up to text/x-mediawiki/expanded only.
 				AttributeExpander,
-				WikiLinkHandler,
+				
+				// now all attributes expanded to tokens or string
+
+				WikiLinkHandler, // more convenient after attribute expansion
 				ExternalLinkHandler
-				/* ExtensionHandler1, */
-				/* ExtensionHandler2, */
+				/* ExtensionHandler2, */ // using expanded args
+				// Finally expand attributes to plain text
 			]
 		]
 	],
@@ -132,10 +139,19 @@ ParserPipelineFactory.prototype.recipes = {
 			[ 
 				// text/wiki-specific tokens
 				QuoteTransformer, 
+				ListHandler,
+
+				// before transforms that depend on behavior switches
+				// examples: toc generation, edit sections
+				BehaviorSwitchHandler,
+
+				// Synchronous extensions
+				Cite, // both before and after paragraph handler
+
+				// Paragraph wrapping
 				PostExpandParagraphHandler,
-				/* Cite, */
-				/* ListHandler, */
 				Sanitizer 
+				// SkipperUnpacker
 			]
 		],
 
@@ -235,7 +251,7 @@ ParserPipelineFactory.prototype.returnPipeline = function ( type, pipe ) {
 	pipe.removeAllListeners( 'end' );
 	pipe.removeAllListeners( 'chunk' );
 	var cache = this.pipelineCache[type];
-	if ( cache.length < 5 ) {
+	if ( cache.length < 8 ) {
 		cache.push( pipe );
 	}
 };

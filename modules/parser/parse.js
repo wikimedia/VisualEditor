@@ -10,6 +10,7 @@ var ParserPipelineFactory = require('./mediawiki.parser.js').ParserPipelineFacto
 	ParserEnv = require('./mediawiki.parser.environment.js').MWParserEnvironment,
 	ConvertDOMToLM = require('./mediawiki.LinearModelConverter.js').ConvertDOMToLM,
 	DOMConverter = require('./mediawiki.DOMConverter.js').DOMConverter,
+	WikitextSerializer = require('./mediawiki.WikitextSerializer.js').WikitextSerializer,
 	optimist = require('optimist');
 
 ( function() {
@@ -26,6 +27,11 @@ var ParserPipelineFactory = require('./mediawiki.parser.js').ParserPipelineFacto
 		},
 		'wikidom': {
 			description: 'Output WikiDOM instead of HTML',
+			'boolean': true,
+			'default': false
+		},
+		'wikitext': {
+			description: 'Output WikiText instead of HTML',
 			'boolean': true,
 			'default': false
 		},
@@ -118,6 +124,9 @@ var ParserPipelineFactory = require('./mediawiki.parser.js').ParserPipelineFacto
 						null,
 						2
 					));
+			} else if ( argv.wikitext ) {
+				new WikitextSerializer().serializeDOM( document.body, 
+					process.stdout.write.bind( process.stdout ) );
 			} else {
 				process.stdout.write( document.body.innerHTML );
 			}

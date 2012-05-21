@@ -52,12 +52,6 @@ TemplateHandler.prototype.onTemplate = function ( token, frame, cb ) {
 	//console.warn('onTemplate! ' + JSON.stringify( token, null, 2 ) + 
 	//		' args: ' + JSON.stringify( this.manager.args ));
 
-
-	// create a new temporary frame for argument and title expansions
-	// XXX: only expand keys, and leave value expansion to template parameter
-	// replacement or parser functions as needed!
-
-	
 	// expand argument keys, with callback set to next processing step
 	// XXX: would likely be faster to do this in a tight loop here
 	var atm = new AttributeTransformManager( 
@@ -77,7 +71,7 @@ TemplateHandler.prototype._nameArgs = function ( attribs ) {
 	for ( var i = 0, l = attribs.length; i < l; i++ ) {
 		// FIXME: Also check for whitespace-only named args!
 		if ( ! attribs[i].k.length ) {
-			out.push( {k: [ n.toString() ], v: attribs[i].v } );
+			out.push( new KV( n.toString(), attribs[i].v ) );
 			n++;
 		} else {
 			out.push( attribs[i] );
@@ -129,7 +123,7 @@ TemplateHandler.prototype._expandTemplate = function ( token, frame, cb, attribs
 		//		'unnamedArgs', tplExpandData.origToken.attribs,
 		//		'funcArg:', funcArg
 		//		);
-		//this.manager.env.dp( 'entering prefix', funcArg,  tplExpandData.expandedArgs  );
+		this.manager.env.dp( 'entering prefix', target, token  );
 		this.parserFunctions[ 'pf_' + prefix ]
 			( token, this.manager.frame, cb, pfAttribs );
 		return;
@@ -156,7 +150,8 @@ TemplateHandler.prototype._expandTemplate = function ( token, frame, cb, attribs
 				templateName,
 				new EndTagTk( 'a' )
 			];
-		cb( { tokens: res, allTokensProcessed: true } );
+		res.rank = this.manager.phaseEndRank;
+		cb( { tokens: res } );
 		return;
 	}
 
@@ -192,7 +187,7 @@ TemplateHandler.prototype._processTemplateAndTitle = function( token, frame, cb,
 	pipeline.addListener( 'chunk', this._onChunk.bind ( this, cb ) );
 	pipeline.addListener( 'end', this._onEnd.bind ( this, cb ) );
 	// Feed the pipeline. XXX: Support different formats.
-	this.manager.env.dp( 'TemplateHandler._processTemplateAndTitle', name, src, attribs );
+	this.manager.env.dp( 'TemplateHandler._processTemplateAndTitle', name, attribs );
 	pipeline.process ( src, name );
 };
 
@@ -201,7 +196,7 @@ TemplateHandler.prototype._processTemplateAndTitle = function( token, frame, cb,
  */
 TemplateHandler.prototype._onChunk = function( cb, chunk ) {
 	// We encapsulate the output by default, so collect tokens here.
-	this.manager.env.stripEOFTkfromTokens( chunk );
+	chunk = this.manager.env.stripEOFTkfromTokens( chunk );
 	this.manager.env.dp( 'TemplateHandler._onChunk', chunk );
 	cb( { tokens: chunk, async: true } );
 };
@@ -234,7 +229,7 @@ TemplateHandler.prototype._fetchTemplateAndTitle = function ( title, parentCB, c
 		this.manager.env.dp( 'Note: trying to fetch ', title );
 
 		// Start a new request if none is outstanding
-		this.manager.env.dp( 'requestQueue: ', this.manager.env.requestQueue );
+		//this.manager.env.dp( 'requestQueue: ', this.manager.env.requestQueue );
 		if ( this.manager.env.requestQueue[title] === undefined ) {
 			this.manager.env.tp( 'Note: Starting new request for ' + title );
 			this.manager.env.requestQueue[title] = new TemplateRequest( this.manager, title );
@@ -269,24 +264,29 @@ TemplateHandler.prototype.onTemplateArg = function ( token, frame, cb ) {
 
 TemplateHandler.prototype._returnArgAttributes = function ( token, cb, frame, attributes ) {
 	//console.warn( '_returnArgAttributes: ' + JSON.stringify( attributes ));
-	var argName = this.manager.env.tokensToString( attributes[0].v ).trim(),
+	var argName = this.manager.env.tokensToString( attributes[0].k ).trim(),
 		res,
 		dict = this.manager.frame.args.named();
-	this.manager.env.dp( 'args', argName, dict );
+	this.manager.env.dp( 'args', argName /*, dict*/ );
 	if ( argName in dict ) {
 		// return tokens for argument
 		//console.warn( 'templateArg found: ' + argName + 
 		//		' vs. ' + JSON.stringify( this.manager.args ) ); 
 		res = dict[argName];
+		this.manager.env.dp( 'arg res:', res );
 		if ( res.constructor === String ) {
 			cb( { tokens: [res] } );
 		} else {
-			dict[argName].to('tokens/x-mediawiki/expanded', function(chunk) { cb ( { tokens: chunk } ); });
+			dict[argName].get({
+				type: 'tokens/x-mediawiki/expanded',
+				cb: function( res ) { cb ( { tokens: res } ); },
+				asyncCB: cb
+			});
 		}
 		return;
 	} else {
-		this.manager.env.dp( 'templateArg not found: ', argName,
-				' vs. ', dict );
+		this.manager.env.dp( 'templateArg not found: ', argName
+				/*' vs. ', dict */ );
 		if ( attributes.length > 1 ) {
 			res = attributes[1].v;
 		} else {
@@ -334,7 +334,7 @@ function TemplateRequest ( manager, title ) {
 
 // Inherit from EventEmitter
 TemplateRequest.prototype = new events.EventEmitter();
-TemplateHandler.prototype.constructor = TemplateRequest;
+TemplateRequest.prototype.constructor = TemplateRequest;
 
 TemplateRequest.prototype._handler = function (error, response, body) {
 	//console.warn( 'response for ' + title + ' :' + body + ':' );
@@ -353,7 +353,7 @@ TemplateRequest.prototype._handler = function (error, response, body) {
 	} else if(response.statusCode ==  200) {
 		var src = '',
 			data,
-				normalizedTitle;
+			normalizedTitle;
 		try {
 			//console.warn( 'body: ' + body );
 			data = JSON.parse( body );
@@ -375,8 +375,29 @@ TemplateRequest.prototype._handler = function (error, response, body) {
 			console.warn( 'Did not find page revisions in the returned body:' + body );
 			src = '';
 		}
+		
+		// check for #REDIRECT
+		var redirMatch = src.match( /[\r\n\s]*#\s*redirect\s\[\[([^\]]+)\]\]/i )
+		if ( redirMatch ) {
+			var title = redirMatch[1];
+			var url = this.manager.env.wgScript + '/api' + 
+				this.manager.env.wgScriptExtension +
+				'?' + 
+				qs.stringify( {
+					format: 'json',
+				action: 'query',
+				prop: 'revisions',
+				rvprop: 'content',
+				titles: title
+				} );
+			//'?format=json&action=query&prop=revisions&rvprop=content&titles=' + title;
+			this.requestOptions.url = url;
+			request( this.requestOptions, this._handler.bind(this) ); 
+			return;
+		}
+
 		//console.warn( 'Page ' + title + ': got ' + src );
-		this.manager.env.tp( 'Retrieved ' + this.title );
+		this.manager.env.tp( 'Retrieved ' + this.title, src );
 
 		// Add the source to the cache
 		this.manager.env.pageCache[this.title] = src;
@@ -387,7 +408,7 @@ TemplateRequest.prototype._handler = function (error, response, body) {
 		// 
 		var listeners = this.listeners( 'src' );
 		var processSome = function () {
-			// XXX: experiment a bit with the number of callback per
+			// XXX: experiment a bit with the number of callbacks per
 			// iteration!
 			var maxIters = Math.min(1, listeners.length);
 			for ( var it = 0; it < maxIters; it++ ) {
@@ -408,9 +429,9 @@ TemplateRequest.prototype._handler = function (error, response, body) {
 	// XXX: handle other status codes
 
 	// Remove self from request queue
-	this.manager.env.dp( 'trying to remove ', this.title, ' from requestQueue' );
+	//this.manager.env.dp( 'trying to remove ', this.title, ' from requestQueue' );
 	delete this.manager.env.requestQueue[this.title];
-	this.manager.env.dp( 'after deletion:', this.manager.env.requestQueue );
+	//this.manager.env.dp( 'after deletion:', this.manager.env.requestQueue );
 };
 
 		/*
