@@ -2,7 +2,167 @@ module( 've.dm.Transaction' );
 
 /* Tests */
 
-test( 've.dm.Transaction', function() {
+test( 'newFromAttributeChange', function() {
+	var doc = new ve.dm.Document( ve.dm.example.data ),
+		cases = {
+		'first element': {
+			'args': [doc, 0, 'level', 2],
+			'ops': [
+				{
+					'type': 'attribute',
+					'key': 'level',
+					'from': 1,
+					'to': 2
+				},
+				{ 'type': 'retain', 'length': 59 }
+			]
+		},
+		'middle element': {
+			'args': [doc, 16, 'style', 'number'],
+			'ops': [
+				{ 'type': 'retain', 'length': 16 },
+				{
+					'type': 'attribute',
+					'key': 'style',
+					'from': 'bullet',
+					'to': 'number'
+				},
+				{ 'type': 'retain', 'length': 43 }
+			]
+		},
+		'non-element': {
+			'args': [doc, 1, 'level', 2],
+			'exception': /^Can not set attributes to non-element data$/
+		},
+		'closing element': {
+			'args': [doc, 4, 'level', 2],
+			'exception': /^Can not set attributes on closing element$/
+		}
+	};
+	for ( var msg in cases ) {
+		if ( cases[msg].ops ) {
+			var tx = ve.dm.Transaction.newFromAttributeChange.apply(
+				ve.dm.Transaction, cases[msg].args
+			);
+			deepEqual( tx.getOperations(), cases[msg].ops, msg + ': operations match' );
+		} else if ( cases[msg].exception ) {
+			/*jshint loopfunc:true*/
+			raises( function() {
+				var tx = ve.dm.Transaction.newFromAttributeChange.apply(
+					ve.dm.Transaction, cases[msg].args
+				);
+			}, cases[msg].exception, msg + ': throw exception' );
+		}
+	}
+} );
+
+test( 'newFromAnnotation', function() {
+	var doc = new ve.dm.Document( ve.dm.example.data ),
+		cases = {
+		'over plain text': {
+			'args': [doc, new ve.Range( 1, 2 ), 'set', { 'type': 'textStyle/bold' }],
+			'ops': [
+				{ 'type': 'retain', 'length': 1 },
+				{
+					'type': 'annotate',
+					'method': 'set',
+					'bias': 'start',
+					'annotation': { 'type': 'textStyle/bold' }
+				},
+				{ 'type': 'retain', 'length': 1 },
+				{
+					'type': 'annotate',
+					'method': 'set',
+					'bias': 'stop',
+					'annotation': { 'type': 'textStyle/bold' }
+				},
+				{ 'type': 'retain', 'length': 57 }
+			]
+		},
+		'over annotated text': {
+			'args': [doc, new ve.Range( 1, 4 ), 'set', { 'type': 'textStyle/bold' }],
+			'ops': [
+				{ 'type': 'retain', 'length': 1 },
+				{
+					'type': 'annotate',
+					'method': 'set',
+					'bias': 'start',
+					'annotation': { 'type': 'textStyle/bold' }
+				},
+				{ 'type': 'retain', 'length': 1 },
+				{
+					'type': 'annotate',
+					'method': 'set',
+					'bias': 'stop',
+					'annotation': { 'type': 'textStyle/bold' }
+				},
+				{ 'type': 'retain', 'length': 1 },
+				{
+					'type': 'annotate',
+					'method': 'set',
+					'bias': 'start',
+					'annotation': { 'type': 'textStyle/bold' }
+				},
+				{ 'type': 'retain', 'length': 1 },
+				{
+					'type': 'annotate',
+					'method': 'set',
+					'bias': 'stop',
+					'annotation': { 'type': 'textStyle/bold' }
+				},
+				{ 'type': 'retain', 'length': 55 }
+			]
+		},
+		'over elements': {
+			'args': [doc, new ve.Range( 4, 9 ), 'set', { 'type': 'textStyle/bold' }],
+			'ops': [
+				{ 'type': 'retain', 'length': 59 }
+			]
+		},
+		'over elements and content': {
+			'args': [doc, new ve.Range( 3, 10 ), 'set', { 'type': 'textStyle/bold' }],
+			'ops': [
+				{ 'type': 'retain', 'length': 3 },
+				{
+					'type': 'annotate',
+					'method': 'set',
+					'bias': 'start',
+					'annotation': { 'type': 'textStyle/bold' }
+				},
+				{ 'type': 'retain', 'length': 1 },
+				{
+					'type': 'annotate',
+					'method': 'set',
+					'bias': 'stop',
+					'annotation': { 'type': 'textStyle/bold' }
+				},
+				{ 'type': 'retain', 'length': 5 },
+				{
+					'type': 'annotate',
+					'method': 'set',
+					'bias': 'start',
+					'annotation': { 'type': 'textStyle/bold' }
+				},
+				{ 'type': 'retain', 'length': 1 },
+				{
+					'type': 'annotate',
+					'method': 'set',
+					'bias': 'stop',
+					'annotation': { 'type': 'textStyle/bold' }
+				},
+				{ 'type': 'retain', 'length': 49 }
+			]
+		}
+	};
+	for ( var msg in cases ) {
+		var tx = ve.dm.Transaction.newFromAnnotation.apply(
+			ve.dm.Transaction, cases[msg].args
+		);
+		deepEqual( tx.getOperations(), cases[msg].ops, msg + ': operations match' );
+	}
+} );
+
+test( 'constructor', function() {
 	var cases = {
 		'retain': {
 			'calls': [['pushRetain', 5]],
@@ -135,7 +295,7 @@ test( 've.dm.Transaction', function() {
 		'replace multiple element attributes': {
 			'calls': [
 				['pushReplaceElementAttribute', 'style', 'bullet', 'number'],
-				['pushReplaceElementAttribute', 'level', '1', '2']
+				['pushReplaceElementAttribute', 'level', 1, 2]
 			],
 			'ops': [
 				{
@@ -147,8 +307,8 @@ test( 've.dm.Transaction', function() {
 				{
 					'type': 'attribute',
 					'key': 'level',
-					'from': '1',
-					'to': '2'
+					'from': 1,
+					'to': 2
 				}
 			],
 			'diff': 0
