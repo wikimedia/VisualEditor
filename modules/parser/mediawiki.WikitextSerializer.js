@@ -67,9 +67,10 @@ WSP._listItemHandler = function ( state, token ) {
 	}
 };
 
-WSP._serializeTableTag = function ( symbol, state, token ) {
+WSP._serializeTableTag = function ( symbol, optionEndSymbol, state, token ) {
 	if ( token.attribs.length ) {
-		return '\n' + symbol + WSP._serializeAttributes( token.attribs ) + ' |';
+		return '\n' + symbol + ' ' + 
+			WSP._serializeAttributes( token.attribs ) + optionEndSymbol;
 	} else {
 		return '\n' + symbol;
 	}
@@ -113,14 +114,15 @@ WSP.tagToWikitext = {
 	dd: { start: id(":") },
 	// XXX: handle options
 	table: { 
-		start: WSP._serializeTableTag.bind(null, "{|"), 
+		start: WSP._serializeTableTag.bind(null, "{|", ''), 
 		end: id("\n|}") 
 	},
 	tbody: {},
-	th: { start: WSP._serializeTableTag.bind(null, "!")  },
+	th: { start: WSP._serializeTableTag.bind(null, "!", ' |')  },
 	// XXX: omit for first row in table.
-	tr: { start: WSP._serializeTableTag.bind(null, "|-") },
-	td: { start: WSP._serializeTableTag.bind(null, "|") },
+	tr: { start: WSP._serializeTableTag.bind(null, "|-", ' |') },
+	td: { start: WSP._serializeTableTag.bind(null, "|", ' |') },
+	caption: { start: WSP._serializeTableTag.bind(null, "|+", ' |') },
 	p: { 
 		start: function( state, token ) {
 			if (state.needParagraphLines) {
