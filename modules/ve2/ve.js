@@ -68,12 +68,16 @@ ve.inArray = $.inArray;
  *
  * This is actually an alias for jQuery.json, which falls back to window.JSON if present.
  *
+ * WARNING: 2 objects can have the same contents but not the same hash if the properties were set
+ * in a different order. Recursive sorting may nessecary prior to hashing, or a hashing algorithm
+ * that produces order-safe reults may need to be used here instead.
+ *
  * @static
  * @method
  * @param {Object} obj Object to generate hash for
  * @returns {String} Hash of object
  */
-ve.getHash = $.toJson;
+ve.getHash = $.toJSON;
 
 /**
  * Gets an array of all property names in an object.

@@ -199,7 +199,7 @@ ve.dm.HTMLConverter.generateAnnotatedContent = function( content, annotations ) 
 		if ( annotations[i].data !== undefined && Object.keys(annotations[i].data).length === 0 ) {
 			delete annotations[i].data;
 		}
-		annoationMap[JSON.stringify( annotations[i] )] = annotations[i];
+		annoationMap[ve.getHash( annotations[i] )] = annotations[i];
 	}
 	for ( i = 0; i < characters.length; i++ ) {
 		characters[i] = [characters[i], annoationMap];
