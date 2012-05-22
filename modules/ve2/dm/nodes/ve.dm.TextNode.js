@@ -21,9 +21,9 @@ ve.dm.TextNode = function( length ) {
  * @member
  */
 ve.dm.TextNode.rules = {
-	'canHaveChildren': false,
-	'canHaveGrandchildren': false,
 	'isWrapped': false,
+	'isContent': true,
+	'canContainContent': false,
 	'childNodeTypes': [],
 	'parentNodeTypes': null
 };

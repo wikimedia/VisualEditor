@@ -179,7 +179,7 @@ ve.dm.Document.isContentOffset = function( data, offset ) {
 					// Is a closing
 					left.type.charAt( 0 ) === '/' &&
 					// Is a leaf
-					!factory.canNodeHaveChildren( left.type.substr( 1 ) )
+					factory.isNodeContent( left.type.substr( 1 ) )
 				) ||
 				// Left of a leaf
 				// <paragraph>|<image></image></paragraph>
@@ -189,7 +189,7 @@ ve.dm.Document.isContentOffset = function( data, offset ) {
 					// Is not a closing
 					right.type.charAt( 0 ) !== '/' &&
 					// Is a leaf
-					!factory.canNodeHaveChildren( right.type )
+					factory.isNodeContent( right.type )
 				) ||
 				// Inside empty content branch
 				// <paragraph>|</paragraph>
@@ -197,8 +197,7 @@ ve.dm.Document.isContentOffset = function( data, offset ) {
 					// Inside empty element
 					'/' + left.type === right.type &&
 					// Both are content branches (right is the same type)
-					factory.canNodeHaveChildren( left.type ) &&
-					!factory.canNodeHaveGrandchildren( left.type )
+					factory.canNodeContainContent( left.type )
 				)
 			)
 		)
@@ -206,7 +205,7 @@ ve.dm.Document.isContentOffset = function( data, offset ) {
 };
 
 /**
- * Checks if content can be inserted at an offset in document data.
+ * Checks if structure can be inserted at an offset in document data.
  *
  * This method assumes that any value that has a type property that's a string is an element object.
  *

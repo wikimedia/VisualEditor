@@ -8,9 +8,7 @@ ve.ce.BranchNodeStub = function( model, $element ) {
 };
 
 ve.ce.BranchNodeStub.rules = {
-	'canHaveChildren': true,
-	'canHaveGrandchildren': true,
-	'isWrapped': true
+	'canBeSplit': true
 };
 
 ve.ce.BranchNodeStub.domWrapperElementTypes = {
@@ -23,6 +21,11 @@ ve.extendClass( ve.ce.BranchNodeStub, ve.ce.BranchNode );
 ve.ce.factory.register( 'branch-stub', ve.ce.BranchNodeStub );
 
 /* Tests */
+
+test( 'canBeSplit', 1, function() {
+	var node = new ve.ce.BranchNodeStub( new ve.dm.BranchNodeStub() );
+	equal( node.canBeSplit(), true );
+} );
 
 test( 'canHaveChildren', 1, function() {
 	var node = new ve.ce.BranchNodeStub( new ve.dm.BranchNodeStub() );

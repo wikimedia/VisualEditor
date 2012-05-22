@@ -50,7 +50,10 @@ ve.dm.NodeFactory.prototype.getParentNodeTypes = function( type ) {
  */
 ve.dm.NodeFactory.prototype.canNodeHaveChildren = function( type ) {
 	if ( type in this.registry ) {
-		return this.registry[type].rules.canHaveChildren;
+		// If childNodeTypes is null any child is allowed, if it's an array of at least one element
+		// than at least one kind of node is allowed
+		var types = this.registry[type].rules.childNodeTypes;
+		return types === null || ( ve.isArray( types ) && types.length > 0 );
 	}
 	throw 'Unknown node type: ' + type;
 };
@@ -65,7 +68,9 @@ ve.dm.NodeFactory.prototype.canNodeHaveChildren = function( type ) {
  */
 ve.dm.NodeFactory.prototype.canNodeHaveGrandchildren = function( type ) {
 	if ( type in this.registry ) {
-		return this.registry[type].rules.canHaveGrandchildren;
+		return this.canNodeHaveChildren( type ) &&
+			!this.registry[type].rules.canContainContent &&
+			!this.registry[type].rules.isContent;
 	}
 	throw 'Unknown node type: ' + type;
 };
@@ -81,6 +86,36 @@ ve.dm.NodeFactory.prototype.canNodeHaveGrandchildren = function( type ) {
 ve.dm.NodeFactory.prototype.isNodeWrapped = function( type ) {
 	if ( type in this.registry ) {
 		return this.registry[type].rules.isWrapped;
+	}
+	throw 'Unknown node type: ' + type;
+};
+
+/**
+ * Checks if a given node contains content.
+ *
+ * @method
+ * @param {String} type Node type
+ * @returns {Boolean} The node contains content
+ * @throws 'Unknown node type'
+ */
+ve.dm.NodeFactory.prototype.canNodeContainContent = function( type ) {
+	if ( type in this.registry ) {
+		return this.registry[type].rules.canContainContent;
+	}
+	throw 'Unknown node type: ' + type;
+};
+
+/**
+ * Checks if a given node is content.
+ *
+ * @method
+ * @param {String} type Node type
+ * @returns {Boolean} The node is content
+ * @throws 'Unknown node type'
+ */
+ve.dm.NodeFactory.prototype.isNodeContent = function( type ) {
+	if ( type in this.registry ) {
+		return this.registry[type].rules.isContent;
 	}
 	throw 'Unknown node type: ' + type;
 };

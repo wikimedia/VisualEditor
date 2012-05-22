@@ -1,5 +1,5 @@
 /**
- * DataModel node for a document.
+ * DataModel node for an alien block node.
  *
  * @class
  * @constructor
@@ -7,9 +7,9 @@
  * @param {Integer} [length] Length of content data in document
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  */
-ve.dm.ImageNode = function( length, attributes ) {
+ve.dm.AlienBlock = function( length, attributes ) {
 	// Inheritance
-	ve.dm.LeafNode.call( this, 'image', 0, attributes );
+	ve.dm.LeafNode.call( this, 'alienBlock', 0, attributes );
 };
 
 /* Static Members */
@@ -21,9 +21,9 @@ ve.dm.ImageNode = function( length, attributes ) {
  * @static
  * @member
  */
-ve.dm.ImageNode.rules = {
+ve.dm.AlienBlock.rules = {
 	'isWrapped': true,
-	'isContent': true,
+	'isContent': false,
 	'canContainContent': false,
 	'childNodeTypes': [],
 	'parentNodeTypes': null
@@ -31,8 +31,8 @@ ve.dm.ImageNode.rules = {
 
 /* Registration */
 
-ve.dm.factory.register( 'image', ve.dm.ImageNode );
+ve.dm.factory.register( 'alienBlock', ve.dm.AlienBlock );
 
 /* Inheritance */
 
-ve.extendClass( ve.dm.ImageNode, ve.dm.LeafNode );
+ve.extendClass( ve.dm.AlienBlock, ve.dm.LeafNode );

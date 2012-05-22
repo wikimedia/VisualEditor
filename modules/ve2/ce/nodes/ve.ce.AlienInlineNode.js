@@ -1,14 +1,14 @@
 /**
- * ContentEditable node for a document.
+ * ContentEditable node for an alien inline node.
  *
  * @class
  * @constructor
  * @extends {ve.ce.LeafNode}
- * @param model {ve.dm.AlienNode} Model to observe
+ * @param model {ve.dm.AlienInlineNode} Model to observe
  */
-ve.ce.AlienNode = function( model ) {
+ve.ce.AlienInlineNode = function( model ) {
 	// Inheritance
-	ve.ce.LeafNode.call( this, 'alien', model );
+	ve.ce.LeafNode.call( this, 'alienInline', model );
 
 	// Events
 	this.model.addListenerMethod( this, 'update', 'onUpdate' );
@@ -48,20 +48,20 @@ ve.ce.AlienNode = function( model ) {
  * @static
  * @member
  */
-ve.ce.AlienNode.rules = {
+ve.ce.AlienInlineNode.rules = {
 	'canBeSplit': false
 };
 
 /* Methods */
 
-ve.ce.AlienNode.prototype.onUpdate = function() {
+ve.ce.AlienInlineNode.prototype.onUpdate = function() {
 	this.$.html( this.model.getAttribute( 'html' ) );
 };
 
 /* Registration */
 
-ve.ce.factory.register( 'alien', ve.ce.AlienNode );
+ve.ce.factory.register( 'alienInline', ve.ce.AlienInlineNode );
 
 /* Inheritance */
 
-ve.extendClass( ve.ce.AlienNode, ve.ce.LeafNode );
+ve.extendClass( ve.ce.AlienInlineNode, ve.ce.LeafNode );

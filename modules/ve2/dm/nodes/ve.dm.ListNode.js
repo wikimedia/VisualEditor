@@ -22,9 +22,9 @@ ve.dm.ListNode = function( children, attributes ) {
  * @member
  */
 ve.dm.ListNode.rules = {
-	'canHaveChildren': true,
-	'canHaveGrandchildren': true,
 	'isWrapped': true,
+	'isContent': false,
+	'canContainContent': false,
 	'childNodeTypes': ['listItem'],
 	'parentNodeTypes': null
 };

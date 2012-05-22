@@ -52,6 +52,26 @@ ve.dm.Node.prototype.isWrapped = function() {
 };
 
 /**
+ * Checks if this node can contain content.
+ *
+ * @method
+ * @returns {Boolean} Node can contain content
+ */
+ve.dm.Node.prototype.canContainContent = function() {
+	return ve.dm.factory.canNodeContainContent( this.type );
+};
+
+/**
+ * Checks if this node is content.
+ *
+ * @method
+ * @returns {Boolean} Node is content
+ */
+ve.dm.Node.prototype.isContent = function() {
+	return ve.dm.factory.isNodeContent( this.type );
+};
+
+/**
  * Gets the inner length.
  *
  * @method

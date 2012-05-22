@@ -22,9 +22,9 @@ ve.dm.DefinitionListNode = function( children, attributes ) {
  * @member
  */
 ve.dm.DefinitionListNode.rules = {
-	'canHaveChildren': true,
-	'canHaveGrandchildren': true,
 	'isWrapped': true,
+	'isContent': false,
+	'canContainContent': false,
 	'childNodeTypes': ['definitionListItem'],
 	'parentNodeTypes': null
 };

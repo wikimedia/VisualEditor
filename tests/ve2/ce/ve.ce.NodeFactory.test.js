@@ -16,14 +16,14 @@ ve.ce.NodeFactoryNodeStub.rules = {
 test( 'canNodeBeSplit', 2, function() {
 	var factory = new ve.ce.NodeFactory();
 	raises( function() {
-			factory.create( 'stub', 23, { 'bar': 'baz' } );
+			factory.create( 'node-factory-node-stub', 23, { 'bar': 'baz' } );
 		},
-		/^Unknown node type: stub$/,
+		/^Unknown node type: node-factory-node-stub$/,
 		'throws an exception when getting allowed child nodes of a node of an unregistered type'
 	);
-	factory.register( 'stub', ve.ce.NodeFactoryNodeStub );
+	factory.register( 'node-factory-node-stub', ve.ce.NodeFactoryNodeStub );
 	strictEqual(
-		factory.canNodeBeSplit( 'stub' ),
+		factory.canNodeBeSplit( 'node-factory-node-stub' ),
 		false,
 		'gets split rules for registered nodes'
 	);

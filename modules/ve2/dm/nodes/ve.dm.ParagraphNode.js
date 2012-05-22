@@ -22,9 +22,9 @@ ve.dm.ParagraphNode = function( children, attributes ) {
  * @member
  */
 ve.dm.ParagraphNode.rules = {
-	'canHaveChildren': true,
-	'canHaveGrandchildren': false,
 	'isWrapped': true,
+	'isContent': false,
+	'canContainContent': true,
 	'childNodeTypes': null,
 	'parentNodeTypes': null
 };

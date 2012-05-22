@@ -22,9 +22,9 @@ ve.dm.HeadingNode = function( children, attributes ) {
  * @member
  */
 ve.dm.HeadingNode.rules = {
-	'canHaveChildren': true,
-	'canHaveGrandchildren': false,
 	'isWrapped': true,
+	'isContent': false,
+	'canContainContent': true,
 	'childNodeTypes': null,
 	'parentNodeTypes': null
 };

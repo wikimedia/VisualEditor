@@ -8,9 +8,10 @@ ve.dm.LeafNodeStub = function() {
 };
 
 ve.dm.LeafNodeStub.rules = {
-	'canHaveChildren': false,
-	'canHaveGrandchildren': false,
-	'isWrapped': true
+	'isWrapped': true,
+	'isContent': true,
+	'canContainContent': false,
+	'childNodeTypes': []
 };
 
 ve.extendClass( ve.dm.LeafNodeStub, ve.dm.LeafNode );

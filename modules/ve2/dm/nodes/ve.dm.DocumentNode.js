@@ -22,9 +22,9 @@ ve.dm.DocumentNode = function( children, attributes ) {
  * @member
  */
 ve.dm.DocumentNode.rules = {
-	'canHaveChildren': true,
-	'canHaveGrandchildren': true,
 	'isWrapped': false,
+	'isContent': false,
+	'canContainContent': false,
 	'childNodeTypes': null,
 	'parentNodeTypes': []
 };

@@ -106,7 +106,8 @@ $wgResourceModules += array(
 			've2/dm/ve.dm.Document.js',
 			've2/dm/ve.dm.HTMLConverter.js',
 
-			've2/dm/nodes/ve.dm.AlienNode.js',
+			've2/dm/nodes/ve.dm.AlienInlineNode.js',
+			've2/dm/nodes/ve.dm.AlienBlockNode.js',
 			've2/dm/nodes/ve.dm.DefinitionListItemNode.js',
 			've2/dm/nodes/ve.dm.DefinitionListNode.js',
 			've2/dm/nodes/ve.dm.DocumentNode.js',
@@ -135,7 +136,8 @@ $wgResourceModules += array(
 			've2/ce/ve.ce.LeafNode.js',
 			've2/ce/ve.ce.Surface.js',
 
-			've2/ce/nodes/ve.ce.AlienNode.js',
+			've2/ce/nodes/ve.ce.AlienInlineNode.js',
+			've2/ce/nodes/ve.ce.AlienBlockNode.js',
 			've2/ce/nodes/ve.ce.DefinitionListItemNode.js',
 			've2/ce/nodes/ve.ce.DefinitionListNode.js',
 			've2/ce/nodes/ve.ce.DocumentNode.js',

@@ -22,9 +22,9 @@ ve.dm.PreformattedNode = function( children, attributes ) {
  * @member
  */
 ve.dm.PreformattedNode.rules = {
-	'canHaveChildren': true,
-	'canHaveGrandchildren': false,
 	'isWrapped': true,
+	'isContent': false,
+	'canContainContent': true,
 	'childNodeTypes': null,
 	'parentNodeTypes': null
 };

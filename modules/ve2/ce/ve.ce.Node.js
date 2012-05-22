@@ -60,6 +60,26 @@ ve.ce.Node.prototype.isWrapped = function() {
 };
 
 /**
+ * Checks if this node can contain content.
+ *
+ * @method
+ * @returns {Boolean} Node can contain content
+ */
+ve.dm.Node.prototype.canContainContent = function() {
+	return this.model.canContainContent();
+};
+
+/**
+ * Checks if this node is content.
+ *
+ * @method
+ * @returns {Boolean} Node is content
+ */
+ve.dm.Node.prototype.isContent = function() {
+	return this.model.isContent();
+};
+
+/**
  * Gets model length.
  *
  * This method passes through to the model.
@@ -90,7 +110,7 @@ ve.ce.Node.prototype.getOuterLength = function() {
  * @returns {Boolean} Node can be split
  */
 ve.ce.Node.prototype.canBeSplit = function() {
-	return ve.ce.factory.canBeSplit( this.type );
+	return ve.ce.factory.canNodeBeSplit( this.type );
 };
 
 /**

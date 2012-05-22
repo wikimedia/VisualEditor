@@ -22,9 +22,9 @@ ve.dm.TableCellNode = function( children, attributes ) {
  * @member
  */
 ve.dm.TableCellNode.rules = {
-	'canHaveChildren': true,
-	'canHaveGrandchildren': true,
 	'isWrapped': true,
+	'isContent': false,
+	'canContainContent': false,
 	'childNodeTypes': null,
 	'parentNodeTypes': ['tableRow']
 };

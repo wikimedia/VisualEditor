@@ -1,5 +1,5 @@
 /**
- * DataModel node for a document.
+ * DataModel node for an alien inline node.
  *
  * @class
  * @constructor
@@ -7,9 +7,9 @@
  * @param {Integer} [length] Length of content data in document
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  */
-ve.dm.AlienNode = function( length, attributes ) {
+ve.dm.AlienInline = function( length, attributes ) {
 	// Inheritance
-	ve.dm.LeafNode.call( this, 'alien', 0, attributes );
+	ve.dm.LeafNode.call( this, 'alienInline', 0, attributes );
 };
 
 /* Static Members */
@@ -21,18 +21,18 @@ ve.dm.AlienNode = function( length, attributes ) {
  * @static
  * @member
  */
-ve.dm.AlienNode.rules = {
-	'canHaveChildren': false,
-	'canHaveGrandchildren': false,
+ve.dm.AlienInline.rules = {
 	'isWrapped': true,
+	'isContent': true,
+	'canContainContent': false,
 	'childNodeTypes': [],
 	'parentNodeTypes': null
 };
 
 /* Registration */
 
-ve.dm.factory.register( 'alien', ve.dm.AlienNode );
+ve.dm.factory.register( 'alienInline', ve.dm.AlienInline );
 
 /* Inheritance */
 
-ve.extendClass( ve.dm.AlienNode, ve.dm.LeafNode );
+ve.extendClass( ve.dm.AlienInline, ve.dm.LeafNode );
