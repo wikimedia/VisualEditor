@@ -76,12 +76,67 @@ WSP._serializeTableTag = function ( symbol, optionEndSymbol, state, token ) {
 	}
 };
 
+WSP._emptyTags = { br: true, meta: true };
+
+WSP._serializeHTMLTag = function ( state, token ) {
+	var close = '';
+	if ( WSP._emptyTags[ token.name ] ) {
+		close = '/';
+	}
+	if ( token.attribs.length ) {
+		return '<' + token.name + ' ' + 
+			WSP._serializeAttributes( token.attribs ) + close + '>';
+	} else {
+		return '<' + token.name + close + '>';
+	}
+};
+
+WSP._serializeHTMLEndTag = function ( state, token ) {
+	if ( ! WSP._emptyTags[ token.name ] ) {
+		return '</' + token.name + '>';
+	} else {
+		return '';
+	}
+};
+
 WSP._linkHandler =  function( state, token ) {
-	return '[[';
+	//return '[[';
 	// TODO: handle internal/external links etc using RDFa and dataAttribs
 	// Also convert unannotated html links to external wiki links for html
 	// import. Might want to consider converting relative links without path
 	// component and file extension to wiki links.
+	
+	var attribDict = state.env.KVtoHash( token.attribs );
+	if ( attribDict.rel && attribDict.href !== undefined ) {
+		var target = decodeURIComponent( 
+				attribDict.href.substr( state.env.wgScriptPath.length + 1 )
+					.replace( '_', ' ' )
+				);
+
+		if ( attribDict.rel === 'mw:wikiLink' ) {
+			if ( token.dataAttribs.gc ) {
+				state.dropContent = true;
+				return '[[' + target;
+			} else {
+				return '[[' + target + '|';
+			}
+		} else if ( attribDict.rel === 'mw:extLink' ) {
+			if ( token.dataAttribs.stx === 'urllink' ) {
+				state.dropContent = true;
+				return attribDict.href;
+			} else if ( token.dataAttribs.gc ) {
+				state.dropContent = true;
+				return '[' + attribDict.href;
+			} else {
+				return '[' + attribDict.href + ' ';
+			}
+		} else {
+			return WSP._serializeHTMLTag( state, token );
+		}
+	} else {
+		return WSP._serializeHTMLTag( state, token );
+	}
+					
 	//if ( rtinfo.type === 'wikilink' ) {
 	//	return '[[' + rtinfo.target + ']]';
 	//} else {
@@ -89,7 +144,25 @@ WSP._linkHandler =  function( state, token ) {
 	//	return '[' + rtinfo.
 };
 WSP._linkEndHandler =  function( state, token ) {
-	return ']]';
+	var attribDict = state.env.KVtoHash( token.attribs );
+	if ( attribDict.rel && attribDict.href !== undefined ) {
+		if ( attribDict.rel === 'mw:wikiLink' ) {
+			state.dropContent = false;
+			return ']]';
+		} else if ( attribDict.rel === 'mw:extLink' ) {
+			if ( token.dataAttribs.stx === 'urllink' ) {
+				state.dropContent = false;
+				return '';
+			} else {
+				state.dropContent = false;
+				return ']';
+			};
+		} else {
+			return WSP._serializeHTMLEndTag( state, token );
+		}
+	} else {
+		return WSP._serializeHTMLEndTag( state, token );
+	}
 };
 
 WSP.tagToWikitext = {
@@ -166,7 +239,17 @@ WSP.tagToWikitext = {
 	h6: { start: id("\n======"), end: id("======\n") },
 	pre: { start: id("<pre>"), end: id("</pre>") },
 	a: { start: WSP._linkHandler, end: WSP._linkEndHandler },
-	nowiki: { start: id("<nowiki>"), end: id("</nowiki>") }
+	meta: { 
+		start: function ( state, token ) {
+			var argDict = state.env.KVtoHash( token.attribs );
+			if ( argDict.typeof === 'mw:tag' ) {
+				return '<' + argDict.content + '>';
+			} else {
+				return WSP._serializeHTMLTag( state, token );
+			}
+		}
+	},
+	br: { start: id( "\n\n" ) }
 };
 
 
@@ -190,12 +273,14 @@ WSP._serializeAttributes = function ( attribs ) {
 	return out.join(' ');
 };
 
-WSP._eatFirstNewLine = function ( state, chunk ) {
-	while ( chunk[0] === '\n' ) {
+WSP._stripFirstNewLines = function ( state, chunk ) {
+	while ( chunk !== '' && chunk[0] === '\n' ) {
 		chunk = chunk.substr(1);
 	}
-	state.realChunkCB( chunk );
-	state.chunkCB = state.realChunkCB;
+	if ( chunk !== '' ) {
+		state.realChunkCB( chunk );
+		state.chunkCB = state.realChunkCB;
+	}
 };
 
 
@@ -205,7 +290,7 @@ WSP._eatFirstNewLine = function ( state, chunk ) {
 WSP.serializeTokens = function( tokens, chunkCB ) {
 	var state = $.extend({}, this.defaultOptions, this.options),
 		i, l;
-	state.chunkCB = WSP._eatFirstNewLine.bind( this, state );
+	state.chunkCB = WSP._stripFirstNewLines.bind( this, state );
 	if ( chunkCB === undefined ) {
 		var out = [];
 		state.realChunkCB = out.push.bind(out);
@@ -228,35 +313,56 @@ WSP.serializeTokens = function( tokens, chunkCB ) {
 WSP._serializeToken = function ( state, token ) {
 	state.prevToken = state.curToken;
 	state.curToken = token;
-	var handler;
+	var handler, 
+		res = '',
+		dropContent = state.dropContent;
 	switch( token.constructor ) {
 		case TagTk:
 		case SelfclosingTagTk:
-			handler = this.tagToWikitext[token.name];
-			if ( handler && handler.start ) {
-				state.chunkCB( handler.start( state, token ) );
+			if ( token.dataAttribs.stx === 'html' ) {
+				res = WSP._serializeHTMLTag( state, token );
+			} else {
+				handler = this.tagToWikitext[token.name];
+				if ( handler ) {
+					if ( handler.start ) {
+						res = handler.start( state, token );
+					}
+				} else {
+					res = WSP._serializeHTMLTag( state, token );
+				}
 			}
 			break;
 		case EndTagTk:
-			handler = this.tagToWikitext[token.name];
-			if ( handler && handler.end ) {
-				state.chunkCB( handler.end( state, token ) );
+			if ( token.dataAttribs.stx === 'html' ) {
+				res = WSP._serializeHTMLEndTag( state, token );
+			} else {
+				handler = this.tagToWikitext[token.name];
+				if ( handler ) {
+					if ( handler.end ) {
+						res = handler.end( state, token );
+					}
+				} else {
+					res = WSP._serializeHTMLEndTag( state, token );
+				}
 			}
 			break;
 		case String:
-			state.chunkCB( token );
+			res = token;
 			break;
 		case CommentTk:
-			state.chunkCB( '<!--' + token.value + '-->' );
+			res = '<!--' + token.value + '-->';
 			break;
 		case NlTk:
-			state.chunkCB( '\n' );
+			res = '\n';
 			break;
 		case EOFTk:
 			break;
 		default:
 			console.warn( 'Unhandled token type ' + JSON.stringify( token ) );
 			break;
+	}
+	if ( ! dropContent || ! state.dropContent ) {
+		state.chunkCB( res );
 	}
 };
 
@@ -265,7 +371,7 @@ WSP._serializeToken = function ( state, token ) {
  */
 WSP.serializeDOM = function( node, chunkCB ) {
 	var state = $.extend({}, this.defaultOptions, this.options);
-	state.chunkCB = this._eatFirstNewLine.bind( this, state );
+	state.chunkCB = this._stripFirstNewLines.bind( this, state );
 	if ( ! chunkCB ) {
 		var out = [];
 		state.realChunkCB = out.push.bind( out );

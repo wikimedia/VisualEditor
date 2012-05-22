@@ -125,7 +125,7 @@ var ParserPipelineFactory = require('./mediawiki.parser.js').ParserPipelineFacto
 						2
 					));
 			} else if ( argv.wikitext ) {
-				new WikitextSerializer().serializeDOM( document.body, 
+				new WikitextSerializer({env: env}).serializeDOM( document.body, 
 					process.stdout.write.bind( process.stdout ) );
 			} else {
 				process.stdout.write( document.body.innerHTML );

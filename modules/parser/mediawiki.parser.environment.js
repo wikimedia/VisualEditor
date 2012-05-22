@@ -108,7 +108,7 @@ MWParserEnvironment.prototype.KVtoHash = function ( kvs ) {
 		var kv = kvs[i],
 			key = this.tokensToString( kv.k ).trim();
 		//if( res[key] === undefined ) {
-		res[key] = this.tokenTrim( kv.v );
+		res[key.toLowerCase()] = this.tokenTrim( kv.v );
 		//}
 	}
 	//console.warn( 'KVtoHash: ' + JSON.stringify( res ));

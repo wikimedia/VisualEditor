@@ -270,7 +270,7 @@
 
     // hack to support numbered external links ([http://example.com]).
     // XXX: Move to token stream transform after templates are expanded!
-    var linkCount = 1;
+    //var linkCount = 1;
 
     // Define block-level tags in JS, so we can use toLowerCase to match tags
     // case-independently. This would be quite ugly (and possibly slower) if
@@ -555,18 +555,22 @@ extlink
               t:inlineline { return t } )?
         "]" {
             stops.pop('extlink');
-            if ( text === '' ) {
-                // XXX: Link numbering should be implemented in post-processor.
-                text = [ "[" + linkCount + "]" ];
-                linkCount++;
-            }
+            //if ( text === '' ) {
+            //    // XXX: Link numbering should be implemented in post-processor.
+            //    text = [ "[" + linkCount + "]" ];
+            //    linkCount++;
+            //}
             //console.warn( 'extlink text: ' + pp( text ) );
+            var dataAttribs = {};
+            if ( text === '' ) {
+                dataAttribs.gc = 1;
+            }
             return [
                 new SelfclosingTagTk( 'extlink', [
                     new KV('href', target),
                     new KV('content', text)
                 ],
-                { type: 'extlink' })
+                dataAttribs)
             ];
         }
       / "[" & { return stops.pop('extlink'); }
@@ -1103,7 +1107,17 @@ xmlish_tag = nowiki / generic_tag
 nowiki 
   = "<nowiki>" nc:nowiki_content "</nowiki>" { 
         //console.warn( 'full nowiki return: ' + pp(nc)); 
-        return [ new TagTk( 'nowiki' ) ].concat( nc, [ new EndTagTk( 'nowiki' ) ] ); 
+        return [ new SelfclosingTagTk( 'meta', 
+                [
+                    {k: 'typeof', v: 'mw:tag'}, 
+                    {k: 'content', v: 'nowiki'} 
+                ])].concat( nc, [ 
+                    new SelfclosingTagTk( 'meta', 
+                    [
+                        {k: 'typeof', v: 'mw:tag'}, 
+                        {k: 'content', v: '/nowiki'} 
+                    ] ) 
+                ] ); 
     }
   / "<nowiki>" { 
           //console.warn('nowiki fallback');

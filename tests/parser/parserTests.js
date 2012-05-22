@@ -327,7 +327,7 @@ ParserTests.prototype.normalizeOut = function ( out ) {
 	// TODO: Do not strip newlines in pre and nowiki blocks!
 	return out.replace(/[\r\n]| (data-mw|typeof|resource|rel|prefix|about|rev|datatype|inlist|property|vocab|content)="[^">]*"/g, '')
 				.replace(/<!--.*?-->\n?/gm, '')
-				.replace(/<\/?(meta|nowiki)[^>]*>/g, '');
+				.replace(/<\/?meta[^>]*>/g, '');
 };
 
 ParserTests.prototype.formatHTML = function ( source ) {
@@ -389,7 +389,7 @@ ParserTests.prototype.processResult = function ( index, item, doc ) {
 		console.log('PARSE FAIL', res.err);
 	} else {
 		if (this.argv.roundtrip) {
-			var rt_wikiText = new WikitextSerializer().serializeDOM(doc.body);
+			var rt_wikiText = new WikitextSerializer({env: this.env}).serializeDOM(doc.body);
 			this.checkRoundTripResult(item, rt_wikiText);
 		} else {
 			// Check the result vs. the expected result.
