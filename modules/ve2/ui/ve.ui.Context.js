@@ -13,7 +13,6 @@ ve.ui.Context = function( surfaceView, $overlay ) {
 
 	// Properties
 	this.surfaceView = surfaceView;
-	//this.surfaceView.attachContextView( this );
 	this.inspectors = {};
 	this.inspector = null;
 	this.position = null;

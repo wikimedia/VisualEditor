@@ -1,5 +1,5 @@
 $(document).ready( function() {
-	var wikidoms = {
+/*	var wikidoms = {
 		'Wikipedia article': {
 			'type': 'document',
 			'children': [
@@ -408,7 +408,7 @@ $(document).ready( function() {
 					]
 				}
 			]
-		},
+		}, */
 		/*
 		'Tables': {
 			'type': 'document',
@@ -492,7 +492,7 @@ $(document).ready( function() {
 				}
 			]
 		},*/
-		'New document': {
+	/*	'New document': {
 			'type': 'document',
 			'children': [
 				{
@@ -501,7 +501,7 @@ $(document).ready( function() {
 				}
 			]
 		}
-	};
+	}; */
 
 	/* Sandbox integration hack.  Allows both MW integration and demo pages to work */
 	if ( $('#content').length === 0 ) {
@@ -590,36 +590,6 @@ $(document).ready( function() {
 		documentModel = sandboxEditor.getDocumentModel(),
 		parent = sandboxEditor.getParent();
 
-	/* Sandbox links above the editor */
-	var $docsList = $( '#es-docs-list' );
-	$.each( wikidoms, function( title, wikidom ) {
-		$docsList.append(
-			$( '<li class="es-docs-listItem"></li>' )
-				.append(
-					$( '<a href="#"></a>' )
-						.text( title )
-						.click( function() {
-							var newDocumentModel = new ve.dm.Document( [{ 'type': 'paragraph' }, '', { 'type': '/paragraph' }] );
-							documentModel.data.splice( 0, documentModel.data.length );
-							ve.insertIntoArray( documentModel.data, 0, newDocumentModel.data );
-							surfaceModel.select( new ve.Range( 1, 1 ) );
-							// FIXME: this should be using ve.batchedSplice(), otherwise things
-							// could explode if newDocumentModel.getChildren() is very long
-							documentModel.splice.apply(
-								documentModel,
-								[0, documentModel.getChildren().length]
-									.concat( newDocumentModel.getChildren() )
-							);
-							surfaceModel.purgeHistory();
-							
-							if ( sandboxEditor.currentMode ) {
-								sandboxEditor.currentMode.update.call( sandboxEditor.currentMode );
-							}
-							return false;
-						} )
-				)
-		);
-	} );
 
 	/* Sandbox Warning Message */
 	$( '#es-docs' ).css( { 'visibility': 'visible' } );
@@ -630,5 +600,5 @@ $(document).ready( function() {
 		$(this).parent().slideUp();
 		return false;
 	} );
-	$( '.es-mode-wikitext' ).click();
+	//$( '.es-mode-wikitext' ).click();
 } );
