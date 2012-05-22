@@ -176,25 +176,32 @@ test( 'constructor', function() {
 		},
 		'insert': {
 			'calls': [
-				['pushInsert', [{ 'type': 'paragraph' }, 'a', 'b', 'c', { 'type': '/paragraph' }]]
+				['pushReplace', [],  [{ 'type': 'paragraph' }, 'a', 'b', 'c', { 'type': '/paragraph' }]]
 			],
 			'ops': [
 				{
-					'type': 'insert',
-					'data': [{ 'type': 'paragraph' }, 'a', 'b', 'c', { 'type': '/paragraph' }]
+					'type': 'replace',
+					'remove': [],
+					'insert': [{ 'type': 'paragraph' }, 'a', 'b', 'c', { 'type': '/paragraph' }]
 				}
 			],
 			'diff': 5
 		},
 		'multiple insert': {
 			'calls': [
-				['pushInsert', [{ 'type': 'paragraph' }, 'a', 'b']],
-				['pushInsert', ['c', { 'type': '/paragraph' }]]
+				['pushReplace', [], [{ 'type': 'paragraph' }, 'a', 'b']],
+				['pushReplace', [], ['c', { 'type': '/paragraph' }]]
 			],
 			'ops': [
 				{
-					'type': 'insert',
-					'data': [{ 'type': 'paragraph' }, 'a', 'b', 'c', { 'type': '/paragraph' }]
+					'type': 'replace',
+					'remove': [],
+					'insert': [{ 'type': 'paragraph' }, 'a', 'b']
+				},
+				{
+					'type': 'replace',
+					'remove': [],
+					'insert': ['c', { 'type': '/paragraph' }]
 				}
 			],
 			'diff': 5
@@ -202,35 +209,42 @@ test( 'constructor', function() {
 		'insert and retain': {
 			'calls': [
 				['pushRetain', 1],
-				['pushInsert', ['a', 'b', 'c']]
+				['pushReplace', [], ['a', 'b', 'c']]
 			],
 			'ops': [
 				{ 'type': 'retain', 'length': 1 },
-				{ 'type': 'insert', 'data': ['a', 'b', 'c'] }
+				{ 'type': 'replace', 'remove': [], 'insert': ['a', 'b', 'c'] }
 			],
 			'diff': 3
 		},
 		'remove': {
 			'calls': [
-				['pushRemove', [{ 'type': 'paragraph' }, 'a', 'b', 'c', { 'type': '/paragraph' }]]
+				['pushReplace', [{ 'type': 'paragraph' }, 'a', 'b', 'c', { 'type': '/paragraph' }], []]
 			],
 			'ops': [
 				{
-					'type': 'remove',
-					'data': [{ 'type': 'paragraph' }, 'a', 'b', 'c', { 'type': '/paragraph' }]
+					'type': 'replace',
+					'remove': [{ 'type': 'paragraph' }, 'a', 'b', 'c', { 'type': '/paragraph' }],
+					'insert': []
 				}
 			],
 			'diff': -5
 		},
 		'multiple remove': {
 			'calls': [
-				['pushRemove', [{ 'type': 'paragraph' }, 'a', 'b']],
-				['pushRemove', ['c', { 'type': '/paragraph' }]]
+				['pushReplace', [{ 'type': 'paragraph' }, 'a', 'b'], []],
+				['pushReplace', ['c', { 'type': '/paragraph' }], []]
 			],
 			'ops': [
 				{
-					'type': 'remove',
-					'data': [{ 'type': 'paragraph' }, 'a', 'b', 'c', { 'type': '/paragraph' }]
+					'type': 'replace',
+					'remove': [{ 'type': 'paragraph' }, 'a', 'b'],
+					'insert': []
+				},
+				{
+					'type': 'replace',
+					'remove': ['c', { 'type': '/paragraph' }],
+					'insert': []
 				}
 			],
 			'diff': -5
@@ -238,11 +252,11 @@ test( 'constructor', function() {
 		'remove and retain': {
 			'calls': [
 				['pushRetain', 1],
-				['pushRemove', ['a', 'b', 'c']]
+				['pushReplace', ['a', 'b', 'c'], []]
 			],
 			'ops': [
 				{ 'type': 'retain', 'length': 1 },
-				{ 'type': 'remove', 'data': ['a', 'b', 'c'] }
+				{ 'type': 'replace', 'remove': ['a', 'b', 'c'], 'insert': [] }
 			],
 			'diff': -3
 		},

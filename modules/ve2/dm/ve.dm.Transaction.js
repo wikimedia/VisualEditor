@@ -176,46 +176,6 @@ ve.dm.Transaction.prototype.pushRetain = function( length ) {
 };
 
 /**
- * Adds an insertion operation.
- *
- * @method
- * @param {Array} data Data to retain
- */
-ve.dm.Transaction.prototype.pushInsert = function( data ) {
-	// FIXME use replace operations instead
-	var end = this.operations.length - 1;
-	if ( this.operations.length && this.operations[end].type === 'insert' ) {
-		this.operations[end].data = this.operations[end].data.concat( data );
-	} else {
-		this.operations.push( {
-			'type': 'insert',
-			'data': data
-		} );
-	}
-	this.lengthDifference += data.length;
-};
-
-/**
- * Adds a removal operation.
- *
- * @method
- * @param {Array} data Data to remove
- */
-ve.dm.Transaction.prototype.pushRemove = function( data ) {
-	// FIXME use replace operations instead
-	var end = this.operations.length - 1;
-	if ( this.operations.length && this.operations[end].type === 'remove' ) {
-		this.operations[end].data = this.operations[end].data.concat( data );
-	} else {
-		this.operations.push( {
-			'type': 'remove',
-			'data': data
-		} );
-	}
-	this.lengthDifference -= data.length;
-};
-
-/**
  * Adds a replace operation
  *
  * @method
