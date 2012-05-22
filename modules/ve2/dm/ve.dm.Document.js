@@ -617,6 +617,164 @@ ve.dm.Document.prototype.getRelativeContentOffset = function( offset, distance )
 	return offset;
 };
 
+// TODO this function needs more work but it seems to work, mostly
+/**
+ * Fix up data so it can safely be inserted into the linear model at offset.
+ * @param data {Array} Snippet of linear model data to insert
+ * @param offset {Integer} Offset in the linear model where the caller wants to insert data
+ * @returns {Array} A (possibly modified) copy of data
+ */
+ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
+	var newData = [], i, j, openingStack = [], closingStack = [], fixupStack = [], node, index,
+		parentNode, parentType, childType, allowedParents, allowedChildren,
+		parentsOK, childrenOK, openings, closings, expectedType, popped;
+	node = this.getNodeFromOffset( offset );
+	// TODO update for iscontent and cancontaincontent stuff
+
+	// TODO document
+	function writeElement( element, index ) {
+		if ( element.type.charAt( 0 ) !== '/' ) {
+			// Opening
+			// Check if this opening balances an earlier closing of a node
+			// that was already in the document. This is only the case if
+			// openingStack is empty (otherwise we still have unclosed nodes from
+			// within data) and if this opening matches the top of closingStack
+			if ( openingStack.length === 0 && closingStack.length > 0 &&
+				closingStack[closingStack.length - 1] === element.type
+			) {
+				// The top of closingStack is now balanced out, so remove it
+				closingStack.pop();
+			} else {
+				// This opens something new, put it on openingStack
+				openingStack.push( element.type );
+			}
+		} else {
+			// Closing
+			// Make sure that this closing matches the currently opened node
+			if ( openingStack.length > 0 ) {
+				// The opening was on openingStack, so we're closing
+				// a node that was opened within data. Don't track
+				// that on closingStack
+				expectedType = openingStack.pop();
+			} else {
+				// openingStack is empty, so we're closing a node that
+				// was already in the document. This means we have to
+				// reopen it later, so track this on closingStack
+				expectedType = node.getType();
+				closingStack.push( expectedType );
+				node = node.getParent();
+				if ( !node ) {
+					throw 'Inserted data is trying to close the root node ' +
+						'(at index ' + index + ')';
+				}
+			}
+			if ( element.type !== '/' + expectedType ) {
+				throw 'Type mismatch, expected /' + expectedType +
+					' but got ' + element.type + ' (at index ' + index + ')';
+			}
+		}
+		newData.push( element );
+	}
+
+	parentNode = node;
+	parentType = parentNode.getType();
+	for ( i = 0; i < data.length; i++ ) {
+		if ( data[i].type === undefined ) {
+			// Content, write through
+			// TODO check that content is allowed at the current offset
+			// TODO make this aware of text nodes
+			newData.push( data[i] );
+		} else if ( data[i].type.charAt( 0 ) !== '/' ) {
+			// Opening
+			// Make sure that opening this element here does not violate the
+			// parent/children rules. If it does, insert stuff to fix it
+			childType = data[i].type;
+			openings = [];
+			do {
+				allowedParents = ve.dm.factory.getParentNodeTypes( childType );
+				parentsOK = allowedParents === null ||
+					$.inArray( parentType, allowedParents ) !== -1;
+				if ( !parentsOK ) {
+					// We can't have this as the parent
+					if ( allowedParents.length === 0 ) {
+						throw 'Cannot insert ' + childType + ' because it ' +
+							' cannot have a parent (at index ' + i + ')';
+					}
+					// Open an allowed node around this node
+					childType = allowedParents[0];
+					openings.unshift( { 'type': childType } );
+				}
+			} while ( !parentsOK );
+			closings = [];
+			do {
+				allowedChildren = ve.dm.factory.getChildNodeTypes( parentType );
+				childrenOK = allowedChildren === null ||
+					$.inArray( childType, allowedChildren ) !== -1;
+				if ( !childrenOK ) {
+					// We can't insert this into this parent
+					// Close the parent and try one level up
+					closings.push( { 'type': '/' + parentType } );
+					if ( openingStack.length > 0 ) {
+						parentType = openingStack.pop();
+						// The opening was on openingStack, so we're closing
+						// a node that was opened within data. Don't track
+						// that on closingStack
+					} else {
+						parentNode = parentNode.getParent();
+						if ( !parentNode ) {
+							throw 'Cannot insert ' + childType + ' even ' +
+								' after closing all containing nodes ' +
+								'(at index ' + i + ')';
+						}
+						parentType = parentNode.getType();
+					}
+				}
+			} while( !childrenOK );
+
+			for ( j = 0; j < closings.length; j++ ) {
+				writeElement( closings[j], i );
+			}
+			for ( j = 0; j < openings.length; j++ ) {
+				writeElement( openings[j], i );
+			}
+			writeElement( data[i], i );
+			fixupStack.push( { 'expectedType': '/' + data[i].type, 'openings': openings, 'closings': closings } );
+			parentType = data[i].type;
+		} else {
+			// Closing
+			writeElement( data[i], i );
+			if ( fixupStack.length > 0 && fixupStack[fixupStack.length - 1].expectedType == data[i].type ) {
+				popped = fixupStack.pop();
+				// Go through these in reverse!
+				for ( j = popped.openings.length - 1; j >= 0; j-- ) {
+					writeElement( { 'type': '/' + popped.openings[j].type }, i );
+				}
+				for ( j = popped.closings.length - 1; j >= 0; j-- ) {
+					// TODO keep actual elements around so attributes are preserved
+					writeElement( { 'type': popped.closings[j].type.substr( 1 ) }, i );
+				}
+			}
+		}
+	}
+
+	// Close unclosed openings
+	while ( openingStack.length > 0 ) {
+		popped = openingStack[openingStack.length - 1];
+		// writeElement() will perform the actual pop() that removes
+		// popped from openingStack
+		writeElement( { 'type': '/' + popped }, i );
+	}
+	// Re-open closed nodes
+	while ( closingStack.length > 0 ) {
+		popped = closingStack[closingStack.length - 1];
+		// writeElement() will perform the actual pop() that removes
+		// popped from closingStack
+		writeElement( { 'type': popped.substr( 1 ) }, i );
+	}
+
+	return newData;
+};
+
 /* Inheritance */
 
 ve.extendClass( ve.dm.Document, ve.Document );
