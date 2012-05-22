@@ -12,7 +12,11 @@ ve.dm.Transaction = function() {
 /* Static Methods */
 
 ve.dm.Transaction.newFromInsertion = function( doc, offset, data ) {
-	// Implement me!
+	var toInsert = doc.fixupInsertion( data, offset );
+	var tx = new ve.dm.Transaction();
+	tx.pushRetain( offset );
+	tx.pushReplace( [], toInsert );
+	return tx;
 };
 
 ve.dm.Transaction.newFromRemoval = function( doc, range ) {
