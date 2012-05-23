@@ -40,13 +40,17 @@ app.get('/', function(req, res){
 	res.end('There are also forms for experiments: <a href="/_wikitext/">wikitext -&gt; html</a> and <a href="/_html/">HTML DOM -&gt; WikiText</a>');
 });
 
+var htmlSpecialChars = function ( s ) {
+	return s.replace(/&/g,'&amp;')
+		.replace(/</g,'&lt;')
+		.replace(/"/g,'&quot;')
+		.replace(/'/g,'&#039;');
+};
+
 var textarea = function ( res, content ) {
 	res.write('<form method=POST><textarea name="content" cols=90 rows=9>');
 	res.write( ( content &&
-					content.replace(/&/g,'&amp;')
-					.replace(/</g,'&lt;')
-					.replace(/"/g,'&quot;')
-					.replace(/'/g,'&#039;')) ||
+					htmlSpecialChars( content) ) ||
 			'');
 	res.write('</textarea><br><input type="submit"></form>');
 };
@@ -67,11 +71,13 @@ app.post(/\/_html\/(.*)/, function(req, res){
 	env.pageName = req.params[0];
 	res.setHeader('Content-type', 'text/html; charset=UTF-8');
 	var p = new html5.Parser();
-	p.parse( req.body.content );
+	p.parse( '<html><body>' + req.body.content + '</body></html>' );
 	res.write('<pre style="background-color: #efefef">');
 	new WikitextSerializer({env: env}).serializeDOM( 
 		p.tree.document.childNodes[0].childNodes[1], 
-		res.write.bind( res ) );
+		function( c ) {
+			res.write( htmlSpecialChars( c ) );
+		});
 	res.write('</pre>');
 	res.write( "<hr>Your HTML DOM:" );
 	textarea( res, req.body.content );

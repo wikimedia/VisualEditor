@@ -156,7 +156,7 @@ WSP._linkEndHandler =  function( state, token ) {
 			} else {
 				state.dropContent = false;
 				return ']';
-			};
+			}
 		} else {
 			return WSP._serializeHTMLEndTag( state, token );
 		}
@@ -242,7 +242,7 @@ WSP.tagToWikitext = {
 	meta: { 
 		start: function ( state, token ) {
 			var argDict = state.env.KVtoHash( token.attribs );
-			if ( argDict.typeof === 'mw:tag' ) {
+			if ( argDict['typeof'] === 'mw:tag' ) {
 				return '<' + argDict.content + '>';
 			} else {
 				return WSP._serializeHTMLTag( state, token );
@@ -394,22 +394,17 @@ WSP._serializeDOM = function( node, state ) {
 			//console.warn( node.nodeName.toLowerCase() );
 			var children = node.childNodes,
 				name = node.nodeName.toLowerCase(),
-				handler = this.tagToWikitext[name];
-			if ( handler ) {
-				var tkAttribs = this._getDOMAttribs(node.attributes),
-					tkRTInfo = this._getDOMRTInfo(node.attributes);
+				tkAttribs = this._getDOMAttribs(node.attributes),
+				tkRTInfo = this._getDOMRTInfo(node.attributes);
 
-				this._serializeToken( state, 
-						new TagTk( name, tkAttribs, tkRTInfo ) );
-				for ( var i = 0, l = children.length; i < l; i++ ) {
-					// serialize all children
-					this._serializeDOM( children[i], state );
-				}
-				this._serializeToken( state, 
-						new EndTagTk( name, tkAttribs, tkRTInfo ) );
-			} else {
-				console.warn( 'Unhandled element: ' + node.outerHTML );
+			this._serializeToken( state, 
+					new TagTk( name, tkAttribs, tkRTInfo ) );
+			for ( var i = 0, l = children.length; i < l; i++ ) {
+				// serialize all children
+				this._serializeDOM( children[i], state );
 			}
+			this._serializeToken( state, 
+					new EndTagTk( name, tkAttribs, tkRTInfo ) );
 			break;
 		case Node.TEXT_NODE:
 			this._serializeToken( state, node.data );
