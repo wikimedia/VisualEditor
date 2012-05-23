@@ -185,7 +185,7 @@ TemplateHandler.prototype._processTemplateAndTitle = function( token, frame, cb,
 
 	// Hook up the inputPipeline output events to our handlers
 	pipeline.addListener( 'chunk', this._onChunk.bind ( this, cb ) );
-	pipeline.addListener( 'end', this._onEnd.bind ( this ) );
+	pipeline.addListener( 'end', this._onEnd.bind ( this, cb ) );
 	// Feed the pipeline. XXX: Support different formats.
 	this.manager.env.dp( 'TemplateHandler._processTemplateAndTitle', name, attribs );
 	pipeline.process ( src, name );
@@ -205,9 +205,9 @@ TemplateHandler.prototype._onChunk = function( cb, chunk ) {
  * Handle the end event emitted by the parser pipeline after fully processing
  * the template source.
  */
-TemplateHandler.prototype._onEnd = function( token, frame, cb ) {
+TemplateHandler.prototype._onEnd = function( cb ) {
 	this.manager.env.dp( 'TemplateHandler._onEnd' );
-	cb( { tokens: [token] } );
+	cb( { tokens: [] } );
 };
 
 

@@ -644,10 +644,10 @@ ParserFunctions.prototype.pf_namespacee = function ( token, frame, cb, args ) {
 	cb( { tokens: [target.split(':').pop() || 'Main'] } );
 };
 ParserFunctions.prototype.pf_pagename = function ( token, frame, cb, args ) {
-	cb( { tokens: [this.env.pageName] } );
+	cb( { tokens: [this.env.pageName || ''] } );
 };
 ParserFunctions.prototype.pf_pagenamebase = function ( token, frame, cb, args ) {
-	cb( { tokens: [this.env.pageName] } );
+	cb( { tokens: [this.env.pageName || ''] } );
 };
 ParserFunctions.prototype.pf_scriptpath = function ( token, frame, cb, args ) {
 	cb( { tokens: [this.env.wgScriptPath] } );

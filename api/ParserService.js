@@ -57,12 +57,14 @@ var textarea = function ( res, content ) {
  * Form-based HTML DOM -> wikitext interface for manual testing
  */
 app.get(/\/_html\/(.*)/, function(req, res){
+	env.pageName = req.params[0];
 	res.setHeader('Content-type', 'text/html; charset=UTF-8');
 	res.write( "Your HTML DOM:" );
 	textarea( res );
 	res.end('');
 });
 app.post(/\/_html\/(.*)/, function(req, res){
+	env.pageName = req.params[0];
 	res.setHeader('Content-type', 'text/html; charset=UTF-8');
 	var p = new html5.Parser();
 	p.parse( req.body.content );
@@ -80,12 +82,14 @@ app.post(/\/_html\/(.*)/, function(req, res){
  * Form-based wikitext -> HTML DOM interface for manual testing
  */
 app.get(/\/_wikitext\/(.*)/, function(req, res){
+	env.pageName = req.params[0];
 	res.setHeader('Content-type', 'text/html; charset=UTF-8');
 	res.write( "Your wikitext:" );
 	textarea( res );
 	res.end('');
 });
 app.post(/\/_wikitext\/(.*)/, function(req, res){
+	env.pageName = req.params[0];
 	res.setHeader('Content-type', 'text/html; charset=UTF-8');
 	var parser = parserPipelineFactory.makePipeline( 'text/x-mediawiki/full' );
 	parser.on('document', function ( document ) {
@@ -111,7 +115,7 @@ app.post(/\/_wikitext\/(.*)/, function(req, res){
  * Regular article parsing
  */
 app.get(/\/(.*)/, function(req, res){
-	env.pageName = req.params.title;
+	env.pageName = req.params[0];
 	var parser = parserPipelineFactory.makePipeline( 'text/x-mediawiki/full' );
 	parser.on('document', function ( document ) {
 		res.end(document.body.innerHTML);
@@ -134,6 +138,7 @@ app.get(/\/(.*)/, function(req, res){
  * Regular article serialization using POST
  */
 app.post(/\/(.*)/, function(req, res){
+	env.pageName = req.params[0];
 	res.setHeader('Content-type', 'text/plain; charset=UTF-8');
 	var p = new html5.Parser();
 	p.parse( req.body.content );
