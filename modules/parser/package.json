@@ -14,7 +14,8 @@
 		"jsdom": "0.x.x",
 		"pegjs": "0.x.x",
 		"lru-cache": "1.x.x",
-		"async": "0.x.x"
+		"async": "0.x.x",
+		"express": "2.5.x"
 	},
 	"devDependencies": {
 		"colors": "0.x.x",

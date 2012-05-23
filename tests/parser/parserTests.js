@@ -297,7 +297,7 @@ ParserTests.prototype.normalizeHTML = function (source) {
 	source = source.replace(/[\r\n]/g, '');
 	try {
 		this.htmlparser.parse('<body>' + source + '</body>');
-		return this.htmlparser.document.getElementsByTagName('body')[0]
+		return this.htmlparser.document.childNodes[0].childNodes[1]
 			.innerHTML
 			// a few things we ignore for now..
 			//.replace(/\/wiki\/Main_Page/g, 'Main Page')
