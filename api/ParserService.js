@@ -62,14 +62,14 @@ var textarea = function ( res, content ) {
  */
 app.get(/\/_html\/(.*)/, function(req, res){
 	env.pageName = req.params[0];
-	res.setHeader('Content-type', 'text/html; charset=UTF-8');
+	res.setHeader('Content-Type', 'text/html; charset=UTF-8');
 	res.write( "Your HTML DOM:" );
 	textarea( res );
 	res.end('');
 });
 app.post(/\/_html\/(.*)/, function(req, res){
 	env.pageName = req.params[0];
-	res.setHeader('Content-type', 'text/html; charset=UTF-8');
+	res.setHeader('Content-Type', 'text/html; charset=UTF-8');
 	var p = new html5.Parser();
 	p.parse( '<html><body>' + req.body.content + '</body></html>' );
 	res.write('<pre style="background-color: #efefef">');
@@ -89,14 +89,14 @@ app.post(/\/_html\/(.*)/, function(req, res){
  */
 app.get(/\/_wikitext\/(.*)/, function(req, res){
 	env.pageName = req.params[0];
-	res.setHeader('Content-type', 'text/html; charset=UTF-8');
+	res.setHeader('Content-Type', 'text/html; charset=UTF-8');
 	res.write( "Your wikitext:" );
 	textarea( res );
 	res.end('');
 });
 app.post(/\/_wikitext\/(.*)/, function(req, res){
 	env.pageName = req.params[0];
-	res.setHeader('Content-type', 'text/html; charset=UTF-8');
+	res.setHeader('Content-Type', 'text/html; charset=UTF-8');
 	var parser = parserPipelineFactory.makePipeline( 'text/x-mediawiki/full' );
 	parser.on('document', function ( document ) {
 		res.write(document.body.innerHTML);
@@ -107,7 +107,7 @@ app.post(/\/_wikitext\/(.*)/, function(req, res){
 		res.end('');
 	});
 	try {
-		res.setHeader('Content-type', 'text/html; charset=UTF-8');
+		res.setHeader('Content-Type', 'text/html; charset=UTF-8');
 		console.log('starting parsing of ' + req.params[0]);
 		// FIXME: This does not handle includes or templates correctly
 		parser.process( req.body.content );
@@ -133,7 +133,7 @@ app.get(/\/(.*)/, function(req, res){
 		//res.end("hello world\n" + req.method + ' ' + req.params.title);
 	});
 	try {
-		res.setHeader('Content-type', 'text/html; charset=UTF-8');
+		res.setHeader('Content-Type', 'text/html; charset=UTF-8');
 		console.log('starting parsing of ' + req.params[0]);
 		// FIXME: This does not handle includes or templates correctly
 		parser.process('{{:' + req.params[0] + '}}' );
@@ -149,7 +149,7 @@ app.get(/\/(.*)/, function(req, res){
  */
 app.post(/\/(.*)/, function(req, res){
 	env.pageName = req.params[0];
-	res.setHeader('Content-type', 'text/plain; charset=UTF-8');
+	res.setHeader('Content-Type', 'text/plain; charset=UTF-8');
 	var p = new html5.Parser();
 	p.parse( req.body.content );
 	new WikitextSerializer({env: env}).serializeDOM( 
