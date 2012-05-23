@@ -8,6 +8,23 @@ ve.ce = {
 };
 
 /**
+ * List of all nodes that may need to have "slug" on their left or right side
+ * For more information look into ve.ce.BrancNode.js
+ *
+ * TODO: Implement it as a one of node rules instead of a "global" array
+ *
+ * @static
+ * @member
+ */
+ve.ce.sluggable = [
+	'image',
+	'list',
+	'table',
+	'alienInline',
+	'alienBlock'
+];
+
+/**
  * RegExp pattern for matching all whitespaces in HTML text.
  *
  * \u0020 (32)  space
