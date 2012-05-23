@@ -50,27 +50,26 @@ ve.dm.HTMLConverter.Node = {
  *     'attributes': Additional attributes to set for this element (optional)
  */
 ve.dm.HTMLConverter.elementTypes = {
-	'p': { 'leafNode': true, 'type': 'paragraph' },
-	'h1': { 'leafNode': true, 'type': 'heading', 'attributes': { 'level': 1 } },
-	'h2': { 'leafNode': true, 'type': 'heading', 'attributes': { 'level': 2 } },
-	'h3': { 'leafNode': true, 'type': 'heading', 'attributes': { 'level': 3 } },
-	'h4': { 'leafNode': true, 'type': 'heading', 'attributes': { 'level': 4 } },
-	'h5': { 'leafNode': true, 'type': 'heading', 'attributes': { 'level': 5 } },
-	'h6': { 'leafNode': true, 'type': 'heading', 'attributes': { 'level': 6 } },
-	'img': { 'leafnode': true, 'type': 'image' },
-	'li': { 'leafNode': false, 'type': 'listItem' },
-	'dt': { 'leafNode': false, 'type': 'listItem', 'attributes': { 'style': 'term' } },
-	'dd': { 'leafNode': false, 'type': 'listItem', 'attributes': { 'style': 'definition' } },
-	'pre': { 'leafNode': true, 'type': 'preformatted' },
-	'table': { 'leafNode': false, 'type': 'table' },
+	'p': { 'leafNode': false, 'canContainContent': true, 'type': 'paragraph' },
+	'h1': { 'leafNode': false, 'canContainContent': true, 'type': 'heading', 'attributes': { 'level': 1 } },
+	'h2': { 'leafNode': false, 'canContainContent': true, 'type': 'heading', 'attributes': { 'level': 2 } },
+	'h3': { 'leafNode': false, 'canContainContent': true, 'type': 'heading', 'attributes': { 'level': 3 } },
+	'h4': { 'leafNode': false, 'canContainContent': true, 'type': 'heading', 'attributes': { 'level': 4 } },
+	'h5': { 'leafNode': false, 'canContainContent': true, 'type': 'heading', 'attributes': { 'level': 5 } },
+	'h6': { 'leafNode': false, 'canContainContent': true, 'type': 'heading', 'attributes': { 'level': 6 } },
+	'img': { 'leafnode': true, 'canContainContent': false, 'type': 'image' },
+	'li': { 'leafNode': false, 'canContainContent': false, 'type': 'listItem' },
+	'dt': { 'leafNode': false, 'canContainContent': false, 'type': 'listItem', 'attributes': { 'style': 'term' } },
+	'dd': { 'leafNode': false, 'canContainContent': false, 'type': 'listItem', 'attributes': { 'style': 'definition' } },
+	'pre': { 'leafNode': false, 'canContainContent': true, 'type': 'preformatted' },
+	'table': { 'leafNode': false, 'canContainContent': false, 'type': 'table' },
 	'tbody': { }, // Ignore tbody for now, we might want it later for header/footer support though
-	'tr': { 'leafNode': false, 'type': 'tableRow' },
-	'th': { 'leafNode': false, 'type': 'tableHeading' },
-	'td': { 'leafNode': false, 'type': 'tableCell' },
-	'ul': { 'leafNode': false, 'type': 'list', 'attributes': { 'style': 'bullet' } },
-	'ol': { 'leafNode': false, 'type': 'list', 'attributes': { 'style': 'number' } },
-	'dl': { 'leafNode': false, 'type': 'definitionList' },
-	'alien': { 'leafNode': true, 'type': 'alien' }
+	'tr': { 'leafNode': false, 'canContainContent': false, 'type': 'tableRow' },
+	'th': { 'leafNode': false, 'canContainContent': false, 'type': 'tableHeading' },
+	'td': { 'leafNode': false, 'canContainContent': false, 'type': 'tableCell' },
+	'ul': { 'leafNode': false, 'canContainContent': false, 'type': 'list', 'attributes': { 'style': 'bullet' } },
+	'ol': { 'leafNode': false, 'canContainContent': false, 'type': 'list', 'attributes': { 'style': 'number' } },
+	'dl': { 'leafNode': false, 'canContainContent': false, 'type': 'definitionList' }
 
 	// Missing types that will end up being alien nodes (not a complete list):
 	// div, center, blockquote, caption, tbody, thead, tfoot, horizontalRule, br, img, video, audio
@@ -239,6 +238,8 @@ ve.dm.HTMLConverter.getLinearModel = function( node, options ) {
  *             linear model. This means that any content in this node will be put in the output
  *             directly rather than being wrapped in paragraphs, and that any child nodes that are
  *             elements will not be descended into.
+ *         'canContainContent': If set and set to true, this element is allowed to contain annotated
+ *             text and inline elements.
  * @returns {Array} Linear model data
  */
 ve.dm.HTMLConverter.prototype.convert = function( node, annotations, typeData ) {
@@ -269,11 +270,6 @@ ve.dm.HTMLConverter.prototype.convert = function( node, annotations, typeData ) 
 
 	for ( i = 0; i < node.childNodes.length; i++ ) {
 		child = node.childNodes[i];
-		if ( child.nodeName === 'ALIEN' ) {
-			data.push( { 'type': 'alien', 'attributes': { 'html': child.innerHTML } } );
-			data.push( { 'type': '/alien' } );
-			continue;
-		}
 		switch ( child.nodeType ) {
 			case types.ELEMENT_NODE:
 				// Check if this is an annotation
@@ -281,25 +277,35 @@ ve.dm.HTMLConverter.prototype.convert = function( node, annotations, typeData ) 
 				if ( annotation ) {
 					// If we have annotated text within a branch node, open a paragraph
 					// Leaf nodes don't need this because they're allowed to contain content
-					if ( !paragraphOpened && !typeData.leafNode ) {
+					if ( !paragraphOpened && typeData && !typeData.canContainContent ) {
 						data.push( { 'type': 'paragraph' } );
 						paragraphOpened = true;
 					}
 					// Recurse into this node
 					data = data.concat( ve.dm.HTMLConverter.prototype.convert( child,
 						annotations.concat( [ annotation ] ),
-						{ 'leafNode': true }
+						{ 'leafNode': true, 'canContainContent': true }
 					) );
 				} else {
-					if ( typeData.leafNode ) {
+					// Skip over unknown nodes, keeping their innerHTML as an attribute
+					if ( !( child.nodeName.toLowerCase() in ve.dm.HTMLConverter.elementTypes ) ) {
+						// Use inline or block depending on parent's ability to contain content
+						var type = typeData.canContainContent ? 'alienInline' : 'alienBlock';
+						data.push( { 'type': type, 'attributes': { 'html': child.innerHTML } } );
+						data.push( { 'type': '/' + type } );
+						continue;
+					}
+					/*
+					if ( typeData.canContainContent ) {
 						// We've found an element node *inside* a leaf node.
 						// This is illegal, so warn and skip it
 						console.warn( 'HTML DOM to linear model conversion error: ' +
-							'found element node (' + child.nodeName + ') inside ' +
-							'leaf node (' + node.nodeName + ')' );
+							'found element that can contain content (' + child.nodeName +
+								') inside another element that can contain content node (' +
+								node.nodeName + ')' );
 						break;
 					}
-					
+					*/
 					// Close the last paragraph, if still open
 					if ( paragraphOpened ) {
 						data.push( { 'type': '/paragraph' } );
@@ -308,6 +314,7 @@ ve.dm.HTMLConverter.prototype.convert = function( node, annotations, typeData ) 
 					
 					// Get the typeData for this node
 					childTypeData = ve.dm.HTMLConverter.elementTypes[child.nodeName.toLowerCase()];
+
 					if ( childTypeData ) {
 						// Recurse into this node
 						// Don't pass annotations through; we should never have those here
@@ -325,8 +332,7 @@ ve.dm.HTMLConverter.prototype.convert = function( node, annotations, typeData ) 
 				break;
 			case types.TEXT_NODE:
 				// If we have annotated text within a branch node, open a paragraph
-				// Leaf nodes don't need this because they're allowed to contain content
-				if ( !paragraphOpened && typeData && !typeData.leafNode ) {
+				if ( !paragraphOpened && typeData && !typeData.canContainContent ) {
 					data.push( { 'type': 'paragraph' } );
 					paragraphOpened = true;
 				}

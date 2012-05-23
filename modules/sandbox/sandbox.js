@@ -569,7 +569,16 @@ $(document).ready( function() {
 	];
 	*/
 	// Define HTML5 DOM
-	var HTML = $( '<div><alien><b>Hello world!</b> What\'s up?</alien><h1>abc</h1><p>a<b>b</b><i>c</i></p><p>Lorem ipsum and</p><table><tbody><tr><td><p><i><b>a</b></i></p></td></tr></tbody></table><ul><li><p>a</p></li></ul><img src="http://dl.dropbox.com/u/1026938/wikia.jpeg"></div>' );
+	var HTML = $(
+		'<div>' +
+			'<div><b>Hello world!</b> What\'s up?</div>' +
+			'<h1>abc</h1>' +
+			'<p>a<b>b</b><i>c</i></p>' +
+			'<p>Lorem ipsum and</p>' +
+			'<table><tbody><tr><td><p><i><b>a</b></i></p></td></tr></tbody></table>' +
+			'<ul><li><p>a</p></li></ul>' +
+			'<p><img src="http://dl.dropbox.com/u/1026938/wikia.jpeg"></p>' +
+		'</div>' );
 
 	/* Sandbox config object. */
 	var options = {

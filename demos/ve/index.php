@@ -110,7 +110,8 @@ include( '../../modules/sandbox/base.php' );
 		<script src="../../modules/ve2/dm/ve.dm.Document.js"></script>
 		<script src="../../modules/ve2/dm/ve.dm.HTMLConverter.js"></script>
 
-		<script src="../../modules/ve2/dm/nodes/ve.dm.AlienNode.js"></script>
+		<script src="../../modules/ve2/dm/nodes/ve.dm.AlienInlineNode.js"></script>
+		<script src="../../modules/ve2/dm/nodes/ve.dm.AlienBlockNode.js"></script>
 		<script src="../../modules/ve2/dm/nodes/ve.dm.DefinitionListItemNode.js"></script>
 		<script src="../../modules/ve2/dm/nodes/ve.dm.DefinitionListNode.js"></script>
 		<script src="../../modules/ve2/dm/nodes/ve.dm.DocumentNode.js"></script>
@@ -139,7 +140,8 @@ include( '../../modules/sandbox/base.php' );
 		<script src="../../modules/ve2/ce/ve.ce.LeafNode.js"></script>
 		<script src="../../modules/ve2/ce/ve.ce.Surface.js"></script>
 
-		<script src="../../modules/ve2/ce/nodes/ve.ce.AlienNode.js"></script>
+		<script src="../../modules/ve2/ce/nodes/ve.ce.AlienInlineNode.js"></script>
+		<script src="../../modules/ve2/ce/nodes/ve.ce.AlienBlockNode.js"></script>
 		<script src="../../modules/ve2/ce/nodes/ve.ce.DefinitionListItemNode.js"></script>
 		<script src="../../modules/ve2/ce/nodes/ve.ce.DefinitionListNode.js"></script>
 		<script src="../../modules/ve2/ce/nodes/ve.ce.DocumentNode.js"></script>
