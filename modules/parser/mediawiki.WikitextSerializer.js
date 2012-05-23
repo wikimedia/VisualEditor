@@ -231,12 +231,12 @@ WSP.tagToWikitext = {
 		}
 	},
 	hr: { start: id("\n----"), end: id("\n") },
-	h1: { start: id("\n="), end: id("=\n") },
-	h2: { start: id("\n=="), end: id("==\n") },
-	h3: { start: id("\n==="), end: id("===\n") },
-	h4: { start: id("\n===="), end: id("====\n") },
-	h5: { start: id("\n====="), end: id("=====\n") },
-	h6: { start: id("\n======"), end: id("======\n") },
+	h1: { start: id("\n\n="), end: id("=\n") },
+	h2: { start: id("\n\n=="), end: id("==\n") },
+	h3: { start: id("\n\n==="), end: id("===\n") },
+	h4: { start: id("\n\n===="), end: id("====\n") },
+	h5: { start: id("\n\n====="), end: id("=====\n") },
+	h6: { start: id("\n\n======"), end: id("======\n") },
 	pre: { start: id("<pre>"), end: id("</pre>") },
 	a: { start: WSP._linkHandler, end: WSP._linkEndHandler },
 	meta: { 

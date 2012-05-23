@@ -116,6 +116,10 @@ app.post(/\/_wikitext\/(.*)/, function(req, res){
  */
 app.get(/\/(.*)/, function(req, res){
 	env.pageName = req.params[0];
+	if ( env.pageName === 'favicon.ico' ) {
+		res.end( 'no favicon yet..');
+		return;
+	}
 	var parser = parserPipelineFactory.makePipeline( 'text/x-mediawiki/full' );
 	parser.on('document', function ( document ) {
 		res.end(document.body.innerHTML);
