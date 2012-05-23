@@ -5,7 +5,7 @@
 
 var cluster = require('cluster');
 var app = require('./ParserService.js');
-var numCPUs = require('os').cpus().length;
+var numCPUs = require('os').cpus().length + 3;
 
 if (cluster.isMaster) {
   // Fork workers.
