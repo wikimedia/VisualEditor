@@ -206,7 +206,7 @@ WSP.tagToWikitext = {
 			if ( state.prevToken.constructor === TagTk && state.prevToken.name === 'tbody' ) {
 				return '';
 			} else {
-				return WSP._serializeTableTag("\n|-", ' |', state, token );
+				return WSP._serializeTableTag("\n|-", '', state, token );
 			}
 		}
 	},
