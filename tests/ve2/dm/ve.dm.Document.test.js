@@ -554,14 +554,14 @@ test( 'isContentOffset', function() {
 			{ 'msg': 'between content branches', 'expected': false },
 			{ 'msg': 'inside emtpy content branch', 'expected': true },
 			{ 'msg': 'between content branches', 'expected': false },
-			{ 'msg': 'begining of content branch and left of inline leaf', 'expected': true },
-			{ 'msg': 'inside content branch with only non-text inline leaf', 'expected': false },
-			{ 'msg': 'end of content branch and right of block leaf', 'expected': true },
-			{ 'msg': 'between content and non-content branches', 'expected': false },
-			{ 'msg': 'between parent and child branches, descending', 'expected': false },
+			{ 'msg': 'begining of content branch, left of inline leaf', 'expected': true },
+			{ 'msg': 'inside content branch with non-text inline leaf', 'expected': false },
+			{ 'msg': 'end of content branch, right of block leaf', 'expected': true },
+			{ 'msg': 'between content, non-content branches', 'expected': false },
+			{ 'msg': 'between parent, child branches, descending', 'expected': false },
 			{ 'msg': 'inside empty non-content branch', 'expected': false },
-			{ 'msg': 'between parent and child branches, ascending', 'expected': false },
-			{ 'msg': 'between non-content branch and block leaf', 'expected': false },
+			{ 'msg': 'between parent, child branches, ascending', 'expected': false },
+			{ 'msg': 'between non-content branch, block leaf', 'expected': false },
 			{ 'msg': 'inside block leaf', 'expected': false },
 			{ 'msg': 'right of document', 'expected': false }
 		];
@@ -594,30 +594,41 @@ test( 'isStructuralOffset', function() {
 		{ 'type': '/alienBlock' }
 	],
 	cases = [
-		{ 'msg': 'left of document', 'expected': true },
-		{ 'msg': 'begining of content branch', 'expected': false },
-		{ 'msg': 'left of non-text inline leaf', 'expected': false },
-		{ 'msg': 'inside non-text inline leaf', 'expected': false },
-		{ 'msg': 'right of non-text inline leaf', 'expected': false },
-		{ 'msg': 'between characters', 'expected': false },
-		{ 'msg': 'end of content branch', 'expected': false },
-		{ 'msg': 'between content branches', 'expected': true },
-		{ 'msg': 'inside emtpy content branch', 'expected': false },
-		{ 'msg': 'between content branches', 'expected': true },
-		{ 'msg': 'begining of content branch and left of inline leaf', 'expected': false },
-		{ 'msg': 'inside content branch with only non-text inline leaf', 'expected': false },
-		{ 'msg': 'end of content branch and right of inline leaf', 'expected': false },
-		{ 'msg': 'between content and non-content branches', 'expected': true },
-		{ 'msg': 'between parent and child branches, descending', 'expected': true },
-		{ 'msg': 'inside empty non-content branch', 'expected': true },
-		{ 'msg': 'between parent and child branches, ascending', 'expected': true },
-		{ 'msg': 'between non-content branch and block leaf', 'expected': true },
-		{ 'msg': 'inside block leaf', 'expected': false },
-		{ 'msg': 'right of document', 'expected': true }
+		{ 'msg': 'left of document', 'expected': [true, true] },
+		{ 'msg': 'begining of content branch', 'expected': [false, false] },
+		{ 'msg': 'left of non-text inline leaf', 'expected': [false, false] },
+		{ 'msg': 'inside non-text inline leaf', 'expected': [false, false] },
+		{ 'msg': 'right of non-text inline leaf', 'expected': [false, false] },
+		{ 'msg': 'between characters', 'expected': [false, false] },
+		{ 'msg': 'end of content branch', 'expected': [false, false] },
+		{ 'msg': 'between content branches', 'expected': [true, true] },
+		{ 'msg': 'inside emtpy content branch', 'expected': [false, false] },
+		{ 'msg': 'between content branches', 'expected': [true, true] },
+		{ 'msg': 'begining of content branch, left of inline leaf', 'expected': [false, false] },
+		{ 'msg': 'inside content branch with non-text inline leaf', 'expected': [false, false] },
+		{ 'msg': 'end of content branch, right of inline leaf', 'expected': [false, false] },
+		{ 'msg': 'between content, non-content branches', 'expected': [true, true] },
+		{ 'msg': 'between parent, child branches, descending', 'expected': [true, false] },
+		{ 'msg': 'inside empty non-content branch', 'expected': [true, true] },
+		{ 'msg': 'between parent, child branches, ascending', 'expected': [true, false] },
+		{ 'msg': 'between non-content branch, block leaf', 'expected': [true, true] },
+		{ 'msg': 'inside block leaf', 'expected': [false, false] },
+		{ 'msg': 'right of document', 'expected': [true, true] }
 	];
-	expect( data.length + 1 );
+	expect( ( data.length + 1 ) * 2 );
 	for ( var i = 0; i < cases.length; i++ ) {
-		strictEqual( ve.dm.Document.isStructuralOffset( data, i ), cases[i].expected, cases[i].msg );
+		var left = data[i - 1] ? ( data[i - 1].type || data[i - 1][0] ) : '[start]',
+			right = data[i] ? ( data[i].type || data[i][0] ) : '[end]';
+		strictEqual(
+			ve.dm.Document.isStructuralOffset( data, i ),
+			cases[i].expected[0],
+			cases[i].msg + ' (' + left + '|' + right + ' @ ' + i + ')'
+		);
+		strictEqual(
+			ve.dm.Document.isStructuralOffset( data, i, true ),
+			cases[i].expected[1],
+			cases[i].msg + ', unrestricted (' + left + '|' + right + ' @ ' + i + ')'
+		);
 	}
 } );
 
@@ -654,14 +665,14 @@ test( 'isElementData', 1, function() {
 		{ 'msg': 'between content branches', 'expected': true },
 		{ 'msg': 'inside emtpy content branch', 'expected': true },
 		{ 'msg': 'between content branches', 'expected': true },
-		{ 'msg': 'begining of content branch and left of inline leaf', 'expected': true },
-		{ 'msg': 'inside content branch with only non-text leaf', 'expected': true },
-		{ 'msg': 'end of content branch and right of inline leaf', 'expected': true },
-		{ 'msg': 'between content and non-content branches', 'expected': true },
-		{ 'msg': 'between parent and child branches, descending', 'expected': true },
+		{ 'msg': 'begining of content branch, left of inline leaf', 'expected': true },
+		{ 'msg': 'inside content branch with non-text leaf', 'expected': true },
+		{ 'msg': 'end of content branch, right of inline leaf', 'expected': true },
+		{ 'msg': 'between content, non-content branches', 'expected': true },
+		{ 'msg': 'between parent, child branches, descending', 'expected': true },
 		{ 'msg': 'inside empty non-content branch', 'expected': true },
-		{ 'msg': 'between parent and child branches, ascending', 'expected': true },
-		{ 'msg': 'between non-content branch and block leaf', 'expected': true },
+		{ 'msg': 'between parent, child branches, ascending', 'expected': true },
+		{ 'msg': 'between non-content branch, block leaf', 'expected': true },
 		{ 'msg': 'inside block leaf', 'expected': true },
 		{ 'msg': 'right of document', 'expected': false }
 	];
