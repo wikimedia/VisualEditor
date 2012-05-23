@@ -10,6 +10,9 @@ ve.ce.AlienInlineNode = function( model ) {
 	// Inheritance
 	ve.ce.LeafNode.call( this, 'alienInline', model );
 
+	// DOM Changes
+	this.$.addClass( 've-ce-alienInlineNode' );
+
 	// Events
 	this.model.addListenerMethod( this, 'update', 'onUpdate' );
 
@@ -30,12 +33,6 @@ ve.ce.AlienInlineNode = function( model ) {
 	this.$.attr( 'contenteditable', false );
 	*/
 
-	// TODO: move to .css file
-	this.$.css( {
-		'display': 'inline',
-		'border': 'rgba(0,0,0,0.3) dashed 1px',
-		'background-color': 'rgba(255,255,186,0.3)'
-	} );
 	this.onUpdate();
 };
 

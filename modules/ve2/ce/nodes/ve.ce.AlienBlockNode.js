@@ -10,6 +10,9 @@ ve.ce.AlienBlockNode = function( model ) {
 	// Inheritance
 	ve.ce.LeafNode.call( this, 'alienBlock', model );
 
+	// DOM Changes
+	this.$.addClass( 've-ce-alienBlockNode' );
+
 	// Events
 	this.model.addListenerMethod( this, 'update', 'onUpdate' );
 
@@ -30,12 +33,6 @@ ve.ce.AlienBlockNode = function( model ) {
 	this.$.attr( 'contenteditable', false );
 	*/
 
-	// TODO: move to .css file
-	this.$.css( {
-		'display': 'block',
-		'border': 'rgba(0,0,0,0.3) dashed 1px',
-		'background-color': 'rgba(255,255,186,0.3)'
-	} );
 	this.onUpdate();
 };
 
