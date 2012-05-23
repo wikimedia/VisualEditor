@@ -435,6 +435,12 @@ AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parent
 				// maybeSyncReturn callback
 				if ( resTokens && resTokens.length ) {
 					if ( resTokens.length === 1 ) {
+						if ( resTokens[0] === undefined ) {
+							console.warn('transformer ' + transformer + 
+									' returned undefined token!');
+							resTokens.shift();
+							break;
+						}
 						if ( token === resTokens[0] && ! resTokens.rank ) {
 							// token not modified, continue with
 							// transforms.

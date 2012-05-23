@@ -343,8 +343,12 @@ function ExternalLinkHandler( manager, isInclude ) {
 		// img_options production only.
 		ExternalLinkHandler.prototype.imageParser = new PegTokenizer();
 	}
-	this.onEnd();
+	this._reset();
 }
+
+ExternalLinkHandler.prototype._reset = function () {
+	this.linkCount = 1;
+};
 
 ExternalLinkHandler.prototype.rank = 1.15;
 ExternalLinkHandler.prototype._imageExtensions = {
@@ -403,6 +407,10 @@ ExternalLinkHandler.prototype.onExtLink = function ( token, manager, cb ) {
 	//console.warn('extlink href: ' + href );
 	//console.warn( 'content: ' + JSON.stringify( content, null, 2 ) );
 	// validate the href
+	if ( ! content.length ) {
+		content = ['[' + this.linkCount + ']'];
+		this.linkCount++;
+	}
 	if ( this.imageParser.tokenizeURL( href ) ) {
 		if ( content.length === 1 && 
 				content[0].constructor === String &&
@@ -433,10 +441,6 @@ ExternalLinkHandler.prototype.onExtLink = function ( token, manager, cb ) {
 				].concat( content, [ new EndTagTk( 'a' )])
 		} );
 	} else {
-		if ( content === '' ) {
-			content = ['[' + this.linkCount + ']'];
-			this.linkCount++;
-		}
 		cb( {
 			tokens: ['[', href, ' ' ].concat( content, [']'] )
 		} );
@@ -444,8 +448,8 @@ ExternalLinkHandler.prototype.onExtLink = function ( token, manager, cb ) {
 };
 
 ExternalLinkHandler.prototype.onEnd = function ( token, manager, cb ) {
-	this.linkCount = 1;
-	return { tokens: token };
+	this._reset();
+	cb( { tokens: [ token ] } );
 };
 
 
