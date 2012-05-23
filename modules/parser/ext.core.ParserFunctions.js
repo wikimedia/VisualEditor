@@ -259,7 +259,8 @@ ParserFunctions.prototype.pf_lcfirst = function ( token, frame, cb, args ) {
 	}
 };
 ParserFunctions.prototype.pf_padleft = function ( token, frame, cb, params ) {
-	var target = params[0].k;
+	var target = params[0].k,
+		env = this.env;
 	if ( ! params[1] ) {
 		return cb( {} );
 	}
@@ -278,7 +279,7 @@ ParserFunctions.prototype.pf_padleft = function ( token, frame, cb, params ) {
 					}
 					cb( { tokens: [target] } );
 				} else {
-					self.env.dp( 'padleft no pad width', args );
+					env.dp( 'padleft no pad width', args );
 					cb( {} );
 				}
 			}
@@ -287,7 +288,8 @@ ParserFunctions.prototype.pf_padleft = function ( token, frame, cb, params ) {
 };
 
 ParserFunctions.prototype.pf_padright = function ( token, frame, cb, params ) {
-	var target = params[0].k;
+	var target = params[0].k,
+		env = this.env;
 	if ( ! params[1] ) {
 		return cb( {} );
 	}
@@ -307,6 +309,7 @@ ParserFunctions.prototype.pf_padright = function ( token, frame, cb, params ) {
 					}
 					cb( { tokens: [target] } );
 				} else {
+					env.dp( 'padright no pad width', args );
 					cb( {} );
 				}
 			}
