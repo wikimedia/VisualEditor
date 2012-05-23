@@ -27,6 +27,12 @@ ve.ce.Surface = function( $container, model ) {
 
 /* Methods */
 
+ve.ce.Surface.prototype.proxy = function( func ) {
+	var _this = this;
+	return( function() {
+		return func.apply( _this, arguments );
+	});
+};
 
 /**
  * @method
