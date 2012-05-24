@@ -33,7 +33,7 @@ ve.ce.BranchNode = function( type, model, $element ) {
 
 /* Static Members */
 
-ve.ce.BranchNode.$slugTemplate = $( '<span class="ve-ce-slug">&nbsp;</span>' );
+ve.ce.BranchNode.$slugTemplate = $( '<span class="ve-ce-slug">&#xFEFF;</span>' );
 
 /* Static Methods */
 
