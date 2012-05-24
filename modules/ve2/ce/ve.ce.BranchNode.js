@@ -31,6 +31,10 @@ ve.ce.BranchNode = function( type, model, $element ) {
 	}
 };
 
+/* Static Members */
+
+ve.ce.BranchNode.$slugTemplate = $( '<span class="ve-ce-slug">&nbsp;</span>' );
+
 /* Static Methods */
 
 ve.ce.BranchNode.getDomWrapperType = function( model, key ) {
@@ -48,6 +52,26 @@ ve.ce.BranchNode.getDomWrapperType = function( model, key ) {
 ve.ce.BranchNode.getDomWrapper = function( model, key ) {
 	var type = ve.ce.BranchNode.getDomWrapperType( model, key );
 	return $( '<' + type + '></' + type + '>' );
+};
+
+/**
+ * Checks if a node can have a slug before or after it.
+ *
+ * TODO: Implement it as a one of node rules instead of a static array
+ *
+ * @static
+ * @method
+ * @param {ve.ce.Node} node Node to check
+ * @returns {Boolean} Node can have a slug
+ */
+ve.ce.BranchNode.canNodeHaveSlug = function( node ) {
+	return [
+		'image',
+		'list',
+		'table',
+		'alienInline',
+		'alienBlock'
+	].indexOf( node.getType() ) !== -1;
 };
 
 /* Methods */
@@ -114,27 +138,23 @@ ve.ce.BranchNode.prototype.onSplice = function( index, howmany ) {
 	this.$slugs.remove();
 
 	// Iterate over all children of this branch and add slugs in appropriate places
-	var	slug = '<span class="ve-ce-slug">&nbsp;</span>',
-		$slug;
-	for( i = 0; i < this.children.length; i++ ) {
-		if ( ve.ce.sluggable.indexOf( this.children[i].type ) !== -1 ) {
+	for ( i = 0; i < this.children.length; i++ ) {
+		if ( ve.ce.BranchNode.canNodeHaveSlug( this.children[i] ) ) {
 			if ( i === 0 ) {
-				// first
-				$slug = $( slug );
-				this.children[i].$.before( $slug );
-				this.$slugs = this.$slugs.add($slug);
+				// First sluggable child (left side)
+				this.$slugs = this.$slugs.add(
+					ve.ce.BranchNode.$slugTemplate.clone().insertBefore( this.children[i].$ )
+				);
 			}
-			if ( i === this.children.length - 1 ) {
-				// last
-				$slug = $( slug );
-				this.children[i].$.after( $slug );
-				this.$slugs = this.$slugs.add($slug);
-			}
-			if ( this.children[i + 1] && ve.ce.sluggable.indexOf( this.children[i + 1].type ) !== -1 ) {
-				// special next to special
-				$slug = $( slug );
-				this.children[i].$.after( $slug );
-				this.$slugs = this.$slugs.add($slug);
+			if (
+				// Last sluggable child (right side)
+				i === this.children.length - 1 ||
+				// Sluggable child followed by another sluggable child (in between)
+				( this.children[i + 1] && ve.ce.BranchNode.canNodeHaveSlug( this.children[i + 1] ) )
+			) {
+				this.$slugs = this.$slugs.add(
+					ve.ce.BranchNode.$slugTemplate.clone().insertAfter( this.children[i].$ )
+				);
 			}
 		}
 	}
