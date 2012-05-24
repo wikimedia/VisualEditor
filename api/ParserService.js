@@ -149,7 +149,7 @@ app.get(/\/(.*)/, function(req, res){
  */
 app.post(/\/(.*)/, function(req, res){
 	env.pageName = req.params[0];
-	res.setHeader('Content-Type', 'text/plain; charset=UTF-8');
+	res.setHeader('Content-Type', 'text/x-mediawiki; charset=UTF-8');
 	var p = new html5.Parser();
 	p.parse( req.body.content );
 	new WikitextSerializer({env: env}).serializeDOM( 

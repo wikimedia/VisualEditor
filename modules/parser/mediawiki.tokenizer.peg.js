@@ -91,15 +91,28 @@ PegTokenizer.prototype.process = function( text, cacheKey ) {
 		text += "\n";
 	}
 
+	var chunkCB;
+	if ( this.canCache ) {
+		chunkCB = this.onCacheChunk.bind( this );
+	} else {
+		chunkCB = this.emit.bind( this, 'chunk' );
+	}
 	// XXX: Commented out exception handling during development to get
 	// reasonable traces.
-	//try {
-		var chunkCB;
-		if ( this.canCache ) {
-			chunkCB = this.onCacheChunk.bind( this );
-		} else {
-			chunkCB = this.emit.bind( this, 'chunk' );
+	if ( ! this.env.debug ) {
+		try {
+			this.tokenizer.tokenize(text, 'start', 
+					// callback
+					chunkCB,
+					// inline break test
+					this
+					);
+			this.onEnd();
+		} catch (e) {
+			console.warn( 'Tokenizer error in ' + cacheKey + ': ' + e );
+			console.trace();
 		}
+	} else {
 		this.tokenizer.tokenize(text, 'start', 
 				// callback
 				chunkCB,
@@ -107,11 +120,7 @@ PegTokenizer.prototype.process = function( text, cacheKey ) {
 				this
 				);
 		this.onEnd();
-	/*} catch (e) {
-		err = e;
-		console.warn( e );
-		console.trace();
-	}*/
+	}
 };
 
 PegTokenizer.prototype.onCacheChunk = function ( chunk ) {
