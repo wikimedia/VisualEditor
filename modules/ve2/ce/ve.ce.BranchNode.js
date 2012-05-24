@@ -65,13 +65,9 @@ ve.ce.BranchNode.getDomWrapper = function( model, key ) {
  * @returns {Boolean} Node can have a slug
  */
 ve.ce.BranchNode.canNodeHaveSlug = function( node ) {
-	return [
-		'image',
-		'list',
-		'table',
-		'alienInline',
-		'alienBlock'
-	].indexOf( node.getType() ) !== -1;
+	return !node.canContainContent() &&
+		node.getParentNodeTypes() === null &&
+		node.getType() !== 'text';
 };
 
 /* Methods */

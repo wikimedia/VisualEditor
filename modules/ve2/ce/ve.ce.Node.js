@@ -24,6 +24,42 @@ ve.ce.Node = function( type, model, $element ) {
 /* Methods */
 
 /**
+ * Gets a list of allowed child node types.
+ *
+ * This method passes through to the model.
+ *
+ * @method
+ * @returns {String[]|null} List of node types allowed as children or null if any type is allowed
+ */
+ve.ce.Node.prototype.getChildNodeTypes = function() {
+	return this.model.getChildNodeTypes();
+};
+
+/**
+ * Gets a list of allowed parent node types.
+ *
+ * This method passes through to the model.
+ *
+ * @method
+ * @returns {String[]|null} List of node types allowed as parents or null if any type is allowed
+ */
+ve.ce.Node.prototype.getParentNodeTypes = function() {
+	return this.model.getParentNodeTypes();
+};
+
+/**
+ * Checks if model is for a node that can have children.
+ *
+ * This method passes through to the model.
+ *
+ * @method
+ * @returns {Boolean} Model node can have children
+ */
+ve.ce.Node.prototype.canHaveChildren = function() {
+	return this.model.canHaveChildren();
+};
+
+/**
  * Checks if model is for a node that can have children.
  *
  * This method passes through to the model.
@@ -65,7 +101,7 @@ ve.ce.Node.prototype.isWrapped = function() {
  * @method
  * @returns {Boolean} Node can contain content
  */
-ve.dm.Node.prototype.canContainContent = function() {
+ve.ce.Node.prototype.canContainContent = function() {
 	return this.model.canContainContent();
 };
 
@@ -75,7 +111,7 @@ ve.dm.Node.prototype.canContainContent = function() {
  * @method
  * @returns {Boolean} Node is content
  */
-ve.dm.Node.prototype.isContent = function() {
+ve.ce.Node.prototype.isContent = function() {
 	return this.model.isContent();
 };
 
