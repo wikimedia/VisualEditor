@@ -81,7 +81,7 @@ $wgResourceModules += array(
 	),
 	'ext.visualEditor.ve' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
-		// ve
+			// ve
 			'jquery/jquery.json.js',
 			've2/ve.js',
 			've2/ve.NodeFactory.js',
@@ -172,10 +172,10 @@ $wgResourceModules += array(
 			've2/ui/tools/ve.ui.FormatDropdownTool.js'
 		),
 		'styles' => array(
-			// es
-			've/ce/styles/ve.ce.Surface.css',
-			've/ce/styles/ve.ce.Content.css',
-			've/ce/styles/ve.ce.Document.css',
+			// ce
+			've2/ce/styles/ve.ce.Surface.css',
+			've2/ce/styles/ve.ce.Content.css',
+			've2/ce/styles/ve.ce.Document.css',
 			// ui
 			've2/ui/styles/ve.ui.Context.css',
 			've2/ui/styles/ve.ui.Inspector.css',

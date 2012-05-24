@@ -1,0 +1,27 @@
+.ve-ce-surface {
+	overflow: hidden;
+	font-size: 1em; /* to look more like MediaWiki use: 0.8em */;
+}
+
+.ve-ce-surface-textarea {
+	position: absolute;
+	z-index: -1;
+	opacity: 0;
+	color: white;
+	background-color: white;
+	border: none;
+	padding: 0;
+	margin: 0;
+	width: 1px;
+}
+
+.ve-ce-surface-textarea:focus {
+	outline: none;
+}
+
+.ve-ce-surface-cursor {
+	position: absolute;
+	background-color: black;
+	width: 1px;
+	display: none;
+}

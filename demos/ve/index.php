@@ -5,10 +5,10 @@
 		<meta charset="UTF-8" />
 		<title>VisualEditor Demo</title>
 		<!-- ce -->
-		<link rel="stylesheet" href="../../modules/ve/ce/styles/ve.ce.Document.css">
-		<link rel="stylesheet" href="../../modules/ve/ce/styles/ve.ce.Content.css">
-		<link rel="stylesheet" href="../../modules/ve/ce/styles/ve.ce.Surface.css">
-		<link rel="stylesheet" href="../../modules/ve/ce/styles/ve.ce.Nodes.css">
+		<link rel="stylesheet" href="../../modules/ve2/ce/styles/ve.ce.Document.css">
+		<link rel="stylesheet" href="../../modules/ve2/ce/styles/ve.ce.Content.css">
+		<link rel="stylesheet" href="../../modules/ve2/ce/styles/ve.ce.Surface.css">
+		<link rel="stylesheet" href="../../modules/ve2/ce/styles/ve.ce.Nodes.css">
 		<!-- ui -->
 		<link rel="stylesheet" href="../../modules/ve2/ui/styles/ve.ui.Context.css">
 		<link rel="stylesheet" href="../../modules/ve2/ui/styles/ve.ui.Inspector.css">

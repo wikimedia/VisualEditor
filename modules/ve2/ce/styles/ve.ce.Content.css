@@ -1,0 +1,89 @@
+.ve-ce-content {
+	position: relative;
+	z-index: 1;
+}
+
+.ve-ce-content-line,
+.ve-ce-content-ruler {
+	line-height: 1.5em;
+	cursor: text;
+	white-space: nowrap;
+	color: #000000;
+}
+
+.ve-ce-content-ruler {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: inline-block;
+	z-index: -1000;
+}
+
+.ve-ce-content-line.empty {
+	display: block;
+	width: 0px;
+}
+
+.ve-ce-content-whitespace {
+	color: #ffffff;
+}
+
+.ve-ce-content-range {
+	display: none;
+	position: absolute;
+	background-color: #b3d6f6;
+	cursor: text;
+	z-index: -1;
+}
+
+.ve-ce-content-format-object {
+	background-color: rgba(0,0,0,0.05);
+	border-radius: 0.25em;
+	margin: 1px 0 1px 1px;
+	padding: 0.25em 0;
+	cursor: default;
+}
+
+.ve-ce-content-format-object * {
+	cursor: default !important;
+}
+
+.ve-ce-content-format-object a:link,
+.ve-ce-content-format-object a:visited,
+.ve-ce-content-format-object a:active {
+	color: #0645AD;
+	text-decoration: none;
+}
+
+.ve-ce-content-format-textStyle-italic,
+.ve-ce-content-format-textStyle-emphasize {
+	font-style: italic;
+}
+
+.ve-ce-content-format-textStyle-bold,
+.ve-ce-content-format-textStyle-strong {
+	font-weight: bold;
+}
+
+.ve-ce-content-format-link {
+	color: #0645AD;
+	text-decoration: underline;
+}
+
+.ve-ce-content-format-textStyle-big {
+	font-size: 1.2em;
+}
+
+.ve-ce-content-format-textStyle-small,
+.ve-ce-content-format-textStyle-subScript,
+.ve-ce-content-format-textStyle-superScript {
+	font-size: .8em;
+}
+
+.ve-ce-content-format-textStyle-subScript {
+	vertical-align: sub;
+}
+
+.ve-ce-content-format-textStyle-superScript {
+	vertical-align: super;
+}
