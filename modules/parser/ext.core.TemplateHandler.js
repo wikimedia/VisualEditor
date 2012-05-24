@@ -371,11 +371,13 @@ TemplateRequest.prototype._handler = function (error, response, body) {
 					normalizeTitle = page.title;
 				} else {
 					console.warn( 'Did not find page revisions for ' + this.title );
-					src = 'No revisions for ' + this.title;
+					if ( this.title === this.manager.env.pageName ) {
+						src = 'No revisions for ' + this.title;
+					}
 				}
 			});
 		} catch ( e2 ) {
-			console.warn( 'Did not find page revisions in the returned body:' + body );
+			console.warn( 'Did not find page revisions in the returned body:' + body + e2 );
 			src = 'No content for ' + this.title;
 		}
 		

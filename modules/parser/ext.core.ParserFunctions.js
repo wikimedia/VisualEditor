@@ -655,6 +655,9 @@ ParserFunctions.prototype.pf_pagenamebase = function ( token, frame, cb, args ) 
 ParserFunctions.prototype.pf_scriptpath = function ( token, frame, cb, args ) {
 	cb( { tokens: [this.env.wgScriptPath] } );
 };
+ParserFunctions.prototype.pf_talkpagename = function ( token, frame, cb, args ) {
+	cb( { tokens: [this.env.pageName.replace(/^[^:]:/, 'Talk:' ) || ''] } );
+};
 
 
 if (typeof module == "object") {
