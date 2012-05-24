@@ -933,6 +933,13 @@ test( 'getRelativeStructuralOffset', function() {
 			'expected': 5
 		},
 		{
+			'msg': '1 right, unrestricted',
+			'offset': 5,
+			'distance': 1,
+			'unrestricted': true,
+			'expected': 8
+		},
+		{
 			'msg': '2 right',
 			'offset': 0,
 			'distance': 2,
@@ -952,10 +959,24 @@ test( 'getRelativeStructuralOffset', function() {
 			'expected': 56
 		},
 		{
+			'msg': '1 left, unrestricted',
+			'offset': 8,
+			'distance': -1,
+			'unrestricted': true,
+			'expected': 5
+		},
+		{
 			'msg': '2 left',
 			'offset': 59,
 			'distance': -2,
 			'expected': 53
+		},
+		{
+			'msg': '2 left, unrestricted',
+			'offset': 8,
+			'distance': -2,
+			'unrestricted': true,
+			'expected': 0
 		}
 	];
 	expect( cases.length );
@@ -986,6 +1007,20 @@ test( 'getNearestStructuralOffset', function() {
 			'expected': 5
 		},
 		{
+			'msg': 'unspecified direction results in shortest distance, unrestricted',
+			'offset': 7,
+			'direction': 0,
+			'unrestricted': true,
+			'expected': 8
+		},
+		{
+			'msg': 'unspecified direction results in shortest distance, unrestricted',
+			'offset': 6,
+			'direction': 0,
+			'unrestricted': true,
+			'expected': 5
+		},
+		{
 			'msg': 'positive direction results in next valid offset to the right',
 			'offset': 1,
 			'direction': 1,
@@ -998,6 +1033,13 @@ test( 'getNearestStructuralOffset', function() {
 			'expected': 5
 		},
 		{
+			'msg': 'positive direction results in next valid offset to the right, unrestricted',
+			'offset': 6,
+			'direction': 1,
+			'unrestricted': true,
+			'expected': 8
+		},
+		{
 			'msg': 'negative direction results in next valid offset to the left',
 			'offset': 1,
 			'direction': -1,
@@ -1008,6 +1050,13 @@ test( 'getNearestStructuralOffset', function() {
 			'offset': 4,
 			'direction': -1,
 			'expected': 0
+		},
+		{
+			'msg': 'negative direction results in next valid offset to the left, unrestricted',
+			'offset': 7,
+			'direction': -1,
+			'unrestricted': true,
+			'expected': 5
 		}
 	];
 	expect( cases.length );
