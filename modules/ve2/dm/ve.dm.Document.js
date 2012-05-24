@@ -233,6 +233,7 @@ ve.dm.Document.isContentOffset = function( data, offset ) {
  * @method
  * @param {Array} data Document data
  * @param {Integer} offset Document offset
+ * @param {Boolean} [unrestricted] Only return true if any kind of element can be inserted at offset
  * @returns {Boolean} Structure can be inserted at offset
  */
 ve.dm.Document.isStructuralOffset = function( data, offset, unrestricted ) {
@@ -627,7 +628,77 @@ ve.dm.Document.prototype.rebuildNodes = function( parent, index, numNodes, offse
 };
 
 /**
+ * Gets an offset a given distance from another using a callback to check if offsets are valid.
+ *
+ * - If {offset} is not already valid, one step will be used to move it to an valid one.
+ * - If {distance} is zero the result will either be {offset} if it's already valid or the
+ *   nearest valid offset to the right if possible and to the left otherwise.
+ * - If {offset} is after the last valid offset and {distance} is >= 1, or if {offset} if
+ *   before the first valid offset and {distance} <= 1 than the result will be the nearest
+ *   valid offset in the opposite direction.
+ *
+ * @method
+ * @param {Integer} offset Offset to start from
+ * @param {Integer} distance Number of valid offsets to move
+ * @param {Function} callback Function to call to check if an offset is valid which will be
+ * given two intital arguments of data and offset
+ * @param {Mixed} [...] Additional arguments to pass to the callback
+ * @returns {Integer} Relative valid offset
+ */
+ve.dm.Document.prototype.getRelativeOffset = function( offset, distance, callback ) {
+	var args = Array.prototype.slice.call( arguments, 3 );
+	// If offset is already a structural offset and distance is zero than no further work is needed,
+	// otherwise distance should be 1 so that we can get out of the invalid starting offset
+	if ( distance === 0 ) {
+		if ( callback.apply( window, [this.data, offset].concat( args ) ) ) {
+			return offset;
+		} else {
+			distance = 1;
+		}
+	}
+	var direction = (
+			offset <= 0 ? 1 : (
+				offset >= this.data.length ? -1 : (
+					distance > 0 ? 1 : -1
+				)
+			)
+		),
+		start = offset,
+		i = start + direction,
+		steps = 0,
+		turnedAround = false;
+	distance = Math.abs( distance );
+	while ( i >= 0 && i <= this.data.length ) {
+		if ( callback.apply( window, [this.data, i].concat( args ) ) ) {
+			steps++;
+			offset = i;
+			if ( distance === steps ) {
+				return offset;
+			}
+		} else if (
+			// Don't keep turning around over and over
+			!turnedAround &&
+			// Only turn around if not a single step could be taken
+			steps === 0 &&
+			// Only turn around if we're about to reach the edge
+			( ( direction < 0 && i === 0 ) || ( direction > 0 && i === this.data.length ) )
+		) {
+			// Start over going in the opposite direction
+			direction *= -1;
+			i = start;
+			distance = 1;
+			turnedAround = true;
+		}
+		i += direction;
+	}
+	return offset;
+};
+
+/**
  * Gets a content offset a given distance forwards or backwards from another.
+ *
+ * This method is a wrapper around {getRelativeOffset}, using {ve.dm.Document.isContentOffset} as
+ * the offset validation callback.
  *
  * @method
  * @param {Integer} offset Offset to start from
@@ -635,24 +706,98 @@ ve.dm.Document.prototype.rebuildNodes = function( parent, index, numNodes, offse
  * @returns {Integer} Relative content offset
  */
 ve.dm.Document.prototype.getRelativeContentOffset = function( offset, distance ) {
-	if ( distance === 0 ) {
+	return this.getRelativeOffset( offset, distance, ve.dm.Document.isContentOffset );
+};
+
+/**
+ * Gets the nearest content offset to a given offset.
+ *
+ * If the offset is already a valid offset, it will be returned unchanged. This method differs from
+ * calling {getRelativeContentOffset} with a zero length differece because the direction can be
+ * controlled without nessecarily moving the offset if it's already valid. Also, if the direction
+ * is 0 or undefined than nearest offsets will be found to the left and right and the one with the
+ * shortest distance will be used.
+ *
+ * This method is a wrapper around {getRelativeOffset}, using {ve.dm.Document.isContentOffset} as
+ * the offset validation callback.
+ *
+ * @method
+ * @param {Integer} offset Offset to start from
+ * @param {Integer} [direction] Direction to prefer matching offset in, -1 for left and 1 for right
+ * @returns {Integer} Nearest content offset
+ */
+ve.dm.Document.prototype.getNearestContentOffset = function( offset, direction ) {
+	if ( direction === undefined ) {
+		var left = this.getRelativeOffset( offset, -1, ve.dm.Document.isContentOffset ),
+			right = this.getRelativeOffset( offset, 1, ve.dm.Document.isContentOffset );
+		return offset - left < right - offset ? left : right;
+	} else {
+		if ( ve.dm.Document.isContentOffset( this.data, offset ) ) {
+			return offset;
+		}
+		return this.getRelativeOffset(
+			offset, direction > 0 ? 1 : -1, ve.dm.Document.isContentOffset
+		);
+	}
+};
+
+/**
+ * Gets a structural offset a given distance forwards or backwards from another.
+ *
+ * This method is a wrapper around {getRelativeOffset}, using {ve.dm.Document.isStructuralOffset} as
+ * the offset validation callback.
+ *
+ * @method
+ * @param {Integer} offset Offset to start from
+ * @param {Integer} distance Number of structural offsets to move
+ * @param {Boolean} [unrestricted] Only return true if any kind of element can be inserted at offset
+ * @returns {Integer} Relative structural offset
+ */
+ve.dm.Document.prototype.getRelativeStructuralOffset = function( offset, distance, unrestricted ) {
+	// Optimization: start and end are always unrestricted structural offsets
+	if ( distance === 0 && ( offset === 0 || offset === this.data.length ) ) {
 		return offset;
 	}
-	var direction = distance > 0 ? 1 : -1,
-		i = offset + direction,
-		steps = 0;
-	distance = Math.abs( distance );
-	while ( i > 0 && i < this.data.length ) {
-		if ( !ve.dm.Document.isStructuralOffset( this.data, i ) ) {
-			steps++;
-			offset = i;
-			if ( distance === steps ) {
-				return offset;
-			}
+	return this.getRelativeOffset(
+		offset, distance, ve.dm.Document.isStructuralOffset, unrestricted
+	);
+};
+
+/**
+ * Gets the nearest structural offset to a given offset.
+ *
+ * If the offset is already a valid offset, it will be returned unchanged. This method differs from
+ * calling {getRelativeStructuralOffset} with a zero length differece because the direction can be
+ * controlled without nessecarily moving the offset if it's already valid. Also, if the direction
+ * is 0 or undefined than nearest offsets will be found to the left and right and the one with the
+ * shortest distance will be used.
+ *
+ * This method is a wrapper around {getRelativeOffset}, using {ve.dm.Document.isStructuralOffset} as
+ * the offset validation callback.
+ *
+ * @method
+ * @param {Integer} offset Offset to start from
+ * @param {Integer} [direction] Direction to prefer matching offset in, -1 for left and 1 for right
+ * @param {Boolean} [unrestricted] Only return true if any kind of element can be inserted at offset
+ * @returns {Integer} Nearest structural offset
+ */
+ve.dm.Document.prototype.getNearestStructuralOffset = function( offset, direction, unrestricted ) {
+	if ( !direction ) {
+		var left = this.getRelativeOffset(
+				offset, -1, ve.dm.Document.isStructuralOffset, unrestricted
+			),
+			right = this.getRelativeOffset(
+				offset, 1, ve.dm.Document.isStructuralOffset, unrestricted
+			);
+		return offset - left < right - offset ? left : right;
+	} else {
+		if ( ve.dm.Document.isStructuralOffset( this.data, offset, unrestricted ) ) {
+			return offset;
 		}
-		i += direction;
+		return this.getRelativeOffset(
+			offset, direction > 0 ? 1 : -1, ve.dm.Document.isStructuralOffset, unrestricted
+		);
 	}
-	return offset;
 };
 
 // TODO this function needs more work but it seems to work, mostly

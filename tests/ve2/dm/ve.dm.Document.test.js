@@ -739,9 +739,39 @@ test( 'rebuildNodes', function() {
 	);
 } );
 
-test( 'getRelativeContentOffset', 1, function() {
+test( 'getRelativeContentOffset', function() {
 	var doc = new ve.dm.Document( ve.dm.example.data ),
 		cases = [
+		{
+			'msg': 'invalid starting offset with zero distance gets corrected',
+			'offset': 0,
+			'distance': 0,
+			'expected': 1
+		},
+		{
+			'msg': 'invalid starting offset with zero distance gets corrected',
+			'offset': 59,
+			'distance': 0,
+			'expected': 58
+		},
+		{
+			'msg': 'valid offset with zero distance returns same offset',
+			'offset': 2,
+			'distance': 0,
+			'expected': 2
+		},
+		{
+			'msg': 'invalid starting offset gets corrected',
+			'offset': 0,
+			'distance': -1,
+			'expected': 1
+		},
+		{
+			'msg': 'invalid starting offset gets corrected',
+			'offset': 59,
+			'distance': 1,
+			'expected': 58
+		},
 		{
 			'msg': 'first content offset is farthest left',
 			'offset': 2,
@@ -807,6 +837,185 @@ test( 'getRelativeContentOffset', 1, function() {
 	for ( var i = 0; i < cases.length; i++ ) {
 		strictEqual(
 			doc.getRelativeContentOffset( cases[i].offset, cases[i].distance ),
+			cases[i].expected,
+			cases[i].msg
+		);
+	}
+} );
+
+test( 'getNearestContentOffset', function() {
+	var doc = new ve.dm.Document( ve.dm.example.data ),
+		cases = [
+		{
+			'msg': 'unspecified direction results in shortest distance',
+			'offset': 0,
+			'direction': 0,
+			'expected': 1
+		},
+		{
+			'msg': 'unspecified direction results in shortest distance',
+			'offset': 5,
+			'direction': 0,
+			'expected': 4
+		},
+		{
+			'msg': 'positive direction results in next valid offset to the right',
+			'offset': 5,
+			'direction': 1,
+			'expected': 9
+		},
+		{
+			'msg': 'negative direction results in next valid offset to the left',
+			'offset': 5,
+			'direction': -1,
+			'expected': 4
+		}
+	];
+	expect( cases.length );
+	for ( var i = 0; i < cases.length; i++ ) {
+		strictEqual(
+			doc.getNearestContentOffset( cases[i].offset, cases[i].direction ),
+			cases[i].expected,
+			cases[i].msg
+		);
+	}
+} );
+
+test( 'getRelativeStructuralOffset', function() {
+	var doc = new ve.dm.Document( ve.dm.example.data ),
+		cases = [
+		{
+			'msg': 'invalid starting offset with zero distance gets corrected',
+			'offset': 1,
+			'distance': 0,
+			'expected': 5
+		},
+		{
+			'msg': 'invalid starting offset with zero distance gets corrected',
+			'offset': 58,
+			'distance': 0,
+			'expected': 59
+		},
+		{
+			'msg': 'valid offset with zero distance returns same offset',
+			'offset': 0,
+			'distance': 0,
+			'expected': 0
+		},
+		{
+			'msg': 'invalid starting offset gets corrected',
+			'offset': 2,
+			'distance': -1,
+			'expected': 0
+		},
+		{
+			'msg': 'invalid starting offset gets corrected',
+			'offset': 57,
+			'distance': 1,
+			'expected': 59
+		},
+		{
+			'msg': 'first structural offset is farthest left',
+			'offset': 5,
+			'distance': -2,
+			'expected': 0
+		},
+		{
+			'msg': 'last structural offset is farthest right',
+			'offset': 56,
+			'distance': 2,
+			'expected': 59
+		},
+		{
+			'msg': '1 right',
+			'offset': 0,
+			'distance': 1,
+			'expected': 5
+		},
+		{
+			'msg': '2 right',
+			'offset': 0,
+			'distance': 2,
+			'expected': 6
+		},
+		{
+			'msg': '2 right, unrestricted',
+			'offset': 0,
+			'distance': 2,
+			'unrestricted': true,
+			'expected': 8
+		},
+		{
+			'msg': '1 left',
+			'offset': 59,
+			'distance': -1,
+			'expected': 56
+		},
+		{
+			'msg': '2 left',
+			'offset': 59,
+			'distance': -2,
+			'expected': 53
+		}
+	];
+	expect( cases.length );
+	for ( var i = 0; i < cases.length; i++ ) {
+		strictEqual(
+			doc.getRelativeStructuralOffset(
+				cases[i].offset, cases[i].distance, cases[i].unrestricted
+			),
+			cases[i].expected,
+			cases[i].msg
+		);
+	}
+} );
+
+test( 'getNearestStructuralOffset', function() {
+	var doc = new ve.dm.Document( ve.dm.example.data ),
+		cases = [
+		{
+			'msg': 'unspecified direction results in shortest distance',
+			'offset': 1,
+			'direction': 0,
+			'expected': 0
+		},
+		{
+			'msg': 'unspecified direction results in shortest distance',
+			'offset': 4,
+			'direction': 0,
+			'expected': 5
+		},
+		{
+			'msg': 'positive direction results in next valid offset to the right',
+			'offset': 1,
+			'direction': 1,
+			'expected': 5
+		},
+		{
+			'msg': 'positive direction results in next valid offset to the right',
+			'offset': 4,
+			'direction': 1,
+			'expected': 5
+		},
+		{
+			'msg': 'negative direction results in next valid offset to the left',
+			'offset': 1,
+			'direction': -1,
+			'expected': 0
+		},
+		{
+			'msg': 'negative direction results in next valid offset to the left',
+			'offset': 4,
+			'direction': -1,
+			'expected': 0
+		}
+	];
+	expect( cases.length );
+	for ( var i = 0; i < cases.length; i++ ) {
+		strictEqual(
+			doc.getNearestStructuralOffset(
+				cases[i].offset, cases[i].direction, cases[i].unrestricted
+			),
 			cases[i].expected,
 			cases[i].msg
 		);
