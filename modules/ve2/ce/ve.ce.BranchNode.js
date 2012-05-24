@@ -78,22 +78,6 @@ ve.ce.BranchNode.getDomWrapper = function( model, key ) {
 	return $( '<' + type + '></' + type + '>' );
 };
 
-/**
- * Checks if a node can have a slug before or after it.
- *
- * TODO: Implement it as a one of node rules instead of a static array
- *
- * @static
- * @method
- * @param {ve.ce.Node} node Node to check
- * @returns {Boolean} Node can have a slug
- */
-ve.ce.BranchNode.canNodeHaveSlug = function( node ) {
-	return !node.canContainContent() &&
-		node.getParentNodeTypes() === null &&
-		node.getType() !== 'text';
-};
-
 /* Methods */
 
 /**
@@ -173,7 +157,7 @@ ve.ce.BranchNode.prototype.onSplice = function( index, howmany ) {
 
 	// Iterate over all children of this branch and add slugs in appropriate places
 	for ( i = 0; i < this.children.length; i++ ) {
-		if ( ve.ce.BranchNode.canNodeHaveSlug( this.children[i] ) ) {
+		if ( this.children[i].canHaveSlug() ) {
 			if ( i === 0 ) {
 				// First sluggable child (left side)
 				this.$slugs = this.$slugs.add(
@@ -184,7 +168,7 @@ ve.ce.BranchNode.prototype.onSplice = function( index, howmany ) {
 				// Last sluggable child (right side)
 				i === this.children.length - 1 ||
 				// Sluggable child followed by another sluggable child (in between)
-				( this.children[i + 1] && ve.ce.BranchNode.canNodeHaveSlug( this.children[i + 1] ) )
+				( this.children[i + 1] && this.children[i + 1].canHaveSlug() )
 			) {
 				this.$slugs = this.$slugs.add(
 					ve.ce.BranchNode.$slugTemplate.clone().insertAfter( this.children[i].$ )

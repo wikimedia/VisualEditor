@@ -116,6 +116,17 @@ ve.ce.Node.prototype.isContent = function() {
 };
 
 /**
+ * Checks if this node can have a slug before or after it.
+ *
+ * @static
+ * @method
+ * @returns {Boolean} Node can have a slug
+ */
+ve.ce.Node.prototype.canHaveSlug = function() {
+	return !this.canContainContent() && this.getParentNodeTypes() === null && this.type !== 'text';
+};
+
+/**
  * Gets model length.
  *
  * This method passes through to the model.
