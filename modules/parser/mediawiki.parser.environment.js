@@ -254,8 +254,12 @@ MWParserEnvironment.prototype.normalizeTitle = function( name ) {
  * @fixme do this for real eh
  */
 MWParserEnvironment.prototype.resolveTitle = function( name, namespace ) {
-	// hack! FIXME: match against proper list of namespaces
-	if ( ( name.indexOf(':') == -1 || name.match(/^H:/) ) && namespace ) {
+	// Resolve subpages
+	if ( name.length && name[0] === '/' ) {
+		name = this.normalizeTitle( this.pageName ) + name;
+	}
+	// FIXME: match against proper list of namespaces
+	if ( name.indexOf(':') == -1 && namespace ) {
 		// hack hack hack
 		name = namespace + ':' + this.normalizeTitle( name );
 	}
