@@ -207,11 +207,27 @@ ve.dm.Document.isContentOffset = function( data, offset ) {
 /**
  * Checks if structure can be inserted at an offset in document data.
  *
+ * If the {unrestricted} param is true than only offsets where any kind of element can be inserted
+ * will return true. This can be used to detect the difference between a location that a paragraph
+ * can be inserted, such as between two tables but not direclty inside a table.
+ *
  * This method assumes that any value that has a type property that's a string is an element object.
  *
- * @example Structural offsets:
+ * @example Structural offsets (unrestricted = false):
  *      <heading> a </heading> <paragraph> b c <img> </img> </paragraph>
  *     ^         . .          ^           . . .     .      .            ^
+ *
+ * @example Structural offsets (unrestricted = true):
+ *      <heading> a </heading> <paragraph> b c <img> </img> </paragraph>
+ *     ^         . .          ^           . . .     .      .            ^
+ *
+ * @example Structural offsets (unrestricted = false):
+ *      <list> <listItem> </listItem> <list>
+ *     ^      ^          ^           ^      ^
+ *
+ * @example Content branch offsets (unrestricted = true):
+ *      <list> <listItem> </listItem> <list>
+ *     ^      .          ^           .      ^
  *
  * @static
  * @method
@@ -219,7 +235,7 @@ ve.dm.Document.isContentOffset = function( data, offset ) {
  * @param {Integer} offset Document offset
  * @returns {Boolean} Structure can be inserted at offset
  */
-ve.dm.Document.isStructuralOffset = function( data, offset ) {
+ve.dm.Document.isStructuralOffset = function( data, offset, unrestricted ) {
 	// Edges are always structural
 	if ( offset === 0 || offset === data.length ) {
 		return true;
@@ -242,15 +258,31 @@ ve.dm.Document.isStructuralOffset = function( data, offset ) {
 				// Is a closing
 				left.type.charAt( 0 ) === '/' &&
 				// Is a branch
-				factory.canNodeHaveChildren( left.type.substr( 1 ) )
+				factory.canNodeHaveChildren( left.type.substr( 1 ) ) &&
+				(
+					// Only apply this rule in unrestricted mode
+					!unrestricted ||
+					// Right of an unrestricted branch
+					// <list><listItem><paragraph>a</paragraph>|</listItem></list>|
+					// Both are non-content branches that can have any kind of child
+					factory.getParentNodeTypes( left.type.substr( 1 ) ) === null
+				)
 			) ||
-			// Left of branch
+			// Left of a branch
 			// |<list>|<listItem>|<paragraph>a</paragraph></listItem></list>
 			(
 				// Is not a closing
 				right.type.charAt( 0 ) !== '/' &&
 				// Is a branch
-				factory.canNodeHaveChildren( right.type )
+				factory.canNodeHaveChildren( right.type ) &&
+				(
+					// Only apply this rule in unrestricted mode
+					!unrestricted ||
+					// Left of an unrestricted branch
+					// |<list><listItem>|<paragraph>a</paragraph></listItem></list>
+					// Both are non-content branches that can have any kind of child
+					factory.getParentNodeTypes( right.type ) === null
+				)
 			) ||
 			// Inside empty non-content branch
 			// <list>|</list> or <list><listItem>|</listItem></list>
@@ -258,7 +290,13 @@ ve.dm.Document.isStructuralOffset = function( data, offset ) {
 				// Inside empty element
 				'/' + left.type === right.type &&
 				// Both are non-content branches (right is the same type)
-				factory.canNodeHaveGrandchildren( left.type )
+				factory.canNodeHaveGrandchildren( left.type ) &&
+				(
+					// Only apply this rule in unrestricted mode
+					!unrestricted ||
+					// Both are non-content branches that can have any kind of child
+					factory.getChildNodeTypes( left.type ) === null
+				)
 			)
 		)
 	);
