@@ -364,22 +364,19 @@ TemplateRequest.prototype._handler = function (error, response, body) {
 			console.warn( "------------------------------------------\n" + body );
 			console.warn( "------------------------------------------" );
 		}
-		if ( !data.query.pages.length ) {
-			console.warn( 'Did not find page revisions for ' + this.title );
-			src = 'No revisions for ' + this.title;
-		} else {
-
-			try {
-				$.each( data.query.pages, function(i, page) {
-					if (page.revisions && page.revisions.length) {
-						src = page.revisions[0]['*'];
-						normalizeTitle = page.title;
-					}
-				});
-			} catch ( e2 ) {
-				console.warn( 'Did not find page revisions in the returned body:' + body );
-				src = 'No content for ' + this.title;
-			}
+		try {
+			$.each( data.query.pages, function(i, page) {
+				if (page.revisions && page.revisions.length) {
+					src = page.revisions[0]['*'];
+					normalizeTitle = page.title;
+				} else {
+					console.warn( 'Did not find page revisions for ' + this.title );
+					src = 'No revisions for ' + this.title;
+				}
+			});
+		} catch ( e2 ) {
+			console.warn( 'Did not find page revisions in the returned body:' + body );
+			src = 'No content for ' + this.title;
 		}
 		
 		// check for #REDIRECT
