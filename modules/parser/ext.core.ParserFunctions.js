@@ -574,17 +574,17 @@ ParserFunctions.prototype.pf_pagenamee = function ( token, frame, cb, args ) {
 };
 ParserFunctions.prototype.pf_fullpagename = function ( token, frame, cb, args ) {
 	var target = args[0].k;
-	cb( { tokens: target && [target] || ["http://example.com/fixme/"] } );
+	cb( { tokens: [target || this.env.pageName ] } );
 };
 ParserFunctions.prototype.pf_fullpagenamee = function ( token, frame, cb, args ) {
 	var target = args[0].k;
-	cb( { tokens: target && [target] || ["http://example.com/fixme/"] } );
+	cb( { tokens: [ target || this.env.pageName ] } );
 };
 // This should be doable with the information in the envirionment
 // (this.env) already.
 ParserFunctions.prototype.pf_fullurl = function ( token, frame, cb, args ) {
 	var target = args[0].k;
-	cb( { tokens: target && [target] || ["http://example.com/fixme/"] } );
+	cb( { tokens: [ target || this.env.wgScriptPath + this.env.pageName || "http://example.com/fixme/" ] } );
 };
 ParserFunctions.prototype.pf_urlencode = function ( token, frame, cb, args ) {
 	var target = args[0].k;
