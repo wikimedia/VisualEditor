@@ -109,6 +109,9 @@ include( '../../modules/sandbox/base.php' );
 		<script src="../../modules/ve2/dm/ve.dm.Transaction.js"></script>
 		<script src="../../modules/ve2/dm/ve.dm.Surface.js"></script>
 		<script src="../../modules/ve2/dm/ve.dm.Document.js"></script>
+		<script src="../../modules/ve2/dm/ve.dm.DocumentSynchronizer.js"></script>
+		<script src="../../modules/ve2/dm/ve.dm.Transaction.js"></script>
+		<script src="../../modules/ve2/dm/ve.dm.TransactionProcessor.js"></script>
 		<script src="../../modules/ve2/dm/ve.dm.HTMLConverter.js"></script>
 
 		<script src="../../modules/ve2/dm/nodes/ve.dm.AlienInlineNode.js"></script>
