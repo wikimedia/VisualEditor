@@ -78,22 +78,6 @@ ve.ce.BranchNode.getDomWrapper = function( model, key ) {
 	return $( '<' + type + '></' + type + '>' );
 };
 
-/**
- * Checks if a node can have a slug before or after it.
- *
- * TODO: Implement it as a one of node rules instead of a static array
- *
- * @static
- * @method
- * @param {ve.ce.Node} node Node to check
- * @returns {Boolean} Node can have a slug
- */
-ve.ce.BranchNode.canNodeHaveSlug = function( node ) {
-	return !node.canContainContent() &&
-		node.getParentNodeTypes() === null &&
-		node.getType() !== 'text';
-};
-
 /* Methods */
 
 /**
@@ -101,14 +85,14 @@ ve.ce.BranchNode.canNodeHaveSlug = function( node ) {
  *
  * This method uses {getDomWrapperType} to determine the proper element type to use.
  *
- * WARNING: The contents and any classes the wrapper already has will be moved to the new wrapper, but
- * other attributes and any information added using $.data() will be lost.
- *
- * TODO: Add an event that can be handled to make sure information is copied from the old wrapper
- * to the new wrapper.
+ * WARNING: The contents, .data( 'node' ) and any classes the wrapper already has will be moved to
+ * the new wrapper, but other attributes and any other information added using $.data() will be
+ * lost upon updating the wrapper. To retain information added to the wrapper, subscribe to the
+ * 'rewrap' event and copy information from the {$old} wrapper the {$new} wrapper.
  *
  * @method
  * @param {String} key Attribute name to read type value from
+ * @emits rewrap ($old, $new)
  */
 ve.ce.BranchNode.prototype.updateDomWrapper = function( key ) {
 	var type = ve.ce.BranchNode.getDomWrapperType( this.model, key );
@@ -116,8 +100,12 @@ ve.ce.BranchNode.prototype.updateDomWrapper = function( key ) {
 		var $element = $( '<' + type + '></' + type + '>' );
 		// Copy classes
 		$element.attr( 'class', this.$.attr( 'class' ) );
+		// Copy .data( 'node' )
+		$element.data( 'node', this.$.data( 'node' ) );
 		// Move contents
 		$element.append( this.$.contents() );
+		// Emit an event that can be handled to copy other things over if needed
+		this.emit( 'rewrap', this.$, $element );
 		// Swap elements
 		this.$.replaceWith( $element );
 		// Use new element from now on
@@ -173,7 +161,7 @@ ve.ce.BranchNode.prototype.onSplice = function( index, howmany ) {
 
 	// Iterate over all children of this branch and add slugs in appropriate places
 	for ( i = 0; i < this.children.length; i++ ) {
-		if ( ve.ce.BranchNode.canNodeHaveSlug( this.children[i] ) ) {
+		if ( this.children[i].canHaveSlug() ) {
 			if ( i === 0 ) {
 				// First sluggable child (left side)
 				this.$slugs = this.$slugs.add(
@@ -184,7 +172,7 @@ ve.ce.BranchNode.prototype.onSplice = function( index, howmany ) {
 				// Last sluggable child (right side)
 				i === this.children.length - 1 ||
 				// Sluggable child followed by another sluggable child (in between)
-				( this.children[i + 1] && ve.ce.BranchNode.canNodeHaveSlug( this.children[i + 1] ) )
+				( this.children[i + 1] && this.children[i + 1].canHaveSlug() )
 			) {
 				this.$slugs = this.$slugs.add(
 					ve.ce.BranchNode.$slugTemplate.clone().insertAfter( this.children[i].$ )
