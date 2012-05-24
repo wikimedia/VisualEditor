@@ -9,3 +9,9 @@
 	border: rgba(0,0,0,0.3) dashed 1px;
 	display: inline;
 }
+
+.ve-ce-slug {
+	display: inline-block;
+	margin-right: -1px;
+	width: 1px;
+}

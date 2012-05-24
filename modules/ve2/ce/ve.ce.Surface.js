@@ -38,7 +38,7 @@ ve.ce.Surface.prototype.proxy = function( func ) {
  * @method
  */
 ve.ce.Surface.prototype.getDOMNodeAndOffset = function( offset ) {
-	var	$node = this.documentView.documentNode.getNodeFromOffset( offset ).parent.$,
+	var	$node = this.documentView.documentNode.getNodeFromOffset( offset ).$.closest('.ve-ce-branchNode'),
 		nodeOffset = this.documentView.documentNode.getOffsetFromNode( $node.data('node') ) + 1,
 		current = [$node.contents(), 0],
 		stack = [current],
@@ -53,7 +53,7 @@ ve.ce.Surface.prototype.getDOMNodeAndOffset = function( offset ) {
 		}
 		var	item = current[0][current[1]],
 			$item = current[0].eq( current[1] );
-		
+
 		if ( item.nodeType === 3 ) {
 			var length = item.textContent.length;
 			if ( offset >= nodeOffset && offset <= nodeOffset + length ) {
@@ -65,8 +65,15 @@ ve.ce.Surface.prototype.getDOMNodeAndOffset = function( offset ) {
 				nodeOffset += length;
 			}
 		} else if ( item.nodeType === 1 ) {
-			if ( $( item ).attr('contentEditable') === 'false' ) {
-				nodeOffset += 1;
+			if ( $( item ).is('.ve-ce-alienBlockNode, .ve-ce-alienInlineNode') ) {
+				nodeOffset += 2;
+			} else if ( $( item ).hasClass('ve-ce-slug') ) {
+				if (nodeOffset == offset) {
+					return {
+						node: item,
+						offset: 1
+					};
+				}
 			} else {
 				stack.push( [$item.contents(), 0] );
 				current[1]++;
@@ -76,7 +83,6 @@ ve.ce.Surface.prototype.getDOMNodeAndOffset = function( offset ) {
 		}
 		current[1]++;
 	}
-	console.log('returning null, like an asshole');
 	return null;
 };
 
