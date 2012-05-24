@@ -659,6 +659,7 @@ ParserFunctions.prototype.pf_talkpagename = function ( token, frame, cb, args ) 
 	cb( { tokens: [this.env.pageName.replace(/^[^:]:/, 'Talk:' ) || ''] } );
 };
 
+// TODO: #titleparts, SUBJECTPAGENAME, BASEPAGENAME. SUBPAGENAME, DEFAULTSORT
 
 if (typeof module == "object") {
 	module.exports.ParserFunctions = ParserFunctions;

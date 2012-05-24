@@ -338,12 +338,12 @@ TemplateRequest.prototype.constructor = TemplateRequest;
 
 TemplateRequest.prototype._handler = function (error, response, body) {
 	//console.warn( 'response for ' + title + ' :' + body + ':' );
+	var self = this;
 	if(error) {
 		this.manager.env.dp(error);	
 		if ( this.retries ) {
 			this.retries--;
 			this.manager.env.tp( 'Retrying template request for ' + this.title );
-			var self = this;
 			// retry
 			request( this.requestOptions, this._handler.bind(this) ); 
 		} else {
@@ -353,8 +353,7 @@ TemplateRequest.prototype._handler = function (error, response, body) {
 	} else if(response.statusCode ===  200) {
 		var src = '',
 			data,
-			normalizedTitle,
-			self = this;
+			normalizedTitle;
 		try {
 			//console.warn( 'body: ' + body );
 			data = JSON.parse( body );
@@ -371,8 +370,10 @@ TemplateRequest.prototype._handler = function (error, response, body) {
 					src = page.revisions[0]['*'];
 					normalizeTitle = page.title;
 				} else {
+					var normalName = self.manager.env.normalizeTitle( 
+						self.manager.env.pageName );
 					console.warn( 'Did not find page revisions for ' + self.title );
-					if ( this.title === self.manager.env.pageName ) {
+					if ( this.title === normalName ) {
 						src = 'No revisions for ' + self.title;
 					}
 				}
@@ -382,7 +383,7 @@ TemplateRequest.prototype._handler = function (error, response, body) {
 		}
 		
 		// check for #REDIRECT
-		var redirMatch = src.match( /[\r\n\s]*#\s*redirect\s*\[\[([^\]]+)\]\]/i )
+		var redirMatch = src.match( /[\r\n\s]*#\s*redirect\s*\[\[([^\]]+)\]\]/i );
 		if ( redirMatch ) {
 			var title = redirMatch[1];
 			var url = this.manager.env.wgScript + '/api' + 
