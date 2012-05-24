@@ -37,6 +37,20 @@ ve.ce.BranchNode.$slugTemplate = $( '<span class="ve-ce-slug">&nbsp;</span>' );
 
 /* Static Methods */
 
+/**
+ * Gets the appropriate element type for the DOM wrapper of a node.
+ *
+ * This method reads the {key} attribute from a {model} and looks up a type in the node's statically
+ * defined {domWrapperElementTypes} member, which is a mapping of possible values of that attribute
+ * and HTML element types.
+ *
+ * @method
+ * @param {ve.dm.BranchNode} model Model node is based on
+ * @param {String} key Attribute name to read type value from
+ * @returns {String} HTML element type for wrapper
+ * @throws 'Undefined attribute' if attribute is not defined in the model
+ * @throws 'Invalid attribute value' if attribute value is not a key in {domWrapperElementTypes}
+ */
 ve.ce.BranchNode.getDomWrapperType = function( model, key ) {
 	var value = model.getAttribute( key );
 	if ( value === undefined ) {
@@ -49,6 +63,16 @@ ve.ce.BranchNode.getDomWrapperType = function( model, key ) {
 	return types[value];
 };
 
+/**
+ * Gets a jQuery selection of a new DOM wrapper for a node.
+ *
+ * This method uses {getDomWrapperType} to determine the proper element type to use.
+ *
+ * @method
+ * @param {ve.dm.BranchNode} model Model node is based on
+ * @param {String} key Attribute name to read type value from
+ * @returns {jQuery} Selection of DOM wrapper
+ */
 ve.ce.BranchNode.getDomWrapper = function( model, key ) {
 	var type = ve.ce.BranchNode.getDomWrapperType( model, key );
 	return $( '<' + type + '></' + type + '>' );
@@ -72,6 +96,20 @@ ve.ce.BranchNode.canNodeHaveSlug = function( node ) {
 
 /* Methods */
 
+/**
+ * Updates the DOM wrapper of this node if needed.
+ *
+ * This method uses {getDomWrapperType} to determine the proper element type to use.
+ *
+ * WARNING: The contents and any classes the wrapper already has will be moved to the new wrapper, but
+ * other attributes and any information added using $.data() will be lost.
+ *
+ * TODO: Add an event that can be handled to make sure information is copied from the old wrapper
+ * to the new wrapper.
+ *
+ * @method
+ * @param {String} key Attribute name to read type value from
+ */
 ve.ce.BranchNode.prototype.updateDomWrapper = function( key ) {
 	var type = ve.ce.BranchNode.getDomWrapperType( this.model, key );
 	if ( type !== this.domWrapperElementType ) {
