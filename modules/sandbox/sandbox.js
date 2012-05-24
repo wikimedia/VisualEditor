@@ -588,7 +588,7 @@ $(document).ready( function() {
 			'</tr>' +
 			'</tbody></table>' +
 			'<div>Template 4</div>' +
-			'<p>Lorem ipsum<div>Template 5</div>is simply dummy text of the printing and typesetting industry.</p>' +
+			'<p>Lorem ipsum <alien>Template 5</alien> is simply dummy text of the printing and typesetting industry.</p>' +
 			'<h2><b>Where</b> can <i>I get some?</i></h2>' +
 			'<ul>' +
 				'<li><p><b>here</b></p></li>' +
@@ -615,7 +615,7 @@ $(document).ready( function() {
 					'<tr>' +
 						'<td>' +
 						'<p>Tabel level 3</p>' +
-						'<p>And templates: <div>Template 6</div></p>' +
+						'<p>And templates: <alien>Template 6</alien></p>' +
 						'<div>Template 7</div>' +
 						'</td>' +
 					'</tr>' +
