@@ -350,7 +350,7 @@ TemplateRequest.prototype._handler = function (error, response, body) {
 			this.emit('src', 'Page/template fetch failure for title ' + this.title, 
 					'text/x-mediawiki');
 		}
-	} else if(response.statusCode ==  200) {
+	} else if(response.statusCode ===  200) {
 		var src = '',
 			data,
 			normalizedTitle;
@@ -364,20 +364,26 @@ TemplateRequest.prototype._handler = function (error, response, body) {
 			console.warn( "------------------------------------------\n" + body );
 			console.warn( "------------------------------------------" );
 		}
-		try {
-			$.each( data.query.pages, function(i, page) {
-				if (page.revisions && page.revisions.length) {
-					src = page.revisions[0]['*'];
-					normalizeTitle = page.title;
-				}
-			});
-		} catch ( e2 ) {
-			console.warn( 'Did not find page revisions in the returned body:' + body );
-			src = '';
+		if ( !data.query.pages.length ) {
+			console.warn( 'Did not find page revisions for ' + this.title );
+			src = 'No revisions for ' + this.title;
+		} else {
+
+			try {
+				$.each( data.query.pages, function(i, page) {
+					if (page.revisions && page.revisions.length) {
+						src = page.revisions[0]['*'];
+						normalizeTitle = page.title;
+					}
+				});
+			} catch ( e2 ) {
+				console.warn( 'Did not find page revisions in the returned body:' + body );
+				src = 'No content for ' + this.title;
+			}
 		}
 		
 		// check for #REDIRECT
-		var redirMatch = src.match( /[\r\n\s]*#\s*redirect\s\[\[([^\]]+)\]\]/i )
+		var redirMatch = src.match( /[\r\n\s]*#\s*redirect\s*\[\[([^\]]+)\]\]/i )
 		if ( redirMatch ) {
 			var title = redirMatch[1];
 			var url = this.manager.env.wgScript + '/api' + 
