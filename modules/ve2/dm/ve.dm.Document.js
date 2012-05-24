@@ -636,6 +636,7 @@ ve.dm.Document.prototype.rebuildNodes = function( parent, index, numNodes, offse
  * - If {offset} is after the last valid offset and {distance} is >= 1, or if {offset} if
  *   before the first valid offset and {distance} <= 1 than the result will be the nearest
  *   valid offset in the opposite direction.
+ * - If the document does not contain a single valid offset the result will be -1
  *
  * @method
  * @param {Integer} offset Offset to start from
@@ -643,7 +644,7 @@ ve.dm.Document.prototype.rebuildNodes = function( parent, index, numNodes, offse
  * @param {Function} callback Function to call to check if an offset is valid which will be
  * given two intital arguments of data and offset
  * @param {Mixed} [...] Additional arguments to pass to the callback
- * @returns {Integer} Relative valid offset
+ * @returns {Integer} Relative valid offset or -1 if there are no valid offsets in document
  */
 ve.dm.Document.prototype.getRelativeOffset = function( offset, distance, callback ) {
 	var args = Array.prototype.slice.call( arguments, 3 );
@@ -668,6 +669,7 @@ ve.dm.Document.prototype.getRelativeOffset = function( offset, distance, callbac
 		steps = 0,
 		turnedAround = false;
 	distance = Math.abs( distance );
+	offset = -1;
 	while ( i >= 0 && i <= this.data.length ) {
 		if ( callback.apply( window, [this.data, i].concat( args ) ) ) {
 			steps++;
@@ -703,7 +705,7 @@ ve.dm.Document.prototype.getRelativeOffset = function( offset, distance, callbac
  * @method
  * @param {Integer} offset Offset to start from
  * @param {Integer} distance Number of content offsets to move
- * @returns {Integer} Relative content offset
+ * @returns {Integer} Relative content offset or -1 if there are no valid offsets in document
  */
 ve.dm.Document.prototype.getRelativeContentOffset = function( offset, distance ) {
 	return this.getRelativeOffset( offset, distance, ve.dm.Document.isContentOffset );
@@ -724,7 +726,7 @@ ve.dm.Document.prototype.getRelativeContentOffset = function( offset, distance )
  * @method
  * @param {Integer} offset Offset to start from
  * @param {Integer} [direction] Direction to prefer matching offset in, -1 for left and 1 for right
- * @returns {Integer} Nearest content offset
+ * @returns {Integer} Nearest content offset or -1 if there are no valid offsets in document
  */
 ve.dm.Document.prototype.getNearestContentOffset = function( offset, direction ) {
 	if ( direction === undefined ) {

@@ -739,6 +739,47 @@ test( 'rebuildNodes', function() {
 	);
 } );
 
+test( 'getRelativeOffset', function() {
+	var cases = [
+		{
+			'msg': 'document without any valid offsets returns -1',
+			'offset': 0,
+			'distance': 1,
+			'data': [],
+			'callback': function( data, offset ) {
+				return false;
+			},
+			'expected': -1
+		},
+		{
+			'msg': 'document with all valid offsets returns offset + distance',
+			'offset': 0,
+			'distance': 2,
+			'data': ['a', 'b'],
+			'callback': function( data, offset ) {
+				return true;
+			},
+			'expected': 2
+		}
+	];
+	expect( cases.length );
+	for ( var i = 0; i < cases.length; i++ ) {
+		var doc = new ve.dm.Document( cases[i].data );
+		strictEqual(
+			doc.getRelativeOffset.apply(
+				doc,
+				[
+					cases[i].offset,
+					cases[i].distance,
+					cases[i].callback
+				].concat( cases[i].args || [] )
+			),
+			cases[i].expected,
+			cases[i].msg
+		);
+	}
+} );
+
 test( 'getRelativeContentOffset', function() {
 	var doc = new ve.dm.Document( ve.dm.example.data ),
 		cases = [
