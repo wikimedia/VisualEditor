@@ -127,6 +127,9 @@ MWParserEnvironment.prototype.setTokenRank = function ( rank, token ) {
 // Strip 'end' tokens and trailing newlines
 MWParserEnvironment.prototype.stripEOFTkfromTokens = function ( tokens ) {
 	this.dp( 'stripping end or whitespace tokens' );
+	if ( tokens.constructor !== Array ) {
+		tokens = [ tokens ];
+	}
 	if ( ! tokens.length ) {
 		return tokens;
 	}
