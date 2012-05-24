@@ -34,10 +34,12 @@ var app = express.createServer();
 app.use(express.bodyParser());
 
 app.get('/', function(req, res){
-	res.write('<body>Usage: <ul><li>GET /title for the DOM');
+	res.write('<body><strong>Welcome to the alpha test web service for the ' +
+		'<a href="http://www.mediawiki.org/wiki/Parsoid">Parsoid<a> parser.</strong>');
+	res.write( '<p>Usage: <ul><li>GET /title for the DOM');
 	res.write('<li>POST a DOM as parameter "content" to /title for the wikitext</ul>');
 	res.write('You can start exploring at <a href="/Main_Page">Main Page</a>. ');
-	res.end('There are also forms for experiments: <a href="/_wikitext/">wikitext -&gt; html</a> and <a href="/_html/">HTML DOM -&gt; WikiText</a>');
+	res.end('There are also forms for experiments: <a href="/_wikitext/">WikiText -&gt; HTML DOM</a> and <a href="/_html/">HTML DOM -&gt; WikiText</a>.');
 });
 
 var htmlSpecialChars = function ( s ) {
