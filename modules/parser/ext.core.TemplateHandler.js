@@ -353,7 +353,8 @@ TemplateRequest.prototype._handler = function (error, response, body) {
 	} else if(response.statusCode ===  200) {
 		var src = '',
 			data,
-			normalizedTitle;
+			normalizedTitle,
+			self = this;
 		try {
 			//console.warn( 'body: ' + body );
 			data = JSON.parse( body );
@@ -370,15 +371,14 @@ TemplateRequest.prototype._handler = function (error, response, body) {
 					src = page.revisions[0]['*'];
 					normalizeTitle = page.title;
 				} else {
-					console.warn( 'Did not find page revisions for ' + this.title );
-					if ( this.title === this.manager.env.pageName ) {
-						src = 'No revisions for ' + this.title;
+					console.warn( 'Did not find page revisions for ' + self.title );
+					if ( this.title === self.manager.env.pageName ) {
+						src = 'No revisions for ' + self.title;
 					}
 				}
 			});
 		} catch ( e2 ) {
 			console.warn( 'Did not find page revisions in the returned body:' + body + e2 );
-			src = 'No content for ' + this.title;
 		}
 		
 		// check for #REDIRECT
