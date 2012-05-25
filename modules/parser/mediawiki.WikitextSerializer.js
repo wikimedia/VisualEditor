@@ -53,17 +53,17 @@ WSP._listEndHandler = function( state, token ) {
 	return '';
 };
 
-WSP._listItemHandler = function ( state, token ) { 
+WSP._listItemHandler = function ( bullet, state, token ) { 
 	//console.warn( JSON.stringify( state.listStack ) );
 	var stack = state.listStack;
 	state.needParagraphLines = true;
 	if (stack.length === 0) {
-		return '';
+		return bullet;
 	} else {
 		var curList = stack[stack.length - 1];
 		curList.itemCount++;
 		// > 1 ==> consecutive list items
-		return ( curList.itemCount > 1 ) ? curList.bullets : '';
+		return ( curList.itemCount > 1 ) ? curList.bullets + bullet : bullet;
 	}
 };
 
@@ -181,10 +181,10 @@ WSP.tagToWikitext = {
 		start: WSP._listHandler.bind( null, '' ), 
 		end: WSP._listEndHandler
 	},
-	li: { start: WSP._listItemHandler },
+	li: { start: WSP._listItemHandler.bind( null, '' ) },
 	// XXX: handle single-line vs. multi-line dls etc
-	dt: { start: id(";") },
-	dd: { start: id(":") },
+	dt: { start: WSP._listItemHandler.bind( null, ';' ) },
+	dd: { start: WSP._listItemHandler.bind( null, ":" ) },
 	// XXX: handle options
 	table: { 
 		start: WSP._serializeTableTag.bind(null, "\n{|", ''), 
