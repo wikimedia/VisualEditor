@@ -40,7 +40,9 @@ app.get('/', function(req, res){
 	res.write('<li>POST a DOM as parameter "content" to /title for the wikitext</ul>');
 	res.write('You can browse the English Wikipedia, for example at '+
 		'<strong><a href="/Main_Page">Main Page</a></strong>. ');
-	res.end('There are also forms for experiments: <strong><a href="/_wikitext/">WikiText -&gt; HTML DOM</a></strong> and <strong><a href="/_html/">HTML DOM -&gt; WikiText</a></strong>.');
+	res.end('<p>There are also forms for experiments:' +
+			'<ul><li><strong><a href="/_wikitext/">WikiText -&gt; HTML DOM</a></strong></li>' +
+			'<li><strong><a href="/_html/">HTML DOM -&gt; WikiText</a></strong></li></ul>');
 });
 
 var htmlSpecialChars = function ( s ) {

@@ -30,9 +30,9 @@ if [ "$1" != '-c' -a "$2" != '-c' ];then
     git diff | less -r
 else
     if [ "$1" = '-r' ];then
-        git commit -a -m "rt: `tail -2 roundtrip.txt`" || exit 1
+        git commit -a -m "rt: `tail -4 roundtrip.txt`" || exit 1
     else
-        git commit -a -m "html: `tail -2 html.txt`" || exit 1
+        git commit -a -m "html: `tail -4 html.txt`" || exit 1
     fi
     git diff HEAD~1 | less -r || exit 1
 fi
