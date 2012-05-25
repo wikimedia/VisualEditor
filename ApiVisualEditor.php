@@ -3,8 +3,8 @@
 class ApiVisualEditor extends ApiBase {
 
 	public function execute() {
-		global $wgRequest;
-
+		global $wgRequest, $wgUser;
+		
 		$parsoid = "http://parsoid.wmflabs.org/";
 		$params = $this->extractRequestParams();
 		$page = Title::newFromText( $params['page'] );
@@ -41,7 +41,7 @@ class ApiVisualEditor extends ApiBase {
 					'action' => 'edit',
 					'title' => $page,
 					'text' => $wikitext,
-					'token' => $params['token'],
+					'token' => $wgUser->editToken(),
 					'summary' => $params['summary'],
 					'notminor' => true
 				);
@@ -99,13 +99,12 @@ class ApiVisualEditor extends ApiBase {
 			'html' => array(
 				ApiBase::PARAM_REQUIRED => false,
 			),
-			'summary' => null,
-			'token' => null
+			'summary' => null
 		);
 	}
 
 	public function needsToken() {
-		return true;
+		return false;
 	}
 
 	public function getVersion() {

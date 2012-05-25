@@ -32,7 +32,7 @@
 				mw.loader.using( 'ext.visualEditor.ve', function(){
 					_this.init();
 				});
-				_this.parsoidGetHTML( pageName, function( content ){
+				_this.getHTML( pageName, function( content ){
 					_this.init( content );
 				});
 
@@ -77,7 +77,7 @@
 					.click(function(){
 						_this.showSpinner();
 						// Save
-						_this.parsoidGetWikitextAndSave(function( content ){
+						_this.save( function( content ){
 							// cleanup
 							_this.cleanup();
 							// load saved page
@@ -111,7 +111,7 @@
 			.find('#mw-content-text, #bodyContent, #firstHeading').show();
 	};
 
-	veCore.prototype.parsoidGetHTML = function (title, callback) {
+	veCore.prototype.getHTML = function (title, callback) {
 		$.ajax({
 			url: mw.util.wikiScript( 'api' ),
 			data: {
@@ -140,7 +140,7 @@
 	API Saves Wikitext to page.
 	Returns new page content
 */
-	veCore.prototype.parsoidGetWikitextAndSave = function (callback) {
+	veCore.prototype.save = function (callback) {
 		// TODO: get html from linmod converter
 		var data = this.mainEditor.documentModel.getData(),
 			html = "<p>Visual Editor test page</p>",
