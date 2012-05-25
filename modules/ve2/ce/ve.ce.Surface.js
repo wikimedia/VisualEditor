@@ -136,19 +136,17 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
 		.focus();
 
 	setTimeout( function() {
-		var key = $('#paste').hide().text().replace( /\s/gm, '' );
+		var pasteString = $('#paste').hide().text(),
+			key = pasteString.replace( /\s/gm, '' ),
+			pasteData = ( _this.clipboard[key] ) ? _this.clipboard[key] : pasteString.split('');
 
-		if ( _this.clipboard[key] ) {
-			// transact
-			var tx = ve.dm.Transaction.newFromInsertion( _this.documentView.model, insertionPoint, _this.clipboard[key] );
-			ve.dm.TransactionProcessor.commit( _this.documentView.model, tx );
+		// transact
+		var tx = ve.dm.Transaction.newFromInsertion( _this.documentView.model, insertionPoint, pasteData );
+		ve.dm.TransactionProcessor.commit( _this.documentView.model, tx );
 
-			// place cursor
-			_this.showCursor( insertionPoint + _this.clipboard[key].length );
-			_this.documentView.documentNode.$.focus();
-		} else {
-			alert('i can only handle copy/paste from hybrid surface. sorry. :(');
-		}
+		// place cursor
+		_this.showCursor( insertionPoint + pasteData.length );
+		_this.documentView.documentNode.$.focus();
 	}, 1 );
 };
 
