@@ -222,8 +222,7 @@ $wgExtraNamespaces[2501] = "VisualEditor_talk";
 $wgContentNamespaces[] = 2500;
 $wgContentNamespaces[] = 2501;
 
-
-// Parsoid API
+// Parsoid Wrapper API
 $wgAutoloadClasses['ApiVisualEditor'] = $dir . 'ApiVisualEditor.php';
 $wgAPIModules['ve-parsoid'] = 'ApiVisualEditor';
 
