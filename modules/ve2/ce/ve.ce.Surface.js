@@ -15,12 +15,15 @@ ve.ce.Surface = function( $container, model ) {
 	this.contextView = new ve.ui.Context( this );
 	this.$ = $container;
 	this.isMouseDown = false;
+	this.clipboard = {};
 
 	// Events
 	this.$.on( {
 		'mousedown': this.proxy( this.onMouseDown ),
 		'mouseup': this.proxy( this.onMouseUp ),
 		'mousemove': this.proxy( this.onMouseMove ),
+		'cut copy': this.proxy( this.onCutCopy ),
+		'paste': this.proxy( this.onPaste ),
 	} );
 
 	// Initialization
@@ -84,6 +87,86 @@ ve.ce.Surface.prototype.onMouseMove = function( e ) {
 	}
 };
 
+/**
+ * @method
+ */
+ve.ce.Surface.prototype.onCutCopy = function( e ) {
+	console.log('copying');
+	var _this = this,
+		sel = rangy.getSelection(),
+		key = sel.getRangeAt(0).toString().replace( /\s/gm, '' );
+
+	this.clipboard[key] = ve.copyArray(
+		this.documentView.model.getData( this.getSelectionRange() )
+	);
+	console.log(this.clipboard);
+
+	if ( event.type == 'cut' ) {
+		setTimeout( function() {
+			// we don't like how browsers cut, so let's undo it and do it ourselves.
+			document.execCommand('undo', false, false);
+			
+			var selection = _this.getSelectionRange();
+			
+			// transact
+			var tx = _this.model.getDocument().prepareRemoval( selection );
+			
+			_this.autoRender = true;
+			_this.model.transact( tx );
+			_this.autoRender = false;
+			
+			_this.clearPollData();
+
+			// place cursor
+			_this.showCursor( selection.start );
+		}, 1 );
+	}
+};
+
+/**
+ * @method
+ */
+ve.ce.Surface.prototype.onPaste = function( e ) {
+	return;
+	var	_this = this,
+		insertionPoint = _this.getSelectionRange().start;
+	
+	$('#paste')
+		.html('')
+		.show()
+		.css( 'top', $(window).scrollTop() )
+		.css( 'left', $(window).scrollLeft() )
+		.focus();
+
+	setTimeout( function() {
+		var key = $('#paste').hide().text().replace( /\s/gm, '' );
+
+		if ( _this.clipboard[key] ) {
+			// transact
+			var tx = _this.documentView.model.prepareInsertion(
+				insertionPoint, _this.clipboard[key]
+			);
+			_this.autoRender = true;
+			_this.model.transact( tx );
+			_this.autoRender = false;
+
+			_this.clearPollData();
+
+			// place cursor
+			_this.showCursor( insertionPoint + _this.clipboard[key].length );
+		} else {
+			alert('i can only handle copy/paste from hybrid surface. sorry. :(');
+		}
+	}, 1 );
+};
+
+
+/**
+ * @method
+ * @param DOMnode {DOM Element} DOM Element
+ * @param DOMoffset {Integer} DOM offset within the DOM Element
+ * @returns {Integer} Linear model offset
+ */
 ve.ce.Surface.prototype.getOffset = function( DOMnode, DOMoffset ) {
 	if ( DOMnode.nodeType === 3 ) {
 		var $branch = $( DOMnode ).closest( '.ve-ce-branchNode' );
@@ -140,6 +223,19 @@ ve.ce.Surface.prototype.getOffset = function( DOMnode, DOMoffset ) {
 
 /**
  * @method
+ * @param elem {DOM Element} DOM Element
+ * @returns {jQuery} jQuery element
+ */
+ve.ce.Surface.getBranchNode = function( elem ) {
+	var $branch = $( elem ).closest( '.ve-ce-branchNode' );
+	return $branch.length ? $branch : null;
+};
+
+
+
+/**
+ * @method
+ * @param offset {Integer} Linear model offset
  */
 ve.ce.Surface.prototype.getDOMNodeAndOffset = function( offset ) {
 	var	$node = this.documentView.documentNode.getNodeFromOffset( offset ).$.closest( '.ve-ce-branchNode' ),
@@ -284,6 +380,27 @@ ve.ce.Surface.prototype.showSelection = function( range ) {
 	rangySel.setSingleRange( rangyRange, range.start !== range.from );
 };
 
+/**
+ * @method
+ * @returns {ve.Range} Current selection range
+ */
+ve.ce.Surface.prototype.getSelectionRange = function() {
+	var rangySel = rangy.getSelection();
+
+	if ( rangySel.isCollapsed ) {
+		var offset = this.getOffset( rangySel.anchorNode, rangySel.anchorOffset, true );
+		return new ve.Range( offset, offset );
+	} else {
+		return new ve.Range(
+			this.getOffset( rangySel.anchorNode, rangySel.anchorOffset, true ),
+			this.getOffset( rangySel.focusNode, rangySel.focusOffset, true )
+		);
+	}
+};
+
+/**
+ * @method
+ */
 ve.ce.Surface.prototype.getSelectionRect = function() {
 	var rangySel = rangy.getSelection();
 	return {
@@ -291,6 +408,7 @@ ve.ce.Surface.prototype.getSelectionRect = function() {
 		end: rangySel.getEndDocumentPos()
 	};
 };
+
 
 /* Inheritance */
 
