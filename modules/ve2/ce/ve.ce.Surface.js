@@ -23,7 +23,7 @@ ve.ce.Surface = function( $container, model ) {
 		'mouseup': this.proxy( this.onMouseUp ),
 		'mousemove': this.proxy( this.onMouseMove ),
 		'cut copy': this.proxy( this.onCutCopy ),
-		'paste': this.proxy( this.onPaste ),
+		'beforepaste paste': this.proxy( this.onPaste ),
 	} );
 
 	// Initialization
