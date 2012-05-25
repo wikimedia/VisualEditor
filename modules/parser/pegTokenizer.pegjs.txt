@@ -1081,7 +1081,7 @@ pre
     ("</pre>" / eof) {
         // return nowiki tags as well?
         //console.warn('inpre');
-        return [ new TagTk( 'pre', attribs ) ]
+        return [ new TagTk( 'pre', attribs, { stx: 'html' } ) ]
                     .concat(ts, [ new EndTagTk( 'pre' ) ]);
     }
   / "</pre>" { return "</pre>"; }
@@ -1446,7 +1446,7 @@ table_row_tag
 table_data_tags
   = pipe
     td:table_data_tag
-    tds:( pipe_pipe tdt:table_data_tag { tdt[0].dataAttribs.t_stx = 'row';  return tdt } )* {
+    tds:( pipe_pipe tdt:table_data_tag { tdt[0].dataAttribs.stx_v = 'row';  return tdt } )* {
         return td.concat(tds);
     }
 
@@ -1470,7 +1470,7 @@ table_heading_tags
   = //& { console.warn( 'th enter @' + input.substr(pos, 10)); return true; }
     "!"
     th:table_heading_tag
-    ths:( "!!" tht:table_heading_tag  { tht[0].dataAttribs.t_stx = 'row'; return tht } )* {
+    ths:( "!!" tht:table_heading_tag  { tht[0].dataAttribs.stx_v = 'row'; return tht } )* {
         //console.warn( 'thts: ' + pp(th.concat(ths)));
         return th.concat(ths);
     }

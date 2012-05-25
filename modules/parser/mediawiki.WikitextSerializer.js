@@ -193,7 +193,7 @@ WSP.tagToWikitext = {
 	tbody: {},
 	th: { 
 		start: function ( state, token ) {
-			if ( token.dataAttribs.t_stx === 'row' ) {
+			if ( token.dataAttribs.stx_v === 'row' ) {
 				return WSP._serializeTableTag("!!", ' |', state, token);
 			} else {
 				return WSP._serializeTableTag("\n!", ' |', state, token);
@@ -212,7 +212,7 @@ WSP.tagToWikitext = {
 	},
 	td: { 
 		start: function ( state, token ) {
-			if ( token.dataAttribs.t_stx === 'row' ) {
+			if ( token.dataAttribs.stx_v === 'row' ) {
 				return WSP._serializeTableTag("||", ' |', state, token);
 			} else {
 				return WSP._serializeTableTag("\n|", ' |', state, token);
@@ -237,7 +237,14 @@ WSP.tagToWikitext = {
 	h4: { start: id("\n\n===="), end: id("====\n") },
 	h5: { start: id("\n\n====="), end: id("=====\n") },
 	h6: { start: id("\n\n======"), end: id("======\n") },
-	pre: { start: id("<pre>"), end: id("</pre>") },
+	// XXX: support indent variant instead by registering a newline handler?
+	pre: { 
+		start: function( state, token ) {
+			state.textHandler = function( t ) { return t.replace( '\n', '\n ' ); };
+			return '';
+		},
+		end: function( state, token) { state.textHandler = null; return ''; }
+	},
 	a: { start: WSP._linkHandler, end: WSP._linkEndHandler },
 	meta: { 
 		start: function ( state, token ) {
@@ -347,7 +354,11 @@ WSP._serializeToken = function ( state, token ) {
 			}
 			break;
 		case String:
-			res = token;
+			if ( state.textHandler ) {
+				res = state.textHandler( token );
+			} else {
+				res = token;
+			}
 			break;
 		case CommentTk:
 			res = '<!--' + token.value + '-->';
