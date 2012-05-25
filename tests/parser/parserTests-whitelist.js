@@ -4,13 +4,12 @@
 
 testWhiteList = {};
 
-// The nesting of italic/bold tags is changed in this test, but the resulting
-// formatting is identical
-testWhiteList["Italics and bold"] = "<ul><li> plain</li><li> plain<i>italic</i>plain</li><li> plain<i>italic</i>plain<i>italic</i>plain</li><li> plain<b>bold</b>plain</li><li> plain<b>bold</b>plain<b>bold</b>plain</li><li> plain<i>italic</i>plain<b>bold</b>plain</li><li> plain<b>bold</b>plain<i>italic</i>plain</li><li> plain<i>italic<b>bold-italic</b>italic</i>plain</li><li> plain<b>bold<i>bold-italic</i>bold</b>plain</li><li> plain<i><b>bold-italic</b>italic</i>plain</li><li> plain<i><b>bold-italic</b></i><b>bold</b>plain</li><li> plain<i>italic<b>bold-italic</b></i>plain</li><li> plain<b>bold<i>bold-italic</i></b>plain</li><li> plain l'<i>italic</i>plain</li><li> plain l'<b>bold</b> plain</li></ul>";
-
+// Italic/link nesting is changed in this test, but the rendered result is the
+// same.
 testWhiteList["Bug 2702: Mismatched <i>, <b> and <a> tags are invalid"] = "<p><i><a href=\"http://example.com\">text</a></i><a href=\"http://example.com\"><b>text</b></a><i>Something <a href=\"http://example.com\">in italic</a></i><i>Something <a href=\"http://example.com\">mixed</a></i><a href=\"http://example.com\"><b>, even bold</b></a><i><b>Now <a href=\"http://example.com\">both</a></b></i></p>";
 
-testWhiteList["Unclosed and unmatched quotes"] = "<p><i><b>Bold italic text </b>with bold deactivated<b> in between.</b></i></p><p><i><b>Bold italic text </b></i><b>with italic deactivated<i> in between.</i></b></p><p><b>Bold text..</b></p><p>..spanning two paragraphs (should not work).<b></b></p><p><b>Bold tag left open</b></p><p><i>Italic tag left open</i></p><p>Normal text.<!-- Unmatching number of opening, closing tags: -->\n</p><p><b>This year'</b>s election <i>should</i> beat <b>last year'</b>s.</p><p><i>Tom<b>s car is bigger than </b></i><b>Susan</b>s.</p>";
+// Extra empty bold element. Needed for round-tripping?
+testWhiteList["Unclosed and unmatched quotes"] = "<p><i data-mw=\"{}\"><b data-mw=\"{}\">Bold italic text </b>with bold deactivated<b data-mw=\"{}\"> in between.</b></i></p><p data-mw=\"{}\"><b data-mw=\"{}\"><i data-mw=\"{}\">Bold italic text </i>with italic deactivated<i data-mw=\"{}\"> in between.</i></b></p><p data-mw=\"{}\"><b data-mw=\"{}\">Bold text..</b></p><p data-mw=\"{}\">..spanning two paragraphs (should not work).<b data-mw=\"{}\"></b></p><p data-mw=\"{}\"><b data-mw=\"{}\">Bold tag left open</b></p><p data-mw=\"{}\"><i data-mw=\"{}\">Italic tag left open</i></p><p data-mw=\"{}\">Normal text.</p><p data-mw=\"{}\"><!-- Unmatching number of opening, closing tags: -->\n<b data-mw=\"{}\">This year'</b>s election <i data-mw=\"{}\">should</i> beat <b data-mw=\"{}\">last year'</b>s.</p><p data-mw=\"{}\"><i data-mw=\"{}\">Tom<b data-mw=\"{}\">s car is bigger than </b></i><b data-mw=\"{}\">Susan</b>s.</p>";
 
 // The expected result for this test is really broken html.
 testWhiteList["Link containing double-single-quotes '' in text embedded in italics (bug 4598 sanity check)"] = "<p><i>Some <a href=\"/wiki/Link\">pretty </a></i><a href=\"/wiki/Link\">italics<i> and stuff</i></a><i>!</i></p>";
