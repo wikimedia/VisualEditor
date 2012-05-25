@@ -21,11 +21,16 @@ class VisualEditorHooks {
 	 * @param $skin Skin
 	 */
 	public static function loadVisualEditor( &$output, &$skin ) {
+		global $wgTitle;
 		// Vector skin supported for now.
 		if ( $skin->getSkinName() !== 'vector' ) {
 			return false;
 		}
-		//TODO: check namespace, user permissions...
+		// Check Namespace
+		if ($wgTitle->getNamespace() !== NS_VISUALEDITOR) {
+			return false;
+		}
+		//TODO: user permissions...
 		return true;
 	}
 
