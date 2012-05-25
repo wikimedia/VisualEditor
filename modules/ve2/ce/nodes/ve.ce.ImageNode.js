@@ -10,14 +10,19 @@ ve.ce.ImageNode = function( model ) {
 	// Inheritance
 	ve.ce.LeafNode.call( this, 'image', model, $( '<img>' ) );
 
+	// DOM Changes
+	this.$.addClass( 've-ce-imageNode' );
+
 	// Properties
 	this.currentSource = null;
 
 	// Events
 	this.model.addListenerMethod( this, 'update', 'onUpdate' );
+	/*
 	this.$.on('mousedown', function() {
 		return false;	
 	});
+	*/
 
 	// Intialization
 	this.onUpdate();
