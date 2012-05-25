@@ -1338,7 +1338,7 @@ dtdd
     // Fortunately dtdds cannot be nested, so we can simply set the flag
     // back to 0 to disable it.
     & { stops.counters['colon'] = 0; return true;}
-    d:inlineline
+    d:inlineline?
     &eolf {
         // Convert trailing space into &nbsp;
         // XXX: This should be moved to a serializer
@@ -1355,7 +1355,8 @@ dtdd
         li.bullets = bullets + ";";
         var li2 = new TagTk( 'listItem' );
         li2.bullets = bullets + ":";
-        return [ li ].concat( c, [ li2 ], d );
+
+        return [ li ].concat( c, [ li2 ], d || new NlTk() );
     }
   // Fall-back case to clear the colon flag
   / & { return true; } { stops.counters['colon'] = 0; return null; }
