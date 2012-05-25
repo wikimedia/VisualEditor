@@ -79,6 +79,19 @@ $wgResourceModules += array(
 			'ext.visualEditor.ve',
 		),
 	),
+	'ext.visualEditor.core' => $wgVisualEditorResourceTemplate + array(
+		'scripts' => array(
+			'core/ve.Core.js',
+		),
+		'messages' => array(
+			'',
+		),
+		'styles' => 'core/ve.Core.css',
+		'dependencies' => array(
+			'jquery',
+			'mediawiki.util'
+		),
+	),
 	'ext.visualEditor.ve' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
 			// ve
@@ -177,6 +190,7 @@ $wgResourceModules += array(
 			've2/ce/styles/ve.ce.Content.css',
 			've2/ce/styles/ve.ce.Document.css',
 			// ui
+			've2/ui/styles/ve.ui.Surface.css',
 			've2/ui/styles/ve.ui.Context.css',
 			've2/ui/styles/ve.ui.Inspector.css',
 			've2/ui/styles/ve.ui.Toolbar.css',
@@ -198,6 +212,24 @@ $wgResourceModules += array(
 	)
 );
 
+/* 
+	VisualEditor Namespace
+	Using 2500 range as it appears available in
+	MW Extension_namespace_registration
+*/
+$wgExtraNamespaces[2500] = "VisualEditor";
+$wgExtraNamespaces[2501] = "VisualEditor_talk";
+$wgContentNamespaces[] = 2500;
+$wgContentNamespaces[] = 2501;
+
+
+// Parsoid API
+$wgAutoloadClasses['ApiVisualEditor'] = $dir . 'ApiVisualEditor.php';
+$wgAPIModules['ve-parsoid'] = 'ApiVisualEditor';
+
+// Integration Hooks
+$wgAutoloadClasses['VisualEditorHooks'] = $dir . 'VisualEditor.hooks.php';
+$wgHooks['BeforePageDisplay'][] = 'VisualEditorHooks::onPageDisplay';
 
 // API for retrieving wikidom parse results
 $wgAutoloadClasses['ApiQueryParseTree'] = $dir . 'api/ApiQueryParseTree.php';
@@ -206,3 +238,5 @@ $wgAPIPropModules['parsetree'] = 'ApiQueryParseTree';
 // external cmd, accepts wikitext and returns parse tree in JSON. Also set environment variables needed by script here.
 putenv('NODE_PATH=/usr/local/bin/node_modules' );
 $wgVisualEditorParserCmd = '/usr/local/bin/node ' . $dir . 'modules/parser/parse.js';
+
+
