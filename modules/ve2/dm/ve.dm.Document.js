@@ -258,8 +258,11 @@ ve.dm.Document.isStructuralOffset = function( data, offset, unrestricted ) {
 			(
 				// Is a closing
 				left.type.charAt( 0 ) === '/' &&
-				// Is a branch
-				factory.canNodeHaveChildren( left.type.substr( 1 ) ) &&
+				// Is a branch or non-content leaf
+				(
+					factory.canNodeHaveChildren( left.type.substr( 1 ) ) ||
+					!factory.isNodeContent( left.type.substr( 1 ) )
+				) &&
 				(
 					// Only apply this rule in unrestricted mode
 					!unrestricted ||
@@ -274,8 +277,11 @@ ve.dm.Document.isStructuralOffset = function( data, offset, unrestricted ) {
 			(
 				// Is not a closing
 				right.type.charAt( 0 ) !== '/' &&
-				// Is a branch
-				factory.canNodeHaveChildren( right.type ) &&
+				// Is a branch or non-content leaf
+				(
+					factory.canNodeHaveChildren( right.type ) ||
+					!factory.isNodeContent( right.type )
+				) &&
 				(
 					// Only apply this rule in unrestricted mode
 					!unrestricted ||

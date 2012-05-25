@@ -523,51 +523,73 @@ test( 'getOuterLength', 1, function() {
 
 test( 'isContentOffset', function() {
 	var data = [
-			{ 'type': 'heading' },
-			'a',
-			{ 'type': 'image' },
-			{ 'type': '/image' },
-			'b',
-			'c',
-			{ 'type': '/heading' },
-			{ 'type': 'paragraph' },
-			{ 'type': '/paragraph' },
-			{ 'type': 'preformatted' },
-			{ 'type': 'image' },
-			{ 'type': '/image' },
-			{ 'type': '/preformatted' },
-			{ 'type': 'list' },
-			{ 'type': 'listItem' },
-			{ 'type': '/listItem' },
-			{ 'type': '/list' },
-			{ 'type': 'alienBlock' },
-			{ 'type': '/alienBlock' }
-		],
-		cases = [
-			{ 'msg': 'left of document', 'expected': false },
-			{ 'msg': 'begining of content branch', 'expected': true },
-			{ 'msg': 'left of non-text inline leaf', 'expected': true },
-			{ 'msg': 'inside non-text inline leaf', 'expected': false },
-			{ 'msg': 'right of non-text inline leaf', 'expected': true },
-			{ 'msg': 'between characters', 'expected': true },
-			{ 'msg': 'end of content branch', 'expected': true },
-			{ 'msg': 'between content branches', 'expected': false },
-			{ 'msg': 'inside emtpy content branch', 'expected': true },
-			{ 'msg': 'between content branches', 'expected': false },
-			{ 'msg': 'begining of content branch, left of inline leaf', 'expected': true },
-			{ 'msg': 'inside content branch with non-text inline leaf', 'expected': false },
-			{ 'msg': 'end of content branch, right of block leaf', 'expected': true },
-			{ 'msg': 'between content, non-content branches', 'expected': false },
-			{ 'msg': 'between parent, child branches, descending', 'expected': false },
-			{ 'msg': 'inside empty non-content branch', 'expected': false },
-			{ 'msg': 'between parent, child branches, ascending', 'expected': false },
-			{ 'msg': 'between non-content branch, block leaf', 'expected': false },
-			{ 'msg': 'inside block leaf', 'expected': false },
-			{ 'msg': 'right of document', 'expected': false }
-		];
+		{ 'type': 'heading' },
+		'a',
+		{ 'type': 'image' },
+		{ 'type': '/image' },
+		'b',
+		'c',
+		{ 'type': '/heading' },
+		{ 'type': 'paragraph' },
+		{ 'type': '/paragraph' },
+		{ 'type': 'preformatted' },
+		{ 'type': 'image' },
+		{ 'type': '/image' },
+		{ 'type': '/preformatted' },
+		{ 'type': 'list' },
+		{ 'type': 'listItem' },
+		{ 'type': '/listItem' },
+		{ 'type': '/list' },
+		{ 'type': 'alienBlock' },
+		{ 'type': '/alienBlock' },
+		{ 'type': 'table' },
+		{ 'type': 'tableRow' },
+		{ 'type': 'tableCell' },
+		{ 'type': 'alienBlock' },
+		{ 'type': '/alienBlock' },
+		{ 'type': '/tableCell' },
+		{ 'type': '/tableRow' },
+		{ 'type': '/table' }
+	],
+	cases = [
+		{ 'msg': 'left of document', 'expected': false },
+		{ 'msg': 'begining of content branch', 'expected': true },
+		{ 'msg': 'left of non-text inline leaf', 'expected': true },
+		{ 'msg': 'inside non-text inline leaf', 'expected': false },
+		{ 'msg': 'right of non-text inline leaf', 'expected': true },
+		{ 'msg': 'between characters', 'expected': true },
+		{ 'msg': 'end of content branch', 'expected': true },
+		{ 'msg': 'between content branches', 'expected': false },
+		{ 'msg': 'inside emtpy content branch', 'expected': true },
+		{ 'msg': 'between content branches', 'expected': false },
+		{ 'msg': 'begining of content branch, left of inline leaf', 'expected': true },
+		{ 'msg': 'inside content branch with non-text inline leaf', 'expected': false },
+		{ 'msg': 'end of content branch, right of non-content leaf', 'expected': true },
+		{ 'msg': 'between content, non-content branches', 'expected': false },
+		{ 'msg': 'between parent, child branches, descending', 'expected': false },
+		{ 'msg': 'inside empty non-content branch', 'expected': false },
+		{ 'msg': 'between parent, child branches, ascending', 'expected': false },
+		{ 'msg': 'between non-content branch, non-content leaf', 'expected': false },
+		{ 'msg': 'inside non-content leaf', 'expected': false },
+		{ 'msg': 'between non-content branches', 'expected': false },
+		{ 'msg': 'between non-content branches', 'expected': false },
+		{ 'msg': 'between non-content branches', 'expected': false },
+		{ 'msg': 'inside non-content branch before non-content leaf', 'expected': false },
+		{ 'msg': 'inside non-content leaf', 'expected': false },
+		{ 'msg': 'inside non-content branch after non-content leaf', 'expected': false },
+		{ 'msg': 'between non-content branches', 'expected': false },
+		{ 'msg': 'between non-content branches', 'expected': false },
+		{ 'msg': 'right of document', 'expected': false }
+	];
 	expect( data.length + 1 );
 	for ( var i = 0; i < cases.length; i++ ) {
-		strictEqual( ve.dm.Document.isContentOffset( data, i ), cases[i].expected, cases[i].msg );
+		var left = data[i - 1] ? ( data[i - 1].type || data[i - 1][0] ) : '[start]',
+			right = data[i] ? ( data[i].type || data[i][0] ) : '[end]';
+		strictEqual(
+			ve.dm.Document.isContentOffset( data, i ),
+			cases[i].expected,
+			cases[i].msg + ' (' + left + '|' + right + ' @ ' + i + ')'
+		);
 	}
 } );
 
@@ -591,7 +613,15 @@ test( 'isStructuralOffset', function() {
 		{ 'type': '/listItem' },
 		{ 'type': '/list' },
 		{ 'type': 'alienBlock' },
-		{ 'type': '/alienBlock' }
+		{ 'type': '/alienBlock' },
+		{ 'type': 'table' },
+		{ 'type': 'tableRow' },
+		{ 'type': 'tableCell' },
+		{ 'type': 'alienBlock' },
+		{ 'type': '/alienBlock' },
+		{ 'type': '/tableCell' },
+		{ 'type': '/tableRow' },
+		{ 'type': '/table' }
 	],
 	cases = [
 		{ 'msg': 'left of document', 'expected': [true, true] },
@@ -611,8 +641,16 @@ test( 'isStructuralOffset', function() {
 		{ 'msg': 'between parent, child branches, descending', 'expected': [true, false] },
 		{ 'msg': 'inside empty non-content branch', 'expected': [true, true] },
 		{ 'msg': 'between parent, child branches, ascending', 'expected': [true, false] },
-		{ 'msg': 'between non-content branch, block leaf', 'expected': [true, true] },
-		{ 'msg': 'inside block leaf', 'expected': [false, false] },
+		{ 'msg': 'between non-content branch, non-content leaf', 'expected': [true, true] },
+		{ 'msg': 'inside non-content leaf', 'expected': [false, false] },
+		{ 'msg': 'between non-content branches', 'expected': [true, true] },
+		{ 'msg': 'between non-content branches', 'expected': [true, false] },
+		{ 'msg': 'between non-content branches', 'expected': [true, false] },
+		{ 'msg': 'inside non-content branch before non-content leaf', 'expected': [true, true] },
+		{ 'msg': 'inside non-content leaf', 'expected': [false, false] },
+		{ 'msg': 'inside non-content branch after non-content leaf', 'expected': [true, true] },
+		{ 'msg': 'between non-content branches', 'expected': [true, false] },
+		{ 'msg': 'between non-content branches', 'expected': [true, false] },
 		{ 'msg': 'right of document', 'expected': [true, true] }
 	];
 	expect( ( data.length + 1 ) * 2 );
@@ -672,8 +710,8 @@ test( 'isElementData', 1, function() {
 		{ 'msg': 'between parent, child branches, descending', 'expected': true },
 		{ 'msg': 'inside empty non-content branch', 'expected': true },
 		{ 'msg': 'between parent, child branches, ascending', 'expected': true },
-		{ 'msg': 'between non-content branch, block leaf', 'expected': true },
-		{ 'msg': 'inside block leaf', 'expected': true },
+		{ 'msg': 'between non-content branch, non-content leaf', 'expected': true },
+		{ 'msg': 'inside non-content leaf', 'expected': true },
 		{ 'msg': 'right of document', 'expected': false }
 	];
 	expect( data.length + 1 );
