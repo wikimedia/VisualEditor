@@ -24,6 +24,9 @@
 			$('#ca-edit > span > a').click( function( e ){
 				// hijack the edit link
 				e.preventDefault();
+				$('#ca-view').removeClass('selected');
+				$('#ca-edit').addClass('selected');
+
 				_this.showSpinner();
 				// async init
 				mw.loader.using( 'ext.visualEditor.ve', function(){
@@ -102,6 +105,8 @@
 	veCore.prototype.cleanup = function(){
 		$('#ve-editor').remove();
 		$('#ve-loader-spinner').remove();
+		$('#ca-view').addClass('selected');
+		$('#ca-edit').removeClass('selected');
 		this.$content
 			.find('#mw-content-text, #bodyContent, #firstHeading').show();
 	};
