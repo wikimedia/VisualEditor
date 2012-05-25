@@ -182,6 +182,26 @@ ve.ce.BranchNode.prototype.onSplice = function( index, howmany ) {
 	}
 };
 
+ve.ce.BranchNode.prototype.hasSlugAtOffset = function( offset ) {
+	for ( var i = 0; i < this.children.length; i++ ) {
+		if ( this.children[i].canHaveSlug() ) {
+			var nodeOffset = this.children[i].model.getRoot().getOffsetFromNode( this.children[i].model );
+			var nodeLength = this.children[i].model.getOuterLength();
+			if ( i === 0 ) {
+				if ( nodeOffset === offset ) {
+					return true;
+				}
+			}
+			if ( i === this.children.length - 1 || ( this.children[i + 1] && this.children[i + 1].canHaveSlug() ) ) {
+				if ( nodeOffset + nodeLength === offset ) {
+					return true;
+				}
+			}
+		}
+	}
+	return false;
+};
+
 /* Inheritance */
 
 ve.extendClass( ve.ce.BranchNode, ve.BranchNode );
