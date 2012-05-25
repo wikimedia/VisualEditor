@@ -910,6 +910,23 @@ test( 'getNearestContentOffset', function() {
 			'offset': 5,
 			'direction': -1,
 			'expected': 4
+		},
+		{
+			'msg': 'valid offset without direction returns same offset',
+			'offset': 1,
+			'expected': 1
+		},
+		{
+			'msg': 'valid offset with positive direction returns same offset',
+			'offset': 1,
+			'direction': 1,
+			'expected': 1
+		},
+		{
+			'msg': 'valid offset with negative direction returns same offset',
+			'offset': 1,
+			'direction': -1,
+			'expected': 1
 		}
 	];
 	expect( cases.length );
@@ -1098,6 +1115,43 @@ test( 'getNearestStructuralOffset', function() {
 			'direction': -1,
 			'unrestricted': true,
 			'expected': 5
+		},
+		{
+			'msg': 'valid offset without direction returns same offset',
+			'offset': 0,
+			'expected': 0
+		},
+		{
+			'msg': 'valid offset with positive direction returns same offset',
+			'offset': 0,
+			'direction': 1,
+			'expected': 0
+		},
+		{
+			'msg': 'valid offset with negative direction returns same offset',
+			'offset': 0,
+			'direction': -1,
+			'expected': 0
+		},
+		{
+			'msg': 'valid offset without direction returns same offset, unrestricted',
+			'offset': 0,
+			'unrestricted': true,
+			'expected': 0
+		},
+		{
+			'msg': 'valid offset with positive direction returns same offset, unrestricted',
+			'offset': 0,
+			'direction': 1,
+			'unrestricted': true,
+			'expected': 0
+		},
+		{
+			'msg': 'valid offset with negative direction returns same offset, unrestricted',
+			'offset': 0,
+			'direction': -1,
+			'unrestricted': true,
+			'expected': 0
 		}
 	];
 	expect( cases.length );

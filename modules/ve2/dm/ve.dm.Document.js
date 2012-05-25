@@ -729,14 +729,14 @@ ve.dm.Document.prototype.getRelativeContentOffset = function( offset, distance )
  * @returns {Integer} Nearest content offset or -1 if there are no valid offsets in document
  */
 ve.dm.Document.prototype.getNearestContentOffset = function( offset, direction ) {
+	if ( ve.dm.Document.isContentOffset( this.data, offset ) ) {
+		return offset;
+	}
 	if ( direction === undefined ) {
 		var left = this.getRelativeOffset( offset, -1, ve.dm.Document.isContentOffset ),
 			right = this.getRelativeOffset( offset, 1, ve.dm.Document.isContentOffset );
 		return offset - left < right - offset ? left : right;
 	} else {
-		if ( ve.dm.Document.isContentOffset( this.data, offset ) ) {
-			return offset;
-		}
 		return this.getRelativeOffset(
 			offset, direction > 0 ? 1 : -1, ve.dm.Document.isContentOffset
 		);
@@ -784,6 +784,9 @@ ve.dm.Document.prototype.getRelativeStructuralOffset = function( offset, distanc
  * @returns {Integer} Nearest structural offset
  */
 ve.dm.Document.prototype.getNearestStructuralOffset = function( offset, direction, unrestricted ) {
+	if ( ve.dm.Document.isStructuralOffset( this.data, offset, unrestricted ) ) {
+		return offset;
+	}
 	if ( !direction ) {
 		var left = this.getRelativeOffset(
 				offset, -1, ve.dm.Document.isStructuralOffset, unrestricted
@@ -793,9 +796,6 @@ ve.dm.Document.prototype.getNearestStructuralOffset = function( offset, directio
 			);
 		return offset - left < right - offset ? left : right;
 	} else {
-		if ( ve.dm.Document.isStructuralOffset( this.data, offset, unrestricted ) ) {
-			return offset;
-		}
 		return this.getRelativeOffset(
 			offset, direction > 0 ? 1 : -1, ve.dm.Document.isStructuralOffset, unrestricted
 		);
