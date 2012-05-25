@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Simple test runner with result archival in results git repository
 # Usage:
 #  ./runtests.sh -c    # wikitext -> HTML DOM tests and commit results
