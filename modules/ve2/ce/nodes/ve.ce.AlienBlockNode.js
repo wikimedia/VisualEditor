@@ -12,27 +12,12 @@ ve.ce.AlienBlockNode = function( model ) {
 
 	// DOM Changes
 	this.$.addClass( 've-ce-alienBlockNode' );
+	this.$.attr( 'contenteditable', false );
 
 	// Events
 	this.model.addListenerMethod( this, 'update', 'onUpdate' );
 
 	// Intialization
-	var _this = this;
-
-	/* We might need some of those at some point */
-	/*
-	this.$.on( {
-		'mousedown': function() {
-			_this.$.css( '-webkit-user-select', 'none' );
-		},
-		'mouseup': function() {
-			_this.$.css( '-webkit-user-select', '' );
-		},
-	} );
-
-	this.$.attr( 'contenteditable', false );
-	*/
-
 	this.onUpdate();
 };
 
