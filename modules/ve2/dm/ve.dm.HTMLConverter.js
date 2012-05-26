@@ -18,29 +18,6 @@ ve.dm.HTMLConverter = function( options ) {
 /* Static Members */
 
 /**
- * HTML DOM node types.
- *
- * If this will be used more than once in a method, it should be aliased locally to avoid excessive
- * lookups.
- *
- * @see https://developer.mozilla.org/en/nodeType
- */
-ve.dm.HTMLConverter.Node = {
-	'ELEMENT_NODE': 1,
-	'ATTRIBUTE_NODE': 2,
-	'TEXT_NODE': 3,
-	'CDATA_SECTION_NODE': 4,
-	'ENTITY_REFERENCE_NODE': 5,
-	'ENTITY_NODE': 6,
-	'PROCESSING_INSTRUCTION_NODE': 7,
-	'COMMENT_NODE': 8,
-	'DOCUMENT_NODE': 9,
-	'DOCUMENT_TYPE_NODE': 10,
-	'DOCUMENT_FRAGMENT_NODE': 11,
-	'NOTATION_NODE': 12
-};
-
-/**
  * Object mapping HTML DOM node names to linear model element names.
  *
  *     'leafNode': Type of model tree node used to represent this element
@@ -244,7 +221,6 @@ ve.dm.HTMLConverter.getLinearModel = function( node, options ) {
  */
 ve.dm.HTMLConverter.prototype.convert = function( node, annotations, typeData ) {
 	var	data = [],
-		types = ve.dm.HTMLConverter.Node,
 		i,
 		child,
 		annotation,
@@ -271,7 +247,7 @@ ve.dm.HTMLConverter.prototype.convert = function( node, annotations, typeData ) 
 	for ( i = 0; i < node.childNodes.length; i++ ) {
 		child = node.childNodes[i];
 		switch ( child.nodeType ) {
-			case types.ELEMENT_NODE:
+			case Node.ELEMENT_NODE:
 				// Check if this is an annotation
 				annotation = ve.dm.HTMLConverter.getAnnotation( child );
 				if ( annotation ) {
@@ -330,7 +306,7 @@ ve.dm.HTMLConverter.prototype.convert = function( node, annotations, typeData ) 
 					}
 				}
 				break;
-			case types.TEXT_NODE:
+			case Node.TEXT_NODE:
 				// If we have annotated text within a branch node, open a paragraph
 				if ( !paragraphOpened && typeData && !typeData.canContainContent ) {
 					data.push( { 'type': 'paragraph' } );
@@ -341,7 +317,7 @@ ve.dm.HTMLConverter.prototype.convert = function( node, annotations, typeData ) 
 					ve.dm.HTMLConverter.generateAnnotatedContent( child.data, annotations )
 				);
 				break;
-			case types.COMMENT_NODE:
+			case Node.COMMENT_NODE:
 				// Comment, do nothing
 				break;
 			default:
