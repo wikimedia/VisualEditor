@@ -1,4 +1,33 @@
 /**
+ #     #                      #######
+ ##    #  ####  #####  ######    #    #   # #####  ######  ####
+ # #   # #    # #    # #         #     # #  #    # #      #
+ #  #  # #    # #    # #####     #      #   #    # #####   ####
+ #   # # #    # #    # #         #      #   #####  #           #
+ #    ## #    # #    # #         #      #   #      #      #    #
+ #     #  ####  #####  ######    #      #   #      ######  ####
+
+
+   #               ####### #       ####### #     # ####### #     # #######         #     # ####### ######  ####### 
+  ##               #       #       #       ##   ## #       ##    #    #            ##    # #     # #     # #       
+ # #               #       #       #       # # # # #       # #   #    #            # #   # #     # #     # #       
+   #      #####    #####   #       #####   #  #  # #####   #  #  #    #            #  #  # #     # #     # #####   
+   #               #       #       #       #     # #       #   # #    #            #   # # #     # #     # #       
+   #               #       #       #       #     # #       #    ##    #            #    ## #     # #     # #       
+ #####             ####### ####### ####### #     # ####### #     #    #            #     # ####### ######  ####### 
+                                                                           #######                                 
+
+  #####              ####### ####### #     # #######         #     # ####### ######  ####### 
+ #     #                #    #        #   #     #            ##    # #     # #     # #       
+       #                #    #         # #      #            # #   # #     # #     # #       
+  #####     #####       #    #####      #       #            #  #  # #     # #     # #####   
+       #                #    #         # #      #            #   # # #     # #     # #       
+ #     #                #    #        #   #     #            #    ## #     # #     # #       
+  #####                 #    ####### #     #    #            #     # ####### ######  ####### 
+                                                     #######
+*/
+
+/**
  * ContentEditable surface.
  *
  * @class
@@ -19,6 +48,7 @@ ve.ce.Surface = function( $container, model ) {
 	
 	// Events
 	this.$.on( {
+		'keydown': this.proxy( this.onKeyDown ),
 		'mousedown': this.proxy( this.onMouseDown ),
 		'mouseup': this.proxy( this.onMouseUp ),
 		'mousemove': this.proxy( this.onMouseMove ),
@@ -45,40 +75,96 @@ ve.ce.Surface.prototype.proxy = function( func ) {
 	});
 };
 
+ve.ce.Surface.prototype.onKeyDown = function( e ) {
+	var rangySel = rangy.getSelection();
+	var offset = this.getOffset( rangySel.anchorNode, rangySel.anchorOffset );
+	console.log( 'onKeyDown', 'offset', offset );
+
+	switch ( e.which ) {
+		case 37: // left arrow key
+			var relativeContentOffset = this.documentView.model.getRelativeContentOffset( offset, -1 );
+			var relativeStructuralOffset = this.documentView.model.getRelativeStructuralOffset( offset - 1, -1, true );
+			var relativeStructuralOffsetNode = this.documentView.documentNode.getNodeFromOffset( relativeStructuralOffset );
+			var hasSlug = relativeStructuralOffsetNode.hasSlugAtOffset( relativeStructuralOffset );
+			if ( hasSlug ) {
+				if ( relativeContentOffset > offset ) {
+					this.showCursor( relativeStructuralOffset );
+				} else {
+					this.showCursor( Math.max( relativeContentOffset, relativeStructuralOffset ) );
+				}
+			} else {
+				this.showCursor( relativeContentOffset );
+			}
+			return false;
+			break;
+		case 39: // right arrow key
+			var relativeContentOffset = this.documentView.model.getRelativeContentOffset( offset, 1 );
+			var relativeStructuralOffset = this.documentView.model.getRelativeStructuralOffset( offset + 1, 1, true );
+			var relativeStructuralOffsetNode = this.documentView.documentNode.getNodeFromOffset( relativeStructuralOffset );
+			var hasSlug = relativeStructuralOffsetNode.hasSlugAtOffset( relativeStructuralOffset );
+			if ( hasSlug ) {
+				if ( relativeContentOffset < offset ) {
+					this.showCursor( relativeStructuralOffset );
+				} else {
+					this.showCursor( Math.min( relativeContentOffset, relativeStructuralOffset ) );
+				}
+			} else {
+				this.showCursor( relativeContentOffset );
+			}
+			return false;
+			break;
+	}
+};
+
 ve.ce.Surface.prototype.onMouseDown = function( e ) {
 	this.isMouseDown = true;
+
+	var _this = this;
+
+	setTimeout( function() {
+		var rangySel = rangy.getSelection();
+		var offset = _this.getOffset( rangySel.anchorNode, rangySel.anchorOffset );
+		console.log( 'onMouseDown', 'rangySel', rangySel.anchorNode, rangySel.anchorOffset );
+		console.log( 'onMouseDown', 'offset', offset );
+	}, 0 );
 
 	var $closestLeaf = $( e.target ).closest( '.ve-ce-leafNode' );
 
 	if ( $closestLeaf.length > 0 ) {
-		var nodeModel = $closestLeaf.data( 'node' ).getModel();
-		var offset = nodeModel.getRoot().getOffsetFromNode( nodeModel );
-		this.showCursor( offset );
+		console.log( 'onMouseDown', 'closest leaf of e.target', $closestLeaf );
+
+		var closestLeafModel = $closestLeaf.data( 'node' ).getModel();
+		var closestLeafOffset = closestLeafModel.getRoot().getOffsetFromNode( closestLeafModel );
+		console.log( 'onMouseDown', 'closestLeafOffset', closestLeafOffset );
+
+		var nearestContentOffset = this.documentView.model.getNearestContentOffset( closestLeafOffset, -1 );
+		console.log( 'onMouseDown', 'nearestContentOffset', nearestContentOffset );
+
+		var nearestStructuralOffset = this.documentView.model.getNearestStructuralOffset( closestLeafOffset, 0, true );
+		console.log( 'onMouseDown', 'nearestStructuralOffset', nearestStructuralOffset );
+
+		var nearestStructuralOffsetNode = this.documentView.documentNode.getNodeFromOffset( nearestStructuralOffset );
+		console.log( 'onMouseDown', 'nearestStructuralOffsetNode', nearestStructuralOffsetNode );
+
+		var hasSlug = nearestStructuralOffsetNode.hasSlugAtOffset( nearestStructuralOffset );
+		console.log( 'onMouseDown', 'hasSlug', hasSlug );
+
+		if ( hasSlug ) {
+			if ( nearestContentOffset > closestLeafOffset ) {
+				this.showCursor( nearestStructuralOffset );
+			} else {
+				this.showCursor( Math.max( nearestStructuralOffset, nearestContentOffset ) );
+			}
+		} else {
+			this.showCursor( nearestContentOffset );
+		}
+
 		return false;
 	}
 };
 
 ve.ce.Surface.prototype.onMouseUp = function( e ) {
 	this.isMouseDown = false;
-
-	var rangySel = rangy.getSelection();
-	console.log("anchor", rangySel.anchorNode, rangySel.anchorOffset);
-
-	var offset1 = this.getOffset( rangySel.anchorNode, rangySel.anchorOffset );
-	console.log( 'offset1', offset1 );
-
-	var offset2 = this.documentView.model.getNearestContentOffset( offset1 );
-	console.log( 'offset2', offset2 );
-
-	var offset3 = this.documentView.model.getNearestStructuralOffset( offset1, 0, true );
-	console.log( 'offset3', offset3 );
-	
-
-
-	this.showCursor( offset1 );
-
-
-
 };
 
 ve.ce.Surface.prototype.onMouseMove = function( e ) {
@@ -158,19 +244,23 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
  * @returns {Integer} Linear model offset
  */
 ve.ce.Surface.prototype.getOffset = function( DOMnode, DOMoffset ) {
-	if ( DOMnode.nodeType === 3 ) {
+	if ( DOMnode.nodeType === 3 /* TEXT_NODE */ ) {
 		var $branch = $( DOMnode ).closest( '.ve-ce-branchNode' );
 		var	current = [$branch.contents(), 0],
 			stack = [current],
 			offset = 0;
 		while ( stack.length > 0 ) {
 			if ( current[1] >= current[0].length ) {
-				stack.pop();
+				var popped = stack.pop();
+				if (popped[2] === true) {
+					offset += 1;
+				}
 				current = stack[ stack.length - 1 ];
 				continue;
 			}
 			var item = current[0][current[1]];
 			var $item = current[0].eq( current[1] );
+
 			if ( item.nodeType === 3 ) {
 				if ( item === DOMnode ) {
 					offset += DOMoffset;
@@ -179,14 +269,22 @@ ve.ce.Surface.prototype.getOffset = function( DOMnode, DOMoffset ) {
 					offset += item.textContent.length;
 				}
 			} else if ( item.nodeType === 1 ) {
-				if ( $( item ).hasClass( 've-ce-leafNode' ) ) {
+				if ( $item.hasClass( 've-ce-slug' ) ) {
+					if ( $item.contents()[0] === DOMnode ) {
+						break;
+					}
+				} else if ( $item.hasClass( 've-ce-leafNode' ) ) {
 					offset += 2;
 				} else {
 					if ( item === DOMnode ) {
 						offset += DOMoffset;
 						break;
 					}				
-					stack.push( [$item.contents(), 0] );
+					if ( $item.is('.ve-ce-leafNode, .ve-ce-branchNode') && !$item.hasClass('ve-ce-documentNode') ) {
+						console.log("adding", $item);
+						offset += 1;
+					}
+					stack.push( [$item.contents(), 0, $item.is('.ve-ce-leafNode, .ve-ce-branchNode') && !$item.hasClass('ve-ce-documentNode') ] );
 					current[1]++;
 					current = stack[stack.length-1];
 					continue;
@@ -196,8 +294,8 @@ ve.ce.Surface.prototype.getOffset = function( DOMnode, DOMoffset ) {
 		}
 		var branchModel = $branch.data( 'node' ).getModel();
 		var branchOffset = branchModel.getRoot().getOffsetFromNode( branchModel );
-		return offset + 1 + branchOffset;
-	} else if ( DOMnode.nodeType === 1 ) {
+		return offset + ((branchModel.isWrapped()) ? 1 : 0) + branchOffset;
+	} else if ( DOMnode.nodeType === 1 /* ELEMENT_NODE */ ) {
 		if ( DOMoffset === 0 ) {
 			throw new "Not implemented";
 		} else {
@@ -228,8 +326,9 @@ ve.ce.Surface.getBranchNode = function( elem ) {
  * @param offset {Integer} Linear model offset
  */
 ve.ce.Surface.prototype.getDOMNodeAndOffset = function( offset ) {
-	var	$node = this.documentView.documentNode.getNodeFromOffset( offset ).$.closest( '.ve-ce-branchNode' ),
-		startOffset = this.documentView.documentNode.getOffsetFromNode( $node.data( 'node' ) ) + 1, 
+	var	$node = this.documentView.documentNode.getNodeFromOffset( offset ).$.closest( '.ve-ce-branchNode' );
+	var node = $node.data( 'node' );
+	var	startOffset = this.documentView.documentNode.getOffsetFromNode( $node.data( 'node' ) ) + ((node.isWrapped()) ? 1 : 0),
 		current = [$node.contents(), 0],
 		stack = [current];
 
@@ -245,19 +344,18 @@ ve.ce.Surface.prototype.getDOMNodeAndOffset = function( offset ) {
 
 		if ( item.nodeType === 3 ) {
 			var length = item.textContent.length;
-
 			if ( offset >= startOffset && offset <= startOffset + length ) {
-				console.log("Success 1");
 				return { node: item, offset: offset - startOffset };
 			} else {
 				startOffset += length;
 			}
 		} else if ( item.nodeType === 1 ) {
 			if ( $item.hasClass('ve-ce-slug') ) {
-				return { node: $item[0], offset: 1 };
+				if ( offset === startOffset ) {
+					return { node: $item[0], offset: 1 };
+				}
 			} else if ( $item.is( '.ve-ce-branchNode, .ve-ce-leafNode' ) ) {
 				var length = $item.data( 'node' ).model.getOuterLength();
-
 				if ( offset >= startOffset && offset < startOffset + length ) {
 					stack.push( [$item.contents(), 0] );
 					current[1]++;
@@ -277,76 +375,6 @@ ve.ce.Surface.prototype.getDOMNodeAndOffset = function( offset ) {
 		current[1]++;
 	}
 	throw new 'Shouldn\'t happen';
-	return;
-
-
-
-
-
-
-
-	var	$node = this.documentView.documentNode.getNodeFromOffset( offset ).$.closest('.ve-ce-branchNode'),
-		nodeOffset = this.documentView.documentNode.getOffsetFromNode( $node.data('node') ) + 1,
-		current = [$node.contents(), 0],
-		stack = [current],
-		localNode,
-		localOffset;
-
-		console.log($node);
-		return;
-
-
-
-	while ( stack.length > 0 ) {
-		if ( current[1] >= current[0].length ) {
-			stack.pop();
-			current = stack[ stack.length - 1 ];
-			continue;
-		}
-		var	item = current[0][current[1]],
-			$item = current[0].eq( current[1] );
-
-			console.log(nodeOffset, $item);
-
-		if ( item.nodeType === 3 ) {
-			var length = item.textContent.length;
-			if ( offset >= nodeOffset && offset <= nodeOffset + length ) {
-				return {
-					node: item,
-					offset: offset - nodeOffset
-				};
-			} else {
-				nodeOffset += length;
-			}
-		} else if ( item.nodeType === 1 ) {
-			if ( $( item ).is('.ve-ce-alienBlockNode, .ve-ce-alienInlineNode, .ve-ce-imageNode') ) {
-				nodeOffset += 2;
-			} else if ( $( item ).hasClass('ve-ce-slug') ) {
-				if (nodeOffset == offset) {
-					return {
-						node: item,
-						offset: 1
-					};
-				}
-			} else {
-
-console.log(this.documentView.model.data);
-				if ( ve.dm.Document.isStructuralOffset( this.documentView.model.data, nodeOffset) ) {
-					console.log("EVER?");
-					nodeOffset++;
-				}
-
-				
-
-				stack.push( [$item.contents(), 0] );
-				current[1]++;
-				current = stack[stack.length-1];
-				continue;
-			}
-		}
-		current[1]++;
-	}
-	return null;
 };
 
 /**
