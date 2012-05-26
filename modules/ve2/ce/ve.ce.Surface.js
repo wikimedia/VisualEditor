@@ -16,14 +16,14 @@ ve.ce.Surface = function( $container, model ) {
 	this.$ = $container;
 	this.isMouseDown = false;
 	this.clipboard = {};
-
+	
 	// Events
 	this.$.on( {
 		'mousedown': this.proxy( this.onMouseDown ),
 		'mouseup': this.proxy( this.onMouseUp ),
 		'mousemove': this.proxy( this.onMouseMove ),
 		'cut copy': this.proxy( this.onCutCopy ),
-		'paste': this.proxy( this.onPaste ),
+		'beforepaste paste': this.proxy( this.onPaste ),
 	} );
 
 	// Initialization
@@ -91,7 +91,6 @@ ve.ce.Surface.prototype.onMouseMove = function( e ) {
  * @method
  */
 ve.ce.Surface.prototype.onCutCopy = function( e ) {
-	console.log('copying');
 	var _this = this,
 		sel = rangy.getSelection(),
 		key = sel.getRangeAt(0).toString().replace( /\s/gm, '' );
@@ -99,9 +98,8 @@ ve.ce.Surface.prototype.onCutCopy = function( e ) {
 	this.clipboard[key] = ve.copyArray(
 		this.documentView.model.getData( this.getSelectionRange() )
 	);
-	console.log(this.clipboard);
 
-	if ( event.type == 'cut' ) {
+	if ( e.type == 'cut' ) {
 		setTimeout( function() {
 			// we don't like how browsers cut, so let's undo it and do it ourselves.
 			document.execCommand('undo', false, false);
@@ -127,7 +125,6 @@ ve.ce.Surface.prototype.onCutCopy = function( e ) {
  * @method
  */
 ve.ce.Surface.prototype.onPaste = function( e ) {
-	return;
 	var	_this = this,
 		insertionPoint = _this.getSelectionRange().start;
 	
@@ -139,24 +136,17 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
 		.focus();
 
 	setTimeout( function() {
-		var key = $('#paste').hide().text().replace( /\s/gm, '' );
+		var pasteString = $('#paste').hide().text(),
+			key = pasteString.replace( /\s/gm, '' ),
+			pasteData = ( _this.clipboard[key] ) ? _this.clipboard[key] : pasteString.split('');
 
-		if ( _this.clipboard[key] ) {
-			// transact
-			var tx = _this.documentView.model.prepareInsertion(
-				insertionPoint, _this.clipboard[key]
-			);
-			_this.autoRender = true;
-			_this.model.transact( tx );
-			_this.autoRender = false;
+		// transact
+		var tx = ve.dm.Transaction.newFromInsertion( _this.documentView.model, insertionPoint, pasteData );
+		ve.dm.TransactionProcessor.commit( _this.documentView.model, tx );
 
-			_this.clearPollData();
-
-			// place cursor
-			_this.showCursor( insertionPoint + _this.clipboard[key].length );
-		} else {
-			alert('i can only handle copy/paste from hybrid surface. sorry. :(');
-		}
+		// place cursor
+		_this.showCursor( insertionPoint + pasteData.length );
+		_this.documentView.documentNode.$.focus();
 	}, 1 );
 };
 

@@ -24,15 +24,15 @@
 			$('#ca-edit > span > a').click( function( e ){
 				// hijack the edit link
 				e.preventDefault();
+				$('#ca-view').removeClass('selected');
+				$('#ca-edit').addClass('selected');
 
-				_this.$content.html(
-					_this.$spinner
-				);
+				_this.showSpinner();
 				// async init
 				mw.loader.using( 'ext.visualEditor.ve', function(){
 					_this.init();
 				});
-				_this.parsoidGetHTML( pageName, function( content ){
+				_this.getHTML( pageName, function( content ){
 					_this.init( content );
 				});
 
@@ -41,6 +41,7 @@
 	};
 
 	veCore.prototype.init = function( html ) {
+		var _this = this;
 		// store the html
 		if (typeof html !== 'undefined') {
 			this.html = html;
@@ -50,7 +51,6 @@
 			typeof ve !== 'undefined' &&
 			typeof this.html !== 'undefined'
 		){
-			console.log ('loaded:', ve, this.html);
 			$html = $("<div />")
 				.html( this.html );
 
@@ -61,17 +61,57 @@
 				toolbars: {
 					top: {
 						/* What modes this toolbar will have */
-						modes: ['wikitext', 'json', 'html', 'render', 'history', 'help']
+						modes: ['wikitext']
 					}
 				}
 			};
 			$editor = $('<div id="ve-editor"></div>');
-			this.$content.html( $editor );
+			this.$spinner.hide();
+			this.$content.append( $editor );
 			this.mainEditor = new ve.Surface( '#ve-editor', $html[0], options );
+
+			// Save BTN
+			$editor.find('.es-modes').append(
+				$('<div />')
+					.text('Save')
+					.click(function(){
+						_this.showSpinner();
+						// Save
+						_this.save( function( content ){
+							// cleanup
+							_this.cleanup();
+							// load saved page
+							_this.$content
+								.find('#mw-content-text').html( content );
+						});
+					})
+			);
 		}
 	};
 
-	veCore.prototype.parsoidGetHTML = function (title, callback) {
+	veCore.prototype.showSpinner = function(){
+		var _this = this;
+		//remove it
+		_this.$spinner.remove();
+		//hide all of the #content element children
+		_this.$content.children().each(function(){
+			$(this).hide();
+		});
+		_this.$content.append(
+			_this.$spinner.show()
+		);
+	};
+
+	veCore.prototype.cleanup = function(){
+		$('#ve-editor').remove();
+		$('#ve-loader-spinner').remove();
+		$('#ca-view').addClass('selected');
+		$('#ca-edit').removeClass('selected');
+		this.$content
+			.find('#mw-content-text, #bodyContent, #firstHeading').show();
+	};
+
+	veCore.prototype.getHTML = function (title, callback) {
 		$.ajax({
 			url: mw.util.wikiScript( 'api' ),
 			data: {
@@ -98,11 +138,13 @@
 	Posts HTML to Parsoid Wrapper API
 	API Posts HTML to Parsoid Service, receives Wikitext,
 	API Saves Wikitext to page.
+	Returns new page content
 */
-	veCore.prototype.parsoidGetWikitextAndSave = function (title, callback) {
+	veCore.prototype.save = function (callback) {
 		// TODO: get html from linmod converter
-		var data = _this.mainEditor.documentModel.getData(),
-			html = "<h1>Test Html</h1>";
+		var data = this.mainEditor.documentModel.getData(),
+			html = "<p>Visual Editor test page</p>",
+			summary = 'Page edit by Visual Editor';
 
 		$.ajax({
 			url: mw.util.wikiScript( 'api' ),
@@ -112,14 +154,21 @@
 				'page': mw.config.get( 'wgPageName' ),
 				'html': html,
 				'token': mw.user.tokens.get('editToken'),
+				'summary': summary,
 				'format': 'json'
 			},
 			dataType: 'json',
 			type: 'POST',
 			success: function( data ) {
-				if( typeof callback === 'function') {
-					console.log (data);
-					callback( data );
+				if (
+					data &&
+					data['ve-parsoid'] &&
+					data['ve-parsoid'].result &&
+					data['ve-parsoid'].result === 'success' &&
+					data['ve-parsoid'].content
+				) {
+					//saved
+					callback( data['ve-parsoid'].content );
 				}
 			},
 			error: function( error ) {}

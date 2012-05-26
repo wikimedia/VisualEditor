@@ -217,13 +217,14 @@ $wgResourceModules += array(
 	Using 2500 range as it appears available in
 	MW Extension_namespace_registration
 */
-$wgExtraNamespaces[2500] = "VisualEditor";
-$wgExtraNamespaces[2501] = "VisualEditor_talk";
-$wgContentNamespaces[] = 2500;
-$wgContentNamespaces[] = 2501;
+define("NS_VISUALEDITOR", 2500);
+define("NS_VISUALEDITOR_TALK", 2501);	
+$wgExtraNamespaces[NS_VISUALEDITOR] = "VisualEditor";
+$wgExtraNamespaces[NS_VISUALEDITOR_TALK] = "VisualEditor_talk";
+$wgContentNamespaces[] = NS_VISUALEDITOR;
+$wgContentNamespaces[] = NS_VISUALEDITOR_TALK;
 
-
-// Parsoid API
+// Parsoid Wrapper API
 $wgAutoloadClasses['ApiVisualEditor'] = $dir . 'ApiVisualEditor.php';
 $wgAPIModules['ve-parsoid'] = 'ApiVisualEditor';
 
