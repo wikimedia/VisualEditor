@@ -27,7 +27,7 @@ PostExpandParagraphHandler.prototype.register = function ( dispatcher ) {
 	dispatcher.addTransform( this.onNewLine.bind(this), 
 			this.newlineRank, 'newline' );
 	// Reset internal state when we are done
-	dispatcher.addTransform( this.reset.bind(this), 
+	dispatcher.addTransform( this.onEnd.bind(this), 
 			this.newlineRank, 'end' );
 };
 
@@ -65,6 +65,11 @@ PostExpandParagraphHandler.prototype.onNewLine = function (  token, frame, cb ) 
 	return {};
 };
 
+PostExpandParagraphHandler.prototype.onEnd = function (  token, frame, cb ) {
+	var tokens = this.tokens;
+	this.reset();
+	return { tokens: tokens.concat( [token] ) };
+}
 
 PostExpandParagraphHandler.prototype.onAny = function ( token, frame, cb ) {
 	//console.warn( 'PostExpandParagraphHandler.onAny' );

@@ -308,7 +308,7 @@ start
  * emitted in chunks per toplevelblock to avoid buffering the full document.
  */
 toplevelblock 
-  = & { blockStart = pos; return true; } b:block {
+  = & { blockStart = pos; return true; } !eof b:block {
     b = flatten(b);
 
     // Add source offsets for round-tripping. XXX: Add these not just for

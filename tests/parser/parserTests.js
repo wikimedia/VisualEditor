@@ -137,6 +137,10 @@ function ParserTests () {
 			description: 'Print trace information (light debugging)',
 			'default': false,
 			'boolean': true
+		},
+		'maxtests': {
+			description: 'Maximum number of tests to run',
+			'boolean': false
 		}
 	}
 	).check( function(argv) {
@@ -184,6 +188,14 @@ function ParserTests () {
 	}
 
 	this.cases = this.getTests() || []; 
+
+	if ( this.argv.maxtests ) {
+		var n = Number(this.argv.maxtests);
+		console.warn('maxtests:' + n );
+		if(n > 0) {
+			this.cases.length = n;
+		}
+	}
 
 	this.articles = {};
 

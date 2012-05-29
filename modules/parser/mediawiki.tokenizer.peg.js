@@ -87,9 +87,9 @@ PegTokenizer.prototype.process = function( text, cacheKey ) {
 
 
 	// Some input normalization: force a trailing newline
-	if ( text.substring(text.length - 1) !== "\n" ) {
-		text += "\n";
-	}
+	//if ( text.substring(text.length - 1) !== "\n" ) {
+	//	text += "\n";
+	//}
 
 	var chunkCB;
 	if ( this.canCache ) {
@@ -169,14 +169,17 @@ PegTokenizer.prototype.inline_breaks = function (input, pos, stops ) {
 		case '=':
 			return stops.onStack( 'equal' ) ||
 				( counters.h &&
-					input.substr( pos + 1, 200)
-					.match(/[ \t]*[\r\n]/) !== null ) || null;
+					( pos === input.length - 1 ||
+					  input.substr( pos + 1, 200)
+						.match(/[ \t]*(?:[\r\n]|$)/) !== null ) 
+				) || null;
 		case '|':
 			return counters.pipe ||
 					counters.template ||
 					counters.linkdesc ||
 				( stops.onStack('table') &&
-					( input[pos + 1].match(/[|}]/) !== null ||
+					( ( pos < input.length - 1 &&
+					  input[pos + 1].match(/[|}]/) !== null ) ||
 						counters.tableCellArg
 					) 
 				) || null;

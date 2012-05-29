@@ -16,16 +16,22 @@ var WSP = WikitextSerializer.prototype;
 WSP.defaultOptions = {
 	needParagraphLines: false,
 	listStack: [],
-	lastHandler: null
+	lastHandler: null,
+	precedingNewlineCount: 0
 };
 
 var id = function( v ) { return function() { return v; }; };
+var nlid = function( newlineCount, v ) { 
+	return function( state ) { 
+		return WSP.getNewLines( state, newlineCount ) + v; 
+	}; 
+};
 
 WSP._listHandler = function( bullet, state, token ) {
 	var bullets, res;
 	var stack = state.listStack;
 	if (stack.length === 0) {
-		bullets = "\n" + bullet;
+		bullets = bullet;
 		res     = bullets;
 	} else {
 		var curList = stack[stack.length - 1];
@@ -43,7 +49,7 @@ WSP._listHandler = function( bullet, state, token ) {
 		}
 	}
 	stack.push({ itemCount: 0, bullets: bullets});
-	return res;
+	return WSP.getNewLines( state, 1 ) + res;
 };
 
 WSP._listEndHandler = function( state, token ) {
@@ -67,7 +73,8 @@ WSP._listItemHandler = function ( bullet, state, token ) {
 	}
 };
 
-WSP._serializeTableTag = function ( symbol, optionEndSymbol, state, token ) {
+WSP._serializeTableTag = function ( symbol, optionEndSymbol, newlineCount, state, token ) {
+	symbol = WSP.getNewLines( state, newlineCount ) + symbol;
 	if ( token.attribs.length ) {
 		return symbol + ' ' + 
 			WSP._serializeAttributes( token.attribs ) + optionEndSymbol;
@@ -187,16 +194,16 @@ WSP.tagToWikitext = {
 	dd: { start: WSP._listItemHandler.bind( null, ":" ) },
 	// XXX: handle options
 	table: { 
-		start: WSP._serializeTableTag.bind(null, "\n{|", ''), 
+		start: WSP._serializeTableTag.bind(null, "{|", '', 1), 
 		end: id("\n|}") 
 	},
 	tbody: {},
 	th: { 
 		start: function ( state, token ) {
 			if ( token.dataAttribs.stx_v === 'row' ) {
-				return WSP._serializeTableTag("!!", ' |', state, token);
+				return WSP._serializeTableTag("!!", ' |', 0, state, token);
 			} else {
-				return WSP._serializeTableTag("\n!", ' |', state, token);
+				return WSP._serializeTableTag( "!", ' |', 1, state, token);
 			}
 		}
 	},
@@ -206,20 +213,20 @@ WSP.tagToWikitext = {
 			if ( state.prevToken.constructor === TagTk && state.prevToken.name === 'tbody' ) {
 				return '';
 			} else {
-				return WSP._serializeTableTag("\n|-", '', state, token );
+				return WSP._serializeTableTag("|-", '', 1, state, token );
 			}
 		}
 	},
 	td: { 
 		start: function ( state, token ) {
 			if ( token.dataAttribs.stx_v === 'row' ) {
-				return WSP._serializeTableTag("||", ' |', state, token);
+				return WSP._serializeTableTag("||", ' |', 0, state, token);
 			} else {
-				return WSP._serializeTableTag("\n|", ' |', state, token);
+				return WSP._serializeTableTag("|", ' |', 1, state, token);
 			}
 		}
 	},
-	caption: { start: WSP._serializeTableTag.bind(null, "\n|+", ' |') },
+	caption: { start: WSP._serializeTableTag.bind(null, "|+", ' |', 1) },
 	p: { 
 		start: function( state, token ) {
 			if (state.needParagraphLines) {
@@ -230,13 +237,13 @@ WSP.tagToWikitext = {
 			}
 		}
 	},
-	hr: { start: id("\n----"), end: id("\n") },
-	h1: { start: id("\n\n="), end: id("=\n") },
-	h2: { start: id("\n\n=="), end: id("==\n") },
-	h3: { start: id("\n\n==="), end: id("===\n") },
-	h4: { start: id("\n\n===="), end: id("====\n") },
-	h5: { start: id("\n\n====="), end: id("=====\n") },
-	h6: { start: id("\n\n======"), end: id("======\n") },
+	hr: { start: nlid(1, "----"), end: id("") },
+	h1: { start: nlid(1, "="), end: id("=") },
+	h2: { start: nlid(1, "=="), end: id("==") },
+	h3: { start: nlid(1, "==="), end: id("===") },
+	h4: { start: nlid(1, "===="), end: id("====") },
+	h5: { start: nlid(1, "====="), end: id("=====") },
+	h6: { start: nlid(1, "======"), end: id("======") },
 	// XXX: support indent variant instead by registering a newline handler?
 	pre: { 
 		start: function( state, token ) {
@@ -256,7 +263,7 @@ WSP.tagToWikitext = {
 			}
 		}
 	},
-	br: { start: id( "\n\n" ) }
+	br: { start: nlid(2, "") }
 };
 
 
@@ -313,6 +320,14 @@ WSP.serializeTokens = function( tokens, chunkCB ) {
 	}
 };
 
+WSP.getNewLines = function ( state, n ) {
+	var out = '';
+	while ( state.precedingNewlineCount < n ) {
+		out += '\n';
+		n--;
+	}
+	return out;
+};
 
 /**
  * Serialize a token.
@@ -372,8 +387,24 @@ WSP._serializeToken = function ( state, token ) {
 			console.warn( 'Unhandled token type ' + JSON.stringify( token ) );
 			break;
 	}
-	if ( ! dropContent || ! state.dropContent ) {
-		state.chunkCB( res );
+	//console.warn( 'res: ' + JSON.stringify( res ) );
+	if ( res !== '' ) {
+		var nls = res.match( /\n+$/ );
+		if ( nls ) {
+			if ( nls[0].length === res.length ) {
+				// completely newlines, continue counting..
+				state.precedingNewlineCount += res.length;
+			} else {
+				// reset to new newline count
+				state.precedingNewlineCount = res.length;
+			}
+		} else {
+			// no trailing newlines at all
+			state.precedingNewlineCount = 0;
+		}
+		if ( ! dropContent || ! state.dropContent ) {
+			state.chunkCB( res );
+		}
 	}
 };
 
@@ -382,6 +413,7 @@ WSP._serializeToken = function ( state, token ) {
  */
 WSP.serializeDOM = function( node, chunkCB ) {
 	var state = $.extend({}, this.defaultOptions, this.options);
+	//console.warn( node.innerHTML );
 	state.chunkCB = this._stripFirstNewLines.bind( this, state );
 	if ( ! chunkCB ) {
 		var out = [];

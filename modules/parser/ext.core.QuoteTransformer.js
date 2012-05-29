@@ -198,7 +198,8 @@ QuoteTransformer.prototype.onNewLine = function (  token, frame, prevToken ) {
 	//console.warn('chunks: ' + JSON.stringify( this.chunks, null, 2 ) );
 
 	// return all collected tokens including the newline
-	res = { tokens: [].concat.apply([], this.chunks) };
+	res = { tokens: Array.prototype.concat.apply([], this.chunks) };
+
 
 	// prepare for next line
 	this.reset();
@@ -207,6 +208,7 @@ QuoteTransformer.prototype.onNewLine = function (  token, frame, prevToken ) {
 	this.dispatcher.removeTransform( this.quoteAndNewlineRank, 'end' );
 	this.dispatcher.removeTransform( this.quoteAndNewlineRank, 'newline' );
 	this.dispatcher.removeTransform( this.anyRank, 'any' );
+	//console.warn( 'res:' + JSON.stringify( res, null, 2 ));
 
 	return res;
 };

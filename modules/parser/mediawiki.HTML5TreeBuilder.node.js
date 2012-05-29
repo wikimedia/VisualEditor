@@ -90,6 +90,7 @@ FauxHTML5.TreeBuilder.prototype.processToken = function (token) {
 			this.emit('token', {type: 'Characters', data: token});
 			break;
 		case NlTk:
+			this.emit('token', {type: 'Characters', data: '\n'});
 			break;
 		case TagTk:
 			this.emit('token', {type: 'StartTag', 
