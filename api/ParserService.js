@@ -3,13 +3,15 @@
  */
 
 var express = require('express'),
+	jsDiff = require('diff'),
 	html5 = require('html5');
 
 var mp = '../modules/parser/';
 
 var ParserPipelineFactory = require(mp + 'mediawiki.parser.js').ParserPipelineFactory,
 	ParserEnv = require(mp + 'mediawiki.parser.environment.js').MWParserEnvironment,
-	WikitextSerializer = require(mp + 'mediawiki.WikitextSerializer.js').WikitextSerializer;
+	WikitextSerializer = require(mp + 'mediawiki.WikitextSerializer.js').WikitextSerializer,
+	TemplateRequest = require(mp + 'mediawiki.ApiRequest.js').TemplateRequest;
 
 var env = new ParserEnv( { 
 	// fetch templates from enwiki for now..
@@ -120,6 +122,43 @@ app.post(/\/_wikitext\/(.*)/, function(req, res){
 		console.log( e );
 		res.write( e );
 	}
+});
+
+/**
+ * Round-trip article testing
+ */
+app.get(/\/_roundtrip\/(.*)/, function(req, res){
+	env.pageName = req.params[0];
+
+	if ( env.pageName === 'favicon.ico' ) {
+		res.end( 'no favicon yet..' );
+		return;
+	}
+
+	var target = env.resolveTitle( env.normalizeTitle( env.pageName ), 'Template' );
+	
+	console.log('retrieving ' + req.params[0]);
+	var tpr = new TemplateRequest( env, target );
+	tpr.once('src', function ( src ) {
+		var parser = parserPipelineFactory.makePipeline( 'text/x-mediawiki/full' );
+		parser.on('document', function ( document ) {
+			var out = new WikitextSerializer({env: env}).serializeDOM( document.body );
+			// TODO: diff with original input
+			var patch = jsDiff.createPatch('wikitext.txt', src, out, 'before', 'after');
+			res.write(out);
+			res.write("\n===================================================================\n");
+			res.end(patch);
+		});
+		try {
+			res.setHeader('Content-Type', 'text/plain; charset=UTF-8');
+			console.log('starting parsing of ' + req.params[0]);
+			// FIXME: This does not handle includes or templates correctly
+			parser.process( src );
+		} catch (e) {
+			console.log( e );
+			res.end( e );
+		}
+	});
 });
 
 /**
