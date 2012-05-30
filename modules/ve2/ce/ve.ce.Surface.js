@@ -202,8 +202,9 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
 	}, 1 );
 };
 
-
 /**
+ * Gets the linear offset based on a given DOM node (DOMnode) and offset (DOMoffset)
+ *
  * @method
  * @param DOMnode {DOM Element} DOM Element
  * @param DOMoffset {Integer} DOM offset within the DOM Element
@@ -211,22 +212,20 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
  */
 ve.ce.Surface.prototype.getOffset = function( DOMnode, DOMoffset ) {
 	if ( DOMnode.nodeType === Node.TEXT_NODE ) {
-		var $branch = $( DOMnode ).closest( '.ve-ce-branchNode' );
-		var	current = [$branch.contents(), 0],
+		var $branch = $( DOMnode ).closest( '.ve-ce-branchNode' ),
+			current = [$branch.contents(), 0],
 			stack = [current],
-			offset = 0;
+			offset = 0,
+			item,
+			$item;
+
 		while ( stack.length > 0 ) {
 			if ( current[1] >= current[0].length ) {
-				var popped = stack.pop();
-				if (popped[2] === true) {
-					offset += 1;
-				}
+				stack.pop();
 				current = stack[ stack.length - 1 ];
 				continue;
 			}
-			var item = current[0][current[1]];
-			var $item = current[0].eq( current[1] );
-
+			item = current[0][current[1]];
 			if ( item.nodeType === Node.TEXT_NODE ) {
 				if ( item === DOMnode ) {
 					offset += DOMoffset;
@@ -235,22 +234,17 @@ ve.ce.Surface.prototype.getOffset = function( DOMnode, DOMoffset ) {
 					offset += item.textContent.length;
 				}
 			} else if ( item.nodeType === Node.ELEMENT_NODE ) {
+				$item = current[0].eq( current[1] );
 				if ( $item.hasClass( 've-ce-slug' ) ) {
 					if ( $item.contents()[0] === DOMnode ) {
 						break;
 					}
 				} else if ( $item.hasClass( 've-ce-leafNode' ) ) {
 					offset += 2;
+				} else if ( $item.hasClass( 've-ce-branchNode' ) ) {
+					offset += $item.data( 'node' ).getOuterLength();
 				} else {
-					if ( item === DOMnode ) {
-						offset += DOMoffset;
-						break;
-					}				
-					if ( $item.is('.ve-ce-leafNode, .ve-ce-branchNode') && !$item.hasClass('ve-ce-documentNode') ) {
-						console.log("adding", $item);
-						offset += 1;
-					}
-					stack.push( [$item.contents(), 0, $item.is('.ve-ce-leafNode, .ve-ce-branchNode') && !$item.hasClass('ve-ce-documentNode') ] );
+					stack.push( [$item.contents(), 0 ] );
 					current[1]++;
 					current = stack[stack.length-1];
 					continue;
@@ -258,21 +252,20 @@ ve.ce.Surface.prototype.getOffset = function( DOMnode, DOMoffset ) {
 			}
 			current[1]++;
 		}
-		var branchModel = $branch.data( 'node' ).getModel();
-		var branchOffset = branchModel.getRoot().getOffsetFromNode( branchModel );
-		return offset + ((branchModel.isWrapped()) ? 1 : 0) + branchOffset;
+		var	branchModel = $branch.data( 'node' ).getModel(),
+			branchOffset = branchModel.getRoot().getOffsetFromNode( branchModel );
+		return offset + branchOffset + ( ( branchModel.isWrapped() ) ? 1 : 0 );
 	} else if ( DOMnode.nodeType === Node.ELEMENT_NODE ) {
 		if ( DOMoffset === 0 ) {
-			throw new "Not implemented";
+			throw "Not implemented";
 		} else {
-			var $node = $( DOMnode ).contents().eq( DOMoffset - 1 );
-			var nodeModel = $node.data( 'node' ).getModel();
-			var nodeOffset = nodeModel.getRoot().getOffsetFromNode( nodeModel );
+			var	$node = $( DOMnode ).contents().eq( DOMoffset - 1 ),
+				nodeModel = $node.data( 'node' ).getModel(),
+				nodeOffset = nodeModel.getRoot().getOffsetFromNode( nodeModel );
 			return nodeOffset + nodeModel.getOuterLength();
 		}
-	} else {
-		throw new "Not implemented";
 	}
+	throw "Not implemented";
 };
 
 /**
