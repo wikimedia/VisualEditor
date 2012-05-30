@@ -268,28 +268,21 @@ ve.ce.Surface.prototype.getOffset = function( DOMnode, DOMoffset ) {
 	throw "Not implemented";
 };
 
-/**
- * @method
- * @param elem {DOM Element} DOM Element
- * @returns {jQuery} jQuery element
- */
-ve.ce.Surface.getBranchNode = function( elem ) {
-	var $branch = $( elem ).closest( '.ve-ce-branchNode' );
-	return $branch.length ? $branch : null;
-};
-
-
 
 /**
+ * Based on a given offset returns DOM node and offset that can be used to place a cursor (with rangy)
+ *
  * @method
  * @param offset {Integer} Linear model offset
  */
-ve.ce.Surface.prototype.getDOMNodeAndOffset = function( offset ) {
-	var	$node = this.documentView.documentNode.getNodeFromOffset( offset ).$.closest( '.ve-ce-branchNode' );
-	var node = $node.data( 'node' );
-	var	startOffset = this.documentView.documentNode.getOffsetFromNode( $node.data( 'node' ) ) + ((node.isWrapped()) ? 1 : 0),
-		current = [$node.contents(), 0],
-		stack = [current];
+ve.ce.Surface.prototype.getNodeAndOffset = function( offset ) {
+	var	node = this.documentView.getNodeFromOffset( offset ),
+		startOffset = this.documentView.getDocumentNode().getOffsetFromNode( node ) + ( ( node.isWrapped() ) ? 1 : 0 ),
+		current = [node.$.contents(), 0],
+		stack = [current],
+		item,
+		$item,
+		length;
 
 	while ( stack.length > 0 ) {
 		if ( current[1] >= current[0].length ) {
@@ -297,24 +290,28 @@ ve.ce.Surface.prototype.getDOMNodeAndOffset = function( offset ) {
 			current = stack[ stack.length - 1 ];
 			continue;
 		}
-
-		var	item = current[0][current[1]],
-			$item = current[0].eq( current[1] );
-
+		item = current[0][current[1]];
 		if ( item.nodeType === Node.TEXT_NODE ) {
-			var length = item.textContent.length;
+			length = item.textContent.length;
 			if ( offset >= startOffset && offset <= startOffset + length ) {
-				return { node: item, offset: offset - startOffset };
+				return {
+					node: item,
+					offset: offset - startOffset
+				};
 			} else {
 				startOffset += length;
 			}
 		} else if ( item.nodeType === Node.ELEMENT_NODE ) {
+			$item = current[0].eq( current[1] );
 			if ( $item.hasClass('ve-ce-slug') ) {
 				if ( offset === startOffset ) {
-					return { node: $item[0], offset: 1 };
+					return {
+						node: $item[0],
+						offset: 1
+					};
 				}
 			} else if ( $item.is( '.ve-ce-branchNode, .ve-ce-leafNode' ) ) {
-				var length = $item.data( 'node' ).model.getOuterLength();
+				length = $item.data( 'node' ).model.getOuterLength();
 				if ( offset >= startOffset && offset < startOffset + length ) {
 					stack.push( [$item.contents(), 0] );
 					current[1]++;
@@ -333,7 +330,19 @@ ve.ce.Surface.prototype.getDOMNodeAndOffset = function( offset ) {
 		}
 		current[1]++;
 	}
-	throw new 'Shouldn\'t happen';
+	throw "Not implemented";
+};
+
+/**
+ * Gets closest BranchNode (.ve-ce-branchNode) based on a given DOM node
+ *
+ * @method
+ * @param elem {DOM Element} DOM Element
+ * @returns {jQuery} jQuery element
+ */
+ve.ce.Surface.getBranchNode = function( elem ) {
+	var $branch = $( elem ).closest( '.ve-ce-branchNode' );
+	return $branch.length ? $branch : null;
 };
 
 /**
@@ -347,8 +356,8 @@ ve.ce.Surface.prototype.showCursor = function( offset ) {
  * @method
  */
 ve.ce.Surface.prototype.showSelection = function( range ) {
-	var	start = this.getDOMNodeAndOffset( range.start ),
-		stop = this.getDOMNodeAndOffset( range.end ),
+	var	start = this.getNodeAndOffset( range.start ),
+		stop = this.getNodeAndOffset( range.end ),
 		rangySel = rangy.getSelection(),
 		rangyRange = rangy.createRange();
 
