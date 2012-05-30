@@ -1,33 +1,4 @@
 /**
- #     #                      #######
- ##    #  ####  #####  ######    #    #   # #####  ######  ####
- # #   # #    # #    # #         #     # #  #    # #      #
- #  #  # #    # #    # #####     #      #   #    # #####   ####
- #   # # #    # #    # #         #      #   #####  #           #
- #    ## #    # #    # #         #      #   #      #      #    #
- #     #  ####  #####  ######    #      #   #      ######  ####
-
-
-   #               ####### #       ####### #     # ####### #     # #######         #     # ####### ######  ####### 
-  ##               #       #       #       ##   ## #       ##    #    #            ##    # #     # #     # #       
- # #               #       #       #       # # # # #       # #   #    #            # #   # #     # #     # #       
-   #      #####    #####   #       #####   #  #  # #####   #  #  #    #            #  #  # #     # #     # #####   
-   #               #       #       #       #     # #       #   # #    #            #   # # #     # #     # #       
-   #               #       #       #       #     # #       #    ##    #            #    ## #     # #     # #       
- #####             ####### ####### ####### #     # ####### #     #    #            #     # ####### ######  ####### 
-                                                                           #######                                 
-
-  #####              ####### ####### #     # #######         #     # ####### ######  ####### 
- #     #                #    #        #   #     #            ##    # #     # #     # #       
-       #                #    #         # #      #            # #   # #     # #     # #       
-  #####     #####       #    #####      #       #            #  #  # #     # #     # #####   
-       #                #    #         # #      #            #   # # #     # #     # #       
- #     #                #    #        #   #     #            #    ## #     # #     # #       
-  #####                 #    ####### #     #    #            #     # ####### ######  ####### 
-                                                     #######
-*/
-
-/**
  * ContentEditable surface.
  *
  * @class
@@ -244,7 +215,7 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
  * @returns {Integer} Linear model offset
  */
 ve.ce.Surface.prototype.getOffset = function( DOMnode, DOMoffset ) {
-	if ( DOMnode.nodeType === 3 /* TEXT_NODE */ ) {
+	if ( DOMnode.nodeType === Node.TEXT_NODE ) {
 		var $branch = $( DOMnode ).closest( '.ve-ce-branchNode' );
 		var	current = [$branch.contents(), 0],
 			stack = [current],
@@ -261,14 +232,14 @@ ve.ce.Surface.prototype.getOffset = function( DOMnode, DOMoffset ) {
 			var item = current[0][current[1]];
 			var $item = current[0].eq( current[1] );
 
-			if ( item.nodeType === 3 ) {
+			if ( item.nodeType === Node.TEXT_NODE ) {
 				if ( item === DOMnode ) {
 					offset += DOMoffset;
 					break;
 				} else {
 					offset += item.textContent.length;
 				}
-			} else if ( item.nodeType === 1 ) {
+			} else if ( item.nodeType === Node.ELEMENT_NODE ) {
 				if ( $item.hasClass( 've-ce-slug' ) ) {
 					if ( $item.contents()[0] === DOMnode ) {
 						break;
@@ -295,7 +266,7 @@ ve.ce.Surface.prototype.getOffset = function( DOMnode, DOMoffset ) {
 		var branchModel = $branch.data( 'node' ).getModel();
 		var branchOffset = branchModel.getRoot().getOffsetFromNode( branchModel );
 		return offset + ((branchModel.isWrapped()) ? 1 : 0) + branchOffset;
-	} else if ( DOMnode.nodeType === 1 /* ELEMENT_NODE */ ) {
+	} else if ( DOMnode.nodeType === Node.ELEMENT_NODE ) {
 		if ( DOMoffset === 0 ) {
 			throw new "Not implemented";
 		} else {
@@ -342,14 +313,14 @@ ve.ce.Surface.prototype.getDOMNodeAndOffset = function( offset ) {
 		var	item = current[0][current[1]],
 			$item = current[0].eq( current[1] );
 
-		if ( item.nodeType === 3 ) {
+		if ( item.nodeType === Node.TEXT_NODE ) {
 			var length = item.textContent.length;
 			if ( offset >= startOffset && offset <= startOffset + length ) {
 				return { node: item, offset: offset - startOffset };
 			} else {
 				startOffset += length;
 			}
-		} else if ( item.nodeType === 1 ) {
+		} else if ( item.nodeType === Node.ELEMENT_NODE ) {
 			if ( $item.hasClass('ve-ce-slug') ) {
 				if ( offset === startOffset ) {
 					return { node: $item[0], offset: 1 };
