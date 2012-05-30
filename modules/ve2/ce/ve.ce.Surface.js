@@ -185,12 +185,7 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
 	var	_this = this,
 		insertionPoint = _this.getSelectionRange().start;
 	
-	$('#paste')
-		.html('')
-		.show()
-		.css( 'top', $(window).scrollTop() )
-		.css( 'left', $(window).scrollLeft() )
-		.focus();
+	$('#paste').html('').show().focus();
 
 	setTimeout( function() {
 		var pasteString = $('#paste').hide().text(),

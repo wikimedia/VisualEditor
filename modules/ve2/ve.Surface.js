@@ -87,7 +87,7 @@ ve.Surface.prototype.setupBaseElements = function() {
 							'id': 'paste', //TODO: make 'paste' in surface stateful and remove this attrib
 							'class': 'paste',
 							'contenteditable': 'true',
-							'style': 'height:1px;width:1px;display:none;opacity:0;position:absolute;'
+							'style': 'height:1px;width:1px;overflow:hidden;position:fixed;display:none;opacity:0;top:0;left:0;'
 						})
 					);
 	// Attach the base the the parent
