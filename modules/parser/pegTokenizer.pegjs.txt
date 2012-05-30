@@ -268,10 +268,6 @@
     // text start position
     var textStart = 0;
 
-    // hack to support numbered external links ([http://example.com]).
-    // XXX: Move to token stream transform after templates are expanded!
-    //var linkCount = 1;
-
     // Define block-level tags in JS, so we can use toLowerCase to match tags
     // case-independently. This would be quite ugly (and possibly slower) if
     // done manually in the grammar.
@@ -1870,7 +1866,7 @@ extlink_preprocessor_text
 
 // Attribute values with preprocessor support
 attribute_preprocessor_text
-  = r:( ts:(!inline_breaks t:[^=<>{\n\r&'"\t ] {return t})+ { return ts.join(''); }
+  = r:( ts:(!inline_breaks t:[^=<>{}\n\r&'"\t ] {return t})+ { return ts.join(''); }
   / !inline_breaks ( 
           directive
         / !inline_breaks [&%] 
@@ -1882,7 +1878,7 @@ attribute_preprocessor_text
   }
 
 attribute_preprocessor_text_single
-  = r:( t:[^{&']+ { return t.join(''); }
+  = r:( t:[^{}&']+ { return t.join(''); }
   / !inline_breaks ( 
       directive
     / [{&] )
@@ -1891,7 +1887,7 @@ attribute_preprocessor_text_single
       return flatten_string ( r );
   }
 attribute_preprocessor_text_double
-  = r:( t:[^{&"]+ { return t.join(''); }
+  = r:( t:[^{}&"]+ { return t.join(''); }
   / !inline_breaks ( 
       directive
     / [{&] )
@@ -1903,7 +1899,7 @@ attribute_preprocessor_text_double
 
 // Variants with the entire attribute on a single line
 attribute_preprocessor_text_line
-  = r:( ts:[^=<>{\n\r&'"\t \[\]|{]+ { return ts.join(''); }
+  = r:( ts:[^=<>{\n\r&'"\t \[\]|{}]+ { return ts.join(''); }
         /  !inline_breaks 
             t:( 
                 directive
@@ -1919,7 +1915,7 @@ attribute_preprocessor_text_line
   }
 
 attribute_preprocessor_text_single_line
-  = r:( t:[^{&']+ { return t.join(''); }
+  = r:( t:[^{}&']+ { return t.join(''); }
   / !inline_breaks ( 
       directive
     / !'\n' [{&] )
@@ -1927,7 +1923,7 @@ attribute_preprocessor_text_single_line
       return flatten_string ( r );
   }
 attribute_preprocessor_text_double_line
-  = r:( t:[^{&"]+ { return t.join(''); }
+  = r:( t:[^{}&"]+ { return t.join(''); }
   / !inline_breaks (
       directive
     / !'\n' [{&] )
