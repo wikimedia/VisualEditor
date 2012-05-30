@@ -14,6 +14,16 @@ ve.ce.Document = function( model ) {
 	this.model = model;
 };
 
+/* Methods */
+
+ve.ce.Document.prototype.getNodeFromOffset = function( offset ) {
+	var node = this.documentNode.getNodeFromOffset( offset );
+	if ( !node.canHaveChildren() ) {
+		node = node.getParent();
+	}
+	return node;
+};
+
 /* Inheritance */
 
 ve.extendClass( ve.ce.Document, ve.Document );
