@@ -14,6 +14,8 @@ if [ ! -d results ];then
       git add html.txt
       git add roundtrip.txt
       git commit -a -m 'init to empty test output' )
+else
+    ( cd results && git checkout -f )
 fi
 
 if [ "$1" = "-r" ];then
