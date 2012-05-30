@@ -1483,7 +1483,7 @@ table_heading_tag
      }
 
 table_end_tag
-  = pipe "}" { 
+  = space* pipe "}" { 
       var tok = [new EndTagTk( 'table' )];
 	  return tok;
   }

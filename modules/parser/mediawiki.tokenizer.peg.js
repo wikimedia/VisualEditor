@@ -205,12 +205,15 @@ PegTokenizer.prototype.inline_breaks = function (input, pos, stops ) {
 				! counters.linkdesc || null;
 		case "\r":
 			return stops.onStack( 'table' ) &&
-				input.substr(pos, 4).match(/\r\n?[!|]/) !== null ||
+				input.substr(pos).match(/\r\n?\s*[!|]/) !== null ||
 				null;
 		case "\n":
-			return stops.onStack( 'table' ) &&
-				input[pos + 1] === '!' ||
-				input[pos + 1] === '|' ||
+			return ( stops.onStack( 'table' ) &&
+				// allow leading whitespace in tables
+				input.substr(pos, 200).match( /^\n\s*[!|]/ ) ) ||
+				// break on table-like syntax when the table stop is not
+				// enabled. XXX: see if this can be improved
+				input.substr(pos, 200).match( /^\n[!|]/ ) ||
 				null;
 		case "]":
 			return stops.onStack( 'extlink' ) ||
