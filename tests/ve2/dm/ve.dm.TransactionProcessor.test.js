@@ -105,7 +105,7 @@ test( 'commit/rollback', function() {
 			],
 			'exception': /^Invalid element error, can not set attributes on non-element data$/
 		},
-		'inserting content': {
+		'inserting text': {
 			'calls': [
 				['pushRetain', 1],
 				['pushReplace', [], ['F', 'O', 'O']]
@@ -114,7 +114,7 @@ test( 'commit/rollback', function() {
 				data.splice( 1, 0, 'F', 'O', 'O' );
 			}
 		},
-		'removing content': {
+		'removing text': {
 			'calls': [
 				['pushRetain', 1],
 				['pushReplace', ['a'], []]
@@ -123,13 +123,22 @@ test( 'commit/rollback', function() {
 				data.splice( 1, 1 );
 			}
 		},
-		'replacing content': {
+		'replacing text': {
 			'calls': [
 				['pushRetain', 1],
 				['pushReplace', ['a'], ['F', 'O', 'O']]
 			],
 			'expected': function( data ) {
 				data.splice( 1, 1, 'F', 'O', 'O' );
+			}
+		},
+		'inserting mixed content': {
+			'calls': [
+				['pushRetain', 1],
+				['pushReplace', ['a'], ['F', 'O', 'O', {'type':'image'}, {'type':'/image'}, 'B', 'A', 'R']]
+			],
+			'expected': function( data ) {
+				data.splice( 1, 1, 'F', 'O', 'O', {'type':'image'}, {'type':'/image'}, 'B', 'A', 'R' );
 			}
 		},
 		'converting an element': {
