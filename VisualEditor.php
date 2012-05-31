@@ -117,6 +117,7 @@ $wgResourceModules += array(
 			've2/dm/ve.dm.Transaction.js',
 			've2/dm/ve.dm.Surface.js',
 			've2/dm/ve.dm.Document.js',
+			've2/dm/ve.dm.DocumentSynchronizer.js',
 			've2/dm/ve.dm.HTMLConverter.js',
 
 			've2/dm/nodes/ve.dm.AlienInlineNode.js',
