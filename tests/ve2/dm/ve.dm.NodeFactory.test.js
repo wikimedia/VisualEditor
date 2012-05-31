@@ -82,5 +82,5 @@ test( 'canNodeHaveGrandchildren', 2, function() {
 } );
 
 test( 'initialization', 1, function() {
-	ok( ve.dm.factory instanceof ve.dm.NodeFactory, 'factory is initialized at ve.dm.factory' );
+	ok( ve.dm.nodeFactory instanceof ve.dm.NodeFactory, 'factory is initialized at ve.dm.nodeFactory' );
 } );

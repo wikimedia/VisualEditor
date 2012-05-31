@@ -42,7 +42,7 @@ ve.ce.AlienInlineNode.prototype.onUpdate = function() {
 
 /* Registration */
 
-ve.ce.factory.register( 'alienInline', ve.ce.AlienInlineNode );
+ve.ce.nodeFactory.register( 'alienInline', ve.ce.AlienInlineNode );
 
 /* Inheritance */
 

@@ -31,7 +31,7 @@ ve.dm.AlienInline.rules = {
 
 /* Registration */
 
-ve.dm.factory.register( 'alienInline', ve.dm.AlienInline );
+ve.dm.nodeFactory.register( 'alienInline', ve.dm.AlienInline );
 
 /* Inheritance */
 

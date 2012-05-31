@@ -60,7 +60,7 @@ ve.ce.ImageNode.prototype.onUpdate = function() {
 
 /* Registration */
 
-ve.ce.factory.register( 'image', ve.ce.ImageNode );
+ve.ce.nodeFactory.register( 'image', ve.ce.ImageNode );
 
 /* Inheritance */
 

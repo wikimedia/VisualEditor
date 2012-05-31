@@ -18,7 +18,7 @@ ve.ce.BranchNodeStub.domWrapperElementTypes = {
 
 ve.extendClass( ve.ce.BranchNodeStub, ve.ce.BranchNode );
 
-ve.ce.factory.register( 'branch-stub', ve.ce.BranchNodeStub );
+ve.ce.nodeFactory.register( 'branch-stub', ve.ce.BranchNodeStub );
 
 /* Tests */
 

@@ -110,7 +110,7 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function( to ) {
 	for ( var i = this.cursor; i < to; i++ ) {
 		item = this.document.data[i];
 		element = item.type !== undefined;
-		if ( element && ve.dm.factory.canNodeHaveChildren( item.type ) ) {
+		if ( element && ve.dm.nodeFactory.canNodeHaveChildren( item.type ) ) {
 			throw 'Invalid transaction, can not annotate a branch element';
 		}
 		annotated = element ? 'annotations' in item : ve.isArray( item );

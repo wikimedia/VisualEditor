@@ -31,7 +31,7 @@ ve.dm.TableCellNode.rules = {
 
 /* Registration */
 
-ve.dm.factory.register( 'tableCell', ve.dm.TableCellNode );
+ve.dm.nodeFactory.register( 'tableCell', ve.dm.TableCellNode );
 
 /* Inheritance */
 

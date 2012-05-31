@@ -32,4 +32,4 @@ ve.extendClass( ve.ce.NodeFactory, ve.NodeFactory );
 
 /* Initialization */
 
-ve.ce.factory = new ve.ce.NodeFactory();
+ve.ce.nodeFactory = new ve.ce.NodeFactory();

@@ -16,7 +16,7 @@ ve.dm.NodeStub.rules = {
 
 ve.extendClass( ve.dm.NodeStub, ve.dm.Node );
 
-ve.dm.factory.register( 'stub', ve.dm.NodeStub );
+ve.dm.nodeFactory.register( 'stub', ve.dm.NodeStub );
 
 /* Tests */
 

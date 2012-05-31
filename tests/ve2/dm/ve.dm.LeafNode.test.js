@@ -16,7 +16,7 @@ ve.dm.LeafNodeStub.rules = {
 
 ve.extendClass( ve.dm.LeafNodeStub, ve.dm.LeafNode );
 
-ve.dm.factory.register( 'leaf-stub', ve.dm.LeafNodeStub );
+ve.dm.nodeFactory.register( 'leaf-stub', ve.dm.LeafNodeStub );
 
 /* Tests */
 

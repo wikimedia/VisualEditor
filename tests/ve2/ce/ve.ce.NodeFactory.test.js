@@ -30,5 +30,5 @@ test( 'canNodeBeSplit', 2, function() {
 } );
 
 test( 'initialization', 1, function() {
-	ok( ve.ce.factory instanceof ve.ce.NodeFactory, 'factory is initialized at ve.ce.factory' );
+	ok( ve.ce.nodeFactory instanceof ve.ce.NodeFactory, 'factory is initialized at ve.ce.nodeFactory' );
 } );

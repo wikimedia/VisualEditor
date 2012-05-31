@@ -26,7 +26,7 @@ ve.ce.PreformattedNode.rules = {
 
 /* Registration */
 
-ve.ce.factory.register( 'preformatted', ve.ce.PreformattedNode );
+ve.ce.nodeFactory.register( 'preformatted', ve.ce.PreformattedNode );
 
 /* Inheritance */
 

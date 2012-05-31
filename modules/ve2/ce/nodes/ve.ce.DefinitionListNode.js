@@ -26,7 +26,7 @@ ve.ce.DefinitionListNode.rules = {
 
 /* Registration */
 
-ve.ce.factory.register( 'definitionList', ve.ce.DefinitionListNode );
+ve.ce.nodeFactory.register( 'definitionList', ve.ce.DefinitionListNode );
 
 /* Inheritance */
 

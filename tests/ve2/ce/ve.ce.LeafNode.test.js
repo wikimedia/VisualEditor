@@ -13,7 +13,7 @@ ve.ce.LeafNodeStub.rules = {
 
 ve.extendClass( ve.ce.LeafNodeStub, ve.ce.LeafNode );
 
-ve.ce.factory.register( 'leaf-stub', ve.ce.LeafNodeStub );
+ve.ce.nodeFactory.register( 'leaf-stub', ve.ce.LeafNodeStub );
 
 /* Tests */
 

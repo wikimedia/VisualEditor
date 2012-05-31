@@ -31,7 +31,7 @@ ve.dm.ParagraphNode.rules = {
 
 /* Registration */
 
-ve.dm.factory.register( 'paragraph', ve.dm.ParagraphNode );
+ve.dm.nodeFactory.register( 'paragraph', ve.dm.ParagraphNode );
 
 /* Inheritance */
 
