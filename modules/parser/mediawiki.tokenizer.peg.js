@@ -213,7 +213,7 @@ PegTokenizer.prototype.inline_breaks = function (input, pos, stops ) {
 				input.substr(pos, 200).match( /^\n\s*[!|]/ ) ) ||
 				// break on table-like syntax when the table stop is not
 				// enabled. XXX: see if this can be improved
-				input.substr(pos, 200).match( /^\n[!|]/ ) ||
+				//input.substr(pos, 200).match( /^\n[!|]/ ) ||
 				null;
 		case "]":
 			return stops.onStack( 'extlink' ) ||
