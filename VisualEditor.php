@@ -243,7 +243,7 @@ $wgAPIModules['ve-parsoid'] = 'ApiVisualEditor';
 // Integration Hooks
 $wgAutoloadClasses['VisualEditorHooks'] = $dir . 'VisualEditor.hooks.php';
 $wgHooks['BeforePageDisplay'][] = 'VisualEditorHooks::onPageDisplay';
-$wgHooks['userCan'][] = 'VisualEditorHooks::canUserEditPage';
+$wgHooks['userCan'][] = 'VisualEditorHooks::namespaceProtection';
 
 // API for retrieving wikidom parse results
 $wgAutoloadClasses['ApiQueryParseTree'] = $dir . 'api/ApiQueryParseTree.php';
