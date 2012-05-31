@@ -31,7 +31,7 @@ ve.dm.DefinitionListNode.rules = {
 
 /* Registration */
 
-ve.dm.factory.register( 'definitionList', ve.dm.DefinitionListNode );
+ve.dm.nodeFactory.register( 'definitionList', ve.dm.DefinitionListNode );
 
 /* Inheritance */
 

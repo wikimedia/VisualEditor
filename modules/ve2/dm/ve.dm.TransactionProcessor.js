@@ -110,7 +110,7 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function( to ) {
 	for ( var i = this.cursor; i < to; i++ ) {
 		item = this.document.data[i];
 		element = item.type !== undefined;
-		if ( element && ve.dm.factory.canNodeHaveChildren( item.type ) ) {
+		if ( element && ve.dm.nodeFactory.canNodeHaveChildren( item.type ) ) {
 			throw 'Invalid transaction, can not annotate a branch element';
 		}
 		annotated = element ? 'annotations' in item : ve.isArray( item );
@@ -254,23 +254,38 @@ ve.dm.TransactionProcessor.prototype.attribute = function( op ) {
 ve.dm.TransactionProcessor.prototype.replace = function( op ) {
 	var	remove = this.reversed ? op.insert : op.remove,
 		insert = this.reversed ? op.remove : op.insert,
-		removeHasStructure = ve.dm.Document.containsElementData( remove ),
-		insertHasStructure = ve.dm.Document.containsElementData( insert ),
+		removeIsContent = ve.dm.Document.isContentData( remove ),
+		insertIsContent = ve.dm.Document.isContentData( insert ),
 		node, selection;
-	// Figure out if this is a structural insert or a content insert
-	if ( !removeHasStructure && !insertHasStructure ) {
+	if ( removeIsContent && insertIsContent ) {
 		// Content replacement
 		// Update the linear model
 		ve.batchSplice( this.document.data, this.cursor, remove.length, insert );
 		this.applyAnnotations( this.cursor + insert.length );
 		
 		// Get the node containing the replaced content
-		selection = this.document.selectNodes( new ve.Range( this.cursor, this.cursor ),
+		selection = this.document.selectNodes(
+			new ve.Range( this.cursor, this.cursor + remove.length ),
 			'leaves'
 		);
-		node = selection[0].node;
-		// Queue a resize for this node
-		this.synchronizer.pushResize( node, insert.length - remove.length );
+
+		var	removeHasStructure = ve.dm.Document.containsElementData( remove ),
+			insertHasStructure = ve.dm.Document.containsElementData( insert );
+		if ( removeHasStructure || insertHasStructure ) {
+			// Replacement is not exclusively text
+			// Rebuild all covered nodes
+			var range = new ve.Range( selection[0].nodeRange.start,
+				selection[selection.length - 1].nodeRange.end );
+			this.synchronizer.pushRebuild( range,
+				new ve.Range( range.start, range.end + insert.length - remove.length )
+			);
+		} else {
+			// Text-only replacement
+			// Queue a resize for this node
+			node = selection[0].node;
+			this.synchronizer.pushResize( node, insert.length - remove.length );
+		}
+
 		// Advance the cursor
 		this.cursor += insert.length;
 	} else {

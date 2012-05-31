@@ -31,7 +31,7 @@ ve.dm.DocumentNode.rules = {
 
 /* Registration */
 
-ve.dm.factory.register( 'document', ve.dm.DocumentNode );
+ve.dm.nodeFactory.register( 'document', ve.dm.DocumentNode );
 
 /* Inheritance */
 

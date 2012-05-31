@@ -31,7 +31,7 @@ ve.dm.ListItemNode.rules = {
 
 /* Registration */
 
-ve.dm.factory.register( 'listItem', ve.dm.ListItemNode );
+ve.dm.nodeFactory.register( 'listItem', ve.dm.ListItemNode );
 
 /* Inheritance */
 

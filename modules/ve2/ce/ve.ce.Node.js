@@ -157,7 +157,7 @@ ve.ce.Node.prototype.getOuterLength = function() {
  * @returns {Boolean} Node can be split
  */
 ve.ce.Node.prototype.canBeSplit = function() {
-	return ve.ce.factory.canNodeBeSplit( this.type );
+	return ve.ce.nodeFactory.canNodeBeSplit( this.type );
 };
 
 /**

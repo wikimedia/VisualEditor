@@ -55,7 +55,7 @@ ve.ce.DefinitionListItemNode.prototype.onUpdate = function() {
 
 /* Registration */
 
-ve.ce.factory.register( 'definitionListItem', ve.ce.DefinitionListItemNode );
+ve.ce.nodeFactory.register( 'definitionListItem', ve.ce.DefinitionListItemNode );
 
 /* Inheritance */
 

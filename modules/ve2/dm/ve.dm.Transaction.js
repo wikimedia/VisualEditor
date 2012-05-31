@@ -11,24 +11,110 @@ ve.dm.Transaction = function() {
 
 /* Static Methods */
 
-ve.dm.Transaction.newFromInsertion = function( doc, offset, data ) {
-	var toInsert = doc.fixupInsertion( data, offset );
-	var tx = new ve.dm.Transaction();
-	tx.pushRetain( offset );
-	tx.pushReplace( [], toInsert );
+/**
+ * Generates a transaction that inserts data at a given offset.
+ *
+ * @static
+ * @method
+ * @param {ve.dm.Document} doc Document to create transaction for
+ * @param {Integer} offset Offset to insert at
+ * @param {Array} data Data to insert
+ * @returns {ve.dm.Transaction} Transcation that inserts data
+ */
+ve.dm.Transaction.newFromInsertion = function( doc, offset, insertion ) {
+	var tx = new ve.dm.Transaction(),
+		data = doc.getData();
+	// Fix up the insertion
+	insertion = doc.fixupInsertion( insertion, offset );
+	// Retain up to insertion point, if needed
+	if ( offset ) {
+		tx.pushRetain( offset );
+	}
+	// Insert data
+	tx.pushReplace( [], insertion );
+	// Retain to end of document, if needed (for completeness)
+	if ( offset < data.length ) {
+		tx.pushRetain( data.length - offset );
+	}
 	return tx;
 };
 
+/**
+ * Generates a transaction which removes data from a given range.
+ *
+ * There are three possible results from a removal:
+ *    1. Remove content only
+ *       - Occurs when the range starts and ends on elements of different type, depth or ancestry
+ *    2. Remove entire elements and their content
+ *       - Occurs when the range spans accross an entire element
+ *    3. Merge two elements by removing the end of one and the beginning of another
+ *       - Occurs when the range starts and ends on elements of similar type, depth and ancestry
+ *
+ * This function uses the following logic to decide what to actually remove:
+ *     1. Elements are only removed if range being removed covers the entire element
+ *     2. Elements can only be merged if {ve.dm.Node.canBeMergedWith} returns true
+ *     3. Merges take place at the highest common ancestor
+ *
+ * @method
+ * @param {ve.dm.Document} doc Document to create transaction for
+ * @param {ve.Range} range Range of data to remove
+ * @returns {ve.dm.Transaction} Transcation that removes data
+ * @throws 'Invalid range, can not remove from {range.start} to {range.end}'
+ */
 ve.dm.Transaction.newFromRemoval = function( doc, range ) {
-	// Implement me!
-};
-
-ve.dm.Transaction.newFromReplacement = function( doc, range, data ) {
-	// Implement me!
+	var tx = new ve.dm.Transaction(),
+		data = doc.getData();
+	// Normalize and validate range
+	range.normalize();
+	if ( range.start === range.end ) {
+		// Empty range, nothing to remove, retain up to the end of the document (for completeness)
+		tx.pushRetain( data.length );
+		return tx;
+	}
+	// Select nodes and validate selection
+	var selection = doc.selectNodes( range, 'leaves' );
+	if ( selection.length === 0 ) {
+		// Empty selection? Something is wrong!
+		throw 'Invalid range, can not remove from ' + range.start + ' to ' + range.end;
+	}
+	// Decide whether to merge or strip
+	if ( selection[0].node.canBeMergedWith( selection[selection.length - 1].node ) ) {
+		// Retain to the start of the range
+		if ( range.start > 0 ) {
+			tx.pushRetain( range.start );
+		}
+		// Remove all data in a given range.
+		tx.pushReplace( data.slice( range.start, range.end ), [] );
+		// Retain up to the end of the document, if needed (for completeness)
+		if ( range.end < data.length ) {
+			tx.pushRetain( data.length - range.end );
+		}
+	} else {
+		var offset = 0,
+			nodeRange;
+		for ( var i = 0; i < selection.length; i++ ) {
+			nodeRange = selection[i].nodeRange;
+			// Retain up to where the next removal starts
+			if ( nodeRange.start > offset ) {
+				tx.pushRetain( nodeRange.start - offset );
+			}
+			// Remove data
+			if ( nodeRange.getLength() ) {
+				tx.pushReplace( data.slice( nodeRange.start, nodeRange.end ), [] );
+			}
+			// Advance to the next node
+			offset = nodeRange.end;
+		}
+		// Retain up to the end of the document, if needed (for completeness)
+		if ( offset < data.length ) {
+			tx.pushRetain( data.length - offset );
+		}
+	}
+	return tx;
 };
 
 /**
- * Get a transaction that changes an attribute.
+ * Generates a transaction that changes an attribute.
  *
  * @static
  * @method
@@ -67,7 +153,7 @@ ve.dm.Transaction.newFromAttributeChange = function( doc, offset, key, value ) {
 };
 
 /**
- * Get a transaction that annotates content.
+ * Generates a transaction that annotates content.
  *
  * @static
  * @method

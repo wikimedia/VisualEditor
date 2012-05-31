@@ -9,7 +9,7 @@ ve.ce.NodeStub = function( model ) {
 
 ve.extendClass( ve.ce.NodeStub, ve.ce.Node );
 
-ve.ce.factory.register( 'stub', ve.ce.NodeStub );
+ve.ce.nodeFactory.register( 'stub', ve.ce.NodeStub );
 
 /* Tests */
 

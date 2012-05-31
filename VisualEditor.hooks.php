@@ -26,12 +26,29 @@ class VisualEditorHooks {
 		if ( $skin->getSkinName() !== 'vector' ) {
 			return false;
 		}
-		// Check Namespace
-		if ($wgTitle->getNamespace() !== NS_VISUALEDITOR) {
+		// Be sure current page is VisualEditor:Something
+		if ( $wgTitle->getNamespace() !== NS_VISUALEDITOR ) {
 			return false;
 		}
-		//TODO: user permissions...
 		return true;
 	}
+	/**
+	 * Allow edits to the namespace only by admins
+	 * Code used from Extension:NamespaceProtection
+	*/
+	public static function canUserEditPage( &$title, &$user, $action, &$result ){
+		global $wgUser, $wgNamespaceProtection;
 
+		if ( array_key_exists( $title->mNamespace, $wgNamespaceProtection ) ) {
+			$nsProt = $wgNamespaceProtection[ $title->mNamespace ];
+
+			if ( !is_array($nsProt) ) $nsProt = array($nsProt);
+				foreach( $nsProt as $right ) {
+					if( '' != $right && !$user->isAllowed( $right ) ) {
+						$result = false;
+					}
+				}
+			}
+		return true;
+	}
 }

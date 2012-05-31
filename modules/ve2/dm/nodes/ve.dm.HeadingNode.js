@@ -31,7 +31,7 @@ ve.dm.HeadingNode.rules = {
 
 /* Registration */
 
-ve.dm.factory.register( 'heading', ve.dm.HeadingNode );
+ve.dm.nodeFactory.register( 'heading', ve.dm.HeadingNode );
 
 /* Inheritance */
 

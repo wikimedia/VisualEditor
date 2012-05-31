@@ -2,7 +2,7 @@ module( 've.dm.Document' );
 
 /* Tests */
 
-test( 'constructor', 2, function() {
+test( 'constructor', 3, function() {
 	var doc = new ve.dm.Document( ve.dm.example.data );
 	deepEqual(
 		ve.example.getNodeTreeSummary( doc.getDocumentNode() ),
@@ -18,6 +18,14 @@ test( 'constructor', 2, function() {
 		},
 		/^Unbalanced input passed to document$/,
 		'unbalanced input causes exception'
+	);
+
+	// TODO data provider?
+	doc = new ve.dm.Document( [ 'a', 'b', 'c', 'd' ] );
+	deepEqual(
+		ve.example.getNodeTreeSummary( doc.getDocumentNode() ),
+		ve.example.getNodeTreeSummary( new ve.dm.DocumentNode( [ new ve.dm.TextNode( 4 ) ] ) ),
+		'plain text input is handled correctly'
 	);
 } );
 
@@ -747,6 +755,37 @@ test( 'containsElementData', 1, function() {
 	for ( var i = 0; i < cases.length; i++ ) {
 		strictEqual(
 			ve.dm.Document.containsElementData( cases[i].data ), cases[i].expected, cases[i].msg
+		);
+	}
+} );
+
+test( 'isContentData', 1, function() {
+	var cases = [
+		{
+			'msg': 'simple paragraph',
+			'data': [{ 'type': 'paragraph' }, 'a', { 'type': '/paragraph' }],
+			'expected': false
+		},
+		{
+			'msg': 'plain text',
+			'data': ['a', 'b', 'c'],
+			'expected': true
+		},
+		{
+			'msg': 'annotated text',
+			'data': [['a', { '{"type:"bold"}': { 'type': 'bold' } } ]],
+			'expected': true
+		},
+		{
+			'msg': 'non-text leaf',
+			'data': ['a', { 'type': 'image' }, { 'type': '/image' }, 'c'],
+			'expected': true
+		}
+	];
+	expect( cases.length );
+	for ( var i = 0; i < cases.length; i++ ) {
+		strictEqual(
+			ve.dm.Document.isContentData( cases[i].data ), cases[i].expected, cases[i].msg
 		);
 	}
 } );

@@ -31,7 +31,7 @@ ve.dm.ImageNode.rules = {
 
 /* Registration */
 
-ve.dm.factory.register( 'image', ve.dm.ImageNode );
+ve.dm.nodeFactory.register( 'image', ve.dm.ImageNode );
 
 /* Inheritance */
 

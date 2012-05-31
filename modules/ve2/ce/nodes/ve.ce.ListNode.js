@@ -53,7 +53,7 @@ ve.ce.ListNode.prototype.onUpdate = function() {
 
 /* Registration */
 
-ve.ce.factory.register( 'list', ve.ce.ListNode );
+ve.ce.nodeFactory.register( 'list', ve.ce.ListNode );
 
 /* Inheritance */
 

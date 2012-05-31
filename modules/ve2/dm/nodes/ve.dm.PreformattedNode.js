@@ -31,7 +31,7 @@ ve.dm.PreformattedNode.rules = {
 
 /* Registration */
 
-ve.dm.factory.register( 'preformatted', ve.dm.PreformattedNode );
+ve.dm.nodeFactory.register( 'preformatted', ve.dm.PreformattedNode );
 
 /* Inheritance */
 

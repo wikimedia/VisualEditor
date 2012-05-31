@@ -59,7 +59,7 @@ ve.ce.HeadingNode.prototype.onUpdate = function() {
 
 /* Registration */
 
-ve.ce.factory.register( 'heading', ve.ce.HeadingNode );
+ve.ce.nodeFactory.register( 'heading', ve.ce.HeadingNode );
 
 /* Inheritance */
 

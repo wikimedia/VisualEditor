@@ -28,7 +28,7 @@ ve.dm.Node = function( type, length, attributes ) {
  * @returns {String[]|null} List of node types allowed as children or null if any type is allowed
  */
 ve.dm.Node.prototype.getChildNodeTypes = function() {
-	return ve.dm.factory.getChildNodeTypes( this.type );
+	return ve.dm.nodeFactory.getChildNodeTypes( this.type );
 };
 
 /**
@@ -38,7 +38,7 @@ ve.dm.Node.prototype.getChildNodeTypes = function() {
  * @returns {String[]|null} List of node types allowed as parents or null if any type is allowed
  */
 ve.dm.Node.prototype.getParentNodeTypes = function() {
-	return ve.dm.factory.getParentNodeTypes( this.type );
+	return ve.dm.nodeFactory.getParentNodeTypes( this.type );
 };
 
 /**
@@ -48,7 +48,7 @@ ve.dm.Node.prototype.getParentNodeTypes = function() {
  * @returns {Boolean} Node can have children
  */
 ve.dm.Node.prototype.canHaveChildren = function() {
-	return ve.dm.factory.canNodeHaveChildren( this.type );
+	return ve.dm.nodeFactory.canNodeHaveChildren( this.type );
 };
 
 /**
@@ -58,7 +58,7 @@ ve.dm.Node.prototype.canHaveChildren = function() {
  * @returns {Boolean} Node can have grandchildren
  */
 ve.dm.Node.prototype.canHaveGrandchildren = function() {
-	return ve.dm.factory.canNodeHaveGrandchildren( this.type );
+	return ve.dm.nodeFactory.canNodeHaveGrandchildren( this.type );
 };
 
 /**
@@ -68,7 +68,7 @@ ve.dm.Node.prototype.canHaveGrandchildren = function() {
  * @returns {Boolean} Node represents a wrapped element
  */
 ve.dm.Node.prototype.isWrapped = function() {
-	return ve.dm.factory.isNodeWrapped( this.type );
+	return ve.dm.nodeFactory.isNodeWrapped( this.type );
 };
 
 /**
@@ -78,7 +78,7 @@ ve.dm.Node.prototype.isWrapped = function() {
  * @returns {Boolean} Node can contain content
  */
 ve.dm.Node.prototype.canContainContent = function() {
-	return ve.dm.factory.canNodeContainContent( this.type );
+	return ve.dm.nodeFactory.canNodeContainContent( this.type );
 };
 
 /**
@@ -88,7 +88,7 @@ ve.dm.Node.prototype.canContainContent = function() {
  * @returns {Boolean} Node is content
  */
 ve.dm.Node.prototype.isContent = function() {
-	return ve.dm.factory.isNodeContent( this.type );
+	return ve.dm.nodeFactory.isNodeContent( this.type );
 };
 
 /**
@@ -158,6 +158,38 @@ ve.dm.Node.prototype.adjustLength = function( adjustment ) {
  */
 ve.dm.Node.prototype.getAttribute = function( key ) {
 	return this.attributes[key];
+};
+
+/**
+ * Checks if this node can be merged with another.
+ *
+ * For two nodes to be mergeable, this node and the given node must either be the same node or:
+ *  - Have the same type
+ *  - Have the same depth
+ *  - Have similar ancestory (each node upstream must have the same type)
+ *
+ * @method
+ * @param {ve.dm.Node} node Node to consider merging with
+ * @returns {Boolean} Nodes can be merged
+ */
+ve.dm.Node.prototype.canBeMergedWith = function( node ) {
+	var	n1 = this,
+		n2 = node;
+	// Move up from n1 and n2 simultaneously until we find a common ancestor
+	while ( n1 !== n2 ) {
+		if (
+			// Check if we have reached a root (means there's no common ancestor or unequal depth)
+			( n1 === null || n2 === null ) ||
+			// Ensure that types match
+			n1.getType() !== n2.getType()
+		) {
+			return false;
+		}
+		// Move up
+		n1 = n1.getParent();
+		n2 = n2.getParent();
+	}
+	return true;
 };
 
 /* Inheritance */

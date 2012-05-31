@@ -128,4 +128,4 @@ ve.extendClass( ve.dm.NodeFactory, ve.NodeFactory );
 
 /* Initialization */
 
-ve.dm.factory = new ve.dm.NodeFactory();
+ve.dm.nodeFactory = new ve.dm.NodeFactory();

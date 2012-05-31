@@ -26,7 +26,7 @@ ve.ce.TableNode.rules = {
 
 /* Registration */
 
-ve.ce.factory.register( 'table', ve.ce.TableNode );
+ve.ce.nodeFactory.register( 'table', ve.ce.TableNode );
 
 /* Inheritance */
 

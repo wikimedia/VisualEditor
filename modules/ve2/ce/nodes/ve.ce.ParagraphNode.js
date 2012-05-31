@@ -26,7 +26,7 @@ ve.ce.ParagraphNode.rules = {
 
 /* Registration */
 
-ve.ce.factory.register( 'paragraph', ve.ce.ParagraphNode );
+ve.ce.nodeFactory.register( 'paragraph', ve.ce.ParagraphNode );
 
 /* Inheritance */
 

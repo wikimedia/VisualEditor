@@ -26,7 +26,7 @@ ve.ce.ListItemNode.rules = {
 
 /* Registration */
 
-ve.ce.factory.register( 'listItem', ve.ce.ListItemNode );
+ve.ce.nodeFactory.register( 'listItem', ve.ce.ListItemNode );
 
 /* Inheritance */
 

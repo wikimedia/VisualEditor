@@ -257,7 +257,7 @@ ve.ce.TextNode.prototype.getHtml = function() {
 
 /* Registration */
 
-ve.ce.factory.register( 'text', ve.ce.TextNode );
+ve.ce.nodeFactory.register( 'text', ve.ce.TextNode );
 
 /* Inheritance */
 

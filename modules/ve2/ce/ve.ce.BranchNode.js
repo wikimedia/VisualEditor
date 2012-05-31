@@ -57,7 +57,7 @@ ve.ce.BranchNode.getDomWrapperType = function( model, key ) {
 	if ( value === undefined ) {
 		throw 'Undefined attribute: ' + key;
 	}
-	var types = ve.ce.factory.lookup( model.getType() ).domWrapperElementTypes;
+	var types = ve.ce.nodeFactory.lookup( model.getType() ).domWrapperElementTypes;
 	if ( types[value] === undefined ) {
 		throw 'Invalid attribute value: ' + value;
 	}
@@ -132,7 +132,7 @@ ve.ce.BranchNode.prototype.onSplice = function( index, howmany ) {
 	// Convert models to views and attach them to this node
 	if ( args.length >= 3 ) {
 		for ( i = 2, length = args.length; i < length; i++ ) {
-			args[i] = ve.ce.factory.create( args[i].getType(), args[i] );
+			args[i] = ve.ce.nodeFactory.create( args[i].getType(), args[i] );
 		}
 	}
 	var removals = this.children.splice.apply( this.children, args );

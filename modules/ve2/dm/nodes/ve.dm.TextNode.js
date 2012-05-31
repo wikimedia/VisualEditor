@@ -30,7 +30,7 @@ ve.dm.TextNode.rules = {
 
 /* Registration */
 
-ve.dm.factory.register( 'text', ve.dm.TextNode );
+ve.dm.nodeFactory.register( 'text', ve.dm.TextNode );
 
 /* Inheritance */
 

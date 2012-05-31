@@ -43,7 +43,7 @@ ve.ce.DocumentNode.prototype.getOuterLength = function() {
 
 /* Registration */
 
-ve.ce.factory.register( 'document', ve.ce.DocumentNode );
+ve.ce.nodeFactory.register( 'document', ve.ce.DocumentNode );
 
 /* Inheritance */
 

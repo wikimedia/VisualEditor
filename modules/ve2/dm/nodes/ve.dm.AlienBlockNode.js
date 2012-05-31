@@ -31,7 +31,7 @@ ve.dm.AlienBlock.rules = {
 
 /* Registration */
 
-ve.dm.factory.register( 'alienBlock', ve.dm.AlienBlock );
+ve.dm.nodeFactory.register( 'alienBlock', ve.dm.AlienBlock );
 
 /* Inheritance */
 

@@ -63,7 +63,7 @@ ve.dm.Document = function( data, parentDocument ) {
 		 * We want to populate the offsetMap with branches only, but we've just written the actual
 		 * node that lives at this offset. So if it's a leaf node, change it to its parent.
 		 */
-		this.offsetMap[i] = ve.dm.factory.canNodeHaveChildren( currentNode.getType() ) ?
+		this.offsetMap[i] = ve.dm.nodeFactory.canNodeHaveChildren( currentNode.getType() ) ?
 			currentNode : parentStack[parentStack.length - 1];
 		// Infer that if an item in the linear model has a type attribute than it must be an element
 		if ( this.data[i].type === undefined ) {
@@ -95,12 +95,12 @@ ve.dm.Document = function( data, parentDocument ) {
 			if ( this.data[i].type.charAt( 0 ) != '/' ) {
 				// Branch or leaf node opening
 				// Create a childless node
-				node = ve.dm.factory.create( this.data[i].type, [], this.data[i].attributes );
+				node = ve.dm.nodeFactory.create( this.data[i].type, [], this.data[i].attributes );
 				// Set the root pointer now, to prevent cascading updates
 				node.setRoot( root );
 				// Put the childless node on the current inner stack
 				currentStack.push( node );
-				if ( ve.dm.factory.canNodeHaveChildren( node.getType() ) ) {
+				if ( ve.dm.nodeFactory.canNodeHaveChildren( node.getType() ) ) {
 					// Create a new inner stack for this node
 					parentStack = currentStack;
 					currentStack = [];
@@ -109,7 +109,7 @@ ve.dm.Document = function( data, parentDocument ) {
 				currentNode = node;
 			} else {
 				// Branch or leaf node closing
-				if ( ve.dm.factory.canNodeHaveChildren( currentNode.getType() ) ) {
+				if ( ve.dm.nodeFactory.canNodeHaveChildren( currentNode.getType() ) ) {
 					// Pop this node's inner stack from the outer stack. It'll have all of the
 					// node's child nodes fully constructed
 					children = stack.pop();
@@ -125,6 +125,12 @@ ve.dm.Document = function( data, parentDocument ) {
 				currentNode = parentStack[parentStack.length - 1];
 			}
 		}
+	}
+
+	if ( inTextNode ) {
+		// Text node ended by end-of-input rather than by an element
+		currentNode.setLength( textLength );
+		// Don't bother updating currentNode et al, we don't use them below
 	}
 	// The end state is stack = [ [this.documentNode] [ array, of, its, children ] ]
 	// so attach all nodes in stack[1] to the root node
@@ -159,7 +165,7 @@ ve.dm.Document.isContentOffset = function( data, offset ) {
 	}
 	var left = data[offset - 1],
 		right = data[offset],
-		factory = ve.dm.factory;
+		factory = ve.dm.nodeFactory;
 	return (
 		// Data exists at offsets
 		( left !== undefined && right !== undefined ) &&
@@ -244,7 +250,7 @@ ve.dm.Document.isStructuralOffset = function( data, offset, unrestricted ) {
 	// Offsets must be within range and both sides must be elements
 	var left = data[offset - 1],
 		right = data[offset],
-		factory = ve.dm.factory;
+		factory = ve.dm.nodeFactory;
 	return (
 		(
 			left !== undefined &&
@@ -350,6 +356,29 @@ ve.dm.Document.containsElementData = function( data ) {
 	return false;
 };
 
+/**
+ * Checks for non-content elements in document data.
+ *
+ * This method assumes that any value that has a type property that's a string is an element object.
+ * Elements are discovered by iterating through the entire data array.
+ *
+ * @static
+ * @method
+ * @param {Array} data Document data
+ * @returns {Boolean} True if all elements in data are content elements
+ */
+ve.dm.Document.isContentData = function( data ) {
+	for ( var i = 0, len = data.length; i < len; i++ ) {
+		if ( data[i].type !== undefined &&
+			data[i].type.charAt( 0 ) !== '/' &&
+			!ve.dm.nodeFactory.isNodeContent( data[i].type )
+		) {
+			return false;
+		}
+	}
+	return true;
+};
+
 /* Methods */
 
 /**
@@ -418,7 +447,7 @@ ve.dm.Document.prototype.getAnnotationsFromOffset = function( offset ) {
 		ve.isPlainObject( this.data[offset] ) && // structural offset
 		this.data[offset].hasOwnProperty('type') && // just in case
 		this.data[offset].type.charAt( 0 ) === '/' && // closing offset
-		ve.dm.factory.canNodeHaveChildren(
+		ve.dm.nodeFactory.canNodeHaveChildren(
 			this.data[offset].type.substr( 1 )
 		) === false // leaf node
 	){
@@ -882,7 +911,7 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 			childType = data[i].type;
 			openings = [];
 			do {
-				allowedParents = ve.dm.factory.getParentNodeTypes( childType );
+				allowedParents = ve.dm.nodeFactory.getParentNodeTypes( childType );
 				parentsOK = allowedParents === null ||
 					$.inArray( parentType, allowedParents ) !== -1;
 				if ( !parentsOK ) {
@@ -898,7 +927,7 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 			} while ( !parentsOK );
 			closings = [];
 			do {
-				allowedChildren = ve.dm.factory.getChildNodeTypes( parentType );
+				allowedChildren = ve.dm.nodeFactory.getChildNodeTypes( parentType );
 				childrenOK = allowedChildren === null ||
 					$.inArray( childType, allowedChildren ) !== -1;
 				if ( !childrenOK ) {

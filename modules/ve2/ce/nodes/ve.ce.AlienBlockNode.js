@@ -42,7 +42,7 @@ ve.ce.AlienBlockNode.prototype.onUpdate = function() {
 
 /* Registration */
 
-ve.ce.factory.register( 'alienBlock', ve.ce.AlienBlockNode );
+ve.ce.nodeFactory.register( 'alienBlock', ve.ce.AlienBlockNode );
 
 /* Inheritance */
 
