@@ -36,7 +36,7 @@ class VisualEditorHooks {
 	 * Allow edits to the namespace only by admins
 	 * Code used from Extension:NamespaceProtection
 	*/
-	function canUserEditPage( &$title, &$user, $action, &$result ){
+	public static function canUserEditPage( &$title, &$user, $action, &$result ){
 		global $wgUser, $wgNamespaceProtection;
 
 		if ( array_key_exists( $title->mNamespace, $wgNamespaceProtection ) ) {
