@@ -2,12 +2,12 @@
  * ContentEditable node factory.
  *
  * @class
- * @extends {ve.NodeFactory}
+ * @extends {ve.Factory}
  * @constructor
  */
 ve.ce.NodeFactory = function() {
 	// Inheritance
-	ve.NodeFactory.call( this );
+	ve.Factory.call( this );
 };
 
 /* Methods */
@@ -28,7 +28,7 @@ ve.ce.NodeFactory.prototype.canNodeBeSplit = function( type ) {
 
 /* Inheritance */
 
-ve.extendClass( ve.ce.NodeFactory, ve.NodeFactory );
+ve.extendClass( ve.ce.NodeFactory, ve.Factory );
 
 /* Initialization */
 

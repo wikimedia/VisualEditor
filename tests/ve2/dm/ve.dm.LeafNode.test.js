@@ -14,6 +14,8 @@ ve.dm.LeafNodeStub.rules = {
 	'childNodeTypes': []
 };
 
+ve.dm.LeafNodeStub.converters = null;
+
 ve.extendClass( ve.dm.LeafNodeStub, ve.dm.LeafNode );
 
 ve.dm.nodeFactory.register( 'leaf-stub', ve.dm.LeafNodeStub );

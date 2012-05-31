@@ -29,6 +29,27 @@ ve.dm.DefinitionListItemNode.rules = {
 	'parentNodeTypes': ['definitionList']
 };
 
+/**
+ * Node converters.
+ *
+ * @see {ve.dm.Converter}
+ * @static
+ * @member
+ */
+ve.dm.DefinitionListItemNode.converters = {
+	'tags': 'dl',
+	'html': {
+		'convert': function( type, element ) {
+			return ve.dm.createHtmlElement( 'dl' );
+		}
+	},
+	'data': {
+		'convert': function( tag, element ) {
+			return { 'type': 'definitionList' };
+		}
+	}
+};
+
 /* Registration */
 
 ve.dm.nodeFactory.register( 'definitionListItem', ve.dm.DefinitionListItemNode );

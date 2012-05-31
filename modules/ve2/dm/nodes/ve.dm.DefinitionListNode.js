@@ -29,6 +29,33 @@ ve.dm.DefinitionListNode.rules = {
 	'parentNodeTypes': null
 };
 
+/**
+ * Node converters.
+ *
+ * @see {ve.dm.Converter}
+ * @static
+ * @member
+ */
+ve.dm.DefinitionListNode.converters = {
+	'tags': ['dt', 'dd'],
+	'html': {
+		'convert': function( type, element ) {
+			return element.attributes && ( {
+				'term': ve.dm.createHtmlElement( 'dt' ),
+				'definition': ve.dm.createHtmlElement( 'dd' )
+			} )[element.attributes['style']];
+		}
+	},
+	'data': {
+		'convert': function( tag, element ) {
+			return ( {
+				'dt': { 'type': 'definitionList', 'attributes': { 'style': 'term' } },
+				'dd': { 'type': 'definitionList', 'attributes': { 'style': 'definition' } }
+			} )[tag];
+		}
+	}
+};
+
 /* Registration */
 
 ve.dm.nodeFactory.register( 'definitionList', ve.dm.DefinitionListNode );

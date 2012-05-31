@@ -29,6 +29,27 @@ ve.dm.ImageNode.rules = {
 	'parentNodeTypes': null
 };
 
+/**
+ * Node converters.
+ *
+ * @see {ve.dm.Converter}
+ * @static
+ * @member
+ */
+ve.dm.ImageNode.converters = {
+	'tags': 'img',
+	'html': {
+		'convert': function( type, element ) {
+			return ve.dm.createHtmlElement( 'img' );
+		}
+	},
+	'data': {
+		'convert': function( tag, element ) {
+			return { 'type': 'image' };
+		}
+	}
+};
+
 /* Registration */
 
 ve.dm.nodeFactory.register( 'image', ve.dm.ImageNode );

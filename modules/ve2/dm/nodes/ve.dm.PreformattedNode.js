@@ -29,6 +29,27 @@ ve.dm.PreformattedNode.rules = {
 	'parentNodeTypes': null
 };
 
+/**
+ * Node converters.
+ *
+ * @see {ve.dm.Converter}
+ * @static
+ * @member
+ */
+ve.dm.PreformattedNode.converters = {
+	'tags': 'pre',
+	'html': {
+		'convert': function( type, element ) {
+			return ve.dm.createHtmlElement( 'pre' );
+		}
+	},
+	'data': {
+		'convert': function( tag, element ) {
+			return { 'type': 'preformatted' };
+		}
+	}
+};
+
 /* Registration */
 
 ve.dm.nodeFactory.register( 'preformatted', ve.dm.PreformattedNode );
