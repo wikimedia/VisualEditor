@@ -759,6 +759,37 @@ test( 'containsElementData', 1, function() {
 	}
 } );
 
+test( 'isContentData', 1, function() {
+	var cases = [
+		{
+			'msg': 'simple paragraph',
+			'data': [{ 'type': 'paragraph' }, 'a', { 'type': '/paragraph' }],
+			'expected': false
+		},
+		{
+			'msg': 'plain text',
+			'data': ['a', 'b', 'c'],
+			'expected': true
+		},
+		{
+			'msg': 'annotated text',
+			'data': [['a', { '{"type:"bold"}': { 'type': 'bold' } } ]],
+			'expected': true
+		},
+		{
+			'msg': 'non-text leaf',
+			'data': ['a', { 'type': 'image' }, { 'type': '/image' }, 'c'],
+			'expected': true
+		}
+	];
+	expect( cases.length );
+	for ( var i = 0; i < cases.length; i++ ) {
+		strictEqual(
+			ve.dm.Document.isContentData( cases[i].data ), cases[i].expected, cases[i].msg
+		);
+	}
+} );
+
 test( 'rebuildNodes', function() {
 	var doc = new ve.dm.Document( ve.dm.example.data.slice( 0 ) ),
 		documentNode = doc.getDocumentNode();

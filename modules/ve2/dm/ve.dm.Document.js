@@ -356,6 +356,29 @@ ve.dm.Document.containsElementData = function( data ) {
 	return false;
 };
 
+/**
+ * Checks for non-content elements in document data.
+ *
+ * This method assumes that any value that has a type property that's a string is an element object.
+ * Elements are discovered by iterating through the entire data array.
+ *
+ * @static
+ * @method
+ * @param {Array} data Document data
+ * @returns {Boolean} True if all elements in data are content elements
+ */
+ve.dm.Document.isContentData = function( data ) {
+	for ( var i = 0, len = data.length; i < len; i++ ) {
+		if ( data[i].type !== undefined &&
+			data[i].type.charAt( 0 ) !== '/' &&
+			!ve.dm.factory.isNodeContent( data[i].type )
+		) {
+			return false;
+		}
+	}
+	return true;
+};
+
 /* Methods */
 
 /**
