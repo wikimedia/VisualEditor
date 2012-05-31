@@ -1,5 +1,5 @@
 /*
-	ve.Core.js
+	VisualEditor Core Module for MediaWiki.org integration
 */
 (function( mw, $ ){
 	
@@ -9,6 +9,9 @@
 			validNamespace = mw.config.get('wgCanonicalNamespace') === 'VisualEditor' ? true: false;
 
 		this.$content = $('#content');
+		// Store content padding so that it can be restored.
+		this.contentPadding = this.$content.css('padding');
+		this.mainEditor = null;
 
 		this.$spinner = $('<div />')
 			.attr({
@@ -21,27 +24,37 @@
 
 		// On VisualEditor namespace ?
 		if ( validNamespace ) {
+			this.setupTabs();
+
 			$('#ca-edit > span > a').click( function( e ){
 				// hijack the edit link
 				e.preventDefault();
-				$('#ca-view').removeClass('selected');
-				$('#ca-edit').addClass('selected');
-
-				_this.showSpinner();
-				// async init
-				mw.loader.using( 'ext.visualEditor.ve', function(){
-					_this.init();
-				});
-				_this.getHTML( pageName, function( content ){
-					_this.init( content );
-				});
+				// Load Editor if not already loaded
+				if( _this.mainEditor === null ) {
+					_this.selectTab( 'ca-edit' );
+					_this.showSpinner();
+					// async init
+					mw.loader.using( 'ext.visualEditor.ve', function(){
+						_this.init();
+					});
+					_this.getParsoidHTML( pageName, function( content ){
+						_this.init( content );
+					});
+				}
 
 			});
 		} //valid namespace
 	};
 
+	// called once for each asnyc callback.
+	// once ve is loaded and page has been parsed into html, continue init
 	veCore.prototype.init = function( html ) {
-		var _this = this;
+		var _this = this,
+			isMobileDevice =
+				('ontouchstart' in window) ||
+				window.DocumentTouch && document instanceof DocumentTouch ||
+				false;
+
 		// store the html
 		if (typeof html !== 'undefined') {
 			this.html = html;
@@ -60,33 +73,122 @@
 			var options = {
 				toolbars: {
 					top: {
-						/* What modes this toolbar will have */
-						modes: ['wikitext']
+						// If mobile device, float false
+						'float': !isMobileDevice,
+						// Toolbar modes
+						'modes': ['wikitext']
 					}
 				}
 			};
 			$editor = $('<div id="ve-editor"></div>');
 			this.$spinner.hide();
-			this.$content.append( $editor );
+			this.$content
+				.css('padding', '0px 0px 0px 1px')
+				.append( $editor );
+				
+
 			this.mainEditor = new ve.Surface( '#ve-editor', $html[0], options );
 
+			$editor.find('.es-panes')
+				.css('padding', this.contentPadding );
+
 			// Save BTN
-			$editor.find('.es-modes').append(
-				$('<div />')
-					.text('Save')
-					.click(function(){
-						_this.showSpinner();
-						// Save
-						_this.save( function( content ){
-							// cleanup
+			$editor.find('.es-modes')
+				.append(
+					$('<div />')
+						.attr('class', 've-action-button')
+						.text('Save')
+						.click(function(){
+							// show save dialog
+							_this.save();
+							_this.showSaveDialog();
+						})
+				).append(
+					$('<div />')
+						.attr('class', 've-action-button')
+						.text('X')
+						.click(function(){
+							// back to read mode
 							_this.cleanup();
-							// load saved page
-							_this.$content
-								.find('#mw-content-text').html( content );
-						});
-					})
+							_this.mainEditor = null;
+						})
 			);
 		}
+	};
+
+	veCore.prototype.setupTabs = function(){
+		//Non admins shouldn't have an edit button, only ca-viewsource
+		var $viewsource;
+
+		// If no edit button, user not sysop
+		if ( $('#ca-edit').length === 0 ) {
+			// Add Edit button
+			mw.util.addPortletLink(
+				'p-views',
+				'#',
+				'Edit', //TODO: dig for i18n messages
+				'ca-edit',
+				'Edit button text',
+				null,
+				'#ca-history'
+			);
+			// Create 'View Source' link in sub menu from original.
+			// Remove original
+			$viewsource = $('#ca-viewsource');
+			if ($viewsource.length > 0) {
+				// if admin, move this to the p-cactions link
+				mw.util.addPortletLink(
+					'p-cactions',
+					$viewsource.find('span > a').attr('href'),
+					$viewsource.find('span > a').text(),
+					$viewsource.attr('id')
+				);
+				$viewsource.remove();
+			}
+		} else {
+			// admin user, create an edit source link
+			mw.util.addPortletLink(
+				'p-cactions',
+				mw.util.wikiGetlink() + '?action=edit',
+				'Edit Source',
+				'ca-editsource'
+			);
+
+		}
+	};
+
+	// Reset tabs, select tab with tabID
+	// #ca-view, #ca-edit, #ca-history
+	veCore.prototype.selectTab = function( tabID ){
+		// unselects all tabs, selects sel
+		$('#p-views')
+			.find('ul')
+			.children()
+			.each(function(){
+				if( $(this).attr('id') === tabID ) {
+					$(this).addClass('selected');
+				} else {
+					$(this).removeClass('selected');
+				}
+			});
+	};
+
+	veCore.prototype.save = function(){
+		var _this = this;
+		_this.showSpinner();
+		// Save
+		
+		_this.getParsoidWikitextAndSave( function( content ){
+			// cleanup
+			_this.cleanup();
+			// load saved page
+			_this.$content
+				.find('#mw-content-text').html( content );
+		});
+	};
+
+	veCore.prototype.showSaveDialog = function(){
+
 	};
 
 	veCore.prototype.showSpinner = function(){
@@ -94,24 +196,28 @@
 		//remove it
 		_this.$spinner.remove();
 		//hide all of the #content element children
-		_this.$content.children().each(function(){
-			$(this).hide();
+		_this.$content
+			.children()
+			.each(function(){
+				$(this).hide();
 		});
 		_this.$content.append(
 			_this.$spinner.show()
 		);
 	};
 
+	//back to view
 	veCore.prototype.cleanup = function(){
-		$('#ve-editor').remove();
-		$('#ve-loader-spinner').remove();
-		$('#ca-view').addClass('selected');
-		$('#ca-edit').removeClass('selected');
+		this.selectTab( 'ca-view' );
 		this.$content
-			.find('#mw-content-text, #bodyContent, #firstHeading').show();
+			.find('#mw-content-text, #bodyContent, #firstHeading').show()
+			.end()
+			.find('#ve-editor, #ve-loader-spinner').remove()
+			.end()
+			.css('padding', this.contentPadding );
 	};
 
-	veCore.prototype.getHTML = function (title, callback) {
+	veCore.prototype.getParsoidHTML = function (title, callback) {
 		$.ajax({
 			url: mw.util.wikiScript( 'api' ),
 			data: {
@@ -140,11 +246,12 @@
 	API Saves Wikitext to page.
 	Returns new page content
 */
-	veCore.prototype.save = function (callback) {
+	veCore.prototype.getParsoidWikitextAndSave = function( callback ) {
 		// TODO: get html from linmod converter
 		var data = this.mainEditor.documentModel.getData(),
-			html = "<p>Visual Editor test page</p>",
-			summary = 'Page edit by Visual Editor';
+			html = "<p>Test edit by Visual Editor</p>",
+			summary = 'Page edit by Visual Editor',
+			minor = false;
 
 		$.ajax({
 			url: mw.util.wikiScript( 'api' ),
@@ -155,6 +262,7 @@
 				'html': html,
 				'token': mw.user.tokens.get('editToken'),
 				'summary': summary,
+				'minor': minor,
 				'format': 'json'
 			},
 			dataType: 'json',
@@ -206,4 +314,4 @@
 
 	var core = new veCore();
 
-})(window.mw, jQuery);
+})( window.mw, jQuery );

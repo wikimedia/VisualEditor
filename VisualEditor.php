@@ -224,6 +224,10 @@ $wgExtraNamespaces[NS_VISUALEDITOR_TALK] = "VisualEditor_talk";
 $wgContentNamespaces[] = NS_VISUALEDITOR;
 $wgContentNamespaces[] = NS_VISUALEDITOR_TALK;
 
+// VE Namespace protection
+$wgNamespaceProtection[NS_VISUALEDITOR] = array('ve-edit');
+$wgGroupPermissions['sysop']['ve-edit'] = true;
+
 // Parsoid Wrapper API
 $wgAutoloadClasses['ApiVisualEditor'] = $dir . 'ApiVisualEditor.php';
 $wgAPIModules['ve-parsoid'] = 'ApiVisualEditor';
@@ -231,6 +235,7 @@ $wgAPIModules['ve-parsoid'] = 'ApiVisualEditor';
 // Integration Hooks
 $wgAutoloadClasses['VisualEditorHooks'] = $dir . 'VisualEditor.hooks.php';
 $wgHooks['BeforePageDisplay'][] = 'VisualEditorHooks::onPageDisplay';
+$wgHooks['userCan'][] = 'VisualEditorHooks::canUserEditPage';
 
 // API for retrieving wikidom parse results
 $wgAutoloadClasses['ApiQueryParseTree'] = $dir . 'api/ApiQueryParseTree.php';
