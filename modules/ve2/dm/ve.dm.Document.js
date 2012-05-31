@@ -126,6 +126,12 @@ ve.dm.Document = function( data, parentDocument ) {
 			}
 		}
 	}
+
+	if ( inTextNode ) {
+		// Text node ended by end-of-input rather than by an element
+		currentNode.setLength( textLength );
+		// Don't bother updating currentNode et al, we don't use them below
+	}
 	// The end state is stack = [ [this.documentNode] [ array, of, its, children ] ]
 	// so attach all nodes in stack[1] to the root node
 	ve.batchSplice( this.documentNode, 0, 0, stack[1] );

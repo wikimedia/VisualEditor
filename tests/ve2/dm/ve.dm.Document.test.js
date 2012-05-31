@@ -2,7 +2,7 @@ module( 've.dm.Document' );
 
 /* Tests */
 
-test( 'constructor', 2, function() {
+test( 'constructor', 3, function() {
 	var doc = new ve.dm.Document( ve.dm.example.data );
 	deepEqual(
 		ve.example.getNodeTreeSummary( doc.getDocumentNode() ),
@@ -18,6 +18,14 @@ test( 'constructor', 2, function() {
 		},
 		/^Unbalanced input passed to document$/,
 		'unbalanced input causes exception'
+	);
+
+	// TODO data provider?
+	doc = new ve.dm.Document( [ 'a', 'b', 'c', 'd' ] );
+	deepEqual(
+		ve.example.getNodeTreeSummary( doc.getDocumentNode() ),
+		ve.example.getNodeTreeSummary( new ve.dm.DocumentNode( [ new ve.dm.TextNode( 4 ) ] ) ),
+		'plain text input is handled correctly'
 	);
 } );
 
