@@ -160,6 +160,38 @@ ve.dm.Node.prototype.getAttribute = function( key ) {
 	return this.attributes[key];
 };
 
+/**
+ * Checks if this node can be merged with another.
+ *
+ * For two nodes to be mergeable, this node and the given node must either be the same node or:
+ *  - Have the same type
+ *  - Have the same depth
+ *  - Have similar ancestory (each node upstream must have the same type)
+ *
+ * @method
+ * @param {ve.dm.Node} node Node to consider merging with
+ * @returns {Boolean} Nodes can be merged
+ */
+ve.dm.Node.prototype.canBeMergedWith = function( node ) {
+	var	n1 = this,
+		n2 = node;
+	// Move up from n1 and n2 simultaneously until we find a common ancestor
+	while ( n1 !== n2 ) {
+		if (
+			// Check if we have reached a root (means there's no common ancestor or unequal depth)
+			( n1 === null || n2 === null ) ||
+			// Ensure that types match
+			n1.getType() !== n2.getType()
+		) {
+			return false;
+		}
+		// Move up
+		n1 = n1.getParent();
+		n2 = n2.getParent();
+	}
+	return true;
+};
+
 /* Inheritance */
 
 ve.extendClass( ve.dm.Node, ve.Node );

@@ -1,6 +1,199 @@
 module( 've.dm.Transaction' );
 
+/* Methods */
+
+ve.dm.Transaction.runBuilderTests = function( cases ) {
+	for ( var msg in cases ) {
+		var tx = new ve.dm.Transaction();
+		for ( var i = 0; i < cases[msg].calls.length; i++ ) {
+			tx[cases[msg].calls[i][0]].apply( tx, cases[msg].calls[i].slice( 1 ) );
+		}
+		deepEqual( tx.getOperations(), cases[msg].ops, msg + ': operations match' );
+		deepEqual( tx.getLengthDifference(), cases[msg].diff, msg + ': length differences match' );
+	}
+};
+
+ve.dm.Transaction.runConstructorTests = function( constructor, cases ) {
+	for ( var msg in cases ) {
+		if ( cases[msg].ops ) {
+			var tx = constructor.apply(
+				ve.dm.Transaction, cases[msg].args
+			);
+			deepEqual( tx.getOperations(), cases[msg].ops, msg + ': operations match' );
+		} else if ( cases[msg].exception ) {
+			/*jshint loopfunc:true*/
+			raises( function() {
+				var tx = constructor.apply(
+					ve.dm.Transaction, cases[msg].args
+				);
+			}, cases[msg].exception, msg + ': throw exception' );
+		}
+	}
+};
+
 /* Tests */
+
+test( 'newFromInsertion', function() {
+	var doc = new ve.dm.Document( ve.dm.example.data ),
+		cases = {
+		'content in first element': {
+			'args': [doc, 1, ['1', '2', '3']],
+			'ops': [
+				{ 'type': 'retain', 'length': 1 },
+				{
+					'type': 'replace',
+					'remove': [],
+					'insert': ['1', '2', '3']
+				},
+				{ 'type': 'retain', 'length': 58 }
+			]
+		},
+		'before first element': {
+			'args': [doc, 0, [{ 'type': 'paragraph' }, '1', { 'type': '/paragraph' }]],
+			'ops': [
+				{
+					'type': 'replace',
+					'remove': [],
+					'insert': [{ 'type': 'paragraph' }, '1', { 'type': '/paragraph' }]
+				},
+				{ 'type': 'retain', 'length': 59 }
+			]
+		},
+		'after last element': {
+			'args': [doc, 59, [{ 'type': 'paragraph' }, '1', { 'type': '/paragraph' }]],
+			'ops': [
+				{ 'type': 'retain', 'length': 59 },
+				{
+					'type': 'replace',
+					'remove': [],
+					'insert': [{ 'type': 'paragraph' }, '1', { 'type': '/paragraph' }]
+				}
+			]
+		},
+		'split paragraph': {
+			'args': [doc, 9, ['1', { 'type': '/paragraph' }, { 'type': 'paragraph' }]],
+			'ops': [
+				{ 'type': 'retain', 'length': 9 },
+				{
+					'type': 'replace',
+					'remove': [],
+					'insert': ['1', { 'type': '/paragraph' }, { 'type': 'paragraph' }]
+				},
+				{ 'type': 'retain', 'length': 50 }
+			]
+		}
+	};
+	ve.dm.Transaction.runConstructorTests( ve.dm.Transaction.newFromInsertion, cases );
+} );
+
+test( 'newFromRemoval', function() {
+	var doc = new ve.dm.Document( ve.dm.example.data ),
+		cases = {
+		'content in first element': {
+			'args': [doc, new ve.Range( 1, 3 )],
+			'ops': [
+				{ 'type': 'retain', 'length': 1 },
+				{
+					'type': 'replace',
+					'remove': [
+						'a',
+						['b', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } }]
+					],
+					'insert': []
+				},
+				{ 'type': 'retain', 'length': 56 }
+			]
+		},
+		'content in last element': {
+			'args': [doc, new ve.Range( 57, 58 )],
+			'ops': [
+				{ 'type': 'retain', 'length': 57 },
+				{
+					'type': 'replace',
+					'remove': ['m'],
+					'insert': []
+				},
+				{ 'type': 'retain', 'length': 1 }
+			]
+		},
+		'first element': {
+			'args': [doc, new ve.Range( 0, 5 )],
+			'ops': [
+				{
+					'type': 'replace',
+					'remove': [
+						{ 'type': 'heading', 'attributes': { 'level': 1 } },
+						'a',
+						['b', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } }],
+						['c', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } }],
+						{ 'type': '/heading' }
+					],
+					'insert': []
+				},
+				{ 'type': 'retain', 'length': 54 }
+			]
+		},
+		'middle element with image': {
+			'args': [doc, new ve.Range( 36, 40 )],
+			'ops': [
+				{ 'type': 'retain', 'length': 36 },
+				{
+					'type': 'replace',
+					'remove': [
+						'h',
+						{ 'type': 'image', 'attributes': { 'html/src': 'image.png' } },
+						{ 'type': '/image' },
+						'i'
+					],
+					'insert': []
+				},
+				{ 'type': 'retain', 'length': 19 }
+			]
+		},
+		'last element': {
+			'args': [doc, new ve.Range( 56, 59 )],
+			'ops': [
+				{ 'type': 'retain', 'length': 56 },
+				{
+					'type': 'replace',
+					'remove': [{ 'type': 'paragraph' }, 'm', { 'type': '/paragraph' }],
+					'insert': []
+				}
+			]
+		},
+		'merge last two elements': {
+			'args': [doc, new ve.Range( 55, 57 )],
+			'ops': [
+				{ 'type': 'retain', 'length': 55 },
+				{
+					'type': 'replace',
+					'remove': [{ 'type': '/paragraph' }, { 'type': 'paragraph' }],
+					'insert': []
+				},
+				{ 'type': 'retain', 'length': 2 }
+			]
+		},
+		'strip out of paragraph in tableCell and paragraph in listItem': {
+			'args': [doc, new ve.Range( 9, 15 )],
+			'ops': [
+				{ 'type': 'retain', 'length': 9 },
+				{
+					'type': 'replace',
+					'remove': ['d'],
+					'insert': []
+				},
+				{ 'type': 'retain', 'length': 4 },
+				{
+					'type': 'replace',
+					'remove': ['e'],
+					'insert': []
+				},
+				{ 'type': 'retain', 'length': 44 }
+			]
+		}
+	};
+	ve.dm.Transaction.runConstructorTests( ve.dm.Transaction.newFromRemoval, cases );
+} );
 
 test( 'newFromAttributeChange', function() {
 	var doc = new ve.dm.Document( ve.dm.example.data ),
@@ -39,21 +232,7 @@ test( 'newFromAttributeChange', function() {
 			'exception': /^Can not set attributes on closing element$/
 		}
 	};
-	for ( var msg in cases ) {
-		if ( cases[msg].ops ) {
-			var tx = ve.dm.Transaction.newFromAttributeChange.apply(
-				ve.dm.Transaction, cases[msg].args
-			);
-			deepEqual( tx.getOperations(), cases[msg].ops, msg + ': operations match' );
-		} else if ( cases[msg].exception ) {
-			/*jshint loopfunc:true*/
-			raises( function() {
-				var tx = ve.dm.Transaction.newFromAttributeChange.apply(
-					ve.dm.Transaction, cases[msg].args
-				);
-			}, cases[msg].exception, msg + ': throw exception' );
-		}
-	}
+	ve.dm.Transaction.runConstructorTests( ve.dm.Transaction.newFromAttributeChange, cases );
 } );
 
 test( 'newFromAnnotation', function() {
@@ -154,15 +333,10 @@ test( 'newFromAnnotation', function() {
 			]
 		}
 	};
-	for ( var msg in cases ) {
-		var tx = ve.dm.Transaction.newFromAnnotation.apply(
-			ve.dm.Transaction, cases[msg].args
-		);
-		deepEqual( tx.getOperations(), cases[msg].ops, msg + ': operations match' );
-	}
+	ve.dm.Transaction.runConstructorTests( ve.dm.Transaction.newFromAnnotation, cases );
 } );
 
-test( 'constructor', function() {
+test( 'pushRetain', function() {
 	var cases = {
 		'retain': {
 			'calls': [['pushRetain', 5]],
@@ -173,10 +347,16 @@ test( 'constructor', function() {
 			'calls': [['pushRetain', 5], ['pushRetain', 3]],
 			'ops': [{ 'type': 'retain', 'length': 8 }],
 			'diff': 0
-		},
+		}
+	};
+	ve.dm.Transaction.runBuilderTests( cases );
+} );
+
+test( 'pushReplace', function() {
+	var cases = {
 		'insert': {
 			'calls': [
-				['pushReplace', [],  [{ 'type': 'paragraph' }, 'a', 'b', 'c', { 'type': '/paragraph' }]]
+				['pushReplace', [], [{ 'type': 'paragraph' }, 'a', 'b', 'c', { 'type': '/paragraph' }]]
 			],
 			'ops': [
 				{
@@ -291,7 +471,13 @@ test( 'constructor', function() {
 				}
 			],
 			'diff': 0
-		},
+		}
+	};
+	ve.dm.Transaction.runBuilderTests( cases );
+} );
+
+test( 'pushReplaceElementAttribute', function() {
+	var cases = {
 		'replace element attribute': {
 			'calls': [
 				['pushReplaceElementAttribute', 'style', 'bullet', 'number']
@@ -326,7 +512,13 @@ test( 'constructor', function() {
 				}
 			],
 			'diff': 0
-		},
+		}
+	};
+	ve.dm.Transaction.runBuilderTests( cases );
+} );
+
+test( 'push*Annotating', function() {
+	var cases = {
 		'start annotating': {
 			'calls': [
 				['pushStartAnnotating', 'set', { 'type': 'textStyle/bold' }]
@@ -398,12 +590,5 @@ test( 'constructor', function() {
 			'diff': 0
 		}
 	};
-	for ( var msg in cases ) {
-		var tx = new ve.dm.Transaction();
-		for ( var i = 0; i < cases[msg].calls.length; i++ ) {
-			tx[cases[msg].calls[i][0]].apply( tx, cases[msg].calls[i].slice( 1 ) );
-		}
-		deepEqual( tx.getOperations(), cases[msg].ops, msg + ': operations match' );
-		deepEqual( tx.getLengthDifference(), cases[msg].diff, msg + ': length differences match' );
-	}
+	ve.dm.Transaction.runBuilderTests( cases );
 } );
