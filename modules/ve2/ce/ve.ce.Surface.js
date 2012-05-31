@@ -256,10 +256,20 @@ ve.ce.Surface.prototype.getOffset = function( DOMnode, DOMoffset ) {
 			branchOffset = branchModel.getRoot().getOffsetFromNode( branchModel );
 		return offset + branchOffset + ( ( branchModel.isWrapped() ) ? 1 : 0 );
 	} else if ( DOMnode.nodeType === Node.ELEMENT_NODE ) {
+		var $DOMnode = $( DOMnode );
 		if ( DOMoffset === 0 ) {
 			throw "Not implemented";
+		} else if ( $DOMnode.hasClass( 've-ce-slug' ) ) {
+			var nodeModel;
+			if ( $DOMnode.next().length > 0 ) {
+				nodeModel = $DOMnode.next().data( 'node' ).getModel();
+				return nodeModel.getRoot().getOffsetFromNode( nodeModel );
+			} else if ( $DOMnode.prev().length > 0 ) {
+				nodeModel = $DOMnode.prev().data( 'node' ).getModel();
+				return nodeModel.getRoot().getOffsetFromNode( nodeModel ) + nodeModel.getOuterLength();
+			}
 		} else {
-			var	$node = $( DOMnode ).contents().eq( DOMoffset - 1 ),
+			var	$node = $DOMnode.contents().eq( DOMoffset - 1 ),
 				nodeModel = $node.data( 'node' ).getModel(),
 				nodeOffset = nodeModel.getRoot().getOffsetFromNode( nodeModel );
 			return nodeOffset + nodeModel.getOuterLength();
