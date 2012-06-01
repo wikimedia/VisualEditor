@@ -32,6 +32,11 @@ class VisualEditorHooks {
 		}
 		return true;
 	}
+	public static function makeGlobalScriptVariables( &$vars ) {
+		global $wgUser, $wgTitle;
+		$vars['vePageWatched'] = $wgUser->isWatched( $wgTitle ) ? true : false;
+		return true;
+	}
 	/**
 	 * 
 	*/
