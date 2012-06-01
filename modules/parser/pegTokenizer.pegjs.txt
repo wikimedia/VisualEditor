@@ -180,6 +180,9 @@
     function SyntaxStops () {
         this.counters = {};
         this.stacks = {};
+        this.key = '';
+        this._counterKey = '';
+        this._stackKey = '';
     }
     SyntaxStops.prototype.inc = function(flag) {
         if (this.counters[flag] !== undefined) {
@@ -187,10 +190,12 @@
         } else {
             this.counters[flag] = 1;
         }
+        this._updateCounterKey();
         return true;
     };
     SyntaxStops.prototype.dec = function(flag) {
         this.counters[flag]--;
+        this._updateCounterKey();
         return false;
     };
     SyntaxStops.prototype.onCount = function ( name ) {
@@ -208,6 +213,7 @@
         } else {
             this.stacks[name].push( value );
         }
+        this._updateStackKey();
         return true;
     };
     SyntaxStops.prototype.pop = function ( name ) {
@@ -216,6 +222,7 @@
         } else {
             throw "SyntaxStops.pop: unknown stop for " + name;
         }
+        this._updateStackKey();
         return false;
     };
     SyntaxStops.prototype.onStack = function ( name ) {
@@ -225,6 +232,31 @@
         } else {
             return stack[stack.length - 1];
         }
+    };
+
+    SyntaxStops.prototype._updateKey = function ( ) {
+        this._updateCounterKey();
+        this._updateStackKey();
+    };
+    SyntaxStops.prototype._updateCounterKey = function ( ) {
+        var counters = [];
+        for ( k in this.counters ) {
+            if ( this.counters[k] > 0 ) {
+                counters.push(k);
+            }
+        }
+        this._counterKey = JSON.stringify(counters);
+        this.key = this._counterKey + this._stackKey;
+    };
+    SyntaxStops.prototype._updateStackKey = function ( ) {
+        var stackStops = [];
+        for ( k in this.stacks ) {
+            if ( this.onStack( k )  ) {
+                stackStops.push(k);
+            }
+        }
+        this._stackKey = JSON.stringify(stackStops);
+        this.key = this._counterKey + this._stackKey;
     };
 
     var stops = new SyntaxStops();
@@ -305,6 +337,14 @@ start
  */
 toplevelblock 
   = & { blockStart = pos; return true; } !eof b:block {
+
+    // Clear the tokenizer's backtracking cache after matching each
+    // toplevelblock. There won't be any backtracking as a document is just a
+    // sequence of toplevelblocks, so the cache for previous toplevelblocks
+    // will never be needed. This frees up a lot of memory: In the case of
+    // [[:en:Barack Obama]], the difference is about 360M vs. 110M.
+    cache = {};
+
     b = flatten(b);
 
     // Add source offsets for round-tripping. XXX: Add these not just for
@@ -324,6 +364,7 @@ toplevelblock
     // Emit tokens for this toplevelblock. This feeds a chunk to the parser
     // pipeline.
     __parseArgs[2]( flatten( b ) );
+
 
     // We don't return any tokens to the start production to save memory. We
     // just emitted them already to our consumers.
@@ -408,10 +449,19 @@ br = space* &newline { return new SelfclosingTagTk( 'br' ) }
  */
 inline_breaks
   = & [=|!}{:\r\n\]<]
-    & { // Important hack: disable caching for this production, as the default
-        // cache key does not take into account flag states!
-        cacheKey = ''; 
+    //& { 
+    //    // Important hack: disable caching for this production, as the default
+    //    // cache key does not take into account flag states!
+    //    cacheKey += 'foo';
+    //    return true;
+    //}
+    & { 
         //console.warn('ilbf: ' + input.substr(pos, 5) );
+        //if ( null !== __parseArgs[3].inline_breaks( input, pos, stops ) ) {
+        //    console.warn('ilb break: ' + pp(input.substr(pos, 5)) );
+        //} else {
+        //    console.warn('ilb no break: ' + pp(input.substr(pos, 5)) );
+        //}
         return null !== __parseArgs[3].inline_breaks( input, pos, stops )
       } 
 
@@ -1377,7 +1427,8 @@ list_char = [*#:;]
 
 table_lines
   = //& { console.warn('enter table_lines: ' + input.substr(pos, 20)); return true; }
-    (! inline_breaks / & '{{!}}' )  r:(
+    (! inline_breaks / & '{{!}}' )  
+    r:(
         & { return stops.push('table', true); }
         tl:table_line 
         tls:( s:sol tl2:table_line { return s.concat(tl2); } )* {
@@ -1467,14 +1518,14 @@ table_heading_tags
     "!"
     th:table_heading_tag
     ths:( "!!" tht:table_heading_tag  { tht[0].dataAttribs.stx_v = 'row'; return tht } )* {
-        //console.warn( 'thts: ' + pp(th.concat(ths)));
+        //console.warn( 'thts: ' + pp([th, ths]));
         return th.concat(ths);
     }
 
 table_heading_tag
   = a:table_cell_args?
     c:nested_block* {
-         //console.warn( 'th stops: ' + pp( stops ) );
+         //console.warn( 'table_heading_tag: ' + pp( [a, c] ) );
          if ( a === '' ) {
              a = [];
          }
