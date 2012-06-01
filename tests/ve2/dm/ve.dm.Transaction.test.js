@@ -150,6 +150,23 @@ test( 'newFromRemoval', function() {
 				{ 'type': 'retain', 'length': 19 }
 			]
 		},
+		'extra openings': {
+			'args': [doc, new ve.Range( 0, 7 )],
+			'ops': [
+				{
+					'type': 'replace',
+					'remove': [
+						{ 'type': 'heading', 'attributes': { 'level': 1 } },
+						'a',
+						['b', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } }],
+						['c', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } }],
+						{ 'type': '/heading' }
+					],
+					'insert': []
+				},
+				{ 'type': 'retain', 'length': 54 }
+			]
+		},
 		'last element': {
 			'args': [doc, new ve.Range( 56, 59 )],
 			'ops': [
@@ -159,6 +176,18 @@ test( 'newFromRemoval', function() {
 					'remove': [{ 'type': 'paragraph' }, 'm', { 'type': '/paragraph' }],
 					'insert': []
 				}
+			]
+		},
+		'extra closings': {
+			'args': [doc, new ve.Range( 30, 37 )],
+			'ops': [
+				{ 'type': 'retain', 'length': 36 },
+				{
+					'type': 'replace',
+					'remove': ['h'],
+					'insert': []
+				},
+				{ 'type': 'retain', 'length': 22 }
 			]
 		},
 		'merge last two elements': {

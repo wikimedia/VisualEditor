@@ -96,3 +96,14 @@ test( 'detach', 2, function() {
 	strictEqual( node1.getRoot(), node1 );
 } );
 
+test( 'canBeMergedWith', 4, function() {
+	var node1 = new ve.dm.LeafNodeStub(),
+		node2 = new ve.dm.BranchNodeStub( [node1] ),
+		node3 = new ve.dm.BranchNodeStub( [node2] ),
+		node4 = new ve.dm.LeafNodeStub(),
+		node5 = new ve.dm.BranchNodeStub( [node4] );
+	strictEqual( node3.canBeMergedWith( node5 ), true, 'same level, same type' );
+	strictEqual( node2.canBeMergedWith( node5 ), false, 'different level, same type' );
+	strictEqual( node2.canBeMergedWith( node1 ), false, 'different level, different type' );
+	strictEqual( node2.canBeMergedWith( node4 ), false, 'same level, different type' );
+} );
