@@ -122,8 +122,7 @@ WSP._linkHandler =  function( state, token ) {
 
 		if ( attribDict.rel === 'mw:wikiLink' ) {
 			if ( token.dataAttribs.gc ) {
-				state.dropContent = true;
-				return '[[' + target;
+				return '[[';
 			} else {
 				return '[[' + target + '|';
 			}
