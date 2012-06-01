@@ -140,7 +140,6 @@ $wgResourceModules += array(
 			've2/dm/nodes/ve.dm.TextNode.js',
 
 			've2/dm/annotations/ve.dm.LinkAnnotation.js',
-			've2/dm/annotations/ve.dm.ObjectAnnotation.js',
 			've2/dm/annotations/ve.dm.TextStyleAnnotation.js',
 
 			've/dm/serializers/ve.dm.AnnotationSerializer.js',

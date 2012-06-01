@@ -134,7 +134,6 @@ include( '../../modules/sandbox/base.php' );
 		<script src="../../modules/ve2/dm/nodes/ve.dm.TextNode.js"></script>
 
 		<script src="../../modules/ve2/dm/annotations/ve.dm.LinkAnnotation.js"></script>
-		<script src="../../modules/ve2/dm/annotations/ve.dm.ObjectAnnotation.js"></script>
 		<script src="../../modules/ve2/dm/annotations/ve.dm.TextStyleAnnotation.js"></script>
 
 		<script src="../../modules/ve/dm/serializers/ve.dm.AnnotationSerializer.js"></script>
