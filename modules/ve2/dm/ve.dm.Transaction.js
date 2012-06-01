@@ -72,13 +72,23 @@ ve.dm.Transaction.newFromRemoval = function( doc, range ) {
 		return tx;
 	}
 	// Select nodes and validate selection
-	var selection = doc.selectNodes( range, 'leaves' );
+	var selection = doc.selectNodes( range, 'leaves' ),
+		nodeRange;
 	if ( selection.length === 0 ) {
 		// Empty selection? Something is wrong!
 		throw 'Invalid range, can not remove from ' + range.start + ' to ' + range.end;
 	}
 	// Decide whether to merge or strip
 	if ( selection[0].node.canBeMergedWith( selection[selection.length - 1].node ) ) {
+		// If only one node was selected, ignore anything past this node
+		if ( selection.length === 1 ) {
+			// Include the parent's wrapping (if any - there should always be, but let's be safe)
+			wrapping = selection[0].node.getParent().isWrapped() ? 1 : 0;
+			// Only reduces the range to cover the selected node if it's shorter
+			range.start = Math.max( range.start, selection[0].nodeRange.start - wrapping );
+			// Only reduces the range to cover the selected node if it's shorter
+			range.end = Math.min( range.end, selection[0].nodeRange.end + wrapping );
+		}
 		// Retain to the start of the range
 		if ( range.start > 0 ) {
 			tx.pushRetain( range.start );
@@ -90,8 +100,7 @@ ve.dm.Transaction.newFromRemoval = function( doc, range ) {
 			tx.pushRetain( data.length - range.end );
 		}
 	} else {
-		var offset = 0,
-			nodeRange;
+		var offset = 0;
 		for ( var i = 0; i < selection.length; i++ ) {
 			nodeRange = selection[i].nodeRange;
 			// Retain up to where the next removal starts
