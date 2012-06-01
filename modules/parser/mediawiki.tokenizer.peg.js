@@ -60,7 +60,10 @@ PegTokenizer.prototype.process = function( text, cacheKey ) {
 		* requires to the source.
 		*/
 		tokenizerSource = tokenizerSource.replace( 'parse: function(input, startRule) {',
-					'parse: function(input, startRule) { var __parseArgs = arguments;' );
+					'parse: function(input, startRule) { var __parseArgs = arguments;' )
+						// Include the stops key in the cache key
+						.replace(/var cacheKey = "[^@"]+@" \+ pos/g, 
+								function(m){ return m +' + stops.key'; });
 		//console.warn( tokenizerSource );
 		PegTokenizer.prototype.tokenizer = eval( tokenizerSource );
 		// alias the parse method
@@ -208,6 +211,7 @@ PegTokenizer.prototype.inline_breaks = function (input, pos, stops ) {
 				input.substr(pos).match(/\r\n?\s*[!|]/) !== null ||
 				null;
 		case "\n":
+			//console.warn(input.substr(pos, 5));
 			return ( stops.onStack( 'table' ) &&
 				// allow leading whitespace in tables
 				input.substr(pos, 200).match( /^\n\s*[!|]/ ) ) ||
