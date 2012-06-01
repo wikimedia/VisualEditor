@@ -38,15 +38,11 @@ ve.dm.TableCellNode.rules = {
  */
 ve.dm.TableCellNode.converters = {
 	'tags': 'td',
-	'html': {
-		'convert': function( type, element ) {
-			return ve.dm.createHtmlElement( 'td' );
-		}
+	'toHtml': function( type, element ) {
+		return ve.dm.createHtmlElement( 'td' );
 	},
-	'data': {
-		'convert': function( tag, element ) {
-			return { 'type': 'tableCell' };
-		}
+	'toData': function( tag, element ) {
+		return { 'type': 'tableCell' };
 	}
 };
 

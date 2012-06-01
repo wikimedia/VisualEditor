@@ -38,15 +38,11 @@ ve.dm.PreformattedNode.rules = {
  */
 ve.dm.PreformattedNode.converters = {
 	'tags': 'pre',
-	'html': {
-		'convert': function( type, element ) {
-			return ve.dm.createHtmlElement( 'pre' );
-		}
+	'toHtml': function( type, element ) {
+		return ve.dm.createHtmlElement( 'pre' );
 	},
-	'data': {
-		'convert': function( tag, element ) {
-			return { 'type': 'preformatted' };
-		}
+	'toData': function( tag, element ) {
+		return { 'type': 'preformatted' };
 	}
 };
 

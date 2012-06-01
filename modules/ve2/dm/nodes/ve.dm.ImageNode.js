@@ -38,15 +38,11 @@ ve.dm.ImageNode.rules = {
  */
 ve.dm.ImageNode.converters = {
 	'tags': 'img',
-	'html': {
-		'convert': function( type, element ) {
-			return ve.dm.createHtmlElement( 'img' );
-		}
+	'toHtml': function( type, element ) {
+		return ve.dm.createHtmlElement( 'img' );
 	},
-	'data': {
-		'convert': function( tag, element ) {
-			return { 'type': 'image' };
-		}
+	'toData': function( tag, element ) {
+		return { 'type': 'image' };
 	}
 };
 

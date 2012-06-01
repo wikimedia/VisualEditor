@@ -21,16 +21,12 @@ ve.dm.ObjectAnnotation = function() {
  */
 ve.dm.ObjectAnnotation.converters = {
 	'tags': ['template', 'hook'],
-	'html': {
-		'convert': function( subType, annotation ) {
-			return annotation.type &&
-				ve.dm.createHtmlElement( 'div', { 'data-type': subType } );
-		}
+	'toHtml': function( subType, annotation ) {
+		return annotation.type &&
+			ve.dm.createHtmlElement( 'div', { 'data-type': subType } );
 	},
-	'data': {
-		'convert': function( tag, element ) {
-			return { 'type': 'object/' + ( element.getAttribute( 'data-type' ) || 'unknown' ) };
-		}
+	'toData': function( tag, element ) {
+		return { 'type': 'object/' + ( element.getAttribute( 'data-type' ) || 'unknown' ) };
 	}
 };
 

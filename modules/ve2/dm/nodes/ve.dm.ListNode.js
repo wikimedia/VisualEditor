@@ -38,21 +38,17 @@ ve.dm.ListNode.rules = {
  */
 ve.dm.ListNode.converters = {
 	'tags': ['ul', 'ol'],
-	'html': {
-		'convert': function( type, element ) {
-			return element.attributes && ( {
-				'bullet': ve.dm.createHtmlElement( 'ul' ),
-				'number': ve.dm.createHtmlElement( 'ol' )
-			} )[element.attributes['style']];
-		}
+	'toHtml': function( type, element ) {
+		return element.attributes && ( {
+			'bullet': ve.dm.createHtmlElement( 'ul' ),
+			'number': ve.dm.createHtmlElement( 'ol' )
+		} )[element.attributes['style']];
 	},
-	'data': {
-		'convert': function( tag, element ) {
-			return ( {
-				'ul': { 'type': 'list', 'attributes': { 'style': 'bullet' } },
-				'ol': { 'type': 'list', 'attributes': { 'style': 'number' } }
-			} )[tag];
-		}
+	'toData': function( tag, element ) {
+		return ( {
+			'ul': { 'type': 'list', 'attributes': { 'style': 'bullet' } },
+			'ol': { 'type': 'list', 'attributes': { 'style': 'number' } }
+		} )[tag];
 	}
 };
 

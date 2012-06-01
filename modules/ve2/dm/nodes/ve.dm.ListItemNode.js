@@ -38,15 +38,11 @@ ve.dm.ListItemNode.rules = {
  */
 ve.dm.ListItemNode.converters = {
 	'tags': 'li',
-	'html': {
-		'convert': function( type, element ) {
-			return ve.dm.createHtmlElement( 'li' );
-		}
+	'toHtml': function( type, element ) {
+		return ve.dm.createHtmlElement( 'li' );
 	},
-	'data': {
-		'convert': function( tag, element ) {
-			return { 'type': 'listItem' };
-		}
+	'toData': function( tag, element ) {
+		return { 'type': 'listItem' };
 	}
 };
 

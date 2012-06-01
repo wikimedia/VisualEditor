@@ -21,19 +21,15 @@ ve.dm.LinkAnnotation = function() {
  */
 ve.dm.LinkAnnotation.converters = {
 	'tags': 'a',
-	'html': {
-		'convert': function( subType, annotation ) {
-			return annotation.type &&
-				ve.dm.createHtmlElement( 'a', { 'data-type': 'link/' + subType } );
-		}
+	'toHtml': function( subType, annotation ) {
+		return annotation.type &&
+			ve.dm.createHtmlElement( 'a', { 'data-type': 'link/' + subType } );
 	},
-	'data': {
-		'convert': function( tag, element ) {
-			// FIXME: the parser currently doesn't output this data this way
-			// Internal links get 'linkType': 'internal' in the data-mw-rt attrib, while external
-			// links currently get nothing
-			return { 'type': 'link/' + ( element.getAttribute( 'data-type' ) || 'unknown' ) };
-		}
+	'toData': function( tag, element ) {
+		// FIXME: the parser currently doesn't output this data this way
+		// Internal links get 'linkType': 'internal' in the data-mw-rt attrib, while external
+		// links currently get nothing
+		return { 'type': 'link/' + ( element.getAttribute( 'data-type' ) || 'unknown' ) };
 	}
 };
 

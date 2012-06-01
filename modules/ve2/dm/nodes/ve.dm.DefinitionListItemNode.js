@@ -38,15 +38,11 @@ ve.dm.DefinitionListItemNode.rules = {
  */
 ve.dm.DefinitionListItemNode.converters = {
 	'tags': 'dl',
-	'html': {
-		'convert': function( type, element ) {
-			return ve.dm.createHtmlElement( 'dl' );
-		}
+	'toHtml': function( type, element ) {
+		return ve.dm.createHtmlElement( 'dl' );
 	},
-	'data': {
-		'convert': function( tag, element ) {
-			return { 'type': 'definitionList' };
-		}
+	'toData': function( tag, element ) {
+		return { 'type': 'definitionList' };
 	}
 };
 

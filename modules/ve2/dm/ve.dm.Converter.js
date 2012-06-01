@@ -9,8 +9,8 @@ ve.dm.Converter = function( nodeFactory, annotationFactory ) {
 	// Properties
 	this.nodeFactory = nodeFactory;
 	this.annotationFactory = annotationFactory;
-	this.elements = { 'html': {}, 'data': {}, 'types': {} };
-	this.annotations = { 'html': {}, 'data': {} };
+	this.elements = { 'toHtml': {}, 'toData': {}, 'types': {} };
+	this.annotations = { 'toHtml': {}, 'toData': {} };
 
 	// Events
 	this.nodeFactory.addListenerMethod( this, 'register', 'onNodeRegister' );
@@ -36,16 +36,16 @@ ve.dm.Converter.prototype.onNodeRegister = function( type, constructor ) {
 		throw 'Missing conversion data in node implementation of ' + type;
 	} else if ( constructor.converters !== null ) {
 		var tags = constructor.converters.tags,
-			html = constructor.converters.html,
-			data = constructor.converters.data;
+			toHtml = constructor.converters.toHtml,
+			toData = constructor.converters.toData;
 		// Convert tags to an array if needed
 		if ( !ve.isArray( tags ) ) {
 			tags = [tags];
 		}
 		// Registration
-		this.elements.html[type] = html.convert;
+		this.elements.toHtml[type] = toHtml;
 		for ( var i = 0; i < tags.length; i++ ) {
-			this.elements.data[tags[i]] = data.convert;
+			this.elements.toData[tags[i]] = toData;
 			this.elements.types[tags[i]] = type;
 		}
 	}
@@ -64,16 +64,16 @@ ve.dm.Converter.prototype.onAnnotationRegister = function( type, constructor ) {
 		throw 'Missing conversion data in annotation implementation of ' + type;
 	} else if ( constructor.converters !== null ) {
 		var tags = constructor.converters.tags,
-			html = constructor.converters.html,
-			data = constructor.converters.data;
+			toHtml = constructor.converters.toHtml,
+			toData = constructor.converters.toData;
 		// Convert tags to an array if needed
 		if ( !ve.isArray( tags ) ) {
 			tags = [tags];
 		}
 		// Registration
-		this.annotations.html[type] = html.convert;
+		this.annotations.toHtml[type] = toHtml;
 		for ( var i = 0; i < tags.length; i++ ) {
-			this.annotations.data[tags[i]] = data.convert;
+			this.annotations.toData[tags[i]] = toData;
 		}
 	}
 };

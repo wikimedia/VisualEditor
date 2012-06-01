@@ -38,15 +38,11 @@ ve.dm.ParagraphNode.rules = {
  */
 ve.dm.ParagraphNode.converters = {
 	'tags': 'p',
-	'html': {
-		'convert': function( type, element ) {
-			return ve.dm.createHtmlElement( 'p' );
-		}
+	'toHtml': function( type, element ) {
+		return ve.dm.createHtmlElement( 'p' );
 	},
-	'data': {
-		'convert': function( tag, element ) {
-			return { 'type': 'paragraph' };
-		}
+	'toData': function( tag, element ) {
+		return { 'type': 'paragraph' };
 	}
 };
 

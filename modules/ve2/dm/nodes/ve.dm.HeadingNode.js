@@ -38,29 +38,25 @@ ve.dm.HeadingNode.rules = {
  */
 ve.dm.HeadingNode.converters = {
 	'tags': ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
-	'html': {
-		'convert': function( type, element ) {
-			return element.attributes && ( {
-				1: ve.dm.createHtmlElement( 'h1' ),
-				2: ve.dm.createHtmlElement( 'h2' ),
-				3: ve.dm.createHtmlElement( 'h3' ),
-				4: ve.dm.createHtmlElement( 'h4' ),
-				5: ve.dm.createHtmlElement( 'h5' ),
-				6: ve.dm.createHtmlElement( 'h6' )
-			} )[element.attributes['level']];
-		}
+	'toHtml': function( type, element ) {
+		return element.attributes && ( {
+			1: ve.dm.createHtmlElement( 'h1' ),
+			2: ve.dm.createHtmlElement( 'h2' ),
+			3: ve.dm.createHtmlElement( 'h3' ),
+			4: ve.dm.createHtmlElement( 'h4' ),
+			5: ve.dm.createHtmlElement( 'h5' ),
+			6: ve.dm.createHtmlElement( 'h6' )
+		} )[element.attributes['level']];
 	},
-	'data': {
-		'convert': function( tag, element ) {
-			return ( {
-				'h1': { 'type': 'heading', 'attributes': { 'level': 1 } },
-				'h2': { 'type': 'heading', 'attributes': { 'level': 2 } },
-				'h3': { 'type': 'heading', 'attributes': { 'level': 3 } },
-				'h4': { 'type': 'heading', 'attributes': { 'level': 4 } },
-				'h5': { 'type': 'heading', 'attributes': { 'level': 5 } },
-				'h6': { 'type': 'heading', 'attributes': { 'level': 6 } }
-			} )[tag];
-		}
+	'toData': function( tag, element ) {
+		return ( {
+			'h1': { 'type': 'heading', 'attributes': { 'level': 1 } },
+			'h2': { 'type': 'heading', 'attributes': { 'level': 2 } },
+			'h3': { 'type': 'heading', 'attributes': { 'level': 3 } },
+			'h4': { 'type': 'heading', 'attributes': { 'level': 4 } },
+			'h5': { 'type': 'heading', 'attributes': { 'level': 5 } },
+			'h6': { 'type': 'heading', 'attributes': { 'level': 6 } }
+		} )[tag];
 	}
 };
 
