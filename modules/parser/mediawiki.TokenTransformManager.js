@@ -946,7 +946,8 @@ AttributeTransformManager.prototype._returnAttributeKey = function ( ref, tokens
 	this.kvs[ref].k = this.manager.env.stripEOFTkfromTokens( this.kvs[ref].k );
 	if ( this.kvs[ref].v === '' ) {
 		// FIXME: use tokenizer production to properly parse this
-		var m = this.manager.env.tokensToString( this.kvs[ref].k ).match( /([^=]+)=['"]?([^'"]*)['"]?$/ );
+		var m = this.manager.env.tokensToString( this.kvs[ref].k )
+			.match( /([^=]+)=['"]?([^'"]*)['"]?$/ );
 		if ( m ) {
 			this.kvs[ref].k = m[1];
 			this.kvs[ref].v = m[2];
@@ -1322,7 +1323,13 @@ Frame.prototype.newParserValue = function ( source, options ) {
 };
 
 Frame.prototype._getID = function( options ) {
-	options.cb( this );
+	if ( !options || !options.cb ) {
+		console.trace();
+		console.warn('Error in Frame._getID: no cb in options!');
+	} else {
+		//console.warn('getID: ' + options.cb);
+		return options.cb( this );
+	}
 };
 
 /**

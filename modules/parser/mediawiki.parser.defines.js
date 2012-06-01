@@ -202,7 +202,6 @@ ParserValue.prototype.toJSON = function() {
 };
 
 ParserValue.prototype.get = function( options, cb ) {
-	//console.trace();
 	if ( ! options ) {
 		options = $.extend({}, this._defaultTransformOptions);
 	} else if ( options.type === undefined ) {
@@ -215,8 +214,13 @@ ParserValue.prototype.get = function( options, cb ) {
 		cb = options.cb;
 	}
 
-	// try the cache
-	var maybeCached = this.source.cache && this.source.cache.get( this.frame, options );
+	var maybeCached;
+	if ( this.source.constructor === String ) {
+		maybeCached = this.source;
+	} else {
+		// try the cache
+		maybeCached = this.source.cache && this.source.cache.get( this.frame, options );
+	}
 	if ( maybeCached !== undefined ) {
 		if ( cb ) {
 			cb ( maybeCached );

@@ -78,24 +78,29 @@ ParserFunctions.prototype._switchLookupFallback = function ( frame, kvs, key, di
 	var kv,
 		l = kvs.length;
 	this.manager.env.tp('swl');
+	//console.trace();
 	this.manager.env.dp('_switchLookupFallback', kvs.length, key, v );
+	if ( v && v.constructor !== String ) {
+		v = '';
+		console.warn(JSON.stringify(v));
+	}
 	if ( v && key === v.trim() ) {
 		// found. now look for the next entry with a non-empty key.
 		this.manager.env.dp( 'switch found' );
-		cb = function( res ) { cb ( { tokens: res } ); };
+		var _cb = function( res ) { cb ( { tokens: res } ); };
 		for ( var j = 0; j < l; j++) {
 			kv = kvs[j];
 			// XXX: make sure the key is always one of these!
 			if ( kv.k.length ) {
 				return kv.v.get({ 
 					type: 'tokens/x-mediawiki/expanded', 
-					cb: cb,
-					asyncCB: cb
+					cb: _cb,
+					asyncCB: _cb
 				});
 			}
 		}
 		// No value found, return empty string? XXX: check this
-		return cb( { } );
+		return cb( [] );
 	} else if ( kvs.length ) {
 		// search for value-only entry which matches
 		var i = 0;
@@ -113,36 +118,45 @@ ParserFunctions.prototype._switchLookupFallback = function ( frame, kvs, key, di
 					console.trace();
 				}
 				var self = this;
-				cb({ async: true });
-				return kv.v.get( { 
-					cb: process.nextTick.bind( process, 
-							self._switchLookupFallback.bind( this, frame, 
-								kvs.slice(i+1), key, dict, cb ) ),
+				//cb({ async: true });
+				//console.warn( 'swtch value: ' + kv.v );
+				return kv.v.get({ 
+					cb: function( val ) {
+						process.nextTick( 
+							self._switchLookupFallback.bind( self, frame, 
+								kvs.slice(i+1), key, dict, cb, val ) 
+						);
+					},
 					asyncCB: cb
 				});
 			}
 		}
 		// value not found!
 		if ( '#default' in dict ) {
-			dict['#default'].get({
+			return dict['#default'].get({
 				type: 'tokens/x-mediawiki/expanded', 
 				cb: function( res ) { cb ( { tokens: res } ); },
 				asyncCB: cb
 			});
-		/*} else if ( kvs.length ) { 
+		} else if ( kvs.length ) { 
 			var lastKV = kvs[kvs.length - 1];
 			if ( lastKV && ! lastKV.k.length ) {
-				cb ( { tokens: lastKV.v } );
+				return lastKV.v.get( {
+					cb: cb,
+					asyncCB: cb } );
+				//cb ( { tokens: lastKV.v } );
 			} else {
-				cb ( {} );
-			}*/
+				cb ( {tokens:[]} );
+			}
 		} else {
 			// nothing found at all.
-			cb ( {} );
+			return cb ( {} );
 		}
+	} else if ( v ) {
+		cb( { tokens: v } );
 	} else {
 		// nothing found at all.
-		cb ( {} );
+		cb( {} );
 	}
 };
 
