@@ -89,10 +89,10 @@ include( '../../modules/sandbox/base.php' );
 		<script src="../../modules/jquery/jquery.js"></script>
 		<script src="../../modules/jquery/jquery.json.js"></script>
 		<script src="../../modules/ve2/ve.js"></script>
-		<script src="../../modules/ve2/ve.NodeFactory.js"></script>
+		<script src="../../modules/ve2/ve.EventEmitter.js"></script>
+		<script src="../../modules/ve2/ve.Factory.js"></script>
 		<script src="../../modules/ve2/ve.Position.js"></script>
 		<script src="../../modules/ve2/ve.Range.js"></script>
-		<script src="../../modules/ve2/ve.EventEmitter.js"></script>
 		<script src="../../modules/ve2/ve.Node.js"></script>
 		<script src="../../modules/ve2/ve.BranchNode.js"></script>
 		<script src="../../modules/ve2/ve.LeafNode.js"></script>
@@ -102,9 +102,11 @@ include( '../../modules/sandbox/base.php' );
 		<!-- dm -->
 		<script src="../../modules/ve2/dm/ve.dm.js"></script>
 		<script src="../../modules/ve2/dm/ve.dm.NodeFactory.js"></script>
+		<script src="../../modules/ve2/dm/ve.dm.AnnotationFactory.js"></script>
 		<script src="../../modules/ve2/dm/ve.dm.Node.js"></script>
 		<script src="../../modules/ve2/dm/ve.dm.BranchNode.js"></script>
 		<script src="../../modules/ve2/dm/ve.dm.LeafNode.js"></script>
+		<script src="../../modules/ve2/dm/ve.dm.Annotation.js"></script>
 		<script src="../../modules/ve2/dm/ve.dm.TransactionProcessor.js"></script>
 		<script src="../../modules/ve2/dm/ve.dm.Transaction.js"></script>
 		<script src="../../modules/ve2/dm/ve.dm.Surface.js"></script>
@@ -112,6 +114,7 @@ include( '../../modules/sandbox/base.php' );
 		<script src="../../modules/ve2/dm/ve.dm.DocumentSynchronizer.js"></script>
 		<script src="../../modules/ve2/dm/ve.dm.Transaction.js"></script>
 		<script src="../../modules/ve2/dm/ve.dm.TransactionProcessor.js"></script>
+		<script src="../../modules/ve2/dm/ve.dm.Converter.js"></script>
 		<script src="../../modules/ve2/dm/ve.dm.HTMLConverter.js"></script>
 
 		<script src="../../modules/ve2/dm/nodes/ve.dm.AlienInlineNode.js"></script>
@@ -129,6 +132,9 @@ include( '../../modules/sandbox/base.php' );
 		<script src="../../modules/ve2/dm/nodes/ve.dm.TableNode.js"></script>
 		<script src="../../modules/ve2/dm/nodes/ve.dm.TableRowNode.js"></script>
 		<script src="../../modules/ve2/dm/nodes/ve.dm.TextNode.js"></script>
+
+		<script src="../../modules/ve2/dm/annotations/ve.dm.LinkAnnotation.js"></script>
+		<script src="../../modules/ve2/dm/annotations/ve.dm.TextStyleAnnotation.js"></script>
 
 		<script src="../../modules/ve/dm/serializers/ve.dm.AnnotationSerializer.js"></script>
 		<script src="../../modules/ve/dm/serializers/ve.dm.HtmlSerializer.js"></script>

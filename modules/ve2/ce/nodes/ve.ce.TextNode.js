@@ -56,12 +56,6 @@ ve.ce.TextNode.htmlCharacters = {
  * @member
  */
 ve.ce.TextNode.annotationRenderers = {
-	'object/hook': {
-		'open': function( data ) {
-			return '<span class="ve-ce-content-format-object">' + data.html;
-		},
-		'close': '</span>'
-	},
 	'textStyle/bold': {
 		'open': '<b>',
 		'close': '</b>'
@@ -138,8 +132,14 @@ ve.ce.TextNode.prototype.getHtml = function() {
 		htmlChars = ve.ce.TextNode.htmlCharacters,
 		renderers = ve.ce.TextNode.annotationRenderers,
 		out = '',
+		i,
+		j,
+		hash,
 		left = '',
 		right,
+		open,
+		close,
+		index,
 		leftPlain,
 		rightPlain,
 		hashStack = [],
@@ -151,9 +151,9 @@ ve.ce.TextNode.prototype.getHtml = function() {
 
 		for ( var hash in annotations ) {
 			annotation = annotations[hash];
-			out += typeof renderers[annotation.type].open === 'function'
-				? renderers[annotation.type].open( annotation.data )
-				: renderers[annotation.type].open;
+			out += typeof renderers[annotation.type].open === 'function' ?
+				renderers[annotation.type].open( annotation.data ) :
+				renderers[annotation.type].open;
 			hashStack.push( hash );
 			annotationStack[hash] = annotation;
 		}
@@ -166,9 +166,9 @@ ve.ce.TextNode.prototype.getHtml = function() {
 
 		for ( var hash in annotations ) {
 			annotation = annotations[hash];
-			out += typeof renderers[annotation.type].close === 'function'
-				? renderers[annotation.type].close( annotation.data )
-				: renderers[annotation.type].close;
+			out += typeof renderers[annotation.type].close === 'function' ?
+				renderers[annotation.type].close( annotation.data ) :
+				renderers[annotation.type].close;
 
 			// new version
 			hashStack.pop();
@@ -187,18 +187,18 @@ ve.ce.TextNode.prototype.getHtml = function() {
 		return out;
 	};
 
-	for ( var i = 0; i < data.length; i++ ) {
+	for ( i = 0; i < data.length; i++ ) {
 		right = data[i];
 		leftPlain = typeof left === 'string';
 		rightPlain = typeof right === 'string';
 		
 		if ( !leftPlain && rightPlain ) {
 			// [formatted][plain]
-			var close = {};
-			for ( var j = hashStack.length - 1; j >= 0; j-- ) {
+			close = {};
+			for ( j = hashStack.length - 1; j >= 0; j-- ) {
 				close[hashStack[j]] = annotationStack[hashStack[j]];
 			}
-			out += closeAnnotations( close );	
+			out += closeAnnotations( close );
 		} else if ( leftPlain && !rightPlain ) {
 			// [plain][formatted]
 			out += openAnnotations( right[1] );
@@ -207,24 +207,24 @@ ve.ce.TextNode.prototype.getHtml = function() {
 
 			// setting index to undefined is is necessary to it does not use value from
 			// the previous iteration
-			var	open = {},
-				index = undefined;
+			open = {},
+			index = undefined;
 
-			for ( var hash in left[1] ) {
+			for ( hash in left[1] ) {
 				if ( !( hash in right[1] ) ) {
-					index = ( index === undefined )
-						? hashStack.indexOf( hash )
-						: Math.min( index, hashStack.indexOf( hash ) );
+					index = ( index === undefined ) ?
+						hashStack.indexOf( hash ) :
+						Math.min( index, hashStack.indexOf( hash ) );
 				}
 			}
 
 			if ( index !== undefined ) {
-				var close = {};
-				for ( var j = hashStack.length - 1; j >= index; j-- ) {
+				close = {};
+				for ( j = hashStack.length - 1; j >= index; j-- ) {
 					close[hashStack[j]] = annotationStack[hashStack[j]];
 				}
 
-				for ( var j = index; j < hashStack.length; j++ ) {
+				for ( j = index; j < hashStack.length; j++ ) {
 					if ( hashStack[j] in right[1] && hashStack[j] in left[1] ) {
 						open[hashStack[j]] = annotationStack[hashStack[j]];
 					}
@@ -232,7 +232,7 @@ ve.ce.TextNode.prototype.getHtml = function() {
 				out += closeAnnotations( close );
 			}
 
-			for ( var hash in right[1] ) {
+			for ( hash in right[1] ) {
 				if ( !( hash in left[1] ) ) {
 					open[hash] = right[1][hash];
 				}
@@ -246,11 +246,11 @@ ve.ce.TextNode.prototype.getHtml = function() {
 		left = right;
 	}
 
-	var close = {};
-	for ( var j = hashStack.length - 1; j >= 0; j-- ) {
+	close = {};
+	for ( j = hashStack.length - 1; j >= 0; j-- ) {
 		close[hashStack[j]] = annotationStack[hashStack[j]];
 	}
-	out += closeAnnotations( close );	
+	out += closeAnnotations( close );
 
 	return out;
 };

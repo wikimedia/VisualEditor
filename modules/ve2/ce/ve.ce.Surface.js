@@ -24,7 +24,7 @@ ve.ce.Surface = function( $container, model ) {
 		'mouseup': this.proxy( this.onMouseUp ),
 		'mousemove': this.proxy( this.onMouseMove ),
 		'cut copy': this.proxy( this.onCutCopy ),
-		'beforepaste paste': this.proxy( this.onPaste ),
+		'beforepaste paste': this.proxy( this.onPaste )
 	} );
 
 	// Initialization
@@ -51,12 +51,19 @@ ve.ce.Surface.prototype.onKeyDown = function( e ) {
 	var offset = this.getOffset( rangySel.anchorNode, rangySel.anchorOffset );
 	console.log( 'onKeyDown', 'offset', offset );
 
+	var relativeContentOffset,
+		relativeStructuralOffset,
+		relativeStructuralOffsetNode,
+		hasSlug;
+
 	switch ( e.which ) {
 		case 37: // left arrow key
-			var relativeContentOffset = this.documentView.model.getRelativeContentOffset( offset, -1 );
-			var relativeStructuralOffset = this.documentView.model.getRelativeStructuralOffset( offset - 1, -1, true );
-			var relativeStructuralOffsetNode = this.documentView.documentNode.getNodeFromOffset( relativeStructuralOffset );
-			var hasSlug = relativeStructuralOffsetNode.hasSlugAtOffset( relativeStructuralOffset );
+			relativeContentOffset = this.documentView.model.getRelativeContentOffset( offset, -1 );
+			relativeStructuralOffset =
+				this.documentView.model.getRelativeStructuralOffset( offset - 1, -1, true );
+			relativeStructuralOffsetNode =
+				this.documentView.documentNode.getNodeFromOffset( relativeStructuralOffset );
+			hasSlug = relativeStructuralOffsetNode.hasSlugAtOffset( relativeStructuralOffset );
 			if ( hasSlug ) {
 				if ( relativeContentOffset > offset ) {
 					this.showCursor( relativeStructuralOffset );
@@ -67,12 +74,13 @@ ve.ce.Surface.prototype.onKeyDown = function( e ) {
 				this.showCursor( relativeContentOffset );
 			}
 			return false;
-			break;
 		case 39: // right arrow key
-			var relativeContentOffset = this.documentView.model.getRelativeContentOffset( offset, 1 );
-			var relativeStructuralOffset = this.documentView.model.getRelativeStructuralOffset( offset + 1, 1, true );
-			var relativeStructuralOffsetNode = this.documentView.documentNode.getNodeFromOffset( relativeStructuralOffset );
-			var hasSlug = relativeStructuralOffsetNode.hasSlugAtOffset( relativeStructuralOffset );
+			relativeContentOffset = this.documentView.model.getRelativeContentOffset( offset, 1 );
+			relativeStructuralOffset =
+				this.documentView.model.getRelativeStructuralOffset( offset + 1, 1, true );
+			relativeStructuralOffsetNode =
+				this.documentView.documentNode.getNodeFromOffset( relativeStructuralOffset );
+			hasSlug = relativeStructuralOffsetNode.hasSlugAtOffset( relativeStructuralOffset );
 			if ( hasSlug ) {
 				if ( relativeContentOffset < offset ) {
 					this.showCursor( relativeStructuralOffset );
@@ -83,7 +91,6 @@ ve.ce.Surface.prototype.onKeyDown = function( e ) {
 				this.showCursor( relativeContentOffset );
 			}
 			return false;
-			break;
 	}
 };
 
@@ -108,13 +115,16 @@ ve.ce.Surface.prototype.onMouseDown = function( e ) {
 		var closestLeafOffset = closestLeafModel.getRoot().getOffsetFromNode( closestLeafModel );
 		console.log( 'onMouseDown', 'closestLeafOffset', closestLeafOffset );
 
-		var nearestContentOffset = this.documentView.model.getNearestContentOffset( closestLeafOffset, -1 );
+		var nearestContentOffset =
+			this.documentView.model.getNearestContentOffset( closestLeafOffset, -1 );
 		console.log( 'onMouseDown', 'nearestContentOffset', nearestContentOffset );
 
-		var nearestStructuralOffset = this.documentView.model.getNearestStructuralOffset( closestLeafOffset, 0, true );
+		var nearestStructuralOffset =
+			this.documentView.model.getNearestStructuralOffset( closestLeafOffset, 0, true );
 		console.log( 'onMouseDown', 'nearestStructuralOffset', nearestStructuralOffset );
 
-		var nearestStructuralOffsetNode = this.documentView.documentNode.getNodeFromOffset( nearestStructuralOffset );
+		var nearestStructuralOffsetNode =
+			this.documentView.documentNode.getNodeFromOffset( nearestStructuralOffset );
 		console.log( 'onMouseDown', 'nearestStructuralOffsetNode', nearestStructuralOffsetNode );
 
 		var hasSlug = nearestStructuralOffsetNode.hasSlugAtOffset( nearestStructuralOffset );
@@ -193,7 +203,9 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
 			pasteData = ( _this.clipboard[key] ) ? _this.clipboard[key] : pasteString.split('');
 
 		// transact
-		var tx = ve.dm.Transaction.newFromInsertion( _this.documentView.model, insertionPoint, pasteData );
+		var tx = ve.dm.Transaction.newFromInsertion(
+			_this.documentView.model, insertionPoint, pasteData
+		);
 		ve.dm.TransactionProcessor.commit( _this.documentView.model, tx );
 
 		// place cursor
@@ -280,14 +292,19 @@ ve.ce.Surface.prototype.getOffset = function( DOMnode, DOMoffset ) {
 
 
 /**
- * Based on a given offset returns DOM node and offset that can be used to place a cursor (with rangy)
+ * Based on a given offset returns DOM node and offset that can be used to place a cursor.
+ *
+ * The results of this function are meant to be used with rangy.
  *
  * @method
  * @param offset {Integer} Linear model offset
+ * @returns {Object} Object containing a node and offset property where node is an HTML element and
+ * offset is the position within the element
  */
 ve.ce.Surface.prototype.getNodeAndOffset = function( offset ) {
 	var	node = this.documentView.getNodeFromOffset( offset ),
-		startOffset = this.documentView.getDocumentNode().getOffsetFromNode( node ) + ( ( node.isWrapped() ) ? 1 : 0 ),
+		startOffset = this.documentView.getDocumentNode().getOffsetFromNode( node ) +
+			( ( node.isWrapped() ) ? 1 : 0 ),
 		current = [node.$.contents(), 0],
 		stack = [current],
 		item,

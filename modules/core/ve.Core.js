@@ -8,19 +8,10 @@
 			pageName = mw.config.get( 'wgPageName' ),
 			validNamespace = mw.config.get('wgCanonicalNamespace') === 'VisualEditor' ? true: false;
 
-		this.$content = $('#content');
-		// Store content padding so that it can be restored.
-		this.contentPadding = this.$content.css('padding');
 		this.mainEditor = null;
-
-		this.$spinner = $('<div />')
-			.attr({
-				'id': 've-loader-spinner',
-				'class': 'mw-ajax-loader'
-			}).css({
-				'height': this.$content.height() + 'px',
-				'width': (this.$content.width() -20 ) + 'px'
-			});
+		this.$content = $('#content');
+		// modify / stash content styles
+		this.prepareContentStyles();
 
 		// On VisualEditor namespace ?
 		if ( validNamespace ) {
@@ -80,39 +71,39 @@
 					}
 				}
 			};
-			$editor = $('<div id="ve-editor"></div>');
+			this.$editor = $('<div id="ve-editor"></div>');
 			this.$spinner.hide();
-			this.$content
-				.css('padding', '0px 0px 0px 1px')
-				.append( $editor );
+	
+			this.$content.css({
+				'padding':'0px 0px 0px 1px'
+			}).append( this.$editor );
 				
 
 			this.mainEditor = new ve.Surface( '#ve-editor', $html[0], options );
 
-			$editor.find('.es-panes')
+			this.$editor.find('.es-panes')
 				.css('padding', this.contentPadding );
 
 			// Save BTN
-			$editor.find('.es-modes')
+			this.$editor.find('.es-modes')
 				.append(
 					$('<div />')
-						.attr('class', 've-action-button')
+						.attr('class', 've-action-button es-inspector-savebutton')
 						.text('Save')
 						.click(function(){
-							// show save dialog
-							_this.save();
-							_this.showSaveDialog();
+							// show/hide dialog
+							_this.$dialog.toggle();
 						})
 				).append(
 					$('<div />')
-						.attr('class', 've-action-button')
-						.text('X')
+						.attr('class', 've-action-button ve-closeBtn')
 						.click(function(){
 							// back to read mode
 							_this.cleanup();
 							_this.mainEditor = null;
 						})
 			);
+			this.initSaveDialog();
 		}
 	};
 
@@ -177,9 +168,9 @@
 		var _this = this;
 		_this.showSpinner();
 		// Save
-		
 		_this.getParsoidWikitextAndSave( function( content ){
 			// cleanup
+			_this.$dialog.toggle();
 			_this.cleanup();
 			// load saved page
 			_this.$content
@@ -187,13 +178,107 @@
 		});
 	};
 
-	veCore.prototype.showSaveDialog = function(){
+	veCore.prototype.initSaveDialog = function(){
+		var _this = this;
+		this.$dialog =
+			$('<div />')
+				.attr({
+					'id': 've-saveDialog',
+					'class': 'es-inspector'
+				}).append(
+					$('<div />')
+						.attr('class', 'es-inspector-title')
+						.text('Save your changes')
+				).append(
+					$('<div />')
+						.attr('class', 'es-inspector-button ve-saveBtn')
+						.click(function(){
+							_this.$dialog.toggle();
+						})
+				).append(
+					$('<div />')
+						.attr('class', 've-dialog-divider')
+						.append(
+							$('<div />')
+								.text("Describe what you changed")
+						).append(
+							$('<input />')
+								.attr({
+									'type':'text'
+								})
+						).append(
+							$('<br />')
+						).append(
+							$('<div />')
+								.attr('class', 've-dialog-left')
+								.append(
+									$('<input />')
+										.attr({
+											'type': 'checkbox',
+											'name': 'chkMinorEdit',
+											'id': 'chkMinorEdit'
+										})
+								).append(
+									$('<label />')
+										.attr('for', 'chkMinorEdit')
+										// i18n
+										.html('This is a <a href="/wiki/Minor_edit">minor edit</a>')
+								).append(
+									$('<br />')
+								).append(
+									$('<input />')
+										.attr({
+											'type': 'checkbox',
+											'name': 'chkWatchlist',
+											'id': 'chkWatchlist'
+										})
+								).append(
+									$('<label />')
+										.attr('for', 'chkWatchlist')
+										// i18n
+										.text('Watch this page')
+								)
+							).append(
+								$('<div />')
+									.attr('class', 've-action-button es-inspector-savebutton doSaveBtn')
+									.text('Save page')
+									.click(function(){
+										_this.save();
+									})
+									.append(
+										$('<div />')
+											.attr('class', 'doSaveBtnIcon')
+									)
+							).append(
+								$('<br />')
+							)
+				).append(
+					$('<div />')
+						.attr('class', 've-dialog-divider')
+						.append(
+							$("<p />")
+								// TODO: Complete text and i18n
+								.text('By editing this page, yadda yadda yadda')
+						)
+				);
+		this.$editor
+			.find('.es-inspector-savebutton')
+			.after ( this.$dialog );
 
 	};
 
 	veCore.prototype.showSpinner = function(){
 		var _this = this;
-		//remove it
+		
+		this.$spinner = $('<div />')
+			.attr({
+				'id': 've-loader-spinner',
+				'class': 'mw-ajax-loader'
+			}).css({
+				'height': this.$content.height() + 'px',
+				'width': (this.$content.width() -20 ) + 'px'
+			});
+
 		_this.$spinner.remove();
 		//hide all of the #content element children
 		_this.$content
@@ -206,8 +291,35 @@
 		);
 	};
 
+	/*  Make a backup of the #content div styles
+		In order to tuck the toolbar close under the tabs,
+		We need to change the padding before inserting the toolbar
+		Additionally, the transitions must be removed so that
+		when adjusting the padding, there is no animated transition.
+	*/
+	veCore.prototype.prepareContentStyles = function(){
+		// Store Padding and transitions
+		this.contentPadding = this.$content.css('padding');
+		this.contentTransition = {
+			'transition': this.$content.css('transition'),
+			'transition-property': this.$content.css('transition-property'),
+			'-moz-transition': this.$content.css('-moz-transition'),
+			'-webkit-transition': this.$content.css('-webkit-transition'),
+			'-o-transition': this.$content.css('-o-transition')
+		};
+		// Squash transitions
+		this.$content.css({
+			'transition': 'none',
+			'transition-property': 'none',
+			'-moz-transition': 'none',
+			'-webkit-transition': 'none',
+			'-o-transition': 'color 0 ease-in'
+		});
+	};
+
 	//back to view
 	veCore.prototype.cleanup = function(){
+		this.mainEditor = null;
 		this.selectTab( 'ca-view' );
 		this.$content
 			.find('#mw-content-text, #bodyContent, #firstHeading').show()

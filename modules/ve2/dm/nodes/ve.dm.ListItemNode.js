@@ -29,6 +29,23 @@ ve.dm.ListItemNode.rules = {
 	'parentNodeTypes': ['list']
 };
 
+/**
+ * Node converters.
+ *
+ * @see {ve.dm.Converter}
+ * @static
+ * @member
+ */
+ve.dm.ListItemNode.converters = {
+	'tags': 'li',
+	'toHtml': function( type, element ) {
+		return ve.dm.createHtmlElement( 'li' );
+	},
+	'toData': function( tag, element ) {
+		return { 'type': 'listItem' };
+	}
+};
+
 /* Registration */
 
 ve.dm.nodeFactory.register( 'listItem', ve.dm.ListItemNode );

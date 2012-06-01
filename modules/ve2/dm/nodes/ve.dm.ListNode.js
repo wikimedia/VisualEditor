@@ -29,6 +29,29 @@ ve.dm.ListNode.rules = {
 	'parentNodeTypes': null
 };
 
+/**
+ * Node converters.
+ *
+ * @see {ve.dm.Converter}
+ * @static
+ * @member
+ */
+ve.dm.ListNode.converters = {
+	'tags': ['ul', 'ol'],
+	'toHtml': function( type, element ) {
+		return element.attributes && ( {
+			'bullet': ve.dm.createHtmlElement( 'ul' ),
+			'number': ve.dm.createHtmlElement( 'ol' )
+		} )[element.attributes['style']];
+	},
+	'toData': function( tag, element ) {
+		return ( {
+			'ul': { 'type': 'list', 'attributes': { 'style': 'bullet' } },
+			'ol': { 'type': 'list', 'attributes': { 'style': 'number' } }
+		} )[tag];
+	}
+};
+
 /* Registration */
 
 ve.dm.nodeFactory.register( 'list', ve.dm.ListNode );

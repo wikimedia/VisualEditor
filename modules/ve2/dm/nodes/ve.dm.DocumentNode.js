@@ -29,9 +29,14 @@ ve.dm.DocumentNode.rules = {
 	'parentNodeTypes': []
 };
 
+// This is a special node, no converter registration is required
+ve.dm.DocumentNode.converters = null;
+
 /* Registration */
 
 ve.dm.nodeFactory.register( 'document', ve.dm.DocumentNode );
+
+// This is a special node, no converter registration is required
 
 /* Inheritance */
 

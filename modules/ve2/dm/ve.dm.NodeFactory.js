@@ -2,12 +2,12 @@
  * DataModel node factory.
  *
  * @class
- * @extends {ve.NodeFactory}
+ * @extends {ve.Factory}
  * @constructor
  */
 ve.dm.NodeFactory = function() {
 	// Inheritance
-	ve.NodeFactory.call( this );
+	ve.Factory.call( this );
 };
 
 /* Methods */
@@ -18,7 +18,7 @@ ve.dm.NodeFactory = function() {
  * @method
  * @param {String} type Node type
  * @returns {String[]|null} List of node types allowed as children or null if any type is allowed
- * @throws 'Unknown node type'
+ * @throws 'Unknown node type: {type}'
  */
 ve.dm.NodeFactory.prototype.getChildNodeTypes = function( type ) {
 	if ( type in this.registry ) {
@@ -33,7 +33,7 @@ ve.dm.NodeFactory.prototype.getChildNodeTypes = function( type ) {
  * @method
  * @param {String} type Node type
  * @returns {String[]|null} List of node types allowed as parents or null if any type is allowed
- * @throws 'Unknown node type'
+ * @throws 'Unknown node type: {type}'
  */
 ve.dm.NodeFactory.prototype.getParentNodeTypes = function( type ) {
 	if ( type in this.registry ) {
@@ -48,7 +48,7 @@ ve.dm.NodeFactory.prototype.getParentNodeTypes = function( type ) {
  * @method
  * @param {String} type Node type
  * @returns {Boolean} The node can have children
- * @throws 'Unknown node type'
+ * @throws 'Unknown node type: {type}'
  */
 ve.dm.NodeFactory.prototype.canNodeHaveChildren = function( type ) {
 	if ( type in this.registry ) {
@@ -66,7 +66,7 @@ ve.dm.NodeFactory.prototype.canNodeHaveChildren = function( type ) {
  * @method
  * @param {String} type Node type
  * @returns {Boolean} The node can have grandchildren
- * @throws 'Unknown node type'
+ * @throws 'Unknown node type: {type}'
  */
 ve.dm.NodeFactory.prototype.canNodeHaveGrandchildren = function( type ) {
 	if ( type in this.registry ) {
@@ -83,7 +83,7 @@ ve.dm.NodeFactory.prototype.canNodeHaveGrandchildren = function( type ) {
  * @method
  * @param {String} type Node type
  * @returns {Boolean} Whether the node has a wrapping element
- * @throws 'Unknown node type'
+ * @throws 'Unknown node type: {type}'
  */
 ve.dm.NodeFactory.prototype.isNodeWrapped = function( type ) {
 	if ( type in this.registry ) {
@@ -98,7 +98,7 @@ ve.dm.NodeFactory.prototype.isNodeWrapped = function( type ) {
  * @method
  * @param {String} type Node type
  * @returns {Boolean} The node contains content
- * @throws 'Unknown node type'
+ * @throws 'Unknown node type: {type}'
  */
 ve.dm.NodeFactory.prototype.canNodeContainContent = function( type ) {
 	if ( type in this.registry ) {
@@ -113,7 +113,7 @@ ve.dm.NodeFactory.prototype.canNodeContainContent = function( type ) {
  * @method
  * @param {String} type Node type
  * @returns {Boolean} The node is content
- * @throws 'Unknown node type'
+ * @throws 'Unknown node type: {type}'
  */
 ve.dm.NodeFactory.prototype.isNodeContent = function( type ) {
 	if ( type in this.registry ) {
@@ -124,7 +124,7 @@ ve.dm.NodeFactory.prototype.isNodeContent = function( type ) {
 
 /* Inheritance */
 
-ve.extendClass( ve.dm.NodeFactory, ve.NodeFactory );
+ve.extendClass( ve.dm.NodeFactory, ve.Factory );
 
 /* Initialization */
 

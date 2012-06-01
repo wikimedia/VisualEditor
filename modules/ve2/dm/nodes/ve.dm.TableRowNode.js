@@ -29,6 +29,23 @@ ve.dm.TableRowNode.rules = {
 	'parentNodeTypes': ['table']
 };
 
+/**
+ * Node converters.
+ *
+ * @see {ve.dm.Converter}
+ * @static
+ * @member
+ */
+ve.dm.TableRowNode.converters = {
+	'tags': 'tr',
+	'toHtml': function( type, element ) {
+		return ve.dm.createHtmlElement( 'tr' );
+	},
+	'toData': function( tag, element ) {
+		return { 'type': 'tableRow' };
+	}
+};
+
 /* Registration */
 
 ve.dm.nodeFactory.register( 'tableRow', ve.dm.TableRowNode );

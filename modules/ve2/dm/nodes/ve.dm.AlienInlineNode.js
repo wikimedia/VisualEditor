@@ -29,6 +29,9 @@ ve.dm.AlienInline.rules = {
 	'parentNodeTypes': null
 };
 
+// This is a special node, no converter registration is required
+ve.dm.AlienInline.converters = null;
+
 /* Registration */
 
 ve.dm.nodeFactory.register( 'alienInline', ve.dm.AlienInline );
