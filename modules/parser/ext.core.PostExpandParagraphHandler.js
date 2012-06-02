@@ -86,8 +86,12 @@ PostExpandParagraphHandler.prototype.onAny = function ( token, frame, cb ) {
 		// None of the tokens we are interested in, so abort processing..
 		//console.warn( 'PostExpandParagraphHandler.onAny: ' + JSON.stringify( this.tokens, null , 2 ) );
 		if ( this.newLines >= 2 && ! u.isBlockToken( token ) ) {
+			var nlTks = [];
+			while ( this.tokens[0].constructor === NlTk ) {
+				nlTks.push( this.tokens.shift() );
+			}
 			//console.warn( 'insert p:' + JSON.stringify( token, null, 2 ) );
-			return { tokens: [ new TagTk( 'p' ) ].concat( this._finish() ) };
+			return { tokens: nlTks.concat([ new TagTk( 'p' ) ], this._finish() ) };
 		} else {
 			return { tokens: this._finish() };
 		}

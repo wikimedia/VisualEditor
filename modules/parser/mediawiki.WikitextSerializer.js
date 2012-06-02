@@ -20,7 +20,13 @@ WSP.defaultOptions = {
 	precedingNewlineCount: 0
 };
 
-var id = function( v ) { return function() { return v; }; };
+var id = function( v, needParagraphLines ) { 
+	return function( state ) { 
+		state.needParagraphLines = needParagraphLines; 
+		return v; 
+	}; 
+};
+
 var nlid = function( newlineCount, v ) { 
 	return function( state ) { 
 		return WSP.getNewLines( state, newlineCount ) + v; 
@@ -235,7 +241,7 @@ WSP.tagToWikitext = {
 	p: { 
 		start: function( state, token ) {
 			if (state.needParagraphLines) {
-				return "\n\n";
+				return WSP.getNewLines( state, 2 );
 			} else {
 				state.needParagraphLines = true;
 				return '';
@@ -243,12 +249,12 @@ WSP.tagToWikitext = {
 		}
 	},
 	hr: { start: nlid(1, "----"), end: id("") },
-	h1: { start: nlid(1, "="), end: id("=") },
-	h2: { start: nlid(1, "=="), end: id("==") },
-	h3: { start: nlid(1, "==="), end: id("===") },
-	h4: { start: nlid(1, "===="), end: id("====") },
-	h5: { start: nlid(1, "====="), end: id("=====") },
-	h6: { start: nlid(1, "======"), end: id("======") },
+	h1: { start: nlid(1, "="), end: id("=", false) },
+	h2: { start: nlid(1, "=="), end: id("==", false) },
+	h3: { start: nlid(1, "==="), end: id("===", false) },
+	h4: { start: nlid(1, "===="), end: id("====", false) },
+	h5: { start: nlid(1, "====="), end: id("=====", false) },
+	h6: { start: nlid(1, "======"), end: id("======", false) },
 	// XXX: support indent variant instead by registering a newline handler?
 	pre: { 
 		start: function( state, token ) {
@@ -394,9 +400,9 @@ WSP._serializeToken = function ( state, token ) {
 	}
 	//console.warn( 'res: ' + JSON.stringify( res ) );
 	if ( res !== '' ) {
-		var nls = res.match( /\n+$/ );
+		var nls = res.match( /(?:\r?\n)+$/ );
 		if ( nls ) {
-			if ( nls[0].length === res.length ) {
+			if ( nls[0] === res ) {
 				// completely newlines, continue counting..
 				state.precedingNewlineCount += res.length;
 			} else {
