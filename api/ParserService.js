@@ -135,7 +135,7 @@ app.get(/\/_roundtrip\/(.*)/, function(req, res){
 		return;
 	}
 
-	var target = env.resolveTitle( env.normalizeTitle( env.pageName ), 'Template' );
+	var target = env.resolveTitle( env.normalizeTitle( env.pageName ), '' );
 	
 	console.log('retrieving ' + req.params[0]);
 	var tpr = new TemplateRequest( env, target );
