@@ -143,15 +143,18 @@ app.get(/\/_roundtrip\/(.*)/, function(req, res){
 	tpr.once('src', function ( src ) {
 		var parser = parserPipelineFactory.makePipeline( 'text/x-mediawiki/full' );
 		parser.on('document', function ( document ) {
+			res.write('<html><head><style>del { background: #ff9191; text-decoration: none; } ins { background: #99ff7e; text-decoration: none }; </style></head><body>');
 			var out = new WikitextSerializer({env: env}).serializeDOM( document.body );
-			// TODO: diff with original input
-			var patch = jsDiff.createPatch('wikitext.txt', src, out, 'before', 'after');
-			res.write(out);
-			res.write("\n===================================================================\n");
-			res.end(patch);
+			var patch = jsDiff.convertChangesToXML( jsDiff.diffWords( out, src ) );
+			res.write( '<h2>Wikitext parsed to HTML DOM</h2><hr>' );
+			res.write(document.body.innerHTML + '<hr>');
+			res.write( '<h2>HTML DOM converted back to Wikitext</h2><hr>' );
+			res.write('<pre>' + htmlSpecialChars( out ) + '</pre><hr>');
+			res.write( '<h2>Diff between original Wikitext (green) and round-tripped wikitext (red)</h2><hr>' );
+			res.end( '<pre>' + patch);
 		});
 		try {
-			res.setHeader('Content-Type', 'text/plain; charset=UTF-8');
+			res.setHeader('Content-Type', 'text/html; charset=UTF-8');
 			console.log('starting parsing of ' + req.params[0]);
 			// FIXME: This does not handle includes or templates correctly
 			parser.process( src );
