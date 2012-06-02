@@ -64,7 +64,7 @@ WikiLinkHandler.prototype.onWikiLink = function ( token, frame, cb ) {
 			obj.dataAttribs.gc = 1;
 		}
 		if ( tail ) {
-			// TODO: make this round-trippable
+			obj.dataAttribs.tail = tail;
 			content.push( tail );
 		}
 		

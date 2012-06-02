@@ -121,6 +121,10 @@ WSP._linkHandler =  function( state, token ) {
 				);
 
 		if ( attribDict.rel === 'mw:wikiLink' ) {
+			if (token.dataAttribs.tail) {
+				state.linkTail = token.dataAttribs.tail;
+			}
+
 			if ( token.dataAttribs.gc ) {
 				return '[[';
 			} else {
@@ -153,8 +157,10 @@ WSP._linkEndHandler =  function( state, token ) {
 	var attribDict = state.env.KVtoHash( token.attribs );
 	if ( attribDict.rel && attribDict.href !== undefined ) {
 		if ( attribDict.rel === 'mw:wikiLink' ) {
+			var retVal = "]]" + (state.linkTail ? state.linkTail : "");
+			state.linkTail   = null;
 			state.dropContent = false;
-			return ']]';
+			return retVal;
 		} else if ( attribDict.rel === 'mw:extLink' ) {
 			if ( token.dataAttribs.stx === 'urllink' ) {
 				state.dropContent = false;
@@ -402,6 +408,7 @@ WSP._serializeToken = function ( state, token ) {
 			state.precedingNewlineCount = 0;
 		}
 		if ( ! dropContent || ! state.dropContent ) {
+			if (state.linkTail) res = res.replace(new RegExp(state.linkTail + "$"), "");
 			state.chunkCB( res );
 		}
 	}
