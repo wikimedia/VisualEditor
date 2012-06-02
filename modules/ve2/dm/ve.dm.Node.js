@@ -151,6 +151,18 @@ ve.dm.Node.prototype.adjustLength = function( adjustment ) {
 };
 
 /**
+ * Gets the offset of this node within the document.
+ *
+ * If this node has no parent than the result will always be 0.
+ *
+ * @method
+ * @returns {Integer} Offset of node
+ */
+ve.dm.Node.prototype.getOffset = function() {
+	return this.root === this ? 0 : this.root.getOffsetFromNode( this );
+};
+
+/**
  * Gets an element attribute value.
  *
  * @method
