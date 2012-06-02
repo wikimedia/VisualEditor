@@ -80,6 +80,7 @@ ParserFunctions.prototype._switchLookupFallback = function ( frame, kvs, key, di
 	this.manager.env.tp('swl');
 	//console.trace();
 	this.manager.env.dp('_switchLookupFallback', kvs.length, key, v );
+	var _cb = function( res ) { cb ( { tokens: res } ); };
 	if ( v && v.constructor !== String ) {
 		v = '';
 		console.warn(JSON.stringify(v));
@@ -87,7 +88,6 @@ ParserFunctions.prototype._switchLookupFallback = function ( frame, kvs, key, di
 	if ( v && key === v.trim() ) {
 		// found. now look for the next entry with a non-empty key.
 		this.manager.env.dp( 'switch found' );
-		var _cb = function( res ) { cb ( { tokens: res } ); };
 		for ( var j = 0; j < l; j++) {
 			kv = kvs[j];
 			// XXX: make sure the key is always one of these!
@@ -100,7 +100,7 @@ ParserFunctions.prototype._switchLookupFallback = function ( frame, kvs, key, di
 			}
 		}
 		// No value found, return empty string? XXX: check this
-		return cb( [] );
+		return cb( {} );
 	} else if ( kvs.length ) {
 		// search for value-only entry which matches
 		var i = 0;
@@ -135,18 +135,18 @@ ParserFunctions.prototype._switchLookupFallback = function ( frame, kvs, key, di
 		if ( '#default' in dict ) {
 			return dict['#default'].get({
 				type: 'tokens/x-mediawiki/expanded', 
-				cb: function( res ) { cb ( { tokens: res } ); },
+				cb: _cb,
 				asyncCB: cb
 			});
 		} else if ( kvs.length ) { 
 			var lastKV = kvs[kvs.length - 1];
 			if ( lastKV && ! lastKV.k.length ) {
 				return lastKV.v.get( {
-					cb: cb,
+					cb: _cb,
 					asyncCB: cb } );
 				//cb ( { tokens: lastKV.v } );
 			} else {
-				cb ( {tokens:[]} );
+				cb ( {} );
 			}
 		} else {
 			// nothing found at all.
