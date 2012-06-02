@@ -38,13 +38,14 @@ app.use(express.bodyParser());
 app.get('/', function(req, res){
 	res.write('<body><strong>Welcome to the alpha test web service for the ' +
 		'<a href="http://www.mediawiki.org/wiki/Parsoid">Parsoid project<a>.</strong>');
-	res.write( '<p>Usage: <ul><li>GET /title for the DOM');
+	res.write( '<p>Usage: <ul><li>GET /title for the DOM. ' +
+		'Example: <a href="/Main_Page">Main Page</a>');
 	res.write('<li>POST a DOM as parameter "content" to /title for the wikitext</ul>');
-	res.write('You can browse the English Wikipedia, for example at '+
-		'<strong><a href="/Main_Page">Main Page</a></strong>. ');
-	res.end('<p>There are also forms for experiments:' +
-			'<ul><li><strong><a href="/_wikitext/">WikiText -&gt; HTML DOM</a></strong></li>' +
-			'<li><strong><a href="/_html/">HTML DOM -&gt; WikiText</a></strong></li></ul>');
+	res.write('<p>There are also some tools for experiments:' +
+			'<ul><li><strong><a href="/_wikitext/">WikiText -&gt; HTML DOM form</a></strong></li>' +
+			'<li><strong><a href="/_html/">HTML DOM -&gt; WikiText form</a></strong></li>');
+	res.end('<li>Round-trip testing arbitrary pages: ' +
+		'<strong><a href="/_roundtrip/Help:Magic">/_roundtrip/Help:Magic</a></strong></li></ul>');
 });
 
 var htmlSpecialChars = function ( s ) {
