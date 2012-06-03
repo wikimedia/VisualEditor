@@ -414,7 +414,9 @@ WSP._serializeToken = function ( state, token ) {
 			state.precedingNewlineCount = 0;
 		}
 		if ( ! dropContent || ! state.dropContent ) {
-			if (state.linkTail) res = res.replace(new RegExp(state.linkTail + "$"), "");
+			if (state.linkTail && res.substr(- state.linkTail.length) === state.linkTail) {
+				res = res.substr(0, res.length - state.linkTail.length);
+			}
 			state.chunkCB( res );
 		}
 	}
