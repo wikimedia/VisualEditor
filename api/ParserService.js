@@ -36,10 +36,10 @@ var app = express.createServer();
 app.use(express.bodyParser());
 
 app.get('/', function(req, res){
-	res.write('<body><strong>Welcome to the alpha test web service for the ' +
-		'<a href="http://www.mediawiki.org/wiki/Parsoid">Parsoid project<a>.</strong>');
+	res.write('<body><h3>Welcome to the alpha test web service for the ' +
+		'<a href="http://www.mediawiki.org/wiki/Parsoid">Parsoid project<a>.</h3>');
 	res.write( '<p>Usage: <ul><li>GET /title for the DOM. ' +
-		'Example: <a href="/Main_Page">Main Page</a>');
+		'Example: <strong><a href="/Main_Page">Main Page</a></strong>');
 	res.write('<li>POST a DOM as parameter "content" to /title for the wikitext</ul>');
 	res.write('<p>There are also some tools for experiments:' +
 			'<ul><li><strong><a href="/_wikitext/">WikiText -&gt; HTML DOM form</a></strong></li>' +
@@ -130,6 +130,7 @@ app.post(/\/_wikitext\/(.*)/, function(req, res){
  */
 app.get(/\/_roundtrip\/(.*)/, function(req, res){
 	env.pageName = req.params[0];
+	env.wgScriptPath = '/_roundtrip';
 
 	if ( env.pageName === 'favicon.ico' ) {
 		res.end( 'no favicon yet..' );
@@ -144,13 +145,13 @@ app.get(/\/_roundtrip\/(.*)/, function(req, res){
 		var parser = parserPipelineFactory.makePipeline( 'text/x-mediawiki/full' );
 		parser.on('document', function ( document ) {
 			res.write('<html><head><style>del { background: #ff9191; text-decoration: none; } ins { background: #99ff7e; text-decoration: none }; </style></head><body>');
-			var out = new WikitextSerializer({env: env}).serializeDOM( document.body );
-			var patch = jsDiff.convertChangesToXML( jsDiff.diffWords( out, src ) );
 			res.write( '<h2>Wikitext parsed to HTML DOM</h2><hr>' );
 			res.write(document.body.innerHTML + '<hr>');
 			res.write( '<h2>HTML DOM converted back to Wikitext</h2><hr>' );
+			var out = new WikitextSerializer({env: env}).serializeDOM( document.body );
 			res.write('<pre>' + htmlSpecialChars( out ) + '</pre><hr>');
 			res.write( '<h2>Diff between original Wikitext (green) and round-tripped wikitext (red)</h2><hr>' );
+			var patch = jsDiff.convertChangesToXML( jsDiff.diffWords( out, src ) );
 			res.end( '<pre>' + patch);
 		});
 		try {
@@ -170,6 +171,7 @@ app.get(/\/_roundtrip\/(.*)/, function(req, res){
  */
 app.get(/\/(.*)/, function(req, res){
 	env.pageName = req.params[0];
+	env.wgScriptPath = '';
 	if ( env.pageName === 'favicon.ico' ) {
 		res.end( 'no favicon yet..');
 		return;
@@ -197,6 +199,7 @@ app.get(/\/(.*)/, function(req, res){
  */
 app.post(/\/(.*)/, function(req, res){
 	env.pageName = req.params[0];
+	env.wgScriptPath = '';
 	res.setHeader('Content-Type', 'text/x-mediawiki; charset=UTF-8');
 	var p = new html5.Parser();
 	p.parse( req.body.content );
