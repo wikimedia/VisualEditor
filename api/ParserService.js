@@ -151,7 +151,7 @@ app.get(/\/_roundtrip\/(.*)/, function(req, res){
 			var out = new WikitextSerializer({env: env}).serializeDOM( document.body );
 			res.write('<pre>' + htmlSpecialChars( out ) + '</pre><hr>');
 			res.write( '<h2>Diff between original Wikitext (green) and round-tripped wikitext (red)</h2><hr>' );
-			var patch = jsDiff.convertChangesToXML( jsDiff.diffWords( out, src ) );
+			var patch = jsDiff.convertChangesToXML( jsDiff.diffLines( out, src ) );
 			res.end( '<pre>' + patch);
 		});
 		try {
