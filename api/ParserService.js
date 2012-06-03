@@ -127,7 +127,7 @@ app.post(/\/_wikitext\/(.*)/, function(req, res){
 });
 
 /**
- * Perform char-based diff on a line-based diff. The char-based algorithm is
+ * Perform word-based diff on a line-based diff. The word-based algorithm is
  * practically unusable for inputs > 5k bytes, so we only perform it on the
  * output of the more efficient line-based diff.
  */
@@ -140,7 +140,7 @@ var refineDiff = function( diff ) {
 			added = d;
 		} else if ( d.removed ) {
 			if ( added ) {
-				var fineDiff = jsDiff.diffChars( d.value, added.value );
+				var fineDiff = jsDiff.diffWords( d.value, added.value );
 				out.push.apply( out, fineDiff );
 				added = null;
 			}
@@ -185,7 +185,7 @@ app.get(/\/_roundtrip\/(.*)/, function(req, res){
 			var patch;
 			if ( src.length < 4000 ) {
 				// Use word-based diff for small articles
-				patch = jsDiff.convertChangesToXML( jsDiff.diffChars( out, src ) );
+				patch = jsDiff.convertChangesToXML( jsDiff.diffWords( out, src ) );
 			} else {
 				patch = jsDiff.convertChangesToXML( refineDiff( jsDiff.diffLines( out, src ) ) );
 			}
