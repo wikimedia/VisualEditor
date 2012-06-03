@@ -28,6 +28,7 @@ var env = new ParserEnv( {
 	maxDepth: 40
 } );
 
+
 var parserPipelineFactory = new ParserPipelineFactory( env );
 //var parser = parserPipelineFactory.makePipeline( 'text/x-mediawiki/full' );
 
@@ -126,6 +127,36 @@ app.post(/\/_wikitext\/(.*)/, function(req, res){
 });
 
 /**
+ * Perform char-based diff on a line-based diff. The char-based algorithm is
+ * practically unusable for inputs > 5k bytes, so we only perform it on the
+ * output of the more efficient line-based diff.
+ */
+var refineDiff = function( diff ) {
+	var added = null,
+		out = [];
+	for ( var i = 0, l = diff.length; i < l; i++ ) {
+		var d = diff[i];
+		if ( d.added ) {
+			added = d;
+		} else if ( d.removed ) {
+			if ( added ) {
+				var fineDiff = jsDiff.diffChars( d.value, added.value );
+				out.push.apply( out, fineDiff );
+				added = null;
+			}
+		} else if ( added ) {
+			out.push( added );
+			added = null;
+			out.push(d);
+		}
+	}
+	if ( added ) {
+		out.push(added);
+	}
+	return out;
+};
+
+/**
  * Round-trip article testing
  */
 app.get(/\/_roundtrip\/(.*)/, function(req, res){
@@ -151,7 +182,13 @@ app.get(/\/_roundtrip\/(.*)/, function(req, res){
 			var out = new WikitextSerializer({env: env}).serializeDOM( document.body );
 			res.write('<pre>' + htmlSpecialChars( out ) + '</pre><hr>');
 			res.write( '<h2>Diff between original Wikitext (green) and round-tripped wikitext (red)</h2><hr>' );
-			var patch = jsDiff.convertChangesToXML( jsDiff.diffLines( out, src ) );
+			var patch;
+			if ( src.length < 4000 ) {
+				// Use word-based diff for small articles
+				patch = jsDiff.convertChangesToXML( jsDiff.diffChars( out, src ) );
+			} else {
+				patch = jsDiff.convertChangesToXML( refineDiff( jsDiff.diffLines( out, src ) ) );
+			}
 			res.end( '<pre>' + patch);
 		});
 		try {
