@@ -60,8 +60,29 @@ ve.dm.Surface.prototype.setSelection = function( selection ) {
  * @param {ve.dm.Transaction} transactions Tranasction to apply to the document
  */
 ve.dm.Surface.prototype.transact = function( transaction ) {
-	ve.dm.TransactionProcessor.commit( this.documentModel, transaction );
+	ve.dm.TransactionProcessor.commit( this.getDocument(), transaction );
 	this.emit( 'transact', transaction );
+};
+
+/* converted method from surface view */
+
+ve.dm.Surface.prototype.annotate = function( method, annotation ) {
+	var selection = this.getSelection();
+
+	if ( method === 'toggle' ) {
+		var annotations = this.getDocument().getAnnotationsFromRange( selection );
+		if ( annotation in annotations ) {
+			method = 'clear';
+		} else {
+			method = 'set';
+		}
+	}
+	if ( this.selection.getLength() ) {
+		var tx = ve.dm.Transaction.newFromAnnotation(
+			this.getDocument(), selection, method, annotation
+		);
+		this.transact( tx );
+	}
 };
 
 /* Inheritance */

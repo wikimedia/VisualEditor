@@ -93,7 +93,8 @@ $wgResourceModules += array(
 			'copyrightpage',
 			'edit',
 			'accesskey-ca-edit',
-			'tooltip-ca-edit'
+			'tooltip-ca-edit',
+			'viewsource'
 
 		),
 		'styles' => 'core/ve.Core.css',
@@ -253,7 +254,7 @@ $wgAPIModules['ve-parsoid'] = 'ApiVisualEditor';
 $wgAutoloadClasses['VisualEditorHooks'] = $dir . 'VisualEditor.hooks.php';
 $wgHooks['BeforePageDisplay'][] = 'VisualEditorHooks::onPageDisplay';
 $wgHooks['userCan'][] = 'VisualEditorHooks::namespaceProtection';
-$wgHooks['MakeGlobalVariablesScript'][] = 'VisualEditorHooks::makeGlobalScriptVariables';
+$wgHooks['MakeGlobalVariablesScript'][] = 'VisualEditorHooks::makeGlobalVariablesScript';
 
 // API for retrieving wikidom parse results
 $wgAutoloadClasses['ApiQueryParseTree'] = $dir . 'api/ApiQueryParseTree.php';
