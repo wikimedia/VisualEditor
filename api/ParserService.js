@@ -137,16 +137,23 @@ var refineDiff = function( diff ) {
 	for ( var i = 0, l = diff.length; i < l; i++ ) {
 		var d = diff[i];
 		if ( d.added ) {
+			if ( added ) {
+				out.push( added );
+			}
 			added = d;
 		} else if ( d.removed ) {
 			if ( added ) {
 				var fineDiff = jsDiff.diffWords( d.value, added.value );
 				out.push.apply( out, fineDiff );
 				added = null;
+			} else {
+				out.push( d );
 			}
-		} else if ( added ) {
-			out.push( added );
-			added = null;
+		} else {
+			if ( added ) {
+				out.push( added );
+				added = null;
+			}
 			out.push(d);
 		}
 	}
@@ -187,6 +194,8 @@ app.get(/\/_roundtrip\/(.*)/, function(req, res){
 				// Use word-based diff for small articles
 				patch = jsDiff.convertChangesToXML( jsDiff.diffWords( out, src ) );
 			} else {
+				//console.log(JSON.stringify( jsDiff.diffLines( out, src ) ));
+				//patch = jsDiff.convertChangesToXML( jsDiff.diffLines( out, src ) );
 				patch = jsDiff.convertChangesToXML( refineDiff( jsDiff.diffLines( out, src ) ) );
 			}
 			res.end( '<pre>' + patch);
