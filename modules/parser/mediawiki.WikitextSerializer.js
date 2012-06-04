@@ -125,6 +125,16 @@ WSP._linkHandler =  function( state, token ) {
 				attribDict.href.substr( state.env.wgScriptPath.length + 1 )
 					.replace( /_/g, ' ' )
 				);
+		if ( token.dataAttribs.sHref ) {
+			//console.warn( JSON.stringify( token.dataAttribs.sHref ) );
+			var normalizedOrigHref = state.env.resolveTitle( 
+					state.env.normalizeTitle( 
+						state.env.tokensToString( token.dataAttribs.sHref ) ), 
+					'' );
+			if ( normalizedOrigHref === target ) {
+				target = token.dataAttribs.sHref;
+			}
+		}
 
 		if ( attribDict.rel === 'mw:wikiLink' ) {
 			if (token.dataAttribs.tail) {

@@ -40,14 +40,18 @@ WikiLinkHandler.prototype.onWikiLink = function ( token, frame, cb ) {
 		// Check if page exists
 		// 
 		//console.warn( 'title: ' + JSON.stringify( title ) );
-		var obj = new TagTk( 'a', 
+		var normalizedHref = title.makeLink(),
+			obj = new TagTk( 'a', 
 					[ 
-						new KV( 'href', title.makeLink() ),
+						new KV( 'href', normalizedHref ),
 						new KV('rel', 'mw:wikiLink')
 					] 
 					, token.dataAttribs
 				),
 			content = token.attribs.slice(1, -1);
+		if ( href !== normalizedHref ) {
+			obj.dataAttribs.sHref = href;
+		}
 		//console.warn('content: ' + JSON.stringify( content, null, 2 ) );
 		// XXX: handle trail
 		if ( content.length ) {
