@@ -1107,7 +1107,7 @@ pre_indent_in_tags
   / & { return stops.dec('pre'); }
 
 pre_indent_line = space l:inlineline { 
-    return [ '\n' ].concat(l); 
+    return l; 
 }
 
 /*
