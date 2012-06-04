@@ -64,8 +64,13 @@ ve.dm.Surface.prototype.transact = function( transaction ) {
 	this.emit( 'transact', transaction );
 };
 
-/* converted method from surface view */
-
+/**
+ * Applies an annotation to the current selection
+ *
+ * @method
+ * @param {String} annotation action: toggle, clear, set
+ * @param {Object} annotation object to apply.
+ */
 ve.dm.Surface.prototype.annotate = function( method, annotation ) {
 	var selection = this.getSelection();
 
