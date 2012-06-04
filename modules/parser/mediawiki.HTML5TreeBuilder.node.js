@@ -74,15 +74,15 @@ FauxHTML5.TreeBuilder.prototype._att = function (maybeAttribs) {
 FauxHTML5.TreeBuilder.prototype.processToken = function (token) {
 	var attribs = token.attribs || [];
 	if ( token.dataAttribs ) {
-		if ( ! token.attribs ) {
-			token.attribs = [];
+		var dataMW = JSON.stringify( token.dataAttribs );
+		if ( dataMW !== '{}' ) {
+			attribs = attribs.concat([ 
+					{
+						// Mediawiki-specific round-trip / non-semantic information
+						k: 'data-mw', 
+						v: dataMW
+					} ] );
 		}
-		attribs = attribs.concat([ 
-				{
-					// Mediawiki-specific round-trip / non-semantic information
-					k: 'data-mw', 
-					v: JSON.stringify( token.dataAttribs ) 
-				} ] );
 	}
 
 	switch( token.constructor ) {
