@@ -173,6 +173,16 @@ ve.dm.Node.prototype.getAttribute = function( key ) {
 };
 
 /**
+ * Gets a reference to this node's attributes object
+ *
+ * @method
+ * @returns {Object} Attributes object (by reference)
+ */
+ve.dm.Node.prototype.getAttributes = function() {
+	return this.attributes;
+};
+
+/**
  * Checks if this node can be merged with another.
  *
  * For two nodes to be mergeable, this node and the given node must either be the same node or:
