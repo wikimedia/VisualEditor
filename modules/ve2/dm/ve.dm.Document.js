@@ -845,20 +845,69 @@ ve.dm.Document.prototype.getNearestStructuralOffset = function( offset, directio
  * @returns {Array} A (possibly modified) copy of data
  */
 ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
-	// TODO document what all these variables are for
-	var newData = [], i, j, openingStack = [], closingStack = [], fixupStack = [], node, index,
-		parentNode, parentType, childType, allowedParents, allowedChildren,
-		parentsOK, childrenOK, openings, closings, closedElements, expectedType, popped,
-		clonedElement, paragraphOpened;
-	node = this.getNodeFromOffset( offset );
+	var
+		// Array where we build the return value
+		newData = [],
+
+		// *** Stacks ***
+		// Array of element openings (object). Openings in data are pushed onto this stack
+		// when they are encountered and popped off when they are closed
+		openingStack = [],
+		// Array of element types (strings). Closings in data that close nodes that were
+		// not opened in data (i.e. were already in the document) are pushed onto this stack
+		// and popped off when balanced out by an opening in data
+		closingStack = [],
+		// Array of objects describing wrappers that need to be fixed up when a given
+		// element is closed.
+		//     'expectedType': closing type that triggers this fixup. Includes initial '/'
+		//     'openings': array of opening elements that should be closed (in reverse order)
+		//     'reopenElements': array of opening elements to insert (in reverse order)
+		fixupStack = [],
+
+		// *** State persisting across iterations of the outer loop ***
+		// The node (from the document) we're currently in. When in a node that was opened
+		// in data, this is set to its first ancestor that is already in the document
+		parentNode,
+		// The type of the node we're currently in, even if that node was opened within data
+		parentType,
+
+		// *** Temporary variables that do not persist across iterations ***
+		// The type of the node we're currently inserting. When the to-be-inserted node
+		// is wrapped, this is set to the type of the outer wrapper.
+		childType,
+		// Stores the return value of getParentNodeTypes( childType )
+		allowedParents,
+		// Stores the return value of getChildNodeTypes( parentType )
+		allowedChildren,
+		// Whether parentType matches allowedParents
+		parentsOK,
+		// Whether childType matches allowedChildren
+		childrenOK,
+		// Array of opening elements to insert (for wrapping the to-be-inserted element)
+		openings,
+		// Array of closing elements to insert (for splitting nodes)
+		closings,
+		// Array of opening elements matching the elements in closings (in the same order)
+		reopenElements,
+		// Temporary variable for building a clone of the current element
+		clonedElement,
+
+		// *** Other variables ***
+		// Used to store values popped from various stacks
+		popped,
+		// Loop variables
+		i, j;
 
 	/**
-	 * Append a linear model element to newData and update openingStack, closingStack and node
-	 * if needed
+	 * Append a linear model element to newData and update the state.
+	 *
+	 * This function updates parentNode, parentType, openingStack and closingStack.
+	 *
 	 * @param {Object|Array|String} element Linear model element
 	 * @param {Number} index Index in data that this element came from. Used for error reporting only
 	 */
 	function writeElement( element, index ) {
+		var expectedType;
 		if ( element.type === undefined ) {
 			// Content, do nothing
 		} else if ( element.type.charAt( 0 ) !== '/' ) {
@@ -876,6 +925,7 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 				// This opens something new, put it on openingStack
 				openingStack.push( element );
 			}
+			parentType = element.type;
 		} else {
 			// Closing
 			// Make sure that this closing matches the currently opened node
@@ -888,14 +938,18 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 				// openingStack is empty, so we're closing a node that
 				// was already in the document. This means we have to
 				// reopen it later, so track this on closingStack
-				expectedType = node.getType();
+				expectedType = parentNode.getType();
 				closingStack.push( expectedType );
-				node = node.getParent();
-				if ( !node ) {
+				parentNode = parentNode.getParent();
+				if ( !parentNode ) {
 					throw 'Inserted data is trying to close the root node ' +
 						'(at index ' + index + ')';
 				}
 			}
+			parentType = expectedType;
+
+			// Validate
+			// FIXME this breaks certain input, should fix it up, not scream and die
 			if ( element.type !== '/' + expectedType ) {
 				throw 'Type mismatch, expected /' + expectedType +
 					' but got ' + element.type + ' (at index ' + index + ')';
@@ -904,15 +958,14 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 		newData.push( element );
 	}
 
-	parentNode = node;
+	parentNode = this.getNodeFromOffset( offset );
 	parentType = parentNode.getType();
-	paragraphOpened = false;
 	for ( i = 0; i < data.length; i++ ) {
 		if ( data[i].type === undefined ||  data[i].type.charAt( 0 ) !== '/' ) {
 			childType = data[i].type || 'text';
 			openings = [];
 			closings = [];
-			closedElements = [];
+			reopenElements = [];
 			// Opening or content
 			// Make sure that opening this element here does not violate the
 			// parent/children/content rules. If it does, insert stuff to fix it
@@ -920,12 +973,10 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 			// If this node is content, check that the containing node can contain
 			// content. If not, wrap in a paragraph
 			if ( ve.dm.nodeFactory.isNodeContent( childType ) &&
-				!ve.dm.nodeFactory.canNodeContainContent( parentType ) &&
-				!paragraphOpened
+				!ve.dm.nodeFactory.canNodeContainContent( parentType )
 			) {
 				childType = 'paragraph';
-				openings.unshift ( { 'type': 'paragraph' } );
-				paragraphOpened = true;
+				openings.unshift ( { 'type': 'paragraph' } );                            
 			}
 
 			// Check that this node is allowed to have the containing node as its
@@ -965,7 +1016,7 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 					if ( openingStack.length > 0 ) {
 						popped = openingStack.pop();
 						parentType = popped.type;
-						closedElements.push( ve.copyObject( popped ) );
+						reopenElements.push( ve.copyObject( popped ) );
 						// The opening was on openingStack, so we're closing
 						// a node that was opened within data. Don't track
 						// that on closingStack
@@ -975,10 +1026,10 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 						// reopen it later, so track this on closingStack
 						closingStack.push( parentType );
 						clonedElement = { 'type': parentType };
-						if ( !$.isEmptyObject( node.getAttributes() ) ) {
-							clonedElement.attributes = ve.copyObject( node.getAttributes() );
+						if ( !$.isEmptyObject( parentNode.getAttributes() ) ) {
+							clonedElement.attributes = ve.copyObject( parentNode.getAttributes() );
 						}
-						closedElements.push( clonedElement );
+						reopenElements.push( clonedElement );
 						parentNode = parentNode.getParent();
 						if ( !parentNode ) {
 							throw 'Cannot insert ' + childType + ' even ' +
@@ -991,7 +1042,7 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 			} while( !childrenOK );
 
 			for ( j = 0; j < closings.length; j++ ) {
-				// writeElement() woud update openingStack/closingStack, but
+				// writeElement() would update openingStack/closingStack, but
 				// we've already done that for closings
 				//writeElement( closings[j], i );
 				newData.push( closings[j] );
@@ -1002,13 +1053,15 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 			writeElement( data[i], i );
 			if ( data[i].type === undefined ) {
 				// Special treatment for text nodes
-				paragraphOpened = true;
 				if ( openings.length > 0 ) {
 					// We wrapped the text node, update parentType
 					parentType = childType;
+					fixupStack.push( { 'expectedType': '/' + childType, 'openings': openings, 'reopenElements': reopenElements } );
 				}
+				// If we didn't wrap the text node, then the node we're inserting
+				// into can have content, so we couldn't have closed anything
 			} else {
-				fixupStack.push( { 'expectedType': '/' + data[i].type, 'openings': openings, 'closedElements': closedElements } );
+				fixupStack.push( { 'expectedType': '/' + data[i].type, 'openings': openings, 'reopenElements': reopenElements } );
 				parentType = data[i].type;
 			}
 		} else {
@@ -1022,11 +1075,11 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 				for ( j = popped.openings.length - 1; j >= 0; j-- ) {
 					writeElement( { 'type': '/' + popped.openings[j].type }, i );
 				}
-				for ( j = popped.closedElements.length - 1; j >= 0; j-- ) {
-					writeElement( popped.closedElements[j], i );
+				for ( j = popped.reopenElements.length - 1; j >= 0; j-- ) {
+					writeElement( popped.reopenElements[j], i );
 				}
 			}
-			parentType = openingStack.length > 0 ? openingStack[openingStack.length - 1] : node.getType();
+			parentType = openingStack.length > 0 ? openingStack[openingStack.length - 1] : parentNode.getType();
 		}
 	}
 
