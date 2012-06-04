@@ -27,15 +27,11 @@ ve.dm.Transaction.newFromInsertion = function( doc, offset, insertion ) {
 	// Fix up the insertion
 	insertion = doc.fixupInsertion( insertion, offset );
 	// Retain up to insertion point, if needed
-	if ( offset ) {
-		tx.pushRetain( offset );
-	}
+	tx.pushRetain( offset );
 	// Insert data
 	tx.pushReplace( [], insertion );
 	// Retain to end of document, if needed (for completeness)
-	if ( offset < data.length ) {
-		tx.pushRetain( data.length - offset );
-	}
+	tx.pushRetain( data.length - offset );
 	return tx;
 };
 
@@ -46,13 +42,13 @@ ve.dm.Transaction.newFromInsertion = function( doc, offset, insertion ) {
  *    1. Remove content only
  *       - Occurs when the range starts and ends on elements of different type, depth or ancestry
  *    2. Remove entire elements and their content
- *       - Occurs when the range spans across an entire element
+ *       - Occurs when the range spans accross an entire element
  *    3. Merge two elements by removing the end of one and the beginning of another
  *       - Occurs when the range starts and ends on elements of similar type, depth and ancestry
  *
  * This function uses the following logic to decide what to actually remove:
  *     1. Elements are only removed if range being removed covers the entire element
- *     2. Elements can only be merged if ve.dm.Node.canBeMergedWith() returns true
+ *     2. Elements can only be merged if {ve.dm.Node.canBeMergedWith} returns true
  *     3. Merges take place at the highest common ancestor
  *
  * @method
@@ -72,52 +68,44 @@ ve.dm.Transaction.newFromRemoval = function( doc, range ) {
 		return tx;
 	}
 	// Select nodes and validate selection
-	var selection = doc.selectNodes( range, 'leaves' ),
-		nodeRange;
+	var selection = doc.selectNodes( range, 'leaves' );
 	if ( selection.length === 0 ) {
 		// Empty selection? Something is wrong!
-		throw 'Invalid range, cannot remove from ' + range.start + ' to ' + range.end;
+		throw 'Invalid range, can not remove from ' + range.start + ' to ' + range.end;
 	}
-	// Decide whether to merge or strip
-	if ( selection[0].node.canBeMergedWith( selection[selection.length - 1].node ) ) {
-		// If only one node was selected, ignore anything past this node
-		if ( selection.length === 1 ) {
-			// Include the parent's wrapping (if any - there should always be, but let's be safe)
-			var wrapping = selection[0].node.getParent().isWrapped() ? 1 : 0;
-			// Only reduces the range to cover the selected node if it's shorter
-			range.start = Math.max( range.start, selection[0].nodeRange.start - wrapping );
-			// Only reduces the range to cover the selected node if it's shorter
-			range.end = Math.min( range.end, selection[0].nodeRange.end + wrapping );
-		}
-		// Retain to the start of the range
-		if ( range.start > 0 ) {
-			tx.pushRetain( range.start );
-		}
-		// Remove all data in a given range.
+
+	var firstNode = selection[0].node,
+		lastNode = selection[selection.length - 1].node;
+
+	if ( firstNode.canBeMergedWith( lastNode ) ) {
+		// Single node selection or mergable multiple node selection
+		tx.pushRetain( range.start );
 		tx.pushReplace( data.slice( range.start, range.end ), [] );
-		// Retain up to the end of the document, if needed (for completeness)
-		if ( range.end < data.length ) {
-			tx.pushRetain( data.length - range.end );
-		}
+		tx.pushRetain( data.length - range.end );
 	} else {
+		// Unmergable multiple node selection
 		var offset = 0;
 		for ( var i = 0; i < selection.length; i++ ) {
-			nodeRange = selection[i].nodeRange;
-			// Retain up to where the next removal starts
-			if ( nodeRange.start > offset ) {
+			var current = selection[i],
+				node = current.node,
+				nodeRange = current.nodeRange,
+				nodeOuterRange = current.nodeOuterRange;
+			if ( range.start <= nodeOuterRange.start && range.end >= nodeOuterRange.end ) {
+				// Drop the whole node
+				tx.pushRetain( nodeOuterRange.start - offset );
+				tx.pushReplace( data.slice( nodeOuterRange.start, nodeOuterRange.end ), [] );
+				offset = nodeOuterRange.end;
+			} else {
+				// Strip content out of the node
 				tx.pushRetain( nodeRange.start - offset );
+				if ( nodeRange.start !== nodeRange.end ) {
+					tx.pushReplace( data.slice( nodeRange.start, nodeRange.end ), [] );
+				}
+				offset = nodeRange.end;
 			}
-			// Remove data
-			if ( nodeRange.getLength() ) {
-				tx.pushReplace( data.slice( nodeRange.start, nodeRange.end ), [] );
-			}
-			// Advance to the next node
-			offset = nodeRange.end;
 		}
 		// Retain up to the end of the document, if needed (for completeness)
-		if ( offset < data.length ) {
-			tx.pushRetain( data.length - offset );
-		}
+		tx.pushRetain( data.length - offset );
 	}
 	return tx;
 };
@@ -147,17 +135,13 @@ ve.dm.Transaction.newFromAttributeChange = function( doc, offset, key, value ) {
 		throw 'Can not set attributes on closing element';
 	}
 	// Retain up to element
-	if ( offset ) {
-		tx.pushRetain( offset );
-	}
+	tx.pushRetain( offset );
 	// Change attribute
 	tx.pushReplaceElementAttribute(
 		key, 'attributes' in data[offset] ? data[offset].attributes[key] : undefined, value
 	);
 	// Retain to end of document
-	if ( offset < data.length ) {
-		tx.pushRetain( data.length - offset );
-	}
+	tx.pushRetain( data.length - offset );
 	return tx;
 };
 
@@ -187,9 +171,7 @@ ve.dm.Transaction.newFromAnnotation = function( doc, range, method, annotation )
 		if ( data[i].type !== undefined ) {
 			// Element
 			if ( on ) {
-				if ( span ) {
-					tx.pushRetain( span );
-				}
+				tx.pushRetain( span );
 				tx.pushStopAnnotating( method, annotation );
 				span = 0;
 				on = false;
@@ -200,9 +182,7 @@ ve.dm.Transaction.newFromAnnotation = function( doc, range, method, annotation )
 			if ( ( covered && method === 'set' ) || ( !covered  && method === 'clear' ) ) {
 				// Skip annotated content
 				if ( on ) {
-					if ( span ) {
-						tx.pushRetain( span );
-					}
+					tx.pushRetain( span );
 					tx.pushStopAnnotating( method, annotation );
 					span = 0;
 					on = false;
@@ -210,9 +190,7 @@ ve.dm.Transaction.newFromAnnotation = function( doc, range, method, annotation )
 			} else {
 				// Cover non-annotated content
 				if ( !on ) {
-					if ( span ) {
-						tx.pushRetain( span );
-					}
+					tx.pushRetain( span );
 					tx.pushStartAnnotating( method, annotation );
 					span = 0;
 					on = true;
@@ -222,15 +200,11 @@ ve.dm.Transaction.newFromAnnotation = function( doc, range, method, annotation )
 		span++;
 		i++;
 	}
-	if ( span ) {
-		tx.pushRetain( span );
-	}
+	tx.pushRetain( span );
 	if ( on ) {
 		tx.pushStopAnnotating( method, annotation );
 	}
-	if ( range.end < data.length ) {
-		tx.pushRetain( data.length - range.end );
-	}
+	tx.pushRetain( data.length - range.end );
 	return tx;
 };
 
@@ -261,16 +235,22 @@ ve.dm.Transaction.prototype.getLengthDifference = function() {
  *
  * @method
  * @param {Integer} length Length of content data to retain
+ * @throws 'Invalid retain length, can not retain backwards: {length}'
  */
 ve.dm.Transaction.prototype.pushRetain = function( length ) {
-	var end = this.operations.length - 1;
-	if ( this.operations.length && this.operations[end].type === 'retain' ) {
-		this.operations[end].length += length;
-	} else {
-		this.operations.push( {
-			'type': 'retain',
-			'length': length
-		} );
+	if ( length < 0 ) {
+		throw 'Invalid retain length, can not retain backwards:' + length;
+	}
+	if ( length ) {
+		var end = this.operations.length - 1;
+		if ( this.operations.length && this.operations[end].type === 'retain' ) {
+			this.operations[end].length += length;
+		} else {
+			this.operations.push( {
+				'type': 'retain',
+				'length': length
+			} );
+		}
 	}
 };
 
