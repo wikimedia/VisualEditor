@@ -42,11 +42,13 @@ app.get('/', function(req, res){
 	res.write( '<p>Usage: <ul><li>GET /title for the DOM. ' +
 		'Example: <strong><a href="/Main_Page">Main Page</a></strong>');
 	res.write('<li>POST a DOM as parameter "content" to /title for the wikitext</ul>');
-	res.write('<p>There are also some tools for experiments:' +
-			'<ul><li><strong><a href="/_wikitext/">WikiText -&gt; HTML DOM form</a></strong></li>' +
+	res.write('<p>There are also some tools for experiments:<ul>');
+	res.write('<li>Round-trip test pages from the English Wikipedia: ' +
+		'<strong><a href="/_rt/Help:Magic">/_rt/Help:Magic</a></strong></li>');
+	res.write('<li><strong><a href="/_rtform/">WikiText -&gt; HTML DOM -&gt; WikiText round-trip form</a></strong></li>');
+	res.write('<li><strong><a href="/_wikitext/">WikiText -&gt; HTML DOM form</a></strong></li>' +
 			'<li><strong><a href="/_html/">HTML DOM -&gt; WikiText form</a></strong></li>');
-	res.end('<li>Round-trip testing arbitrary pages: ' +
-		'<strong><a href="/_roundtrip/Help:Magic">/_roundtrip/Help:Magic</a></strong></li></ul>');
+	res.end('</ul>');
 });
 
 var htmlSpecialChars = function ( s ) {
@@ -163,12 +165,46 @@ var refineDiff = function( diff ) {
 	return out;
 };
 
+var roundTripDiff = function ( res, src, document ) {
+	res.write('<html><head><style>del { background: #ff9191; text-decoration: none; } ins { background: #99ff7e; text-decoration: none }; </style></head><body>');
+	res.write( '<h2>Wikitext parsed to HTML DOM</h2><hr>' );
+	res.write(document.body.innerHTML + '<hr>');
+	res.write( '<h2>HTML DOM converted back to Wikitext</h2><hr>' );
+	var out = new WikitextSerializer({env: env}).serializeDOM( document.body );
+	res.write('<pre>' + htmlSpecialChars( out ) + '</pre><hr>');
+	res.write( '<h2>Diff between original Wikitext (green) and round-tripped wikitext (red)</h2><hr>' );
+	var patch;
+	if ( src.length < 4000 ) {
+		// Use word-based diff for small articles
+		patch = jsDiff.convertChangesToXML( jsDiff.diffWords( out, src ) );
+	} else {
+		//console.log(JSON.stringify( jsDiff.diffLines( out, src ) ));
+		//patch = jsDiff.convertChangesToXML( jsDiff.diffLines( out, src ) );
+		patch = jsDiff.convertChangesToXML( refineDiff( jsDiff.diffLines( out, src ) ) );
+	}
+	res.end( '<pre>' + patch);
+};
+
+var parse = function ( res, cb, src ) {
+	var parser = parserPipelineFactory.makePipeline( 'text/x-mediawiki/full' );
+	parser.on('document', cb.bind( null, res, src ) );
+	try {
+		res.setHeader('Content-Type', 'text/html; charset=UTF-8');
+		//console.log('starting parsing of ' + req.params[0]);
+		// FIXME: This does not handle includes or templates correctly
+		parser.process( src );
+	} catch (e) {
+		console.log( e );
+		res.end( e );
+	}
+};
+
 /**
  * Round-trip article testing
  */
-app.get(/\/_roundtrip\/(.*)/, function(req, res){
+app.get(/\/_rt\/(.*)/, function(req, res){
 	env.pageName = req.params[0];
-	env.wgScriptPath = '/_roundtrip';
+	env.wgScriptPath = '/_rt';
 
 	if ( env.pageName === 'favicon.ico' ) {
 		res.end( 'no favicon yet..' );
@@ -179,37 +215,25 @@ app.get(/\/_roundtrip\/(.*)/, function(req, res){
 	
 	console.log('retrieving ' + req.params[0]);
 	var tpr = new TemplateRequest( env, target );
-	tpr.once('src', function ( src ) {
-		var parser = parserPipelineFactory.makePipeline( 'text/x-mediawiki/full' );
-		parser.on('document', function ( document ) {
-			res.write('<html><head><style>del { background: #ff9191; text-decoration: none; } ins { background: #99ff7e; text-decoration: none }; </style></head><body>');
-			res.write( '<h2>Wikitext parsed to HTML DOM</h2><hr>' );
-			res.write(document.body.innerHTML + '<hr>');
-			res.write( '<h2>HTML DOM converted back to Wikitext</h2><hr>' );
-			var out = new WikitextSerializer({env: env}).serializeDOM( document.body );
-			res.write('<pre>' + htmlSpecialChars( out ) + '</pre><hr>');
-			res.write( '<h2>Diff between original Wikitext (green) and round-tripped wikitext (red)</h2><hr>' );
-			var patch;
-			if ( src.length < 4000 ) {
-				// Use word-based diff for small articles
-				patch = jsDiff.convertChangesToXML( jsDiff.diffWords( out, src ) );
-			} else {
-				//console.log(JSON.stringify( jsDiff.diffLines( out, src ) ));
-				//patch = jsDiff.convertChangesToXML( jsDiff.diffLines( out, src ) );
-				patch = jsDiff.convertChangesToXML( refineDiff( jsDiff.diffLines( out, src ) ) );
-			}
-			res.end( '<pre>' + patch);
-		});
-		try {
-			res.setHeader('Content-Type', 'text/html; charset=UTF-8');
-			console.log('starting parsing of ' + req.params[0]);
-			// FIXME: This does not handle includes or templates correctly
-			parser.process( src );
-		} catch (e) {
-			console.log( e );
-			res.end( e );
-		}
-	});
+	tpr.once('src', parse.bind( null, res, roundTripDiff ));
+});
+
+/**
+ * Form-based round-tripping for manual testing
+ */
+app.get(/\/_rtform\/(.*)/, function(req, res){
+	env.pageName = req.params[0];
+	res.setHeader('Content-Type', 'text/html; charset=UTF-8');
+	res.write( "Your wikitext:" );
+	textarea( res );
+	res.end('');
+});
+app.post(/\/_rtform\/(.*)/, function(req, res){
+	env.pageName = req.params[0];
+	res.setHeader('Content-Type', 'text/html; charset=UTF-8');
+	var parser = parserPipelineFactory.makePipeline( 'text/x-mediawiki/full' );
+
+	parse( res, roundTripDiff, req.body.content);
 });
 
 /**
