@@ -12,6 +12,7 @@ function ListHandler ( manager ) {
 }
 
 ListHandler.prototype.listRank = 2.49; // before PostExpandParagraphHandler
+ListHandler.prototype.anyRank = 2.49 + 0.001; // before PostExpandParagraphHandler
 
 ListHandler.prototype.bulletCharsMap = {
 	'*': { list: 'ul', item: 'li' },
@@ -27,15 +28,27 @@ ListHandler.prototype.reset = function() {
 	this.endtags = [];  // Stack of end tags
 };
 
-ListHandler.prototype.onNewline = function ( token, frame, prevToken ) {
-	var tokens = [token];
-	if (this.newline) {
-		// second newline without a list item in between, close the list
-		tokens = this.end().concat( tokens );
+ListHandler.prototype.onAny = function ( token, frame, prevToken ) {
+	var tokens;
+	if ( token.constructor === NlTk ) {
+		if (this.newline) {
+			// second newline without a list item in between, close the list
+			tokens = this.end().concat( [token] );
+			this.newline = false;
+		} else {
+			tokens = [token];
+			this.newline = true;
+		}
+		return { tokens: tokens };
+	} else if ( this.newline ) {
+		tokens = this.end().concat( [token] );
+		this.newline = false;
+		return { tokens: tokens };
+	} else {
+		return { token: token };
 	}
-	this.newline = true;
-	return { tokens: tokens };
 };
+
 
 ListHandler.prototype.onEnd = function( token, frame, prevToken ) {
 	return { tokens: this.end().concat([token]) };
@@ -45,11 +58,12 @@ ListHandler.prototype.end = function( ) {
 	// pop all open list item tokens
 	var tokens = this.popTags(this.bstack.length);
 	this.reset();
-	this.manager.removeTransform( this.listRank, 'newline' );
+	this.manager.removeTransform( this.anyRank, 'any' );
 	return tokens;
 };
 
 ListHandler.prototype.onListItem = function ( token, frame, prevToken ) {
+	this.newline = false;
 	if (token.constructor === TagTk){
 		// convert listItem to list and list item tokens
 		return { tokens: this.doListItem( this.bstack, token.bullets ) };
@@ -99,8 +113,8 @@ ListHandler.prototype.doListItem = function ( bs, bn ) {
 	this.bstack = bn;
 	if (!bs.length)
 	{
-		this.manager.addTransform( this.onNewline.bind(this),
-				this.listRank, 'newline' );
+		this.manager.addTransform( this.onAny.bind(this),
+				this.anyRank, 'any' );
 	}
 	// emit close tag tokens for closed lists
 	if (changeLen === 0)
