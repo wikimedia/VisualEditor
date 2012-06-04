@@ -173,7 +173,8 @@ test( 'newFromInsertion', function() {
 } );
 
 test( 'newFromRemoval', function() {
-	var doc = new ve.dm.Document( ve.dm.example.data ),
+	var alienDoc = new ve.dm.Document( ve.dm.example.alienData ),
+		doc = new ve.dm.Document( ve.dm.example.data ),
 		cases = {
 		'content in first element': {
 			'args': [doc, new ve.Range( 1, 3 )],
@@ -304,6 +305,40 @@ test( 'newFromRemoval', function() {
 					'insert': []
 				},
 				{ 'type': 'retain', 'length': 44 }
+			]
+		},
+		'over first alien into paragraph': {
+			'args': [alienDoc, new ve.Range( 0, 4 )],
+			'ops': [
+				{
+					'type': 'replace',
+					'remove': [{ 'type': 'alienBlock' }, { 'type': '/alienBlock' }],
+					'insert': []
+				},
+				{ 'type': 'retain', 'length': 1 },
+				{
+					'type': 'replace',
+					'remove': ['a'],
+					'insert': []
+				},
+				{ 'type': 'retain', 'length': 6 }
+			]
+		},
+		'out of paragraph over last alien': {
+			'args': [alienDoc, new ve.Range( 6, 10 )],
+			'ops': [
+				{ 'type': 'retain', 'length': 6 },
+				{
+					'type': 'replace',
+					'remove': ['b'],
+					'insert': []
+				},
+				{ 'type': 'retain', 'length': 1 },
+				{
+					'type': 'replace',
+					'remove': [{ 'type': 'alienBlock' }, { 'type': '/alienBlock' }],
+					'insert': []
+				}
 			]
 		}
 	};

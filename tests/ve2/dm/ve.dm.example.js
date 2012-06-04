@@ -180,6 +180,31 @@ ve.dm.example.data = [
 	'm',
 	// 58 - End of paragraph
 	{ 'type': '/paragraph' }
+	// 59 - End of document
+];
+
+ve.dm.example.alienData = [
+	// 0 - Open alienBlock
+	{ 'type': 'alienBlock' },
+	// 1 - Close alienBlock
+	{ 'type': '/alienBlock' },
+	// 2 - Open paragraph
+	{ 'type': 'paragraph' },
+	// 3 - Plain character 'a'
+	'a',
+	// 4 - Open alienInline
+	{ 'type': 'alienBlock' },
+	// 5 - Close alienInline
+	{ 'type': '/alienBlock' },
+	// 6 - Plain character 'b'
+	'b',
+	// 7 - Close paragraph
+	{ 'type': '/paragraph' },
+	// 8 - Open alienBlock
+	{ 'type': 'alienBlock' },
+	// 9 - Close alienBlock
+	{ 'type': '/alienBlock' }
+	// 10 - End of document
 ];
 
 /**
