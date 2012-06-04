@@ -68,7 +68,9 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 		endInside,
 		startBetween,
 		endBetween,
-		startFound = false;
+		startFound = false,
+		nodeRange,
+		isWrapped;
 
 	mode = mode || 'leaves';
 	if ( mode !== 'leaves' && mode !== 'siblings' ) {
@@ -84,11 +86,13 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 
 	if ( !doc.children || doc.children.length === 0 ) {
 		// Document has no children. This is weird
+		nodeRange = new ve.Range( 0, doc.getLength() );
 		return [ {
 			'node': doc,
 			'range': new ve.Range( start, end ),
 			'index': 0,
-			'nodeRange': new ve.Range( 0, doc.getLength() )
+			'nodeRange': nodeRange,
+			'nodeOuterRange': nodeRange
 		} ];
 	}
 	// TODO maybe we could find the start more efficiently using the offset map
@@ -103,19 +107,26 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 		startInside = start >= left && start <= right;
 		// Is the end inside node?
 		endInside = end >= left && end <= right;
+		// Does the node have wrapping elements around it
+		isWrapped = node.isWrapped();
 		// Is the start between prevNode and node or between the parent's opening and node?
-		startBetween = node.isWrapped() ? start == left - 1 : start == left;
+		startBetween = isWrapped ? start == left - 1 : start == left;
 		// Is the end between node and nextNode or between node and the parent's closing?
-		endBetween = node.isWrapped() ? end == right + 1 : end == right;
+		endBetween = isWrapped ? end == right + 1 : end == right;
 
 		if ( start == end && ( startBetween || endBetween ) && node.isWrapped() ) {
 			// Empty range in the parent, outside of any child
+			nodeRange = new ve.Range( currentFrame.startOffset,
+				currentFrame.startOffset + currentFrame.node.getLength()
+			);
+			isWrapped = currentFrame.node.isWrapped();
 			retval = [ {
 				'node': currentFrame.node,
 				'indexInNode': currentFrame.index + ( endBetween ? 1 : 0 ),
 				'range': new ve.Range( start, end ),
-				'nodeRange': new ve.Range( currentFrame.startOffset,
-					currentFrame.startOffset + currentFrame.node.getLength()
+				'nodeRange': nodeRange,
+				'nodeOuterRange': new ve.Range(
+					nodeRange.start - isWrapped, nodeRange.start + isWrapped
 				)
 			} ];
 			parentFrame = stack[stack.length - 2];
@@ -145,7 +156,8 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 					'node': node,
 					// no 'range' because the entire node is covered
 					'index': currentFrame.index,
-					'nodeRange': new ve.Range( left, right )
+					'nodeRange': new ve.Range( left, right ),
+					'nodeOuterRange': new ve.Range( left - isWrapped, right + isWrapped )
 				} );
 				startFound = true;
 			} else {
@@ -154,7 +166,8 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 					'node': node,
 					'range': new ve.Range( start, end ),
 					'index': currentFrame.index,
-					'nodeRange': new ve.Range( left, right )
+					'nodeRange': new ve.Range( left, right ),
+					'nodeOuterRange': new ve.Range( left - isWrapped, right + isWrapped )
 				} ];
 			}
 		} else if ( startInside && endInside ) {
@@ -177,7 +190,8 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 					'node': node,
 					'range': new ve.Range( start, end ),
 					'index': currentFrame.index,
-					'nodeRange': new ve.Range( left, right )
+					'nodeRange': new ve.Range( left, right ),
+					'nodeOuterRange': new ve.Range( left - isWrapped, right + isWrapped )
 				} ];
 			}
 		} else if ( startInside ) {
@@ -201,7 +215,8 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 					'node': node,
 					'range': new ve.Range( start, right ),
 					'index': currentFrame.index,
-					'nodeRange': new ve.Range( left, right )
+					'nodeRange': new ve.Range( left, right ),
+					'nodeOuterRange': new ve.Range( left - isWrapped, right + isWrapped )
 				} );
 				startFound = true;
 			}
@@ -229,7 +244,8 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 					'node': node,
 					// no 'range' because the entire node is covered
 					'index': currentFrame.index,
-					'nodeRange': new ve.Range( left, right )
+					'nodeRange': new ve.Range( left, right ),
+					'nodeOuterRange': new ve.Range( left - isWrapped, right + isWrapped )
 				} );
 				return retval;
 			}
@@ -254,7 +270,8 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 					'node': node,
 					'range': new ve.Range( left, end ),
 					'index': currentFrame.index,
-					'nodeRange': new ve.Range( left, right )
+					'nodeRange': new ve.Range( left, right ),
+					'nodeOuterRange': new ve.Range( left - isWrapped, right + isWrapped )
 				} );
 				return retval;
 			}
@@ -282,7 +299,8 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 					'node': node,
 					// no 'range' because the entire node is covered
 					'index': currentFrame.index,
-					'nodeRange': new ve.Range( left, right )
+					'nodeRange': new ve.Range( left, right ),
+					'nodeOuterRange': new ve.Range( left - isWrapped, right + isWrapped )
 				} );
 			}
 		}
