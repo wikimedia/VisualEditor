@@ -123,7 +123,7 @@ WSP._linkHandler =  function( state, token ) {
 	if ( attribDict.rel && attribDict.href !== undefined ) {
 		var target = decodeURIComponent( 
 				attribDict.href.substr( state.env.wgScriptPath.length + 1 )
-					.replace( '_', ' ' )
+					.replace( /_/g, ' ' )
 				);
 
 		if ( attribDict.rel === 'mw:wikiLink' ) {
