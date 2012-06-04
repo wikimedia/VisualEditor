@@ -287,9 +287,13 @@ ParserFunctions.prototype.pf_padleft = function ( token, frame, cb, params ) {
 					if ( args[1] && args[1].v !== '' ) {
 						pad = args[1].v;
 					}
-					var n = args[0].v;
-					while ( target.length < n ) {
-						target = pad + target;
+					var n = args[0].v,
+						padLength = pad.length;
+					while ( (target.length + padLength) < n ) {
+						target += pad;
+					}
+					if ( target.length < n ) {
+						target = pad.substr( 0, n - target.length ) + target;
 					}
 					cb( { tokens: [target] } );
 				} else {
@@ -317,9 +321,13 @@ ParserFunctions.prototype.pf_padright = function ( token, frame, cb, params ) {
 					} else {
 						pad = '0';
 					}
-					var n = args[0].v;
-					while ( target.length < n ) {
-						target = target + pad;
+					var n = args[0].v,
+						padLength = pad.length;
+					while ( target.length + padLength < n ) {
+						target += pad;
+					}
+					if ( target.length < n ) {
+						target += pad.substr( 0, n - target.length );
 					}
 					cb( { tokens: [target] } );
 				} else {
