@@ -845,15 +845,22 @@ ve.dm.Document.prototype.getNearestStructuralOffset = function( offset, directio
  * @returns {Array} A (possibly modified) copy of data
  */
 ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
+	// TODO document what all these variables are for
 	var newData = [], i, j, openingStack = [], closingStack = [], fixupStack = [], node, index,
 		parentNode, parentType, childType, allowedParents, allowedChildren,
-		parentsOK, childrenOK, openings, closings, expectedType, popped;
+		parentsOK, childrenOK, openings, closings, expectedType, popped, paragraphOpened;
 	node = this.getNodeFromOffset( offset );
-	// TODO update for iscontent and cancontaincontent stuff
 
-	// TODO document
+	/**
+	 * Append a linear model element to newData and update openingStack, closingStack and node
+	 * if needed
+	 * @param {Object|Array|String} element Linear model element
+	 * @param {Number} index Index in data that this element came from. Used for error reporting only
+	 */
 	function writeElement( element, index ) {
-		if ( element.type.charAt( 0 ) !== '/' ) {
+		if ( element.type === undefined ) {
+			// Content, do nothing
+		} else if ( element.type.charAt( 0 ) !== '/' ) {
 			// Opening
 			// Check if this opening balances an earlier closing of a node
 			// that was already in the document. This is only the case if
@@ -898,18 +905,29 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 
 	parentNode = node;
 	parentType = parentNode.getType();
+	paragraphOpened = false;
 	for ( i = 0; i < data.length; i++ ) {
-		if ( data[i].type === undefined ) {
-			// Content, write through
-			// TODO check that content is allowed at the current offset
-			// TODO make this aware of text nodes
-			newData.push( data[i] );
-		} else if ( data[i].type.charAt( 0 ) !== '/' ) {
-			// Opening
-			// Make sure that opening this element here does not violate the
-			// parent/children rules. If it does, insert stuff to fix it
-			childType = data[i].type;
+		if ( data[i].type === undefined ||  data[i].type.charAt( 0 ) !== '/' ) {
+			childType = data[i].type || 'text';
 			openings = [];
+			closings = [];
+			// Opening or content
+			// Make sure that opening this element here does not violate the
+			// parent/children/content rules. If it does, insert stuff to fix it
+
+			// If this node is content, check that the containing node can contain
+			// content. If not, wrap in a paragraph
+			if ( ve.dm.nodeFactory.isNodeContent( childType ) &&
+				!ve.dm.nodeFactory.canNodeContainContent( parentType ) &&
+				!paragraphOpened
+			) {
+				childType = 'paragraph';
+				openings.unshift ( { 'type': 'paragraph' } );
+				paragraphOpened = true;
+			}
+
+			// Check that this node is allowed to have the containing node as its
+			// parent. If not, wrap it until it's fixed
 			do {
 				allowedParents = ve.dm.nodeFactory.getParentNodeTypes( childType );
 				parentsOK = allowedParents === null ||
@@ -925,11 +943,19 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 					openings.unshift( { 'type': childType } );
 				}
 			} while ( !parentsOK );
-			closings = [];
+
+			// Check that the containing node can have this node as its child. If not,
+			// close nodes until it's fixed
 			do {
 				allowedChildren = ve.dm.nodeFactory.getChildNodeTypes( parentType );
 				childrenOK = allowedChildren === null ||
 					$.inArray( childType, allowedChildren ) !== -1;
+				// Also check if we're trying to insert structure into a node that
+				// has to contain content
+				childrenOK = childrenOK && !(
+					!ve.dm.nodeFactory.isNodeContent( childType ) &&
+					ve.dm.nodeFactory.canNodeContainContent( parentType )
+				);
 				if ( !childrenOK ) {
 					// We can't insert this into this parent
 					// Close the parent and try one level up
@@ -940,6 +966,10 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 						// a node that was opened within data. Don't track
 						// that on closingStack
 					} else {
+						// openingStack is empty, so we're closing a node that
+						// was already in the document. This means we have to
+						// reopen it later, so track this on closingStack
+						closingStack.push( parentType );
 						parentNode = parentNode.getParent();
 						if ( !parentNode ) {
 							throw 'Cannot insert ' + childType + ' even ' +
@@ -952,17 +982,31 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 			} while( !childrenOK );
 
 			for ( j = 0; j < closings.length; j++ ) {
-				writeElement( closings[j], i );
+				// writeElement() woud update openingStack/closingStack, but
+				// we've already done that for closings
+				//writeElement( closings[j], i );
+				newData.push( closings[j] );
 			}
 			for ( j = 0; j < openings.length; j++ ) {
 				writeElement( openings[j], i );
 			}
 			writeElement( data[i], i );
-			fixupStack.push( { 'expectedType': '/' + data[i].type, 'openings': openings, 'closings': closings } );
-			parentType = data[i].type;
+			if ( data[i].type === undefined ) {
+				// Special treatment for text nodes
+				paragraphOpened = true;
+				if ( openings.length > 0 ) {
+					// We wrapped the text node, update parentType
+					parentType = childType;
+				}
+			} else {
+				fixupStack.push( { 'expectedType': '/' + data[i].type, 'openings': openings, 'closings': closings } );
+				parentType = data[i].type;
+			}
 		} else {
 			// Closing
 			writeElement( data[i], i );
+			// TODO don't close fixup stuff if the next thing immediately needs to be fixed up as well;
+			// instead, merge the two wrappers
 			if ( fixupStack.length > 0 && fixupStack[fixupStack.length - 1].expectedType == data[i].type ) {
 				popped = fixupStack.pop();
 				// Go through these in reverse!
@@ -974,6 +1018,7 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 					writeElement( { 'type': popped.closings[j].type.substr( 1 ) }, i );
 				}
 			}
+			parentType = openingStack.length > 0 ? openingStack[openingStack.length - 1] : node.getType();
 		}
 	}
 
@@ -989,7 +1034,7 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 		popped = closingStack[closingStack.length - 1];
 		// writeElement() will perform the actual pop() that removes
 		// popped from closingStack
-		writeElement( { 'type': popped.substr( 1 ) }, i );
+		writeElement( { 'type': popped }, i );
 	}
 
 	return newData;
