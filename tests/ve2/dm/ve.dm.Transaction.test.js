@@ -77,8 +77,7 @@ test( 'newFromInsertion', function() {
 				{
 					'type': 'replace',
 					'remove': [],
-					// FIXME should retain attributes in heading opening
-					'insert': [{'type': '/heading' }, { 'type': 'paragraph' } , 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'heading' }]
+					'insert': [{'type': '/heading' }, { 'type': 'paragraph' } , 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'heading', 'attributes': { 'level': 1 } }]
 				},
 				{ 'type': 'retain', 'length': 57 }
 			]
@@ -90,7 +89,7 @@ test( 'newFromInsertion', function() {
 				{
 					'type': 'replace',
 					'remove': [],
-					'insert': [{'type': '/list' }, { 'type': 'paragraph' } , 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'list' }]
+					'insert': [{'type': '/list' }, { 'type': 'paragraph' } , 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'list', 'attributes': { 'style': 'bullet' } }]
 				},
 				{ 'type': 'retain', 'length': 47 }
 			]

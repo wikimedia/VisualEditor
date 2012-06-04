@@ -848,7 +848,8 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 	// TODO document what all these variables are for
 	var newData = [], i, j, openingStack = [], closingStack = [], fixupStack = [], node, index,
 		parentNode, parentType, childType, allowedParents, allowedChildren,
-		parentsOK, childrenOK, openings, closings, expectedType, popped, paragraphOpened;
+		parentsOK, childrenOK, openings, closings, closedElements, expectedType, popped,
+		clonedElement, paragraphOpened;
 	node = this.getNodeFromOffset( offset );
 
 	/**
@@ -873,7 +874,7 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 				closingStack.pop();
 			} else {
 				// This opens something new, put it on openingStack
-				openingStack.push( element.type );
+				openingStack.push( element );
 			}
 		} else {
 			// Closing
@@ -882,7 +883,7 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 				// The opening was on openingStack, so we're closing
 				// a node that was opened within data. Don't track
 				// that on closingStack
-				expectedType = openingStack.pop();
+				expectedType = openingStack.pop().type;
 			} else {
 				// openingStack is empty, so we're closing a node that
 				// was already in the document. This means we have to
@@ -911,6 +912,7 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 			childType = data[i].type || 'text';
 			openings = [];
 			closings = [];
+			closedElements = [];
 			// Opening or content
 			// Make sure that opening this element here does not violate the
 			// parent/children/content rules. If it does, insert stuff to fix it
@@ -961,7 +963,9 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 					// Close the parent and try one level up
 					closings.push( { 'type': '/' + parentType } );
 					if ( openingStack.length > 0 ) {
-						parentType = openingStack.pop();
+						popped = openingStack.pop();
+						parentType = popped.type;
+						closedElements.push( ve.copyObject( popped ) );
 						// The opening was on openingStack, so we're closing
 						// a node that was opened within data. Don't track
 						// that on closingStack
@@ -970,6 +974,11 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 						// was already in the document. This means we have to
 						// reopen it later, so track this on closingStack
 						closingStack.push( parentType );
+						clonedElement = { 'type': parentType };
+						if ( !$.isEmptyObject( node.getAttributes() ) ) {
+							clonedElement.attributes = ve.copyObject( node.getAttributes() );
+						}
+						closedElements.push( clonedElement );
 						parentNode = parentNode.getParent();
 						if ( !parentNode ) {
 							throw 'Cannot insert ' + childType + ' even ' +
@@ -999,7 +1008,7 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 					parentType = childType;
 				}
 			} else {
-				fixupStack.push( { 'expectedType': '/' + data[i].type, 'openings': openings, 'closings': closings } );
+				fixupStack.push( { 'expectedType': '/' + data[i].type, 'openings': openings, 'closedElements': closedElements } );
 				parentType = data[i].type;
 			}
 		} else {
@@ -1013,9 +1022,8 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 				for ( j = popped.openings.length - 1; j >= 0; j-- ) {
 					writeElement( { 'type': '/' + popped.openings[j].type }, i );
 				}
-				for ( j = popped.closings.length - 1; j >= 0; j-- ) {
-					// TODO keep actual elements around so attributes are preserved
-					writeElement( { 'type': popped.closings[j].type.substr( 1 ) }, i );
+				for ( j = popped.closedElements.length - 1; j >= 0; j-- ) {
+					writeElement( popped.closedElements[j], i );
 				}
 			}
 			parentType = openingStack.length > 0 ? openingStack[openingStack.length - 1] : node.getType();
@@ -1027,7 +1035,7 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 		popped = openingStack[openingStack.length - 1];
 		// writeElement() will perform the actual pop() that removes
 		// popped from openingStack
-		writeElement( { 'type': '/' + popped }, i );
+		writeElement( { 'type': '/' + popped.type }, i );
 	}
 	// Re-open closed nodes
 	while ( closingStack.length > 0 ) {
