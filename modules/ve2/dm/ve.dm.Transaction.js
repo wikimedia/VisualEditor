@@ -42,13 +42,13 @@ ve.dm.Transaction.newFromInsertion = function( doc, offset, insertion ) {
  *    1. Remove content only
  *       - Occurs when the range starts and ends on elements of different type, depth or ancestry
  *    2. Remove entire elements and their content
- *       - Occurs when the range spans accross an entire element
+ *       - Occurs when the range spans across an entire element
  *    3. Merge two elements by removing the end of one and the beginning of another
  *       - Occurs when the range starts and ends on elements of similar type, depth and ancestry
  *
  * This function uses the following logic to decide what to actually remove:
  *     1. Elements are only removed if range being removed covers the entire element
- *     2. Elements can only be merged if {ve.dm.Node.canBeMergedWith} returns true
+ *     2. Elements can only be merged if ve.dm.Node.canBeMergedWith() returns true
  *     3. Merges take place at the highest common ancestor
  *
  * @method
@@ -71,7 +71,7 @@ ve.dm.Transaction.newFromRemoval = function( doc, range ) {
 	var selection = doc.selectNodes( range, 'leaves' );
 	if ( selection.length === 0 ) {
 		// Empty selection? Something is wrong!
-		throw 'Invalid range, can not remove from ' + range.start + ' to ' + range.end;
+		throw 'Invalid range, cannot remove from ' + range.start + ' to ' + range.end;
 	}
 
 	var firstNode = selection[0].node,
