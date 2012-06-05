@@ -9,13 +9,14 @@ var MWParserEnvironment = function(opts) {
 		pageCache: {}, // @fixme use something with managed space
 		debug: false,
 		trace: false,
-		wgScriptPath: "/wiki",
+		wgScriptPath: "/wiki/",
 		wgScript: "/wiki/index.php",
 		wgUploadPath: "/wiki/images",
 		wgScriptExtension: ".php",
 		fetchTemplates: false,
 		maxDepth: 40,
-		pageName: 'Main page'
+		pageName: 'Main page',
+		interwikis: '^$'
 	};
 	// XXX: this should be namespaced
 	$.extend(options, opts);
@@ -115,14 +116,6 @@ MWParserEnvironment.prototype.KVtoHash = function ( kvs ) {
 	return res;
 };
 
-MWParserEnvironment.prototype.setTokenRank = function ( rank, token ) {
-	// convert string literal to string object
-	if ( token.constructor === String && token.rank === undefined ) {
-		token = new String( token );
-	}
-	token.rank = rank;
-	return token;
-};
 
 // Strip 'end' tokens and trailing newlines
 MWParserEnvironment.prototype.stripEOFTkfromTokens = function ( tokens ) {
@@ -236,13 +229,22 @@ MWParserEnvironment.prototype.normalizeTitle = function( name ) {
 	}
 	
 	function upperFirst( s ) { return s.substr(0, 1).toUpperCase() + s.substr(1); }
-	// XXX: Do not uppercase all bits!
-	var ns = name.split(':', 1)[0];
-	if( ns !== '' && ns !== name ) {
-		name = upperFirst( ns ) + ':' + upperFirst( name.substr( ns.length + 1 ) );
-	} else {
-		name = upperFirst( name );
+
+	function splitNS ( ) {
+		var ns = name.split(':', 1)[0];
+		if( ns !== '' && ns !== name ) {
+			if ( ns.match( this.interwikis ) ) {
+				forceNS += ns + ':';
+				name = name.substr( ns.length + 1 );
+				splitNS();
+			} else {
+				name = upperFirst( ns ) + ':' + upperFirst( name.substr( ns.length + 1 ) );
+			}
+		} else {
+			name = upperFirst( name );
+		}
 	}
+	splitNS();
 	//name = name.split(':').map( upperFirst ).join(':');
 	//if (name === '') {
 	//	throw new Error('Invalid/empty title');
@@ -411,3 +413,4 @@ MWParserEnvironment.prototype.tp = function ( ) {
 if (typeof module == "object") {
 	module.exports.MWParserEnvironment = MWParserEnvironment;
 }
+

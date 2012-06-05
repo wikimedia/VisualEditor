@@ -13,11 +13,12 @@ var ParserPipelineFactory = require(mp + 'mediawiki.parser.js').ParserPipelineFa
 	WikitextSerializer = require(mp + 'mediawiki.WikitextSerializer.js').WikitextSerializer,
 	TemplateRequest = require(mp + 'mediawiki.ApiRequest.js').TemplateRequest;
 
+
 var env = new ParserEnv( { 
 	// fetch templates from enwiki for now..
 	wgScript: 'http://en.wikipedia.org/w',
 	// stay within the 'proxied' content, so that we can click around
-	wgScriptPath: '', //http://en.wikipedia.org/wiki', 
+	wgScriptPath: '/', //http://en.wikipedia.org/wiki', 
 	wgScriptExtension: '.php',
 	// XXX: add options for this!
 	wgUploadPath: 'http://upload.wikimedia.org/wikipedia/commons',
@@ -25,7 +26,9 @@ var env = new ParserEnv( {
 	// enable/disable debug output using this switch	
 	debug: false,
 	trace: false,
-	maxDepth: 40
+	maxDepth: 40,
+	interwikis: 
+"en|de|fr|nl|it|pl|es|ru|ja|pt|zh|sv|vi|uk|ca|no|fi|cs|hu|ko|fa|id|tr|ro|ar|sk|eo|da|sr|lt|ms|eu|he|sl|bg|kk|vo|war|hr|hi|et|az|gl|simple|nn|la|th|el|new|roa-rup|oc|sh|ka|mk|tl|ht|pms|te|ta|be-x-old|ceb|br|be|lv|sq|jv|mg|cy|lb|mr|is|bs|yo|an|hy|fy|bpy|lmo|pnb|ml|sw|bn|io|af|gu|zh-yue|ne|nds|ku|ast|ur|scn|su|qu|diq|ba|tt|my|ga|cv|ia|nap|bat-smg|map-bms|wa|kn|als|am|bug|tg|gd|zh-min-nan|yi|vec|hif|sco|roa-tara|os|arz|nah|uz|sah|mn|sa|mzn|pam|hsb|mi|li|ky|si|co|gan|glk|ckb|bo|fo|bar|bcl|ilo|mrj|fiu-vro|nds-nl|tk|vls|se|gv|ps|rue|dv|nrm|pag|koi|pa|rm|km|kv|udm|csb|mhr|fur|mt|wuu|lij|ug|lad|pi|zea|sc|bh|zh-classical|nov|ksh|or|ang|kw|so|nv|xmf|stq|hak|ay|frp|frr|ext|szl|pcd|ie|gag|haw|xal|ln|rw|pdc|pfl|krc|crh|eml|ace|gn|to|ce|kl|arc|myv|dsb|vep|pap|bjn|as|tpi|lbe|wo|mdf|jbo|kab|av|sn|cbk-zam|ty|srn|kbd|lo|ab|lez|mwl|ltg|ig|na|kg|tet|za|kaa|nso|zu|rmy|cu|tn|chr|got|sm|bi|mo|bm|iu|chy|ik|pih|ss|sd|pnt|cdo|ee|ha|ti|bxr|om|ks|ts|ki|ve|sg|rn|dz|cr|lg|ak|tum|fj|st|tw|ch|ny|ff|xh|ng|ii|cho|mh|aa|kj|ho|mus|kr|hz"
 } );
 
 
@@ -190,8 +193,6 @@ var parse = function ( res, cb, src ) {
 	parser.on('document', cb.bind( null, res, src ) );
 	try {
 		res.setHeader('Content-Type', 'text/html; charset=UTF-8');
-		//console.log('starting parsing of ' + req.params[0]);
-		// FIXME: This does not handle includes or templates correctly
 		parser.process( src );
 	} catch (e) {
 		console.log( e );
@@ -202,9 +203,16 @@ var parse = function ( res, cb, src ) {
 /**
  * Round-trip article testing
  */
-app.get(/\/_rt\/(.*)/, function(req, res){
-	env.pageName = req.params[0];
-	env.wgScriptPath = '/_rt';
+app.get( new RegExp('/_rt/(?:(?:(?:' + env.interwikis + '):/)?(' + env.interwikis + '):)?(.*)') , function(req, res){
+	env.pageName = req.params[1];
+	if ( req.params[0] ) {
+		env.wgScriptPath = '/_rt/' + req.params[0] + ':';
+		env.wgScript = 'http://' + req.params[0] + '.wikipedia.org/w';
+	} else {
+		// default to English Wikipedia
+		env.wgScriptPath = '/';
+		env.wgScript = 'http://en.wikipedia.org/w';
+	}
 
 	if ( env.pageName === 'favicon.ico' ) {
 		res.end( 'no favicon yet..' );
@@ -213,7 +221,7 @@ app.get(/\/_rt\/(.*)/, function(req, res){
 
 	var target = env.resolveTitle( env.normalizeTitle( env.pageName ), '' );
 	
-	console.log('retrieving ' + req.params[0]);
+	console.log('starting parsing of ' + target);
 	var tpr = new TemplateRequest( env, target );
 	tpr.once('src', parse.bind( null, res, roundTripDiff ));
 });
@@ -239,29 +247,43 @@ app.post(/\/_rtform\/(.*)/, function(req, res){
 /**
  * Regular article parsing
  */
-app.get(/\/(.*)/, function(req, res){
-	env.pageName = req.params[0];
-	env.wgScriptPath = '';
+app.get(new RegExp( '/(?:(?:(?:' + env.interwikis + '):/)?(' + env.interwikis + '):)?(.*)' ), function(req, res){
+	env.pageName = req.params[1];
+	if ( req.params[0] ) {
+		env.wgScriptPath = req.params[0] + ':';
+		env.wgScript = 'http://' + req.params[0] + '.wikipedia.org/w';
+	} else {
+		// default to English Wikipedia
+		env.wgScriptPath = '/';
+		env.wgScript = 'http://en.wikipedia.org/w';
+	}
 	if ( env.pageName === 'favicon.ico' ) {
 		res.end( 'no favicon yet..');
 		return;
 	}
-	var parser = parserPipelineFactory.makePipeline( 'text/x-mediawiki/full' );
-	parser.on('document', function ( document ) {
+	var target = env.resolveTitle( env.normalizeTitle( env.pageName ), '' );
+//		parser = parserPipelineFactory.makePipeline( 'text/x-mediawiki/full' );
+//	parser.on('document', function ( document ) {
+//		res.end(document.body.innerHTML);
+//		//res.write('<form method=POST><input name="content"></form>');
+//		//res.end("hello world\n" + req.method + ' ' + req.params.title);
+//	});
+//	try {
+//		res.setHeader('Content-Type', 'text/html; charset=UTF-8');
+//		console.log('starting parsing of ' + req.params[0]);
+//		// FIXME: This does not handle includes or templates correctly
+//		parser.process('{{:' + target + '}}' );
+//	} catch (e) {
+//		console.log( e );
+//		res.end( e );
+//		textarea( res, req.body.content );
+//	}
+
+	console.log('starting parsing of ' + target);
+	var tpr = new TemplateRequest( env, target );
+	tpr.once('src', parse.bind( null, res, function ( res, src, document ) {
 		res.end(document.body.innerHTML);
-		//res.write('<form method=POST><input name="content"></form>');
-		//res.end("hello world\n" + req.method + ' ' + req.params.title);
-	});
-	try {
-		res.setHeader('Content-Type', 'text/html; charset=UTF-8');
-		console.log('starting parsing of ' + req.params[0]);
-		// FIXME: This does not handle includes or templates correctly
-		parser.process('{{:' + req.params[0] + '}}' );
-	} catch (e) {
-		console.log( e );
-		res.end( e );
-		textarea( res, req.body.content );
-	}
+	}));
 });
 
 /**
@@ -269,7 +291,7 @@ app.get(/\/(.*)/, function(req, res){
  */
 app.post(/\/(.*)/, function(req, res){
 	env.pageName = req.params[0];
-	env.wgScriptPath = '';
+	env.wgScriptPath = '/';
 	res.setHeader('Content-Type', 'text/x-mediawiki; charset=UTF-8');
 	var p = new html5.Parser();
 	p.parse( req.body.content );

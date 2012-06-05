@@ -58,7 +58,7 @@ var ParserPipelineFactory = require('./mediawiki.parser.js').ParserPipelineFacto
 		'wgScriptPath': {
 			description: 'http path to remote web interface, e.g. http://wiki.sample.com/wiki',
 			'boolean': false,
-			'default': 'http://en.wikipedia.org/wiki'
+			'default': 'http://en.wikipedia.org/wiki/'
 		},
 		'wgScriptExtension': {
 			description: 'Extension for PHP files on remote API server, if any. Include the period, e.g. ".php"',

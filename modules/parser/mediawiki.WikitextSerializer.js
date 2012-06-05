@@ -122,7 +122,7 @@ WSP._linkHandler =  function( state, token ) {
 	var attribDict = state.env.KVtoHash( token.attribs );
 	if ( attribDict.rel && attribDict.href !== undefined ) {
 		var target = decodeURIComponent( 
-				attribDict.href.substr( state.env.wgScriptPath.length + 1 ) );
+				attribDict.href.substr( state.env.wgScriptPath.length ) );
 		if ( token.dataAttribs.sHref ) {
 			//console.warn( JSON.stringify( token.dataAttribs.sHref ) );
 			var normalizedOrigHref = state.env.resolveTitle( 

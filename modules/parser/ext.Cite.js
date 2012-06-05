@@ -153,7 +153,6 @@ Cite.prototype.onReferences = function ( token, manager ) {
 		res = [ new SelfclosingTagTk( 'meta', [ new KV('fixme', 'add-rdfa-rt-info') ] ) ];
 	}
 
-	res = res.map( this.manager.env.setTokenRank.bind( res, this.referencesRank ) );
 	//console.warn( 'references res: ' + JSON.stringify( res, null, 2 ) );
 	return { tokens: res };
 };
