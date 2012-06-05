@@ -36,7 +36,8 @@
     //    return es;
     //};
 
-    var flatten = function ( e ) {
+/**
+    var old_flatten = function ( e ) {
         // Fast single-level flatten:
         //return [].concat.apply([], e);
         
@@ -66,6 +67,26 @@
             return e;
         }
     };
+**/
+
+    var flatten = function(e) {
+        function internal_flatten(e, res) {
+            for (var i = 0, l = e.length; i < l; i++) {
+                var v = e[i];
+                if (v.constructor === Array ) {
+                    // Change in assumption from a shallow array to a nested array.
+                    if (res === null) res = e.slice(0, i);
+                    internal_flatten(v, res);
+                } else if (res !== null) {
+                    res.push(v);
+                }
+            }
+
+            return res === null ? e : res;
+        }
+
+        return internal_flatten(e, null);
+    }
 
     
     var flatten_string = function ( c ) {
