@@ -121,28 +121,40 @@ WSP._linkHandler =  function( state, token ) {
 	
 	var attribDict = state.env.KVtoHash( token.attribs );
 	if ( attribDict.rel && attribDict.href !== undefined ) {
-		var target = decodeURIComponent( 
-				attribDict.href.substr( state.env.wgScriptPath.length ) );
-		if ( token.dataAttribs.sHref ) {
-			//console.warn( JSON.stringify( token.dataAttribs.sHref ) );
-			var normalizedOrigHref = state.env.resolveTitle( 
-					state.env.normalizeTitle( 
-						state.env.tokensToString( token.dataAttribs.sHref ) ), 
-					'' );
-			if ( normalizedOrigHref === target ) {
-				target = token.dataAttribs.sHref;
-			}
-		} else {
-			target = target.replace( /_/g, ' ' )
-		}
 
 		if ( attribDict.rel === 'mw:wikiLink' ) {
-			if (token.dataAttribs.tail) {
-				state.linkTail = token.dataAttribs.tail;
+			var tail = token.dataAttribs.tail,
+				target = decodeURIComponent( 
+					attribDict.href.substr( state.env.wgScriptPath.length ) );
+			if ( tail && tail.length ) {
+				state.dropTail = tail;
+				if ( token.dataAttribs.gc ) {
+					target = token.dataAttribs.sHref;
+				} else {
+					target = target.replace( /_/g, ' ' );
+				}
+			} else {
+				if ( token.dataAttribs.sHref ) {
+					//console.warn( JSON.stringify( token.dataAttribs.sHref ) );
+					var normalizedOrigHref = state.env.resolveTitle( 
+							state.env.normalizeTitle( 
+								state.env.tokensToString( token.dataAttribs.sHref ) ), 
+							'' );
+					if ( normalizedOrigHref === target ) {
+						// Non-standard capitalization
+						target = token.dataAttribs.sHref;
+					}
+				} else {
+					target = target.replace( /_/g, ' ' );
+				}
 			}
 
+			// FIXME: Properly handle something like [[{{Foo}}]]s
+			target = state.env.tokensToString( target );
+
 			if ( token.dataAttribs.gc ) {
-				return '[[';
+				state.dropContent = true;
+				return '[[' + target;
 			} else {
 				return '[[' + target + '|';
 			}
@@ -173,9 +185,9 @@ WSP._linkEndHandler =  function( state, token ) {
 	var attribDict = state.env.KVtoHash( token.attribs );
 	if ( attribDict.rel && attribDict.href !== undefined ) {
 		if ( attribDict.rel === 'mw:wikiLink' ) {
-			var retVal = "]]" + (state.linkTail ? state.linkTail : "");
-			state.linkTail   = null;
+			var retVal = "]]" + (token.dataAttribs.tail ? token.dataAttribs.tail : "");
 			state.dropContent = false;
+			state.dropTail = false;
 			return retVal;
 		} else if ( attribDict.rel === 'mw:extLink' ) {
 			if ( token.dataAttribs.stx === 'urllink' ) {
@@ -359,6 +371,7 @@ WSP._serializeToken = function ( state, token ) {
 	var handler, 
 		res = '',
 		dropContent = state.dropContent;
+	//console.warn( 'st: ' + JSON.stringify( token ) );
 	switch( token.constructor ) {
 		case TagTk:
 		case SelfclosingTagTk:
@@ -424,8 +437,11 @@ WSP._serializeToken = function ( state, token ) {
 			state.precedingNewlineCount = 0;
 		}
 		if ( ! dropContent || ! state.dropContent ) {
-			if (state.linkTail && res.substr(- state.linkTail.length) === state.linkTail) {
-				res = res.substr(0, res.length - state.linkTail.length);
+			// FIXME: This might modify not just the last content token in a
+			// link, which would be wrong. We'll likely have to collect tokens
+			// between a tags instead, and strip only the last content token.
+			if (state.dropTail && res.substr(- state.dropTail.length) === state.dropTail) {
+				res = res.substr(0, res.length - state.dropTail.length);
 			}
 			state.chunkCB( res );
 		}

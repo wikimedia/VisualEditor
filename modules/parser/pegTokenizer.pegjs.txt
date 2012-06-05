@@ -916,7 +916,7 @@ wikilink
     // XXX In real MediaWiki, this is a language-dependent positive character
     // class. Can we work out a static negative class instead?
     // XXX: Exclude uppercase chars from non-latin languages too!
-    tail:( ![A-Z \t(),.:-] tc:text_char { return tc } )* {
+    tail:( ![A-Z \t(),.:\n\r-] tc:text_char { return tc } )* {
       var obj = new SelfclosingTagTk( 'wikilink' ),
           textTokens = [];
       obj.attribs.push( new KV('', target) );
@@ -931,8 +931,10 @@ wikilink
       // Deal with content. XXX: Properly support pipe-trick etc
       //lcontent.tail = tail && tail.join('') || '';
 
+      // We store the tail and content(s) in attributes, so that it is
+      // expanded by the AttributeExpander pass.
+      obj.attribs.push( new KV( 'tail',  tail && tail.join('') || '') );
       obj.attribs = obj.attribs.concat( lcontent.content );
-      obj.attribs.push( new KV( 'tail', tail && tail.join('') || '' ) );
       //console.warn( "XXX:" + pp([obj].concat(textTokens, [new EndTagTk( 'a' )])) );
       return [obj];
   }
