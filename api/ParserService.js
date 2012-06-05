@@ -203,7 +203,7 @@ var parse = function ( res, cb, src ) {
 /**
  * Round-trip article testing
  */
-app.get( new RegExp('/_rt/(?:(?:(?:' + env.interwikis + '):/)?(' + env.interwikis + '):)?(.*)') , function(req, res){
+app.get( new RegExp('/_rt/(?:(?:(?:' + env.interwikis + '):)?(' + env.interwikis + '):)?(.*)') , function(req, res){
 	env.pageName = req.params[1];
 	if ( req.params[0] ) {
 		env.wgScriptPath = '/_rt/' + req.params[0] + ':';
@@ -247,10 +247,10 @@ app.post(/\/_rtform\/(.*)/, function(req, res){
 /**
  * Regular article parsing
  */
-app.get(new RegExp( '/(?:(?:(?:' + env.interwikis + '):/)?(' + env.interwikis + '):)?(.*)' ), function(req, res){
+app.get(new RegExp( '/(?:(?:(?:' + env.interwikis + '):)?(' + env.interwikis + '):)?(.*)' ), function(req, res){
 	env.pageName = req.params[1];
 	if ( req.params[0] ) {
-		env.wgScriptPath = req.params[0] + ':';
+		env.wgScriptPath = '/' + req.params[0] + ':';
 		env.wgScript = 'http://' + req.params[0] + '.wikipedia.org/w';
 	} else {
 		// default to English Wikipedia
@@ -262,22 +262,6 @@ app.get(new RegExp( '/(?:(?:(?:' + env.interwikis + '):/)?(' + env.interwikis + 
 		return;
 	}
 	var target = env.resolveTitle( env.normalizeTitle( env.pageName ), '' );
-//		parser = parserPipelineFactory.makePipeline( 'text/x-mediawiki/full' );
-//	parser.on('document', function ( document ) {
-//		res.end(document.body.innerHTML);
-//		//res.write('<form method=POST><input name="content"></form>');
-//		//res.end("hello world\n" + req.method + ' ' + req.params.title);
-//	});
-//	try {
-//		res.setHeader('Content-Type', 'text/html; charset=UTF-8');
-//		console.log('starting parsing of ' + req.params[0]);
-//		// FIXME: This does not handle includes or templates correctly
-//		parser.process('{{:' + target + '}}' );
-//	} catch (e) {
-//		console.log( e );
-//		res.end( e );
-//		textarea( res, req.body.content );
-//	}
 
 	console.log('starting parsing of ' + target);
 	var tpr = new TemplateRequest( env, target );
