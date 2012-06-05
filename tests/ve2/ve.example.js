@@ -205,6 +205,19 @@ ve.example.getSelectNodesCases = function( doc ) {
 				}
 			],
 			'msg': 'zero-length range at the start of the document'
+		},
+		{
+			'actual': doc.selectNodes( new ve.Range( 30, 37 ), 'leaves' ),
+			'expected': [
+				// preformatted/text
+				{
+					'node': lookup( documentNode, 2, 0 ),
+					// no 'range' because the text node is covered completely
+					'index': 0,
+					'nodeRange': new ve.Range( 36, 37 )
+				}
+			],
+			'msg': 'range with 5 closings and a text node'
 		}
 	];
 };

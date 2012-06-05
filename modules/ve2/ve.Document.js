@@ -319,7 +319,9 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 				( nextNode.isWrapped() ? 1 : 0 );
 		} else {
 			// There is no next node, move up the stack until there is one
-			left = right;
+			left = right +
+				// Skip over node's closing, if present
+				( node.isWrapped() ? 1 : 0 );
 			while ( !nextNode ) {
 				stack.pop();
 				if ( stack.length === 0 ) {
