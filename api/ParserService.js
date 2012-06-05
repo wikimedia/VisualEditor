@@ -210,7 +210,7 @@ app.get( new RegExp('/_rt/(?:(?:(?:' + env.interwikis + '):)?(' + env.interwikis
 		env.wgScript = 'http://' + req.params[0] + '.wikipedia.org/w';
 	} else {
 		// default to English Wikipedia
-		env.wgScriptPath = '/';
+		env.wgScriptPath = '/_rt/';
 		env.wgScript = 'http://en.wikipedia.org/w';
 	}
 
