@@ -1355,6 +1355,7 @@ block_tag
         } else {
             res = new TagTk( name, attribs );
         }
+        res.dataAttribs.stx = 'html';
         return [res];
     }
 
