@@ -418,6 +418,39 @@ ParserTests.prototype.processResult = function ( index, item, doc ) {
 	process.nextTick( this.processCase.bind( this, index + 1 ) );
 };
 
+ParserTests.prototype.diff = function ( a, b ) {
+	if ( this.argv.color ) {
+		return jsDiff.diffWords( a, b ).map( function ( change ) {
+			if ( change.added ) {
+				return change.value.green;
+			} else if ( change.removed ) {
+				return change.value.red;
+			} else {
+				return change.value;
+			}
+		}).join('');
+	} else {
+		var patch = jsDiff.createPatch('wikitext.txt', a, b, 'before', 'after');
+
+		console.log('DIFF'.cyan +': ');
+
+		// Strip the header from the patch, we know how diffs work..
+		patch = patch.replace(/^[^\n]*\n[^\n]*\n[^\n]*\n[^\n]*\n/, '');
+
+		return patch.split( '\n' ).map( function(line) {
+			// Add some colors to diff output
+			switch( line.charAt(0) ) {
+				case '-':
+					return line.red;
+				case '+':
+					return line.blue;
+				default:
+					return line;
+			}
+		}).join( "\n" );
+	}
+}
+
 ParserTests.prototype.checkResult = function ( item, out ) {
 	var normalizedOut = this.normalizeOut(out);
 	var normalizedExpected = this.normalizeHTML(item.result);
@@ -450,26 +483,10 @@ ParserTests.prototype.checkResult = function ( item, out ) {
 
 			console.log('NORMALIZED RENDERED'.magenta + ':');
 			console.log(this.formatHTML(this.normalizeOut(out)) + "\n");
-			var patch = jsDiff.createPatch('wikitext.txt', a, b, 'before', 'after');
 
 			console.log('DIFF'.cyan +': ');
 
-			// Strip the header from the patch, we know how diffs work..
-			patch = patch.replace(/^[^\n]*\n[^\n]*\n[^\n]*\n[^\n]*\n/, '');
-
-			var colored_diff = patch.split( '\n' ).map( function(line) {
-				// Add some colors to diff output
-				switch( line.charAt(0) ) {
-					case '-':
-						return line.red;
-					case '+':
-						return line.blue;
-					default:
-						return line;
-				}
-			}).join( "\n" );
-
-
+			var colored_diff = this.diff( a, b );
 			console.log( colored_diff );
 
 			if(this.argv.printwhitelist) {
@@ -507,26 +524,8 @@ ParserTests.prototype.checkRoundTripResult = function ( item, out ) {
 
 			console.log('NORMALIZED RENDERED'.magenta + ':');
 			console.log(normalizedOut + "\n");
-			var patch = jsDiff.createPatch('wikitext.txt', normalizedExpected, normalizedOut, 'before', 'after');
-
 			console.log('DIFF'.cyan +': ');
-
-			// Strip the header from the patch, we know how diffs work..
-			patch = patch.replace(/^[^\n]*\n[^\n]*\n[^\n]*\n[^\n]*\n/, '');
-
-			var colored_diff = patch.split( '\n' ).map( function(line) {
-				// Add some colors to diff output
-				switch( line.charAt(0) ) {
-					case '-':
-						return line.red;
-					case '+':
-						return line.blue;
-					default:
-						return line;
-				}
-			}).join( "\n" );
-
-
+			var colored_diff = this.diff ( normalizedExpected, normalizedOut );
 			console.log( colored_diff );
 		}
 	} else {

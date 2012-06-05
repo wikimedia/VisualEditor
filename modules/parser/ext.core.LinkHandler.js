@@ -25,8 +25,7 @@ WikiLinkHandler.prototype.rank = 1.15; // after AttributeExpander
 
 WikiLinkHandler.prototype.onWikiLink = function ( token, frame, cb ) {
 	var env = this.manager.env,
-		href = token.attribs[0].v,
-		tail = env.lookupKV( token.attribs, 'tail' ).v;
+		href = token.attribs[0].v;
 	var title = this.manager.env.makeTitleFromPrefixedText( 
 					env.tokensToString( href )
 				);
@@ -48,7 +47,7 @@ WikiLinkHandler.prototype.onWikiLink = function ( token, frame, cb ) {
 					] 
 					, token.dataAttribs
 				),
-			content = token.attribs.slice(1, -1);
+			content = token.attribs.slice(2);
 		if ( href !== normalizedHref ) {
 			obj.dataAttribs.sHref = href;
 		}
@@ -67,13 +66,15 @@ WikiLinkHandler.prototype.onWikiLink = function ( token, frame, cb ) {
 			content = [ env.decodeURI( env.tokensToString( href ) ) ];
 			obj.dataAttribs.gc = 1;
 		}
+
+		var tail = token.attribs[1].v;
 		if ( tail ) {
 			obj.dataAttribs.tail = tail;
 			content.push( tail );
 		}
 		
 		cb ( { 
-			tokens: [obj].concat( content, new EndTagTk( 'a' ) )
+			tokens: [obj].concat( content, [ new EndTagTk( 'a' ) ] )
 		} );
 	}
 };
@@ -116,8 +117,8 @@ WikiLinkHandler.prototype.renderFile = function ( token, frame, cb, title ) {
 	// distinguish media types
 	// if image: parse options
 	
-	// Slice off the target and trail
-	var content = token.attribs.slice(1, -1);
+	// Slice off the target and tail
+	var content = token.attribs.slice(2);
 
 
 	var MD5 = new jshashes.MD5(),
