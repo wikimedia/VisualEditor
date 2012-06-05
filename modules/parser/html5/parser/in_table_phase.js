@@ -33,7 +33,7 @@ var end_tag_handlers = {
 	'-default': 'endTagOther',
 }
 
-exports.Phase = p = function InTablePhase(parser, tree) {
+var p = exports.Phase = function InTablePhase(parser, tree) {
 	Phase.call(this, parser, tree);
 	this.start_tag_handlers = start_tag_handlers;
 	this.end_tag_handlers = end_tag_handlers;
@@ -92,14 +92,14 @@ p.prototype.startTagOther = function(name, attributes) {
 }
 
 p.prototype.endTagTable = function(name) {
-	if(this.inScope(name, true)) {
+	if(this.inScope(name, HTML5.TABLE_SCOPING_ELEMENTS)) {
 		this.tree.generateImpliedEndTags();
-		if(this.tree.open_elements[this.tree.open_elements.length - 1].tagName.toLowerCase() != name) {
-			this.parse_error("end-tag-too-early-named", {gotName: 'table', expectedName: this.tree.open_elements[this.tree.open_elements.length - 1].tagName.toLowerCase()});
+		if(this.tree.open_elements.last().tagName.toLowerCase() != name) {
+			this.parse_error("end-tag-too-early-named", {gotName: 'table', expectedName: this.tree.open_elements.last().tagName.toLowerCase()});
 		}
 
 		this.tree.remove_open_elements_until('table');
-		this.parser.reset_insertion_mode(this.tree.open_elements[this.tree.open_elements.length - 1]);
+		this.parser.reset_insertion_mode(this.tree.open_elements.last());
 	} else {
 		assert.ok(this.parser.inner_html);
 		this.parse_error();
@@ -121,7 +121,7 @@ p.prototype.endTagOther = function(name) {
 
 p.prototype.clearStackToTableContext = function() {
 	var name;
-	while(name = this.tree.open_elements[this.tree.open_elements.length - 1].tagName.toLowerCase(), (name != 'table' && name != 'html')) {
+	while(name = this.tree.open_elements.last().tagName.toLowerCase(), (name != 'table' && name != 'html')) {
 		this.parse_error("unexpected-implied-end-tag-in-table", {name: name})
 		this.tree.pop_element()
 	}

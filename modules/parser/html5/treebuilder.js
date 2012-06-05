@@ -1,21 +1,15 @@
-//"use strict";
-
+require('../core-upgrade');
 var HTML5 = require('../html5');
 var assert = require('assert');
-if(!Array.prototype.last) {
-	Array.prototype.last = function() { return this[this.length - 1] };
-}
 
-HTML5.TreeBuilder = function TreeBuilder(document) {
-	this.open_elements = [];
+var b = HTML5.TreeBuilder = function TreeBuilder(document) {
 	this.document = document;
-	this.activeFormattingElements = [];
+	this.reset();
 }
-
-var b = HTML5.TreeBuilder;
 
 b.prototype.reset = function() {
-
+	this.open_elements = [];
+	this.activeFormattingElements = [];
 }
 
 b.prototype.copyAttributeToElement = function(element, attribute) {
@@ -35,10 +29,12 @@ b.prototype.copyAttributeToElement = function(element, attribute) {
 }
 
 b.prototype.createElement = function (name, attributes, namespace) {
+	var el;
     try {
-        var el = this.document.createElement(name);
+        el = this.document.createElement(name);
     } catch(e) {
-        console.log("Can't create element '"+ name + "' (" + e + ")")
+        console.log("Can't create element '"+ name + "' (" + e + ") Using a div for now. FIXME!")
+		el = this.document.createElement('div');
     }
     el.namespace = namespace;
     if(attributes) {
@@ -72,14 +68,14 @@ b.prototype.insert_foreign_element = function(name, attributes, namespace) {
 
 b.prototype.insert_element_normal = function(name, attributes, namespace) {
 	var element = this.createElement(name, attributes, namespace);
-	this.open_elements[this.open_elements.length - 1].appendChild(element);
+	this.open_elements.last().appendChild(element);
 	this.open_elements.push(element);
 	return element;
 }
 
 b.prototype.insert_element_from_table = function(name, attributes, namespace) {
 	var element = this.createElement(name, attributes, namespace)
-	if(HTML5.TABLE_INSERT_MODE_ELEMENTS.indexOf(this.open_elements[this.open_elements.length - 1].tagName.toLowerCase()) != -1) {
+	if(HTML5.TABLE_INSERT_MODE_ELEMENTS.indexOf(this.open_elements.last().tagName.toLowerCase()) != -1) {
 		// We should be in the InTable mode. This means we want to do
 		// special magic element rearranging 
 		var t = this.getTableMisnestedNodePosition()
@@ -98,7 +94,7 @@ b.prototype.insert_element_from_table = function(name, attributes, namespace) {
 b.prototype.insert_comment = function(data, parent) {
     try {
         var c = this.document.createComment(data);
-        if(!parent) parent = this.open_elements[this.open_elements.length - 1];
+        if(!parent) parent = this.open_elements.last();
         parent.appendChild(c);
     } catch(e) {
         console.log("Can't create comment ("+ data + ")")
@@ -116,8 +112,9 @@ b.prototype.insert_doctype = function (name, publicId, systemId) {
 	
 
 b.prototype.insert_text = function(data, parent) {
-	if(!parent) parent = this.open_elements[this.open_elements.length - 1];
-	if(!this.insert_from_table || HTML5.TABLE_INSERT_MODE_ELEMENTS.indexOf(this.open_elements[this.open_elements.length - 1].tagName.toLowerCase()) == -1) {
+	if(!parent) parent = this.open_elements.last();
+	HTML5.debug('treebuilder.insert_text', data);
+	if(!this.insert_from_table || HTML5.TABLE_INSERT_MODE_ELEMENTS.indexOf(this.open_elements.last().tagName.toLowerCase()) == -1) {
 		if(parent.lastChild && parent.lastChild.nodeType == parent.TEXT_NODE) {
 			parent.lastChild.appendData(data);
 		} else {
@@ -125,7 +122,7 @@ b.prototype.insert_text = function(data, parent) {
                 var tn = this.document.createTextNode(data);
                 parent.appendChild(tn);
             } catch(e) {
-                console.log("Can't create tex node (" + data + ")");
+                console.log("Can't create text node (" + data + ")");
             }
 		}
 	} else {
@@ -194,25 +191,13 @@ b.prototype.getTableMisnestedNodePosition = function() {
 	return {parent: fosterParent, insertBefore: insertBefore}
 }
 
-b.prototype.elementInScope = function(name, tableVariant) {
-	if(this.open_elements.length == 0) return false
-	for(var i = this.open_elements.length - 1; i >= 0; i--) {
-		if (this.open_elements[i].tagName == undefined) return false
-		else if(this.open_elements[i].tagName.toLowerCase() == name) return true
-		else if(this.open_elements[i].tagName.toLowerCase() == 'table') return false
-		else if(!tableVariant && HTML5.SCOPING_ELEMENTS.indexOf(this.open_elements[i].tagName.toLowerCase()) != -1) return false
-		else if(this.open_elements[i].tagName.toLowerCase() == 'html') return false;
-	}
-	return false; 
-}
-
 b.prototype.generateImpliedEndTags = function(exclude) {
 	if(exclude) exclude = exclude.toLowerCase()
 	if(this.open_elements.length == 0) {
 		HTML5.debug('treebuilder.generateImpliedEndTags', 'no open elements')
 		return
 	}
-	var name = this.open_elements[this.open_elements.length - 1].tagName.toLowerCase();
+	var name = this.open_elements.last().tagName.toLowerCase();
 	if(['dd', 'dt', 'li', 'p', 'td', 'th', 'tr'].indexOf(name) != -1 && name != exclude) {
 		var p  = this.pop_element();
 		this.generateImpliedEndTags(exclude);
@@ -246,7 +231,7 @@ b.prototype.reconstructActiveFormattingElements = function() {
 
 		this.activeFormattingElements[i] = element;
 
-		if(element == this.activeFormattingElements[this.activeFormattingElements.length - 1]) break;
+		if(element == this.activeFormattingElements.last()) break;
 	}
 
 }

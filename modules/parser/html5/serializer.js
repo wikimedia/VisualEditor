@@ -1,4 +1,3 @@
-//"use strict";
 var HTML5 = require('../html5');
 var events = require('events');
 
@@ -25,10 +24,12 @@ var default_opts = {
 }
 
 HTML5.serialize = function(src, target, override) {
+	var options;
 	if(!override) {
 		options = default_opts
 	} else {
 		options = {}
+		var k;
 		for(k in default_opts) options[k] = default_opts[k]
 		for(k in override) options[k] = override[k]
 	}
@@ -84,7 +85,7 @@ HTML5.serialize = function(src, target, override) {
 			attrs = attrs.sort();
 			for(var ki in attrs) {
 				var quote_attr = false;
-				v = tok.data.getNamedItem(attrs[ki].nodeName).nodeValue;
+				var v = tok.data.getNamedItem(attrs[ki].nodeName).nodeValue;
 				attributes += " "+attrs[ki].nodeName;
 				if(!options.minimize_boolean_attributes || ((HTML5.BOOLEAN_ATTRIBUTES[tok.name] || []).indexOf(ki) == -1 && (HTML5.BOOLEAN_ATTRIBUTES["_global"].indexOf(ki) == -1))) {
 					attributes += "=";

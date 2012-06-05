@@ -1,4 +1,3 @@
-//"use strict";
 var Phase = require('./phase').Phase;
 var HTML5 = require('../../html5');
 
@@ -22,7 +21,7 @@ var end_tag_handlers = {
 	"-default": 'endTagOther',
 };
 
-exports.Phase = p = function AfterHeadPhase(parser, tree) {
+var p = exports.Phase = function AfterHeadPhase(parser, tree) {
 	Phase.call(this, parser, tree);
         this.start_tag_handlers = start_tag_handlers;
         this.end_tag_handlers = end_tag_handlers;

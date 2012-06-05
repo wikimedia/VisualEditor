@@ -1,4 +1,3 @@
-//"use strict";
 var HTML5 = require('../../html5');
 var Phase = require('./phase').Phase;
 var assert = require('assert')
@@ -11,7 +10,7 @@ var start_tag_handlers = {
 	meta: 'startTagProcessInHead',
 	script: 'startTagProcessInHead',
 	style: 'startTagProcessInHead',
-	title: 'startTagProcessInHead',
+	title: 'startTagTitle',
 	body: 'startTagBody',
 	form: 'startTagForm',
 	plaintext: 'startTagPlaintext',
@@ -42,7 +41,7 @@ var start_tag_handlers = {
 	menu: 'startTagCloseP',
 	ol: 'startTagCloseP',
 	p: 'startTagCloseP',
-	pre: 'startTagCloseP',
+	pre: 'startTagCloseP', /// @todo: Handle <pre> and <listing> specially with regards to newlines
 	ul: 'startTagCloseP',
 	b: 'startTagFormatting',
 	big: 'startTagFormatting',
@@ -80,7 +79,7 @@ var start_tag_handlers = {
 	colgroup: 'startTagMisplaced',
 	frame: 'startTagMisplaced',
 	frameset: 'startTagMisplaced',
-	//head: 'startTagMisplaced',
+	head: 'startTagMisplaced',
 	tbody: 'startTagMisplaced',
 	td: 'startTagMisplaced',
 	tfoot: 'startTagMisplaced',
@@ -100,6 +99,8 @@ var start_tag_handlers = {
 	command: 'startTagNew',
 	math: 'startTagMath',
 	svg: 'startTagSVG',
+    rt: 'startTagRpRt',
+    rp: 'startTagRpRt',
 	"-default": 'startTagOther',
 }
 
@@ -189,10 +190,11 @@ var end_tag_handlers = {
 	footer: 'endTagNew',
 	datagrid: 'endTagNew',
 	command: 'endTagNew',
+    title: 'endTagTitle',
 	"-default": 'endTagOther',
 }
 
-exports.Phase = p = function InBodyPhase(parser, tree) {
+var p = exports.Phase = function InBodyPhase(parser, tree) {
 	Phase.call(this, parser, tree);
 	this.start_tag_handlers = start_tag_handlers;
 	this.end_tag_handlers = end_tag_handlers;
@@ -203,8 +205,8 @@ p.prototype = new Phase;
 
 p.prototype.processSpaceCharactersDropNewline = function(data) {
 	this.dropNewline = false
-	var lastTag = this.tree.open_elements[this.tree.open_elements.length - 1].tagName.toLowerCase()
-	if(data.length > 0 && data[0] == "\n" && ('pre' == lastTag || 'textarea' == lastTag) && !this.tree.open_elements[this.tree.open_elements.length - 1].hasChildNodes()) {
+	var lastTag = this.tree.open_elements.last().tagName.toLowerCase()
+	if(data.length > 0 && data[0] == "\n" && ('pre' == lastTag || 'textarea' == lastTag) && !this.tree.open_elements.last().hasChildNodes()) {
 		data = data.slice(1)
 	}
 
@@ -236,7 +238,7 @@ p.prototype.processCharacters = function(data) {
 }
 
 p.prototype.startTagProcessInHead = function(name, attributes) {
-	new PHASES.inHead(this.parser, this.tree).processStartTag(name, attributes);
+	new HTML5.PHASES.inHead(this.parser, this.tree).processStartTag(name, attributes);
 }
 
 p.prototype.startTagBody = function(name, attributes) {
@@ -254,7 +256,7 @@ p.prototype.startTagBody = function(name, attributes) {
 }
 
 p.prototype.startTagCloseP = function(name, attributes) {
-	if(this.inScope('p')) this.endTagP('p');
+	if(this.inScope('p', HTML5.BUTTON_SCOPING_ELEMENTS)) this.endTagP('p');
 	this.tree.insert_element(name, attributes);
 	if(name == 'pre') {
 		this.dropNewline = true
@@ -265,14 +267,25 @@ p.prototype.startTagForm = function(name, attributes) {
 	if(this.tree.formPointer) {
 		this.parse_error('unexpected-start-tag', {name: name});
 	} else {
-		if(this.inScope('p')) this.endTagP('p');
+		if(this.inScope('p', HTML5.BUTTON_SCOPING_ELEMENTS)) this.endTagP('p');
 		this.tree.insert_element(name, attributes);
-		this.tree.formPointer = this.tree.open_elements[this.tree.open_elements.length - 1];
+		this.tree.formPointer = this.tree.open_elements.last();
 	}
 }
 
+p.prototype.startTagRpRt = function(name, attributes) {
+	if(this.inScope('ruby')) {
+        this.tree.generateImpliedEndTags();
+        if(this.tree.open_elements.last().tagName.toLowerCase() != 'ruby') {
+	        this.parse_error('unexpected child of ruby');
+            while(this.tree.open_elements.last().tagName.toLowerCase() != 'ruby') this.tree.pop_element();
+        }
+    }
+    this.startTagOther(name, attributes);
+}
+
 p.prototype.startTagListItem = function(name, attributes) {
-	if(this.inScope('p')) this.endTagP('p');
+	/// @todo: Fix according to current spec. http://www.w3.org/TR/html5/tree-construction.html#parsing-main-inbody
 	var stopNames = {li: ['li'], dd: ['dd', 'dt'], dt: ['dd', 'dt']};
 	var stopName = stopNames[name];
 
@@ -295,19 +308,25 @@ p.prototype.startTagListItem = function(name, attributes) {
 		// formatting elements
 		if(HTML5.SPECIAL_ELEMENTS.concat(HTML5.SCOPING_ELEMENTS).indexOf(node.tagName.toLowerCase()) != -1 && (node.tagName.toLowerCase() != 'address' && node.tagName.toLowerCase() != 'div')) break;
 	}
+	if(this.inScope('p', HTML5.BUTTON_SCOPING_ELEMENTS)) this.endTagP('p');
 
 	// Always insert an <li> element
 	this.tree.insert_element(name, attributes);
 }
 
 p.prototype.startTagPlaintext = function(name, attributes) {
-	if(this.inScope('p')) this.endTagP('p');
+	if(this.inScope('p', HTML5.BUTTON_SCOPING_ELEMENTS)) this.endTagP('p');
 	this.tree.insert_element(name, attributes);
 	this.parser.tokenizer.content_model = HTML5.Models.PLAINTEXT;
 }
 
 p.prototype.startTagHeading = function(name, attributes) {
-	if(this.inScope('p')) this.endTagP('p');
+	if(this.inScope('p', HTML5.BUTTON_SCOPING_ELEMENTS)) this.endTagP('p');
+	if(['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].indexOf(this.tree.open_elements.last().tagName) != -1) {
+		this.parse_error('heading in heading');
+		this.tree.pop_element();
+	}
+
 	this.tree.insert_element(name, attributes);
 }
 
@@ -348,6 +367,8 @@ p.prototype.startTagButton = function(name, attributes) {
 	} else {
 		this.tree.reconstructActiveFormattingElements();
 		this.tree.insert_element(name, attributes);
+		/// @todo set frameset-ok flag to false
+		/// @todo is the marker needed anymore?
 		this.tree.activeFormattingElements.push(HTML5.Marker);
 	}
 }
@@ -359,11 +380,13 @@ p.prototype.startTagAppletMarqueeObject = function(name, attributes) {
 }
 
 p.prototype.endTagAppletButtonMarqueeObject = function(name) {
-	if(this.inScope(name)) this.tree.generateImpliedEndTags()
-	if(this.tree.open_elements[this.tree.open_elements.length - 1].tagName.toLowerCase() != name) {
-		this.parse_error('end-tag-too-early', {name: name})
-	}
-	if(this.inScope(name)) {
+	if(!this.inScope(name)) {
+		this.parse_error("unexpected-end-tag", {name: name});
+	} else {
+		this.tree.generateImpliedEndTags()
+		if(this.tree.open_elements.last().tagName.toLowerCase() != name) {
+			this.parse_error('end-tag-too-early', {name: name})
+		}
 		this.tree.remove_open_elements_until(name)
 		this.tree.clearActiveFormattingElements()
 	}
@@ -470,7 +493,7 @@ p.prototype.endTagBr = function(name) {
 }
 
 p.prototype.startTagOptionOptgroup = function(name, attributes) {
-	if(this.inScope('option')) endTagOther('option');
+	if(this.inScope('option')) this.endTagOther('option');
 	this.tree.reconstructActiveFormattingElements();
 	this.tree.insert_element(name, attributes);
 }
@@ -484,13 +507,27 @@ p.prototype.startTagOther = function(name, attributes) {
 	this.tree.insert_element(name, attributes);
 }
 
+p.prototype.startTagTitle = function(name, attributes) {
+	this.tree.insert_element(name, attributes);
+	this.parser.tokenizer.content_model = HTML5.Models.RCDATA;
+}
+
+p.prototype.endTagTitle = function(name, attributes) {
+	if(this.tree.open_elements[this.tree.open_elements.length - 1].tagName.toLowerCase() == name.toLowerCase()) {
+		this.tree.pop_element()
+        this.parser.tokenizer.content_model = HTML5.Models.PCDATA;
+	} else {
+		this.parse_error('unexpected-end-tag', {name: name});
+	}
+}
+
 p.prototype.endTagOther = function endTagOther(name) {
 	var nodes = this.tree.open_elements;
 	for(var eli = nodes.length - 1; eli > 0; eli--) {
 		var currentNode = nodes[eli];
 		if(nodes[eli].tagName.toLowerCase() == name) {
 			this.tree.generateImpliedEndTags();
-			if(this.tree.open_elements[this.tree.open_elements.length - 1].tagName.toLowerCase() != name) {
+			if(this.tree.open_elements.last().tagName.toLowerCase() != name) {
 				this.parse_error('unexpected-end-tag', {name: name});
 			}
 			
@@ -538,28 +575,29 @@ p.prototype.startTagSVG = function(name, attributes) {
 }
 
 p.prototype.endTagP = function(name) {
-	if(this.inScope('p')) this.tree.generateImpliedEndTags('p');
-	if(!this.tree.open_elements[this.tree.open_elements.length - 1].tagName.toLowerCase() == 'p')
+	if(!this.inScope('p', HTML5.BUTTON_SCOPING_ELENENTS)) {
 		this.parse_error('unexpected-end-tag', {name: 'p'});
-	if(this.inScope('p')) {
-		while(this.inScope('p')) this.tree.pop_element();
-	} else {
 		this.startTagCloseP('p', {});
 		this.endTagP('p');
+	} else {
+		this.tree.generateImpliedEndTags('p');
+		if(!this.tree.open_elements.last().tagName.toLowerCase() == 'p')
+			this.parse_error('unexpected-end-tag', {name: 'p'});
+		this.tree.remove_open_elements_until(name);
 	}
 }
 
 p.prototype.endTagBody = function(name) {
-	if(this.tree.open_elements[1].tagName.toLowerCase() != 'body') {
-		// inner_html case
+	if(!this.inScope('body')) {
 		this.parse_error('unexpected-end-tag', {name: 'body'});
 		return;
 	}
 
-	if(this.tree.open_elements[this.tree.open_elements.length - 1].tagName.toLowerCase() != 'body') {
+	/// @todo Emit parse error on end tags other than the ones listed in http://www.w3.org/TR/html5/tree-construction.html#parsing-main-inbody
+	if(this.tree.open_elements.last().tagName.toLowerCase() != 'body') {
 		this.parse_error('expected-one-end-tag-but-got-another', {
 			expectedName: 'body',
-			gotName: this.tree.open_elements[this.tree.open_elements.length - 1].tagName.toLowerCase()
+			gotName: this.tree.open_elements.last().tagName.toLowerCase()
 		});
 	}
 	this.parser.newPhase('afterBody');
@@ -571,54 +609,69 @@ p.prototype.endTagHtml = function(name) {
 }
 
 p.prototype.endTagBlock = function(name) {
-	if(this.inScope(name)) this.tree.generateImpliedEndTags();
-	if(!this.tree.open_elements[this.tree.open_elements.length - 1].tagName.toLowerCase() == 'name') {
-		this.parse_error('end-tag-too-early', {name: name});
+	if(!this.inScope(name)) {
+		this.parse_error('end-tag-for-tag-not-in-scope', {name: name});
+	} else {
+		this.tree.generateImpliedEndTags();
+		if(!this.tree.open_elements.last().tagName.toLowerCase() == 'name') {
+			this.parse_error('end-tag-too-early', {name: name});
+		}
+		this.tree.remove_open_elements_until(name);
 	}
-	if(this.inScope(name)) this.tree.remove_open_elements_until(name);
 }
 
 p.prototype.endTagForm = function(name)  {
-	if(this.inScope(name)) {
-		this.tree.generateImpliedEndTags();
-	}
-	
-	if(this.tree.open_elements[this.tree.open_elements.length - 1].tagName.toLowerCase() != name) {
-		this.parse_error('end-tag-too-early-ignored', {name: 'form'});
-	} else {
-		this.tree.pop_element();
-	}
+	var node = this.tree.formPointer;
 	this.tree.formPointer = null;
+	if(!node || !this.inScope(name)) {
+		this.parse_error('end-tag-for-tag-not-in-scope', {name: name});
+	} else {
+		this.tree.generateImpliedEndTags();
+	
+		if(this.tree.open_elements.last().tagName.toLowerCase() != name) {
+			this.parse_error('end-tag-too-early-ignored', {name: 'form'});
+		} else {
+			this.tree.pop_element();
+			/// @todo the spec is a bit vague here. Remove node from the stack -- what if it's in the middle?
+		}
+	}
 }
 
 p.prototype.endTagListItem = function(name) {
-	if(this.inScope(name)) this.tree.generateImpliedEndTags(name);
-	if(this.tree.open_elements[this.tree.open_elements.length - 1].tagName.toLowerCase() != name)
-		this.parse_error('end-tag-too-early', {name: name});
-	if(this.inScope(name)) this.tree.remove_open_elements_until(name);
+	if(!this.inScope(name, HTML5.LIST_SCOPING_ELEMENTS)) {
+		this.parse_error('wrong-end-tag-ignored', {name: name});
+	} else {
+		this.tree.generateImpliedEndTags(name);
+		if(this.tree.open_elements.last().tagName.toLowerCase() != name)
+			this.parse_error('end-tag-too-early', {name: name});
+		this.tree.remove_open_elements_until(name);
+	}
 }
 
 p.prototype.endTagHeading = function(name) {
-	for(var i in HTML5.HEADING_ELEMENTS) {
+	var error = true;
+	var i;
+
+	for(i in HTML5.HEADING_ELEMENTS) {
 		var el = HTML5.HEADING_ELEMENTS[i];
 		if(this.inScope(el)) {
-			this.tree.generateImpliedEndTags();
+			error = false;
 			break;
 		}
 	}
+	if(error) {
+		this.parse_error('wrong-end-tag-ignored', {name: name});
+		return;
+	}
 
-	if(this.tree.open_elements[this.tree.open_elements.length - 1].tagName.toLowerCase() != name)
+	this.tree.generateImpliedEndTags();
+
+	if(this.tree.open_elements.last().tagName.toLowerCase() != name)
 		this.parse_error('end-tag-too-early', {name: name});
 
-	for(var i in HTML5.HEADING_ELEMENTS) {
-		var el = HTML5.HEADING_ELEMENTS[i];
-		if(this.inScope(el)) {
-			this.tree.remove_open_elements_until(function(e) {
-				return HTML5.HEADING_ELEMENTS.indexOf(e.tagName.toLowerCase()) != -1
-			});
-			break;
-		}
-	}
+	this.tree.remove_open_elements_until(function(e) {
+		return HTML5.HEADING_ELEMENTS.indexOf(e.tagName.toLowerCase()) != -1
+	});
 }
 
 p.prototype.endTagFormatting = function(name) {
@@ -634,7 +687,7 @@ p.prototype.endTagFormatting = function(name) {
 			return;
 		}
 
-		if(afeElement != this.tree.open_elements[this.tree.open_elements.length - 1]) {
+		if(afeElement != this.tree.open_elements.last()) {
 			this.parse_error('adoption-agency-1.3', {name: name});
 		}
 		
@@ -718,5 +771,5 @@ p.prototype.endTagFormatting = function(name) {
 
 p.prototype.addFormattingElement = function(name, attributes) {
 	this.tree.insert_element(name, attributes);
-	this.tree.activeFormattingElements.push(this.tree.open_elements[this.tree.open_elements.length - 1]);
+	this.tree.activeFormattingElements.push(this.tree.open_elements.last());
 }

@@ -1,5 +1,6 @@
 var Phase = require('./phase').Phase;
 var inBody = require('./in_body_phase').Phase;
+var HTML5 = require('../../html5');
 
 var starts = {
 	html: 'startTagHtml',
@@ -39,14 +40,14 @@ exports.Phase = function InCellPhase(parser, tree) {
 
 exports.Phase.prototype = new Phase;
 
-p = exports.Phase.prototype;
+var p = exports.Phase.prototype;
 
 p.processCharacters = function(data) {
 	new inBody(this.parser, this.tree).processCharacters(data);
 }
 
 p.startTagTableOther = function(name, attributes) {
-	if(this.inScope('td', true) || this.inScope('th', true)) {
+	if(this.inScope('td', HTML5.TABLE_SCOPING_ELEMENTS) || this.inScope('th', HTML5.TABLE_SCOPING_ELEMENTS)) {
 		this.closeCell();
 		this.parser.phase.processStartTag(name, attributes);
 	} else {
@@ -60,9 +61,9 @@ p.startTagOther = function(name, attributes) {
 }
 
 p.endTagTableCell = function(name) {
-	if(this.inScope(name, true)) {
+	if(this.inScope(name, HTML5.TABLE_SCOPING_ELEMENTS)) {
 		this.tree.generateImpliedEndTags(name);
-		if(this.tree.open_elements[this.tree.open_elements.length - 1].tagName.toLowerCase() != name.toLowerCase()) {
+		if(this.tree.open_elements.last().tagName.toLowerCase() != name.toLowerCase()) {
 			this.parse_error('unexpected-cell-end-tag', {name: name});
 			this.tree.remove_open_elements_until(name);
 		} else {
@@ -80,7 +81,7 @@ p.endTagIgnore = function(name) {
 }
 
 p.endTagImply = function(name) {
-	if(this.inScope(name, true)) {
+	if(this.inScope(name, HTML5.TABLE_SCOPING_ELEMENTS)) {
 		this.closeCell();
 		this.parser.phase.processEndTag(name);
 	} else {
@@ -94,9 +95,9 @@ p.endTagOther = function(name) {
 }
 
 p.closeCell = function() {
-	if(this.inScope('td', true)) {
+	if(this.inScope('td', HTML5.TABLE_SCOPING_ELEMENTS)) {
 		this.endTagTableCell('td');
-	} else if(this.inScope('th', true)) {
+	} else if(this.inScope('th', HTML5.TABLE_SCOPING_ELEMENTS)) {
 		this.endTagTableCell('th');
 	}
 }

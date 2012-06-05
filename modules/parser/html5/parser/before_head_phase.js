@@ -1,4 +1,3 @@
-//"use strict";
 var Phase = require('./phase').Phase;
 
 var start_tag_handlers = {
@@ -16,7 +15,7 @@ var end_tag_handlers = {
 	'-default': 'endTagOther',
 }
 
-exports.Phase = p = function (parser, tree) {
+var p = exports.Phase = function (parser, tree) {
 	Phase.call(this, parser, tree);
 	this.start_tag_handlers = start_tag_handlers;
 	this.end_tag_handlers = end_tag_handlers;
@@ -40,7 +39,7 @@ p.prototype.processSpaceCharacters = function(data) {
 
 p.prototype.startTagHead = function(name, attributes) {
 	this.tree.insert_element(name, attributes);
-	this.tree.head_pointer = this.tree.open_elements[this.tree.open_elements.length - 1];
+	this.tree.head_pointer = this.tree.open_elements.last();
 	this.parser.newPhase('inHead');
 }
 
