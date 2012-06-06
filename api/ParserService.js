@@ -229,6 +229,8 @@ var roundTripDiff = function ( res, src, document ) {
 	res.write('<pre>' + htmlSpecialChars( out ) + '</pre><hr>');
 	res.write( '<h2>Diff between original Wikitext (green) and round-tripped wikitext (red)</h2><hr>' );
 	var patch;
+	src = src.replace(/\n(?=\n)/g, '\n ');
+	out = out.replace(/\n(?=\n)/g, '\n ');
 	if ( src.length < 4000 ) {
 		// Use word-based diff for small articles
 		patch = jsDiff.convertChangesToXML( jsDiff.diffWords( src, out ) );
