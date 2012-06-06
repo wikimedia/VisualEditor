@@ -85,7 +85,7 @@ app.post(/\/_html\/(.*)/, function(req, res){
 	env.pageName = req.params[0];
 	res.setHeader('Content-Type', 'text/html; charset=UTF-8');
 	var p = new html5.Parser();
-	p.parse( '<html><body>' + req.body.content + '</body></html>' );
+	p.parse( '<html><body>' + req.body.content.replace(/\r/g, '') + '</body></html>' );
 	res.write('<pre style="background-color: #efefef">');
 	new WikitextSerializer({env: env}).serializeDOM( 
 		p.tree.document.childNodes[0].childNodes[1], 
@@ -94,7 +94,7 @@ app.post(/\/_html\/(.*)/, function(req, res){
 		});
 	res.write('</pre>');
 	res.write( "<hr>Your HTML DOM:" );
-	textarea( res, req.body.content );
+	textarea( res, req.body.content.replace(/\r/g, '') );
 	res.end('');
 });
 
@@ -117,14 +117,14 @@ app.post(/\/_wikitext\/(.*)/, function(req, res){
 		//res.write('<form method=POST><input name="content"></form>');
 		//res.end("hello world\n" + req.method + ' ' + req.params.title);
 		res.write( "<hr>Your wikitext:" );
-		textarea( res, req.body.content );
+		textarea( res, req.body.content.replace(/\r/g, '') );
 		res.end('');
 	});
 	try {
 		res.setHeader('Content-Type', 'text/html; charset=UTF-8');
 		console.log('starting parsing of ' + req.params[0]);
 		// FIXME: This does not handle includes or templates correctly
-		parser.process( req.body.content );
+		parser.process( req.body.content.replace(/\r/g, '') );
 	} catch (e) {
 		console.log( e );
 		res.write( e );
@@ -291,7 +291,8 @@ app.post(/\/_rtform\/(.*)/, function(req, res){
 	res.setHeader('Content-Type', 'text/html; charset=UTF-8');
 	var parser = parserPipelineFactory.makePipeline( 'text/x-mediawiki/full' );
 
-	parse( res, roundTripDiff, req.body.content);
+	// we don't care about \r, and normalize everything to \n
+	parse( res, roundTripDiff, req.body.content.replace(/\r/g, ''));
 });
 
 /**
