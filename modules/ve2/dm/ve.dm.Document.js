@@ -119,6 +119,15 @@ ve.dm.Document = function( data, parentDocument ) {
 						// This can only happen if we got unbalanced data
 						throw 'Unbalanced input passed to document';
 					}
+
+					if ( children.length === 0 &&
+						ve.dm.nodeFactory.canNodeContainContent(
+							currentNode.getType()
+						)
+					) {
+						// Content nodes cannot be childless, add a zero-length text node
+						children.push( new ve.dm.TextNode( 0 ) );
+					}
 					// Attach the children to the node
 					ve.batchSplice( currentNode, 0, 0, children );
 				}
