@@ -340,6 +340,30 @@ test( 'newFromRemoval', function() {
 					'insert': []
 				}
 			]
+		},
+		'merging two paragraphs inside definitionListItems': {
+			'args': [doc, new ve.Range( 45, 49 )],
+			'ops': [
+				{ 'type': 'retain', 'length': 45 },
+				{
+					'type': 'replace',
+					'remove': [{ 'type': '/paragraph' }, { 'type': '/definitionListItem' }, { 'type': 'definitionListItem', 'attributes': { 'style': 'definition' } }, { 'type': 'paragraph' }],
+					'insert': []
+				},
+				{ 'type': 'retain', 'length': 10 }
+			]
+		},
+		'merging two paragraphs while also deleting some content': {
+			'args': [doc, new ve.Range( 54, 57 )],
+			'ops': [
+				{ 'type': 'retain', 'length': 54 },
+				{
+					'type': 'replace',
+					'remove': ['l', { 'type': '/paragraph' }, { 'type': 'paragraph' } ],
+					'insert': []
+				},
+				{ 'type': 'retain', 'length': 2 }
+			]
 		}
 	};
 	ve.dm.Transaction.runConstructorTests( ve.dm.Transaction.newFromRemoval, cases );
