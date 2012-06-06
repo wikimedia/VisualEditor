@@ -3,9 +3,9 @@
 class ApiVisualEditor extends ApiBase {
 
 	public function execute() {
-		global $wgRequest, $wgUser;
+		global $wgRequest, $wgUser, $wgVisualEditorParsoidURL;
 		
-		$parsoid = "http://parsoid.wmflabs.org/";
+		$parsoid = $wgVisualEditorParsoidURL;
 		$params = $this->extractRequestParams();
 		$page = Title::newFromText( $params['page'] );
 
