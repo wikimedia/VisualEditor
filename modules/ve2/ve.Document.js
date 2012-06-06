@@ -126,7 +126,7 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 				'range': new ve.Range( start, end ),
 				'nodeRange': nodeRange,
 				'nodeOuterRange': new ve.Range(
-					nodeRange.start - isWrapped, nodeRange.start + isWrapped
+					nodeRange.start - isWrapped, nodeRange.end + isWrapped
 				)
 			} ];
 			parentFrame = stack[stack.length - 2];
