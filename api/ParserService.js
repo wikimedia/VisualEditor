@@ -221,7 +221,7 @@ var refineDiff = function( diff ) {
 };
 
 var roundTripDiff = function ( res, src, document ) {
-	res.write('<html><head><style>del { background: #ff9191; text-decoration: none; } ins { background: #99ff7e; text-decoration: none }; </style></head><body>');
+	res.write('<html><head><style>ins { background: #ff9191; text-decoration: none; } del { background: #99ff7e; text-decoration: none }; </style></head><body>');
 	res.write( '<h2>Wikitext parsed to HTML DOM</h2><hr>' );
 	res.write(document.body.innerHTML + '<hr>');
 	res.write( '<h2>HTML DOM converted back to Wikitext</h2><hr>' );
@@ -231,11 +231,11 @@ var roundTripDiff = function ( res, src, document ) {
 	var patch;
 	if ( src.length < 4000 ) {
 		// Use word-based diff for small articles
-		patch = jsDiff.convertChangesToXML( jsDiff.diffWords( out, src ) );
+		patch = jsDiff.convertChangesToXML( jsDiff.diffWords( src, out ) );
 	} else {
 		//console.log(JSON.stringify( jsDiff.diffLines( out, src ) ));
 		//patch = jsDiff.convertChangesToXML( jsDiff.diffLines( out, src ) );
-		patch = jsDiff.convertChangesToXML( refineDiff( jsDiff.diffLines( out, src ) ) );
+		patch = jsDiff.convertChangesToXML( refineDiff( jsDiff.diffLines( src, out ) ) );
 	}
 	res.end( '<pre>' + patch);
 };
