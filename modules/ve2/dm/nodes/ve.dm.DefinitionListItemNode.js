@@ -37,12 +37,18 @@ ve.dm.DefinitionListItemNode.rules = {
  * @member
  */
 ve.dm.DefinitionListItemNode.converters = {
-	'tags': 'dl',
+	'tags': ['dt', 'dd'],
 	'toHtml': function( type, element ) {
-		return ve.dm.createHtmlElement( 'dl' );
+		return element.attributes && ( {
+			'term': ve.dm.createHtmlElement( 'dt' ),
+			'definition': ve.dm.createHtmlElement( 'dd' )
+		} )[element.attributes['style']];
 	},
 	'toData': function( tag, element ) {
-		return { 'type': 'definitionList' };
+		return ( {
+			'dt': { 'type': 'definitionListItem', 'attributes': { 'style': 'term' } },
+			'dd': { 'type': 'definitionListItem', 'attributes': { 'style': 'definition' } }
+		} )[tag];
 	}
 };
 

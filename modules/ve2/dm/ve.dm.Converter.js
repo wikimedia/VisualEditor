@@ -78,6 +78,79 @@ ve.dm.Converter.prototype.onAnnotationRegister = function( type, constructor ) {
 	}
 };
 
+/**
+ * ...
+ *
+ * @method
+ */
+ve.dm.Converter.prototype.getHtmlElementFromDataElement = function( dataElement ) {
+	var type = dataElement.type,
+		htmlElement = this.elements.toHtml[type]( type, dataElement ),
+		attributes = dataElement.attributes;
+	// Add 'html/*' attributes directly sans 'html/', others get packaged in the 'data-mw' attribute
+	if ( attributes ) {
+		var dataMw = {},
+			key,
+			value;
+		for ( key in dataElement.attributes ) {
+			value = dataElement.attributes[key];
+			if ( key.indexOf( 'html/' ) === 0 ) {
+				htmlElement.setAttribute( key.substr( 5 ), value );
+			} else if ( key.indexOf( 'mw/' ) === 0 ) {
+				dataMw[key] = value;
+			}
+			// Other attributes should have already been handled by the node's toHtml converter
+		}
+		for ( key in dataMw ) {
+			htmlElement.setAttribute( 'data-mw', JSON.stringify( dataMw ) );
+			break;
+		}
+	}
+	return htmlElement;
+};
+
+/**
+ * ...
+ *
+ * @method
+ */
+ve.dm.Converter.prototype.getHtmlContentFromDataContent = function( dataContent ) {
+	//
+};
+
+/**
+ * ...
+ *
+ * @method
+ */
+ve.dm.Converter.prototype.getDataElementFromHtmlElement = function( htmlElement ) {
+	var type = htmlElement.nodeName.toLowerCase(),
+		dataElement = this.elements.toData[type]( type, htmlElement );
+	// Add 'data-mw' attributes to the 'mw/' namespace, others get added under 'html/'
+	for ( var i = 0; i < htmlElement.attributes.length; i++ ) {
+		dataElement.attributes = {};
+		var attribute = htmlElement.attributes[i];
+		if ( attribute.name.toLowerCase() === 'data-mw' ) {
+			var dataMw = JSON.parse( attribute.value );
+			for ( var key in dataMw ) {
+				dataElement.attributes['mw/' + key] = dataMw[key];
+			}
+		} else {
+			dataElement.attributes['html/' + attribute.name] = attribute.value;
+		}
+	}
+	return dataElement;
+};
+
+/**
+ * ...
+ *
+ * @method
+ */
+ve.dm.Converter.prototype.getDataContentFromHtmlContent = function( htmlContent ) {
+	//
+};
+
 /* Initialization */
 
 ve.dm.converter = new ve.dm.Converter( ve.dm.nodeFactory, ve.dm.annotationFactory );

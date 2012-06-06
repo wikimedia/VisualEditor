@@ -411,3 +411,86 @@ ve.dm.example.getOffsetMap = function( root ) {
 		lookup( root ) // 59 - document
 	];
 };
+
+ve.dm.example.conversions = {
+	'definitionListItem term': {
+		'htmlElement': ve.dm.createHtmlElement( 'dt' ),
+		'dataElement': { 'type': 'definitionListItem', 'attributes': { 'style': 'term' } }
+	},
+	'definitionListItem definition': {
+		'htmlElement': ve.dm.createHtmlElement( 'dd' ),
+		'dataElement': { 'type': 'definitionListItem', 'attributes': { 'style': 'definition' } }
+	},
+	'definitionList definition': {
+		'htmlElement': ve.dm.createHtmlElement( 'dl' ),
+		'dataElement': { 'type': 'definitionList' }
+	},
+	'heading level 1': {
+		'htmlElement': ve.dm.createHtmlElement( 'h1' ),
+		'dataElement': { 'type': 'heading', 'attributes': { 'level': 1 } }
+	},
+	'heading level 2': {
+		'htmlElement': ve.dm.createHtmlElement( 'h2' ),
+		'dataElement': { 'type': 'heading', 'attributes': { 'level': 2 } }
+	},
+	'heading level 3': {
+		'htmlElement': ve.dm.createHtmlElement( 'h3' ),
+		'dataElement': { 'type': 'heading', 'attributes': { 'level': 3 } }
+	},
+	'heading level 4': {
+		'htmlElement': ve.dm.createHtmlElement( 'h4' ),
+		'dataElement': { 'type': 'heading', 'attributes': { 'level': 4 } }
+	},
+	'heading level 5': {
+		'htmlElement': ve.dm.createHtmlElement( 'h5' ),
+		'dataElement': { 'type': 'heading', 'attributes': { 'level': 5 } }
+	},
+	'heading level 6': {
+		'htmlElement': ve.dm.createHtmlElement( 'h6' ),
+		'dataElement': { 'type': 'heading', 'attributes': { 'level': 6 } }
+	},
+	'image': {
+		'htmlElement': ve.dm.createHtmlElement( 'image' ),
+		'dataElement': { 'type': 'image' }
+	},
+	'listItem': {
+		'htmlElement': ve.dm.createHtmlElement( 'li' ),
+		'dataElement': { 'type': 'listItem' }
+	},
+	'list bullet': {
+		'htmlElement': ve.dm.createHtmlElement( 'ul' ),
+		'dataElement': { 'type': 'list', 'attributes': { 'style': 'bullet' } }
+	},
+	'list number': {
+		'htmlElement': ve.dm.createHtmlElement( 'ol' ),
+		'dataElement': { 'type': 'list', 'attributes': { 'style': 'number' } }
+	},
+	'paragraph': {
+		'htmlElement': ve.dm.createHtmlElement( 'p' ),
+		'dataElement': { 'type': 'paragraph' }
+	},
+	'preformatted': {
+		'htmlElement': ve.dm.createHtmlElement( 'pre' ),
+		'dataElement': { 'type': 'preformatted' }
+	},
+	'tableCell': {
+		'htmlElement': ve.dm.createHtmlElement( 'td' ),
+		'dataElement': { 'type': 'tableCell' }
+	},
+	'table': {
+		'htmlElement': ve.dm.createHtmlElement( 'table' ),
+		'dataElement': { 'type': 'table' }
+	},
+	'tableRow': {
+		'htmlElement': ve.dm.createHtmlElement( 'tr' ),
+		'dataElement': { 'type': 'tableRow' }
+	},
+	'paragraph with mw-data attribute': {
+		'htmlElement': ve.dm.createHtmlElement( 'p', { 'data-mw': '{"test":1234}' } ),
+		'dataElement': { 'type': 'paragraph', 'attributes': { 'mw/test': 1234 } }
+	},
+	'paragraph with html attributes': {
+		'htmlElement': ve.dm.createHtmlElement( 'p', { 'style': 'color:blue' } ),
+		'dataElement': { 'type': 'paragraph', 'attributes': { 'html/style': 'color:blue' } }
+	}
+};

@@ -283,6 +283,24 @@ ve.example.getNodeSelectionSummary = function( selection ) {
 };
 
 /**
+ * Builds a summary of an HTML element.
+ *
+ * Generated summaries contain...
+ *
+ * @method
+ * @param {HTMLElement} element Element to summarize
+ * @returns {Object} Summary of element
+ */
+ve.example.getHtmlElementSummary = function( element ) {
+	var $element = $( element );
+	return {
+		'type': element.nodeName.toLowerCase(),
+		'text': $element.text(),
+		'html': $element.html()
+	};
+};
+
+/**
  * Looks up a value in a node tree.
  *
  * @method
