@@ -187,6 +187,26 @@ test( 'commit/rollback', function() {
 			'expected': function( data ) {
 				data.splice( 55, 2 );
 			}
+		},
+		'stripping elements': {
+			'calls': [
+				['pushRetain', 3],
+				[
+					'pushReplace',
+					[['c', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } }]],
+					[]
+				],
+				['pushRetain', 5],
+				[
+					'pushReplace',
+					['d'],
+					[]
+				]
+			],
+			'expected': function( data ) {
+				data.splice( 9, 1 );
+				data.splice( 3, 1 );
+			}
 		}
 	};
 	// Generate original document

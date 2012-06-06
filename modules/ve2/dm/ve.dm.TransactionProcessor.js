@@ -21,6 +21,11 @@ ve.dm.TransactionProcessor = function( doc, transaction, reversed ) {
 	 * the cursor only ever moves forward.
 	 */
 	this.cursor = 0;
+	/**
+	 * Adjustment used to convert between linear model offsets in the original linear model and
+	 * in the half-updated linear model.
+	 */
+	this.adjustment = 0;
 	/*
 	 * Set and clear are lists of annotations which should be added or removed to content being
 	 * inserted or retained. The format of these objects is { hash: annotationObjectReference }
@@ -265,7 +270,8 @@ ve.dm.TransactionProcessor.prototype.replace = function( op ) {
 		
 		// Get the node containing the replaced content
 		selection = this.document.selectNodes(
-			new ve.Range( this.cursor, this.cursor + remove.length ),
+			new ve.Range( this.cursor - this.adjustment,
+				      this.cursor - this.adjustment + remove.length ),
 			'leaves'
 		);
 
@@ -277,7 +283,8 @@ ve.dm.TransactionProcessor.prototype.replace = function( op ) {
 			var range = new ve.Range( selection[0].nodeRange.start,
 				selection[selection.length - 1].nodeRange.end );
 			this.synchronizer.pushRebuild( range,
-				new ve.Range( range.start, range.end + insert.length - remove.length )
+				new ve.Range( range.start + this.adjustment,
+					range.end + this.adjustment + insert.length - remove.length )
 			);
 		} else {
 			// Text-only replacement
@@ -288,6 +295,7 @@ ve.dm.TransactionProcessor.prototype.replace = function( op ) {
 
 		// Advance the cursor
 		this.cursor += insert.length;
+		this.adjustment += insert.length - remove.length;
 	} else {
 		// Structural replacement
 
@@ -300,7 +308,6 @@ ve.dm.TransactionProcessor.prototype.replace = function( op ) {
 			removeLevel = 0,
 			insertLevel = 0,
 			startOffset = this.cursor,
-			adjustment = 0,
 			i,
 			type,
 			prevCursor,
@@ -325,8 +332,8 @@ ve.dm.TransactionProcessor.prototype.replace = function( op ) {
 				// covered, and add their ranges to the affected ranges list
 				if ( opRemove.length > 0 ) {
 					selection = this.document.selectNodes( new ve.Range(
-						prevCursor - adjustment,
-						prevCursor + opRemove.length - adjustment
+						prevCursor - this.adjustment,
+						prevCursor + opRemove.length - this.adjustment
 					), 'siblings' );
 					for ( i = 0; i < selection.length; i++ ) {
 						// .nodeRange is the inner range, we need the
@@ -389,7 +396,7 @@ ve.dm.TransactionProcessor.prototype.replace = function( op ) {
 				}
 
 				// Update adjustment
-				adjustment += opInsert.length - opRemove.length;
+				this.adjustment += opInsert.length - opRemove.length;
 			} else {
 				// We know that other operations won't cause adjustments, so we
 				// don't have to update adjustment
@@ -412,7 +419,7 @@ ve.dm.TransactionProcessor.prototype.replace = function( op ) {
 		// of them, and rebuild that
 		coveringRange = ve.Range.newCoveringRange( affectedRanges );
 		this.synchronizer.pushRebuild( coveringRange, new ve.Range( coveringRange.start,
-			coveringRange.end + adjustment )
+			coveringRange.end + this.adjustment )
 		);
 	}
 };
