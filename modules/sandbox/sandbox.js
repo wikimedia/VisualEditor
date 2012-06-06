@@ -646,7 +646,13 @@ $(document).ready( function() {
 	var sandboxEditor = new ve.Surface( '#content', HTML[0], options ),
 		surfaceModel = sandboxEditor.getSurfaceModel(),
 		documentModel = sandboxEditor.getDocumentModel(),
-		parent = sandboxEditor.getParent();
+		parent = sandboxEditor.getParent(),
+		view = sandboxEditor.view;
+
+		/* Rob's test selection stuff */
+		/*surfaceModel.setSelection( new ve.Range(0, documentModel.getData().length ) );
+		view.showSelection ( surfaceModel.getSelection() );
+		console.log (surfaceModel.getSelection().getLength());*/
 
 
 	/* Sandbox Warning Message */
