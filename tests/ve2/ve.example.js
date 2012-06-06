@@ -276,7 +276,7 @@ ve.example.getNodeSelectionSummary = function( selection ) {
 				'index': selection[i].index,
 				'indexInNode': selection[i].indexInNode,
 				'nodeRange': selection[i].nodeRange,
-				'nodeOuterRange': selection[i].nodeRange
+				'nodeOuterRange': selection[i].nodeOuterRange
 			} );
 		}
 	}
