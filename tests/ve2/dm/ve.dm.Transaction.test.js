@@ -364,6 +364,30 @@ test( 'newFromRemoval', function() {
 				},
 				{ 'type': 'retain', 'length': 2 }
 			]
+		},
+		'removing from a heading into a paragraph': {
+			'args': [doc, new ve.Range( 2, 55 )],
+			'ops': [
+				{ 'type': 'retain', 'length': 2 },
+				{
+					'type': 'replace',
+					'remove': doc.getData().slice( 2, 4 ),
+					'insert': []
+				},
+				{ 'type': 'retain', 'length': 1 },
+				{
+					'type': 'replace',
+					'remove': doc.getData().slice( 5, 53 ),
+					'insert': []
+				},
+				{ 'type': 'retain', 'length': 1 },
+				{
+					'type': 'replace',
+					'remove': ['l'],
+					'insert': []
+				},
+				{ 'type': 'retain', 'length': 4 }
+			]
 		}
 	};
 	ve.dm.Transaction.runConstructorTests( ve.dm.Transaction.newFromRemoval, cases );
