@@ -64,7 +64,7 @@ ve.example.getSelectNodesCases = function( doc ) {
 					'node': lookup( documentNode, 2, 1 ),
 					'index': 1,
 					'nodeRange': new ve.Range( 38, 38 ),
-					'nodeOuterRange': new ve.Range( 36, 39 )
+					'nodeOuterRange': new ve.Range( 37, 39 )
 				},
 				// preformatted/text
 				{
@@ -129,7 +129,7 @@ ve.example.getSelectNodesCases = function( doc ) {
 					'range': new ve.Range( 42, 49 ),
 					'index': 3,
 					'nodeRange': new ve.Range( 42, 52 ),
-					'nodeOuterRange': new ve.Range( 41, 52 )
+					'nodeOuterRange': new ve.Range( 41, 53 )
 				}
 			],
 			'msg': 'more than 2 siblings at the document level'
@@ -214,10 +214,57 @@ ve.example.getSelectNodesCases = function( doc ) {
 					'node': lookup( documentNode, 2, 0 ),
 					// no 'range' because the text node is covered completely
 					'index': 0,
-					'nodeRange': new ve.Range( 36, 37 )
+					'nodeRange': new ve.Range( 36, 37 ),
+					'nodeOuterRange': new ve.Range( 36, 37 )
 				}
 			],
 			'msg': 'range with 5 closings and a text node'
+		},
+		{
+			'actual': doc.selectNodes( new ve.Range( 2, 55 ), 'covered' ),
+			'expected': [
+				// heading/text
+				{
+					'node': lookup( documentNode, 0, 0 ),
+					'range': new ve.Range( 2, 4 ),
+					'index': 0,
+					'nodeRange': new ve.Range( 1, 4 ),
+					'nodeOuterRange': new ve.Range( 1, 4 )
+				},
+				// table
+				{
+					'node': lookup( documentNode, 1 ),
+					// no 'range' because the table is covered completely
+					'index': 1,
+					'nodeRange': new ve.Range( 6, 34 ),
+					'nodeOuterRange': new ve.Range( 5, 35 )
+				},
+				// preformatted
+				{
+					'node': lookup( documentNode, 2 ),
+					// no 'range' because the node is covered completely
+					'index': 2,
+					'nodeRange': new ve.Range( 36, 40 ),
+					'nodeOuterRange': new ve.Range( 35, 41 )
+				},
+				// definitionList
+				{
+					'node': lookup( documentNode, 3 ),
+					// no 'range' because the node is covered completely
+					'index': 3,
+					'nodeRange': new ve.Range( 42, 52 ),
+					'nodeOuterRange': new ve.Range( 41, 53 )
+				},
+				// paragraph/text
+				{
+					'node': lookup( documentNode, 4, 0 ),
+					// no 'range' because the text node is covered completely
+					'index': 0,
+					'nodeRange': new ve.Range( 54, 55 ),
+					'nodeOuterRange': new ve.Range( 54, 55 )
+				}
+			],
+			'msg': 'range from the first heading into the second-to-last paragraph, in covered mode'
 		}
 	];
 };
@@ -275,7 +322,7 @@ ve.example.getNodeSelectionSummary = function( selection ) {
 				'index': selection[i].index,
 				'indexInNode': selection[i].indexInNode,
 				'nodeRange': selection[i].nodeRange,
-				'nodeOuterRange': selection[i].nodeRange
+				'nodeOuterRange': selection[i].nodeOuterRange
 			} );
 		}
 	}
