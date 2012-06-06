@@ -494,7 +494,7 @@ inline
 
 
 inlineline
-  = c:(urltext / !inline_breaks (inline_element / [^\n]))+ {
+  = c:(urltext / !inline_breaks (inline_element / [^\r\n]))+ {
       return flatten_stringlist( c );
 }
 
@@ -723,7 +723,7 @@ urlencoded_char = "%" c0:[0-9a-fA-F] c1:[0-9a-fA-F] {
 //[^][<>"\\x00-\\x20\\x7F\p{Zs}]
 
 // no punctiation, and '{<' to trigger directives
-no_punctuation_char = [^ :\]\[\n"'<>\x00-\x20\x7f,.&%\u00A0\u1680\u180E\u2000-\u200A\u202F\u205F\u3000{]
+no_punctuation_char = [^ :\]\[\r\n"'<>\x00-\x20\x7f,.&%\u00A0\u1680\u180E\u2000-\u200A\u202F\u205F\u3000{]
 
 url
   = proto:url_protocol 
@@ -1993,7 +1993,7 @@ attribute_preprocessor_text_single_line
   = r:( t:[^{}&']+ { return t.join(''); }
   / !inline_breaks ( 
       directive
-    / !'\n' [{&] )
+    / ![\r\n] [{&] )
   )* {
       return flatten_string ( r );
   }
@@ -2001,7 +2001,7 @@ attribute_preprocessor_text_double_line
   = r:( t:[^{}&"]+ { return t.join(''); }
   / !inline_breaks (
       directive
-    / !'\n' [{&] )
+    / ![\r\n] [{&] )
   )* {
       //console.warn( 'double:' + pp(r) );
       return flatten_string ( r );
