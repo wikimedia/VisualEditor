@@ -137,6 +137,57 @@ app.post(/\/_wikitext\/(.*)/, function(req, res){
  * output of the more efficient line-based diff.
  */
 var refineDiff = function( diff ) {
+	// Attempt to accumulate consecutive add-delete pairs
+	// with short text separating them (short = 2 chars right now)
+	//
+	// This is equivalent to the <b><i> ... </i></b> minimization
+	// to expand range of <b> and <i> tags, except there is no optimal
+	// solution except as determined by heuristics ("short text" = <= 2 chars).
+	function mergeConsecutiveSegments(wordDiffs) {
+		var n        = wordDiffs.length;
+		var currIns  = null, currDel = null;
+		var newDiffs = [];
+		for (var i = 0; i < n; i++) {
+			var d = wordDiffs[i];
+			if (d.added) {
+				// Attempt to accumulate
+				if (currIns === null) {
+					currIns = d;
+				} else {
+					currIns.value = currIns.value + d.value;
+				}
+			} else if (d.removed) {
+				// Attempt to accumulate
+				if (currDel === null) {
+					currDel = d;
+				} else {
+					currDel.value = currDel.value + d.value;
+				}
+			} else if ((d.value.length < 3) && currIns && currDel) {
+				// Attempt to accumulate
+				currIns.value = currIns.value + d.value;
+				currDel.value = currDel.value + d.value;
+			} else {
+				// Accumulation ends. Purge!
+				if (currIns !== null) {
+					newDiffs.push(currIns);
+					currIns = null;
+				}
+				if (currDel !== null) {
+					newDiffs.push(currDel);
+					currDel = null;
+				}
+				newDiffs.push(d);
+			}
+		}
+
+		// Purge buffered diffs
+		if (currIns !== null) newDiffs.push(currIns);
+		if (currDel !== null) newDiffs.push(currDel);
+
+		return newDiffs;
+	}
+
 	var added = null,
 		out = [];
 	for ( var i = 0, l = diff.length; i < l; i++ ) {
@@ -149,6 +200,7 @@ var refineDiff = function( diff ) {
 		} else if ( d.removed ) {
 			if ( added ) {
 				var fineDiff = jsDiff.diffWords( d.value, added.value );
+				fineDiff = mergeConsecutiveSegments(fineDiff);
 				out.push.apply( out, fineDiff );
 				added = null;
 			} else {
