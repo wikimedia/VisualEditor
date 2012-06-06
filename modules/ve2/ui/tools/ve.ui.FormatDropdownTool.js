@@ -82,13 +82,13 @@ ve.FormatDropdownTool.prototype.updateState = function( annotations, nodes ) {
 	// Get type and attributes of the first node
 	var i,
 		format = {
-			'type': nodes[0].getElementType(),
-			'attributes': nodes[0].getElement().attributes
+			'type': nodes[0].type,
+			'attributes': nodes[0].attributes
 		};
 	// Look for mismatches, in which case format should be null
-	for ( i = 1; i < nodes.length; i++ ) {
-		if ( format.type != nodes[i].getElementType() ||
-			!ve.compareObjects( format.attributes, nodes[i].element.attributes ) ) {
+	for ( i = 1; i < nodes[0].children.length; i++ ) {
+		if ( format.type != nodes[0].children[i].getElementType() ||
+			!ve.compareObjects( format.attributes, nodes.children[i].element.attributes ) ) {
 			format = null;
 			break;
 		}

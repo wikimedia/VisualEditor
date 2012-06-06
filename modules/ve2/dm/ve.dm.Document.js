@@ -514,7 +514,7 @@ ve.dm.Document.prototype.getAnnotatedRangeFromOffset = function ( offset, annota
  * Checks if a character has matching annotations.
  *
  * @static
- * @methodng
+ * @method
  * @param {Integer} offset Offset of annotated character
  * @param {RegExp} pattern Regular expression pattern to match with
  * @returns {Boolean} Character has matching annotations
@@ -536,21 +536,44 @@ ve.dm.Document.prototype.offsetContainsMatchingAnnotations = function( offset, p
 };
 
 /**
- * Gets a list of annotations that match a regular expression.
+ * Gets a list of annotations that match a regular expression at an offset
  *
- * @static
- * @methodng
+ * @method
  * @param {Integer} offset Offset of annotated character
  * @param {RegExp} pattern Regular expression pattern to match with
  * @returns {Object} Annotations that match the pattern
  */
-ve.dm.Document.prototype.getMatchingAnnotations = function( offset, pattern ) {
+ve.dm.Document.prototype.getMatchingAnnotationsFromOffset = function( offset, pattern ) {
 	if ( !( pattern instanceof RegExp ) ) {
 		throw 'Invalid Pattern. Pattern not instance of RegExp';
 	}
 	var matches = {},
 		annotations = ve.isArray( this.data[offset] ) ?
 			this.data[offset][1] : this.data[offset].annotations;
+	if ( ve.isPlainObject( annotations ) ) {
+		for ( var hash in annotations ) {
+			if ( pattern.test( annotations[hash].type ) ){
+				matches[hash] = annotations[hash];
+			}
+		}
+	}
+	return matches;
+};
+
+/**
+ * Gets a list of annotations annotations that match a regular expression.
+ *
+ * @static
+ * @method
+ * @param {Array} annotations Annotations to search through
+ * @param {RegExp} pattern Regular expression pattern to match with
+ * @returns {Object} Annotations that match the pattern
+ */
+ve.dm.Document.getMatchingAnnotations = function( annotations, pattern ) {
+	if ( !( pattern instanceof RegExp ) ) {
+		throw 'Invalid Pattern. Pattern not instance of RegExp';
+	}
+	var matches = null;
 	if ( ve.isPlainObject( annotations ) ) {
 		for ( var hash in annotations ) {
 			if ( pattern.test( annotations[hash].type ) ){

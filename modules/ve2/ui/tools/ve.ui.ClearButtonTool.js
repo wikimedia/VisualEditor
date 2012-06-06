@@ -19,18 +19,19 @@ ve.ui.ClearButtonTool = function( toolbar, name, title ) {
 /* Methods */
 
 ve.ui.ClearButtonTool.prototype.onClick = function() {
-	var surfaceView = this.toolbar.getSurfaceView();
+	var surfaceView = this.toolbar.getSurfaceView(),
+		model = surfaceView.model;
 		
-	surfaceView.annotate( 'clear', this.pattern );
-	surfaceView.clearInsertionAnnotations();
-	surfaceView.contextView.closeInspector();
+	model.annotate( 'clear', this.pattern );
+	//surfaceView.clearInsertionAnnotations();
+	//surfaceView.contextView.closeInspector();
 };
 
 ve.ui.ClearButtonTool.prototype.updateState = function( annotations ) {
-	var matchingAnnotations = ve.dm.DocumentNode.getMatchingAnnotations(
-		annotations.all, this.pattern
+	var matchingAnnotations = ve.dm.Document.getMatchingAnnotations(
+		annotations, this.pattern
 	);
-	if ( matchingAnnotations.length === 0 ) {
+	if ( matchingAnnotations === null ) {
 		this.$.addClass( 'es-toolbarButtonTool-disabled' );
 	} else {
 		this.$.removeClass( 'es-toolbarButtonTool-disabled' );

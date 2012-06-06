@@ -12,6 +12,7 @@ ve.dm.Surface = function( doc ) {
 	// Properties
 	this.documentModel = doc;
 	this.selection = null;
+	this.bigStack = [];  // NOTE: HistoryButtonTool depends on bigStack
 };
 
 /**
