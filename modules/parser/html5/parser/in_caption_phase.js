@@ -1,6 +1,7 @@
 var Phase = require('./phase').Phase;
 var inBody = require('./in_body_phase').Phase;
 var assert = require('assert');
+var HTML5 = require('../../html5');
 
 var starts = {
 	html: 'startTagHtml',
@@ -30,7 +31,7 @@ var ends = {
 	'-default': 'endTagOther'
 }
 
-exports.Phase = p = function InCaptionPhase(parser, tree) {
+var p = exports.Phase = function InCaptionPhase(parser, tree) {
 	Phase.call(this, parser, tree);
 	this.start_tag_handlers = starts;
 	this.end_tag_handlers = ends;
@@ -39,7 +40,7 @@ exports.Phase = p = function InCaptionPhase(parser, tree) {
 p.prototype = new Phase;
 
 p.prototype.ignoreEndTagCaption = function() {
-	return !this.inScope('caption', true);
+	return !this.inScope('caption', HTML5.TABLE_SCOPING_ELEMENTS);
 }
 
 p.prototype.processCharacters = function(data) {
@@ -65,9 +66,9 @@ p.prototype.endTagCaption = function(name) {
 	} else {
 		// AT this code is quite similar to endTagTable in inTable
 		this.tree.generateImpliedEndTags();
-		if(this.tree.open_elements[this.tree.open_elements.length - 1].tagName.toLowerCase() != 'caption') {
+		if(this.tree.open_elements.last().tagName.toLowerCase() != 'caption') {
 			this.parse_error('expected-one-end-tag-but-got-another',
-                    		{gotName: "caption", expectedName: this.tree.open_elements[this.tree.open_elements.length - 1].tagName.toLowerCase()});
+                    		{gotName: "caption", expectedName: this.tree.open_elements.last().tagName.toLowerCase()});
 		}
 
 		this.tree.remove_open_elements_until('caption');

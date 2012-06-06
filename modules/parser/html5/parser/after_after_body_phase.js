@@ -6,7 +6,7 @@ var start_tag_handlers = {
 	'-default': 'startTagOther',
 }
 
-exports.Phase = p = function AfterAfterBodyPhase(parser, tree) {
+var p = exports.Phase = function AfterAfterBodyPhase(parser, tree) {
 	Phase.call(this, parser, tree);
 	this.start_tag_handlers = start_tag_handlers;
 }
@@ -25,8 +25,8 @@ p.prototype.processSpaceCharacters = function(data) {
 	new inBody(this.parser, this.tree).processSpaceCharacters(data);
 }
 
-p.prototype.startTagHtml = function(data) {
-	new inBody(this.parser, this.tree).startTagHtml(data);
+p.prototype.startTagHtml = function(data, attributes) {
+	new inBody(this.parser, this.tree).startTagHtml(data, attributes);
 }
 
 p.prototype.startTagOther = function(name, attributes) {

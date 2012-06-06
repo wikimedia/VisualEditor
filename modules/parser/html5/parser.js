@@ -1,5 +1,3 @@
-//"use strict";
-
 var HTML5 = exports.HTML5 = require('../html5');
 
 var events = require('events');
@@ -25,7 +23,7 @@ var Parser = HTML5.Parser = function HTML5Parser(options) {
 		return phase;
 	});
 
-	if(options) for(o in options) {
+	if(options) for(var o in options) {
 		this[o] = options[o];
 	}
 
@@ -42,15 +40,16 @@ var Parser = HTML5.Parser = function HTML5Parser(options) {
 
 Parser.prototype = new events.EventEmitter;
 
+// normally accepts the source
 Parser.prototype.parse = function(tokenizer) {
+	//if(!source) throw(new Error("No source to parse"));
+	//HTML5.debug('parser.parse', source)
+	//this.tokenizer = new HTML5.Tokenizer(source, this.document);
+
 	this.tokenizer = tokenizer;
 	
-	this.tokenizer.addListener('token', function(t) { 
-		return function(token) { t.do_token(token); };
-	}(this));
-	this.tokenizer.addListener('end', function(t) { 
-		return function() { t.emit('end'); };
-	}(this));
+	this.tokenizer.addListener('token', this.do_token.bind(this));
+	this.tokenizer.addListener('end', this.emit.bind(this, 'end'));
 
 	this.setup();
 	//this.tokenizer.tokenize();
@@ -85,12 +84,13 @@ Object.defineProperty(Parser.prototype, 'fragment', {
 });
 
 Parser.prototype.newPhase = function(name) {
-	this.phase = new PHASES[name](this, this.tree);
+	this.phase = new HTML5.PHASES[name](this, this.tree);
 	HTML5.debug('parser.newPhase', name)
 	this.phaseName = name;
 }
 
 Parser.prototype.do_token = function(token) {
+	//console.warn('d_token: ' + JSON.stringify(token));
 	var method = 'process' + token.type;
 
 	switch(token.type) {
