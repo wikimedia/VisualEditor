@@ -85,7 +85,7 @@ $messages['br'] = array(
  */
 $messages['de'] = array(
 	'visualeditor' => 'WYSIWYG-Editor',
-	'visualeditorsandbox' => 'WYSIWYG-Editor - Spielwiese',
+	'visualeditorsandbox' => 'WYSIWYG-Editor – Spielwiese',
 	'visualeditor-desc' => 'Ermöglicht einen WYSIWYG-Editor',
 	'visualeditor-sandbox-title' => 'Spielwiese für den WYSIWYG-Editor',
 	'visualeditor-tooltip-wikitext' => 'Von und zur Ansicht in Wikitext umschalten',
@@ -311,12 +311,17 @@ $messages['it'] = array(
  * @author Shirayuki
  */
 $messages['ja'] = array(
+	'visualeditor' => '視覚的エディター',
+	'visualeditorsandbox' => '視覚的エディターのサンドボックス',
+	'visualeditor-desc' => 'MediaWiki用の視覚的エディター',
+	'visualeditor-sandbox-title' => '視覚的エディターのサンドボックス',
 	'visualeditor-tooltip-wikitext' => 'ウィキテキストの表示を切り替え',
 	'visualeditor-tooltip-json' => 'JSON 表示を切り替え',
 	'visualeditor-tooltip-html' => 'HTML 表示を切り替え',
 	'visualeditor-tooltip-render' => 'プレビューを切り替え',
 	'visualeditor-tooltip-help' => 'ヘルプ表示を切り替え',
 	'visualeditor-feedback-prompt' => 'フィードバックを残す',
+	'visualeditor-feedback-dialog-title' => '視覚的エディターのサンドボックスについてフィードバックを残す',
 );
 
 /** Luxembourgish (Lëtzebuergesch)
