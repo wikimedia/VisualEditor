@@ -262,6 +262,10 @@ ve.dm.Transaction.prototype.pushRetain = function( length ) {
  * @param {Array] insert Data to replace 'remove' with
  */
 ve.dm.Transaction.prototype.pushReplace = function( remove, insert ) {
+	if ( remove.length === 0 && insert.length === 0 ) {
+		// Don't push no-ops
+		return;
+	}
 	this.operations.push( {
 		'type': 'replace',
 		'remove': remove,
