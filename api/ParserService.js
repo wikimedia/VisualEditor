@@ -200,7 +200,7 @@ var refineDiff = function( diff ) {
 			added = d;
 		} else if ( d.removed ) {
 			if ( added ) {
-				var fineDiff = jsDiff.diffWords( d.value, added.value );
+				var fineDiff = jsDiff.diffChars( d.value, added.value );
 				fineDiff = mergeConsecutiveSegments(fineDiff);
 				out.push.apply( out, fineDiff );
 				added = null;
