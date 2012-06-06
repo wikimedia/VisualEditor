@@ -64,7 +64,7 @@ ve.example.getSelectNodesCases = function( doc ) {
 					'node': lookup( documentNode, 2, 1 ),
 					'index': 1,
 					'nodeRange': new ve.Range( 38, 38 ),
-					'nodeOuterRange': new ve.Range( 36, 39 )
+					'nodeOuterRange': new ve.Range( 37, 39 )
 				},
 				// preformatted/text
 				{
@@ -129,7 +129,7 @@ ve.example.getSelectNodesCases = function( doc ) {
 					'range': new ve.Range( 42, 49 ),
 					'index': 3,
 					'nodeRange': new ve.Range( 42, 52 ),
-					'nodeOuterRange': new ve.Range( 41, 52 )
+					'nodeOuterRange': new ve.Range( 41, 53 )
 				}
 			],
 			'msg': 'more than 2 siblings at the document level'
@@ -214,7 +214,8 @@ ve.example.getSelectNodesCases = function( doc ) {
 					'node': lookup( documentNode, 2, 0 ),
 					// no 'range' because the text node is covered completely
 					'index': 0,
-					'nodeRange': new ve.Range( 36, 37 )
+					'nodeRange': new ve.Range( 36, 37 ),
+					'nodeOuterRange': new ve.Range( 36, 37 )
 				}
 			],
 			'msg': 'range with 5 closings and a text node'
