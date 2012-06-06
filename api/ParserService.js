@@ -163,7 +163,7 @@ var refineDiff = function( diff ) {
 				} else {
 					currDel.value = currDel.value + d.value;
 				}
-			} else if ((d.value.length < 3) && currIns && currDel) {
+			} else if ((d.value.length < 4) && currIns && currDel) {
 				// Attempt to accumulate
 				currIns.value = currIns.value + d.value;
 				currDel.value = currDel.value + d.value;
@@ -231,14 +231,9 @@ var roundTripDiff = function ( res, src, document ) {
 	var patch;
 	src = src.replace(/\n(?=\n)/g, '\n ');
 	out = out.replace(/\n(?=\n)/g, '\n ');
-	if ( src.length < 4000 ) {
-		// Use word-based diff for small articles
-		patch = jsDiff.convertChangesToXML( jsDiff.diffWords( src, out ) );
-	} else {
-		//console.log(JSON.stringify( jsDiff.diffLines( out, src ) ));
-		//patch = jsDiff.convertChangesToXML( jsDiff.diffLines( out, src ) );
-		patch = jsDiff.convertChangesToXML( refineDiff( jsDiff.diffLines( src, out ) ) );
-	}
+	//console.log(JSON.stringify( jsDiff.diffLines( out, src ) ));
+	//patch = jsDiff.convertChangesToXML( jsDiff.diffLines( out, src ) );
+	patch = jsDiff.convertChangesToXML( refineDiff( jsDiff.diffLines( src, out ) ) );
 	res.end( '<pre>' + patch);
 };
 
