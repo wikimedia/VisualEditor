@@ -148,25 +148,26 @@ var refineDiff = function( diff ) {
 		var currIns  = null, currDel = null;
 		var newDiffs = [];
 		for (var i = 0; i < n; i++) {
-			var d = wordDiffs[i];
+			var d    = wordDiffs[i];
+			var dVal = d.value;
 			if (d.added) {
 				// Attempt to accumulate
 				if (currIns === null) {
 					currIns = d;
 				} else {
-					currIns.value = currIns.value + d.value;
+					currIns.value = currIns.value + dVal;
 				}
 			} else if (d.removed) {
 				// Attempt to accumulate
 				if (currDel === null) {
 					currDel = d;
 				} else {
-					currDel.value = currDel.value + d.value;
+					currDel.value = currDel.value + dVal;
 				}
-			} else if ((d.value.length < 4) && currIns && currDel) {
+			} else if (((dVal.length < 4) || !dVal.match(/\s/)) && currIns && currDel) {
 				// Attempt to accumulate
-				currIns.value = currIns.value + d.value;
-				currDel.value = currDel.value + d.value;
+				currIns.value = currIns.value + dVal;
+				currDel.value = currDel.value + dVal;
 			} else {
 				// Accumulation ends. Purge!
 				if (currIns !== null) {
