@@ -15,3 +15,11 @@
 	margin-right: -1px;
 	width: 1px;*/
 }
+
+.ve-ce-branchNode p {
+	min-height: 1em;
+}
+
+.ve-ce-branchNode h1, .ve-ce-branchNode h2, .ve-ce-branchNode h3, .ve-ce-branchNode h4, .ve-ce-branchNode h5, .ve-ce-branchNode h6 {
+	min-height: 1em;
+}
