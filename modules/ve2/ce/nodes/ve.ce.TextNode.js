@@ -117,6 +117,9 @@ ve.ce.TextNode.annotationRenderers = {
  */
 ve.ce.TextNode.prototype.onUpdate = function() {
 	var $new = $( $( '<span>' + this.getHtml() + '</span>' ).contents() );
+	if ( $new.length === 0 ) {
+		$new = $new.add( document.createTextNode( '' ) );
+	}
 	this.$.replaceWith( $new );
 	this.$ = $new;
 };
