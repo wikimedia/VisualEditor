@@ -2,6 +2,13 @@ var title = require('./mediawiki.Title.js'),
 	Title = title.Title,
 	Namespace = title.Namespace;
 
+var wikipedias = "en|de|fr|nl|it|pl|es|ru|ja|pt|zh|sv|vi|uk|ca|no|fi|cs|hu|ko|fa|id|tr|ro|ar|sk|eo|da|sr|lt|ms|eu|he|sl|bg|kk|vo|war|hr|hi|et|az|gl|simple|nn|la|th|el|new|roa-rup|oc|sh|ka|mk|tl|ht|pms|te|ta|be-x-old|ceb|br|be|lv|sq|jv|mg|cy|lb|mr|is|bs|yo|an|hy|fy|bpy|lmo|pnb|ml|sw|bn|io|af|gu|zh-yue|ne|nds|ku|ast|ur|scn|su|qu|diq|ba|tt|my|ga|cv|ia|nap|bat-smg|map-bms|wa|kn|als|am|bug|tg|gd|zh-min-nan|yi|vec|hif|sco|roa-tara|os|arz|nah|uz|sah|mn|sa|mzn|pam|hsb|mi|li|ky|si|co|gan|glk|ckb|bo|fo|bar|bcl|ilo|mrj|fiu-vro|nds-nl|tk|vls|se|gv|ps|rue|dv|nrm|pag|koi|pa|rm|km|kv|udm|csb|mhr|fur|mt|wuu|lij|ug|lad|pi|zea|sc|bh|zh-classical|nov|ksh|or|ang|kw|so|nv|xmf|stq|hak|ay|frp|frr|ext|szl|pcd|ie|gag|haw|xal|ln|rw|pdc|pfl|krc|crh|eml|ace|gn|to|ce|kl|arc|myv|dsb|vep|pap|bjn|as|tpi|lbe|wo|mdf|jbo|kab|av|sn|cbk-zam|ty|srn|kbd|lo|ab|lez|mwl|ltg|ig|na|kg|tet|za|kaa|nso|zu|rmy|cu|tn|chr|got|sm|bi|mo|bm|iu|chy|ik|pih|ss|sd|pnt|cdo|ee|ha|ti|bxr|om|ks|ts|ki|ve|sg|rn|dz|cr|lg|ak|tum|fj|st|tw|ch|ny|ff|xh|ng|ii|cho|mh|aa|kj|ho|mus|kr|hz";
+
+var interwikiMap = {};
+wikipedias.split('|').forEach( function (prefix) {
+	interwikiMap[prefix] = 'http://' + prefix + '.wikipedia.org/w';
+});
+
 var MWParserEnvironment = function(opts) {
 	var options = {
 		tagHooks: {},
@@ -16,12 +23,17 @@ var MWParserEnvironment = function(opts) {
 		fetchTemplates: false,
 		maxDepth: 40,
 		pageName: 'Main page',
-		interwikiMap: {},
-		interwikiRegexp: '^$'
+		interwikiMap: interwikiMap,
+		interwikiRegexp: Object.keys(interwikiMap).join('|')
 	};
 	// XXX: this should be namespaced
 	$.extend(options, opts);
 	$.extend(this, options);
+};
+
+MWParserEnvironment.prototype.addInterwiki = function (prefix, wgScript) {
+	this.interwikiMap[prefix] = wgScript;
+	this.interwikiRegexp = Object.keys(this.interwikiMap).join('|');
 };
 
 // Outstanding page requests (for templates etc)
@@ -208,7 +220,7 @@ MWParserEnvironment.prototype.normalizeTitle = function( name ) {
 	if (typeof name !== 'string') {
 		throw new Error('nooooooooo not a string');
 	}
-	var forceNS;
+	var forceNS, self = this;
 	if ( name.substr( 0, 1 ) === ':' ) {
 		forceNS = ':';
 		name = name.substr(1);
@@ -232,11 +244,12 @@ MWParserEnvironment.prototype.normalizeTitle = function( name ) {
 	function upperFirst( s ) { return s.substr(0, 1).toUpperCase() + s.substr(1); }
 
 	function splitNS ( ) {
-		var ns = name.split(':', 1)[0];
+		var nsMatch = name.match( /([a-zA-Z-]+):/ ),
+			ns = nsMatch && nsMatch[1] || '';
 		if( ns !== '' && ns !== name ) {
-			if ( ns.match( this.interwikiRegexp ) ) {
+			if ( self.interwikiMap[ns.toLowerCase()] ) {
 				forceNS += ns + ':';
-				name = name.substr( ns.length + 1 );
+				name = name.substr( nsMatch[0].length );
 				splitNS();
 			} else {
 				name = upperFirst( ns ) + ':' + upperFirst( name.substr( ns.length + 1 ) );
