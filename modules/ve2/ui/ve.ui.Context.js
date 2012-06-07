@@ -119,6 +119,7 @@ ve.ui.Context.prototype.positionOverlay = function( $overlay ) {
 	// Center align overlay
 	var overlayLeft = -Math.round( overlayWidth / 2 );
 	// Adjust overlay left or right depending on viewport
+/*
 	if ( ( this.position.left - overlayMargin ) + overlayLeft < 0 ) {
 		// Move right a bit past center
 		overlayLeft -= this.position.left + overlayLeft - overlayMargin;
@@ -126,13 +127,15 @@ ve.ui.Context.prototype.positionOverlay = function( $overlay ) {
 		// Move left a bit past center
 		overlayLeft += windowWidth - overlayMargin - ( this.position.left - overlayLeft );
 	}
+*/
 	$overlay.css( 'left', overlayLeft );
 	// Position overlay on top or bottom depending on viewport
-	if ( this.position.top + overlayHeight + ( overlayMargin * 2 ) < windowHeight + windowScrollTop ) {
+/*	if ( this.position.top + overlayHeight + ( overlayMargin * 2 ) < windowHeight + windowScrollTop ) {
 		this.$.addClass( 'es-contextView-position-below' );
 	} else {
 		this.$.addClass( 'es-contextView-position-above' );
 	}
+*/
 };
 
 ve.ui.Context.prototype.clear = function() {

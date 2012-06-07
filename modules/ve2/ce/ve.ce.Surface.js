@@ -435,6 +435,10 @@ ve.ce.Surface.prototype.getSelectionRect = function() {
 	};
 };
 
+ve.ce.Surface.prototype.getModel = function() {
+	return this.model;
+};
+
 
 /* Inheritance */
 

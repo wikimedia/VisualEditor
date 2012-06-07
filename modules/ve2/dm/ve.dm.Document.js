@@ -594,6 +594,29 @@ ve.dm.Document.getMatchingAnnotations = function( annotations, pattern ) {
 };
 
 /**
+ * Returns an annotation from annotations that match a regular expression.
+ *
+ * @static
+ * @method
+ * @param {Array} annotations Annotations to search through
+ * @param {RegExp} pattern Regular expression pattern to match with
+ * @returns {Object} Annotation object
+ */
+ve.dm.Document.getMatchingAnnotation = function( annotations, pattern ) {
+	if ( !( pattern instanceof RegExp ) ) {
+		throw 'Invalid Pattern. Pattern not instance of RegExp';
+	}
+	if ( ve.isPlainObject( annotations ) ) {
+		for ( var hash in annotations ) {
+			if ( pattern.test( annotations[hash].type ) ){
+				return annotations[hash];
+			}
+		}
+	}
+	return;
+};
+
+/**
  * Quick check for annotation inside annotations object
  *
  * @static

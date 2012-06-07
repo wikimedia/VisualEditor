@@ -652,8 +652,8 @@ $(document).ready( function() {
 	window.sandboxEditor = sandboxEditor;
 
 		/* Rob's test selection stuff */
-		//surfaceModel.setSelection( new ve.Range(0, documentModel.getData().length ) );
-		//view.showSelection ( surfaceModel.getSelection() );
+		surfaceModel.setSelection( new ve.Range(0, documentModel.getData().length ) );
+		view.showSelection ( surfaceModel.getSelection() );
 
 	/* Sandbox Warning Message */
 	$( '#es-docs' ).css( { 'visibility': 'visible' } );
