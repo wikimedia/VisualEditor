@@ -646,8 +646,14 @@ $(document).ready( function() {
 	var sandboxEditor = new ve.Surface( '#content', HTML[0], options ),
 		surfaceModel = sandboxEditor.getSurfaceModel(),
 		documentModel = sandboxEditor.getDocumentModel(),
-		parent = sandboxEditor.getParent();
+		parent = sandboxEditor.getParent(),
+		view = sandboxEditor.view;
+	
+	window.sandboxEditor = sandboxEditor;
 
+		/* Rob's test selection stuff */
+		//surfaceModel.setSelection( new ve.Range(0, documentModel.getData().length ) );
+		//view.showSelection ( surfaceModel.getSelection() );
 
 	/* Sandbox Warning Message */
 	$( '#es-docs' ).css( { 'visibility': 'visible' } );

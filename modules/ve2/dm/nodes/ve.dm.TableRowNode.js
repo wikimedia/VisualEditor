@@ -37,11 +37,11 @@ ve.dm.TableRowNode.rules = {
  * @member
  */
 ve.dm.TableRowNode.converters = {
-	'tags': 'tr',
-	'toHtml': function( type, element ) {
-		return ve.dm.createHtmlElement( 'tr' );
+	'domElementTypes': ['tr'],
+	'toDomElement': function( type, element ) {
+		return ve.dm.createDomElement( 'tr' );
 	},
-	'toData': function( tag, element ) {
+	'toDataElement': function( tag, element ) {
 		return { 'type': 'tableRow' };
 	}
 };

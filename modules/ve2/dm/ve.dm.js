@@ -8,7 +8,7 @@ ve.dm = {
 	//'converter': Initialized in ve.dm.Converter.js
 };
 
-ve.dm.createHtmlElement = function( type, attributes, doc ) {
+ve.dm.createDomElement = function( type, attributes, doc ) {
 	if ( doc === undefined ) {
 		doc = document;
 	}
@@ -17,4 +17,12 @@ ve.dm.createHtmlElement = function( type, attributes, doc ) {
 		element.setAttribute( key, attributes[key] );
 	}
 	return element;
+};
+
+ve.dm.getObjectFromDomElementAttributes = function( domAttributes ) {
+	var attributes = {};
+	for ( var i = 0; i < domAttributes.length; i++ ) {
+		attributes[domAttributes[i].name] = domAttributes[i].value;
+	}
+	return attributes;
 };

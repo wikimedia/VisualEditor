@@ -166,7 +166,7 @@ ve.dm.HTMLConverter.getAnnotation = function( node ) {
  */
 ve.dm.HTMLConverter.generateAnnotatedContent = function( content, annotations ) {
 	var characters = content.split( '' ),
-		annoationMap = {},
+		annotationMap = {},
 		i;
 	if ( !annotations || annotations.length === 0 ) {
 		return characters;
@@ -175,10 +175,12 @@ ve.dm.HTMLConverter.generateAnnotatedContent = function( content, annotations ) 
 		if ( annotations[i].data !== undefined && Object.keys(annotations[i].data).length === 0 ) {
 			delete annotations[i].data;
 		}
-		annoationMap[ve.getHash( annotations[i] )] = annotations[i];
+		annotationMap[ve.getHash( annotations[i] )] = annotations[i];
 	}
 	for ( i = 0; i < characters.length; i++ ) {
-		characters[i] = [characters[i], annoationMap];
+		// Make a shallow copy of the annotationMap object, otherwise adding an annotation
+		// to one character automatically adds it to all of others as well
+		characters[i] = [characters[i], ve.extendObject( {}, annotationMap )];
 	}
 	return characters;
 };

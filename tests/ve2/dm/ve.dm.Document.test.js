@@ -2,7 +2,7 @@ module( 've.dm.Document' );
 
 /* Tests */
 
-test( 'constructor', 3, function() {
+test( 'constructor', 4, function() {
 	var doc = new ve.dm.Document( ve.dm.example.data );
 	deepEqual(
 		ve.example.getNodeTreeSummary( doc.getDocumentNode() ),
@@ -26,6 +26,13 @@ test( 'constructor', 3, function() {
 		ve.example.getNodeTreeSummary( doc.getDocumentNode() ),
 		ve.example.getNodeTreeSummary( new ve.dm.DocumentNode( [ new ve.dm.TextNode( 4 ) ] ) ),
 		'plain text input is handled correctly'
+	);
+
+	doc = new ve.dm.Document( [ { 'type': 'paragraph' }, { 'type': '/paragraph' } ] );
+	deepEqual(
+		ve.example.getNodeTreeSummary( doc.getDocumentNode() ),
+		ve.example.getNodeTreeSummary( new ve.dm.DocumentNode( [ new ve.dm.ParagraphNode( [ new ve.dm.TextNode( 0 ) ] ) ] ) ),
+		'empty paragraph gets a zero-length text node'
 	);
 } );
 
@@ -461,7 +468,7 @@ test( 'getAnnotatedRangeFromOffset', 1,  function(){
 	}
 } );
 
-test( 'getMatchingAnnotations', 1, function() {
+test( 'getMatchingAnnotationsFromOffset', 1, function() {
 	var cases = {
 		'finds two out of three': {
 			'pattern': /textStyle\/.*/,
@@ -513,7 +520,7 @@ test( 'getMatchingAnnotations', 1, function() {
 	for ( var msg in cases ) {
 		deepEqual(
 			( new ve.dm.Document( [cases[msg].character] ) )
-				.getMatchingAnnotations( 0, cases[msg].pattern ),
+				.getMatchingAnnotationsFromOffset( 0, cases[msg].pattern ),
 			cases[msg].expected,
 			msg
 		);

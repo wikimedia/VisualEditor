@@ -119,6 +119,15 @@ ve.dm.Document = function( data, parentDocument ) {
 						// This can only happen if we got unbalanced data
 						throw 'Unbalanced input passed to document';
 					}
+
+					if ( children.length === 0 &&
+						ve.dm.nodeFactory.canNodeContainContent(
+							currentNode.getType()
+						)
+					) {
+						// Content nodes cannot be childless, add a zero-length text node
+						children.push( new ve.dm.TextNode( 0 ) );
+					}
 					// Attach the children to the node
 					ve.batchSplice( currentNode, 0, 0, children );
 				}
@@ -514,7 +523,7 @@ ve.dm.Document.prototype.getAnnotatedRangeFromOffset = function ( offset, annota
  * Checks if a character has matching annotations.
  *
  * @static
- * @methodng
+ * @method
  * @param {Integer} offset Offset of annotated character
  * @param {RegExp} pattern Regular expression pattern to match with
  * @returns {Boolean} Character has matching annotations
@@ -536,15 +545,14 @@ ve.dm.Document.prototype.offsetContainsMatchingAnnotations = function( offset, p
 };
 
 /**
- * Gets a list of annotations that match a regular expression.
+ * Gets a list of annotations that match a regular expression at an offset
  *
- * @static
- * @methodng
+ * @method
  * @param {Integer} offset Offset of annotated character
  * @param {RegExp} pattern Regular expression pattern to match with
  * @returns {Object} Annotations that match the pattern
  */
-ve.dm.Document.prototype.getMatchingAnnotations = function( offset, pattern ) {
+ve.dm.Document.prototype.getMatchingAnnotationsFromOffset = function( offset, pattern ) {
 	if ( !( pattern instanceof RegExp ) ) {
 		throw 'Invalid Pattern. Pattern not instance of RegExp';
 	}
@@ -559,6 +567,72 @@ ve.dm.Document.prototype.getMatchingAnnotations = function( offset, pattern ) {
 		}
 	}
 	return matches;
+};
+
+/**
+ * Gets a list of annotations annotations that match a regular expression.
+ *
+ * @static
+ * @method
+ * @param {Array} annotations Annotations to search through
+ * @param {RegExp} pattern Regular expression pattern to match with
+ * @returns {Object} Annotations that match the pattern
+ */
+ve.dm.Document.getMatchingAnnotations = function( annotations, pattern ) {
+	if ( !( pattern instanceof RegExp ) ) {
+		throw 'Invalid Pattern. Pattern not instance of RegExp';
+	}
+	var matches = null;
+	if ( ve.isPlainObject( annotations ) ) {
+		for ( var hash in annotations ) {
+			if ( pattern.test( annotations[hash].type ) ){
+				matches[hash] = annotations[hash];
+			}
+		}
+	}
+	return matches;
+};
+
+/**
+ * Returns an annotation from annotations that match a regular expression.
+ *
+ * @static
+ * @method
+ * @param {Array} annotations Annotations to search through
+ * @param {RegExp} pattern Regular expression pattern to match with
+ * @returns {Object} Annotation object
+ */
+ve.dm.Document.getMatchingAnnotation = function( annotations, pattern ) {
+	if ( !( pattern instanceof RegExp ) ) {
+		throw 'Invalid Pattern. Pattern not instance of RegExp';
+	}
+	if ( ve.isPlainObject( annotations ) ) {
+		for ( var hash in annotations ) {
+			if ( pattern.test( annotations[hash].type ) ){
+				return annotations[hash];
+			}
+		}
+	}
+	return;
+};
+
+/**
+ * Quick check for annotation inside annotations object
+ *
+ * @static
+ * @method
+ * @param {Object} annotations Annotations to search through
+ * @param {Object} pattern Regular expression pattern to match with
+ * @returns {Boolean} if annotation in annotations object
+ */
+ve.dm.Document.annotationsContainAnnotation = function( annotations, annotation ) {
+	var contains = false;
+	$.each(annotations, function(i, val){
+		if ( ve.compareObjects(val, annotation) ) {
+			contains = true;
+		}
+	});
+	return contains;
 };
 
 /**
@@ -845,15 +919,72 @@ ve.dm.Document.prototype.getNearestStructuralOffset = function( offset, directio
  * @returns {Array} A (possibly modified) copy of data
  */
 ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
-	var newData = [], i, j, openingStack = [], closingStack = [], fixupStack = [], node, index,
-		parentNode, parentType, childType, allowedParents, allowedChildren,
-		parentsOK, childrenOK, openings, closings, expectedType, popped;
-	node = this.getNodeFromOffset( offset );
-	// TODO update for iscontent and cancontaincontent stuff
+	var
+		// Array where we build the return value
+		newData = [],
 
-	// TODO document
+		// *** Stacks ***
+		// Array of element openings (object). Openings in data are pushed onto this stack
+		// when they are encountered and popped off when they are closed
+		openingStack = [],
+		// Array of element types (strings). Closings in data that close nodes that were
+		// not opened in data (i.e. were already in the document) are pushed onto this stack
+		// and popped off when balanced out by an opening in data
+		closingStack = [],
+		// Array of objects describing wrappers that need to be fixed up when a given
+		// element is closed.
+		//     'expectedType': closing type that triggers this fixup. Includes initial '/'
+		//     'openings': array of opening elements that should be closed (in reverse order)
+		//     'reopenElements': array of opening elements to insert (in reverse order)
+		fixupStack = [],
+
+		// *** State persisting across iterations of the outer loop ***
+		// The node (from the document) we're currently in. When in a node that was opened
+		// in data, this is set to its first ancestor that is already in the document
+		parentNode,
+		// The type of the node we're currently in, even if that node was opened within data
+		parentType,
+
+		// *** Temporary variables that do not persist across iterations ***
+		// The type of the node we're currently inserting. When the to-be-inserted node
+		// is wrapped, this is set to the type of the outer wrapper.
+		childType,
+		// Stores the return value of getParentNodeTypes( childType )
+		allowedParents,
+		// Stores the return value of getChildNodeTypes( parentType )
+		allowedChildren,
+		// Whether parentType matches allowedParents
+		parentsOK,
+		// Whether childType matches allowedChildren
+		childrenOK,
+		// Array of opening elements to insert (for wrapping the to-be-inserted element)
+		openings,
+		// Array of closing elements to insert (for splitting nodes)
+		closings,
+		// Array of opening elements matching the elements in closings (in the same order)
+		reopenElements,
+		// Temporary variable for building a clone of the current element
+		clonedElement,
+
+		// *** Other variables ***
+		// Used to store values popped from various stacks
+		popped,
+		// Loop variables
+		i, j;
+
+	/**
+	 * Append a linear model element to newData and update the state.
+	 *
+	 * This function updates parentNode, parentType, openingStack and closingStack.
+	 *
+	 * @param {Object|Array|String} element Linear model element
+	 * @param {Number} index Index in data that this element came from. Used for error reporting only
+	 */
 	function writeElement( element, index ) {
-		if ( element.type.charAt( 0 ) !== '/' ) {
+		var expectedType;
+		if ( element.type === undefined ) {
+			// Content, do nothing
+		} else if ( element.type.charAt( 0 ) !== '/' ) {
 			// Opening
 			// Check if this opening balances an earlier closing of a node
 			// that was already in the document. This is only the case if
@@ -866,8 +997,9 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 				closingStack.pop();
 			} else {
 				// This opens something new, put it on openingStack
-				openingStack.push( element.type );
+				openingStack.push( element );
 			}
+			parentType = element.type;
 		} else {
 			// Closing
 			// Make sure that this closing matches the currently opened node
@@ -875,19 +1007,23 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 				// The opening was on openingStack, so we're closing
 				// a node that was opened within data. Don't track
 				// that on closingStack
-				expectedType = openingStack.pop();
+				expectedType = openingStack.pop().type;
 			} else {
 				// openingStack is empty, so we're closing a node that
 				// was already in the document. This means we have to
 				// reopen it later, so track this on closingStack
-				expectedType = node.getType();
+				expectedType = parentNode.getType();
 				closingStack.push( expectedType );
-				node = node.getParent();
-				if ( !node ) {
+				parentNode = parentNode.getParent();
+				if ( !parentNode ) {
 					throw 'Inserted data is trying to close the root node ' +
 						'(at index ' + index + ')';
 				}
 			}
+			parentType = expectedType;
+
+			// Validate
+			// FIXME this breaks certain input, should fix it up, not scream and die
 			if ( element.type !== '/' + expectedType ) {
 				throw 'Type mismatch, expected /' + expectedType +
 					' but got ' + element.type + ' (at index ' + index + ')';
@@ -896,20 +1032,29 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 		newData.push( element );
 	}
 
-	parentNode = node;
+	parentNode = this.getNodeFromOffset( offset );
 	parentType = parentNode.getType();
 	for ( i = 0; i < data.length; i++ ) {
-		if ( data[i].type === undefined ) {
-			// Content, write through
-			// TODO check that content is allowed at the current offset
-			// TODO make this aware of text nodes
-			newData.push( data[i] );
-		} else if ( data[i].type.charAt( 0 ) !== '/' ) {
-			// Opening
-			// Make sure that opening this element here does not violate the
-			// parent/children rules. If it does, insert stuff to fix it
-			childType = data[i].type;
+		if ( data[i].type === undefined ||  data[i].type.charAt( 0 ) !== '/' ) {
+			childType = data[i].type || 'text';
 			openings = [];
+			closings = [];
+			reopenElements = [];
+			// Opening or content
+			// Make sure that opening this element here does not violate the
+			// parent/children/content rules. If it does, insert stuff to fix it
+
+			// If this node is content, check that the containing node can contain
+			// content. If not, wrap in a paragraph
+			if ( ve.dm.nodeFactory.isNodeContent( childType ) &&
+				!ve.dm.nodeFactory.canNodeContainContent( parentType )
+			) {
+				childType = 'paragraph';
+				openings.unshift ( { 'type': 'paragraph' } );                            
+			}
+
+			// Check that this node is allowed to have the containing node as its
+			// parent. If not, wrap it until it's fixed
 			do {
 				allowedParents = ve.dm.nodeFactory.getParentNodeTypes( childType );
 				parentsOK = allowedParents === null ||
@@ -925,21 +1070,40 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 					openings.unshift( { 'type': childType } );
 				}
 			} while ( !parentsOK );
-			closings = [];
+
+			// Check that the containing node can have this node as its child. If not,
+			// close nodes until it's fixed
 			do {
 				allowedChildren = ve.dm.nodeFactory.getChildNodeTypes( parentType );
 				childrenOK = allowedChildren === null ||
 					$.inArray( childType, allowedChildren ) !== -1;
+				// Also check if we're trying to insert structure into a node that
+				// has to contain content
+				childrenOK = childrenOK && !(
+					!ve.dm.nodeFactory.isNodeContent( childType ) &&
+					ve.dm.nodeFactory.canNodeContainContent( parentType )
+				);
 				if ( !childrenOK ) {
 					// We can't insert this into this parent
 					// Close the parent and try one level up
 					closings.push( { 'type': '/' + parentType } );
 					if ( openingStack.length > 0 ) {
-						parentType = openingStack.pop();
+						popped = openingStack.pop();
+						parentType = popped.type;
+						reopenElements.push( ve.copyObject( popped ) );
 						// The opening was on openingStack, so we're closing
 						// a node that was opened within data. Don't track
 						// that on closingStack
 					} else {
+						// openingStack is empty, so we're closing a node that
+						// was already in the document. This means we have to
+						// reopen it later, so track this on closingStack
+						closingStack.push( parentType );
+						clonedElement = { 'type': parentType };
+						if ( !$.isEmptyObject( parentNode.getAttributes() ) ) {
+							clonedElement.attributes = ve.copyObject( parentNode.getAttributes() );
+						}
+						reopenElements.push( clonedElement );
 						parentNode = parentNode.getParent();
 						if ( !parentNode ) {
 							throw 'Cannot insert ' + childType + ' even ' +
@@ -952,28 +1116,44 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 			} while( !childrenOK );
 
 			for ( j = 0; j < closings.length; j++ ) {
-				writeElement( closings[j], i );
+				// writeElement() would update openingStack/closingStack, but
+				// we've already done that for closings
+				//writeElement( closings[j], i );
+				newData.push( closings[j] );
 			}
 			for ( j = 0; j < openings.length; j++ ) {
 				writeElement( openings[j], i );
 			}
 			writeElement( data[i], i );
-			fixupStack.push( { 'expectedType': '/' + data[i].type, 'openings': openings, 'closings': closings } );
-			parentType = data[i].type;
+			if ( data[i].type === undefined ) {
+				// Special treatment for text nodes
+				if ( openings.length > 0 ) {
+					// We wrapped the text node, update parentType
+					parentType = childType;
+					fixupStack.push( { 'expectedType': '/' + childType, 'openings': openings, 'reopenElements': reopenElements } );
+				}
+				// If we didn't wrap the text node, then the node we're inserting
+				// into can have content, so we couldn't have closed anything
+			} else {
+				fixupStack.push( { 'expectedType': '/' + data[i].type, 'openings': openings, 'reopenElements': reopenElements } );
+				parentType = data[i].type;
+			}
 		} else {
 			// Closing
 			writeElement( data[i], i );
+			// TODO don't close fixup stuff if the next thing immediately needs to be fixed up as well;
+			// instead, merge the two wrappers
 			if ( fixupStack.length > 0 && fixupStack[fixupStack.length - 1].expectedType == data[i].type ) {
 				popped = fixupStack.pop();
 				// Go through these in reverse!
 				for ( j = popped.openings.length - 1; j >= 0; j-- ) {
 					writeElement( { 'type': '/' + popped.openings[j].type }, i );
 				}
-				for ( j = popped.closings.length - 1; j >= 0; j-- ) {
-					// TODO keep actual elements around so attributes are preserved
-					writeElement( { 'type': popped.closings[j].type.substr( 1 ) }, i );
+				for ( j = popped.reopenElements.length - 1; j >= 0; j-- ) {
+					writeElement( popped.reopenElements[j], i );
 				}
 			}
+			parentType = openingStack.length > 0 ? openingStack[openingStack.length - 1] : parentNode.getType();
 		}
 	}
 
@@ -982,14 +1162,14 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 		popped = openingStack[openingStack.length - 1];
 		// writeElement() will perform the actual pop() that removes
 		// popped from openingStack
-		writeElement( { 'type': '/' + popped }, i );
+		writeElement( { 'type': '/' + popped.type }, i );
 	}
 	// Re-open closed nodes
 	while ( closingStack.length > 0 ) {
 		popped = closingStack[closingStack.length - 1];
 		// writeElement() will perform the actual pop() that removes
 		// popped from closingStack
-		writeElement( { 'type': popped.substr( 1 ) }, i );
+		writeElement( { 'type': popped }, i );
 	}
 
 	return newData;

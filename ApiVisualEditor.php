@@ -3,9 +3,9 @@
 class ApiVisualEditor extends ApiBase {
 
 	public function execute() {
-		global $wgRequest, $wgUser;
+		global $wgRequest, $wgUser, $wgVisualEditorParsoidURL;
 		
-		$parsoid = "http://parsoid.wmflabs.org/";
+		$parsoid = $wgVisualEditorParsoidURL;
 		$params = $this->extractRequestParams();
 		$page = Title::newFromText( $params['page'] );
 
@@ -38,7 +38,7 @@ class ApiVisualEditor extends ApiBase {
 			if ( $wikitext ) {
 
 				/* Save Page */
-				$flags = $params['minor'] ? EDIT_MINOR : EDIT_UPDATE;
+				$flags = $params['minor'] === 'true' ? EDIT_MINOR : EDIT_UPDATE;
 
 				$wikiPage = WikiPage::factory( $page );
 				$status = $wikiPage->doEdit( 
@@ -46,7 +46,21 @@ class ApiVisualEditor extends ApiBase {
 					$params['summary'],
 					$flags
 				);
-				//$status->ok === true ? 
+				
+				// Check status ?
+				// $status->ok === true ?
+
+				// Add / Remove from watch list.
+				if( $params['watch'] === 'true' ) {
+					if ( $wgUser->isWatched( $page ) === false ) {
+						$wgUser->addWatch( $page );	
+					}
+				} else {
+					// Remove from watchlist? 
+					if ( $wgUser->isWatched( $page ) === true ) {
+						$wgUser->removeWatch( $page );	
+					}
+				}
 
 				/* Get page content */
 				// NOTE: possibly return content from revision object vs current rev ?
@@ -92,6 +106,9 @@ class ApiVisualEditor extends ApiBase {
 				ApiBase::PARAM_REQUIRED => true,
 			),
 			'minor' => array(
+				ApiBase::PARAM_REQUIRED => false,
+			),
+			'watch' => array(
 				ApiBase::PARAM_REQUIRED => false,
 			),
 			'html' => array(

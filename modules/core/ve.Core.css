@@ -14,7 +14,7 @@
 	vertical-align: top;
 	padding: 0.25em;
 	height: 22px;
-	margin-right: 0.125em;
+	margin-right: 0.25em;
 	border: solid 1px transparent;
 }
 .ve-action-button:before {
@@ -36,9 +36,9 @@
 
 /* Save dialog styles */
 #ve-saveDialog {
-	top: 0px;
+	top: -1px;
 	right: 2.5em;
-	width: 35em;
+	width: 29em;
 }
 
 #ve-saveDialog > .ve-dialog-divider {
@@ -51,18 +51,18 @@
 	clear: both;
 }
 
-#ve-saveDialog > .ve-dialog-divider > .ve-dialog-left {
+.ve-dialog-left {
 	float: left;	
 }
 
-#ve-saveDialog > .ve-dialog-divider > input[type='text'] {
+#ve-saveDialog input[type='text'] {
 	width: 96%;
 	font-size: 12px;
 	padding: 4px;
-	margin-bottom: 10px;
+	margin: 10px 0px;
 }
 
-#ve-saveDialog > .ve-dialog-divider > input[type='checkbox'] {
+#ve-saveDialog input[type='checkbox'] {
 	margin-right: 5px;
 }
 
@@ -82,7 +82,7 @@
 }
 /* inspector styles */
 .es-inspector-savebutton {
-	padding-right: 24px;
+	padding-right: 26px;
 	border:1px solid transparent;
 	border-radius: 0.125em;
 	-webkit-border-radius: 0.125em;
@@ -90,7 +90,7 @@
 	-o-border-radius: 0.125em;
 	/* need new button */
 	/* @embed */
-	background-image: url(../ve2/ui/styles/images/save.png);
+	background-image: url(../ve2/ui/styles/images/close.png);
 	background-position: center right;
 	background-repeat: no-repeat;
 }

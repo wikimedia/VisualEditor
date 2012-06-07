@@ -180,6 +180,31 @@ ve.dm.example.data = [
 	'm',
 	// 58 - End of paragraph
 	{ 'type': '/paragraph' }
+	// 59 - End of document
+];
+
+ve.dm.example.alienData = [
+	// 0 - Open alienBlock
+	{ 'type': 'alienBlock' },
+	// 1 - Close alienBlock
+	{ 'type': '/alienBlock' },
+	// 2 - Open paragraph
+	{ 'type': 'paragraph' },
+	// 3 - Plain character 'a'
+	'a',
+	// 4 - Open alienInline
+	{ 'type': 'alienBlock' },
+	// 5 - Close alienInline
+	{ 'type': '/alienBlock' },
+	// 6 - Plain character 'b'
+	'b',
+	// 7 - Close paragraph
+	{ 'type': '/paragraph' },
+	// 8 - Open alienBlock
+	{ 'type': 'alienBlock' },
+	// 9 - Close alienBlock
+	{ 'type': '/alienBlock' }
+	// 10 - End of document
 ];
 
 /**
@@ -385,4 +410,95 @@ ve.dm.example.getOffsetMap = function( root ) {
 		// </p>
 		lookup( root ) // 59 - document
 	];
+};
+
+ve.dm.example.conversions = {
+	'definitionListItem term': {
+		'domElement': ve.dm.createDomElement( 'dt' ),
+		'dataElement': { 'type': 'definitionListItem', 'attributes': { 'style': 'term' } }
+	},
+	'definitionListItem definition': {
+		'domElement': ve.dm.createDomElement( 'dd' ),
+		'dataElement': { 'type': 'definitionListItem', 'attributes': { 'style': 'definition' } }
+	},
+	'definitionList definition': {
+		'domElement': ve.dm.createDomElement( 'dl' ),
+		'dataElement': { 'type': 'definitionList' }
+	},
+	'heading level 1': {
+		'domElement': ve.dm.createDomElement( 'h1' ),
+		'dataElement': { 'type': 'heading', 'attributes': { 'level': 1 } }
+	},
+	'heading level 2': {
+		'domElement': ve.dm.createDomElement( 'h2' ),
+		'dataElement': { 'type': 'heading', 'attributes': { 'level': 2 } }
+	},
+	'heading level 3': {
+		'domElement': ve.dm.createDomElement( 'h3' ),
+		'dataElement': { 'type': 'heading', 'attributes': { 'level': 3 } }
+	},
+	'heading level 4': {
+		'domElement': ve.dm.createDomElement( 'h4' ),
+		'dataElement': { 'type': 'heading', 'attributes': { 'level': 4 } }
+	},
+	'heading level 5': {
+		'domElement': ve.dm.createDomElement( 'h5' ),
+		'dataElement': { 'type': 'heading', 'attributes': { 'level': 5 } }
+	},
+	'heading level 6': {
+		'domElement': ve.dm.createDomElement( 'h6' ),
+		'dataElement': { 'type': 'heading', 'attributes': { 'level': 6 } }
+	},
+	'image': {
+		'domElement': ve.dm.createDomElement( 'image' ),
+		'dataElement': { 'type': 'image' }
+	},
+	'listItem': {
+		'domElement': ve.dm.createDomElement( 'li' ),
+		'dataElement': { 'type': 'listItem' }
+	},
+	'list bullet': {
+		'domElement': ve.dm.createDomElement( 'ul' ),
+		'dataElement': { 'type': 'list', 'attributes': { 'style': 'bullet' } }
+	},
+	'list number': {
+		'domElement': ve.dm.createDomElement( 'ol' ),
+		'dataElement': { 'type': 'list', 'attributes': { 'style': 'number' } }
+	},
+	'paragraph': {
+		'domElement': ve.dm.createDomElement( 'p' ),
+		'dataElement': { 'type': 'paragraph' }
+	},
+	'preformatted': {
+		'domElement': ve.dm.createDomElement( 'pre' ),
+		'dataElement': { 'type': 'preformatted' }
+	},
+	'tableCell': {
+		'domElement': ve.dm.createDomElement( 'td' ),
+		'dataElement': { 'type': 'tableCell' }
+	},
+	'table': {
+		'domElement': ve.dm.createDomElement( 'table' ),
+		'dataElement': { 'type': 'table' }
+	},
+	'tableRow': {
+		'domElement': ve.dm.createDomElement( 'tr' ),
+		'dataElement': { 'type': 'tableRow' }
+	},
+	'paragraph with mw-data attribute': {
+		'domElement': ve.dm.createDomElement( 'p', { 'data-mw': '{"test":1234}' } ),
+		'dataElement': { 'type': 'paragraph', 'attributes': { 'html/data-mw': '{"test":1234}' } }
+	},
+	'paragraph with style attribute': {
+		'domElement': ve.dm.createDomElement( 'p', { 'style': 'color:blue' } ),
+		'dataElement': { 'type': 'paragraph', 'attributes': { 'html/style': 'color:blue' } }
+	},
+	'alien unknown type': {
+		'domElement': ve.dm.createDomElement( 'alien' ),
+		'dataElement': { 'type': 'alienBlock', 'attributes': { 'html': '<alien></alien>' } }
+	},
+	'alien generated content': {
+		'domElement': ve.dm.createDomElement( 'p', { 'data-mw-gc': '' } ),
+		'dataElement': { 'type': 'alienBlock', 'attributes': { 'html': '<p data-mw-gc=""></p>' } }
+	}
 };

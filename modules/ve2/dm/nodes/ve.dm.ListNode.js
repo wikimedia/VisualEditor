@@ -37,14 +37,14 @@ ve.dm.ListNode.rules = {
  * @member
  */
 ve.dm.ListNode.converters = {
-	'tags': ['ul', 'ol'],
-	'toHtml': function( type, element ) {
+	'domElementTypes': ['ul', 'ol'],
+	'toDomElement': function( type, element ) {
 		return element.attributes && ( {
-			'bullet': ve.dm.createHtmlElement( 'ul' ),
-			'number': ve.dm.createHtmlElement( 'ol' )
+			'bullet': ve.dm.createDomElement( 'ul' ),
+			'number': ve.dm.createDomElement( 'ol' )
 		} )[element.attributes['style']];
 	},
-	'toData': function( tag, element ) {
+	'toDataElement': function( tag, element ) {
 		return ( {
 			'ul': { 'type': 'list', 'attributes': { 'style': 'bullet' } },
 			'ol': { 'type': 'list', 'attributes': { 'style': 'number' } }

@@ -37,18 +37,18 @@ ve.dm.HeadingNode.rules = {
  * @member
  */
 ve.dm.HeadingNode.converters = {
-	'tags': ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
-	'toHtml': function( type, element ) {
+	'domElementTypes': ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
+	'toDomElement': function( type, element ) {
 		return element.attributes && ( {
-			1: ve.dm.createHtmlElement( 'h1' ),
-			2: ve.dm.createHtmlElement( 'h2' ),
-			3: ve.dm.createHtmlElement( 'h3' ),
-			4: ve.dm.createHtmlElement( 'h4' ),
-			5: ve.dm.createHtmlElement( 'h5' ),
-			6: ve.dm.createHtmlElement( 'h6' )
+			1: ve.dm.createDomElement( 'h1' ),
+			2: ve.dm.createDomElement( 'h2' ),
+			3: ve.dm.createDomElement( 'h3' ),
+			4: ve.dm.createDomElement( 'h4' ),
+			5: ve.dm.createDomElement( 'h5' ),
+			6: ve.dm.createDomElement( 'h6' )
 		} )[element.attributes['level']];
 	},
-	'toData': function( tag, element ) {
+	'toDataElement': function( tag, element ) {
 		return ( {
 			'h1': { 'type': 'heading', 'attributes': { 'level': 1 } },
 			'h2': { 'type': 'heading', 'attributes': { 'level': 2 } },

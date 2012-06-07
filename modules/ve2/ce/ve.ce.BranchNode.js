@@ -43,12 +43,12 @@ ve.ce.BranchNode.$slugTemplate = $( '<span class="ve-ce-slug">&#xFEFF;</span>' )
  *
  * This method reads the {key} attribute from a {model} and looks up a type in the node's statically
  * defined {domWrapperElementTypes} member, which is a mapping of possible values of that attribute
- * and HTML element types.
+ * and DOM element types.
  *
  * @method
  * @param {ve.dm.BranchNode} model Model node is based on
  * @param {String} key Attribute name to read type value from
- * @returns {String} HTML element type for wrapper
+ * @returns {String} DOM element type for wrapper
  * @throws 'Undefined attribute' if attribute is not defined in the model
  * @throws 'Invalid attribute value' if attribute value is not a key in {domWrapperElementTypes}
  */

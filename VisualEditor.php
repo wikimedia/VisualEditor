@@ -15,6 +15,12 @@
  * @version 0.1.0
  */
 
+/* Configuration */
+
+// URL to the parsoid instance
+$wgVisualEditorParsoidURL = 'http://parsoid.wmflabs.org/';
+
+
 /* Setup */
 
 $wgExtensionCredits['other'][] = array(
@@ -84,7 +90,18 @@ $wgResourceModules += array(
 			'core/ve.Core.js',
 		),
 		'messages' => array(
-			'',
+			'minoredit',
+			'savearticle',
+			'watchthis',
+			'summary',
+			'tooltip-save',
+			'copyrightwarning',
+			'copyrightpage',
+			'edit',
+			'accesskey-ca-edit',
+			'tooltip-ca-edit',
+			'viewsource'
+
 		),
 		'styles' => 'core/ve.Core.css',
 		'dependencies' => array(
@@ -243,13 +260,4 @@ $wgAPIModules['ve-parsoid'] = 'ApiVisualEditor';
 $wgAutoloadClasses['VisualEditorHooks'] = $dir . 'VisualEditor.hooks.php';
 $wgHooks['BeforePageDisplay'][] = 'VisualEditorHooks::onPageDisplay';
 $wgHooks['userCan'][] = 'VisualEditorHooks::namespaceProtection';
-
-// API for retrieving wikidom parse results
-$wgAutoloadClasses['ApiQueryParseTree'] = $dir . 'api/ApiQueryParseTree.php';
-$wgAPIPropModules['parsetree'] = 'ApiQueryParseTree';
-
-// external cmd, accepts wikitext and returns parse tree in JSON. Also set environment variables needed by script here.
-putenv('NODE_PATH=/usr/local/bin/node_modules' );
-$wgVisualEditorParserCmd = '/usr/local/bin/node ' . $dir . 'modules/parser/parse.js';
-
-
+$wgHooks['MakeGlobalVariablesScript'][] = 'VisualEditorHooks::makeGlobalVariablesScript';

@@ -78,7 +78,10 @@ ve.ui.IndentationButtonTool.prototype.outdent = function( listItems ) {
 ve.ui.IndentationButtonTool.prototype.updateState = function( annotations, nodes ) {
 	function areListItems( nodes ) {
 		for( var i = 0; i < nodes.length; i++ ) {
-			if ( nodes[i].getParent().getElementType() !== 'listItem' ) {
+			if (
+				nodes[i].parent !== null &&
+				nodes[i].getParent().getType() !== 'listItem' )
+			{
 				return false;
 			}
 		}

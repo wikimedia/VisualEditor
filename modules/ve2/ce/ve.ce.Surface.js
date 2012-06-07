@@ -160,29 +160,36 @@ ve.ce.Surface.prototype.onMouseMove = function( e ) {
 ve.ce.Surface.prototype.onCutCopy = function( e ) {
 	var _this = this,
 		sel = rangy.getSelection(),
-		key = sel.getRangeAt(0).toString().replace( /\s/gm, '' );
+		$frag = null,
+		key = '';
 
+	// Create key from text and element names
+	$frag = $(sel.getRangeAt(0).cloneContents());
+	$frag.contents().each(function() {
+		key += this.textContent || this.nodeName;
+	});
+	key = key.replace( /\s/gm, '' );
+
+	// Set surface clipboard
 	this.clipboard[key] = ve.copyArray(
 		this.documentView.model.getData( this.getSelectionRange() )
 	);
 
 	if ( e.type == 'cut' ) {
 		setTimeout( function() {
-			// we don't like how browsers cut, so let's undo it and do it ourselves.
+			var	selection = null,
+				tx = null;
+		
+			// We don't like how browsers cut, so let's undo it and do it ourselves.
 			document.execCommand('undo', false, false);
 			
-			var selection = _this.getSelectionRange();
+			selection = _this.getSelectionRange();
 			
-			// transact
-			var tx = _this.model.getDocument().prepareRemoval( selection );
-			
-			_this.autoRender = true;
-			_this.model.transact( tx );
-			_this.autoRender = false;
-			
-			_this.clearPollData();
+			// Transact
+			tx = ve.dm.Transaction.newFromRemoval( _this.documentView.model, selection );
+			ve.dm.TransactionProcessor.commit( _this.documentView.model, tx );
 
-			// place cursor
+			// Place cursor
 			_this.showCursor( selection.start );
 		}, 1 );
 	}
@@ -193,23 +200,39 @@ ve.ce.Surface.prototype.onCutCopy = function( e ) {
  */
 ve.ce.Surface.prototype.onPaste = function( e ) {
 	var	_this = this,
-		insertionPoint = _this.getSelectionRange().start;
+		selection = this.getSelectionRange(),
+		tx = null;
+	
+	// Pasting into a range? Remove first.	
+	if (!rangy.getSelection().isCollapsed) {
+		tx = ve.dm.Transaction.newFromRemoval( _this.documentView.model, selection );
+		ve.dm.TransactionProcessor.commit( _this.documentView.model, tx );
+	}
 	
 	$('#paste').html('').show().focus();
 
 	setTimeout( function() {
-		var pasteString = $('#paste').hide().text(),
-			key = pasteString.replace( /\s/gm, '' ),
-			pasteData = ( _this.clipboard[key] ) ? _this.clipboard[key] : pasteString.split('');
+		var	key = '',
+			pasteData = null,
+			tx = null;
+		
+		// Create key from text and element names
+		$('#paste').hide().contents().each(function() {
+			key += this.textContent || this.nodeName;
+		});
+		key = key.replace( /\s/gm, '' );
 
-		// transact
-		var tx = ve.dm.Transaction.newFromInsertion(
-			_this.documentView.model, insertionPoint, pasteData
+		// Get linear model from surface clipboard or create array from unknown pasted content
+		pasteData = ( _this.clipboard[key] ) ? _this.clipboard[key] : $('#paste').text().split('');
+
+		// Transact
+		tx = ve.dm.Transaction.newFromInsertion(
+			_this.documentView.model, selection.start, pasteData
 		);
 		ve.dm.TransactionProcessor.commit( _this.documentView.model, tx );
 
-		// place cursor
-		_this.showCursor( insertionPoint + pasteData.length );
+		// Place cursor
+		_this.showCursor( selection.start + pasteData.length );
 		_this.documentView.documentNode.$.focus();
 	}, 1 );
 };
@@ -420,6 +443,10 @@ ve.ce.Surface.prototype.getSelectionRect = function() {
 		start: rangySel.getStartDocumentPos(),
 		end: rangySel.getEndDocumentPos()
 	};
+};
+
+ve.ce.Surface.prototype.getModel = function() {
+	return this.model;
 };
 
 

@@ -37,11 +37,11 @@ ve.dm.ImageNode.rules = {
  * @member
  */
 ve.dm.ImageNode.converters = {
-	'tags': 'img',
-	'toHtml': function( type, element ) {
-		return ve.dm.createHtmlElement( 'img' );
+	'domElementTypes': ['img'],
+	'toDomElement': function( type, element ) {
+		return ve.dm.createDomElement( 'img' );
 	},
-	'toData': function( tag, element ) {
+	'toDataElement': function( tag, element ) {
 		return { 'type': 'image' };
 	}
 };

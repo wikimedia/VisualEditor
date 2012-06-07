@@ -16,20 +16,25 @@ ve.ui.Toolbar = function( $container, surfaceView, config ) {
 	this.$groups = $( '<div class="es-toolbarGroups"></div>' ).prependTo( this.$ );
 	this.tools = [];
 
-
-	this.surfaceView.on( 'rangeChange', function( e ) {
-		if ( e.new !== null ) {
-			var	annotations = _this.surfaceView.getAnnotations(),
-				nodes = [],
-				model = _this.surfaceView.documentView.model;
-
-			if ( e.new.from === e.new.to ) {
-				nodes.push( model.getNodeFromOffset( e.new.from ) );
+	// Listen to the model for selection event
+	this.surfaceView.model.on( 'select', function( e ){
+		var model = _this.surfaceView.model,
+			doc = model.getDocument(),
+			annotations = doc.getAnnotationsFromRange( model.getSelection() ),
+			nodes = [],
+			startNode,
+			endNode;
+		
+		if( e !== null ) {
+			if ( e.from === e.to ){
+				nodes.push( doc.getNodeFromOffset( e.from ) );
 			} else {
-				var	startNode = model.getNodeFromOffset( e.new.start ),
-					endNode = model.getNodeFromOffset( e.new.end );
+				startNode = doc.getNodeFromOffset( e.from );
+				endNode = doc.getNodeFromOffset ( e.end );
+				// These should be different, alas just in case.
 				if ( startNode === endNode ) {
 					nodes.push( startNode );
+
 				} else {
 					model.traverseLeafNodes( function( node ) {
 						nodes.push( node );
@@ -39,16 +44,19 @@ ve.ui.Toolbar = function( $container, surfaceView, config ) {
 					}, startNode );
 				}
 			}
-
+			
+			// Update state
 			for ( i = 0; i < _this.tools.length; i++ ) {
 				_this.tools[i].updateState( annotations, nodes );
 			}
 		} else {
+			// Clear state
 			for ( i = 0; i < _this.tools.length; i++ ) {
 				_this.tools[i].clearState();
 			}
 		}
-	} );
+
+	});
 
 	this.config = config || [
 		{ 'name': 'history', 'items' : ['undo', 'redo'] },

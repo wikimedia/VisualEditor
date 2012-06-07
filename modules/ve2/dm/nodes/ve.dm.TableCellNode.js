@@ -37,11 +37,11 @@ ve.dm.TableCellNode.rules = {
  * @member
  */
 ve.dm.TableCellNode.converters = {
-	'tags': 'td',
-	'toHtml': function( type, element ) {
-		return ve.dm.createHtmlElement( 'td' );
+	'domElementTypes': ['td'],
+	'toDomElement': function( type, element ) {
+		return ve.dm.createDomElement( 'td' );
 	},
-	'toData': function( tag, element ) {
+	'toDataElement': function( tag, element ) {
 		return { 'type': 'tableCell' };
 	}
 };

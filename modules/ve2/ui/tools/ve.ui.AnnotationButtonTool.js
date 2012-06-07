@@ -21,34 +21,33 @@ ve.ui.AnnotationButtonTool = function( toolbar, name, title, data ) {
 /* Methods */
 
 ve.ui.AnnotationButtonTool.prototype.onClick = function() {
-	var surfaceView = this.toolbar.getSurfaceView();
+	var surfaceView = this.toolbar.getSurfaceView(),
+		surfaceModel = surfaceView.model;
+
 	if ( this.inspector ) {
-		if( surfaceView.getSelectionRange() ) {
-			this.toolbar.getSurfaceView().contextView.openInspector( this.inspector );
+		if( surfaceModel.getSelection() ) {
+			surfaceView.contextView.openInspector( this.inspector );
 		} else {
 			if ( this.active ) {
-				var surfaceModel = surfaceView.getModel(),
-					documentModel = surfaceModel.getDocument(),
+				var documentModel = surfaceModel.getDocument(),
 					selection = surfaceModel.getSelection(),
-					range = documentModel.getAnnotationBoundaries(
-						selection.from, this.annotation, true
+					range = documentModel.getAnnotatedRangeFromOffset(
+						selection.from, this.annotation
 					);
-				surfaceModel.select( range );
-				this.toolbar.getSurfaceView().getContextView().openInspector( this.inspector );
+				surfaceView.showSelection( range );
+				surfaceView.contextView.openInspector( this.inspector );
 			}
 		}
 	} else {
-		surfaceView.annotate( this.active ? 'clear' : 'set', this.annotation );
+		surfaceModel.annotate( this.active ? 'clear' : 'set', this.annotation );
 	}
 };
 
 ve.ui.AnnotationButtonTool.prototype.updateState = function( annotations, nodes ) {
-	if (
-		ve.dm.DocumentNode.getIndexOfAnnotation( annotations.full, this.annotation, true ) !== -1
-	) {
-		this.$.addClass( 'es-toolbarButtonTool-down' );
-		this.active = true;
-		return;
+	if ( ve.dm.Document.annotationsContainAnnotation(annotations, this.annotation) ) {
+			this.$.addClass( 'es-toolbarButtonTool-down' );
+			this.active = true;
+			return;
 	}
 	this.$.removeClass( 'es-toolbarButtonTool-down' );
 	this.active = false;

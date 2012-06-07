@@ -35,7 +35,7 @@ ve.ui.ListButtonTool.prototype.list = function( nodes, style ) {
 
 	for( i = 0; i < nodes.length; i++ ) {
 		parent = nodes[i].getParent();
-		if ( parent.getElementType() === 'listItem' ) {
+		if ( parent.getType() === 'listItem' ) {
 			if ( stack.length > 0 ) {
 				stacks.push( stack );
 				stack = [];
@@ -63,7 +63,7 @@ ve.ui.ListButtonTool.prototype.list = function( nodes, style ) {
 			selection.from += 2;
 			selection.to += 2;
 		} else {
-			if ( nodes[0].getParent().getElementType() != 'listItem' ) {
+			if ( nodes[0].getParent().getType() != 'listItem' ) {
 				if ( selection.from < selection.to ) {
 					selection.from += 2;
 				} else {
@@ -285,7 +285,7 @@ ve.ui.ListButtonTool.prototype.updateState = function( annotations, nodes ) {
 		var parent, styles;
 		for( var i = 0; i < nodes.length; i++ ) {
 			parent = nodes[i].getParent();
-			if ( parent.getElementType() !== 'listItem' ) {
+			if ( parent.getType() !== 'listItem' ) {
 				return false;
 			}
 			styles = parent.getElementAttribute( 'styles' );

@@ -36,19 +36,7 @@ ve.dm.Transaction.runConstructorTests = function( constructor, cases ) {
 test( 'newFromInsertion', function() {
 	var doc = new ve.dm.Document( ve.dm.example.data ),
 		cases = {
-		'content in first element': {
-			'args': [doc, 1, ['1', '2', '3']],
-			'ops': [
-				{ 'type': 'retain', 'length': 1 },
-				{
-					'type': 'replace',
-					'remove': [],
-					'insert': ['1', '2', '3']
-				},
-				{ 'type': 'retain', 'length': 58 }
-			]
-		},
-		'before first element': {
+		'paragraph before first element': {
 			'args': [doc, 0, [{ 'type': 'paragraph' }, '1', { 'type': '/paragraph' }]],
 			'ops': [
 				{
@@ -59,7 +47,7 @@ test( 'newFromInsertion', function() {
 				{ 'type': 'retain', 'length': 59 }
 			]
 		},
-		'after last element': {
+		'paragraph after last element': {
 			'args': [doc, 59, [{ 'type': 'paragraph' }, '1', { 'type': '/paragraph' }]],
 			'ops': [
 				{ 'type': 'retain', 'length': 59 },
@@ -81,13 +69,112 @@ test( 'newFromInsertion', function() {
 				},
 				{ 'type': 'retain', 'length': 50 }
 			]
+		},
+		'paragraph inside a heading closes and reopens heading': {
+			'args': [doc, 2, [{ 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }]],
+			'ops': [
+				{ 'type': 'retain', 'length': 2 },
+				{
+					'type': 'replace',
+					'remove': [],
+					'insert': [{'type': '/heading' }, { 'type': 'paragraph' } , 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'heading', 'attributes': { 'level': 1 } }]
+				},
+				{ 'type': 'retain', 'length': 57 }
+			]
+		},
+		'paragraph inside a list closes and reopens list': {
+			'args': [doc, 12, [{ 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }]],
+			'ops': [
+				{ 'type': 'retain', 'length': 12 },
+				{
+					'type': 'replace',
+					'remove': [],
+					'insert': [{'type': '/list' }, { 'type': 'paragraph' } , 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'list', 'attributes': { 'style': 'bullet' } }]
+				},
+				{ 'type': 'retain', 'length': 47 }
+			]
+		},
+		'tableCell inside the document is wrapped in a table and a tableRow': {
+			'args': [doc, 41, [{ 'type': 'tableCell' }, { 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': '/tableCell' }]],
+			'ops': [
+				{ 'type': 'retain', 'length': 41 },
+				{
+					'type': 'replace',
+					'remove': [],
+					'insert': [{ 'type': 'table' }, { 'type': 'tableRow' }, { 'type': 'tableCell' }, { 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': '/tableCell' }, { 'type': '/tableRow' }, { 'type': '/table' }]
+				},
+				{ 'type': 'retain', 'length': 18 }
+			]
+		},
+		'tableCell inside a paragraph is wrapped in a table and a tableRow and closes and reopens the paragraph': {
+			'args': [doc, 50, [{ 'type': 'tableCell' }, { 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': '/tableCell' }]],
+			'ops': [
+				{ 'type': 'retain', 'length': 50 },
+				{
+					'type': 'replace',
+					'remove': [],
+					'insert': [{ 'type': '/paragraph' }, { 'type': 'table' }, { 'type': 'tableRow' }, { 'type': 'tableCell' }, { 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': '/tableCell' }, { 'type': '/tableRow' }, { 'type': '/table' }, { 'type': 'paragraph' }]
+				},
+				{ 'type': 'retain', 'length': 9 }
+			]
+		},
+		'text at a structural location in the document is wrapped in a paragraph': {
+			'args': [doc, 0, ['F', 'O', 'O']],
+			'ops': [
+				{
+					'type': 'replace',
+					'remove': [],
+					'insert': [{ 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }]
+				},
+				{ 'type': 'retain', 'length': 59 }
+			]
+		},
+		'text inside a paragraph is not wrapped in a paragraph': {
+			'args': [doc, 15, ['F', 'O', 'O']],
+			'ops': [
+				{ 'type': 'retain', 'length': 15 },
+				{
+					'type': 'replace',
+					'remove': [],
+					'insert': ['F', 'O', 'O']
+				},
+				{ 'type': 'retain', 'length': 44 }
+			]
+		},
+		'text inside a heading is not wrapped in a paragraph': {
+			'args': [doc, 2, ['F', 'O', 'O']],
+			'ops': [
+				{ 'type': 'retain', 'length': 2 },
+				{
+					'type': 'replace',
+					'remove': [],
+					'insert': ['F', 'O', 'O']
+				},
+				{ 'type': 'retain', 'length': 57 }
+			]
+		},
+		'text inside a tableRow is wrapped in a paragraph and closes and reopens the tableRow and the table': {
+			'args': [doc, 33, ['F', 'O', 'O']],
+			'ops': [
+				{ 'type': 'retain', 'length': 33 },
+				{
+					'type': 'replace',
+					'remove': [],
+					'insert': [{ 'type': '/tableRow' }, { 'type': '/table' }, { 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'table' }, { 'type': 'tableRow' }]
+				},
+				{ 'type': 'retain', 'length': 26 }
+			]
 		}
+		// TODO test cases for unclosed openings
+		// TODO test cases for (currently failing) unopened closings use case
+		// TODO analyze other possible cases (substrings of linmod data)
 	};
 	ve.dm.Transaction.runConstructorTests( ve.dm.Transaction.newFromInsertion, cases );
 } );
 
 test( 'newFromRemoval', function() {
-	var doc = new ve.dm.Document( ve.dm.example.data ),
+	var alienDoc = new ve.dm.Document( ve.dm.example.alienData ),
+		doc = new ve.dm.Document( ve.dm.example.data ),
 		cases = {
 		'content in first element': {
 			'args': [doc, new ve.Range( 1, 3 )],
@@ -218,6 +305,88 @@ test( 'newFromRemoval', function() {
 					'insert': []
 				},
 				{ 'type': 'retain', 'length': 44 }
+			]
+		},
+		'over first alien into paragraph': {
+			'args': [alienDoc, new ve.Range( 0, 4 )],
+			'ops': [
+				{
+					'type': 'replace',
+					'remove': [{ 'type': 'alienBlock' }, { 'type': '/alienBlock' }],
+					'insert': []
+				},
+				{ 'type': 'retain', 'length': 1 },
+				{
+					'type': 'replace',
+					'remove': ['a'],
+					'insert': []
+				},
+				{ 'type': 'retain', 'length': 6 }
+			]
+		},
+		'out of paragraph over last alien': {
+			'args': [alienDoc, new ve.Range( 6, 10 )],
+			'ops': [
+				{ 'type': 'retain', 'length': 6 },
+				{
+					'type': 'replace',
+					'remove': ['b'],
+					'insert': []
+				},
+				{ 'type': 'retain', 'length': 1 },
+				{
+					'type': 'replace',
+					'remove': [{ 'type': 'alienBlock' }, { 'type': '/alienBlock' }],
+					'insert': []
+				}
+			]
+		},
+		'merging two paragraphs inside definitionListItems': {
+			'args': [doc, new ve.Range( 45, 49 )],
+			'ops': [
+				{ 'type': 'retain', 'length': 45 },
+				{
+					'type': 'replace',
+					'remove': [{ 'type': '/paragraph' }, { 'type': '/definitionListItem' }, { 'type': 'definitionListItem', 'attributes': { 'style': 'definition' } }, { 'type': 'paragraph' }],
+					'insert': []
+				},
+				{ 'type': 'retain', 'length': 10 }
+			]
+		},
+		'merging two paragraphs while also deleting some content': {
+			'args': [doc, new ve.Range( 54, 57 )],
+			'ops': [
+				{ 'type': 'retain', 'length': 54 },
+				{
+					'type': 'replace',
+					'remove': ['l', { 'type': '/paragraph' }, { 'type': 'paragraph' } ],
+					'insert': []
+				},
+				{ 'type': 'retain', 'length': 2 }
+			]
+		},
+		'removing from a heading into a paragraph': {
+			'args': [doc, new ve.Range( 2, 55 )],
+			'ops': [
+				{ 'type': 'retain', 'length': 2 },
+				{
+					'type': 'replace',
+					'remove': doc.getData().slice( 2, 4 ),
+					'insert': []
+				},
+				{ 'type': 'retain', 'length': 1 },
+				{
+					'type': 'replace',
+					'remove': doc.getData().slice( 5, 53 ),
+					'insert': []
+				},
+				{ 'type': 'retain', 'length': 1 },
+				{
+					'type': 'replace',
+					'remove': ['l'],
+					'insert': []
+				},
+				{ 'type': 'retain', 'length': 4 }
 			]
 		}
 	};

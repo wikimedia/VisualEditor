@@ -252,6 +252,9 @@ ve.ce.TextNode.prototype.getHtml = function() {
 	}
 	out += closeAnnotations( close );
 
+	// Mulitple spaces should alternate spaces and &nbsp;
+	out = out.replace(/  /g, ' &nbsp;');
+
 	return out;
 };
 

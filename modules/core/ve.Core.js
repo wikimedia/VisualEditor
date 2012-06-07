@@ -9,14 +9,12 @@
 			validNamespace = mw.config.get('wgCanonicalNamespace') === 'VisualEditor' ? true: false;
 
 		this.mainEditor = null;
-		this.$content = $('#content');
-		// modify / stash content styles
-		this.prepareContentStyles();
-
 		// On VisualEditor namespace ?
 		if ( validNamespace ) {
+			this.$content = $('#content');
 			this.setupTabs();
-
+			// modify / stash content styles
+			this.prepareContentStyles();
 			$('#ca-edit > span > a').click( function( e ){
 				// hijack the edit link
 				e.preventDefault();
@@ -82,7 +80,7 @@
 			this.mainEditor = new ve.Surface( '#ve-editor', $html[0], options );
 
 			this.$editor.find('.es-panes')
-				.css('padding', this.contentPadding );
+				.css('padding', this.contentStyles.padding );
 
 			// Save BTN
 			this.$editor.find('.es-modes')
@@ -99,8 +97,8 @@
 						.attr('class', 've-action-button ve-closeBtn')
 						.click(function(){
 							// back to read mode
-							_this.cleanup();
 							_this.mainEditor = null;
+							_this.cleanup();
 						})
 			);
 			this.initSaveDialog();
@@ -117,10 +115,10 @@
 			mw.util.addPortletLink(
 				'p-views',
 				'#',
-				'Edit', //TODO: dig for i18n messages
+				mw.msg('edit'),
 				'ca-edit',
-				'Edit button text',
-				null,
+				mw.msg('tooltip-ca-edit'),
+				mw.msg('accesskey-ca-edit'),
 				'#ca-history'
 			);
 			// Create 'View Source' link in sub menu from original.
@@ -141,7 +139,7 @@
 			mw.util.addPortletLink(
 				'p-cactions',
 				mw.util.wikiGetlink() + '?action=edit',
-				'Edit Source',
+				'Edit Source', // TODO: i18n
 				'ca-editsource'
 			);
 
@@ -170,11 +168,11 @@
 		// Save
 		_this.getParsoidWikitextAndSave( function( content ){
 			// cleanup
-			_this.$dialog.toggle();
-			_this.cleanup();
+			_this.$dialog.slideUp();
 			// load saved page
 			_this.$content
 				.find('#mw-content-text').html( content );
+			_this.cleanup();
 		});
 	};
 
@@ -188,7 +186,7 @@
 				}).append(
 					$('<div />')
 						.attr('class', 'es-inspector-title')
-						.text('Save your changes')
+						.text( mw.msg('tooltip-save') )
 				).append(
 					$('<div />')
 						.attr('class', 'es-inspector-button ve-saveBtn')
@@ -201,9 +199,11 @@
 						.append(
 							$('<div />')
 								.text("Describe what you changed")
+								//.text( mw.msg('summary') )
 						).append(
 							$('<input />')
 								.attr({
+									'id': 'txtEditSummary',
 									'type':'text'
 								})
 						).append(
@@ -221,8 +221,7 @@
 								).append(
 									$('<label />')
 										.attr('for', 'chkMinorEdit')
-										// i18n
-										.html('This is a <a href="/wiki/Minor_edit">minor edit</a>')
+										.text( mw.msg('minoredit') )
 								).append(
 									$('<br />')
 								).append(
@@ -231,17 +230,19 @@
 											'type': 'checkbox',
 											'name': 'chkWatchlist',
 											'id': 'chkWatchlist'
-										})
+										}).prop(
+											'checked',
+											mw.config.get('vePageWatched')
+										)
 								).append(
 									$('<label />')
 										.attr('for', 'chkWatchlist')
-										// i18n
-										.text('Watch this page')
+										.text( mw.msg('watchthis') )
 								)
 							).append(
 								$('<div />')
 									.attr('class', 've-action-button es-inspector-savebutton doSaveBtn')
-									.text('Save page')
+									.text( mw.msg('savearticle') )
 									.click(function(){
 										_this.save();
 									})
@@ -257,8 +258,17 @@
 						.attr('class', 've-dialog-divider')
 						.append(
 							$("<p />")
-								// TODO: Complete text and i18n
-								.text('By editing this page, yadda yadda yadda')
+								// TODO: i18n
+								.html(
+									"By editing this page, you agree to irrevocably release your \
+									contributions under the CC-By-SA 3.0 License.  If you don't \
+									want your writing to be editied mercilessly and redistrubuted \
+									at will, then don't submit it here.  <br /><br />You are also \
+									confirming that you wrote this yourself, or copied it from a \
+									public domain or similar free resource.  See Project:Copyright \
+									for full details of the licenses used on this site.  \
+									<b>DO NOT SUBMIT COPYRIGHTED WORK WITHOUT PERMISSION!</b>"
+								)
 						)
 				);
 		this.$editor
@@ -299,8 +309,8 @@
 	*/
 	veCore.prototype.prepareContentStyles = function(){
 		// Store Padding and transitions
-		this.contentPadding = this.$content.css('padding');
-		this.contentTransition = {
+		this.contentStyles = {
+			'padding': this.$content.css('padding'),
 			'transition': this.$content.css('transition'),
 			'transition-property': this.$content.css('transition-property'),
 			'-moz-transition': this.$content.css('-moz-transition'),
@@ -326,7 +336,9 @@
 			.end()
 			.find('#ve-editor, #ve-loader-spinner').remove()
 			.end()
-			.css('padding', this.contentPadding );
+			//.css( this.contentStyles );
+			// only put back padding for now, ideally restore transition css though
+			.css('padding', this.contentStyles.padding);
 	};
 
 	veCore.prototype.getParsoidHTML = function (title, callback) {
@@ -361,9 +373,10 @@
 	veCore.prototype.getParsoidWikitextAndSave = function( callback ) {
 		// TODO: get html from linmod converter
 		var data = this.mainEditor.documentModel.getData(),
-			html = "<p>Test edit by Visual Editor</p>",
-			summary = 'Page edit by Visual Editor',
-			minor = false;
+			html = "<p>Test edit made with Visual Editor</p><p>" + (new Date()).getTime() + "</p>",
+			summary = $('#txtEditSummary').val(),
+			minor = $('#chkMinorEdit').prop('checked'),
+			watch = $('#chkWatchlist').prop('checked');
 
 		$.ajax({
 			url: mw.util.wikiScript( 'api' ),
@@ -375,6 +388,7 @@
 				'token': mw.user.tokens.get('editToken'),
 				'summary': summary,
 				'minor': minor,
+				'watch': watch,
 				'format': 'json'
 			},
 			dataType: 'json',

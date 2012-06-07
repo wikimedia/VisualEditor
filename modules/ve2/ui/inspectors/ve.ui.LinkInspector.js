@@ -23,8 +23,8 @@ ve.ui.LinkInspector = function( toolbar, context ) {
 			return;
 		}
 
-		var surfaceView = _this.context.getSurfaceView();
-		surfaceView.annotate( 'clear', /link\/.*/ );
+		var surfaceModel = _this.context.getSurfaceView().getModel();
+		surfaceModel.annotate( 'clear', /link\/.*/ );
 
 		_this.$locationInput.val( '' );
 		_this.context.closeInspector();
@@ -46,14 +46,13 @@ ve.ui.LinkInspector.prototype.getTitleFromSelection = function() {
 	var surfaceView = this.context.getSurfaceView(),
 		surfaceModel = surfaceView.getModel(),
 		documentModel = surfaceModel.getDocument(),
-		data = documentModel.getData( surfaceView.getSelectionRange() );
+		data = documentModel.getData( surfaceModel.getSelection() );
 	if ( data.length ) {
-		var annotation = ve.dm.DocumentNode.getMatchingAnnotations( data[0], /link\/.*/ );
-		if ( annotation.length ) {
-			annotation = annotation[0];
-		}
-		if ( annotation && annotation.data && annotation.data.title ) {
-			return annotation.data.title;
+		var annotation = ve.dm.Document.getMatchingAnnotation( data[0], /link\/.*/ );
+		if ( ve.isPlainObject(annotation) ) {
+			if ( annotation && annotation.data && annotation.data.title ) {
+				return annotation.data.title;
+			}
 		}
 	}
 	return null;
@@ -82,9 +81,9 @@ ve.ui.LinkInspector.prototype.onClose = function( accept ) {
 		if ( title === this.getTitleFromSelection() || !title ) {
 			return;
 		}
-		var surfaceView = this.context.getSurfaceView();
-		surfaceView.annotate( 'clear', /link\/.*/ );
-		surfaceView.annotate( 'set', { 'type': 'link/internal', 'data': { 'title': title } } );
+		var surfaceModel = this.context.getSurfaceView().model;
+		surfaceModel.annotate( 'clear', /link\/.*/ );
+		surfaceModel.annotate( 'set', { 'type': 'link/internal', 'data': { 'title': title } } );
 	}
 };
 
