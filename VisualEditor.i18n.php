@@ -324,6 +324,24 @@ $messages['ja'] = array(
 	'visualeditor-feedback-dialog-title' => '視覚的エディターのサンドボックスについてフィードバックを残す',
 );
 
+/** Korean (한국어)
+ * @author 아라
+ */
+$messages['ko'] = array(
+	'visualeditor' => '시각적편집기',
+	'visualeditorsandbox' => '시작적 편집기 실험실',
+	'visualeditor-desc' => '미디어위키를 위한 시각적 편집기',
+	'visualeditor-sandbox-title' => '시작적 편집기 실험실',
+	'visualeditor-tooltip-wikitext' => '위키텍스트 보기 전환',
+	'visualeditor-tooltip-json' => 'JSON 보기 전환',
+	'visualeditor-tooltip-html' => 'HTML 보기 전환',
+	'visualeditor-tooltip-render' => '미리 보기 전환',
+	'visualeditor-tooltip-history' => '트랜젝션 역사 보기 전환',
+	'visualeditor-tooltip-help' => '도움말 보기 전환',
+	'visualeditor-feedback-prompt' => '피드백 남기기',
+	'visualeditor-feedback-dialog-title' => '시각적편집기 실험실에 대한 피드백 남기기',
+);
+
 /** Luxembourgish (Lëtzebuergesch)
  * @author Robby
  */
