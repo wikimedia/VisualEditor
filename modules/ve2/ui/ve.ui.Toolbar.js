@@ -44,10 +44,10 @@ ve.ui.Toolbar = function( $container, surfaceView, config ) {
 					}, startNode );
 				}
 			}
+			
 			// Update state
 			for ( i = 0; i < _this.tools.length; i++ ) {
 				_this.tools[i].updateState( annotations, nodes );
-				console.log ('updated tools');
 			}
 		} else {
 			// Clear state

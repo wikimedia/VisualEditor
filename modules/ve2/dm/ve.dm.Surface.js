@@ -50,8 +50,8 @@ ve.dm.Surface.prototype.setSelection = function( selection ) {
 		)
 	{
 		this.selection = selection;
-		this.emit ('select', this.selection.clone() );
 	}
+	this.emit ('select', this.selection.clone() );
 };
 
 /**
@@ -88,6 +88,8 @@ ve.dm.Surface.prototype.annotate = function( method, annotation ) {
 			this.getDocument(), selection, method, annotation
 		);
 		this.transact( tx );
+		// emit selection for dev purposes
+		this.setSelection ( selection );
 	}
 };
 

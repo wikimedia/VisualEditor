@@ -44,10 +44,10 @@ ve.ui.AnnotationButtonTool.prototype.onClick = function() {
 };
 
 ve.ui.AnnotationButtonTool.prototype.updateState = function( annotations, nodes ) {
-	if ( this.annotation in annotations ) {
-		this.$.addClass( 'es-toolbarButtonTool-down' );
-		this.active = true;
-		return;
+	if ( ve.dm.Document.annotationsContainAnnotation(annotations, this.annotation) ) {
+			this.$.addClass( 'es-toolbarButtonTool-down' );
+			this.active = true;
+			return;
 	}
 	this.$.removeClass( 'es-toolbarButtonTool-down' );
 	this.active = false;

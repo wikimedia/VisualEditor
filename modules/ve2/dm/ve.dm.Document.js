@@ -594,6 +594,25 @@ ve.dm.Document.getMatchingAnnotations = function( annotations, pattern ) {
 };
 
 /**
+ * Quick check for annotation inside annotations object
+ *
+ * @static
+ * @method
+ * @param {Object} annotations Annotations to search through
+ * @param {Object} pattern Regular expression pattern to match with
+ * @returns {Boolean} if annotation in annotations object
+ */
+ve.dm.Document.annotationsContainAnnotation = function( annotations, annotation ) {
+	var contains = false;
+	$.each(annotations, function(i, val){
+		if ( ve.compareObjects(val, annotation) ) {
+			contains = true;
+		}
+	});
+	return contains;
+};
+
+/**
  * Gets an array of common annnotations across a range.
  *
  * @method
