@@ -142,12 +142,7 @@ ve.dm.Converter.prototype.getDataElementFromDomElement = function( domElement ) 
 		// Unsupported elements
 		!( domElementType in this.elements.toDataElement )
 	) {
-		return {
-			'type': 'alienBlock',
-			'attributes': {
-				'html': $( '<div></div>' ).append( $( domElement ).clone() ).html()
-			}
-		};
+		return false;
 	}
 	var dataElement = this.elements.toDataElement[domElementType]( domElementType, domElement ),
 		domElementAttributes = domElement.attributes;
@@ -210,6 +205,23 @@ ve.dm.Converter.prototype.getDataFromDom = function( domElement, annotations, da
 		var childDomElement = domElement.childNodes[i];
 		switch ( childDomElement.nodeType ) {
 			case Node.ELEMENT_NODE:
+				// Detect and handle inline alien nodes
+				if (
+					// Generated content
+					childDomElement.hasAttribute( 'data-mw-gc' ) &&
+					// Inside a content branch
+					ve.dm.nodeFactory.canNodeContainContent( branchType )
+				) {
+					// Fallback to alien inline
+					data.push( {
+						'type': 'alienInline',
+						'attributes': {
+							'html': $( '<div>' ).append( $( childDomElement ).clone() ).html()
+						}
+					} );
+					break;
+				}
+				// Detect and handle annotated content
 				var annotation = this.getDataAnnotationFromDomElement( childDomElement );
 				if ( annotation ) {
 					// Start auto-wrapping of bare content
@@ -223,14 +235,16 @@ ve.dm.Converter.prototype.getDataFromDom = function( domElement, annotations, da
 							childDomElement, annotations.concat( annotation ), undefined, path
 						)
 					);
-				} else {
-					// End auto-wrapping of bare content
-					if ( wrapping ) {
-						data.push( { 'type': '/paragraph' } );
-						wrapping = false;
-					}
-					// Append child element data
-					var childDataElement = this.getDataElementFromDomElement( childDomElement );
+					break;
+				}
+				// End auto-wrapping of bare content
+				if ( wrapping ) {
+					data.push( { 'type': '/paragraph' } );
+					wrapping = false;
+				}
+				// Append child element data
+				var childDataElement = this.getDataElementFromDomElement( childDomElement );
+				if ( childDataElement ) {
 					data = data.concat(
 						this.getDataFromDom(
 							childDomElement,
@@ -239,7 +253,15 @@ ve.dm.Converter.prototype.getDataFromDom = function( domElement, annotations, da
 							path.concat( childDataElement.type )
 						)
 					);
+					break;
 				}
+				// Fallback to alien block
+				data.push( {
+					'type': 'alienBlock',
+					'attributes': {
+						'html': $( '<div>' ).append( $( childDomElement ).clone() ).html()
+					}
+				} );
 				break;
 			case Node.TEXT_NODE:
 				// Start auto-wrapping of bare content

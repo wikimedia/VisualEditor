@@ -492,13 +492,5 @@ ve.dm.example.conversions = {
 	'paragraph with style attribute': {
 		'domElement': ve.dm.createDomElement( 'p', { 'style': 'color:blue' } ),
 		'dataElement': { 'type': 'paragraph', 'attributes': { 'html/style': 'color:blue' } }
-	},
-	'alien unknown type': {
-		'domElement': ve.dm.createDomElement( 'alien' ),
-		'dataElement': { 'type': 'alienBlock', 'attributes': { 'html': '<alien></alien>' } }
-	},
-	'alien generated content': {
-		'domElement': ve.dm.createDomElement( 'p', { 'data-mw-gc': '' } ),
-		'dataElement': { 'type': 'alienBlock', 'attributes': { 'html': '<p data-mw-gc=""></p>' } }
 	}
 };

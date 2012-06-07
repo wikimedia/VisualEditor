@@ -54,6 +54,19 @@ test( 'getDataFromDom', function() {
 				{ 'type': 'image', 'attributes' : { 'html/src' : 'image.png' } },
 				{ 'type' : '/image' }
 			]
+		},
+		'paragraph with inline alien': {
+			'html': '<p>a<a href="b.html" data-mw-gc="">b</a>c</p>',
+			'data': [
+				{ 'type': 'paragraph' },
+				'a',
+				{
+					'type': 'alienInline',
+					'attributes': { 'html': '<a href="b.html" data-mw-gc="">b</a>' }
+				},
+				'c',
+				{ 'type': '/paragraph' }
+			]
 		}
 	};
 
