@@ -14,18 +14,30 @@ ve.ce.Surface = function( $container, model ) {
 	this.documentView = new ve.ce.Document( model.getDocument() );
 	this.contextView = new ve.ui.Context( this );
 	this.$ = $container;
+
+	// Driven by mousedown and mouseup events
 	this.isMouseDown = false;
-	this.clipboard = {};
-	
+	this.range = {
+		anchorNode: null,
+		anchorOffset: null,
+		focusNode: null,
+		focusOffset: null
+	};
+
 	// Events
 	this.$.on( {
+		'keypress': this.proxy( this.onKeyPress ),
 		'keydown': this.proxy( this.onKeyDown ),
 		'mousedown': this.proxy( this.onMouseDown ),
 		'mouseup': this.proxy( this.onMouseUp ),
 		'mousemove': this.proxy( this.onMouseMove ),
-		'cut copy': this.proxy( this.onCutCopy ),
-		'beforepaste paste': this.proxy( this.onPaste )
+		'dragover drop': function( e ) {
+			// Prevent content drag & drop
+			e.preventDefault();
+			return false;
+		}
 	} );
+	this.model.on( 'select', this.proxy( this.onSelect ) );
 
 	// Initialization
 	this.$.append( this.documentView.documentNode.$ );
@@ -46,111 +58,109 @@ ve.ce.Surface.prototype.proxy = function( func ) {
 	});
 };
 
+ve.ce.Surface.prototype.onSelect = function( e ) {
+	console.log("onSelect", e);
+};
+
+ve.ce.Surface.prototype.onKeyPress = function( e ) {
+	console.log('onKeyPress');
+};
+
 ve.ce.Surface.prototype.onKeyDown = function( e ) {
-	var rangySel = rangy.getSelection();
-	var offset = this.getOffset( rangySel.anchorNode, rangySel.anchorOffset );
-	console.log( 'onKeyDown', 'offset', offset );
+	console.log('onKeyDown');
+	// Prevent all interactions coming from keyboard when mouse is down (possibly selecting)
+	if ( this.isMouseDown === true ) {
+		e.preventDefault();
+		return false;
+	}
 
-	var relativeContentOffset,
-		relativeStructuralOffset,
-		relativeStructuralOffsetNode,
-		hasSlug;
+	switch ( e.keyCode ) {
+		// Left arrow
+		case 37:
+			break;
+		// Right arrow
+		case 39:
+			break;
+		// Backspace
+		case 8:
 
-	switch ( e.which ) {
-		case 37: // left arrow key
-			relativeContentOffset = this.documentView.model.getRelativeContentOffset( offset, -1 );
-			relativeStructuralOffset =
-				this.documentView.model.getRelativeStructuralOffset( offset - 1, -1, true );
-			relativeStructuralOffsetNode =
-				this.documentView.documentNode.getNodeFromOffset( relativeStructuralOffset );
-			hasSlug = relativeStructuralOffsetNode.hasSlugAtOffset( relativeStructuralOffset );
-			if ( hasSlug ) {
-				if ( relativeContentOffset > offset ) {
-					this.showCursor( relativeStructuralOffset );
-				} else {
-					this.showCursor( Math.max( relativeContentOffset, relativeStructuralOffset ) );
-				}
-			} else {
-				this.showCursor( relativeContentOffset );
-			}
-			return false;
-		case 39: // right arrow key
-			relativeContentOffset = this.documentView.model.getRelativeContentOffset( offset, 1 );
-			relativeStructuralOffset =
-				this.documentView.model.getRelativeStructuralOffset( offset + 1, 1, true );
-			relativeStructuralOffsetNode =
-				this.documentView.documentNode.getNodeFromOffset( relativeStructuralOffset );
-			hasSlug = relativeStructuralOffsetNode.hasSlugAtOffset( relativeStructuralOffset );
-			if ( hasSlug ) {
-				if ( relativeContentOffset < offset ) {
-					this.showCursor( relativeStructuralOffset );
-				} else {
-					this.showCursor( Math.min( relativeContentOffset, relativeStructuralOffset ) );
-				}
-			} else {
-				this.showCursor( relativeContentOffset );
-			}
-			return false;
+			tx = ve.dm.Transaction.newFromRemoval( this.documentView.model, this.model.getSelection() );
+			ve.dm.TransactionProcessor.commit( this.documentView.model, tx );
+			this.showCursor(this.model.getSelection().start);
+
+
+			e.preventDefault();
+			break;
+		// Delete
+		case 46:
+			e.preventDefault();
+			break;
 	}
 };
 
 ve.ce.Surface.prototype.onMouseDown = function( e ) {
 	this.isMouseDown = true;
 
-	var _this = this;
-
-	setTimeout( function() {
-		var rangySel = rangy.getSelection();
-		var offset = _this.getOffset( rangySel.anchorNode, rangySel.anchorOffset );
-		console.log( 'onMouseDown', 'rangySel', rangySel.anchorNode, rangySel.anchorOffset );
-		console.log( 'onMouseDown', 'offset', offset );
-	}, 0 );
-
-	var $closestLeaf = $( e.target ).closest( '.ve-ce-leafNode' );
-
-	if ( $closestLeaf.length > 0 ) {
-		console.log( 'onMouseDown', 'closest leaf of e.target', $closestLeaf );
-
-		var closestLeafModel = $closestLeaf.data( 'node' ).getModel();
-		var closestLeafOffset = closestLeafModel.getRoot().getOffsetFromNode( closestLeafModel );
-		console.log( 'onMouseDown', 'closestLeafOffset', closestLeafOffset );
-
-		var nearestContentOffset =
-			this.documentView.model.getNearestContentOffset( closestLeafOffset, -1 );
-		console.log( 'onMouseDown', 'nearestContentOffset', nearestContentOffset );
-
-		var nearestStructuralOffset =
-			this.documentView.model.getNearestStructuralOffset( closestLeafOffset, 0, true );
-		console.log( 'onMouseDown', 'nearestStructuralOffset', nearestStructuralOffset );
-
-		var nearestStructuralOffsetNode =
-			this.documentView.documentNode.getNodeFromOffset( nearestStructuralOffset );
-		console.log( 'onMouseDown', 'nearestStructuralOffsetNode', nearestStructuralOffsetNode );
-
-		var hasSlug = nearestStructuralOffsetNode.hasSlugAtOffset( nearestStructuralOffset );
-		console.log( 'onMouseDown', 'hasSlug', hasSlug );
-
-		if ( hasSlug ) {
-			if ( nearestContentOffset > closestLeafOffset ) {
-				this.showCursor( nearestStructuralOffset );
-			} else {
-				this.showCursor( Math.max( nearestStructuralOffset, nearestContentOffset ) );
-			}
-		} else {
-			this.showCursor( nearestContentOffset );
-		}
-
-		return false;
-	}
+	// TODO: Add special handling for clicking on images and alien nodes
+	var $leaf = $( e.target ).closest( '.ve-ce-leafNode' );
 };
 
 ve.ce.Surface.prototype.onMouseUp = function( e ) {
-	this.isMouseDown = false;
+	var handler = function() {
+		var rangySel = rangy.getSelection();
+
+		if ( rangySel.anchorNode === null && rangySel.focusNode === null ) {
+			setTimeout( this.proxy( handler ), 100 );
+			return;
+		}
+
+		if (
+			rangySel.anchorNode !== this.range.anchorNode ||
+			rangySel.anchorOffset !== this.range.anchorOffset ||
+			rangySel.focusNode !== this.range.focusNode ||
+			rangySel.focusOffset !== this.range.focusOffset
+		) {
+			if ( rangySel.isCollapsed ) {
+				var offset = this.getOffset( rangySel.anchorNode, rangySel.anchorOffset );
+				this.model.setSelection( new ve.Range( offset ) );
+			} else {
+				if ( !rangySel.isBackwards() ) {
+					var offset1 = this.getOffset( rangySel.anchorNode, rangySel.anchorOffset ),
+						offset2 = this.getOffset( rangySel.focusNode, rangySel.focusOffset );
+				} else {
+					var offset1 = this.getOffset( rangySel.focusNode, rangySel.focusOffset ),
+						offset2 = this.getOffset( rangySel.anchorNode, rangySel.anchorOffset );
+				}
+
+				var offset1Fixed = this.getNearestCorrectOffset( offset1, 1 ),
+					offset2Fixed = this.getNearestCorrectOffset( offset2, -1 );
+
+				var range;
+				if ( !rangySel.isBackwards() ) {
+					range = new ve.Range( offset1Fixed, offset2Fixed );
+				} else {
+					range = new ve.Range( offset2Fixed, offset1Fixed );
+				}
+
+				this.model.setSelection( range );
+
+				if ( offset1 !== offset1Fixed || offset2 !== offset2Fixed ) {
+					this.showSelection( range );
+				}
+			}
+			this.range.anchorNode = rangySel.anchorNode;
+			this.range.anchorOffset = rangySel.anchorOffset;
+			this.range.focusNode = rangySel.focusNode;
+			this.range.focusOffset = rangySel.focusOffset;			
+		}
+
+		this.isMouseDown = false;
+	};
+	setTimeout( this.proxy( handler ), 0 );
 };
 
 ve.ce.Surface.prototype.onMouseMove = function( e ) {
 	if ( this.isMouseDown === true ) {
-		//...
 	}
 };
 
@@ -237,82 +247,68 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
 	}, 1 );
 };
 
-/**
- * Gets the linear offset based on a given DOM node (DOMnode) and offset (DOMoffset)
- *
- * @method
- * @param DOMnode {DOM Element} DOM Element
- * @param DOMoffset {Integer} DOM offset within the DOM Element
- * @returns {Integer} Linear model offset
- */
-ve.ce.Surface.prototype.getOffset = function( DOMnode, DOMoffset ) {
-	if ( DOMnode.nodeType === Node.TEXT_NODE ) {
-		var $branch = $( DOMnode ).closest( '.ve-ce-branchNode' ),
-			current = [$branch.contents(), 0],
-			stack = [current],
-			offset = 0,
-			item,
-			$item;
+ve.ce.Surface.prototype.showCursor = function( offset ) {
+	this.showSelection( new ve.Range( offset ) );
+}
 
-		while ( stack.length > 0 ) {
-			if ( current[1] >= current[0].length ) {
-				stack.pop();
-				current = stack[ stack.length - 1 ];
-				continue;
-			}
-			item = current[0][current[1]];
-			if ( item.nodeType === Node.TEXT_NODE ) {
-				if ( item === DOMnode ) {
-					offset += DOMoffset;
-					break;
-				} else {
-					offset += item.textContent.length;
-				}
-			} else if ( item.nodeType === Node.ELEMENT_NODE ) {
-				$item = current[0].eq( current[1] );
-				if ( $item.hasClass( 've-ce-slug' ) ) {
-					if ( $item.contents()[0] === DOMnode ) {
-						break;
-					}
-				} else if ( $item.hasClass( 've-ce-leafNode' ) ) {
-					offset += 2;
-				} else if ( $item.hasClass( 've-ce-branchNode' ) ) {
-					offset += $item.data( 'node' ).getOuterLength();
-				} else {
-					stack.push( [$item.contents(), 0 ] );
-					current[1]++;
-					current = stack[stack.length-1];
-					continue;
-				}
-			}
-			current[1]++;
-		}
-		var	branchModel = $branch.data( 'node' ).getModel(),
-			branchOffset = branchModel.getRoot().getOffsetFromNode( branchModel );
-		return offset + branchOffset + ( ( branchModel.isWrapped() ) ? 1 : 0 );
-	} else if ( DOMnode.nodeType === Node.ELEMENT_NODE ) {
-		var $DOMnode = $( DOMnode );
-		if ( DOMoffset === 0 ) {
-			throw "Not implemented";
-		} else if ( $DOMnode.hasClass( 've-ce-slug' ) ) {
-			var nodeModel;
-			if ( $DOMnode.next().length > 0 ) {
-				nodeModel = $DOMnode.next().data( 'node' ).getModel();
-				return nodeModel.getRoot().getOffsetFromNode( nodeModel );
-			} else if ( $DOMnode.prev().length > 0 ) {
-				nodeModel = $DOMnode.prev().data( 'node' ).getModel();
-				return nodeModel.getRoot().getOffsetFromNode( nodeModel ) + nodeModel.getOuterLength();
-			}
-		} else {
-			var	$node = $DOMnode.contents().eq( DOMoffset - 1 ),
-				nodeModel = $node.data( 'node' ).getModel(),
-				nodeOffset = nodeModel.getRoot().getOffsetFromNode( nodeModel );
-			return nodeOffset + nodeModel.getOuterLength();
-		}
+ve.ce.Surface.prototype.showSelection = function( range ) {
+	var rangySel = rangy.getSelection(),
+		rangyRange = rangy.createRange(),
+		start,
+		end;
+
+	if ( range.start !== range.end ) {
+		start = this.getNodeAndOffset( range.start );
+		end = this.getNodeAndOffset( range.end ),
+		rangyRange.setStart( start.node, start.offset );
+		rangyRange.setEnd( end.node, end.offset );
+		rangySel.setSingleRange( rangyRange, range.start !== range.from );
+	} else {
+		start = end = this.getNodeAndOffset( range.start );
+		rangyRange.setStart( start.node, start.offset );
+		rangySel.setSingleRange( rangyRange );
 	}
-	throw "Not implemented";
 };
 
+// TODO: Find a better name and a better place for this method
+ve.ce.Surface.prototype.getNearestCorrectOffset = function( offset, direction ) {
+	direction = direction > 0 ? 1 : -1;
+
+	if ( ve.dm.Document.isContentOffset( this.documentView.model.data, offset ) || this.hasSlugAtOffset( offset ) ) {
+		return offset;
+	}
+
+	var	contentOffset = this.documentView.model.getNearestContentOffset( offset, direction ),
+		structuralOffset = this.documentView.model.getNearestStructuralOffset( offset, direction, true );
+
+	if ( !this.hasSlugAtOffset( structuralOffset ) ) {
+		return contentOffset;
+	}
+
+	if ( direction === 1 ) {
+		if ( contentOffset < offset ) {
+			return structuralOffset;
+		} else {
+			return Math.min( contentOffset, structuralOffset );
+		}
+	} else {
+		if ( contentOffset > offset ) {
+			return structuralOffset;
+		} else {
+			return Math.max( contentOffset, structuralOffset );
+		}
+	}
+};
+
+// TODO: Find a better name and a better place for this method - probably in a document view?
+ve.ce.Surface.prototype.hasSlugAtOffset = function( offset ) {
+	var node = this.documentView.documentNode.getNodeFromOffset( offset );
+	if ( node.canHaveChildren() ) {
+		return this.documentView.documentNode.getNodeFromOffset( offset ).hasSlugAtOffset( offset );	
+	} else {
+		return false;
+	}
+};
 
 /**
  * Based on a given offset returns DOM node and offset that can be used to place a cursor.
@@ -380,75 +376,113 @@ ve.ce.Surface.prototype.getNodeAndOffset = function( offset ) {
 		}
 		current[1]++;
 	}
-	throw "Not implemented";
 };
 
 /**
- * Gets closest BranchNode (.ve-ce-branchNode) based on a given DOM node
+ * Gets the linear offset based on a given DOM node and DOM offset
  *
  * @method
- * @param elem {DOM Element} DOM Element
- * @returns {jQuery} jQuery element
+ * @param DOMnode {DOM Node} DOM node
+ * @param DOMoffset {Integer} DOM offset within the DOM Element
+ * @returns {Integer} Linear model offset
  */
-ve.ce.Surface.getBranchNode = function( elem ) {
-	var $branch = $( elem ).closest( '.ve-ce-branchNode' );
-	return $branch.length ? $branch : null;
-};
-
-/**
- * @method
- */
-ve.ce.Surface.prototype.showCursor = function( offset ) {
-	this.showSelection( new ve.Range( offset ) );
-};
-
-/**
- * @method
- */
-ve.ce.Surface.prototype.showSelection = function( range ) {
-	var	start = this.getNodeAndOffset( range.start ),
-		stop = this.getNodeAndOffset( range.end ),
-		rangySel = rangy.getSelection(),
-		rangyRange = rangy.createRange();
-
-	rangyRange.setStart( start.node, start.offset );
-	rangyRange.setEnd( stop.node, stop.offset );
-	rangySel.setSingleRange( rangyRange, range.start !== range.from );
-};
-
-/**
- * @method
- * @returns {ve.Range} Current selection range
- */
-ve.ce.Surface.prototype.getSelectionRange = function() {
-	var rangySel = rangy.getSelection();
-
-	if ( rangySel.isCollapsed ) {
-		var offset = this.getOffset( rangySel.anchorNode, rangySel.anchorOffset, true );
-		return new ve.Range( offset, offset );
+ve.ce.Surface.prototype.getOffset = function( DOMnode, DOMoffset ) {
+	if ( DOMnode.nodeType === Node.TEXT_NODE ) {
+		return this.getOffsetFromTextNode( DOMnode, DOMoffset );
 	} else {
-		return new ve.Range(
-			this.getOffset( rangySel.anchorNode, rangySel.anchorOffset, true ),
-			this.getOffset( rangySel.focusNode, rangySel.focusOffset, true )
-		);
+		return this.getOffsetFromElementNode( DOMnode, DOMoffset );
 	}
 };
 
-/**
- * @method
- */
-ve.ce.Surface.prototype.getSelectionRect = function() {
-	var rangySel = rangy.getSelection();
-	return {
-		start: rangySel.getStartDocumentPos(),
-		end: rangySel.getEndDocumentPos()
-	};
+ve.ce.Surface.prototype.getOffsetFromTextNode = function( DOMnode, DOMoffset ) {
+	var	$node = $( DOMnode ).closest( '.ve-ce-branchNode, .ve-ce-alienBlockNode, .ve-ce-alienInlineNode' ),
+		nodeModel = $node.data( 'node' ).getModel();
+	if ( ! $node.hasClass( 've-ce-branchNode' ) ) {
+		return nodeModel.getOffset();
+	}
+	var	current = [$node.contents(), 0],
+		stack = [current],
+		offset = 0,
+		item,
+		$item;
+	while ( stack.length > 0 ) {
+		if ( current[1] >= current[0].length ) {
+			stack.pop();
+			current = stack[ stack.length - 1 ];
+			continue;
+		}
+		item = current[0][current[1]];
+		if ( item.nodeType === Node.TEXT_NODE ) {
+			if ( item === DOMnode ) {
+				offset += DOMoffset;
+				break;
+			} else {
+				offset += item.textContent.length;
+			}
+		} else if ( item.nodeType === Node.ELEMENT_NODE ) {
+			$item = current[0].eq( current[1] );
+			if ( $item.hasClass( 've-ce-slug' ) ) {
+				if ( $item.contents()[0] === DOMnode ) {
+					break;
+				}
+			} else if ( $item.hasClass( 've-ce-leafNode' ) ) {
+				offset += 2;
+			} else if ( $item.hasClass( 've-ce-branchNode' ) ) {
+				offset += $item.data( 'node' ).getOuterLength();
+			} else {
+				stack.push( [$item.contents(), 0 ] );
+				current[1]++;
+				current = stack[stack.length-1];
+				continue;
+			}
+		}
+		current[1]++;
+	}
+	return offset + nodeModel.getOffset() + ( nodeModel.isWrapped() ? 1 : 0 );
+};
+
+ve.ce.Surface.prototype.getOffsetFromElementNode = function( DOMnode, DOMoffset, addOuterLength ) {
+	var	$DOMnode = $( DOMnode ),
+		nodeModel,
+		node;
+
+	if ( $DOMnode.hasClass( 've-ce-slug' ) ) {
+		if ( $DOMnode.prev().length > 0 ) {
+			nodeModel = $DOMnode.prev().data( 'node' ).getModel();
+			return nodeModel.getOffset() + nodeModel.getOuterLength();
+		}
+		if ( $DOMnode.next().length > 0 ) {
+			nodeModel = $DOMnode.next().data( 'node' ).getModel();
+			return nodeModel.getOffset();
+		}
+	}
+
+	if ( DOMoffset === 0 ) {
+		node = $DOMnode.data( 'node' );
+		if ( node ) {
+			nodeModel = $DOMnode.data( 'node' ).getModel();
+			if ( addOuterLength === true ) {
+				return nodeModel.getOffset() + nodeModel.getOuterLength();
+			} else {
+				return nodeModel.getOffset();
+			}
+		} else {
+			node = $DOMnode.contents().last()[0];
+		}
+	} else {
+		node = $DOMnode.contents()[ DOMoffset - 1 ];
+	}
+
+	if ( node.nodeType === Node.TEXT_NODE ) {
+		return this.getOffsetFromTextNode( node, node.length );
+	} else {
+		return this.getOffsetFromElementNode( node, 0, true );
+	}
 };
 
 ve.ce.Surface.prototype.getModel = function() {
 	return this.model;
 };
-
 
 /* Inheritance */
 
