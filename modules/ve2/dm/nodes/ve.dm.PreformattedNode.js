@@ -37,11 +37,11 @@ ve.dm.PreformattedNode.rules = {
  * @member
  */
 ve.dm.PreformattedNode.converters = {
-	'tags': 'pre',
-	'toHtml': function( type, element ) {
-		return ve.dm.createHtmlElement( 'pre' );
+	'domElementTypes': ['pre'],
+	'toDomElement': function( type, element ) {
+		return ve.dm.createDomElement( 'pre' );
 	},
-	'toData': function( tag, element ) {
+	'toDataElement': function( tag, element ) {
 		return { 'type': 'preformatted' };
 	}
 };

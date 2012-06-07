@@ -414,83 +414,91 @@ ve.dm.example.getOffsetMap = function( root ) {
 
 ve.dm.example.conversions = {
 	'definitionListItem term': {
-		'htmlElement': ve.dm.createHtmlElement( 'dt' ),
+		'domElement': ve.dm.createDomElement( 'dt' ),
 		'dataElement': { 'type': 'definitionListItem', 'attributes': { 'style': 'term' } }
 	},
 	'definitionListItem definition': {
-		'htmlElement': ve.dm.createHtmlElement( 'dd' ),
+		'domElement': ve.dm.createDomElement( 'dd' ),
 		'dataElement': { 'type': 'definitionListItem', 'attributes': { 'style': 'definition' } }
 	},
 	'definitionList definition': {
-		'htmlElement': ve.dm.createHtmlElement( 'dl' ),
+		'domElement': ve.dm.createDomElement( 'dl' ),
 		'dataElement': { 'type': 'definitionList' }
 	},
 	'heading level 1': {
-		'htmlElement': ve.dm.createHtmlElement( 'h1' ),
+		'domElement': ve.dm.createDomElement( 'h1' ),
 		'dataElement': { 'type': 'heading', 'attributes': { 'level': 1 } }
 	},
 	'heading level 2': {
-		'htmlElement': ve.dm.createHtmlElement( 'h2' ),
+		'domElement': ve.dm.createDomElement( 'h2' ),
 		'dataElement': { 'type': 'heading', 'attributes': { 'level': 2 } }
 	},
 	'heading level 3': {
-		'htmlElement': ve.dm.createHtmlElement( 'h3' ),
+		'domElement': ve.dm.createDomElement( 'h3' ),
 		'dataElement': { 'type': 'heading', 'attributes': { 'level': 3 } }
 	},
 	'heading level 4': {
-		'htmlElement': ve.dm.createHtmlElement( 'h4' ),
+		'domElement': ve.dm.createDomElement( 'h4' ),
 		'dataElement': { 'type': 'heading', 'attributes': { 'level': 4 } }
 	},
 	'heading level 5': {
-		'htmlElement': ve.dm.createHtmlElement( 'h5' ),
+		'domElement': ve.dm.createDomElement( 'h5' ),
 		'dataElement': { 'type': 'heading', 'attributes': { 'level': 5 } }
 	},
 	'heading level 6': {
-		'htmlElement': ve.dm.createHtmlElement( 'h6' ),
+		'domElement': ve.dm.createDomElement( 'h6' ),
 		'dataElement': { 'type': 'heading', 'attributes': { 'level': 6 } }
 	},
 	'image': {
-		'htmlElement': ve.dm.createHtmlElement( 'image' ),
+		'domElement': ve.dm.createDomElement( 'image' ),
 		'dataElement': { 'type': 'image' }
 	},
 	'listItem': {
-		'htmlElement': ve.dm.createHtmlElement( 'li' ),
+		'domElement': ve.dm.createDomElement( 'li' ),
 		'dataElement': { 'type': 'listItem' }
 	},
 	'list bullet': {
-		'htmlElement': ve.dm.createHtmlElement( 'ul' ),
+		'domElement': ve.dm.createDomElement( 'ul' ),
 		'dataElement': { 'type': 'list', 'attributes': { 'style': 'bullet' } }
 	},
 	'list number': {
-		'htmlElement': ve.dm.createHtmlElement( 'ol' ),
+		'domElement': ve.dm.createDomElement( 'ol' ),
 		'dataElement': { 'type': 'list', 'attributes': { 'style': 'number' } }
 	},
 	'paragraph': {
-		'htmlElement': ve.dm.createHtmlElement( 'p' ),
+		'domElement': ve.dm.createDomElement( 'p' ),
 		'dataElement': { 'type': 'paragraph' }
 	},
 	'preformatted': {
-		'htmlElement': ve.dm.createHtmlElement( 'pre' ),
+		'domElement': ve.dm.createDomElement( 'pre' ),
 		'dataElement': { 'type': 'preformatted' }
 	},
 	'tableCell': {
-		'htmlElement': ve.dm.createHtmlElement( 'td' ),
+		'domElement': ve.dm.createDomElement( 'td' ),
 		'dataElement': { 'type': 'tableCell' }
 	},
 	'table': {
-		'htmlElement': ve.dm.createHtmlElement( 'table' ),
+		'domElement': ve.dm.createDomElement( 'table' ),
 		'dataElement': { 'type': 'table' }
 	},
 	'tableRow': {
-		'htmlElement': ve.dm.createHtmlElement( 'tr' ),
+		'domElement': ve.dm.createDomElement( 'tr' ),
 		'dataElement': { 'type': 'tableRow' }
 	},
 	'paragraph with mw-data attribute': {
-		'htmlElement': ve.dm.createHtmlElement( 'p', { 'data-mw': '{"test":1234}' } ),
-		'dataElement': { 'type': 'paragraph', 'attributes': { 'mw/test': 1234 } }
+		'domElement': ve.dm.createDomElement( 'p', { 'data-mw': '{"test":1234}' } ),
+		'dataElement': { 'type': 'paragraph', 'attributes': { 'html/data-mw': '{"test":1234}' } }
 	},
-	'paragraph with html attributes': {
-		'htmlElement': ve.dm.createHtmlElement( 'p', { 'style': 'color:blue' } ),
+	'paragraph with style attribute': {
+		'domElement': ve.dm.createDomElement( 'p', { 'style': 'color:blue' } ),
 		'dataElement': { 'type': 'paragraph', 'attributes': { 'html/style': 'color:blue' } }
+	},
+	'alien unknown type': {
+		'domElement': ve.dm.createDomElement( 'alien' ),
+		'dataElement': { 'type': 'alienBlock', 'attributes': { 'html': '<alien></alien>' } }
+	},
+	'alien generated content': {
+		'domElement': ve.dm.createDomElement( 'p', { 'data-mw-gc': '' } ),
+		'dataElement': { 'type': 'alienBlock', 'attributes': { 'html': '<p data-mw-gc=""></p>' } }
 	}
 };

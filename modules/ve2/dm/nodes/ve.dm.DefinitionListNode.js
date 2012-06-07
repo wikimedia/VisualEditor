@@ -37,11 +37,11 @@ ve.dm.DefinitionListNode.rules = {
  * @member
  */
 ve.dm.DefinitionListNode.converters = {
-	'tags': 'dl',
-	'toHtml': function( type, element ) {
-		return ve.dm.createHtmlElement( 'dl' );
+	'domElementTypes': ['dl'],
+	'toDomElement': function( type, element ) {
+		return ve.dm.createDomElement( 'dl' );
 	},
-	'toData': function( tag, element ) {
+	'toDataElement': function( tag, element ) {
 		return { 'type': 'definitionList' };
 	}
 };

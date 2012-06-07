@@ -20,12 +20,12 @@ ve.dm.LinkAnnotation = function() {
  * @member
  */
 ve.dm.LinkAnnotation.converters = {
-	'tags': 'a',
-	'toHtml': function( subType, annotation ) {
+	'domElementTypes': ['a'],
+	'toDomElement': function( subType, annotation ) {
 		return annotation.type &&
-			ve.dm.createHtmlElement( 'a', { 'data-type': 'link/' + subType } );
+			ve.dm.createDomElement( 'a', { 'data-type': 'link/' + subType } );
 	},
-	'toData': function( tag, element ) {
+	'toDataAnnotation': function( tag, element ) {
 		// FIXME: the parser currently doesn't output this data this way
 		// Internal links get 'linkType': 'internal' in the data-mw-rt attrib, while external
 		// links currently get nothing

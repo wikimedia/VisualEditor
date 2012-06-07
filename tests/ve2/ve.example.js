@@ -338,7 +338,7 @@ ve.example.getNodeSelectionSummary = function( selection ) {
  * @param {HTMLElement} element Element to summarize
  * @returns {Object} Summary of element
  */
-ve.example.getHtmlElementSummary = function( element ) {
+ve.example.getDomElementSummary = function( element ) {
 	var $element = $( element );
 	return {
 		'type': element.nodeName.toLowerCase(),

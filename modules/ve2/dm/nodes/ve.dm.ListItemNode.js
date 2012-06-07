@@ -37,11 +37,11 @@ ve.dm.ListItemNode.rules = {
  * @member
  */
 ve.dm.ListItemNode.converters = {
-	'tags': 'li',
-	'toHtml': function( type, element ) {
-		return ve.dm.createHtmlElement( 'li' );
+	'domElementTypes': ['li'],
+	'toDomElement': function( type, element ) {
+		return ve.dm.createDomElement( 'li' );
 	},
-	'toData': function( tag, element ) {
+	'toDataElement': function( tag, element ) {
 		return { 'type': 'listItem' };
 	}
 };
