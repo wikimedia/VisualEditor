@@ -388,6 +388,18 @@ test( 'newFromRemoval', function() {
 				},
 				{ 'type': 'retain', 'length': 4 }
 			]
+		},
+		'removing content from a paragraph in the middle': {
+			'args': [doc, new ve.Range( 54, 55 )],
+			'ops': [
+				{ 'type': 'retain', 'length': 54 },
+				{
+					'type': 'replace',
+					'remove': ['l'],
+					'insert': []
+				},
+				{ 'type': 'retain', 'length': 4 }
+			]
 		}
 	};
 	ve.dm.Transaction.runConstructorTests( ve.dm.Transaction.newFromRemoval, cases );

@@ -11,8 +11,38 @@ ve.dm.Surface = function( doc ) {
 	ve.EventEmitter.call( this );
 	// Properties
 	this.documentModel = doc;
+
+	// TODO: Waiting for ve.ce.Surface to update model surface. 
+	// Until then, fake data:
+	this.selection = new ve.Range(5, 7);
+	//this.selection = null;
+	
+
+	this.smallStack = [];
+	this.bigStack = [];
+	this.undoIndex = 0;
+
+	var _this = this;
+	setInterval( function () {
+		_this.breakpoint();
+	}, 750 );
+};
+
+/* Methods */
+
+ve.dm.Surface.prototype.purgeHistory = function() {
 	this.selection = null;
-	this.bigStack = [];  // NOTE: HistoryButtonTool depends on bigStack
+	this.smallStack = [];
+	this.bigStack = [];
+	this.undoIndex = 0;
+};
+
+ve.dm.Surface.prototype.getHistory = function() {
+	if ( this.smallStack.length > 0 ) {
+		return this.bigStack.slice( 0 ).concat( [{ 'stack': this.smallStack.slice(0) }] );
+	} else {
+		return this.bigStack.slice( 0 );
+	}
 };
 
 /**
@@ -61,6 +91,9 @@ ve.dm.Surface.prototype.setSelection = function( selection ) {
  * @param {ve.dm.Transaction} transactions Tranasction to apply to the document
  */
 ve.dm.Surface.prototype.transact = function( transaction ) {
+	this.bigStack = this.bigStack.slice( 0, this.bigStack.length - this.undoIndex );
+	this.undoIndex = 0;
+	this.smallStack.push( transaction );
 	ve.dm.TransactionProcessor.commit( this.getDocument(), transaction );
 	this.emit( 'transact', transaction );
 };
@@ -92,6 +125,54 @@ ve.dm.Surface.prototype.annotate = function( method, annotation ) {
 		this.setSelection ( selection );
 	}
 };
+
+ve.dm.Surface.prototype.breakpoint = function( selection ) {
+	if( this.smallStack.length > 0 ) {
+		this.bigStack.push( {
+			stack: this.smallStack,
+			selection: selection || this.selection.clone()
+		} );
+		this.smallStack = [];
+	}
+};
+
+ve.dm.Surface.prototype.undo = function() {
+	this.breakpoint();
+	this.undoIndex++;
+	if ( this.bigStack[this.bigStack.length - this.undoIndex] ) {
+		var diff = 0;
+		var item = this.bigStack[this.bigStack.length - this.undoIndex];
+		for( var i = item.stack.length - 1; i >= 0; i-- ) {
+			this.documentModel.rollback( item.stack[i] );
+			diff += item.stack[i].lengthDifference;
+		}
+		var selection = item.selection;
+		selection.from -= diff;
+		selection.to -= diff;
+		this.setSelection( selection );
+	}
+};
+
+ve.dm.Surface.prototype.redo = function() {
+	this.breakpoint();
+	if ( this.undoIndex > 0 ) {
+		if ( this.bigStack[this.bigStack.length - this.undoIndex] ) {
+			var diff = 0;
+			var item = this.bigStack[this.bigStack.length - this.undoIndex];
+			for( var i = 0; i < item.stack.length; i++ ) {
+				this.transact( item.stack[i] );
+				diff += item.stack[i].lengthDifference;
+			}
+			var selection = item.selection;
+			selection.from += diff;
+			selection.to += diff;
+			this.selection = null;
+			this.setSelection( selection );
+		}
+		this.undoIndex--;
+	}
+};
+
 
 /* Inheritance */
 

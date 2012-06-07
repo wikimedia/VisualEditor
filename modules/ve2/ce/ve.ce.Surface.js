@@ -187,7 +187,7 @@ ve.ce.Surface.prototype.onCutCopy = function( e ) {
 			
 			// Transact
 			tx = ve.dm.Transaction.newFromRemoval( _this.documentView.model, selection );
-			ve.dm.TransactionProcessor.commit( _this.documentView.model, tx );
+			_this.model.transact( tx );
 
 			// Place cursor
 			_this.showCursor( selection.start );
@@ -206,7 +206,7 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
 	// Pasting into a range? Remove first.	
 	if (!rangy.getSelection().isCollapsed) {
 		tx = ve.dm.Transaction.newFromRemoval( _this.documentView.model, selection );
-		ve.dm.TransactionProcessor.commit( _this.documentView.model, tx );
+		_this.model.transact( tx );
 	}
 	
 	$('#paste').html('').show().focus();
@@ -229,7 +229,7 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
 		tx = ve.dm.Transaction.newFromInsertion(
 			_this.documentView.model, selection.start, pasteData
 		);
-		ve.dm.TransactionProcessor.commit( _this.documentView.model, tx );
+		_this.model.transact( tx );
 
 		// Place cursor
 		_this.showCursor( selection.start + pasteData.length );
