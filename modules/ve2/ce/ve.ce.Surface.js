@@ -14,6 +14,7 @@ ve.ce.Surface = function( $container, model ) {
 	this.documentView = new ve.ce.Document( model.getDocument() );
 	this.contextView = new ve.ui.Context( this );
 	this.$ = $container;
+	this.clipboard = {};
 
 	// Driven by mousedown and mouseup events
 	this.isMouseDown = false;
@@ -184,7 +185,7 @@ ve.ce.Surface.prototype.onCutCopy = function( e ) {
 
 	// Set surface clipboard
 	this.clipboard[key] = ve.copyArray(
-		this.documentView.model.getData( this.getSelectionRange() )
+		this.documentView.model.getData( this.model.getSelection() )
 	);
 
 	if ( e.type == 'cut' ) {
@@ -195,7 +196,7 @@ ve.ce.Surface.prototype.onCutCopy = function( e ) {
 			// We don't like how browsers cut, so let's undo it and do it ourselves.
 			document.execCommand('undo', false, false);
 			
-			selection = _this.getSelectionRange();
+			selection = _this.model.getSelection();
 			
 			// Transact
 			tx = ve.dm.Transaction.newFromRemoval( _this.documentView.model, selection );
@@ -212,7 +213,7 @@ ve.ce.Surface.prototype.onCutCopy = function( e ) {
  */
 ve.ce.Surface.prototype.onPaste = function( e ) {
 	var	_this = this,
-		selection = this.getSelectionRange(),
+		selection = this.model.getSelection(),
 		tx = null;
 	
 	// Pasting into a range? Remove first.	
