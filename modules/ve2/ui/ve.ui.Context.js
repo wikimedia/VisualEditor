@@ -95,7 +95,7 @@ ve.ui.Context.prototype.positionIcon = function() {
 	var	selection = this.surfaceView.model.getSelection(),
 		selectionRect = this.surfaceView.getSelectionRect();
 
-	if( selection.getDirection() === 1 ) {
+	if( selection.to > selection.from ) {
 		this.position = new ve.Position( selectionRect.end.x, selectionRect.end.y );
 		this.$.addClass( 'es-contextView-position-end' );
 	} else {
@@ -118,6 +118,7 @@ ve.ui.Context.prototype.positionOverlay = function( $overlay ) {
 		windowScrollTop = $window.scrollTop();
 	// Center align overlay
 	var overlayLeft = -Math.round( overlayWidth / 2 );
+
 	// Adjust overlay left or right depending on viewport
 /*
 	if ( ( this.position.left - overlayMargin ) + overlayLeft < 0 ) {
@@ -130,12 +131,14 @@ ve.ui.Context.prototype.positionOverlay = function( $overlay ) {
 */
 	$overlay.css( 'left', overlayLeft );
 	// Position overlay on top or bottom depending on viewport
+
 /*	if ( this.position.top + overlayHeight + ( overlayMargin * 2 ) < windowHeight + windowScrollTop ) {
 		this.$.addClass( 'es-contextView-position-below' );
 	} else {
 		this.$.addClass( 'es-contextView-position-above' );
 	}
 */
+
 };
 
 ve.ui.Context.prototype.clear = function() {

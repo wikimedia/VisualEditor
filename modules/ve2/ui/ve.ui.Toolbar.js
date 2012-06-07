@@ -20,7 +20,7 @@ ve.ui.Toolbar = function( $container, surfaceView, config ) {
 	this.surfaceView.model.on( 'select', function( e ){
 		var model = _this.surfaceView.model,
 			doc = model.getDocument(),
-			annotations = doc.getAnnotationsFromRange( model.getSelection() ),
+			annotations = doc.getAnnotationsFromRange( e ),
 			nodes = [],
 			startNode,
 			endNode;
@@ -44,13 +44,17 @@ ve.ui.Toolbar = function( $container, surfaceView, config ) {
 					}, startNode );
 				}
 			}
-			
+			// Update Context
+			if ( e.getLength() > 0 ) {
+				_this.surfaceView.contextView.set();
+			}
 			// Update state
 			for ( i = 0; i < _this.tools.length; i++ ) {
 				_this.tools[i].updateState( annotations, nodes );
 			}
 		} else {
 			// Clear state
+			_this.surfaceView.contextView.clear();
 			for ( i = 0; i < _this.tools.length; i++ ) {
 				_this.tools[i].clearState();
 			}

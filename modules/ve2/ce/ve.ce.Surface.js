@@ -25,6 +25,9 @@ ve.ce.Surface = function( $container, model ) {
 		focusOffset: null
 	};
 
+	// init rangy in case of Toshiba...
+	rangy.init();
+	
 	// Events
 	this.$.on( {
 		'keypress': this.proxy( this.onKeyPress ),

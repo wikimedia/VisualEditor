@@ -674,6 +674,7 @@ $(document).ready( function() {
 
 		/* Rob's test selection stuff */
 		//surfaceModel.setSelection( new ve.Range(0, documentModel.getData().length ) );
+		//surfaceModel.setSelection( new ve.Range( 178, 185 ) );
 		//view.showSelection ( surfaceModel.getSelection() );
 
 	/* Sandbox Warning Message */

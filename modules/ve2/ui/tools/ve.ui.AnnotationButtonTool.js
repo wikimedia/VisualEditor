@@ -22,15 +22,15 @@ ve.ui.AnnotationButtonTool = function( toolbar, name, title, data ) {
 
 ve.ui.AnnotationButtonTool.prototype.onClick = function() {
 	var surfaceView = this.toolbar.getSurfaceView(),
-		surfaceModel = surfaceView.model;
+		surfaceModel = surfaceView.model,
+		selection = surfaceModel.getSelection();
 
 	if ( this.inspector ) {
-		if( surfaceModel.getSelection() ) {
+		if( selection ) {
 			surfaceView.contextView.openInspector( this.inspector );
 		} else {
 			if ( this.active ) {
 				var documentModel = surfaceModel.getDocument(),
-					selection = surfaceModel.getSelection(),
 					range = documentModel.getAnnotatedRangeFromOffset(
 						selection.from, this.annotation
 					);
@@ -40,6 +40,7 @@ ve.ui.AnnotationButtonTool.prototype.onClick = function() {
 		}
 	} else {
 		surfaceModel.annotate( this.active ? 'clear' : 'set', this.annotation );
+		surfaceView.showSelection( selection );
 	}
 };
 
