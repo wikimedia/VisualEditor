@@ -31,6 +31,8 @@ ve.ce.Surface = function( $container, model ) {
 		'mousedown': this.proxy( this.onMouseDown ),
 		'mouseup': this.proxy( this.onMouseUp ),
 		'mousemove': this.proxy( this.onMouseMove ),
+		'cut copy': this.proxy( this.onCutCopy ),
+		'beforepaste paste': this.proxy( this.onPaste ),
 		'dragover drop': function( e ) {
 			// Prevent content drag & drop
 			e.preventDefault();
