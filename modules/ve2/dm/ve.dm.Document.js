@@ -1179,6 +1179,69 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 	return newData;
 };
 
+/**
+ * Get the linear model data for the given range, but fix up unopened closings and unclosed openings
+ * in the data snippet such that the returned snippet is balanced.
+ *
+ * @returns {Array} Balanced snippet of linear model data
+ */
+ve.dm.Document.prototype.getBalancedData = function( range ) {
+	var	node = this.getNodeFromOffset( range.start ),
+		selection = this.selectNodes( range, 'siblings' ),
+		addOpenings = [],
+		addClosings = [];
+	if ( selection.length === 0 ) {
+		// WTF?
+		throw 'Invalid range, cannot select from ' + range.start + ' to ' + range.end;
+	}
+	if ( selection.length === 1 && selection[0].range.equals( range ) ) {
+		// Nothing to fix up
+		return this.data.slice( range.start, range.end );
+	}
+
+	var	first = selection[0],
+		last = selection[selection.length - 1],
+		firstNode = first.node,
+		lastNode = last.node;
+	while ( !firstNode.isWrapped() ) {
+		firstNode = firstNode.getParent();
+	}
+	while ( !lastNode.isWrapped() ) {
+		lastNode = lastNode.getParent();
+	}
+
+	if ( first.range ) {
+		while( true ) {
+			while ( !node.isWrapped() ) {
+				node = node.getParent();
+			}
+			addOpenings.push( node.getClonedElement() );
+			if ( node === firstNode ) {
+				break;
+			}
+			node = node.getParent();
+		}
+	}
+
+	node = this.getNodeFromOffset( range.end );
+	if ( last !== first && last.range ) {
+		while ( true ) {
+			while ( !node.isWrapped() ) {
+				node = node.getParent();
+			}
+			addClosings.push( { 'type': '/' + node.getType() } );
+			if ( node === lastNode ) {
+				break;
+			}
+			node = node.getParent();
+		}
+	}
+
+	return addOpenings.reverse()
+		.concat( this.data.slice( range.start, range.end ) )
+		.concat( addClosings );
+};
+
 /* Inheritance */
 
 ve.extendClass( ve.dm.Document, ve.Document );

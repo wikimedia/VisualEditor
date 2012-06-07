@@ -1261,3 +1261,125 @@ test( 'selectNodes', function() {
 		);
 	}
 } );
+
+test( 'getBalancedData', function() {
+	var doc = new ve.dm.Document( ve.dm.example.data ),
+		cases = [
+		{
+			'msg': 'empty range',
+			'range': new ve.Range( 2, 2 ),
+			'expected': []
+		},
+		{
+			'msg': 'range with one character',
+			'range': new ve.Range( 2, 3 ),
+			'expected': [
+				['b', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } }]
+			]
+		},
+		{
+			'msg': 'range with two characters',
+			'range': new ve.Range( 2, 4 ),
+			'expected': [
+				['b', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } }],
+				['c', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } }]
+			]
+		},
+		{
+			'msg': 'range with two characters and a header closing',
+			'range': new ve.Range( 2, 5 ),
+			'expected': [
+				{ 'type': 'heading', 'attributes': { 'level': 1 } },
+				['b', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } }],
+				['c', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } }],
+				{ 'type': '/heading' }
+			]
+		},
+		{
+			'msg': 'range with one character, a header closing and a table opening',
+			'range': new ve.Range( 3, 6 ),
+			'expected': [
+				{ 'type': 'heading', 'attributes': { 'level': 1 } },
+				['c', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } }],
+				{ 'type': '/heading' },
+				{ 'type': 'table' },
+				{ 'type': '/table' }
+			]
+		},
+		{
+			'msg': 'range from a paragraph into a list',
+			'range': new ve.Range( 14, 20 ),
+			'expected': [
+				{ 'type': 'paragraph' },
+				'e',
+				{ 'type': '/paragraph' },
+				{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
+				{ 'type': 'listItem'  },
+				{ 'type': 'paragraph' },
+				'f',
+				{ 'type': '/paragraph' },
+				{ 'type': '/listItem' },
+				{ 'type': '/list' }
+			]
+		},
+		{
+			'msg': 'range from a paragraph inside a nested list into the next list',
+			'range': new ve.Range( 19, 26 ),
+			'expected': [
+				{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
+				{ 'type': 'listItem' },
+				{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
+				{ 'type': 'listItem' },
+				{ 'type': 'paragraph' },
+				'f',
+				{ 'type': '/paragraph' },
+				{ 'type': '/listItem' },
+				{ 'type': '/list' },
+				{ 'type': '/listItem' },
+				{ 'type': '/list' },
+				{ 'type': 'list', 'attributes': { 'style': 'number' } },
+				{ 'type': '/list' }
+			]
+		},
+		{
+			'msg': 'range from a paragraph inside a nested list out of both lists',
+			'range': new ve.Range( 19, 25 ),
+			'expected': [
+				{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
+				{ 'type': 'listItem' },
+				{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
+				{ 'type': 'listItem' },
+				{ 'type': 'paragraph' },
+				'f',
+				{ 'type': '/paragraph' },
+				{ 'type': '/listItem' },
+				{ 'type': '/list' },
+				{ 'type': '/listItem' },
+				{ 'type': '/list' }
+			]
+		},
+		{
+			'msg': 'range from a paragraph inside a nested list out of the outer listItem',
+			'range': new ve.Range( 19, 24 ),
+			'expected': [
+				{ 'type': 'listItem' },
+				{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
+				{ 'type': 'listItem' },
+				{ 'type': 'paragraph' },
+				'f',
+				{ 'type': '/paragraph' },
+				{ 'type': '/listItem' },
+				{ 'type': '/list' },
+				{ 'type': '/listItem' }
+			]
+		}
+	];
+	expect( cases.length );
+	for ( var i = 0; i < cases.length; i++ ) {
+		deepEqual(
+			doc.getBalancedData( cases[i].range ),
+			cases[i].expected,
+			cases[i].msg
+		);
+	}
+} );
