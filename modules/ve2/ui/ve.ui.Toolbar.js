@@ -24,7 +24,7 @@ ve.ui.Toolbar = function( $container, surfaceView, config ) {
 			nodes = [],
 			startNode,
 			endNode;
-		
+
 		if( e !== null ) {
 			if ( e.from === e.to ){
 				nodes.push( doc.getNodeFromOffset( e.from ) );
@@ -49,6 +49,7 @@ ve.ui.Toolbar = function( $container, surfaceView, config ) {
 				_this.surfaceView.contextView.set();
 			}
 			// Update state
+			console.log(annotations, nodes);
 			for ( i = 0; i < _this.tools.length; i++ ) {
 				_this.tools[i].updateState( annotations, nodes );
 			}

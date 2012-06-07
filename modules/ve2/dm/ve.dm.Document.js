@@ -659,6 +659,11 @@ ve.dm.Document.prototype.getAnnotationsFromRange = function( range ) {
 		map = {};
 		
 	range.normalize();
+	
+	if ( range.getLength() === 0 ) {
+		return this.getAnnotationsFromOffset( range.to );
+	}
+
 	for ( var i = range.start; i < range.end; i++ ) {
 		// skip non characters
 		if ( ve.dm.Document.isElementData( this.data, i ) ) {
