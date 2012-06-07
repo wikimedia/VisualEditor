@@ -39,7 +39,7 @@ ve.dm.DefinitionListNode.rules = {
 ve.dm.DefinitionListNode.converters = {
 	'domElementTypes': ['dl'],
 	'toDomElement': function( type, element ) {
-		return ve.dm.createDomElement( 'dl' );
+		return document.createElement( 'dl' );
 	},
 	'toDataElement': function( tag, element ) {
 		return { 'type': 'definitionList' };

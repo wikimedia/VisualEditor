@@ -302,9 +302,13 @@ ve.dm.Converter.prototype.getDataFromDom = function( domElement, annotations, da
  * @method
  */
 ve.dm.Converter.prototype.getDomFromData = function( data ) {
-	var dom = ve.createDomElement( 'div' );
+	var dom = document.createElement( 'div' );
 	for ( var i = 0; i < data.length; i++ ) {
-		// TODO: Implement
+		if ( typeof data[i] === 'string' || ve.isArray( data[i] ) ) {
+			// Text
+		} else if ( ve.isPlainObject( data[i] ) ) {
+			// Element
+		}
 	}
 	return dom;
 };

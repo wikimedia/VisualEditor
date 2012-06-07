@@ -22,8 +22,11 @@ ve.dm.LinkAnnotation = function() {
 ve.dm.LinkAnnotation.converters = {
 	'domElementTypes': ['a'],
 	'toDomElement': function( subType, annotation ) {
-		return annotation.type &&
-			ve.dm.createDomElement( 'a', { 'data-type': 'link/' + subType } );
+		if ( annotation.type ) {
+			var link = dom.createElement( 'a' );
+			link.setAttribute( 'data-type', 'link/' + subType );
+			return link;
+		}
 	},
 	'toDataAnnotation': function( tag, element ) {
 		// FIXME: the parser currently doesn't output this data this way

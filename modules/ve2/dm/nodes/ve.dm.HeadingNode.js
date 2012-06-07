@@ -40,12 +40,12 @@ ve.dm.HeadingNode.converters = {
 	'domElementTypes': ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
 	'toDomElement': function( type, element ) {
 		return element.attributes && ( {
-			1: ve.dm.createDomElement( 'h1' ),
-			2: ve.dm.createDomElement( 'h2' ),
-			3: ve.dm.createDomElement( 'h3' ),
-			4: ve.dm.createDomElement( 'h4' ),
-			5: ve.dm.createDomElement( 'h5' ),
-			6: ve.dm.createDomElement( 'h6' )
+			1: document.createElement( 'h1' ),
+			2: document.createElement( 'h2' ),
+			3: document.createElement( 'h3' ),
+			4: document.createElement( 'h4' ),
+			5: document.createElement( 'h5' ),
+			6: document.createElement( 'h6' )
 		} )[element.attributes['level']];
 	},
 	'toDataElement': function( tag, element ) {

@@ -39,7 +39,7 @@ ve.dm.ImageNode.rules = {
 ve.dm.ImageNode.converters = {
 	'domElementTypes': ['img'],
 	'toDomElement': function( type, element ) {
-		return ve.dm.createDomElement( 'img' );
+		return document.createElement( 'img' );
 	},
 	'toDataElement': function( tag, element ) {
 		return { 'type': 'image' };

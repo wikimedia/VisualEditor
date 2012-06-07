@@ -22,7 +22,7 @@ ve.dm.TextStyleAnnotation = function() {
 ve.dm.TextStyleAnnotation.converters = {
 	'domElementTypes': ['i', 'b', 'u', 's', 'small', 'big', 'span'],
 	'toDomElement': function( subType, annotation ) {
-		return annotation.type && ve.dm.createDomElement( ( {
+		return annotation.type && document.createElement( ( {
 			'italic': 'i',
 			'bold': 'b',
 			'underline': 'u',

@@ -362,3 +362,11 @@ ve.example.lookupNode = function( root ) {
 	}
 	return node;
 };
+
+ve.example.createDomElement = function( type, attributes ) {
+	var element = document.createElement( type );
+	for ( var key in attributes ) {
+		element.setAttribute( key, attributes[key] );
+	}
+	return element;
+};

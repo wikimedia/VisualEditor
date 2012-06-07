@@ -39,7 +39,7 @@ ve.dm.ParagraphNode.rules = {
 ve.dm.ParagraphNode.converters = {
 	'domElementTypes': ['p'],
 	'toDomElement': function( type, element ) {
-		return ve.dm.createDomElement( 'p' );
+		return document.createElement( 'p' );
 	},
 	'toDataElement': function( tag, element ) {
 		return { 'type': 'paragraph' };

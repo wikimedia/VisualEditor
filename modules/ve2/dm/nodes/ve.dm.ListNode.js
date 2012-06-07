@@ -40,8 +40,8 @@ ve.dm.ListNode.converters = {
 	'domElementTypes': ['ul', 'ol'],
 	'toDomElement': function( type, element ) {
 		return element.attributes && ( {
-			'bullet': ve.dm.createDomElement( 'ul' ),
-			'number': ve.dm.createDomElement( 'ol' )
+			'bullet': document.createElement( 'ul' ),
+			'number': document.createElement( 'ol' )
 		} )[element.attributes['style']];
 	},
 	'toDataElement': function( tag, element ) {

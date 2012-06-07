@@ -414,83 +414,83 @@ ve.dm.example.getOffsetMap = function( root ) {
 
 ve.dm.example.conversions = {
 	'definitionListItem term': {
-		'domElement': ve.dm.createDomElement( 'dt' ),
+		'domElement': ve.example.createDomElement( 'dt' ),
 		'dataElement': { 'type': 'definitionListItem', 'attributes': { 'style': 'term' } }
 	},
 	'definitionListItem definition': {
-		'domElement': ve.dm.createDomElement( 'dd' ),
+		'domElement': ve.example.createDomElement( 'dd' ),
 		'dataElement': { 'type': 'definitionListItem', 'attributes': { 'style': 'definition' } }
 	},
 	'definitionList definition': {
-		'domElement': ve.dm.createDomElement( 'dl' ),
+		'domElement': ve.example.createDomElement( 'dl' ),
 		'dataElement': { 'type': 'definitionList' }
 	},
 	'heading level 1': {
-		'domElement': ve.dm.createDomElement( 'h1' ),
+		'domElement': ve.example.createDomElement( 'h1' ),
 		'dataElement': { 'type': 'heading', 'attributes': { 'level': 1 } }
 	},
 	'heading level 2': {
-		'domElement': ve.dm.createDomElement( 'h2' ),
+		'domElement': ve.example.createDomElement( 'h2' ),
 		'dataElement': { 'type': 'heading', 'attributes': { 'level': 2 } }
 	},
 	'heading level 3': {
-		'domElement': ve.dm.createDomElement( 'h3' ),
+		'domElement': ve.example.createDomElement( 'h3' ),
 		'dataElement': { 'type': 'heading', 'attributes': { 'level': 3 } }
 	},
 	'heading level 4': {
-		'domElement': ve.dm.createDomElement( 'h4' ),
+		'domElement': ve.example.createDomElement( 'h4' ),
 		'dataElement': { 'type': 'heading', 'attributes': { 'level': 4 } }
 	},
 	'heading level 5': {
-		'domElement': ve.dm.createDomElement( 'h5' ),
+		'domElement': ve.example.createDomElement( 'h5' ),
 		'dataElement': { 'type': 'heading', 'attributes': { 'level': 5 } }
 	},
 	'heading level 6': {
-		'domElement': ve.dm.createDomElement( 'h6' ),
+		'domElement': ve.example.createDomElement( 'h6' ),
 		'dataElement': { 'type': 'heading', 'attributes': { 'level': 6 } }
 	},
 	'image': {
-		'domElement': ve.dm.createDomElement( 'image' ),
+		'domElement': ve.example.createDomElement( 'image' ),
 		'dataElement': { 'type': 'image' }
 	},
 	'listItem': {
-		'domElement': ve.dm.createDomElement( 'li' ),
+		'domElement': ve.example.createDomElement( 'li' ),
 		'dataElement': { 'type': 'listItem' }
 	},
 	'list bullet': {
-		'domElement': ve.dm.createDomElement( 'ul' ),
+		'domElement': ve.example.createDomElement( 'ul' ),
 		'dataElement': { 'type': 'list', 'attributes': { 'style': 'bullet' } }
 	},
 	'list number': {
-		'domElement': ve.dm.createDomElement( 'ol' ),
+		'domElement': ve.example.createDomElement( 'ol' ),
 		'dataElement': { 'type': 'list', 'attributes': { 'style': 'number' } }
 	},
 	'paragraph': {
-		'domElement': ve.dm.createDomElement( 'p' ),
+		'domElement': ve.example.createDomElement( 'p' ),
 		'dataElement': { 'type': 'paragraph' }
 	},
 	'preformatted': {
-		'domElement': ve.dm.createDomElement( 'pre' ),
+		'domElement': ve.example.createDomElement( 'pre' ),
 		'dataElement': { 'type': 'preformatted' }
 	},
 	'tableCell': {
-		'domElement': ve.dm.createDomElement( 'td' ),
+		'domElement': ve.example.createDomElement( 'td' ),
 		'dataElement': { 'type': 'tableCell' }
 	},
 	'table': {
-		'domElement': ve.dm.createDomElement( 'table' ),
+		'domElement': ve.example.createDomElement( 'table' ),
 		'dataElement': { 'type': 'table' }
 	},
 	'tableRow': {
-		'domElement': ve.dm.createDomElement( 'tr' ),
+		'domElement': ve.example.createDomElement( 'tr' ),
 		'dataElement': { 'type': 'tableRow' }
 	},
 	'paragraph with mw-data attribute': {
-		'domElement': ve.dm.createDomElement( 'p', { 'data-mw': '{"test":1234}' } ),
+		'domElement': ve.example.createDomElement( 'p', { 'data-mw': '{"test":1234}' } ),
 		'dataElement': { 'type': 'paragraph', 'attributes': { 'html/data-mw': '{"test":1234}' } }
 	},
 	'paragraph with style attribute': {
-		'domElement': ve.dm.createDomElement( 'p', { 'style': 'color:blue' } ),
+		'domElement': ve.example.createDomElement( 'p', { 'style': 'color:blue' } ),
 		'dataElement': { 'type': 'paragraph', 'attributes': { 'html/style': 'color:blue' } }
 	}
 };

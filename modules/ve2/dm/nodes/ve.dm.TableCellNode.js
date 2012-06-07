@@ -39,7 +39,7 @@ ve.dm.TableCellNode.rules = {
 ve.dm.TableCellNode.converters = {
 	'domElementTypes': ['td'],
 	'toDomElement': function( type, element ) {
-		return ve.dm.createDomElement( 'td' );
+		return document.createElement( 'td' );
 	},
 	'toDataElement': function( tag, element ) {
 		return { 'type': 'tableCell' };

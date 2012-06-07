@@ -39,7 +39,7 @@ ve.dm.ListItemNode.rules = {
 ve.dm.ListItemNode.converters = {
 	'domElementTypes': ['li'],
 	'toDomElement': function( type, element ) {
-		return ve.dm.createDomElement( 'li' );
+		return document.createElement( 'li' );
 	},
 	'toDataElement': function( tag, element ) {
 		return { 'type': 'listItem' };

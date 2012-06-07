@@ -40,8 +40,8 @@ ve.dm.DefinitionListItemNode.converters = {
 	'domElementTypes': ['dt', 'dd'],
 	'toDomElement': function( type, element ) {
 		return element.attributes && ( {
-			'term': ve.dm.createDomElement( 'dt' ),
-			'definition': ve.dm.createDomElement( 'dd' )
+			'term': document.createElement( 'dt' ),
+			'definition': document.createElement( 'dd' )
 		} )[element.attributes['style']];
 	},
 	'toDataElement': function( tag, element ) {
