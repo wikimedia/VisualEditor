@@ -66,7 +66,7 @@ app.get('/', function(req, res){
 	res.write('<li><strong><a href="/_wikitext/">WikiText -&gt; HTML DOM form</a></strong></li>' +
 			'<li><strong><a href="/_html/">HTML DOM -&gt; WikiText form</a></strong></li>');
 	res.write('</ul>');
-	res.end('<p>We are currently focusing on round-tripping of basic formatting like inline/bold, headings, lists, tables and links. Templates and thumbnails are not expected to round-trip properly yet. <strong>Please report issues you see at <a href="http://www.mediawiki.org/w/index.php?title=Talk:Parsoid/Todo&action=edit&section=new">:mw:Talk:Parsoid/Todo</a>. Thanks!</strong></p>');
+	res.end('<p>We are currently focusing on round-tripping of basic formatting like inline/bold, headings, lists, tables and links. Templates, citations and thumbnails are not expected to round-trip properly yet. <strong>Please report issues you see at <a href="http://www.mediawiki.org/w/index.php?title=Talk:Parsoid/Todo&action=edit&section=new">:mw:Talk:Parsoid/Todo</a>. Thanks!</strong></p>');
 });
 
 var htmlSpecialChars = function ( s ) {
