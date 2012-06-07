@@ -213,12 +213,15 @@ ve.dm.Converter.prototype.getDataFromDom = function( domElement, annotations, da
 					ve.dm.nodeFactory.canNodeContainContent( branchType )
 				) {
 					// Fallback to alien inline
-					data.push( {
-						'type': 'alienInline',
-						'attributes': {
-							'html': $( '<div>' ).append( $( childDomElement ).clone() ).html()
-						}
-					} );
+					data = data.concat( [
+						{
+							'type': 'alienInline',
+							'attributes': {
+								'html': $( '<div>' ).append( $( childDomElement ).clone() ).html()
+							}
+						},
+						{ 'type': '/alienInline' }
+					] );
 					break;
 				}
 				// Detect and handle annotated content
@@ -256,12 +259,15 @@ ve.dm.Converter.prototype.getDataFromDom = function( domElement, annotations, da
 					break;
 				}
 				// Fallback to alien block
-				data.push( {
-					'type': 'alienBlock',
-					'attributes': {
-						'html': $( '<div>' ).append( $( childDomElement ).clone() ).html()
-					}
-				} );
+				data = data.concat( [
+					{
+						'type': 'alienBlock',
+						'attributes': {
+							'html': $( '<div>' ).append( $( childDomElement ).clone() ).html()
+						}
+					},
+					{ 'type': '/alienBlock' }
+				] );
 				break;
 			case Node.TEXT_NODE:
 				// Start auto-wrapping of bare content

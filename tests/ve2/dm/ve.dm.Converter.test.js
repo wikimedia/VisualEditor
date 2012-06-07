@@ -28,7 +28,7 @@ test( 'getDomElementFromDataElement', function() {
 
 test( 'getDataFromDom', function() {
 	var cases = {
-		'paragraph and text': {
+		'paragraph with plain text': {
 			'html': '<p>abc</p>',
 			'data': [
 				{ 'type': 'paragraph' },
@@ -38,7 +38,7 @@ test( 'getDataFromDom', function() {
 				{ 'type': '/paragraph' }
 			]
 		},
-		'bold, italic, underline': {
+		'annotated text with bold, italic, underline formatting': {
 			'html': '<p><b>a</b><i>b</i><u>c</u></p>',
 			'data': [
 				{ 'type': 'paragraph' },
@@ -55,7 +55,7 @@ test( 'getDataFromDom', function() {
 				{ 'type' : '/image' }
 			]
 		},
-		'paragraph with inline alien': {
+		'paragraph with alienInline inside': {
 			'html': '<p>a<a href="b.html" data-mw-gc="">b</a>c</p>',
 			'data': [
 				{ 'type': 'paragraph' },
@@ -64,7 +64,25 @@ test( 'getDataFromDom', function() {
 					'type': 'alienInline',
 					'attributes': { 'html': '<a href="b.html" data-mw-gc="">b</a>' }
 				},
+				{ 'type': '/alienInline' },
 				'c',
+				{ 'type': '/paragraph' }
+			]
+		},
+		'paragraphs with an alienBlock between them': {
+			'html': '<p>abc</p><p data-mw-gc="">abc</p><p>def</p>',
+			'data': [
+				{ 'type': 'paragraph' },
+				'a',
+				'b',
+				'c',
+				{ 'type': '/paragraph' },
+				{ 'type': 'alienBlock', 'attributes': { 'html': '<p data-mw-gc="">abc</p>' } },
+				{ 'type': '/alienBlock' },
+				{ 'type': 'paragraph' },
+				'd',
+				'e',
+				'f',
 				{ 'type': '/paragraph' }
 			]
 		}
