@@ -36,7 +36,7 @@ ve.ui.Toolbar = function( $container, surfaceView, config ) {
 					nodes.push( startNode );
 
 				} else {
-					model.traverseLeafNodes( function( node ) {
+					model.getDocument().getDocumentNode().traverseLeafNodes( function( node ) {
 						nodes.push( node );
 						if( node === endNode ) {
 							return false;

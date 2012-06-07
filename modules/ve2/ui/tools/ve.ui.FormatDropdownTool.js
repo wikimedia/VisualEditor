@@ -88,7 +88,7 @@ ve.FormatDropdownTool.prototype.updateState = function( annotations, nodes ) {
 	// Look for mismatches, in which case format should be null
 	for ( i = 1; i < nodes.length; i++ ) {
 		if ( format.type != nodes[i].getType() ||
-			!ve.compareObjects( format.attributes, nodes.children[i].element.attributes ) ) {
+			!ve.compareObjects( format.attributes, nodes[i].attributes ) ) {
 			format = null;
 			break;
 		}
