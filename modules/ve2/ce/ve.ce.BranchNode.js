@@ -34,7 +34,6 @@ ve.ce.BranchNode = function( type, model, $element ) {
 /* Static Members */
 
 ve.ce.BranchNode.$slugTemplate = $( '<span class="ve-ce-slug">&#xFEFF;</span>' );
-//ve.ce.BranchNode.$slugTemplate = $( '<span class="ve-ce-slug">OJEJ</span>' );
 
 /* Static Methods */
 
@@ -164,8 +163,6 @@ ve.ce.BranchNode.prototype.onSplice = function( index, howmany ) {
 
 	if ( this.canHaveGrandchildren() ) {
 		$slug.css( 'display', 'block');
-	} else {
-		$slug.css( { display: 'inline-block', width: '1px' } );
 	}
 
 	// Iterate over all children of this branch and add slugs in appropriate places
