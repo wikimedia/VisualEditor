@@ -207,6 +207,7 @@ ve.ce.Surface.prototype.onCutCopy = function( e ) {
 
 			// Place cursor
 			_this.showCursor( selection.start );
+			_this.model.setSelection( new ve.Range( selection.start ) );
 		}, 1 );
 	}
 };
@@ -249,6 +250,7 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
 
 		// Place cursor
 		_this.showCursor( selection.start + pasteData.length );
+		_this.model.setSelection( new ve.Range( selection.start + pasteData.length ) );
 		_this.documentView.documentNode.$.focus();
 	}, 1 );
 };
