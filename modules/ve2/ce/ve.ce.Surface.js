@@ -157,7 +157,7 @@ ve.ce.Surface.prototype.onMouseUp = function( e ) {
 			this.range.anchorNode = rangySel.anchorNode;
 			this.range.anchorOffset = rangySel.anchorOffset;
 			this.range.focusNode = rangySel.focusNode;
-			this.range.focusOffset = rangySel.focusOffset;			
+			this.range.focusOffset = rangySel.focusOffset;
 		}
 
 		this.isMouseDown = false;
@@ -219,7 +219,7 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
 		selection = this.model.getSelection(),
 		tx = null;
 	
-	// Pasting into a range? Remove first.	
+	// Pasting into a range? Remove first.
 	if (!rangy.getSelection().isCollapsed) {
 		tx = ve.dm.Transaction.newFromRemoval( _this.documentView.model, selection );
 		_this.model.transact( tx );
@@ -255,7 +255,7 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
 
 ve.ce.Surface.prototype.showCursor = function( offset ) {
 	this.showSelection( new ve.Range( offset ) );
-}
+};
 
 ve.ce.Surface.prototype.showSelection = function( range ) {
 	var rangySel = rangy.getSelection(),
@@ -488,6 +488,14 @@ ve.ce.Surface.prototype.getOffsetFromElementNode = function( DOMnode, DOMoffset,
 
 ve.ce.Surface.prototype.getModel = function() {
 	return this.model;
+};
+/* Supplies the selection anchor coordinates to contextView */
+ve.ce.Surface.prototype.getSelectionRect = function() {
+	var rangySel = rangy.getSelection();
+	return {
+		start: rangySel.getStartDocumentPos(),
+		end: rangySel.getEndDocumentPos()
+	};
 };
 
 /* Inheritance */
