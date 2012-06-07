@@ -236,7 +236,7 @@ var refineDiff = function( diff ) {
 	return out;
 };
 
-var roundTripDiff = function ( res, src, document ) {
+var roundTripDiff = function ( req, res, src, document ) {
 	res.write('<html><head><style>ins { background: #ff9191; text-decoration: none; } del { background: #99ff7e; text-decoration: none }; </style></head><body>');
 	res.write( '<h2>Wikitext parsed to HTML DOM</h2><hr>' );
 	res.write(document.body.innerHTML + '<hr>');
@@ -250,12 +250,20 @@ var roundTripDiff = function ( res, src, document ) {
 	//console.log(JSON.stringify( jsDiff.diffLines( out, src ) ));
 	//patch = jsDiff.convertChangesToXML( jsDiff.diffLines( out, src ) );
 	patch = jsDiff.convertChangesToXML( refineDiff( jsDiff.diffLines( src, out ) ) );
-	res.end( '<pre>' + patch);
+	res.write( '<pre>' + patch);
+	// Add a 'report issue' link
+	res.end('<hr><h2>'+
+			'<a style="color: red" ' +
+			'href="http://www.mediawiki.org/w/index.php?title=Talk:Parsoid/Todo' +
+			'&action=edit&section=new&preloadtitle=' +
+			'Issue%20on%20http://parsoid.wmflabs.org' + req.url + '">' +
+			'Report a parser issue in this page at [[:mw:Talk:Parsoid/Todo]]'+
+			'</a></h2><hr>');
 };
 
-var parse = function ( res, cb, src ) {
+var parse = function ( req, res, cb, src ) {
 	var parser = parserPipelineFactory.makePipeline( 'text/x-mediawiki/full' );
-	parser.on('document', cb.bind( null, res, src ) );
+	parser.on('document', cb.bind( null, req, res, src ) );
 	try {
 		res.setHeader('Content-Type', 'text/html; charset=UTF-8');
 		parser.process( src );
@@ -287,7 +295,7 @@ app.get( new RegExp('/_rt/(?:(?:(?:' + env.interwikiRegexp + '):+)?(' + env.inte
 	
 	console.log('starting parsing of ' + target);
 	var tpr = new TemplateRequest( env, target );
-	tpr.once('src', parse.bind( null, res, roundTripDiff ));
+	tpr.once('src', parse.bind( null, req, res, roundTripDiff ));
 });
 
 /**
@@ -306,7 +314,7 @@ app.post(/\/_rtform\/(.*)/, function(req, res){
 	var parser = parserPipelineFactory.makePipeline( 'text/x-mediawiki/full' );
 
 	// we don't care about \r, and normalize everything to \n
-	parse( res, roundTripDiff, req.body.content.replace(/\r/g, ''));
+	parse( req, res, roundTripDiff, req.body.content.replace(/\r/g, ''));
 });
 
 /**
@@ -329,7 +337,7 @@ app.get(new RegExp( '/(?:(?:(?:' + env.interwikiRegexp + '):+)?(' + env.interwik
 
 	console.log('starting parsing of ' + target);
 	var tpr = new TemplateRequest( env, target );
-	tpr.once('src', parse.bind( null, res, function ( res, src, document ) {
+	tpr.once('src', parse.bind( null, req, res, function ( req, res, src, document ) {
 		res.end(document.body.innerHTML);
 	}));
 });
