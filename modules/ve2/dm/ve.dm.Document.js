@@ -973,8 +973,6 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 		closings,
 		// Array of opening elements matching the elements in closings (in the same order)
 		reopenElements,
-		// Temporary variable for building a clone of the current element
-		clonedElement,
 
 		// *** Other variables ***
 		// Used to store values popped from various stacks
@@ -1109,11 +1107,7 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 						// was already in the document. This means we have to
 						// reopen it later, so track this on closingStack
 						closingStack.push( parentType );
-						clonedElement = { 'type': parentType };
-						if ( !$.isEmptyObject( parentNode.getAttributes() ) ) {
-							clonedElement.attributes = ve.copyObject( parentNode.getAttributes() );
-						}
-						reopenElements.push( clonedElement );
+						reopenElements.push( parentNode.getClonedElement() );
 						parentNode = parentNode.getParent();
 						if ( !parentNode ) {
 							throw 'Cannot insert ' + childType + ' even ' +

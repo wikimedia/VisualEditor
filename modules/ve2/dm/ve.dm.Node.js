@@ -183,6 +183,19 @@ ve.dm.Node.prototype.getAttributes = function() {
 };
 
 /**
+ * Get a clone of the linear model element for this node. The attributes object is deep-copied.
+ *
+ * @returns {Object} Element object with 'type' and (optionally) 'attributes' fields
+ */
+ve.dm.Node.prototype.getClonedElement = function() {
+	var retval = { 'type': this.type };
+	if ( !ve.isEmptyObject( this.attributes ) ) {
+		retval.attributes = ve.copyObject( this.attributes );
+	}
+	return retval;
+}
+
+/**
  * Checks if this node can be merged with another.
  *
  * For two nodes to be mergeable, this node and the given node must either be the same node or:
