@@ -2,10 +2,37 @@
  * A very basic parser / serializer web service.
  */
 
+/**
+ * Config section
+ *
+ * Could move this to a separate file later.
+ */
+
+// default to en.wikipedia.org
+var defaultInterwiki = 'en';
+// alternative: default to www.mediawiki.org
+//var defaultInterwiki = 'mw';
+
+var wikipedias = "en|de|fr|nl|it|pl|es|ru|ja|pt|zh|sv|vi|uk|ca|no|fi|cs|hu|ko|fa|id|tr|ro|ar|sk|eo|da|sr|lt|ms|eu|he|sl|bg|kk|vo|war|hr|hi|et|az|gl|simple|nn|la|th|el|new|roa-rup|oc|sh|ka|mk|tl|ht|pms|te|ta|be-x-old|ceb|br|be|lv|sq|jv|mg|cy|lb|mr|is|bs|yo|an|hy|fy|bpy|lmo|pnb|ml|sw|bn|io|af|gu|zh-yue|ne|nds|ku|ast|ur|scn|su|qu|diq|ba|tt|my|ga|cv|ia|nap|bat-smg|map-bms|wa|kn|als|am|bug|tg|gd|zh-min-nan|yi|vec|hif|sco|roa-tara|os|arz|nah|uz|sah|mn|sa|mzn|pam|hsb|mi|li|ky|si|co|gan|glk|ckb|bo|fo|bar|bcl|ilo|mrj|fiu-vro|nds-nl|tk|vls|se|gv|ps|rue|dv|nrm|pag|koi|pa|rm|km|kv|udm|csb|mhr|fur|mt|wuu|lij|ug|lad|pi|zea|sc|bh|zh-classical|nov|ksh|or|ang|kw|so|nv|xmf|stq|hak|ay|frp|frr|ext|szl|pcd|ie|gag|haw|xal|ln|rw|pdc|pfl|krc|crh|eml|ace|gn|to|ce|kl|arc|myv|dsb|vep|pap|bjn|as|tpi|lbe|wo|mdf|jbo|kab|av|sn|cbk-zam|ty|srn|kbd|lo|ab|lez|mwl|ltg|ig|na|kg|tet|za|kaa|nso|zu|rmy|cu|tn|chr|got|sm|bi|mo|bm|iu|chy|ik|pih|ss|sd|pnt|cdo|ee|ha|ti|bxr|om|ks|ts|ki|ve|sg|rn|dz|cr|lg|ak|tum|fj|st|tw|ch|ny|ff|xh|ng|ii|cho|mh|aa|kj|ho|mus|kr|hz";
+
+var interwikiMap = {};
+wikipedias.split('|').forEach( function (prefix) {
+	interwikiMap[prefix] = 'http://' + prefix + '.wikipedia.org/w';
+});
+
+// add mediawiki.org
+interwikiMap.mw = 'http://www.mediawiki.org/w';
+
+/**
+ * End config section
+ */
+
+// global includes
 var express = require('express'),
 	jsDiff = require('diff'),
 	html5 = require('html5');
 
+// local includes
 var mp = '../modules/parser/';
 
 var ParserPipelineFactory = require(mp + 'mediawiki.parser.js').ParserPipelineFactory,
@@ -13,10 +40,9 @@ var ParserPipelineFactory = require(mp + 'mediawiki.parser.js').ParserPipelineFa
 	WikitextSerializer = require(mp + 'mediawiki.WikitextSerializer.js').WikitextSerializer,
 	TemplateRequest = require(mp + 'mediawiki.ApiRequest.js').TemplateRequest;
 
-
 var env = new ParserEnv( { 
 	// fetch templates from enwiki for now..
-	wgScript: 'http://en.wikipedia.org/w',
+	wgScript: interwikiMap[defaultInterwiki],
 	// stay within the 'proxied' content, so that we can click around
 	wgScriptPath: '/', //http://en.wikipedia.org/wiki', 
 	wgScriptExtension: '.php',
@@ -27,8 +53,8 @@ var env = new ParserEnv( {
 	debug: false,
 	trace: false,
 	maxDepth: 40,
-	interwikis: 
-"en|de|fr|nl|it|pl|es|ru|ja|pt|zh|sv|vi|uk|ca|no|fi|cs|hu|ko|fa|id|tr|ro|ar|sk|eo|da|sr|lt|ms|eu|he|sl|bg|kk|vo|war|hr|hi|et|az|gl|simple|nn|la|th|el|new|roa-rup|oc|sh|ka|mk|tl|ht|pms|te|ta|be-x-old|ceb|br|be|lv|sq|jv|mg|cy|lb|mr|is|bs|yo|an|hy|fy|bpy|lmo|pnb|ml|sw|bn|io|af|gu|zh-yue|ne|nds|ku|ast|ur|scn|su|qu|diq|ba|tt|my|ga|cv|ia|nap|bat-smg|map-bms|wa|kn|als|am|bug|tg|gd|zh-min-nan|yi|vec|hif|sco|roa-tara|os|arz|nah|uz|sah|mn|sa|mzn|pam|hsb|mi|li|ky|si|co|gan|glk|ckb|bo|fo|bar|bcl|ilo|mrj|fiu-vro|nds-nl|tk|vls|se|gv|ps|rue|dv|nrm|pag|koi|pa|rm|km|kv|udm|csb|mhr|fur|mt|wuu|lij|ug|lad|pi|zea|sc|bh|zh-classical|nov|ksh|or|ang|kw|so|nv|xmf|stq|hak|ay|frp|frr|ext|szl|pcd|ie|gag|haw|xal|ln|rw|pdc|pfl|krc|crh|eml|ace|gn|to|ce|kl|arc|myv|dsb|vep|pap|bjn|as|tpi|lbe|wo|mdf|jbo|kab|av|sn|cbk-zam|ty|srn|kbd|lo|ab|lez|mwl|ltg|ig|na|kg|tet|za|kaa|nso|zu|rmy|cu|tn|chr|got|sm|bi|mo|bm|iu|chy|ik|pih|ss|sd|pnt|cdo|ee|ha|ti|bxr|om|ks|ts|ki|ve|sg|rn|dz|cr|lg|ak|tum|fj|st|tw|ch|ny|ff|xh|ng|ii|cho|mh|aa|kj|ho|mus|kr|hz"
+	interwikiMap: interwikiMap,
+	interwikiRegexp: Object.keys(interwikiMap).join('|')
 } );
 
 
@@ -253,15 +279,14 @@ var parse = function ( res, cb, src ) {
 /**
  * Round-trip article testing
  */
-app.get( new RegExp('/_rt/(?:(?:(?:' + env.interwikis + '):)?(' + env.interwikis + '):)?(.*)') , function(req, res){
+app.get( new RegExp('/_rt/(?:(?:(?:' + env.interwikiRegexp + '):)?(' + env.interwikiRegexp + '):)?(.*)') , function(req, res){
 	env.pageName = req.params[1];
 	if ( req.params[0] ) {
 		env.wgScriptPath = '/_rt/' + req.params[0] + ':';
-		env.wgScript = 'http://' + req.params[0] + '.wikipedia.org/w';
+		env.wgScript = env.interwikiMap[req.params[0]];
 	} else {
-		// default to English Wikipedia
 		env.wgScriptPath = '/_rt/';
-		env.wgScript = 'http://en.wikipedia.org/w';
+		env.wgScript = env.interwikiMap[defaultInterwiki];
 	}
 
 	if ( env.pageName === 'favicon.ico' ) {
@@ -298,15 +323,14 @@ app.post(/\/_rtform\/(.*)/, function(req, res){
 /**
  * Regular article parsing
  */
-app.get(new RegExp( '/(?:(?:(?:' + env.interwikis + '):)?(' + env.interwikis + '):)?(.*)' ), function(req, res){
+app.get(new RegExp( '/(?:(?:(?:' + env.interwikiRegexp + '):)?(' + env.interwikiRegexp + '):)?(.*)' ), function(req, res){
 	env.pageName = req.params[1];
 	if ( req.params[0] ) {
 		env.wgScriptPath = '/' + req.params[0] + ':';
-		env.wgScript = 'http://' + req.params[0] + '.wikipedia.org/w';
+		env.wgScript = env.interwikiMap[req.params[0]];
 	} else {
-		// default to English Wikipedia
 		env.wgScriptPath = '/';
-		env.wgScript = 'http://en.wikipedia.org/w';
+		env.wgScript = env.interwikiMap[defaultInterwiki];
 	}
 	if ( env.pageName === 'favicon.ico' ) {
 		res.end( 'no favicon yet..');

@@ -16,7 +16,8 @@ var MWParserEnvironment = function(opts) {
 		fetchTemplates: false,
 		maxDepth: 40,
 		pageName: 'Main page',
-		interwikis: '^$'
+		interwikiMap: {},
+		interwikiRegexp: '^$'
 	};
 	// XXX: this should be namespaced
 	$.extend(options, opts);
@@ -233,7 +234,7 @@ MWParserEnvironment.prototype.normalizeTitle = function( name ) {
 	function splitNS ( ) {
 		var ns = name.split(':', 1)[0];
 		if( ns !== '' && ns !== name ) {
-			if ( ns.match( this.interwikis ) ) {
+			if ( ns.match( this.interwikiRegexp ) ) {
 				forceNS += ns + ':';
 				name = name.substr( ns.length + 1 );
 				splitNS();
