@@ -257,8 +257,9 @@ var roundTripDiff = function ( req, res, src, document ) {
 			'href="http://www.mediawiki.org/w/index.php?title=Talk:Parsoid/Todo' +
 			'&action=edit&section=new&preloadtitle=' +
 			'Issue%20on%20http://parsoid.wmflabs.org' + req.url + '">' +
-			'Report a parser issue in this page at [[:mw:Talk:Parsoid/Todo]]'+
-			'</a></h2><hr>');
+			'Report a parser issue in this page</a> at ' +
+			'<a href="http://www.mediawiki.org/wiki/Talk:Parsoid/Todo">'+
+			'[[:mw:Talk:Parsoid/Todo]]</a></h2><hr>');
 };
 
 var parse = function ( req, res, cb, src ) {
