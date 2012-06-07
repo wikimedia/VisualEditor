@@ -571,14 +571,13 @@ $(document).ready( function() {
 	// Define HTML5 DOM
 	var HTML = $(
 		'<div>' +
-			'<div><table><tr><td>123</td></tr></table></div>' +
-			'<p><b>Lorem <img src="http://upload.wikimedia.org/wikipedia/en/b/bc/Wiki.png"> Ipsum</b> is simply dummy text of the printing <img src="http://upload.wikimedia.org/wikipedia/en/b/bc/Wiki.png"> and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>' +
-			'<h2><b>What</b> is <i>Lorem Ipsum?</i></h2>' +
+			'<p>123<b>456</b> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>' +
+			'<h2><b>W<i>ha</i>t</b> is <i>Lorem<b> Ips<u>um?</u></b></i></h2>' +
 			'<p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.</p>' +
 			'<table><tbody>' +
 			'<tr>' +
 				'<td><p>Lorem Ipsum is simply dummy text...</p></td>' +
-				'<td><div>Template 2</div><div>Template 3</div><p>The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested.</p></td>' +
+				'<td><p>The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested.</p></td>' +
 				'<td><p>Nullam aliquam ligula nec metus pretium in lobortis urna pellentesque.</p></td>' +
 			'</tr>' +
 			'<tr>' +
@@ -587,20 +586,24 @@ $(document).ready( function() {
 				'<td><p>Suspendisse vulputate sagittis iaculis. Suspendisse potenti.</p></td>' +
 			'</tr>' +
 			'</tbody></table>' +
-			'<div>Template 4</div>' +
-			'<p>Lorem ipsum <alien>Template 5</alien> is simply dummy text of the printing and typesetting industry.</p>' +
+			'<p>Lorem ipsum is simply dummy text of the printing and typesetting industry.</p>' +
 			'<h2><b>Where</b> can <i>I get some?</i></h2>' +
 			'<ul>' +
 				'<li><p><b>here</b></p></li>' +
 				'<li><p>or <i>here</i></p></li>' +
 				'<li><p>or <u>there</u></p></li>' +
 			'</ul>' +
+			'<ul>' +
+				'<li><p><b>1</b></p></li>' +
+				'<li><p><i>2</i></p></li>' +
+				'<li><p><u>3</u></p></li>' +
+			'</ul>' +
 			'<h2>Why do we use it?</h2>' +
 			'<table><tbody>' +
 			'<tr>' +
 				'<td>' +
 				'<p>Tabel level 1</p>' +
-				'<p>And image: <img src="http://upload.wikimedia.org/wikipedia/en/b/bc/Wiki.png"></p>' +
+				'<p>Hi Hi Ho Ho</p>' +
 				'<table><tbody>' +
 				'<tr>' +
 					'<td>' +
@@ -615,8 +618,7 @@ $(document).ready( function() {
 					'<tr>' +
 						'<td>' +
 						'<p>Tabel level 3</p>' +
-						'<p>And templates: <alien>Template 6</alien></p>' +
-						'<div>Template 7</div>' +
+						'<p>Ha Ha Hi Hi</p>' +
 						'</td>' +
 					'</tr>' +
 					'</tbody></table>' +
@@ -626,7 +628,6 @@ $(document).ready( function() {
 				'</td>' +
 			'</tr>' +
 			'</tbody></table>' +
-			'<div>Template 8</div>' +
 		'</div>' );
 
 	/* Sandbox config object. */
