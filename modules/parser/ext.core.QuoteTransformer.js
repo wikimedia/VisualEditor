@@ -149,11 +149,12 @@ QuoteTransformer.prototype.onNewLine = function (  token, frame, prevToken ) {
 			firstspace = -1;
 		for (var j = 0; j < this.bolds.length; j++) {
 			var ctx = this.bolds[j][0];
-			//console.warn("balancing!" + JSON.stringify(ctx.prevToken, null, 2));
-			if (ctx.prevToken) {
-				if (ctx.prevToken.constructor === String) {
-					var lastchar = prevToken[ctx.prevToken.length - 1],
-						secondtolastchar = ctx.prevToken[ctx.prevToken.length - 2];
+			var ctxPrevToken = ctx.prevToken;
+			//console.warn("balancing!" + JSON.stringify(ctxPrevToken, null, 2));
+			if (ctxPrevToken) {
+				if (ctxPrevToken.constructor === String) {
+					var lastchar = ctxPrevToken[ctxPrevToken.length - 1],
+						secondtolastchar = ctxPrevToken[ctxPrevToken.length - 2];
 					if (lastchar === ' ' && firstspace === -1) {
 						firstspace = j;
 					} else if (lastchar !== ' ') {
@@ -165,8 +166,8 @@ QuoteTransformer.prototype.onNewLine = function (  token, frame, prevToken ) {
 							firstmultiletterword = j;
 						}
 					}
-				} else if ( ( ctx.prevToken.constructor === NlTk ||
-								ctx.prevToken.constructor === TagTk ) &&
+				} else if ( ( ctxPrevToken.constructor === NlTk ||
+								ctxPrevToken.constructor === TagTk ) &&
 								firstmultiletterword == -1 ) {
 					// This is an approximation, as the original doQuotes
 					// operates on the source and just looks at space vs.
@@ -177,6 +178,7 @@ QuoteTransformer.prototype.onNewLine = function (  token, frame, prevToken ) {
 			}
 		}
 
+		// console.log("fslw: " + firstsingleletterword + "; fmlw: " + firstmultiletterword + "; fs: " + firstspace);
 
 		// now see if we can convert a bold to an italic and
 		// an apostrophe
@@ -218,9 +220,8 @@ QuoteTransformer.prototype.onNewLine = function (  token, frame, prevToken ) {
 QuoteTransformer.prototype.convertBold = function ( i ) {
 	var chunk = this.bolds[i],
 		textToken = "'";
-	//console.warn('convertbold!');
 	if ( chunk.pos ) {
-		this.chunks[chunk.pos - 1].push( textToken );
+		this.chunks[chunk.pos].push( textToken );
 	} else {
 		// prepend another chunk
 		this.chunks.unshift( [ textToken ] );

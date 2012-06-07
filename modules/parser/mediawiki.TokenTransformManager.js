@@ -719,6 +719,8 @@ SyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 		} else if ( res.token ) {
 			localAccum.push(res.token);
 			this.prevToken = res.token;
+		} else {
+			this.prevToken = token;
 		}
 	}
 	localAccum.rank = this.phaseEndRank;
