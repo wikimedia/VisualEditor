@@ -138,7 +138,6 @@ $wgResourceModules += array(
 			've2/dm/ve.dm.Document.js',
 			've2/dm/ve.dm.DocumentSynchronizer.js',
 			've2/dm/ve.dm.Converter.js',
-			've2/dm/ve.dm.HTMLConverter.js',
 
 			've2/dm/nodes/ve.dm.AlienInlineNode.js',
 			've2/dm/nodes/ve.dm.AlienBlockNode.js',
@@ -154,6 +153,7 @@ $wgResourceModules += array(
 			've2/dm/nodes/ve.dm.TableCellNode.js',
 			've2/dm/nodes/ve.dm.TableNode.js',
 			've2/dm/nodes/ve.dm.TableRowNode.js',
+			've2/dm/nodes/ve.dm.TableSectionNode.js',
 			've2/dm/nodes/ve.dm.TextNode.js',
 
 			've2/dm/annotations/ve.dm.LinkAnnotation.js',
@@ -187,6 +187,7 @@ $wgResourceModules += array(
 			've2/ce/nodes/ve.ce.TableCellNode.js',
 			've2/ce/nodes/ve.ce.TableNode.js',
 			've2/ce/nodes/ve.ce.TableRowNode.js',
+			've2/ce/nodes/ve.ce.TableSectionNode.js',
 			've2/ce/nodes/ve.ce.TextNode.js',
 
 			// ui

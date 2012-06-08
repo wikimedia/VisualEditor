@@ -115,7 +115,6 @@ include( '../../modules/sandbox/base.php' );
 		<script src="../../modules/ve2/dm/ve.dm.Transaction.js"></script>
 		<script src="../../modules/ve2/dm/ve.dm.TransactionProcessor.js"></script>
 		<script src="../../modules/ve2/dm/ve.dm.Converter.js"></script>
-		<script src="../../modules/ve2/dm/ve.dm.HTMLConverter.js"></script>
 
 		<script src="../../modules/ve2/dm/nodes/ve.dm.AlienInlineNode.js"></script>
 		<script src="../../modules/ve2/dm/nodes/ve.dm.AlienBlockNode.js"></script>
@@ -131,6 +130,7 @@ include( '../../modules/sandbox/base.php' );
 		<script src="../../modules/ve2/dm/nodes/ve.dm.TableCellNode.js"></script>
 		<script src="../../modules/ve2/dm/nodes/ve.dm.TableNode.js"></script>
 		<script src="../../modules/ve2/dm/nodes/ve.dm.TableRowNode.js"></script>
+		<script src="../../modules/ve2/dm/nodes/ve.dm.TableSectionNode.js"></script>
 		<script src="../../modules/ve2/dm/nodes/ve.dm.TextNode.js"></script>
 
 		<script src="../../modules/ve2/dm/annotations/ve.dm.LinkAnnotation.js"></script>
@@ -164,6 +164,7 @@ include( '../../modules/sandbox/base.php' );
 		<script src="../../modules/ve2/ce/nodes/ve.ce.TableCellNode.js"></script>
 		<script src="../../modules/ve2/ce/nodes/ve.ce.TableNode.js"></script>
 		<script src="../../modules/ve2/ce/nodes/ve.ce.TableRowNode.js"></script>
+		<script src="../../modules/ve2/ce/nodes/ve.ce.TableSectionNode.js"></script>
 		<script src="../../modules/ve2/ce/nodes/ve.ce.TextNode.js"></script>
 
 		<!-- ui -->

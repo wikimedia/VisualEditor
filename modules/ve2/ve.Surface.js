@@ -6,12 +6,12 @@
  * @class
  * @constructor
  * @param {String} parent Selector of element to attach to
- * @param {Array} html Document html
+ * @param {HTMLElement} html Document html
  * @param {Object} options Configuration options
  */
-ve.Surface = function( parent, html, options ) {
+ve.Surface = function( parent, dom, options ) {
 	// Create linear model from HTML5 DOM
-	var data = ve.dm.HTMLConverter.getLinearModel( html );
+	var data = ve.dm.converter.getDataFromDom( dom );
 	// Properties
 	this.parent = parent;
 	this.modes = {};

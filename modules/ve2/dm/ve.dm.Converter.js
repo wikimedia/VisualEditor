@@ -309,7 +309,7 @@ ve.dm.Converter.prototype.getDataFromDom = function( domElement, annotations, da
 				}
 				// Annotate the text and output it
 				data = data.concat(
-					ve.dm.HTMLConverter.generateAnnotatedContent( childDomElement.data, annotations )
+					ve.dm.Converter.getDataContentFromText( childDomElement.data, annotations )
 				);
 				break;
 			case Node.COMMENT_NODE:
