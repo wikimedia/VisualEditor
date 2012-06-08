@@ -460,7 +460,7 @@ ve.dm.example.conversions = {
 		'dataElement': { 'type': 'heading', 'attributes': { 'level': 6 } }
 	},
 	'image': {
-		'domElement': ve.example.createDomElement( 'image' ),
+		'domElement': ve.example.createDomElement( 'img' ),
 		'dataElement': { 'type': 'image' }
 	},
 	'listItem': {
@@ -562,6 +562,43 @@ ve.dm.example.domToDataCases = {
 				'e',
 				'f',
 				{ 'type': '/paragraph' }
+			]
+		},
+		'example document': {
+			'html': ve.dm.example.html,
+			'data': ve.dm.example.data
+		},
+		'list item with space followed by link': {
+			'html': '<ul><li><p> <a data-type="unknown" href="foo">bar</a></p></li></ul>',
+			'data': [
+				{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
+				{ 'type': 'listItem' },
+				{ 'type': 'paragraph' },
+				' ',
+				[
+					'b',
+					{
+						'{"type":"link/unknown","data":{"href":"foo"}}':
+							{ 'type': 'link/unknown', 'data': { 'href': 'foo' }
+					}
+				}],
+				[
+					'a',
+					{
+						'{"type":"link/unknown","data":{"href":"foo"}}':
+							{ 'type': 'link/unknown', 'data': { 'href': 'foo' }
+					}
+				}],
+				[
+					'r',
+					{
+						'{"type":"link/unknown","data":{"href":"foo"}}':
+							{ 'type': 'link/unknown', 'data': { 'href': 'foo' }
+					}
+				}],
+				{ 'type': '/paragraph' },
+				{ 'type': '/listItem' },
+				{ 'type': '/list' }
 			]
 		}
 };

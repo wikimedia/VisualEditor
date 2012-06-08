@@ -221,13 +221,13 @@ ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function( dataAnnota
  * @param {Array} [path] Array of linear model element types
  * @returns {Array} Linear model data
  */
-ve.dm.Converter.prototype.getDataFromDom = function( domElement, annotations, dataElement, path ) {
+ve.dm.Converter.prototype.getDataFromDom = function( domElement, annotations, dataElement, path, alreadyWrapped ) {
 	// Fallback to defaults
 	annotations = annotations || [];
 	path = path || ['document'];
 	var data = [],
-		wrapping = false,
-		branchType = path[path.length - 1];
+		branchType = path[path.length - 1],
+		wrapping = false;
 	// Open element
 	if ( dataElement ) {
 		data.push( dataElement );
@@ -260,14 +260,14 @@ ve.dm.Converter.prototype.getDataFromDom = function( domElement, annotations, da
 				var annotation = this.getDataAnnotationFromDomElement( childDomElement );
 				if ( annotation ) {
 					// Start auto-wrapping of bare content
-					if ( !wrapping && !ve.dm.nodeFactory.canNodeContainContent( branchType ) ) {
+					if ( !wrapping && !alreadyWrapped && !ve.dm.nodeFactory.canNodeContainContent( branchType ) ) {
 						data.push( { 'type': 'paragraph' } );
 						wrapping = true;
 					}
 					// Append child element data
 					data = data.concat(
 						this.getDataFromDom(
-							childDomElement, annotations.concat( annotation ), undefined, path
+							childDomElement, annotations.concat( annotation ), undefined, path, wrapping || alreadyWrapped
 						)
 					);
 					break;
@@ -285,7 +285,8 @@ ve.dm.Converter.prototype.getDataFromDom = function( domElement, annotations, da
 							childDomElement,
 							[],
 							childDataElement,
-							path.concat( childDataElement.type )
+							path.concat( childDataElement.type ),
+							wrapping || alreadyWrapped
 						)
 					);
 					break;
@@ -303,7 +304,7 @@ ve.dm.Converter.prototype.getDataFromDom = function( domElement, annotations, da
 				break;
 			case Node.TEXT_NODE:
 				// Start auto-wrapping of bare content
-				if ( !wrapping && !ve.dm.nodeFactory.canNodeContainContent( branchType ) ) {
+				if ( !wrapping && !alreadyWrapped && !ve.dm.nodeFactory.canNodeContainContent( branchType ) ) {
 					data.push( { 'type': 'paragraph' } );
 					wrapping = true;
 				}
