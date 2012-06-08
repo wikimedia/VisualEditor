@@ -10,8 +10,7 @@ class ApiVisualEditor extends ApiBase {
 		$page = Title::newFromText( $params['page'] );
 
 		if ($params['paction'] === 'parse') {
-			// Not reliable for long request.
-			$parsed = file_get_contents(
+			$parsed = Http::get(
 				$parsoid.$page
 			);
 
