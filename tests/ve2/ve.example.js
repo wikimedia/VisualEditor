@@ -332,19 +332,30 @@ ve.example.getNodeSelectionSummary = function( selection ) {
 /**
  * Builds a summary of an HTML element.
  *
- * Generated summaries contain...
+ * Summaries include node name, text, attributes and recursive summaries of children.
  *
  * @method
  * @param {HTMLElement} element Element to summarize
  * @returns {Object} Summary of element
  */
 ve.example.getDomElementSummary = function( element ) {
-	var $element = $( element );
-	return {
-		'type': element.nodeName.toLowerCase(),
-		'text': $element.text(),
-		'html': $element.html()
-	};
+	var $element = $( element ),
+		summary = {
+			'type': element.nodeName.toLowerCase(),
+			'text': $element.text(),
+			'attributes': {},
+			'children': []
+		},
+		i;
+	// Gather attributes
+	for ( i = 0; i < element.attributes.length; i++ ) {
+		summary.attributes[element.attributes[i].name] = element.attributes[i].value;
+	}
+	// Summarize children
+	for ( i = 0; i < element.children.length; i++ ) {
+		summary.children.push( ve.example.getDomElementSummary( element.children[i] ) );
+	}
+	return summary;
 };
 
 /**
