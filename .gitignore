@@ -2,3 +2,6 @@
 *~
 *.kate-swp
 .*.swp
+
+modules/parser/node_modules/
+api/npm-debug.log
