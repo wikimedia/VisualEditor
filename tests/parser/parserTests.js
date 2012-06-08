@@ -137,6 +137,10 @@ function ParserTests () {
 			description: 'Print trace information (light debugging)',
 			'default': false,
 			'boolean': true
+		},
+		'maxtests': {
+			description: 'Maximum number of tests to run',
+			'boolean': false
 		}
 	}
 	).check( function(argv) {
@@ -184,6 +188,14 @@ function ParserTests () {
 	}
 
 	this.cases = this.getTests() || []; 
+
+	if ( this.argv.maxtests ) {
+		var n = Number(this.argv.maxtests);
+		console.warn('maxtests:' + n );
+		if(n > 0) {
+			this.cases.length = n;
+		}
+	}
 
 	this.articles = {};
 
@@ -297,7 +309,7 @@ ParserTests.prototype.normalizeHTML = function (source) {
 	source = source.replace(/[\r\n]/g, '');
 	try {
 		this.htmlparser.parse('<body>' + source + '</body>');
-		return this.htmlparser.document.getElementsByTagName('body')[0]
+		return this.htmlparser.document.childNodes[0].childNodes[1]
 			.innerHTML
 			// a few things we ignore for now..
 			//.replace(/\/wiki\/Main_Page/g, 'Main Page')
@@ -327,7 +339,7 @@ ParserTests.prototype.normalizeOut = function ( out ) {
 	// TODO: Do not strip newlines in pre and nowiki blocks!
 	return out.replace(/[\r\n]| (data-mw|typeof|resource|rel|prefix|about|rev|datatype|inlist|property|vocab|content)="[^">]*"/g, '')
 				.replace(/<!--.*?-->\n?/gm, '')
-				.replace(/<\/?(meta|nowiki)[^>]*>/g, '');
+				.replace(/<\/?meta[^>]*>/g, '');
 };
 
 ParserTests.prototype.formatHTML = function ( source ) {
@@ -389,7 +401,7 @@ ParserTests.prototype.processResult = function ( index, item, doc ) {
 		console.log('PARSE FAIL', res.err);
 	} else {
 		if (this.argv.roundtrip) {
-			var rt_wikiText = new WikitextSerializer().serializeDOM(doc.body);
+			var rt_wikiText = new WikitextSerializer({env: this.env}).serializeDOM(doc.body);
 			this.checkRoundTripResult(item, rt_wikiText);
 		} else {
 			// Check the result vs. the expected result.
@@ -405,6 +417,39 @@ ParserTests.prototype.processResult = function ( index, item, doc ) {
 	// Now call schedule the next test, if any
 	process.nextTick( this.processCase.bind( this, index + 1 ) );
 };
+
+ParserTests.prototype.diff = function ( a, b ) {
+	if ( this.argv.color ) {
+		return jsDiff.diffWords( a, b ).map( function ( change ) {
+			if ( change.added ) {
+				return change.value.green;
+			} else if ( change.removed ) {
+				return change.value.red;
+			} else {
+				return change.value;
+			}
+		}).join('');
+	} else {
+		var patch = jsDiff.createPatch('wikitext.txt', a, b, 'before', 'after');
+
+		console.log('DIFF'.cyan +': ');
+
+		// Strip the header from the patch, we know how diffs work..
+		patch = patch.replace(/^[^\n]*\n[^\n]*\n[^\n]*\n[^\n]*\n/, '');
+
+		return patch.split( '\n' ).map( function(line) {
+			// Add some colors to diff output
+			switch( line.charAt(0) ) {
+				case '-':
+					return line.red;
+				case '+':
+					return line.blue;
+				default:
+					return line;
+			}
+		}).join( "\n" );
+	}
+}
 
 ParserTests.prototype.checkResult = function ( item, out ) {
 	var normalizedOut = this.normalizeOut(out);
@@ -438,26 +483,10 @@ ParserTests.prototype.checkResult = function ( item, out ) {
 
 			console.log('NORMALIZED RENDERED'.magenta + ':');
 			console.log(this.formatHTML(this.normalizeOut(out)) + "\n");
-			var patch = jsDiff.createPatch('wikitext.txt', a, b, 'before', 'after');
 
 			console.log('DIFF'.cyan +': ');
 
-			// Strip the header from the patch, we know how diffs work..
-			patch = patch.replace(/^[^\n]*\n[^\n]*\n[^\n]*\n[^\n]*\n/, '');
-
-			var colored_diff = patch.split( '\n' ).map( function(line) {
-				// Add some colors to diff output
-				switch( line.charAt(0) ) {
-					case '-':
-						return line.red;
-					case '+':
-						return line.blue;
-					default:
-						return line;
-				}
-			}).join( "\n" );
-
-
+			var colored_diff = this.diff( a, b );
 			console.log( colored_diff );
 
 			if(this.argv.printwhitelist) {
@@ -495,26 +524,8 @@ ParserTests.prototype.checkRoundTripResult = function ( item, out ) {
 
 			console.log('NORMALIZED RENDERED'.magenta + ':');
 			console.log(normalizedOut + "\n");
-			var patch = jsDiff.createPatch('wikitext.txt', normalizedExpected, normalizedOut, 'before', 'after');
-
 			console.log('DIFF'.cyan +': ');
-
-			// Strip the header from the patch, we know how diffs work..
-			patch = patch.replace(/^[^\n]*\n[^\n]*\n[^\n]*\n[^\n]*\n/, '');
-
-			var colored_diff = patch.split( '\n' ).map( function(line) {
-				// Add some colors to diff output
-				switch( line.charAt(0) ) {
-					case '-':
-						return line.red;
-					case '+':
-						return line.blue;
-					default:
-						return line;
-				}
-			}).join( "\n" );
-
-
+			var colored_diff = this.diff ( normalizedExpected, normalizedOut );
 			console.log( colored_diff );
 		}
 	} else {

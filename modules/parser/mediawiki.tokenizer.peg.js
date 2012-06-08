@@ -60,7 +60,10 @@ PegTokenizer.prototype.process = function( text, cacheKey ) {
 		* requires to the source.
 		*/
 		tokenizerSource = tokenizerSource.replace( 'parse: function(input, startRule) {',
-					'parse: function(input, startRule) { var __parseArgs = arguments;' );
+					'parse: function(input, startRule) { var __parseArgs = arguments;' )
+						// Include the stops key in the cache key
+						.replace(/var cacheKey = "[^@"]+@" \+ pos/g, 
+								function(m){ return m +' + stops.key'; });
 		//console.warn( tokenizerSource );
 		PegTokenizer.prototype.tokenizer = eval( tokenizerSource );
 		// alias the parse method
@@ -87,19 +90,34 @@ PegTokenizer.prototype.process = function( text, cacheKey ) {
 
 
 	// Some input normalization: force a trailing newline
-	if ( text.substring(text.length - 1) !== "\n" ) {
-		text += "\n";
-	}
+	//if ( text.substring(text.length - 1) !== "\n" ) {
+	//	text += "\n";
+	//}
 
+	var chunkCB;
+	if ( this.canCache ) {
+		chunkCB = this.onCacheChunk.bind( this );
+	} else {
+		chunkCB = this.emit.bind( this, 'chunk' );
+	}
 	// XXX: Commented out exception handling during development to get
 	// reasonable traces.
-	//try {
-		var chunkCB;
-		if ( this.canCache ) {
-			chunkCB = this.onCacheChunk.bind( this );
-		} else {
-			chunkCB = this.emit.bind( this, 'chunk' );
+	if ( ! this.env.debug ) {
+		try {
+			this.tokenizer.tokenize(text, 'start', 
+					// callback
+					chunkCB,
+					// inline break test
+					this
+					);
+			this.onEnd();
+		} catch (e) {
+			console.warn( 'Tokenizer error in ' + cacheKey + ': ' + e );
+			console.trace();
+			chunkCB( ['Tokenizer error in ' + cacheKey + ': ' + e] );
+			this.onEnd();
 		}
+	} else {
 		this.tokenizer.tokenize(text, 'start', 
 				// callback
 				chunkCB,
@@ -107,11 +125,7 @@ PegTokenizer.prototype.process = function( text, cacheKey ) {
 				this
 				);
 		this.onEnd();
-	/*} catch (e) {
-		err = e;
-		console.warn( e );
-		console.trace();
-	}*/
+	}
 };
 
 PegTokenizer.prototype.onCacheChunk = function ( chunk ) {
@@ -158,14 +172,17 @@ PegTokenizer.prototype.inline_breaks = function (input, pos, stops ) {
 		case '=':
 			return stops.onStack( 'equal' ) ||
 				( counters.h &&
-					input.substr( pos + 1, 200)
-					.match(/[ \t]*[\r\n]/) !== null ) || null;
+					( pos === input.length - 1 ||
+					  input.substr( pos + 1, 200)
+						.match(/[ \t]*(?:[\r\n]|$)/) !== null ) 
+				) || null;
 		case '|':
 			return counters.pipe ||
 					counters.template ||
 					counters.linkdesc ||
 				( stops.onStack('table') &&
-					( input[pos + 1].match(/[|}]/) !== null ||
+					( ( pos < input.length - 1 &&
+					  input[pos + 1].match(/[|}]/) !== null ) ||
 						counters.tableCellArg
 					) 
 				) || null;
@@ -191,12 +208,16 @@ PegTokenizer.prototype.inline_breaks = function (input, pos, stops ) {
 				! counters.linkdesc || null;
 		case "\r":
 			return stops.onStack( 'table' ) &&
-				input.substr(pos, 4).match(/\r\n?[!|]/) !== null ||
+				input.substr(pos).match(/\r\n?\s*[!|]/) !== null ||
 				null;
 		case "\n":
-			return stops.onStack( 'table' ) &&
-				input[pos + 1] === '!' ||
-				input[pos + 1] === '|' ||
+			//console.warn(input.substr(pos, 5));
+			return ( stops.onStack( 'table' ) &&
+				// allow leading whitespace in tables
+				input.substr(pos, 200).match( /^\n\s*[!|]/ ) ) ||
+				// break on table-like syntax when the table stop is not
+				// enabled. XXX: see if this can be improved
+				//input.substr(pos, 200).match( /^\n[!|]/ ) ||
 				null;
 		case "]":
 			return stops.onStack( 'extlink' ) ||

@@ -1,4 +1,3 @@
-//"use strict";
 var Phase = require('./phase').Phase;
 var HTML5 = require('../../html5');
 
@@ -29,7 +28,7 @@ var end_tag_handlers = {
 	"-default": 'endTagOther',
 }
 
-exports.Phase = p = function InHeadPhase(parser, tree) {
+var p = exports.Phase = function InHeadPhase(parser, tree) {
 	Phase.call(this, parser, tree);
 	this.name = 'in_head_phase';
 	this.start_tag_handlers = start_tag_handlers;
@@ -39,7 +38,7 @@ exports.Phase = p = function InHeadPhase(parser, tree) {
 p.prototype = new Phase;
 
 p.prototype.processEOF = function() {
-	var name = this.tree.open_elements[this.tree.open_elements.length - 1].tagName.toLowerCase()
+	var name = this.tree.open_elements.last().tagName.toLowerCase()
 	if(['title', 'style', 'script'].indexOf(name) != -1) {
 		this.parse_error("expected-named-closing-tag-but-got-eof", {name: name});
 		this.tree.pop_element();
@@ -51,7 +50,8 @@ p.prototype.processEOF = function() {
 }
 
 p.prototype.processCharacters = function(data) {
-	var name = this.tree.open_elements[this.tree.open_elements.length - 1].tagName.toLowerCase()
+	var name = this.tree.open_elements.last().tagName.toLowerCase();
+	HTML5.debug('parser.inHead.processCharacters', data);
 	if(['title', 'style', 'script', 'noscript'].indexOf(name) != -1) {
 		this.tree.insert_text(data);
 	} else {
@@ -88,7 +88,7 @@ p.prototype.startTagNoScript = function(name, attributes) {
 	if(this.tree.head_pointer && this.parser.phaseName == 'inHead') {
 		this.appendToHead(element);
 	} else {
-		this.tree.open_elements[this.tree.open_elements.length - 1].appendChild(element);
+		this.tree.open_elements.last().appendChild(element);
 	}
 	this.tree.open_elements.push(element);
 	this.parser.tokenizer.content_model = HTML5.Models.CDATA;
@@ -101,7 +101,7 @@ p.prototype.startTagScript = function(name, attributes) {
 	if(this.tree.head_pointer && this.parser.phaseName == 'inHead') {
 		this.appendToHead(element);
 	} else {
-		this.tree.open_elements[this.tree.open_elements.length - 1].appendChild(element);
+		this.tree.open_elements.last().appendChild(element);
 	}
 	this.tree.open_elements.push(element);
 	this.parser.tokenizer.content_model = HTML5.Models.SCRIPT_CDATA;
@@ -112,7 +112,7 @@ p.prototype.startTagBaseLinkMeta = function(name, attributes) {
 	if(this.tree.head_pointer && this.parser.phaseName == 'inHead') {
 		this.appendToHead(element);
 	} else {
-		this.tree.open_elements[this.tree.open_elements.length - 1].appendChild(element);
+		this.tree.open_elements.last().appendChild(element);
 	}
 }
 
@@ -148,7 +148,7 @@ p.prototype.endTagOther = function(name) {
 }
 
 p.prototype.anything_else = function() {
-	if(this.tree.open_elements[this.tree.open_elements.length - 1].tagName.toLowerCase() == 'head') {
+	if(this.tree.open_elements.last().tagName.toLowerCase() == 'head') {
 		this.endTagHead('head')
 	} else {
 		this.parser.newPhase('afterHead');
@@ -160,7 +160,7 @@ p.prototype.anything_else = function() {
 p.prototype.appendToHead = function(element) {
 	if(!this.tree.head_pointer) {
 		// FIXME assert(this.parser.inner_html)
-		this.tree.open_elements[this.tree.open_elements.length - 1].appendChild(element);
+		this.tree.open_elements.last().appendChild(element);
 	} else {
 		this.tree.head_pointer.appendChild(element);
 	}

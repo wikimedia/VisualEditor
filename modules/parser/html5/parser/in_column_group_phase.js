@@ -23,7 +23,7 @@ exports.Phase = function InColgroupPhase(parser, tree) {
 var p = exports.Phase.prototype = new Phase;
 
 p.ignoreEndTagColgroup = function() {
-	return this.tree.open_elements[this.tree.open_elements.length - 1].tagName.toLowerCase() == 'html'
+	return this.tree.open_elements.last().tagName.toLowerCase() == 'html'
 }
 
 p.processCharacters = function(data) {

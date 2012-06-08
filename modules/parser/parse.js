@@ -58,7 +58,7 @@ var ParserPipelineFactory = require('./mediawiki.parser.js').ParserPipelineFacto
 		'wgScriptPath': {
 			description: 'http path to remote web interface, e.g. http://wiki.sample.com/wiki',
 			'boolean': false,
-			'default': 'http://en.wikipedia.org/wiki'
+			'default': 'http://en.wikipedia.org/wiki/'
 		},
 		'wgScriptExtension': {
 			description: 'Extension for PHP files on remote API server, if any. Include the period, e.g. ".php"',
@@ -98,7 +98,7 @@ var ParserPipelineFactory = require('./mediawiki.parser.js').ParserPipelineFacto
 						pageName: argv.pagename
 					} );
 	var parserPipelineFactory = new ParserPipelineFactory( env );
-	parser = parserPipelineFactory.makePipeline( 'text/x-mediawiki/full' );
+	var parser = parserPipelineFactory.makePipeline( 'text/x-mediawiki/full' );
 
 	process.stdin.resume();
 	process.stdin.setEncoding('utf8');
@@ -125,7 +125,7 @@ var ParserPipelineFactory = require('./mediawiki.parser.js').ParserPipelineFacto
 						2
 					));
 			} else if ( argv.wikitext ) {
-				new WikitextSerializer().serializeDOM( document.body, 
+				new WikitextSerializer({env: env}).serializeDOM( document.body, 
 					process.stdout.write.bind( process.stdout ) );
 			} else {
 				process.stdout.write( document.body.innerHTML );

@@ -83,7 +83,7 @@ p.endTagTable = function(name) {
 }
 
 p.endTagTableRowGroup = function(name) {
-	if(this.inScope(name, true)) {
+	if(this.inScope(name, HTML5.TABLE_SCOPING_ELEMENTS)) {
 		this.endTagTr('tr');
 		this.parser.phase.processEndTag(name);
 	} else {
@@ -102,12 +102,12 @@ p.endTagOther = function(name) {
 
 p.clearStackToTableRowContext = function() {
 	var name;
-	while(name = this.tree.open_elements[this.tree.open_elements.length - 1].tagName.toLowerCase(), (name != 'tr' && name != 'html')) {
+	while(name = this.tree.open_elements.last().tagName.toLowerCase(), (name != 'tr' && name != 'html')) {
 		this.parse_error("unexpected-implied-end-tag-in-table-row", {name: name})
 		this.tree.pop_element();
 	}
 }
 
 p.ignoreEndTagTr = function() {
-	return !this.inScope('tr', true);
+	return !this.inScope('tr', HTML5.TABLE_SCOPING_ELEMENTS);
 }

@@ -78,24 +78,29 @@ ParserFunctions.prototype._switchLookupFallback = function ( frame, kvs, key, di
 	var kv,
 		l = kvs.length;
 	this.manager.env.tp('swl');
+	//console.trace();
 	this.manager.env.dp('_switchLookupFallback', kvs.length, key, v );
+	var _cb = function( res ) { cb ( { tokens: res } ); };
+	if ( v && v.constructor !== String ) {
+		v = '';
+		console.warn(JSON.stringify(v));
+	}
 	if ( v && key === v.trim() ) {
 		// found. now look for the next entry with a non-empty key.
 		this.manager.env.dp( 'switch found' );
-		cb = function( res ) { cb ( { tokens: res } ); };
 		for ( var j = 0; j < l; j++) {
 			kv = kvs[j];
 			// XXX: make sure the key is always one of these!
 			if ( kv.k.length ) {
 				return kv.v.get({ 
 					type: 'tokens/x-mediawiki/expanded', 
-					cb: cb,
-					asyncCB: cb
+					cb: _cb,
+					asyncCB: _cb
 				});
 			}
 		}
 		// No value found, return empty string? XXX: check this
-		return cb( { } );
+		return cb( {} );
 	} else if ( kvs.length ) {
 		// search for value-only entry which matches
 		var i = 0;
@@ -113,36 +118,45 @@ ParserFunctions.prototype._switchLookupFallback = function ( frame, kvs, key, di
 					console.trace();
 				}
 				var self = this;
-				cb({ async: true });
-				return kv.v.get( { 
-					cb: process.nextTick.bind( process, 
-							self._switchLookupFallback.bind( this, frame, 
-								kvs.slice(i+1), key, dict, cb ) ),
+				//cb({ async: true });
+				//console.warn( 'swtch value: ' + kv.v );
+				return kv.v.get({ 
+					cb: function( val ) {
+						process.nextTick( 
+							self._switchLookupFallback.bind( self, frame, 
+								kvs.slice(i+1), key, dict, cb, val ) 
+						);
+					},
 					asyncCB: cb
 				});
 			}
 		}
 		// value not found!
 		if ( '#default' in dict ) {
-			dict['#default'].get({
+			return dict['#default'].get({
 				type: 'tokens/x-mediawiki/expanded', 
-				cb: function( res ) { cb ( { tokens: res } ); },
+				cb: _cb,
 				asyncCB: cb
 			});
-		/*} else if ( kvs.length ) { 
+		} else if ( kvs.length ) { 
 			var lastKV = kvs[kvs.length - 1];
 			if ( lastKV && ! lastKV.k.length ) {
-				cb ( { tokens: lastKV.v } );
+				return lastKV.v.get( {
+					cb: _cb,
+					asyncCB: cb } );
+				//cb ( { tokens: lastKV.v } );
 			} else {
 				cb ( {} );
-			}*/
+			}
 		} else {
 			// nothing found at all.
-			cb ( {} );
+			return cb ( {} );
 		}
+	} else if ( v ) {
+		cb( { tokens: v } );
 	} else {
 		// nothing found at all.
-		cb ( {} );
+		cb( {} );
 	}
 };
 
@@ -259,7 +273,8 @@ ParserFunctions.prototype.pf_lcfirst = function ( token, frame, cb, args ) {
 	}
 };
 ParserFunctions.prototype.pf_padleft = function ( token, frame, cb, params ) {
-	var target = params[0].k;
+	var target = params[0].k,
+		env = this.env;
 	if ( ! params[1] ) {
 		return cb( {} );
 	}
@@ -272,13 +287,17 @@ ParserFunctions.prototype.pf_padleft = function ( token, frame, cb, params ) {
 					if ( args[1] && args[1].v !== '' ) {
 						pad = args[1].v;
 					}
-					var n = args[0].v;
-					while ( target.length < n ) {
-						target = pad + target;
+					var n = args[0].v,
+						padLength = pad.length;
+					while ( (target.length + padLength) < n ) {
+						target += pad;
+					}
+					if ( target.length < n ) {
+						target = pad.substr( 0, n - target.length ) + target;
 					}
 					cb( { tokens: [target] } );
 				} else {
-					self.env.dp( 'padleft no pad width', args );
+					env.dp( 'padleft no pad width', args );
 					cb( {} );
 				}
 			}
@@ -287,7 +306,8 @@ ParserFunctions.prototype.pf_padleft = function ( token, frame, cb, params ) {
 };
 
 ParserFunctions.prototype.pf_padright = function ( token, frame, cb, params ) {
-	var target = params[0].k;
+	var target = params[0].k,
+		env = this.env;
 	if ( ! params[1] ) {
 		return cb( {} );
 	}
@@ -301,12 +321,17 @@ ParserFunctions.prototype.pf_padright = function ( token, frame, cb, params ) {
 					} else {
 						pad = '0';
 					}
-					var n = args[0].v;
-					while ( target.length < n ) {
-						target = target + pad;
+					var n = args[0].v,
+						padLength = pad.length;
+					while ( target.length + padLength < n ) {
+						target += pad;
+					}
+					if ( target.length < n ) {
+						target += pad.substr( 0, n - target.length );
 					}
 					cb( { tokens: [target] } );
 				} else {
+					env.dp( 'padright no pad width', args );
 					cb( {} );
 				}
 			}
@@ -571,17 +596,17 @@ ParserFunctions.prototype.pf_pagenamee = function ( token, frame, cb, args ) {
 };
 ParserFunctions.prototype.pf_fullpagename = function ( token, frame, cb, args ) {
 	var target = args[0].k;
-	cb( { tokens: target && [target] || ["http://example.com/fixme/"] } );
+	cb( { tokens: [target || this.env.pageName ] } );
 };
 ParserFunctions.prototype.pf_fullpagenamee = function ( token, frame, cb, args ) {
 	var target = args[0].k;
-	cb( { tokens: target && [target] || ["http://example.com/fixme/"] } );
+	cb( { tokens: [ target || this.env.pageName ] } );
 };
 // This should be doable with the information in the envirionment
 // (this.env) already.
 ParserFunctions.prototype.pf_fullurl = function ( token, frame, cb, args ) {
 	var target = args[0].k;
-	cb( { tokens: target && [target] || ["http://example.com/fixme/"] } );
+	cb( { tokens: [ target || this.env.wgScriptPath + this.env.pageName || "http://example.com/fixme/" ] } );
 };
 ParserFunctions.prototype.pf_urlencode = function ( token, frame, cb, args ) {
 	var target = args[0].k;
@@ -644,15 +669,19 @@ ParserFunctions.prototype.pf_namespacee = function ( token, frame, cb, args ) {
 	cb( { tokens: [target.split(':').pop() || 'Main'] } );
 };
 ParserFunctions.prototype.pf_pagename = function ( token, frame, cb, args ) {
-	cb( { tokens: [this.env.pageName] } );
+	cb( { tokens: [this.env.pageName || ''] } );
 };
 ParserFunctions.prototype.pf_pagenamebase = function ( token, frame, cb, args ) {
-	cb( { tokens: [this.env.pageName] } );
+	cb( { tokens: [this.env.pageName || ''] } );
 };
 ParserFunctions.prototype.pf_scriptpath = function ( token, frame, cb, args ) {
 	cb( { tokens: [this.env.wgScriptPath] } );
 };
+ParserFunctions.prototype.pf_talkpagename = function ( token, frame, cb, args ) {
+	cb( { tokens: [this.env.pageName.replace(/^[^:]:/, 'Talk:' ) || ''] } );
+};
 
+// TODO: #titleparts, SUBJECTPAGENAME, BASEPAGENAME. SUBPAGENAME, DEFAULTSORT
 
 if (typeof module == "object") {
 	module.exports.ParserFunctions = ParserFunctions;

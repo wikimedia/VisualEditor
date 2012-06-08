@@ -435,6 +435,12 @@ AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parent
 				// maybeSyncReturn callback
 				if ( resTokens && resTokens.length ) {
 					if ( resTokens.length === 1 ) {
+						if ( resTokens[0] === undefined ) {
+							console.warn('transformer ' + transformer.rank + 
+									' returned undefined token!');
+							resTokens.shift();
+							break;
+						}
 						if ( token === resTokens[0] && ! resTokens.rank ) {
 							// token not modified, continue with
 							// transforms.
@@ -713,6 +719,8 @@ SyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 		} else if ( res.token ) {
 			localAccum.push(res.token);
 			this.prevToken = res.token;
+		} else {
+			this.prevToken = token;
 		}
 	}
 	localAccum.rank = this.phaseEndRank;
@@ -787,6 +795,20 @@ AttributeTransformManager.prototype.process = function ( attributes ) {
 		var kv = new KV( [], [] );
 		this.kvs.push( kv );
 
+		if ( cur.v.constructor === Array && cur.v.length ) {
+			// Assume that the return is async, will be decremented in callback
+			this.outstanding++;
+
+			// transform the value
+			this.frame.expand( cur.v,
+					{ 
+						type: this._toType,
+						cb: this._returnAttributeValue.bind( this, i )
+					} );
+		} else {
+			kv.v = cur.v;
+		}
+
 		if ( cur.k.constructor === Array && cur.k.length ) {
 			// Assume that the return is async, will be decremented in callback
 			this.outstanding++;
@@ -801,19 +823,6 @@ AttributeTransformManager.prototype.process = function ( attributes ) {
 			kv.k = cur.k;
 		}
 
-		if ( cur.v.constructor === Array && cur.v.length ) {
-			// Assume that the return is async, will be decremented in callback
-			this.outstanding++;
-
-			// transform the value
-			this.frame.expand( cur.v,
-					{ 
-						type: this._toType,
-						cb: this._returnAttributeValue.bind( this, i )
-					} );
-		} else {
-			kv.v = cur.v;
-		}
 	}
 	this.outstanding--;
 	if ( this.outstanding === 0 ) {
@@ -937,6 +946,16 @@ AttributeTransformManager.prototype._returnAttributeKey = function ( ref, tokens
 	//console.warn( 'check _returnAttributeKey: ' + JSON.stringify( tokens )  );
 	this.kvs[ref].k = tokens;
 	this.kvs[ref].k = this.manager.env.stripEOFTkfromTokens( this.kvs[ref].k );
+	if ( this.kvs[ref].v === '' ) {
+		// FIXME: use tokenizer production to properly parse this
+		var m = this.manager.env.tokensToString( this.kvs[ref].k )
+			.match( /([^=]+)=['"]?([^'"]*)['"]?$/ );
+		if ( m ) {
+			this.kvs[ref].k = m[1];
+			this.kvs[ref].v = m[2];
+			//console.warn( m + JSON.stringify( this.kvs[ref] ) );
+		}
+	}
 	this.outstanding--;
 	if ( this.outstanding === 0 ) {
 		this.callback( this.kvs );
@@ -1306,7 +1325,13 @@ Frame.prototype.newParserValue = function ( source, options ) {
 };
 
 Frame.prototype._getID = function( options ) {
-	options.cb( this );
+	if ( !options || !options.cb ) {
+		console.trace();
+		console.warn('Error in Frame._getID: no cb in options!');
+	} else {
+		//console.warn('getID: ' + options.cb);
+		return options.cb( this );
+	}
 };
 
 /**

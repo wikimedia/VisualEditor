@@ -27,16 +27,17 @@ PostExpandParagraphHandler.prototype.register = function ( dispatcher ) {
 	dispatcher.addTransform( this.onNewLine.bind(this), 
 			this.newlineRank, 'newline' );
 	// Reset internal state when we are done
-	dispatcher.addTransform( this.reset.bind(this), 
+	dispatcher.addTransform( this.onEnd.bind(this), 
 			this.newlineRank, 'end' );
 };
 
 PostExpandParagraphHandler.prototype.reset = function ( token, frame, cb ) {
 	//console.warn( 'PostExpandParagraphHandler.reset ' + JSON.stringify( this.tokens ) );
 	if ( this.newLines ) {
-		return { tokens: this._finish() };
+		this.tokens.push( token );
+		return this._finish();
 	} else {
-		return { token: token };
+		return [token];
 	}
 };
 
@@ -65,15 +66,18 @@ PostExpandParagraphHandler.prototype.onNewLine = function (  token, frame, cb ) 
 	return {};
 };
 
+PostExpandParagraphHandler.prototype.onEnd = function (  token, frame, cb ) {
+	return { tokens: this.reset( token ) };
+}
 
 PostExpandParagraphHandler.prototype.onAny = function ( token, frame, cb ) {
 	//console.warn( 'PostExpandParagraphHandler.onAny' );
-	this.tokens.push( token );
 	if ( token.constructor === CommentTk || 
 			( token.constructor === String && token.match( /^[\t ]*$/ ) ) 
 	)
 	{
 		// Continue with collection..
+		this.tokens.push( token );
 		return {};
 	} else {
 		// XXX: Only open paragraph if inline token follows!
@@ -81,10 +85,16 @@ PostExpandParagraphHandler.prototype.onAny = function ( token, frame, cb ) {
 		// None of the tokens we are interested in, so abort processing..
 		//console.warn( 'PostExpandParagraphHandler.onAny: ' + JSON.stringify( this.tokens, null , 2 ) );
 		if ( this.newLines >= 2 && ! u.isBlockToken( token ) ) {
-			//console.warn( 'insert p:' + JSON.stringify( token, null, 2 ) );
-			return { tokens: [ new TagTk( 'p' ) ].concat( this._finish() ) };
+			this.tokens.push( token );
+			var nlTks = [];
+			while ( this.tokens[0].constructor === NlTk ) {
+				nlTks.push( this.tokens.shift() );
+			}
+			var res = { tokens: nlTks.concat([ new TagTk( 'p' ) ], this._finish() ) };
+			//console.warn( 'insert p:' + JSON.stringify( res, null, 2 ) );
+			return res;
 		} else {
-			return { tokens: this._finish() };
+			return { tokens: this.reset(token) };
 		}
 	}
 

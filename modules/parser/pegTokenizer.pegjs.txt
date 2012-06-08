@@ -36,7 +36,8 @@
     //    return es;
     //};
 
-    var flatten = function ( e ) {
+/**
+    var old_flatten = function ( e ) {
         // Fast single-level flatten:
         //return [].concat.apply([], e);
         
@@ -66,6 +67,26 @@
             return e;
         }
     };
+**/
+
+    var flatten = function(e) {
+        function internal_flatten(e, res) {
+            for (var i = 0, l = e.length; i < l; i++) {
+                var v = e[i];
+                if (v.constructor === Array ) {
+                    // Change in assumption from a shallow array to a nested array.
+                    if (res === null) res = e.slice(0, i);
+                    internal_flatten(v, res);
+                } else if (res !== null) {
+                    res.push(v);
+                }
+            }
+
+            return res === null ? e : res;
+        }
+
+        return internal_flatten(e, null);
+    }
 
     
     var flatten_string = function ( c ) {
@@ -180,6 +201,9 @@
     function SyntaxStops () {
         this.counters = {};
         this.stacks = {};
+        this.key = '';
+        this._counterKey = '';
+        this._stackKey = '';
     }
     SyntaxStops.prototype.inc = function(flag) {
         if (this.counters[flag] !== undefined) {
@@ -187,10 +211,12 @@
         } else {
             this.counters[flag] = 1;
         }
+        this._updateCounterKey();
         return true;
     };
     SyntaxStops.prototype.dec = function(flag) {
         this.counters[flag]--;
+        this._updateCounterKey();
         return false;
     };
     SyntaxStops.prototype.onCount = function ( name ) {
@@ -208,6 +234,7 @@
         } else {
             this.stacks[name].push( value );
         }
+        this._updateStackKey();
         return true;
     };
     SyntaxStops.prototype.pop = function ( name ) {
@@ -216,6 +243,7 @@
         } else {
             throw "SyntaxStops.pop: unknown stop for " + name;
         }
+        this._updateStackKey();
         return false;
     };
     SyntaxStops.prototype.onStack = function ( name ) {
@@ -225,6 +253,31 @@
         } else {
             return stack[stack.length - 1];
         }
+    };
+
+    SyntaxStops.prototype._updateKey = function ( ) {
+        this._updateCounterKey();
+        this._updateStackKey();
+    };
+    SyntaxStops.prototype._updateCounterKey = function ( ) {
+        var counters = [];
+        for ( k in this.counters ) {
+            if ( this.counters[k] > 0 ) {
+                counters.push(k);
+            }
+        }
+        this._counterKey = JSON.stringify(counters);
+        this.key = this._counterKey + this._stackKey;
+    };
+    SyntaxStops.prototype._updateStackKey = function ( ) {
+        var stackStops = [];
+        for ( k in this.stacks ) {
+            if ( this.onStack( k )  ) {
+                stackStops.push(k);
+            }
+        }
+        this._stackKey = JSON.stringify(stackStops);
+        this.key = this._counterKey + this._stackKey;
     };
 
     var stops = new SyntaxStops();
@@ -268,10 +321,6 @@
     // text start position
     var textStart = 0;
 
-    // hack to support numbered external links ([http://example.com]).
-    // XXX: Move to token stream transform after templates are expanded!
-    var linkCount = 1;
-
     // Define block-level tags in JS, so we can use toLowerCase to match tags
     // case-independently. This would be quite ugly (and possibly slower) if
     // done manually in the grammar.
@@ -308,7 +357,15 @@ start
  * emitted in chunks per toplevelblock to avoid buffering the full document.
  */
 toplevelblock 
-  = & { blockStart = pos; return true; } b:block {
+  = & { blockStart = pos; return true; } !eof b:block {
+
+    // Clear the tokenizer's backtracking cache after matching each
+    // toplevelblock. There won't be any backtracking as a document is just a
+    // sequence of toplevelblocks, so the cache for previous toplevelblocks
+    // will never be needed. This frees up a lot of memory: In the case of
+    // [[:en:Barack Obama]], the difference is about 360M vs. 110M.
+    cache = {};
+
     b = flatten(b);
 
     // Add source offsets for round-tripping. XXX: Add these not just for
@@ -328,6 +385,7 @@ toplevelblock
     // Emit tokens for this toplevelblock. This feeds a chunk to the parser
     // pipeline.
     __parseArgs[2]( flatten( b ) );
+
 
     // We don't return any tokens to the start production to save memory. We
     // just emitted them already to our consumers.
@@ -412,10 +470,19 @@ br = space* &newline { return new SelfclosingTagTk( 'br' ) }
  */
 inline_breaks
   = & [=|!}{:\r\n\]<]
-    & { // Important hack: disable caching for this production, as the default
-        // cache key does not take into account flag states!
-        cacheKey = ''; 
+    //& { 
+    //    // Important hack: disable caching for this production, as the default
+    //    // cache key does not take into account flag states!
+    //    cacheKey += 'foo';
+    //    return true;
+    //}
+    & { 
         //console.warn('ilbf: ' + input.substr(pos, 5) );
+        //if ( null !== __parseArgs[3].inline_breaks( input, pos, stops ) ) {
+        //    console.warn('ilb break: ' + pp(input.substr(pos, 5)) );
+        //} else {
+        //    console.warn('ilb no break: ' + pp(input.substr(pos, 5)) );
+        //}
         return null !== __parseArgs[3].inline_breaks( input, pos, stops )
       } 
 
@@ -427,7 +494,7 @@ inline
 
 
 inlineline
-  = c:(urltext / !inline_breaks (inline_element / [^\n]))+ {
+  = c:(urltext / !inline_breaks (inline_element / [^\r\n]))+ {
       return flatten_stringlist( c );
 }
 
@@ -555,18 +622,22 @@ extlink
               t:inlineline { return t } )?
         "]" {
             stops.pop('extlink');
-            if ( text === '' ) {
-                // XXX: Link numbering should be implemented in post-processor.
-                text = [ "[" + linkCount + "]" ];
-                linkCount++;
-            }
+            //if ( text === '' ) {
+            //    // XXX: Link numbering should be implemented in post-processor.
+            //    text = [ "[" + linkCount + "]" ];
+            //    linkCount++;
+            //}
             //console.warn( 'extlink text: ' + pp( text ) );
+            var dataAttribs = {};
+            if ( text === '' ) {
+                dataAttribs.gc = 1;
+            }
             return [
                 new SelfclosingTagTk( 'extlink', [
                     new KV('href', target),
                     new KV('content', text)
                 ],
-                { type: 'extlink' })
+                dataAttribs)
             ];
         }
       / "[" & { return stops.pop('extlink'); }
@@ -652,7 +723,7 @@ urlencoded_char = "%" c0:[0-9a-fA-F] c1:[0-9a-fA-F] {
 //[^][<>"\\x00-\\x20\\x7F\p{Zs}]
 
 // no punctiation, and '{<' to trigger directives
-no_punctuation_char = [^ :\]\[\n"'<>\x00-\x20\x7f,.&%\u00A0\u1680\u180E\u2000-\u200A\u202F\u205F\u3000{]
+no_punctuation_char = [^ :\]\[\r\n"'<>\x00-\x20\x7f,.&%\u00A0\u1680\u180E\u2000-\u200A\u202F\u205F\u3000{]
 
 url
   = proto:url_protocol 
@@ -866,7 +937,7 @@ wikilink
     // XXX In real MediaWiki, this is a language-dependent positive character
     // class. Can we work out a static negative class instead?
     // XXX: Exclude uppercase chars from non-latin languages too!
-    tail:( ![A-Z \t(),.:-] tc:text_char { return tc } )* {
+    tail:( ![A-Z \t(),.:\n\r-] tc:text_char { return tc } )* {
       var obj = new SelfclosingTagTk( 'wikilink' ),
           textTokens = [];
       obj.attribs.push( new KV('', target) );
@@ -881,8 +952,10 @@ wikilink
       // Deal with content. XXX: Properly support pipe-trick etc
       //lcontent.tail = tail && tail.join('') || '';
 
+      // We store the tail and content(s) in attributes, so that it is
+      // expanded by the AttributeExpander pass.
+      obj.attribs.push( new KV( 'tail',  tail && tail.join('') || '') );
       obj.attribs = obj.attribs.concat( lcontent.content );
-      obj.attribs.push( new KV( 'tail', tail && tail.join('') || '' ) );
       //console.warn( "XXX:" + pp([obj].concat(textTokens, [new EndTagTk( 'a' )])) );
       return [obj];
   }
@@ -1057,7 +1130,7 @@ pre_indent_in_tags
   / & { return stops.dec('pre'); }
 
 pre_indent_line = space l:inlineline { 
-    return [ '\n' ].concat(l); 
+    return l; 
 }
 
 /*
@@ -1077,7 +1150,7 @@ pre
     ("</pre>" / eof) {
         // return nowiki tags as well?
         //console.warn('inpre');
-        return [ new TagTk( 'pre', attribs ) ]
+        return [ new TagTk( 'pre', attribs, { stx: 'html' } ) ]
                     .concat(ts, [ new EndTagTk( 'pre' ) ]);
     }
   / "</pre>" { return "</pre>"; }
@@ -1103,7 +1176,17 @@ xmlish_tag = nowiki / generic_tag
 nowiki 
   = "<nowiki>" nc:nowiki_content "</nowiki>" { 
         //console.warn( 'full nowiki return: ' + pp(nc)); 
-        return [ new TagTk( 'nowiki' ) ].concat( nc, [ new EndTagTk( 'nowiki' ) ] ); 
+        return [ new SelfclosingTagTk( 'meta', 
+                [
+                    {k: 'typeof', v: 'mw:tag'}, 
+                    {k: 'content', v: 'nowiki'} 
+                ])].concat( nc, [ 
+                    new SelfclosingTagTk( 'meta', 
+                    [
+                        {k: 'typeof', v: 'mw:tag'}, 
+                        {k: 'content', v: '/nowiki'} 
+                    ] ) 
+                ] ); 
     }
   / "<nowiki>" { 
           //console.warn('nowiki fallback');
@@ -1295,6 +1378,7 @@ block_tag
         } else {
             res = new TagTk( name, attribs );
         }
+        res.dataAttribs.stx = 'html';
         return [res];
     }
 
@@ -1324,7 +1408,7 @@ dtdd
     // Fortunately dtdds cannot be nested, so we can simply set the flag
     // back to 0 to disable it.
     & { stops.counters['colon'] = 0; return true;}
-    d:inlineline
+    d:inlineline?
     &eolf {
         // Convert trailing space into &nbsp;
         // XXX: This should be moved to a serializer
@@ -1341,7 +1425,8 @@ dtdd
         li.bullets = bullets + ";";
         var li2 = new TagTk( 'listItem' );
         li2.bullets = bullets + ":";
-        return [ li ].concat( c, [ li2 ], d );
+
+        return [ li ].concat( c, [ li2 ], d || new NlTk() );
     }
   // Fall-back case to clear the colon flag
   / & { return true; } { stops.counters['colon'] = 0; return null; }
@@ -1366,7 +1451,8 @@ list_char = [*#:;]
 
 table_lines
   = //& { console.warn('enter table_lines: ' + input.substr(pos, 20)); return true; }
-    (! inline_breaks / & '{{!}}' )  r:(
+    (! inline_breaks / & '{{!}}' )  
+    r:(
         & { return stops.push('table', true); }
         tl:table_line 
         tls:( s:sol tl2:table_line { return s.concat(tl2); } )* {
@@ -1431,7 +1517,7 @@ table_row_tag
 table_data_tags
   = pipe
     td:table_data_tag
-    tds:( pipe_pipe tdt:table_data_tag { tdt[0].dataAttribs.t_stx = 'row';  return tdt } )* {
+    tds:( pipe_pipe tdt:table_data_tag { tdt[0].dataAttribs.stx_v = 'row';  return tdt } )* {
         return td.concat(tds);
     }
 
@@ -1455,15 +1541,15 @@ table_heading_tags
   = //& { console.warn( 'th enter @' + input.substr(pos, 10)); return true; }
     "!"
     th:table_heading_tag
-    ths:( "!!" tht:table_heading_tag  { tht[0].dataAttribs.t_stx = 'row'; return tht } )* {
-        //console.warn( 'thts: ' + pp(th.concat(ths)));
+    ths:( "!!" tht:table_heading_tag  { tht[0].dataAttribs.stx_v = 'row'; return tht } )* {
+        //console.warn( 'thts: ' + pp([th, ths]));
         return th.concat(ths);
     }
 
 table_heading_tag
   = a:table_cell_args?
     c:nested_block* {
-         //console.warn( 'th stops: ' + pp( stops ) );
+         //console.warn( 'table_heading_tag: ' + pp( [a, c] ) );
          if ( a === '' ) {
              a = [];
          }
@@ -1472,7 +1558,7 @@ table_heading_tag
      }
 
 table_end_tag
-  = pipe "}" { 
+  = space* pipe "}" { 
       var tok = [new EndTagTk( 'table' )];
 	  return tok;
   }
@@ -1855,7 +1941,7 @@ extlink_preprocessor_text
 
 // Attribute values with preprocessor support
 attribute_preprocessor_text
-  = r:( ts:(!inline_breaks t:[^=<>{\n\r&'"\t ] {return t})+ { return ts.join(''); }
+  = r:( ts:(!inline_breaks t:[^=<>{}\n\r&'"\t ] {return t})+ { return ts.join(''); }
   / !inline_breaks ( 
           directive
         / !inline_breaks [&%] 
@@ -1867,7 +1953,7 @@ attribute_preprocessor_text
   }
 
 attribute_preprocessor_text_single
-  = r:( t:[^{&']+ { return t.join(''); }
+  = r:( t:[^{}&']+ { return t.join(''); }
   / !inline_breaks ( 
       directive
     / [{&] )
@@ -1876,7 +1962,7 @@ attribute_preprocessor_text_single
       return flatten_string ( r );
   }
 attribute_preprocessor_text_double
-  = r:( t:[^{&"]+ { return t.join(''); }
+  = r:( t:[^{}&"]+ { return t.join(''); }
   / !inline_breaks ( 
       directive
     / [{&] )
@@ -1888,7 +1974,7 @@ attribute_preprocessor_text_double
 
 // Variants with the entire attribute on a single line
 attribute_preprocessor_text_line
-  = r:( ts:[^=<>{\n\r&'"\t \[\]|{]+ { return ts.join(''); }
+  = r:( ts:[^=<>{\n\r&'"\t \[\]|{}]+ { return ts.join(''); }
         /  !inline_breaks 
             t:( 
                 directive
@@ -1904,18 +1990,18 @@ attribute_preprocessor_text_line
   }
 
 attribute_preprocessor_text_single_line
-  = r:( t:[^{&']+ { return t.join(''); }
+  = r:( t:[^{}&']+ { return t.join(''); }
   / !inline_breaks ( 
       directive
-    / !'\n' [{&] )
+    / ![\r\n] [{&] )
   )* {
       return flatten_string ( r );
   }
 attribute_preprocessor_text_double_line
-  = r:( t:[^{&"]+ { return t.join(''); }
+  = r:( t:[^{}&"]+ { return t.join(''); }
   / !inline_breaks (
       directive
-    / !'\n' [{&] )
+    / ![\r\n] [{&] )
   )* {
       //console.warn( 'double:' + pp(r) );
       return flatten_string ( r );

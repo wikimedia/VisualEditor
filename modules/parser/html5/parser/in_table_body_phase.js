@@ -1,5 +1,6 @@
 var Phase = require('./phase').Phase;
 var inTable = require('./in_table_phase').Phase
+var HTML5 = require('../../html5');
 
 var starts = {
 	html: 'startTagHtml',
@@ -57,9 +58,9 @@ p.startTagTableCell = function(name, attributes) {
 
 p.startTagTableOther = function(name, attributes) {
 	// XXX any ideas on how to share this with endTagTable
-	if(this.inScope('tbody', true) ||  this.inScope('thead', true) || this.inScope('tfoot', true)) {
+	if(this.inScope('tbody', HTML5.TABLE_SCOPING_ELEMENTS) ||  this.inScope('thead', HTML5.TABLE_SCOPING_ELEMENTS) || this.inScope('tfoot', HTML5.TABLE_SCOPING_ELEMENTS)) {
 		this.clearStackToTableBodyContext();
-		this.endTagTableRowGroup(this.tree.open_elements[this.tree.open_elements.length - 1].tagName.toLowerCase());
+		this.endTagTableRowGroup(this.tree.open_elements.last().tagName.toLowerCase());
 		this.parser.phase.processStartTag(name, attributes);
 	} else {
 		// inner_html case
@@ -72,7 +73,7 @@ p.startTagOther = function(name, attributes) {
 }
 
 p.endTagTableRowGroup = function(name) {
-	if(this.inScope(name, true)) {
+	if(this.inScope(name, HTML5.TABLE_SCOPING_ELEMENTS)) {
 		this.clearStackToTableBodyContext();
 		this.tree.pop_element();
 		this.parser.newPhase('inTable');
@@ -82,9 +83,9 @@ p.endTagTableRowGroup = function(name) {
 }
 
 p.endTagTable = function(name) {
-	if(this.inScope('tbody', true) || this.inScope('thead', true) || this.inScope('tfoot', true)) {
+	if(this.inScope('tbody', HTML5.TABLE_SCOPING_ELEMENTS) || this.inScope('thead', HTML5.TABLE_SCOPING_ELEMENTS) || this.inScope('tfoot', HTML5.TABLE_SCOPING_ELEMENTS)) {
 		this.clearStackToTableBodyContext();
-		this.endTagTableRowGroup(this.tree.open_elements[this.tree.open_elements.length - 1].tagName.toLowerCase())
+		this.endTagTableRowGroup(this.tree.open_elements.last().tagName.toLowerCase())
 		this.parser.phase.processEndTag(name)
 	} else {
 		// inner_html case
@@ -101,7 +102,8 @@ p.endTagOther = function(name) {
 }
 
 p.clearStackToTableBodyContext = function() {
-	while(name = this.tree.open_elements[this.tree.open_elements.length - 1].tagName.toLowerCase(), name != 'tbody' && name != 'tfoot' && name != 'thead' && name != 'html') {
+	var name;
+	while(name = this.tree.open_elements.last().tagName.toLowerCase(), name != 'tbody' && name != 'tfoot' && name != 'thead' && name != 'html') {
 		this.parse_error("unexpected-implied-end-tag-in-table", {name: name})
 		this.tree.pop_element();
 	}

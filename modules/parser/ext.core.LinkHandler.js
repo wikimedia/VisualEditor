@@ -25,8 +25,7 @@ WikiLinkHandler.prototype.rank = 1.15; // after AttributeExpander
 
 WikiLinkHandler.prototype.onWikiLink = function ( token, frame, cb ) {
 	var env = this.manager.env,
-		href = token.attribs[0].v,
-		tail = env.lookupKV( token.attribs, 'tail' ).v;
+		href = token.attribs[0].v;
 	var title = this.manager.env.makeTitleFromPrefixedText( 
 					env.tokensToString( href )
 				);
@@ -40,16 +39,18 @@ WikiLinkHandler.prototype.onWikiLink = function ( token, frame, cb ) {
 		// Check if page exists
 		// 
 		//console.warn( 'title: ' + JSON.stringify( title ) );
-		var obj = new TagTk( 'a', 
+		var normalizedHref = title.makeLink(),
+			obj = new TagTk( 'a', 
 					[ 
-						new KV( 'href', title.makeLink() ),
-						new KV('typeof', 'http://mediawiki.org/rdf/wikilink'),
-						// Add resource as CURIE- needs global default prefix
-						// definition.
-						new KV('resource', '[:' + title.getPrefixedText() + ']')
+						new KV( 'href', normalizedHref ),
+						new KV('rel', 'mw:wikiLink')
 					] 
+					, token.dataAttribs
 				),
-			content = token.attribs.slice(1, -1);
+			content = token.attribs.slice(2);
+		if ( href !== normalizedHref ) {
+			obj.dataAttribs.sHref = href;
+		}
 		//console.warn('content: ' + JSON.stringify( content, null, 2 ) );
 		// XXX: handle trail
 		if ( content.length ) {
@@ -63,16 +64,17 @@ WikiLinkHandler.prototype.onWikiLink = function ( token, frame, cb ) {
 			content = out;
 		} else {
 			content = [ env.decodeURI( env.tokensToString( href ) ) ];
+			obj.dataAttribs.gc = 1;
 		}
+
+		var tail = token.attribs[1].v;
 		if ( tail ) {
+			obj.dataAttribs.tail = tail;
 			content.push( tail );
 		}
 		
-		//obj.attribs.push( new KV('data-mw-type', 'internal') );
-		obj.dataAttribs = token.dataAttribs;
-		obj.dataAttribs.linkType = 'internal';
 		cb ( { 
-			tokens: [obj].concat( content, new EndTagTk( 'a' ) )
+			tokens: [obj].concat( content, [ new EndTagTk( 'a' ) ] )
 		} );
 	}
 };
@@ -115,8 +117,8 @@ WikiLinkHandler.prototype.renderFile = function ( token, frame, cb, title ) {
 	// distinguish media types
 	// if image: parse options
 	
-	// Slice off the target and trail
-	var content = token.attribs.slice(1, -1);
+	// Slice off the target and tail
+	var content = token.attribs.slice(2);
 
 
 	var MD5 = new jshashes.MD5(),
@@ -338,13 +340,20 @@ function ExternalLinkHandler( manager, isInclude ) {
 	this.manager.addTransform( this.onUrlLink.bind( this ), this.rank, 'tag', 'urllink' );
 	this.manager.addTransform( this.onExtLink.bind( this ), 
 			this.rank - 0.001, 'tag', 'extlink' );
+	this.manager.addTransform( this.onEnd.bind( this ), 
+			this.rank, 'end' );
 	// create a new peg parser for image options..
 	if ( !this.imageParser ) {
 		// Actually the regular tokenizer, but we'll call it with the
 		// img_options production only.
 		ExternalLinkHandler.prototype.imageParser = new PegTokenizer();
 	}
+	this._reset();
 }
+
+ExternalLinkHandler.prototype._reset = function () {
+	this.linkCount = 1;
+};
 
 ExternalLinkHandler.prototype.rank = 1.15;
 ExternalLinkHandler.prototype._imageExtensions = {
@@ -371,9 +380,9 @@ ExternalLinkHandler.prototype.onUrlLink = function ( token, frame, cb ) {
 					[ 
 					new KV( 'src', href ),
 					new KV( 'alt', href.split('/').last() ),
-					new KV('typeof', 'http://mediawiki.org/rdf/externalImage')
+					new KV('rel', 'mw:externalImage')
 					],
-					{ type: 'urllink' }
+					{ stx: 'urllink' }
 					) 
 				]
 		} );
@@ -383,9 +392,9 @@ ExternalLinkHandler.prototype.onUrlLink = function ( token, frame, cb ) {
 				new TagTk( 'a', 
 					[ 
 						new KV( 'href', href ),
-						new KV('typeof', 'http://mediawiki.org/rdf/externalLink')
+						new KV('rel', 'mw:extLink')
 					],
-					{ type: 'urllink' } ),
+					{ stx: 'urllink' } ),
 				href,
 				new EndTagTk( 'a' )
 			] 
@@ -398,11 +407,15 @@ ExternalLinkHandler.prototype.onUrlLink = function ( token, frame, cb ) {
 ExternalLinkHandler.prototype.onExtLink = function ( token, manager, cb ) {
 	var env = this.manager.env,
 		href = env.tokensToString( env.lookupKV( token.attribs, 'href' ).v ),
-		content=  env.lookupKV( token.attribs, 'content' ).v;
+		content= env.lookupKV( token.attribs, 'content' ).v;
 	href = env.sanitizeURI( href );
 	//console.warn('extlink href: ' + href );
 	//console.warn( 'content: ' + JSON.stringify( content, null, 2 ) );
 	// validate the href
+	if ( ! content.length ) {
+		content = ['[' + this.linkCount + ']'];
+		this.linkCount++;
+	}
 	if ( this.imageParser.tokenizeURL( href ) ) {
 		if ( content.length === 1 && 
 				content[0].constructor === String &&
@@ -426,8 +439,7 @@ ExternalLinkHandler.prototype.onExtLink = function ( token, manager, cb ) {
 					new TagTk ( 'a', 
 							[ 
 								new KV('href', href),
-								new KV('typeof', 'http://mediawiki.org/rdf/externalLink'),
-								new KV('property', 'http://mediawiki.org/rdf/terms/linkcontent')
+								new KV('rel', 'mw:extLink')
 							], 
 							token.dataAttribs
 					)
@@ -438,6 +450,11 @@ ExternalLinkHandler.prototype.onExtLink = function ( token, manager, cb ) {
 			tokens: ['[', href, ' ' ].concat( content, [']'] )
 		} );
 	}
+};
+
+ExternalLinkHandler.prototype.onEnd = function ( token, manager, cb ) {
+	this._reset();
+	cb( { tokens: [ token ] } );
 };
 
 

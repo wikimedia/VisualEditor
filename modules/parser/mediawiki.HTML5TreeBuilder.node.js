@@ -72,17 +72,19 @@ FauxHTML5.TreeBuilder.prototype._att = function (maybeAttribs) {
 // Adapt the token format to internal HTML tree builder format, call the actual
 // html tree builder by emitting the token.
 FauxHTML5.TreeBuilder.prototype.processToken = function (token) {
+	//console.warn( 'processToken: ' + JSON.stringify( token ));
+
 	var attribs = token.attribs || [];
 	if ( token.dataAttribs ) {
-		if ( ! token.attribs ) {
-			token.attribs = [];
+		var dataMW = JSON.stringify( token.dataAttribs );
+		if ( dataMW !== '{}' ) {
+			attribs = attribs.concat([ 
+					{
+						// Mediawiki-specific round-trip / non-semantic information
+						k: 'data-mw', 
+						v: dataMW
+					} ] );
 		}
-		attribs = attribs.concat([ 
-				{
-					// Mediawiki-specific round-trip / non-semantic information
-					k: 'data-mw', 
-					v: JSON.stringify( token.dataAttribs ) 
-				} ] );
 	}
 
 	switch( token.constructor ) {
@@ -90,6 +92,7 @@ FauxHTML5.TreeBuilder.prototype.processToken = function (token) {
 			this.emit('token', {type: 'Characters', data: token});
 			break;
 		case NlTk:
+			this.emit('token', {type: 'Characters', data: '\n'});
 			break;
 		case TagTk:
 			this.emit('token', {type: 'StartTag', 
@@ -130,7 +133,6 @@ FauxHTML5.TreeBuilder.prototype.processToken = function (token) {
 			break;
 		default:
 			console.warn("Unhandled token: " + JSON.stringify(token));
-			break;
 			break;
 	}
 };
