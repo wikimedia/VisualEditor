@@ -14,6 +14,12 @@ ve.ui.HistoryButtonTool = function( toolbar, name, title, data ) {
 	// Properties
 	this.data = data;
 	this.enabled = false;
+	
+	var _this = this;
+	this.toolbar.surfaceView.model.on( 'history', function() {
+		_this.updateState();		
+	});
+
 };
 
 /* Methods */
@@ -21,10 +27,12 @@ ve.ui.HistoryButtonTool = function( toolbar, name, title, data ) {
 ve.ui.HistoryButtonTool.prototype.onClick = function() {
 	switch ( this.name ) {
 		case 'undo':
-			this.toolbar.surfaceView.model.undo( 1 );
+			var selection = this.toolbar.surfaceView.model.undo( 1 ) || this.toolbar.surfaceView.model.selection;
+			this.toolbar.surfaceView.showSelection( selection );
 			break;
 		case 'redo':
-			this.toolbar.surfaceView.model.redo( 1 );
+			var selection = this.toolbar.surfaceView.model.redo( 1 ) || this.toolbar.surfaceView.model.selection;
+			this.toolbar.surfaceView.showSelection( selection );
 			break;
 	}
 };
@@ -39,7 +47,7 @@ ve.ui.HistoryButtonTool.prototype.updateState = function( annotations ) {
 			this.enabled = surfaceModel.undoIndex > 0;
 			break;
 	}
-
+	
 	this.updateEnabled();
 };
 

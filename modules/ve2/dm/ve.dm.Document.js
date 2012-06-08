@@ -401,6 +401,16 @@ ve.dm.Document.prototype.rollback = function( transaction ) {
 };
 
 /**
+ * Commits a transaction's effects on the content data.
+ * 
+ * @method
+ * @param {ve.dm.Transaction}
+ */
+ve.dm.Document.prototype.commit = function( transaction ) {
+	ve.dm.TransactionProcessor.commit( this, transaction );
+};
+
+/**
  * Gets slice or copy of the document data.
  *
  * @method

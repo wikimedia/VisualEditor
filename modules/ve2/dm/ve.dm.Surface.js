@@ -11,11 +11,7 @@ ve.dm.Surface = function( doc ) {
 	ve.EventEmitter.call( this );
 	// Properties
 	this.documentModel = doc;
-
-	// TODO: Waiting for ve.ce.Surface to update model surface. 
-	// Until then, fake data:
-	this.selection = new ve.Range(5, 7);
-	//this.selection = null;
+	this.selection = null;
 	
 
 	this.smallStack = [];
@@ -133,6 +129,7 @@ ve.dm.Surface.prototype.breakpoint = function( selection ) {
 			selection: selection || this.selection.clone()
 		} );
 		this.smallStack = [];
+		this.emit ( 'history' );
 	}
 };
 
@@ -147,10 +144,11 @@ ve.dm.Surface.prototype.undo = function() {
 			diff += item.stack[i].lengthDifference;
 		}
 		var selection = item.selection;
-		selection.from -= diff;
-		selection.to -= diff;
-		this.setSelection( selection );
+		selection.end -= diff;
+		this.emit ( 'history' );
+		return selection;
 	}
+	return null;
 };
 
 ve.dm.Surface.prototype.redo = function() {
@@ -160,17 +158,17 @@ ve.dm.Surface.prototype.redo = function() {
 			var diff = 0;
 			var item = this.bigStack[this.bigStack.length - this.undoIndex];
 			for( var i = 0; i < item.stack.length; i++ ) {
-				this.transact( item.stack[i] );
+				this.documentModel.commit( item.stack[i] );
 				diff += item.stack[i].lengthDifference;
 			}
 			var selection = item.selection;
-			selection.from += diff;
-			selection.to += diff;
-			this.selection = null;
-			this.setSelection( selection );
+			selection.end += diff;
 		}
 		this.undoIndex--;
+		this.emit ( 'history' );
+		return selection;
 	}
+	return null;
 };
 
 
