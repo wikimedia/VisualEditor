@@ -74,113 +74,117 @@ ve.dm.example.data = [
 	{ 'type': '/heading' },
 	//  5 - Beginning of table
 	{ 'type': 'table' },
-	//  6 - Beginning of row
+	//  6 - Beginning of body
+	{ 'type': 'tableSection', 'attributes': { 'style': 'body' } },
+	//  7 - Beginning of row
 	{ 'type': 'tableRow' },
-	//  7 - Beginning of cell
+	//  8 - Beginning of cell
 	{ 'type': 'tableCell', 'attributes': { 'style': 'data' } },
-	//  8 - Beginning of paragraph
+	//  9 - Beginning of paragraph
 	{ 'type': 'paragraph' },
-	//  9 - Plain "d"
+	// 10 - Plain "d"
 	'd',
-	// 10 - End of paragraph
+	// 11 - End of paragraph
 	{ 'type': '/paragraph' },
-	// 11 - Beginning of bullet list
+	// 12 - Beginning of bullet list
 	{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
-	// 12 - Beginning of list item
+	// 13 - Beginning of list item
 	{ 'type': 'listItem' },
-	// 13 - Beginning of paragraph
+	// 14 - Beginning of paragraph
 	{ 'type': 'paragraph' },
-	// 14 - Plain "e"
+	// 15 - Plain "e"
 	'e',
-	// 15 - End of paragraph
+	// 16 - End of paragraph
 	{ 'type': '/paragraph' },
-	// 16 - Beginning of nested bullet list
+	// 17 - Beginning of nested bullet list
 	{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
-	// 17 - Beginning of nested bullet list item
+	// 18 - Beginning of nested bullet list item
 	{ 'type': 'listItem'  },
-	// 18 - Beginning of paragraph
+	// 19 - Beginning of paragraph
 	{ 'type': 'paragraph' },
-	// 19 - Plain "f"
+	// 20 - Plain "f"
 	'f',
-	// 20 - End of paragraph
+	// 21 - End of paragraph
 	{ 'type': '/paragraph' },
-	// 21 - End of nested bullet list item
+	// 22 - End of nested bullet list item
 	{ 'type': '/listItem' },
-	// 22 - End of nested bullet list
+	// 23 - End of nested bullet list
 	{ 'type': '/list' },
-	// 23 - End of bullet list item
+	// 24 - End of bullet list item
 	{ 'type': '/listItem' },
-	// 24 - End of bullet list
+	// 25 - End of bullet list
 	{ 'type': '/list' },
-	// 25 - Beginning of numbered list
+	// 26 - Beginning of numbered list
 	{ 'type': 'list', 'attributes': { 'style': 'number' } },
-	// 26 - Beginning of numbered list item
+	// 27 - Beginning of numbered list item
 	{ 'type': 'listItem' },
-	// 27 - Beginning of paragraph
+	// 28 - Beginning of paragraph
 	{ 'type': 'paragraph' },
-	// 28 - Plain "g"
+	// 29 - Plain "g"
 	'g',
-	// 29 - End of paragraph
+	// 30 - End of paragraph
 	{ 'type': '/paragraph' },
-	// 30 - End of item
+	// 31 - End of item
 	{ 'type': '/listItem' },
-	// 31 - End of list
+	// 32 - End of list
 	{ 'type': '/list' },
-	// 32 - End of cell
+	// 33 - End of cell
 	{ 'type': '/tableCell' },
-	// 33 - End of row
+	// 34 - End of row
 	{ 'type': '/tableRow' },
-	// 34 - End of table
+	// 35 - End of body
+	{ 'type': '/tableSection' },
+	// 36 - End of table
 	{ 'type': '/table' },
-	// 35 - Beginning of preformatted
+	// 37 - Beginning of preformatted
 	{ 'type': 'preformatted' },
-	// 36 - Plain "h"
+	// 38 - Plain "h"
 	'h',
-	// 37 - Beginning of inline image
+	// 39 - Beginning of inline image
 	{ 'type': 'image', 'attributes': { 'html/src': 'image.png' } },
-	// 38 - End of inline image
+	// 40 - End of inline image
 	{ 'type': '/image' },
-	// 39 - Plain "i"
+	// 41 - Plain "i"
 	'i',
-	// 40 - End of preformatted
+	// 42 - End of preformatted
 	{ 'type': '/preformatted' },
-	// 41 - Beginning of definition list
+	// 43 - Beginning of definition list
 	{ 'type': 'definitionList' },
-	// 42 - Beginning of definition list term item
+	// 44 - Beginning of definition list term item
 	{ 'type': 'definitionListItem', 'attributes': { 'style': 'term' } },
-	// 43 - Beginning of paragraph
+	// 45 - Beginning of paragraph
 	{ 'type': 'paragraph' },
-	// 44 - Plain "j"
+	// 46 - Plain "j"
 	'j',
-	// 45 - End of paragraph
+	// 47 - End of paragraph
 	{ 'type': '/paragraph' },
-	// 46 - End of definition list term item
+	// 48 - End of definition list term item
 	{ 'type': '/definitionListItem' },
-	// 47 - Beginning of definition list definition item
+	// 49 - Beginning of definition list definition item
 	{ 'type': 'definitionListItem', 'attributes': { 'style': 'definition' } },
-	// 48 - Beginning of paragraph
+	// 50 - Beginning of paragraph
 	{ 'type': 'paragraph' },
-	// 49 - Plain "k"
+	// 51 - Plain "k"
 	'k',
-	// 50 - End of paragraph
+	// 52 - End of paragraph
 	{ 'type': '/paragraph' },
-	// 51 - End of definition list definition item
+	// 53 - End of definition list definition item
 	{ 'type': '/definitionListItem' },
-	// 52 - End of definition list
+	// 54 - End of definition list
 	{ 'type': '/definitionList' },
-	// 53 - Beginning of paragraph
+	// 55 - Beginning of paragraph
 	{ 'type': 'paragraph' },
-	// 54 - Plain "l"
+	// 56 - Plain "l"
 	'l',
-	// 55 - End of paragraph
+	// 57 - End of paragraph
 	{ 'type': '/paragraph' },
-	// 56 - Beginning of paragraph
+	// 58 - Beginning of paragraph
 	{ 'type': 'paragraph' },
-	// 57 - Plain "m"
+	// 59 - Plain "m"
 	'm',
-	// 58 - End of paragraph
+	// 60 - End of paragraph
 	{ 'type': '/paragraph' }
-	// 59 - End of document
+	// 61 - End of document
 ];
 
 ve.dm.example.alienData = [
@@ -232,46 +236,48 @@ ve.dm.example.tree = new ve.dm.DocumentNode( [
 	// Heading with "abc"
 	new ve.dm.HeadingNode( [new ve.dm.TextNode( 3 )], ve.dm.example.data[0].attributes ),
 	new ve.dm.TableNode( [
-		new ve.dm.TableRowNode( [
-			new ve.dm.TableCellNode( [
-				// Paragraph with "d"
-				new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] ),
-				new ve.dm.ListNode( [
-					// 1st level bullet list item with "e"
-					new ve.dm.ListItemNode( [
-						new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] ),
-						new ve.dm.ListNode( [
-							// 2nd level bullet list item with "f"
-							new ve.dm.ListItemNode( [
-								new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] )
-							] )
-						], ve.dm.example.data[16].attributes )
-					] )
-				], ve.dm.example.data[11].attributes  ),
-				new ve.dm.ListNode( [
-					// Numbered list item with "g"
-					new ve.dm.ListItemNode( [
-						new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] )
-					] )
-				], ve.dm.example.data[25].attributes )
-			], ve.dm.example.data[7].attributes )
-		] )
+		new ve.dm.TableSectionNode( [
+			new ve.dm.TableRowNode( [
+				new ve.dm.TableCellNode( [
+					// Paragraph with "d"
+					new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] ),
+					new ve.dm.ListNode( [
+						// 1st level bullet list item with "e"
+						new ve.dm.ListItemNode( [
+							new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] ),
+							new ve.dm.ListNode( [
+								// 2nd level bullet list item with "f"
+								new ve.dm.ListItemNode( [
+									new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] )
+								] )
+							], ve.dm.example.data[17].attributes )
+						] )
+					], ve.dm.example.data[12].attributes  ),
+					new ve.dm.ListNode( [
+						// Numbered list item with "g"
+						new ve.dm.ListItemNode( [
+							new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] )
+						] )
+					], ve.dm.example.data[26].attributes )
+				], ve.dm.example.data[8].attributes )
+			] )
+		], ve.dm.example.data[6].attributes )
 	] ),
 	// Preformatted with "h[image.png]i"
 	new ve.dm.PreformattedNode( [
 		new ve.dm.TextNode( 1 ),
-		new ve.dm.ImageNode( [], ve.dm.example.data[37].attributes ),
+		new ve.dm.ImageNode( [], ve.dm.example.data[39].attributes ),
 		new ve.dm.TextNode( 1 )
 	] ),
 	new ve.dm.DefinitionListNode( [
 		// Definition list term item with "j"
 		new ve.dm.DefinitionListItemNode( [
 			new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] )
-		], ve.dm.example.data[42].attributes ),
+		], ve.dm.example.data[44].attributes ),
 		// Definition list definition item with "k"
 		new ve.dm.DefinitionListItemNode( [
 			new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] )
-		], ve.dm.example.data[47].attributes )
+		], ve.dm.example.data[49].attributes )
 	] ),
 	new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] ),
 	new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] )
@@ -303,61 +309,65 @@ ve.dm.example.getOffsetMap = function( root ) {
 		lookup( root ), // 5 - document
 		// <table>
 		lookup( root, 1 ), // 6 - table
+		// <tbody>
+		lookup( root, 1, 0 ), // 7 - tableSection
 		// <tr>
-		lookup( root, 1, 0 ), // 7 - tableRow
+		lookup( root, 1, 0, 0 ), // 7 - tableRow
 		// <td>
-		lookup( root, 1, 0, 0 ), // 8 - tableCell
+		lookup( root, 1, 0, 0, 0 ), // 8 - tableCell
 		// <p>
-		lookup( root, 1, 0, 0, 0 ), // 9 - paragraph
+		lookup( root, 1, 0, 0, 0, 0 ), // 9 - paragraph
 		// d
-		lookup( root, 1, 0, 0, 0 ), // 10 - paragraph
+		lookup( root, 1, 0, 0, 0, 0 ), // 10 - paragraph
 		// </p>
-		lookup( root, 1, 0, 0 ), // 11 - tableCell
+		lookup( root, 1, 0, 0, 0 ), // 11 - tableCell
 		// <ul>
-		lookup( root, 1, 0, 0, 1 ), // 12 - list
+		lookup( root, 1, 0, 0, 0, 1 ), // 12 - list
 		// <li>
-		lookup( root, 1, 0, 0, 1, 0 ), // 13 - listItem
+		lookup( root, 1, 0, 0, 0, 1, 0 ), // 13 - listItem
 		// <p>
-		lookup( root, 1, 0, 0, 1, 0, 0 ), // 14 - paragraph
+		lookup( root, 1, 0, 0, 0, 1, 0, 0 ), // 14 - paragraph
 		// e
-		lookup( root, 1, 0, 0, 1, 0, 0 ), // 15 - paragraph
+		lookup( root, 1, 0, 0, 0, 1, 0, 0 ), // 15 - paragraph
 		// </p>
-		lookup( root, 1, 0, 0, 1, 0 ), // 16 - listItem
+		lookup( root, 1, 0, 0, 0, 1, 0 ), // 16 - listItem
 		// <ul>
-		lookup( root, 1, 0, 0, 1, 0, 1 ), // 17 - list
+		lookup( root, 1, 0, 0, 0, 1, 0, 1 ), // 17 - list
 		// <li>
-		lookup( root, 1, 0, 0, 1, 0, 1, 0 ), // 18 - listItem
+		lookup( root, 1, 0, 0, 0, 1, 0, 1, 0 ), // 18 - listItem
 		// <p>
-		lookup( root, 1, 0, 0, 1, 0, 1, 0, 0 ), // 19 - paragraph
+		lookup( root, 1, 0, 0, 0, 1, 0, 1, 0, 0 ), // 19 - paragraph
 		// f
-		lookup( root, 1, 0, 0, 1, 0, 1, 0, 0 ), // 20 - paragraph
+		lookup( root, 1, 0, 0, 0, 1, 0, 1, 0, 0 ), // 20 - paragraph
 		// </p>
-		lookup( root, 1, 0, 0, 1, 0, 1, 0 ), // 21 - listItem
+		lookup( root, 1, 0, 0, 0, 1, 0, 1, 0 ), // 21 - listItem
 		// </li>
-		lookup( root, 1, 0, 0, 1, 0, 1 ), // 22 - list
+		lookup( root, 1, 0, 0, 0, 1, 0, 1 ), // 22 - list
 		// </ul>
-		lookup( root, 1, 0, 0, 1, 0 ), // 23 - listItem
+		lookup( root, 1, 0, 0, 0, 1, 0 ), // 23 - listItem
 		// </li>
-		lookup( root, 1, 0, 0, 1 ), // 24 - list
+		lookup( root, 1, 0, 0, 0, 1 ), // 24 - list
 		// </ul>
-		lookup( root, 1, 0, 0 ), // 25 - tableCell
+		lookup( root, 1, 0, 0, 0 ), // 25 - tableCell
 		// <ul>
-		lookup( root, 1, 0, 0, 2 ), // 26 - list
+		lookup( root, 1, 0, 0, 0, 2 ), // 26 - list
 		// <li>
-		lookup( root, 1, 0, 0, 2, 0 ), // 27 - listItem
+		lookup( root, 1, 0, 0, 0, 2, 0 ), // 27 - listItem
 		// <p>
-		lookup( root, 1, 0, 0, 2, 0, 0 ), // 28 - paragraph
+		lookup( root, 1, 0, 0, 0, 2, 0, 0 ), // 28 - paragraph
 		// g
-		lookup( root, 1, 0, 0, 2, 0, 0 ), // 29 - paragraph
+		lookup( root, 1, 0, 0, 0, 2, 0, 0 ), // 29 - paragraph
 		// </p>
-		lookup( root, 1, 0, 0, 2, 0 ), // 30 - listItem
+		lookup( root, 1, 0, 0, 0, 2, 0 ), // 30 - listItem
 		// </li>
-		lookup( root, 1, 0, 0, 2 ), // 31 - list
+		lookup( root, 1, 0, 0, 0, 2 ), // 31 - list
 		// </ul>
-		lookup( root, 1, 0, 0 ), // 32 - tableCell
+		lookup( root, 1, 0, 0, 0 ), // 32 - tableCell
 		// </td>
-		lookup( root, 1, 0 ), // 33 - tableRow
+		lookup( root, 1, 0, 0 ), // 33 - tableRow
 		// </tr>
+		lookup( root, 1, 0 ), // 33 - tableSection
+		// </tbody>
 		lookup( root, 1 ), // 34 - table
 		// </table>
 		lookup( root ), // 35- document

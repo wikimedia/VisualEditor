@@ -37,15 +37,15 @@ test( 'commit/rollback', function() {
 		},
 		'annotating content and leaf elements': {
 			'calls': [
-				['pushRetain', 36],
+				['pushRetain', 38],
 				['pushStartAnnotating', 'set', { 'type': 'textStyle/bold' }],
 				['pushRetain', 2],
 				['pushStopAnnotating', 'set', { 'type': 'textStyle/bold' }]
 			],
 			'expected': function( data ) {
 				var b = { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } };
-				data[36] = ['h', b];
-				data[37].annotations = b;
+				data[38] = ['h', b];
+				data[39].annotations = b;
 			}
 		},
 		'using an annotation method other than set or clear throws an exception': {
@@ -56,13 +56,22 @@ test( 'commit/rollback', function() {
 			],
 			'exception': /^Invalid annotation method/
 		},
-		'annotating branch element throws an exception': {
+		'annotating branch opening element throws an exception': {
 			'calls': [
 				['pushStartAnnotating', 'set', { 'type': 'textStyle/bold' }],
 				['pushRetain', 1],
 				['pushStopAnnotating', 'set', { 'type': 'textStyle/bold' }]
 			],
-			'exception': /^Invalid transaction, can not annotate a branch element$/
+			'exception': /^Invalid transaction, cannot annotate a branch opening element$/
+		},
+		'annotating branch closing element throws an exception': {
+			'calls': [
+				['pushRetain', 4],
+				['pushStartAnnotating', 'set', { 'type': 'textStyle/bold' }],
+				['pushRetain', 1],
+				['pushStopAnnotating', 'set', { 'type': 'textStyle/bold' }]
+			],
+			'exception': /^Invalid transaction, cannot annotate a branch closing element$/
 		},
 		'setting duplicate annotations throws an exception': {
 			'calls': [
@@ -85,17 +94,17 @@ test( 'commit/rollback', function() {
 		'changing, removing and adding attributes': {
 			'calls': [
 				['pushReplaceElementAttribute', 'level', 1, 2],
-				['pushRetain', 11],
+				['pushRetain', 12],
 				['pushReplaceElementAttribute', 'style', 'bullet', 'number'],
 				['pushReplaceElementAttribute', 'test', undefined, 'abcd'],
-				['pushRetain', 26],
+				['pushRetain', 27],
 				['pushReplaceElementAttribute', 'html/src', 'image.png', undefined]
 			],
 			'expected': function( data ) {
 				data[0].attributes.level = 2;
-				data[11].attributes.style = 'number';
-				data[11].attributes.test = 'abcd';
-				delete data[37].attributes['html/src'];
+				data[12].attributes.style = 'number';
+				data[12].attributes.test = 'abcd';
+				delete data[39].attributes['html/src'];
 			}
 		},
 		'changing attributes on non-element data throws an exception': {
@@ -177,7 +186,7 @@ test( 'commit/rollback', function() {
 		},
 		'merging an element': {
 			'calls': [
-				['pushRetain', 55],
+				['pushRetain', 57],
 				[
 					'pushReplace',
 					[{ 'type': '/paragraph' }, { 'type': 'paragraph' }],
@@ -185,7 +194,7 @@ test( 'commit/rollback', function() {
 				]
 			],
 			'expected': function( data ) {
-				data.splice( 55, 2 );
+				data.splice( 57, 2 );
 			}
 		},
 		'stripping elements': {
@@ -196,7 +205,7 @@ test( 'commit/rollback', function() {
 					[['c', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } }]],
 					[]
 				],
-				['pushRetain', 5],
+				['pushRetain', 6],
 				[
 					'pushReplace',
 					['d'],
@@ -204,7 +213,7 @@ test( 'commit/rollback', function() {
 				]
 			],
 			'expected': function( data ) {
-				data.splice( 9, 1 );
+				data.splice( 10, 1 );
 				data.splice( 3, 1 );
 			}
 		}

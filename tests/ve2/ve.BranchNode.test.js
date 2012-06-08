@@ -39,10 +39,10 @@ test( 'traverseLeafNodes', 1, function() {
 			'node': docNode,
 			'output': [
 						children[0].children[0],
-						children[1].children[0].children[0].children[0].children[0],
-						children[1].children[0].children[0].children[1].children[0].children[0].children[0],
-						children[1].children[0].children[0].children[1].children[0].children[1].children[0].children[0].children[0],
-						children[1].children[0].children[0].children[2].children[0].children[0].children[0],
+						children[1].children[0].children[0].children[0].children[0].children[0],
+						children[1].children[0].children[0].children[0].children[1].children[0].children[0].children[0],
+						children[1].children[0].children[0].children[0].children[1].children[0].children[1].children[0].children[0].children[0],
+						children[1].children[0].children[0].children[0].children[2].children[0].children[0].children[0],
 						children[2].children[0],
 						children[2].children[1],
 						children[2].children[2],
@@ -59,8 +59,8 @@ test( 'traverseLeafNodes', 1, function() {
 			'node': docNode,
 			'output': [
 						children[0].children[0],
-						children[1].children[0].children[0].children[0].children[0],
-						children[1].children[0].children[0].children[1].children[0].children[0].children[0]
+						children[1].children[0].children[0].children[0].children[0].children[0],
+						children[1].children[0].children[0].children[0].children[1].children[0].children[0].children[0]
 			],
 			'reverse': [
 						children[5].children[0],
@@ -70,12 +70,12 @@ test( 'traverseLeafNodes', 1, function() {
 						children[2].children[2],
 						children[2].children[1],
 						children[2].children[0],
-						children[1].children[0].children[0].children[2].children[0].children[0].children[0],
-						children[1].children[0].children[0].children[1].children[0].children[1].children[0].children[0].children[0],
-						children[1].children[0].children[0].children[1].children[0].children[0].children[0]
+						children[1].children[0].children[0].children[0].children[2].children[0].children[0].children[0],
+						children[1].children[0].children[0].children[0].children[1].children[0].children[1].children[0].children[0].children[0],
+						children[1].children[0].children[0].children[0].children[1].children[0].children[0].children[0]
 			],
 			'callback': function( node ) {
-				if ( node === children[1].children[0].children[0].children[1].children[0].children[0].children[0] ) {
+				if ( node === children[1].children[0].children[0].children[0].children[1].children[0].children[0].children[0] ) {
 					return false;
 				}
 			},
@@ -95,10 +95,10 @@ test( 'traverseLeafNodes', 1, function() {
 			],
 			'reverse': [
 						children[2].children[0],
-						children[1].children[0].children[0].children[2].children[0].children[0].children[0],
-						children[1].children[0].children[0].children[1].children[0].children[1].children[0].children[0].children[0],
-						children[1].children[0].children[0].children[1].children[0].children[0].children[0],
-						children[1].children[0].children[0].children[0].children[0],
+						children[1].children[0].children[0].children[0].children[2].children[0].children[0].children[0],
+						children[1].children[0].children[0].children[0].children[1].children[0].children[1].children[0].children[0].children[0],
+						children[1].children[0].children[0].children[0].children[1].children[0].children[0].children[0],
+						children[1].children[0].children[0].children[0].children[0].children[0],
 						children[0].children[0]
 			],
 			'from': children[2].children[0],
@@ -109,10 +109,10 @@ test( 'traverseLeafNodes', 1, function() {
 		{
 			'node': docNode,
 			'output': [
-						children[1].children[0].children[0].children[0].children[0],
-						children[1].children[0].children[0].children[1].children[0].children[0].children[0],
-						children[1].children[0].children[0].children[1].children[0].children[1].children[0].children[0].children[0],
-						children[1].children[0].children[0].children[2].children[0].children[0].children[0],
+						children[1].children[0].children[0].children[0].children[0].children[0],
+						children[1].children[0].children[0].children[0].children[1].children[0].children[0].children[0],
+						children[1].children[0].children[0].children[0].children[1].children[0].children[1].children[0].children[0].children[0],
+						children[1].children[0].children[0].children[0].children[2].children[0].children[0].children[0],
 						children[2].children[0],
 						children[2].children[1],
 						children[2].children[2],
@@ -132,10 +132,10 @@ test( 'traverseLeafNodes', 1, function() {
 		{
 			'node': children[1],
 			'output': [
-						children[1].children[0].children[0].children[0].children[0],
-						children[1].children[0].children[0].children[1].children[0].children[0].children[0],
-						children[1].children[0].children[0].children[1].children[0].children[1].children[0].children[0].children[0],
-						children[1].children[0].children[0].children[2].children[0].children[0].children[0]
+						children[1].children[0].children[0].children[0].children[0].children[0],
+						children[1].children[0].children[0].children[0].children[1].children[0].children[0].children[0],
+						children[1].children[0].children[0].children[0].children[1].children[0].children[1].children[0].children[0].children[0],
+						children[1].children[0].children[0].children[0].children[2].children[0].children[0].children[0]
 			],
 			'reverse': true,
 			'desc': 'Calling traverseLeafNodes() on a non-root node only returns leaf nodes inside that node'
