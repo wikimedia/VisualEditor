@@ -6,13 +6,13 @@
 		<title>VisualEditor Demo</title>
 		<!-- ce -->
 		<link rel="stylesheet" href="../../modules/ve2/ce/styles/ve.ce.Document.css">
-		<link rel="stylesheet" href="../../modules/ve2/ce/styles/ve.ce.Content.css">
+		<link rel="stylesheet" href="../../modules/ve2/ce/styles/ve.ce.Node.css">
 		<link rel="stylesheet" href="../../modules/ve2/ce/styles/ve.ce.Surface.css">
-		<link rel="stylesheet" href="../../modules/ve2/ce/styles/ve.ce.Nodes.css">
 		<!-- ui -->
 		<link rel="stylesheet" href="../../modules/ve2/ui/styles/ve.ui.Context.css">
 		<link rel="stylesheet" href="../../modules/ve2/ui/styles/ve.ui.Inspector.css">
 		<link rel="stylesheet" href="../../modules/ve2/ui/styles/ve.ui.Menu.css">
+		<link rel="stylesheet" href="../../modules/ve2/ui/styles/ve.ui.Surface.css">
 		<link rel="stylesheet" href="../../modules/ve2/ui/styles/ve.ui.Toolbar.css">
 		<!-- sandbox -->
 		<link rel="stylesheet" href="../../modules/sandbox/sandbox.css">

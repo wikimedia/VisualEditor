@@ -1,10 +1,10 @@
 .ve-ce-documentNode {
 	cursor: text;
 	overflow: hidden;
-	/*-webkit-user-select: none;*/
+	font-size: 0.8em;
 }
 
 /* Prevent focus outline on editor */
-[contenteditable="true"] {
+.ve-ce-documentNode[contenteditable="true"]:focus {
 	outline: none;
 }

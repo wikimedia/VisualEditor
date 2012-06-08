@@ -211,15 +211,15 @@ $wgResourceModules += array(
 		),
 		'styles' => array(
 			// ce
-			've2/ce/styles/ve.ce.Surface.css',
-			've2/ce/styles/ve.ce.Content.css',
 			've2/ce/styles/ve.ce.Document.css',
+			've2/ce/styles/ve.ce.Node.css',
+			've2/ce/styles/ve.ce.Surface.css',
 			// ui
-			've2/ui/styles/ve.ui.Surface.css',
 			've2/ui/styles/ve.ui.Context.css',
 			've2/ui/styles/ve.ui.Inspector.css',
-			've2/ui/styles/ve.ui.Toolbar.css',
 			've2/ui/styles/ve.ui.Menu.css',
+			've2/ui/styles/ve.ui.Surface.css',
+			've2/ui/styles/ve.ui.Toolbar.css',
 		),
 		'dependencies' => array(
 			'jquery',

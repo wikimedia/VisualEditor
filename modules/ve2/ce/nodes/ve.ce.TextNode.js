@@ -42,8 +42,8 @@ ve.ce.TextNode.htmlCharacters = {
 	'>': '&gt;',
 	'\'': '&#039;',
 	'"': '&quot;',
-	'\n': '<span class="ve-ce-content-whitespace">&#182;</span>',
-	'\t': '<span class="ve-ce-content-whitespace">&#8702;</span>'
+	'\n': '<span class="ve-ce-textNode-whitespace">&#182;</span>',
+	'\t': '<span class="ve-ce-textNode-whitespace">&#8702;</span>'
 };
 
 /**
@@ -69,47 +69,46 @@ ve.ce.TextNode.annotationRenderers = {
 		'close': '</u>'
 	},
 	'textStyle/strong': {
-		'open': '<span class="ve-ce-content-format-textStyle-strong">',
-		'close': '</span>'
+		'open': '<strong>',
+		'close': '</strong>'
 	},
 	'textStyle/emphasize': {
-		'open': '<span class="ve-ce-content-format-textStyle-emphasize">',
-		'close': '</span>'
+		'open': '<em>',
+		'close': '<em>'
 	},
 	'textStyle/big': {
-		'open': '<span class="ve-ce-content-format-textStyle-big">',
-		'close': '</span>'
+		'open': '<big>',
+		'close': '</big>'
 	},
 	'textStyle/small': {
-		'open': '<span class="ve-ce-content-format-textStyle-small">',
-		'close': '</span>'
+		'open': '<small>',
+		'close': '</small>'
 	},
 	'textStyle/superScript': {
-		'open': '<span class="ve-ce-content-format-textStyle-superScript">',
-		'close': '</span>'
+		'open': '<sup>',
+		'close': '</sup>'
 	},
 	'textStyle/subScript': {
-		'open': '<span class="ve-ce-content-format-textStyle-subScript">',
-		'close': '</span>'
+		'open': '<sub>',
+		'close': '</sub>'
 	},
 	'link/external': {
 		'open': function( data ) {
-			return '<span class="ve-ce-content-format-link" data-href="' + data.href + '">';
+			return '<a href="' + data.href + '">';
 		},
-		'close': '</span>'
+		'close': '</a>'
 	},
 	'link/internal': {
 		'open': function( data ) {
-			return '<span class="ve-ce-content-format-link" data-title="wiki/' + data.title + '">';
+			return '<a href="' + data.href + '">';
 		},
-		'close': '</span>'
+		'close': '</a>'
 	},
 	'link/unknown': {
 		'open': function( data ) {
-			if ( !data) { debugger; } 
-			return '<span class="ve-ce-content-format-link" data-href="' + data.href + '">';
+			return '<a href="#">';
 		},
-		'close': '</span>'
+		'close': '</a>'
 	}
 };
 
