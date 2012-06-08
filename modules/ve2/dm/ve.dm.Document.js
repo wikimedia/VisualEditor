@@ -959,6 +959,8 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 		parentNode,
 		// The type of the node we're currently in, even if that node was opened within data
 		parentType,
+		// Whether we are currently in a text node
+		inTextNode,
 
 		// *** Temporary variables that do not persist across iterations ***
 		// The type of the node we're currently inserting. When the to-be-inserted node
@@ -1047,7 +1049,23 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 
 	parentNode = this.getNodeFromOffset( offset );
 	parentType = parentNode.getType();
+	inTextNode = false;
 	for ( i = 0; i < data.length; i++ ) {
+		if ( inTextNode && data[i].type !== undefined ) {
+			// We're leaving a text node, process fixupStack if needed
+			// TODO duplicated code
+			if ( fixupStack.length > 0 && fixupStack[fixupStack.length - 1].expectedType == '/text' ) {
+				popped = fixupStack.pop();
+				// Go through these in reverse!
+				for ( j = popped.openings.length - 1; j >= 0; j-- ) {
+					writeElement( { 'type': '/' + popped.openings[j].type }, i );
+				}
+				for ( j = popped.reopenElements.length - 1; j >= 0; j-- ) {
+					writeElement( popped.reopenElements[j], i );
+				}
+			}
+			parentType = openingStack.length > 0 ? openingStack[openingStack.length - 1] : parentNode.getType();
+		}
 		if ( data[i].type === undefined ||  data[i].type.charAt( 0 ) !== '/' ) {
 			childType = data[i].type || 'text';
 			openings = [];
@@ -1063,7 +1081,7 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 				!ve.dm.nodeFactory.canNodeContainContent( parentType )
 			) {
 				childType = 'paragraph';
-				openings.unshift ( { 'type': 'paragraph' } );                            
+				openings.unshift ( { 'type': 'paragraph' } );
 			}
 
 			// Check that this node is allowed to have the containing node as its
@@ -1136,10 +1154,11 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 			writeElement( data[i], i );
 			if ( data[i].type === undefined ) {
 				// Special treatment for text nodes
+				inTextNode = true;
 				if ( openings.length > 0 ) {
 					// We wrapped the text node, update parentType
 					parentType = childType;
-					fixupStack.push( { 'expectedType': '/' + childType, 'openings': openings, 'reopenElements': reopenElements } );
+					fixupStack.push( { 'expectedType': '/text', 'openings': openings, 'reopenElements': reopenElements } );
 				}
 				// If we didn't wrap the text node, then the node we're inserting
 				// into can have content, so we couldn't have closed anything
@@ -1164,6 +1183,22 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
 			}
 			parentType = openingStack.length > 0 ? openingStack[openingStack.length - 1] : parentNode.getType();
 		}
+	}
+
+	if ( inTextNode ) {
+		// We're leaving a text node, process fixupStack if needed
+		// TODO duplicated code
+		if ( fixupStack.length > 0 && fixupStack[fixupStack.length - 1].expectedType == '/text' ) {
+			popped = fixupStack.pop();
+			// Go through these in reverse!
+			for ( j = popped.openings.length - 1; j >= 0; j-- ) {
+				writeElement( { 'type': '/' + popped.openings[j].type }, i );
+			}
+			for ( j = popped.reopenElements.length - 1; j >= 0; j-- ) {
+				writeElement( popped.reopenElements[j], i );
+			}
+		}
+		parentType = openingStack.length > 0 ? openingStack[openingStack.length - 1] : parentNode.getType();
 	}
 
 	// Close unclosed openings
