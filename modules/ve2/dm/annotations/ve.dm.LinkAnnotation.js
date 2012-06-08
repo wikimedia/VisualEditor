@@ -23,7 +23,7 @@ ve.dm.LinkAnnotation.converters = {
 	'domElementTypes': ['a'],
 	'toDomElement': function( subType, annotation ) {
 		if ( annotation.type ) {
-			var link = dom.createElement( 'a' );
+			var link = document.createElement( 'a' );
 			link.setAttribute( 'data-type', 'link/' + subType );
 			return link;
 		}
