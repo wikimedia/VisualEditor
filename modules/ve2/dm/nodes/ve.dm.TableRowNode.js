@@ -26,7 +26,7 @@ ve.dm.TableRowNode.rules = {
 	'isContent': false,
 	'canContainContent': false,
 	'childNodeTypes': ['tableCell'],
-	'parentNodeTypes': ['table']
+	'parentNodeTypes': ['tableSection']
 };
 
 /**
