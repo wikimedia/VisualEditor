@@ -106,17 +106,27 @@ ve.dm.Converter.prototype.onAnnotationRegister = function( dataElementType, cons
 };
 
 /**
- * ...
+ * Get the DOM element for a given linear model element.
+ *
+ * This invokes the toDomElement function registered for the element type.
+ * NOTE: alienBlock and alienInline elements are not supported, if you pass them this function
+ * will return false. (Opposite of District 9: no aliens allowed.)
  *
  * @method
+ * @param {Object} dataElement Linear model element
+ * @returns {HTMLElement|false} DOM element, or false if this element cannot be converted
  */
 ve.dm.Converter.prototype.getDomElementFromDataElement = function( dataElement ) {
 	var dataElementType = dataElement.type;
-	if ( dataElementType === 'alienBlock' ) {
-		// Alien nodes convert back to their original HTML
-		return $( dataElement.attributes.html )[0];
+	if (
+		// Aliens
+		dataElementType === 'alienInline' || dataElementType === 'alienBlock' ||
+		// Unsupported elements
+		!( dataElementType in this.elements.toDomElement)
+	) {
+		return false;
 	}
-	var domElement = this.elements.toDomElement[dataElementType]( dataElementType, dataElement ),
+	var	domElement = this.elements.toDomElement[dataElementType]( dataElementType, dataElement ),
 		dataElementAttributes = dataElement.attributes;
 	if ( dataElementAttributes ) {
 		for ( var key in dataElementAttributes ) {
@@ -130,9 +140,14 @@ ve.dm.Converter.prototype.getDomElementFromDataElement = function( dataElement )
 };
 
 /**
- * ...
+ * Get the linear model data element for a given DOM element.
+ *
+ * This invokes the toDataElement function registered for the element type, after checking that
+ * there is no data-mw-gc attribute.
  *
  * @method
+ * @param {HTMLElement} domElement DOM element
+ * @returns {Object|false} Linear model element, or false if this node cannot be converted
  */
 ve.dm.Converter.prototype.getDataElementFromDomElement = function( domElement ) {
 	var domElementType = domElement.nodeName.toLowerCase();
@@ -176,18 +191,35 @@ ve.dm.Converter.prototype.getDataAnnotationFromDomElement = function( domElement
 };
 
 /**
- * ...
+ * Build an HTML DOM node for a linear model annotation.
  *
  * @method
+ * @param {Object} dataAnnotation Annotation object
+ * @returns {HTMLElement|false} HTML DOM node, or false if this annotation is not known
  */
 ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function( dataAnnotation ) {
-	// TODO: Implement
+	var	split = dataAnnotation.type.split( '/', 2 ),
+		baseType = split[0],
+		subType = split.slice( 1 ).join( '/' ),
+		toDomElement = this.annotations.toDomElement[baseType];
+	if ( typeof toDomElement === 'function' ) {
+		return toDomElement( subType, dataAnnotation );
+	}
+	return false;
 };
 
 /**
- * ...
+ * Convert an HTML DOM tree to a linear model.
+ *
+ * Do not use the annotations, dataElement and path parameters, they're used for internal
+ * recursion only.
  *
  * @method
+ * @param {HTMLElement} domElement Wrapper div containing the HTML to convert
+ * @param {Array} [annotations] Array of annotations (objects) to apply to the generated data
+ * @param {Object} [dataElement] Data element to wrap the returned data in
+ * @param {Array} [path] Array of linear model element types
+ * @returns {Array} Linear model data
  */
 ve.dm.Converter.prototype.getDataFromDom = function( domElement, annotations, dataElement, path ) {
 	// Fallback to defaults
@@ -297,20 +329,148 @@ ve.dm.Converter.prototype.getDataFromDom = function( domElement, annotations, da
 };
 
 /**
- * ...
+ * Convert linear model data to an HTML DOM
  *
  * @method
+ * @param {Array} data Linear model data
+ * @returns {HTMLElement} Wrapper div containing the resulting HTML
  */
 ve.dm.Converter.prototype.getDomFromData = function( data ) {
-	var dom = document.createElement( 'div' );
+	var container = document.createElement( 'div' ),
+		domElement = container,
+		text;
 	for ( var i = 0; i < data.length; i++ ) {
-		if ( typeof data[i] === 'string' || ve.isArray( data[i] ) ) {
+		if ( typeof data[i] === 'string' ) {
 			// Text
-		} else if ( ve.isPlainObject( data[i] ) ) {
+			text = '';
+			// Continue forward as far as the plain text goes
+			while ( typeof data[i] === 'string' ) {
+				text += data[i];
+				i++;
+			}
+			// i points to the first non-text thing, go back one so we don't skip this later
+			i--;
+			// Add text
+			domElement.appendChild( document.createTextNode( text ) );
+		} else if (
+			ve.isArray( data[i] ) ||
+			(
+				data[i].annotations !== undefined &&
+				ve.dm.nodeFactory.isNodeContent( data[i].type )
+			)
+		) {
+			// Annotated text
+			var annotations,
+				annotationStack = {}, // { hash: DOMnode }
+				hash,
+				annotationElement,
+				done;
+			text = '';
+			while (
+				ve.isArray( data[i] ) ||
+				(
+					data[i].annotations !== undefined &&
+					ve.dm.nodeFactory.isNodeContent( data[i].type )
+				)
+			) {
+				annotations = data[i].annotations || data[i][1];
+				// Check for closed annotations
+				for ( hash in annotationStack ) {
+					if ( !( hash in annotations ) ) {
+						// It's closed
+						// Traverse up until we hit the node we need to close, and then
+						// traverse up one more time to close that node
+						done = false;
+						while ( !done ) {
+							done = domElement === annotationStack[hash];
+							// Remove the annotation from the stack
+							delete annotationStack[domElement.veAnnotationHash];
+							// Remove the temporary veAnnotationHash property
+							delete domElement.veAnnotationHash;
+							// Add text if needed
+							if ( text.length > 0 ) {
+								domElement.appendChild( document.createTextNode( text ) );
+								text = '';
+							}
+							// Traverse up
+							domElement = domElement.parentNode;
+						}
+					}
+				}
+				// Check for opened annotations
+				for ( hash in annotations ) {
+					if ( !( hash in annotationStack ) ) {
+						// It's opened
+						annotationElement = this.getDomElementFromDataAnnotation( annotations[hash] );
+						// Temporary property, will remove this when closing the annotation
+						annotationElement.veAnnotationHash = hash;
+						// Add to the annotation stack
+						annotationStack[hash] = annotationElement;
+						// Add text if needed
+						if ( text.length > 0 ) {
+							domElement.appendChild( document.createTextNode( text ) );
+							text = '';
+						}
+						// Attach new node and descend into it
+						domElement.appendChild( annotationElement );
+						domElement = annotationElement;
+					}
+				}
+				if ( data[i].annotations === undefined ) {
+					text += data[i][0];
+				} else {
+					// Add text if needed
+					if ( text.length > 0 ) {
+						domElement.appendChild( document.createTextNode( text ) );
+						text = '';
+					}
+					// Insert the element
+					domElement.appendChild( this.getDomElementFromDataElement( data[i] ) );
+					// Increment i once more so we skip over the closing as well
+					i++;
+				}
+				i++;
+			}
+			// We're now at the first non-annotated thing, go back one so we don't skip this later
+			i--;
+
+			// Add any gathered text
+			if ( text.length > 0 ) {
+				domElement.appendChild( document.createTextNode( text ) );
+				text = '';
+			}
+			// Close any remaining annotation nodes
+			while ( domElement.veAnnotationHash !== undefined ) {
+				delete domElement.veAnnotationHash;
+				domElement = domElement.parentNode;
+			}
+		} else if ( data[i].type !== undefined ) {
+			var dataElement = data[i];
 			// Element
+			if ( dataElement.type === 'alienBlock' || dataElement.type === 'alienInline' ) {
+				// Create nodes from source
+				var wrapper = document.createElement( 'div' );
+				wrapper.innerHTML = dataElement.attributes.html;
+				// Add element - adds all child elements, but there really should only be 1
+				while ( wrapper.firstChild ) {
+					domElement.appendChild( wrapper.firstChild );
+				}
+				// Make sure the alien closing is skipped
+				i++;
+			} else if ( dataElement.type.charAt( 0 ) === '/' ) {
+				// Ascend to parent node
+				domElement = domElement.parentNode;
+			} else {
+				// Create node from data
+				var childDomElement = this.getDomElementFromDataElement( dataElement );
+				// Add element
+				domElement.appendChild( childDomElement );
+				// Descend into child node
+				domElement = childDomElement;
+			}
 		}
 	}
-	return dom;
+	return container;
 };
 
 /* Initialization */
