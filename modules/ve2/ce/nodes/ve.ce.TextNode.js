@@ -14,7 +14,7 @@ ve.ce.TextNode = function( model ) {
 	this.model.addListenerMethod( this, 'update', 'onUpdate' );
 
 	// Intialization
-	this.onUpdate();
+	this.onUpdate( true );
 };
 
 /* Static Members */
@@ -122,13 +122,15 @@ ve.ce.TextNode.annotationRenderers = {
  *
  * @method
  */
-ve.ce.TextNode.prototype.onUpdate = function() {
-	var $new = $( $( '<span>' + this.getHtml() + '</span>' ).contents() );
-	if ( $new.length === 0 ) {
-		$new = $new.add( document.createTextNode( '' ) );
+ve.ce.TextNode.prototype.onUpdate = function( force ) {
+	if ( force === true || this.getSurface().autoRender === true ) {
+		var $new = $( $( '<span>' + this.getHtml() + '</span>' ).contents() );
+		if ( $new.length === 0 ) {
+			$new = $new.add( document.createTextNode( '' ) );
+		}
+		this.$.replaceWith( $new );
+		this.$ = $new;
 	}
-	this.$.replaceWith( $new );
-	this.$ = $new;
 };
 
 /**
@@ -269,6 +271,14 @@ ve.ce.TextNode.prototype.getHtml = function() {
 	out = out.replace(/  /g, ' &nbsp;');
 
 	return out;
+};
+
+ve.ce.TextNode.prototype.getSurface = function() {
+	var view = this;
+	while( !view.surface ) {
+		view = view.parent;
+	}
+	return view.surface;
 };
 
 /* Registration */

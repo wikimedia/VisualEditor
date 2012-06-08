@@ -6,9 +6,9 @@
  * @constructor
  * @param model {ve.dm.Document} Model to observe
  */
-ve.ce.Document = function( model ) {
+ve.ce.Document = function( model, surface ) {
 	// Inheritance
-	ve.Document.call( this, new ve.ce.DocumentNode( model.getDocumentNode() ) );
+	ve.Document.call( this, new ve.ce.DocumentNode( model.getDocumentNode(), surface ) );
 
 	// Properties
 	this.model = model;
