@@ -46,6 +46,10 @@ var env = new ParserEnv( {
 // add mediawiki.org
 env.addInterwiki( 'mw', 'http://www.mediawiki.org/w' );
 
+// add localhost and make it the default
+env.addInterwiki( 'localhost', 'http://localhost/mediawiki' );
+defaultInterwiki = 'localhost';
+
 var parserPipelineFactory = new ParserPipelineFactory( env );
 //var parser = parserPipelineFactory.makePipeline( 'text/x-mediawiki/full' );
 
