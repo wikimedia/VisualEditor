@@ -6,12 +6,9 @@
  * @extends {ve.ce.BranchNode}
  * @param model {ve.dm.DocumentNode} Model to observe
  */
-ve.ce.DocumentNode = function( model, surface ) {
+ve.ce.DocumentNode = function( model ) {
 	// Inheritance
 	ve.ce.BranchNode.call( this, 'document', model );
-
-	// Properties
-	this.surface = surface;
 
 	// DOM Changes
 	this.$.addClass( 've-ce-documentNode' );

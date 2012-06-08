@@ -11,36 +11,10 @@ ve.ce.Surface = function( $container, model ) {
 
 	// Properties
 	this.model = model;
-	this.documentView = new ve.ce.Document( model.getDocument(), this );
+	this.documentView = new ve.ce.Document( model.getDocument() );
 	this.contextView = new ve.ui.Context( this );
 	this.$ = $container;
 	this.clipboard = {};
-	this.autoRender = false;
-
-	this.poll = {
-		text: null,
-		hash: null,
-		node: null,
-		range: null,
-		rangySelection: {
-			anchorNode: null,
-			anchorOffset: null,
-			focusNode: null,
-			focusOffset: null
-		},
-
-		polling: false,
-		timeout: null,
-		frequency: 100
-	};
-
-
-	// Events
-	this.documentView.documentNode.$.on( {
-		focus: this.proxy( this.documentOnFocus ),
-		blur: this.proxy( this.documentOnBlur )
-	} );
-	this.on( 'contentChange', this.proxy( this.onContentChange ) );
 
 	// Driven by mousedown and mouseup events
 	this.isMouseDown = false;
@@ -53,14 +27,14 @@ ve.ce.Surface = function( $container, model ) {
 
 	// init rangy in case of Toshiba...
 	rangy.init();
-
+	
 	// Events
 	this.$.on( {
-		//'keypress': this.proxy( this.onKeyPress ),
-		//'keydown': this.proxy( this.onKeyDown ),
-		//'mousedown': this.proxy( this.onMouseDown ),
-		//'mouseup': this.proxy( this.onMouseUp ),
-		//'mousemove': this.proxy( this.onMouseMove ),
+		'keypress': this.proxy( this.onKeyPress ),
+		'keydown': this.proxy( this.onKeyDown ),
+		'mousedown': this.proxy( this.onMouseDown ),
+		'mouseup': this.proxy( this.onMouseUp ),
+		'mousemove': this.proxy( this.onMouseMove ),
 		'cut copy': this.proxy( this.onCutCopy ),
 		'beforepaste paste': this.proxy( this.onPaste ),
 		'dragover drop': function( e ) {
@@ -69,7 +43,6 @@ ve.ce.Surface = function( $container, model ) {
 			return false;
 		}
 	} );
-
 	this.model.on( 'select', this.proxy( this.onSelect ) );
 
 	// Initialization
@@ -89,142 +62,6 @@ ve.ce.Surface.prototype.proxy = function( func ) {
 	return( function() {
 		return func.apply( _this, arguments );
 	});
-};
-
-ve.ce.Surface.prototype.documentOnFocus = function() {
-	console.log( 'documentOnFocus' );
-	this.startPolling( true );
-};
-
-ve.ce.Surface.prototype.documentOnBlur = function() {
-	console.log( 'documentOnBlur' );
-	this.stopPolling();
-};
-
-ve.ce.Surface.prototype.startPolling = function( async ) {
-	console.log( 'startPolling', async );
-
-	if ( this.poll.polling === false ) {
-		this.poll.polling = true;
-		this.pollChanges( async );
-	}
-};
-
-ve.ce.Surface.prototype.stopPolling = function() {
-	console.log( 'stopPolling' );
-
-	if ( this.poll.polling === true ) {
-		this.poll.polling = false;
-		clearTimeout( this.poll.timeout );
-	}
-};
-
-ve.ce.Surface.prototype.pollChanges = function( async ) {
-	var delay = this.proxy( function( now ) {
-		this.poll.timeout = setTimeout( this.proxy( this.pollChanges ), async ? 0 : this.poll.frequency );
-	} );
-
-	if ( async ) {
-		delay( true );
-		return;
-	}
-
-	var node = this.poll.node,
-		range = this.poll.range,
-		rangySelection = rangy.getSelection();
-
-	if (
-		rangySelection.anchorNode !== this.poll.rangySelection.anchorNode ||
-		rangySelection.anchorOffset !== this.poll.rangySelection.anchorOffset ||
-		rangySelection.focusNode !== this.poll.rangySelection.focusNode ||
-		rangySelection.focusOffset !== this.poll.rangySelection.focusOffset
-	) {
-		this.poll.rangySelection.anchorNode = rangySelection.anchorNode;
-		this.poll.rangySelection.anchorOffset = rangySelection.anchorOffset;
-		this.poll.rangySelection.focusNode = rangySelection.focusNode;
-		this.poll.rangySelection.focusOffset = rangySelection.focusOffset;
-
-		// TODO: Optimize for the case of collapsed (rangySelection.isCollapsed) range
-
-		var	$anchorNode = $( rangySelection.anchorNode ).closest( '.ve-ce-branchNode' ),
-			$focusNode = $( rangySelection.focusNode ).closest( '.ve-ce-branchNode' );
-
-		if ( $anchorNode[0] === $focusNode[0] ) {
-			node = $anchorNode[0]
-		} else {
-			node = null;
-		}
-
-		// Do we really need to figure out range even if node is null?
-
-		range = new ve.Range(
-			this.getOffset( rangySelection.anchorNode, rangySelection.anchorOffset ),
-			this.getOffset( rangySelection.focusNode, rangySelection.focusOffset )
-		);
-	}
-
-	if ( this.poll.node !== node ) {
-		this.poll.text = ve.ce.Surface.getDOMText( node );
-		this.poll.hash = ve.ce.Surface.getDOMHash( node );
-		this.poll.node = node;
-	} else {
-		var	text = ve.ce.Surface.getDOMText( node ),
-			hash = ve.ce.Surface.getDOMHash( node );
-		if ( this.poll.text !== text || this.poll.hash !== hash ) {
-			
-			this.emit( 'contentChange', {
-				'node': node,
-				'old': {
-					'text': this.poll.text,
-					'hash': this.poll.hash,
-					'range': this.poll.range,
-				},
-				'new': {
-					'text': text,
-					'hash': hash,
-					'range': range					
-				}
-			} );
-
-			this.poll.text = text;
-			this.poll.hash = hash;
-		}
-	}
-
-	if ( this.poll.range !== range ) {
-		this.poll.range = range;
-		this.model.setSelection( range );
-	}
-
-	delay();
-};
-
-ve.ce.Surface.prototype.onContentChange = function( e ) {
-	var	nodeOffset = $( e.node ).data( 'node' ).model.getOffset(),
-		offsetDiff = (
-			e.old.range !== null &&
-			e.new.range !== null &&
-			e.old.range.getLength() === 0 &&
-			e.new.range.getLength() === 0
-		) ? e.new.range.start - e.old.range.start : null,
-		lengthDiff = e.new.text.length - e.old.text.length;
-
-	if (
-		offsetDiff === lengthDiff &&
-		e.old.text.substring( 0, e.old.range.start - nodeOffset - 1 ) === e.new.text.substring( 0, e.old.range.start - nodeOffset - 1 )
-	) {
-		var	data = e.new.text.substring( e.old.range.start - nodeOffset - 1, e.new.range.start - nodeOffset - 1).split( '' ),
-			annotations = this.model.getDocument().getAnnotationsFromOffset( e.old.range.start - 1 );
-
-		// TODO: Add annotations to data
-
-		this.model.transact( ve.dm.Transaction.newFromInsertion(
-			this.documentView.model, e.old.range.start, data
-		) );
-
-	} else {
-		// ...
-	}
 };
 
 ve.ce.Surface.prototype.onSelect = function( e ) {
@@ -342,8 +179,6 @@ ve.ce.Surface.prototype.onCutCopy = function( e ) {
 		$frag = null,
 		key = '';
 
-	this.stopPolling();
-
 	// Create key from text and element names
 	$frag = $(sel.getRangeAt(0).cloneContents());
 	$frag.contents().each(function() {
@@ -367,11 +202,8 @@ ve.ce.Surface.prototype.onCutCopy = function( e ) {
 			selection = _this.model.getSelection();
 			
 			// Transact
-			_this.autoRender = true;
 			tx = ve.dm.Transaction.newFromRemoval( _this.documentView.model, selection );
 			_this.model.transact( tx );
-			_this.autoRender = false;
-			_this.startPolling();
 
 			// Place cursor
 			_this.showCursor( selection.start );
@@ -666,48 +498,6 @@ ve.ce.Surface.prototype.getSelectionRect = function() {
 		start: rangySel.getStartDocumentPos(),
 		end: rangySel.getEndDocumentPos()
 	};
-};
-
-ve.ce.Surface.getDOMHash = function( elem ) {
-	var nodeType = elem.nodeType,
-		nodeName = elem.nodeName,
-		ret = '';
-
-	if ( nodeType === 3 || nodeType === 4 ) {
-		return '#';
-	} else if ( nodeType === 1 || nodeType === 9 ) {
-		ret += '<' + nodeName + '>';
-		// Traverse it's children
-		for ( elem = elem.firstChild; elem; elem = elem.nextSibling) {
-			ret += ve.ce.Surface.getDOMHash( elem );
-		}
-		ret += '</' + nodeName + '>';
-	}
-	return ret;
-};
-
-ve.ce.Surface.getDOMText = function( elem ) {
-	var func = function( elem ) {
-		var nodeType = elem.nodeType,
-			ret = '';
-		if ( nodeType === 1 || nodeType === 9 ) {
-			// Use textContent || innerText for elements
-			if ( typeof elem.textContent === 'string' ) {
-				return elem.textContent;
-			} else if ( typeof elem.innerText === 'string' ) {
-				// Replace IE's carriage returns
-				return elem.innerText.replace( /\r\n/g, '' );
-			} else {
-				// Traverse it's children
-				for ( elem = elem.firstChild; elem; elem = elem.nextSibling) {
-					ret += func( elem );
-				}
-			}
-		} else if ( nodeType === 3 || nodeType === 4 ) {
-			return elem.nodeValue;
-		}
-	};
-	return func( elem ).replace( /\u00A0|\u0020/g, ' ' );
 };
 
 /* Inheritance */
