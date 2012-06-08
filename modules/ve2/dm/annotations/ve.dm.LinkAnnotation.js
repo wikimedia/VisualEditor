@@ -24,7 +24,8 @@ ve.dm.LinkAnnotation.converters = {
 	'toDomElement': function( subType, annotation ) {
 		if ( annotation.type ) {
 			var link = document.createElement( 'a' );
-			link.setAttribute( 'data-type', 'link/' + subType );
+			link.setAttribute( 'data-type', subType );
+			link.setAttribute( 'href', annotation.data.href );
 			return link;
 		}
 	},
@@ -32,7 +33,7 @@ ve.dm.LinkAnnotation.converters = {
 		// FIXME: the parser currently doesn't output this data this way
 		// Internal links get 'linkType': 'internal' in the data-mw-rt attrib, while external
 		// links currently get nothing
-		return { 'type': 'link/' + ( element.getAttribute( 'data-type' ) || 'unknown' ) };
+		return { 'type': 'link/' + ( element.getAttribute( 'data-type' ) || 'unknown' ), 'data': { 'href': element.getAttribute( 'href' ) } };
 	}
 };
 
