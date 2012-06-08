@@ -77,7 +77,7 @@ ve.dm.example.data = [
 	//  6 - Beginning of row
 	{ 'type': 'tableRow' },
 	//  7 - Beginning of cell
-	{ 'type': 'tableCell' },
+	{ 'type': 'tableCell', 'attributes': { 'style': 'data' } },
 	//  8 - Beginning of paragraph
 	{ 'type': 'paragraph' },
 	//  9 - Plain "d"
@@ -254,7 +254,7 @@ ve.dm.example.tree = new ve.dm.DocumentNode( [
 						new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] )
 					] )
 				], ve.dm.example.data[25].attributes )
-			] )
+			], ve.dm.example.data[7].attributes )
 		] )
 	] ),
 	// Preformatted with "h[image.png]i"
@@ -475,7 +475,7 @@ ve.dm.example.conversions = {
 	},
 	'tableCell': {
 		'domElement': ve.example.createDomElement( 'td' ),
-		'dataElement': { 'type': 'tableCell' }
+		'dataElement': { 'type': 'tableCell', 'attributes': { 'style': 'data' } }
 	},
 	'table': {
 		'domElement': ve.example.createDomElement( 'table' ),
