@@ -383,7 +383,7 @@
 				'action': 've-parsoid',
 				'paction': 'save',
 				'page': mw.config.get( 'wgPageName' ),
-				'html': html,
+				'html': $(html).html(),
 				'token': mw.user.tokens.get('editToken'),
 				'summary': summary,
 				'minor': minor,
