@@ -371,9 +371,8 @@
 	Returns new page content
 */
 	veCore.prototype.getParsoidWikitextAndSave = function( callback ) {
-		// TODO: get html from linmod converter
 		var data = this.mainEditor.documentModel.getData(),
-			html = "<p>Test edit made with Visual Editor</p><p>" + (new Date()).getTime() + "</p>",
+			html = ve.dm.converter.getDomFromData( data ),
 			summary = $('#txtEditSummary').val(),
 			minor = $('#chkMinorEdit').prop('checked'),
 			watch = $('#chkWatchlist').prop('checked');
