@@ -6,3 +6,13 @@
 ve.ui = {
 	
 };
+
+/*
+ * @method static
+ * Returns UI stylesheet path
+ */
+ve.ui.getStylesheetPath = function() {
+	// gets the path to a UI
+	// TODO: look for mw.util and rewrite
+	return "/extensions/VisualEditor/modules/ve2/ui/styles/";
+};

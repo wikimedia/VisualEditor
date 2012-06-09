@@ -34,6 +34,7 @@ ve.ui.AnnotationButtonTool.prototype.onClick = function() {
 					range = documentModel.getAnnotatedRangeFromOffset(
 						selection.from, this.annotation
 					);
+				surfaceModel.setSelection ( range );
 				surfaceView.showSelection( range );
 				surfaceView.contextView.openInspector( this.inspector );
 			}

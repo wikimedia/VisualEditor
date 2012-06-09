@@ -117,8 +117,6 @@ ve.dm.Surface.prototype.annotate = function( method, annotation ) {
 			this.getDocument(), selection, method, annotation
 		);
 		this.transact( tx );
-		// emit selection for dev purposes
-		this.setSelection ( selection );
 	}
 };
 

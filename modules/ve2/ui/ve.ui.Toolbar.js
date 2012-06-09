@@ -18,14 +18,16 @@ ve.ui.Toolbar = function( $container, surfaceView, config ) {
 
 	// Listen to the model for selection event
 	this.surfaceView.model.on( 'select', function( e ){
-		var model = _this.surfaceView.model,
+
+		var model = _this.surfaceView.getModel(),
 			doc = model.getDocument(),
-			annotations = doc.getAnnotationsFromRange( e ),
+			annotations,
 			nodes = [],
 			startNode,
 			endNode;
+		console.log ('event');
 
-		if( e !== null ) {
+		if(	e !== null ) {
 			if ( e.from === e.to ){
 				nodes.push( doc.getNodeFromOffset( e.from ) );
 			} else {
@@ -47,20 +49,21 @@ ve.ui.Toolbar = function( $container, surfaceView, config ) {
 			// Update Context
 			if ( e.getLength() > 0 ) {
 				_this.surfaceView.contextView.set();
+			} else {
+				_this.surfaceView.contextView.clear();
 			}
+
+			annotations = doc.getAnnotationsFromRange( e );
 			// Update state
-			console.log(annotations, nodes);
 			for ( i = 0; i < _this.tools.length; i++ ) {
 				_this.tools[i].updateState( annotations, nodes );
 			}
 		} else {
 			// Clear state
-			_this.surfaceView.contextView.clear();
 			for ( i = 0; i < _this.tools.length; i++ ) {
 				_this.tools[i].clearState();
 			}
 		}
-
 	});
 
 	this.config = config || [
@@ -70,6 +73,7 @@ ve.ui.Toolbar = function( $container, surfaceView, config ) {
 		{ 'name': 'list', 'items' : ['number', 'bullet', 'outdent', 'indent'] }
 	];
 	this.setup();
+
 };
 
 /* Methods */
@@ -102,6 +106,7 @@ ve.ui.Toolbar.prototype.setup = function() {
 
 		this.$groups.append( $group );
 	}
+
 };
 
 ve.extendClass( ve.ui.Toolbar, ve.EventEmitter );
