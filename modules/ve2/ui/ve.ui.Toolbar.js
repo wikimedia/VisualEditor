@@ -25,7 +25,6 @@ ve.ui.Toolbar = function( $container, surfaceView, config ) {
 			nodes = [],
 			startNode,
 			endNode;
-		console.log ('event');
 
 		if(	e !== null ) {
 			if ( e.from === e.to ){
@@ -60,6 +59,7 @@ ve.ui.Toolbar = function( $container, surfaceView, config ) {
 			}
 		} else {
 			// Clear state
+			_this.surfaceView.contextView.clear();
 			for ( i = 0; i < _this.tools.length; i++ ) {
 				_this.tools[i].clearState();
 			}
