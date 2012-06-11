@@ -27,7 +27,7 @@ class ApiVisualEditor extends ApiBase {
 		} elseif ($params['paction'] === 'save') {
 			// API Posts HTML to Parsoid Service, receives Wikitext,
 			// API Saves Wikitext to page.
-			$wikitext = Http::post( $parsoid.$page, array( 'postData' => 'content='.$params['html'] ) );
+			$wikitext = Http::post( $parsoid.$page, array( 'postData' => array( 'content' => $params['html'] ) ) );
 
 			if ( $wikitext ) {
 
