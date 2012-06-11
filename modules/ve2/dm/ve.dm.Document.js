@@ -149,6 +149,34 @@ ve.dm.Document = function( data, parentDocument ) {
 /* Static methods */
 
 /**
+ * Applies annotations to content data.
+ * 
+ * This method modifies data in place.
+ * 
+ * @method
+ * @param {Array} data Data to remove annotations from
+ * @param {Array} annotations Annotations to apply
+ */
+ve.dm.Document.addAnnotationsToData = function( data, annotations ) {
+	if ( !annotations || annotations.length === 0 ) {
+		return;
+	}
+	var	annotationMap = {},
+		i;
+	// Build annotation map
+	for ( i = 0; i < annotations.length; i++ ) {
+		annotationMap[ve.getHash( annotations[i] )] = annotations[i];
+	}
+	// Apply annotations to data
+	for ( i = 0; i < data.length; i++ ) {
+		if ( !ve.isArray( data[i] ) ) {
+			data[i] = [data[i]];
+		}
+		data[i][1] = ve.extendObject( data[i][1], annotationMap );
+	}
+};
+
+/**
  * Checks if content can be inserted at an offset in document data.
  *
  * This method assumes that any value that has a type property that's a string is an element object.
