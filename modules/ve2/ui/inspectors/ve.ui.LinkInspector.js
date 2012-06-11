@@ -23,8 +23,9 @@ ve.ui.LinkInspector = function( toolbar, context ) {
 			return;
 		}
 
-		var surfaceModel = _this.context.getSurfaceView().getModel();
-		surfaceModel.annotate( 'clear', /link\/.*/ );
+		var		surfaceModel = _this.context.getSurfaceView().getModel(),
+				annotation = _this.getSelectedLinkAnnotation();
+		surfaceModel.annotate( 'clear', annotation );
 
 		_this.$locationInput.val( '' );
 		_this.context.closeInspector();
@@ -42,18 +43,28 @@ ve.ui.LinkInspector = function( toolbar, context ) {
 
 /* Methods */
 
-ve.ui.LinkInspector.prototype.getTitleFromSelection = function() {
+ve.ui.LinkInspector.prototype.getSelectedLinkAnnotation = function(){
 	var surfaceView = this.context.getSurfaceView(),
 		surfaceModel = surfaceView.getModel(),
 		documentModel = surfaceModel.getDocument(),
 		data = documentModel.getData( surfaceModel.getSelection() );
+
 	if ( data.length ) {
-		var annotation = ve.dm.Document.getMatchingAnnotation( data[0], /link\/.*/ );
-		if ( ve.isPlainObject(annotation) ) {
-			if ( annotation && annotation.data && annotation.data.title ) {
-				return annotation.data.title;
+		if ( ve.isPlainObject( data[0][1] ) ) {
+			var annotation = ve.dm.Document.getMatchingAnnotation( data[0][1], /link\/.*/ );
+			if ( ve.isPlainObject(annotation) ) {
+				return annotation;
 			}
 		}
+	}
+	return ;
+};
+
+ve.ui.LinkInspector.prototype.getTitleFromSelection = function() {
+	var annotation = this.getSelectedLinkAnnotation();
+
+	if ( annotation && annotation.data && annotation.data.title ) {
+		return annotation.data.title;
 	}
 	return null;
 };
@@ -81,8 +92,10 @@ ve.ui.LinkInspector.prototype.onClose = function( accept ) {
 		if ( title === this.getTitleFromSelection() || !title ) {
 			return;
 		}
-		var surfaceModel = this.context.getSurfaceView().model;
-		surfaceModel.annotate( 'clear', /link\/.*/ );
+		var surfaceModel = this.context.getSurfaceView().getModel(),
+			annotation = this.getSelectedLinkAnnotation();
+
+		surfaceModel.annotate( 'clear', annotation );
 		surfaceModel.annotate( 'set', { 'type': 'link/wikiLink', 'data': { 'title': title } } );
 	}
 };

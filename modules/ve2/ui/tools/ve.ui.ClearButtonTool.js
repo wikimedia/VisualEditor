@@ -24,7 +24,7 @@ ve.ui.ClearButtonTool.prototype.onClick = function() {
 		
 	model.annotate( 'clear', this.pattern );
 	//surfaceView.clearInsertionAnnotations();
-	//surfaceView.contextView.closeInspector();
+	surfaceView.contextView.closeInspector();
 };
 
 ve.ui.ClearButtonTool.prototype.updateState = function( annotations ) {
