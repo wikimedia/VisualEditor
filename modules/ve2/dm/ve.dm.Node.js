@@ -112,6 +112,28 @@ ve.dm.Node.prototype.getOuterLength = function() {
 };
 
 /**
+ * Gets the range inside the node.
+ *
+ * @method
+ * @returns {ve.Range} Inner node range
+ */
+ve.dm.Node.prototype.getRange = function() {
+	var offset = this.getOffset();
+	return new ve.Range( offset, offset + this.length );
+};
+
+/**
+ * Gets the range outside the node.
+ *
+ * @method
+ * @returns {ve.Range} Outer node range
+ */
+ve.dm.Node.prototype.getOuterRange = function() {
+	var offset = this.getOffset();
+	return new ve.Range( offset, offset + this.getOuterLength() );
+};
+
+/**
  * Sets the inner length.
  *
  * @method
