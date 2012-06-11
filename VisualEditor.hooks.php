@@ -2,57 +2,58 @@
 
 class VisualEditorHooks {
 	/**
-	 * Adds VisualEditor JS to the output if in the correct namespace
+	 * Adds VisualEditor JS to the output if in the correct namespace.
+	 *
+	 * This is attached to the MediaWiki 'BeforePageDisplay' hook.
 	 *
 	 * @param $output OutputPage
 	 * @param $skin Skin
 	 */
-	public static function onPageDisplay( &$output, &$skin ) {
-		if ( self::loadVisualEditor( $output, $skin ) ) {
-			$output->addModules( array( 'ext.visualEditor.core' ) );
+	public static function onBeforePageDisplay( &$output, &$skin ) {
+		global $wgTitle;
+		if (
+			// Vector skin supported for now.
+			$skin->getSkinName() === 'vector' &&
+			// Be sure current page is VisualEditor:Something
+			$wgTitle->getNamespace() === NS_VISUALEDITOR
+		) {
+			$output->addModules( array( 'ext.visualEditor.editPageInit' ) );
 		}
 		return true;
 	}
 
 	/**
-	 * Determines whether or not we should construct the loader.
+	 * Adds extra variables to the page config.
 	 *
-	 * @param $output OutputPage
-	 * @param $skin Skin
+	 * This is attached to the MediaWiki 'MakeGlobalVariablesScript' hook.
 	 */
-	public static function loadVisualEditor( &$output, &$skin ) {
-		global $wgTitle;
-		// Vector skin supported for now.
-		if ( $skin->getSkinName() !== 'vector' ) {
-			return false;
-		}
-		// Be sure current page is VisualEditor:Something
-		if ( $wgTitle->getNamespace() !== NS_VISUALEDITOR ) {
-			return false;
-		}
-		return true;
-	}
-	public static function makeGlobalVariablesScript( &$vars ) {
+	public static function onMakeGlobalVariablesScript( &$vars ) {
 		global $wgUser, $wgTitle;
-		$vars['vePageWatched'] = $wgUser->isWatched( $wgTitle ) ? true : false;
+		$vars['wgVisualEditor'] = array(
+			'isPageWatched' => $wgUser->isWatched( $wgTitle )
+		);
 		return true;
 	}
+
 	/**
-	 * 
-	*/
-	public static function namespaceProtection( &$title, &$user, $action, &$result ){
+	 * Prevents editing in the VisualEditor namespace by non-sysop users.
+	 *
+	 * This is attached to the MediaWiki 'userCan' hook.
+	 */
+	public static function onUserCan( &$title, &$user, $action, &$result ) {
 		global $wgUser, $wgNamespaceProtection;
 
 		if ( array_key_exists( $title->mNamespace, $wgNamespaceProtection ) ) {
-			$nsProt = $wgNamespaceProtection[ $title->mNamespace ];
-
-			if ( !is_array($nsProt) ) $nsProt = array($nsProt);
-				foreach( $nsProt as $right ) {
-					if( '' != $right && !$user->isAllowed( $right ) ) {
-						$result = false;
-					}
+			$nsProt = $wgNamespaceProtection[$title->mNamespace];
+			if ( !is_array( $nsProt ) ) {
+				$nsProt = array( $nsProt );
+			}
+			foreach( $nsProt as $right ) {
+				if ( $right != '' && !$user->isAllowed( $right ) ) {
+					$result = false;
 				}
 			}
+		}
 		return true;
 	}
 }

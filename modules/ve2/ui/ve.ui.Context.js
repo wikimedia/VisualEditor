@@ -203,27 +203,20 @@ ve.ui.Context.prototype.addInspector = function( name, inspector ) {
 	inspectorDoc.write( inspectorContent );
 	inspectorDoc.close();
 
-	$('head', inspectorDoc).append( $styleLink );
-	$('#ve-inspector-wrapper', inspectorDoc ).append( inspector.$ );
+	$( 'head', inspectorDoc).append( $styleLink );
+	$( '#ve-inspector-wrapper', inspectorDoc ).append( inspector.$ );
   
-	$( 'body', inspectorDoc ).css({
+	$( 'body', inspectorDoc ).css( {
 		'padding': '0px 5px 10px 5px',
 		'margin': 0
-	});
-
-	var asdf = {
-		'width': inspector.$.outerWidth( true ) + 10,
-		'height': inspector.$.outerHeight( true ) + 10
-	};
-	console.log (asdf);
-	console.log (inspector.$);
+	} );
 
 	// apply the dimensions of the inspector to the iframe, may need to be moved to open inspector
 	function tweakIframeDimensions() {
-		_this.$inspectors.css({
+		_this.$inspectors.css( {
 			'width': inspector.$.outerWidth( true ) + 10,
 			'height': inspector.$.outerHeight( true ) + 10
-		});
+		} );
 	}
 
 };

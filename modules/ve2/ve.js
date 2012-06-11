@@ -4,9 +4,7 @@
  * All classes and functions will be attached to this object to keep the global namespace clean.
  */
 window.ve = {
-	/**
-	 * List of instances of visual editors
-	 */
+	// List of instances of visual editors
 	'instances': []
 };
 
@@ -52,6 +50,8 @@ ve.isPlainObject = $.isPlainObject;
 ve.isEmptyObject = $.isEmptyObject;
 
 ve.isArray = $.isArray;
+
+ve.proxy = $.proxy;
 
 /**
  * Wrapper for Array.prototype.indexOf

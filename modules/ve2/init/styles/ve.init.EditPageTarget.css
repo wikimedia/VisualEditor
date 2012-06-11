@@ -1,0 +1,155 @@
+.es-toolbar-wrapper {
+	margin: -1.25em -1.5em -1.5em -1.5em;
+}
+
+.es-toolbar {
+	margin-left: 1px;
+}
+
+.ve-init-editPageTarget-loadingSpinner {
+	background-color: #ffffff;
+	opacity: 0.75;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-position: center 2em !important;
+}
+
+.ve-init-editPageTarget-button {
+	display: inline-block;
+	border: solid 1px 
+	transparent;
+	border-radius: 0.125em;
+	-webkit-border-radius: 0.125em;
+	-moz-border-radius: 0.125em;
+	-o-border-radius: 0.125em;
+	cursor: pointer;
+	vertical-align: top;
+	padding: 0.25em;
+	height: 22px;
+	margin-right: 0.25em;
+	border: solid 1px transparent;
+}
+.ve-init-editPageTarget-button:before {
+	content: " ";
+	position: absolute;
+	display: block;
+	height: 22px;
+}
+.ve-init-editPageTarget-button:hover {
+	border-color: #eeeeee;
+}
+.ve-init-editPageTarget-button:active,
+.ve-init-editPageTarget-button-down {
+	border-color: #dddddd;
+	-webkit-box-shadow: inset 0px 1px 4px 0px rgba(0, 0, 0, 0.07);
+	-moz-box-shadow: inset 0px 1px 4px 0px rgba(0, 0, 0, 0.07);
+	box-shadow: inset 0px 1px 4px 0px rgba(0, 0, 0, 0.07);
+}
+
+.ve-init-editPageTarget-closeButton {
+	width: 22px;
+	background-image: url(../../ui/styles/images/close.png);
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+
+/* inspector styles */
+.ve-init-editPageTarget-saveButton {
+	padding-right: 32px;
+	border:1px solid transparent;
+	border-radius: 0.125em;
+	-webkit-border-radius: 0.125em;
+	-moz-border-radius: 0.125em;
+	-o-border-radius: 0.125em;
+	/* need new button */
+	/* @embed */
+	background-image: url(../../ui/styles/images/accept.png);
+	background-position: right center;
+	background-repeat: no-repeat;
+}
+
+.ve-init-editPageTarget-saveButton span {
+	font-size: 0.8em;
+}
+
+/* mini save button */
+.ve-init-editPageTarget-saveDialog-closeButton {
+	right: .025em;
+	width: 22px;
+	background-image: url(../../ui/styles/images/close.png);
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+
+.ve-init-editPageTarget-saveDialog-saveButton {
+	position: absolute;
+	border: 1px solid rgb(196,229,154);
+	margin-top: 10px;
+	right: 10px;
+	font-size: 1em;
+	padding: 0.5em 1em;
+	border-radius: 0.25em;
+	-moz-border-radius: 0.25em;
+	background-image: url(../../ui/styles/images/close.png);
+	background-position: center right;
+	background-repeat: no-repeat;
+	/* Fancy CSS background */
+	background-image: linear-gradient(bottom, rgb(195,229,154) 0%, rgb(240,251,225) 100%);
+	background-image: -o-linear-gradient(bottom, rgb(195,229,154) 0%, rgb(240,251,225) 100%);
+	background-image: -moz-linear-gradient(bottom, rgb(195,229,154) 0%, rgb(240,251,225) 100%);
+	background-image: -webkit-linear-gradient(bottom, rgb(195,229,154) 0%, rgb(240,251,225) 100%);
+	background-image: -ms-linear-gradient(bottom, rgb(195,229,154) 0%, rgb(240,251,225) 100%);
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, rgb(195,229,154)),
+		color-stop(1, rgb(240,251,225))
+	);
+}
+.ve-init-editPageTarget-saveDialog-saveButton-icon {
+	display: inline-block;
+	vertical-align: middle;
+	height: 2em;
+	width: 28px;
+	background: transparent;
+	background-image: url(../../ui/styles/images/accept-clear.png);
+	background-position: top right;
+	background-repeat: no-repeat;
+}
+
+/* Save dialog styles */
+
+.ve-init-editPageTarget-saveDialog {
+	display: block;
+	top: -1px;
+	right: 2.5em;
+	width: 29em;
+}
+
+.ve-init-editPageTarget-saveDialog-body {
+	border-top:1px solid #dddddd;
+	padding: 10px 0;
+	font-size: 12px;
+}
+
+.ve-init-editPageTarget-saveDialog-license {
+	font-size: 0.7em;
+	color: #999999;
+}
+
+.ve-init-editPageTarget-saveDialog-options {
+	float: left;	
+}
+
+.ve-init-editPageTarget-saveDialog input[type='text'] {
+	width: 96%;
+	font-size: 12px;
+	padding: 4px;
+	margin: 10px 0;
+}
+
+.ve-init-editPageTarget-saveDialog input[type='checkbox'] {
+	margin-right: 5px;
+}

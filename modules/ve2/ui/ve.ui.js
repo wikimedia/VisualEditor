@@ -1,6 +1,6 @@
 /**
  * VisualEditor User Interface namespace.
- * 
+ *
  * All classes and functions will be attached to this object to keep the global namespace clean.
  */
 ve.ui = {
@@ -14,5 +14,5 @@ ve.ui = {
 ve.ui.getStylesheetPath = function() {
 	// gets the path to a UI
 	// TODO: look for mw.util and rewrite
-	return "/extensions/VisualEditor/modules/ve2/ui/styles/";
+	return mw.config.get( 'wgExtensionAssetsPath' ) + '/VisualEditor/modules/ve2/ui/styles/';
 };

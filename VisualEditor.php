@@ -20,7 +20,6 @@
 // URL to the parsoid instance
 $wgVisualEditorParsoidURL = 'http://parsoid.wmflabs.org/';
 
-
 /* Setup */
 
 $wgExtensionCredits['other'][] = array(
@@ -82,12 +81,19 @@ $wgResourceModules += array(
 		),
 		'styles' => 'sandbox/sandbox.css',
 		'dependencies' => array(
-			'ext.visualEditor.ve',
+			'ext.visualEditor.core',
 		),
 	),
-	'ext.visualEditor.core' => $wgVisualEditorResourceTemplate + array(
+	'ext.visualEditor.editPageInit' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
-			'core/ve.Core.js',
+			've2/init/targets/ve.init.EditPageTarget.js',
+		),
+		'styles' => array(
+			've2/init/styles/ve.init.EditPageTarget.css',
+		),
+		'dependencies' => array(
+			'ext.visualEditor.init',
+			'mediawiki.util'
 		),
 		'messages' => array(
 			'minoredit',
@@ -101,19 +107,27 @@ $wgResourceModules += array(
 			'accesskey-ca-edit',
 			'tooltip-ca-edit',
 			'viewsource'
-
-		),
-		'styles' => 'core/ve.Core.css',
-		'dependencies' => array(
-			'jquery',
-			'mediawiki.util'
 		),
 	),
-	'ext.visualEditor.ve' => $wgVisualEditorResourceTemplate + array(
+	'ext.visualEditor.init' => $wgVisualEditorResourceTemplate + array(
+		'scripts' => array(
+			've2/init/ve.init.js',
+			've2/init/ve.init.Target.js',
+		),
+		'dependencies' => array(
+			'ext.visualEditor.base'
+		),
+	),
+	'ext.visualEditor.base' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
 			// ve
 			'jquery/jquery.json.js',
 			've2/ve.js',
+		)
+	),
+	'ext.visualEditor.core' => $wgVisualEditorResourceTemplate + array(
+		'scripts' => array(
+			// ve
 			've2/ve.EventEmitter.js',
 			've2/ve.Factory.js',
 			've2/ve.Position.js',
@@ -224,6 +238,7 @@ $wgResourceModules += array(
 		'dependencies' => array(
 			'jquery',
 			'rangy',
+			'ext.visualEditor.base'
 		),
 		'messages' => array(
 			'visualeditor-tooltip-wikitext',
@@ -237,20 +252,21 @@ $wgResourceModules += array(
 	)
 );
 
-/* 
-	VisualEditor Namespace
-	Using 2500 range as it appears available in
-	MW Extension_namespace_registration
+/*
+ * VisualEditor Namespace
+ * Using 2500 and 2501 as per registration on mediawiki.org
+ *
+ * @see http://www.mediawiki.org/wiki/Extension_default_namespaces
 */
-define("NS_VISUALEDITOR", 2500);
-define("NS_VISUALEDITOR_TALK", 2501);	
-$wgExtraNamespaces[NS_VISUALEDITOR] = "VisualEditor";
-$wgExtraNamespaces[NS_VISUALEDITOR_TALK] = "VisualEditor_talk";
+define( 'NS_VISUALEDITOR', 2500 );
+define( 'NS_VISUALEDITOR_TALK', 2501 );	
+$wgExtraNamespaces[NS_VISUALEDITOR] = 'VisualEditor';
+$wgExtraNamespaces[NS_VISUALEDITOR_TALK] = 'VisualEditor_talk';
 $wgContentNamespaces[] = NS_VISUALEDITOR;
 $wgContentNamespaces[] = NS_VISUALEDITOR_TALK;
 
 // VE Namespace protection
-$wgNamespaceProtection[NS_VISUALEDITOR] = array('ve-edit');
+$wgNamespaceProtection[NS_VISUALEDITOR] = array( 've-edit' );
 $wgGroupPermissions['sysop']['ve-edit'] = true;
 
 // Parsoid Wrapper API
@@ -259,6 +275,6 @@ $wgAPIModules['ve-parsoid'] = 'ApiVisualEditor';
 
 // Integration Hooks
 $wgAutoloadClasses['VisualEditorHooks'] = $dir . 'VisualEditor.hooks.php';
-$wgHooks['BeforePageDisplay'][] = 'VisualEditorHooks::onPageDisplay';
-$wgHooks['userCan'][] = 'VisualEditorHooks::namespaceProtection';
-$wgHooks['MakeGlobalVariablesScript'][] = 'VisualEditorHooks::makeGlobalVariablesScript';
+$wgHooks['BeforePageDisplay'][] = 'VisualEditorHooks::onBeforePageDisplay';
+$wgHooks['userCan'][] = 'VisualEditorHooks::onUserCan';
+$wgHooks['MakeGlobalVariablesScript'][] = 'VisualEditorHooks::onMakeGlobalVariablesScript';
