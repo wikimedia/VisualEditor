@@ -6,14 +6,14 @@
 	margin-left: 1px;
 }
 
-.ve-init-editPageTarget-loadingSpinner {
+.ve-init-viewPageTarget-loadingSpinner {
 	background-image: url(images/loading.gif);
 	width: 128px;
 	height: 15px;
 	float: right;
 }
 
-.ve-init-editPageTarget-button {
+.ve-init-viewPageTarget-button {
 	display: inline-block;
 	border: solid 1px 
 	transparent;
@@ -28,17 +28,17 @@
 	margin-right: 0.25em;
 	border: solid 1px transparent;
 }
-.ve-init-editPageTarget-button:before {
+.ve-init-viewPageTarget-button:before {
 	content: " ";
 	position: absolute;
 	display: block;
 	height: 22px;
 }
-.ve-init-editPageTarget-button:hover {
+.ve-init-viewPageTarget-button:hover {
 	border-color: #eeeeee;
 }
-.ve-init-editPageTarget-button:active,
-.ve-init-editPageTarget-button-down {
+.ve-init-viewPageTarget-button:active,
+.ve-init-viewPageTarget-button-down {
 	border-color: #dddddd;
 	-webkit-box-shadow: inset 0px 1px 4px 0px rgba(0, 0, 0, 0.07);
 	-moz-box-shadow: inset 0px 1px 4px 0px rgba(0, 0, 0, 0.07);
@@ -46,7 +46,7 @@
 }
 
 /* inspector styles */
-.ve-init-editPageTarget-saveButton {
+.ve-init-viewPageTarget-saveButton {
 	padding-right: 32px;
 	border:1px solid transparent;
 	border-radius: 0.125em;
@@ -60,12 +60,12 @@
 	background-repeat: no-repeat;
 }
 
-.ve-init-editPageTarget-saveButton span {
+.ve-init-viewPageTarget-saveButton span {
 	font-size: 0.8em;
 }
 
 /* mini save button */
-.ve-init-editPageTarget-saveDialog-closeButton {
+.ve-init-viewPageTarget-saveDialog-closeButton {
 	right: .025em;
 	width: 22px;
 	background-image: url(../../ui/styles/images/close.png);
@@ -73,7 +73,7 @@
 	background-repeat: no-repeat;
 }
 
-.ve-init-editPageTarget-saveDialog-saveButton {
+.ve-init-viewPageTarget-saveDialog-saveButton {
 	position: absolute;
 	border: 1px solid rgb(196,229,154);
 	margin-top: 10px;
@@ -99,7 +99,7 @@
 		color-stop(1, rgb(240,251,225))
 	);
 }
-.ve-init-editPageTarget-saveDialog-saveButton-icon {
+.ve-init-viewPageTarget-saveDialog-saveButton-icon {
 	display: inline-block;
 	vertical-align: middle;
 	height: 2em;
@@ -112,35 +112,35 @@
 
 /* Save dialog styles */
 
-.ve-init-editPageTarget-saveDialog {
+.ve-init-viewPageTarget-saveDialog {
 	display: block;
 	top: -1px;
 	right: 0.25em;
 	width: 29em;
 }
 
-.ve-init-editPageTarget-saveDialog-body {
+.ve-init-viewPageTarget-saveDialog-body {
 	border-top:1px solid #dddddd;
 	padding: 10px 0;
 	font-size: 12px;
 }
 
-.ve-init-editPageTarget-saveDialog-license {
+.ve-init-viewPageTarget-saveDialog-license {
 	font-size: 0.7em;
 	color: #999999;
 }
 
-.ve-init-editPageTarget-saveDialog-options {
+.ve-init-viewPageTarget-saveDialog-options {
 	float: left;	
 }
 
-.ve-init-editPageTarget-saveDialog input[type='text'] {
+.ve-init-viewPageTarget-saveDialog input[type='text'] {
 	width: 96%;
 	font-size: 12px;
 	padding: 4px;
 	margin: 10px 0;
 }
 
-.ve-init-editPageTarget-saveDialog input[type='checkbox'] {
+.ve-init-viewPageTarget-saveDialog input[type='checkbox'] {
 	margin-right: 5px;
 }

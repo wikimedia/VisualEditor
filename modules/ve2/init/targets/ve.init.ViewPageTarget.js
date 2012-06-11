@@ -6,7 +6,7 @@
  * @extends {ve.init.Target}
  * @param {String} title Page title of target
  */
-ve.init.EditPageTarget = function() {
+ve.init.ViewPageTarget = function() {
 	// Inheritance
 	ve.init.Target.call( this, mw.config.get( 'wgPageName' ) );
 
@@ -39,33 +39,33 @@ ve.init.EditPageTarget = function() {
 /* Static Members */
 
 /*jshint multistr: true*/
-ve.init.EditPageTarget.saveDialogTemplate = '\
-<div class="es-inspector ve-init-editPageTarget-saveDialog">\
-	<div class="es-inspector-title ve-init-editPageTarget-saveDialog-title"></div>\
-	<div class="es-inspector-button ve-init-editPageTarget-saveDialog-closeButton"></div>\
-	<div class="ve-init-editPageTarget-saveDialog-body">\
-		<div class="ve-init-editPageTarget-saveDialog-editSummary-label"></div>\
-		<input name="editSummary" id="ve-init-editPageTarget-saveDialog-editSummary" type="text">\
+ve.init.ViewPageTarget.saveDialogTemplate = '\
+<div class="es-inspector ve-init-viewPageTarget-saveDialog">\
+	<div class="es-inspector-title ve-init-viewPageTarget-saveDialog-title"></div>\
+	<div class="es-inspector-button ve-init-viewPageTarget-saveDialog-closeButton"></div>\
+	<div class="ve-init-viewPageTarget-saveDialog-body">\
+		<div class="ve-init-viewPageTarget-saveDialog-editSummary-label"></div>\
+		<input name="editSummary" id="ve-init-viewPageTarget-saveDialog-editSummary" type="text">\
 		<div class="clear:both"></div>\
-		<div class="ve-init-editPageTarget-saveDialog-options">\
+		<div class="ve-init-viewPageTarget-saveDialog-options">\
 			<input type="checkbox" name="minorEdit" \
-				id="ve-init-editPageTarget-saveDialog-minorEdit">\
-			<label class="ve-init-editPageTarget-saveDialog-minorEdit-label" \
-				for="ve-init-editPageTarget-saveDialog-minorEdit">This is a minor edit</label>\
+				id="ve-init-viewPageTarget-saveDialog-minorEdit">\
+			<label class="ve-init-viewPageTarget-saveDialog-minorEdit-label" \
+				for="ve-init-viewPageTarget-saveDialog-minorEdit">This is a minor edit</label>\
 			<div style="clear:both"></div>\
 			<input type="checkbox" name="watchList" \
-				id="ve-init-editPageTarget-saveDialog-watchList">\
-			<label class="ve-init-editPageTarget-saveDialog-watchList-label" \
-				for="ve-init-editPageTarget-saveDialog-watchList">Watch this page</label>\
+				id="ve-init-viewPageTarget-saveDialog-watchList">\
+			<label class="ve-init-viewPageTarget-saveDialog-watchList-label" \
+				for="ve-init-viewPageTarget-saveDialog-watchList">Watch this page</label>\
 		</div>\
-		<div class="ve-init-editPageTarget-button ve-init-editPageTarget-saveDialog-saveButton">\
-			<span class="ve-init-editPageTarget-saveDialog-saveButton-label"></span>\
-			<div class="ve-init-editPageTarget-saveDialog-saveButton-icon"></div>\
+		<div class="ve-init-viewPageTarget-button ve-init-viewPageTarget-saveDialog-saveButton">\
+			<span class="ve-init-viewPageTarget-saveDialog-saveButton-label"></span>\
+			<div class="ve-init-viewPageTarget-saveDialog-saveButton-icon"></div>\
 		</div>\
 		<div style="clear:both"></div>\
 	</div>\
-	<div class="ve-init-editPageTarget-saveDialog-foot">\
-		<p class="ve-init-editPageTarget-saveDialog-license"></p>\
+	<div class="ve-init-viewPageTarget-saveDialog-foot">\
+		<p class="ve-init-viewPageTarget-saveDialog-license"></p>\
 	</div>\
 </div>';
 
@@ -76,7 +76,7 @@ ve.init.EditPageTarget.saveDialogTemplate = '\
  *
  * @method
  */
-ve.init.EditPageTarget.prototype.onEditTabClick = function( e ) {
+ve.init.ViewPageTarget.prototype.onEditTabClick = function( e ) {
 	// Ignore multiple clicks while editor is active
 	if ( !this.active ) {
 		// UI updates
@@ -95,15 +95,15 @@ ve.init.EditPageTarget.prototype.onEditTabClick = function( e ) {
  *
  * @method
  */
-ve.init.EditPageTarget.prototype.onSaveDialogSaveButtonClick = function( e ) {
+ve.init.ViewPageTarget.prototype.onSaveDialogSaveButtonClick = function( e ) {
 	this.showSpinner();
 	// Save
 	this.save(
 		ve.dm.converter.getDomFromData( this.surface.getDocumentModel().getData() ),
 		{
-			'summary': $( '#ve-init-editPageTarget-saveDialog-editSummary' ).val(),
-			'minor': $( '#ve-init-editPageTarget-saveDialog-minorEdit' ).prop( 'checked' ),
-			'watch': $( '#ve-init-editPageTarget-saveDialog-watchList' ).prop( 'checked' )
+			'summary': $( '#ve-init-viewPageTarget-saveDialog-editSummary' ).val(),
+			'minor': $( '#ve-init-viewPageTarget-saveDialog-minorEdit' ).prop( 'checked' ),
+			'watch': $( '#ve-init-viewPageTarget-saveDialog-watchList' ).prop( 'checked' )
 		},
 		ve.proxy( this.onSave, this )
 	);
@@ -114,7 +114,7 @@ ve.init.EditPageTarget.prototype.onSaveDialogSaveButtonClick = function( e ) {
  *
  * @method
  */
-ve.init.EditPageTarget.prototype.onLoad = function( error, dom ) {
+ve.init.ViewPageTarget.prototype.onLoad = function( error, dom ) {
 	if ( error ) {
 		// TODO: Error handling in the UI
 	} else {
@@ -128,7 +128,7 @@ ve.init.EditPageTarget.prototype.onLoad = function( error, dom ) {
  *
  * @method
  */
-ve.init.EditPageTarget.prototype.onSave = function( error, content ) {
+ve.init.ViewPageTarget.prototype.onSave = function( error, content ) {
 	if ( error ) {
 		// TODO: Handle error in UI
 	} else {
@@ -146,7 +146,7 @@ ve.init.EditPageTarget.prototype.onSave = function( error, content ) {
  *
  * @method
  */
-ve.init.EditPageTarget.prototype.setUpSurface = function( dom ) {
+ve.init.ViewPageTarget.prototype.setUpSurface = function( dom ) {
 	// Initialize surface
 	this.$surface.appendTo( this.$content );
 	this.surface = new ve.Surface( this.$surface, dom, this.surfaceOptions );
@@ -157,13 +157,13 @@ ve.init.EditPageTarget.prototype.setUpSurface = function( dom ) {
 	this.$spinner.remove();
 	this.$view.hide();
 	this.$spinner.hide();
-	this.$dialog = $( ve.init.EditPageTarget.saveDialogTemplate );
+	this.$dialog = $( ve.init.ViewPageTarget.saveDialogTemplate );
 	// Add save and close buttons
 	this.$toolbar
 		.find( '.es-modes' )
 			.append(
 				$( '<div></div>' )
-					.addClass( 've-init-editPageTarget-button ve-init-editPageTarget-saveButton' )
+					.addClass( 've-init-viewPageTarget-button ve-init-viewPageTarget-saveButton' )
 					.append(
 						$( '<span></span>' )
 							.text( mw.msg( 'savearticle' ) )
@@ -172,31 +172,31 @@ ve.init.EditPageTarget.prototype.setUpSurface = function( dom ) {
 			);
 	// Set up save dialog
 	this.$dialog
-		.find( '.ve-init-editPageTarget-saveDialog-title' )
+		.find( '.ve-init-viewPageTarget-saveDialog-title' )
 			.text( mw.msg( 'tooltip-save' ) )
 			.end()
-		.find( '.ve-init-editPageTarget-saveDialog-closeButton' )
+		.find( '.ve-init-viewPageTarget-saveDialog-closeButton' )
 			.click( ve.proxy( function() { $(this).fadeOut( 'fast' ); }, this.$dialog ) )
 			.end()
-		.find( '.ve-init-editPageTarget-saveDialog-editSummary-label' )
+		.find( '.ve-init-viewPageTarget-saveDialog-editSummary-label' )
 			.text( mw.msg( 'summary' ) )
 			.end()
-		.find( '.ve-init-editPageTarget-saveDialog-minorEdit-label' )
+		.find( '.ve-init-viewPageTarget-saveDialog-minorEdit-label' )
 			.text( mw.msg( 'minoredit' ) )
 			.end()
-		.find( '.ve-init-editPageTarget-saveDialog-watchList' )
+		.find( '.ve-init-viewPageTarget-saveDialog-watchList' )
 			.prop( 'checked', ve.config.isPageWatched )
 			.end()
-		.find( '.ve-init-editPageTarget-saveDialog-watchList-label' )
+		.find( '.ve-init-viewPageTarget-saveDialog-watchList-label' )
 			.text( mw.msg( 'watchthis' ) )
 			.end()
-		.find( '.ve-init-editPageTarget-saveDialog-saveButton' )
+		.find( '.ve-init-viewPageTarget-saveDialog-saveButton' )
 			.click( ve.proxy( this.onSaveDialogSaveButtonClick, this ) )
 			.end()
-		.find( '.ve-init-editPageTarget-saveDialog-saveButton-label' )
+		.find( '.ve-init-viewPageTarget-saveDialog-saveButton-label' )
 			.text( mw.msg( 'savearticle' ) )
 			.end()
-		.find( '.ve-init-editPageTarget-saveDialog-license' )
+		.find( '.ve-init-viewPageTarget-saveDialog-license' )
 			.html(
 				"By editing this page, you agree to irrevocably release your \
 				contributions under the CC-By-SA 3.0 License.  If you don't want your \
@@ -208,10 +208,10 @@ ve.init.EditPageTarget.prototype.setUpSurface = function( dom ) {
 				<b>DO NOT SUBMIT COPYRIGHTED WORK WITHOUT PERMISSION!</b>"
 			)
 			.end()
-		.insertAfter( this.$toolbar.find( '.ve-init-editPageTarget-saveButton' ) );
+		.insertAfter( this.$toolbar.find( '.ve-init-viewPageTarget-saveButton' ) );
 };
 
-ve.init.EditPageTarget.prototype.tearDownSurface = function( content ) {
+ve.init.ViewPageTarget.prototype.tearDownSurface = function( content ) {
 	// Reset tabs
 	this.setSelectedTab( 'ca-view' );
 	// Update UI
@@ -224,7 +224,7 @@ ve.init.EditPageTarget.prototype.tearDownSurface = function( content ) {
 	this.surface = null;
 };
 
-ve.init.EditPageTarget.prototype.setupTabs = function(){
+ve.init.ViewPageTarget.prototype.setupTabs = function(){
 	// Only sysop users will have an edit tab in this namespace, so we might need to add one
 	if ( $( '#ca-edit' ).length === 0 ) {
 		// Add edit tab
@@ -267,9 +267,9 @@ ve.init.EditPageTarget.prototype.setupTabs = function(){
  *
  * @method
  */
-ve.init.EditPageTarget.prototype.showSpinner = function() {
+ve.init.ViewPageTarget.prototype.showSpinner = function() {
 	this.$spinner = $( '<div></div>' )
-		.addClass( 've-init-editPageTarget-loadingSpinner' )
+		.addClass( 've-init-viewPageTarget-loadingSpinner' )
 		.prependTo( this.$heading );
 	this.$heading.fadeTo( 'fast', 0.5 );
 };
@@ -282,18 +282,18 @@ ve.init.EditPageTarget.prototype.showSpinner = function() {
  * @method
  * @param {String} id HTML ID of tab to select
  */
-ve.init.EditPageTarget.prototype.setSelectedTab = function( id ) {
+ve.init.ViewPageTarget.prototype.setSelectedTab = function( id ) {
 	$( '#p-views' ).find( 'li.selected' ).removeClass( 'selected' );
 	$( '#' + id ).addClass( 'selected' );
 };
 
 /* Inheritance */
 
-ve.extendClass( ve.init.EditPageTarget, ve.init.Target );
+ve.extendClass( ve.init.ViewPageTarget, ve.init.Target );
 
 /* Initialization */
 
 // TODO: Clean this stuff up
 
 ve.config = mw.config.get( 'wgVisualEditor' );
-ve.init.current = new ve.init.EditPageTarget();
+ve.init.current = new ve.init.ViewPageTarget();

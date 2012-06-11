@@ -86,10 +86,10 @@ $wgResourceModules += array(
 	),
 	'ext.visualEditor.editPageInit' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
-			've2/init/targets/ve.init.EditPageTarget.js',
+			've2/init/targets/ve.init.ViewPageTarget.js',
 		),
 		'styles' => array(
-			've2/init/styles/ve.init.EditPageTarget.css',
+			've2/init/styles/ve.init.ViewPageTarget.css',
 		),
 		'dependencies' => array(
 			'ext.visualEditor.init',
