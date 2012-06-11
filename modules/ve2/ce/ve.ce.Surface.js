@@ -30,20 +30,20 @@ ve.ce.Surface = function( $container, model ) {
 	
 	// Events
 	this.$.on( {
-		'keypress': this.proxy( this.onKeyPress ),
-		'keydown': this.proxy( this.onKeyDown ),
-		'mousedown': this.proxy( this.onMouseDown ),
-		'mouseup': this.proxy( this.onMouseUp ),
-		'mousemove': this.proxy( this.onMouseMove ),
-		'cut copy': this.proxy( this.onCutCopy ),
-		'beforepaste paste': this.proxy( this.onPaste ),
+		'keypress': ve.proxy( this.onKeyPress, this ),
+		'keydown': ve.proxy( this.onKeyDown, this ),
+		'mousedown': ve.proxy( this.onMouseDown, this ),
+		'mouseup': ve.proxy( this.onMouseUp, this ),
+		'mousemove': ve.proxy( this.onMouseMove, this ),
+		'cut copy': ve.proxy( this.onCutCopy, this ),
+		'beforepaste paste': ve.proxy( this.onPaste, this ),
 		'dragover drop': function( e ) {
 			// Prevent content drag & drop
 			e.preventDefault();
 			return false;
 		}
 	} );
-	this.model.on( 'select', this.proxy( this.onSelect ) );
+	this.model.on( 'select', ve.proxy( this.onSelect, this ) );
 
 	// Initialization
 	this.$.append( this.documentView.documentNode.$ );
@@ -56,13 +56,6 @@ ve.ce.Surface = function( $container, model ) {
 
 
 /* Methods */
-
-ve.ce.Surface.prototype.proxy = function( func ) {
-	var _this = this;
-	return( function() {
-		return func.apply( _this, arguments );
-	});
-};
 
 ve.ce.Surface.prototype.onSelect = function( e ) {
 	console.log("onSelect", e);
@@ -113,10 +106,12 @@ ve.ce.Surface.prototype.onMouseDown = function( e ) {
 
 ve.ce.Surface.prototype.onMouseUp = function( e ) {
 	var handler = function() {
-		var rangySel = rangy.getSelection();
+		var rangySel = rangy.getSelection(),
+			offset1,
+			offset2;
 
 		if ( rangySel.anchorNode === null && rangySel.focusNode === null ) {
-			setTimeout( this.proxy( handler ), 100 );
+			setTimeout( ve.proxy( handler, this ), 100 );
 			return;
 		}
 
@@ -131,11 +126,11 @@ ve.ce.Surface.prototype.onMouseUp = function( e ) {
 				this.model.setSelection( new ve.Range( offset ) );
 			} else {
 				if ( !rangySel.isBackwards() ) {
-					var offset1 = this.getOffset( rangySel.anchorNode, rangySel.anchorOffset ),
-						offset2 = this.getOffset( rangySel.focusNode, rangySel.focusOffset );
+					offset1 = this.getOffset( rangySel.anchorNode, rangySel.anchorOffset );
+					offset2 = this.getOffset( rangySel.focusNode, rangySel.focusOffset );
 				} else {
-					var offset1 = this.getOffset( rangySel.focusNode, rangySel.focusOffset ),
-						offset2 = this.getOffset( rangySel.anchorNode, rangySel.anchorOffset );
+					offset1 = this.getOffset( rangySel.focusNode, rangySel.focusOffset );
+					offset2 = this.getOffset( rangySel.anchorNode, rangySel.anchorOffset );
 				}
 
 				var offset1Fixed = this.getNearestCorrectOffset( offset1, 1 ),
@@ -162,7 +157,7 @@ ve.ce.Surface.prototype.onMouseUp = function( e ) {
 
 		this.isMouseDown = false;
 	};
-	setTimeout( this.proxy( handler ), 0 );
+	setTimeout( ve.proxy( handler, this ), 0 );
 };
 
 ve.ce.Surface.prototype.onMouseMove = function( e ) {
@@ -282,12 +277,16 @@ ve.ce.Surface.prototype.showSelection = function( range ) {
 ve.ce.Surface.prototype.getNearestCorrectOffset = function( offset, direction ) {
 	direction = direction > 0 ? 1 : -1;
 
-	if ( ve.dm.Document.isContentOffset( this.documentView.model.data, offset ) || this.hasSlugAtOffset( offset ) ) {
+	if (
+		ve.dm.Document.isContentOffset( this.documentView.model.data, offset ) ||
+		this.hasSlugAtOffset( offset )
+	) {
 		return offset;
 	}
 
 	var	contentOffset = this.documentView.model.getNearestContentOffset( offset, direction ),
-		structuralOffset = this.documentView.model.getNearestStructuralOffset( offset, direction, true );
+		structuralOffset =
+			this.documentView.model.getNearestStructuralOffset( offset, direction, true );
 
 	if ( !this.hasSlugAtOffset( structuralOffset ) ) {
 		return contentOffset;
@@ -312,7 +311,7 @@ ve.ce.Surface.prototype.getNearestCorrectOffset = function( offset, direction ) 
 ve.ce.Surface.prototype.hasSlugAtOffset = function( offset ) {
 	var node = this.documentView.documentNode.getNodeFromOffset( offset );
 	if ( node.canHaveChildren() ) {
-		return this.documentView.documentNode.getNodeFromOffset( offset ).hasSlugAtOffset( offset );	
+		return this.documentView.documentNode.getNodeFromOffset( offset ).hasSlugAtOffset( offset );
 	} else {
 		return false;
 	}
@@ -390,20 +389,22 @@ ve.ce.Surface.prototype.getNodeAndOffset = function( offset ) {
  * Gets the linear offset based on a given DOM node and DOM offset
  *
  * @method
- * @param DOMnode {DOM Node} DOM node
- * @param DOMoffset {Integer} DOM offset within the DOM Element
+ * @param domNode {DOM Node} DOM node
+ * @param domOffset {Integer} DOM offset within the DOM Element
  * @returns {Integer} Linear model offset
  */
-ve.ce.Surface.prototype.getOffset = function( DOMnode, DOMoffset ) {
-	if ( DOMnode.nodeType === Node.TEXT_NODE ) {
-		return this.getOffsetFromTextNode( DOMnode, DOMoffset );
+ve.ce.Surface.prototype.getOffset = function( domNode, domOffset ) {
+	if ( domNode.nodeType === Node.TEXT_NODE ) {
+		return this.getOffsetFromTextNode( domNode, domOffset );
 	} else {
-		return this.getOffsetFromElementNode( DOMnode, DOMoffset );
+		return this.getOffsetFromElementNode( domNode, domOffset );
 	}
 };
 
-ve.ce.Surface.prototype.getOffsetFromTextNode = function( DOMnode, DOMoffset ) {
-	var	$node = $( DOMnode ).closest( '.ve-ce-branchNode, .ve-ce-alienBlockNode, .ve-ce-alienInlineNode' ),
+ve.ce.Surface.prototype.getOffsetFromTextNode = function( domNode, domOffset ) {
+	var	$node = $( domNode ).closest(
+			'.ve-ce-branchNode, .ve-ce-alienBlockNode, .ve-ce-alienInlineNode'
+		),
 		nodeModel = $node.data( 'node' ).getModel();
 	if ( ! $node.hasClass( 've-ce-branchNode' ) ) {
 		return nodeModel.getOffset();
@@ -421,8 +422,8 @@ ve.ce.Surface.prototype.getOffsetFromTextNode = function( DOMnode, DOMoffset ) {
 		}
 		item = current[0][current[1]];
 		if ( item.nodeType === Node.TEXT_NODE ) {
-			if ( item === DOMnode ) {
-				offset += DOMoffset;
+			if ( item === domNode ) {
+				offset += domOffset;
 				break;
 			} else {
 				offset += item.textContent.length;
@@ -430,7 +431,7 @@ ve.ce.Surface.prototype.getOffsetFromTextNode = function( DOMnode, DOMoffset ) {
 		} else if ( item.nodeType === Node.ELEMENT_NODE ) {
 			$item = current[0].eq( current[1] );
 			if ( $item.hasClass( 've-ce-slug' ) ) {
-				if ( $item.contents()[0] === DOMnode ) {
+				if ( $item.contents()[0] === domNode ) {
 					break;
 				}
 			} else if ( $item.hasClass( 've-ce-leafNode' ) ) {
@@ -449,36 +450,36 @@ ve.ce.Surface.prototype.getOffsetFromTextNode = function( DOMnode, DOMoffset ) {
 	return offset + nodeModel.getOffset() + ( nodeModel.isWrapped() ? 1 : 0 );
 };
 
-ve.ce.Surface.prototype.getOffsetFromElementNode = function( DOMnode, DOMoffset, addOuterLength ) {
-	var	$DOMnode = $( DOMnode ),
+ve.ce.Surface.prototype.getOffsetFromElementNode = function( domNode, domOffset, addOuterLength ) {
+	var	$domNode = $( domNode ),
 		nodeModel,
 		node;
 
-	if ( $DOMnode.hasClass( 've-ce-slug' ) ) {
-		if ( $DOMnode.prev().length > 0 ) {
-			nodeModel = $DOMnode.prev().data( 'node' ).getModel();
+	if ( $domNode.hasClass( 've-ce-slug' ) ) {
+		if ( $domNode.prev().length > 0 ) {
+			nodeModel = $domNode.prev().data( 'node' ).getModel();
 			return nodeModel.getOffset() + nodeModel.getOuterLength();
 		}
-		if ( $DOMnode.next().length > 0 ) {
-			nodeModel = $DOMnode.next().data( 'node' ).getModel();
+		if ( $domNode.next().length > 0 ) {
+			nodeModel = $domNode.next().data( 'node' ).getModel();
 			return nodeModel.getOffset();
 		}
 	}
 
-	if ( DOMoffset === 0 ) {
-		node = $DOMnode.data( 'node' );
+	if ( domOffset === 0 ) {
+		node = $domNode.data( 'node' );
 		if ( node ) {
-			nodeModel = $DOMnode.data( 'node' ).getModel();
+			nodeModel = $domNode.data( 'node' ).getModel();
 			if ( addOuterLength === true ) {
 				return nodeModel.getOffset() + nodeModel.getOuterLength();
 			} else {
 				return nodeModel.getOffset();
 			}
 		} else {
-			node = $DOMnode.contents().last()[0];
+			node = $domNode.contents().last()[0];
 		}
 	} else {
-		node = $DOMnode.contents()[ DOMoffset - 1 ];
+		node = $domNode.contents()[ domOffset - 1 ];
 	}
 
 	if ( node.nodeType === Node.TEXT_NODE ) {
