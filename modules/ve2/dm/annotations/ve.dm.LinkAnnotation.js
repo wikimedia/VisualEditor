@@ -24,16 +24,22 @@ ve.dm.LinkAnnotation.converters = {
 	'toDomElement': function( subType, annotation ) {
 		if ( annotation.type ) {
 			var link = document.createElement( 'a' );
-			link.setAttribute( 'data-type', subType );
 			link.setAttribute( 'href', annotation.data.href );
+			link.setAttribute( 'data-mw', annotation.data.mw );
+			if ( subType === 'wikiLink' || subType === 'extLink' ) {
+				link.setAttribute( 'rel', 'mw:' + subType );
+			}
 			return link;
 		}
 	},
 	'toDataAnnotation': function( tag, element ) {
-		// FIXME: the parser currently doesn't output this data this way
-		// Internal links get 'linkType': 'internal' in the data-mw-rt attrib, while external
-		// links currently get nothing
-		return { 'type': 'link/' + ( element.getAttribute( 'data-type' ) || 'unknown' ), 'data': { 'href': element.getAttribute( 'href' ) } };
+		return {
+			'type': 'link/' + ( element.getAttribute( 'rel' ).split( ':' )[1] || 'unknown' ),
+			'data': {
+				'href': element.getAttribute( 'href' ),
+				'mw': element.getAttribute( 'data-mw' )
+			}
+		};
 	}
 };
 
