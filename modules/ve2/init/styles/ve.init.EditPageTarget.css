@@ -47,13 +47,6 @@
 	box-shadow: inset 0px 1px 4px 0px rgba(0, 0, 0, 0.07);
 }
 
-.ve-init-editPageTarget-closeButton {
-	width: 22px;
-	background-image: url(../../ui/styles/images/close.png);
-	background-position: center center;
-	background-repeat: no-repeat;
-}
-
 /* inspector styles */
 .ve-init-editPageTarget-saveButton {
 	padding-right: 32px;
@@ -124,7 +117,7 @@
 .ve-init-editPageTarget-saveDialog {
 	display: block;
 	top: -1px;
-	right: 2.5em;
+	right: 0.25em;
 	width: 29em;
 }
 

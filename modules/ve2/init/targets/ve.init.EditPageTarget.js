@@ -133,7 +133,7 @@ ve.init.EditPageTarget.prototype.onSave = function( error, content ) {
 		// TODO: Handle error in UI
 	} else {
 		// Hide the save dialog
-		this.$dialog.slideUp();
+		this.$dialog.fadeOut();
 		// Refresh page with changed content
 		this.$content.find( '#mw-content-text' ).html( content );
 		// Restore the page to how it used to be
@@ -152,7 +152,7 @@ ve.init.EditPageTarget.prototype.setUpSurface = function( dom ) {
 	this.surface = new ve.Surface( this.$surface, dom, this.surfaceOptions );
 	// Transplant the toolbar
 	this.$toolbar = this.$surface.find( '.es-toolbar-wrapper' ).insertBefore( this.$heading );
-	this.$heading.css( 'margin-top', this.$toolbar.outerHeight() );
+	this.$heading.animate( { 'margin-top': this.$toolbar.outerHeight() }, 'fast' );
 	// Update UI
 	this.$spinner.remove();
 	this.$view.hide();
@@ -168,12 +168,7 @@ ve.init.EditPageTarget.prototype.setUpSurface = function( dom ) {
 						$( '<span></span>' )
 							.text( mw.msg( 'savearticle' ) )
 					)
-					.click( ve.proxy( this.$dialog.show, this.$dialog ) )
-			)
-			.append(
-				$( '<div></div>' )
-					.addClass( 've-init-editPageTarget-button ve-init-editPageTarget-closeButton' )
-					.click( ve.proxy( this.tearDownSurface, this ) )
+					.click( ve.proxy( function() { $(this).fadeIn( 'fast' ); }, this.$dialog ) )
 			);
 	// Set up save dialog
 	this.$dialog
@@ -181,7 +176,7 @@ ve.init.EditPageTarget.prototype.setUpSurface = function( dom ) {
 			.text( mw.msg( 'tooltip-save' ) )
 			.end()
 		.find( '.ve-init-editPageTarget-saveDialog-closeButton' )
-			.click( ve.proxy( this.$dialog.hide, this.$dialog ) )
+			.click( ve.proxy( function() { $(this).fadeOut( 'fast' ); }, this.$dialog ) )
 			.end()
 		.find( '.ve-init-editPageTarget-saveDialog-editSummary-label' )
 			.text( mw.msg( 'summary' ) )
@@ -224,7 +219,7 @@ ve.init.EditPageTarget.prototype.tearDownSurface = function( content ) {
 	this.$surface.remove();
 	this.$toolbar.remove();
 	this.$spinner.remove();
-	this.$heading.css( 'margin-top', 0 );
+	this.$heading.animate( { 'margin-top': 0 }, 'fast' );
 	// Destroy editor
 	this.surface = null;
 };
