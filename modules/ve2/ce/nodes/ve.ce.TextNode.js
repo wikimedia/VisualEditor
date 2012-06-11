@@ -160,9 +160,6 @@ ve.ce.TextNode.prototype.getHtml = function() {
 
 		for ( var hash in annotations ) {
 			annotation = annotations[hash];
-			if ( renderers[annotation.type] === undefined ) {
-				debugger;
-			}
 			out += typeof renderers[annotation.type].open === 'function' ?
 				renderers[annotation.type].open( annotation.data ) :
 				renderers[annotation.type].open;
