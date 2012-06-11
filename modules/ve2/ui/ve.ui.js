@@ -4,7 +4,8 @@
  * All classes and functions will be attached to this object to keep the global namespace clean.
  */
 ve.ui = {
-	
+	// Path to UI assets for direct loading
+	'stylesheetPath': 'extensions/VisualEditor/modules/ve2/ui/styles/'
 };
 
 /*
@@ -12,7 +13,9 @@ ve.ui = {
  * Returns UI stylesheet path
  */
 ve.ui.getStylesheetPath = function() {
-	// gets the path to a UI
-	// TODO: look for mw.util and rewrite
-	return mw.config.get( 'wgExtensionAssetsPath' ) + '/VisualEditor/modules/ve2/ui/styles/';
+	if ( 'mw' in window ) {
+		return mw.config.get( 'wgExtensionAssetsPath' ) + '/VisualEditor/modules/ve2/ui/styles/';
+	} else {
+		return ve.ui.stylesheetPath;
+	}
 };

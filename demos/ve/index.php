@@ -169,6 +169,9 @@ include( '../../modules/sandbox/base.php' );
 
 		<!-- ui -->
 		<script src="../../modules/ve2/ui/ve.ui.js"></script>
+		<script>
+			ve.ui.stylesheetPath = '../../modules/ve2/ui/styles/';
+		</script>
 		<script src="../../modules/ve2/ui/ve.ui.Inspector.js"></script>
 		<script src="../../modules/ve2/ui/ve.ui.Tool.js"></script>
 		<script src="../../modules/ve2/ui/ve.ui.Toolbar.js"></script>
