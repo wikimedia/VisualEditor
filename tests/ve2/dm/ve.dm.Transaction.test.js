@@ -548,6 +548,62 @@ test( 'newFromAnnotation', function() {
 	ve.dm.Transaction.runConstructorTests( ve.dm.Transaction.newFromAnnotation, cases );
 } );
 
+test( 'newFromContentBranchConversion', function() {
+	var doc = new ve.dm.Document( ve.dm.example.data ),
+		cases = {
+		'range inside a heading, convert to paragraph': {
+			'args': [doc, new ve.Range( 1, 2 ), 'paragraph'],
+			'ops': [
+				{
+					'type': 'replace',
+					'remove': [{ 'type': 'heading', 'attributes': { 'level': 1 } }],
+					'insert': [{ 'type': 'paragraph' }]
+				},
+				{ 'type': 'retain', 'length': 3 },
+				{
+					'type': 'replace',
+					'remove': [{ 'type': '/heading' }],
+					'insert': [{ 'type': '/paragraph' }]
+				},
+				{ 'type': 'retain', 'length': 56 }
+			]
+		},
+		'range around 2 paragraphs, convert to preformatted': {
+			'args': [doc, new ve.Range( 50, 58 ), 'preformatted'],
+			'ops': [
+				{ 'type': 'retain', 'length': 50 },
+				{
+					'type': 'replace',
+					'remove': [{ 'type': 'paragraph' }],
+					'insert': [{ 'type': 'preformatted' }]
+				},
+				{ 'type': 'retain', 'length': 1 },
+				{
+					'type': 'replace',
+					'remove': [{ 'type': '/paragraph' }],
+					'insert': [{ 'type': '/preformatted' }]
+				},
+				{ 'type': 'retain', 'length': 2 },
+				{
+					'type': 'replace',
+					'remove': [{ 'type': 'paragraph' }],
+					'insert': [{ 'type': 'preformatted' }]
+				},
+				{ 'type': 'retain', 'length': 1 },
+				{
+					'type': 'replace',
+					'remove': [{ 'type': '/paragraph' }],
+					'insert': [{ 'type': '/preformatted' }]
+				},
+				{ 'type': 'retain', 'length': 3 }
+			]
+		}
+	};
+	ve.dm.Transaction.runConstructorTests(
+		ve.dm.Transaction.newFromContentBranchConversion, cases
+	);
+} );
+
 test( 'pushRetain', function() {
 	var cases = {
 		'retain': {

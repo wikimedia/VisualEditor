@@ -240,6 +240,61 @@ ve.dm.Transaction.newFromAnnotation = function( doc, range, method, annotation )
 	return tx;
 };
 
+/**
+ * Generates a transaction that converts elements that can contain content.
+ *
+ * @static
+ * @method
+ * @param {ve.dm.Document} doc Document to create transaction for
+ * @param {ve.Range} range Range to convert
+ * @param {String} type Symbolic name of element type to convert to
+ * @param {Object} attr Attributes to initialize element with
+ * @returns {ve.dm.Transaction} Transcation that annotates content
+ */
+ve.dm.Transaction.newFromContentBranchConversion = function( doc, range, type, attr ) {
+	var tx = new ve.dm.Transaction(),
+		data = doc.getData(),
+		selection = doc.selectNodes( range, 'leaves' ),
+		opening = { 'type': type },
+		closing = { 'type': '/' + type },
+		previousBranch,
+		previousBranchOuterRange;
+	// Add attributes to opening if needed
+	if ( ve.isPlainObject( attr ) ) {
+		opening.attributes = attr;
+	}
+	// Replace the wrappings of each content branch in the range
+	for ( var i = 0; i < selection.length; i++ ) {
+		var selected = selection[i];
+		if ( selected.node.isContent() ) {
+			var branch = selected.node.getParent(),
+				branchOuterRange = branch.getOuterRange();
+			// Don't convert the same branch twice
+			if ( branch === previousBranch ) {
+				continue;
+			}
+			// Retain up to this branch, considering where the previous one left off
+			tx.pushRetain(
+				branchOuterRange.start - ( previousBranch ? previousBranchOuterRange.end : 0 )
+			);
+			// Replace the opening
+			tx.pushReplace( [data[branchOuterRange.start]], [ve.copyObject( opening )] );
+			// Retain the contents
+			tx.pushRetain( branch.getLength() );
+			// Replace the closing
+			tx.pushReplace( [data[branchOuterRange.end - 1]], [ve.copyObject( closing )] );
+			// Remember this branch and it's range for next time
+			previousBranch = branch;
+			previousBranchOuterRange = branchOuterRange;
+		}
+	}
+	// Retain until the end
+	tx.pushRetain(
+		data.length - ( previousBranch ? previousBranchOuterRange.end : 0 )
+	);
+	return tx;
+};
+
 /* Methods */
 
 /**
