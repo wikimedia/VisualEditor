@@ -7,12 +7,10 @@
 }
 
 .ve-init-editPageTarget-loadingSpinner {
-	background-color: #ffffff;
-	opacity: 0.75;
-	position: absolute;
-	top: 0;
-	left: 0;
-	background-position: center 2em !important;
+	background-image: url(images/loading.gif);
+	width: 128px;
+	height: 15px;
+	float: right;
 }
 
 .ve-init-editPageTarget-button {

@@ -96,7 +96,6 @@ ve.init.EditPageTarget.prototype.onEditTabClick = function( e ) {
  * @method
  */
 ve.init.EditPageTarget.prototype.onSaveDialogSaveButtonClick = function( e ) {
-	var _this = this;
 	this.showSpinner();
 	// Save
 	this.save(
@@ -120,6 +119,7 @@ ve.init.EditPageTarget.prototype.onLoad = function( error, dom ) {
 		// TODO: Error handling in the UI
 	} else {
 		this.setUpSurface( dom );
+		this.$surface.find( '.ve-ce-documentNode' ).focus();
 	}
 };
 
@@ -215,11 +215,11 @@ ve.init.EditPageTarget.prototype.tearDownSurface = function( content ) {
 	// Reset tabs
 	this.setSelectedTab( 'ca-view' );
 	// Update UI
-	this.$view.show().fadeTo( 1 );
+	this.$view.show().fadeTo( 'fast', 1 );
 	this.$surface.remove();
 	this.$toolbar.remove();
 	this.$spinner.remove();
-	this.$heading.animate( { 'margin-top': 0 }, 'fast' );
+	this.$heading.animate( { 'margin-top': 0, 'opacity': 1 }, 'fast' );
 	// Destroy editor
 	this.surface = null;
 };
@@ -268,14 +268,10 @@ ve.init.EditPageTarget.prototype.setupTabs = function(){
  * @method
  */
 ve.init.EditPageTarget.prototype.showSpinner = function() {
-	var $bodyContent = $( '#bodyContent' );
 	this.$spinner = $( '<div></div>' )
-		.addClass( 've-init-editPageTarget-loadingSpinner mw-ajax-loader' )
-		.css( {
-			'height': $bodyContent.height() + 'px',
-			'width': ( $bodyContent.width() -20 ) + 'px'
-		} )
-		.appendTo( $bodyContent );
+		.addClass( 've-init-editPageTarget-loadingSpinner' )
+		.prependTo( this.$heading );
+	this.$heading.fadeTo( 'fast', 0.5 );
 };
 
 /**
