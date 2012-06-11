@@ -162,7 +162,6 @@ ve.ui.Context.prototype.openInspector = function( name ) {
 	this.inspectors[name].open();
 	this.positionOverlay( this.$inspectors );
 	this.$inspectors.show();
-	this.positionOverlay( this.$inspectors );
 	//this.positionOverlay( this.inspectors[name].$ );
 	this.inspector = name;
 };

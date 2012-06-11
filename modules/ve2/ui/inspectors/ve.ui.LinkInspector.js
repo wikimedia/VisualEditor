@@ -83,7 +83,7 @@ ve.ui.LinkInspector.prototype.onClose = function( accept ) {
 		}
 		var surfaceModel = this.context.getSurfaceView().model;
 		surfaceModel.annotate( 'clear', /link\/.*/ );
-		surfaceModel.annotate( 'set', { 'type': 'link/internal', 'data': { 'title': title } } );
+		surfaceModel.annotate( 'set', { 'type': 'link/wikiLink', 'data': { 'title': title } } );
 	}
 };
 
