@@ -47,6 +47,7 @@ ve.Document.prototype.getDocumentNode = function() {
  * @throws 'Invalid end offset' if range.end is out of range
  */
 ve.Document.prototype.selectNodes = function( range, mode ) {
+	range.normalize();
 	var	doc = this.documentNode,
 		retval = [],
 		start = range.start,
