@@ -25,7 +25,10 @@ ve.ui.LinkInspector = function( toolbar, context ) {
 
 		var		surfaceModel = _this.context.getSurfaceView().getModel(),
 				annotation = _this.getSelectedLinkAnnotation();
-		surfaceModel.annotate( 'clear', annotation );
+		// If link annotation exists, clear it.
+		if ( annotation !== undefined ) {
+			surfaceModel.annotate( 'clear', annotation );
+		}
 
 		_this.$locationInput.val( '' );
 		_this.context.closeInspector();
@@ -95,7 +98,10 @@ ve.ui.LinkInspector.prototype.onClose = function( accept ) {
 		var surfaceModel = this.context.getSurfaceView().getModel(),
 			annotation = this.getSelectedLinkAnnotation();
 
-		surfaceModel.annotate( 'clear', annotation );
+		// Clear link annotation if it exists
+		if ( annotation !== undefined ) {
+			surfaceModel.annotate( 'clear', annotation );
+		}
 		surfaceModel.annotate( 'set', { 'type': 'link/wikiLink', 'data': { 'title': title } } );
 	}
 };

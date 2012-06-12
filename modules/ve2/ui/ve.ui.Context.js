@@ -168,8 +168,10 @@ ve.ui.Context.prototype.openInspector = function( name ) {
 
 ve.ui.Context.prototype.closeInspector = function( accept ) {
 	if ( this.inspector ) {
-		this.inspectors[this.inspector].close( accept );
 		this.$inspectors.hide();
+		
+		this.inspectors[this.inspector].close( accept );
+		
 		this.inspector = null;
 	}
 };
