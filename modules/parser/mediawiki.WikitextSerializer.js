@@ -68,7 +68,7 @@ WSP._listEndHandler = function( state, token ) {
 WSP._listItemHandler = function ( bullet, state, token ) { 
 	//console.warn( JSON.stringify( state.listStack ) );
 	var stack = state.listStack;
-	state.needParagraphLines = true;
+	// state.needParagraphLines = true;
 	if (stack.length === 0) {
 		return bullet;
 	} else {
@@ -262,7 +262,11 @@ WSP.tagToWikitext = {
 	caption: { start: WSP._serializeTableTag.bind(null, "|+", ' |', 1) },
 	p: { 
 		start: function( state, token ) {
-			if (state.needParagraphLines) {
+			if (state.listStack.length > 0) {
+				// SSS FIXME: Other tags that have similar requirements within lists?
+				// Paragraphs within lists are not expanded
+				return '';
+			} else if (state.needParagraphLines) {
 				return WSP.getNewLines( state, 2 );
 			} else {
 				state.needParagraphLines = true;
@@ -362,6 +366,27 @@ WSP.getNewLines = function ( state, n ) {
 	return out;
 };
 
+WSP.defaultHTMLTagHandler = { 
+	start: WSP._serializeHTMLTag, 
+	end  : WSP._serializeHTMLEndTag 
+};
+
+WSP.getTokenHandler = function(state, token) {
+	if (token.dataAttribs.stx === 'html') return this.defaultHTMLTagHandler;
+
+	var tname = token.name;
+	if (tname === "p" && state.listStack.length > 0) {
+		// We dont want paragraphs in list context expanded.
+		// Retain them as html tags.
+		//
+		// SSS FIXME: any other cases like this?
+		return this.defaultHTMLTagHandler;
+	} else {
+		var handler = this.tagToWikitext[tname];
+		return handler ? handler : this.defaultHTMLTagHandler;
+	}
+};
+
 /**
  * Serialize a token.
  */
@@ -369,45 +394,21 @@ WSP._serializeToken = function ( state, token ) {
 	state.prevToken = state.curToken;
 	state.curToken = token;
 	var handler, 
-		res = '',
+		res,
 		dropContent = state.dropContent;
 	//console.warn( 'st: ' + JSON.stringify( token ) );
 	switch( token.constructor ) {
 		case TagTk:
 		case SelfclosingTagTk:
-			if ( token.dataAttribs.stx === 'html' ) {
-				res = WSP._serializeHTMLTag( state, token );
-			} else {
-				handler = this.tagToWikitext[token.name];
-				if ( handler ) {
-					if ( handler.start ) {
-						res = handler.start( state, token );
-					}
-				} else {
-					res = WSP._serializeHTMLTag( state, token );
-				}
-			}
+			handler = WSP.getTokenHandler(state, token);
+			res = handler.start ? handler.start( state, token ) : null;
 			break;
 		case EndTagTk:
-			if ( token.dataAttribs.stx === 'html' ) {
-				res = WSP._serializeHTMLEndTag( state, token );
-			} else {
-				handler = this.tagToWikitext[token.name];
-				if ( handler ) {
-					if ( handler.end ) {
-						res = handler.end( state, token );
-					}
-				} else {
-					res = WSP._serializeHTMLEndTag( state, token );
-				}
-			}
+			handler = WSP.getTokenHandler(state, token);
+			res = handler.end ? handler.end( state, token ) : null;
 			break;
 		case String:
-			if ( state.textHandler ) {
-				res = state.textHandler( token );
-			} else {
-				res = token;
-			}
+			res = state.textHandler ? state.textHandler( token ) : token;
 			break;
 		case CommentTk:
 			res = '<!--' + token.value + '-->';
@@ -416,13 +417,15 @@ WSP._serializeToken = function ( state, token ) {
 			res = '\n';
 			break;
 		case EOFTk:
+			res = null;
 			break;
 		default:
+			res = null;
 			console.warn( 'Unhandled token type ' + JSON.stringify( token ) );
 			break;
 	}
 	//console.warn( 'res: ' + JSON.stringify( res ) );
-	if ( res !== '' ) {
+	if (res) {
 		var nls = res.match( /(?:\r?\n)+$/ );
 		if ( nls ) {
 			if ( nls[0] === res ) {
