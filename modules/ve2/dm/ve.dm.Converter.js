@@ -303,14 +303,24 @@ ve.dm.Converter.prototype.getDataFromDom = function( domElement, annotations, da
 				] );
 				break;
 			case Node.TEXT_NODE:
+				// HACK: strip trailing newlines in <li> tags. Workaround for a Parsoid bug
+				var text = childDomElement.data;
+				if ( domElement.nodeName.toLowerCase() === 'li' ) {
+					text = text.replace( /\n+$/, '' );
+				}
+				if ( text === '' ) {
+					break;
+				}
+
 				// Start auto-wrapping of bare content
 				if ( !wrapping && !alreadyWrapped && !ve.dm.nodeFactory.canNodeContainContent( branchType ) ) {
 					data.push( { 'type': 'paragraph' } );
 					wrapping = true;
 				}
+
 				// Annotate the text and output it
 				data = data.concat(
-					ve.dm.Converter.getDataContentFromText( childDomElement.data, annotations )
+					ve.dm.Converter.getDataContentFromText( text, annotations )
 				);
 				break;
 			case Node.COMMENT_NODE:
@@ -471,6 +481,36 @@ ve.dm.Converter.prototype.getDomFromData = function( data ) {
 			}
 		}
 	}
+
+	// HACK: do postprocessing on the data to work around bugs in Parsoid concerning paragraphs
+	// inside list items
+	$( container ).find( 'li' ).each( function() {
+		var $sublists = $(this).children( 'ul, ol' ),
+			$firstChild = $(this.firstChild);
+		if ( $firstChild.is( 'p' ) ) {
+			// Unwrap the first paragraph, unless it has stx=html
+			var datamw = $.parseJSON( $firstChild.attr( 'data-mw' ) ) || {};
+			if ( datamw.stx !== 'html' ) {
+				$firstChild.replaceWith( $firstChild.contents() );
+			}
+		}
+
+		// Append a newline to the end of the <li> , provided its last child is not a list
+		var lastChildNodeName = this.lastChild.nodeName.toLowerCase();
+		if ( lastChildNodeName !== 'ul' && lastChildNodeName !== 'ol' ) {
+			$(this).append( "\n" );
+		}
+		// Append a newline before every sublist that is preceded by something
+		$sublists.each( function() {
+			if ( this.previousSibling ) {
+				if ( this.previousSibling.nodeName.toLowerCase() === 'text' ) {
+					this.previousSibling.data += "\n";
+				} else {
+					this.parentNode.insertBefore( document.createTextNode( "\n" ), this );
+				}
+			}
+		});
+	});
 	return container;
 };
 
