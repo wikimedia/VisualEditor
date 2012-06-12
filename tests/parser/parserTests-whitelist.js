@@ -5,11 +5,9 @@
 testWhiteList = {};
 
 // Italic/link nesting is changed in this test, but the rendered result is the
-// same.
+// same. Currently the result is actually an improvement over the MediaWiki
+// output.
 testWhiteList["Bug 2702: Mismatched <i>, <b> and <a> tags are invalid"] = "<p><i><a href=\"http://example.com\">text</a></i><a href=\"http://example.com\"><b>text</b></a><i>Something <a href=\"http://example.com\">in italic</a></i><i>Something <a href=\"http://example.com\">mixed</a></i><a href=\"http://example.com\"><b>, even bold</b></a><i><b>Now <a href=\"http://example.com\">both</a></b></i></p>";
-
-// Extra empty bold element. Needed for round-tripping?
-testWhiteList["Unclosed and unmatched quotes"] = "<p><i data-mw=\"{}\"><b data-mw=\"{}\">Bold italic text </b>with bold deactivated<b data-mw=\"{}\"> in between.</b></i></p><p data-mw=\"{}\"><b data-mw=\"{}\"><i data-mw=\"{}\">Bold italic text </i>with italic deactivated<i data-mw=\"{}\"> in between.</i></b></p><p data-mw=\"{}\"><b data-mw=\"{}\">Bold text..</b></p><p data-mw=\"{}\">..spanning two paragraphs (should not work).<b data-mw=\"{}\"></b></p><p data-mw=\"{}\"><b data-mw=\"{}\">Bold tag left open</b></p><p data-mw=\"{}\"><i data-mw=\"{}\">Italic tag left open</i></p><p data-mw=\"{}\">Normal text.</p><p data-mw=\"{}\"><!-- Unmatching number of opening, closing tags: -->\n<b data-mw=\"{}\">This year'</b>s election <i data-mw=\"{}\">should</i> beat <b data-mw=\"{}\">last year'</b>s.</p><p data-mw=\"{}\"><i data-mw=\"{}\">Tom<b data-mw=\"{}\">s car is bigger than </b></i><b data-mw=\"{}\">Susan</b>s.</p>";
 
 // The expected result for this test is really broken html.
 testWhiteList["Link containing double-single-quotes '' in text embedded in italics (bug 4598 sanity check)"] = "<p><i>Some <a href=\"/wiki/Link\">pretty </a></i><a href=\"/wiki/Link\">italics<i> and stuff</i></a><i>!</i></p>";
@@ -23,22 +21,25 @@ testWhiteList["5 quotes, code coverage +1 line"] = "<p><i><b></b></i></p>";
 // supplies the old result without preformatting.
 testWhiteList["Bug 6200: Preformatted in <blockquote>"] = "<blockquote><pre>\nBlah</pre></blockquote>";
 
-
 // empty table tags / with only a caption are legal in HTML5.
 testWhiteList["A table with no data."] = "<table></table>";
 testWhiteList["A table with nothing but a caption"] = "<table><caption> caption</caption></table>";
 testWhiteList["Fuzz testing: Parser22"] = "<p><a href=\"http://===r:::https://b\">http://===r:::https://b</a></p><table></table>";
 
+/** 
+ * Small whitespace differences that we now start to care about for
+ * round-tripping 
+ */
+
 // Very minor whitespace difference at end of cell (MediaWiki inserts a
 // newline before the close tag even if there was no trailing space in the cell)
-testWhiteList["Table rowspan"] = "<table border=\"1\"><tbody><tr><td> Cell 1, row 1 </td><td rowspan=\"2\"> Cell 2, row 1 (and 2) </td><td> Cell 3, row 1 </td></tr><tr><td> Cell 1, row 2 </td><td> Cell 3, row 2 </td></tr></tbody></table>";
+//testWhiteList["Table rowspan"] = "<table border=\"1\"><tbody><tr><td> Cell 1, row 1 </td><td rowspan=\"2\"> Cell 2, row 1 (and 2) </td><td> Cell 3, row 1 </td></tr><tr><td> Cell 1, row 2 </td><td> Cell 3, row 2 </td></tr></tbody></table>";
 
 // Inter-element whitespace only
-testWhiteList["Indented table markup mixed with indented pre content (proposed in bug 6200)"] = "   \n\n<table><tbody><tr><td><pre>\nText that should be rendered preformatted\n</pre></td></tr></tbody></table>";
+//testWhiteList["Indented table markup mixed with indented pre content (proposed in bug 6200)"] = "   \n\n<table><tbody><tr><td><pre>\nText that should be rendered preformatted\n</pre></td></tr></tbody></table>";
 
 
-
-/* Missing token transform functionality */
+/* Misc sanitizer / HTML5 differences */
 
 // Single quotes are legal in HTML5 URIs. See 
 // http://www.whatwg.org/specs/web-apps/current-work/multipage/urls.html#url-manipulation-and-creation
