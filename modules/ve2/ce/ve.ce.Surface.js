@@ -311,7 +311,7 @@ ve.ce.Surface.prototype.getNearestCorrectOffset = function( offset, direction ) 
 ve.ce.Surface.prototype.hasSlugAtOffset = function( offset ) {
 	var node = this.documentView.documentNode.getNodeFromOffset( offset );
 	if ( node.canHaveChildren() ) {
-		return this.documentView.documentNode.getNodeFromOffset( offset ).hasSlugAtOffset( offset );
+		return node.hasSlugAtOffset( offset );
 	} else {
 		return false;
 	}
