@@ -99,7 +99,6 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 			'nodeOuterRange': nodeRange
 		} ];
 	}
-	// TODO maybe we could find the start more efficiently using the offset map
 	left = doc.children[0].isWrapped() ? 1 : 0;
 
 	do {

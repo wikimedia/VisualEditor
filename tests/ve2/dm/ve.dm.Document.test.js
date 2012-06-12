@@ -41,17 +41,6 @@ test( 'getData', 1, function() {
 	deepEqual( doc.getData(), ve.dm.example.data );
 } );
 
-test( 'getOffsetMap', function() {
-	var doc = new ve.dm.Document( ve.dm.example.data ),
-		actual = doc.getOffsetMap(),
-		expected = ve.dm.example.getOffsetMap( doc.getDocumentNode() );
-	expect( actual.length + 1 );
-	ok( actual.length === expected.length, 'offset map lengths match' );
-	for ( var i = 0; i < actual.length; i++ ) {
-		ok( actual[i] === expected[i], 'reference at offset ' + i );
-	}
-} );
-
 test( 'getNodeFromOffset', function() {
 	var doc = new ve.dm.Document( ve.dm.example.data ),
 		root = doc.getDocumentNode().getRoot(),
