@@ -95,6 +95,21 @@ ve.init.ViewPageTarget.prototype.onEditTabClick = function( e ) {
  *
  * @method
  */
+ve.init.ViewPageTarget.prototype.onViewTabClick = function( e ) {
+	// Don't do anything special unless we are in editing mode
+	if ( this.active ) {
+		this.tearDownSurface();
+		// Prevent the edit tab's normal behavior
+		e.preventDefault();
+		return false;
+	}
+};
+
+/**
+ * ...
+ *
+ * @method
+ */
 ve.init.ViewPageTarget.prototype.onSaveDialogSaveButtonClick = function( e ) {
 	this.showSpinner();
 	// Save
@@ -151,12 +166,14 @@ ve.init.ViewPageTarget.prototype.setUpSurface = function( dom ) {
 	this.$surface.appendTo( this.$content );
 	this.surface = new ve.Surface( this.$surface, dom, this.surfaceOptions );
 	// Transplant the toolbar
-	this.$toolbar = this.$surface.find( '.es-toolbar-wrapper' ).insertBefore( this.$heading );
-	this.$heading.animate( { 'margin-top': this.$toolbar.outerHeight() }, 'fast' );
+	this.$toolbar = this.$surface.find( '.es-toolbar-wrapper' );
+	this.$heading
+		.before( this.$toolbar )
+		.addClass( 've-init-viewPageTarget-pageTitle' )
+		.css( { 'margin-top': this.$toolbar.outerHeight(), 'opacity': 0.5 } );
 	// Update UI
-	this.$spinner.remove();
 	this.$view.hide();
-	this.$spinner.hide();
+	this.$spinner.remove();
 	this.$dialog = $( ve.init.ViewPageTarget.saveDialogTemplate );
 	// Add save and close buttons
 	this.$toolbar
@@ -165,9 +182,10 @@ ve.init.ViewPageTarget.prototype.setUpSurface = function( dom ) {
 				$( '<div></div>' )
 					.addClass( 've-init-viewPageTarget-button ve-init-viewPageTarget-saveButton' )
 					.append(
-						$( '<span></span>' )
+						$( '<span class="ve-init-viewPageTarget-saveButton-label"></span>' )
 							.text( mw.msg( 'savearticle' ) )
 					)
+					.append( $( '<span class="ve-init-viewPageTarget-saveButton-icon"></span>' ) )
 					.click( ve.proxy( function() { $(this).fadeIn( 'fast' ); }, this.$dialog ) )
 			);
 	// Set up save dialog
@@ -209,19 +227,24 @@ ve.init.ViewPageTarget.prototype.setUpSurface = function( dom ) {
 			)
 			.end()
 		.insertAfter( this.$toolbar.find( '.ve-init-viewPageTarget-saveButton' ) );
+	this.active = true;
 };
 
 ve.init.ViewPageTarget.prototype.tearDownSurface = function( content ) {
 	// Reset tabs
 	this.setSelectedTab( 'ca-view' );
 	// Update UI
-	this.$view.show().fadeTo( 'fast', 1 );
-	this.$surface.remove();
+	this.$surface.empty().detach();
 	this.$toolbar.remove();
 	this.$spinner.remove();
-	this.$heading.animate( { 'margin-top': 0, 'opacity': 1 }, 'fast' );
+	this.$view.show().fadeTo( 'fast', 1 );
+	this.$heading.css( { 'margin-top': 'auto', 'opacity': 1 } );
+	setTimeout( ve.proxy( function() {
+		$(this).removeClass( 've-init-viewPageTarget-pageTitle' );
+	}, this.$heading ), 1000 );
 	// Destroy editor
 	this.surface = null;
+	this.active = false;
 };
 
 ve.init.ViewPageTarget.prototype.setupTabs = function(){
@@ -260,6 +283,7 @@ ve.init.ViewPageTarget.prototype.setupTabs = function(){
 		);
 	}
 	$( '#ca-edit > span > a' ).click( ve.proxy( this.onEditTabClick, this ) );
+	$( '#ca-view > span > a' ).click( ve.proxy( this.onViewTabClick, this ) );
 };
 
 /**
@@ -271,7 +295,6 @@ ve.init.ViewPageTarget.prototype.showSpinner = function() {
 	this.$spinner = $( '<div></div>' )
 		.addClass( 've-init-viewPageTarget-loadingSpinner' )
 		.prependTo( this.$heading );
-	this.$heading.fadeTo( 'fast', 0.5 );
 };
 
 /**

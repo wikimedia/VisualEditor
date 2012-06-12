@@ -6,6 +6,13 @@
 	margin-left: 1px;
 }
 
+.ve-init-viewPageTarget-pageTitle {
+	-webkit-transition: opacity 200ms ease-out, margin-top 200ms ease-out;
+	-moz-transition: opacity 200ms ease-out, margin-top 200ms ease-out;
+	-o-transition: opacity 200ms ease-out, margin-top 200ms ease-out;
+	transition: opacity 200ms ease-out, margin-top 200ms ease-out;
+}
+
 .ve-init-viewPageTarget-loadingSpinner {
 	background-image: url(images/loading.gif);
 	width: 128px;
@@ -28,15 +35,18 @@
 	margin-right: 0.25em;
 	border: solid 1px transparent;
 }
+
 .ve-init-viewPageTarget-button:before {
 	content: " ";
 	position: absolute;
 	display: block;
 	height: 22px;
 }
+
 .ve-init-viewPageTarget-button:hover {
 	border-color: #eeeeee;
 }
+
 .ve-init-viewPageTarget-button:active,
 .ve-init-viewPageTarget-button-down {
 	border-color: #dddddd;
@@ -47,20 +57,29 @@
 
 /* inspector styles */
 .ve-init-viewPageTarget-saveButton {
-	padding-right: 32px;
-	border:1px solid transparent;
+	border: 1px solid transparent;
 	border-radius: 0.125em;
 	-webkit-border-radius: 0.125em;
 	-moz-border-radius: 0.125em;
 	-o-border-radius: 0.125em;
-	/* need new button */
+}
+
+.ve-init-viewPageTarget-saveButton-icon {
+	display: inline-block;
+	vertical-align: middle;
+	width: 32px;
+	height: 32px;
 	/* @embed */
 	background-image: url(../../ui/styles/images/accept.png);
-	background-position: right center;
+	background-position: right top;
 	background-repeat: no-repeat;
 }
 
-.ve-init-viewPageTarget-saveButton span {
+.ve-init-viewPageTarget-saveButton-label {
+	display: inline-block;
+	vertical-align: middle;
+	height: 32px;
+	padding-left: 4px;
 	font-size: 0.8em;
 }
 
@@ -99,6 +118,7 @@
 		color-stop(1, rgb(240,251,225))
 	);
 }
+
 .ve-init-viewPageTarget-saveDialog-saveButton-icon {
 	display: inline-block;
 	vertical-align: middle;
@@ -106,7 +126,7 @@
 	width: 28px;
 	background: transparent;
 	background-image: url(../../ui/styles/images/accept-clear.png);
-	background-position: top right;
+	background-position: right top;
 	background-repeat: no-repeat;
 }
 
@@ -115,7 +135,7 @@
 .ve-init-viewPageTarget-saveDialog {
 	display: block;
 	top: -1px;
-	right: 0.25em;
+	right: 0.5em;
 	width: 29em;
 }
 

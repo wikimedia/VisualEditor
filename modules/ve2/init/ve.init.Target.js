@@ -43,8 +43,7 @@ ve.init.Target.prototype.load = function( callback ) {
 		return false;
 	}
 	// Start loading the module immediately
-	var modules = this.modules;
-	mw.loader.load( modules );
+	mw.loader.load( this.modules );
 	// Load DOM
 	this.isDomLoading = true;
 	$.ajax( {
@@ -61,7 +60,7 @@ ve.init.Target.prototype.load = function( callback ) {
 		// Wait up to 9 seconds
 		'timeout': 9000,
 		'error': callback,
-		'success': function( data ) {
+		'success': ve.proxy( function( data ) {
 			this.isDomLoading = false;
 			var response = data['ve-parsoid'];
 			if ( !response ) {
@@ -70,11 +69,11 @@ ve.init.Target.prototype.load = function( callback ) {
 				callback( 'Invalid HTML content in response from server' );
 			} else {
 				// Everything worked, the page was loaded, continue as soon as the module is ready
-				mw.loader.using( modules, function() {
+				mw.loader.using( this.modules, function() {
 					callback( null, $( '<div></div>' ).html( data['ve-parsoid'].parsed )[0] );
 				} );
 			}
-		}
+		}, this )
 	} );
 	return true;
 };
@@ -125,7 +124,7 @@ ve.init.Target.prototype.save = function( dom, options, callback ) {
 		'dataType': 'json',
 		'type': 'POST',
 		'error': callback,
-		'success': function( data ) {
+		'success': ve.proxy( function() {
 			this.isDomSaving = false;
 			var response = data['ve-parsoid'];
 			if ( !response ) {
@@ -138,7 +137,7 @@ ve.init.Target.prototype.save = function( dom, options, callback ) {
 				// Everything worked, the page was saved, continue immediately
 				callback( null, response.content );
 			}
-		}
+		}, this )
 	} );
 	return true;
 };
