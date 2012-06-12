@@ -284,7 +284,7 @@ WSP.tagToWikitext = {
 	// XXX: support indent variant instead by registering a newline handler?
 	pre: { 
 		start: function( state, token ) {
-			state.textHandler = function( t ) { return t.replace( /\n/g, '\n ' ); };
+			state.textHandler = function( t ) { return t.replace( /^/g, ' ' ); };
 			return '';
 		},
 		end: function( state, token) { state.textHandler = null; return ''; }
