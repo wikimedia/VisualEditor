@@ -15,17 +15,20 @@ ve.dm.example.html =
 				'<p>d</p>' +
 				'<ul>' +
 					'<li>' +
-						'<p>e</p>' +
+						'e' + // Not wrapped in a <p> due to Parsoid behavior
+						"\n" + // Workaround for Parsoid bug
 						'<ul>' +
 							'<li>' +
-								'<p>f</p>' +
+								'f' + // Not wrapped in a <p> due to Parsoid behavior
+								"\n" + // Workaround for Parsoid bug
 							'</li>' +
 						'</ul>' +
 					'</li>' +
 				'</ul>' +
 				'<ol>' +
 					'<li>' +
-						'<p>g</p>' +
+						'g' + // Not wrapped in a <p> due to Parsoid behavior
+						"\n" + // Workaround for Parsoid bug
 					'</li>' +
 				'</ol>' +
 			'</td>' +
@@ -569,7 +572,10 @@ ve.dm.example.domToDataCases = {
 			'data': ve.dm.example.data
 		},
 		'list item with space followed by link': {
-			'html': '<ul><li><p> <a data-type="unknown" href="foo">bar</a></p></li></ul>',
+			// This HTML is weird because of workarounds for Parsoid bugs:
+			// * newline before </li>
+			// * first paragraph in an <li> not wrapped in <p>
+			'html': '<ul><li> <a rel="mw:extLink" href="foo">bar</a>\n</li></ul>',
 			'data': [
 				{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
 				{ 'type': 'listItem' },
@@ -578,22 +584,22 @@ ve.dm.example.domToDataCases = {
 				[
 					'b',
 					{
-						'{"type":"link/unknown","data":{"href":"foo"}}':
-							{ 'type': 'link/unknown', 'data': { 'href': 'foo' }
+						'{"type":"link/extLink","data":{"href":"foo"}}':
+							{ 'type': 'link/extLink', 'data': { 'href': 'foo' }
 					}
 				}],
 				[
 					'a',
 					{
-						'{"type":"link/unknown","data":{"href":"foo"}}':
-							{ 'type': 'link/unknown', 'data': { 'href': 'foo' }
+						'{"type":"link/extLink","data":{"href":"foo"}}':
+							{ 'type': 'link/extLink', 'data': { 'href': 'foo' }
 					}
 				}],
 				[
 					'r',
 					{
-						'{"type":"link/unknown","data":{"href":"foo"}}':
-							{ 'type': 'link/unknown', 'data': { 'href': 'foo' }
+						'{"type":"link/extLink","data":{"href":"foo"}}':
+							{ 'type': 'link/extLink', 'data': { 'href': 'foo' }
 					}
 				}],
 				{ 'type': '/paragraph' },
