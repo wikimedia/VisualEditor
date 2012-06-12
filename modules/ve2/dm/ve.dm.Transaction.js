@@ -249,7 +249,7 @@ ve.dm.Transaction.newFromAnnotation = function( doc, range, method, annotation )
  * @param {ve.Range} range Range to convert
  * @param {String} type Symbolic name of element type to convert to
  * @param {Object} attr Attributes to initialize element with
- * @returns {ve.dm.Transaction} Transcation that annotates content
+ * @returns {ve.dm.Transaction} Transaction that annotates content
  */
 ve.dm.Transaction.newFromContentBranchConversion = function( doc, range, type, attr ) {
 	var tx = new ve.dm.Transaction(),
@@ -283,7 +283,7 @@ ve.dm.Transaction.newFromContentBranchConversion = function( doc, range, type, a
 			tx.pushRetain( branch.getLength() );
 			// Replace the closing
 			tx.pushReplace( [data[branchOuterRange.end - 1]], [ve.copyObject( closing )] );
-			// Remember this branch and it's range for next time
+			// Remember this branch and its range for next time
 			previousBranch = branch;
 			previousBranchOuterRange = branchOuterRange;
 		}
