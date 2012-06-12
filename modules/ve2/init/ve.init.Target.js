@@ -124,7 +124,7 @@ ve.init.Target.prototype.save = function( dom, options, callback ) {
 		'dataType': 'json',
 		'type': 'POST',
 		'error': callback,
-		'success': ve.proxy( function() {
+		'success': ve.proxy( function( data ) {
 			this.isDomSaving = false;
 			var response = data['ve-parsoid'];
 			if ( !response ) {
