@@ -665,7 +665,7 @@ $(document).ready( function() {
 		Attach to #content element
 	*/
 	var sandboxEditor = new ve.Surface( '#content', HTML[0], options ),
-		surfaceModel = sandboxEditor.getSurfaceModel(),
+		surfaceModel = sandboxEditor.getModel(),
 		documentModel = sandboxEditor.getDocumentModel(),
 		parent = sandboxEditor.getParent(),
 		view = sandboxEditor.view;

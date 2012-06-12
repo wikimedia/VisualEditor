@@ -631,7 +631,7 @@ ve.dm.Document.getMatchingAnnotations = function( annotations, pattern ) {
 	if ( !( pattern instanceof RegExp ) ) {
 		throw 'Invalid Pattern. Pattern not instance of RegExp';
 	}
-	var matches = null;
+	var matches = {};
 	if ( ve.isPlainObject( annotations ) ) {
 		for ( var hash in annotations ) {
 			if ( pattern.test( annotations[hash].type ) ){
