@@ -36,14 +36,19 @@ ve.ce.Surface = function( $container, model ) {
 		'mouseup': ve.proxy( this.onMouseUp, this ),
 		'mousemove': ve.proxy( this.onMouseMove, this ),
 		'cut copy': ve.proxy( this.onCutCopy, this ),
-		'beforepaste paste': ve.proxy( this.onPaste, this ),
+		'paste': ve.proxy( this.onPaste, this ),
 		'dragover drop': function( e ) {
 			// Prevent content drag & drop
 			e.preventDefault();
 			return false;
 		}
 	} );
+	if ($.browser.msie) {
+		this.$.on('beforepaste', ve.proxy( this.onPaste, this ) );
+	};
+
 	this.model.on( 'select', ve.proxy( this.onSelect, this ) );
+	
 
 	// Initialization
 	this.$.append( this.documentView.documentNode.$ );
