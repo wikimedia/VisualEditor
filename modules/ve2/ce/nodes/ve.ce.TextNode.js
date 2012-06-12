@@ -42,8 +42,8 @@ ve.ce.TextNode.htmlCharacters = {
 	'>': '&gt;',
 	'\'': '&#039;',
 	'"': '&quot;',
-	'\n': '<span class="ve-ce-textNode-whitespace">&#182;</span>',
-	'\t': '<span class="ve-ce-textNode-whitespace">&#8702;</span>'
+	'\n': '&crarr;',
+	'\t': '&#10142;'
 };
 
 /**
