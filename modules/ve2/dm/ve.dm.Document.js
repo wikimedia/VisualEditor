@@ -14,6 +14,7 @@ ve.dm.Document = function( data, parentDocument ) {
 	// Properties
 	this.parentDocument = parentDocument;
 	this.data = data || [];
+	this.offsetMap = new Array( this.data.length );
 
 	// Initialization
 	var doc = parentDocument || this;
@@ -22,9 +23,17 @@ ve.dm.Document = function( data, parentDocument ) {
 	this.documentNode.setRoot( root );
 
 	/*
+	 * The offsetMap is always one element longer than data because it includes a reference to the
+	 * root node at the offset just past the end. To make population work correctly, we have to
+	 * start out with that one extra reference.
+	 */
+	this.offsetMap.push( this.documentNode );
+
+	/*
 	 * Build a tree of nodes and nodes that will be added to them after a full scan is complete,
 	 * then from the bottom up add nodes to their potential parents. This avoids massive length
-	 * updates being broadcast upstream constantly while building is underway.
+	 * updates being broadcast upstream constantly while building is underway. Also populate the
+	 * offset map as we go.
 	 */
 	var node,
 		textLength = 0,
@@ -37,6 +46,25 @@ ve.dm.Document = function( data, parentDocument ) {
 		parentStack = stack[0],
 		currentNode = this.documentNode;
 	for ( var i = 0, length = this.data.length; i < length; i++ ) {
+		/*
+		 * Set the node reference for this offset in the offset cache.
+		 *
+		 * This looks simple, but there are three cases that result in the same thing:
+		 *
+		 *   1. data[i] is an opening, so offset i is before the opening, so we need to point to the
+		 *      parent of the opened element. currentNode will be set to the opened element later,
+		 *      but right now its still set to the parent of the opened element.
+		 *   2. data[i] is a closing, so offset i is before the closing, so we need to point to the
+		 *      closed element. currentNode will be set to the parent of the closed element later,
+		 *      but right now it's still set to the closed element.
+		 *   3. data[i] is content, so offset i is in the middle of an element, so obviously we need
+		 *      currentNode, which won't be changed by this iteration.
+		 *
+		 * We want to populate the offsetMap with branches only, but we've just written the actual
+		 * node that lives at this offset. So if it's a leaf node, change it to its parent.
+		 */
+		this.offsetMap[i] = ve.dm.nodeFactory.canNodeHaveChildren( currentNode.getType() ) ?
+			currentNode : parentStack[parentStack.length - 1];
 		// Infer that if an item in the linear model has a type attribute than it must be an element
 		if ( this.data[i].type === undefined ) {
 			// Text node opening
@@ -432,13 +460,12 @@ ve.dm.Document.prototype.getData = function( range, deep ) {
 	return deep ? ve.copyArray( data ) : data;
 };
 
+ve.dm.Document.prototype.getOffsetMap = function() {
+	return this.offsetMap;
+};
+
 ve.dm.Document.prototype.getNodeFromOffset = function( offset ) {
-	// FIXME duplicated from ve.ce.Document
-	var node = this.documentNode.getNodeFromOffset( offset );
-	if ( !node.canHaveChildren() ) {
-		node = node.getParent();
-	}
-	return node;
+	return this.offsetMap[offset];
 };
 
 /**
@@ -488,9 +515,10 @@ ve.dm.Document.prototype.getAnnotationsFromOffset = function( offset ) {
 		this.data[offset][1] : this.data[offset].annotations;
 
 	if ( ve.isPlainObject( annotations ) ) {
-		return ve.getObjectValues( annotations );
+		//return ve.getObjectValues( annotations );
+		return annotations;
 	}
-	return [];
+	return {};
 };
 
 /**
@@ -503,7 +531,7 @@ ve.dm.Document.prototype.getAnnotationsFromOffset = function( offset ) {
  */
 ve.dm.Document.prototype.offsetContainsAnnotation = function ( offset, annotation ) {
 	var annotations = this.getAnnotationsFromOffset( offset );
-	for ( var a=0; a<annotations.length; a++ ) {
+	for (var a in annotations) {
 		if ( ve.compareObjects( annotations[a], annotation ) ){
 			return true;
 		}
@@ -665,7 +693,7 @@ ve.dm.Document.annotationsContainAnnotation = function( annotations, annotation 
  */
 ve.dm.Document.prototype.getAnnotationsFromRange = function( range ) {
 	var	currentChar = {},
-		annotations = [],
+		annotations = {},
 		charCount = 0,
 		map = {};
 		
@@ -684,7 +712,7 @@ ve.dm.Document.prototype.getAnnotationsFromRange = function( range ) {
 		currentChar = this.data[i][1];
 		// if a non annotated character, no commonality.
 		if ( currentChar === undefined ) {
-			return [];
+			return annotations;
 		}
 		charCount++;
 		// if current char annotations are not the same as previous char.
@@ -704,7 +732,7 @@ ve.dm.Document.prototype.getAnnotationsFromRange = function( range ) {
 	}
 	// build array of annotations
 	for ( var key in map ) {
-		annotations.push( map[key] );
+		annotations[key] = map[key];
 	}
 	return annotations;
 };
@@ -714,13 +742,14 @@ ve.dm.Document.prototype.getAnnotationsFromRange = function( range ) {
  *
  * The data provided to this method may contain either one node or multiple sibling nodes, but it
  * must be balanced and valid. Data provided to this method also may not contain any content at the
- * top level. The tree is updated during this operation.
+ * top level. The tree and offset map are updated during this operation.
  *
  * Process:
  *  1. Nodes between {index} and {index} + {numNodes} in {parent} will be removed
  *  2. Data will be retrieved from this.data using {offset} and {newLength}
  *  3. A document fragment will be generated from the retrieved data
- *  4. The document fragment's nodes will be inserted into {parent} at {index}
+ *  4. The document fragment's offset map will be inserted into this document at {offset}
+ *  5. The document fragment's nodes will be inserted into {parent} at {index}
  *
  * Use cases:
  *  1. Rebuild old nodes and offset data after a change to the linear model.
@@ -735,11 +764,18 @@ ve.dm.Document.prototype.getAnnotationsFromRange = function( range ) {
  *     inserted before {index}. To insert nodes at the end, use number of children in {parent}
  *   - If {numNodes} == 1: Only the node at {index} will be rebuilt
  *   - If {numNodes} > 1: The node at {index} and the next {numNodes-1} nodes will be rebuilt
- * @param {Integer} offset Linear model offset to rebuild from
+ * @param {Integer} offset Linear model offset to rebuild or insert offset map data
+ *   - If {numNodes} == 0: Offset to insert offset map data at
+ *   - If {numNodes} >= 1: Offset to remove old and insert new offset map data at
  * @param {Integer} newLength Length of data in linear model to rebuild or insert nodes for
  * @returns {ve.dm.Node[]} Array containing the rebuilt/inserted nodes
  */
 ve.dm.Document.prototype.rebuildNodes = function( parent, index, numNodes, offset, newLength ) {
+	// Compute the length of the old nodes (so we can splice their offsets out of the offset map)
+	var oldLength = 0;
+	for ( var i = index; i < index + numNodes; i++ ) {
+		oldLength += parent.children[i].getOuterLength();
+	}
 	// Get a slice of the document where it's been changed
 	var data = this.data.slice( offset, offset + newLength );
 	// Build document fragment from data
@@ -748,6 +784,8 @@ ve.dm.Document.prototype.rebuildNodes = function( parent, index, numNodes, offse
 	var nodes = fragment.getDocumentNode().getChildren();
 	// Replace nodes in the model tree
 	ve.batchSplice( parent, index, numNodes, nodes );
+	// Update offset map
+	ve.batchSplice( this.offsetMap, offset, oldLength, fragment.getOffsetMap() );
 	// Return inserted nodes
 	return nodes;
 };

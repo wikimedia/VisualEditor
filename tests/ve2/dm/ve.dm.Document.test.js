@@ -151,8 +151,8 @@ test( 'getAnnotationsFromOffset', 1, function() {
 				['b', { '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } }]
 			],
 			'expected': [
-				[{ 'type': 'textStyle/bold' }],
-				[{ 'type': 'textStyle/bold' }]
+				{ '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } },
+				{ '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } }
 			]
 		},
 		{
@@ -162,8 +162,8 @@ test( 'getAnnotationsFromOffset', 1, function() {
 				['b', { '{"type:"textStyle/italic"}': { 'type': 'textStyle/italic' } }]
 			],
 			'expected': [
-				[{ 'type': 'textStyle/bold' }],
-				[{ 'type': 'textStyle/italic' }]
+				{ '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } },
+				{ '{"type:"textStyle/italic"}': { 'type': 'textStyle/italic' } }
 			]
 		},
 		{
@@ -176,9 +176,14 @@ test( 'getAnnotationsFromOffset', 1, function() {
 						'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline'}
 					}]
 			],
-			'expected': [
-				[{ 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' }, { 'type': 'textStyle/underline' }]
-			]
+			'expected':
+				[
+					{
+						'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
+						'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic'},
+						'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline'}
+					}
+				]
 		}
 
 	];
@@ -210,7 +215,7 @@ test( 'getAnnotationsFromRange', 1, function() {
 				['a', { '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
 				['b', { '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } } ]
 			],
-			'expected': [ { 'type': 'textStyle/bold' } ]
+			'expected': { '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } }
 		},
 		{
 			'msg': 'bold and italic',
@@ -228,7 +233,12 @@ test( 'getAnnotationsFromRange', 1, function() {
 					}
 				]
 			],
-			'expected': [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ]
+			'expected':
+				{
+					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
+					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic'}
+				}
+				
 		},
 		{
 			'msg': 'bold and italic',
@@ -247,7 +257,11 @@ test( 'getAnnotationsFromRange', 1, function() {
 					}
 				]
 			],
-			'expected': [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ]
+			'expected':
+					{
+						'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
+						'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic'}
+					}
 		},
 		{
 			'msg': 'none common, non annotated character at end',
@@ -267,7 +281,7 @@ test( 'getAnnotationsFromRange', 1, function() {
 				],
 				['c']
 			],
-			'expected': []
+			'expected': {}
 		},
 		{
 			'msg': 'none common, reverse of previous',
@@ -287,7 +301,7 @@ test( 'getAnnotationsFromRange', 1, function() {
 					}
 				]
 			],
-			'expected': []
+			'expected': {}
 		},
 		{
 			'msg': 'all different',
@@ -295,12 +309,12 @@ test( 'getAnnotationsFromRange', 1, function() {
 				['a', { '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
 				['b', { '{"type:"textStyle/italic"}': { 'type': 'textStyle/italic' } } ]
 			],
-			'expected': []
+			'expected': {}
 		},
 		{
 			'msg': 'no annotations',
 			'data': ['a', 'b'],
-			'expected': []
+			'expected': {}
 		}
 	];
 
