@@ -63,6 +63,13 @@ ve.ce.Surface.prototype.onSelect = function( e ) {
 
 ve.ce.Surface.prototype.onKeyPress = function( e ) {
 	console.log('onKeyPress');
+	switch ( e.which ) {
+		// Enter
+		case 13:
+			e.preventDefault();
+			this.handleEnter();
+			break;
+	}
 };
 
 ve.ce.Surface.prototype.onKeyDown = function( e ) {
@@ -248,6 +255,59 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
 		_this.model.setSelection( new ve.Range( selection.start + pasteData.length ) );
 		_this.documentView.documentNode.$.focus();
 	}, 1 );
+};
+
+ve.ce.Surface.prototype.handleEnter = function() {
+	/* TODO: Determine if we still need this
+	this.stopPolling();
+	*/
+	var selection = this.model.getSelection(),
+		tx;
+		
+	if ( selection.from !== selection.to ) {
+		tx = ve.dm.Transaction.newFromRemoval( this.documentView.model, selection );
+		this.model.transact( tx );
+	}
+	
+	var	node = this.documentView.getNodeFromOffset( selection.to ),
+		nodeOffset = this.documentView.getDocumentNode().getOffsetFromNode( node ),
+		stack = [];
+	
+	// Build stack
+	ve.Node.traverseUpstream( node, function( node ) {
+		var elementType = node.type;
+		if ( !node.canBeSplit() ) {
+			return false;
+		}
+		stack.splice(
+			stack.length / 2,
+			0,
+			{ 'type': '/' + elementType },
+			{
+				'type': elementType,
+				'attributes': ve.copyObject( node.model.attributes )
+			}
+		);
+		return true;
+	} );
+
+	// Transact
+	tx = ve.dm.Transaction.newFromInsertion( this.documentView.model, selection.from, stack );
+	this.model.transact( tx );
+
+	// Place cursor
+	selection.from = selection.to = this.model.getDocument().getRelativeContentOffset( selection.from, 1 );
+
+	this.showCursor(selection.from);
+	this.model.setSelection( new ve.Range( selection.from ) );
+	
+	/* TODO: Determine if we still need this
+	var _this = this;
+	setTimeout( function() {
+		_this.poll.prevText = _this.poll.prevHash = _this.poll.prevOffset = _this.poll.node = null;
+		_this.startPolling();
+	}, 0 );
+	*/
 };
 
 ve.ce.Surface.prototype.showCursor = function( offset ) {

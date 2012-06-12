@@ -21,7 +21,7 @@ ve.ce.ListItemNode = function( model ) {
  * @member
  */
 ve.ce.ListItemNode.rules = {
-	'canBeSplit': false
+	'canBeSplit': true
 };
 
 /* Registration */
