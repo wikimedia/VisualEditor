@@ -25,7 +25,9 @@ ve.dm.LinkAnnotation.converters = {
 		if ( annotation.type ) {
 			var link = document.createElement( 'a' );
 			link.setAttribute( 'href', annotation.data.href );
-			link.setAttribute( 'data-mw', annotation.data.mw );
+			if ( annotation.data.mw ) {
+				link.setAttribute( 'data-mw', annotation.data.mw );
+			}
 			if ( subType === 'wikiLink' || subType === 'extLink' ) {
 				link.setAttribute( 'rel', 'mw:' + subType );
 			}
@@ -33,13 +35,19 @@ ve.dm.LinkAnnotation.converters = {
 		}
 	},
 	'toDataAnnotation': function( tag, element ) {
-		return {
-			'type': 'link/' + ( element.getAttribute( 'rel' ).split( ':' )[1] || 'unknown' ),
-			'data': {
-				'href': element.getAttribute( 'href' ),
-				'mw': element.getAttribute( 'data-mw' )
-			}
-		};
+		var rel = element.getAttribute( 'rel' ) || '',
+			subtype = rel.split( ':' )[1] || 'unknown';
+			retval = {
+				'type': 'link/' + subtype,
+				'data': {
+					'href': element.getAttribute( 'href' )
+				}
+			},
+			mwattr = element.getAttribute( 'data-mw' );
+		if ( mwattr ) {
+			retval.data.mw = mwattr;
+		}
+		return retval;
 	}
 };
 
