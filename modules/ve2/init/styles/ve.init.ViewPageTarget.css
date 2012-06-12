@@ -55,6 +55,11 @@
 	box-shadow: inset 0px 1px 4px 0px rgba(0, 0, 0, 0.07);
 }
 
+.ve-init-viewPageTarget-button-disabled {
+	opacity: 0.5;
+	-moz-opacity: 0.5;
+}
+
 /* inspector styles */
 .ve-init-viewPageTarget-saveButton {
 	border: 1px solid transparent;
@@ -134,7 +139,7 @@
 
 .ve-init-viewPageTarget-saveDialog {
 	display: block;
-	top: -1px;
+	top: 0.25em;
 	right: 0.5em;
 	width: 29em;
 }

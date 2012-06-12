@@ -18,6 +18,8 @@ ve.init.ViewPageTarget = function() {
 	this.$toolbar = null;
 	this.surface = null;
 	this.active = false;
+	this.edited = false;
+	this.proxiedOnSurfaceModelTransact = ve.proxy( this.onSurfaceModelTransact, this );
 	this.surfaceOptions = {
 		'toolbars': {
 			'top': {
@@ -98,7 +100,12 @@ ve.init.ViewPageTarget.prototype.onEditTabClick = function( e ) {
 ve.init.ViewPageTarget.prototype.onViewTabClick = function( e ) {
 	// Don't do anything special unless we are in editing mode
 	if ( this.active ) {
-		this.tearDownSurface();
+		if (
+			!this.surface.getModel().getHistory().length ||
+			confirm( 'Are you sure you want to go back to view mode without saving first?' )
+		) {
+			this.tearDownSurface();
+		}
 		// Prevent the edit tab's normal behavior
 		e.preventDefault();
 		return false;
@@ -129,10 +136,47 @@ ve.init.ViewPageTarget.prototype.onSaveDialogSaveButtonClick = function( e ) {
  *
  * @method
  */
+ve.init.ViewPageTarget.prototype.onSurfaceModelTransact = function() {
+	if ( !this.edited ) {
+		this.edited = true;
+		this.$toolbar.find( '.ve-init-viewPageTarget-saveButton ' )
+			.removeClass( 've-init-viewPageTarget-button-disabled' );
+		this.surface.getModel().removeListener( 'transact', this.proxiedOnSurfaceModelTransact );
+	}
+};
+
+/**
+ * ...
+ *
+ * @method
+ */
+ve.init.ViewPageTarget.prototype.onSaveButtonClick = function( e ) {
+	if ( this.edited ) {
+		this.$dialog.fadeIn( 'fast' );
+		this.$dialog.find( 'input:first' ).focus();
+	}
+};
+
+/**
+ * ...
+ *
+ * @method
+ */
+ve.init.ViewPageTarget.prototype.onSaveDialogCloseButtonClick = function( e ) {
+	this.$dialog.fadeOut( 'fast' );
+	this.$surface.find( '.ve-ce-documentNode' ).focus();
+};
+
+/**
+ * ...
+ *
+ * @method
+ */
 ve.init.ViewPageTarget.prototype.onLoad = function( error, dom ) {
 	if ( error ) {
 		// TODO: Error handling in the UI
 	} else {
+		this.edited = false;
 		this.setUpSurface( dom );
 		this.$surface.find( '.ve-ce-documentNode' ).focus();
 	}
@@ -165,6 +209,7 @@ ve.init.ViewPageTarget.prototype.setUpSurface = function( dom ) {
 	// Initialize surface
 	this.$surface.appendTo( this.$content );
 	this.surface = new ve.Surface( this.$surface, dom, this.surfaceOptions );
+	this.surface.getModel().on( 'transact', this.proxiedOnSurfaceModelTransact );
 	// Transplant the toolbar
 	this.$toolbar = this.$surface.find( '.es-toolbar-wrapper' );
 	this.$heading
@@ -180,13 +225,21 @@ ve.init.ViewPageTarget.prototype.setUpSurface = function( dom ) {
 		.find( '.es-modes' )
 			.append(
 				$( '<div></div>' )
-					.addClass( 've-init-viewPageTarget-button ve-init-viewPageTarget-saveButton' )
+					.addClass(
+						've-init-viewPageTarget-button ' +
+						've-init-viewPageTarget-button-disabled ' +
+						've-init-viewPageTarget-saveButton'
+					)
 					.append(
 						$( '<span class="ve-init-viewPageTarget-saveButton-label"></span>' )
 							.text( mw.msg( 'savearticle' ) )
 					)
 					.append( $( '<span class="ve-init-viewPageTarget-saveButton-icon"></span>' ) )
-					.click( ve.proxy( function() { $(this).fadeIn( 'fast' ); }, this.$dialog ) )
+					.mousedown( function( e ) {
+						e.preventDefault();
+						return false;
+					} )
+					.click( ve.proxy( this.onSaveButtonClick, this ) )
 			);
 	// Set up save dialog
 	this.$dialog
@@ -194,7 +247,7 @@ ve.init.ViewPageTarget.prototype.setUpSurface = function( dom ) {
 			.text( mw.msg( 'tooltip-save' ) )
 			.end()
 		.find( '.ve-init-viewPageTarget-saveDialog-closeButton' )
-			.click( ve.proxy( function() { $(this).fadeOut( 'fast' ); }, this.$dialog ) )
+			.click( ve.proxy( this.onSaveDialogCloseButtonClick, this ) )
 			.end()
 		.find( '.ve-init-viewPageTarget-saveDialog-editSummary-label' )
 			.text( mw.msg( 'summary' ) )
