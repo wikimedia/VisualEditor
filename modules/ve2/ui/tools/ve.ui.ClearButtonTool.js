@@ -39,7 +39,6 @@ ve.ui.ClearButtonTool.prototype.onClick = function() {
 	var surfaceView = this.toolbar.getSurfaceView(),
 		model = surfaceView.getModel();
 
-	model.annotate( 'clear', this.getAnnotation() );
 	surfaceView.showSelection( model.getSelection() );
 	//surfaceView.clearInsertionAnnotations();
 	surfaceView.contextView.closeInspector();

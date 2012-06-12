@@ -16,55 +16,9 @@ ve.ui.Toolbar = function( $container, surfaceView, config ) {
 	this.$groups = $( '<div class="es-toolbarGroups"></div>' ).prependTo( this.$ );
 	this.tools = [];
 
-	// Listen to the model for selection event
-	this.surfaceView.model.on( 'select', function( e ){
-
-		var model = _this.surfaceView.getModel(),
-			doc = model.getDocument(),
-			annotations,
-			nodes = [],
-			startNode,
-			endNode;
-
-		if(	e !== null ) {
-			if ( e.from === e.to ){
-				nodes.push( doc.getNodeFromOffset( e.from ) );
-			} else {
-				startNode = doc.getNodeFromOffset( e.from );
-				endNode = doc.getNodeFromOffset ( e.end );
-				// These should be different, alas just in case.
-				if ( startNode === endNode ) {
-					nodes.push( startNode );
-
-				} else {
-					model.getDocument().getDocumentNode().traverseLeafNodes( function( node ) {
-						nodes.push( node );
-						if( node === endNode ) {
-							return false;
-						}
-					}, startNode );
-				}
-			}
-			// Update Context
-			if ( e.getLength() > 0 ) {
-				_this.surfaceView.contextView.set();
-			} else {
-				_this.surfaceView.contextView.clear();
-			}
-
-			annotations = doc.getAnnotationsFromRange( e );
-			// Update state
-			for ( i = 0; i < _this.tools.length; i++ ) {
-				_this.tools[i].updateState( annotations, nodes );
-			}
-		} else {
-			// Clear state
-			_this.surfaceView.contextView.clear();
-			for ( i = 0; i < _this.tools.length; i++ ) {
-				_this.tools[i].clearState();
-			}
-		}
-	});
+	// Update tools on selection, and transactions.
+	this.surfaceView.model.on( 'select', ve.proxy( this.updateTools, this ) );
+	this.surfaceView.model.on( 'transact', ve.proxy( this.updateTools, this ) );
 
 	this.config = config || [
 		{ 'name': 'history', 'items' : ['undo', 'redo'] },
@@ -77,6 +31,60 @@ ve.ui.Toolbar = function( $container, surfaceView, config ) {
 };
 
 /* Methods */
+
+ve.ui.Toolbar.prototype.updateTools = function( e ) {
+	var _this = this,
+		model = _this.surfaceView.getModel(),
+		doc = model.getDocument(),
+		annotations,
+		nodes = [],
+		startNode,
+		endNode;
+
+	// if not a select event, update from selection
+	if (e.from === undefined) {
+		e = model.getSelection();
+	}
+
+	if( e !== null ) {
+		if ( e.from === e.to ){
+			nodes.push( doc.getNodeFromOffset( e.from ) );
+		} else {
+			startNode = doc.getNodeFromOffset( e.from );
+			endNode = doc.getNodeFromOffset ( e.end );
+			// These should be different, alas just in case.
+			if ( startNode === endNode ) {
+				nodes.push( startNode );
+
+			} else {
+				model.getDocument().getDocumentNode().traverseLeafNodes( function( node ) {
+					nodes.push( node );
+					if( node === endNode ) {
+						return false;
+					}
+				}, startNode );
+			}
+		}
+		// Update Context
+		if ( e.getLength() > 0 ) {
+			_this.surfaceView.contextView.set();
+		} else {
+			_this.surfaceView.contextView.clear();
+		}
+
+		annotations = doc.getAnnotationsFromRange( e );
+		// Update state
+		for ( i = 0; i < _this.tools.length; i++ ) {
+			_this.tools[i].updateState( annotations, nodes );
+		}
+	} else {
+		// Clear state
+		_this.surfaceView.contextView.clear();
+		for ( i = 0; i < _this.tools.length; i++ ) {
+			_this.tools[i].clearState();
+		}
+	}
+};
 
 ve.ui.Toolbar.prototype.getSurfaceView = function() {
 	return this.surfaceView;
