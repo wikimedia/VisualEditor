@@ -45,7 +45,7 @@ ve.ce.Surface = function( $container, model ) {
 	} );
 	if ($.browser.msie) {
 		this.$.on('beforepaste', ve.proxy( this.onPaste, this ) );
-	};
+	}
 
 	this.model.on( 'select', ve.proxy( this.onSelect, this ) );
 	

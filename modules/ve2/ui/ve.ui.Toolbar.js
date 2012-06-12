@@ -41,9 +41,10 @@ ve.ui.Toolbar.prototype.updateTools = function( e ) {
 		startNode,
 		endNode;
 
-	// if not a select event, update from selection
-	if (e.from === undefined) {
+	// On transact: set e, and redraw selection
+	if ( e.from === undefined ) {
 		e = model.getSelection();
+		this.surfaceView.showSelection( e );
 	}
 
 	if( e !== null ) {
