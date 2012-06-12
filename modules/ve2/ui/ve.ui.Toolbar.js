@@ -16,7 +16,7 @@ ve.ui.Toolbar = function( $container, surfaceView, config ) {
 	this.$groups = $( '<div class="es-toolbarGroups"></div>' ).prependTo( this.$ );
 	this.tools = [];
 
-	// Update tools on selection, and transactions.
+	// Update tools on selection and all transactions.
 	this.surfaceView.model.on( 'select', ve.proxy( this.updateTools, this ) );
 	this.surfaceView.model.on( 'transact', ve.proxy( this.updateTools, this ) );
 
