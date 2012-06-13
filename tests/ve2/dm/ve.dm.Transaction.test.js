@@ -604,6 +604,86 @@ test( 'newFromContentBranchConversion', function() {
 	);
 } );
 
+test( 'newFromWrap', function() {
+	var doc = new ve.dm.Document( ve.dm.example.data ),
+		cases = {
+		'changes a heading to a paragraph': {
+			'args': [doc, new ve.Range( 1, 4 ),  [ { 'type': 'heading', 'attributes': { 'level': 1 } } ], [ { 'type': 'paragraph' } ], [], []],
+			'ops': [
+				{ 'type': 'replace', 'remove': [ { 'type': 'heading', 'attributes': { 'level': 1 } } ], 'insert': [ { 'type': 'paragraph' } ] },
+				{ 'type': 'retain', 'length': 3 },
+				{ 'type': 'replace', 'remove': [ { 'type': '/heading' } ], 'insert': [ { 'type': '/paragraph' } ] },
+				{ 'type': 'retain', 'length': 56 }
+			]
+		},
+		'unwraps a list': {
+			'args': [doc, new ve.Range( 13, 25 ), [ { 'type': 'list' } ], [], [ { 'type': 'listItem' } ], []],
+			'ops': [
+				{ 'type': 'retain', 'length': 12 },
+				{ 'type': 'replace', 'remove': [ { 'type': 'list', 'attributes': { 'style': 'bullet' } } ], 'insert': [] },
+				{ 'type': 'replace', 'remove': [ { 'type': 'listItem' } ], 'insert': [] },
+				{ 'type': 'retain', 'length': 10 },
+				{ 'type': 'replace', 'remove': [ { 'type': '/listItem' } ], 'insert': [] },
+				{ 'type': 'replace', 'remove': [ { 'type': '/list' } ], 'insert': [] },
+				{ 'type': 'retain', 'length': 35 }
+			]
+		},
+		'replaces a table with a list': {
+			'args': [doc, new ve.Range( 9, 33 ), [ { 'type': 'table' }, { 'type': 'tableSection' }, { 'type': 'tableRow' }, { 'type': 'tableCell' } ], [ { 'type': 'list' }, { 'type': 'listItem' } ], [], []],
+			'ops': [
+				{ 'type': 'retain', 'length': 5 },
+				{ 'type': 'replace', 'remove': [ { 'type': 'table' }, { 'type': 'tableSection', 'attributes': { 'style': 'body' } }, { 'type': 'tableRow' }, { 'type': 'tableCell', 'attributes': { 'style': 'data' } } ], 'insert': [ { 'type': 'list' }, { 'type': 'listItem' } ] },
+				{ 'type': 'retain', 'length': 24 },
+				{ 'type': 'replace', 'remove': [ { 'type': '/tableCell' }, { 'type': '/tableRow' }, { 'type': '/tableSection' }, { 'type': '/table' } ], 'insert': [ { 'type': '/listItem' }, { 'type': '/list' } ] },
+				{ 'type': 'retain', 'length': 24 }
+			]
+		},
+		'wraps two adjacent paragraphs in a list': {
+			'args': [doc, new ve.Range( 55, 61 ), [], [ { 'type': 'list', 'attributes': { 'style': 'number' } } ], [], [ { 'type': 'listItem' } ]],
+			'ops': [
+				{ 'type': 'retain', 'length': 55 },
+				{ 'type': 'replace', 'remove': [], 'insert': [ { 'type': 'list', 'attributes': { 'style': 'number' } } ] },
+				{ 'type': 'replace', 'remove': [], 'insert': [ { 'type': 'listItem' } ] },
+				{ 'type': 'retain', 'length': 3 },
+				{ 'type': 'replace', 'remove': [], 'insert': [ { 'type': '/listItem' } ] },
+				{ 'type': 'replace', 'remove': [], 'insert': [ { 'type': 'listItem' } ] },
+				{ 'type': 'retain', 'length': 3 },
+				{ 'type': 'replace', 'remove': [], 'insert': [ { 'type': '/listItem' } ] },
+				{ 'type': 'replace', 'remove': [], 'insert': [ { 'type': '/list' } ] }
+			]
+		},
+		'wraps two adjacent paragraphs in a definitionList': {
+			'args': [doc, new ve.Range( 55, 61 ), [], [ { 'type': 'definitionList' } ], [], [ { 'type': 'definitionListItem', 'attributes': { 'style': 'term' } } ]],
+			'ops': [
+				{ 'type': 'retain', 'length': 55 },
+				{ 'type': 'replace', 'remove': [], 'insert': [ { 'type': 'definitionList' } ] },
+				{ 'type': 'replace', 'remove': [], 'insert': [ { 'type': 'definitionListItem', 'attributes': { 'style': 'term' } } ] },
+				{ 'type': 'retain', 'length': 3 },
+				{ 'type': 'replace', 'remove': [], 'insert': [ { 'type': '/definitionListItem' } ] },
+				{ 'type': 'replace', 'remove': [], 'insert': [ { 'type': 'definitionListItem', 'attributes': { 'style': 'term' } } ] },
+				{ 'type': 'retain', 'length': 3 },
+				{ 'type': 'replace', 'remove': [], 'insert': [ { 'type': '/definitionListItem' } ] },
+				{ 'type': 'replace', 'remove': [], 'insert': [ { 'type': '/definitionList' } ] }
+			]
+		},
+		'checks integrity of unwrapOuter parameter': {
+			'args': [doc, new ve.Range( 13, 32 ), [ { 'type': 'table' } ], [], [], []],
+			'exception': /^Element in unwrapOuter does not match: expected table but found list$/
+		},
+		'checks integrity of unwrapEach parameter': {
+			'args': [doc, new ve.Range( 13, 32 ), [ { 'type': 'list' } ], [], [ { 'type': 'paragraph' } ], []],
+			'exception': /^Element in unwrapEach does not match: expected paragraph but found listItem$/
+		},
+		'checks that unwrapOuter fits before the range': {
+			'args': [doc, new ve.Range( 1, 4 ), [ { 'type': 'listItem' }, { 'type': 'paragraph' } ], [], [], []],
+			'exception': /^unwrapOuter is longer than the data preceding the range$/
+		}
+	};
+	ve.dm.Transaction.runConstructorTests(
+		ve.dm.Transaction.newFromWrap, cases
+	);
+} );
+
 test( 'pushRetain', function() {
 	var cases = {
 		'retain': {

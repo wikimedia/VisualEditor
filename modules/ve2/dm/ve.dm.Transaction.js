@@ -295,6 +295,145 @@ ve.dm.Transaction.newFromContentBranchConversion = function( doc, range, type, a
 	return tx;
 };
 
+/**
+ * Generates a transaction which wraps, unwraps or replaces structure.
+ *
+ * The unwrap parameters are checked against the actual model data, and
+ * an exception is thrown if the type fields don't match. This means you
+ * can omit attributes from the unwrap parameters, those are automatically
+ * picked up from the model data instead.
+ *
+ * NOTE: This function currently does not fix invalid parent/child relationships, so it will
+ * happily convert paragraphs to listItems without wrapping them in a list if that's what you
+ * ask it to do. We'll probably fix this later but for now the caller is responsible for giving
+ * valid instructions.
+ *
+ * @param {ve.dm.Document} doc Document to generate a transaction for
+ * @param {ve.Range} range Range to wrap/unwrap/replace around
+ * @param {Array} unwrapOuter Array of opening elements to unwrap. These must be immediately *outside* the range.
+ * @param {Array} wrapOuter Array of opening elements to wrap around the range.
+ * @param {Array} unwrapEach Array of opening elements to unwrap from each top-level element in the range.
+ * @param {Array} wrapEach Array of opening elements to wrap around each top-level element in the range.
+ * @returns {ve.dm.Transaction}
+ *
+ * @example Changing a paragraph to a header:
+ *     Before: [ {'type': 'paragraph'}, 'a', 'b', 'c', {'type': '/paragraph'} ]
+ *     newFromWrap( new ve.Range( 1, 4 ), [ {'type': 'paragraph'} ], [ {'type': 'heading', 'level': 1 } ] );
+ *     After: [ {'type': 'heading', 'level': 1 }, 'a', 'b', 'c', {'type': '/heading'} ]
+ *
+ * @example Changing a set of paragraphs to a list:
+ *     Before: [ {'type': 'paragraph'}, 'a', {'type': '/paragraph'}, {'type':'paragraph'}, 'b', {'type':'/paragraph'} ]
+ *     newFromWrap( new ve.Range( 0, 6 ), [], [ {'type': 'list' } ], [], [ {'type': 'listItem', 'attributes': {'styles': ['bullet']}} ] );
+ *     After: [ {'type': 'list'}, {'type': 'listItem', 'attributes': {'styles': ['bullet']}}, {'type':'paragraph'} 'a',
+ *              {'type': '/paragraph'}, {'type': '/listItem'}, {'type': 'listItem', 'attributes': {'styles': ['bullet']}},
+ *              {'type': 'paragraph'}, 'b', {'type': '/paragraph'}, {'type': '/listItem'}, {'type': '/list'} ]
+ */
+ve.dm.Transaction.newFromWrap = function( doc, range, unwrapOuter, wrapOuter, unwrapEach, wrapEach ) {
+	// Function to generate arrays of closing elements in reverse order
+	function closingArray( openings ) {
+		var closings = [], i, len = openings.length;
+		for ( i = 0; i < len; i++ ) {
+			closings[closings.length] = { 'type': '/' + openings[len - i - 1].type };
+		}
+		return closings;
+	}
+
+	// TODO: check for and fix nesting validity like fixupInsertion does
+
+	var tx = new ve.dm.Transaction(), i, j, unwrapOuterData;
+	range.normalize();
+	if ( range.start > unwrapOuter.length ) {
+		// Retain up to the first thing we're unwrapping
+		// The outer unwrapping takes place *outside*
+		// the range, so compensate for that
+		tx.pushRetain( range.start - unwrapOuter.length );
+	} else if ( range.start < unwrapOuter.length ) {
+		throw 'unwrapOuter is longer than the data preceding the range';
+	}
+
+	// Replace the opening elements for the outer unwrap&wrap
+	if ( wrapOuter.length > 0 || unwrapOuter.length > 0 ) {
+		// Verify that wrapOuter matches the data at this position
+		unwrapOuterData = doc.data.slice( range.start - unwrapOuter.length, range.start );
+		for ( i = 0; i < unwrapOuterData.length; i++ ) {
+			if ( unwrapOuterData[i].type !== unwrapOuter[i].type ) {
+				throw 'Element in unwrapOuter does not match: expected ' +
+					unwrapOuter[i].type + ' but found ' + unwrapOuterData[i].type;
+			}
+		}
+		// Instead of putting in unwrapOuter as given, put it in the
+		// way it appears in the mode,l so we pick up any attributes
+		tx.pushReplace( unwrapOuterData, wrapOuter );
+	}
+
+	if ( wrapEach.length > 0 || unwrapEach.length > 0 ) {
+		var	closingUnwrapEach = closingArray( unwrapEach ),
+			closingWrapEach = closingArray( wrapEach ),
+			depth = 0,
+			startOffset,
+			unwrapEachData;
+		// Visit each top-level child and wrap/unwrap it
+		// TODO figure out if we should use the tree/node functions here
+		// rather than iterating over offsets, it may or may not be faster
+		for ( i = range.start; i < range.end; i++ ) {
+			if ( doc.data[i].type === undefined ) {
+				// This is a content offset, skip
+			} else {
+				// This is a structural offset
+				if ( doc.data[i].type.charAt( 0 ) != '/' ) {
+					// This is an opening element
+					if ( depth === 0 ) {
+						// We are at the start of a top-level element
+						// Replace the opening elements
+
+						// Verify that unwrapEach matches the data at this position
+						unwrapEachData = doc.data.slice( i, i + unwrapEach.length );
+						for ( j = 0; j < unwrapEachData.length; j++ ) {
+							if ( unwrapEachData[j].type !== unwrapEach[j].type ) {
+								throw 'Element in unwrapEach does not match: expected ' +
+									unwrapEach[j].type + ' but found ' +
+									unwrapEachData[j].type;
+							}
+						}
+						// Instead of putting in unwrapEach as given, put it in the
+						// way it appears in the model, so we pick up any attributes
+						tx.pushReplace( unwrapEachData, wrapEach );
+
+						// Store this offset for later
+						startOffset = i;
+					}
+					depth++;
+				} else {
+					// This is a closing element
+					depth--;
+					if ( depth === 0 ) {
+						// We are at the end of a top-level element
+						// Retain the contents of what we're wrapping
+						tx.pushRetain( i - startOffset + 1 - unwrapEach.length*2 );
+						// Replace the closing elements
+						tx.pushReplace( closingUnwrapEach, closingWrapEach );
+					}
+				}
+			}
+		}
+	} else {
+		// There is no wrapEach/unwrapEach to be done, just retain
+		// up to the end of the range
+		tx.pushRetain( range.end - range.start );
+	}
+
+	if ( wrapOuter.length > 0 || unwrapOuter.length > 0 ) {
+		tx.pushReplace( closingArray( unwrapOuter ), closingArray( wrapOuter ) );
+	}
+
+	// Retain up to the end of the document
+	if ( range.end < doc.data.length ) {
+		tx.pushRetain( doc.data.length - range.end - unwrapOuter.length );
+	}
+
+	return tx;
+};
+
 /* Methods */
 
 /**
