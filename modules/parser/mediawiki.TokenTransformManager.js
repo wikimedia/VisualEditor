@@ -318,12 +318,12 @@ AsyncTokenTransformManager.prototype.onEndEvent = function () {
  * Utility method to set up a new TokenAccumulator with the right callbacks.
  */
 AsyncTokenTransformManager.prototype._makeNextAccum = function( cb, state ) {
-	var res = {};
-	res.accum = new TokenAccumulator( this, cb );
-	var _cbs = { parent: res.accum.getParentCB( 'child' ) };
-	res.cb = this.maybeSyncReturn.bind( this, state, _cbs ); 
-	_cbs.self = res.cb;
-	return res;
+	var newAccum = new TokenAccumulator( this, cb );
+	var _cbs     = { parent: newAccum.getParentCB( 'child' ) };
+	var newCB    = this.maybeSyncReturn.bind( this, state, _cbs ); 
+	_cbs.self = newCB;
+
+	return { accum: newAccum, cb: newCB };
 };
 
 // Debug counter, provides an UID for transformTokens calls so that callbacks
