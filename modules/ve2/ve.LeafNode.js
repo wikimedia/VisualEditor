@@ -13,7 +13,7 @@ ve.LeafNode = function() {
 
 /**
  * Checks if this node has child nodes.
- * 
+ *
  * @method
  * @see {ve.Node.prototype.hasChildren}
  * @returns {Boolean} Whether this node has children

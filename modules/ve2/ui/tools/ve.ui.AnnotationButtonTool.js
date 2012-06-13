@@ -1,6 +1,6 @@
 /**
  * Creates an ve.ui.AnnotationButtonTool object.
- * 
+ *
  * @class
  * @constructor
  * @extends {ve.ui.ButtonTool}

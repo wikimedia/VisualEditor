@@ -1,6 +1,6 @@
 /**
  * Creates an ve.ui.ButtonTool object.
- * 
+ *
  * @class
  * @constructor
  * @param {ve.ui.Toolbar} toolbar

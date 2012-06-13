@@ -183,7 +183,7 @@ ve.Node.prototype.detach = function() {
 /**
  * Traverse tree of nodes (model or view) upstream and for each traversed node call callback function passing traversed node as a parameter.
  * Callback function is called for node passed as node paramter as well.
- * 
+ *
  * @param {ve.Node} node Node from which to start traversing
  * @param {function} callback Callback method to be called for every traversed node
  * @method

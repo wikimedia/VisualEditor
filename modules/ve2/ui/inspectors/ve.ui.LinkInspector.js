@@ -1,6 +1,6 @@
 /**
  * Creates an ve.ui.LinkInspector object.
- * 
+ *
  * @class
  * @constructor
  * @param {ve.ui.Toolbar} toolbar

@@ -1,6 +1,6 @@
 /**
  * Creates an ve.ui.Menu object.
- * 
+ *
  * @class
  * @constructor
  * @param {Object[]} items List of items to append initially

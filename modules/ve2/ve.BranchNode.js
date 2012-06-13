@@ -16,7 +16,7 @@ ve.BranchNode = function( children ) {
 
 /**
  * Checks if this node has child nodes.
- * 
+ *
  * @method
  * @see {ve.Node.prototype.hasChildren}
  * @returns {Boolean} Whether this node has children
@@ -84,12 +84,12 @@ ve.BranchNode.prototype.setDocument = function( doc ) {
 
 /**
  * Gets the node at a given offset.
- * 
+ *
  * This method is pretty expensive. If you need to get different slices of the same content, get
  * the content first, then slice it up locally.
- * 
+ *
  * TODO: Rewrite this method to not use recursion, because the function call overhead is expensive
- * 
+ *
  * @method
  * @param {Integer} offset Offset get node for
  * @param {Boolean} [shallow] Do not iterate into child nodes of child nodes

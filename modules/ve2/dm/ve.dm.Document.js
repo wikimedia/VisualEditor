@@ -150,9 +150,9 @@ ve.dm.Document = function( data, parentDocument ) {
 
 /**
  * Applies annotations to content data.
- * 
+ *
  * This method modifies data in place.
- * 
+ *
  * @method
  * @param {Array} data Data to remove annotations from
  * @param {Array} annotations Annotations to apply
@@ -420,7 +420,7 @@ ve.dm.Document.isContentData = function( data ) {
 
 /**
  * Reverses a transaction's effects on the content data.
- * 
+ *
  * @method
  * @param {ve.dm.Transaction}
  */
@@ -430,7 +430,7 @@ ve.dm.Document.prototype.rollback = function( transaction ) {
 
 /**
  * Commits a transaction's effects on the content data.
- * 
+ *
  * @method
  * @param {ve.dm.Transaction}
  */

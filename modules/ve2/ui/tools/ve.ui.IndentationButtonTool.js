@@ -1,6 +1,6 @@
 /**
  * Creates an ve.ui.IndentationButtonTool object.
- * 
+ *
  * @class
  * @constructor
  * @extends {ve.ui.ButtonTool}

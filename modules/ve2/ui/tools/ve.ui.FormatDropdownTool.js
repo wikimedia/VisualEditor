@@ -1,6 +1,6 @@
 /**
  * Creates an ve.FormatDropdownTool object.
- * 
+ *
  * @class
  * @constructor
  * @extends {ve.ui.DropdownTool}
