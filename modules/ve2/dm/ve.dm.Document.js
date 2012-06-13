@@ -158,21 +158,12 @@ ve.dm.Document = function( data, parentDocument ) {
  * @param {Array} annotations Annotations to apply
  */
 ve.dm.Document.addAnnotationsToData = function( data, annotations ) {
-	if ( !annotations || annotations.length === 0 ) {
-		return;
-	}
-	var	annotationMap = {},
-		i;
-	// Build annotation map
-	for ( i = 0; i < annotations.length; i++ ) {
-		annotationMap[ve.getHash( annotations[i] )] = annotations[i];
-	}
 	// Apply annotations to data
 	for ( i = 0; i < data.length; i++ ) {
 		if ( !ve.isArray( data[i] ) ) {
 			data[i] = [data[i]];
 		}
-		data[i][1] = ve.extendObject( data[i][1], annotationMap );
+		data[i][1] = ve.extendObject( data[i][1], annotations );
 	}
 };
 
