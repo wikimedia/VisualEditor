@@ -83,7 +83,7 @@ ve.ui.Tool.tools.link = {
 	'name': 'link',
 	'title': 'Link (ctrl/cmd + K)',
 	'data': {
-		'annotation': { 'type': 'link/internal', 'data': { 'title': '' } },
+		'annotation': { 'type': 'link/wikiLink', 'data': { 'title': '' } },
 		'inspector': 'link'
 	}
 };
