@@ -119,30 +119,26 @@ WSP._linkHandler =  function( state, token ) {
 	// import. Might want to consider converting relative links without path
 	// component and file extension to wiki links.
 	
-	var attribDict = state.env.KVtoHash( token.attribs );
+	var env = state.env;
+	var attribDict = env.KVtoHash( token.attribs );
 	if ( attribDict.rel && attribDict.href !== undefined ) {
-
+		var tokenData = token.dataAttribs;
 		if ( attribDict.rel === 'mw:wikiLink' ) {
-			var tail = token.dataAttribs.tail,
+			var tail = tokenData.tail,
 				target = decodeURIComponent( 
-					attribDict.href.substr( state.env.wgScriptPath.length ) );
+					attribDict.href.substr( env.wgScriptPath.length ) );
 			if ( tail && tail.length ) {
 				state.dropTail = tail;
-				if ( token.dataAttribs.gc ) {
-					target = token.dataAttribs.sHref;
-				} else {
-					target = target.replace( /_/g, ' ' );
-				}
+				target = tokenData.gc ? tokenData.sHref : target.replace( /_/g, ' ' );
 			} else {
-				var origHref = token.dataAttribs.sHref;
+				var origHref = tokenData.sHref;
 				if (origHref) {
-					//console.warn( JSON.stringify( token.dataAttribs.sHref ) );
-					var env = state.env;
+					//console.warn( JSON.stringify( tokenData.sHref ) );
 					// SSS FIXME: Why was resolveTitle wrapping this?  Also, why do we require normalizeTitle here?
-					var normalizedOrigHref = env.normalizeTitle(env.tokensToString(token.dataAttribs.sHref));
+					var normalizedOrigHref = env.normalizeTitle(env.tokensToString(origHref));
 					if ( normalizedOrigHref === target ) {
 						// Non-standard capitalization
-						target = token.dataAttribs.sHref;
+						target = origHref;
 					}
 				} else {
 					target = target.replace( /_/g, ' ' );
@@ -150,19 +146,19 @@ WSP._linkHandler =  function( state, token ) {
 			}
 
 			// FIXME: Properly handle something like [[{{Foo}}]]s
-			target = state.env.tokensToString( target );
+			target = env.tokensToString( target );
 
-			if ( token.dataAttribs.gc ) {
+			if ( tokenData.gc ) {
 				state.dropContent = true;
 				return '[[' + target;
 			} else {
 				return '[[' + target + '|';
 			}
 		} else if ( attribDict.rel === 'mw:extLink' ) {
-			if ( token.dataAttribs.stx === 'urllink' ) {
+			if ( tokenData.stx === 'urllink' ) {
 				state.dropContent = true;
 				return attribDict.href;
-			} else if ( token.dataAttribs.gc ) {
+			} else if ( tokenData.gc ) {
 				state.dropContent = true;
 				return '[' + attribDict.href;
 			} else {
