@@ -53,9 +53,9 @@ ve.FormatDropdownTool = function( toolbar, name, title ) {
 			'attributes': { 'level': 6 }
 		},
 		{
-			'name': 'pre',
+			'name': 'preformatted',
 			'label': 'Preformatted',
-			'type' : 'pre'
+			'type' : 'preformatted'
 		}
 	] );
 };
