@@ -401,11 +401,11 @@ WSP._serializeToken = function ( state, token ) {
 		case TagTk:
 		case SelfclosingTagTk:
 			handler = WSP.getTokenHandler(state, token);
-			res = handler.start ? handler.start( state, token ) : null;
+			res = handler.start ? handler.start( state, token ) : '';
 			break;
 		case EndTagTk:
 			handler = WSP.getTokenHandler(state, token);
-			res = handler.end ? handler.end( state, token ) : null;
+			res = handler.end ? handler.end( state, token ) : '';
 			break;
 		case String:
 			res = state.textHandler ? state.textHandler( token ) : token;
@@ -417,15 +417,15 @@ WSP._serializeToken = function ( state, token ) {
 			res = '\n';
 			break;
 		case EOFTk:
-			res = null;
+			res = '';
 			break;
 		default:
-			res = null;
+			res = '';
 			console.warn( 'Unhandled token type ' + JSON.stringify( token ) );
 			break;
 	}
 	//console.warn( 'res: ' + JSON.stringify( res ) );
-	if (res) {
+	if (res !== '') {
 		var nls = res.match( /(?:\r?\n)+$/ );
 		if ( nls ) {
 			if ( nls[0] === res ) {
