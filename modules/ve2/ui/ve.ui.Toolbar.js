@@ -32,27 +32,26 @@ ve.ui.Toolbar = function( $container, surfaceView, config ) {
 
 /* Methods */
 
-ve.ui.Toolbar.prototype.updateTools = function( e ) {
-	var _this = this,
-		model = _this.surfaceView.getModel(),
+/**
+ * Triggers update events on all tools.
+ *
+ * @method
+ */
+ve.ui.Toolbar.prototype.updateTools = function() {
+	var model = this.surfaceView.getModel(),
 		doc = model.getDocument(),
 		annotations,
 		nodes = [],
+		range = model.getSelection(),
 		startNode,
 		endNode;
 
-	// On transact: set e, and redraw selection
-	if ( e.from === undefined ) {
-		e = model.getSelection();
-		this.surfaceView.showSelection( e );
-	}
-
-	if( e !== null ) {
-		if ( e.from === e.to ){
-			nodes.push( doc.getNodeFromOffset( e.from ) );
+	if ( range !== null ) {
+		if ( range.from === range.to ){
+			nodes.push( doc.getNodeFromOffset( range.from ) );
 		} else {
-			startNode = doc.getNodeFromOffset( e.from );
-			endNode = doc.getNodeFromOffset ( e.end );
+			startNode = doc.getNodeFromOffset( range.from );
+			endNode = doc.getNodeFromOffset ( range.end );
 			// These should be different, alas just in case.
 			if ( startNode === endNode ) {
 				nodes.push( startNode );
@@ -67,22 +66,24 @@ ve.ui.Toolbar.prototype.updateTools = function( e ) {
 			}
 		}
 		// Update Context
-		if ( e.getLength() > 0 ) {
-			_this.surfaceView.contextView.set();
+		if ( range.getLength() > 0 ) {
+			this.surfaceView.contextView.set();
+			annotations = doc.getAnnotationsFromRange( range );
 		} else {
-			_this.surfaceView.contextView.clear();
+			this.surfaceView.contextView.clear();
+			annotations = doc.getAnnotationsFromOffset(
+				doc.getNearestContentOffset( range.start - 1 )
+			);
 		}
-
-		annotations = doc.getAnnotationsFromRange( e );
 		// Update state
-		for ( i = 0; i < _this.tools.length; i++ ) {
-			_this.tools[i].updateState( annotations, nodes );
+		for ( i = 0; i < this.tools.length; i++ ) {
+			this.tools[i].updateState( annotations, nodes );
 		}
 	} else {
 		// Clear state
-		_this.surfaceView.contextView.clear();
-		for ( i = 0; i < _this.tools.length; i++ ) {
-			_this.tools[i].clearState();
+		this.surfaceView.contextView.clear();
+		for ( i = 0; i < this.tools.length; i++ ) {
+			this.tools[i].clearState();
 		}
 	}
 };

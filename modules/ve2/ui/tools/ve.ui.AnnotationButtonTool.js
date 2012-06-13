@@ -46,13 +46,16 @@ ve.ui.AnnotationButtonTool.prototype.onClick = function() {
 };
 
 ve.ui.AnnotationButtonTool.prototype.updateState = function( annotations, nodes ) {
-	if ( ve.dm.Document.annotationsContainAnnotation(annotations, this.annotation) ) {
-			this.$.addClass( 'es-toolbarButtonTool-down' );
-			this.active = true;
-			return;
+	var matches = ve.dm.Document.getMatchingAnnotations(
+		annotations, new RegExp( '^' + this.annotation.type + '$' )
+	);
+	if ( ve.isEmptyObject( matches ) ) {
+		this.$.removeClass( 'es-toolbarButtonTool-down' );
+		this.active = false;
+	} else {
+		this.$.addClass( 'es-toolbarButtonTool-down' );
+		this.active = true;
 	}
-	this.$.removeClass( 'es-toolbarButtonTool-down' );
-	this.active = false;
 };
 
 /* Registration */

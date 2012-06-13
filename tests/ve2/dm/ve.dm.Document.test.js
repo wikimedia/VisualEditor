@@ -205,12 +205,9 @@ test( 'getAnnotationsFromOffset', 1, function() {
 } );
 
 test( 'getAnnotationsFromRange', 1, function() {
-	var doc,
-		range,
-		annotations,
-		cases = [
+	var cases = [
 		{
-			'msg': 'all bold',
+			'msg': 'single annotations',
 			'data': [
 				['a', { '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
 				['b', { '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } } ]
@@ -218,38 +215,41 @@ test( 'getAnnotationsFromRange', 1, function() {
 			'expected': { '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } }
 		},
 		{
-			'msg': 'bold and italic',
+			'msg': 'mutliple annotations',
 			'data': [
-				['a',
+				[
+					'a',
 					{
 						'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
 						'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic'}
 					}
 				],
-				['b',
+				[
+					'b',
 					{
 						'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
 						'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic'}
 					}
 				]
 			],
-			'expected':
-				{
-					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic'}
-				}
+			'expected': {
+				'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
+				'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic'}
+			}
 				
 		},
 		{
-			'msg': 'bold and italic',
+			'msg': 'lowest common coverage',
 			'data': [
-				['a',
+				[
+					'a',
 					{
 						'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
 						'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic'}
 					}
 				],
-				['b',
+				[
+					'b',
 					{
 						'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
 						'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic'},
@@ -257,22 +257,67 @@ test( 'getAnnotationsFromRange', 1, function() {
 					}
 				]
 			],
-			'expected':
+			'expected': {
+				'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
+				'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic'}
+			}
+		},
+		{
+			'msg': 'no common coverage due to plain character at the start',
+			'data': [
+				['a'],
+				[
+					'b',
+					{
+						'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
+						'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic'},
+						'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline'}
+					}
+				],
+				[
+					'c',
 					{
 						'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
 						'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic'}
 					}
+				]
+			],
+			'expected': {}
 		},
 		{
-			'msg': 'none common, non annotated character at end',
+			'msg': 'no common coverage due to plain character in the middle',
 			'data': [
-				['a',
+				[
+					'a',
+					{
+						'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
+						'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic'},
+						'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline'}
+					}
+				],
+				['b'],
+				[
+					'c',
+					{
+						'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
+						'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic'}
+					}
+				]
+			],
+			'expected': {}
+		},
+		{
+			'msg': 'no common coverage due to plain character at the end',
+			'data': [
+				[
+					'a',
 					{
 						'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
 						'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic'}
 					}
 				],
-				['b',
+				[
+					'b',
 					{
 						'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
 						'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic'},
@@ -284,27 +329,7 @@ test( 'getAnnotationsFromRange', 1, function() {
 			'expected': {}
 		},
 		{
-			'msg': 'none common, reverse of previous',
-			'data': [
-				['a'],
-				['b',
-					{
-						'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-						'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic'},
-						'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline'}
-					}
-				],
-				['c',
-					{
-						'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-						'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic'}
-					}
-				]
-			],
-			'expected': {}
-		},
-		{
-			'msg': 'all different',
+			'msg': 'no common coverage due to mismatched annotations',
 			'data': [
 				['a', { '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
 				['b', { '{"type:"textStyle/italic"}': { 'type': 'textStyle/italic' } } ]
@@ -312,8 +337,65 @@ test( 'getAnnotationsFromRange', 1, function() {
 			'expected': {}
 		},
 		{
-			'msg': 'no annotations',
+			'msg': 'annotations are collected using all with mismatched annotations',
+			'data': [
+				['a', { '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
+				['b', { '{"type:"textStyle/italic"}': { 'type': 'textStyle/italic' } } ]
+			],
+			'all': true,
+			'expected': {
+				'{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' },
+				'{"type:"textStyle/italic"}': { 'type': 'textStyle/italic' }
+			}
+		},
+		{
+			'msg': 'annotations are collected using all, even with a plain character at the start',
+			'data': [
+				['a', { '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
+				['b', { '{"type:"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
+				['c']
+			],
+			'all': true,
+			'expected': {
+				'{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' },
+				'{"type:"textStyle/italic"}': { 'type': 'textStyle/italic' }
+			}
+		},
+		{
+			'msg': 'annotations are collected using all, even with a plain character at the middle',
+			'data': [
+				['a', { '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
+				['b', { '{"type:"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
+				['c']
+			],
+			'all': true,
+			'expected': {
+				'{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' },
+				'{"type:"textStyle/italic"}': { 'type': 'textStyle/italic' }
+			}
+		},
+		{
+			'msg': 'annotations are collected using all, even with a plain character at the end',
+			'data': [
+				['a', { '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
+				['b', { '{"type:"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
+				['c']
+			],
+			'all': true,
+			'expected': {
+				'{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' },
+				'{"type:"textStyle/italic"}': { 'type': 'textStyle/italic' }
+			}
+		},
+		{
+			'msg': 'no common coverage from all plain characters',
 			'data': ['a', 'b'],
+			'expected': {}
+		},
+		{
+			'msg': 'no common coverage using all from all plain characters',
+			'data': ['a', 'b'],
+			'all': true,
 			'expected': {}
 		}
 	];
@@ -321,13 +403,12 @@ test( 'getAnnotationsFromRange', 1, function() {
 	expect( cases.length );
 
 	for ( var i = 0; i < cases.length; i++ ) {
-		doc = new ve.dm.Document ( cases[i].data );
-		range = new ve.Range( 0, doc.getData().length );
-		annotations = doc.getAnnotationsFromRange( range );
+		var doc = new ve.dm.Document ( cases[i].data );
 		deepEqual(
-			annotations, cases[i].expected, cases[i].msg
+			doc.getAnnotationsFromRange( new ve.Range( 0, cases[i].data.length ), cases[i].all ),
+			cases[i].expected,
+			cases[i].msg
 		);
-
 	}
 } );
 

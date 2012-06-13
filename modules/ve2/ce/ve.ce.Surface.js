@@ -11,24 +11,24 @@ ve.ce.Surface = function( $container, model ) {
 
 	// Properties
 	this.model = model;
-	this.documentView = new ve.ce.Document( model.getDocument() );
-	this.contextView = new ve.ui.Context( this );
+
+	// Properties
+	this.documentView = null; // See initialization below
+	this.contextView = null; // See initialization below
 	this.$ = $container;
 	this.clipboard = {};
-
-	// Driven by mousedown and mouseup events
-	this.isMouseDown = false;
 	this.range = {
-		anchorNode: null,
-		anchorOffset: null,
-		focusNode: null,
-		focusOffset: null
+		'anchorNode': null,
+		'anchorOffset': null,
+		'focusNode': null,
+		'focusOffset': null
 	};
+	// Tracked using mouse events
+	this.isMouseDown = false;
 
-	// init rangy in case of Toshiba...
-	rangy.init();
-	
 	// Events
+	this.model.on( 'select', ve.proxy( this.onSelect, this ) );
+	this.model.on( 'transact', ve.proxy( this.onTransact, this ) );
 	this.$.on( {
 		'keypress': ve.proxy( this.onKeyPress, this ),
 		'keydown': ve.proxy( this.onKeyDown, this ),
@@ -43,31 +43,38 @@ ve.ce.Surface = function( $container, model ) {
 			return false;
 		}
 	} );
-	if ($.browser.msie) {
-		this.$.on('beforepaste', ve.proxy( this.onPaste, this ) );
+	if ( $.browser.msie ) {
+		this.$.on( 'beforepaste', ve.proxy( this.onPaste, this ) );
 	}
 
-	this.model.on( 'select', ve.proxy( this.onSelect, this ) );
-	
-
 	// Initialization
-	this.$.append( this.documentView.documentNode.$ );
-
 	try {
-		document.execCommand( "enableObjectResizing", false, false );
-		document.execCommand( "enableInlineTableEditing", false, false );
-	} catch (e) { }
+		document.execCommand( 'enableObjectResizing', false, false );
+		document.execCommand( 'enableInlineTableEditing', false, false );
+	} catch ( e ) {
+		// Silently ignore
+	}
+	// Initialize rangy in case of Toshiba...
+	rangy.init();
+	// Must be initialized after select and transact listeners are added to model so respond first
+	this.documentView = new ve.ce.Document( model.getDocument() );
+	this.contextView = new ve.ui.Context( this );
+	this.$.append( this.documentView.documentNode.$ );
 };
-
 
 /* Methods */
 
-ve.ce.Surface.prototype.onSelect = function( e ) {
-	console.log("onSelect", e);
+ve.ce.Surface.prototype.onSelect = function( range ) {
+	//console.log( 'onSelect', range );
+};
+
+ve.ce.Surface.prototype.onTransact = function( tx ) {
+	//console.log( 'onTransact', tx );
+	this.showSelection( this.model.getSelection() );
 };
 
 ve.ce.Surface.prototype.onKeyPress = function( e ) {
-	console.log('onKeyPress');
+	//console.log( 'onKeyPress' );
 	switch ( e.which ) {
 		// Enter
 		case 13:
@@ -78,13 +85,12 @@ ve.ce.Surface.prototype.onKeyPress = function( e ) {
 };
 
 ve.ce.Surface.prototype.onKeyDown = function( e ) {
-	console.log('onKeyDown');
+	//console.log( 'onKeyDown' );
 	// Prevent all interactions coming from keyboard when mouse is down (possibly selecting)
 	if ( this.isMouseDown === true ) {
 		e.preventDefault();
 		return false;
 	}
-
 	switch ( e.keyCode ) {
 		// Left arrow
 		case 37:
@@ -94,12 +100,9 @@ ve.ce.Surface.prototype.onKeyDown = function( e ) {
 			break;
 		// Backspace
 		case 8:
-
 			tx = ve.dm.Transaction.newFromRemoval( this.documentView.model, this.model.getSelection() );
 			ve.dm.TransactionProcessor.commit( this.documentView.model, tx );
 			this.showCursor(this.model.getSelection().start);
-
-
 			e.preventDefault();
 			break;
 		// Delete
@@ -111,7 +114,6 @@ ve.ce.Surface.prototype.onKeyDown = function( e ) {
 
 ve.ce.Surface.prototype.onMouseDown = function( e ) {
 	this.isMouseDown = true;
-
 	// TODO: Add special handling for clicking on images and alien nodes
 	var $leaf = $( e.target ).closest( '.ve-ce-leafNode' );
 };

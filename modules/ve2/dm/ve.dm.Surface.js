@@ -103,15 +103,6 @@ ve.dm.Surface.prototype.transact = function( transaction ) {
  */
 ve.dm.Surface.prototype.annotate = function( method, annotation ) {
 	var selection = this.getSelection();
-
-	if ( method === 'toggle' ) {
-		var annotations = this.getDocument().getAnnotationsFromRange( selection );
-		if ( annotation in annotations ) {
-			method = 'clear';
-		} else {
-			method = 'set';
-		}
-	}
 	if ( this.selection.getLength() ) {
 		var tx = ve.dm.Transaction.newFromAnnotation(
 			this.getDocument(), selection, method, annotation

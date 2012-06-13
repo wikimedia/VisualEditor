@@ -18,7 +18,7 @@ ve.ui.ClearButtonTool = function( toolbar, name, title ) {
 
 /* Methods */
 
-ve.ui.ClearButtonTool.prototype.getAnnotation = function(){
+ve.ui.ClearButtonTool.prototype.getAnnotations = function(){
 	var surfaceView = this.toolbar.getSurfaceView(),
 		surfaceModel = surfaceView.getModel(),
 		documentModel = surfaceModel.getDocument(),
@@ -26,10 +26,7 @@ ve.ui.ClearButtonTool.prototype.getAnnotation = function(){
 
 	if ( data.length ) {
 		if ( ve.isPlainObject( data[0][1] ) ) {
-			var annotation = ve.dm.Document.getMatchingAnnotation( data[0][1], this.pattern );
-			if ( ve.isPlainObject( annotation ) ) {
-				return annotation;
-			}
+			return ve.dm.Document.getMatchingAnnotations( data[0][1], this.pattern );
 		}
 	}
 	return ;
@@ -37,9 +34,11 @@ ve.ui.ClearButtonTool.prototype.getAnnotation = function(){
 
 ve.ui.ClearButtonTool.prototype.onClick = function() {
 	var surfaceView = this.toolbar.getSurfaceView(),
-		model = surfaceView.getModel();
-
-	model.annotate( 'clear', this.getAnnotation() );
+		model = surfaceView.getModel(),
+		annotations = this.getAnnotations();
+	for ( var hash in annotations ) {
+		model.annotate( 'clear', annotations[hash] );
+	}
 	surfaceView.showSelection( model.getSelection() );
 	surfaceView.contextView.closeInspector();
 };

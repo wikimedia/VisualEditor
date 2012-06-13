@@ -23,11 +23,11 @@ ve.ui.LinkInspector = function( toolbar, context ) {
 			return;
 		}
 
-		var		surfaceModel = _this.context.getSurfaceView().getModel(),
-				annotation = _this.getSelectedLinkAnnotation();
+		var	surfaceModel = _this.context.getSurfaceView().getModel(),
+			annotations = _this.getSelectedLinkAnnotations();
 		// If link annotation exists, clear it.
-		if ( annotation !== undefined ) {
-			surfaceModel.annotate( 'clear', annotation );
+		for ( var hash in annotations ) {
+			surfaceModel.annotate( 'clear', annotations[hash] );
 		}
 
 		_this.$locationInput.val( '' );
@@ -46,7 +46,7 @@ ve.ui.LinkInspector = function( toolbar, context ) {
 
 /* Methods */
 
-ve.ui.LinkInspector.prototype.getSelectedLinkAnnotation = function(){
+ve.ui.LinkInspector.prototype.getSelectedLinkAnnotations = function(){
 	var surfaceView = this.context.getSurfaceView(),
 		surfaceModel = surfaceView.getModel(),
 		documentModel = surfaceModel.getDocument(),
@@ -54,9 +54,9 @@ ve.ui.LinkInspector.prototype.getSelectedLinkAnnotation = function(){
 
 	if ( data.length ) {
 		if ( ve.isPlainObject( data[0][1] ) ) {
-			var annotation = ve.dm.Document.getMatchingAnnotation( data[0][1], /link\/.*/ );
-			if ( ve.isPlainObject(annotation) ) {
-				return annotation;
+			var annotations = ve.dm.Document.getMatchingAnnotations( data[0][1], /link\/.*/ );
+			for ( var hash in annotations ) {
+				return annotations[hash];
 			}
 		}
 	}
@@ -64,10 +64,12 @@ ve.ui.LinkInspector.prototype.getSelectedLinkAnnotation = function(){
 };
 
 ve.ui.LinkInspector.prototype.getTitleFromSelection = function() {
-	var annotation = this.getSelectedLinkAnnotation();
-
-	if ( annotation && annotation.data && annotation.data.title ) {
-		return annotation.data.title;
+	var annotations = this.getSelectedLinkAnnotations();
+	for ( var hash in annotations ) {
+		// Use the first one that has a title (there should only be one, but this is just in case)
+		if ( annotations[hash].data && annotations[hash].data.title ) {
+			return annotations[hash].data.title;
+		}
 	}
 	return null;
 };
@@ -96,11 +98,11 @@ ve.ui.LinkInspector.prototype.onClose = function( accept ) {
 			return;
 		}
 		var surfaceModel = this.context.getSurfaceView().getModel(),
-			annotation = this.getSelectedLinkAnnotation();
+			annotations = this.getSelectedLinkAnnotations();
 
 		// Clear link annotation if it exists
-		if ( annotation !== undefined ) {
-			surfaceModel.annotate( 'clear', annotation );
+		for ( var hash in annotations ) {
+			surfaceModel.annotate( 'clear', annotations[hash] );
 		}
 		surfaceModel.annotate( 'set', { 'type': 'link/wikiLink', 'data': { 'title': title } } );
 	}
