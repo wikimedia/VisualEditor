@@ -316,8 +316,6 @@ app.get(/\/_rtform\/(.*)/, function(req, res){
 app.post(/\/_rtform\/(.*)/, function(req, res){
 	env.pageName = req.params[0];
 	res.setHeader('Content-Type', 'text/html; charset=UTF-8');
-	var parser = parserPipelineFactory.makePipeline( 'text/x-mediawiki/full' );
-
 	// we don't care about \r, and normalize everything to \n
 	parse( req, res, roundTripDiff, req.body.content.replace(/\r/g, ''));
 });
