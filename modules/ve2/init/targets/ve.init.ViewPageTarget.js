@@ -290,6 +290,7 @@ ve.init.ViewPageTarget.prototype.tearDownSurface = function( content ) {
 	this.$surface.empty().detach();
 	this.$toolbar.remove();
 	this.$spinner.remove();
+	$( '.es-contextView' ).remove();
 	this.$view.show().fadeTo( 'fast', 1 );
 	this.$heading.css( { 'margin-top': 'auto', 'opacity': 1 } );
 	setTimeout( ve.proxy( function() {
