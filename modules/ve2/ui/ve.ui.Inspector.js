@@ -1,6 +1,6 @@
 /**
  * Creates an ve.ui.Inspector object.
- * 
+ *
  * @class
  * @constructor
  * @param {ve.ui.Toolbar} toolbar

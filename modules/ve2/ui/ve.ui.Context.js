@@ -90,7 +90,6 @@ ve.ui.Context.prototype.set = function() {
 	if ( this.position ) {
 		this.positionOverlay( this.menuView.$ );
 		if ( this.inspector ) {
-			//this.positionOverlay( this.inspectors[this.inspector].$ );
 			this.positionOverlay ( this.$inspectors );
 		}
 	}
@@ -137,8 +136,8 @@ ve.ui.Context.prototype.positionOverlay = function( $overlay ) {
 	}
 
 	$overlay.css( 'left', overlayLeft );
-	// Position overlay on top or bottom depending on viewport
 
+	// Position overlay on top or bottom depending on viewport
 	if ( this.position.top + overlayHeight + ( overlayMargin * 2 ) < windowHeight + windowScrollTop ) {
 		this.$.addClass( 'es-contextView-position-below' );
 	} else {
@@ -162,16 +161,13 @@ ve.ui.Context.prototype.openInspector = function( name ) {
 	this.inspectors[name].open();
 	this.positionOverlay( this.$inspectors );
 	this.$inspectors.show();
-	//this.positionOverlay( this.inspectors[name].$ );
 	this.inspector = name;
 };
 
 ve.ui.Context.prototype.closeInspector = function( accept ) {
 	if ( this.inspector ) {
-		this.$inspectors.hide();
-		
 		this.inspectors[this.inspector].close( accept );
-		
+		this.$inspectors.hide();
 		this.inspector = null;
 	}
 };
@@ -217,7 +213,7 @@ ve.ui.Context.prototype.addInspector = function( name, inspector ) {
 		_this.$inspectors.css( {
 			'width': inspector.$.outerWidth( true ) + 10,
 			'height': inspector.$.outerHeight( true ) + 10
-		} );
+		} ).hide();
 	}
 
 };
