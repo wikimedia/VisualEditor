@@ -134,12 +134,12 @@ WSP._linkHandler =  function( state, token ) {
 					target = target.replace( /_/g, ' ' );
 				}
 			} else {
-				if ( token.dataAttribs.sHref ) {
+				var origHref = token.dataAttribs.sHref;
+				if (origHref) {
 					//console.warn( JSON.stringify( token.dataAttribs.sHref ) );
-					var normalizedOrigHref = state.env.resolveTitle( 
-							state.env.normalizeTitle( 
-								state.env.tokensToString( token.dataAttribs.sHref ) ), 
-							'' );
+					var env = state.env;
+					// SSS FIXME: Why was resolveTitle wrapping this?  Also, why do we require normalizeTitle here?
+					var normalizedOrigHref = env.normalizeTitle(env.tokensToString(token.dataAttribs.sHref));
 					if ( normalizedOrigHref === target ) {
 						// Non-standard capitalization
 						target = token.dataAttribs.sHref;
