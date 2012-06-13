@@ -12,6 +12,8 @@
 var defaultInterwiki = 'en';
 // alternative: default to www.mediawiki.org
 //var defaultInterwiki = 'mw';
+// for development: default to localhost
+//var defaultInterwiki = 'localhost';
 
 /**
  * End config section
@@ -45,6 +47,8 @@ var env = new ParserEnv( {
 
 // add mediawiki.org
 env.addInterwiki( 'mw', 'http://www.mediawiki.org/w' );
+// For development:
+//env.addInterwiki( 'localhost', 'http://localhost/w' );
 
 // add localhost and make it the default
 env.addInterwiki( 'localhost', 'http://localhost/mediawiki' );
@@ -316,8 +320,6 @@ app.get(/\/_rtform\/(.*)/, function(req, res){
 app.post(/\/_rtform\/(.*)/, function(req, res){
 	env.pageName = req.params[0];
 	res.setHeader('Content-Type', 'text/html; charset=UTF-8');
-	var parser = parserPipelineFactory.makePipeline( 'text/x-mediawiki/full' );
-
 	// we don't care about \r, and normalize everything to \n
 	parse( req, res, roundTripDiff, req.body.content.replace(/\r/g, ''));
 });
