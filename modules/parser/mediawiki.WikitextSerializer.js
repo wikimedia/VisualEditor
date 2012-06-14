@@ -27,12 +27,6 @@ var id = function( v, needParagraphLines ) {
 	}; 
 };
 
-var nlid = function( newlineCount, v ) { 
-	return function( state ) { 
-		return WSP.getNewLines( state, newlineCount ) + v; 
-	}; 
-};
-
 WSP._listHandler = function( bullet, state, token ) {
 	var bullets, res;
 	var stack = state.listStack;
@@ -55,7 +49,7 @@ WSP._listHandler = function( bullet, state, token ) {
 		}
 	}
 	stack.push({ itemCount: 0, bullets: bullets});
-	return WSP.getNewLines( state, 1 ) + res;
+	return res;
 };
 
 WSP._listEndHandler = function( state, token ) {
@@ -66,24 +60,27 @@ WSP._listEndHandler = function( state, token ) {
 };
 
 WSP._listItemHandler = function ( bullet, state, token ) { 
-	//console.warn( JSON.stringify( state.listStack ) );
-	var stack = state.listStack;
-	// state.needParagraphLines = true;
-	if (stack.length === 0) {
-		return bullet;
-	} else {
-		var curList = stack[stack.length - 1];
-		curList.itemCount++;
-		// > 1 ==> consecutive list items
-		return ( curList.itemCount > 1 ) ? curList.bullets + bullet : bullet;
+	var stack   = state.listStack;
+	var curList = stack[stack.length - 1];
+
+	curList.itemCount++;
+
+	if (bullet === '') {
+	    // For 2nd item and later, always get a single new line and discard the rest
+		// This only applies to <li> list items
+		state.precedingNewlineCount = (curList.itemCount > 1) ? 1 : 0;
+		state.ignoreLeadingNewLines = true;
 	}
+
+	return ((curList.itemCount > 1 ) ? curList.bullets + bullet : bullet);
 };
 
-WSP._serializeTableTag = function ( symbol, optionEndSymbol, newlineCount, state, token ) {
-	symbol = WSP.getNewLines( state, newlineCount ) + symbol;
+WSP._serializeTableTag = function ( symbol, optionEndSymbol, startOnNewLine, state, token ) {
+	// Ensure we have a new line to start on
+	if (startOnNewLine && state.precedingNewlineCount < 1) state.precedingNewlineCount = 1;
+
 	if ( token.attribs.length ) {
-		return symbol + ' ' + 
-			WSP._serializeAttributes( token.attribs ) + optionEndSymbol;
+		return symbol + ' ' + WSP._serializeAttributes( token.attribs ) + optionEndSymbol;
 	} else {
 		return symbol;
 	}
@@ -223,16 +220,16 @@ WSP.tagToWikitext = {
 	dd: { start: WSP._listItemHandler.bind( null, ":" ) },
 	// XXX: handle options
 	table: { 
-		start: WSP._serializeTableTag.bind(null, "{|", '', 1), 
+		start: WSP._serializeTableTag.bind(null, "{|", '', false), 
 		end: id("\n|}") 
 	},
 	tbody: {},
 	th: { 
 		start: function ( state, token ) {
 			if ( token.dataAttribs.stx_v === 'row' ) {
-				return WSP._serializeTableTag("!!", ' |', 0, state, token);
+				return WSP._serializeTableTag("!!", ' |', false, state, token);
 			} else {
-				return WSP._serializeTableTag( "!", ' |', 1, state, token);
+				return WSP._serializeTableTag( "!", ' |', true, state, token);
 			}
 		}
 	},
@@ -242,41 +239,40 @@ WSP.tagToWikitext = {
 			if ( state.prevToken.constructor === TagTk && state.prevToken.name === 'tbody' ) {
 				return '';
 			} else {
-				return WSP._serializeTableTag("|-", '', 1, state, token );
+				return WSP._serializeTableTag("|-", '', true, state, token );
 			}
 		}
 	},
 	td: { 
 		start: function ( state, token ) {
 			if ( token.dataAttribs.stx_v === 'row' ) {
-				return WSP._serializeTableTag("||", ' |', 0, state, token);
+				return WSP._serializeTableTag("||", ' |', false, state, token);
 			} else {
-				return WSP._serializeTableTag("|", ' |', 1, state, token);
+				return WSP._serializeTableTag("|", ' |', false, state, token);
 			}
 		}
 	},
-	caption: { start: WSP._serializeTableTag.bind(null, "|+", ' |', 1) },
+	caption: { start: WSP._serializeTableTag.bind(null, "|+", ' |', true) },
 	p: { 
 		start: function( state, token ) {
 			if (state.listStack.length > 0) {
 				// SSS FIXME: Other tags that have similar requirements within lists?
 				// Paragraphs within lists are not expanded
-				return '';
 			} else if (state.needParagraphLines) {
-				return WSP.getNewLines( state, 2 );
+				if (state.precedingNewlineCount < 2) state.precedingNewlineCount = 2;
 			} else {
 				state.needParagraphLines = true;
-				return '';
 			}
+			return '';
 		}
 	},
-	hr: { start: nlid(1, "----"), end: id("") },
-	h1: { start: nlid(1, "="), end: id("=", false) },
-	h2: { start: nlid(1, "=="), end: id("==", false) },
-	h3: { start: nlid(1, "==="), end: id("===", false) },
-	h4: { start: nlid(1, "===="), end: id("====", false) },
-	h5: { start: nlid(1, "====="), end: id("=====", false) },
-	h6: { start: nlid(1, "======"), end: id("======", false) },
+	hr: { start: id("----",   false), end: id("",       false) },
+	h1: { start: id("=",      false), end: id("=",      false) },
+	h2: { start: id("==",     false), end: id("==",     false) },
+	h3: { start: id("===",    false), end: id("===",    false) },
+	h4: { start: id("====",   false), end: id("====",   false) },
+	h5: { start: id("=====",  false), end: id("=====",  false) },
+	h6: { start: id("======", false), end: id("======", false) },
 	// XXX: support indent variant instead by registering a newline handler?
 	pre: { 
 		start: function( state, token ) {
@@ -296,7 +292,7 @@ WSP.tagToWikitext = {
 			}
 		}
 	},
-	br: { start: nlid(2, "") }
+	br: { start: id("", false) }
 };
 
 
@@ -320,46 +316,25 @@ WSP._serializeAttributes = function ( attribs ) {
 	return out.join(' ');
 };
 
-WSP._stripFirstNewLines = function ( state, chunk ) {
-	while ( chunk !== '' && chunk[0] === '\n' ) {
-		chunk = chunk.substr(1);
-	}
-	if ( chunk !== '' ) {
-		state.realChunkCB( chunk );
-		state.chunkCB = state.realChunkCB;
-	}
-};
-
-
 /**
  * Serialize a chunk of tokens
  */
 WSP.serializeTokens = function( tokens, chunkCB ) {
 	var state = $.extend({}, this.defaultOptions, this.options),
 		i, l;
-	state.chunkCB = WSP._stripFirstNewLines.bind( this, state );
 	if ( chunkCB === undefined ) {
 		var out = [];
-		state.realChunkCB = out.push.bind(out);
+		state.chunkCB = out.push.bind(out);
 		for ( i = 0, l = tokens.length; i < l; i++ ) {
 			this._serializeToken( state, tokens[i] );
 		}
 		return out;
 	} else {
-		state.realChunkCB = chunkCB;
+		state.chunkCB = chunkCB;
 		for ( i = 0, l = tokens.length; i < l; i++ ) {
 			this._serializeToken( state, tokens[i] );
 		}
 	}
-};
-
-WSP.getNewLines = function ( state, n ) {
-	var out = '';
-	while ( state.precedingNewlineCount < n ) {
-		out += '\n';
-		n--;
-	}
-	return out;
 };
 
 WSP.defaultHTMLTagHandler = { 
@@ -387,15 +362,16 @@ WSP.getTokenHandler = function(state, token) {
  * Serialize a token.
  */
 WSP._serializeToken = function ( state, token ) {
+	var handler, res, dropContent;
+
+	dropContent     = state.dropContent;
 	state.prevToken = state.curToken;
-	state.curToken = token;
-	var handler, 
-		res,
-		dropContent = state.dropContent;
-	//console.warn( 'st: ' + JSON.stringify( token ) );
+	state.curToken  = token;
+
 	switch( token.constructor ) {
 		case TagTk:
 		case SelfclosingTagTk:
+			state.ignoreLeadingNewLines = false;
 			handler = WSP.getTokenHandler(state, token);
 			res = handler.start ? handler.start( state, token ) : '';
 			break;
@@ -420,29 +396,50 @@ WSP._serializeToken = function ( state, token ) {
 			console.warn( 'Unhandled token type ' + JSON.stringify( token ) );
 			break;
 	}
-	//console.warn( 'res: ' + JSON.stringify( res ) );
+
+	var requiredNLCount = state.precedingNewlineCount;
 	if (res !== '') {
+		// Deal with trailing new lines
+		var allDone = false;
 		var nls = res.match( /(?:\r?\n)+$/ );
-		if ( nls ) {
-			if ( nls[0] === res ) {
-				// completely newlines, continue counting..
+		if (nls) {
+			var matchedStr = nls[0];
+			if (matchedStr === res) {
+				// all newlines, accumulate count, and clear output
 				state.precedingNewlineCount += res.length;
+				res = "";
+				allDone = true;
 			} else {
-				// reset to new newline count
-				state.precedingNewlineCount = res.length;
+				// strip new lines & reset newline count
+				res = res.replace(/(\r?\n)+$/, '');
+				state.precedingNewlineCount = matchedStr.length;
 			}
 		} else {
 			// no trailing newlines at all
 			state.precedingNewlineCount = 0;
 		}
-		if ( ! dropContent || ! state.dropContent ) {
+
+		// Deal with leading new lines
+		if (!allDone) {
+			nls = res.match(/(^\r?\n)+/);
+			if (nls) {
+				if (!state.ignoreLeadingNewLines) requiredNLCount += nls[0].length;
+				res = res.replace(/(^\r?\n)+/, '');
+			}
+		}
+
+		if ( res !== '' && (! dropContent || ! state.dropContent )) {
 			// FIXME: This might modify not just the last content token in a
 			// link, which would be wrong. We'll likely have to collect tokens
 			// between a tags instead, and strip only the last content token.
 			if (state.dropTail && res.substr(- state.dropTail.length) === state.dropTail) {
 				res = res.substr(0, res.length - state.dropTail.length);
 			}
-			state.chunkCB( res );
+
+			// Add required # of new lines in the beginning
+			var out = '';
+			for (var i = 0; i < requiredNLCount; i++) out += '\n';
+			state.chunkCB(out + res);
 		}
 	}
 };
@@ -453,14 +450,13 @@ WSP._serializeToken = function ( state, token ) {
 WSP.serializeDOM = function( node, chunkCB ) {
 	var state = $.extend({}, this.defaultOptions, this.options);
 	//console.warn( node.innerHTML );
-	state.chunkCB = this._stripFirstNewLines.bind( this, state );
 	if ( ! chunkCB ) {
 		var out = [];
-		state.realChunkCB = out.push.bind( out );
+		state.chunkCB = out.push.bind( out );
 		this._serializeDOM( node, state );
 		return out.join('');
 	} else {
-		state.realChunkCB = chunkCB;
+		state.chunkCB = chunkCB;
 		this._serializeDOM( node, state );
 	}
 };
