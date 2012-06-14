@@ -125,21 +125,26 @@ WSP._linkHandler =  function( state, token ) {
 	if ( attribDict.rel && attribDict.href !== undefined ) {
 		var tokenData = token.dataAttribs;
 		if ( attribDict.rel === 'mw:wikiLink' ) {
-			var tail = tokenData.tail,
-				target = decodeURIComponent( 
-					attribDict.href.substr( env.wgScriptPath.length ) );
+			var base   = env.wgScriptPath;
+			var href   = attribDict.href;
+			var prefix = href.substr(0, base.length);
+			var target = (prefix === base) ? href.substr(base.length) : href;
+			target = decodeURIComponent(target);
+
+			var tail   = tokenData.tail;
 			if ( tail && tail.length ) {
 				state.dropTail = tail;
-				target = tokenData.gc ? tokenData.sHref : target.replace( /_/g, ' ' );
+				target = tokenData.gc ? tokenData.sHref[0] : target.replace( /_/g, ' ' );
 			} else {
-				var origHref = tokenData.sHref;
-				if (origHref) {
+				// SSS: Why is sHref an array instead of a string?
+				var origLinkTgt = tokenData.sHref[0];
+				if (origLinkTgt) {
 					//console.warn( JSON.stringify( tokenData.sHref ) );
 					// SSS FIXME: Why was resolveTitle wrapping this?  Also, why do we require normalizeTitle here?
-					var normalizedOrigHref = env.normalizeTitle(env.tokensToString(origHref));
-					if ( normalizedOrigHref === target ) {
+					var normalizedOrigLinkTgt = env.normalizeTitle(env.tokensToString(origLinkTgt));
+					if ( normalizedOrigLinkTgt === target ) {
 						// Non-standard capitalization
-						target = origHref;
+						target = origLinkTgt;
 					}
 				} else {
 					target = target.replace( /_/g, ' ' );
