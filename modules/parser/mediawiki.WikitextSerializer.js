@@ -65,7 +65,7 @@ WSP._listItemHandler = function ( bullet, state, token ) {
 	curList.itemCount++;
 
 	if (bullet === '') {
-	    // For 2nd item and later, always get a single new line and discard the rest
+		// For 2nd item and later, always get a single new line and discard the rest
 		// This only applies to <li> list items
 		state.precedingNewlineCount = (curList.itemCount > 1) ? 1 : 0;
 		state.ignoreLeadingNewLines = true;
@@ -173,22 +173,16 @@ WSP._linkHandler =  function( state, token ) {
 	//	// external link
 	//	return '[' + rtinfo.
 };
-WSP._linkEndHandler =  function( state, token ) {
+WSP._linkEndHandler = function( state, token ) {
 	var attribDict = state.env.KVtoHash( token.attribs );
 	if ( attribDict.rel && attribDict.href !== undefined ) {
 		if ( attribDict.rel === 'mw:wikiLink' ) {
-			var retVal = "]]" + (token.dataAttribs.tail ? token.dataAttribs.tail : "");
 			state.dropContent = false;
-			state.dropTail = false;
-			return retVal;
+			state.dropTail    = false;
+			return "]]" + (token.dataAttribs.tail ? token.dataAttribs.tail : "");
 		} else if ( attribDict.rel === 'mw:extLink' ) {
-			if ( token.dataAttribs.stx === 'urllink' ) {
-				state.dropContent = false;
-				return '';
-			} else {
-				state.dropContent = false;
-				return ']';
-			}
+			state.dropContent = false;
+			return (token.dataAttribs.stx === 'urllink') ? '' : ']';
 		} else {
 			return WSP._serializeHTMLEndTag( state, token );
 		}
