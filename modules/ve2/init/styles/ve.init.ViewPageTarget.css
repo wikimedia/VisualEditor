@@ -1,9 +1,5 @@
 .es-toolbar-wrapper {
 	margin: -1em -1em 1em -1em;
-	transition: margin 250ms, height 250ms;
-	-moz-transition: margin 250ms, height 250ms;
-	-webkit-transition: margin 250ms, height 250ms;
-	-o-transition: margin 250ms, height 250ms;
 }
 
 .es-toolbar {
@@ -12,11 +8,16 @@
 }
 
 .ve-init-viewPageTarget-pageTitle {
-	-webkit-transition: opacity 200ms ease-out, margin-top 200ms ease-out;
-	-moz-transition: opacity 200ms ease-out, margin-top 200ms ease-out;
-	-o-transition: opacity 200ms ease-out, margin-top 200ms ease-out;
-	transition: opacity 200ms ease-out, margin-top 200ms ease-out;
+	-webkit-transition: opacity 200ms ease-out;
+	-moz-transition: opacity 200ms ease-out;
+	-o-transition: opacity 200ms ease-out;
+	transition: opacity 200ms ease-out;
 	cursor: default;
+}
+
+.ve-init-viewPageTarget-pageToc {
+	display: inline-block;
+	overflow: hidden;
 }
 
 .ve-init-viewPageTarget-loadingSpinner {
