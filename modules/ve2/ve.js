@@ -276,3 +276,11 @@ ve.batchSplice = function( arr, offset, remove, data ) {
 ve.insertIntoArray = function( dst, offset, src ) {
 	ve.batchSplice( dst, offset, 0, src );
 };
+
+ve.debug = true;
+
+ve.log = function() {
+	if ( ve.debug === true && window.console ) { 
+		console.log.apply( console, arguments );
+	}
+};

@@ -131,8 +131,12 @@ ve.ce.TextNode.prototype.onUpdate = function( force ) {
 		this.$ = $new;
 		if ( this.parent ) {
 			this.parent.clean();
-			// TODO: Remove before release or make it some debug variable dependent
-			//this.parent.$.css('display','none').fadeIn( 'fast' );
+			if ( ve.debug ) {
+				this.parent.$.css('background-color', '#F6F6F6');
+				setTimeout( ve.proxy( function() {
+					this.parent.$.css('background-color', 'transparent');
+				}, this ), 350 );
+			}
 		}
 	}
 };
