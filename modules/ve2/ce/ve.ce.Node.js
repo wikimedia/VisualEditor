@@ -170,6 +170,23 @@ ve.ce.Node.prototype.getModel = function() {
 	return this.model;
 };
 
+ve.ce.Node.getSplitableNode = function( node ) {
+	var splitableNode = null;
+	
+	ve.Node.traverseUpstream( node, function( node ) {
+		console.log(node);
+		if ( node.canBeSplit() ) {
+			splitableNode = node;
+			return true;		
+		} else {
+			return false;			
+		}
+	} );
+	
+	return splitableNode;
+};
+
+
 /**
  * Attaches node as a child to another node.
  *

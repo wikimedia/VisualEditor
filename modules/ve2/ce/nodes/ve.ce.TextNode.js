@@ -132,7 +132,7 @@ ve.ce.TextNode.prototype.onUpdate = function( force ) {
 		if ( this.parent ) {
 			this.parent.clean();
 			// TODO: Remove before release or make it some debug variable dependent
-			this.parent.$.css('display','none').fadeIn( 'fast' );
+			//this.parent.$.css('display','none').fadeIn( 'fast' );
 		}
 	}
 };

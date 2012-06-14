@@ -104,20 +104,38 @@ ve.ce.Surface.prototype.documentOnBlur = function() {
 };
 
 ve.ce.Surface.prototype.onKeyDown = function( e ) {
-	if ( this.poll.polling === false ) {
-		this.poll.polling = true;
-		this.pollChanges();
-	}
-};
-
-ve.ce.Surface.prototype.onKeyPress = function( e ) {
-	switch ( e.which ) {
+	switch ( e.keyCode ) {
+		// Left arrow
+		case 37:
+			break;
+		// Right arrow
+		case 39:
+			break;
 		// Enter
 		case 13:
 			e.preventDefault();
 			this.handleEnter();
 			break;
+		// Backspace
+		case 8:
+			this.handleDelete( true );
+			e.preventDefault();
+			break;
+		// Delete
+		case 46:
+			this.handleDelete( false );
+			e.preventDefault();
+			break;
+		default:
+			if ( this.poll.polling === false ) {
+				this.poll.polling = true;
+				this.pollChanges();
+			}
 	}
+};
+
+ve.ce.Surface.prototype.onKeyPress = function( e ) {
+	console.log('onKeyPress');
 };
 
 ve.ce.Surface.prototype.onMouseDown = function( e ) {
@@ -136,7 +154,7 @@ ve.ce.Surface.prototype.onMouseDown = function( e ) {
 };
 
 ve.ce.Surface.prototype.pollChanges = function( async ) {
-	var delay = ve.proxy( function( now ) {
+	var delay = ve.proxy( function( async ) {
 		if ( this.poll.polling ) {
 			if ( this.poll.timeout !== null ) {
 				clearTimeout( this.poll.timeout );
@@ -226,6 +244,36 @@ ve.ce.Surface.prototype.pollChanges = function( async ) {
 	delay();
 };
 
+ve.ce.Surface.prototype.stopPolling = function() {
+	if ( this.poll.polling ) {
+		this.pollChanges();
+		this.poll.polling = false;
+		clearTimeout( this.poll.timeout );
+	}
+};
+
+ve.ce.Surface.prototype.startPolling = function() {
+	if ( this.poll.polling === true ) {
+		this.pollChanges();
+		this.pollChanges( true );
+	} else {
+		this.poll.polling = true;
+		this.pollChanges( true );
+	}
+};
+
+ve.ce.Surface.prototype.clearPollData = function() {
+	this.poll.text = null;
+	this.poll.hash = null;
+	this.poll.node = null;
+	this.poll.rangySelection = {
+		anchorNode: null,
+		anchorOffset: null,
+		focusNode: null,
+		focusOffset: null
+	};
+};
+
 ve.ce.Surface.prototype.onContentChange = function( e ) {
 	var	nodeOffset = $( e.node ).data( 'node' ).model.getOffset(),
 		offsetDiff = (
@@ -278,11 +326,17 @@ ve.ce.Surface.prototype.onContentChange = function( e ) {
 
 		ve.dm.Document.addAnnotationsToData( data, annotations );
 
+
 		this.hideSelection();
+		this.poll.node = null;
+		this.poll.rangySelection.anchorNode = null;
+		/*
+
+
 		this.poll.polling = false;
 		clearTimeout( this.poll.timeout );
 		this.poll.node = null;
-
+*/
 		// TODO: combine newFromRemoval and newFromInsertion into one newFromReplacement
 		if ( fromLeft + fromRight < e.old.text.length ) {
 			this.model.transact( ve.dm.Transaction.newFromRemoval( this.documentView.model, new ve.Range(
@@ -501,6 +555,101 @@ ve.ce.Surface.prototype.handleEnter = function() {
 		_this.startPolling();
 	}, 0 );
 	*/
+};
+
+ve.ce.Surface.prototype.handleDelete = function( backspace ) {	
+	this.stopPolling();
+	this.clearPollData();
+
+	var selection = this.model.getSelection(),
+		sourceOffset,
+		targetOffset,
+		sourceSplitableNode,
+		targetSplitableNode,
+		tx,
+		cursorAt;
+
+	if ( selection.from === selection.to ) {
+		if ( backspace ) {
+			sourceOffset = selection.to; 
+			targetOffset = this.model.getDocument().getRelativeContentOffset( sourceOffset, -1 );
+		} else {
+			sourceOffset = this.model.getDocument().getRelativeContentOffset( selection.to, 1 );
+			targetOffset = selection.to;
+		}
+
+		var	sourceNode = this.documentView.getNodeFromOffset( sourceOffset, false ),
+			targetNode = this.documentView.getNodeFromOffset( targetOffset, false );
+		
+		if ( sourceNode.type === targetNode.type ) {
+			sourceSplitableNode = ve.ce.Node.getSplitableNode( sourceNode );
+			targetSplitableNode = ve.ce.Node.getSplitableNode( targetNode );
+		}
+		//console.log(sourceSplitableNode, targetSplitableNode);
+		
+		cursorAt = targetOffset;
+
+
+		if ( sourceNode === targetNode ||
+			( typeof sourceSplitableNode !== 'undefined' &&
+			sourceSplitableNode.getParent()  === targetSplitableNode.getParent() ) ) {
+			// Source and target are the same node or have the same parent (list items)
+			
+			// Transact
+			tx = ve.dm.Transaction.newFromRemoval( this.documentView.model, new ve.Range( targetOffset, sourceOffset ) );
+			this.model.transact( tx );
+		} else {
+			// Source and target are different nodes and do not share a parent. Perform tricky merge.
+
+			// !!!This portion still in development
+			return;
+			
+			// Transact
+			/*
+			tx = ve.dm.Transaction.newFromInsertion(
+				this.documentView.model, targetOffset, sourceNode.model.getContentData()
+			);
+			*/
+	
+			console.log('sourceNode', sourceNode);
+			console.log('sourceOffset', sourceOffset);
+			console.log('targetNode', targetNode);
+			console.log('targetOffset', targetOffset);
+return;
+			console.log('length: ', sourceNode.model.getLength());
+			console.log('outerlength: ', sourceNode.model.getOuterLength());
+			console.log('offset', this.documentView.getDocumentNode().getOffsetFromNode( sourceNode ));
+			console.log('some data: ', this.documentView.model.getData( this.model.getSelection() ) )
+			
+			// Find the node that should be completely removed
+			var nodeToDelete = sourceNode;
+			ve.Node.traverseUpstream( nodeToDelete, function( node ) {
+				if ( node.getParent().children.length === 1 ) {
+					nodeToDelete = node.getParent();
+					return true;
+				} else {
+					return false;
+				}
+			} );
+			
+			// Create range surrounding the entire sourceNode and remove
+			var range = new ve.Range();
+			range.from = this.documentView.getDocumentNode().getOffsetFromNode( sourceNode )
+			range.to = range.from + sourceNode.model.getOuterLength();
+			tx = ve.dm.Transaction.newFromRemoval( this.documentView.model, range );
+			this.model.transact( tx );
+		}
+	} else {
+		// selection removal
+		tx = ve.dm.Transaction.newFromRemoval( this.documentView.model, selection );
+		this.model.transact( tx );
+		cursorAt = selection.start;
+	}
+
+	this.showCursor(cursorAt);
+	this.model.setSelection( new ve.Range( cursorAt ) );
+
+	this.startPolling();
 };
 
 ve.ce.Surface.prototype.showCursor = function( offset ) {
