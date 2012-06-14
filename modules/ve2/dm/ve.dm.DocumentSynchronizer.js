@@ -32,80 +32,90 @@ ve.dm.DocumentSynchronizer = function( doc ) {
  * @static
  * @member
  */
-ve.dm.DocumentSynchronizer.synchronizers = {
+ve.dm.DocumentSynchronizer.synchronizers = {};
 
-	/* Static Methods */
+/* Static Methods */
 
-	/**
-	 * Synchronizes an annotation action.
-	 *
-	 * @static
-	 * @method
-	 * @param {Object} action
-	 */
-	'annotation': function( action ) {
-		// Queue events for all leaf nodes covered by the range
-		// TODO test me
-		var i, selection = this.document.selectNodes( action.range, 'leaves' );
-		for ( i = 0; i < selection.length; i++ ) {
-			this.queueEvent( selection[i].node, 'annotation' );
-			this.queueEvent( selection[i].node, 'update' );
-		}
-	},
-	/**
-	 * Synchronizes an attribute change action.
-	 *
-	 * @static
-	 * @method
-	 * @param {Object} action
-	 */
-	'attributeChange': function( action ) {
-		this.queueEvent( action.node, 'attributeChange', action.key, action.from, action.to );
-		this.queueEvent( action.node, 'update' );
-	},
-	/**
-	 * Synchronizes a resize action.
-	 *
-	 * @static
-	 * @method
-	 * @param {Object} action
-	 */
-	'resize': function( action ) {
-		action.node.adjustLength( action.adjustment );
-		this.queueEvent( action.node, 'update' );
-	},
-	/**
-	 * Synchronizes a rebuild action.
-	 *
-	 * @static
-	 * @method
-	 * @param {Object} action
-	 */
-	'rebuild': function( action ) {
-		// Find the nodes contained by oldRange
-		var selection = this.document.selectNodes( action.oldRange, 'siblings' );
-		if ( selection.length === 0 ) {
-			// WTF? Nothing to rebuild, I guess. Whatever.
-			return;
-		}
-		
-		var firstNode, parent, index, numNodes;
-		if ( 'indexInNode' in selection[0] ) {
-			// Insertion
-			parent = selection[0].node;
-			index = selection[0].indexInNode;
-			numNodes = 0;
-		} else {
-			// Rebuild
-			firstNode = selection[0].node,
-			parent = firstNode.getParent(),
-			index = selection[0].index;
-			numNodes = selection.length;
-		}
-		this.document.rebuildNodes( parent, index, numNodes, action.oldRange.from,
-			action.newRange.getLength()
-		);
+/**
+ * Synchronizes an annotation action.
+ *
+ * This method is called within the context of a document synchronizer instance.
+ *
+ * @static
+ * @method
+ * @param {Object} action
+ */
+ve.dm.DocumentSynchronizer.synchronizers.annotation = function( action ) {
+	// Queue events for all leaf nodes covered by the range
+	// TODO test me
+	var i, selection = this.document.selectNodes( action.range, 'leaves' );
+	for ( i = 0; i < selection.length; i++ ) {
+		this.queueEvent( selection[i].node, 'annotation' );
+		this.queueEvent( selection[i].node, 'update' );
 	}
+};
+
+/**
+ * Synchronizes an attribute change action.
+ *
+ * This method is called within the context of a document synchronizer instance.
+ *
+ * @static
+ * @method
+ * @param {Object} action
+ */
+ve.dm.DocumentSynchronizer.synchronizers.attributeChange = function( action ) {
+	this.queueEvent( action.node, 'attributeChange', action.key, action.from, action.to );
+	this.queueEvent( action.node, 'update' );
+};
+
+/**
+ * Synchronizes a resize action.
+ *
+ * This method is called within the context of a document synchronizer instance.
+ *
+ * @static
+ * @method
+ * @param {Object} action
+ */
+ve.dm.DocumentSynchronizer.synchronizers.resize = function( action ) {
+	action.node.adjustLength( action.adjustment );
+	// no update needed, adjustLength causes an update event on it's own
+};
+
+/**
+ * Synchronizes a rebuild action.
+ *
+ * This method is called within the context of a document synchronizer instance.
+ *
+ * @static
+ * @method
+ * @param {Object} action
+ */
+ve.dm.DocumentSynchronizer.synchronizers.rebuild = function( action ) {
+	// Find the nodes contained by oldRange
+	var selection = this.document.selectNodes( action.oldRange, 'siblings' );
+	if ( selection.length === 0 ) {
+		// WTF? Nothing to rebuild, I guess. Whatever.
+		return;
+	}
+	
+	var firstNode, parent, index, numNodes;
+	if ( 'indexInNode' in selection[0] ) {
+		// Insertion
+		parent = selection[0].node;
+		index = selection[0].indexInNode;
+		numNodes = 0;
+	} else {
+		// Rebuild
+		firstNode = selection[0].node,
+		parent = firstNode.getParent(),
+		index = selection[0].index;
+		numNodes = selection.length;
+	}
+	this.document.rebuildNodes( parent, index, numNodes, action.oldRange.from,
+		action.newRange.getLength()
+	);
 };
 
 /* Methods */

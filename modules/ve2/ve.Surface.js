@@ -65,6 +65,9 @@ ve.Surface = function( parent, dom, options ) {
 
 	// Registration
 	ve.instances.push( this );
+
+	// Start tracking changes
+	this.model.startHistoryTracking();
 };
 
 /* Methods */
