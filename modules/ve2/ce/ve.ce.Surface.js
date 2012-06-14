@@ -15,6 +15,7 @@ ve.ce.Surface = function( $container, model ) {
 	this.contextView = null; // See initialization below
 	this.selectionInterval = null;
 	this.$ = $container;
+	this.$document = $( document );
 	this.clipboard = {};
 	this.render = true; // Used in ve.ce.TextNode
 
@@ -34,17 +35,11 @@ ve.ce.Surface = function( $container, model ) {
 		frequency: 100
 	};
 
-	this.isMouseDown = false; // Tracked using mouse events
-
 	// Events
 	this.model.on( 'select', ve.proxy( this.onSelect, this ) );
 	this.model.on( 'transact', ve.proxy( this.onTransact, this ) );
 	this.on( 'contentChange', ve.proxy( this.onContentChange, this ) );
-
-	/*
 	this.$.on( {
-		'mouseup': ve.proxy( this.onMouseUp, this ),
-		'mousemove': ve.proxy( this.onMouseMove, this ),
 		'cut copy': ve.proxy( this.onCutCopy, this ),
 		'paste': ve.proxy( this.onPaste, this ),
 		'dragover drop': function( e ) {
@@ -56,7 +51,6 @@ ve.ce.Surface = function( $container, model ) {
 	if ( $.browser.msie ) {
 		this.$.on( 'beforepaste', ve.proxy( this.onPaste, this ) );
 	}
-	*/
 
 	// Initialization
 	try {
@@ -73,15 +67,62 @@ ve.ce.Surface = function( $container, model ) {
 
 	// DocumentNode Events
 	this.documentView.getDocumentNode().$.on( {
-		'keydown.ve-ce-Surface': ve.proxy( this.onKeyDown, this ),
-		'keypress.ve-ce-Surface': ve.proxy( this.onKeyPress, this ),
-		'mousedown.ve-ce-Surface': ve.proxy( this.onMouseDown, this ),
-		'focus.ve-ce-Surface': ve.proxy( this.documentOnFocus, this ),
-		'blur.ve-ce-Surface': ve.proxy( this.documentOnBlur, this ),
+		'focus': ve.proxy( this.documentOnFocus, this ),
+		'blur': ve.proxy( this.documentOnBlur, this ),
 	} );
 };
 
 /* Methods */
+
+ve.ce.Surface.prototype.documentOnFocus = function() {
+	ve.log( 'documentOnFocus' );
+
+	this.$document.on( {
+		// key
+		'keydown.ve-ce-Surface': ve.proxy( this.onKeyDown, this ),
+		// mouse
+		'mousedown.ve-ce-Surface': ve.proxy( this.onMouseDown, this ),
+		'mouseup.ve-ce-Surface': ve.proxy( this.onMouseUp, this ),
+	} );
+	this.poll.polling = true;
+	this.pollChanges( true );
+};
+
+ve.ce.Surface.prototype.documentOnBlur = function() {
+	ve.log( 'documentOnBlur' );
+
+	this.$document.off( '.ve-ce-Surface' );
+	this.stopPolling();
+};
+
+ve.ce.Surface.prototype.onMouseDown = function( e ) {
+	ve.log( 'onMouseDown' );
+
+	if ( this.poll.polling === true ) {
+		this.pollChanges();
+		if ( $( e.target ).closest( '.ve-ce-documentNode' ).length === 0 ) {
+			this.stopPolling();
+		} else {
+			this.pollChanges( true );
+		}
+	}
+
+	// Block / prevent triple click
+	if ( e.originalEvent.detail > 2 ) {
+		e.preventDefault();
+	}
+};
+
+ve.ce.Surface.prototype.onMouseUp = function( e ) {
+	ve.log( 'onMouseUp' );
+};
+
+ve.ce.Surface.prototype.stopPolling = function() {
+	ve.log( 'stopPolling' );
+
+	this.poll.polling = false;
+	clearTimeout( this.poll.timeout );
+};
 
 ve.ce.Surface.prototype.onSelect = function( range ) {
 	var _this = this;
@@ -108,18 +149,6 @@ ve.ce.Surface.prototype.onSelect = function( range ) {
 
 ve.ce.Surface.prototype.onTransact = function( tx ) {
 	this.showSelection( this.model.getSelection() );
-};
-
-ve.ce.Surface.prototype.documentOnFocus = function() {
-	// ...
-};
-
-ve.ce.Surface.prototype.documentOnBlur = function() {
-	if ( this.poll.polling ) {
-		this.pollChanges();
-		this.poll.polling = false;
-		clearTimeout( this.poll.timeout );
-	}
 };
 
 ve.ce.Surface.prototype.onKeyDown = function( e ) {
@@ -157,20 +186,7 @@ ve.ce.Surface.prototype.onKeyPress = function( e ) {
 	console.log('onKeyPress');
 };
 
-ve.ce.Surface.prototype.onMouseDown = function( e ) {
-	// Block triple click (select node) - temporary
-	if ( e.originalEvent.detail > 2 ) {
-		e.preventDefault();
-	}
 
-	if ( this.poll.polling === true ) {
-		this.pollChanges();
-		this.pollChanges( true );
-	} else {
-		this.poll.polling = true;
-		this.pollChanges( true );
-	}
-};
 
 ve.ce.Surface.prototype.pollChanges = function( async ) {
 	var delay = ve.proxy( function( async ) {
@@ -261,14 +277,6 @@ ve.ce.Surface.prototype.pollChanges = function( async ) {
 	}
 
 	delay();
-};
-
-ve.ce.Surface.prototype.stopPolling = function() {
-	if ( this.poll.polling ) {
-		this.pollChanges();
-		this.poll.polling = false;
-		clearTimeout( this.poll.timeout );
-	}
 };
 
 ve.ce.Surface.prototype.startPolling = function() {
