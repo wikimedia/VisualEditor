@@ -373,10 +373,7 @@ WSP._serializeToken = function ( state, token ) {
 				//
 				// SSS FIXME: Other tags that have similar requirements within lists or
 				// other contexts?
-
-				// Normalize white space at 2 newlines between paragraphs
-				// So, ...\n*</p><p>... will always introduce 2 newlines
-				state.precedingNewlineCount = 2;
+				if (state.precedingNewlineCount < 2) state.precedingNewlineCount = 2;
 			}
 		} else if (state.precedingNewlineCount < 1) {
 			state.precedingNewlineCount = 1;
