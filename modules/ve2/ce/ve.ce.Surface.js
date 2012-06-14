@@ -121,6 +121,11 @@ ve.ce.Surface.prototype.onKeyPress = function( e ) {
 };
 
 ve.ce.Surface.prototype.onMouseDown = function( e ) {
+	// Block triple click (select node) - temporary
+	if ( e.originalEvent.detail > 2 ) {
+		e.preventDefault();
+	}
+
 	if ( this.poll.polling === true ) {
 		this.pollChanges();
 		this.pollChanges( true );
