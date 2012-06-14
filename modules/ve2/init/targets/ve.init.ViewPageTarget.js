@@ -19,6 +19,7 @@ ve.init.ViewPageTarget = function() {
 	this.surface = null;
 	this.active = false;
 	this.edited = false;
+	this.activating = false;
 	this.proxiedOnSurfaceModelTransact = ve.proxy( this.onSurfaceModelTransact, this );
 	this.surfaceOptions = {
 		'toolbars': {
@@ -80,7 +81,8 @@ ve.init.ViewPageTarget.saveDialogTemplate = '\
  */
 ve.init.ViewPageTarget.prototype.onEditTabClick = function( e ) {
 	// Ignore multiple clicks while editor is active
-	if ( !this.active ) {
+	if ( !this.active && !this.activating ) {
+		this.activating = true;
 		// UI updates
 		this.setSelectedTab( 'ca-edit' );
 		this.showSpinner();
@@ -173,6 +175,7 @@ ve.init.ViewPageTarget.prototype.onSaveDialogCloseButtonClick = function( e ) {
  * @method
  */
 ve.init.ViewPageTarget.prototype.onLoad = function( error, dom ) {
+	this.activating = false;
 	if ( error ) {
 		// TODO: Error handling in the UI
 	} else {
@@ -212,10 +215,11 @@ ve.init.ViewPageTarget.prototype.setUpSurface = function( dom ) {
 	this.surface.getModel().on( 'transact', this.proxiedOnSurfaceModelTransact );
 	// Transplant the toolbar
 	this.$toolbar = this.$surface.find( '.es-toolbar-wrapper' );
+	this.$toolbar.find( '.es-toolbar' ).slideDown( 'fast' );
 	this.$heading
 		.before( this.$toolbar )
 		.addClass( 've-init-viewPageTarget-pageTitle' )
-		.css( { 'margin-top': this.$toolbar.outerHeight(), 'opacity': 0.5 } );
+		.fadeTo( 'fast', 0.5 );
 	// Update UI
 	this.$view.hide();
 	this.$spinner.remove();
@@ -288,11 +292,13 @@ ve.init.ViewPageTarget.prototype.tearDownSurface = function( content ) {
 	this.setSelectedTab( 'ca-view' );
 	// Update UI
 	this.$surface.empty().detach();
-	this.$toolbar.remove();
+	this.$toolbar.find( '.es-toolbar' ).slideUp( 'fast', function() {
+		$(this).parent().remove();
+	} );
 	this.$spinner.remove();
 	$( '.es-contextView' ).remove();
 	this.$view.show().fadeTo( 'fast', 1 );
-	this.$heading.css( { 'margin-top': 'auto', 'opacity': 1 } );
+	this.$heading.fadeTo( 'fast', 1 );
 	setTimeout( ve.proxy( function() {
 		$(this).removeClass( 've-init-viewPageTarget-pageTitle' );
 	}, this.$heading ), 1000 );
