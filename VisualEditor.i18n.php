@@ -33,7 +33,7 @@ $messages['qqq'] = array(
 	'visualeditor-feedback-prompt' => 'A link that opens feedback form in http://www.mediawiki.org/wiki/Special:VisualEditorSandbox',
 );
 
-/** Asturian (Asturianu)
+/** Asturian (asturianu)
  * @author Xuacu
  */
 $messages['ast'] = array(
@@ -70,7 +70,7 @@ $messages['be-tarask'] = array(
 	'visualeditor-feedback-dialog-title' => 'Пакіньце водгук пра пясочніцу візуальнага рэдактара',
 );
 
-/** Breton (Brezhoneg)
+/** Breton (brezhoneg)
  * @author Fulup
  * @author Y-M D
  */
@@ -116,7 +116,7 @@ $messages['dsb'] = array(
 	'visualeditor-feedback-dialog-title' => 'Komentar wó grajkanišću VisualEditora zawóstajiś',
 );
 
-/** Spanish (Español)
+/** Spanish (español)
  * @author Armando-Martin
  * @author Imre
  */
@@ -135,7 +135,7 @@ $messages['es'] = array(
 	'visualeditor-feedback-dialog-title' => "Comentar sobre la zona segura (''sandbox'') del Editor Visual",
 );
 
-/** Finnish (Suomi)
+/** Finnish (suomi)
  * @author Nike
  * @author Olli
  */
@@ -154,7 +154,7 @@ $messages['fi'] = array(
 	'visualeditor-feedback-dialog-title' => 'Jätä palautetta visuaalisen muokkaimen hiekkalaatikosta.',
 );
 
-/** French (Français)
+/** French (français)
  * @author Crochet.david
  * @author Gomoko
  */
@@ -173,7 +173,7 @@ $messages['fr'] = array(
 	'visualeditor-feedback-dialog-title' => "Laissez un commentaire sur le bac à sable de l'éditeur visuel",
 );
 
-/** Franco-Provençal (Arpetan)
+/** Franco-Provençal (arpetan)
  * @author ChrisPtDe
  */
 $messages['frp'] = array(
@@ -252,7 +252,7 @@ $messages['hsb'] = array(
 	'visualeditor-feedback-dialog-title' => 'Zawostaj komentar wo hrajkanišću VisualEditora',
 );
 
-/** Hungarian (Magyar)
+/** Hungarian (magyar)
  * @author Dj
  */
 $messages['hu'] = array(
@@ -270,7 +270,7 @@ $messages['hu'] = array(
 	'visualeditor-feedback-dialog-title' => 'Visszajelzés készítése a VisualEditor homokozójáról',
 );
 
-/** Interlingua (Interlingua)
+/** Interlingua (interlingua)
  * @author McDutchie
  */
 $messages['ia'] = array(
@@ -288,7 +288,7 @@ $messages['ia'] = array(
 	'visualeditor-feedback-dialog-title' => 'Lassar commentario super le cassa a sablo del editor visual',
 );
 
-/** Italian (Italiano)
+/** Italian (italiano)
  * @author Beta16
  * @author F. Cosoleto
  */
@@ -352,14 +352,14 @@ $messages['lb'] = array(
 	'visualeditor-feedback-prompt' => 'Gitt Äre Feedback',
 );
 
-/** Lithuanian (Lietuvių)
+/** Lithuanian (lietuvių)
  * @author Eitvys200
  */
 $messages['lt'] = array(
 	'visualeditor-feedback-prompt' => 'Palikti atsiliepimą',
 );
 
-/** Macedonian (Македонски)
+/** Macedonian (македонски)
  * @author Bjankuloski06
  */
 $messages['mk'] = array(
@@ -433,7 +433,7 @@ $messages['nl'] = array(
 	'visualeditor-feedback-dialog-title' => 'Terugkoppeling geven over de visuele tekstverwerker',
 );
 
-/** Polish (Polski)
+/** Polish (polski)
  * @author Mikołka
  */
 $messages['pl'] = array(
@@ -470,7 +470,7 @@ $messages['pms'] = array(
 	'visualeditor-feedback-dialog-title' => "Lassé n'opinion a propòsit dl'Ambient ëd preuva ëd VisualEditor",
 );
 
-/** Russian (Русский)
+/** Russian (русский)
  * @author Amire80
  * @author Eugrus
  */
@@ -508,14 +508,14 @@ $messages['si'] = array(
 	'visualeditor-feedback-dialog-title' => 'දෘශ්‍යසංස්කරණ වැලිපිල්ල ගැන ප්‍රතිචාරය ලබාදෙන්න',
 );
 
-/** Swedish (Svenska)
+/** Swedish (svenska)
  * @author WikiPhoenix
  */
 $messages['sv'] = array(
 	'visualeditor-feedback-prompt' => 'Lämna feedback',
 );
 
-/** Ukrainian (Українська)
+/** Ukrainian (українська)
  * @author Тест
  */
 $messages['uk'] = array(
@@ -541,7 +541,7 @@ $messages['vi'] = array(
 	'visualeditor-feedback-dialog-title' => 'Gửi phản hồi về chỗ thử Trình soạn thị giác',
 );
 
-/** Simplified Chinese (‪中文(简体)‬)
+/** Simplified Chinese (‪中文（简体）‬)
  * @author Anakmalaysia
  * @author Liangent
  * @author Shizhao
@@ -561,7 +561,7 @@ $messages['zh-hans'] = array(
 	'visualeditor-feedback-dialog-title' => '留下关于可视化编辑器的反馈',
 );
 
-/** Traditional Chinese (‪中文(繁體)‬)
+/** Traditional Chinese (‪中文（繁體）‬)
  * @author Anakmalaysia
  */
 $messages['zh-hant'] = array(
