@@ -686,7 +686,8 @@ ve.ce.Surface.prototype.showSelection = function( range ) {
 		end = this.getNodeAndOffset( range.end ),
 		rangyRange.setStart( start.node, start.offset );
 		rangyRange.setEnd( end.node, end.offset );
-		rangySel.setSingleRange( rangyRange, range.start !== range.from );
+		rangySel.removeAllRanges();
+		rangySel.addRange( rangyRange, range.start !== range.from );
 	} else {
 		start = end = this.getNodeAndOffset( range.start );
 		rangyRange.setStart( start.node, start.offset );
