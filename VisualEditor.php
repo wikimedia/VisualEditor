@@ -90,6 +90,9 @@ $wgResourceModules += array(
 		),
 		'styles' => array(
 			've2/init/styles/ve.init.ViewPageTarget.css',
+			've2/init/styles/ve.init.ViewPageTarget-hd.css' => array(
+				'media' => 'screen and (min-width: 982px)'
+			),
 		),
 		'dependencies' => array(
 			'ext.visualEditor.init',

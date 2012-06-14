@@ -23,6 +23,8 @@ ve.dm.LinkAnnotation.converters = {
 	'domElementTypes': ['a'],
 	'toDomElement': function( subType, annotation ) {
 		if ( annotation.type ) {
+			// In the future we'll probably want to write sHref here but right now
+			// Parsoid ignores it anyway so there's no point
 			var link = document.createElement( 'a' );
 			link.setAttribute( 'href', annotation.data.href );
 			if ( annotation.data.mw ) {
@@ -36,14 +38,19 @@ ve.dm.LinkAnnotation.converters = {
 	},
 	'toDataAnnotation': function( tag, element ) {
 		var rel = element.getAttribute( 'rel' ) || '',
-			subtype = rel.split( ':' )[1] || 'unknown';
+			subtype = rel.split( ':' )[1] || 'unknown',
+			mwattr = element.getAttribute( 'data-mw' ),
+			mwdata = $.parseJSON( mwattr ) || {},
+			href = element.getAttribute( 'href' ),
 			retval = {
 				'type': 'link/' + subtype,
 				'data': {
-					'href': element.getAttribute( 'href' )
+					'href': href,
+					// For some daft reason sHref is an array
+					'title': mwdata.sHref && mwdata.sHref[0] ?
+						mwdata.sHref[0] : href
 				}
-			},
-			mwattr = element.getAttribute( 'data-mw' );
+			};
 		if ( mwattr ) {
 			retval.data.mw = mwattr;
 		}
