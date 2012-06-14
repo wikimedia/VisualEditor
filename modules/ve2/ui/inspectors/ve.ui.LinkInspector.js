@@ -54,13 +54,10 @@ ve.ui.LinkInspector.prototype.getSelectedLinkAnnotations = function(){
 
 	if ( data.length ) {
 		if ( ve.isPlainObject( data[0][1] ) ) {
-			var annotations = ve.dm.Document.getMatchingAnnotations( data[0][1], /link\/.*/ );
-			for ( var hash in annotations ) {
-				return annotations[hash];
-			}
+			return ve.dm.Document.getMatchingAnnotations( data[0][1], /link\/.*/ );
 		}
 	}
-	return ;
+	return {};
 };
 
 ve.ui.LinkInspector.prototype.getTitleFromSelection = function() {
