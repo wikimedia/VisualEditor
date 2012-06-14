@@ -363,7 +363,7 @@ ve.dm.Transaction.newFromWrap = function( doc, range, unwrapOuter, wrapOuter, un
 		}
 		// Instead of putting in unwrapOuter as given, put it in the
 		// way it appears in the mode,l so we pick up any attributes
-		tx.pushReplace( unwrapOuterData, ve.copyObject( wrapOuter ) );
+		tx.pushReplace( unwrapOuterData, ve.copyArray( wrapOuter ) );
 	}
 
 	if ( wrapEach.length > 0 || unwrapEach.length > 0 ) {
@@ -397,7 +397,7 @@ ve.dm.Transaction.newFromWrap = function( doc, range, unwrapOuter, wrapOuter, un
 						}
 						// Instead of putting in unwrapEach as given, put it in the
 						// way it appears in the model, so we pick up any attributes
-						tx.pushReplace( ve.copyObject( unwrapEachData ), ve.copyObject( wrapEach ) );
+						tx.pushReplace( ve.copyArray( unwrapEachData ), ve.copyArray( wrapEach ) );
 
 						// Store this offset for later
 						startOffset = i;
@@ -411,7 +411,7 @@ ve.dm.Transaction.newFromWrap = function( doc, range, unwrapOuter, wrapOuter, un
 						// Retain the contents of what we're wrapping
 						tx.pushRetain( i - startOffset + 1 - unwrapEach.length*2 );
 						// Replace the closing elements
-						tx.pushReplace( ve.copyObject( closingUnwrapEach ), ve.copyObject( closingWrapEach ) );
+						tx.pushReplace( ve.copyArray( closingUnwrapEach ), ve.copyArray( closingWrapEach ) );
 					}
 				}
 			}
