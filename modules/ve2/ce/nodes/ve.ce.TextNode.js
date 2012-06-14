@@ -14,7 +14,7 @@ ve.ce.TextNode = function( model ) {
 	this.model.addListenerMethod( this, 'update', 'onUpdate' );
 
 	// Intialization
-	this.onUpdate();
+	this.onUpdate( true );
 };
 
 /* Static Members */
@@ -121,13 +121,20 @@ ve.ce.TextNode.annotationRenderers = {
  *
  * @method
  */
-ve.ce.TextNode.prototype.onUpdate = function() {
-	var $new = $( $( '<span>' + this.getHtml() + '</span>' ).contents() );
-	if ( $new.length === 0 ) {
-		$new = $new.add( document.createTextNode( '' ) );
+ve.ce.TextNode.prototype.onUpdate = function( force ) {
+	if ( force === true || this.getSurface().render === true ) {
+		var $new = $( $( '<span>' + this.getHtml() + '</span>' ).contents() );
+		if ( $new.length === 0 ) {
+			$new = $new.add( document.createTextNode( '' ) );
+		}
+		this.$.replaceWith( $new );
+		this.$ = $new;
+		if ( this.parent ) {
+			this.parent.clean();
+			// TODO: Remove before release or make it some debug variable dependent
+			this.parent.$.css('display','none').fadeIn( 'fast' );
+		}
 	}
-	this.$.replaceWith( $new );
-	this.$ = $new;
 };
 
 /**
@@ -153,6 +160,27 @@ ve.ce.TextNode.prototype.getHtml = function() {
 		rightPlain,
 		hashStack = [],
 		annotationStack = {};
+
+	// If first or last char is a space it should be replaced with &nbsp; to be rendered correctly
+	// TODO: Special handling for spaces in <pre> may be required
+	if ( ve.isArray( data[0] ) ) {
+		if ( data[0][0] === ' ' ) {
+			data[0][0] = '&nbsp;';
+		}
+	} else {
+		if ( data[0] === ' ' ) {
+			data[0] = '&nbsp;';
+		}
+	}
+	if ( ve.isArray( data[data.length - 1] ) ) {
+		if ( data[data.length - 1][0] === ' ' ) {
+			data[data.length - 1][0] = '&nbsp;';
+		}
+	} else {
+		if ( data[data.length - 1] === ' ' ) {
+			data[data.length - 1] = '&nbsp;';
+		}
+	}
 
 	var openAnnotations = function( annotations ) {
 		var out = '',
@@ -262,9 +290,18 @@ ve.ce.TextNode.prototype.getHtml = function() {
 	out += closeAnnotations( close );
 
 	// Mulitple spaces should alternate spaces and &nbsp;
+	// TODO: Special handling for spaces in <pre> may be required
 	out = out.replace(/  /g, ' &nbsp;');
 
 	return out;
+};
+
+ve.ce.TextNode.prototype.getSurface = function() {
+	var view = this;
+	while( !view.surface ) {
+		view = view.parent;
+	}
+	return view.surface;
 };
 
 /* Registration */

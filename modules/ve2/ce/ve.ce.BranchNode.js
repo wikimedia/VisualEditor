@@ -208,6 +208,13 @@ ve.ce.BranchNode.prototype.hasSlugAtOffset = function( offset ) {
 	return false;
 };
 
+ve.ce.BranchNode.prototype.clean = function() {
+	this.$.empty();
+	for ( var i = 0; i < this.children.length; i++ ) {
+		this.$.append( this.children[i].$ );
+	}
+};
+
 /* Inheritance */
 
 ve.extendClass( ve.ce.BranchNode, ve.BranchNode );
