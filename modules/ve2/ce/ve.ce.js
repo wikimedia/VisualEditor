@@ -32,27 +32,30 @@ ve.ce.whitespacePattern = /[\u0020\u00A0]/g;
  * @returns {String} Plain text of DOM element
  */
 ve.ce.getDomText = function( element ) {
-	var nodeType = element.nodeType,
-		text = '';
-	if ( nodeType === 1 || nodeType === 9 ) {
-		// Use textContent || innerText for elements
-		if ( typeof element.textContent === 'string' ) {
-			return element.textContent;
-		} else if ( typeof element.innerText === 'string' ) {
-			// Replace IE's carriage returns
-			return element.innerText.replace( /\r\n/g, '' );
-		} else {
-			// Traverse it's children
-			for ( element = element.firstChild; element; element = element.nextSibling) {
-				text += ve.ce.getDomText( element );
+	var func = function( element ) {
+		var nodeType = element.nodeType,
+			text = '';
+		if ( nodeType === 1 || nodeType === 9 || nodeType === 11 ) {
+			// Use textContent || innerText for elements
+			if ( typeof element.textContent === 'string' ) {
+				return element.textContent;
+			} else if ( typeof element.innerText === 'string' ) {
+				// Replace IE's carriage returns
+				return element.innerText.replace( /\r\n/g, '' );
+			} else {
+				// Traverse it's children
+				for ( element = element.firstChild; element; element = element.nextSibling) {
+					text += func( element );
+				}
 			}
+		} else if ( nodeType === 3 || nodeType === 4 ) {
+			return element.nodeValue;
 		}
-	} else if ( nodeType === 3 || nodeType === 4 ) {
-		return element.nodeValue;
+		return text;
 	}
 	// Return the text, replacing spaces and non-breaking spaces with spaces?
 	// TODO: Why are we replacing spaces (\u0020) with spaces (' ')
-	return text.replace( ve.ce.whitespacePattern, ' ' );
+	return func( element ).replace( ve.ce.whitespacePattern, ' ' );
 };
 
 /**
