@@ -44,7 +44,8 @@ ve.ui.Toolbar.prototype.updateTools = function() {
 		nodes = [],
 		range = model.getSelection(),
 		startNode,
-		endNode;
+		endNode,
+		_this = this;
 
 	if ( range !== null ) {
 		if ( range.from === range.to ){
@@ -67,10 +68,8 @@ ve.ui.Toolbar.prototype.updateTools = function() {
 		}
 		// Update Context
 		if ( range.getLength() > 0 ) {
-			this.surfaceView.contextView.set();
 			annotations = doc.getAnnotationsFromRange( range );
 		} else {
-			this.surfaceView.contextView.clear();
 			annotations = doc.getAnnotationsFromOffset(
 				doc.getNearestContentOffset( range.start - 1 )
 			);
@@ -81,7 +80,6 @@ ve.ui.Toolbar.prototype.updateTools = function() {
 		}
 	} else {
 		// Clear state
-		this.surfaceView.contextView.clear();
 		for ( i = 0; i < this.tools.length; i++ ) {
 			this.tools[i].clearState();
 		}

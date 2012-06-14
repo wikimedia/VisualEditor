@@ -13,6 +13,7 @@ ve.ce.Surface = function( $container, model ) {
 	this.model = model;
 	this.documentView = null; // See initialization below
 	this.contextView = null; // See initialization below
+	this.selectionInterval = null;
 	this.$ = $container;
 	this.clipboard = {};
 	this.render = true; // Used in ve.ce.TextNode
@@ -83,13 +84,31 @@ ve.ce.Surface = function( $container, model ) {
 /* Methods */
 
 ve.ce.Surface.prototype.onSelect = function( range ) {
-	// ...
+	var _this = this;
+	var oldSelection = this.model.getSelection();
+
+	if ( this.selectionInterval === null ) {
+		var timeout = setInterval( check, 500 );
+	}
+
+	function check(){
+		var newSelection = _this.model.getSelection();
+
+		if ( ve.compareObjects( oldSelection,  newSelection) ) {
+			_this.contextView.set();
+			clearInterval( _this.selectionInterval );
+		}
+		if ( newSelection.getLength() === 0 ) {
+			_this.contextView.clear();
+			clearInterval( _this.selectionInterval );
+		}
+
+	}
 };
 
 ve.ce.Surface.prototype.onTransact = function( tx ) {
 	this.showSelection( this.model.getSelection() );
 };
-
 
 ve.ce.Surface.prototype.documentOnFocus = function() {
 	// ...
@@ -893,6 +912,20 @@ ve.ce.Surface.prototype.getOffsetFromElementNode = function( domNode, domOffset,
 	} else {
 		return this.getOffsetFromElementNode( node, 0, true );
 	}
+};
+
+ve.ce.Surface.prototype.updateContextIcon = function() {
+	var _this = this,
+		selection = this.model.getSelection();
+	
+		if ( this.contextView ) {
+			if ( selection.getLength() > 0 ) {
+				this.contextView.set();
+			} else {
+				this.contextView.clear();
+			}
+		}
+
 };
 
 /* Supplies the selection anchor coordinates to contextView */
