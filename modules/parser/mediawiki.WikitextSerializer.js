@@ -27,6 +27,13 @@ var id = function(v) {
 };
 
 WSP._listHandler = function( bullet, state, token ) {
+	function isListItem(token) {
+		if (token.constructor !== TagTk) return false;
+
+		var tokenName = token.name;
+		return (tokenName === 'li' || tokenName === 'dt' || tokenName === 'dd');
+	}
+
 	var bullets, res;
 	var stack = state.listStack;
 	if (stack.length === 0) {
@@ -38,10 +45,9 @@ WSP._listHandler = function( bullet, state, token ) {
 		curList.itemCount++;
 		if (	// deeply nested list
 				curList.itemCount > 2 ||
-				// A nested list, not directly after the li
-				( curList.itemCount > 1 &&
-				! ( state.prevToken.constructor === TagTk && 
-					state.prevToken.name === 'li') )) {
+				// A nested list, not directly after a list item
+				(curList.itemCount > 1 && !isListItem(state.prevToken))) {
+			if (bullet !== '' && (state.precedingNewlineCount < 1)) state.precedingNewlineCount = 1;
 			res = bullets;
 		} else {
 			res = bullet;
@@ -53,8 +59,7 @@ WSP._listHandler = function( bullet, state, token ) {
 
 WSP._listEndHandler = function( state, token ) {
 	state.listStack.pop();
-	// FIXME: insert a newline after a list block is closed (the next token is
-	// no list token).
+	state.precedingNewlineCount = 1;
 	return '';
 };
 
@@ -448,6 +453,7 @@ WSP._serializeToken = function ( state, token ) {
 			state.chunkCB(out + res);
 		}
 	}
+	//console.log("tok: " + ((token.constructor === String) ? token : token.name) + ", res: <" + res + ">");
 };
 
 /**
