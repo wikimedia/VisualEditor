@@ -185,32 +185,37 @@ ve.ce.Surface.prototype.pollChanges = function( async ) {
 		this.model.setSelection( range );
 	}
 
+	// TODO: Invastigate more when and why node is null and what to do in those cases
+
 	if ( this.poll.node !== node ) {
 		if ( node === null ) {
-			return;
+			this.poll.text = this.poll.hash = this.poll.node = null;
+		} else {
+			this.poll.text = ve.ce.getDomText( node );
+			this.poll.hash = ve.ce.getDomHash( node );
+			this.poll.node = node;
 		}
-		this.poll.text = ve.ce.getDomText( node );
-		this.poll.hash = ve.ce.getDomHash( node );
-		this.poll.node = node;
 	} else {
-		var	text = ve.ce.getDomText( node ),
-			hash = ve.ce.getDomHash( node );
-		if ( this.poll.text !== text || this.poll.hash !== hash ) {
-			this.emit( 'contentChange', {
-				'node': node,
-				'old': {
-					'text': this.poll.text,
-					'hash': this.poll.hash,
-					'range': this.poll.range,
-				},
-				'new': {
-					'text': text,
-					'hash': hash,
-					'range': range					
-				}
-			} );
-			this.poll.text = text;
-			this.poll.hash = hash;
+		if ( node !== null ) {
+			var	text = ve.ce.getDomText( node ),
+				hash = ve.ce.getDomHash( node );
+			if ( this.poll.text !== text || this.poll.hash !== hash ) {
+				this.emit( 'contentChange', {
+					'node': node,
+					'old': {
+						'text': this.poll.text,
+						'hash': this.poll.hash,
+						'range': this.poll.range,
+					},
+					'new': {
+						'text': text,
+						'hash': hash,
+						'range': range					
+					}
+				} );
+				this.poll.text = text;
+				this.poll.hash = hash;
+			}
 		}
 	}
 
