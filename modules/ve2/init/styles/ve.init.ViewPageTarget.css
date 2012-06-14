@@ -1,5 +1,9 @@
 .es-toolbar-wrapper {
 	margin: -1em -1em 1em -1em;
+	transition: margin 250ms, height 250ms;
+	-moz-transition: margin 250ms, height 250ms;
+	-webkit-transition: margin 250ms, height 250ms;
+	-o-transition: margin 250ms, height 250ms;
 }
 
 .es-toolbar {

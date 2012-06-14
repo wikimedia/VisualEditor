@@ -119,7 +119,7 @@ ve.dm.Node.prototype.getOuterLength = function() {
  */
 ve.dm.Node.prototype.getRange = function() {
 	var offset = this.getOffset();
-	return new ve.Range( offset, offset + this.length );
+	return new ve.Range( offset + ( this.isWrapped() ? 1 : 0 ), offset + this.length );
 };
 
 /**

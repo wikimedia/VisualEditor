@@ -250,7 +250,10 @@ ve.dm.TransactionProcessor.processors.replace = function( op ) {
 					opInsert = this.reversed ? operation.remove : operation.insert;
 				// Update the linear model for this insert
 				ve.batchSplice( this.document.data, this.cursor, opRemove.length, opInsert );
-				affectedRanges.push( new ve.Range( this.cursor, this.cursor + opRemove.length ) );
+				affectedRanges.push( new ve.Range(
+					this.cursor - this.adjusment,
+					this.cursor - this.adjusment + opRemove.length
+				) );
 				prevCursor = this.cursor;
 				this.cursor += opInsert.length;
 				// Paint the removed selection, figure out which nodes were

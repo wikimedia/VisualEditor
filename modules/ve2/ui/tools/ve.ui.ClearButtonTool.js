@@ -19,17 +19,9 @@ ve.ui.ClearButtonTool = function( toolbar, name, title ) {
 /* Methods */
 
 ve.ui.ClearButtonTool.prototype.getAnnotations = function(){
-	var surfaceView = this.toolbar.getSurfaceView(),
-		surfaceModel = surfaceView.getModel(),
-		documentModel = surfaceModel.getDocument(),
-		data = documentModel.getData( surfaceModel.getSelection() );
-
-	if ( data.length ) {
-		if ( ve.isPlainObject( data[0][1] ) ) {
-			return ve.dm.Document.getMatchingAnnotations( data[0][1], this.pattern );
-		}
-	}
-	return ;
+	var surface = this.toolbar.getSurfaceView(),
+		model = surface.getModel();
+	return model.getDocument().getAnnotationsFromRange( model.getSelection(), true );
 };
 
 ve.ui.ClearButtonTool.prototype.onClick = function() {
@@ -44,11 +36,9 @@ ve.ui.ClearButtonTool.prototype.onClick = function() {
 };
 
 ve.ui.ClearButtonTool.prototype.updateState = function( annotations ) {
-	var matchingAnnotations = ve.dm.Document.getMatchingAnnotations(
-		annotations, this.pattern
-	);
+	var allAnnotations = this.getAnnotations();
 
-	if ( ve.isEmptyObject( matchingAnnotations ) ) {
+	if ( ve.isEmptyObject( allAnnotations ) ) {
 		this.$.addClass( 'es-toolbarButtonTool-disabled' );
 	} else {
 		this.$.removeClass( 'es-toolbarButtonTool-disabled' );
