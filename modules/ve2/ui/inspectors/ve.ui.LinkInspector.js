@@ -101,7 +101,10 @@ ve.ui.LinkInspector.prototype.onClose = function( accept ) {
 		for ( var hash in annotations ) {
 			surfaceModel.annotate( 'clear', annotations[hash] );
 		}
-		surfaceModel.annotate( 'set', { 'type': 'link/wikiLink', 'data': { 'title': title } } );
+		surfaceModel.annotate( 'set', { 'type': 'link/wikiLink', 'data': {
+			'title': title,
+			'href': '/' + title // HACK to work around Parsoid bug
+		} } );
 	}
 };
 
