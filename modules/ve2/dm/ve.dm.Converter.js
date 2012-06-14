@@ -222,11 +222,25 @@ ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function( dataAnnota
  * @returns {Array} Linear model data
  */
 ve.dm.Converter.prototype.getDataFromDom = function( domElement, annotations, dataElement, path, alreadyWrapped ) {
+	function createAlien( domElement, isInline ) {
+		var type = isInline ? 'alienInline' : 'alienBlock';
+		return [
+			{
+				'type': type,
+				'attributes': {
+					'html': $( '<div>' ).append( $( domElement ).clone() ).html()
+				}
+			},
+			{ 'type': '/' + type }
+		];
+	}
+
 	// Fallback to defaults
 	annotations = annotations || [];
 	path = path || ['document'];
 	var data = [],
 		branchType = path[path.length - 1],
+		branchIsContent = ve.dm.nodeFactory.canNodeContainContent( branchType ),
 		wrapping = false;
 	// Open element
 	if ( dataElement ) {
@@ -237,30 +251,16 @@ ve.dm.Converter.prototype.getDataFromDom = function( domElement, annotations, da
 		var childDomElement = domElement.childNodes[i];
 		switch ( childDomElement.nodeType ) {
 			case Node.ELEMENT_NODE:
-				// Detect and handle inline alien nodes
-				if (
-					// Generated content
-					childDomElement.hasAttribute( 'data-mw-gc' ) &&
-					// Inside a content branch
-					ve.dm.nodeFactory.canNodeContainContent( branchType )
-				) {
-					// Fallback to alien inline
-					data = data.concat( [
-						{
-							'type': 'alienInline',
-							'attributes': {
-								'html': $( '<div>' ).append( $( childDomElement ).clone() ).html()
-							}
-						},
-						{ 'type': '/alienInline' }
-					] );
+				// Detect generated content and wrap it in an alien node
+				if ( childDomElement.hasAttribute( 'data-mw-gc' ) ) {
+					data = data.concat( createAlien( childDomElement, branchIsContent ) );
 					break;
 				}
 				// Detect and handle annotated content
 				var annotation = this.getDataAnnotationFromDomElement( childDomElement );
 				if ( annotation ) {
 					// Start auto-wrapping of bare content
-					if ( !wrapping && !alreadyWrapped && !ve.dm.nodeFactory.canNodeContainContent( branchType ) ) {
+					if ( !wrapping && !alreadyWrapped && !branchIsContent ) {
 						data.push( { 'type': 'paragraph' } );
 						wrapping = true;
 					}
@@ -291,16 +291,8 @@ ve.dm.Converter.prototype.getDataFromDom = function( domElement, annotations, da
 					);
 					break;
 				}
-				// Fallback to alien block
-				data = data.concat( [
-					{
-						'type': 'alienBlock',
-						'attributes': {
-							'html': $( '<div>' ).append( $( childDomElement ).clone() ).html()
-						}
-					},
-					{ 'type': '/alienBlock' }
-				] );
+				// We don't know what this is, fall back to alien
+				data = data.concat( createAlien( childDomElement, branchIsContent ) );
 				break;
 			case Node.TEXT_NODE:
 				// HACK: strip trailing newlines in <li> tags. Workaround for a Parsoid bug
@@ -313,7 +305,7 @@ ve.dm.Converter.prototype.getDataFromDom = function( domElement, annotations, da
 				}
 
 				// Start auto-wrapping of bare content
-				if ( !wrapping && !alreadyWrapped && !ve.dm.nodeFactory.canNodeContainContent( branchType ) ) {
+				if ( !wrapping && !alreadyWrapped && !branchIsContent ) {
 					data.push( { 'type': 'paragraph' } );
 					wrapping = true;
 				}
