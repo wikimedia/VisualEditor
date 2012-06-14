@@ -184,12 +184,12 @@ ve.ce.Surface.prototype.pollChanges = function( async ) {
 		if ( node === null ) {
 			return;
 		}
-		this.poll.text = ve.ce.Surface.getDOMText( node );
-		this.poll.hash = ve.ce.Surface.getDOMHash( node );
+		this.poll.text = ve.ce.getDomText( node );
+		this.poll.hash = ve.ce.getDomHash( node );
 		this.poll.node = node;
 	} else {
-		var	text = ve.ce.Surface.getDOMText( node ),
-			hash = ve.ce.Surface.getDOMHash( node );
+		var	text = ve.ce.getDomText( node ),
+			hash = ve.ce.getDomHash( node );
 		if ( this.poll.text !== text || this.poll.hash !== hash ) {
 			this.emit( 'contentChange', {
 				'node': node,
@@ -736,9 +736,6 @@ ve.ce.Surface.prototype.getOffsetFromElementNode = function( domNode, domOffset,
 	}
 };
 
-ve.ce.Surface.prototype.getModel = function() {
-	return this.model;
-};
 /* Supplies the selection anchor coordinates to contextView */
 ve.ce.Surface.prototype.getSelectionRect = function() {
 	var rangySel = rangy.getSelection();
@@ -748,46 +745,8 @@ ve.ce.Surface.prototype.getSelectionRect = function() {
 	};
 };
 
-ve.ce.Surface.getDOMHash = function( elem ) {
-	var nodeType = elem.nodeType,
-		nodeName = elem.nodeName,
-		ret = '';
-
-	if ( nodeType === 3 || nodeType === 4 ) {
-		return '#';
-	} else if ( nodeType === 1 || nodeType === 9 ) {
-		ret += '<' + nodeName + '>';
-		// Traverse it's children
-		for ( elem = elem.firstChild; elem; elem = elem.nextSibling) {
-			ret += ve.ce.Surface.getDOMHash( elem );
-		}
-		ret += '</' + nodeName + '>';
-	}
-	return ret;
-};
-
-ve.ce.Surface.getDOMText = function( elem ) {
-	var func = function( elem ) {
-		var nodeType = elem.nodeType,
-			ret = '';
-		if ( nodeType === 1 || nodeType === 9 ) {
-			// Use textContent || innerText for elements
-			if ( typeof elem.textContent === 'string' ) {
-				return elem.textContent;
-			} else if ( typeof elem.innerText === 'string' ) {
-				// Replace IE's carriage returns
-				return elem.innerText.replace( /\r\n/g, '' );
-			} else {
-				// Traverse it's children
-				for ( elem = elem.firstChild; elem; elem = elem.nextSibling) {
-					ret += func( elem );
-				}
-			}
-		} else if ( nodeType === 3 || nodeType === 4 ) {
-			return elem.nodeValue;
-		}
-	};
-	return func( elem ).replace( /\u00A0|\u0020/g, ' ' );
+ve.ce.Surface.prototype.getModel = function() {
+	return this.model;
 };
 
 /* Inheritance */
