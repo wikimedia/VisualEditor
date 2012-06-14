@@ -14,15 +14,14 @@ WikitextSerializer = function( options ) {
 var WSP = WikitextSerializer.prototype;
 
 WSP.defaultOptions = {
-	needParagraphLines: false,
-	listStack: [],
-	lastHandler: null,
+	needParagraphLines   : false,
+	listStack            : [],
+	lastHandler          : null,
 	precedingNewlineCount: 0
 };
 
-var id = function( v, needParagraphLines ) { 
+var id = function(v) { 
 	return function( state ) { 
-		state.needParagraphLines = needParagraphLines; 
 		return v; 
 	}; 
 };
@@ -201,7 +200,7 @@ WSP._linkEndHandler =  function( state, token ) {
 WSP.tagToWikitext = {
 	body: {},
 	b: { start: id("'''"), end: id("'''") },
-	i: { start: id("''"), end: id("''") },
+	i: { start: id("''"),  end: id("''") },
 	ul: { 
 		start: WSP._listHandler.bind( null, '*' ),
 		end: WSP._listEndHandler 
@@ -254,25 +253,18 @@ WSP.tagToWikitext = {
 	},
 	caption: { start: WSP._serializeTableTag.bind(null, "|+", ' |', true) },
 	p: { 
-		start: function( state, token ) {
-			if (state.listStack.length > 0) {
-				// SSS FIXME: Other tags that have similar requirements within lists?
-				// Paragraphs within lists are not expanded
-			} else if (state.needParagraphLines) {
-				if (state.precedingNewlineCount < 2) state.precedingNewlineCount = 2;
-			} else {
-				state.needParagraphLines = true;
-			}
+		end: function(state, token) {
+			state.needParagraphLines = true;
 			return '';
 		}
 	},
-	hr: { start: id("----",   false), end: id("",       false) },
-	h1: { start: id("=",      false), end: id("=",      false) },
-	h2: { start: id("==",     false), end: id("==",     false) },
-	h3: { start: id("===",    false), end: id("===",    false) },
-	h4: { start: id("====",   false), end: id("====",   false) },
-	h5: { start: id("=====",  false), end: id("=====",  false) },
-	h6: { start: id("======", false), end: id("======", false) },
+	hr: { start: id("----"),   end: id("") },
+	h1: { start: id("="),      end: id("=") },
+	h2: { start: id("=="),     end: id("==") },
+	h3: { start: id("==="),    end: id("===") },
+	h4: { start: id("===="),   end: id("====") },
+	h5: { start: id("====="),  end: id("=====") },
+	h6: { start: id("======"), end: id("======") },
 	// XXX: support indent variant instead by registering a newline handler?
 	pre: { 
 		start: function( state, token ) {
@@ -292,7 +284,7 @@ WSP.tagToWikitext = {
 			}
 		}
 	},
-	br: { start: id("", false) }
+	br: { start: id("") }
 };
 
 
@@ -367,6 +359,26 @@ WSP._serializeToken = function ( state, token ) {
 	dropContent     = state.dropContent;
 	state.prevToken = state.curToken;
 	state.curToken  = token;
+
+	if (state.needParagraphLines) {
+		if (token.constructor === TagTk && token.name === "p") {
+			if ((token.dataAttribs.stx !== "html") && (state.listStack.length === 0)) {
+				// Not expanded in these contexts:
+				// - Explicit <p> tags in source wikitext
+				// - Paragraphs within lists
+				//
+				// SSS FIXME: Other tags that have similar requirements within lists or
+				// other contexts?
+
+				// Normalize white space at 2 newlines between paragraphs
+				// So, ...\n*</p><p>... will always introduce 2 newlines
+				state.precedingNewlineCount = 2;
+			}
+		} else if (state.precedingNewlineCount < 1) {
+			state.precedingNewlineCount = 1;
+		}
+		state.needParagraphLines = false;
+	}
 
 	switch( token.constructor ) {
 		case TagTk:
