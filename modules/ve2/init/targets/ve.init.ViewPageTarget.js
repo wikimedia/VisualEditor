@@ -12,7 +12,9 @@ ve.init.ViewPageTarget = function() {
 
 	// Properties
 	this.$content = $( '#content' );
-	this.$view = this.$content.find( '#mw-content-text, #bodyContent' );
+	this.$page = $( '#mw-content-text' );
+	this.$view = $( '#bodyContent' );
+	this.$toc = $( '#toc' );
 	this.$heading = $( '#firstHeading' );
 	this.$surface = $( '<div class="ve-surface"></div>' );
 	this.$toolbar = null;
@@ -20,6 +22,7 @@ ve.init.ViewPageTarget = function() {
 	this.active = false;
 	this.edited = false;
 	this.activating = false;
+	this.deactivating = false;
 	this.proxiedOnSurfaceModelTransact = ve.proxy( this.onSurfaceModelTransact, this );
 	this.surfaceOptions = {
 		'toolbars': {
@@ -79,15 +82,39 @@ ve.init.ViewPageTarget.saveDialogTemplate = '\
  *
  * @method
  */
-ve.init.ViewPageTarget.prototype.onEditTabClick = function( e ) {
+ve.init.ViewPageTarget.prototype.onEditTabClick = function( e, section ) {
 	// Ignore multiple clicks while editor is active
 	if ( !this.active && !this.activating ) {
 		this.activating = true;
 		// UI updates
 		this.setSelectedTab( 'ca-edit' );
 		this.showSpinner();
+		this.$toc.addClass( 've-init-viewPageTarget-pageToc' ).slideUp( 'fast' );
+		// Remember scroll position
+		var scrollTop = $( window ).scrollTop();
 		// Asynchronous initialization - load ve modules at the same time as the content
-		this.load( ve.proxy( this.onLoad, this ) );
+		this.load( ve.proxy( function( error, dom ) {
+			this.onLoad( error, dom );
+			if ( section !== undefined ) {
+				// HACK: All of this code is fragile, be careful and suspicious
+				var $heading = this.$surface
+					.find( '.ve-ce-documentNode' )
+						.find( 'h1, h2, h3, h4, h5, h6' )
+							.eq( section );
+					surfaceView = this.surface.getView(),
+					surfaceModel = surfaceView.getModel(),
+					doc = surfaceModel.getDocument();
+				if ( $heading.length ) {
+					var offset = doc.getNearestContentOffset(
+						$heading.data( 'node' ).getModel().getOffset()
+					);
+					surfaceModel.setSelection( new ve.Range( offset, offset ) );
+					surfaceView.showSelection( surfaceModel.getSelection() );
+					// Restore scroll position
+					$( window ).scrollTop( scrollTop );
+				}
+			}
+		}, this ) );
 	}
 	// Prevent the edit tab's normal behavior
 	e.preventDefault();
@@ -99,14 +126,36 @@ ve.init.ViewPageTarget.prototype.onEditTabClick = function( e ) {
  *
  * @method
  */
+ve.init.ViewPageTarget.prototype.onEditSectionLinkClick = function( e ) {
+	var heading = $( e.target ).closest( 'h1, h2, h3, h4, h5, h6' )[0],
+		tocHeading = this.$page.find( '#toc h2' )[0];
+		section = 0;
+	this.$page.find( 'h1, h2, h3, h4, h5, h6' ).each( function() {
+		if ( this === heading ) {
+			return false;
+		}
+		if ( this !== tocHeading ) {
+			section++;
+		}
+	} );
+	return this.onEditTabClick( e, section );
+};
+
+/**
+ * ...
+ *
+ * @method
+ */
 ve.init.ViewPageTarget.prototype.onViewTabClick = function( e ) {
 	// Don't do anything special unless we are in editing mode
-	if ( this.active ) {
+	if ( this.active && !this.deactivating ) {
+		this.deactivating = true;
 		if (
 			!this.surface.getModel().getHistory().length ||
 			confirm( 'Are you sure you want to go back to view mode without saving first?' )
 		) {
 			this.tearDownSurface();
+			this.deactivating = false;
 		}
 		// Prevent the edit tab's normal behavior
 		e.preventDefault();
@@ -302,6 +351,9 @@ ve.init.ViewPageTarget.prototype.tearDownSurface = function( content ) {
 	setTimeout( ve.proxy( function() {
 		$(this).removeClass( 've-init-viewPageTarget-pageTitle' );
 	}, this.$heading ), 1000 );
+	this.$toc.slideDown( 'fast', function() {
+		$(this).removeClass( 've-init-viewPageTarget-pageToc' );
+	} );
 	// Destroy editor
 	this.surface = null;
 	this.active = false;
@@ -342,8 +394,9 @@ ve.init.ViewPageTarget.prototype.setupTabs = function(){
 			'ca-editsource'
 		);
 	}
-	$( '#ca-edit > span > a' ).click( ve.proxy( this.onEditTabClick, this ) );
-	$( '#ca-view > span > a' ).click( ve.proxy( this.onViewTabClick, this ) );
+	$( '#ca-edit a' ).click( ve.proxy( this.onEditTabClick, this ) );
+	$( '#mw-content-text .editsection a' ).click( ve.proxy( this.onEditSectionLinkClick, this ) );
+	$( '#ca-view a' ).click( ve.proxy( this.onViewTabClick, this ) );
 };
 
 /**
