@@ -554,7 +554,7 @@ ve.dm.Converter.prototype.getDomFromData = function( data ) {
 	// HACK: do postprocessing on the data to work around bugs in Parsoid concerning paragraphs
 	// inside list items
 	$( container ).find( 'li, dd, dt' ).each( function() {
-		var $sublists = $(this).children( 'ul, ol' ),
+		var $sublists = $(this).children( 'ul, ol, dl' ),
 			$firstChild = $(this.firstChild);
 		if ( $firstChild.is( 'p' ) ) {
 			// Unwrap the first paragraph, unless it has stx=html
