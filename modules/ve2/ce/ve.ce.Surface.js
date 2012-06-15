@@ -129,7 +129,7 @@ ve.ce.Surface.prototype.onSelect = function( range ) {
 	var oldSelection = this.model.getSelection();
 
 	if ( this.selectionInterval === null ) {
-		var timeout = setInterval( check, 500 );
+		this.selectionInterval = setInterval( check, 500 );
 	}
 
 	function check(){
