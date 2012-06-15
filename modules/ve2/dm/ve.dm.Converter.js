@@ -318,7 +318,6 @@ ve.dm.Converter.prototype.getDataFromDom = function( domElement, annotations, da
 				 */
 				var contentNode = childDomElement.parentNode;
 				if ( contentNode.nodeName.toLowerCase() === 'p' ) {
-					//debugger;
 					if (
 						contentNode.previousSibling &&
 						contentNode.previousSibling.nodeName.toLowerCase() !== 'p' &&
@@ -379,18 +378,17 @@ ve.dm.Converter.prototype.getDomFromData = function( data ) {
 		// HACK reintroduce newlines needed to make Parsoid not freak out
 		// This reverses the newline stripping done in getDataFromDom()
 		/*
-			* Leading newlines:
-			* If the previous sibling is a paragraph, do not add any leading newlines
-			* If there is no previous sibling, do not add any leading newlines
-			* Otherwise, add 1 leading newline
-			*
-			* Trailing newlines:
-			* If the next sibling is a paragraph, add 2 trailing newlines
-			* If there is no next sibling, do not add any trailing newlines
-			* Otherwise, add 1 trailing newline
-			*/
+		 * Leading newlines:
+		 * If the previous sibling is a paragraph, do not add any leading newlines
+		 * If there is no previous sibling, do not add any leading newlines
+		 * Otherwise, add 1 leading newline
+		 *
+		 * Trailing newlines:
+		 * If the next sibling is a paragraph, add 2 trailing newlines
+		 * If there is no next sibling, do not add any trailing newlines
+		 * Otherwise, add 1 trailing newline
+		 */
 		if ( node.nodeName.toLowerCase() === 'p' ) {
-			//debugger;
 			if (
 				node.previousSibling &&
 				node.previousSibling.nodeName.toLowerCase() !== 'p'
