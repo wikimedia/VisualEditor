@@ -51,6 +51,7 @@ ve.ce.ImageNode.rules = {
  * @method
  */
 ve.ce.ImageNode.prototype.onUpdate = function() {
+	// TODO needs to support height/width
 	var source = this.model.getAttribute( 'html/src' );
 	if ( source !== this.currentSource ) {
 		this.currentSource = source;
