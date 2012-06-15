@@ -84,8 +84,7 @@ ve.ce.Surface.prototype.documentOnFocus = function() {
 		'mousedown.ve-ce-Surface': ve.proxy( this.onMouseDown, this ),
 		'mouseup.ve-ce-Surface': ve.proxy( this.onMouseUp, this ),
 	} );
-	this.poll.polling = true;
-	this.pollChanges( true );
+	this.startPolling():
 };
 
 ve.ce.Surface.prototype.documentOnBlur = function() {
@@ -122,6 +121,27 @@ ve.ce.Surface.prototype.stopPolling = function() {
 
 	this.poll.polling = false;
 	clearTimeout( this.poll.timeout );
+};
+
+ve.ce.Surface.prototype.startPolling = function( async ) {
+	ve.log( 'startPolling' );
+
+	this.poll.polling = true;
+	this.pollChanges( async );
+};
+
+ve.ce.Surface.prototype.clearPollData = function() {
+	ve.log( 'clearPollData' );
+
+	this.poll.text = null;
+	this.poll.hash = null;
+	this.poll.node = null;
+	this.poll.rangySelection. = {
+		anchorNode: null,
+		anchorOffset: null,
+		focusNode: null,
+		focusOffset: null
+	};
 };
 
 ve.ce.Surface.prototype.onSelect = function( range ) {
@@ -277,16 +297,6 @@ ve.ce.Surface.prototype.pollChanges = function( async ) {
 	}
 
 	delay();
-};
-
-ve.ce.Surface.prototype.startPolling = function() {
-	if ( this.poll.polling === true ) {
-		this.pollChanges();
-		this.pollChanges( true );
-	} else {
-		this.poll.polling = true;
-		this.pollChanges( true );
-	}
 };
 
 ve.ce.Surface.prototype.clearPollData = function() {
