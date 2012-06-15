@@ -668,9 +668,15 @@ return;
 			} );
 			
 			// Create range surrounding the entire sourceNode and remove
-			var range = new ve.Range();
+			/*var range = new ve.Range();
 			range.from = this.documentView.getDocumentNode().getOffsetFromNode( sourceNode )
-			range.to = range.from + sourceNode.model.getOuterLength();
+			range.to = range.from + sourceNode.model.getOuterLength();*/
+			// Just setting .from and .to produces an invalid range with .start and .end unset --Roan
+			var from = this.documentView.getDocumentNode().getOffsetFromNode( sourceNode ),
+				range = new ve.Range(
+					from,
+					from + sourceNode.model.getOuterLength()
+				);
 			tx = ve.dm.Transaction.newFromRemoval( this.documentView.model, range );
 			this.model.transact( tx );
 		}
