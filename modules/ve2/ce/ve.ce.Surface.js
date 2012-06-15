@@ -13,7 +13,7 @@ ve.ce.Surface = function( $container, model ) {
 	this.model = model;
 	this.documentView = null; // See initialization below
 	this.contextView = null; // See initialization below
-	this.selectionInterval = null;
+	this.selectionTimeout = null;
 	this.$ = $container;
 	this.$document = $( document );
 	this.clipboard = {};
@@ -144,11 +144,14 @@ ve.ce.Surface.prototype.clearPollData = function() {
 	};
 };
 
+/* Responsible for Debouncing the ContextView Icon
+   until select events are finished being fired. */
 ve.ce.Surface.prototype.onSelect = function( range ) {
-	var _this = this,
-		selection = this.model.getSelection();
-	
-	function update() {
+	var _this = this;
+
+	clearTimeout(this.selectionTimeout);
+	this.selectionTimeout = setTimeout(function(){
+		var selection = _this.model.getSelection();
 		if ( _this.contextView ) {
 			if ( selection.getLength() > 0 ) {
 				_this.contextView.set();
@@ -156,9 +159,7 @@ ve.ce.Surface.prototype.onSelect = function( range ) {
 				_this.contextView.clear();
 			}
 		}
-		_this.updateSelectionTimeout = undefined;
-	}
-	this.updateSelectionTimeout = setTimeout( update, 500 );
+	}, 500);
 };
 
 ve.ce.Surface.prototype.onTransact = function( tx ) {
