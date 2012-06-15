@@ -37,7 +37,7 @@ ve.ce.TableCellNode.rules = {
  */
 ve.ce.TableCellNode.domWrapperElementTypes = {
 	'data': 'td',
-	'heading': 'th'
+	'header': 'th'
 };
 
 /* Methods */

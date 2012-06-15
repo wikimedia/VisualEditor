@@ -36,9 +36,9 @@ ve.ce.TableSectionNode.rules = {
  * @member
  */
 ve.ce.TableSectionNode.domWrapperElementTypes = {
-	'head': 'thead',
+	'header': 'thead',
 	'body': 'tbody',
-	'foot': 'tfoot'
+	'footer': 'tfoot'
 };
 
 /* Methods */
