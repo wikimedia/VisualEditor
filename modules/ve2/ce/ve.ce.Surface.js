@@ -158,10 +158,7 @@ ve.ce.Surface.prototype.onSelect = function( range ) {
 		}
 		_this.updateSelectionTimeout = undefined;
 	}
-	if ( this.updateSelectionTimeout !== undefined ) {
-		return;
-	}
-	this.updateSelectionTimeout = setTimeout( update, 750 );
+	this.updateSelectionTimeout = setTimeout( update, 500 );
 };
 
 ve.ce.Surface.prototype.onTransact = function( tx ) {

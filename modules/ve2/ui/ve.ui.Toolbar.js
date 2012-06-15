@@ -66,10 +66,11 @@ ve.ui.Toolbar.prototype.updateTools = function() {
 				}, startNode );
 			}
 		}
-		// Update Context
 		if ( range.getLength() > 0 ) {
 			annotations = doc.getAnnotationsFromRange( range );
 		} else {
+			// Clear context
+			_this.surfaceView.contextView.clear();
 			annotations = doc.getAnnotationsFromOffset(
 				doc.getNearestContentOffset( range.start - 1 )
 			);
