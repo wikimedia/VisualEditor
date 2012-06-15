@@ -84,7 +84,7 @@ ve.ce.Surface.prototype.documentOnFocus = function() {
 		'mousedown.ve-ce-Surface': ve.proxy( this.onMouseDown, this ),
 		'mouseup.ve-ce-Surface': ve.proxy( this.onMouseUp, this ),
 	} );
-	this.startPolling():
+	this.startPolling();
 };
 
 ve.ce.Surface.prototype.documentOnBlur = function() {
@@ -149,7 +149,7 @@ ve.ce.Surface.prototype.onSelect = function( range ) {
 	var oldSelection = this.model.getSelection();
 
 	if ( this.selectionInterval === null ) {
-		var timeout = setInterval( check, 500 );
+		this.selectionInterval = setInterval( check, 500 );
 	}
 
 	function check(){
@@ -542,9 +542,8 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
 };
 
 ve.ce.Surface.prototype.handleEnter = function() {
-	/* TODO: Determine if we still need this
 	this.stopPolling();
-	*/
+
 	var selection = this.model.getSelection(),
 		tx;
 		
@@ -585,18 +584,12 @@ ve.ce.Surface.prototype.handleEnter = function() {
 	this.showCursor(selection.from);
 	this.model.setSelection( new ve.Range( selection.from ) );
 	
-	/* TODO: Determine if we still need this
-	var _this = this;
-	setTimeout( function() {
-		_this.poll.prevText = _this.poll.prevHash = _this.poll.prevOffset = _this.poll.node = null;
-		_this.startPolling();
-	}, 0 );
-	*/
+	this.clearPollData();
+	this.startPolling();
 };
 
 ve.ce.Surface.prototype.handleDelete = function( backspace ) {	
 	this.stopPolling();
-	this.clearPollData();
 
 	var selection = this.model.getSelection(),
 		sourceOffset,
@@ -686,6 +679,7 @@ return;
 	this.showCursor(cursorAt);
 	this.model.setSelection( new ve.Range( cursorAt ) );
 
+	this.clearPollData();
 	this.startPolling();
 };
 
