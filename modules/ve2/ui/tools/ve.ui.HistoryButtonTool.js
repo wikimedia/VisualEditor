@@ -25,6 +25,7 @@ ve.ui.HistoryButtonTool = function( toolbar, name, title, data ) {
 /* Methods */
 
 ve.ui.HistoryButtonTool.prototype.onClick = function() {
+	this.toolbar.surfaceView.stopPolling();
 	switch ( this.name ) {
 		case 'undo':
 			var selection = this.toolbar.surfaceView.model.undo( 1 ) || this.toolbar.surfaceView.model.selection;
@@ -35,6 +36,8 @@ ve.ui.HistoryButtonTool.prototype.onClick = function() {
 			this.toolbar.surfaceView.showSelection( selection );
 			break;
 	}
+	this.toolbar.surfaceView.clearPollData();
+	this.toolbar.surfaceView.startPolling();
 };
 
 ve.ui.HistoryButtonTool.prototype.updateState = function( annotations ) {
