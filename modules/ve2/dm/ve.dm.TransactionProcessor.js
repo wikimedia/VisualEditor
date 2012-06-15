@@ -251,8 +251,8 @@ ve.dm.TransactionProcessor.processors.replace = function( op ) {
 				// Update the linear model for this insert
 				ve.batchSplice( this.document.data, this.cursor, opRemove.length, opInsert );
 				affectedRanges.push( new ve.Range(
-					this.cursor - this.adjusment,
-					this.cursor - this.adjusment + opRemove.length
+					this.cursor - this.adjustment,
+					this.cursor - this.adjustment + opRemove.length
 				) );
 				prevCursor = this.cursor;
 				this.cursor += opInsert.length;
