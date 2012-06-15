@@ -332,7 +332,9 @@ ve.ce.Surface.prototype.onContentChange = function( e ) {
 			).split( '' ),
 			annotations = this.model.getDocument().getAnnotationsFromOffset( e.old.range.start - 1 );
 
-		ve.dm.Document.addAnnotationsToData( data, annotations );
+		if ( !ve.isEmptyObject( annotations ) ) {
+			ve.dm.Document.addAnnotationsToData( data, annotations );
+		}
 
 		this.render = false;
 
@@ -361,7 +363,9 @@ ve.ce.Surface.prototype.onContentChange = function( e ) {
 		var	annotations = this.model.getDocument().getAnnotationsFromOffset( nodeOffset + 1 + fromLeft ),
 			data = e.new.text.substring( fromLeft, e.new.text.length - fromRight ).split( '' );
 
-		ve.dm.Document.addAnnotationsToData( data, annotations );
+		if ( !ve.isEmptyObject( annotations ) ) {
+			ve.dm.Document.addAnnotationsToData( data, annotations );
+		}
 
 
 		this.hideSelection();
