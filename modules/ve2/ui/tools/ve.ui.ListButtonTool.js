@@ -19,13 +19,73 @@
 /* Methods */
 
 ve.ui.ListButtonTool.prototype.list = function( nodes, style ) {
+	var surface = this.toolbar.surfaceView,
+		model = surface.getModel(),
+		doc = model.getDocument(),
+		selection = model.getSelection(),
+		siblings = doc.selectNodes( selection, 'siblings'),
+		outerRange = null,
+		tx;
 
+	if ( siblings.length > 1 ){
+		outerRange = new ve.Range(
+			siblings[0].nodeOuterRange.from,
+			siblings[siblings.length-1].nodeOuterRange.to
+		);
+	} else {
+		outerRange = ( siblings[0].node['parent'].getOuterRange() );
+	}
+
+	tx = ve.dm.Transaction.newFromWrap(
+		doc,
+		outerRange,
+		[],
+		[ { 'type': 'list', 'attributes': { 'style': style } } ],
+		[],
+		[ { 'type': 'listItem' } ]
+	);
+	model.transact ( tx );
+	return ;
+	
+	siblings = doc.selectNodes(selection, 'siblings');
+	outerRange = new ve.Range(
+		siblings[0].nodeOuterRange.from,
+		siblings[siblings.length-1].nodeOuterRange.to
+	);
+	model.setSelection( outerRange );
+	surface.showSelection( model.getSelection() );
 };
 
-ve.ui.ListButtonTool.prototype.unlist = function( nodes ) {
+ve.ui.ListButtonTool.prototype.unlist = function( node ){
+	var surface = this.toolbar.surfaceView,
+		model = surface.getModel(),
+		doc = model.getDocument(),
+		selection = model.getSelection(),
+		siblings = doc.selectNodes( selection, 'siblings'),
+		outerRange = null,
+		tx;
+
+	if ( siblings.length > 1 ){
+		outerRange = new ve.Range(
+			siblings[0].nodeOuterRange.from,
+			siblings[siblings.length-1].nodeOuterRange.to
+		);
+	} else {
+		outerRange = ( siblings[0].node['parent'].getOuterRange() );
+	}
+
+	tx = ve.dm.Transaction.newFromWrap(
+		doc,
+		outerRange,
+		[ { 'type': 'list' } ],
+		[],
+		[ { 'type': 'listItem' } ],
+		[]
+	);
+
+	model.transact ( tx );
 
 };
-
 ve.ui.ListButtonTool.prototype.onClick = function() {
 	this.toolbar.surfaceView.model.breakpoint();
 	if ( !this.$.hasClass( 'es-toolbarButtonTool-down' ) ) {
