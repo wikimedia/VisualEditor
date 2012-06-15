@@ -458,8 +458,6 @@ ve.ce.Surface.prototype.onCutCopy = function( e ) {
 		$frag = null,
 		key = '';
 
-	//this.stopPolling();
-
 	// Create key from text and element names
 	$frag = $(sel.getRangeAt(0).cloneContents());
 	$frag.contents().each(function() {
@@ -473,6 +471,8 @@ ve.ce.Surface.prototype.onCutCopy = function( e ) {
 	);
 
 	if ( e.type == 'cut' ) {
+		this.stopPolling();
+		
 		setTimeout( function() {
 			var	selection = null,
 				tx = null;
@@ -492,6 +492,9 @@ ve.ce.Surface.prototype.onCutCopy = function( e ) {
 			// Place cursor
 			_this.showCursor( selection.start );
 			_this.model.setSelection( new ve.Range( selection.start ) );
+			
+			_this.clearPollData();
+			_this.startPolling();
 		}, 1 );
 	}
 };
@@ -500,10 +503,11 @@ ve.ce.Surface.prototype.onCutCopy = function( e ) {
  * @method
  */
 ve.ce.Surface.prototype.onPaste = function( e ) {
-	debugger;
 	var	_this = this,
 		selection = this.model.getSelection(),
 		tx = null;
+	
+	this.stopPolling();
 	
 	// Pasting into a range? Remove first.
 	if (!rangy.getSelection().isCollapsed) {
@@ -537,6 +541,9 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
 		_this.showCursor( selection.start + pasteData.length );
 		_this.model.setSelection( new ve.Range( selection.start + pasteData.length ) );
 		_this.documentView.documentNode.$.focus();
+		
+		_this.clearPollData();
+		_this.startPolling();
 	}, 1 );
 };
 
