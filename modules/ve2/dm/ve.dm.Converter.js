@@ -303,6 +303,42 @@ ve.dm.Converter.prototype.getDataFromDom = function( domElement, annotations, da
 				if ( text === '' ) {
 					break;
 				}
+				// HACK: strip implied leading and trailing newlines in <p> tags
+				// Workaround for a Parsoid bug
+				/*
+				 * Leading newlines:
+				 * If the previous sibling is a paragraph, do not strip leading newlines
+				 * If there is no previous sibling, do not strip leading newlines
+				 * Otherwise, strip 1 leading newline
+				 *
+				 * Trailing newlines:
+				 * If the next sibling is a paragraph, strip 2 trailing newlines
+				 * If there is no next sibling, do not strip trailing newlines
+				 * Otherwise, strip 1 trailing newline
+				 */
+				var contentNode = childDomElement.parentNode;
+				if ( contentNode.nodeName.toLowerCase() === 'p' ) {
+					//debugger;
+					if (
+						contentNode.previousSibling &&
+						contentNode.previousSibling.nodeName.toLowerCase() !== 'p' &&
+						text.charAt( 0 ) === '\n'
+					) {
+						text = text.substr( 1 );
+					}
+					if ( contentNode.nextSibling ) {
+						// Strip one trailing newline
+						if ( text.charAt( text.length - 1 ) === "\n" ) {
+							text = text.substr( 0, text.length - 1 );
+						}
+						if ( contentNode.nextSibling.nodeName.toLowerCase() === 'p' ) {
+							// Strip another one
+							if ( text.charAt( text.length - 1 ) === "\n" ) {
+								text = text.substr( 0, text.length - 1 );
+							}
+						}
+					}
+				}
 
 				// Start auto-wrapping of bare content
 				if ( !wrapping && !alreadyWrapped && !branchIsContent ) {
@@ -339,6 +375,40 @@ ve.dm.Converter.prototype.getDataFromDom = function( domElement, annotations, da
  * @returns {HTMLElement} Wrapper div containing the resulting HTML
  */
 ve.dm.Converter.prototype.getDomFromData = function( data ) {
+	function fixupText( text, node ) {
+		// HACK reintroduce newlines needed to make Parsoid not freak out
+		// This reverses the newline stripping done in getDataFromDom()
+		/*
+			* Leading newlines:
+			* If the previous sibling is a paragraph, do not add any leading newlines
+			* If there is no previous sibling, do not add any leading newlines
+			* Otherwise, add 1 leading newline
+			*
+			* Trailing newlines:
+			* If the next sibling is a paragraph, add 2 trailing newlines
+			* If there is no next sibling, do not add any trailing newlines
+			* Otherwise, add 1 trailing newline
+			*/
+		if ( node.nodeName.toLowerCase() === 'p' ) {
+			//debugger;
+			if (
+				node.previousSibling &&
+				node.previousSibling.nodeName.toLowerCase() !== 'p'
+			) {
+				text = "\n" + text;
+			}
+			if ( node.nextSibling ) {
+				// Add one trailing newline
+				text += "\n";
+				if ( node.nextSibling.nodeName.toLowerCase() === 'p' ) {
+					// Add another one
+					text += "\n";
+				}
+			}
+		}
+		return text;
+	}
+
 	var container = document.createElement( 'div' ),
 		domElement = container,
 		text;
@@ -503,6 +573,18 @@ ve.dm.Converter.prototype.getDomFromData = function( data ) {
 			}
 		});
 	});
+
+	// HACK more postprocessing, this time to add newlines to paragraphs so Parsoid doesn't freak out
+	$( container )
+		// Get all text nodes
+		.find( '*' )
+		.contents()
+		.filter( function() {
+			return this.nodeType == 3;
+		} )
+		.each( function() {
+			this.data = fixupText( this.data, this.parentNode );
+		} );
 	return container;
 };
 
