@@ -607,6 +607,7 @@ ve.ce.Surface.prototype.handleDelete = function( backspace ) {
 		if ( backspace ) {
 			sourceOffset = selection.to; 
 			targetOffset = this.model.getDocument().getRelativeContentOffset( sourceOffset, -1 );
+			this.model.setSelection( new ve.Range( targetOffset, targetOffset ) );
 		} else {
 			sourceOffset = this.model.getDocument().getRelativeContentOffset( selection.to, 1 );
 			targetOffset = selection.to;
@@ -675,6 +676,7 @@ return;
 		}
 	} else {
 		// selection removal
+		this.model.setSelection( new ve.Range( selection.start, selection.start ) );
 		tx = ve.dm.Transaction.newFromRemoval( this.documentView.model, selection );
 		this.model.transact( tx );
 		cursorAt = selection.start;
