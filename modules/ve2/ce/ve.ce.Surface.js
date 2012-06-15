@@ -145,26 +145,23 @@ ve.ce.Surface.prototype.clearPollData = function() {
 };
 
 ve.ce.Surface.prototype.onSelect = function( range ) {
-	var _this = this;
-	var oldSelection = this.model.getSelection();
-
-	if ( this.selectionInterval === null ) {
-		this.selectionInterval = setInterval( check, 500 );
-	}
-
-	function check(){
-		var newSelection = _this.model.getSelection();
-
-		if ( ve.compareObjects( oldSelection,  newSelection) ) {
-			_this.contextView.set();
-			clearInterval( _this.selectionInterval );
+	var _this = this,
+		selection = this.model.getSelection();
+	
+	function update() {
+		if ( _this.contextView ) {
+			if ( selection.getLength() > 0 ) {
+				_this.contextView.set();
+			} else {
+				_this.contextView.clear();
+			}
 		}
-		if ( newSelection.getLength() === 0 ) {
-			_this.contextView.clear();
-			clearInterval( _this.selectionInterval );
-		}
-
+		_this.updateSelectionTimeout = undefined;
 	}
+	if ( this.updateSelectionTimeout !== undefined ) {
+		return;
+	}
+	this.updateSelectionTimeout = setTimeout( update, 750 );
 };
 
 ve.ce.Surface.prototype.onTransact = function( tx ) {
