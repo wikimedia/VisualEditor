@@ -136,7 +136,7 @@ ve.ce.Surface.prototype.clearPollData = function() {
 	this.poll.text = null;
 	this.poll.hash = null;
 	this.poll.node = null;
-	this.poll.rangySelection. = {
+	this.poll.rangySelection = {
 		anchorNode: null,
 		anchorOffset: null,
 		focusNode: null,
