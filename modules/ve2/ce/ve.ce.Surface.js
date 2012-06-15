@@ -84,7 +84,7 @@ ve.ce.Surface.prototype.documentOnFocus = function() {
 		'mousedown.ve-ce-Surface': ve.proxy( this.onMouseDown, this ),
 		'mouseup.ve-ce-Surface': ve.proxy( this.onMouseUp, this ),
 	} );
-	this.startPolling();
+	this.startPolling( true );
 };
 
 ve.ce.Surface.prototype.documentOnBlur = function() {
