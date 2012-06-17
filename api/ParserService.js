@@ -304,6 +304,43 @@ app.get( new RegExp('/_rt/(?:(?:(?:' + env.interwikiRegexp + '):+)?(' + env.inte
 });
 
 /**
+ * Round-trip article testing with newline stripping for editor-created HTML
+ * simulation
+ */
+app.get( new RegExp('/_rtve/(?:(?:(?:' + env.interwikiRegexp + '):+)?(' + env.interwikiRegexp + '):)?(.*)') , function(req, res){
+	env.pageName = req.params[1];
+	if ( req.params[0] ) {
+		env.wgScriptPath = '/_rtve/' + req.params[0] + ':';
+		env.wgScript = env.interwikiMap[req.params[0]];
+	} else {
+		env.wgScriptPath = '/_rtve/';
+		env.wgScript = env.interwikiMap[defaultInterwiki];
+	}
+
+	if ( env.pageName === 'favicon.ico' ) {
+		res.end( 'no favicon yet..' );
+		return;
+	}
+
+	var target = env.resolveTitle( env.normalizeTitle( env.pageName ), '' );
+	
+	console.log('starting parsing of ' + target);
+	var tpr = new TemplateRequest( env, target ),
+		cb = function ( req, res, src, document ) {
+			// strip newlines from the html
+			var html = document.innerHTML.replace(/[\r\n]/g, ''),
+				p = new html5.Parser();
+			p.parse( html );
+			var newDocument = p.tree.document;
+			// monkey-patch document.body reference for now..
+			newDocument.body = newDocument.childNodes[0].childNodes[1];
+			roundTripDiff( req, res, src, newDocument );
+		};
+
+	tpr.once('src', parse.bind( null, req, res, cb ));
+});
+
+/**
  * Form-based round-tripping for manual testing
  */
 app.get(/\/_rtform\/(.*)/, function(req, res){
