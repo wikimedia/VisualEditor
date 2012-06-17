@@ -89,10 +89,16 @@ FauxHTML5.TreeBuilder.prototype.processToken = function (token) {
 
 	switch( token.constructor ) {
 		case String:
-			this.emit('token', {type: 'Characters', data: token});
+			if ( token.match(/^[ \t\r\n\f]+$/) ) {
+				// Treat space characters specially so that the tree builder
+				// doesn't apply the foster parenting algorithm
+				this.emit('token', {type: 'SpaceCharacters', data: token});
+			} else {
+				this.emit('token', {type: 'Characters', data: token});
+			}
 			break;
 		case NlTk:
-			this.emit('token', {type: 'Characters', data: '\n'});
+			this.emit('token', {type: 'SpaceCharacters', data: '\n'});
 			break;
 		case TagTk:
 			this.emit('token', {type: 'StartTag', 
