@@ -277,12 +277,28 @@ ve.insertIntoArray = function( dst, offset, src ) {
 	ve.batchSplice( dst, offset, 0, src );
 };
 
-ve.debug = true;
-
+/**
+ * Logs data to the console.
+ *
+ * This implementation does nothing, to add a real implmementation ve.debug needs to be loaded.
+ *
+ * @static
+ * @method
+ * @param {Mixed} [...] Data to log
+ */
 ve.log = function() {
-	if ( ve.debug === true && window.console ) { 
-		// Solution from http://whattheheadsaid.com/2011/04/internet-explorer-9s-problematic-console-object
-		var log = Function.prototype.bind.call(console.log, console);
-		log.apply(console, arguments);
-	}
+	// don't do anything, this is just a stub
+};
+
+/**
+ * Logs an object to the console.
+ *
+ * This implementation does nothing, to add a real implmementation ve.debug needs to be loaded.
+ *
+ * @static
+ * @method
+ * @param {Object} obj Object to log
+ */
+ve.dir = function( obj ) {
+	// don't do anything, this is just a stub
 };

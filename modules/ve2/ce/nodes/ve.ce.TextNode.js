@@ -219,7 +219,7 @@ ve.ce.TextNode.prototype.getHtml = function() {
 			/*
 			var depth = hashStack.indexOf( hash );
 			if ( depth !== -1 ) {
-				console.log(depth, hashStack.length);
+				ve.log(depth, hashStack.length);
 				hashStack.splice( depth, 1 );
 				delete annotationStack[hash];
 			}

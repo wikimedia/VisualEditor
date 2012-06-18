@@ -89,6 +89,7 @@ include( '../../modules/sandbox/base.php' );
 		<script src="../../modules/jquery/jquery.js"></script>
 		<script src="../../modules/jquery/jquery.json.js"></script>
 		<script src="../../modules/ve2/ve.js"></script>
+		<script src="../../modules/ve2/ve.debug.js"></script>
 		<script src="../../modules/ve2/ve.EventEmitter.js"></script>
 		<script src="../../modules/ve2/ve.Factory.js"></script>
 		<script src="../../modules/ve2/ve.Position.js"></script>

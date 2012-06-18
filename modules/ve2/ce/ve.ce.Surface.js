@@ -205,7 +205,7 @@ ve.ce.Surface.prototype.onKeyDown = function( e ) {
 };
 
 ve.ce.Surface.prototype.onKeyPress = function( e ) {
-	console.log('onKeyPress');
+	ve.log('onKeyPress');
 };
 
 
@@ -623,7 +623,7 @@ ve.ce.Surface.prototype.handleDelete = function( backspace ) {
 			sourceSplitableNode = ve.ce.Node.getSplitableNode( sourceNode );
 			targetSplitableNode = ve.ce.Node.getSplitableNode( targetNode );
 		}
-		//console.log(sourceSplitableNode, targetSplitableNode);
+		//ve.log(sourceSplitableNode, targetSplitableNode);
 		
 		cursorAt = targetOffset;
 
@@ -649,15 +649,15 @@ ve.ce.Surface.prototype.handleDelete = function( backspace ) {
 			);
 			*/
 	
-			console.log('sourceNode', sourceNode);
-			console.log('sourceOffset', sourceOffset);
-			console.log('targetNode', targetNode);
-			console.log('targetOffset', targetOffset);
+			ve.log('sourceNode', sourceNode);
+			ve.log('sourceOffset', sourceOffset);
+			ve.log('targetNode', targetNode);
+			ve.log('targetOffset', targetOffset);
 return;
-			console.log('length: ', sourceNode.model.getLength());
-			console.log('outerlength: ', sourceNode.model.getOuterLength());
-			console.log('offset', this.documentView.getDocumentNode().getOffsetFromNode( sourceNode ));
-			console.log('some data: ', this.documentView.model.getData( this.model.getSelection() ) )
+			ve.log('length: ', sourceNode.model.getLength());
+			ve.log('outerlength: ', sourceNode.model.getOuterLength());
+			ve.log('offset', this.documentView.getDocumentNode().getOffsetFromNode( sourceNode ));
+			ve.log('some data: ', this.documentView.model.getData( this.model.getSelection() ) )
 			
 			// Find the node that should be completely removed
 			var nodeToDelete = sourceNode;

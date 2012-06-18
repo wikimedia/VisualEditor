@@ -179,7 +179,6 @@ ve.init.ViewPageTarget.prototype.onSaveError = function( response, status, error
  * @param {Event} e DOM event
  */
 ve.init.ViewPageTarget.prototype.onEditTabClick = function( event ) {
-	console.log( this );
 	this.activate();
 	// Prevent the edit tab's normal behavior
 	event.preventDefault();
@@ -207,7 +206,6 @@ ve.init.ViewPageTarget.prototype.onEditSectionLinkClick = function( event ) {
  * @param {Event} event DOM event
  */
 ve.init.ViewPageTarget.prototype.onViewTabClick = function( event ) {
-	console.log( this );
 	this.deactivate();
 	// Prevent the edit tab's normal behavior
 	event.preventDefault();

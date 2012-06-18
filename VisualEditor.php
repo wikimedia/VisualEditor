@@ -127,7 +127,10 @@ $wgResourceModules += array(
 			'jquery/jquery.json.js',
 			've2/ve.js',
 			've2/ve.EventEmitter.js',
-		)
+		),
+		'debugScripts' => array(
+			've2/ve.debug.js',
+		),
 	),
 	'ext.visualEditor.core' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
