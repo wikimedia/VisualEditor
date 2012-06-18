@@ -247,7 +247,7 @@ WSP.tagHandlers = {
 	tbody: {},
 	th: { 
 		init: function(state, token) {
-			this.startsNewline = token.dataAttribs.stx_v === 'row';
+			this.startsNewline = token.dataAttribs.stx_v !== 'row';
 		},
 		start: function ( state, token ) {
 			if ( token.dataAttribs.stx_v === 'row' ) {
@@ -491,12 +491,13 @@ WSP._serializeToken = function ( state, token ) {
 			if (requiredNLCount > 0) requiredNLCount--;
 		}
 
-		// console.warn("tok: " + token + ", res: <" + res + ">" + ", onnl: " + state.onNewline + ", # nls: " + state.availableNewlineCount);
+		// console.warn("tok: " + token + ", res: <" + res + ">" + ", onnl: " + state.onNewline + ", # nls: " + state.availableNewlineCount + "; required: " + requiredNLCount);
 
 		// Emit new line, if necessary
 		if (token.startsNewline && !state.onNewline) {
 			state.chunkCB("\n");
 			state.onNewline = true;
+			state.emitNewlineOnNextToken = false;
 			// console.warn("--> starting NL"); 
 			// Eat up an available line
 			if (state.availableNewlineCount > 0) state.availableNewlineCount--;
