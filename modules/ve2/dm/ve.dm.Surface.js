@@ -64,36 +64,28 @@ ve.dm.Surface.prototype.getSelection = function() {
 };
 
 /**
- * Sets the selection
- *
- * @method
- * @param {ve.Range} selection
- */
-ve.dm.Surface.prototype.setSelection = function( selection ) {
-	selection.normalize();
-
-	if (
-		( !this.selection ) ||
-		( !this.selection.equals ( selection ) )
-		)
-	{
-		this.selection = selection;
-	}
-	this.emit ('select', this.selection.clone() );
-};
-
-/**
- * Applies a series of transactions to the content data.
+ * Applies a series of transactions to the content data and sets the selection.
  *
  * @method
  * @param {ve.dm.Transaction} transactions Tranasction to apply to the document
+ * @param {ve.Range} selection
  */
-ve.dm.Surface.prototype.transact = function( transaction ) {
-	this.bigStack = this.bigStack.slice( 0, this.bigStack.length - this.undoIndex );
-	this.undoIndex = 0;
-	this.smallStack.push( transaction );
-	ve.dm.TransactionProcessor.commit( this.getDocument(), transaction );
-	this.emit( 'transact', transaction );
+ve.dm.Surface.prototype.change = function( transaction, selection ) {
+	if ( transaction ) {
+		this.bigStack = this.bigStack.slice( 0, this.bigStack.length - this.undoIndex );
+		this.undoIndex = 0;
+		this.smallStack.push( transaction );
+		ve.dm.TransactionProcessor.commit( this.getDocument(), transaction );
+	}
+	if ( selection && ( !this.selection || !this.selection.equals ( selection ) ) ) {
+		selection.normalize();
+		this.selection = selection;
+		this.emit ('select', this.selection.clone() );
+	}
+	if ( transaction ) {
+		this.emit( 'transact', transaction );
+	}
+	this.emit( 'change', transaction, selection );
 };
 
 /**
@@ -109,7 +101,7 @@ ve.dm.Surface.prototype.annotate = function( method, annotation ) {
 		var tx = ve.dm.Transaction.newFromAnnotation(
 			this.getDocument(), selection, method, annotation
 		);
-		this.transact( tx );
+		this.change( tx );
 	}
 };
 

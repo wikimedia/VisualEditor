@@ -36,8 +36,9 @@ ve.ce.Surface = function( $container, model ) {
 	};
 
 	// Events
-	this.model.on( 'select', ve.proxy( this.onSelect, this ) );
-	this.model.on( 'transact', ve.proxy( this.onTransact, this ) );
+	this.model.on( 'change', ve.proxy( this.onChange, this ) );
+	//this.model.on( 'select', ve.proxy( this.onSelect, this ) );
+	//this.model.on( 'transact', ve.proxy( this.onTransact, this ) );
 	this.on( 'contentChange', ve.proxy( this.onContentChange, this ) );
 	this.$.on( {
 		'cut copy': ve.proxy( this.onCutCopy, this ),
@@ -73,6 +74,12 @@ ve.ce.Surface = function( $container, model ) {
 };
 
 /* Methods */
+
+ve.ce.Surface.prototype.onChange = function( transaction, selection ) {
+	if ( selection ) {
+		this.showSelection( selection );
+	}
+};
 
 ve.ce.Surface.prototype.documentOnFocus = function() {
 	ve.log( 'documentOnFocus' );
@@ -250,7 +257,6 @@ ve.ce.Surface.prototype.pollChanges = function( async ) {
 			this.getOffset( rangySelection.anchorNode, rangySelection.anchorOffset ),
 			this.getOffset( rangySelection.focusNode, rangySelection.focusOffset )
 		);
-		this.model.setSelection( range );
 	}
 
 	// TODO: Invastigate more when and why node is null and what to do in those cases
@@ -288,6 +294,15 @@ ve.ce.Surface.prototype.pollChanges = function( async ) {
 	}
 
 	if ( this.poll.range !== range ) {
+
+		console.log('old', range.start);
+		if ( range.getLength() === 0 ) {
+			range = new ve.Range( this.getNearestCorrectOffset( range.start, 1 ) );
+		}
+		console.log('new', range.start);
+
+		// TODO: Fix range
+		this.model.change( null, range );
 		this.poll.range = range;
 	}
 
@@ -333,9 +348,10 @@ ve.ce.Surface.prototype.onContentChange = function( e ) {
 
 		this.render = false;
 
-		this.model.transact( ve.dm.Transaction.newFromInsertion(
-			this.documentView.model, e.old.range.start, data
-		) );
+		this.model.change(
+			ve.dm.Transaction.newFromInsertion( this.documentView.model, e.old.range.start, data ),
+			e.new.range
+		);
 
 		this.render = true;
 
@@ -364,25 +380,22 @@ ve.ce.Surface.prototype.onContentChange = function( e ) {
 
 
 		this.hideSelection();
-		this.poll.node = null;
-		this.poll.rangySelection.anchorNode = null;
-		/*
+		this.clearPollData();
 
-
-		this.poll.polling = false;
-		clearTimeout( this.poll.timeout );
-		this.poll.node = null;
-*/
 		// TODO: combine newFromRemoval and newFromInsertion into one newFromReplacement
 		if ( fromLeft + fromRight < e.old.text.length ) {
-			this.model.transact( ve.dm.Transaction.newFromRemoval( this.documentView.model, new ve.Range(
-				nodeOffset + 1 + fromLeft,
-				nodeOffset + 1 + e.old.text.length - fromRight
-			) ) );
+			this.model.change(
+				ve.dm.Transaction.newFromRemoval(
+					this.documentView.model,
+					new ve.Range( nodeOffset + 1 + fromLeft, nodeOffset + 1 + e.old.text.length - fromRight )
+				),
+				e.new.range
+			);
 		}
-		this.model.transact( ve.dm.Transaction.newFromInsertion(
-				this.documentView.model, nodeOffset + 1 + fromLeft, data
-		) );
+		this.model.change(
+			ve.dm.Transaction.newFromInsertion( this.documentView.model, nodeOffset + 1 + fromLeft, data ),
+			e.new.range
+		);
 	}
 };
 
@@ -458,6 +471,8 @@ ve.ce.Surface.prototype.onCutCopy = function( e ) {
 		$frag = null,
 		key = '';
 
+	this.stopPolling();
+
 	// Create key from text and element names
 	$frag = $(sel.getRangeAt(0).cloneContents());
 	$frag.contents().each(function() {
@@ -485,14 +500,9 @@ ve.ce.Surface.prototype.onCutCopy = function( e ) {
 			// Transact
 			_this.autoRender = true;
 			tx = ve.dm.Transaction.newFromRemoval( _this.documentView.model, selection );
-			_this.model.transact( tx );
+			_this.model.change( tx, new ve.Range( selection.start ) );
 			_this.autoRender = false;
-			//_this.startPolling();
 
-			// Place cursor
-			_this.showCursor( selection.start );
-			_this.model.setSelection( new ve.Range( selection.start ) );
-			
 			_this.clearPollData();
 			_this.startPolling();
 		}, 1 );
@@ -512,7 +522,7 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
 	// Pasting into a range? Remove first.
 	if (!rangy.getSelection().isCollapsed) {
 		tx = ve.dm.Transaction.newFromRemoval( _this.documentView.model, selection );
-		_this.model.transact( tx );
+		_this.model.change( tx );
 	}
 	
 	$('#paste').html('').show().focus();
@@ -535,11 +545,7 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
 		tx = ve.dm.Transaction.newFromInsertion(
 			_this.documentView.model, selection.start, pasteData
 		);
-		_this.model.transact( tx );
-
-		// Place cursor
-		_this.showCursor( selection.start + pasteData.length );
-		_this.model.setSelection( new ve.Range( selection.start + pasteData.length ) );
+		_this.model.change( tx, new ve.Range( selection.start + pasteData.length ) );
 		_this.documentView.documentNode.$.focus();
 		
 		_this.clearPollData();
@@ -550,12 +556,12 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
 ve.ce.Surface.prototype.handleEnter = function() {
 	this.stopPolling();
 
-	var selection = this.model.getSelection(),
-		tx;
-		
+	var selection = this.model.getSelection();
+
 	if ( selection.from !== selection.to ) {
-		tx = ve.dm.Transaction.newFromRemoval( this.documentView.model, selection );
-		this.model.transact( tx );
+		this.model.change(
+			ve.dm.Transaction.newFromRemoval( this.documentView.model, selection )
+		);
 	}
 	
 	var	node = this.documentView.getNodeFromOffset( selection.to ),
@@ -580,16 +586,11 @@ ve.ce.Surface.prototype.handleEnter = function() {
 		return true;
 	} );
 
-	// Transact
-	tx = ve.dm.Transaction.newFromInsertion( this.documentView.model, selection.from, stack );
-	this.model.transact( tx );
+	this.model.change( 
+		ve.dm.Transaction.newFromInsertion( this.documentView.model, selection.from, stack ),
+		new ve.Range ( this.model.getDocument().getRelativeContentOffset( selection.from, 1 )
+	) );
 
-	// Place cursor
-	selection.from = selection.to = this.model.getDocument().getRelativeContentOffset( selection.from, 1 );
-
-	this.showCursor(selection.from);
-	this.model.setSelection( new ve.Range( selection.from ) );
-	
 	this.clearPollData();
 	this.startPolling();
 };
@@ -609,7 +610,7 @@ ve.ce.Surface.prototype.handleDelete = function( backspace ) {
 		if ( backspace ) {
 			sourceOffset = selection.to; 
 			targetOffset = this.model.getDocument().getRelativeContentOffset( sourceOffset, -1 );
-			this.model.setSelection( new ve.Range( targetOffset, targetOffset ) );
+			//this.model.setSelection( new ve.Range( targetOffset, targetOffset ) );
 		} else {
 			sourceOffset = this.model.getDocument().getRelativeContentOffset( selection.to, 1 );
 			targetOffset = selection.to;
@@ -634,7 +635,7 @@ ve.ce.Surface.prototype.handleDelete = function( backspace ) {
 			
 			// Transact
 			tx = ve.dm.Transaction.newFromRemoval( this.documentView.model, new ve.Range( targetOffset, sourceOffset ) );
-			this.model.transact( tx );
+			this.model.change( tx, new ve.Range( cursorAt ) );
 		} else {
 			// Source and target are different nodes and do not share a parent. Perform tricky merge.
 
@@ -684,14 +685,9 @@ return;
 		}
 	} else {
 		// selection removal
-		this.model.setSelection( new ve.Range( selection.start, selection.start ) );
 		tx = ve.dm.Transaction.newFromRemoval( this.documentView.model, selection );
-		this.model.transact( tx );
-		cursorAt = selection.start;
+		this.model.change( tx, new ve.Range( selection.start ) );
 	}
-
-	this.showCursor(cursorAt);
-	this.model.setSelection( new ve.Range( cursorAt ) );
 
 	this.clearPollData();
 	this.startPolling();
