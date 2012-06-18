@@ -266,7 +266,7 @@ $wgResourceModules += array(
  * @see http://www.mediawiki.org/wiki/Extension_default_namespaces
 */
 define( 'NS_VISUALEDITOR', 2500 );
-define( 'NS_VISUALEDITOR_TALK', 2501 );	
+define( 'NS_VISUALEDITOR_TALK', 2501 );
 $wgExtraNamespaces[NS_VISUALEDITOR] = 'VisualEditor';
 $wgExtraNamespaces[NS_VISUALEDITOR_TALK] = 'VisualEditor_talk';
 $wgContentNamespaces[] = NS_VISUALEDITOR;
@@ -283,5 +283,4 @@ $wgAPIModules['ve-parsoid'] = 'ApiVisualEditor';
 // Integration Hooks
 $wgAutoloadClasses['VisualEditorHooks'] = $dir . 'VisualEditor.hooks.php';
 $wgHooks['BeforePageDisplay'][] = 'VisualEditorHooks::onBeforePageDisplay';
-$wgHooks['userCan'][] = 'VisualEditorHooks::onUserCan';
 $wgHooks['MakeGlobalVariablesScript'][] = 'VisualEditorHooks::onMakeGlobalVariablesScript';
