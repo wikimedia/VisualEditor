@@ -79,6 +79,7 @@ ve.ce.Surface.prototype.documentOnFocus = function() {
 	this.$document.on( {
 		// key down
 		'keydown.ve-ce-Surface': ve.proxy( this.onKeyDown, this ),
+		'keypress.ve-ce-Surface': ve.proxy( this.onKeyPress, this ),
 		// mouse down
 		'mousedown.ve-ce-Surface': ve.proxy( this.onMouseDown, this ),
 	} );
@@ -226,11 +227,28 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
 	}, 1 );
 };
 
-/*
 ve.ce.Surface.prototype.onKeyPress = function( e ) {
 	ve.log('onKeyPress');
+
+	var selection = this.model.getSelection();
+
+	if ( selection.getLength() === 0 ) {
+		if ( this.hasSlugAtOffset( selection.start ) ) {
+			var data = [ { 'type' : 'paragraph' }, { 'type' : '/paragraph' } ];
+			this.stopPolling();
+			this.model.change( 
+				ve.dm.Transaction.newFromInsertion(
+					this.documentView.model,
+					selection.start,
+					data
+				),
+				new ve.Range ( selection.start + 1 )
+			);
+			this.clearPollData();
+			this.startPolling();
+		}
+	}
 };
-*/
 
 ve.ce.Surface.prototype.startPolling = function( async ) {
 	ve.log( 'startPolling' );
