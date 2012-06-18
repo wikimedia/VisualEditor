@@ -21,9 +21,24 @@ ve.init.ViewPageTarget = function() {
 	this.activating = false;
 	this.deactivating = false;
 	this.scrollTop = null;
-	this.section = null;
 	this.proxiedOnSurfaceModelTransact = ve.proxy( this.onSurfaceModelTransact, this );
 	this.surfaceOptions = { 'toolbars': { 'top': { 'float': !this.isMobileDevice } } };
+	this.editUri = new mw.Uri( $( '#ca-edit a' ).attr( 'href' ) );
+	this.viewUri = new mw.Uri( $( '#ca-view a' ).attr( 'href' ) );
+	this.veEditUri = this.editUri.clone();
+	delete this.veEditUri.query.action;
+	this.veEditUri.query.veaction = 'edit';
+	this.currentUri = new mw.Uri( window.location.toString() );
+	this.section = this.currentUri.query.vesection || null;
+	this.isViewPage = (
+		mw.config.get( 'wgCanonicalNamespace' ) === 'VisualEditor' &&
+		mw.config.get( 'wgAction' ) === 'view' &&
+		this.currentUri.query.diff === undefined
+	);
+	this.canBeActivated = (
+		mw.config.get( 'wgCanonicalNamespace' ) === 'VisualEditor' ||
+		mw.config.get( 'wgRelevantPageName' ).substr( 0, 13 ) === 'VisualEditor:'
+	);
 
 	// Events
 	this.addListenerMethods( this, {
@@ -34,21 +49,16 @@ ve.init.ViewPageTarget = function() {
 	} );
 
 	// Initialization
-	var uri =  new mw.Uri( window.location.toString() );
-	if ( mw.config.get( 'wgCanonicalNamespace' ) === 'VisualEditor' ) {
-		if ( mw.config.get( 'wgAction' ) === 'view' && uri.query.diff === undefined ) {
-			this.setupSkinTabs();
-			this.setupSectionEditLinks();
+	if ( this.canBeActivated ) {
+		this.setupSkinTabs();
+		this.setupSectionEditLinks();
+		if ( this.isViewPage ) {
 			this.setupToolbarSaveButton();
 			this.setupSaveDialog();
-			if ( uri.query.veaction === 'edit' ) {
+			if ( this.currentUri.query.veaction === 'edit' ) {
 				this.activate();
 			}
-		} else {
-			this.setupSkinTabs();
 		}
-	} else if ( mw.config.get( 'wgRelevantPageName' ).substr( 0, 13 ) === 'VisualEditor:' ) {
-		this.setupSkinTabs();
 	}
 };
 
@@ -201,7 +211,7 @@ ve.init.ViewPageTarget.prototype.onEditTabClick = function( event ) {
  * @param {Event} event DOM event
  */
 ve.init.ViewPageTarget.prototype.onEditSectionLinkClick = function( event ) {
-	this.saveEditingSection( $( event.target ).closest( 'h1, h2, h3, h4, h5, h6' )[0] );
+	this.saveEditSection( $( event.target ).closest( 'h1, h2, h3, h4, h5, h6' )[0] );
 	this.activate();
 	// Prevent the edit tab's normal behavior
 	event.preventDefault();
@@ -358,33 +368,27 @@ ve.init.ViewPageTarget.prototype.setupSkinTabs = function() {
 		// Sysop users will need a new edit source tab since we are highjacking the edit tab
 		mw.util.addPortletLink(
 			'p-cactions',
-			$( '#ca-edit a' ).attr( 'href' ),
+			this.editUri,
 			'Edit Source', // TODO: i18n
 			'ca-editsource'
 		);
 	}
-	var uri =  new mw.Uri( window.location.toString() );
-	if (
-		mw.config.get( 'wgCanonicalNamespace' ) === 'VisualEditor' &&
-		mw.config.get( 'wgAction' ) === 'view' &&
-		uri.query.diff === undefined
-	) {
+	if ( this.isViewPage ) {
+		// Allow instant-editing
 		$( '#ca-edit a' ).click( ve.proxy( this.onEditTabClick, this ) );
 		$( '#ca-view a, #ca-nstab-visualeditor a' ).click( ve.proxy( this.onViewTabClick, this ) );
 	} else {
-		var editUri =  new mw.Uri( $( '#ca-edit a' ).attr( 'href' ) );
-		delete editUri.query.action;
-		editUri.query.veaction = 'edit';
-		$( '#ca-edit a' ).attr( 'href', editUri );
+		// Route edits through the view page
+		$( '#ca-edit a' ).attr( 'href', this.veEditUri );
 	}
 	// Source editing shouldn't highlight the edit tab
 	if ( mw.config.get( 'wgAction' ) === 'edit' ) {
 		$( '#p-views' ).find( 'li.selected' ).removeClass( 'selected' );
 	}
 	// Fix the URL if there was a veaction param in it
-	if ( uri.query.veaction === 'edit' && window.history.replaceState ) {
+	if ( this.currentUri.query.veaction === 'edit' && window.history.replaceState ) {
 		var title = $( 'head title' ).text();
-		window.history.replaceState( null, title, $( '#ca-view a' ).attr( 'href' ) );
+		window.history.replaceState( null, title, this.viewUri );
 	}
 };
 
@@ -394,7 +398,18 @@ ve.init.ViewPageTarget.prototype.setupSkinTabs = function() {
  * @method
  */
 ve.init.ViewPageTarget.prototype.setupSectionEditLinks = function() {
-	$( '#mw-content-text .editsection a' ).click( ve.proxy( this.onEditSectionLinkClick, this ) );
+	var $links = $( '#mw-content-text .editsection a' );
+	if ( this.isViewPage ) {
+		$links.click( ve.proxy( this.onEditSectionLinkClick, this ) );
+	} else {
+		var _this = this;
+		$links.each( function() {
+			var veSectionEditUri = _this.veEditUri.clone(),
+				sectionEditUri = new mw.Uri( $(this).attr( 'href' ) );
+			veSectionEditUri.extend( { 'vesection': sectionEditUri.query.section } );
+			$(this).attr( 'href', veSectionEditUri );
+		} );
+	}
 };
 
 /**
@@ -739,19 +754,26 @@ ve.init.ViewPageTarget.prototype.detachSurface = function() {
  * @method
  * @param {HTMLElement} heading Heading element of section
  */
-ve.init.ViewPageTarget.prototype.saveEditSection = function( heading ) {
-	var $page = $( '#mw-content-text' );
-		tocHeading = $page.find( '#toc h2' )[0];
+ve.init.ViewPageTarget.prototype.getEditSection = function( heading ) {
+	var $page = $( '#mw-content-text' ),
 		section = 0;
-	$page.find( 'h1, h2, h3, h4, h5, h6' ).each( function() {
+	$page.find( 'h1, h2, h3, h4, h5, h6' ).not( '#toc h2' ).each( function() {
+		section++;
 		if ( this === heading ) {
 			return false;
 		}
-		if ( this !== tocHeading ) {
-			section++;
-		}
 	} );
-	this.section = section;
+	return section;
+};
+
+/**
+ * Gets the numeric index of a section in the page.
+ *
+ * @method
+ * @param {HTMLElement} heading Heading element of section
+ */
+ve.init.ViewPageTarget.prototype.saveEditSection = function( heading ) {
+	this.section = this.getEditSection( heading );
 };
 
 /**
@@ -761,20 +783,20 @@ ve.init.ViewPageTarget.prototype.saveEditSection = function( heading ) {
  * @param {Number} section Section to move cursor to
  */
 ve.init.ViewPageTarget.prototype.restoreEditSection = function() {
-	if ( this.section ) {
+	if ( this.section !== null ) {
 		var surfaceView = this.surface.getView(),
 			surfaceModel = surfaceView.getModel();
 		this.$surface
 			.find( '.ve-ce-documentNode' )
 				.find( 'h1, h2, h3, h4, h5, h6' )
-					.eq( this.section )
+					.eq( this.section - 1 )
 						.each( function() {
 							var headingNode = $(this).data( 'node' );
 							if ( headingNode ) {
 								var offset = surfaceModel.getDocument().getNearestContentOffset(
 									headingNode.getModel().getOffset()
 								);
-								surfaceModel.setSelection( new ve.Range( offset, offset ) );
+								surfaceModel.change( null, new ve.Range( offset, offset ) );
 								surfaceView.showSelection( surfaceModel.getSelection() );
 							}
 						} );
