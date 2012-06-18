@@ -208,7 +208,7 @@ WSP.tagHandlers = {
 			startsNewline : true,
 			handle: WSP._listHandler.bind( null, '*' ),
 			pairSepNLCount: 2,
-			treatAsNewline: true
+			newlineTransparent: true
 		},
 		end: {
 			endsLine: true,
@@ -220,7 +220,7 @@ WSP.tagHandlers = {
 			startsNewline : true,
 			handle: WSP._listHandler.bind( null, '#' ),
 			pairSepNLCount: 2,
-			treatAsNewline: true
+			newlineTransparent: true
 		},
 		end: {
 			endsLine      : true,
@@ -232,7 +232,7 @@ WSP.tagHandlers = {
 			startsNewline : true,
 			handle: WSP._listHandler.bind( null, ''), 
 			pairSepNLCount: 2,
-			treatAsNewline: true
+			newlineTransparent: true
 		},
 		end: {
 			endsLine: true,
@@ -367,8 +367,11 @@ WSP.tagHandlers = {
 			handle: function ( state, token ) {
 				var argDict = state.env.KVtoHash( token.attribs );
 				if ( argDict['typeof'] === 'mw:tag' ) {
+					// we use this currently for nowiki and noinclude & co
+					this.newlineTransparent = true;
 					return '<' + argDict.content + '>';
 				} else {
+					this.newlineTransparent = false;
 					return WSP._serializeHTMLTag( state, token );
 				}
 			}
@@ -527,6 +530,10 @@ WSP._serializeToken = function ( state, token ) {
 			break;
 		case CommentTk:
 			res = '<!--' + token.value + '-->';
+			// don't consider comments for changes of the onNewline status
+			// XXX: convert all non-tag handlers to a similar handler
+			// structure as tags?
+			handler = { newlineTransparent: true }; 
 			break;
 		case NlTk:
 			res = '\n';
@@ -627,7 +634,7 @@ WSP._serializeToken = function ( state, token ) {
 				res = res.replace(/\n/g, ' ');
 			}
 			out += res;
-			if ( res !== '' ) {
+			if ( res !== '' && !handler.newlineTransparent ) {
 				state.onNewline = false;
 			}
 			state.chunkCB( out );
@@ -645,9 +652,6 @@ WSP._serializeToken = function ( state, token ) {
 		}
 		if ( handler.singleLine > 0 ) {
 			state.singleLineMode += handler.singleLine;
-		}
-		if ( handler.treatAsNewline ) {
-			state.onNewline = true;
 		}
 	}
 };
