@@ -14,8 +14,12 @@ class VisualEditorHooks {
 		if (
 			// Vector skin supported for now.
 			$skin->getSkinName() === 'vector' &&
-			// Be sure current page is VisualEditor:Something
-			$wgTitle->getNamespace() === NS_VISUALEDITOR
+			(
+				// Article in the VisualEditor namespace
+				$wgTitle->getNamespace() === NS_VISUALEDITOR ||
+				// Special page action for an article in the VisualEditor namespace
+				$skin->getRelevantTitle()->getNamespace() === NS_VISUALEDITOR
+			)
 		) {
 			$output->addModules( array( 'ext.visualEditor.editPageInit' ) );
 		}

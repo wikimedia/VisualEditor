@@ -96,7 +96,8 @@ $wgResourceModules += array(
 		),
 		'dependencies' => array(
 			'ext.visualEditor.init',
-			'mediawiki.util'
+			'mediawiki.util',
+			'mediawiki.Uri'
 		),
 		'messages' => array(
 			'minoredit',

@@ -34,12 +34,21 @@ ve.init.ViewPageTarget = function() {
 	} );
 
 	// Initialization
-	if ( mw.config.get('wgCanonicalNamespace') === 'VisualEditor' ) {
-		// Clicking the edit tab is the only way any other code gets run, and this sets that up
+	if ( mw.config.get( 'wgCanonicalNamespace' ) === 'VisualEditor' ) {
+		if ( mw.config.get( 'wgAction' ) === 'view' ) {
+			this.setupSkinTabs();
+			this.setupSectionEditLinks();
+			this.setupToolbarSaveButton();
+			this.setupSaveDialog();
+			var uri =  new mw.Uri( window.location.toString() );
+			if ( uri.query.veaction === 'edit' ) {
+				this.activate();
+			}
+		} else {
+			this.setupSkinTabs();
+		}
+	} else if ( mw.config.get( 'wgRelevantPageName' ).substr( 0, 13 ) === 'VisualEditor:' ) {
 		this.setupSkinTabs();
-		this.setupSectionEditLinks();
-		this.setupToolbarSaveButton();
-		this.setupSaveDialog();
 	}
 };
 
@@ -347,13 +356,27 @@ ve.init.ViewPageTarget.prototype.setupSkinTabs = function() {
 		// Sysop users will need a new edit source tab since we are highjacking the edit tab
 		mw.util.addPortletLink(
 			'p-cactions',
-			mw.util.wikiGetlink() + '?action=edit',
+			$( '#ca-edit a' ).attr( 'href' ),
 			'Edit Source', // TODO: i18n
 			'ca-editsource'
 		);
 	}
-	$( '#ca-edit a' ).click( ve.proxy( this.onEditTabClick, this ) );
-	$( '#ca-view a' ).click( ve.proxy( this.onViewTabClick, this ) );
+	if (
+		mw.config.get( 'wgCanonicalNamespace' ) === 'VisualEditor' &&
+		mw.config.get( 'wgAction' ) === 'view'
+	) {
+		$( '#ca-edit a' ).click( ve.proxy( this.onEditTabClick, this ) );
+		$( '#ca-view a' ).click( ve.proxy( this.onViewTabClick, this ) );
+	} else {
+		var uri =  new mw.Uri( $( '#ca-edit a' ).attr( 'href' ) );
+		delete uri.query.action;
+		uri.query.veaction = 'edit';
+		$( '#ca-edit a' ).attr( 'href', uri );
+	}
+	// Source editing shouldn't highlight the edit tab
+	if ( mw.config.get( 'wgAction' ) === 'edit' ) {
+		$( '#p-views' ).find( 'li.selected' ).removeClass( 'selected' );
+	}
 };
 
 /**
