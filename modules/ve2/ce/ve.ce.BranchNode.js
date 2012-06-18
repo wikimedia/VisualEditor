@@ -144,7 +144,7 @@ ve.ce.BranchNode.prototype.onSplice = function( index, howmany ) {
 		var $target;
 		if ( index ) {
 			// Get the element before the insertion point
-			$anchor = this.$.children().eq( index - 1 );
+			$anchor = this.$.children(':not(.ve-ce-slug)').eq( index - 1 );
 		}
 		for ( i = args.length - 1; i >= 2; i-- ) {
 			args[i].attach( this );
