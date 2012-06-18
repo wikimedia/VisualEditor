@@ -1,9 +1,9 @@
+.ve-surface {
+	margin-top: 0.8em;
+}
+
 .es-toolbar-wrapper {
 	margin: -1em -1em 1em -1em;
-	transition: margin 250ms, height 250ms;
-	-moz-transition: margin 250ms, height 250ms;
-	-webkit-transition: margin 250ms, height 250ms;
-	-o-transition: margin 250ms, height 250ms;
 }
 
 .es-toolbar {
@@ -31,7 +31,7 @@
 	float: right;
 }
 
-.ve-init-viewPageTarget-button {
+.ve-init-viewPageTarget-toolbar-saveButton {
 	display: inline-block;
 	border: solid 1px 
 	transparent;
@@ -47,40 +47,31 @@
 	border: solid 1px transparent;
 }
 
-.ve-init-viewPageTarget-button:before {
+.ve-init-viewPageTarget-toolbar-saveButton:before {
 	content: " ";
 	position: absolute;
 	display: block;
 	height: 22px;
 }
 
-.ve-init-viewPageTarget-button:hover {
+.ve-init-viewPageTarget-toolbar-saveButton:hover {
 	border-color: #eeeeee;
 }
 
-.ve-init-viewPageTarget-button:active,
-.ve-init-viewPageTarget-button-down {
+.ve-init-viewPageTarget-toolbar-saveButton:active,
+.ve-init-viewPageTarget-toolbar-saveButton-down {
 	border-color: #dddddd;
 	-webkit-box-shadow: inset 0px 1px 4px 0px rgba(0, 0, 0, 0.07);
 	-moz-box-shadow: inset 0px 1px 4px 0px rgba(0, 0, 0, 0.07);
 	box-shadow: inset 0px 1px 4px 0px rgba(0, 0, 0, 0.07);
 }
 
-.ve-init-viewPageTarget-button-disabled {
+.ve-init-viewPageTarget-toolbar-saveButton-disabled {
 	opacity: 0.5;
 	-moz-opacity: 0.5;
 }
 
-/* inspector styles */
-.ve-init-viewPageTarget-saveButton {
-	border: 1px solid transparent;
-	border-radius: 0.125em;
-	-webkit-border-radius: 0.125em;
-	-moz-border-radius: 0.125em;
-	-o-border-radius: 0.125em;
-}
-
-.ve-init-viewPageTarget-saveButton-icon {
+.ve-init-viewPageTarget-toolbar-saveButton-icon {
 	display: inline-block;
 	vertical-align: middle;
 	width: 32px;
@@ -91,7 +82,7 @@
 	background-repeat: no-repeat;
 }
 
-.ve-init-viewPageTarget-saveButton-label {
+.ve-init-viewPageTarget-toolbar-saveButton-label {
 	display: inline-block;
 	vertical-align: middle;
 	height: 32px;
@@ -110,29 +101,31 @@
 
 .ve-init-viewPageTarget-saveDialog-saveButton {
 	position: absolute;
-	border: 1px solid rgb(196,229,154);
+	cursor: pointer;
+	border: 1px solid #c3e59a;
 	margin-top: 10px;
 	right: 10px;
 	font-size: 1em;
 	padding: 0.5em 1em;
 	border-radius: 0.25em;
 	-moz-border-radius: 0.25em;
-	background-image: url(../../ui/styles/images/close.png);
-	background-position: center right;
-	background-repeat: no-repeat;
 	/* Fancy CSS background */
-	background-image: linear-gradient(bottom, rgb(195,229,154) 0%, rgb(240,251,225) 100%);
-	background-image: -o-linear-gradient(bottom, rgb(195,229,154) 0%, rgb(240,251,225) 100%);
-	background-image: -moz-linear-gradient(bottom, rgb(195,229,154) 0%, rgb(240,251,225) 100%);
-	background-image: -webkit-linear-gradient(bottom, rgb(195,229,154) 0%, rgb(240,251,225) 100%);
-	background-image: -ms-linear-gradient(bottom, rgb(195,229,154) 0%, rgb(240,251,225) 100%);
+	background-image: linear-gradient(bottom, #c3e59a 0%, #f0fbe1 100%);
+	background-image: -o-linear-gradient(bottom, #c3e59a 0%, #f0fbe1 100%);
+	background-image: -moz-linear-gradient(bottom, #c3e59a 0%, #f0fbe1 100%);
+	background-image: -webkit-linear-gradient(bottom, #c3e59a 0%, #f0fbe1 100%);
+	background-image: -ms-linear-gradient(bottom, #c3e59a 0%, #f0fbe1 100%);
 	background-image: -webkit-gradient(
 		linear,
 		left bottom,
 		left top,
-		color-stop(0, rgb(195,229,154)),
-		color-stop(1, rgb(240,251,225))
+		color-stop(0, #c3e59a),
+		color-stop(1, #f0fbe1)
 	);
+}
+
+.ve-init-viewPageTarget-saveDialog-saveButton:hover {
+	border-color: #a7cd76;
 }
 
 .ve-init-viewPageTarget-saveDialog-saveButton-icon {
@@ -140,6 +133,7 @@
 	vertical-align: middle;
 	height: 2em;
 	width: 28px;
+	margin-right: -4px;
 	background: transparent;
 	background-image: url(../../ui/styles/images/accept-clear.png);
 	background-position: right top;
@@ -171,7 +165,7 @@
 }
 
 .ve-init-viewPageTarget-saveDialog input[type='text'] {
-	width: 96%;
+	width: 98%;
 	font-size: 12px;
 	padding: 4px;
 	margin: 10px 0;

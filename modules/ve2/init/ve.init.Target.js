@@ -6,17 +6,127 @@
  * @param {String} title Page title of target
  */
 ve.init.Target = function( title ) {
+	// Inheritance
+	ve.EventEmitter.call( this );
+
 	// Properties
 	this.title = title;
 	this.editToken = mw.user.tokens.get( 'editToken' );
 	this.apiUrl = mw.util.wikiScript( 'api' );
 	this.modules = ['ext.visualEditor.core'];
-	this.isDomLoading = false;
-	this.isDomSaving = false;
+	this.loading = false;
+	this.saving = false;
+	this.dom = null;
 	this.isMobileDevice = (
 		'ontouchstart' in window ||
 		( window.DocumentTouch && document instanceof DocumentTouch )
 	);
+};
+
+/* Static Methods */
+
+/**
+ * Handle response to a successful load request.
+ *
+ * This method is called within the context of a target instance. If successful the DOM from the
+ * server will be parsed, stored in {this.dom} and then {ve.init.Target.onReady} will be called once
+ * the modules are ready.
+ *
+ * @static
+ * @method
+ * @param {Object} response XHR Response object
+ * @param {String} status Text status message
+ * @emits loadError (message)
+ */
+ve.init.Target.onLoad = function( response, status ) {
+	var data = response['ve-parsoid'];
+	if ( !data ) {
+		this.loading = false;
+		this.emit( 'loadError', 'Invalid response from server' );
+	} else if ( typeof data.parsed !== 'string' ) {
+		this.loading = false;
+		this.emit( 'loadError', 'Invalid HTML content in response from server' );
+	} else {
+		this.dom = $( '<div></div>' ).html( data.parsed )[0];
+		// Everything worked, the page was loaded, continue as soon as the module is ready
+		mw.loader.using( this.modules, ve.proxy( ve.init.Target.onReady, this ) );
+	}
+};
+
+/**
+ * Handle both DOM and modules being loaded and ready.
+ *
+ * This method is called within the context of a target instance. After the load event is emitted
+ * this.dom is cleared, allowing it to be garbage collected.
+ *
+ * @static
+ * @method
+ * @emits load (dom)
+ */
+ve.init.Target.onReady = function() {
+	this.loading = false;
+	this.emit( 'load', this.dom );
+	// Release DOM data
+	this.dom = null;
+};
+
+/**
+ * Handle response to a successful load request.
+ *
+ * This method is called within the context of a target instance.
+ *
+ * @static
+ * @method
+ * @param {Object} response XHR Response object
+ * @param {String} status Text status message
+ * @param {Mixed} error Thrown exception or HTTP error string
+ * @emits load (dom)
+ */
+ve.init.Target.onLoadError = function( response, text, exception ) {
+	this.loading = false;
+	this.emit( 'loadError', response, text, exception );
+};
+
+/**
+ * Handle response to a successful save request.
+ *
+ * This method is called within the context of a target instance.
+ *
+ * @static
+ * @method
+ * @param {Object} response XHR Response object
+ * @param {String} status Text status message
+ * @emits save (html)
+ */
+ve.init.Target.onSave = function( response, status ) {
+	this.saving = false;
+	var data = response['ve-parsoid'];
+	if ( !response ) {
+		this.emit( 'saveError', 'Invalid response from server' );
+	} else if ( data.result !== 'success' ) {
+		this.emit( 'saveError', 'Unsuccessful request: ' + data.result );
+	} else if ( typeof data.content !== 'string' ) {
+		this.emit( 'saveError', 'Invalid HTML content in response from server' );
+	} else {
+		this.emit( 'save', data.content );
+	}
+};
+
+/**
+ * Handle response to a successful save request.
+ *
+ * This method is called within the context of a target instance.
+ *
+ * @static
+ * @method
+ * @param {Object} data HTTP Response object
+ * @param {String} status Text status message
+ * @param {Mixed} error Thrown exception or HTTP error string
+ * @emits save (html)
+ */
+ve.init.Target.onSaveError = function( response, status, error ) {
+	this.saving = false;
+	this.emit( 'saveError', response, status, error );
 };
 
 /* Methods */
@@ -39,13 +149,13 @@ ve.init.Target = function( title ) {
 */
 ve.init.Target.prototype.load = function( callback ) {
 	// Prevent duplicate requests
-	if ( this.isDomLoading ) {
+	if ( this.loading ) {
 		return false;
 	}
 	// Start loading the module immediately
 	mw.loader.load( this.modules );
 	// Load DOM
-	this.isDomLoading = true;
+	this.loading = true;
 	$.ajax( {
 		'url': this.apiUrl,
 		'data': {
@@ -59,21 +169,8 @@ ve.init.Target.prototype.load = function( callback ) {
 		'cache': 'false',
 		// Wait up to 9 seconds
 		'timeout': 9000,
-		'error': callback,
-		'success': ve.proxy( function( data ) {
-			this.isDomLoading = false;
-			var response = data['ve-parsoid'];
-			if ( !response ) {
-				callback( 'Invalid response from server' );
-			} else if ( typeof response.parsed !== 'string' ) {
-				callback( 'Invalid HTML content in response from server' );
-			} else {
-				// Everything worked, the page was loaded, continue as soon as the module is ready
-				mw.loader.using( this.modules, function() {
-					callback( null, $( '<div></div>' ).html( data['ve-parsoid'].parsed )[0] );
-				} );
-			}
-		}, this )
+		'error': ve.proxy( ve.init.Target.onLoadError, this ),
+		'success': ve.proxy( ve.init.Target.onLoad, this )
 	} );
 	return true;
 };
@@ -103,11 +200,11 @@ ve.init.Target.prototype.load = function( callback ) {
 */
 ve.init.Target.prototype.save = function( dom, options, callback ) {
 	// Prevent duplicate requests
-	if ( this.isDomSaving ) {
+	if ( this.saving ) {
 		return false;
 	}
 	// Save DOM
-	this.isDomSaving = true;
+	this.saving = true;
 	$.ajax( {
 		'url': this.apiUrl,
 		'data': {
@@ -123,21 +220,12 @@ ve.init.Target.prototype.save = function( dom, options, callback ) {
 		},
 		'dataType': 'json',
 		'type': 'POST',
-		'error': callback,
-		'success': ve.proxy( function( data ) {
-			this.isDomSaving = false;
-			var response = data['ve-parsoid'];
-			if ( !response ) {
-				callback( 'Invalid response from server' );
-			} else if ( response.result !== 'success' ) {
-				callback( 'Unsuccessful request: ' + response.result );
-			} else if ( typeof response.content !== 'string' ) {
-				callback( 'Invalid HTML content in response from server' );
-			} else {
-				// Everything worked, the page was saved, continue immediately
-				callback( null, response.content );
-			}
-		}, this )
+		'error': ve.proxy( ve.init.Target.onSaveError, this ),
+		'success': ve.proxy( ve.init.Target.onSave, this )
 	} );
 	return true;
 };
+
+/* Inheritance */
+
+ve.extendClass( ve.init.Target, ve.EventEmitter );
