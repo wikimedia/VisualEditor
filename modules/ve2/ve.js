@@ -281,6 +281,8 @@ ve.debug = true;
 
 ve.log = function() {
 	if ( ve.debug === true && window.console ) { 
-		console.log.apply( console, arguments );
+		// Solution from http://whattheheadsaid.com/2011/04/internet-explorer-9s-problematic-console-object
+		var log = Function.prototype.bind.call(console.log, console);
+		log.apply(console, arguments);
 	}
 };
