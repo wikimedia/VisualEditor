@@ -37,8 +37,6 @@ ve.ce.Surface = function( $container, model ) {
 
 	// Events
 	this.model.on( 'change', ve.proxy( this.onChange, this ) );
-	//this.model.on( 'select', ve.proxy( this.onSelect, this ) );
-	//this.model.on( 'transact', ve.proxy( this.onTransact, this ) );
 	this.on( 'contentChange', ve.proxy( this.onContentChange, this ) );
 	this.$.on( {
 		'cut copy': ve.proxy( this.onCutCopy, this ),
@@ -75,21 +73,14 @@ ve.ce.Surface = function( $container, model ) {
 
 /* Methods */
 
-ve.ce.Surface.prototype.onChange = function( transaction, selection ) {
-	if ( selection ) {
-		this.showSelection( selection );
-	}
-};
-
 ve.ce.Surface.prototype.documentOnFocus = function() {
 	ve.log( 'documentOnFocus' );
 
 	this.$document.on( {
-		// key
+		// key down
 		'keydown.ve-ce-Surface': ve.proxy( this.onKeyDown, this ),
-		// mouse
+		// mouse down
 		'mousedown.ve-ce-Surface': ve.proxy( this.onMouseDown, this ),
-		'mouseup.ve-ce-Surface': ve.proxy( this.onMouseUp, this ),
 	} );
 	this.startPolling( true );
 };
@@ -117,60 +108,6 @@ ve.ce.Surface.prototype.onMouseDown = function( e ) {
 	if ( e.originalEvent.detail > 2 ) {
 		e.preventDefault();
 	}
-};
-
-ve.ce.Surface.prototype.onMouseUp = function( e ) {
-	ve.log( 'onMouseUp' );
-};
-
-ve.ce.Surface.prototype.stopPolling = function() {
-	ve.log( 'stopPolling' );
-
-	this.poll.polling = false;
-	clearTimeout( this.poll.timeout );
-};
-
-ve.ce.Surface.prototype.startPolling = function( async ) {
-	ve.log( 'startPolling' );
-
-	this.poll.polling = true;
-	this.pollChanges( async );
-};
-
-ve.ce.Surface.prototype.clearPollData = function() {
-	ve.log( 'clearPollData' );
-
-	this.poll.text = null;
-	this.poll.hash = null;
-	this.poll.node = null;
-	this.poll.rangySelection = {
-		anchorNode: null,
-		anchorOffset: null,
-		focusNode: null,
-		focusOffset: null
-	};
-};
-
-/* Responsible for Debouncing the ContextView Icon
-   until select events are finished being fired. */
-ve.ce.Surface.prototype.onSelect = function( range ) {
-	var _this = this;
-
-	clearTimeout(this.selectionTimeout);
-	this.selectionTimeout = setTimeout(function(){
-		var selection = _this.model.getSelection();
-		if ( _this.contextView ) {
-			if ( selection.getLength() > 0 ) {
-				_this.contextView.set();
-			} else {
-				_this.contextView.clear();
-			}
-		}
-	}, 500);
-};
-
-ve.ce.Surface.prototype.onTransact = function( tx ) {
-	this.showSelection( this.model.getSelection() );
 };
 
 ve.ce.Surface.prototype.onKeyDown = function( e ) {
@@ -204,11 +141,122 @@ ve.ce.Surface.prototype.onKeyDown = function( e ) {
 	}
 };
 
+ve.ce.Surface.prototype.onCutCopy = function( e ) {
+	var _this = this,
+		sel = rangy.getSelection(),
+		$frag = null,
+		key = '';
+
+	this.stopPolling();
+
+	// Create key from text and element names
+	$frag = $(sel.getRangeAt(0).cloneContents());
+	$frag.contents().each(function() {
+		key += this.textContent || this.nodeName;
+	});
+	key = key.replace( /\s/gm, '' );
+
+	// Set surface clipboard
+	this.clipboard[key] = ve.copyArray(
+		this.documentView.model.getData( this.model.getSelection() )
+	);
+
+	if ( e.type == 'cut' ) {
+		this.stopPolling();
+		
+		setTimeout( function() {
+			var	selection = null,
+				tx = null;
+		
+			// We don't like how browsers cut, so let's undo it and do it ourselves.
+			document.execCommand('undo', false, false);
+			
+			selection = _this.model.getSelection();
+			
+			// Transact
+			_this.autoRender = true;
+			tx = ve.dm.Transaction.newFromRemoval( _this.documentView.model, selection );
+			_this.model.change( tx, new ve.Range( selection.start ) );
+			_this.autoRender = false;
+
+			_this.clearPollData();
+			_this.startPolling();
+		}, 1 );
+	}
+};
+
+ve.ce.Surface.prototype.onPaste = function( e ) {
+	var	_this = this,
+		selection = this.model.getSelection(),
+		tx = null;
+	
+	this.stopPolling();
+	
+	// Pasting into a range? Remove first.
+	if (!rangy.getSelection().isCollapsed) {
+		tx = ve.dm.Transaction.newFromRemoval( _this.documentView.model, selection );
+		_this.model.change( tx );
+	}
+	
+	$('#paste').html('').show().focus();
+
+	setTimeout( function() {
+		var	key = '',
+			pasteData = null,
+			tx = null;
+		
+		// Create key from text and element names
+		$('#paste').hide().contents().each(function() {
+			key += this.textContent || this.nodeName;
+		});
+		key = key.replace( /\s/gm, '' );
+
+		// Get linear model from surface clipboard or create array from unknown pasted content
+		pasteData = ( _this.clipboard[key] ) ? _this.clipboard[key] : $('#paste').text().split('');
+
+		// Transact
+		tx = ve.dm.Transaction.newFromInsertion(
+			_this.documentView.model, selection.start, pasteData
+		);
+		_this.model.change( tx, new ve.Range( selection.start + pasteData.length ) );
+		_this.documentView.documentNode.$.focus();
+		
+		_this.clearPollData();
+		_this.startPolling();
+	}, 1 );
+};
+
+/*
 ve.ce.Surface.prototype.onKeyPress = function( e ) {
 	ve.log('onKeyPress');
 };
+*/
 
+ve.ce.Surface.prototype.startPolling = function( async ) {
+	ve.log( 'startPolling' );
 
+	this.poll.polling = true;
+	this.pollChanges( async );
+};
+
+ve.ce.Surface.prototype.stopPolling = function() {
+	ve.log( 'stopPolling' );
+
+	this.poll.polling = false;
+	clearTimeout( this.poll.timeout );
+};
+
+ve.ce.Surface.prototype.clearPollData = function() {
+	ve.log( 'clearPollData' );
+
+	this.poll.text = null;
+	this.poll.hash = null;
+	this.poll.node = null;
+	this.poll.rangySelection.anchorNode = null;
+	this.poll.rangySelection.anchorOffset = null;
+	this.poll.rangySelection.focusNode = null;
+	this.poll.rangySelection.focusOffset = null;
+};
 
 ve.ce.Surface.prototype.pollChanges = function( async ) {
 	var delay = ve.proxy( function( async ) {
@@ -295,30 +343,16 @@ ve.ce.Surface.prototype.pollChanges = function( async ) {
 
 	if ( this.poll.range !== range ) {
 
-		console.log('old', range.start);
+		// TODO: Fix range
 		if ( range.getLength() === 0 ) {
 			range = new ve.Range( this.getNearestCorrectOffset( range.start, 1 ) );
 		}
-		console.log('new', range.start);
 
-		// TODO: Fix range
 		this.model.change( null, range );
 		this.poll.range = range;
 	}
 
 	delay();
-};
-
-ve.ce.Surface.prototype.clearPollData = function() {
-	this.poll.text = null;
-	this.poll.hash = null;
-	this.poll.node = null;
-	this.poll.rangySelection = {
-		anchorNode: null,
-		anchorOffset: null,
-		focusNode: null,
-		focusOffset: null
-	};
 };
 
 ve.ce.Surface.prototype.onContentChange = function( e ) {
@@ -347,12 +381,10 @@ ve.ce.Surface.prototype.onContentChange = function( e ) {
 		}
 
 		this.render = false;
-
 		this.model.change(
 			ve.dm.Transaction.newFromInsertion( this.documentView.model, e.old.range.start, data ),
 			e.new.range
 		);
-
 		this.render = true;
 
 	} else {
@@ -378,8 +410,6 @@ ve.ce.Surface.prototype.onContentChange = function( e ) {
 			ve.dm.Document.addAnnotationsToData( data, annotations );
 		}
 
-
-		this.hideSelection();
 		this.clearPollData();
 
 		// TODO: combine newFromRemoval and newFromInsertion into one newFromReplacement
@@ -399,158 +429,28 @@ ve.ce.Surface.prototype.onContentChange = function( e ) {
 	}
 };
 
-/*
-ve.ce.Surface.prototype.onMouseUp = function( e ) {
-	var handler = function() {
-		var rangySel = rangy.getSelection(),
-			offset1,
-			offset2;
+ve.ce.Surface.prototype.onChange = function( transaction, selection ) {
+	ve.log( 'onChange' );
 
-		if ( rangySel.anchorNode === null && rangySel.focusNode === null ) {
-			setTimeout( ve.proxy( handler, this ), 100 );
-			return;
-		}
+	if ( selection ) {
+		this.showSelection( selection );
 
-		if (
-			rangySel.anchorNode !== this.range.anchorNode ||
-			rangySel.anchorOffset !== this.range.anchorOffset ||
-			rangySel.focusNode !== this.range.focusNode ||
-			rangySel.focusOffset !== this.range.focusOffset
-		) {
-			if ( rangySel.isCollapsed ) {
-				var offset = this.getOffset( rangySel.anchorNode, rangySel.anchorOffset );
-				this.model.setSelection( new ve.Range( offset ) );
-			} else {
-				if ( !rangySel.isBackwards() ) {
-					offset1 = this.getOffset( rangySel.anchorNode, rangySel.anchorOffset );
-					offset2 = this.getOffset( rangySel.focusNode, rangySel.focusOffset );
-				} else {
-					offset1 = this.getOffset( rangySel.focusNode, rangySel.focusOffset );
-					offset2 = this.getOffset( rangySel.anchorNode, rangySel.anchorOffset );
+		// Responsible for Debouncing the ContextView Icon until select events are finished being fired.
+		// TODO: Use ve.debounce method to abstract usage of setTimeout
+		clearTimeout( this.selectionTimeout );
+		this.selectionTimeout = setTimeout(
+			ve.proxy( function() {
+				if ( this.contextView ) {
+					if ( selection.getLength() > 0 ) {
+						this.contextView.set();
+					} else {
+						this.contextView.clear();
+					}
 				}
-
-				var offset1Fixed = this.getNearestCorrectOffset( offset1, 1 ),
-					offset2Fixed = this.getNearestCorrectOffset( offset2, -1 );
-
-				var range;
-				if ( !rangySel.isBackwards() ) {
-					range = new ve.Range( offset1Fixed, offset2Fixed );
-				} else {
-					range = new ve.Range( offset2Fixed, offset1Fixed );
-				}
-
-				this.model.setSelection( range );
-
-				if ( offset1 !== offset1Fixed || offset2 !== offset2Fixed ) {
-					this.showSelection( range );
-				}
-			}
-			this.range.anchorNode = rangySel.anchorNode;
-			this.range.anchorOffset = rangySel.anchorOffset;
-			this.range.focusNode = rangySel.focusNode;
-			this.range.focusOffset = rangySel.focusOffset;
-		}
-
-		this.isMouseDown = false;
-	};
-	setTimeout( ve.proxy( handler, this ), 0 );
-};
-
-ve.ce.Surface.prototype.onMouseMove = function( e ) {
-	if ( this.isMouseDown === true ) {
-	}
-};
-*/
-
-/**
- * @method
- */
-ve.ce.Surface.prototype.onCutCopy = function( e ) {
-	var _this = this,
-		sel = rangy.getSelection(),
-		$frag = null,
-		key = '';
-
-	this.stopPolling();
-
-	// Create key from text and element names
-	$frag = $(sel.getRangeAt(0).cloneContents());
-	$frag.contents().each(function() {
-		key += this.textContent || this.nodeName;
-	});
-	key = key.replace( /\s/gm, '' );
-
-	// Set surface clipboard
-	this.clipboard[key] = ve.copyArray(
-		this.documentView.model.getData( this.model.getSelection() )
-	);
-
-	if ( e.type == 'cut' ) {
-		this.stopPolling();
-		
-		setTimeout( function() {
-			var	selection = null,
-				tx = null;
-		
-			// We don't like how browsers cut, so let's undo it and do it ourselves.
-			document.execCommand('undo', false, false);
-			
-			selection = _this.model.getSelection();
-			
-			// Transact
-			_this.autoRender = true;
-			tx = ve.dm.Transaction.newFromRemoval( _this.documentView.model, selection );
-			_this.model.change( tx, new ve.Range( selection.start ) );
-			_this.autoRender = false;
-
-			_this.clearPollData();
-			_this.startPolling();
-		}, 1 );
-	}
-};
-
-/**
- * @method
- */
-ve.ce.Surface.prototype.onPaste = function( e ) {
-	var	_this = this,
-		selection = this.model.getSelection(),
-		tx = null;
-	
-	this.stopPolling();
-	
-	// Pasting into a range? Remove first.
-	if (!rangy.getSelection().isCollapsed) {
-		tx = ve.dm.Transaction.newFromRemoval( _this.documentView.model, selection );
-		_this.model.change( tx );
-	}
-	
-	$('#paste').html('').show().focus();
-
-	setTimeout( function() {
-		var	key = '',
-			pasteData = null,
-			tx = null;
-		
-		// Create key from text and element names
-		$('#paste').hide().contents().each(function() {
-			key += this.textContent || this.nodeName;
-		});
-		key = key.replace( /\s/gm, '' );
-
-		// Get linear model from surface clipboard or create array from unknown pasted content
-		pasteData = ( _this.clipboard[key] ) ? _this.clipboard[key] : $('#paste').text().split('');
-
-		// Transact
-		tx = ve.dm.Transaction.newFromInsertion(
-			_this.documentView.model, selection.start, pasteData
+			}, this ),
+			250
 		);
-		_this.model.change( tx, new ve.Range( selection.start + pasteData.length ) );
-		_this.documentView.documentNode.$.focus();
-		
-		_this.clearPollData();
-		_this.startPolling();
-	}, 1 );
+	}
 };
 
 ve.ce.Surface.prototype.handleEnter = function() {
@@ -715,10 +615,6 @@ ve.ce.Surface.prototype.showSelection = function( range ) {
 		rangyRange.setStart( start.node, start.offset );
 		rangySel.setSingleRange( rangyRange );
 	}
-};
-
-ve.ce.Surface.prototype.hideSelection = function() {
-	rangy.getSelection().removeAllRanges();
 };
 
 // TODO: Find a better name and a better place for this method
