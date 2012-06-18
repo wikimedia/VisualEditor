@@ -44,7 +44,7 @@ ve.ui.ListButtonTool.prototype.list = function( nodes, style ) {
 		[],
 		[ { 'type': 'listItem' } ]
 	);
-	model.transact ( tx );
+	model.change ( tx );
 	return ;
 	
 	siblings = doc.selectNodes(selection, 'siblings');
