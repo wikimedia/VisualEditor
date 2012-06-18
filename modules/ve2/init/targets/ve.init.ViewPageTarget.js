@@ -343,10 +343,12 @@ ve.init.ViewPageTarget.prototype.setupSkinTabs = function() {
 	// Only sysop users will have an edit tab in this namespace, so we might need to add one
 	if ( $( '#ca-edit' ).length === 0 ) {
 		// Add edit tab
+		var action = Number( mw.config.get( 'wgArticleId', 0 ) ) === 0 ?
+			'create' : 'edit';
 		mw.util.addPortletLink(
 			'p-views',
 			'#',
-			mw.msg( 'edit' ),
+			mw.msg( action ), // 'edit' or 'create'
 			'ca-edit',
 			mw.msg( 'tooltip-ca-edit' ),
 			mw.msg( 'accesskey-ca-edit' ),

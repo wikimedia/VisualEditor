@@ -108,6 +108,7 @@ $wgResourceModules += array(
 			'copyrightwarning',
 			'copyrightpage',
 			'edit',
+			'create',
 			'accesskey-ca-edit',
 			'tooltip-ca-edit',
 			'viewsource'
