@@ -366,7 +366,7 @@ ve.init.ViewPageTarget.prototype.setupSkinTabs = function() {
 		mw.config.get( 'wgAction' ) === 'view'
 	) {
 		$( '#ca-edit a' ).click( ve.proxy( this.onEditTabClick, this ) );
-		$( '#ca-view a' ).click( ve.proxy( this.onViewTabClick, this ) );
+		$( '#ca-view a, #ca-nstab-visualeditor a' ).click( ve.proxy( this.onViewTabClick, this ) );
 	} else {
 		var uri =  new mw.Uri( $( '#ca-edit a' ).attr( 'href' ) );
 		delete uri.query.action;

@@ -7,8 +7,8 @@
  * @method
  * @param {Mixed} [...] Data to log
  */
-ve.log = window.console && window.console.log ?
-	Function.prototype.bind.call( console.log, console ) : ve.log;
+ve.log = window.console && window.ve.log ?
+	Function.prototype.bind.call( ve.log, console ) : ve.log;
 
 /**
  * Logs an object to the console.
