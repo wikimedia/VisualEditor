@@ -17,7 +17,8 @@ WSP.defaultOptions = {
 	onNewline            : true,
 	listStack            : [],
 	lastHandler          : null,
-	availableNewlineCount: 0
+	availableNewlineCount: 0,
+	singleLineMode: 0
 };
 
 var id = function(v) { 
@@ -86,7 +87,7 @@ WSP._serializeHTMLTag = function ( state, token ) {
 	}
 
 	// Swallow required newline from previous token on encountering a HTML tag
-	state.emitNewlineOnNextToken = false;
+	//state.emitNewlineOnNextToken = false;
 
 	if ( token.attribs.length ) {
 		return '<' + token.name + ' ' + 
@@ -194,137 +195,229 @@ WSP._linkEndHandler = function( state, token ) {
 
 WSP.tagHandlers = {
 	body: {
-		init: function(state, token) {
-			// swallow trailing new line
-			state.emitNewlineOnNextToken = false;
+		start: {
+			handle: function(state, token) {
+				// swallow trailing new line
+				state.emitNewlineOnNextToken = false;
+				return '';
+			}
 		}
 	},
 	ul: { 
-		startsNewline : true,
-		endsLine      : true,
-		start         : WSP._listHandler.bind( null, '*' ),
-		end           : WSP._listEndHandler,
-		pairsNeedNLSep: true
+		start: {
+			startsNewline : true,
+			handle: WSP._listHandler.bind( null, '*' ),
+			pairSepNLCount: 2,
+			treatAsNewline: true
+		},
+		end: {
+			endsLine: true,
+			handle: WSP._listEndHandler
+		}
 	},
 	ol: { 
-		startsNewline : true,
-		endsLine      : true,
-		start         : WSP._listHandler.bind( null, '#' ),
-		end           : WSP._listEndHandler,
-		pairsNeedNLSep: true
+		start: {
+			startsNewline : true,
+			handle: WSP._listHandler.bind( null, '#' ),
+			pairSepNLCount: 2,
+			treatAsNewline: true
+		},
+		end: {
+			endsLine      : true,
+			handle: WSP._listEndHandler
+		}
 	},
 	dl: { 
-		startsNewline : true,
-		endsLine      : true,
-		start         : WSP._listHandler.bind( null, ''), 
-		end           : WSP._listEndHandler,
-		pairsNeedNLSep: true
+		start: {
+			startsNewline : true,
+			handle: WSP._listHandler.bind( null, ''), 
+			pairSepNLCount: 2,
+			treatAsNewline: true
+		},
+		end: {
+			endsLine: true,
+			handle: WSP._listEndHandler
+		}
 	},
 	li: { 
-		// SSS FIXME: would be good to get rid of this hack
-		init: function(state, token) {
-			var stack   = state.listStack;
-			var curList = stack[stack.length - 1];
-			this.startsNewline = (curList.itemCount > 0);
+		start: {
+			handle: WSP._listItemHandler.bind( null, '' ),
+			singleLine: 1,
+			pairSepNLCount: 1
 		},
-		startSwallowsExcessNewlines: true,
-		start: WSP._listItemHandler.bind( null, '' )
+		end: {
+			singleLine: -1
+		}
 	},
 	// XXX: handle single-line vs. multi-line dls etc
 	dt: { 
-		startsNewline: true,
-		start: WSP._listItemHandler.bind( null, ';' ) 
+		start: {
+			startsNewline: true,
+			singleLine: 1,
+			handle: WSP._listItemHandler.bind( null, ';' )
+		},
+		end: {
+			singleLine: -1
+		}
 	},
 	dd: { 
-		endsLine: true,
-		start: WSP._listItemHandler.bind( null, ":" )
+		start: {
+			singleLine: 1,
+			handle: WSP._listItemHandler.bind( null, ":" )
+		},
+		end: {
+			endsLine: true,
+			singleLine: -1
+		}
 	},
 	// XXX: handle options
 	table: { 
-		start: WSP._serializeTableTag.bind(null, "{|", ''), 
-		end: id("\n|}") 
-	},
-	tbody: {},
-	th: { 
-		init: function(state, token) {
-			this.startsNewline = token.dataAttribs.stx_v !== 'row';
+		start: {
+			handle: WSP._serializeTableTag.bind(null, "{|", '')
 		},
-		start: function ( state, token ) {
-			if ( token.dataAttribs.stx_v === 'row' ) {
-				return WSP._serializeTableTag("!!", ' |', state, token);
-			} else {
-				return WSP._serializeTableTag( "!", ' |', state, token);
+		end: {
+			handle: function(state, token) {
+				if ( state.prevTagToken && state.prevTagToken.name === 'tr' ) {
+					this.startsNewline = true;
+				} else {
+					this.startsNewline = false;
+				}
+				return "|}";
 			}
 		}
 	},
-	// XXX: omit for first row in table.
-	tr: { 
-		startsNewline: true,
-		start: function ( state, token ) {
-			if ( state.prevToken.constructor === TagTk && state.prevToken.name === 'tbody' ) {
-				return '';
-			} else {
-				return WSP._serializeTableTag("|-", '', state, token );
+	tbody: { start: { ignore: true }, end: { ignore: true } },
+	th: { 
+		start: {
+			handle: function ( state, token ) {
+				if ( token.dataAttribs.stx_v === 'row' ) {
+					this.startsNewline = false;
+					return WSP._serializeTableTag("!!", ' |', state, token);
+				} else {
+					this.startsNewline = true;
+					return WSP._serializeTableTag( "!", ' |', state, token);
+				}
 			}
+		}
+	},
+	tr: { 
+		start: {
+			handle: function ( state, token ) {
+				if ( state.prevToken.constructor === TagTk && state.prevToken.name === 'tbody' ) {
+					// Omit for first row in a table. XXX: support optional trs
+					// for first line (in source wikitext) too using some flag in
+					// data-mw (stx: 'wikitext' ?)
+					return '';
+				} else {
+					return WSP._serializeTableTag("|-", '', state, token );
+				}
+			},
+			startsNewline: true
 		}
 	},
 	td: { 
-		start: function ( state, token ) {
-			if ( token.dataAttribs.stx_v === 'row' ) {
-				return WSP._serializeTableTag("||", ' |', state, token);
-			} else {
-				return WSP._serializeTableTag("|", ' |', state, token);
+		start: {
+			handle: function ( state, token ) {
+				if ( token.dataAttribs.stx_v === 'row' ) {
+					this.startsNewline = false;
+					return WSP._serializeTableTag("||", ' |', state, token);
+				} else {
+					this.startsNewline = true;
+					return WSP._serializeTableTag("|", ' |', state, token);
+				}
 			}
 		}
 	},
 	caption: { 
-		startsNewline: true,
-		start: WSP._serializeTableTag.bind(null, "|+", ' |')
+		start: {
+			startsNewline: true,
+			handle: WSP._serializeTableTag.bind(null, "|+", ' |')
+		}
 	},
 	p: { 
-		init: function(state, token) {
+		make: function(state, token) {
 			// Special case handling in a list context
 			// VE embeds list content in paragraph tags
-			if (state.listStack.length > 0) {
-				if (!token.dataAttribs) token.dataAttribs = {};
-				token.dataAttribs.stx = "html";
-			}
+			return state.singleLineMode ? WSP.defaultHTMLTagHandler : this;
 		},
-		startsNewline : true,
-		endsLine      : true,
-		pairsNeedNLSep: true
+		start: {
+			startsNewline : true,
+			pairSepNLCount: 2
+		},
+		end: {
+			endsLine: true
+		}
 	},
 	// XXX: support indent variant instead by registering a newline handler?
 	pre: { 
-		startsNewline: true,
-		endsLine: true,
-		start: function( state, token ) {
-			state.textHandler = function( t ) { return t.replace(/\n/g, '\n ' ); };
-			return ' ';
+		start: {
+			startsNewline: true,
+			handle: function( state, token ) {
+				state.textHandler = function( t ) { return t.replace(/\n/g, '\n ' ); };
+				return ' ';
+			}
 		},
-		end: function( state, token) { state.textHandler = null; return ''; }
+		end: {
+			endsLine: true,
+			handle: function( state, token) { state.textHandler = null; return ''; }
+		}
 	},
 	meta: { 
-		start: function ( state, token ) {
-			var argDict = state.env.KVtoHash( token.attribs );
-			if ( argDict['typeof'] === 'mw:tag' ) {
-				return '<' + argDict.content + '>';
-			} else {
-				return WSP._serializeHTMLTag( state, token );
+		start: {
+			handle: function ( state, token ) {
+				var argDict = state.env.KVtoHash( token.attribs );
+				if ( argDict['typeof'] === 'mw:tag' ) {
+					return '<' + argDict.content + '>';
+				} else {
+					return WSP._serializeHTMLTag( state, token );
+				}
 			}
 		}
 	},
-	hr: { startsNewline: true, endsLine: true, start: id("----"),   end: id("") },
-	h1: { startsNewline: true, endsLine: true, start: id("="),      end: id("=") },
-	h2: { startsNewline: true, endsLine: true, start: id("=="),     end: id("==") },
-	h3: { startsNewline: true, endsLine: true, start: id("==="),    end: id("===") },
-	h4: { startsNewline: true, endsLine: true, start: id("===="),   end: id("====") },
-	h5: { startsNewline: true, endsLine: true, start: id("====="),  end: id("=====") },
-	h6: { startsNewline: true, endsLine: true, start: id("======"), end: id("======") },
-	br: { startsNewline: true, endsLine: true, start: id("") },
-	b:  { start: id("'''"), end: id("'''") },
-	i:  { start: id("''"),  end: id("''") },
-	a:  { start: WSP._linkHandler, end: WSP._linkEndHandler }
+	hr: { 
+		start: { startsNewline: true, handle: id("----") },
+		end: { endsLine: true }
+	},
+	h1: { 
+		start: { startsNewline: true, handle: id("=") },
+		end: { endsLine: true, handle: id("=") }
+	},
+	h2: { 
+		start: { startsNewline: true, handle: id("==") },
+		end: { endsLine: true, handle: id("==") }
+	},
+	h3: { 
+		start: { startsNewline: true, handle: id("===") },
+		end: { endsLine: true, handle: id("===") }
+	},
+	h4: { 
+		start: { startsNewline: true, handle: id("====") },
+		end: { endsLine: true, handle: id("====") }
+	},
+	h5: { 
+		start: { startsNewline: true, handle: id("=====") },
+		end: { endsLine: true, handle: id("=====") }
+	},
+	h6: { 
+		start: { startsNewline: true, handle: id("======") },
+		end: { endsLine: true, handle: id("======") }
+	},
+	br: { 
+		start: { startsNewline: true, handle: id("") },
+		end: { endsLine: true }
+	},
+	b:  { 
+		start: { handle: id("'''") },
+		end: { handle: id("'''") }
+	},
+	i:  { 
+		start: { handle: id("''") },
+		end: { handle: id("''") }
+	},
+	a:  { 
+		start: { handle: WSP._linkHandler },
+		end: { handle: WSP._linkEndHandler }
+	}
 };
 
 
@@ -370,23 +463,29 @@ WSP.serializeTokens = function( tokens, chunkCB ) {
 };
 
 WSP.defaultHTMLTagHandler = { 
-	start: WSP._serializeHTMLTag, 
-	end  : WSP._serializeHTMLEndTag 
+	start: { handle: WSP._serializeHTMLTag }, 
+	end  : { handle: WSP._serializeHTMLEndTag } 
 };
 
-WSP.getTokenHandler = function(state, token) {
-	if (token.dataAttribs.stx === 'html') return this.defaultHTMLTagHandler;
-
-	var tname = token.name;
-	if (tname === "p" && state.listStack.length > 0) {
-		// We dont want paragraphs in list context expanded.
-		// Retain them as html tags.
-		//
-		// SSS FIXME: any other cases like this?
-		return this.defaultHTMLTagHandler;
+WSP._getTokenHandler = function(state, token) {
+	var handler;
+	if (token.dataAttribs.stx === 'html') {
+		handler = this.defaultHTMLTagHandler;
 	} else {
-		var handler = this.tagHandlers[tname];
-		return handler ? handler : this.defaultHTMLTagHandler;
+		var tname = token.name;
+		handler = this.tagHandlers[tname];
+		if ( handler && handler.make ) {
+			handler = handler.make(state, token);
+		}
+	}
+	
+	if ( ! handler ) {
+		handler = this.defaultHTMLTagHandler;
+	}
+	if ( token.constructor === TagTk || token.constructor === SelfclosingTagTk ) {
+		return handler.start || {};
+	} else {
+		return handler.end || {};
 	}
 };
 
@@ -394,25 +493,34 @@ WSP.getTokenHandler = function(state, token) {
  * Serialize a token.
  */
 WSP._serializeToken = function ( state, token ) {
-	var handler, res, dropContent;
+	var handler = {}, 
+		res = '', 
+		dropContent = state.dropContent;
 
-	dropContent     = state.dropContent;
 	state.prevToken = state.curToken;
 	state.curToken  = token;
+
 
 	switch( token.constructor ) {
 		case TagTk:
 		case SelfclosingTagTk:
-			state.prevTagToken = state.currTagToken;
-			state.currTagToken = token;
-			handler = token.handler;
-			res = handler ? handler( state, token ) : '';
+			handler = WSP._getTokenHandler( state, token );
+			if ( ! handler.ignore ) {
+				state.prevTagToken = state.currTagToken;
+				state.currTagToken = token;
+				res = handler.handle ? handler.handle( state, token ) : '';
+			}
 			break;
 		case EndTagTk:
-			state.prevTagToken = state.currTagToken;
-			state.currTagToken = token;
-			handler = token.handler;
-			res = handler ? handler( state, token ) : '';
+			handler = WSP._getTokenHandler( state, token );
+			if ( ! handler.ignore ) {
+				state.prevTagToken = state.currTagToken;
+				state.currTagToken = token;
+				if ( handler.singleLine < 0 ) {
+					state.singleLineMode--;
+				}
+				res = handler.handle ? handler.handle( state, token ) : '';
+			}
 			break;
 		case String:
 			res = state.textHandler ? state.textHandler( token ) : token;
@@ -422,9 +530,14 @@ WSP._serializeToken = function ( state, token ) {
 			break;
 		case NlTk:
 			res = '\n';
+			res = state.textHandler ? state.textHandler( res ) : res;
 			break;
 		case EOFTk:
 			res = '';
+			for ( var i = 0, l = state.availableNewlineCount; i < l; i++ ) {
+				res += '\n';
+			}
+			state.chunkCB(res);
 			break;
 		default:
 			res = '';
@@ -432,79 +545,77 @@ WSP._serializeToken = function ( state, token ) {
 			break;
 	}
 
-	// Check if we have a pair of identical tag tokens </p><p>; </ul><ul>; etc. 
-	// that have to be separated by extra newlines and add those in.
-	if (token.pairsNeedNLSep && state.prevTagToken && state.prevTagToken.name == token.name) {
-		if (state.availableNewlineCount < 2) state.availableNewlineCount = 2;
-	}
+	if (! dropContent || ! state.dropContent ) {
 
-	var requiredNLCount = state.availableNewlineCount;
-	if (res !== '') {
-		// Deal with trailing new lines
-		var allDone = false;
-		var nls = res.match( /(?:\r?\n)+$/ );
-		if (nls) {
-			var matchedStr = nls[0];
-			if (matchedStr === res) {
+		var requiredNLCount = state.availableNewlineCount;
+		if (res !== '') {
+			// Deal with leading or trailing new lines
+			var match = res.match( /^((?:\r?\n)*)((?:.*?|[\r\n]+[^\r\n])*?)((?:\r?\n)*)$/ ),
+				leadingNLs = match[1],
+				trailingNLs = match[3];
+
+			if (leadingNLs === res) {
 				// all newlines, accumulate count, and clear output
+				state.availableNewlineCount += leadingNLs.replace(/\r\n/g, '\n').length;
 				res = "";
-				allDone = true;
-			    state.availableNewlineCount += matchedStr.length;
 			} else {
-				// strip new lines & reset newline count
-				res = res.replace(/(\r?\n)+$/, '');
-			    state.availableNewlineCount = matchedStr.length;
-			}
-		} else {
-			// no trailing newlines at all
-			state.availableNewlineCount = 0;
-		}
+				state.availableNewlineCount = trailingNLs.replace(/\r\n/g, '\n').length;
+				if ( leadingNLs !== '' ) {
+					requiredNLCount += leadingNLs.replace(/\r\n/g, '\n').length;
+				}
 
-		// Deal with leading new lines
-		if (!allDone) {
-			nls = res.match(/(^\r?\n)+/);
-			if (nls) {
-				requiredNLCount += nls[0].length;
-				res = res.replace(/(^\r?\n)+/, '');
+				// strip newlines
+				res = match[2];
 			}
 		}
-	}
 
-	// Swallow excess new lines
-	if (token.swallowsExcessNewlines) {
+		// Check if we have a pair of identical tag tokens </p><p>; </ul><ul>; etc. 
+		// that have to be separated by extra newlines and add those in.
+		if (handler.pairSepNLCount && state.prevTagToken && 
+				state.prevTagToken.constructor === EndTagTk && 
+				state.prevTagToken.name == token.name ) {
+					if ( requiredNLCount < handler.pairSepNLCount) {
+						requiredNLCount = handler.pairSepNLCount;
+					}
+				} /*else if (state.singleLineMode) {
+		// Swallow newlines
+		// XXX: also swallow newlines in the middle of text content
 		requiredNLCount = 0;
 		state.availableNewlineCount = 0;
-	}
+		}*/
 
-	if (res != '') {
-		// Prev token's new line token
-		// Pure whitespace tokens don't trigger newline
-		// --> Hack to deal with comments on the end of newline triggering tokens
-		//     like headers, etc.
-		if (!res.match(/^\s*$/) &&  state.emitNewlineOnNextToken) {
-			state.chunkCB("\n");
-			state.onNewline = true;
-			state.emitNewlineOnNextToken = false;
-			// console.warn("--> ending line"); 
-			// Eat up an available line
-			if (state.availableNewlineCount > 0) state.availableNewlineCount--;
-			if (requiredNLCount > 0) requiredNLCount--;
+		if ( state.env.debug ) {
+			console.warn("tok: " + token + ", res: <" + res + ">" + 
+					", onnl: " + state.onNewline + ", # nls: " + 
+					state.availableNewlineCount + ', reqNLs: ' + requiredNLCount);
 		}
+		if (res !== '') {
+			var out = '';
+			// Prev token's new line token
+			if ( !state.singleLineMode &&
+					( ( !res.match(/^\s*$/) && state.emitNewlineOnNextToken ) ||
+					( handler.startsNewline && !state.onNewline ) ) ) 
+			{
+				// Emit new line, if necessary
+				if ( ! requiredNLCount ) {
+					requiredNLCount++;
+				}
+				state.emitNewlineOnNextToken = false;
+			}
 
-		// console.warn("tok: " + token + ", res: <" + res + ">" + ", onnl: " + state.onNewline + ", # nls: " + state.availableNewlineCount + "; required: " + requiredNLCount);
+			// Add required # of new lines in the beginning
+			for (i = 0; i < requiredNLCount; i++) {
+				out += '\n';
+			}
+			if ( state.availableNewlineCount > requiredNLCount ) {
+				// availableNewlineCount was not reset, and requiredNLCount
+				// can only be incremented.
+				state.availableNewlineCount -= requiredNLCount;
+			}
+			if ( requiredNLCount ) {
+				state.onNewline = true;
+			}
 
-		// Emit new line, if necessary
-		if (token.startsNewline && !state.onNewline) {
-			state.chunkCB("\n");
-			state.onNewline = true;
-			state.emitNewlineOnNextToken = false;
-			// console.warn("--> starting NL"); 
-			// Eat up an available line
-			if (state.availableNewlineCount > 0) state.availableNewlineCount--;
-			if (requiredNLCount > 0) requiredNLCount--;
-		}
-
-		if (! dropContent || ! state.dropContent ) {
 			// FIXME: This might modify not just the last content token in a
 			// link, which would be wrong. We'll likely have to collect tokens
 			// between a tags instead, and strip only the last content token.
@@ -512,21 +623,33 @@ WSP._serializeToken = function ( state, token ) {
 				res = res.substr(0, res.length - state.dropTail.length);
 			}
 
-			// Add required # of new lines in the beginning
-			var out = '';
-			for (var i = 0; i < requiredNLCount; i++) out += '\n';
-			state.chunkCB(out + res);
-			state.onNewline = false;
+			if ( state.singleLineMode ) {
+				res = res.replace(/\n/g, ' ');
+			}
+			out += res;
+			if ( res !== '' ) {
+				state.onNewline = false;
+			}
+			state.chunkCB( out );
+		} else if ( requiredNLCount > state.availableNewlineCount ) {
+			state.availableNewlineCount = requiredNLCount;
 		}
-	} 
-/*
-	else {
-		console.warn("SILENT: tok: " + token + ", res: <" + res + ">" + ", onnl: " + state.onNewline + ", # nls: " + state.availableNewlineCount);
-	}
-*/
+		/* else {
+			console.warn("SILENT: tok: " + token + ", res: <" + res + ">" + ", onnl: " + state.onNewline + ", # nls: " + state.availableNewlineCount);
+		}
+		*/
 
-	// Record end of line
-	if (token.endsLine) state.emitNewlineOnNextToken = true;
+		if (handler.endsLine) {
+			// Record end of line
+			state.emitNewlineOnNextToken = true;
+		}
+		if ( handler.singleLine > 0 ) {
+			state.singleLineMode += handler.singleLine;
+		}
+		if ( handler.treatAsNewline ) {
+			state.onNewline = true;
+		}
+	}
 };
 
 /**
@@ -539,10 +662,12 @@ WSP.serializeDOM = function( node, chunkCB ) {
 		var out = [];
 		state.chunkCB = out.push.bind( out );
 		this._serializeDOM( node, state );
+		this._serializeToken( state, new EOFTk() );
 		return out.join('');
 	} else {
 		state.chunkCB = chunkCB;
 		this._serializeDOM( node, state );
+		this._serializeToken( state, new EOFTk() );
 	}
 };
 
@@ -560,38 +685,26 @@ WSP._serializeDOM = function( node, state ) {
 				tkAttribs = this._getDOMAttribs(node.attributes),
 				tkRTInfo = this._getDOMRTInfo(node.attributes);
 
-			// Use the start token (which has data attributes) to get the correct handlers
-			// for both the start and end tokens
-			var startToken = new TagTk(name, tkAttribs, tkRTInfo);
-			var endToken   = new EndTagTk(name, tkAttribs, tkRTInfo);
-			var handlers   = WSP.getTokenHandler(state, startToken);
-
-			// Serialize startToken
-			if (handlers.init) handlers.init(state, startToken);
-			startToken.handler = handlers.start;
-			startToken.startsNewline = handlers.startsNewline;
-			startToken.swallowsExcessNewlines = handlers.startSwallowsExcessNewlines;
-			startToken.pairsNeedNLSep = handlers.pairsNeedNLSep;
-			this._serializeToken(state, startToken);
+			// Serialize the start token
+			this._serializeToken(state, new TagTk(name, tkAttribs, tkRTInfo));
 
 			// then children
 			for ( var i = 0, l = children.length; i < l; i++ ) {
 				this._serializeDOM( children[i], state );
 			}
 
-			// then endToken
-			if (handlers.init) handlers.init(state, endToken);
-			endToken.handler = handlers.end;
-			endToken.endsLine = handlers.endsLine;
-			endToken.swallowsExcessNewlines = handlers.endSwallowsExcessNewlines;
-			this._serializeToken(state, endToken);
+			// then the end token
+			this._serializeToken(state, new EndTagTk(name, tkAttribs, tkRTInfo));
 			break;
 		case Node.TEXT_NODE:
 			this._serializeToken( state, node.data );
 			break;
 		case Node.COMMENT_NODE:
+			// delay the newline creation until after the comment
+			var savedEmitNewlineOnNextToken = state.emitNewlineOnNextToken;
 			state.emitNewlineOnNextToken = false;
 			this._serializeToken( state, new CommentTk( node.data ) );
+			state.emitNewlineOnNextToken = savedEmitNewlineOnNextToken;
 			break;
 		default:
 			console.warn( "Unhandled node type: " + 

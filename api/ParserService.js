@@ -246,14 +246,14 @@ var roundTripDiff = function ( req, res, src, document ) {
 	res.write(document.body.innerHTML + '<hr>');
 	res.write( '<h2>HTML DOM converted back to Wikitext</h2><hr>' );
 	var out = new WikitextSerializer({env: env}).serializeDOM( document.body );
-	res.write('<pre>' + htmlSpecialChars( out ) + '</pre><hr>');
-	res.write( '<h2>Diff between original Wikitext (green) and round-tripped wikitext (red)</h2><hr>' );
+	res.write('<pre>' + htmlSpecialChars( out ) + '</pre><hr>\n');
+	res.write( '<h2>Diff between original Wikitext (green) and round-tripped wikitext (red)</h2><hr>\n' );
 	var patch;
 	src = src.replace(/\n(?=\n)/g, '\n ');
 	out = out.replace(/\n(?=\n)/g, '\n ');
 	//console.log(JSON.stringify( jsDiff.diffLines( out, src ) ));
-	//patch = jsDiff.convertChangesToXML( jsDiff.diffLines( out, src ) );
-	patch = jsDiff.convertChangesToXML( refineDiff( jsDiff.diffLines( src, out ) ) );
+	patch = jsDiff.convertChangesToXML( jsDiff.diffLines( src, out ) );
+	//patch = jsDiff.convertChangesToXML( refineDiff( jsDiff.diffLines( src, out ) ) );
 	res.write( '<pre>' + patch);
 	// Add a 'report issue' link
 	res.end('<hr><h2>'+
