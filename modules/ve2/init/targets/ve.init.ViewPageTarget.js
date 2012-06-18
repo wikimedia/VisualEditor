@@ -34,13 +34,13 @@ ve.init.ViewPageTarget = function() {
 	} );
 
 	// Initialization
+	var uri =  new mw.Uri( window.location.toString() );
 	if ( mw.config.get( 'wgCanonicalNamespace' ) === 'VisualEditor' ) {
-		if ( mw.config.get( 'wgAction' ) === 'view' ) {
+		if ( mw.config.get( 'wgAction' ) === 'view' && uri.query.diff === undefined ) {
 			this.setupSkinTabs();
 			this.setupSectionEditLinks();
 			this.setupToolbarSaveButton();
 			this.setupSaveDialog();
-			var uri =  new mw.Uri( window.location.toString() );
 			if ( uri.query.veaction === 'edit' ) {
 				this.activate();
 			}
@@ -215,10 +215,12 @@ ve.init.ViewPageTarget.prototype.onEditSectionLinkClick = function( event ) {
  * @param {Event} event DOM event
  */
 ve.init.ViewPageTarget.prototype.onViewTabClick = function( event ) {
-	this.deactivate();
-	// Prevent the edit tab's normal behavior
-	event.preventDefault();
-	return false;
+	if ( this.active ) {
+		this.deactivate();
+		// Prevent the edit tab's normal behavior
+		event.preventDefault();
+		return false;
+	}
 };
 
 /**
@@ -361,21 +363,28 @@ ve.init.ViewPageTarget.prototype.setupSkinTabs = function() {
 			'ca-editsource'
 		);
 	}
+	var uri =  new mw.Uri( window.location.toString() );
 	if (
 		mw.config.get( 'wgCanonicalNamespace' ) === 'VisualEditor' &&
-		mw.config.get( 'wgAction' ) === 'view'
+		mw.config.get( 'wgAction' ) === 'view' &&
+		uri.query.diff === undefined
 	) {
 		$( '#ca-edit a' ).click( ve.proxy( this.onEditTabClick, this ) );
 		$( '#ca-view a, #ca-nstab-visualeditor a' ).click( ve.proxy( this.onViewTabClick, this ) );
 	} else {
-		var uri =  new mw.Uri( $( '#ca-edit a' ).attr( 'href' ) );
-		delete uri.query.action;
-		uri.query.veaction = 'edit';
-		$( '#ca-edit a' ).attr( 'href', uri );
+		var editUri =  new mw.Uri( $( '#ca-edit a' ).attr( 'href' ) );
+		delete editUri.query.action;
+		editUri.query.veaction = 'edit';
+		$( '#ca-edit a' ).attr( 'href', editUri );
 	}
 	// Source editing shouldn't highlight the edit tab
 	if ( mw.config.get( 'wgAction' ) === 'edit' ) {
 		$( '#p-views' ).find( 'li.selected' ).removeClass( 'selected' );
+	}
+	// Fix the URL if there was a veaction param in it
+	if ( uri.query.veaction === 'edit' && window.history.replaceState ) {
+		var title = $( 'head title' ).text();
+		window.history.replaceState( null, title, $( '#ca-view a' ).attr( 'href' ) );
 	}
 };
 
