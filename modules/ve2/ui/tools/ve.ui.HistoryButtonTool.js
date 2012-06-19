@@ -60,13 +60,13 @@ ve.ui.HistoryButtonTool.prototype.updateState = function( annotations ) {
 ve.ui.Tool.tools.undo = {
 	'constructor': ve.ui.HistoryButtonTool,
 	'name': 'undo',
-	'title': 'Undo (ctrl/cmd + Z)'
+	'title': mw.msg( 'visualeditor-historybutton-undo-tooltip' )
 };
 
 ve.ui.Tool.tools.redo = {
 	'constructor': ve.ui.HistoryButtonTool,
 	'name': 'redo',
-	'title': 'Redo (ctrl/cmd + shift + Z)'
+	'title': mw.msg( 'visualeditor-historybutton-redo-tooltip' )
 };
 
 /* Inhertiance */

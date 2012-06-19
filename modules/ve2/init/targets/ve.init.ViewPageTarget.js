@@ -77,12 +77,12 @@ ve.init.ViewPageTarget.saveDialogTemplate = '\
 			<input type="checkbox" name="minorEdit" \
 				id="ve-init-viewPageTarget-saveDialog-minorEdit">\
 			<label class="ve-init-viewPageTarget-saveDialog-minorEdit-label" \
-				for="ve-init-viewPageTarget-saveDialog-minorEdit">This is a minor edit</label>\
+				for="ve-init-viewPageTarget-saveDialog-minorEdit"></label>\
 			<div style="clear:both"></div>\
 			<input type="checkbox" name="watchList" \
 				id="ve-init-viewPageTarget-saveDialog-watchList">\
 			<label class="ve-init-viewPageTarget-saveDialog-watchList-label" \
-				for="ve-init-viewPageTarget-saveDialog-watchList">Watch this page</label>\
+				for="ve-init-viewPageTarget-saveDialog-watchList"></label>\
 		</div>\
 		<div class="ve-init-viewPageTarget-button ve-init-viewPageTarget-saveDialog-saveButton">\
 			<span class="ve-init-viewPageTarget-saveDialog-saveButton-label"></span>\
@@ -125,7 +125,7 @@ ve.init.ViewPageTarget.prototype.deactivate = function( override ) {
 		if (
 			override ||
 			!this.surface.getModel().getHistory().length ||
-			confirm( 'Are you sure you want to go back to view mode without saving first?' )
+			confirm( mw.msg( 'visualeditor-viewpage-savewarning' ) )
 		) {
 			this.deactivating = true;
 			// User interface changes
@@ -373,7 +373,7 @@ ve.init.ViewPageTarget.prototype.setupSkinTabs = function() {
 		mw.util.addPortletLink(
 			'p-cactions',
 			this.editUri,
-			'Edit Source', // TODO: i18n
+			mw.msg( 'visualeditor-ca-editsource' ),
 			'ca-editsource'
 		);
 	}

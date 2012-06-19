@@ -111,7 +111,8 @@ $wgResourceModules += array(
 			'create',
 			'accesskey-ca-edit',
 			'tooltip-ca-edit',
-			'viewsource'
+			'viewsource',
+			'visualeditor-ca-editsource'
 		),
 	),
 	'ext.visualEditor.init' => $wgVisualEditorResourceTemplate + array(
@@ -256,6 +257,28 @@ $wgResourceModules += array(
 			'visualeditor-tooltip-history',
 			'visualeditor-tooltip-help',
 			'visualeditor',
+			'visualeditor-linkinspector-tooltip',
+			'visualeditor-linkinspector-label-pagetitle',
+			'visualeditor-formatdropdown-tooltip',
+			'visualeditor-formatdropdown-format-paragraph',
+			'visualeditor-formatdropdown-format-heading1',
+			'visualeditor-formatdropdown-format-heading2',
+			'visualeditor-formatdropdown-format-heading3',
+			'visualeditor-formatdropdown-format-heading4',
+			'visualeditor-formatdropdown-format-heading5',
+			'visualeditor-formatdropdown-format-heading6',
+			'visualeditor-formatdropdown-format-preformatted',
+			'visualeditor-annotationbutton-bold-tooltip',
+			'visualeditor-annotationbutton-italic-tooltip',
+			'visualeditor-annotationbutton-link-tooltip',
+			'visualeditor-indentationbutton-indent-tooltip',
+			'visualeditor-indentationbutton-outdent-tooltip',
+			'visualeditor-listbutton-number-tooltip',
+			'visualeditor-listbutton-bullet-tooltip',
+			'visualeditor-clearbutton-tooltip',
+			'visualeditor-historybutton-undo-tooltip',
+			'visualeditor-historybutton-redo-tooltip',
+			'visualeditor-viewpage-savewarning',
 		),
 	)
 );
