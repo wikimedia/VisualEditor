@@ -22,33 +22,38 @@ ve.dm.LinkAnnotation = function() {
 ve.dm.LinkAnnotation.converters = {
 	'domElementTypes': ['a'],
 	'toDomElement': function( subType, annotation ) {
-		if ( annotation.type ) {
-			var link = document.createElement( 'a' ),
-				mwdata = $.parseJSON( annotation.data.mw ) || {};
+		var link = document.createElement( 'a' );
+		if ( subType === 'wikiLink' ) {
+			link.setAttribute( 'rel', 'mw:wikiLink' );
+			// Set href to /title
+			link.setAttribute( 'href', '/' + annotation.data.title );
+		} else if ( subType === 'extLink' ) {
+			link.setAttribute( 'rel', 'mw:extLink' );
 			link.setAttribute( 'href', annotation.data.href );
-			mwdata.sHref = [annotation.data.title];
-			link.setAttribute( 'data-mw', $.toJSON( mwdata ) );
-			if ( subType === 'wikiLink' || subType === 'extLink' ) {
-				link.setAttribute( 'rel', 'mw:' + subType );
-			}
-			return link;
 		}
+		if ( annotation.data.mw ) {
+			link.setAttribute( 'data-mw', annotation.data.mw );
+		}
+		return link;
 	},
 	'toDataAnnotation': function( tag, element ) {
 		var rel = element.getAttribute( 'rel' ) || '',
-			subtype = rel.split( ':' )[1] || 'unknown',
+			subType = rel.split( ':' )[1] || 'unknown',
 			mwattr = element.getAttribute( 'data-mw' ),
 			mwdata = $.parseJSON( mwattr ) || {},
 			href = element.getAttribute( 'href' ),
 			retval = {
-				'type': 'link/' + subtype,
-				'data': {
-					'href': href,
-					// For some daft reason sHref is an array
-					'title': mwdata.sHref && mwdata.sHref[0] ?
-						mwdata.sHref[0] : href
-				}
+				'type': 'link/' + subType,
+				'data': {}
 			};
+		if ( subType === 'wikiLink' ) {
+			// For some daft reason sHref is an array
+			retval.data.title = mwdata.sHref && mwdata.sHref[0] ? mwdata.sHref[0] :
+				// Trim leading slash from href
+				href.replace( /^\//, '' );
+		} else if ( subType === 'extLink' ) {
+			retval.data.href = href;
+		}
 		if ( mwattr ) {
 			retval.data.mw = mwattr;
 		}

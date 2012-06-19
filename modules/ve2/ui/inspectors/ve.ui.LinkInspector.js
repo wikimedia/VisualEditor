@@ -65,26 +65,32 @@ ve.ui.LinkInspector.prototype.getSelectedLinkAnnotations = function(){
 	return {};
 };
 
-ve.ui.LinkInspector.prototype.getTitleFromSelection = function() {
+ve.ui.LinkInspector.prototype.getAnnotationFromSelection = function() {
 	var annotations = this.getSelectedLinkAnnotations();
 	for ( var hash in annotations ) {
-		// Use the first one that has a title (there should only be one, but this is just in case)
-		if ( annotations[hash].data && annotations[hash].data.title ) {
-			return annotations[hash].data.title;
+		// Use the first one with a recognized type (there should only be one, but this is just in case)
+		if ( annotations[hash].type === 'link/wikiLink' || annotations[hash].type === 'link/extLink' ) {
+			return annotations[hash];
 		}
 	}
 	return null;
 };
 
 ve.ui.LinkInspector.prototype.onOpen = function() {
-	var title = this.getTitleFromSelection();
-	if ( title !== null ) {
-		this.$locationInput.val( title );
-		this.$clearButton.removeClass( 'es-inspector-button-disabled' );
-	} else {
+	var annotation = this.getAnnotationFromSelection();
+	if ( annotation === null ) {
 		this.$locationInput.val( '' );
 		this.$clearButton.addClass( 'es-inspector-button-disabled' );
+	} else if ( annotation.type === 'link/wikiLink' ) {
+		// Internal link
+		this.$locationInput.val( annotation.data.title || '' );
+		this.$clearButton.removeClass( 'es-inspector-button-disabled' );
+	} else {
+		// External link
+		this.$locationInput.val( annotation.data.href || '' );
+		this.$clearButton.removeClass( 'es-inspector-button-disabled' );
 	}
+
 	this.$acceptButton.addClass( 'es-inspector-button-disabled' );
 	this.initialValue = this.$locationInput.val();
 	var _this = this;
@@ -95,8 +101,8 @@ ve.ui.LinkInspector.prototype.onOpen = function() {
 
 ve.ui.LinkInspector.prototype.onClose = function( accept ) {
 	if ( accept ) {
-		var title = this.$locationInput.val();
-		if ( title === this.getTitleFromSelection() || !title ) {
+		var target = this.$locationInput.val();
+		if ( target === this.initialValue || !target ) {
 			return;
 		}
 		var surfaceModel = this.context.getSurfaceView().getModel(),
@@ -106,10 +112,24 @@ ve.ui.LinkInspector.prototype.onClose = function( accept ) {
 		for ( var hash in annotations ) {
 			surfaceModel.annotate( 'clear', annotations[hash] );
 		}
-		surfaceModel.annotate( 'set', { 'type': 'link/wikiLink', 'data': {
-			'title': title,
-			'href': '/' + title // HACK to work around Parsoid bug
-		} } );
+
+		var annotation;
+		// Figure out if this is an internal or external link
+		// TODO better logic
+		if ( target.match( /^https?:\/\// ) ) {
+			// External link
+			annotation = {
+				'type': 'link/extLink',
+				'data': { 'href': target }
+			};
+		} else {
+			// Internal link
+			annotation = {
+				'type': 'link/wikiLink',
+				'data': { 'title': target }
+			};
+		}
+		surfaceModel.annotate( 'set', annotation );
 	}
 };
 
