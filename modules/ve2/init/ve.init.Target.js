@@ -101,7 +101,7 @@ ve.init.Target.onLoadError = function( response, text, exception ) {
 ve.init.Target.onSave = function( response, status ) {
 	this.saving = false;
 	var data = response['ve-parsoid'];
-	if ( !response ) {
+	if ( !data ) {
 		this.emit( 'saveError', 'Invalid response from server' );
 	} else if ( data.result !== 'success' ) {
 		this.emit( 'saveError', 'Unsuccessful request: ' + data.result );
