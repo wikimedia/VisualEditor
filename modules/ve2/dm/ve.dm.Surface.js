@@ -67,7 +67,7 @@ ve.dm.Surface.prototype.getSelection = function() {
  * Applies a series of transactions to the content data and sets the selection.
  *
  * @method
- * @param {ve.dm.Transaction} transactions Tranasction to apply to the document
+ * @param {ve.dm.Transaction} transaction Transaction to apply to the document
  * @param {ve.Range} selection
  */
 ve.dm.Surface.prototype.change = function( transaction, selection ) {
