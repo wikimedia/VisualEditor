@@ -591,7 +591,10 @@ ve.dm.Converter.prototype.getDomFromData = function( data ) {
 		.find( '*' )
 		.contents()
 		.filter( function() {
-			return this.nodeType == 3;
+			// Text nodes only
+			return this.nodeType == 3 &&
+				// Exclude text nodes within lists
+				$( this.parentNode ).closest( 'li, dd, dt' ).length === 0;
 		} )
 		.each( function() {
 			this.data = fixupText( this.data, this.parentNode );
