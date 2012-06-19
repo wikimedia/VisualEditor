@@ -47,8 +47,7 @@ ve.dm.LinkAnnotation.converters = {
 				'data': {}
 			};
 		if ( subType === 'wikiLink' ) {
-			// For some daft reason sHref is an array
-			retval.data.title = mwdata.sHref && mwdata.sHref[0] ? mwdata.sHref[0] :
+			retval.data.title = mwdata.sHref ||
 				// Trim leading slash from href
 				href.replace( /^\//, '' );
 		} else if ( subType === 'extLink' ) {

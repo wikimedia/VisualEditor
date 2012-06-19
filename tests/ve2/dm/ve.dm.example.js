@@ -411,6 +411,7 @@ ve.dm.example.domToDataCases = {
 				{ 'type': '/paragraph' }
 			]
 		},
+		// TODO these last two are broken due to newline hacks, will be unbroken once we remove the newline hacks
 		'paragraphs with an alienBlock between them': {
 			'html': '<p>abc</p><p data-mw-gc="">abc</p><p>def</p>',
 			'data': [
@@ -436,7 +437,7 @@ ve.dm.example.domToDataCases = {
 			// This HTML is weird because of workarounds for Parsoid bugs:
 			// * newline before </li>
 			// * first paragraph in an <li> not wrapped in <p>
-			'html': '<ul><li> <a rel="mw:extLink" href="/foo" data-mw="{&quot;sHref&quot;:[&quot;foo&quot;]}">bar</a>\n</li></ul>',
+			'html': '<ul><li> <a rel="mw:wikiLink" href="/foo" data-mw="{&quot;sHref&quot;:&quot;foo&quot;}">bar</a>\n</li></ul>',
 			'data': [
 				{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
 				{ 'type': 'listItem' },
@@ -445,33 +446,30 @@ ve.dm.example.domToDataCases = {
 				[
 					'b',
 					{
-						'{"type":"link/extLink","data":{"href":"/foo","title":"foo","mw":"{\\"sHref\\":[\\"foo\\"]}"}}':
-							{ 'type': 'link/extLink', 'data': {
-								'href': '/foo',
+						'{"type":"link/wikiLink","data":{"title":"foo","mw":"{\\"sHref\\":\\"foo\\"}"}}':
+							{ 'type': 'link/wikiLink', 'data': {
 								'title': 'foo',
-								'mw': '{"sHref":["foo"]}'
+								'mw': '{"sHref":"foo"}'
 							}
 					}
 				}],
 				[
 					'a',
 					{
-						'{"type":"link/extLink","data":{"href":"/foo","title":"foo","mw":"{\\"sHref\\":[\\"foo\\"]}"}}':
-							{ 'type': 'link/extLink', 'data': {
-								'href': '/foo',
+						'{"type":"link/wikiLink","data":{"title":"foo","mw":"{\\"sHref\\":\\"foo\\"}"}}':
+							{ 'type': 'link/wikiLink', 'data': {
 								'title': 'foo',
-								'mw': '{"sHref":["foo"]}'
+								'mw': '{"sHref":"foo"}'
 							}
 					}
 				}],
 				[
 					'r',
 					{
-						'{"type":"link/extLink","data":{"href":"/foo","title":"foo","mw":"{\\"sHref\\":[\\"foo\\"]}"}}':
-							{ 'type': 'link/extLink', 'data': {
-								'href': '/foo',
+						'{"type":"link/wikiLink","data":{"title":"foo","mw":"{\\"sHref\\":\\"foo\\"}"}}':
+							{ 'type': 'link/wikiLink', 'data': {
 								'title': 'foo',
-								'mw': '{"sHref":["foo"]}'
+								'mw': '{"sHref":"foo"}'
 							}
 					}
 				}],
