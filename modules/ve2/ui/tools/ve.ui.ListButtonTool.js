@@ -29,34 +29,34 @@ ve.ui.ListButtonTool.prototype.list = function( nodes, style ) {
 
 	if ( siblings.length > 1 ){
 		outerRange = new ve.Range(
-			siblings[0].nodeOuterRange.from,
-			siblings[siblings.length-1].nodeOuterRange.to
+			siblings[0].nodeOuterRange.from, siblings[siblings.length-1].nodeOuterRange.to
 		);
-	} else if( siblings[0].node['parent'] !== null ) {
-		outerRange = ( siblings[0].node['parent'].getOuterRange() );
+	} else if ( siblings[0].node.parent !== null ) {
+		outerRange = ( siblings[0].node.parent.getOuterRange() );
 	}
 
-	if( outerRange instanceof ve.Range ) {
+	if ( outerRange instanceof ve.Range ) {
 		// Convert everything to paragraphs first
 		tx = ve.dm.Transaction.newFromContentBranchConversion( doc, outerRange, 'paragraph' );
 		model.change( tx );
 
+		// Wrap everything in a list and each content branch in a listItem
 		tx = ve.dm.Transaction.newFromWrap(
 			doc,
 			outerRange,
 			[],
-			[ { 'type': 'list', 'attributes': { 'style': style } } ],
+			[{ 'type': 'list', 'attributes': { 'style': style } }],
 			[],
-			[ { 'type': 'listItem' } ]
+			[{ 'type': 'listItem' }]
 		);
 		model.change ( tx );
+
 		// Modify selection
 		siblings = doc.selectNodes( selection, 'siblings'),
 		outerRange = new ve.Range(
-			siblings[0].nodeRange.from,
-			siblings[siblings.length-1].nodeRange.to
+			siblings[0].nodeRange.from, siblings[siblings.length-1].nodeRange.to
 		);
-		model.change (null, outerRange);
+		model.change( null, outerRange );
 	}
 };
 
