@@ -74,7 +74,7 @@ ve.FormatDropdownTool.prototype.onSelect = function( item ) {
 		item.type,
 		item.attributes
 	);
-	model.transact ( txs );
+	model.change( txs );
 	surfaceView.showSelection( selection );
 };
 

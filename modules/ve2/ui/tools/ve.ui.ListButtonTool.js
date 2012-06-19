@@ -83,7 +83,7 @@ ve.ui.ListButtonTool.prototype.unlist = function( node ){
 		[]
 	);
 
-	model.transact ( tx );
+	model.change( tx );
 
 };
 ve.ui.ListButtonTool.prototype.onClick = function() {

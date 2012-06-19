@@ -599,7 +599,7 @@ return;
 					from + sourceNode.model.getOuterLength()
 				);
 			tx = ve.dm.Transaction.newFromRemoval( this.documentView.model, range );
-			this.model.transact( tx );
+			this.model.change( tx );
 		}
 	} else {
 		// selection removal

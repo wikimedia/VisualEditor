@@ -50,7 +50,7 @@ ve.ui.IndentationButtonTool.prototype.indent = function( listItems ) {
 				'styles',
 				styles.concat( styles[styles.length - 1] )
 			);
-			surface.model.transact( tx );
+			surface.model.change( tx );
 		}
 	}
 	surface.emitCursor();
@@ -69,7 +69,7 @@ ve.ui.IndentationButtonTool.prototype.outdent = function( listItems ) {
 				'styles',
 				styles.slice( 0, styles.length - 1 )
 			);
-			surface.model.transact( tx );
+			surface.model.change( tx );
 		}
 	}
 	surface.emitCursor();

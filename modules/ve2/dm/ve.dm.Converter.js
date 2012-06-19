@@ -373,6 +373,10 @@ ve.dm.Converter.prototype.getDataFromDom = function( domElement, annotations, da
 	if ( dataElement ) {
 		data.push( { 'type': '/' + dataElement.type } );
 	}
+	// Don't return an empty document
+	if ( branchType === 'document' && data.length === 0 ) {
+		return [{ 'type': 'paragraph' }, { 'type': '/paragraph' }];
+	}
 	return data;
 };
 
