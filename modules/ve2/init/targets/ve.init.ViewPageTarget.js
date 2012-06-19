@@ -23,11 +23,11 @@ ve.init.ViewPageTarget = function() {
 	this.scrollTop = null;
 	this.proxiedOnSurfaceModelTransact = ve.proxy( this.onSurfaceModelTransact, this );
 	this.surfaceOptions = { 'toolbars': { 'top': { 'float': !this.isMobileDevice } } };
-	this.editUri = new mw.Uri( $( '#ca-edit a' ).attr( 'href' ) );
-	this.viewUri = new mw.Uri( $( '#ca-view a' ).attr( 'href' ) );
-	this.veEditUri = this.editUri.clone();
-	delete this.veEditUri.query.action;
-	this.veEditUri.query.veaction = 'edit';
+	this.viewUri = new mw.Uri( mw.util.wikiGetlink() );
+	this.editUri = new mw.Uri( mw.util.wikiGetlink() );
+	this.editUri.extend( { 'action': 'edit' } );
+	this.veEditUri = new mw.Uri( mw.util.wikiGetlink() );
+	this.veEditUri.extend( { 'veaction': 'edit' } );
 	this.currentUri = new mw.Uri( window.location.toString() );
 	this.section = this.currentUri.query.vesection || null;
 	this.isViewPage = (
@@ -405,9 +405,9 @@ ve.init.ViewPageTarget.prototype.setupSectionEditLinks = function() {
 	if ( this.isViewPage ) {
 		$links.click( ve.proxy( this.onEditSectionLinkClick, this ) );
 	} else {
-		var _this = this;
+		var veEditUri = this.veEditUri;
 		$links.each( function() {
-			var veSectionEditUri = _this.veEditUri.clone(),
+			var veSectionEditUri = new mw.Uri( veEditUri.toString() ),
 				sectionEditUri = new mw.Uri( $(this).attr( 'href' ) );
 			veSectionEditUri.extend( { 'vesection': sectionEditUri.query.section } );
 			$(this).attr( 'href', veSectionEditUri );
