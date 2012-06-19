@@ -252,8 +252,8 @@ var roundTripDiff = function ( req, res, src, document ) {
 	src = src.replace(/\n(?=\n)/g, '\n ');
 	out = out.replace(/\n(?=\n)/g, '\n ');
 	//console.log(JSON.stringify( jsDiff.diffLines( out, src ) ));
-	//patch = jsDiff.convertChangesToXML( jsDiff.diffLines( src, out ) );
-	patch = jsDiff.convertChangesToXML( refineDiff( jsDiff.diffLines( src, out ) ) );
+	patch = jsDiff.convertChangesToXML( jsDiff.diffLines( src, out ) );
+	//patch = jsDiff.convertChangesToXML( refineDiff( jsDiff.diffLines( src, out ) ) );
 	res.write( '<pre>' + patch);
 	// Add a 'report issue' link
 	res.end('<hr><h2>'+
