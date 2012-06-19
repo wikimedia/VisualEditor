@@ -15,45 +15,44 @@ ve.ui.HistoryButtonTool = function( toolbar, name, title, data ) {
 	this.data = data;
 	this.enabled = false;
 	
-	var _this = this;
-	this.toolbar.surfaceView.model.on( 'history', function() {
-		_this.updateState();		
-	});
-
+	this.toolbar.getSurfaceView().model.on( 'history', ve.proxy( this.updateState, this ) );
 };
 
 /* Methods */
 
 ve.ui.HistoryButtonTool.prototype.onClick = function() {
-	this.toolbar.surfaceView.stopPolling();
 	switch ( this.name ) {
 		case 'undo':
-			var selection = this.toolbar.surfaceView.model.undo( 1 ) || this.toolbar.surfaceView.model.selection;
-			this.toolbar.surfaceView.showSelection( selection );
-			break;
 		case 'redo':
-			var selection = this.toolbar.surfaceView.model.redo( 1 ) || this.toolbar.surfaceView.model.selection;
-			this.toolbar.surfaceView.showSelection( selection );
+			if ( this.isButtonEnabled( this.name ) ) {
+				var surfaceView = this.toolbar.getSurfaceView();
+				surfaceView.stopPolling();
+				surfaceView.showSelection(
+					surfaceView.getModel()[this.name]( 1 ) || surfaceView.model.selection
+				);
+				surfaceView.clearPollData();
+				surfaceView.startPolling();
+			}
 			break;
 	}
-	this.toolbar.surfaceView.clearPollData();
-	this.toolbar.surfaceView.startPolling();
 };
 
 ve.ui.HistoryButtonTool.prototype.updateState = function( annotations ) {
-	var surfaceModel = this.toolbar.surfaceView.model;
-	switch( this.name ) {
-		case 'undo':
-			this.enabled = surfaceModel.bigStack.length - surfaceModel.undoIndex > 0;
-			break;
-		case 'redo':
-			this.enabled = surfaceModel.undoIndex > 0;
-			break;
-	}
-	
+	this.enabled = this.isButtonEnabled( this.name );
 	this.updateEnabled();
 };
 
+ve.ui.HistoryButtonTool.prototype.isButtonEnabled = function( name ) {
+	var surfaceModel = this.toolbar.getSurfaceView().getModel();
+	switch( name ) {
+		case 'undo':
+			return surfaceModel.bigStack.length - surfaceModel.undoIndex > 0;
+		case 'redo':
+			return surfaceModel.undoIndex > 0;
+		default:
+			return false;
+	}
+};
 
 /* Registration */
 
