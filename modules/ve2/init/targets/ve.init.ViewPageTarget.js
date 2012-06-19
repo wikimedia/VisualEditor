@@ -16,6 +16,7 @@ ve.init.ViewPageTarget = function() {
 	this.$spinner = $( '<div class="ve-init-viewPageTarget-loadingSpinner"></div>' );
 	this.$toolbarSaveButton = $( '<div class="ve-init-viewPageTarget-toolbar-saveButton"></div>' );
 	this.$saveDialog = $( '<div class="es-inspector ve-init-viewPageTarget-saveDialog"></div>' );
+	this.$saveDialogSaveButton = null;
 	this.surface = null;
 	this.active = false;
 	this.edited = false;
@@ -85,7 +86,7 @@ ve.init.ViewPageTarget.saveDialogTemplate = '\
 			<label class="ve-init-viewPageTarget-saveDialog-watchList-label" \
 				for="ve-init-viewPageTarget-saveDialog-watchList"></label>\
 		</div>\
-		<div class="ve-init-viewPageTarget-button ve-init-viewPageTarget-saveDialog-saveButton">\
+		<div class="ve-init-viewPageTarget-saveDialog-saveButton">\
 			<span class="ve-init-viewPageTarget-saveDialog-saveButton-label"></span>\
 			<div class="ve-init-viewPageTarget-saveDialog-saveButton-icon"></div>\
 		</div>\
@@ -167,7 +168,13 @@ ve.init.ViewPageTarget.prototype.onLoad = function( dom ) {
  * @param {Mixed} error Thrown exception or HTTP error string
  */
 ve.init.ViewPageTarget.prototype.onLoadError = function( response, status, error ) {
-	// TODO: Something...
+	alert( 'Error loading data from server: ' + status );
+	this.activating = false;
+	this.restoreSkinTabs();
+	this.hideSpinner();
+	this.showTableOfContents();
+	this.showPageContent();
+	this.restorePageTitle();
 };
 
 /**
@@ -192,7 +199,7 @@ ve.init.ViewPageTarget.prototype.onSave = function( html ) {
  * @param {Mixed} error Thrown exception or HTTP error string
  */
 ve.init.ViewPageTarget.prototype.onSaveError = function( response, status, error ) {
-	// TODO: Something...
+	alert( 'Error saving data to server: ' + status );
 };
 
 /**
@@ -270,8 +277,7 @@ ve.init.ViewPageTarget.prototype.onSurfaceModelTransact = function( tx ) {
  * @param {Event} event DOM event
  */
 ve.init.ViewPageTarget.prototype.onSaveDialogSaveButtonClick = function( event ) {
-	this.showSpinner();
-	// Save
+	this.lockSaveDialogSaveButton();
 	this.save(
 		ve.dm.converter.getDomFromData( this.surface.getDocumentModel().getData() ),
 		{
@@ -432,17 +438,19 @@ ve.init.ViewPageTarget.prototype.setupToolbarSaveButton = function() {
 				.text( mw.msg( 'savearticle' ) )
 		)
 		.append( $( '<span class="ve-init-viewPageTarget-toolbar-saveButton-icon"></span>' ) )
-		.mousedown( function( e ) {
-			$(this).addClass( 've-init-viewPageTarget-toolbar-saveButton-down' );
-			e.preventDefault();
-			return false;
-		} )
-		.mouseup( function( e ) {
-			$(this).removeClass( 've-init-viewPageTarget-toolbar-saveButton-down' );
-			e.preventDefault();
-			return false;
-		} )
-		.click( ve.proxy( this.onToolbarSaveButtonClick, this ) );
+		.bind( {
+			'mousedown': function( event ) {
+				$(this).addClass( 've-init-viewPageTarget-toolbar-saveButton-down' );
+				event.preventDefault();
+				return false;
+			},
+			'mouseleave mouseup': function( event ) {
+				$(this).removeClass( 've-init-viewPageTarget-toolbar-saveButton-down' );
+				event.preventDefault();
+				return false;
+			},
+			'click': ve.proxy( this.onToolbarSaveButtonClick, this )
+		} );
 };
 
 /**
@@ -491,7 +499,15 @@ ve.init.ViewPageTarget.prototype.setupSaveDialog = function() {
 			.text( mw.msg( 'watchthis' ) )
 			.end()
 		.find( '.ve-init-viewPageTarget-saveDialog-saveButton' )
-			.click( ve.proxy( this.onSaveDialogSaveButtonClick, this ) )
+			.bind( {
+				'mousedown': function() {
+					$(this).addClass( 've-init-viewPageTarget-saveDialog-saveButton-down' );
+				},
+				'mouseleave mouseup': function() {
+					$(this).removeClass( 've-init-viewPageTarget-saveDialog-saveButton-down' );
+				},
+				'click': ve.proxy( this.onSaveDialogSaveButtonClick, this )
+			} )
 			.end()
 		.find( '.ve-init-viewPageTarget-saveDialog-saveButton-label' )
 			.text( mw.msg( 'savearticle' ) )
@@ -508,6 +524,8 @@ ve.init.ViewPageTarget.prototype.setupSaveDialog = function() {
 				used on this site.\
 				<b>DO NOT SUBMIT COPYRIGHTED WORK WITHOUT PERMISSION!</b>"
 			);
+	this.$saveDialogSaveButton = this.$saveDialog
+		.find( '.ve-init-viewPageTarget-saveDialog-saveButton' );
 };
 
 /**
@@ -627,6 +645,7 @@ ve.init.ViewPageTarget.prototype.hideTableOfContents = function() {
  * @method
  */
 ve.init.ViewPageTarget.prototype.showSaveDialog = function() {
+	this.unlockSaveDialogSaveButton();
 	this.$saveDialog.fadeIn( 'fast' ).find( 'input:first' ).focus();
 };
 
@@ -670,6 +689,24 @@ ve.init.ViewPageTarget.prototype.enableToolbarSaveButton = function() {
  */
 ve.init.ViewPageTarget.prototype.disableToolbarSaveButton = function() {
 	this.$toolbarSaveButton.addClass( 've-init-viewPageTarget-toolbar-saveButton-disabled' );
+};
+
+/**
+ * Enables the save dialog save button.
+ *
+ * @method
+ */
+ve.init.ViewPageTarget.prototype.unlockSaveDialogSaveButton = function() {
+	this.$saveDialogSaveButton.removeClass( 've-init-viewPageTarget-saveDialog-saveButton-saving' );
+};
+
+/**
+ * Disables the save dialog save button.
+ *
+ * @method
+ */
+ve.init.ViewPageTarget.prototype.lockSaveDialogSaveButton = function() {
+	this.$saveDialogSaveButton.addClass( 've-init-viewPageTarget-saveDialog-saveButton-saving' );
 };
 
 /**

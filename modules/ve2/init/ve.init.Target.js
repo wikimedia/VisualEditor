@@ -43,9 +43,12 @@ ve.init.Target.onLoad = function( response, status ) {
 	if ( !data ) {
 		this.loading = false;
 		this.emit( 'loadError', null, 'Invalid response from server', null );
+	} else if ( typeof data.result === 'error' ) {
+		this.loading = false;
+		this.emit( 'loadError', null, 'Server error', null );
 	} else if ( typeof data.parsed !== 'string' ) {
 		this.loading = false;
-		this.emit( 'loadError', null, 'Invalid HTML content in response from server', null );
+		this.emit( 'loadError', null, 'No HTML content in response from server', null );
 	} else {
 		this.dom = $( '<div></div>' ).html( data.parsed )[0];
 		// Everything worked, the page was loaded, continue as soon as the module is ready
@@ -167,9 +170,9 @@ ve.init.Target.prototype.load = function( callback ) {
 		},
 		'dataType': 'json',
 		'type': 'GET',
+		// Wait up to 10 seconds before giving up
+		'timeout': 10000,
 		'cache': 'false',
-		// Wait up to 9 seconds
-		'timeout': 9000,
 		'error': ve.proxy( ve.init.Target.onLoadError, this ),
 		'success': ve.proxy( ve.init.Target.onLoad, this )
 	} );
@@ -221,6 +224,8 @@ ve.init.Target.prototype.save = function( dom, options, callback ) {
 		},
 		'dataType': 'json',
 		'type': 'POST',
+		// Wait up to 10 seconds before giving up
+		'timeout': 10000,
 		'error': ve.proxy( ve.init.Target.onSaveError, this ),
 		'success': ve.proxy( ve.init.Target.onSave, this )
 	} );

@@ -124,8 +124,33 @@
 	);
 }
 
+.ve-init-viewPageTarget-saveDialog-saveButton:active,
+.ve-init-viewPageTarget-saveDialog-saveButton-down {
+	/* Fancy CSS background */
+	background-image: linear-gradient(bottom, #f0fbe1 0%, #c3e59a 100%);
+	background-image: -o-linear-gradient(bottom, #f0fbe1 0%, #c3e59a 100%);
+	background-image: -moz-linear-gradient(bottom, #f0fbe1 0%, #c3e59a 100%);
+	background-image: -webkit-linear-gradient(bottom, #f0fbe1 0%, #c3e59a 100%);
+	background-image: -ms-linear-gradient(bottom, #f0fbe1 0%, #c3e59a 100%);
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, #f0fbe1),
+		color-stop(1, #c3e59a)
+	);
+}
+
 .ve-init-viewPageTarget-saveDialog-saveButton:hover {
 	border-color: #a7cd76;
+}
+
+.ve-init-viewPageTarget-saveDialog-saveButton-saving,
+.ve-init-viewPageTarget-saveDialog-saveButton-saving:hover {
+	background-color: #e6f2cc;
+	background-image: none;
+	color: #cccccc;
+	border-color: #e3f0c6;
 }
 
 .ve-init-viewPageTarget-saveDialog-saveButton-icon {
@@ -138,6 +163,12 @@
 	background-image: url(../../ui/styles/images/accept-clear.png);
 	background-position: right top;
 	background-repeat: no-repeat;
+}
+
+.ve-init-viewPageTarget-saveDialog-saveButton-saving
+	.ve-init-viewPageTarget-saveDialog-saveButton-icon {
+	background-image: url(images/saving.gif);
+	background-position: right 46%;
 }
 
 /* Save dialog styles */
