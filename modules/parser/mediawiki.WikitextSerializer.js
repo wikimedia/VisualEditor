@@ -11,14 +11,129 @@ WikitextSerializer = function( options ) {
 	}, options || {} );
 };
 
+require('./core-upgrade.js');
+var PegTokenizer = require('./mediawiki.tokenizer.peg.js').PegTokenizer;
+
 var WSP = WikitextSerializer.prototype;
 
 WSP.defaultOptions = {
-	onNewline            : true,
-	listStack            : [],
-	lastHandler          : null,
-	availableNewlineCount: 0,
-	singleLineMode: 0
+	onNewline: true, // actually following start of file or a real newline
+	onStartOfLine : true, // in start-of-line context, not necessarily after newline
+	listStack: [],
+	lastHandler: null,
+	availableNewlineCount: 0, // collected (and stripped) newlines from the input
+	singleLineMode: 0 // single-line syntactical context: list items, headings etc
+};
+
+WSP.escapeWikiText = function ( state, text ) {
+	// tokenize the text
+	var p = new PegTokenizer( state.env ),
+		tokens = [];
+	p.on('chunk', function ( chunk ) { 
+		//console.warn( JSON.stringify(chunk));
+		tokens.push.apply( tokens, chunk );
+	});
+	p.on('end', function(){ 
+		//console.warn( JSON.stringify('end'));
+	});
+	// this is synchronous for now, will still need sync version later, or
+	// alternatively make text processing in the serializer async
+	if ( ! state.onNewline ) {
+		// Prefix '_' so that no start-of-line wiki syntax matches. Strip it from
+		// the result.
+		p.process( '_' + text );
+		// now strip the leading underscore.
+		if ( tokens[0] === '_' ) {
+			tokens.shift();
+		} else {
+			tokens[0] = tokens[0].substr(1);
+		}
+	} else {
+		p.process( text );
+	}
+	//
+	// wrap any run of non-text tokens into <nowiki> tags using the source
+	// offsets of top-level productions
+	// return the updated text
+	var outTexts = [],
+		nonTextTokenAccum = [],
+		cursor = 0;
+	function wrapNonTextTokens () {
+		if ( nonTextTokenAccum.length ) {
+			var missingRangeEnd = false;
+			// TODO: make sure the source positions are always set!
+			// The start range
+			var startRange = nonTextTokenAccum[0].dataAttribs.tsr,
+				rangeStart, rangeEnd;
+			if ( ! startRange ) {
+				console.warn( 'No tsr on ' + nonTextTokenAccum[0] );
+				rangeStart = cursor;
+			} else {
+				rangeStart = startRange[0];
+				if ( ! state.onNewline ) {
+					// compensate for underscore.
+					rangeStart--;
+				}
+				cursor = rangeStart;
+			}
+
+			var endRange = nonTextTokenAccum.last().dataAttribs.tsr;
+			if ( ! endRange ) {
+				// FIXME: improve this!
+				//rangeEnd = state.env.tokensToString( tokens ).length;
+				// Be conservative and extend the range to the end for now.
+				// Alternatives: only extend it to the next token with range
+				// info on it.
+				missingRangeEnd = true;
+				rangeEnd = text.length;
+			} else {
+				rangeEnd = endRange[1];
+				if ( ! state.onNewline ) {
+					// compensate for underscore.
+					rangeEnd--;
+				}
+			}
+
+			var escapedSource = text.substr( rangeStart, rangeEnd - rangeStart ) 
+									.replace( /<(\/?nowiki)>/g, '&lt;$1&gt;' );
+			outTexts.push( '<nowiki>' );
+			outTexts.push( escapedSource );
+			outTexts.push( '</nowiki>' );
+			cursor += 17 + escapedSource.length;
+			if ( missingRangeEnd ) {
+				throw 'No tsr on end token: ' + nonTextTokenAccum.last();
+			}
+			nonTextTokenAccum = [];
+		}
+	}
+	try {
+		for ( var i = 0, l = tokens.length; i < l; i++ ) {
+			var token = tokens[i];
+			switch ( token.constructor ) {
+				case String:
+					wrapNonTextTokens();
+					outTexts.push( token );
+					cursor += token.length;
+					break;
+				case NlTk:
+					wrapNonTextTokens();
+					outTexts.push( '\n' );
+					cursor++;
+					break;
+				case EOFTk:
+					wrapNonTextTokens();
+					break;
+				default:
+					//console.warn('pushing ' + token);
+					nonTextTokenAccum.push(token);
+					break;
+			}
+		}
+	} catch ( e ) {
+		console.warn( e );
+	}
+	//console.warn( 'escaped wikiText: ' + outTexts.join('') );
+	return outTexts.join('');
 };
 
 var id = function(v) { 
@@ -353,7 +468,9 @@ WSP.tagHandlers = {
 		start: {
 			startsNewline: true,
 			handle: function( state, token ) {
-				state.textHandler = function( t ) { return t.replace(/\n/g, '\n ' ); };
+				state.textHandler = function( t ) { 
+					return t.replace(/\n/g, '\n ' ); 
+				};
 				return ' ';
 			}
 		},
@@ -369,6 +486,11 @@ WSP.tagHandlers = {
 				if ( argDict['typeof'] === 'mw:tag' ) {
 					// we use this currently for nowiki and noinclude & co
 					this.newlineTransparent = true;
+					if ( argDict.content === 'nowiki' ) {
+						state.inNoWiki = true;
+					} else if ( argDict.content === '/nowiki' ) {
+						state.inNoWiki = false;
+					}
 					return '<' + argDict.content + '>';
 				} else {
 					this.newlineTransparent = false;
@@ -526,11 +648,12 @@ WSP._serializeToken = function ( state, token ) {
 			}
 			break;
 		case String:
-			res = state.textHandler ? state.textHandler( token ) : token;
+			res = state.inNoWiki? token : this.escapeWikiText( state, token );
+			res = state.textHandler ? state.textHandler( res ) : res;
 			break;
 		case CommentTk:
 			res = '<!--' + token.value + '-->';
-			// don't consider comments for changes of the onNewline status
+			// don't consider comments for changes of the onStartOfLine status
 			// XXX: convert all non-tag handlers to a similar handler
 			// structure as tags?
 			handler = { newlineTransparent: true }; 
@@ -601,7 +724,7 @@ WSP._serializeToken = function ( state, token ) {
 			// Prev token's new line token
 			if ( !state.singleLineMode &&
 					( ( !res.match(/^\s*$/) && state.emitNewlineOnNextToken ) ||
-					( handler.startsNewline && !state.onNewline ) ) ) 
+					( handler.startsNewline && !state.onStartOfLine ) ) ) 
 			{
 				// Emit new line, if necessary
 				if ( ! requiredNLCount ) {
@@ -621,6 +744,7 @@ WSP._serializeToken = function ( state, token ) {
 			}
 			if ( requiredNLCount ) {
 				state.onNewline = true;
+				state.onStartOfLine = true;
 			}
 
 			// FIXME: This might modify not just the last content token in a
@@ -634,8 +758,11 @@ WSP._serializeToken = function ( state, token ) {
 				res = res.replace(/\n/g, ' ');
 			}
 			out += res;
-			if ( res !== '' && !handler.newlineTransparent ) {
+			if ( res !== '' ) {
 				state.onNewline = false;
+				if ( !handler.newlineTransparent ) {
+					state.onStartOfLine = false;
+				}
 			}
 			state.chunkCB( out );
 		} else if ( requiredNLCount > state.availableNewlineCount ) {
@@ -736,6 +863,7 @@ WSP._getDOMRTInfo = function( attribs ) {
 		return {};
 	}
 };
+
 
 // Quick HACK: define Node constants locally
 // https://developer.mozilla.org/en/nodeType

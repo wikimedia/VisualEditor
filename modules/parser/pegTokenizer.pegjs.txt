@@ -357,8 +357,7 @@ start
  * emitted in chunks per toplevelblock to avoid buffering the full document.
  */
 toplevelblock 
-  = & { blockStart = pos; return true; } !eof b:block {
-
+  = !eof b:block {
     // Clear the tokenizer's backtracking cache after matching each
     // toplevelblock. There won't be any backtracking as a document is just a
     // sequence of toplevelblocks, so the cache for previous toplevelblocks
@@ -379,9 +378,9 @@ toplevelblock
         if (bs.dataAttribs === undefined) {
             bs.dataAttribs = {};
         }
-        bs.dataAttribs.sourcePos = [blockStart, pos];
+        bs.dataAttribs.bsp = [pos0, pos];
     }
-
+    
     // Emit tokens for this toplevelblock. This feeds a chunk to the parser
     // pipeline.
     __parseArgs[2]( flatten( b ) );
@@ -454,7 +453,7 @@ paragraph
       return s1.concat(s2, /* [new TagTk('p')],*/ c); 
   }
 
-br = space* &newline { return new SelfclosingTagTk( 'br' ) }
+br = space* &newline { return new SelfclosingTagTk( 'br', [], {tsr: [pos0, pos]} ) }
 
 /*
  * Syntax stops: Avoid eating significant tokens for higher-level productions
@@ -517,6 +516,7 @@ h = & "=" // guard, to make sure '='+ will match.
      s:'='+ // moved in here to make s accessible to inner action
      & { return stops.inc('h'); }
      c:inlineline 
+     endTPos:({ return pos })
      e:'='+ 
      spc:(sp:space+ { return sp.join('') } / comment)*
      &eolf 
@@ -542,22 +542,20 @@ h = & "=" // guard, to make sure '='+ will match.
             }
         }
 
-        return [new TagTk( 'h' + level )]
-                .concat(c, [new EndTagTk( 'h' + level ), spc]);
+        return [new TagTk( 'h' + level, [], { tsr: [pos0, pos0+level] } )]
+                .concat(c, [
+                        new EndTagTk( 'h' + level, [], 
+                            { tsr: [endTPos, endTPos + level]} ), 
+                        spc
+                        ]);
       }
     / & { /* dp('nomatch exit h'); */ stops.dec('h'); return false } { return null }
     ) { return r }
 
-comments
-  = '<!--' c:comment_chars* ('-->' / eof)
-    cs:(space* newline space* cn:comment { return cn })* {
-        return [new CommentTk( c.join('') )].concat(cs);
-    }
-
 comment
   = '<!--' c:comment_chars* ('-->' / eof)
     {
-        return [new CommentTk( c.join('') )];
+        return [new CommentTk( c.join(''), { tsr: [pos0, pos] } )];
     }
 
 comment_chars
@@ -593,7 +591,8 @@ behavior_switch
     return [
         new TagTk(
             'behavior-switch',
-            [new KV('word', behavior)]
+            [new KV('word', behavior)],
+            { tsr: [pos0, pos] }
         )
     ];
 }
@@ -608,7 +607,7 @@ autolink
 
 urllink
   = target:url {
-      return [ new TagTk( 'urllink', [new KV('href', target)] ) ];
+      return [ new TagTk( 'urllink', [new KV('href', target)], { tsr: [pos0, pos] } ) ];
   }
 
 extlink
@@ -632,6 +631,7 @@ extlink
             if ( text === '' ) {
                 dataAttribs.gc = 1;
             }
+            dataAttribs.tsr = [pos0, pos];
             return [
                 new SelfclosingTagTk( 'extlink', [
                     new KV('href', target),
@@ -658,7 +658,8 @@ autoref
         new SelfclosingTagTk( 'extlink', [
            new KV('href', sprintf(base_urls[ref], identifier)),
            new KV('content', [ref, identifier].join(' '))
-        ] )
+        ],
+        {tsr: [pos0, pos]})
     ];
 }
 
@@ -679,7 +680,8 @@ isbn
            new KV('', 'Special:BookSources/' + isbn.replace(/[^\d]/g, '')),
            new KV('', 'ISBN ' + isbn),
            new KV('tail', ''),
-        ] )
+        ],
+        {tsr: [pos0, pos]})
     ];
 }
 
@@ -793,7 +795,7 @@ template
       // generically expanded. The TemplateHandler then needs to shift it out
       // again.
       params.unshift( { k: flatten( target ), v: [] } );
-      var obj = new SelfclosingTagTk( 'template', params );
+      var obj = new SelfclosingTagTk( 'template', params, {tsr: [pos0, pos]} );
       //console.warn( 'tokenizer template ' + pos + );
       //console.warn('template @' + pos + '::' + input.substr(pos, 40) );
       return obj;
@@ -817,7 +819,7 @@ tplarg
     "}}}" {
       name = flatten( name );
       params.unshift( new KV( name, '' ) );
-      var obj = new SelfclosingTagTk( 'templatearg', params );
+      var obj = new SelfclosingTagTk( 'templatearg', params, {tsr: [pos0, pos]} );
       //console.warn( 'tokenizer tplarg ' + JSON.stringify( obj, null, 2 ));
       //console.warn('template arg @' + pos + '::' + input.substr(pos, 40) );
       return obj;
@@ -915,34 +917,33 @@ template_param_text
   / & { stops.pop('table'); stops.pop('extlink'); return stops.dec('template'); }
 
 
+wikilink_content
+  = lcs:( pipe lt:link_text { return new KV( '', lt ); } )+ { 
+        return { pos: [pos0, pos], content: lcs };
+    }
+  / { 
+        return { pos: [pos0, pos], content: [] };
+    }
+
 // TODO: handle link prefixes as in al[[Razi]]
 wikilink
-  = & { return posStack.push('wikilink' , pos); }
-    "[[" 
+  = "[[" 
     ! url
     //target:link_target 
     // XXX: disallow pipe!
     target:wikilink_preprocessor_text
-    lcontent:( 
-               & { return posStack.push('lcontent' , pos); }
-               lcs:( pipe lt:link_text { return new KV( '', lt ); } )+ { 
-                   return { pos: posStack.pop('lcontent' , pos), content: lcs };
-               }
-            
-             / { 
-                 return { pos: posStack.pop('lcontent' , pos), content: [] };
-               }
-             )
+    lcontent:wikilink_content
     "]]" 
     // XXX In real MediaWiki, this is a language-dependent positive character
     // class. Can we work out a static negative class instead?
     // XXX: Exclude uppercase chars from non-latin languages too!
-    tail:( ![A-Z \t(),.:\n\r-] tc:text_char { return tc } )* {
+    tail:( ![A-Z \t(),.:\n\r-] tc:text_char { return tc } )* 
+  {
       var obj = new SelfclosingTagTk( 'wikilink' ),
           textTokens = [];
       obj.attribs.push( new KV('', target) );
       obj.dataAttribs = { 
-          sourcePos: posStack.pop( 'wikilink', pos ),
+          tsr: [pos0, pos],
           contentPos: lcontent.pos
       };
       // XXX: Point to object with path, revision and input information
@@ -959,7 +960,6 @@ wikilink
       //console.warn( "XXX:" + pp([obj].concat(textTokens, [new EndTagTk( 'a' )])) );
       return [obj];
   }
-  / ! { return posStack.pop( 'wikilink', pos ); }
 
 link_text
   = & { return stops.inc('linkdesc'); }
@@ -1006,7 +1006,7 @@ link_end = "]]"
  * bolds/italics and MediaWiki's special heuristics for apostrophes, which are
  * all not context free. */
 quote = "''" x:"'"* {
-	var res = new TagTk( 'mw-quote' ); // Will be consumed in token transforms
+	var res = new TagTk( 'mw-quote', [], { tsr: [pos0, pos] } ); // Will be consumed in token transforms
     res.value = "''" + x.join('');
     return res;
 }
@@ -1106,13 +1106,16 @@ img_attribute
 pre_indent 
   = pre_indent_in_tags
   / l:pre_indent_line ls:(sol pre_indent_line)* {
-      return [new TagTk( 'pre' )]
+      return [new TagTk( 'pre', [], { tsr: [pos0, pos0 + 1] } )]
                     .concat( [l], ls
                            , [new EndTagTk( 'pre' )]);
   }
 
 // An indented pre block that is surrounded with pre tags. The pre tags are
 // used directly.
+// XXX gwicke: check if the first line is not indented, and round-trip spaces;
+// possibly merge with the regular 'pre' production.
+// FIXME: fix tag end position
 pre_indent_in_tags
   = space+ // XXX: capture space for round-tripping
     "<pre" 
@@ -1124,7 +1127,7 @@ pre_indent_in_tags
     "</pre>"
   {   
     stops.dec('pre');
-    return [ new TagTk( 'pre', attribs ) ]
+    return [ new TagTk( 'pre', attribs, { tsr: [pos0, pos0] } ) ]
         .concat( l, flatten( ls ), [ new EndTagTk( 'pre' ) ] );
   }
   / & { return stops.dec('pre'); }
@@ -1150,8 +1153,9 @@ pre
     ("</pre>" / eof) {
         // return nowiki tags as well?
         //console.warn('inpre');
-        return [ new TagTk( 'pre', attribs, { stx: 'html' } ) ]
-                    .concat(ts, [ new EndTagTk( 'pre' ) ]);
+        // FIXME: end pos of start tag
+        return [ new TagTk( 'pre', attribs, { stx: 'html', tsr: [pos0, pos0 + 5] } ) ] 
+                    .concat(ts, [ new EndTagTk( 'pre', [], { tsr: [pos - 6, pos] } ) ]);
     }
   / "</pre>" { return "</pre>"; }
 
@@ -1176,16 +1180,20 @@ xmlish_tag = nowiki / generic_tag
 nowiki 
   = "<nowiki>" nc:nowiki_content "</nowiki>" { 
         //console.warn( 'full nowiki return: ' + pp(nc)); 
-        return [ new SelfclosingTagTk( 'meta', 
-                [
-                    {k: 'typeof', v: 'mw:tag'}, 
-                    {k: 'content', v: 'nowiki'} 
-                ])].concat( nc, [ 
+        return [ 
+            new SelfclosingTagTk( 'meta', 
+                    [
+                        {k: 'typeof', v: 'mw:tag'}, 
+                        {k: 'content', v: 'nowiki'} 
+                    ],
+                    { tsr: [pos0, pos0+8] } )
+        ].concat( nc, [ 
                     new SelfclosingTagTk( 'meta', 
                     [
                         {k: 'typeof', v: 'mw:tag'}, 
                         {k: 'content', v: '/nowiki'} 
-                    ] ) 
+                    ],
+                    { tsr: [pos - 9, pos] }) 
                 ] ); 
     }
   / "<nowiki>" { 
@@ -1256,7 +1264,6 @@ nonhtml_endtag
 // following paragraphs
 generic_tag
   = "<" 
-    & { tagStartPos = pos; return true; } // remember the start position of this tag
     end:"/"? name:[0-9a-zA-Z]+ 
     attribs:generic_newline_attribute* 
     ( space / newline ) *
@@ -1274,7 +1281,7 @@ generic_tag
         if ( res.dataAttribs === undefined ) {
             res.dataAttribs = {};
         }
-        res.dataAttribs.sourceTagPos = [tagStartPos - 1, pos];
+        res.dataAttribs.tsr = [pos0, pos];
         res.dataAttribs.stx = 'html';
         return res;
     }
@@ -1378,6 +1385,7 @@ block_tag
         } else {
             res = new TagTk( name, attribs );
         }
+        res.dataAttribs.tsr = [pos0, pos];
         res.dataAttribs.stx = 'html';
         return [res];
     }
@@ -1394,7 +1402,7 @@ li = bullets:list_char+
 {
     if ( c === '' )
         c = [];
-    var li = new TagTk( 'listItem' );
+    var li = new TagTk( 'listItem', [], { tsr: [pos0, pos0 + bullets.length] }  );
     li.bullets = bullets;
     return [ li, c ];
 }
@@ -1404,7 +1412,7 @@ dtdd
     ";"
     & {return stops.inc('colon');}
     c:inlineline
-    ":"
+    cpos:(":" { return pos })
     // Fortunately dtdds cannot be nested, so we can simply set the flag
     // back to 0 to disable it.
     & { stops.counters['colon'] = 0; return true;}
@@ -1421,9 +1429,9 @@ dtdd
         //}
         
         bullets = bullets.join('');
-        var li = new TagTk( 'listItem' );
+        var li = new TagTk( 'listItem', [], { tsr: [pos0, pos0 + bullets.length] }   );
         li.bullets = bullets + ";";
-        var li2 = new TagTk( 'listItem' );
+        var li2 = new TagTk( 'listItem', [],  { tsr: [cpos, cpos+1] }   );
         li2.bullets = bullets + ":";
 
         return [ li ].concat( c, [ li2 ], d || new NlTk() );
@@ -1476,9 +1484,10 @@ table_start_tag
   = "{" pipe
     ta:generic_attribute* 
     space*
+    tsEndPos:({return pos})
     te:table_end_tag? // can occur somewhere in the middle of the line too
     { 
-        var toks = [ new TagTk( 'table' ) ];
+        var toks = [ new TagTk( 'table', [], { tsr: [pos0, tsEndPos] } ) ];
         if ( ta )
             toks[0].attribs = ta;
         if ( te )
@@ -1487,9 +1496,10 @@ table_start_tag
     }
 
 table_caption_tag
-  = pipe "+" 
+  = pipe "+"
+    tcStartPos:({return pos;})
     c:inline* { 
-        return [ new TagTk( 'caption' )]
+        return [ new TagTk( 'caption', [], {tsr: [pos0, tcStartPos]} )]
                     .concat( c, [ new EndTagTk( 'caption' ) ]);
     }
 
@@ -1499,13 +1509,14 @@ table_row_tag
     pipe "-"
     a:generic_attribute*
     space*
+    tagEndPos:({return pos})
     // handle tables with missing table cells after a row
     td:( s:sol !( pipe / "!" ) tdt:table_data_tag { return s.concat(tdt); } )?
     { 
         // We rely on our tree builder to close the row as needed. This is
         // needed to support building tables from fragment templates with
         // individual cells or rows.
-        var trToken = [ new TagTk( 'tr', a ) ];
+        var trToken = [ new TagTk( 'tr', a, {tsr: [pos0, tagEndPos]} ) ];
         if ( !td ) {
             return trToken;
         } else {
@@ -1527,13 +1538,14 @@ table_data_tag
     a:table_cell_args?
     //& { console.warn("past attrib, pos=" + pos + input.substr(pos,10)); return true; }
     // use inline_breaks to break on tr etc
+    tagEndPos:({return pos})
     td:nested_block* 
     { 
         if ( a === '' ) {
             a = [];
         }
         //console.warn("table data result: " + pp(td) + ", attribs: " + pp(a));
-        return [ new TagTk( 'td', a )]
+        return [ new TagTk( 'td', a, {tsr: [pos0, tagEndPos]} )]
                     .concat( td );
     }
 
@@ -1548,18 +1560,19 @@ table_heading_tags
 
 table_heading_tag
   = a:table_cell_args?
+    tagEndPos:({return pos})
     c:nested_block* {
          //console.warn( 'table_heading_tag: ' + pp( [a, c] ) );
          if ( a === '' ) {
              a = [];
          }
-         return [ new TagTk( 'th', a ) ]
+         return [ new TagTk( 'th', a, {tsr: [pos0, tagEndPos]} ) ]
 						.concat( c );
      }
 
 table_end_tag
   = space* pipe "}" { 
-      var tok = [new EndTagTk( 'table' )];
+      var tok = [new EndTagTk( 'table', [], { tsr: [pos0, pos] } )];
 	  return tok;
   }
 
@@ -1571,129 +1584,6 @@ table_cell_args
         return as;
     }
     / & { return stops.dec('tableCellArg'); }
-
-
-
-/* Tables, full-table version (no support for table fragments from templates) 
- * Only left here for comparison purposes with the above productions. Remove
- * when those work as intended! */
-table 
-  = tas:table_start space* c:table_caption? b:table_body? te:table_end { 
-      var res = new TagTk( 'table' );
-      var body = b !== '' ? b : [];
-      //dp("body: " + pp(body));
-      if (tas.length > 0) {
-          // FIXME: actually parse and build structure
-          //res.attribs = [new KV('data-unparsed', tas.join(''))];
-          res.attribs = tas;
-      }
-
-      if (c != '') {
-          var caption = [ new TagTk( 'caption' ) ]
-                        .concat(c, [new EndTagTk( 'caption' )], te);
-      } else {
-          var caption = [];
-      }
-      //dp(pp(res));
-
-      return [res].concat(caption, body, [new EndTagTk( 'table' )]);
-  }
-
-table_start 
-  = "{" pipe
-    res:(
-        & { stops.push('table', true); return true; }
-        ta:generic_attribute* 
-        { 
-            //dp("table_start " + pp(ta) + ", pos:" + pos);
-            return ta;
-        }
-        / & { stops.pop('table'); return false; } { return null; }
-    ) { return res }
-
-table_caption 
-  = n:newlineToken
-    pipe "+" c:nested_block* { 
-        return n.concat(c);
-    }
-
-table_body 
-  = //& { dp("table_body enter"); return true; }
-    firstrow:table_firstrow otherrows:table_row* { 
-      /* dp('table first and otherrows: ' 
-       * + pp([firstrow].concat(otherrows))); */
-      return [firstrow].concat(otherrows); 
-  }
-  / otherrows:table_row* {
-      //dp('table otherrows: ' + pp(otherrows));
-      return otherrows;
-  }
-
-table_firstrow 
-  = td:(table_data / table_heading)+ { 
-      //dp('firstrow: ' + pp(td));
-      return [ new TagTk( 'tr' )]
-             .concat(td, [ new EndTagTk( 'tr' )]);
-  }
-
-table_row 
-  = //& { dp("table row enter"); return true; }
-  n:newlineToken
-    pipe "-" 
-    a:(as:generic_attribute+ space* pipe !pipe { return as } )?
-    space* 
-    td:(table_data / table_heading)* { 
-        return n.concat([ new TagTk( 'tr' )]
-					   , td, [ new EndTagTk( 'tr' )]);
-    }
-
-table_data 
-  = //& { dp("table_data enter, pos=" + pos + input.substr(pos,10)); return true; }
-	n:(pipe_pipe { return [] } / nt:newlineToken (pipe / !'!') { return nt }) 
-    ! [}+-]
-    //& { dp('before attrib, pos=' + pos); return true; }
-    a:(as:generic_attribute+ space* end_pipe { return as } )?
-    //& { dp('past attrib, pos=' + pos); return true; }
-    // use inline_breaks to break on tr etc
-    td:(
-        //& { dp("table_data 2, pos=" + pos + input.substr(pos,10)); return true; }
-        b:nested_block+ { return b }
-       )* { 
-        if ( a == '' ) {
-            a = [];
-        }
-        //dp("table data result: " + pp(td) + ", attribts: " + pp(a));
-        return n.concat( [ new TagTk( 'td',  a ) ]
-					   , td, [ new EndTagTk( 'td' ) ] );
-    }
-
-table_heading
-  = n:("!!" { return [] } / nl:sol "!" { return nl }) 
-    a:(as:generic_attribute+ end_pipe { return as } )?
-     c:inline {
-         if ( a == '' ) {
-             a = [];
-         }
-         return n.concat( [ new TagTk( 'th', a )]
-						, c, [ new EndTagTk( 'th' ) ]);
-     }
-
-thtd_attribs
-  // In particular, do not match [|\n]
-  = a:(text / ! inline_breaks c:[="':;/,. -] { return c } )+ end_pipe {
-    return a;
-  }
-
-
-table_end 
-  = nt:newlineToken? ( pipe "}" / eof ) { 
-	  stops.pop('table'); 
-	  if(nt) 
-		  return nt;
-	  else
-		  return [];
-  }
-
 
 
 /*******************************************************************
@@ -1808,14 +1698,17 @@ sol
     )?
     // Eat includeonly/noinclude at start of line, so that start-of-line
     // syntax after it still matches
-    ni:(space* "<" c:"/"? t:("includeonly" / "noinclude") ">" {return [c, t]} )?
+    ni:( niStart:({return pos}) 
+         space* 
+        "<" c:"/"? t:("includeonly" / "noinclude") 
+        ">" {return [c, t, [niStart, pos]]} )?
     {
         var niToken = [];
         if ( ni !== '') {
             if ( ni[0] === '/' ) {
-                niToken = [new EndTagTk( ni[1] )];
+                niToken = [new EndTagTk( ni[1], [], { tsr: ni[2] } )];
             } else {
-                niToken = [new TagTk( ni[1] )];
+                niToken = [new TagTk( ni[1], [], { tsr: ni[2] } )];
             }
         }
 
@@ -1851,7 +1744,8 @@ noinclude
     "</noinclude>"
     {
         stops.dec('noinclude');
-        return [new TagTk('noinclude')].concat(i, [new EndTagTk('noinclude')]);
+        return [new TagTk('noinclude', [], {tsr: [pos0, pos0+13]})]
+            .concat(i, [new EndTagTk('noinclude', [], {tsr: [pos - 14, pos]})]);
     }
   / & { return stops.dec('noinclude'); }
 
@@ -1862,7 +1756,8 @@ includeonly
     "</includeonly>"
     {
         stops.dec('includeonly');
-        return [new TagTk('includeonly')].concat(i, [new EndTagTk('includeonly')]);
+        return [new TagTk('includeonly', [], {tsr: [pos0, pos0+13]})]
+            .concat(i, [new EndTagTk('includeonly', [], {tsr: [pos - 14, pos]})]);
     }
   / & { return stops.dec('includeonly'); }
 
@@ -1873,7 +1768,8 @@ onlyinclude
     "</onlyinclude>"
     {
         stops.dec('onlyinclude');
-        return [new TagTk('onlyinclude')].concat(i, [new EndTagTk('onlyinclude')]);
+        return [new TagTk('onlyinclude', [], {tsr: [pos0, pos0+13]})]
+            .concat(i, [new EndTagTk('onlyinclude', [], {tsr: [pos - 14, pos]})]);
     }
   / & { return stops.dec('onlyinclude'); }
 
