@@ -335,11 +335,29 @@ ve.debounce = function( func, wait, immediate ) {
 /**
  * Gets a localized message.
  *
+ * If mw.msg isn't available, a basic implementation is used instead.
+ *
  * @static
  * @method
  * @param {String} key Message key
  * @param {Mixed} [...] Message parameters
  */
 ve.msg = typeof mw === 'object' ? mw.msg : function( key ) {
-	return '(' + key + ')';
+	if ( key in ve.msg.messages ) {
+		// Simple message parser, does $N replacement and nothing else.
+		var parameters = Array.prototype.slice.call( arguments, 0 );
+		return ve.msg.messages[key].replace( /\$(\d+)/g, function ( str, match ) {
+			var index = parseInt( match, 10 ) - 1;
+			return parameters[index] !== undefined ? parameters[index] : '$' + match;
+		} );
+	}
+	return '<' + key + '>';
 };
+
+/**
+ * Map of message keys and values used by the mw.msg fallback.
+ *
+ * @static
+ * @member
+ */
+ve.msg.messages = {};

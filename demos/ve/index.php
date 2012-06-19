@@ -89,6 +89,12 @@ include( '../../modules/sandbox/base.php' );
 		<script src="../../modules/jquery/jquery.js"></script>
 		<script src="../../modules/jquery/jquery.json.js"></script>
 		<script src="../../modules/ve2/ve.js"></script>
+		<script>
+		<?php
+			include( dirname( dirname( dirname( __FILE__ ) ) ) . '/VisualEditor.i18n.php' );
+			echo 've.msg.messages = ' . json_encode( $messages['en'] );
+		?>
+		</script>
 		<script src="../../modules/ve2/ve.debug.js"></script>
 		<script src="../../modules/ve2/ve.EventEmitter.js"></script>
 		<script src="../../modules/ve2/ve.Factory.js"></script>
