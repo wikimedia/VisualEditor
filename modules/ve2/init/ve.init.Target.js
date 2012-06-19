@@ -3,14 +3,14 @@
  *
  * @class
  * @constructor
- * @param {String} title Page title of target
+ * @param {String} pageName Name of target page
  */
-ve.init.Target = function( title ) {
+ve.init.Target = function( pageName ) {
 	// Inheritance
 	ve.EventEmitter.call( this );
 
 	// Properties
-	this.title = title;
+	this.pageName = pageName;
 	this.editToken = mw.user.tokens.get( 'editToken' );
 	this.apiUrl = mw.util.wikiScript( 'api' );
 	this.modules = ['ext.visualEditor.core'];
@@ -161,7 +161,7 @@ ve.init.Target.prototype.load = function( callback ) {
 		'data': {
 			'action': 've-parsoid',
 			'paction': 'parse',
-			'page': this.title,
+			'page': this.pageName,
 			'format': 'json'
 		},
 		'dataType': 'json',
@@ -211,7 +211,7 @@ ve.init.Target.prototype.save = function( dom, options, callback ) {
 			'format': 'json',
 			'action': 've-parsoid',
 			'paction': 'save',
-			'page': this.title,
+			'page': this.pageName,
 			'html': $( dom ).html(),
 			'token': this.editToken,
 			'summary': options.summary,
