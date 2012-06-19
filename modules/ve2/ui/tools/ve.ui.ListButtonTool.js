@@ -62,21 +62,22 @@ ve.ui.ListButtonTool.prototype.unlist = function( node ){
 		doc = model.getDocument(),
 		selection = model.getSelection(),
 		siblings = doc.selectNodes( selection, 'siblings'),
-		outerRange = null,
+		listNode,
 		tx;
 
-	if ( siblings.length > 1 ){
-		outerRange = new ve.Range(
-			siblings[0].nodeOuterRange.from,
-			siblings[siblings.length-1].nodeOuterRange.to
-		);
-	} else {
-		outerRange = ( siblings[0].node['parent'].getOuterRange() );
+	if ( siblings.length === 0 ) {
+		return ;
+	}
+	
+	listNode = siblings[0].node;
+	// Get the parent list node
+	while ( listNode && listNode.getType() !== 'list' ) {
+		listNode = listNode.getParent();
 	}
 
 	tx = ve.dm.Transaction.newFromWrap(
 		doc,
-		outerRange,
+		listNode.getRange(),
 		[ { 'type': 'list' } ],
 		[],
 		[ { 'type': 'listItem' } ],
@@ -86,6 +87,7 @@ ve.ui.ListButtonTool.prototype.unlist = function( node ){
 	model.change( tx );
 
 };
+
 ve.ui.ListButtonTool.prototype.onClick = function() {
 	this.toolbar.surfaceView.model.breakpoint();
 	if ( !this.$.hasClass( 'es-toolbarButtonTool-down' ) ) {
@@ -97,6 +99,32 @@ ve.ui.ListButtonTool.prototype.onClick = function() {
 };
 
 ve.ui.ListButtonTool.prototype.updateState = function( annotations, nodes ) {
+
+	function areListItemsOfStyle( nodes, style ) {
+		var parent;
+		for ( var i=0; i < nodes.length; i++ ) {
+			parent = nodes[i].getParent();
+			if ( !parent || parent.getType() !== 'listItem' ) {
+				return false;
+			}
+			if (
+				parent.getType() === 'listItem' //&&
+				//parent.getAttribute('styles') === style
+			) {
+				console.log ('styles', parent.getAttribute('styles'));
+				//return true;
+			}
+
+		}
+		return true;
+	}
+	console.log (this.name);
+	if ( areListItemsOfStyle( nodes, this.name ) ) {
+		this.$.addClass( 'es-toolbarButtonTool-down' );
+	} else {
+		this.$.removeClass( 'es-toolbarButtonTool-down' );
+	}
+
 	/*
 	 * XXX: Disabled for now because lists work differently now (they are structured, not flat)
 	 *
@@ -116,6 +144,7 @@ ve.ui.ListButtonTool.prototype.updateState = function( annotations, nodes ) {
 	}
 
 	this.nodes = nodes;
+
 	if ( areListItemsOfStyle( this.nodes, this.name ) ) {
 		this.$.addClass( 'es-toolbarButtonTool-down' );
 	} else {
