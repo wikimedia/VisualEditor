@@ -9,30 +9,36 @@ class ApiVisualEditor extends ApiBase {
 		$params = $this->extractRequestParams();
 		$page = Title::newFromText( $params['page'] );
 
-		if ($params['paction'] === 'parse') {
-			$parsed = Http::get(
-				$parsoid.$page
-			);
+		if ( $params['paction'] === 'parse' ) {
+			if ( $page->exists() ) {
+				$parsed = Http::get(
+					$parsoid . $page->getPrefixedDBkey()
+				);
 
-			if ( $parsed ) {
-				$result = array(
-					'result' => 'success',
-					'parsed' => $parsed
-				);
+				if ( $parsed ) {
+					$result = array(
+						'result' => 'success',
+						'parsed' => $parsed
+					);
+				} else {
+					$result = array(
+						'result' => 'error'
+					);
+				}
 			} else {
-				$result = array(
-					'result' => 'error'
-				);
+				$result = array( 'result' => 'success', 'parsed' => '' );
 			}
-		} elseif ($params['paction'] === 'save') {
+		} elseif ( $params['paction'] === 'save' ) {
 			// API Posts HTML to Parsoid Service, receives Wikitext,
 			// API Saves Wikitext to page.
-			$wikitext = Http::post( $parsoid.$page, array( 'postData' => array( 'content' => $params['html'] ) ) );
+			$wikitext = Http::post( $parsoid . $page->getPrefixedDBkey(),
+				array( 'postData' => array( 'content' => $params['html'] ) )
+			);
 
 			if ( $wikitext ) {
 
 				/* Save Page */
-				$flags = $params['minor'] === 'true' ? EDIT_MINOR : EDIT_UPDATE;
+				$flags = $params['minor'] === 'true' ? EDIT_MINOR : 0;
 
 				$wikiPage = WikiPage::factory( $page );
 				$status = $wikiPage->doEdit( 
