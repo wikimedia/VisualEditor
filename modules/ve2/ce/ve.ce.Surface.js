@@ -248,6 +248,20 @@ ve.ce.Surface.prototype.onKeyPress = function( e ) {
 			this.startPolling();
 		}
 	}
+
+	if ( selection.getLength() > 0 ) {
+		this.stopPolling();
+		this.model.change(
+			ve.dm.Transaction.newFromRemoval(
+				this.documentView.model,
+				selection
+			),
+			new ve.Range( selection.start )
+		);
+		this.clearPollData();
+		this.startPolling();
+	}
+
 };
 
 ve.ce.Surface.prototype.startPolling = function( async ) {
@@ -504,9 +518,9 @@ ve.ce.Surface.prototype.handleEnter = function() {
 		return true;
 	} );
 
-	this.model.change( 
-		ve.dm.Transaction.newFromInsertion( this.documentView.model, selection.from, stack ),
-		new ve.Range ( this.model.getDocument().getRelativeContentOffset( selection.from, 1 )
+	this.model.change( ve.dm.Transaction.newFromInsertion( this.documentView.model, selection.from, stack ) );
+	this.model.change( null, new ve.Range(
+		this.model.getDocument().getRelativeContentOffset( selection.from, 1 )
 	) );
 
 	this.clearPollData();
