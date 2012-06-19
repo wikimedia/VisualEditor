@@ -36,16 +36,16 @@ ve.init.Target = function( pageName ) {
  * @method
  * @param {Object} response XHR Response object
  * @param {String} status Text status message
- * @emits loadError (message)
+ * @emits loadError (null, message, null)
  */
 ve.init.Target.onLoad = function( response, status ) {
 	var data = response['ve-parsoid'];
 	if ( !data ) {
 		this.loading = false;
-		this.emit( 'loadError', 'Invalid response from server' );
+		this.emit( 'loadError', null, 'Invalid response from server', null );
 	} else if ( typeof data.parsed !== 'string' ) {
 		this.loading = false;
-		this.emit( 'loadError', 'Invalid HTML content in response from server' );
+		this.emit( 'loadError', null, 'Invalid HTML content in response from server', null );
 	} else {
 		this.dom = $( '<div></div>' ).html( data.parsed )[0];
 		// Everything worked, the page was loaded, continue as soon as the module is ready
@@ -80,7 +80,7 @@ ve.init.Target.onReady = function() {
  * @param {Object} response XHR Response object
  * @param {String} status Text status message
  * @param {Mixed} error Thrown exception or HTTP error string
- * @emits load (dom)
+ * @emits loadError (response, text, exception)
  */
 ve.init.Target.onLoadError = function( response, text, exception ) {
 	this.loading = false;
@@ -97,16 +97,17 @@ ve.init.Target.onLoadError = function( response, text, exception ) {
  * @param {Object} response XHR Response object
  * @param {String} status Text status message
  * @emits save (html)
+ * @emits saveError (null, message, null)
  */
 ve.init.Target.onSave = function( response, status ) {
 	this.saving = false;
 	var data = response['ve-parsoid'];
 	if ( !data ) {
-		this.emit( 'saveError', 'Invalid response from server' );
+		this.emit( 'saveError', null, 'Invalid response from server', null );
 	} else if ( data.result !== 'success' ) {
-		this.emit( 'saveError', 'Unsuccessful request: ' + data.result );
+		this.emit( 'saveError', null, 'Unsuccessful request: ' + data.result, null );
 	} else if ( typeof data.content !== 'string' ) {
-		this.emit( 'saveError', 'Invalid HTML content in response from server' );
+		this.emit( 'saveError', null, 'Invalid HTML content in response from server', null );
 	} else {
 		this.emit( 'save', data.content );
 	}
@@ -122,7 +123,7 @@ ve.init.Target.onSave = function( response, status ) {
  * @param {Object} data HTTP Response object
  * @param {String} status Text status message
  * @param {Mixed} error Thrown exception or HTTP error string
- * @emits save (html)
+ * @emits saveError (response, status, error)
  */
 ve.init.Target.onSaveError = function( response, status, error ) {
 	this.saving = false;
