@@ -131,13 +131,13 @@ ve.ui.ListButtonTool.prototype.updateState = function( annotations, nodes ) {
 ve.ui.Tool.tools.number = {
 	'constructor': ve.ui.ListButtonTool,
 	'name': 'number',
-	'title': mw.msg( 'visualeditor-listbutton-number-tooltip' ),
+	'title': ve.msg( 'visualeditor-listbutton-number-tooltip' ),
 };
 
 ve.ui.Tool.tools.bullet = {
 	'constructor': ve.ui.ListButtonTool,
 	'name': 'bullet',
-	'title': mw.msg( 'visualeditor-listbutton-bullet-tooltip' ),
+	'title': ve.msg( 'visualeditor-listbutton-bullet-tooltip' ),
 };
 
 /* Inheritance */

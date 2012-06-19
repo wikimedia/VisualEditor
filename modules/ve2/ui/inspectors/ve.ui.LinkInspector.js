@@ -13,10 +13,10 @@ ve.ui.LinkInspector = function( toolbar, context ) {
 		.prependTo( this.$ );
 	this.$.prepend(
 		$( '<div class="es-inspector-title"></div>' )
-			.text( mw.msg( 'visualeditor-linkinspector-title' ) )
+			.text( ve.msg( 'visualeditor-linkinspector-title' ) )
 	);
 	this.$locationLabel = $( '<label></label>' )
-		.text( mw.msg( 'visualeditor-linkinspector-label-pagetitle' ) )
+		.text( ve.msg( 'visualeditor-linkinspector-label-pagetitle' ) )
 		.appendTo( this.$form );
 	this.$locationInput = $( '<input type="text">' ).appendTo( this.$form );
 	this.initialValue = null;

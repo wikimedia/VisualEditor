@@ -59,13 +59,13 @@ ve.ui.HistoryButtonTool.prototype.isButtonEnabled = function( name ) {
 ve.ui.Tool.tools.undo = {
 	'constructor': ve.ui.HistoryButtonTool,
 	'name': 'undo',
-	'title': mw.msg( 'visualeditor-historybutton-undo-tooltip' )
+	'title': ve.msg( 'visualeditor-historybutton-undo-tooltip' )
 };
 
 ve.ui.Tool.tools.redo = {
 	'constructor': ve.ui.HistoryButtonTool,
 	'name': 'redo',
-	'title': mw.msg( 'visualeditor-historybutton-redo-tooltip' )
+	'title': ve.msg( 'visualeditor-historybutton-redo-tooltip' )
 };
 
 /* Inhertiance */

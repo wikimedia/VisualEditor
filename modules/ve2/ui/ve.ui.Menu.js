@@ -63,7 +63,7 @@ ve.ui.Menu.prototype.addItem = function( item, before ) {
 		if ( item.label ) {
 			item.$ = $( '<div class="es-menuView-item"></div>' )
 				.attr( 'rel', item.name )
-				// TODO: this should take a labelmsg instead and call mw.msg()
+				// TODO: this should take a labelmsg instead and call ve.msg()
 				.append( $( '<span></span>' ).text( item.label ) );
 		} else {
 			// No label, must be a break

@@ -127,7 +127,7 @@ ve.init.ViewPageTarget.prototype.deactivate = function( override ) {
 		if (
 			override ||
 			!this.surface.getModel().getHistory().length ||
-			confirm( mw.msg( 'visualeditor-viewpage-savewarning' ) )
+			confirm( ve.msg( 'visualeditor-viewpage-savewarning' ) )
 		) {
 			this.deactivating = true;
 			// User interface changes
@@ -362,10 +362,10 @@ ve.init.ViewPageTarget.prototype.setupSkinTabs = function() {
 		mw.util.addPortletLink(
 			'p-views',
 			'#',
-			mw.msg( action ), // 'edit' or 'create'
+			ve.msg( action ), // 'edit' or 'create'
 			'ca-edit',
-			mw.msg( 'tooltip-ca-edit' ),
-			mw.msg( 'accesskey-ca-edit' ),
+			ve.msg( 'tooltip-ca-edit' ),
+			ve.msg( 'accesskey-ca-edit' ),
 			'#ca-history'
 		);
 		// If there isn't an edit tab, there's a view source tab we need to replace with edit source
@@ -386,7 +386,7 @@ ve.init.ViewPageTarget.prototype.setupSkinTabs = function() {
 		mw.util.addPortletLink(
 			'p-cactions',
 			this.editUri,
-			mw.msg( 'visualeditor-ca-editsource' ),
+			ve.msg( 'visualeditor-ca-editsource' ),
 			'ca-editsource'
 		);
 	}
@@ -438,7 +438,7 @@ ve.init.ViewPageTarget.prototype.setupToolbarSaveButton = function() {
 	this.$toolbarSaveButton
 		.append(
 			$( '<span class="ve-init-viewPageTarget-toolbar-saveButton-label"></span>' )
-				.text( mw.msg( 'savearticle' ) )
+				.text( ve.msg( 'savearticle' ) )
 		)
 		.append( $( '<span class="ve-init-viewPageTarget-toolbar-saveButton-icon"></span>' ) )
 		.bind( {
@@ -484,22 +484,22 @@ ve.init.ViewPageTarget.prototype.setupSaveDialog = function() {
 	this.$saveDialog
 		.html( ve.init.ViewPageTarget.saveDialogTemplate )
 		.find( '.ve-init-viewPageTarget-saveDialog-title' )
-			.text( mw.msg( 'tooltip-save' ) )
+			.text( ve.msg( 'tooltip-save' ) )
 			.end()
 		.find( '.ve-init-viewPageTarget-saveDialog-closeButton' )
 			.click( ve.proxy( this.onSaveDialogCloseButtonClick, this ) )
 			.end()
 		.find( '.ve-init-viewPageTarget-saveDialog-editSummary-label' )
-			.text( mw.msg( 'summary' ) )
+			.text( ve.msg( 'summary' ) )
 			.end()
 		.find( '.ve-init-viewPageTarget-saveDialog-minorEdit-label' )
-			.text( mw.msg( 'minoredit' ) )
+			.text( ve.msg( 'minoredit' ) )
 			.end()
 		.find( '#ve-init-viewPageTarget-saveDialog-watchList' )
 			.prop( 'checked', mw.config.get( 'wgVisualEditor' ).isPageWatched )
 			.end()
 		.find( '.ve-init-viewPageTarget-saveDialog-watchList-label' )
-			.text( mw.msg( 'watchthis' ) )
+			.text( ve.msg( 'watchthis' ) )
 			.end()
 		.find( '.ve-init-viewPageTarget-saveDialog-saveButton' )
 			.bind( {
@@ -513,7 +513,7 @@ ve.init.ViewPageTarget.prototype.setupSaveDialog = function() {
 			} )
 			.end()
 		.find( '.ve-init-viewPageTarget-saveDialog-saveButton-label' )
-			.text( mw.msg( 'savearticle' ) )
+			.text( ve.msg( 'savearticle' ) )
 			.end()
 		.find( '.ve-init-viewPageTarget-saveDialog-license' )
 			// FIXME license text is hardcoded English

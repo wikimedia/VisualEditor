@@ -63,7 +63,7 @@ ve.ui.AnnotationButtonTool.prototype.updateState = function( annotations, nodes 
 ve.ui.Tool.tools.bold = {
 	'constructor': ve.ui.AnnotationButtonTool,
 	'name': 'bold',
-	'title': mw.msg( 'visualeditor-annotationbutton-bold-tooltip' ),
+	'title': ve.msg( 'visualeditor-annotationbutton-bold-tooltip' ),
 	'data': {
 		'annotation': { 'type': 'textStyle/bold' }
 	}
@@ -72,7 +72,7 @@ ve.ui.Tool.tools.bold = {
 ve.ui.Tool.tools.italic = {
 	'constructor': ve.ui.AnnotationButtonTool,
 	'name': 'italic',
-	'title': mw.msg( 'visualeditor-annotationbutton-italic-tooltip' ),
+	'title': ve.msg( 'visualeditor-annotationbutton-italic-tooltip' ),
 	'data': {
 		'annotation': { 'type': 'textStyle/italic' }
 	}
@@ -81,7 +81,7 @@ ve.ui.Tool.tools.italic = {
 ve.ui.Tool.tools.link = {
 	'constructor': ve.ui.AnnotationButtonTool,
 	'name': 'link',
-	'title': mw.msg( 'visualeditor-annotationbutton-link-tooltip' ),
+	'title': ve.msg( 'visualeditor-annotationbutton-link-tooltip' ),
 	'data': {
 		'annotation': { 'type': 'link/wikiLink', 'data': { 'title': '' } },
 		'inspector': 'link'

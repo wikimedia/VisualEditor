@@ -13,48 +13,48 @@ ve.FormatDropdownTool = function( toolbar, name, title ) {
 	ve.ui.DropdownTool.call( this, toolbar, name, title, [
 		{
 			'name': 'paragraph',
-			'label': mw.msg( 'visualeditor-formatdropdown-format-paragraph' ),
+			'label': ve.msg( 'visualeditor-formatdropdown-format-paragraph' ),
 			'type' : 'paragraph'
 		},
 		{
 			'name': 'heading-1',
-			'label': mw.msg( 'visualeditor-formatdropdown-format-heading1' ),
+			'label': ve.msg( 'visualeditor-formatdropdown-format-heading1' ),
 			'type' : 'heading',
 			'attributes': { 'level': 1 }
 		},
 		{
 			'name': 'heading-2',
-			'label': mw.msg( 'visualeditor-formatdropdown-format-heading2' ),
+			'label': ve.msg( 'visualeditor-formatdropdown-format-heading2' ),
 			'type' : 'heading',
 			'attributes': { 'level': 2 }
 		},
 		{
 			'name': 'heading-3',
-			'label': mw.msg( 'visualeditor-formatdropdown-format-heading3' ),
+			'label': ve.msg( 'visualeditor-formatdropdown-format-heading3' ),
 			'type' : 'heading',
 			'attributes': { 'level': 3 }
 		},
 		{
 			'name': 'heading-4',
-			'label': mw.msg( 'visualeditor-formatdropdown-format-heading4' ),
+			'label': ve.msg( 'visualeditor-formatdropdown-format-heading4' ),
 			'type' : 'heading',
 			'attributes': { 'level': 4 }
 		},
 		{
 			'name': 'heading-5',
-			'label': mw.msg( 'visualeditor-formatdropdown-format-heading5' ),
+			'label': ve.msg( 'visualeditor-formatdropdown-format-heading5' ),
 			'type' : 'heading',
 			'attributes': { 'level': 5 }
 		},
 		{
 			'name': 'heading-6',
-			'label': mw.msg( 'visualeditor-formatdropdown-format-heading6' ),
+			'label': ve.msg( 'visualeditor-formatdropdown-format-heading6' ),
 			'type' : 'heading',
 			'attributes': { 'level': 6 }
 		},
 		{
 			'name': 'preformatted',
-			'label': mw.msg( 'visualeditor-formatdropdown-format-preformatted' ),
+			'label': ve.msg( 'visualeditor-formatdropdown-format-preformatted' ),
 			'type' : 'preformatted'
 		}
 	] );
@@ -115,7 +115,7 @@ ve.FormatDropdownTool.prototype.updateState = function( annotations, nodes ) {
 ve.ui.Tool.tools.format = {
 	'constructor': ve.FormatDropdownTool,
 	'name': 'format',
-	'title': mw.msg( 'visualeditor-formatdropdown-tooltip' )
+	'title': ve.msg( 'visualeditor-formatdropdown-tooltip' )
 };
 
 /* Inheritance */

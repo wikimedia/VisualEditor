@@ -50,7 +50,7 @@ ve.ui.ClearButtonTool.prototype.updateState = function( annotations ) {
 ve.ui.Tool.tools.clear = {
 	'constructor': ve.ui.ClearButtonTool,
 	'name': 'clear',
-	'title': mw.msg( 'visualeditor-clearbutton-tooltip' )
+	'title': ve.msg( 'visualeditor-clearbutton-tooltip' )
 };
 
 /* Inheritance */

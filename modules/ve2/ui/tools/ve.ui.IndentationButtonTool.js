@@ -101,13 +101,13 @@ ve.ui.IndentationButtonTool.prototype.updateState = function( annotations, nodes
 ve.ui.Tool.tools.indent = {
 	'constructor': ve.ui.IndentationButtonTool,
 	'name': 'indent',
-	'title': mw.msg( 'visualeditor-indentationbutton-indent-tooltip' ),
+	'title': ve.msg( 'visualeditor-indentationbutton-indent-tooltip' ),
 };
 
 ve.ui.Tool.tools.outdent = {
 	'constructor': ve.ui.IndentationButtonTool,
 	'name': 'outdent',
-	'title': mw.msg( 'visualeditor-indentationbutton-outdent-tooltip' ),
+	'title': ve.msg( 'visualeditor-indentationbutton-outdent-tooltip' ),
 };
 
 /* Inheritance */

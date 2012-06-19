@@ -314,16 +314,32 @@ ve.dir = function( obj ) {
  * @static
  * @method
  */
-ve.debounce = function(func, wait, immediate) {
+ve.debounce = function( func, wait, immediate ) {
 	var timeout;
 	return function() {
 		var context = this, args = arguments;
 		var later = function() {
 			timeout = null;
-			if (!immediate) func.apply(context, args);
+			if ( !immediate ) {
+				func.apply( context, args );
+			}
 		};
-		if (immediate && !timeout) func.apply(context, args);
-		clearTimeout(timeout);
-		timeout = setTimeout(later, wait);
+		if ( immediate && !timeout ) {
+			func.apply( context, args );
+		}
+		clearTimeout( timeout );
+		timeout = setTimeout( later, wait );
 	};
+};
+
+/**
+ * Gets a localized message.
+ *
+ * @static
+ * @method
+ * @param {String} key Message key
+ * @param {Mixed} [...] Message parameters
+ */
+ve.msg = typeof mw === 'object' ? mw.msg : function( key ) {
+	return '(' + key + ')';
 };
