@@ -36,6 +36,11 @@ ve.ui.ListButtonTool.prototype.list = function( nodes, style ) {
 		outerRange = ( siblings[0].node['parent'].getOuterRange() );
 	}
 
+	// Convert everything to paragraphs first
+	tx = ve.dm.Transaction.newFromContentBranchConversion( doc, outerRange, 'paragraph' );
+	model.change( tx );
+
+	// Then wrap them in the list
 	tx = ve.dm.Transaction.newFromWrap(
 		doc,
 		outerRange,
