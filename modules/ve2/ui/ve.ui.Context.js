@@ -16,6 +16,7 @@ ve.ui.Context = function( surfaceView, $overlay ) {
 	this.inspectors = {};
 	this.inspector = null;
 	this.position = null;
+	this.clicking = false;
 	this.$ = $( '<div class="es-contextView"></div>' ).appendTo( $overlay || $( 'body' ) );
 	this.$toolbar = $( '<div class="es-contextView-toolbar"></div>' );
 	this.$inspectors =
@@ -40,34 +41,38 @@ ve.ui.Context = function( surfaceView, $overlay ) {
 	);
 	
 	// Events
-	var _this = this;
 	this.$icon.bind( {
-		'mousedown': function( e ) {
-			if ( e.which === 1 ) {
-				e.preventDefault();
-				return false;
-			}
-		},
-		'mouseup': function( e ) {
-			if ( e.which === 1 ) {
-				if ( _this.inspector ) {
-					_this.closeInspector();
-				} else {
-					if ( _this.isMenuOpen() ) {
-						_this.closeMenu();
-					} else {
-						_this.openMenu();
-					}
-				}
-			}
-		}
+		'mousedown': ve.proxy( this.onMouseDown, this ),
+		'mouseup': ve.proxy( this.onMouseUp, this )
 	} );
+	$( window ).bind( 'resize scroll', ve.proxy( this.set, this ) );
 
 	// Intitialization
 	this.addInspector( 'link', new ve.ui.LinkInspector( this.toolbarView, this ) );
 };
 
 /* Methods */
+
+ve.ui.Context.prototype.onMouseDown = function( event ) {
+	this.clicking = true;
+	event.preventDefault();
+	return false;
+};
+
+ve.ui.Context.prototype.onMouseUp = function( event ) {
+	if ( this.clicking && event.which === 1 ) {
+		if ( this.inspector ) {
+			this.closeInspector();
+		} else {
+			if ( this.isMenuOpen() ) {
+				this.closeMenu();
+			} else {
+				this.openMenu();
+			}
+		}
+	}
+	this.clicking = false;
+};
 
 ve.ui.Context.prototype.getSurfaceView = function() {
 	return this.surfaceView;
@@ -121,7 +126,8 @@ ve.ui.Context.prototype.positionOverlay = function( $overlay ) {
 		$window = $( window ),
 		windowWidth = $window.width(),
 		windowHeight = $window.height(),
-		windowScrollTop = $window.scrollTop();
+		windowScrollTop = $window.scrollTop(),
+		selection = this.surfaceView.model.getSelection();
 	// Center align overlay
 	var overlayLeft = -Math.round( overlayWidth / 2 );
 
@@ -138,7 +144,10 @@ ve.ui.Context.prototype.positionOverlay = function( $overlay ) {
 	$overlay.css( 'left', overlayLeft );
 
 	// Position overlay on top or bottom depending on viewport
-	if ( this.position.top + overlayHeight + ( overlayMargin * 2 ) < windowHeight + windowScrollTop ) {
+	if (
+		selection.from < selection.to &&
+		this.position.top + overlayHeight + ( overlayMargin * 2 ) < windowHeight + windowScrollTop
+	) {
 		this.$.addClass( 'es-contextView-position-below' );
 	} else {
 		this.$.addClass( 'es-contextView-position-above' );
