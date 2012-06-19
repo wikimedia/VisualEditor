@@ -149,6 +149,9 @@ WSP._listHandler = function( bullet, state, token ) {
 		var tokenName = token.name;
 		return (tokenName === 'li' || tokenName === 'dt' || tokenName === 'dd');
 	}
+	if ( state.singleLineMode ) {
+		state.singleLineMode--;
+	}
 
 	var bullets, res;
 	var stack = state.listStack;
@@ -640,7 +643,7 @@ WSP._serializeToken = function ( state, token ) {
 			if ( ! handler.ignore ) {
 				state.prevTagToken = state.currTagToken;
 				state.currTagToken = token;
-				if ( handler.singleLine < 0 ) {
+				if ( handler.singleLine < 0 && state.singleLineMode ) {
 					state.singleLineMode--;
 				}
 				res = handler.handle ? handler.handle( state, token ) : '';
@@ -702,16 +705,12 @@ WSP._serializeToken = function ( state, token ) {
 		// that have to be separated by extra newlines and add those in.
 		if (handler.pairSepNLCount && state.prevTagToken && 
 				state.prevTagToken.constructor === EndTagTk && 
-				state.prevTagToken.name == token.name ) {
-					if ( requiredNLCount < handler.pairSepNLCount) {
-						requiredNLCount = handler.pairSepNLCount;
-					}
-				} /*else if (state.singleLineMode) {
-		// Swallow newlines
-		// XXX: also swallow newlines in the middle of text content
-		requiredNLCount = 0;
-		state.availableNewlineCount = 0;
-		}*/
+				state.prevTagToken.name == token.name ) 
+		{
+			if ( requiredNLCount < handler.pairSepNLCount) {
+				requiredNLCount = handler.pairSepNLCount;
+			}
+		}
 
 		if ( state.env.debug ) {
 			console.warn("tok: " + token + ", res: <" + res + ">" + 
