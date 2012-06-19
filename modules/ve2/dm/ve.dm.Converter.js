@@ -414,17 +414,18 @@ ve.dm.Converter.prototype.getDomFromData = function( data ) {
 		 * If there is no next sibling, do not add any trailing newlines
 		 * Otherwise, add 1 trailing newline
 		 */
-		if ( node.nodeName.toLowerCase() === 'p' ) {
+		if ( node.parentNode.nodeName.toLowerCase() === 'p' ) {
 			if (
-				node.previousSibling &&
-				node.previousSibling.nodeName.toLowerCase().match( /h\d/ )
+				node.parentNode.previousSibling &&
+				node.parentNode.previousSibling.nodeName.toLowerCase().match( /h\d/ ) &&
+				!node.previousSibling
 			) {
 				text = "\n" + text;
 			}
-			if ( node.nextSibling ) {
+			if ( node.parentNode.nextSibling && !node.nextSibling ) {
 				// Add one trailing newline
 				text += "\n";
-				if ( node.nextSibling.nodeName.toLowerCase() === 'p' ) {
+				if ( node.parentNode.nextSibling.nodeName.toLowerCase() === 'p' ) {
 					// Add another one
 					text += "\n";
 				}
@@ -610,7 +611,7 @@ ve.dm.Converter.prototype.getDomFromData = function( data ) {
 				$( this.parentNode ).closest( 'li, dd, dt' ).length === 0;
 		} )
 		.each( function() {
-			this.data = fixupText( this.data, this.parentNode );
+			this.data = fixupText( this.data, this );
 		} );
 	// And add newlines after headings too
 	$( container ).find( 'h1, h2, h3, h4, h5, h6' ).each( function() {
