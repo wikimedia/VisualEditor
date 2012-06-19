@@ -570,7 +570,6 @@ ve.dm.Converter.prototype.getDomFromData = function( data ) {
 		}
 
 		// Append a newline to the end of the <li> , provided its last child is not a list
-		var lastChildNodeName = this.lastChild.nodeName.toLowerCase();
 		if ( $lastChild.is( ':not(ul,ol)' ) ) {
 			$(this).append( "\n" );
 		}
