@@ -165,24 +165,28 @@ ve.ce.TextNode.prototype.getHtml = function() {
 		hashStack = [],
 		annotationStack = {};
 
-	// If first or last char is a space it should be replaced with &nbsp; to be rendered correctly
 	// TODO: Special handling for spaces in <pre> may be required
-	if ( ve.isArray( data[0] ) ) {
-		if ( data[0][0] === ' ' ) {
-			data[0][0] = '&nbsp;';
-		}
-	} else {
-		if ( data[0] === ' ' ) {
-			data[0] = '&nbsp;';
-		}
-	}
-	if ( ve.isArray( data[data.length - 1] ) ) {
-		if ( data[data.length - 1][0] === ' ' ) {
-			data[data.length - 1][0] = '&nbsp;';
-		}
-	} else {
-		if ( data[data.length - 1] === ' ' ) {
-			data[data.length - 1] = '&nbsp;';
+	if ( data.length >= 2 ) {
+		for( i = 0; i < data.length - 1; i++ ) {
+			if ( 
+				( i === 0 && data[i][0][0] === ' ' && data[i + 1][0][0] !== ' ' ) ||
+				( i === data.length - 1 && data[i][0][0] === ' ' )
+			){
+				// Replace last space and first space (if not followed by another space) with &nbsp;
+				if ( ve.isArray( data[i] ) ) {
+					data[i][0] = '&nbsp;';
+				} else {
+					data[i] = '&nbsp;';
+				}
+			} else if ( data[i][0][0] === ' ' && data[i + 1][0] === ' ' ) {
+				// Mulitple spaces should alternate spaces and &nbsp;
+				if ( ve.isArray( data[i + 1] ) ) {
+					data[i + 1][0] = '&nbsp;';
+				} else {
+					data[i + 1] = '&nbsp;';
+				}
+				i++;
+			}
 		}
 	}
 
@@ -292,10 +296,6 @@ ve.ce.TextNode.prototype.getHtml = function() {
 		close[hashStack[j]] = annotationStack[hashStack[j]];
 	}
 	out += closeAnnotations( close );
-
-	// Mulitple spaces should alternate spaces and &nbsp;
-	// TODO: Special handling for spaces in <pre> may be required
-	out = out.replace(/  /g, ' &nbsp;');
 
 	return out;
 };
