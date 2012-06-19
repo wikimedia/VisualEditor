@@ -257,6 +257,7 @@ $wgResourceModules += array(
 			'visualeditor-tooltip-history',
 			'visualeditor-tooltip-help',
 			'visualeditor',
+			'visualeditor-linkinspector-title',
 			'visualeditor-linkinspector-tooltip',
 			'visualeditor-linkinspector-label-pagetitle',
 			'visualeditor-formatdropdown-tooltip',
