@@ -328,7 +328,7 @@ app.get( new RegExp('/_rtve/(?:(?:(?:' + env.interwikiRegexp + '):+)?(' + env.in
 	var tpr = new TemplateRequest( env, target ),
 		cb = function ( req, res, src, document ) {
 			// strip newlines from the html
-			var html = document.innerHTML.replace(/>[\r\n]+/g, '>'),
+			var html = document.innerHTML.replace(/[\r\n]/g, ''),
 				p = new html5.Parser();
 			p.parse( html );
 			var newDocument = p.tree.document;
