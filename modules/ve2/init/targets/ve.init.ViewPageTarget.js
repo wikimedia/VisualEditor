@@ -168,13 +168,16 @@ ve.init.ViewPageTarget.prototype.onLoad = function( dom ) {
  * @param {Mixed} error Thrown exception or HTTP error string
  */
 ve.init.ViewPageTarget.prototype.onLoadError = function( response, status, error ) {
-	alert( 'Error loading data from server: ' + status );
-	this.activating = false;
-	this.restoreSkinTabs();
-	this.hideSpinner();
-	this.showTableOfContents();
-	this.showPageContent();
-	this.restorePageTitle();
+	if ( confirm( 'Error loading data from server: ' + status + '. Would you like to retry?' ) ) {
+		this.load();
+	} else {
+		this.activating = false;
+		this.restoreSkinTabs();
+		this.hideSpinner();
+		this.showTableOfContents();
+		this.showPageContent();
+		this.restorePageTitle();
+	}
 };
 
 /**
