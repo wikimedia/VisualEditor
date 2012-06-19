@@ -177,6 +177,7 @@ ve.init.ViewPageTarget.prototype.onLoadError = function( response, status, error
  */
 ve.init.ViewPageTarget.prototype.onSave = function( html ) {
 	this.hideSaveDialog();
+	this.resetSaveDialog();
 	this.replacePageContent( html );
 	this.deactivate( true );
 };
@@ -480,7 +481,7 @@ ve.init.ViewPageTarget.prototype.setupSaveDialog = function() {
 		.find( '.ve-init-viewPageTarget-saveDialog-minorEdit-label' )
 			.text( mw.msg( 'minoredit' ) )
 			.end()
-		.find( '.ve-init-viewPageTarget-saveDialog-watchList' )
+		.find( '#ve-init-viewPageTarget-saveDialog-watchList' )
 			.prop( 'checked', mw.config.get( 'wgVisualEditor' ).isPageWatched )
 			.end()
 		.find( '.ve-init-viewPageTarget-saveDialog-watchList-label' )
@@ -634,6 +635,20 @@ ve.init.ViewPageTarget.prototype.showSaveDialog = function() {
 ve.init.ViewPageTarget.prototype.hideSaveDialog = function() {
 	this.$saveDialog.fadeOut( 'fast' );
 	this.$surface.find( '.ve-ce-documentNode' ).focus();
+};
+
+/**
+ * Resets the fields of the save dialog
+ *
+ * @method
+ */
+ve.init.ViewPageTarget.prototype.resetSaveDialog = function() {
+	this.$saveDialog
+		.find( '#ve-init-viewPageTarget-saveDialog-editSummary' )
+			.val( '' )
+			.end()
+		.find( '#ve-init-viewPageTarget-saveDialog-minorEdit' )
+			.prop( 'checked', false );
 };
 
 /**
