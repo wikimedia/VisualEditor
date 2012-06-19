@@ -336,6 +336,7 @@ ve.init.ViewPageTarget.prototype.tearDownSurface = function() {
 	this.$document.blur();
 	this.$document = null;
 	this.$surface.empty().detach();
+	$( '.es-contextView' ).remove();
 	this.detachToolbar();
 	this.hideSpinner();
 	this.showPageContent();
