@@ -49,7 +49,7 @@ WikiLinkHandler.prototype.onWikiLink = function ( token, frame, cb ) {
 				),
 			content = token.attribs.slice(2);
 		if ( href !== normalizedHref ) {
-			obj.dataAttribs.sHref = href;
+			obj.dataAttribs.sHref = env.tokensToString( href );
 		}
 		//console.warn('content: ' + JSON.stringify( content, null, 2 ) );
 		// XXX: handle trail

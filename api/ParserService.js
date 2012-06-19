@@ -223,7 +223,7 @@ var refineDiff = function( diff ) {
 			added = d;
 		} else if ( d.removed ) {
 			if ( added ) {
-				var fineDiff = jsDiff.diffChars( d.value, added.value );
+				var fineDiff = jsDiff.diffWords( d.value, added.value );
 				fineDiff = mergeConsecutiveSegments(fineDiff);
 				out.push.apply( out, fineDiff );
 				added = null;
@@ -250,13 +250,13 @@ var roundTripDiff = function ( req, res, src, document ) {
 	res.write(document.body.innerHTML + '<hr>');
 	res.write( '<h2>HTML DOM converted back to Wikitext</h2><hr>' );
 	var out = new WikitextSerializer({env: env}).serializeDOM( document.body );
-	res.write('<pre>' + htmlSpecialChars( out ) + '</pre><hr>');
-	res.write( '<h2>Diff between original Wikitext (green) and round-tripped wikitext (red)</h2><hr>' );
+	res.write('<pre>' + htmlSpecialChars( out ) + '</pre><hr>\n');
+	res.write( '<h2>Diff between original Wikitext (green) and round-tripped wikitext (red)</h2><hr>\n' );
 	var patch;
 	src = src.replace(/\n(?=\n)/g, '\n ');
 	out = out.replace(/\n(?=\n)/g, '\n ');
 	//console.log(JSON.stringify( jsDiff.diffLines( out, src ) ));
-	//patch = jsDiff.convertChangesToXML( jsDiff.diffLines( out, src ) );
+	//patch = jsDiff.convertChangesToXML( jsDiff.diffLines( src, out ) );
 	patch = jsDiff.convertChangesToXML( refineDiff( jsDiff.diffLines( src, out ) ) );
 	res.write( '<pre>' + patch);
 	// Add a 'report issue' link
@@ -332,7 +332,7 @@ app.get( new RegExp('/_rtve/(?:(?:(?:' + env.interwikiRegexp + '):+)?(' + env.in
 	var tpr = new TemplateRequest( env, target ),
 		cb = function ( req, res, src, document ) {
 			// strip newlines from the html
-			var html = document.innerHTML.replace(/[\r\n]/g, ''),
+			var html = document.innerHTML.replace(/>[\r\n]+/g, '>'),
 				p = new html5.Parser();
 			p.parse( html );
 			var newDocument = p.tree.document;

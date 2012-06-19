@@ -55,8 +55,12 @@ NlTk.prototype.toJSON = function () {
 NlTk.prototype.constructor = NlTk;
 NlTk.prototype.toString = toString;
 
-function CommentTk( value ) { 
+function CommentTk( value, dataAttribs ) { 
 	this.value = value;
+	// won't survive in the DOM, but still useful for token serialization
+	if ( dataAttribs !== undefined ) {
+		this.dataAttribs = dataAttribs;
+	}
 }
 CommentTk.prototype = {};
 CommentTk.prototype.toJSON = function () {
