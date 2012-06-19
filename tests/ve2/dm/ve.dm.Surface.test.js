@@ -35,17 +35,19 @@ test( 'setSelection', 1, function() {
 	surface.setSelection( new ve.Range( 1, 1 ) );
 } );
 
-test( 'transact', 1, function() {
+test( 'change', 2, function() {
 	var surface = new ve.dm.SurfaceStub();
 	var tx = new ve.dm.Transaction();
 	surface.on( 'transact', function() {
 		ok( true, 'transact was emitted' );
 	} );
-	surface.transact( tx );
+	surface.on( 'change', function() {
+		ok( true, 'change was emitted' );
+	} );
+	surface.change( tx );
 } );
 
-
-test('annotate', 1, function(){
+test( 'annotate', 1, function() {
 	var surface,
 		cases = [
 		{
@@ -105,4 +107,4 @@ test('annotate', 1, function(){
 		);
 
 	}
-});
+} );
