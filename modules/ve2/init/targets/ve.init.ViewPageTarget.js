@@ -493,13 +493,14 @@ ve.init.ViewPageTarget.prototype.setupSaveDialog = function() {
 			.text( mw.msg( 'savearticle' ) )
 			.end()
 		.find( '.ve-init-viewPageTarget-saveDialog-license' )
+			// FIXME license text is hardcoded English
 			.html(
 				"By editing this page, you agree to irrevocably release your \
-				contributions under the CC-By-SA 3.0 License.  If you don't want your \
-				writing to be editied  mercilessly and redistrubuted at will, then \
-				don't submit it here.<br /><br />You  are also confirming that you \
+				contributions under the CC-BY-SA 3.0 License.  If you don't want your \
+				writing to be edited mercilessly and redistrubuted at will, then \
+				don't submit it here.<br /><br />You are also confirming that you \
 				wrote this yourself, or copied it from a public domain or similar free \
-				resource.  See Project:Copyright for full details of the  licenses \
+				resource.  See Project:Copyright for full details of the licenses \
 				used on this site.\
 				<b>DO NOT SUBMIT COPYRIGHTED WORK WITHOUT PERMISSION!</b>"
 			);
