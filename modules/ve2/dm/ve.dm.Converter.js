@@ -559,7 +559,8 @@ ve.dm.Converter.prototype.getDomFromData = function( data ) {
 	// inside list items
 	$( container ).find( 'li, dd, dt' ).each( function() {
 		var $sublists = $(this).children( 'ul, ol, dl' ),
-			$firstChild = $(this.firstChild);
+			$firstChild = $(this.firstChild),
+			$lastChild = $(this.lastChild);
 		if ( $firstChild.is( 'p' ) ) {
 			// Unwrap the first paragraph, unless it has stx=html
 			var datamw = $.parseJSON( $firstChild.attr( 'data-mw' ) ) || {};
@@ -570,7 +571,7 @@ ve.dm.Converter.prototype.getDomFromData = function( data ) {
 
 		// Append a newline to the end of the <li> , provided its last child is not a list
 		var lastChildNodeName = this.lastChild.nodeName.toLowerCase();
-		if ( lastChildNodeName !== 'ul' && lastChildNodeName !== 'ol' ) {
+		if ( $lastChild.is( ':not(ul,ol)' ) ) {
 			$(this).append( "\n" );
 		}
 		// Append a newline before every sublist that is preceded by something
