@@ -12,6 +12,7 @@ ve.init.ViewPageTarget = function() {
 
 	// Properties
 	this.$surface = $( '<div class="ve-surface"></div>' );
+	this.$document = null;
 	this.$spinner = $( '<div class="ve-init-viewPageTarget-loadingSpinner"></div>' );
 	this.$toolbarSaveButton = $( '<div class="ve-init-viewPageTarget-toolbar-saveButton"></div>' );
 	this.$saveDialog = $( '<div class="es-inspector ve-init-viewPageTarget-saveDialog"></div>' );
@@ -153,7 +154,7 @@ ve.init.ViewPageTarget.prototype.onLoad = function( dom ) {
 	this.attachSaveDialog();
 	this.restoreScrollPosition();
 	this.restoreEditSection();
-	this.$surface.find( '.ve-ce-documentNode' ).focus();
+	this.$document.focus();
 	this.activating = false;
 };
 
@@ -302,6 +303,7 @@ ve.init.ViewPageTarget.prototype.setUpSurface = function( dom ) {
 	// Initialize surface
 	this.attachSurface();
 	this.surface = new ve.Surface( this.$surface, dom, this.surfaceOptions );
+	this.$document = this.$surface.find( '.ve-ce-documentNode' );
 	this.surface.getModel().on( 'transact', this.proxiedOnSurfaceModelTransact );
 	// Transplant the toolbar
 	this.attachToolbar();
@@ -322,7 +324,8 @@ ve.init.ViewPageTarget.prototype.tearDownSurface = function() {
 	// Reset tabs
 	this.restoreSkinTabs();
 	// Update UI
-	this.$surface.find( '.ve-ce-documentNode' ).blur();
+	this.$document.blur();
+	this.$document = null;
 	this.$surface.empty().detach();
 	this.detachToolbar();
 	this.hideSpinner();
@@ -634,7 +637,7 @@ ve.init.ViewPageTarget.prototype.showSaveDialog = function() {
  */
 ve.init.ViewPageTarget.prototype.hideSaveDialog = function() {
 	this.$saveDialog.fadeOut( 'fast' );
-	this.$surface.find( '.ve-ce-documentNode' ).focus();
+	this.$document.focus();
 };
 
 /**
@@ -811,20 +814,16 @@ ve.init.ViewPageTarget.prototype.restoreEditSection = function() {
 	if ( this.section !== null ) {
 		var surfaceView = this.surface.getView(),
 			surfaceModel = surfaceView.getModel();
-		this.$surface
-			.find( '.ve-ce-documentNode' )
-				.find( 'h1, h2, h3, h4, h5, h6' )
-					.eq( this.section - 1 )
-						.each( function() {
-							var headingNode = $(this).data( 'node' );
-							if ( headingNode ) {
-								var offset = surfaceModel.getDocument().getNearestContentOffset(
-									headingNode.getModel().getOffset()
-								);
-								surfaceModel.change( null, new ve.Range( offset, offset ) );
-								surfaceView.showSelection( surfaceModel.getSelection() );
-							}
-						} );
+		this.$document.find( 'h1, h2, h3, h4, h5, h6' ).eq( this.section - 1 ).each( function() {
+			var headingNode = $(this).data( 'node' );
+			if ( headingNode ) {
+				var offset = surfaceModel.getDocument().getNearestContentOffset(
+					headingNode.getModel().getOffset()
+				);
+				surfaceModel.change( null, new ve.Range( offset, offset ) );
+				surfaceView.showSelection( surfaceModel.getSelection() );
+			}
+		} );
 		this.section = null;
 	}
 };
