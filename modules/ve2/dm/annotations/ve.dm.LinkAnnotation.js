@@ -23,13 +23,11 @@ ve.dm.LinkAnnotation.converters = {
 	'domElementTypes': ['a'],
 	'toDomElement': function( subType, annotation ) {
 		if ( annotation.type ) {
-			// In the future we'll probably want to write sHref here but right now
-			// Parsoid ignores it anyway so there's no point
-			var link = document.createElement( 'a' );
+			var link = document.createElement( 'a' ),
+				mwdata = $.parseJSON( annotation.data.mw ) || {};
 			link.setAttribute( 'href', annotation.data.href );
-			if ( annotation.data.mw ) {
-				link.setAttribute( 'data-mw', annotation.data.mw );
-			}
+			mwdata.sHref = [annotation.data.title];
+			link.setAttribute( 'data-mw', $.toJSON( mwdata ) );
 			if ( subType === 'wikiLink' || subType === 'extLink' ) {
 				link.setAttribute( 'rel', 'mw:' + subType );
 			}
