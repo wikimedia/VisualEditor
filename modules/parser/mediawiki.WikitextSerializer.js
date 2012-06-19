@@ -241,14 +241,13 @@ WSP._linkHandler =  function( state, token ) {
 			var tail   = tokenData.tail;
 			if ( tail && tail.length ) {
 				state.dropTail = tail;
-				target = tokenData.gc ? tokenData.sHref[0] : target.replace( /_/g, ' ' );
+				target = tokenData.gc ? tokenData.sHref : target.replace( /_/g, ' ' );
 			} else {
-				// SSS: Why is sHref an array instead of a string?
-				var origLinkTgt = tokenData.sHref[0];
+				var origLinkTgt = tokenData.sHref;
 				if (origLinkTgt) {
-					//console.warn( JSON.stringify( tokenData.sHref ) );
-					// SSS FIXME: Why was resolveTitle wrapping this?  Also, why do we require normalizeTitle here?
-					var normalizedOrigLinkTgt = env.normalizeTitle(env.tokensToString(origLinkTgt));
+					// Normalize the source target so that we can compare it
+					// with href.
+					var normalizedOrigLinkTgt =  env.normalizeTitle( env.tokensToString(origLinkTgt) );
 					if ( normalizedOrigLinkTgt === target ) {
 						// Non-standard capitalization
 						target = origLinkTgt;
