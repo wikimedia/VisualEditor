@@ -114,6 +114,8 @@
 	background-color: white;
 }
 .es-toolbarDropdownTool-label {
+	overflow: hidden;
+	height: 2em;
 	padding: 0.25em;
 	font-size: 0.8em;
 	line-height: 24px;
