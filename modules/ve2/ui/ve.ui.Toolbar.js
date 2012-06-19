@@ -17,8 +17,8 @@ ve.ui.Toolbar = function( $container, surfaceView, config ) {
 	this.tools = [];
 
 	// Update tools on selection and all transactions.
-	this.surfaceView.model.on( 'select', ve.proxy( this.updateTools, this ) );
-	this.surfaceView.model.on( 'transact', ve.proxy( this.updateTools, this ) );
+	this.surfaceView.model.on( 'change', ve.proxy( this.updateTools, this ) );
+	//this.surfaceView.model.on( 'transact', ve.proxy( this.updateTools, this ) );
 
 	this.config = config || [
 		{ 'name': 'history', 'items' : ['undo', 'redo'] },
@@ -56,7 +56,6 @@ ve.ui.Toolbar.prototype.updateTools = function() {
 			// These should be different, alas just in case.
 			if ( startNode === endNode ) {
 				nodes.push( startNode );
-
 			} else {
 				model.getDocument().getDocumentNode().traverseLeafNodes( function( node ) {
 					nodes.push( node );
@@ -66,6 +65,7 @@ ve.ui.Toolbar.prototype.updateTools = function() {
 				}, startNode );
 			}
 		}
+
 		if ( range.getLength() > 0 ) {
 			annotations = doc.getAnnotationsFromRange( range );
 		} else {

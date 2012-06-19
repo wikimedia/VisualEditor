@@ -32,33 +32,32 @@ ve.ui.ListButtonTool.prototype.list = function( nodes, style ) {
 			siblings[0].nodeOuterRange.from,
 			siblings[siblings.length-1].nodeOuterRange.to
 		);
-	} else {
+	} else if( siblings[0].node['parent'] !== null ) {
 		outerRange = ( siblings[0].node['parent'].getOuterRange() );
 	}
 
-	// Convert everything to paragraphs first
-	tx = ve.dm.Transaction.newFromContentBranchConversion( doc, outerRange, 'paragraph' );
-	model.change( tx );
+	if( outerRange instanceof ve.Range ) {
+		// Convert everything to paragraphs first
+		tx = ve.dm.Transaction.newFromContentBranchConversion( doc, outerRange, 'paragraph' );
+		model.change( tx );
 
-	// Then wrap them in the list
-	tx = ve.dm.Transaction.newFromWrap(
-		doc,
-		outerRange,
-		[],
-		[ { 'type': 'list', 'attributes': { 'style': style } } ],
-		[],
-		[ { 'type': 'listItem' } ]
-	);
-	model.change ( tx );
-	return ;
-	
-	siblings = doc.selectNodes(selection, 'siblings');
-	outerRange = new ve.Range(
-		siblings[0].nodeOuterRange.from,
-		siblings[siblings.length-1].nodeOuterRange.to
-	);
-	model.setSelection( outerRange );
-	surface.showSelection( model.getSelection() );
+		tx = ve.dm.Transaction.newFromWrap(
+			doc,
+			outerRange,
+			[],
+			[ { 'type': 'list', 'attributes': { 'style': style } } ],
+			[],
+			[ { 'type': 'listItem' } ]
+		);
+		model.change ( tx );
+		// Modify selection
+		siblings = doc.selectNodes( selection, 'siblings'),
+		outerRange = new ve.Range(
+			siblings[0].nodeRange.from,
+			siblings[siblings.length-1].nodeRange.to
+		);
+		model.change (null, outerRange);
+	}
 };
 
 ve.ui.ListButtonTool.prototype.unlist = function( node ){
@@ -76,7 +75,7 @@ ve.ui.ListButtonTool.prototype.unlist = function( node ){
 	
 	listNode = siblings[0].node;
 	// Get the parent list node
-	while ( listNode && listNode.getType() !== 'list' ) {
+	while( listNode && listNode.getType() !== 'list' ) {
 		listNode = listNode.getParent();
 	}
 
@@ -90,7 +89,6 @@ ve.ui.ListButtonTool.prototype.unlist = function( node ){
 	);
 
 	model.change( tx );
-
 };
 
 ve.ui.ListButtonTool.prototype.onClick = function() {
@@ -105,57 +103,27 @@ ve.ui.ListButtonTool.prototype.onClick = function() {
 
 ve.ui.ListButtonTool.prototype.updateState = function( annotations, nodes ) {
 
-	function areListItemsOfStyle( nodes, style ) {
-		var parent;
+	function areListItemsOfStyle( nodes, style ){
+		var listNode = null;
 		for ( var i=0; i < nodes.length; i++ ) {
-			parent = nodes[i].getParent();
-			if ( !parent || parent.getType() !== 'listItem' ) {
-				return false;
+			listNode = nodes[i];
+			// Get the list node
+			while( listNode && listNode.getType() !== 'list' ) {
+				listNode = listNode.getParent();
 			}
-			if (
-				parent.getType() === 'listItem' //&&
-				//parent.getAttribute('styles') === style
-			) {
-				console.log ('styles', parent.getAttribute('styles'));
-				//return true;
+			if( listNode && listNode.getAttribute('style') === style ) {
+				return true;
 			}
-
 		}
-		return true;
+		return false;
 	}
-	console.log (this.name);
+
+
 	if ( areListItemsOfStyle( nodes, this.name ) ) {
 		this.$.addClass( 'es-toolbarButtonTool-down' );
 	} else {
 		this.$.removeClass( 'es-toolbarButtonTool-down' );
 	}
-
-	/*
-	 * XXX: Disabled for now because lists work differently now (they are structured, not flat)
-	 *
-	function areListItemsOfStyle( nodes, style ) {
-		var parent, styles;
-		for( var i = 0; i < nodes.length; i++ ) {
-			parent = nodes[i].getParent();
-			if ( parent.getType() !== 'listItem' ) {
-				return false;
-			}
-			styles = parent.getElementAttribute( 'styles' );
-			if ( styles[ styles.length - 1] !== style ) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	this.nodes = nodes;
-
-	if ( areListItemsOfStyle( this.nodes, this.name ) ) {
-		this.$.addClass( 'es-toolbarButtonTool-down' );
-	} else {
-		this.$.removeClass( 'es-toolbarButtonTool-down' );
-	}
-	*/
 };
 
 /* Registration */
