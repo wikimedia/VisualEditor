@@ -119,9 +119,10 @@ ve.init.ViewPageTarget.prototype.activate = function() {
  *
  * @method
  */
-ve.init.ViewPageTarget.prototype.deactivate = function() {
+ve.init.ViewPageTarget.prototype.deactivate = function( override ) {
 	if ( this.active && !this.deactivating ) {
 		if (
+			override ||
 			!this.surface.getModel().getHistory().length ||
 			confirm( 'Are you sure you want to go back to view mode without saving first?' )
 		) {
@@ -176,7 +177,7 @@ ve.init.ViewPageTarget.prototype.onLoadError = function( response, status, error
 ve.init.ViewPageTarget.prototype.onSave = function( html ) {
 	this.hideSaveDialog();
 	this.replacePageContent( html );
-	this.deactivate();
+	this.deactivate( true );
 };
 
 /**
@@ -564,7 +565,10 @@ ve.init.ViewPageTarget.prototype.hideSpinner = function() {
  * @method
  */
 ve.init.ViewPageTarget.prototype.showPageContent = function() {
-	$( '#bodyContent' ).children().not( '#siteSub' ).show().fadeTo( 0, 1 );
+	$( '#bodyContent .ve-init-viewPageTarget-content:not(#siteSub)' )
+		.removeClass( 've-init-viewPageTarget-content' )
+		.show()
+		.fadeTo( 0, 1 );
 };
 
 /**
@@ -573,7 +577,9 @@ ve.init.ViewPageTarget.prototype.showPageContent = function() {
  * @method
  */
 ve.init.ViewPageTarget.prototype.mutePageContent = function() {
-	$( '#bodyContent' ).children().not( '#siteSub' ).fadeTo( 'fast', 0.25 );
+	$( '#bodyContent :visible:not(#siteSub)' )
+		.addClass( 've-init-viewPageTarget-content' )
+		.fadeTo( 'fast', 0.25 );
 };
 
 /**
@@ -582,7 +588,9 @@ ve.init.ViewPageTarget.prototype.mutePageContent = function() {
  * @method
  */
 ve.init.ViewPageTarget.prototype.hidePageContent = function() {
-	$( '#bodyContent' ).children().not( '#siteSub' ).hide();
+	$( '#bodyContent :visible:not(#siteSub)' )
+		.addClass( 've-init-viewPageTarget-content' )
+		.hide();
 };
 
 /**
