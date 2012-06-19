@@ -8,7 +8,7 @@
  */
 ve.init.ViewPageTarget = function() {
 	// Inheritance
-	ve.init.Target.call( this, mw.config.get( 'wgPageName' ) );
+	ve.init.Target.call( this, mw.config.get( 'wgRelevantPageName' ) );
 
 	// Properties
 	this.$surface = $( '<div class="ve-surface"></div>' );
@@ -23,21 +23,22 @@ ve.init.ViewPageTarget = function() {
 	this.scrollTop = null;
 	this.proxiedOnSurfaceModelTransact = ve.proxy( this.onSurfaceModelTransact, this );
 	this.surfaceOptions = { 'toolbars': { 'top': { 'float': !this.isMobileDevice } } };
-	this.viewUri = new mw.Uri( mw.util.wikiGetlink() );
-	this.editUri = new mw.Uri( mw.util.wikiGetlink() );
-	this.editUri.extend( { 'action': 'edit' } );
-	this.veEditUri = new mw.Uri( mw.util.wikiGetlink() );
-	this.veEditUri.extend( { 'veaction': 'edit' } );
 	this.currentUri = new mw.Uri( window.location.toString() );
 	this.section = this.currentUri.query.vesection || null;
+	this.namespaceName = mw.config.get( 'wgCanonicalNamespace' );
+	this.viewUri = new mw.Uri( mw.util.wikiGetlink( this.pageName ) );
+	this.editUri = new mw.Uri( this.viewUri.toString() );
+	this.editUri.extend( { 'action': 'edit' } );
+	this.veEditUri = new mw.Uri( this.viewUri.toString() );
+	this.veEditUri.extend( { 'veaction': 'edit' } );
 	this.isViewPage = (
-		mw.config.get( 'wgCanonicalNamespace' ) === 'VisualEditor' &&
+		this.namespaceName === 'VisualEditor' &&
 		mw.config.get( 'wgAction' ) === 'view' &&
 		this.currentUri.query.diff === undefined
 	);
 	this.canBeActivated = (
-		mw.config.get( 'wgCanonicalNamespace' ) === 'VisualEditor' ||
-		mw.config.get( 'wgRelevantPageName' ).substr( 0, 13 ) === 'VisualEditor:'
+		this.namespaceName === 'VisualEditor' ||
+		this.pageName.substr( 0, 13 ) === 'VisualEditor:'
 	);
 
 	// Events
@@ -581,7 +582,7 @@ ve.init.ViewPageTarget.prototype.showPageContent = function() {
 ve.init.ViewPageTarget.prototype.mutePageContent = function() {
 	$( '#bodyContent :visible:not(#siteSub)' )
 		.addClass( 've-init-viewPageTarget-content' )
-		.fadeTo( 'fast', 0.25 );
+		.fadeTo( 'fast', 0.6 );
 };
 
 /**
@@ -692,8 +693,7 @@ ve.init.ViewPageTarget.prototype.transformPageTitle = function() {
  * @method
  */
 ve.init.ViewPageTarget.prototype.mutePageTitle = function() {
-	$( '#firstHeading' ).fadeTo( 'fast', 0.25 );
-	$( '#siteSub' ).fadeTo( 'fast', 0.25 );
+	$( '#firstHeading, #siteSub' ).fadeTo( 'fast', 0.6 );
 };
 
 /**
@@ -702,8 +702,7 @@ ve.init.ViewPageTarget.prototype.mutePageTitle = function() {
  * @method
  */
 ve.init.ViewPageTarget.prototype.restorePageTitle = function() {
-	$( '#firstHeading' ).fadeTo( 'fast', 1 );
-	$( '#siteSub' ).fadeTo( 'fast', 1 );
+	$( '#firstHeading, #siteSub' ).fadeTo( 'fast', 1 );
 	setTimeout( function() {
 		$( '#firstHeading' ).removeClass( 've-init-viewPageTarget-pageTitle' );
 	}, 1000 );
