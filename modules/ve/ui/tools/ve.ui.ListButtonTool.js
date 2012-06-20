@@ -19,112 +19,82 @@
 /* Methods */
 
 ve.ui.ListButtonTool.prototype.list = function( nodes, style ) {
-	var surfaceView = this.toolbar.getSurfaceView(),
-		surfaceModel = surfaceView.getModel(),
+	var surfaceModel = this.toolbar.getSurfaceView().getModel(),
+		documentModel = surfaceModel.getDocument(),
 		selection = surfaceModel.getSelection(),
-		doc = surfaceModel.getDocument(),
-		leaves = doc.selectNodes( selection, 'leaves' ),
-		wrapGap = null,
-		prevList,
-		firstCoveredSibling,
-		lastCoveredSibling,
-		node,
-		parentNode,
-		grandparentNode,
-		thisNode,
-		convertRange,
-		lastOffset = selection.to;
-	// Iterate through covered leaf nodes and process either a conversion or wrapping for groups of
-	// consecutive covered siblings - for conversion, the entire list will be changed
-	for ( var i = 0; i < leaves.length; i++ ) {
-		node = leaves[i].node;
-		if ( node.isContent() ) {
-			node = node.getParent();
-		}
-		parentNode = node.getParent();
-		if ( parentNode.getType() === 'listItem' ) {
-			// Convert it
-			grandparentNode = parentNode.getParent();
-			if ( grandparentNode !== prevList && grandparentNode.getType() === 'list' ) {
+		groups = documentModel.getCoveredSiblingGroups( selection ),
+		previousList,
+		groupRange,
+		group,
+		tx;
+	for ( var i = 0; i < groups.length; i++ ) {
+		group = groups[i];
+		if ( group.grandparent && group.grandparent.getType() === 'list' ) {
+			if ( group.grandparent !== previousList ) {
 				// Change the list style
 				surfaceModel.change(
 					ve.dm.Transaction.newFromAttributeChange(
-						doc, grandparentNode.getOffset(), 'style', style
+						documentModel, group.grandparent.getOffset(), 'style', style
 					),
 					selection
 				);
 				// Skip this one next time
-				prevList = grandparentNode;
+				previousList = group.grandparent;
 			}
 		} else {
-			// Wrap it and it's covered siblings
-			firstCoveredSibling = node;
-			// Seek forward to the last covered sibling
-			thisNode = firstCoveredSibling;
-			do {
-				lastCoveredSibling = thisNode;
-				i++;
-				if ( leaves[i] === undefined ) {
-					break;
-				}
-				thisNode = leaves[i].node;
-				if ( thisNode.isContent() ) {
-					thisNode = thisNode.getParent();
-				}
-			} while ( thisNode.getParent() === parentNode );
-			convertRange = new ve.Range(
-				firstCoveredSibling.getOuterRange().start, lastCoveredSibling.getOuterRange().end
+			// Get a range that covers the whole group
+			groupRange = new ve.Range(
+				group.nodes[0].getOuterRange().start,
+				group.nodes[group.nodes.length - 1].getOuterRange().end
 			);
 			// Convert everything to paragraphs first
 			surfaceModel.change(
-				ve.dm.Transaction.newFromContentBranchConversion( doc, convertRange, 'paragraph' ),
+				ve.dm.Transaction.newFromContentBranchConversion(
+					documentModel, groupRange, 'paragraph'
+				),
 				selection
 			);
 			// Wrap everything in a list and each content branch in a listItem
-			surfaceModel.change(
-				ve.dm.Transaction.newFromWrap(
-					doc,
-					convertRange,
-					[],
-					[{ 'type': 'list', 'attributes': { 'style': style } }],
-					[],
-					[{ 'type': 'listItem' }]
-				)
-				// TODO: Come up with a proper range object and use it here
+			tx = ve.dm.Transaction.newFromWrap(
+				documentModel,
+				groupRange,
+				[],
+				[{ 'type': 'list', 'attributes': { 'style': style } }],
+				[],
+				[{ 'type': 'listItem' }]
 			);
+			surfaceModel.change( tx, tx.translateRange( selection ) );
 		}
 	}
 };
 
-ve.ui.ListButtonTool.prototype.unlist = function( node ){
-	var surface = this.toolbar.surfaceView,
-		model = surface.getModel(),
-		doc = model.getDocument(),
-		selection = model.getSelection(),
-		siblings = doc.selectNodes( selection, 'siblings'),
-		listNode,
+ve.ui.ListButtonTool.prototype.unlist = function( node ) {
+	var surfaceModel = this.toolbar.getSurfaceView().getModel(),
+		documentModel = surfaceModel.getDocument(),
+		selection = surfaceModel.getSelection(),
+		groups = documentModel.getCoveredSiblingGroups( selection ),
+		previousList,
+		group,
 		tx;
-
-	if ( siblings.length === 0 ) {
-		return ;
+	for ( var i = 0; i < groups.length; i++ ) {
+		group = groups[i];
+		if ( group.grandparent && group.grandparent.getType() === 'list' ) {
+			if ( group.grandparent !== previousList ) {
+				// Unwrap the parent list
+				tx = ve.dm.Transaction.newFromWrap(
+					documentModel,
+					group.grandparent.getRange(),
+					[ { 'type': 'list' } ],
+					[],
+					[ { 'type': 'listItem' } ],
+					[]
+				);
+				surfaceModel.change( tx, tx.translateRange( selection ) );
+				// Skip this one next time
+				previousList = group.grandparent;
+			}
+		}
 	}
-	
-	listNode = siblings[0].node;
-	// Get the parent list node
-	while( listNode && listNode.getType() !== 'list' ) {
-		listNode = listNode.getParent();
-	}
-
-	tx = ve.dm.Transaction.newFromWrap(
-		doc,
-		listNode.getRange(),
-		[ { 'type': 'list' } ],
-		[],
-		[ { 'type': 'listItem' } ],
-		[]
-	);
-
-	model.change( tx );
 };
 
 ve.ui.ListButtonTool.prototype.onClick = function() {
