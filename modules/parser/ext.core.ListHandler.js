@@ -3,7 +3,7 @@
  */
 
 function ListHandler ( manager ) {
-	this.manager = manager
+	this.manager = manager;
 	this.reset();
 	this.manager.addTransform( this.onListItem.bind(this), 
 			this.listRank, 'tag', 'listItem' );
@@ -18,7 +18,7 @@ ListHandler.prototype.bulletCharsMap = {
 	'*': { list: 'ul', item: 'li' },
 	'#': { list: 'ol', item: 'li' },
 	';': { list: 'dl', item: 'dt' },
-	':': { list: 'dl', item: 'dd' },
+	':': { list: 'dl', item: 'dd' }
 };
 
 ListHandler.prototype.reset = function() {
@@ -116,25 +116,29 @@ ListHandler.prototype.doListItem = function ( bs, bn ) {
 		this.manager.addTransform( this.onAny.bind(this),
 				this.anyRank, 'any' );
 	}
+	
+	var itemToken;
+
 	// emit close tag tokens for closed lists
 	if (changeLen === 0)
 	{
-		var itemToken = this.endtags.pop();
+		itemToken = this.endtags.pop();
 		this.endtags.push(new EndTagTk( itemToken.name ));
 		return [
 			itemToken,
 			new TagTk( itemToken.name )
 		];
 	}
-	else if ( bs.length == bn.length
-			&& changeLen == 1
-			&& this.isDlDd( bs[prefixLen], bn[prefixLen] ) )
+	else if ( bs.length == bn.length && 
+			changeLen == 1 && 
+			this.isDlDd( bs[prefixLen], bn[prefixLen] ) )
 	{
 		// handle dd/dt transitions
 		var newName = this.bulletCharsMap[bn[prefixLen]].item;
+		var endTag = this.endtags.pop();
 		this.endtags.push(new EndTagTk( newName ));
 		return [
-			this.endtags.pop(),
+			endTag,
 			new TagTk( newName )
 		];
 	}
@@ -143,7 +147,7 @@ ListHandler.prototype.doListItem = function ( bs, bn ) {
 		var tokens = this.popTags(bs.length - prefixLen);
 
 		if (prefixLen > 0 && bn.length == prefixLen ) {
-			var itemToken = this.endtags.pop();
+			itemToken = this.endtags.pop();
 			tokens.push(itemToken);
 			tokens.push(new TagTk( itemToken.name ));
 			this.endtags.push(new EndTagTk( itemToken.name ));
