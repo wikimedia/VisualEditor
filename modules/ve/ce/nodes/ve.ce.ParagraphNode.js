@@ -1,26 +1,33 @@
 /**
- * Creates an ve.ce.ParagraphNode object.
- * 
+ * ContentEditable node for a paragraph.
+ *
  * @class
  * @constructor
- * @extends {ve.ce.LeafNode}
- * @param {ve.dm.ParagraphNode} model Paragraph model to view
+ * @extends {ve.ce.BranchNode}
+ * @param model {ve.dm.ParagraphNode} Model to observe
  */
 ve.ce.ParagraphNode = function( model ) {
 	// Inheritance
-	ve.ce.LeafNode.call( this, model, $( '<p></p>' ) );
+	ve.ce.BranchNode.call( this, 'paragraph', model, $( '<p></p>' ) );
+};
 
-	// DOM Changes
-	this.$.addClass( 've-ce-paragraphNode' );
+/* Static Members */
+
+/**
+ * Node rules.
+ *
+ * @see ve.ce.NodeFactory
+ * @static
+ * @member
+ */
+ve.ce.ParagraphNode.rules = {
+	'canBeSplit': true
 };
 
 /* Registration */
 
-ve.ce.DocumentNode.splitRules.paragraph = {
-	'self': true,
-	'children': null
-};
+ve.ce.nodeFactory.register( 'paragraph', ve.ce.ParagraphNode );
 
 /* Inheritance */
 
-ve.extendClass( ve.ce.ParagraphNode, ve.ce.LeafNode );
+ve.extendClass( ve.ce.ParagraphNode, ve.ce.BranchNode );

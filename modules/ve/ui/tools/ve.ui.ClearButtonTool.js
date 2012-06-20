@@ -1,6 +1,6 @@
 /**
  * Creates an ve.ui.ClearButtonTool object.
- * 
+ *
  * @class
  * @constructor
  * @extends {ve.ui.ButtonTool}
@@ -18,19 +18,27 @@ ve.ui.ClearButtonTool = function( toolbar, name, title ) {
 
 /* Methods */
 
+ve.ui.ClearButtonTool.prototype.getAnnotations = function(){
+	var surface = this.toolbar.getSurfaceView(),
+		model = surface.getModel();
+	return model.getDocument().getAnnotationsFromRange( model.getSelection(), true );
+};
+
 ve.ui.ClearButtonTool.prototype.onClick = function() {
-	var surfaceView = this.toolbar.getSurfaceView();
-		
-	surfaceView.annotate( 'clear', this.pattern );
-	surfaceView.clearInsertionAnnotations();
+	var surfaceView = this.toolbar.getSurfaceView(),
+		model = surfaceView.getModel(),
+		annotations = this.getAnnotations();
+	for ( var hash in annotations ) {
+		model.annotate( 'clear', annotations[hash] );
+	}
+	surfaceView.showSelection( model.getSelection() );
 	surfaceView.contextView.closeInspector();
 };
 
 ve.ui.ClearButtonTool.prototype.updateState = function( annotations ) {
-	var matchingAnnotations = ve.dm.DocumentNode.getMatchingAnnotations(
-		annotations.all, this.pattern
-	);
-	if ( matchingAnnotations.length === 0 ) {
+	var allAnnotations = this.getAnnotations();
+
+	if ( ve.isEmptyObject( allAnnotations ) ) {
 		this.$.addClass( 'es-toolbarButtonTool-disabled' );
 	} else {
 		this.$.removeClass( 'es-toolbarButtonTool-disabled' );
@@ -42,7 +50,7 @@ ve.ui.ClearButtonTool.prototype.updateState = function( annotations ) {
 ve.ui.Tool.tools.clear = {
 	'constructor': ve.ui.ClearButtonTool,
 	'name': 'clear',
-	'title': 'Clear formatting'
+	'title': ve.msg( 'visualeditor-clearbutton-tooltip' )
 };
 
 /* Inheritance */

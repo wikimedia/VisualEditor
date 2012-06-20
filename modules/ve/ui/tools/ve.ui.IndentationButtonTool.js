@@ -1,6 +1,6 @@
 /**
  * Creates an ve.ui.IndentationButtonTool object.
- * 
+ *
  * @class
  * @constructor
  * @extends {ve.ui.ButtonTool}
@@ -50,7 +50,7 @@ ve.ui.IndentationButtonTool.prototype.indent = function( listItems ) {
 				'styles',
 				styles.concat( styles[styles.length - 1] )
 			);
-			surface.model.transact( tx );
+			surface.model.change( tx );
 		}
 	}
 	surface.emitCursor();
@@ -69,7 +69,7 @@ ve.ui.IndentationButtonTool.prototype.outdent = function( listItems ) {
 				'styles',
 				styles.slice( 0, styles.length - 1 )
 			);
-			surface.model.transact( tx );
+			surface.model.change( tx );
 		}
 	}
 	surface.emitCursor();
@@ -78,7 +78,10 @@ ve.ui.IndentationButtonTool.prototype.outdent = function( listItems ) {
 ve.ui.IndentationButtonTool.prototype.updateState = function( annotations, nodes ) {
 	function areListItems( nodes ) {
 		for( var i = 0; i < nodes.length; i++ ) {
-			if ( nodes[i].getParent().getElementType() !== 'listItem' ) {
+			if (
+				nodes[i].parent !== null &&
+				nodes[i].getParent().getType() !== 'listItem' )
+			{
 				return false;
 			}
 		}
@@ -98,13 +101,13 @@ ve.ui.IndentationButtonTool.prototype.updateState = function( annotations, nodes
 ve.ui.Tool.tools.indent = {
 	'constructor': ve.ui.IndentationButtonTool,
 	'name': 'indent',
-	'title': 'Increase indentation'
+	'title': ve.msg( 'visualeditor-indentationbutton-indent-tooltip' ),
 };
 
 ve.ui.Tool.tools.outdent = {
 	'constructor': ve.ui.IndentationButtonTool,
 	'name': 'outdent',
-	'title': 'Reduce indentation'
+	'title': ve.msg( 'visualeditor-indentationbutton-outdent-tooltip' ),
 };
 
 /* Inheritance */

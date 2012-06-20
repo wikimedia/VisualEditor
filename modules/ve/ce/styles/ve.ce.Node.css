@@ -1,0 +1,32 @@
+.ve-ce-alienBlockNode {
+	background-color: rgb(255,255,186) rgba(255,255,186,0.3);
+	border: rgba(0,0,0,0.3) dashed 1px;
+	display: block;
+}
+
+.ve-ce-alienInlineNode {
+	background-color: rgb(255,255,186) rgba(255,255,186,0.3);
+	border: rgba(0,0,0,0.3) dashed 1px;
+	display: inline;
+}
+
+.ve-ce-slug {
+	/*display: inline-block;
+	margin-right: -1px;
+	width: 1px;*/
+}
+
+.ve-ce-branchNode h1:empty:before,
+.ve-ce-branchNode h2:empty:before,
+.ve-ce-branchNode h3:empty:before,
+.ve-ce-branchNode h4:empty:before,
+.ve-ce-branchNode h5:empty:before,
+.ve-ce-branchNode h6:empty:before,
+.ve-ce-branchNode p:empty:before {
+	content: url('data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==');
+}
+
+li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
+	margin: 0;
+	padding: 0;
+}

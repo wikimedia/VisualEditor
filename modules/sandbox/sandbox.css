@@ -186,7 +186,7 @@
 }
 
 #es-docs {
-	margin-bottom: 1em;
+	margin: 0 2em 1em 2em;
 }
 
 #es-docs-label {
@@ -275,6 +275,6 @@
 }
 
 #es-warning-dismiss:after {
-	content: ' ✖';
+	content: ' x';
 	color: black;
 }

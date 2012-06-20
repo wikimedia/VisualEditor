@@ -1,6 +1,6 @@
 /**
  * Creates an ve.ui.AnnotationButtonTool object.
- * 
+ *
  * @class
  * @constructor
  * @extends {ve.ui.ButtonTool}
@@ -21,37 +21,41 @@ ve.ui.AnnotationButtonTool = function( toolbar, name, title, data ) {
 /* Methods */
 
 ve.ui.AnnotationButtonTool.prototype.onClick = function() {
-	var surfaceView = this.toolbar.getSurfaceView();
+	var surfaceView = this.toolbar.getSurfaceView(),
+		surfaceModel = surfaceView.model,
+		selection = surfaceModel.getSelection();
+
 	if ( this.inspector ) {
-		if( surfaceView.getSelectionRange() ) {
-			this.toolbar.getSurfaceView().contextView.openInspector( this.inspector );
+		if( selection ) {
+			surfaceView.contextView.openInspector( this.inspector );
 		} else {
 			if ( this.active ) {
-				var surfaceModel = surfaceView.getModel(),
-					documentModel = surfaceModel.getDocument(),
-					selection = surfaceModel.getSelection(),
-					range = documentModel.getAnnotationBoundaries(
-						selection.from, this.annotation, true
+				var documentModel = surfaceModel.getDocument(),
+					range = documentModel.getAnnotatedRangeFromOffset(
+						selection.from, this.annotation
 					);
-				surfaceModel.select( range );
-				this.toolbar.getSurfaceView().getContextView().openInspector( this.inspector );
+				surfaceModel.setSelection ( range );
+				surfaceView.showSelection( range );
+				surfaceView.contextView.openInspector( this.inspector );
 			}
 		}
 	} else {
-		surfaceView.annotate( this.active ? 'clear' : 'set', this.annotation );
+		surfaceModel.annotate( this.active ? 'clear' : 'set', this.annotation );
+		surfaceView.showSelection( selection );
 	}
 };
 
 ve.ui.AnnotationButtonTool.prototype.updateState = function( annotations, nodes ) {
-	if (
-		ve.dm.DocumentNode.getIndexOfAnnotation( annotations.full, this.annotation, true ) !== -1
-	) {
+	var matches = ve.dm.Document.getMatchingAnnotations(
+		annotations, new RegExp( '^' + this.annotation.type + '$' )
+	);
+	if ( ve.isEmptyObject( matches ) ) {
+		this.$.removeClass( 'es-toolbarButtonTool-down' );
+		this.active = false;
+	} else {
 		this.$.addClass( 'es-toolbarButtonTool-down' );
 		this.active = true;
-		return;
 	}
-	this.$.removeClass( 'es-toolbarButtonTool-down' );
-	this.active = false;
 };
 
 /* Registration */
@@ -59,7 +63,7 @@ ve.ui.AnnotationButtonTool.prototype.updateState = function( annotations, nodes 
 ve.ui.Tool.tools.bold = {
 	'constructor': ve.ui.AnnotationButtonTool,
 	'name': 'bold',
-	'title': 'Bold (ctrl/cmd + B)',
+	'title': ve.msg( 'visualeditor-annotationbutton-bold-tooltip' ),
 	'data': {
 		'annotation': { 'type': 'textStyle/bold' }
 	}
@@ -68,7 +72,7 @@ ve.ui.Tool.tools.bold = {
 ve.ui.Tool.tools.italic = {
 	'constructor': ve.ui.AnnotationButtonTool,
 	'name': 'italic',
-	'title': 'Italic (ctrl/cmd + I)',
+	'title': ve.msg( 'visualeditor-annotationbutton-italic-tooltip' ),
 	'data': {
 		'annotation': { 'type': 'textStyle/italic' }
 	}
@@ -77,9 +81,9 @@ ve.ui.Tool.tools.italic = {
 ve.ui.Tool.tools.link = {
 	'constructor': ve.ui.AnnotationButtonTool,
 	'name': 'link',
-	'title': 'Link (ctrl/cmd + K)',
+	'title': ve.msg( 'visualeditor-annotationbutton-link-tooltip' ),
 	'data': {
-		'annotation': { 'type': 'link/internal', 'data': { 'title': '' } },
+		'annotation': { 'type': 'link/wikiLink', 'data': { 'title': '' } },
 		'inspector': 'link'
 	}
 };

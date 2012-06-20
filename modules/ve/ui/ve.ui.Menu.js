@@ -1,6 +1,6 @@
 /**
  * Creates an ve.ui.Menu object.
- * 
+ *
  * @class
  * @constructor
  * @param {Object[]} items List of items to append initially
@@ -63,7 +63,7 @@ ve.ui.Menu.prototype.addItem = function( item, before ) {
 		if ( item.label ) {
 			item.$ = $( '<div class="es-menuView-item"></div>' )
 				.attr( 'rel', item.name )
-				// TODO: i18n time!
+				// TODO: this should take a labelmsg instead and call ve.msg()
 				.append( $( '<span></span>' ).text( item.label ) );
 		} else {
 			// No label, must be a break

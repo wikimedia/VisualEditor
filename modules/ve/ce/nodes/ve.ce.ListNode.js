@@ -1,58 +1,59 @@
 /**
- * Creates an ve.ce.ListNode object.
- * 
+ * ContentEditable node for a list.
+ *
  * @class
  * @constructor
  * @extends {ve.ce.BranchNode}
- * @param {ve.dm.ListNode} model List model to view
+ * @param model {ve.dm.ListNode} Model to observe
  */
 ve.ce.ListNode = function( model ) {
 	// Inheritance
-	var style = model.getElementAttribute( 'style' ),
-		type = ve.ce.ListNode.domNodeTypes[style];
-	ve.ce.BranchNode.call( this, model, $( '<' + type + '></' + type + '>' ) );
-
-	// Properties
-	this.currentStylesHash = null;
-
-	// DOM Changes
-	this.$.addClass( 've-ce-listNode' );
+	ve.ce.BranchNode.call( this, 'list', model, ve.ce.BranchNode.getDomWrapper( model, 'style' ) );
 
 	// Events
-	var _this = this;
-	this.model.on( 'update', function() {
-		_this.setStyle();
-	} );
+	this.model.addListenerMethod( this, 'update', 'onUpdate' );
 };
 
 /* Static Members */
 
-ve.ce.ListNode.domNodeTypes = {
+/**
+ * Node rules.
+ *
+ * @see ve.ce.NodeFactory
+ * @static
+ * @member
+ */
+ve.ce.ListNode.rules = {
+	'canBeSplit': false
+};
+
+/**
+ * Mapping of list style values and DOM wrapper element types.
+ *
+ * @static
+ * @member
+ */
+ve.ce.ListNode.domWrapperElementTypes = {
 	'bullet': 'ul',
-	'number': 'ol',
-	'definition': 'dl'
+	'number': 'ol'
 };
 
 /* Methods */
 
-ve.ce.ListNode.prototype.setStyle = function() {
-	var style = this.model.getElementAttribute( 'style' ),
-		type = ve.ce.ListItemNode.domNodeTypes[style];
-	if ( type === undefined ) {
-		throw 'Invalid style attribute for heading node: ' + style;
-	}
-	if ( style !== this.currentStyleHash ) {
-		this.currentStyleHash = style;
-		this.convertDomElement( type );
-	}
+/**
+ * Responds to model update events.
+ *
+ * If the style changed since last update the DOM wrapper will be replaced with an appropriate one.
+ *
+ * @method
+ */
+ve.ce.ListNode.prototype.onUpdate = function() {
+	this.updateDomWrapper( 'style' );
 };
 
 /* Registration */
 
-ve.ce.DocumentNode.splitRules.list = {
-	'self': false,
-	'children': true
-};
+ve.ce.nodeFactory.register( 'list', ve.ce.ListNode );
 
 /* Inheritance */
 

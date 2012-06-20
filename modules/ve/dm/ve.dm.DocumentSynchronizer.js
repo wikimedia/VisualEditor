@@ -1,73 +1,183 @@
 /**
  * Creates an ve.dm.DocumentSynchronizer object.
- * 
- * This object is a utility for collecting actions to be performed on the model tree
- * in multiple steps and then processing those actions in a single step.
- * 
+ *
+ * This object is a utility for collecting actions to be performed on the model tree in multiple
+ * steps as the linear model is modified my a transaction processor and then processing those queued
+ * actions when the transaction is done being processed.
+ *
+ * IMPORTANT NOTE: It is assumed that:
+ *   - The linear model has already been updated for the pushed actions
+ *   - Actions are pushed in increasing offset order
+ *   - Actions are non-overlapping
+ *
  * @class
  * @constructor
+ * @param {ve.dm.Document} doc Document to synchronize
  */
-ve.dm.DocumentSynchronizer = function( model ) {
+ve.dm.DocumentSynchronizer = function( doc ) {
 	// Properties
-	this.model = model;
-	this.actions = [];
+	this.document = doc;
+	this.actionQueue = [];
+	this.eventQueue = [];
+};
+
+/* Static Members */
+
+/**
+ * Synchronization methods.
+ *
+ * Each method is specific to a type of action. Methods are called in the context of a document
+ * synchronizer, so they work similar to normal methods on the object.
+ *
+ * @static
+ * @member
+ */
+ve.dm.DocumentSynchronizer.synchronizers = {};
+
+/* Static Methods */
+
+/**
+ * Synchronizes an annotation action.
+ *
+ * This method is called within the context of a document synchronizer instance.
+ *
+ * @static
+ * @method
+ * @param {Object} action
+ */
+ve.dm.DocumentSynchronizer.synchronizers.annotation = function( action ) {
+	// Queue events for all leaf nodes covered by the range
+	// TODO test me
+	var i, selection = this.document.selectNodes( action.range, 'leaves' );
+	for ( i = 0; i < selection.length; i++ ) {
+		this.queueEvent( selection[i].node, 'annotation' );
+		this.queueEvent( selection[i].node, 'update' );
+	}
+};
+
+/**
+ * Synchronizes an attribute change action.
+ *
+ * This method is called within the context of a document synchronizer instance.
+ *
+ * @static
+ * @method
+ * @param {Object} action
+ */
+ve.dm.DocumentSynchronizer.synchronizers.attributeChange = function( action ) {
+	this.queueEvent( action.node, 'attributeChange', action.key, action.from, action.to );
+	this.queueEvent( action.node, 'update' );
+};
+
+/**
+ * Synchronizes a resize action.
+ *
+ * This method is called within the context of a document synchronizer instance.
+ *
+ * @static
+ * @method
+ * @param {Object} action
+ */
+ve.dm.DocumentSynchronizer.synchronizers.resize = function( action ) {
+	action.node.adjustLength( action.adjustment );
+	// no update needed, adjustLength causes an update event on it's own
+};
+
+/**
+ * Synchronizes a rebuild action.
+ *
+ * This method is called within the context of a document synchronizer instance.
+ *
+ * @static
+ * @method
+ * @param {Object} action
+ */
+ve.dm.DocumentSynchronizer.synchronizers.rebuild = function( action ) {
+	// Find the nodes contained by oldRange
+	var selection = this.document.selectNodes( action.oldRange, 'siblings' );
+	if ( selection.length === 0 ) {
+		// WTF? Nothing to rebuild, I guess. Whatever.
+		return;
+	}
+	
+	var firstNode, parent, index, numNodes;
+	if ( 'indexInNode' in selection[0] ) {
+		// Insertion
+		parent = selection[0].node;
+		index = selection[0].indexInNode;
+		numNodes = 0;
+	} else {
+		// Rebuild
+		firstNode = selection[0].node,
+		parent = firstNode.getParent(),
+		index = selection[0].index;
+		numNodes = selection.length;
+	}
+	this.document.rebuildNodes( parent, index, numNodes, action.oldRange.from,
+		action.newRange.getLength()
+	);
 };
 
 /* Methods */
 
-ve.dm.DocumentSynchronizer.prototype.getModel = function() {
-	return this.model;
+/**
+ * Gets the document being synchronized.
+ *
+ * @method
+ * @returns {ve.dm.Document} Document being synchronized
+ */
+ve.dm.DocumentSynchronizer.prototype.getDocument = function() {
+	return this.document;
 };
 
 /**
- * Add an insert action to the queue
- * @param {ve.dm.BranchNode} node Node to insert
- * @param {Integer} [offset] Offset of the inserted node, if known
+ * Add an annotation action to the queue.
+ *
+ * This finds all leaf nodes covered wholly or partially by the given range, and emits annotation
+ * events for all of them.
+ *
+ * @method
+ * @param {ve.Range} range Range that was annotated
  */
-ve.dm.DocumentSynchronizer.prototype.pushInsert = function( node, offset ) {
-	this.actions.push( {
-		'type': 'insert',
+ve.dm.DocumentSynchronizer.prototype.pushAnnotation = function( range ) {
+	this.actionQueue.push( {
+		'type': 'annotation',
+		'range': range
+	} );
+};
+
+/**
+ * Add an attribute change to the queue.
+ *
+ * This emits an attributeChange event for the given node with the provided metadata.
+ *
+ * @method
+ * @param {ve.dm.Node} node Node whose attribute changed
+ * @param {String} key Key of the attribute that changed
+ * @param {Mixed} from Old value of the attribute
+ * @param {Mixed} to New value of the attribute
+ */
+ve.dm.DocumentSynchronizer.prototype.pushAttributeChange = function( node, key, from, to ) {
+	this.actionQueue.push( {
+		'type': 'attributeChange',
 		'node': node,
-		'offset': offset || null
+		'key': key,
+		'from': from,
+		'to': to
 	} );
 };
 
 /**
- * Add a delete action to the queue
- * @param {ve.dm.BranchNode} node Node to delete
- */
-ve.dm.DocumentSynchronizer.prototype.pushDelete = function( node ) {
-	this.actions.push( {
-		'type': 'delete',
-		'node': node
-	} );
-};
-
-/**
- * Add a rebuild action to the queue. This rebuilds one or more nodes from data
- * found in the linear model.
- * @param {ve.Range} oldRange Range that the old nodes used to span. This is
- *                            used to find the old nodes in the model tree.
- * @param {ve.Range} newRange Range that contains the new nodes. This is used
- *                            to get the new node data from the linear model.
- */
-ve.dm.DocumentSynchronizer.prototype.pushRebuild = function( oldRange, newRange ) {
-	oldRange.normalize();
-	newRange.normalize();
-	this.actions.push( {
-		'type': 'rebuild',
-		'oldRange': oldRange,
-		'newRange': newRange
-	} );
-};
-
-/**
- * Add a resize action to the queue. This changes the content length of a leaf node.
- * @param {ve.dm.BranchNode} node Node to resize
+ * Add a resize action to the queue.
+ *
+ * This changes the length of a text node.
+ *
+ * @method
+ * @param {ve.dm.TextNode} node Node to resize
  * @param {Integer} adjustment Length adjustment to apply to the node
  */
 ve.dm.DocumentSynchronizer.prototype.pushResize = function( node, adjustment ) {
-	this.actions.push( {
+	this.actionQueue.push( {
 		'type': 'resize',
 		'node': node,
 		'adjustment': adjustment
@@ -75,107 +185,82 @@ ve.dm.DocumentSynchronizer.prototype.pushResize = function( node, adjustment ) {
 };
 
 /**
- * Add an update action to the queue
- * @param {ve.dm.BranchNode} node Node to update
+ * Add a rebuild action to the queue.
+ *
+ * When a range of data has been changed arbitrarily this can be used to drop the nodes that
+ * represented the original range and replace them with new nodes that represent the new range.
+ *
+ * @method
+ * @param {ve.Range} oldRange Range of old nodes to be dropped
+ * @param {ve.Range} newRange Range for new nodes to be built from
  */
-ve.dm.DocumentSynchronizer.prototype.pushUpdate = function( node ) {
-	this.actions.push( {
-		'type': 'update',
-		'node': node
+ve.dm.DocumentSynchronizer.prototype.pushRebuild = function( oldRange, newRange ) {
+	this.actionQueue.push( {
+		'type': 'rebuild',
+		'oldRange': oldRange,
+		'newRange': newRange
 	} );
 };
 
 /**
- * Apply queued actions to the model tree. This assumes that the linear model
- * has already been updated, but the model tree has not yet been.
- * 
+ * Queue an event to be emitted on a node.
+ *
+ * This method is called by methods defined in {ve.dm.DocumentSynchronizer.synchronizers}.
+ *
+ * Duplicate events will be ignored only if all arguments match exactly. Hashes of each event that
+ * has been queued are stored in the nodes they will eventually be fired on.
+ *
+ * @method
+ * @param {ve.dm.Node} node
+ * @param {String} event Event name
+ * @param {Mixed} [...] Additional arguments to be passed to the event when fired
+ */
+ve.dm.DocumentSynchronizer.prototype.queueEvent = function( node, event ) {
+	// Check if this is already queued
+	var args = Array.prototype.slice.call( arguments, 1 );
+	var hash = $.toJSON( args );
+	if ( !node.queuedEventHashes ) {
+		node.queuedEventHashes = {};
+	}
+	if ( !node.queuedEventHashes[hash] ) {
+		node.queuedEventHashes[hash] = true;
+		this.eventQueue.push( { 'node': node, 'args': args } );
+	}
+};
+
+/**
+ * Synchronizes node tree using queued actions.
+ *
+ * This method uses the static methods defined in {ve.dm.DocumentSynchronizer.synchronizers} and
+ * calls them in the context of {this}.
+ *
+ * After synchronization is complete all queued events will be emitted. Hashes of queued events that
+ * have been stored on nodes are removed from the nodes after the events have all been emitted.
+ *
+ * This method also clears both action and event queues.
+ *
  * @method
  */
 ve.dm.DocumentSynchronizer.prototype.synchronize = function() {
-	// TODO: Normalize the actions list to clean up nested actions
-	// Perform all actions
-	var	action,
-		offset,
-		parent;
-	for ( var i = 0, len = this.actions.length; i < len; i++ ) {
-		action = this.actions[i];
-		offset = action.offset || null;
-		switch ( action.type ) {
-			case 'insert':
-				// Compute the offset if it wasn't provided
-				if ( offset === null ) {
-					offset = this.model.getOffsetFromNode( action.node );
-				}
-				// Insert the new node at the given offset
-				var target = this.model.getNodeFromOffset( offset + 1 );
-				if ( target === this.model ) {
-					// Insert at the beginning of the document
-					this.model.splice( 0, 0, action.node );
-				} else if ( target === null ) {
-					// Insert at the end of the document
-					this.model.splice( this.model.getElementLength(), 0, action.node );
-				} else {
-					// Insert before the element currently at the offset
-					parent = target.getParent();
-					parent.splice( parent.indexOf( target ), 0, action.node );
-				}
-				break;
-			case 'delete':
-				// Replace original node with new node
-				parent = action.node.getParent();
-				parent.splice( parent.indexOf( action.node ), 1 );
-				break;
-			case 'rebuild':
-				// Find the node(s) contained by oldRange. This is done by repeatedly
-				// invoking selectNodes() in shallow mode until we find the right node(s).
-				// TODO this traversal could be made more efficient once we have an offset map
-				// TODO I need to add this recursive shallow stuff to selectNodes() as a 'siblings' mode
-				var selection, node = this.model, range = action.oldRange;
-				while ( true ) {
-					selection = node.selectNodes( range, true );
-					// We stop descending if:
-					// * we got more than one node, OR
-					// * we got a leaf node, OR
-					// * we got no range, which means the entire node is covered, OR
-					// * we got the same node back, which means we'd get in an infinite loop
-					if ( selection.length != 1 ||
-						!selection[0].node.hasChildren() ||
-						!selection[0].range ||
-						selection[0].node == node
-					) {
-						break;
-					}
-					// Descend into this node
-					node = selection[0].node;
-					range = selection[0].range;
-
-				}
-				if ( selection[0].node == this.model ) {
-					// We got some sort of weird input, ignore it
-					break;
-				}
-				
-				// The first node we're rebuilding is selection[0].node , and we're rebuilding
-				// selection.length adjacent nodes.
-				// TODO selectNodes() discovers the index of selection[0].node in its parent,
-				// but discards it, and now we recompute it
-				this.model.rebuildNodes( selection[0].node.getParent(),
-					selection[0].node.getParent().indexOf( selection[0].node ),
-					selection.length, action.oldRange.from,
-					this.model.getData( action.newRange )
-				);
-				break;
-			case 'resize':
-				// Adjust node length - causes update events to be emitted
-				action.node.adjustContentLength( action.adjustment );
-				break;
-			case 'update':
-				// Emit update events
-				action.node.emit( 'update' );
-				break;
+	var action,
+		event,
+		i;
+	// Execute the actions in the queue
+	for ( i = 0; i < this.actionQueue.length; i++ ) {
+		action = this.actionQueue[i];
+		if ( action.type in ve.dm.DocumentSynchronizer.synchronizers ) {
+			ve.dm.DocumentSynchronizer.synchronizers[action.type].call( this, action );
+		} else {
+			throw 'Invalid action type ' + action.type;
 		}
 	}
-	
-	// We've processed the queue, clear it
-	this.actions = [];
+	// Emit events in the event queue
+	for ( i = 0; i < this.eventQueue.length; i++ ) {
+		event = this.eventQueue[i];
+		event.node.emit.apply( event.node, event.args );
+		delete event.node.queuedEventHashes;
+	}
+	// Clear queues
+	this.actionQueue = [];
+	this.eventQueue = [];
 };

@@ -50,6 +50,10 @@ env.addInterwiki( 'mw', 'http://www.mediawiki.org/w' );
 // For development:
 //env.addInterwiki( 'localhost', 'http://localhost/w' );
 
+// add localhost and make it the default
+env.addInterwiki( 'localhost', 'http://localhost/mediawiki' );
+defaultInterwiki = 'localhost';
+
 var parserPipelineFactory = new ParserPipelineFactory( env );
 //var parser = parserPipelineFactory.makePipeline( 'text/x-mediawiki/full' );
 

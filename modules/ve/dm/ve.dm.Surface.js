@@ -1,30 +1,32 @@
 /**
- * Creates an ve.dm.Surface object.
+ * DataModel surface.
  *
  * @class
  * @constructor
  * @extends {ve.EventEmitter}
- * @param {ve.dm.DocumentNode} doc Document model to create surface for
+ * @param {ve.dm.Document} doc Document model to create surface for
  */
 ve.dm.Surface = function( doc ) {
 	// Inheritance
 	ve.EventEmitter.call( this );
-
 	// Properties
-	this.doc = doc;
+	this.documentModel = doc;
 	this.selection = null;
-
 	this.smallStack = [];
 	this.bigStack = [];
 	this.undoIndex = 0;
-
-	var _this = this;
-	setInterval( function () {
-		_this.breakpoint();
-	}, 750 );
+	this.historyTrackingInterval = null;
 };
 
 /* Methods */
+
+ve.dm.Surface.prototype.startHistoryTracking = function() {
+	this.historyTrackingInterval = setInterval( ve.proxy( this.breakpoint, this ), 750 );
+};
+
+ve.dm.Surface.prototype.stopHistoryTracking = function() {
+	clearInterval( this.historyTrackingInterval );
+};
 
 ve.dm.Surface.prototype.purgeHistory = function() {
 	this.selection = null;
@@ -48,7 +50,7 @@ ve.dm.Surface.prototype.getHistory = function() {
  * @returns {ve.dm.DocumentNode} Document model of the surface
  */
 ve.dm.Surface.prototype.getDocument = function() {
-	return this.doc;
+	return this.documentModel;
 };
 
 /**
@@ -62,69 +64,56 @@ ve.dm.Surface.prototype.getSelection = function() {
 };
 
 /**
- * Sets the selection
+ * Applies a series of transactions to the content data and sets the selection.
  *
  * @method
- */
-ve.dm.Surface.prototype.setSelection = function( selection ) {
-	this.selection = selection;
-};
-
-/**
- * Changes the selection.
- *
- * If changing the selection at a high frequency (such as while dragging) use the combine argument
- * to avoid them being split up into multiple history items
- *
- * @method
+ * @param {ve.dm.Transaction} transaction Transaction to apply to the document
  * @param {ve.Range} selection
- * @param {Boolean} isManual Whether this selection was the result of a user action, and thus should
- * be recorded in history...?
  */
-ve.dm.Surface.prototype.select = function( selection, isManual ) {
-	selection.normalize();
-	/*if (
-		( ! this.selection ) || ( ! this.selection.equals( selection ) )
-	) {*/
-		if ( isManual ) {
-			this.breakpoint();
-		}
-		// check if the last thing is a selection, if so, swap it.
+ve.dm.Surface.prototype.change = function( transaction, selection ) {
+	if ( transaction ) {
+		this.bigStack = this.bigStack.slice( 0, this.bigStack.length - this.undoIndex );
+		this.undoIndex = 0;
+		this.smallStack.push( transaction );
+		ve.dm.TransactionProcessor.commit( this.getDocument(), transaction );
+	}
+	if ( selection && ( !this.selection || !this.selection.equals ( selection ) ) ) {
+		selection.normalize();
 		this.selection = selection;
-		this.emit( 'select', this.selection.clone() );
-	//}
+		this.emit ('select', this.selection.clone() );
+	}
+	if ( transaction ) {
+		this.emit( 'transact', transaction );
+	}
+	this.emit( 'change', transaction, selection );
 };
 
 /**
- * Applies a series of transactions to the content data.
- *
- * If committing multiple transactions which are the result of a single user action and need to be
- * part of a single history item, use the isPartial argument for all but the last one to avoid them
- * being split up into multple history items.
+ * Applies an annotation to the current selection
  *
  * @method
- * @param {ve.dm.Transaction} transactions Tranasction to apply to the document
- * @param {boolean} isPartial whether this transaction is part of a larger logical grouping of
- * transactions (such as when replacing - delete, then insert)
+ * @param {String} annotation action: toggle, clear, set
+ * @param {Object} annotation object to apply.
  */
-ve.dm.Surface.prototype.transact = function( transaction ) {
-	this.bigStack = this.bigStack.slice( 0, this.bigStack.length - this.undoIndex );
-	this.undoIndex = 0;
-	this.smallStack.push( transaction );
-	this.doc.commit( transaction );
-	this.emit( 'transact', transaction );
+ve.dm.Surface.prototype.annotate = function( method, annotation ) {
+	var selection = this.getSelection();
+	if ( this.selection.getLength() ) {
+		var tx = ve.dm.Transaction.newFromAnnotation(
+			this.getDocument(), selection, method, annotation
+		);
+		this.change( tx );
+	}
 };
 
 ve.dm.Surface.prototype.breakpoint = function( selection ) {
-	/*
 	if( this.smallStack.length > 0 ) {
 		this.bigStack.push( {
 			stack: this.smallStack,
 			selection: selection || this.selection.clone()
 		} );
 		this.smallStack = [];
+		this.emit ( 'history' );
 	}
-	*/
 };
 
 ve.dm.Surface.prototype.undo = function() {
@@ -134,14 +123,15 @@ ve.dm.Surface.prototype.undo = function() {
 		var diff = 0;
 		var item = this.bigStack[this.bigStack.length - this.undoIndex];
 		for( var i = item.stack.length - 1; i >= 0; i-- ) {
-			this.doc.rollback( item.stack[i] );
+			this.documentModel.rollback( item.stack[i] );
 			diff += item.stack[i].lengthDifference;
 		}
 		var selection = item.selection;
-		selection.from -= diff;
-		selection.to -= diff;
-		this.select( selection );
+		selection.end -= diff;
+		this.emit ( 'history' );
+		return selection;
 	}
+	return null;
 };
 
 ve.dm.Surface.prototype.redo = function() {
@@ -151,18 +141,19 @@ ve.dm.Surface.prototype.redo = function() {
 			var diff = 0;
 			var item = this.bigStack[this.bigStack.length - this.undoIndex];
 			for( var i = 0; i < item.stack.length; i++ ) {
-				this.doc.commit( item.stack[i] );
+				this.documentModel.commit( item.stack[i] );
 				diff += item.stack[i].lengthDifference;
 			}
 			var selection = item.selection;
-			selection.from += diff;
-			selection.to += diff;
-			this.selection = null;
-			this.select( selection );
+			selection.end += diff;
 		}
 		this.undoIndex--;
+		this.emit ( 'history' );
+		return selection;
 	}
+	return null;
 };
+
 
 /* Inheritance */
 

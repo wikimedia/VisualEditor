@@ -1,27 +1,32 @@
 /**
- * Creates an ve.ce.TableRowNode object.
- * 
+ * ContentEditable node for a table row.
+ *
  * @class
  * @constructor
  * @extends {ve.ce.BranchNode}
- * @param {ve.dm.TableRowNode} model Table row model to view
+ * @param model {ve.dm.TableRowNode} Model to observe
  */
 ve.ce.TableRowNode = function( model ) {
 	// Inheritance
-	ve.ce.BranchNode.call( this, model, $( '<tr></tr>' ), true );
-	
-	// DOM Changes
-	this.$
-		.attr( 'style', model.getElementAttribute( 'html/style' ) )
-		.addClass( 've-ce-tableRowNode' );
+	ve.ce.BranchNode.call( this, 'tableRow', model, $( '<tr></tr>' ) );
+};
+
+/* Static Members */
+
+/**
+ * Node rules.
+ *
+ * @see ve.ce.NodeFactory
+ * @static
+ * @member
+ */
+ve.ce.TableRowNode.rules = {
+	'canBeSplit': false
 };
 
 /* Registration */
 
-ve.ce.DocumentNode.splitRules.tableRow = {
-	'self': false,
-	'children': false
-};
+ve.ce.nodeFactory.register( 'tableRow', ve.ce.TableRowNode );
 
 /* Inheritance */
 

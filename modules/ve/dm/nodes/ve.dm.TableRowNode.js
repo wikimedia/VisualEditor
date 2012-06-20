@@ -1,37 +1,54 @@
 /**
- * Creates an ve.dm.TableRowNode object.
- * 
+ * DataModel node for a table row.
+ *
  * @class
  * @constructor
  * @extends {ve.dm.BranchNode}
- * @param {Object} element Document data element of this node
- * @param {ve.dm.Node[]} contents List of child nodes to initially add
+ * @param {ve.dm.BranchNode[]} [children] Child nodes to attach
+ * @param {Object} [attributes] Reference to map of attribute key/value pairs
  */
-ve.dm.TableRowNode = function( element, contents ) {
+ve.dm.TableRowNode = function( children, attributes ) {
 	// Inheritance
-	ve.dm.BranchNode.call( this, 'tableRow', element, contents );
+	ve.dm.BranchNode.call( this, 'tableRow', children, attributes );
 };
 
-/* Methods */
+/* Static Members */
 
 /**
- * Creates a table row view for this model.
- * 
- * @method
- * @returns {ve.ce.TableRowNode}
+ * Node rules.
+ *
+ * @see ve.dm.NodeFactory
+ * @static
+ * @member
  */
-ve.dm.TableRowNode.prototype.createView = function() {
-	return new ve.ce.TableRowNode( this );
+ve.dm.TableRowNode.rules = {
+	'isWrapped': true,
+	'isContent': false,
+	'canContainContent': false,
+	'childNodeTypes': ['tableCell'],
+	'parentNodeTypes': ['tableSection']
+};
+
+/**
+ * Node converters.
+ *
+ * @see {ve.dm.Converter}
+ * @static
+ * @member
+ */
+ve.dm.TableRowNode.converters = {
+	'domElementTypes': ['tr'],
+	'toDomElement': function( type, element ) {
+		return document.createElement( 'tr' );
+	},
+	'toDataElement': function( tag, element ) {
+		return { 'type': 'tableRow' };
+	}
 };
 
 /* Registration */
 
-ve.dm.DocumentNode.nodeModels.tableRow = ve.dm.TableRowNode;
-
-ve.dm.DocumentNode.nodeRules.tableRow = {
-	'parents': ['table'],
-	'children': ['tableCell']
-};
+ve.dm.nodeFactory.register( 'tableRow', ve.dm.TableRowNode );
 
 /* Inheritance */
 

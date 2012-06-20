@@ -1,18 +1,17 @@
 /**
- * Creates an ve.ce.DocumentNode object.
- * 
+ * ContentEditable node for a document.
+ *
  * @class
  * @constructor
  * @extends {ve.ce.BranchNode}
- * @param {ve.dm.DocumentNode} documentModel Document model to view
- * @param {ve.ce.Surface} surfaceView Surface view this view is a child of
+ * @param model {ve.dm.DocumentNode} Model to observe
  */
-ve.ce.DocumentNode = function( model, surfaceView ) {
+ve.ce.DocumentNode = function( model, surface ) {
 	// Inheritance
-	ve.ce.BranchNode.call( this, model );
+	ve.ce.BranchNode.call( this, 'document', model );
 
 	// Properties
-	this.surfaceView = surfaceView;
+	this.surface = surface;
 
 	// DOM Changes
 	this.$.addClass( 've-ce-documentNode' );
@@ -22,51 +21,32 @@ ve.ce.DocumentNode = function( model, surfaceView ) {
 
 /* Static Members */
 
-
 /**
- * Mapping of symbolic names and splitting rules.
- * 
- * Each rule is an object with a self and children property. Each of these properties may contain
- * one of two possible values:
- *     Boolean - Whether a split is allowed
- *     Null - Node is a leaf, so there's nothing to split
- * 
- * @example Paragraph rules
- *     {
- *         'self': true
- *         'children': null
- *     }
- * @example List rules
- *     {
- *         'self': false,
- *         'children': true
- *     }
- * @example ListItem rules
- *     {
- *         'self': true,
- *         'children': false
- *     }
+ * Node rules.
+ *
+ * @see ve.ce.NodeFactory
+ * @static
+ * @member
  */
-ve.ce.DocumentNode.splitRules = {};
+ve.ce.DocumentNode.rules = {
+	'canBeSplit': false
+};
 
 /* Methods */
 
 /**
- * Get the document offset of a position created from passed DOM event
- * 
+ * Gets the outer length, which for a document node is the same as the inner length.
+ *
  * @method
- * @param e {Event} Event to create ve.Position from
- * @returns {Integer} Document offset
+ * @returns {Integer} Length of the entire node
  */
-ve.ce.DocumentNode.prototype.getOffsetFromEvent = function( e ) {
-	var position = ve.Position.newFromEventPagePosition( e );
-	return this.getOffsetFromRenderedPosition( position );
+ve.ce.DocumentNode.prototype.getOuterLength = function() {
+	return this.length;
 };
 
-ve.ce.DocumentNode.splitRules.document = {
-	'self': false,
-	'children': true
-};
+/* Registration */
+
+ve.ce.nodeFactory.register( 'document', ve.ce.DocumentNode );
 
 /* Inheritance */
 

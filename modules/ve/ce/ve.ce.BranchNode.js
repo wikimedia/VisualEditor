@@ -1,114 +1,142 @@
 /**
- * Creates an ve.ce.BranchNode object.
- * 
+ * ContentEditable node that can have branch or leaf children.
+ *
  * @class
  * @abstract
  * @constructor
  * @extends {ve.BranchNode}
  * @extends {ve.ce.Node}
- * @param model {ve.ModelNode} Model to observe
+ * @param {String} type Symbolic name of node type
+ * @param model {ve.dm.BranchNode} Model to observe
  * @param {jQuery} [$element] Element to use as a container
  */
-ve.ce.BranchNode = function( model, $element, horizontal ) {
+ve.ce.BranchNode = function( type, model, $element ) {
 	// Inheritance
 	ve.BranchNode.call( this );
-	ve.ce.Node.call( this, model, $element );
+	ve.ce.Node.call( this, type, model, $element );
 
 	// Properties
-	this.horizontal = horizontal || false;
+	this.domWrapperElementType = this.$.get(0).nodeName.toLowerCase();
+	this.$slugs = $();
 
-	if ( model ) {
-		// Append existing model children
-		var childModels = model.getChildren();
-		for ( var i = 0; i < childModels.length; i++ ) {
-			this.onAfterPush( childModels[i] );
-		}
+	// Events
+	this.model.addListenerMethod( this, 'splice', 'onSplice' );
 
-		// Observe and mimic changes on model
-		this.model.addListenerMethods( this, {
-			'afterPush': 'onAfterPush',
-			'afterUnshift': 'onAfterUnshift',
-			'afterPop': 'onAfterPop',
-			'afterShift': 'onAfterShift',
-			'afterSplice': 'onAfterSplice',
-			'afterSort': 'onAfterSort',
-			'afterReverse': 'onAfterReverse'
-		} );
+	// DOM Changes
+	this.$.addClass( 've-ce-branchNode' );
+
+	// Initialization
+	if ( model.getChildren().length ) {
+		this.onSplice.apply( this, [0, 0].concat( model.getChildren() ) );
 	}
+};
+
+/* Static Members */
+
+ve.ce.BranchNode.$slugTemplate = $( '<span class="ve-ce-slug">&#xFEFF;</span>' );
+
+/* Static Methods */
+
+/**
+ * Gets the appropriate element type for the DOM wrapper of a node.
+ *
+ * This method reads the {key} attribute from a {model} and looks up a type in the node's statically
+ * defined {domWrapperElementTypes} member, which is a mapping of possible values of that attribute
+ * and DOM element types.
+ *
+ * @method
+ * @param {ve.dm.BranchNode} model Model node is based on
+ * @param {String} key Attribute name to read type value from
+ * @returns {String} DOM element type for wrapper
+ * @throws 'Undefined attribute' if attribute is not defined in the model
+ * @throws 'Invalid attribute value' if attribute value is not a key in {domWrapperElementTypes}
+ */
+ve.ce.BranchNode.getDomWrapperType = function( model, key ) {
+	var value = model.getAttribute( key );
+	if ( value === undefined ) {
+		throw 'Undefined attribute: ' + key;
+	}
+	var types = ve.ce.nodeFactory.lookup( model.getType() ).domWrapperElementTypes;
+	if ( types[value] === undefined ) {
+		throw 'Invalid attribute value: ' + value;
+	}
+	return types[value];
+};
+
+/**
+ * Gets a jQuery selection of a new DOM wrapper for a node.
+ *
+ * This method uses {getDomWrapperType} to determine the proper element type to use.
+ *
+ * @method
+ * @param {ve.dm.BranchNode} model Model node is based on
+ * @param {String} key Attribute name to read type value from
+ * @returns {jQuery} Selection of DOM wrapper
+ */
+ve.ce.BranchNode.getDomWrapper = function( model, key ) {
+	var type = ve.ce.BranchNode.getDomWrapperType( model, key );
+	return $( '<' + type + '></' + type + '>' );
 };
 
 /* Methods */
 
-ve.ce.BranchNode.prototype.onAfterPush = function( childModel ) {
-	var childView = childModel.createView();
-	this.emit( 'beforePush', childView );
-	childView.attach( this );
-	childView.on( 'update', this.emitUpdate );
-	// Update children
-	this.children.push( childView );
-	// Update DOM
-	this.$.append( childView.$ );
-	// TODO: adding and deleting classes has to be implemented for unshift, shift, splice, sort
-	// and reverse as well
-	if ( this.children.length === 1 ) {
-		childView.$.addClass('es-viewBranchNode-firstChild');
+/**
+ * Updates the DOM wrapper of this node if needed.
+ *
+ * This method uses {getDomWrapperType} to determine the proper element type to use.
+ *
+ * WARNING: The contents, .data( 'node' ) and any classes the wrapper already has will be moved to
+ * the new wrapper, but other attributes and any other information added using $.data() will be
+ * lost upon updating the wrapper. To retain information added to the wrapper, subscribe to the
+ * 'rewrap' event and copy information from the {$old} wrapper the {$new} wrapper.
+ *
+ * @method
+ * @param {String} key Attribute name to read type value from
+ * @emits rewrap ($old, $new)
+ */
+ve.ce.BranchNode.prototype.updateDomWrapper = function( key ) {
+	var type = ve.ce.BranchNode.getDomWrapperType( this.model, key );
+	if ( type !== this.domWrapperElementType ) {
+		var $element = $( '<' + type + '></' + type + '>' );
+		// Copy classes
+		$element.attr( 'class', this.$.attr( 'class' ) );
+		// Copy .data( 'node' )
+		$element.data( 'node', this.$.data( 'node' ) );
+		// Move contents
+		$element.append( this.$.contents() );
+		// Emit an event that can be handled to copy other things over if needed
+		this.emit( 'rewrap', this.$, $element );
+		// Swap elements
+		this.$.replaceWith( $element );
+		// Use new element from now on
+		this.$ = $element;
 	}
-	this.emit( 'afterPush', childView );
-	this.emit( 'update' );
 };
 
-ve.ce.BranchNode.prototype.onAfterUnshift = function( childModel ) {
-	var childView = childModel.createView();
-	this.emit( 'beforeUnshift', childView );
-	childView.attach( this );
-	childView.on( 'update', this.emitUpdate );
-	// Update children
-	this.children.unshift( childView );
-	// Update DOM
-	this.$.prepend( childView.$ );
-	this.emit( 'afterUnshift', childView );
-	this.emit( 'update' );
-};
-
-ve.ce.BranchNode.prototype.onAfterPop = function() {
-	this.emit( 'beforePop' );
-	// Update children
-	var childView = this.children.pop();
-	childView.detach();
-	childView.removeEventListener( 'update', this.emitUpdate );
-	// Update DOM
-	childView.$.detach();
-	this.emit( 'afterPop' );
-	this.emit( 'update' );
-};
-
-ve.ce.BranchNode.prototype.onAfterShift = function() {
-	this.emit( 'beforeShift' );
-	// Update children
-	var childView = this.children.shift();
-	childView.detach();
-	childView.removeEventListener( 'update', this.emitUpdate );
-	// Update DOM
-	childView.$.detach();
-	this.emit( 'afterShift' );
-	this.emit( 'update' );
-};
-
-ve.ce.BranchNode.prototype.onAfterSplice = function( index, howmany ) {
+/**
+ * Responds to splice events on a ve.dm.BranchNode.
+ *
+ * ve.ce.Node objects are generated from the inserted ve.dm.Node objects, producing a view that's a
+ * mirror of it's model.
+ *
+ * @method
+ * @param {Integer} index Index to remove and or insert nodes at
+ * @param {Integer} howmany Number of nodes to remove
+ * @param {ve.dm.BranchNode} [...] Variadic list of nodes to insert
+ */
+ve.ce.BranchNode.prototype.onSplice = function( index, howmany ) {
 	var i,
 		length,
 		args = Array.prototype.slice.call( arguments, 0 );
 	// Convert models to views and attach them to this node
 	if ( args.length >= 3 ) {
 		for ( i = 2, length = args.length; i < length; i++ ) {
-			args[i] = args[i].createView();
+			args[i] = ve.ce.nodeFactory.create( args[i].getType(), args[i] );
 		}
 	}
-	this.emit.apply( this, ['beforeSplice'].concat( args ) );
 	var removals = this.children.splice.apply( this.children, args );
 	for ( i = 0, length = removals.length; i < length; i++ ) {
 		removals[i].detach();
-		removals[i].removeListener( 'update', this.emitUpdate );
 		// Update DOM
 		removals[i].$.detach();
 	}
@@ -116,11 +144,10 @@ ve.ce.BranchNode.prototype.onAfterSplice = function( index, howmany ) {
 		var $target;
 		if ( index ) {
 			// Get the element before the insertion point
-			$anchor = this.$.children().eq( index - 1 );
+			$anchor = this.$.children(':not(.ve-ce-slug)').eq( index - 1 );
 		}
 		for ( i = args.length - 1; i >= 2; i-- ) {
 			args[i].attach( this );
-			args[i].on( 'update', this.emitUpdate );
 			if ( index ) {
 				$anchor.after( args[i].$ );
 			} else {
@@ -128,142 +155,64 @@ ve.ce.BranchNode.prototype.onAfterSplice = function( index, howmany ) {
 			}
 		}
 	}
-	this.emit.apply( this, ['afterSplice'].concat( args ) );
-	if ( args.length >= 3 ) {
-		for ( i = 2, length = args.length; i < length; i++ ) {
-			args[i].renderContent();
-		}
-	}
-	this.emit( 'update' );
-};
 
-ve.ce.BranchNode.prototype.onAfterSort = function() {
-	this.emit( 'beforeSort' );
-	var childModels = this.model.getChildren();
-	for ( var i = 0; i < childModels.length; i++ ) {
-		for ( var j = 0; j < this.children.length; j++ ) {
-			if ( this.children[j].getModel() === childModels[i] ) {
-				var childView = this.children[j];
-				// Update children
-				this.children.splice( j, 1 );
-				this.children.push( childView );
-				// Update DOM
-				this.$.append( childView.$ );
+	// Remove all slugs in this branch
+	this.$slugs.remove();
+
+	var $slug = ve.ce.BranchNode.$slugTemplate.clone();
+
+	if ( this.canHaveGrandchildren() ) {
+		$slug.css( 'display', 'block');
+	}
+
+	// Iterate over all children of this branch and add slugs in appropriate places
+	for ( i = 0; i < this.children.length; i++ ) {
+		if ( this.children[i].canHaveSlug() ) {
+			if ( i === 0 ) {
+				// First sluggable child (left side)
+				this.$slugs = this.$slugs.add(
+					$slug.clone().insertBefore( this.children[i].$ )
+				);
+			}
+			if (
+				// Last sluggable child (right side)
+				i === this.children.length - 1 ||
+				// Sluggable child followed by another sluggable child (in between)
+				( this.children[i + 1] && this.children[i + 1].canHaveSlug() )
+			) {
+				this.$slugs = this.$slugs.add(
+					$slug.clone().insertAfter( this.children[i].$ )
+				);
 			}
 		}
 	}
-	this.emit( 'afterSort' );
-	this.emit( 'update' );
-	this.renderContent();
 };
 
-ve.ce.BranchNode.prototype.onAfterReverse = function() {
-	this.emit( 'beforeReverse' );
-	// Update children
-	this.reverse();
-	// Update DOM
-	this.$.children().each( function() {
-		$(this).prependTo( $(this).parent() );
-	} );
-	this.emit( 'afterReverse' );
-	this.emit( 'update' );
-	this.renderContent();
-};
-
-/**
- * Render content.
- * 
- * @method
- */
-ve.ce.BranchNode.prototype.renderContent = function() {
+ve.ce.BranchNode.prototype.hasSlugAtOffset = function( offset ) {
 	for ( var i = 0; i < this.children.length; i++ ) {
-		this.children[i].renderContent();
-	}
-};
-
-/**
- * Draw selection around a given range.
- * 
- * @method
- * @param {ve.Range} range Range of content to draw selection around
- */
-ve.ce.BranchNode.prototype.drawSelection = function( range ) {
-	var selectedNodes = this.selectNodes( range, true );
-	for ( var i = 0; i < this.children.length; i++ ) {
-		if ( selectedNodes.length && this.children[i] === selectedNodes[0].node ) {
-			for ( var j = 0; j < selectedNodes.length; j++ ) {
-				selectedNodes[j].node.drawSelection( selectedNodes[j].range );
+		if ( this.children[i].canHaveSlug() ) {
+			var nodeOffset = this.children[i].model.getRoot().getOffsetFromNode( this.children[i].model );
+			var nodeLength = this.children[i].model.getOuterLength();
+			if ( i === 0 ) {
+				if ( nodeOffset === offset ) {
+					return true;
+				}
 			}
-			i += selectedNodes.length - 1;
-		} else {
-			this.children[i].clearSelection();
+			if ( i === this.children.length - 1 || ( this.children[i + 1] && this.children[i + 1].canHaveSlug() ) ) {
+				if ( nodeOffset + nodeLength === offset ) {
+					return true;
+				}
+			}
 		}
 	}
+	return false;
 };
 
-/**
- * Clear selection.
- * 
- * @method
- */
-ve.ce.BranchNode.prototype.clearSelection = function() {
+ve.ce.BranchNode.prototype.clean = function() {
+	this.$.empty();
 	for ( var i = 0; i < this.children.length; i++ ) {
-		this.children[i].clearSelection();
+		this.$.append( this.children[i].$ );
 	}
-};
-
-/**
- * Gets the nearest offset of a rendered position.
- * 
- * @method
- * @param {ve.Position} position Position to get offset for
- * @returns {Integer} Offset of position
- */
-ve.ce.BranchNode.prototype.getOffsetFromRenderedPosition = function( position ) {
-	if ( this.children.length === 0 ) {
-		return 0;
-	}
-	var node = this.children[0];
-	for ( var i = 1; i < this.children.length; i++ ) {
-		if ( this.horizontal && this.children[i].$.offset().left > position.left ) {
-			break;
-		} else if ( !this.horizontal && this.children[i].$.offset().top > position.top ) {
-			break;			
-		}
-		node = this.children[i];
-	}
-	return node.getParent().getOffsetFromNode( node, true ) +
-		node.getOffsetFromRenderedPosition( position ) + 1;
-};
-
-/**
- * Gets rendered position of offset within content.
- * 
- * @method
- * @param {Integer} offset Offset to get position for
- * @returns {ve.Position} Position of offset
- */
-ve.ce.BranchNode.prototype.getRenderedPositionFromOffset = function( offset, leftBias ) {
-	var node = this.getNodeFromOffset( offset, true );
-	if ( node !== null ) {
-		return node.getRenderedPositionFromOffset(
-			offset - this.getOffsetFromNode( node, true ) - 1,
-			leftBias
-		);
-	}
-	return null;
-};
-
-ve.ce.BranchNode.prototype.getRenderedLineRangeFromOffset = function( offset ) {
-	var node = this.getNodeFromOffset( offset, true );
-	if ( node !== null ) {
-		var nodeOffset = this.getOffsetFromNode( node, true );
-		return ve.Range.newFromTranslatedRange(
-			node.getRenderedLineRangeFromOffset( offset - nodeOffset - 1 ),
-			nodeOffset + 1
-		);
-	}
-	return null;
 };
 
 /* Inheritance */

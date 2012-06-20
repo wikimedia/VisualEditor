@@ -1,5 +1,5 @@
 $(document).ready( function() {
-	var wikidoms = {
+/*	var wikidoms = {
 		'Wikipedia article': {
 			'type': 'document',
 			'children': [
@@ -408,7 +408,7 @@ $(document).ready( function() {
 					]
 				}
 			]
-		},
+		}, */
 		/*
 		'Tables': {
 			'type': 'document',
@@ -492,7 +492,7 @@ $(document).ready( function() {
 				}
 			]
 		},*/
-		'New document': {
+	/*	'New document': {
 			'type': 'document',
 			'children': [
 				{
@@ -501,7 +501,7 @@ $(document).ready( function() {
 				}
 			]
 		}
-	};
+	}; */
 
 	/* Sandbox integration hack.  Allows both MW integration and demo pages to work */
 	if ( $('#content').length === 0 ) {
@@ -509,6 +509,146 @@ $(document).ready( function() {
 			$( '<div />' ).attr( 'id', 'content' )
 		);
 	}
+
+	// Overwrite input data with example data
+	/*
+	data = [
+		{ 'type': 'heading', 'attributes': { 'level': 1 } },
+		'a',
+		'b',
+		'c',
+		{ 'type': '/heading' },
+		{ 'type': 'paragraph' },
+		'a',
+		['b', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } }],
+		['c', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } }],
+		{ 'type': '/paragraph' },
+		{ 'type': 'paragraph' },
+		{ 'type': 'image', 'attributes': { 'html/src': 'http://placekitten.com/g/120/120' } },
+		{ 'type': '/image' },
+		'L',
+		'o',
+		'r',
+		'e',
+		'm',
+		' ',
+		'i',
+		'p',
+		's',
+		'u',
+		'm',
+		' ',
+		{ 'type': 'image', 'attributes': { 'html/src': 'http://placekitten.com/g/100/100' } },
+		{ 'type': '/image' },
+		' ',
+		'a',
+		'n',
+		'd',
+		{ 'type': '/paragraph' },
+		{ 'type': 'table' },
+		{ 'type': 'tableRow' },
+		{ 'type': 'tableCell' },
+		{ 'type': 'paragraph' },
+		['a', {
+			'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
+			'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }
+		}],
+		{ 'type': '/paragraph' },
+		{ 'type': '/tableCell' },
+		{ 'type': '/tableRow' },
+		{ 'type': '/table' },
+		{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
+		{ 'type': 'listItem', 'attributes': { 'style': 'item' } },
+		{ 'type': 'paragraph' },
+		'a',
+		{ 'type': '/paragraph' },
+		{ 'type': '/listItem' },
+		{ 'type': '/list' },
+		{ 'type': 'image', 'attributes': { 'html/src': 'http://dl.dropbox.com/u/1026938/wikia.jpeg' } },
+		{ 'type': '/image' },
+	];
+	*/
+	// Define HTML5 DOM
+	var HTML = $(
+		'<div>' +
+			'<p>123<b>456</b> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>' +
+			'<h2><b>W<i>ha</i>t</b> is <i>Lorem<b> Ips<u>um?</u></b></i></h2>' +
+			'<p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.</p>' +
+			'<table><tbody>' +
+			'<tr>' +
+				'<td><p>Lorem Ipsum is simply dummy text...</p></td>' +
+				'<td><p>The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested.</p></td>' +
+				'<td><p>Nullam aliquam ligula nec metus pretium in lobortis urna pellentesque.</p></td>' +
+			'</tr>' +
+			'<tr>' +
+				'<td><p>Nullam nulla neque, luctus et cursus eu, sollicitudin sollicitudin massa.</p></td>' +
+				'<td><p>Sed consectetur nunc blandit urna pulvinar eu porttitor lorem rutrum. Maecenas vel justo id felis consectetur euismod.</p></td>' +
+				'<td><p>Suspendisse vulputate sagittis iaculis. Suspendisse potenti.</p></td>' +
+			'</tr>' +
+			'</tbody></table>' +
+			'<p>Lorem ipsum is simply dummy text of the printing and typesetting industry.</p>' +
+			'<h2><b>Where</b> can <i>I get some?</i></h2>' +
+			'<ul>' +
+				'<li><p><b>here</b></p></li>' +
+				'<li><p>or <i>here</i></p></li>' +
+				'<li><p>or <u>there</u></p></li>' +
+			'</ul>' +
+			'<ul>' +
+				'<li><p><b>1</b></p></li>' +
+				'<li><p><i>2</i></p></li>' +
+				'<li><p><u>3</u></p></li>' +
+			'</ul>' +
+			'<h2>Why do we use it?</h2>' +
+			'<table><tbody>' +
+			'<tr>' +
+				'<td>' +
+				'<p>Tabel level 1</p>' +
+				'<p>Hi Hi Ho Ho</p>' +
+				'<table><tbody>' +
+				'<tr>' +
+					'<td>' +
+					'<p>Tabel level 2</p>' +
+					'<p>And list:</p>' +
+					'<ul>' +
+						'<li><p><b>here</b></p></li>' +
+						'<li><p>or <i>here</i></p></li>' +
+						'<li><p>or <u>there</u></p></li>' +
+					'</ul>' +
+					'<table><tbody>' +
+					'<tr>' +
+						'<td>' +
+						'<p>Tabel level 3</p>' +
+						'<p>Ha Ha Hi Hi</p>' +
+						'</td>' +
+					'</tr>' +
+					'</tbody></table>' +
+					'</td>' +
+				'</tr>' +
+				'</tbody></table>' +
+				'</td>' +
+			'</tr>' +
+			'</tbody></table>' +
+		'</div>' );
+
+	// HTML without images and aliens
+	HTML = $(
+		'<div>' +
+			'<p><b>Lorem Ipsum</b> is simpply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>' +
+			'<h2><b>What</b> is <i>Lorem Ipsum?</i></h2>' +
+			'<p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.</p>' +
+			'<h3><b>Look</b> at <i>this headline</i></h3>' +
+
+			'<p>Lorem ipsum is simply dummy text of the printing and typesetting industry.</p>' +
+			'<h2><b>Where</b> can <i>I get some?</i></h2>' +
+			'<ul>' +
+				'<li><p><b>here</b></p></li>' +
+				'<li><p>or <i>here</i></p></li>' +
+				'<li><p>or <u>there</u></p></li>' +
+			'</ul>' +
+			'<h2>Why do we use it?</h2>' +
+			'<p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.</p>' +
+		'</div>' );
+
 
 	/* Sandbox config object. */
 	var options = {
@@ -524,41 +664,18 @@ $(document).ready( function() {
 		Create Sandbox instance of VE
 		Attach to #content element
 	*/
-	var sandboxEditor = new ve.Surface( '#content', wikidoms['Wikipedia article'], options ),
-		surfaceModel = sandboxEditor.getSurfaceModel(),
+	var sandboxEditor = new ve.Surface( '#content', HTML[0], options ),
+		surfaceModel = sandboxEditor.getModel(),
 		documentModel = sandboxEditor.getDocumentModel(),
-		parent = sandboxEditor.getParent();
+		parent = sandboxEditor.getParent(),
+		view = sandboxEditor.view;
+	
+	window.sandboxEditor = sandboxEditor;
 
-	/* Sandbox links above the editor */
-	var $docsList = $( '#es-docs-list' );
-	$.each( wikidoms, function( title, wikidom ) {
-		$docsList.append(
-			$( '<li class="es-docs-listItem"></li>' )
-				.append(
-					$( '<a href="#"></a>' )
-						.text( title )
-						.click( function() {
-							var newDocumentModel = ve.dm.DocumentNode.newFromPlainObject( wikidom );
-							documentModel.data.splice( 0, documentModel.data.length );
-							ve.insertIntoArray( documentModel.data, 0, newDocumentModel.data );
-							surfaceModel.select( new ve.Range( 1, 1 ) );
-							// FIXME: this should be using ve.batchedSplice(), otherwise things
-							// could explode if newDocumentModel.getChildren() is very long
-							documentModel.splice.apply(
-								documentModel,
-								[0, documentModel.getChildren().length]
-									.concat( newDocumentModel.getChildren() )
-							);
-							surfaceModel.purgeHistory();
-							
-							if ( sandboxEditor.currentMode ) {
-								sandboxEditor.currentMode.update.call( sandboxEditor.currentMode );
-							}
-							return false;
-						} )
-				)
-		);
-	} );
+		/* Rob's test selection stuff */
+		//surfaceModel.setSelection( new ve.Range(0, documentModel.getData().length ) );
+		//surfaceModel.setSelection( new ve.Range( 178, 185 ) );
+		//view.showSelection ( surfaceModel.getSelection() );
 
 	/* Sandbox Warning Message */
 	$( '#es-docs' ).css( { 'visibility': 'visible' } );
@@ -569,5 +686,5 @@ $(document).ready( function() {
 		$(this).parent().slideUp();
 		return false;
 	} );
-	$( '.es-mode-wikitext' ).click();
+	//$( '.es-mode-wikitext' ).click();
 } );

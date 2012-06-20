@@ -114,13 +114,15 @@
 	background-color: white;
 }
 .es-toolbarDropdownTool-label {
+	overflow: hidden;
+	height: 2em;
 	padding: 0.25em;
 	font-size: 0.8em;
 	line-height: 24px;
 	padding-left: 0.75em;
 	padding-right: 24px;
 	background-image: url(images/arrow-down.png);
-	background-position: 9em center;
+	background-position: 8.75em center;
 	background-repeat: no-repeat;
 }
 .es-toolbarDropdownTool .es-menuView {
