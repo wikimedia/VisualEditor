@@ -892,6 +892,10 @@ ve.ce.Surface.prototype.getModel = function() {
 	return this.model;
 };
 
+ve.ce.Surface.prototype.getDocument = function() {
+	return this.documentView;
+};
+
 /* Inheritance */
 
 ve.extendClass( ve.ce.Surface, ve.EventEmitter );
