@@ -571,26 +571,9 @@ ve.ce.Surface.prototype.handleDelete = function( backspace ) {
 		} else {
 			// Source and target are different nodes and do not share a parent. Perform tricky merge.
 
-			// !!!This portion still in development
-			return;
-			
-			// Transact
-			/*
-			tx = ve.dm.Transaction.newFromInsertion(
-				this.documentView.model, targetOffset, sourceNode.model.getContentData()
-			);
-			*/
-	
-			ve.log('sourceNode', sourceNode);
-			ve.log('sourceOffset', sourceOffset);
-			ve.log('targetNode', targetNode);
-			ve.log('targetOffset', targetOffset);
-return;
-			ve.log('length: ', sourceNode.model.getLength());
-			ve.log('outerlength: ', sourceNode.model.getOuterLength());
-			ve.log('offset', this.documentView.getDocumentNode().getOffsetFromNode( sourceNode ));
-			ve.log('some data: ', this.documentView.model.getData( this.model.getSelection() ) )
-			
+			// Get the data for the source node
+			var sourceData = this.documentView.model.getData( sourceNode.model.getRange() );
+
 			// Find the node that should be completely removed
 			var nodeToDelete = sourceNode;
 			ve.Node.traverseUpstream( nodeToDelete, function( node ) {
@@ -601,19 +584,14 @@ return;
 					return false;
 				}
 			} );
-			
-			// Create range surrounding the entire sourceNode and remove
-			/*var range = new ve.Range();
-			range.from = this.documentView.getDocumentNode().getOffsetFromNode( sourceNode )
-			range.to = range.from + sourceNode.model.getOuterLength();*/
-			// Just setting .from and .to produces an invalid range with .start and .end unset --Roan
-			var from = this.documentView.getDocumentNode().getOffsetFromNode( sourceNode ),
-				range = new ve.Range(
-					from,
-					from + sourceNode.model.getOuterLength()
-				);
-			tx = ve.dm.Transaction.newFromRemoval( this.documentView.model, range );
-			this.model.change( tx );
+
+			// Remove source node or source node ancestor
+			tx = ve.dm.Transaction.newFromRemoval( this.documentView.model, nodeToDelete.getModel().getOuterRange() );
+			this.model.change( tx );			
+
+			// Append source data to target
+			tx = ve.dm.Transaction.newFromInsertion( this.documentView.model, targetOffset, sourceData );
+			this.model.change( tx, new ve.Range( cursorAt ) );
 		}
 	} else {
 		// selection removal
