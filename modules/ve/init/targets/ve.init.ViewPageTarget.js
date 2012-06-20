@@ -187,10 +187,15 @@ ve.init.ViewPageTarget.prototype.onLoadError = function( response, status, error
  * @param {HTMLElement} html Rendered HTML from server
  */
 ve.init.ViewPageTarget.prototype.onSave = function( html ) {
-	this.hideSaveDialog();
-	this.resetSaveDialog();
-	this.replacePageContent( html );
-	this.deactivate( true );
+	if ( Number( mw.config.get( 'wgArticleId', 0 ) ) === 0 ) {
+		// This is a page creation, refresh the page
+		window.location.href = this.viewUri;
+	} else {
+		this.hideSaveDialog();
+		this.resetSaveDialog();
+		this.replacePageContent( html );
+		this.deactivate( true );
+	}
 };
 
 /**
