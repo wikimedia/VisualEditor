@@ -80,7 +80,7 @@ ve.dm.DocumentSynchronizer.synchronizers.attributeChange = function( action ) {
  */
 ve.dm.DocumentSynchronizer.synchronizers.resize = function( action ) {
 	action.node.adjustLength( action.adjustment );
-	// no update needed, adjustLength causes an update event on it's own
+	// no update needed, adjustLength causes an update event on its own
 };
 
 /**

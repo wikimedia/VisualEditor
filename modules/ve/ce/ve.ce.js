@@ -43,7 +43,7 @@ ve.ce.getDomText = function( element ) {
 				// Replace IE's carriage returns
 				return element.innerText.replace( /\r\n/g, '' );
 			} else {
-				// Traverse it's children
+				// Traverse its children
 				for ( element = element.firstChild; element; element = element.nextSibling) {
 					text += func( element );
 				}
@@ -52,7 +52,7 @@ ve.ce.getDomText = function( element ) {
 			return element.nodeValue;
 		}
 		return text;
-	}
+	};
 	// Return the text, replacing spaces and non-breaking spaces with spaces?
 	// TODO: Why are we replacing spaces (\u0020) with spaces (' ')
 	return func( element ).replace( ve.ce.whitespacePattern, ' ' );
@@ -80,7 +80,7 @@ ve.ce.getDomHash = function( element ) {
 		return '#';
 	} else if ( nodeType === 1 || nodeType === 9 ) {
 		hash += '<' + nodeName + '>';
-		// Traverse it's children
+		// Traverse its children
 		for ( element = element.firstChild; element; element = element.nextSibling) {
 			hash += ve.ce.getDomHash( element );
 		}

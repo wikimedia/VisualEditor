@@ -625,7 +625,7 @@ ve.dm.Document.prototype.getAnnotationsFromRange = function( range, all ) {
 	if ( range.getLength() === 0 ) {
 		return {};
 	}
-	// There's at least one character, get it's annotations
+	// There's at least one character, get its annotations
 	left = this.getAnnotationsFromOffset( range.start );
 	// Shorcut for single character ranges
 	if ( range.getLength() === 1 ) {

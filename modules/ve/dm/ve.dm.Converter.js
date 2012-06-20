@@ -46,7 +46,7 @@ ve.dm.Converter.getDataContentFromText = function( text, annotations ) {
 		// Make a shallow copy of the annotationMap object, otherwise adding an annotation to one
 		// character automatically adds it to all of others as well, annotations should be treated
 		// as immutable, so it's OK to share references, but annotation maps are not immutable, so
-		// it's not safe to share references - each annotated character needs it's own map
+		// its not safe to share references - each annotated character needs its own map
 		characters[i] = [characters[i], ve.extendObject( {}, annotationMap )];
 	}
 	return characters;
@@ -57,8 +57,8 @@ ve.dm.Converter.getDataContentFromText = function( text, annotations ) {
 /**
  * Responds to register events from the node factory.
  *
- * If a node is special; such as document, alienInline, alienBlock and text; it's converters data
- * should be set to null, as to distinguish it from a new node type that someone has simply
+ * If a node is special; such as document, alienInline, alienBlock and text; its {converters}
+ * property should be set to null, as to distinguish it from a new node type that someone has simply
  * forgotten to implement converters for.
  *
  * @method

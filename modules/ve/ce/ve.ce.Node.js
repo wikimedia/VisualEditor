@@ -200,7 +200,7 @@ ve.ce.Node.prototype.attach = function( parent ) {
 };
 
 /**
- * Detaches node from it's parent.
+ * Detaches node from its parent.
  *
  * @method
  * @emits detach (parent)
