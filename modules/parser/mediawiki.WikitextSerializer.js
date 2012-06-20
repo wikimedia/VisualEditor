@@ -38,19 +38,32 @@ WSP.escapeWikiText = function ( state, text ) {
 	});
 	// this is synchronous for now, will still need sync version later, or
 	// alternatively make text processing in the serializer async
+	var prefixedText = text;
 	if ( ! state.onNewline ) {
 		// Prefix '_' so that no start-of-line wiki syntax matches. Strip it from
 		// the result.
-		p.process( '_' + text );
+		prefixedText = '_' + text;
+	}
+
+	if ( state.inIndentPre ) {
+		prefixedText = prefixedText.replace(/(\r?\n)/g, '$1_');
+	}
+
+	// FIXME: parse using 
+	p.process( prefixedText );
+
+
+	if ( ! state.onNewline ) {
 		// now strip the leading underscore.
 		if ( tokens[0] === '_' ) {
 			tokens.shift();
 		} else {
 			tokens[0] = tokens[0].substr(1);
 		}
-	} else {
-		p.process( text );
 	}
+
+	// state.inIndentPre is handled on the complete output
+
 	//
 	// wrap any run of non-text tokens into <nowiki> tags using the source
 	// offsets of top-level productions
@@ -133,7 +146,12 @@ WSP.escapeWikiText = function ( state, text ) {
 		console.warn( e );
 	}
 	//console.warn( 'escaped wikiText: ' + outTexts.join('') );
-	return outTexts.join('');
+	var res = outTexts.join('');
+	if ( state.inIndentPre ) {
+		return res.replace(/\n_/g, '\n');
+	} else {
+		return res;
+	}
 };
 
 var id = function(v) { 
@@ -203,6 +221,11 @@ WSP._serializeHTMLTag = function ( state, token ) {
 		close = '/';
 	}
 
+	if ( token.name === 'pre' ) {
+		// html-syntax pre is very similar to nowiki
+		state.inHTMLPre = true;
+	}
+
 	// Swallow required newline from previous token on encountering a HTML tag
 	//state.emitNewlineOnNextToken = false;
 
@@ -215,6 +238,9 @@ WSP._serializeHTMLTag = function ( state, token ) {
 };
 
 WSP._serializeHTMLEndTag = function ( state, token ) {
+	if ( token.name === 'pre' ) {
+		state.inHTMLPre = false;
+	}
 	if ( ! WSP._emptyTags[ token.name ] ) {
 		return '</' + token.name + '>';
 	} else {
@@ -471,6 +497,7 @@ WSP.tagHandlers = {
 		start: {
 			startsNewline: true,
 			handle: function( state, token ) {
+				state.inIndentPre = true;
 				state.textHandler = function( t ) { 
 					return t.replace(/\n/g, '\n ' ); 
 				};
@@ -479,7 +506,11 @@ WSP.tagHandlers = {
 		},
 		end: {
 			endsLine: true,
-			handle: function( state, token) { state.textHandler = null; return ''; }
+			handle: function( state, token) { 
+				state.inIndentPre = false;
+				state.textHandler = null; 
+				return ''; 
+			}
 		}
 	},
 	meta: { 
@@ -653,7 +684,8 @@ WSP._serializeToken = function ( state, token ) {
 			}
 			break;
 		case String:
-			res = state.inNoWiki? token : this.escapeWikiText( state, token );
+			res = ( state.inNoWiki || state.inHTMLPre ) ? token 
+				: this.escapeWikiText( state, token );
 			res = state.textHandler ? state.textHandler( res ) : res;
 			break;
 		case CommentTk:
