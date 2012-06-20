@@ -191,14 +191,17 @@ ve.init.ViewPageTarget.prototype.onSave = function( html ) {
 		// This is a page creation, refresh the page
 		window.location.href = this.viewUri;
 	} else {
-		// Update the watch link to match the state of 'watch checkbox' in save dialog
-		var watchPage = this.$saveDialog
-			.find( '#ve-init-viewPageTarget-saveDialog-watchList')
-			.prop( 'checked' );
-		mw.page.watch.updateWatchLink(
-			$('#ca-watch a, #ca-unwatch a'),
-			watchPage === true ? 'unwatch': 'watch'
-		);
+		// Update watch link to match 'watch checkbox' in save dialog.
+		// User logged in if module loaded.
+		if ( mw.page.watch !== undefined ) {
+			var watchPage = this.$saveDialog
+				.find( '#ve-init-viewPageTarget-saveDialog-watchList')
+				.prop( 'checked' );
+			mw.page.watch.updateWatchLink(
+				$('#ca-watch a, #ca-unwatch a'),
+				watchPage === true ? 'unwatch': 'watch'
+			);
+		}
 		this.hideSaveDialog();
 		this.resetSaveDialog();
 		this.replacePageContent( html );
