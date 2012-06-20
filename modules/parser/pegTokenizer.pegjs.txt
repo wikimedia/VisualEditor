@@ -422,6 +422,7 @@ block_lines
     // eat an empty line before the block
     s2:(os:optionalSpaceToken so:sol { return os.concat(so) })? 
     bl:block_line { 
+        //console.warn( pp(s));
         var s2_ = (s2 !== '') ? s2 : [];
         return s.concat(s2_, bl); 
     }
@@ -453,7 +454,13 @@ paragraph
       return s1.concat(s2, /* [new TagTk('p')],*/ c); 
   }
 
-br = space* &newline { return new SelfclosingTagTk( 'br', [], {tsr: [pos0, pos]} ) }
+br = s:optionalSpaceToken &newline { 
+    return s.concat( 
+            [ 
+                new SelfclosingTagTk( 'br', [], {tsr: [pos0, pos]} )
+            ] 
+        );
+}
 
 /*
  * Syntax stops: Avoid eating significant tokens for higher-level productions
@@ -494,6 +501,7 @@ inline
 
 inlineline
   = c:(urltext / !inline_breaks (inline_element / [^\r\n]))+ {
+      //console.warn('inlineline out:' + pp(c) + input.substr(pos0, pos));
       return flatten_stringlist( c );
 }
 
@@ -830,9 +838,9 @@ template_param
     // MW accepts |foo | = bar | as a single param..
     ('|' (space / newline)* &'=')?
     val:(
-        s0:space* 
+        s0:optionalSpaceToken
         "="
-        s1:space*
+        s1:optionalSpaceToken
         value:template_param_value? {
             return { s0: s0, s1: s1, value: value };
         }
@@ -1133,6 +1141,7 @@ pre_indent_in_tags
   / & { return stops.dec('pre'); }
 
 pre_indent_line = space l:inlineline { 
+    //console.warn( JSON.stringify( [s, l] ) );
     return l; 
 }
 
@@ -1207,7 +1216,7 @@ nowiki
 
 nowiki_content
   = ts:(   t:[^<]+ { return t.join('') } 
-           / "<pre" p0:space* p1:[^>]* ">" p2:nowiki_content "</pre>" {
+           / "<pre" p0:optionalSpaceToken p1:[^>]* ">" p2:nowiki_content "</pre>" {
                  //console.warn('nested pre in nowiki');
                  return ["<pre"].concat(p0, p1, [">"], p2, ["</pre>"]).join('');
                }
@@ -1309,9 +1318,9 @@ generic_newline_attribute
 
 // A single-line attribute.
 generic_attribute
-  = s:space* 
+  = s:optionalSpaceToken
     name:generic_attribute_name
-    value:(space*
+    value:(optionalSpaceToken
           v:generic_attribute_value { return v })?
 {
     //console.warn( 'generic attribute: ' + pp([name, value]));
@@ -1666,8 +1675,10 @@ htmlentity = "&" c:[#0-9a-zA-Z]+ ";" {
     return unentity("&" + c.join('') + ";") 
 }
 
-space
+spaces
   = s:[ \t]+ { return s.join(''); }
+
+space = [ \t]
 
 optionalSpaceToken
   = s:space* {
@@ -1695,16 +1706,16 @@ sol
     // Eat includeonly/noinclude at start of line, so that start-of-line
     // syntax after it still matches
     ni:( niStart:({return pos}) 
-         space* 
+         s:space* 
         "<" c:"/"? t:("includeonly" / "noinclude") 
-        ">" {return [c, t, [niStart, pos]]} )?
+        ">" {return [s.join(''), c, t, [niStart, pos]]} )?
     {
         var niToken = [];
         if ( ni !== '') {
-            if ( ni[0] === '/' ) {
-                niToken = [new EndTagTk( ni[1], [], { tsr: ni[2] } )];
+            if ( ni[1] === '/' ) {
+                niToken = [new EndTagTk( ni[2], [], { tsr: ni[3] } )];
             } else {
-                niToken = [new TagTk( ni[1], [], { tsr: ni[2] } )];
+                niToken = [new TagTk( ni[2], [], { tsr: ni[3] } )];
             }
         }
 
