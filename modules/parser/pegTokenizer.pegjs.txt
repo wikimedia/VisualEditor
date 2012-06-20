@@ -1211,6 +1211,12 @@ nowiki_content
                  //console.warn('nested pre in nowiki');
                  return ["<pre"].concat(p0, p1, [">"], p2, ["</pre>"]).join('');
                }
+            // FIXME: convert the </pre> stop to a syntactic stop, so that it
+            // only triggers if we are in a pre context.
+            // Should abort the nowiki match:
+            //   <pre><nowiki></pre></nowiki>
+            // Should allow the </pre> in nowiki:
+            //   <nowiki></pre></nowiki>
            / (!("</"( "nowiki>" / "pre>")) c:. {
                //console.warn('nowiki: single char' + c);
                return c;
@@ -1418,23 +1424,13 @@ dtdd
     & { stops.counters['colon'] = 0; return true;}
     d:inlineline?
     &eolf {
-        // Convert trailing space into &nbsp;
-        // XXX: This should be moved to a serializer
-        //var clen = c.length;
-        //if (clen && c[clen - 1].constructor === String) {
-        //    var val = c[clen - 1].value;
-        //    if(val.length && val[val.length - 1] == ' ') {
-        //        c[clen - 1].value = val.substr(0, val.length - 1) + "\u00a0";
-        //    }
-        //}
-        
         bullets = bullets.join('');
         var li = new TagTk( 'listItem', [], { tsr: [pos0, pos0 + bullets.length] }   );
         li.bullets = bullets + ";";
         var li2 = new TagTk( 'listItem', [],  { tsr: [cpos, cpos+1] }   );
         li2.bullets = bullets + ":";
 
-        return [ li ].concat( c, [ li2 ], d || new NlTk() );
+        return [ li ].concat( c, [ li2 ], d || '' );
     }
   // Fall-back case to clear the colon flag
   / & { return true; } { stops.counters['colon'] = 0; return null; }

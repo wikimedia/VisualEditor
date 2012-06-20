@@ -168,7 +168,6 @@ WSP._listHandler = function( bullet, state, token ) {
 				(curList.itemCount > 1 && !isListItem(state.prevToken))) {
 			res = bullets;
 		} else {
-			if (bullet !== '') token.startsNewline = false;
 			res = bullet;
 		}
 	}
@@ -348,8 +347,7 @@ WSP.tagHandlers = {
 		start: {
 			startsNewline : true,
 			handle: WSP._listHandler.bind( null, ''), 
-			pairSepNLCount: 2,
-			newlineTransparent: true
+			pairSepNLCount: 2
 		},
 		end: {
 			endsLine: true,
@@ -369,9 +367,10 @@ WSP.tagHandlers = {
 	// XXX: handle single-line vs. multi-line dls etc
 	dt: { 
 		start: {
-			startsNewline: true,
 			singleLine: 1,
-			handle: WSP._listItemHandler.bind( null, ';' )
+			handle: WSP._listItemHandler.bind( null, ';' ),
+			pairSepNLCount: 1,
+			newlineTransparent: true
 		},
 		end: {
 			singleLine: -1
@@ -380,7 +379,9 @@ WSP.tagHandlers = {
 	dd: { 
 		start: {
 			singleLine: 1,
-			handle: WSP._listItemHandler.bind( null, ":" )
+			handle: WSP._listItemHandler.bind( null, ":" ),
+			pairSepNLCount: 1,
+			newlineTransparent: true
 		},
 		end: {
 			endsLine: true,
@@ -492,6 +493,8 @@ WSP.tagHandlers = {
 						state.inNoWiki = true;
 					} else if ( argDict.content === '/nowiki' ) {
 						state.inNoWiki = false;
+					} else {
+						console.warn( JSON.stringify( argDict ) );
 					}
 					return '<' + argDict.content + '>';
 				} else {
@@ -677,6 +680,7 @@ WSP._serializeToken = function ( state, token ) {
 			break;
 	}
 
+
 	if (! dropContent || ! state.dropContent ) {
 
 		var requiredNLCount = state.availableNewlineCount;
@@ -713,11 +717,10 @@ WSP._serializeToken = function ( state, token ) {
 		}
 
 		if ( state.env.debug ) {
-			console.warn("tok: " + token + ", res: <" + res + ">" + 
-					", onnl: " + state.onNewline + ", # nls: " + 
-					state.availableNewlineCount + ', reqNLs: ' + requiredNLCount);
+			console.warn(token + " -> " + res + ", onnl: " + state.onNewline + ", #nls " + 
+					state.availableNewlineCount + ', req ' + requiredNLCount);
 		}
-		if (res !== '') {
+		if (res !== '' ) {
 			var out = '';
 			// Prev token's new line token
 			if ( !state.singleLineMode &&
@@ -762,9 +765,15 @@ WSP._serializeToken = function ( state, token ) {
 					state.onStartOfLine = false;
 				}
 			}
+			state.env.dp(' =>', out);
 			state.chunkCB( out );
-		} else if ( requiredNLCount > state.availableNewlineCount ) {
-			state.availableNewlineCount = requiredNLCount;
+		} else {
+			if ( requiredNLCount > state.availableNewlineCount ) {
+				state.availableNewlineCount = requiredNLCount;
+			}
+			if ( handler.startsNewline && ! state.onStartOfLine ) {
+				state.emitNewlineOnNextToken = true;
+			}
 		}
 		/* else {
 			console.warn("SILENT: tok: " + token + ", res: <" + res + ">" + ", onnl: " + state.onNewline + ", # nls: " + state.availableNewlineCount);
