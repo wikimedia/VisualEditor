@@ -290,7 +290,7 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 				} );
 				return retval;
 			}
-		} else if ( startFound ) {
+		} else if ( startFound && end > right ) {
 			// Neither the start nor the end is inside node, but we found the start earlier,
 			// so node must be between the start and the end
 			// Add the entire node, so no range property
