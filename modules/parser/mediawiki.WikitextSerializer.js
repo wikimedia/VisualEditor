@@ -178,7 +178,8 @@ WSP._listHandler = function( bullet, state, token ) {
 		res     = bullets;
 	} else {
 		var curList = stack[stack.length - 1];
-		bullets = curList.bullets + bullet;
+		//console.warn(JSON.stringify( stack ));
+		bullets = curList.bullets + curList.itemBullet + bullet;
 		curList.itemCount++;
 		if (	// deeply nested list
 				curList.itemCount > 2 ||
@@ -189,7 +190,8 @@ WSP._listHandler = function( bullet, state, token ) {
 			res = bullet;
 		}
 	}
-	stack.push({ itemCount: 0, bullets: bullets});
+	stack.push({ itemCount: 0, bullets: bullets, itemBullet: ''});
+	state.env.dp('lh res', bullets, res );
 	return res;
 };
 
@@ -202,8 +204,23 @@ WSP._listItemHandler = function ( bullet, state, token ) {
 	var stack   = state.listStack;
 	var curList = stack[stack.length - 1];
 	curList.itemCount++;
-	return ((curList.itemCount > 1 ) ? curList.bullets + bullet : bullet);
+	var res;
+	curList.itemBullet = bullet;
+	if (curList.itemCount > 1 ) {
+		res = curList.bullets + bullet;
+	} else {
+		res = bullet;
+	}
+	state.env.dp( 'lih', token, res );
+	return res;
 };
+
+//WSP._listItemEndHandler = function ( state, token ) {
+//	var curList   = state.listStack.last();
+//	curList.itemBullet = '';
+//	return '';
+//};
+	
 
 WSP._serializeTableTag = function ( symbol, optionEndSymbol, state, token ) {
 	if ( token.attribs.length ) {
@@ -399,6 +416,7 @@ WSP.tagHandlers = {
 			newlineTransparent: true
 		},
 		end: {
+			//handle: WSP._listItemEndHandler,
 			singleLine: -1
 		}
 	},
@@ -410,6 +428,7 @@ WSP.tagHandlers = {
 			newlineTransparent: true
 		},
 		end: {
+			//handle: WSP._listItemEndHandler,
 			endsLine: true,
 			singleLine: -1
 		}
