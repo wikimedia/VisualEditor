@@ -683,9 +683,9 @@ WSP._serializeToken = function ( state, token ) {
 
 	if (! dropContent || ! state.dropContent ) {
 
-		var requiredNLCount = state.availableNewlineCount;
+		var newNLCount = 0;
 		if (res !== '') {
-			// Deal with leading or trailing new lines
+			// Strip leading or trailing newlines from the returned string
 			var match = res.match( /^((?:\r?\n)*)((?:.*?|[\r\n]+[^\r\n])*?)((?:\r?\n)*)$/ ),
 				leadingNLs = match[1],
 				trailingNLs = match[3];
@@ -695,11 +695,10 @@ WSP._serializeToken = function ( state, token ) {
 				state.availableNewlineCount += leadingNLs.replace(/\r\n/g, '\n').length;
 				res = "";
 			} else {
-				state.availableNewlineCount = trailingNLs.replace(/\r\n/g, '\n').length;
+				newNLCount = trailingNLs.replace(/\r\n/g, '\n').length;
 				if ( leadingNLs !== '' ) {
-					requiredNLCount += leadingNLs.replace(/\r\n/g, '\n').length;
+					state.availableNewlineCount += leadingNLs.replace(/\r\n/g, '\n').length;
 				}
-
 				// strip newlines
 				res = match[2];
 			}
@@ -711,14 +710,14 @@ WSP._serializeToken = function ( state, token ) {
 				state.prevTagToken.constructor === EndTagTk && 
 				state.prevTagToken.name == token.name ) 
 		{
-			if ( requiredNLCount < handler.pairSepNLCount) {
-				requiredNLCount = handler.pairSepNLCount;
+			if ( state.availableNewlineCount < handler.pairSepNLCount) {
+				state.availableNewlineCount = handler.pairSepNLCount;
 			}
 		}
 
 		if ( state.env.debug ) {
 			console.warn(token + " -> " + res + ", onnl: " + state.onNewline + ", #nls " + 
-					state.availableNewlineCount + ', req ' + requiredNLCount);
+					state.availableNewlineCount + ', new ' + newNLCount);
 		}
 		if (res !== '' ) {
 			var out = '';
@@ -728,25 +727,23 @@ WSP._serializeToken = function ( state, token ) {
 					( handler.startsNewline && !state.onStartOfLine ) ) ) 
 			{
 				// Emit new line, if necessary
-				if ( ! requiredNLCount ) {
-					requiredNLCount++;
+				if ( ! state.availableNewlineCount ) {
+					state.availableNewlineCount++;
 				}
 				state.emitNewlineOnNextToken = false;
 			}
 
-			// Add required # of new lines in the beginning
-			for (i = 0; i < requiredNLCount; i++) {
-				out += '\n';
-			}
-			if ( state.availableNewlineCount > requiredNLCount ) {
-				// availableNewlineCount was not reset, and requiredNLCount
-				// can only be incremented.
-				state.availableNewlineCount -= requiredNLCount;
-			}
-			if ( requiredNLCount ) {
+			if ( state.availableNewlineCount ) {
 				state.onNewline = true;
 				state.onStartOfLine = true;
 			}
+
+			// Add required # of new lines in the beginning
+			for (; state.availableNewlineCount; state.availableNewlineCount--) {
+				out += '\n';
+			}
+
+			state.availableNewlineCount = newNLCount;
 
 			// FIXME: This might modify not just the last content token in a
 			// link, which would be wrong. We'll likely have to collect tokens
@@ -768,9 +765,7 @@ WSP._serializeToken = function ( state, token ) {
 			state.env.dp(' =>', out);
 			state.chunkCB( out );
 		} else {
-			if ( requiredNLCount > state.availableNewlineCount ) {
-				state.availableNewlineCount = requiredNLCount;
-			}
+			state.availableNewlineCount += newNLCount;
 			if ( handler.startsNewline && ! state.onStartOfLine ) {
 				state.emitNewlineOnNextToken = true;
 			}
