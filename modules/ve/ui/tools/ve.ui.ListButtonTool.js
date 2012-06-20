@@ -138,24 +138,32 @@ ve.ui.ListButtonTool.prototype.onClick = function() {
 };
 
 ve.ui.ListButtonTool.prototype.updateState = function( annotations, nodes ) {
+	var	surfaceView = this.toolbar.getSurfaceView(),
+		surfaceModel = surfaceView.getModel(),
+		doc = surfaceView.getDocument(),
+		selection = surfaceModel.getSelection(),
+		leaves = doc.selectNodes( selection, 'leaves' );
 
-	function areListItemsOfStyle( nodes, style ){
+	function areListItemsOfStyle( leaves, style ){
 		var listNode = null;
-		for ( var i=0; i < nodes.length; i++ ) {
-			listNode = nodes[i];
+
+		for ( var i=0; i < leaves.length; i++ ) {
+			listNode = leaves[i].node;
 			// Get the list node
 			while( listNode && listNode.getType() !== 'list' ) {
 				listNode = listNode.getParent();
+				if ( listNode === null ) {
+					return false;
+				}
 			}
-			if( listNode && listNode.getAttribute('style') === style ) {
-				return true;
+			if( listNode.getModel().getAttribute('style') !== style ) {
+				return false;
 			}
 		}
-		return false;
+		return true;
 	}
 
-
-	if ( areListItemsOfStyle( nodes, this.name ) ) {
+	if ( areListItemsOfStyle( leaves, this.name ) ) {
 		this.$.addClass( 'es-toolbarButtonTool-down' );
 	} else {
 		this.$.removeClass( 'es-toolbarButtonTool-down' );
@@ -167,13 +175,13 @@ ve.ui.ListButtonTool.prototype.updateState = function( annotations, nodes ) {
 ve.ui.Tool.tools.number = {
 	'constructor': ve.ui.ListButtonTool,
 	'name': 'number',
-	'title': ve.msg( 'visualeditor-listbutton-number-tooltip' ),
+	'title': ve.msg( 'visualeditor-listbutton-number-tooltip' )
 };
 
 ve.ui.Tool.tools.bullet = {
 	'constructor': ve.ui.ListButtonTool,
 	'name': 'bullet',
-	'title': ve.msg( 'visualeditor-listbutton-bullet-tooltip' ),
+	'title': ve.msg( 'visualeditor-listbutton-bullet-tooltip' )
 };
 
 /* Inheritance */
