@@ -142,6 +142,36 @@ $messages['de'] = array(
 	'visualeditor-tooltip-help' => 'Hilfen ein- und ausblenden',
 	'visualeditor-feedback-prompt' => 'Rückmeldung geben',
 	'visualeditor-feedback-dialog-title' => 'Rückmeldung zur Spielwiese für den WYSIWYG-Editor geben',
+	'visualeditor-ca-editsource' => 'Quelltext bearbeiten',
+	'visualeditor-linkinspector-title' => 'Link bearbeiten',
+	'visualeditor-linkinspector-label-pagetitle' => 'Seitenname',
+	'visualeditor-formatdropdown-title' => 'Format ändern',
+	'visualeditor-formatdropdown-format-paragraph' => 'Absatz',
+	'visualeditor-formatdropdown-format-heading1' => 'Überschrift 1',
+	'visualeditor-formatdropdown-format-heading2' => 'Überschrift 2',
+	'visualeditor-formatdropdown-format-heading3' => 'Überschrift 3',
+	'visualeditor-formatdropdown-format-heading4' => 'Überschrift 4',
+	'visualeditor-formatdropdown-format-heading5' => 'Überschrift 5',
+	'visualeditor-formatdropdown-format-heading6' => 'Überschrift 6',
+	'visualeditor-formatdropdown-format-preformatted' => 'Vorformatiert',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Fett',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Kursiv',
+	'visualeditor-annotationbutton-link-tooltip' => 'Link',
+	'visualeditor-indentationbutton-indent-tooltip' => 'Einzug vergrößern',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Einzug verkleinern',
+	'visualeditor-listbutton-number-tooltip' => 'Nummerierte Liste',
+	'visualeditor-listbutton-bullet-tooltip' => 'Aufgezählte Liste',
+	'visualeditor-clearbutton-tooltip' => 'Formatierungen entfernen',
+	'visualeditor-historybutton-undo-tooltip' => 'Rückgängig machen',
+	'visualeditor-historybutton-redo-tooltip' => 'Wiederholen',
+	'visualeditor-viewpage-savewarning' => 'Bist du sicher, dass du zum Ansichtsmodus wechseln möchtest, ohne vorher zu speichern?',
+);
+
+/** German (formal address) (‪Deutsch (Sie-Form)‬)
+ * @author Kghbln
+ */
+$messages['de-formal'] = array(
+	'visualeditor-viewpage-savewarning' => 'Sind Sie sicher, dass Sie zum Ansichtsmodus wechseln möchten, ohne vorher zu speichern?',
 );
 
 /** Lower Sorbian (Dolnoserbski)
@@ -179,6 +209,29 @@ $messages['es'] = array(
 	'visualeditor-tooltip-help' => 'Conmutar a vista de ayuda',
 	'visualeditor-feedback-prompt' => 'Comentar',
 	'visualeditor-feedback-dialog-title' => "Comentar sobre la zona segura (''sandbox'') del Editor Visual",
+	'visualeditor-ca-editsource' => 'Editar fuente',
+	'visualeditor-linkinspector-title' => 'Editar enlace',
+	'visualeditor-linkinspector-label-pagetitle' => 'Título de la página',
+	'visualeditor-formatdropdown-title' => 'Cambiar formato',
+	'visualeditor-formatdropdown-format-paragraph' => 'Párrafo',
+	'visualeditor-formatdropdown-format-heading1' => 'Encabezado 1',
+	'visualeditor-formatdropdown-format-heading2' => 'Encabezado 2',
+	'visualeditor-formatdropdown-format-heading3' => 'Encabezado 3',
+	'visualeditor-formatdropdown-format-heading4' => 'Encabezado 4',
+	'visualeditor-formatdropdown-format-heading5' => 'Encabezado 5',
+	'visualeditor-formatdropdown-format-heading6' => 'Encabezado 6',
+	'visualeditor-formatdropdown-format-preformatted' => 'Preformateado',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Negrita',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Cursiva',
+	'visualeditor-annotationbutton-link-tooltip' => 'Enlace',
+	'visualeditor-indentationbutton-indent-tooltip' => 'Aumentar sangría',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Disminuir sangría',
+	'visualeditor-listbutton-number-tooltip' => 'Lista numerada',
+	'visualeditor-listbutton-bullet-tooltip' => 'Lista con viñetas',
+	'visualeditor-clearbutton-tooltip' => 'Borrar formato',
+	'visualeditor-historybutton-undo-tooltip' => 'Deshacer',
+	'visualeditor-historybutton-redo-tooltip' => 'Rehacer',
+	'visualeditor-viewpage-savewarning' => '¿Estás seguro que quieres volver al modo de visualización sin guardar primero?',
 );
 
 /** Finnish (suomi)
@@ -237,7 +290,7 @@ $messages['frp'] = array(
 	'visualeditor-feedback-dialog-title' => 'Balyér voutron avis sur la bouèta de sabla de l’èditor visuâl',
 );
 
-/** Galician (Galego)
+/** Galician (galego)
  * @author Toliño
  */
 $messages['gl'] = array(
@@ -253,6 +306,29 @@ $messages['gl'] = array(
 	'visualeditor-tooltip-help' => 'Alternar a vista de axuda',
 	'visualeditor-feedback-prompt' => 'Deixe un comentario',
 	'visualeditor-feedback-dialog-title' => 'Deixe un comentario sobre a zona de probas do editor visual',
+	'visualeditor-ca-editsource' => 'Editar a fonte',
+	'visualeditor-linkinspector-title' => 'Ligazón de edición',
+	'visualeditor-linkinspector-label-pagetitle' => 'Título da páxina',
+	'visualeditor-formatdropdown-title' => 'Cambiar o formato',
+	'visualeditor-formatdropdown-format-paragraph' => 'Parágrafo',
+	'visualeditor-formatdropdown-format-heading1' => 'Cabeceira 1',
+	'visualeditor-formatdropdown-format-heading2' => 'Cabeceira 2',
+	'visualeditor-formatdropdown-format-heading3' => 'Cabeceira 3',
+	'visualeditor-formatdropdown-format-heading4' => 'Cabeceira 4',
+	'visualeditor-formatdropdown-format-heading5' => 'Cabeceira 5',
+	'visualeditor-formatdropdown-format-heading6' => 'Cabeceira 6',
+	'visualeditor-formatdropdown-format-preformatted' => 'Con formato previo',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Negra',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Cursiva',
+	'visualeditor-annotationbutton-link-tooltip' => 'Ligazón',
+	'visualeditor-indentationbutton-indent-tooltip' => 'Aumentar a sangría',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Diminuír a sangría',
+	'visualeditor-listbutton-number-tooltip' => 'Lista numerada',
+	'visualeditor-listbutton-bullet-tooltip' => 'Lista con asteriscos',
+	'visualeditor-clearbutton-tooltip' => 'Borrar o formato',
+	'visualeditor-historybutton-undo-tooltip' => 'Desfacer',
+	'visualeditor-historybutton-redo-tooltip' => 'Refacer',
+	'visualeditor-viewpage-savewarning' => 'Está seguro de querer volver ao modo de lectura sen gardar primeiro?',
 );
 
 /** Hebrew (עברית)
@@ -351,6 +427,29 @@ $messages['it'] = array(
 	'visualeditor-tooltip-help' => 'Mostra/nascondi aiuto',
 	'visualeditor-feedback-prompt' => 'Lascia un commento',
 	'visualeditor-feedback-dialog-title' => "Lascia un commento sulla pagina delle prove per l'editor visivo",
+	'visualeditor-ca-editsource' => 'Modifica sorgente',
+	'visualeditor-linkinspector-title' => 'Modifica collegamento',
+	'visualeditor-linkinspector-label-pagetitle' => 'Titolo della pagina',
+	'visualeditor-formatdropdown-title' => 'Cambia formato',
+	'visualeditor-formatdropdown-format-paragraph' => 'Paragrafo',
+	'visualeditor-formatdropdown-format-heading1' => 'Titolo 1',
+	'visualeditor-formatdropdown-format-heading2' => 'Titolo 2',
+	'visualeditor-formatdropdown-format-heading3' => 'Titolo 3',
+	'visualeditor-formatdropdown-format-heading4' => 'Titolo 4',
+	'visualeditor-formatdropdown-format-heading5' => 'Titolo 5',
+	'visualeditor-formatdropdown-format-heading6' => 'Titolo 6',
+	'visualeditor-formatdropdown-format-preformatted' => 'Preformattato',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Grassetto',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Corsivo',
+	'visualeditor-annotationbutton-link-tooltip' => 'Collegamento',
+	'visualeditor-indentationbutton-indent-tooltip' => 'Aumenta indentazione',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Riduci indentazione',
+	'visualeditor-listbutton-number-tooltip' => 'Elenco numerato',
+	'visualeditor-listbutton-bullet-tooltip' => 'Elenco puntato',
+	'visualeditor-clearbutton-tooltip' => 'Pulisci formattazione',
+	'visualeditor-historybutton-undo-tooltip' => 'Annulla',
+	'visualeditor-historybutton-redo-tooltip' => 'Rifai',
+	'visualeditor-viewpage-savewarning' => 'Sei sicuro di voler tornare alla modalità in visualizzazione senza salvare prima?',
 );
 
 /** Japanese (日本語)
