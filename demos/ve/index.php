@@ -5,15 +5,15 @@
 		<meta charset="UTF-8" />
 		<title>VisualEditor Demo</title>
 		<!-- ce -->
-		<link rel="stylesheet" href="../../modules/ve2/ce/styles/ve.ce.Document.css">
-		<link rel="stylesheet" href="../../modules/ve2/ce/styles/ve.ce.Node.css">
-		<link rel="stylesheet" href="../../modules/ve2/ce/styles/ve.ce.Surface.css">
+		<link rel="stylesheet" href="../../modules/ve/ce/styles/ve.ce.Document.css">
+		<link rel="stylesheet" href="../../modules/ve/ce/styles/ve.ce.Node.css">
+		<link rel="stylesheet" href="../../modules/ve/ce/styles/ve.ce.Surface.css">
 		<!-- ui -->
-		<link rel="stylesheet" href="../../modules/ve2/ui/styles/ve.ui.Context.css">
-		<link rel="stylesheet" href="../../modules/ve2/ui/styles/ve.ui.Inspector.css">
-		<link rel="stylesheet" href="../../modules/ve2/ui/styles/ve.ui.Menu.css">
-		<link rel="stylesheet" href="../../modules/ve2/ui/styles/ve.ui.Surface.css">
-		<link rel="stylesheet" href="../../modules/ve2/ui/styles/ve.ui.Toolbar.css">
+		<link rel="stylesheet" href="../../modules/ve/ui/styles/ve.ui.Context.css">
+		<link rel="stylesheet" href="../../modules/ve/ui/styles/ve.ui.Inspector.css">
+		<link rel="stylesheet" href="../../modules/ve/ui/styles/ve.ui.Menu.css">
+		<link rel="stylesheet" href="../../modules/ve/ui/styles/ve.ui.Surface.css">
+		<link rel="stylesheet" href="../../modules/ve/ui/styles/ve.ui.Toolbar.css">
 		<!-- sandbox -->
 		<link rel="stylesheet" href="../../modules/sandbox/sandbox.css">
 		<style>
@@ -88,113 +88,115 @@ include( '../../modules/sandbox/base.php' );
 		<!-- ve -->
 		<script src="../../modules/jquery/jquery.js"></script>
 		<script src="../../modules/jquery/jquery.json.js"></script>
-		<script src="../../modules/ve2/ve.js"></script>
+		<script src="../../modules/ve/ve.js"></script>
 		<script>
 		<?php
 			include( dirname( dirname( dirname( __FILE__ ) ) ) . '/VisualEditor.i18n.php' );
 			echo 've.msg.messages = ' . json_encode( $messages['en'] );
 		?>
 		</script>
-		<script src="../../modules/ve2/ve.debug.js"></script>
-		<script src="../../modules/ve2/ve.EventEmitter.js"></script>
-		<script src="../../modules/ve2/ve.Factory.js"></script>
-		<script src="../../modules/ve2/ve.Position.js"></script>
-		<script src="../../modules/ve2/ve.Range.js"></script>
-		<script src="../../modules/ve2/ve.Node.js"></script>
-		<script src="../../modules/ve2/ve.BranchNode.js"></script>
-		<script src="../../modules/ve2/ve.LeafNode.js"></script>
-		<script src="../../modules/ve2/ve.Surface.js"></script>
-		<script src="../../modules/ve2/ve.Document.js"></script>
+		<script src="../../modules/ve/ve.debug.js"></script>
+		<script src="../../modules/ve/ve.EventEmitter.js"></script>
+		<script src="../../modules/ve/ve.Factory.js"></script>
+		<script src="../../modules/ve/ve.Position.js"></script>
+		<script src="../../modules/ve/ve.Range.js"></script>
+		<script src="../../modules/ve/ve.Node.js"></script>
+		<script src="../../modules/ve/ve.BranchNode.js"></script>
+		<script src="../../modules/ve/ve.LeafNode.js"></script>
+		<script src="../../modules/ve/ve.Surface.js"></script>
+		<script src="../../modules/ve/ve.Document.js"></script>
 
 		<!-- dm -->
-		<script src="../../modules/ve2/dm/ve.dm.js"></script>
-		<script src="../../modules/ve2/dm/ve.dm.NodeFactory.js"></script>
-		<script src="../../modules/ve2/dm/ve.dm.AnnotationFactory.js"></script>
-		<script src="../../modules/ve2/dm/ve.dm.Node.js"></script>
-		<script src="../../modules/ve2/dm/ve.dm.BranchNode.js"></script>
-		<script src="../../modules/ve2/dm/ve.dm.LeafNode.js"></script>
-		<script src="../../modules/ve2/dm/ve.dm.Annotation.js"></script>
-		<script src="../../modules/ve2/dm/ve.dm.TransactionProcessor.js"></script>
-		<script src="../../modules/ve2/dm/ve.dm.Transaction.js"></script>
-		<script src="../../modules/ve2/dm/ve.dm.Surface.js"></script>
-		<script src="../../modules/ve2/dm/ve.dm.Document.js"></script>
-		<script src="../../modules/ve2/dm/ve.dm.DocumentSynchronizer.js"></script>
-		<script src="../../modules/ve2/dm/ve.dm.Transaction.js"></script>
-		<script src="../../modules/ve2/dm/ve.dm.TransactionProcessor.js"></script>
-		<script src="../../modules/ve2/dm/ve.dm.Converter.js"></script>
+		<script src="../../modules/ve/dm/ve.dm.js"></script>
+		<script src="../../modules/ve/dm/ve.dm.NodeFactory.js"></script>
+		<script src="../../modules/ve/dm/ve.dm.AnnotationFactory.js"></script>
+		<script src="../../modules/ve/dm/ve.dm.Node.js"></script>
+		<script src="../../modules/ve/dm/ve.dm.BranchNode.js"></script>
+		<script src="../../modules/ve/dm/ve.dm.LeafNode.js"></script>
+		<script src="../../modules/ve/dm/ve.dm.Annotation.js"></script>
+		<script src="../../modules/ve/dm/ve.dm.TransactionProcessor.js"></script>
+		<script src="../../modules/ve/dm/ve.dm.Transaction.js"></script>
+		<script src="../../modules/ve/dm/ve.dm.Surface.js"></script>
+		<script src="../../modules/ve/dm/ve.dm.Document.js"></script>
+		<script src="../../modules/ve/dm/ve.dm.DocumentSynchronizer.js"></script>
+		<script src="../../modules/ve/dm/ve.dm.Transaction.js"></script>
+		<script src="../../modules/ve/dm/ve.dm.TransactionProcessor.js"></script>
+		<script src="../../modules/ve/dm/ve.dm.Converter.js"></script>
 
-		<script src="../../modules/ve2/dm/nodes/ve.dm.AlienInlineNode.js"></script>
-		<script src="../../modules/ve2/dm/nodes/ve.dm.AlienBlockNode.js"></script>
-		<script src="../../modules/ve2/dm/nodes/ve.dm.DefinitionListItemNode.js"></script>
-		<script src="../../modules/ve2/dm/nodes/ve.dm.DefinitionListNode.js"></script>
-		<script src="../../modules/ve2/dm/nodes/ve.dm.DocumentNode.js"></script>
-		<script src="../../modules/ve2/dm/nodes/ve.dm.HeadingNode.js"></script>
-		<script src="../../modules/ve2/dm/nodes/ve.dm.ImageNode.js"></script>
-		<script src="../../modules/ve2/dm/nodes/ve.dm.ListItemNode.js"></script>
-		<script src="../../modules/ve2/dm/nodes/ve.dm.ListNode.js"></script>
-		<script src="../../modules/ve2/dm/nodes/ve.dm.ParagraphNode.js"></script>
-		<script src="../../modules/ve2/dm/nodes/ve.dm.PreformattedNode.js"></script>
-		<script src="../../modules/ve2/dm/nodes/ve.dm.TableCellNode.js"></script>
-		<script src="../../modules/ve2/dm/nodes/ve.dm.TableNode.js"></script>
-		<script src="../../modules/ve2/dm/nodes/ve.dm.TableRowNode.js"></script>
-		<script src="../../modules/ve2/dm/nodes/ve.dm.TableSectionNode.js"></script>
-		<script src="../../modules/ve2/dm/nodes/ve.dm.TextNode.js"></script>
+		<script src="../../modules/ve/dm/nodes/ve.dm.AlienInlineNode.js"></script>
+		<script src="../../modules/ve/dm/nodes/ve.dm.AlienBlockNode.js"></script>
+		<script src="../../modules/ve/dm/nodes/ve.dm.DefinitionListItemNode.js"></script>
+		<script src="../../modules/ve/dm/nodes/ve.dm.DefinitionListNode.js"></script>
+		<script src="../../modules/ve/dm/nodes/ve.dm.DocumentNode.js"></script>
+		<script src="../../modules/ve/dm/nodes/ve.dm.HeadingNode.js"></script>
+		<script src="../../modules/ve/dm/nodes/ve.dm.ImageNode.js"></script>
+		<script src="../../modules/ve/dm/nodes/ve.dm.ListItemNode.js"></script>
+		<script src="../../modules/ve/dm/nodes/ve.dm.ListNode.js"></script>
+		<script src="../../modules/ve/dm/nodes/ve.dm.ParagraphNode.js"></script>
+		<script src="../../modules/ve/dm/nodes/ve.dm.PreformattedNode.js"></script>
+		<script src="../../modules/ve/dm/nodes/ve.dm.TableCellNode.js"></script>
+		<script src="../../modules/ve/dm/nodes/ve.dm.TableNode.js"></script>
+		<script src="../../modules/ve/dm/nodes/ve.dm.TableRowNode.js"></script>
+		<script src="../../modules/ve/dm/nodes/ve.dm.TableSectionNode.js"></script>
+		<script src="../../modules/ve/dm/nodes/ve.dm.TextNode.js"></script>
 
-		<script src="../../modules/ve2/dm/annotations/ve.dm.LinkAnnotation.js"></script>
-		<script src="../../modules/ve2/dm/annotations/ve.dm.TextStyleAnnotation.js"></script>
+		<script src="../../modules/ve/dm/annotations/ve.dm.LinkAnnotation.js"></script>
+		<script src="../../modules/ve/dm/annotations/ve.dm.TextStyleAnnotation.js"></script>
 
+		<!--
 		<script src="../../modules/ve/dm/serializers/ve.dm.AnnotationSerializer.js"></script>
 		<script src="../../modules/ve/dm/serializers/ve.dm.HtmlSerializer.js"></script>
 		<script src="../../modules/ve/dm/serializers/ve.dm.JsonSerializer.js"></script>
 		<script src="../../modules/ve/dm/serializers/ve.dm.WikitextSerializer.js"></script>
+		-->
 
 		<!-- ce -->
-		<script src="../../modules/ve2/ce/ve.ce.js"></script>
-		<script src="../../modules/ve2/ce/ve.ce.NodeFactory.js"></script>
-		<script src="../../modules/ve2/ce/ve.ce.Document.js"></script>
-		<script src="../../modules/ve2/ce/ve.ce.Node.js"></script>
-		<script src="../../modules/ve2/ce/ve.ce.BranchNode.js"></script>
-		<script src="../../modules/ve2/ce/ve.ce.LeafNode.js"></script>
-		<script src="../../modules/ve2/ce/ve.ce.Surface.js"></script>
+		<script src="../../modules/ve/ce/ve.ce.js"></script>
+		<script src="../../modules/ve/ce/ve.ce.NodeFactory.js"></script>
+		<script src="../../modules/ve/ce/ve.ce.Document.js"></script>
+		<script src="../../modules/ve/ce/ve.ce.Node.js"></script>
+		<script src="../../modules/ve/ce/ve.ce.BranchNode.js"></script>
+		<script src="../../modules/ve/ce/ve.ce.LeafNode.js"></script>
+		<script src="../../modules/ve/ce/ve.ce.Surface.js"></script>
 
-		<script src="../../modules/ve2/ce/nodes/ve.ce.AlienInlineNode.js"></script>
-		<script src="../../modules/ve2/ce/nodes/ve.ce.AlienBlockNode.js"></script>
-		<script src="../../modules/ve2/ce/nodes/ve.ce.DefinitionListItemNode.js"></script>
-		<script src="../../modules/ve2/ce/nodes/ve.ce.DefinitionListNode.js"></script>
-		<script src="../../modules/ve2/ce/nodes/ve.ce.DocumentNode.js"></script>
-		<script src="../../modules/ve2/ce/nodes/ve.ce.HeadingNode.js"></script>
-		<script src="../../modules/ve2/ce/nodes/ve.ce.ImageNode.js"></script>
-		<script src="../../modules/ve2/ce/nodes/ve.ce.ListItemNode.js"></script>
-		<script src="../../modules/ve2/ce/nodes/ve.ce.ListNode.js"></script>
-		<script src="../../modules/ve2/ce/nodes/ve.ce.ParagraphNode.js"></script>
-		<script src="../../modules/ve2/ce/nodes/ve.ce.PreformattedNode.js"></script>
-		<script src="../../modules/ve2/ce/nodes/ve.ce.TableCellNode.js"></script>
-		<script src="../../modules/ve2/ce/nodes/ve.ce.TableNode.js"></script>
-		<script src="../../modules/ve2/ce/nodes/ve.ce.TableRowNode.js"></script>
-		<script src="../../modules/ve2/ce/nodes/ve.ce.TableSectionNode.js"></script>
-		<script src="../../modules/ve2/ce/nodes/ve.ce.TextNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.ce.AlienInlineNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.ce.AlienBlockNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.ce.DefinitionListItemNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.ce.DefinitionListNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.ce.DocumentNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.ce.HeadingNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.ce.ImageNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.ce.ListItemNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.ce.ListNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.ce.ParagraphNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.ce.PreformattedNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.ce.TableCellNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.ce.TableNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.ce.TableRowNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.ce.TableSectionNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.ce.TextNode.js"></script>
 
 		<!-- ui -->
-		<script src="../../modules/ve2/ui/ve.ui.js"></script>
+		<script src="../../modules/ve/ui/ve.ui.js"></script>
 		<script>
-			ve.ui.stylesheetPath = '../../modules/ve2/ui/styles/';
+			ve.ui.stylesheetPath = '../../modules/ve/ui/styles/';
 		</script>
-		<script src="../../modules/ve2/ui/ve.ui.Inspector.js"></script>
-		<script src="../../modules/ve2/ui/ve.ui.Tool.js"></script>
-		<script src="../../modules/ve2/ui/ve.ui.Toolbar.js"></script>
-		<script src="../../modules/ve2/ui/ve.ui.Context.js"></script>
-		<script src="../../modules/ve2/ui/ve.ui.Menu.js"></script>
+		<script src="../../modules/ve/ui/ve.ui.Inspector.js"></script>
+		<script src="../../modules/ve/ui/ve.ui.Tool.js"></script>
+		<script src="../../modules/ve/ui/ve.ui.Toolbar.js"></script>
+		<script src="../../modules/ve/ui/ve.ui.Context.js"></script>
+		<script src="../../modules/ve/ui/ve.ui.Menu.js"></script>
 
-		<script src="../../modules/ve2/ui/inspectors/ve.ui.LinkInspector.js"></script>
+		<script src="../../modules/ve/ui/inspectors/ve.ui.LinkInspector.js"></script>
 
-		<script src="../../modules/ve2/ui/tools/ve.ui.ButtonTool.js"></script>
-		<script src="../../modules/ve2/ui/tools/ve.ui.AnnotationButtonTool.js"></script>
-		<script src="../../modules/ve2/ui/tools/ve.ui.ClearButtonTool.js"></script>
-		<script src="../../modules/ve2/ui/tools/ve.ui.HistoryButtonTool.js"></script>
-		<script src="../../modules/ve2/ui/tools/ve.ui.ListButtonTool.js"></script>
-		<script src="../../modules/ve2/ui/tools/ve.ui.IndentationButtonTool.js"></script>
-		<script src="../../modules/ve2/ui/tools/ve.ui.DropdownTool.js"></script>
-		<script src="../../modules/ve2/ui/tools/ve.ui.FormatDropdownTool.js"></script>
+		<script src="../../modules/ve/ui/tools/ve.ui.ButtonTool.js"></script>
+		<script src="../../modules/ve/ui/tools/ve.ui.AnnotationButtonTool.js"></script>
+		<script src="../../modules/ve/ui/tools/ve.ui.ClearButtonTool.js"></script>
+		<script src="../../modules/ve/ui/tools/ve.ui.HistoryButtonTool.js"></script>
+		<script src="../../modules/ve/ui/tools/ve.ui.ListButtonTool.js"></script>
+		<script src="../../modules/ve/ui/tools/ve.ui.IndentationButtonTool.js"></script>
+		<script src="../../modules/ve/ui/tools/ve.ui.DropdownTool.js"></script>
+		<script src="../../modules/ve/ui/tools/ve.ui.FormatDropdownTool.js"></script>
 	
 		<!-- sandbox -->
 		<script src="../../modules/sandbox/sandbox.js"></script>
