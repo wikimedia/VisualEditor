@@ -249,7 +249,7 @@ ve.ce.Surface.prototype.onKeyPress = function( e ) {
 		}
 	}
 
-	if ( selection.getLength() > 0 ) {
+	if ( selection.getLength() > 0 && e.which !== 0 ) {
 		this.stopPolling();
 		this.model.change(
 			ve.dm.Transaction.newFromRemoval(
