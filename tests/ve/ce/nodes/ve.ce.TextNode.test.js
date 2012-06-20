@@ -3,7 +3,7 @@ module( 've.ce.TextNode' );
 
 /* Tests */
 
-test( 'getHtml', 10, function() {
+test( 'getHtml', 22, function() {
 	var cases = [
 		{
 			'data': [
@@ -204,6 +204,66 @@ test( 'getHtml', 10, function() {
 				{ 'type': '/paragraph' }
 			],
 			'html': 'abc<i><u><b>d</b></u></i><u><b>ef</b></u>ghi'
+		},
+		{
+			// [ ]
+			'data': [{ 'type': 'paragraph' },{ 'type': '/paragraph' }],
+			'html': ''
+		},
+		{
+			// [ ]
+			'data': [{ 'type': 'paragraph' },' ',{ 'type': '/paragraph' }],
+			'html': '&nbsp;'
+		},
+		{
+			// [ ][ ]
+			'data': [{ 'type': 'paragraph' },' ', ' ',{ 'type': '/paragraph' }],
+			'html': '&nbsp;&nbsp;'
+		},
+		{
+			// [ ][ ][ ]
+			'data': [{ 'type': 'paragraph' },' ', ' ', ' ',{ 'type': '/paragraph' }],
+			'html': '&nbsp; &nbsp;'
+		},
+		{
+			// [ ][ ][ ][ ]
+			'data': [{ 'type': 'paragraph' },' ', ' ', ' ', ' ',{ 'type': '/paragraph' }],
+			'html': '&nbsp; &nbsp;&nbsp;'
+		},
+		{
+			// [ ][ ][ ][ ][ ]
+			'data': [{ 'type': 'paragraph' },' ', ' ', ' ', ' ', ' ',{ 'type': '/paragraph' }],
+			'html': '&nbsp; &nbsp; &nbsp;'
+		},
+		{
+			// [ ][ ][ ][ ][ ][ ]
+			'data': [{ 'type': 'paragraph' },' ', ' ', ' ', ' ', ' ', ' ',{ 'type': '/paragraph' }],
+			'html': '&nbsp; &nbsp; &nbsp;&nbsp;'
+		},
+		{
+			// [ ][A][ ][ ][ ][ ]
+			'data': [{ 'type': 'paragraph' },' ', 'A', ' ', ' ', ' ', ' ',{ 'type': '/paragraph' }],
+			'html': '&nbsp;A &nbsp; &nbsp;'
+		},
+		{
+			// [ ][ ][A][ ][ ][ ]
+			'data': [{ 'type': 'paragraph' },' ', ' ', 'A', ' ', ' ', ' ',{ 'type': '/paragraph' }],
+			'html': '&nbsp; A &nbsp;&nbsp;'
+		},
+		{
+			// [ ][ ][ ][A][ ][ ]
+			'data': [{ 'type': 'paragraph' },' ', ' ', ' ', 'A', ' ', ' ',{ 'type': '/paragraph' }],
+			'html': '&nbsp; &nbsp;A &nbsp;'
+		},
+		{
+			// [ ][ ][ ][ ][A][ ]
+			'data': [{ 'type': 'paragraph' },' ', ' ', ' ', ' ', 'A', ' ',{ 'type': '/paragraph' }],
+			'html': '&nbsp; &nbsp; A&nbsp;'
+		},
+		{
+			// [ ][ ][ ][ ][ ][A]
+			'data': [{ 'type': 'paragraph' },' ', ' ', ' ', ' ', ' ', 'A',{ 'type': '/paragraph' }],
+			'html': '&nbsp; &nbsp; &nbsp;A'
 		}
 	];
 	for ( var i = 0; i < cases.length; i++ ) {

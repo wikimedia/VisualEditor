@@ -165,26 +165,27 @@ ve.ce.TextNode.prototype.getHtml = function() {
 		hashStack = [],
 		annotationStack = {};
 
-	// TODO: Special handling for spaces in <pre> may be required
-	if ( data.length >= 2 ) {
-		for( i = 0; i < data.length - 1; i++ ) {
-			if ( 
-				( i === 0 && data[i][0][0] === ' ' && data[i + 1][0][0] !== ' ' ) ||
-				( i === data.length - 1 && data[i][0][0] === ' ' )
-			){
-				// Replace last space and first space (if not followed by another space) with &nbsp;
-				if ( ve.isArray( data[i] ) ) {
-					data[i][0] = '&nbsp;';
-				} else {
-					data[i] = '&nbsp;';
-				}
-			} else if ( data[i][0][0] === ' ' && data[i + 1][0] === ' ' ) {
-				// Mulitple spaces should alternate spaces and &nbsp;
-				if ( ve.isArray( data[i + 1] ) ) {
-					data[i + 1][0] = '&nbsp;';
-				} else {
-					data[i + 1] = '&nbsp;';
-				}
+	var replaceWithNonBreakingSpace = function( index, data ) {
+		if ( ve.isArray( data[index] ) ) {
+			data[index][0] = '&nbsp;';
+		} else {
+			data[index] = '&nbsp;';
+		}
+	};
+	if ( data.length > 0 ) {
+		if ( data[0] === ' ') {
+			replaceWithNonBreakingSpace( 0, data );
+		}
+	}
+	if ( data.length > 1 ) {
+		if ( data[ data.length - 1 ] === ' ') {
+			replaceWithNonBreakingSpace( data.length - 1, data );
+		}
+	}
+	if ( data.length > 2 ) {
+		for ( var i = 1; i < data.length - 1; i++ ) {
+			if ( data[i] === ' ' && data[i + 1] === ' ') {
+				replaceWithNonBreakingSpace( i + 1, data );
 				i++;
 			}
 		}
