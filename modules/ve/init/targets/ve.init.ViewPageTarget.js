@@ -191,6 +191,14 @@ ve.init.ViewPageTarget.prototype.onSave = function( html ) {
 		// This is a page creation, refresh the page
 		window.location.href = this.viewUri;
 	} else {
+		// Update the watch link to match the state of 'watch checkbox' in save dialog
+		var watchPage = this.$saveDialog
+			.find( '#ve-init-viewPageTarget-saveDialog-watchList')
+			.prop( 'checked' );
+		mw.page.watch.updateWatchLink(
+			$('#ca-watch a, #ca-unwatch a'),
+			watchPage === true ? 'unwatch': 'watch'
+		);
 		this.hideSaveDialog();
 		this.resetSaveDialog();
 		this.replacePageContent( html );
@@ -535,6 +543,17 @@ ve.init.ViewPageTarget.prototype.setupSaveDialog = function() {
 			);
 	this.$saveDialogSaveButton = this.$saveDialog
 		.find( '.ve-init-viewPageTarget-saveDialog-saveButton' );
+
+	/* Hook onto the 'watch' event on by mediawiki.page.watch.ajax.js
+	 * Triggered when mw.page.watch.updateWatchLink(link, action) is called.
+	 */
+	$( '#ca-watch, #ca-unwatch' ).on( 'watch.mw',
+		ve.proxy( function( e, action ){
+			this.$saveDialog
+				.find( '#ve-init-viewPageTarget-saveDialog-watchList')
+				.prop( 'checked', ( action === 'watch') );
+		}, this )
+	);
 };
 
 /**
