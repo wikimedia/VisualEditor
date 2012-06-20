@@ -110,6 +110,8 @@ ve.ce.BranchNode.prototype.updateDomWrapper = function( key ) {
 		this.$.replaceWith( $element );
 		// Use new element from now on
 		this.$ = $element;
+		// Remember which type we are using now
+		this.domWrapperElementType = type;
 	}
 };
 
