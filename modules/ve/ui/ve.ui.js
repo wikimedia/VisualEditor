@@ -5,7 +5,7 @@
  */
 ve.ui = {
 	// Path to UI assets for direct loading
-	'stylesheetPath': 'extensions/VisualEditor/modules/ve2/ui/styles/'
+	'stylesheetPath': 'extensions/VisualEditor/modules/ve/ui/styles/'
 };
 
 /*
@@ -14,7 +14,7 @@ ve.ui = {
  */
 ve.ui.getStylesheetPath = function() {
 	if ( 'mw' in window ) {
-		return mw.config.get( 'wgExtensionAssetsPath' ) + '/VisualEditor/modules/ve2/ui/styles/';
+		return mw.config.get( 'wgExtensionAssetsPath' ) + '/VisualEditor/modules/ve/ui/styles/';
 	} else {
 		return ve.ui.stylesheetPath;
 	}
