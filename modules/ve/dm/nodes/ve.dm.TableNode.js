@@ -1,37 +1,54 @@
 /**
- * Creates an ve.dm.TableNode object.
- * 
+ * DataModel node for a table.
+ *
  * @class
  * @constructor
  * @extends {ve.dm.BranchNode}
- * @param {Object} element Document data element of this node
- * @param {ve.dm.TableCellNode[]} contents List of child nodes to initially add
+ * @param {ve.dm.BranchNode[]} [children] Child nodes to attach
+ * @param {Object} [attributes] Reference to map of attribute key/value pairs
  */
-ve.dm.TableNode = function( element, contents ) {
+ve.dm.TableNode = function( children, attributes ) {
 	// Inheritance
-	ve.dm.BranchNode.call( this, 'table', element, contents );
+	ve.dm.BranchNode.call( this, 'table', children, attributes );
 };
 
-/* Methods */
+/* Static Members */
 
 /**
- * Creates a table view for this model.
- * 
- * @method
- * @returns {ve.ce.TableNode}
+ * Node rules.
+ *
+ * @see ve.dm.NodeFactory
+ * @static
+ * @member
  */
-ve.dm.TableNode.prototype.createView = function() {
-	return new ve.ce.TableNode( this );
+ve.dm.TableNode.rules = {
+	'isWrapped': true,
+	'isContent': false,
+	'canContainContent': false,
+	'childNodeTypes': ['tableRow'],
+	'parentNodeTypes': null
+};
+
+/**
+ * Node converters.
+ *
+ * @see {ve.dm.Converter}
+ * @static
+ * @member
+ */
+ve.dm.TableNode.converters = {
+	'domElementTypes': ['table'],
+	'toDomElement': function( type, element ) {
+		return document.createElement( 'table' );
+	},
+	'toDataElement': function( tag, element ) {
+		return { 'type': 'table' };
+	}
 };
 
 /* Registration */
 
-ve.dm.DocumentNode.nodeModels.table = ve.dm.TableNode;
-
-ve.dm.DocumentNode.nodeRules.table = {
-	'parents': null,
-	'children': ['tableRow']
-};
+ve.dm.nodeFactory.register( 'table', ve.dm.TableNode );
 
 /* Inheritance */
 

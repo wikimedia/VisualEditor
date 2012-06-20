@@ -47,7 +47,7 @@
 }
 
 .es-contextView-position-above .es-menuView {
-	bottom: -4px;
+	bottom: 2px;
 }
 
 .es-contextView-position-below .es-menuView {
@@ -55,14 +55,14 @@
 }
 
 .es-contextView-inspectors {
-	position: absolute;	
+	position: absolute;
 }
 
-.es-contextView-position-above .es-inspector {
-	bottom: -4px;
+.es-contextView-position-above .es-contextView-inspectors {
+	bottom: -8px;
 }
 
-.es-contextView-position-below .es-inspector {
+.es-contextView-position-below .es-contextView-inspectors {
 	top: 2px;
 }
 

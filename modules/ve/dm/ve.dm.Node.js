@@ -1,286 +1,255 @@
 /**
- * Creates an ve.dm.Node object.
- * 
+ * Generic DataModel node.
+ *
  * @class
  * @abstract
  * @constructor
  * @extends {ve.Node}
  * @param {String} type Symbolic name of node type
- * @param {Object} element Element object in document data
  * @param {Integer} [length] Length of content data in document
+ * @param {Object} [attributes] Reference to map of attribute key/value pairs
  */
-ve.dm.Node = function( type, element, length ) {
+ve.dm.Node = function( type, length, attributes ) {
 	// Inheritance
-	ve.Node.call( this );
+	ve.Node.call( this, type );
 
 	// Properties
-	this.type = type;
-	this.parent = null;
-	this.root = this;
-	this.element = element || null;
-	this.contentLength = length || 0;
-};
-
-/* Abstract Methods */
-
-/**
- * Creates a view for this node.
- * 
- * @abstract
- * @method
- * @returns {ve.ce.Node} New item view associated with this model
- */
-ve.dm.Node.prototype.createView = function() {
-	throw 'DocumentModelNode.createView not implemented in this subclass:' + this.constructor;
-};
-
-/**
- * Gets a plain object representation of the document's data.
- * 
- * @method
- * @returns {Object} Plain object representation
- */
-ve.dm.Node.prototype.getPlainObject = function() {
-	throw 'DocumentModelNode.getPlainObject not implemented in this subclass:' + this.constructor;
+	this.length = length || 0;
+	this.attributes = attributes || {};
+	this.doc = undefined;
 };
 
 /* Methods */
 
 /**
- * Gets the content length.
- * 
+ * Gets a list of allowed child node types.
+ *
  * @method
- * @see {ve.Node.prototype.getContentLength}
- * @returns {Integer} Length of content
+ * @returns {String[]|null} List of node types allowed as children or null if any type is allowed
  */
-ve.dm.Node.prototype.getContentLength = function() {
-	return this.contentLength;
+ve.dm.Node.prototype.getChildNodeTypes = function() {
+	return ve.dm.nodeFactory.getChildNodeTypes( this.type );
 };
 
 /**
- * Gets the element length.
- * 
+ * Gets a list of allowed parent node types.
+ *
  * @method
- * @see {ve.Node.prototype.getElementLength}
- * @returns {Integer} Length of content
+ * @returns {String[]|null} List of node types allowed as parents or null if any type is allowed
  */
-ve.dm.Node.prototype.getElementLength = function() {
-	return this.contentLength + 2;
+ve.dm.Node.prototype.getParentNodeTypes = function() {
+	return ve.dm.nodeFactory.getParentNodeTypes( this.type );
 };
 
 /**
- * Sets the content length.
- * 
+ * Checks if this node can have child nodes.
+ *
  * @method
- * @param {Integer} contentLength Length of content
- * @throws Invalid content length error if contentLength is less than 0
+ * @returns {Boolean} Node can have children
  */
-ve.dm.Node.prototype.setContentLength = function( contentLength ) {
-	if ( contentLength < 0 ) {
-		throw 'Invalid content length error. Content length can not be less than 0.';
+ve.dm.Node.prototype.canHaveChildren = function() {
+	return ve.dm.nodeFactory.canNodeHaveChildren( this.type );
+};
+
+/**
+ * Checks if this node can have child nodes which can also have child nodes.
+ *
+ * @method
+ * @returns {Boolean} Node can have grandchildren
+ */
+ve.dm.Node.prototype.canHaveGrandchildren = function() {
+	return ve.dm.nodeFactory.canNodeHaveGrandchildren( this.type );
+};
+
+/**
+ * Checks if this node represents a wrapped element in the linear model.
+ *
+ * @method
+ * @returns {Boolean} Node represents a wrapped element
+ */
+ve.dm.Node.prototype.isWrapped = function() {
+	return ve.dm.nodeFactory.isNodeWrapped( this.type );
+};
+
+/**
+ * Checks if this node can contain content.
+ *
+ * @method
+ * @returns {Boolean} Node can contain content
+ */
+ve.dm.Node.prototype.canContainContent = function() {
+	return ve.dm.nodeFactory.canNodeContainContent( this.type );
+};
+
+/**
+ * Checks if this node is content.
+ *
+ * @method
+ * @returns {Boolean} Node is content
+ */
+ve.dm.Node.prototype.isContent = function() {
+	return ve.dm.nodeFactory.isNodeContent( this.type );
+};
+
+/**
+ * Gets the inner length.
+ *
+ * @method
+ * @returns {Integer} Length of the node's contents
+ */
+ve.dm.Node.prototype.getLength = function() {
+	return this.length;
+};
+
+/**
+ * Gets the outer length, including any opening/closing elements.
+ *
+ * @method
+ * @returns {Integer} Length of the entire node
+ */
+ve.dm.Node.prototype.getOuterLength = function() {
+	return this.length + ( this.isWrapped() ? 2 : 0 );
+};
+
+/**
+ * Gets the range inside the node.
+ *
+ * @method
+ * @returns {ve.Range} Inner node range
+ */
+ve.dm.Node.prototype.getRange = function() {
+	var offset = this.getOffset();
+	if ( this.isWrapped() ) {
+		offset++;
 	}
-	var diff = contentLength - this.contentLength;
-	this.contentLength = contentLength;
+	return new ve.Range( offset, offset + this.length );
+};
+
+/**
+ * Gets the range outside the node.
+ *
+ * @method
+ * @returns {ve.Range} Outer node range
+ */
+ve.dm.Node.prototype.getOuterRange = function() {
+	var offset = this.getOffset();
+	return new ve.Range( offset, offset + this.getOuterLength() );
+};
+
+/**
+ * Sets the inner length.
+ *
+ * @method
+ * @param {Integer} length Length of content
+ * @throws Invalid content length error if length is less than 0
+ * @emits lengthChange (diff)
+ * @emits update
+ */
+ve.dm.Node.prototype.setLength = function( length ) {
+	if ( length < 0 ) {
+		throw 'Length cannot be negative';
+	}
+	// Compute length adjustment from old length
+	var diff = length - this.length;
+	// Set new length
+	this.length = length;
+	// Adjust the parent's length
 	if ( this.parent ) {
-		this.parent.adjustContentLength( diff );
+		this.parent.adjustLength( diff );
 	}
+	// Emit events
+	this.emit( 'lengthChange', diff );
+	this.emit( 'update' );
 };
 
 /**
- * Adjust the content length.
- * 
+ * Adjust the length.
+ *
  * @method
- * @param {Integer} adjustment Amount to adjust content length by
+ * @param {Integer} adjustment Amount to adjust length by
  * @throws Invalid adjustment error if resulting length is less than 0
+ * @emits lengthChange (diff)
+ * @emits update
  */
-ve.dm.Node.prototype.adjustContentLength = function( adjustment, quiet ) {
-	this.contentLength += adjustment;
-	// Make sure the adjustment was sane
-	if ( this.contentLength < 0 ) {
-		// Reverse the adjustment
-		this.contentLength -= adjustment;
-		// Complain about it
-		throw 'Invalid adjustment error. Content length can not be less than 0.';
-	}
-	if ( this.parent ) {
-		this.parent.adjustContentLength( adjustment, true );
-	}
-	if ( !quiet ) {
-		this.emit( 'update' );
-	}
+ve.dm.Node.prototype.adjustLength = function( adjustment ) {
+	this.setLength( this.length + adjustment );
 };
 
 /**
- * Attaches this node to another as a child.
- * 
+ * Gets the offset of this node within the document.
+ *
+ * If this node has no parent than the result will always be 0.
+ *
  * @method
- * @param {ve.dm.Node} parent Node to attach to
- * @emits attach (parent)
+ * @returns {Integer} Offset of node
  */
-ve.dm.Node.prototype.attach = function( parent ) {
-	this.emit( 'beforeAttach', parent );
-	this.parent = parent;
-	this.setRoot( parent.getRoot() );
-	this.emit( 'afterAttach', parent );
-};
-
-/**
- * Detaches this node from it's parent.
- * 
- * @method
- * @emits detach
- */
-ve.dm.Node.prototype.detach = function() {
-	this.emit( 'beforeDetach' );
-	this.parent = null;
-	this.clearRoot();
-	this.emit( 'afterDetach' );
-};
-
-/**
- * Gets a reference to this node's parent.
- * 
- * @method
- * @returns {ve.dm.Node} Reference to this node's parent
- */
-ve.dm.Node.prototype.getParent = function() {
-	return this.parent;
-};
-
-/**
- * Gets the root node in the tree this node is currently attached to.
- * 
- * @method
- * @returns {ve.dm.Node} Root node
- */
-ve.dm.Node.prototype.getRoot = function() {
-	return this.root;
-};
-
-/**
- * Sets the root node to this and all of it's children.
- * 
- * This method is overridden by nodes with children.
- * 
- * @method
- * @param {ve.dm.Node} root Node to use as root
- */
-ve.dm.Node.prototype.setRoot = function( root ) {
-	this.root = root;
-};
-
-/**
- * Clears the root node from this and all of it's children.
- * 
- * This method is overridden by nodes with children.
- * 
- * @method
- */
-ve.dm.Node.prototype.clearRoot = function() {
-	this.root = null;
-};
-
-/**
- * Gets the element object.
- * 
- * @method
- * @returns {Object} Element object in linear data model
- */
-ve.dm.Node.prototype.getElement = function() {
-	return this.element;
-};
-
-/**
- * Gets the symbolic element type name.
- * 
- * @method
- * @returns {String} Symbolic name of element type
- */
-ve.dm.Node.prototype.getElementType = function() {
-	//return this.element.type;
-	// We can't use this.element.type because this.element may be null
-	// So this function now returns this.type and should really be called
-	// getType()
-	// TODO: Do we care?
-	return this.type;
+ve.dm.Node.prototype.getOffset = function() {
+	return this.root === this ? 0 : this.root.getOffsetFromNode( this );
 };
 
 /**
  * Gets an element attribute value.
- * 
+ *
  * @method
- * @returns {Mixed} Value of attribute, or null if no such attribute exists
+ * @returns {Mixed} Value of attribute, or undefined if no such attribute exists
  */
-ve.dm.Node.prototype.getElementAttribute = function( key ) {
-	if ( this.element && this.element.attributes && key in this.element.attributes ) {
-		return this.element.attributes[key];
-	}
-	return null;
+ve.dm.Node.prototype.getAttribute = function( key ) {
+	return this.attributes[key];
 };
 
 /**
- * Gets all element data, including the element opening, closing and it's contents.
- * 
+ * Gets a reference to this node's attributes object
+ *
  * @method
- * @returns {Array} Element data
+ * @returns {Object} Attributes object (by reference)
  */
-ve.dm.Node.prototype.getElementData = function() {
-	// Get reference to the document, which might be this node but otherwise should be this.root
-	var root = this.type === 'document' ?
-		this : ( this.root && this.root.type === 'document' ? this.root : null );
-	if ( root ) {
-		return root.getElementDataFromNode( this );
-	}
-	return [];
+ve.dm.Node.prototype.getAttributes = function() {
+	return this.attributes;
 };
 
 /**
- * Gets content data within a given range.
- * 
- * @method
- * @param {ve.Range} [range] Range of content to get
- * @returns {Array} Content data
+ * Get a clone of the linear model element for this node. The attributes object is deep-copied.
+ *
+ * @returns {Object} Element object with 'type' and (optionally) 'attributes' fields
  */
-ve.dm.Node.prototype.getContentData = function( range ) {
-	// Get reference to the document, which might be this node but otherwise should be this.root
-	var root = this.type === 'document' ?
-		this : ( this.root && this.root.type === 'document' ? this.root : null );
-	if ( root ) {
-		return root.getContentDataFromNode( this, range );
+ve.dm.Node.prototype.getClonedElement = function() {
+	var retval = { 'type': this.type };
+	if ( !ve.isEmptyObject( this.attributes ) ) {
+		retval.attributes = ve.copyObject( this.attributes );
 	}
-	return [];
-};
+	return retval;
+}
 
 /**
- * Gets plain text version of the content within a specific range.
- * 
- * Two newlines are inserted between leaf nodes.
- * 
- * TODO: Maybe do something more adaptive with newlines
- * 
+ * Checks if this node can be merged with another.
+ *
+ * For two nodes to be mergeable, this node and the given node must either be the same node or:
+ *  - Have the same type
+ *  - Have the same depth
+ *  - Have similar ancestory (each node upstream must have the same type)
+ *
  * @method
- * @param {ve.Range} [range] Range of text to get
- * @returns {String} Text within given range
+ * @param {ve.dm.Node} node Node to consider merging with
+ * @returns {Boolean} Nodes can be merged
  */
-ve.dm.Node.prototype.getContentText = function( range ) {
-	var content = this.getContentData( range );
-	// Copy characters
-	var text = '',
-		element = false;
-	for ( var i = 0, length = content.length; i < length; i++ ) {
-		if ( typeof content[i].type === 'string' ) {
-			if ( i ) {
-				element = true;
-			}
-		} else {
-			if ( element ) {
-				text += '\n\n';
-				element = false;
-			}
-			text += typeof content[i] === 'string' ? content[i] : content[i][0];
+ve.dm.Node.prototype.canBeMergedWith = function( node ) {
+	var	n1 = this,
+		n2 = node;
+	// Move up from n1 and n2 simultaneously until we find a common ancestor
+	while ( n1 !== n2 ) {
+		if (
+			// Check if we have reached a root (means there's no common ancestor or unequal depth)
+			( n1 === null || n2 === null ) ||
+			// Ensure that types match
+			n1.getType() !== n2.getType()
+		) {
+			return false;
 		}
+		// Move up
+		n1 = n1.getParent();
+		n2 = n2.getParent();
 	}
-	return text;
+	return true;
 };
 
 /* Inheritance */

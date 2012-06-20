@@ -1,6 +1,6 @@
 /**
- * Creates an ve.LeafNode object.
- * 
+ * Mixin for leaf nodes.
+ *
  * @class
  * @abstract
  * @constructor
@@ -13,7 +13,7 @@ ve.LeafNode = function() {
 
 /**
  * Checks if this node has child nodes.
- * 
+ *
  * @method
  * @see {ve.Node.prototype.hasChildren}
  * @returns {Boolean} Whether this node has children

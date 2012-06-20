@@ -16,39 +16,8 @@ ve.ui.Toolbar = function( $container, surfaceView, config ) {
 	this.$groups = $( '<div class="es-toolbarGroups"></div>' ).prependTo( this.$ );
 	this.tools = [];
 
-
-	this.surfaceView.on( 'rangeChange', function( e ) {
-		if ( e.new !== null ) {
-			var	annotations = _this.surfaceView.getAnnotations(),
-				nodes = [],
-				model = _this.surfaceView.documentView.model;
-
-			if ( e.new.from === e.new.to ) {
-				nodes.push( model.getNodeFromOffset( e.new.from ) );
-			} else {
-				var	startNode = model.getNodeFromOffset( e.new.start ),
-					endNode = model.getNodeFromOffset( e.new.end );
-				if ( startNode === endNode ) {
-					nodes.push( startNode );
-				} else {
-					model.traverseLeafNodes( function( node ) {
-						nodes.push( node );
-						if( node === endNode ) {
-							return false;
-						}
-					}, startNode );
-				}
-			}
-
-			for ( i = 0; i < _this.tools.length; i++ ) {
-				_this.tools[i].updateState( annotations, nodes );
-			}
-		} else {
-			for ( i = 0; i < _this.tools.length; i++ ) {
-				_this.tools[i].clearState();
-			}
-		}
-	} );
+	// Update tools on selection and all transactions.
+	this.surfaceView.model.on( 'change', ve.proxy( this.updateTools, this ) );
 
 	this.config = config || [
 		{ 'name': 'history', 'items' : ['undo', 'redo'] },
@@ -57,9 +26,65 @@ ve.ui.Toolbar = function( $container, surfaceView, config ) {
 		{ 'name': 'list', 'items' : ['number', 'bullet', 'outdent', 'indent'] }
 	];
 	this.setup();
+
 };
 
 /* Methods */
+
+/**
+ * Triggers update events on all tools.
+ *
+ * @method
+ */
+ve.ui.Toolbar.prototype.updateTools = function() {
+	var model = this.surfaceView.getModel(),
+		doc = model.getDocument(),
+		annotations,
+		nodes = [],
+		range = model.getSelection(),
+		startNode,
+		endNode,
+		_this = this;
+
+	if ( range !== null ) {
+		if ( range.from === range.to ){
+			nodes.push( doc.getNodeFromOffset( range.from ) );
+		} else {
+			startNode = doc.getNodeFromOffset( range.from );
+			endNode = doc.getNodeFromOffset ( range.end );
+			// These should be different, alas just in case.
+			if ( startNode === endNode ) {
+				nodes.push( startNode );
+			} else {
+				model.getDocument().getDocumentNode().traverseLeafNodes( function( node ) {
+					nodes.push( node );
+					if( node === endNode ) {
+						return false;
+					}
+				}, startNode );
+			}
+		}
+
+		if ( range.getLength() > 0 ) {
+			annotations = doc.getAnnotationsFromRange( range );
+		} else {
+			// Clear context
+			_this.surfaceView.contextView.clear();
+			annotations = doc.getAnnotationsFromOffset(
+				doc.getNearestContentOffset( range.start - 1 )
+			);
+		}
+		// Update state
+		for ( i = 0; i < this.tools.length; i++ ) {
+			this.tools[i].updateState( annotations, nodes );
+		}
+	} else {
+		// Clear state
+		for ( i = 0; i < this.tools.length; i++ ) {
+			this.tools[i].clearState();
+		}
+	}
+};
 
 ve.ui.Toolbar.prototype.getSurfaceView = function() {
 	return this.surfaceView;
@@ -89,6 +114,7 @@ ve.ui.Toolbar.prototype.setup = function() {
 
 		this.$groups.append( $group );
 	}
+
 };
 
 ve.extendClass( ve.ui.Toolbar, ve.EventEmitter );

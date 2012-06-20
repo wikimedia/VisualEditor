@@ -25,3 +25,18 @@
 	width: 1px;
 	display: none;
 }
+
+#paste {
+	display: none;
+	height: 1px;
+	left: 0;
+	opacity: 0;
+	overflow: hidden;
+	position: fixed;
+	top: 0;
+	width: 1px;
+}
+#paste * {
+	height: 1px !important;
+	width: 1px !important;
+}

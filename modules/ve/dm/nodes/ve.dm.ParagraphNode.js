@@ -1,38 +1,55 @@
 /**
- * Creates an ve.dm.ParagraphNode object.
- * 
+ * DataModel node for a paragraph.
+ *
  * @class
  * @constructor
- * @extends {ve.dm.LeafNode}
- * @param {Object} element Document data element of this node
- * @param {Integer} length Length of document data element
+ * @extends {ve.dm.BranchNode}
+ * @param {ve.dm.LeafNode[]} [children] Child nodes to attach
+ * @param {Object} [attributes] Reference to map of attribute key/value pairs
  */
-ve.dm.ParagraphNode = function( element, length ) {
+ve.dm.ParagraphNode = function( children, attributes ) {
 	// Inheritance
-	ve.dm.LeafNode.call( this, 'paragraph', element, length );
+	ve.dm.BranchNode.call( this, 'paragraph', children, attributes );
 };
 
-/* Methods */
+/* Static Members */
 
 /**
- * Creates a paragraph view for this model.
- * 
- * @method
- * @returns {ve.ce.ParagraphNode}
+ * Node rules.
+ *
+ * @see ve.dm.NodeFactory
+ * @static
+ * @member
  */
-ve.dm.ParagraphNode.prototype.createView = function() {
-	return new ve.ce.ParagraphNode( this );
+ve.dm.ParagraphNode.rules = {
+	'isWrapped': true,
+	'isContent': false,
+	'canContainContent': true,
+	'childNodeTypes': null,
+	'parentNodeTypes': null
+};
+
+/**
+ * Node converters.
+ *
+ * @see {ve.dm.Converter}
+ * @static
+ * @member
+ */
+ve.dm.ParagraphNode.converters = {
+	'domElementTypes': ['p'],
+	'toDomElement': function( type, element ) {
+		return document.createElement( 'p' );
+	},
+	'toDataElement': function( tag, element ) {
+		return { 'type': 'paragraph' };
+	}
 };
 
 /* Registration */
 
-ve.dm.DocumentNode.nodeModels.paragraph = ve.dm.ParagraphNode;
-
-ve.dm.DocumentNode.nodeRules.paragraph = {
-	'parents': null,
-	'children': []
-};
+ve.dm.nodeFactory.register( 'paragraph', ve.dm.ParagraphNode );
 
 /* Inheritance */
 
-ve.extendClass( ve.dm.ParagraphNode, ve.dm.LeafNode );
+ve.extendClass( ve.dm.ParagraphNode, ve.dm.BranchNode );

@@ -1,36 +1,41 @@
 /**
- * Creates an ve.ce.HeadingNode object.
- * 
+ * ContentEditable node for a heading.
+ *
  * @class
  * @constructor
- * @extends {ve.ce.LeafNode}
- * @param {ve.dm.HeadingNode} model Heading model to view
+ * @extends {ve.ce.BranchNode}
+ * @param model {ve.dm.HeadingNode} Model to observe
  */
 ve.ce.HeadingNode = function( model ) {
 	// Inheritance
-	var level = model.getElementAttribute( 'level' ),
-		type = ve.ce.HeadingNode.domNodeTypes[level];
-	if ( type === undefined ) {
-		throw 'Invalid level attribute for heading node: ' + level;
-	}
-	ve.ce.LeafNode.call( this, model, $( '<' + type + '></' + type + '>' ) );
-
-	// Properties
-	this.currentLevelHash = level;
-
-	// DOM Changes
-	this.$.addClass( 've-ce-headingNode' );
+	ve.ce.BranchNode.call(
+		this, 'heading', model, ve.ce.BranchNode.getDomWrapper( model, 'level' )
+	);
 
 	// Events
-	var _this = this;
-	this.model.on( 'update', function() {
-		_this.setLevel();
-	} );
+	this.model.addListenerMethod( this, 'update', 'onUpdate' );
 };
 
 /* Static Members */
 
-ve.ce.HeadingNode.domNodeTypes = {
+/**
+ * Node rules.
+ *
+ * @see ve.ce.NodeFactory
+ * @static
+ * @member
+ */
+ve.ce.HeadingNode.rules = {
+	'canBeSplit': true
+};
+
+/**
+ * Mapping of heading level values and DOM wrapper element types.
+ *
+ * @static
+ * @member
+ */
+ve.ce.HeadingNode.domWrapperElementTypes = {
 	'1': 'h1',
 	'2': 'h2',
 	'3': 'h3',
@@ -41,25 +46,21 @@ ve.ce.HeadingNode.domNodeTypes = {
 
 /* Methods */
 
-ve.ce.HeadingNode.prototype.setLevel = function() {
-	var level = this.model.getElementAttribute( 'level' ),
-		type = ve.ce.HeadingNode.domNodeTypes[level];
-	if ( type === undefined ) {
-		throw 'Invalid level attribute for heading node: ' + level;
-	}
-	if ( level !== this.currentLevelHash ) {
-		this.currentLevelHash = level;
-		this.convertDomElement( type );
-	}
+/**
+ * Responds to model update events.
+ *
+ * If the level changed since last update the DOM wrapper will be replaced with an appropriate one.
+ *
+ * @method
+ */
+ve.ce.HeadingNode.prototype.onUpdate = function() {
+	this.updateDomWrapper( 'level' );
 };
 
 /* Registration */
 
-ve.ce.DocumentNode.splitRules.heading = {
-	'self': true,
-	'children': null
-};
+ve.ce.nodeFactory.register( 'heading', ve.ce.HeadingNode );
 
 /* Inheritance */
 
-ve.extendClass( ve.ce.HeadingNode, ve.ce.LeafNode );
+ve.extendClass( ve.ce.HeadingNode, ve.ce.BranchNode );

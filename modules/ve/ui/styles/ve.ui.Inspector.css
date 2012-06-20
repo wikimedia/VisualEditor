@@ -1,5 +1,5 @@
 .es-inspector {
-	display: none;
+	font-family: sans-serif;
 	position: absolute;
 	border: solid 1px #cccccc;
 	-webkit-border-radius: 0.25em;

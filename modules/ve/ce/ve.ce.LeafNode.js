@@ -1,48 +1,24 @@
 /**
- * Creates an ve.ce.LeafNode object.
- * 
+ * ContentEditable node that can not have any children.
+ *
  * @class
  * @abstract
  * @constructor
  * @extends {ve.LeafNode}
  * @extends {ve.ce.Node}
- * @param model {ve.ModelNode} Model to observe
+ * @param {String} type Symbolic name of node type
+ * @param model {ve.dm.LeafNode} Model to observe
  * @param {jQuery} [$element] Element to use as a container
  */
-ve.ce.LeafNode = function( model, $element ) {
+ve.ce.LeafNode = function( type, model, $element ) {
 	// Inheritance
 	ve.LeafNode.call( this );
-	ve.ce.Node.call( this, model, $element );
+	ve.ce.Node.call( this, type, model, $element );
 
-	this.$.data( 'view', this );
-	this.$.addClass( 've-ce-leafNode' );
-
-	// Properties
-	this.contentView = new ve.ce.Content( model, this.$, this );
-
-	// Events
-	this.contentView.on( 'update', this.emitUpdate );
-};
-
-/* Methods */
-
-ve.ce.LeafNode.prototype.convertDomElement = function( type ) {
-	ve.ce.Node.prototype.call( this, type );
-	// Transplant content view
-	this.contentView.setContainer( this.$ );
-};
-
-/**
- * Render content.
- * 
- * @method
- */
-ve.ce.LeafNode.prototype.renderContent = function() {
-	this.contentView.render();
-};
-
-ve.ce.LeafNode.prototype.getDOMText = function() {
-	return ve.ce.getDOMText( this.$[0] );
+	// DOM Changes
+	if ( model.isWrapped() ) {
+		this.$.addClass( 've-ce-leafNode' );
+	}
 };
 
 /* Inheritance */

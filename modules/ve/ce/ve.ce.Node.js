@@ -1,63 +1,195 @@
 /**
- * Creates an ve.ce.Node object.
- * 
+ * Generic ContentEditable node.
+ *
  * @class
  * @abstract
  * @constructor
  * @extends {ve.Node}
+ * @param {String} type Symbolic name of node type
  * @param {ve.dm.Node} model Model to observe
- * @param {jQuery} [$element=$( '<div></div>' )] Element to use as a container
+ * @param {jQuery} [$element] Element to use as a container
  */
-ve.ce.Node = function( model, $element ) {
+ve.ce.Node = function( type, model, $element ) {
 	// Inheritance
-	ve.Node.call( this );
-	
+	ve.Node.call( this, type );
+
 	// Properties
 	this.model = model;
-	this.parent = null;
 	this.$ = $element || $( '<div></div>' );
+	this.parent = null;
+
+	this.$.data( 'node', this );
 };
 
 /* Methods */
 
-ve.ce.Node.prototype.convertDomElement = function( type ) {
-	// Create new element
-	var $new = $( '<' + type + '></' + type + '>' );
-	// Copy classes
-	$new.attr( 'class', this.$.attr( 'class' ) );
-	// Move contents
-	$new.append( this.$.contents() );
-	// Swap elements
-	this.$.replaceWith( $new );
-	// Use new element from now on
-	this.$ = $new;
+/**
+ * Gets a list of allowed child node types.
+ *
+ * This method passes through to the model.
+ *
+ * @method
+ * @returns {String[]|null} List of node types allowed as children or null if any type is allowed
+ */
+ve.ce.Node.prototype.getChildNodeTypes = function() {
+	return this.model.getChildNodeTypes();
 };
 
 /**
- * Gets the length of the element in the model.
- * 
+ * Gets a list of allowed parent node types.
+ *
+ * This method passes through to the model.
+ *
  * @method
- * @see {ve.Node.prototype.getElementLength}
- * @returns {Integer} Length of content
+ * @returns {String[]|null} List of node types allowed as parents or null if any type is allowed
  */
-ve.ce.Node.prototype.getElementLength = function() {
-	return this.model.getElementLength();
+ve.ce.Node.prototype.getParentNodeTypes = function() {
+	return this.model.getParentNodeTypes();
 };
 
 /**
- * Gets the length of the content in the model.
- * 
+ * Checks if model is for a node that can have children.
+ *
+ * This method passes through to the model.
+ *
  * @method
- * @see {ve.Node.prototype.getContentLength}
- * @returns {Integer} Length of content
+ * @returns {Boolean} Model node can have children
  */
-ve.ce.Node.prototype.getContentLength = function() {
-	return this.model.getContentLength();
+ve.ce.Node.prototype.canHaveChildren = function() {
+	return this.model.canHaveChildren();
 };
+
+/**
+ * Checks if model is for a node that can have children.
+ *
+ * This method passes through to the model.
+ *
+ * @method
+ * @returns {Boolean} Model node can have children
+ */
+ve.ce.Node.prototype.canHaveChildren = function() {
+	return this.model.canHaveChildren();
+};
+
+/**
+ * Checks if model is for a node that can have grandchildren.
+ *
+ * This method passes through to the model.
+ *
+ * @method
+ * @returns {Boolean} Model node can have grandchildren
+ */
+ve.ce.Node.prototype.canHaveGrandchildren = function() {
+	return this.model.canHaveGrandchildren();
+};
+
+/**
+ * Checks if model is for a wrapped element.
+ *
+ * This method passes through to the model.
+ *
+ * @method
+ * @returns {Boolean} Model node is a wrapped element
+ */
+ve.ce.Node.prototype.isWrapped = function() {
+	return this.model.isWrapped();
+};
+
+/**
+ * Checks if this node can contain content.
+ *
+ * @method
+ * @returns {Boolean} Node can contain content
+ */
+ve.ce.Node.prototype.canContainContent = function() {
+	return this.model.canContainContent();
+};
+
+/**
+ * Checks if this node is content.
+ *
+ * @method
+ * @returns {Boolean} Node is content
+ */
+ve.ce.Node.prototype.isContent = function() {
+	return this.model.isContent();
+};
+
+/**
+ * Checks if this node can have a slug before or after it.
+ *
+ * @static
+ * @method
+ * @returns {Boolean} Node can have a slug
+ */
+ve.ce.Node.prototype.canHaveSlug = function() {
+	return !this.canContainContent() && this.getParentNodeTypes() === null && this.type !== 'text';
+};
+
+/**
+ * Gets model length.
+ *
+ * This method passes through to the model.
+ *
+ * @method
+ * @returns {Integer} Model length
+ */
+ve.ce.Node.prototype.getLength = function() {
+	return this.model.getLength();
+};
+
+/**
+ * Gets model outer length.
+ *
+ * This method passes through to the model.
+ *
+ * @method
+ * @returns {Integer} Model outer length
+ */
+ve.ce.Node.prototype.getOuterLength = function() {
+	return this.model.getOuterLength();
+};
+
+/**
+ * Checks if this node can be split.
+ *
+ * @method
+ * @returns {Boolean} Node can be split
+ */
+ve.ce.Node.prototype.canBeSplit = function() {
+	return ve.ce.nodeFactory.canNodeBeSplit( this.type );
+};
+
+/**
+ * Gets a reference to the model this node observes.
+ *
+ * @method
+ * @returns {ve.dm.Node} Reference to the model this node observes
+ */
+ve.ce.Node.prototype.getModel = function() {
+	return this.model;
+};
+
+ve.ce.Node.getSplitableNode = function( node ) {
+	var splitableNode = null;
+	
+	ve.Node.traverseUpstream( node, function( node ) {
+		ve.log(node);
+		if ( node.canBeSplit() ) {
+			splitableNode = node;
+			return true;		
+		} else {
+			return false;			
+		}
+	} );
+	
+	return splitableNode;
+};
+
 
 /**
  * Attaches node as a child to another node.
- * 
+ *
  * @method
  * @param {ve.ce.Node} parent Node to attach to
  * @emits attach (parent)
@@ -69,7 +201,7 @@ ve.ce.Node.prototype.attach = function( parent ) {
 
 /**
  * Detaches node from it's parent.
- * 
+ *
  * @method
  * @emits detach (parent)
  */
@@ -77,42 +209,6 @@ ve.ce.Node.prototype.detach = function() {
 	var parent = this.parent;
 	this.parent = null;
 	this.emit( 'detach', parent );
-};
-
-/**
- * Gets a reference to this node's parent.
- * 
- * @method
- * @returns {ve.ce.Node} Reference to this node's parent
- */
-ve.ce.Node.prototype.getParent = function() {
-	return this.parent;
-};
-
-/**
- * Gets a reference to the model this node observes.
- * 
- * @method
- * @returns {ve.dm.Node} Reference to the model this node observes
- */
-ve.ce.Node.prototype.getModel = function() {
-	return this.model;
-};
-
-ve.ce.Node.getSplitableNode = function( node ) {
-	var splitableNode = null;
-
-	ve.Node.traverseUpstream( node, function( node ) {
-		var elementType = node.model.getElementType();
-		if (
-			splitableNode !== null &&
-			ve.ce.DocumentNode.splitRules[ elementType ].children === true
-		) {
-			return false;
-		}
-		splitableNode = ve.ce.DocumentNode.splitRules[ elementType ].self ? node : null;
-	} );
-	return splitableNode;
 };
 
 /* Inheritance */

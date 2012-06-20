@@ -6,10 +6,12 @@
  * @class
  * @constructor
  * @param {String} parent Selector of element to attach to
- * @param {Array} data Document data
+ * @param {HTMLElement} html Document html
  * @param {Object} options Configuration options
  */
-ve.Surface = function( parent, data, options ) {
+ve.Surface = function( parent, dom, options ) {
+	// Create linear model from HTML5 DOM
+	var data = ve.dm.converter.getDataFromDom( dom );
 	// Properties
 	this.parent = parent;
 	this.modes = {};
@@ -42,99 +44,113 @@ ve.Surface = function( parent, data, options ) {
 	this.$surface = null;
 	this.toolbarWrapper = {};
 
-	/* Register Document and Surface Models */
-	this.documentModel = ve.dm.DocumentNode.newFromPlainObject( data );
-	this.surfaceModel = new ve.dm.Surface( this.documentModel );
+	/* Create document model object with the linear model */
+	this.documentModel = new ve.dm.Document ( data );
+	this.model = new ve.dm.Surface( this.documentModel );
 	
 	// Setup VE DOM Skeleton
 	this.setupBaseElements();
 
-	// Setup Surface View
-	this.setupSurfaceView();
+	this.$surface = $( '<div></div>' ).attr( 'class', 'es-editor' );
+	this.$base.find( '.es-visual' ).append( this.$surface );
+
+	/* Instantiate surface layer */
+	this.view = new ve.ce.Surface( $( '.es-editor' ), this.model );
 
 	// Setup toolbars based on this.options
 	this.setupToolbars();
 
 	// Setup various toolbar modes and panels
-	this.setupModes();
+	//this.setupModes();
 
 	// Registration
 	ve.instances.push( this );
-	console.log (this);
+
+	// Start tracking changes
+	this.model.startHistoryTracking();
 };
 
-/* Setup Methods */
+/* Methods */
+
+ve.Surface.prototype.getModel = function() {
+	return this.model;
+};
+
+ve.Surface.prototype.getDocumentModel = function() {
+	return this.documentModel;
+};
+
+ve.Surface.prototype.getView = function() {
+	return this.view;
+};
+
+ve.Surface.prototype.getContext = function() {
+	return this.context;
+};
+
+ve.Surface.prototype.getParent = function() {
+	return this.parent;
+};
 
 ve.Surface.prototype.setupBaseElements = function() {
 	// Make new base element
-	this.$base = $('<div />')
-					.attr( 'class', 'es-base' )
-					.append(
-						$('<div />').attr('class', 'es-panes')
-							.append(
-								$('<div />').attr('class', 'es-visual')
-							).append(
-								$('<div />').attr('class', 'es-panels')
-							).append(
-								$('<div />').attr('style', 'clear:both')
-							)
-					).append(
-						$('<div />').attr( {
-							'id': 'paste', //TODO: make 'paste' in surface stateful and remove this attrib
-							'class': 'paste',
-							'contenteditable': 'true',
-							'style': 'height:1px;width:1px;display:none;opacity:0;position:absolute;'
-						})
-					);
+	this.$base = $( '<div></div>' )
+		.attr( 'class', 'es-base' )
+		.append(
+			$( '<div></div>' ).attr( 'class', 'es-panes' )
+				.append( $( '<div></div>' ).attr( 'class', 'es-visual' ) )
+				.append( $( '<div></div>' ).attr( 'class', 'es-panels' ) )
+				.append( $( '<div></div>' ).attr( 'style', 'clear:both' ) )
+		)
+		.append(
+			$( '<div></div>' ).attr( {
+				// TODO: make 'paste' in surface stateful and remove this attrib
+				'id': 'paste',
+				'class': 'paste',
+				'contenteditable': 'true'
+			} )
+		);
 	// Attach the base the the parent
 	$( this.getParent() ).append( this.$base );
-};
-
-ve.Surface.prototype.setupSurfaceView = function() {
-	this.$surface = $('<div />').attr('class', 'es-editor');
-	this.$base.find('.es-visual').append( this.$surface );
-
-	/* Instantiate surface layer */
-	this.view = new ve.ce.Surface( $( '.es-editor' ), this.getSurfaceModel() );
-	this.context = new ve.ui.Context( this.view );
 };
 
 ve.Surface.prototype.setupToolbars = function() {
 	var _this = this;
 
 	// Build each toolbar
-	$.each( this.options.toolbars, function(name, config) {
+	$.each( this.options.toolbars, function( name, config ) {
 		if ( config !== null ) {
-			if(name === 'top') {
+			if( name === 'top' ) {
 				// Append toolbar wrapper at the top, just above .es-panes
-				_this.toolbarWrapper[name] = $('<div />')
-					.attr('class', 'es-toolbar-wrapper')
+				_this.toolbarWrapper[name] = $( '<div></div>' )
+					.attr( 'class', 'es-toolbar-wrapper' )
 					.append(
-						$('<div />').attr('class', 'es-toolbar')
+						$( '<div></div>' ).attr( 'class', 'es-toolbar' )
 							.append(
-								$('<div />').attr('class', 'es-modes')
+								$( '<div></div>' ).attr( 'class', 'es-modes' )
 							).append(
-								$('<div />').attr('style', 'clear:both')
+								$( '<div></div>' ).attr( 'style', 'clear:both' )
 							).append(
-								$('<div />').attr('class', 'es-toolbar-shadow')
+								$( '<div></div>' ).attr( 'class', 'es-toolbar-shadow' )
 							)
 				);
 
-				_this.$base.find('.es-panes').before( _this.toolbarWrapper[name] );
+				_this.$base.find( '.es-panes' ).before( _this.toolbarWrapper[name] );
 			}
 			// Instantiate the toolbar
-			_this['toolbar-' + name] = new ve.ui.Toolbar( _this.$base.find( '.es-toolbar' ), _this.view, config.tools );
+			_this['toolbar-' + name] = new ve.ui.Toolbar(
+				_this.$base.find( '.es-toolbar' ), _this.view, config.tools
+			);
 		}
-		
-	});
+	} );
 
 	// Setup sticky toolbar
 	this.makeMainEditorToolbarFloat();
 };
 
 /*
- * This code is responsible for switching toolbar into floating mode when scrolling (with
- * keyboard or mouse).
+ * This code is responsible for switching toolbar into floating mode when scrolling ( with
+ * keyboard or mouse ).
  * TODO: Determine if this would be better in ui.toolbar vs here.
  * TODO: This needs to be refactored so that it only works on the main editor top tool bar.
  */
@@ -143,7 +159,7 @@ ve.Surface.prototype.makeMainEditorToolbarFloat = function() {
 		return;
 	}
 	var $toolbarWrapper = this.toolbarWrapper.top,
-		$toolbar = $toolbarWrapper.find('.es-toolbar');
+		$toolbar = $toolbarWrapper.find( '.es-toolbar' );
 		$window = $( window );
 
 	$window.scroll( function() {
@@ -169,28 +185,28 @@ ve.Surface.prototype.setupModes = function(){
 	var activeModes = [];
 
 	// Loop through toolbar config to build modes
-	$.each( _this.options.toolbars, function(name, toolbar){
+	$.each( _this.options.toolbars, function( name, toolbar ){
 		//if toolbar has modes
 		if( toolbar.modes && toolbar.modes.length > 0 ) {
-			for(var i=0;i<=toolbar.modes.length -1;i++) {
+			for( var i=0;i<=toolbar.modes.length -1;i++ ) {
 				$( _this.toolbarWrapper[name] )
-					.find('.es-modes')
+					.find( '.es-modes' )
 					.append(
-						$('<div />').attr({
+						$( '<div></div>' ).attr( {
 							'class': 'es-modes-button es-mode-' + toolbar.modes[i],
 							'title': _this.options.modes[toolbar.modes[i]]
-						})
+						} )
 				);
 				if( !activeModes[mode] ) {
 					activeModes.push( toolbar.modes[i] );
 				}
 			}
 		}
-	});
+	} );
 
 	// Build elements in #es-panels for each activeMode
 	if ( activeModes.length > 0 ) {
-		for (var mode in activeModes) {
+		for ( var mode in activeModes ) {
 			var renderType = '';
 			switch( activeModes[mode] ) {
 				case 'render':
@@ -204,11 +220,11 @@ ve.Surface.prototype.setupModes = function(){
 					break;
 			}
 			_this.$base
-				.find('.es-panels')
+				.find( '.es-panels' )
 				.append(
-					$('<div />').attr({
-						'class': 'es-panel es-panel-' + activeModes[mode] + ' ' + renderType
-					})
+					$( '<div></div>' ).attr(
+						'class', 'es-panel es-panel-' + activeModes[mode] + ' ' + renderType
+					)
 				);
 		}
 	}
@@ -221,10 +237,10 @@ ve.Surface.prototype.setupModes = function(){
 	//Bind Mode events
 	$.each( this.modes, function( name, mode ) {
 		mode.$.click( function() {
-			var disable = $(this).hasClass( 'es-modes-button-down' );
+			var disable = $( this ).hasClass( 'es-modes-button-down' );
 			var visible = _this.$base.hasClass( 'es-showData' );
-			$('.es-modes-button').removeClass( 'es-modes-button-down' );
-			$('.es-panel').hide();
+			$( '.es-modes-button' ).removeClass( 'es-modes-button-down' );
+			$( '.es-panel' ).hide();
 			if ( disable ) {
 				if ( visible ) {
 					_this.$base.removeClass( 'es-showData' );
@@ -232,7 +248,7 @@ ve.Surface.prototype.setupModes = function(){
 				}
 				_this.currentMode = null;
 			} else {
-				$(this).addClass( 'es-modes-button-down' );
+				$( this ).addClass( 'es-modes-button-down' );
 				mode.$panel.show();
 				if ( !visible ) {
 					_this.$base.addClass( 'es-showData' );
@@ -245,12 +261,12 @@ ve.Surface.prototype.setupModes = function(){
 	} );
 
 	/* Bind some surface events for modes */
-	this.getSurfaceModel().on( 'transact', function() {
+	this.model.on( 'transact', function() {
 		if ( _this.currentMode ) {
 			_this.currentMode.update.call( _this.currentMode );
 		}
 	} );
-	this.getSurfaceModel().on( 'select', function() {
+	this.model.on( 'select', function() {
 		if ( _this.currentMode === _this.modes.history ) {
 			_this.currentMode.update.call( _this.currentMode );
 		}
@@ -306,7 +322,7 @@ ve.Surface.prototype.defineModes = function() {
 			'$': _this.$base.find( '.es-mode-history' ),
 			'$panel': _this.$base.find( '.es-panel-history' ),
 			'update': function() {
-				var	history = _this.getSurfaceModel().getHistory(),
+				var	history = _this.model.getHistory(),
 					i = history.length,
 					end = Math.max( 0, i - 25 ),
 					j,
@@ -320,8 +336,8 @@ ve.Surface.prototype.defineModes = function() {
 				while ( --i >= end ) {
 					z++;
 					operations = [];
-					for ( j = 0; j < history[i].stack.length; j++) {
-						ops = history[i].stack[j].getOperations().slice(0);
+					for ( j = 0; j < history[i].stack.length; j++ ) {
+						ops = history[i].stack[j].getOperations().slice( 0 );
 						for ( k = 0; k < ops.length; k++ ) {
 							data = ops[k].data || ops[k].length;
 							if ( ve.isArray( data ) ) {
@@ -333,11 +349,11 @@ ve.Surface.prototype.defineModes = function() {
 							if ( typeof data !== 'string' && typeof data !== 'number' ) {
 								data = '-';
 							}
-							ops[k] = ops[k].type.substr( 0, 3 ) + '(' + data + ')';
+							ops[k] = ops[k].type.substr( 0, 3 ) + '( ' + data + ' )';
 						}
-						operations.push('[' + ops.join( ', ' ) + ']');
+						operations.push( '[' + ops.join( ', ' ) + ']' );
 					}
-					events += '<div' + (z === _this.getSurfaceModel().undoIndex ? ' class="es-panel-history-active"' : '') + '>' + operations.join(', ') + '</div>';
+					events += '<div' + ( z === _this.model.undoIndex ? ' class="es-panel-history-active"' : '' ) + '>' + operations.join( ', ' ) + '</div>';
 				}
 				
 				this.$panel.html( events );
@@ -350,7 +366,7 @@ ve.Surface.prototype.defineModes = function() {
 				//TODO: Make this less ugly,
 				//HOW?: Create api to register help items so that they may be generated here.
 				/*jshint multistr:true */
-				this.$panel.html('\
+				this.$panel.html( '\
 				<div class="es-help-title">Keyboard Shortcuts</div>\
 				<div class="es-help-shortcuts-title">Clipboard</div>\
 				<div class="es-help-shortcut">\
@@ -441,30 +457,8 @@ ve.Surface.prototype.defineModes = function() {
 						<span class="es-help-key">Arrow</span>\
 					</span>\
 					Adjust selection by words or blocks\
-				</div>');
+				</div>' );
 			}
 		}
 	};
-};
-
-/* Get Methods */
-
-ve.Surface.prototype.getSurfaceModel = function() {
-	return this.surfaceModel;
-};
-
-ve.Surface.prototype.getDocumentModel = function() {
-	return this.documentModel;
-};
-
-ve.Surface.prototype.getView = function() {
-	return this.view;
-};
-
-ve.Surface.prototype.getContext = function() {
-	return this.context;
-};
-
-ve.Surface.prototype.getParent = function() {
-	return this.parent;
 };

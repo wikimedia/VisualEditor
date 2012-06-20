@@ -1,27 +1,61 @@
 /**
- * Creates an ve.ce.TableCellNode object.
- * 
+ * ContentEditable node for a table cell.
+ *
  * @class
  * @constructor
  * @extends {ve.ce.BranchNode}
- * @param {ve.dm.TableCellNode} model Table cell model to view
+ * @param model {ve.dm.TableCellNode} Model to observe
  */
 ve.ce.TableCellNode = function( model ) {
 	// Inheritance
-	ve.ce.BranchNode.call( this, model, $( '<td></td>' ) );
+	ve.ce.BranchNode.call(
+		this, 'tableCell', model, ve.ce.BranchNode.getDomWrapper( model, 'style' )
+	);
 
-	// DOM Changes
-	this.$
-		.attr( 'style', model.getElementAttribute( 'html/style' ) )
-		.addClass( 've-ce-tableCellNode' );
+	// Events
+	this.model.addListenerMethod( this, 'update', 'onUpdate' );
+};
+
+/* Static Members */
+
+/**
+ * Node rules.
+ *
+ * @see ve.ce.NodeFactory
+ * @static
+ * @member
+ */
+ve.ce.TableCellNode.rules = {
+	'canBeSplit': false
+};
+
+/**
+ * Mapping of list item style values and DOM wrapper element types.
+ *
+ * @static
+ * @member
+ */
+ve.ce.TableCellNode.domWrapperElementTypes = {
+	'data': 'td',
+	'header': 'th'
+};
+
+/* Methods */
+
+/**
+ * Responds to model update events.
+ *
+ * If the style changed since last update the DOM wrapper will be replaced with an appropriate one.
+ *
+ * @method
+ */
+ve.ce.TableCellNode.prototype.onUpdate = function() {
+	this.updateDomWrapper( 'style' );
 };
 
 /* Registration */
 
-ve.ce.DocumentNode.splitRules.tableCell = {
-	'self': false,
-	'children': true
-};
+ve.ce.nodeFactory.register( 'tableCell', ve.ce.TableCellNode );
 
 /* Inheritance */
 

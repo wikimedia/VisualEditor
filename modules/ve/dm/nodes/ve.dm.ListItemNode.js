@@ -1,37 +1,54 @@
 /**
- * Creates an ve.dm.ListItemNode object.
- * 
+ * DataModel node for a list item.
+ *
  * @class
  * @constructor
- * @extends {ve.dm.LeafNode}
- * @param {Object} element Document data element of this node
- * @param {Integer} length Length of document data element
+ * @extends {ve.dm.BranchNode}
+ * @param {ve.dm.BranchNode[]} [children] Child nodes to attach
+ * @param {Object} [attributes] Reference to map of attribute key/value pairs
  */
-ve.dm.ListItemNode = function( element, contents ) {
+ve.dm.ListItemNode = function( children, attributes ) {
 	// Inheritance
-	ve.dm.BranchNode.call( this, 'listItem', element, contents );
+	ve.dm.BranchNode.call( this, 'listItem', children, attributes );
 };
 
-/* Methods */
+/* Static Members */
 
 /**
- * Creates a list item view for this model.
- * 
- * @method
- * @returns {ve.ce.ListItemNode}
+ * Node rules.
+ *
+ * @see ve.dm.NodeFactory
+ * @static
+ * @member
  */
-ve.dm.ListItemNode.prototype.createView = function() {
-	return new ve.ce.ListItemNode( this );
+ve.dm.ListItemNode.rules = {
+	'isWrapped': true,
+	'isContent': false,
+	'canContainContent': false,
+	'childNodeTypes': null,
+	'parentNodeTypes': ['list']
+};
+
+/**
+ * Node converters.
+ *
+ * @see {ve.dm.Converter}
+ * @static
+ * @member
+ */
+ve.dm.ListItemNode.converters = {
+	'domElementTypes': ['li'],
+	'toDomElement': function( type, element ) {
+		return document.createElement( 'li' );
+	},
+	'toDataElement': function( tag, element ) {
+		return { 'type': 'listItem' };
+	}
 };
 
 /* Registration */
 
-ve.dm.DocumentNode.nodeModels.listItem = ve.dm.ListItemNode;
-
-ve.dm.DocumentNode.nodeRules.listItem = {
-	'parents': ['list'],
-	'children': null
-};
+ve.dm.nodeFactory.register( 'listItem', ve.dm.ListItemNode );
 
 /* Inheritance */
 
