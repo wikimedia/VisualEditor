@@ -265,6 +265,21 @@ ve.example.getSelectNodesCases = function( doc ) {
 				}
 			],
 			'msg': 'range from the first heading into the second-to-last paragraph, in covered mode'
+		},
+		{
+			'actual': doc.selectNodes( new ve.Range( 14, 14 ), 'siblings' ),
+			'expected': [
+				// table/tableSection/tableRow/tableCell/list/listItem
+				{
+					'node': lookup( documentNode, 1, 0, 0, 0, 1, 0 ),
+					'range': new ve.Range( 14, 14 ),
+					'index': 0,
+					'indexInNode': 0,
+					'nodeRange': new ve.Range( 14, 24 ),
+					'nodeOuterRange': new ve.Range( 13, 25 )
+				}
+				],
+			'msg': 'zero-length range at the beginning of a listItem, in siblings mode'
 		}
 	];
 };
