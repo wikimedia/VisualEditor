@@ -457,6 +457,55 @@ ve.dm.Transaction.prototype.getLengthDifference = function() {
 };
 
 /**
+ * Compute what a given offset in the pre-transaction linear model maps to after the transaction
+ * has been applied.
+ *
+ * @param {Number} offset Offset in the linear model before the transaction
+ * @returns {Number|null} Offset of the same thing after the transaction, or null if it was removed
+ */
+ve.dm.Transaction.prototype.translateOffset = function( offset ) {
+	var i, cursor = 0, adjustment = 0, op, opLength;
+	if ( offset === 0 ) {
+		return 0;
+	}
+	for ( i = 0; i < this.operations.length; i++ ) {
+		op = this.operations[i];
+		if ( op.type === 'replace' ) {
+			adjustment += op.insert.length - op.remove.length;
+			if ( offset === cursor + op.remove.length ) {
+				// Offset points to right after the removal, translate it
+				return offset + adjustment;
+			} else if ( offset > cursor && offset < cursor + op.remove.length ) {
+				// The offset points inside of the removal
+				return null;
+			}
+			cursor += op.remove.length;
+		} else if ( op.type === 'retain' ) {
+			if ( offset > cursor && offset <= cursor + op.length ) {
+				return offset + adjustment;
+			}
+			cursor += op.length;
+		}
+	}
+	return offset + adjustment;
+};
+
+/**
+ * Translate a range using translateOffset()
+ * @param {ve.Range} range Range to translate
+ * @returns {ve.Range|null} Translated range if both start and end could be translated, or null
+ */
+ve.dm.Transaction.prototype.translateRange = function( range ) {
+	var from = this.translateOffset( range.from ),
+		to = this.translateOffset( range.to );
+	if ( from && to ) {
+		return new ve.Range( from, to );
+	} else {
+		return null;
+	}
+};
+
+/**
  * Adds a retain operation.
  *
  * @method

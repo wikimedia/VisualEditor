@@ -684,6 +684,39 @@ test( 'newFromWrap', function() {
 	);
 } );
 
+test( 'translateOffset', function() {
+	// Populate a transaction with bogus data
+	var tx = new ve.dm.Transaction();
+	tx.pushReplace( [], ['a','b','c'] );
+	tx.pushRetain ( 5 );
+	tx.pushReplace( ['d', 'e', 'f', 'g'], [] );
+	tx.pushRetain( 2 );
+	tx.pushStartAnnotating( 'set', { 'type': 'textStyle/bold' } );
+	tx.pushRetain( 1 );
+	tx.pushReplace( ['h'], ['i', 'j', 'k', 'l', 'm'] );
+
+	var mapping = {
+		0: 0,
+		1: 4,
+		2: 5,
+		3: 6,
+		4: 7,
+		5: 8,
+		6: null,
+		7: null,
+		8: null,
+		9: 8,
+		10: 9,
+		11: 10,
+		12: 11,
+		13: 16
+	};
+	expect( 14 );
+	for ( var offset in mapping ) {
+		strictEqual( tx.translateOffset( Number( offset ) ), mapping[offset] );
+	}
+} );
+
 test( 'pushRetain', function() {
 	var cases = {
 		'retain': {
