@@ -160,7 +160,7 @@ var id = function(v) {
 	}; 
 };
 
-WSP._listHandler = function( bullet, state, token ) {
+WSP._listHandler = function( handler, bullet, state, token ) {
 	function isListItem(token) {
 		if (token.constructor !== TagTk) return false;
 
@@ -176,6 +176,7 @@ WSP._listHandler = function( bullet, state, token ) {
 	if (stack.length === 0) {
 		bullets = bullet;
 		res     = bullets;
+		handler.startsNewline = true;
 	} else {
 		var curList = stack[stack.length - 1];
 		//console.warn(JSON.stringify( stack ));
@@ -186,12 +187,14 @@ WSP._listHandler = function( bullet, state, token ) {
 				// A nested list, not directly after a list item
 				(curList.itemCount > 1 && !isListItem(state.prevToken))) {
 			res = bullets;
+			handler.startsNewline = true;
 		} else {
 			res = bullet;
+			handler.startsNewline = false;
 		}
 	}
 	stack.push({ itemCount: 0, bullets: bullets, itemBullet: ''});
-	state.env.dp('lh res', bullets, res );
+	state.env.dp('lh res', bullets, res, handler );
 	return res;
 };
 
@@ -200,27 +203,33 @@ WSP._listEndHandler = function( state, token ) {
 	return '';
 };
 
-WSP._listItemHandler = function ( bullet, state, token ) { 
+WSP._listItemHandler = function ( handler, bullet, state, token ) { 
 	var stack   = state.listStack;
 	var curList = stack[stack.length - 1];
 	curList.itemCount++;
 	var res;
 	curList.itemBullet = bullet;
-	if (curList.itemCount > 1 ) {
+	if (curList.itemCount > 1 && // don't prefix bullets on the first descent
+			// Check if the item is / will also be in start of line context,
+			// and prefix all bullets if so.
+			// XXX gwicke: abstract out the 'will be on start of line if
+			// output is not empty' bit to method or flag.
+			( state.onStartOfLine ||
+				state.availableNewlineCount ||
+				state.emitNewlineOnNextToken || 
+				// separation between the same tokens would be triggered
+				( state.prevToken.constructor === EndTagTk && 
+					state.prevToken.name === token.name) ) ) 
+	{
+		handler.startsNewline = true;
 		res = curList.bullets + bullet;
 	} else {
+		handler.startsNewline = false;
 		res = bullet;
 	}
-	state.env.dp( 'lih', token, res );
+	state.env.dp( 'lih', token, res, handler );
 	return res;
 };
-
-//WSP._listItemEndHandler = function ( state, token ) {
-//	var curList   = state.listStack.last();
-//	curList.itemBullet = '';
-//	return '';
-//};
-	
 
 WSP._serializeTableTag = function ( symbol, optionEndSymbol, state, token ) {
 	if ( token.attribs.length ) {
@@ -365,7 +374,9 @@ WSP.tagHandlers = {
 	ul: { 
 		start: {
 			startsNewline : true,
-			handle: WSP._listHandler.bind( null, '*' ),
+			handle: function ( state, token ) {
+					return WSP._listHandler( this, '*', state, token );
+			},
 			pairSepNLCount: 2,
 			newlineTransparent: true
 		},
@@ -377,7 +388,9 @@ WSP.tagHandlers = {
 	ol: { 
 		start: {
 			startsNewline : true,
-			handle: WSP._listHandler.bind( null, '#' ),
+			handle: function ( state, token ) {
+					return WSP._listHandler( this, '#', state, token );
+			},
 			pairSepNLCount: 2,
 			newlineTransparent: true
 		},
@@ -389,7 +402,9 @@ WSP.tagHandlers = {
 	dl: { 
 		start: {
 			startsNewline : true,
-			handle: WSP._listHandler.bind( null, ''), 
+			handle: function ( state, token ) {
+					return WSP._listHandler( this, '', state, token );
+			},
 			pairSepNLCount: 2
 		},
 		end: {
@@ -399,7 +414,9 @@ WSP.tagHandlers = {
 	},
 	li: { 
 		start: {
-			handle: WSP._listItemHandler.bind( null, '' ),
+			handle: function ( state, token ) {
+				return WSP._listItemHandler( this, '', state, token );
+			},
 			singleLine: 1,
 			pairSepNLCount: 1
 		},
@@ -411,24 +428,26 @@ WSP.tagHandlers = {
 	dt: { 
 		start: {
 			singleLine: 1,
-			handle: WSP._listItemHandler.bind( null, ';' ),
+			handle: function ( state, token ) {
+				return WSP._listItemHandler( this, ';', state, token );
+			},
 			pairSepNLCount: 1,
 			newlineTransparent: true
 		},
 		end: {
-			//handle: WSP._listItemEndHandler,
 			singleLine: -1
 		}
 	},
 	dd: { 
 		start: {
 			singleLine: 1,
-			handle: WSP._listItemHandler.bind( null, ":" ),
+			handle: function ( state, token ) {
+				return WSP._listItemHandler( this, ':', state, token );
+			},
 			pairSepNLCount: 1,
 			newlineTransparent: true
 		},
 		end: {
-			//handle: WSP._listItemEndHandler,
 			endsLine: true,
 			singleLine: -1
 		}
@@ -765,7 +784,7 @@ WSP._serializeToken = function ( state, token ) {
 		// that have to be separated by extra newlines and add those in.
 		if (handler.pairSepNLCount && state.prevTagToken && 
 				state.prevTagToken.constructor === EndTagTk && 
-				state.prevTagToken.name == token.name ) 
+				state.prevTagToken.name === token.name ) 
 		{
 			if ( state.availableNewlineCount < handler.pairSepNLCount) {
 				state.availableNewlineCount = handler.pairSepNLCount;
@@ -773,8 +792,10 @@ WSP._serializeToken = function ( state, token ) {
 		}
 
 		if ( state.env.debug ) {
-			console.warn(token + " -> " + res + ", onnl: " + state.onNewline + ", #nls " + 
-					state.availableNewlineCount + ', new ' + newNLCount);
+			console.warn(token + " -> " + JSON.stringify( res ) + 
+					"\n   onnl: " + state.onNewline + 
+					", #nl: is" + state.availableNewlineCount + '/new' + newNLCount +
+					', emitOnNext:' + state.emitNewlineOnNextToken);
 		}
 		if (res !== '' ) {
 			var out = '';
