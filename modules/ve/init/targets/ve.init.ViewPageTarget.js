@@ -168,7 +168,7 @@ ve.init.ViewPageTarget.prototype.onLoad = function( dom ) {
  * @param {Mixed} error Thrown exception or HTTP error string
  */
 ve.init.ViewPageTarget.prototype.onLoadError = function( response, status, error ) {
-	if ( confirm( 'Error loading data from server: ' + status + '. Would you like to retry?' ) ) {
+	if ( confirm( ve.msg( 'visualeditor-loadwarning', status ) ) ) {
 		this.load();
 	} else {
 		this.activating = false;
@@ -218,7 +218,7 @@ ve.init.ViewPageTarget.prototype.onSave = function( html ) {
  * @param {Mixed} error Thrown exception or HTTP error string
  */
 ve.init.ViewPageTarget.prototype.onSaveError = function( response, status, error ) {
-	alert( 'Error saving data to server: ' + status );
+	alert( ve.msg( 'visualeditor-saveerror', status ) );
 };
 
 /**

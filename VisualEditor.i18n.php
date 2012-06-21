@@ -40,6 +40,8 @@ $messages['en'] = array(
 	'visualeditor-historybutton-undo-tooltip' => 'Undo',
 	'visualeditor-historybutton-redo-tooltip' => 'Redo',
 	'visualeditor-viewpage-savewarning' => 'Are you sure you want to go back to view mode without saving first?',
+	'visualeditor-loadwarning' => 'Error loading data from server: $1. Would you like to retry?',
+	'visualeditor-saveerror' => 'Error saving data to server: $1.',
 );
 
 /** Message documentation (Message documentation)
@@ -76,6 +78,8 @@ $messages['qqq'] = array(
 	'visualeditor-historybutton-undo-tooltip' => 'Tooltip for the undo button',
 	'visualeditor-historybutton-redo-tooltip' => 'Tooltip for the redo button',
 	'visualeditor-viewpage-savewarning' => 'Text shown when the user tries to leave the editor without saving their changes',
+	'visualeditor-loadwarning' => 'Text shown when the editor fails to load properly. $1 is the error message from the server, in English.',
+	'visualeditor-saveerror' => 'Text shown when the editor fails to save properly.',
 );
 
 /** Asturian (asturianu)

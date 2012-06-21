@@ -275,6 +275,8 @@ $wgResourceModules += array(
 			'visualeditor-historybutton-undo-tooltip',
 			'visualeditor-historybutton-redo-tooltip',
 			'visualeditor-viewpage-savewarning',
+			'visualeditor-loadwarning',
+			'visualeditor-saveerror',
 		),
 	)
 );
