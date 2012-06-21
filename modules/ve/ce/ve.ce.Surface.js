@@ -18,6 +18,7 @@ ve.ce.Surface = function( $container, model ) {
 	this.$document = $( document );
 	this.clipboard = {};
 	this.render = true; // Used in ve.ce.TextNode
+	this.sluggable = true;
 
 	this.poll = {
 		text: null,
@@ -267,21 +268,32 @@ ve.ce.Surface.prototype.onKeyPress = function( e ) {
 
 	var selection = this.model.getSelection();
 
-	if ( selection.getLength() === 0 ) {
-		if ( this.hasSlugAtOffset( selection.start ) ) {
+	if (
+		selection.getLength() === 0 &&
+		this.sluggable === true &&
+		this.hasSlugAtOffset( selection.start )
+	) {
+		var	node;
+		this.sluggable = false;
+		this.stopPolling();
+		if ( this.documentView.getNodeFromOffset( selection.start ).getLength() !== 0 ) {
 			var data = [ { 'type' : 'paragraph' }, { 'type' : '/paragraph' } ];
-			this.stopPolling();
 			this.model.change(
 				ve.dm.Transaction.newFromInsertion(
 					this.documentView.model,
 					selection.start,
 					data
 				),
-				new ve.Range ( selection.start + 1 )
+				new ve.Range( selection.start + 1 )
 			);
-			this.clearPollData();
-			this.startPolling();
+			node = this.documentView.getNodeFromOffset( selection.start + 1 );
+		} else {
+			node = this.documentView.getNodeFromOffset( selection.start );
 		}
+		node.$.empty();
+		node.$.append( document.createTextNode('') );
+		this.clearPollData();
+		this.startPolling();
 	}
 
 	if ( selection.getLength() > 0 && e.which !== 0 ) {
@@ -496,6 +508,7 @@ ve.ce.Surface.prototype.onContentChange = function( e ) {
 			e.new.range
 		);
 	}
+	this.sluggable = true;
 };
 
 ve.ce.Surface.prototype.onChange = function( transaction, selection ) {
