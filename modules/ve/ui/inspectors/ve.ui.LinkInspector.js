@@ -76,10 +76,28 @@ ve.ui.LinkInspector.prototype.getAnnotationFromSelection = function() {
 	return null;
 };
 
+// TODO: This should probably be somewhere else but I needed this here for now.
+ve.ui.LinkInspector.prototype.getSelectionText = function() {
+	var surfaceView = this.context.getSurfaceView(),
+		surfaceModel = surfaceView.getModel(),
+		documentModel = surfaceModel.getDocument(),
+		data = documentModel.getData( surfaceModel.getSelection() ),
+		str = '',
+		max = Math.min( data.length, 255 );
+	for ( var i = 0; i < max; i++ ) {
+		if ( ve.isArray( data[i] ) ) {
+			str += data[i][0];
+		} else if( typeof data[i] === 'string') {
+			str += data[i];
+		}
+	}
+	return str;
+};
+
 ve.ui.LinkInspector.prototype.onOpen = function() {
 	var annotation = this.getAnnotationFromSelection();
 	if ( annotation === null ) {
-		this.$locationInput.val( '' );
+		this.$locationInput.val( this.getSelectionText() );
 		this.$clearButton.addClass( 'es-inspector-button-disabled' );
 	} else if ( annotation.type === 'link/wikiLink' ) {
 		// Internal link
