@@ -785,13 +785,46 @@ ve.ce.Surface.prototype.showSelection = function( range ) {
 
 	if ( range.start !== range.end ) {
 		start = this.getNodeAndOffset( range.start );
-		end = this.getNodeAndOffset( range.end ),
+		end = this.getNodeAndOffset( range.end );
+
+		if ( $.browser.msie ) {
+			if ( range.start === range.from ) {
+				if (
+					start.node === this.poll.rangySelection.anchorNode &&
+					start.offset === this.poll.rangySelection.anchorOffset &&
+					end.node === this.poll.rangySelection.focusNode &&
+					end.offset === this.poll.rangySelection.focusOffset
+				) {
+					return;
+				}
+			} else {
+				if (
+					end.node === this.poll.rangySelection.anchorNode &&
+					end.offset === this.poll.rangySelection.anchorOffset &&
+					start.node === this.poll.rangySelection.focusNode &&
+					start.offset === this.poll.rangySelection.focusOffset
+				) {
+					return;
+				}
+			}
+		}
+
 		rangyRange.setStart( start.node, start.offset );
 		rangyRange.setEnd( end.node, end.offset );
 		rangySel.removeAllRanges();
 		rangySel.addRange( rangyRange, range.start !== range.from );
 	} else {
 		start = end = this.getNodeAndOffset( range.start );
+
+		if ( $.browser.msie ) {
+			if (
+				start.node === this.poll.rangySelection.anchorNode &&
+				start.offset === this.poll.rangySelection.anchorOffset
+			) {
+				return;
+			}
+		}
+
 		rangyRange.setStart( start.node, start.offset );
 		rangySel.setSingleRange( rangyRange );
 	}
