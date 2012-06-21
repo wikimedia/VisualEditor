@@ -193,7 +193,7 @@ ve.init.ViewPageTarget.prototype.onSave = function( html ) {
 	} else {
 		// Update watch link to match 'watch checkbox' in save dialog.
 		// User logged in if module loaded.
-		if ( mw.page.watch !== undefined ) {
+		if ( mw.page.hasOwnProperty( 'watch' ) ) {
 			var watchPage = this.$saveDialog
 				.find( '#ve-init-viewPageTarget-saveDialog-watchList')
 				.prop( 'checked' );
