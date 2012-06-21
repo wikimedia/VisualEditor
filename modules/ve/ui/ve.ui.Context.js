@@ -179,15 +179,15 @@ ve.ui.Context.prototype.openInspector = function( name ) {
 		throw 'Missing inspector error. Can not open nonexistent inspector: ' + name;
 	}
 	this.inspectors[name].open();
+	this.resizeInspectorFrame( this.inspectors[name] );
 	this.positionOverlay( this.$inspectors );
-	this.$inspectors.show();
 	this.inspector = name;
 };
 
 ve.ui.Context.prototype.closeInspector = function( accept ) {
 	if ( this.inspector ) {
 		this.inspectors[this.inspector].close( accept );
-		this.$inspectors.hide();
+		this.hideInspectorFrame();
 		this.inspector = null;
 	}
 };
@@ -214,7 +214,7 @@ ve.ui.Context.prototype.addInspector = function( name, inspector ) {
 				'rel': 'stylesheet',
 				'type': 'text/css',
 				'href': ve.ui.getStylesheetPath() + 've.ui.Inspector.css'
-			}).on( 'load', tweakIframeDimensions );
+			});
 
 	var inspectorDoc = this.$inspectors.prop( 'contentWindow' ).document;
 	var inspectorContent = '<div id="ve-inspector-wrapper"></div>';
@@ -222,22 +222,28 @@ ve.ui.Context.prototype.addInspector = function( name, inspector ) {
 	inspectorDoc.write( inspectorContent );
 	inspectorDoc.close();
 
-	$( 'head', inspectorDoc).append( $styleLink );
+	$( 'head', inspectorDoc ).append( $styleLink );
 	$( '#ve-inspector-wrapper', inspectorDoc ).append( inspector.$ );
   
 	$( 'body', inspectorDoc ).css( {
 		'padding': '0px 5px 10px 5px',
 		'margin': 0
 	} );
+	this.hideInspectorFrame();
+};
 
-	// apply the dimensions of the inspector to the iframe, may need to be moved to open inspector
-	function tweakIframeDimensions() {
-		_this.$inspectors.css( {
-			'width': inspector.$.outerWidth( true ) + 10,
-			'height': inspector.$.outerHeight( true ) + 10
-		} );
-	}
+ve.ui.Context.prototype.hideInspectorFrame = function ( inspector ) {
+	this.$inspectors.css({
+		'width': 0,
+		'height': 0
+	});
+};
 
+ve.ui.Context.prototype.resizeInspectorFrame = function( inspector ){
+	this.$inspectors.css( {
+		'width': inspector.$.outerWidth( true ) + 10,
+		'height': inspector.$.outerHeight( true ) + 10
+	} );
 };
 
 ve.ui.Context.prototype.removeInspector = function( name ) {
