@@ -56,17 +56,34 @@ ve.ce.TextNode.htmlCharacters = {
  * @member
  */
 ve.ce.TextNode.annotationRenderers = {
-	'textStyle/bold': {
-		'open': '<b>',
-		'close': '</b>'
-	},
 	'textStyle/italic': {
 		'open': '<i>',
 		'close': '</i>'
 	},
+	'textStyle/bold': {
+		'open': '<b>',
+		'close': '</b>'
+	},
 	'textStyle/underline': {
 		'open': '<u>',
 		'close': '</u>'
+	},
+	'textStyle/strike': {
+		'open': '<s>',
+		'close': '</s>'
+	},
+	'textStyle/small': {
+		'open': '<small>',
+		'close': '</small>'
+	},
+	'textStyle/big': {
+		'open': '<big>',
+		'close': '</big>'
+	},
+	'textStyle/span': {
+		// TODO recognize attributes
+		'open': '<span>',
+		'close': '</span>'
 	},
 	'textStyle/strong': {
 		'open': '<strong>',
@@ -75,14 +92,6 @@ ve.ce.TextNode.annotationRenderers = {
 	'textStyle/emphasize': {
 		'open': '<em>',
 		'close': '<em>'
-	},
-	'textStyle/big': {
-		'open': '<big>',
-		'close': '</big>'
-	},
-	'textStyle/small': {
-		'open': '<small>',
-		'close': '</small>'
 	},
 	'textStyle/superScript': {
 		'open': '<sup>',
