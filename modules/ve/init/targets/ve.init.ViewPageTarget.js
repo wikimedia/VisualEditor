@@ -192,6 +192,7 @@ ve.init.ViewPageTarget.prototype.onLoadError = function( response, status, error
 ve.init.ViewPageTarget.prototype.onSave = function( html ) {
 	if ( Number( mw.config.get( 'wgArticleId', 0 ) ) === 0 ) {
 		// This is a page creation, refresh the page
+		this.teardownBeforeUnloadHandler();
 		window.location.href = this.viewUri;
 	} else {
 		// Update watch link to match 'watch checkbox' in save dialog.
