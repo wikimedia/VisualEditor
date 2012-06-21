@@ -216,6 +216,26 @@ ve.ce.Surface.prototype.onKeyDown = function( e ) {
 				this.model.annotate( annotations[ve.getHash(annotation)] ? 'clear' : 'set', annotation );
 			}
 			break;
+		// Z
+		case 90:
+			if ( ve.ce.Surface.isShortcutKey( e ) ) {
+				if ( e.shiftKey ) {
+					// Ctrl+Shift+Z / Cmd+Shift+Z, redo
+					e.preventDefault();
+					this.stopPolling();
+					this.showSelection( this.model.redo() );
+					this.clearPollData();
+					this.startPolling();
+				} else {
+					// Ctrl+Z / Cmd+Z, undo
+					e.preventDefault();
+					this.stopPolling();
+					this.showSelection( this.model.undo() );
+					this.clearPollData();
+					this.startPolling();
+				}
+			}
+			break;
 		default:
 			if ( this.poll.polling === false ) {
 				this.poll.polling = true;
