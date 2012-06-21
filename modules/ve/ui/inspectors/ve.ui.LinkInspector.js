@@ -87,7 +87,7 @@ ve.ui.LinkInspector.prototype.getSelectionText = function() {
 	for ( var i = 0; i < max; i++ ) {
 		if ( ve.isArray( data[i] ) ) {
 			str += data[i][0];
-		} else if( typeof data[i] === 'string') {
+		} else if( typeof data[i] === 'string' ) {
 			str += data[i];
 		}
 	}
@@ -96,21 +96,29 @@ ve.ui.LinkInspector.prototype.getSelectionText = function() {
 
 ve.ui.LinkInspector.prototype.onOpen = function() {
 	var annotation = this.getAnnotationFromSelection();
+	var initialValue = '';
 	if ( annotation === null ) {
 		this.$locationInput.val( this.getSelectionText() );
 		this.$clearButton.addClass( 'es-inspector-button-disabled' );
 	} else if ( annotation.type === 'link/wikiLink' ) {
 		// Internal link
-		this.$locationInput.val( annotation.data.title || '' );
+		initialValue = annotation.data.title || '';
+		this.$locationInput.val( initialValue );
 		this.$clearButton.removeClass( 'es-inspector-button-disabled' );
 	} else {
 		// External link
-		this.$locationInput.val( annotation.data.href || '' );
+		initialValue = annotation.data.title || '';
+		this.$locationInput.val( initialValue );
 		this.$clearButton.removeClass( 'es-inspector-button-disabled' );
 	}
 
-	this.$acceptButton.addClass( 'es-inspector-button-disabled' );
-	this.initialValue = this.$locationInput.val();
+	this.initialValue = initialValue;
+	if ( this.$locationInput.val().length === 0 ) {
+		this.$acceptButton.addClass( 'es-inspector-button-disabled' );
+	} else {
+		this.$acceptButton.removeClass( 'es-inspector-button-disabled' );
+	}
+	
 	var _this = this;
 	setTimeout( function() {
 		_this.$locationInput.focus().select();
