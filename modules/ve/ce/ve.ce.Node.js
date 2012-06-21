@@ -177,38 +177,13 @@ ve.ce.Node.getSplitableNode = function( node ) {
 		ve.log(node);
 		if ( node.canBeSplit() ) {
 			splitableNode = node;
-			return true;		
+			return true;
 		} else {
-			return false;			
+			return false;
 		}
 	} );
 	
 	return splitableNode;
-};
-
-
-/**
- * Attaches node as a child to another node.
- *
- * @method
- * @param {ve.ce.Node} parent Node to attach to
- * @emits attach (parent)
- */
-ve.ce.Node.prototype.attach = function( parent ) {
-	this.parent = parent;
-	this.emit( 'attach', parent );
-};
-
-/**
- * Detaches node from its parent.
- *
- * @method
- * @emits detach (parent)
- */
-ve.ce.Node.prototype.detach = function() {
-	var parent = this.parent;
-	this.parent = null;
-	this.emit( 'detach', parent );
 };
 
 /* Inheritance */

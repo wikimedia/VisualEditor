@@ -122,7 +122,10 @@ ve.ce.TextNode.annotationRenderers = {
  * @method
  */
 ve.ce.TextNode.prototype.onUpdate = function( force ) {
-	if ( force === true || this.getSurface().render === true ) {
+	if ( !force && !this.root.getSurface ) {
+		throw 'Can not update a text node that is not attached to a document';
+	}
+	if ( force === true || this.root.getSurface().render === true ) {
 		var $new = $( $( '<span>' + this.getHtml() + '</span>' ).contents() );
 		if ( $new.length === 0 ) {
 			$new = $new.add( document.createTextNode( '' ) );
@@ -293,14 +296,6 @@ ve.ce.TextNode.prototype.getHtml = function() {
 	}
 	out += closeAnnotations( close );
 	return out;
-};
-
-ve.ce.TextNode.prototype.getSurface = function() {
-	var view = this;
-	while( !view.surface ) {
-		view = view.parent;
-	}
-	return view.surface;
 };
 
 /* Registration */

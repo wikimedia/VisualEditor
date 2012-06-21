@@ -174,10 +174,11 @@ ve.Node.prototype.attach = function( parent ) {
  * @emits detach
  */
 ve.Node.prototype.detach = function() {
+	var parent = this.parent;
 	this.parent = null;
 	this.setRoot( this );
 	this.setDocument();
-	this.emit( 'detach' );
+	this.emit( 'detach', parent );
 };
 
 /**
