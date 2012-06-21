@@ -332,7 +332,7 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
 ve.ce.Surface.prototype.onKeyPress = function( e ) {
 	ve.log('onKeyPress');
 	
-	if ( ve.ce.Surface.isShortcutKey( e ) ) {
+	if ( ve.ce.Surface.isShortcutKey( e ) || e.which === 13 ) {
 		return;
 	}
 
