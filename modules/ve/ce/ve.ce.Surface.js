@@ -197,6 +197,7 @@ ve.ce.Surface.prototype.onKeyDown = function( e ) {
 		// B
 		case 66:
 			if ( e.metaKey ) {
+				e.preventDefault();
 				// Ctrl+B / Cmd+B, annotate with bold
 				var annotations = this.documentView.model.getAnnotationsFromRange( this.model.getSelection() ),
 					annotation = {"type":"textStyle/bold"};
@@ -212,6 +213,7 @@ ve.ce.Surface.prototype.onKeyDown = function( e ) {
 					annotation = {"type":"textStyle/italic"};
 
 				this.model.annotate( annotations[ve.getHash(annotation)] ? 'clear' : 'set', annotation );
+				e.preventDefault();
 			}
 			break;
 		default:
@@ -309,6 +311,10 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
 
 ve.ce.Surface.prototype.onKeyPress = function( e ) {
 	ve.log('onKeyPress');
+	
+	if (e.metaKey) {
+		return;
+	}
 
 	var selection = this.model.getSelection();
 
