@@ -112,7 +112,8 @@ $wgResourceModules += array(
 			'accesskey-ca-edit',
 			'tooltip-ca-edit',
 			'viewsource',
-			'visualeditor-ca-editsource'
+			'visualeditor-ca-editsource',
+			'visualeditor-loadwarning',
 		),
 	),
 	'ext.visualEditor.init' => $wgVisualEditorResourceTemplate + array(
@@ -275,7 +276,6 @@ $wgResourceModules += array(
 			'visualeditor-historybutton-undo-tooltip',
 			'visualeditor-historybutton-redo-tooltip',
 			'visualeditor-viewpage-savewarning',
-			'visualeditor-loadwarning',
 			'visualeditor-saveerror',
 		),
 	)
