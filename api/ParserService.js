@@ -9,9 +9,10 @@
  */
 
 // default to en.wikipedia.org
-var defaultInterwiki = 'en';
+//var defaultInterwiki = 'en';
 // alternative: default to www.mediawiki.org
-//var defaultInterwiki = 'mw';
+// Use this in production for now
+var defaultInterwiki = 'mw';
 // for development: default to localhost
 //var defaultInterwiki = 'localhost';
 
