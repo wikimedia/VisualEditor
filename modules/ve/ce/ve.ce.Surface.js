@@ -539,12 +539,19 @@ ve.ce.Surface.prototype.handleEnter = function() {
 		nodeModel = node.getModel(),
 		cursor = selection.from,
 		nodeOffset = nodeModel.getOffset(),
-		contentBranchModel = nodeModel.isContent() ? nodeModel.getParent() : nodeModel;
-	if ( contentBranchModel.getType() !== 'paragraph' ) {
+		contentBranchModel = nodeModel.isContent() ? nodeModel.getParent() : nodeModel,
+		contentBranchModelRange = contentBranchModel.getRange();
+
+	if (
+		contentBranchModel.getType() !== 'paragraph' &&
+		(
+			cursor === contentBranchModelRange.from ||
+			cursor === contentBranchModelRange.to
+		)
+	) {
 		// If we're at the start/end of something that's not a paragraph, insert a paragraph
 		// before/after
-		var contentBranchModelRange = contentBranchModel.getRange();
-			emptyParagraph = [{ 'type': 'paragraph' }, { 'type': '/paragraph' }];
+		var emptyParagraph = [{ 'type': 'paragraph' }, { 'type': '/paragraph' }];
 		if ( cursor === contentBranchModelRange.from ) {
 			tx = ve.dm.Transaction.newFromInsertion(
 				documentModel, contentBranchModel.getOuterRange().from, emptyParagraph
