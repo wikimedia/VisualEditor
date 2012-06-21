@@ -49,7 +49,7 @@ var env = new ParserEnv( {
 // add mediawiki.org
 env.addInterwiki( 'mw', 'http://www.mediawiki.org/w' );
 // For development:
-//env.addInterwiki( 'localhost', 'http://localhost/w' );
+env.addInterwiki( 'localhost', 'http://localhost/w' );
 
 var parserPipelineFactory = new ParserPipelineFactory( env );
 //var parser = parserPipelineFactory.makePipeline( 'text/x-mediawiki/full' );
@@ -62,11 +62,11 @@ app.get('/', function(req, res){
 	res.write('<body><h3>Welcome to the alpha test web service for the ' +
 		'<a href="http://www.mediawiki.org/wiki/Parsoid">Parsoid project<a>.</h3>');
 	res.write( '<p>Usage: <ul><li>GET /title for the DOM. ' +
-		'Example: <strong><a href="/Main_Page">Main Page</a></strong>');
+		'Example: <strong><a href="/en:Main_Page">Main Page</a></strong>');
 	res.write('<li>POST a DOM as parameter "content" to /title for the wikitext</ul>');
 	res.write('<p>There are also some tools for experiments:<ul>');
 	res.write('<li>Round-trip test pages from the English Wikipedia: ' +
-		'<strong><a href="/_rt/Help:Magic">/_rt/Help:Magic</a></strong></li>');
+		'<strong><a href="/_rt/en:Help:Magic">/_rt/Help:Magic</a></strong></li>');
 	res.write('<li><strong><a href="/_rtform/">WikiText -&gt; HTML DOM -&gt; WikiText round-trip form</a></strong></li>');
 	res.write('<li><strong><a href="/_wikitext/">WikiText -&gt; HTML DOM form</a></strong></li>' +
 			'<li><strong><a href="/_html/">HTML DOM -&gt; WikiText form</a></strong></li>');
