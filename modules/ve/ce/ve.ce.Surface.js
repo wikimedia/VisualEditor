@@ -134,6 +134,26 @@ ve.ce.Surface.prototype.onKeyDown = function( e ) {
 			this.handleDelete( false );
 			e.preventDefault();
 			break;
+		// B
+		case 66:
+			if ( e.metaKey ) {
+				// Ctrl+B / Cmd+B, annotate with bold
+				var annotations = this.documentView.model.getAnnotationsFromRange( this.model.getSelection() ),
+					annotation = {"type":"textStyle/bold"};
+
+				this.model.annotate( annotations[ve.getHash(annotation)] ? 'clear' : 'set', annotation );
+			}
+			break;
+		// I
+		case 73:
+			if ( e.metaKey ) {
+				// Ctrl+I / Cmd+I, annotate with italic
+				var annotations = this.documentView.model.getAnnotationsFromRange( this.model.getSelection() ),
+					annotation = {"type":"textStyle/italic"};
+
+				this.model.annotate( annotations[ve.getHash(annotation)] ? 'clear' : 'set', annotation );
+			}
+			break;
 		default:
 			if ( this.poll.polling === false ) {
 				this.poll.polling = true;
