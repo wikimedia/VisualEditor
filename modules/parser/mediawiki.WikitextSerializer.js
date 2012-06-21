@@ -178,14 +178,18 @@ WSP._listHandler = function( handler, bullet, state, token ) {
 		res     = bullets;
 		handler.startsNewline = true;
 	} else {
-		var curList = stack[stack.length - 1];
+		var curList = stack.last();
 		//console.warn(JSON.stringify( stack ));
 		bullets = curList.bullets + curList.itemBullet + bullet;
 		curList.itemCount++;
 		if (	// deeply nested list
-				curList.itemCount > 2 ||
+				//( curList.itemCount > 1 &&
+				//	token.name === 'dd' &&
+				//	state.prevTagToken.constructor === EndTagTk &&
+				//	state.prevTagToken.name === 'dt' &&
+				//	! state.onStartOfLine ) ||
 				// A nested list, not directly after a list item
-				(curList.itemCount > 1 && !isListItem(state.prevToken))) {
+				curList.itemCount > 1 && !isListItem(state.prevToken)) {
 			res = bullets;
 			handler.startsNewline = true;
 		} else {
@@ -214,12 +218,20 @@ WSP._listItemHandler = function ( handler, bullet, state, token ) {
 			// and prefix all bullets if so.
 			// XXX gwicke: abstract out the 'will be on start of line if
 			// output is not empty' bit to method or flag.
-			( state.onStartOfLine ||
+		(	( state.onStartOfLine ||
 				state.availableNewlineCount ||
 				state.emitNewlineOnNextToken || 
 				// separation between the same tokens would be triggered
 				( state.prevToken.constructor === EndTagTk && 
-					state.prevToken.name === token.name) ) ) 
+					state.prevToken.name === token.name) ) || 
+			// insert a newline before the dd unless specified differently on
+			// the prevTagToken
+			(   token.name === 'dd' && token.dataAttribs.stx !== 'row' &&
+				state.prevTagToken.constructor === EndTagTk &&
+				state.prevTagToken.name === 'dt'
+			)
+		) 
+	)
 	{
 		handler.startsNewline = true;
 		res = curList.bullets + bullet;

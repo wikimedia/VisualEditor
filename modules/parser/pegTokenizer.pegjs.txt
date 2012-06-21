@@ -1434,9 +1434,16 @@ dtdd
     d:inlineline?
     &eolf {
         bullets = bullets.join('');
-        var li = new TagTk( 'listItem', [], { tsr: [pos0, pos0 + bullets.length] }   );
+        var li = new TagTk( 'listItem', [], 
+                { 
+                    tsr: [pos0, pos0 + bullets.length]
+                }   );
         li.bullets = bullets + ";";
-        var li2 = new TagTk( 'listItem', [],  { tsr: [cpos, cpos+1] }   );
+        var li2 = new TagTk( 'listItem', [],  
+                { 
+                    tsr: [cpos, cpos+1], 
+                    stx: 'row'
+                }   );
         li2.bullets = bullets + ":";
 
         return [ li ].concat( c, [ li2 ], d || '' );
@@ -1636,7 +1643,7 @@ urltext = ( t:[^'<~[{\n\rIPRfghimnstw_|!:\]} &=]+ { return t.join(''); }
           / htmlentity 
           // Convert trailing space into &nbsp;
           // XXX: This should be moved to a serializer
-          / ' ' & ':' { return "\u00a0"; }
+          /// ' ' & ':' { return "\u00a0"; }
           / t:text_char )+
 
 /*
