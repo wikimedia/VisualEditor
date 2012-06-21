@@ -157,6 +157,8 @@ ve.ce.TextNode.prototype.getHtml = function() {
 		hash,
 		left = '',
 		right,
+		character,
+		nextCharacter,
 		open,
 		close,
 		index,
@@ -173,18 +175,25 @@ ve.ce.TextNode.prototype.getHtml = function() {
 		}
 	};
 	if ( data.length > 0 ) {
-		if ( data[0] === ' ') {
+		character = data[0];
+		if ( ve.isArray( character ) ? character[0] === ' ' : character === ' ' ) {
 			replaceWithNonBreakingSpace( 0, data );
 		}
 	}
 	if ( data.length > 1 ) {
-		if ( data[ data.length - 1 ] === ' ') {
+		character = data[data.length - 1];
+		if ( ve.isArray( character ) ? character[0] === ' ' : character === ' ' ) {
 			replaceWithNonBreakingSpace( data.length - 1, data );
 		}
 	}
 	if ( data.length > 2 ) {
-		for ( var i = 1; i < data.length - 1; i++ ) {
-			if ( data[i] === ' ' && data[i + 1] === ' ') {
+		for ( i = 1; i < data.length - 1; i++ ) {
+			character = data[i];
+			nextCharacter = data[i + 1];
+			if (
+				( ve.isArray( character ) ? character[0] === ' ' : character === ' ' ) &&
+				( ve.isArray( nextCharacter ) ? nextCharacter[0] === ' ' : nextCharacter === ' ' )
+			) {
 				replaceWithNonBreakingSpace( i + 1, data );
 				i++;
 			}
@@ -194,7 +203,6 @@ ve.ce.TextNode.prototype.getHtml = function() {
 	var openAnnotations = function( annotations ) {
 		var out = '',
 			annotation;
-
 		for ( var hash in annotations ) {
 			annotation = annotations[hash];
 			out += typeof renderers[annotation.type].open === 'function' ?
@@ -209,26 +217,13 @@ ve.ce.TextNode.prototype.getHtml = function() {
 	var closeAnnotations = function( annotations ) {
 		var out = '',
 			annotation;
-
 		for ( var hash in annotations ) {
 			annotation = annotations[hash];
 			out += typeof renderers[annotation.type].close === 'function' ?
 				renderers[annotation.type].close( annotation.data ) :
 				renderers[annotation.type].close;
-
-			// new version
 			hashStack.pop();
 			delete annotationStack[hash];
-
-			// old version
-			/*
-			var depth = hashStack.indexOf( hash );
-			if ( depth !== -1 ) {
-				ve.log(depth, hashStack.length);
-				hashStack.splice( depth, 1 );
-				delete annotationStack[hash];
-			}
-			*/
 		}
 		return out;
 	};
@@ -297,7 +292,6 @@ ve.ce.TextNode.prototype.getHtml = function() {
 		close[hashStack[j]] = annotationStack[hashStack[j]];
 	}
 	out += closeAnnotations( close );
-
 	return out;
 };
 
