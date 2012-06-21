@@ -94,13 +94,13 @@ ve.ce.TextNode.annotationRenderers = {
 	},
 	'link/extLink': {
 		'open': function( data ) {
-			return '<a href="' + data.href + '">';
+			return '<a href="' + mw.html.escape( data.href ) + '">';
 		},
 		'close': '</a>'
 	},
 	'link/wikiLink': {
 		'open': function( data ) {
-			return '<a href="' + data.href + '">';
+			return '<a href="' + mw.html.escape( data.href ) + '">';
 		},
 		'close': '</a>'
 	},
