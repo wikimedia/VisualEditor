@@ -168,6 +168,12 @@ ve.ce.BranchNode.prototype.onSplice = function( index, howmany ) {
 	}
 
 	// Iterate over all children of this branch and add slugs in appropriate places
+	if ( this.getLength() === 0 ) {
+		this.$.empty();
+		this.$slugs = this.$slugs.add(
+			$slug.clone().appendTo( this.$ )
+		);
+	}
 	for ( i = 0; i < this.children.length; i++ ) {
 		if ( this.children[i].canHaveSlug() ) {
 			if ( i === 0 ) {
