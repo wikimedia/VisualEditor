@@ -677,8 +677,7 @@ ve.ce.Surface.prototype.handleEnter = function() {
 			var list =  outermostNode.getModel().getParent();
 			// Remove the list item
 			tx = ve.dm.Transaction.newFromRemoval( documentModel, outermostNode.getModel().getOuterRange() );
-			selection = tx.translateRange( selection );
-			this.model.change( tx, selection );
+			this.model.change( tx );
 			// Insert a paragraph
 			tx = ve.dm.Transaction.newFromInsertion( documentModel, list.getOuterRange().to, emptyParagraph );
 			
