@@ -110,6 +110,7 @@ ve.init.ViewPageTarget.prototype.activate = function() {
 		this.activating = true;
 		// User interface changes
 		this.transformSkinTabs();
+		this.hideSiteNotice();
 		this.showSpinner();
 		this.hideTableOfContents();
 		this.mutePageContent();
@@ -134,6 +135,7 @@ ve.init.ViewPageTarget.prototype.deactivate = function( override ) {
 			this.deactivating = true;
 			// User interface changes
 			this.restoreSkinTabs();
+			this.restoreSiteNotice();
 			this.hideSpinner();
 			this.detachToolbarSaveButton();
 			this.detachSaveDialog();
@@ -818,6 +820,24 @@ ve.init.ViewPageTarget.prototype.transformSkinTabs = function() {
 ve.init.ViewPageTarget.prototype.restoreSkinTabs = function() {
 	$( '#p-views' ).find( 'li.selected' ).removeClass( 'selected' );
 	$( '#ca-view' ).addClass( 'selected' );
+};
+
+/**
+ * Hides site notice on page if present.
+ *
+ * @method
+ */
+ve.init.ViewPageTarget.prototype.hideSiteNotice = function(){
+	$('#siteNotice').hide();
+};
+
+/**
+ * Show site notice on page if present.
+ *
+ * @method
+ */
+ve.init.ViewPageTarget.prototype.restoreSiteNotice = function(){
+	$('#siteNotice').show();
 };
 
 /**
