@@ -457,11 +457,14 @@ ve.dm.Transaction.prototype.getLengthDifference = function() {
 };
 
 /**
- * Compute what a given offset in the pre-transaction linear model maps to after the transaction
- * has been applied.
+ * Translate an offset based on a transaction.
  *
- * @param {Number} offset Offset in the linear model before the transaction
- * @returns {Number|null} Offset of the same thing after the transaction, or null if it was removed
+ * This is useful when you want to anticipate what an offset will be after a transaction is
+ * processed.
+ *
+ * @method
+ * @param {Number} offset Offset in the linear model before the transaction has been processed
+ * @returns {Number} Translated offset, as it will be after processing transaction
  */
 ve.dm.Transaction.prototype.translateOffset = function( offset ) {
 	var i, cursor = 0, adjustment = 0, op, opLength;
@@ -477,7 +480,7 @@ ve.dm.Transaction.prototype.translateOffset = function( offset ) {
 				return offset + adjustment;
 			} else if ( offset > cursor && offset < cursor + op.remove.length ) {
 				// The offset points inside of the removal
-				return offset;
+				return cursor + op.remove.length + adjustment;
 			}
 			cursor += op.remove.length;
 		} else if ( op.type === 'retain' ) {
@@ -491,18 +494,18 @@ ve.dm.Transaction.prototype.translateOffset = function( offset ) {
 };
 
 /**
- * Translate a range using translateOffset()
- * @param {ve.Range} range Range to translate
- * @returns {ve.Range|null} Translated range if both start and end could be translated, or null
+ * Translate a range based on a transaction.
+ *
+ * This is useful when you want to anticipate what a selection will be after a transaction is
+ * processed.
+ *
+ * @method
+ * @see {translateOffset}
+ * @param {ve.Range} range Range in the linear model before the transaction has been processed
+ * @returns {ve.Range} Translated range, as it will be after processing transaction
  */
 ve.dm.Transaction.prototype.translateRange = function( range ) {
-	var from = this.translateOffset( range.from ),
-		to = this.translateOffset( range.to );
-	if ( from && to ) {
-		return new ve.Range( from, to );
-	} else {
-		return null;
-	}
+	return new ve.Range( this.translateOffset( range.from ), this.translateOffset( range.to ) );
 };
 
 /**
