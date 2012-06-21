@@ -100,7 +100,7 @@ ListHandler.prototype.popTags = function ( n ) {
 	return tokens;
 };
 
-ListHandler.prototype.isDlDd = function (a, b) {
+ListHandler.prototype.isDtDd = function (a, b) {
 	var ab = [a,b].sort();
 	return (ab[0] === ':' && ab[1] === ';');
 };
@@ -130,17 +130,18 @@ ListHandler.prototype.doListItem = function ( bs, bn, token ) {
 		];
 	} else {
 		var tokens = [];
-		if ( bs.length <= bn.length && 
-			bs.length - prefixLen === 1 && 
-			this.isDlDd( bs[prefixLen], bn[prefixLen] ) )
+		if ( bs.length > prefixLen && 
+			 bn.length > prefixLen && 
+			this.isDtDd( bs[prefixLen], bn[prefixLen] ) )
 		{
+			tokens = this.popTags(bs.length - prefixLen - 1);
 			// handle dd/dt transitions
 			var newName = this.bulletCharsMap[bn[prefixLen]].item;
 			var endTag = this.endtags.pop();
 			this.endtags.push(new EndTagTk( newName ));
 			// TODO: review dataAttribs forwarding here and below in
 			// doListItem, in particular re accuracy of tsr!
-			tokens = [ endTag, new TagTk( newName, [], token.dataAttribs  ) ];
+			tokens = tokens.concat([ endTag, new TagTk( newName, [], token.dataAttribs  ) ]);
 			prefixLen++;
 		} else {
 			tokens = tokens.concat( this.popTags(bs.length - prefixLen) );
