@@ -19,6 +19,7 @@ ve.ui.IndentationButtonTool.prototype.onClick = function() {
 		var	listItems = [],
 			listItem,
 			i;
+		// FIXME old code, doesn't work
 		for ( i = 0; i < this.nodes.length; i++ ) {
 			listItem = this.nodes[i].getParent();
 			if ( listItems.length > 0 ) {
@@ -38,6 +39,7 @@ ve.ui.IndentationButtonTool.prototype.onClick = function() {
 };
 
 ve.ui.IndentationButtonTool.prototype.indent = function( listItems ) {
+	// FIXME old code, doesn't work
 	var	surface = this.toolbar.surfaceView,
 		styles,
 		i;
@@ -57,6 +59,7 @@ ve.ui.IndentationButtonTool.prototype.indent = function( listItems ) {
 };
 
 ve.ui.IndentationButtonTool.prototype.outdent = function( listItems ) {
+	// FIXME old code, doesn't work
 	var	surface = this.toolbar.surfaceView,
 		styles,
 		i;
@@ -76,6 +79,7 @@ ve.ui.IndentationButtonTool.prototype.outdent = function( listItems ) {
 };
 
 ve.ui.IndentationButtonTool.prototype.updateState = function( annotations, nodes ) {
+	// FIXME old code, doesn't work
 	function areListItems( nodes ) {
 		for( var i = 0; i < nodes.length; i++ ) {
 			if (
@@ -98,6 +102,8 @@ ve.ui.IndentationButtonTool.prototype.updateState = function( annotations, nodes
 
 /* Registration */
 
+// Commented out because these don't work yet
+/*
 ve.ui.Tool.tools.indent = {
 	'constructor': ve.ui.IndentationButtonTool,
 	'name': 'indent',
@@ -109,6 +115,7 @@ ve.ui.Tool.tools.outdent = {
 	'name': 'outdent',
 	'title': ve.msg( 'visualeditor-indentationbutton-outdent-tooltip' ),
 };
+*/
 
 /* Inheritance */
 
