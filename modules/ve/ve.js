@@ -345,7 +345,7 @@ ve.debounce = function( func, wait, immediate ) {
 ve.msg = typeof mw === 'object' ? mw.msg : function( key ) {
 	if ( key in ve.msg.messages ) {
 		// Simple message parser, does $N replacement and nothing else.
-		var parameters = Array.prototype.slice.call( arguments, 0 );
+		var parameters = Array.prototype.slice.call( arguments, 1 );
 		return ve.msg.messages[key].replace( /\$(\d+)/g, function ( str, match ) {
 			var index = parseInt( match, 10 ) - 1;
 			return parameters[index] !== undefined ? parameters[index] : '$' + match;
