@@ -243,7 +243,8 @@ ve.dm.TransactionProcessor.processors.replace = function( op ) {
 			minInsertLevel = 0,
 			coveringRange,
 			scopeStart,
-			scopeEnd;
+			scopeEnd,
+			opAdjustment = 0;
 		while ( true ) {
 			if ( operation.type == 'replace' ) {
 				var	opRemove = this.reversed ? operation.insert : operation.remove,
@@ -323,6 +324,7 @@ ve.dm.TransactionProcessor.processors.replace = function( op ) {
 				}
 				// Update adjustment
 				this.adjustment += opInsert.length - opRemove.length;
+				opAdjustment += opInsert.length - opRemove.length;
 			} else {
 				// We know that other operations won't cause adjustments, so we
 				// don't have to update adjustment
@@ -341,8 +343,12 @@ ve.dm.TransactionProcessor.processors.replace = function( op ) {
 		// From all the affected ranges we have gathered, compute a range that covers all
 		// of them, and rebuild that
 		coveringRange = ve.Range.newCoveringRange( affectedRanges );
-		this.synchronizer.pushRebuild( coveringRange, new ve.Range( coveringRange.start,
-			coveringRange.end + this.adjustment )
+		this.synchronizer.pushRebuild(
+			coveringRange,
+			new ve.Range(
+				coveringRange.start + this.adjustment - opAdjustment,
+				coveringRange.end + this.adjustment
+			)
 		);
 	}
 };
