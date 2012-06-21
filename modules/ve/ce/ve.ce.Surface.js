@@ -501,48 +501,70 @@ ve.ce.Surface.prototype.onChange = function( transaction, selection ) {
 };
 
 ve.ce.Surface.prototype.handleEnter = function() {
+	var selection = this.model.getSelection(),
+		documentModel = this.model.getDocument(),
+		tx;
+	// Stop polling while we work
 	this.stopPolling();
-
-	var selection = this.model.getSelection();
-
+	// Handle removal first
 	if ( selection.from !== selection.to ) {
-		this.model.change(
-			ve.dm.Transaction.newFromRemoval( this.documentView.model, selection )
-		);
+		tx = ve.dm.Transaction.newFromRemoval( documentModel, selection );
+		selection = tx.translateRange( selection );
+		this.model.change( tx, selection );
 	}
-	
-	var	node = this.documentView.getNodeFromOffset( selection.to ),
-		nodeOffset = this.documentView.getDocumentNode().getOffsetFromNode( node ),
-		stack = [];
-	
-	// Build stack
-	ve.Node.traverseUpstream( node, function( node ) {
-		var elementType = node.type;
-		if ( !node.canBeSplit() ) {
-			return false;
+	// Handle insertion
+	var	node = this.documentView.getNodeFromOffset( selection.from ),
+		nodeModel = node.getModel(),
+		cursor = selection.from,
+		nodeOffset = nodeModel.getOffset(),
+		contentBranchModel = nodeModel.isContent() ? nodeModel.getParent() : nodeModel;
+	if ( contentBranchModel.getType() !== 'paragraph' ) {
+		// If we're at the start/end of something that's not a paragraph, insert a paragraph
+		// before/after
+		var contentBranchModelRange = contentBranchModel.getRange();
+			emptyParagraph = [{ 'type': 'paragraph' }, { 'type': '/paragraph' }];
+		if ( cursor === contentBranchModelRange.from ) {
+			tx = ve.dm.Transaction.newFromInsertion(
+				documentModel, contentBranchModel.getOuterRange().from, emptyParagraph
+			);
+		} else if ( cursor === contentBranchModelRange.to ) {
+			tx = ve.dm.Transaction.newFromInsertion(
+				documentModel, contentBranchModel.getOuterRange().to, emptyParagraph
+			);
 		}
-		stack.splice(
-			stack.length / 2,
-			0,
-			{ 'type': '/' + elementType },
-			{
-				'type': elementType,
-				'attributes': ve.copyObject( node.model.attributes )
+	} else {
+		// Split
+		stack = [];
+		ve.Node.traverseUpstream( node, function( node ) {
+			var elementType = node.type;
+			if ( !node.canBeSplit() ) {
+				return false;
 			}
-		);
-		return true;
-	} );
-
-	this.model.change( ve.dm.Transaction.newFromInsertion( this.documentView.model, selection.from, stack ) );
-	this.model.change( null, new ve.Range(
-		this.model.getDocument().getRelativeContentOffset( selection.from, 1 )
-	) );
-
+			stack.splice(
+				stack.length / 2,
+				0,
+				{ 'type': '/' + elementType },
+				{
+					'type': elementType,
+					'attributes': ve.copyObject( node.model.attributes )
+				}
+			);
+			return true;
+		} );
+		// We must process the transaction first because getRelativeContentOffset can't help us yet
+		tx = ve.dm.Transaction.newFromInsertion( documentModel, selection.from, stack );
+	}
+	this.model.change( tx );
+	// Now we can move the cursor forward
+	this.model.change(
+		null, new ve.Range( documentModel.getRelativeContentOffset( selection.from, 1 ) )
+	);
+	// Reset and resume polling
 	this.clearPollData();
 	this.startPolling();
 };
 
-ve.ce.Surface.prototype.handleDelete = function( backspace ) {	
+ve.ce.Surface.prototype.handleDelete = function( backspace ) {
 	this.stopPolling();
 
 	var selection = this.model.getSelection(),
