@@ -135,7 +135,7 @@ ve.ui.LinkInspector.prototype.onClose = function( accept ) {
 		var annotation;
 		// Figure out if this is an internal or external link
 		// TODO better logic
-		if ( target.match( /^https?:\/\// ) ) {
+		if ( target.match( /^(https?:)?\/\// ) ) {
 			// External link
 			annotation = {
 				'type': 'link/extLink',
