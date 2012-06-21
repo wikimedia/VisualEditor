@@ -107,7 +107,7 @@ ve.ui.LinkInspector.prototype.onOpen = function() {
 		this.$clearButton.removeClass( 'es-inspector-button-disabled' );
 	} else {
 		// External link
-		initialValue = annotation.data.title || '';
+		initialValue = annotation.data.href || '';
 		this.$locationInput.val( initialValue );
 		this.$clearButton.removeClass( 'es-inspector-button-disabled' );
 	}
