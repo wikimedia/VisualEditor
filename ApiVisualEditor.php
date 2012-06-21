@@ -28,7 +28,9 @@ class ApiVisualEditor extends ApiBase {
 			} else {
 				$result = array( 'result' => 'success', 'parsed' => '' );
 			}
-		} elseif ( $params['paction'] === 'save' ) {
+		} elseif ( $params['paction'] === 'save' && $wgUser->isBlocked() ) {
+			$result = array( 'result' => 'error' );
+		} elseif ( $params['paction'] === 'save' /* means user is not blocked */ ) {
 			// API Posts HTML to Parsoid Service, receives Wikitext,
 			// API Saves Wikitext to page.
 			$wikitext = Http::post( $parsoid . $page->getPrefixedDBkey(),
