@@ -148,33 +148,49 @@ ve.FormatDropdownTool.prototype.onSelect = function( item ) {
 	surfaceView.showSelection( selection );
 };
 
-ve.FormatDropdownTool.prototype.updateState = function( annotations, nodes ) {
-	// Get type and attributes of the first node
-	var i,
-		format = {
-			'type': nodes[0].type,
-			'attributes': nodes[0].attributes
-		};
-	// Look for mismatches, in which case format should be null
-	for ( i = 1; i < nodes.length; i++ ) {
-		if ( format.type != nodes[i].getType() ||
-			!ve.compareObjects( format.attributes || {}, nodes[i].attributes || {} ) ) {
-			format = null;
-			break;
+ve.FormatDropdownTool.prototype.getMatchingMenuItems = function( nodes ) {
+	var matches = [],
+		items = this.menuView.getItems();
+	for ( var i = 0; i < nodes.length; i++ ) {
+		var nodeType = nodes[i].getType(),
+			nodeAttributes = nodes[i].getAttributes();
+		// Outer loop continue point
+		itemLoop:
+		for ( var j = 0; j < items.length; j++ ) {
+			var item = items[j];
+			if ( item.type == nodeType ) {
+				if ( item.attributes && nodeAttributes ) {
+					// Compare attributes
+					for ( var key in item.attributes ) {
+						if (
+							// Node must have all the required attributes
+							!( key in nodeAttributes ) ||
+							// Use weak comparison because numbers sometimes come through as strings
+							item.attributes[key] != nodeAttributes[key]
+						) {
+							// Skip to the next menu item
+							continue itemLoop;
+						}
+					}
+				} else if ( item.attributes && !nodeAttributes ) {
+					// Node is required to have certain attributes but doesn't
+					// have any, so it doesn't match
+					continue itemLoop;
+				}
+				matches.push( item );
+			}
 		}
 	}
-	if ( format === null ) {
-		this.$label.html( '&nbsp;' );
-	} else {
-		var items = this.menuView.getItems();
-		for ( i = 0; i < items.length; i++ ) {
-			if (
-				format.type === items[i].type &&
-				ve.compareObjects( format.attributes || {}, items[i].attributes || {} )
-			) {
-				this.$label.text( items[i].label );
-				break;
-			}
+	return matches;
+};
+
+ve.FormatDropdownTool.prototype.updateState = function( annotations, nodes ) {
+	if ( nodes.length ) {
+		var items = this.getMatchingMenuItems( nodes );
+		if ( items.length === 1 ) {
+			this.$label.text( items[0].label );
+		} else {
+			this.$label.html( '&nbsp;' );
 		}
 	}
 };
