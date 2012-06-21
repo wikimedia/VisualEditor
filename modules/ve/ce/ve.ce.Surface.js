@@ -113,6 +113,21 @@ ve.ce.Surface.prototype.onMouseDown = function( e ) {
 
 ve.ce.Surface.prototype.onKeyDown = function( e ) {
 	switch ( e.keyCode ) {
+		// Indenting list items doesn't work yet, so disable tab handling for now
+		/*
+		// Tab Key
+		case 9:
+			e.preventDefault();
+			// FIXME check if indentation is even possible here, insert literal tab otherwise
+			ve.ui.IndentationButtonTool.changeListLevel( this.model , 'in' );
+			break;
+		// Shift + Tab Key
+		case 16:
+			e.preventDefault();
+			// FIXME check if indentation is even possible here
+			ve.ui.IndentationButtonTool.changeListLevel( this.model , 'out' );
+			break;
+		*/
 		// Left arrow
 		case 37:
 			break;
