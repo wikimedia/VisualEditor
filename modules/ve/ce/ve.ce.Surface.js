@@ -867,7 +867,7 @@ ve.ce.Surface.prototype.getNearestCorrectOffset = function( offset, direction ) 
 // TODO: Find a better name and a better place for this method - probably in a document view?
 ve.ce.Surface.prototype.hasSlugAtOffset = function( offset ) {
 	var node = this.documentView.documentNode.getNodeFromOffset( offset );
-	if ( node.canHaveChildren() ) {
+	if ( node && node.canHaveChildren() ) {
 		return node.hasSlugAtOffset( offset );
 	} else {
 		return false;
