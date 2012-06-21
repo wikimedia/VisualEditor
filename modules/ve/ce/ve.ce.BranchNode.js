@@ -119,7 +119,7 @@ ve.ce.BranchNode.prototype.updateDomWrapper = function( key ) {
  * Responds to splice events on a ve.dm.BranchNode.
  *
  * ve.ce.Node objects are generated from the inserted ve.dm.Node objects, producing a view that's a
- * mirror of it's model.
+ * mirror of its model.
  *
  * @method
  * @param {Integer} index Index to remove and or insert nodes at

@@ -64,7 +64,7 @@ ve.proxy = $.proxy;
 ve.inArray = $.inArray;
 
 /**
- * Generates a hash of an object based on it's name and data.
+ * Generates a hash of an object based on its name and data.
  *
  * This is actually an alias for jQuery.json, which falls back to window.JSON if present.
  *

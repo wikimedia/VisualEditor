@@ -4,7 +4,7 @@
  * @class
  * @constructor
  * @param {Object[]} items List of items to append initially
- * @param {Function} callback Function to call if an item doesn't have it's own callback
+ * @param {Function} callback Function to call if an item doesn't have its own callback
  * @param {jQuery} [$overlay=$( 'body' )] DOM selection to add nodes to
  */
 ve.ui.Menu = function( items, callback, $overlay ) {
