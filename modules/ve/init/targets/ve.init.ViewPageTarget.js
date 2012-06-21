@@ -17,6 +17,8 @@ ve.init.ViewPageTarget = function() {
 	this.$toolbarSaveButton = $( '<div class="ve-init-viewPageTarget-toolbar-saveButton"></div>' );
 	this.$saveDialog = $( '<div class="es-inspector ve-init-viewPageTarget-saveDialog"></div>' );
 	this.$saveDialogSaveButton = null;
+	this.onBeforeUnloadFallback = null;
+	this.proxiedOnBeforeUnload = null;
 	this.surface = null;
 	this.active = false;
 	this.edited = false;
@@ -155,6 +157,7 @@ ve.init.ViewPageTarget.prototype.onLoad = function( dom ) {
 	this.attachSaveDialog();
 	this.restoreScrollPosition();
 	this.restoreEditSection();
+	this.setupBeforeUnloadHandler();
 	this.$document.focus();
 	this.activating = false;
 };
@@ -205,6 +208,7 @@ ve.init.ViewPageTarget.prototype.onSave = function( html ) {
 		this.hideSaveDialog();
 		this.resetSaveDialog();
 		this.replacePageContent( html );
+		this.teardownBeforeUnloadHandler();
 		this.deactivate( true );
 	}
 };
@@ -547,16 +551,17 @@ ve.init.ViewPageTarget.prototype.setupSaveDialog = function() {
 	this.$saveDialogSaveButton = this.$saveDialog
 		.find( '.ve-init-viewPageTarget-saveDialog-saveButton' );
 
-	/* Hook onto the 'watch' event on by mediawiki.page.watch.ajax.js
-	 * Triggered when mw.page.watch.updateWatchLink(link, action) is called.
-	 */
-	$( '#ca-watch, #ca-unwatch' ).on( 'watch.mw',
-		ve.proxy( function( e, action ){
-			this.$saveDialog
-				.find( '#ve-init-viewPageTarget-saveDialog-watchList')
-				.prop( 'checked', ( action === 'watch') );
-		}, this )
-	);
+	// Hook onto the 'watch' event on by mediawiki.page.watch.ajax.js
+	// Triggered when mw.page.watch.updateWatchLink(link, action) is called
+	$( '#ca-watch, #ca-unwatch' )
+		.on(
+			'watch.mw',
+			ve.proxy( function( e, action ){
+				this.$saveDialog
+					.find( '#ve-init-viewPageTarget-saveDialog-watchList')
+					.prop( 'checked', ( action === 'watch') );
+			}, this )
+		);
 };
 
 /**
@@ -893,6 +898,80 @@ ve.init.ViewPageTarget.prototype.restoreEditSection = function() {
 			}
 		} );
 		this.section = null;
+	}
+};
+
+/**
+ * Adds onbeforunload handler.
+ *
+ * @method
+ */
+ve.init.ViewPageTarget.prototype.setupBeforeUnloadHandler = function() {
+	// Remember any already set on before unload handler
+	this.onBeforeUnloadFallback = window.onbeforeunload;
+	// Attach before unload handler
+	window.onbeforeunload = this.proxiedOnBeforeUnload = ve.proxy( this.onBeforeUnload, this );
+	// Attach page show handlers
+	if ( window.addEventListener ) {
+		window.addEventListener( 'pageshow', ve.proxy( this.onPageShow, this ), false );
+	} else if ( window.attachEvent ) {
+		window.attachEvent( 'pageshow', ve.proxy( this.onPageShow, this ) );
+	}
+};
+
+/**
+ * Removes onbeforunload handler.
+ *
+ * @method
+ */
+ve.init.ViewPageTarget.prototype.teardownBeforeUnloadHandler = function() {
+	// Restore whatever previous onbeforeload hook existed
+	window.onbeforeunload = this.onBeforeUnloadFallback;
+};
+
+/**
+ * Responds to page show event.
+ *
+ * @method
+ */
+ve.init.ViewPageTarget.prototype.onPageShow = function() {
+	// Re-add onbeforeunload handler
+	window.onbeforeunload = this.proxiedOnBeforeUnload;
+};
+
+/**
+ * Responds to before unload event.
+ *
+ * @method
+ */
+ve.init.ViewPageTarget.prototype.onBeforeUnload = function() {
+	var fallbackResult,
+		message,
+		proxiedOnBeforeUnload = this.proxiedOnBeforeUnload;
+	// Check if someone already set on onbeforeunload hook
+	if ( this.onBeforeUnloadFallback ) {
+		// Get the result of their onbeforeunload hook
+		fallbackResult = this.onBeforeUnloadFallback();
+	}
+	// Check if their onbeforeunload hook returned something
+	if ( fallbackResult !== undefined ) {
+		// Exit here, returning their message
+		message = fallbackResult;
+	} else {
+		// Check if there's been an edit
+		if ( this.surface.getModel().getHistory().length ) {
+			// Return our message
+			message = ve.msg( 'visualeditor-viewpage-savewarning' );
+		}
+	}
+	// Unset the onbeforeunload handler so we don't break page caching in Firefox
+	window.onbeforeunload = null;
+	if ( message !== undefined ) {
+		// ...but if the user chooses not to leave the page, we need to rebind it
+		setTimeout( function() {
+			window.onbeforeunload = proxiedOnBeforeUnload;
+		} );
+		return message;
 	}
 };
 
