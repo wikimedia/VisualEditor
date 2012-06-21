@@ -52,6 +52,15 @@ ve.ui.Toolbar.prototype.updateTools = function() {
 		} else {
 			startNode = doc.getNodeFromOffset( range.from );
 			endNode = doc.getNodeFromOffset ( range.end );
+
+			if(startNode.type === 'document' || endNode.type === 'document') {
+				// Clear state
+				for ( i = 0; i < this.tools.length; i++ ) {
+					this.tools[i].clearState();
+				}
+				return;
+			}
+
 			// These should be different, alas just in case.
 			if ( startNode === endNode ) {
 				nodes.push( startNode );
