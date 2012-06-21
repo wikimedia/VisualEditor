@@ -829,7 +829,9 @@ ve.init.ViewPageTarget.prototype.restoreSkinTabs = function() {
  * @method
  */
 ve.init.ViewPageTarget.prototype.hideSiteNotice = function(){
-	$('#siteNotice').hide();
+	$( '#siteNotice:visible' )
+		.addClass( 've-hide' )
+		.slideUp( 'fast' );
 };
 
 /**
@@ -838,7 +840,8 @@ ve.init.ViewPageTarget.prototype.hideSiteNotice = function(){
  * @method
  */
 ve.init.ViewPageTarget.prototype.restoreSiteNotice = function(){
-	$('#siteNotice').show();
+	$(' #siteNotice.ve-hide' )
+		.slideDown( 'fast' );
 };
 
 /**
