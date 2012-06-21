@@ -101,7 +101,7 @@ ve.dm.Surface.prototype.annotate = function( method, annotation ) {
 		var tx = ve.dm.Transaction.newFromAnnotation(
 			this.getDocument(), selection, method, annotation
 		);
-		this.change( tx );
+		this.change( tx, selection );
 	}
 };
 
