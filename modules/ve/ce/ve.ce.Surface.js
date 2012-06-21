@@ -67,7 +67,7 @@ ve.ce.Surface = function( $container, model ) {
 	// DocumentNode Events
 	this.documentView.getDocumentNode().$.on( {
 		'focus': ve.proxy( this.documentOnFocus, this ),
-		'blur': ve.proxy( this.documentOnBlur, this ),
+		'blur': ve.proxy( this.documentOnBlur, this )
 	} );
 };
 
@@ -81,7 +81,7 @@ ve.ce.Surface.prototype.documentOnFocus = function() {
 		'keydown.ve-ce-Surface': ve.proxy( this.onKeyDown, this ),
 		'keypress.ve-ce-Surface': ve.proxy( this.onKeyPress, this ),
 		// mouse down
-		'mousedown.ve-ce-Surface': ve.proxy( this.onMouseDown, this ),
+		'mousedown.ve-ce-Surface': ve.proxy( this.onMouseDown, this )
 	} );
 	this.startPolling( true );
 };
@@ -251,7 +251,7 @@ ve.ce.Surface.prototype.onKeyPress = function( e ) {
 		if ( this.hasSlugAtOffset( selection.start ) ) {
 			var data = [ { 'type' : 'paragraph' }, { 'type' : '/paragraph' } ];
 			this.stopPolling();
-			this.model.change( 
+			this.model.change(
 				ve.dm.Transaction.newFromInsertion(
 					this.documentView.model,
 					selection.start,
@@ -311,7 +311,9 @@ ve.ce.Surface.prototype.pollChanges = function( async ) {
 			if ( this.poll.timeout !== null ) {
 				clearTimeout( this.poll.timeout );
 			}
-			this.poll.timeout = setTimeout( ve.proxy( this.pollChanges, this ), async ? 0 : this.poll.frequency );
+			this.poll.timeout = setTimeout(
+				ve.proxy( this.pollChanges, this ), async ? 0 : this.poll.frequency
+			);
 		}
 	}, this );
 
@@ -341,7 +343,7 @@ ve.ce.Surface.prototype.pollChanges = function( async ) {
 			$focusNode = $( rangySelection.focusNode ).closest( '.ve-ce-branchNode' );
 
 		if ( $anchorNode[0] === $focusNode[0] ) {
-			node = $anchorNode[0]
+			node = $anchorNode[0];
 		} else {
 			node = null;
 		}
@@ -374,12 +376,12 @@ ve.ce.Surface.prototype.pollChanges = function( async ) {
 					'old': {
 						'text': this.poll.text,
 						'hash': this.poll.hash,
-						'range': this.poll.range,
+						'range': this.poll.range
 					},
 					'new': {
 						'text': text,
 						'hash': hash,
-						'range': range					
+						'range': range
 					}
 				} );
 				this.poll.text = text;
@@ -577,7 +579,7 @@ ve.ce.Surface.prototype.handleDelete = function( backspace ) {
 
 	if ( selection.from === selection.to ) {
 		if ( backspace ) {
-			sourceOffset = selection.to; 
+			sourceOffset = selection.to;
 			targetOffset = this.model.getDocument().getRelativeContentOffset( sourceOffset, -1 );
 			//this.model.setSelection( new ve.Range( targetOffset, targetOffset ) );
 		} else {
@@ -624,7 +626,7 @@ ve.ce.Surface.prototype.handleDelete = function( backspace ) {
 
 			// Remove source node or source node ancestor
 			tx = ve.dm.Transaction.newFromRemoval( this.documentView.model, nodeToDelete.getModel().getOuterRange() );
-			this.model.change( tx );			
+			this.model.change( tx );
 
 			// Append source data to target
 			tx = ve.dm.Transaction.newFromInsertion( this.documentView.model, targetOffset, sourceData );
