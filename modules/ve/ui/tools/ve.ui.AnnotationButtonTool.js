@@ -24,24 +24,12 @@ ve.ui.AnnotationButtonTool.prototype.onClick = function() {
 	var surfaceView = this.toolbar.getSurfaceView(),
 		surfaceModel = surfaceView.model,
 		selection = surfaceModel.getSelection();
-
 	if ( this.inspector ) {
-		if( selection ) {
+		if ( selection && selection.getLength() ) {
 			surfaceView.contextView.openInspector( this.inspector );
-		} else {
-			if ( this.active ) {
-				var documentModel = surfaceModel.getDocument(),
-					range = documentModel.getAnnotatedRangeFromOffset(
-						selection.from, this.annotation
-					);
-				surfaceModel.setSelection ( range );
-				surfaceView.showSelection( range );
-				surfaceView.contextView.openInspector( this.inspector );
-			}
 		}
 	} else {
 		surfaceModel.annotate( this.active ? 'clear' : 'set', this.annotation );
-		surfaceView.showSelection( selection );
 	}
 };
 

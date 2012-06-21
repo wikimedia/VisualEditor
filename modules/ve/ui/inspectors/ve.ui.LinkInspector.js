@@ -100,12 +100,13 @@ ve.ui.LinkInspector.prototype.onOpen = function() {
 };
 
 ve.ui.LinkInspector.prototype.onClose = function( accept ) {
+	var surfaceView = this.context.getSurfaceView();
 	if ( accept ) {
 		var target = this.$locationInput.val();
 		if ( target === this.initialValue || !target ) {
 			return;
 		}
-		var surfaceModel = this.context.getSurfaceView().getModel(),
+		var surfaceModel = surfaceView.getModel(),
 			annotations = this.getSelectedLinkAnnotations();
 
 		// Clear link annotation if it exists
@@ -131,6 +132,8 @@ ve.ui.LinkInspector.prototype.onClose = function( accept ) {
 		}
 		surfaceModel.annotate( 'set', annotation );
 	}
+	// Restore focus
+	surfaceView.getDocument().getDocumentNode().$.focus();
 };
 
 /* Inheritance */
