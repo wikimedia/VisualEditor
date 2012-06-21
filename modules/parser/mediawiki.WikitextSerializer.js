@@ -555,8 +555,11 @@ WSP.tagHandlers = {
 		}
 	},
 	hr: { 
-		start: { startsNewline: true, handle: id("----") },
-		end: { endsLine: true }
+		start: { 
+			startsNewline: true, 
+			endsLine: true,
+			handle: id("----") 
+		}
 	},
 	h1: { 
 		start: { startsNewline: true, handle: id("=") },
@@ -583,8 +586,11 @@ WSP.tagHandlers = {
 		end: { endsLine: true, handle: id("======") }
 	},
 	br: { 
-		start: { startsNewline: true, handle: id("") },
-		end: { endsLine: true }
+		start: { 
+			startsNewline: true,
+			endsLine: true,
+			handle: id("") 
+		}
 	},
 	b:  { 
 		start: { handle: id("'''") },
