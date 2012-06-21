@@ -712,20 +712,27 @@ ve.ce.Surface.prototype.handleDelete = function( backspace ) {
 		cursorAt = targetOffset;
 
 
-		if ( sourceNode === targetNode ||
-			( typeof sourceSplitableNode !== 'undefined' &&
-			sourceSplitableNode.getParent()  === targetSplitableNode.getParent() ) ) {
-			// Source and target are the same node or have the same parent (list items)
-			
-			// Transact
-			tx = ve.dm.Transaction.newFromRemoval( this.documentView.model, new ve.Range( targetOffset, sourceOffset ) );
+		if (
+			// Source and target are the same node
+			sourceNode === targetNode ||
+			(
+				// Source and target have the same parent (list items)
+				sourceSplitableNode !== undefined &&
+				sourceSplitableNode.getParent() === targetSplitableNode.getParent()
+			)
+		) {
+			// Simple removal
+			tx = ve.dm.Transaction.newFromRemoval(
+				this.documentView.model, new ve.Range( targetOffset, sourceOffset )
+			);
 			this.model.change( tx, new ve.Range( cursorAt ) );
+		} else if ( sourceNode.getType() === 'document' ) {
+			// Source is a slug - move the cursor somewhere useful
+			this.model.change( null, new ve.Range( cursorAt ) );
 		} else {
-			// Source and target are different nodes and do not share a parent. Perform tricky merge.
-
+			// Source and target are different nodes and do not share a parent, perform tricky merge
 			// Get the data for the source node
 			var sourceData = this.documentView.model.getData( sourceNode.model.getRange() );
-
 			// Find the node that should be completely removed
 			var nodeToDelete = sourceNode;
 			ve.Node.traverseUpstream( nodeToDelete, function( node ) {
@@ -736,19 +743,24 @@ ve.ce.Surface.prototype.handleDelete = function( backspace ) {
 					return false;
 				}
 			} );
-
 			// Remove source node or source node ancestor
-			tx = ve.dm.Transaction.newFromRemoval( this.documentView.model, nodeToDelete.getModel().getOuterRange() );
-			this.model.change( tx );
-
+			this.model.change( ve.dm.Transaction.newFromRemoval(
+				this.documentView.model, nodeToDelete.getModel().getOuterRange()
+			) );
 			// Append source data to target
-			tx = ve.dm.Transaction.newFromInsertion( this.documentView.model, targetOffset, sourceData );
-			this.model.change( tx, new ve.Range( cursorAt ) );
+			this.model.change(
+				ve.dm.Transaction.newFromInsertion(
+					this.documentView.model, targetOffset, sourceData
+				),
+				new ve.Range( cursorAt )
+			);
 		}
 	} else {
-		// selection removal
-		tx = ve.dm.Transaction.newFromRemoval( this.documentView.model, selection );
-		this.model.change( tx, new ve.Range( selection.start ) );
+		// Selection removal
+		this.model.change(
+			ve.dm.Transaction.newFromRemoval( this.documentView.model, selection ),
+			new ve.Range( selection.start )
+		);
 	}
 
 	this.clearPollData();
