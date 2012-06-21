@@ -29,7 +29,11 @@ ve.dm.TextStyleAnnotation.converters = {
 			'strike': 's',
 			'small': 'small',
 			'big': 'big',
-			'span': 'span'
+			'span': 'span',
+			'strong': 'strong',
+			'emphasize': 'em',
+			'superScript': 'sup',
+			'subScript': 'sub'
 			// TODO: Add other supported inline DOM elements to this list
 		} )[subType] );
 	},
@@ -42,7 +46,11 @@ ve.dm.TextStyleAnnotation.converters = {
 				's': 'strike',
 				'small': 'small',
 				'big': 'big',
-				'span': 'span'
+				'span': 'span',
+				'strong': 'strong',
+				'em': 'emphasize',
+				'sup': 'superScript',
+				'sub': 'subScript'
 				// TODO: Add other supported inline DOM elements to this list
 			} )[tag]
 		};
