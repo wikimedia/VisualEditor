@@ -9,9 +9,10 @@
  */
 
 // default to en.wikipedia.org
-var defaultInterwiki = 'en';
+//var defaultInterwiki = 'en';
 // alternative: default to www.mediawiki.org
-//var defaultInterwiki = 'mw';
+// Use this in production for now
+var defaultInterwiki = 'mw';
 // for development: default to localhost
 //var defaultInterwiki = 'localhost';
 
@@ -49,10 +50,6 @@ var env = new ParserEnv( {
 env.addInterwiki( 'mw', 'http://www.mediawiki.org/w' );
 // For development:
 //env.addInterwiki( 'localhost', 'http://localhost/w' );
-
-// add localhost and make it the default
-env.addInterwiki( 'localhost', 'http://localhost/mediawiki' );
-defaultInterwiki = 'localhost';
 
 var parserPipelineFactory = new ParserPipelineFactory( env );
 //var parser = parserPipelineFactory.makePipeline( 'text/x-mediawiki/full' );
