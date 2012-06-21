@@ -19,6 +19,7 @@ ve.dm.DocumentSynchronizer = function( doc ) {
 	this.document = doc;
 	this.actionQueue = [];
 	this.eventQueue = [];
+	this.adjustment = 0;
 };
 
 /* Static Members */
@@ -80,6 +81,7 @@ ve.dm.DocumentSynchronizer.synchronizers.attributeChange = function( action ) {
  */
 ve.dm.DocumentSynchronizer.synchronizers.resize = function( action ) {
 	action.node.adjustLength( action.adjustment );
+	this.adjustment += action.adjustment;
 	// no update needed, adjustLength causes an update event on its own
 };
 
@@ -94,7 +96,10 @@ ve.dm.DocumentSynchronizer.synchronizers.resize = function( action ) {
  */
 ve.dm.DocumentSynchronizer.synchronizers.rebuild = function( action ) {
 	// Find the nodes contained by oldRange
-	var selection = this.document.selectNodes( action.oldRange, 'siblings' );
+	var selection = this.document.selectNodes(
+		ve.Range.newFromTranslatedRange( action.oldRange, this.adjustment ),
+		'siblings'
+	);
 	if ( selection.length === 0 ) {
 		// WTF? Nothing to rebuild, I guess. Whatever.
 		return;
@@ -116,6 +121,7 @@ ve.dm.DocumentSynchronizer.synchronizers.rebuild = function( action ) {
 	this.document.rebuildNodes( parent, index, numNodes, action.oldRange.from,
 		action.newRange.getLength()
 	);
+	this.adjustment += action.newRange.getLength() - action.oldRange.getLength();
 };
 
 /* Methods */
