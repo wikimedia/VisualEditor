@@ -204,8 +204,10 @@ ve.ui.Context.prototype.addInspector = function( name, inspector ) {
 	if ( name in this.inspectors ) {
 		throw 'Duplicate inspector error. Previous registration with the same name: ' + name;
 	}
+	inspector.$.hide();
 	this.inspectors[name] = inspector;
-	//create link to stylesheet
+	// Iframe build code below.
+	// TODO: Rework this to allow multiple inspectors
 	$styleLink =
 		$('<link />')
 			.attr({
@@ -233,7 +235,7 @@ ve.ui.Context.prototype.addInspector = function( name, inspector ) {
 		_this.$inspectors.css( {
 			'width': inspector.$.outerWidth( true ) + 10,
 			'height': inspector.$.outerHeight( true ) + 10
-		} ).hide();
+		} );
 	}
 
 };
