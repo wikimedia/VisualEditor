@@ -150,7 +150,7 @@ ve.dm.Transaction.newFromRemoval = function( doc, range ) {
  * @param {ve.dm.Document} doc Document to create transaction for
  * @param {Integer} offset Offset of element
  * @param {String} key Attribute name
- * @param {Mixed} value New value
+ * @param {Mixed} value New value, or undefined to remove the attribute
  * @returns {ve.dm.Transaction} Transcation that changes an element
  * @throws 'Can not set attributes to non-element data'
  * @throws 'Can not set attributes on closing element'
@@ -554,8 +554,8 @@ ve.dm.Transaction.prototype.pushReplace = function( remove, insert ) {
  *
  * @method
  * @param {String} key Name of attribute to change
- * @param {Mixed} from Value change attribute from
- * @param {Mixed} to Value to change attribute to
+ * @param {Mixed} from Value change attribute from, or undefined if not previously set
+ * @param {Mixed} to Value to change attribute to, or undefined to remove
  */
 ve.dm.Transaction.prototype.pushReplaceElementAttribute = function( key, from, to ) {
 	this.operations.push( {
