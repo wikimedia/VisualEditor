@@ -168,6 +168,8 @@ $messages['de'] = array(
 	'visualeditor-historybutton-undo-tooltip' => 'Rückgängig machen',
 	'visualeditor-historybutton-redo-tooltip' => 'Wiederholen',
 	'visualeditor-viewpage-savewarning' => 'Bist du sicher, dass du zum Ansichtsmodus wechseln möchtest, ohne vorher zu speichern?',
+	'visualeditor-loadwarning' => 'Fehler beim Laden der Daten vom Server: $1. Soll der Vorgang erneut durchgeführt werden?',
+	'visualeditor-saveerror' => 'Fehler beim Speichern der Daten auf dem Server: $1.',
 );
 
 /** German (formal address) (‪Deutsch (Sie-Form)‬)
@@ -332,6 +334,8 @@ $messages['gl'] = array(
 	'visualeditor-historybutton-undo-tooltip' => 'Desfacer',
 	'visualeditor-historybutton-redo-tooltip' => 'Refacer',
 	'visualeditor-viewpage-savewarning' => 'Está seguro de querer volver ao modo de lectura sen gardar primeiro?',
+	'visualeditor-loadwarning' => 'Erro ao cargar os datos desde o servidor: $1. Quéreo intentar de novo?',
+	'visualeditor-saveerror' => 'Erro ao gardar os datos no servidor: $1.',
 );
 
 /** Hebrew (עברית)
@@ -375,6 +379,29 @@ $messages['hsb'] = array(
 	'visualeditor-tooltip-help' => 'Pomoc pokazać a schować',
 	'visualeditor-feedback-prompt' => 'Komentar zawostajić',
 	'visualeditor-feedback-dialog-title' => 'Zawostaj komentar wo hrajkanišću VisualEditora',
+	'visualeditor-ca-editsource' => 'Žórłowy tekst wobdźěłać',
+	'visualeditor-linkinspector-title' => 'Wotkaz wobdźěłać',
+	'visualeditor-linkinspector-label-pagetitle' => 'Titul strony',
+	'visualeditor-formatdropdown-title' => 'Format změnić',
+	'visualeditor-formatdropdown-format-paragraph' => 'Wotstawk',
+	'visualeditor-formatdropdown-format-heading1' => 'Nadpis 1',
+	'visualeditor-formatdropdown-format-heading2' => 'Nadpis 2',
+	'visualeditor-formatdropdown-format-heading3' => 'Nadpis 3',
+	'visualeditor-formatdropdown-format-heading4' => 'Nadpis 4',
+	'visualeditor-formatdropdown-format-heading5' => 'Nadpis 5',
+	'visualeditor-formatdropdown-format-heading6' => 'Nadpis 6',
+	'visualeditor-formatdropdown-format-preformatted' => 'Předformatowany',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Tučny',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Kursiwny',
+	'visualeditor-annotationbutton-link-tooltip' => 'Wotkaz',
+	'visualeditor-indentationbutton-indent-tooltip' => 'Zasunjenje powjetšić',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Zasunjenje pomjeńšić',
+	'visualeditor-listbutton-number-tooltip' => 'Čisłowana lisćina',
+	'visualeditor-listbutton-bullet-tooltip' => 'Nalicenje',
+	'visualeditor-clearbutton-tooltip' => 'Formatowanje wotstronić',
+	'visualeditor-historybutton-undo-tooltip' => 'Cofnyć',
+	'visualeditor-historybutton-redo-tooltip' => 'Wospjetować',
+	'visualeditor-saveerror' => 'Zmylk při składowanju datow na serwerje: $1.',
 );
 
 /** Hungarian (magyar)
@@ -411,6 +438,31 @@ $messages['ia'] = array(
 	'visualeditor-tooltip-help' => 'Alternar adjuta',
 	'visualeditor-feedback-prompt' => 'Lassar commentario',
 	'visualeditor-feedback-dialog-title' => 'Lassar commentario super le cassa a sablo del editor visual',
+	'visualeditor-ca-editsource' => 'Modificar fonte',
+	'visualeditor-linkinspector-title' => 'Modificar ligamine',
+	'visualeditor-linkinspector-label-pagetitle' => 'Titulo del pagina',
+	'visualeditor-formatdropdown-title' => 'Cambiar formato',
+	'visualeditor-formatdropdown-format-paragraph' => 'Paragrapho',
+	'visualeditor-formatdropdown-format-heading1' => 'Titulo 1',
+	'visualeditor-formatdropdown-format-heading2' => 'Titulo 2',
+	'visualeditor-formatdropdown-format-heading3' => 'Titulo 3',
+	'visualeditor-formatdropdown-format-heading4' => 'Titulo 4',
+	'visualeditor-formatdropdown-format-heading5' => 'Titulo 5',
+	'visualeditor-formatdropdown-format-heading6' => 'Titulo 6',
+	'visualeditor-formatdropdown-format-preformatted' => 'Preformatate',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Grasse',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Italic',
+	'visualeditor-annotationbutton-link-tooltip' => 'Ligamine',
+	'visualeditor-indentationbutton-indent-tooltip' => 'Augmentar indentation',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Reducer indentation',
+	'visualeditor-listbutton-number-tooltip' => 'Lista numerate',
+	'visualeditor-listbutton-bullet-tooltip' => 'Lista a punctos',
+	'visualeditor-clearbutton-tooltip' => 'Rader formatation',
+	'visualeditor-historybutton-undo-tooltip' => 'Disfacer',
+	'visualeditor-historybutton-redo-tooltip' => 'Refacer',
+	'visualeditor-viewpage-savewarning' => 'Es tu secur de voler retornar al modo de lectura sin salveguardar primo?',
+	'visualeditor-loadwarning' => 'Error durante le cargamento del datos ab le servitor: $1. Vole tu reprobar?',
+	'visualeditor-saveerror' => 'Error durante le salveguarda del datos in le servitor: $1.',
 );
 
 /** Italian (italiano)
@@ -453,6 +505,8 @@ $messages['it'] = array(
 	'visualeditor-historybutton-undo-tooltip' => 'Annulla',
 	'visualeditor-historybutton-redo-tooltip' => 'Rifai',
 	'visualeditor-viewpage-savewarning' => 'Sei sicuro di voler tornare alla modalità in visualizzazione senza salvare prima?',
+	'visualeditor-loadwarning' => 'Errore durante il caricamento dei dati dal server: $1. Vuoi riprovare?',
+	'visualeditor-saveerror' => 'Errore durante il salvataggio dei dati sul server: $1.',
 );
 
 /** Japanese (日本語)
@@ -523,6 +577,11 @@ $messages['mk'] = array(
 	'visualeditor-tooltip-help' => 'Поглед на помош',
 	'visualeditor-feedback-prompt' => 'Дајте мислење',
 	'visualeditor-feedback-dialog-title' => 'Дајте мислење за Песочникот на ВизуеленУредник',
+	'visualeditor-ca-editsource' => 'Уреди извор',
+	'visualeditor-linkinspector-title' => 'Уреди врска',
+	'visualeditor-linkinspector-label-pagetitle' => 'Наслов на страницата',
+	'visualeditor-formatdropdown-title' => 'Смени формат',
+	'visualeditor-formatdropdown-format-paragraph' => 'Пасус',
 	'visualeditor-formatdropdown-format-heading1' => 'Наслов 1',
 	'visualeditor-formatdropdown-format-heading2' => 'Наслов 2',
 	'visualeditor-formatdropdown-format-heading3' => 'Наслов 3',
