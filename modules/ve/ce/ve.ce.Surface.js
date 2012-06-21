@@ -538,7 +538,9 @@ ve.ce.Surface.prototype.onChange = function( transaction, selection ) {
 ve.ce.Surface.prototype.handleEnter = function() {
 	var selection = this.model.getSelection(),
 		documentModel = this.model.getDocument(),
-		tx;
+		emptyParagraph = [{ 'type': 'paragraph' }, { 'type': '/paragraph' }],
+		tx,
+		advanceCursor = true;
 	// Stop polling while we work
 	this.stopPolling();
 	// Handle removal first
@@ -564,7 +566,6 @@ ve.ce.Surface.prototype.handleEnter = function() {
 	) {
 		// If we're at the start/end of something that's not a paragraph, insert a paragraph
 		// before/after
-		var emptyParagraph = [{ 'type': 'paragraph' }, { 'type': '/paragraph' }];
 		if ( cursor === contentBranchModelRange.from ) {
 			tx = ve.dm.Transaction.newFromInsertion(
 				documentModel, contentBranchModel.getOuterRange().from, emptyParagraph
@@ -576,7 +577,9 @@ ve.ce.Surface.prototype.handleEnter = function() {
 		}
 	} else {
 		// Split
-		stack = [];
+		var	stack = [],
+			outermostNode = null;
+
 		ve.Node.traverseUpstream( node, function( node ) {
 			if ( !node.canBeSplit() ) {
 				return false;
@@ -587,16 +590,46 @@ ve.ce.Surface.prototype.handleEnter = function() {
 				{ 'type': '/' + node.type },
 				node.model.getClonedElement()
 			);
+			outermostNode = node;
 			return true;
 		} );
-		// We must process the transaction first because getRelativeContentOffset can't help us yet
-		tx = ve.dm.Transaction.newFromInsertion( documentModel, selection.from, stack );
+		
+		var	outerParent = outermostNode.getModel().getParent(),
+			outerChildrenCount = outerParent.getChildren().length
+		
+		if ( 
+			outermostNode.type == 'listItem' && // this is a list item
+			outerParent.getChildren()[outerChildrenCount - 1] == outermostNode.getModel() && // this is the last list item
+			outermostNode.children.length == 1 && // there is one child
+			node.model.length == 0 // the child is empty
+		) {
+			// Enter was pressed in an empty list item.
+			var list =  outermostNode.getModel().getParent();
+			// Remove the list item
+			tx = ve.dm.Transaction.newFromRemoval( documentModel, outermostNode.getModel().getOuterRange() );
+			selection = tx.translateRange( selection );
+			this.model.change( tx, selection );
+			// Insert a paragraph
+			tx = ve.dm.Transaction.newFromInsertion( documentModel, list.getOuterRange().to, emptyParagraph );
+			
+			advanceCursor = false;				
+		} else {		
+			// We must process the transaction first because getRelativeContentOffset can't help us yet
+			tx = ve.dm.Transaction.newFromInsertion( documentModel, selection.from, stack );
+		}
 	}
 	this.model.change( tx );
+
 	// Now we can move the cursor forward
-	this.model.change(
-		null, new ve.Range( documentModel.getRelativeContentOffset( selection.from, 1 ) )
-	);
+	if ( advanceCursor ) {
+		this.model.change(
+			null, new ve.Range( documentModel.getRelativeContentOffset( selection.from, 1 ) )
+		);
+	} else {
+		this.model.change(
+			null, new ve.Range( documentModel.getNearestContentOffset( selection.from ) )
+		);		
+	}
 	// Reset and resume polling
 	this.clearPollData();
 	this.startPolling();
