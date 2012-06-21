@@ -136,6 +136,9 @@ $wgResourceModules += array(
 			've/ve.debug.js',
 		),
 	),
+	'ext.visualEditor.specialMessages' => $wgVisualEditorResourceTemplate + array(
+		'class' => 'VisualEditorMessagesModule'
+	),
 	'ext.visualEditor.core' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
 			// ve
@@ -306,3 +309,5 @@ $wgAPIModules['ve-parsoid'] = 'ApiVisualEditor';
 $wgAutoloadClasses['VisualEditorHooks'] = $dir . 'VisualEditor.hooks.php';
 $wgHooks['BeforePageDisplay'][] = 'VisualEditorHooks::onBeforePageDisplay';
 $wgHooks['MakeGlobalVariablesScript'][] = 'VisualEditorHooks::onMakeGlobalVariablesScript';
+
+$wgAutoloadClasses['VisualEditorMessagesModule'] = $dir . 'VisualEditorMessagesModule.php';

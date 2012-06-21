@@ -514,6 +514,7 @@ ve.init.ViewPageTarget.prototype.setupSaveDialog = function() {
 			.click( ve.proxy( this.onSaveDialogCloseButtonClick, this ) )
 			.end()
 		.find( '.ve-init-viewPageTarget-saveDialog-editSummary-label' )
+			// This will be updated to use ve.specialMessages.summary later
 			.text( ve.msg( 'summary' ) )
 			.end()
 		.find( '.ve-init-viewPageTarget-saveDialog-minorEdit-label' )
@@ -573,6 +574,9 @@ ve.init.ViewPageTarget.prototype.setupSaveDialog = function() {
  * @method
  */
 ve.init.ViewPageTarget.prototype.attachSaveDialog = function() {
+	// Update the summary message from ve.specialMessages
+	this.$saveDialog.find( '.ve-init-viewPageTarget-saveDialog-editSummary-label' )
+		.html( ve.specialMessages.summary );
 	this.$saveDialog.insertAfter( this.$toolbarSaveButton );
 };
 
