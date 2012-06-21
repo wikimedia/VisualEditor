@@ -536,18 +536,14 @@ ve.ce.Surface.prototype.handleEnter = function() {
 		// Split
 		stack = [];
 		ve.Node.traverseUpstream( node, function( node ) {
-			var elementType = node.type;
 			if ( !node.canBeSplit() ) {
 				return false;
 			}
 			stack.splice(
 				stack.length / 2,
 				0,
-				{ 'type': '/' + elementType },
-				{
-					'type': elementType,
-					'attributes': ve.copyObject( node.model.attributes )
-				}
+				{ 'type': '/' + node.type },
+				node.model.getClonedElement()
 			);
 			return true;
 		} );
