@@ -197,6 +197,9 @@ ve.ce.BranchNode.prototype.onSplice = function( index, howmany ) {
 };
 
 ve.ce.BranchNode.prototype.hasSlugAtOffset = function( offset ) {
+	if ( this.getLength() === 0 ) {
+		return true;
+	}
 	for ( var i = 0; i < this.children.length; i++ ) {
 		if ( this.children[i].canHaveSlug() ) {
 			var nodeOffset = this.children[i].model.getRoot().getOffsetFromNode( this.children[i].model );
