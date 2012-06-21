@@ -44,6 +44,16 @@ ve.ce.DocumentNode.prototype.getOuterLength = function() {
 	return this.length;
 };
 
+/**
+ * Gets the surface this document is attached to.
+ *
+ * @method
+ * @returns {ve.ve.Surface} Surface this document is attached to
+ */
+ve.ce.DocumentNode.prototype.getSurface = function() {
+	return this.surface;
+};
+
 /* Registration */
 
 ve.ce.nodeFactory.register( 'document', ve.ce.DocumentNode );
