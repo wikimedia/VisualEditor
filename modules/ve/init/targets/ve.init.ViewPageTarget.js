@@ -555,7 +555,7 @@ ve.init.ViewPageTarget.prototype.setupSaveDialog = function() {
 	// Triggered when mw.page.watch.updateWatchLink(link, action) is called
 	$( '#ca-watch, #ca-unwatch' )
 		.on(
-			'watch.mw',
+			'watchpage.mw',
 			ve.proxy( function( e, action ){
 				this.$saveDialog
 					.find( '#ve-init-viewPageTarget-saveDialog-watchList')
