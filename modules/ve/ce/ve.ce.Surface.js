@@ -130,9 +130,53 @@ ve.ce.Surface.prototype.onKeyDown = function( e ) {
 		*/
 		// Left arrow
 		case 37:
+			if ( !e.altKey && this.model.getSelection().getLength() === 0 ) {
+				var offset = this.model.getSelection().start;
+				var relativeContentOffset = this.documentView.model.getRelativeContentOffset( offset, -1 );
+				var relativeStructuralOffset = this.documentView.model.getRelativeStructuralOffset( offset - 1, -1, true );
+				var relativeStructuralOffsetNode = this.documentView.documentNode.getNodeFromOffset( relativeStructuralOffset );
+				var hasSlug = relativeStructuralOffsetNode.hasSlugAtOffset( relativeStructuralOffset );
+				var newOffset;
+				if ( hasSlug ) {
+					if ( relativeContentOffset > offset ) {
+						newOffset = relativeStructuralOffset;
+					} else {
+						newOffset = Math.max( relativeContentOffset, relativeStructuralOffset );
+					}
+				} else {
+					newOffset = Math.min( offset, relativeContentOffset );
+				}
+				this.model.change(
+					null,
+					new ve.Range( newOffset )
+				);
+				e.preventDefault();
+			}
 			break;
 		// Right arrow
 		case 39:
+			if ( !e.altKey && this.model.getSelection().getLength() === 0 ) {
+				var offset = this.model.getSelection().start;
+				var relativeContentOffset = this.documentView.model.getRelativeContentOffset( offset, 1 );
+				var relativeStructuralOffset = this.documentView.model.getRelativeStructuralOffset( offset + 1, 1, true );
+				var relativeStructuralOffsetNode = this.documentView.documentNode.getNodeFromOffset( relativeStructuralOffset );
+				var hasSlug = relativeStructuralOffsetNode.hasSlugAtOffset( relativeStructuralOffset );
+				var newOffset;
+				if ( hasSlug ) {
+					if ( relativeContentOffset < offset ) {
+						newOffset = relativeStructuralOffset;
+					} else {
+						newOffset = Math.min( relativeContentOffset, relativeStructuralOffset );
+					}
+				} else {
+					newOffset = Math.max( offset, relativeContentOffset );
+				}
+				this.model.change(
+					null,
+					new ve.Range( newOffset )
+				);
+				e.preventDefault();
+			}
 			break;
 		// Enter
 		case 13:
