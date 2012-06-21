@@ -603,7 +603,7 @@ ve.ce.Surface.prototype.handleDelete = function( backspace ) {
 	if ( selection.from === selection.to ) {
 		if ( backspace ) {
 			sourceOffset = selection.to;
-			targetOffset = this.model.getDocument().getRelativeContentOffset( sourceOffset, -1 );
+			targetOffset = this.getNearestCorrectOffset( sourceOffset - 1, -1 );
 			//this.model.setSelection( new ve.Range( targetOffset, targetOffset ) );
 		} else {
 			sourceOffset = this.model.getDocument().getRelativeContentOffset( selection.to, 1 );
