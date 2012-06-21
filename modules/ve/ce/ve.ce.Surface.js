@@ -196,9 +196,9 @@ ve.ce.Surface.prototype.onKeyDown = function( e ) {
 			break;
 		// B
 		case 66:
-			if ( e.metaKey ) {
-				e.preventDefault();
+			if ( ve.ce.Surface.isShortcutKey( e ) ) {
 				// Ctrl+B / Cmd+B, annotate with bold
+				e.preventDefault();
 				var annotations = this.documentView.model.getAnnotationsFromRange( this.model.getSelection() ),
 					annotation = {"type":"textStyle/bold"};
 
@@ -207,13 +207,13 @@ ve.ce.Surface.prototype.onKeyDown = function( e ) {
 			break;
 		// I
 		case 73:
-			if ( e.metaKey ) {
+			if ( ve.ce.Surface.isShortcutKey( e ) ) {
 				// Ctrl+I / Cmd+I, annotate with italic
+				e.preventDefault();
 				var annotations = this.documentView.model.getAnnotationsFromRange( this.model.getSelection() ),
 					annotation = {"type":"textStyle/italic"};
 
 				this.model.annotate( annotations[ve.getHash(annotation)] ? 'clear' : 'set', annotation );
-				e.preventDefault();
 			}
 			break;
 		default:
@@ -312,7 +312,7 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
 ve.ce.Surface.prototype.onKeyPress = function( e ) {
 	ve.log('onKeyPress');
 	
-	if (e.metaKey) {
+	if ( ve.ce.Surface.isShortcutKey( e ) ) {
 		return;
 	}
 
@@ -1034,6 +1034,14 @@ ve.ce.Surface.prototype.getSelectionRect = function() {
 		start: rangySel.getStartDocumentPos(),
 		end: rangySel.getEndDocumentPos()
 	};
+};
+
+/* Tests if the modifier key for keyboard shortcuts is pressed. */
+ve.ce.Surface.isShortcutKey = function( e ) {
+	if ( e.ctrlKey || e.metaKey ) {
+		return true;
+	}
+	return false;
 };
 
 ve.ce.Surface.prototype.getModel = function() {
