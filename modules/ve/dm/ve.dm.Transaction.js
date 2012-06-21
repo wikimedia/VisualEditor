@@ -477,7 +477,7 @@ ve.dm.Transaction.prototype.translateOffset = function( offset ) {
 				return offset + adjustment;
 			} else if ( offset > cursor && offset < cursor + op.remove.length ) {
 				// The offset points inside of the removal
-				return null;
+				return offset;
 			}
 			cursor += op.remove.length;
 		} else if ( op.type === 'retain' ) {
