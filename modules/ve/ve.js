@@ -361,3 +361,12 @@ ve.msg = typeof mw === 'object' ? mw.msg : function( key ) {
  * @member
  */
 ve.msg.messages = {};
+
+/**
+ * Map of message keys and values for special messages loaded from VisualEditorMessagesModule.php
+ * The values are HTML.
+ *
+ * @static
+ * @member
+ */
+ve.specialMessages = {};
