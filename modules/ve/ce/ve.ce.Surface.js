@@ -131,7 +131,7 @@ ve.ce.Surface.prototype.onKeyDown = function( e ) {
 		*/
 		// Left arrow
 		case 37:
-			if ( !e.altKey && this.model.getSelection().getLength() === 0 ) {
+			if ( !e.altKey && !e.shiftKey && this.model.getSelection().getLength() === 0 ) {
 				var offset = this.model.getSelection().start;
 				var relativeContentOffset = this.documentView.model.getRelativeContentOffset( offset, -1 );
 				var relativeStructuralOffset = this.documentView.model.getRelativeStructuralOffset( offset - 1, -1, true );
@@ -156,7 +156,7 @@ ve.ce.Surface.prototype.onKeyDown = function( e ) {
 			break;
 		// Right arrow
 		case 39:
-			if ( !e.altKey && this.model.getSelection().getLength() === 0 ) {
+			if ( !e.altKey && !e.shiftKey && this.model.getSelection().getLength() === 0 ) {
 				var offset = this.model.getSelection().start;
 				var relativeContentOffset = this.documentView.model.getRelativeContentOffset( offset, 1 );
 				var relativeStructuralOffset = this.documentView.model.getRelativeStructuralOffset( offset + 1, 1, true );
