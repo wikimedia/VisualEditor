@@ -275,6 +275,12 @@ $messages['fr'] = array(
 	'visualeditor-tooltip-help' => "Basculer la vue d'aide",
 	'visualeditor-feedback-prompt' => 'Laisser un commentaire',
 	'visualeditor-feedback-dialog-title' => "Laissez un commentaire sur le bac à sable de l'éditeur visuel",
+	'visualeditor-formatdropdown-format-paragraph' => 'Paragraphe',
+	'visualeditor-formatdropdown-format-preformatted' => 'Préformaté',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Gras',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Italique',
+	'visualeditor-listbutton-number-tooltip' => 'Liste numérotée',
+	'visualeditor-listbutton-bullet-tooltip' => 'Liste à puces',
 );
 
 /** Franco-Provençal (arpetan)
@@ -401,6 +407,8 @@ $messages['hsb'] = array(
 	'visualeditor-clearbutton-tooltip' => 'Formatowanje wotstronić',
 	'visualeditor-historybutton-undo-tooltip' => 'Cofnyć',
 	'visualeditor-historybutton-redo-tooltip' => 'Wospjetować',
+	'visualeditor-viewpage-savewarning' => 'Chceš so woprawdźe k napohladowemu modusej wróćić, bjeztoho zo by prjedy składował?',
+	'visualeditor-loadwarning' => 'Zmylk při začitowanju datow ze serwera: $1. Chceš znowa spytać?',
 	'visualeditor-saveerror' => 'Zmylk při składowanju datow na serwerje: $1.',
 );
 
@@ -600,6 +608,30 @@ $messages['mk'] = array(
 	'visualeditor-historybutton-undo-tooltip' => 'Врати',
 	'visualeditor-historybutton-redo-tooltip' => 'Повтори',
 	'visualeditor-viewpage-savewarning' => 'Дали сте сигурни дека сакате да се вратите на прегледниот режим без прво да ги ачувате измените?',
+	'visualeditor-loadwarning' => 'Грешка при вчитување на податоците од опслужувачот: $1. Дали сакате да пробате одново?',
+	'visualeditor-saveerror' => 'Грешка при зачувување на податоците во опслужувачот: $1.',
+);
+
+/** Malayalam (മലയാളം)
+ * @author Praveenp
+ */
+$messages['ml'] = array(
+	'visualeditor-ca-editsource' => 'മൂലരൂപം തിരുത്തുക',
+	'visualeditor-linkinspector-title' => 'കണ്ണി തിരുത്തുക',
+	'visualeditor-linkinspector-label-pagetitle' => 'താളിന്റെ തലക്കെട്ട്',
+	'visualeditor-formatdropdown-title' => 'തരം മാറ്റുക',
+	'visualeditor-formatdropdown-format-paragraph' => 'ഖണ്ഡിക',
+	'visualeditor-formatdropdown-format-heading1' => 'തലക്കെട്ട് 1',
+	'visualeditor-formatdropdown-format-heading2' => 'തലക്കെട്ട് 2',
+	'visualeditor-formatdropdown-format-heading3' => 'തലക്കെട്ട് 3',
+	'visualeditor-formatdropdown-format-heading4' => 'തലക്കെട്ട് 4',
+	'visualeditor-formatdropdown-format-heading5' => 'തലക്കെട്ട് 5',
+	'visualeditor-formatdropdown-format-heading6' => 'തലക്കെട്ട് 6',
+	'visualeditor-annotationbutton-bold-tooltip' => 'കടുപ്പിക്കുക',
+	'visualeditor-annotationbutton-italic-tooltip' => 'ചെരിച്ച്',
+	'visualeditor-annotationbutton-link-tooltip' => 'കണ്ണി',
+	'visualeditor-historybutton-undo-tooltip' => 'തിരസ്കരിക്കുക',
+	'visualeditor-historybutton-redo-tooltip' => 'വീണ്ടും വരുത്തുക',
 );
 
 /** Malay (Bahasa Melayu)
@@ -787,6 +819,31 @@ $messages['vi'] = array(
 	'visualeditor-tooltip-help' => 'Bật/tắt trợ giúp',
 	'visualeditor-feedback-prompt' => 'Gửi phản hồi',
 	'visualeditor-feedback-dialog-title' => 'Gửi phản hồi về chỗ thử Trình soạn thị giác',
+	'visualeditor-ca-editsource' => 'Sửa đổi mã nguồn',
+	'visualeditor-linkinspector-title' => 'Sửa đổi liên kết',
+	'visualeditor-linkinspector-label-pagetitle' => 'Tên trang',
+	'visualeditor-formatdropdown-title' => 'Thay đổi định dạng',
+	'visualeditor-formatdropdown-format-paragraph' => 'Đoạn văn',
+	'visualeditor-formatdropdown-format-heading1' => 'Đề mục cấp 1',
+	'visualeditor-formatdropdown-format-heading2' => 'Đề mục cấp 2',
+	'visualeditor-formatdropdown-format-heading3' => 'Đề mục cấp 3',
+	'visualeditor-formatdropdown-format-heading4' => 'Đề mục cấp 4',
+	'visualeditor-formatdropdown-format-heading5' => 'Đề mục cấp 5',
+	'visualeditor-formatdropdown-format-heading6' => 'Đề mục cấp 6',
+	'visualeditor-formatdropdown-format-preformatted' => 'Định dạng sẵn',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Đậm',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Xiên',
+	'visualeditor-annotationbutton-link-tooltip' => 'Liên kết',
+	'visualeditor-indentationbutton-indent-tooltip' => 'Tăng lề',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Thụt lề',
+	'visualeditor-listbutton-number-tooltip' => 'Danh sách đánh số',
+	'visualeditor-listbutton-bullet-tooltip' => 'Danh sách không đánh số',
+	'visualeditor-clearbutton-tooltip' => 'Xóa định dạng',
+	'visualeditor-historybutton-undo-tooltip' => 'Hoàn tác',
+	'visualeditor-historybutton-redo-tooltip' => 'Làm lại',
+	'visualeditor-viewpage-savewarning' => 'Bạn có chắc chắn muốn quay trở về chế độ xem mà không lưu giữ trước tiên?',
+	'visualeditor-loadwarning' => 'Lỗi tải dữ liệu từ máy chủ: $1. Bạn có muốn thử lại không?',
+	'visualeditor-saveerror' => 'Lỗi lưu dữ liệu trên máy chủ: $1.',
 );
 
 /** Simplified Chinese (‪中文（简体）‬)
