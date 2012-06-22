@@ -96,10 +96,8 @@ ve.dm.DocumentSynchronizer.synchronizers.resize = function( action ) {
  */
 ve.dm.DocumentSynchronizer.synchronizers.rebuild = function( action ) {
 	// Find the nodes contained by oldRange
-	var selection = this.document.selectNodes(
-		ve.Range.newFromTranslatedRange( action.oldRange, this.adjustment ),
-		'siblings'
-	);
+	var adjustedOldRange = ve.Range.newFromTranslatedRange( action.oldRange, this.adjustment );
+	var selection = this.document.selectNodes( adjustedOldRange, 'siblings' );
 	if ( selection.length === 0 ) {
 		// WTF? Nothing to rebuild, I guess. Whatever.
 		return;
@@ -118,10 +116,10 @@ ve.dm.DocumentSynchronizer.synchronizers.rebuild = function( action ) {
 		index = selection[0].index;
 		numNodes = selection.length;
 	}
-	this.document.rebuildNodes( parent, index, numNodes, action.oldRange.from,
+	this.document.rebuildNodes( parent, index, numNodes, adjustedOldRange.from,
 		action.newRange.getLength()
 	);
-	this.adjustment += action.newRange.getLength() - action.oldRange.getLength();
+	this.adjustment += action.newRange.getLength() - adjustedOldRange.getLength();
 };
 
 /* Methods */
