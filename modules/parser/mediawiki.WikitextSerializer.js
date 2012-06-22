@@ -16,13 +16,42 @@ var PegTokenizer = require('./mediawiki.tokenizer.peg.js').PegTokenizer;
 
 var WSP = WikitextSerializer.prototype;
 
-WSP.defaultOptions = {
-	onNewline: true, // actually following start of file or a real newline
-	onStartOfLine : true, // in start-of-line context, not necessarily after newline
+/* *********************************************************************
+ * Here is what the state attributes mean:
+ *
+ * listStack
+ *    Stack of list contexts to let us emit wikitext for nested lists.
+ *    Each context keeps track of 3 values:
+ *    - itemBullet: the wikitext bullet char for this list
+ *    - itemCount : # of list items encountered so far for the list 
+ *    - bullets   : cumulative bullet prefix based on all the lists
+ *                  that enclose the current list
+ *
+ * onNewline
+ *    true on start of file or after a new line has been emitted.
+ *
+ * onStartOfLine
+ *    true when onNewline is true, and also in other start-of-line contexts
+ *    Ex: after a comment has been emitted, or after include/noinclude tokens.
+ *
+ * singleLineMode
+ *    - if (> 0), we cannot emit any newlines.
+ *    - this value changes as we entire/exit dom subtrees that require
+ *      single-line wikitext output. WSP._tagHandlers specify single-line
+ *      mode for individual tags.
+ *
+ * availableNewlineCount
+ *    # of newlines that have been encountered so far but not emitted yet.
+ *    Newlines are buffered till they need to be output.  This lets us
+ *    swallow newlines in contexts where they shouldn't be emitted for
+ *    ensuring equivalent wikitext output. (ex dom: ..</li>\n\n</li>..)
+ * ********************************************************************* */
+WSP.initialState = {
 	listStack: [],
-	lastHandler: null,
-	availableNewlineCount: 0, // collected (and stripped) newlines from the input
-	singleLineMode: 0 // single-line syntactical context: list items, headings etc
+	onNewline: true,
+	onStartOfLine : true,
+	availableNewlineCount: 0,
+	singleLineMode: 0
 };
 
 WSP.escapeWikiText = function ( state, text ) {
@@ -208,29 +237,52 @@ WSP._listEndHandler = function( state, token ) {
 };
 
 WSP._listItemHandler = function ( handler, bullet, state, token ) { 
+	function inStartOfLineContext(state) {
+		return	state.onStartOfLine || 
+				state.emitNewlineOnNextToken ||
+				(state.availableNewlineCount > 0);
+	}
+
+	function isRepeatToken(state, token) {
+		return	state.prevToken.constructor === EndTagTk && 
+				state.prevToken.name === token.name;
+	}
+
+	function isMultiLineDtDdPair(state, token) {
+		return	token.name === 'dd' && 
+				token.dataAttribs.stx !== 'row' &&
+				state.prevTagToken.constructor === EndTagTk &&
+				state.prevTagToken.name === 'dt';
+	}
+
 	var stack   = state.listStack;
 	var curList = stack[stack.length - 1];
 	curList.itemCount++;
-	var res;
 	curList.itemBullet = bullet;
-	if (curList.itemCount > 1 && // don't prefix bullets on the first descent
-			// Check if the item is / will also be in start of line context,
-			// and prefix all bullets if so.
-			// XXX gwicke: abstract out the 'will be on start of line if
-			// output is not empty' bit to method or flag.
-		(	( state.onStartOfLine ||
-				state.availableNewlineCount ||
-				state.emitNewlineOnNextToken || 
-				// separation between the same tokens would be triggered
-				( state.prevToken.constructor === EndTagTk && 
-					state.prevToken.name === token.name) ) || 
-			// insert a newline before the dd unless specified differently on
-			// the prevTagToken
-			(   token.name === 'dd' && token.dataAttribs.stx !== 'row' &&
-				state.prevTagToken.constructor === EndTagTk &&
-				state.prevTagToken.name === 'dt'
-			)
-		) 
+
+	// Output bullet prefix only if:
+	// - this is not the first list item
+	// - we are either in:
+	//    * a new line context, 
+	//    * seeing an identical token as the last one (..</li><li>...)
+	//      (since we are in this handler on encountering a list item token,
+	//       this means we are the 2nd or later item in the list, BUT without
+	//       any intervening new lines or other tokens in between)
+	//    * on the dd part of a multi-line dt-dd pair
+	//      (The dd on a single-line dt-dd pair sticks to the dt.
+	//       which means it won't get the bullets that the dt already got).
+	//
+	// SSS FIXME: This condition could be rephrased as:
+	//
+	// if (isRepeatToken(state, token) ||
+	//     (curList.itemCount > 1 && (inStartOfLineContext(state) || isMultiLineDtDdPair(state, token))))
+	//
+	var res;
+	if (curList.itemCount > 1 && 
+		(	inStartOfLineContext(state) ||
+			isRepeatToken(state, token) ||
+			isMultiLineDtDdPair(state, token)
+		)
 	)
 	{
 		handler.startsNewline = true;
@@ -373,6 +425,33 @@ WSP._linkEndHandler = function( state, token ) {
 	}
 };
 
+/* *********************************************************************
+ * startsNewline
+ *     if true, the wikitext for the dom subtree rooted
+ *     at this html tag requires a new line context.
+ *
+ * endsLine
+ *     if true, the wikitext for the dom subtree rooted
+ *     at this html tag ends the line.
+ *
+ * pairsSepNlCount
+ *     # of new lines required between wikitext for dom siblings
+ *     of the same tag type (..</p><p>.., etc.)
+ *
+ * newlineTransparent
+ *     if true, this token does not change the newline status
+ *     after it is emitted.
+ *
+ * singleLine
+ *     if 1, the wikitext for the dom subtree rooted at this html tag
+ *     requires all content to be emitted on the same line without 
+ *     any line breaks. +1 sets the single-line mode (on descending
+ *     the dom subtree), -1 clears the single-line mod (on exiting
+ *     the dom subtree).
+ *
+ * ignore
+ *     if true, the serializer pretends as if it never saw this token.
+ * ********************************************************************* */
 WSP.tagHandlers = {
 	body: {
 		start: {
@@ -662,7 +741,7 @@ WSP._serializeAttributes = function ( attribs ) {
  * Serialize a chunk of tokens
  */
 WSP.serializeTokens = function( tokens, chunkCB ) {
-	var state = $.extend({}, this.defaultOptions, this.options),
+	var state = $.extend({}, this.initialState, this.options),
 		i, l;
 	if ( chunkCB === undefined ) {
 		var out = [];
@@ -879,18 +958,22 @@ WSP._serializeToken = function ( state, token ) {
  * Serialize an HTML DOM document.
  */
 WSP.serializeDOM = function( node, chunkCB ) {
-	var state = $.extend({}, this.defaultOptions, this.options);
-	//console.warn( node.innerHTML );
-	if ( ! chunkCB ) {
-		var out = [];
-		state.chunkCB = out.push.bind( out );
-		this._serializeDOM( node, state );
-		this._serializeToken( state, new EOFTk() );
-		return out.join('');
-	} else {
-		state.chunkCB = chunkCB;
-		this._serializeDOM( node, state );
-		this._serializeToken( state, new EOFTk() );
+	try {
+		var state = $.extend({}, this.initialState, this.options);
+		//console.warn( node.innerHTML );
+		if ( ! chunkCB ) {
+			var out = [];
+			state.chunkCB = out.push.bind( out );
+			this._serializeDOM( node, state );
+			this._serializeToken( state, new EOFTk() );
+			return out.join('');
+		} else {
+			state.chunkCB = chunkCB;
+			this._serializeDOM( node, state );
+			this._serializeToken( state, new EOFTk() );
+		}
+	} catch (e) {
+		console.warn(e.stack);
 	}
 };
 
