@@ -182,7 +182,7 @@ ve.ce.Surface.prototype.onKeyDown = function( e ) {
 		// Enter
 		case 13:
 			e.preventDefault();
-			this.handleEnter();
+			this.handleEnter( e );
 			break;
 		// Backspace
 		case 8:
@@ -605,14 +605,16 @@ ve.ce.Surface.prototype.onChange = function( transaction, selection ) {
 	}
 };
 
-ve.ce.Surface.prototype.handleEnter = function() {
+ve.ce.Surface.prototype.handleEnter = function( e ) {
 	var selection = this.model.getSelection(),
 		documentModel = this.model.getDocument(),
 		emptyParagraph = [{ 'type': 'paragraph' }, { 'type': '/paragraph' }],
 		tx,
 		advanceCursor = true;
+
 	// Stop polling while we work
 	this.stopPolling();
+
 	// Handle removal first
 	if ( selection.from !== selection.to ) {
 		tx = ve.dm.Transaction.newFromRemoval( documentModel, selection );
@@ -661,12 +663,16 @@ ve.ce.Surface.prototype.handleEnter = function() {
 				node.model.getClonedElement()
 			);
 			outermostNode = node;
-			return true;
+			if ( e.shiftKey ) {
+				return false;
+			} else {
+				return true;
+			}
 		} );
-		
+
 		var	outerParent = outermostNode.getModel().getParent(),
 			outerChildrenCount = outerParent.getChildren().length
-		
+
 		if ( 
 			outermostNode.type == 'listItem' && // this is a list item
 			outerParent.getChildren()[outerChildrenCount - 1] == outermostNode.getModel() && // this is the last list item
