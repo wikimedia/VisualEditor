@@ -23,5 +23,4 @@ ve.ce.LeafNode = function( type, model, $element ) {
 
 /* Inheritance */
 
-ve.extendClass( ve.ce.LeafNode, ve.LeafNode );
-ve.extendClass( ve.ce.LeafNode, ve.ce.Node );
+ve.extendClass( ve.ce.LeafNode, ve.LeafNode, ve.ce.Node );
