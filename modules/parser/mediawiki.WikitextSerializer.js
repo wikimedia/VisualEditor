@@ -154,7 +154,12 @@ WSP.escapeWikiText = function ( state, text ) {
 			switch ( token.constructor ) {
 				case String:
 					wrapNonTextTokens();
-					outTexts.push( token );
+					outTexts.push(
+						// Entity-escape only dangerous chars for now
+						// FIXME: don't decode entities in the tokenizer when
+						// parsing text content for escaping!
+						token.replace(/</g, '&lt;').replace(/>/g, '&gt;')
+					);
 					cursor += token.length;
 					break;
 				case NlTk:
