@@ -68,7 +68,8 @@ WSP.escapeWikiText = function ( state, text ) {
 	// this is synchronous for now, will still need sync version later, or
 	// alternatively make text processing in the serializer async
 	var prefixedText = text;
-	if ( ! state.onNewline ) {
+	var inNewlineContext = WSP._inNewLineContext( state );
+	if ( ! inNewlineContext ) {
 		// Prefix '_' so that no start-of-line wiki syntax matches. Strip it from
 		// the result.
 		prefixedText = '_' + text;
@@ -82,7 +83,7 @@ WSP.escapeWikiText = function ( state, text ) {
 	p.process( prefixedText );
 
 
-	if ( ! state.onNewline ) {
+	if ( ! inNewlineContext ) {
 		// now strip the leading underscore.
 		if ( tokens[0] === '_' ) {
 			tokens.shift();
@@ -112,7 +113,7 @@ WSP.escapeWikiText = function ( state, text ) {
 				rangeStart = cursor;
 			} else {
 				rangeStart = startRange[0];
-				if ( ! state.onNewline ) {
+				if ( ! inNewlineContext ) {
 					// compensate for underscore.
 					rangeStart--;
 				}
@@ -130,7 +131,7 @@ WSP.escapeWikiText = function ( state, text ) {
 				rangeEnd = text.length;
 			} else {
 				rangeEnd = endRange[1];
-				if ( ! state.onNewline ) {
+				if ( ! inNewlineContext ) {
 					// compensate for underscore.
 					rangeEnd--;
 				}
@@ -194,6 +195,18 @@ var id = function(v) {
 	}; 
 };
 
+WSP._inStartOfLineContext = function(state) {
+	return	state.onStartOfLine || 
+		state.emitNewlineOnNextToken ||
+		(state.availableNewlineCount > 0);
+};
+
+WSP._inNewLineContext = function(state) {
+	return	state.onNewline || 
+		state.emitNewlineOnNextToken ||
+		(state.availableNewlineCount > 0);
+};
+
 WSP._listHandler = function( handler, bullet, state, token ) {
 	function isListItem(token) {
 		if (token.constructor !== TagTk) return false;
@@ -242,11 +255,6 @@ WSP._listEndHandler = function( state, token ) {
 };
 
 WSP._listItemHandler = function ( handler, bullet, state, token ) { 
-	function inStartOfLineContext(state) {
-		return	state.onStartOfLine || 
-				state.emitNewlineOnNextToken ||
-				(state.availableNewlineCount > 0);
-	}
 
 	function isRepeatToken(state, token) {
 		return	state.prevToken.constructor === EndTagTk && 
@@ -284,7 +292,7 @@ WSP._listItemHandler = function ( handler, bullet, state, token ) {
 	//
 	var res;
 	if (curList.itemCount > 1 && 
-		(	inStartOfLineContext(state) ||
+		(	WSP._inStartOfLineContext(state) ||
 			isRepeatToken(state, token) ||
 			isMultiLineDtDdPair(state, token)
 		)
