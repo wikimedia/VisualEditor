@@ -237,6 +237,8 @@ $messages['es'] = array(
 	'visualeditor-historybutton-undo-tooltip' => 'Deshacer',
 	'visualeditor-historybutton-redo-tooltip' => 'Rehacer',
 	'visualeditor-viewpage-savewarning' => '¿Estás seguro que quieres volver al modo de visualización sin guardar primero?',
+	'visualeditor-loadwarning' => 'Error al cargar los datos del servidor: $1. ¿Le gustaría volver a intentarlo?',
+	'visualeditor-saveerror' => 'Error al guardar datos en el servidor: $1.',
 );
 
 /** Finnish (suomi)
@@ -369,7 +371,7 @@ $messages['hi'] = array(
 	'visualeditor-feedback-prompt' => 'प्रतिक्रिया छोड़ें',
 );
 
-/** Upper Sorbian (Hornjoserbsce)
+/** Upper Sorbian (hornjoserbsce)
  * @author Michawiki
  */
 $messages['hsb'] = array(
