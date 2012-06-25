@@ -443,6 +443,7 @@ block_line
       }
   / ! { return stops.counters.nopre } pre_indent
   / pre
+  / "----" { return new SelfclosingTagTk( "hr", [], {tsr: [pos0, pos]} ); }
 
 /*
  * A paragraph. We don't emit 'p' tokens to avoid issues with template
