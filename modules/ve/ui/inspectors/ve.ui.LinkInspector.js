@@ -133,9 +133,8 @@ ve.ui.LinkInspector.prototype.prepareOpen = function() {
 };
 
 ve.ui.LinkInspector.prototype.onOpen = function() {
-	var	annotation = this.getAnnotationFromSelection(),
+	var annotation = this.getAnnotationFromSelection(),
 		initialValue = '';
-
 	if ( annotation === null ) {
 		this.$locationInput.val( this.getSelectionText() );
 		this.$clearButton.addClass( 'es-inspector-button-disabled' );
@@ -164,40 +163,40 @@ ve.ui.LinkInspector.prototype.onOpen = function() {
 };
 
 ve.ui.LinkInspector.prototype.onClose = function( accept ) {
-	var surfaceView = this.context.getSurfaceView();
+	var surfaceView = this.context.getSurfaceView(),
+		surfaceModel = surfaceView.getModel(),
+		annotations = this.getSelectedLinkAnnotations(),
+		target = this.$locationInput.val(),
+		hash, annotation;
 	if ( accept ) {
-		var target = this.$locationInput.val();
 		if ( target === this.initialValue || !target ) {
 			return;
 		}
-		var surfaceModel = surfaceView.getModel(),
-			annotations = this.getSelectedLinkAnnotations();
-
 		// Clear link annotation if it exists
-		for ( var hash in annotations ) {
+		for ( hash in annotations ) {
 			surfaceModel.annotate( 'clear', annotations[hash] );
 		}
-
-		var annotation;
-		// Figure out if this is an internal or external link
-		// TODO better logic
-		if ( target.match( /^(https?:)?\/\// ) ) {
-			// External link
-			annotation = {
-				'type': 'link/extLink',
-				'data': { 'href': target }
-			};
-		} else {
-			// Internal link
-			annotation = {
-				'type': 'link/wikiLink',
-				'data': { 'title': target }
-			};
-		}
-		surfaceModel.annotate( 'set', annotation );
+		surfaceModel.annotate( 'set', ve.ui.LinkInspector.getAnnotationForTarget( target ) );
 	}
 	// Restore focus
 	surfaceView.getDocument().getDocumentNode().$.focus();
+};
+
+ve.ui.LinkInspector.getAnnotationForTarget = function( target ) {
+	// Figure out if this is an internal or external link
+	if ( target.match( /^(https?:)?\/\// ) ) {
+		// External link
+		return {
+			'type': 'link/extLink',
+			'data': { 'href': target }
+		};
+	} else {
+		// Internal link
+		return {
+			'type': 'link/wikiLink',
+			'data': { 'title': target }
+		};
+	}
 };
 
 /* Inheritance */
