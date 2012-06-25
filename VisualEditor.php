@@ -220,7 +220,8 @@ $wgResourceModules += array(
 		'dependencies' => array(
 			'jquery',
 			'rangy',
-			'ext.visualEditor.base'
+			'ext.visualEditor.base',
+			'mediawiki.Title',
 		),
 		'messages' => array(
 			'visualeditor',

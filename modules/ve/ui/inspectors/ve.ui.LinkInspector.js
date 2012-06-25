@@ -183,6 +183,7 @@ ve.ui.LinkInspector.prototype.onClose = function( accept ) {
 };
 
 ve.ui.LinkInspector.getAnnotationForTarget = function( target ) {
+	var title;
 	// Figure out if this is an internal or external link
 	if ( target.match( /^(https?:)?\/\// ) ) {
 		// External link
@@ -192,6 +193,18 @@ ve.ui.LinkInspector.getAnnotationForTarget = function( target ) {
 		};
 	} else {
 		// Internal link
+		// TODO in the longer term we'll want to have autocompletion and existence&validity
+		// checks using AJAX
+		try {
+			title = new mw.Title( target );
+			if ( title.getNamespaceId() === 6 || title.getNamespaceId() === 14 ) {
+				// File: or Category: link
+				// We have to prepend a colon so this is interpreted as a link
+				// rather than an image inclusion or categorization
+				target = ':' + target;
+			}
+		} catch ( e ) { }
+
 		return {
 			'type': 'link/wikiLink',
 			'data': { 'title': target }
