@@ -1609,8 +1609,6 @@ table_cell_args
 
 text_char = [^'<~[{\n\r:\]}|!=]
 
-text = t:text_char+ { return t.join(''); }
-
 /* Legend
  * '    quotes (italic/bold)
  * <    start of xmlish_tag
@@ -1819,16 +1817,6 @@ preprocessor_text
   )+ {
       return flatten ( r );
   }
-
-spaceless_preprocessor_text
-  = r:( t:[^'<~[{\n\r|!\]}{\t &=]+ { return t.join(''); }
-  / !inline_breaks (
-      directive
-    / !' ' text_char )
-  )+ {
-      return flatten_string ( r );
-  }
-
 
 wikilink_preprocessor_text 
   = r:( t:[^<~[{\n\r\t|!\]}{ &=]+ { return t.join(''); }
