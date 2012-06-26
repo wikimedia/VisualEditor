@@ -579,9 +579,13 @@ ve.init.ViewPageTarget.prototype.setupSaveDialog = function() {
  * @method
  */
 ve.init.ViewPageTarget.prototype.attachSaveDialog = function() {
-	// Update the summary message from ve.specialMessages
+	// Update the summary and minoredit messages from ve.specialMessages
 	this.$saveDialog.find( '.ve-init-viewPageTarget-saveDialog-editSummary-label' )
 		.html( ve.specialMessages.summary );
+	this.$saveDialog.find( '.ve-init-viewPageTarget-saveDialog-minorEdit-label' )
+		.html( ve.specialMessages.minoredit );
+	this.$saveDialog.find( '.ve-init-viewPageTarget-saveDialog-watchList-label' )
+		.html( ve.specialMessages.watchthis );
 	this.$saveDialog.insertAfter( this.$toolbarSaveButton );
 };
 
