@@ -216,6 +216,15 @@ ve.ce.Surface.prototype.onKeyDown = function( e ) {
 				this.model.annotate( annotations[ve.getHash(annotation)] ? 'clear' : 'set', annotation );
 			}
 			break;
+		// K
+		case 75:
+			if ( ve.ce.Surface.isShortcutKey( e ) ) {
+				if ( this.model.getSelection() && this.model.getSelection().getLength() ) {
+					e.preventDefault();
+					this.contextView.openInspector( 'link' );
+				}
+			}
+			break;
 		// Z
 		case 90:
 			if ( ve.ce.Surface.isShortcutKey( e ) ) {
