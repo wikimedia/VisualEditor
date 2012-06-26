@@ -1146,9 +1146,12 @@ pre_indent_line = space l:inlineline {
 }
 
 /*
- * Pre blocks defined using non-indented HTML tags only parse nowiki tags
- * inside them, and convert other content to verbatim text. Nowiki inside pre
- * is not functionally needed, but supported for backwards compatibility.
+ * Pre blocks defined using non-indented HTML tags only parse nowiki tags and
+ * html entities inside them, and convert other content to verbatim text.
+ * Nowiki inside pre is not functionally needed, but supported for backwards
+ * compatibility.
+ *
+ * TODO: add entity support!
  */
 pre
   = "<pre" 
@@ -1679,7 +1682,14 @@ urltext = ( t:[^'<~[{\n\rIPRfghimnstw_|!:\]} &=]+ { return t.join(''); }
 //       }
 
 htmlentity = "&" c:[#0-9a-zA-Z]+ ";" { 
-    return unentity("&" + c.join('') + ";") 
+    //return "&" + c.join('') + ";";
+    var m = "&" + c.join('') + ";";
+    return [
+        new TagTk('span', [new KV('data-mw-gc', 'both')], { stx: 'entity', src: m } ),
+        unentity(m),
+        new EndTagTk('span')
+    ];
+    //return unentity("&" + c.join('') + ";") 
 }
 
 spaces
