@@ -77,6 +77,8 @@ ve.ce.Surface = function( $container, model ) {
 ve.ce.Surface.prototype.documentOnFocus = function() {
 	ve.log( 'documentOnFocus' );
 
+	this.$document.off( '.ve-ce-Surface' );
+
 	this.$document.on( {
 		// key down
 		'keydown.ve-ce-Surface': ve.proxy( this.onKeyDown, this ),
