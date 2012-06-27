@@ -1196,14 +1196,14 @@ nowiki
         return [ 
             new TagTk( 'span', 
                     [
-                        {k: 'data-mw-gc', v: 'wrapper'}, 
+                        {k: 'data-gen', v: 'wrapper'}, 
                         {k: 'typeof', v: 'mw:nowiki'}
                     ],
                     { tsr: [pos0, pos0+8] } )
         ].concat( nc, [ 
                     new EndTagTk( 'span', 
                     [
-                        {k: 'data-mw-gc', v: 'wrapper'}, 
+                        {k: 'data-gen', v: 'wrapper'}, 
                         {k: 'typeof', v: 'mw:nowiki'}
                     ],
                     { tsr: [pos - 9, pos] }) 
@@ -1686,7 +1686,7 @@ htmlentity = "&" c:[#0-9a-zA-Z]+ ";" {
     //return "&" + c.join('') + ";";
     var m = "&" + c.join('') + ";";
     return [
-        new TagTk('span', [new KV('data-mw-gc', 'both')], { stx: 'entity', src: m } ),
+        new TagTk('span', [new KV('data-gen', 'both')], { stx: 'entity', src: m } ),
         unentity(m),
         new EndTagTk('span')
     ];
