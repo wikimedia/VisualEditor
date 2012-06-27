@@ -68,7 +68,7 @@ WSP.escapeWikiText = function ( state, text ) {
 	// this is synchronous for now, will still need sync version later, or
 	// alternatively make text processing in the serializer async
 	var prefixedText = text;
-	var inNewlineContext = WSP._inNewLineContext( state );
+	var inNewlineContext = state.onNewLine;
 	if ( ! inNewlineContext ) {
 		// Prefix '_' so that no start-of-line wiki syntax matches. Strip it from
 		// the result.
@@ -81,7 +81,6 @@ WSP.escapeWikiText = function ( state, text ) {
 
 	// FIXME: parse using 
 	p.process( prefixedText );
-
 
 	if ( ! inNewlineContext ) {
 		// now strip the leading underscore.
@@ -149,6 +148,7 @@ WSP.escapeWikiText = function ( state, text ) {
 			nonTextTokenAccum = [];
 		}
 	}
+
 	try {
 		for ( var i = 0, l = tokens.length; i < l; i++ ) {
 			var token = tokens[i];
@@ -195,18 +195,6 @@ var id = function(v) {
 	}; 
 };
 
-WSP._inStartOfLineContext = function(state) {
-	return	state.onStartOfLine || 
-		state.emitNewlineOnNextToken ||
-		(state.availableNewlineCount > 0);
-};
-
-WSP._inNewLineContext = function(state) {
-	return	state.onNewline || 
-		state.emitNewlineOnNextToken ||
-		(state.availableNewlineCount > 0);
-};
-
 WSP._listHandler = function( handler, bullet, state, token ) {
 	function isListItem(token) {
 		if (token.constructor !== TagTk) return false;
@@ -229,14 +217,8 @@ WSP._listHandler = function( handler, bullet, state, token ) {
 		//console.warn(JSON.stringify( stack ));
 		bullets = curList.bullets + curList.itemBullet + bullet;
 		curList.itemCount++;
-		if (	// deeply nested list
-				//( curList.itemCount > 1 &&
-				//	token.name === 'dd' &&
-				//	state.prevTagToken.constructor === EndTagTk &&
-				//	state.prevTagToken.name === 'dt' &&
-				//	! state.onStartOfLine ) ||
-				// A nested list, not directly after a list item
-				curList.itemCount > 1 && !isListItem(state.prevToken)) {
+		// A nested list, not directly after a list item
+		if (curList.itemCount > 1 && !isListItem(state.prevToken)) {
 			res = bullets;
 			handler.startsNewline = true;
 		} else {
@@ -292,7 +274,7 @@ WSP._listItemHandler = function ( handler, bullet, state, token ) {
 	//
 	var res;
 	if (curList.itemCount > 1 && 
-		(	WSP._inStartOfLineContext(state) ||
+		(	state.onStartOfLine ||
 			isRepeatToken(state, token) ||
 			isMultiLineDtDdPair(state, token)
 		)
@@ -328,9 +310,6 @@ WSP._serializeHTMLTag = function ( state, token ) {
 		// html-syntax pre is very similar to nowiki
 		state.inHTMLPre = true;
 	}
-
-	// Swallow required newline from previous token on encountering a HTML tag
-	//state.emitNewlineOnNextToken = false;
 
 	if ( token.attribs.length ) {
 		return '<' + token.name + ' ' + 
@@ -467,7 +446,7 @@ WSP._linkEndHandler = function( state, token ) {
  * ********************************************************************* */
 WSP.tagHandlers = {
 	body: {
-		start: {
+		end: {
 			handle: function(state, token) {
 				// swallow trailing new line
 				state.emitNewlineOnNextToken = false;
@@ -772,8 +751,8 @@ WSP.serializeTokens = function( tokens, chunkCB ) {
 };
 
 WSP.defaultHTMLTagHandler = { 
-	start: { handle: WSP._serializeHTMLTag }, 
-	end  : { handle: WSP._serializeHTMLEndTag } 
+	start: { isNewlineEquivalent: true, handle: WSP._serializeHTMLTag }, 
+	end  : { isNewlineEquivalent: true, handle: WSP._serializeHTMLEndTag } 
 };
 
 WSP._getTokenHandler = function(state, token) {
@@ -809,6 +788,11 @@ WSP._serializeToken = function ( state, token ) {
 	state.prevToken = state.curToken;
 	state.curToken  = token;
 
+	// The serializer is logically in a new line context if a new line is pending
+	if (state.emitNewlineOnNextToken || (state.availableNewlineCount > 0)) {
+		state.onNewline = true;
+		state.onStartOfLine = true;
+	}
 
 	switch( token.constructor ) {
 		case TagTk:
@@ -860,10 +844,8 @@ WSP._serializeToken = function ( state, token ) {
 			break;
 	}
 
-
 	if (! dropContent || ! state.dropContent ) {
-
-		var newNLCount = 0;
+		var newTrailingNLCount = 0;
 		if (res !== '') {
 			// Strip leading or trailing newlines from the returned string
 			var match = res.match( /^((?:\r?\n)*)((?:.*?|[\r\n]+[^\r\n])*?)((?:\r?\n)*)$/ ),
@@ -875,7 +857,7 @@ WSP._serializeToken = function ( state, token ) {
 				state.availableNewlineCount += leadingNLs.replace(/\r\n/g, '\n').length;
 				res = "";
 			} else {
-				newNLCount = trailingNLs.replace(/\r\n/g, '\n').length;
+				newTrailingNLCount = trailingNLs.replace(/\r\n/g, '\n').length;
 				if ( leadingNLs !== '' ) {
 					state.availableNewlineCount += leadingNLs.replace(/\r\n/g, '\n').length;
 				}
@@ -895,37 +877,38 @@ WSP._serializeToken = function ( state, token ) {
 			}
 		}
 
-		if ( state.env.debug ) {
-			console.warn(token + " -> " + JSON.stringify( res ) + 
-					"\n   onnl: " + state.onNewline + 
-					", #nl: is" + state.availableNewlineCount + '/new' + newNLCount +
-					', emitOnNext:' + state.emitNewlineOnNextToken);
+		if (state.env.debug) {
+			console.warn(token + 
+					", res: " + JSON.stringify( res ) + 
+					", nl: " + state.onNewline + 
+					", sol: " + state.onStartOfLine + 
+					', eon:' + state.emitNewlineOnNextToken +
+					", #nl: " + state.availableNewlineCount + 
+					', #new:' + newTrailingNLCount);
 		}
-		if (res !== '' ) {
-			var out = '';
-			// Prev token's new line token
-			if ( !state.singleLineMode &&
-					( ( !res.match(/^\s*$/) && state.emitNewlineOnNextToken ) ||
-					( handler.startsNewline && !state.onStartOfLine ) ) ) 
-			{
-				// Emit new line, if necessary
-				if ( ! state.availableNewlineCount ) {
-					state.availableNewlineCount++;
-				}
-				state.emitNewlineOnNextToken = false;
-			}
 
-			if ( state.availableNewlineCount ) {
-				state.onNewline = true;
-				state.onStartOfLine = true;
-			}
+		if (res !== '') {
+			var out = '';
+			// If this is not a html tag and the serializer is not in single-line mode,
+			// allocate a newline if 
+			// - prev token needs a single line, 
+			// - handler starts a new line and we aren't on a new line,
+			//
+			// Newline-equivalent tokens (HTML tags for example) don't get
+			// implicit newlines.
+			if (!handler.isNewlineEquivalent
+				&& !state.singleLineMode
+				&& !state.availableNewlineCount
+				&& ((!res.match(/^\s*$/) && state.emitNewlineOnNextToken) ||
+					(!state.onStartOfLine && handler.startsNewline)))
+			{
+				state.availableNewlineCount = 1;
+			} 
 
 			// Add required # of new lines in the beginning
 			for (; state.availableNewlineCount; state.availableNewlineCount--) {
 				out += '\n';
 			}
-
-			state.availableNewlineCount = newNLCount;
 
 			// FIXME: This might modify not just the last content token in a
 			// link, which would be wrong. We'll likely have to collect tokens
@@ -938,24 +921,29 @@ WSP._serializeToken = function ( state, token ) {
 				res = res.replace(/\n/g, ' ');
 			}
 			out += res;
-			if ( res !== '' ) {
+			state.env.dp(' =>', out);
+			state.chunkCB( out );
+
+			// Update new line state
+			// 1. If this token generated new trailing new lines, we are in a newline state again.
+			//    If not, we are not!  But, handle onStartOfLine specially. 
+			if (newTrailingNLCount > 0) {
+				state.availableNewlineCount = newTrailingNLCount;
+				state.onNewline = true;
+				state.onStartOfLine = true;
+			} else {
+				state.availableNewlineCount = 0;
 				state.onNewline = false;
-				if ( !handler.newlineTransparent ) {
+				if (!handler.newlineTransparent) {
 					state.onStartOfLine = false;
 				}
 			}
-			state.env.dp(' =>', out);
-			state.chunkCB( out );
-		} else {
-			state.availableNewlineCount += newNLCount;
-			if ( handler.startsNewline && ! state.onStartOfLine ) {
-				state.emitNewlineOnNextToken = true;
-			}
+
+			// 2. Previous token nl state is no longer relevant
+			state.emitNewlineOnNextToken = false;
+		} else if ( handler.startsNewline && !state.onStartOfLine ) {
+			state.emitNewlineOnNextToken = true;
 		}
-		/* else {
-			console.warn("SILENT: tok: " + token + ", res: <" + res + ">" + ", onnl: " + state.onNewline + ", # nls: " + state.availableNewlineCount);
-		}
-		*/
 
 		if (handler.endsLine) {
 			// Record end of line
