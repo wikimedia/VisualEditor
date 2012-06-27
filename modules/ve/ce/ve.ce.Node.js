@@ -174,7 +174,6 @@ ve.ce.Node.getSplitableNode = function( node ) {
 	var splitableNode = null;
 	
 	ve.Node.traverseUpstream( node, function( node ) {
-		ve.log(node);
 		if ( node.canBeSplit() ) {
 			splitableNode = node;
 			return true;
