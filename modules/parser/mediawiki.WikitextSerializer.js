@@ -176,7 +176,7 @@ WSP.escapeWikiText = function ( state, text ) {
 					break;
 				case TagTk:
 					if ( token.attribs[0] && 
-							token.attribs[0].k === 'data-mw-gc' &&
+							token.attribs[0].k === 'data-gen' &&
 							token.attribs[0].v === 'both' &&
 							// XXX: move the decision whether to escape or not
 							// into individual handlers!
@@ -697,12 +697,12 @@ WSP.tagHandlers = {
 		start: {
 			handle: function( state, token ) {
 				var argDict = state.env.KVtoHash( token.attribs );
-				if ( argDict['data-mw-gc'] === 'both' && 
+				if ( argDict['data-gen'] === 'both' && 
 						token.dataAttribs.src ) {
 					// FIXME: compare content with original content
 					state.dropContent = true;
 					return token.dataAttribs.src;
-				} else if ( argDict['data-mw-gc'] === 'wrapper' ) {
+				} else if ( argDict['data-gen'] === 'wrapper' ) {
 					if ( argDict['typeof'] === 'mw:nowiki' ) {
 						this.inNoWiki = true;
 					}
@@ -717,11 +717,11 @@ WSP.tagHandlers = {
 		end: {
 			handle: function ( state, token ) { 
 				var argDict = state.env.KVtoHash( token.attribs );
-				if ( argDict['data-mw-gc'] === 'both' && 
+				if ( argDict['data-gen'] === 'both' && 
 						token.dataAttribs.src ) {
 					state.dropContent = false; 
 					return '';
-				} else if ( argDict['data-mw-gc'] === 'wrapper' ) {
+				} else if ( argDict['data-gen'] === 'wrapper' ) {
 					if ( argDict['typeof'] === 'mw:nowiki' ) {
 						this.inNoWiki = false;
 					}
