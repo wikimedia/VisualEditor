@@ -1117,7 +1117,7 @@ pre_indent
   / l:pre_indent_line ls:(sol pre_indent_line)* {
       return [new TagTk( 'pre', [], { tsr: [pos0, pos0 + 1] } )]
                     .concat( [l], ls
-                           , [new EndTagTk( 'pre' )]);
+                           , [new EndTagTk( 'pre', [], {tsr: [pos, pos]} )]);
   }
 
 // An indented pre block that is surrounded with pre tags. The pre tags are
