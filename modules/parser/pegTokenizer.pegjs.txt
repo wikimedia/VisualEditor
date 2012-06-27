@@ -1193,17 +1193,17 @@ nowiki
   = "<nowiki>" nc:nowiki_content "</nowiki>" { 
         //console.warn( 'full nowiki return: ' + pp(nc)); 
         return [ 
-            new SelfclosingTagTk( 'meta', 
+            new TagTk( 'span', 
                     [
-                        {k: 'typeof', v: 'mw:tag'}, 
-                        {k: 'content', v: 'nowiki'} 
+                        {k: 'data-mw-gc', v: 'wrapper'}, 
+                        {k: 'typeof', v: 'mw:nowiki'}
                     ],
                     { tsr: [pos0, pos0+8] } )
         ].concat( nc, [ 
-                    new SelfclosingTagTk( 'meta', 
+                    new EndTagTk( 'span', 
                     [
-                        {k: 'typeof', v: 'mw:tag'}, 
-                        {k: 'content', v: '/nowiki'} 
+                        {k: 'data-mw-gc', v: 'wrapper'}, 
+                        {k: 'typeof', v: 'mw:nowiki'}
                     ],
                     { tsr: [pos - 9, pos] }) 
                 ] ); 

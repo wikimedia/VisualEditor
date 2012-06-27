@@ -436,6 +436,8 @@ WSP._linkHandler =  function( state, token ) {
 				return '[' + attribDict.href + ' ';
 			}
 		} else {
+			// TODO: default to extlink for simple links without rel set, and
+			// switch to html only when needed to support attributes
 			return WSP._serializeHTMLTag( state, token );
 		}
 	} else {
@@ -698,6 +700,13 @@ WSP.tagHandlers = {
 						console.warn( JSON.stringify( argDict ) );
 					}
 					return '<' + argDict.content + '>';
+				} else if ( argDict['typeof'] === 'mw:noinclude' ) {
+					this.newlineTransparent = true;
+					if ( token.dataAttribs.src === '<noinclude>' ) {
+						return '<noinclude>';
+					} else {
+						return '</noinclude>';
+					}
 				} else {
 					this.newlineTransparent = false;
 					return WSP._serializeHTMLTag( state, token );
@@ -714,6 +723,11 @@ WSP.tagHandlers = {
 					// FIXME: compare content with original content
 					state.dropContent = true;
 					return token.dataAttribs.src;
+				} else if ( argDict['data-mw-gc'] === 'wrapper' ) {
+					if ( argDict['typeof'] === 'mw:nowiki' ) {
+						this.inNoWiki = true;
+					}
+					return '<nowiki>';
 				} else {
 					// Fall back to plain HTML serialization for spans created
 					// by the editor
@@ -728,7 +742,14 @@ WSP.tagHandlers = {
 						token.dataAttribs.src ) {
 					state.dropContent = false; 
 					return '';
+				} else if ( argDict['data-mw-gc'] === 'wrapper' ) {
+					if ( argDict['typeof'] === 'mw:nowiki' ) {
+						this.inNoWiki = false;
+					}
+					return '</nowiki>';
 				} else {
+					// Fall back to plain HTML serialization for spans created
+					// by the editor
 					return WSP._serializeHTMLEndTag( state, token );
 				}
 			}
