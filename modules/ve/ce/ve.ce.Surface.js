@@ -277,16 +277,16 @@ ve.ce.Surface.prototype.onCutCopy = function( e ) {
 
 	if ( e.type == 'cut' ) {
 		this.stopPolling();
-		
+
 		setTimeout( function() {
 			var	selection = null,
 				tx = null;
-		
+
 			// We don't like how browsers cut, so let's undo it and do it ourselves.
 			document.execCommand('undo', false, false);
-			
+
 			selection = _this.model.getSelection();
-			
+
 			// Transact
 			_this.autoRender = true;
 			tx = ve.dm.Transaction.newFromRemoval( _this.documentView.model, selection );
@@ -303,22 +303,22 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
 	var	_this = this,
 		selection = this.model.getSelection(),
 		tx = null;
-	
+
 	this.stopPolling();
-	
+
 	// Pasting into a range? Remove first.
 	if (!rangy.getSelection().isCollapsed) {
 		tx = ve.dm.Transaction.newFromRemoval( _this.documentView.model, selection );
 		_this.model.change( tx );
 	}
-	
+
 	$('#paste').html('').show().focus();
 
 	setTimeout( function() {
 		var	key = '',
 			pasteData = null,
 			tx = null;
-		
+
 		// Create key from text and element names
 		$('#paste').hide().contents().each(function() {
 			key += this.textContent || this.nodeName;
@@ -334,7 +334,7 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
 		);
 		_this.model.change( tx, new ve.Range( selection.start + pasteData.length ) );
 		_this.documentView.documentNode.$.focus();
-		
+
 		_this.clearPollData();
 		_this.startPolling();
 	}, 1 );
@@ -342,7 +342,7 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
 
 ve.ce.Surface.prototype.onKeyPress = function( e ) {
 	ve.log('onKeyPress');
-	
+
 	if ( ve.ce.Surface.isShortcutKey( e ) || e.which === 13 ) {
 		return;
 	}
@@ -684,7 +684,7 @@ ve.ce.Surface.prototype.handleEnter = function( e ) {
 		var	outerParent = outermostNode.getModel().getParent(),
 			outerChildrenCount = outerParent.getChildren().length
 
-		if ( 
+		if (
 			outermostNode.type == 'listItem' && // this is a list item
 			outerParent.getChildren()[outerChildrenCount - 1] == outermostNode.getModel() && // this is the last list item
 			outermostNode.children.length == 1 && // there is one child
@@ -697,9 +697,9 @@ ve.ce.Surface.prototype.handleEnter = function( e ) {
 			this.model.change( tx );
 			// Insert a paragraph
 			tx = ve.dm.Transaction.newFromInsertion( documentModel, list.getOuterRange().to, emptyParagraph );
-			
-			advanceCursor = false;				
-		} else {		
+
+			advanceCursor = false;
+		} else {
 			// We must process the transaction first because getRelativeContentOffset can't help us yet
 			tx = ve.dm.Transaction.newFromInsertion( documentModel, selection.from, stack );
 		}
@@ -714,7 +714,7 @@ ve.ce.Surface.prototype.handleEnter = function( e ) {
 	} else {
 		this.model.change(
 			null, new ve.Range( documentModel.getNearestContentOffset( selection.from ) )
-		);		
+		);
 	}
 	// Reset and resume polling
 	this.clearPollData();
@@ -733,10 +733,9 @@ ve.ce.Surface.prototype.handleDelete = function( backspace ) {
 		cursorAt;
 
 	if ( selection.from === selection.to ) {
-		if ( backspace ) {
+		if ( backspace || selection.to === this.model.getDocument().data.length - 1) {
 			sourceOffset = selection.to;
 			targetOffset = this.getNearestCorrectOffset( sourceOffset - 1, -1 );
-			//this.model.setSelection( new ve.Range( targetOffset, targetOffset ) );
 		} else {
 			sourceOffset = this.model.getDocument().getRelativeContentOffset( selection.to, 1 );
 			targetOffset = selection.to;
@@ -744,15 +743,13 @@ ve.ce.Surface.prototype.handleDelete = function( backspace ) {
 
 		var	sourceNode = this.documentView.getNodeFromOffset( sourceOffset, false ),
 			targetNode = this.documentView.getNodeFromOffset( targetOffset, false );
-		
+
 		if ( sourceNode.type === targetNode.type ) {
 			sourceSplitableNode = ve.ce.Node.getSplitableNode( sourceNode );
 			targetSplitableNode = ve.ce.Node.getSplitableNode( targetNode );
 		}
-		//ve.log(sourceSplitableNode, targetSplitableNode);
-		
-		cursorAt = targetOffset;
 
+		cursorAt = targetOffset;
 
 		if (
 			// Source and target are the same node
@@ -1085,7 +1082,7 @@ ve.ce.Surface.prototype.getOffsetFromElementNode = function( domNode, domOffset,
 ve.ce.Surface.prototype.updateContextIcon = function() {
 	var _this = this,
 		selection = this.model.getSelection();
-	
+
 		if ( this.contextView ) {
 			if ( selection.getLength() > 0 ) {
 				this.contextView.set();
