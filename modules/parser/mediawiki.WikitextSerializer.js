@@ -156,10 +156,13 @@ WSP.escapeWikiText = function ( state, text ) {
 				case String:
 					wrapNonTextTokens();
 					outTexts.push(
-						// Entity-escape only dangerous chars for now
-						// FIXME: don't decode entities in the tokenizer when
-						// parsing text content for escaping!
-						token.replace(/</g, '&lt;').replace(/>/g, '&gt;')
+						token
+						// Angle brackets forming HTML tags are picked up as
+						// tags and escaped with nowiki. Remaining angle
+						// brackets can remain unescaped in the wikitext. They
+						// are entity-escaped by the HTML5 DOM serializer when
+						// outputting the HTML DOM.
+						//.replace(/</g, '&lt;').replace(/>/g, '&gt;')
 					);
 					cursor += token.length;
 					break;
@@ -170,6 +173,31 @@ WSP.escapeWikiText = function ( state, text ) {
 					break;
 				case EOFTk:
 					wrapNonTextTokens();
+					break;
+				case TagTk:
+					if ( token.attribs[0] && 
+							token.attribs[0].k === 'data-mw-gc' &&
+							token.attribs[0].v === 'both' &&
+							// XXX: move the decision whether to escape or not
+							// into individual handlers!
+							token.dataAttribs.src ) 
+					{
+						wrapNonTextTokens();
+						// push out the original source
+						// XXX: This assumes the content was not
+						// modified for now.
+						outTexts.push( token.dataAttribs.src );
+						// skip generated tokens
+						for ( ; i < l; i ++) {
+							var tk = tokens[i];
+							if ( tk.constructor === EndTagTk &&
+									tk.name === token.name ) {
+										break;
+									}
+						}
+					} else {
+						nonTextTokenAccum.push(token);
+					}
 					break;
 				default:
 					//console.warn('pushing ' + token);
@@ -387,6 +415,8 @@ WSP._linkHandler =  function( state, token ) {
 				return '[' + attribDict.href + ' ';
 			}
 		} else {
+			// TODO: default to extlink for simple links without rel set, and
+			// switch to html only when needed to support attributes
 			return WSP._serializeHTMLTag( state, token );
 		}
 	} else {
@@ -649,9 +679,57 @@ WSP.tagHandlers = {
 						console.warn( JSON.stringify( argDict ) );
 					}
 					return '<' + argDict.content + '>';
+				} else if ( argDict['typeof'] === 'mw:noinclude' ) {
+					this.newlineTransparent = true;
+					if ( token.dataAttribs.src === '<noinclude>' ) {
+						return '<noinclude>';
+					} else {
+						return '</noinclude>';
+					}
 				} else {
 					this.newlineTransparent = false;
 					return WSP._serializeHTMLTag( state, token );
+				}
+			}
+		}
+	},
+	span: {
+		start: {
+			handle: function( state, token ) {
+				var argDict = state.env.KVtoHash( token.attribs );
+				if ( argDict['data-mw-gc'] === 'both' && 
+						token.dataAttribs.src ) {
+					// FIXME: compare content with original content
+					state.dropContent = true;
+					return token.dataAttribs.src;
+				} else if ( argDict['data-mw-gc'] === 'wrapper' ) {
+					if ( argDict['typeof'] === 'mw:nowiki' ) {
+						this.inNoWiki = true;
+					}
+					return '<nowiki>';
+				} else {
+					// Fall back to plain HTML serialization for spans created
+					// by the editor
+					return WSP._serializeHTMLTag( state, token );
+				}
+			}
+		},
+		end: {
+			handle: function ( state, token ) { 
+				var argDict = state.env.KVtoHash( token.attribs );
+				if ( argDict['data-mw-gc'] === 'both' && 
+						token.dataAttribs.src ) {
+					state.dropContent = false; 
+					return '';
+				} else if ( argDict['data-mw-gc'] === 'wrapper' ) {
+					if ( argDict['typeof'] === 'mw:nowiki' ) {
+						this.inNoWiki = false;
+					}
+					return '</nowiki>';
+				} else {
+					// Fall back to plain HTML serialization for spans created
+					// by the editor
+					return WSP._serializeHTMLEndTag( state, token );
 				}
 			}
 		}

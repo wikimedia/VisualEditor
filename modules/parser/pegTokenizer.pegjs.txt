@@ -1147,9 +1147,12 @@ pre_indent_line = space l:inlineline {
 }
 
 /*
- * Pre blocks defined using non-indented HTML tags only parse nowiki tags
- * inside them, and convert other content to verbatim text. Nowiki inside pre
- * is not functionally needed, but supported for backwards compatibility.
+ * Pre blocks defined using non-indented HTML tags only parse nowiki tags and
+ * html entities inside them, and convert other content to verbatim text.
+ * Nowiki inside pre is not functionally needed, but supported for backwards
+ * compatibility.
+ *
+ * TODO: add entity support!
  */
 pre
   = "<pre" 
@@ -1191,17 +1194,17 @@ nowiki
   = "<nowiki>" nc:nowiki_content "</nowiki>" { 
         //console.warn( 'full nowiki return: ' + pp(nc)); 
         return [ 
-            new SelfclosingTagTk( 'meta', 
+            new TagTk( 'span', 
                     [
-                        {k: 'typeof', v: 'mw:tag'}, 
-                        {k: 'content', v: 'nowiki'} 
+                        {k: 'data-mw-gc', v: 'wrapper'}, 
+                        {k: 'typeof', v: 'mw:nowiki'}
                     ],
                     { tsr: [pos0, pos0+8] } )
         ].concat( nc, [ 
-                    new SelfclosingTagTk( 'meta', 
+                    new EndTagTk( 'span', 
                     [
-                        {k: 'typeof', v: 'mw:tag'}, 
-                        {k: 'content', v: '/nowiki'} 
+                        {k: 'data-mw-gc', v: 'wrapper'}, 
+                        {k: 'typeof', v: 'mw:nowiki'}
                     ],
                     { tsr: [pos - 9, pos] }) 
                 ] ); 
@@ -1680,7 +1683,14 @@ urltext = ( t:[^'<~[{\n\rIPRfghimnstw_|!:\]} &=]+ { return t.join(''); }
 //       }
 
 htmlentity = "&" c:[#0-9a-zA-Z]+ ";" { 
-    return unentity("&" + c.join('') + ";") 
+    //return "&" + c.join('') + ";";
+    var m = "&" + c.join('') + ";";
+    return [
+        new TagTk('span', [new KV('data-mw-gc', 'both')], { stx: 'entity', src: m } ),
+        unentity(m),
+        new EndTagTk('span')
+    ];
+    //return unentity("&" + c.join('') + ";") 
 }
 
 spaces
