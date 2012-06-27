@@ -1541,7 +1541,9 @@ table_row_tag
 table_data_tags
   = pipe
     td:table_data_tag
+    tagEndPos:({return pos})
     tds:( pipe_pipe tdt:table_data_tag { tdt[0].dataAttribs.stx_v = 'row';  return tdt } )* {
+        td[0].dataAttribs.tsr = [pos0, tagEndPos];
         return td.concat(tds);
     }
 
