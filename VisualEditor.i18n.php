@@ -100,7 +100,7 @@ $messages['ast'] = array(
 	'visualeditor-feedback-dialog-title' => 'Dexar un comentariu tocante a la zona de pruebes del editor visual',
 );
 
-/** Belarusian (Taraškievica orthography) (‪Беларуская (тарашкевіца)‬)
+/** Belarusian (Taraškievica orthography) (‪беларуская (тарашкевіца)‬)
  * @author EugeneZelenko
  * @author Wizardist
  */
@@ -117,6 +117,31 @@ $messages['be-tarask'] = array(
 	'visualeditor-tooltip-help' => 'Паказаць даведку',
 	'visualeditor-feedback-prompt' => 'Пакінуць водгук',
 	'visualeditor-feedback-dialog-title' => 'Пакіньце водгук пра пясочніцу візуальнага рэдактара',
+	'visualeditor-ca-editsource' => 'Рэдагаваць крыніцу',
+	'visualeditor-linkinspector-title' => 'Рэдагаваньне спасылкі',
+	'visualeditor-linkinspector-label-pagetitle' => 'Назва старонкі',
+	'visualeditor-formatdropdown-title' => 'Зьмяніць фарматаваньне',
+	'visualeditor-formatdropdown-format-paragraph' => 'Параграф',
+	'visualeditor-formatdropdown-format-heading1' => 'Загаловак 1',
+	'visualeditor-formatdropdown-format-heading2' => 'Загаловак 2',
+	'visualeditor-formatdropdown-format-heading3' => 'Загаловак 3',
+	'visualeditor-formatdropdown-format-heading4' => 'Загаловак 4',
+	'visualeditor-formatdropdown-format-heading5' => 'Загаловак 5',
+	'visualeditor-formatdropdown-format-heading6' => 'Загаловак 6',
+	'visualeditor-formatdropdown-format-preformatted' => 'Аформлены',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Тоўсты',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Курсіў',
+	'visualeditor-annotationbutton-link-tooltip' => 'Спасылка',
+	'visualeditor-indentationbutton-indent-tooltip' => 'Павялічыць водступ',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Паменшыць водступ',
+	'visualeditor-listbutton-number-tooltip' => 'Нумараваны сьпіс',
+	'visualeditor-listbutton-bullet-tooltip' => 'Маркіраваны сьпіс',
+	'visualeditor-clearbutton-tooltip' => 'Прыбраць афармленьне',
+	'visualeditor-historybutton-undo-tooltip' => 'Скасаваць',
+	'visualeditor-historybutton-redo-tooltip' => 'Узнавіць',
+	'visualeditor-viewpage-savewarning' => 'Вы ўпэўненыя, што жадаеце перайсьці ў рэжым прагляду без папярэдняга захаваньня?',
+	'visualeditor-loadwarning' => 'Памылка ў час загрузкі зьвестак з сэрвэру: $1. Жадаеце паўтарыць?',
+	'visualeditor-saveerror' => 'Памылка ў час захаваньня зьвестак на сэрвэры: $1.',
 );
 
 /** Breton (brezhoneg)
@@ -698,6 +723,31 @@ $messages['ms'] = array(
 	'visualeditor-tooltip-help' => 'Togol paparan bantuan',
 	'visualeditor-feedback-prompt' => 'Tinggalkan maklum balas',
 	'visualeditor-feedback-dialog-title' => 'Tinggalkan maklum balas tentang Kotak Pasir VisualEditor',
+	'visualeditor-ca-editsource' => 'Sunting sumber',
+	'visualeditor-linkinspector-title' => 'Sunting pautan',
+	'visualeditor-linkinspector-label-pagetitle' => 'Tajuk halaman',
+	'visualeditor-formatdropdown-title' => 'Tukar format',
+	'visualeditor-formatdropdown-format-paragraph' => 'Perenggan',
+	'visualeditor-formatdropdown-format-heading1' => 'Pengatas 1',
+	'visualeditor-formatdropdown-format-heading2' => 'Pengatas 2',
+	'visualeditor-formatdropdown-format-heading3' => 'Pengatas 3',
+	'visualeditor-formatdropdown-format-heading4' => 'Pengatas 4',
+	'visualeditor-formatdropdown-format-heading5' => 'Pengatas 5',
+	'visualeditor-formatdropdown-format-heading6' => 'Pengatas 6',
+	'visualeditor-formatdropdown-format-preformatted' => 'Praformat',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Tebal',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Condong',
+	'visualeditor-annotationbutton-link-tooltip' => 'Pautan',
+	'visualeditor-indentationbutton-indent-tooltip' => 'Jarakkan engsotan',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Rapatkan engsotan',
+	'visualeditor-listbutton-number-tooltip' => 'Senarai bernombor',
+	'visualeditor-listbutton-bullet-tooltip' => 'Senarai berbulet',
+	'visualeditor-clearbutton-tooltip' => 'Buang pemformatan',
+	'visualeditor-historybutton-undo-tooltip' => 'Batalkan',
+	'visualeditor-historybutton-redo-tooltip' => 'Pulihkan',
+	'visualeditor-viewpage-savewarning' => 'Adakah anda benar-benar ingin kembali ke ragam paparan tanpa menyimpan terlebih dahulu?',
+	'visualeditor-loadwarning' => 'Ralat ketika memuatkan data dari pelayan: $1. Adakah anda hendak mencuba lagi?',
+	'visualeditor-saveerror' => 'Ralat ketika memuatkan data dari pelayan: $1',
 );
 
 /** Nepali (नेपाली)
