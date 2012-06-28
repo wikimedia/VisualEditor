@@ -144,10 +144,10 @@ WikiLinkHandler.prototype.renderFile = function ( token, frame, cb, title ) {
 		//console.log( JSON.stringify( oText, null, 2 ) );
 		if ( oText.constructor === String ) {
 			oText = oText.trim();
-			if ( this._simpleImageOptions[ oText.toLowerCase() ] ) {
-				options.push( new KV( this._simpleImageOptions[ oText.toLowerCase() ], 
-							oText ) );
-				oHash[ this._simpleImageOptions[ oText ] ] = oText;
+			var imgOption = this._simpleImageOptions[ oText.toLowerCase()];
+			if (imgOption) {
+				options.push( new KV(imgOption, oText ) );
+				oHash[imgOption] = oText;
 				continue;
 			} else {
 				var maybeSize = oText.match(/^(\d*)(?:x(\d+))?px$/);
@@ -229,6 +229,8 @@ WikiLinkHandler.prototype.renderThumb = function ( token, manager, cb, title, pa
 	a.dataAttribs = token.dataAttribs;
 	a.dataAttribs.optionHash = oHash;
 	a.dataAttribs.optionList = options;
+	// clear src string since we can serialize this
+	a.dataAttribs.src = undefined;
 
 	var width = 165;
 
