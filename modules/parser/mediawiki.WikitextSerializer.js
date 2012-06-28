@@ -175,9 +175,9 @@ WSP.escapeWikiText = function ( state, text ) {
 					wrapNonTextTokens();
 					break;
 				case TagTk:
-					if ( token.attribs[0] && 
-							token.attribs[0].k === 'data-gen' &&
-							token.attribs[0].v === 'both' &&
+				case SelfclosingTagTk:
+					var argDict = state.env.KVtoHash( token.attribs );
+					if ( argDict['data-gen'] === 'both' &&
 							// XXX: move the decision whether to escape or not
 							// into individual handlers!
 							token.dataAttribs.src ) 
@@ -697,16 +697,15 @@ WSP.tagHandlers = {
 		start: {
 			handle: function( state, token ) {
 				var argDict = state.env.KVtoHash( token.attribs );
-				if ( argDict['data-gen'] === 'both' && 
-						token.dataAttribs.src ) {
-					// FIXME: compare content with original content
-					state.dropContent = true;
-					return token.dataAttribs.src;
-				} else if ( argDict['data-gen'] === 'wrapper' ) {
+				if ( argDict['data-gen'] === 'both' ) {
 					if ( argDict['typeof'] === 'mw:nowiki' ) {
-						this.inNoWiki = true;
+						state.inNoWiki = true;
+						return '<nowiki>';
+					} else if ( token.dataAttribs.src ) {
+						// FIXME: compare content with original content
+						state.dropContent = true;
+						return token.dataAttribs.src;
 					}
-					return '<nowiki>';
 				} else {
 					// Fall back to plain HTML serialization for spans created
 					// by the editor
@@ -717,15 +716,14 @@ WSP.tagHandlers = {
 		end: {
 			handle: function ( state, token ) { 
 				var argDict = state.env.KVtoHash( token.attribs );
-				if ( argDict['data-gen'] === 'both' && 
-						token.dataAttribs.src ) {
-					state.dropContent = false; 
-					return '';
-				} else if ( argDict['data-gen'] === 'wrapper' ) {
+				if ( argDict['data-gen'] === 'both' ) {
 					if ( argDict['typeof'] === 'mw:nowiki' ) {
-						this.inNoWiki = false;
+						state.inNoWiki = false;
+						return '</nowiki>';
+					} else if ( token.dataAttribs.src ) {
+						state.dropContent = false; 
+						return '';
 					}
-					return '</nowiki>';
 				} else {
 					// Fall back to plain HTML serialization for spans created
 					// by the editor
