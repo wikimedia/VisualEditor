@@ -160,10 +160,14 @@ ve.compareObjects = function( a, b, asymmetrical ) {
  * @method
  * @param {Array} a First array to compare
  * @param {Array} b Second array to compare
- * @param {Boolean} [compareObjects] If true, use ve.compareObjects() to compare objects, otherwise use ===
+ * @param {Boolean} [objectsByValue] Use ve.compareObjects() to compare objects instead of ===
  */
-ve.compareArrays = function( a, b, compareObjects ) {
-	var i, aValue, bValue, aType, bType;
+ve.compareArrays = function( a, b, objectsByValue ) {
+	var i,
+		aValue,
+		bValue,
+		aType,
+		bType;
 	if ( a.length !== b.length ) {
 		return false;
 	}
@@ -172,11 +176,22 @@ ve.compareArrays = function( a, b, compareObjects ) {
 		bValue = b[i];
 		aType = typeof aValue;
 		bType = typeof bValue;
-		if ( aType !== bType || !(
-			( ve.isArray( aValue ) && ve.isArray( bValue ) && ve.compareArrays( aValue, bValue ) ) ||
-			( compareObjects && ve.isPlainObject( aValue ) && ve.compareObjects( aValue, bValue ) ) ||
-			aValue === bValue
-		) ) {
+		if (
+			aType !== bType ||
+			!(
+				(
+					ve.isArray( aValue ) &&
+					ve.isArray( bValue ) &&
+					ve.compareArrays( aValue, bValue )
+				) ||
+				(
+					objectsByValue &&
+					ve.isPlainObject( aValue ) &&
+					ve.compareObjects( aValue, bValue )
+				) ||
+				aValue === bValue
+			)
+		) {
 			return false;
 		}
 	}
@@ -232,8 +247,14 @@ ve.copyObject = function( source ) {
 };
 
 /**
- * Splice one array into another. This is the equivalent of arr.splice( offset, remove, d1, d2, d3, ... )
- * except that d1, d2, d3, ... are specified as an array rather than separate parameters.
+ * Splice one array into another.
+ *
+ * This is the equivalent of arr.splice( offset, remove, d1, d2, d3, ... ) except that arguments are
+ * specified as an array rather than separate parameters.
+ *
+ * This method has been proven to be faster than using slice and concat to create a new array, but
+ * performance tests should be conducted on each use of this method to verify this is true for the
+ * particular use. Also, browsers change fast, never assume anything, always test everything.
  *
  * @static
  * @method
