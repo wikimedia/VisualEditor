@@ -234,7 +234,6 @@ ve.dm.TransactionProcessor.processors.replace = function( op ) {
 		var operation = op,
 			removeLevel = 0,
 			insertLevel = 0,
-			startOffset = this.cursor,
 			i,
 			type,
 			prevCursor,
@@ -415,8 +414,7 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function( to ) {
 		element,
 		annotated,
 		annotations,
-		hash,
-		empty;
+		hash;
 	for ( var i = this.cursor; i < to; i++ ) {
 		item = this.document.data[i];
 		element = item.type !== undefined;
