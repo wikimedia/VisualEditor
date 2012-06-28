@@ -742,27 +742,27 @@ WSP.tagHandlers = {
 		}
 	},
 	h1: { 
-		start: { startsNewline: true, handle: id("=") },
+		start: { startsNewline: true, handle: id("="), defaultStartNewlineCount: 2 },
 		end: { endsLine: true, handle: id("=") }
 	},
 	h2: { 
-		start: { startsNewline: true, handle: id("==") },
+		start: { startsNewline: true, handle: id("=="), defaultStartNewlineCount: 2 },
 		end: { endsLine: true, handle: id("==") }
 	},
 	h3: { 
-		start: { startsNewline: true, handle: id("===") },
+		start: { startsNewline: true, handle: id("==="), defaultStartNewlineCount: 2 },
 		end: { endsLine: true, handle: id("===") }
 	},
 	h4: { 
-		start: { startsNewline: true, handle: id("====") },
+		start: { startsNewline: true, handle: id("===="), defaultStartNewlineCount: 2 },
 		end: { endsLine: true, handle: id("====") }
 	},
 	h5: { 
-		start: { startsNewline: true, handle: id("=====") },
+		start: { startsNewline: true, handle: id("====="), defaultStartNewlineCount: 2 },
 		end: { endsLine: true, handle: id("=====") }
 	},
 	h6: { 
-		start: { startsNewline: true, handle: id("======") },
+		start: { startsNewline: true, handle: id("======"), defaultStartNewlineCount: 2 },
 		end: { endsLine: true, handle: id("======") }
 	},
 	br: { 
@@ -980,7 +980,7 @@ WSP._serializeToken = function ( state, token ) {
 				&& ((!res.match(/^\s*$/) && state.emitNewlineOnNextToken) ||
 					(!state.onStartOfLine && handler.startsNewline)))
 			{
-				state.availableNewlineCount = 1;
+				state.availableNewlineCount = handler.defaultStartNewlineCount || 1;
 			} 
 
 			// Add required # of new lines in the beginning
