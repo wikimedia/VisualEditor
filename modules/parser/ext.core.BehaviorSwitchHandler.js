@@ -14,7 +14,13 @@ BehaviorSwitchHandler.prototype.onBehaviorSwitch = function ( token, manager, cb
 
 	env.setVariable(magic_word, true);
 
-	return { };
+	return { tokens: 
+		[
+			new SelfclosingTagTk( 'meta', 
+					[ new KV( 'data-gen', 'both' ) ],
+					token.dataAttribs )
+		]
+	};
 };
 
 

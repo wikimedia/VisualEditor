@@ -603,7 +603,10 @@ behavior_switch
         new TagTk(
             'behavior-switch',
             [new KV('word', behavior)],
-            { tsr: [pos0, pos] }
+            { 
+                tsr: [pos0, pos],
+                src: input.substr(pos0, pos - pos0)
+            }
         )
     ];
 }
