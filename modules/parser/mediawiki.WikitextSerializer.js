@@ -46,6 +46,7 @@ var WSP = WikitextSerializer.prototype;
  *    swallow newlines in contexts where they shouldn't be emitted for
  *    ensuring equivalent wikitext output. (ex dom: ..</li>\n\n</li>..)
  * ********************************************************************* */
+
 WSP.initialState = {
 	listStack: [],
 	onNewline: true,
@@ -734,6 +735,72 @@ WSP.tagHandlers = {
 			}
 		}
 	},
+	figure: {
+		start: {
+			handle: function ( state, token ) { 
+				state.inCollectionMode = true;
+				state.collectorToken = token.name;
+				state.tokens = [token];
+				return '';
+			}
+		},
+		end : {
+			handle: function ( state, token ) {
+				// clear collection mode first thing!
+				state.inCollectionMode = false;
+
+				var figTokens = state.tokens;
+
+				// skip tokens looking for the image tag
+				var img;
+				var i = 1, n = figTokens.length;
+				while (i < n) {
+					if (figTokens[i].name === "img") {
+						img = figTokens[i];
+						break;
+					}
+					i++;
+				}
+
+				// skip tokens looking for the start and end caption tags
+				var fcStartIndex = 0, fcEndIndex = 0;
+				while (i < n) {
+					if (figTokens[i].name === "figcaption") {
+						if (fcStartIndex > 0) {
+							fcEndIndex = i;
+							break;
+						} else {
+							fcStartIndex = i;
+						}
+					}
+					i++;
+				}
+
+				// Call the serializer to build the caption
+				var caption = state.serializer.serializeTokens(figTokens.slice(fcStartIndex+1, fcEndIndex)).join('');
+
+				// Get the image resource name
+				// FIXME: file name has been capitalized -- need some fix in the parser
+				var argDict = state.env.KVtoHash( img.attribs );
+				var imgR = argDict.resource.replace(/(^\[:)|(\]$)/g, '');
+
+				// Now, build the complete wikitext for the figure
+				var outBits = [imgR];
+
+				var figToken = figTokens[0];
+				var figAttrs = figToken.dataAttribs.optionList;
+				// SSS FIXME: May not be entirely correct
+				for (i = 0, n = figAttrs.length; i < n; i++) {
+					outBits.push(figAttrs[i].v);
+				}
+				if (caption) {
+					outBits.push(caption);
+				}
+
+				return "[[" + outBits.join('|') + "]]";
+			}
+		}
+	},
 	hr: { 
 		start: { 
 			startsNewline: true, 
@@ -813,6 +880,7 @@ WSP._serializeAttributes = function ( attribs ) {
 WSP.serializeTokens = function( tokens, chunkCB ) {
 	var state = $.extend({}, this.initialState, this.options),
 		i, l;
+	state.serializer = this;
 	if ( chunkCB === undefined ) {
 		var out = [];
 		state.chunkCB = out.push.bind(out);
@@ -859,6 +927,13 @@ WSP._getTokenHandler = function(state, token) {
  * Serialize a token.
  */
 WSP._serializeToken = function ( state, token ) {
+	if (state.inCollectionMode) {
+		state.tokens.push(token);
+		if (state.collectorToken !== token.name) {
+			return;
+		}
+	}
+
 	var handler = {}, 
 		res = '', 
 		dropContent = state.dropContent;
@@ -974,10 +1049,10 @@ WSP._serializeToken = function ( state, token ) {
 			//
 			// Newline-equivalent tokens (HTML tags for example) don't get
 			// implicit newlines.
-			if (!handler.isNewlineEquivalent
-				&& !state.singleLineMode
-				&& !state.availableNewlineCount
-				&& ((!res.match(/^\s*$/) && state.emitNewlineOnNextToken) ||
+			if (!handler.isNewlineEquivalent &&
+					!state.singleLineMode && 
+					!state.availableNewlineCount && 
+					((!res.match(/^\s*$/) && state.emitNewlineOnNextToken) ||
 					(!state.onStartOfLine && handler.startsNewline)))
 			{
 				state.availableNewlineCount = 1;
@@ -1039,6 +1114,7 @@ WSP._serializeToken = function ( state, token ) {
 WSP.serializeDOM = function( node, chunkCB ) {
 	try {
 		var state = $.extend({}, this.initialState, this.options);
+		state.serializer = this;
 		//console.warn( node.innerHTML );
 		if ( ! chunkCB ) {
 			var out = [];
@@ -1080,6 +1156,7 @@ WSP._serializeDOM = function( node, state ) {
 
 			// then the end token
 			this._serializeToken(state, new EndTagTk(name, tkAttribs, tkRTInfo));
+
 			break;
 		case Node.TEXT_NODE:
 			this._serializeToken( state, node.data );
