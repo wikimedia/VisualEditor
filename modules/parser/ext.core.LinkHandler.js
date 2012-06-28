@@ -33,8 +33,13 @@ WikiLinkHandler.prototype.onWikiLink = function ( token, frame, cb ) {
 	if ( title.ns.isFile() ) {
 		cb( this.renderFile( token, frame, cb, title ) );
 	} else if ( title.ns.isCategory() ) {
-		// TODO: implement
-		cb( { } );
+		// Simply round-trip category links for now
+		cb( { tokens: [ 
+				new SelfclosingTagTk( 'meta', 
+					[new KV( 'data-gen', 'both' )],
+					token.dataAttribs ) 
+				] 
+		});
 	} else {
 		// Check if page exists
 		// 
