@@ -412,11 +412,11 @@ ExternalLinkHandler.prototype.onExtLink = function ( token, manager, cb ) {
 	//console.warn('extlink href: ' + href );
 	//console.warn( 'content: ' + JSON.stringify( content, null, 2 ) );
 	// validate the href
-	if ( ! content.length ) {
-		content = ['[' + this.linkCount + ']'];
-		this.linkCount++;
-	}
 	if ( this.imageParser.tokenizeURL( href ) ) {
+		if ( ! content.length ) {
+			content = ['[' + this.linkCount + ']'];
+			this.linkCount++;
+		}
 		if ( content.length === 1 && 
 				content[0].constructor === String &&
 				this.imageParser.tokenizeURL( content[0] ) &&
@@ -446,8 +446,14 @@ ExternalLinkHandler.prototype.onExtLink = function ( token, manager, cb ) {
 				].concat( content, [ new EndTagTk( 'a' )])
 		} );
 	} else {
+		var tokens = ['[', href ];
+		if ( content.length ) {
+			tokens = tokens.concat( [' '], content );
+		}
+		tokens.push(']');
+
 		cb( {
-			tokens: ['[', href, ' ' ].concat( content, [']'] )
+			tokens: tokens
 		} );
 	}
 };
