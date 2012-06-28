@@ -1,14 +1,12 @@
-We're starting to merge bits from Wikidom and ParserPlayground tests here.
-Enjoy!
+VisualEditor and Parsoid work together to provide a visual editor for wiki pages.
 
-Short-term work highlights:
-* convert parser to wikidom format & using the wikidom serializer
-* port/update/write more tests
-* Special: page to host the editor as a standalone demo
-* Opt-in test mode to switch the editor in on EditPage (initially blank)
-* Use serializer to save pages from editor
-* Use parser to load pages into editor
+Parsoid is used to convert wikitext documents to annotated HTML which the VisualEditor is able to
+load, modify and emit back to Parsoid at which point it is converted back into wikitext.
 
-Long-term work highlights:
-* more thorough & bulk testing
-* more extension support
+Both projects are written in JavaScript. Parsoid runs on Node.js while VisualEditor runs in a web
+browser.
+
+For more information about these projects, check out the wiki:
+
+	* http://www.mediawiki.org/wiki/VisualEditor
+	* http://www.mediawiki.org/wiki/Parsoid
