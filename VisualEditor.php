@@ -97,6 +97,7 @@ $wgResourceModules += array(
 		'dependencies' => array(
 			'ext.visualEditor.init',
 			'mediawiki.util',
+			'mediawiki.feedback',
 			'mediawiki.Uri'
 		),
 		'messages' => array(
@@ -114,6 +115,8 @@ $wgResourceModules += array(
 			'viewsource',
 			'visualeditor-ca-editsource',
 			'visualeditor-loadwarning',
+			'visualeditor-feedback-prompt',
+			'visualeditor-feedback-dialog-title'
 		),
 	),
 	'ext.visualEditor.init' => $wgVisualEditorResourceTemplate + array(

@@ -31,20 +31,37 @@
 	float: right;
 }
 
-.ve-init-viewPageTarget-toolbar-saveButton {
+.ve-init-viewPageTarget-toolbar-feedbackButton {
 	display: inline-block;
-	border: solid 1px 
-	transparent;
-	border-radius: 0.125em;
-	-webkit-border-radius: 0.125em;
-	-moz-border-radius: 0.125em;
-	-o-border-radius: 0.125em;
 	cursor: pointer;
 	vertical-align: top;
 	padding: 0.25em;
 	height: 22px;
 	margin-right: 0.25em;
 	border: solid 1px transparent;
+}
+
+.ve-init-viewPageTarget-toolbar-feedbackButton a {
+	display: inline-block;
+	vertical-align: middle;
+	height: 32px;
+	padding-left: 4px;
+	padding-right: 4px;
+	font-size: 0.8em;
+}
+
+.ve-init-viewPageTarget-toolbar-saveButton {
+	display: inline-block;
+	border: solid 1px #cccccc;
+	-webkit-border-radius: 0.125em;
+	-moz-border-radius: 0.125em;
+	-o-border-radius: 0.125em;
+	border-radius: 0.125em;
+	cursor: pointer;
+	vertical-align: top;
+	padding: 0.25em;
+	height: 22px;
+	margin-right: 0.25em;
 }
 
 .ve-init-viewPageTarget-toolbar-saveButton:before {
