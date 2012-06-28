@@ -534,6 +534,7 @@ h = & "=" // guard, to make sure '='+ will match.
         var level = Math.min(s.length, e.length);
         // convert surplus equals into text
         if(s.length > level) {
+            s = s.join('');
             var extras = s.substr(0, s.length - level);
             if(c[0].constructor === String) {
                 c[0] = extras + c[0];
@@ -542,6 +543,7 @@ h = & "=" // guard, to make sure '='+ will match.
             }
         }
         if(e.length > level) {
+            e = e.join('');
             var extras = e.substr(0, e.length - level),
                 lastElem = c[c.length - 1];
             if(lastElem.constructor === String) {
