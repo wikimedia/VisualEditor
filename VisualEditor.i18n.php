@@ -6,15 +6,7 @@ $messages = array();
  */
 $messages['en'] = array(
 	'visualeditor' => 'VisualEditor',
-	'visualeditorsandbox' => 'Visual editor sandbox',
 	'visualeditor-desc' => 'Visual editor for MediaWiki',
-	'visualeditor-sandbox-title' => 'Visual editor sandbox',
-	'visualeditor-tooltip-wikitext' => 'Toggle wikitext view',
-	'visualeditor-tooltip-json' => 'Toggle JSON view',
-	'visualeditor-tooltip-html' => 'Toggle HTML view',
-	'visualeditor-tooltip-render' => 'Toggle preview',
-	'visualeditor-tooltip-history' => 'Toggle transaction history view',
-	'visualeditor-tooltip-help' => 'Toggle help view',
 	'visualeditor-feedback-prompt' => 'Leave feedback',
 	'visualeditor-feedback-dialog-title' => 'Leave feedback about VisualEditor Sandbox',
 	'visualeditor-ca-editsource' => 'Edit source',

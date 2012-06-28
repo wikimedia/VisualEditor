@@ -21,7 +21,7 @@ class VisualEditorHooks {
 				$skin->getRelevantTitle()->getNamespace() === NS_VISUALEDITOR
 			)
 		) {
-			$output->addModules( array( 'ext.visualEditor.editPageInit' ) );
+			$output->addModules( array( 'ext.visualEditor.viewPageTarget' ) );
 		}
 		return true;
 	}

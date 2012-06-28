@@ -1,0 +1,101 @@
+body {
+	font-family: "Arial";
+	font-size: 1em;
+	width: 100%;
+	margin: 1em 0;
+	padding: 0;
+	overflow-y: scroll;
+	background-color: white;
+}
+
+/* Demo */
+
+.ve-demo-docs {
+	list-style: none;
+	margin: 0 0 1em 0;
+	display: inline-block;
+}
+
+.ve-demo-docs li {
+	list-style: none;
+	margin: 0 0.75em 0 0;
+	padding: 0;
+	display: inline-block;
+}
+
+/* Editor */
+
+.es-base {
+	margin: 2em;
+	margin-top: 0;
+	-webkit-box-shadow: 0 0.25em 1.5em 0 #dddddd;
+	-moz-box-shadow: 0 0.25em 1.5em 0 #dddddd;
+	box-shadow: 0 0.25em 1.5em 0 #dddddd;
+	-webkit-border-radius: 0.5em;
+	-moz-border-radius: 0.5em;
+	-o-border-radius: 0.5em;
+	border-radius: 0.5em;
+}
+
+.ve-ce-documentNode {
+	border: solid 1px #cccccc;
+	border-top: none;
+	padding: 0.75em 1.5em;
+}
+
+.es-toolbar {
+	border: solid 1px #cccccc;
+	position: relative;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	-o-border-radius: 0;
+	border-radius: 0;
+	-webkit-border-top-right-radius: 0.25em;
+	-moz-border-top-right-radius: 0.25em;
+	-o-border-top-right-radius: 0.25em;
+	border-top-right-radius: 0.25em;
+	-webkit-border-top-left-radius: 0.25em;
+	-moz-border-top-left-radius: 0.25em;
+	-o-border-top-left-radius: 0.25em;
+	border-top-left-radius: 0.25em;
+	background-image: url(../../modules/ve/ui/styles/images/fade-up.png);
+	background-position: left bottom;
+	background-repeat: repeat-x;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
+.es-toolbar-wrapper.float .es-toolbar {
+	top: 0;
+	position: fixed;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	-o-border-radius: 0;
+	border-radius: 0;
+	z-index: 100;
+	border-top: none;
+}
+
+.es-toolbar-shadow {
+	background-image: url(../../modules/ve/ui/styles/images/toolbar-shadow.png);
+	background-position: left top;
+	background-repeat: repeat-x;
+	position: absolute;
+	bottom: -9px;
+	height: 9px;
+	width: 100%;
+	pointer-events: none;
+	-ms-transition: opacity 500ms ease-in-out;
+	-webkit-transition: opacity 500ms ease-in-out;
+	-moz-transition: opacity 500ms ease-in-out;
+	-o-transition: opacity 500ms ease-in-out;
+	transition: opacity 500ms ease-in-out;
+	opacity: 0.125;
+}
+
+.es-toolbar-wrapper.float .es-toolbar-shadow {
+	opacity: 0.5;
+}
