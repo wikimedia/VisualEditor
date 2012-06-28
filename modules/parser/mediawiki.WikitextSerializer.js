@@ -13,6 +13,7 @@ WikitextSerializer = function( options ) {
 
 require('./core-upgrade.js');
 var PegTokenizer = require('./mediawiki.tokenizer.peg.js').PegTokenizer;
+var WikitextConstants = require('./mediawiki.wikitext.constants.js').WikitextConstants;
 
 var WSP = WikitextSerializer.prototype;
 
@@ -784,13 +785,43 @@ WSP.tagHandlers = {
 				var imgR = argDict.resource.replace(/(^\[:)|(\]$)/g, '');
 
 				// Now, build the complete wikitext for the figure
-				var outBits = [imgR];
-
+				var outBits  = [imgR];
 				var figToken = figTokens[0];
 				var figAttrs = figToken.dataAttribs.optionList;
-				// SSS FIXME: May not be entirely correct
+
+				var simpleImgOptions = WikitextConstants.Image.SimpleOptions;
+				var prefixImgOptions = WikitextConstants.Image.PrefixOptions;
+				var sizeOptions      = { "width": 1, "height": 1};
+				var size             = {};
 				for (i = 0, n = figAttrs.length; i < n; i++) {
-					outBits.push(figAttrs[i].v);
+					var a = figAttrs[i];
+					var k = a.k, v = a.v;
+					if (sizeOptions[k]) {
+						size[k] = v;
+					} else {
+						// Output size first and clear it
+						var w = size.width;
+						if (w) {
+							outBits.push(w + (size.height ? "x" + size.height : '') + "px");
+							size.width = null;
+						}
+
+						// The values and keys in the parser attributes are a flip
+						// of how they are in the wikitext constants image hash
+						// Hence the indexing by 'v' instead of 'k'
+						if (simpleImgOptions[v] === k) {
+							outBits.push(v);
+						} else if (prefixImgOptions[v]) {
+							outBits.push(prefixImgOptions[k] + "=" + v);
+						} else if (k === "aspect") { 
+							// SSS: Bad Hack!  Need a better solution
+							// One solution is to search through prefix options hash but seems ugly.
+							// Another is to flip prefix options hash and use it to search.
+							outBits.push("upright=" + v);
+						} else {
+							console.warn("Unknown image option encountered: " + JSON.stringify(a));
+						}
+					}
 				}
 				if (caption) {
 					outBits.push(caption);

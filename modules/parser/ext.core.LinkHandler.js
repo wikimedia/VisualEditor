@@ -132,10 +132,16 @@ WikiLinkHandler.prototype.renderFile = function ( token, frame, cb, title ) {
 						oHash.height = y;
 					}
 				} else {
-					var bits = oText.split( '=', 2 ),
-						key = WikitextConstants.Image.PrefixOptions[ bits[0].trim().toLowerCase() ];
+					var bits = oText.split( '=', 2 );
+					var normalizedBit0 = bits[0].trim().toLowerCase();
+					var key = WikitextConstants.Image.PrefixOptions[normalizedBit0];
 					if ( bits[0] && key) {
 						oHash[key] = bits[1];
+						// Preserve white space
+						// FIXME: But this doesn't work for the 'upright' key
+						if (key === normalizedBit0) {
+							key = bits[0];
+						}
 						options.push( new KV( key, bits[1] ) );
 						//console.warn('handle prefix ' + bits );
 					} else {

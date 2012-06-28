@@ -37,7 +37,7 @@ WikitextConstants = {
 			'link': 'link',
 			'alt': 'alt',
 			'page': 'page',
-			'thumbnail': 'thumb',
+			'thumbnail': 'thumbnail',
 			'thumb': 'thumb',
 			'upright': 'aspect'
 		}
