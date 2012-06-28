@@ -8,7 +8,8 @@
  */
 
 var jshashes = require('jshashes'),
-	PegTokenizer = require('./mediawiki.tokenizer.peg.js').PegTokenizer;
+	PegTokenizer = require('./mediawiki.tokenizer.peg.js').PegTokenizer,
+	WikitextConstants = require('./mediawiki.wikitext.constants.js').WikitextConstants;
 
 function WikiLinkHandler( manager, isInclude ) {
 	this.manager = manager;
@@ -84,39 +85,6 @@ WikiLinkHandler.prototype.onWikiLink = function ( token, frame, cb ) {
 	}
 };
 
-WikiLinkHandler.prototype._simpleImageOptions = {
-	// halign
-	'left': 'halign',
-	'right': 'halign',
-	'center': 'halign',
-	'float': 'halign',
-	'none': 'halign',
-	// valign
-	'baseline': 'valign',
-	'sub': 'valign',
-	'super': 'valign',
-	'top': 'valign',
-	'text-top': 'valign',
-	'middle': 'valign',
-	'bottom': 'valign',
-	'text-bottom': 'valign',
-	// format
-	'border': 'format',
-	'frameless': 'format',
-	'frame': 'format',
-	'thumbnail': 'format',
-	'thumb': 'format'
-};
-
-WikiLinkHandler.prototype._prefixImageOptions = {
-	'link': 'link',
-	'alt': 'alt',
-	'page': 'page',
-	'thumbnail': 'thumb',
-	'thumb': 'thumb',
-	'upright': 'aspect'
-};
-
 WikiLinkHandler.prototype.renderFile = function ( token, frame, cb, title ) {
 	var env = this.manager.env;
 	// distinguish media types
@@ -144,7 +112,7 @@ WikiLinkHandler.prototype.renderFile = function ( token, frame, cb, title ) {
 		//console.log( JSON.stringify( oText, null, 2 ) );
 		if ( oText.constructor === String ) {
 			oText = oText.trim();
-			var imgOption = this._simpleImageOptions[ oText.toLowerCase()];
+			var imgOption = WikitextConstants.Image.SimpleOptions[ oText.toLowerCase()];
 			if (imgOption) {
 				options.push( new KV(imgOption, oText ) );
 				oHash[imgOption] = oText;
@@ -165,7 +133,7 @@ WikiLinkHandler.prototype.renderFile = function ( token, frame, cb, title ) {
 					}
 				} else {
 					var bits = oText.split( '=', 2 ),
-						key = this._prefixImageOptions[ bits[0].trim().toLowerCase() ];
+						key = WikitextConstants.Image.PrefixOptions[ bits[0].trim().toLowerCase() ];
 					if ( bits[0] && key) {
 						oHash[key] = bits[1];
 						options.push( new KV( key, bits[1] ) );
