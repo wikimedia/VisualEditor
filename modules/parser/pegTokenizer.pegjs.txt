@@ -955,7 +955,8 @@ wikilink
       obj.attribs.push( new KV('', target) );
       obj.dataAttribs = { 
           tsr: [pos0, pos],
-          contentPos: lcontent.pos
+          contentPos: lcontent.pos,
+          src: input.substr(pos0, pos - pos0)
       };
       // XXX: Point to object with path, revision and input information
       //obj.source = input;

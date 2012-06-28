@@ -56,6 +56,22 @@ MWParserEnvironment.prototype.lookupKV = function ( kvs, key ) {
 	return null;
 };
 
+MWParserEnvironment.prototype.lookup = function ( kvs, key ) {
+	if ( ! kvs ) {
+		return null;
+	}
+	var kv;
+	for ( var i = 0, l = kvs.length; i < l; i++ ) {
+		kv = kvs[i];
+		if ( kv.k.trim() === key ) {
+			// found, return it.
+			return kv.v;
+		}
+	}
+	// nothing found!
+	return null;
+};
+
 MWParserEnvironment.prototype.lookupValue = function ( kvs, key ) {
 	if ( ! kvs ) {
 		return null;

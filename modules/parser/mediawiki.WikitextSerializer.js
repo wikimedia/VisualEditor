@@ -52,7 +52,8 @@ WSP.initialState = {
 	onNewline: true,
 	onStartOfLine : true,
 	availableNewlineCount: 0,
-	singleLineMode: 0
+	singleLineMode: 0,
+	tokens: []
 };
 
 WSP.escapeWikiText = function ( state, text ) {
@@ -901,7 +902,19 @@ WSP.defaultHTMLTagHandler = {
 
 WSP._getTokenHandler = function(state, token) {
 	var handler;
-	if (token.dataAttribs.stx === 'html') {
+	if ( token.dataAttribs.src !== undefined &&
+		state.env.lookup( token.attribs, 'data-gen' ) === 'both' ) {
+			if ( token.constructor === TagTk ) {
+				state.inCollectionMode = true;
+				state.collectorToken = token.name;
+				return { handle: id( token.dataAttribs.src ) };
+			} else if ( token.constructor === SelfclosingTagTk ) {
+				return { handle: id( token.dataAttribs.src ) };
+			} else { // EndTagTk
+				state.inCollectionMode = false;
+				return { handle: id('') };
+			}
+	} else if (token.dataAttribs.stx === 'html') {
 		handler = this.defaultHTMLTagHandler;
 	} else {
 		var tname = token.name;

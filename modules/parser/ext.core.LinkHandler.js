@@ -191,7 +191,10 @@ WikiLinkHandler.prototype.renderFile = function ( token, frame, cb, title ) {
 		return this.renderThumb( token, this.manager, cb, title, path, caption, oHash, options );
 	} else {
 		// TODO: get /wiki from config!
-		var a = new TagTk( 'a', [ new KV( 'href', title.makeLink() ) ] );
+		var a = new TagTk( 'a', [ 
+					new KV( 'href', title.makeLink() ),
+					new KV( 'data-gen', 'both' )
+				] );
 		a.dataAttribs = token.dataAttribs;
 
 		var width, height;
@@ -261,6 +264,7 @@ WikiLinkHandler.prototype.renderThumb = function ( token, manager, cb, title, pa
 		new TagTk( 
 				'figure', 
 				[
+					new KV('data-gen', 'both'),
 					new KV('class', figureclass),
 					new KV('style', figurestyle),
 					new KV('typeof', 'http://mediawiki.org/rdf/Thumb'),
