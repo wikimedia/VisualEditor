@@ -1198,14 +1198,14 @@ nowiki
         return [ 
             new TagTk( 'span', 
                     [
-                        {k: 'data-gen', v: 'wrapper'}, 
+                        {k: 'data-gen', v: 'both'}, 
                         {k: 'typeof', v: 'mw:nowiki'}
                     ],
                     { tsr: [pos0, pos0+8] } )
         ].concat( nc, [ 
                     new EndTagTk( 'span', 
                     [
-                        {k: 'data-gen', v: 'wrapper'}, 
+                        {k: 'data-gen', v: 'both'}, 
                         {k: 'typeof', v: 'mw:nowiki'}
                     ],
                     { tsr: [pos - 9, pos] }) 
