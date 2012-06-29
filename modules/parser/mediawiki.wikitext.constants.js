@@ -9,37 +9,45 @@
  * ------------------------------------------------------------------- */
 
 WikitextConstants = {
+	// Valid image options:
+	// * Prefix options are of the form "alt=foo"
+	// * Simple options are of the form "center"
+	//
+	// See http://en.wikipedia.org/wiki/Wikipedia:Extended_image_syntax
+	// for more information about how they are used.
 	Image: {
+		PrefixOptions: {
+			'link'     : 'link',
+			'alt'      : 'alt',
+			'page'     : 'page',
+			'thumbnail': 'thumbnail',
+			'thumb'    : 'thumb',
+			'upright'  : 'aspect'
+		},
 		SimpleOptions: {
 			// halign
-			'left': 'halign',
-			'right': 'halign',
+			'left'  : 'halign',
+			'right' : 'halign',
 			'center': 'halign',
-			'float': 'halign',
-			'none': 'halign',
+			'float' : 'halign',
+			'none'  : 'halign',
+
 			// valign
-			'baseline': 'valign',
-			'sub': 'valign',
-			'super': 'valign',
-			'top': 'valign',
-			'text-top': 'valign',
-			'middle': 'valign',
-			'bottom': 'valign',
+			'baseline'   : 'valign',
+			'sub'        : 'valign',
+			'super'      : 'valign',
+			'top'        : 'valign',
+			'text-top'   : 'valign',
+			'middle'     : 'valign',
+			'bottom'     : 'valign',
 			'text-bottom': 'valign',
+
 			// format
-			'border': 'format',
+			'border'   : 'format',
 			'frameless': 'format',
-			'frame': 'format',
+			'frame'    : 'format',
 			'thumbnail': 'format',
-			'thumb': 'format'
-		},
-		PrefixOptions: {
-			'link': 'link',
-			'alt': 'alt',
-			'page': 'page',
-			'thumbnail': 'thumbnail',
-			'thumb': 'thumb',
-			'upright': 'aspect'
+			'thumb'    : 'format'
 		}
 	}
 };
