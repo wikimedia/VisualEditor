@@ -189,7 +189,9 @@ WSP.escapeWikiText = function ( state, text ) {
 						// push out the original source
 						// XXX: This assumes the content was not
 						// modified for now.
-						outTexts.push( token.dataAttribs.src );
+						outTexts.push( token.dataAttribs.src
+								// escape ampersands in entity text
+								.replace(/&(#?[0-9a-zA-Z]{2,6};)/, '&amp;$1') );
 						// skip generated tokens
 						for ( ; i < l; i ++) {
 							var tk = tokens[i];
