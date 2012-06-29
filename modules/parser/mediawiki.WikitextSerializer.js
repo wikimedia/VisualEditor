@@ -652,6 +652,7 @@ WSP.tagHandlers = {
 	pre: { 
 		start: {
 			startsNewline: true,
+			pairSepNLCount: 2,
 			handle: function( state, token ) {
 				state.inIndentPre = true;
 				state.textHandler = function( t ) { 
