@@ -49,7 +49,8 @@ ve.ce.Surface = function( $container, model ) {
 	this.model.on( 'change', ve.proxy( this.onChange, this ) );
 	this.on( 'contentChange', ve.proxy( this.onContentChange, this ) );
 	this.$.on( {
-		'cut copy': ve.proxy( this.onCutCopy, this ),
+		'cut': ve.proxy( this.onCut, this ),
+		'copy': ve.proxy( this.onCopy, this ),
 		'paste': ve.proxy( this.onPaste, this ),
 		'dragover drop': function( e ) {
 			// Prevent content drag & drop
@@ -69,6 +70,8 @@ ve.ce.Surface = function( $container, model ) {
 		// Silently ignore
 	}
 	rangy.init();
+	ve.ce.Surface.clearLocalStorage();
+
 	// Must be initialized after select and transact listeners are added to model so respond first
 	this.documentView = new ve.ce.Document( model.getDocument(), this );
 	this.contextView = new ve.ui.Context( this );
@@ -274,48 +277,54 @@ ve.ce.Surface.prototype.onKeyDown = function( e ) {
 	}
 };
 
-ve.ce.Surface.prototype.onCutCopy = function( e ) {
-	var view = this,
-		sel = rangy.getSelection(),
-		$frag = null,
+ve.ce.Surface.prototype.onCopy = function( e ) {
+	var sel = rangy.getSelection(),
+		$frag = $( sel.getRangeAt(0).cloneContents() ),
+		dataArray = ve.copyArray( this.documentView.model.getData( this.model.getSelection() ) ),
 		key = '';
+
+	// Create key from text and element names
+	$frag.contents().each( function() {
+		key += this.textContent || this.nodeName;
+	} );
+	key = 've-' + key.replace( /\s/gm, '' );
+
+	// Set clipboard and localStorage
+	this.clipboard[key] = dataArray;
+	try {
+		localStorage.setItem(
+			key, JSON.stringify( { 'time': new Date().getTime(), 'data': dataArray } )
+		);
+	} catch( e ) {
+		// Silently ignore
+	}
+};
+
+ve.ce.Surface.prototype.onCut = function( e ) {
+	var surface = this;
 
 	this.stopPolling();
 
-	// Create key from text and element names
-	$frag = $( sel.getRangeAt(0).cloneContents() );
-	$frag.contents().each( function () {
-		key += this.textContent || this.nodeName;
-	} );
-	key = key.replace( /\s/gm, '' );
+	this.onCopy( e );
 
-	// Set surface clipboard
-	this.clipboard[key] = ve.copyArray(
-		this.documentView.model.getData( this.model.getSelection() )
-	);
+	setTimeout( function() {
+		var	selection,
+			tx;
 
-	if ( e.type === 'cut' ) {
-		this.stopPolling();
+		// We don't like how browsers cut, so let's undo it and do it ourselves.
+		document.execCommand( 'undo', false, false );
 
-		setTimeout( function() {
-			var selection = null,
-				tx = null;
+		selection = surface.model.getSelection();
 
-			// We don't like how browsers cut, so let's undo it and do it ourselves.
-			document.execCommand( 'undo', false, false );
+		// Transact
+		surface.autoRender = true;
+		tx = ve.dm.Transaction.newFromRemoval( surface.documentView.model, selection );
+		surface.model.change( tx, new ve.Range( selection.start ) );
+		surface.autoRender = false;
 
-			selection = view.model.getSelection();
-
-			// Transact
-			view.autoRender = true;
-			tx = ve.dm.Transaction.newFromRemoval( view.documentView.model, selection );
-			view.model.change( tx, new ve.Range( selection.start ) );
-			view.autoRender = false;
-
-			view.clearPollData();
-			view.startPolling();
-		}, 1 );
-	}
+		surface.clearPollData();
+		surface.startPolling();
+	}, 1 );
 };
 
 ve.ce.Surface.prototype.onPaste = function( e ) {
@@ -339,13 +348,19 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
 			tx = null;
 
 		// Create key from text and element names
-		$('#paste').hide().contents().each(function() {
+		$( '#paste' ).hide().contents().each( function() {
 			key += this.textContent || this.nodeName;
-		});
-		key = key.replace( /\s/gm, '' );
+		} );
+		key = 've-' + key.replace( /\s/gm, '' );
 
-		// Get linear model from surface clipboard or create array from unknown pasted content
-		pasteData = ( view.clipboard[key] ) ? view.clipboard[key] : $('#paste').text().split('');
+		// Get linear model from clipboard, localStorage, or create array from unknown pasted content
+		if ( view.clipboard[key] ) {
+			pasteData = view.clipboard[key];
+		} else if ( localStorage.getItem( key ) ) {
+			pasteData = JSON.parse( localStorage.getItem( key ) ).data;
+		} else {
+			pasteData = $( '#paste' ).text().split( '' );
+		}
 
 		// Transact
 		tx = ve.dm.Transaction.newFromInsertion(
@@ -719,9 +734,13 @@ ve.ce.Surface.prototype.handleEnter = function( e ) {
 			node.model.length === 0 // the child is empty
 		) {
 			// Enter was pressed in an empty list item.
-			// Outdent the list item, which will turn it into a paragraph if it's not in a nested list
-			// FIXME this is an ugly way to trigger outdent, with a proper API we could do better
-			ve.ui.IndentationButtonTool.outdentListItem( this.model );
+			var list = outermostNode.getModel().getParent();
+			// Remove the list item
+			tx = ve.dm.Transaction.newFromRemoval( documentModel, outermostNode.getModel().getOuterRange() );
+			this.model.change( tx );
+			// Insert a paragraph
+			tx = ve.dm.Transaction.newFromInsertion( documentModel, list.getOuterRange().to, emptyParagraph );
+
 			advanceCursor = false;
 		} else {
 			// We must process the transaction first because getRelativeContentOffset can't help us yet
@@ -769,13 +788,14 @@ ve.ce.Surface.prototype.handleDelete = function( backspace ) {
 			targetOffset = selection.to;
 		}
 
-		sourceNode = this.documentView.getNodeFromOffset( sourceOffset, false );
-		targetNode = this.documentView.getNodeFromOffset( targetOffset, false );
+		var	sourceNode = this.documentView.getNodeFromOffset( sourceOffset, false ),
+			targetNode = this.documentView.getNodeFromOffset( targetOffset, false );
 
 		if ( sourceNode.type === targetNode.type ) {
 			sourceSplitableNode = ve.ce.Node.getSplitableNode( sourceNode );
 			targetSplitableNode = ve.ce.Node.getSplitableNode( targetNode );
 		}
+		//ve.log(sourceSplitableNode, targetSplitableNode);
 
 		cursorAt = targetOffset;
 
@@ -1110,6 +1130,17 @@ ve.ce.Surface.prototype.getOffsetFromElementNode = function( domNode, domOffset,
 	}
 };
 
+ve.ce.Surface.prototype.updateContextIcon = function() {
+	var selection = this.model.getSelection();
+	if ( this.contextView ) {
+		if ( selection.getLength() > 0 ) {
+			this.contextView.set();
+		} else {
+			this.contextView.clear();
+		}
+	}
+};
+
 /* Supplies the selection anchor coordinates to contextView */
 ve.ce.Surface.prototype.getSelectionRect = function() {
 	var rangySel = rangy.getSelection();
@@ -1125,6 +1156,31 @@ ve.ce.Surface.isShortcutKey = function( e ) {
 		return true;
 	}
 	return false;
+};
+
+/* Removes localStorage keys for copy and paste after a day */
+ve.ce.Surface.clearLocalStorage = function() {
+	var keysToRemove = [];
+
+	for ( var i = 0; i < localStorage.length; i++ ) {
+		var key = localStorage.key( i );
+
+		if ( key.indexOf( 've-' ) !== 0 ) {
+			return false;
+		}
+
+		var	time = JSON.parse( localStorage.getItem( key ) ).time,
+			now = new Date().getTime();
+
+		if (now - time > 86400000) {
+			// Don't remove keys while iterating. Store them for later removal.
+			keysToRemove.push( key );
+		}
+	}
+
+	$.each( keysToRemove, function( i, val ) {
+		localStorage.removeItem( val );
+	} );
 };
 
 ve.ce.Surface.prototype.getModel = function() {
