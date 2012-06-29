@@ -809,10 +809,10 @@ WSP.tagHandlers = {
 						// The values and keys in the parser attributes are a flip
 						// of how they are in the wikitext constants image hash
 						// Hence the indexing by 'v' instead of 'k'
-						if (simpleImgOptions[v] === k) {
+						if (simpleImgOptions[v.trim()] === k) {
 							outBits.push(v);
-						} else if (prefixImgOptions[v]) {
-							outBits.push(prefixImgOptions[k] + "=" + v);
+						} else if (prefixImgOptions[k.trim()]) {
+							outBits.push(k + "=" + v);
 						} else if (k === "aspect") { 
 							// SSS: Bad Hack!  Need a better solution
 							// One solution is to search through prefix options hash but seems ugly.

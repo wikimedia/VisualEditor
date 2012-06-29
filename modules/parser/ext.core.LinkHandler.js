@@ -26,13 +26,12 @@ WikiLinkHandler.prototype.rank = 1.15; // after AttributeExpander
 
 WikiLinkHandler.prototype.onWikiLink = function ( token, frame, cb ) {
 	var env = this.manager.env,
-		href = token.attribs[0].v;
-	var title = this.manager.env.makeTitleFromPrefixedText( 
-					env.tokensToString( href )
-				);
+		href = token.attribs[0].v,
+		hrefStr = env.tokensToString( href );
+	var title = this.manager.env.makeTitleFromPrefixedText(hrefStr);
 
 	if ( title.ns.isFile() ) {
-		cb( this.renderFile( token, frame, cb, title ) );
+		cb( this.renderFile( token, frame, cb, hrefStr, title ) );
 	} else if ( title.ns.isCategory() ) {
 		// Simply round-trip category links for now
 		cb( { tokens: [ 
@@ -50,12 +49,11 @@ WikiLinkHandler.prototype.onWikiLink = function ( token, frame, cb ) {
 					[ 
 						new KV( 'href', normalizedHref ),
 						new KV('rel', 'mw:wikiLink')
-					] 
-					, token.dataAttribs
+					], token.dataAttribs
 				),
 			content = token.attribs.slice(2);
 		if ( href !== normalizedHref ) {
-			obj.dataAttribs.sHref = env.tokensToString( href );
+			obj.dataAttribs.sHref = hrefStr;
 		}
 		//console.warn('content: ' + JSON.stringify( content, null, 2 ) );
 		// XXX: handle trail
@@ -69,7 +67,7 @@ WikiLinkHandler.prototype.onWikiLink = function ( token, frame, cb ) {
 			}
 			content = out;
 		} else {
-			content = [ env.decodeURI( env.tokensToString( href ) ) ];
+			content = [ env.decodeURI(hrefStr) ];
 			obj.dataAttribs.gc = 1;
 		}
 
@@ -85,7 +83,7 @@ WikiLinkHandler.prototype.onWikiLink = function ( token, frame, cb ) {
 	}
 };
 
-WikiLinkHandler.prototype.renderFile = function ( token, frame, cb, title ) {
+WikiLinkHandler.prototype.renderFile = function ( token, frame, cb, fileName, title ) {
 	var env = this.manager.env;
 	// distinguish media types
 	// if image: parse options
@@ -111,10 +109,11 @@ WikiLinkHandler.prototype.renderFile = function ( token, frame, cb, title ) {
 			oText = this.manager.env.tokensToString( oContent.v, true );
 		//console.log( JSON.stringify( oText, null, 2 ) );
 		if ( oText.constructor === String ) {
-			oText = oText.trim();
-			var imgOption = WikitextConstants.Image.SimpleOptions[ oText.toLowerCase()];
+			var origOText = oText;
+			oText = oText.trim().toLowerCase();
+			var imgOption = WikitextConstants.Image.SimpleOptions[oText];
 			if (imgOption) {
-				options.push( new KV(imgOption, oText ) );
+				options.push( new KV(imgOption, origOText ) );
 				oHash[imgOption] = oText;
 				continue;
 			} else {
@@ -132,7 +131,7 @@ WikiLinkHandler.prototype.renderFile = function ( token, frame, cb, title ) {
 						oHash.height = y;
 					}
 				} else {
-					var bits = oText.split( '=', 2 );
+					var bits = origOText.split( '=', 2 );
 					var normalizedBit0 = bits[0].trim().toLowerCase();
 					var key = WikitextConstants.Image.PrefixOptions[normalizedBit0];
 					if ( bits[0] && key) {
@@ -167,7 +166,7 @@ WikiLinkHandler.prototype.renderFile = function ( token, frame, cb, title ) {
 	// XXX: render according to mode (inline, thumb, framed etc)
 	
 	if ( oHash.format && ( oHash.format === 'thumb' || oHash.format === 'thumbnail') ) {
-		return this.renderThumb( token, this.manager, cb, title, path, caption, oHash, options );
+		return this.renderThumb( token, this.manager, cb, title, fileName, path, caption, oHash, options );
 	} else {
 		// TODO: get /wiki from config!
 		var a = new TagTk( 'a', [ 
@@ -197,7 +196,7 @@ WikiLinkHandler.prototype.renderFile = function ( token, frame, cb, title ) {
 	}
 };
 
-WikiLinkHandler.prototype.renderThumb = function ( token, manager, cb, title, path, caption, oHash, options ) {
+WikiLinkHandler.prototype.renderThumb = function ( token, manager, cb, title, fileName, path, caption, oHash, options ) {
 	// TODO: get /wiki from config!
 	var a = new TagTk( 'a', [ new KV( 'href', title.makeLink() ) ] );
 	a.dataAttribs = token.dataAttribs;
@@ -270,7 +269,7 @@ WikiLinkHandler.prototype.renderThumb = function ( token, manager, cb, title, pa
 					new KV('alt', oHash.alt || title.key ),
 					// Add resource as CURIE- needs global default prefix
 					// definition.
-					new KV('resource', '[:' + title.getPrefixedText() + ']')
+					new KV('resource', '[:' + fileName + ']')
 				]
 			),
 		new EndTagTk( 'a' ),
