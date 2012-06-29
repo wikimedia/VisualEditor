@@ -46,10 +46,12 @@ $messages['en'] = array(
 
 /** Message documentation (Message documentation)
  * @author Erik Moeller
+ * @author Jdforrester
  * @author Nike
  * @author Trevor Parscal
  */
 $messages['qqq'] = array(
+	'visualeditor' => 'The name of the VisualEditor extension',
 	'visualeditor-tooltip-wikitext' => 'Tooltip for a toolbar button which activates or deactivates a split view, with the visual editor on the left-hand side, and a dynamically updating but read-only wikitext view on the right-hand side.',
 	'visualeditor-tooltip-json' => 'Tooltip for a toolbar button which activates or deactivates a split view, with the visual editor on the left-hand side, and a dynamically updating but read-only JSON representation of the document on the right-hand side. This view is primarily useful for debugging purposes.',
 	'visualeditor-tooltip-html' => 'Tooltip for a toolbar button which activates or deactivates a split view, with the visual editor on the left-hand side, and a dyanmically updating but read-only raw HTML view on the right-hand side. This view is primarily useful for debugging purposes.',
@@ -242,6 +244,49 @@ $messages['dsb'] = array(
 	'visualeditor-tooltip-help' => 'Pomoc pokazaś a schowaś',
 	'visualeditor-feedback-prompt' => 'Komentar zawóstajiś',
 	'visualeditor-feedback-dialog-title' => 'Komentar wó grajkanišću VisualEditora zawóstajiś',
+);
+
+/** British English (British English)
+ * @author Jdforrester
+ */
+$messages['en-gb'] = array(
+	'visualeditor' => 'VisualEditor',
+	'visualeditorsandbox' => 'VisualEditor Sandbox',
+	'visualeditor-desc' => 'VisualEditor for MediaWiki',
+	'visualeditor-sandbox-title' => 'VisualEditor Sandbox',
+	'visualeditor-tooltip-wikitext' => 'Toggle wikitext view',
+	'visualeditor-tooltip-json' => 'Toggle JSON view',
+	'visualeditor-tooltip-html' => 'Toggle HTML view',
+	'visualeditor-tooltip-render' => 'Toggle preview',
+	'visualeditor-tooltip-history' => 'Toggle transaction history view',
+	'visualeditor-tooltip-help' => 'Toggle help view',
+	'visualeditor-feedback-prompt' => 'Leave feedback',
+	'visualeditor-feedback-dialog-title' => 'Leave feedback about VisualEditor Sandbox',
+	'visualeditor-ca-editsource' => 'Edit source',
+	'visualeditor-linkinspector-title' => 'Edit link',
+	'visualeditor-linkinspector-label-pagetitle' => 'Page title',
+	'visualeditor-formatdropdown-title' => 'Change format',
+	'visualeditor-formatdropdown-format-paragraph' => 'Paragraph',
+	'visualeditor-formatdropdown-format-heading1' => 'Heading 1',
+	'visualeditor-formatdropdown-format-heading2' => 'Heading 2',
+	'visualeditor-formatdropdown-format-heading3' => 'Heading 3',
+	'visualeditor-formatdropdown-format-heading4' => 'Heading 4',
+	'visualeditor-formatdropdown-format-heading5' => 'Heading 5',
+	'visualeditor-formatdropdown-format-heading6' => 'Heading 6',
+	'visualeditor-formatdropdown-format-preformatted' => 'Pre-formatted',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Bold',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Italic',
+	'visualeditor-annotationbutton-link-tooltip' => 'Link',
+	'visualeditor-indentationbutton-indent-tooltip' => 'Increase indent',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Decrease indent',
+	'visualeditor-listbutton-number-tooltip' => 'Numbered list',
+	'visualeditor-listbutton-bullet-tooltip' => 'Bullet list',
+	'visualeditor-clearbutton-tooltip' => 'Clear formatting',
+	'visualeditor-historybutton-undo-tooltip' => 'Undo',
+	'visualeditor-historybutton-redo-tooltip' => 'Redo',
+	'visualeditor-viewpage-savewarning' => 'Are you sure you want to go back to view mode without first saving?',
+	'visualeditor-loadwarning' => 'Error loading data from server: $1. Would you like to try again?',
+	'visualeditor-saveerror' => 'Error saving data to server: $1.',
 );
 
 /** Spanish (español)
