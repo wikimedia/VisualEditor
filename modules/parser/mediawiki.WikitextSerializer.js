@@ -191,7 +191,7 @@ WSP.escapeWikiText = function ( state, text ) {
 						// modified for now.
 						outTexts.push( token.dataAttribs.src
 								// escape ampersands in entity text
-								.replace(/&(#?[0-9a-zA-Z]{2,6};)/, '&amp;$1') );
+								.replace(/&(#?[0-9a-zA-Z]{2,8};)/, '&amp;$1') );
 						// skip generated tokens
 						for ( ; i < l; i ++) {
 							var tk = tokens[i];
@@ -652,6 +652,7 @@ WSP.tagHandlers = {
 	pre: { 
 		start: {
 			startsNewline: true,
+			pairSepNLCount: 2,
 			handle: function( state, token ) {
 				state.inIndentPre = true;
 				state.textHandler = function( t ) { 
