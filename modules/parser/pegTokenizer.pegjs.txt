@@ -337,6 +337,16 @@
 
     var self = this;
 
+    /*
+     * Emit a chunk of tokens to our consumers.  Once this has been done, the
+     * current expression can return an empty list (true).
+     */
+    var emitChunk = function (tokens) {
+        __parseArgs[2](tokens);
+    };
+
+
+
         
 }
 
@@ -347,7 +357,7 @@
 start
   = e:toplevelblock* newline* { 
       // end is passed inline as a token, as well as a separate event for now.
-      __parseArgs[2]( [ new EOFTk( ) ] );
+      emitChunk( [ new EOFTk( ) ] );
       return []; //flatten(e);
   }
 
@@ -383,7 +393,7 @@ toplevelblock
     
     // Emit tokens for this toplevelblock. This feeds a chunk to the parser
     // pipeline.
-    __parseArgs[2]( flatten( b ) );
+    emitChunk( flatten( b ) );
 
 
     // We don't return any tokens to the start production to save memory. We
