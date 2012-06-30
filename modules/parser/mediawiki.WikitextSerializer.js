@@ -228,13 +228,14 @@ var id = function(v) {
 	}; 
 };
 
-WSP._listHandler = function( handler, bullet, state, token ) {
-	function isListItem(token) {
-		if (token.constructor !== TagTk) return false;
+function isListItem(token) {
+	if (token.constructor !== TagTk) return false;
 
-		var tokenName = token.name;
-		return (tokenName === 'li' || tokenName === 'dt' || tokenName === 'dd');
-	}
+	var tokenName = token.name;
+	return (tokenName === 'li' || tokenName === 'dt' || tokenName === 'dd');
+}
+
+WSP._listHandler = function( handler, bullet, state, token ) {
 	if ( state.singleLineMode ) {
 		state.singleLineMode--;
 	}
@@ -634,11 +635,24 @@ WSP.tagHandlers = {
 			handle: WSP._serializeTableTag.bind(null, "|+", ' |')
 		}
 	},
-	p: { 
+	p: {
 		make: function(state, token) {
+			// "stx": "html" tags never get here
 			// Special case handling in a list context
-			// VE embeds list content in paragraph tags
-			return state.singleLineMode ? WSP.defaultHTMLTagHandler : this;
+			// VE embeds list content in paragraph tags.
+			//
+			// SSS FIXME: This will *NOT* work if the list item has nested paragraph tags!
+			var prevToken = state.prevToken;
+			if (	token.attribs.length === 0
+				&&  (	(state.listStack.length > 0 && isListItem(prevToken))
+					||  (prevToken.constructor === TagTk && prevToken.name === 'td')
+					||  (state.ignorePTag && token.constructor === EndTagTk)))
+			{
+				state.ignorePTag = !state.ignorePTag;
+				return { start: { ignore: true }, end: { ignore: true } };
+			} else {
+				return state.singleLineMode ? WSP.defaultHTMLTagHandler : this;
+			}
 		},
 		start: {
 			startsNewline : true,
