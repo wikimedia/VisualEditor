@@ -102,11 +102,13 @@ ve.ui.Context.prototype.isMenuOpen = function() {
 };
 
 ve.ui.Context.prototype.set = function() {
-	this.positionIcon();
-	if ( this.position ) {
-		this.positionOverlay( this.menuView.$ );
-		if ( this.inspector ) {
-			this.positionOverlay ( this.$inspectors );
+	if ( this.surfaceView.getModel().getSelection().getLength() > 0 ) {
+		this.positionIcon();
+		if ( this.position ) {
+			this.positionOverlay( this.menuView.$ );
+			if ( this.inspector ) {
+				this.positionOverlay ( this.$inspectors );
+			}
 		}
 	}
 };
