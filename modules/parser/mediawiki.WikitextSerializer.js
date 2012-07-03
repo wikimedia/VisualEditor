@@ -852,7 +852,19 @@ WSP.tagHandlers = {
 		start: { 
 			startsNewline: true, 
 			endsLine: true,
-			handle: id("----") 
+			handle: function(state, token) {
+				var extra_dashes = token.dataAttribs.extra_dashes;
+				if (extra_dashes && (extra_dashes > 0)) {
+					var buf = ["----"];
+					for (var i = 0; i < extra_dashes; i++) {
+						buf.push("-");
+					}
+					return buf.join('');
+				} else {
+					// num_dashes undefined OR exactly 4
+					return "----";
+				}
+			}
 		}
 	},
 	h1: { 
