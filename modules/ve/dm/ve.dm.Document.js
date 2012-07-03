@@ -669,6 +669,26 @@ ve.dm.Document.prototype.getAnnotationsFromRange = function( range, all ) {
 };
 
 /**
+ * Returns ve.Range free of outer whitespace.
+ *
+ * @method
+ * @param {ve.Range} [range] Range of data to get, all data will be given by default
+ * @returns {Object} A new range if modified, otherwise returns passed range.
+ */
+ve.dm.Document.prototype.trimOuterSpaceFromRange = function( range ){
+	range.normalize();
+	var	start = range.start,
+		end = range.end;
+	while ( this.data[start] === ' ' ) {
+		start++;
+	}
+	while ( this.data[end - 1] === ' ' ) {
+		end--;
+	}
+	return range.to < range.end ? new ve.Range( end, start ) : new ve.Range( start, end );
+};
+
+/**
  * Rebuild one or more nodes following a change in linear model data.
  *
  * The data provided to this method may contain either one node or multiple sibling nodes, but it

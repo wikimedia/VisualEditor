@@ -113,6 +113,20 @@ ve.Range.prototype.normalize = function() {
 };
 
 /**
+ * Swaps from and to values, effectively changing the direction.
+ *
+ * The range will also be normalized when this is called.
+ *
+ * @method
+ */
+ve.Range.prototype.flip = function() {
+	var from = this.from;
+	this.from = this.to;
+	this.to = from;
+	this.normalize();
+};
+
+/**
  * Determines if two Ranges are equal. Direction counts.
  *
  * @method

@@ -59,8 +59,14 @@ ve.ui.Inspector = function( toolbar, context ) {
 /* Methods */
 
 ve.ui.Inspector.prototype.open = function() {
+	// Prepare to open
+	if ( this.prepareOpen ) {
+		this.prepareOpen();
+	}
+	// Show
 	this.$.show();
 	this.context.closeMenu();
+	// Open
 	if ( this.onOpen ) {
 		this.onOpen();
 	}

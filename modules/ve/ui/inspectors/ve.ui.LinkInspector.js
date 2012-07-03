@@ -15,6 +15,7 @@
 ve.ui.LinkInspector = function( toolbar, context ) {
 	// Inheritance
 	ve.ui.Inspector.call( this, toolbar, context );
+
 	// Properties
 	this.$clearButton = $( '<div class="es-inspector-button es-inspector-clear-button"></div>' )
 		.prependTo( this.$ );
@@ -29,29 +30,28 @@ ve.ui.LinkInspector = function( toolbar, context ) {
 	this.initialValue = null;
 
 	// Events
-	var _this = this;
+	var inspector = this;
 	this.$clearButton.click( function() {
 		if ( $(this).is( '.es-inspector-button-disabled' ) ) {
 			return;
 		}
 
 		var hash,
-			surfaceModel = _this.context.getSurfaceView().getModel(),
-			annotations = _this.getSelectedLinkAnnotations();
+			surfaceModel = inspector.context.getSurfaceView().getModel(),
+			annotations = inspector.getSelectedLinkAnnotations();
 		// If link annotation exists, clear it.
 		for ( hash in annotations ) {
 			surfaceModel.annotate( 'clear', annotations[hash] );
 		}
-
-		_this.$locationInput.val( '' );
-		_this.context.closeInspector();
+		inspector.$locationInput.val( '' );
+		inspector.context.closeInspector();
 	} );
 	this.$locationInput.bind( 'mousedown keydown cut paste', function() {
 		setTimeout( function() {
-			if ( _this.$locationInput.val() !== _this.initialValue ) {
-				_this.$acceptButton.removeClass( 'es-inspector-button-disabled' );
+			if ( inspector.$locationInput.val() !== inspector.initialValue ) {
+				inspector.$acceptButton.removeClass( 'es-inspector-button-disabled' );
 			} else {
-				_this.$acceptButton.addClass( 'es-inspector-button-disabled' );
+				inspector.$acceptButton.addClass( 'es-inspector-button-disabled' );
 			}
 		}, 0 );
 	} );
@@ -104,9 +104,38 @@ ve.ui.LinkInspector.prototype.getSelectionText = function() {
 	return str;
 };
 
+/*
+ * Method called prior to opening inspector which fixes up
+ * selection to contain the complete annotated link range
+ * OR unwrap outer whitespace from selection.
+ */
+ve.ui.LinkInspector.prototype.prepareOpen = function() {
+	var	surfaceView = this.context.getSurfaceView(),
+		surfaceModel = surfaceView.getModel(),
+		doc = surfaceModel.getDocument(),
+		annotation = this.getAnnotationFromSelection(),
+		selection = surfaceModel.getSelection(),
+		newSelection;
+
+	if ( annotation !== null ) {
+		// Ensure that the entire annotated range is selected
+		newSelection = doc.getAnnotatedRangeFromOffset( selection.start, annotation );
+		// Apply selection direction to new selection
+		if ( selection.from > selection.start ) {
+			newSelection.flip();
+		}
+	} else {
+		// No annotation, trim outer space from range
+		newSelection = doc.trimOuterSpaceFromRange( selection );
+	}
+
+	surfaceModel.change( null, newSelection );
+};
+
 ve.ui.LinkInspector.prototype.onOpen = function() {
-	var annotation = this.getAnnotationFromSelection();
-	var initialValue = '';
+	var	annotation = this.getAnnotationFromSelection(),
+		initialValue = '';
+
 	if ( annotation === null ) {
 		this.$locationInput.val( this.getSelectionText() );
 		this.$clearButton.addClass( 'es-inspector-button-disabled' );
@@ -128,11 +157,10 @@ ve.ui.LinkInspector.prototype.onOpen = function() {
 	} else {
 		this.$acceptButton.removeClass( 'es-inspector-button-disabled' );
 	}
-	
-	var _this = this;
-	setTimeout( function() {
-		_this.$locationInput.focus().select();
-	}, 0 );
+
+	setTimeout( ve.proxy( function() {
+		this.$locationInput.focus().select();
+	}, this ), 0 );
 };
 
 ve.ui.LinkInspector.prototype.onClose = function( accept ) {

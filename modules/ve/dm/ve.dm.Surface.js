@@ -105,6 +105,7 @@ ve.dm.Surface.prototype.change = function( transaction, selection ) {
 ve.dm.Surface.prototype.annotate = function( method, annotation ) {
 	var selection = this.getSelection();
 	if ( selection.getLength() ) {
+		selection = this.getDocument().trimOuterSpaceFromRange( selection );
 		var tx = ve.dm.Transaction.newFromAnnotation(
 			this.getDocument(), selection, method, annotation
 		);
