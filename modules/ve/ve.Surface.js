@@ -143,6 +143,11 @@ ve.Surface.prototype.setupToolbars = function() {
 				);
 
 				_this.$base.find( '.es-panes' ).before( _this.toolbarWrapper[name] );
+
+				if ( 'float' in config && config.float === true ) {
+					// Float top toolbar
+					_this.floatTopToolbar();
+				}
 			}
 			// Instantiate the toolbar
 			_this['toolbar-' + name] = new ve.ui.Toolbar(
@@ -150,9 +155,6 @@ ve.Surface.prototype.setupToolbars = function() {
 			);
 		}
 	} );
-
-	// Setup sticky toolbar
-	this.makeMainEditorToolbarFloat();
 };
 
 /*
@@ -161,7 +163,7 @@ ve.Surface.prototype.setupToolbars = function() {
  * TODO: Determine if this would be better in ui.toolbar vs here.
  * TODO: This needs to be refactored so that it only works on the main editor top tool bar.
  */
-ve.Surface.prototype.makeMainEditorToolbarFloat = function() {
+ve.Surface.prototype.floatTopToolbar = function() {
 	if ( !this.toolbarWrapper.top ) {
 		return;
 	}
@@ -171,17 +173,49 @@ ve.Surface.prototype.makeMainEditorToolbarFloat = function() {
 
 	$window.scroll( function() {
 		var toolbarWrapperOffset = $toolbarWrapper.offset();
+		var $editorDocument = $toolbarWrapper.parent()
+			.find('.ve-surface').find('.ve-ce-documentNode');
+
 		if ( $window.scrollTop() > toolbarWrapperOffset.top ) {
+			var left = toolbarWrapperOffset.left,
+				right = $window.width() - $toolbarWrapper.outerWidth() - left;
+			// If not floating, set float
 			if ( !$toolbarWrapper.hasClass( 'float' ) ) {
-				var left = toolbarWrapperOffset.left,
-					right = $window.width() - $toolbarWrapper.outerWidth() - left;
-				$toolbarWrapper.css( 'height', $toolbarWrapper.height() ).addClass( 'float' );
+				$toolbarWrapper.css( 'height', $toolbarWrapper.height() )
+					.addClass( 'float' );
 				$toolbar.css( { 'left': left, 'right': right } );
+			} else {
+				// Toolbar is floated
+				if (
+					// Toolbar is at or below the top of last node in the document
+					$window.scrollTop() + $toolbar.height() >=
+						$editorDocument.children( '.ve-ce-branchNode:last' ).offset().top
+				) {
+					if( !$toolbarWrapper.hasClass( 'bottom' ) ) {
+						$toolbarWrapper
+							.removeClass( 'float' )
+							.addClass( 'bottom' );
+						$toolbar.css({
+							'top': $window.scrollTop() + "px",
+							'left': left,
+							'right': right
+						});
+					}
+				} else { // Unattach toolbar
+					if ( $toolbarWrapper.hasClass( 'bottom' ) ) {
+						$toolbarWrapper
+							.removeClass( 'bottom' )
+							.addClass( 'float' );
+						$toolbar.css( { 'left': left, 'right': right, 'top': 0 } );
+					}
+				}
 			}
-		} else {
-			if ( $toolbarWrapper.hasClass( 'float' ) ) {
-				$toolbarWrapper.css( 'height', 'auto' ).removeClass( 'float' );
-				$toolbar.css( { 'left': 0, 'right': 0 } );
+		} else { // Return toolbar to top position
+			if ( $toolbarWrapper.hasClass( 'float' ) || $toolbarWrapper.hasClass( 'bottom' ) ) {
+				$toolbarWrapper.css( 'height', 'auto' )
+					.removeClass( 'float' )
+					.removeClass( 'bottom' );
+				$toolbar.css( { 'top': 0, 'left': 0, 'right': 0 } );
 			}
 		}
 	} );

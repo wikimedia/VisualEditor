@@ -31,6 +31,15 @@
 	z-index: 100;
 	border-top: none;
 }
+.es-toolbar-wrapper.bottom .es-toolbar {
+	position: absolute;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	-o-border-radius: 0;
+	border-radius: 0;
+	z-index: 100;
+	border-top: none;
+}
 .es-toolbar-shadow {
 	background-image: url(images/toolbar-shadow.png);
 	background-position: top left;
