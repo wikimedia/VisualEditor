@@ -84,6 +84,19 @@ $messages['qqq'] = array(
 	'visualeditor-saveerror' => 'Text shown when the editor fails to save properly.',
 );
 
+/** Assamese (অসমীয়া)
+ * @author Bishnu Saikia
+ */
+$messages['as'] = array(
+	'visualeditor-formatdropdown-format-paragraph' => 'দফা',
+	'visualeditor-formatdropdown-format-heading1' => 'শিৰোনাম ১',
+	'visualeditor-formatdropdown-format-heading2' => 'শিৰোনাম ২',
+	'visualeditor-formatdropdown-format-heading3' => 'শিৰোনাম ৩',
+	'visualeditor-formatdropdown-format-heading4' => 'শিৰোনাম ৪',
+	'visualeditor-formatdropdown-format-heading5' => 'শিৰোনাম ৫',
+	'visualeditor-formatdropdown-format-heading6' => 'শিৰোনাম ৬',
+);
+
 /** Asturian (asturianu)
  * @author Xuacu
  */
@@ -669,6 +682,31 @@ $messages['ko'] = array(
 	'visualeditor-tooltip-help' => '도움말 보기 전환',
 	'visualeditor-feedback-prompt' => '피드백 남기기',
 	'visualeditor-feedback-dialog-title' => '시각적편집기 실험실에 대한 피드백 남기기',
+	'visualeditor-ca-editsource' => '자료 편집',
+	'visualeditor-linkinspector-title' => '링크 편집',
+	'visualeditor-linkinspector-label-pagetitle' => '문서 제목',
+	'visualeditor-formatdropdown-title' => '서식 바꾸기',
+	'visualeditor-formatdropdown-format-paragraph' => '문단',
+	'visualeditor-formatdropdown-format-heading1' => '1단계 문단 제목',
+	'visualeditor-formatdropdown-format-heading2' => '2단계 문단 제목',
+	'visualeditor-formatdropdown-format-heading3' => '3단계 문단 제목',
+	'visualeditor-formatdropdown-format-heading4' => '4단계 문단 제목',
+	'visualeditor-formatdropdown-format-heading5' => '5단계 문단 제목',
+	'visualeditor-formatdropdown-format-heading6' => '6단계 문단 제목',
+	'visualeditor-formatdropdown-format-preformatted' => '서식 지정',
+	'visualeditor-annotationbutton-bold-tooltip' => '굵은 글씨',
+	'visualeditor-annotationbutton-italic-tooltip' => '기울인 글씨',
+	'visualeditor-annotationbutton-link-tooltip' => '링크',
+	'visualeditor-indentationbutton-indent-tooltip' => '들여쓰기 높이기',
+	'visualeditor-indentationbutton-outdent-tooltip' => '들여쓰기 낮추기',
+	'visualeditor-listbutton-number-tooltip' => '번호가 매겨진 목록',
+	'visualeditor-listbutton-bullet-tooltip' => '글머리 기호 목록',
+	'visualeditor-clearbutton-tooltip' => '서식 지우기',
+	'visualeditor-historybutton-undo-tooltip' => '되돌리기',
+	'visualeditor-historybutton-redo-tooltip' => '다시 실행',
+	'visualeditor-viewpage-savewarning' => '먼저 저장하지 않고 보기 모드로 돌아가겠습니까?',
+	'visualeditor-loadwarning' => '서버에서 데이터를 불러오는 중 오류: $1. 다시 시도하겠습니까?',
+	'visualeditor-saveerror' => '서버에 데이터를 저장하는 중 오류: $1.',
 );
 
 /** Luxembourgish (Lëtzebuergesch)
