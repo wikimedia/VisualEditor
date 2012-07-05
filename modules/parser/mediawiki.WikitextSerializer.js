@@ -228,6 +228,18 @@ var id = function(v) {
 	}; 
 };
 
+var closeHeading = function(v) { 
+	return function(state, token) { 
+		var prevToken = state.prevToken;
+		// Deal with empty headings. Ex: <h1></h1>
+		if (prevToken.constructor === TagTk && prevToken.name === token.name) {
+			return "<nowiki></nowiki>" + v;
+		} else {
+			return v; 
+		}
+	};
+};
+
 function isListItem(token) {
 	if (token.constructor !== TagTk) return false;
 
@@ -857,27 +869,27 @@ WSP.tagHandlers = {
 	},
 	h1: { 
 		start: { startsNewline: true, handle: id("="), defaultStartNewlineCount: 2 },
-		end: { endsLine: true, handle: id("=") }
+		end: { endsLine: true, handle: closeHeading("=") }
 	},
 	h2: { 
 		start: { startsNewline: true, handle: id("=="), defaultStartNewlineCount: 2 },
-		end: { endsLine: true, handle: id("==") }
+		end: { endsLine: true, handle: closeHeading("==") }
 	},
 	h3: { 
 		start: { startsNewline: true, handle: id("==="), defaultStartNewlineCount: 2 },
-		end: { endsLine: true, handle: id("===") }
+		end: { endsLine: true, handle: closeHeading("===") }
 	},
 	h4: { 
 		start: { startsNewline: true, handle: id("===="), defaultStartNewlineCount: 2 },
-		end: { endsLine: true, handle: id("====") }
+		end: { endsLine: true, handle: closeHeading("====") }
 	},
 	h5: { 
 		start: { startsNewline: true, handle: id("====="), defaultStartNewlineCount: 2 },
-		end: { endsLine: true, handle: id("=====") }
+		end: { endsLine: true, handle: closeHeading("=====") }
 	},
 	h6: { 
 		start: { startsNewline: true, handle: id("======"), defaultStartNewlineCount: 2 },
-		end: { endsLine: true, handle: id("======") }
+		end: { endsLine: true, handle: closeHeading("======") }
 	},
 	br: { 
 		start: { 
