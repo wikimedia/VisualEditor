@@ -42,6 +42,7 @@ ve.dm.Transaction.runConstructorTests = function( constructor, cases ) {
 
 test( 'newFromInsertion', function() {
 	var doc = new ve.dm.Document( ve.dm.example.data ),
+		doc2 = new ve.dm.Document( [ { 'type': 'paragraph' }, { 'type': '/paragraph' } ] ),
 		cases = {
 		'paragraph before first element': {
 			'args': [doc, 0, [{ 'type': 'paragraph' }, '1', { 'type': '/paragraph' }]],
@@ -172,6 +173,30 @@ test( 'newFromInsertion', function() {
 					'insert': [{ 'type': '/tableRow' }, { 'type': '/tableSection' }, { 'type': '/table' }, { 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'table' }, { 'type': 'tableSection', 'attributes': { 'style': 'body' } }, { 'type': 'tableRow' } ]
 				},
 				{ 'type': 'retain', 'length': 27 }
+			]
+		},
+		'inserting two paragraphs into a document with just an empty paragraph': {
+			'args': [doc2, 1, ['F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'paragraph' }, 'B', 'A', 'R']],
+			'ops': [
+				{ 'type': 'retain', 'length': 1 },
+				{
+					'type': 'replace',
+					'remove': [],
+					'insert': ['F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'paragraph' }, 'B', 'A', 'R']
+				},
+				{ 'type': 'retain', 'length': 1 }
+			]
+		},
+		'inserting three paragraphs into a document with just an empty paragraph': {
+			'args': [doc2, 1, ['F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' }, { 'type': 'paragraph' }, 'B', 'A', 'Z']],
+			'ops': [
+				{ 'type': 'retain', 'length': 1 },
+				{
+					'type': 'replace',
+					'remove': [],
+					'insert': ['F', 'O', 'O', { 'type': '/paragraph' }, { 'type': 'paragraph' }, 'B', 'A', 'R', { 'type': '/paragraph' }, { 'type': 'paragraph' }, 'B', 'A', 'Z']
+				},
+				{ 'type': 'retain', 'length': 1 }
 			]
 		}
 		// TODO test cases for unclosed openings
