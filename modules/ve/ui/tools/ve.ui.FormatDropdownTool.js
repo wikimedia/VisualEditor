@@ -200,7 +200,7 @@ ve.FormatDropdownTool.prototype.updateState = function( annotations, nodes ) {
 ve.ui.Tool.tools.format = {
 	'constructor': ve.FormatDropdownTool,
 	'name': 'format',
-	'title': ve.msg( 'visualeditor-formatdropdown-tooltip' )
+	'title': ve.msg( 'visualeditor-formatdropdown-title' )
 };
 
 /* Inheritance */
