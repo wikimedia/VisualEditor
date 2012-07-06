@@ -41,17 +41,18 @@
 	filter:alpha(opacity=25);
 	opacity: 0.25;
 }
-.es-inspector-closeButton {
+
+.es-inspector-close-button {
 	right: 0.25em;
 	background-image: url(images/close.png);
 }
 
-.es-inspector-acceptButton {
+.es-inspector-accept-button {
 	right: 2.25em;
 	background-image: url(images/accept.png);
 }
 
-.es-inspector-clearButton {
+.es-inspector-clear-button {
 	right: 4.25em;
 	background-image: url(images/clear.png);
 }

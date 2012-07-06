@@ -18,9 +18,9 @@ ve.ui.Inspector = function( toolbar, context ) {
 	this.context = context;
 	this.$ = $( '<div class="es-inspector"></div>' );
 	//
-	this.$closeButton = $( '<div class="es-inspector-button es-inspector-closeButton"></div>' )
+	this.$closeButton = $( '<div class="es-inspector-button es-inspector-close-button"></div>' )
 		.appendTo( this.$ );
-	this.$acceptButton = $( '<div class="es-inspector-button es-inspector-acceptButton"></div>' )
+	this.$acceptButton = $( '<div class="es-inspector-button es-inspector-accept-button"></div>' )
 		.appendTo( this.$ );
 	this.$form = $( '<form></form>' ).appendTo( this.$ );
 
