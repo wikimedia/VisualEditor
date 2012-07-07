@@ -11,6 +11,9 @@
  * @author Neil Kandalgaonkar <neilk@wikimedia.org>
  * @author Gabriel Wicke <gwicke@wikimedia.org>
  * @author Brion Vibber <brion@wikimedia.org>
+ * @author Christian Williams <christian@wikia-inc.com>
+ * @author Rob Moen <rmoen@wikimedia.org>
+ * @author Subramanya Sastry <ssastry@wikimedia.org>
  * @license GPL v2 or later
  * @version 0.1.0
  */
@@ -32,6 +35,9 @@ $wgExtensionCredits['other'][] = array(
 		'Neil Kandalgaonkar',
 		'Gabriel Wicke',
 		'Brion Vibber',
+		'Christian Williams',
+		'Rob Moen',
+		'Subramanya Sastry',
 	),
 	'version' => '0.1.0',
 	'url' => 'https://www.mediawiki.org/wiki/Extension:VisualEditor',
