@@ -213,6 +213,7 @@ ve.ui.Context.prototype.addInspector = function( name, inspector ) {
 			.attr({
 				'rel': 'stylesheet',
 				'type': 'text/css',
+				'media': 'screen',
 				'href': ve.ui.getStylesheetPath() + 've.ui.Inspector.css'
 			});
 
