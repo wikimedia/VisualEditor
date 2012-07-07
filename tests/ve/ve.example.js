@@ -216,6 +216,15 @@ ve.example.getSelectNodesCases = function( doc ) {
 		{
 			'actual': doc.selectNodes( new ve.Range( 32, 39 ), 'leaves' ),
 			'expected': [
+				// table/tableSection/tableRow/tableCell/list
+				{
+					'node': lookup( documentNode, 1, 0, 0, 0, 2 ),
+					'range': new ve.Range( 32, 32 ),
+					'index': 2,
+					'indexInNode': 1,
+					'nodeRange': new ve.Range( 27, 32 ),
+					'nodeOuterRange': new ve.Range( 26, 33 )
+				},
 				// preformatted/text
 				{
 					'node': lookup( documentNode, 2, 0 ),
@@ -285,8 +294,32 @@ ve.example.getSelectNodesCases = function( doc ) {
 					'nodeRange': new ve.Range( 14, 24 ),
 					'nodeOuterRange': new ve.Range( 13, 25 )
 				}
-				],
+			],
 			'msg': 'zero-length range at the beginning of a listItem, in siblings mode'
+		},
+		{
+			'actual': doc.selectNodes( new ve.Range( 25, 27 ), 'covered' ),
+			'expected': [
+				// table/tableSection/tableRow/tableCell/list
+				{
+					'node': lookup( documentNode, 1, 0, 0, 0, 1 ),
+					'range': new ve.Range( 25, 25 ),
+					'index': 1,
+					'indexInNode': 1,
+					'nodeRange': new ve.Range( 13, 25 ),
+					'nodeOuterRange': new ve.Range( 12, 26 )
+				},
+				// table/tableSection/tableRow/tableCell/list
+				{
+					'node': lookup( documentNode, 1, 0, 0, 0, 2 ),
+					'range': new ve.Range( 27, 27 ),
+					'index': 2,
+					'indexInNode': 0,
+					'nodeRange': new ve.Range( 27, 32 ),
+					'nodeOuterRange': new ve.Range( 26, 33 )
+				}
+			],
+			'msg': 'range covering a list closing and a list opening'
 		}
 	];
 };

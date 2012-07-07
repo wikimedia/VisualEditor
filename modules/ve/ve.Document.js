@@ -124,7 +124,30 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 		// Is the end between node and nextNode or between node and the parent's closing?
 		endBetween = isWrapped ? end === right + 1 : end === right;
 
-		if ( start === end && ( startBetween || endBetween ) && node.isWrapped() ) {
+		if ( isWrapped && end === left - 1 && currentFrame.index === 0 ) {
+			// The selection ends here with an empty range at the beginning of the node
+			// TODO duplicated code
+			nodeRange = new ve.Range( currentFrame.startOffset,
+				currentFrame.startOffset + currentFrame.node.getLength()
+			);
+			isWrapped = currentFrame.node.isWrapped();
+			retval.push( {
+				'node': currentFrame.node,
+				'indexInNode': 0,
+				'range': new ve.Range( end, end ),
+				'nodeRange': nodeRange,
+				'nodeOuterRange': new ve.Range(
+					nodeRange.start - isWrapped, nodeRange.end + isWrapped
+				)
+			} );
+			parentFrame = stack[stack.length - 2];
+			if ( parentFrame ) {
+				retval[retval.length - 1].index = parentFrame.index;
+			}
+			return retval;
+		}
+
+		if ( start == end && ( startBetween || endBetween ) && node.isWrapped() ) {
 			// Empty range in the parent, outside of any child
 			nodeRange = new ve.Range( currentFrame.startOffset,
 				currentFrame.startOffset + currentFrame.node.getLength()
@@ -350,6 +373,30 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 				// Skip over node's closing, if present
 				( node.isWrapped() ? 1 : 0 );
 			while ( !nextNode ) {
+				// Check if the start is right past the end of this node, at the end of
+				// the parent
+				if ( node.isWrapped() && start == left ) {
+					// TODO duplicated code
+					nodeRange = new ve.Range( currentFrame.startOffset,
+						currentFrame.startOffset + currentFrame.node.getLength()
+					);
+					isWrapped = currentFrame.node.isWrapped();
+					retval = [ {
+						'node': currentFrame.node,
+						'indexInNode': currentFrame.index + 1,
+						'range': new ve.Range( left, left ),
+						'nodeRange': nodeRange,
+						'nodeOuterRange': new ve.Range(
+							nodeRange.start - isWrapped, nodeRange.end + isWrapped
+						)
+					} ];
+					parentFrame = stack[stack.length - 2];
+					if ( parentFrame ) {
+						retval[0].index = parentFrame.index;
+					}
+				}
+
+				// Move up the stack
 				stack.pop();
 				if ( stack.length === 0 ) {
 					// This shouldn't be possible
