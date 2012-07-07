@@ -1079,20 +1079,6 @@ ve.ce.Surface.prototype.getOffsetFromElementNode = function( domNode, domOffset,
 	}
 };
 
-ve.ce.Surface.prototype.updateContextIcon = function() {
-	var _this = this,
-		selection = this.model.getSelection();
-
-		if ( this.contextView ) {
-			if ( selection.getLength() > 0 ) {
-				this.contextView.set();
-			} else {
-				this.contextView.clear();
-			}
-		}
-
-};
-
 /* Supplies the selection anchor coordinates to contextView */
 ve.ce.Surface.prototype.getSelectionRect = function() {
 	var rangySel = rangy.getSelection();
