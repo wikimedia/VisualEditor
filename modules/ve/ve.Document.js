@@ -143,6 +143,7 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 			if ( parentFrame ) {
 				retval[0].index = parentFrame.index;
 			}
+			return retval;
 		} else if ( startBetween ) {
 			// start is between the previous sibling and node
 			// so the selection covers all or part of node
