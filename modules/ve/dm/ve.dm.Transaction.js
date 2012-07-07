@@ -192,8 +192,7 @@ ve.dm.Transaction.newFromAttributeChange = function( doc, offset, key, value ) {
  */
 ve.dm.Transaction.newFromAnnotation = function( doc, range, method, annotation ) {
 	var tx = new ve.dm.Transaction(),
-		data = doc.getData(),
-		hash = ve.getHash( annotation );
+		data = doc.getData();
 	// Iterate over all data in range, annotating where appropriate
 	range.normalize();
 	var i = range.start,
@@ -467,7 +466,7 @@ ve.dm.Transaction.prototype.getLengthDifference = function() {
  * @returns {Number} Translated offset, as it will be after processing transaction
  */
 ve.dm.Transaction.prototype.translateOffset = function( offset ) {
-	var i, cursor = 0, adjustment = 0, op, opLength;
+	var i, cursor = 0, adjustment = 0, op;
 	if ( offset === 0 ) {
 		return 0;
 	}
