@@ -371,6 +371,14 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 	return retval;
 };
 
+/**
+ * Return groups of sibling nodes covered by the given range
+ * @param {ve.Range} selection Range
+ * @return {Array} Array of objects. Each object has the following keys:
+ *     nodes: Array of sibling nodes covered by a part of range
+ *     parent: Parent of all of these nodes
+ *     grandparent: parent's parent
+ */
 ve.Document.prototype.getCoveredSiblingGroups = function( selection ) {
 	var leaves = this.selectNodes( selection, 'leaves' ),
 		firstCoveredSibling,
@@ -378,10 +386,13 @@ ve.Document.prototype.getCoveredSiblingGroups = function( selection ) {
 		node,
 		parentNode,
 		siblingNode,
-		groups = [];
-	// Iterate through covered leaf nodes and process either a conversion or wrapping for groups of
-	// consecutive covered siblings - for conversion, the entire list will be changed
+		groups = [],
+		lastEndOffset = 0;
 	for ( var i = 0; i < leaves.length; i++ ) {
+		if ( leaves[i].nodeOuterRange.end <= lastEndOffset ) {
+			// This range is contained within a range we've already processed
+			continue;
+		}
 		node = leaves[i].node;
 		// Traverse up to a content branch from content elements
 		if ( node.isContent() ) {
@@ -411,6 +422,7 @@ ve.Document.prototype.getCoveredSiblingGroups = function( selection ) {
 				siblingNode = siblingNode.getParent();
 			}
 		} while ( siblingNode.getParent() === parentNode );
+		lastEndOffset = parentNode.getOuterRange().end;
 	}
 	return groups;
 };
