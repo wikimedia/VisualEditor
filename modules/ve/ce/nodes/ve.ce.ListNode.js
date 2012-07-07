@@ -58,6 +58,19 @@ ve.ce.ListNode.prototype.onUpdate = function() {
 	this.updateDomWrapper( 'style' );
 };
 
+/**
+ * Supplement onSplice() to work around a rendering bug in Firefox
+ */
+ve.ce.ListNode.prototype.onSplice = function() {
+	// Call ve.ce.BranchNode's implementation
+	var args = Array.prototype.slice.call( arguments, 0 );
+	ve.ce.BranchNode.prototype.onSplice.apply( this, args );
+
+	// There's a bug in Firefox where numbered lists aren't renumbered after in/outdenting
+	// list items. Force renumbering by requesting the height, which causes a reflow
+	this.$.css( 'height' );
+};
+
 /* Registration */
 
 ve.ce.nodeFactory.register( 'list', ve.ce.ListNode );
