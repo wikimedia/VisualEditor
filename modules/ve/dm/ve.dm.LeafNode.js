@@ -20,5 +20,4 @@ ve.dm.LeafNode = function( type, length, attributes ) {
 
 /* Inheritance */
 
-ve.extendClass( ve.dm.LeafNode, ve.LeafNode );
-ve.extendClass( ve.dm.LeafNode, ve.dm.Node );
+ve.extendClass( ve.dm.LeafNode, ve.LeafNode, ve.dm.Node );

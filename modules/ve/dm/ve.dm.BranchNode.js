@@ -116,5 +116,4 @@ ve.dm.BranchNode.prototype.splice = function( index, howmany ) {
 
 /* Inheritance */
 
-ve.extendClass( ve.dm.BranchNode, ve.BranchNode );
-ve.extendClass( ve.dm.BranchNode, ve.dm.Node );
+ve.extendClass( ve.dm.BranchNode, ve.BranchNode, ve.dm.Node );

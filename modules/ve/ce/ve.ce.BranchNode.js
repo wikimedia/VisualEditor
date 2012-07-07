@@ -237,5 +237,4 @@ ve.ce.BranchNode.prototype.clean = function() {
 
 /* Inheritance */
 
-ve.extendClass( ve.ce.BranchNode, ve.BranchNode );
-ve.extendClass( ve.ce.BranchNode, ve.ce.Node );
+ve.extendClass( ve.ce.BranchNode, ve.BranchNode, ve.ce.Node );
