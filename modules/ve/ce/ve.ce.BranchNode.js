@@ -84,7 +84,7 @@ ve.ce.BranchNode.getDomWrapper = function( model, key ) {
 
 /* Methods */
 
-ve.ce.BranchNode.prototype.doSlugs = function() {
+ve.ce.BranchNode.prototype.addSlugs = function() {
 	// Remove all slugs in this branch
 	this.$slugs.remove();
 
@@ -201,7 +201,7 @@ ve.ce.BranchNode.prototype.onSplice = function( index, howmany ) {
 		}
 	}
 
-	this.doSlugs();
+	this.addSlugs();
 };
 
 ve.ce.BranchNode.prototype.hasSlugAtOffset = function( offset ) {
@@ -232,7 +232,7 @@ ve.ce.BranchNode.prototype.clean = function() {
 	for ( var i = 0; i < this.children.length; i++ ) {
 		this.$.append( this.children[i].$ );
 	}
-	this.doSlugs();
+	this.addSlugs();
 };
 
 /* Inheritance */
