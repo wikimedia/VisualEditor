@@ -133,21 +133,20 @@ ve.ce.Surface.prototype.onKeyDown = function( e ) {
 		annotations,
 		annotation;
 	switch ( e.keyCode ) {
-		// Indenting list items doesn't work yet, so disable tab handling for now
-		/*
 		// Tab Key
 		case 9:
-			e.preventDefault();
-			// FIXME check if indentation is even possible here, insert literal tab otherwise
-			ve.ui.IndentationButtonTool.changeListLevel( this.model , 'in' );
+			// If possible, trigger a list indent/outdent
+			// FIXME this way of checking whether indenting is possible is extremely hacky
+			// Instead, we should allow toolbar tools to subscribe to and intercept keydowns
+			if ( $( '.es-toolbarButtonTool-indent' ).is( ':not(.es-toolbarButtonTool-disabled)' ) ) {
+				e.preventDefault();
+				if ( e.shiftKey ) {
+					ve.ui.IndentationButtonTool.outdentListItem( this.model );
+				} else {
+					ve.ui.IndentationButtonTool.indentListItem( this.model );
+				}
+			}
 			break;
-		// Shift + Tab Key
-		case 16:
-			e.preventDefault();
-			// FIXME check if indentation is even possible here
-			ve.ui.IndentationButtonTool.changeListLevel( this.model , 'out' );
-			break;
-		*/
 		// Left arrow
 		case 37:
 			if ( !e.metaKey && !e.altKey && !e.shiftKey && this.model.getSelection().getLength() === 0 ) {
