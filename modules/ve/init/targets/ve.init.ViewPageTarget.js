@@ -91,10 +91,10 @@ ve.init.ViewPageTarget.saveDialogTemplate = '\
 			<label class="ve-init-viewPageTarget-saveDialog-watchList-label" \
 				for="ve-init-viewPageTarget-saveDialog-watchList"></label>\
 		</div>\
-		<div class="ve-init-viewPageTarget-saveDialog-saveButton">\
+		<button class="ve-init-viewPageTarget-saveDialog-saveButton">\
 			<span class="ve-init-viewPageTarget-saveDialog-saveButton-label"></span>\
 			<div class="ve-init-viewPageTarget-saveDialog-saveButton-icon"></div>\
-		</div>\
+		</button>\
 		<div style="clear:both"></div>\
 	</div>\
 	<div class="ve-init-viewPageTarget-saveDialog-foot">\

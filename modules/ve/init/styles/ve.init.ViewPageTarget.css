@@ -52,16 +52,30 @@
 
 .ve-init-viewPageTarget-toolbar-saveButton {
 	display: inline-block;
-	border: solid 1px #cccccc;
-	-webkit-border-radius: 0.125em;
-	-moz-border-radius: 0.125em;
-	-o-border-radius: 0.125em;
-	border-radius: 0.125em;
+	border: solid 1px #c3e59a;
+	-webkit-border-radius: 0.25em;
+	-moz-border-radius: 0.25em;
+	-o-border-radius: 0.25em;
+	border-radius: 0.25em;
 	cursor: pointer;
 	vertical-align: top;
-	padding: 0.25em;
+	font-size: 1em;
+	padding: 0.25em 0.5em;
 	height: 22px;
 	margin-right: 0.25em;
+	/* Fancy CSS background */
+	background-image: linear-gradient(bottom, #c3e59a 0%, #f0fbe1 100%);
+	background-image: -o-linear-gradient(bottom, #c3e59a 0%, #f0fbe1 100%);
+	background-image: -moz-linear-gradient(bottom, #c3e59a 0%, #f0fbe1 100%);
+	background-image: -webkit-linear-gradient(bottom, #c3e59a 0%, #f0fbe1 100%);
+	background-image: -ms-linear-gradient(bottom, #c3e59a 0%, #f0fbe1 100%);
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, #c3e59a),
+		color-stop(1, #f0fbe1)
+	);
 }
 
 .ve-init-viewPageTarget-toolbar-saveButton:before {
@@ -86,17 +100,6 @@
 .ve-init-viewPageTarget-toolbar-saveButton-disabled {
 	opacity: 0.5;
 	-moz-opacity: 0.5;
-}
-
-.ve-init-viewPageTarget-toolbar-saveButton-icon {
-	display: inline-block;
-	vertical-align: middle;
-	width: 32px;
-	height: 32px;
-	/* @embed */
-	background-image: url(../../ui/styles/images/accept.png);
-	background-position: right top;
-	background-repeat: no-repeat;
 }
 
 .ve-init-viewPageTarget-toolbar-saveButton-label {
@@ -124,8 +127,10 @@
 	right: 10px;
 	font-size: 1em;
 	padding: 0.5em 1em;
-	border-radius: 0.25em;
+	-webkit-border-radius: 0.25em;
 	-moz-border-radius: 0.25em;
+	-o-border-radius: 0.25em;
+	border-radius: 0.25em;
 	/* Fancy CSS background */
 	background-image: linear-gradient(bottom, #c3e59a 0%, #f0fbe1 100%);
 	background-image: -o-linear-gradient(bottom, #c3e59a 0%, #f0fbe1 100%);
@@ -170,6 +175,7 @@
 	border-color: #e3f0c6;
 }
 
+.ve-init-viewPageTarget-toolbar-saveButton-icon,
 .ve-init-viewPageTarget-saveDialog-saveButton-icon {
 	display: inline-block;
 	vertical-align: middle;
@@ -180,6 +186,15 @@
 	background-image: url(../../ui/styles/images/accept-clear.png);
 	background-position: right top;
 	background-repeat: no-repeat;
+}
+
+.ve-init-viewPageTarget-saveDialog-saveButton-label {
+	display: inline-block;
+	vertical-align: middle;
+	height: 32px;
+	line-height: 2.125em;
+	padding-left: 4px;
+	font-size: 1.2em;
 }
 
 .ve-init-viewPageTarget-saveDialog-saveButton-saving
