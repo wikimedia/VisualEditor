@@ -18,8 +18,8 @@ ve.extendClass( ve.DocumentStub, ve.Document );
 
 /* Tests */
 
-test( 'getDocumentNode', 1, function() {
+test( 'getDocumentNode', 1, function( assert ) {
 	var node = new ve.NodeStub(),
 		doc = new ve.DocumentStub( node );
-	strictEqual( doc.getDocumentNode( node ), node );
+	assert.strictEqual( doc.getDocumentNode( node ), node );
 } );

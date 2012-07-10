@@ -9,14 +9,10 @@ module( 've.dm.Document' );
 
 /* Tests */
 
-test( 'constructor', 4, function() {
+test( 'constructor', 4, function( assert ) {
 	var doc = new ve.dm.Document( ve.dm.example.data );
-	deepEqual(
-		ve.example.getNodeTreeSummary( doc.getDocumentNode() ),
-		ve.example.getNodeTreeSummary( ve.dm.example.tree ),
-		'node tree matches example data'
-	);
-	raises(
+	assert.equalNodeTree( doc.getDocumentNode(), ve.dm.example.tree, 'node tree matches example data' );
+	assert.throws(
 		function() {
 			doc = new ve.dm.Document( [
 				{ 'type': '/paragraph' },
@@ -29,23 +25,23 @@ test( 'constructor', 4, function() {
 
 	// TODO data provider?
 	doc = new ve.dm.Document( [ 'a', 'b', 'c', 'd' ] );
-	deepEqual(
-		ve.example.getNodeTreeSummary( doc.getDocumentNode() ),
-		ve.example.getNodeTreeSummary( new ve.dm.DocumentNode( [ new ve.dm.TextNode( 4 ) ] ) ),
+	assert.equalNodeTree(
+		doc.getDocumentNode(),
+		new ve.dm.DocumentNode( [ new ve.dm.TextNode( 4 ) ] ),
 		'plain text input is handled correctly'
 	);
 
 	doc = new ve.dm.Document( [ { 'type': 'paragraph' }, { 'type': '/paragraph' } ] );
-	deepEqual(
-		ve.example.getNodeTreeSummary( doc.getDocumentNode() ),
-		ve.example.getNodeTreeSummary( new ve.dm.DocumentNode( [ new ve.dm.ParagraphNode( [ new ve.dm.TextNode( 0 ) ] ) ] ) ),
+	assert.equalNodeTree(
+		doc.getDocumentNode(),
+		new ve.dm.DocumentNode( [ new ve.dm.ParagraphNode( [ new ve.dm.TextNode( 0 ) ] ) ] ),
 		'empty paragraph gets a zero-length text node'
 	);
 } );
 
-test( 'getData', 1, function() {
+test( 'getData', 1, function( assert ) {
 	var doc = new ve.dm.Document( ve.dm.example.data );
-	deepEqual( doc.getData(), ve.dm.example.data );
+	assert.deepEqual( doc.getData(), ve.dm.example.data );
 } );
 
 test( 'getNodeFromOffset', function() {
@@ -122,30 +118,30 @@ test( 'getNodeFromOffset', function() {
 		for ( var j = 0; j < expected[i].length; j++ ) {
 			node = node.children[expected[i][j]];
 		}
-		ok( node === doc.getNodeFromOffset( i ), 'reference at offset ' + i );
+		assert.ok( node === doc.getNodeFromOffset( i ), 'reference at offset ' + i );
 	}
 } );
 
-test( 'getDataFromNode', 3, function() {
+test( 'getDataFromNode', 3, function( assert ) {
 	var doc = new ve.dm.Document( ve.dm.example.data );
-	deepEqual(
+	assert.deepEqual(
 		doc.getDataFromNode( doc.getDocumentNode().getChildren()[0] ),
 		ve.dm.example.data.slice( 1, 4 ),
 		'branch with leaf children'
 	);
-	deepEqual(
+	assert.deepEqual(
 		doc.getDataFromNode( doc.getDocumentNode().getChildren()[1] ),
 		ve.dm.example.data.slice( 6, 36 ),
 		'branch with branch children'
 	);
-	deepEqual(
+	assert.deepEqual(
 		doc.getDataFromNode( doc.getDocumentNode().getChildren()[2].getChildren()[1] ),
 		[],
 		'leaf without children'
 	);
 } );
 
-test( 'getAnnotationsFromOffset', 1, function() {
+test( 'getAnnotationsFromOffset', 1, function( assert ) {
 	var doc,
 		range,
 		annotations,
@@ -206,12 +202,12 @@ test( 'getAnnotationsFromOffset', 1, function() {
 		doc = new ve.dm.Document ( cases[i].data );
 		for ( var j = 0; j < doc.getData().length; j++ ) {
 			annotations = doc.getAnnotationsFromOffset( j );
-			deepEqual( annotations, cases[i].expected[j], cases[i].msg[j] );
+			assert.deepEqual( annotations, cases[i].expected[j], cases[i].msg[j] );
 		}
 	}
 } );
 
-test( 'getAnnotationsFromRange', 1, function() {
+test( 'getAnnotationsFromRange', 1, function( assert ) {
 	var cases = [
 		{
 			'msg': 'single annotations',
@@ -411,7 +407,7 @@ test( 'getAnnotationsFromRange', 1, function() {
 
 	for ( var i = 0; i < cases.length; i++ ) {
 		var doc = new ve.dm.Document ( cases[i].data );
-		deepEqual(
+		assert.deepEqual(
 			doc.getAnnotationsFromRange( new ve.Range( 0, cases[i].data.length ), cases[i].all ),
 			cases[i].expected,
 			cases[i].msg
@@ -419,7 +415,7 @@ test( 'getAnnotationsFromRange', 1, function() {
 	}
 } );
 
-test( 'offsetContainsAnnotation', 1, function(){
+test( 'offsetContainsAnnotation', 1, function( assert ){
 	var doc,
 		cases = [
 		{
@@ -456,7 +452,7 @@ test( 'offsetContainsAnnotation', 1, function(){
 
 	for ( var i = 0;i < cases.length; i++ ) {
 		doc = new ve.dm.Document( cases[i].data );
-		deepEqual(
+		assert.deepEqual(
 			doc.offsetContainsAnnotation( 0, cases[i].lookFor ),
 			cases[i].expected,
 			cases[i].msg
@@ -555,7 +551,7 @@ test( 'getAnnotatedRangeFromOffset', 1,  function(){
 
 	for ( var i = 0; i < cases.length; i++ ) {
 		doc = new ve.dm.Document( cases[i].data );
-		deepEqual(
+		assert.deepEqual(
 			doc.getAnnotatedRangeFromOffset(cases[i].offset, cases[i].annotation),
 			cases[i].expected,
 			cases[i].msg
@@ -563,7 +559,7 @@ test( 'getAnnotatedRangeFromOffset', 1,  function(){
 	}
 } );
 
-test( 'getMatchingAnnotationsFromOffset', 1, function() {
+test( 'getMatchingAnnotationsFromOffset', 1, function( assert ) {
 	var cases = {
 		'finds two out of three': {
 			'pattern': /textStyle\/.*/,
@@ -613,7 +609,7 @@ test( 'getMatchingAnnotationsFromOffset', 1, function() {
 	expect( ve.getObjectKeys( cases ).length );
 
 	for ( var msg in cases ) {
-		deepEqual(
+		assert.deepEqual(
 			( new ve.dm.Document( [cases[msg].character] ) )
 				.getMatchingAnnotationsFromOffset( 0, cases[msg].pattern ),
 			cases[msg].expected,
@@ -622,9 +618,9 @@ test( 'getMatchingAnnotationsFromOffset', 1, function() {
 	}
 } );
 
-test( 'getOuterLength', 1, function() {
+test( 'getOuterLength', 1, function( assert ) {
 	var doc = new ve.dm.Document( ve.dm.example.data );
-	strictEqual(
+	assert.strictEqual(
 		doc.getDocumentNode().getOuterLength(),
 		ve.dm.example.data.length,
 		'document does not have elements around it'
@@ -695,7 +691,7 @@ test( 'isContentOffset', function() {
 	for ( var i = 0; i < cases.length; i++ ) {
 		var left = data[i - 1] ? ( data[i - 1].type || data[i - 1][0] ) : '[start]',
 			right = data[i] ? ( data[i].type || data[i][0] ) : '[end]';
-		strictEqual(
+		assert.strictEqual(
 			ve.dm.Document.isContentOffset( data, i ),
 			cases[i].expected,
 			cases[i].msg + ' (' + left + '|' + right + ' @ ' + i + ')'
@@ -767,12 +763,12 @@ test( 'isStructuralOffset', function() {
 	for ( var i = 0; i < cases.length; i++ ) {
 		var left = data[i - 1] ? ( data[i - 1].type || data[i - 1][0] ) : '[start]',
 			right = data[i] ? ( data[i].type || data[i][0] ) : '[end]';
-		strictEqual(
+		assert.strictEqual(
 			ve.dm.Document.isStructuralOffset( data, i ),
 			cases[i].expected[0],
 			cases[i].msg + ' (' + left + '|' + right + ' @ ' + i + ')'
 		);
-		strictEqual(
+		assert.strictEqual(
 			ve.dm.Document.isStructuralOffset( data, i, true ),
 			cases[i].expected[1],
 			cases[i].msg + ', unrestricted (' + left + '|' + right + ' @ ' + i + ')'
@@ -780,7 +776,7 @@ test( 'isStructuralOffset', function() {
 	}
 } );
 
-test( 'isElementData', 1, function() {
+test( 'isElementData', 1, function( assert ) {
 	var data = [
 		{ 'type': 'heading' },
 		'a',
@@ -826,11 +822,11 @@ test( 'isElementData', 1, function() {
 	];
 	expect( data.length + 1 );
 	for ( var i = 0; i < cases.length; i++ ) {
-		strictEqual( ve.dm.Document.isElementData( data, i ), cases[i].expected, cases[i].msg );
+		assert.strictEqual( ve.dm.Document.isElementData( data, i ), cases[i].expected, cases[i].msg );
 	}
 } );
 
-test( 'containsElementData', 1, function() {
+test( 'containsElementData', 1, function( assert ) {
 	var cases = [
 		{
 			'msg': 'simple paragraph',
@@ -855,13 +851,13 @@ test( 'containsElementData', 1, function() {
 	];
 	expect( cases.length );
 	for ( var i = 0; i < cases.length; i++ ) {
-		strictEqual(
+		assert.strictEqual(
 			ve.dm.Document.containsElementData( cases[i].data ), cases[i].expected, cases[i].msg
 		);
 	}
 } );
 
-test( 'isContentData', 1, function() {
+test( 'isContentData', 1, function( assert ) {
 	var cases = [
 		{
 			'msg': 'simple paragraph',
@@ -886,7 +882,7 @@ test( 'isContentData', 1, function() {
 	];
 	expect( cases.length );
 	for ( var i = 0; i < cases.length; i++ ) {
-		strictEqual(
+		assert.strictEqual(
 			ve.dm.Document.isContentData( cases[i].data ), cases[i].expected, cases[i].msg
 		);
 	}
@@ -897,9 +893,9 @@ test( 'rebuildNodes', function() {
 		documentNode = doc.getDocumentNode();
 	// Rebuild table without changes
 	doc.rebuildNodes( documentNode, 1, 1, 5, 32 );
-	deepEqual(
-		ve.example.getNodeTreeSummary( documentNode ),
-		ve.example.getNodeTreeSummary( ve.dm.example.tree ),
+	assert.equalNodeTree(
+		documentNode,
+		ve.dm.example.tree,
 		'rebuild without changes'
 	);
 
@@ -910,9 +906,9 @@ test( 'rebuildNodes', function() {
 	tree.splice( 1, 1, new ve.dm.ParagraphNode( [new ve.dm.TextNode( 3 )] ) );
 	// Rebuild with changes
 	doc.rebuildNodes( documentNode, 1, 1, 5, 5 );
-	deepEqual(
-		ve.example.getNodeTreeSummary( documentNode ),
-		ve.example.getNodeTreeSummary( tree ),
+	assert.equalNodeTree(
+		documentNode,
+		tree,
 		'replace table with paragraph'
 	);
 } );
@@ -943,7 +939,7 @@ test( 'getRelativeOffset', function() {
 	expect( cases.length );
 	for ( var i = 0; i < cases.length; i++ ) {
 		var doc = new ve.dm.Document( cases[i].data );
-		strictEqual(
+		assert.strictEqual(
 			doc.getRelativeOffset.apply(
 				doc,
 				[
@@ -1054,7 +1050,7 @@ test( 'getRelativeContentOffset', function() {
 	];
 	expect( cases.length );
 	for ( var i = 0; i < cases.length; i++ ) {
-		strictEqual(
+		assert.strictEqual(
 			doc.getRelativeContentOffset( cases[i].offset, cases[i].distance ),
 			cases[i].expected,
 			cases[i].msg
@@ -1109,7 +1105,7 @@ test( 'getNearestContentOffset', function() {
 	];
 	expect( cases.length );
 	for ( var i = 0; i < cases.length; i++ ) {
-		strictEqual(
+		assert.strictEqual(
 			doc.getNearestContentOffset( cases[i].offset, cases[i].direction ),
 			cases[i].expected,
 			cases[i].msg
@@ -1217,7 +1213,7 @@ test( 'getRelativeStructuralOffset', function() {
 	];
 	expect( cases.length );
 	for ( var i = 0; i < cases.length; i++ ) {
-		strictEqual(
+		assert.strictEqual(
 			doc.getRelativeStructuralOffset(
 				cases[i].offset, cases[i].distance, cases[i].unrestricted
 			),
@@ -1334,7 +1330,7 @@ test( 'getNearestStructuralOffset', function() {
 	];
 	expect( cases.length );
 	for ( var i = 0; i < cases.length; i++ ) {
-		strictEqual(
+		assert.strictEqual(
 			doc.getNearestStructuralOffset(
 				cases[i].offset, cases[i].direction, cases[i].unrestricted
 			),
@@ -1348,11 +1344,7 @@ test( 'selectNodes', function() {
 	var doc = new ve.dm.Document( ve.dm.example.data ),
 		cases = ve.example.getSelectNodesCases( doc );
 	for ( var i = 0; i < cases.length; i++ ) {
-		deepEqual(
-			ve.example.getNodeSelectionSummary( cases[i].actual ),
-			ve.example.getNodeSelectionSummary( cases[i].expected ),
-			cases[i].msg
-		);
+		assert.equalNodeSelection( cases[i].actual, cases[i].expected, cases[i].msg );
 	}
 } );
 
@@ -1470,7 +1462,7 @@ test( 'getBalancedData', function() {
 	];
 	expect( cases.length );
 	for ( var i = 0; i < cases.length; i++ ) {
-		deepEqual(
+		assert.deepEqual(
 			doc.getBalancedData( cases[i].range ),
 			cases[i].expected,
 			cases[i].msg

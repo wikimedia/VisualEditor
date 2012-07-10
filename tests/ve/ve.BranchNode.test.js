@@ -18,29 +18,29 @@ ve.extendClass( ve.BranchNodeStub, ve.BranchNode );
 
 /* Tests */
 
-test( 'getChildren', 2, function() {
+test( 'getChildren', 2, function( assert ) {
 	var node1 = new ve.BranchNodeStub(),
 		node2 = new ve.BranchNodeStub( [node1] );
-	deepEqual( node1.getChildren(), [] );
-	deepEqual( node2.getChildren(), [node1] );
+	assert.deepEqual( node1.getChildren(), [] );
+	assert.deepEqual( node2.getChildren(), [node1] );
 } );
 
-test( 'indexOf', 4, function() {
+test( 'indexOf', 4, function( assert ) {
 	var node1 = new ve.BranchNodeStub(),
 		node2 = new ve.BranchNodeStub(),
 		node3 = new ve.BranchNodeStub(),
 		node4 = new ve.BranchNodeStub( [node1, node2, node3] );
-	strictEqual( node4.indexOf( null ), -1 );
-	strictEqual( node4.indexOf( node1 ), 0 );
-	strictEqual( node4.indexOf( node2 ), 1 );
-	strictEqual( node4.indexOf( node3 ), 2 );
+	assert.strictEqual( node4.indexOf( null ), -1 );
+	assert.strictEqual( node4.indexOf( node1 ), 0 );
+	assert.strictEqual( node4.indexOf( node2 ), 1 );
+	assert.strictEqual( node4.indexOf( node3 ), 2 );
 } );
 
-test( 'traverseLeafNodes', 1, function() {
+test( 'traverseLeafNodes', 1, function( assert ) {
 	var fragment = new ve.dm.Document( ve.dm.example.data ),
 		docNode = fragment.getDocumentNode(),
-		children = docNode.getChildren();
-	var tests = [
+		children = docNode.getChildren(),
+		tests = [
 		// Test 1 & 2
 		{
 			'node': docNode,
@@ -172,10 +172,10 @@ test( 'traverseLeafNodes', 1, function() {
 				test.node.traverseLeafNodes( callback, test.from, test.isReversed );
 			};
 		if ( test.exception ) {
-			raises( f, test.exception, test.desc );
+			assert.throws( f, test.exception, test.desc );
 		} else {
 			f();
-			ok( ve.compareArrays( realLeaves, test.output ), test.desc );
+			assert.ok( ve.compareArrays( realLeaves, test.output ), test.desc );
 		}
 	}
 

@@ -242,23 +242,23 @@ test( 'commit/rollback', function() {
 			var expectedDocument = new ve.dm.Document( expectedData );
 			// Commit
 			ve.dm.TransactionProcessor.commit( testDocument, tx );
-			deepEqual( testDocument.getData(), expectedData, 'commit (data): ' + msg );
-			deepEqual(
-				ve.example.getNodeTreeSummary( testDocument.getDocumentNode() ),
-				ve.example.getNodeTreeSummary( expectedDocument.getDocumentNode() ),
+			assert.deepEqual( testDocument.getData(), expectedData, 'commit (data): ' + msg );
+			assert.equalNodeTree(
+				testDocument.getDocumentNode(),
+				expectedDocument.getDocumentNode(),
 				'commit (tree): ' + msg
 			);
 			// Rollback
 			ve.dm.TransactionProcessor.rollback( testDocument, tx );
-			deepEqual( testDocument.getData(), ve.dm.example.data, 'rollback (data): ' + msg );
-			deepEqual(
-				ve.example.getNodeTreeSummary( testDocument.getDocumentNode() ),
-				ve.example.getNodeTreeSummary( originalDoc.getDocumentNode() ),
+			assert.deepEqual( testDocument.getData(), ve.dm.example.data, 'rollback (data): ' + msg );
+			assert.equalNodeTree(
+				testDocument.getDocumentNode(),
+				originalDoc.getDocumentNode(),
 				'rollback (tree): ' + msg
 			);
 		} else if ( 'exception' in cases[msg] ) {
 			/*jshint loopfunc:true */
-			raises(
+			assert.throws(
 				function() {
 					ve.dm.TransactionProcessor.commit( testDocument, tx );
 				},

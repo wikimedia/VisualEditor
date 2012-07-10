@@ -9,7 +9,7 @@ module( 've.ce.TextNode' );
 
 /* Tests */
 
-test( 'getHtml', 22, function() {
+test( 'getHtml', 22, function( assert ) {
 	var cases = [
 		{
 			'data': [
@@ -273,7 +273,7 @@ test( 'getHtml', 22, function() {
 		}
 	];
 	for ( var i = 0; i < cases.length; i++ ) {
-		equal(
+		assert.equal(
 			( new ve.ce.TextNode(
 				( new ve.dm.Document( cases[i].data ) )
 					.documentNode.getChildren()[0].getChildren()[0] )

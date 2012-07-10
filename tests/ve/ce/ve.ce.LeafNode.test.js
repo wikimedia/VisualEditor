@@ -24,17 +24,17 @@ ve.ce.nodeFactory.register( 'leaf-stub', ve.ce.LeafNodeStub );
 
 /* Tests */
 
-test( 'canBeSplit', 1, function() {
+test( 'canBeSplit', 1, function( assert ) {
 	var node = new ve.ce.LeafNodeStub( new ve.dm.LeafNodeStub() );
-	equal( node.canBeSplit(), false );
+	assert.equal( node.canBeSplit(), false );
 } );
 
-test( 'canHaveChildren', 1, function() {
+test( 'canHaveChildren', 1, function( assert ) {
 	var node = new ve.ce.LeafNodeStub( new ve.dm.LeafNodeStub() );
-	equal( node.canHaveChildren(), false );
+	assert.equal( node.canHaveChildren(), false );
 } );
 
-test( 'canHaveGrandchildren', 1, function() {
+test( 'canHaveGrandchildren', 1, function( assert ) {
 	var node = new ve.ce.LeafNodeStub( new ve.dm.LeafNodeStub() );
-	equal( node.canHaveGrandchildren(), false );
+	assert.equal( node.canHaveGrandchildren(), false );
 } );

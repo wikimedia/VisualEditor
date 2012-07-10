@@ -9,10 +9,10 @@ module( 've.dm.Converter' );
 
 /* Tests */
 
-test( 'getDataElementFromDomElement', function() {
+test( 'getDataElementFromDomElement', function( assert ) {
 	for ( var msg in ve.dm.example.conversions ) {
 		var conversion = ve.dm.example.conversions[msg];
-		deepEqual(
+		assert.deepEqual(
 			ve.dm.converter.getDataElementFromDomElement( conversion.domElement ),
 			conversion.dataElement,
 			msg
@@ -20,23 +20,21 @@ test( 'getDataElementFromDomElement', function() {
 	}
 } );
 
-test( 'getDomElementFromDataElement', function() {
+test( 'getDomElementFromDataElement', function( assert ) {
 	for ( var msg in ve.dm.example.conversions ) {
 		var conversion = ve.dm.example.conversions[msg];
-		deepEqual(
-			ve.example.getDomElementSummary(
-				ve.dm.converter.getDomElementFromDataElement( conversion.dataElement )
-			),
-			ve.example.getDomElementSummary( conversion.domElement ),
+		assert.equalDomElement(
+			ve.dm.converter.getDomElementFromDataElement( conversion.dataElement ),
+			conversion.domElement,
 			msg
 		);
 	}
 } );
 
-test( 'getDataFromDom', function() {
+test( 'getDataFromDom', function( assert ) {
 	var cases = ve.dm.example.domToDataCases;
 	for ( var msg in cases ) {
-		deepEqual(
+		assert.deepEqual(
 			ve.dm.converter.getDataFromDom( $( '<div></div>' ).html( cases[msg].html )[0] ),
 			cases[msg].data,
 			msg
@@ -44,13 +42,13 @@ test( 'getDataFromDom', function() {
 	}
 } );
 
-test( 'getDomFromData', function() {
+test( 'getDomFromData', function( assert ) {
 	var cases = ve.dm.example.domToDataCases;
 	for ( var msg in cases ) {
-		deepEqual(
-			ve.example.getDomElementSummary( ve.dm.converter.getDomFromData( cases[msg].data ) ),
-			ve.example.getDomElementSummary( $( '<div></div>' ).html( cases[msg].html )[0] ),
+		assert.equalDomElement(
+			ve.dm.converter.getDomFromData( cases[msg].data ),
+			$( '<div></div>' ).html( cases[msg].html )[0],
 			msg
 		);
 	}
-});
+} );

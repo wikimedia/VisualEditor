@@ -20,34 +20,34 @@ ve.ce.nodeFactory.register( 'stub', ve.ce.NodeStub );
 
 /* Tests */
 
-test( 'getModel', 1, function() {
+test( 'getModel', 1, function( assert ) {
 	var model = new ve.dm.NodeStub( 'stub', 0 ),
 		view = new ve.ce.NodeStub( model );
-	strictEqual( view.getModel(), model, 'returns reference to model given to constructor' );
+	assert.strictEqual( view.getModel(), model, 'returns reference to model given to constructor' );
 } );
 
-test( 'getParent', 1, function() {
+test( 'getParent', 1, function( assert ) {
 	var a = new ve.ce.NodeStub( new ve.dm.NodeStub( 'stub', 0 ) );
-	strictEqual( a.getParent(), null, 'returns null if not attached' );
+	assert.strictEqual( a.getParent(), null, 'returns null if not attached' );
 } );
 
-test( 'attach', 2, function() {
+test( 'attach', 2, function( assert ) {
 	var a = new ve.ce.NodeStub( new ve.dm.NodeStub( 'stub', 0 ) ),
 		b = new ve.ce.NodeStub( new ve.dm.NodeStub( 'stub', 0 ) );
 	a.on( 'attach', function( parent ) {
-		strictEqual( parent, b, 'attach event is called with parent as first argument' );
+		assert.strictEqual( parent, b, 'attach event is called with parent as first argument' );
 	} );
 	a.attach( b );
-	strictEqual( a.getParent(), b, 'parent is set to given object after attach' );
+	assert.strictEqual( a.getParent(), b, 'parent is set to given object after attach' );
 } );
 
-test( 'detach', 2, function() {
+test( 'detach', 2, function( assert ) {
 	var a = new ve.ce.NodeStub( new ve.dm.NodeStub( 'stub', 0 ) ),
 		b = new ve.ce.NodeStub( new ve.dm.NodeStub( 'stub', 0 ) );
 	a.attach( b );
 	a.on( 'detach', function( parent ) {
-		strictEqual( parent, b, 'detach event is called with parent as first argument' );
+		assert.strictEqual( parent, b, 'detach event is called with parent as first argument' );
 	} );
 	a.detach();
-	strictEqual( a.getParent(), null, 'parent is set null after detach' );
+	assert.strictEqual( a.getParent(), null, 'parent is set null after detach' );
 } );

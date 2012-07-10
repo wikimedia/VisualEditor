@@ -29,12 +29,12 @@ ve.dm.nodeFactory.register( 'leaf-stub', ve.dm.LeafNodeStub );
 
 /* Tests */
 
-test( 'canHaveChildren', 1, function() {
+test( 'canHaveChildren', 1, function( assert ) {
 	var node = new ve.dm.LeafNodeStub();
-	equal( node.canHaveChildren(), false );
+	assert.equal( node.canHaveChildren(), false );
 } );
 
-test( 'canHaveGrandchildren', 1, function() {
+test( 'canHaveGrandchildren', 1, function( assert ) {
 	var node = new ve.dm.LeafNodeStub();
-	equal( node.canHaveGrandchildren(), false );
+	assert.equal( node.canHaveGrandchildren(), false );
 } );

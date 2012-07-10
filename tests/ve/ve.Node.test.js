@@ -18,17 +18,17 @@ ve.extendClass( ve.NodeStub, ve.Node );
  
 /* Tests */
 
-test( 'getType', 1, function() {
+test( 'getType', 1, function( assert ) {
 	var node = new ve.NodeStub();
-	strictEqual( node.getType(), 'stub' );
+	assert.strictEqual( node.getType(), 'stub' );
 } );
 
-test( 'getParent', 1, function() {
+test( 'getParent', 1, function( assert ) {
 	var node = new ve.NodeStub();
-	strictEqual( node.getParent(), null );
+	assert.strictEqual( node.getParent(), null );
 } );
 
-test( 'getRoot', 1, function() {
+test( 'getRoot', 1, function( assert ) {
 	var node = new ve.NodeStub();
-	strictEqual( node.getRoot(), node );
+	assert.strictEqual( node.getRoot(), node );
 } );
