@@ -297,6 +297,23 @@ WSP._listItemHandler = function ( handler, bullet, state, token ) {
 	}
 
 	var stack   = state.listStack;
+
+	// This check is required to handle cases where the DOM is not well-formed.
+	//
+	// FIXME NOTE: This is required currently to deal with bugs in the parser
+	// as it deals with complex cases.  But, in the future, we could deal with
+	// this in one of the following ways:
+	// (a) The serializer expects a well-formed DOM and all cleanup will be 
+	//     done as part of external tools/passes.
+	// (b) The serializer supports a small set of exceptional cases and bare
+	//     list items could be one of them
+	// (c) The serializer ought to handle any DOM that is thrown at it.
+	//
+	// Yet to be resolved.
+	if (stack.length === 0) {
+		stack.push({ itemCount: 0, bullets: bullet, itemBullet: bullet});
+	}
+
 	var curList = stack[stack.length - 1];
 	curList.itemCount++;
 	curList.itemBullet = bullet;
@@ -835,18 +852,22 @@ WSP.tagHandlers = {
 							size.width = null;
 						}
 
-						// The values and keys in the parser attributes are a flip
-						// of how they are in the wikitext constants image hash
-						// Hence the indexing by 'v' instead of 'k'
-						if (simpleImgOptions[v.trim()] === k) {
-							outBits.push(v);
-						} else if (prefixImgOptions[k.trim()]) {
-							outBits.push(k + "=" + v);
-						} else if (k === "aspect") { 
+						if (k === "aspect") {
 							// SSS: Bad Hack!  Need a better solution
 							// One solution is to search through prefix options hash but seems ugly.
 							// Another is to flip prefix options hash and use it to search.
-							outBits.push("upright=" + v);
+							if (v) {
+								outBits.push("upright=" + v);
+							} else {
+								outBits.push("upright");
+							}
+						} else if (simpleImgOptions[v.trim()] === k) {
+							// The values and keys in the parser attributes are a flip
+							// of how they are in the wikitext constants image hash
+							// Hence the indexing by 'v' instead of 'k'
+							outBits.push(v);
+						} else if (prefixImgOptions[k.trim()]) {
+							outBits.push(k + "=" + v);
 						} else {
 							console.warn("Unknown image option encountered: " + JSON.stringify(a));
 						}
