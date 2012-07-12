@@ -391,9 +391,11 @@ toplevelblock
         bs.dataAttribs.bsp = [pos0, pos];
     }
 
+    console.warn("------- <chunk> -------");
     for (var i = 0, n = b.length; i < n; i++) {
         console.warn(b[i].toString());
     }
+    console.warn("------- </chunk> -------");
     
     // Emit tokens for this toplevelblock. This feeds a chunk to the parser
     // pipeline.

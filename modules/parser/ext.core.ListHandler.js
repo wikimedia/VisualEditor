@@ -106,6 +106,7 @@ ListHandler.prototype.isDtDd = function (a, b) {
 };
 
 ListHandler.prototype.doListItem = function ( bs, bn, token ) {
+	this.manager.env.tracer.startPass("doListItem");
 	var prefixLen = this.commonPrefixLength (bs, bn),
 		changeLen = Math.max(bs.length, bn.length) - prefixLen,
 		prefix = bn.slice(0, prefixLen);
@@ -120,11 +121,11 @@ ListHandler.prototype.doListItem = function ( bs, bn, token ) {
 	var itemToken;
 
 	// emit close tag tokens for closed lists
-	if (changeLen === 0)
-	{
+	var res;
+	if (changeLen === 0) {
 		itemToken = this.endtags.pop();
 		this.endtags.push(new EndTagTk( itemToken.name ));
-		return [
+		res = [
 			itemToken,
 			new TagTk( itemToken.name, [], token.dataAttribs )
 		];
@@ -160,8 +161,11 @@ ListHandler.prototype.doListItem = function ( bs, bn, token ) {
 
 			tokens = tokens.concat(this.pushList(this.bulletCharsMap[bn[i]]));
 		}
-		return tokens;
+		res = tokens;
 	}
+	this.manager.env.tracer.output("Returning: " + TagTk.toStringTokens(res, ","));
+	this.manager.env.tracer.endPass("doListItem");
+	return res;
 };
 
 if (typeof module == "object") {

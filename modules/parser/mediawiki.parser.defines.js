@@ -4,11 +4,29 @@
  */
 
 var async = require('async');
+require('./core-upgrade.js');
+
 
 function TagTk( name, attribs, dataAttribs ) { 
 	this.name = name;
 	this.attribs = attribs || [];
 	this.dataAttribs = dataAttribs || {};
+}
+
+// SSS: Hacky!
+TagTk.toStringTokens = function(tokens, separator) {
+	if (tokens.constructor !== Array) {
+		return tokens.toString();
+	} else if (tokens.length === 0) {
+		return null;
+	} else {
+		var buf = []; 
+		for (var i = 0, n = tokens.length; i < n; i++) {
+			buf.push(tokens[i].toString());
+		}
+		if (!separator) separator = "\n";
+		return buf.join(separator);
+	}
 }
 
 TagTk.prototype = {
@@ -82,59 +100,35 @@ SelfclosingTagTk.prototype = {
 		return $.extend( { type: 'SelfclosingTagTk' }, this );
 	},
 
-	tokensToString: function(toks) {
-		if (toks.constructor === String) {
-			return toks;
-		} else if (toks.length === 0) {
-			return null;
+	defaultToString: function(compact) {
+		if (compact) {
+			var buf = "<" + this.name + ">:";
+			return (this.attribs[0]) ? buf + TagTk.toStringTokens(this.attribs[0].k) : buf;
 		} else {
-			var buf = []; 
-			for (var i = 0, n = toks.length; i < n; i++) {
-				buf.push(toks[i].toString());
-			}
-			return buf.join('\n');
-		}
-	},
-
-	tagToStringFns: {
-		"template": function() {
-			var buf = ["<template>"]
+			var buf = ["<" + this.name + ">:{"];
 			for (var i = 0, n = this.attribs.length; i < n; i++) {
 				var a = this.attribs[i];
-				var kStr = this.tokensToString(a.k);
+				var kStr = TagTk.toStringTokens(a.k);
 				if (kStr) buf.push("k={" + kStr + "}");
-				var vStr = this.tokensToString(a.v);
+				else buf.push("k=");
+				var vStr = TagTk.toStringTokens(a.v);
 				if (vStr) buf.push("v={" + vStr + "}");
+				else buf.push("v=");
 			}
 
-			buf.push("</template>");
-			return buf.join("\n");
-		},
-		"templatearg": function() {
-			var buf = ["<template-arg>"]
-			for (var i = 0, n = this.attribs.length; i < n; i++) {
-				var a = this.attribs[i];
-				var kStr = this.tokensToString(a.k);
-				if (kStr) buf.push("k:{" + kStr + "}");
-				var vStr = this.tokensToString(a.v);
-				if (vStr) buf.push("v:{" + vStr + "}");
-			}
-
-			buf.push("</template-arg>");
+			buf.push("}");
 			return buf.join("\n");
 		}
 	},
 
-	defaultToString: function() {
-		return "<" + this.name + " />";
-	},
+	tagToStringFns: { },
 
-	toString: function() {
+	toString: function(compact) {
 		if (this.dataAttribs.stx && this.dataAttribs.stx === "html") {
 			return "<HTML:" + this.name + " />";
 		} else {
 			var f = this.tagToStringFns[this.name];
-			return f ? f.bind(this)() : this.defaultToString();
+			return f ? f.bind(this)(compact) : this.defaultToString(compact);
 		}
 	}
 };
@@ -209,82 +203,82 @@ function Params ( env, params ) {
 	this.push.apply( this, params );
 }
 
-Params.prototype = [];
-Params.prototype.constructor = Params;
+Params.prototype = [].mergeProperties({
+	constructor: Params,
 
-Params.prototype.toString = function () {
-	return this.slice(0).toString();
-};
+	toString: function () {
+		return this.slice(0).toString();
+	},
 
-Params.prototype.dict = function () {
-	var res = {};
-	for ( var i = 0, l = this.length; i < l; i++ ) {
-		var kv = this[i],
-			key = this.env.tokensToString( kv.k ).trim();
-		res[key] = kv.v;
-	}
-	//console.warn( 'KVtoHash: ' + JSON.stringify( res ));
-	return res;
-};
-
-Params.prototype.named = function () {
-	var n = 1,
-		out = {};
-	for ( var i = 0, l = this.length; i < l; i++ ) {
-		// FIXME: Also check for whitespace-only named args!
-		var k = this[i].k;
-		if ( k.constructor === String ) {
-			k = k.trim();
+	dict: function () {
+		var res = {};
+		for ( var i = 0, l = this.length; i < l; i++ ) {
+			var kv = this[i],
+				key = this.env.tokensToString( kv.k ).trim();
+			res[key] = kv.v;
 		}
-		if ( ! k.length ) {
-			out[n.toString()] = this[i].v;
-			n++;
-		} else if ( k.constructor === String ) {
-			out[k] = this[i].v;
-		} else {
-			out[this.env.tokensToString( k ).trim()] = this[i].v;
+		//console.warn( 'KVtoHash: ' + JSON.stringify( res ));
+		return res;
+	},
+
+	named: function () {
+		var n = 1,
+			out = {};
+		for ( var i = 0, l = this.length; i < l; i++ ) {
+			// FIXME: Also check for whitespace-only named args!
+			var k = this[i].k;
+			if ( k.constructor === String ) {
+				k = k.trim();
+			}
+			if ( ! k.length ) {
+				out[n.toString()] = this[i].v;
+				n++;
+			} else if ( k.constructor === String ) {
+				out[k] = this[i].v;
+			} else {
+				out[this.env.tokensToString( k ).trim()] = this[i].v;
+			}
 		}
+		return out;
+	},
+
+	/**
+	 * Expand a slice of the parameters using the supplied get options.
+	 */
+	getSlice: function ( options, start, end ) {
+		var args = this.slice( start, end ),
+			cb = options.cb;
+		//console.warn( JSON.stringify( args ) );
+		async.map( 
+				args,
+				function( kv, cb2 ) {
+					if ( kv.v.constructor === String ) {
+						// nothing to do
+						cb2( null, kv );
+					} else if ( kv.v.constructor === Array &&
+						// remove String from Array
+						kv.v.length === 1 && kv.v[0].constructor === String ) {
+							cb2( null, new KV( kv.k, kv.v[0] ) );
+					} else {
+						// Expand the value
+						var o2 = $.extend( {}, options );
+						// add in the key
+						o2.cb = function ( v ) {
+							cb2( null, new KV( kv.k, v ) );
+						};
+						kv.v.get( o2 );
+					}
+				},
+				function( err, res ) {
+					if ( err ) {
+						console.trace();
+						throw JSON.stringify( err );
+					}
+					//console.warn( 'getSlice res: ' + JSON.stringify( res ) );
+					cb( res );
+				});
 	}
-	return out;
-};
-
-/**
- * Expand a slice of the parameters using the supplied get options.
- */
-Params.prototype.getSlice = function ( options, start, end ) {
-	var args = this.slice( start, end ),
-		cb = options.cb;
-	//console.warn( JSON.stringify( args ) );
-	async.map( 
-			args,
-			function( kv, cb2 ) {
-				if ( kv.v.constructor === String ) {
-					// nothing to do
-					cb2( null, kv );
-				} else if ( kv.v.constructor === Array &&
-					// remove String from Array
-					kv.v.length === 1 && kv.v[0].constructor === String ) {
-						cb2( null, new KV( kv.k, kv.v[0] ) );
-				} else {
-					// Expand the value
-					var o2 = $.extend( {}, options );
-					// add in the key
-					o2.cb = function ( v ) {
-						cb2( null, new KV( kv.k, v ) );
-					};
-					kv.v.get( o2 );
-				}
-			},
-			function( err, res ) {
-				if ( err ) {
-					console.trace();
-					throw JSON.stringify( err );
-				}
-				//console.warn( 'getSlice res: ' + JSON.stringify( res ) );
-				cb( res );
-			});
-};
-
+});
 
 
 /**
@@ -303,7 +297,6 @@ function ParserValue ( source, frame ) {
 	Object.defineProperty( this, 'frame', 
 			{ value: frame, enumerable: false } );
 }
-
 
 ParserValue.prototype = {
 	_defaultTransformOptions: {

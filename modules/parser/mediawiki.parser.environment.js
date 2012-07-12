@@ -9,6 +9,35 @@ wikipedias.split('|').forEach( function (prefix) {
 	interwikiMap[prefix] = 'http://' + prefix + '.wikipedia.org/w';
 });
 
+function Tracer(env) {
+	this.env = env;
+}
+Tracer.prototype = {
+	startPass: function(string) {
+		if (this.env.trace) {
+			console.warn("-- start: " + string);
+		}
+	},
+
+	endPass: function(string) {
+		if (this.env.trace) {
+			console.warn("-- end:   " + string);
+		}
+	},
+
+	processToken: function(token) {
+		if (this.env.trace) {
+			console.warn("T: " + token.toString(true));
+		}
+	},
+
+	output: function(string) {
+		if (this.env.trace) {
+			console.warn(string);
+		}
+	}
+}
+
 var MWParserEnvironment = function(opts) {
 	var options = {
 		tagHooks: {},
@@ -29,6 +58,9 @@ var MWParserEnvironment = function(opts) {
 	// XXX: this should be namespaced
 	$.extend(options, opts);
 	$.extend(this, options);
+
+	// Tracing object
+	this.tracer = new Tracer(this);
 };
 
 MWParserEnvironment.prototype.setInterwiki = function (prefix, wgScript) {

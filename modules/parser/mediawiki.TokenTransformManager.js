@@ -277,6 +277,7 @@ AsyncTokenTransformManager.prototype.process = function ( tokens ) {
  * @param {Array} chunk of tokens
  */
 AsyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
+	this.env.tracer.startPass("onChunk (Async:" + this.attributeType + ")");
 	// Set top-level callback to next transform phase
 	var res = this.transformTokens ( tokens, this.tokenCB );
 	this.env.dp( 'AsyncTokenTransformManager onChunk', res.async? 'async' : 'sync', res.tokens );
@@ -295,6 +296,7 @@ AsyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 		this.tailAccumulator = res.async;
 		this.tokenCB = res.async.getParentCB ( 'sibling' );
 	}
+	this.env.tracer.endPass("onChunk (Async:" + this.attributeType + ")");
 };
 
 /**
@@ -415,6 +417,8 @@ AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parent
 						JSON.stringify( token ) );
 			}
 		}
+
+		this.env.tracer.processToken(token);
 
 		var ts = this._getTransforms( token, minRank );
 
@@ -665,6 +669,7 @@ SyncTokenTransformManager.prototype.process = function ( tokens ) {
  * @param {Array} Token chunk.
  */
 SyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
+	this.env.tracer.startPass("onChunk (Sync:" + this.attributeType + ")");
 	this.env.dp( 'SyncTokenTransformManager.onChunk, input: ', tokens );
 	var res,
 		localAccum = [],
@@ -691,6 +696,9 @@ SyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 			token = tokens[i];
 			minRank = tokens.rank || this.phaseEndRank - 1;
 		}
+
+		this.env.tracer.processToken(token);
+
 		res = { token: token };
 		
 		ts = this._getTransforms( token, minRank );
@@ -710,6 +718,7 @@ SyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 			}
 			token = res.token;
 		}
+
 		//this.env.dp( 'sync res:', res );
 
 		if( res.tokens && res.tokens.length ) {
@@ -729,6 +738,7 @@ SyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 	localAccum.rank = this.phaseEndRank;
 	localAccum.cache = tokens.cache;
 	this.env.dp( 'SyncTokenTransformManager.onChunk: emitting ', localAccum );
+	this.env.tracer.endPass("onChunk (Sync:" + this.attributeType + ")");
 	this.emit( 'chunk', localAccum );
 };
 
