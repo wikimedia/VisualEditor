@@ -14,18 +14,18 @@ function TagTk( name, attribs, dataAttribs ) {
 }
 
 // SSS: Hacky!
-TagTk.toStringTokens = function(tokens, separator) {
+TagTk.toStringTokens = function(tokens, indent) {
+	if (!indent) indent = "";
 	if (tokens.constructor !== Array) {
-		return tokens.toString();
+		return [tokens.toString(false, indent)];
 	} else if (tokens.length === 0) {
-		return null;
+		return [null];
 	} else {
-		var buf = []; 
+		var buf = [];
 		for (var i = 0, n = tokens.length; i < n; i++) {
-			buf.push(tokens[i].toString());
+			buf.push(tokens[i].toString(false, indent));
 		}
-		if (!separator) separator = "\n";
-		return buf.join(separator);
+		return buf;
 	}
 }
 
@@ -56,8 +56,10 @@ TagTk.prototype = {
 	},
 
 	toString: function() {
+		var buf = [];
 		if (this.dataAttribs.stx && this.dataAttribs.stx === "html") {
 			return "<HTML:" + this.name + ">";
+		return buf.join();
 		} else {
 			var f = this.tagToStringFns[this.name];
 			return f ? f.bind(this)() : this.defaultToString();
@@ -100,35 +102,60 @@ SelfclosingTagTk.prototype = {
 		return $.extend( { type: 'SelfclosingTagTk' }, this );
 	},
 
-	defaultToString: function(compact) {
-		if (compact) {
-			var buf = "<" + this.name + ">:";
-			return (this.attribs[0]) ? buf + TagTk.toStringTokens(this.attribs[0].k) : buf;
-		} else {
-			var buf = ["<" + this.name + ">:{"];
-			for (var i = 0, n = this.attribs.length; i < n; i++) {
-				var a = this.attribs[i];
-				var kStr = TagTk.toStringTokens(a.k);
-				if (kStr) buf.push("k={" + kStr + "}");
-				else buf.push("k=");
-				var vStr = TagTk.toStringTokens(a.v);
-				if (vStr) buf.push("v={" + vStr + "}");
-				else buf.push("v=");
+	defaultToString: function(compact, indent) {
+		function multiTokenArgToString(key, arg, indent, newIndent) {
+			var present = true;
+			var toks    = TagTk.toStringTokens(arg, newIndent);
+			var str     = toks.join("\n" + newIndent);
+
+			if (toks.length > 1 || str[0] === '<') {
+				str = [key, ":{\n", newIndent, str, "\n", indent, "}"].join('');
+			} else {
+				present = (str !== '');
 			}
 
-			buf.push("}");
-			return buf.join("\n");
+			return {present: present, str: str};
+		}
+
+		if (compact) {
+			var buf = "<" + this.name + ">:";
+			return (this.attribs[0]) ? buf + TagTk.toStringTokens(this.attribs[0].k, "\n") : buf;
+		} else {
+			if (!indent) indent = "";
+			var indentIncrement = "  ";
+			var origIndent = indent;
+			var buf = [];
+			indent = indent + indentIncrement;
+			for (var i = 0, n = this.attribs.length; i < n; i++) {
+				var a = this.attribs[i];
+				var newIndent = indent + indentIncrement;
+				var kVal = multiTokenArgToString("k", a.k, indent, newIndent);
+				var vVal = multiTokenArgToString("v", a.v, indent, newIndent);
+
+				if (kVal.present && vVal.present) {
+					buf.push([kVal.str, "=", vVal.str].join(''));
+				} else {
+					if (kVal.present) {
+						buf.push(kVal.str);
+					}
+					if (vVal.present) {
+						buf.push(vVal.str);
+					}
+				}
+			}
+
+			return ["<", this.name, ">(\n", indent, buf.join("\n" + indent + "|"), "\n", origIndent, ")"].join('');
 		}
 	},
 
 	tagToStringFns: { },
 
-	toString: function(compact) {
+	toString: function(compact, indent) {
 		if (this.dataAttribs.stx && this.dataAttribs.stx === "html") {
 			return "<HTML:" + this.name + " />";
 		} else {
 			var f = this.tagToStringFns[this.name];
-			return f ? f.bind(this)(compact) : this.defaultToString(compact);
+			return f ? f.bind(this)(compact, indent) : this.defaultToString(compact, indent);
 		}
 	}
 };

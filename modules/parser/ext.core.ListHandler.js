@@ -163,7 +163,7 @@ ListHandler.prototype.doListItem = function ( bs, bn, token ) {
 		}
 		res = tokens;
 	}
-	this.manager.env.tracer.output("Returning: " + TagTk.toStringTokens(res, ","));
+	this.manager.env.tracer.output("Returning: " + TagTk.toStringTokens(res).join(","));
 	this.manager.env.tracer.endPass("doListItem");
 	return res;
 };
