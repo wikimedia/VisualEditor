@@ -31,8 +31,12 @@ var MWParserEnvironment = function(opts) {
 	$.extend(this, options);
 };
 
-MWParserEnvironment.prototype.addInterwiki = function (prefix, wgScript) {
+MWParserEnvironment.prototype.setInterwiki = function (prefix, wgScript) {
 	this.interwikiMap[prefix] = wgScript;
+	this.interwikiRegexp = Object.keys(this.interwikiMap).join('|');
+};
+MWParserEnvironment.prototype.removeInterwiki = function (prefix) {
+	delete this.interwikiMap[prefix];
 	this.interwikiRegexp = Object.keys(this.interwikiMap).join('|');
 };
 
