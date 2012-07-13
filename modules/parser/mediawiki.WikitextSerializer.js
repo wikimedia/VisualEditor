@@ -228,6 +228,23 @@ var id = function(v) {
 	}; 
 };
 
+var endTagMatchTokenCollector = function ( tk ) {
+	var tokens = [tk];
+
+	return {
+		collect: function ( state, token ) {
+			tokens.push( token );
+			if ( token.constructor === EndTagTk &&
+					token.name === tk.name ) {
+				return false;
+			} else {
+				return true;
+			}
+		},
+		tokens: tokens
+	};
+};
+
 var closeHeading = function(v) { 
 	return function(state, token) { 
 		var prevToken = state.prevToken;
@@ -440,6 +457,7 @@ WSP._linkHandler =  function( state, token ) {
 				return '[[' + target + '|';
 			}
 		} else if ( attribDict.rel === 'mw:extLink' ) {
+			// TODO: use data-{gen,sem,special} instead!
 			if ( tokenData.stx === 'urllink' ) {
 				state.dropContent = true;
 				return attribDict.href;
@@ -784,18 +802,15 @@ WSP.tagHandlers = {
 	figure: {
 		start: {
 			handle: function ( state, token ) { 
-				state.inCollectionMode = true;
-				state.collectorToken = token.name;
-				state.tokens = [token];
+				state.tokenCollector = endTagMatchTokenCollector( token );
 				return '';
 			}
 		},
 		end : {
 			handle: function ( state, token ) {
-				// clear collection mode first thing!
-				state.inCollectionMode = false;
 
-				var figTokens = state.tokens;
+				var figTokens = state.tokenCollector.tokens;
+				state.tokenCollector = null;
 
 				// skip tokens looking for the image tag
 				var img;
@@ -997,14 +1012,15 @@ WSP._getTokenHandler = function(state, token) {
 	var handler;
 	if ( token.dataAttribs.src !== undefined &&
 		state.env.lookup( token.attribs, 'data-gen' ) === 'both' ) {
+			// implement generic src round-tripping: 
+			// return src, and drop the generated content
 			if ( token.constructor === TagTk ) {
-				state.inCollectionMode = true;
-				state.collectorToken = token.name;
+				state.tokenCollector = endTagMatchTokenCollector( token );
 				return { handle: id( token.dataAttribs.src ) };
 			} else if ( token.constructor === SelfclosingTagTk ) {
 				return { handle: id( token.dataAttribs.src ) };
 			} else { // EndTagTk
-				state.inCollectionMode = false;
+				state.tokenCollector = null;
 				return { handle: id('') };
 			}
 	} else if (token.dataAttribs.stx === 'html') {
@@ -1031,9 +1047,9 @@ WSP._getTokenHandler = function(state, token) {
  * Serialize a token.
  */
 WSP._serializeToken = function ( state, token ) {
-	if (state.inCollectionMode) {
-		state.tokens.push(token);
-		if (state.collectorToken !== token.name) {
+	if (state.tokenCollector) {
+		if ( state.tokenCollector.collect( state, token ) ) {
+			// continue collecting
 			return;
 		}
 	}
