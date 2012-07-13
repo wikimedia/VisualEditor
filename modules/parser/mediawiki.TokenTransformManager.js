@@ -117,9 +117,9 @@ TokenTransformManager.prototype.removeTransform = function ( rank, type, name ) 
 
 	if ( type === 'tag' ) {
 		name = name.toLowerCase();
-		var maybeTransArr = this.transformers.tag.name;
+		var maybeTransArr = this.transformers.tag[name];
 		if ( maybeTransArr ) {
-			this.transformers.tag.name = maybeTransArr.filter( rankUnEqual );
+			this.transformers.tag[name] = maybeTransArr.filter( rankUnEqual );
 		}
 	} else {
 		this.transformers[type] = this.transformers[type].filter( rankUnEqual ) ;
@@ -245,8 +245,14 @@ AsyncTokenTransformManager.prototype.setFrame = function ( parentFrame, title, a
 AsyncTokenTransformManager.prototype.emitChunk = function( ret ) {
 	this.env.dp( 'emitChunk', ret );
 	this.emit( 'chunk', ret.tokens );
+
 	if ( ! ret.async ) {
 		this.emit('end');
+		// NOTE: This is a dummy return.  We are entering async mode and
+		// there is no caller waiting to consume this return value.
+		// This is present here for parity with the return on the other branch
+		// and not confuse anyone wondering if there is a missing return here.
+		return;
 	} else {
 		// allow accumulators to go direct
 		return this.emitChunk.bind( this );
@@ -363,7 +369,7 @@ AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parent
 		minRank;
 	
 	// make localAccum compatible with getParentCB('sibling')
-	localAccum.getParentCB = function() { return parentCB };
+	localAccum.getParentCB = function() { return parentCB; };
 	var nextAccum = this._makeNextAccum( parentCB, s );
 
 	var i = 0,
