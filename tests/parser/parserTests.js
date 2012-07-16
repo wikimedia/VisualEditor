@@ -340,7 +340,7 @@ ParserTests.prototype.normalizeOut = function ( out ) {
 	return out
 		.replace(/<span data-gen=[^>]*>((?:[^<]+|(?!<\/span).)*)<\/span>/g,
 						'$1')
-		.replace(/[\r\n]| (data-mw|typeof|resource|rel|prefix|about|rev|datatype|inlist|property|vocab|content)="[^">]*"/g, '')
+		.replace(/[\r\n]| (data-rt|typeof|resource|rel|prefix|about|rev|datatype|inlist|property|vocab|content)="[^">]*"/g, '')
 		.replace(/<!--.*?-->\n?/gm, '')
 		.replace(/<\/?meta[^>]*>/g, '');
 };

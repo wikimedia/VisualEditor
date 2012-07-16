@@ -51,7 +51,7 @@ testWhiteList["Invalid attributes in table cell (bug 1830)"] = "<table><tbody><t
 testWhiteList["Table security: embedded pipes (http://lists.wikimedia.org/mailman/htdig/wikitech-l/2006-April/022293.html)"] = "<table><tbody><tr><td> |<a href=\"ftp://|x||\">[1]</a>\" onmouseover=\"alert(document.cookie)\"&gt;test</td></tr></tbody></table>";
 
 // Sanitizer, but UTF8 in link is ok in HTML5
-testWhiteList["External link containing double-single-quotes with no space separating the url from text in italics"] = "<p><a href=\"http://www.musee-picasso.fr/pages/page_id18528_u1l2.htm\" data-mw=\"{&quot;sourcePos&quot;:[0,146]}\"><i>La muerte de Casagemas</i> (1901) en el sitio de </a><a href=\"/wiki/Museo_Picasso_(París)\">Museo Picasso</a>.</p>";
+testWhiteList["External link containing double-single-quotes with no space separating the url from text in italics"] = "<p><a href=\"http://www.musee-picasso.fr/pages/page_id18528_u1l2.htm\" data-rt=\"{&quot;sourcePos&quot;:[0,146]}\"><i>La muerte de Casagemas</i> (1901) en el sitio de </a><a href=\"/wiki/Museo_Picasso_(París)\">Museo Picasso</a>.</p>";
 
 testWhiteList["External links: wiki links within external link (Bug 3695)"] = "<p><a href=\"http://example.com\"></a><a href=\"/wiki/Wikilink\">wikilink</a> embedded in ext link</p>";
 
