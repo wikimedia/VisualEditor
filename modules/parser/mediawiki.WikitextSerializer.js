@@ -228,16 +228,25 @@ var id = function(v) {
 	}; 
 };
 
-var endTagMatchTokenCollector = function ( tk ) {
+var endTagMatchTokenCollector = function ( tk, cb ) {
 	var tokens = [tk];
 
 	return {
+		cb: cb,
 		collect: function ( state, token ) {
 			tokens.push( token );
 			if ( token.constructor === EndTagTk &&
 					token.name === tk.name ) {
-				return false;
+				// finish collection
+				if ( this.cb ) {
+					// abort further token processing since the cb handled it
+					return this.cb( state, tokens );
+				} else {
+					// let a handler deal with token processing
+					return false;
+				}
 			} else {
+				// continue collection
 				return true;
 			}
 		},
@@ -370,6 +379,92 @@ WSP._listItemHandler = function ( handler, bullet, state, token ) {
 	return res;
 };
 
+
+WSP._figureHandler = function ( state, figTokens ) {
+
+	// skip tokens looking for the image tag
+	var img;
+	var i = 1, n = figTokens.length;
+	while (i < n) {
+		if (figTokens[i].name === "img") {
+			img = figTokens[i];
+			break;
+		}
+		i++;
+	}
+
+	// skip tokens looking for the start and end caption tags
+	var fcStartIndex = 0, fcEndIndex = 0;
+	while (i < n) {
+		if (figTokens[i].name === "figcaption") {
+			if (fcStartIndex > 0) {
+				fcEndIndex = i;
+				break;
+			} else {
+				fcStartIndex = i;
+			}
+		}
+		i++;
+	}
+
+	// Call the serializer to build the caption
+	var caption = state.serializer.serializeTokens(figTokens.slice(fcStartIndex+1, fcEndIndex)).join('');
+
+	// Get the image resource name
+	// FIXME: file name has been capitalized -- need some fix in the parser
+	var argDict = state.env.KVtoHash( img.attribs );
+	var imgR = argDict.resource.replace(/(^\[:)|(\]$)/g, '');
+
+	// Now, build the complete wikitext for the figure
+	var outBits  = [imgR];
+	var figToken = figTokens[0];
+	var figAttrs = figToken.dataAttribs.optionList;
+
+	var simpleImgOptions = WikitextConstants.Image.SimpleOptions;
+	var prefixImgOptions = WikitextConstants.Image.PrefixOptions;
+	var sizeOptions      = { "width": 1, "height": 1};
+	var size             = {};
+	for (i = 0, n = figAttrs.length; i < n; i++) {
+		var a = figAttrs[i];
+		var k = a.k, v = a.v;
+		if (sizeOptions[k]) {
+			size[k] = v;
+		} else {
+			// Output size first and clear it
+			var w = size.width;
+			if (w) {
+				outBits.push(w + (size.height ? "x" + size.height : '') + "px");
+				size.width = null;
+			}
+
+			if (k === "aspect") {
+				// SSS: Bad Hack!  Need a better solution
+				// One solution is to search through prefix options hash but seems ugly.
+				// Another is to flip prefix options hash and use it to search.
+				if (v) {
+					outBits.push("upright=" + v);
+				} else {
+					outBits.push("upright");
+				}
+			} else if (simpleImgOptions[v.trim()] === k) {
+				// The values and keys in the parser attributes are a flip
+				// of how they are in the wikitext constants image hash
+				// Hence the indexing by 'v' instead of 'k'
+				outBits.push(v);
+			} else if (prefixImgOptions[k.trim()]) {
+				outBits.push(k + "=" + v);
+			} else {
+				console.warn("Unknown image option encountered: " + JSON.stringify(a));
+			}
+		}
+	}
+	if (caption) {
+		outBits.push(caption);
+	}
+
+	return "[[" + outBits.join('|') + "]]";
+};
+
 WSP._serializeTableTag = function ( symbol, optionEndSymbol, state, token ) {
 	if ( token.attribs.length ) {
 		return symbol + ' ' + WSP._serializeAttributes( token.attribs ) + optionEndSymbol;
@@ -413,9 +508,9 @@ WSP._serializeHTMLEndTag = function ( state, token ) {
 WSP._linkHandler =  function( state, token ) {
 	//return '[[';
 	// TODO: handle internal/external links etc using RDFa and dataAttribs
-	// Also convert unannotated html links to external wiki links for html
-	// import. Might want to consider converting relative links without path
-	// component and file extension to wiki links.
+	// Also convert unannotated html links without advanced attributes to
+	// external wiki links for html import. Might want to consider converting
+	// relative links without path component and file extension to wiki links.
 	
 	var env = state.env;
 	var attribDict = env.KVtoHash( token.attribs );
@@ -468,12 +563,30 @@ WSP._linkHandler =  function( state, token ) {
 				return '[' + attribDict.href + ' ';
 			}
 		} else {
-			// TODO: default to extlink for simple links without rel set, and
-			// switch to html only when needed to support attributes
+			// Unknown rel was set
 			return WSP._serializeHTMLTag( state, token );
 		}
 	} else {
-		return WSP._serializeHTMLTag( state, token );
+		// TODO: default to extlink for simple links with unknown rel set
+		// switch to html only when needed to support attributes
+
+		var isComplexLink = function ( attribDict ) {
+			for ( var name in attribDict ) {
+				if ( name && ! name in { href: 1 } ) {
+					return true;
+				}
+			}
+			return false;
+		};
+
+		if ( true || isComplexLink ( attribDict ) ) {
+			// Complex attributes we can't support in wiki syntax
+			return WSP._serializeHTMLTag( state, token );
+		} else {
+			// TODO: serialize as external wikilink
+			return '';
+		}
+
 	}
 					
 	//if ( rtinfo.type === 'wikilink' ) {
@@ -802,99 +915,13 @@ WSP.tagHandlers = {
 	figure: {
 		start: {
 			handle: function ( state, token ) { 
-				state.tokenCollector = endTagMatchTokenCollector( token );
+				state.tokenCollector = endTagMatchTokenCollector( token, WSP._figureHandler );
+				// Set the handler- not terribly useful since this one doesn't
+				// have any flags, but still useful for general testing
+				state.tokenCollector.handler = this;
 				return '';
 			}
 		},
-		end : {
-			handle: function ( state, token ) {
-
-				var figTokens = state.tokenCollector.tokens;
-				state.tokenCollector = null;
-
-				// skip tokens looking for the image tag
-				var img;
-				var i = 1, n = figTokens.length;
-				while (i < n) {
-					if (figTokens[i].name === "img") {
-						img = figTokens[i];
-						break;
-					}
-					i++;
-				}
-
-				// skip tokens looking for the start and end caption tags
-				var fcStartIndex = 0, fcEndIndex = 0;
-				while (i < n) {
-					if (figTokens[i].name === "figcaption") {
-						if (fcStartIndex > 0) {
-							fcEndIndex = i;
-							break;
-						} else {
-							fcStartIndex = i;
-						}
-					}
-					i++;
-				}
-
-				// Call the serializer to build the caption
-				var caption = state.serializer.serializeTokens(figTokens.slice(fcStartIndex+1, fcEndIndex)).join('');
-
-				// Get the image resource name
-				// FIXME: file name has been capitalized -- need some fix in the parser
-				var argDict = state.env.KVtoHash( img.attribs );
-				var imgR = argDict.resource.replace(/(^\[:)|(\]$)/g, '');
-
-				// Now, build the complete wikitext for the figure
-				var outBits  = [imgR];
-				var figToken = figTokens[0];
-				var figAttrs = figToken.dataAttribs.optionList;
-
-				var simpleImgOptions = WikitextConstants.Image.SimpleOptions;
-				var prefixImgOptions = WikitextConstants.Image.PrefixOptions;
-				var sizeOptions      = { "width": 1, "height": 1};
-				var size             = {};
-				for (i = 0, n = figAttrs.length; i < n; i++) {
-					var a = figAttrs[i];
-					var k = a.k, v = a.v;
-					if (sizeOptions[k]) {
-						size[k] = v;
-					} else {
-						// Output size first and clear it
-						var w = size.width;
-						if (w) {
-							outBits.push(w + (size.height ? "x" + size.height : '') + "px");
-							size.width = null;
-						}
-
-						if (k === "aspect") {
-							// SSS: Bad Hack!  Need a better solution
-							// One solution is to search through prefix options hash but seems ugly.
-							// Another is to flip prefix options hash and use it to search.
-							if (v) {
-								outBits.push("upright=" + v);
-							} else {
-								outBits.push("upright");
-							}
-						} else if (simpleImgOptions[v.trim()] === k) {
-							// The values and keys in the parser attributes are a flip
-							// of how they are in the wikitext constants image hash
-							// Hence the indexing by 'v' instead of 'k'
-							outBits.push(v);
-						} else if (prefixImgOptions[k.trim()]) {
-							outBits.push(k + "=" + v);
-						} else {
-							console.warn("Unknown image option encountered: " + JSON.stringify(a));
-						}
-					}
-				}
-				if (caption) {
-					outBits.push(caption);
-				}
-
-				return "[[" + outBits.join('|') + "]]";
-			}
-		}
 	},
 	hr: { 
 		start: { 
@@ -1047,74 +1074,86 @@ WSP._getTokenHandler = function(state, token) {
  * Serialize a token.
  */
 WSP._serializeToken = function ( state, token ) {
-	if (state.tokenCollector) {
-		if ( state.tokenCollector.collect( state, token ) ) {
-			// continue collecting
-			return;
-		}
-	}
-
-	var handler = {}, 
-		res = '', 
+	var res = '',
+		collectorResult = false,
+		handler = {}, 
 		dropContent = state.dropContent;
 
-	state.prevToken = state.curToken;
-	state.curToken  = token;
-
-	// The serializer is logically in a new line context if a new line is pending
-	if (state.emitNewlineOnNextToken || (state.availableNewlineCount > 0)) {
-		state.onNewline = true;
-		state.onStartOfLine = true;
-	}
-
-	switch( token.constructor ) {
-		case TagTk:
-		case SelfclosingTagTk:
-			handler = WSP._getTokenHandler( state, token );
-			if ( ! handler.ignore ) {
-				state.prevTagToken = state.currTagToken;
-				state.currTagToken = token;
-				res = handler.handle ? handler.handle( state, token ) : '';
+	if (state.tokenCollector) {
+		var collectorResult = state.tokenCollector.collect( state, token );
+		if ( collectorResult === true ) {
+			// continue collecting
+			return;
+		} else if ( collectorResult !== false ) {
+			res = collectorResult;
+			if ( state.tokenCollector.handler ) {
+				handler = state.tokenCollector.handler;
 			}
-			break;
-		case EndTagTk:
-			handler = WSP._getTokenHandler( state, token );
-			if ( ! handler.ignore ) {
-				state.prevTagToken = state.currTagToken;
-				state.currTagToken = token;
-				if ( handler.singleLine < 0 && state.singleLineMode ) {
-					state.singleLineMode--;
+			state.tokenCollector = null;
+		}
+	} 
+
+	if ( collectorResult === false ) {
+
+
+		state.prevToken = state.curToken;
+		state.curToken  = token;
+
+		// The serializer is logically in a new line context if a new line is pending
+		if (state.emitNewlineOnNextToken || (state.availableNewlineCount > 0)) {
+			state.onNewline = true;
+			state.onStartOfLine = true;
+		}
+
+		switch( token.constructor ) {
+			case TagTk:
+			case SelfclosingTagTk:
+				handler = WSP._getTokenHandler( state, token );
+				if ( ! handler.ignore ) {
+					state.prevTagToken = state.currTagToken;
+					state.currTagToken = token;
+					res = handler.handle ? handler.handle( state, token ) : '';
 				}
-				res = handler.handle ? handler.handle( state, token ) : '';
-			}
-			break;
-		case String:
-			res = ( state.inNoWiki || state.inHTMLPre ) ? token 
-				: this.escapeWikiText( state, token );
-			res = state.textHandler ? state.textHandler( res ) : res;
-			break;
-		case CommentTk:
-			res = '<!--' + token.value + '-->';
-			// don't consider comments for changes of the onStartOfLine status
-			// XXX: convert all non-tag handlers to a similar handler
-			// structure as tags?
-			handler = { newlineTransparent: true }; 
-			break;
-		case NlTk:
-			res = '\n';
-			res = state.textHandler ? state.textHandler( res ) : res;
-			break;
-		case EOFTk:
-			res = '';
-			for ( var i = 0, l = state.availableNewlineCount; i < l; i++ ) {
-				res += '\n';
-			}
-			state.chunkCB(res);
-			break;
-		default:
-			res = '';
-			console.warn( 'Unhandled token type ' + JSON.stringify( token ) );
-			break;
+				break;
+			case EndTagTk:
+				handler = WSP._getTokenHandler( state, token );
+				if ( ! handler.ignore ) {
+					state.prevTagToken = state.currTagToken;
+					state.currTagToken = token;
+					if ( handler.singleLine < 0 && state.singleLineMode ) {
+						state.singleLineMode--;
+					}
+					res = handler.handle ? handler.handle( state, token ) : '';
+				}
+				break;
+			case String:
+				res = ( state.inNoWiki || state.inHTMLPre ) ? token 
+					: this.escapeWikiText( state, token );
+				res = state.textHandler ? state.textHandler( res ) : res;
+				break;
+			case CommentTk:
+				res = '<!--' + token.value + '-->';
+				// don't consider comments for changes of the onStartOfLine status
+				// XXX: convert all non-tag handlers to a similar handler
+				// structure as tags?
+				handler = { newlineTransparent: true }; 
+				break;
+			case NlTk:
+				res = '\n';
+				res = state.textHandler ? state.textHandler( res ) : res;
+				break;
+			case EOFTk:
+				res = '';
+				for ( var i = 0, l = state.availableNewlineCount; i < l; i++ ) {
+					res += '\n';
+				}
+				state.chunkCB(res);
+				break;
+			default:
+				res = '';
+				console.warn( 'Unhandled token type ' + JSON.stringify( token ) );
+				break;
+		}
 	}
 
 	if (! dropContent || ! state.dropContent ) {
