@@ -17,16 +17,16 @@ ve.ui.LinkInspector = function( toolbar, context ) {
 	ve.ui.Inspector.call( this, toolbar, context );
 
 	// Properties
-	this.$clearButton = $( '<div class="es-inspector-button es-inspector-clear-button"></div>' )
+	this.$clearButton = $( '<div class="es-inspector-button es-inspector-clearButton"></div>', context.inspectorDoc )
 		.prependTo( this.$ );
 	this.$.prepend(
-		$( '<div class="es-inspector-title"></div>' )
+		$( '<div class="es-inspector-title"></div>', context.inspectorDoc )
 			.text( ve.msg( 'visualeditor-linkinspector-title' ) )
 	);
-	this.$locationLabel = $( '<label></label>' )
+	this.$locationLabel = $( '<label></label>', context.inspectorDoc )
 		.text( ve.msg( 'visualeditor-linkinspector-label-pagetitle' ) )
 		.appendTo( this.$form );
-	this.$locationInput = $( '<input type="text">' ).appendTo( this.$form );
+	this.$locationInput = $( '<input type="text">', context.inspectorDoc ).appendTo( this.$form );
 	this.initialValue = null;
 
 	// Events

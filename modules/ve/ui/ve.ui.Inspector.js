@@ -23,13 +23,14 @@ ve.ui.Inspector = function( toolbar, context ) {
 	// Properties
 	this.toolbar = toolbar;
 	this.context = context;
-	this.$ = $( '<div class="es-inspector"></div>' );
+
+	this.$ = $( '<div class="es-inspector"></div>', context.inspectorDoc );
 	//
-	this.$closeButton = $( '<div class="es-inspector-button es-inspector-close-button"></div>' )
+	this.$closeButton = $( '<div class="es-inspector-button es-inspector-closeButton"></div>', context.inspectorDoc  )
 		.appendTo( this.$ );
-	this.$acceptButton = $( '<div class="es-inspector-button es-inspector-accept-button"></div>' )
+	this.$acceptButton = $( '<div class="es-inspector-button es-inspector-acceptButton"></div>', context.inspectorDoc  )
 		.appendTo( this.$ );
-	this.$form = $( '<form></form>' ).appendTo( this.$ );
+	this.$form = $( '<form></form>', context.inspectorDoc ).appendTo( this.$ );
 
 	// Events
 	var _this = this;

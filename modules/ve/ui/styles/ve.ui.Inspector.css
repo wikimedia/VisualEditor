@@ -49,17 +49,17 @@
 	opacity: 0.25;
 }
 
-.es-inspector-close-button {
+.es-inspector-closeButton {
 	right: 0.25em;
 	background-image: url(images/close.png);
 }
 
-.es-inspector-accept-button {
+.es-inspector-acceptButton {
 	right: 2.25em;
 	background-image: url(images/accept.png);
 }
 
-.es-inspector-clear-button {
+.es-inspector-clearButton {
 	right: 4.25em;
 	background-image: url(images/clear.png);
 }
