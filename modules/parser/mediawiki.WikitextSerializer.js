@@ -654,7 +654,7 @@ WSP.tagHandlers = {
 				if ( state.prevToken.constructor === TagTk && state.prevToken.name === 'tbody' ) {
 					// Omit for first row in a table. XXX: support optional trs
 					// for first line (in source wikitext) too using some flag in
-					// data-mw (stx: 'wikitext' ?)
+					// data-rt (stx: 'wikitext' ?)
 					return '';
 				} else {
 					return WSP._serializeTableTag("|-", '', state, token );
@@ -1300,7 +1300,7 @@ WSP._getDOMAttribs = function( attribs ) {
 	var out = [];
 	for ( var i = 0, l = attribs.length; i < l; i++ ) {
 		var attrib = attribs.item(i);
-		if ( attrib.name !== 'data-mw' ) {
+		if ( attrib.name !== 'data-rt' ) {
 			out.push( { k: attrib.name, v: attrib.value } );
 		}
 	}
@@ -1308,8 +1308,8 @@ WSP._getDOMAttribs = function( attribs ) {
 };
 
 WSP._getDOMRTInfo = function( attribs ) {
-	if ( attribs['data-mw'] ) {
-		return JSON.parse( attribs['data-mw'].value || '{}' );
+	if ( attribs['data-rt'] ) {
+		return JSON.parse( attribs['data-rt'].value || '{}' );
 	} else {
 		return {};
 	}
