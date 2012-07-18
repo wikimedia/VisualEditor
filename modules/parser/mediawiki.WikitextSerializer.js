@@ -228,6 +228,13 @@ var id = function(v) {
 	}; 
 };
 
+var installCollector = function ( collectorConstructor, cb, handler, state, token ) {
+	state.tokenCollector = new collectorConstructor( token, cb, handler );
+	return '';
+};
+
+
+
 var endTagMatchTokenCollector = function ( tk, cb ) {
 	var tokens = [tk];
 
@@ -505,18 +512,20 @@ WSP._serializeHTMLEndTag = function ( state, token ) {
 	}
 };
 
-WSP._linkHandler =  function( state, token ) {
+WSP._linkHandler =  function( state, tokens ) {
 	//return '[[';
 	// TODO: handle internal/external links etc using RDFa and dataAttribs
 	// Also convert unannotated html links without advanced attributes to
 	// external wiki links for html import. Might want to consider converting
 	// relative links without path component and file extension to wiki links.
 	
-	var env = state.env;
+	var env = state.env,
+		token = tokens.shift(),
+		endToken = tokens.pop();
 	var attribDict = env.KVtoHash( token.attribs );
 	if ( attribDict.rel && attribDict.href !== undefined ) {
 		var tokenData = token.dataAttribs;
-		if ( attribDict.rel === 'mw:wikiLink' ) {
+		if ( attribDict.rel === 'mw:WikiLink' ) {
 			var base   = env.wgScriptPath;
 			var href   = attribDict.href;
 			var prefix = href.substr(0, base.length);
@@ -525,9 +534,9 @@ WSP._linkHandler =  function( state, token ) {
 
 			var tail   = tokenData.tail;
 			if ( tail && tail.length ) {
-				state.dropTail = tail;
 				target = tokenData.gc ? tokenData.sHref : target.replace( /_/g, ' ' );
 			} else {
+				tail = '';
 				var origLinkTgt = tokenData.sHref;
 				if (origLinkTgt) {
 					// Normalize the source target so that we can compare it
@@ -546,21 +555,24 @@ WSP._linkHandler =  function( state, token ) {
 			target = env.tokensToString( target );
 
 			if ( tokenData.gc ) {
-				state.dropContent = true;
-				return '[[' + target;
+				return '[[' + target + ']]' + tail;
 			} else {
-				return '[[' + target + '|';
+				var content = state.serializer.serializeTokens( tokens ).join('');
+				if (tail && content.substr(- tail.length) === tail) {
+					content = content.substr(0, content.length - tail.length);
+				}
+				return '[[' + target + '|' + content + ']]' + tail;
 			}
-		} else if ( attribDict.rel === 'mw:extLink' ) {
+		} else if ( attribDict.rel === 'mw:ExtLink' ) {
 			// TODO: use data-{gen,sem,special} instead!
 			if ( tokenData.stx === 'urllink' ) {
-				state.dropContent = true;
 				return attribDict.href;
 			} else if ( tokenData.gc ) {
-				state.dropContent = true;
-				return '[' + attribDict.href;
+				return '[' + attribDict.href + ']';
 			} else {
-				return '[' + attribDict.href + ' ';
+				return '[' + attribDict.href + ' ' + 
+					state.serializer.serializeTokens( tokens ).join('') + 
+					']';
 			}
 		} else {
 			// Unknown rel was set
@@ -572,7 +584,7 @@ WSP._linkHandler =  function( state, token ) {
 
 		var isComplexLink = function ( attribDict ) {
 			for ( var name in attribDict ) {
-				if ( name && ! name in { href: 1 } ) {
+				if ( name && ! ( name in { href: 1 } ) ) {
 					return true;
 				}
 			}
@@ -581,7 +593,9 @@ WSP._linkHandler =  function( state, token ) {
 
 		if ( true || isComplexLink ( attribDict ) ) {
 			// Complex attributes we can't support in wiki syntax
-			return WSP._serializeHTMLTag( state, token );
+			return WSP._serializeHTMLTag( state, token ) +
+				state.serializer.serializeTokens( tokens ) +
+				WSP._serializeHTMLEndTag( state, endToken );
 		} else {
 			// TODO: serialize as external wikilink
 			return '';
@@ -595,23 +609,28 @@ WSP._linkHandler =  function( state, token ) {
 	//	// external link
 	//	return '[' + rtinfo.
 };
-WSP._linkEndHandler = function( state, token ) {
-	var attribDict = state.env.KVtoHash( token.attribs );
-	if ( attribDict.rel && attribDict.href !== undefined ) {
-		if ( attribDict.rel === 'mw:wikiLink' ) {
-			state.dropContent = false;
-			state.dropTail    = false;
-			return "]]" + (token.dataAttribs.tail ? token.dataAttribs.tail : "");
-		} else if ( attribDict.rel === 'mw:extLink' ) {
-			state.dropContent = false;
-			return (token.dataAttribs.stx === 'urllink') ? '' : ']';
-		} else {
-			return WSP._serializeHTMLEndTag( state, token );
-		}
+
+WSP.genContentSpanTypes = { 'mw:Nowiki':1, 'mw:Entity': 1 };
+
+/**
+ * Compare the actual content with the previous content and use
+ * dataAttribs.src if it does. Return serialization of modified content
+ * otherwise.
+ */
+WSP.compareSourceHandler = function ( state, tokens ) {
+	var token = tokens.shift(),
+		lastToken = tokens.pop(),
+		content = state.env.tokensToString( tokens, true );
+	if ( content.constructor !== String ) {
+		return state.serializer.serializeTokens( tokens ).join('');
+	} else if ( content === token.dataAttribs.srcContent ) {
+		return token.dataAttribs.src;
 	} else {
-		return WSP._serializeHTMLEndTag( state, token );
+		return content;
 	}
 };
+
+
 
 /* *********************************************************************
  * startsNewline
@@ -803,10 +822,10 @@ WSP.tagHandlers = {
 			//
 			// SSS FIXME: This will *NOT* work if the list item has nested paragraph tags!
 			var prevToken = state.prevToken;
-			if (	token.attribs.length === 0
-				&&  (	(state.listStack.length > 0 && isListItem(prevToken))
-					||  (prevToken.constructor === TagTk && prevToken.name === 'td')
-					||  (state.ignorePTag && token.constructor === EndTagTk)))
+			if (	token.attribs.length === 0 &&  
+					(	(state.listStack.length > 0 && isListItem(prevToken)) ||  
+						(prevToken.constructor === TagTk && prevToken.name === 'td') ||  
+						(state.ignorePTag && token.constructor === EndTagTk)))
 			{
 				state.ignorePTag = !state.ignorePTag;
 				return { start: { ignore: true }, end: { ignore: true } };
@@ -877,14 +896,18 @@ WSP.tagHandlers = {
 		start: {
 			handle: function( state, token ) {
 				var argDict = state.env.KVtoHash( token.attribs );
-				if ( argDict['data-gen'] === 'both' ) {
-					if ( argDict['typeof'] === 'mw:nowiki' ) {
+				if ( argDict['typeof'] in WSP.genContentSpanTypes ) {
+					if ( argDict['typeof'] === 'mw:Nowiki' ) {
 						state.inNoWiki = true;
 						return '<nowiki>';
 					} else if ( token.dataAttribs.src ) {
 						// FIXME: compare content with original content
-						state.dropContent = true;
-						return token.dataAttribs.src;
+						return installCollector(
+									endTagMatchTokenCollector,
+									WSP.compareSourceHandler,
+									this,
+									state, token
+								);
 					}
 				} else {
 					// Fall back to plain HTML serialization for spans created
@@ -896,13 +919,10 @@ WSP.tagHandlers = {
 		end: {
 			handle: function ( state, token ) { 
 				var argDict = state.env.KVtoHash( token.attribs );
-				if ( argDict['data-gen'] === 'both' ) {
-					if ( argDict['typeof'] === 'mw:nowiki' ) {
+				if ( argDict['typeof'] in WSP.genContentSpanTypes ) {
+					if ( argDict['typeof'] === 'mw:Nowiki' ) {
 						state.inNoWiki = false;
 						return '</nowiki>';
-					} else if ( token.dataAttribs.src ) {
-						state.dropContent = false; 
-						return '';
 					}
 				} else {
 					// Fall back to plain HTML serialization for spans created
@@ -921,7 +941,7 @@ WSP.tagHandlers = {
 				state.tokenCollector.handler = this;
 				return '';
 			}
-		},
+		}
 	},
 	hr: { 
 		start: { 
@@ -982,8 +1002,13 @@ WSP.tagHandlers = {
 		end: { handle: id("''") }
 	},
 	a:  { 
-		start: { handle: WSP._linkHandler },
-		end: { handle: WSP._linkEndHandler }
+		start: { 
+			handle: installCollector.bind(null, 
+						endTagMatchTokenCollector, 
+						WSP._linkHandler,
+						this
+					)
+		}
 	}
 };
 
@@ -1080,7 +1105,7 @@ WSP._serializeToken = function ( state, token ) {
 		dropContent = state.dropContent;
 
 	if (state.tokenCollector) {
-		var collectorResult = state.tokenCollector.collect( state, token );
+		collectorResult = state.tokenCollector.collect( state, token );
 		if ( collectorResult === true ) {
 			// continue collecting
 			return;
@@ -1220,13 +1245,6 @@ WSP._serializeToken = function ( state, token ) {
 			// Add required # of new lines in the beginning
 			for (; state.availableNewlineCount; state.availableNewlineCount--) {
 				out += '\n';
-			}
-
-			// FIXME: This might modify not just the last content token in a
-			// link, which would be wrong. We'll likely have to collect tokens
-			// between a tags instead, and strip only the last content token.
-			if (state.dropTail && res.substr(- state.dropTail.length) === state.dropTail) {
-				res = res.substr(0, res.length - state.dropTail.length);
 			}
 
 			if ( state.singleLineMode ) {

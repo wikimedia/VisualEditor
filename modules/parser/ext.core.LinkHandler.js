@@ -48,7 +48,7 @@ WikiLinkHandler.prototype.onWikiLink = function ( token, frame, cb ) {
 			obj = new TagTk( 'a', 
 					[ 
 						new KV( 'href', normalizedHref ),
-						new KV('rel', 'mw:wikiLink')
+						new KV('rel', 'mw:WikiLink')
 					], token.dataAttribs
 				),
 			content = token.attribs.slice(2);
@@ -376,7 +376,7 @@ ExternalLinkHandler.prototype.onUrlLink = function ( token, frame, cb ) {
 				new TagTk( 'a', 
 					[ 
 						new KV( 'href', href ),
-						new KV('rel', 'mw:extLink')
+						new KV('rel', 'mw:ExtLink')
 					],
 					{ stx: 'urllink' } ),
 				href,
@@ -423,7 +423,7 @@ ExternalLinkHandler.prototype.onExtLink = function ( token, manager, cb ) {
 					new TagTk ( 'a', 
 							[ 
 								new KV('href', href),
-								new KV('rel', 'mw:extLink')
+								new KV('rel', 'mw:ExtLink')
 							], 
 							token.dataAttribs
 					)
