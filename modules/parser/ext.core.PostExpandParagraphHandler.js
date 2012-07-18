@@ -5,8 +5,7 @@
  */
 
 // Include general utilities
-var Util = require('./ext.Util.js').Util,
-	u = new Util();
+var u = require('./ext.Util.js').Util;
 
 
 function PostExpandParagraphHandler ( dispatcher ) {

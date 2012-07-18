@@ -18,7 +18,8 @@
 
 var events = require('events'),
 	LRU = require("lru-cache"),
-	jshashes = require('jshashes');
+	jshashes = require('jshashes'),
+	Util = require('./ext.Util.js').Util;
 
 /**
  * Base class for token transform managers
@@ -111,8 +112,8 @@ TokenTransformManager.prototype.addTransform = function ( transformation, debug_
 			var r = transformation.apply(null, args);
 			mgr.env.tracer.endPass(debug_name + ":" + rank);
 			return r;
-		}
-	};
+		};
+	}
 
 	if (type === 'any') {
 		// Record the any transformation
@@ -960,7 +961,7 @@ AttributeTransformManager.prototype.processValues = function ( attributes ) {
 AttributeTransformManager.prototype._returnAttributeValue = function ( ref, tokens ) {
 	this.manager.env.dp( 'check _returnAttributeValue: ', ref,  tokens );
 	this.kvs[ref].v = tokens;
-	this.kvs[ref].v = this.manager.env.stripEOFTkfromTokens( this.kvs[ref].v );
+	this.kvs[ref].v = Util.stripEOFTkfromTokens( this.kvs[ref].v );
 	this.outstanding--;
 	if ( this.outstanding === 0 ) {
 		this.callback( this.kvs );
@@ -973,7 +974,7 @@ AttributeTransformManager.prototype._returnAttributeValue = function ( ref, toke
 AttributeTransformManager.prototype._returnAttributeKey = function ( ref, tokens ) {
 	//console.warn( 'check _returnAttributeKey: ' + JSON.stringify( tokens )  );
 	this.kvs[ref].k = tokens;
-	this.kvs[ref].k = this.manager.env.stripEOFTkfromTokens( this.kvs[ref].k );
+	this.kvs[ref].k = Util.stripEOFTkfromTokens( this.kvs[ref].k );
 	if ( this.kvs[ref].v === '' ) {
 		// FIXME: use tokenizer production to properly parse this
 		var m = this.manager.env.tokensToString( this.kvs[ref].k )
@@ -1287,7 +1288,7 @@ Frame.prototype._eofTkList = [ new EOFTk() ];
  */
 Frame.prototype.onThunkEvent = function ( state, notYetDone, ret ) {
 	if ( notYetDone ) {
-		state.accum = state.accum.concat(this.manager.env.stripEOFTkfromTokens( ret ) );
+		state.accum = state.accum.concat(Util.stripEOFTkfromTokens( ret ) );
 		this.manager.env.dp( 'Frame.onThunkEvent accum:', this._cacheKey, state.accum );
 	} else {
 		this.manager.env.dp( 'Frame.onThunkEvent:', this._cacheKey, state.accum );

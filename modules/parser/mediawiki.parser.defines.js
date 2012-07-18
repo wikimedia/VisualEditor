@@ -3,30 +3,14 @@
  * strings or String objects (if attributes are needed).
  */
 
-var async = require('async');
 require('./core-upgrade.js');
-
+var async = require('async');
+var Util = require('./ext.Util.js').Util;
 
 function TagTk( name, attribs, dataAttribs ) { 
 	this.name = name;
 	this.attribs = attribs || [];
 	this.dataAttribs = dataAttribs || {};
-}
-
-// SSS: Hacky!
-TagTk.toStringTokens = function(tokens, indent) {
-	if (!indent) indent = "";
-	if (tokens.constructor !== Array) {
-		return [tokens.toString(false, indent)];
-	} else if (tokens.length === 0) {
-		return [null];
-	} else {
-		var buf = [];
-		for (var i = 0, n = tokens.length; i < n; i++) {
-			buf.push(tokens[i].toString(false, indent));
-		}
-		return buf;
-	}
 }
 
 TagTk.prototype = {
@@ -105,7 +89,7 @@ SelfclosingTagTk.prototype = {
 	defaultToString: function(compact, indent) {
 		function multiTokenArgToString(key, arg, indent, newIndent) {
 			var present = true;
-			var toks    = TagTk.toStringTokens(arg, newIndent);
+			var toks    = Util.toStringTokens(arg, newIndent);
 			var str     = toks.join("\n" + newIndent);
 
 			if (toks.length > 1 || str[0] === '<') {
@@ -119,7 +103,7 @@ SelfclosingTagTk.prototype = {
 
 		if (compact) {
 			var buf = "<" + this.name + ">:";
-			return (this.attribs[0]) ? buf + TagTk.toStringTokens(this.attribs[0].k, "\n") : buf;
+			return (this.attribs[0]) ? buf + Util.toStringTokens(this.attribs[0].k, "\n") : buf;
 		} else {
 			if (!indent) indent = "";
 			var indentIncrement = "  ";

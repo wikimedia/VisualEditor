@@ -9,7 +9,8 @@
 
 var jshashes = require('jshashes'),
 	PegTokenizer = require('./mediawiki.tokenizer.peg.js').PegTokenizer,
-	WikitextConstants = require('./mediawiki.wikitext.constants.js').WikitextConstants;
+	WikitextConstants = require('./mediawiki.wikitext.constants.js').WikitextConstants,
+	Util = require('./ext.Util.js').Util;
 
 function WikiLinkHandler( manager, isInclude ) {
 	this.manager = manager;
@@ -28,7 +29,7 @@ WikiLinkHandler.prototype.onWikiLink = function ( token, frame, cb ) {
 	var env = this.manager.env,
 		href = token.attribs[0].v,
 		hrefStr = env.tokensToString( href );
-	var title = this.manager.env.makeTitleFromPrefixedText(hrefStr);
+	var title = env.makeTitleFromPrefixedText(hrefStr);
 
 	if ( title.ns.isFile() ) {
 		cb( this.renderFile( token, frame, cb, hrefStr, title ) );
@@ -67,7 +68,7 @@ WikiLinkHandler.prototype.onWikiLink = function ( token, frame, cb ) {
 			}
 			content = out;
 		} else {
-			content = [ env.decodeURI(hrefStr) ];
+			content = [ Util.decodeURI(hrefStr) ];
 			obj.dataAttribs.gc = 1;
 		}
 
@@ -356,8 +357,8 @@ ExternalLinkHandler.prototype._isImageLink = function ( href ) {
 
 ExternalLinkHandler.prototype.onUrlLink = function ( token, frame, cb ) {
 	var env = this.manager.env,
-		href = env.sanitizeURI( 
-				env.tokensToString( env.lookupKV( token.attribs, 'href' ).v )
+		href = Util.sanitizeURI( 
+				env.tokensToString( Util.lookupKV( token.attribs, 'href' ).v )
 			);
 	if ( this._isImageLink( href ) ) {
 		cb( { tokens: [ new SelfclosingTagTk( 'img', 
@@ -390,9 +391,9 @@ ExternalLinkHandler.prototype.onUrlLink = function ( token, frame, cb ) {
 // Bracketed external link
 ExternalLinkHandler.prototype.onExtLink = function ( token, manager, cb ) {
 	var env = this.manager.env,
-		href = env.tokensToString( env.lookupKV( token.attribs, 'href' ).v ),
-		content= env.lookupKV( token.attribs, 'content' ).v;
-	href = env.sanitizeURI( href );
+		href = env.tokensToString( Util.lookupKV( token.attribs, 'href' ).v ),
+		content= Util.lookupKV( token.attribs, 'content' ).v;
+	href = Util.sanitizeURI( href );
 	//console.warn('extlink href: ' + href );
 	//console.warn( 'content: ' + JSON.stringify( content, null, 2 ) );
 	// validate the href

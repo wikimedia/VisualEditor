@@ -1,8 +1,7 @@
 /* Perform post-processing steps on an already-built HTML DOM. */
 
 var events = require('events'),
-	util = require('./ext.Util.js'),
-	Util = new util.Util();
+	Util = require('./ext.Util.js').Util;
 
 // Quick HACK: define Node constants
 // https://developer.mozilla.org/en/nodeType

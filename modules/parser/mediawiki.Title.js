@@ -1,3 +1,5 @@
+var Util = require('./ext.Util.js').Util;
+
 function Title ( key, ns, nskey, env ) {
 	this.key = key;
 	// Namespace index
@@ -10,7 +12,7 @@ function Title ( key, ns, nskey, env ) {
 Title.prototype.makeLink = function () {
 	// XXX: links always point to the canonical namespace name.
 	if ( false && this.nskey ) {
-		return this.env.sanitizeURI( this.env.wgScriptPath +
+		return Util.sanitizeURI( this.env.wgScriptPath +
 				this.nskey + ':' + this.key );
 	} else {
 		var l = this.env.wgScriptPath,
@@ -19,21 +21,21 @@ Title.prototype.makeLink = function () {
 		if ( ns ) {
 			l += ns + ':';
 		}
-		return this.env.sanitizeURI( l + this.key );
+		return Util.sanitizeURI( l + this.key );
 	}
 };
 
 Title.prototype.getPrefixedText = function () {
 	// XXX: links always point to the canonical namespace name.
 	if ( this.nskey ) {
-		return this.env.sanitizeURI( this.nskey + ':' + this.key );
+		return Util.sanitizeURI( this.nskey + ':' + this.key );
 	} else {
 		var ns = this.ns.getDefaultName();
 
 		if ( ns ) {
 			ns += ':';
 		}
-		return this.env.sanitizeURI( ns + this.key );
+		return Util.sanitizeURI( ns + this.key );
 	}
 };
 

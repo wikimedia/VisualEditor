@@ -1,4 +1,5 @@
 var TokenCollector = require( './ext.util.TokenCollector.js' ).TokenCollector;
+// var Util = require( './ext.Util.js' ).Util;
 
 /**
  * Simple token transform version of the Cite extension.
@@ -52,7 +53,7 @@ Cite.prototype.handleRef = function ( tokens ) {
 	if (options.group) {
 		bits.push(options.group);
 	}
-	//bits.push(env.formatNum( ref.groupIndex + 1 ));
+	//bits.push(Util.formatNum( ref.groupIndex + 1 ));
 	bits.push(ref.groupIndex + 1);
 
 	var res = [
@@ -119,7 +120,7 @@ Cite.prototype.onReferences = function ( token, manager ) {
 						// XXX: make formatNum available!
 						//{
 						//	type: 'TEXT', 
-						//	value: env.formatNum( ref.groupIndex + '.' + i)
+						//	value: Util.formatNum( ref.groupIndex + '.' + i)
 						//},
 						ref.groupIndex + '.' + i,
 						new EndTagTk( 'a' )

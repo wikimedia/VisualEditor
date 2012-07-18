@@ -2,6 +2,8 @@
  * Create list tag around list items and map wiki bullet levels to html
  */
 
+var Util = require('./ext.Util.js').Util;
+
 function ListHandler ( manager ) {
 	this.manager = manager;
 	this.reset();
@@ -162,7 +164,7 @@ ListHandler.prototype.doListItem = function ( bs, bn, token ) {
 		}
 		res = tokens;
 	}
-	this.manager.env.tracer.output("Returning: " + TagTk.toStringTokens(res).join(","));
+	this.manager.env.tracer.output("Returning: " + Util.toStringTokens(res).join(","));
 	return res;
 };
 

@@ -8,9 +8,7 @@
  */
 
 // Include general utilities
-var Util = require('./ext.Util.js').Util,
-	u = new Util();
-
+var u = require('./ext.Util.js').Util;
 
 function Sanitizer ( manager ) {
 	this.manager = manager;
@@ -34,7 +32,7 @@ Sanitizer.prototype.onAnchor = function ( token ) {
 	if ( token.constructor === EndTagTk ) {
 		return { token: token };
 	}
-	var hrefKV = this.manager.env.lookupKV( token.attribs, 'href' );
+	var hrefKV = u.lookupKV( token.attribs, 'href' );
 	// FIXME: Should the flattening of attributes to text be performed as part
 	// of the AttributeTransformManager processing? This certainly is not the
 	// right place!
