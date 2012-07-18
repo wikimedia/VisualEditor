@@ -8,7 +8,7 @@
  * about Wikitext itself.  For now, this is barebones and sparse.
  * ------------------------------------------------------------------- */
 
-WikitextConstants = {
+var WikitextConstants = {
 	// Valid image options:
 	// * Prefix options are of the form "alt=foo"
 	// * Simple options are of the form "center"
