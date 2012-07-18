@@ -218,7 +218,6 @@ var Util = {
 		return out;
 	},
 
-
 	// Does this need separate UI/content inputs?
 	formatNum: function( num ) {
 		return num + '';
@@ -227,6 +226,7 @@ var Util = {
 	decodeURI: function ( s ) {
 		return s.replace( /%[0-9a-f][0-9a-f]/g, function( m ) {
 			try {
+				// JS library function
 				return decodeURI( m );
 			} catch ( e ) {
 				return m;
