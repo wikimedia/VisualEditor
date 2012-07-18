@@ -91,14 +91,29 @@ TokenTransformManager.prototype._cmpTransformations = function ( a, b ) {
  *
  * @method
  * @param {Function} transform.
+ * @param {String} Debug string to identify the transformer in a trace.
  * @param {Number} rank, [0,3) with [0,1) in-order on input token stream,
  * [1,2) out-of-order and [2,3) in-order on output token stream
  * @param {String} type, one of 'tag', 'text', 'newline', 'comment', 'end',
  * 'martian' (unknown token), 'any' (any token, matched before other matches).
  * @param {String} tag name for tags, omitted for non-tags
  */
-TokenTransformManager.prototype.addTransform = function ( transformation, rank, type, name ) {
-	var t = {transform: transformation, rank: rank};
+TokenTransformManager.prototype.addTransform = function ( transformation, debug_name, rank, type, name ) {
+	var t = { rank: rank };
+	if (!this.env.trace) {
+		t.transform = transformation;
+	} else {
+		// Trace info
+		var mgr = this;
+		t.transform = function() {
+			var args = arguments;
+			mgr.env.tracer.startPass(debug_name + ":" + rank);
+			var r = transformation.apply(null, args);
+			mgr.env.tracer.endPass(debug_name + ":" + rank);
+			return r;
+		}
+	};
+
 	if (type === 'any') {
 		// Record the any transformation
 		this.defaultTransformers.push(t);

@@ -38,7 +38,7 @@ function TokenCollector ( manager, transformation, toEnd, rank, type, name ) {
 	this.toEnd = toEnd;
 	this.tokens = [];
 	this.isActive = false;
-	manager.addTransform( this._onDelimiterToken.bind( this ), rank, type, name );
+	manager.addTransform( this._onDelimiterToken.bind( this ), "TokenCollector:_onDelimiterToken", rank, type, name );
 }
 		
 /**
@@ -88,9 +88,9 @@ TokenCollector.prototype._onDelimiterToken = function ( token, frame, cb ) {
 		} else {
 			// start collection
 			this.manager.env.dp( 'starting collection on ', token );
-			this.manager.addTransform( this._onAnyToken.bind ( this ), 
+			this.manager.addTransform( this._onAnyToken.bind ( this ),"TokenCollector:_onAnyToken",  
 					this.rank + this._anyDelta, 'any' );
-			this.manager.addTransform( this._onDelimiterToken.bind( this ), 
+			this.manager.addTransform( this._onDelimiterToken.bind( this ),"TokenCollector:_onDelimiterToken:end",  
 					this.rank, 'end' );
 			this.isActive = true;
 		}

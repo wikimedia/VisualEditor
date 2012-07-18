@@ -30,11 +30,11 @@ TemplateHandler.prototype.rank = 1.1;
 TemplateHandler.prototype.register = function ( manager ) {
 	this.manager = manager;
 	// Register for template and templatearg tag tokens
-	manager.addTransform( this.onTemplate.bind(this), 
+	manager.addTransform( this.onTemplate.bind(this), "TemplateHandler:onTemplate",
 			this.rank, 'tag', 'template' );
 
 	// Template argument expansion
-	manager.addTransform( this.onTemplateArg.bind(this), 
+	manager.addTransform( this.onTemplateArg.bind(this), "TemplateHandler:onTemplateArg",
 			this.rank, 'tag', 'templatearg' );
 
 };

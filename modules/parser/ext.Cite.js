@@ -19,7 +19,7 @@ function Cite ( manager, isInclude ) {
 			'ref'
 			);
 	// And register for references tags
-	manager.addTransform( this.onReferences.bind(this), 
+	manager.addTransform( this.onReferences.bind(this), "Cite:onReferences",
 			this.referencesRank, 'tag', 'references' );
 }
 

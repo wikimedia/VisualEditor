@@ -5,9 +5,9 @@
 function ListHandler ( manager ) {
 	this.manager = manager;
 	this.reset();
-	this.manager.addTransform( this.onListItem.bind(this), 
+	this.manager.addTransform( this.onListItem.bind(this), "ListHandler:onListItem",
 			this.listRank, 'tag', 'listItem' );
-	this.manager.addTransform( this.onEnd.bind(this),
+	this.manager.addTransform( this.onEnd.bind(this), "ListHandler:onEnd",
 			this.listRank, 'end' );
 }
 
@@ -106,7 +106,6 @@ ListHandler.prototype.isDtDd = function (a, b) {
 };
 
 ListHandler.prototype.doListItem = function ( bs, bn, token ) {
-	this.manager.env.tracer.startPass("doListItem");
 	var prefixLen = this.commonPrefixLength (bs, bn),
 		changeLen = Math.max(bs.length, bn.length) - prefixLen,
 		prefix = bn.slice(0, prefixLen);
@@ -114,7 +113,7 @@ ListHandler.prototype.doListItem = function ( bs, bn, token ) {
 	this.bstack = bn;
 	if (!bs.length)
 	{
-		this.manager.addTransform( this.onAny.bind(this),
+		this.manager.addTransform( this.onAny.bind(this), "ListHandler:onAny",
 				this.anyRank, 'any' );
 	}
 	
@@ -164,7 +163,6 @@ ListHandler.prototype.doListItem = function ( bs, bn, token ) {
 		res = tokens;
 	}
 	this.manager.env.tracer.output("Returning: " + TagTk.toStringTokens(res).join(","));
-	this.manager.env.tracer.endPass("doListItem");
 	return res;
 };
 

@@ -13,7 +13,7 @@ var jshashes = require('jshashes'),
 
 function WikiLinkHandler( manager, isInclude ) {
 	this.manager = manager;
-	this.manager.addTransform( this.onWikiLink.bind( this ), this.rank, 'tag', 'wikilink' );
+	this.manager.addTransform( this.onWikiLink.bind( this ), "WikiLinkHandler:onWikiLink", this.rank, 'tag', 'wikilink' );
 	// create a new peg parser for image options..
 	if ( !this.imageParser ) {
 		// Actually the regular tokenizer, but we'll call it with the
@@ -321,10 +321,10 @@ WikiLinkHandler.prototype.renderThumb = function ( token, manager, cb, title, fi
 
 function ExternalLinkHandler( manager, isInclude ) {
 	this.manager = manager;
-	this.manager.addTransform( this.onUrlLink.bind( this ), this.rank, 'tag', 'urllink' );
-	this.manager.addTransform( this.onExtLink.bind( this ), 
+	this.manager.addTransform( this.onUrlLink.bind( this ), "ExternalLinkHandler:onUrlLink", this.rank, 'tag', 'urllink' );
+	this.manager.addTransform( this.onExtLink.bind( this ), "ExternalLinkHandler:onExtLink",  
 			this.rank - 0.001, 'tag', 'extlink' );
-	this.manager.addTransform( this.onEnd.bind( this ), 
+	this.manager.addTransform( this.onEnd.bind( this ), "ExternalLinkHandler:onEnd",  
 			this.rank, 'end' );
 	// create a new peg parser for image options..
 	if ( !this.imageParser ) {

@@ -15,13 +15,13 @@ function Tracer(env) {
 Tracer.prototype = {
 	startPass: function(string) {
 		if (this.env.trace) {
-			console.warn("-- start: " + string);
+			console.warn("---- start: " + string + " ----");
 		}
 	},
 
 	endPass: function(string) {
 		if (this.env.trace) {
-			console.warn("-- end:   " + string);
+			console.warn("---- end  : " + string + " ----");
 		}
 	},
 

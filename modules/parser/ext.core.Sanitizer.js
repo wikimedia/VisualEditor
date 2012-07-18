@@ -25,8 +25,8 @@ Sanitizer.prototype.anyRank = 2.9901;
 // Register this transformer with the TokenTransformer
 Sanitizer.prototype.register = function ( manager ) {
 	this.manager = manager;
-	manager.addTransform( this.onAnchor.bind(this), this.handledRank, 'tag', 'a' );
-	manager.addTransform( this.onAny.bind(this), this.anyRank, 'any' );
+	manager.addTransform( this.onAnchor.bind(this), "Sanitizer:onAnchor", this.handledRank, 'tag', 'a' );
+	manager.addTransform( this.onAny.bind(this), "Sanitizer:onAny", this.anyRank, 'any' );
 };
 
 Sanitizer.prototype.onAnchor = function ( token ) {

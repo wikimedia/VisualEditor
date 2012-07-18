@@ -24,10 +24,10 @@ PostExpandParagraphHandler.prototype.anyRank = 2.501; // Just after regular quot
 PostExpandParagraphHandler.prototype.register = function ( dispatcher ) {
 	this.dispatcher = dispatcher;
 	// Register for NEWLINE tokens
-	dispatcher.addTransform( this.onNewLine.bind(this), 
+	dispatcher.addTransform( this.onNewLine.bind(this), "PostExpandParagraphHandler:onNewLine",
 			this.newlineRank, 'newline' );
 	// Reset internal state when we are done
-	dispatcher.addTransform( this.onEnd.bind(this), 
+	dispatcher.addTransform( this.onEnd.bind(this), "PostExpandParagraphHandler:onEnd",
 			this.newlineRank, 'end' );
 };
 
@@ -58,7 +58,7 @@ PostExpandParagraphHandler.prototype.onNewLine = function (  token, frame, cb ) 
 	this.tokens.push( token );
 
 	if( ! this.newLines ) {
-		this.dispatcher.addTransform( this.onAny.bind(this), 
+		this.dispatcher.addTransform( this.onAny.bind(this), "PostExpandParagraphHandler:onAny",
 				this.anyRank, 'any' );
 	}
 
