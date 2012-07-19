@@ -1435,7 +1435,7 @@ block_tag
 /*********************************************************
  *   Lists 
  *********************************************************/
-lists = (dtdd / li) (sol (dtdd / li))*
+lists = (dtdd / hacky_dl_uses / li) (sol (dtdd / hacky_dl_uses / li))*
 
 li = bullets:list_char+ 
      c:inlineline?
@@ -1447,6 +1447,26 @@ li = bullets:list_char+
     li.bullets = bullets;
     return [ li, c ];
 }
+
+/* 
+ * This production is required to support wikitext of this form
+ *   ::{|border="1"|foo|bar|baz|}
+ * where the leading colons are used to indent the entire table.
+ * This hack was added back in 2006 in commit
+ * a0746946312b0f1eda30a2c793f5f7052e8e5f3a based on a patch by Carl
+ * Fürstenberg.
+ */
+hacky_dl_uses = bullets:":"+
+               c:table_lines
+               &eolf
+{
+    if ( c === '' )
+        c = [];
+    var li = new TagTk( 'listItem', [], { tsr: [pos0, pos0 + bullets.length] }  );
+    li.bullets = bullets;
+    return [ li, c ];
+}
+
 
 dtdd 
   = bullets:(!(";" !list_char) lc:list_char { return lc })*
