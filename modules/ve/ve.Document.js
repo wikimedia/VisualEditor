@@ -113,11 +113,11 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 		// Does the node have wrapping elements around it
 		isWrapped = node.isWrapped();
 		// Is the start between prevNode and node or between the parent's opening and node?
-		startBetween = isWrapped ? start == left - 1 : start == left;
+		startBetween = isWrapped ? start === left - 1 : start === left;
 		// Is the end between node and nextNode or between node and the parent's closing?
-		endBetween = isWrapped ? end == right + 1 : end == right;
+		endBetween = isWrapped ? end === right + 1 : end === right;
 
-		if ( start == end && ( startBetween || endBetween ) && node.isWrapped() ) {
+		if ( start === end && ( startBetween || endBetween ) && node.isWrapped() ) {
 			// Empty range in the parent, outside of any child
 			nodeRange = new ve.Range( currentFrame.startOffset,
 				currentFrame.startOffset + currentFrame.node.getLength()
@@ -204,8 +204,10 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 				} ];
 			}
 		} else if ( startInside ) {
-			if ( ( mode === 'leaves' || mode === 'covered' )
-				&& node.children && node.children.length
+			if (
+				( mode === 'leaves' || mode === 'covered' ) &&
+				node.children &&
+				node.children.length
 			) {
 				// node is a branch node and the start is inside it
 				// Descend into it
@@ -262,8 +264,10 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
 				return retval;
 			}
 		} else if ( endInside ) {
-			if ( ( mode === 'leaves' || mode === 'covered' )
-				&& node.children && node.children.length
+			if (
+				( mode === 'leaves' || mode === 'covered' ) &&
+				node.children &&
+				node.children.length
 			) {
 				// node is a branch node and the end is inside it
 				// Descend into it

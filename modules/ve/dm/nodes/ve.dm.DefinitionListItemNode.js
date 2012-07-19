@@ -42,7 +42,7 @@ ve.dm.DefinitionListItemNode.converters = {
 		return element.attributes && ( {
 			'term': document.createElement( 'dt' ),
 			'definition': document.createElement( 'dd' )
-		} )[element.attributes['style']];
+		} )[element.attributes.style];
 	},
 	'toDataElement': function( tag, element ) {
 		return ( {

@@ -1,3 +1,5 @@
+/*global mw */
+
 /**
  * Generic target.
  *
@@ -19,7 +21,7 @@ ve.init.Target = function( pageName ) {
 	this.dom = null;
 	this.isMobileDevice = (
 		'ontouchstart' in window ||
-		( window.DocumentTouch && document instanceof DocumentTouch )
+		( window.DocumentTouch && document instanceof window.DocumentTouch )
 	);
 };
 

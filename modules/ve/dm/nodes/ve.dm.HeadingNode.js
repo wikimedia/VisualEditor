@@ -46,7 +46,7 @@ ve.dm.HeadingNode.converters = {
 			4: document.createElement( 'h4' ),
 			5: document.createElement( 'h5' ),
 			6: document.createElement( 'h6' )
-		} )[element.attributes['level']];
+		} )[element.attributes.level];
 	},
 	'toDataElement': function( tag, element ) {
 		return ( {

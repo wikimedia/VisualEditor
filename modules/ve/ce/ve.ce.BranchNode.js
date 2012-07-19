@@ -56,11 +56,12 @@ if ( $.browser.msie ) {
  * @throws 'Invalid attribute value' if attribute value is not a key in {domWrapperElementTypes}
  */
 ve.ce.BranchNode.getDomWrapperType = function( model, key ) {
-	var value = model.getAttribute( key );
+	var types,
+		value = model.getAttribute( key );
 	if ( value === undefined ) {
 		throw 'Undefined attribute: ' + key;
 	}
-	var types = ve.ce.nodeFactory.lookup( model.getType() ).domWrapperElementTypes;
+	types = ve.ce.nodeFactory.lookup( model.getType() ).domWrapperElementTypes;
 	if ( types[value] === undefined ) {
 		throw 'Invalid attribute value: ' + value;
 	}
@@ -85,10 +86,12 @@ ve.ce.BranchNode.getDomWrapper = function( model, key ) {
 /* Methods */
 
 ve.ce.BranchNode.prototype.addSlugs = function() {
+	var i, $slug;
+
 	// Remove all slugs in this branch
 	this.$slugs.remove();
 
-	var $slug = ve.ce.BranchNode.$slugTemplate.clone();
+	$slug = ve.ce.BranchNode.$slugTemplate.clone();
 
 	if ( this.canHaveGrandchildren() ) {
 		$slug.css( 'display', 'block');
@@ -101,7 +104,7 @@ ve.ce.BranchNode.prototype.addSlugs = function() {
 			$slug.clone().appendTo( this.$ )
 		);
 	}
-	for ( var i = 0; i < this.children.length; i++ ) {
+	for ( i = 0; i < this.children.length; i++ ) {
 		if ( this.children[i].canHaveSlug() ) {
 			if ( i === 0 ) {
 				// First sluggable child (left side)
@@ -138,9 +141,11 @@ ve.ce.BranchNode.prototype.addSlugs = function() {
  * @emits rewrap ($old, $new)
  */
 ve.ce.BranchNode.prototype.updateDomWrapper = function( key ) {
-	var type = ve.ce.BranchNode.getDomWrapperType( this.model, key );
+	var $element,
+		type = ve.ce.BranchNode.getDomWrapperType( this.model, key );
+
 	if ( type !== this.domWrapperElementType ) {
-		var $element = $( '<' + type + '></' + type + '>' );
+		$element = $( '<' + type + '></' + type + '>' );
 		// Copy classes
 		$element.attr( 'class', this.$.attr( 'class' ) );
 		// Copy .data( 'node' )
@@ -172,21 +177,23 @@ ve.ce.BranchNode.prototype.updateDomWrapper = function( key ) {
 ve.ce.BranchNode.prototype.onSplice = function( index, howmany ) {
 	var i,
 		length,
-		args = Array.prototype.slice.call( arguments, 0 );
+		args = Array.prototype.slice.call( arguments, 0 ),
+		$anchor,
+		removals,
+		$target;
 	// Convert models to views and attach them to this node
 	if ( args.length >= 3 ) {
 		for ( i = 2, length = args.length; i < length; i++ ) {
 			args[i] = ve.ce.nodeFactory.create( args[i].getType(), args[i] );
 		}
 	}
-	var removals = this.children.splice.apply( this.children, args );
+	removals = this.children.splice.apply( this.children, args );
 	for ( i = 0, length = removals.length; i < length; i++ ) {
 		removals[i].detach();
 		// Update DOM
 		removals[i].$.detach();
 	}
 	if ( args.length >= 3 ) {
-		var $target;
 		if ( index ) {
 			// Get the element before the insertion point
 			$anchor = this.$.children(':not(.ve-ce-slug)').eq( index - 1 );
@@ -205,13 +212,14 @@ ve.ce.BranchNode.prototype.onSplice = function( index, howmany ) {
 };
 
 ve.ce.BranchNode.prototype.hasSlugAtOffset = function( offset ) {
+	var i, nodeOffset, nodeLength;
 	if ( this.getLength() === 0 ) {
 		return true;
 	}
-	for ( var i = 0; i < this.children.length; i++ ) {
+	for ( i = 0; i < this.children.length; i++ ) {
 		if ( this.children[i].canHaveSlug() ) {
-			var nodeOffset = this.children[i].model.getRoot().getOffsetFromNode( this.children[i].model );
-			var nodeLength = this.children[i].model.getOuterLength();
+			nodeOffset = this.children[i].model.getRoot().getOffsetFromNode( this.children[i].model );
+			nodeLength = this.children[i].model.getOuterLength();
 			if ( i === 0 ) {
 				if ( nodeOffset === offset ) {
 					return true;

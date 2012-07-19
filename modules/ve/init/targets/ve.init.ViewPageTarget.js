@@ -1,3 +1,5 @@
+/*global mw,confirm,alert */
+
 /**
  * Edit page target.
  *

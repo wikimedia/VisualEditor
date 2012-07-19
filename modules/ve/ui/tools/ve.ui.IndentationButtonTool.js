@@ -23,7 +23,7 @@ ve.ui.IndentationButtonTool.prototype.onClick = function() {
 		for ( i = 0; i < this.nodes.length; i++ ) {
 			listItem = this.nodes[i].getParent();
 			if ( listItems.length > 0 ) {
-				if (listItem != listItems[listItems.length - 1]) {
+				if (listItem !== listItems[listItems.length - 1]) {
 					listItems.push( listItem );
 				}
 			} else {
@@ -42,7 +42,8 @@ ve.ui.IndentationButtonTool.prototype.indent = function( listItems ) {
 	// FIXME old code, doesn't work
 	var	surface = this.toolbar.surfaceView,
 		styles,
-		i;
+		i,
+		tx;
 
 	for ( i = 0; i < listItems.length; i++ ) {
 		styles = listItems[i].getElementAttribute( 'styles' );
@@ -62,7 +63,8 @@ ve.ui.IndentationButtonTool.prototype.outdent = function( listItems ) {
 	// FIXME old code, doesn't work
 	var	surface = this.toolbar.surfaceView,
 		styles,
-		i;
+		i,
+		tx;
 
 	for ( i = 0; i < listItems.length; i++ ) {
 		styles = listItems[i].getElementAttribute( 'styles' );

@@ -373,7 +373,7 @@ ve.dm.Converter.prototype.getDataFromDom = function( domElement, annotations, da
 	// If we're closing a node that doesn't have any children, but could contain a paragraph,
 	// add a paragraph. This prevents things like empty list items
 	var childTypes = ve.dm.nodeFactory.getChildNodeTypes( branchType );
-	if ( branchType !== 'paragraph' && dataElement && data[data.length - 1] == dataElement &&
+	if ( branchType !== 'paragraph' && dataElement && data[data.length - 1] === dataElement &&
 		!wrapping && !ve.dm.nodeFactory.canNodeContainContent( branchType ) &&
 		!ve.dm.nodeFactory.isNodeContent( branchType ) &&
 		( childTypes === null || $.inArray( 'paragraph', childTypes ) !== -1 )
@@ -606,7 +606,7 @@ ve.dm.Converter.prototype.getDomFromData = function( data ) {
 		.contents()
 		.filter( function() {
 			// Text nodes only
-			return this.nodeType == 3 &&
+			return this.nodeType === 3 &&
 				// Exclude text nodes within lists
 				$( this.parentNode ).closest( 'li, dd, dt' ).length === 0;
 		} )

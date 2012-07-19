@@ -42,7 +42,7 @@ ve.dm.ListNode.converters = {
 		return element.attributes && ( {
 			'bullet': document.createElement( 'ul' ),
 			'number': document.createElement( 'ol' )
-		} )[element.attributes['style']];
+		} )[element.attributes.style];
 	},
 	'toDataElement': function( tag, element ) {
 		return ( {

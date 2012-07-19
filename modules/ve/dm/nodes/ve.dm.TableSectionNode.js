@@ -43,7 +43,7 @@ ve.dm.TableSectionNode.converters = {
 			'header': document.createElement( 'thead' ),
 			'body': document.createElement( 'tbody' ),
 			'footer': document.createElement( 'tfoot' )
-		} )[element.attributes['style']];
+		} )[element.attributes.style];
 	},
 	'toDataElement': function( tag, element ) {
 		return ( {

@@ -159,7 +159,7 @@ ve.Surface.prototype.makeMainEditorToolbarFloat = function() {
 		return;
 	}
 	var $toolbarWrapper = this.toolbarWrapper.top,
-		$toolbar = $toolbarWrapper.find( '.es-toolbar' );
+		$toolbar = $toolbarWrapper.find( '.es-toolbar' ),
 		$window = $( window );
 
 	$window.scroll( function() {

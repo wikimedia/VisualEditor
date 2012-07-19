@@ -218,7 +218,7 @@ ve.dm.Node.prototype.getClonedElement = function() {
 		retval.attributes = ve.copyObject( this.attributes );
 	}
 	return retval;
-}
+};
 
 /**
  * Checks if this node can be merged with another.

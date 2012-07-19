@@ -120,7 +120,7 @@ test( 'getHtml', 22, function() {
 				}],
 				'g',
 				'h',
-				'i',				
+				'i',
 				{ 'type': '/paragraph' }
 			],
 			'html': 'abc<b><i><u>def</u></i></b>ghi'
@@ -147,7 +147,7 @@ test( 'getHtml', 22, function() {
 				}],
 				'g',
 				'h',
-				'i',				
+				'i',
 				{ 'type': '/paragraph' }
 			],
 			'html': 'abc<b><i><u>d</u></i></b><i><u>e<b>f</b></u></i>ghi'
@@ -174,7 +174,7 @@ test( 'getHtml', 22, function() {
 				}],
 				'g',
 				'h',
-				'i',				
+				'i',
 				{ 'type': '/paragraph' }
 			],
 			'html': 'abc<i><u><b>d</b>e<b>f</b></u></i>ghi'
@@ -200,7 +200,7 @@ test( 'getHtml', 22, function() {
 				}],
 				'g',
 				'h',
-				'i',				
+				'i',
 				{ 'type': '/paragraph' }
 			],
 			'html': 'abc<i><u><b>d</b></u></i><u><b>ef</b></u>ghi'
