@@ -1,7 +1,12 @@
 /**
- * ContentEditable namespace.
- *
- * All classes and functions will be attached to this object to keep the global namespace clean.
+ * VisualEditor content editable namespace.
+ * 
+ * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+/**
+ * Namespace for all VisualEditor content editable classes, static methods and static properties.
  */
 ve.ce = {
 	//'nodeFactory': Initialized in ve.ce.NodeFactory.js

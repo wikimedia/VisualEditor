@@ -1,4 +1,11 @@
 /**
+ * VisualEditor data model DocumentSynchronizer class.
+ * 
+ * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+/**
  * Creates an ve.dm.DocumentSynchronizer object.
  *
  * This object is a utility for collecting actions to be performed on the model tree in multiple

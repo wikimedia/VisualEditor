@@ -1,4 +1,11 @@
 /**
+ * VisualEditor content editable AlienBlockNode class.
+ * 
+ * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+/**
  * ContentEditable node for an alien block node.
  *
  * @class

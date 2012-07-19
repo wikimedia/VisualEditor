@@ -1,4 +1,11 @@
 /**
+ * VisualEditor BranchNode class.
+ * 
+ * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+/**
  * Mixin for branch nodes.
  *
  * Branch nodes are immutable, which is why there are no methods for adding or removing children.

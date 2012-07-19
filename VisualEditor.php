@@ -4,18 +4,8 @@
  * 
  * @file
  * @ingroup Extensions
- * 
- * @author Trevor Parscal <trevor@wikimedia.org>
- * @author Inez Korczyński <inez@wikia-inc.com>
- * @author Roan Kattouw <roan.kattouw@gmail.com>
- * @author Neil Kandalgaonkar <neilk@wikimedia.org>
- * @author Gabriel Wicke <gwicke@wikimedia.org>
- * @author Brion Vibber <brion@wikimedia.org>
- * @author Christian Williams <christian@wikia-inc.com>
- * @author Rob Moen <rmoen@wikimedia.org>
- * @author Subramanya Sastry <ssastry@wikimedia.org>
- * @license GPL v2 or later
- * @version 0.1.0
+ * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /* Configuration */

@@ -1,4 +1,16 @@
-// ToolbarView
+/**
+ * VisualEditor user interface Toolbar class.
+ * 
+ * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+/**
+ * Editing toolbar.
+ *
+ * @class
+ * @constructor
+ */
 ve.ui.Toolbar = function( $container, surfaceView, config ) {
 	// Inheritance TODO: Do we still need it?
 	ve.EventEmitter.call( this );

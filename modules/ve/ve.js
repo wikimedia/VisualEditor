@@ -2,8 +2,13 @@
 
 /**
  * VisualEditor namespace.
- *
- * All classes and functions will be attached to this object to keep the global namespace clean.
+ * 
+ * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+/**
+ * Namespace for all VisualEditor classes, static methods and static properties.
  */
 window.ve = {
 	// List of instances of visual editors

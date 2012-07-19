@@ -1,4 +1,11 @@
 /**
+ * VisualEditor content editable DocumentNode class.
+ * 
+ * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+/**
  * ContentEditable node for a document.
  *
  * @class

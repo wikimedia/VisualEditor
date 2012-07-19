@@ -1,4 +1,11 @@
 /**
+ * VisualEditor data model BranchNode class.
+ * 
+ * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+/**
  * DataModel node that can have branch or leaf children.
  *
  * @class

@@ -1,4 +1,11 @@
 /**
+ * VisualEditor Surface class.
+ * 
+ * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+/**
  * Creates an ve.Surface object.
  *
  * A surface is a top-level object which contains both a surface model and a surface view.

@@ -1,4 +1,12 @@
 /**
+ * VisualEditor Position class.
+ * 
+ * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+
+/**
  * Pixel position.
  *
  * This can also support an optional bottom field, to represent a vertical line, such as a cursor.

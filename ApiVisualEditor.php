@@ -1,5 +1,13 @@
 <?php
-/* Base parsoid API wrapper. */
+/**
+ * Parsoid API wrapper.
+ * 
+ * @file
+ * @ingroup Extensions
+ * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
 class ApiVisualEditor extends ApiBase {
 
 	public function execute() {

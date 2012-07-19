@@ -1,4 +1,11 @@
 /**
+ * VisualEditor data model AlienInlineNode class.
+ * 
+ * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+/**
  * DataModel node for an alien inline node.
  *
  * @class

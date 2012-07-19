@@ -1,4 +1,11 @@
 /**
+ * VisualEditor data model TransactionProcessor class.
+ * 
+ * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+/**
  * DataModel transaction processor.
  *
  * This class reads operations from a transaction and applies them one by one. It's not intended

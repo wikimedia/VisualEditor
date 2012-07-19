@@ -1,3 +1,10 @@
+/**
+ * VisualEditor user interface Inspector styles.
+ * 
+ * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
 .es-inspector {
 	font-family: sans-serif;
 	position: absolute;

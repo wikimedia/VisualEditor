@@ -1,4 +1,11 @@
 /**
+ * VisualEditor debugging methods.
+ * 
+ * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+/**
  * Logs data to the console.
  *
  * This implementation does nothing, to add a real implmementation ve.debug needs to be loaded.
