@@ -28,10 +28,11 @@ ve.ui.LinkInspector = function( toolbar, context ) {
 			return;
 		}
 
-		var	surfaceModel = _this.context.getSurfaceView().getModel(),
+		var hash,
+			surfaceModel = _this.context.getSurfaceView().getModel(),
 			annotations = _this.getSelectedLinkAnnotations();
 		// If link annotation exists, clear it.
-		for ( var hash in annotations ) {
+		for ( hash in annotations ) {
 			surfaceModel.annotate( 'clear', annotations[hash] );
 		}
 
@@ -66,8 +67,9 @@ ve.ui.LinkInspector.prototype.getSelectedLinkAnnotations = function(){
 };
 
 ve.ui.LinkInspector.prototype.getAnnotationFromSelection = function() {
-	var annotations = this.getSelectedLinkAnnotations();
-	for ( var hash in annotations ) {
+	var hash,
+		annotations = this.getSelectedLinkAnnotations();
+	for ( hash in annotations ) {
 		// Use the first one with a recognized type (there should only be one, but this is just in case)
 		if ( annotations[hash].type === 'link/wikiLink' || annotations[hash].type === 'link/extLink' ) {
 			return annotations[hash];
@@ -78,13 +80,14 @@ ve.ui.LinkInspector.prototype.getAnnotationFromSelection = function() {
 
 // TODO: This should probably be somewhere else but I needed this here for now.
 ve.ui.LinkInspector.prototype.getSelectionText = function() {
-	var surfaceView = this.context.getSurfaceView(),
+	var i,
+		surfaceView = this.context.getSurfaceView(),
 		surfaceModel = surfaceView.getModel(),
 		documentModel = surfaceModel.getDocument(),
 		data = documentModel.getData( surfaceModel.getSelection() ),
 		str = '',
 		max = Math.min( data.length, 255 );
-	for ( var i = 0; i < max; i++ ) {
+	for ( i = 0; i < max; i++ ) {
 		if ( ve.isArray( data[i] ) ) {
 			str += data[i][0];
 		} else if( typeof data[i] === 'string' ) {

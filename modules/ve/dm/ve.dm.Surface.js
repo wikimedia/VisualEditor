@@ -80,7 +80,7 @@ ve.dm.Surface.prototype.change = function( transaction, selection ) {
 	if ( selection && ( !this.selection || !this.selection.equals ( selection ) ) ) {
 		selection.normalize();
 		this.selection = selection;
-		this.emit ('select', this.selection.clone() );
+		this.emit('select', this.selection.clone() );
 	}
 	if ( transaction ) {
 		this.emit( 'transact', transaction );
@@ -112,7 +112,7 @@ ve.dm.Surface.prototype.breakpoint = function( selection ) {
 			selection: selection || this.selection.clone()
 		} );
 		this.smallStack = [];
-		this.emit ( 'history' );
+		this.emit( 'history' );
 	}
 };
 
@@ -128,7 +128,7 @@ ve.dm.Surface.prototype.undo = function() {
 		}
 		var selection = item.selection;
 		selection.end -= diff;
-		this.emit ( 'history' );
+		this.emit( 'history' );
 		return selection;
 	}
 	return null;
@@ -136,6 +136,7 @@ ve.dm.Surface.prototype.undo = function() {
 
 ve.dm.Surface.prototype.redo = function() {
 	this.breakpoint();
+	var selection;
 	if ( this.undoIndex > 0 ) {
 		if ( this.bigStack[this.bigStack.length - this.undoIndex] ) {
 			var diff = 0;
@@ -144,11 +145,11 @@ ve.dm.Surface.prototype.redo = function() {
 				this.documentModel.commit( item.stack[i] );
 				diff += item.stack[i].lengthDifference;
 			}
-			var selection = item.selection;
+			selection = item.selection;
 			selection.end += diff;
 		}
 		this.undoIndex--;
-		this.emit ( 'history' );
+		this.emit( 'history' );
 		return selection;
 	}
 	return null;

@@ -42,7 +42,7 @@ ve.dm.TableCellNode.converters = {
 		return element.attributes && ( {
 			'data': document.createElement( 'td' ),
 			'header': document.createElement( 'th' )
-		} )[element.attributes['style']];
+		} )[element.attributes.style];
 	},
 	'toDataElement': function( tag, element ) {
 		return ( {

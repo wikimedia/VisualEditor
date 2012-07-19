@@ -1,0 +1,43 @@
+{
+	"predef": [
+		"ve",
+
+		"Node",
+
+		"QUnit",
+		"test",
+		"raises",
+		"expect",
+		"ok",
+		"equal",
+		"notEqual",
+		"strictEqual",
+		"strictNotEqual",
+		"deepEqual",
+		"deepNotEqual"
+	],
+
+	"bitwise": true,
+	"curly": true,
+	"eqeqeq": true,
+	"immed": true,
+	"latedef": true,
+	"newcap": true,
+	"noarg": true,
+	"noempty": true,
+	"nonew": true,
+	"regexp": true,
+	"undef": true,
+	"strict": false,
+	"trailing": true,
+
+	"smarttabs": true,
+	"multistr": true,
+
+	"browser": true,
+	"node": true,
+	"jquery": true,
+
+	"nomen": true,
+	"onevar": true
+}

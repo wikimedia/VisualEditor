@@ -158,7 +158,7 @@ ve.FormatDropdownTool.prototype.getMatchingMenuItems = function( nodes ) {
 		itemLoop:
 		for ( var j = 0; j < items.length; j++ ) {
 			var item = items[j];
-			if ( item.type == nodeType ) {
+			if ( item.type === nodeType ) {
 				if ( item.attributes && nodeAttributes ) {
 					// Compare attributes
 					for ( var key in item.attributes ) {
@@ -166,7 +166,7 @@ ve.FormatDropdownTool.prototype.getMatchingMenuItems = function( nodes ) {
 							// Node must have all the required attributes
 							!( key in nodeAttributes ) ||
 							// Use weak comparison because numbers sometimes come through as strings
-							item.attributes[key] != nodeAttributes[key]
+							item.attributes[key] !== nodeAttributes[key]
 						) {
 							// Skip to the next menu item
 							continue itemLoop;

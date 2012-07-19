@@ -202,7 +202,6 @@ ve.ui.Context.prototype.getInspector = function( name ) {
 };
 
 ve.ui.Context.prototype.addInspector = function( name, inspector ) {
-	var _this = this;
 	if ( name in this.inspectors ) {
 		throw 'Duplicate inspector error. Previous registration with the same name: ' + name;
 	}
@@ -210,7 +209,7 @@ ve.ui.Context.prototype.addInspector = function( name, inspector ) {
 	this.inspectors[name] = inspector;
 	// Iframe build code below.
 	// TODO: Rework this to allow multiple inspectors
-	$styleLink =
+	var $styleLink =
 		$('<link />')
 			.attr({
 				'rel': 'stylesheet',

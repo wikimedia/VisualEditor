@@ -148,35 +148,7 @@ test( 'traverseLeafNodes', 1, function() {
 			'desc': 'Passing a sibling for from results in an exception'
 		}
 	];
-	var count=0;
-	for(var t=0;t<tests.length;t++) {
-		if(tests[t].hasOwnProperty('reverse')) {
-			count++;
-		}
-		count++;
-	}
 
-	expect (count);
-	for ( var i = 0; i < tests.length; i++ ) {
-		executeTest( tests[i] );
-		if ( tests[i].reverse !== undefined ) {
-			var reversed = {
-				'node': tests[i].node,
-				'from': tests[i].from,
-				'callback': tests[i].callback,
-				'exception': tests[i].exception,
-				'isReversed': true,
-				'desc': tests[i].reverseDesc || tests[i].desc + ' (in reverse)'
-			};
-			if ( tests[i].output !== undefined && tests[i].reverse === true ) {
-				reversed.output = tests[i].output.reverse();
-			} else {
-				reversed.output = tests[i].reverse;
-			}
-			executeTest( reversed );
-		}
-	}
-	
 	function executeTest( test ) {
 		var	realLeaves = [],
 			callback = function( node ) {
@@ -197,6 +169,35 @@ test( 'traverseLeafNodes', 1, function() {
 		} else {
 			f();
 			ok( ve.compareArrays( realLeaves, test.output ), test.desc );
+		}
+	}
+
+	var count = 0;
+	for ( var t = 0; t < tests.length; t++ ) {
+		if ( tests[t].hasOwnProperty( 'reverse' ) ) {
+			count++;
+		}
+		count++;
+	}
+
+	expect( count );
+	for ( var i = 0; i < tests.length; i++ ) {
+		executeTest( tests[i] );
+		if ( tests[i].reverse !== undefined ) {
+			var reversed = {
+				'node': tests[i].node,
+				'from': tests[i].from,
+				'callback': tests[i].callback,
+				'exception': tests[i].exception,
+				'isReversed': true,
+				'desc': tests[i].reverseDesc || tests[i].desc + ' (in reverse)'
+			};
+			if ( tests[i].output !== undefined && tests[i].reverse === true ) {
+				reversed.output = tests[i].output.reverse();
+			} else {
+				reversed.output = tests[i].reverse;
+			}
+			executeTest( reversed );
 		}
 	}
 } );

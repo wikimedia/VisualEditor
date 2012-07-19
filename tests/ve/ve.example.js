@@ -296,7 +296,8 @@ ve.example.getSelectNodesCases = function( doc ) {
  * @returns {Object} Summary of node tree
  */
 ve.example.getNodeTreeSummary = function( node, shallow ) {
-	var summary = {
+	var i,
+		summary = {
 		'getType': node.getType(),
 		'getLength': node.getLength(),
 		'getOuterLength': node.getOuterLength(),
@@ -306,7 +307,7 @@ ve.example.getNodeTreeSummary = function( node, shallow ) {
 		summary['children.length'] = node.children.length;
 		if ( !shallow ) {
 			summary.children = [];
-			for ( var i = 0; i < node.children.length; i++ ) {
+			for ( i = 0; i < node.children.length; i++ ) {
 				summary.children.push( ve.example.getNodeTreeSummary( node.children[i] ) );
 			}
 		}
@@ -325,12 +326,13 @@ ve.example.getNodeTreeSummary = function( node, shallow ) {
  * @returns {Object} Summary of selection
  */
 ve.example.getNodeSelectionSummary = function( selection ) {
-	var summary = {
+	var i,
+		summary = {
 		'length': selection.length
 	};
 	if ( selection.length ) {
 		summary.results = [];
-		for ( var i = 0; i < selection.length; i++ ) {
+		for ( i = 0; i < selection.length; i++ ) {
 			summary.results.push( {
 				'node': ve.example.getNodeTreeSummary( selection[i].node, true ),
 				'range': selection[i].range,
@@ -382,16 +384,18 @@ ve.example.getDomElementSummary = function( element ) {
  * @param {ve.Node} Node at given path
  */
 ve.example.lookupNode = function( root ) {
-	var node = root;
-	for ( var i = 1; i < arguments.length; i++ ) {
+	var i,
+		node = root;
+	for ( i = 1; i < arguments.length; i++ ) {
 		node = node.children[arguments[i]];
 	}
 	return node;
 };
 
 ve.example.createDomElement = function( type, attributes ) {
-	var element = document.createElement( type );
-	for ( var key in attributes ) {
+	var key,
+		element = document.createElement( type );
+	for ( key in attributes ) {
 		element.setAttribute( key, attributes[key] );
 	}
 	return element;

@@ -20,7 +20,7 @@ ve.ce.ImageNode = function( model ) {
 	this.model.addListenerMethod( this, 'update', 'onUpdate' );
 	/*
 	this.$.on('mousedown', function() {
-		return false;	
+		return false;
 	});
 	*/
 

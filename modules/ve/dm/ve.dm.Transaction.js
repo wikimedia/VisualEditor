@@ -59,7 +59,8 @@ ve.dm.Transaction.newFromInsertion = function( doc, offset, insertion ) {
  */
 ve.dm.Transaction.newFromRemoval = function( doc, range ) {
 	var tx = new ve.dm.Transaction(),
-		data = doc.getData();
+		data = doc.getData(),
+		i;
 	// Normalize and validate range
 	range.normalize();
 	if ( range.start === range.end ) {
@@ -375,11 +376,9 @@ ve.dm.Transaction.newFromWrap = function( doc, range, unwrapOuter, wrapOuter, un
 		// TODO figure out if we should use the tree/node functions here
 		// rather than iterating over offsets, it may or may not be faster
 		for ( i = range.start; i < range.end; i++ ) {
-			if ( doc.data[i].type === undefined ) {
-				// This is a content offset, skip
-			} else {
+			if ( doc.data[i].type !== undefined ) {
 				// This is a structural offset
-				if ( doc.data[i].type.charAt( 0 ) != '/' ) {
+				if ( doc.data[i].type.charAt( 0 ) !== '/' ) {
 					// This is an opening element
 					if ( depth === 0 ) {
 						// We are at the start of a top-level element

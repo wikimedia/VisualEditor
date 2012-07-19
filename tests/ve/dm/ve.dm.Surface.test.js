@@ -102,7 +102,7 @@ test( 'annotate', 1, function() {
 	for ( var i = 0; i < cases.length; i++ ) {
 		surface = new ve.dm.SurfaceStub( cases[i].data );
 		surface.change( null, new ve.Range( 0, surface.getDocument().getData().length ) );
-		surface.annotate( cases[i].annotate['method'], cases[i].annotate['annotation'] );
+		surface.annotate( cases[i].annotate.method, cases[i].annotate.annotation );
 		deepEqual( surface.getDocument().getData(), cases[i].expected, cases[i].msg );
 
 	}

@@ -135,6 +135,7 @@ ve.ce.TextNode.prototype.onUpdate = function( force ) {
 		throw 'Can not update a text node that is not attached to a document';
 	}
 	if ( force === true || this.root.getSurface().render === true ) {
+		// XXX: Why is this being passed to $(), creating a new jQuery object? –krinkle 20120719
 		var $new = $( $( '<span>' + this.getHtml() + '</span>' ).contents() );
 		if ( $new.length === 0 ) {
 			$new = $new.add( document.createTextNode( '' ) );
@@ -144,9 +145,9 @@ ve.ce.TextNode.prototype.onUpdate = function( force ) {
 		if ( this.parent ) {
 			this.parent.clean();
 			if ( ve.debug ) {
-				this.parent.$.css('background-color', '#F6F6F6');
-				setTimeout( ve.proxy( function() {
-					this.parent.$.css('background-color', 'transparent');
+				this.parent.$.css('backgroundColor', '#F6F6F6');
+				setTimeout( ve.proxy( function () {
+					this.parent.$.css('backgroundColor', 'transparent');
 				}, this ), 350 );
 			}
 		}
@@ -177,15 +178,17 @@ ve.ce.TextNode.prototype.getHtml = function() {
 		leftPlain,
 		rightPlain,
 		hashStack = [],
-		annotationStack = {};
+		annotationStack = {},
+		chr;
 
-	var replaceWithNonBreakingSpace = function( index, data ) {
+	function replaceWithNonBreakingSpace( index, data ) {
 		if ( ve.isArray( data[index] ) ) {
 			data[index][0] = '&nbsp;';
 		} else {
 			data[index] = '&nbsp;';
 		}
-	};
+	}
+
 	if ( data.length > 0 ) {
 		character = data[0];
 		if ( ve.isArray( character ) ? character[0] === ' ' : character === ' ' ) {
@@ -212,10 +215,10 @@ ve.ce.TextNode.prototype.getHtml = function() {
 		}
 	}
 
-	var openAnnotations = function( annotations ) {
+	function openAnnotations( annotations ) {
 		var out = '',
-			annotation;
-		for ( var hash in annotations ) {
+			annotation, hash;
+		for ( hash in annotations ) {
 			annotation = annotations[hash];
 			out += typeof renderers[annotation.type].open === 'function' ?
 				renderers[annotation.type].open( annotation.data ) :
@@ -224,12 +227,12 @@ ve.ce.TextNode.prototype.getHtml = function() {
 			annotationStack[hash] = annotation;
 		}
 		return out;
-	};
+	}
 
-	var closeAnnotations = function( annotations ) {
+	function closeAnnotations( annotations ) {
 		var out = '',
-			annotation;
-		for ( var hash in annotations ) {
+			annotation, hash;
+		for ( hash in annotations ) {
 			annotation = annotations[hash];
 			out += typeof renderers[annotation.type].close === 'function' ?
 				renderers[annotation.type].close( annotation.data ) :
@@ -238,7 +241,7 @@ ve.ce.TextNode.prototype.getHtml = function() {
 			delete annotationStack[hash];
 		}
 		return out;
-	};
+	}
 
 	for ( i = 0; i < data.length; i++ ) {
 		right = data[i];
@@ -294,7 +297,7 @@ ve.ce.TextNode.prototype.getHtml = function() {
 			out += openAnnotations( open );
 		}
 
-		var chr = rightPlain ? right : right[0];
+		chr = rightPlain ? right : right[0];
 		out += chr in htmlChars ? htmlChars[chr] : chr;
 		left = right;
 	}

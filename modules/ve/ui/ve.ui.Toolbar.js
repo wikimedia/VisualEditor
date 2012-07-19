@@ -26,7 +26,6 @@ ve.ui.Toolbar = function( $container, surfaceView, config ) {
 		{ 'name': 'list', 'items' : ['number', 'bullet', 'outdent', 'indent'] }
 	];
 	this.setup();
-
 };
 
 /* Methods */
@@ -44,7 +43,8 @@ ve.ui.Toolbar.prototype.updateTools = function() {
 		range = model.getSelection(),
 		startNode,
 		endNode,
-		_this = this;
+		_this = this,
+		i;
 
 	if ( range !== null ) {
 		if ( range.from === range.to ){

@@ -245,7 +245,7 @@ ve.dm.TransactionProcessor.processors.replace = function( op ) {
 			scopeEnd,
 			opAdjustment = 0;
 		while ( true ) {
-			if ( operation.type == 'replace' ) {
+			if ( operation.type === 'replace' ) {
 				var	opRemove = this.reversed ? operation.insert : operation.remove,
 					opInsert = this.reversed ? operation.remove : operation.insert;
 				// Update the linear model for this insert
@@ -282,14 +282,14 @@ ve.dm.TransactionProcessor.processors.replace = function( op ) {
 				// only consistent if both levels are zero.
 				for ( i = 0; i < opRemove.length; i++ ) {
 					type = opRemove[i].type;
-					if ( type === undefined ) {
-						// This is content, ignore
-					} else if ( type.charAt( 0 ) === '/' ) {
-						// Closing element
-						removeLevel--;
-					} else {
-						// Opening element
-						removeLevel++;
+					if ( type !== undefined ) {
+						if ( type.charAt( 0 ) === '/' ) {
+							// Closing element
+							removeLevel--;
+						} else {
+							// Opening element
+							removeLevel++;
+						}
 					}
 				}
 				// Keep track of the scope of the insertion
@@ -298,27 +298,27 @@ ve.dm.TransactionProcessor.processors.replace = function( op ) {
 				// in which case it's the affected ancestor
 				for ( i = 0; i < opInsert.length; i++ ) {
 					type = opInsert[i].type;
-					if ( type === undefined ) {
-						// This is content, ignore
-					} else if ( type.charAt( 0 ) === '/' ) {
-						// Closing element
-						insertLevel--;
-						if ( insertLevel < minInsertLevel ) {
-							// Closing an unopened element at a higher
-							// (more negative) level than before
-							// Lazy-initialize scope
-							scope = scope || this.document.getNodeFromOffset( prevCursor );
-							// Push the full range of the old scope as an affected range
-							scopeStart = this.document.getDocumentNode().getOffsetFromNode( scope );
-							scopeEnd = scopeStart + scope.getOuterLength();
-							affectedRanges.push( new ve.Range( scopeStart, scopeEnd ) );
-							// Update scope
-							scope = scope.getParent() || scope;
-						}
+					if ( type !== undefined ) {
+						if ( type.charAt( 0 ) === '/' ) {
+							// Closing element
+							insertLevel--;
+							if ( insertLevel < minInsertLevel ) {
+								// Closing an unopened element at a higher
+								// (more negative) level than before
+								// Lazy-initialize scope
+								scope = scope || this.document.getNodeFromOffset( prevCursor );
+								// Push the full range of the old scope as an affected range
+								scopeStart = this.document.getDocumentNode().getOffsetFromNode( scope );
+								scopeEnd = scopeStart + scope.getOuterLength();
+								affectedRanges.push( new ve.Range( scopeStart, scopeEnd ) );
+								// Update scope
+								scope = scope.getParent() || scope;
+							}
 
-					} else {
-						// Opening element
-						insertLevel++;
+						} else {
+							// Opening element
+							insertLevel++;
+						}
 					}
 				}
 				// Update adjustment
@@ -374,7 +374,7 @@ ve.dm.TransactionProcessor.prototype.executeOperation = function( op ) {
 	if ( op.type in ve.dm.TransactionProcessor.processors ) {
 		ve.dm.TransactionProcessor.processors[op.type].call( this, op );
 	} else {
-		throw 'Invalid operation error. Operation type is not supported: ' + operation.type;
+		throw 'Invalid operation error. Operation type is not supported: ' + op.type;
 	}
 };
 
