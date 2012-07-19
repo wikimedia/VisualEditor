@@ -36,7 +36,9 @@ class VisualEditorMessagesModule extends ResourceLoaderModule {
 
 	public function getScript( ResourceLoaderContext $context ) {
 		$messages = array(
-			'summary' => wfMessage( 'summary' )->parse()
+			'summary' => wfMessage( 'summary' )->parse(),
+			'minoredit' => wfMessage( 'minoredit' )->parse(),
+			'watchthis' => wfMessage( 'watchthis' )->parse(),
 		);
 		return 've.specialMessages = ' .
 			FormatJson::encode( $messages ) .
@@ -46,7 +48,7 @@ class VisualEditorMessagesModule extends ResourceLoaderModule {
 	public function getMessages() {
 		// We don't actually use the i18n on the client-side, but registering the messages
 		// is needed to make cache invalidation work
-		return array( 'summary' );
+		return array( 'summary', 'minoredit', 'watchthis' );
 	}
 	
 	public function getDependencies() {
