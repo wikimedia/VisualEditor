@@ -45,10 +45,6 @@ $wgExtensionCredits['other'][] = array(
 );
 $dir = dirname( __FILE__ ) . '/';
 $wgExtensionMessagesFiles['VisualEditor'] = $dir . 'VisualEditor.i18n.php';
-$wgExtensionMessagesFiles['VisualEditorAliases'] = $dir . 'VisualEditor.alias.php';
-$wgAutoloadClasses['SpecialVisualEditorSandbox'] = $dir . 'SpecialVisualEditorSandbox.php';
-$wgSpecialPages['VisualEditorSandbox'] = 'SpecialVisualEditorSandbox';
-$wgSpecialPageGroups['VisualEditorSandbox'] = 'other';
 
 $wgVisualEditorResourceTemplate = array(
 	'localBasePath' => dirname( __FILE__ ) . '/modules',
@@ -63,34 +59,13 @@ $wgResourceModules += array(
 			'rangy/rangy-position.js',
 		),
 	),
-	'ext.visualEditor.special.sandbox' => $wgVisualEditorResourceTemplate + array(
-		'scripts' => array(
-			'sandbox/special.js',
-		),
-		'messages' => array(
-			'visualeditor-feedback-prompt',
-			'visualeditor-feedback-dialog-title',
-			'visualeditor-sandbox-title',
-		),
-		'dependencies' => array( 
-			'ext.visualEditor.sandbox',
-			'mediawiki.feedback',
-			'mediawiki.Uri',
+	// Alias for backwards compat, safe to remove after
+	'ext.visualEditor.editPageInit' => $wgVisualEditorResourceTemplate + array(
+		'dependencies' => array(
+			'ext.visualEditor.viewPageTarget',
 		)
 	),
-	'ext.visualEditor.sandbox' => $wgVisualEditorResourceTemplate + array(
-		'scripts' => array(
-			'sandbox/sandbox.js',
-		),
-		'messages' => array(
-			'visualeditorsandbox',
-		),
-		'styles' => 'sandbox/sandbox.css',
-		'dependencies' => array(
-			'ext.visualEditor.core',
-		),
-	),
-	'ext.visualEditor.editPageInit' => $wgVisualEditorResourceTemplate + array(
+	'ext.visualEditor.viewPageTarget' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
 			've/init/targets/ve.init.ViewPageTarget.js',
 		),
@@ -258,12 +233,6 @@ $wgResourceModules += array(
 			'ext.visualEditor.base'
 		),
 		'messages' => array(
-			'visualeditor-tooltip-wikitext',
-			'visualeditor-tooltip-json',
-			'visualeditor-tooltip-html',
-			'visualeditor-tooltip-render',
-			'visualeditor-tooltip-history',
-			'visualeditor-tooltip-help',
 			'visualeditor',
 			'visualeditor-linkinspector-title',
 			'visualeditor-linkinspector-label-pagetitle',

@@ -250,31 +250,3 @@
 .es-help-key-or {
 	color: #999999;
 }
-
-.es-warning {
-	color: red;
-	text-align: center;
-	margin-bottom: 1em;
-	display: none;
-	border: solid 1px #ffbbbb;
-	padding: 0.5em 0.75em;
-	-webkit-border-radius: 0.25em;
-	-moz-border-radius: 0.25em;
-	-o-border-radius: 0.25em;
-	border-radius: 0.25em;
-}
-
-#es-warning-dismiss {
-	float: right;
-	color: white;
-}
-
-#es-warning-dismiss:hover {
-	text-decoration: none;
-	color: silver;
-}
-
-#es-warning-dismiss:after {
-	content: ' x';
-	color: black;
-}

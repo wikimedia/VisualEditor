@@ -1,9 +1,18 @@
+<?php
+	$path = dirname( __FILE__ ) . '/pages';
+	$pages = glob( $path . '/*.html' );
+	$page = current( $pages );
+	if ( isset( $_GET['page'] ) && in_array( $path . '/' . $_GET['page'] . '.html', $pages ) ) {
+		$page =  $path . '/' . $_GET['page'] . '.html';
+	}
+	$html = '<div>' . file_get_contents( $page ) . '</div>';
+?>
 <!DOCTYPE html>
 
 <html>
 	<head>
 		<meta charset="UTF-8" />
-		<title>VisualEditor Demo</title>
+		<title>VisualEditor Standalone Demo</title>
 		<!-- ce -->
 		<link rel="stylesheet" href="../../modules/ve/ce/styles/ve.ce.Document.css">
 		<link rel="stylesheet" href="../../modules/ve/ce/styles/ve.ce.Node.css">
@@ -14,73 +23,21 @@
 		<link rel="stylesheet" href="../../modules/ve/ui/styles/ve.ui.Menu.css">
 		<link rel="stylesheet" href="../../modules/ve/ui/styles/ve.ui.Surface.css">
 		<link rel="stylesheet" href="../../modules/ve/ui/styles/ve.ui.Toolbar.css">
-		<!-- sandbox -->
-		<link rel="stylesheet" href="../../modules/sandbox/sandbox.css">
-		<style>
-			body {
-				font-family: "Arial";
-				font-size: 1em;
-				width: 100%;
-				margin: 1em 0;
-				padding: 0;
-				overflow-y: scroll;
-				background-color: white;
-			}
-			#es-warning {
-				margin: 2em 2em 1em 2em;
-			}
-			#es-docs {
-				margin: 0 2em 1em 2em;
-			}
-			.es-base {
-				margin: 2em;
-				margin-top: 0em;
-				-webkit-box-shadow: 0 0.25em 1.5em 0 #dddddd;
-				-moz-box-shadow: 0 0.25em 1.5em 0 #dddddd;
-				box-shadow: 0 0.25em 1.5em 0 #dddddd;
-				-webkit-border-radius: 0.5em;
-				-moz-border-radius: 0.5em;
-				-o-border-radius: 0.5em;
-				border-radius: 0.5em;
-			}
-			.es-panes {
-				border: solid 1px #cccccc;
-				border-top: none;
-			}
-			.es-editor, .es-showData .es-editor {
-				padding-left: 1em;
-				padding-right: 1em;
-			}
-			.es-toolbar {
-				-webkit-border-radius: 0;
-				-moz-border-radius: 0;
-				-o-border-radius: 0;
-				border-radius: 0;
-				-webkit-border-top-right-radius: 0.25em;
-				-moz-border-top-right-radius: 0.25em;
-				-o-border-top-right-radius: 0.25em;
-				border-top-right-radius: 0.25em;
-				-webkit-border-top-left-radius: 0.25em;
-				-moz-border-top-left-radius: 0.25em;
-				-o-border-top-left-radius: 0.25em;
-				border-top-left-radius: 0.25em;
-			}
-			.es-toolbar.float {
-				left: 2em;
-				right: 2em;
-				top: 0;
-			}
-			.es-docs {
-				margin-left: 2.5em;
-			}
-		</style>
+		<!-- demo -->
+		<link rel="stylesheet" href="demo.css">
 	</head>
 	<body>
-<?php
+		<ul class="ve-demo-docs">
+			<?php foreach( $pages as $page ): ?>
+				<li>
+					<a href="./?page=<?php echo basename( $page, '.html' ); ?>">
+						<?php echo basename( $page, '.html' ); ?>
+					</a>
+				</li>
+			<?php endforeach; ?>
+		</ul>
+		<div class="ve-demo-content"></div>
 
-include( '../../modules/sandbox/base.php' );
-
-?>
 		<!-- Rangy -->
 		<script src="../../modules/rangy/rangy-core.js"></script>
 		<script src="../../modules/rangy/rangy-position.js"></script>
@@ -143,13 +100,6 @@ include( '../../modules/sandbox/base.php' );
 		<script src="../../modules/ve/dm/annotations/ve.dm.LinkAnnotation.js"></script>
 		<script src="../../modules/ve/dm/annotations/ve.dm.TextStyleAnnotation.js"></script>
 
-		<!--
-		<script src="../../modules/ve/dm/serializers/ve.dm.AnnotationSerializer.js"></script>
-		<script src="../../modules/ve/dm/serializers/ve.dm.HtmlSerializer.js"></script>
-		<script src="../../modules/ve/dm/serializers/ve.dm.JsonSerializer.js"></script>
-		<script src="../../modules/ve/dm/serializers/ve.dm.WikitextSerializer.js"></script>
-		-->
-
 		<!-- ce -->
 		<script src="../../modules/ve/ce/ve.ce.js"></script>
 		<script src="../../modules/ve/ce/ve.ce.NodeFactory.js"></script>
@@ -197,8 +147,16 @@ include( '../../modules/sandbox/base.php' );
 		<script src="../../modules/ve/ui/tools/ve.ui.IndentationButtonTool.js"></script>
 		<script src="../../modules/ve/ui/tools/ve.ui.DropdownTool.js"></script>
 		<script src="../../modules/ve/ui/tools/ve.ui.FormatDropdownTool.js"></script>
-	
-		<!-- sandbox -->
-		<script src="../../modules/sandbox/sandbox.js"></script>
+
+		<!-- demo -->
+		<script>
+			$(document).ready( function() {
+				new ve.Surface(
+					$( '.ve-demo-content' ),
+					$( <?php echo json_encode( $html ) ?> )[0]
+				);
+				$( '.ve-ce-documentNode' ).focus();
+			} );
+		</script>
 	</body>
 </html>
