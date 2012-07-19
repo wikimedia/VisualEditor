@@ -1,11 +1,21 @@
 <?php
-	$path = dirname( __FILE__ ) . '/pages';
-	$pages = glob( $path . '/*.html' );
-	$page = current( $pages );
-	if ( isset( $_GET['page'] ) && in_array( $path . '/' . $_GET['page'] . '.html', $pages ) ) {
-		$page =  $path . '/' . $_GET['page'] . '.html';
-	}
-	$html = '<div>' . file_get_contents( $page ) . '</div>';
+/**
+ * VisualEditor standalone demo
+ *
+ * @file
+ * @ingroup Extensions
+ * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+$path = dirname( __FILE__ ) . '/pages';
+$pages = glob( $path . '/*.html' );
+$page = current( $pages );
+if ( isset( $_GET['page'] ) && in_array( $path . '/' . $_GET['page'] . '.html', $pages ) ) {
+	$page =  $path . '/' . $_GET['page'] . '.html';
+}
+$html = '<div>' . file_get_contents( $page ) . '</div>';
+
 ?>
 <!DOCTYPE html>
 

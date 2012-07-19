@@ -1,7 +1,7 @@
 <?php
 /**
  * VisualEditor extension
- * 
+ *
  * @file
  * @ingroup Extensions
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
