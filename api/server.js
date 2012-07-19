@@ -17,10 +17,27 @@ if (cluster.isMaster) {
   }
 
   cluster.on('death', function(worker) {
-    console.log('worker ' + worker.pid + ' died, restarting.');
-	// restart worker
-	cluster.fork();
+    if(!worker.suicide) {
+      console.log('worker ' + worker.pid + ' died, restarting.');
+      // restart worker
+      cluster.fork();
+    }
   });
+  process.on('SIGTERM', function() {
+    console.log('master shutting down, killing workers');
+    for(var i = 0; i < workers.length; i++) {
+      console.log('Killing worker ' + i + ' with PID ' + workers[i].pid);
+      // disconnect() doesn't work for some reason
+      //workers[i].disconnect();
+      workers[i].kill('SIGTERM');
+    }
+    console.log('Done killing workers, bye');
+    process.exit(1);
+  } );
 } else {
+  process.on('SIGTERM', function() {
+    console.log('Worker shutting down');
+    process.exit(1);
+  });
   app.listen(8000);
 }
