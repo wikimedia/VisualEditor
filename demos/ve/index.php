@@ -14,7 +14,7 @@
 		<meta charset="UTF-8" />
 		<title>VisualEditor Standalone Demo</title>
 		<!-- ce -->
-		<link rel="stylesheet" href="../../modules/ve/ce/styles/ve.ce.Document.css">
+		<link rel="stylesheet" href="../../modules/ve/ce/styles/ve.ce.DocumentNode.css">
 		<link rel="stylesheet" href="../../modules/ve/ce/styles/ve.ce.Node.css">
 		<link rel="stylesheet" href="../../modules/ve/ce/styles/ve.ce.Surface.css">
 		<!-- ui -->
