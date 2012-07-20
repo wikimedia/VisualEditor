@@ -71,6 +71,16 @@ ve.ce.ListNode.prototype.onSplice = function() {
 	this.$.css( 'height' );
 };
 
+ve.ce.ListNode.prototype.canHaveSlugAfter = function() {
+	if ( this.getParent().getType() === 'listItem' ) {
+		// Nested lists should not have slugs after them
+		return false;
+	} else {
+		// Call the parent's implementation
+		return ve.ce.BranchNode.prototype.canHaveSlugAfter.call( this );
+	}
+};
+
 /* Registration */
 
 ve.ce.nodeFactory.register( 'list', ve.ce.ListNode );
