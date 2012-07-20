@@ -182,7 +182,7 @@ ve.BranchNode.prototype.getOffsetFromNode = function( node ) {
  */
 ve.BranchNode.prototype.traverseLeafNodes = function( callback, from, reverse ) {
 		// Stack of indices that lead from this to node
-	var	indexStack = [],
+	var indexStack = [],
 		// Node whose children we're currently traversing
 		node = this,
 		// Index of the child node we're currently visiting

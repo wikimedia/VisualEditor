@@ -240,7 +240,7 @@ ve.dm.Node.prototype.getClonedElement = function() {
  * @returns {Boolean} Nodes can be merged
  */
 ve.dm.Node.prototype.canBeMergedWith = function( node ) {
-	var	n1 = this,
+	var n1 = this,
 		n2 = node;
 	// Move up from n1 and n2 simultaneously until we find a common ancestor
 	while ( n1 !== n2 ) {

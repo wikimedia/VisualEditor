@@ -133,7 +133,7 @@ ve.dm.Converter.prototype.getDomElementFromDataElement = function( dataElement )
 	) {
 		return false;
 	}
-	var	domElement = this.elements.toDomElement[dataElementType]( dataElementType, dataElement ),
+	var domElement = this.elements.toDomElement[dataElementType]( dataElementType, dataElement ),
 		dataElementAttributes = dataElement.attributes;
 	if ( dataElementAttributes ) {
 		for ( var key in dataElementAttributes ) {
@@ -189,7 +189,7 @@ ve.dm.Converter.prototype.getDataElementFromDomElement = function( domElement ) 
  * @returns {Object|false} Annotation object, or false if this node is not an annotation
  */
 ve.dm.Converter.prototype.getDataAnnotationFromDomElement = function( domElement ) {
-	var	domElementType = domElement.nodeName.toLowerCase(),
+	var domElementType = domElement.nodeName.toLowerCase(),
 		toDataAnnotation = this.annotations.toDataAnnotation[domElementType];
 	if ( typeof toDataAnnotation === 'function' ) {
 		return toDataAnnotation( domElementType, domElement );
@@ -205,7 +205,7 @@ ve.dm.Converter.prototype.getDataAnnotationFromDomElement = function( domElement
  * @returns {HTMLElement|false} HTML DOM node, or false if this annotation is not known
  */
 ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function( dataAnnotation ) {
-	var	split = dataAnnotation.type.split( '/', 2 ),
+	var split = dataAnnotation.type.split( '/', 2 ),
 		baseType = split[0],
 		subType = split.slice( 1 ).join( '/' ),
 		toDomElement = this.annotations.toDomElement[baseType];

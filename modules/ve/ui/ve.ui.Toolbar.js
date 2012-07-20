@@ -19,7 +19,7 @@ ve.ui.Toolbar = function( $container, surfaceView, config ) {
 	}
 
 	// References for use in closures
-	var	_this = this,
+	var _this = this,
 		$window = $( window );
 
 	// Properties
@@ -113,7 +113,7 @@ ve.ui.Toolbar.prototype.getSurfaceView = function() {
 
 ve.ui.Toolbar.prototype.setup = function() {
 	for ( var i = 0; i < this.config.length; i++ ) {
-		var	$group = $( '<div>' )
+		var $group = $( '<div>' )
 			.addClass( 'es-toolbarGroup' )
 			.addClass( 'es-toolbarGroup-' + this.config[i].name );
 		if ( this.config[i].label ) {
