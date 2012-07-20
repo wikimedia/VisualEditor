@@ -1218,15 +1218,13 @@ nowiki
         return [ 
             new TagTk( 'span', 
                     [
-                        {k: 'data-gen', v: 'both'}, 
-                        {k: 'typeof', v: 'mw:nowiki'}
+                        {k: 'typeof', v: 'mw:Nowiki'}
                     ],
                     { tsr: [pos0, pos0+8] } )
         ].concat( nc, [ 
                     new EndTagTk( 'span', 
                     [
-                        {k: 'data-gen', v: 'both'}, 
-                        {k: 'typeof', v: 'mw:nowiki'}
+                        {k: 'typeof', v: 'mw:Nowiki'}
                     ],
                     { tsr: [pos - 9, pos] }) 
                 ] ); 
@@ -1726,10 +1724,11 @@ urltext = ( t:[^'<~[{\n\rIPRfghimnstw_|!:\]} &=]+ { return t.join(''); }
 
 htmlentity = "&" c:[#0-9a-zA-Z]+ ";" { 
     //return "&" + c.join('') + ";";
-    var m = "&" + c.join('') + ";";
+    var m = "&" + c.join('') + ";",
+        c = unentity(m);
     return [
-        new TagTk('span', [new KV('data-gen', 'both')], { stx: 'entity', src: m } ),
-        unentity(m),
+        new TagTk('span', [new KV('typeof', 'mw:Entity')], { src: m, srcContent: c } ),
+        c,
         new EndTagTk('span')
     ];
     //return unentity("&" + c.join('') + ";") 
