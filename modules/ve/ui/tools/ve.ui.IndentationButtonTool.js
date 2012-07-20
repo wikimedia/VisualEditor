@@ -23,7 +23,7 @@
 
 ve.ui.IndentationButtonTool.prototype.onClick = function() {
 	if ( !this.$.hasClass( 'es-toolbarButtonTool-disabled' ) ) {
-		var	listItems = [],
+		var listItems = [],
 			listItem,
 			i;
 		// FIXME old code, doesn't work
@@ -47,7 +47,7 @@ ve.ui.IndentationButtonTool.prototype.onClick = function() {
 
 ve.ui.IndentationButtonTool.prototype.indent = function( listItems ) {
 	// FIXME old code, doesn't work
-	var	surface = this.toolbar.surfaceView,
+	var surface = this.toolbar.surfaceView,
 		styles,
 		i,
 		tx;
@@ -68,7 +68,7 @@ ve.ui.IndentationButtonTool.prototype.indent = function( listItems ) {
 
 ve.ui.IndentationButtonTool.prototype.outdent = function( listItems ) {
 	// FIXME old code, doesn't work
-	var	surface = this.toolbar.surfaceView,
+	var surface = this.toolbar.surfaceView,
 		styles,
 		i,
 		tx;

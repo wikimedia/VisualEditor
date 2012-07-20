@@ -115,7 +115,7 @@ ve.ui.ListButtonTool.prototype.onClick = function() {
 };
 
 ve.ui.ListButtonTool.prototype.updateState = function( annotations, nodes ) {
-	var	surfaceView = this.toolbar.getSurfaceView(),
+	var surfaceView = this.toolbar.getSurfaceView(),
 		surfaceModel = surfaceView.getModel(),
 		doc = surfaceView.getDocument(),
 		selection = surfaceModel.getSelection(),

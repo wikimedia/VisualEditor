@@ -374,7 +374,7 @@ ve.dm.Transaction.newFromWrap = function( doc, range, unwrapOuter, wrapOuter, un
 	}
 
 	if ( wrapEach.length > 0 || unwrapEach.length > 0 ) {
-		var	closingUnwrapEach = closingArray( unwrapEach ),
+		var closingUnwrapEach = closingArray( unwrapEach ),
 			closingWrapEach = closingArray( wrapEach ),
 			depth = 0,
 			startOffset,

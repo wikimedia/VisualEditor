@@ -623,7 +623,7 @@ ve.dm.Document.getMatchingAnnotations = function( annotations, pattern ) {
  */
 ve.dm.Document.prototype.getAnnotationsFromRange = function( range, all ) {
 	range.normalize();
-	var	annotations = {},
+	var annotations = {},
 		count = 0,
 		left,
 		right,
@@ -1206,7 +1206,7 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
  * @returns {Array} Balanced snippet of linear model data
  */
 ve.dm.Document.prototype.getBalancedData = function( range ) {
-	var	node = this.getNodeFromOffset( range.start ),
+	var node = this.getNodeFromOffset( range.start ),
 		selection = this.selectNodes( range, 'siblings' ),
 		addOpenings = [],
 		addClosings = [];
@@ -1219,7 +1219,7 @@ ve.dm.Document.prototype.getBalancedData = function( range ) {
 		return this.data.slice( range.start, range.end );
 	}
 
-	var	first = selection[0],
+	var first = selection[0],
 		last = selection[selection.length - 1],
 		firstNode = first.node,
 		lastNode = last.node;

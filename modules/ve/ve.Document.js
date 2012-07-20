@@ -55,7 +55,7 @@ ve.Document.prototype.getDocumentNode = function() {
  */
 ve.Document.prototype.selectNodes = function( range, mode ) {
 	range.normalize();
-	var	doc = this.documentNode,
+	var doc = this.documentNode,
 		retval = [],
 		start = range.start,
 		end = range.end,

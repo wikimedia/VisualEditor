@@ -193,7 +193,7 @@ ve.dm.TransactionProcessor.processors.attribute = function( op ) {
  * @param {Array} op.insert Linear model data to insert
  */
 ve.dm.TransactionProcessor.processors.replace = function( op ) {
-	var	remove = this.reversed ? op.insert : op.remove,
+	var remove = this.reversed ? op.insert : op.remove,
 		insert = this.reversed ? op.remove : op.insert,
 		removeIsContent = ve.dm.Document.isContentData( remove ),
 		insertIsContent = ve.dm.Document.isContentData( insert ),
@@ -211,7 +211,7 @@ ve.dm.TransactionProcessor.processors.replace = function( op ) {
 			),
 			'leaves'
 		);
-		var	removeHasStructure = ve.dm.Document.containsElementData( remove ),
+		var removeHasStructure = ve.dm.Document.containsElementData( remove ),
 			insertHasStructure = ve.dm.Document.containsElementData( insert );
 		if ( removeHasStructure || insertHasStructure ) {
 			// Replacement is not exclusively text
@@ -253,7 +253,7 @@ ve.dm.TransactionProcessor.processors.replace = function( op ) {
 			opAdjustment = 0;
 		while ( true ) {
 			if ( operation.type === 'replace' ) {
-				var	opRemove = this.reversed ? operation.insert : operation.remove,
+				var opRemove = this.reversed ? operation.insert : operation.remove,
 					opInsert = this.reversed ? operation.remove : operation.insert;
 				// Update the linear model for this insert
 				ve.batchSplice( this.document.data, this.cursor, opRemove.length, opInsert );

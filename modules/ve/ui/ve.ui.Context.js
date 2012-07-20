@@ -123,7 +123,7 @@ ve.ui.Context.prototype.set = function() {
 ve.ui.Context.prototype.positionIcon = function() {
 	this.$.removeClass( 'es-contextView-position-start es-contextView-position-end' );
 
-	var	selection = this.surfaceView.model.getSelection(),
+	var selection = this.surfaceView.model.getSelection(),
 		selectionRect = this.surfaceView.getSelectionRect();
 
 	if( selection.to > selection.from ) {

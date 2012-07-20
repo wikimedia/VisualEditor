@@ -173,7 +173,7 @@ ve.Surface.prototype.makeMainEditorToolbarFloat = function() {
 		var toolbarWrapperOffset = $toolbarWrapper.offset();
 		if ( $window.scrollTop() > toolbarWrapperOffset.top ) {
 			if ( !$toolbarWrapper.hasClass( 'float' ) ) {
-				var	left = toolbarWrapperOffset.left,
+				var left = toolbarWrapperOffset.left,
 					right = $window.width() - $toolbarWrapper.outerWidth() - left;
 				$toolbarWrapper.css( 'height', $toolbarWrapper.height() ).addClass( 'float' );
 				$toolbar.css( { 'left': left, 'right': right } );
@@ -329,7 +329,7 @@ ve.Surface.prototype.defineModes = function() {
 			'$': _this.$base.find( '.es-mode-history' ),
 			'$panel': _this.$base.find( '.es-panel-history' ),
 			'update': function() {
-				var	history = _this.model.getHistory(),
+				var history = _this.model.getHistory(),
 					i = history.length,
 					end = Math.max( 0, i - 25 ),
 					j,

@@ -157,7 +157,7 @@ test( 'traverseLeafNodes', 1, function() {
 	];
 
 	function executeTest( test ) {
-		var	realLeaves = [],
+		var realLeaves = [],
 			callback = function( node ) {
 				var retval;
 				realLeaves.push( node );

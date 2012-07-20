@@ -70,7 +70,7 @@ ve.FormatDropdownTool = function( toolbar, name, title ) {
 /* Methods */
 
 ve.FormatDropdownTool.splitAndUnwrap = function( model, list, firstItem, lastItem, selection ) {
-	var	doc = model.getDocument(),
+	var doc = model.getDocument(),
 		start = firstItem.getOuterRange().start,
 		end = lastItem.getOuterRange().end,
 		tx;
@@ -102,7 +102,7 @@ ve.FormatDropdownTool.splitAndUnwrap = function( model, list, firstItem, lastIte
 };
 
 ve.FormatDropdownTool.prototype.onSelect = function( item ) {
-	var	surfaceView = this.toolbar.getSurfaceView(),
+	var surfaceView = this.toolbar.getSurfaceView(),
 		model = surfaceView.getModel(),
 		selection = model.getSelection(),
 		doc = model.getDocument();
