@@ -27,9 +27,7 @@ class VisualEditorMessagesModule extends ResourceLoaderModule {
 			'minoredit' => wfMessage( 'minoredit' )->parse(),
 			'watchthis' => wfMessage( 'watchthis' )->parse(),
 		);
-		return 've.specialMessages = ' .
-			FormatJson::encode( $messages ) .
-			';';
+		return 've.init.platform.addMessages(' . FormatJson::encode( $messages ) . ');';
 	}
 
 	public function getMessages() {
@@ -37,7 +35,7 @@ class VisualEditorMessagesModule extends ResourceLoaderModule {
 		// is needed to make cache invalidation work
 		return array( 'summary', 'minoredit', 'watchthis' );
 	}
-	
+
 	public function getDependencies() {
 		return array( 'ext.visualEditor.base' );
 	}

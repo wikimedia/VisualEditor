@@ -1,20 +1,20 @@
 /*global mw */
 
 /**
- * VisualEditor initialization Target class.
+ * VisualEditor MediaWiki initialization Target class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Generic target.
+ * MediaWiki target.
  *
  * @class
  * @constructor
  * @param {String} pageName Name of target page
  */
-ve.init.Target = function( pageName ) {
+ve.init.mw.Target = function( pageName ) {
 	// Inheritance
 	ve.EventEmitter.call( this );
 
@@ -38,7 +38,7 @@ ve.init.Target = function( pageName ) {
  * Handle response to a successful load request.
  *
  * This method is called within the context of a target instance. If successful the DOM from the
- * server will be parsed, stored in {this.dom} and then {ve.init.Target.onReady} will be called once
+ * server will be parsed, stored in {this.dom} and then {ve.init.mw.Target.onReady} will be called once
  * the modules are ready.
  *
  * @static
@@ -47,7 +47,7 @@ ve.init.Target = function( pageName ) {
  * @param {String} status Text status message
  * @emits loadError (null, message, null)
  */
-ve.init.Target.onLoad = function( response, status ) {
+ve.init.mw.Target.onLoad = function( response, status ) {
 	var data = response['ve-parsoid'];
 	if ( !data ) {
 		this.loading = false;
@@ -61,7 +61,7 @@ ve.init.Target.onLoad = function( response, status ) {
 	} else {
 		this.dom = $( '<div></div>' ).html( data.parsed )[0];
 		// Everything worked, the page was loaded, continue as soon as the module is ready
-		mw.loader.using( this.modules, ve.proxy( ve.init.Target.onReady, this ) );
+		mw.loader.using( this.modules, ve.proxy( ve.init.mw.Target.onReady, this ) );
 	}
 };
 
@@ -75,7 +75,7 @@ ve.init.Target.onLoad = function( response, status ) {
  * @method
  * @emits load (dom)
  */
-ve.init.Target.onReady = function() {
+ve.init.mw.Target.onReady = function() {
 	this.loading = false;
 	this.emit( 'load', this.dom );
 	// Release DOM data
@@ -94,7 +94,7 @@ ve.init.Target.onReady = function() {
  * @param {Mixed} error Thrown exception or HTTP error string
  * @emits loadError (response, text, exception)
  */
-ve.init.Target.onLoadError = function( response, text, exception ) {
+ve.init.mw.Target.onLoadError = function( response, text, exception ) {
 	this.loading = false;
 	this.emit( 'loadError', response, text, exception );
 };
@@ -111,7 +111,7 @@ ve.init.Target.onLoadError = function( response, text, exception ) {
  * @emits save (html)
  * @emits saveError (null, message, null)
  */
-ve.init.Target.onSave = function( response, status ) {
+ve.init.mw.Target.onSave = function( response, status ) {
 	this.saving = false;
 	var data = response['ve-parsoid'];
 	if ( !data ) {
@@ -137,7 +137,7 @@ ve.init.Target.onSave = function( response, status ) {
  * @param {Mixed} error Thrown exception or HTTP error string
  * @emits saveError (response, status, error)
  */
-ve.init.Target.onSaveError = function( response, status, error ) {
+ve.init.mw.Target.onSaveError = function( response, status, error ) {
 	this.saving = false;
 	this.emit( 'saveError', response, status, error );
 };
@@ -160,7 +160,7 @@ ve.init.Target.onSaveError = function( response, status, error ) {
  * @param {Function} callback Function to call when complete, accepts error and dom arguments
  * @returns {Boolean} Loading is now in progress
 */
-ve.init.Target.prototype.load = function( callback ) {
+ve.init.mw.Target.prototype.load = function( callback ) {
 	// Prevent duplicate requests
 	if ( this.loading ) {
 		return false;
@@ -182,8 +182,8 @@ ve.init.Target.prototype.load = function( callback ) {
 		// Wait up to 10 seconds before giving up
 		'timeout': 10000,
 		'cache': 'false',
-		'error': ve.proxy( ve.init.Target.onLoadError, this ),
-		'success': ve.proxy( ve.init.Target.onLoad, this )
+		'error': ve.proxy( ve.init.mw.Target.onLoadError, this ),
+		'success': ve.proxy( ve.init.mw.Target.onLoad, this )
 	} );
 	return true;
 };
@@ -211,7 +211,7 @@ ve.init.Target.prototype.load = function( callback ) {
  * @param {Function} callback Function to call when complete, accepts error and html arguments
  * @returns {Boolean} Saving is now in progress
 */
-ve.init.Target.prototype.save = function( dom, options, callback ) {
+ve.init.mw.Target.prototype.save = function( dom, options, callback ) {
 	// Prevent duplicate requests
 	if ( this.saving ) {
 		return false;
@@ -235,12 +235,12 @@ ve.init.Target.prototype.save = function( dom, options, callback ) {
 		'type': 'POST',
 		// Wait up to 10 seconds before giving up
 		'timeout': 10000,
-		'error': ve.proxy( ve.init.Target.onSaveError, this ),
-		'success': ve.proxy( ve.init.Target.onSave, this )
+		'error': ve.proxy( ve.init.mw.Target.onSaveError, this ),
+		'success': ve.proxy( ve.init.mw.Target.onSave, this )
 	} );
 	return true;
 };
 
 /* Inheritance */
 
-ve.extendClass( ve.init.Target, ve.EventEmitter );
+ve.extendClass( ve.init.mw.Target, ve.EventEmitter );

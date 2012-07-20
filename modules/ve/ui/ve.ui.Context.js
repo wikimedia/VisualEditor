@@ -86,7 +86,7 @@ ve.ui.Context.prototype.setupInspectorFrame = function() {
 				'rel': 'stylesheet',
 				'type': 'text/css',
 				'media': 'screen',
-				'href': ve.ui.getStylesheetPath() + 've.ui.Inspector.css'
+				'href': ve.init.platform.getModulesUrl() + '/ve/ui/styles/ve.ui.Inspector.css'
 			} );
 
 	// Append inspector styles to iframe head

@@ -365,38 +365,11 @@ ve.debounce = function( func, wait, immediate ) {
 /**
  * Gets a localized message.
  *
- * If mw.msg isn't available, a basic implementation is used instead.
- *
  * @static
  * @method
  * @param {String} key Message key
  * @param {Mixed} [...] Message parameters
  */
-ve.msg = typeof mw === 'object' ? mw.msg : function( key ) {
-	if ( key in ve.msg.messages ) {
-		// Simple message parser, does $N replacement and nothing else.
-		var parameters = Array.prototype.slice.call( arguments, 1 );
-		return ve.msg.messages[key].replace( /\$(\d+)/g, function ( str, match ) {
-			var index = parseInt( match, 10 ) - 1;
-			return parameters[index] !== undefined ? parameters[index] : '$' + match;
-		} );
-	}
-	return '<' + key + '>';
+ve.msg = function() {
+	return ve.init.platform.getMessage.apply( ve.init.platform, arguments );
 };
-
-/**
- * Map of message keys and values used by the mw.msg fallback.
- *
- * @static
- * @member
- */
-ve.msg.messages = {};
-
-/**
- * Map of message keys and values for special messages loaded from VisualEditorMessagesModule.php
- * The values are HTML.
- *
- * @static
- * @member
- */
-ve.specialMessages = {};

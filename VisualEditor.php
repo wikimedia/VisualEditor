@@ -57,16 +57,21 @@ $wgResourceModules += array(
 	),
 	'ext.visualEditor.viewPageTarget' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
-			've/init/targets/ve.init.ViewPageTarget.js',
+			've/init/ve.init.js',
+			've/init/ve.init.Platform.js',
+			've/init/mw/ve.init.mw.js',
+			've/init/mw/ve.init.mw.Platform.js',
+			've/init/mw/ve.init.mw.Target.js',
+			've/init/mw/targets/ve.init.mw.ViewPageTarget.js',
 		),
 		'styles' => array(
-			've/init/styles/ve.init.ViewPageTarget.css',
-			've/init/styles/ve.init.ViewPageTarget-hd.css' => array(
+			've/init/mw/styles/ve.init.mw.ViewPageTarget.css',
+			've/init/mw/styles/ve.init.mw.ViewPageTarget-hd.css' => array(
 				'media' => 'screen and (min-width: 982px)'
 			),
 		),
 		'dependencies' => array(
-			'ext.visualEditor.init',
+			'ext.visualEditor.base',
 			'mediawiki.util',
 			'mediawiki.feedback',
 			'mediawiki.Uri'
@@ -88,15 +93,6 @@ $wgResourceModules += array(
 			'visualeditor-loadwarning',
 			'visualeditor-feedback-prompt',
 			'visualeditor-feedback-dialog-title'
-		),
-	),
-	'ext.visualEditor.init' => $wgVisualEditorResourceTemplate + array(
-		'scripts' => array(
-			've/init/ve.init.js',
-			've/init/ve.init.Target.js',
-		),
-		'dependencies' => array(
-			'ext.visualEditor.base'
 		),
 	),
 	'ext.visualEditor.base' => $wgVisualEditorResourceTemplate + array(

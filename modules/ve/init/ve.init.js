@@ -9,5 +9,5 @@
  * Namespace for all VisualEditor initialization classes, static methods and static properties.
  */
 ve.init = {
-	//
+	//'platform': Initialized in a file containing a subclass of ve.init.Platform
 };

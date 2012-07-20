@@ -56,12 +56,6 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 		<script src="../../modules/jquery/jquery.js"></script>
 		<script src="../../modules/jquery/jquery.json.js"></script>
 		<script src="../../modules/ve/ve.js"></script>
-		<script>
-		<?php
-			include( dirname( dirname( dirname( __FILE__ ) ) ) . '/VisualEditor.i18n.php' );
-			echo 've.msg.messages = ' . json_encode( $messages['en'] );
-		?>
-		</script>
 		<script src="../../modules/ve/ve.debug.js"></script>
 		<script src="../../modules/ve/ve.EventEmitter.js"></script>
 		<script src="../../modules/ve/ve.Factory.js"></script>
@@ -72,6 +66,19 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 		<script src="../../modules/ve/ve.LeafNode.js"></script>
 		<script src="../../modules/ve/ve.Surface.js"></script>
 		<script src="../../modules/ve/ve.Document.js"></script>
+
+		<!-- init -->
+		<script src="../../modules/ve/init/ve.init.js"></script>
+		<script src="../../modules/ve/init/ve.init.Platform.js"></script>
+		<script src="../../modules/ve/init/sa/ve.init.sa.js"></script>
+		<script src="../../modules/ve/init/sa/ve.init.sa.Platform.js"></script>
+		<script>
+			<?php
+				include( dirname( dirname( dirname( __FILE__ ) ) ) . '/VisualEditor.i18n.php' );
+				echo 've.init.platform.addMessages( ' . json_encode( $messages['en'] ) . ');';
+			?>
+			ve.init.platform.setModulesUrl( '../../modules' );
+		</script>
 
 		<!-- dm -->
 		<script src="../../modules/ve/dm/ve.dm.js"></script>
@@ -138,9 +145,6 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 
 		<!-- ui -->
 		<script src="../../modules/ve/ui/ve.ui.js"></script>
-		<script>
-			ve.ui.stylesheetPath = '../../modules/ve/ui/styles/';
-		</script>
 		<script src="../../modules/ve/ui/ve.ui.Inspector.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.Tool.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.Toolbar.js"></script>
