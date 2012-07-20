@@ -46,8 +46,15 @@ ve.ui.IndentationButtonTool.prototype.onClick = function() {
 };
 
 ve.ui.IndentationButtonTool.prototype.indent = function( listItems ) {
-	var surfaceModel = this.toolbar.getSurfaceView().getModel(),
-		documentModel = surfaceModel.getDocument(),
+	ve.ui.IndentationButtonTool.indentListItem( this.toolbar.getSurfaceView().getModel() );
+};
+
+ve.ui.IndentationButtonTool.prototype.outdent = function( listItems ) {
+	ve.ui.IndentationButtonTool.outdentListItem( this.toolbar.getSurfaceView().getModel() );
+};
+
+ve.ui.IndentationButtonTool.indentListItem = function( surfaceModel ) {
+	var documentModel = surfaceModel.getDocument(),
 		selection = surfaceModel.getSelection(),
 		groups = documentModel.getCoveredSiblingGroups( selection );
 
@@ -123,9 +130,8 @@ ve.ui.IndentationButtonTool.prototype.indent = function( listItems ) {
 	}
 };
 
-ve.ui.IndentationButtonTool.prototype.outdent = function( listItems ) {
-	var surfaceModel = this.toolbar.getSurfaceView().getModel(),
-		documentModel = surfaceModel.getDocument(),
+ve.ui.IndentationButtonTool.outdentListItem = function( surfaceModel ) {
+	var documentModel = surfaceModel.getDocument(),
 		selection = surfaceModel.getSelection(),
 		groups = documentModel.getCoveredSiblingGroups( selection );
 
@@ -238,7 +244,6 @@ ve.ui.IndentationButtonTool.prototype.outdent = function( listItems ) {
 };
 
 ve.ui.IndentationButtonTool.prototype.updateState = function( annotations, nodes ) {
-	// FIXME old code, doesn't work
 	function areListItems( nodes ) {
 		for( var i = 0; i < nodes.length; i++ ) {
 			if (

@@ -123,15 +123,24 @@ ve.ce.Node.prototype.isContent = function() {
 };
 
 /**
- * Checks if this node can have a slug before or after it.
+ * Checks if this node can have a slug before it
  *
  * @static
  * @method
- * @returns {Boolean} Node can have a slug
+ * @returns {Boolean} Whether the node can have a slug before it
  */
-ve.ce.Node.prototype.canHaveSlug = function() {
+ve.ce.Node.prototype.canHaveSlugBefore = function() {
 	return !this.canContainContent() && this.getParentNodeTypes() === null && this.type !== 'text';
 };
+
+/**
+ * Checks if this node can have a slug after it
+ *
+ * @static
+ * @method
+ * @returns {Boolean} Whether the node can have a slug after it
+ */
+ve.ce.Node.prototype.canHaveSlugAfter = ve.ce.Node.prototype.canHaveSlugBefore;
 
 /**
  * Gets model length.

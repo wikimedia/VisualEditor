@@ -133,21 +133,20 @@ ve.ce.Surface.prototype.onKeyDown = function( e ) {
 		annotations,
 		annotation;
 	switch ( e.keyCode ) {
-		// Indenting list items doesn't work yet, so disable tab handling for now
-		/*
 		// Tab Key
 		case 9:
-			e.preventDefault();
-			// FIXME check if indentation is even possible here, insert literal tab otherwise
-			ve.ui.IndentationButtonTool.changeListLevel( this.model , 'in' );
+			// If possible, trigger a list indent/outdent
+			// FIXME this way of checking whether indenting is possible is extremely hacky
+			// Instead, we should allow toolbar tools to subscribe to and intercept keydowns
+			if ( $( '.es-toolbarButtonTool-indent' ).is( ':not(.es-toolbarButtonTool-disabled)' ) ) {
+				e.preventDefault();
+				if ( e.shiftKey ) {
+					ve.ui.IndentationButtonTool.outdentListItem( this.model );
+				} else {
+					ve.ui.IndentationButtonTool.indentListItem( this.model );
+				}
+			}
 			break;
-		// Shift + Tab Key
-		case 16:
-			e.preventDefault();
-			// FIXME check if indentation is even possible here
-			ve.ui.IndentationButtonTool.changeListLevel( this.model , 'out' );
-			break;
-		*/
 		// Left arrow
 		case 37:
 			if ( !e.metaKey && !e.altKey && !e.shiftKey && this.model.getSelection().getLength() === 0 ) {
@@ -720,20 +719,16 @@ ve.ce.Surface.prototype.handleEnter = function( e ) {
 			node.model.length === 0 // the child is empty
 		) {
 			// Enter was pressed in an empty list item.
-			var list =  outermostNode.getModel().getParent();
-			// Remove the list item
-			tx = ve.dm.Transaction.newFromRemoval( documentModel, outermostNode.getModel().getOuterRange() );
-			this.model.change( tx );
-			// Insert a paragraph
-			tx = ve.dm.Transaction.newFromInsertion( documentModel, list.getOuterRange().to, emptyParagraph );
-
+			// Outdent the list item, which will turn it into a paragraph if it's not in a nested list
+			// FIXME this is an ugly way to trigger outdent, with a proper API we could do better
+			ve.ui.IndentationButtonTool.outdentListItem( this.model );
 			advanceCursor = false;
 		} else {
 			// We must process the transaction first because getRelativeContentOffset can't help us yet
 			tx = ve.dm.Transaction.newFromInsertion( documentModel, selection.from, stack );
+			this.model.change( tx );
 		}
 	}
-	this.model.change( tx );
 
 	// Now we can move the cursor forward
 	if ( advanceCursor ) {

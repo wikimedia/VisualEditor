@@ -111,24 +111,26 @@ ve.ce.BranchNode.prototype.addSlugs = function() {
 			$slug.clone().appendTo( this.$ )
 		);
 	}
+	// TODO the before/after logic below is duplicated from hasSlugAtOffset(), refactor this
 	for ( i = 0; i < this.children.length; i++ ) {
-		if ( this.children[i].canHaveSlug() ) {
-			if ( i === 0 ) {
-				// First sluggable child (left side)
-				this.$slugs = this.$slugs.add(
-					$slug.clone().insertBefore( this.children[i].$ )
-				);
-			}
+		if ( this.children[i].canHaveSlugAfter() ) {
 			if (
 				// Last sluggable child (right side)
 				i === this.children.length - 1 ||
 				// Sluggable child followed by another sluggable child (in between)
-				( this.children[i + 1] && this.children[i + 1].canHaveSlug() )
+				( this.children[i + 1] && this.children[i + 1].canHaveSlugBefore() )
 			) {
 				this.$slugs = this.$slugs.add(
 					$slug.clone().insertAfter( this.children[i].$ )
 				);
 			}
+		}
+		// First sluggable child (left side)
+		if ( i === 0 && this.children[i].canHaveSlugBefore() ) {
+			this.$slugs = this.$slugs.add(
+				$slug.clone().insertBefore( this.children[i].$ )
+			);
+
 		}
 	}
 };
@@ -224,18 +226,26 @@ ve.ce.BranchNode.prototype.hasSlugAtOffset = function( offset ) {
 		return true;
 	}
 	for ( i = 0; i < this.children.length; i++ ) {
-		if ( this.children[i].canHaveSlug() ) {
+		if ( this.children[i].canHaveSlugAfter() || this.children[i].canHaveSlugBefore() ) {
 			nodeOffset = this.children[i].model.getRoot().getOffsetFromNode( this.children[i].model );
-			nodeLength = this.children[i].model.getOuterLength();
-			if ( i === 0 ) {
-				if ( nodeOffset === offset ) {
+			if ( this.children[i].canHaveSlugAfter() ) {
+				nodeLength = this.children[i].model.getOuterLength();
+				if (
+					// Offset is after this child
+					offset === nodeOffset + nodeLength &&
+					(
+						// Last sluggable child (right side)
+						i === this.children.length - 1 ||
+						// Sluggable child followed by another sluggable child (in between)
+						( this.children[i + 1] && this.children[i + 1].canHaveSlugBefore() )
+					)
+				) {
 					return true;
 				}
 			}
-			if ( i === this.children.length - 1 || ( this.children[i + 1] && this.children[i + 1].canHaveSlug() ) ) {
-				if ( nodeOffset + nodeLength === offset ) {
-					return true;
-				}
+			// First sluggable child (left side)
+			if ( i === 0 && offset === nodeOffset && this.children[i].canHaveSlugBefore() ) {
+				return true;
 			}
 		}
 	}
