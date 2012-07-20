@@ -652,7 +652,7 @@ ve.init.ViewPageTarget.prototype.hideSpinner = function() {
  * @method
  */
 ve.init.ViewPageTarget.prototype.showPageContent = function() {
-	$( '#bodyContent .ve-init-viewPageTarget-content:not(#siteSub)' )
+	$( '#bodyContent >.ve-init-viewPageTarget-content' )
 		.removeClass( 've-init-viewPageTarget-content' )
 		.show()
 		.fadeTo( 0, 1 );
@@ -664,7 +664,7 @@ ve.init.ViewPageTarget.prototype.showPageContent = function() {
  * @method
  */
 ve.init.ViewPageTarget.prototype.mutePageContent = function() {
-	$( '#bodyContent :visible:not(#siteSub)' )
+	$( '#bodyContent >:visible:not(#siteSub)' )
 		.addClass( 've-init-viewPageTarget-content' )
 		.fadeTo( 'fast', 0.6 );
 };
@@ -675,7 +675,7 @@ ve.init.ViewPageTarget.prototype.mutePageContent = function() {
  * @method
  */
 ve.init.ViewPageTarget.prototype.hidePageContent = function() {
-	$( '#bodyContent :visible:not(#siteSub)' )
+	$( '#bodyContent >:visible:not(#siteSub)' )
 		.addClass( 've-init-viewPageTarget-content' )
 		.hide();
 };
@@ -810,7 +810,7 @@ ve.init.ViewPageTarget.prototype.transformPageTitle = function() {
  * @method
  */
 ve.init.ViewPageTarget.prototype.mutePageTitle = function() {
-	$( '#firstHeading, #siteSub' ).fadeTo( 'fast', 0.6 );
+	$( '#firstHeading, #siteSub:visible' ).fadeTo( 'fast', 0.6 );
 };
 
 /**
@@ -819,7 +819,7 @@ ve.init.ViewPageTarget.prototype.mutePageTitle = function() {
  * @method
  */
 ve.init.ViewPageTarget.prototype.restorePageTitle = function() {
-	$( '#firstHeading, #siteSub' ).fadeTo( 'fast', 1 );
+	$( '#firstHeading, #siteSub:visible' ).fadeTo( 'fast', 1 );
 	setTimeout( function() {
 		$( '#firstHeading' ).removeClass( 've-init-viewPageTarget-pageTitle' );
 	}, 1000 );
