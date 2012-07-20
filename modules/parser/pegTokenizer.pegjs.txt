@@ -715,9 +715,9 @@ isbn
 
     return [
         new SelfclosingTagTk( 'wikilink', [
-           new KV('', 'Special:BookSources/' + isbn.replace(/[^\d]/g, '')),
-           new KV('', 'ISBN ' + isbn),
+           new KV('href', 'Special:BookSources/' + isbn.replace(/[^\d]/g, '')),
            new KV('tail', ''),
+           new KV('content', 'ISBN ' + isbn),
         ],
         {tsr: [pos0, pos]})
     ];
@@ -979,7 +979,7 @@ wikilink
   {
       var obj = new SelfclosingTagTk( 'wikilink' ),
           textTokens = [];
-      obj.attribs.push( new KV('', target) );
+      obj.attribs.push( new KV('href', target) );
       obj.dataAttribs = { 
           tsr: [pos0, pos],
           contentPos: lcontent.pos,

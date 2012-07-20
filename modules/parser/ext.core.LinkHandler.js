@@ -27,12 +27,11 @@ WikiLinkHandler.prototype.rank = 1.15; // after AttributeExpander
 
 WikiLinkHandler.prototype.onWikiLink = function ( token, frame, cb ) {
 	var env = this.manager.env,
-		href = token.attribs[0].v,
-		hrefStr = env.tokensToString( href );
-	var title = env.makeTitleFromPrefixedText(hrefStr);
+		href = env.tokensToString( Util.lookupKV( token.attribs, 'href' ).v ),
+		title = env.makeTitleFromPrefixedText(href);
 
 	if ( title.ns.isFile() ) {
-		cb( this.renderFile( token, frame, cb, hrefStr, title ) );
+		cb( this.renderFile( token, frame, cb, href, title ) );
 	} else if ( title.ns.isCategory() ) {
 		// Simply round-trip category links for now
 		cb( { tokens: [ 
@@ -54,11 +53,12 @@ WikiLinkHandler.prototype.onWikiLink = function ( token, frame, cb ) {
 				),
 			content = token.attribs.slice(2);
 		if ( href !== normalizedHref ) {
-			obj.dataAttribs.sHref = hrefStr;
+			obj.dataAttribs.sHref = href;
 		}
 		//console.warn('content: ' + JSON.stringify( content, null, 2 ) );
+
 		// XXX: handle trail
-		if ( content.length ) {
+		if ( content.length > 0 ) {
 			var out = [];
 			for ( var i = 0, l = content.length; i < l ; i++ ) {
 				out = out.concat( content[i].v );
@@ -68,11 +68,11 @@ WikiLinkHandler.prototype.onWikiLink = function ( token, frame, cb ) {
 			}
 			content = out;
 		} else {
-			content = [ Util.decodeURI(hrefStr) ];
+			content = [ Util.decodeURI(href) ];
 			obj.dataAttribs.gc = 1;
 		}
 
-		var tail = token.attribs[1].v;
+		var tail = Util.lookupKV( token.attribs, 'tail' ).v;
 		if ( tail ) {
 			obj.dataAttribs.tail = tail;
 			content.push( tail );
@@ -89,9 +89,7 @@ WikiLinkHandler.prototype.renderFile = function ( token, frame, cb, fileName, ti
 	// distinguish media types
 	// if image: parse options
 	
-	// Slice off the target and tail
 	var content = token.attribs.slice(2);
-
 
 	var MD5 = new jshashes.MD5(),
 		hash = MD5.hex( title.key ),
@@ -358,8 +356,7 @@ ExternalLinkHandler.prototype._isImageLink = function ( href ) {
 ExternalLinkHandler.prototype.onUrlLink = function ( token, frame, cb ) {
 	var env = this.manager.env,
 		href = Util.sanitizeURI( 
-				env.tokensToString( Util.lookupKV( token.attribs, 'href' ).v )
-			);
+				env.tokensToString( Util.lookupKV( token.attribs, 'href' ).v ));
 	if ( this._isImageLink( href ) ) {
 		cb( { tokens: [ new SelfclosingTagTk( 'img', 
 					[ 
@@ -391,9 +388,8 @@ ExternalLinkHandler.prototype.onUrlLink = function ( token, frame, cb ) {
 // Bracketed external link
 ExternalLinkHandler.prototype.onExtLink = function ( token, manager, cb ) {
 	var env = this.manager.env,
-		href = env.tokensToString( Util.lookupKV( token.attribs, 'href' ).v ),
+		href = Util.sanitizeURI(env.tokensToString( Util.lookupKV( token.attribs, 'href' ).v )),
 		content= Util.lookupKV( token.attribs, 'content' ).v;
-	href = Util.sanitizeURI( href );
 	//console.warn('extlink href: ' + href );
 	//console.warn( 'content: ' + JSON.stringify( content, null, 2 ) );
 	// validate the href
