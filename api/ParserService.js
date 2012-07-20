@@ -8,7 +8,7 @@
  * @example
  *    exports.setup = function( config, env ) {
  *        config.defaultInterwiki = 'localhost';
- *        env.addInterwiki( 'localhost', 'http://localhost/mediawiki' );
+ *        env.setInterwiki( 'localhost', 'http://localhost/mediawiki' );
  *    };
  */
 
@@ -61,7 +61,7 @@ var env = new ParserEnv( {
 } );
 
 // add mediawiki.org
-env.addInterwiki( 'mw', 'http://www.mediawiki.org/w' );
+env.setInterwiki( 'mw', 'http://www.mediawiki.org/w' );
 
 // add localhost default
 env.addInterwiki( 'localhost', 'http://localhost/w' );
