@@ -26,9 +26,10 @@ Tracer.prototype = {
 		}
 	},
 
-	processToken: function(token) {
+	processToken: function(token, compact) {
+		if (compact === undefined) compact = true;
 		if (this.env.trace) {
-			console.warn("T: " + token.toString(true));
+			console.warn("T: " + token.toString(compact));
 		}
 	},
 

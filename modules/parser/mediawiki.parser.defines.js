@@ -40,10 +40,8 @@ TagTk.prototype = {
 	},
 
 	toString: function() {
-		var buf = [];
 		if (this.dataAttribs.stx && this.dataAttribs.stx === "html") {
 			return "<HTML:" + this.name + ">";
-		return buf.join();
 		} else {
 			var f = this.tagToStringFns[this.name];
 			return f ? f.bind(this)() : this.defaultToString();
@@ -86,53 +84,91 @@ SelfclosingTagTk.prototype = {
 		return $.extend( { type: 'SelfclosingTagTk' }, this );
 	},
 
-	defaultToString: function(compact, indent) {
-		function multiTokenArgToString(key, arg, indent, newIndent) {
-			var present = true;
-			var toks    = Util.toStringTokens(arg, newIndent);
-			var str     = toks.join("\n" + newIndent);
+	multiTokenArgToString: function(key, arg, indent, indentIncrement) {
+		var newIndent = indent + indentIncrement;
+		var present = true;
+		var toks    = Util.toStringTokens(arg, newIndent);
+		var str     = toks.join("\n" + newIndent);
 
-			if (toks.length > 1 || str[0] === '<') {
-				str = [key, ":{\n", newIndent, str, "\n", indent, "}"].join('');
-			} else {
-				present = (str !== '');
-			}
-
-			return {present: present, str: str};
+		if (toks.length > 1 || str[0] === '<') {
+			str = [key, ":{\n", newIndent, str, "\n", indent, "}"].join('');
+		} else {
+			present = (str !== '');
 		}
 
+		return {present: present, str: str};
+	},
+
+	attrsToString: function(indent, indentIncrement, startAttrIndex) {
+		var buf = [];
+		for (var i = startAttrIndex, n = this.attribs.length; i < n; i++) {
+			var a = this.attribs[i];
+			var kVal = this.multiTokenArgToString("k", a.k, indent, indentIncrement);
+			var vVal = this.multiTokenArgToString("v", a.v, indent, indentIncrement);
+
+			if (kVal.present && vVal.present) {
+				buf.push([kVal.str, "=", vVal.str].join(''));
+			} else {
+				if (kVal.present) buf.push(kVal.str);
+				if (vVal.present) buf.push(vVal.str);
+			}
+		}
+
+		return buf.join("\n" + indent + "|");
+	},
+
+	defaultToString: function(compact, indent) {
 		if (compact) {
 			var buf = "<" + this.name + ">:";
 			return (this.attribs[0]) ? buf + Util.toStringTokens(this.attribs[0].k, "\n") : buf;
 		} else {
 			if (!indent) indent = "";
-			var indentIncrement = "  ";
 			var origIndent = indent;
-			var buf = [];
+			var indentIncrement = "  ";
 			indent = indent + indentIncrement;
-			for (var i = 0, n = this.attribs.length; i < n; i++) {
-				var a = this.attribs[i];
-				var newIndent = indent + indentIncrement;
-				var kVal = multiTokenArgToString("k", a.k, indent, newIndent);
-				var vVal = multiTokenArgToString("v", a.v, indent, newIndent);
-
-				if (kVal.present && vVal.present) {
-					buf.push([kVal.str, "=", vVal.str].join(''));
-				} else {
-					if (kVal.present) {
-						buf.push(kVal.str);
-					}
-					if (vVal.present) {
-						buf.push(vVal.str);
-					}
-				}
-			}
-
-			return ["<", this.name, ">(\n", indent, buf.join("\n" + indent + "|"), "\n", origIndent, ")"].join('');
+			return ["<", this.name, ">(\n", indent, this.attrsToString(indent, indentIncrement, 0), "\n", origIndent, ")"].join('');
 		}
 	},
 
-	tagToStringFns: { },
+	tagToStringFns: { 
+		"extlink": function(compact, indent) {
+			var href    = Util.kvTokensToString(Util.lookupKV(this.attribs, 'href').v);
+			if (compact) {
+				return ["<extlink:", href, ">"].join('');
+			} else {
+				if (!indent) indent = "";
+				var origIndent = indent;
+				var indentIncrement = "  ";
+				indent = indent + indentIncrement;
+				var content = Util.lookupKV(this.attribs, 'content').v;
+				content = this.multiTokenArgToString("v", content, indent, indentIncrement).str;
+				return ["<extlink>(\n", indent, 
+						"href=", href, "\n", indent, 
+						"content=", content, "\n", origIndent, 
+						")"].join('');
+			}
+		},
+
+		"wikilink": function(compact, indent) {
+			if (!indent) indent = "";
+			var href = Util.kvTokensToString(Util.lookupKV(this.attribs, 'href').v);
+			if (compact) {
+				return ["<wikilink:", href, ">"].join('');
+			} else {
+				if (!indent) indent = "";
+				var origIndent = indent;
+				var indentIncrement = "  ";
+				indent = indent + indentIncrement;
+				var tail = Util.lookupKV(this.attribs, 'tail').v;
+				var content = this.attrsToString(indent, indentIncrement, 2);
+				return ["<wikilink>(\n", indent, 
+						"href=", href, "\n", indent, 
+						"tail=", tail, "\n", indent,
+						"content=", content, "\n", origIndent, 
+						")"].join('');
+			}
+		}
+	},
 
 	toString: function(compact, indent) {
 		if (this.dataAttribs.stx && this.dataAttribs.stx === "html") {
