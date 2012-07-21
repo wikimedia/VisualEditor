@@ -129,7 +129,7 @@
 	padding-left: 0.75em;
 	padding-right: 24px;
 	background-image: url(images/arrow-down.png);
-	background-position: 8.75em center;
+	background-position: right;
 	background-repeat: no-repeat;
 }
 .es-toolbarDropdownTool .es-menuView {
