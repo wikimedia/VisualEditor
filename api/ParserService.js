@@ -64,7 +64,7 @@ var env = new ParserEnv( {
 env.setInterwiki( 'mw', 'http://www.mediawiki.org/w' );
 
 // add localhost default
-env.addInterwiki( 'localhost', 'http://localhost/w' );
+env.setInterwiki( 'localhost', 'http://localhost/w' );
 
 // Apply local settings
 if (path.existsSync(lsp)) {
