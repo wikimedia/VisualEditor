@@ -5,55 +5,153 @@
 
 var async = require('async');
 
-var toString = function() { return JSON.stringify( this ); };
-
 function TagTk( name, attribs, dataAttribs ) { 
-	//this.type = 'TAG';
 	this.name = name;
 	this.attribs = attribs || [];
 	this.dataAttribs = dataAttribs || {};
 }
-TagTk.prototype = {};
-TagTk.prototype.toJSON = function () {
-	return $.extend( { type: 'TagTk' }, this );
+
+TagTk.prototype = {
+	constructor: TagTk,
+
+	toJSON: function () {
+		return $.extend( { type: 'TagTk' }, this );
+	},
+
+	defaultToString: function(t) {
+		return "<" + this.name + ">";
+	},
+
+	tagToStringFns: {
+		"listItem": function() {
+			return "<li:" + this.bullets.join('') + ">";
+		},
+		"mw-quote": function() {
+			return "<mw-quote:" + this.value + ">";
+		},
+		"urllink": function() {
+			return "<urllink:" + this.attribs[0].v + ">";
+		},
+		"behavior-switch": function() {
+			return "<behavior-switch:" + this.attribs[0].v + ">";
+		}
+	},
+
+	toString: function() {
+		if (this.dataAttribs.stx && this.dataAttribs.stx === "html") {
+			return "<HTML:" + this.name + ">";
+		} else {
+			var f = this.tagToStringFns[this.name];
+			return f ? f.bind(this)() : this.defaultToString();
+		}
+	}
 };
-TagTk.prototype.constructor = TagTk;
-TagTk.prototype.toString = toString;
 
 function EndTagTk( name, attribs, dataAttribs ) { 
 	this.name = name;
 	this.attribs = attribs || [];
 	this.dataAttribs = dataAttribs || {};
 }
-EndTagTk.prototype = {};
-EndTagTk.prototype.toJSON = function () {
-	return $.extend( { type: 'EndTagTk' }, this );
+
+EndTagTk.prototype = {
+	constructor: EndTagTk,
+
+	toJSON: function () {
+		return $.extend( { type: 'EndTagTk' }, this );
+	},
+
+	toString: function() {
+		if (this.dataAttribs.stx && this.dataAttribs.stx === "html") {
+			return "</HTML:" + this.name + ">";
+		} else {
+			return "</" + this.name + ">";
+		}
+	}
 };
-EndTagTk.prototype.constructor = EndTagTk;
-EndTagTk.prototype.toString = toString;
 
 function SelfclosingTagTk( name, attribs, dataAttribs ) { 
-	//this.type = 'SELFCLOSINGTAG';
 	this.name = name;
 	this.attribs = attribs || [];
 	this.dataAttribs = dataAttribs || {};
 }
-SelfclosingTagTk.prototype = {};
-SelfclosingTagTk.prototype.toJSON = function () {
-	return $.extend( { type: 'SelfclosingTagTk' }, this );
-};
-SelfclosingTagTk.prototype.constructor = SelfclosingTagTk;
-SelfclosingTagTk.prototype.toString = toString;
 
-function NlTk( ) {
-	//this.type = 'NEWLINE';
-}
-NlTk.prototype = {};
-NlTk.prototype.toJSON = function () {
-	return $.extend( { type: 'NlTk' }, this );
+SelfclosingTagTk.prototype = {
+	constructor: SelfclosingTagTk,
+
+	toJSON: function () {
+		return $.extend( { type: 'SelfclosingTagTk' }, this );
+	},
+
+	tokensToString: function(toks) {
+		if (toks.constructor === String) {
+			return toks;
+		} else if (toks.length === 0) {
+			return null;
+		} else {
+			var buf = []; 
+			for (var i = 0, n = toks.length; i < n; i++) {
+				buf.push(toks[i].toString());
+			}
+			return buf.join('\n');
+		}
+	},
+
+	tagToStringFns: {
+		"template": function() {
+			var buf = ["<template>"]
+			for (var i = 0, n = this.attribs.length; i < n; i++) {
+				var a = this.attribs[i];
+				var kStr = this.tokensToString(a.k);
+				if (kStr) buf.push("k={" + kStr + "}");
+				var vStr = this.tokensToString(a.v);
+				if (vStr) buf.push("v={" + vStr + "}");
+			}
+
+			buf.push("</template>");
+			return buf.join("\n");
+		},
+		"templatearg": function() {
+			var buf = ["<template-arg>"]
+			for (var i = 0, n = this.attribs.length; i < n; i++) {
+				var a = this.attribs[i];
+				var kStr = this.tokensToString(a.k);
+				if (kStr) buf.push("k:{" + kStr + "}");
+				var vStr = this.tokensToString(a.v);
+				if (vStr) buf.push("v:{" + vStr + "}");
+			}
+
+			buf.push("</template-arg>");
+			return buf.join("\n");
+		}
+	},
+
+	defaultToString: function() {
+		return "<" + this.name + " />";
+	},
+
+	toString: function() {
+		if (this.dataAttribs.stx && this.dataAttribs.stx === "html") {
+			return "<HTML:" + this.name + " />";
+		} else {
+			var f = this.tagToStringFns[this.name];
+			return f ? f.bind(this)() : this.defaultToString();
+		}
+	}
 };
-NlTk.prototype.constructor = NlTk;
-NlTk.prototype.toString = toString;
+
+function NlTk( ) { }
+
+NlTk.prototype = {
+	constructor: NlTk,
+
+	toJSON: function () {
+		return $.extend( { type: 'NlTk' }, this );
+	},
+
+	toString: function() {
+		return "\\n";
+	}
+};
 
 function CommentTk( value, dataAttribs ) { 
 	this.value = value;
@@ -62,21 +160,31 @@ function CommentTk( value, dataAttribs ) {
 		this.dataAttribs = dataAttribs;
 	}
 }
-CommentTk.prototype = {};
-CommentTk.prototype.toJSON = function () {
-	return $.extend( { type: 'COMMENT' }, this );
+
+CommentTk.prototype = {
+	constructor: CommentTk,
+
+	toJSON: function () {
+		return $.extend( { type: 'COMMENT' }, this );
+	},
+
+	toString: function() {
+		return "<!--" + this.value + "-->";
+	}
 };
-CommentTk.prototype.constructor = CommentTk;
-CommentTk.prototype.toString = toString; 
 
 function EOFTk( ) { }
-EOFTk.prototype = {};
-EOFTk.prototype.toJSON = function () {
-	return $.extend( { type: 'EOFTk' }, this );
-};
-EOFTk.prototype.constructor = EOFTk;
-EOFTk.prototype.toString = toString;
+EOFTk.prototype = {
+	constructor: EOFTk,
 
+	toJSON: function () {
+		return $.extend( { type: 'EOFTk' }, this );
+	},
+
+	toString: function() {
+		return "";
+	}
+};
 
 
 // A key-value pair
@@ -197,59 +305,56 @@ function ParserValue ( source, frame ) {
 }
 
 
-ParserValue.prototype._defaultTransformOptions = {
-	type: 'text/x-mediawiki/expanded'
-};
+ParserValue.prototype = {
+	_defaultTransformOptions: {
+		type: 'text/x-mediawiki/expanded'
+	},
 
-ParserValue.prototype.toJSON = function() {
-	return this.source;
-};
+	toJSON: function() {
+		return this.source;
+	},
 
-ParserValue.prototype.get = function( options, cb ) {
-	if ( ! options ) {
-		options = $.extend({}, this._defaultTransformOptions);
-	} else if ( options.type === undefined ) {
-		options.type = this._defaultTransformOptions.type;
-	}
+	get: function( options, cb ) {
+		if ( ! options ) {
+			options = $.extend({}, this._defaultTransformOptions);
+		} else if ( options.type === undefined ) {
+			options.type = this._defaultTransformOptions.type;
+		}
 
-	// convenience cb override for async-style functions that pass a cb as the
-	// last argument
-	if ( cb === undefined ) {
-		cb = options.cb;
-	}
+		// convenience cb override for async-style functions that pass a cb as the
+		// last argument
+		if ( cb === undefined ) {
+			cb = options.cb;
+		}
 
-	var maybeCached;
-	if ( this.source.constructor === String ) {
-		maybeCached = this.source;
-	} else {
-		// try the cache
-		maybeCached = this.source.cache && this.source.cache.get( this.frame, options );
-	}
-	if ( maybeCached !== undefined ) {
-		if ( cb ) {
-			cb ( maybeCached );
+		var maybeCached;
+		if ( this.source.constructor === String ) {
+			maybeCached = this.source;
 		} else {
-			return maybeCached;
+			// try the cache
+			maybeCached = this.source.cache && this.source.cache.get( this.frame, options );
 		}
-	} else {
-		if ( ! options.cb ) {
-			console.trace();
-			throw "Chunk.get: Need to expand asynchronously, but no cb provided! " +
-				JSON.stringify( this, null, 2 );
+		if ( maybeCached !== undefined ) {
+			if ( cb ) {
+				cb ( maybeCached );
+			} else {
+				return maybeCached;
+			}
+		} else {
+			if ( ! options.cb ) {
+				console.trace();
+				throw "Chunk.get: Need to expand asynchronously, but no cb provided! " +
+					JSON.stringify( this, null, 2 );
+			}
+			options.cb = cb;
+			this.frame.expand( this.source, options );
 		}
-		options.cb = cb;
-		this.frame.expand( this.source, options );
+	},
+
+	length: function () {
+		return this.source.length;
 	}
 };
-
-ParserValue.prototype.length = function () {
-	return this.source.length;
-};
-
-
-//Chunk.prototype.slice = function () {
-//	return this.source.slice.apply( this.source, arguments );
-//};
 
 
 // TODO: don't use globals!
