@@ -399,10 +399,13 @@ app.get(new RegExp( '/(?:(?:(?:' + env.interwikiRegexp + '):+)?(' + env.interwik
 	}
 	var target = env.resolveTitle( env.normalizeTitle( env.pageName ), '' );
 
+	var st = new Date();
 	console.log('starting parsing of ' + target);
 	var tpr = new TemplateRequest( env, target );
 	tpr.once('src', parse.bind( null, req, res, function ( req, res, src, document ) {
 		res.end(document.body.innerHTML);
+		var et = new Date();
+		console.warn("Request Time (ms): " + (et - st));
 	}));
 });
 
