@@ -37,6 +37,7 @@ $messages['en'] = array(
 );
 
 /** Message documentation (Message documentation)
+ * @author Amire80
  * @author Erik Moeller
  * @author Jdforrester
  * @author Nike
@@ -44,15 +45,11 @@ $messages['en'] = array(
  */
 $messages['qqq'] = array(
 	'visualeditor' => 'The name of the VisualEditor extension',
-	'visualeditor-tooltip-wikitext' => 'Tooltip for a toolbar button which activates or deactivates a split view, with the visual editor on the left-hand side, and a dynamically updating but read-only wikitext view on the right-hand side.',
-	'visualeditor-tooltip-json' => 'Tooltip for a toolbar button which activates or deactivates a split view, with the visual editor on the left-hand side, and a dynamically updating but read-only JSON representation of the document on the right-hand side. This view is primarily useful for debugging purposes.',
-	'visualeditor-tooltip-html' => 'Tooltip for a toolbar button which activates or deactivates a split view, with the visual editor on the left-hand side, and a dyanmically updating but read-only raw HTML view on the right-hand side. This view is primarily useful for debugging purposes.',
-	'visualeditor-tooltip-render' => 'Tooltip for a toolbar button which activates or deactivates a split view, with the visual editor on the left-hand side, and a dynamically updating preview on the right-hand side. This view is primarily useful for debugging purposes.',
-	'visualeditor-tooltip-history' => "Tooltip for a toolbar button which activates or deactivates a split view, with the visual editor on the left-hand side, and a history of the user's edit transactions on the right-hand side. This view is primarily useful for debugging purposes.",
 	'visualeditor-feedback-prompt' => 'A link that opens feedback form in http://www.mediawiki.org/wiki/Special:VisualEditorSandbox',
 	'visualeditor-ca-editsource' => 'Text for the edit source link in the tab dropdown',
 	'visualeditor-linkinspector-title' => 'Title of the link inspector dialog',
 	'visualeditor-linkinspector-label-pagetitle' => 'Label for the text field that holds the link target in the link inspector',
+	'visualeditor-formatdropdown-title' => 'This is a tooltip for the drop-down box for choosing the formatting style of the selected text, such as "Heading 1", "Heading 2" or "Plain text". (This is not related to "file format" or "data format", such as "Wikitext", "HTML", "PDF" etc.)',
 	'visualeditor-formatdropdown-format-paragraph' => 'Item in the formatting dropdown for paragraphs (normal text)',
 	'visualeditor-formatdropdown-format-heading1' => 'Item in the formatting dropdown for a level 1 heading',
 	'visualeditor-formatdropdown-format-heading2' => 'Item in the formatting dropdown for a level 2 heading',
@@ -87,6 +84,10 @@ $messages['as'] = array(
 	'visualeditor-formatdropdown-format-heading4' => 'শিৰোনাম ৪',
 	'visualeditor-formatdropdown-format-heading5' => 'শিৰোনাম ৫',
 	'visualeditor-formatdropdown-format-heading6' => 'শিৰোনাম ৬',
+	'visualeditor-annotationbutton-bold-tooltip' => 'গাঢ়',
+	'visualeditor-annotationbutton-italic-tooltip' => 'হেলনীয়া',
+	'visualeditor-annotationbutton-link-tooltip' => 'সংযোগ',
+	'visualeditor-historybutton-undo-tooltip' => 'পূৰ্ববত কৰক',
 );
 
 /** Asturian (asturianu)
@@ -467,21 +468,13 @@ $messages['gl'] = array(
  */
 $messages['he'] = array(
 	'visualeditor' => 'עורך חזותי',
-	'visualeditorsandbox' => 'ארגז חול לבדיקות העורך החזותי',
 	'visualeditor-desc' => 'עורך חזותי למדיה־ויקי',
-	'visualeditor-sandbox-title' => 'ארגז חול לבדיקות העורך החזותי',
-	'visualeditor-tooltip-wikitext' => 'תצוגת קוד ויקי',
-	'visualeditor-tooltip-json' => 'תצוגת JSON',
-	'visualeditor-tooltip-html' => 'תצוגת HTML',
-	'visualeditor-tooltip-render' => 'תצוגה מקדימה',
-	'visualeditor-tooltip-history' => 'תצוגת גרסאות קודמות',
-	'visualeditor-tooltip-help' => 'תצוגת עזרה',
 	'visualeditor-feedback-prompt' => 'שליחת משוב',
 	'visualeditor-feedback-dialog-title' => 'שליחת משוב על ארגז החול של העורך החזותי',
 	'visualeditor-ca-editsource' => 'עריכת קוד מקור',
 	'visualeditor-linkinspector-title' => 'עריכת קישור',
 	'visualeditor-linkinspector-label-pagetitle' => 'כותרת דף',
-	'visualeditor-formatdropdown-title' => 'שינוי תסדיר',
+	'visualeditor-formatdropdown-title' => 'שינוי סגנון',
 	'visualeditor-formatdropdown-format-paragraph' => 'פסקה',
 	'visualeditor-formatdropdown-format-heading1' => 'כותרת רמה 1',
 	'visualeditor-formatdropdown-format-heading2' => 'כותרת רמה 2',
@@ -718,6 +711,32 @@ $messages['ko'] = array(
 	'visualeditor-viewpage-savewarning' => '먼저 저장하지 않고 보기 모드로 돌아가겠습니까?',
 	'visualeditor-loadwarning' => '서버에서 데이터를 불러오는 중 오류: $1. 다시 시도하겠습니까?',
 	'visualeditor-saveerror' => '서버에 데이터를 저장하는 중 오류: $1.',
+);
+
+/** Colognian (Ripoarisch)
+ * @author Purodha
+ */
+$messages['ksh'] = array(
+	'visualeditor-linkinspector-label-pagetitle' => 'Siggetittel',
+	'visualeditor-formatdropdown-title' => 'De Fommateerong ändere',
+	'visualeditor-formatdropdown-format-paragraph' => 'Afschnett',
+	'visualeditor-formatdropdown-format-heading1' => 'Övverschreff 1',
+	'visualeditor-formatdropdown-format-heading2' => 'Övverschreff 2',
+	'visualeditor-formatdropdown-format-heading3' => 'Övverschreff 3',
+	'visualeditor-formatdropdown-format-heading4' => 'Övverschreff 4',
+	'visualeditor-formatdropdown-format-heading5' => 'Övverschreff 5',
+	'visualeditor-formatdropdown-format-heading6' => 'Övverschreff 6',
+	'visualeditor-formatdropdown-format-preformatted' => 'De Fommateerong es ald doh',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Fätte Schreff',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Scheive Schreff',
+	'visualeditor-annotationbutton-link-tooltip' => 'ene Lengk',
+	'visualeditor-indentationbutton-indent-tooltip' => 'Mieh enjeröck',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Winnijer enjeröck',
+	'visualeditor-listbutton-number-tooltip' => 'En Leß met Nommere',
+	'visualeditor-listbutton-bullet-tooltip' => 'Leß met Pungkte',
+	'visualeditor-clearbutton-tooltip' => 'Fomaateeronge fottnämme',
+	'visualeditor-historybutton-undo-tooltip' => 'Donn de läzde Änderong zeröck nämme',
+	'visualeditor-historybutton-redo-tooltip' => 'Donn dat norr_ens',
 );
 
 /** Luxembourgish (Lëtzebuergesch)
@@ -1031,6 +1050,41 @@ $messages['si'] = array(
  */
 $messages['sv'] = array(
 	'visualeditor-feedback-prompt' => 'Lämna feedback',
+);
+
+/** Tagalog (Tagalog)
+ * @author AnakngAraw
+ */
+$messages['tl'] = array(
+	'visualeditor' => 'Pampatnugot na Pampaningin',
+	'visualeditor-desc' => 'Pampatnugot na pampaningin para sa MediaWiki',
+	'visualeditor-feedback-prompt' => 'Mag-iwan ng tugon',
+	'visualeditor-feedback-dialog-title' => 'Mag-iwan ng tugon hinggil sa Subukan ng Pampatnugot na Pampaningin',
+	'visualeditor-ca-editsource' => 'Baguhin ang pinagmulan',
+	'visualeditor-linkinspector-title' => 'Baguhin ang kawing',
+	'visualeditor-linkinspector-label-pagetitle' => 'Pamagat ng pahina',
+	'visualeditor-formatdropdown-title' => 'Baguhin ang anyo',
+	'visualeditor-formatdropdown-format-paragraph' => 'Talata',
+	'visualeditor-formatdropdown-format-heading1' => 'Pamuhatan 1',
+	'visualeditor-formatdropdown-format-heading2' => 'Pamuhatan 2',
+	'visualeditor-formatdropdown-format-heading3' => 'Pamuhatan 3',
+	'visualeditor-formatdropdown-format-heading4' => 'Pamuhatan 4',
+	'visualeditor-formatdropdown-format-heading5' => 'Pamuhatan 5',
+	'visualeditor-formatdropdown-format-heading6' => 'Pamuhatan 6',
+	'visualeditor-formatdropdown-format-preformatted' => 'May paunang kaanyuan',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Makapal',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Nakapahilis',
+	'visualeditor-annotationbutton-link-tooltip' => 'Kawing',
+	'visualeditor-indentationbutton-indent-tooltip' => 'Dagdagan ang pagkakayupi',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Bawasan ang pagkakayupi',
+	'visualeditor-listbutton-number-tooltip' => 'Listahang may bilang',
+	'visualeditor-listbutton-bullet-tooltip' => 'Listahang napungluan',
+	'visualeditor-clearbutton-tooltip' => 'Hawiin ang kaanyuan',
+	'visualeditor-historybutton-undo-tooltip' => 'Ibalik sa dati',
+	'visualeditor-historybutton-redo-tooltip' => 'Gawing muli',
+	'visualeditor-viewpage-savewarning' => 'Nakakatiyak ka bang nais mong magbalik sa gawi na nakikita na hindi muna nagsasagip?',
+	'visualeditor-loadwarning' => 'Kamalian sa pagkakarga ng dato mula sa tagapaghain: $1. Nais mo bang subukan ulit?',
+	'visualeditor-saveerror' => 'Kamalian sa pagsagip ng dato sa tagapaghain: $1.',
 );
 
 /** Ukrainian (українська)
