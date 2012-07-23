@@ -181,7 +181,7 @@ WSP.escapeWikiText = function ( state, text ) {
 				case TagTk:
 				case SelfclosingTagTk:
 					var argDict = state.env.KVtoHash( token.attribs );
-					if ( argDict['data-gen'] === 'both' &&
+					if ( argDict['typeof'] === 'mw:Placeholder' &&
 							// XXX: move the decision whether to escape or not
 							// into individual handlers!
 							token.dataAttribs.src ) 
@@ -574,6 +574,12 @@ WSP._linkHandler =  function( state, tokens ) {
 				return '[' + attribDict.href + ' ' + 
 					state.serializer.serializeTokens( tokens ).join('') + 
 					']';
+			}
+		} else if ( attribDict.rel === 'mw:Image' ) {
+			// simple source-based round-tripping for now..
+			// TODO: properly implement!
+			if ( token.dataAttribs.src ) {
+				return token.dataAttribs.src;
 			}
 		} else {
 			// Unknown rel was set
@@ -1064,7 +1070,7 @@ WSP.defaultHTMLTagHandler = {
 WSP._getTokenHandler = function(state, token) {
 	var handler;
 	if ( token.dataAttribs.src !== undefined &&
-		Util.lookup( token.attribs, 'data-gen' ) === 'both' ) {
+		Util.lookup( token.attribs, 'typeof' ) === 'mw:Placeholder' ) {
 			// implement generic src round-tripping: 
 			// return src, and drop the generated content
 			if ( token.constructor === TagTk ) {

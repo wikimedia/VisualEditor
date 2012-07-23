@@ -3,7 +3,7 @@
  * asynchronous transform.
  *
  * @author Gabriel Wicke <gwicke@wikimedia.org>
- * 
+ *
  * TODO: keep round-trip information in meta tag or the like
  */
 
@@ -34,19 +34,19 @@ WikiLinkHandler.prototype.onWikiLink = function ( token, frame, cb ) {
 		cb( this.renderFile( token, frame, cb, href, title ) );
 	} else if ( title.ns.isCategory() ) {
 		// Simply round-trip category links for now
-		cb( { tokens: [ 
-				new SelfclosingTagTk( 'meta', 
-					[new KV( 'data-gen', 'both' )],
-					token.dataAttribs ) 
-				] 
+		cb( { tokens: [
+				new SelfclosingTagTk( 'meta',
+					[new KV( 'typeof', 'mw:Placeholder' )],
+					token.dataAttribs )
+				]
 		});
 	} else {
 		// Check if page exists
-		// 
+		//
 		//console.warn( 'title: ' + JSON.stringify( title ) );
 		var normalizedHref = title.makeLink(),
-			obj = new TagTk( 'a', 
-					[ 
+			obj = new TagTk( 'a',
+					[
 						new KV( 'href', normalizedHref ),
 						new KV('rel', 'mw:WikiLink')
 					], token.dataAttribs
@@ -170,7 +170,7 @@ WikiLinkHandler.prototype.renderFile = function ( token, frame, cb, fileName, ti
 		// TODO: get /wiki from config!
 		var a = new TagTk( 'a', [ 
 					new KV( 'href', title.makeLink() ),
-					new KV( 'data-gen', 'both' )
+					new KV( 'rel', 'mw:Image' )
 				] );
 		a.dataAttribs = token.dataAttribs;
 
@@ -243,12 +243,9 @@ WikiLinkHandler.prototype.renderThumb = function ( token, manager, cb, title, fi
 		new TagTk( 
 				'figure', 
 				[
-					new KV('data-gen', 'both'),
+					new KV('typeof', 'mw:Thumb'),
 					new KV('class', figureclass),
-					new KV('style', figurestyle),
-					new KV('typeof', 'http://mediawiki.org/rdf/Thumb'),
-					// XXX: define this globally?
-					new KV('prefix', "mw: http://mediawiki.org/rdf/terms/")
+					new KV('style', figurestyle)
 				] 
 			),
 		new TagTk( 
@@ -348,7 +345,7 @@ ExternalLinkHandler.prototype._imageExtensions = {
 
 ExternalLinkHandler.prototype._isImageLink = function ( href ) {
 	var bits = href.split( '.' );
-	return bits.length > 1 && 
+	return bits.length > 1 &&
 		this._imageExtensions[ bits[bits.length - 1] ] &&
 		href.match( /^https?:\/\// );
 };

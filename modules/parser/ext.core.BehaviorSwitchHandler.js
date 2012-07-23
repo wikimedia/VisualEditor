@@ -17,7 +17,7 @@ BehaviorSwitchHandler.prototype.onBehaviorSwitch = function ( token, manager, cb
 	return { tokens: 
 		[
 			new SelfclosingTagTk( 'meta', 
-					[ new KV( 'data-gen', 'both' ) ],
+					[ new KV( 'typeof', 'mw:Placeholder' ) ],
 					token.dataAttribs )
 		]
 	};
