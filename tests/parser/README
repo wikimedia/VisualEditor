@@ -1,22 +1,20 @@
 Work in progress. :)
 
-Please see https://www.mediawiki.org/wiki/Future/Parser_development for some
-information on how to get started with these tests and the current parser
-architecture.
+Please see https://www.mediawiki.org/wiki/Parsoid for some information on how
+to get started with these tests and the current parser architecture.
 
 Install dependencies and run tests:
 
-cd tests/parser
-make test
+cd modules/parser 
+(cd ../../modules/parser if you are in this README file's directory)
+npm test
 
 == Running parserTests.js ==
 
-For parserTests, you also need MediaWiki's parser test cases (parserTests.txt)
-either in a phase3 checkout parallel to extensions (tried by default). You can
-also specify a test case file as an argument.
-
-The "make test" target in this directory downloads parserTests.txt and specifies
-it as the test case automatically.  Of course, you may also run tests manually:
+For parserTests, you also need MediaWiki's parser test cases (parserTests.txt). 
+'npm test' from the modules directory automatically fetches the current
+version to this directory. You can also specify a test case file as an
+argument. You can also symlink parserTests.txt from a core git checkout.
 
 node ./parserTests.js
 
@@ -24,10 +22,8 @@ Several options are available for parserTests:
 
 node ./parserTests.js --help
 
+Example for round-trip testing:
+
+node ./parserTests.js --roundtrip
+
 Enjoy!
-
-== Running roundtrip tests ==
-
-Round-trip tests are not yet ported to the current parser architecture. The
-focus so far has been on parserTests and getting the parser architecture in
-shape, but we'll get back to round-trip tests eventually.
