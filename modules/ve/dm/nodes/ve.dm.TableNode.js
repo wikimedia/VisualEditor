@@ -32,7 +32,7 @@ ve.dm.TableNode.rules = {
 	'isWrapped': true,
 	'isContent': false,
 	'canContainContent': false,
-	'childNodeTypes': ['tableRow'],
+	'childNodeTypes': ['tableSection'],
 	'parentNodeTypes': null
 };
 
