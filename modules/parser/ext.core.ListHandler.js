@@ -7,10 +7,12 @@ var Util = require('./ext.Util.js').Util;
 function ListHandler ( manager ) {
 	this.manager = manager;
 	this.reset();
-	this.manager.addTransform( this.onListItem.bind(this), "ListHandler:onListItem",
-			this.listRank, 'tag', 'listItem' );
-	this.manager.addTransform( this.onEnd.bind(this), "ListHandler:onEnd",
-			this.listRank, 'end' );
+	this.manager.addTransform(this.onListItem.bind(this), 
+							"ListHandler:onListItem",
+							this.listRank, 'tag', 'listItem' );
+	this.manager.addTransform( this.onEnd.bind(this),
+							"ListHandler:onEnd",
+							this.listRank, 'end' );
 }
 
 ListHandler.prototype.listRank = 2.49; // before PostExpandParagraphHandler
@@ -68,7 +70,7 @@ ListHandler.prototype.onListItem = function ( token, frame, prevToken ) {
 	this.newline = false;
 	if (token.constructor === TagTk){
 		// convert listItem to list and list item tokens
-		return { tokens: this.doListItem( this.bstack, token.bullets, token ) };
+		return { tokens: this.doListItem(this.bstack, token.bullets, token) };
 	}
 	return { token: token };
 };
@@ -76,8 +78,7 @@ ListHandler.prototype.onListItem = function ( token, frame, prevToken ) {
 ListHandler.prototype.commonPrefixLength = function (x, y) {
 	var minLength = Math.min(x.length, y.length);
 	for(var i = 0; i < minLength; i++) {
-		if (x[i] != y[i])
-			break;
+		if (x[i] != y[i]) break;
 	}
 	return i;
 };
@@ -113,8 +114,7 @@ ListHandler.prototype.doListItem = function ( bs, bn, token ) {
 		prefix = bn.slice(0, prefixLen);
 	this.newline = false;
 	this.bstack = bn;
-	if (!bs.length)
-	{
+	if (!bs.length) {
 		this.manager.addTransform( this.onAny.bind(this), "ListHandler:onAny",
 				this.anyRank, 'any' );
 	}
@@ -143,14 +143,15 @@ ListHandler.prototype.doListItem = function ( bs, bn, token ) {
 			this.endtags.push(new EndTagTk( newName ));
 			// TODO: review dataAttribs forwarding here and below in
 			// doListItem, in particular re accuracy of tsr!
-			tokens = tokens.concat([ endTag, new TagTk( newName, [], token.dataAttribs  ) ]);
+			var newTag = new TagTk(newName, [], token.dataAttribs);
+			tokens = tokens.concat([ endTag, newTag ]);
 			prefixLen++;
 		} else {
 			tokens = tokens.concat( this.popTags(bs.length - prefixLen) );
 			if (prefixLen > 0 && bn.length == prefixLen ) {
 				itemToken = this.endtags.pop();
 				tokens.push(itemToken);
-				tokens.push(new TagTk( itemToken.name, [], token.dataAttribs  ));
+				tokens.push(new TagTk(itemToken.name, [], token.dataAttribs));
 				this.endtags.push(new EndTagTk( itemToken.name ));
 			}
 		}
@@ -164,7 +165,10 @@ ListHandler.prototype.doListItem = function ( bs, bn, token ) {
 		}
 		res = tokens;
 	}
-	this.manager.env.tracer.output("Returning: " + Util.toStringTokens(res).join(","));
+
+	if (this.manager.env.trace) {
+		this.manager.env.tracer.output("Returning: " + Util.toStringTokens(res).join(","));
+	}
 	return res;
 };
 
