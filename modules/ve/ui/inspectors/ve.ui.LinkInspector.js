@@ -38,8 +38,8 @@ ve.ui.LinkInspector = function( toolbar, context ) {
 
 		var hash,
 			surfaceModel = inspector.context.getSurfaceView().getModel(),
-			annotations = inspector.getSelectedLinkAnnotations();
-		// If link annotation exists, clear it.
+			annotations = inspector.getAllLinkAnnotationsFromSelection();
+		// Clear all link annotations.
 		for ( hash in annotations ) {
 			surfaceModel.annotate( 'clear', annotations[hash] );
 		}
@@ -48,7 +48,7 @@ ve.ui.LinkInspector = function( toolbar, context ) {
 	} );
 	this.$locationInput.bind( 'mousedown keydown cut paste', function() {
 		setTimeout( function() {
-			if ( inspector.$locationInput.val() !== inspector.initialValue ) {
+			if ( inspector.$locationInput.val() !== '' ) {
 				inspector.$acceptButton.removeClass( 'es-inspector-button-disabled' );
 			} else {
 				inspector.$acceptButton.addClass( 'es-inspector-button-disabled' );
@@ -59,23 +59,24 @@ ve.ui.LinkInspector = function( toolbar, context ) {
 
 /* Methods */
 
-ve.ui.LinkInspector.prototype.getSelectedLinkAnnotations = function(){
+ve.ui.LinkInspector.prototype.getAllLinkAnnotationsFromSelection = function() {
 	var surfaceView = this.context.getSurfaceView(),
 		surfaceModel = surfaceView.getModel(),
 		documentModel = surfaceModel.getDocument(),
-		data = documentModel.getData( surfaceModel.getSelection() );
+		annotations,
+		linkAnnotations = {};
 
-	if ( data.length ) {
-		if ( ve.isPlainObject( data[0][1] ) ) {
-			return ve.dm.Document.getMatchingAnnotations( data[0][1], /link\/.*/ );
+		annotations = documentModel.getAnnotationsFromRange( surfaceModel.getSelection(), true );
+		linkAnnotations = ve.dm.Document.getMatchingAnnotations ( annotations,  /link\/.*/  );
+		if ( !ve.isEmptyObject( linkAnnotations ) ) {
+			return linkAnnotations;
 		}
-	}
-	return {};
+
+	return null;
 };
 
-ve.ui.LinkInspector.prototype.getAnnotationFromSelection = function() {
-	var hash,
-		annotations = this.getSelectedLinkAnnotations();
+ve.ui.LinkInspector.prototype.getFirstLinkAnnotation = function( annotations ) {
+	var hash;
 	for ( hash in annotations ) {
 		// Use the first one with a recognized type (there should only be one, but this is just in case)
 		if ( annotations[hash].type === 'link/wikiLink' || annotations[hash].type === 'link/extLink' ) {
@@ -113,27 +114,34 @@ ve.ui.LinkInspector.prototype.prepareOpen = function() {
 	var	surfaceView = this.context.getSurfaceView(),
 		surfaceModel = surfaceView.getModel(),
 		doc = surfaceModel.getDocument(),
-		annotation = this.getAnnotationFromSelection(),
+		annotations = this.getAllLinkAnnotationsFromSelection(),
+		annotation = this.getFirstLinkAnnotation( annotations ),
 		selection = surfaceModel.getSelection(),
+		annotatedRange,
 		newSelection;
 
-	if ( annotation !== null ) {
-		// Ensure that the entire annotated range is selected
-		newSelection = doc.getAnnotatedRangeFromOffset( selection.start, annotation );
-		// Apply selection direction to new selection
-		if ( selection.from > selection.start ) {
-			newSelection.flip();
-		}
-	} else {
-		// No annotation, trim outer space from range
-		newSelection = doc.trimOuterSpaceFromRange( selection );
-	}
+	// Trim outer space from range if any.
+	newSelection = doc.trimOuterSpaceFromRange( selection );
 
+	if ( annotation !== null ) {
+		annotatedRange = doc.getAnnotatedRangeFromSelection( newSelection, annotation );
+
+		// Adjust selection if it does not contain the annotated range
+		if ( selection.start > annotatedRange.start ||
+			 selection.end < annotatedRange.end
+		) {
+			newSelection = annotatedRange;
+			// if selected from right to left
+			if ( selection.from > selection.start ) {
+				newSelection.flip();
+			}
+		}
+	}
 	surfaceModel.change( null, newSelection );
 };
 
 ve.ui.LinkInspector.prototype.onOpen = function() {
-	var annotation = this.getAnnotationFromSelection(),
+	var	annotation = this.getFirstLinkAnnotation( this.getAllLinkAnnotationsFromSelection() ),
 		initialValue = '';
 	if ( annotation === null ) {
 		this.$locationInput.val( this.getSelectionText() );
@@ -165,11 +173,11 @@ ve.ui.LinkInspector.prototype.onOpen = function() {
 ve.ui.LinkInspector.prototype.onClose = function( accept ) {
 	var surfaceView = this.context.getSurfaceView(),
 		surfaceModel = surfaceView.getModel(),
-		annotations = this.getSelectedLinkAnnotations(),
+		annotations = this.getAllLinkAnnotationsFromSelection(),
 		target = this.$locationInput.val(),
 		hash, annotation;
 	if ( accept ) {
-		if ( target === this.initialValue || !target ) {
+		if ( !target ) {
 			return;
 		}
 		// Clear link annotation if it exists
@@ -177,6 +185,7 @@ ve.ui.LinkInspector.prototype.onClose = function( accept ) {
 			surfaceModel.annotate( 'clear', annotations[hash] );
 		}
 		surfaceModel.annotate( 'set', ve.ui.LinkInspector.getAnnotationForTarget( target ) );
+
 	}
 	// Restore focus
 	surfaceView.getDocument().getDocumentNode().$.focus();
