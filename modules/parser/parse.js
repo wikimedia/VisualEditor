@@ -1,7 +1,7 @@
 /**
  * Command line parse utility.
  * Read from STDIN, write to STDOUT.
- * 
+ *
  * @author Neil Kandalgaonkar <neilk@wikimedia.org>
  * @author Gabriel Wicke <gwicke@wikimedia.org>
  */
@@ -11,7 +11,8 @@ var ParserPipelineFactory = require('./mediawiki.parser.js').ParserPipelineFacto
 	ConvertDOMToLM = require('./mediawiki.LinearModelConverter.js').ConvertDOMToLM,
 	DOMConverter = require('./mediawiki.DOMConverter.js').DOMConverter,
 	WikitextSerializer = require('./mediawiki.WikitextSerializer.js').WikitextSerializer,
-	optimist = require('optimist');
+	optimist = require('optimist'),
+	html5 = require('html5');
 
 ( function() {
 	var opts = optimist.usage( 'Usage: echo wikitext | $0', {
@@ -27,6 +28,11 @@ var ParserPipelineFactory = require('./mediawiki.parser.js').ParserPipelineFacto
 		},
 		'wikidom': {
 			description: 'Output WikiDOM instead of HTML',
+			'boolean': true,
+			'default': false
+		},
+		'html2wt': {
+			description: 'Convert input HTML to Wikitext',
 			'boolean': true,
 			'default': false
 		},
@@ -83,7 +89,7 @@ var ParserPipelineFactory = require('./mediawiki.parser.js').ParserPipelineFacto
 		return;
 	}
 
-	var env = new ParserEnv( { 
+	var env = new ParserEnv( {
 						// fetch templates from enwiki by default..
 						wgScript: argv.wgScript,
 						wgScriptPath: argv.wgScriptPath,
@@ -91,14 +97,12 @@ var ParserPipelineFactory = require('./mediawiki.parser.js').ParserPipelineFacto
 						// XXX: add options for this!
 						wgUploadPath: 'http://upload.wikimedia.org/wikipedia/commons',
 						fetchTemplates: argv.fetchTemplates,
-						// enable/disable debug output using this switch	
+						// enable/disable debug output using this switch
 						debug: argv.debug,
 						trace: argv.trace,
 						maxDepth: argv.maxdepth,
 						pageName: argv.pagename
 					} );
-	var parserPipelineFactory = new ParserPipelineFactory( env );
-	var parser = parserPipelineFactory.makePipeline( 'text/x-mediawiki/full' );
 
 	process.stdin.resume();
 	process.stdin.setEncoding('utf8');
@@ -108,34 +112,47 @@ var ParserPipelineFactory = require('./mediawiki.parser.js').ParserPipelineFacto
 		inputChunks.push( chunk );
 	} );
 
-
-
-	process.stdin.on( 'end', function() { 
+	process.stdin.on( 'end', function() {
 		var input = inputChunks.join('');
-		parser.on('document', function ( document ) {
-			// Print out the html
-			if ( argv.linearmodel ) {
-				process.stdout.write( 
-					JSON.stringify( ConvertDOMToLM( document.body ), null, 2 ) );
-			} else if ( argv.wikidom ) {
-				process.stdout.write(
-					JSON.stringify(
-						new DOMConverter().HTMLtoWiki( document.body ),
-						null,
-						2
-					));
-			} else if ( argv.wikitext ) {
-				new WikitextSerializer({env: env}).serializeDOM( document.body, 
-					process.stdout.write.bind( process.stdout ) );
-			} else {
-				process.stdout.write( document.body.innerHTML );
-			}
+		if (argv.html2wt) {
+			var p = new html5.Parser();
+			p.parse('<html><body>' + input.replace(/\r/g, '') + '</body></html>');
+			var content = p.tree.document.childNodes[0].childNodes[1];
+			var stdout  = process.stdout;
+			new WikitextSerializer({env: env}).serializeDOM(content, stdout.write.bind(stdout));
+
 			// add a trailing newline for shell user's benefit
-			process.stdout.write( "\n" );
+			stdout.write( "\n" );
 			process.exit(0);
-		});
-		// Kick off the pipeline by feeding the input into the parser pipeline
-		parser.process( input );
+		} else {
+			var parserPipelineFactory = new ParserPipelineFactory( env );
+			var parser = parserPipelineFactory.makePipeline( 'text/x-mediawiki/full' );
+			parser.on('document', function ( document ) {
+				// Print out the html
+				if ( argv.linearmodel ) {
+					process.stdout.write(
+						JSON.stringify( ConvertDOMToLM( document.body ), null, 2 ) );
+				} else if ( argv.wikidom ) {
+					process.stdout.write(
+						JSON.stringify(
+							new DOMConverter().HTMLtoWiki( document.body ),
+							null,
+							2
+						));
+				} else if ( argv.wikitext ) {
+					new WikitextSerializer({env: env}).serializeDOM( document.body,
+						process.stdout.write.bind( process.stdout ) );
+				} else {
+					process.stdout.write( document.body.innerHTML );
+				}
+
+				// add a trailing newline for shell user's benefit
+				process.stdout.write( "\n" );
+				process.exit(0);
+			});
+			// Kick off the pipeline by feeding the input into the parser pipeline
+			parser.process( input );
+		}
 	} );
 
 } )();
