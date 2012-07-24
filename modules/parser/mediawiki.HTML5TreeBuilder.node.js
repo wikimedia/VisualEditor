@@ -81,7 +81,7 @@ FauxHTML5.TreeBuilder.prototype.processToken = function (token) {
 			attribs = attribs.concat([ 
 					{
 						// Mediawiki-specific round-trip / non-semantic information
-						k: 'data-rt', 
+						k: 'data-parsoid', 
 						v: dataMW
 					} ] );
 		}

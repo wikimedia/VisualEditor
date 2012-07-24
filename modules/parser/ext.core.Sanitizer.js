@@ -321,7 +321,7 @@ Sanitizer.prototype._stripIDNs = function ( host ) {
  * Sanitize any tag.
  *
  * XXX: Make attribute sanitation reversible by storing round-trip info in
- * token.dataAttribs object (which is serialized as JSON in a data-rt
+ * token.dataAttribs object (which is serialized as JSON in a data-parsoid
  * attribute in the DOM).
  */
 Sanitizer.prototype.onAny = function ( token ) {

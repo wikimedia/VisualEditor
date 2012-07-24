@@ -338,9 +338,9 @@ ParserTests.prototype.normalizeHTML = function (source) {
 ParserTests.prototype.normalizeOut = function ( out ) {
 	// TODO: Do not strip newlines in pre and nowiki blocks!
 	return out
-		.replace(/<span data-gen=[^>]*>((?:[^<]+|(?!<\/span).)*)<\/span>/g,
+		.replace(/<span typeof="mw:(?:(?:Placeholder|Nowiki))"[^>]*>((?:[^<]+|(?!<\/span).)*)<\/span>/g,
 						'$1')
-		.replace(/[\r\n]| (data-rt|typeof|resource|rel|prefix|about|rev|datatype|inlist|property|vocab|content)="[^">]*"/g, '')
+		.replace(/[\r\n]| (data-parsoid|typeof|resource|rel|prefix|about|rev|datatype|inlist|property|vocab|content)="[^">]*"/g, '')
 		.replace(/<!--.*?-->\n?/gm, '')
 		.replace(/<\/?meta[^>]*>/g, '');
 };

@@ -90,7 +90,7 @@ var annotationTypes = {
 	'span': 'textStyle/span',
 	'a': function( node ) {
 		// FIXME the parser currently doesn't output this data this way
-		// Internal links get linkType:'internal' in the data-rt attrib,
+		// Internal links get linkType:'internal' in the data-parsoid attrib,
 		// external links get nothing
 		var atype = node.getAttribute( 'data-type' );
 		if ( atype ) {
