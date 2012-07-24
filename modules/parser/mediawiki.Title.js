@@ -1,4 +1,4 @@
-var Util = require('./ext.Util.js').Util;
+var Util = require('./mediawiki.Util.js').Util;
 
 function Title ( key, ns, nskey, env ) {
 	this.key = key;

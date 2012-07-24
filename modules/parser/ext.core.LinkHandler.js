@@ -10,7 +10,7 @@
 var jshashes = require('jshashes'),
 	PegTokenizer = require('./mediawiki.tokenizer.peg.js').PegTokenizer,
 	WikitextConstants = require('./mediawiki.wikitext.constants.js').WikitextConstants,
-	Util = require('./ext.Util.js').Util;
+	Util = require('./mediawiki.Util.js').Util;
 
 function WikiLinkHandler( manager, isInclude ) {
 	this.manager = manager;

@@ -1,7 +1,7 @@
 /* Perform post-processing steps on an already-built HTML DOM. */
 
 var events = require('events'),
-	Util = require('./ext.Util.js').Util;
+	Util = require('./mediawiki.Util.js').Util;
 
 // Quick HACK: define Node constants
 // https://developer.mozilla.org/en/nodeType

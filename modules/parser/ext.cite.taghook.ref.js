@@ -1,4 +1,4 @@
-var Util = require( './ext.Util.js' ).Util;
+var Util = require( './mediawiki.Util.js' ).Util;
 
 /**
  * The ref / references tags don't do any fancy HTML, so we can actually

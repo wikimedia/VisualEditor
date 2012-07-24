@@ -17,7 +17,7 @@ var $ = require('jquery'),
 									.AttributeTransformManager,
 	defines = require('./mediawiki.parser.defines.js'),
 	TemplateRequest = require('./mediawiki.ApiRequest.js').TemplateRequest,
-	Util = require('./ext.Util.js').Util;
+	Util = require('./mediawiki.Util.js').Util;
 
 function TemplateHandler ( manager ) {
 	this.register( manager );

@@ -2,7 +2,7 @@
  * Create list tag around list items and map wiki bullet levels to html
  */
 
-var Util = require('./ext.Util.js').Util;
+var Util = require('./mediawiki.Util.js').Util;
 
 function ListHandler ( manager ) {
 	this.manager = manager;

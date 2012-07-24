@@ -19,7 +19,7 @@
 var events = require('events'),
 	LRU = require("lru-cache"),
 	jshashes = require('jshashes'),
-	Util = require('./ext.Util.js').Util;
+	Util = require('./mediawiki.Util.js').Util;
 
 /**
  * Base class for token transform managers

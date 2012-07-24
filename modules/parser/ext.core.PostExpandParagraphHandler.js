@@ -5,7 +5,7 @@
  */
 
 // Include general utilities
-var u = require('./ext.Util.js').Util;
+var u = require('./mediawiki.Util.js').Util;
 
 
 function PostExpandParagraphHandler ( dispatcher ) {

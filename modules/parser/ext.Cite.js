@@ -1,5 +1,5 @@
 var TokenCollector = require( './ext.util.TokenCollector.js' ).TokenCollector;
-// var Util = require( './ext.Util.js' ).Util;
+// var Util = require( './mediawiki.Util.js' ).Util;
 
 /**
  * Simple token transform version of the Cite extension.

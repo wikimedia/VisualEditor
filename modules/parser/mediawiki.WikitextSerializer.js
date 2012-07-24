@@ -1,7 +1,7 @@
 require('./core-upgrade.js');
 var PegTokenizer = require('./mediawiki.tokenizer.peg.js').PegTokenizer;
 var WikitextConstants = require('./mediawiki.wikitext.constants.js').WikitextConstants;
-var Util = require('./ext.Util.js').Util;
+var Util = require('./mediawiki.Util.js').Util;
 
 /**
  * Serializes a chunk of tokens or an HTML DOM to MediaWiki's wikitext flavor.

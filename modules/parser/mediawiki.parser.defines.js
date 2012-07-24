@@ -4,7 +4,7 @@
  */
 
 var async = require('async');
-var Util = require('./ext.Util.js').Util;
+var Util = require('./mediawiki.Util.js').Util;
 
 /* -------------------- TagTk -------------------- */
 function TagTk( name, attribs, dataAttribs ) { 

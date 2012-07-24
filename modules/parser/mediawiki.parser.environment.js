@@ -1,4 +1,4 @@
-var Util = require('./ext.Util.js').Util;
+var Util = require('./mediawiki.Util.js').Util;
 var title = require('./mediawiki.Title.js'),
 	Title = title.Title,
 	Namespace = title.Namespace;
