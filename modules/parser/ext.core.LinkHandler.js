@@ -47,8 +47,7 @@ WikiLinkHandler.prototype.onWikiLink = function ( token, frame, cb ) {
 		var normalizedHref = title.makeLink(),
 			obj = new TagTk( 'a',
 					[
-						new KV( 'href', normalizedHref ),
-						new KV('rel', 'mw:WikiLink')
+						new KV( 'href', normalizedHref )
 					], token.dataAttribs
 				),
 			content = token.attribs.slice(2);
@@ -66,10 +65,11 @@ WikiLinkHandler.prototype.onWikiLink = function ( token, frame, cb ) {
 					out.push( '|' );
 				}
 			}
+			obj.attribs.push( new KV('rel', 'mw:WikiLink') );
 			content = out;
 		} else {
 			content = [ Util.decodeURI(href) ];
-			obj.dataAttribs.gc = 1;
+			obj.attribs.push( new KV('rel', 'mw:SimpleWikiLink') );
 		}
 
 		var tail = Util.lookupKV( token.attribs, 'tail' ).v;
@@ -371,9 +371,8 @@ ExternalLinkHandler.prototype.onUrlLink = function ( token, frame, cb ) {
 				new TagTk( 'a', 
 					[ 
 						new KV( 'href', href ),
-						new KV('rel', 'mw:ExtLink')
-					],
-					{ stx: 'urllink' } ),
+						new KV('rel', 'mw:UrlLink')
+					] ),
 				href,
 				new EndTagTk( 'a' )
 			] 
@@ -386,7 +385,8 @@ ExternalLinkHandler.prototype.onUrlLink = function ( token, frame, cb ) {
 ExternalLinkHandler.prototype.onExtLink = function ( token, manager, cb ) {
 	var env = this.manager.env,
 		href = Util.sanitizeURI(env.tokensToString( Util.lookupKV( token.attribs, 'href' ).v )),
-		content= Util.lookupKV( token.attribs, 'content' ).v;
+		content= Util.lookupKV( token.attribs, 'content' ).v,
+		rdfaType = 'mw:ExtLink';
 	//console.warn('extlink href: ' + href );
 	//console.warn( 'content: ' + JSON.stringify( content, null, 2 ) );
 	// validate the href
@@ -394,6 +394,7 @@ ExternalLinkHandler.prototype.onExtLink = function ( token, manager, cb ) {
 		if ( ! content.length ) {
 			content = ['[' + this.linkCount + ']'];
 			this.linkCount++;
+			rdfaType = 'mw:NumberedExtLink';
 		}
 		if ( content.length === 1 && 
 				content[0].constructor === String &&
@@ -417,7 +418,7 @@ ExternalLinkHandler.prototype.onExtLink = function ( token, manager, cb ) {
 					new TagTk ( 'a', 
 							[ 
 								new KV('href', href),
-								new KV('rel', 'mw:ExtLink')
+								new KV('rel', rdfaType)
 							], 
 							token.dataAttribs
 					)
