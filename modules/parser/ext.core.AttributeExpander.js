@@ -16,7 +16,7 @@ var $ = require('jquery'),
 function AttributeExpander ( manager ) {
 	this.manager = manager;
 	// XXX: only register for tag tokens?
-	manager.addTransform( this.onToken.bind(this), 
+	manager.addTransform( this.onToken.bind(this), "AttributeExpander:onToken",
 			this.rank, 'any' );
 }
 

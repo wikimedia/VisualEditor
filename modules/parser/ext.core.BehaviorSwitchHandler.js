@@ -3,7 +3,7 @@
 
 function BehaviorSwitchHandler( manager, isInclude ) {
 	this.manager = manager;
-	this.manager.addTransform( this.onBehaviorSwitch.bind( this ), this.rank, 'tag', 'behavior-switch' );
+	this.manager.addTransform( this.onBehaviorSwitch.bind( this ), "BehaviorSwitchHandler:onBehaviorSwitch", this.rank, 'tag', 'behavior-switch' );
 }
 
 BehaviorSwitchHandler.prototype.rank = 2.14;

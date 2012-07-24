@@ -8,9 +8,7 @@
  */
 
 // Include general utilities
-var Util = require('./ext.Util.js').Util,
-	u = new Util();
-
+var u = require('./ext.Util.js').Util;
 
 function Sanitizer ( manager ) {
 	this.manager = manager;
@@ -25,8 +23,8 @@ Sanitizer.prototype.anyRank = 2.9901;
 // Register this transformer with the TokenTransformer
 Sanitizer.prototype.register = function ( manager ) {
 	this.manager = manager;
-	manager.addTransform( this.onAnchor.bind(this), this.handledRank, 'tag', 'a' );
-	manager.addTransform( this.onAny.bind(this), this.anyRank, 'any' );
+	manager.addTransform( this.onAnchor.bind(this), "Sanitizer:onAnchor", this.handledRank, 'tag', 'a' );
+	manager.addTransform( this.onAny.bind(this), "Sanitizer:onAny", this.anyRank, 'any' );
 };
 
 Sanitizer.prototype.onAnchor = function ( token ) {
@@ -34,7 +32,7 @@ Sanitizer.prototype.onAnchor = function ( token ) {
 	if ( token.constructor === EndTagTk ) {
 		return { token: token };
 	}
-	var hrefKV = this.manager.env.lookupKV( token.attribs, 'href' );
+	var hrefKV = u.lookupKV( token.attribs, 'href' );
 	// FIXME: Should the flattening of attributes to text be performed as part
 	// of the AttributeTransformManager processing? This certainly is not the
 	// right place!

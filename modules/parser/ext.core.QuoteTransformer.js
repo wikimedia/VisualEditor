@@ -34,7 +34,7 @@ QuoteTransformer.prototype.reset = function ( ) {
 QuoteTransformer.prototype.register = function ( dispatcher ) {
 	this.dispatcher = dispatcher;
 	// Register for QUOTE tag tokens
-	dispatcher.addTransform( this.onQuote.bind(this), 
+	dispatcher.addTransform( this.onQuote.bind(this), "QuoteTransformer:onQuote",
 			this.quoteAndNewlineRank, 'tag', 'mw-quote' );
 };
 
@@ -64,13 +64,13 @@ QuoteTransformer.prototype.onQuote = function ( token, frame, prevToken ) {
 	
 
 	if ( ! this.isActive ) {
-		this.dispatcher.addTransform( this.onNewLine.bind(this), 
+		this.dispatcher.addTransform( this.onNewLine.bind(this), "QuoteTransformer:onNewLine",
 				this.quoteAndNewlineRank, 'newline' );
 		// Treat end-of-input just the same as a newline
-		this.dispatcher.addTransform( this.onNewLine.bind(this), 
+		this.dispatcher.addTransform( this.onNewLine.bind(this), "QuoteTransformer:onNewLine:end",
 				this.quoteAndNewlineRank, 'end' );
 		// register for any token if not yet active
-		this.dispatcher.addTransform( this.onAny.bind(this), this.anyRank, 'any' );
+		this.dispatcher.addTransform( this.onAny.bind(this), "QuoteTransformer:onAny", this.anyRank, 'any' );
 		this.isActive = true;
 	}
 

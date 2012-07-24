@@ -16,8 +16,8 @@ var $ = require('jquery'),
 	AttributeTransformManager = require('./mediawiki.TokenTransformManager.js')
 									.AttributeTransformManager,
 	defines = require('./mediawiki.parser.defines.js'),
-	TemplateRequest = require('./mediawiki.ApiRequest.js').TemplateRequest;
-
+	TemplateRequest = require('./mediawiki.ApiRequest.js').TemplateRequest,
+	Util = require('./ext.Util.js').Util;
 
 function TemplateHandler ( manager ) {
 	this.register( manager );
@@ -30,11 +30,11 @@ TemplateHandler.prototype.rank = 1.1;
 TemplateHandler.prototype.register = function ( manager ) {
 	this.manager = manager;
 	// Register for template and templatearg tag tokens
-	manager.addTransform( this.onTemplate.bind(this), 
+	manager.addTransform( this.onTemplate.bind(this), "TemplateHandler:onTemplate",
 			this.rank, 'tag', 'template' );
 
 	// Template argument expansion
-	manager.addTransform( this.onTemplateArg.bind(this), 
+	manager.addTransform( this.onTemplateArg.bind(this), "TemplateHandler:onTemplateArg",
 			this.rank, 'tag', 'templatearg' );
 
 };
@@ -195,7 +195,7 @@ TemplateHandler.prototype._processTemplateAndTitle = function( token, frame, cb,
  */
 TemplateHandler.prototype._onChunk = function( cb, chunk ) {
 	// We encapsulate the output by default, so collect tokens here.
-	chunk = this.manager.env.stripEOFTkfromTokens( chunk );
+	chunk = Util.stripEOFTkfromTokens( chunk );
 	this.manager.env.dp( 'TemplateHandler._onChunk', chunk );
 	cb( { tokens: chunk, async: true } );
 };

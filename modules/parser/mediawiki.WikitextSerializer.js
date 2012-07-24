@@ -1,3 +1,8 @@
+require('./core-upgrade.js');
+var PegTokenizer = require('./mediawiki.tokenizer.peg.js').PegTokenizer;
+var WikitextConstants = require('./mediawiki.wikitext.constants.js').WikitextConstants;
+var Util = require('./ext.Util.js').Util;
+
 /**
  * Serializes a chunk of tokens or an HTML DOM to MediaWiki's wikitext flavor.
  * 
@@ -10,10 +15,6 @@ WikitextSerializer = function( options ) {
 		// defaults
 	}, options || {} );
 };
-
-require('./core-upgrade.js');
-var PegTokenizer = require('./mediawiki.tokenizer.peg.js').PegTokenizer;
-var WikitextConstants = require('./mediawiki.wikitext.constants.js').WikitextConstants;
 
 var WSP = WikitextSerializer.prototype;
 
@@ -1063,7 +1064,7 @@ WSP.defaultHTMLTagHandler = {
 WSP._getTokenHandler = function(state, token) {
 	var handler;
 	if ( token.dataAttribs.src !== undefined &&
-		state.env.lookup( token.attribs, 'data-gen' ) === 'both' ) {
+		Util.lookup( token.attribs, 'data-gen' ) === 'both' ) {
 			// implement generic src round-tripping: 
 			// return src, and drop the generated content
 			if ( token.constructor === TagTk ) {

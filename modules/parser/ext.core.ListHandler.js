@@ -2,12 +2,14 @@
  * Create list tag around list items and map wiki bullet levels to html
  */
 
+var Util = require('./ext.Util.js').Util;
+
 function ListHandler ( manager ) {
 	this.manager = manager;
 	this.reset();
-	this.manager.addTransform( this.onListItem.bind(this), 
+	this.manager.addTransform( this.onListItem.bind(this), "ListHandler:onListItem",
 			this.listRank, 'tag', 'listItem' );
-	this.manager.addTransform( this.onEnd.bind(this),
+	this.manager.addTransform( this.onEnd.bind(this), "ListHandler:onEnd",
 			this.listRank, 'end' );
 }
 
@@ -113,18 +115,18 @@ ListHandler.prototype.doListItem = function ( bs, bn, token ) {
 	this.bstack = bn;
 	if (!bs.length)
 	{
-		this.manager.addTransform( this.onAny.bind(this),
+		this.manager.addTransform( this.onAny.bind(this), "ListHandler:onAny",
 				this.anyRank, 'any' );
 	}
 	
 	var itemToken;
 
 	// emit close tag tokens for closed lists
-	if (changeLen === 0)
-	{
+	var res;
+	if (changeLen === 0) {
 		itemToken = this.endtags.pop();
 		this.endtags.push(new EndTagTk( itemToken.name ));
-		return [
+		res = [
 			itemToken,
 			new TagTk( itemToken.name, [], token.dataAttribs )
 		];
@@ -160,8 +162,10 @@ ListHandler.prototype.doListItem = function ( bs, bn, token ) {
 
 			tokens = tokens.concat(this.pushList(this.bulletCharsMap[bn[i]]));
 		}
-		return tokens;
+		res = tokens;
 	}
+	this.manager.env.tracer.output("Returning: " + Util.toStringTokens(res).join(","));
+	return res;
 };
 
 if (typeof module == "object") {

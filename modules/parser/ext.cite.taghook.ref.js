@@ -1,3 +1,5 @@
+var Util = require( './ext.Util.js' ).Util;
+
 /**
  * The ref / references tags don't do any fancy HTML, so we can actually
  * implement this in terms of parse tree manipulations, skipping the need
@@ -70,7 +72,7 @@ MWRefTagHook = function( env ) {
 		if (options.group) {
 			bits.push(options.group);
 		}
-		bits.push(env.formatNum( ref.groupIndex + 1 ));
+		bits.push(Util.formatNum( ref.groupIndex + 1 ));
 
 		return {
 			type: 'span',
@@ -124,7 +126,7 @@ MWReferencesTagHook = function( env ) {
 					type: 'hashlink',
 					target: '#' + ref.linkbacks[0],
 					content: [
-						env.formatNum( ref.groupIndex + '.' + i)
+						Util.formatNum( ref.groupIndex + '.' + i)
 					]
 				});
 			})

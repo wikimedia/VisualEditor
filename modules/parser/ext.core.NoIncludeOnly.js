@@ -20,10 +20,10 @@ function OnlyInclude( manager, isInclude ) {
 		this.inOnlyInclude = false;
 		this.foundOnlyInclude = false;
 		// register for 'any' token, collect those
-		this.manager.addTransform( this.onAnyInclude.bind( this ), this.rank, 'any' );
+		this.manager.addTransform( this.onAnyInclude.bind( this ), "OnlyInclude:onAnyInclude", this.rank, 'any' );
 	} else {
 		// just convert onlyinclude tokens into meta tags with rt info
-		this.manager.addTransform( this.onOnlyInclude.bind( this ), this.rank, 
+		this.manager.addTransform( this.onOnlyInclude.bind( this ), "OnlyInclude:onOnlyInclude", this.rank, 
 				'tag', 'onlyinclude' );
 	}
 }

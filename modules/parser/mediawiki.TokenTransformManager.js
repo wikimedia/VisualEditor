@@ -18,7 +18,8 @@
 
 var events = require('events'),
 	LRU = require("lru-cache"),
-	jshashes = require('jshashes');
+	jshashes = require('jshashes'),
+	Util = require('./ext.Util.js').Util;
 
 /**
  * Base class for token transform managers
@@ -91,14 +92,29 @@ TokenTransformManager.prototype._cmpTransformations = function ( a, b ) {
  *
  * @method
  * @param {Function} transform.
+ * @param {String} Debug string to identify the transformer in a trace.
  * @param {Number} rank, [0,3) with [0,1) in-order on input token stream,
  * [1,2) out-of-order and [2,3) in-order on output token stream
  * @param {String} type, one of 'tag', 'text', 'newline', 'comment', 'end',
  * 'martian' (unknown token), 'any' (any token, matched before other matches).
  * @param {String} tag name for tags, omitted for non-tags
  */
-TokenTransformManager.prototype.addTransform = function ( transformation, rank, type, name ) {
-	var t = {transform: transformation, rank: rank};
+TokenTransformManager.prototype.addTransform = function ( transformation, debug_name, rank, type, name ) {
+	var t = { rank: rank };
+	if (!this.env.trace) {
+		t.transform = transformation;
+	} else {
+		// Trace info
+		var mgr = this;
+		t.transform = function() {
+			var args = arguments;
+			mgr.env.tracer.startPass(debug_name + ":" + rank);
+			var r = transformation.apply(null, args);
+			mgr.env.tracer.endPass(debug_name + ":" + rank);
+			return r;
+		};
+	}
+
 	if (type === 'any') {
 		// Record the any transformation
 		this.defaultTransformers.push(t);
@@ -277,6 +293,7 @@ AsyncTokenTransformManager.prototype.process = function ( tokens ) {
  * @param {Array} chunk of tokens
  */
 AsyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
+	this.env.tracer.startPass("onChunk (Async:" + this.attributeType + ")");
 	// Set top-level callback to next transform phase
 	var res = this.transformTokens ( tokens, this.tokenCB );
 	this.env.dp( 'AsyncTokenTransformManager onChunk', res.async? 'async' : 'sync', res.tokens );
@@ -295,6 +312,7 @@ AsyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 		this.tailAccumulator = res.async;
 		this.tokenCB = res.async.getParentCB ( 'sibling' );
 	}
+	this.env.tracer.endPass("onChunk (Async:" + this.attributeType + ")");
 };
 
 /**
@@ -415,6 +433,8 @@ AsyncTokenTransformManager.prototype.transformTokens = function ( tokens, parent
 						JSON.stringify( token ) );
 			}
 		}
+
+		this.env.tracer.processToken(token);
 
 		var ts = this._getTransforms( token, minRank );
 
@@ -665,6 +685,7 @@ SyncTokenTransformManager.prototype.process = function ( tokens ) {
  * @param {Array} Token chunk.
  */
 SyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
+	this.env.tracer.startPass("onChunk (Sync:" + this.attributeType + ")");
 	this.env.dp( 'SyncTokenTransformManager.onChunk, input: ', tokens );
 	var res,
 		localAccum = [],
@@ -691,6 +712,9 @@ SyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 			token = tokens[i];
 			minRank = tokens.rank || this.phaseEndRank - 1;
 		}
+
+		this.env.tracer.processToken(token);
+
 		res = { token: token };
 		
 		ts = this._getTransforms( token, minRank );
@@ -710,6 +734,7 @@ SyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 			}
 			token = res.token;
 		}
+
 		//this.env.dp( 'sync res:', res );
 
 		if( res.tokens && res.tokens.length ) {
@@ -729,6 +754,7 @@ SyncTokenTransformManager.prototype.onChunk = function ( tokens ) {
 	localAccum.rank = this.phaseEndRank;
 	localAccum.cache = tokens.cache;
 	this.env.dp( 'SyncTokenTransformManager.onChunk: emitting ', localAccum );
+	this.env.tracer.endPass("onChunk (Sync:" + this.attributeType + ")");
 	this.emit( 'chunk', localAccum );
 };
 
@@ -935,7 +961,7 @@ AttributeTransformManager.prototype.processValues = function ( attributes ) {
 AttributeTransformManager.prototype._returnAttributeValue = function ( ref, tokens ) {
 	this.manager.env.dp( 'check _returnAttributeValue: ', ref,  tokens );
 	this.kvs[ref].v = tokens;
-	this.kvs[ref].v = this.manager.env.stripEOFTkfromTokens( this.kvs[ref].v );
+	this.kvs[ref].v = Util.stripEOFTkfromTokens( this.kvs[ref].v );
 	this.outstanding--;
 	if ( this.outstanding === 0 ) {
 		this.callback( this.kvs );
@@ -948,7 +974,7 @@ AttributeTransformManager.prototype._returnAttributeValue = function ( ref, toke
 AttributeTransformManager.prototype._returnAttributeKey = function ( ref, tokens ) {
 	//console.warn( 'check _returnAttributeKey: ' + JSON.stringify( tokens )  );
 	this.kvs[ref].k = tokens;
-	this.kvs[ref].k = this.manager.env.stripEOFTkfromTokens( this.kvs[ref].k );
+	this.kvs[ref].k = Util.stripEOFTkfromTokens( this.kvs[ref].k );
 	if ( this.kvs[ref].v === '' ) {
 		// FIXME: use tokenizer production to properly parse this
 		var m = this.manager.env.tokensToString( this.kvs[ref].k )
@@ -1262,7 +1288,7 @@ Frame.prototype._eofTkList = [ new EOFTk() ];
  */
 Frame.prototype.onThunkEvent = function ( state, notYetDone, ret ) {
 	if ( notYetDone ) {
-		state.accum = state.accum.concat(this.manager.env.stripEOFTkfromTokens( ret ) );
+		state.accum = state.accum.concat(Util.stripEOFTkfromTokens( ret ) );
 		this.manager.env.dp( 'Frame.onThunkEvent accum:', this._cacheKey, state.accum );
 	} else {
 		this.manager.env.dp( 'Frame.onThunkEvent:', this._cacheKey, state.accum );

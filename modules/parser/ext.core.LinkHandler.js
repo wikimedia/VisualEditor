@@ -9,11 +9,12 @@
 
 var jshashes = require('jshashes'),
 	PegTokenizer = require('./mediawiki.tokenizer.peg.js').PegTokenizer,
-	WikitextConstants = require('./mediawiki.wikitext.constants.js').WikitextConstants;
+	WikitextConstants = require('./mediawiki.wikitext.constants.js').WikitextConstants,
+	Util = require('./ext.Util.js').Util;
 
 function WikiLinkHandler( manager, isInclude ) {
 	this.manager = manager;
-	this.manager.addTransform( this.onWikiLink.bind( this ), this.rank, 'tag', 'wikilink' );
+	this.manager.addTransform( this.onWikiLink.bind( this ), "WikiLinkHandler:onWikiLink", this.rank, 'tag', 'wikilink' );
 	// create a new peg parser for image options..
 	if ( !this.imageParser ) {
 		// Actually the regular tokenizer, but we'll call it with the
@@ -26,12 +27,11 @@ WikiLinkHandler.prototype.rank = 1.15; // after AttributeExpander
 
 WikiLinkHandler.prototype.onWikiLink = function ( token, frame, cb ) {
 	var env = this.manager.env,
-		href = token.attribs[0].v,
-		hrefStr = env.tokensToString( href );
-	var title = this.manager.env.makeTitleFromPrefixedText(hrefStr);
+		href = env.tokensToString( Util.lookupKV( token.attribs, 'href' ).v ),
+		title = env.makeTitleFromPrefixedText(href);
 
 	if ( title.ns.isFile() ) {
-		cb( this.renderFile( token, frame, cb, hrefStr, title ) );
+		cb( this.renderFile( token, frame, cb, href, title ) );
 	} else if ( title.ns.isCategory() ) {
 		// Simply round-trip category links for now
 		cb( { tokens: [ 
@@ -53,11 +53,12 @@ WikiLinkHandler.prototype.onWikiLink = function ( token, frame, cb ) {
 				),
 			content = token.attribs.slice(2);
 		if ( href !== normalizedHref ) {
-			obj.dataAttribs.sHref = hrefStr;
+			obj.dataAttribs.sHref = href;
 		}
 		//console.warn('content: ' + JSON.stringify( content, null, 2 ) );
+
 		// XXX: handle trail
-		if ( content.length ) {
+		if ( content.length > 0 ) {
 			var out = [];
 			for ( var i = 0, l = content.length; i < l ; i++ ) {
 				out = out.concat( content[i].v );
@@ -67,11 +68,11 @@ WikiLinkHandler.prototype.onWikiLink = function ( token, frame, cb ) {
 			}
 			content = out;
 		} else {
-			content = [ env.decodeURI(hrefStr) ];
+			content = [ Util.decodeURI(href) ];
 			obj.dataAttribs.gc = 1;
 		}
 
-		var tail = token.attribs[1].v;
+		var tail = Util.lookupKV( token.attribs, 'tail' ).v;
 		if ( tail ) {
 			obj.dataAttribs.tail = tail;
 			content.push( tail );
@@ -88,9 +89,7 @@ WikiLinkHandler.prototype.renderFile = function ( token, frame, cb, fileName, ti
 	// distinguish media types
 	// if image: parse options
 	
-	// Slice off the target and tail
 	var content = token.attribs.slice(2);
-
 
 	var MD5 = new jshashes.MD5(),
 		hash = MD5.hex( title.key ),
@@ -321,10 +320,10 @@ WikiLinkHandler.prototype.renderThumb = function ( token, manager, cb, title, fi
 
 function ExternalLinkHandler( manager, isInclude ) {
 	this.manager = manager;
-	this.manager.addTransform( this.onUrlLink.bind( this ), this.rank, 'tag', 'urllink' );
-	this.manager.addTransform( this.onExtLink.bind( this ), 
+	this.manager.addTransform( this.onUrlLink.bind( this ), "ExternalLinkHandler:onUrlLink", this.rank, 'tag', 'urllink' );
+	this.manager.addTransform( this.onExtLink.bind( this ), "ExternalLinkHandler:onExtLink",  
 			this.rank - 0.001, 'tag', 'extlink' );
-	this.manager.addTransform( this.onEnd.bind( this ), 
+	this.manager.addTransform( this.onEnd.bind( this ), "ExternalLinkHandler:onEnd",  
 			this.rank, 'end' );
 	// create a new peg parser for image options..
 	if ( !this.imageParser ) {
@@ -356,9 +355,8 @@ ExternalLinkHandler.prototype._isImageLink = function ( href ) {
 
 ExternalLinkHandler.prototype.onUrlLink = function ( token, frame, cb ) {
 	var env = this.manager.env,
-		href = env.sanitizeURI( 
-				env.tokensToString( env.lookupKV( token.attribs, 'href' ).v )
-			);
+		href = Util.sanitizeURI( 
+				env.tokensToString( Util.lookupKV( token.attribs, 'href' ).v ));
 	if ( this._isImageLink( href ) ) {
 		cb( { tokens: [ new SelfclosingTagTk( 'img', 
 					[ 
@@ -390,9 +388,8 @@ ExternalLinkHandler.prototype.onUrlLink = function ( token, frame, cb ) {
 // Bracketed external link
 ExternalLinkHandler.prototype.onExtLink = function ( token, manager, cb ) {
 	var env = this.manager.env,
-		href = env.tokensToString( env.lookupKV( token.attribs, 'href' ).v ),
-		content= env.lookupKV( token.attribs, 'content' ).v;
-	href = env.sanitizeURI( href );
+		href = Util.sanitizeURI(env.tokensToString( Util.lookupKV( token.attribs, 'href' ).v )),
+		content= Util.lookupKV( token.attribs, 'content' ).v;
 	//console.warn('extlink href: ' + href );
 	//console.warn( 'content: ' + JSON.stringify( content, null, 2 ) );
 	// validate the href
