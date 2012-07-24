@@ -526,7 +526,7 @@ WSP._linkHandler =  function( state, tokens ) {
 	var attribDict = env.KVtoHash( token.attribs );
 	if ( attribDict.rel && attribDict.href !== undefined ) {
 		var tokenData = token.dataAttribs;
-		if ( attribDict.rel === 'mw:WikiLink' ) {
+		if ( attribDict.rel === 'mw:WikiLink' || attribDict.rel === 'mw:SimpleWikiLink' ) {
 			var base   = env.wgScriptPath;
 			var href   = attribDict.href;
 			var prefix = href.substr(0, base.length);
@@ -535,7 +535,11 @@ WSP._linkHandler =  function( state, tokens ) {
 
 			var tail   = tokenData.tail;
 			if ( tail && tail.length ) {
-				target = tokenData.gc ? tokenData.sHref : target.replace( /_/g, ' ' );
+				if ( attribDict.rel === 'mw:SimpleWikiLink' ) {
+					target = tokenData.sHref;
+				} else {
+					target = target.replace( /_/g, ' ' );
+				}
 			} else {
 				tail = '';
 				var origLinkTgt = tokenData.sHref;
@@ -555,7 +559,7 @@ WSP._linkHandler =  function( state, tokens ) {
 			// FIXME: Properly handle something like [[{{Foo}}]]s
 			target = env.tokensToString( target );
 
-			if ( tokenData.gc ) {
+			if ( attribDict.rel === 'mw:SimpleWikiLink' ) {
 				return '[[' + target + ']]' + tail;
 			} else {
 				var content = state.serializer.serializeTokens( tokens ).join('');
@@ -565,16 +569,13 @@ WSP._linkHandler =  function( state, tokens ) {
 				return '[[' + target + '|' + content + ']]' + tail;
 			}
 		} else if ( attribDict.rel === 'mw:ExtLink' ) {
-			// TODO: use data-{gen,sem,special} instead!
-			if ( tokenData.stx === 'urllink' ) {
-				return attribDict.href;
-			} else if ( tokenData.gc ) {
-				return '[' + attribDict.href + ']';
-			} else {
-				return '[' + attribDict.href + ' ' + 
-					state.serializer.serializeTokens( tokens ).join('') + 
-					']';
-			}
+			return '[' + attribDict.href + ' ' + 
+				state.serializer.serializeTokens( tokens ).join('') + 
+				']';
+		} else if ( attribDict.rel === 'mw:UrlLink' ) {
+			return attribDict.href;
+		} else if ( attribDict.rel === 'mw:NumberedExtLink' ) {
+			return '[' + attribDict.href + ']';
 		} else if ( attribDict.rel === 'mw:Image' ) {
 			// simple source-based round-tripping for now..
 			// TODO: properly implement!
