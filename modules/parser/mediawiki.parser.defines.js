@@ -13,6 +13,60 @@ function TagTk( name, attribs, dataAttribs ) {
 	this.dataAttribs = dataAttribs || {};
 }
 
+/**
+ * Generic token attribute accessors
+ */
+var genericTokenMethods = {
+
+	/**
+	 * Generic set attribute method. Expects the context to be set to a token.
+	 */
+	addAttribute: function ( attributeName, value ) {
+		this.attribs.push( new KV( attributeName, value ) );
+	},
+
+	/**
+	 * Generic set attribute method with support for change detection. Expects the
+	 * context to be set to a token.
+	 */
+	addNormalizedAttribute: function ( attributeName, normalizedValue, origValue ) {
+		this.addAttribute( attributeName, normalizedValue );
+		if ( ! this.dataAttribs.a ) {
+			this.dataAttribs.a = {};
+		}
+		this.dataAttribs.a[attributeName] = normalizedValue;
+		if ( origValue !== undefined ) {
+			if ( ! this.dataAttribs.sa ) {
+				this.dataAttribs.sa = {};
+			}
+			this.dataAttribs.sa[attributeName] = origValue;
+		}
+	},
+
+	/**
+	 * Generic attribute accessor. Expects the context to be set to a token.
+	 */
+	getAttribute: function ( attributeName ) {
+		return Util.lookup( this.attribs, attributeName );
+	},
+
+	/**
+	 * Attribute accessor for the wikitext serializer. Performs change
+	 * detection and uses unnormalized attribute values if set. Expects the
+	 * context to be set to a token.
+	 */
+	getAttributeSource: function ( attributeName ) {
+		var curVal = Util.lookup( this.attribs, attributeName );
+		if ( ! this.dataAttribs.a || 
+				this.dataAttribs.a[attributeName] !== curVal ||
+				this.dataAttribs.sa[attributeName] === undefined ) {
+			return curVal;
+		} else {
+			return this.dataAttribs.sa[attributeName];
+		}
+	}
+};
+
 TagTk.prototype = {};
 
 TagTk.prototype.constructor = TagTk;
@@ -48,6 +102,8 @@ TagTk.prototype.toString = function() {
 		return f ? f.bind(this)() : this.defaultToString();
 	}
 };
+// add in generic token methods
+$.extend( TagTk.prototype, genericTokenMethods );
 
 /* -------------------- EndTagTk -------------------- */
 function EndTagTk( name, attribs, dataAttribs ) { 
@@ -71,6 +127,8 @@ EndTagTk.prototype.toString = function() {
 		return "</" + this.name + ">";
 	}
 };
+// add in generic token methods
+$.extend( EndTagTk.prototype, genericTokenMethods );
 
 /* -------------------- SelfclosingTagTk -------------------- */
 function SelfclosingTagTk( name, attribs, dataAttribs ) { 
@@ -182,6 +240,8 @@ SelfclosingTagTk.prototype.toString = function(compact, indent) {
 		return f ? f.bind(this)(compact, indent) : this.defaultToString(compact, indent);
 	}
 };
+// add in generic token methods
+$.extend( SelfclosingTagTk.prototype, genericTokenMethods );
 
 /* -------------------- NlTk -------------------- */
 function NlTk( ) { }
@@ -407,7 +467,7 @@ ParserValue.prototype.length = function () {
 
 
 // TODO: don't use globals!
-if (typeof module == "object") {
+if (typeof module === "object") {
 	module.exports = {};
 	global.TagTk = TagTk;
 	global.EndTagTk = EndTagTk;
