@@ -14,7 +14,7 @@
  * @param {Integer} [length] Length of content data in document
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  */
-ve.dm.AlienBlock = function( length, attributes ) {
+ve.dm.AlienBlockNode = function( length, attributes ) {
 	// Inheritance
 	ve.dm.LeafNode.call( this, 'alienBlock', 0, attributes );
 };
@@ -28,7 +28,7 @@ ve.dm.AlienBlock = function( length, attributes ) {
  * @static
  * @member
  */
-ve.dm.AlienBlock.rules = {
+ve.dm.AlienBlockNode.rules = {
 	'isWrapped': true,
 	'isContent': false,
 	'canContainContent': false,
@@ -37,12 +37,12 @@ ve.dm.AlienBlock.rules = {
 };
 
 // This is a special node, no converter registration is required
-ve.dm.AlienBlock.converters = null;
+ve.dm.AlienBlockNode.converters = null;
 
 /* Registration */
 
-ve.dm.nodeFactory.register( 'alienBlock', ve.dm.AlienBlock );
+ve.dm.nodeFactory.register( 'alienBlock', ve.dm.AlienBlockNode );
 
 /* Inheritance */
 
-ve.extendClass( ve.dm.AlienBlock, ve.dm.LeafNode );
+ve.extendClass( ve.dm.AlienBlockNode, ve.dm.LeafNode );
