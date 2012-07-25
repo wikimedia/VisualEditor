@@ -1,3 +1,5 @@
+/*global mw*/
+
 /**
  * VisualEditor user interface LinkInspector class.
  *
@@ -206,6 +208,7 @@ ve.ui.LinkInspector.getAnnotationForTarget = function ( target ) {
 		// TODO in the longer term we'll want to have autocompletion and existence&validity
 		// checks using AJAX
 		try {
+			// FIXME mw dependency
 			title = new mw.Title( target );
 			if ( title.getNamespaceId() === 6 || title.getNamespaceId() === 14 ) {
 				// File: or Category: link
