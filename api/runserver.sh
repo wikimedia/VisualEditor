@@ -13,4 +13,4 @@ git pull
 killall node
 
 # run the server as non-privileged user
-nohup sudo -u nobody node server.js >> nohup.out &
+nohup sudo -u nobody node server.js >> nohup.out 2>&1 &
