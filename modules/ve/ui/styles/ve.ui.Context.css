@@ -40,13 +40,15 @@
 }
 
 .es-contextView-position-above .es-contextView-icon {
+	/* @embed */
 	background-image: url(images/arrow-up.png);
-	background-position: 4px 4px;
+	background-position: 50% 4px;
 }
 
 .es-contextView-position-below .es-contextView-icon {
+	/* @embed */
 	background-image: url(images/arrow-down.png);
-	background-position: 4px 5px;
+	background-position: 50% 5px;
 }
 .es-contextView-position-above .es-contextView-icon:hover,
 .es-contextView-position-below .es-contextView-icon:hover {
