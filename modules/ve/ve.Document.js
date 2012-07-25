@@ -470,6 +470,7 @@ ve.Document.prototype.getCoveredSiblingGroups = function( selection ) {
 				siblingNode = siblingNode.getParent();
 			}
 		} while ( siblingNode.getParent() === parentNode );
+		i--;
 		lastEndOffset = parentNode.getOuterRange().end;
 	}
 	return groups;
