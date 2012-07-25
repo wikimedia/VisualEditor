@@ -109,6 +109,12 @@ var textarea = function ( res, content ) {
 	res.write('</textarea><br><input type="submit"></form>');
 };
 
+/**
+ * robots.txt: no indexing.
+ */
+app.get(/^\/robots.txt$/, function(req, res){
+	res.end( "User-agent: *\nDisallow: /\n" );
+});
 
 
 /**
