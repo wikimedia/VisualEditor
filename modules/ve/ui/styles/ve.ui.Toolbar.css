@@ -123,15 +123,23 @@
 .es-toolbarDropdownTool-label {
 	overflow: hidden;
 	height: 2em;
-	padding: 0.25em;
+	padding: 0.25em 0.25em 0.25em .75em;
 	font-size: 0.8em;
 	line-height: 24px;
-	padding-left: 0.75em;
-	padding-right: 24px;
+}
+
+.es-toolbarDropdownTool-icon {
+	position: absolute;
+	right: 0;
+	width: 5px;
+	height: 2em;
+	padding: 0 .5em;
+	/* @embed */
 	background-image: url(images/arrow-down.png);
-	background-position: right;
+	background-position: 50% 50%;
 	background-repeat: no-repeat;
 }
+
 .es-toolbarDropdownTool .es-menuView {
 	left: -1px;
 	top: -1px;
