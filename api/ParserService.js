@@ -405,7 +405,7 @@ app.get(new RegExp( '/(?:(?:(?:' + env.interwikiRegexp + '):+)?(' + env.interwik
 	tpr.once('src', parse.bind( null, req, res, function ( req, res, src, document ) {
 		res.end(document.body.innerHTML);
 		var et = new Date();
-		console.warn("Request Time (ms): " + (et - st));
+		console.warn("completed parsing of " + target + " in " + (et - st) + " ms");
 	}));
 });
 
