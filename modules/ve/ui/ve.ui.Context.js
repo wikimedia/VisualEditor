@@ -258,14 +258,16 @@ ve.ui.Context.prototype.addInspector = function( name, inspector ) {
 ve.ui.Context.prototype.hideInspectorFrame = function ( inspector ) {
 	this.$inspectors.css({
 		'width': 0,
-		'height': 0
+		'height': 0,
+		'visibility': 'hidden'
 	});
 };
 
 ve.ui.Context.prototype.resizeInspectorFrame = function( inspector ){
 	this.$inspectors.css( {
 		'width': inspector.$.outerWidth( true ) + 10,
-		'height': inspector.$.outerHeight( true ) + 10
+		'height': inspector.$.outerHeight( true ) + 10,
+		'visibility': 'visible'
 	} );
 };
 
