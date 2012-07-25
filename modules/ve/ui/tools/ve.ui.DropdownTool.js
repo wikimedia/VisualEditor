@@ -27,6 +27,7 @@ ve.ui.DropdownTool = function( toolbar, name, title, items ) {
 		_this.onSelect( item );
 		_this.$label.text( item.label );
 	}, this.$ );
+	this.$icon = $( '<div class="es-toolbarDropdownTool-icon"></div>' ).appendTo( this.$ );
 	this.$label = $( '<div class="es-toolbarDropdownTool-label">&nbsp;</div>' ).appendTo( this.$ );
 
 	// Events
