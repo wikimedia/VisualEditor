@@ -168,5 +168,36 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 				$( '.ve-ce-documentNode' ).focus();
 			} );
 		</script>
+
+		<div style="margin-left: 2em; margin-right: 2em; margin-bottom: 1em;">
+			<labe>Start</label>
+			<input type="text" style="width: 3em" id="ve-debug-start"/>
+			<labe>End</label>
+			<input type="text" style="width: 3em" id="ve-debug-end"/>
+			<br/>
+			<a href="#" id="ve-get-range">Get range from the editor</a>
+			<br/>
+			<a href="#" id="ve-dump-data">Dump data to the console</a>
+		</div>
+
+		<script>
+		$( function() {
+			$( '#ve-get-range' ).on( "click", function( e ) {
+				var range = ve.instances[0].view.model.getSelection();
+				$( '#ve-debug-start' ).val( range.start );
+				$( '#ve-debug-end' ).val( range.end );
+				e.preventDefault();
+				return false;
+			} );
+			$( '#ve-dump-data' ).on( "click", function( e ) {
+				var	start = $( '#ve-debug-start' ).val(),
+					end = $( '#ve-debug-end' ).val();
+				// TODO: Validate input
+				console.dir( ve.instances[0].view.documentView.model.data.slice( start, end ) );
+				e.preventDefault();
+				return false;
+			} );
+		} );
+		</script>
 	</body>
 </html>
