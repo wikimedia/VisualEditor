@@ -5,8 +5,7 @@ to get started with these tests and the current parser architecture.
 
 Install dependencies and run tests:
 
-cd modules/parser 
-(cd ../../modules/parser if you are in this README file's directory)
+(cd .. if you are in this README file's directory)
 npm test
 
 == Running parserTests.js ==
