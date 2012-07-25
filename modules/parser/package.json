@@ -24,7 +24,7 @@
 	},
 	"main": "mediawiki.parser.js",
 	"scripts": {
-		"pretest": "node ../../tests/parser/fetch-parserTests.txt.js",
-		"test": "node ../../tests/parser/parserTests.js"
+		"pretest": "node test/fetch-parserTests.txt.js",
+		"test": "node test/parserTests.js"
 	}
 }
