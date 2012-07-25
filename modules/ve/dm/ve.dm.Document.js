@@ -502,7 +502,7 @@ ve.dm.Document.prototype.getAnnotationsFromOffset = function( offset ) {
  */
 ve.dm.Document.prototype.offsetContainsAnnotation = function ( offset, annotation ) {
 	var annotations = this.getAnnotationsFromOffset( offset );
-	for (var a in annotations) {
+	for ( var a in annotations ) {
 		if ( ve.compareObjects( annotations[a], annotation ) ){
 			return true;
 		}
@@ -531,7 +531,34 @@ ve.dm.Document.prototype.getAnnotatedRangeFromOffset = function ( offset, annota
 		}
 	}
 	while ( end < this.data.length ) {
-		if ( this.offsetContainsAnnotation(end, annotation ) === false ) {
+		if ( this.offsetContainsAnnotation( end, annotation ) === false ) {
+			break;
+		}
+		end++;
+	}
+	return new ve.Range( start, end );
+};
+
+/**
+ * Gets the range of an annotation found in the selection range.
+ *
+ * @param {Integer} offset Offset to begin looking forward and backward from
+ * @param {Object} annotation Annotation to test for coverage with
+ * @returns {ve.Range|null} Range of content covered by annotation, or a copy of the range.
+ */
+ve.dm.Document.prototype.getAnnotatedRangeFromSelection = function( range, annotation ) {
+	var start = range.start,
+		end = range.end;
+
+	while ( start > 0 ) {
+		start--;
+		if ( this.offsetContainsAnnotation( start, annotation ) === false ) {
+			start++;
+			break;
+		}
+	}
+	while ( end < this.data.length ) {
+		if ( this.offsetContainsAnnotation( end, annotation ) === false ) {
 			break;
 		}
 		end++;
