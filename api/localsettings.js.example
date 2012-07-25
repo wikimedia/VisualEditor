@@ -9,5 +9,5 @@
 
 exports.setup = function( config, env ) {
 	config.defaultInterwiki = 'localhost';
-	env.addInterwiki( 'localhost', 'http://localhost/mediawiki' );
+	env.setInterwiki( 'localhost', 'http://localhost/mediawiki' );
 };
