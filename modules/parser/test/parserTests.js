@@ -34,7 +34,7 @@ var fileDependencies = [];
 
 // Fetch up some of our wacky parser bits...
 
-var basePath = path.join(path.dirname(path.dirname(process.cwd())), 'modules');
+var basePath = path.dirname(path.dirname(process.cwd()));
 
 function _require(filename) {
 	var fullpath = path.join( basePath, filename );
