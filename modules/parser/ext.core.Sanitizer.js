@@ -41,7 +41,7 @@ Sanitizer.validUrlProtocols = [
 	'svn://',
 	'git://',
 	'mms://',
-	'//', // for protocol-relative URLs
+	'//' // for protocol-relative URLs
 ];
 
 // SSS: Could possibly be moved to mediawiki.wikitext.constants
@@ -229,6 +229,276 @@ Sanitizer.getAttrWhiteList = function(tag) {
 
 };
 
+/**
+ * Character entity aliases accepted by MediaWiki
+ */
+Sanitizer.htmlEntityAliases = {
+	'רלמ': 'rlm',
+	'رلم': 'rlm'
+};
+
+/**
+ * List of all named character entities defined in HTML 4.01
+ * http://www.w3.org/TR/html4/sgml/entities.html
+ * As well as &apos; which is only defined starting in XHTML1.
+ * @private
+ */
+Sanitizer.htmlEntities = {
+	'Aacute'   : 193,
+	'aacute'   : 225,
+	'Acirc'    : 194,
+	'acirc'    : 226,
+	'acute'    : 180,
+	'AElig'    : 198,
+	'aelig'    : 230,
+	'Agrave'   : 192,
+	'agrave'   : 224,
+	'alefsym'  : 8501,
+	'Alpha'    : 913,
+	'alpha'    : 945,
+	'amp'      : 38,
+	'and'      : 8743,
+	'ang'      : 8736,
+	'apos'     : 39, // New in XHTML & HTML 5; avoid in output for compatibility with IE.
+	'Aring'    : 197,
+	'aring'    : 229,
+	'asymp'    : 8776,
+	'Atilde'   : 195,
+	'atilde'   : 227,
+	'Auml'     : 196,
+	'auml'     : 228,
+	'bdquo'    : 8222,
+	'Beta'     : 914,
+	'beta'     : 946,
+	'brvbar'   : 166,
+	'bull'     : 8226,
+	'cap'      : 8745,
+	'Ccedil'   : 199,
+	'ccedil'   : 231,
+	'cedil'    : 184,
+	'cent'     : 162,
+	'Chi'      : 935,
+	'chi'      : 967,
+	'circ'     : 710,
+	'clubs'    : 9827,
+	'cong'     : 8773,
+	'copy'     : 169,
+	'crarr'    : 8629,
+	'cup'      : 8746,
+	'curren'   : 164,
+	'dagger'   : 8224,
+	'Dagger'   : 8225,
+	'darr'     : 8595,
+	'dArr'     : 8659,
+	'deg'      : 176,
+	'Delta'    : 916,
+	'delta'    : 948,
+	'diams'    : 9830,
+	'divide'   : 247,
+	'Eacute'   : 201,
+	'eacute'   : 233,
+	'Ecirc'    : 202,
+	'ecirc'    : 234,
+	'Egrave'   : 200,
+	'egrave'   : 232,
+	'empty'    : 8709,
+	'emsp'     : 8195,
+	'ensp'     : 8194,
+	'Epsilon'  : 917,
+	'epsilon'  : 949,
+	'equiv'    : 8801,
+	'Eta'      : 919,
+	'eta'      : 951,
+	'ETH'      : 208,
+	'eth'      : 240,
+	'Euml'     : 203,
+	'euml'     : 235,
+	'euro'     : 8364,
+	'exist'    : 8707,
+	'fnof'     : 402,
+	'forall'   : 8704,
+	'frac12'   : 189,
+	'frac14'   : 188,
+	'frac34'   : 190,
+	'frasl'    : 8260,
+	'Gamma'    : 915,
+	'gamma'    : 947,
+	'ge'       : 8805,
+	'gt'       : 62,
+	'harr'     : 8596,
+	'hArr'     : 8660,
+	'hearts'   : 9829,
+	'hellip'   : 8230,
+	'Iacute'   : 205,
+	'iacute'   : 237,
+	'Icirc'    : 206,
+	'icirc'    : 238,
+	'iexcl'    : 161,
+	'Igrave'   : 204,
+	'igrave'   : 236,
+	'image'    : 8465,
+	'infin'    : 8734,
+	'int'      : 8747,
+	'Iota'     : 921,
+	'iota'     : 953,
+	'iquest'   : 191,
+	'isin'     : 8712,
+	'Iuml'     : 207,
+	'iuml'     : 239,
+	'Kappa'    : 922,
+	'kappa'    : 954,
+	'Lambda'   : 923,
+	'lambda'   : 955,
+	'lang'     : 9001,
+	'laquo'    : 171,
+	'larr'     : 8592,
+	'lArr'     : 8656,
+	'lceil'    : 8968,
+	'ldquo'    : 8220,
+	'le'       : 8804,
+	'lfloor'   : 8970,
+	'lowast'   : 8727,
+	'loz'      : 9674,
+	'lrm'      : 8206,
+	'lsaquo'   : 8249,
+	'lsquo'    : 8216,
+	'lt'       : 60,
+	'macr'     : 175,
+	'mdash'    : 8212,
+	'micro'    : 181,
+	'middot'   : 183,
+	'minus'    : 8722,
+	'Mu'       : 924,
+	'mu'       : 956,
+	'nabla'    : 8711,
+	'nbsp'     : 160,
+	'ndash'    : 8211,
+	'ne'       : 8800,
+	'ni'       : 8715,
+	'not'      : 172,
+	'notin'    : 8713,
+	'nsub'     : 8836,
+	'Ntilde'   : 209,
+	'ntilde'   : 241,
+	'Nu'       : 925,
+	'nu'       : 957,
+	'Oacute'   : 211,
+	'oacute'   : 243,
+	'Ocirc'    : 212,
+	'ocirc'    : 244,
+	'OElig'    : 338,
+	'oelig'    : 339,
+	'Ograve'   : 210,
+	'ograve'   : 242,
+	'oline'    : 8254,
+	'Omega'    : 937,
+	'omega'    : 969,
+	'Omicron'  : 927,
+	'omicron'  : 959,
+	'oplus'    : 8853,
+	'or'       : 8744,
+	'ordf'     : 170,
+	'ordm'     : 186,
+	'Oslash'   : 216,
+	'oslash'   : 248,
+	'Otilde'   : 213,
+	'otilde'   : 245,
+	'otimes'   : 8855,
+	'Ouml'     : 214,
+	'ouml'     : 246,
+	'para'     : 182,
+	'part'     : 8706,
+	'permil'   : 8240,
+	'perp'     : 8869,
+	'Phi'      : 934,
+	'phi'      : 966,
+	'Pi'       : 928,
+	'pi'       : 960,
+	'piv'      : 982,
+	'plusmn'   : 177,
+	'pound'    : 163,
+	'prime'    : 8242,
+	'Prime'    : 8243,
+	'prod'     : 8719,
+	'prop'     : 8733,
+	'Psi'      : 936,
+	'psi'      : 968,
+	'quot'     : 34,
+	'radic'    : 8730,
+	'rang'     : 9002,
+	'raquo'    : 187,
+	'rarr'     : 8594,
+	'rArr'     : 8658,
+	'rceil'    : 8969,
+	'rdquo'    : 8221,
+	'real'     : 8476,
+	'reg'      : 174,
+	'rfloor'   : 8971,
+	'Rho'      : 929,
+	'rho'      : 961,
+	'rlm'      : 8207,
+	'rsaquo'   : 8250,
+	'rsquo'    : 8217,
+	'sbquo'    : 8218,
+	'Scaron'   : 352,
+	'scaron'   : 353,
+	'sdot'     : 8901,
+	'sect'     : 167,
+	'shy'      : 173,
+	'Sigma'    : 931,
+	'sigma'    : 963,
+	'sigmaf'   : 962,
+	'sim'      : 8764,
+	'spades'   : 9824,
+	'sub'      : 8834,
+	'sube'     : 8838,
+	'sum'      : 8721,
+	'sup'      : 8835,
+	'sup1'     : 185,
+	'sup2'     : 178,
+	'sup3'     : 179,
+	'supe'     : 8839,
+	'szlig'    : 223,
+	'Tau'      : 932,
+	'tau'      : 964,
+	'there4'   : 8756,
+	'Theta'    : 920,
+	'theta'    : 952,
+	'thetasym' : 977,
+	'thinsp'   : 8201,
+	'THORN'    : 222,
+	'thorn'    : 254,
+	'tilde'    : 732,
+	'times'    : 215,
+	'trade'    : 8482,
+	'Uacute'   : 218,
+	'uacute'   : 250,
+	'uarr'     : 8593,
+	'uArr'     : 8657,
+	'Ucirc'    : 219,
+	'ucirc'    : 251,
+	'Ugrave'   : 217,
+	'ugrave'   : 249,
+	'uml'      : 168,
+	'upsih'    : 978,
+	'Upsilon'  : 933,
+	'upsilon'  : 965,
+	'Uuml'     : 220,
+	'uuml'     : 252,
+	'weierp'   : 8472,
+	'Xi'       : 926,
+	'xi'       : 958,
+	'Yacute'   : 221,
+	'yacute'   : 253,
+	'yen'      : 165,
+	'Yuml'     : 376,
+	'yuml'     : 255,
+	'Zeta'     : 918,
+	'zeta'     : 950,
+	'zwj'      : 8205,
+	'zwnj'     : 8204
+};
+
 // SSS: These 3 regexps could possibly be moved to mediawiki.wikitext.constants
 // or some other better named constants/config file or maybe
 // even a static config object in Sanitizer.
@@ -251,10 +521,58 @@ Sanitizer.EVIL_URI_PATTERN = /(^|\s|\*\/\s*)(javascript|vbscript)([^\w]|$)/i;
 
 Sanitizer.XMLNS_ATTRIBUTE_PATTERN = /^xmlns:[:A-Z_a-z-.0-9]+$/;
 
+// SSS FIXME: Move this to a common constants file 
+Sanitizer.UTF8_REPLACEMENT = "\xef\xbf\xbd";
+
+// SSS FIXME: Is there a library function for this?
+// Move this to some utility files
+/**
+ * Returns the utf8 encoding of the code point.
+ */
+Sanitizer.codepointToUtf8 = function(cp) {
+	return unescape(encodeURIComponent(cp));
+};
+
+/**
+ * Returns true if a given Unicode codepoint is a valid character in XML.
+ */
+Sanitizer.validateCodepoint = function(cp) {
+	return (cp ==    0x09)
+		|| (cp ==    0x0a)
+		|| (cp ==    0x0d)
+		|| (cp >=    0x20 && cp <=   0xd7ff)
+		|| (cp >=  0xe000 && cp <=   0xfffd)
+		|| (cp >= 0x10000 && cp <= 0x10ffff);
+};
+
+Sanitizer.getCSSDecodeRegexp = function() {
+	// Decode escape sequences and line continuation
+	// See the grammar in the CSS 2 spec, appendix D.
+	// This has to be done AFTER decoding character references.
+	// This means it isn't possible for this function to return
+	// unsanitized escape sequences. It is possible to manufacture
+	// input that contains character references that decode to
+	// escape sequences that decode to character references, but
+	// it's OK for the return value to contain character references
+	// because the caller is supposed to escape those anyway.
+	if (!this.cssDecodeRE) {
+		var space = '[\\x20\\t\\r\\n\\f]';
+		var nl = '(?:\\n|\\r\\n|\\r|\\f)';
+		var backslash = '\\\\';
+		this.cssDecodeRE = new RegExp(backslash +
+			"(?:" +
+				"(" + nl + ") |" + // 1. Line continuation
+				"([0-9A-Fa-f]{1,6})" + space+ "? |" + // 2. character number
+				"(.) |" + // 3. backslash cancelling special meaning
+				"() |" + // 4. backslash at end of string
+			")");
+	}
+	return this.cssDecodeRE;
+};
+
 // constants
 Sanitizer.prototype.handledRank = 2.99;
 Sanitizer.prototype.anyRank = 2.9901;
-
 
 // Register this transformer with the TokenTransformer
 Sanitizer.prototype.register = function ( manager ) {
@@ -315,8 +633,6 @@ Sanitizer.prototype._stripIDNs = function ( host ) {
 	return host.replace( this._IDNRegexp, '' );
 };
 	
-	
-
 /**
  * Sanitize any tag.
  *
@@ -363,14 +679,103 @@ Sanitizer.prototype.onAny = function ( token ) {
 	return { token: token };
 };
 
-Sanitizer.prototype.checkCss = function ( value ) {
-	if (/[\000-\010\016-\037\177]/.test(value)) {
+/**
+ * If the named entity is defined in the HTML 4.0/XHTML 1.0 DTD,
+ * return the UTF-8 encoding of that character. Otherwise, returns
+ * pseudo-entity source (eg "&foo;")
+ */
+
+Sanitizer.prototype.decodeEntity = function(name ) {
+	if (htmlEntityAliases(name)) {
+		name = htmlEntityAliases(name);
+	}
+
+	var e = htmlEntities(name);
+	if (e) {
+		return Sanitizer.codepointToUtf8(e);
+	} else {
+		return "&" + name + ";";
+	}
+};
+
+/**
+ * Return UTF-8 string for a codepoint if that is a valid
+ * character reference, otherwise U+FFFD REPLACEMENT CHARACTER.
+ */
+Sanitizer.prototype.decodeChar = function (codepoint) {
+	if(Sanitizer.validateCodepoint(codepoint)) {
+		return codepointToUtf8(codepoint);
+	} else {
+		return UTF8_REPLACEMENT;
+	}
+};
+
+/**
+ * Decode any character references, numeric or named entities,
+ * in the text and return a UTF-8 string.
+ */
+Sanitizer.prototype.decodeCharReferences = function ( text ) {
+	return text.replace(Sanitizer.CHAR_REFS_REGEX, function() {
+		if (arguments[1]) {
+			return this.decodeEntity(arguments[1]);
+		} else if (arguments[2]) {
+			return this.decodeChar(parseInt(arguments[2], 10));
+		} else if (arguments[3]) {
+			return this.decodeChar(parseInt(arguments[3], 16));
+		} else {
+			return arguments[4];
+		}
+	});
+};
+
+Sanitizer.prototype.checkCss = function (text) {
+	// Decode character references like &#123;
+	text = this.decodeCharReferences(text);
+	text = text.replace(Sanitizer.getCSSDecodeRegexp(), function() {
+				var c;
+				if (arguments[1] !== '' ) {
+					// Line continuation
+					return '';
+				} else if (arguments[2] !== '' ) {
+					c = Sanitizer.codepointToUtf8(parseInt(arguments[2], 16));
+				} else if (arguments[3] !== '' ) {
+					c = arguments[3];
+				} else {
+					c = '\\';
+				}
+
+				if ( c == "\n" || c == '"' || c == "'" || c == '\\' ) {
+					// These characters need to be escaped in strings
+					// Clean up the escape sequence to avoid parsing errors by clients
+					return '\\' + (c.charCodeAt(0)).toString(16) + ' ';
+				} else {
+					// Decode unnecessary escape
+					return c;
+				}
+			});
+
+	// Remove any comments; IE gets token splitting wrong
+	// This must be done AFTER decoding character references and
+	// escape sequences, because those steps can introduce comments
+	// This step cannot introduce character references or escape
+	// sequences, because it replaces comments with spaces rather
+	// than removing them completely.
+	text = text.replace(/\/\*.*\*\//g, ' ');
+
+	// Remove anything after a comment-start token, to guard against
+	// incorrect client implementations.
+	var commentPos = text.indexOf('/*');
+	if (commentPos >= 0) {
+		text = text.substring(0, commentPos);
+	}
+
+	if (/[\000-\010\016-\037\177]/.test(text)) {
 		return '/* invalid control char */';
 	}
-	if (/expression|filter\s*:|accelerator\s*:|url\s*\(/i.test(value)) {
+	if (/expression|filter\s*:|accelerator\s*:|url\s*\(/i.test(text)) {
 		return '/* insecure input */';
 	}
-	return value;
+	return text;
 };
 
 Sanitizer.prototype.escapeId = function(id, options) {
