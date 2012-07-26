@@ -334,16 +334,17 @@ Sanitizer.prototype.onAny = function ( token ) {
 	if ( token.attribs && token.attribs.length ) {
 		var attribs = token.attribs.slice();
 		var newToken = $.extend( {}, token );
+		var env = this.manager.env;
 		for ( var i = 0, l = attribs.length; i < l; i++ ) {
 			var kv = attribs[i],
 				k = kv.k,
 				v = kv.v;
 
 			if ( k.constructor === Array ) {
-				k = this.manager.env.tokensToString ( k );
+				k = env.tokensToString ( k );
 			}
 			if ( v.constructor === Array ) {
-				v = this.manager.env.tokensToString ( v );
+				v = env.tokensToString ( v );
 			}
 			if ( k === 'style' ) {
 				v = this.checkCss(v);

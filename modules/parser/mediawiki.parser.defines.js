@@ -94,9 +94,18 @@ TagTk.prototype.tagToStringFns = {
 	}
 };
 
-TagTk.prototype.toString = function() {
+TagTk.prototype.toString = function(compact) {
 	if (this.dataAttribs.stx && this.dataAttribs.stx === "html") {
-		return "<HTML:" + this.name + ">";
+		if (compact) {
+			return "<HTML:" + this.name + ">";
+		} else {
+			var buf = [];
+			for (var i = 0, n = this.attribs.length; i < n; i++) {
+				var a = this.attribs[i];
+				buf.push(Util.toStringTokens(a.k).join('') + "=" + Util.toStringTokens(a.v).join(''));
+			}
+			return "<HTML:" + this.name + " " + buf.join(' ') + ">";
+		}
 	} else {
 		var f = this.tagToStringFns[this.name];
 		return f ? f.bind(this)() : this.defaultToString();
