@@ -40,6 +40,7 @@ ve.dm.LinkAnnotation.converters = {
 		link.setAttribute( 'rel', 'mw:' + subType );
 		if ( subType === 'WikiLink' || subType === 'SimpleWikiLink') {
 			// Set href to /title
+			// FIXME article path should be configurable, currently Parsoid always uses '/'
 			link.setAttribute( 'href', '/' + annotation.data.title );
 		} else if ( subType === 'ExtLink' || subType === 'NumberedExtLink' || subType === 'UrlLink' ) {
 			// Set href directly
@@ -50,9 +51,6 @@ ve.dm.LinkAnnotation.converters = {
 	'toDataAnnotation': function( tag, element ) {
 		var rel = element.getAttribute( 'rel' ) || '',
 			subType = rel.split( ':' )[1] || 'unknown',
-			// FIXME we shouldn't need to read data-rt, Parsoid should provide sHref
-			mwattr = element.getAttribute( 'data-rt' ),
-			mwdata = $.parseJSON( mwattr ) || {},
 			href = element.getAttribute( 'href' ),
 			retval = {
 				'type': 'link/' + subType,
@@ -60,9 +58,9 @@ ve.dm.LinkAnnotation.converters = {
 			},
 			i, attribute;
 		if ( subType === 'WikiLink' || subType === 'SimpleWikiLink' ) {
-			retval.data.title = mwdata.sHref ||
-				// Trim leading slash from href
-				href.replace( /^\//, '' );
+			// Get title from href by stripping article path
+			// FIXME article path should be configurable, currently Parsoid always uses '/'
+			retval.data.title = href.replace( /^\//, '' );
 		} else if ( subType === 'ExtLink' || subType === 'NumberedExtLink' || subType === 'UrlLink' ) {
 			retval.data.href = href;
 		}
