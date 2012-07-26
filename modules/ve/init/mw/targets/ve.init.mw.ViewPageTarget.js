@@ -525,6 +525,7 @@ ve.init.mw.ViewPageTarget.prototype.detachToolbarSaveButton = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
+	var viewPage = this;
 	this.$saveDialog
 		.html( ve.init.mw.ViewPageTarget.saveDialogTemplate )
 		.find( '.ve-init-mw-viewPageTarget-saveDialog-title' )
@@ -532,6 +533,20 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 			.end()
 		.find( '.ve-init-mw-viewPageTarget-saveDialog-closeButton' )
 			.click( ve.proxy( this.onSaveDialogCloseButtonClick, this ) )
+			.end()
+		.find( '.ve-init-mw-viewPageTarget-saveDialog-editSummary-label' )
+			// This will be updated to use ve.specialMessages.summary later
+			.text( ve.msg( 'summary' ) )
+			.end()
+		.find( '#ve-init-mw-viewPageTarget-saveDialog-editSummary' )
+			.on( 'keydown', function( e ) {
+				if ( e.which === 13 ) {
+					viewPage.onSaveDialogSaveButtonClick();
+				}
+			} )
+			.end()
+		.find( '.ve-init-mw-viewPageTarget-saveDialog-minorEdit-label' )
+			.text( ve.msg( 'minoredit' ) )
 			.end()
 		.find( '#ve-init-mw-viewPageTarget-saveDialog-watchList' )
 			.prop( 'checked', mw.config.get( 'wgVisualEditor' ).isPageWatched )
@@ -702,8 +717,15 @@ ve.init.mw.ViewPageTarget.prototype.hideTableOfContents = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.showSaveDialog = function () {
+	var viewPage = this;
 	this.unlockSaveDialogSaveButton();
 	this.$saveDialog.fadeIn( 'fast' ).find( 'input:first' ).focus();
+	$( document ).on( 'keydown', function( e ) {
+		var key = e.keyCode || e.which;
+		if ( key === 27 ) {
+			viewPage.onSaveDialogCloseButtonClick();
+		}
+	});
 };
 
 /**
@@ -714,6 +736,7 @@ ve.init.mw.ViewPageTarget.prototype.showSaveDialog = function () {
 ve.init.mw.ViewPageTarget.prototype.hideSaveDialog = function () {
 	this.$saveDialog.fadeOut( 'fast' );
 	this.$document.focus();
+	$( document ).off( 'keydown' );
 };
 
 /**
