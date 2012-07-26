@@ -444,7 +444,7 @@ ve.dm.example.domToDataCases = {
 			// This HTML is weird because of workarounds for Parsoid bugs:
 			// * newline before </li>
 			// * first paragraph in an <li> not wrapped in <p>
-			'html': '<ul><li> <a rel="mw:wikiLink" href="/foo" data-mw="{&quot;sHref&quot;:&quot;foo&quot;}">bar</a>\n</li></ul>',
+			'html': '<ul><li> <a rel="mw:WikiLink" href="/foo" data-rt="{&quot;sHref&quot;:&quot;foo&quot;}">bar</a>\n</li></ul>',
 			'data': [
 				{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
 				{ 'type': 'listItem' },
@@ -453,33 +453,51 @@ ve.dm.example.domToDataCases = {
 				[
 					'b',
 					{
-						'{"type":"link/wikiLink","data":{"title":"foo","mw":"{\\"sHref\\":\\"foo\\"}"}}':
-							{ 'type': 'link/wikiLink', 'data': {
+						'{"type":"link/WikiLink","data":{"title":"foo","htmlAttributes":{"data-rt":"{\\"sHref\\":\\"foo\\"}","href":"/foo","rel":"mw:WikiLink"}}}': {
+							'type': 'link/WikiLink',
+							'data': {
 								'title': 'foo',
-								'mw': '{"sHref":"foo"}'
+								'htmlAttributes': {
+									'data-rt': '{"sHref":"foo"}',
+									'href': '/foo',
+									'rel': 'mw:WikiLink'
+								}
 							}
+						}
 					}
-				}],
+				],
 				[
 					'a',
 					{
-						'{"type":"link/wikiLink","data":{"title":"foo","mw":"{\\"sHref\\":\\"foo\\"}"}}':
-							{ 'type': 'link/wikiLink', 'data': {
+						'{"type":"link/WikiLink","data":{"title":"foo","htmlAttributes":{"data-rt":"{\\"sHref\\":\\"foo\\"}","href":"/foo","rel":"mw:WikiLink"}}}': {
+							'type': 'link/WikiLink',
+							'data': {
 								'title': 'foo',
-								'mw': '{"sHref":"foo"}'
+								'htmlAttributes': {
+									'data-rt': '{"sHref":"foo"}',
+									'href': '/foo',
+									'rel': 'mw:WikiLink'
+								}
 							}
+						}
 					}
-				}],
+				],
 				[
 					'r',
 					{
-						'{"type":"link/wikiLink","data":{"title":"foo","mw":"{\\"sHref\\":\\"foo\\"}"}}':
-							{ 'type': 'link/wikiLink', 'data': {
+						'{"type":"link/WikiLink","data":{"title":"foo","htmlAttributes":{"data-rt":"{\\"sHref\\":\\"foo\\"}","href":"/foo","rel":"mw:WikiLink"}}}': {
+							'type': 'link/WikiLink',
+							'data': {
 								'title': 'foo',
-								'mw': '{"sHref":"foo"}'
+								'htmlAttributes': {
+									'data-rt': '{"sHref":"foo"}',
+									'href': '/foo',
+									'rel': 'mw:WikiLink'
+								}
 							}
+						}
 					}
-				}],
+				],
 				{ 'type': '/paragraph' },
 				{ 'type': '/listItem' },
 				{ 'type': '/list' }

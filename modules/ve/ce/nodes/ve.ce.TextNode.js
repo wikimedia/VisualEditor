@@ -108,13 +108,31 @@ ve.ce.TextNode.annotationRenderers = {
 		'open': '<sub>',
 		'close': '</sub>'
 	},
-	'link/extLink': {
+	'link/ExtLink': {
 		'open': function( data ) {
 			return '<a href="#">';
 		},
 		'close': '</a>'
 	},
-	'link/wikiLink': {
+	'link/NumberedExtLink': {
+		'open': function( data ) {
+			return '<a href="#">';
+		},
+		'close': '</a>'
+	},
+	'link/UrlLink': {
+		'open': function( data ) {
+			return '<a href="#">';
+		},
+		'close': '</a>'
+	},
+	'link/WikiLink': {
+		'open': function( data ) {
+			return '<a href="#">';
+		},
+		'close': '</a>'
+	},
+	'link/SimpleWikiLink': {
 		'open': function( data ) {
 			return '<a href="#">';
 		},
