@@ -11,6 +11,7 @@
 
 .es-toolbar-wrapper {
 	margin: -1em -1em 1em -1em;
+	position: relative;
 }
 
 .es-toolbar {
