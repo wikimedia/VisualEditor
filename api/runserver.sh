@@ -10,7 +10,7 @@ fi
 git pull
 
 # kill a running server (crude version..)
-killall node
+killall -9 node
 
 # run the server as non-privileged user
 nohup sudo -u nobody node server.js >> nohup.out 2>&1 &
