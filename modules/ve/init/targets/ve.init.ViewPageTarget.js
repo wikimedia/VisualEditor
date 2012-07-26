@@ -595,7 +595,7 @@ ve.init.ViewPageTarget.prototype.attachSaveDialog = function() {
 		.html( ve.specialMessages.minoredit );
 	this.$saveDialog.find( '.ve-init-viewPageTarget-saveDialog-watchList-label' )
 		.html( ve.specialMessages.watchthis );
-	this.$saveDialog.insertAfter( this.$toolbarSaveButton );
+	this.$saveDialog.appendTo( this.$toolbarWrapper );
 };
 
 /**
@@ -778,7 +778,8 @@ ve.init.ViewPageTarget.prototype.lockSaveDialogSaveButton = function() {
  * @method
  */
 ve.init.ViewPageTarget.prototype.attachToolbar = function() {
-	$( '.es-toolbar-wrapper' )
+	this.$toolbarWrapper = this.$surface.find( '.es-toolbar-wrapper' );
+	this.$toolbarWrapper
 		.insertBefore( $( '#firstHeading' ) )
 		.find( '.es-toolbar' )
 			.slideDown( 'fast' );
