@@ -41,7 +41,8 @@ ve.dm.LinkAnnotation.converters = {
 		if ( subType === 'WikiLink' || subType === 'SimpleWikiLink') {
 			// Set href to /title
 			// FIXME article path should be configurable, currently Parsoid always uses '/'
-			link.setAttribute( 'href', '/' + annotation.data.title );
+			// FIXME space -> _ is MW-specific
+			link.setAttribute( 'href', '/' + annotation.data.title.replace( / /g, '_' ) );
 		} else if ( subType === 'ExtLink' || subType === 'NumberedExtLink' || subType === 'UrlLink' ) {
 			// Set href directly
 			link.setAttribute( 'href', annotation.data.href );
@@ -60,7 +61,8 @@ ve.dm.LinkAnnotation.converters = {
 		if ( subType === 'WikiLink' || subType === 'SimpleWikiLink' ) {
 			// Get title from href by stripping article path
 			// FIXME article path should be configurable, currently Parsoid always uses '/'
-			retval.data.title = href.replace( /^\//, '' );
+			// FIXME _ -> space is MW-specific
+			retval.data.title = href.replace( /^\//, '' ).replace( /_/g, ' ' );
 		} else if ( subType === 'ExtLink' || subType === 'NumberedExtLink' || subType === 'UrlLink' ) {
 			retval.data.href = href;
 		}
