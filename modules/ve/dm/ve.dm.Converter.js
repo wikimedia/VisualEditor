@@ -260,6 +260,7 @@ ve.dm.Converter.prototype.getDataFromDom = function( domElement, annotations, da
 			case Node.ELEMENT_NODE:
 				// Detect generated content and wrap it in an alien node
 				if ( childDomElement.hasAttribute( 'data-mw-gc' ) ) {
+					// FIXME Parsoid outputs RDFa now, address this in API rewrite
 					data = data.concat( createAlien( childDomElement, branchIsContent ) );
 					break;
 				}
@@ -584,7 +585,7 @@ ve.dm.Converter.prototype.getDomFromData = function( data ) {
 			$lastChild = $(this.lastChild);
 		if ( $firstChild.is( 'p' ) ) {
 			// Unwrap the first paragraph, unless it has stx=html
-			var datamw = $.parseJSON( $firstChild.attr( 'data-mw' ) ) || {};
+			var datamw = $.parseJSON( $firstChild.attr( 'data-rt' ) ) || {};
 			if ( datamw.stx !== 'html' ) {
 				$firstChild.replaceWith( $firstChild.contents() );
 			}
