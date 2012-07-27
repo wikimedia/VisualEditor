@@ -46,4 +46,49 @@ class VisualEditorHooks {
 		);
 		return true;
 	}
+
+	public static function onResourceLoaderTestModules( array &$testModules, ResourceLoader &$resourceLoader ) {
+		$testModules['qunit']['ext.visualEditor.test'] = array(
+			'scripts' => array(
+				// QUnit plugin
+				've.qunit.js',
+				// VisualEditor Tests
+				've.example.js',
+				've.Document.test.js',
+				've.Node.test.js',
+				've.BranchNode.test.js',
+				've.LeafNode.test.js',
+				've.Factory.test.js',
+				// VisualEditor DataModel Tests
+				'dm/ve.dm.example.js',
+				'dm/ve.dm.NodeFactory.test.js',
+				'dm/ve.dm.Node.test.js',
+				'dm/ve.dm.Converter.test.js',
+				'dm/ve.dm.BranchNode.test.js',
+				'dm/ve.dm.LeafNode.test.js',
+				'dm/nodes/ve.dm.TextNode.test.js',
+				'dm/ve.dm.Document.test.js',
+				'dm/ve.dm.DocumentSynchronizer.test.js',
+				'dm/ve.dm.Transaction.test.js',
+				'dm/ve.dm.TransactionProcessor.test.js',
+				'dm/ve.dm.Surface.test.js',
+				// VisualEditor ContentEditable Tests
+				'ce/ve.ce.test.js',
+				'ce/ve.ce.Document.test.js',
+				'ce/ve.ce.NodeFactory.test.js',
+				'ce/ve.ce.Node.test.js',
+				'ce/ve.ce.BranchNode.test.js',
+				'ce/ve.ce.LeafNode.test.js',
+				'ce/nodes/ve.ce.TextNode.test.js',
+			),
+			'dependencies' => array(
+				'ext.visualEditor.core',
+				'ext.visualEditor.viewPageTarget',
+			),
+			'localBasePath' => dirname( __FILE__ ) . '/modules/ve/test',
+			'remoteExtPath' => 'VisualEditor/modules/ve/test',
+		);
+
+		return true;
+	}
 }
