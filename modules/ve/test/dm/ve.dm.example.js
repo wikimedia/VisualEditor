@@ -444,7 +444,7 @@ ve.dm.example.domToDataCases = {
 			// This HTML is weird because of workarounds for Parsoid bugs:
 			// * newline before </li>
 			// * first paragraph in an <li> not wrapped in <p>
-			'html': '<ul><li> <a rel="mw:WikiLink" href="/foo" data-rt="{&quot;sHref&quot;:&quot;foo&quot;}">bar</a>\n</li></ul>',
+			'html': '<ul><li> <a rel="mw:WikiLink" href="/Foo_bar" data-rt="{&quot;sHref&quot;:&quot;foo bar&quot;}">bar</a>\n</li></ul>',
 			'data': [
 				{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
 				{ 'type': 'listItem' },
@@ -453,13 +453,13 @@ ve.dm.example.domToDataCases = {
 				[
 					'b',
 					{
-						'{"type":"link/WikiLink","data":{"title":"foo","htmlAttributes":{"data-rt":"{\\"sHref\\":\\"foo\\"}","href":"/foo","rel":"mw:WikiLink"}}}': {
+						'{"type":"link/WikiLink","data":{"title":"Foo bar","htmlAttributes":{"data-rt":"{\\"sHref\\":\\"foo bar\\"}","href":"/Foo_bar","rel":"mw:WikiLink"}}}': {
 							'type': 'link/WikiLink',
 							'data': {
-								'title': 'foo',
+								'title': 'Foo bar',
 								'htmlAttributes': {
-									'data-rt': '{"sHref":"foo"}',
-									'href': '/foo',
+									'data-rt': '{"sHref":"foo bar"}',
+									'href': '/Foo_bar',
 									'rel': 'mw:WikiLink'
 								}
 							}
@@ -469,13 +469,13 @@ ve.dm.example.domToDataCases = {
 				[
 					'a',
 					{
-						'{"type":"link/WikiLink","data":{"title":"foo","htmlAttributes":{"data-rt":"{\\"sHref\\":\\"foo\\"}","href":"/foo","rel":"mw:WikiLink"}}}': {
+						'{"type":"link/WikiLink","data":{"title":"Foo bar","htmlAttributes":{"data-rt":"{\\"sHref\\":\\"foo bar\\"}","href":"/Foo_bar","rel":"mw:WikiLink"}}}': {
 							'type': 'link/WikiLink',
 							'data': {
-								'title': 'foo',
+								'title': 'Foo bar',
 								'htmlAttributes': {
-									'data-rt': '{"sHref":"foo"}',
-									'href': '/foo',
+									'data-rt': '{"sHref":"foo bar"}',
+									'href': '/Foo_bar',
 									'rel': 'mw:WikiLink'
 								}
 							}
@@ -485,13 +485,13 @@ ve.dm.example.domToDataCases = {
 				[
 					'r',
 					{
-						'{"type":"link/WikiLink","data":{"title":"foo","htmlAttributes":{"data-rt":"{\\"sHref\\":\\"foo\\"}","href":"/foo","rel":"mw:WikiLink"}}}': {
+						'{"type":"link/WikiLink","data":{"title":"Foo bar","htmlAttributes":{"data-rt":"{\\"sHref\\":\\"foo bar\\"}","href":"/Foo_bar","rel":"mw:WikiLink"}}}': {
 							'type': 'link/WikiLink',
 							'data': {
-								'title': 'foo',
+								'title': 'Foo bar',
 								'htmlAttributes': {
-									'data-rt': '{"sHref":"foo"}',
-									'href': '/foo',
+									'data-rt': '{"sHref":"foo bar"}',
+									'href': '/Foo_bar',
 									'rel': 'mw:WikiLink'
 								}
 							}
