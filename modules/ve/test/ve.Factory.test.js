@@ -5,18 +5,18 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-module( 've.Factory' );
+QUnit.module( 've.Factory' );
 
 /* Stubs */
 
-ve.FactoryObjectStub = function( a, b ) {
+ve.FactoryObjectStub = function ( a, b ) {
 	this.a = a;
 	this.b = b;
 };
 
 /* Tests */
 
-test( 'register', 1, function( assert ) {
+QUnit.test( 'register', 1, function ( assert ) {
 	var factory = new ve.Factory();
 	assert.throws(
 		function() {
@@ -27,10 +27,10 @@ test( 'register', 1, function( assert ) {
 	);
 } );
 
-test( 'create', 2, function( assert ) {
+QUnit.test( 'create', 2, function ( assert ) {
 	var factory = new ve.Factory();
 	assert.throws(
-		function() {
+		function () {
 			factory.create( 'factory-object-stub', 23, { 'bar': 'baz' } );
 		},
 		/^Unknown object type: factory-object-stub$/,
@@ -44,7 +44,7 @@ test( 'create', 2, function( assert ) {
 	);
 } );
 
-test( 'lookup', 1, function( assert ) {
+QUnit.test( 'lookup', 1, function ( assert ) {
 	var factory = new ve.Factory();
 	factory.register( 'factory-object-stub', ve.FactoryObjectStub );
 	assert.strictEqual( factory.lookup( 'factory-object-stub' ), ve.FactoryObjectStub );

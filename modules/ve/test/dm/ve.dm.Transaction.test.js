@@ -5,42 +5,44 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-module( 've.dm.Transaction' );
+QUnit.module( 've.dm.Transaction' );
 
-/* Methods */
+/* Helper methods */
 
-ve.dm.Transaction.runBuilderTests = function( cases ) {
-	for ( var msg in cases ) {
-		var tx = new ve.dm.Transaction();
-		for ( var i = 0; i < cases[msg].calls.length; i++ ) {
+function runBuilderTests( assert, cases ) {
+	var msg, tx, i;
+	for ( msg in cases ) {
+		tx = new ve.dm.Transaction();
+		for ( i = 0; i < cases[msg].calls.length; i++ ) {
 			tx[cases[msg].calls[i][0]].apply( tx, cases[msg].calls[i].slice( 1 ) );
 		}
 		assert.deepEqual( tx.getOperations(), cases[msg].ops, msg + ': operations match' );
 		assert.deepEqual( tx.getLengthDifference(), cases[msg].diff, msg + ': length differences match' );
 	}
-};
+}
 
-ve.dm.Transaction.runConstructorTests = function( constructor, cases ) {
-	for ( var msg in cases ) {
+function runConstructorTests( assert, constructor, cases ) {
+	var msg, tx;
+	for ( msg in cases ) {
 		if ( cases[msg].ops ) {
-			var tx = constructor.apply(
+			tx = constructor.apply(
 				ve.dm.Transaction, cases[msg].args
 			);
 			assert.deepEqual( tx.getOperations(), cases[msg].ops, msg + ': operations match' );
 		} else if ( cases[msg].exception ) {
-			/*jshint loopfunc:true*/
-			assert.throws( function() {
+			/*jshint loopfunc:true */
+			assert.throws( function () {
 				var tx = constructor.apply(
 					ve.dm.Transaction, cases[msg].args
 				);
 			}, cases[msg].exception, msg + ': throw exception' );
 		}
 	}
-};
+}
 
 /* Tests */
 
-test( 'newFromInsertion', function() {
+QUnit.test( 'newFromInsertion', function ( assert ) {
 	var doc = new ve.dm.Document( ve.dm.example.data ),
 		doc2 = new ve.dm.Document( [ { 'type': 'paragraph' }, { 'type': '/paragraph' } ] ),
 		cases = {
@@ -203,10 +205,10 @@ test( 'newFromInsertion', function() {
 		// TODO test cases for (currently failing) unopened closings use case
 		// TODO analyze other possible cases (substrings of linmod data)
 	};
-	ve.dm.Transaction.runConstructorTests( ve.dm.Transaction.newFromInsertion, cases );
+	runConstructorTests( assert, ve.dm.Transaction.newFromInsertion, cases );
 } );
 
-test( 'newFromRemoval', function() {
+QUnit.test( 'newFromRemoval', function ( assert ) {
 	var alienDoc = new ve.dm.Document( ve.dm.example.alienData ),
 		doc = new ve.dm.Document( ve.dm.example.data ),
 		cases = {
@@ -436,10 +438,10 @@ test( 'newFromRemoval', function() {
 			]
 		}
 	};
-	ve.dm.Transaction.runConstructorTests( ve.dm.Transaction.newFromRemoval, cases );
+	runConstructorTests( assert, ve.dm.Transaction.newFromRemoval, cases );
 } );
 
-test( 'newFromAttributeChange', function() {
+QUnit.test( 'newFromAttributeChange', function ( assert ) {
 	var doc = new ve.dm.Document( ve.dm.example.data ),
 		cases = {
 		'first element': {
@@ -476,10 +478,10 @@ test( 'newFromAttributeChange', function() {
 			'exception': /^Can not set attributes on closing element$/
 		}
 	};
-	ve.dm.Transaction.runConstructorTests( ve.dm.Transaction.newFromAttributeChange, cases );
+	runConstructorTests( assert, ve.dm.Transaction.newFromAttributeChange, cases );
 } );
 
-test( 'newFromAnnotation', function() {
+QUnit.test( 'newFromAnnotation', function ( assert ) {
 	var doc = new ve.dm.Document( ve.dm.example.data ),
 		cases = {
 		'over plain text': {
@@ -577,10 +579,10 @@ test( 'newFromAnnotation', function() {
 			]
 		}
 	};
-	ve.dm.Transaction.runConstructorTests( ve.dm.Transaction.newFromAnnotation, cases );
+	runConstructorTests( assert, ve.dm.Transaction.newFromAnnotation, cases );
 } );
 
-test( 'newFromContentBranchConversion', function() {
+QUnit.test( 'newFromContentBranchConversion', function ( assert ) {
 	var doc = new ve.dm.Document( ve.dm.example.data ),
 		cases = {
 		'range inside a heading, convert to paragraph': {
@@ -631,12 +633,14 @@ test( 'newFromContentBranchConversion', function() {
 			]
 		}
 	};
-	ve.dm.Transaction.runConstructorTests(
-		ve.dm.Transaction.newFromContentBranchConversion, cases
+	runConstructorTests(
+		assert,
+		ve.dm.Transaction.newFromContentBranchConversion,
+		cases
 	);
 } );
 
-test( 'newFromWrap', function() {
+QUnit.test( 'newFromWrap', function ( assert ) {
 	var doc = new ve.dm.Document( ve.dm.example.data ),
 		cases = {
 		'changes a heading to a paragraph': {
@@ -711,14 +715,17 @@ test( 'newFromWrap', function() {
 			'exception': /^unwrapOuter is longer than the data preceding the range$/
 		}
 	};
-	ve.dm.Transaction.runConstructorTests(
-		ve.dm.Transaction.newFromWrap, cases
+	runConstructorTests(
+		assert,
+		ve.dm.Transaction.newFromWrap,
+		cases
 	);
 } );
 
-test( 'translateOffset', function() {
+QUnit.test( 'translateOffset', function ( assert ) {
+	var tx, mapping, offset;
 	// Populate a transaction with bogus data
-	var tx = new ve.dm.Transaction();
+	tx = new ve.dm.Transaction();
 	tx.pushReplace( [], ['a','b','c'] );
 	tx.pushRetain ( 5 );
 	tx.pushReplace( ['d', 'e', 'f', 'g'], [] );
@@ -727,7 +734,7 @@ test( 'translateOffset', function() {
 	tx.pushRetain( 1 );
 	tx.pushReplace( ['h'], ['i', 'j', 'k', 'l', 'm'] );
 
-	var mapping = {
+	mapping = {
 		0: 0,
 		1: 4,
 		2: 5,
@@ -743,13 +750,13 @@ test( 'translateOffset', function() {
 		12: 11,
 		13: 16
 	};
-	expect( 14 );
-	for ( var offset in mapping ) {
+	QUnit.expect( 14 );
+	for ( offset in mapping ) {
 		assert.strictEqual( tx.translateOffset( Number( offset ) ), mapping[offset] );
 	}
 } );
 
-test( 'pushRetain', function() {
+QUnit.test( 'pushRetain', function ( assert ) {
 	var cases = {
 		'retain': {
 			'calls': [['pushRetain', 5]],
@@ -762,10 +769,10 @@ test( 'pushRetain', function() {
 			'diff': 0
 		}
 	};
-	ve.dm.Transaction.runBuilderTests( cases );
+	runBuilderTests( assert, cases );
 } );
 
-test( 'pushReplace', function() {
+QUnit.test( 'pushReplace', function ( assert ) {
 	var cases = {
 		'insert': {
 			'calls': [
@@ -886,10 +893,10 @@ test( 'pushReplace', function() {
 			'diff': 0
 		}
 	};
-	ve.dm.Transaction.runBuilderTests( cases );
+	runBuilderTests( assert, cases );
 } );
 
-test( 'pushReplaceElementAttribute', function() {
+QUnit.test( 'pushReplaceElementAttribute', function ( assert ) {
 	var cases = {
 		'replace element attribute': {
 			'calls': [
@@ -927,10 +934,10 @@ test( 'pushReplaceElementAttribute', function() {
 			'diff': 0
 		}
 	};
-	ve.dm.Transaction.runBuilderTests( cases );
+	runBuilderTests( assert, cases );
 } );
 
-test( 'push*Annotating', function() {
+QUnit.test( 'push*Annotating', function ( assert ) {
 	var cases = {
 		'start annotating': {
 			'calls': [
@@ -1003,5 +1010,5 @@ test( 'push*Annotating', function() {
 			'diff': 0
 		}
 	};
-	ve.dm.Transaction.runBuilderTests( cases );
+	runBuilderTests( assert, cases );
 } );

@@ -15,7 +15,7 @@
  * @extends {ve.init.mw.Target}
  * @param {String} title Page title of target
  */
-ve.init.mw.ViewPageTarget = function() {
+ve.init.mw.ViewPageTarget = function () {
 	// Inheritance
 	ve.init.mw.Target.call( this, mw.config.get( 'wgRelevantPageName' ) );
 
@@ -119,7 +119,7 @@ ve.init.mw.ViewPageTarget.saveDialogTemplate = '\
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.activate = function() {
+ve.init.mw.ViewPageTarget.prototype.activate = function () {
 	if ( !this.active && !this.activating ) {
 		this.activating = true;
 		// User interface changes
@@ -139,7 +139,7 @@ ve.init.mw.ViewPageTarget.prototype.activate = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.deactivate = function( override ) {
+ve.init.mw.ViewPageTarget.prototype.deactivate = function ( override ) {
 	if ( this.active && !this.deactivating ) {
 		if (
 			override ||
@@ -167,7 +167,7 @@ ve.init.mw.ViewPageTarget.prototype.deactivate = function( override ) {
  * @method
  * @param {HTMLElement} dom Parsed DOM from server
  */
-ve.init.mw.ViewPageTarget.prototype.onLoad = function( dom ) {
+ve.init.mw.ViewPageTarget.prototype.onLoad = function ( dom ) {
 	this.edited = false;
 	this.setUpSurface( dom );
 	this.attachToolbarSaveButton();
@@ -188,7 +188,7 @@ ve.init.mw.ViewPageTarget.prototype.onLoad = function( dom ) {
  * @param {String} status Text status message
  * @param {Mixed} error Thrown exception or HTTP error string
  */
-ve.init.mw.ViewPageTarget.prototype.onLoadError = function( response, status, error ) {
+ve.init.mw.ViewPageTarget.prototype.onLoadError = function ( response, status, error ) {
 	if ( confirm( ve.msg( 'visualeditor-loadwarning', status ) ) ) {
 		this.load();
 	} else {
@@ -207,7 +207,7 @@ ve.init.mw.ViewPageTarget.prototype.onLoadError = function( response, status, er
  * @method
  * @param {HTMLElement} html Rendered HTML from server
  */
-ve.init.mw.ViewPageTarget.prototype.onSave = function( html ) {
+ve.init.mw.ViewPageTarget.prototype.onSave = function ( html ) {
 	if ( Number( mw.config.get( 'wgArticleId', 0 ) ) === 0 ) {
 		// This is a page creation, refresh the page
 		this.teardownBeforeUnloadHandler();
@@ -240,7 +240,8 @@ ve.init.mw.ViewPageTarget.prototype.onSave = function( html ) {
  * @param {String} status Text status message
  * @param {Mixed} error Thrown exception or HTTP error string
  */
-ve.init.mw.ViewPageTarget.prototype.onSaveError = function( response, status, error ) {
+ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( response, status, error ) {
+	// XXX: Don't use alert.
 	alert( ve.msg( 'visualeditor-saveerror', status ) );
 };
 
@@ -248,12 +249,12 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function( response, status, er
  * Handles clicks on the edit tab.
  *
  * @method
- * @param {Event} e DOM event
+ * @param {jQuery.Event} e
  */
-ve.init.mw.ViewPageTarget.prototype.onEditTabClick = function( event ) {
+ve.init.mw.ViewPageTarget.prototype.onEditTabClick = function ( e ) {
 	this.activate();
 	// Prevent the edit tab's normal behavior
-	event.preventDefault();
+	e.preventDefault();
 	return false;
 };
 
@@ -261,13 +262,13 @@ ve.init.mw.ViewPageTarget.prototype.onEditTabClick = function( event ) {
  * Handles clicks on a section edit link.
  *
  * @method
- * @param {Event} event DOM event
+ * @param {jQuery.Event} e
  */
-ve.init.mw.ViewPageTarget.prototype.onEditSectionLinkClick = function( event ) {
-	this.saveEditSection( $( event.target ).closest( 'h1, h2, h3, h4, h5, h6' )[0] );
+ve.init.mw.ViewPageTarget.prototype.onEditSectionLinkClick = function ( e ) {
+	this.saveEditSection( $( e.target ).closest( 'h1, h2, h3, h4, h5, h6' )[0] );
 	this.activate();
 	// Prevent the edit tab's normal behavior
-	event.preventDefault();
+	e.preventDefault();
 	return false;
 };
 
@@ -275,13 +276,13 @@ ve.init.mw.ViewPageTarget.prototype.onEditSectionLinkClick = function( event ) {
  * Handles clicks on the view tab.
  *
  * @method
- * @param {Event} event DOM event
+ * @param {jQuery.Event} e
  */
-ve.init.mw.ViewPageTarget.prototype.onViewTabClick = function( event ) {
+ve.init.mw.ViewPageTarget.prototype.onViewTabClick = function ( e ) {
 	if ( this.active ) {
 		this.deactivate();
 		// Prevent the edit tab's normal behavior
-		event.preventDefault();
+		e.preventDefault();
 		return false;
 	}
 };
@@ -290,9 +291,9 @@ ve.init.mw.ViewPageTarget.prototype.onViewTabClick = function( event ) {
  * Handles clicks on the save button in the toolbar.
  *
  * @method
- * @param {Event} event DOM event
+ * @param {jQuery.Event} e
  */
-ve.init.mw.ViewPageTarget.prototype.onToolbarSaveButtonClick = function( event ) {
+ve.init.mw.ViewPageTarget.prototype.onToolbarSaveButtonClick = function ( e ) {
 	if ( this.edited ) {
 		this.showSaveDialog();
 	}
@@ -306,7 +307,7 @@ ve.init.mw.ViewPageTarget.prototype.onToolbarSaveButtonClick = function( event )
  * @method
  * @param {ve.Transaction} tx Processed transaction
  */
-ve.init.mw.ViewPageTarget.prototype.onSurfaceModelTransact = function( tx ) {
+ve.init.mw.ViewPageTarget.prototype.onSurfaceModelTransact = function ( tx ) {
 	this.edited = true;
 	this.enableToolbarSaveButton();
 	this.surface.getModel().removeListener( 'transact', this.proxiedOnSurfaceModelTransact );
@@ -316,9 +317,9 @@ ve.init.mw.ViewPageTarget.prototype.onSurfaceModelTransact = function( tx ) {
  * Handles clicks on the save button in the save dialog.
  *
  * @method
- * @param {Event} event DOM event
+ * @param {jQuery.Event} e
  */
-ve.init.mw.ViewPageTarget.prototype.onSaveDialogSaveButtonClick = function( event ) {
+ve.init.mw.ViewPageTarget.prototype.onSaveDialogSaveButtonClick = function ( e ) {
 	this.lockSaveDialogSaveButton();
 	this.save(
 		ve.dm.converter.getDomFromData( this.surface.getDocumentModel().getData() ),
@@ -335,9 +336,9 @@ ve.init.mw.ViewPageTarget.prototype.onSaveDialogSaveButtonClick = function( even
  * Handles clicks on the close button in the save dialog.
  *
  * @method
- * @param {Event} event DOM event
+ * @param {jQuery.Event} e
  */
-ve.init.mw.ViewPageTarget.prototype.onSaveDialogCloseButtonClick = function( event ) {
+ve.init.mw.ViewPageTarget.prototype.onSaveDialogCloseButtonClick = function ( e ) {
 	this.hideSaveDialog();
 };
 
@@ -347,7 +348,7 @@ ve.init.mw.ViewPageTarget.prototype.onSaveDialogCloseButtonClick = function( eve
  * @method
  * @param {HTMLElement} dom HTML DOM to edit
  */
-ve.init.mw.ViewPageTarget.prototype.setUpSurface = function( dom ) {
+ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( dom ) {
 	// Initialize surface
 	this.attachSurface();
 	this.surface = new ve.Surface( this.$surface, dom, this.surfaceOptions );
@@ -368,7 +369,7 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function( dom ) {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.tearDownSurface = function() {
+ve.init.mw.ViewPageTarget.prototype.tearDownSurface = function () {
 	// Reset tabs
 	this.restoreSkinTabs();
 	// Update UI
@@ -393,12 +394,13 @@ ve.init.mw.ViewPageTarget.prototype.tearDownSurface = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function() {
+ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
 	// Only sysop users will have an edit tab in this namespace, so we might need to add one
 	if ( $( '#ca-edit' ).length === 0 ) {
 		// Add edit tab
 		var action = Number( mw.config.get( 'wgArticleId', 0 ) ) === 0 ?
 			'create' : 'edit';
+
 		mw.util.addPortletLink(
 			'p-views',
 			'#',
@@ -408,6 +410,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function() {
 			ve.msg( 'accesskey-ca-edit' ),
 			'#ca-history'
 		);
+
 		// If there isn't an edit tab, there's a view source tab we need to replace with edit source
 		var $viewSource = $( '#ca-viewsource' );
 		if ( $viewSource.length > 0 ) {
@@ -454,13 +457,14 @@ ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.setupSectionEditLinks = function() {
+ve.init.mw.ViewPageTarget.prototype.setupSectionEditLinks = function () {
 	var $links = $( '#mw-content-text .editsection a' );
 	if ( this.isViewPage ) {
 		$links.click( ve.proxy( this.onEditSectionLinkClick, this ) );
 	} else {
 		var veEditUri = this.veEditUri;
-		$links.each( function() {
+		$links.each( function () {
+			// FIXME: mw.Uri is mediaWiki specific
 			var veSectionEditUri = new mw.Uri( veEditUri.toString() ),
 				sectionEditUri = new mw.Uri( $(this).attr( 'href' ) );
 			veSectionEditUri.extend( { 'vesection': sectionEditUri.query.section } );
@@ -474,7 +478,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSectionEditLinks = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.setupToolbarSaveButton = function() {
+ve.init.mw.ViewPageTarget.prototype.setupToolbarSaveButton = function () {
 	this.$toolbarSaveButton
 		.append(
 			$( '<span class="ve-init-mw-viewPageTarget-toolbar-saveButton-label"></span>' )
@@ -482,14 +486,14 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarSaveButton = function() {
 		)
 		.append( $( '<span class="ve-init-mw-viewPageTarget-toolbar-saveButton-icon"></span>' ) )
 		.bind( {
-			'mousedown': function( event ) {
+			'mousedown': function ( e ) {
 				$(this).addClass( 've-init-mw-viewPageTarget-toolbar-saveButton-down' );
-				event.preventDefault();
+				e.preventDefault();
 				return false;
 			},
-			'mouseleave mouseup': function( event ) {
+			'mouseleave mouseup': function ( e ) {
 				$(this).removeClass( 've-init-mw-viewPageTarget-toolbar-saveButton-down' );
-				event.preventDefault();
+				e.preventDefault();
 				return false;
 			},
 			'click': ve.proxy( this.onToolbarSaveButtonClick, this )
@@ -501,7 +505,7 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarSaveButton = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.attachToolbarSaveButton = function() {
+ve.init.mw.ViewPageTarget.prototype.attachToolbarSaveButton = function () {
 	$( '.es-toolbar .es-modes' ).append( this.$toolbarSaveButton );
 	this.disableToolbarSaveButton();
 };
@@ -511,7 +515,7 @@ ve.init.mw.ViewPageTarget.prototype.attachToolbarSaveButton = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.detachToolbarSaveButton = function() {
+ve.init.mw.ViewPageTarget.prototype.detachToolbarSaveButton = function () {
 	this.$toolbarSaveButton.detach();
 };
 
@@ -520,7 +524,7 @@ ve.init.mw.ViewPageTarget.prototype.detachToolbarSaveButton = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function() {
+ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 	this.$saveDialog
 		.html( ve.init.mw.ViewPageTarget.saveDialogTemplate )
 		.find( '.ve-init-mw-viewPageTarget-saveDialog-title' )
@@ -534,10 +538,10 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function() {
 			.end()
 		.find( '.ve-init-mw-viewPageTarget-saveDialog-saveButton' )
 			.bind( {
-				'mousedown': function() {
+				'mousedown': function () {
 					$(this).addClass( 've-init-mw-viewPageTarget-saveDialog-saveButton-down' );
 				},
-				'mouseleave mouseup': function() {
+				'mouseleave mouseup': function () {
 					$(this).removeClass( 've-init-mw-viewPageTarget-saveDialog-saveButton-down' );
 				},
 				'click': ve.proxy( this.onSaveDialogSaveButtonClick, this )
@@ -552,7 +556,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function() {
 				"By editing this page, you agree to irrevocably release your \
 				contributions under the CC-BY-SA 3.0 License.  If you don't want your \
 				writing to be edited mercilessly and redistrubuted at will, then \
-				don't submit it here.<br /><br />You are also confirming that you \
+				don't submit it here.<br/><br/>You are also confirming that you \
 				wrote this yourself, or copied it from a public domain or similar free \
 				resource.  See Project:Copyright for full details of the licenses \
 				used on this site.\
@@ -566,7 +570,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function() {
 	$( '#ca-watch, #ca-unwatch' )
 		.on(
 			'watchpage.mw',
-			ve.proxy( function( e, action ){
+			ve.proxy( function ( e, action ){
 				this.$saveDialog
 					.find( '#ve-init-mw-viewPageTarget-saveDialog-watchList')
 					.prop( 'checked', ( action === 'watch') );
@@ -579,7 +583,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.attachSaveDialog = function() {
+ve.init.mw.ViewPageTarget.prototype.attachSaveDialog = function () {
 	// Update the summary, minoredit and watchthis messages (which came through the message module)
 	this.$saveDialog.find( '.ve-init-mw-viewPageTarget-saveDialog-editSummary-label' )
 		.html( ve.msg( 'summary' ) );
@@ -595,7 +599,7 @@ ve.init.mw.ViewPageTarget.prototype.attachSaveDialog = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.detachSaveDialog = function() {
+ve.init.mw.ViewPageTarget.prototype.detachSaveDialog = function () {
 	this.$saveDialog.detach();
 };
 
@@ -604,7 +608,7 @@ ve.init.mw.ViewPageTarget.prototype.detachSaveDialog = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.saveScrollPosition = function() {
+ve.init.mw.ViewPageTarget.prototype.saveScrollPosition = function () {
 	this.scrollTop = $( window ).scrollTop();
 };
 
@@ -613,7 +617,7 @@ ve.init.mw.ViewPageTarget.prototype.saveScrollPosition = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.restoreScrollPosition = function() {
+ve.init.mw.ViewPageTarget.prototype.restoreScrollPosition = function () {
 	if ( this.scrollTop ) {
 		$( window ).scrollTop( this.scrollTop );
 		this.scrollTop = null;
@@ -625,8 +629,8 @@ ve.init.mw.ViewPageTarget.prototype.restoreScrollPosition = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.showSpinner = function() {
-	this.$spinner.prependTo( $( '#firstHeading' ) );
+ve.init.mw.ViewPageTarget.prototype.showSpinner = function () {
+	this.$spinner.prependTo( '#firstHeading' );
 };
 
 /**
@@ -634,7 +638,7 @@ ve.init.mw.ViewPageTarget.prototype.showSpinner = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.hideSpinner = function() {
+ve.init.mw.ViewPageTarget.prototype.hideSpinner = function () {
 	this.$spinner.detach();
 };
 
@@ -643,7 +647,7 @@ ve.init.mw.ViewPageTarget.prototype.hideSpinner = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.showPageContent = function() {
+ve.init.mw.ViewPageTarget.prototype.showPageContent = function () {
 	$( '#bodyContent >.ve-init-mw-viewPageTarget-content' )
 		.removeClass( 've-init-mw-viewPageTarget-content' )
 		.show()
@@ -655,7 +659,7 @@ ve.init.mw.ViewPageTarget.prototype.showPageContent = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.mutePageContent = function() {
+ve.init.mw.ViewPageTarget.prototype.mutePageContent = function () {
 	$( '#bodyContent >:visible:not(#siteSub)' )
 		.addClass( 've-init-mw-viewPageTarget-content' )
 		.fadeTo( 'fast', 0.6 );
@@ -666,7 +670,7 @@ ve.init.mw.ViewPageTarget.prototype.mutePageContent = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.hidePageContent = function() {
+ve.init.mw.ViewPageTarget.prototype.hidePageContent = function () {
 	$( '#bodyContent >:visible:not(#siteSub)' )
 		.addClass( 've-init-mw-viewPageTarget-content' )
 		.hide();
@@ -677,8 +681,8 @@ ve.init.mw.ViewPageTarget.prototype.hidePageContent = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.showTableOfContents = function() {
-	$( '#toc' ).slideDown( 'fast', function() {
+ve.init.mw.ViewPageTarget.prototype.showTableOfContents = function () {
+	$( '#toc' ).slideDown( 'fast', function () {
 		$(this).removeClass( 've-init-mw-viewPageTarget-pageToc' );
 	} );
 };
@@ -688,7 +692,7 @@ ve.init.mw.ViewPageTarget.prototype.showTableOfContents = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.hideTableOfContents = function() {
+ve.init.mw.ViewPageTarget.prototype.hideTableOfContents = function () {
 	$( '#toc' ).addClass( 've-init-mw-viewPageTarget-pageToc' ).slideUp( 'fast' );
 };
 
@@ -697,7 +701,7 @@ ve.init.mw.ViewPageTarget.prototype.hideTableOfContents = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.showSaveDialog = function() {
+ve.init.mw.ViewPageTarget.prototype.showSaveDialog = function () {
 	this.unlockSaveDialogSaveButton();
 	this.$saveDialog.fadeIn( 'fast' ).find( 'input:first' ).focus();
 };
@@ -707,7 +711,7 @@ ve.init.mw.ViewPageTarget.prototype.showSaveDialog = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.hideSaveDialog = function() {
+ve.init.mw.ViewPageTarget.prototype.hideSaveDialog = function () {
 	this.$saveDialog.fadeOut( 'fast' );
 	this.$document.focus();
 };
@@ -717,7 +721,7 @@ ve.init.mw.ViewPageTarget.prototype.hideSaveDialog = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.resetSaveDialog = function() {
+ve.init.mw.ViewPageTarget.prototype.resetSaveDialog = function () {
 	this.$saveDialog
 		.find( '#ve-init-mw-viewPageTarget-saveDialog-editSummary' )
 			.val( '' )
@@ -731,7 +735,7 @@ ve.init.mw.ViewPageTarget.prototype.resetSaveDialog = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.enableToolbarSaveButton = function() {
+ve.init.mw.ViewPageTarget.prototype.enableToolbarSaveButton = function () {
 	this.$toolbarSaveButton.removeClass( 've-init-mw-viewPageTarget-toolbar-saveButton-disabled' );
 };
 
@@ -740,7 +744,7 @@ ve.init.mw.ViewPageTarget.prototype.enableToolbarSaveButton = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.disableToolbarSaveButton = function() {
+ve.init.mw.ViewPageTarget.prototype.disableToolbarSaveButton = function () {
 	this.$toolbarSaveButton.addClass( 've-init-mw-viewPageTarget-toolbar-saveButton-disabled' );
 };
 
@@ -749,7 +753,7 @@ ve.init.mw.ViewPageTarget.prototype.disableToolbarSaveButton = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.unlockSaveDialogSaveButton = function() {
+ve.init.mw.ViewPageTarget.prototype.unlockSaveDialogSaveButton = function () {
 	this.$saveDialogSaveButton
 		.removeClass( 've-init-mw-viewPageTarget-saveDialog-saveButton-saving' );
 };
@@ -759,7 +763,7 @@ ve.init.mw.ViewPageTarget.prototype.unlockSaveDialogSaveButton = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.lockSaveDialogSaveButton = function() {
+ve.init.mw.ViewPageTarget.prototype.lockSaveDialogSaveButton = function () {
 	this.$saveDialogSaveButton.addClass( 've-init-mw-viewPageTarget-saveDialog-saveButton-saving' );
 };
 
@@ -770,7 +774,7 @@ ve.init.mw.ViewPageTarget.prototype.lockSaveDialogSaveButton = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.attachToolbar = function() {
+ve.init.mw.ViewPageTarget.prototype.attachToolbar = function () {
 	this.$toolbarWrapper = this.$surface.find( '.es-toolbar-wrapper' );
 	this.$toolbarWrapper
 		.insertBefore( $( '#firstHeading' ) )
@@ -783,8 +787,8 @@ ve.init.mw.ViewPageTarget.prototype.attachToolbar = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.detachToolbar = function() {
-	$( '.es-toolbar' ).slideUp( 'fast', function() {
+ve.init.mw.ViewPageTarget.prototype.detachToolbar = function () {
+	$( '.es-toolbar' ).slideUp( 'fast', function () {
 		$(this).parent().remove();
 	} );
 };
@@ -794,7 +798,7 @@ ve.init.mw.ViewPageTarget.prototype.detachToolbar = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.transformPageTitle = function() {
+ve.init.mw.ViewPageTarget.prototype.transformPageTitle = function () {
 	$( '#firstHeading' ).addClass( 've-init-mw-viewPageTarget-pageTitle' );
 };
 
@@ -803,7 +807,7 @@ ve.init.mw.ViewPageTarget.prototype.transformPageTitle = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.mutePageTitle = function() {
+ve.init.mw.ViewPageTarget.prototype.mutePageTitle = function  () {
 	$( '#firstHeading, #siteSub:visible' ).fadeTo( 'fast', 0.6 );
 };
 
@@ -812,9 +816,9 @@ ve.init.mw.ViewPageTarget.prototype.mutePageTitle = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.restorePageTitle = function() {
+ve.init.mw.ViewPageTarget.prototype.restorePageTitle = function () {
 	$( '#firstHeading, #siteSub:visible' ).fadeTo( 'fast', 1 );
-	setTimeout( function() {
+	setTimeout( function () {
 		$( '#firstHeading' ).removeClass( 've-init-mw-viewPageTarget-pageTitle' );
 	}, 1000 );
 };
@@ -824,7 +828,7 @@ ve.init.mw.ViewPageTarget.prototype.restorePageTitle = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.transformSkinTabs = function() {
+ve.init.mw.ViewPageTarget.prototype.transformSkinTabs = function () {
 	$( '#p-views' ).find( 'li.selected' ).removeClass( 'selected' );
 	$( '#ca-edit' ).addClass( 'selected' );
 };
@@ -834,7 +838,7 @@ ve.init.mw.ViewPageTarget.prototype.transformSkinTabs = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.restoreSkinTabs = function() {
+ve.init.mw.ViewPageTarget.prototype.restoreSkinTabs = function () {
 	$( '#p-views' ).find( 'li.selected' ).removeClass( 'selected' );
 	$( '#ca-view' ).addClass( 'selected' );
 };
@@ -844,7 +848,7 @@ ve.init.mw.ViewPageTarget.prototype.restoreSkinTabs = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.hideSiteNotice = function(){
+ve.init.mw.ViewPageTarget.prototype.hideSiteNotice = function () {
 	$( '#siteNotice:visible' )
 		.addClass( 've-hide' )
 		.slideUp( 'fast' );
@@ -855,7 +859,7 @@ ve.init.mw.ViewPageTarget.prototype.hideSiteNotice = function(){
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.restoreSiteNotice = function(){
+ve.init.mw.ViewPageTarget.prototype.restoreSiteNotice = function () {
 	$(' #siteNotice.ve-hide' )
 		.slideDown( 'fast' );
 };
@@ -866,7 +870,7 @@ ve.init.mw.ViewPageTarget.prototype.restoreSiteNotice = function(){
  * @method
  * @param {HTMLElement} html Rendered HTML from server
  */
-ve.init.mw.ViewPageTarget.prototype.replacePageContent = function( html ) {
+ve.init.mw.ViewPageTarget.prototype.replacePageContent = function ( html ) {
 	$( '#mw-content-text' ).html( html );
 };
 
@@ -875,7 +879,7 @@ ve.init.mw.ViewPageTarget.prototype.replacePageContent = function( html ) {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.attachSurface = function() {
+ve.init.mw.ViewPageTarget.prototype.attachSurface = function () {
 	$( '#content' ).append( this.$surface );
 };
 
@@ -884,7 +888,7 @@ ve.init.mw.ViewPageTarget.prototype.attachSurface = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.detachSurface = function() {
+ve.init.mw.ViewPageTarget.prototype.detachSurface = function () {
 	this.$surface.detach();
 	$( '.es-contextView' ).remove();
 };
@@ -895,10 +899,10 @@ ve.init.mw.ViewPageTarget.prototype.detachSurface = function() {
  * @method
  * @param {HTMLElement} heading Heading element of section
  */
-ve.init.mw.ViewPageTarget.prototype.getEditSection = function( heading ) {
+ve.init.mw.ViewPageTarget.prototype.getEditSection = function ( heading ) {
 	var $page = $( '#mw-content-text' ),
 		section = 0;
-	$page.find( 'h1, h2, h3, h4, h5, h6' ).not( '#toc h2' ).each( function() {
+	$page.find( 'h1, h2, h3, h4, h5, h6' ).not( '#toc h2' ).each( function () {
 		section++;
 		if ( this === heading ) {
 			return false;
@@ -913,7 +917,7 @@ ve.init.mw.ViewPageTarget.prototype.getEditSection = function( heading ) {
  * @method
  * @param {HTMLElement} heading Heading element of section
  */
-ve.init.mw.ViewPageTarget.prototype.saveEditSection = function( heading ) {
+ve.init.mw.ViewPageTarget.prototype.saveEditSection = function ( heading ) {
 	this.section = this.getEditSection( heading );
 };
 
@@ -923,14 +927,15 @@ ve.init.mw.ViewPageTarget.prototype.saveEditSection = function( heading ) {
  * @method
  * @param {Number} section Section to move cursor to
  */
-ve.init.mw.ViewPageTarget.prototype.restoreEditSection = function() {
+ve.init.mw.ViewPageTarget.prototype.restoreEditSection = function () {
 	if ( this.section !== null ) {
-		var surfaceView = this.surface.getView(),
+		var offset,
+			surfaceView = this.surface.getView(),
 			surfaceModel = surfaceView.getModel();
-		this.$document.find( 'h1, h2, h3, h4, h5, h6' ).eq( this.section - 1 ).each( function() {
+		this.$document.find( 'h1, h2, h3, h4, h5, h6' ).eq( this.section - 1 ).each( function () {
 			var headingNode = $(this).data( 'node' );
 			if ( headingNode ) {
-				var offset = surfaceModel.getDocument().getNearestContentOffset(
+				offset = surfaceModel.getDocument().getNearestContentOffset(
 					headingNode.getModel().getOffset()
 				);
 				surfaceModel.change( null, new ve.Range( offset, offset ) );
@@ -946,7 +951,7 @@ ve.init.mw.ViewPageTarget.prototype.restoreEditSection = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.setupBeforeUnloadHandler = function() {
+ve.init.mw.ViewPageTarget.prototype.setupBeforeUnloadHandler = function () {
 	// Remember any already set on before unload handler
 	this.onBeforeUnloadFallback = window.onbeforeunload;
 	// Attach before unload handler
@@ -964,7 +969,7 @@ ve.init.mw.ViewPageTarget.prototype.setupBeforeUnloadHandler = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.teardownBeforeUnloadHandler = function() {
+ve.init.mw.ViewPageTarget.prototype.teardownBeforeUnloadHandler = function () {
 	// Restore whatever previous onbeforeload hook existed
 	window.onbeforeunload = this.onBeforeUnloadFallback;
 };
@@ -974,7 +979,7 @@ ve.init.mw.ViewPageTarget.prototype.teardownBeforeUnloadHandler = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.onPageShow = function() {
+ve.init.mw.ViewPageTarget.prototype.onPageShow = function () {
 	// Re-add onbeforeunload handler
 	window.onbeforeunload = this.proxiedOnBeforeUnload;
 };
@@ -984,7 +989,7 @@ ve.init.mw.ViewPageTarget.prototype.onPageShow = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.onBeforeUnload = function() {
+ve.init.mw.ViewPageTarget.prototype.onBeforeUnload = function () {
 	var fallbackResult,
 		message,
 		proxiedOnBeforeUnload = this.proxiedOnBeforeUnload;
@@ -1008,8 +1013,9 @@ ve.init.mw.ViewPageTarget.prototype.onBeforeUnload = function() {
 	window.onbeforeunload = null;
 	if ( message !== undefined ) {
 		// ...but if the user chooses not to leave the page, we need to rebind it
-		setTimeout( function() {
+		setTimeout( function () {
 			window.onbeforeunload = proxiedOnBeforeUnload;
+		// XXX: Missing argument to setTimeout?
 		} );
 		return message;
 	}
@@ -1020,7 +1026,7 @@ ve.init.mw.ViewPageTarget.prototype.onBeforeUnload = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.setupToolbarFeedbackButton = function() {
+ve.init.mw.ViewPageTarget.prototype.setupToolbarFeedbackButton = function () {
 	var feedback = new mw.Feedback( {
 		'title': new mw.Title( 'Visual editor/Feedback' ),
 		'dialogTitleMessageKey': 'visualeditor-feedback-dialog-title',
@@ -1034,7 +1040,7 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarFeedbackButton = function() {
 	} );
 	this.$toolbarFeedbackButton.find( 'a' )
 		.text( ve.msg( 'visualeditor-feedback-prompt' ) )
-		.click( function() {
+		.click( function () {
 			feedback.launch();
 		} );
 };
@@ -1044,7 +1050,7 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarFeedbackButton = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.attachToolbarFeedbackButton = function() {
+ve.init.mw.ViewPageTarget.prototype.attachToolbarFeedbackButton = function () {
 	$( '.es-toolbar .es-modes' ).prepend( this.$toolbarFeedbackButton );
 };
 
@@ -1053,7 +1059,7 @@ ve.init.mw.ViewPageTarget.prototype.attachToolbarFeedbackButton = function() {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.detachToolbarFeedbackButton = function() {
+ve.init.mw.ViewPageTarget.prototype.detachToolbarFeedbackButton = function () {
 	this.$toolbarFeedbackButton.detach();
 };
 

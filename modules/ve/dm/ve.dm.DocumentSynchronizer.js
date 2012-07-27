@@ -21,7 +21,7 @@
  * @constructor
  * @param {ve.dm.Document} doc Document to synchronize
  */
-ve.dm.DocumentSynchronizer = function( doc ) {
+ve.dm.DocumentSynchronizer = function ( doc ) {
 	// Properties
 	this.document = doc;
 	this.actionQueue = [];
@@ -53,7 +53,7 @@ ve.dm.DocumentSynchronizer.synchronizers = {};
  * @method
  * @param {Object} action
  */
-ve.dm.DocumentSynchronizer.synchronizers.annotation = function( action ) {
+ve.dm.DocumentSynchronizer.synchronizers.annotation = function ( action ) {
 	// Queue events for all leaf nodes covered by the range
 	// TODO test me
 	var i, selection = this.document.selectNodes( action.range, 'leaves' );
@@ -72,7 +72,7 @@ ve.dm.DocumentSynchronizer.synchronizers.annotation = function( action ) {
  * @method
  * @param {Object} action
  */
-ve.dm.DocumentSynchronizer.synchronizers.attributeChange = function( action ) {
+ve.dm.DocumentSynchronizer.synchronizers.attributeChange = function ( action ) {
 	this.queueEvent( action.node, 'attributeChange', action.key, action.from, action.to );
 	this.queueEvent( action.node, 'update' );
 };
@@ -86,7 +86,7 @@ ve.dm.DocumentSynchronizer.synchronizers.attributeChange = function( action ) {
  * @method
  * @param {Object} action
  */
-ve.dm.DocumentSynchronizer.synchronizers.resize = function( action ) {
+ve.dm.DocumentSynchronizer.synchronizers.resize = function ( action ) {
 	action.node.adjustLength( action.adjustment );
 	this.adjustment += action.adjustment;
 	// no update needed, adjustLength causes an update event on its own
@@ -101,16 +101,17 @@ ve.dm.DocumentSynchronizer.synchronizers.resize = function( action ) {
  * @method
  * @param {Object} action
  */
-ve.dm.DocumentSynchronizer.synchronizers.rebuild = function( action ) {
-	// Find the nodes contained by oldRange
-	var adjustedOldRange = ve.Range.newFromTranslatedRange( action.oldRange, this.adjustment );
-	var selection = this.document.selectNodes( adjustedOldRange, 'siblings' );
+ve.dm.DocumentSynchronizer.synchronizers.rebuild = function ( action ) {
+	var firstNode, parent, index, numNodes,
+		// Find the nodes contained by oldRange
+		adjustedOldRange = ve.Range.newFromTranslatedRange( action.oldRange, this.adjustment ),
+		selection = this.document.selectNodes( adjustedOldRange, 'siblings' );
+
 	if ( selection.length === 0 ) {
 		// WTF? Nothing to rebuild, I guess. Whatever.
 		return;
 	}
 	
-	var firstNode, parent, index, numNodes;
 	if ( 'indexInNode' in selection[0] ) {
 		// Insertion
 		parent = selection[0].node;
@@ -137,7 +138,7 @@ ve.dm.DocumentSynchronizer.synchronizers.rebuild = function( action ) {
  * @method
  * @returns {ve.dm.Document} Document being synchronized
  */
-ve.dm.DocumentSynchronizer.prototype.getDocument = function() {
+ve.dm.DocumentSynchronizer.prototype.getDocument = function () {
 	return this.document;
 };
 
@@ -150,7 +151,7 @@ ve.dm.DocumentSynchronizer.prototype.getDocument = function() {
  * @method
  * @param {ve.Range} range Range that was annotated
  */
-ve.dm.DocumentSynchronizer.prototype.pushAnnotation = function( range ) {
+ve.dm.DocumentSynchronizer.prototype.pushAnnotation = function ( range ) {
 	this.actionQueue.push( {
 		'type': 'annotation',
 		'range': range
@@ -168,7 +169,7 @@ ve.dm.DocumentSynchronizer.prototype.pushAnnotation = function( range ) {
  * @param {Mixed} from Old value of the attribute
  * @param {Mixed} to New value of the attribute
  */
-ve.dm.DocumentSynchronizer.prototype.pushAttributeChange = function( node, key, from, to ) {
+ve.dm.DocumentSynchronizer.prototype.pushAttributeChange = function ( node, key, from, to ) {
 	this.actionQueue.push( {
 		'type': 'attributeChange',
 		'node': node,
@@ -187,7 +188,7 @@ ve.dm.DocumentSynchronizer.prototype.pushAttributeChange = function( node, key, 
  * @param {ve.dm.TextNode} node Node to resize
  * @param {Integer} adjustment Length adjustment to apply to the node
  */
-ve.dm.DocumentSynchronizer.prototype.pushResize = function( node, adjustment ) {
+ve.dm.DocumentSynchronizer.prototype.pushResize = function ( node, adjustment ) {
 	this.actionQueue.push( {
 		'type': 'resize',
 		'node': node,
@@ -205,7 +206,7 @@ ve.dm.DocumentSynchronizer.prototype.pushResize = function( node, adjustment ) {
  * @param {ve.Range} oldRange Range of old nodes to be dropped
  * @param {ve.Range} newRange Range for new nodes to be built from
  */
-ve.dm.DocumentSynchronizer.prototype.pushRebuild = function( oldRange, newRange ) {
+ve.dm.DocumentSynchronizer.prototype.pushRebuild = function ( oldRange, newRange ) {
 	this.actionQueue.push( {
 		'type': 'rebuild',
 		'oldRange': oldRange,
@@ -226,16 +227,21 @@ ve.dm.DocumentSynchronizer.prototype.pushRebuild = function( oldRange, newRange 
  * @param {String} event Event name
  * @param {Mixed} [...] Additional arguments to be passed to the event when fired
  */
-ve.dm.DocumentSynchronizer.prototype.queueEvent = function( node, event ) {
+ve.dm.DocumentSynchronizer.prototype.queueEvent = function ( node, event ) {
 	// Check if this is already queued
-	var args = Array.prototype.slice.call( arguments, 1 );
-	var hash = $.toJSON( args );
+	var
+		args = Array.prototype.slice.call( arguments, 1 ),
+		hash = $.toJSON( args );
+
 	if ( !node.queuedEventHashes ) {
 		node.queuedEventHashes = {};
 	}
 	if ( !node.queuedEventHashes[hash] ) {
 		node.queuedEventHashes[hash] = true;
-		this.eventQueue.push( { 'node': node, 'args': args } );
+		this.eventQueue.push( {
+			'node': node,
+			'args': args
+		} );
 	}
 };
 
@@ -252,7 +258,7 @@ ve.dm.DocumentSynchronizer.prototype.queueEvent = function( node, event ) {
  *
  * @method
  */
-ve.dm.DocumentSynchronizer.prototype.synchronize = function() {
+ve.dm.DocumentSynchronizer.prototype.synchronize = function () {
 	var action,
 		event,
 		i;

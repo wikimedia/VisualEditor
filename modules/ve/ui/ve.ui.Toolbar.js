@@ -11,7 +11,7 @@
  * @class
  * @constructor
  */
-ve.ui.Toolbar = function( $container, surfaceView, config ) {
+ve.ui.Toolbar = function ( $container, surfaceView, config ) {
 	// Inheritance TODO: Do we still need it?
 	ve.EventEmitter.call( this );
 	if ( !surfaceView ) {
@@ -19,8 +19,7 @@ ve.ui.Toolbar = function( $container, surfaceView, config ) {
 	}
 
 	// References for use in closures
-	var _this = this,
-		$window = $( window );
+	var $window = $( window );
 
 	// Properties
 	this.surfaceView = surfaceView;
@@ -47,7 +46,7 @@ ve.ui.Toolbar = function( $container, surfaceView, config ) {
  *
  * @method
  */
-ve.ui.Toolbar.prototype.updateTools = function() {
+ve.ui.Toolbar.prototype.updateTools = function () {
 	var model = this.surfaceView.getModel(),
 		doc = model.getDocument(),
 		annotations,
@@ -55,7 +54,7 @@ ve.ui.Toolbar.prototype.updateTools = function() {
 		range = model.getSelection(),
 		startNode,
 		endNode,
-		_this = this,
+		tool = this,
 		i;
 
 	if ( range !== null ) {
@@ -77,7 +76,7 @@ ve.ui.Toolbar.prototype.updateTools = function() {
 			if ( startNode === endNode ) {
 				nodes.push( startNode );
 			} else {
-				model.getDocument().getDocumentNode().traverseLeafNodes( function( node ) {
+				model.getDocument().getDocumentNode().traverseLeafNodes( function ( node ) {
 					nodes.push( node );
 					if( node === endNode ) {
 						return false;
@@ -90,7 +89,7 @@ ve.ui.Toolbar.prototype.updateTools = function() {
 			annotations = doc.getAnnotationsFromRange( range );
 		} else {
 			// Clear context
-			_this.surfaceView.contextView.clear();
+			tool.surfaceView.contextView.clear();
 			annotations = doc.getAnnotationsFromOffset(
 				doc.getNearestContentOffset( range.start - 1 )
 			);
@@ -107,11 +106,11 @@ ve.ui.Toolbar.prototype.updateTools = function() {
 	}
 };
 
-ve.ui.Toolbar.prototype.getSurfaceView = function() {
+ve.ui.Toolbar.prototype.getSurfaceView = function () {
 	return this.surfaceView;
 };
 
-ve.ui.Toolbar.prototype.setup = function() {
+ve.ui.Toolbar.prototype.setup = function () {
 	for ( var i = 0; i < this.config.length; i++ ) {
 		var $group = $( '<div>' )
 			.addClass( 'es-toolbarGroup' )

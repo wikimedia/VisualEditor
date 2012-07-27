@@ -17,7 +17,7 @@
  * @param {ve.dm.Node[]} [children] Child nodes to attach
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  */
-ve.dm.BranchNode = function( type, children, attributes ) {
+ve.dm.BranchNode = function ( type, children, attributes ) {
 	// Inheritance
 	ve.dm.Node.call( this, type, 0, attributes );
 	ve.BranchNode.call( this );
@@ -38,7 +38,7 @@ ve.dm.BranchNode = function( type, children, attributes ) {
  * @emits splice (index, 0, [childModel])
  * @emits update
  */
-ve.dm.BranchNode.prototype.push = function( childModel ) {
+ve.dm.BranchNode.prototype.push = function ( childModel ) {
 	this.splice( this.children.length, 0, childModel );
 	return this.children.length;
 };
@@ -51,7 +51,7 @@ ve.dm.BranchNode.prototype.push = function( childModel ) {
  * @emits splice (index, 1, [])
  * @emits update
  */
-ve.dm.BranchNode.prototype.pop = function() {
+ve.dm.BranchNode.prototype.pop = function () {
 	if ( this.children.length ) {
 		var childModel = this.children[this.children.length - 1];
 		this.splice( this.children.length - 1, 1 );
@@ -68,7 +68,7 @@ ve.dm.BranchNode.prototype.pop = function() {
  * @emits splice (0, 0, [childModel])
  * @emits update
  */
-ve.dm.BranchNode.prototype.unshift = function( childModel ) {
+ve.dm.BranchNode.prototype.unshift = function ( childModel ) {
 	this.splice( 0, 0, childModel );
 	return this.children.length;
 };
@@ -81,7 +81,7 @@ ve.dm.BranchNode.prototype.unshift = function( childModel ) {
  * @emits splice (0, 1, [])
  * @emits update
  */
-ve.dm.BranchNode.prototype.shift = function() {
+ve.dm.BranchNode.prototype.shift = function () {
 	if ( this.children.length ) {
 		var childModel = this.children[0];
 		this.splice( 0, 1 );
@@ -99,11 +99,13 @@ ve.dm.BranchNode.prototype.shift = function() {
  * @returns {ve.dm.BranchNode[]} Removed nodes
  * @emits splice (index, howmany, [...])
  */
-ve.dm.BranchNode.prototype.splice = function( index, howmany ) {
+ve.dm.BranchNode.prototype.splice = function ( index, howmany ) {
 	var i,
 		length,
-		args = Array.prototype.slice.call( arguments, 0 ),
+		removals,
+		args = Array.prototype.slice.call( arguments ),
 		diff = 0;
+
 	if ( args.length >= 3 ) {
 		length = args.length;
 		for ( i = 2; i < length; i++ ) {
@@ -111,11 +113,13 @@ ve.dm.BranchNode.prototype.splice = function( index, howmany ) {
 			diff += args[i].getOuterLength();
 		}
 	}
-	var removals = this.children.splice.apply( this.children, args );
+
+	removals = this.children.splice.apply( this.children, args );
 	for ( i = 0, length = removals.length; i < length; i++ ) {
 		removals[i].detach();
 		diff -= removals[i].getOuterLength();
 	}
+
 	this.adjustLength( diff, true );
 	this.emit.apply( this, ['splice'].concat( args ) );
 	return removals;

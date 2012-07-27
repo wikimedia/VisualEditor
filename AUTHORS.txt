@@ -6,6 +6,7 @@ Inez Korczynski <inez@wikia-inc.com>
 Roan Kattouw <roan@wikimedia.org>
 Rob Moen <rmoen@wikimedia.org>
 Subramanya Sastry <ssastry@wikimedia.org>
+Timo Tijhof <timo@wikimedia.org>
 Trevor Parscal <trevor@wikimedia.org>
 
 Patch Contributors (minor contributors, alphabetically)

@@ -5,11 +5,11 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-module( 've.dm.BranchNode' );
+QUnit.module( 've.dm.BranchNode' );
 
 /* Stubs */
 
-ve.dm.BranchNodeStub = function( children, attributes ) {
+ve.dm.BranchNodeStub = function ( children, attributes ) {
 	// Inheritance
 	ve.dm.BranchNode.call( this, 'branch-stub', children, attributes );
 };
@@ -29,17 +29,17 @@ ve.dm.nodeFactory.register( 'branch-stub', ve.dm.BranchNodeStub );
 
 /* Tests */
 
-test( 'canHaveChildren', 1, function( assert ) {
+QUnit.test( 'canHaveChildren', 1, function ( assert ) {
 	var node = new ve.dm.BranchNodeStub();
 	assert.equal( node.canHaveChildren(), true );
 } );
 
-test( 'canHaveGrandchildren', 1, function( assert ) {
+QUnit.test( 'canHaveGrandchildren', 1, function ( assert ) {
 	var node = new ve.dm.BranchNodeStub();
 	assert.equal( node.canHaveGrandchildren(), true );
 } );
 
-test( 'setRoot', 3, function( assert ) {
+QUnit.test( 'setRoot', 3, function ( assert ) {
 	var node1 = new ve.dm.BranchNodeStub(),
 		node2 = new ve.dm.BranchNodeStub( [node1] ),
 		node3 = new ve.dm.BranchNodeStub( [node2] ),
@@ -50,7 +50,7 @@ test( 'setRoot', 3, function( assert ) {
 	assert.strictEqual( node1.getRoot(), node4 );
 } );
 
-test( 'setDocument', 3, function( assert ) {
+QUnit.test( 'setDocument', 3, function ( assert ) {
 	var node1 = new ve.dm.BranchNodeStub(),
 		node2 = new ve.dm.BranchNodeStub( [node1] ),
 		node3 = new ve.dm.BranchNodeStub( [node2] ),
@@ -61,11 +61,11 @@ test( 'setDocument', 3, function( assert ) {
 	assert.strictEqual( node1.getDocument(), node4 );
 } );
 
-test( 'push', 3, function( assert ) {
+QUnit.test( 'push', 3, function ( assert ) {
 	var node1 = new ve.dm.BranchNodeStub(),
 		node2 = new ve.dm.BranchNodeStub(),
 		node3 = new ve.dm.BranchNodeStub( [node1] );
-	node3.on( 'splice', function() {
+	node3.on( 'splice', function () {
 		// Will be called 1 time
 		assert.ok( true, 'splice was emitted' );
 	} );
@@ -73,11 +73,11 @@ test( 'push', 3, function( assert ) {
 	assert.deepEqual( node3.getChildren(), [node1, node2] );
 } );
 
-test( 'pop', 3, function( assert ) {
+QUnit.test( 'pop', 3, function ( assert ) {
 	var node1 = new ve.dm.BranchNodeStub(),
 		node2 = new ve.dm.BranchNodeStub(),
 		node3 = new ve.dm.BranchNodeStub( [node1, node2] );
-	node3.on( 'splice', function() {
+	node3.on( 'splice', function () {
 		// Will be called 1 time
 		assert.ok( true, 'splice was emitted' );
 	} );
@@ -85,11 +85,11 @@ test( 'pop', 3, function( assert ) {
 	assert.deepEqual( node3.getChildren(), [node1] );
 } );
 
-test( 'unshift', 3, function( assert ) {
+QUnit.test( 'unshift', 3, function ( assert ) {
 	var node1 = new ve.dm.BranchNodeStub(),
 		node2 = new ve.dm.BranchNodeStub(),
 		node3 = new ve.dm.BranchNodeStub( [node1] );
-	node3.on( 'splice', function() {
+	node3.on( 'splice', function () {
 		// Will be called 1 time
 		assert.ok( true, 'splice was emitted' );
 	} );
@@ -97,7 +97,7 @@ test( 'unshift', 3, function( assert ) {
 	assert.deepEqual( node3.getChildren(), [node2, node1] );
 } );
 
-test( 'shift', 3, function( assert ) {
+QUnit.test( 'shift', 3, function ( assert ) {
 	var node1 = new ve.dm.BranchNodeStub(),
 		node2 = new ve.dm.BranchNodeStub(),
 		node3 = new ve.dm.BranchNodeStub( [node1, node2] );
@@ -109,12 +109,12 @@ test( 'shift', 3, function( assert ) {
 	assert.deepEqual( node3.getChildren(), [node2] );
 } );
 
-test( 'splice', 9, function( assert ) {
+QUnit.test( 'splice', 9, function ( assert ) {
 	var node1 = new ve.dm.BranchNodeStub(),
 		node2 = new ve.dm.BranchNodeStub(),
 		node3 = new ve.dm.BranchNodeStub(),
 		node4 = new ve.dm.BranchNodeStub( [node1, node2] );
-	node4.on( 'splice', function() {
+	node4.on( 'splice', function () {
 		// Will be called 3 times
 		assert.ok( true, 'splice was emitted' );
 	} );
@@ -129,7 +129,7 @@ test( 'splice', 9, function( assert ) {
 	assert.deepEqual( node4.getChildren(), [node1, node3] );
 } );
 
-test( 'getOffsetFromNode', 4, function( assert ) {
+QUnit.test( 'getOffsetFromNode', 4, function ( assert ) {
 	var node1 = new ve.dm.BranchNodeStub(),
 		node2 = new ve.dm.BranchNodeStub(),
 		node3 = new ve.dm.BranchNodeStub( [node1, node2] ),

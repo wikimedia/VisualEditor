@@ -5,11 +5,11 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-module( 've.dm.NodeFactory' );
+QUnit.module( 've.dm.NodeFactory' );
 
 /* Stubs */
 
-ve.dm.NodeFactoryNodeStub = function( a, b ) {
+ve.dm.NodeFactoryNodeStub = function ( a, b ) {
 	this.a = a;
 	this.b = b;
 };
@@ -28,7 +28,7 @@ ve.dm.NodeFactoryNodeStub.converters = null;
 
 /* Tests */
 
-test( 'getChildNodeTypes', 2, function( assert ) {
+QUnit.test( 'getChildNodeTypes', 2, function ( assert ) {
 	var factory = new ve.dm.NodeFactory();
 	assert.throws( function() {
 			factory.getChildNodeTypes( 'node-factory-node-stub', 23, { 'bar': 'baz' } );
@@ -44,9 +44,9 @@ test( 'getChildNodeTypes', 2, function( assert ) {
 	);
 } );
 
-test( 'getParentNodeTypes', 2, function( assert ) {
+QUnit.test( 'getParentNodeTypes', 2, function ( assert ) {
 	var factory = new ve.dm.NodeFactory();
-	assert.throws( function() {
+	assert.throws( function () {
 			factory.getParentNodeTypes( 'node-factory-node-stub', 23, { 'bar': 'baz' } );
 		},
 		/^Unknown node type: node-factory-node-stub$/,
@@ -60,9 +60,9 @@ test( 'getParentNodeTypes', 2, function( assert ) {
 	);
 } );
 
-test( 'canNodeHaveChildren', 2, function( assert ) {
+QUnit.test( 'canNodeHaveChildren', 2, function ( assert ) {
 	var factory = new ve.dm.NodeFactory();
-	assert.throws( function() {
+	assert.throws( function () {
 			factory.canNodeHaveChildren( 'node-factory-node-stub', 23, { 'bar': 'baz' } );
 		},
 		/^Unknown node type: node-factory-node-stub$/,
@@ -76,7 +76,7 @@ test( 'canNodeHaveChildren', 2, function( assert ) {
 	);
 } );
 
-test( 'canNodeHaveGrandchildren', 2, function( assert ) {
+QUnit.test( 'canNodeHaveGrandchildren', 2, function ( assert ) {
 	var factory = new ve.dm.NodeFactory();
 	assert.throws( function() {
 			factory.canNodeHaveGrandchildren( 'node-factory-node-stub', 23, { 'bar': 'baz' } );
@@ -92,6 +92,6 @@ test( 'canNodeHaveGrandchildren', 2, function( assert ) {
 	);
 } );
 
-test( 'initialization', 1, function( assert ) {
+QUnit.test( 'initialization', 1, function ( assert ) {
 	assert.ok( ve.dm.nodeFactory instanceof ve.dm.NodeFactory, 'factory is initialized at ve.dm.nodeFactory' );
 } );

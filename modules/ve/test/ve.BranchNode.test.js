@@ -5,11 +5,11 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-module( 've.BranchNode' );
+QUnit.module( 've.BranchNode' );
 
 /* Stubs */
 
-ve.BranchNodeStub = function( children ) {
+ve.BranchNodeStub = function ( children ) {
 	// Inheritance
 	ve.BranchNode.call( this, children );
 };
@@ -18,14 +18,14 @@ ve.extendClass( ve.BranchNodeStub, ve.BranchNode );
 
 /* Tests */
 
-test( 'getChildren', 2, function( assert ) {
+QUnit.test( 'getChildren', 2, function ( assert ) {
 	var node1 = new ve.BranchNodeStub(),
 		node2 = new ve.BranchNodeStub( [node1] );
 	assert.deepEqual( node1.getChildren(), [] );
 	assert.deepEqual( node2.getChildren(), [node1] );
 } );
 
-test( 'indexOf', 4, function( assert ) {
+QUnit.test( 'indexOf', 4, function ( assert ) {
 	var node1 = new ve.BranchNodeStub(),
 		node2 = new ve.BranchNodeStub(),
 		node3 = new ve.BranchNodeStub(),
@@ -36,7 +36,7 @@ test( 'indexOf', 4, function( assert ) {
 	assert.strictEqual( node4.indexOf( node3 ), 2 );
 } );
 
-test( 'traverseLeafNodes', 1, function( assert ) {
+QUnit.test( 'traverseLeafNodes', 1, function ( assert ) {
 	var fragment = new ve.dm.Document( ve.dm.example.data ),
 		docNode = fragment.getDocumentNode(),
 		children = docNode.getChildren(),
@@ -81,7 +81,7 @@ test( 'traverseLeafNodes', 1, function( assert ) {
 						children[1].children[0].children[0].children[0].children[1].children[0].children[1].children[0].children[0].children[0],
 						children[1].children[0].children[0].children[0].children[1].children[0].children[0].children[0]
 			],
-			'callback': function( node ) {
+			'callback': function ( node ) {
 				if ( node === children[1].children[0].children[0].children[0].children[1].children[0].children[0].children[0] ) {
 					return false;
 				}
@@ -158,7 +158,7 @@ test( 'traverseLeafNodes', 1, function( assert ) {
 
 	function executeTest( test ) {
 		var realLeaves = [],
-			callback = function( node ) {
+			callback = function ( node ) {
 				var retval;
 				realLeaves.push( node );
 				if ( test.callback ) {
@@ -168,7 +168,7 @@ test( 'traverseLeafNodes', 1, function( assert ) {
 					}
 				}
 			},
-			f = function() {
+			f = function () {
 				test.node.traverseLeafNodes( callback, test.from, test.isReversed );
 			};
 		if ( test.exception ) {
@@ -187,7 +187,7 @@ test( 'traverseLeafNodes', 1, function( assert ) {
 		count++;
 	}
 
-	expect( count );
+	QUnit.expect( count );
 	for ( var i = 0; i < tests.length; i++ ) {
 		executeTest( tests[i] );
 		if ( tests[i].reverse !== undefined ) {

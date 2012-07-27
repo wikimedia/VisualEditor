@@ -12,7 +12,7 @@
  * @constructor
  * @param {jQuery} $overlay DOM selection to add nodes to
  */
-ve.ui.Context = function( surfaceView, $overlay ) {
+ve.ui.Context = function ( surfaceView, $overlay ) {
 	// Inheritance
 	if ( !surfaceView ) {
 		return;
@@ -45,7 +45,7 @@ ve.ui.Context = function( surfaceView, $overlay ) {
 	);
 	
 	// Events
-	this.$icon.bind( {
+	this.$icon.on( {
 		'mousedown': ve.proxy( this.onMouseDown, this ),
 		'mouseup': ve.proxy( this.onMouseUp, this )
 	} );
@@ -60,7 +60,7 @@ ve.ui.Context = function( surfaceView, $overlay ) {
 
 /* Methods */
 
-ve.ui.Context.prototype.setupInspectorFrame = function() {
+ve.ui.Context.prototype.setupInspectorFrame = function () {
 	// Create and append an iframe for inspectors.
 	// Use of iframe is required to retain selection while inspector controls are focused.
 	this.$inspectors =
@@ -81,7 +81,7 @@ ve.ui.Context.prototype.setupInspectorFrame = function() {
 
 	// Create style element in iframe document scope
 	var $styleLink =
-		$('<link />', this.inspectorDoc )
+		$( '<link>', this.inspectorDoc )
 			.attr( {
 				'rel': 'stylesheet',
 				'type': 'text/css',
@@ -101,22 +101,22 @@ ve.ui.Context.prototype.setupInspectorFrame = function() {
 	this.hideInspectorFrame();
 };
 
-ve.ui.Context.prototype.onDocumentFocus = function( event ) {
-	$( window ).bind( 'resize.ve-ui-context scroll.ve-ui-context', ve.proxy( this.set, this ) );
+ve.ui.Context.prototype.onDocumentFocus = function ( e ) {
+	$( window ).on( 'resize.ve-ui-context scroll.ve-ui-context', ve.proxy( this.set, this ) );
 };
 
-ve.ui.Context.prototype.onDocumentBlur = function( event ) {
-	$( window ).unbind( 'resize.ve-ui-context scroll.ve-ui-context' );
+ve.ui.Context.prototype.onDocumentBlur = function ( e ) {
+	$( window ).off( 'resize.ve-ui-context scroll.ve-ui-context' );
 };
 
-ve.ui.Context.prototype.onMouseDown = function( event ) {
+ve.ui.Context.prototype.onMouseDown = function ( e ) {
 	this.clicking = true;
-	event.preventDefault();
+	e.preventDefault();
 	return false;
 };
 
-ve.ui.Context.prototype.onMouseUp = function( event ) {
-	if ( this.clicking && event.which === 1 ) {
+ve.ui.Context.prototype.onMouseUp = function ( e ) {
+	if ( this.clicking && e.which === 1 ) {
 		if ( this.inspector ) {
 			this.closeInspector();
 		} else {
@@ -130,23 +130,23 @@ ve.ui.Context.prototype.onMouseUp = function( event ) {
 	this.clicking = false;
 };
 
-ve.ui.Context.prototype.getSurfaceView = function() {
+ve.ui.Context.prototype.getSurfaceView = function () {
 	return this.surfaceView;
 };
 
-ve.ui.Context.prototype.openMenu = function() {
+ve.ui.Context.prototype.openMenu = function () {
 	this.menuView.open();
 };
 
-ve.ui.Context.prototype.closeMenu = function() {
+ve.ui.Context.prototype.closeMenu = function () {
 	this.menuView.close();
 };
 
-ve.ui.Context.prototype.isMenuOpen = function() {
+ve.ui.Context.prototype.isMenuOpen = function () {
 	return this.menuView.isOpen();
 };
 
-ve.ui.Context.prototype.set = function() {
+ve.ui.Context.prototype.set = function () {
 	if ( this.surfaceView.getModel().getSelection().getLength() > 0 ) {
 		this.positionIcon();
 		if ( this.position ) {
@@ -158,7 +158,7 @@ ve.ui.Context.prototype.set = function() {
 	}
 };
 
-ve.ui.Context.prototype.positionIcon = function() {
+ve.ui.Context.prototype.positionIcon = function () {
 	this.$.removeClass( 'es-contextView-position-start es-contextView-position-end' );
 
 	var selection = this.surfaceView.model.getSelection(),
@@ -176,7 +176,7 @@ ve.ui.Context.prototype.positionIcon = function() {
 	this.$icon.fadeIn( 'fast' );
 };
 
-ve.ui.Context.prototype.positionOverlay = function( $overlay ) {
+ve.ui.Context.prototype.positionOverlay = function ( $overlay ) {
 	this.$.removeClass( 'es-contextView-position-below es-contextView-position-above' );
 	var overlayMargin = 5,
 		overlayWidth = $overlay.outerWidth(),
@@ -213,7 +213,7 @@ ve.ui.Context.prototype.positionOverlay = function( $overlay ) {
 
 };
 
-ve.ui.Context.prototype.clear = function() {
+ve.ui.Context.prototype.clear = function () {
 	if ( this.inspector ) {
 		this.closeInspector();
 	}
@@ -221,7 +221,7 @@ ve.ui.Context.prototype.clear = function() {
 	this.menuView.close();
 };
 
-ve.ui.Context.prototype.openInspector = function( name ) {
+ve.ui.Context.prototype.openInspector = function ( name ) {
 	if ( !( name in this.inspectors ) ) {
 		throw 'Missing inspector error. Can not open nonexistent inspector: ' + name;
 	}
@@ -231,7 +231,7 @@ ve.ui.Context.prototype.openInspector = function( name ) {
 	this.inspector = name;
 };
 
-ve.ui.Context.prototype.closeInspector = function( accept ) {
+ve.ui.Context.prototype.closeInspector = function ( accept ) {
 	if ( this.inspector ) {
 		this.inspectors[this.inspector].close( accept );
 		this.hideInspectorFrame();
@@ -239,14 +239,14 @@ ve.ui.Context.prototype.closeInspector = function( accept ) {
 	}
 };
 
-ve.ui.Context.prototype.getInspector = function( name ) {
+ve.ui.Context.prototype.getInspector = function ( name ) {
 	if ( name in this.inspectors ) {
 		return this.inspectors[name];
 	}
 	return null;
 };
 
-ve.ui.Context.prototype.addInspector = function( name, inspector ) {
+ve.ui.Context.prototype.addInspector = function ( name, inspector ) {
 	if ( name in this.inspectors ) {
 		throw 'Duplicate inspector error. Previous registration with the same name: ' + name;
 	}
@@ -263,7 +263,7 @@ ve.ui.Context.prototype.hideInspectorFrame = function ( inspector ) {
 	});
 };
 
-ve.ui.Context.prototype.resizeInspectorFrame = function( inspector ){
+ve.ui.Context.prototype.resizeInspectorFrame = function ( inspector ){
 	this.$inspectors.css( {
 		'width': inspector.$.outerWidth( true ) + 10,
 		'height': inspector.$.outerHeight( true ) + 10,
@@ -271,7 +271,7 @@ ve.ui.Context.prototype.resizeInspectorFrame = function( inspector ){
 	} );
 };
 
-ve.ui.Context.prototype.removeInspector = function( name ) {
+ve.ui.Context.prototype.removeInspector = function ( name ) {
 	if ( name in this.inspectors ) {
 		throw 'Missing inspector error. Can not remove nonexistent inspector: ' + name;
 	}

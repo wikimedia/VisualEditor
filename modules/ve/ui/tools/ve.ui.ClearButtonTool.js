@@ -14,7 +14,7 @@
  * @param {ve.ui.Toolbar} toolbar
  * @param {String} name
  */
-ve.ui.ClearButtonTool = function( toolbar, name, title ) {
+ve.ui.ClearButtonTool = function ( toolbar, name, title ) {
 	// Inheritance
 	ve.ui.ButtonTool.call( this, toolbar, name, title );
 
@@ -25,24 +25,25 @@ ve.ui.ClearButtonTool = function( toolbar, name, title ) {
 
 /* Methods */
 
-ve.ui.ClearButtonTool.prototype.getAnnotations = function(){
+ve.ui.ClearButtonTool.prototype.getAnnotations = function () {
 	var surface = this.toolbar.getSurfaceView(),
 		model = surface.getModel();
 	return model.getDocument().getAnnotationsFromRange( model.getSelection(), true );
 };
 
-ve.ui.ClearButtonTool.prototype.onClick = function() {
-	var surfaceView = this.toolbar.getSurfaceView(),
+ve.ui.ClearButtonTool.prototype.onClick = function () {
+	var hash,
+		surfaceView = this.toolbar.getSurfaceView(),
 		model = surfaceView.getModel(),
 		annotations = this.getAnnotations();
-	for ( var hash in annotations ) {
+	for ( hash in annotations ) {
 		model.annotate( 'clear', annotations[hash] );
 	}
 	surfaceView.showSelection( model.getSelection() );
 	surfaceView.contextView.closeInspector();
 };
 
-ve.ui.ClearButtonTool.prototype.updateState = function( annotations ) {
+ve.ui.ClearButtonTool.prototype.updateState = function ( annotations ) {
 	var allAnnotations = this.getAnnotations();
 
 	if ( ve.isEmptyObject( allAnnotations ) ) {

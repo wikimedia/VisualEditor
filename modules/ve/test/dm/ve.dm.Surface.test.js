@@ -5,9 +5,9 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-module( 've.dm.Surface' );
+QUnit.module( 've.dm.Surface' );
 
-ve.dm.SurfaceStub = function( data ) {
+ve.dm.SurfaceStub = function ( data ) {
 	// Inheritance
 
 	if ( data !== undefined ) {
@@ -24,27 +24,32 @@ ve.extendClass( ve.dm.SurfaceStub, ve.dm.Surface );
 
 // Tests
 
-test( 'getDocument', 1, function( assert ) {
+QUnit.test( 'getDocument', 1, function ( assert ) {
 	var surface = new ve.dm.SurfaceStub();
 	assert.strictEqual( surface.getDocument(), surface.documentModel );
 } );
 
-test( 'getSelection', 1, function( assert ) {
+QUnit.test( 'getSelection', 1, function ( assert ) {
 	var surface = new ve.dm.SurfaceStub();
 	assert.strictEqual( surface.getSelection(), surface.selection );
 } );
 
-test( 'change', 3, function( assert ) {
+QUnit.test( 'change', 3, function ( assert ) {
 	var surface = new ve.dm.SurfaceStub(),
 		tx = new ve.dm.Transaction(),
-		events = { 'transact': 0, 'select': 0, 'change': 0 };
-	surface.on( 'transact', function() {
+		events = {
+			'transact': 0,
+			'select': 0,
+			'change': 0
+		};
+
+	surface.on( 'transact', function () {
 		events.transact++;
 	} );
-	surface.on( 'select', function() {
+	surface.on( 'select', function () {
 		events.select++;
 	} );
-	surface.on( 'change', function() {
+	surface.on( 'change', function () {
 		events.change++;
 	} );
 	surface.change( tx );
@@ -55,8 +60,9 @@ test( 'change', 3, function( assert ) {
 	assert.deepEqual( events, { 'transact': 2, 'select': 2, 'change': 3 } );
 } );
 
-test( 'annotate', 1, function( assert ) {
-	var surface,
+QUnit.test( 'annotate', 1, function ( assert ) {
+	var i,
+		surface,
 		cases = [
 		{
 			'msg': 'Set Bold',
@@ -105,8 +111,8 @@ test( 'annotate', 1, function( assert ) {
 		}
 	];
 
-	expect( cases.length );
-	for ( var i = 0; i < cases.length; i++ ) {
+	QUnit.expect( cases.length );
+	for ( i = 0; i < cases.length; i++ ) {
 		surface = new ve.dm.SurfaceStub( cases[i].data );
 		surface.change( null, new ve.Range( 0, surface.getDocument().getData().length ) );
 		surface.annotate( cases[i].annotate.method, cases[i].annotate.annotation );

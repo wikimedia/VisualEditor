@@ -1,4 +1,4 @@
-( function( QUnit ) {
+( function ( QUnit ) {
 
 /**
  * Builds a summary of a node tree.
@@ -119,4 +119,4 @@ QUnit.assert.equalDomElement = function( actual, expected, message ) {
 	);
 };
 
-} )( QUnit );
+}( QUnit ) );

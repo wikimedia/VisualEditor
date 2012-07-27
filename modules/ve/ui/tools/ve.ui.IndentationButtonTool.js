@@ -14,14 +14,14 @@
  * @param {ve.ui.Toolbar} toolbar
  * @param {String} name
  */
- ve.ui.IndentationButtonTool = function( toolbar, name, title, data ) {
+ ve.ui.IndentationButtonTool = function ( toolbar, name, title, data ) {
 	ve.ui.ButtonTool.call( this, toolbar, name, title );
 	this.data = data;
 };
 
 /* Methods */
 
-ve.ui.IndentationButtonTool.prototype.onClick = function() {
+ve.ui.IndentationButtonTool.prototype.onClick = function () {
 	if ( !this.$.hasClass( 'es-toolbarButtonTool-disabled' ) ) {
 		var listItems = [],
 			listItem,
@@ -45,16 +45,17 @@ ve.ui.IndentationButtonTool.prototype.onClick = function() {
 	}
 };
 
-ve.ui.IndentationButtonTool.prototype.indent = function( listItems ) {
+ve.ui.IndentationButtonTool.prototype.indent = function ( listItems ) {
 	ve.ui.IndentationButtonTool.indentListItem( this.toolbar.getSurfaceView().getModel() );
 };
 
-ve.ui.IndentationButtonTool.prototype.outdent = function( listItems ) {
+ve.ui.IndentationButtonTool.prototype.outdent = function ( listItems ) {
 	ve.ui.IndentationButtonTool.outdentListItem( this.toolbar.getSurfaceView().getModel() );
 };
 
-ve.ui.IndentationButtonTool.indentListItem = function( surfaceModel ) {
-	var documentModel = surfaceModel.getDocument(),
+ve.ui.IndentationButtonTool.indentListItem = function ( surfaceModel ) {
+	var i, group,
+		documentModel = surfaceModel.getDocument(),
 		selection = surfaceModel.getSelection(),
 		groups = documentModel.getCoveredSiblingGroups( selection );
 
@@ -121,7 +122,7 @@ ve.ui.IndentationButtonTool.indentListItem = function( surfaceModel ) {
 		surfaceModel.change( null, selection );
 	}
 
-	for ( var i = 0; i < groups.length; i++ ) {
+	for ( i = 0; i < groups.length; i++ ) {
 		group = groups[i];
 		if ( group.grandparent && group.grandparent.getType() === 'list' ) {
 			// FIXME this doesn't work when trying to work with multiple list items
@@ -130,8 +131,9 @@ ve.ui.IndentationButtonTool.indentListItem = function( surfaceModel ) {
 	}
 };
 
-ve.ui.IndentationButtonTool.outdentListItem = function( surfaceModel ) {
-	var documentModel = surfaceModel.getDocument(),
+ve.ui.IndentationButtonTool.outdentListItem = function ( surfaceModel ) {
+	var i, group,
+		documentModel = surfaceModel.getDocument(),
 		selection = surfaceModel.getSelection(),
 		groups = documentModel.getCoveredSiblingGroups( selection );
 
@@ -234,7 +236,7 @@ ve.ui.IndentationButtonTool.outdentListItem = function( surfaceModel ) {
 		surfaceModel.change( null, selection );
 	}
 
-	for ( var i = 0; i < groups.length; i++ ) {
+	for ( i = 0; i < groups.length; i++ ) {
 		group = groups[i];
 		if ( group.grandparent && group.grandparent.getType() === 'list' ) {
 			// FIXME this doesn't work when trying to work with multiple list items
@@ -243,9 +245,9 @@ ve.ui.IndentationButtonTool.outdentListItem = function( surfaceModel ) {
 	}
 };
 
-ve.ui.IndentationButtonTool.prototype.updateState = function( annotations, nodes ) {
+ve.ui.IndentationButtonTool.prototype.updateState = function ( annotations, nodes ) {
 	function areListItems( nodes ) {
-		for( var i = 0; i < nodes.length; i++ ) {
+		for ( var i = 0; i < nodes.length; i++ ) {
 			if (
 				nodes[i].parent !== null &&
 				nodes[i].getParent().getType() !== 'listItem' )

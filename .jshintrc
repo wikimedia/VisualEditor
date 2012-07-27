@@ -2,19 +2,7 @@
 	"predef": [
 		"ve",
 
-		"Node",
-
-		"QUnit",
-		"test",
-		"raises",
-		"expect",
-		"ok",
-		"equal",
-		"notEqual",
-		"strictEqual",
-		"strictNotEqual",
-		"deepEqual",
-		"deepNotEqual"
+		"QUnit"
 	],
 
 	"bitwise": true,

@@ -14,7 +14,9 @@
  * @param {Function} callback Function to call if an item doesn't have its own callback
  * @param {jQuery} [$overlay=$( 'body' )] DOM selection to add nodes to
  */
-ve.ui.Menu = function( items, callback, $overlay ) {
+ve.ui.Menu = function ( items, callback, $overlay ) {
+	var i, menu;
+
 	// Properties
 	this.$ = $( '<div class="es-menuView"></div>' ).appendTo( $overlay || $( 'body' ) );
 	this.items = [];
@@ -23,28 +25,29 @@ ve.ui.Menu = function( items, callback, $overlay ) {
 
 	// Items
 	if ( ve.isArray( items ) ) {
-		for ( var i = 0; i < items.length; i++ ) {
+		for ( i = 0; i < items.length; i++ ) {
 			this.addItem( items[i] );
 		}
 	}
 
 	// Events
-	var _this = this;
-	this.$.bind( {
-		'mousedown': function( e ) {
+	menu = this;
+	menu.$.on( {
+		'mousedown': function ( e ) {
 			if ( e.which === 1 ) {
 				e.preventDefault();
 				return false;
 			}
 		},
-		'mouseup': function( e ) {
+		'mouseup': function ( e ) {
 			if ( e.which === 1 ) {
-				var $item = $( e.target ).closest( '.es-menuView-item' );
+				var name, i,
+					$item = $( e.target ).closest( '.es-menuView-item' );
 				if ( $item.length ) {
-					var name = $item.attr( 'rel' );
-					for ( var i = 0; i < _this.items.length; i++ ) {
-						if ( _this.items[i].name === name ) {
-							_this.onSelect( _this.items[i], e );
+					name = $item.attr( 'rel' );
+					for ( i = 0; i < menu.items.length; i++ ) {
+						if ( menu.items[i].name === name ) {
+							menu.onSelect( menu.items[i], e );
 							return true;
 						}
 					}
@@ -56,7 +59,7 @@ ve.ui.Menu = function( items, callback, $overlay ) {
 
 /* Methods */
 
-ve.ui.Menu.prototype.addItem = function( item, before ) {
+ve.ui.Menu.prototype.addItem = function ( item, before ) {
 	if ( item === '-' ) {
 		item = {
 			'name': 'break-' + this.autoNamedBreaks++
@@ -71,7 +74,7 @@ ve.ui.Menu.prototype.addItem = function( item, before ) {
 			item.$ = $( '<div class="es-menuView-item"></div>' )
 				.attr( 'rel', item.name )
 				// TODO: this should take a labelmsg instead and call ve.msg()
-				.append( $( '<span></span>' ).text( item.label ) );
+				.append( $( '<span>' ).text( item.label ) );
 		} else {
 			// No label, must be a break
 			item.$ = $( '<div class="es-menuView-break"></div>' )
@@ -92,7 +95,7 @@ ve.ui.Menu.prototype.addItem = function( item, before ) {
 	this.$.append( item.$ );
 };
 
-ve.ui.Menu.prototype.removeItem = function( name ) {
+ve.ui.Menu.prototype.removeItem = function ( name ) {
 	for ( var i = 0; i < this.items.length; i++ ) {
 		if ( this.items[i].name === name ) {
 			this.items.splice( i, 1 );
@@ -101,27 +104,30 @@ ve.ui.Menu.prototype.removeItem = function( name ) {
 	}
 };
 
-ve.ui.Menu.prototype.getItems = function() {
+ve.ui.Menu.prototype.getItems = function () {
 	return this.items;
 };
 
-ve.ui.Menu.prototype.setPosition = function( position ) {
-	return this.$.css( { 'top': position.top, 'left': position.left } );
+ve.ui.Menu.prototype.setPosition = function ( position ) {
+	return this.$.css( {
+		'top': position.top,
+		'left': position.left
+	} );
 };
 
-ve.ui.Menu.prototype.open = function() {
+ve.ui.Menu.prototype.open = function () {
 	this.$.show();
 };
 
-ve.ui.Menu.prototype.close = function() {
+ve.ui.Menu.prototype.close = function () {
 	this.$.hide();
 };
 
-ve.ui.Menu.prototype.isOpen = function() {
+ve.ui.Menu.prototype.isOpen = function () {
 	return this.$.is( ':visible' );
 };
 
-ve.ui.Menu.prototype.onSelect = function( item, event ) {
+ve.ui.Menu.prototype.onSelect = function ( item, event ) {
 	if ( typeof item.callback === 'function' ) {
 		item.callback( item );
 	} else if ( typeof this.callback === 'function' ) {

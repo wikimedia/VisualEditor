@@ -5,12 +5,14 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-module( 've.ce.TextNode' );
+QUnit.module( 've.ce.TextNode' );
 
 /* Tests */
 
-test( 'getHtml', 22, function( assert ) {
-	var cases = [
+QUnit.test( 'getHtml', 22, function ( assert ) {
+	var i, len, cases;
+
+	cases = [
 		{
 			'data': [
 				{ 'type': 'paragraph' },
@@ -272,7 +274,7 @@ test( 'getHtml', 22, function( assert ) {
 			'html': '&nbsp; &nbsp; &nbsp;A'
 		}
 	];
-	for ( var i = 0; i < cases.length; i++ ) {
+	for ( i = 0, len = cases.length; i < len; i++ ) {
 		assert.equal(
 			( new ve.ce.TextNode(
 				( new ve.dm.Document( cases[i].data ) )

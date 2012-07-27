@@ -5,11 +5,11 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-module( 've.Document' );
+QUnit.module( 've.Document' );
 
 /* Stubs */
 
-ve.DocumentStub = function( documentNode ) {
+ve.DocumentStub = function ( documentNode ) {
 	// Inheritance
 	ve.Document.call( this, documentNode );
 };
@@ -18,7 +18,7 @@ ve.extendClass( ve.DocumentStub, ve.Document );
 
 /* Tests */
 
-test( 'getDocumentNode', 1, function( assert ) {
+QUnit.test( 'getDocumentNode', 1, function ( assert ) {
 	var node = new ve.NodeStub(),
 		doc = new ve.DocumentStub( node );
 	assert.strictEqual( doc.getDocumentNode( node ), node );

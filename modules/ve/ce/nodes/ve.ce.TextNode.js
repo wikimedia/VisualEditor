@@ -13,7 +13,7 @@
  * @extends {ve.ce.LeafNode}
  * @param model {ve.dm.TextNode} Model to observe
  */
-ve.ce.TextNode = function( model ) {
+ve.ce.TextNode = function ( model ) {
 	// Inheritance
 	ve.ce.LeafNode.call( this, 'text', model, $( document.createTextNode('') ) );
 	
@@ -109,37 +109,37 @@ ve.ce.TextNode.annotationRenderers = {
 		'close': '</sub>'
 	},
 	'link/ExtLink': {
-		'open': function( data ) {
+		'open': function ( data ) {
 			return '<a href="#">';
 		},
 		'close': '</a>'
 	},
 	'link/NumberedExtLink': {
-		'open': function( data ) {
+		'open': function ( data ) {
 			return '<a href="#">';
 		},
 		'close': '</a>'
 	},
 	'link/UrlLink': {
-		'open': function( data ) {
+		'open': function ( data ) {
 			return '<a href="#">';
 		},
 		'close': '</a>'
 	},
 	'link/WikiLink': {
-		'open': function( data ) {
+		'open': function ( data ) {
 			return '<a href="#">';
 		},
 		'close': '</a>'
 	},
 	'link/SimpleWikiLink': {
-		'open': function( data ) {
+		'open': function ( data ) {
 			return '<a href="#">';
 		},
 		'close': '</a>'
 	},
 	'link/unknown': {
-		'open': function( data ) {
+		'open': function ( data ) {
 			return '<a href="#">';
 		},
 		'close': '</a>'
@@ -155,13 +155,12 @@ ve.ce.TextNode.annotationRenderers = {
  *
  * @method
  */
-ve.ce.TextNode.prototype.onUpdate = function( force ) {
+ve.ce.TextNode.prototype.onUpdate = function ( force ) {
 	if ( !force && !this.root.getSurface ) {
 		throw 'Can not update a text node that is not attached to a document';
 	}
 	if ( force === true || this.root.getSurface().render === true ) {
-		// XXX: Why is this being passed to $(), creating a new jQuery object? –krinkle 20120719
-		var $new = $( $( '<span>' + this.getHtml() + '</span>' ).contents() );
+		var $new = $( '<span>' ).html( this.getHtml() ).contents();
 		if ( $new.length === 0 ) {
 			$new = $new.add( document.createTextNode( '' ) );
 		}
@@ -170,9 +169,9 @@ ve.ce.TextNode.prototype.onUpdate = function( force ) {
 		if ( this.parent ) {
 			this.parent.clean();
 			if ( ve.debug ) {
-				this.parent.$.css('backgroundColor', '#F6F6F6');
+				this.parent.$.css( 'backgroundColor', '#F6F6F6' );
 				setTimeout( ve.proxy( function () {
-					this.parent.$.css('backgroundColor', 'transparent');
+					this.parent.$.css( 'backgroundColor', 'transparent' );
 				}, this ), 350 );
 			}
 		}
@@ -185,7 +184,7 @@ ve.ce.TextNode.prototype.onUpdate = function( force ) {
  * @method
  * @param {String} Rendered HTML of data within content model
  */
-ve.ce.TextNode.prototype.getHtml = function() {
+ve.ce.TextNode.prototype.getHtml = function () {
 	var data = this.model.getDocument().getDataFromNode( this.model ),
 		htmlChars = ve.ce.TextNode.htmlCharacters,
 		renderers = ve.ce.TextNode.annotationRenderers,

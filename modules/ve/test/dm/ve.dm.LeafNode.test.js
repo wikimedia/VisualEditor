@@ -5,11 +5,11 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-module( 've.dm.LeafNode' );
+QUnit.module( 've.dm.LeafNode' );
 
 /* Stubs */
 
-ve.dm.LeafNodeStub = function() {
+ve.dm.LeafNodeStub = function () {
 	// Inheritance
 	ve.dm.LeafNode.call( this, 'leaf-stub' );
 };
@@ -29,12 +29,12 @@ ve.dm.nodeFactory.register( 'leaf-stub', ve.dm.LeafNodeStub );
 
 /* Tests */
 
-test( 'canHaveChildren', 1, function( assert ) {
+QUnit.test( 'canHaveChildren', 1, function ( assert ) {
 	var node = new ve.dm.LeafNodeStub();
 	assert.equal( node.canHaveChildren(), false );
 } );
 
-test( 'canHaveGrandchildren', 1, function( assert ) {
+QUnit.test( 'canHaveGrandchildren', 1, function ( assert ) {
 	var node = new ve.dm.LeafNodeStub();
 	assert.equal( node.canHaveGrandchildren(), false );
 } );

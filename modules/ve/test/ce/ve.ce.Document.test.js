@@ -5,14 +5,15 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-module( 've.ce.Document' );
+QUnit.module( 've.ce.Document' );
 
 /* Tests */
 
-test( 'selectNodes', function() {
-	var doc = new ve.ce.Document( new ve.dm.Document( ve.dm.example.data ) ),
+QUnit.test( 'selectNodes', function ( assert ) {
+	var i, len,
+		doc = new ve.ce.Document( new ve.dm.Document( ve.dm.example.data ) ),
 		cases = ve.example.getSelectNodesCases( doc );
-	for ( var i = 0; i < cases.length; i++ ) {
+	for ( i = 0, len = cases.length; i < len; i++ ) {
 		assert.equalNodeSelection( cases[i].actual, cases[i].expected, cases[i].msg );
 	}
 } );

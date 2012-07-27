@@ -5,19 +5,19 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-module( 've.dm.TransactionProcessor' );
+QUnit.module( 've.dm.TransactionProcessor' );
 
 /* Tests */
 
-test( 'commit/rollback', function() {
+QUnit.test( 'commit/rollback', function ( assert ) {
 	var cases = {
 		'no operations': {
 			'calls': [],
-			'expected': function( data ) {}
+			'expected': function ( data ) {}
 		},
 		'retaining': {
 			'calls': [['pushRetain', 38]],
-			'expected': function( data ) {}
+			'expected': function ( data ) {}
 		},
 		'annotating content': {
 			'calls': [
@@ -34,7 +34,7 @@ test( 'commit/rollback', function() {
 				['pushStopAnnotating', 'set', { 'type': 'textStyle/bold' }],
 				['pushStopAnnotating', 'set', { 'type': 'textStyle/underline' }]
 			],
-			'expected': function( data ) {
+			'expected': function ( data ) {
 				var b = { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } },
 					u = { '{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' } };
 				data[1] = ['a', b];
@@ -49,7 +49,7 @@ test( 'commit/rollback', function() {
 				['pushRetain', 2],
 				['pushStopAnnotating', 'set', { 'type': 'textStyle/bold' }]
 			],
-			'expected': function( data ) {
+			'expected': function ( data ) {
 				var b = { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } };
 				data[38] = ['h', b];
 				data[39].annotations = b;
@@ -107,7 +107,7 @@ test( 'commit/rollback', function() {
 				['pushRetain', 27],
 				['pushReplaceElementAttribute', 'html/src', 'image.png', undefined]
 			],
-			'expected': function( data ) {
+			'expected': function ( data ) {
 				data[0].attributes.level = 2;
 				data[12].attributes.style = 'number';
 				data[12].attributes.test = 'abcd';
@@ -126,7 +126,7 @@ test( 'commit/rollback', function() {
 				['pushRetain', 1],
 				['pushReplace', [], ['F', 'O', 'O']]
 			],
-			'expected': function( data ) {
+			'expected': function ( data ) {
 				data.splice( 1, 0, 'F', 'O', 'O' );
 			}
 		},
@@ -135,7 +135,7 @@ test( 'commit/rollback', function() {
 				['pushRetain', 1],
 				['pushReplace', ['a'], []]
 			],
-			'expected': function( data ) {
+			'expected': function ( data ) {
 				data.splice( 1, 1 );
 			}
 		},
@@ -144,7 +144,7 @@ test( 'commit/rollback', function() {
 				['pushRetain', 1],
 				['pushReplace', ['a'], ['F', 'O', 'O']]
 			],
-			'expected': function( data ) {
+			'expected': function ( data ) {
 				data.splice( 1, 1, 'F', 'O', 'O' );
 			}
 		},
@@ -153,7 +153,7 @@ test( 'commit/rollback', function() {
 				['pushRetain', 1],
 				['pushReplace', ['a'], ['F', 'O', 'O', {'type':'image'}, {'type':'/image'}, 'B', 'A', 'R']]
 			],
-			'expected': function( data ) {
+			'expected': function ( data ) {
 				data.splice( 1, 1, 'F', 'O', 'O', {'type':'image'}, {'type':'/image'}, 'B', 'A', 'R' );
 			}
 		},
@@ -167,7 +167,7 @@ test( 'commit/rollback', function() {
 				['pushRetain', 3],
 				['pushReplace', [{ 'type': '/heading' }], [{ 'type': '/paragraph' }]]
 			],
-			'expected': function( data ) {
+			'expected': function ( data ) {
 				data[0].type = 'paragraph';
 				delete data[0].attributes;
 				data[4].type = '/paragraph';
@@ -182,7 +182,7 @@ test( 'commit/rollback', function() {
 					[{ 'type': '/heading' }, { 'type': 'heading', 'attributes': { 'level': 1 } }]
 				]
 			],
-			'expected': function( data ) {
+			'expected': function ( data ) {
 				data.splice(
 					2,
 					0,
@@ -200,7 +200,7 @@ test( 'commit/rollback', function() {
 					[]
 				]
 			],
-			'expected': function( data ) {
+			'expected': function ( data ) {
 				data.splice( 57, 2 );
 			}
 		},
@@ -219,7 +219,7 @@ test( 'commit/rollback', function() {
 					[]
 				]
 			],
-			'expected': function( data ) {
+			'expected': function ( data ) {
 				data.splice( 10, 1 );
 				data.splice( 3, 1 );
 			}
@@ -259,7 +259,7 @@ test( 'commit/rollback', function() {
 		} else if ( 'exception' in cases[msg] ) {
 			/*jshint loopfunc:true */
 			assert.throws(
-				function() {
+				function () {
 					ve.dm.TransactionProcessor.commit( testDocument, tx );
 				},
 				cases[msg].exception,

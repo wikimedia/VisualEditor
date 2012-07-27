@@ -16,7 +16,7 @@
  * @param {HTMLElement} html Document html
  * @param {Object} options Configuration options
  */
-ve.Surface = function( parent, dom, options ) {
+ve.Surface = function ( parent, dom, options ) {
 	// Create linear model from HTML5 DOM
 	var data = ve.dm.converter.getDataFromDom( dom );
 	// Properties
@@ -58,7 +58,7 @@ ve.Surface = function( parent, dom, options ) {
 	// Setup VE DOM Skeleton
 	this.setupBaseElements();
 
-	this.$surface = $( '<div></div>' ).attr( 'class', 'es-editor' );
+	this.$surface = $( '<div>' ).attr( 'class', 'es-editor' );
 	this.$base.find( '.es-visual' ).append( this.$surface );
 
 	/* Instantiate surface layer */
@@ -79,38 +79,38 @@ ve.Surface = function( parent, dom, options ) {
 
 /* Methods */
 
-ve.Surface.prototype.getModel = function() {
+ve.Surface.prototype.getModel = function () {
 	return this.model;
 };
 
-ve.Surface.prototype.getDocumentModel = function() {
+ve.Surface.prototype.getDocumentModel = function () {
 	return this.documentModel;
 };
 
-ve.Surface.prototype.getView = function() {
+ve.Surface.prototype.getView = function () {
 	return this.view;
 };
 
-ve.Surface.prototype.getContext = function() {
+ve.Surface.prototype.getContext = function () {
 	return this.context;
 };
 
-ve.Surface.prototype.getParent = function() {
+ve.Surface.prototype.getParent = function () {
 	return this.parent;
 };
 
-ve.Surface.prototype.setupBaseElements = function() {
+ve.Surface.prototype.setupBaseElements = function () {
 	// Make new base element
-	this.$base = $( '<div></div>' )
+	this.$base = $( '<div>' )
 		.attr( 'class', 'es-base' )
 		.append(
-			$( '<div></div>' ).attr( 'class', 'es-panes' )
-				.append( $( '<div></div>' ).attr( 'class', 'es-visual' ) )
-				.append( $( '<div></div>' ).attr( 'class', 'es-panels' ) )
-				.append( $( '<div></div>' ).attr( 'style', 'clear:both' ) )
+			$( '<div>' ).attr( 'class', 'es-panes' )
+				.append( $( '<div>' ).attr( 'class', 'es-visual' ) )
+				.append( $( '<div>' ).attr( 'class', 'es-panels' ) )
+				.append( $( '<div>' ).attr( 'style', 'clear:both' ) )
 		)
 		.append(
-			$( '<div></div>' ).attr( {
+			$( '<div>' ).attr( {
 				// TODO: make 'paste' in surface stateful and remove this attrib
 				'id': 'paste',
 				'class': 'paste',
@@ -121,37 +121,37 @@ ve.Surface.prototype.setupBaseElements = function() {
 	$( this.getParent() ).append( this.$base );
 };
 
-ve.Surface.prototype.setupToolbars = function() {
-	var _this = this;
+ve.Surface.prototype.setupToolbars = function () {
+	var surface = this;
 
 	// Build each toolbar
-	$.each( this.options.toolbars, function( name, config ) {
+	$.each( this.options.toolbars, function ( name, config ) {
 		if ( config !== null ) {
 			if( name === 'top' ) {
 				// Append toolbar wrapper at the top, just above .es-panes
-				_this.toolbarWrapper[name] = $( '<div></div>' )
+				surface.toolbarWrapper[name] = $( '<div>' )
 					.attr( 'class', 'es-toolbar-wrapper' )
 					.append(
-						$( '<div></div>' ).attr( 'class', 'es-toolbar' )
+						$( '<div>' ).attr( 'class', 'es-toolbar' )
 							.append(
-								$( '<div></div>' ).attr( 'class', 'es-modes' )
+								$( '<div>' ).attr( 'class', 'es-modes' )
 							).append(
-								$( '<div></div>' ).attr( 'style', 'clear:both' )
+								$( '<div>' ).attr( 'style', 'clear:both' )
 							).append(
-								$( '<div></div>' ).attr( 'class', 'es-toolbar-shadow' )
+								$( '<div>' ).attr( 'class', 'es-toolbar-shadow' )
 							)
 				);
 
-				_this.$base.find( '.es-panes' ).before( _this.toolbarWrapper[name] );
+				surface.$base.find( '.es-panes' ).before( surface.toolbarWrapper[name] );
 
 				if ( 'float' in config && config.float === true ) {
 					// Float top toolbar
-					_this.floatTopToolbar();
+					surface.floatTopToolbar();
 				}
 			}
 			// Instantiate the toolbar
-			_this['toolbar-' + name] = new ve.ui.Toolbar(
-				_this.$base.find( '.es-toolbar' ), _this.view, config.tools
+			surface['toolbar-' + name] = new ve.ui.Toolbar(
+				surface.$base.find( '.es-toolbar' ), surface.view, config.tools
 			);
 		}
 	} );
@@ -163,7 +163,7 @@ ve.Surface.prototype.setupToolbars = function() {
  * TODO: Determine if this would be better in ui.toolbar vs here.
  * TODO: This needs to be refactored so that it only works on the main editor top tool bar.
  */
-ve.Surface.prototype.floatTopToolbar = function() {
+ve.Surface.prototype.floatTopToolbar = function () {
 	if ( !this.toolbarWrapper.top ) {
 		return;
 	}
@@ -171,7 +171,7 @@ ve.Surface.prototype.floatTopToolbar = function() {
 		$toolbar = $toolbarWrapper.find( '.es-toolbar' ),
 		$window = $( window );
 
-	$window.scroll( function() {
+	$window.scroll( function () {
 		var toolbarWrapperOffset = $toolbarWrapper.offset();
 		var $editorDocument = $toolbarWrapper.parent()
 			.find('.ve-surface').find('.ve-ce-documentNode');
@@ -181,9 +181,13 @@ ve.Surface.prototype.floatTopToolbar = function() {
 				right = $window.width() - $toolbarWrapper.outerWidth() - left;
 			// If not floating, set float
 			if ( !$toolbarWrapper.hasClass( 'float' ) ) {
-				$toolbarWrapper.css( 'height', $toolbarWrapper.height() )
+				$toolbarWrapper
+					.css( 'height', $toolbarWrapper.height() )
 					.addClass( 'float' );
-				$toolbar.css( { 'left': left, 'right': right } );
+				$toolbar.css( {
+					'left': left,
+					'right': right
+				} );
 			} else {
 				// Toolbar is floated
 				if (
@@ -191,12 +195,13 @@ ve.Surface.prototype.floatTopToolbar = function() {
 					$window.scrollTop() + $toolbar.height() >=
 						$editorDocument.children( '.ve-ce-branchNode:last' ).offset().top
 				) {
+					// XXX: Use less generic class names (not "bottom" and "float")
 					if( !$toolbarWrapper.hasClass( 'bottom' ) ) {
 						$toolbarWrapper
 							.removeClass( 'float' )
 							.addClass( 'bottom' );
 						$toolbar.css({
-							'top': $window.scrollTop() + "px",
+							'top': $window.scrollTop() + 'px',
 							'left': left,
 							'right': right
 						});
@@ -206,7 +211,11 @@ ve.Surface.prototype.floatTopToolbar = function() {
 						$toolbarWrapper
 							.removeClass( 'bottom' )
 							.addClass( 'float' );
-						$toolbar.css( { 'left': left, 'right': right, 'top': 0 } );
+						$toolbar.css( {
+							'top': 0,
+							'left': left,
+							'right': right
+						} );
 					}
 				}
 			}
@@ -215,30 +224,36 @@ ve.Surface.prototype.floatTopToolbar = function() {
 				$toolbarWrapper.css( 'height', 'auto' )
 					.removeClass( 'float' )
 					.removeClass( 'bottom' );
-				$toolbar.css( { 'top': 0, 'left': 0, 'right': 0 } );
+				$toolbar.css( {
+					'top': 0,
+					'left': 0,
+					'right': 0
+				} );
 			}
 		}
 	} );
 };
 
-ve.Surface.prototype.setupModes = function(){
-	var _this = this;
-	var activeModes = [];
+ve.Surface.prototype.setupModes = function () {
+	var mode, renderType, i, len,
+		surface = this,
+		activeModes = [];
 
 	// Loop through toolbar config to build modes
-	$.each( _this.options.toolbars, function( name, toolbar ){
-		//if toolbar has modes
+	$.each( surface.options.toolbars, function ( name, toolbar ) {
+		// If toolbar has modes
 		if( toolbar.modes && toolbar.modes.length > 0 ) {
-			for( var i=0;i<=toolbar.modes.length -1;i++ ) {
-				$( _this.toolbarWrapper[name] )
+			for( i = 0, len = toolbar.modes.length - 1; i <= len; i++ ) {
+				$( surface.toolbarWrapper[name] )
 					.find( '.es-modes' )
 					.append(
-						$( '<div></div>' ).attr( {
+						$( '<div>' ).attr( {
 							'class': 'es-modes-button es-mode-' + toolbar.modes[i],
-							'title': _this.options.modes[toolbar.modes[i]]
+							'title': surface.options.modes[ toolbar.modes[i] ]
 						} )
 				);
-				if( !activeModes[mode] ) {
+				// XXX: 'mode' is undefined here ?
+				if ( !activeModes[mode] ) {
 					activeModes.push( toolbar.modes[i] );
 				}
 			}
@@ -247,9 +262,8 @@ ve.Surface.prototype.setupModes = function(){
 
 	// Build elements in #es-panels for each activeMode
 	if ( activeModes.length > 0 ) {
-		for ( var mode in activeModes ) {
-			var renderType = '';
-			switch( activeModes[mode] ) {
+		for ( mode in activeModes ) {
+			switch ( activeModes[mode] ) {
 				case 'render':
 					renderType = 'es-render';
 					break;
@@ -260,10 +274,10 @@ ve.Surface.prototype.setupModes = function(){
 					renderType = 'es-code';
 					break;
 			}
-			_this.$base
+			surface.$base
 				.find( '.es-panels' )
 				.append(
-					$( '<div></div>' ).attr(
+					$( '<div>' ).attr(
 						'class', 'es-panel es-panel-' + activeModes[mode] + ' ' + renderType
 					)
 				);
@@ -276,40 +290,40 @@ ve.Surface.prototype.setupModes = function(){
 	this.defineModes();
 
 	//Bind Mode events
-	$.each( this.modes, function( name, mode ) {
-		mode.$.click( function() {
+	$.each( this.modes, function ( name, mode ) {
+		mode.$.click( function () {
 			var disable = $( this ).hasClass( 'es-modes-button-down' );
-			var visible = _this.$base.hasClass( 'es-showData' );
+			var visible = surface.$base.hasClass( 'es-showData' );
 			$( '.es-modes-button' ).removeClass( 'es-modes-button-down' );
 			$( '.es-panel' ).hide();
 			if ( disable ) {
 				if ( visible ) {
-					_this.$base.removeClass( 'es-showData' );
+					surface.$base.removeClass( 'es-showData' );
 					$( window ).resize();
 				}
-				_this.currentMode = null;
+				surface.currentMode = null;
 			} else {
 				$( this ).addClass( 'es-modes-button-down' );
 				mode.$panel.show();
 				if ( !visible ) {
-					_this.$base.addClass( 'es-showData' );
+					surface.$base.addClass( 'es-showData' );
 					$( window ).resize();
 				}
 				mode.update.call( mode );
-				_this.currentMode = mode;
+				surface.currentMode = mode;
 			}
 		} );
 	} );
 
 	/* Bind some surface events for modes */
-	this.model.on( 'transact', function() {
-		if ( _this.currentMode ) {
-			_this.currentMode.update.call( _this.currentMode );
+	this.model.on( 'transact', function () {
+		if ( surface.currentMode ) {
+			surface.currentMode.update.call( surface.currentMode );
 		}
 	} );
-	this.model.on( 'select', function() {
-		if ( _this.currentMode === _this.modes.history ) {
-			_this.currentMode.update.call( _this.currentMode );
+	this.model.on( 'select', function () {
+		if ( surface.currentMode === surface.modes.history ) {
+			surface.currentMode.update.call( surface.currentMode );
 		}
 	} );
 
@@ -320,50 +334,50 @@ ve.Surface.prototype.setupModes = function(){
 	Define modes
 	TODO: possibly extend this object via the config
 */
-ve.Surface.prototype.defineModes = function() {
-	var _this = this;
+ve.Surface.prototype.defineModes = function () {
+	var surface = this;
 	this.modes = {
 		'wikitext': {
-			'$': _this.$base.find( '.es-mode-wikitext' ),
-			'$panel': _this.$base.find( '.es-panel-wikitext' ),
-			'update': function() {
+			'$': surface.$base.find( '.es-mode-wikitext' ),
+			'$panel': surface.$base.find( '.es-panel-wikitext' ),
+			'update': function () {
 				this.$panel.text(
-					ve.dm.WikitextSerializer.stringify( _this.getDocumentModel().getPlainObject() )
+					ve.dm.WikitextSerializer.stringify( surface.getDocumentModel().getPlainObject() )
 				);
 			}
 		},
 		'json': {
-			'$': _this.$base.find( '.es-mode-json' ),
-			'$panel': _this.$base.find( '.es-panel-json' ),
-			'update': function() {
-				this.$panel.text( ve.dm.JsonSerializer.stringify( _this.getDocumentModel().getPlainObject(), {
+			'$': surface.$base.find( '.es-mode-json' ),
+			'$panel': surface.$base.find( '.es-panel-json' ),
+			'update': function () {
+				this.$panel.text( ve.dm.JsonSerializer.stringify( surface.getDocumentModel().getPlainObject(), {
 					'indentWith': '  '
 				} ) );
 			}
 		},
 		'html': {
-			'$': _this.$base.find( '.es-mode-html' ),
-			'$panel': _this.$base.find( '.es-panel-html' ),
-			'update': function() {
+			'$': surface.$base.find( '.es-mode-html' ),
+			'$panel': surface.$base.find( '.es-panel-html' ),
+			'update': function () {
 				this.$panel.text(
-					ve.dm.HtmlSerializer.stringify( _this.getDocumentModel().getPlainObject() )
+					ve.dm.HtmlSerializer.stringify( surface.getDocumentModel().getPlainObject() )
 				);
 			}
 		},
 		'render': {
-			'$': _this.$base.find( '.es-mode-render' ),
-			'$panel': _this.$base.find( '.es-panel-render' ),
-			'update': function() {
+			'$': surface.$base.find( '.es-mode-render' ),
+			'$panel': surface.$base.find( '.es-panel-render' ),
+			'update': function () {
 				this.$panel.html(
-					ve.dm.HtmlSerializer.stringify( _this.getDocumentModel().getPlainObject() )
+					ve.dm.HtmlSerializer.stringify( surface.getDocumentModel().getPlainObject() )
 				);
 			}
 		},
 		'history': {
-			'$': _this.$base.find( '.es-mode-history' ),
-			'$panel': _this.$base.find( '.es-panel-history' ),
-			'update': function() {
-				var history = _this.model.getHistory(),
+			'$': surface.$base.find( '.es-mode-history' ),
+			'$panel': surface.$base.find( '.es-panel-history' ),
+			'update': function () {
+				var history = surface.model.getHistory(),
 					i = history.length,
 					end = Math.max( 0, i - 25 ),
 					j,
@@ -394,16 +408,16 @@ ve.Surface.prototype.defineModes = function() {
 						}
 						operations.push( '[' + ops.join( ', ' ) + ']' );
 					}
-					events += '<div' + ( z === _this.model.undoIndex ? ' class="es-panel-history-active"' : '' ) + '>' + operations.join( ', ' ) + '</div>';
+					events += '<div' + ( z === surface.model.undoIndex ? ' class="es-panel-history-active"' : '' ) + '>' + operations.join( ', ' ) + '</div>';
 				}
 				
 				this.$panel.html( events );
 			}
 		},
 		'help': {
-			'$': _this.$base.find( '.es-mode-help' ),
-			'$panel': _this.$base.find( '.es-panel-help' ),
-			'update': function() {
+			'$': surface.$base.find( '.es-mode-help' ),
+			'$panel': surface.$base.find( '.es-panel-help' ),
+			'update': function () {
 				//TODO: Make this less ugly,
 				//HOW?: Create api to register help items so that they may be generated here.
 				/*jshint multistr:true */

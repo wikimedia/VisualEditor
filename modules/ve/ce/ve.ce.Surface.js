@@ -14,7 +14,7 @@
  * @constructor
  * @param model {ve.dm.Surface} Model to observe
  */
-ve.ce.Surface = function( $container, model ) {
+ve.ce.Surface = function ( $container, model ) {
 	// Inheritance
 	ve.EventEmitter.call( this );
 
@@ -52,7 +52,7 @@ ve.ce.Surface = function( $container, model ) {
 		'cut': ve.proxy( this.onCut, this ),
 		'copy': ve.proxy( this.onCopy, this ),
 		'paste': ve.proxy( this.onPaste, this ),
-		'dragover drop': function( e ) {
+		'dragover drop': function ( e ) {
 			// Prevent content drag & drop
 			e.preventDefault();
 			return false;
@@ -86,7 +86,7 @@ ve.ce.Surface = function( $container, model ) {
 
 /* Methods */
 
-ve.ce.Surface.prototype.documentOnFocus = function() {
+ve.ce.Surface.prototype.documentOnFocus = function () {
 	ve.log( 'documentOnFocus' );
 
 	this.$document.off( '.ve-ce-Surface' );
@@ -101,14 +101,14 @@ ve.ce.Surface.prototype.documentOnFocus = function() {
 	this.startPolling( true );
 };
 
-ve.ce.Surface.prototype.documentOnBlur = function() {
+ve.ce.Surface.prototype.documentOnBlur = function () {
 	ve.log( 'documentOnBlur' );
 
 	this.$document.off( '.ve-ce-Surface' );
 	this.stopPolling();
 };
 
-ve.ce.Surface.prototype.onMouseDown = function( e ) {
+ve.ce.Surface.prototype.onMouseDown = function ( e ) {
 	ve.log( 'onMouseDown' );
 
 	if ( this.poll.polling === true ) {
@@ -126,7 +126,7 @@ ve.ce.Surface.prototype.onMouseDown = function( e ) {
 	}
 };
 
-ve.ce.Surface.prototype.onKeyDown = function( e ) {
+ve.ce.Surface.prototype.onKeyDown = function ( e ) {
 	var offset,
 		relativeContentOffset,
 		relativeStructuralOffset,
@@ -277,14 +277,14 @@ ve.ce.Surface.prototype.onKeyDown = function( e ) {
 	}
 };
 
-ve.ce.Surface.prototype.onCopy = function( e ) {
+ve.ce.Surface.prototype.onCopy = function ( e ) {
 	var sel = rangy.getSelection(),
 		$frag = $( sel.getRangeAt(0).cloneContents() ),
 		dataArray = ve.copyArray( this.documentView.model.getData( this.model.getSelection() ) ),
 		key = '';
 
 	// Create key from text and element names
-	$frag.contents().each( function() {
+	$frag.contents().each( function () {
 		key += this.textContent || this.nodeName;
 	} );
 	key = 've-' + key.replace( /\s/gm, '' );
@@ -293,14 +293,18 @@ ve.ce.Surface.prototype.onCopy = function( e ) {
 	this.clipboard[key] = dataArray;
 	try {
 		localStorage.setItem(
-			key, JSON.stringify( { 'time': new Date().getTime(), 'data': dataArray } )
+			key,
+			JSON.stringify( {
+				'time': new Date().getTime(),
+				'data': dataArray
+			} )
 		);
-	} catch( e ) {
+	} catch ( e ) {
 		// Silently ignore
 	}
 };
 
-ve.ce.Surface.prototype.onCut = function( e ) {
+ve.ce.Surface.prototype.onCut = function ( e ) {
 	var surface = this;
 
 	this.stopPolling();
@@ -327,7 +331,7 @@ ve.ce.Surface.prototype.onCut = function( e ) {
 	}, 1 );
 };
 
-ve.ce.Surface.prototype.onPaste = function( e ) {
+ve.ce.Surface.prototype.onPaste = function ( e ) {
 	var view = this,
 		selection = this.model.getSelection(),
 		tx = null;
@@ -335,20 +339,20 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
 	this.stopPolling();
 
 	// Pasting into a range? Remove first.
-	if (!rangy.getSelection().isCollapsed) {
+	if ( !rangy.getSelection().isCollapsed ) {
 		tx = ve.dm.Transaction.newFromRemoval( view.documentView.model, selection );
 		view.model.change( tx );
 	}
 
-	$('#paste').html('').show().focus();
+	$( '#paste' ).html( '' ).show().focus();
 
-	setTimeout( function() {
+	setTimeout( function () {
 		var key = '',
-			pasteData = null,
-			tx = null;
+			pasteData,
+			tx;
 
 		// Create key from text and element names
-		$( '#paste' ).hide().contents().each( function() {
+		$( '#paste' ).hide().contents().each( function () {
 			key += this.textContent || this.nodeName;
 		} );
 		key = 've-' + key.replace( /\s/gm, '' );
@@ -364,7 +368,9 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
 
 		// Transact
 		tx = ve.dm.Transaction.newFromInsertion(
-			view.documentView.model, selection.start, pasteData
+			view.documentView.model,
+			selection.start,
+			pasteData
 		);
 		view.model.change( tx, new ve.Range( selection.start + pasteData.length ) );
 		view.documentView.documentNode.$.focus();
@@ -374,10 +380,10 @@ ve.ce.Surface.prototype.onPaste = function( e ) {
 	}, 1 );
 };
 
-ve.ce.Surface.prototype.onKeyPress = function( e ) {
+ve.ce.Surface.prototype.onKeyPress = function ( e ) {
 	var node, selection, data;
 
-	ve.log('onKeyPress');
+	ve.log( 'onKeyPress' );
 
 	if ( ve.ce.Surface.isShortcutKey( e ) || e.which === 13 ) {
 		return;
@@ -407,7 +413,8 @@ ve.ce.Surface.prototype.onKeyPress = function( e ) {
 			node = this.documentView.getNodeFromOffset( selection.start );
 		}
 		node.$.empty();
-		node.$.append( document.createTextNode('') );
+		// TODO: Can this be chained to the above line?
+		node.$.append( document.createTextNode( '' ) );
 		this.clearPollData();
 		this.startPolling();
 	}
@@ -427,21 +434,21 @@ ve.ce.Surface.prototype.onKeyPress = function( e ) {
 
 };
 
-ve.ce.Surface.prototype.startPolling = function( async ) {
+ve.ce.Surface.prototype.startPolling = function ( async ) {
 	ve.log( 'startPolling' );
 
 	this.poll.polling = true;
 	this.pollChanges( async );
 };
 
-ve.ce.Surface.prototype.stopPolling = function() {
+ve.ce.Surface.prototype.stopPolling = function () {
 	ve.log( 'stopPolling' );
 
 	this.poll.polling = false;
 	clearTimeout( this.poll.timeout );
 };
 
-ve.ce.Surface.prototype.clearPollData = function() {
+ve.ce.Surface.prototype.clearPollData = function () {
 	ve.log( 'clearPollData' );
 
 	this.poll.text = null;
@@ -453,12 +460,12 @@ ve.ce.Surface.prototype.clearPollData = function() {
 	this.poll.rangySelection.focusOffset = null;
 };
 
-ve.ce.Surface.prototype.pollChanges = function( async ) {
+ve.ce.Surface.prototype.pollChanges = function ( async ) {
 	var delay, node, range, rangySelection,
 		$anchorNode, $focusNode,
 		text, hash;
 
-	delay = ve.proxy( function( async ) {
+	delay = ve.proxy( function ( async ) {
 		if ( this.poll.polling ) {
 			if ( this.poll.timeout !== null ) {
 				clearTimeout( this.poll.timeout );
@@ -556,7 +563,7 @@ ve.ce.Surface.prototype.pollChanges = function( async ) {
 	delay();
 };
 
-ve.ce.Surface.prototype.onContentChange = function( e ) {
+ve.ce.Surface.prototype.onContentChange = function ( e ) {
 	var nodeOffset = $( e.node ).data( 'node' ).model.getOffset(),
 		offsetDiff = (
 			e.old.range !== null &&
@@ -633,7 +640,7 @@ ve.ce.Surface.prototype.onContentChange = function( e ) {
 	this.sluggable = true;
 };
 
-ve.ce.Surface.prototype.onChange = function( transaction, selection ) {
+ve.ce.Surface.prototype.onChange = function ( transaction, selection ) {
 	ve.log( 'onChange' );
 
 	if ( selection ) {
@@ -643,7 +650,7 @@ ve.ce.Surface.prototype.onChange = function( transaction, selection ) {
 		// TODO: Use ve.debounce method to abstract usage of setTimeout
 		clearTimeout( this.selectionTimeout );
 		this.selectionTimeout = setTimeout(
-			ve.proxy( function() {
+			ve.proxy( function () {
 				if ( this.contextView ) {
 					if ( selection.getLength() > 0 ) {
 						this.contextView.set();
@@ -657,7 +664,7 @@ ve.ce.Surface.prototype.onChange = function( transaction, selection ) {
 	}
 };
 
-ve.ce.Surface.prototype.handleEnter = function( e ) {
+ve.ce.Surface.prototype.handleEnter = function ( e ) {
 	var selection = this.model.getSelection(),
 		documentModel = this.model.getDocument(),
 		emptyParagraph = [{ 'type': 'paragraph' }, { 'type': '/paragraph' }],
@@ -706,7 +713,7 @@ ve.ce.Surface.prototype.handleEnter = function( e ) {
 		var stack = [],
 			outermostNode = null;
 
-		ve.Node.traverseUpstream( node, function( node ) {
+		ve.Node.traverseUpstream( node, function ( node ) {
 			if ( !node.canBeSplit() ) {
 				return false;
 			}
@@ -764,7 +771,7 @@ ve.ce.Surface.prototype.handleEnter = function( e ) {
 	this.startPolling();
 };
 
-ve.ce.Surface.prototype.handleDelete = function( backspace ) {
+ve.ce.Surface.prototype.handleDelete = function ( backspace ) {
 	this.stopPolling();
 
 	var selection = this.model.getSelection(),
@@ -788,8 +795,8 @@ ve.ce.Surface.prototype.handleDelete = function( backspace ) {
 			targetOffset = selection.to;
 		}
 
-		var	sourceNode = this.documentView.getNodeFromOffset( sourceOffset, false ),
-			targetNode = this.documentView.getNodeFromOffset( targetOffset, false );
+		sourceNode = this.documentView.getNodeFromOffset( sourceOffset, false );
+		targetNode = this.documentView.getNodeFromOffset( targetOffset, false );
 
 		if ( sourceNode.type === targetNode.type ) {
 			sourceSplitableNode = ve.ce.Node.getSplitableNode( sourceNode );
@@ -822,7 +829,7 @@ ve.ce.Surface.prototype.handleDelete = function( backspace ) {
 			sourceData = this.documentView.model.getData( sourceNode.model.getRange() );
 			// Find the node that should be completely removed
 			nodeToDelete = sourceNode;
-			ve.Node.traverseUpstream( nodeToDelete, function( node ) {
+			ve.Node.traverseUpstream( nodeToDelete, function ( node ) {
 				if ( node.getParent().children.length === 1 ) {
 					nodeToDelete = node.getParent();
 					return true;
@@ -854,11 +861,11 @@ ve.ce.Surface.prototype.handleDelete = function( backspace ) {
 	this.startPolling();
 };
 
-ve.ce.Surface.prototype.showCursor = function( offset ) {
+ve.ce.Surface.prototype.showCursor = function ( offset ) {
 	this.showSelection( new ve.Range( offset ) );
 };
 
-ve.ce.Surface.prototype.showSelection = function( range ) {
+ve.ce.Surface.prototype.showSelection = function ( range ) {
 	var rangySel = rangy.getSelection(),
 		rangyRange = rangy.createRange(),
 		start,
@@ -912,7 +919,7 @@ ve.ce.Surface.prototype.showSelection = function( range ) {
 };
 
 // TODO: Find a better name and a better place for this method
-ve.ce.Surface.prototype.getNearestCorrectOffset = function( offset, direction ) {
+ve.ce.Surface.prototype.getNearestCorrectOffset = function ( offset, direction ) {
 	direction = direction > 0 ? 1 : -1;
 
 	if (
@@ -946,7 +953,7 @@ ve.ce.Surface.prototype.getNearestCorrectOffset = function( offset, direction ) 
 };
 
 // TODO: Find a better name and a better place for this method - probably in a document view?
-ve.ce.Surface.prototype.hasSlugAtOffset = function( offset ) {
+ve.ce.Surface.prototype.hasSlugAtOffset = function ( offset ) {
 	var node = this.documentView.documentNode.getNodeFromOffset( offset );
 	if ( node && node.canHaveChildren() ) {
 		return node.hasSlugAtOffset( offset );
@@ -965,7 +972,7 @@ ve.ce.Surface.prototype.hasSlugAtOffset = function( offset ) {
  * @returns {Object} Object containing a node and offset property where node is an HTML element and
  * offset is the position within the element
  */
-ve.ce.Surface.prototype.getNodeAndOffset = function( offset ) {
+ve.ce.Surface.prototype.getNodeAndOffset = function ( offset ) {
 	var node = this.documentView.getNodeFromOffset( offset ),
 		startOffset = this.documentView.getDocumentNode().getOffsetFromNode( node ) +
 			( ( node.isWrapped() ) ? 1 : 0 ),
@@ -1031,7 +1038,7 @@ ve.ce.Surface.prototype.getNodeAndOffset = function( offset ) {
  * @param domOffset {Integer} DOM offset within the DOM Element
  * @returns {Integer} Linear model offset
  */
-ve.ce.Surface.prototype.getOffset = function( domNode, domOffset ) {
+ve.ce.Surface.prototype.getOffset = function ( domNode, domOffset ) {
 	if ( domNode.nodeType === Node.TEXT_NODE ) {
 		return this.getOffsetFromTextNode( domNode, domOffset );
 	} else {
@@ -1039,7 +1046,7 @@ ve.ce.Surface.prototype.getOffset = function( domNode, domOffset ) {
 	}
 };
 
-ve.ce.Surface.prototype.getOffsetFromTextNode = function( domNode, domOffset ) {
+ve.ce.Surface.prototype.getOffsetFromTextNode = function ( domNode, domOffset ) {
 	var $node, nodeModel, current, stack, item, offset, $item;
 
 	$node = $( domNode ).closest(
@@ -1091,7 +1098,7 @@ ve.ce.Surface.prototype.getOffsetFromTextNode = function( domNode, domOffset ) {
 	return offset + nodeModel.getOffset() + ( nodeModel.isWrapped() ? 1 : 0 );
 };
 
-ve.ce.Surface.prototype.getOffsetFromElementNode = function( domNode, domOffset, addOuterLength ) {
+ve.ce.Surface.prototype.getOffsetFromElementNode = function ( domNode, domOffset, addOuterLength ) {
 	var $domNode = $( domNode ),
 		nodeModel,
 		node;
@@ -1142,7 +1149,7 @@ ve.ce.Surface.prototype.updateContextIcon = function() {
 };
 
 /* Supplies the selection anchor coordinates to contextView */
-ve.ce.Surface.prototype.getSelectionRect = function() {
+ve.ce.Surface.prototype.getSelectionRect = function () {
 	var rangySel = rangy.getSelection();
 	return {
 		start: rangySel.getStartDocumentPos(),
@@ -1151,7 +1158,7 @@ ve.ce.Surface.prototype.getSelectionRect = function() {
 };
 
 /* Tests if the modifier key for keyboard shortcuts is pressed. */
-ve.ce.Surface.isShortcutKey = function( e ) {
+ve.ce.Surface.isShortcutKey = function ( e ) {
 	if ( e.ctrlKey || e.metaKey ) {
 		return true;
 	}
@@ -1159,35 +1166,38 @@ ve.ce.Surface.isShortcutKey = function( e ) {
 };
 
 /* Removes localStorage keys for copy and paste after a day */
-ve.ce.Surface.clearLocalStorage = function() {
-	var keysToRemove = [];
+ve.ce.Surface.clearLocalStorage = function () {
+	var i, len, key,
+		time, now,
+		keysToRemove = [];
 
-	for ( var i = 0; i < localStorage.length; i++ ) {
-		var key = localStorage.key( i );
+	for ( i = 0, len = localStorage.length; i < len; i++ ) {
+		key = localStorage.key( i );
 
 		if ( key.indexOf( 've-' ) !== 0 ) {
 			return false;
 		}
 
-		var	time = JSON.parse( localStorage.getItem( key ) ).time,
-			now = new Date().getTime();
+		time = JSON.parse( localStorage.getItem( key ) ).time;
+		now = new Date().getTime();
 
-		if (now - time > 86400000) {
+		// Offset: 24 days (in miliseconds)
+		if ( now - time > ( 24 * 3600 * 1000 ) ) {
 			// Don't remove keys while iterating. Store them for later removal.
 			keysToRemove.push( key );
 		}
 	}
 
-	$.each( keysToRemove, function( i, val ) {
+	$.each( keysToRemove, function ( i, val ) {
 		localStorage.removeItem( val );
 	} );
 };
 
-ve.ce.Surface.prototype.getModel = function() {
+ve.ce.Surface.prototype.getModel = function () {
 	return this.model;
 };
 
-ve.ce.Surface.prototype.getDocument = function() {
+ve.ce.Surface.prototype.getDocument = function () {
 	return this.documentView;
 };
 

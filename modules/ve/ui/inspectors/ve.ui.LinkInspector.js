@@ -12,7 +12,7 @@
  * @constructor
  * @param {ve.ui.Toolbar} toolbar
  */
-ve.ui.LinkInspector = function( toolbar, context ) {
+ve.ui.LinkInspector = function ( toolbar, context ) {
 	// Inheritance
 	ve.ui.Inspector.call( this, toolbar, context );
 
@@ -23,7 +23,7 @@ ve.ui.LinkInspector = function( toolbar, context ) {
 		$( '<div class="es-inspector-title"></div>', context.inspectorDoc )
 			.text( ve.msg( 'visualeditor-linkinspector-title' ) )
 	);
-	this.$locationLabel = $( '<label></label>', context.inspectorDoc )
+	this.$locationLabel = $( '<label>', context.inspectorDoc )
 		.text( ve.msg( 'visualeditor-linkinspector-label-pagetitle' ) )
 		.appendTo( this.$form );
 	this.$locationInput = $( '<input type="text">', context.inspectorDoc ).appendTo( this.$form );
@@ -31,7 +31,7 @@ ve.ui.LinkInspector = function( toolbar, context ) {
 
 	// Events
 	var inspector = this;
-	this.$clearButton.click( function() {
+	this.$clearButton.click( function () {
 		if ( $(this).is( '.es-inspector-button-disabled' ) ) {
 			return;
 		}
@@ -46,8 +46,8 @@ ve.ui.LinkInspector = function( toolbar, context ) {
 		inspector.$locationInput.val( '' );
 		inspector.context.closeInspector();
 	} );
-	this.$locationInput.bind( 'mousedown keydown cut paste', function() {
-		setTimeout( function() {
+	this.$locationInput.on( 'mousedown keydown cut paste', function () {
+		setTimeout( function () {
 			if ( inspector.$locationInput.val() !== '' ) {
 				inspector.$acceptButton.removeClass( 'es-inspector-button-disabled' );
 			} else {
@@ -59,7 +59,7 @@ ve.ui.LinkInspector = function( toolbar, context ) {
 
 /* Methods */
 
-ve.ui.LinkInspector.prototype.getAllLinkAnnotationsFromSelection = function() {
+ve.ui.LinkInspector.prototype.getAllLinkAnnotationsFromSelection = function () {
 	var surfaceView = this.context.getSurfaceView(),
 		surfaceModel = surfaceView.getModel(),
 		documentModel = surfaceModel.getDocument(),
@@ -67,6 +67,7 @@ ve.ui.LinkInspector.prototype.getAllLinkAnnotationsFromSelection = function() {
 		linkAnnotations = {};
 
 		annotations = documentModel.getAnnotationsFromRange( surfaceModel.getSelection(), true );
+		// XXX: '.' is not escaped, is the '.*' part redundant?
 		linkAnnotations = ve.dm.Document.getMatchingAnnotations ( annotations,  /link\/.*/  );
 		if ( !ve.isEmptyObject( linkAnnotations ) ) {
 			return linkAnnotations;
@@ -75,7 +76,7 @@ ve.ui.LinkInspector.prototype.getAllLinkAnnotationsFromSelection = function() {
 	return null;
 };
 
-ve.ui.LinkInspector.prototype.getFirstLinkAnnotation = function( annotations ) {
+ve.ui.LinkInspector.prototype.getFirstLinkAnnotation = function ( annotations ) {
 	var hash;
 	for ( hash in annotations ) {
 		// Use the first one with a recognized type (there should only be one, but this is just in case)
@@ -87,7 +88,7 @@ ve.ui.LinkInspector.prototype.getFirstLinkAnnotation = function( annotations ) {
 };
 
 // TODO: This should probably be somewhere else but I needed this here for now.
-ve.ui.LinkInspector.prototype.getSelectionText = function() {
+ve.ui.LinkInspector.prototype.getSelectionText = function () {
 	var i,
 		surfaceView = this.context.getSurfaceView(),
 		surfaceModel = surfaceView.getModel(),
@@ -110,7 +111,7 @@ ve.ui.LinkInspector.prototype.getSelectionText = function() {
  * selection to contain the complete annotated link range
  * OR unwrap outer whitespace from selection.
  */
-ve.ui.LinkInspector.prototype.prepareOpen = function() {
+ve.ui.LinkInspector.prototype.prepareOpen = function () {
 	var	surfaceView = this.context.getSurfaceView(),
 		surfaceModel = surfaceView.getModel(),
 		doc = surfaceModel.getDocument(),
@@ -140,7 +141,7 @@ ve.ui.LinkInspector.prototype.prepareOpen = function() {
 	surfaceModel.change( null, newSelection );
 };
 
-ve.ui.LinkInspector.prototype.onOpen = function() {
+ve.ui.LinkInspector.prototype.onOpen = function () {
 	var	annotation = this.getFirstLinkAnnotation( this.getAllLinkAnnotationsFromSelection() ),
 		initialValue = '';
 	if ( annotation === null ) {
@@ -165,12 +166,12 @@ ve.ui.LinkInspector.prototype.onOpen = function() {
 		this.$acceptButton.removeClass( 'es-inspector-button-disabled' );
 	}
 
-	setTimeout( ve.proxy( function() {
+	setTimeout( ve.proxy( function () {
 		this.$locationInput.focus().select();
 	}, this ), 0 );
 };
 
-ve.ui.LinkInspector.prototype.onClose = function( accept ) {
+ve.ui.LinkInspector.prototype.onClose = function ( accept ) {
 	var surfaceView = this.context.getSurfaceView(),
 		surfaceModel = surfaceView.getModel(),
 		annotations = this.getAllLinkAnnotationsFromSelection(),
@@ -191,7 +192,7 @@ ve.ui.LinkInspector.prototype.onClose = function( accept ) {
 	surfaceView.getDocument().getDocumentNode().$.focus();
 };
 
-ve.ui.LinkInspector.getAnnotationForTarget = function( target ) {
+ve.ui.LinkInspector.getAnnotationForTarget = function ( target ) {
 	var title;
 	// Figure out if this is an internal or external link
 	if ( target.match( /^(https?:)?\/\// ) ) {

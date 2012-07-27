@@ -5,11 +5,11 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-module( 've.ce.LeafNode' );
+QUnit.module( 've.ce.LeafNode' );
 
 /* Stubs */
 
-ve.ce.LeafNodeStub = function( model ) {
+ve.ce.LeafNodeStub = function ( model ) {
 	// Inheritance
 	ve.ce.LeafNode.call( this, 'leaf-stub', model );
 };
@@ -24,17 +24,17 @@ ve.ce.nodeFactory.register( 'leaf-stub', ve.ce.LeafNodeStub );
 
 /* Tests */
 
-test( 'canBeSplit', 1, function( assert ) {
+QUnit.test( 'canBeSplit', 1, function ( assert ) {
 	var node = new ve.ce.LeafNodeStub( new ve.dm.LeafNodeStub() );
 	assert.equal( node.canBeSplit(), false );
 } );
 
-test( 'canHaveChildren', 1, function( assert ) {
+QUnit.test( 'canHaveChildren', 1, function ( assert ) {
 	var node = new ve.ce.LeafNodeStub( new ve.dm.LeafNodeStub() );
 	assert.equal( node.canHaveChildren(), false );
 } );
 
-test( 'canHaveGrandchildren', 1, function( assert ) {
+QUnit.test( 'canHaveGrandchildren', 1, function ( assert ) {
 	var node = new ve.ce.LeafNodeStub( new ve.dm.LeafNodeStub() );
 	assert.equal( node.canHaveGrandchildren(), false );
 } );

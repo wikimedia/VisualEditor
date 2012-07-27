@@ -5,13 +5,14 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-module( 've.dm.Converter' );
+QUnit.module( 've.dm.Converter' );
 
 /* Tests */
 
-test( 'getDataElementFromDomElement', function( assert ) {
-	for ( var msg in ve.dm.example.conversions ) {
-		var conversion = ve.dm.example.conversions[msg];
+QUnit.test( 'getDataElementFromDomElement', function ( assert ) {
+	var msg, conversion;
+	for ( msg in ve.dm.example.conversions ) {
+		conversion = ve.dm.example.conversions[msg];
 		assert.deepEqual(
 			ve.dm.converter.getDataElementFromDomElement( conversion.domElement ),
 			conversion.dataElement,
@@ -20,9 +21,10 @@ test( 'getDataElementFromDomElement', function( assert ) {
 	}
 } );
 
-test( 'getDomElementFromDataElement', function( assert ) {
-	for ( var msg in ve.dm.example.conversions ) {
-		var conversion = ve.dm.example.conversions[msg];
+QUnit.test( 'getDomElementFromDataElement', function ( assert ) {
+	var msg, conversion;
+	for ( msg in ve.dm.example.conversions ) {
+		conversion = ve.dm.example.conversions[msg];
 		assert.equalDomElement(
 			ve.dm.converter.getDomElementFromDataElement( conversion.dataElement ),
 			conversion.domElement,
@@ -31,23 +33,25 @@ test( 'getDomElementFromDataElement', function( assert ) {
 	}
 } );
 
-test( 'getDataFromDom', function( assert ) {
-	var cases = ve.dm.example.domToDataCases;
-	for ( var msg in cases ) {
+QUnit.test( 'getDataFromDom', function ( assert ) {
+	var msg,
+		cases = ve.dm.example.domToDataCases;
+	for ( msg in cases ) {
 		assert.deepEqual(
-			ve.dm.converter.getDataFromDom( $( '<div></div>' ).html( cases[msg].html )[0] ),
+			ve.dm.converter.getDataFromDom( $( '<div>' ).html( cases[msg].html )[0] ),
 			cases[msg].data,
 			msg
 		);
 	}
 } );
 
-test( 'getDomFromData', function( assert ) {
-	var cases = ve.dm.example.domToDataCases;
-	for ( var msg in cases ) {
+QUnit.test( 'getDomFromData', function ( assert ) {
+	var msg,
+		cases = ve.dm.example.domToDataCases;
+	for ( msg in cases ) {
 		assert.equalDomElement(
 			ve.dm.converter.getDomFromData( cases[msg].data ),
-			$( '<div></div>' ).html( cases[msg].html )[0],
+			$( '<div>' ).html( cases[msg].html )[0],
 			msg
 		);
 	}

@@ -14,7 +14,7 @@
  * @param {ve.ui.Toolbar} toolbar
  * @param {String} name
  */
- ve.ui.ListButtonTool = function( toolbar, name, title, data ) {
+ ve.ui.ListButtonTool = function ( toolbar, name, title, data ) {
 	// Inheritance
 	ve.ui.ButtonTool.call( this, toolbar, name, title );
 
@@ -25,7 +25,7 @@
 
 /* Methods */
 
-ve.ui.ListButtonTool.prototype.list = function( nodes, style ) {
+ve.ui.ListButtonTool.prototype.list = function ( nodes, style ) {
 	var surfaceModel = this.toolbar.getSurfaceView().getModel(),
 		documentModel = surfaceModel.getDocument(),
 		selection = surfaceModel.getSelection(),
@@ -33,8 +33,9 @@ ve.ui.ListButtonTool.prototype.list = function( nodes, style ) {
 		previousList,
 		groupRange,
 		group,
-		tx;
-	for ( var i = 0; i < groups.length; i++ ) {
+		tx, i;
+
+	for ( i = 0; i < groups.length; i++ ) {
 		group = groups[i];
 		if ( group.grandparent && group.grandparent.getType() === 'list' ) {
 			if ( group.grandparent !== previousList ) {
@@ -75,7 +76,7 @@ ve.ui.ListButtonTool.prototype.list = function( nodes, style ) {
 	}
 };
 
-ve.ui.ListButtonTool.prototype.unlist = function( node ) {
+ve.ui.ListButtonTool.prototype.unlist = function ( node ) {
 	/**
 	 * Recursively prepare to unwrap all lists in a given range.
 	 *
@@ -93,9 +94,10 @@ ve.ui.ListButtonTool.prototype.unlist = function( node ) {
 	function getUnlistRanges( documentModel, range ) {
 		var groups = documentModel.getCoveredSiblingGroups( range ),
 			// Collect ranges in an object for deduplication
-			unlistRanges = {}, range,
+			unlistRanges = {},
 			i, j, k, group, previousList, list, listItem,
 			subList, endOffset = 0;
+
 		for ( i = 0; i < groups.length; i++ ) {
 			group = groups[i];
 			list = group.grandparent;
@@ -133,10 +135,12 @@ ve.ui.ListButtonTool.prototype.unlist = function( node ) {
 		selection = surfaceModel.getSelection(),
 		unlistRangesObj = getUnlistRanges( documentModel, selection ),
 		unlistRangesArr = [],
-		i, j;
+		i, j, tx;
+
 	for ( i in unlistRangesObj ) {
 		unlistRangesArr.push( unlistRangesObj[i] );
 	}
+
 	for ( i = 0; i < unlistRangesArr.length; i++ ) {
 		// Unwrap the range given by unlistRanges[i]
 		tx = ve.dm.Transaction.newFromWrap(
@@ -159,7 +163,7 @@ ve.ui.ListButtonTool.prototype.unlist = function( node ) {
 	surfaceModel.change( null, selection );
 };
 
-ve.ui.ListButtonTool.prototype.onClick = function() {
+ve.ui.ListButtonTool.prototype.onClick = function () {
 	this.toolbar.surfaceView.model.breakpoint();
 	if ( !this.$.hasClass( 'es-toolbarButtonTool-down' ) ) {
 		this.list( this.nodes, this.name );
@@ -169,7 +173,7 @@ ve.ui.ListButtonTool.prototype.onClick = function() {
 	this.toolbar.surfaceView.model.breakpoint();
 };
 
-ve.ui.ListButtonTool.prototype.updateState = function( annotations, nodes ) {
+ve.ui.ListButtonTool.prototype.updateState = function ( annotations, nodes ) {
 	var surfaceView = this.toolbar.getSurfaceView(),
 		surfaceModel = surfaceView.getModel(),
 		doc = surfaceView.getDocument(),
@@ -177,18 +181,18 @@ ve.ui.ListButtonTool.prototype.updateState = function( annotations, nodes ) {
 		leaves = doc.selectNodes( selection, 'leaves' );
 
 	function areListItemsOfStyle( leaves, style ){
-		var listNode = null;
+		var i, listNode;
 
-		for ( var i=0; i < leaves.length; i++ ) {
+		for ( i = 0; i < leaves.length; i++ ) {
 			listNode = leaves[i].node;
 			// Get the list node
-			while( listNode && listNode.getType() !== 'list' ) {
+			while ( listNode && listNode.getType() !== 'list' ) {
 				listNode = listNode.getParent();
 				if ( listNode === null ) {
 					return false;
 				}
 			}
-			if( listNode.getModel().getAttribute('style') !== style ) {
+			if ( listNode.getModel().getAttribute('style') !== style ) {
 				return false;
 			}
 		}

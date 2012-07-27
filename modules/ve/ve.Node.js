@@ -14,7 +14,7 @@
  * @extends {ve.EventEmitter}
  * @param {String} type Symbolic name of node type
  */
-ve.Node = function( type ) {
+ve.Node = function ( type ) {
 	// Inheritance
 	ve.EventEmitter.call( this );
 
@@ -26,9 +26,9 @@ ve.Node = function( type ) {
 
 	// Convenience function for emitting update events - context is bound by enclosing this scope
 	// making it easy to pass through other functions as a callback
-	var _this = this;
-	this.emitUpdate = function() {
-		_this.emit( 'update' );
+	var node = this;
+	this.emitUpdate = function () {
+		node.emit( 'update' );
 	};
 };
 
@@ -42,7 +42,7 @@ ve.Node = function( type ) {
  * @returns {Boolean} Node can have children
  * @throws {Error} if not overridden
  */
-ve.Node.prototype.canHaveChildren = function() {
+ve.Node.prototype.canHaveChildren = function () {
 	throw 've.Node.canHaveChildren must be overridden in subclass';
 };
 
@@ -54,7 +54,7 @@ ve.Node.prototype.canHaveChildren = function() {
  * @returns {Boolean} Node can have grandchildren
  * @throws {Error} if not overridden
  */
-ve.Node.prototype.canHaveGrandchildren = function() {
+ve.Node.prototype.canHaveGrandchildren = function () {
 	throw 've.Node.canHaveGrandchildren must be overridden in subclass';
 };
 
@@ -66,7 +66,7 @@ ve.Node.prototype.canHaveGrandchildren = function() {
  * @returns {Boolean} Node represents a wrapped element
  * @throws {Error} if not overridden
  */
-ve.Node.prototype.isWrapped = function() {
+ve.Node.prototype.isWrapped = function () {
 	throw 've.Node.isWrapped must be overridden in subclass';
 };
 
@@ -78,7 +78,7 @@ ve.Node.prototype.isWrapped = function() {
  * @returns {Integer} Node length
  * @throws {Error} if not overridden
  */
-ve.Node.prototype.getLength = function() {
+ve.Node.prototype.getLength = function () {
 	throw 've.Node.getLength must be overridden in subclass';
 };
 
@@ -90,7 +90,7 @@ ve.Node.prototype.getLength = function() {
  * @returns {Integer} Node outer length
  * @throws {Error} if not overridden
  */
-ve.Node.prototype.getOuterLength = function() {
+ve.Node.prototype.getOuterLength = function () {
 	throw 've.Node.getOuterLength must be overridden in subclass';
 };
 
@@ -102,7 +102,7 @@ ve.Node.prototype.getOuterLength = function() {
  * @method
  * @returns {String} Symbolic name of element type
  */
-ve.Node.prototype.getType = function() {
+ve.Node.prototype.getType = function () {
 	return this.type;
 };
 
@@ -112,7 +112,7 @@ ve.Node.prototype.getType = function() {
  * @method
  * @returns {ve.Node} Reference to this node's parent
  */
-ve.Node.prototype.getParent = function() {
+ve.Node.prototype.getParent = function () {
 	return this.parent;
 };
 
@@ -122,7 +122,7 @@ ve.Node.prototype.getParent = function() {
  * @method
  * @returns {ve.Node} Root node
  */
-ve.Node.prototype.getRoot = function() {
+ve.Node.prototype.getRoot = function () {
 	return this.root;
 };
 
@@ -134,7 +134,7 @@ ve.Node.prototype.getRoot = function() {
  * @method
  * @param {ve.Node} root Node to use as root
  */
-ve.Node.prototype.setRoot = function( root ) {
+ve.Node.prototype.setRoot = function ( root ) {
 	this.root = root;
 };
 
@@ -144,7 +144,7 @@ ve.Node.prototype.setRoot = function( root ) {
  * @method
  * @returns {ve.Document} Document this node is a part of
  */
-ve.Node.prototype.getDocument = function( root ) {
+ve.Node.prototype.getDocument = function ( root ) {
 	return this.doc;
 };
 
@@ -156,7 +156,7 @@ ve.Node.prototype.getDocument = function( root ) {
  * @method
  * @param {ve.Document} doc Document this node is a part of
  */
-ve.Node.prototype.setDocument = function( doc ) {
+ve.Node.prototype.setDocument = function ( doc ) {
 	this.doc = doc;
 };
 
@@ -167,7 +167,7 @@ ve.Node.prototype.setDocument = function( doc ) {
  * @param {ve.Node} parent Node to attach to
  * @emits attach (parent)
  */
-ve.Node.prototype.attach = function( parent ) {
+ve.Node.prototype.attach = function ( parent ) {
 	this.parent = parent;
 	this.setRoot( parent.getRoot() );
 	this.setDocument( parent.getDocument() );
@@ -180,7 +180,7 @@ ve.Node.prototype.attach = function( parent ) {
  * @method
  * @emits detach
  */
-ve.Node.prototype.detach = function() {
+ve.Node.prototype.detach = function () {
 	var parent = this.parent;
 	this.parent = null;
 	this.setRoot( this );
@@ -196,7 +196,7 @@ ve.Node.prototype.detach = function() {
  * @param {function} callback Callback method to be called for every traversed node
  * @method
  */
-ve.Node.traverseUpstream = function( node, callback ) {
+ve.Node.traverseUpstream = function ( node, callback ) {
 	while ( node ) {
 		if ( callback ( node ) === false ) {
 			break;

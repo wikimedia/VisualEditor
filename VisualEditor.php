@@ -11,7 +11,7 @@
 /* Configuration */
 
 // URL to the parsoid instance
-$wgVisualEditorParsoidURL = 'http://parsoid.wmflabs.org/';
+$wgVisualEditorParsoidURL = 'http://localhost:8000';
 
 /* Setup */
 
@@ -74,7 +74,8 @@ $wgResourceModules += array(
 			'ext.visualEditor.base',
 			'mediawiki.util',
 			'mediawiki.feedback',
-			'mediawiki.Uri'
+			'mediawiki.Uri',
+			'mediawiki.Title'
 		),
 		'messages' => array(
 			'minoredit',

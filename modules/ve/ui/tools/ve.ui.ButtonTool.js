@@ -13,20 +13,21 @@
  * @param {ve.ui.Toolbar} toolbar
  * @param {String} name
  */
-ve.ui.ButtonTool = function( toolbar, name, title ) {
+ve.ui.ButtonTool = function ( toolbar, name, title ) {
 	// Inheritance
 	ve.ui.Tool.call( this, toolbar, name, title );
+
 	if ( !name ) {
 		return;
 	}
 
 	// Properties
-	this.$.addClass( 'es-toolbarButtonTool' ).addClass( 'es-toolbarButtonTool-' + name );
+	this.$.addClass( 'es-toolbarButtonTool es-toolbarButtonTool-' + name );
 
 	// Events
-	var _this = this;
-	this.$.bind( {
-		'mousedown': function( e ) {
+	var tool = this;
+	tool.$.on( {
+		'mousedown': function ( e ) {
 			if ( e.which === 1 ) {
 				e.preventDefault();
 				return false;
@@ -34,7 +35,7 @@ ve.ui.ButtonTool = function( toolbar, name, title ) {
 		},
 		'mouseup': function ( e ) {
 			if ( e.which === 1 ) {
-				_this.onClick( e );
+				tool.onClick( e );
 			}
 		}
 	} );
@@ -42,11 +43,11 @@ ve.ui.ButtonTool = function( toolbar, name, title ) {
 
 /* Methods */
 
-ve.ui.ButtonTool.prototype.onClick = function() {
+ve.ui.ButtonTool.prototype.onClick = function () {
 	throw 'ButtonTool.onClick not implemented in this subclass:' + this.constructor;
 };
 
-ve.ui.ButtonTool.prototype.updateEnabled = function() {
+ve.ui.ButtonTool.prototype.updateEnabled = function () {
 	if ( this.enabled ) {
 		this.$.removeClass( 'es-toolbarButtonTool-disabled' );
 	} else {
