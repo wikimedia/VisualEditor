@@ -25,15 +25,17 @@ function TagTk( name, attribs, dataAttribs ) {
  * Private helper for genericTokenMethods
  */
 var setShadowInfo = function ( name, value, origValue ) {
-	if ( ! this.dataAttribs.a ) {
-		this.dataAttribs.a = {};
-	}
-	this.dataAttribs.a[name] = value;
-	if ( origValue !== undefined ) {
-		if ( ! this.dataAttribs.sa ) {
-			this.dataAttribs.sa = {};
+	if ( value !== origValue ) {
+		if ( ! this.dataAttribs.a ) {
+			this.dataAttribs.a = {};
 		}
-		this.dataAttribs.sa[name] = origValue;
+		this.dataAttribs.a[name] = value;
+		if ( origValue !== undefined ) {
+			if ( ! this.dataAttribs.sa ) {
+				this.dataAttribs.sa = {};
+			}
+			this.dataAttribs.sa[name] = origValue;
+		}
 	}
 };
 
@@ -73,8 +75,12 @@ var genericTokenMethods = {
 	 */
 	getAttributeShadowInfo: function ( name ) {
 		var curVal = Util.lookup( this.attribs, name );
-		if ( ! this.dataAttribs.a ||
-				this.dataAttribs.a[name] !== curVal ||
+		if ( ! this.dataAttribs.a ) {
+			return { 
+				value: curVal,
+				modified: false
+			};
+		} else if ( this.dataAttribs.a[name] !== curVal ||
 				this.dataAttribs.sa[name] === undefined ) {
 			return { 
 				value: curVal,

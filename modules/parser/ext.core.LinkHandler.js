@@ -27,8 +27,9 @@ WikiLinkHandler.prototype.rank = 1.15; // after AttributeExpander
 
 WikiLinkHandler.prototype.onWikiLink = function ( token, frame, cb ) {
 	var env = this.manager.env,
-		href = env.tokensToString( Util.lookupKV( token.attribs, 'href' ).v ),
-		title = env.makeTitleFromPrefixedText(href);
+		href = env.tokensToString( 
+					Util.lookup( token.attribs, 'href' ) ),
+		title = env.makeTitleFromPrefixedText(env.normalizeTitle(href));
 
 	if ( title.ns.isFile() ) {
 		cb( this.renderFile( token, frame, cb, href, title ) );
@@ -47,13 +48,11 @@ WikiLinkHandler.prototype.onWikiLink = function ( token, frame, cb ) {
 		var normalizedHref = title.makeLink(),
 			obj = new TagTk( 'a',
 					[
-						new KV( 'href', normalizedHref )
+						new KV('rel', 'mw:WikiLink')
 					], token.dataAttribs
 				),
 			content = token.attribs.slice(2);
-		if ( href !== normalizedHref ) {
-			obj.dataAttribs.sHref = href;
-		}
+		obj.addNormalizedAttribute( 'href', normalizedHref, env.wgScriptPath + href );
 		//console.warn('content: ' + JSON.stringify( content, null, 2 ) );
 
 		// XXX: handle trail
@@ -65,11 +64,10 @@ WikiLinkHandler.prototype.onWikiLink = function ( token, frame, cb ) {
 					out.push( '|' );
 				}
 			}
-			obj.attribs.push( new KV('rel', 'mw:WikiLink') );
 			content = out;
 		} else {
+			obj.dataAttribs.stx = 'simple';
 			content = [ Util.decodeURI(href) ];
-			obj.attribs.push( new KV('rel', 'mw:SimpleWikiLink') );
 		}
 
 		var tail = Util.lookupKV( token.attribs, 'tail' ).v;

@@ -277,6 +277,19 @@ var Util = {
 			s += '#' + anchor;
 		}
 		return s;
+	},
+
+	/**
+	 * Strip a string suffix if it matches
+	 */
+	stripSuffix: function ( text, suffix ) {
+		var sLen = suffix.length;
+		if ( sLen && text.substr( text.length - sLen, sLen ) === suffix )
+		{
+			return text.substr( 0, text.length - sLen );
+		} else {
+			return text;
+		}
 	}
 };
 
