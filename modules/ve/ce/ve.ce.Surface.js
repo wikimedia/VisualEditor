@@ -106,6 +106,9 @@ ve.ce.Surface.prototype.documentOnBlur = function () {
 
 	this.$document.off( '.ve-ce-Surface' );
 	this.stopPolling();
+	if ( this.contextView ) {
+		this.contextView.clear();
+	}
 };
 
 ve.ce.Surface.prototype.onMouseDown = function ( e ) {
