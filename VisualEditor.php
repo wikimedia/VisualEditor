@@ -57,8 +57,6 @@ $wgResourceModules += array(
 	),
 	'ext.visualEditor.viewPageTarget' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
-			've/init/ve.init.js',
-			've/init/ve.init.Platform.js',
 			've/init/mw/ve.init.mw.js',
 			've/init/mw/ve.init.mw.Platform.js',
 			've/init/mw/ve.init.mw.Target.js',
@@ -102,6 +100,8 @@ $wgResourceModules += array(
 			'jquery/jquery.json.js',
 			've/ve.js',
 			've/ve.EventEmitter.js',
+			've/init/ve.init.js',
+			've/init/ve.init.Platform.js',
 		),
 		'debugScripts' => array(
 			've/ve.debug.js',
