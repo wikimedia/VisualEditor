@@ -6,64 +6,130 @@
 var async = require('async');
 var Util = require('./mediawiki.Util.js').Util;
 
+
+/* -------------------- KV -------------------- */
+// A key-value pair
+function KV ( k, v ) {
+	this.k = k;
+	this.v = v;
+}
+
 /* -------------------- TagTk -------------------- */
-function TagTk( name, attribs, dataAttribs ) { 
+function TagTk( name, attribs, dataAttribs ) {
 	this.name = name;
 	this.attribs = attribs || [];
 	this.dataAttribs = dataAttribs || {};
 }
 
 /**
+ * Private helper for genericTokenMethods
+ */
+var setShadowInfo = function ( name, value, origValue ) {
+	if ( ! this.dataAttribs.a ) {
+		this.dataAttribs.a = {};
+	}
+	this.dataAttribs.a[name] = value;
+	if ( origValue !== undefined ) {
+		if ( ! this.dataAttribs.sa ) {
+			this.dataAttribs.sa = {};
+		}
+		this.dataAttribs.sa[name] = origValue;
+	}
+};
+
+/**
  * Generic token attribute accessors
  */
 var genericTokenMethods = {
+	setShadowInfo: setShadowInfo,
 
 	/**
 	 * Generic set attribute method. Expects the context to be set to a token.
 	 */
-	addAttribute: function ( attributeName, value ) {
-		this.attribs.push( new KV( attributeName, value ) );
+	addAttribute: function ( name, value ) {
+		this.attribs.push( new KV( name, value ) );
 	},
 
 	/**
 	 * Generic set attribute method with support for change detection. Expects the
 	 * context to be set to a token.
 	 */
-	addNormalizedAttribute: function ( attributeName, normalizedValue, origValue ) {
-		this.addAttribute( attributeName, normalizedValue );
-		if ( ! this.dataAttribs.a ) {
-			this.dataAttribs.a = {};
-		}
-		this.dataAttribs.a[attributeName] = normalizedValue;
-		if ( origValue !== undefined ) {
-			if ( ! this.dataAttribs.sa ) {
-				this.dataAttribs.sa = {};
-			}
-			this.dataAttribs.sa[attributeName] = origValue;
-		}
+	addNormalizedAttribute: function ( name, value, origValue ) {
+		this.addAttribute( name, value );
+		this.setShadowInfo( name, value, origValue );
 	},
 
 	/**
 	 * Generic attribute accessor. Expects the context to be set to a token.
 	 */
-	getAttribute: function ( attributeName ) {
-		return Util.lookup( this.attribs, attributeName );
+	getAttribute: function ( name ) {
+		return Util.lookup( this.attribs, name );
 	},
 
 	/**
-	 * Attribute accessor for the wikitext serializer. Performs change
+	 * Attribute info accessor for the wikitext serializer. Performs change
 	 * detection and uses unnormalized attribute values if set. Expects the
 	 * context to be set to a token.
 	 */
-	getAttributeSource: function ( attributeName ) {
-		var curVal = Util.lookup( this.attribs, attributeName );
-		if ( ! this.dataAttribs.a || 
-				this.dataAttribs.a[attributeName] !== curVal ||
-				this.dataAttribs.sa[attributeName] === undefined ) {
-			return curVal;
+	getAttributeShadowInfo: function ( name ) {
+		var curVal = Util.lookup( this.attribs, name );
+		if ( ! this.dataAttribs.a ||
+				this.dataAttribs.a[name] !== curVal ||
+				this.dataAttribs.sa[name] === undefined ) {
+			return { 
+				value: curVal,
+				modified: true
+			};
 		} else {
-			return this.dataAttribs.sa[attributeName];
+			return { 
+				value: this.dataAttribs.sa[name],
+				modified: false
+			};
 		}
+	},
+
+	/**
+	 * Completely remove all attributes with this name.
+	 */
+	removeAttribute: function ( name ) {
+		var out = [],
+			attribs = this.attribs;
+		for ( var i = 0, l = attribs.length; i < l; i++ ) {
+			var kv = attribs[i];
+			if ( kv.k.toLowerCase() !== name ) {
+				out.push( kv );
+			}
+		}
+		this.attribs = out;
+	},
+
+	/**
+	 * Set an attribute to a value, and shadow it if it was already set
+	 */
+	setShadowedAttribute: function ( name, value ) {
+		var out = [],
+			found = false;
+		for ( var i = attribs.length; i >= 0; i-- ) {
+			var kv = attribs[i];
+			if ( kv.k.toLowerCase() !== name ) {
+				out.push( kv );
+			} else if ( ! found ) {
+				if ( ! this.dataAttribs.a ||
+						this.dataAttribs.a[name] === undefined )
+				{
+					this.setShadowInfo( name, value, kv.v );
+				}
+
+				kv.v = value;
+				found = true;
+			}
+			// else strip it..
+		}
+		out.reverse();
+		if ( ! found ) {
+			out.push( new KV( name, value ) );
+		}
+		this.attribs = out;
 	}
 };
 
@@ -115,7 +181,7 @@ TagTk.prototype.toString = function(compact) {
 $.extend( TagTk.prototype, genericTokenMethods );
 
 /* -------------------- EndTagTk -------------------- */
-function EndTagTk( name, attribs, dataAttribs ) { 
+function EndTagTk( name, attribs, dataAttribs ) {
 	this.name = name;
 	this.attribs = attribs || [];
 	this.dataAttribs = dataAttribs || {};
@@ -140,7 +206,7 @@ EndTagTk.prototype.toString = function() {
 $.extend( EndTagTk.prototype, genericTokenMethods );
 
 /* -------------------- SelfclosingTagTk -------------------- */
-function SelfclosingTagTk( name, attribs, dataAttribs ) { 
+function SelfclosingTagTk( name, attribs, dataAttribs ) {
 	this.name = name;
 	this.attribs = attribs || [];
 	this.dataAttribs = dataAttribs || {};
@@ -179,8 +245,12 @@ SelfclosingTagTk.prototype.attrsToString = function(indent, indentIncrement, sta
 		if (kVal.present && vVal.present) {
 			buf.push([kVal.str, "=", vVal.str].join(''));
 		} else {
-			if (kVal.present) buf.push(kVal.str);
-			if (vVal.present) buf.push(vVal.str);
+			if (kVal.present) {
+				buf.push(kVal.str);
+			}
+			if (vVal.present) {
+				buf.push(vVal.str);
+			}
 		}
 	}
 
@@ -193,7 +263,9 @@ SelfclosingTagTk.prototype.defaultToString = function(compact, indent) {
 		var attr0 = this.attribs[0];
 		return attr0 ? buf + Util.toStringTokens(attr0.k, "\n") : buf;
 	} else {
-		if (!indent) indent = "";
+		if (!indent) {
+			indent = "";
+		}
 		var origIndent = indent;
 		var indentIncrement = "  ";
 		indent = indent + indentIncrement;
@@ -207,7 +279,9 @@ SelfclosingTagTk.prototype.tagToStringFns = {
 		if (compact) {
 			return ["<extlink:", href, ">"].join('');
 		} else {
-			if (!indent) indent = "";
+			if (!indent) {
+				indent = "";
+			}
 			var origIndent = indent;
 			var indentIncrement = "  ";
 			indent = indent + indentIncrement;
@@ -221,21 +295,25 @@ SelfclosingTagTk.prototype.tagToStringFns = {
 	},
 
 	"wikilink": function(compact, indent) {
-		if (!indent) indent = "";
+		if (!indent) {
+			indent = "";
+		}
 		var href = Util.kvTokensToString(Util.lookupKV(this.attribs, 'href').v);
 		if (compact) {
 			return ["<wikilink:", href, ">"].join('');
 		} else {
-			if (!indent) indent = "";
+			if (!indent) {
+				indent = "";
+			}
 			var origIndent = indent;
 			var indentIncrement = "  ";
 			indent = indent + indentIncrement;
 			var tail = Util.lookupKV(this.attribs, 'tail').v;
 			var content = this.attrsToString(indent, indentIncrement, 2);
-			return ["<wikilink>(\n", indent, 
-					"href=", href, "\n", indent, 
+			return ["<wikilink>(\n", indent,
+					"href=", href, "\n", indent,
 					"tail=", tail, "\n", indent,
-					"content=", content, "\n", origIndent, 
+					"content=", content, "\n", origIndent,
 					")"].join('');
 		}
 	}
@@ -268,7 +346,7 @@ NlTk.prototype = {
 };
 
 /* -------------------- CommentTk -------------------- */
-function CommentTk( value, dataAttribs ) { 
+function CommentTk( value, dataAttribs ) {
 	this.value = value;
 	// won't survive in the DOM, but still useful for token serialization
 	if ( dataAttribs !== undefined ) {
@@ -302,13 +380,6 @@ EOFTk.prototype = {
 	}
 };
 
-
-/* -------------------- KV -------------------- */
-// A key-value pair
-function KV ( k, v ) {
-	this.k = k;
-	this.v = v;
-}
 
 
 
