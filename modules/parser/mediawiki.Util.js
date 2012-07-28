@@ -64,8 +64,8 @@ var Util = {
 	 * @returns {Boolean}: True if token is block-level, false otherwise.
 	 */
 	isBlockToken: function ( token ) {
-		if ( token.constructor === TagTk || 
-				token.constructor === EndTagTk || 
+		if ( token.constructor === TagTk ||
+				token.constructor === EndTagTk ||
 				token.constructor === SelfclosingTagTk ) {
 			return Util.isBlockTag( token.name.toLowerCase() );
 		} else {
@@ -290,9 +290,32 @@ var Util = {
 		} else {
 			return text;
 		}
+	},
+
+	arrayToHash: function(a) {
+		var h = {};
+		for (var i = 0, n = a.length; i < n; i++) {
+			h[a[i]] = 1;
+		}
+		return h;
+	},
+
+	// Returns the utf8 encoding of the code point
+	codepointToUtf8: function(cp) {
+		return unescape(encodeURIComponent(cp));
+	},
+
+	// Returns true if a given Unicode codepoint is a valid character in XML.
+	validateCodepoint: function(cp) {
+		return (cp ===    0x09) ||
+			(cp ===   0x0a) ||
+			(cp ===   0x0d) ||
+			(cp >=    0x20 && cp <=   0xd7ff) ||
+			(cp >=  0xe000 && cp <=   0xfffd) ||
+			(cp >= 0x10000 && cp <= 0x10ffff);
 	}
 };
 
-if (typeof module == "object") {
+if (typeof module === "object") {
 	module.exports.Util = Util;
 }
