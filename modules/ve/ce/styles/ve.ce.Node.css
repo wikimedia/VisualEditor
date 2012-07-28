@@ -6,21 +6,23 @@
  */
 
 .ve-ce-alienBlockNode {
-	background-color: rgb(255,255,186) rgba(255,255,186,0.3);
-	border: rgba(0,0,0,0.3) dashed 1px;
+	background-color: rgb(255, 255, 186) rgba(255, 255, 186, 0.3);
+	border: rgba(0, 0, 0, 0.3) dashed 1px;
 	display: block;
 }
 
 .ve-ce-alienInlineNode {
-	background-color: rgb(255,255,186) rgba(255,255,186,0.3);
-	border: rgba(0,0,0,0.3) dashed 1px;
+	background-color: rgb(255, 255, 186) rgba(255, 255, 186, 0.3);
+	border: rgba(0, 0, 0, 0.3) dashed 1px;
 	display: inline;
 }
 
 .ve-ce-slug {
-	/*display: inline-block;
+	/*
+	display: inline-block;
 	margin-right: -1px;
-	width: 1px;*/
+	width: 1px;
+	*/
 }
 
 .ve-ce-branchNode h1:empty:before,

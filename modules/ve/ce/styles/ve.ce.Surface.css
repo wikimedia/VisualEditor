@@ -13,9 +13,10 @@
 .ve-ce-surface-textarea {
 	position: absolute;
 	z-index: -1;
+	filter: alpha(opacity=0);
 	opacity: 0;
 	color: white;
-	background-color: white;
+	background-color: #fff;
 	border: none;
 	padding: 0;
 	margin: 0;
@@ -28,7 +29,7 @@
 
 .ve-ce-surface-cursor {
 	position: absolute;
-	background-color: black;
+	background-color: #000;
 	width: 1px;
 	display: none;
 }
@@ -37,12 +38,14 @@
 	display: none;
 	height: 1px;
 	left: 0;
+	filter: alpha(opacity=0);
 	opacity: 0;
 	overflow: hidden;
 	position: fixed;
 	top: 0;
 	width: 1px;
 }
+
 #paste * {
 	height: 1px !important;
 	width: 1px !important;

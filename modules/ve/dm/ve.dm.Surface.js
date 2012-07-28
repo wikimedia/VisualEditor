@@ -13,7 +13,7 @@
  * @extends {ve.EventEmitter}
  * @param {ve.dm.Document} doc Document model to create surface for
  */
-ve.dm.Surface = function( doc ) {
+ve.dm.Surface = function ( doc ) {
 	// Inheritance
 	ve.EventEmitter.call( this );
 	// Properties
@@ -27,22 +27,22 @@ ve.dm.Surface = function( doc ) {
 
 /* Methods */
 
-ve.dm.Surface.prototype.startHistoryTracking = function() {
+ve.dm.Surface.prototype.startHistoryTracking = function () {
 	this.historyTrackingInterval = setInterval( ve.proxy( this.breakpoint, this ), 750 );
 };
 
-ve.dm.Surface.prototype.stopHistoryTracking = function() {
+ve.dm.Surface.prototype.stopHistoryTracking = function () {
 	clearInterval( this.historyTrackingInterval );
 };
 
-ve.dm.Surface.prototype.purgeHistory = function() {
+ve.dm.Surface.prototype.purgeHistory = function () {
 	this.selection = null;
 	this.smallStack = [];
 	this.bigStack = [];
 	this.undoIndex = 0;
 };
 
-ve.dm.Surface.prototype.getHistory = function() {
+ve.dm.Surface.prototype.getHistory = function () {
 	if ( this.smallStack.length > 0 ) {
 		return this.bigStack.slice( 0 ).concat( [{ 'stack': this.smallStack.slice(0) }] );
 	} else {
@@ -56,7 +56,7 @@ ve.dm.Surface.prototype.getHistory = function() {
  * @method
  * @returns {ve.dm.DocumentNode} Document model of the surface
  */
-ve.dm.Surface.prototype.getDocument = function() {
+ve.dm.Surface.prototype.getDocument = function () {
 	return this.documentModel;
 };
 
@@ -66,7 +66,7 @@ ve.dm.Surface.prototype.getDocument = function() {
  * @method
  * @returns {ve.Range} Current selection
  */
-ve.dm.Surface.prototype.getSelection = function() {
+ve.dm.Surface.prototype.getSelection = function () {
 	return this.selection;
 };
 
@@ -77,7 +77,7 @@ ve.dm.Surface.prototype.getSelection = function() {
  * @param {ve.dm.Transaction} transaction Transaction to apply to the document
  * @param {ve.Range} selection
  */
-ve.dm.Surface.prototype.change = function( transaction, selection ) {
+ve.dm.Surface.prototype.change = function ( transaction, selection ) {
 	if ( transaction ) {
 		this.bigStack = this.bigStack.slice( 0, this.bigStack.length - this.undoIndex );
 		this.undoIndex = 0;
@@ -102,19 +102,20 @@ ve.dm.Surface.prototype.change = function( transaction, selection ) {
  * @param {String} annotation action: toggle, clear, set
  * @param {Object} annotation object to apply.
  */
-ve.dm.Surface.prototype.annotate = function( method, annotation ) {
-	var selection = this.getSelection();
+ve.dm.Surface.prototype.annotate = function ( method, annotation ) {
+	var tx,
+		selection = this.getSelection();
 	if ( selection.getLength() ) {
 		selection = this.getDocument().trimOuterSpaceFromRange( selection );
-		var tx = ve.dm.Transaction.newFromAnnotation(
+		tx = ve.dm.Transaction.newFromAnnotation(
 			this.getDocument(), selection, method, annotation
 		);
 		this.change( tx, selection );
 	}
 };
 
-ve.dm.Surface.prototype.breakpoint = function( selection ) {
-	if( this.smallStack.length > 0 ) {
+ve.dm.Surface.prototype.breakpoint = function ( selection ) {
+	if ( this.smallStack.length > 0 ) {
 		this.bigStack.push( {
 			stack: this.smallStack,
 			selection: selection || this.selection.clone()
@@ -124,17 +125,18 @@ ve.dm.Surface.prototype.breakpoint = function( selection ) {
 	}
 };
 
-ve.dm.Surface.prototype.undo = function() {
+ve.dm.Surface.prototype.undo = function () {
+	var diff, item, i, selection;
 	this.breakpoint();
 	this.undoIndex++;
 	if ( this.bigStack[this.bigStack.length - this.undoIndex] ) {
-		var diff = 0;
-		var item = this.bigStack[this.bigStack.length - this.undoIndex];
-		for( var i = item.stack.length - 1; i >= 0; i-- ) {
+		diff = 0;
+		item = this.bigStack[this.bigStack.length - this.undoIndex];
+		for ( i = item.stack.length - 1; i >= 0; i-- ) {
 			this.documentModel.rollback( item.stack[i] );
 			diff += item.stack[i].lengthDifference;
 		}
-		var selection = item.selection;
+		selection = item.selection;
 		selection.end -= diff;
 		this.emit( 'history' );
 		return selection;
@@ -142,14 +144,14 @@ ve.dm.Surface.prototype.undo = function() {
 	return null;
 };
 
-ve.dm.Surface.prototype.redo = function() {
+ve.dm.Surface.prototype.redo = function () {
+	var selection, diff, item, i;
 	this.breakpoint();
-	var selection;
 	if ( this.undoIndex > 0 ) {
 		if ( this.bigStack[this.bigStack.length - this.undoIndex] ) {
-			var diff = 0;
-			var item = this.bigStack[this.bigStack.length - this.undoIndex];
-			for( var i = 0; i < item.stack.length; i++ ) {
+			diff = 0;
+			item = this.bigStack[this.bigStack.length - this.undoIndex];
+			for ( i = 0; i < item.stack.length; i++ ) {
 				this.documentModel.commit( item.stack[i] );
 				diff += item.stack[i].lengthDifference;
 			}
@@ -162,7 +164,6 @@ ve.dm.Surface.prototype.redo = function() {
 	}
 	return null;
 };
-
 
 /* Inheritance */
 

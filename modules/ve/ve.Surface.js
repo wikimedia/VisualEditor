@@ -34,7 +34,7 @@ ve.Surface = function ( parent, dom, options ) {
 						{ 'name': 'list', 'items' : ['number', 'bullet', 'outdent', 'indent'] }]
 			}
 		},
-		//TODO: i18n
+		// TODO: i18n
 		modes: {
 			wikitext: 'Toggle wikitext view',
 			json: 'Toggle JSON view',
@@ -51,14 +51,14 @@ ve.Surface = function ( parent, dom, options ) {
 	this.$surface = null;
 	this.toolbarWrapper = {};
 
-	/* Create document model object with the linear model */
-	this.documentModel = new ve.dm.Document ( data );
+	// Create document model object with the linear model
+	this.documentModel = new ve.dm.Document( data );
 	this.model = new ve.dm.Surface( this.documentModel );
 	
 	// Setup VE DOM Skeleton
 	this.setupBaseElements();
 
-	this.$surface = $( '<div>' ).attr( 'class', 'es-editor' );
+	this.$surface = $( '<div>' ).addClass( 'es-editor' );
 	this.$base.find( '.es-visual' ).append( this.$surface );
 
 	/* Instantiate surface layer */
@@ -102,12 +102,12 @@ ve.Surface.prototype.getParent = function () {
 ve.Surface.prototype.setupBaseElements = function () {
 	// Make new base element
 	this.$base = $( '<div>' )
-		.attr( 'class', 'es-base' )
+		.addClass( 'es-base' )
 		.append(
-			$( '<div>' ).attr( 'class', 'es-panes' )
-				.append( $( '<div>' ).attr( 'class', 'es-visual' ) )
-				.append( $( '<div>' ).attr( 'class', 'es-panels' ) )
-				.append( $( '<div>' ).attr( 'style', 'clear:both' ) )
+			$( '<div>' ).addClass( 'es-panes' )
+				.append( $( '<div>' ).addClass( 'es-visual' ) )
+				.append( $( '<div>' ).addClass( 'es-panels' ) )
+				.append( $( '<div>' ).css( 'clear', 'both' ) )
 		)
 		.append(
 			$( '<div>' ).attr( {
@@ -130,15 +130,15 @@ ve.Surface.prototype.setupToolbars = function () {
 			if( name === 'top' ) {
 				// Append toolbar wrapper at the top, just above .es-panes
 				surface.toolbarWrapper[name] = $( '<div>' )
-					.attr( 'class', 'es-toolbar-wrapper' )
+					.addClass( 'es-toolbar-wrapper' )
 					.append(
-						$( '<div>' ).attr( 'class', 'es-toolbar' )
+						$( '<div>' ).addClass( 'es-toolbar' )
 							.append(
-								$( '<div>' ).attr( 'class', 'es-modes' )
+								$( '<div>' ).addClass( 'es-modes' )
 							).append(
-								$( '<div>' ).attr( 'style', 'clear:both' )
+								$( '<div>' ).css( 'clear', 'both' )
 							).append(
-								$( '<div>' ).attr( 'class', 'es-toolbar-shadow' )
+								$( '<div>' ).addClass( 'es-toolbar-shadow' )
 							)
 				);
 
@@ -151,7 +151,9 @@ ve.Surface.prototype.setupToolbars = function () {
 			}
 			// Instantiate the toolbar
 			surface['toolbar-' + name] = new ve.ui.Toolbar(
-				surface.$base.find( '.es-toolbar' ), surface.view, config.tools
+				surface.$base.find( '.es-toolbar' ),
+				surface.view,
+				config.tools
 			);
 		}
 	} );
@@ -174,7 +176,7 @@ ve.Surface.prototype.floatTopToolbar = function () {
 	$window.scroll( function () {
 		var toolbarWrapperOffset = $toolbarWrapper.offset();
 		var $editorDocument = $toolbarWrapper.parent()
-			.find('.ve-surface').find('.ve-ce-documentNode');
+			.find('.ve-surface .ve-ce-documentNode');
 
 		if ( $window.scrollTop() > toolbarWrapperOffset.top ) {
 			var left = toolbarWrapperOffset.left,

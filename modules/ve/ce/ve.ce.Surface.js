@@ -314,7 +314,7 @@ ve.ce.Surface.prototype.onCut = function ( e ) {
 
 	this.onCopy( e );
 
-	setTimeout( function() {
+	setTimeout( function () {
 		var	selection,
 			tx;
 
@@ -1107,11 +1107,11 @@ ve.ce.Surface.prototype.getOffsetFromElementNode = function ( domNode, domOffset
 		node;
 
 	if ( $domNode.hasClass( 've-ce-slug' ) ) {
-		if ( $domNode.prev().length > 0 ) {
+		if ( $domNode.prev().length ) {
 			nodeModel = $domNode.prev().data( 'node' ).getModel();
 			return nodeModel.getOffset() + nodeModel.getOuterLength();
 		}
-		if ( $domNode.next().length > 0 ) {
+		if ( $domNode.next().length ) {
 			nodeModel = $domNode.next().data( 'node' ).getModel();
 			return nodeModel.getOffset();
 		}
@@ -1140,7 +1140,7 @@ ve.ce.Surface.prototype.getOffsetFromElementNode = function ( domNode, domOffset
 	}
 };
 
-ve.ce.Surface.prototype.updateContextIcon = function() {
+ve.ce.Surface.prototype.updateContextIcon = function () {
 	var selection = this.model.getSelection();
 	if ( this.contextView ) {
 		if ( selection.getLength() > 0 ) {
