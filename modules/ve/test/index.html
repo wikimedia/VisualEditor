@@ -1,37 +1,33 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-	"http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 	<head>
+		<meta charset="UTF-8">
 		<title>VisualEditor Tests</title>
-		<link rel="stylesheet" href="../../qunit/qunit.css" type="text/css" />
-	</head>
-	<body>
-		<h1 id="qunit-header">VisualEditor Tests</h1>
-		<h2 id="qunit-banner"></h2>
-		<div id="qunit-testrunner-toolbar"></div>
-		<h2 id="qunit-userAgent"></h2>
-		<ol id="qunit-tests"></ol>
-		<div id="qunit-fixture">test markup</div>
 
+		<!-- Load test framework -->
+		<link rel="stylesheet" href="../../qunit/qunit.css">
 		<script src="../../qunit/qunit.js"></script>
-		<script src="ve.qunit.js"></script>
+
+		<!-- Load application depenencies -->
 		<script src="../../jquery/jquery.js"></script>
 		<script src="../../jquery/jquery.json.js"></script>
 
-		<!-- VisualEditor -->
+		<!-- Load application -->
+		<!-- ext.visualEditor.base -->
 		<script src="../ve.js"></script>
-		<script src="../ve.debug.js"></script>
 		<script src="../ve.EventEmitter.js"></script>
+		<script src="../init/ve.init.js"></script>
+		<script src="../init/ve.init.Platform.js"></script>
+		<script src="../ve.debug.js"></script>
+		<!-- ext.visualEditor.core -->
+		<script src="../ve.Factory.js"></script>
+		<script src="../ve.Position.js"></script>
+		<script src="../ve.Range.js"></script>
 		<script src="../ve.Node.js"></script>
 		<script src="../ve.BranchNode.js"></script>
 		<script src="../ve.LeafNode.js"></script>
-		<script src="../ve.Factory.js"></script>
-		<script src="../ve.Document.js"></script>
-		<script src="../ve.Position.js"></script>
-		<script src="../ve.Range.js"></script>
 		<script src="../ve.Surface.js"></script>
-
-		<!-- VisualEditor DataModel -->
+		<script src="../ve.Document.js"></script>
 		<script src="../dm/ve.dm.js"></script>
 		<script src="../dm/ve.dm.NodeFactory.js"></script>
 		<script src="../dm/ve.dm.AnnotationFactory.js"></script>
@@ -45,12 +41,8 @@
 		<script src="../dm/ve.dm.TransactionProcessor.js"></script>
 		<script src="../dm/ve.dm.Surface.js"></script>
 		<script src="../dm/ve.dm.Converter.js"></script>
-
-		<!-- VisualEditor DataModel Annotations -->
 		<script src="../dm/annotations/ve.dm.LinkAnnotation.js"></script>
 		<script src="../dm/annotations/ve.dm.TextStyleAnnotation.js"></script>
-
-		<!-- VisualEditor DataModel Nodes -->
 		<script src="../dm/nodes/ve.dm.AlienInlineNode.js"></script>
 		<script src="../dm/nodes/ve.dm.AlienBlockNode.js"></script>
 		<script src="../dm/nodes/ve.dm.DefinitionListNode.js"></script>
@@ -67,16 +59,12 @@
 		<script src="../dm/nodes/ve.dm.TableRowNode.js"></script>
 		<script src="../dm/nodes/ve.dm.TableSectionNode.js"></script>
 		<script src="../dm/nodes/ve.dm.TextNode.js"></script>
-
-		<!-- VisualEditor ContentEditable -->
 		<script src="../ce/ve.ce.js"></script>
 		<script src="../ce/ve.ce.NodeFactory.js"></script>
 		<script src="../ce/ve.ce.Document.js"></script>
 		<script src="../ce/ve.ce.Node.js"></script>
 		<script src="../ce/ve.ce.BranchNode.js"></script>
 		<script src="../ce/ve.ce.LeafNode.js"></script>
-
-		<!-- VisualEditor ContentEditable Nodes -->
 		<script src="../ce/nodes/ve.ce.AlienInlineNode.js"></script>
 		<script src="../ce/nodes/ve.ce.AlienBlockNode.js"></script>
 		<script src="../ce/nodes/ve.ce.DefinitionListNode.js"></script>
@@ -94,19 +82,19 @@
 		<script src="../ce/nodes/ve.ce.TableRowNode.js"></script>
 		<script src="../ce/nodes/ve.ce.TextNode.js"></script>
 
-		<!-- VisualEditor Tests -->
+		<!-- Load plugins for test framework -->
+		<script src="ve.qunit.js"></script>
+
+		<!-- Load test suites -->
 		<script src="ve.example.js"></script>
 		<script src="ve.Document.test.js"></script>
 		<script src="ve.Node.test.js"></script>
 		<script src="ve.BranchNode.test.js"></script>
 		<script src="ve.LeafNode.test.js"></script>
 		<script src="ve.Factory.test.js"></script>
-
-		<!-- VisualEditor DataModel Tests -->
 		<script src="dm/ve.dm.example.js"></script>
 		<script src="dm/ve.dm.NodeFactory.test.js"></script>
 		<script src="dm/ve.dm.Node.test.js"></script>
-
 		<script src="dm/ve.dm.Converter.test.js"></script>
 		<script src="dm/ve.dm.BranchNode.test.js"></script>
 		<script src="dm/ve.dm.LeafNode.test.js"></script>
@@ -116,8 +104,6 @@
 		<script src="dm/ve.dm.Transaction.test.js"></script>
 		<script src="dm/ve.dm.TransactionProcessor.test.js"></script>
 		<script src="dm/ve.dm.Surface.test.js"></script>
-
-		<!-- VisualEditor ContentEditable Tests -->
 		<script src="ce/ve.ce.test.js"></script>
 		<script src="ce/ve.ce.Document.test.js"></script>
 		<script src="ce/ve.ce.NodeFactory.test.js"></script>
@@ -125,5 +111,9 @@
 		<script src="ce/ve.ce.BranchNode.test.js"></script>
 		<script src="ce/ve.ce.LeafNode.test.js"></script>
 		<script src="ce/nodes/ve.ce.TextNode.test.js"></script>
+	</head>
+	<body>
+		<div id="qunit"></div>
+		<div id="qunit-fixture">test markup</div>
 	</body>
 </html>
