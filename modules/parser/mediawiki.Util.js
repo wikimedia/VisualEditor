@@ -104,22 +104,6 @@ var Util = {
 		}
 	},
 
-	lookup: function ( kvs, key ) {
-		if ( ! kvs ) {
-			return null;
-		}
-		var kv;
-		for ( var i = 0, l = kvs.length; i < l; i++ ) {
-			kv = kvs[i];
-			if ( kv.k.trim() === key ) {
-				// found, return it.
-				return kv.v;
-			}
-		}
-		// nothing found!
-		return null;
-	},
-
 	lookupKV: function ( kvs, key ) {
 		if ( ! kvs ) {
 			return null;
@@ -134,6 +118,11 @@ var Util = {
 		}
 		// nothing found!
 		return null;
+	},
+
+	lookup: function ( kvs, key ) {
+		var kv = this.lookupKV(kvs, key);
+		return kv == null ? null : kv.v;
 	},
 
 	lookupValue: function ( kvs, key ) {
