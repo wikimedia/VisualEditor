@@ -46,6 +46,54 @@ Sanitizer.validUrlProtocols = [
 
 // SSS: Could possibly be moved to mediawiki.wikitext.constants
 // or some other better named constants/config file
+// List of whitelisted tags that can be used as raw HTML in wikitext.
+// All other html/html-like tags will be spit out as text.
+Sanitizer.tagWhiteList = [
+	// In case you were wondering, explicit <a .. > HTML is NOT allowed in wikitext.
+	// That is why the <a> tag is missing from the white-list.
+	'abbr',
+	// 'body', // SSS FIXME: Required? -- not present in php sanitizer
+	'b', 'bdi', 'big', 'blockquote', 'br',
+	'caption', 'center', 'cite', 'code',
+	'dd', 'del', 'dfn', 'div', 'dl', 'dt',
+	'em',
+	'font',
+	'gallery', // SSS FIXME: comes from an extension? -- not present in php sanitizer
+	// 'head', 'html', // SSS FIXME: Required? -- not present in php sanitizer
+	'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr',
+	'i', 'ins',
+	'kbd',
+	'li',
+	// 'meta', // SSS FIXME:Required? -- not present in php sanitizer
+	'ol',
+	'p', 'pre',
+	'rb', 'rp', 'rt', 'ruby',
+	's', 'samp', 'small', 'span', 'strike', 'strong', 'sub', 'sup',
+	'tag', // SSS FIXME: comes from an extension? -- not present in php sanitizer
+	'table', 'td', 'th', 'tr', 'tt',
+	'u', 'ul'
+];
+
+// SSS: Could possibly be moved to mediawiki.Util.js
+function arrayToHash(a) {
+	var h = {};
+	for (var i = 0, n = a.length; i < n; i++) {
+		h[a[i]] = 1;
+	}
+	return h;
+}
+
+// SSS: Could possibly be moved to mediawiki.wikitext.constants
+// or some other better named constants/config file
+Sanitizer.getTagWhiteListHash = function() {
+	if (!this.tagWhiteListHash) {
+		this.tagWhiteListHash = arrayToHash(this.tagWhiteList);
+	}
+	return this.tagWhiteListHash;
+};
+
+// SSS: Could possibly be moved to mediawiki.wikitext.constants
+// or some other better named constants/config file
 Sanitizer.getValidUrlProtocolsRE = function() {
 	if (!this.validUrlProtocolRE) {
 		this.validProtocolRE = new RegExp(this.validUrlProtocols.join('|'));
@@ -63,7 +111,7 @@ Sanitizer.getAttrWhiteList = function(tag) {
 		// base list
 		var common = ["id", "class", "lang", "dir", "title", "style"];
 
-		// RDFa attributes 
+		// RDFa attributes
 		var rdfa = ["about", "property", "resource", "datatype", "typeof"];
 		if (this.dummyFlags.allowRdfaAttrs) [].push.apply(common, rdfa);
 
@@ -211,21 +259,12 @@ Sanitizer.getAttrWhiteList = function(tag) {
 		};
 	}
 
-	var wlist = this.attrWhiteListCache[tag];
-	if (!wlist) {
-		wlist = {};
-		var wlistArray = this.attrWhiteList[tag] || [];
-
-		// convert array to a hash to enable fast lookup
-		for (var i = 0, n = wlistArray.length; i < n; i++) {
-			wlist[wlistArray[i]] = 1;
-		}
-
-		// cache
-		this.attrWhiteListCache[tag] = wlist;
+	// cache
+	if (!this.attrWhiteListCache[tag]) {
+		this.attrWhiteListCache[tag] = arrayToHash(this.attrWhiteList[tag] || []);
 	}
 
-	return wlist;
+	return this.attrWhiteListCache[tag];
 
 };
 
@@ -521,11 +560,11 @@ Sanitizer.EVIL_URI_PATTERN = /(^|\s|\*\/\s*)(javascript|vbscript)([^\w]|$)/i;
 
 Sanitizer.XMLNS_ATTRIBUTE_PATTERN = /^xmlns:[:A-Z_a-z-.0-9]+$/;
 
-// SSS FIXME: Move this to a common constants file 
+// SSS FIXME: Move this to a common constants file
 Sanitizer.UTF8_REPLACEMENT = "\xef\xbf\xbd";
 
 // SSS FIXME: Is there a library function for this?
-// Move this to some utility files
+// Move this to some utility file
 /**
  * Returns the utf8 encoding of the code point.
  */
@@ -537,12 +576,12 @@ Sanitizer.codepointToUtf8 = function(cp) {
  * Returns true if a given Unicode codepoint is a valid character in XML.
  */
 Sanitizer.validateCodepoint = function(cp) {
-	return (cp ==    0x09)
-		|| (cp ==    0x0a)
-		|| (cp ==    0x0d)
-		|| (cp >=    0x20 && cp <=   0xd7ff)
-		|| (cp >=  0xe000 && cp <=   0xfffd)
-		|| (cp >= 0x10000 && cp <= 0x10ffff);
+	return (cp ===    0x09) ||
+		(cp ===   0x0a) ||
+		(cp ===   0x0d) ||
+		(cp >=    0x20 && cp <=   0xd7ff) ||
+		(cp >=  0xe000 && cp <=   0xfffd) ||
+		(cp >= 0x10000 && cp <= 0x10ffff);
 };
 
 Sanitizer.getCSSDecodeRegexp = function() {
@@ -626,7 +665,7 @@ Sanitizer.prototype._IDNRegexp = new RegExp(
 		"\u200c|" + // 200c ZERO WIDTH NON-JOINER
 		"\u200d|" + // 200d ZERO WIDTH JOINER
 		"[\ufe00-\ufe0f]", // fe00-fe0f VARIATION SELECTOR-1-16
-		'g' 
+		'g'
 		);
 
 Sanitizer.prototype._stripIDNs = function ( host ) {
@@ -644,36 +683,44 @@ Sanitizer.prototype.onAny = function ( token ) {
 	// XXX: validate token type according to whitelist and convert non-ok ones
 	// back to text.
 
-	// Convert attributes to string, if necessary.
-	// XXX: Likely better done in AttributeTransformManager when processing is
-	// complete
-	if ( token.attribs && token.attribs.length ) {
-		var attribs = token.attribs.slice();
-		var newToken = $.extend( {}, token );
-		var env = this.manager.env;
-		for ( var i = 0, l = attribs.length; i < l; i++ ) {
-			var kv = attribs[i],
-				k = kv.k,
-				v = kv.v;
+	var tagWLHash = Sanitizer.getTagWhiteListHash();
+	if (((token.constructor === TagTk) || (token.constructor === EndTagTk)) &&
+		 token.dataAttribs.stx === 'html' &&
+		 !tagWLHash[token.name.toLowerCase()]) {
+		// unknown tag -- convert to plain text
+		token = "&lt;" + ((token.constructor === TagTk) ? "" : "/") + token.name + "&gt;";
+	} else {
+		// Convert attributes to string, if necessary.
+		// XXX: Likely better done in AttributeTransformManager when processing is
+		// complete
+		if ( token.attribs && token.attribs.length ) {
+			var attribs = token.attribs.slice();
+			var newToken = $.extend( {}, token );
+			var env = this.manager.env;
+			for ( var i = 0, l = attribs.length; i < l; i++ ) {
+				var kv = attribs[i],
+					k = kv.k,
+					v = kv.v;
 
-			if ( k.constructor === Array ) {
-				k = env.tokensToString ( k );
+				if ( k.constructor === Array ) {
+					k = env.tokensToString ( k );
+				}
+				if ( v.constructor === Array ) {
+					v = env.tokensToString ( v );
+				}
+				if ( k === 'style' ) {
+					v = this.checkCss(v);
+				}
+				attribs[i] = new KV( k, v );
 			}
-			if ( v.constructor === Array ) {
-				v = env.tokensToString ( v );
+
+			// Sanitize attribues
+			if (token.constructor === TagTk) {
+				newToken.attribs = this.sanitizeTagAttrs(token.name, attribs);
 			}
-			if ( k === 'style' ) {
-				v = this.checkCss(v);
-			}
-			attribs[i] = new KV( k, v );
+
+			token = newToken;
 		}
-
-		// Sanitize HTML tags
-		if (token.constructor === TagTk) {
-			newToken.attribs = this.sanitizeTagAttrs(token.name, attribs);
-		}
-
-		token = newToken;
 	}
 
 	return { token: token };
@@ -686,11 +733,11 @@ Sanitizer.prototype.onAny = function ( token ) {
  */
 
 Sanitizer.prototype.decodeEntity = function(name ) {
-	if (htmlEntityAliases(name)) {
-		name = htmlEntityAliases(name);
+	if (Sanitizer.htmlEntityAliases(name)) {
+		name = Sanitizer.htmlEntityAliases(name);
 	}
 
-	var e = htmlEntities(name);
+	var e = Sanitizer.htmlEntities(name);
 	if (e) {
 		return Sanitizer.codepointToUtf8(e);
 	} else {
@@ -704,9 +751,9 @@ Sanitizer.prototype.decodeEntity = function(name ) {
  */
 Sanitizer.prototype.decodeChar = function (codepoint) {
 	if(Sanitizer.validateCodepoint(codepoint)) {
-		return codepointToUtf8(codepoint);
+		return Sanitizer.codepointToUtf8(codepoint);
 	} else {
-		return UTF8_REPLACEMENT;
+		return Sanitizer.UTF8_REPLACEMENT;
 	}
 };
 
@@ -744,7 +791,7 @@ Sanitizer.prototype.checkCss = function (text) {
 					c = '\\';
 				}
 
-				if ( c == "\n" || c == '"' || c == "'" || c == '\\' ) {
+				if ( c === "\n" || c === '"' || c === "'" || c === '\\' ) {
 					// These characters need to be escaped in strings
 					// Clean up the escape sequence to avoid parsing errors by clients
 					return '\\' + (c.charCodeAt(0)).toString(16) + ' ';
