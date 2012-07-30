@@ -47,14 +47,14 @@ var ParserPipelineFactory = require(mp + 'mediawiki.parser.js').ParserPipelineFa
 	WikitextSerializer = require(mp + 'mediawiki.WikitextSerializer.js').WikitextSerializer,
 	TemplateRequest = require(mp + 'mediawiki.ApiRequest.js').TemplateRequest;
 
-var env = new ParserEnv( { 
+var env = new ParserEnv( {
 	// stay within the 'proxied' content, so that we can click around
-	wgScriptPath: '/', //http://en.wikipedia.org/wiki', 
+	wgScriptPath: '/', //http://en.wikipedia.org/wiki',
 	wgScriptExtension: '.php',
 	// XXX: add options for this!
 	wgUploadPath: 'http://upload.wikimedia.org/wikipedia/commons',
 	fetchTemplates: true,
-	// enable/disable debug output using this switch	
+	// enable/disable debug output using this switch
 	debug: false,
 	trace: false,
 	maxDepth: 40
@@ -112,7 +112,7 @@ var textarea = function ( res, content ) {
 /**
  * robots.txt: no indexing.
  */
-app.get(/^\/robots.txt$/, function(req, res){
+app.get(/^\/robots.txt$/, function ( req, res ) {
 	res.end( "User-agent: *\nDisallow: /\n" );
 });
 
@@ -120,21 +120,21 @@ app.get(/^\/robots.txt$/, function(req, res){
 /**
  * Form-based HTML DOM -> wikitext interface for manual testing
  */
-app.get(/\/_html\/(.*)/, function(req, res){
+app.get(/\/_html\/(.*)/, function ( req, res ) {
 	env.pageName = req.params[0];
 	res.setHeader('Content-Type', 'text/html; charset=UTF-8');
 	res.write( "Your HTML DOM:" );
 	textarea( res );
 	res.end('');
 });
-app.post(/\/_html\/(.*)/, function(req, res){
+app.post(/\/_html\/(.*)/, function ( req, res ) {
 	env.pageName = req.params[0];
 	res.setHeader('Content-Type', 'text/html; charset=UTF-8');
 	var p = new html5.Parser();
 	p.parse( '<html><body>' + req.body.content.replace(/\r/g, '') + '</body></html>' );
 	res.write('<pre style="background-color: #efefef">');
-	new WikitextSerializer({env: env}).serializeDOM( 
-		p.tree.document.childNodes[0].childNodes[1], 
+	new WikitextSerializer({env: env}).serializeDOM(
+		p.tree.document.childNodes[0].childNodes[1],
 		function( c ) {
 			res.write( htmlSpecialChars( c ) );
 		});
@@ -147,14 +147,14 @@ app.post(/\/_html\/(.*)/, function(req, res){
 /**
  * Form-based wikitext -> HTML DOM interface for manual testing
  */
-app.get(/\/_wikitext\/(.*)/, function(req, res){
+app.get(/\/_wikitext\/(.*)/, function ( req, res ) {
 	env.pageName = req.params[0];
 	res.setHeader('Content-Type', 'text/html; charset=UTF-8');
 	res.write( "Your wikitext:" );
 	textarea( res );
 	res.end('');
 });
-app.post(/\/_wikitext\/(.*)/, function(req, res){
+app.post(/\/_wikitext\/(.*)/, function ( req, res ) {
 	env.pageName = req.params[0];
 	res.setHeader('Content-Type', 'text/html; charset=UTF-8');
 	var parser = parserPipelineFactory.makePipeline( 'text/x-mediawiki/full' );
@@ -182,7 +182,7 @@ app.post(/\/_wikitext\/(.*)/, function(req, res){
  * practically unusable for inputs > 5k bytes, so we only perform it on the
  * output of the more efficient line-based diff.
  */
-var refineDiff = function( diff ) {
+var refineDiff = function ( diff ) {
 	// Attempt to accumulate consecutive add-delete pairs
 	// with short text separating them (short = 2 chars right now)
 	//
@@ -190,11 +190,11 @@ var refineDiff = function( diff ) {
 	// to expand range of <b> and <i> tags, except there is no optimal
 	// solution except as determined by heuristics ("short text" = <= 2 chars).
 	function mergeConsecutiveSegments(wordDiffs) {
-		var n        = wordDiffs.length;
-		var currIns  = null, currDel = null;
+		var n = wordDiffs.length;
+		var currIns = null, currDel = null;
 		var newDiffs = [];
 		for (var i = 0; i < n; i++) {
-			var d    = wordDiffs[i];
+			var d = wordDiffs[i];
 			var dVal = d.value;
 			if (d.added) {
 				// Attempt to accumulate
@@ -229,8 +229,12 @@ var refineDiff = function( diff ) {
 		}
 
 		// Purge buffered diffs
-		if (currIns !== null) newDiffs.push(currIns);
-		if (currDel !== null) newDiffs.push(currDel);
+		if (currIns !== null) {
+			newDiffs.push(currIns);
+		}
+		if (currDel !== null) {
+			newDiffs.push(currDel);
+		}
 
 		return newDiffs;
 	}
@@ -268,17 +272,17 @@ var refineDiff = function( diff ) {
 };
 
 var roundTripDiff = function ( req, res, src, document ) {
+	var out, patch;
 	res.write('<html><head><style>ins { background: #ff9191; text-decoration: none; } del { background: #99ff7e; text-decoration: none }; </style></head><body>');
 	res.write( '<h2>Wikitext parsed to HTML DOM</h2><hr>' );
 	res.write(document.body.innerHTML + '<hr>');
 	res.write( '<h2>HTML DOM converted back to Wikitext</h2><hr>' );
-	var out = new WikitextSerializer({env: env}).serializeDOM( document.body );
+	out = new WikitextSerializer({env: env}).serializeDOM( document.body );
 	if ( out === undefined ) {
 		out = "An error occured in the WikitextSerializer, please check the log for information";
 	}
 	res.write('<pre>' + htmlSpecialChars( out ) + '</pre><hr>\n');
 	res.write( '<h2>Diff between original Wikitext (green) and round-tripped wikitext (red)</h2><hr>\n' );
-	var patch;
 	src = src.replace(/\n(?=\n)/g, '\n ');
 	out = out.replace(/\n(?=\n)/g, '\n ');
 	//console.log(JSON.stringify( jsDiff.diffLines( out, src ) ));
@@ -373,14 +377,14 @@ app.get( new RegExp('/_rtve/(?:(?:(?:' + env.interwikiRegexp + '):+)?(' + env.in
 /**
  * Form-based round-tripping for manual testing
  */
-app.get(/\/_rtform\/(.*)/, function(req, res){
+app.get(/\/_rtform\/(.*)/, function ( req, res ) {
 	env.pageName = req.params[0];
 	res.setHeader('Content-Type', 'text/html; charset=UTF-8');
 	res.write( "Your wikitext:" );
 	textarea( res );
 	res.end('');
 });
-app.post(/\/_rtform\/(.*)/, function(req, res){
+app.post(/\/_rtform\/(.*)/, function ( req, res ) {
 	env.pageName = req.params[0];
 	res.setHeader('Content-Type', 'text/html; charset=UTF-8');
 	// we don't care about \r, and normalize everything to \n
@@ -418,7 +422,7 @@ app.get(new RegExp( '/(?:(?:(?:' + env.interwikiRegexp + '):+)?(' + env.interwik
 /**
  * Regular article serialization using POST
  */
-app.post(/\/(.*)/, function(req, res){
+app.post(/\/(.*)/, function ( req, res ) {
 	env.pageName = req.params[0];
 	env.wgScriptPath = '/';
 	res.setHeader('Content-Type', 'text/x-mediawiki; charset=UTF-8');

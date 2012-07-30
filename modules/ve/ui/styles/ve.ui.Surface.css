@@ -6,21 +6,24 @@
  */
 
 .es-toolbar {
-	border-bottom: solid 1px #cccccc;
+	border-bottom: solid 1px #ccc;
 	position: relative;
 /*	-webkit-border-radius: 0.25em;
 	-moz-border-radius: 0.25em;
 	-o-border-radius: 0.25em;
-	border-radius: 0.25em;*/
+	border-radius: 0.25em;
+*/
+	/* @embed */
 	background-image: url(images/fade-up.png);
 	background-position: bottom left;
 	background-repeat: repeat-x;
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
-	-o-user-select;
+	-o-user-select: none;
 	user-select: none;
 }
+
 .es-toolbar-wrapper.float .es-toolbar {
 	top: 0;
 	position: fixed;
@@ -31,6 +34,7 @@
 	z-index: 100;
 	border-top: none;
 }
+
 .es-toolbar-wrapper.bottom .es-toolbar {
 	position: absolute;
 	-webkit-border-radius: 0;
@@ -40,7 +44,9 @@
 	z-index: 100;
 	border-top: none;
 }
+
 .es-toolbar-shadow {
+	/* @embed */
 	background-image: url(images/toolbar-shadow.png);
 	background-position: top left;
 	background-repeat: repeat-x;
@@ -53,16 +59,21 @@
 	-moz-transition: opacity 500ms ease-in-out;
 	-o-transition: opacity 500ms ease-in-out;
 	transition: opacity 500ms ease-in-out;
+	filter: alpha(opacity=12);
 	opacity: 0.125;
 }
+
 .es-toolbar.float .es-toolbar-shadow {
+	filter: alpha(opacity=50);
 	opacity: 0.5;
 }
+
 .es-showData .es-editor {
-	border-right: solid 1px #cccccc;
+	border-right: solid 1px #ccc;
 	margin: 0;
 	padding: 0;
 }
+
 .es-showData .es-visual {
 	margin: 0;
 	padding: 0;
@@ -71,31 +82,38 @@
 	overflow: hidden;
 	margin-left: -1px;
 }
+
 .es-panels {
 	display: none;
 }
+
 .es-showData .es-panels {
 	display: block;
 	float: right;
 	width: 50%;
 	overflow: hidden;
 }
+
 .es-panel {
 	margin: 0;
 	padding: 1em;
 	display: none;
 }
+
 .es-code {
 	white-space: pre-wrap;
 	font-family: monospace, "Courier New";
 	font-size: 0.8em;
 }
+
 .mediawiki .es-code {
 	font-size: 1em;
 }
+
 .es-render {
 	padding: 1em;
 }
+
 .es-history {
 	line-height: 1.5em;
 	padding: 0;
@@ -106,16 +124,19 @@
 .es-render ul {
 	line-height: 1.5em;
 	list-style-type: square;
-	margin: .3em 0 0 1.5em;
+	margin: 0.3em 0 0 1.5em;
 	padding: 0;
+	/* @embed */
 	list-style-image: url(images/bullet-icon.png);
 }
+
 .es-render ol {
 	line-height: 1.5em;
-	margin: .3em 0 0 3.2em;
+	margin: 0.3em 0 0 3.2em;
 	padding: 0;
 	list-style-image: none;
 }
+
 .es-render li {
 	margin-bottom: .1em;
 }
@@ -127,17 +148,19 @@
 .es-toolbar .es-toolbarGroups {
 	float: left;
 }
+
 .es-modes {
 	float: right;
 	padding: 0.25em;
 }
+
 .es-modes-button {
 	display: inline-block;
 	border: solid 1px transparent;
-	border-radius: 0.125em;
 	-webkit-border-radius: 0.125em;
 	-moz-border-radius: 0.125em;
 	-o-border-radius: 0.125em;
+	border-radius: 0.125em;
 	cursor: pointer;
 	vertical-align: top;
 	padding: 0.25em;
@@ -153,11 +176,12 @@
 	width: 22px;
 }
 .es-modes-button:hover {
-	border-color: #eeeeee;
+	border-color: #eee;
 }
 .es-modes-button:active,
 .es-modes-button-down {
-	border-color: #dddddd;
+	border-color: #ddd;
+	/* @embed */
 	background-image: url(images/fade-down.png);
 	background-position: top left;
 	background-repeat: repeat-x;
@@ -166,39 +190,45 @@
 	box-shadow: inset 0px 1px 4px 0px rgba(0, 0, 0, 0.07);
 }
 .es-mode-wikitext:before {
+	/* @embed */
 	background-image: url(images/wikitext.png);
 }
 
 .es-mode-json:before {
+	/* @embed */
 	background-image: url(images/json.png);
 }
 
 .es-mode-html:before {
+	/* @embed */
 	background-image: url(images/html.png);
 }
 
 .es-mode-render:before {
+	/* @embed */
 	background-image: url(images/render.png);
 }
 
 .es-mode-history:before {
+	/* @embed */
 	background-image: url(images/history.png);
 }
 
 .es-mode-help:before {
+	/* @embed */
 	background-image: url(images/help.png);
 }
 
 .es-panel-history div {
-	border-bottom: solid 1px #dddddd;
+	border-bottom: solid 1px #ddd;
 	padding: 0.5em 0;
-	color: #666666;
+	color: #666;
 	background-color: #f9f9f9;
 }
 
 .es-panel-history div.es-panel-history-active {
-	color: #000000;
-	background-color: white;
+	color: #000;
+	background-color: #fff;
 }
 
 #es-docs {
@@ -249,11 +279,11 @@
 	min-width: 1em;
 	text-align: center;
 	cursor: default;
-	border: solid 1px #333333;
-	border-top-color: #666666;
-	border-bottom-color: #000000;
-	background-color: #333333;
-	color: #ffffff;
+	border: solid 1px #333;
+	border-top-color: #666;
+	border-bottom-color: #000;
+	background-color: #333;
+	color: #fff;
 	-webkit-border-radius: 0.25em;
 	-moz-border-radius: 0.25em;
 	-o-border-radius: 0.25em;
@@ -264,5 +294,5 @@
 }
 
 .es-help-key-or {
-	color: #999999;
+	color: #999;
 }

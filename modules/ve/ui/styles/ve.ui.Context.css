@@ -17,15 +17,15 @@
 	height: 15px;
 	display: none;
 	cursor: pointer;
-	border: solid 1px #cccccc;
+	border: solid 1px #ccc;
 	-webkit-border-radius: 1em;
 	-moz-border-radius: 1em;
 	-o-border-radius: 1em;
 	border-radius: 1em;
-	background-color: white;
-	-webkit-box-shadow: 0 0.25em 1em 0 rgba(0,0,0,0.25);
-	-moz-box-shadow: 0 0.25em 1em 0 rgba(0,0,0,0.25);
-	box-shadow: 0 0.25em 1em 0 rgba(0,0,0,0.25);
+	background-color: #fff;
+	-webkit-box-shadow: 0 0.25em 1em 0 rgba(0, 0, 0, 0.25);
+	-moz-box-shadow: 0 0.25em 1em 0 rgba(0, 0, 0, 0.25);
+	box-shadow: 0 0.25em 1em 0 rgba(0, 0, 0, 0.25);
 	z-index: 4;
 }
 
@@ -77,15 +77,15 @@
 
 .es-contextView-panels {
 	position: absolute;
-	border: solid 1px #cccccc;
+	border: solid 1px #ccc;
 	-webkit-border-radius: 0.25em;
 	-moz-border-radius: 0.25em;
 	-o-border-radius: 0.25em;
 	border-radius: 0.25em;
-	background-color: rgba(255,255,255,0.95);
-	-webkit-box-shadow: 0 0.25em 1em 0 rgba(0,0,0,0.25);
-	-moz-box-shadow: 0 0.25em 1em 0 rgba(0,0,0,0.25);
-	box-shadow: 0 0.25em 1em 0 rgba(0,0,0,0.25);
+	background-color: rgba(255, 255, 255, 0.95);
+	-webkit-box-shadow: 0 0.25em 1em 0 rgba(0, 0, 0, 0.25);
+	-moz-box-shadow: 0 0.25em 1em 0 rgba(0, 0, 0, 0.25);
+	box-shadow: 0 0.25em 1em 0 rgba(0, 0, 0, 0.25);
 	padding: 0.33em 0;
 }
 
