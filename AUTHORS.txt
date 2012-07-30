@@ -1,11 +1,9 @@
 Principal Authors (major contributors, alphabetically)
 
 Christian Williams <christian@wikia-inc.com>
-Gabriel Wicke <gwicke@wikimedia.org>
 Inez Korczynski <inez@wikia-inc.com>
 Roan Kattouw <roan@wikimedia.org>
 Rob Moen <rmoen@wikimedia.org>
-Subramanya Sastry <ssastry@wikimedia.org>
 Timo Tijhof <timo@wikimedia.org>
 Trevor Parscal <trevor@wikimedia.org>
 
@@ -17,7 +15,9 @@ Antoine Musso <hashar@free.fr>
 Audrey Tang <audreyt@audreyt.org>
 Brion Vibber <brion@wikimedia.org>
 Erik Moeller <erik@wikimedia.org>
+Gabriel Wicke <gwicke@wikimedia.org>
 James Forrester  <jforrester@wikimedia.org>
 Neil Kandalgaonkar <neilk@brevity.org>
 Mark A. Hershberger <mah@everybody.org>
 Mark Holmquist <mtraceur@member.fsf.org>
+Subramanya Sastry <ssastry@wikimedia.org>
