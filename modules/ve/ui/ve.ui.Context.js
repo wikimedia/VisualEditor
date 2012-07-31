@@ -146,6 +146,10 @@ ve.ui.Context.prototype.isMenuOpen = function () {
 	return this.menuView.isOpen();
 };
 
+ve.ui.Context.prototype.areChildrenCurrentlyVisible = function() {
+	return this.inspector !== null || this.menuView.isOpen();
+};
+
 ve.ui.Context.prototype.set = function () {
 	if ( this.surfaceView.getModel().getSelection().getLength() > 0 ) {
 		this.positionIcon();
