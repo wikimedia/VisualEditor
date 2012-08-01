@@ -106,7 +106,10 @@ ve.ce.Surface.prototype.documentOnBlur = function () {
 
 	this.$document.off( '.ve-ce-Surface' );
 	this.stopPolling();
-	if ( this.contextView ) {
+	if (
+		this.contextView &&
+		!this.contextView.areChildrenCurrentlyVisible()
+	) {
 		this.contextView.clear();
 	}
 };
