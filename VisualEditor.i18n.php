@@ -234,6 +234,13 @@ $messages['de-formal'] = array(
 	'visualeditor-viewpage-savewarning' => 'Sind Sie sicher, dass Sie zum Ansichtsmodus wechseln möchten, ohne vorher zu speichern?',
 );
 
+/** Zazaki (Zazaki)
+ * @author Erdemaslancan
+ */
+$messages['diq'] = array(
+	'visualeditor-linkinspector-label-pagetitle' => 'Sernamey pela',
+);
+
 /** Lower Sorbian (dolnoserbski)
  * @author Michawiki
  */
@@ -1005,6 +1012,13 @@ $messages['pms'] = array(
 	'visualeditor-tooltip-help' => "Ativé la visualisassion d'agiut",
 	'visualeditor-feedback-prompt' => "Lassé n'opinion",
 	'visualeditor-feedback-dialog-title' => "Lassé n'opinion a propòsit dl'Ambient ëd preuva ëd VisualEditor",
+);
+
+/** Portuguese (português)
+ * @author Hamilton Abreu
+ */
+$messages['pt'] = array(
+	'visualeditor-saveerror' => 'Erro ao gravar os dados no servidor: $1.',
 );
 
 /** Russian (русский)
