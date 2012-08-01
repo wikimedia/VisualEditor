@@ -10,8 +10,10 @@
 
 /* Configuration */
 
-// URL to the parsoid instance
+// URL to the Parsoid instance
 $wgVisualEditorParsoidURL = 'http://localhost:8000';
+// Interwiki prefix to pass to the Parsoid instance
+$wgVisualEditorParsoidPrefix = 'localhost:';
 
 /* Setup */
 

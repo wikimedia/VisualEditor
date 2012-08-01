@@ -11,7 +11,7 @@
 class ApiVisualEditor extends ApiBase {
 
 	public function execute() {
-		global $wgVisualEditorParsoidURL;
+		global $wgVisualEditorParsoidURL, $wgVisualEditorParsoidPrefix;
 		$user = $this->getUser();
 
 		$parsoid = $wgVisualEditorParsoidURL;
@@ -23,7 +23,9 @@ class ApiVisualEditor extends ApiBase {
 				$parsed = Http::get(
 					// Insert slash since wgVisualEditorParsoidURL may or may not
 					// end in a slash. Double slashes are no problem --catrope
-					$parsoid . '/' . $page->getPrefixedDBkey()
+					$parsoid . '/' . urlencode(
+						$wgVisualEditorParsoidPrefix . $page->getPrefixedDBkey()
+					)
 				);
 
 				if ( $parsed ) {
