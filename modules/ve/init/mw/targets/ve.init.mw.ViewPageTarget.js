@@ -38,15 +38,19 @@ ve.init.mw.ViewPageTarget = function () {
 	this.deactivating = false;
 	this.scrollTop = null;
 	this.proxiedOnSurfaceModelTransact = ve.proxy( this.onSurfaceModelTransact, this );
-	this.surfaceOptions = { 'toolbars': { 'top': { 'float': !this.isMobileDevice } } };
+	this.surfaceOptions = {
+		'toolbars': {
+			'top': {
+				'float': !this.isMobileDevice
+			}
+		}
+	};
 	this.currentUri = new mw.Uri( window.location.toString() );
 	this.section = this.currentUri.query.vesection || null;
 	this.namespaceName = mw.config.get( 'wgCanonicalNamespace' );
 	this.viewUri = new mw.Uri( mw.util.wikiGetlink( this.pageName ) );
-	this.editUri = new mw.Uri( this.viewUri.toString() );
-	this.editUri.extend( { 'action': 'edit' } );
-	this.veEditUri = new mw.Uri( this.viewUri.toString() );
-	this.veEditUri.extend( { 'veaction': 'edit' } );
+	this.editUri = this.viewUri.clone().extend( { 'action': 'edit' } );
+	this.veEditUri = this.viewUri.clone().extend( { 'veaction': 'edit' } );
 	this.isViewPage = (
 		this.namespaceName === 'VisualEditor' &&
 		mw.config.get( 'wgAction' ) === 'view' &&
@@ -54,7 +58,7 @@ ve.init.mw.ViewPageTarget = function () {
 	);
 	this.canBeActivated = (
 		this.namespaceName === 'VisualEditor' ||
-		this.pageName.substr( 0, 13 ) === 'VisualEditor:'
+		this.pageName.indexOf( 'VisualEditor:' ) === 0
 	);
 
 	// Events
@@ -96,7 +100,7 @@ ve.init.mw.ViewPageTarget.saveDialogTemplate = '\
 				id="ve-init-mw-viewPageTarget-saveDialog-minorEdit">\
 			<label class="ve-init-mw-viewPageTarget-saveDialog-minorEdit-label" \
 				for="ve-init-mw-viewPageTarget-saveDialog-minorEdit"></label>\
-			<div style="clear:both"></div>\
+			<div style="clear: both;"></div>\
 			<input type="checkbox" name="watchList" \
 				id="ve-init-mw-viewPageTarget-saveDialog-watchList">\
 			<label class="ve-init-mw-viewPageTarget-saveDialog-watchList-label" \
@@ -106,7 +110,7 @@ ve.init.mw.ViewPageTarget.saveDialogTemplate = '\
 			<span class="ve-init-mw-viewPageTarget-saveDialog-saveButton-label"></span>\
 			<div class="ve-init-mw-viewPageTarget-saveDialog-saveButton-icon"></div>\
 		</button>\
-		<div style="clear:both"></div>\
+		<div style="clear: both;"></div>\
 	</div>\
 	<div class="ve-init-mw-viewPageTarget-saveDialog-foot">\
 		<p class="ve-init-mw-viewPageTarget-saveDialog-license"></p>\
@@ -215,13 +219,15 @@ ve.init.mw.ViewPageTarget.prototype.onSave = function ( html ) {
 	} else {
 		// Update watch link to match 'watch checkbox' in save dialog.
 		// User logged in if module loaded.
-		if ( mw.page.hasOwnProperty( 'watch' ) ) {
-			var watchPage = this.$saveDialog
+		// Just checking for mw.page.watch is not enough because in Firefox
+		// there is Object.prototype.watch...
+		if ( mw.page.watch && mw.page.watch.updateWatchLink ) {
+			var watchChecked = this.$saveDialog
 				.find( '#ve-init-mw-viewPageTarget-saveDialog-watchList')
 				.prop( 'checked' );
 			mw.page.watch.updateWatchLink(
-				$('#ca-watch a, #ca-unwatch a'),
-				watchPage === true ? 'unwatch': 'watch'
+				$( '#ca-watch a, #ca-unwatch a' ),
+				watchChecked ? 'unwatch': 'watch'
 			);
 		}
 		this.hideSaveDialog();
@@ -241,7 +247,7 @@ ve.init.mw.ViewPageTarget.prototype.onSave = function ( html ) {
  * @param {Mixed} error Thrown exception or HTTP error string
  */
 ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( response, status, error ) {
-	// XXX: Don't use alert.
+	// TODO: Don't use alert.
 	alert( ve.msg( 'visualeditor-saveerror', status ) );
 };
 
@@ -255,7 +261,6 @@ ve.init.mw.ViewPageTarget.prototype.onEditTabClick = function ( e ) {
 	this.activate();
 	// Prevent the edit tab's normal behavior
 	e.preventDefault();
-	return false;
 };
 
 /**
@@ -269,7 +274,6 @@ ve.init.mw.ViewPageTarget.prototype.onEditSectionLinkClick = function ( e ) {
 	this.activate();
 	// Prevent the edit tab's normal behavior
 	e.preventDefault();
-	return false;
 };
 
 /**
@@ -283,7 +287,6 @@ ve.init.mw.ViewPageTarget.prototype.onViewTabClick = function ( e ) {
 		this.deactivate();
 		// Prevent the edit tab's normal behavior
 		e.preventDefault();
-		return false;
 	}
 };
 
@@ -399,7 +402,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
 	// Only sysop users will have an edit tab in this namespace, so we might need to add one
 	if ( $( '#ca-edit' ).length === 0 ) {
 		// Add edit tab
-		action = Number( mw.config.get( 'wgArticleId', 0 ) ) === 0 ? 'create' : 'edit';
+		action = mw.config.get( 'wgArticleId', 0 ) === 0 ? 'create' : 'edit';
 
 		mw.util.addPortletLink(
 			'p-views',
@@ -464,7 +467,6 @@ ve.init.mw.ViewPageTarget.prototype.setupSectionEditLinks = function () {
 		$links.click( ve.proxy( this.onEditSectionLinkClick, this ) );
 	} else {
 		$links.each( function () {
-			// FIXME: mw.Uri is mediaWiki specific
 			var veSectionEditUri = new mw.Uri( veEditUri.toString() ),
 				sectionEditUri = new mw.Uri( $(this).attr( 'href' ) );
 			veSectionEditUri.extend( { 'vesection': sectionEditUri.query.section } );
@@ -489,12 +491,10 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarSaveButton = function () {
 			'mousedown': function ( e ) {
 				$(this).addClass( 've-init-mw-viewPageTarget-toolbar-saveButton-down' );
 				e.preventDefault();
-				return false;
 			},
 			'mouseleave mouseup': function ( e ) {
 				$(this).removeClass( 've-init-mw-viewPageTarget-toolbar-saveButton-down' );
 				e.preventDefault();
-				return false;
 			},
 			'click': ve.proxy( this.onToolbarSaveButtonClick, this )
 		} );
@@ -539,7 +539,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 			.text( ve.msg( 'summary' ) )
 			.end()
 		.find( '#ve-init-mw-viewPageTarget-saveDialog-editSummary' )
-			.on( 'keydown', function( e ) {
+			.on( 'keydown', function ( e ) {
 				if ( e.which === 13 ) {
 					viewPage.onSaveDialogSaveButtonClick();
 				}
@@ -663,7 +663,7 @@ ve.init.mw.ViewPageTarget.prototype.hideSpinner = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.showPageContent = function () {
-	$( '#bodyContent >.ve-init-mw-viewPageTarget-content' )
+	$( '#bodyContent > .ve-init-mw-viewPageTarget-content' )
 		.removeClass( 've-init-mw-viewPageTarget-content' )
 		.show()
 		.fadeTo( 0, 1 );
@@ -675,7 +675,7 @@ ve.init.mw.ViewPageTarget.prototype.showPageContent = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.mutePageContent = function () {
-	$( '#bodyContent >:visible:not(#siteSub)' )
+	$( '#bodyContent > :visible:not(#siteSub)' )
 		.addClass( 've-init-mw-viewPageTarget-content' )
 		.fadeTo( 'fast', 0.6 );
 };
@@ -686,7 +686,7 @@ ve.init.mw.ViewPageTarget.prototype.mutePageContent = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.hidePageContent = function () {
-	$( '#bodyContent >:visible:not(#siteSub)' )
+	$( '#bodyContent > :visible:not(#siteSub)' )
 		.addClass( 've-init-mw-viewPageTarget-content' )
 		.hide();
 };
@@ -719,10 +719,9 @@ ve.init.mw.ViewPageTarget.prototype.hideTableOfContents = function () {
 ve.init.mw.ViewPageTarget.prototype.showSaveDialog = function () {
 	var viewPage = this;
 	this.unlockSaveDialogSaveButton();
-	this.$saveDialog.fadeIn( 'fast' ).find( 'input:first' ).focus();
-	$( document ).on( 'keydown', function( e ) {
-		var key = e.keyCode || e.which;
-		if ( key === 27 ) {
+	this.$saveDialog.fadeIn( 'fast' ).find( 'input' ).eq( 0 ).focus();
+	$( document ).on( 'keydown', function ( e ) {
+		if ( e.which === 27 ) {
 			viewPage.onSaveDialogCloseButtonClick();
 		}
 	});
@@ -759,7 +758,8 @@ ve.init.mw.ViewPageTarget.prototype.resetSaveDialog = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.enableToolbarSaveButton = function () {
-	this.$toolbarSaveButton.removeClass( 've-init-mw-viewPageTarget-toolbar-saveButton-disabled' );
+	this.$toolbarSaveButton
+		.removeClass( 've-init-mw-viewPageTarget-toolbar-saveButton-disabled' );
 };
 
 /**
@@ -768,7 +768,8 @@ ve.init.mw.ViewPageTarget.prototype.enableToolbarSaveButton = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.disableToolbarSaveButton = function () {
-	this.$toolbarSaveButton.addClass( 've-init-mw-viewPageTarget-toolbar-saveButton-disabled' );
+	this.$toolbarSaveButton
+		.addClass( 've-init-mw-viewPageTarget-toolbar-saveButton-disabled' );
 };
 
 /**
@@ -787,7 +788,8 @@ ve.init.mw.ViewPageTarget.prototype.unlockSaveDialogSaveButton = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.lockSaveDialogSaveButton = function () {
-	this.$saveDialogSaveButton.addClass( 've-init-mw-viewPageTarget-saveDialog-saveButton-saving' );
+	this.$saveDialogSaveButton
+		.addClass( 've-init-mw-viewPageTarget-saveDialog-saveButton-saving' );
 };
 
 /**
@@ -798,8 +800,7 @@ ve.init.mw.ViewPageTarget.prototype.lockSaveDialogSaveButton = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.attachToolbar = function () {
-	this.$toolbarWrapper = this.$surface.find( '.es-toolbar-wrapper' );
-	this.$toolbarWrapper
+	this.$toolbarWrapper = this.$surface.find( '.es-toolbar-wrapper' )
 		.insertBefore( $( '#firstHeading' ) )
 		.find( '.es-toolbar' )
 			.slideDown( 'fast' );
@@ -1038,8 +1039,7 @@ ve.init.mw.ViewPageTarget.prototype.onBeforeUnload = function () {
 		// ...but if the user chooses not to leave the page, we need to rebind it
 		setTimeout( function () {
 			window.onbeforeunload = proxiedOnBeforeUnload;
-		// XXX: Missing argument to setTimeout?
-		} );
+		}, 1 );
 		return message;
 	}
 };

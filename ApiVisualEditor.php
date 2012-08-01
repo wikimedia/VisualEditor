@@ -21,7 +21,9 @@ class ApiVisualEditor extends ApiBase {
 		if ( $params['paction'] === 'parse' ) {
 			if ( $page->exists() ) {
 				$parsed = Http::get(
-					$parsoid . $page->getPrefixedDBkey()
+					// Insert slash since wgVisualEditorParsoidURL may or may not
+					// end in a slash. Double slashes are no problem --catrope
+					$parsoid . '/' . $page->getPrefixedDBkey()
 				);
 
 				if ( $parsed ) {
@@ -35,7 +37,10 @@ class ApiVisualEditor extends ApiBase {
 					);
 				}
 			} else {
-				$result = array( 'result' => 'success', 'parsed' => '' );
+				$result = array(
+					'result' => 'success',
+					'parsed' => ''
+				);
 			}
 		} elseif ( $params['paction'] === 'save' && $user->isBlocked() ) {
 			$result = array( 'result' => 'error' );

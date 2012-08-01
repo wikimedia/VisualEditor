@@ -14,7 +14,7 @@
  * @constructor
  * @param {String} pageName Name of target page
  */
-ve.init.mw.Platform = function() {
+ve.init.mw.Platform = function () {
 	// Inheritance
 	ve.init.Platform.call( this );
 
@@ -28,12 +28,12 @@ ve.init.mw.Platform = function() {
 /**
  * Gets a regular expression that matches allowed external link URLs.
  *
- * Uses MediaWiki's {wgUrlProtocols} variable.
+ * Uses the mw.config wgUrlProtocols variable.
  *
  * @method
  * @returns {RegExp} Regular expression object
  */
-ve.init.mw.Platform.prototype.getExternalLinkUrlProtocolsRegExp = function() {
+ve.init.mw.Platform.prototype.getExternalLinkUrlProtocolsRegExp = function () {
 	return this.externalLinkUrlProtocolsRegExp;
 };
 
@@ -45,7 +45,7 @@ ve.init.mw.Platform.prototype.getExternalLinkUrlProtocolsRegExp = function() {
  * @method
  * @returns {String} Remote modules URL
  */
-ve.init.mw.Platform.prototype.getModulesUrl = function() {
+ve.init.mw.Platform.prototype.getModulesUrl = function () {
 	return this.modulesUrl;
 };
 
@@ -57,7 +57,7 @@ ve.init.mw.Platform.prototype.getModulesUrl = function() {
  * @method
  * @param {Object} messages Map of message-key/message-string pairs
  */
-ve.init.mw.Platform.prototype.addMessages = function( messages ) {
+ve.init.mw.Platform.prototype.addMessages = function ( messages ) {
 	return mw.messages.set( messages );
 };
 
@@ -71,7 +71,7 @@ ve.init.mw.Platform.prototype.addMessages = function( messages ) {
  * @param {Mixed} [...] List of arguments which will be injected at $1, $2, etc. in the messaage
  * @returns {String} Localized message
  */
-ve.init.mw.Platform.prototype.getMessage = function( key ) {
+ve.init.mw.Platform.prototype.getMessage = function ( key ) {
 	return mw.msg.apply( mw.msg, arguments );
 };
 

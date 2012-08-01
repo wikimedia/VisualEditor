@@ -14,7 +14,7 @@
  * @constructor
  * @param {String} pageName Name of target page
  */
-ve.init.mw.Target = function( pageName ) {
+ve.init.mw.Target = function ( pageName ) {
 	// Inheritance
 	ve.EventEmitter.call( this );
 
@@ -47,7 +47,7 @@ ve.init.mw.Target = function( pageName ) {
  * @param {String} status Text status message
  * @emits loadError (null, message, null)
  */
-ve.init.mw.Target.onLoad = function( response, status ) {
+ve.init.mw.Target.onLoad = function ( response, status ) {
 	var data = response['ve-parsoid'];
 	if ( !data ) {
 		this.loading = false;
@@ -59,7 +59,7 @@ ve.init.mw.Target.onLoad = function( response, status ) {
 		this.loading = false;
 		this.emit( 'loadError', null, 'No HTML content in response from server', null );
 	} else {
-		this.dom = $( '<div></div>' ).html( data.parsed )[0];
+		this.dom = $( '<div>' ).html( data.parsed )[0];
 		// Everything worked, the page was loaded, continue as soon as the module is ready
 		mw.loader.using( this.modules, ve.proxy( ve.init.mw.Target.onReady, this ) );
 	}
@@ -75,7 +75,7 @@ ve.init.mw.Target.onLoad = function( response, status ) {
  * @method
  * @emits load (dom)
  */
-ve.init.mw.Target.onReady = function() {
+ve.init.mw.Target.onReady = function () {
 	this.loading = false;
 	this.emit( 'load', this.dom );
 	// Release DOM data
@@ -94,7 +94,7 @@ ve.init.mw.Target.onReady = function() {
  * @param {Mixed} error Thrown exception or HTTP error string
  * @emits loadError (response, text, exception)
  */
-ve.init.mw.Target.onLoadError = function( response, text, exception ) {
+ve.init.mw.Target.onLoadError = function ( response, text, exception ) {
 	this.loading = false;
 	this.emit( 'loadError', response, text, exception );
 };
@@ -111,7 +111,7 @@ ve.init.mw.Target.onLoadError = function( response, text, exception ) {
  * @emits save (html)
  * @emits saveError (null, message, null)
  */
-ve.init.mw.Target.onSave = function( response, status ) {
+ve.init.mw.Target.onSave = function ( response, status ) {
 	this.saving = false;
 	var data = response['ve-parsoid'];
 	if ( !data ) {
@@ -137,7 +137,7 @@ ve.init.mw.Target.onSave = function( response, status ) {
  * @param {Mixed} error Thrown exception or HTTP error string
  * @emits saveError (response, status, error)
  */
-ve.init.mw.Target.onSaveError = function( response, status, error ) {
+ve.init.mw.Target.onSaveError = function ( response, status, error ) {
 	this.saving = false;
 	this.emit( 'saveError', response, status, error );
 };
@@ -160,7 +160,7 @@ ve.init.mw.Target.onSaveError = function( response, status, error ) {
  * @param {Function} callback Function to call when complete, accepts error and dom arguments
  * @returns {Boolean} Loading is now in progress
 */
-ve.init.mw.Target.prototype.load = function( callback ) {
+ve.init.mw.Target.prototype.load = function ( callback ) {
 	// Prevent duplicate requests
 	if ( this.loading ) {
 		return false;
@@ -182,8 +182,8 @@ ve.init.mw.Target.prototype.load = function( callback ) {
 		// Wait up to 10 seconds before giving up
 		'timeout': 10000,
 		'cache': 'false',
-		'error': ve.proxy( ve.init.mw.Target.onLoadError, this ),
-		'success': ve.proxy( ve.init.mw.Target.onLoad, this )
+		'success': ve.proxy( ve.init.mw.Target.onLoad, this ),
+		'error': ve.proxy( ve.init.mw.Target.onLoadError, this )
 	} );
 	return true;
 };
@@ -211,7 +211,7 @@ ve.init.mw.Target.prototype.load = function( callback ) {
  * @param {Function} callback Function to call when complete, accepts error and html arguments
  * @returns {Boolean} Saving is now in progress
 */
-ve.init.mw.Target.prototype.save = function( dom, options, callback ) {
+ve.init.mw.Target.prototype.save = function ( dom, options, callback ) {
 	// Prevent duplicate requests
 	if ( this.saving ) {
 		return false;
@@ -235,8 +235,8 @@ ve.init.mw.Target.prototype.save = function( dom, options, callback ) {
 		'type': 'POST',
 		// Wait up to 10 seconds before giving up
 		'timeout': 10000,
-		'error': ve.proxy( ve.init.mw.Target.onSaveError, this ),
-		'success': ve.proxy( ve.init.mw.Target.onSave, this )
+		'success': ve.proxy( ve.init.mw.Target.onSave, this ),
+		'error': ve.proxy( ve.init.mw.Target.onSaveError, this )
 	} );
 	return true;
 };
