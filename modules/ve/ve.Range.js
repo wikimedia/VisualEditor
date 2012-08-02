@@ -11,7 +11,7 @@
  * @class
  * @constructor
  * @param from {Integer} Starting offset
- * @param to {Integer} Ending offset
+ * @param [to=from] {Integer} Ending offset
  * @property from {Integer} Starting offset
  * @property to {Integer} Ending offset
  * @property start {Integer} Normalized starting offset

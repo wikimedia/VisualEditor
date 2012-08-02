@@ -71,6 +71,16 @@ ve.dm.Surface.prototype.getSelection = function () {
 };
 
 /**
+ * Gets a fragment from this document and selection.
+ *
+ * @method
+ * @returns {ve.dm.SurfaceFragment} Surface fragment
+ */
+ve.dm.Surface.prototype.getFragment = function () {
+	return new ve.dm.SurfaceFragment( this );
+};
+
+/**
  * Applies a series of transactions to the content data and sets the selection.
  *
  * @method
