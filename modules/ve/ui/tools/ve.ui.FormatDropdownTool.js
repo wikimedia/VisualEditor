@@ -102,21 +102,21 @@ ve.FormatDropdownTool.splitAndUnwrap = function( model, list, firstItem, lastIte
 };
 
 ve.FormatDropdownTool.prototype.onSelect = function( item ) {
-	var surfaceView = this.toolbar.getSurfaceView(),
+	var selected, prevList, firstInList, lastInList, i, contentBranch, listItem, txs,
+		surfaceView = this.toolbar.getSurfaceView(),
 		model = surfaceView.getModel(),
 		selection = model.getSelection(),
 		doc = model.getDocument();
 	if ( item.type !== 'paragraph' ) {
 		// We can't have headings or pre's in a list, so if we're trying to convert
 		// things that are in lists to a heading or a pre, split the list
-		var selected = doc.selectNodes( selection, 'leaves' );
-		var prevList, firstInList, lastInList;
-		for ( var i = 0; i < selected.length; i++ ) {
-			var contentBranch = selected[i].node.isContent() ?
+		selected = doc.selectNodes( selection, 'leaves' );
+		for ( i = 0; i < selected.length; i++ ) {
+			contentBranch = selected[i].node.isContent() ?
 				selected[i].node.getParent() :
 				selected[i].node;
 			// Check if it's in a list
-			var listItem = contentBranch;
+			listItem = contentBranch;
 			while ( listItem && listItem.getType() !== 'listItem' ) {
 				listItem = listItem.getParent();
 			}
@@ -145,7 +145,7 @@ ve.FormatDropdownTool.prototype.onSelect = function( item ) {
 			);
 		}
 	}
-	var txs = ve.dm.Transaction.newFromContentBranchConversion(
+	txs = ve.dm.Transaction.newFromContentBranchConversion(
 		doc,
 		selection,
 		item.type,
@@ -156,19 +156,20 @@ ve.FormatDropdownTool.prototype.onSelect = function( item ) {
 };
 
 ve.FormatDropdownTool.prototype.getMatchingMenuItems = function( nodes ) {
-	var matches = [],
+	var i, j, nodeType, nodeAttributes, item, key,
+		matches = [],
 		items = this.menuView.getItems();
-	for ( var i = 0; i < nodes.length; i++ ) {
-		var nodeType = nodes[i].getType(),
-			nodeAttributes = nodes[i].getAttributes();
+	for ( i = 0; i < nodes.length; i++ ) {
+		nodeType = nodes[i].getType();
+		nodeAttributes = nodes[i].getAttributes();
 		// Outer loop continue point
 		itemLoop:
-		for ( var j = 0; j < items.length; j++ ) {
-			var item = items[j];
+		for ( j = 0; j < items.length; j++ ) {
+			item = items[j];
 			if ( item.type === nodeType ) {
 				if ( item.attributes && nodeAttributes ) {
 					// Compare attributes
-					for ( var key in item.attributes ) {
+					for ( key in item.attributes ) {
 						if (
 							// Node must have all the required attributes
 							!( key in nodeAttributes ) ||

@@ -45,9 +45,9 @@ QUnit.test( 'getData', 1, function ( assert ) {
 } );
 
 QUnit.test( 'getNodeFromOffset', function ( assert ) {
-	var doc = new ve.dm.Document( ve.dm.example.data ),
+	var i, j, node,
+		doc = new ve.dm.Document( ve.dm.example.data ),
 		root = doc.getDocumentNode().getRoot(),
-		node,
 		expected = [
 		[], // 0 - document
 		[0], // 1 - heading
@@ -113,9 +113,9 @@ QUnit.test( 'getNodeFromOffset', function ( assert ) {
 		[] // 59 - document
 	];
 	QUnit.expect( expected.length );
-	for ( var i = 0; i < expected.length; i++ ) {
+	for ( i = 0; i < expected.length; i++ ) {
 		node = root;
-		for ( var j = 0; j < expected[i].length; j++ ) {
+		for ( j = 0; j < expected[i].length; j++ ) {
 			node = node.children[expected[i][j]];
 		}
 		assert.ok( node === doc.getNodeFromOffset( i ), 'reference at offset ' + i );
@@ -562,9 +562,10 @@ QUnit.test( 'getAnnotatedRangeFromOffset', 1,  function ( assert ) {
 } );
 
 QUnit.test( 'getMatchingAnnotationsFromOffset', 1, function ( assert ) {
-	var cases = {
+	var msg,
+		cases = {
 		'finds two out of three': {
-			'pattern': /textStyle\/.*/,
+			'pattern': /^textStyle\//,
 			'character': [
 				'a',
 				{
@@ -579,7 +580,7 @@ QUnit.test( 'getMatchingAnnotationsFromOffset', 1, function ( assert ) {
 			}
 		},
 		'finds 3 out of 3': {
-			'pattern': /textStyle\/.*/,
+			'pattern': /^textStyle\//,
 			'character': [
 				'a',
 				{
@@ -595,7 +596,7 @@ QUnit.test( 'getMatchingAnnotationsFromOffset', 1, function ( assert ) {
 			}
 		},
 		'finds none': {
-			'pattern': /link\/.*/,
+			'pattern': /^link\//,
 			'character': [
 				'a',
 				{
@@ -610,7 +611,7 @@ QUnit.test( 'getMatchingAnnotationsFromOffset', 1, function ( assert ) {
 
 	QUnit.expect( ve.getObjectKeys( cases ).length );
 
-	for ( var msg in cases ) {
+	for ( msg in cases ) {
 		assert.deepEqual(
 			( new ve.dm.Document( [cases[msg].character] ) )
 				.getMatchingAnnotationsFromOffset( 0, cases[msg].pattern ),
@@ -630,7 +631,8 @@ QUnit.test( 'getOuterLength', 1, function ( assert ) {
 } );
 
 QUnit.test( 'isContentOffset', function ( assert ) {
-	var data = [
+	var i, left, right,
+		data = [
 		{ 'type': 'heading' },
 		'a',
 		{ 'type': 'image' },
@@ -690,9 +692,9 @@ QUnit.test( 'isContentOffset', function ( assert ) {
 		{ 'msg': 'right of document', 'expected': false }
 	];
 	QUnit.expect( data.length + 1 );
-	for ( var i = 0; i < cases.length; i++ ) {
-		var left = data[i - 1] ? ( data[i - 1].type || data[i - 1][0] ) : '[start]',
-			right = data[i] ? ( data[i].type || data[i][0] ) : '[end]';
+	for ( i = 0; i < cases.length; i++ ) {
+		left = data[i - 1] ? ( data[i - 1].type || data[i - 1][0] ) : '[start]';
+		right = data[i] ? ( data[i].type || data[i][0] ) : '[end]';
 		assert.strictEqual(
 			ve.dm.Document.isContentOffset( data, i ),
 			cases[i].expected,
@@ -702,7 +704,8 @@ QUnit.test( 'isContentOffset', function ( assert ) {
 } );
 
 QUnit.test( 'isStructuralOffset', function ( assert ) {
-	var data = [
+	var i, left, right,
+		data = [
 		{ 'type': 'heading' },
 		'a',
 		{ 'type': 'image' },
@@ -762,9 +765,9 @@ QUnit.test( 'isStructuralOffset', function ( assert ) {
 		{ 'msg': 'right of document', 'expected': [true, true] }
 	];
 	QUnit.expect( ( data.length + 1 ) * 2 );
-	for ( var i = 0; i < cases.length; i++ ) {
-		var left = data[i - 1] ? ( data[i - 1].type || data[i - 1][0] ) : '[start]',
-			right = data[i] ? ( data[i].type || data[i][0] ) : '[end]';
+	for ( i = 0; i < cases.length; i++ ) {
+		left = data[i - 1] ? ( data[i - 1].type || data[i - 1][0] ) : '[start]',
+		right = data[i] ? ( data[i].type || data[i][0] ) : '[end]';
 		assert.strictEqual(
 			ve.dm.Document.isStructuralOffset( data, i ),
 			cases[i].expected[0],
@@ -862,7 +865,8 @@ QUnit.test( 'containsElementData', 1, function ( assert ) {
 } );
 
 QUnit.test( 'isContentData', 1, function ( assert ) {
-	var cases = [
+	var i,
+		cases = [
 		{
 			'msg': 'simple paragraph',
 			'data': [{ 'type': 'paragraph' }, 'a', { 'type': '/paragraph' }],
@@ -885,7 +889,7 @@ QUnit.test( 'isContentData', 1, function ( assert ) {
 		}
 	];
 	QUnit.expect( cases.length );
-	for ( var i = 0; i < cases.length; i++ ) {
+	for ( i = 0; i < cases.length; i++ ) {
 		assert.strictEqual(
 			ve.dm.Document.isContentData( cases[i].data ), cases[i].expected, cases[i].msg
 		);
@@ -893,7 +897,8 @@ QUnit.test( 'isContentData', 1, function ( assert ) {
 } );
 
 QUnit.test( 'rebuildNodes', function ( assert ) {
-	var doc = new ve.dm.Document( ve.dm.example.data.slice( 0 ) ),
+	var tree,
+		doc = new ve.dm.Document( ve.dm.example.data.slice( 0 ) ),
 		documentNode = doc.getDocumentNode();
 	// Rebuild table without changes
 	doc.rebuildNodes( documentNode, 1, 1, 5, 32 );
@@ -904,7 +909,7 @@ QUnit.test( 'rebuildNodes', function ( assert ) {
 	);
 
 	// XXX: Create a new document node tree from the old one
-	var tree = new ve.dm.DocumentNode( ve.dm.example.tree.getChildren() );
+	tree = new ve.dm.DocumentNode( ve.dm.example.tree.getChildren() );
 	// Replace table with paragraph
 	doc.data.splice( 5, 32, { 'type': 'paragraph' }, 'a', 'b', 'c', { 'type': '/paragraph' } );
 	tree.splice( 1, 1, new ve.dm.ParagraphNode( [new ve.dm.TextNode( 3 )] ) );
@@ -1064,7 +1069,8 @@ QUnit.test( 'getRelativeContentOffset', function ( assert ) {
 } );
 
 QUnit.test( 'getNearestContentOffset', function ( assert ) {
-	var doc = new ve.dm.Document( ve.dm.example.data ),
+	var i,
+		doc = new ve.dm.Document( ve.dm.example.data ),
 		cases = [
 		{
 			'msg': 'unspecified direction results in shortest distance',
@@ -1109,7 +1115,7 @@ QUnit.test( 'getNearestContentOffset', function ( assert ) {
 		}
 	];
 	QUnit.expect( cases.length );
-	for ( var i = 0; i < cases.length; i++ ) {
+	for ( i = 0; i < cases.length; i++ ) {
 		assert.strictEqual(
 			doc.getNearestContentOffset( cases[i].offset, cases[i].direction ),
 			cases[i].expected,
@@ -1119,7 +1125,8 @@ QUnit.test( 'getNearestContentOffset', function ( assert ) {
 } );
 
 QUnit.test( 'getRelativeStructuralOffset', function ( assert ) {
-	var doc = new ve.dm.Document( ve.dm.example.data ),
+	var i,
+		doc = new ve.dm.Document( ve.dm.example.data ),
 		cases = [
 		{
 			'msg': 'invalid starting offset with zero distance gets corrected',
@@ -1217,7 +1224,7 @@ QUnit.test( 'getRelativeStructuralOffset', function ( assert ) {
 		}
 	];
 	QUnit.expect( cases.length );
-	for ( var i = 0; i < cases.length; i++ ) {
+	for ( i = 0; i < cases.length; i++ ) {
 		assert.strictEqual(
 			doc.getRelativeStructuralOffset(
 				cases[i].offset, cases[i].distance, cases[i].unrestricted

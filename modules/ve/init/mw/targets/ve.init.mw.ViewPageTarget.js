@@ -395,11 +395,11 @@ ve.init.mw.ViewPageTarget.prototype.tearDownSurface = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
+	var action, $viewSource, title;
 	// Only sysop users will have an edit tab in this namespace, so we might need to add one
 	if ( $( '#ca-edit' ).length === 0 ) {
 		// Add edit tab
-		var action = Number( mw.config.get( 'wgArticleId', 0 ) ) === 0 ?
-			'create' : 'edit';
+		action = Number( mw.config.get( 'wgArticleId', 0 ) ) === 0 ? 'create' : 'edit';
 
 		mw.util.addPortletLink(
 			'p-views',
@@ -412,7 +412,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
 		);
 
 		// If there isn't an edit tab, there's a view source tab we need to replace with edit source
-		var $viewSource = $( '#ca-viewsource' );
+		$viewSource = $( '#ca-viewsource' );
 		if ( $viewSource.length > 0 ) {
 			// "Move" the view source link to p-actions
 			mw.util.addPortletLink(
@@ -447,7 +447,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
 	}
 	// Fix the URL if there was a veaction param in it
 	if ( this.currentUri.query.veaction === 'edit' && window.history.replaceState ) {
-		var title = $( 'head title' ).text();
+		title = $( 'head title' ).text();
 		window.history.replaceState( null, title, this.viewUri );
 	}
 };
@@ -458,11 +458,11 @@ ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.setupSectionEditLinks = function () {
-	var $links = $( '#mw-content-text .editsection a' );
+	var veEditUri = this.veEditUri,
+		$links = $( '#mw-content-text .editsection a' );
 	if ( this.isViewPage ) {
 		$links.click( ve.proxy( this.onEditSectionLinkClick, this ) );
 	} else {
-		var veEditUri = this.veEditUri;
 		$links.each( function () {
 			// FIXME: mw.Uri is mediaWiki specific
 			var veSectionEditUri = new mw.Uri( veEditUri.toString() ),

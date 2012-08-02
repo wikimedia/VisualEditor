@@ -77,12 +77,13 @@ ve.dm.Converter.prototype.onNodeRegister = function( dataElementType, constructo
 	if ( constructor.converters === undefined ) {
 		throw 'Missing conversion data in node implementation of ' + dataElementType;
 	} else if ( constructor.converters !== null ) {
-		var domElementTypes = constructor.converters.domElementTypes,
+		var i,
+			domElementTypes = constructor.converters.domElementTypes,
 			toDomElement = constructor.converters.toDomElement,
 			toDataElement = constructor.converters.toDataElement;
 		// Registration
 		this.elements.toDomElement[dataElementType] = toDomElement;
-		for ( var i = 0; i < domElementTypes.length; i++ ) {
+		for ( i = 0; i < domElementTypes.length; i++ ) {
 			this.elements.toDataElement[domElementTypes[i]] = toDataElement;
 			this.elements.dataElementTypes[domElementTypes[i]] = dataElementType;
 		}
@@ -101,12 +102,13 @@ ve.dm.Converter.prototype.onAnnotationRegister = function( dataElementType, cons
 	if ( constructor.converters === undefined ) {
 		throw 'Missing conversion data in annotation implementation of ' + dataElementType;
 	} else if ( constructor.converters !== null ) {
-		var domElementTypes = constructor.converters.domElementTypes,
+		var i,
+			domElementTypes = constructor.converters.domElementTypes,
 			toDomElement = constructor.converters.toDomElement,
 			toDataAnnotation = constructor.converters.toDataAnnotation;
 		// Registration
 		this.annotations.toDomElement[dataElementType] = toDomElement;
-		for ( var i = 0; i < domElementTypes.length; i++ ) {
+		for ( i = 0; i < domElementTypes.length; i++ ) {
 			this.annotations.toDataAnnotation[domElementTypes[i]] = toDataAnnotation;
 		}
 	}
@@ -124,7 +126,8 @@ ve.dm.Converter.prototype.onAnnotationRegister = function( dataElementType, cons
  * @returns {HTMLElement|false} DOM element, or false if this element cannot be converted
  */
 ve.dm.Converter.prototype.getDomElementFromDataElement = function( dataElement ) {
-	var dataElementType = dataElement.type;
+	var key, domElement, dataElementAttributes,
+		dataElementType = dataElement.type;
 	if (
 		// Aliens
 		dataElementType === 'alienInline' || dataElementType === 'alienBlock' ||
@@ -133,10 +136,10 @@ ve.dm.Converter.prototype.getDomElementFromDataElement = function( dataElement )
 	) {
 		return false;
 	}
-	var domElement = this.elements.toDomElement[dataElementType]( dataElementType, dataElement ),
-		dataElementAttributes = dataElement.attributes;
+	domElement = this.elements.toDomElement[dataElementType]( dataElementType, dataElement );
+	dataElementAttributes = dataElement.attributes;
 	if ( dataElementAttributes ) {
-		for ( var key in dataElementAttributes ) {
+		for ( key in dataElementAttributes ) {
 			// Only include 'html/*' attributes and strip the 'html/' from the beginning of the name
 			if ( key.indexOf( 'html/' ) === 0 ) {
 				domElement.setAttribute( key.substr( 5 ), dataElementAttributes[key] );
@@ -157,7 +160,8 @@ ve.dm.Converter.prototype.getDomElementFromDataElement = function( dataElement )
  * @returns {Object|false} Linear model element, or false if this node cannot be converted
  */
 ve.dm.Converter.prototype.getDataElementFromDomElement = function( domElement ) {
-	var domElementType = domElement.nodeName.toLowerCase();
+	var dataElement, domElementAttributes, dataElementAttributes, domElementAttribute, i,
+		domElementType = domElement.nodeName.toLowerCase();
 	if (
 		// Generated elements
 		domElement.hasAttribute( 'data-mw-gc' ) ||
@@ -166,13 +170,13 @@ ve.dm.Converter.prototype.getDataElementFromDomElement = function( domElement ) 
 	) {
 		return false;
 	}
-	var dataElement = this.elements.toDataElement[domElementType]( domElementType, domElement ),
-		domElementAttributes = domElement.attributes;
+	dataElement = this.elements.toDataElement[domElementType]( domElementType, domElement );
+	domElementAttributes = domElement.attributes;
 	if ( domElementAttributes.length ) {
-		var dataElementAttributes = dataElement.attributes = dataElement.attributes || {};
+		dataElementAttributes = dataElement.attributes = dataElement.attributes || {};
 		// Inlcude all attributes and prepend 'html/' to each attribute name
-		for ( var i = 0; i < domElementAttributes.length; i++ ) {
-			var domElementAttribute = domElementAttributes[i];
+		for ( i = 0; i < domElementAttributes.length; i++ ) {
+			domElementAttribute = domElementAttributes[i];
 			dataElementAttributes['html/' + domElementAttribute.name] = domElementAttribute.value;
 		}
 	}
@@ -245,7 +249,8 @@ ve.dm.Converter.prototype.getDataFromDom = function( domElement, annotations, da
 	// Fallback to defaults
 	annotations = annotations || [];
 	path = path || ['document'];
-	var data = [],
+	var i, childDomElement, annotation, childDataElement, text, contentNode, childTypes,
+		data = [],
 		branchType = path[path.length - 1],
 		branchIsContent = ve.dm.nodeFactory.canNodeContainContent( branchType ),
 		wrapping = false;
@@ -254,8 +259,8 @@ ve.dm.Converter.prototype.getDataFromDom = function( domElement, annotations, da
 		data.push( dataElement );
 	}
 	// Add contents
-	for ( var i = 0; i < domElement.childNodes.length; i++ ) {
-		var childDomElement = domElement.childNodes[i];
+	for ( i = 0; i < domElement.childNodes.length; i++ ) {
+		childDomElement = domElement.childNodes[i];
 		switch ( childDomElement.nodeType ) {
 			case Node.ELEMENT_NODE:
 				// Detect generated content and wrap it in an alien node
@@ -265,7 +270,7 @@ ve.dm.Converter.prototype.getDataFromDom = function( domElement, annotations, da
 					break;
 				}
 				// Detect and handle annotated content
-				var annotation = this.getDataAnnotationFromDomElement( childDomElement );
+				annotation = this.getDataAnnotationFromDomElement( childDomElement );
 				if ( annotation ) {
 					// Start auto-wrapping of bare content
 					if ( !wrapping && !alreadyWrapped && !branchIsContent ) {
@@ -286,7 +291,7 @@ ve.dm.Converter.prototype.getDataFromDom = function( domElement, annotations, da
 					wrapping = false;
 				}
 				// Append child element data
-				var childDataElement = this.getDataElementFromDomElement( childDomElement );
+				childDataElement = this.getDataElementFromDomElement( childDomElement );
 				if ( childDataElement ) {
 					data = data.concat(
 						this.getDataFromDom(
@@ -304,7 +309,7 @@ ve.dm.Converter.prototype.getDataFromDom = function( domElement, annotations, da
 				break;
 			case Node.TEXT_NODE:
 				// HACK: strip trailing newlines in <li> tags. Workaround for a Parsoid bug
-				var text = childDomElement.data;
+				text = childDomElement.data;
 				if ( domElement.nodeName.toLowerCase() === 'li' ) {
 					text = text.replace( /\n+$/, '' );
 				}
@@ -325,7 +330,7 @@ ve.dm.Converter.prototype.getDataFromDom = function( domElement, annotations, da
 				 * If there is no next sibling, do not strip trailing newlines
 				 * Otherwise, strip 1 trailing newline
 				 */
-				var contentNode = childDomElement.parentNode;
+				contentNode = childDomElement.parentNode;
 				if ( contentNode.nodeName.toLowerCase() === 'p' ) {
 					if (
 						contentNode.previousSibling &&
@@ -380,7 +385,7 @@ ve.dm.Converter.prototype.getDataFromDom = function( domElement, annotations, da
 
 	// If we're closing a node that doesn't have any children, but could contain a paragraph,
 	// add a paragraph. This prevents things like empty list items
-	var childTypes = ve.dm.nodeFactory.getChildNodeTypes( branchType );
+	childTypes = ve.dm.nodeFactory.getChildNodeTypes( branchType );
 	if ( branchType !== 'paragraph' && dataElement && data[data.length - 1] === dataElement &&
 		!wrapping && !ve.dm.nodeFactory.canNodeContainContent( branchType ) &&
 		!ve.dm.nodeFactory.isNodeContent( branchType ) &&
@@ -409,6 +414,12 @@ ve.dm.Converter.prototype.getDataFromDom = function( domElement, annotations, da
  * @returns {HTMLElement} Wrapper div containing the resulting HTML
  */
 ve.dm.Converter.prototype.getDomFromData = function( data ) {
+	var text, i, annotations,  hash, annotationElement, done, dataElement, wrapper, childDomElement,
+		datamw,
+		container = document.createElement( 'div' ),
+		domElement = container,
+		annotationStack = {}; // { hash: DOMnode }
+
 	function fixupText( text, node ) {
 		// HACK reintroduce newlines needed to make Parsoid not freak out
 		// This reverses the newline stripping done in getDataFromDom()
@@ -442,10 +453,7 @@ ve.dm.Converter.prototype.getDomFromData = function( data ) {
 		return text;
 	}
 
-	var container = document.createElement( 'div' ),
-		domElement = container,
-		text;
-	for ( var i = 0; i < data.length; i++ ) {
+	for ( i = 0; i < data.length; i++ ) {
 		if ( typeof data[i] === 'string' ) {
 			// Text
 			text = '';
@@ -466,11 +474,6 @@ ve.dm.Converter.prototype.getDomFromData = function( data ) {
 			)
 		) {
 			// Annotated text
-			var annotations,
-				annotationStack = {}, // { hash: DOMnode }
-				hash,
-				annotationElement,
-				done;
 			text = '';
 			while (
 				ve.isArray( data[i] ) ||
@@ -551,11 +554,11 @@ ve.dm.Converter.prototype.getDomFromData = function( data ) {
 				domElement = domElement.parentNode;
 			}
 		} else if ( data[i].type !== undefined ) {
-			var dataElement = data[i];
+			dataElement = data[i];
 			// Element
 			if ( dataElement.type === 'alienBlock' || dataElement.type === 'alienInline' ) {
 				// Create nodes from source
-				var wrapper = document.createElement( 'div' );
+				wrapper = document.createElement( 'div' );
 				wrapper.innerHTML = dataElement.attributes.html;
 				// Add element - adds all child elements, but there really should only be 1
 				while ( wrapper.firstChild ) {
@@ -568,7 +571,7 @@ ve.dm.Converter.prototype.getDomFromData = function( data ) {
 				domElement = domElement.parentNode;
 			} else {
 				// Create node from data
-				var childDomElement = this.getDomElementFromDataElement( dataElement );
+				childDomElement = this.getDomElementFromDataElement( dataElement );
 				// Add element
 				domElement.appendChild( childDomElement );
 				// Descend into child node
@@ -585,7 +588,7 @@ ve.dm.Converter.prototype.getDomFromData = function( data ) {
 			$lastChild = $(this.lastChild);
 		if ( $firstChild.is( 'p' ) ) {
 			// Unwrap the first paragraph, unless it has stx=html
-			var datamw = $.parseJSON( $firstChild.attr( 'data-rt' ) ) || {};
+			datamw = $.parseJSON( $firstChild.attr( 'data-rt' ) ) || {};
 			if ( datamw.stx !== 'html' ) {
 				$firstChild.replaceWith( $firstChild.contents() );
 			}

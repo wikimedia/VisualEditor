@@ -65,9 +65,12 @@ ve.dm.Transaction.newFromInsertion = function( doc, offset, insertion ) {
  * @throws 'Invalid range, can not remove from {range.start} to {range.end}'
  */
 ve.dm.Transaction.newFromRemoval = function( doc, range ) {
-	var tx = new ve.dm.Transaction(),
-		data = doc.getData(),
-		i;
+	var i, selection, first, last, nodeStart, nodeEnd,
+		offset = 0,
+		removeStart = null,
+		removeEnd = null,
+		tx = new ve.dm.Transaction(),
+		data = doc.getData();
 	// Normalize and validate range
 	range.normalize();
 	if ( range.start === range.end ) {
@@ -76,13 +79,11 @@ ve.dm.Transaction.newFromRemoval = function( doc, range ) {
 		return tx;
 	}
 	// Select nodes and validate selection
-	var selection = doc.selectNodes( range, 'covered' );
+	selection = doc.selectNodes( range, 'covered' );
 	if ( selection.length === 0 ) {
 		// Empty selection? Something is wrong!
 		throw 'Invalid range, cannot remove from ' + range.start + ' to ' + range.end;
 	}
-
-	var first, last, offset = 0, removeStart = null, removeEnd = null, nodeStart, nodeEnd;
 	first = selection[0];
 	last = selection[selection.length - 1];
 	// If the first and last node are mergeable, merge them
@@ -199,13 +200,14 @@ ve.dm.Transaction.newFromAttributeChange = function( doc, offset, key, value ) {
  * @returns {ve.dm.Transaction} Transcation that annotates content
  */
 ve.dm.Transaction.newFromAnnotation = function( doc, range, method, annotation ) {
-	var tx = new ve.dm.Transaction(),
-		data = doc.getData();
-	// Iterate over all data in range, annotating where appropriate
-	range.normalize();
-	var i = range.start,
+	var covered,
+		tx = new ve.dm.Transaction(),
+		data = doc.getData(),
+		i = range.start,
 		span = i,
 		on = false;
+	// Iterate over all data in range, annotating where appropriate
+	range.normalize();
 	while ( i < range.end ) {
 		if ( data[i].type !== undefined ) {
 			// Element
@@ -217,7 +219,7 @@ ve.dm.Transaction.newFromAnnotation = function( doc, range, method, annotation )
 			}
 		} else {
 			// Content
-			var covered = doc.offsetContainsAnnotation( i, annotation );
+			covered = doc.offsetContainsAnnotation( i, annotation );
 			if ( ( covered && method === 'set' ) || ( !covered  && method === 'clear' ) ) {
 				// Skip annotated content
 				if ( on ) {
@@ -259,7 +261,8 @@ ve.dm.Transaction.newFromAnnotation = function( doc, range, method, annotation )
  * @returns {ve.dm.Transaction} Transaction that annotates content
  */
 ve.dm.Transaction.newFromContentBranchConversion = function( doc, range, type, attr ) {
-	var tx = new ve.dm.Transaction(),
+	var i, selected, branch, branchOuterRange,
+		tx = new ve.dm.Transaction(),
 		data = doc.getData(),
 		selection = doc.selectNodes( range, 'leaves' ),
 		opening = { 'type': type },
@@ -271,11 +274,11 @@ ve.dm.Transaction.newFromContentBranchConversion = function( doc, range, type, a
 		opening.attributes = attr;
 	}
 	// Replace the wrappings of each content branch in the range
-	for ( var i = 0; i < selection.length; i++ ) {
-		var selected = selection[i];
+	for ( i = 0; i < selection.length; i++ ) {
+		selected = selection[i];
 		if ( selected.node.isContent() ) {
-			var branch = selected.node.getParent(),
-				branchOuterRange = branch.getOuterRange();
+			branch = selected.node.getParent();
+			branchOuterRange = branch.getOuterRange();
 			// Don't convert the same branch twice
 			if ( branch === previousBranch ) {
 				continue;
@@ -336,6 +339,10 @@ ve.dm.Transaction.newFromContentBranchConversion = function( doc, range, type, a
  *              {'type': 'paragraph'}, 'b', {'type': '/paragraph'}, {'type': '/listItem'}, {'type': '/list'} ]
  */
 ve.dm.Transaction.newFromWrap = function( doc, range, unwrapOuter, wrapOuter, unwrapEach, wrapEach ) {
+	var i, j, unwrapOuterData, startOffset, unwrapEachData, closingUnwrapEach, closingWrapEach,
+		tx = new ve.dm.Transaction(),
+		depth = 0;
+
 	// Function to generate arrays of closing elements in reverse order
 	function closingArray( openings ) {
 		var closings = [], i, len = openings.length;
@@ -344,10 +351,10 @@ ve.dm.Transaction.newFromWrap = function( doc, range, unwrapOuter, wrapOuter, un
 		}
 		return closings;
 	}
+	closingUnwrapEach = closingArray( unwrapEach );
+	closingWrapEach = closingArray( wrapEach );
 
 	// TODO: check for and fix nesting validity like fixupInsertion does
-
-	var tx = new ve.dm.Transaction(), i, j, unwrapOuterData;
 	range.normalize();
 	if ( range.start > unwrapOuter.length ) {
 		// Retain up to the first thing we're unwrapping
@@ -374,11 +381,6 @@ ve.dm.Transaction.newFromWrap = function( doc, range, unwrapOuter, wrapOuter, un
 	}
 
 	if ( wrapEach.length > 0 || unwrapEach.length > 0 ) {
-		var closingUnwrapEach = closingArray( unwrapEach ),
-			closingWrapEach = closingArray( wrapEach ),
-			depth = 0,
-			startOffset,
-			unwrapEachData;
 		// Visit each top-level child and wrap/unwrap it
 		// TODO figure out if we should use the tree/node functions here
 		// rather than iterating over offsets, it may or may not be faster

@@ -23,27 +23,24 @@ ve.dm.Document = function( data, parentDocument ) {
 	this.data = data || [];
 
 	// Initialization
-	var doc = parentDocument || this;
-	this.documentNode.setDocument( doc );
-	var root = doc.getDocumentNode();
-	this.documentNode.setRoot( root );
-
 	/*
 	 * Build a tree of nodes and nodes that will be added to them after a full scan is complete,
 	 * then from the bottom up add nodes to their potential parents. This avoids massive length
 	 * updates being broadcast upstream constantly while building is underway.
 	 */
-	var node,
+	var i, length, node, children, openingIndex,
+		doc = parentDocument || this,
+		root = doc.getDocumentNode(),
 		textLength = 0,
 		inTextNode = false,
 		// Stack of stacks, each containing a
 		stack = [[this.documentNode], []],
-		children,
-		openingIndex,
 		currentStack = stack[1],
 		parentStack = stack[0],
 		currentNode = this.documentNode;
-	for ( var i = 0, length = this.data.length; i < length; i++ ) {
+	this.documentNode.setDocument( doc );
+	this.documentNode.setRoot( root );
+	for ( i = 0, length = this.data.length; i < length; i++ ) {
 		// Infer that if an item in the linear model has a type attribute than it must be an element
 		if ( this.data[i].type === undefined ) {
 			// Text node opening
@@ -417,15 +414,15 @@ ve.dm.Document.prototype.commit = function( transaction ) {
  * @returns {Array} Slice or copy of document data
  */
 ve.dm.Document.prototype.getData = function( range, deep ) {
-	var start = 0,
-		end;
+	var end, data,
+		start = 0;
 	if ( range !== undefined ) {
 		range.normalize();
 		start = Math.max( 0, Math.min( this.data.length, range.start ) );
 		end = Math.max( 0, Math.min( this.data.length, range.end ) );
 	}
 	// IE work-around: arr.slice( 0, undefined ) returns [] while arr.slice( 0 ) behaves correctly
-	var data = end === undefined ? this.data.slice( start ) : this.data.slice( start, end );
+	data = end === undefined ? this.data.slice( start ) : this.data.slice( start, end );
 	// Return either the slice or a deep copy of the slice
 	return deep ? ve.copyArray( data ) : data;
 };
@@ -501,9 +498,9 @@ ve.dm.Document.prototype.getAnnotationsFromOffset = function( offset ) {
  * @returns {Boolean} Whether an offset contains the specified annotation
  */
 ve.dm.Document.prototype.offsetContainsAnnotation = function ( offset, annotation ) {
-	var annotations = this.getAnnotationsFromOffset( offset );
-	for ( var a in annotations ) {
-		if ( ve.compareObjects( annotations[a], annotation ) ){
+	var hash, annotations = this.getAnnotationsFromOffset( offset );
+	for ( hash in annotations ) {
+		if ( ve.compareObjects( annotations[hash], annotation ) ){
 			return true;
 		}
 	}
@@ -579,10 +576,11 @@ ve.dm.Document.prototype.offsetContainsMatchingAnnotations = function( offset, p
 	if ( !( pattern instanceof RegExp ) ) {
 		throw 'Invalid Pattern. Pattern not instance of RegExp';
 	}
-	var annotations = ve.isArray( this.data[offset] ) ?
+	var hash,
+		annotations = ve.isArray( this.data[offset] ) ?
 		this.data[offset][1] : this.data[offset].annotations;
 	if ( ve.isPlainObject( annotations ) ) {
-		for ( var hash in annotations ) {
+		for ( hash in annotations ) {
 			if ( pattern.test( annotations[hash].type ) ) {
 				return true;
 			}
@@ -603,11 +601,12 @@ ve.dm.Document.prototype.getMatchingAnnotationsFromOffset = function( offset, pa
 	if ( !( pattern instanceof RegExp ) ) {
 		throw 'Invalid Pattern. Pattern not instance of RegExp';
 	}
-	var matches = {},
+	var hash,
+		matches = {},
 		annotations = ve.isArray( this.data[offset] ) ?
 			this.data[offset][1] : this.data[offset].annotations;
 	if ( ve.isPlainObject( annotations ) ) {
-		for ( var hash in annotations ) {
+		for ( hash in annotations ) {
 			if ( pattern.test( annotations[hash].type ) ){
 				matches[hash] = annotations[hash];
 			}
@@ -629,9 +628,10 @@ ve.dm.Document.getMatchingAnnotations = function( annotations, pattern ) {
 	if ( !( pattern instanceof RegExp ) ) {
 		throw 'Invalid Pattern. Pattern not instance of RegExp';
 	}
-	var matches = {};
+	var hash,
+		matches = {};
 	if ( ve.isPlainObject( annotations ) ) {
-		for ( var hash in annotations ) {
+		for ( hash in annotations ) {
 			if ( pattern.test( annotations[hash].type ) ){
 				matches[hash] = annotations[hash];
 			}
@@ -649,12 +649,13 @@ ve.dm.Document.getMatchingAnnotations = function( annotations, pattern ) {
  * @returns {Object} A copy of all annotation objects offset is covered by
  */
 ve.dm.Document.prototype.getAnnotationsFromRange = function( range, all ) {
-	range.normalize();
-	var annotations = {},
+	var i,
+		annotations = {},
 		count = 0,
 		left,
 		right,
 		hash;
+	range.normalize();
 	// Shorcut for zero-length ranges
 	if ( range.getLength() === 0 ) {
 		return {};
@@ -666,7 +667,7 @@ ve.dm.Document.prototype.getAnnotationsFromRange = function( range, all ) {
 		return left;
 	}
 	// Iterator over the range, looking for annotations, starting at the 2nd character
-	for ( var i = range.start + 1; i < range.end; i++ ) {
+	for ( i = range.start + 1; i < range.end; i++ ) {
 		// Skip non character data
 		if ( ve.dm.Document.isElementData( this.data, i ) ) {
 			continue;
@@ -746,12 +747,12 @@ ve.dm.Document.prototype.trimOuterSpaceFromRange = function( range ){
  * @returns {ve.dm.Node[]} Array containing the rebuilt/inserted nodes
  */
 ve.dm.Document.prototype.rebuildNodes = function( parent, index, numNodes, offset, newLength ) {
-	// Get a slice of the document where it's been changed
-	var data = this.data.slice( offset, offset + newLength );
-	// Build document fragment from data
-	var fragment = new ve.dm.Document( data, this );
-	// Get generated child nodes from the document fragment
-	var nodes = fragment.getDocumentNode().getChildren();
+	var // Get a slice of the document where it's been changed
+		data = this.data.slice( offset, offset + newLength ),
+		// Build document fragment from data
+		fragment = new ve.dm.Document( data, this ),
+		// Get generated child nodes from the document fragment
+		nodes = fragment.getDocumentNode().getChildren();
 	// Replace nodes in the model tree
 	ve.batchSplice( parent, index, numNodes, nodes );
 	// Return inserted nodes
@@ -778,7 +779,11 @@ ve.dm.Document.prototype.rebuildNodes = function( parent, index, numNodes, offse
  * @returns {Integer} Relative valid offset or -1 if there are no valid offsets in document
  */
 ve.dm.Document.prototype.getRelativeOffset = function( offset, distance, callback ) {
-	var args = Array.prototype.slice.call( arguments, 3 );
+	var i, direction,
+		args = Array.prototype.slice.call( arguments, 3 ),
+		start = offset,
+		steps = 0,
+		turnedAround = false;
 	// If offset is already a structural offset and distance is zero than no further work is needed,
 	// otherwise distance should be 1 so that we can get out of the invalid starting offset
 	if ( distance === 0 ) {
@@ -788,19 +793,18 @@ ve.dm.Document.prototype.getRelativeOffset = function( offset, distance, callbac
 			distance = 1;
 		}
 	}
-	var direction = (
-			offset <= 0 ? 1 : (
-				offset >= this.data.length ? -1 : (
-					distance > 0 ? 1 : -1
-				)
+	// Initial values
+	direction = (
+		offset <= 0 ? 1 : (
+			offset >= this.data.length ? -1 : (
+				distance > 0 ? 1 : -1
 			)
-		),
-		start = offset,
-		i = start + direction,
-		steps = 0,
-		turnedAround = false;
+		)
+	);
 	distance = Math.abs( distance );
+	i = start + direction;
 	offset = -1;
+	// Iteration
 	while ( i >= 0 && i <= this.data.length ) {
 		if ( callback.apply( window, [this.data, i].concat( args ) ) ) {
 			steps++;
@@ -1255,23 +1259,23 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
  * @returns {Array} Balanced snippet of linear model data
  */
 ve.dm.Document.prototype.getBalancedData = function( range ) {
-	var node = this.getNodeFromOffset( range.start ),
+	var first, last, firstNode, lastNode,
+		node = this.getNodeFromOffset( range.start ),
 		selection = this.selectNodes( range, 'siblings' ),
 		addOpenings = [],
 		addClosings = [];
 	if ( selection.length === 0 ) {
-		// WTF?
-		throw 'Invalid range, cannot select from ' + range.start + ' to ' + range.end;
+		return [];
 	}
 	if ( selection.length === 1 && selection[0].range.equals( range ) ) {
 		// Nothing to fix up
 		return this.data.slice( range.start, range.end );
 	}
 
-	var first = selection[0],
-		last = selection[selection.length - 1],
-		firstNode = first.node,
-		lastNode = last.node;
+	first = selection[0];
+	last = selection[selection.length - 1];
+	firstNode = first.node;
+	lastNode = last.node;
 	while ( !firstNode.isWrapped() ) {
 		firstNode = firstNode.getParent();
 	}

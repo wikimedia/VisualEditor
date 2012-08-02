@@ -181,7 +181,6 @@ ve.ui.Context.prototype.positionIcon = function () {
 };
 
 ve.ui.Context.prototype.positionOverlay = function ( $overlay ) {
-	this.$.removeClass( 'es-contextView-position-below es-contextView-position-above' );
 	var overlayMargin = 5,
 		overlayWidth = $overlay.outerWidth(),
 		overlayHeight = $overlay.outerHeight(),
@@ -189,12 +188,11 @@ ve.ui.Context.prototype.positionOverlay = function ( $overlay ) {
 		windowWidth = $window.width(),
 		windowHeight = $window.height(),
 		windowScrollTop = $window.scrollTop(),
-		selection = this.surfaceView.model.getSelection();
-	// Center align overlay
-	var overlayLeft = -Math.round( overlayWidth / 2 );
+		selection = this.surfaceView.model.getSelection(),
+		// Center align overlay
+		overlayLeft = -Math.round( overlayWidth / 2 );
 
 	// Adjust overlay left or right depending on viewport
-
 	if ( ( this.position.left - overlayMargin ) + overlayLeft < 0 ) {
 		// Move right a bit past center
 		overlayLeft -= this.position.left + overlayLeft - overlayMargin;
@@ -206,6 +204,7 @@ ve.ui.Context.prototype.positionOverlay = function ( $overlay ) {
 	$overlay.css( 'left', overlayLeft );
 
 	// Position overlay on top or bottom depending on viewport
+	this.$.removeClass( 'es-contextView-position-below es-contextView-position-above' );
 	if (
 		selection.from < selection.to &&
 		this.position.top + overlayHeight + ( overlayMargin * 2 ) < windowHeight + windowScrollTop

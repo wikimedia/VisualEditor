@@ -34,9 +34,11 @@ ve.EventEmitter.prototype.emit = function( type ) {
 	if ( !( type in this.events ) ) {
 		return false;
 	}
-	var listeners = this.events[type].slice();
-	var args = Array.prototype.slice.call( arguments, 1 );
-	for ( var i = 0; i < listeners.length; i++ ) {
+	var i,
+		listeners = this.events[type].slice(),
+		length = listeners.length,
+		args = Array.prototype.slice.call( arguments, 1 );
+	for ( i = 0; i < length; i++ ) {
 		listeners[i].apply( this, args );
 	}
 	return true;
@@ -151,11 +153,12 @@ ve.EventEmitter.prototype.removeListener = function( type, listener ) {
 	if ( !( type in this.events ) || !this.events[type].length ) {
 		return this;
 	}
-	var handlers = this.events[type];
+	var i,
+		handlers = this.events[type];
 	if ( handlers.length === 1 && handlers[0] === listener ) {
 		delete this.events[type];
 	} else {
-		var i = ve.inArray( listener, handlers );
+		i = ve.inArray( listener, handlers );
 		if ( i < 0 ) {
 			return this;
 		}

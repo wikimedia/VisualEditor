@@ -42,9 +42,11 @@ window.ve = {
  * @param {Function} [..] List of base classed to use methods from
  */
 ve.extendClass = function( dst ) {
-	for ( var i = 1; i < arguments.length; i++ ) {
-		var base = arguments[i].prototype;
-		for ( var method in base ) {
+	var i, method, base,
+		length = arguments.length;
+	for ( i = 1; i < length; i++ ) {
+		base = arguments[i].prototype;
+		for ( method in base ) {
 			if ( typeof base[method] === 'function' && !( method in dst.prototype ) ) {
 				dst.prototype[method] = base[method];
 			}
@@ -145,8 +147,7 @@ ve.getObjectValues = function( obj ) {
  * @returns {Boolean} If the objects contain the same values as each other
  */
 ve.compareObjects = function( a, b, asymmetrical ) {
-	var aValue, bValue, aType, bType;
-	var k;
+	var aValue, bValue, aType, bType, k;
 	for ( k in a ) {
 		aValue = a[k];
 		bValue = b[k];
@@ -216,10 +217,11 @@ ve.compareArrays = function( a, b, objectsByValue ) {
  * @returns {Array} Copy of source array
  */
 ve.copyArray = function( source ) {
-	var destination = [];
-	for ( var i = 0; i < source.length; i++ ) {
-		var sourceValue = source[i],
-			sourceType = typeof sourceValue;
+	var i, sourceValue, sourceType,
+		destination = [];
+	for ( i = 0; i < source.length; i++ ) {
+		sourceValue = source[i];
+		sourceType = typeof sourceValue;
 		if ( sourceType === 'string' || sourceType === 'number' ) {
 			destination.push( sourceValue );
 		} else if ( ve.isPlainObject( sourceValue ) ) {
@@ -240,10 +242,11 @@ ve.copyArray = function( source ) {
  * @returns {Object} Copy of source object
  */
 ve.copyObject = function( source ) {
-	var destination = {};
-	for ( var key in source ) {
-		var sourceValue = source[key],
-			sourceType = typeof sourceValue;
+	var key, sourceValue, sourceType,
+		destination = {};
+	for ( key in source ) {
+		sourceValue = source[key];
+		sourceType = typeof sourceValue;
 		if ( sourceType === 'string' || sourceType === 'number' ) {
 			destination[key] = sourceValue;
 		} else if ( ve.isPlainObject( sourceValue ) ) {
@@ -347,13 +350,14 @@ ve.dir = function( obj ) {
 ve.debounce = function( func, wait, immediate ) {
 	var timeout;
 	return function() {
-		var context = this, args = arguments;
-		var later = function() {
-			timeout = null;
-			if ( !immediate ) {
-				func.apply( context, args );
-			}
-		};
+		var context = this,
+			args = arguments,
+			later = function() {
+				timeout = null;
+				if ( !immediate ) {
+					func.apply( context, args );
+				}
+			};
 		if ( immediate && !timeout ) {
 			func.apply( context, args );
 		}

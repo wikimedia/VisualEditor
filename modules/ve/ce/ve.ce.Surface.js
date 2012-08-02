@@ -570,7 +570,8 @@ ve.ce.Surface.prototype.pollChanges = function ( async ) {
 };
 
 ve.ce.Surface.prototype.onContentChange = function ( e ) {
-	var nodeOffset = $( e.node ).data( 'node' ).model.getOffset(),
+	var data, annotations, len,
+		nodeOffset = $( e.node ).data( 'node' ).model.getOffset(),
 		offsetDiff = (
 			e.old.range !== null &&
 			e['new'].range !== null &&
@@ -578,8 +579,8 @@ ve.ce.Surface.prototype.onContentChange = function ( e ) {
 			e['new'].range.getLength() === 0
 		) ? e['new'].range.start - e.old.range.start : null,
 		lengthDiff = e['new'].text.length - e.old.text.length,
-		data,
-		annotations;
+		fromLeft = 0,
+		fromRight = 0;
 
 	if (
 		offsetDiff === lengthDiff &&
@@ -604,9 +605,7 @@ ve.ce.Surface.prototype.onContentChange = function ( e ) {
 		this.render = true;
 
 	} else {
-		var fromLeft = 0,
-			fromRight = 0,
-			len = Math.min( e.old.text.length, e['new'].text.length );
+		len = Math.min( e.old.text.length, e['new'].text.length );
 
 		while ( fromLeft < len && e.old.text[fromLeft] === e['new'].text[fromLeft] ) {
 			++fromLeft;
@@ -671,13 +670,19 @@ ve.ce.Surface.prototype.onChange = function ( transaction, selection ) {
 };
 
 ve.ce.Surface.prototype.handleEnter = function ( e ) {
-	var selection = this.model.getSelection(),
+	var tx, outerParent, outerChildrenCount, list,
+		selection = this.model.getSelection(),
 		documentModel = this.model.getDocument(),
 		emptyParagraph = [{ 'type': 'paragraph' }, { 'type': '/paragraph' }],
-		tx,
 		advanceCursor = true,
-		outerParent,
-		outerChildrenCount;
+		node = this.documentView.getNodeFromOffset( selection.from ),
+		nodeModel = node.getModel(),
+		cursor = selection.from,
+		nodeOffset = nodeModel.getOffset(),
+		contentBranchModel = nodeModel.isContent() ? nodeModel.getParent() : nodeModel,
+		contentBranchModelRange = contentBranchModel.getRange(),
+		stack = [],
+		outermostNode = null;
 
 	// Stop polling while we work
 	this.stopPolling();
@@ -688,14 +693,8 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 		selection = tx.translateRange( selection );
 		this.model.change( tx, selection );
 	}
-	// Handle insertion
-	var node = this.documentView.getNodeFromOffset( selection.from ),
-		nodeModel = node.getModel(),
-		cursor = selection.from,
-		nodeOffset = nodeModel.getOffset(),
-		contentBranchModel = nodeModel.isContent() ? nodeModel.getParent() : nodeModel,
-		contentBranchModelRange = contentBranchModel.getRange();
 
+	// Handle insertion
 	if (
 		contentBranchModel.getType() !== 'paragraph' &&
 		(
@@ -716,9 +715,6 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 		}
 	} else {
 		// Split
-		var stack = [],
-			outermostNode = null;
-
 		ve.Node.traverseUpstream( node, function ( node ) {
 			if ( !node.canBeSplit() ) {
 				return false;
@@ -747,7 +743,7 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 			node.model.length === 0 // the child is empty
 		) {
 			// Enter was pressed in an empty list item.
-			var list = outermostNode.getModel().getParent();
+			list = outermostNode.getModel().getParent();
 			// Remove the list item
 			tx = ve.dm.Transaction.newFromRemoval( documentModel, outermostNode.getModel().getOuterRange() );
 			this.model.change( tx );

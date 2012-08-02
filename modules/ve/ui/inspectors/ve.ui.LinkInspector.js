@@ -70,7 +70,7 @@ ve.ui.LinkInspector.prototype.getAllLinkAnnotationsFromSelection = function () {
 
 		annotations = documentModel.getAnnotationsFromRange( surfaceModel.getSelection(), true );
 		// XXX: '.' is not escaped, is the '.*' part redundant?
-		linkAnnotations = ve.dm.Document.getMatchingAnnotations ( annotations,  /link\/.*/  );
+		linkAnnotations = ve.dm.Document.getMatchingAnnotations ( annotations,  /^link\//  );
 		if ( !ve.isEmptyObject( linkAnnotations ) ) {
 			return linkAnnotations;
 		}
@@ -81,8 +81,11 @@ ve.ui.LinkInspector.prototype.getAllLinkAnnotationsFromSelection = function () {
 ve.ui.LinkInspector.prototype.getFirstLinkAnnotation = function ( annotations ) {
 	var hash;
 	for ( hash in annotations ) {
-		// Use the first one with a recognized type (there should only be one, but this is just in case)
-		if ( annotations[hash].type === 'link/wikiLink' || annotations[hash].type === 'link/extLink' ) {
+		// Use the first one with a recognized type (there should only be one, this is just in case)
+		if (
+			annotations[hash].type === 'link/wikiLink' ||
+			annotations[hash].type === 'link/extLink'
+		) {
 			return annotations[hash];
 		}
 	}

@@ -17,7 +17,7 @@
  * @class
  * @constructor
  */
-ve.dm.TransactionProcessor = function( doc, transaction, reversed ) {
+ve.dm.TransactionProcessor = function ( doc, transaction, reversed ) {
 	// Properties
 	this.document = doc;
 	this.operations = transaction.getOperations();
@@ -59,7 +59,7 @@ ve.dm.TransactionProcessor.processors = {};
  * @param {ve.dm.Document} doc Document object to apply the transaction to
  * @param {ve.dm.Transaction} transaction Transaction to apply
  */
-ve.dm.TransactionProcessor.commit = function( doc, transaction ) {
+ve.dm.TransactionProcessor.commit = function ( doc, transaction ) {
 	new ve.dm.TransactionProcessor( doc, transaction, false ).process();
 };
 
@@ -71,7 +71,7 @@ ve.dm.TransactionProcessor.commit = function( doc, transaction ) {
  * @param {ve.dm.Document} doc Document object to apply the transaction to
  * @param {ve.dm.Transaction} transaction Transaction to apply
  */
-ve.dm.TransactionProcessor.rollback = function( doc, transaction ) {
+ve.dm.TransactionProcessor.rollback = function ( doc, transaction ) {
 	new ve.dm.TransactionProcessor( doc, transaction, true ).process();
 };
 
@@ -88,7 +88,7 @@ ve.dm.TransactionProcessor.rollback = function( doc, transaction ) {
  * @param {Object} op Operation object:
  * @param {Integer} op.length Number of elements to retain
  */
-ve.dm.TransactionProcessor.processors.retain = function( op ) {
+ve.dm.TransactionProcessor.processors.retain = function ( op ) {
 	this.applyAnnotations( this.cursor + op.length );
 	this.cursor += op.length;
 };
@@ -108,7 +108,7 @@ ve.dm.TransactionProcessor.processors.retain = function( op ) {
  * @param {String} op.annotation Annotation object to set or clear from content
  * @throws 'Invalid annotation method'
  */
-ve.dm.TransactionProcessor.processors.annotate = function( op ) {
+ve.dm.TransactionProcessor.processors.annotate = function ( op ) {
 	var target, hash;
 	if ( op.method === 'set' ) {
 		target = this.reversed ? this.clear : this.set;
@@ -145,13 +145,13 @@ ve.dm.TransactionProcessor.processors.annotate = function( op ) {
  * @param {Mixed} op.from: Old attribute value, or undefined if not previously set
  * @param {Mixed} op.to: New attribute value, or undefined to unset
  */
-ve.dm.TransactionProcessor.processors.attribute = function( op ) {
-	var element = this.document.data[this.cursor];
+ve.dm.TransactionProcessor.processors.attribute = function ( op ) {
+	var element = this.document.data[this.cursor],
+		to = this.reversed ? op.from : op.to,
+		from = this.reversed ? op.to : op.from;
 	if ( element.type === undefined ) {
 		throw 'Invalid element error, can not set attributes on non-element data';
 	}
-	var to = this.reversed ? op.from : op.to;
-	var from = this.reversed ? op.to : op.from;
 	if ( to === undefined ) {
 		// Clear
 		if ( element.attributes ) {
@@ -192,12 +192,29 @@ ve.dm.TransactionProcessor.processors.attribute = function( op ) {
  * @param {Array} op.remove Linear model data to remove
  * @param {Array} op.insert Linear model data to insert
  */
-ve.dm.TransactionProcessor.processors.replace = function( op ) {
-	var remove = this.reversed ? op.insert : op.remove,
+ve.dm.TransactionProcessor.processors.replace = function ( op ) {
+	var node, selection, range,
+		remove = this.reversed ? op.insert : op.remove,
 		insert = this.reversed ? op.remove : op.insert,
 		removeIsContent = ve.dm.Document.isContentData( remove ),
 		insertIsContent = ve.dm.Document.isContentData( insert ),
-		node, selection;
+		removeHasStructure = ve.dm.Document.containsElementData( remove ),
+		insertHasStructure = ve.dm.Document.containsElementData( insert ),
+		operation = op,
+		removeLevel = 0,
+		insertLevel = 0,
+		i,
+		type,
+		prevCursor,
+		affectedRanges = [],
+		scope,
+		minInsertLevel = 0,
+		coveringRange,
+		scopeStart,
+		scopeEnd,
+		opAdjustment = 0,
+		opRemove,
+		opInsert;
 	if ( removeIsContent && insertIsContent ) {
 		// Content replacement
 		// Update the linear model
@@ -211,13 +228,12 @@ ve.dm.TransactionProcessor.processors.replace = function( op ) {
 			),
 			'leaves'
 		);
-		var removeHasStructure = ve.dm.Document.containsElementData( remove ),
-			insertHasStructure = ve.dm.Document.containsElementData( insert );
 		if ( removeHasStructure || insertHasStructure ) {
 			// Replacement is not exclusively text
 			// Rebuild all covered nodes
-			var range = new ve.Range( selection[0].nodeRange.start,
-				selection[selection.length - 1].nodeRange.end );
+			range = new ve.Range(
+				selection[0].nodeRange.start, selection[selection.length - 1].nodeRange.end
+			);
 			this.synchronizer.pushRebuild( range,
 				new ve.Range( range.start + this.adjustment,
 					range.end + this.adjustment + insert.length - remove.length )
@@ -238,23 +254,10 @@ ve.dm.TransactionProcessor.processors.replace = function( op ) {
 		// replace operation to the linear model, then keeps applying subsequent
 		// operations until the model is consistent. We keep track of the changes
 		// and queue a single rebuild after the loop finishes.
-		var operation = op,
-			removeLevel = 0,
-			insertLevel = 0,
-			i,
-			type,
-			prevCursor,
-			affectedRanges = [],
-			scope,
-			minInsertLevel = 0,
-			coveringRange,
-			scopeStart,
-			scopeEnd,
-			opAdjustment = 0;
 		while ( true ) {
 			if ( operation.type === 'replace' ) {
-				var opRemove = this.reversed ? operation.insert : operation.remove,
-					opInsert = this.reversed ? operation.remove : operation.insert;
+				opRemove = this.reversed ? operation.insert : operation.remove,
+				opInsert = this.reversed ? operation.remove : operation.insert;
 				// Update the linear model for this insert
 				ve.batchSplice( this.document.data, this.cursor, opRemove.length, opInsert );
 				affectedRanges.push( new ve.Range(
@@ -366,7 +369,7 @@ ve.dm.TransactionProcessor.processors.replace = function( op ) {
  *
  * @method
  */
-ve.dm.TransactionProcessor.prototype.nextOperation = function() {
+ve.dm.TransactionProcessor.prototype.nextOperation = function () {
 	return this.operations[this.operationIndex++] || false;
 };
 
@@ -377,7 +380,7 @@ ve.dm.TransactionProcessor.prototype.nextOperation = function() {
  * @param {Object} op Operation object to execute
  * @throws 'Invalid operation error. Operation type is not supported'
  */
-ve.dm.TransactionProcessor.prototype.executeOperation = function( op ) {
+ve.dm.TransactionProcessor.prototype.executeOperation = function ( op ) {
 	if ( op.type in ve.dm.TransactionProcessor.processors ) {
 		ve.dm.TransactionProcessor.processors[op.type].call( this, op );
 	} else {
@@ -392,7 +395,7 @@ ve.dm.TransactionProcessor.prototype.executeOperation = function( op ) {
  *
  * @method
  */
-ve.dm.TransactionProcessor.prototype.process = function() {
+ve.dm.TransactionProcessor.prototype.process = function () {
 	var op;
 	// This loop is factored this way to allow operations to be skipped over or executed
 	// from within other operations
@@ -413,16 +416,12 @@ ve.dm.TransactionProcessor.prototype.process = function() {
  * @throws 'Invalid transaction, annotation to be set is already set'
  * @throws 'Invalid transaction, annotation to be cleared is not set'
  */
-ve.dm.TransactionProcessor.prototype.applyAnnotations = function( to ) {
+ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
+	var item, element, annotated, annotations, hash, i;
 	if ( ve.isEmptyObject( this.set ) && ve.isEmptyObject( this.clear ) ) {
 		return;
 	}
-	var item,
-		element,
-		annotated,
-		annotations,
-		hash;
-	for ( var i = this.cursor; i < to; i++ ) {
+	for ( i = this.cursor; i < to; i++ ) {
 		item = this.document.data[i];
 		element = item.type !== undefined;
 		if ( element ) {

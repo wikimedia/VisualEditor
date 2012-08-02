@@ -10,7 +10,8 @@ QUnit.module( 've.dm.TransactionProcessor' );
 /* Tests */
 
 QUnit.test( 'commit/rollback', function ( assert ) {
-	var cases = {
+	var i, originalData, originalDoc, msg, testDocument, tx, expectedData, expectedDocument,
+		cases = {
 		'no operations': {
 			'calls': [],
 			'expected': function ( data ) {}
@@ -226,20 +227,20 @@ QUnit.test( 'commit/rollback', function ( assert ) {
 		}
 	};
 	// Generate original document
-	var originalData = ve.dm.example.data,
-		originalDoc = new ve.dm.Document( originalData );
+	originalData = ve.dm.example.data;
+	originalDoc = new ve.dm.Document( originalData );
 	// Run tests
-	for ( var msg in cases ) {
-		var testDocument = new ve.dm.Document( ve.copyArray( originalData ) ),
-			tx = new ve.dm.Transaction();
-		for ( var i = 0; i < cases[msg].calls.length; i++ ) {
+	for ( msg in cases ) {
+		testDocument = new ve.dm.Document( ve.copyArray( originalData ) );
+		tx = new ve.dm.Transaction();
+		for ( i = 0; i < cases[msg].calls.length; i++ ) {
 			tx[cases[msg].calls[i][0]].apply( tx, cases[msg].calls[i].slice( 1 ) );
 		}
 		if ( 'expected' in cases[msg] ) {
 			// Generate expected document
-			var expectedData = ve.copyArray( originalData );
+			expectedData = ve.copyArray( originalData );
 			cases[msg].expected( expectedData );
-			var expectedDocument = new ve.dm.Document( expectedData );
+			expectedDocument = new ve.dm.Document( expectedData );
 			// Commit
 			ve.dm.TransactionProcessor.commit( testDocument, tx );
 			assert.deepEqual( testDocument.getData(), expectedData, 'commit (data): ' + msg );

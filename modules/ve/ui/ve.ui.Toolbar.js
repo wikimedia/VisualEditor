@@ -111,8 +111,9 @@ ve.ui.Toolbar.prototype.getSurfaceView = function () {
 };
 
 ve.ui.Toolbar.prototype.setup = function () {
-	for ( var i = 0; i < this.config.length; i++ ) {
-		var $group = $( '<div>' )
+	var i, j, $group, tool, toolDefintion;
+	for ( i = 0; i < this.config.length; i++ ) {
+		$group = $( '<div>' )
 			.addClass( 'es-toolbarGroup' )
 			.addClass( 'es-toolbarGroup-' + this.config[i].name );
 		if ( this.config[i].label ) {
@@ -121,10 +122,10 @@ ve.ui.Toolbar.prototype.setup = function () {
 			);
 		}
 
-		for ( var j = 0; j < this.config[i].items.length; j++ ) {
-			var toolDefintion = ve.ui.Tool.tools[ this.config[i].items[j] ];
+		for ( j = 0; j < this.config[i].items.length; j++ ) {
+			toolDefintion = ve.ui.Tool.tools[ this.config[i].items[j] ];
 			if ( toolDefintion ) {
-				var tool = new toolDefintion.constructor(
+				tool = new toolDefintion.constructor(
 					this, toolDefintion.name, toolDefintion.title, toolDefintion.data
 				);
 				this.tools.push( tool );

@@ -21,7 +21,6 @@ ve.Surface = function ( parent, dom, options ) {
 	var data = ve.dm.converter.getDataFromDom( dom );
 	// Properties
 	this.parent = parent;
-	this.modes = {};
 	this.currentMode = null;
 	/* Extend VE configuration recursively */
 	this.options = ve.extendObject( true, {
@@ -33,17 +32,7 @@ ve.Surface = function ( parent, dom, options ) {
 						{ 'name': 'textStyle', 'items' : ['bold', 'italic', 'link', 'clear'] },
 						{ 'name': 'list', 'items' : ['number', 'bullet', 'outdent', 'indent'] }]
 			}
-		},
-		// TODO: i18n
-		modes: {
-			wikitext: 'Toggle wikitext view',
-			json: 'Toggle JSON view',
-			html: 'Toggle HTML view',
-			render: 'Toggle preview',
-			history: 'Toggle transaction history view',
-			help: 'Toggle help view'
 		}
-
 	}, options );
 
 	// A place to store element references
@@ -54,7 +43,7 @@ ve.Surface = function ( parent, dom, options ) {
 	// Create document model object with the linear model
 	this.documentModel = new ve.dm.Document( data );
 	this.model = new ve.dm.Surface( this.documentModel );
-	
+
 	// Setup VE DOM Skeleton
 	this.setupBaseElements();
 
@@ -66,9 +55,6 @@ ve.Surface = function ( parent, dom, options ) {
 
 	// Setup toolbars based on this.options
 	this.setupToolbars();
-
-	// Setup various toolbar modes and panels
-	//this.setupModes();
 
 	// Registration
 	ve.instances.push( this );
@@ -174,13 +160,13 @@ ve.Surface.prototype.floatTopToolbar = function () {
 		$window = $( window );
 
 	$window.scroll( function () {
-		var toolbarWrapperOffset = $toolbarWrapper.offset();
-		var $editorDocument = $toolbarWrapper.parent()
-			.find('.ve-surface .ve-ce-documentNode');
+		var left, right,
+			toolbarWrapperOffset = $toolbarWrapper.offset(),
+			$editorDocument = $toolbarWrapper.parent().find('.ve-surface .ve-ce-documentNode');
 
 		if ( $window.scrollTop() > toolbarWrapperOffset.top ) {
-			var left = toolbarWrapperOffset.left,
-				right = $window.width() - $toolbarWrapper.outerWidth() - left;
+			left = toolbarWrapperOffset.left;
+			right = $window.width() - $toolbarWrapper.outerWidth() - left;
 			// If not floating, set float
 			if ( !$toolbarWrapper.hasClass( 'float' ) ) {
 				$toolbarWrapper
@@ -234,288 +220,4 @@ ve.Surface.prototype.floatTopToolbar = function () {
 			}
 		}
 	} );
-};
-
-ve.Surface.prototype.setupModes = function () {
-	var mode, renderType, i, len,
-		surface = this,
-		activeModes = [];
-
-	// Loop through toolbar config to build modes
-	$.each( surface.options.toolbars, function ( name, toolbar ) {
-		// If toolbar has modes
-		if( toolbar.modes && toolbar.modes.length > 0 ) {
-			for( i = 0, len = toolbar.modes.length - 1; i <= len; i++ ) {
-				$( surface.toolbarWrapper[name] )
-					.find( '.es-modes' )
-					.append(
-						$( '<div>' ).attr( {
-							'class': 'es-modes-button es-mode-' + toolbar.modes[i],
-							'title': surface.options.modes[ toolbar.modes[i] ]
-						} )
-				);
-				// XXX: 'mode' is undefined here ?
-				if ( !activeModes[mode] ) {
-					activeModes.push( toolbar.modes[i] );
-				}
-			}
-		}
-	} );
-
-	// Build elements in #es-panels for each activeMode
-	if ( activeModes.length > 0 ) {
-		for ( mode in activeModes ) {
-			switch ( activeModes[mode] ) {
-				case 'render':
-					renderType = 'es-render';
-					break;
-				case 'help':
-					renderType = '';
-					break;
-				default:
-					renderType = 'es-code';
-					break;
-			}
-			surface.$base
-				.find( '.es-panels' )
-				.append(
-					$( '<div>' ).attr(
-						'class', 'es-panel es-panel-' + activeModes[mode] + ' ' + renderType
-					)
-				);
-		}
-	}
-	/*
-		Define this.modes
-		Called after bulding elements.
-	*/
-	this.defineModes();
-
-	//Bind Mode events
-	$.each( this.modes, function ( name, mode ) {
-		mode.$.click( function () {
-			var disable = $( this ).hasClass( 'es-modes-button-down' );
-			var visible = surface.$base.hasClass( 'es-showData' );
-			$( '.es-modes-button' ).removeClass( 'es-modes-button-down' );
-			$( '.es-panel' ).hide();
-			if ( disable ) {
-				if ( visible ) {
-					surface.$base.removeClass( 'es-showData' );
-					$( window ).resize();
-				}
-				surface.currentMode = null;
-			} else {
-				$( this ).addClass( 'es-modes-button-down' );
-				mode.$panel.show();
-				if ( !visible ) {
-					surface.$base.addClass( 'es-showData' );
-					$( window ).resize();
-				}
-				mode.update.call( mode );
-				surface.currentMode = mode;
-			}
-		} );
-	} );
-
-	/* Bind some surface events for modes */
-	this.model.on( 'transact', function () {
-		if ( surface.currentMode ) {
-			surface.currentMode.update.call( surface.currentMode );
-		}
-	} );
-	this.model.on( 'select', function () {
-		if ( surface.currentMode === surface.modes.history ) {
-			surface.currentMode.update.call( surface.currentMode );
-		}
-	} );
-
-
-};
-
-/*
-	Define modes
-	TODO: possibly extend this object via the config
-*/
-ve.Surface.prototype.defineModes = function () {
-	var surface = this;
-	this.modes = {
-		'wikitext': {
-			'$': surface.$base.find( '.es-mode-wikitext' ),
-			'$panel': surface.$base.find( '.es-panel-wikitext' ),
-			'update': function () {
-				this.$panel.text(
-					ve.dm.WikitextSerializer.stringify( surface.getDocumentModel().getPlainObject() )
-				);
-			}
-		},
-		'json': {
-			'$': surface.$base.find( '.es-mode-json' ),
-			'$panel': surface.$base.find( '.es-panel-json' ),
-			'update': function () {
-				this.$panel.text( ve.dm.JsonSerializer.stringify( surface.getDocumentModel().getPlainObject(), {
-					'indentWith': '  '
-				} ) );
-			}
-		},
-		'html': {
-			'$': surface.$base.find( '.es-mode-html' ),
-			'$panel': surface.$base.find( '.es-panel-html' ),
-			'update': function () {
-				this.$panel.text(
-					ve.dm.HtmlSerializer.stringify( surface.getDocumentModel().getPlainObject() )
-				);
-			}
-		},
-		'render': {
-			'$': surface.$base.find( '.es-mode-render' ),
-			'$panel': surface.$base.find( '.es-panel-render' ),
-			'update': function () {
-				this.$panel.html(
-					ve.dm.HtmlSerializer.stringify( surface.getDocumentModel().getPlainObject() )
-				);
-			}
-		},
-		'history': {
-			'$': surface.$base.find( '.es-mode-history' ),
-			'$panel': surface.$base.find( '.es-panel-history' ),
-			'update': function () {
-				var history = surface.model.getHistory(),
-					i = history.length,
-					end = Math.max( 0, i - 25 ),
-					j,
-					k,
-					ops,
-					events = '',
-					z = 0,
-					operations,
-					data;
-					
-				while ( --i >= end ) {
-					z++;
-					operations = [];
-					for ( j = 0; j < history[i].stack.length; j++ ) {
-						ops = history[i].stack[j].getOperations().slice( 0 );
-						for ( k = 0; k < ops.length; k++ ) {
-							data = ops[k].data || ops[k].length;
-							if ( ve.isArray( data ) ) {
-								data = data[0];
-								if ( ve.isArray( data ) ) {
-									data = data[0];
-								}
-							}
-							if ( typeof data !== 'string' && typeof data !== 'number' ) {
-								data = '-';
-							}
-							ops[k] = ops[k].type.substr( 0, 3 ) + '( ' + data + ' )';
-						}
-						operations.push( '[' + ops.join( ', ' ) + ']' );
-					}
-					events += '<div' + ( z === surface.model.undoIndex ? ' class="es-panel-history-active"' : '' ) + '>' + operations.join( ', ' ) + '</div>';
-				}
-				
-				this.$panel.html( events );
-			}
-		},
-		'help': {
-			'$': surface.$base.find( '.es-mode-help' ),
-			'$panel': surface.$base.find( '.es-panel-help' ),
-			'update': function () {
-				//TODO: Make this less ugly,
-				//HOW?: Create api to register help items so that they may be generated here.
-				/*jshint multistr:true */
-				this.$panel.html( '\
-				<div class="es-help-title">Keyboard Shortcuts</div>\
-				<div class="es-help-shortcuts-title">Clipboard</div>\
-				<div class="es-help-shortcut">\
-					<span class="es-help-keys">\
-						<span class="es-help-key">Ctrl <span class="es-help-key-or">or</span> &#8984;</span> +\
-						<span class="es-help-key">C</span>\
-					</span>\
-					Copy selected text\
-				</div>\
-				<div class="es-help-shortcut">\
-					<span class="es-help-keys">\
-						<span class="es-help-key">Ctrl <span class="es-help-key-or">or</span> &#8984;</span> +\
-						<span class="es-help-key">X</span>\
-					</span>\
-					Cut selected text\
-				</div>\
-				<div class="es-help-shortcut">\
-					<span class="es-help-keys">\
-						<span class="es-help-key">Ctrl <span class="es-help-key-or">or</span> &#8984;</span> +\
-						<span class="es-help-key">V</span>\
-					</span>\
-					Paste text at the cursor\
-				</div>\
-				<div class="es-help-shortcuts-title">History navigation</div>\
-				<div class="es-help-shortcut">\
-					<span class="es-help-keys">\
-						<span class="es-help-key">Ctrl <span class="es-help-key-or">or</span> &#8984;</span> +\
-						<span class="es-help-key">Z</span>\
-					</span>\
-					Undo\
-				</div>\
-				<div class="es-help-shortcut">\
-					<span class="es-help-keys">\
-						<span class="es-help-key">Ctrl <span class="es-help-key-or">or</span> &#8984;</span> +\
-						<span class="es-help-key">Y</span>\
-					</span>\
-					Redo\
-				</div>\
-				<div class="es-help-shortcut">\
-					<span class="es-help-keys">\
-						<span class="es-help-key">Ctrl <span class="es-help-key-or">or</span> &#8984;</span> +\
-						<span class="es-help-key">&#8679;</span> +\
-						<span class="es-help-key">Z</span>\
-					</span>\
-					Redo\
-				</div>\
-				<div class="es-help-shortcuts-title">Formatting</div>\
-				<div class="es-help-shortcut">\
-					<span class="es-help-keys">\
-						<span class="es-help-key">Ctrl <span class="es-help-key-or">or</span> &#8984;</span> +\
-						<span class="es-help-key">B</span>\
-					</span>\
-					Make selected text bold\
-				</div>\
-				<div class="es-help-shortcut">\
-					<span class="es-help-keys">\
-						<span class="es-help-key">Ctrl <span class="es-help-key-or">or</span> &#8984;</span> +\
-						<span class="es-help-key">I</span>\
-					</span>\
-					Make selected text italic\
-				</div>\
-				<div class="es-help-shortcut">\
-					<span class="es-help-keys">\
-						<span class="es-help-key">Ctrl <span class="es-help-key-or">or</span> &#8984;</span> +\
-						<span class="es-help-key">K</span>\
-					</span>\
-					Make selected text a link\
-				</div>\
-				<div class="es-help-shortcuts-title">Selection</div>\
-				<div class="es-help-shortcut">\
-					<span class="es-help-keys">\
-						<span class="es-help-key">&#8679;</span> +\
-						<span class="es-help-key">Arrow</span>\
-					</span>\
-					Adjust selection\
-				</div>\
-				<div class="es-help-shortcut">\
-					<span class="es-help-keys">\
-						<span class="es-help-key">Ctrl <span class="es-help-key-or">or</span> &#x2325;</span> +\
-						<span class="es-help-key">Arrow</span>\
-					</span>\
-					Move cursor by words or blocks\
-				</div>\
-				<div class="es-help-shortcut">\
-					<span class="es-help-keys">\
-						<span class="es-help-key">Ctrl <span class="es-help-key-or">or</span> &#x2325;</span> +\
-						<span class="es-help-key">&#8679;</span> +\
-						<span class="es-help-key">Arrow</span>\
-					</span>\
-					Adjust selection by words or blocks\
-				</div>' );
-			}
-		}
-	};
 };

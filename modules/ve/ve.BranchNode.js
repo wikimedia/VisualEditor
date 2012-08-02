@@ -108,10 +108,9 @@ ve.BranchNode.prototype.getNodeFromOffset = function( offset, shallow ) {
 	}
 	// TODO a lot of logic is duplicated in selectNodes(), abstract that into a traverser or something
 	if ( this.children.length ) {
-		var nodeOffset = 0,
-			nodeLength,
-			childNode;
-		for ( var i = 0, length = this.children.length; i < length; i++ ) {
+		var i, length, nodeLength, childNode,
+			nodeOffset = 0;
+		for ( i = 0, length = this.children.length; i < length; i++ ) {
 			childNode = this.children[i];
 			if ( offset === nodeOffset ) {
 				// The requested offset is right before childNode,
@@ -151,15 +150,15 @@ ve.BranchNode.prototype.getOffsetFromNode = function( node ) {
 		return 0;
 	}
 	if ( this.children.length ) {
-		var offset = 0,
-			childNode;
-		for ( var i = 0, length = this.children.length; i < length; i++ ) {
+		var i, length, childOffset, childNode,
+			offset = 0;
+		for ( i = 0, length = this.children.length; i < length; i++ ) {
 			childNode = this.children[i];
 			if ( childNode === node ) {
 				return offset;
 			}
 			if ( childNode.canHaveChildren() && childNode.getChildren().length ) {
-				var childOffset = this.getOffsetFromNode.call( childNode, node );
+				childOffset = this.getOffsetFromNode.call( childNode, node );
 				if ( childOffset !== -1 ) {
 					return offset + 1 + childOffset;
 				}

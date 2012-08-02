@@ -37,7 +37,8 @@ QUnit.test( 'indexOf', 4, function ( assert ) {
 } );
 
 QUnit.test( 'traverseLeafNodes', 1, function ( assert ) {
-	var fragment = new ve.dm.Document( ve.dm.example.data ),
+	var count, t, i, reversed,
+		fragment = new ve.dm.Document( ve.dm.example.data ),
 		docNode = fragment.getDocumentNode(),
 		children = docNode.getChildren(),
 		tests = [
@@ -179,8 +180,8 @@ QUnit.test( 'traverseLeafNodes', 1, function ( assert ) {
 		}
 	}
 
-	var count = 0;
-	for ( var t = 0; t < tests.length; t++ ) {
+	count = 0;
+	for ( t = 0; t < tests.length; t++ ) {
 		if ( tests[t].hasOwnProperty( 'reverse' ) ) {
 			count++;
 		}
@@ -188,10 +189,10 @@ QUnit.test( 'traverseLeafNodes', 1, function ( assert ) {
 	}
 
 	QUnit.expect( count );
-	for ( var i = 0; i < tests.length; i++ ) {
+	for ( i = 0; i < tests.length; i++ ) {
 		executeTest( tests[i] );
 		if ( tests[i].reverse !== undefined ) {
-			var reversed = {
+			reversed = {
 				'node': tests[i].node,
 				'from': tests[i].from,
 				'callback': tests[i].callback,
