@@ -68,7 +68,7 @@ ve.ui.Menu.prototype.addItem = function ( item, before ) {
 	// Items that don't have custom DOM elements will be auto-created
 	if ( !item.$ ) {
 		if ( !item.name ) {
-			throw 'Invalid menu item error. Items must have a name property.';
+			throw new ve.Error( 'Invalid menu item error. Items must have a name property.' );
 		}
 		if ( item.label ) {
 			item.$ = $( '<div class="es-menuView-item"></div>' )

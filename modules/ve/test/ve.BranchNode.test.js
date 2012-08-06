@@ -152,7 +152,7 @@ QUnit.test( 'traverseLeafNodes', 1, function ( assert ) {
 		{
 			'node': children[1],
 			'from': children[2],
-			'exception': /^from parameter passed to traverseLeafNodes\(\) must be a descendant$/,
+			'exception': ve.Error,
 			'desc': 'Passing a sibling for from results in an exception'
 		}
 	];

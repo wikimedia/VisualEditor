@@ -93,7 +93,7 @@ ve.dm.Document = function ( data, parentDocument ) {
 					parentStack = stack[stack.length - 2];
 					if ( !parentStack ) {
 						// This can only happen if we got unbalanced data
-						throw 'Unbalanced input passed to document';
+						throw new ve.Error( 'Unbalanced input passed to document' );
 					}
 
 					if ( children.length === 0 &&
@@ -574,7 +574,7 @@ ve.dm.Document.prototype.getAnnotatedRangeFromSelection = function ( range, anno
  */
 ve.dm.Document.prototype.offsetContainsMatchingAnnotations = function ( offset, pattern ) {
 	if ( !( pattern instanceof RegExp ) ) {
-		throw 'Invalid Pattern. Pattern not instance of RegExp';
+		throw new ve.Error( 'Invalid Pattern. Pattern not instance of RegExp' );
 	}
 	var hash,
 		annotations = ve.isArray( this.data[offset] ) ?
@@ -599,7 +599,7 @@ ve.dm.Document.prototype.offsetContainsMatchingAnnotations = function ( offset, 
  */
 ve.dm.Document.prototype.getMatchingAnnotationsFromOffset = function ( offset, pattern ) {
 	if ( !( pattern instanceof RegExp ) ) {
-		throw 'Invalid Pattern. Pattern not instance of RegExp';
+		throw new ve.Error( 'Invalid Pattern. Pattern not instance of RegExp' );
 	}
 	var hash,
 		matches = {},
@@ -626,7 +626,7 @@ ve.dm.Document.prototype.getMatchingAnnotationsFromOffset = function ( offset, p
  */
 ve.dm.Document.getMatchingAnnotations = function ( annotations, pattern ) {
 	if ( !( pattern instanceof RegExp ) ) {
-		throw 'Invalid Pattern. Pattern not instance of RegExp';
+		throw new ve.Error( 'Invalid Pattern. Pattern not instance of RegExp' );
 	}
 	var hash,
 		matches = {};
@@ -1045,16 +1045,16 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 					closingStack.push( parentNode );
 					parentNode = parentNode.getParent();
 					if ( !parentNode ) {
-						throw 'Inserted data is trying to close the root node ' +
-							'(at index ' + index + ')';
+						throw new ve.Error( 'Inserted data is trying to close the root node ' +
+							'(at index ' + index + ')' );
 					}
 					parentType = expectedType;
 
 					// Validate
 					// FIXME this breaks certain input, should fix it up, not scream and die
 					if ( element.type !== '/' + expectedType ) {
-						throw 'Type mismatch, expected /' + expectedType +
-							' but got ' + element.type + ' (at index ' + index + ')';
+						throw new ve.Error( 'Type mismatch, expected /' + expectedType +
+							' but got ' + element.type + ' (at index ' + index + ')' );
 					}
 				}
 			}
@@ -1112,8 +1112,8 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 				if ( !parentsOK ) {
 					// We can't have this as the parent
 					if ( allowedParents.length === 0 ) {
-						throw 'Cannot insert ' + childType + ' because it ' +
-							' cannot have a parent (at index ' + i + ')';
+						throw new ve.Error( 'Cannot insert ' + childType + ' because it ' +
+							' cannot have a parent (at index ' + i + ')' );
 					}
 					// Open an allowed node around this node
 					childType = allowedParents[0];
@@ -1151,9 +1151,9 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 						reopenElements.push( parentNode.getClonedElement() );
 						parentNode = parentNode.getParent();
 						if ( !parentNode ) {
-							throw 'Cannot insert ' + childType + ' even ' +
+							throw new ve.Error( 'Cannot insert ' + childType + ' even ' +
 								' after closing all containing nodes ' +
-								'(at index ' + i + ')';
+								'(at index ' + i + ')' );
 						}
 						parentType = parentNode.getType();
 					}

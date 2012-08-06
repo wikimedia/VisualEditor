@@ -43,7 +43,7 @@ ve.Node = function ( type ) {
  * @throws {Error} if not overridden
  */
 ve.Node.prototype.canHaveChildren = function () {
-	throw 've.Node.canHaveChildren must be overridden in subclass';
+	throw new ve.Error( 've.Node.canHaveChildren must be overridden in subclass' );
 };
 
 /**
@@ -55,7 +55,7 @@ ve.Node.prototype.canHaveChildren = function () {
  * @throws {Error} if not overridden
  */
 ve.Node.prototype.canHaveGrandchildren = function () {
-	throw 've.Node.canHaveGrandchildren must be overridden in subclass';
+	throw new ve.Error( 've.Node.canHaveGrandchildren must be overridden in subclass' );
 };
 
 /**
@@ -67,7 +67,7 @@ ve.Node.prototype.canHaveGrandchildren = function () {
  * @throws {Error} if not overridden
  */
 ve.Node.prototype.isWrapped = function () {
-	throw 've.Node.isWrapped must be overridden in subclass';
+	throw new ve.Error( 've.Node.isWrapped must be overridden in subclass' );
 };
 
 /**
@@ -79,7 +79,7 @@ ve.Node.prototype.isWrapped = function () {
  * @throws {Error} if not overridden
  */
 ve.Node.prototype.getLength = function () {
-	throw 've.Node.getLength must be overridden in subclass';
+	throw new ve.Error( 've.Node.getLength must be overridden in subclass' );
 };
 
 /**
@@ -91,7 +91,7 @@ ve.Node.prototype.getLength = function () {
  * @throws {Error} if not overridden
  */
 ve.Node.prototype.getOuterLength = function () {
-	throw 've.Node.getOuterLength must be overridden in subclass';
+	throw new ve.Error( 've.Node.getOuterLength must be overridden in subclass' );
 };
 
 /* Methods */

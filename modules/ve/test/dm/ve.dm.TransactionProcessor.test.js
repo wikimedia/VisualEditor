@@ -62,7 +62,7 @@ QUnit.test( 'commit/rollback', function ( assert ) {
 				['pushRetain', 1],
 				['pushStopAnnotating', 'invalid-method', { 'type': 'textStyle/bold' }]
 			],
-			'exception': /^Invalid annotation method/
+			'exception': ve.Error
 		},
 		'annotating branch opening element throws an exception': {
 			'calls': [
@@ -70,7 +70,7 @@ QUnit.test( 'commit/rollback', function ( assert ) {
 				['pushRetain', 1],
 				['pushStopAnnotating', 'set', { 'type': 'textStyle/bold' }]
 			],
-			'exception': /^Invalid transaction, cannot annotate a branch opening element$/
+			'exception': ve.Error
 		},
 		'annotating branch closing element throws an exception': {
 			'calls': [
@@ -79,7 +79,7 @@ QUnit.test( 'commit/rollback', function ( assert ) {
 				['pushRetain', 1],
 				['pushStopAnnotating', 'set', { 'type': 'textStyle/bold' }]
 			],
-			'exception': /^Invalid transaction, cannot annotate a branch closing element$/
+			'exception': ve.Error
 		},
 		'setting duplicate annotations throws an exception': {
 			'calls': [
@@ -88,7 +88,7 @@ QUnit.test( 'commit/rollback', function ( assert ) {
 				['pushRetain', 1],
 				['pushStopAnnotating', 'set', { 'type': 'textStyle/bold' }]
 			],
-			'exception': /^Invalid transaction, annotation to be set is already set$/
+			'exception': ve.Error
 		},
 		'removing non-existent annotations throws an exception': {
 			'calls': [
@@ -97,7 +97,7 @@ QUnit.test( 'commit/rollback', function ( assert ) {
 				['pushRetain', 1],
 				['pushStopAnnotating', 'clear', { 'type': 'textStyle/bold' }]
 			],
-			'exception': /^Invalid transaction, annotation to be cleared is not set$/
+			'exception': ve.Error
 		},
 		'changing, removing and adding attributes': {
 			'calls': [
@@ -120,7 +120,7 @@ QUnit.test( 'commit/rollback', function ( assert ) {
 				['pushRetain', 1],
 				['pushReplaceElementAttribute', 'foo', 23, 42]
 			],
-			'exception': /^Invalid element error, can not set attributes on non-element data$/
+			'exception': ve.Error
 		},
 		'inserting text': {
 			'calls': [

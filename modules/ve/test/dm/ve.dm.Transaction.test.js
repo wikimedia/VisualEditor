@@ -471,11 +471,11 @@ QUnit.test( 'newFromAttributeChange', function ( assert ) {
 		},
 		'non-element': {
 			'args': [doc, 1, 'level', 2],
-			'exception': /^Can not set attributes to non-element data$/
+			'exception': ve.Error
 		},
 		'closing element': {
 			'args': [doc, 4, 'level', 2],
-			'exception': /^Can not set attributes on closing element$/
+			'exception': ve.Error
 		}
 	};
 	runConstructorTests( assert, ve.dm.Transaction.newFromAttributeChange, cases );
@@ -704,15 +704,15 @@ QUnit.test( 'newFromWrap', function ( assert ) {
 		},
 		'checks integrity of unwrapOuter parameter': {
 			'args': [doc, new ve.Range( 13, 32 ), [ { 'type': 'table' } ], [], [], []],
-			'exception': /^Element in unwrapOuter does not match: expected table but found list$/
+			'exception': ve.Error
 		},
 		'checks integrity of unwrapEach parameter': {
 			'args': [doc, new ve.Range( 13, 32 ), [ { 'type': 'list' } ], [], [ { 'type': 'paragraph' } ], []],
-			'exception': /^Element in unwrapEach does not match: expected paragraph but found listItem$/
+			'exception': ve.Error
 		},
 		'checks that unwrapOuter fits before the range': {
 			'args': [doc, new ve.Range( 1, 4 ), [ { 'type': 'listItem' }, { 'type': 'paragraph' } ], [], [], []],
-			'exception': /^unwrapOuter is longer than the data preceding the range$/
+			'exception': ve.Error
 		}
 	};
 	runConstructorTests(

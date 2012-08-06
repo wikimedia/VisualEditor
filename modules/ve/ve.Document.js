@@ -85,14 +85,14 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 
 	mode = mode || 'leaves';
 	if ( mode !== 'leaves' && mode !== 'covered' && mode !== 'siblings' ) {
-		throw 'Invalid mode: ' + mode;
+		throw new ve.Error( 'Invalid mode: ' + mode );
 	}
 
 	if ( start < 0 || start > doc.getLength() ) {
-		throw 'Invalid start offset: ' + start;
+		throw new ve.Error( 'Invalid start offset: ' + start );
 	}
 	if ( end < 0 || end > doc.getLength() ) {
-		throw 'Invalid end offset: ' + end;
+		throw new ve.Error( 'Invalid end offset: ' + end );
 	}
 
 	if ( !doc.children || doc.children.length === 0 ) {
