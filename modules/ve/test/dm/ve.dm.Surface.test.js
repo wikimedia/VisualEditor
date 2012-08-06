@@ -72,7 +72,7 @@ QUnit.test( 'annotate', 1, function ( assert ) {
 			'expected':
 			[
 				[
-					"b",
+					'b',
 						{
 							"{\"type\":\"textStyle/bold\"}": {
 								"type": "textStyle/bold"
@@ -80,7 +80,7 @@ QUnit.test( 'annotate', 1, function ( assert ) {
 						}
 				],
 				[
-					"o",
+					'o',
 						{
 							"{\"type\":\"textStyle/bold\"}": {
 								"type": "textStyle/bold"
@@ -88,7 +88,7 @@ QUnit.test( 'annotate', 1, function ( assert ) {
 						}
 				],
 				[
-					"l",
+					'l',
 						{
 							"{\"type\":\"textStyle/bold\"}": {
 								"type": "textStyle/bold"
@@ -96,7 +96,7 @@ QUnit.test( 'annotate', 1, function ( assert ) {
 						}
 				],
 				[
-					"d",
+					'd',
 						{
 							"{\"type\":\"textStyle/bold\"}": {
 								"type": "textStyle/bold"
