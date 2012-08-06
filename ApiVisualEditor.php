@@ -47,7 +47,7 @@ class ApiVisualEditor extends ApiBase {
 		} elseif ( $params['paction'] === 'save' /* means user is not blocked */ ) {
 			// API Posts HTML to Parsoid Service, receives Wikitext,
 			// API Saves Wikitext to page.
-			$wikitext = Http::post( $parsoid . $page->getPrefixedDBkey(),
+			$wikitext = Http::post( $parsoid . '/' . $page->getPrefixedDBkey(),
 				array( 'postData' => array( 'content' => $params['html'] ) )
 			);
 
