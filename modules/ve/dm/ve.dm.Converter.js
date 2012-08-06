@@ -550,6 +550,7 @@ ve.dm.Converter.prototype.getDomFromData = function( data ) {
 			}
 			// Close any remaining annotation nodes
 			while ( domElement.veAnnotationHash !== undefined ) {
+				delete annotationStack[domElement.veAnnotationHash];
 				delete domElement.veAnnotationHash;
 				domElement = domElement.parentNode;
 			}
