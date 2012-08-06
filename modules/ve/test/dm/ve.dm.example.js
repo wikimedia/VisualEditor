@@ -22,20 +22,17 @@ ve.dm.example.html =
 				'<p>d</p>' +
 				'<ul>' +
 					'<li>' +
-						'e' + // Not wrapped in a <p> due to Parsoid behavior
-						"\n" + // Workaround for Parsoid bug
+						'<p>e</p>' +
 						'<ul>' +
 							'<li>' +
-								'f' + // Not wrapped in a <p> due to Parsoid behavior
-								"\n" + // Workaround for Parsoid bug
+								'<p>f</p>' +
 							'</li>' +
 						'</ul>' +
 					'</li>' +
 				'</ul>' +
 				'<ol>' +
 					'<li>' +
-						'g' + // Not wrapped in a <p> due to Parsoid behavior
-						"\n" + // Workaround for Parsoid bug
+						'<p>g</p>' +
 					'</li>' +
 				'</ol>' +
 			'</td>' +
@@ -441,10 +438,7 @@ ve.dm.example.domToDataCases = {
 			'data': ve.dm.example.data
 		},
 		'list item with space followed by link': {
-			// This HTML is weird because of workarounds for Parsoid bugs:
-			// * newline before </li>
-			// * first paragraph in an <li> not wrapped in <p>
-			'html': '<ul><li> <a rel="mw:WikiLink" href="/Foo_bar" data-rt="{&quot;sHref&quot;:&quot;foo bar&quot;}">bar</a>\n</li></ul>',
+			'html': '<ul><li><p> <a rel="mw:WikiLink" href="/Foo_bar" data-rt="{&quot;sHref&quot;:&quot;foo bar&quot;}">bar</a></p></li></ul>',
 			'data': [
 				{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
 				{ 'type': 'listItem' },
