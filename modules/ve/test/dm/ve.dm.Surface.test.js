@@ -74,32 +74,32 @@ QUnit.test( 'annotate', 1, function ( assert ) {
 				[
 					'b',
 						{
-							"{\"type\":\"textStyle/bold\"}": {
-								"type": "textStyle/bold"
+							'{"type":"textStyle/bold"}': {
+								'type': 'textStyle/bold'
 							}
 						}
 				],
 				[
 					'o',
 						{
-							"{\"type\":\"textStyle/bold\"}": {
-								"type": "textStyle/bold"
+							'{"type":"textStyle/bold"}': {
+								'type': 'textStyle/bold'
 							}
 						}
 				],
 				[
 					'l',
 						{
-							"{\"type\":\"textStyle/bold\"}": {
-								"type": "textStyle/bold"
+							'{"type":"textStyle/bold"}': {
+								'type': 'textStyle/bold'
 							}
 						}
 				],
 				[
 					'd',
 						{
-							"{\"type\":\"textStyle/bold\"}": {
-								"type": "textStyle/bold"
+							'{"type":"textStyle/bold"}': {
+								'type': 'textStyle/bold'
 							}
 						}
 				]

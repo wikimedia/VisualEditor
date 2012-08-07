@@ -15,6 +15,7 @@
 	"noempty": true,
 	"nonew": true,
 	"regexp": true,
+	"quotmark": "single",
 	"undef": true,
 	"strict": false,
 	"trailing": true,
