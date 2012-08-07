@@ -83,8 +83,8 @@ ve.ui.LinkInspector.prototype.getFirstLinkAnnotation = function ( annotations ) 
 	for ( hash in annotations ) {
 		// Use the first one with a recognized type (there should only be one, this is just in case)
 		if (
-			annotations[hash].type === 'link/wikiLink' ||
-			annotations[hash].type === 'link/extLink'
+			annotations[hash].type === 'link/WikiLink' ||
+			annotations[hash].type === 'link/ExtLink'
 		) {
 			return annotations[hash];
 		}
@@ -203,7 +203,7 @@ ve.ui.LinkInspector.getAnnotationForTarget = function ( target ) {
 	if ( target.match( /^(https?:)?\/\// ) ) {
 		// External link
 		return {
-			'type': 'link/extLink',
+			'type': 'link/ExtLink',
 			'data': { 'href': target }
 		};
 	} else {
@@ -222,7 +222,7 @@ ve.ui.LinkInspector.getAnnotationForTarget = function ( target ) {
 		} catch ( e ) { }
 
 		return {
-			'type': 'link/wikiLink',
+			'type': 'link/WikiLink',
 			'data': { 'title': target }
 		};
 	}
