@@ -13,7 +13,7 @@
  * @extends {ve.ce.BranchNode}
  * @param model {ve.dm.DocumentNode} Model to observe
  */
-ve.ce.DocumentNode = function( model, surface ) {
+ve.ce.DocumentNode = function ( model, surface ) {
 	// Inheritance
 	ve.ce.BranchNode.call( this, 'document', model );
 
@@ -47,7 +47,7 @@ ve.ce.DocumentNode.rules = {
  * @method
  * @returns {Integer} Length of the entire node
  */
-ve.ce.DocumentNode.prototype.getOuterLength = function() {
+ve.ce.DocumentNode.prototype.getOuterLength = function () {
 	return this.length;
 };
 
@@ -57,7 +57,7 @@ ve.ce.DocumentNode.prototype.getOuterLength = function() {
  * @method
  * @returns {ve.ve.Surface} Surface this document is attached to
  */
-ve.ce.DocumentNode.prototype.getSurface = function() {
+ve.ce.DocumentNode.prototype.getSurface = function () {
 	return this.surface;
 };
 

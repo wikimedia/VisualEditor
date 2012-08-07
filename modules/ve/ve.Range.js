@@ -17,7 +17,7 @@
  * @property start {Integer} Normalized starting offset
  * @property end {Integer} Normalized ending offset
  */
-ve.Range = function( from, to ) {
+ve.Range = function ( from, to ) {
 	this.from = from || 0;
 	this.to = typeof to === 'undefined' ? this.from : to;
 	this.normalize();
@@ -31,7 +31,7 @@ ve.Range = function( from, to ) {
  * @param {Integer} distance Distance to move range by
  * @returns {ve.Range} New translated range
  */
-ve.Range.newFromTranslatedRange = function( range, distance ) {
+ve.Range.newFromTranslatedRange = function ( range, distance ) {
 	return new ve.Range( range.from + distance, range.to + distance );
 };
 
@@ -42,7 +42,7 @@ ve.Range.newFromTranslatedRange = function( range, distance ) {
  * @param {Array} ranges Array of ve.Range objects (at least one)
  * @returns {ve.Range} Range that spans all of the given ranges
  */
-ve.Range.newCoveringRange = function( ranges ) {
+ve.Range.newCoveringRange = function ( ranges ) {
 	var minStart, maxEnd, i;
 	if ( !ranges || ranges.length === 0 ) {
 		throw 'newCoveringRange() requires at least one range';
@@ -68,7 +68,7 @@ ve.Range.newCoveringRange = function( ranges ) {
  * @method
  * @returns {ve.Range} Clone of range
  */
-ve.Range.prototype.clone = function() {
+ve.Range.prototype.clone = function () {
 	return new ve.Range( this.from, this.to );
 };
 
@@ -79,7 +79,7 @@ ve.Range.prototype.clone = function() {
  * @param offset {Integer} Offset to check
  * @returns {Boolean} If offset is within this range
  */
-ve.Range.prototype.containsOffset = function( offset ) {
+ve.Range.prototype.containsOffset = function ( offset ) {
 	this.normalize();
 	return offset >= this.start && offset < this.end;
 };
@@ -90,7 +90,7 @@ ve.Range.prototype.containsOffset = function( offset ) {
  * @method
  * @returns {Integer} Length of range
  */
-ve.Range.prototype.getLength = function() {
+ve.Range.prototype.getLength = function () {
 	return Math.abs( this.from - this.to );
 };
 
@@ -102,7 +102,7 @@ ve.Range.prototype.getLength = function() {
  *
  * @method
  */
-ve.Range.prototype.normalize = function() {
+ve.Range.prototype.normalize = function () {
 	if ( this.from < this.to ) {
 		this.start = this.from;
 		this.end = this.to;
@@ -119,7 +119,7 @@ ve.Range.prototype.normalize = function() {
  *
  * @method
  */
-ve.Range.prototype.flip = function() {
+ve.Range.prototype.flip = function () {
 	var from = this.from;
 	this.from = this.to;
 	this.to = from;
@@ -133,6 +133,6 @@ ve.Range.prototype.flip = function() {
  * @param {ve.Range}
  * @returns {Boolean}
  */
-ve.Range.prototype.equals = function( other ) {
+ve.Range.prototype.equals = function ( other ) {
 	return this.from === other.from && this.to === other.to;
 };

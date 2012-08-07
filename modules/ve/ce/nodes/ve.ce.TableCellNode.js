@@ -13,7 +13,7 @@
  * @extends {ve.ce.BranchNode}
  * @param model {ve.dm.TableCellNode} Model to observe
  */
-ve.ce.TableCellNode = function( model ) {
+ve.ce.TableCellNode = function ( model ) {
 	// Inheritance
 	ve.ce.BranchNode.call(
 		this, 'tableCell', model, ve.ce.BranchNode.getDomWrapper( model, 'style' )
@@ -56,7 +56,7 @@ ve.ce.TableCellNode.domWrapperElementTypes = {
  *
  * @method
  */
-ve.ce.TableCellNode.prototype.onUpdate = function() {
+ve.ce.TableCellNode.prototype.onUpdate = function () {
 	this.updateDomWrapper( 'style' );
 };
 

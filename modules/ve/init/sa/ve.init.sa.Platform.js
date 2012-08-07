@@ -12,7 +12,7 @@
  * @constructor
  * @param {String} pageName Name of target page
  */
-ve.init.sa.Platform = function() {
+ve.init.sa.Platform = function () {
 	// Inheritance
 	ve.init.Platform.call( this );
 
@@ -30,7 +30,7 @@ ve.init.sa.Platform = function() {
  * @method
  * @returns {RegExp} Regular expression object
  */
-ve.init.sa.Platform.prototype.getExternalLinkUrlProtocolsRegExp = function() {
+ve.init.sa.Platform.prototype.getExternalLinkUrlProtocolsRegExp = function () {
 	return this.externalLinkUrlProtocolsRegExp;
 };
 
@@ -40,7 +40,7 @@ ve.init.sa.Platform.prototype.getExternalLinkUrlProtocolsRegExp = function() {
  * @method
  * @param {String} url Remote modules URL
  */
-ve.init.sa.Platform.prototype.setModulesUrl = function( url ) {
+ve.init.sa.Platform.prototype.setModulesUrl = function ( url ) {
 	this.modulesUrl = url;
 };
 
@@ -50,7 +50,7 @@ ve.init.sa.Platform.prototype.setModulesUrl = function( url ) {
  * @method
  * @returns {String} Remote modules URL
  */
-ve.init.sa.Platform.prototype.getModulesUrl = function() {
+ve.init.sa.Platform.prototype.getModulesUrl = function () {
 	return this.modulesUrl;
 };
 
@@ -60,7 +60,7 @@ ve.init.sa.Platform.prototype.getModulesUrl = function() {
  * @method
  * @param {Object} messages Map of message-key/message-string pairs
  */
-ve.init.sa.Platform.prototype.addMessages = function( messages ) {
+ve.init.sa.Platform.prototype.addMessages = function ( messages ) {
 	for ( var key in messages ) {
 		this.messages[key] = messages[key];
 	}
@@ -74,7 +74,7 @@ ve.init.sa.Platform.prototype.addMessages = function( messages ) {
  * @param {Mixed} [...] List of arguments which will be injected at $1, $2, etc. in the messaage
  * @returns {String} Localized message
  */
-ve.init.sa.Platform.prototype.getMessage = function( key ) {
+ve.init.sa.Platform.prototype.getMessage = function ( key ) {
 	if ( key in this.messages ) {
 		// Simple message parser, does $N replacement and nothing else.
 		var parameters = Array.prototype.slice.call( arguments, 1 );

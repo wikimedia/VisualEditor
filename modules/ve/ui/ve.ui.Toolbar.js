@@ -58,7 +58,7 @@ ve.ui.Toolbar.prototype.updateTools = function () {
 		i;
 
 	if ( range !== null ) {
-		if ( range.from === range.to ){
+		if ( range.from === range.to ) {
 			nodes.push( doc.getNodeFromOffset( range.from ) );
 		} else {
 			startNode = doc.getNodeFromOffset( range.from );

@@ -14,7 +14,7 @@
  * @param {Integer} [length] Length of content data in document
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  */
-ve.dm.AlienBlockNode = function( length, attributes ) {
+ve.dm.AlienBlockNode = function ( length, attributes ) {
 	// Inheritance
 	ve.dm.LeafNode.call( this, 'alienBlock', 0, attributes );
 };

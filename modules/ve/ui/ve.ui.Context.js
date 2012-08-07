@@ -146,7 +146,7 @@ ve.ui.Context.prototype.isMenuOpen = function () {
 	return this.menuView.isOpen();
 };
 
-ve.ui.Context.prototype.areChildrenCurrentlyVisible = function() {
+ve.ui.Context.prototype.areChildrenCurrentlyVisible = function () {
 	return this.inspector !== null || this.menuView.isOpen();
 };
 
@@ -266,7 +266,7 @@ ve.ui.Context.prototype.hideInspectorFrame = function ( inspector ) {
 	});
 };
 
-ve.ui.Context.prototype.resizeInspectorFrame = function ( inspector ){
+ve.ui.Context.prototype.resizeInspectorFrame = function ( inspector ) {
 	this.$inspectors.css( {
 		'width': inspector.$.outerWidth( true ) + 10,
 		'height': inspector.$.outerHeight( true ) + 10,

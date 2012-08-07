@@ -53,7 +53,7 @@ QUnit.test( 'getOuterLength', 2, function ( assert ) {
 	assert.strictEqual( node2.getOuterLength(), 1236 );
 } );
 
-QUnit.test( 'setLength', 2, function( assert ) {
+QUnit.test( 'setLength', 2, function ( assert ) {
 	var node = new ve.dm.NodeStub();
 	node.setLength( 1234 );
 	assert.strictEqual( node.getLength(), 1234 );

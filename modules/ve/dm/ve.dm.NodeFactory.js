@@ -12,7 +12,7 @@
  * @extends {ve.Factory}
  * @constructor
  */
-ve.dm.NodeFactory = function() {
+ve.dm.NodeFactory = function () {
 	// Inheritance
 	ve.Factory.call( this );
 };
@@ -27,7 +27,7 @@ ve.dm.NodeFactory = function() {
  * @returns {String[]|null} List of node types allowed as children or null if any type is allowed
  * @throws 'Unknown node type: {type}'
  */
-ve.dm.NodeFactory.prototype.getChildNodeTypes = function( type ) {
+ve.dm.NodeFactory.prototype.getChildNodeTypes = function ( type ) {
 	if ( type in this.registry ) {
 		return this.registry[type].rules.childNodeTypes;
 	}
@@ -42,7 +42,7 @@ ve.dm.NodeFactory.prototype.getChildNodeTypes = function( type ) {
  * @returns {String[]|null} List of node types allowed as parents or null if any type is allowed
  * @throws 'Unknown node type: {type}'
  */
-ve.dm.NodeFactory.prototype.getParentNodeTypes = function( type ) {
+ve.dm.NodeFactory.prototype.getParentNodeTypes = function ( type ) {
 	if ( type in this.registry ) {
 		return this.registry[type].rules.parentNodeTypes;
 	}
@@ -57,7 +57,7 @@ ve.dm.NodeFactory.prototype.getParentNodeTypes = function( type ) {
  * @returns {Boolean} The node can have children
  * @throws 'Unknown node type: {type}'
  */
-ve.dm.NodeFactory.prototype.canNodeHaveChildren = function( type ) {
+ve.dm.NodeFactory.prototype.canNodeHaveChildren = function ( type ) {
 	if ( type in this.registry ) {
 		// If childNodeTypes is null any child is allowed, if it's an array of at least one element
 		// than at least one kind of node is allowed
@@ -75,7 +75,7 @@ ve.dm.NodeFactory.prototype.canNodeHaveChildren = function( type ) {
  * @returns {Boolean} The node can have grandchildren
  * @throws 'Unknown node type: {type}'
  */
-ve.dm.NodeFactory.prototype.canNodeHaveGrandchildren = function( type ) {
+ve.dm.NodeFactory.prototype.canNodeHaveGrandchildren = function ( type ) {
 	if ( type in this.registry ) {
 		return this.canNodeHaveChildren( type ) &&
 			!this.registry[type].rules.canContainContent &&
@@ -92,7 +92,7 @@ ve.dm.NodeFactory.prototype.canNodeHaveGrandchildren = function( type ) {
  * @returns {Boolean} Whether the node has a wrapping element
  * @throws 'Unknown node type: {type}'
  */
-ve.dm.NodeFactory.prototype.isNodeWrapped = function( type ) {
+ve.dm.NodeFactory.prototype.isNodeWrapped = function ( type ) {
 	if ( type in this.registry ) {
 		return this.registry[type].rules.isWrapped;
 	}
@@ -107,7 +107,7 @@ ve.dm.NodeFactory.prototype.isNodeWrapped = function( type ) {
  * @returns {Boolean} The node contains content
  * @throws 'Unknown node type: {type}'
  */
-ve.dm.NodeFactory.prototype.canNodeContainContent = function( type ) {
+ve.dm.NodeFactory.prototype.canNodeContainContent = function ( type ) {
 	if ( type in this.registry ) {
 		return this.registry[type].rules.canContainContent;
 	}
@@ -122,7 +122,7 @@ ve.dm.NodeFactory.prototype.canNodeContainContent = function( type ) {
  * @returns {Boolean} The node is content
  * @throws 'Unknown node type: {type}'
  */
-ve.dm.NodeFactory.prototype.isNodeContent = function( type ) {
+ve.dm.NodeFactory.prototype.isNodeContent = function ( type ) {
 	if ( type in this.registry ) {
 		return this.registry[type].rules.isContent;
 	}

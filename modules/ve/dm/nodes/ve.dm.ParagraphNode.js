@@ -14,7 +14,7 @@
  * @param {ve.dm.LeafNode[]} [children] Child nodes to attach
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  */
-ve.dm.ParagraphNode = function( children, attributes ) {
+ve.dm.ParagraphNode = function ( children, attributes ) {
 	// Inheritance
 	ve.dm.BranchNode.call( this, 'paragraph', children, attributes );
 };
@@ -45,10 +45,10 @@ ve.dm.ParagraphNode.rules = {
  */
 ve.dm.ParagraphNode.converters = {
 	'domElementTypes': ['p'],
-	'toDomElement': function( type, element ) {
+	'toDomElement': function ( type, element ) {
 		return document.createElement( 'p' );
 	},
-	'toDataElement': function( tag, element ) {
+	'toDataElement': function ( tag, element ) {
 		return { 'type': 'paragraph' };
 	}
 };

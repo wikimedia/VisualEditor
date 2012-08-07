@@ -14,7 +14,7 @@
  * @param {ve.ui.Toolbar} toolbar
  * @param {String} name
  */
-ve.ui.HistoryButtonTool = function( toolbar, name, title, data ) {
+ve.ui.HistoryButtonTool = function ( toolbar, name, title, data ) {
 	// Inheritance
 	ve.ui.ButtonTool.call( this, toolbar, name, title );
 
@@ -27,7 +27,7 @@ ve.ui.HistoryButtonTool = function( toolbar, name, title, data ) {
 
 /* Methods */
 
-ve.ui.HistoryButtonTool.prototype.onClick = function() {
+ve.ui.HistoryButtonTool.prototype.onClick = function () {
 	switch ( this.name ) {
 		case 'undo':
 		case 'redo':
@@ -44,12 +44,12 @@ ve.ui.HistoryButtonTool.prototype.onClick = function() {
 	}
 };
 
-ve.ui.HistoryButtonTool.prototype.updateState = function( annotations ) {
+ve.ui.HistoryButtonTool.prototype.updateState = function ( annotations ) {
 	this.enabled = this.isButtonEnabled( this.name );
 	this.updateEnabled();
 };
 
-ve.ui.HistoryButtonTool.prototype.isButtonEnabled = function( name ) {
+ve.ui.HistoryButtonTool.prototype.isButtonEnabled = function ( name ) {
 	var surfaceModel = this.toolbar.getSurfaceView().getModel();
 	switch( name ) {
 		case 'undo':

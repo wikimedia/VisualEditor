@@ -13,7 +13,7 @@
  * @extends {ve.ce.BranchNode}
  * @param model {ve.dm.TableRowNode} Model to observe
  */
-ve.ce.TableRowNode = function( model ) {
+ve.ce.TableRowNode = function ( model ) {
 	// Inheritance
 	ve.ce.BranchNode.call( this, 'tableRow', model, $( '<tr></tr>' ) );
 };

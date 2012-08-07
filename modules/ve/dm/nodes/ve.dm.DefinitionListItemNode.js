@@ -14,7 +14,7 @@
  * @param {ve.dm.BranchNode[]} [children] Child nodes to attach
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  */
-ve.dm.DefinitionListItemNode = function( children, attributes ) {
+ve.dm.DefinitionListItemNode = function ( children, attributes ) {
 	// Inheritance
 	ve.dm.BranchNode.call( this, 'definitionListItem', children, attributes );
 };
@@ -45,13 +45,13 @@ ve.dm.DefinitionListItemNode.rules = {
  */
 ve.dm.DefinitionListItemNode.converters = {
 	'domElementTypes': ['dt', 'dd'],
-	'toDomElement': function( type, element ) {
+	'toDomElement': function ( type, element ) {
 		return element.attributes && ( {
 			'term': document.createElement( 'dt' ),
 			'definition': document.createElement( 'dd' )
 		} )[element.attributes.style];
 	},
-	'toDataElement': function( tag, element ) {
+	'toDataElement': function ( tag, element ) {
 		return ( {
 			'dt': { 'type': 'definitionListItem', 'attributes': { 'style': 'term' } },
 			'dd': { 'type': 'definitionListItem', 'attributes': { 'style': 'definition' } }

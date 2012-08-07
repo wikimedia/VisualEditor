@@ -151,7 +151,7 @@ ve.init.mw.Target.onSaveError = function ( response, status, error ) {
  *
  * @example
  *     target.loadDom(
- *         function( error, dom ) {
+ *         function ( error, dom ) {
  *             // Handle errors and do something with the loaded DOM
  *         }
  *     );
@@ -197,7 +197,7 @@ ve.init.mw.Target.prototype.load = function ( callback ) {
  *     target.saveDom(
  *         dom,
  *         { 'summary': 'test', 'minor': true, 'watch': false },
- *         function( error, html ) {
+ *         function ( error, html ) {
  *             // Handle errors and do something with the rendered HTML
  *         }
  *     );

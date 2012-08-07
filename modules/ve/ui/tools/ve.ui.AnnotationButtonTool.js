@@ -15,7 +15,7 @@
  * @param {String} name
  * @param {Object} annotation
  */
-ve.ui.AnnotationButtonTool = function( toolbar, name, title, data ) {
+ve.ui.AnnotationButtonTool = function ( toolbar, name, title, data ) {
 	// Inheritance
 	ve.ui.ButtonTool.call( this, toolbar, name, title );
 
@@ -27,7 +27,7 @@ ve.ui.AnnotationButtonTool = function( toolbar, name, title, data ) {
 
 /* Methods */
 
-ve.ui.AnnotationButtonTool.prototype.onClick = function() {
+ve.ui.AnnotationButtonTool.prototype.onClick = function () {
 	var surfaceView = this.toolbar.getSurfaceView(),
 		surfaceModel = surfaceView.model,
 		selection = surfaceModel.getSelection();
@@ -40,7 +40,7 @@ ve.ui.AnnotationButtonTool.prototype.onClick = function() {
 	}
 };
 
-ve.ui.AnnotationButtonTool.prototype.updateState = function( annotations, nodes ) {
+ve.ui.AnnotationButtonTool.prototype.updateState = function ( annotations, nodes ) {
 	var matches = ve.dm.Document.getMatchingAnnotations(
 		annotations, new RegExp( '^' + this.annotation.type + '$' )
 	);

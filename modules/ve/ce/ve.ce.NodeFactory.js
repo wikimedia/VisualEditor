@@ -12,7 +12,7 @@
  * @extends {ve.Factory}
  * @constructor
  */
-ve.ce.NodeFactory = function() {
+ve.ce.NodeFactory = function () {
 	// Inheritance
 	ve.Factory.call( this );
 };
@@ -26,7 +26,7 @@ ve.ce.NodeFactory = function() {
  * @returns {Boolean} The node can have grandchildren
  * @throws 'Unknown node type'
  */
-ve.ce.NodeFactory.prototype.canNodeBeSplit = function( type ) {
+ve.ce.NodeFactory.prototype.canNodeBeSplit = function ( type ) {
 	if ( type in this.registry ) {
 		return this.registry[type].rules.canBeSplit;
 	}

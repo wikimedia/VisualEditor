@@ -14,7 +14,7 @@
  * @param {ve.dm.BranchNode[]} [children] Child nodes to attach
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  */
-ve.dm.DocumentNode = function( children, attributes ) {
+ve.dm.DocumentNode = function ( children, attributes ) {
 	// Inheritance
 	ve.dm.BranchNode.call( this, 'document', children, attributes );
 };

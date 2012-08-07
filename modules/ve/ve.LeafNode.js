@@ -12,7 +12,7 @@
  * @abstract
  * @constructor
  */
-ve.LeafNode = function() {
+ve.LeafNode = function () {
 	//
 };
 
@@ -25,6 +25,6 @@ ve.LeafNode = function() {
  * @see {ve.Node.prototype.hasChildren}
  * @returns {Boolean} Whether this node has children
  */
-ve.LeafNode.prototype.hasChildren = function() {
+ve.LeafNode.prototype.hasChildren = function () {
 	return false;
 };

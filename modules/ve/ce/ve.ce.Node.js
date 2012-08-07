@@ -16,7 +16,7 @@
  * @param {ve.dm.Node} model Model to observe
  * @param {jQuery} [$element] Element to use as a container
  */
-ve.ce.Node = function( type, model, $element ) {
+ve.ce.Node = function ( type, model, $element ) {
 	// Inheritance
 	ve.Node.call( this, type );
 
@@ -38,7 +38,7 @@ ve.ce.Node = function( type, model, $element ) {
  * @method
  * @returns {String[]|null} List of node types allowed as children or null if any type is allowed
  */
-ve.ce.Node.prototype.getChildNodeTypes = function() {
+ve.ce.Node.prototype.getChildNodeTypes = function () {
 	return this.model.getChildNodeTypes();
 };
 
@@ -50,7 +50,7 @@ ve.ce.Node.prototype.getChildNodeTypes = function() {
  * @method
  * @returns {String[]|null} List of node types allowed as parents or null if any type is allowed
  */
-ve.ce.Node.prototype.getParentNodeTypes = function() {
+ve.ce.Node.prototype.getParentNodeTypes = function () {
 	return this.model.getParentNodeTypes();
 };
 
@@ -62,7 +62,7 @@ ve.ce.Node.prototype.getParentNodeTypes = function() {
  * @method
  * @returns {Boolean} Model node can have children
  */
-ve.ce.Node.prototype.canHaveChildren = function() {
+ve.ce.Node.prototype.canHaveChildren = function () {
 	return this.model.canHaveChildren();
 };
 
@@ -74,7 +74,7 @@ ve.ce.Node.prototype.canHaveChildren = function() {
  * @method
  * @returns {Boolean} Model node can have children
  */
-ve.ce.Node.prototype.canHaveChildren = function() {
+ve.ce.Node.prototype.canHaveChildren = function () {
 	return this.model.canHaveChildren();
 };
 
@@ -86,7 +86,7 @@ ve.ce.Node.prototype.canHaveChildren = function() {
  * @method
  * @returns {Boolean} Model node can have grandchildren
  */
-ve.ce.Node.prototype.canHaveGrandchildren = function() {
+ve.ce.Node.prototype.canHaveGrandchildren = function () {
 	return this.model.canHaveGrandchildren();
 };
 
@@ -98,7 +98,7 @@ ve.ce.Node.prototype.canHaveGrandchildren = function() {
  * @method
  * @returns {Boolean} Model node is a wrapped element
  */
-ve.ce.Node.prototype.isWrapped = function() {
+ve.ce.Node.prototype.isWrapped = function () {
 	return this.model.isWrapped();
 };
 
@@ -108,7 +108,7 @@ ve.ce.Node.prototype.isWrapped = function() {
  * @method
  * @returns {Boolean} Node can contain content
  */
-ve.ce.Node.prototype.canContainContent = function() {
+ve.ce.Node.prototype.canContainContent = function () {
 	return this.model.canContainContent();
 };
 
@@ -118,7 +118,7 @@ ve.ce.Node.prototype.canContainContent = function() {
  * @method
  * @returns {Boolean} Node is content
  */
-ve.ce.Node.prototype.isContent = function() {
+ve.ce.Node.prototype.isContent = function () {
 	return this.model.isContent();
 };
 
@@ -129,7 +129,7 @@ ve.ce.Node.prototype.isContent = function() {
  * @method
  * @returns {Boolean} Whether the node can have a slug before it
  */
-ve.ce.Node.prototype.canHaveSlugBefore = function() {
+ve.ce.Node.prototype.canHaveSlugBefore = function () {
 	return !this.canContainContent() && this.getParentNodeTypes() === null && this.type !== 'text';
 };
 
@@ -150,7 +150,7 @@ ve.ce.Node.prototype.canHaveSlugAfter = ve.ce.Node.prototype.canHaveSlugBefore;
  * @method
  * @returns {Integer} Model length
  */
-ve.ce.Node.prototype.getLength = function() {
+ve.ce.Node.prototype.getLength = function () {
 	return this.model.getLength();
 };
 
@@ -162,7 +162,7 @@ ve.ce.Node.prototype.getLength = function() {
  * @method
  * @returns {Integer} Model outer length
  */
-ve.ce.Node.prototype.getOuterLength = function() {
+ve.ce.Node.prototype.getOuterLength = function () {
 	return this.model.getOuterLength();
 };
 
@@ -172,7 +172,7 @@ ve.ce.Node.prototype.getOuterLength = function() {
  * @method
  * @returns {Boolean} Node can be split
  */
-ve.ce.Node.prototype.canBeSplit = function() {
+ve.ce.Node.prototype.canBeSplit = function () {
 	return ve.ce.nodeFactory.canNodeBeSplit( this.type );
 };
 
@@ -182,14 +182,14 @@ ve.ce.Node.prototype.canBeSplit = function() {
  * @method
  * @returns {ve.dm.Node} Reference to the model this node observes
  */
-ve.ce.Node.prototype.getModel = function() {
+ve.ce.Node.prototype.getModel = function () {
 	return this.model;
 };
 
-ve.ce.Node.getSplitableNode = function( node ) {
+ve.ce.Node.getSplitableNode = function ( node ) {
 	var splitableNode = null;
 	
-	ve.Node.traverseUpstream( node, function( node ) {
+	ve.Node.traverseUpstream( node, function ( node ) {
 		if ( node.canBeSplit() ) {
 			splitableNode = node;
 			return true;

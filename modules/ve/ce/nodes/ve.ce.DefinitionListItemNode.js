@@ -13,7 +13,7 @@
  * @extends {ve.ce.BranchNode}
  * @param model {ve.dm.DefinitionListItemNode} Model to observe
  */
-ve.ce.DefinitionListItemNode = function( model ) {
+ve.ce.DefinitionListItemNode = function ( model ) {
 	// Inheritance
 	ve.ce.BranchNode.call(
 		this, 'definitionListItem', model, ve.ce.BranchNode.getDomWrapper( model, 'style' )
@@ -56,7 +56,7 @@ ve.ce.DefinitionListItemNode.domWrapperElementTypes = {
  *
  * @method
  */
-ve.ce.DefinitionListItemNode.prototype.onUpdate = function() {
+ve.ce.DefinitionListItemNode.prototype.onUpdate = function () {
 	this.updateDomWrapper( 'style' );
 };
 

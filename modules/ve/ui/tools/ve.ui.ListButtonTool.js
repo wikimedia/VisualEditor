@@ -180,7 +180,7 @@ ve.ui.ListButtonTool.prototype.updateState = function ( annotations, nodes ) {
 		selection = surfaceModel.getSelection(),
 		leaves = doc.selectNodes( selection, 'leaves' );
 
-	function areListItemsOfStyle( leaves, style ){
+	function areListItemsOfStyle( leaves, style ) {
 		var i, listNode;
 
 		for ( i = 0; i < leaves.length; i++ ) {

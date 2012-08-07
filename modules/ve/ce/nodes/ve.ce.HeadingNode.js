@@ -13,7 +13,7 @@
  * @extends {ve.ce.BranchNode}
  * @param model {ve.dm.HeadingNode} Model to observe
  */
-ve.ce.HeadingNode = function( model ) {
+ve.ce.HeadingNode = function ( model ) {
 	// Inheritance
 	ve.ce.BranchNode.call(
 		this, 'heading', model, ve.ce.BranchNode.getDomWrapper( model, 'level' )
@@ -60,7 +60,7 @@ ve.ce.HeadingNode.domWrapperElementTypes = {
  *
  * @method
  */
-ve.ce.HeadingNode.prototype.onUpdate = function() {
+ve.ce.HeadingNode.prototype.onUpdate = function () {
 	this.updateDomWrapper( 'level' );
 };
 

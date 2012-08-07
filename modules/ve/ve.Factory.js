@@ -13,7 +13,7 @@
  * @constructor
  * @extends {ve.EventEmitter}
  */
-ve.Factory = function() {
+ve.Factory = function () {
 	// Inheritance
 	ve.EventEmitter.call( this );
 
@@ -34,7 +34,7 @@ ve.Factory = function() {
  * @param {Function} constructor Constructor to use when creating object
  * @throws 'Constructor must be a function, cannot be a string'
  */
-ve.Factory.prototype.register = function( type, constructor ) {
+ve.Factory.prototype.register = function ( type, constructor ) {
 	if ( typeof constructor !== 'function' ) {
 		throw 'Constructor must be a function, cannot be a ' + typeof constructor;
 	}
@@ -59,7 +59,7 @@ ve.Factory.prototype.register = function( type, constructor ) {
  * @returns {Object} The new object
  * @throws 'Unknown object type'
  */
-ve.Factory.prototype.create = function( type, a, b ) {
+ve.Factory.prototype.create = function ( type, a, b ) {
 	if ( type in this.registry ) {
 		return new this.registry[type]( a, b );
 	}
@@ -73,7 +73,7 @@ ve.Factory.prototype.create = function( type, a, b ) {
  * @param {String} type Object type
  * @returns {Function|undefined} Constructor for type
  */
-ve.Factory.prototype.lookup = function( type ) {
+ve.Factory.prototype.lookup = function ( type ) {
 	return this.registry[type];
 };
 

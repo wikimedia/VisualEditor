@@ -13,7 +13,7 @@
  * @extends {ve.ce.LeafNode}
  * @param model {ve.dm.AlienInlineNode} Model to observe
  */
-ve.ce.AlienInlineNode = function( model ) {
+ve.ce.AlienInlineNode = function ( model ) {
 	// Inheritance
 	ve.ce.LeafNode.call( this, 'alienInline', model );
 
@@ -43,7 +43,7 @@ ve.ce.AlienInlineNode.rules = {
 
 /* Methods */
 
-ve.ce.AlienInlineNode.prototype.onUpdate = function() {
+ve.ce.AlienInlineNode.prototype.onUpdate = function () {
 	this.$.html( this.model.getAttribute( 'html' ) );
 };
 

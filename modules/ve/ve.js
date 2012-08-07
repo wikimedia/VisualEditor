@@ -41,7 +41,7 @@ window.ve = {
  * @param {Function} dst Class to extend
  * @param {Function} [..] List of base classed to use methods from
  */
-ve.extendClass = function( dst ) {
+ve.extendClass = function ( dst ) {
 	var i, method, base,
 		length = arguments.length;
 	for ( i = 1; i < length; i++ ) {
@@ -100,7 +100,7 @@ ve.getHash = $.toJSON;
  * @param {Object} Object to get properties from
  * @returns {String[]} List of object keys
  */
-ve.getObjectKeys = Object.keys || function( obj ) {
+ve.getObjectKeys = Object.keys || function ( obj ) {
 	var keys = [],
 		key,
 		hop = Object.prototype.hasOwnProperty;
@@ -120,7 +120,7 @@ ve.getObjectKeys = Object.keys || function( obj ) {
  * @param {Object} Object to get values from
  * @returns {Array} List of object values
  */
-ve.getObjectValues = function( obj ) {
+ve.getObjectValues = function ( obj ) {
 	var values = [],
 		key,
 		hop = Object.prototype.hasOwnProperty;
@@ -146,7 +146,7 @@ ve.getObjectValues = function( obj ) {
  * @param {Boolean} [asymmetrical] Whether to check only that b contains values from a
  * @returns {Boolean} If the objects contain the same values as each other
  */
-ve.compareObjects = function( a, b, asymmetrical ) {
+ve.compareObjects = function ( a, b, asymmetrical ) {
 	var aValue, bValue, aType, bType, k;
 	for ( k in a ) {
 		aValue = a[k];
@@ -172,7 +172,7 @@ ve.compareObjects = function( a, b, asymmetrical ) {
  * @param {Array} b Second array to compare
  * @param {Boolean} [objectsByValue] Use ve.compareObjects() to compare objects instead of ===
  */
-ve.compareArrays = function( a, b, objectsByValue ) {
+ve.compareArrays = function ( a, b, objectsByValue ) {
 	var i,
 		aValue,
 		bValue,
@@ -216,7 +216,7 @@ ve.compareArrays = function( a, b, objectsByValue ) {
  * @param {Array} source Array to copy
  * @returns {Array} Copy of source array
  */
-ve.copyArray = function( source ) {
+ve.copyArray = function ( source ) {
 	var i, sourceValue, sourceType,
 		destination = [];
 	for ( i = 0; i < source.length; i++ ) {
@@ -241,7 +241,7 @@ ve.copyArray = function( source ) {
  * @param {Object} source Object to copy
  * @returns {Object} Copy of source object
  */
-ve.copyObject = function( source ) {
+ve.copyObject = function ( source ) {
 	var key, sourceValue, sourceType,
 		destination = {};
 	for ( key in source ) {
@@ -276,7 +276,7 @@ ve.copyObject = function( source ) {
  * @param {Number} remove Number of elements to remove at the offset. May be zero
  * @param {Array} data Array of items to insert at the offset
  */
-ve.batchSplice = function( arr, offset, remove, data ) {
+ve.batchSplice = function ( arr, offset, remove, data ) {
 	// We need to splice insertion in in batches, because of parameter list length limits which vary
 	// cross-browser - 1024 seems to be a safe batch size on all browsers
 	var index = 0, batchSize = 1024, toRemove = remove;
@@ -306,7 +306,7 @@ ve.batchSplice = function( arr, offset, remove, data ) {
  * @method
  * @see ve.batchSplice
  */
-ve.insertIntoArray = function( dst, offset, src ) {
+ve.insertIntoArray = function ( dst, offset, src ) {
 	ve.batchSplice( dst, offset, 0, src );
 };
 
@@ -319,7 +319,7 @@ ve.insertIntoArray = function( dst, offset, src ) {
  * @method
  * @param {Mixed} [...] Data to log
  */
-ve.log = function() {
+ve.log = function () {
 	// don't do anything, this is just a stub
 };
 
@@ -332,7 +332,7 @@ ve.log = function() {
  * @method
  * @param {Object} obj Object to log
  */
-ve.dir = function( obj ) {
+ve.dir = function ( obj ) {
 	// don't do anything, this is just a stub
 };
 
@@ -347,12 +347,12 @@ ve.dir = function( obj ) {
  * @static
  * @method
  */
-ve.debounce = function( func, wait, immediate ) {
+ve.debounce = function ( func, wait, immediate ) {
 	var timeout;
-	return function() {
+	return function () {
 		var context = this,
 			args = arguments,
-			later = function() {
+			later = function () {
 				timeout = null;
 				if ( !immediate ) {
 					func.apply( context, args );
@@ -374,6 +374,6 @@ ve.debounce = function( func, wait, immediate ) {
  * @param {String} key Message key
  * @param {Mixed} [...] Message parameters
  */
-ve.msg = function() {
+ve.msg = function () {
 	return ve.init.platform.getMessage.apply( ve.init.platform, arguments );
 };

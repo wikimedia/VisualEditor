@@ -12,7 +12,7 @@
  * @constructor
  * @extends {ve.dm.Annotation}
  */
-ve.dm.TextStyleAnnotation = function() {
+ve.dm.TextStyleAnnotation = function () {
 	// Inheritance
 	ve.dm.Annotation.call( this );
 };
@@ -28,7 +28,7 @@ ve.dm.TextStyleAnnotation = function() {
  */
 ve.dm.TextStyleAnnotation.converters = {
 	'domElementTypes': ['i', 'b', 'u', 's', 'small', 'big', 'span'],
-	'toDomElement': function( subType, annotation ) {
+	'toDomElement': function ( subType, annotation ) {
 		return annotation.type && document.createElement( ( {
 			'italic': 'i',
 			'bold': 'b',
@@ -44,7 +44,7 @@ ve.dm.TextStyleAnnotation.converters = {
 			// TODO: Add other supported inline DOM elements to this list
 		} )[subType] );
 	},
-	'toDataAnnotation': function( tag, element ) {
+	'toDataAnnotation': function ( tag, element ) {
 		return {
 			'type': 'textStyle/' + ( {
 				'i': 'italic',

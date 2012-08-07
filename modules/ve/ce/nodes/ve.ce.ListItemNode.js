@@ -13,7 +13,7 @@
  * @extends {ve.ce.BranchNode}
  * @param model {ve.dm.ListItemNode} Model to observe
  */
-ve.ce.ListItemNode = function( model ) {
+ve.ce.ListItemNode = function ( model ) {
 	// Inheritance
 	ve.ce.BranchNode.call( this, 'listItem', model, $( '<li></li>' ) );
 };

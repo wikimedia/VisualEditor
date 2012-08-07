@@ -101,7 +101,7 @@ QUnit.test( 'shift', 3, function ( assert ) {
 	var node1 = new ve.dm.BranchNodeStub(),
 		node2 = new ve.dm.BranchNodeStub(),
 		node3 = new ve.dm.BranchNodeStub( [node1, node2] );
-	node3.on( 'splice', function() {
+	node3.on( 'splice', function () {
 		// Will be called 1 time
 		assert.ok( true, 'splice was emitted' );
 	} );

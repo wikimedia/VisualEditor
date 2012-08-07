@@ -16,7 +16,7 @@
  * @param {Integer} [length] Length of content data in document
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  */
-ve.dm.Node = function( type, length, attributes ) {
+ve.dm.Node = function ( type, length, attributes ) {
 	// Inheritance
 	ve.Node.call( this, type );
 
@@ -34,7 +34,7 @@ ve.dm.Node = function( type, length, attributes ) {
  * @method
  * @returns {String[]|null} List of node types allowed as children or null if any type is allowed
  */
-ve.dm.Node.prototype.getChildNodeTypes = function() {
+ve.dm.Node.prototype.getChildNodeTypes = function () {
 	return ve.dm.nodeFactory.getChildNodeTypes( this.type );
 };
 
@@ -44,7 +44,7 @@ ve.dm.Node.prototype.getChildNodeTypes = function() {
  * @method
  * @returns {String[]|null} List of node types allowed as parents or null if any type is allowed
  */
-ve.dm.Node.prototype.getParentNodeTypes = function() {
+ve.dm.Node.prototype.getParentNodeTypes = function () {
 	return ve.dm.nodeFactory.getParentNodeTypes( this.type );
 };
 
@@ -54,7 +54,7 @@ ve.dm.Node.prototype.getParentNodeTypes = function() {
  * @method
  * @returns {Boolean} Node can have children
  */
-ve.dm.Node.prototype.canHaveChildren = function() {
+ve.dm.Node.prototype.canHaveChildren = function () {
 	return ve.dm.nodeFactory.canNodeHaveChildren( this.type );
 };
 
@@ -64,7 +64,7 @@ ve.dm.Node.prototype.canHaveChildren = function() {
  * @method
  * @returns {Boolean} Node can have grandchildren
  */
-ve.dm.Node.prototype.canHaveGrandchildren = function() {
+ve.dm.Node.prototype.canHaveGrandchildren = function () {
 	return ve.dm.nodeFactory.canNodeHaveGrandchildren( this.type );
 };
 
@@ -74,7 +74,7 @@ ve.dm.Node.prototype.canHaveGrandchildren = function() {
  * @method
  * @returns {Boolean} Node represents a wrapped element
  */
-ve.dm.Node.prototype.isWrapped = function() {
+ve.dm.Node.prototype.isWrapped = function () {
 	return ve.dm.nodeFactory.isNodeWrapped( this.type );
 };
 
@@ -84,7 +84,7 @@ ve.dm.Node.prototype.isWrapped = function() {
  * @method
  * @returns {Boolean} Node can contain content
  */
-ve.dm.Node.prototype.canContainContent = function() {
+ve.dm.Node.prototype.canContainContent = function () {
 	return ve.dm.nodeFactory.canNodeContainContent( this.type );
 };
 
@@ -94,7 +94,7 @@ ve.dm.Node.prototype.canContainContent = function() {
  * @method
  * @returns {Boolean} Node is content
  */
-ve.dm.Node.prototype.isContent = function() {
+ve.dm.Node.prototype.isContent = function () {
 	return ve.dm.nodeFactory.isNodeContent( this.type );
 };
 
@@ -104,7 +104,7 @@ ve.dm.Node.prototype.isContent = function() {
  * @method
  * @returns {Integer} Length of the node's contents
  */
-ve.dm.Node.prototype.getLength = function() {
+ve.dm.Node.prototype.getLength = function () {
 	return this.length;
 };
 
@@ -114,7 +114,7 @@ ve.dm.Node.prototype.getLength = function() {
  * @method
  * @returns {Integer} Length of the entire node
  */
-ve.dm.Node.prototype.getOuterLength = function() {
+ve.dm.Node.prototype.getOuterLength = function () {
 	return this.length + ( this.isWrapped() ? 2 : 0 );
 };
 
@@ -124,7 +124,7 @@ ve.dm.Node.prototype.getOuterLength = function() {
  * @method
  * @returns {ve.Range} Inner node range
  */
-ve.dm.Node.prototype.getRange = function() {
+ve.dm.Node.prototype.getRange = function () {
 	var offset = this.getOffset();
 	if ( this.isWrapped() ) {
 		offset++;
@@ -138,7 +138,7 @@ ve.dm.Node.prototype.getRange = function() {
  * @method
  * @returns {ve.Range} Outer node range
  */
-ve.dm.Node.prototype.getOuterRange = function() {
+ve.dm.Node.prototype.getOuterRange = function () {
 	var offset = this.getOffset();
 	return new ve.Range( offset, offset + this.getOuterLength() );
 };
@@ -152,7 +152,7 @@ ve.dm.Node.prototype.getOuterRange = function() {
  * @emits lengthChange (diff)
  * @emits update
  */
-ve.dm.Node.prototype.setLength = function( length ) {
+ve.dm.Node.prototype.setLength = function ( length ) {
 	if ( length < 0 ) {
 		throw 'Length cannot be negative';
 	}
@@ -178,7 +178,7 @@ ve.dm.Node.prototype.setLength = function( length ) {
  * @emits lengthChange (diff)
  * @emits update
  */
-ve.dm.Node.prototype.adjustLength = function( adjustment ) {
+ve.dm.Node.prototype.adjustLength = function ( adjustment ) {
 	this.setLength( this.length + adjustment );
 };
 
@@ -190,7 +190,7 @@ ve.dm.Node.prototype.adjustLength = function( adjustment ) {
  * @method
  * @returns {Integer} Offset of node
  */
-ve.dm.Node.prototype.getOffset = function() {
+ve.dm.Node.prototype.getOffset = function () {
 	return this.root === this ? 0 : this.root.getOffsetFromNode( this );
 };
 
@@ -200,7 +200,7 @@ ve.dm.Node.prototype.getOffset = function() {
  * @method
  * @returns {Mixed} Value of attribute, or undefined if no such attribute exists
  */
-ve.dm.Node.prototype.getAttribute = function( key ) {
+ve.dm.Node.prototype.getAttribute = function ( key ) {
 	return this.attributes[key];
 };
 
@@ -210,7 +210,7 @@ ve.dm.Node.prototype.getAttribute = function( key ) {
  * @method
  * @returns {Object} Attributes object (by reference)
  */
-ve.dm.Node.prototype.getAttributes = function() {
+ve.dm.Node.prototype.getAttributes = function () {
 	return this.attributes;
 };
 
@@ -219,7 +219,7 @@ ve.dm.Node.prototype.getAttributes = function() {
  *
  * @returns {Object} Element object with 'type' and (optionally) 'attributes' fields
  */
-ve.dm.Node.prototype.getClonedElement = function() {
+ve.dm.Node.prototype.getClonedElement = function () {
 	var retval = { 'type': this.type };
 	if ( !ve.isEmptyObject( this.attributes ) ) {
 		retval.attributes = ve.copyObject( this.attributes );
@@ -239,7 +239,7 @@ ve.dm.Node.prototype.getClonedElement = function() {
  * @param {ve.dm.Node} node Node to consider merging with
  * @returns {Boolean} Nodes can be merged
  */
-ve.dm.Node.prototype.canBeMergedWith = function( node ) {
+ve.dm.Node.prototype.canBeMergedWith = function ( node ) {
 	var n1 = this,
 		n2 = node;
 	// Move up from n1 and n2 simultaneously until we find a common ancestor

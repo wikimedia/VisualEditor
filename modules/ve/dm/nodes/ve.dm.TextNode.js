@@ -13,7 +13,7 @@
  * @extends {ve.dm.LeafNode}
  * @param {Integer} [length] Length of content data in document
  */
-ve.dm.TextNode = function( length ) {
+ve.dm.TextNode = function ( length ) {
 	// Inheritance
 	ve.dm.LeafNode.call( this, 'text', length );
 };

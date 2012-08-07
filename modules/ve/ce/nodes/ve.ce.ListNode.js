@@ -13,7 +13,7 @@
  * @extends {ve.ce.BranchNode}
  * @param model {ve.dm.ListNode} Model to observe
  */
-ve.ce.ListNode = function( model ) {
+ve.ce.ListNode = function ( model ) {
 	// Inheritance
 	ve.ce.BranchNode.call( this, 'list', model, ve.ce.BranchNode.getDomWrapper( model, 'style' ) );
 
@@ -54,14 +54,14 @@ ve.ce.ListNode.domWrapperElementTypes = {
  *
  * @method
  */
-ve.ce.ListNode.prototype.onUpdate = function() {
+ve.ce.ListNode.prototype.onUpdate = function () {
 	this.updateDomWrapper( 'style' );
 };
 
 /**
  * Supplement onSplice() to work around a rendering bug in Firefox
  */
-ve.ce.ListNode.prototype.onSplice = function() {
+ve.ce.ListNode.prototype.onSplice = function () {
 	// Call ve.ce.BranchNode's implementation
 	var args = Array.prototype.slice.call( arguments, 0 );
 	ve.ce.BranchNode.prototype.onSplice.apply( this, args );
@@ -71,7 +71,7 @@ ve.ce.ListNode.prototype.onSplice = function() {
 	this.$.css( 'height' );
 };
 
-ve.ce.ListNode.prototype.canHaveSlugAfter = function() {
+ve.ce.ListNode.prototype.canHaveSlugAfter = function () {
 	if ( this.getParent().getType() === 'listItem' ) {
 		// Nested lists should not have slugs after them
 		return false;

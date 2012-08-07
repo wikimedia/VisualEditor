@@ -20,7 +20,7 @@
  * @property top {Integer} Vertical top position
  * @property bottom {Integer} Vertical bottom position of bottom
  */
-ve.Position = function( left, top, bottom ) {
+ve.Position = function ( left, top, bottom ) {
 	this.left = left || 0;
 	this.top = top || 0;
 	this.bottom = bottom || this.top;
@@ -36,7 +36,7 @@ ve.Position = function( left, top, bottom ) {
  * @param $element {jQuery} Element to get offset from
  * @returns {ve.Position} Position with element data applied
  */
-ve.Position.newFromElementPagePosition = function( $element ) {
+ve.Position.newFromElementPagePosition = function ( $element ) {
 	var offset = $element.offset();
 	return new ve.Position( offset.left, offset.top );
 };
@@ -49,7 +49,7 @@ ve.Position.newFromElementPagePosition = function( $element ) {
  * @param $element {jQuery} Element to get position from
  * @returns {ve.Position} Position with element data applied
  */
-ve.Position.newFromElementLayerPosition = function( $element ) {
+ve.Position.newFromElementLayerPosition = function ( $element ) {
 	var position = $element.position();
 	return new ve.Position( position.left, position.top );
 };
@@ -62,7 +62,7 @@ ve.Position.newFromElementLayerPosition = function( $element ) {
  * @param event {Event} Event to get position data from
  * @returns {ve.Position} Position with event data applied
  */
-ve.Position.newFromEventScreenPosition = function( event ) {
+ve.Position.newFromEventScreenPosition = function ( event ) {
 	return new ve.Position( event.screenX, event.screenY );
 };
 
@@ -74,7 +74,7 @@ ve.Position.newFromEventScreenPosition = function( event ) {
  * @param event {Event} Event to get position data from
  * @returns {ve.Position} Position with event data applied
  */
-ve.Position.newFromEventPagePosition = function( event ) {
+ve.Position.newFromEventPagePosition = function ( event ) {
 	return new ve.Position( event.pageX, event.pageY );
 };
 
@@ -86,7 +86,7 @@ ve.Position.newFromEventPagePosition = function( event ) {
  * @param event {Event} Event to get position data from
  * @returns {ve.Position} Position with event data applied
  */
-ve.Position.newFromEventLayerPosition = function( event ) {
+ve.Position.newFromEventLayerPosition = function ( event ) {
 	return new ve.Position( event.layerX, event.layerY );
 };
 
@@ -98,7 +98,7 @@ ve.Position.newFromEventLayerPosition = function( event ) {
  * @method
  * @param position {ve.Position} Position to add values from
  */
-ve.Position.prototype.add = function( position ) {
+ve.Position.prototype.add = function ( position ) {
 	this.top += position.top;
 	this.bottom += position.bottom;
 	this.left += position.left;
@@ -110,7 +110,7 @@ ve.Position.prototype.add = function( position ) {
  * @method
  * @param position {ve.Position} Position to subtract values from
  */
-ve.Position.prototype.subtract = function( position ) {
+ve.Position.prototype.subtract = function ( position ) {
 	this.top -= position.top;
 	this.bottom -= position.bottom;
 	this.left -= position.left;
@@ -123,7 +123,7 @@ ve.Position.prototype.subtract = function( position ) {
  * @param position {ve.Position} Position to compare with
  * @returns {Boolean} If positions have the same left and top values
  */
-ve.Position.prototype.at = function( position ) {
+ve.Position.prototype.at = function ( position ) {
 	return this.left === position.left && this.top === position.top;
 };
 
@@ -134,7 +134,7 @@ ve.Position.prototype.at = function( position ) {
  * @param position {ve.Position} Position to compare with
  * @returns {Boolean} If positions share a top or a left value
  */
-ve.Position.prototype.perpendicularWith = function( position ) {
+ve.Position.prototype.perpendicularWith = function ( position ) {
 	return this.left === position.left || this.top === position.top;
 };
 
@@ -145,7 +145,7 @@ ve.Position.prototype.perpendicularWith = function( position ) {
  * @param position {ve.Position} Position to compare with
  * @returns {Boolean} If positions have the same top value
  */
-ve.Position.prototype.levelWith = function( position ) {
+ve.Position.prototype.levelWith = function ( position ) {
 	return this.top === position.top;
 };
 
@@ -156,7 +156,7 @@ ve.Position.prototype.levelWith = function( position ) {
  * @param position {ve.Position} Position to compare with
  * @returns {Boolean} If positions have the same left value
  */
-ve.Position.prototype.plumbWith = function( position ) {
+ve.Position.prototype.plumbWith = function ( position ) {
 	return this.left === position.left;
 };
 
@@ -170,7 +170,7 @@ ve.Position.prototype.plumbWith = function( position ) {
  * @param radius {Integer} Pixel distance from this position to consider "near-by"
  * @returns {Boolean} If positions are near-by each other
  */
-ve.Position.prototype.near = function( position, radius ) {
+ve.Position.prototype.near = function ( position, radius ) {
 	return Math.sqrt(
 		Math.pow( this.left - position.left, 2 ),
 		Math.pow( this.top - position.top )
@@ -186,7 +186,7 @@ ve.Position.prototype.near = function( position, radius ) {
  * @param position {ve.Position} Position to compare with
  * @returns {Boolean} If this position is above the other
  */
-ve.Position.prototype.above = function( position ) {
+ve.Position.prototype.above = function ( position ) {
 	return this.bottom < position.top;
 };
 
@@ -199,7 +199,7 @@ ve.Position.prototype.above = function( position ) {
  * @param position {ve.Position} Position to compare with
  * @returns {Boolean} If this position is below the other
  */
-ve.Position.prototype.below = function( position ) {
+ve.Position.prototype.below = function ( position ) {
 	return this.top > position.bottom;
 };
 
@@ -210,7 +210,7 @@ ve.Position.prototype.below = function( position ) {
  * @param position {ve.Position} Position to compare with
  * @returns {Boolean} If this position is the left the other
  */
-ve.Position.prototype.leftOf = function( left ) {
+ve.Position.prototype.leftOf = function ( left ) {
 	return this.left < left;
 };
 
@@ -221,6 +221,6 @@ ve.Position.prototype.leftOf = function( left ) {
  * @param position {ve.Position} Position to compare with
  * @returns {Boolean} If this position is the right the other
  */
-ve.Position.prototype.rightOf = function( left ) {
+ve.Position.prototype.rightOf = function ( left ) {
 	return this.left > left;
 };

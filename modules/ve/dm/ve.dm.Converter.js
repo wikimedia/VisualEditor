@@ -12,7 +12,7 @@
  * @constructor
  * @param {Object} options Conversion options
  */
-ve.dm.Converter = function( nodeFactory, annotationFactory ) {
+ve.dm.Converter = function ( nodeFactory, annotationFactory ) {
 	// Properties
 	this.nodeFactory = nodeFactory;
 	this.annotationFactory = annotationFactory;
@@ -33,7 +33,7 @@ ve.dm.Converter = function( nodeFactory, annotationFactory ) {
  * @param {Array} [annotations] Array of annotation objects to apply
  * @returns {Array} Linear model data, one element per character
  */
-ve.dm.Converter.getDataContentFromText = function( text, annotations ) {
+ve.dm.Converter.getDataContentFromText = function ( text, annotations ) {
 	var characters = text.split( '' ),
 		annotationMap = {},
 		i;
@@ -73,7 +73,7 @@ ve.dm.Converter.getDataContentFromText = function( text, annotations ) {
  * @param {Function} constructor Node constructor
  * @throws 'Missing conversion data in node implementation of {type}'
  */
-ve.dm.Converter.prototype.onNodeRegister = function( dataElementType, constructor ) {
+ve.dm.Converter.prototype.onNodeRegister = function ( dataElementType, constructor ) {
 	if ( constructor.converters === undefined ) {
 		throw 'Missing conversion data in node implementation of ' + dataElementType;
 	} else if ( constructor.converters !== null ) {
@@ -98,7 +98,7 @@ ve.dm.Converter.prototype.onNodeRegister = function( dataElementType, constructo
  * @param {Function} constructor Annotation constructor
  * @throws 'Missing conversion data in annotation implementation of {type}'
  */
-ve.dm.Converter.prototype.onAnnotationRegister = function( dataElementType, constructor ) {
+ve.dm.Converter.prototype.onAnnotationRegister = function ( dataElementType, constructor ) {
 	if ( constructor.converters === undefined ) {
 		throw 'Missing conversion data in annotation implementation of ' + dataElementType;
 	} else if ( constructor.converters !== null ) {
@@ -125,7 +125,7 @@ ve.dm.Converter.prototype.onAnnotationRegister = function( dataElementType, cons
  * @param {Object} dataElement Linear model element
  * @returns {HTMLElement|false} DOM element, or false if this element cannot be converted
  */
-ve.dm.Converter.prototype.getDomElementFromDataElement = function( dataElement ) {
+ve.dm.Converter.prototype.getDomElementFromDataElement = function ( dataElement ) {
 	var key, domElement, dataElementAttributes,
 		dataElementType = dataElement.type;
 	if (
@@ -159,7 +159,7 @@ ve.dm.Converter.prototype.getDomElementFromDataElement = function( dataElement )
  * @param {HTMLElement} domElement DOM element
  * @returns {Object|false} Linear model element, or false if this node cannot be converted
  */
-ve.dm.Converter.prototype.getDataElementFromDomElement = function( domElement ) {
+ve.dm.Converter.prototype.getDataElementFromDomElement = function ( domElement ) {
 	var dataElement, domElementAttributes, dataElementAttributes, domElementAttribute, i,
 		domElementType = domElement.nodeName.toLowerCase();
 	if (
@@ -192,7 +192,7 @@ ve.dm.Converter.prototype.getDataElementFromDomElement = function( domElement ) 
  * @param {HTMLElement} domElement HTML DOM node
  * @returns {Object|false} Annotation object, or false if this node is not an annotation
  */
-ve.dm.Converter.prototype.getDataAnnotationFromDomElement = function( domElement ) {
+ve.dm.Converter.prototype.getDataAnnotationFromDomElement = function ( domElement ) {
 	var domElementType = domElement.nodeName.toLowerCase(),
 		toDataAnnotation = this.annotations.toDataAnnotation[domElementType];
 	if ( typeof toDataAnnotation === 'function' ) {
@@ -208,7 +208,7 @@ ve.dm.Converter.prototype.getDataAnnotationFromDomElement = function( domElement
  * @param {Object} dataAnnotation Annotation object
  * @returns {HTMLElement|false} HTML DOM node, or false if this annotation is not known
  */
-ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function( dataAnnotation ) {
+ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function ( dataAnnotation ) {
 	var split = dataAnnotation.type.split( '/', 2 ),
 		baseType = split[0],
 		subType = split.slice( 1 ).join( '/' ),
@@ -232,7 +232,7 @@ ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function( dataAnnota
  * @param {Array} [path] Array of linear model element types
  * @returns {Array} Linear model data
  */
-ve.dm.Converter.prototype.getDataFromDom = function( domElement, annotations, dataElement, path, alreadyWrapped ) {
+ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, dataElement, path, alreadyWrapped ) {
 	function createAlien( domElement, isInline ) {
 		var type = isInline ? 'alienInline' : 'alienBlock';
 		return [
@@ -377,7 +377,7 @@ ve.dm.Converter.prototype.getDataFromDom = function( domElement, annotations, da
  * @param {Array} data Linear model data
  * @returns {HTMLElement} Wrapper div containing the resulting HTML
  */
-ve.dm.Converter.prototype.getDomFromData = function( data ) {
+ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 	var text, i, annotations,  hash, annotationElement, done, dataElement, wrapper, childDomElement,
 		datamw,
 		container = document.createElement( 'div' ),

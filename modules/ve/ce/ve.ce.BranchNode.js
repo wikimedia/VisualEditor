@@ -17,7 +17,7 @@
  * @param model {ve.dm.BranchNode} Model to observe
  * @param {jQuery} [$element] Element to use as a container
  */
-ve.ce.BranchNode = function( type, model, $element ) {
+ve.ce.BranchNode = function ( type, model, $element ) {
 	// Inheritance
 	ve.BranchNode.call( this );
 	ve.ce.Node.call( this, type, model, $element );
@@ -62,7 +62,7 @@ if ( $.browser.msie ) {
  * @throws 'Undefined attribute' if attribute is not defined in the model
  * @throws 'Invalid attribute value' if attribute value is not a key in {domWrapperElementTypes}
  */
-ve.ce.BranchNode.getDomWrapperType = function( model, key ) {
+ve.ce.BranchNode.getDomWrapperType = function ( model, key ) {
 	var types,
 		value = model.getAttribute( key );
 	if ( value === undefined ) {
@@ -85,14 +85,14 @@ ve.ce.BranchNode.getDomWrapperType = function( model, key ) {
  * @param {String} key Attribute name to read type value from
  * @returns {jQuery} Selection of DOM wrapper
  */
-ve.ce.BranchNode.getDomWrapper = function( model, key ) {
+ve.ce.BranchNode.getDomWrapper = function ( model, key ) {
 	var type = ve.ce.BranchNode.getDomWrapperType( model, key );
 	return $( '<' + type + '></' + type + '>' );
 };
 
 /* Methods */
 
-ve.ce.BranchNode.prototype.addSlugs = function() {
+ve.ce.BranchNode.prototype.addSlugs = function () {
 	var i, $slug;
 
 	// Remove all slugs in this branch
@@ -149,7 +149,7 @@ ve.ce.BranchNode.prototype.addSlugs = function() {
  * @param {String} key Attribute name to read type value from
  * @emits rewrap ($old, $new)
  */
-ve.ce.BranchNode.prototype.updateDomWrapper = function( key ) {
+ve.ce.BranchNode.prototype.updateDomWrapper = function ( key ) {
 	var $element,
 		type = ve.ce.BranchNode.getDomWrapperType( this.model, key );
 
@@ -183,7 +183,7 @@ ve.ce.BranchNode.prototype.updateDomWrapper = function( key ) {
  * @param {Integer} howmany Number of nodes to remove
  * @param {ve.dm.BranchNode} [...] Variadic list of nodes to insert
  */
-ve.ce.BranchNode.prototype.onSplice = function( index, howmany ) {
+ve.ce.BranchNode.prototype.onSplice = function ( index, howmany ) {
 	var i,
 		length,
 		args = Array.prototype.slice.call( arguments, 0 ),
@@ -220,7 +220,7 @@ ve.ce.BranchNode.prototype.onSplice = function( index, howmany ) {
 	this.addSlugs();
 };
 
-ve.ce.BranchNode.prototype.hasSlugAtOffset = function( offset ) {
+ve.ce.BranchNode.prototype.hasSlugAtOffset = function ( offset ) {
 	var i, nodeOffset, nodeLength;
 	if ( this.getLength() === 0 ) {
 		return true;
@@ -252,7 +252,7 @@ ve.ce.BranchNode.prototype.hasSlugAtOffset = function( offset ) {
 	return false;
 };
 
-ve.ce.BranchNode.prototype.clean = function() {
+ve.ce.BranchNode.prototype.clean = function () {
 	this.$.empty();
 	for ( var i = 0; i < this.children.length; i++ ) {
 		this.$.append( this.children[i].$ );

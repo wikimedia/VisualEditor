@@ -12,7 +12,7 @@
  * @constructor
  * @extends {ve.dm.Annotation}
  */
-ve.dm.LinkAnnotation = function() {
+ve.dm.LinkAnnotation = function () {
 	// Inheritance
 	ve.dm.Annotation.call( this );
 };
@@ -28,7 +28,7 @@ ve.dm.LinkAnnotation = function() {
  */
 ve.dm.LinkAnnotation.converters = {
 	'domElementTypes': ['a'],
-	'toDomElement': function( subType, annotation ) {
+	'toDomElement': function ( subType, annotation ) {
 		var link = document.createElement( 'a' ), key, attributes;
 		// Restore html/* attributes
 		// TODO this should be done for all annotations, factor this out in the new API
@@ -49,7 +49,7 @@ ve.dm.LinkAnnotation.converters = {
 		}
 		return link;
 	},
-	'toDataAnnotation': function( tag, element ) {
+	'toDataAnnotation': function ( tag, element ) {
 		var rel = element.getAttribute( 'rel' ) || '',
 			subType = rel.split( ':' )[1] || 'unknown',
 			href = element.getAttribute( 'href' ),

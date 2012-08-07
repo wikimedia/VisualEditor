@@ -12,7 +12,7 @@
  * @constructor
  * @param model {ve.Node} Model to observe
  */
-ve.Document = function( documentNode ) {
+ve.Document = function ( documentNode ) {
 	// Properties
 	this.documentNode = documentNode;
 };
@@ -25,7 +25,7 @@ ve.Document = function( documentNode ) {
  * @method
  * @returns {ve.Node} Root of node tree
  */
-ve.Document.prototype.getDocumentNode = function() {
+ve.Document.prototype.getDocumentNode = function () {
 	return this.documentNode;
 };
 
@@ -53,7 +53,7 @@ ve.Document.prototype.getDocumentNode = function() {
  * @throws 'Invalid start offset' if range.start is out of range
  * @throws 'Invalid end offset' if range.end is out of range
  */
-ve.Document.prototype.selectNodes = function( range, mode ) {
+ve.Document.prototype.selectNodes = function ( range, mode ) {
 	range.normalize();
 	var doc = this.documentNode,
 		retval = [],
@@ -427,7 +427,7 @@ ve.Document.prototype.selectNodes = function( range, mode ) {
  *     parent: Parent of all of these nodes
  *     grandparent: parent's parent
  */
-ve.Document.prototype.getCoveredSiblingGroups = function( selection ) {
+ve.Document.prototype.getCoveredSiblingGroups = function ( selection ) {
 	var i, firstCoveredSibling, lastCoveredSibling, node, parentNode, siblingNode,
 		leaves = this.selectNodes( selection, 'leaves' ),
 		groups = [],

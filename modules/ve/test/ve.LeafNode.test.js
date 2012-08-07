@@ -9,7 +9,7 @@ module( 've.LeafNode' );
 
 /* Stubs */
 
-ve.LeafNodeStub = function() {
+ve.LeafNodeStub = function () {
 	// Inheritance
 	ve.LeafNode.call( this );
 };

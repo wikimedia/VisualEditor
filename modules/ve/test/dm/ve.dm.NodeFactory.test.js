@@ -30,7 +30,7 @@ ve.dm.NodeFactoryNodeStub.converters = null;
 
 QUnit.test( 'getChildNodeTypes', 2, function ( assert ) {
 	var factory = new ve.dm.NodeFactory();
-	assert.throws( function() {
+	assert.throws( function () {
 			factory.getChildNodeTypes( 'node-factory-node-stub', 23, { 'bar': 'baz' } );
 		},
 		/^Unknown node type: node-factory-node-stub$/,
@@ -78,7 +78,7 @@ QUnit.test( 'canNodeHaveChildren', 2, function ( assert ) {
 
 QUnit.test( 'canNodeHaveGrandchildren', 2, function ( assert ) {
 	var factory = new ve.dm.NodeFactory();
-	assert.throws( function() {
+	assert.throws( function () {
 			factory.canNodeHaveGrandchildren( 'node-factory-node-stub', 23, { 'bar': 'baz' } );
 		},
 		/^Unknown node type: node-factory-node-stub$/,

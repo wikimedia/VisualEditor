@@ -91,7 +91,7 @@ function getDomElementSummary( element ) {
 	return summary;
 }
 
-QUnit.assert.equalNodeTree = function( actual, expected, shallow, message ) {
+QUnit.assert.equalNodeTree = function ( actual, expected, shallow, message ) {
 	if ( typeof shallow === 'string' && arguments.length === 3 ) {
 		message = shallow;
 		shallow = undefined;
@@ -103,7 +103,7 @@ QUnit.assert.equalNodeTree = function( actual, expected, shallow, message ) {
 	);
 };
 
-QUnit.assert.equalNodeSelection = function( actual, expected, message ) {
+QUnit.assert.equalNodeSelection = function ( actual, expected, message ) {
 	var actualSummary = getNodeSelectionSummary( actual ),
 		expectedSummary = getNodeSelectionSummary( expected );
 	QUnit.push(
@@ -111,7 +111,7 @@ QUnit.assert.equalNodeSelection = function( actual, expected, message ) {
 	);
 };
 
-QUnit.assert.equalDomElement = function( actual, expected, message ) {
+QUnit.assert.equalDomElement = function ( actual, expected, message ) {
 	var actualSummary = getDomElementSummary( actual ),
 		expectedSummary = getDomElementSummary( expected );
 	QUnit.push(

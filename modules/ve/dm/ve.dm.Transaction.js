@@ -11,7 +11,7 @@
  * @class
  * @constructor
  */
-ve.dm.Transaction = function() {
+ve.dm.Transaction = function () {
 	this.operations = [];
 	this.lengthDifference = 0;
 };
@@ -28,7 +28,7 @@ ve.dm.Transaction = function() {
  * @param {Array} data Data to insert
  * @returns {ve.dm.Transaction} Transcation that inserts data
  */
-ve.dm.Transaction.newFromInsertion = function( doc, offset, insertion ) {
+ve.dm.Transaction.newFromInsertion = function ( doc, offset, insertion ) {
 	var tx = new ve.dm.Transaction(),
 		data = doc.getData();
 	// Fix up the insertion
@@ -64,7 +64,7 @@ ve.dm.Transaction.newFromInsertion = function( doc, offset, insertion ) {
  * @returns {ve.dm.Transaction} Transcation that removes data
  * @throws 'Invalid range, can not remove from {range.start} to {range.end}'
  */
-ve.dm.Transaction.newFromRemoval = function( doc, range ) {
+ve.dm.Transaction.newFromRemoval = function ( doc, range ) {
 	var i, selection, first, last, nodeStart, nodeEnd,
 		offset = 0,
 		removeStart = null,
@@ -164,7 +164,7 @@ ve.dm.Transaction.newFromRemoval = function( doc, range ) {
  * @throws 'Can not set attributes to non-element data'
  * @throws 'Can not set attributes on closing element'
  */
-ve.dm.Transaction.newFromAttributeChange = function( doc, offset, key, value ) {
+ve.dm.Transaction.newFromAttributeChange = function ( doc, offset, key, value ) {
 	var tx = new ve.dm.Transaction(),
 		data = doc.getData();
 	// Verify element exists at offset
@@ -199,7 +199,7 @@ ve.dm.Transaction.newFromAttributeChange = function( doc, offset, key, value ) {
  * @param {Object} annotation Annotation to set or clear
  * @returns {ve.dm.Transaction} Transcation that annotates content
  */
-ve.dm.Transaction.newFromAnnotation = function( doc, range, method, annotation ) {
+ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation ) {
 	var covered,
 		tx = new ve.dm.Transaction(),
 		data = doc.getData(),
@@ -260,7 +260,7 @@ ve.dm.Transaction.newFromAnnotation = function( doc, range, method, annotation )
  * @param {Object} attr Attributes to initialize element with
  * @returns {ve.dm.Transaction} Transaction that annotates content
  */
-ve.dm.Transaction.newFromContentBranchConversion = function( doc, range, type, attr ) {
+ve.dm.Transaction.newFromContentBranchConversion = function ( doc, range, type, attr ) {
 	var i, selected, branch, branchOuterRange,
 		tx = new ve.dm.Transaction(),
 		data = doc.getData(),
@@ -338,7 +338,7 @@ ve.dm.Transaction.newFromContentBranchConversion = function( doc, range, type, a
  *              {'type': '/paragraph'}, {'type': '/listItem'}, {'type': 'listItem', 'attributes': {'styles': ['bullet']}},
  *              {'type': 'paragraph'}, 'b', {'type': '/paragraph'}, {'type': '/listItem'}, {'type': '/list'} ]
  */
-ve.dm.Transaction.newFromWrap = function( doc, range, unwrapOuter, wrapOuter, unwrapEach, wrapEach ) {
+ve.dm.Transaction.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, unwrapEach, wrapEach ) {
 	var i, j, unwrapOuterData, startOffset, unwrapEachData, closingUnwrapEach, closingWrapEach,
 		tx = new ve.dm.Transaction(),
 		depth = 0;
@@ -449,7 +449,7 @@ ve.dm.Transaction.newFromWrap = function( doc, range, unwrapOuter, wrapOuter, un
  * @method
  * @returns {Object[]} List of operations
  */
-ve.dm.Transaction.prototype.getOperations = function() {
+ve.dm.Transaction.prototype.getOperations = function () {
 	return this.operations;
 };
 
@@ -459,7 +459,7 @@ ve.dm.Transaction.prototype.getOperations = function() {
  * @method
  * @returns {Integer} Difference in content length
  */
-ve.dm.Transaction.prototype.getLengthDifference = function() {
+ve.dm.Transaction.prototype.getLengthDifference = function () {
 	return this.lengthDifference;
 };
 
@@ -473,7 +473,7 @@ ve.dm.Transaction.prototype.getLengthDifference = function() {
  * @param {Number} offset Offset in the linear model before the transaction has been processed
  * @returns {Number} Translated offset, as it will be after processing transaction
  */
-ve.dm.Transaction.prototype.translateOffset = function( offset ) {
+ve.dm.Transaction.prototype.translateOffset = function ( offset ) {
 	var i, cursor = 0, adjustment = 0, op;
 	if ( offset === 0 ) {
 		return 0;
@@ -511,7 +511,7 @@ ve.dm.Transaction.prototype.translateOffset = function( offset ) {
  * @param {ve.Range} range Range in the linear model before the transaction has been processed
  * @returns {ve.Range} Translated range, as it will be after processing transaction
  */
-ve.dm.Transaction.prototype.translateRange = function( range ) {
+ve.dm.Transaction.prototype.translateRange = function ( range ) {
 	return new ve.Range( this.translateOffset( range.from ), this.translateOffset( range.to ) );
 };
 
@@ -522,7 +522,7 @@ ve.dm.Transaction.prototype.translateRange = function( range ) {
  * @param {Integer} length Length of content data to retain
  * @throws 'Invalid retain length, can not retain backwards: {length}'
  */
-ve.dm.Transaction.prototype.pushRetain = function( length ) {
+ve.dm.Transaction.prototype.pushRetain = function ( length ) {
 	if ( length < 0 ) {
 		throw 'Invalid retain length, can not retain backwards:' + length;
 	}
@@ -546,7 +546,7 @@ ve.dm.Transaction.prototype.pushRetain = function( length ) {
  * @param {Array} remove Data to remove
  * @param {Array] insert Data to replace 'remove' with
  */
-ve.dm.Transaction.prototype.pushReplace = function( remove, insert ) {
+ve.dm.Transaction.prototype.pushReplace = function ( remove, insert ) {
 	if ( remove.length === 0 && insert.length === 0 ) {
 		// Don't push no-ops
 		return;
@@ -567,7 +567,7 @@ ve.dm.Transaction.prototype.pushReplace = function( remove, insert ) {
  * @param {Mixed} from Value change attribute from, or undefined if not previously set
  * @param {Mixed} to Value to change attribute to, or undefined to remove
  */
-ve.dm.Transaction.prototype.pushReplaceElementAttribute = function( key, from, to ) {
+ve.dm.Transaction.prototype.pushReplaceElementAttribute = function ( key, from, to ) {
 	this.operations.push( {
 		'type': 'attribute',
 		'key': key,
@@ -583,7 +583,7 @@ ve.dm.Transaction.prototype.pushReplaceElementAttribute = function( key, from, t
  * @param {String} method Method to use, either "set" or "clear"
  * @param {Object} annotation Annotation object to start setting or clearing from content data
  */
-ve.dm.Transaction.prototype.pushStartAnnotating = function( method, annotation ) {
+ve.dm.Transaction.prototype.pushStartAnnotating = function ( method, annotation ) {
 	this.operations.push( {
 		'type': 'annotate',
 		'method': method,
@@ -599,7 +599,7 @@ ve.dm.Transaction.prototype.pushStartAnnotating = function( method, annotation )
  * @param {String} method Method to use, either "set" or "clear"
  * @param {Object} annotation Annotation object to stop setting or clearing from content data
  */
-ve.dm.Transaction.prototype.pushStopAnnotating = function( method, annotation ) {
+ve.dm.Transaction.prototype.pushStopAnnotating = function ( method, annotation ) {
 	this.operations.push( {
 		'type': 'annotate',
 		'method': method,

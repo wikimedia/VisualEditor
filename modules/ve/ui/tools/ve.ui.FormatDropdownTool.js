@@ -15,7 +15,7 @@
  * @param {String} name
  * @param {Object[]} items
  */
-ve.FormatDropdownTool = function( toolbar, name, title ) {
+ve.FormatDropdownTool = function ( toolbar, name, title ) {
 	// Inheritance
 	ve.ui.DropdownTool.call( this, toolbar, name, title, [
 		{
@@ -69,7 +69,7 @@ ve.FormatDropdownTool = function( toolbar, name, title ) {
 
 /* Methods */
 
-ve.FormatDropdownTool.splitAndUnwrap = function( model, list, firstItem, lastItem, selection ) {
+ve.FormatDropdownTool.splitAndUnwrap = function ( model, list, firstItem, lastItem, selection ) {
 	var doc = model.getDocument(),
 		start = firstItem.getOuterRange().start,
 		end = lastItem.getOuterRange().end,
@@ -101,7 +101,7 @@ ve.FormatDropdownTool.splitAndUnwrap = function( model, list, firstItem, lastIte
 	return selection;
 };
 
-ve.FormatDropdownTool.prototype.onSelect = function( item ) {
+ve.FormatDropdownTool.prototype.onSelect = function ( item ) {
 	var selected, prevList, firstInList, lastInList, i, contentBranch, listItem, txs,
 		surfaceView = this.toolbar.getSurfaceView(),
 		model = surfaceView.getModel(),
@@ -155,7 +155,7 @@ ve.FormatDropdownTool.prototype.onSelect = function( item ) {
 	surfaceView.showSelection( selection );
 };
 
-ve.FormatDropdownTool.prototype.getMatchingMenuItems = function( nodes ) {
+ve.FormatDropdownTool.prototype.getMatchingMenuItems = function ( nodes ) {
 	var i, j, nodeType, nodeAttributes, item, key,
 		matches = [],
 		items = this.menuView.getItems();
@@ -192,7 +192,7 @@ ve.FormatDropdownTool.prototype.getMatchingMenuItems = function( nodes ) {
 	return matches;
 };
 
-ve.FormatDropdownTool.prototype.updateState = function( annotations, nodes ) {
+ve.FormatDropdownTool.prototype.updateState = function ( annotations, nodes ) {
 	if ( nodes.length ) {
 		var items = this.getMatchingMenuItems( nodes );
 		if ( items.length === 1 ) {

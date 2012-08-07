@@ -14,7 +14,7 @@
  * @param {ve.dm.LeafNode[]} [children] Child nodes to attach
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  */
-ve.dm.PreformattedNode = function( children, attributes ) {
+ve.dm.PreformattedNode = function ( children, attributes ) {
 	// Inheritance
 	ve.dm.BranchNode.call( this, 'preformatted', children, attributes );
 };
@@ -45,10 +45,10 @@ ve.dm.PreformattedNode.rules = {
  */
 ve.dm.PreformattedNode.converters = {
 	'domElementTypes': ['pre'],
-	'toDomElement': function( type, element ) {
+	'toDomElement': function ( type, element ) {
 		return document.createElement( 'pre' );
 	},
-	'toDataElement': function( tag, element ) {
+	'toDataElement': function ( tag, element ) {
 		return { 'type': 'preformatted' };
 	}
 };

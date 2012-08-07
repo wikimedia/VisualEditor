@@ -14,7 +14,7 @@
  * @param {ve.dm.BranchNode[]} [children] Child nodes to attach
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  */
-ve.dm.TableRowNode = function( children, attributes ) {
+ve.dm.TableRowNode = function ( children, attributes ) {
 	// Inheritance
 	ve.dm.BranchNode.call( this, 'tableRow', children, attributes );
 };
@@ -45,10 +45,10 @@ ve.dm.TableRowNode.rules = {
  */
 ve.dm.TableRowNode.converters = {
 	'domElementTypes': ['tr'],
-	'toDomElement': function( type, element ) {
+	'toDomElement': function ( type, element ) {
 		return document.createElement( 'tr' );
 	},
-	'toDataElement': function( tag, element ) {
+	'toDataElement': function ( tag, element ) {
 		return { 'type': 'tableRow' };
 	}
 };

@@ -585,7 +585,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 	$( '#ca-watch, #ca-unwatch' )
 		.on(
 			'watchpage.mw',
-			ve.proxy( function ( e, action ){
+			ve.proxy( function ( e, action ) {
 				this.$saveDialog
 					.find( '#ve-init-mw-viewPageTarget-saveDialog-watchList')
 					.prop( 'checked', ( action === 'watch') );

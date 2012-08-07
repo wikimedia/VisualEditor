@@ -13,7 +13,7 @@
  * @constructor
  * @param {String} pageName Name of target page
  */
-ve.init.Platform = function() {
+ve.init.Platform = function () {
 	// Inheritance
 	ve.EventEmitter.call( this );
 };
@@ -27,7 +27,7 @@ ve.init.Platform = function() {
  * @abstract
  * @returns {RegExp} Regular expression object
  */
-ve.init.Platform.prototype.getExternalLinkUrlProtocolsRegExp = function() {
+ve.init.Platform.prototype.getExternalLinkUrlProtocolsRegExp = function () {
 	throw 've.init.Platform.getExternalLinkUrlProtocolsRegExp must be overridden in subclass';
 };
 
@@ -38,7 +38,7 @@ ve.init.Platform.prototype.getExternalLinkUrlProtocolsRegExp = function() {
  * @abstract
  * @returns {String} Remote modules URL
  */
-ve.init.Platform.prototype.getModulesUrl = function() {
+ve.init.Platform.prototype.getModulesUrl = function () {
 	throw 've.init.Platform.getModulesUrl must be overridden in subclass';
 };
 
@@ -49,7 +49,7 @@ ve.init.Platform.prototype.getModulesUrl = function() {
  * @abstract
  * @param {Object} messages Map of message-key/message-string pairs
  */
-ve.init.Platform.prototype.addMessages = function( messages ) {
+ve.init.Platform.prototype.addMessages = function ( messages ) {
 	throw 've.init.Platform.addMessages must be overridden in subclass';
 };
 
@@ -62,7 +62,7 @@ ve.init.Platform.prototype.addMessages = function( messages ) {
  * @param {Mixed} [...] List of arguments which will be injected at $1, $2, etc. in the messaage
  * @returns {String} Localized message
  */
-ve.init.Platform.prototype.getMessage = function( key ) {
+ve.init.Platform.prototype.getMessage = function ( key ) {
 	throw 've.init.Platform.getMessage must be overridden in subclass';
 };
 

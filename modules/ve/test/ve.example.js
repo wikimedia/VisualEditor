@@ -11,7 +11,7 @@ ve.example = {};
 
 /* Methods */
 
-ve.example.getSelectNodesCases = function( doc ) {
+ve.example.getSelectNodesCases = function ( doc ) {
 	var lookup = ve.example.lookupNode,
 		documentNode = doc.getDocumentNode();
 	return [
@@ -332,7 +332,7 @@ ve.example.getSelectNodesCases = function( doc ) {
  * @param {Integer} [...] Index path
  * @param {ve.Node} Node at given path
  */
-ve.example.lookupNode = function( root ) {
+ve.example.lookupNode = function ( root ) {
 	var i,
 		node = root;
 	for ( i = 1; i < arguments.length; i++ ) {
@@ -341,7 +341,7 @@ ve.example.lookupNode = function( root ) {
 	return node;
 };
 
-ve.example.createDomElement = function( type, attributes ) {
+ve.example.createDomElement = function ( type, attributes ) {
 	var key,
 		element = document.createElement( type );
 	for ( key in attributes ) {

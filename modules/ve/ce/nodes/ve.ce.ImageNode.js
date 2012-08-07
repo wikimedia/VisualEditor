@@ -13,7 +13,7 @@
  * @extends {ve.ce.LeafNode}
  * @param model {ve.dm.ImageNode} Model to observe
  */
-ve.ce.ImageNode = function( model ) {
+ve.ce.ImageNode = function ( model ) {
 	// Inheritance
 	ve.ce.LeafNode.call( this, 'image', model, $( '<img>' ) );
 
@@ -26,7 +26,7 @@ ve.ce.ImageNode = function( model ) {
 	// Events
 	this.model.addListenerMethod( this, 'update', 'onUpdate' );
 	/*
-	this.$.on('mousedown', function() {
+	this.$.on('mousedown', function () {
 		return false;
 	});
 	*/
@@ -57,7 +57,7 @@ ve.ce.ImageNode.rules = {
  *
  * @method
  */
-ve.ce.ImageNode.prototype.onUpdate = function() {
+ve.ce.ImageNode.prototype.onUpdate = function () {
 	// TODO needs to support height/width
 	var source = this.model.getAttribute( 'html/src' );
 	if ( source !== this.currentSource ) {

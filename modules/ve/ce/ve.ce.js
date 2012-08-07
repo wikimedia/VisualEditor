@@ -36,8 +36,8 @@ ve.ce.whitespacePattern = /[\u0020\u00A0]/g;
  * @param {DOMElement} element DOM element to get text of
  * @returns {String} Plain text of DOM element
  */
-ve.ce.getDomText = function( element ) {
-	var func = function( element ) {
+ve.ce.getDomText = function ( element ) {
+	var func = function ( element ) {
 		var nodeType = element.nodeType,
 			text = '';
 		if ( nodeType === 1 || nodeType === 9 || nodeType === 11 ) {
@@ -76,7 +76,7 @@ ve.ce.getDomText = function( element ) {
  * @param {DOMElement} element DOM element to get hash of
  * @returns {String} Hash of DOM element
  */
-ve.ce.getDomHash = function( element ) {
+ve.ce.getDomHash = function ( element ) {
 	var nodeType = element.nodeType,
 		nodeName = element.nodeName,
 		hash = '';

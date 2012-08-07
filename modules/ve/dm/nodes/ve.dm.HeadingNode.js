@@ -14,7 +14,7 @@
  * @param {ve.dm.LeafNode[]} [children] Child nodes to attach
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  */
-ve.dm.HeadingNode = function( children, attributes ) {
+ve.dm.HeadingNode = function ( children, attributes ) {
 	// Inheritance
 	ve.dm.BranchNode.call( this, 'heading', children, attributes );
 };
@@ -45,7 +45,7 @@ ve.dm.HeadingNode.rules = {
  */
 ve.dm.HeadingNode.converters = {
 	'domElementTypes': ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
-	'toDomElement': function( type, element ) {
+	'toDomElement': function ( type, element ) {
 		return element.attributes && ( {
 			1: document.createElement( 'h1' ),
 			2: document.createElement( 'h2' ),
@@ -55,7 +55,7 @@ ve.dm.HeadingNode.converters = {
 			6: document.createElement( 'h6' )
 		} )[element.attributes.level];
 	},
-	'toDataElement': function( tag, element ) {
+	'toDataElement': function ( tag, element ) {
 		return ( {
 			'h1': { 'type': 'heading', 'attributes': { 'level': 1 } },
 			'h2': { 'type': 'heading', 'attributes': { 'level': 2 } },

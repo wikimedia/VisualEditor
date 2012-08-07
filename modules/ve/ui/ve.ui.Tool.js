@@ -13,7 +13,7 @@
  * @param {ve.ui.Toolbar} toolbar
  * @param {String} name
  */
-ve.ui.Tool = function( toolbar, name, title ) {
+ve.ui.Tool = function ( toolbar, name, title ) {
 	this.toolbar = toolbar;
 	this.name = name;
 	this.title = title;
@@ -26,10 +26,10 @@ ve.ui.Tool.tools = {};
 
 /* Methods */
 
-ve.ui.Tool.prototype.updateState = function() {
+ve.ui.Tool.prototype.updateState = function () {
 	throw 'Tool.updateState not implemented in this subclass:' + this.constructor;
 };
 
-ve.ui.Tool.prototype.clearState = function() {
+ve.ui.Tool.prototype.clearState = function () {
 	this.$.removeClass( 'es-toolbarButtonTool-down' );
 };

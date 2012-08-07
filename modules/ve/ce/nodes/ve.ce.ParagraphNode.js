@@ -13,7 +13,7 @@
  * @extends {ve.ce.BranchNode}
  * @param model {ve.dm.ParagraphNode} Model to observe
  */
-ve.ce.ParagraphNode = function( model ) {
+ve.ce.ParagraphNode = function ( model ) {
 	// Inheritance
 	ve.ce.BranchNode.call( this, 'paragraph', model, $( '<p></p>' ) );
 };

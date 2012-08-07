@@ -14,7 +14,7 @@
  * @param {Array} data Linear model data to start with
  * @param {ve.dm.Document} [parentDocument] Document to use as root for created nodes
  */
-ve.dm.Document = function( data, parentDocument ) {
+ve.dm.Document = function ( data, parentDocument ) {
 	// Inheritance
 	ve.Document.call( this, new ve.dm.DocumentNode() );
 
@@ -133,7 +133,7 @@ ve.dm.Document = function( data, parentDocument ) {
  * @param {Array} data Data to remove annotations from
  * @param {Array} annotations Annotations to apply
  */
-ve.dm.Document.addAnnotationsToData = function( data, annotations ) {
+ve.dm.Document.addAnnotationsToData = function ( data, annotations ) {
 	// Apply annotations to data
 	for ( var i = 0; i < data.length; i++ ) {
 		if ( !ve.isArray( data[i] ) ) {
@@ -162,7 +162,7 @@ ve.dm.Document.addAnnotationsToData = function( data, annotations ) {
  * @param {Integer} offset Document offset
  * @returns {Boolean} Content can be inserted at offset
  */
-ve.dm.Document.isContentOffset = function( data, offset ) {
+ve.dm.Document.isContentOffset = function ( data, offset ) {
 	// Edges are never content
 	if ( offset === 0 || offset === data.length ) {
 		return false;
@@ -246,7 +246,7 @@ ve.dm.Document.isContentOffset = function( data, offset ) {
  * @param {Boolean} [unrestricted] Only return true if any kind of element can be inserted at offset
  * @returns {Boolean} Structure can be inserted at offset
  */
-ve.dm.Document.isStructuralOffset = function( data, offset, unrestricted ) {
+ve.dm.Document.isStructuralOffset = function ( data, offset, unrestricted ) {
 	// Edges are always structural
 	if ( offset === 0 || offset === data.length ) {
 		return true;
@@ -334,7 +334,7 @@ ve.dm.Document.isStructuralOffset = function( data, offset, unrestricted ) {
  * @param {Integer} offset Document offset
  * @returns {Boolean} Data at offset is an element
  */
-ve.dm.Document.isElementData = function( data, offset ) {
+ve.dm.Document.isElementData = function ( data, offset ) {
 	// Data exists at offset and appears to be an element
 	return data[offset] !== undefined && typeof data[offset].type === 'string';
 };
@@ -350,7 +350,7 @@ ve.dm.Document.isElementData = function( data, offset ) {
  * @param {Array} data Document data
  * @returns {Boolean} At least one elements exists in data
  */
-ve.dm.Document.containsElementData = function( data ) {
+ve.dm.Document.containsElementData = function ( data ) {
 	var i = data.length;
 	while ( i-- ) {
 		if ( data[i].type !== undefined ) {
@@ -371,7 +371,7 @@ ve.dm.Document.containsElementData = function( data ) {
  * @param {Array} data Document data
  * @returns {Boolean} True if all elements in data are content elements
  */
-ve.dm.Document.isContentData = function( data ) {
+ve.dm.Document.isContentData = function ( data ) {
 	for ( var i = 0, len = data.length; i < len; i++ ) {
 		if ( data[i].type !== undefined &&
 			data[i].type.charAt( 0 ) !== '/' &&
@@ -391,7 +391,7 @@ ve.dm.Document.isContentData = function( data ) {
  * @method
  * @param {ve.dm.Transaction}
  */
-ve.dm.Document.prototype.rollback = function( transaction ) {
+ve.dm.Document.prototype.rollback = function ( transaction ) {
 	ve.dm.TransactionProcessor.rollback( this, transaction );
 };
 
@@ -401,7 +401,7 @@ ve.dm.Document.prototype.rollback = function( transaction ) {
  * @method
  * @param {ve.dm.Transaction}
  */
-ve.dm.Document.prototype.commit = function( transaction ) {
+ve.dm.Document.prototype.commit = function ( transaction ) {
 	ve.dm.TransactionProcessor.commit( this, transaction );
 };
 
@@ -413,7 +413,7 @@ ve.dm.Document.prototype.commit = function( transaction ) {
  * @param {Boolean} [deep=false] Whether to return a deep copy (WARNING! This may be very slow)
  * @returns {Array} Slice or copy of document data
  */
-ve.dm.Document.prototype.getData = function( range, deep ) {
+ve.dm.Document.prototype.getData = function ( range, deep ) {
 	var end, data,
 		start = 0;
 	if ( range !== undefined ) {
@@ -427,7 +427,7 @@ ve.dm.Document.prototype.getData = function( range, deep ) {
 	return deep ? ve.copyArray( data ) : data;
 };
 
-ve.dm.Document.prototype.getNodeFromOffset = function( offset ) {
+ve.dm.Document.prototype.getNodeFromOffset = function ( offset ) {
 	// FIXME duplicated from ve.ce.Document
 	var node = this.documentNode.getNodeFromOffset( offset );
 	if ( !node.canHaveChildren() ) {
@@ -443,7 +443,7 @@ ve.dm.Document.prototype.getNodeFromOffset = function( offset ) {
  * @param {ve.dm.Node} node Node to get content data for
  * @returns {Array|null} List of content and elements inside node or null if node is not found
  */
-ve.dm.Document.prototype.getDataFromNode = function( node ) {
+ve.dm.Document.prototype.getDataFromNode = function ( node ) {
 	var length = node.getLength(),
 		offset = this.documentNode.getOffsetFromNode( node );
 	if ( offset >= 0 ) {
@@ -464,7 +464,7 @@ ve.dm.Document.prototype.getDataFromNode = function( node ) {
  * @param {Integer} offset Offset to get annotations for
  * @returns {Object} A copy of all annotation objects offset is covered by
  */
-ve.dm.Document.prototype.getAnnotationsFromOffset = function( offset ) {
+ve.dm.Document.prototype.getAnnotationsFromOffset = function ( offset ) {
 	var annotations;
 	// Since annotations are not stored on a closing leaf node,
 	// rewind offset by 1 to return annotations for that structure
@@ -475,7 +475,7 @@ ve.dm.Document.prototype.getAnnotationsFromOffset = function( offset ) {
 		ve.dm.nodeFactory.canNodeHaveChildren(
 			this.data[offset].type.substr( 1 )
 		) === false // leaf node
-	){
+	) {
 		offset = this.getRelativeContentOffset( offset, -1 );
 	}
 
@@ -500,7 +500,7 @@ ve.dm.Document.prototype.getAnnotationsFromOffset = function( offset ) {
 ve.dm.Document.prototype.offsetContainsAnnotation = function ( offset, annotation ) {
 	var hash, annotations = this.getAnnotationsFromOffset( offset );
 	for ( hash in annotations ) {
-		if ( ve.compareObjects( annotations[hash], annotation ) ){
+		if ( ve.compareObjects( annotations[hash], annotation ) ) {
 			return true;
 		}
 	}
@@ -543,7 +543,7 @@ ve.dm.Document.prototype.getAnnotatedRangeFromOffset = function ( offset, annota
  * @param {Object} annotation Annotation to test for coverage with
  * @returns {ve.Range|null} Range of content covered by annotation, or a copy of the range.
  */
-ve.dm.Document.prototype.getAnnotatedRangeFromSelection = function( range, annotation ) {
+ve.dm.Document.prototype.getAnnotatedRangeFromSelection = function ( range, annotation ) {
 	var start = range.start,
 		end = range.end;
 
@@ -572,7 +572,7 @@ ve.dm.Document.prototype.getAnnotatedRangeFromSelection = function( range, annot
  * @param {RegExp} pattern Regular expression pattern to match with
  * @returns {Boolean} Character has matching annotations
  */
-ve.dm.Document.prototype.offsetContainsMatchingAnnotations = function( offset, pattern ) {
+ve.dm.Document.prototype.offsetContainsMatchingAnnotations = function ( offset, pattern ) {
 	if ( !( pattern instanceof RegExp ) ) {
 		throw 'Invalid Pattern. Pattern not instance of RegExp';
 	}
@@ -597,7 +597,7 @@ ve.dm.Document.prototype.offsetContainsMatchingAnnotations = function( offset, p
  * @param {RegExp} pattern Regular expression pattern to match with
  * @returns {Object} Annotations that match the pattern
  */
-ve.dm.Document.prototype.getMatchingAnnotationsFromOffset = function( offset, pattern ) {
+ve.dm.Document.prototype.getMatchingAnnotationsFromOffset = function ( offset, pattern ) {
 	if ( !( pattern instanceof RegExp ) ) {
 		throw 'Invalid Pattern. Pattern not instance of RegExp';
 	}
@@ -607,7 +607,7 @@ ve.dm.Document.prototype.getMatchingAnnotationsFromOffset = function( offset, pa
 			this.data[offset][1] : this.data[offset].annotations;
 	if ( ve.isPlainObject( annotations ) ) {
 		for ( hash in annotations ) {
-			if ( pattern.test( annotations[hash].type ) ){
+			if ( pattern.test( annotations[hash].type ) ) {
 				matches[hash] = annotations[hash];
 			}
 		}
@@ -624,7 +624,7 @@ ve.dm.Document.prototype.getMatchingAnnotationsFromOffset = function( offset, pa
  * @param {RegExp} pattern Regular expression pattern to match with
  * @returns {Object} Annotations that match the pattern
  */
-ve.dm.Document.getMatchingAnnotations = function( annotations, pattern ) {
+ve.dm.Document.getMatchingAnnotations = function ( annotations, pattern ) {
 	if ( !( pattern instanceof RegExp ) ) {
 		throw 'Invalid Pattern. Pattern not instance of RegExp';
 	}
@@ -632,7 +632,7 @@ ve.dm.Document.getMatchingAnnotations = function( annotations, pattern ) {
 		matches = {};
 	if ( ve.isPlainObject( annotations ) ) {
 		for ( hash in annotations ) {
-			if ( pattern.test( annotations[hash].type ) ){
+			if ( pattern.test( annotations[hash].type ) ) {
 				matches[hash] = annotations[hash];
 			}
 		}
@@ -648,7 +648,7 @@ ve.dm.Document.getMatchingAnnotations = function( annotations, pattern ) {
  * @param {Boolean} [all] Get all annotations found within the range, not just those that cover it
  * @returns {Object} A copy of all annotation objects offset is covered by
  */
-ve.dm.Document.prototype.getAnnotationsFromRange = function( range, all ) {
+ve.dm.Document.prototype.getAnnotationsFromRange = function ( range, all ) {
 	var i,
 		annotations = {},
 		count = 0,
@@ -703,7 +703,7 @@ ve.dm.Document.prototype.getAnnotationsFromRange = function( range, all ) {
  * @param {ve.Range} [range] Range of data to get, all data will be given by default
  * @returns {Object} A new range if modified, otherwise returns passed range.
  */
-ve.dm.Document.prototype.trimOuterSpaceFromRange = function( range ){
+ve.dm.Document.prototype.trimOuterSpaceFromRange = function ( range ) {
 	range.normalize();
 	var	start = range.start,
 		end = range.end;
@@ -746,7 +746,7 @@ ve.dm.Document.prototype.trimOuterSpaceFromRange = function( range ){
  * @param {Integer} newLength Length of data in linear model to rebuild or insert nodes for
  * @returns {ve.dm.Node[]} Array containing the rebuilt/inserted nodes
  */
-ve.dm.Document.prototype.rebuildNodes = function( parent, index, numNodes, offset, newLength ) {
+ve.dm.Document.prototype.rebuildNodes = function ( parent, index, numNodes, offset, newLength ) {
 	var // Get a slice of the document where it's been changed
 		data = this.data.slice( offset, offset + newLength ),
 		// Build document fragment from data
@@ -778,7 +778,7 @@ ve.dm.Document.prototype.rebuildNodes = function( parent, index, numNodes, offse
  * @param {Mixed} [...] Additional arguments to pass to the callback
  * @returns {Integer} Relative valid offset or -1 if there are no valid offsets in document
  */
-ve.dm.Document.prototype.getRelativeOffset = function( offset, distance, callback ) {
+ve.dm.Document.prototype.getRelativeOffset = function ( offset, distance, callback ) {
 	var i, direction,
 		args = Array.prototype.slice.call( arguments, 3 ),
 		start = offset,
@@ -842,7 +842,7 @@ ve.dm.Document.prototype.getRelativeOffset = function( offset, distance, callbac
  * @param {Integer} distance Number of content offsets to move
  * @returns {Integer} Relative content offset or -1 if there are no valid offsets in document
  */
-ve.dm.Document.prototype.getRelativeContentOffset = function( offset, distance ) {
+ve.dm.Document.prototype.getRelativeContentOffset = function ( offset, distance ) {
 	return this.getRelativeOffset( offset, distance, ve.dm.Document.isContentOffset );
 };
 
@@ -863,7 +863,7 @@ ve.dm.Document.prototype.getRelativeContentOffset = function( offset, distance )
  * @param {Integer} [direction] Direction to prefer matching offset in, -1 for left and 1 for right
  * @returns {Integer} Nearest content offset or -1 if there are no valid offsets in document
  */
-ve.dm.Document.prototype.getNearestContentOffset = function( offset, direction ) {
+ve.dm.Document.prototype.getNearestContentOffset = function ( offset, direction ) {
 	if ( ve.dm.Document.isContentOffset( this.data, offset ) ) {
 		return offset;
 	}
@@ -890,7 +890,7 @@ ve.dm.Document.prototype.getNearestContentOffset = function( offset, direction )
  * @param {Boolean} [unrestricted] Only return true if any kind of element can be inserted at offset
  * @returns {Integer} Relative structural offset
  */
-ve.dm.Document.prototype.getRelativeStructuralOffset = function( offset, distance, unrestricted ) {
+ve.dm.Document.prototype.getRelativeStructuralOffset = function ( offset, distance, unrestricted ) {
 	// Optimization: start and end are always unrestricted structural offsets
 	if ( distance === 0 && ( offset === 0 || offset === this.data.length ) ) {
 		return offset;
@@ -918,7 +918,7 @@ ve.dm.Document.prototype.getRelativeStructuralOffset = function( offset, distanc
  * @param {Boolean} [unrestricted] Only return true if any kind of element can be inserted at offset
  * @returns {Integer} Nearest structural offset
  */
-ve.dm.Document.prototype.getNearestStructuralOffset = function( offset, direction, unrestricted ) {
+ve.dm.Document.prototype.getNearestStructuralOffset = function ( offset, direction, unrestricted ) {
 	if ( ve.dm.Document.isStructuralOffset( this.data, offset, unrestricted ) ) {
 		return offset;
 	}
@@ -944,7 +944,7 @@ ve.dm.Document.prototype.getNearestStructuralOffset = function( offset, directio
  * @param offset {Integer} Offset in the linear model where the caller wants to insert data
  * @returns {Array} A (possibly modified) copy of data
  */
-ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
+ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 	var
 		// Array where we build the return value
 		newData = [],
@@ -1258,7 +1258,7 @@ ve.dm.Document.prototype.fixupInsertion = function( data, offset ) {
  *
  * @returns {Array} Balanced snippet of linear model data
  */
-ve.dm.Document.prototype.getBalancedData = function( range ) {
+ve.dm.Document.prototype.getBalancedData = function ( range ) {
 	var first, last, firstNode, lastNode,
 		node = this.getNodeFromOffset( range.start ),
 		selection = this.selectNodes( range, 'siblings' ),

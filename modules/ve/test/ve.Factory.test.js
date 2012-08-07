@@ -19,7 +19,7 @@ ve.FactoryObjectStub = function ( a, b ) {
 QUnit.test( 'register', 1, function ( assert ) {
 	var factory = new ve.Factory();
 	assert.throws(
-		function() {
+		function () {
 			factory.register( 'factory-object-stub', 'not-a-function' );
 		},
 		/^Constructor must be a function, cannot be a string$/,

@@ -14,7 +14,7 @@
  * @param {Integer} [length] Length of content data in document
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  */
-ve.dm.AlienInlineNode = function( length, attributes ) {
+ve.dm.AlienInlineNode = function ( length, attributes ) {
 	// Inheritance
 	ve.dm.LeafNode.call( this, 'alienInline', 0, attributes );
 };
