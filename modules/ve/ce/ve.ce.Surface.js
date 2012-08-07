@@ -86,6 +86,12 @@ ve.ce.Surface = function ( $container, model ) {
 
 /* Methods */
 
+/**
+ * Responds to document focus events.
+ *
+ * @method
+ * @param {jQuery.Event} e
+ */
 ve.ce.Surface.prototype.documentOnFocus = function () {
 	ve.log( 'documentOnFocus' );
 
@@ -101,6 +107,12 @@ ve.ce.Surface.prototype.documentOnFocus = function () {
 	this.startPolling( true );
 };
 
+/**
+ * Responds to document blur events.
+ *
+ * @method
+ * @param {jQuery.Event} e
+ */
 ve.ce.Surface.prototype.documentOnBlur = function () {
 	ve.log( 'documentOnBlur' );
 
@@ -114,6 +126,12 @@ ve.ce.Surface.prototype.documentOnBlur = function () {
 	}
 };
 
+/**
+ * Responds to document mouse down events.
+ *
+ * @method
+ * @param {jQuery.Event} e
+ */
 ve.ce.Surface.prototype.onMouseDown = function ( e ) {
 	ve.log( 'onMouseDown' );
 
@@ -132,6 +150,12 @@ ve.ce.Surface.prototype.onMouseDown = function ( e ) {
 	}
 };
 
+/**
+ * Responds to document key down events.
+ *
+ * @method
+ * @param {jQuery.Event} e
+ */
 ve.ce.Surface.prototype.onKeyDown = function ( e ) {
 	var offset,
 		relativeContentOffset,
@@ -283,6 +307,12 @@ ve.ce.Surface.prototype.onKeyDown = function ( e ) {
 	}
 };
 
+/**
+ * Responds to copy events.
+ *
+ * @method
+ * @param {jQuery.Event} e
+ */
 ve.ce.Surface.prototype.onCopy = function ( e ) {
 	var sel = rangy.getSelection(),
 		$frag = $( sel.getRangeAt(0).cloneContents() ),
@@ -310,6 +340,12 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 	}
 };
 
+/**
+ * Responds to cut events.
+ *
+ * @method
+ * @param {jQuery.Event} e
+ */
 ve.ce.Surface.prototype.onCut = function ( e ) {
 	var surface = this;
 
@@ -337,7 +373,13 @@ ve.ce.Surface.prototype.onCut = function ( e ) {
 	}, 1 );
 };
 
-ve.ce.Surface.prototype.onPaste = function ( e ) {
+/**
+ * Responds to paste events.
+ *
+ * @method
+ * @param {jQuery.Event} e
+ */
+ve.ce.Surface.prototype.onPaste = function () {
 	var view = this,
 		selection = this.model.getSelection(),
 		tx = null;
@@ -386,6 +428,12 @@ ve.ce.Surface.prototype.onPaste = function ( e ) {
 	}, 1 );
 };
 
+/**
+ * Responds to document key press events.
+ *
+ * @method
+ * @param {jQuery.Event} e
+ */
 ve.ce.Surface.prototype.onKeyPress = function ( e ) {
 	var node, selection, data;
 
@@ -440,6 +488,12 @@ ve.ce.Surface.prototype.onKeyPress = function ( e ) {
 
 };
 
+/**
+ * Begins polling for changes.
+ *
+ * @method
+ * @param {Boolean} async Allow polling to happen asynchronously
+ */
 ve.ce.Surface.prototype.startPolling = function ( async ) {
 	ve.log( 'startPolling' );
 
@@ -447,6 +501,11 @@ ve.ce.Surface.prototype.startPolling = function ( async ) {
 	this.pollChanges( async );
 };
 
+/**
+ * Stops polling for changes.
+ *
+ * @method
+ */
 ve.ce.Surface.prototype.stopPolling = function () {
 	ve.log( 'stopPolling' );
 
@@ -454,6 +513,11 @@ ve.ce.Surface.prototype.stopPolling = function () {
 	clearTimeout( this.poll.timeout );
 };
 
+/**
+ * Clears change-polling state.
+ *
+ * @method
+ */
 ve.ce.Surface.prototype.clearPollData = function () {
 	ve.log( 'clearPollData' );
 
@@ -466,6 +530,11 @@ ve.ce.Surface.prototype.clearPollData = function () {
 	this.poll.rangySelection.focusOffset = null;
 };
 
+/**
+ * Checks if the document has changed since last poll.
+ *
+ * @method
+ */
 ve.ce.Surface.prototype.pollChanges = function ( async ) {
 	var delay, node, range, rangySelection,
 		$anchorNode, $focusNode,
@@ -536,19 +605,20 @@ ve.ce.Surface.prototype.pollChanges = function ( async ) {
 			text = ve.ce.getDomText( node );
 			hash = ve.ce.getDomHash( node );
 			if ( this.poll.text !== text || this.poll.hash !== hash ) {
-				this.emit( 'contentChange', {
-					'node': node,
-					'old': {
-						'text': this.poll.text,
-						'hash': this.poll.hash,
-						'range': this.poll.range
-					},
-					'new': {
+				this.emit(
+					'contentChange',
+					node,
+					{
 						'text': text,
 						'hash': hash,
 						'range': range
+					},
+					{
+						'text': this.poll.text,
+						'hash': this.poll.hash,
+						'range': this.poll.range
 					}
-				} );
+				);
 				this.poll.text = text;
 				this.poll.hash = hash;
 			}
@@ -569,29 +639,45 @@ ve.ce.Surface.prototype.pollChanges = function ( async ) {
 	delay();
 };
 
-ve.ce.Surface.prototype.onContentChange = function ( e ) {
+/**
+ * Responds to document content change events.
+ *
+ * Emitted in {ve.ce.Surface.prototype.pollChanges}.
+ *
+ * @method
+ * @param {HTMLElement} node DOM node the change occured in
+ * @param {Object} previous Old data
+ * @param {Object} previous.text Old plain text content
+ * @param {Object} previous.hash Old DOM hash
+ * @param {Object} previous.range Old selection
+ * @param {Object} next New data
+ * @param {Object} next.text New plain text content
+ * @param {Object} next.hash New DOM hash
+ * @param {Object} next.range New selection
+ */
+ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 	var data, annotations, len,
-		nodeOffset = $( e.node ).data( 'node' ).model.getOffset(),
+		nodeOffset = $( node ).data( 'node' ).model.getOffset(),
 		offsetDiff = (
-			e.old.range !== null &&
-			e['new'].range !== null &&
-			e.old.range.getLength() === 0 &&
-			e['new'].range.getLength() === 0
-		) ? e['new'].range.start - e.old.range.start : null,
-		lengthDiff = e['new'].text.length - e.old.text.length,
+			previous.range !== null &&
+			next.range !== null &&
+			previous.range.getLength() === 0 &&
+			next.range.getLength() === 0
+		) ? next.range.start - previous.range.start : null,
+		lengthDiff = next.text.length - previous.text.length,
 		fromLeft = 0,
 		fromRight = 0;
 
 	if (
 		offsetDiff === lengthDiff &&
-		e.old.text.substring( 0, e.old.range.start - nodeOffset - 1 ) ===
-		e['new'].text.substring( 0, e.old.range.start - nodeOffset - 1 )
+		previous.text.substring( 0, previous.range.start - nodeOffset - 1 ) ===
+		next.text.substring( 0, previous.range.start - nodeOffset - 1 )
 	) {
-		data = e['new'].text.substring(
-				e.old.range.start - nodeOffset - 1,
-				e['new'].range.start - nodeOffset - 1
+		data = next.text.substring(
+				previous.range.start - nodeOffset - 1,
+				next.range.start - nodeOffset - 1
 			).split( '' );
-		annotations = this.model.getDocument().getAnnotationsFromOffset( e.old.range.start - 1 );
+		annotations = this.model.getDocument().getAnnotationsFromOffset( previous.range.start - 1 );
 
 		if ( !ve.isEmptyObject( annotations ) ) {
 			ve.dm.Document.addAnnotationsToData( data, annotations );
@@ -599,27 +685,30 @@ ve.ce.Surface.prototype.onContentChange = function ( e ) {
 
 		this.render = false;
 		this.model.change(
-			ve.dm.Transaction.newFromInsertion( this.documentView.model, e.old.range.start, data ),
-			e['new'].range
+			ve.dm.Transaction.newFromInsertion(
+				this.documentView.model, previous.range.start, data
+			),
+			next.range
 		);
 		this.render = true;
 
 	} else {
-		len = Math.min( e.old.text.length, e['new'].text.length );
+		len = Math.min( previous.text.length, next.text.length );
 
-		while ( fromLeft < len && e.old.text[fromLeft] === e['new'].text[fromLeft] ) {
+		while ( fromLeft < len && previous.text[fromLeft] === next.text[fromLeft] ) {
 			++fromLeft;
 		}
 		while (
 			fromRight < len - fromLeft &&
-			e.old.text[e.old.text.length - 1 - fromRight] ===
-			e['new'].text[e['new'].text.length - 1 - fromRight]
+			previous.text[previous.text.length - 1 - fromRight] ===
+			next.text[next.text.length - 1 - fromRight]
 		) {
 			++fromRight;
 		}
 
-		annotations = this.model.getDocument().getAnnotationsFromOffset( nodeOffset + 1 + fromLeft );
-		data = e['new'].text.substring( fromLeft, e['new'].text.length - fromRight ).split( '' );
+		annotations = this.model.getDocument()
+			.getAnnotationsFromOffset( nodeOffset + 1 + fromLeft );
+		data = next.text.substring( fromLeft, next.text.length - fromRight ).split( '' );
 
 		if ( !ve.isEmptyObject( annotations ) ) {
 			ve.dm.Document.addAnnotationsToData( data, annotations );
@@ -628,30 +717,42 @@ ve.ce.Surface.prototype.onContentChange = function ( e ) {
 		this.clearPollData();
 
 		// TODO: combine newFromRemoval and newFromInsertion into one newFromReplacement
-		if ( fromLeft + fromRight < e.old.text.length ) {
+		if ( fromLeft + fromRight < previous.text.length ) {
 			this.model.change(
 				ve.dm.Transaction.newFromRemoval(
 					this.documentView.model,
-					new ve.Range( nodeOffset + 1 + fromLeft, nodeOffset + 1 + e.old.text.length - fromRight )
+					new ve.Range(
+						nodeOffset + 1 + fromLeft, nodeOffset + 1 + previous.text.length - fromRight
+					)
 				),
-				e['new'].range
+				next.range
 			);
 		}
 		this.model.change(
-			ve.dm.Transaction.newFromInsertion( this.documentView.model, nodeOffset + 1 + fromLeft, data ),
-			e['new'].range
+			ve.dm.Transaction.newFromInsertion(
+				this.documentView.model, nodeOffset + 1 + fromLeft, data
+			),
+			next.range
 		);
 	}
 	this.sluggable = true;
 };
 
+/**
+ * Called from ve.dm.Surface.prototype.change.
+ *
+ * @method
+ * @param {ve.dm.Transaction|null} transaction
+ * @param {ve.Range|undefined} selection
+ */
 ve.ce.Surface.prototype.onChange = function ( transaction, selection ) {
 	ve.log( 'onChange' );
 
 	if ( selection ) {
 		this.showSelection( selection );
 
-		// Responsible for Debouncing the ContextView Icon until select events are finished being fired.
+		// Responsible for Debouncing the ContextView Icon until select events are finished being
+		// fired.
 		// TODO: Use ve.debounce method to abstract usage of setTimeout
 		clearTimeout( this.selectionTimeout );
 		this.selectionTimeout = setTimeout(
@@ -669,6 +770,12 @@ ve.ce.Surface.prototype.onChange = function ( transaction, selection ) {
 	}
 };
 
+/**
+ * Responds to enter key events.
+ *
+ * @method
+ * @param {jQuery.Event} e
+ */
 ve.ce.Surface.prototype.handleEnter = function ( e ) {
 	var tx, outerParent, outerChildrenCount, list,
 		selection = this.model.getSelection(),
@@ -737,22 +844,31 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 		outerChildrenCount = outerParent.getChildren().length;
 
 		if (
-			outermostNode.type === 'listItem' && // this is a list item
-			outerParent.getChildren()[outerChildrenCount - 1] === outermostNode.getModel() && // this is the last list item
-			outermostNode.children.length === 1 && // there is one child
-			node.model.length === 0 // the child is empty
+			// This is a list item
+			outermostNode.type === 'listItem' &&
+			// This is the last list item
+			outerParent.getChildren()[outerChildrenCount - 1] === outermostNode.getModel() &&
+			// There is one child
+			outermostNode.children.length === 1 &&
+			// The child is empty
+			node.model.length === 0
 		) {
 			// Enter was pressed in an empty list item.
 			list = outermostNode.getModel().getParent();
 			// Remove the list item
-			tx = ve.dm.Transaction.newFromRemoval( documentModel, outermostNode.getModel().getOuterRange() );
+			tx = ve.dm.Transaction.newFromRemoval(
+				documentModel, outermostNode.getModel().getOuterRange()
+			);
 			this.model.change( tx );
 			// Insert a paragraph
-			tx = ve.dm.Transaction.newFromInsertion( documentModel, list.getOuterRange().to, emptyParagraph );
+			tx = ve.dm.Transaction.newFromInsertion(
+				documentModel, list.getOuterRange().to, emptyParagraph
+			);
 
 			advanceCursor = false;
 		} else {
-			// We must process the transaction first because getRelativeContentOffset can't help us yet
+			// We must process the transaction first because getRelativeContentOffset can't help us
+			// yet
 			tx = ve.dm.Transaction.newFromInsertion( documentModel, selection.from, stack );
 			this.model.change( tx );
 		}
@@ -773,6 +889,12 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 	this.startPolling();
 };
 
+/**
+ * Responds to backspace and delete key events.
+ *
+ * @method
+ * @param {Boolean} Key was a backspace
+ */
 ve.ce.Surface.prototype.handleDelete = function ( backspace ) {
 	this.stopPolling();
 
@@ -863,10 +985,22 @@ ve.ce.Surface.prototype.handleDelete = function ( backspace ) {
 	this.startPolling();
 };
 
+/**
+ * Shows the cursor at a given offset.
+ *
+ * @method
+ * @param {Number} offset Offset to show cursor at
+ */
 ve.ce.Surface.prototype.showCursor = function ( offset ) {
 	this.showSelection( new ve.Range( offset ) );
 };
 
+/**
+ * Shows selection on a given range.
+ *
+ * @method
+ * @param {ve.Range} range Range to show selection on
+ */
 ve.ce.Surface.prototype.showSelection = function ( range ) {
 	var rangySel = rangy.getSelection(),
 		rangyRange = rangy.createRange(),
@@ -920,7 +1054,15 @@ ve.ce.Surface.prototype.showSelection = function ( range ) {
 	}
 };
 
-// TODO: Find a better name and a better place for this method
+/**
+ * Gets the nearest offset that a cursor can actually be placed at.
+ *
+ * TODO: Find a better name and a better place for this method
+ *
+ * @method
+ * @param {Number} offset Offset to start looking at
+ * @param {Number} [direction=-1] Direction to look in, +1 or -1
+ */
 ve.ce.Surface.prototype.getNearestCorrectOffset = function ( offset, direction ) {
 	direction = direction > 0 ? 1 : -1;
 
@@ -954,7 +1096,15 @@ ve.ce.Surface.prototype.getNearestCorrectOffset = function ( offset, direction )
 	}
 };
 
-// TODO: Find a better name and a better place for this method - probably in a document view?
+/**
+ * Checks if a given offset is inside a slug.
+ *
+ * TODO: Find a better name and a better place for this method - probably in a document view?
+ *
+ * @method
+ * @param {Number} offset Offset to check for a slug at
+ * @returns {Boolean} A slug exists at the given offset
+ */
 ve.ce.Surface.prototype.hasSlugAtOffset = function ( offset ) {
 	var node = this.documentView.documentNode.getNodeFromOffset( offset );
 	if ( node && node.canHaveChildren() ) {
@@ -965,7 +1115,7 @@ ve.ce.Surface.prototype.hasSlugAtOffset = function ( offset ) {
 };
 
 /**
- * Based on a given offset returns DOM node and offset that can be used to place a cursor.
+ * Gets a DOM node and offset that can be used to place a cursor, based on a given offset.
  *
  * The results of this function are meant to be used with rangy.
  *
@@ -1033,11 +1183,11 @@ ve.ce.Surface.prototype.getNodeAndOffset = function ( offset ) {
 };
 
 /**
- * Gets the linear offset based on a given DOM node and DOM offset
+ * Gets the linear offset from a given DOM node and offset within it.
  *
  * @method
- * @param domNode {DOM Node} DOM node
- * @param domOffset {Integer} DOM offset within the DOM Element
+ * @param {DOM Node} domNode DOM node
+ * @param {Integer} domOffset DOM offset within the DOM Element
  * @returns {Integer} Linear model offset
  */
 ve.ce.Surface.prototype.getOffset = function ( domNode, domOffset ) {
@@ -1048,6 +1198,14 @@ ve.ce.Surface.prototype.getOffset = function ( domNode, domOffset ) {
 	}
 };
 
+/**
+ * Gets the linear offset from a given text node and offset within it.
+ *
+ * @method
+ * @param {DOM Node} domNode DOM node
+ * @param {Integer} domOffset DOM offset within the DOM Element
+ * @returns {Integer} Linear model offset
+ */
 ve.ce.Surface.prototype.getOffsetFromTextNode = function ( domNode, domOffset ) {
 	var $node, nodeModel, current, stack, item, offset, $item;
 
@@ -1100,6 +1258,15 @@ ve.ce.Surface.prototype.getOffsetFromTextNode = function ( domNode, domOffset ) 
 	return offset + nodeModel.getOffset() + ( nodeModel.isWrapped() ? 1 : 0 );
 };
 
+/**
+ * Gets the linear offset from a given element node and offset within it.
+ *
+ * @method
+ * @param {DOM Node} domNode DOM node
+ * @param {Integer} domOffset DOM offset within the DOM Element
+ * @param {Boolean} [addOuterLength] Use outer length, which includes wrappers if any exist
+ * @returns {Integer} Linear model offset
+ */
 ve.ce.Surface.prototype.getOffsetFromElementNode = function ( domNode, domOffset, addOuterLength ) {
 	var $domNode = $( domNode ),
 		nodeModel,
@@ -1139,6 +1306,11 @@ ve.ce.Surface.prototype.getOffsetFromElementNode = function ( domNode, domOffset
 	}
 };
 
+/**
+ * Updates the context icon.
+ *
+ * @method
+ */
 ve.ce.Surface.prototype.updateContextIcon = function () {
 	var selection = this.model.getSelection();
 	if ( this.contextView ) {
@@ -1150,7 +1322,11 @@ ve.ce.Surface.prototype.updateContextIcon = function () {
 	}
 };
 
-/* Supplies the selection anchor coordinates to contextView */
+/**
+ * Gets the coordinates of the selection anchor.
+ *
+ * @method
+ */
 ve.ce.Surface.prototype.getSelectionRect = function () {
 	var rangySel = rangy.getSelection();
 	return {
@@ -1159,7 +1335,12 @@ ve.ce.Surface.prototype.getSelectionRect = function () {
 	};
 };
 
-/* Tests if the modifier key for keyboard shortcuts is pressed. */
+/**
+ * Tests if the modifier key for keyboard shortcuts is pressed.
+ *
+ * @method
+ * @param {jQuery.Event} e
+ */
 ve.ce.Surface.isShortcutKey = function ( e ) {
 	if ( e.ctrlKey || e.metaKey ) {
 		return true;
@@ -1167,7 +1348,11 @@ ve.ce.Surface.isShortcutKey = function ( e ) {
 	return false;
 };
 
-/* Removes localStorage keys for copy and paste after a day */
+/**
+ * Removes localStorage keys for copy and paste after a day.
+ *
+ * @method
+ */
 ve.ce.Surface.clearLocalStorage = function () {
 	var i, len, key,
 		time, now,
@@ -1195,10 +1380,22 @@ ve.ce.Surface.clearLocalStorage = function () {
 	} );
 };
 
+/**
+ * Gets the surface model.
+ *
+ * @method
+ * @returns {ve.dm.Surface} Surface model
+ */
 ve.ce.Surface.prototype.getModel = function () {
 	return this.model;
 };
 
+/**
+ * Gets the document view.
+ *
+ * @method
+ * @returns {ve.ce.Document} Document view
+ */
 ve.ce.Surface.prototype.getDocument = function () {
 	return this.documentView;
 };

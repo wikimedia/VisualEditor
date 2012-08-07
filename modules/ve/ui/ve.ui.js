@@ -1,5 +1,3 @@
-/*global mw */
-
 /**
  * VisualEditor user interface namespace.
  *

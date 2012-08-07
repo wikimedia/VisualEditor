@@ -1,5 +1,3 @@
-/*global mw */
-
 /**
  * VisualEditor namespace.
  *
@@ -332,7 +330,7 @@ ve.log = function () {
  * @method
  * @param {Object} obj Object to log
  */
-ve.dir = function ( obj ) {
+ve.dir = function () {
 	// don't do anything, this is just a stub
 };
 

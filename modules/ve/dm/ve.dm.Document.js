@@ -28,7 +28,7 @@ ve.dm.Document = function ( data, parentDocument ) {
 	 * then from the bottom up add nodes to their potential parents. This avoids massive length
 	 * updates being broadcast upstream constantly while building is underway.
 	 */
-	var i, length, node, children, openingIndex,
+	var i, length, node, children,
 		doc = parentDocument || this,
 		root = doc.getDocumentNode(),
 		textLength = 0,
@@ -650,8 +650,6 @@ ve.dm.Document.getMatchingAnnotations = function ( annotations, pattern ) {
  */
 ve.dm.Document.prototype.getAnnotationsFromRange = function ( range, all ) {
 	var i,
-		annotations = {},
-		count = 0,
 		left,
 		right,
 		hash;

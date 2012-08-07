@@ -160,7 +160,7 @@ ve.init.mw.Target.onSaveError = function ( response, status, error ) {
  * @param {Function} callback Function to call when complete, accepts error and dom arguments
  * @returns {Boolean} Loading is now in progress
 */
-ve.init.mw.Target.prototype.load = function ( callback ) {
+ve.init.mw.Target.prototype.load = function () {
 	// Prevent duplicate requests
 	if ( this.loading ) {
 		return false;
@@ -205,13 +205,13 @@ ve.init.mw.Target.prototype.load = function ( callback ) {
  * @method
  * @param {HTMLElement} dom DOM to save
  * @param {Object} options Saving options
- * @param {String} options.summary Edit summary
- * @param {Boolean} options.minor Edit is a minor edit
- * @param {Boolean} options.watch Watch this page
+ *  - {String} summary Edit summary
+ *  - {Boolean} minor Edit is a minor edit
+ *  - {Boolean} watch Watch this page
  * @param {Function} callback Function to call when complete, accepts error and html arguments
  * @returns {Boolean} Saving is now in progress
 */
-ve.init.mw.Target.prototype.save = function ( dom, options, callback ) {
+ve.init.mw.Target.prototype.save = function ( dom, options ) {
 	// Prevent duplicate requests
 	if ( this.saving ) {
 		return false;

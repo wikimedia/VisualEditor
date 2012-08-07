@@ -127,7 +127,7 @@ ve.ui.Menu.prototype.isOpen = function () {
 	return this.$.is( ':visible' );
 };
 
-ve.ui.Menu.prototype.onSelect = function ( item, event ) {
+ve.ui.Menu.prototype.onSelect = function ( item ) {
 	if ( typeof item.callback === 'function' ) {
 		item.callback( item );
 	} else if ( typeof this.callback === 'function' ) {

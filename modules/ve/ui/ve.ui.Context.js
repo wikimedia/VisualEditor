@@ -61,6 +61,7 @@ ve.ui.Context = function ( surfaceView, $overlay ) {
 /* Methods */
 
 ve.ui.Context.prototype.setupInspectorFrame = function () {
+	var $styleLink;
 	// Create and append an iframe for inspectors.
 	// Use of iframe is required to retain selection while inspector controls are focused.
 	this.$inspectors =
@@ -80,7 +81,7 @@ ve.ui.Context.prototype.setupInspectorFrame = function () {
 	this.$inspectorWrapper = $( this.inspectorDoc ).find( '.ve-inspector-wrapper' );
 
 	// Create style element in iframe document scope
-	var $styleLink =
+	$styleLink =
 		$( '<link>', this.inspectorDoc )
 			.attr( {
 				'rel': 'stylesheet',
@@ -90,10 +91,10 @@ ve.ui.Context.prototype.setupInspectorFrame = function () {
 			} );
 
 	// Append inspector styles to iframe head
-	$( 'head', this.inspectorDoc ).append( $styleLink );
+	$( this.inspectorDoc ).find( 'head' ).append( $styleLink );
 
 	// Adjust iframe body styles.
-	$( 'body', this.inspectorDoc ).css( {
+	$( this.inspectorDoc ).find( 'body' ).css( {
 		'padding': '0px 5px 10px 5px',
 		'margin': 0
 	} );
@@ -101,11 +102,11 @@ ve.ui.Context.prototype.setupInspectorFrame = function () {
 	this.hideInspectorFrame();
 };
 
-ve.ui.Context.prototype.onDocumentFocus = function ( e ) {
+ve.ui.Context.prototype.onDocumentFocus = function () {
 	$( window ).on( 'resize.ve-ui-context scroll.ve-ui-context', ve.proxy( this.set, this ) );
 };
 
-ve.ui.Context.prototype.onDocumentBlur = function ( e ) {
+ve.ui.Context.prototype.onDocumentBlur = function () {
 	$( window ).off( 'resize.ve-ui-context scroll.ve-ui-context' );
 };
 
@@ -168,7 +169,7 @@ ve.ui.Context.prototype.positionIcon = function () {
 	var selection = this.surfaceView.model.getSelection(),
 		selectionRect = this.surfaceView.getSelectionRect();
 
-	if( selection.to > selection.from ) {
+	if ( selection.to > selection.from ) {
 		this.position = new ve.Position( selectionRect.end.x, selectionRect.end.y );
 		this.$.addClass( 'es-contextView-position-end' );
 	} else {
@@ -176,7 +177,10 @@ ve.ui.Context.prototype.positionIcon = function () {
 		this.$.addClass( 'es-contextView-position-start' );
 	}
 
-	this.$.css( { 'left': this.position.left, 'top': this.position.top } );
+	this.$.css( {
+		'left': this.position.left,
+		'top': this.position.top
+	} );
 	this.$icon.fadeIn( 'fast' );
 };
 
@@ -258,7 +262,7 @@ ve.ui.Context.prototype.addInspector = function ( name, inspector ) {
 	this.$inspectorWrapper.append( inspector.$ );
 };
 
-ve.ui.Context.prototype.hideInspectorFrame = function ( inspector ) {
+ve.ui.Context.prototype.hideInspectorFrame = function () {
 	this.$inspectors.css({
 		'width': 0,
 		'height': 0,

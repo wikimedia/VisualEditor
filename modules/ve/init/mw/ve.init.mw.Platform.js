@@ -71,7 +71,7 @@ ve.init.mw.Platform.prototype.addMessages = function ( messages ) {
  * @param {Mixed} [...] List of arguments which will be injected at $1, $2, etc. in the messaage
  * @returns {String} Localized message
  */
-ve.init.mw.Platform.prototype.getMessage = function ( key ) {
+ve.init.mw.Platform.prototype.getMessage = function () {
 	return mw.msg.apply( mw.msg, arguments );
 };
 
