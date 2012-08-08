@@ -316,9 +316,12 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 
 				if ( !branchIsContent ) {
 					// If it's bare content, strip leading and trailing newlines
-					// FIXME these newlines should be turned into placeholders instead
+					// FIXME these newlines should be preserved somehow
 					text = text.replace( /^\n+/, '' ).replace( /\n+$/, '' );
 				}
+				// Strip leading and trailing whitespace
+				// TODO store it in the element so it can be preserved
+				text = text.replace( /^\s+/, '' ).replace( /\s+$/, '' );
 				if ( text === '' ) {
 					// Don't produce an empty text node or an empty paragraph
 					break;
