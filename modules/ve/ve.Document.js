@@ -416,6 +416,9 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 			}
 		}
 	} while ( end >= left - 1 );
+	if ( retval.length === 0 ) {
+		throw new Error( 'selectNodes epic fail' );
+	}
 	return retval;
 };
 
