@@ -29,7 +29,7 @@ ve.EventEmitter = function () {
  */
 ve.EventEmitter.prototype.emit = function ( type ) {
 	if ( type === 'error' && !( 'error' in this.events ) ) {
-		throw 'Missing error handler error.';
+		throw new ve.Error( 'Missing error handler error.' );
 	}
 	if ( !( type in this.events ) ) {
 		return false;
@@ -55,7 +55,7 @@ ve.EventEmitter.prototype.emit = function ( type ) {
  */
 ve.EventEmitter.prototype.addListener = function ( type, listener ) {
 	if ( typeof listener !== 'function' ) {
-		throw 'Invalid listener error. Function expected.';
+		throw new ve.Error( 'Invalid listener error. Function expected.' );
 	}
 	this.emit( 'newListener', type, listener );
 	if ( type in this.events ) {
@@ -94,7 +94,7 @@ ve.EventEmitter.prototype.addListenerMethod = function ( target, event, method )
 		if ( typeof target[method] === 'function' ) {
 			target[method].apply( target, Array.prototype.slice.call( arguments, 0 ) );
 		} else {
-			throw 'Listener method error. Target has no such method: ' + method;
+			throw new ve.Error( 'Listener method error. Target has no such method: ' + method );
 		}
 	} );
 };
@@ -148,7 +148,7 @@ ve.EventEmitter.prototype.once = function ( type, listener ) {
  */
 ve.EventEmitter.prototype.removeListener = function ( type, listener ) {
 	if ( typeof listener !== 'function' ) {
-		throw 'Invalid listener error. Function expected.';
+		throw new ve.Error( 'Invalid listener error. Function expected.' );
 	}
 	if ( !( type in this.events ) || !this.events[type].length ) {
 		return this;

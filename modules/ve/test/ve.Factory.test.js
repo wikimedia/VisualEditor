@@ -22,7 +22,7 @@ QUnit.test( 'register', 1, function ( assert ) {
 		function () {
 			factory.register( 'factory-object-stub', 'not-a-function' );
 		},
-		/^Constructor must be a function, cannot be a string$/,
+		ve.Error,
 		'throws an exception when trying to register a non-function value as a constructor'
 	);
 } );
@@ -33,7 +33,7 @@ QUnit.test( 'create', 2, function ( assert ) {
 		function () {
 			factory.create( 'factory-object-stub', 23, { 'bar': 'baz' } );
 		},
-		/^Unknown object type: factory-object-stub$/,
+		ve.Error,
 		'throws an exception when trying to create a object of an unregistered type'
 	);
 	factory.register( 'factory-object-stub', ve.FactoryObjectStub );

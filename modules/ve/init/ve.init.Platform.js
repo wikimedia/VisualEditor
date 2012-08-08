@@ -28,7 +28,7 @@ ve.init.Platform = function () {
  * @returns {RegExp} Regular expression object
  */
 ve.init.Platform.prototype.getExternalLinkUrlProtocolsRegExp = function () {
-	throw 've.init.Platform.getExternalLinkUrlProtocolsRegExp must be overridden in subclass';
+	throw new ve.Error( 've.init.Platform.getExternalLinkUrlProtocolsRegExp must be overridden in subclass' );
 };
 
 /**
@@ -39,7 +39,7 @@ ve.init.Platform.prototype.getExternalLinkUrlProtocolsRegExp = function () {
  * @returns {String} Remote modules URL
  */
 ve.init.Platform.prototype.getModulesUrl = function () {
-	throw 've.init.Platform.getModulesUrl must be overridden in subclass';
+	throw new ve.Error( 've.init.Platform.getModulesUrl must be overridden in subclass' );
 };
 
 /**
@@ -50,7 +50,7 @@ ve.init.Platform.prototype.getModulesUrl = function () {
  * @param {Object} messages Map of message-key/message-string pairs
  */
 ve.init.Platform.prototype.addMessages = function ( messages ) {
-	throw 've.init.Platform.addMessages must be overridden in subclass';
+	throw new ve.Error( 've.init.Platform.addMessages must be overridden in subclass' );
 };
 
 /**
@@ -63,7 +63,7 @@ ve.init.Platform.prototype.addMessages = function ( messages ) {
  * @returns {String} Localized message
  */
 ve.init.Platform.prototype.getMessage = function ( key ) {
-	throw 've.init.Platform.getMessage must be overridden in subclass';
+	throw new ve.Error( 've.init.Platform.getMessage must be overridden in subclass' );
 };
 
 /* Inheritance */

@@ -36,7 +36,7 @@ ve.Factory = function () {
  */
 ve.Factory.prototype.register = function ( type, constructor ) {
 	if ( typeof constructor !== 'function' ) {
-		throw 'Constructor must be a function, cannot be a ' + typeof constructor;
+		throw new ve.Error( 'Constructor must be a function, cannot be a ' + typeof constructor );
 	}
 	this.registry[type] = constructor;
 	this.emit( 'register', type, constructor );
@@ -63,7 +63,7 @@ ve.Factory.prototype.create = function ( type, a, b ) {
 	if ( type in this.registry ) {
 		return new this.registry[type]( a, b );
 	}
-	throw 'Unknown object type: ' + type;
+	throw new ve.Error( 'Unknown object type: ' + type );
 };
 
 /**

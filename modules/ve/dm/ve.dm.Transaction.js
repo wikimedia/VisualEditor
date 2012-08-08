@@ -82,7 +82,7 @@ ve.dm.Transaction.newFromRemoval = function ( doc, range ) {
 	selection = doc.selectNodes( range, 'covered' );
 	if ( selection.length === 0 ) {
 		// Empty selection? Something is wrong!
-		throw 'Invalid range, cannot remove from ' + range.start + ' to ' + range.end;
+		throw new ve.Error( 'Invalid range, cannot remove from ' + range.start + ' to ' + range.end );
 	}
 	first = selection[0];
 	last = selection[selection.length - 1];
@@ -169,11 +169,11 @@ ve.dm.Transaction.newFromAttributeChange = function ( doc, offset, key, value ) 
 		data = doc.getData();
 	// Verify element exists at offset
 	if ( data[offset].type === undefined ) {
-		throw 'Can not set attributes to non-element data';
+		throw new ve.Error( 'Can not set attributes to non-element data' );
 	}
 	// Verify element is not a closing
 	if ( data[offset].type.charAt( 0 ) === '/' ) {
-		throw 'Can not set attributes on closing element';
+		throw new ve.Error( 'Can not set attributes on closing element' );
 	}
 	// Retain up to element
 	tx.pushRetain( offset );
@@ -362,7 +362,7 @@ ve.dm.Transaction.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, u
 		// the range, so compensate for that
 		tx.pushRetain( range.start - unwrapOuter.length );
 	} else if ( range.start < unwrapOuter.length ) {
-		throw 'unwrapOuter is longer than the data preceding the range';
+		throw new ve.Error( 'unwrapOuter is longer than the data preceding the range' );
 	}
 
 	// Replace the opening elements for the outer unwrap&wrap
@@ -371,8 +371,8 @@ ve.dm.Transaction.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, u
 		unwrapOuterData = doc.data.slice( range.start - unwrapOuter.length, range.start );
 		for ( i = 0; i < unwrapOuterData.length; i++ ) {
 			if ( unwrapOuterData[i].type !== unwrapOuter[i].type ) {
-				throw 'Element in unwrapOuter does not match: expected ' +
-					unwrapOuter[i].type + ' but found ' + unwrapOuterData[i].type;
+				throw new ve.Error( 'Element in unwrapOuter does not match: expected ' +
+					unwrapOuter[i].type + ' but found ' + unwrapOuterData[i].type );
 			}
 		}
 		// Instead of putting in unwrapOuter as given, put it in the
@@ -397,9 +397,9 @@ ve.dm.Transaction.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, u
 						unwrapEachData = doc.data.slice( i, i + unwrapEach.length );
 						for ( j = 0; j < unwrapEachData.length; j++ ) {
 							if ( unwrapEachData[j].type !== unwrapEach[j].type ) {
-								throw 'Element in unwrapEach does not match: expected ' +
+								throw new ve.Error( 'Element in unwrapEach does not match: expected ' +
 									unwrapEach[j].type + ' but found ' +
-									unwrapEachData[j].type;
+									unwrapEachData[j].type );
 							}
 						}
 						// Instead of putting in unwrapEach as given, put it in the
@@ -524,7 +524,7 @@ ve.dm.Transaction.prototype.translateRange = function ( range ) {
  */
 ve.dm.Transaction.prototype.pushRetain = function ( length ) {
 	if ( length < 0 ) {
-		throw 'Invalid retain length, can not retain backwards:' + length;
+		throw new ve.Error( 'Invalid retain length, can not retain backwards:' + length );
 	}
 	if ( length ) {
 		var end = this.operations.length - 1;

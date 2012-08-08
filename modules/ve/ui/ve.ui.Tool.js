@@ -27,7 +27,7 @@ ve.ui.Tool.tools = {};
 /* Methods */
 
 ve.ui.Tool.prototype.updateState = function () {
-	throw 'Tool.updateState not implemented in this subclass:' + this.constructor;
+	throw new ve.Error( 'Tool.updateState not implemented in this subclass:' + this.constructor );
 };
 
 ve.ui.Tool.prototype.clearState = function () {
