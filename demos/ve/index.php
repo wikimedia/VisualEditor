@@ -100,6 +100,7 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 
 		<script src="../../modules/ve/dm/nodes/ve.dm.AlienInlineNode.js"></script>
 		<script src="../../modules/ve/dm/nodes/ve.dm.AlienBlockNode.js"></script>
+		<script src="../../modules/ve/dm/nodes/ve.dm.BreakNode.js"></script>
 		<script src="../../modules/ve/dm/nodes/ve.dm.DefinitionListItemNode.js"></script>
 		<script src="../../modules/ve/dm/nodes/ve.dm.DefinitionListNode.js"></script>
 		<script src="../../modules/ve/dm/nodes/ve.dm.DocumentNode.js"></script>
@@ -129,6 +130,7 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 
 		<script src="../../modules/ve/ce/nodes/ve.ce.AlienInlineNode.js"></script>
 		<script src="../../modules/ve/ce/nodes/ve.ce.AlienBlockNode.js"></script>
+		<script src="../../modules/ve/ce/nodes/ve.ce.BreakNode.js"></script>
 		<script src="../../modules/ve/ce/nodes/ve.ce.DefinitionListItemNode.js"></script>
 		<script src="../../modules/ve/ce/nodes/ve.ce.DefinitionListNode.js"></script>
 		<script src="../../modules/ve/ce/nodes/ve.ce.DocumentNode.js"></script>
