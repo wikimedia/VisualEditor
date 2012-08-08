@@ -471,11 +471,11 @@ QUnit.test( 'newFromAttributeChange', function ( assert ) {
 		},
 		'non-element': {
 			'args': [doc, 1, 'level', 2],
-			'exception': ve.Error
+			'exception': Error
 		},
 		'closing element': {
 			'args': [doc, 4, 'level', 2],
-			'exception': ve.Error
+			'exception': Error
 		}
 	};
 	runConstructorTests( assert, ve.dm.Transaction.newFromAttributeChange, cases );
@@ -704,15 +704,15 @@ QUnit.test( 'newFromWrap', function ( assert ) {
 		},
 		'checks integrity of unwrapOuter parameter': {
 			'args': [doc, new ve.Range( 13, 32 ), [ { 'type': 'table' } ], [], [], []],
-			'exception': ve.Error
+			'exception': Error
 		},
 		'checks integrity of unwrapEach parameter': {
 			'args': [doc, new ve.Range( 13, 32 ), [ { 'type': 'list' } ], [], [ { 'type': 'paragraph' } ], []],
-			'exception': ve.Error
+			'exception': Error
 		},
 		'checks that unwrapOuter fits before the range': {
 			'args': [doc, new ve.Range( 1, 4 ), [ { 'type': 'listItem' }, { 'type': 'paragraph' } ], [], [], []],
-			'exception': ve.Error
+			'exception': Error
 		}
 	};
 	runConstructorTests(

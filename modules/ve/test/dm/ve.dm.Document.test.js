@@ -19,7 +19,7 @@ QUnit.test( 'constructor', 4, function ( assert ) {
 				{ 'type': 'paragraph' }
 			] );
 		},
-		ve.Error,
+		Error,
 		'unbalanced input causes exception'
 	);
 

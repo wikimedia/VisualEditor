@@ -226,7 +226,7 @@ ve.ui.Context.prototype.clear = function () {
 
 ve.ui.Context.prototype.openInspector = function ( name ) {
 	if ( !( name in this.inspectors ) ) {
-		throw new ve.Error( 'Missing inspector error. Can not open nonexistent inspector: ' + name );
+		throw new Error( 'Missing inspector error. Can not open nonexistent inspector: ' + name );
 	}
 	this.inspectors[name].open();
 	this.resizeInspectorFrame( this.inspectors[name] );
@@ -251,7 +251,7 @@ ve.ui.Context.prototype.getInspector = function ( name ) {
 
 ve.ui.Context.prototype.addInspector = function ( name, inspector ) {
 	if ( name in this.inspectors ) {
-		throw new ve.Error( 'Duplicate inspector error. Previous registration with the same name: ' + name );
+		throw new Error( 'Duplicate inspector error. Previous registration with the same name: ' + name );
 	}
 	inspector.$.hide();
 	this.inspectors[name] = inspector;
@@ -276,7 +276,7 @@ ve.ui.Context.prototype.resizeInspectorFrame = function ( inspector ) {
 
 ve.ui.Context.prototype.removeInspector = function ( name ) {
 	if ( name in this.inspectors ) {
-		throw new ve.Error( 'Missing inspector error. Can not remove nonexistent inspector: ' + name );
+		throw new Error( 'Missing inspector error. Can not remove nonexistent inspector: ' + name );
 	}
 	this.inspectors[name].detach();
 	delete this.inspectors[name];

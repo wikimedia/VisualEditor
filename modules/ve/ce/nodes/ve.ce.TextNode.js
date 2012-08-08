@@ -157,7 +157,7 @@ ve.ce.TextNode.annotationRenderers = {
  */
 ve.ce.TextNode.prototype.onUpdate = function ( force ) {
 	if ( !force && !this.root.getSurface ) {
-		throw new ve.Error( 'Can not update a text node that is not attached to a document' );
+		throw new Error( 'Can not update a text node that is not attached to a document' );
 	}
 	if ( force === true || this.root.getSurface().render === true ) {
 		var $new = $( '<span>' ).html( this.getHtml() ).contents();

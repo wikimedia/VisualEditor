@@ -75,7 +75,7 @@ ve.dm.Converter.getDataContentFromText = function ( text, annotations ) {
  */
 ve.dm.Converter.prototype.onNodeRegister = function ( dataElementType, constructor ) {
 	if ( constructor.converters === undefined ) {
-		throw new ve.Error( 'Missing conversion data in node implementation of ' + dataElementType );
+		throw new Error( 'Missing conversion data in node implementation of ' + dataElementType );
 	} else if ( constructor.converters !== null ) {
 		var i,
 			domElementTypes = constructor.converters.domElementTypes,
@@ -100,7 +100,7 @@ ve.dm.Converter.prototype.onNodeRegister = function ( dataElementType, construct
  */
 ve.dm.Converter.prototype.onAnnotationRegister = function ( dataElementType, constructor ) {
 	if ( constructor.converters === undefined ) {
-		throw new ve.Error( 'Missing conversion data in annotation implementation of ' + dataElementType );
+		throw new Error( 'Missing conversion data in annotation implementation of ' + dataElementType );
 	} else if ( constructor.converters !== null ) {
 		var i,
 			domElementTypes = constructor.converters.domElementTypes,

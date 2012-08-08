@@ -268,7 +268,7 @@ ve.dm.DocumentSynchronizer.prototype.synchronize = function () {
 		if ( action.type in ve.dm.DocumentSynchronizer.synchronizers ) {
 			ve.dm.DocumentSynchronizer.synchronizers[action.type].call( this, action );
 		} else {
-			throw new ve.Error( 'Invalid action type ' + action.type );
+			throw new Error( 'Invalid action type ' + action.type );
 		}
 	}
 	// Emit events in the event queue

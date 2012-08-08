@@ -44,7 +44,7 @@ ve.ui.ButtonTool = function ( toolbar, name, title ) {
 /* Methods */
 
 ve.ui.ButtonTool.prototype.onClick = function () {
-	throw new ve.Error( 'ButtonTool.onClick not implemented in this subclass:' + this.constructor );
+	throw new Error( 'ButtonTool.onClick not implemented in this subclass:' + this.constructor );
 };
 
 ve.ui.ButtonTool.prototype.updateEnabled = function () {

@@ -152,7 +152,7 @@ QUnit.test( 'traverseLeafNodes', 1, function ( assert ) {
 		{
 			'node': children[1],
 			'from': children[2],
-			'exception': ve.Error,
+			'exception': Error,
 			'desc': 'Passing a sibling for from results in an exception'
 		}
 	];

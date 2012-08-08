@@ -202,13 +202,13 @@ ve.BranchNode.prototype.traverseLeafNodes = function ( callback, from, reverse )
 			if ( !p ) {
 				// n is a root node and we haven't reached this
 				// That means from isn't a descendant of this
-				throw new ve.Error( 'from parameter passed to traverseLeafNodes() must be a descendant' );
+				throw new Error( 'from parameter passed to traverseLeafNodes() must be a descendant' );
 			}
 			// Find the index of n in p
 			i = p.indexOf( n );
 			if ( i === -1 ) {
 				// This isn't supposed to be possible
-				throw new ve.Error( 'Tree corruption detected: node isn\'t in its parent\'s children array' );
+				throw new Error( 'Tree corruption detected: node isn\'t in its parent\'s children array' );
 			}
 			indexStack.push( i );
 			// Move up

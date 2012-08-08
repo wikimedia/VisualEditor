@@ -26,7 +26,7 @@ QUnit.test( 'canNodeBeSplit', 2, function ( assert ) {
 	assert.throws( function () {
 			factory.canNodeBeSplit( 'node-factory-node-stub' );
 		},
-		ve.Error,
+		Error,
 		'throws an exception when getting split rules for a node of an unregistered type'
 	);
 	factory.register( 'node-factory-node-stub', ve.ce.NodeFactoryNodeStub );

@@ -115,7 +115,7 @@ ve.dm.TransactionProcessor.processors.annotate = function ( op ) {
 	} else if ( op.method === 'clear' ) {
 		target = this.reversed ? this.set : this.clear;
 	} else {
-		throw new ve.Error( 'Invalid annotation method ' + op.method );
+		throw new Error( 'Invalid annotation method ' + op.method );
 	}
 	
 	hash = $.toJSON( op.annotation );
@@ -150,7 +150,7 @@ ve.dm.TransactionProcessor.processors.attribute = function ( op ) {
 		to = this.reversed ? op.from : op.to,
 		from = this.reversed ? op.to : op.from;
 	if ( element.type === undefined ) {
-		throw new ve.Error( 'Invalid element error, can not set attributes on non-element data' );
+		throw new Error( 'Invalid element error, can not set attributes on non-element data' );
 	}
 	if ( to === undefined ) {
 		// Clear
@@ -346,7 +346,7 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 			// Get the next operation
 			operation = this.nextOperation();
 			if ( !operation ) {
-				throw new ve.Error( 'Unbalanced set of replace operations found' );
+				throw new Error( 'Unbalanced set of replace operations found' );
 			}
 		}
 		// From all the affected ranges we have gathered, compute a range that covers all
@@ -384,7 +384,7 @@ ve.dm.TransactionProcessor.prototype.executeOperation = function ( op ) {
 	if ( op.type in ve.dm.TransactionProcessor.processors ) {
 		ve.dm.TransactionProcessor.processors[op.type].call( this, op );
 	} else {
-		throw new ve.Error( 'Invalid operation error. Operation type is not supported: ' + op.type );
+		throw new Error( 'Invalid operation error. Operation type is not supported: ' + op.type );
 	}
 };
 
@@ -426,9 +426,9 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 		element = item.type !== undefined;
 		if ( element ) {
 			if ( item.type.charAt( 0 ) === '/' ) {
-				throw new ve.Error( 'Invalid transaction, cannot annotate a branch closing element' );
+				throw new Error( 'Invalid transaction, cannot annotate a branch closing element' );
 			} else if ( ve.dm.nodeFactory.canNodeHaveChildren( item.type ) ) {
-				throw new ve.Error( 'Invalid transaction, cannot annotate a branch opening element' );
+				throw new Error( 'Invalid transaction, cannot annotate a branch opening element' );
 			}
 		}
 		annotated = element ? 'annotations' in item : ve.isArray( item );
@@ -436,13 +436,13 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 		// Set and clear annotations
 		for ( hash in this.set ) {
 			if ( hash in annotations ) {
-				throw new ve.Error( 'Invalid transaction, annotation to be set is already set' );
+				throw new Error( 'Invalid transaction, annotation to be set is already set' );
 			}
 			annotations[hash] = this.set[hash];
 		}
 		for ( hash in this.clear ) {
 			if ( !( hash in annotations ) ) {
-				throw new ve.Error( 'Invalid transaction, annotation to be cleared is not set' );
+				throw new Error( 'Invalid transaction, annotation to be cleared is not set' );
 			}
 			delete annotations[hash];
 		}

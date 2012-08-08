@@ -31,7 +31,7 @@ ve.dm.NodeFactory.prototype.getChildNodeTypes = function ( type ) {
 	if ( type in this.registry ) {
 		return this.registry[type].rules.childNodeTypes;
 	}
-	throw new ve.Error( 'Unknown node type: ' + type );
+	throw new Error( 'Unknown node type: ' + type );
 };
 
 /**
@@ -46,7 +46,7 @@ ve.dm.NodeFactory.prototype.getParentNodeTypes = function ( type ) {
 	if ( type in this.registry ) {
 		return this.registry[type].rules.parentNodeTypes;
 	}
-	throw new ve.Error( 'Unknown node type: ' + type );
+	throw new Error( 'Unknown node type: ' + type );
 };
 
 /**
@@ -64,7 +64,7 @@ ve.dm.NodeFactory.prototype.canNodeHaveChildren = function ( type ) {
 		var types = this.registry[type].rules.childNodeTypes;
 		return types === null || ( ve.isArray( types ) && types.length > 0 );
 	}
-	throw new ve.Error( 'Unknown node type: ' + type );
+	throw new Error( 'Unknown node type: ' + type );
 };
 
 /**
@@ -81,7 +81,7 @@ ve.dm.NodeFactory.prototype.canNodeHaveGrandchildren = function ( type ) {
 			!this.registry[type].rules.canContainContent &&
 			!this.registry[type].rules.isContent;
 	}
-	throw new ve.Error( 'Unknown node type: ' + type );
+	throw new Error( 'Unknown node type: ' + type );
 };
 
 /**
@@ -96,7 +96,7 @@ ve.dm.NodeFactory.prototype.isNodeWrapped = function ( type ) {
 	if ( type in this.registry ) {
 		return this.registry[type].rules.isWrapped;
 	}
-	throw new ve.Error( 'Unknown node type: ' + type );
+	throw new Error( 'Unknown node type: ' + type );
 };
 
 /**
@@ -111,7 +111,7 @@ ve.dm.NodeFactory.prototype.canNodeContainContent = function ( type ) {
 	if ( type in this.registry ) {
 		return this.registry[type].rules.canContainContent;
 	}
-	throw new ve.Error( 'Unknown node type: ' + type );
+	throw new Error( 'Unknown node type: ' + type );
 };
 
 /**
@@ -126,7 +126,7 @@ ve.dm.NodeFactory.prototype.isNodeContent = function ( type ) {
 	if ( type in this.registry ) {
 		return this.registry[type].rules.isContent;
 	}
-	throw new ve.Error( 'Unknown node type: ' + type );
+	throw new Error( 'Unknown node type: ' + type );
 };
 
 /* Inheritance */

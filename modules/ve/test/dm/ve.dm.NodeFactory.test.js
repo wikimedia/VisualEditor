@@ -33,7 +33,7 @@ QUnit.test( 'getChildNodeTypes', 2, function ( assert ) {
 	assert.throws( function () {
 			factory.getChildNodeTypes( 'node-factory-node-stub', 23, { 'bar': 'baz' } );
 		},
-		ve.Error,
+		Error,
 		'throws an exception when getting allowed child nodes of a node of an unregistered type'
 	);
 	factory.register( 'node-factory-node-stub', ve.dm.NodeFactoryNodeStub );
@@ -49,7 +49,7 @@ QUnit.test( 'getParentNodeTypes', 2, function ( assert ) {
 	assert.throws( function () {
 			factory.getParentNodeTypes( 'node-factory-node-stub', 23, { 'bar': 'baz' } );
 		},
-		ve.Error,
+		Error,
 		'throws an exception when getting allowed parent nodes of a node of an unregistered type'
 	);
 	factory.register( 'node-factory-node-stub', ve.dm.NodeFactoryNodeStub );
@@ -65,7 +65,7 @@ QUnit.test( 'canNodeHaveChildren', 2, function ( assert ) {
 	assert.throws( function () {
 			factory.canNodeHaveChildren( 'node-factory-node-stub', 23, { 'bar': 'baz' } );
 		},
-		ve.Error,
+		Error,
 		'throws an exception when checking if a node of an unregistered type can have children'
 	);
 	factory.register( 'node-factory-node-stub', ve.dm.NodeFactoryNodeStub );
@@ -81,7 +81,7 @@ QUnit.test( 'canNodeHaveGrandchildren', 2, function ( assert ) {
 	assert.throws( function () {
 			factory.canNodeHaveGrandchildren( 'node-factory-node-stub', 23, { 'bar': 'baz' } );
 		},
-		ve.Error,
+		Error,
 		'throws an exception when checking if a node of an unregistered type can have grandchildren'
 	);
 	factory.register( 'node-factory-node-stub', ve.dm.NodeFactoryNodeStub );

@@ -63,7 +63,7 @@ ve.ui.DropdownTool = function ( toolbar, name, title, items ) {
 /* Methods */
 
 ve.ui.DropdownTool.prototype.onSelect = function ( item ) {
-	throw new ve.Error( 'DropdownTool.onSelect not implemented in this subclass:' + this.constructor );
+	throw new Error( 'DropdownTool.onSelect not implemented in this subclass:' + this.constructor );
 };
 
 /* Inheritance */

@@ -101,7 +101,6 @@ $wgResourceModules += array(
 		'scripts' => array(
 			// ve
 			've/ve.js',
-			've/ve.Error.js',
 			've/ve.EventEmitter.js',
 			've/init/ve.init.js',
 			've/init/ve.init.Platform.js',

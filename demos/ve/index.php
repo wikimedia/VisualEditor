@@ -57,7 +57,6 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 		<script src="../../modules/jquery/jquery.json.js"></script>
 		<script src="../../modules/ve/ve.js"></script>
 		<script src="../../modules/ve/ve.debug.js"></script>
-		<script src="../../modules/ve/ve.Error.js"></script>
 		<script src="../../modules/ve/ve.EventEmitter.js"></script>
 		<script src="../../modules/ve/ve.Factory.js"></script>
 		<script src="../../modules/ve/ve.Position.js"></script>

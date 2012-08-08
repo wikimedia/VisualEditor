@@ -66,11 +66,11 @@ ve.ce.BranchNode.getDomWrapperType = function ( model, key ) {
 	var types,
 		value = model.getAttribute( key );
 	if ( value === undefined ) {
-		throw new ve.Error( 'Undefined attribute: ' + key );
+		throw new Error( 'Undefined attribute: ' + key );
 	}
 	types = ve.ce.nodeFactory.lookup( model.getType() ).domWrapperElementTypes;
 	if ( types[value] === undefined ) {
-		throw new ve.Error( 'Invalid attribute value: ' + value );
+		throw new Error( 'Invalid attribute value: ' + value );
 	}
 	return types[value];
 };

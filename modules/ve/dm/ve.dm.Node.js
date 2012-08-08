@@ -154,7 +154,7 @@ ve.dm.Node.prototype.getOuterRange = function () {
  */
 ve.dm.Node.prototype.setLength = function ( length ) {
 	if ( length < 0 ) {
-		throw new ve.Error( 'Length cannot be negative' );
+		throw new Error( 'Length cannot be negative' );
 	}
 	// Compute length adjustment from old length
 	var diff = length - this.length;

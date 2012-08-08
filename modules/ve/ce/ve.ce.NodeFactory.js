@@ -30,7 +30,7 @@ ve.ce.NodeFactory.prototype.canNodeBeSplit = function ( type ) {
 	if ( type in this.registry ) {
 		return this.registry[type].rules.canBeSplit;
 	}
-	throw new ve.Error( 'Unknown node type: ' + type );
+	throw new Error( 'Unknown node type: ' + type );
 };
 
 /* Inheritance */

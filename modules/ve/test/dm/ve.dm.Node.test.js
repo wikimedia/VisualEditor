@@ -62,7 +62,7 @@ QUnit.test( 'setLength', 2, function ( assert ) {
 			// Length can not be negative
 			node.setLength( -1 );
 		},
-		ve.Error,
+		Error,
 		'throws exception if length is negative'
 	);
 } );
