@@ -34,16 +34,6 @@ ve.ce.BreakNode.rules = {
 	'canBeSplit': false
 };
 
-/* Methods */
-
-ve.ce.BreakNode.prototype.canHaveSlugBefore = function () {
-	return true;
-};
-
-ve.ce.BreakNode.prototype.canHaveSlugAfter = function () {
-	return true;
-};
-
 /* Registration */
 
 ve.ce.nodeFactory.register( 'break', ve.ce.BreakNode );
