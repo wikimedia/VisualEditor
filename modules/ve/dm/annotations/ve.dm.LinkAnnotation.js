@@ -43,7 +43,7 @@ ve.dm.LinkAnnotation.converters = {
 			// FIXME article path should be configurable, currently Parsoid always uses '/'
 			// FIXME space -> _ is MW-specific
 			link.setAttribute( 'href', '/' + annotation.data.title.replace( / /g, '_' ) );
-		} else if ( subType === 'ExtLink' || subType === 'NumberedExtLink' || subType === 'UrlLink' ) {
+		} else if ( subType === 'ExtLink' || subType === 'ExtLink/Numbered' || subType === 'ExtLink/URL' ) {
 			// Set href directly
 			link.setAttribute( 'href', annotation.data.href );
 		}
@@ -63,7 +63,7 @@ ve.dm.LinkAnnotation.converters = {
 			// FIXME article path should be configurable, currently Parsoid always uses '/'
 			// FIXME _ -> space is MW-specific
 			retval.data.title = href.replace( /^\//, '' ).replace( /_/g, ' ' );
-		} else if ( subType === 'ExtLink' || subType === 'NumberedExtLink' || subType === 'UrlLink' ) {
+		} else if ( subType === 'ExtLink' || subType === 'ExtLink/Numbered' || subType === 'ExtLink/URL' ) {
 			retval.data.href = href;
 		}
 

@@ -114,13 +114,13 @@ ve.ce.TextNode.annotationRenderers = {
 		},
 		'close': '</a>'
 	},
-	'link/NumberedExtLink': {
+	'link/ExtLink/Numbered': {
 		'open': function () {
 			return '<a href="#">';
 		},
 		'close': '</a>'
 	},
-	'link/UrlLink': {
+	'link/ExtLink/URL': {
 		'open': function () {
 			return '<a href="#">';
 		},
