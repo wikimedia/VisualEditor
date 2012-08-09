@@ -152,7 +152,7 @@ ve.ui.LinkInspector.prototype.onOpen = function () {
 	if ( annotation === null ) {
 		this.$locationInput.val( this.getSelectionText() );
 		this.$clearButton.addClass( 'es-inspector-button-disabled' );
-	} else if ( annotation.type === 'link/wikiLink' ) {
+	} else if ( annotation.type === 'link/WikiLink' ) {
 		// Internal link
 		initialValue = annotation.data.title || '';
 		this.$locationInput.val( initialValue );
