@@ -29,7 +29,7 @@ ve.dm.TextStyleAnnotation = function () {
 ve.dm.TextStyleAnnotation.converters = {
 	'domElementTypes': ['i', 'b', 'u', 's', 'small', 'big', 'span'],
 	'toDomElement': function ( subType, annotation ) {
-		return annotation.type && document.createElement( ( {
+		var map = {
 			'italic': 'i',
 			'bold': 'b',
 			'underline': 'u',
@@ -42,11 +42,16 @@ ve.dm.TextStyleAnnotation.converters = {
 			'superScript': 'sup',
 			'subScript': 'sub'
 			// TODO: Add other supported inline DOM elements to this list
-		} )[subType] );
+		};
+		return $( document.createElement( map[subType] ) )
+			// Restore HTML attributes
+			// Will be done for us in the new annotation API
+			.attr( annotation.htmlAttributes )
+			.get( 0 );
 	},
 	'toDataAnnotation': function ( tag, element ) {
-		return {
-			'type': 'textStyle/' + ( {
+		var annotation, i, length,
+			map = {
 				'i': 'italic',
 				'b': 'bold',
 				'u': 'underline',
@@ -59,8 +64,17 @@ ve.dm.TextStyleAnnotation.converters = {
 				'sup': 'superScript',
 				'sub': 'subScript'
 				// TODO: Add other supported inline DOM elements to this list
-			} )[tag]
+			};
+		annotation = {
+			type: 'textStyle/' + map[tag],
+			htmlAttributes: {}
 		};
+		// Preserve HTML attributes
+		// Will be done for us in the new annotation API
+		for ( i = 0, length = element.attributes.length; i < length; i++ ) {
+			annotation.htmlAttributes[element.attributes[i].name] = element.attributes[i].value;
+		}
+		return annotation;
 	}
 };
 
