@@ -184,6 +184,39 @@ $messages['br'] = array(
 	'visualeditor-historybutton-redo-tooltip' => 'Adober',
 );
 
+/** Czech (česky)
+ * @author Chmee2
+ */
+$messages['cs'] = array(
+	'visualeditor' => 'WYSIWYG editor',
+	'visualeditor-desc' => 'WYSIWYG editor pro MediaWiki',
+	'visualeditor-feedback-prompt' => 'Podělte se se svým názorem',
+	'visualeditor-feedback-dialog-title' => 'Podělte se se svým názorem na WYSIWYG editor',
+	'visualeditor-ca-editsource' => 'Upravit zdroj',
+	'visualeditor-linkinspector-title' => 'Upravit odkaz',
+	'visualeditor-linkinspector-label-pagetitle' => 'Název stránky',
+	'visualeditor-formatdropdown-title' => 'Změnit formát',
+	'visualeditor-formatdropdown-format-paragraph' => 'Odstavec',
+	'visualeditor-formatdropdown-format-heading1' => 'Nadpis 1',
+	'visualeditor-formatdropdown-format-heading2' => 'Nadpis 2',
+	'visualeditor-formatdropdown-format-heading3' => 'Nadpis 3',
+	'visualeditor-formatdropdown-format-heading4' => 'Nadpis 4',
+	'visualeditor-formatdropdown-format-heading5' => 'Nadpis 5',
+	'visualeditor-formatdropdown-format-heading6' => 'Nadpis 6',
+	'visualeditor-formatdropdown-format-preformatted' => 'Předformátovaný',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Tučné',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Kurzíva',
+	'visualeditor-annotationbutton-link-tooltip' => 'Odkaz',
+	'visualeditor-indentationbutton-indent-tooltip' => 'Zvětšit odsazení',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Zmenšit odsazení',
+	'visualeditor-listbutton-number-tooltip' => 'Číslovaný seznam',
+	'visualeditor-listbutton-bullet-tooltip' => 'Seznam s odrážkami',
+	'visualeditor-clearbutton-tooltip' => 'Vymazat formátování',
+	'visualeditor-historybutton-undo-tooltip' => 'Zpět',
+	'visualeditor-historybutton-redo-tooltip' => 'Znovu',
+	'visualeditor-viewpage-savewarning' => 'Opravdu se chcete vrátit k režimu zobrazení bez uložení?',
+);
+
 /** German (Deutsch)
  * @author Kghbln
  */
@@ -344,6 +377,17 @@ $messages['es'] = array(
 	'visualeditor-viewpage-savewarning' => '¿Estás seguro que quieres volver al modo de visualización sin guardar primero?',
 	'visualeditor-loadwarning' => 'Error al cargar los datos del servidor: $1. ¿Le gustaría volver a intentarlo?',
 	'visualeditor-saveerror' => 'Error al guardar datos en el servidor: $1.',
+);
+
+/** Persian (فارسی)
+ * @author Mjbmr
+ */
+$messages['fa'] = array(
+	'visualeditor-annotationbutton-bold-tooltip' => 'ضخیم',
+	'visualeditor-annotationbutton-italic-tooltip' => 'مورب',
+	'visualeditor-annotationbutton-link-tooltip' => 'پیوند',
+	'visualeditor-historybutton-undo-tooltip' => 'خنثی‌سازی',
+	'visualeditor-historybutton-redo-tooltip' => 'انجام دوباره',
 );
 
 /** Finnish (suomi)
@@ -677,6 +721,30 @@ $messages['ja'] = array(
 	'visualeditor-feedback-dialog-title' => '視覚的エディターのサンドボックスについてフィードバックを残す',
 );
 
+/** Georgian (ქართული)
+ * @author David1010
+ */
+$messages['ka'] = array(
+	'visualeditor' => 'ვიზუალური რედაქტორი',
+	'visualeditor-desc' => 'მედიავიკის ვიზუალური რედაქტორი',
+	'visualeditor-feedback-prompt' => 'გამოხმაურების დატოვება',
+	'visualeditor-ca-editsource' => 'წყაროს რედაქტირება',
+	'visualeditor-linkinspector-title' => 'ბმულის რედაქტირება',
+	'visualeditor-linkinspector-label-pagetitle' => 'გვერდის სათაური',
+	'visualeditor-formatdropdown-title' => 'ფორმატის ცვლილება',
+	'visualeditor-formatdropdown-format-paragraph' => 'პარაგრაფი',
+	'visualeditor-formatdropdown-format-heading1' => 'სათაური 1',
+	'visualeditor-formatdropdown-format-heading2' => 'სათაური 2',
+	'visualeditor-formatdropdown-format-heading3' => 'სათაური 3',
+	'visualeditor-formatdropdown-format-heading4' => 'სათაური 4',
+	'visualeditor-formatdropdown-format-heading5' => 'სათაური 5',
+	'visualeditor-formatdropdown-format-heading6' => 'სათაური 6',
+	'visualeditor-annotationbutton-bold-tooltip' => 'მუქი',
+	'visualeditor-annotationbutton-italic-tooltip' => 'კურსივი',
+	'visualeditor-annotationbutton-link-tooltip' => 'ბმული',
+	'visualeditor-historybutton-undo-tooltip' => 'დაბრუნება',
+);
+
 /** Korean (한국어)
  * @author 아라
  */
@@ -1006,11 +1074,52 @@ $messages['pms'] = array(
 	'visualeditor-feedback-dialog-title' => "Lassé n'opinion a propòsit dl'Ambient ëd preuva ëd VisualEditor",
 );
 
+/** Pashto (پښتو)
+ * @author Ahmed-Najib-Biabani-Ibrahimkhel
+ */
+$messages['ps'] = array(
+	'visualeditor-annotationbutton-bold-tooltip' => 'زغرد',
+	'visualeditor-annotationbutton-italic-tooltip' => 'رېوند',
+	'visualeditor-annotationbutton-link-tooltip' => 'تړنه',
+	'visualeditor-historybutton-undo-tooltip' => 'ناکړل',
+	'visualeditor-historybutton-redo-tooltip' => 'بياکړل',
+);
+
 /** Portuguese (português)
  * @author Hamilton Abreu
  */
 $messages['pt'] = array(
 	'visualeditor-saveerror' => 'Erro ao gravar os dados no servidor: $1.',
+);
+
+/** Romanian (română)
+ * @author Firilacroco
+ */
+$messages['ro'] = array(
+	'visualeditor-feedback-prompt' => 'Lăsați un comentariu',
+	'visualeditor-feedback-dialog-title' => 'Lăsați un comentariu despre cutia cu nisip a editorului vizual',
+	'visualeditor-ca-editsource' => 'Modificați sursa',
+	'visualeditor-linkinspector-title' => 'Modificați legătura',
+	'visualeditor-linkinspector-label-pagetitle' => 'Titlul paginii',
+	'visualeditor-formatdropdown-title' => 'Modificați formatul',
+	'visualeditor-formatdropdown-format-paragraph' => 'Paragraf',
+	'visualeditor-formatdropdown-format-heading1' => 'Titlu 1',
+	'visualeditor-formatdropdown-format-heading2' => 'Titlu 2',
+	'visualeditor-formatdropdown-format-heading3' => 'Titlu 3',
+	'visualeditor-formatdropdown-format-heading4' => 'Titlu 4',
+	'visualeditor-formatdropdown-format-heading5' => 'Titlu 5',
+	'visualeditor-formatdropdown-format-heading6' => 'Titlu 6',
+	'visualeditor-formatdropdown-format-preformatted' => 'Preformatat',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Aldin',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Cursiv',
+	'visualeditor-annotationbutton-link-tooltip' => 'Legătură',
+	'visualeditor-indentationbutton-indent-tooltip' => 'Măriți indentarea',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Diminuați indentarea',
+	'visualeditor-listbutton-number-tooltip' => 'Listă numerotată',
+	'visualeditor-listbutton-bullet-tooltip' => 'Listă cu puncte',
+	'visualeditor-clearbutton-tooltip' => 'Curățați formatarea',
+	'visualeditor-historybutton-undo-tooltip' => 'Anulare',
+	'visualeditor-historybutton-redo-tooltip' => 'Refacere',
 );
 
 /** Russian (русский)
@@ -1038,17 +1147,15 @@ $messages['ru'] = array(
  */
 $messages['si'] = array(
 	'visualeditor' => 'දෘශ්‍යසංස්කාරක',
-	'visualeditorsandbox' => 'දෘශ්‍යසංස්කරණ වැලිපිල්ල',
 	'visualeditor-desc' => 'මීඩියාවිකි සඳහා දෘශ්‍යසංස්කාරක',
-	'visualeditor-sandbox-title' => 'දෘශ්‍යසංස්කරණ වැලිපිල්ල',
-	'visualeditor-tooltip-wikitext' => 'පුරුක්මය විකිපාඨ දසුන',
-	'visualeditor-tooltip-json' => 'පුරුක්මය JSON දසුන',
-	'visualeditor-tooltip-html' => 'පුරුක්මය එච්ටීඑම්එල් දසුන',
-	'visualeditor-tooltip-render' => 'පුරුක්මය පෙරදසුන',
-	'visualeditor-tooltip-history' => 'පුරුක්මය වාර්තා ඉතිහාස දසුන',
-	'visualeditor-tooltip-help' => 'පුරුක්මය උපකාරක දසුන',
 	'visualeditor-feedback-prompt' => 'ප්‍රතිචාරය ලබා දෙන්න',
 	'visualeditor-feedback-dialog-title' => 'දෘශ්‍යසංස්කරණ වැලිපිල්ල ගැන ප්‍රතිචාරය ලබාදෙන්න',
+	'visualeditor-linkinspector-label-pagetitle' => 'පිටුවේ මාතෘකාව',
+	'visualeditor-formatdropdown-format-paragraph' => 'ඡේදය',
+	'visualeditor-annotationbutton-bold-tooltip' => 'තද පැහැ අකුරු',
+	'visualeditor-annotationbutton-italic-tooltip' => 'ඇළ අකුරු',
+	'visualeditor-annotationbutton-link-tooltip' => 'සබැඳුම',
+	'visualeditor-historybutton-undo-tooltip' => 'අහෝසිය',
 );
 
 /** Swedish (svenska)
@@ -1166,19 +1273,25 @@ $messages['zh-hans'] = array(
 
 /** Traditional Chinese (‪中文（繁體）‬)
  * @author Anakmalaysia
+ * @author Simon Shek
  */
 $messages['zh-hant'] = array(
 	'visualeditor' => '可視化編輯器',
-	'visualeditorsandbox' => '可視化編輯器沙盒',
 	'visualeditor-desc' => 'MediaWiki的可視化編輯器',
-	'visualeditor-sandbox-title' => '可視化編輯器沙盒',
-	'visualeditor-tooltip-wikitext' => '切換wikitext視圖',
-	'visualeditor-tooltip-json' => '切換JSON視圖',
-	'visualeditor-tooltip-html' => '切換HTML視圖',
-	'visualeditor-tooltip-render' => '切換預覽',
-	'visualeditor-tooltip-history' => '切換交易歷史觀',
-	'visualeditor-tooltip-help' => '切換幫助視圖',
 	'visualeditor-feedback-prompt' => '留下反饋',
 	'visualeditor-feedback-dialog-title' => '留下關於可視化編輯器的反饋',
+	'visualeditor-linkinspector-label-pagetitle' => '頁面標題',
+	'visualeditor-formatdropdown-title' => '更改格式',
+	'visualeditor-formatdropdown-format-paragraph' => '段落',
+	'visualeditor-formatdropdown-format-heading1' => '標題 1',
+	'visualeditor-formatdropdown-format-heading2' => '標題 2',
+	'visualeditor-formatdropdown-format-heading3' => '標題 3',
+	'visualeditor-formatdropdown-format-heading4' => '標題 4',
+	'visualeditor-formatdropdown-format-heading5' => '標題 5',
+	'visualeditor-formatdropdown-format-heading6' => '標題 6',
+	'visualeditor-annotationbutton-bold-tooltip' => '粗體',
+	'visualeditor-annotationbutton-italic-tooltip' => '斜體',
+	'visualeditor-annotationbutton-link-tooltip' => '連結',
+	'visualeditor-clearbutton-tooltip' => '清除格式',
 );
 
