@@ -427,6 +427,16 @@ ve.dm.Document.prototype.getData = function ( range, deep ) {
 	return deep ? ve.copyArray( data ) : data;
 };
 
+/**
+ * Gets the length of the document.
+ *
+ * @method
+ * @returns {Number} Document data length
+ */
+ve.dm.Document.prototype.getLength = function () {
+	return this.data.length;
+};
+
 ve.dm.Document.prototype.getNodeFromOffset = function ( offset ) {
 	// FIXME duplicated from ve.ce.Document
 	var node = this.documentNode.getNodeFromOffset( offset );
