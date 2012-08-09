@@ -78,7 +78,7 @@ ve.ui.Tool.tools.link = {
 	'name': 'link',
 	'title': ve.msg( 'visualeditor-annotationbutton-link-tooltip' ),
 	'data': {
-		'annotation': { 'type': 'link/wikiLink', 'data': { 'title': '' } },
+		'annotation': { 'type': 'link/WikiLink', 'data': { 'title': '' } },
 		'inspector': 'link'
 	}
 };
