@@ -144,6 +144,7 @@ $wgResourceModules += array(
 
 			've/dm/nodes/ve.dm.AlienInlineNode.js',
 			've/dm/nodes/ve.dm.AlienBlockNode.js',
+			've/dm/nodes/ve.dm.BreakNode.js',
 			've/dm/nodes/ve.dm.DefinitionListItemNode.js',
 			've/dm/nodes/ve.dm.DefinitionListNode.js',
 			've/dm/nodes/ve.dm.DocumentNode.js',
@@ -173,6 +174,7 @@ $wgResourceModules += array(
 
 			've/ce/nodes/ve.ce.AlienInlineNode.js',
 			've/ce/nodes/ve.ce.AlienBlockNode.js',
+			've/ce/nodes/ve.ce.BreakNode.js',
 			've/ce/nodes/ve.ce.DefinitionListItemNode.js',
 			've/ce/nodes/ve.ce.DefinitionListNode.js',
 			've/ce/nodes/ve.ce.DocumentNode.js',
