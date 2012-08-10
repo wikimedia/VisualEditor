@@ -46,7 +46,7 @@ ve.dm.TextStyleAnnotation.converters = {
 		return $( document.createElement( map[subType] ) )
 			// Restore HTML attributes
 			// Will be done for us in the new annotation API
-			.attr( annotation.htmlAttributes )
+			.attr( annotation.htmlAttributes || {} )
 			.get( 0 );
 	},
 	'toDataAnnotation': function ( tag, element ) {
@@ -67,12 +67,15 @@ ve.dm.TextStyleAnnotation.converters = {
 			};
 		annotation = {
 			type: 'textStyle/' + map[tag],
-			htmlAttributes: {}
 		};
 		// Preserve HTML attributes
 		// Will be done for us in the new annotation API
-		for ( i = 0, length = element.attributes.length; i < length; i++ ) {
-			annotation.htmlAttributes[element.attributes[i].name] = element.attributes[i].value;
+		length = element.attributes.length;
+		if ( length > 0 ) {
+			annotation.htmlAttributes = {};
+			for ( i = 0; i < length; i++ ) {
+				annotation.htmlAttributes[element.attributes[i].name] = element.attributes[i].value;
+			}
 		}
 		return annotation;
 	}
