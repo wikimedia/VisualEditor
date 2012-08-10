@@ -320,8 +320,19 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 					text = text.replace( /^\n+/, '' ).replace( /\n+$/, '' );
 				}
 				// Strip leading and trailing whitespace
+				// but only in non-annotation nodes
 				// TODO store it in the element so it can be preserved
-				text = text.replace( /^\s+/, '' ).replace( /\s+$/, '' );
+				if ( annotations.length === 0 && i === 0 ) {
+					// Strip leading whitespace from the first child
+					text = text.replace( /^\s+/, '' );
+				}
+				if (
+					annotations.length === 0 &&
+					i === domElement.childNodes.length - 1
+				) {
+					// Strip trailing whitespace from the last child
+					text = text.replace( /\s+$/g, '' );
+				}
 				if ( text === '' ) {
 					// Don't produce an empty text node or an empty paragraph
 					break;
