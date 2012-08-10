@@ -66,7 +66,7 @@ ve.dm.TextStyleAnnotation.converters = {
 				// TODO: Add other supported inline DOM elements to this list
 			};
 		annotation = {
-			type: 'textStyle/' + map[tag],
+			type: 'textStyle/' + map[tag]
 		};
 		// Preserve HTML attributes
 		// Will be done for us in the new annotation API

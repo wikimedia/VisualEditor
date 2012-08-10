@@ -256,7 +256,7 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 		// and queue a single rebuild after the loop finishes.
 		while ( true ) {
 			if ( operation.type === 'replace' ) {
-				opRemove = this.reversed ? operation.insert : operation.remove,
+				opRemove = this.reversed ? operation.insert : operation.remove;
 				opInsert = this.reversed ? operation.remove : operation.insert;
 				// Update the linear model for this insert
 				ve.batchSplice( this.document.data, this.cursor, opRemove.length, opInsert );

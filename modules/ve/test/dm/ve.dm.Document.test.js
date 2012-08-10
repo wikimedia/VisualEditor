@@ -766,7 +766,7 @@ QUnit.test( 'isStructuralOffset', function ( assert ) {
 	];
 	QUnit.expect( ( data.length + 1 ) * 2 );
 	for ( i = 0; i < cases.length; i++ ) {
-		left = data[i - 1] ? ( data[i - 1].type || data[i - 1][0] ) : '[start]',
+		left = data[i - 1] ? ( data[i - 1].type || data[i - 1][0] ) : '[start]';
 		right = data[i] ? ( data[i].type || data[i][0] ) : '[end]';
 		assert.strictEqual(
 			ve.dm.Document.isStructuralOffset( data, i ),

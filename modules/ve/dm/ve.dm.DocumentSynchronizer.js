@@ -119,8 +119,8 @@ ve.dm.DocumentSynchronizer.synchronizers.rebuild = function ( action ) {
 		numNodes = 0;
 	} else {
 		// Rebuild
-		firstNode = selection[0].node,
-		parent = firstNode.getParent(),
+		firstNode = selection[0].node;
+		parent = firstNode.getParent();
 		index = selection[0].index;
 		numNodes = selection.length;
 	}

@@ -289,7 +289,7 @@ ve.ce.TextNode.prototype.getHtml = function () {
 
 			// setting index to undefined is is necessary to it does not use value from
 			// the previous iteration
-			open = {},
+			open = {};
 			index = undefined;
 
 			for ( hash in left[1] ) {
