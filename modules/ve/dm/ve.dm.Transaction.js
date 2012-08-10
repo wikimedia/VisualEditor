@@ -278,6 +278,10 @@ ve.dm.Transaction.newFromContentBranchConversion = function ( doc, range, type, 
 		selected = selection[i];
 		if ( selected.node.isContent() ) {
 			branch = selected.node.getParent();
+			// Skip branches that are already of the target type and have identical attributes
+			if ( branch.getType() === type && ve.compareObjects( branch.getAttributes(), attr ) ) {
+				continue;
+			}
 			branchOuterRange = branch.getOuterRange();
 			// Don't convert the same branch twice
 			if ( branch === previousBranch ) {
@@ -442,6 +446,22 @@ ve.dm.Transaction.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, u
 };
 
 /* Methods */
+
+/**
+ * Checks if transaction would make any actual changes if processed.
+ *
+ * There may be more sophisticated checks that can be done, like looking for things being replaced
+ * with identical content, but such transactions probably should not be created in the first place.
+ *
+ * @method
+ * @returns {Boolean} Transaction is no-op
+ */
+ve.dm.Transaction.prototype.isNoOp = function () {
+	return (
+		this.operations.length === 0 ||
+		( this.operations.length === 1 && this.operations[0].type === 'retain' )
+	);
+};
 
 /**
  * Gets a list of all operations.

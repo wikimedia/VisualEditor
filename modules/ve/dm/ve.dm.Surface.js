@@ -88,7 +88,7 @@ ve.dm.Surface.prototype.getFragment = function () {
  * @param {ve.Range|undefined} selection
  */
 ve.dm.Surface.prototype.change = function ( transaction, selection ) {
-	if ( transaction ) {
+	if ( transaction && !transaction.isNoOp() ) {
 		this.bigStack = this.bigStack.slice( 0, this.bigStack.length - this.undoIndex );
 		this.undoIndex = 0;
 		this.smallStack.push( transaction );
