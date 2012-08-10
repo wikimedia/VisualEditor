@@ -207,6 +207,8 @@ ve.ce.TextNode.prototype.getHtml = function () {
 
 	function replaceWithNonBreakingSpace( index, data ) {
 		if ( ve.isArray( data[index] ) ) {
+			// Don't modify the original array, clone it first
+			data[index] = data[index].slice( 0 );
 			data[index][0] = '&nbsp;';
 		} else {
 			data[index] = '&nbsp;';
