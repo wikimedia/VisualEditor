@@ -108,6 +108,31 @@ $messages['ast'] = array(
 	'visualeditor-feedback-dialog-title' => 'Dexar un comentariu tocante a la zona de pruebes del editor visual',
 );
 
+/** Bashkir (башҡортса)
+ * @author Haqmar
+ */
+$messages['ba'] = array(
+	'visualeditor' => 'VisualEditor',
+	'visualeditor-desc' => 'MediaWiki өсөн визуаль мөхәррирләгес',
+	'visualeditor-feedback-prompt' => 'Фекерегеҙҙе беледерегеҙ',
+	'visualeditor-feedback-dialog-title' => 'VisualEditor ҡомлоғо тураһында үҙ фекерегеҙҙе белдерегеҙ',
+	'visualeditor-ca-editsource' => 'Сығанаҡты мөхәррирләргә',
+	'visualeditor-linkinspector-title' => 'Һылтанманы мөхәррирләргә',
+	'visualeditor-linkinspector-label-pagetitle' => 'Бит исеме',
+	'visualeditor-formatdropdown-title' => 'Форматты үҙгәртергә',
+	'visualeditor-formatdropdown-format-paragraph' => 'Параграф',
+	'visualeditor-formatdropdown-format-heading1' => 'Башлыҡ 1',
+	'visualeditor-formatdropdown-format-heading2' => 'Башлыҡ 2',
+	'visualeditor-formatdropdown-format-heading3' => 'Башлыҡ 3',
+	'visualeditor-formatdropdown-format-heading4' => 'Башлыҡ 4',
+	'visualeditor-formatdropdown-format-heading5' => 'Башлыҡ 5',
+	'visualeditor-formatdropdown-format-heading6' => 'Башлыҡ 6',
+	'visualeditor-formatdropdown-format-preformatted' => 'Әҙер формат',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Ҡалын',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Ҡыя',
+	'visualeditor-annotationbutton-link-tooltip' => 'Һылтанма',
+);
+
 /** Belarusian (Taraškievica orthography) (‪беларуская (тарашкевіца)‬)
  * @author EugeneZelenko
  * @author Wizardist
@@ -379,6 +404,20 @@ $messages['es'] = array(
 	'visualeditor-saveerror' => 'Error al guardar datos en el servidor: $1.',
 );
 
+/** Estonian (eesti)
+ * @author Avjoska
+ */
+$messages['et'] = array(
+	'visualeditor-formatdropdown-format-heading1' => 'Pealkiri 1',
+	'visualeditor-formatdropdown-format-heading2' => 'Pealkiri 2',
+	'visualeditor-formatdropdown-format-heading3' => 'Pealkiri 3',
+	'visualeditor-formatdropdown-format-heading4' => 'Pealkiri 4',
+	'visualeditor-formatdropdown-format-heading5' => 'Pealkiri 5',
+	'visualeditor-formatdropdown-format-heading6' => 'Pealkiri 6',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Rasvane kiri',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Kaldkiri',
+);
+
 /** Persian (فارسی)
  * @author Mjbmr
  */
@@ -604,17 +643,25 @@ $messages['hsb'] = array(
  */
 $messages['hu'] = array(
 	'visualeditor' => 'VisualEditor',
-	'visualeditorsandbox' => 'Vizuális szerkesztő homokozó',
 	'visualeditor-desc' => 'Vizuális szerkesztő a MediaWikihez',
-	'visualeditor-sandbox-title' => 'VisualEditor homokozó',
-	'visualeditor-tooltip-wikitext' => 'Wikiszöveg nézet kapcsolása',
-	'visualeditor-tooltip-json' => 'JSON nézet kapcsolása',
-	'visualeditor-tooltip-html' => 'HTML nézet kapcsolása',
-	'visualeditor-tooltip-render' => 'Előnézet kapcsolása',
-	'visualeditor-tooltip-history' => 'Tranzakció történet nézet kapcsolása',
-	'visualeditor-tooltip-help' => 'Súgó nézet kapcsolása',
 	'visualeditor-feedback-prompt' => 'Visszajelzés',
 	'visualeditor-feedback-dialog-title' => 'Visszajelzés készítése a VisualEditor homokozójáról',
+	'visualeditor-formatdropdown-format-heading1' => 'Címsor 1',
+	'visualeditor-formatdropdown-format-heading2' => 'Címsor 2',
+	'visualeditor-formatdropdown-format-heading3' => 'Címsor 3',
+	'visualeditor-formatdropdown-format-heading4' => 'Címsor 4',
+	'visualeditor-formatdropdown-format-heading5' => 'Címsor 5',
+	'visualeditor-formatdropdown-format-heading6' => 'Címsor 6',
+	'visualeditor-formatdropdown-format-preformatted' => 'Előre formázott',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Félkövér',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Dőlt',
+	'visualeditor-annotationbutton-link-tooltip' => 'Hivatkozás',
+	'visualeditor-indentationbutton-indent-tooltip' => 'Behúzás növelése',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Behúzás csökkentése',
+	'visualeditor-listbutton-number-tooltip' => 'Számozott lista',
+	'visualeditor-clearbutton-tooltip' => 'Formázás törlése',
+	'visualeditor-historybutton-undo-tooltip' => 'Visszavonás',
+	'visualeditor-historybutton-redo-tooltip' => 'Újra',
 );
 
 /** Interlingua (interlingua)
@@ -1141,6 +1188,22 @@ $messages['ru'] = array(
 	'visualeditor-feedback-dialog-title' => 'Оставить отзыв о песочнице с VisualEditor',
 );
 
+/** Rusyn (русиньскый)
+ * @author Gazeb
+ */
+$messages['rue'] = array(
+	'visualeditor-formatdropdown-format-heading1' => 'Надпис 1',
+	'visualeditor-formatdropdown-format-heading2' => 'Надпис 2',
+	'visualeditor-formatdropdown-format-heading3' => 'Надпис 3',
+	'visualeditor-formatdropdown-format-heading4' => 'Надпис 4',
+	'visualeditor-formatdropdown-format-heading5' => 'Надпис 5',
+	'visualeditor-formatdropdown-format-heading6' => 'Надпис 6',
+	'visualeditor-formatdropdown-format-preformatted' => 'Передформатованый',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Товсте',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Курзіва',
+	'visualeditor-annotationbutton-link-tooltip' => 'Одказ',
+);
+
 /** Sinhala (සිංහල)
  * @author Singhalawap
  * @author පසිඳු කාවින්ද
@@ -1163,6 +1226,34 @@ $messages['si'] = array(
  */
 $messages['sv'] = array(
 	'visualeditor-feedback-prompt' => 'Lämna feedback',
+);
+
+/** Tamil (தமிழ்)
+ * @author Shanmugamp7
+ */
+$messages['ta'] = array(
+	'visualeditor-ca-editsource' => 'மூலத்தை தொகு',
+	'visualeditor-linkinspector-title' => 'இணைப்பைத் தொகு',
+	'visualeditor-linkinspector-label-pagetitle' => 'பக்கத்தின் தலைப்பு',
+	'visualeditor-formatdropdown-title' => 'வடிவமைப்பை மாற்றுக',
+	'visualeditor-formatdropdown-format-paragraph' => 'பத்தி',
+	'visualeditor-formatdropdown-format-heading1' => 'தலைப்பு 1',
+	'visualeditor-formatdropdown-format-heading2' => 'தலைப்பு 2',
+	'visualeditor-formatdropdown-format-heading3' => 'தலைப்பு 3',
+	'visualeditor-formatdropdown-format-heading4' => 'தலைப்பு 4',
+	'visualeditor-formatdropdown-format-heading5' => 'தலைப்பு 5',
+	'visualeditor-formatdropdown-format-heading6' => 'தலைப்பு 6',
+	'visualeditor-formatdropdown-format-preformatted' => 'முன்வடிவமைக்கப்பட்டது',
+	'visualeditor-annotationbutton-bold-tooltip' => 'தடித்த',
+	'visualeditor-annotationbutton-italic-tooltip' => 'சாய்ந்த',
+	'visualeditor-annotationbutton-link-tooltip' => 'இணைப்பு',
+	'visualeditor-indentationbutton-indent-tooltip' => 'உள்தள்ளலை அதிகரிக்கவும்',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'உள்தள்ளலை குறைக்கவும்',
+	'visualeditor-listbutton-number-tooltip' => 'எண்களுடன் வரிசை',
+	'visualeditor-listbutton-bullet-tooltip' => 'குண்டுக்குறியிட்ட பட்டியல்',
+	'visualeditor-clearbutton-tooltip' => 'வடிவமைத்தலை வெறுமையாக்கு',
+	'visualeditor-historybutton-undo-tooltip' => 'மீளமை',
+	'visualeditor-historybutton-redo-tooltip' => 'மீண்டும் செய்',
 );
 
 /** Tagalog (Tagalog)
@@ -1254,21 +1345,23 @@ $messages['vi'] = array(
 /** Simplified Chinese (‪中文（简体）‬)
  * @author Anakmalaysia
  * @author Liangent
+ * @author Shirayuki
  * @author Shizhao
  */
 $messages['zh-hans'] = array(
 	'visualeditor' => '可视化编辑器',
-	'visualeditorsandbox' => '可视化编辑器沙盒',
 	'visualeditor-desc' => 'MediaWiki的可视化编辑器',
-	'visualeditor-sandbox-title' => '可视化编辑器沙盒',
-	'visualeditor-tooltip-wikitext' => '切换wikitext视图',
-	'visualeditor-tooltip-json' => '切换JSON视图',
-	'visualeditor-tooltip-html' => '切换HTML视图',
-	'visualeditor-tooltip-render' => '切换预览',
-	'visualeditor-tooltip-history' => '切换交易历史观',
-	'visualeditor-tooltip-help' => '切换帮助视图',
 	'visualeditor-feedback-prompt' => '留下反馈',
 	'visualeditor-feedback-dialog-title' => '留下关于可视化编辑器的反馈',
+	'visualeditor-formatdropdown-format-heading1' => '标题 1',
+	'visualeditor-formatdropdown-format-heading2' => '标题 2',
+	'visualeditor-formatdropdown-format-heading3' => '标题 3',
+	'visualeditor-formatdropdown-format-heading4' => '标题 4',
+	'visualeditor-formatdropdown-format-heading5' => '标题 5',
+	'visualeditor-formatdropdown-format-heading6' => '标题 6',
+	'visualeditor-annotationbutton-bold-tooltip' => '粗体',
+	'visualeditor-annotationbutton-italic-tooltip' => '斜体',
+	'visualeditor-annotationbutton-link-tooltip' => '链接',
 );
 
 /** Traditional Chinese (‪中文（繁體）‬)
