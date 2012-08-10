@@ -609,14 +609,14 @@ ve.ce.Surface.prototype.pollChanges = function ( async ) {
 					'contentChange',
 					node,
 					{
-						'text': text,
-						'hash': hash,
-						'range': range
-					},
-					{
 						'text': this.poll.text,
 						'hash': this.poll.hash,
 						'range': this.poll.range
+					},
+					{
+						'text': text,
+						'hash': hash,
+						'range': range
 					}
 				);
 				this.poll.text = text;
