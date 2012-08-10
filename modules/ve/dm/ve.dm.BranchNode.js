@@ -99,7 +99,7 @@ ve.dm.BranchNode.prototype.shift = function () {
  * @returns {ve.dm.BranchNode[]} Removed nodes
  * @emits splice (index, howmany, [...])
  */
-ve.dm.BranchNode.prototype.splice = function ( index, howmany ) {
+ve.dm.BranchNode.prototype.splice = function () {
 	var i,
 		length,
 		removals,

@@ -144,7 +144,7 @@ ve.Node.prototype.setRoot = function ( root ) {
  * @method
  * @returns {ve.Document} Document this node is a part of
  */
-ve.Node.prototype.getDocument = function ( root ) {
+ve.Node.prototype.getDocument = function () {
 	return this.doc;
 };
 

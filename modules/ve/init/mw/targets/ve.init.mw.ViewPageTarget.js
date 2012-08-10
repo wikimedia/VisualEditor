@@ -191,7 +191,7 @@ ve.init.mw.ViewPageTarget.prototype.onLoad = function ( dom ) {
  * @param {String} status Text status message
  * @param {Mixed} error Thrown exception or HTTP error string
  */
-ve.init.mw.ViewPageTarget.prototype.onLoadError = function ( response, status, error ) {
+ve.init.mw.ViewPageTarget.prototype.onLoadError = function ( response, status ) {
 	if ( confirm( ve.msg( 'visualeditor-loadwarning', status ) ) ) {
 		this.load();
 	} else {
@@ -245,7 +245,7 @@ ve.init.mw.ViewPageTarget.prototype.onSave = function ( html ) {
  * @param {String} status Text status message
  * @param {Mixed} error Thrown exception or HTTP error string
  */
-ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( response, status, error ) {
+ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( response, status ) {
 	// TODO: Don't use alert.
 	alert( ve.msg( 'visualeditor-saveerror', status ) );
 };
@@ -295,7 +295,7 @@ ve.init.mw.ViewPageTarget.prototype.onViewTabClick = function ( e ) {
  * @method
  * @param {jQuery.Event} e
  */
-ve.init.mw.ViewPageTarget.prototype.onToolbarSaveButtonClick = function ( e ) {
+ve.init.mw.ViewPageTarget.prototype.onToolbarSaveButtonClick = function () {
 	if ( this.edited ) {
 		this.showSaveDialog();
 	}
@@ -309,7 +309,7 @@ ve.init.mw.ViewPageTarget.prototype.onToolbarSaveButtonClick = function ( e ) {
  * @method
  * @param {ve.Transaction} tx Processed transaction
  */
-ve.init.mw.ViewPageTarget.prototype.onSurfaceModelTransact = function ( tx ) {
+ve.init.mw.ViewPageTarget.prototype.onSurfaceModelTransact = function () {
 	this.edited = true;
 	this.enableToolbarSaveButton();
 	this.surface.getModel().removeListener( 'transact', this.proxiedOnSurfaceModelTransact );
@@ -321,7 +321,7 @@ ve.init.mw.ViewPageTarget.prototype.onSurfaceModelTransact = function ( tx ) {
  * @method
  * @param {jQuery.Event} e
  */
-ve.init.mw.ViewPageTarget.prototype.onSaveDialogSaveButtonClick = function ( e ) {
+ve.init.mw.ViewPageTarget.prototype.onSaveDialogSaveButtonClick = function () {
 	this.lockSaveDialogSaveButton();
 	this.save(
 		ve.dm.converter.getDomFromData( this.surface.getDocumentModel().getData() ),
@@ -340,7 +340,7 @@ ve.init.mw.ViewPageTarget.prototype.onSaveDialogSaveButtonClick = function ( e )
  * @method
  * @param {jQuery.Event} e
  */
-ve.init.mw.ViewPageTarget.prototype.onSaveDialogCloseButtonClick = function ( e ) {
+ve.init.mw.ViewPageTarget.prototype.onSaveDialogCloseButtonClick = function () {
 	this.hideSaveDialog();
 };
 

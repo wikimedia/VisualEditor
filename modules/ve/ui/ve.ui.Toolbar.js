@@ -18,9 +18,6 @@ ve.ui.Toolbar = function ( $container, surfaceView, config ) {
 		return;
 	}
 
-	// References for use in closures
-	var $window = $( window );
-
 	// Properties
 	this.surfaceView = surfaceView;
 	this.$ = $container;

@@ -249,7 +249,7 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 	// Fallback to defaults
 	annotations = annotations || [];
 	path = path || ['document'];
-	var i, childDomElement, annotation, childDataElement, text, contentNode, childTypes,
+	var i, childDomElement, annotation, childDataElement, text, childTypes,
 		data = [],
 		branchType = path[path.length - 1],
 		branchIsContent = ve.dm.nodeFactory.canNodeContainContent( branchType ),
@@ -382,7 +382,6 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
  */
 ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 	var text, i, annotations,  hash, annotationElement, done, dataElement, wrapper, childDomElement,
-		datamw,
 		container = document.createElement( 'div' ),
 		domElement = container,
 		annotationStack = {}; // { hash: DOMnode }

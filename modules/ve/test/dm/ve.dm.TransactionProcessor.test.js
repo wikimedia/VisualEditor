@@ -14,11 +14,11 @@ QUnit.test( 'commit/rollback', function ( assert ) {
 		cases = {
 		'no operations': {
 			'calls': [],
-			'expected': function ( data ) {}
+			'expected': function () {}
 		},
 		'retaining': {
 			'calls': [['pushRetain', 38]],
-			'expected': function ( data ) {}
+			'expected': function () {}
 		},
 		'annotating content': {
 			'calls': [

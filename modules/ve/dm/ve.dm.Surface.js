@@ -84,8 +84,8 @@ ve.dm.Surface.prototype.getFragment = function () {
  * Applies a series of transactions to the content data and sets the selection.
  *
  * @method
- * @param {ve.dm.Transaction} transaction Transaction to apply to the document
- * @param {ve.Range} selection
+ * @param {ve.dm.Transaction|null} transaction Transaction to apply to the document
+ * @param {ve.Range|undefined} selection
  */
 ve.dm.Surface.prototype.change = function ( transaction, selection ) {
 	if ( transaction ) {

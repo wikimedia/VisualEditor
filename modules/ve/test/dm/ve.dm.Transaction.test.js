@@ -32,7 +32,7 @@ function runConstructorTests( assert, constructor, cases ) {
 		} else if ( cases[msg].exception ) {
 			/*jshint loopfunc:true */
 			assert.throws( function () {
-				var tx = constructor.apply(
+				constructor.apply(
 					ve.dm.Transaction, cases[msg].args
 				);
 			}, cases[msg].exception, msg + ': throw exception' );
