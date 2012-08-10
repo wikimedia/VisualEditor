@@ -12,8 +12,9 @@
  * @constructor
  * @param {ve.dm.Surface} surface Target surface
  * @param {ve.Range} [range] Range within target document, current selection used by default
+ * @param {Boolean} [autoSelect] Update the surface's selection when making changes
  */
-ve.dm.SurfaceFragment = function ( surface, range ) {
+ve.dm.SurfaceFragment = function ( surface, range, autoSelect ) {
 	// Short-circuit for null fragment
 	if ( !surface ) {
 		return this;
@@ -23,6 +24,7 @@ ve.dm.SurfaceFragment = function ( surface, range ) {
 	this.surface = surface;
 	this.document = surface.getDocument();
 	this.range = range && range instanceof ve.Range ? range : surface.getSelection();
+	this.autoSelect = !!autoSelect;
 
 	// Events
 	surface.on( 'transact', ve.proxy( this, this.onTransact ) );
@@ -75,7 +77,8 @@ ve.dm.SurfaceFragment.prototype.adjustRange = function ( start, end ) {
 	}
 	return new ve.dm.SurfaceFragment(
 		this.document,
-		new ve.Range( this.range.start + ( start || 0 ),  this.range.end + ( end || 0 ) )
+		new ve.Range( this.range.start + ( start || 0 ),  this.range.end + ( end || 0 ) ),
+		this.autoSelect
 	);
 };
 
@@ -90,7 +93,9 @@ ve.dm.SurfaceFragment.prototype.collapseRange = function () {
 	if ( !this.surface ) {
 		return this;
 	}
-	return new ve.dm.SurfaceFragment( this.document, new ve.Range( this.range.start ) );
+	return new ve.dm.SurfaceFragment(
+		this.document, new ve.Range( this.range.start ), this.autoSelect
+	);
 };
 
 /**
@@ -105,7 +110,7 @@ ve.dm.SurfaceFragment.prototype.trimRange = function () {
 		return this;
 	}
 	return new ve.dm.SurfaceFragment(
-		this.document, this.document.trimOuterSpaceFromRange( this.range )
+		this.document, this.document.trimOuterSpaceFromRange( this.range ), this.autoSelect
 	);
 };
 
@@ -168,7 +173,17 @@ ve.dm.SurfaceFragment.prototype.expandRange = function ( scope, type ) {
 		default:
 			throw new Error( 'Invalid scope argument: ' + scope );
 	}
-	return new ve.dm.SurfaceFragment( this.document, range );
+	return new ve.dm.SurfaceFragment( this.document, range, this.autoSelect );
+};
+
+/**
+ * Checks if the surface's selection will be updated automatically when changes are made.
+ *
+ * @method
+ * @returns {Boolean} Will automatically update surface selection
+ */
+ve.dm.SurfaceFragment.prototype.willAutoSelect = function () {
+	return this.autoSelect;
 };
 
 /**
@@ -210,20 +225,84 @@ ve.dm.SurfaceFragment.prototype.getText = function () {
 };
 
 /**
- * Get nodes covered by the fragment.
+ * Get all leaf nodes covered by the fragment.
  *
- * @see {ve.Document.selectNodes} for information about the modes argument.
+ * @see {ve.Document.selectNodes} for more information about the return value.
  *
  * @method
- * @param {String} [mode='leaves'] Type of selection to perform
  * @returns {Array} List of nodes and related information
  */
-ve.dm.SurfaceFragment.prototype.getNodes = function ( mode ) {
+ve.dm.SurfaceFragment.prototype.getLeafNodes = function () {
 	// Handle null fragment
 	if ( !this.surface ) {
 		return [];
 	}
-	return this.document.selectNodes( mode, this.range );
+	return this.document.selectNodes( this.range, 'leaves' );
+};
+
+/**
+ * Get nodes covered by the fragment.
+ *
+ * Does not descend into nodes that are entirely covered by the range. The result is
+ * similar to that of {ve.dm.SurfaceFragment.prototype.getLeafNodes} except that if a node is
+ * entirely covered, its children aren't returned separately.
+ *
+ * @see {ve.Document.selectNodes} for more information about the return value.
+ *
+ * @method
+ * @returns {Array} List of nodes and related information
+ */
+ve.dm.SurfaceFragment.prototype.getCoveredNodes = function () {
+	// Handle null fragment
+	if ( !this.surface ) {
+		return [];
+	}
+	return this.document.selectNodes( this.range, 'coveredNodes' );
+};
+
+/**
+ * Get nodes covered by the fragment.
+ *
+ * Includes adjacent siblings covered by the range, descending if the range is in a single node.
+ *
+ * @see {ve.Document.selectNodes} for more information about the return value.
+ *
+ * @method
+ * @returns {Array} List of nodes and related information
+ */
+ve.dm.SurfaceFragment.prototype.getSiblingNodes = function () {
+	// Handle null fragment
+	if ( !this.surface ) {
+		return [];
+	}
+	return this.document.selectNodes( this.range, 'siblings' );
+};
+
+/**
+ * Chooses whether to automatically update the surface selection when making changes.
+ *
+ * @method
+ * @param {Boolean} [value=true] Automatically update surface selection
+ * @returns {ve.dm.SurfaceFragment} This fragment
+ */
+ve.dm.SurfaceFragment.prototype.autoSelect = function ( value ) {
+	this.autoSelect = value === undefined || !!value;
+	return this;
+};
+
+/**
+ * Applies the fragment's range to the surface as a selection.
+ *
+ * @method
+ * @returns {ve.dm.SurfaceFragment} This fragment
+ */
+ve.dm.SurfaceFragment.prototype.select = function () {
+	// Handle null fragment
+	if ( !this.surface ) {
+		return this;
+	}
+	this.surface.setSelection( this.range );
+	return this;
 };
 
 /**
@@ -249,7 +328,8 @@ ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, type, data 
 	}
 	if ( this.range.getLength() ) {
 		tx = ve.dm.Transaction.newFromAnnotation( this.document, this.range, method, annotation );
-		this.surface.change( tx, this.range );
+		this.range = tx.translateRange( this.range );
+		this.surface.change( tx, this.autoSelect && this.range );
 	}
 	return this;
 };
@@ -257,10 +337,10 @@ ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, type, data 
 /**
  * Remove content in the fragment and insert content before it.
  *
- * This will move the fragment to the end of the insertion and make it zero-length.
+ * This will move the fragment's range to the end of the insertion and make it zero-length.
  *
  * @method
- * @param {Mixed} content Content to insert
+ * @param {String|Array} content Content to insert, can be either a string or array of data
  * @param {Boolean} annotate Content should be automatically annotated to match surrounding content
  * @returns {ve.dm.SurfaceFragment} This fragment
  */
@@ -269,7 +349,25 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
 	if ( !this.surface ) {
 		return this;
 	}
-	// TODO: Implement
+	var tx, annotations;
+	if ( this.range.getLength() ) {
+		this.removeContent();
+	}
+	// Auto-convert content to array of plain text characters
+	if ( typeof content === 'string' ) {
+		content = content.split( '' );
+	}
+	if ( content.length ) {
+		if ( annotate ) {
+			annotations = this.document.getAnnotationsFromOffset( this.range.start - 1 );
+			if ( !ve.isEmptyObject( annotations ) ) {
+				ve.dm.Document.addAnnotationsToData( content, annotations );
+			}
+		}
+		tx = ve.Transaction.newFromInsertion( this.document, content );
+		this.range = tx.translateRange( this.range );
+		this.surface.change( tx, this.autoSelect && this.range );
+	}
 	return this;
 };
 
@@ -284,19 +382,47 @@ ve.dm.SurfaceFragment.prototype.removeContent = function () {
 	if ( !this.surface ) {
 		return this;
 	}
-	// TODO: Implement
+	var tx;
+	if ( this.range.getLength() ) {
+		tx = ve.Transaction.newFromRemoval( this.document, this.range );
+		this.range = tx.translateRange( this.range );
+		this.surface.change( tx, this.autoSelect && this.range );
+	}
 	return this;
 };
 
 /**
- * Converts content branches in the fragment.
+ * Converts each content branch in the fragment from one type to another.
  *
  * @method
  * @param {String} type Element type to convert to
- * @param {Object} [attributes] Initial attributes for new element
+ * @param {Object} [attr] Initial attributes for new element
  * @returns {ve.dm.SurfaceFragment} This fragment
  */
-ve.dm.SurfaceFragment.prototype.convertNodes = function ( type, attributes ) {
+ve.dm.SurfaceFragment.prototype.convertNodes = function ( type, attr ) {
+	// Handle null fragment
+	if ( !this.surface ) {
+		return this;
+	}
+	var tx = ve.Transaction.newFromContentBranchConversion( this.document, this.range, type, attr );
+	this.range = tx.translateRange( this.range );
+	this.surface.change( tx, this.autoSelect && this.range );
+	return this;
+};
+
+/**
+ * Wraps each node in the fragment with one or more elements.
+ *
+ * A wrapper object is a linear model element; a plain object containing a type property and an
+ * optional attributes property.
+ *
+ * @method
+ * @param {Object|Object[]} wrapper Wrapper object, or array of wrapper objects (see above)
+ * @param {String} wrapper.type Node type of wrapper
+ * @param {Object} [wrapper.attributes] Attributes of wrapper
+ * @returns {ve.dm.SurfaceFragment} This fragment
+ */
+ve.dm.SurfaceFragment.prototype.wrapNodes = function ( wrapper ) {
 	// Handle null fragment
 	if ( !this.surface ) {
 		return this;
@@ -306,14 +432,13 @@ ve.dm.SurfaceFragment.prototype.convertNodes = function ( type, attributes ) {
 };
 
 /**
- * Wraps content in the fragment with one or more elements.
- *
- * TODO: Figure out what the arguments for this function should be
+ * Unwraps each node in the fragment out of one or more elements.
  *
  * @method
+ * @param {String|String[]} type Node types to unwrap, or array of node types to unwrap
  * @returns {ve.dm.SurfaceFragment} This fragment
  */
-ve.dm.SurfaceFragment.prototype.wrapNodes = function () {
+ve.dm.SurfaceFragment.prototype.unwrapNodes = function ( type ) {
 	// Handle null fragment
 	if ( !this.surface ) {
 		return this;
@@ -323,14 +448,80 @@ ve.dm.SurfaceFragment.prototype.wrapNodes = function () {
 };
 
 /**
- * Unwraps content in the fragment out of one or more elements.
+ * Changes the wrapping of each node in the fragment from one type to another.
+ *
+ * A wrapper object is a linear model element; a plain object containing a type property and an
+ * optional attributes property.
+ *
+ * @method
+ * @param {String|String[]} type Node types to unwrap, or array of node types to unwrap
+ * @param {Object|Object[]} wrapper Wrapper object, or array of wrapper objects (see above)
+ * @param {String} wrapper.type Node type of wrapper
+ * @param {Object} [wrapper.attributes] Attributes of wrapper
+ * @returns {ve.dm.SurfaceFragment} This fragment
+ */
+ve.dm.SurfaceFragment.prototype.rewrapNodes = function ( type, wrapper ) {
+	// Handle null fragment
+	if ( !this.surface ) {
+		return this;
+	}
+	// TODO: Implement
+	return this;
+};
+
+/**
+ * Wraps nodes in the fragment with one or more elements.
+ *
+ * A wrapper object is a linear model element; a plain object containing a type property and an
+ * optional attributes property.
+ *
+ * @method
+ * @param {Object|Object[]} wrapper Wrapper object, or array of wrapper objects (see above)
+ * @param {String} wrapper.type Node type of wrapper
+ * @param {Object} [wrapper.attributes] Attributes of wrapper
+ * @returns {ve.dm.SurfaceFragment} This fragment
+ */
+ve.dm.SurfaceFragment.prototype.wrapAllNodes = function ( wrapper ) {
+	// Handle null fragment
+	if ( !this.surface ) {
+		return this;
+	}
+	// TODO: Implement
+	return this;
+};
+
+/**
+ * Unwraps nodes in the fragment out of one or more elements.
  *
  * TODO: Figure out what the arguments for this function should be
  *
  * @method
+ * @param {String|String[]} type Node types to unwrap, or array of node types to unwrap
  * @returns {ve.dm.SurfaceFragment} This fragment
  */
-ve.dm.SurfaceFragment.prototype.unwrapNodes = function () {
+ve.dm.SurfaceFragment.prototype.unwrapAllNodes = function ( type ) {
+	// Handle null fragment
+	if ( !this.surface ) {
+		return this;
+	}
+	// TODO: Implement
+	return this;
+};
+
+/**
+ * Changes the wrapping of nodes in the fragment from one type to another.
+ *
+ * A wrapper object is a linear model element; a plain object containing a type property and an
+ * optional attributes property.
+ *
+ * @method
+ * @param {String|String[]} type Node types to unwrap, or array of node types to unwrap
+ * @param {Object|Object[]} wrapper Wrapper object, or array of wrapper objects (see above)
+ * @param {String} wrapper.type Node type of wrapper
+ * @param {Object} [wrapper.attributes] Attributes of wrapper
+ * @returns {ve.dm.SurfaceFragment} This fragment
+ */
+ve.dm.SurfaceFragment.prototype.rewrapAllNodes = function ( type, wrapper ) {
 	// Handle null fragment
 	if ( !this.surface ) {
 		return this;
