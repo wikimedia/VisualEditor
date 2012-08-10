@@ -249,7 +249,8 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 	// Fallback to defaults
 	annotations = annotations || [];
 	path = path || ['document'];
-	var i, childDomElement, annotation, childDataElement, text, childTypes,
+	var i, childDomElement, annotation, childDataElement, text, childTypes, matches, paragraph,
+		wrapperElement = dataElement,
 		data = [],
 		branchType = path[path.length - 1],
 		branchIsContent = ve.dm.nodeFactory.canNodeContainContent( branchType ),
@@ -309,29 +310,16 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 				break;
 			case Node.TEXT_NODE:
 				// HACK: strip trailing newline in <li> tags. Workaround for a Parsoid bug
+				// TODO kill this in favor of the fringe whitespace preservation
+				// code below
 				text = childDomElement.data;
 				if ( domElement.nodeName.toLowerCase() === 'li' ) {
 					text = text.replace( /\n$/, '' );
 				}
-
 				if ( !branchIsContent ) {
 					// If it's bare content, strip leading and trailing newlines
 					// FIXME these newlines should be preserved somehow
 					text = text.replace( /^\n+/, '' ).replace( /\n+$/, '' );
-				}
-				// Strip leading and trailing whitespace
-				// but only in non-annotation nodes
-				// TODO store it in the element so it can be preserved
-				if ( annotations.length === 0 && i === 0 ) {
-					// Strip leading whitespace from the first child
-					text = text.replace( /^\s+/, '' );
-				}
-				if (
-					annotations.length === 0 &&
-					i === domElement.childNodes.length - 1
-				) {
-					// Strip trailing whitespace from the last child
-					text = text.replace( /\s+$/g, '' );
 				}
 				if ( text === '' ) {
 					// Don't produce an empty text node or an empty paragraph
@@ -340,8 +328,40 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 
 				// Start auto-wrapping of bare content
 				if ( !wrapping && !alreadyWrapped && !branchIsContent ) {
-					data.push( { 'type': 'paragraph' } );
+					paragraph = { 'type': 'paragraph' };
+					data.push( paragraph );
 					wrapping = true;
+					wrapperElement = paragraph;
+				}
+
+				// Strip leading and trailing whitespace
+				// but only in non-annotation nodes
+				if ( annotations.length === 0 && i === 0 && wrapperElement ) {
+					// Strip leading whitespace from the first child
+					matches = text.match( /^\s+/ );
+					if ( matches && matches[0] !== '' ) {
+						if ( !wrapperElement.fringeWhitespace ) {
+							wrapperElement.fringeWhitespace = {};
+						}
+						wrapperElement.fringeWhitespace.innerPre = matches[0];
+						text = text.substring( matches[0].length );
+					}
+				}
+				if (
+					annotations.length === 0 &&
+					i === domElement.childNodes.length - 1 &&
+					wrapperElement
+				) {
+					// Strip trailing whitespace from the last child
+					matches = text.match( /\s+$/ );
+					if ( matches && matches[0] !== '' ) {
+						if ( !wrapperElement.fringeWhitespace ) {
+							wrapperElement.fringeWhitespace = {};
+						}
+						wrapperElement.fringeWhitespace.innerPost = matches[0];
+						text = text.substring( 0,
+							text.length - matches[0].length );
+					}
 				}
 
 				// Annotate the text and output it
@@ -392,7 +412,8 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
  * @returns {HTMLElement} Wrapper div containing the resulting HTML
  */
 ve.dm.Converter.prototype.getDomFromData = function ( data ) {
-	var text, i, annotations,  hash, annotationElement, done, dataElement, wrapper, childDomElement,
+	var text, i, annotations,  hash, annotationElement, done, dataElement, wrapper,
+		childDomElement, pre, post,
 		container = document.createElement( 'div' ),
 		domElement = container,
 		annotationStack = {}; // { hash: DOMnode }
@@ -511,11 +532,44 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 				// Make sure the alien closing is skipped
 				i++;
 			} else if ( dataElement.type.charAt( 0 ) === '/' ) {
+				// Process whitespace
+				if ( domElement.veWhitespace ) {
+					pre = domElement.veWhitespace.innerPre;
+					if ( pre ) {
+						if ( domElement.firstChild.nodeType === 3 ) {
+							// First child is a TextNode, prepend to it
+							domElement.firstChild.insertData( 0, pre );
+						} else {
+							// Prepend a TextNode
+							domElement.insertBefore(
+								document.createTextNode( pre ),
+								domElement.firstChild
+							);
+						}
+					}
+					post = domElement.veWhitespace.innerPost;
+					if ( post ) {
+						if ( domElement.lastChild.nodeType === 3 ) {
+							// Last child is a TextNode, append to it
+							domElement.lastChild.appendData( post );
+						} else {
+							// Append a TextNode
+							domElement.appendChild(
+								document.createTextNode( post )
+							);
+						}
+					}
+					delete domElement.veWhitespace;
+				}
 				// Ascend to parent node
 				domElement = domElement.parentNode;
 			} else {
 				// Create node from data
 				childDomElement = this.getDomElementFromDataElement( dataElement );
+				// Add whitespace info
+				if ( dataElement.fringeWhitespace ) {
+					childDomElement.veWhitespace = dataElement.fringeWhitespace;
+				}
 				// Add element
 				domElement.appendChild( childDomElement );
 				// Descend into child node
