@@ -25,7 +25,7 @@ ve.ui.Toolbar = function ( $container, surfaceView, config ) {
 	this.tools = [];
 
 	// Update tools on selection and all transactions.
-	this.surfaceView.model.on( 'change', ve.proxy( this.updateTools, this ) );
+	this.surfaceView.model.on( 'change', ve.bind( this.updateTools, this ) );
 
 	this.config = config || [
 		{ 'name': 'history', 'items' : ['undo', 'redo'] },

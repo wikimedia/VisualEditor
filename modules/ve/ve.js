@@ -13,7 +13,7 @@ window.ve = {
 	'instances': []
 };
 
-/* Functions */
+/* Utility functions */
 
 /**
  * Extends a constructor with the prototype of another.
@@ -52,25 +52,69 @@ ve.extendClass = function ( dst ) {
 	}
 };
 
-ve.extendObject = $.extend;
-
 ve.isPlainObject = $.isPlainObject;
 
 ve.isEmptyObject = $.isEmptyObject;
 
+/**
+ * Check whether given variable is an array. Should not use `instanceof` or
+ * `constructor` due to the inability to detect arrays from a different
+ * scope.
+ * @static
+ * @method
+ * @until ES5: Array.isArray.
+ * @param {Mixed} x
+ * @return {Boolean}
+ */
 ve.isArray = $.isArray;
 
-ve.proxy = $.proxy;
+/**
+ * Create a function calls the given function in a certain context.
+ * If a function does not have an explicit context, it is determined at
+ * executin time based on how it is invoked (e.g. object member, call/apply,
+ * global scope, etc.).
+ * Performance optimization: http://jsperf.com/function-bind-shim-perf
+ *
+ * @static
+ * @method
+ * @until ES5: Function.prototype.bind.
+ * @param {Function} func Function to bind.
+ * @param {Object} context Context for the function.
+ * @param {Mixed} [..] Variadic list of arguments to prepend to arguments
+ * to the bound function.
+ * @return {Function} The bound.
+ */
+ve.bind = $.proxy;
 
 /**
  * Wrapper for Array.prototype.indexOf
- *
- * @param {Mixed} value Element to search for
- * @param {Array} array Array to search in
- * @param {Integer} [fromIndex=0] Index to being searching from
- * @return {Number} Index of value in array, or -1 if not found. Comparisons are done with ===
+ * @static
+ * @method
+ * @until ES5
+ * @param {Mixed} value Element to search for.
+ * @param {Array} array Array to search in.
+ * @param {Integer} [fromIndex=0] Index to being searching from.
+ * @return {Number} Index of value in array, or -1 if not found.
+ * Values are compared without type coersion.
  */
-ve.inArray = $.inArray;
+ve.indexOf = $.inArray;
+
+/**
+ * Merge properties of one or more objects into another.
+ * Preserves original object's inheritance (e.g. Array, Object, whatever).
+ * In case of array or array-like objects only the indexed properties
+ * are copied over.
+ * Beware: If called with only one argument, it will consider
+ * 'target' as 'source' and 'this' as 'target'. Which means
+ * ve.extendObject( { a: 1 } ); sets ve.a = 1;
+ *
+ * @param {Boolean} [recursive=false]
+ * @param {Mixed} target Object that will receive the new properties.
+ * @param {Mixed} [..] Variadic list of objects containing properties
+ * to be merged into the targe.
+ * @return {Mixed} Modified version of first or second argument.
+ */
+ve.extendObject = $.extend;
 
 /**
  * Generates a hash of an object based on its name and data.
@@ -95,6 +139,7 @@ ve.getHash = $.toJSON;
  *
  * @static
  * @method
+ * @until ES5
  * @param {Object} Object to get properties from
  * @returns {String[]} List of object keys
  */

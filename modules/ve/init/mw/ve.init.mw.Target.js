@@ -61,7 +61,7 @@ ve.init.mw.Target.onLoad = function ( response, status ) {
 	} else {
 		this.dom = $( '<div>' ).html( data.parsed )[0];
 		// Everything worked, the page was loaded, continue as soon as the module is ready
-		mw.loader.using( this.modules, ve.proxy( ve.init.mw.Target.onReady, this ) );
+		mw.loader.using( this.modules, ve.bind( ve.init.mw.Target.onReady, this ) );
 	}
 };
 
@@ -182,8 +182,8 @@ ve.init.mw.Target.prototype.load = function () {
 		// Wait up to 10 seconds before giving up
 		'timeout': 10000,
 		'cache': 'false',
-		'success': ve.proxy( ve.init.mw.Target.onLoad, this ),
-		'error': ve.proxy( ve.init.mw.Target.onLoadError, this )
+		'success': ve.bind( ve.init.mw.Target.onLoad, this ),
+		'error': ve.bind( ve.init.mw.Target.onLoadError, this )
 	} );
 	return true;
 };
@@ -235,8 +235,8 @@ ve.init.mw.Target.prototype.save = function ( dom, options ) {
 		'type': 'POST',
 		// Wait up to 10 seconds before giving up
 		'timeout': 10000,
-		'success': ve.proxy( ve.init.mw.Target.onSave, this ),
-		'error': ve.proxy( ve.init.mw.Target.onSaveError, this )
+		'success': ve.bind( ve.init.mw.Target.onSave, this ),
+		'error': ve.bind( ve.init.mw.Target.onSaveError, this )
 	} );
 	return true;
 };

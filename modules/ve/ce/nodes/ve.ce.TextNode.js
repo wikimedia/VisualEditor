@@ -170,7 +170,7 @@ ve.ce.TextNode.prototype.onUpdate = function ( force ) {
 			this.parent.clean();
 			if ( ve.debug ) {
 				this.parent.$.css( 'backgroundColor', '#F6F6F6' );
-				setTimeout( ve.proxy( function () {
+				setTimeout( ve.bind( function () {
 					this.parent.$.css( 'backgroundColor', 'transparent' );
 				}, this ), 350 );
 			}

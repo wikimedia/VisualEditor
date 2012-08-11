@@ -171,7 +171,7 @@ ve.ui.LinkInspector.prototype.onOpen = function () {
 		this.$acceptButton.removeClass( 'es-inspector-button-disabled' );
 	}
 
-	setTimeout( ve.proxy( function () {
+	setTimeout( ve.bind( function () {
 		this.$locationInput.focus().select();
 	}, this ), 0 );
 };
