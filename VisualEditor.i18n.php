@@ -1122,6 +1122,16 @@ $messages['ta'] = array(
 	'visualeditor-historybutton-redo-tooltip' => 'மீண்டும் செய்',
 );
 
+/** Telugu (తెలుగు)
+ * @author Veeven
+ */
+$messages['te'] = array(
+	'visualeditor-linkinspector-label-pagetitle' => 'పేజీ శీర్షిక',
+	'visualeditor-annotationbutton-bold-tooltip' => 'బొద్దు',
+	'visualeditor-annotationbutton-italic-tooltip' => 'వాలు',
+	'visualeditor-annotationbutton-link-tooltip' => 'లంకె',
+);
+
 /** Tagalog (Tagalog)
  * @author AnakngAraw
  */
