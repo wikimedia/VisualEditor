@@ -41,10 +41,12 @@ $messages['en'] = array(
  * @author Erik Moeller
  * @author Jdforrester
  * @author Nike
+ * @author Purodha
  * @author Trevor Parscal
  */
 $messages['qqq'] = array(
 	'visualeditor' => 'The name of the VisualEditor extension',
+	'visualeditor-desc' => '{{desc}}',
 	'visualeditor-feedback-prompt' => 'A link that opens feedback form in http://www.mediawiki.org/wiki/Special:VisualEditorSandbox',
 	'visualeditor-ca-editsource' => 'Text for the edit source link in the tab dropdown',
 	'visualeditor-linkinspector-title' => 'Title of the link inspector dialog',
@@ -70,7 +72,7 @@ $messages['qqq'] = array(
 	'visualeditor-historybutton-redo-tooltip' => 'Tooltip for the redo button',
 	'visualeditor-viewpage-savewarning' => 'Text shown when the user tries to leave the editor without saving their changes',
 	'visualeditor-loadwarning' => 'Text shown when the editor fails to load properly. $1 is the error message from the server, in English.',
-	'visualeditor-saveerror' => 'Text shown when the editor fails to save properly.',
+	'visualeditor-saveerror' => 'Text shown when the editor fails to save properly. $1 is an error message, in English.',
 );
 
 /** Assamese (অসমীয়া)
@@ -95,15 +97,7 @@ $messages['as'] = array(
  */
 $messages['ast'] = array(
 	'visualeditor' => 'VisualEditor',
-	'visualeditorsandbox' => 'Zona de pruebes del editor visual',
 	'visualeditor-desc' => 'Editor visual pa MediaWiki',
-	'visualeditor-sandbox-title' => 'Zona de pruebes del editor visual',
-	'visualeditor-tooltip-wikitext' => 'Alternar la vista de testu wiki',
-	'visualeditor-tooltip-json' => 'Alternar la vista JSON',
-	'visualeditor-tooltip-html' => 'Alternar la vista HTML',
-	'visualeditor-tooltip-render' => 'Alternar la vista previa',
-	'visualeditor-tooltip-history' => "Alternar la vista d'historial d'operaciones",
-	'visualeditor-tooltip-help' => "Alternar la vista d'ayuda",
 	'visualeditor-feedback-prompt' => 'Dexar un comentariu',
 	'visualeditor-feedback-dialog-title' => 'Dexar un comentariu tocante a la zona de pruebes del editor visual',
 );
@@ -139,15 +133,7 @@ $messages['ba'] = array(
  */
 $messages['be-tarask'] = array(
 	'visualeditor' => 'Візуальны рэдактар',
-	'visualeditorsandbox' => 'Пясочніца візуальнага рэдактара',
 	'visualeditor-desc' => 'Візуальны рэдактар для MediaWiki',
-	'visualeditor-sandbox-title' => 'Пясочніца візуальнага рэдактара',
-	'visualeditor-tooltip-wikitext' => 'Паказаць вікітэкст',
-	'visualeditor-tooltip-json' => 'Паказаць JSON',
-	'visualeditor-tooltip-html' => 'Паказаць HTML',
-	'visualeditor-tooltip-render' => 'Паказаць папярэдні прагляд',
-	'visualeditor-tooltip-history' => 'Паказаць гісторыю дзеяньняў',
-	'visualeditor-tooltip-help' => 'Паказаць даведку',
 	'visualeditor-feedback-prompt' => 'Пакінуць водгук',
 	'visualeditor-feedback-dialog-title' => 'Пакіньце водгук пра пясочніцу візуальнага рэдактара',
 	'visualeditor-ca-editsource' => 'Рэдагаваць крыніцу',
@@ -183,7 +169,6 @@ $messages['be-tarask'] = array(
  */
 $messages['br'] = array(
 	'visualeditor' => 'VisualEditor',
-	'visualeditor-sandbox-title' => 'Poull-traezh VisualEditor',
 	'visualeditor-feedback-prompt' => 'Lezel un evezhiadenn',
 	'visualeditor-ca-editsource' => 'Kemmañ ar vammenn',
 	'visualeditor-linkinspector-title' => 'Kemmañ al liamm',
@@ -247,15 +232,7 @@ $messages['cs'] = array(
  */
 $messages['de'] = array(
 	'visualeditor' => 'WYSIWYG-Editor',
-	'visualeditorsandbox' => 'WYSIWYG-Editor – Spielwiese',
 	'visualeditor-desc' => 'Ermöglicht einen WYSIWYG-Editor',
-	'visualeditor-sandbox-title' => 'Spielwiese für den WYSIWYG-Editor',
-	'visualeditor-tooltip-wikitext' => 'Von und zur Ansicht in Wikitext umschalten',
-	'visualeditor-tooltip-json' => 'Von und zur Ansicht in JSON umschalten',
-	'visualeditor-tooltip-html' => 'Von und zur Ansicht in HTML umschalten',
-	'visualeditor-tooltip-render' => 'Von und zur Vorschau umschalten',
-	'visualeditor-tooltip-history' => 'Transaktionsverlauf ein- und ausblenden',
-	'visualeditor-tooltip-help' => 'Hilfen ein- und ausblenden',
 	'visualeditor-feedback-prompt' => 'Rückmeldung geben',
 	'visualeditor-feedback-dialog-title' => 'Rückmeldung zur Spielwiese für den WYSIWYG-Editor geben',
 	'visualeditor-ca-editsource' => 'Quelltext bearbeiten',
@@ -304,15 +281,7 @@ $messages['diq'] = array(
  */
 $messages['dsb'] = array(
 	'visualeditor' => 'VisualEditor',
-	'visualeditorsandbox' => 'WYSIWYG-editor - grajkanišćo',
 	'visualeditor-desc' => 'WYSIWYG-editor za MediaWiki',
-	'visualeditor-sandbox-title' => 'WYSIWYG-editor - grajkanišćo',
-	'visualeditor-tooltip-wikitext' => 'Wikitekstowy naglěd pśešaltowaś',
-	'visualeditor-tooltip-json' => 'JSON-naglěd pśešaltowaś',
-	'visualeditor-tooltip-html' => 'HTML-naglěd pśešaltowaś',
-	'visualeditor-tooltip-render' => 'Naglěd pśešaltowaś',
-	'visualeditor-tooltip-history' => 'Naglěd transakciskeje historije pśešaltowaś',
-	'visualeditor-tooltip-help' => 'Pomoc pokazaś a schowaś',
 	'visualeditor-feedback-prompt' => 'Komentar zawóstajiś',
 	'visualeditor-feedback-dialog-title' => 'Komentar wó grajkanišću VisualEditora zawóstajiś',
 );
@@ -322,15 +291,7 @@ $messages['dsb'] = array(
  */
 $messages['en-gb'] = array(
 	'visualeditor' => 'VisualEditor',
-	'visualeditorsandbox' => 'VisualEditor Sandbox',
 	'visualeditor-desc' => 'VisualEditor for MediaWiki',
-	'visualeditor-sandbox-title' => 'VisualEditor Sandbox',
-	'visualeditor-tooltip-wikitext' => 'Toggle wikitext view',
-	'visualeditor-tooltip-json' => 'Toggle JSON view',
-	'visualeditor-tooltip-html' => 'Toggle HTML view',
-	'visualeditor-tooltip-render' => 'Toggle preview',
-	'visualeditor-tooltip-history' => 'Toggle transaction history view',
-	'visualeditor-tooltip-help' => 'Toggle help view',
 	'visualeditor-feedback-prompt' => 'Leave feedback',
 	'visualeditor-feedback-dialog-title' => 'Leave feedback about VisualEditor Sandbox',
 	'visualeditor-ca-editsource' => 'Edit source',
@@ -366,15 +327,7 @@ $messages['en-gb'] = array(
  */
 $messages['es'] = array(
 	'visualeditor' => 'VisualEditor',
-	'visualeditorsandbox' => "Zona segura (''sandbox'') del editor visual",
 	'visualeditor-desc' => 'Editor visual para MediaWiki',
-	'visualeditor-sandbox-title' => "Zona segura (''sandbox'') del editor visual",
-	'visualeditor-tooltip-wikitext' => 'Conmutar a vista de texto wiki',
-	'visualeditor-tooltip-json' => 'Conmutar a vista JSON',
-	'visualeditor-tooltip-html' => 'Alternar a vista HTML',
-	'visualeditor-tooltip-render' => 'Alternar a vista previa',
-	'visualeditor-tooltip-history' => 'Alternar a vista de historial de transacciones',
-	'visualeditor-tooltip-help' => 'Conmutar a vista de ayuda',
 	'visualeditor-feedback-prompt' => 'Comentar',
 	'visualeditor-feedback-dialog-title' => "Comentar sobre la zona segura (''sandbox'') del Editor Visual",
 	'visualeditor-ca-editsource' => 'Editar fuente',
@@ -435,15 +388,7 @@ $messages['fa'] = array(
  */
 $messages['fi'] = array(
 	'visualeditor' => 'Visuaalinen muokkain',
-	'visualeditorsandbox' => 'Visuaalisen muokkaimen hiekkalaatikko',
 	'visualeditor-desc' => 'Visuaalinen muokkain MediaWikille',
-	'visualeditor-sandbox-title' => 'Visuaalisen muokkaimen hiekkalaatikko',
-	'visualeditor-tooltip-wikitext' => 'Vaihda wikitekstinäkymään',
-	'visualeditor-tooltip-json' => 'Vaihda JSON-näkymään',
-	'visualeditor-tooltip-html' => 'Vaihda HTML-näkymään',
-	'visualeditor-tooltip-render' => 'Vaihda esikatseluun',
-	'visualeditor-tooltip-history' => 'Vaihda historianäkymään',
-	'visualeditor-tooltip-help' => 'Vaihda ohjenäkymään',
 	'visualeditor-feedback-prompt' => 'Jätä palautetta',
 	'visualeditor-feedback-dialog-title' => 'Jätä palautetta visuaalisen muokkaimen hiekkalaatikosta.',
 );
@@ -454,15 +399,7 @@ $messages['fi'] = array(
  */
 $messages['fr'] = array(
 	'visualeditor' => 'VisualEditor',
-	'visualeditorsandbox' => "Bac à sable de l'éditeur visuel",
 	'visualeditor-desc' => 'Éditeur visuel pour MediaWiki',
-	'visualeditor-sandbox-title' => 'Bac à sable de VisualEditor',
-	'visualeditor-tooltip-wikitext' => 'Basculer la vue en wikitexte',
-	'visualeditor-tooltip-json' => 'Basculer la vue en JSON',
-	'visualeditor-tooltip-html' => 'Basculer la vue en HTML',
-	'visualeditor-tooltip-render' => 'Basculer en prévisualisation',
-	'visualeditor-tooltip-history' => "Basculer en vue d'historique des transactions",
-	'visualeditor-tooltip-help' => "Basculer la vue d'aide",
 	'visualeditor-feedback-prompt' => 'Laisser un commentaire',
 	'visualeditor-feedback-dialog-title' => "Laissez un commentaire sur le bac à sable de l'éditeur visuel",
 	'visualeditor-ca-editsource' => 'Modifier la source',
@@ -497,15 +434,7 @@ $messages['fr'] = array(
  */
 $messages['frp'] = array(
 	'visualeditor' => 'Èditor visuâl',
-	'visualeditorsandbox' => 'Bouèta de sabla de l’èditor visuâl',
 	'visualeditor-desc' => 'Èditor visuâl por MediaWiki',
-	'visualeditor-sandbox-title' => 'Bouèta de sabla de l’èditor visuâl',
-	'visualeditor-tooltip-wikitext' => 'Bascular la vua en vouiquitèxto',
-	'visualeditor-tooltip-json' => 'Bascular la vua en JSON',
-	'visualeditor-tooltip-html' => 'Bascular la vua en HTML',
-	'visualeditor-tooltip-render' => 'Bascular la prèvisualisacion',
-	'visualeditor-tooltip-history' => 'Bascular la vua d’historico de les transaccions',
-	'visualeditor-tooltip-help' => 'Bascular la vua d’éde',
 	'visualeditor-feedback-prompt' => 'Balyér voutron avis',
 	'visualeditor-feedback-dialog-title' => 'Balyér voutron avis sur la bouèta de sabla de l’èditor visuâl',
 );
@@ -515,15 +444,7 @@ $messages['frp'] = array(
  */
 $messages['gl'] = array(
 	'visualeditor' => 'Editor visual',
-	'visualeditorsandbox' => 'Zona de probas do editor visual',
 	'visualeditor-desc' => 'Editor visual para MediaWiki',
-	'visualeditor-sandbox-title' => 'Zona de probas do editor visual',
-	'visualeditor-tooltip-wikitext' => 'Alternar a vista en texto wiki',
-	'visualeditor-tooltip-json' => 'Alternar a vista en JSON',
-	'visualeditor-tooltip-html' => 'Alternar a vista en HTML',
-	'visualeditor-tooltip-render' => 'Alternar a vista previa',
-	'visualeditor-tooltip-history' => 'Alternar a vista en historial de transaccións',
-	'visualeditor-tooltip-help' => 'Alternar a vista de axuda',
 	'visualeditor-feedback-prompt' => 'Deixe un comentario',
 	'visualeditor-feedback-dialog-title' => 'Deixe un comentario sobre a zona de probas do editor visual',
 	'visualeditor-ca-editsource' => 'Editar a fonte',
@@ -600,15 +521,7 @@ $messages['hi'] = array(
  */
 $messages['hsb'] = array(
 	'visualeditor' => 'VisualEditor',
-	'visualeditorsandbox' => 'WYSIWYG-editor - hrajkanišćo',
 	'visualeditor-desc' => 'WYSIWYG-editor za MediaWiki',
-	'visualeditor-sandbox-title' => 'WYSIWYG-editor - hrajkanišćo',
-	'visualeditor-tooltip-wikitext' => 'Wikitekstowy napohlad přepinać',
-	'visualeditor-tooltip-json' => 'JSON-napohlad přepinać',
-	'visualeditor-tooltip-html' => 'HTML-napohlad přepinać',
-	'visualeditor-tooltip-render' => 'Napohlad přepinać',
-	'visualeditor-tooltip-history' => 'Napohlad transakciskeje historije přepinać',
-	'visualeditor-tooltip-help' => 'Pomoc pokazać a schować',
 	'visualeditor-feedback-prompt' => 'Komentar zawostajić',
 	'visualeditor-feedback-dialog-title' => 'Zawostaj komentar wo hrajkanišću VisualEditora',
 	'visualeditor-ca-editsource' => 'Žórłowy tekst wobdźěłać',
@@ -669,15 +582,7 @@ $messages['hu'] = array(
  */
 $messages['ia'] = array(
 	'visualeditor' => 'Editor visual',
-	'visualeditorsandbox' => 'Cassa a sablo del editor visual',
 	'visualeditor-desc' => 'Editor visual pro MediaWiki',
-	'visualeditor-sandbox-title' => 'Cassa a sablo del editor visual',
-	'visualeditor-tooltip-wikitext' => 'Alternar vista wikitexto',
-	'visualeditor-tooltip-json' => 'Alternar vista JSON',
-	'visualeditor-tooltip-html' => 'Alternar vista HTML',
-	'visualeditor-tooltip-render' => 'Alternar previsualisation',
-	'visualeditor-tooltip-history' => 'Alternar vista historia de transactiones',
-	'visualeditor-tooltip-help' => 'Alternar adjuta',
 	'visualeditor-feedback-prompt' => 'Lassar commentario',
 	'visualeditor-feedback-dialog-title' => 'Lassar commentario super le cassa a sablo del editor visual',
 	'visualeditor-ca-editsource' => 'Modificar fonte',
@@ -713,15 +618,7 @@ $messages['ia'] = array(
  */
 $messages['it'] = array(
 	'visualeditor' => 'VisualEditor',
-	'visualeditorsandbox' => 'Prova editor visivo',
 	'visualeditor-desc' => 'Editor visivo per MediaWiki',
-	'visualeditor-sandbox-title' => "Pagina delle prove per l'editor visivo",
-	'visualeditor-tooltip-wikitext' => 'Mostra/nascondi wikitesto',
-	'visualeditor-tooltip-json' => 'Mostra/nascondi JSON',
-	'visualeditor-tooltip-html' => 'Mostra/nascondi HTML',
-	'visualeditor-tooltip-render' => 'Mostra/nascondi anteprima',
-	'visualeditor-tooltip-history' => 'Mostra/nascondi azioni',
-	'visualeditor-tooltip-help' => 'Mostra/nascondi aiuto',
 	'visualeditor-feedback-prompt' => 'Lascia un commento',
 	'visualeditor-feedback-dialog-title' => "Lascia un commento sulla pagina delle prove per l'editor visivo",
 	'visualeditor-ca-editsource' => 'Modifica sorgente',
@@ -756,14 +653,7 @@ $messages['it'] = array(
  */
 $messages['ja'] = array(
 	'visualeditor' => '視覚的エディター',
-	'visualeditorsandbox' => '視覚的エディターのサンドボックス',
 	'visualeditor-desc' => 'MediaWiki用の視覚的エディター',
-	'visualeditor-sandbox-title' => '視覚的エディターのサンドボックス',
-	'visualeditor-tooltip-wikitext' => 'ウィキテキストの表示を切り替え',
-	'visualeditor-tooltip-json' => 'JSON 表示を切り替え',
-	'visualeditor-tooltip-html' => 'HTML 表示を切り替え',
-	'visualeditor-tooltip-render' => 'プレビューを切り替え',
-	'visualeditor-tooltip-help' => 'ヘルプ表示を切り替え',
 	'visualeditor-feedback-prompt' => 'フィードバックを残す',
 	'visualeditor-feedback-dialog-title' => '視覚的エディターのサンドボックスについてフィードバックを残す',
 );
@@ -831,6 +721,12 @@ $messages['ko'] = array(
  * @author Purodha
  */
 $messages['ksh'] = array(
+	'visualeditor' => 'Sigge beldlesch beärbeide',
+	'visualeditor-desc' => 'Määd_et müjjelesch, em MedijaWikki Sigge beldlesch ze beärbeide.',
+	'visualeditor-feedback-prompt' => 'Jivv_en Röckmäldong',
+	'visualeditor-feedback-dialog-title' => 'Donn en Röckmäldong övver et Ußprobeere vum  Sigge beldlesch Beärbeide jävve',
+	'visualeditor-ca-editsource' => 'der Quälltäx ändere',
+	'visualeditor-linkinspector-title' => 'Lengk ändere',
 	'visualeditor-linkinspector-label-pagetitle' => 'Siggetittel',
 	'visualeditor-formatdropdown-title' => 'De Fommateerong ändere',
 	'visualeditor-formatdropdown-format-paragraph' => 'Afschnett',
@@ -851,6 +747,9 @@ $messages['ksh'] = array(
 	'visualeditor-clearbutton-tooltip' => 'Fomaateeronge fottnämme',
 	'visualeditor-historybutton-undo-tooltip' => 'Donn de läzde Änderong zeröck nämme',
 	'visualeditor-historybutton-redo-tooltip' => 'Donn dat norr_ens',
+	'visualeditor-viewpage-savewarning' => 'Wells De verhaftesch retuur jonn op et beldlesch Beärbeide, der ohne eeds_ens di Sigg met Dinge Änderonge em Wiki faßzehallde?',
+	'visualeditor-loadwarning' => 'Ene Fähler es opjetrodde beim Daate Laade vum däm ẞööver: <i lang="en">$1</i>.',
+	'visualeditor-saveerror' => 'Ene Fähler es opjetrodde beim Daate Faßhallde op däm ẞööver: <i lang="en">$1</i>.',
 );
 
 /** Luxembourgish (Lëtzebuergesch)
@@ -859,10 +758,6 @@ $messages['ksh'] = array(
 $messages['lb'] = array(
 	'visualeditor' => 'WYSIWYG-Editeur',
 	'visualeditor-desc' => 'WYSIWYG-Editeur fir MediaWiki',
-	'visualeditor-sandbox-title' => 'WYSIWYG-Editeur - Sandkëscht',
-	'visualeditor-tooltip-wikitext' => 'Op de Wikitext-Mode ëmschalten',
-	'visualeditor-tooltip-json' => 'Op den JSON-Mode ëmschalten',
-	'visualeditor-tooltip-html' => 'Op den HTML-Mode ëmschalten',
 	'visualeditor-feedback-prompt' => 'Gitt Äre Feedback',
 	'visualeditor-ca-editsource' => 'Quelltext änneren',
 	'visualeditor-linkinspector-title' => 'Link änneren',
@@ -899,15 +794,7 @@ $messages['lt'] = array(
  */
 $messages['mk'] = array(
 	'visualeditor' => 'Визуелен уредник',
-	'visualeditorsandbox' => 'Песочник — Визуелен уредник',
 	'visualeditor-desc' => 'Визуелен уредник за МедијаВики',
-	'visualeditor-sandbox-title' => 'Песочник — Визуелен уредник',
-	'visualeditor-tooltip-wikitext' => 'Поглед на викитекст',
-	'visualeditor-tooltip-json' => 'Поглед на JSON',
-	'visualeditor-tooltip-html' => 'Поглед на HTML',
-	'visualeditor-tooltip-render' => 'Поглед на преглед',
-	'visualeditor-tooltip-history' => 'Поглед на историја на преносот',
-	'visualeditor-tooltip-help' => 'Поглед на помош',
 	'visualeditor-feedback-prompt' => 'Дајте мислење',
 	'visualeditor-feedback-dialog-title' => 'Дајте мислење за Песочникот на ВизуеленУредник',
 	'visualeditor-ca-editsource' => 'Уреди извор',
@@ -942,15 +829,7 @@ $messages['mk'] = array(
  */
 $messages['ml'] = array(
 	'visualeditor' => 'കണ്ടുതിരുത്തൽ ഉപകരണം',
-	'visualeditorsandbox' => 'കണ്ടുതിരുത്തൽ ഉപകരണ എഴുത്തുകളരി',
 	'visualeditor-desc' => 'മീഡിയവിക്കിയ്ക്കായുള്ള കണ്ടുതിരുത്തൽ ഉപകരണം',
-	'visualeditor-sandbox-title' => 'കണ്ടുതിരുത്തൽ ഉപകരണ എഴുത്തുകളരി',
-	'visualeditor-tooltip-wikitext' => 'വിക്കി എഴുത്തുരൂപം മാറ്റിക്കാണിക്കുക',
-	'visualeditor-tooltip-json' => 'ജെസൺ രൂപം മാറ്റിക്കാണിക്കുക',
-	'visualeditor-tooltip-html' => 'എച്ച്.റ്റി.എം.എൽ. രൂപം മാറ്റിക്കാണിക്കുക',
-	'visualeditor-tooltip-render' => 'എങ്ങനെയുണ്ടെന്ന് കാണിക്കുക / മാറ്റുക',
-	'visualeditor-tooltip-history' => 'ഇടപാട് നാൾവഴി മാറ്റിക്കാണിക്കുക',
-	'visualeditor-tooltip-help' => 'സഹായം പ്രദർശിപ്പിക്കുക / നീക്കംചെയ്യുക',
 	'visualeditor-feedback-prompt' => 'അഭിപ്രായമിടുക',
 	'visualeditor-feedback-dialog-title' => 'കണ്ടുതിരുത്തൽ ഉപകരണ എഴുത്തുകളരിയെപ്പറ്റിയുള്ള അഭിപ്രായം അറിയിക്കുക',
 	'visualeditor-ca-editsource' => 'മൂലരൂപം തിരുത്തുക',
@@ -983,15 +862,7 @@ $messages['ml'] = array(
  */
 $messages['ms'] = array(
 	'visualeditor' => 'VisualEditor',
-	'visualeditorsandbox' => 'Kotak pasir editor visual',
 	'visualeditor-desc' => 'Alat penyuntingan visual untuk MediaWiki',
-	'visualeditor-sandbox-title' => 'Kotak Pasir VisualEditor',
-	'visualeditor-tooltip-wikitext' => 'Togol paparan teks wiki',
-	'visualeditor-tooltip-json' => 'Togol paparan JSON',
-	'visualeditor-tooltip-html' => 'Togol paparan HTML',
-	'visualeditor-tooltip-render' => 'Togol pralihat',
-	'visualeditor-tooltip-history' => 'Togol paparan sejarah transaksi',
-	'visualeditor-tooltip-help' => 'Togol paparan bantuan',
 	'visualeditor-feedback-prompt' => 'Tinggalkan maklum balas',
 	'visualeditor-feedback-dialog-title' => 'Tinggalkan maklum balas tentang Kotak Pasir VisualEditor',
 	'visualeditor-ca-editsource' => 'Sunting sumber',
@@ -1026,15 +897,7 @@ $messages['ms'] = array(
  */
 $messages['ne'] = array(
 	'visualeditor' => 'दृष्टि सम्पादक',
-	'visualeditorsandbox' => 'दृष्टि सम्पादक प्रयोगस्थल',
 	'visualeditor-desc' => 'मेडियाविकिको लागि दृष्टि सम्पादक',
-	'visualeditor-sandbox-title' => 'दृष्टि सम्पादक प्रयोगस्थल',
-	'visualeditor-tooltip-wikitext' => 'विकिपाठ दृष्यहरू फेर्ने',
-	'visualeditor-tooltip-json' => 'जेशन(JSON) दृष्य फेर्ने',
-	'visualeditor-tooltip-html' => 'एच टि एम एल(HTML ) दृष्य फेर्ने(Toggle)',
-	'visualeditor-tooltip-render' => 'पुर्वावलोकन फेर्ने(Toggle)',
-	'visualeditor-tooltip-history' => 'कृयाकलाप को इतिहाँस दृष्यहरू फेर्ने',
-	'visualeditor-tooltip-help' => 'मद्दतको दृष्य फेर्ने',
 	'visualeditor-feedback-prompt' => 'प्रतिकृया दिने',
 	'visualeditor-feedback-dialog-title' => 'दृष्टि सम्पादक प्रयोगस्थल को बारेमा प्रतिकृया दिने',
 );
@@ -1046,15 +909,7 @@ $messages['ne'] = array(
  */
 $messages['nl'] = array(
 	'visualeditor' => 'Vereenvoudigde tekstverwerker',
-	'visualeditorsandbox' => 'Testruimte voor Vereenvoudigde tekstverwerker',
 	'visualeditor-desc' => 'Vereenvoudigde tekstverwerker voor MediaWiki',
-	'visualeditor-sandbox-title' => 'Testruimte voor Vereenvoudigde tekstverwerker',
-	'visualeditor-tooltip-wikitext' => 'Omschakelen van wikitekst-weergave',
-	'visualeditor-tooltip-json' => 'Omschakelen van JSON-weergave',
-	'visualeditor-tooltip-html' => 'Omschakelen van HTML-weergave',
-	'visualeditor-tooltip-render' => 'Omschakelen van voorvertoning',
-	'visualeditor-tooltip-history' => 'Transactiegeschiedenis weergeven of verbergen',
-	'visualeditor-tooltip-help' => 'Hulp weergeven of verbergen',
 	'visualeditor-feedback-prompt' => 'Terugkoppeling achterlaten',
 	'visualeditor-feedback-dialog-title' => 'Terugkoppeling geven over de visuele tekstverwerker',
 	'visualeditor-ca-editsource' => 'Bron bewerken',
@@ -1089,15 +944,7 @@ $messages['nl'] = array(
  */
 $messages['pl'] = array(
 	'visualeditor' => 'VisualEditor',
-	'visualeditorsandbox' => 'Brudnopis edytora graficznego',
 	'visualeditor-desc' => 'Edytor graficzny MediaWiki',
-	'visualeditor-sandbox-title' => 'Brudnopis edytora graficznego',
-	'visualeditor-tooltip-wikitext' => 'Przełącz podgląd wikitekstu',
-	'visualeditor-tooltip-json' => 'Przełącz podgląd formatu JSON',
-	'visualeditor-tooltip-html' => 'Przełącz podgląd kodu HTML',
-	'visualeditor-tooltip-render' => 'Przełącz podgląd tekstu',
-	'visualeditor-tooltip-history' => 'Przełącz podgląd historii operacji',
-	'visualeditor-tooltip-help' => 'Przełącz podgląd pomocy',
 	'visualeditor-feedback-prompt' => 'Prześlij opinię',
 	'visualeditor-feedback-dialog-title' => 'Prześlij swoją opinię na temat brudnopisu VisualEditor',
 );
@@ -1108,15 +955,7 @@ $messages['pl'] = array(
  */
 $messages['pms'] = array(
 	'visualeditor' => 'Editor Visual',
-	'visualeditorsandbox' => "Ambient ëd preuva dl'editor visual",
 	'visualeditor-desc' => 'Editor visual për MediaWiki',
-	'visualeditor-sandbox-title' => "Ambient ëd preuva dl'editor visual",
-	'visualeditor-tooltip-wikitext' => 'Ativé la visualisassion an test wiki',
-	'visualeditor-tooltip-json' => 'Ativé la visualisassion an JSON',
-	'visualeditor-tooltip-html' => 'Ativé la visualisassion an HTML',
-	'visualeditor-tooltip-render' => 'Ativé la previsualisassion',
-	'visualeditor-tooltip-history' => 'Ativé la visualisassion dla stòria dle transassion',
-	'visualeditor-tooltip-help' => "Ativé la visualisassion d'agiut",
 	'visualeditor-feedback-prompt' => "Lassé n'opinion",
 	'visualeditor-feedback-dialog-title' => "Lassé n'opinion a propòsit dl'Ambient ëd preuva ëd VisualEditor",
 );
@@ -1137,6 +976,41 @@ $messages['ps'] = array(
  */
 $messages['pt'] = array(
 	'visualeditor-saveerror' => 'Erro ao gravar os dados no servidor: $1.',
+);
+
+/** Brazilian Portuguese (português do Brasil)
+ * @author Jaideraf
+ */
+$messages['pt-br'] = array(
+	'visualeditor' => 'VisualEditor',
+	'visualeditor-desc' => 'Editor visual para o MediaWiki',
+	'visualeditor-feedback-prompt' => 'Forneça o feedback',
+	'visualeditor-feedback-dialog-title' => 'Forneça o feedback sobre a página de testes do editor visual',
+	'visualeditor-ca-editsource' => 'Editar código-fonte',
+	'visualeditor-linkinspector-title' => 'Editar link',
+	'visualeditor-linkinspector-label-pagetitle' => 'Título da página',
+	'visualeditor-formatdropdown-title' => 'Alterar o formato',
+	'visualeditor-formatdropdown-format-paragraph' => 'Parágrafo',
+	'visualeditor-formatdropdown-format-heading1' => 'Nível 1',
+	'visualeditor-formatdropdown-format-heading2' => 'Nível 2',
+	'visualeditor-formatdropdown-format-heading3' => 'Nível 3',
+	'visualeditor-formatdropdown-format-heading4' => 'Nível 4',
+	'visualeditor-formatdropdown-format-heading5' => 'Nível 5',
+	'visualeditor-formatdropdown-format-heading6' => 'Nível 6',
+	'visualeditor-formatdropdown-format-preformatted' => 'Pré-formatado',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Negrito',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Itálico',
+	'visualeditor-annotationbutton-link-tooltip' => 'Link',
+	'visualeditor-indentationbutton-indent-tooltip' => 'Aumentar recuo',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Diminuir recuo',
+	'visualeditor-listbutton-number-tooltip' => 'Lista numerada',
+	'visualeditor-listbutton-bullet-tooltip' => 'Lista com marcadores',
+	'visualeditor-clearbutton-tooltip' => 'Limpar formatação',
+	'visualeditor-historybutton-undo-tooltip' => 'Desfazer',
+	'visualeditor-historybutton-redo-tooltip' => 'Refazer',
+	'visualeditor-viewpage-savewarning' => 'Tem certeza que deseja voltar para a página sem querer salvar a edição?',
+	'visualeditor-loadwarning' => 'Erro ao carregar dados do servidor:  $1. Gostaria de tentar novamente?',
+	'visualeditor-saveerror' => 'Erro ao salvar dados para o servidor:  $1.',
 );
 
 /** Romanian (română)
@@ -1175,15 +1049,7 @@ $messages['ro'] = array(
  */
 $messages['ru'] = array(
 	'visualeditor' => 'VisualEditor',
-	'visualeditorsandbox' => 'Песочница для визуального редактора',
 	'visualeditor-desc' => 'Визуальный редактор для MediaWiki',
-	'visualeditor-sandbox-title' => 'Песочница для визуального редактора',
-	'visualeditor-tooltip-wikitext' => 'Переключить на викитекст',
-	'visualeditor-tooltip-json' => 'Переключить на вид JSON',
-	'visualeditor-tooltip-html' => 'Переключить на HTML-вид',
-	'visualeditor-tooltip-render' => 'Предварительный просмотр переключения',
-	'visualeditor-tooltip-history' => 'Переключить на вид истории действий',
-	'visualeditor-tooltip-help' => 'Переключить на вид представления справки',
 	'visualeditor-feedback-prompt' => 'Оставить отзыв',
 	'visualeditor-feedback-dialog-title' => 'Оставить отзыв о песочнице с VisualEditor',
 );
@@ -1291,28 +1157,12 @@ $messages['tl'] = array(
 	'visualeditor-saveerror' => 'Kamalian sa pagsagip ng dato sa tagapaghain: $1.',
 );
 
-/** Ukrainian (українська)
- * @author Тест
- */
-$messages['uk'] = array(
-	'visualeditor-tooltip-wikitext' => 'Переключити перегляд вікі-тексту',
-	'visualeditor-tooltip-render' => 'Переключити попередній перегляд',
-);
-
 /** Vietnamese (Tiếng Việt)
  * @author Minh Nguyen
  */
 $messages['vi'] = array(
 	'visualeditor' => 'Trình soạn thị giác',
-	'visualeditorsandbox' => 'Chỗ thử Trình soạn thị giác',
 	'visualeditor-desc' => 'Trình soạn thị giác MediaWiki',
-	'visualeditor-sandbox-title' => 'Chỗ thử Trình soạn thị giác',
-	'visualeditor-tooltip-wikitext' => 'Bật/tắt chế độ văn bản wiki',
-	'visualeditor-tooltip-json' => 'Bật/tắt chế độ JSON',
-	'visualeditor-tooltip-html' => 'Bật/tắt chế độ HTML',
-	'visualeditor-tooltip-render' => 'Bật/tắt xem thử',
-	'visualeditor-tooltip-history' => 'Bật/tắt lịch sử thay đổi',
-	'visualeditor-tooltip-help' => 'Bật/tắt trợ giúp',
 	'visualeditor-feedback-prompt' => 'Gửi phản hồi',
 	'visualeditor-feedback-dialog-title' => 'Gửi phản hồi về chỗ thử Trình soạn thị giác',
 	'visualeditor-ca-editsource' => 'Sửa đổi mã nguồn',
