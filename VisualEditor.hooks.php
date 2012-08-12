@@ -55,6 +55,7 @@ class VisualEditorHooks {
 				// QUnit plugin
 				've.qunit.js',
 				// VisualEditor Tests
+				've.test.js',
 				've.example.js',
 				've.Document.test.js',
 				've.Node.test.js',

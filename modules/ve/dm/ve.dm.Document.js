@@ -502,7 +502,6 @@ ve.dm.Document.prototype.getAnnotationsFromOffset = function ( offset ) {
 		this.data[offset][1] : this.data[offset].annotations;
 
 	if ( ve.isPlainObject( annotations ) ) {
-		//return ve.getObjectValues( annotations );
 		return ve.extendObject( {}, annotations );
 	}
 	return {};

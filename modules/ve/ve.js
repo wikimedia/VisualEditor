@@ -118,6 +118,7 @@ ve.extendObject = $.extend;
 
 /**
  * Generates a hash of an object based on its name and data.
+ * Performance optimization: http://jsperf.com/ve-gethash-201208#/toJson_fnReplacerIfAoForElse
  *
  * To avoid two objects with the same values generating different hashes, we utilize the replacer
  * argument of JSON.stringify and sort the object by key as it's being serialized. This may or may
@@ -125,11 +126,11 @@ ve.extendObject = $.extend;
  *
  * @static
  * @method
- * @param {Object} obj Object to generate hash for
+ * @param {Object} val Object to generate hash for
  * @returns {String} Hash of object
  */
-ve.getHash = function ( value ) {
-    return JSON.stringify( value, ve.getHash.keySortReplacer );
+ve.getHash = function ( val ) {
+	return JSON.stringify( val, ve.getHash.keySortReplacer );
 };
 
 /**
@@ -140,71 +141,36 @@ ve.getHash = function ( value ) {
  * @static
  * @method
  * @param {String} key Property name of value being replaced
- * @param {Mixed} value Property value to replace
+ * @param {Mixed} val Property value to replace
  * @returns {Mixed} Replacement value
  */
-ve.getHash.keySortReplacer = function ( key, value ) {
-    if ( value.constructor !== Object ) {
-        return value;
-    }
-    return ve.reduceArray( ve.getObjectKeys( value ).sort(), function( sorted, key ) {
-        sorted[key] = value[key];
-        return sorted;
-    }, {} );
-};
+ve.getHash.keySortReplacer = function ( key, val ) {
+	/*jshint newcap: false */
+	var normalized, keys, i, len;
+	// Only normalize objects when the key-order is ambiguous
+	// (e.g. any object not an array).
+	if ( !ve.isArray( val ) && Object( val ) === val ) {
+		normalized = {};
+		keys = ve.getObjectKeys( val ).sort();
+		i = 0;
+		len = keys.length;
+		for ( ; i < len; i += 1 ) {
+			normalized[keys[i]] = val[keys[i]];
+		}
+		return normalized;
 
-/**
- * Reduces an array using a callback function.
- *
- * Native reduce will be used if available.
- *
- * @see https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/Reduce
- *
- * @static
- * @method
- * @param {Array} arr Array to reduce
- * @param {Function} callback Function to execute for each element in the array
- * @param {Mixed} [initialValue] First argument to the first call of the callback
- * @returns {Array} Reduced array
- */
-ve.reduceArray = function ( arr, callback, initialValue ) {
-	// Use native implementation if available
-	if ( Array.prototype.reduce ) {
-		return arr.reduce( callback, initialValue );
-	}
-	if ( arr === null || arr === undefined ) {
-		throw new TypeError( 'Object is null or undefined' );
-	}
-	var curr,
-		i = 0,
-		length = arr.length || 0;
-	if ( typeof callback !== 'function' ) {
-		// ES5 : 'If IsCallable(callbackfn) is false, throw a TypeError exception.'
-		throw new TypeError( 'First argument is not callable' );
-	}
-	if ( initialValue === undefined ) {
-		if ( length === 0 ) {
-			throw new TypeError( 'Array length is 0 and initialValue is undefined' );
-		}
-		curr = arr[0];
-		// Start accumulating at the second element
-		i = 1;
+	// Primitive values and arrays get stable hashes
+	// by default. Lets those be stringified as-is.
 	} else {
-		curr = initialValue;
+		return val;
 	}
-	while ( i < length ) {
-		if ( i in arr ) {
-			curr = callback.call( undefined, curr, arr[i], i, arr );
-		}
-		++i;
-	}
-	return curr;
 };
 
 /**
  * Gets an array of all property names in an object.
  *
  * This falls back to the native impelentation of Object.keys if available.
+ * Performance optimization: http://jsperf.com/object-keys-shim-perf#/fnHasown_fnForIfcallLength
  *
  * @static
  * @method
@@ -212,17 +178,27 @@ ve.reduceArray = function ( arr, callback, initialValue ) {
  * @param {Object} Object to get properties from
  * @returns {String[]} List of object keys
  */
-ve.getObjectKeys = Object.keys || function ( obj ) {
-	var keys = [],
-		key,
-		hop = Object.prototype.hasOwnProperty;
-	for ( key in obj ) {
-		if ( hop.call( obj, key ) ) {
-			keys.push( key );
+ve.getObjectKeys = Object.hasOwnProperty( 'keys' ) ? Object.keys : ( function () {
+	var hasOwn = Object.prototype.hasOwnProperty;
+
+	return function ( obj ) {
+		/*jshint newcap: false */
+		var key, keys;
+
+		if ( Object( obj ) !== obj ) {
+			throw new TypeError( 'Called on non-object' );
 		}
-	}
-	return keys;
-};
+
+		keys = [];
+		for ( key in obj ) {
+			if ( hasOwn.call( obj, key ) ) {
+				keys[keys.length] = key;
+			}
+		}
+
+		return keys;
+	};
+}() );
 
 /**
  * Gets an array of all property values in an object.
@@ -232,17 +208,27 @@ ve.getObjectKeys = Object.keys || function ( obj ) {
  * @param {Object} Object to get values from
  * @returns {Array} List of object values
  */
-ve.getObjectValues = function ( obj ) {
-	var values = [],
-		key,
-		hop = Object.prototype.hasOwnProperty;
-	for ( key in obj ) {
-		if ( hop.call( obj, key ) ) {
-			values.push( obj[key] );
+ve.getObjectValues = ( function () {
+	var hasOwn = Object.prototype.hasOwnProperty;
+
+	return function ( obj ) {
+		/*jshint newcap: false */
+		var key, values;
+
+		if ( Object( obj ) !== obj ) {
+			throw new TypeError( 'Called on non-object' );
 		}
-	}
-	return values;
-};
+
+		values = [];
+		for ( key in obj ) {
+			if ( hasOwn.call( obj, key ) ) {
+				values[values.length] = obj[key];
+			}
+		}
+
+		return values;
+	};
+}() );
 
 /**
  * Recursively compares string and number property between two objects.
@@ -516,7 +502,7 @@ ve.escapeHtml = function( value ) {
  */
 ve.escapeHtml.escapeHtmlCharacter = function ( value ) {
 	switch ( value ) {
-		case "'":
+		case '\'':
 			return '&#039;';
 		case '"':
 			return '&quot;';
