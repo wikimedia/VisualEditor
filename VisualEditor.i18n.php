@@ -359,16 +359,24 @@ $messages['es'] = array(
 
 /** Estonian (eesti)
  * @author Avjoska
+ * @author Pikne
  */
 $messages['et'] = array(
+	'visualeditor-ca-editsource' => 'Muuda allikat',
+	'visualeditor-linkinspector-title' => 'Redigeeri linki',
+	'visualeditor-linkinspector-label-pagetitle' => 'Lehekülje pealkiri',
+	'visualeditor-formatdropdown-title' => 'Muuda vormingut',
+	'visualeditor-formatdropdown-format-paragraph' => 'Lõik',
 	'visualeditor-formatdropdown-format-heading1' => 'Pealkiri 1',
 	'visualeditor-formatdropdown-format-heading2' => 'Pealkiri 2',
 	'visualeditor-formatdropdown-format-heading3' => 'Pealkiri 3',
 	'visualeditor-formatdropdown-format-heading4' => 'Pealkiri 4',
 	'visualeditor-formatdropdown-format-heading5' => 'Pealkiri 5',
 	'visualeditor-formatdropdown-format-heading6' => 'Pealkiri 6',
+	'visualeditor-formatdropdown-format-preformatted' => 'Eelvormindatud',
 	'visualeditor-annotationbutton-bold-tooltip' => 'Rasvane kiri',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Kaldkiri',
+	'visualeditor-annotationbutton-link-tooltip' => 'Link',
 );
 
 /** Persian (فارسی)
@@ -1109,6 +1117,30 @@ $messages['si'] = array(
  */
 $messages['sv'] = array(
 	'visualeditor-feedback-prompt' => 'Lämna feedback',
+	'visualeditor-ca-editsource' => 'Redigera källa',
+	'visualeditor-linkinspector-title' => 'Redigera länk',
+	'visualeditor-linkinspector-label-pagetitle' => 'Sidtitel',
+	'visualeditor-formatdropdown-title' => 'Ändra format',
+	'visualeditor-formatdropdown-format-paragraph' => 'Paragraf',
+	'visualeditor-formatdropdown-format-heading1' => 'Rubrik 1',
+	'visualeditor-formatdropdown-format-heading2' => 'Rubrik 2',
+	'visualeditor-formatdropdown-format-heading3' => 'Rubrik 3',
+	'visualeditor-formatdropdown-format-heading4' => 'Rubrik 4',
+	'visualeditor-formatdropdown-format-heading5' => 'Rubrik 5',
+	'visualeditor-formatdropdown-format-heading6' => 'Rubrik 6',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Fet',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Kursiv',
+	'visualeditor-annotationbutton-link-tooltip' => 'Länk',
+	'visualeditor-indentationbutton-indent-tooltip' => 'Öka indrag',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Minska indrag',
+	'visualeditor-listbutton-number-tooltip' => 'Numrerad lista',
+	'visualeditor-listbutton-bullet-tooltip' => 'Punktlista',
+	'visualeditor-clearbutton-tooltip' => 'Radera formatering',
+	'visualeditor-historybutton-undo-tooltip' => 'Ångra',
+	'visualeditor-historybutton-redo-tooltip' => 'Gör om',
+	'visualeditor-viewpage-savewarning' => 'Är du säker på att du vill gå tillbaka till visningsläget utan att spara först?',
+	'visualeditor-loadwarning' => 'Fel uppstod vid inläsning av data från server: $1. Vill du försöka igen?',
+	'visualeditor-saveerror' => 'Fel uppstod vid sparande av data till server: $1.',
 );
 
 /** Tamil (தமிழ்)
