@@ -28,7 +28,7 @@ ve.dm.Surface = function ( doc ) {
 /* Methods */
 
 ve.dm.Surface.prototype.startHistoryTracking = function () {
-	this.historyTrackingInterval = setInterval( ve.proxy( this.breakpoint, this ), 750 );
+	this.historyTrackingInterval = setInterval( ve.bind( this.breakpoint, this ), 750 );
 };
 
 ve.dm.Surface.prototype.stopHistoryTracking = function () {

@@ -25,7 +25,7 @@ ve.dm.SurfaceFragment = function ( surface, range ) {
 	this.range = range && range instanceof ve.Range ? range : surface.getSelection();
 
 	// Events
-	surface.on( 'transact', ve.proxy( this, this.onTransact ) );
+	surface.on( 'transact', ve.bind( this, this.onTransact ) );
 
 	// Initialization
 	var length = this.document.getLength();

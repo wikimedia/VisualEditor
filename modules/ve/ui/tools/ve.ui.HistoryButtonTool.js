@@ -22,7 +22,7 @@ ve.ui.HistoryButtonTool = function ( toolbar, name, title, data ) {
 	this.data = data;
 	this.enabled = false;
 	
-	this.toolbar.getSurfaceView().model.on( 'history', ve.proxy( this.updateState, this ) );
+	this.toolbar.getSurfaceView().model.on( 'history', ve.bind( this.updateState, this ) );
 };
 
 /* Methods */

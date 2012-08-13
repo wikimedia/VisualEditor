@@ -46,12 +46,12 @@ ve.ui.Context = function ( surfaceView, $overlay ) {
 	
 	// Events
 	this.$icon.on( {
-		'mousedown': ve.proxy( this.onMouseDown, this ),
-		'mouseup': ve.proxy( this.onMouseUp, this )
+		'mousedown': ve.bind( this.onMouseDown, this ),
+		'mouseup': ve.bind( this.onMouseUp, this )
 	} );
 	this.surfaceView.getDocument().getDocumentNode().$.on( {
-		'focus': ve.proxy( this.onDocumentFocus, this ),
-		'blur': ve.proxy( this.onDocumentBlur, this )
+		'focus': ve.bind( this.onDocumentFocus, this ),
+		'blur': ve.bind( this.onDocumentBlur, this )
 	} );
 
 	// Intitialize link inspector
@@ -103,7 +103,7 @@ ve.ui.Context.prototype.setupInspectorFrame = function () {
 };
 
 ve.ui.Context.prototype.onDocumentFocus = function () {
-	$( window ).on( 'resize.ve-ui-context scroll.ve-ui-context', ve.proxy( this.set, this ) );
+	$( window ).on( 'resize.ve-ui-context scroll.ve-ui-context', ve.bind( this.set, this ) );
 };
 
 ve.ui.Context.prototype.onDocumentBlur = function () {

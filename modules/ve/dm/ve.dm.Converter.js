@@ -367,7 +367,7 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 	if ( branchType !== 'paragraph' && dataElement && data[data.length - 1] === dataElement &&
 		!wrapping && !ve.dm.nodeFactory.canNodeContainContent( branchType ) &&
 		!ve.dm.nodeFactory.isNodeContent( branchType ) &&
-		( childTypes === null || $.inArray( 'paragraph', childTypes ) !== -1 )
+		( childTypes === null || ve.indexOf( 'paragraph', childTypes ) !== -1 )
 	) {
 		data.push( { 'type': 'paragraph' } );
 		data.push( { 'type': '/paragraph' } );

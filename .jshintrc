@@ -28,7 +28,6 @@
 	"multistr": true,
 
 	"browser": true,
-	"node": true,
 	"jquery": true,
 
 	"nomen": true,

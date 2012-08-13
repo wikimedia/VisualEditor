@@ -158,7 +158,7 @@ ve.EventEmitter.prototype.removeListener = function ( type, listener ) {
 	if ( handlers.length === 1 && handlers[0] === listener ) {
 		delete this.events[type];
 	} else {
-		i = ve.inArray( listener, handlers );
+		i = ve.indexOf( listener, handlers );
 		if ( i < 0 ) {
 			return this;
 		}

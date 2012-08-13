@@ -46,12 +46,12 @@ ve.ce.Surface = function ( $container, model ) {
 	};
 
 	// Events
-	this.model.on( 'change', ve.proxy( this.onChange, this ) );
-	this.on( 'contentChange', ve.proxy( this.onContentChange, this ) );
+	this.model.on( 'change', ve.bind( this.onChange, this ) );
+	this.on( 'contentChange', ve.bind( this.onContentChange, this ) );
 	this.$.on( {
-		'cut': ve.proxy( this.onCut, this ),
-		'copy': ve.proxy( this.onCopy, this ),
-		'paste': ve.proxy( this.onPaste, this ),
+		'cut': ve.bind( this.onCut, this ),
+		'copy': ve.bind( this.onCopy, this ),
+		'paste': ve.bind( this.onPaste, this ),
 		'dragover drop': function ( e ) {
 			// Prevent content drag & drop
 			e.preventDefault();
@@ -59,7 +59,7 @@ ve.ce.Surface = function ( $container, model ) {
 		}
 	} );
 	if ( $.browser.msie ) {
-		this.$.on( 'beforepaste', ve.proxy( this.onPaste, this ) );
+		this.$.on( 'beforepaste', ve.bind( this.onPaste, this ) );
 	}
 
 	// Initialization
@@ -79,8 +79,8 @@ ve.ce.Surface = function ( $container, model ) {
 
 	// DocumentNode Events
 	this.documentView.getDocumentNode().$.on( {
-		'focus': ve.proxy( this.documentOnFocus, this ),
-		'blur': ve.proxy( this.documentOnBlur, this )
+		'focus': ve.bind( this.documentOnFocus, this ),
+		'blur': ve.bind( this.documentOnBlur, this )
 	} );
 };
 
@@ -99,10 +99,10 @@ ve.ce.Surface.prototype.documentOnFocus = function () {
 
 	this.$document.on( {
 		// key down
-		'keydown.ve-ce-Surface': ve.proxy( this.onKeyDown, this ),
-		'keypress.ve-ce-Surface': ve.proxy( this.onKeyPress, this ),
+		'keydown.ve-ce-Surface': ve.bind( this.onKeyDown, this ),
+		'keypress.ve-ce-Surface': ve.bind( this.onKeyPress, this ),
 		// mouse down
-		'mousedown.ve-ce-Surface': ve.proxy( this.onMouseDown, this )
+		'mousedown.ve-ce-Surface': ve.bind( this.onMouseDown, this )
 	} );
 	this.startPolling( true );
 };
@@ -540,13 +540,13 @@ ve.ce.Surface.prototype.pollChanges = function ( async ) {
 		$anchorNode, $focusNode,
 		text, hash;
 
-	delay = ve.proxy( function ( async ) {
+	delay = ve.bind( function ( async ) {
 		if ( this.poll.polling ) {
 			if ( this.poll.timeout !== null ) {
 				clearTimeout( this.poll.timeout );
 			}
 			this.poll.timeout = setTimeout(
-				ve.proxy( this.pollChanges, this ), async ? 0 : this.poll.frequency
+				ve.bind( this.pollChanges, this ), async ? 0 : this.poll.frequency
 			);
 		}
 	}, this );
@@ -756,7 +756,7 @@ ve.ce.Surface.prototype.onChange = function ( transaction, selection ) {
 		// TODO: Use ve.debounce method to abstract usage of setTimeout
 		clearTimeout( this.selectionTimeout );
 		this.selectionTimeout = setTimeout(
-			ve.proxy( function () {
+			ve.bind( function () {
 				if ( this.contextView ) {
 					if ( selection.getLength() > 0 ) {
 						this.contextView.set();

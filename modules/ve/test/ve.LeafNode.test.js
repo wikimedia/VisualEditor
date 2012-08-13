@@ -5,7 +5,7 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-module( 've.LeafNode' );
+QUnit.module( 've.LeafNode' );
 
 /* Stubs */
 
