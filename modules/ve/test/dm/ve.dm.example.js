@@ -442,8 +442,7 @@ ve.dm.example.domToDataCases = {
 		'data': [
 			{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
 			{ 'type': 'listItem' },
-			{ 'type': 'paragraph' },
-			' ',
+			{ 'type': 'paragraph', 'fringeWhitespace': { 'innerPre': ' ' } },
 			[
 				'b',
 				{
@@ -495,6 +494,104 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/paragraph' },
 			{ 'type': '/listItem' },
 			{ 'type': '/list' }
+		]
+	},
+	'whitespace preservation in headings': {
+		'html': '<h2>Foo</h2><h2> Bar</h2><h2>Baz </h2><h2>  Quux   </h2>',
+		'data': [
+			{ 'type': 'heading', 'attributes': { 'level': 2 } },
+			'F',
+			'o',
+			'o',
+			{ 'type': '/heading' },
+			{
+				'type': 'heading',
+				'attributes': { 'level': 2 },
+				'fringeWhitespace': { 'innerPre': ' ' }
+			},
+			'B',
+			'a',
+			'r',
+			{ 'type': '/heading' },
+			{
+				'type': 'heading',
+				'attributes': { 'level': 2 },
+				'fringeWhitespace': { 'innerPost': ' ' }
+			},
+			'B',
+			'a',
+			'z',
+			{ 'type': '/heading' },
+			{
+				'type': 'heading',
+				'attributes': { 'level': 2 },
+				'fringeWhitespace': { 'innerPre': '  ', 'innerPost': '   ' }
+			},
+			'Q',
+			'u',
+			'u',
+			'x',
+			{ 'type': '/heading' }
+		]
+	},
+	'whitespace preservation in list items': {
+		'normalizedHtml': '<ul><li><p>Foo</p></li><li><p> Bar</p></li><li><p>Baz </p></li><li><p>  Quux   </p></li></ul>',
+		'html': '<ul><li>Foo</li><li> Bar</li><li>Baz </li><li>  Quux   </li></ul>',
+		'data': [
+			{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
+			{ 'type': 'listItem' },
+			{ 'type': 'paragraph' },
+			'F',
+			'o',
+			'o',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': 'listItem' },
+			{ 'type': 'paragraph', 'fringeWhitespace': { 'innerPre': ' ' }
+			},
+			'B',
+			'a',
+			'r',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': 'listItem' },
+			{ 'type': 'paragraph', 'fringeWhitespace': { 'innerPost': ' ' }
+			},
+			'B',
+			'a',
+			'z',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': 'listItem' },
+			{
+				'type': 'paragraph',
+				'fringeWhitespace': { 'innerPre': '  ', 'innerPost': '   ' }
+			},
+			'Q',
+			'u',
+			'u',
+			'x',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': '/list' }
+		]
+	},
+	'whitespace preservation with annotations': {
+		'html': '<p> <i>  Foo   </i>    </p>',
+		'data': [
+			{
+				'type': 'paragraph',
+				'fringeWhitespace': { 'innerPre': ' ', 'innerPost': '    '}
+			},
+			[ ' ', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
+			[ ' ', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
+			[ 'F', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
+			[ 'o', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
+			[ 'o', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
+			[ ' ', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
+			[ ' ', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
+			[ ' ', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
+			{ 'type': '/paragraph' }
 		]
 	}
 };

@@ -72,6 +72,9 @@ ve.dm.Document = function ( data, parentDocument ) {
 				// Branch or leaf node opening
 				// Create a childless node
 				node = ve.dm.nodeFactory.create( this.data[i].type, [], this.data[i].attributes );
+				if ( this.data[i].fringeWhitespace ) {
+					node.setFringeWhitespace( this.data[i].fringeWhitespace );
+				}
 				// Set the root pointer now, to prevent cascading updates
 				node.setRoot( root );
 				// Put the childless node on the current inner stack

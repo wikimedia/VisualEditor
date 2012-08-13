@@ -51,7 +51,7 @@ QUnit.test( 'getDomFromData', function ( assert ) {
 	for ( msg in cases ) {
 		assert.equalDomElement(
 			ve.dm.converter.getDomFromData( cases[msg].data ),
-			$( '<div>' ).html( cases[msg].html )[0],
+			$( '<div>' ).html( cases[msg].normalizedHtml || cases[msg].html )[0],
 			msg
 		);
 	}
