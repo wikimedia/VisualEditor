@@ -75,9 +75,10 @@ ve.dm.Surface.prototype.getSelection = function () {
  *
  * @method
  * @returns {ve.dm.SurfaceFragment} Surface fragment
+ * @param {Boolean} [autoSelect] Update the surface's selection when making changes
  */
-ve.dm.Surface.prototype.getFragment = function () {
-	return new ve.dm.SurfaceFragment( this );
+ve.dm.Surface.prototype.getFragment = function ( autoSelect ) {
+	return new ve.dm.SurfaceFragment( this, this.selection, autoSelect );
 };
 
 /**
