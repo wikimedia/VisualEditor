@@ -496,6 +496,95 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/list' }
 		]
 	},
+	'numbered external link': {
+		'html': '<p><a rel="mw:ExtLink/Numbered" href="http://www.mediawiki.org/">[1]</a></p>',
+		'data': [
+			{ 'type': 'paragraph' },
+			[
+				'[',
+				{
+					'{"type":"link/ExtLink/Numbered","data":{"href":"http://www.mediawiki.org/","htmlAttributes":{"href":"http://www.mediawiki.org/","rel":"mw:ExtLink/Numbered"}}}': {
+						'type': 'link/ExtLink/Numbered',
+						'data': {
+							'href': 'http://www.mediawiki.org/',
+							'htmlAttributes': {
+								'href': 'http://www.mediawiki.org/',
+								'rel': 'mw:ExtLink/Numbered'
+							}
+						}
+					}
+				}
+			],
+			[
+				'1',
+				{
+					'{"type":"link/ExtLink/Numbered","data":{"href":"http://www.mediawiki.org/","htmlAttributes":{"href":"http://www.mediawiki.org/","rel":"mw:ExtLink/Numbered"}}}': {
+						'type': 'link/ExtLink/Numbered',
+						'data': {
+							'href': 'http://www.mediawiki.org/',
+							'htmlAttributes': {
+								'href': 'http://www.mediawiki.org/',
+								'rel': 'mw:ExtLink/Numbered'
+							}
+						}
+					}
+				}
+			],
+			[
+				']',
+				{
+					'{"type":"link/ExtLink/Numbered","data":{"href":"http://www.mediawiki.org/","htmlAttributes":{"href":"http://www.mediawiki.org/","rel":"mw:ExtLink/Numbered"}}}': {
+						'type': 'link/ExtLink/Numbered',
+						'data': {
+							'href': 'http://www.mediawiki.org/',
+							'htmlAttributes': {
+								'href': 'http://www.mediawiki.org/',
+								'rel': 'mw:ExtLink/Numbered'
+							}
+						}
+					}
+				}
+			],
+			{ 'type': '/paragraph' }
+		]
+	},
+	'URL link': {
+		'html': '<p><a rel="mw:ExtLink/URL" href="http://www.mediawiki.org/">mw</a></p>',
+		'data': [
+			{ 'type': 'paragraph' },
+			[
+				'm',
+				{
+					'{"type":"link/ExtLink/URL","data":{"href":"http://www.mediawiki.org/","htmlAttributes":{"href":"http://www.mediawiki.org/","rel":"mw:ExtLink/URL"}}}': {
+						'type': 'link/ExtLink/URL',
+						'data': {
+							'href': 'http://www.mediawiki.org/',
+							'htmlAttributes': {
+								'href': 'http://www.mediawiki.org/',
+								'rel': 'mw:ExtLink/URL'
+							}
+						}
+					}
+				}
+			],
+			[
+				'w',
+				{
+					'{"type":"link/ExtLink/URL","data":{"href":"http://www.mediawiki.org/","htmlAttributes":{"href":"http://www.mediawiki.org/","rel":"mw:ExtLink/URL"}}}': {
+						'type': 'link/ExtLink/URL',
+						'data': {
+							'href': 'http://www.mediawiki.org/',
+							'htmlAttributes': {
+								'href': 'http://www.mediawiki.org/',
+								'rel': 'mw:ExtLink/URL'
+							}
+						}
+					}
+				}
+			],
+			{ 'type': '/paragraph' }
+		]
+	},
 	'whitespace preservation in headings': {
 		'html': '<h2>Foo</h2><h2> Bar</h2><h2>Baz </h2><h2>  Quux   </h2>',
 		'data': [

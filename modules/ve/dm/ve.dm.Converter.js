@@ -209,7 +209,7 @@ ve.dm.Converter.prototype.getDataAnnotationFromDomElement = function ( domElemen
  * @returns {HTMLElement|false} HTML DOM node, or false if this annotation is not known
  */
 ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function ( dataAnnotation ) {
-	var split = dataAnnotation.type.split( '/', 2 ),
+	var split = dataAnnotation.type.split( '/' ),
 		baseType = split[0],
 		subType = split.slice( 1 ).join( '/' ),
 		toDomElement = this.annotations.toDomElement[baseType];
