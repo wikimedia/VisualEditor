@@ -132,12 +132,6 @@ ve.ce.TextNode.annotationRenderers = {
 		},
 		'close': '</a>'
 	},
-	'link/SimpleWikiLink': {
-		'open': function () {
-			return '<a href="#">';
-		},
-		'close': '</a>'
-	},
 	'link/unknown': {
 		'open': function () {
 			return '<a href="#">';
