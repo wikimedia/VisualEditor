@@ -38,7 +38,7 @@ ve.dm.LinkAnnotation.converters = {
 		}
 
 		link.setAttribute( 'rel', 'mw:' + subType );
-		if ( subType === 'WikiLink' || subType === 'SimpleWikiLink') {
+		if ( subType === 'WikiLink' ) {
 			// Set href to /title
 			// FIXME article path should be configurable, currently Parsoid always uses '/'
 			// FIXME space -> _ is MW-specific
@@ -58,7 +58,7 @@ ve.dm.LinkAnnotation.converters = {
 				'data': {}
 			},
 			i, attribute;
-		if ( subType === 'WikiLink' || subType === 'SimpleWikiLink' ) {
+		if ( subType === 'WikiLink' ) {
 			// Get title from href by stripping article path
 			// FIXME article path should be configurable, currently Parsoid always uses '/'
 			// FIXME _ -> space is MW-specific
