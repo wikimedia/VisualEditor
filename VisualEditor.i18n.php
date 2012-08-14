@@ -1145,8 +1145,10 @@ $messages['sv'] = array(
 
 /** Tamil (தமிழ்)
  * @author Shanmugamp7
+ * @author மதனாஹரன்
  */
 $messages['ta'] = array(
+	'visualeditor-feedback-prompt' => 'பின்னூட்டத்தை விட்டுச் செல்லவும்',
 	'visualeditor-ca-editsource' => 'மூலத்தை தொகு',
 	'visualeditor-linkinspector-title' => 'இணைப்பைத் தொகு',
 	'visualeditor-linkinspector-label-pagetitle' => 'பக்கத்தின் தலைப்பு',
