@@ -84,7 +84,9 @@ ve.ui.LinkInspector.prototype.getFirstLinkAnnotation = function ( annotations ) 
 		// Use the first one with a recognized type (there should only be one, this is just in case)
 		if (
 			annotations[hash].type === 'link/WikiLink' ||
-			annotations[hash].type === 'link/ExtLink'
+			annotations[hash].type === 'link/ExtLink' ||
+			annotations[hash].type === 'link/ExtLink/Numbered' ||
+			annotations[hash].type === 'link/ExtLink/URL'
 		) {
 			return annotations[hash];
 		}
