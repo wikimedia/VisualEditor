@@ -438,7 +438,7 @@ ve.dm.example.domToDataCases = {
 		'data': ve.dm.example.data
 	},
 	'list item with space followed by link': {
-		'html': '<ul><li><p> <a rel="mw:WikiLink" href="/Foo_bar" data-rt="{&quot;sHref&quot;:&quot;foo bar&quot;}">bar</a></p></li></ul>',
+		'html': '<ul><li><p> <a rel="mw:WikiLink" href="Foo_bar" data-rt="{&quot;sHref&quot;:&quot;foo bar&quot;}">bar</a></p></li></ul>',
 		'data': [
 			{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
 			{ 'type': 'listItem' },
@@ -446,13 +446,13 @@ ve.dm.example.domToDataCases = {
 			[
 				'b',
 				{
-					'{"type":"link/WikiLink","data":{"title":"Foo bar","htmlAttributes":{"data-rt":"{\\"sHref\\":\\"foo bar\\"}","href":"/Foo_bar","rel":"mw:WikiLink"}}}': {
+					'{"type":"link/WikiLink","data":{"title":"Foo bar","htmlAttributes":{"data-rt":"{\\"sHref\\":\\"foo bar\\"}","href":"Foo_bar","rel":"mw:WikiLink"}}}': {
 						'type': 'link/WikiLink',
 						'data': {
 							'title': 'Foo bar',
 							'htmlAttributes': {
 								'data-rt': '{"sHref":"foo bar"}',
-								'href': '/Foo_bar',
+								'href': 'Foo_bar',
 								'rel': 'mw:WikiLink'
 							}
 						}
@@ -462,13 +462,13 @@ ve.dm.example.domToDataCases = {
 			[
 				'a',
 				{
-					'{"type":"link/WikiLink","data":{"title":"Foo bar","htmlAttributes":{"data-rt":"{\\"sHref\\":\\"foo bar\\"}","href":"/Foo_bar","rel":"mw:WikiLink"}}}': {
+					'{"type":"link/WikiLink","data":{"title":"Foo bar","htmlAttributes":{"data-rt":"{\\"sHref\\":\\"foo bar\\"}","href":"Foo_bar","rel":"mw:WikiLink"}}}': {
 						'type': 'link/WikiLink',
 						'data': {
 							'title': 'Foo bar',
 							'htmlAttributes': {
 								'data-rt': '{"sHref":"foo bar"}',
-								'href': '/Foo_bar',
+								'href': 'Foo_bar',
 								'rel': 'mw:WikiLink'
 							}
 						}
@@ -478,13 +478,13 @@ ve.dm.example.domToDataCases = {
 			[
 				'r',
 				{
-					'{"type":"link/WikiLink","data":{"title":"Foo bar","htmlAttributes":{"data-rt":"{\\"sHref\\":\\"foo bar\\"}","href":"/Foo_bar","rel":"mw:WikiLink"}}}': {
+					'{"type":"link/WikiLink","data":{"title":"Foo bar","htmlAttributes":{"data-rt":"{\\"sHref\\":\\"foo bar\\"}","href":"Foo_bar","rel":"mw:WikiLink"}}}': {
 						'type': 'link/WikiLink',
 						'data': {
 							'title': 'Foo bar',
 							'htmlAttributes': {
 								'data-rt': '{"sHref":"foo bar"}',
-								'href': '/Foo_bar',
+								'href': 'Foo_bar',
 								'rel': 'mw:WikiLink'
 							}
 						}
@@ -494,6 +494,59 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/paragraph' },
 			{ 'type': '/listItem' },
 			{ 'type': '/list' }
+		]
+	},
+	'internal link with ../': {
+		'html': '<p><a rel="mw:WikiLink" href="../../../Foo/Bar">Foo</a></p>',
+		'normalizedHtml': '<p><a rel="mw:WikiLink" href="Foo/Bar">Foo</a></p>',
+		'data': [
+			{ 'type': 'paragraph' },
+			[
+				'F',
+				{
+					'{"type":"link/WikiLink","data":{"title":"Foo/Bar","htmlAttributes":{"href":"../../../Foo/Bar","rel":"mw:WikiLink"}}}': {
+						'type': 'link/WikiLink',
+						'data': {
+							'title': 'Foo/Bar',
+							'htmlAttributes': {
+								'href': '../../../Foo/Bar',
+								'rel': 'mw:WikiLink'
+							}
+						}
+					}
+				}
+			],
+			[
+				'o',
+				{
+					'{"type":"link/WikiLink","data":{"title":"Foo/Bar","htmlAttributes":{"href":"../../../Foo/Bar","rel":"mw:WikiLink"}}}': {
+						'type': 'link/WikiLink',
+						'data': {
+							'title': 'Foo/Bar',
+							'htmlAttributes': {
+								'href': '../../../Foo/Bar',
+								'rel': 'mw:WikiLink'
+							}
+						}
+					}
+				}
+			],
+			[
+				'o',
+				{
+					'{"type":"link/WikiLink","data":{"title":"Foo/Bar","htmlAttributes":{"href":"../../../Foo/Bar","rel":"mw:WikiLink"}}}': {
+						'type': 'link/WikiLink',
+						'data': {
+							'title': 'Foo/Bar',
+							'htmlAttributes': {
+								'href': '../../../Foo/Bar',
+								'rel': 'mw:WikiLink'
+							}
+						}
+					}
+				}
+			],
+			{ 'type': '/paragraph' }
 		]
 	},
 	'numbered external link': {
