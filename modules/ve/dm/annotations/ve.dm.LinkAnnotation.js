@@ -39,10 +39,9 @@ ve.dm.LinkAnnotation.converters = {
 
 		link.setAttribute( 'rel', 'mw:' + subType );
 		if ( subType === 'WikiLink' ) {
-			// Set href to /title
-			// FIXME article path should be configurable, currently Parsoid always uses '/'
+			// Set href to title
 			// FIXME space -> _ is MW-specific
-			link.setAttribute( 'href', '/' + annotation.data.title.replace( / /g, '_' ) );
+			link.setAttribute( 'href', annotation.data.title.replace( / /g, '_' ) );
 		} else if ( subType === 'ExtLink' || subType === 'ExtLink/Numbered' || subType === 'ExtLink/URL' ) {
 			// Set href directly
 			link.setAttribute( 'href', annotation.data.href );
@@ -59,10 +58,12 @@ ve.dm.LinkAnnotation.converters = {
 			},
 			i, attribute;
 		if ( subType === 'WikiLink' ) {
-			// Get title from href by stripping article path
-			// FIXME article path should be configurable, currently Parsoid always uses '/'
-			// FIXME _ -> space is MW-specific
-			retval.data.title = href.replace( /^\//, '' ).replace( /_/g, ' ' );
+			// Get title from href
+			// The href is simply the title, unless we're dealing with a page that
+			// has slashes in its name in which case it's preceded by one or more
+			// instances of "../", so strip those.
+			// FIXME Both this and _ -> space are MW-specific
+			retval.data.title = href.replace( /^(\.\.\/)*/, '' ).replace( /_/g, ' ' );
 		} else if ( subType === 'ExtLink' || subType === 'ExtLink/Numbered' || subType === 'ExtLink/URL' ) {
 			retval.data.href = href;
 		}
