@@ -11,9 +11,11 @@
 /* Configuration */
 
 // URL to the Parsoid instance
+// MUST NOT end in a slash due to Parsoid bug
 $wgVisualEditorParsoidURL = 'http://localhost:8000';
 // Interwiki prefix to pass to the Parsoid instance
-$wgVisualEditorParsoidPrefix = 'localhost:';
+// Parsoid will be called as $url/$prefix/$pagename
+$wgVisualEditorParsoidPrefix = 'localhost';
 
 /* Setup */
 

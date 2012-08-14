@@ -21,11 +21,10 @@ class ApiVisualEditor extends ApiBase {
 		if ( $params['paction'] === 'parse' ) {
 			if ( $page->exists() ) {
 				$parsed = Http::get(
-					// Insert slash since wgVisualEditorParsoidURL may or may not
-					// end in a slash. Double slashes are no problem --catrope
-					$parsoid . '/' . urlencode(
-						$wgVisualEditorParsoidPrefix . $page->getPrefixedDBkey()
-					)
+					// Insert slash since wgVisualEditorParsoidURL does not
+					// end in a slash
+					$parsoid . '/' . $wgVisualEditorParsoidPrefix . '/' .
+						urlencode( $page->getPrefixedDBkey() )
 				);
 
 				if ( $parsed ) {
