@@ -8,7 +8,6 @@
 .ve-ce-documentNode {
 	cursor: text;
 	overflow: hidden;
-	font-size: 0.8em;
 }
 
 /* Prevent focus outline on editor */

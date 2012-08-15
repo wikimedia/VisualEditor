@@ -23,6 +23,8 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 	<head>
 		<meta charset="UTF-8" />
 		<title>VisualEditor Standalone Demo</title>
+		<!-- init -->
+		<link rel="stylesheet" href="../../modules/ve/init/sa/styles/ve.init.sa.css">
 		<!-- ce -->
 		<link rel="stylesheet" href="../../modules/ve/ce/styles/ve.ce.DocumentNode.css">
 		<link rel="stylesheet" href="../../modules/ve/ce/styles/ve.ce.Node.css">

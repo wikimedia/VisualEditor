@@ -9,6 +9,9 @@
  */
 
 class VisualEditorHooks {
+	/** List of skins VisualEditor integration supports */
+	protected static $supportedSkins = array( 'vector', 'apex' );
+
 	/**
 	 * Adds VisualEditor JS to the output if in the correct namespace.
 	 *
@@ -20,8 +23,7 @@ class VisualEditorHooks {
 	public static function onBeforePageDisplay( &$output, &$skin ) {
 		global $wgTitle;
 		if (
-			// Vector skin supported for now.
-			$skin->getSkinName() === 'vector' &&
+			in_array( $skin->getSkinName(), self::$supportedSkins ) &&
 			(
 				// Article in the VisualEditor namespace
 				$wgTitle->getNamespace() === NS_VISUALEDITOR ||

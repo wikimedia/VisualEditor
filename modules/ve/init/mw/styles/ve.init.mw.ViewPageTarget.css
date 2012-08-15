@@ -5,19 +5,48 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-.ve-surface {
+/* Vector */
+
+.skin-vector .ve-surface {
 	margin-top: 0.8em;
 }
 
-.es-toolbar-wrapper {
+.skin-vector .ve-ce-documentNode {
+	font-size: 0.8em;
+}
+
+.skin-vector .es-toolbar-wrapper {
 	margin: -1em -1em 1em -1em;
 	position: relative;
 }
 
-.es-toolbar {
+.skin-vector .es-toolbar {
 	display: none;
 	margin-left: 1px;
 }
+
+/* Apex */
+
+.skin-apex .ve-surface {
+	margin-top: 0.8em;
+}
+
+.skin-apex .es-toolbar-wrapper {
+	margin: -0.9em -3em 0.8em -3em;
+	position: relative;
+}
+
+.skin-apex .es-toolbar {
+	display: none;
+	line-height: 1.5em;
+}
+
+.skin-apex .es-menuView-item:hover {
+	background-color: #d5eaed;
+	background-color: rgba(213, 234, 237, 0.75);
+}
+
+/* VisualEditor */
 
 .ve-init-mw-viewPageTarget-pageTitle {
 	-webkit-transition: opacity 200ms ease-out;
