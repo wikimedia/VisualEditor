@@ -119,18 +119,87 @@ ve.extendObject = $.extend;
 /**
  * Generates a hash of an object based on its name and data.
  *
- * This is actually an alias for jQuery.json, which falls back to window.JSON if present.
- *
- * WARNING: 2 objects can have the same contents but not the same hash if the properties were set
- * in a different order. Recursive sorting may nessecary prior to hashing, or a hashing algorithm
- * that produces order-safe reults may need to be used here instead.
+ * To avoid two objects with the same values generating different hashes, we utilize the replacer
+ * argument of JSON.stringify and sort the object by key as it's being serialized. This may or may
+ * not be the fastest way to do this; we should investigate this further.
  *
  * @static
  * @method
  * @param {Object} obj Object to generate hash for
  * @returns {String} Hash of object
  */
-ve.getHash = $.toJSON;
+ve.getHash = function ( value ) {
+    return JSON.stringify( value, ve.getHash.keySortReplacer );
+};
+
+/**
+ * Helper function for ve.getHash which sorts objects by key.
+ *
+ * This is a callback passed into JSON.stringify.
+ *
+ * @static
+ * @method
+ * @param {String} key Property name of value being replaced
+ * @param {Mixed} value Property value to replace
+ * @returns {Mixed} Replacement value
+ */
+ve.getHash.keySortReplacer = function ( key, value ) {
+    if ( value.constructor !== Object ) {
+        return value;
+    }
+    return ve.reduceArray( ve.getObjectKeys( value ).sort(), function( sorted, key ) {
+        sorted[key] = value[key];
+        return sorted;
+    }, {} );
+};
+
+/**
+ * Reduces an array using a callback function.
+ *
+ * Native reduce will be used if available.
+ *
+ * @see https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/Reduce
+ *
+ * @static
+ * @method
+ * @param {Array} arr Array to reduce
+ * @param {Function} callback Function to execute for each element in the array
+ * @param {Mixed} [initialValue] First argument to the first call of the callback
+ * @returns {Array} Reduced array
+ */
+ve.reduceArray = function ( arr, callback, initialValue ) {
+	// Use native implementation if available
+	if ( Array.prototype.reduce ) {
+		return arr.reduce( callback, initialValue );
+	}
+	if ( arr === null || arr === undefined ) {
+		throw new TypeError( 'Object is null or undefined' );
+	}
+	var curr,
+		i = 0,
+		length = arr.length || 0;
+	if ( typeof callback !== 'function' ) {
+		// ES5 : 'If IsCallable(callbackfn) is false, throw a TypeError exception.'
+		throw new TypeError( 'First argument is not callable' );
+	}
+	if ( initialValue === undefined ) {
+		if ( length === 0 ) {
+			throw new TypeError( 'Array length is 0 and initialValue is undefined' );
+		}
+		curr = arr[0];
+		// Start accumulating at the second element
+		i = 1;
+	} else {
+		curr = initialValue;
+	}
+	while ( i < length ) {
+		if ( i in arr ) {
+			curr = callback.call( undefined, curr, arr[i], i, arr );
+		}
+		++i;
+	}
+	return curr;
+};
 
 /**
  * Gets an array of all property names in an object.

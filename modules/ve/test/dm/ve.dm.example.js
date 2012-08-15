@@ -446,7 +446,7 @@ ve.dm.example.domToDataCases = {
 			[
 				'b',
 				{
-					'{"type":"link/WikiLink","data":{"title":"Foo bar","htmlAttributes":{"data-rt":"{\\"sHref\\":\\"foo bar\\"}","href":"Foo_bar","rel":"mw:WikiLink"}}}': {
+					'{"data":{"htmlAttributes":{"data-rt":"{\\"sHref\\":\\"foo bar\\"}","href":"Foo_bar","rel":"mw:WikiLink"},"title":"Foo bar"},"type":"link/WikiLink"}': {
 						'type': 'link/WikiLink',
 						'data': {
 							'title': 'Foo bar',
@@ -462,7 +462,7 @@ ve.dm.example.domToDataCases = {
 			[
 				'a',
 				{
-					'{"type":"link/WikiLink","data":{"title":"Foo bar","htmlAttributes":{"data-rt":"{\\"sHref\\":\\"foo bar\\"}","href":"Foo_bar","rel":"mw:WikiLink"}}}': {
+					'{"data":{"htmlAttributes":{"data-rt":"{\\"sHref\\":\\"foo bar\\"}","href":"Foo_bar","rel":"mw:WikiLink"},"title":"Foo bar"},"type":"link/WikiLink"}': {
 						'type': 'link/WikiLink',
 						'data': {
 							'title': 'Foo bar',
@@ -478,7 +478,7 @@ ve.dm.example.domToDataCases = {
 			[
 				'r',
 				{
-					'{"type":"link/WikiLink","data":{"title":"Foo bar","htmlAttributes":{"data-rt":"{\\"sHref\\":\\"foo bar\\"}","href":"Foo_bar","rel":"mw:WikiLink"}}}': {
+					'{"data":{"htmlAttributes":{"data-rt":"{\\"sHref\\":\\"foo bar\\"}","href":"Foo_bar","rel":"mw:WikiLink"},"title":"Foo bar"},"type":"link/WikiLink"}': {
 						'type': 'link/WikiLink',
 						'data': {
 							'title': 'Foo bar',
@@ -504,7 +504,7 @@ ve.dm.example.domToDataCases = {
 			[
 				'F',
 				{
-					'{"type":"link/WikiLink","data":{"title":"Foo/Bar","htmlAttributes":{"href":"../../../Foo/Bar","rel":"mw:WikiLink"}}}': {
+					'{"data":{"htmlAttributes":{"href":"../../../Foo/Bar","rel":"mw:WikiLink"},"title":"Foo/Bar"},"type":"link/WikiLink"}': {
 						'type': 'link/WikiLink',
 						'data': {
 							'title': 'Foo/Bar',
@@ -519,7 +519,7 @@ ve.dm.example.domToDataCases = {
 			[
 				'o',
 				{
-					'{"type":"link/WikiLink","data":{"title":"Foo/Bar","htmlAttributes":{"href":"../../../Foo/Bar","rel":"mw:WikiLink"}}}': {
+					'{"data":{"htmlAttributes":{"href":"../../../Foo/Bar","rel":"mw:WikiLink"},"title":"Foo/Bar"},"type":"link/WikiLink"}': {
 						'type': 'link/WikiLink',
 						'data': {
 							'title': 'Foo/Bar',
@@ -534,7 +534,7 @@ ve.dm.example.domToDataCases = {
 			[
 				'o',
 				{
-					'{"type":"link/WikiLink","data":{"title":"Foo/Bar","htmlAttributes":{"href":"../../../Foo/Bar","rel":"mw:WikiLink"}}}': {
+					'{"data":{"htmlAttributes":{"href":"../../../Foo/Bar","rel":"mw:WikiLink"},"title":"Foo/Bar"},"type":"link/WikiLink"}': {
 						'type': 'link/WikiLink',
 						'data': {
 							'title': 'Foo/Bar',
@@ -556,7 +556,7 @@ ve.dm.example.domToDataCases = {
 			[
 				'[',
 				{
-					'{"type":"link/ExtLink/Numbered","data":{"href":"http://www.mediawiki.org/","htmlAttributes":{"href":"http://www.mediawiki.org/","rel":"mw:ExtLink/Numbered"}}}': {
+					'{"data":{"href":"http://www.mediawiki.org/","htmlAttributes":{"href":"http://www.mediawiki.org/","rel":"mw:ExtLink/Numbered"}},"type":"link/ExtLink/Numbered"}': {
 						'type': 'link/ExtLink/Numbered',
 						'data': {
 							'href': 'http://www.mediawiki.org/',
@@ -571,7 +571,7 @@ ve.dm.example.domToDataCases = {
 			[
 				'1',
 				{
-					'{"type":"link/ExtLink/Numbered","data":{"href":"http://www.mediawiki.org/","htmlAttributes":{"href":"http://www.mediawiki.org/","rel":"mw:ExtLink/Numbered"}}}': {
+					'{"data":{"href":"http://www.mediawiki.org/","htmlAttributes":{"href":"http://www.mediawiki.org/","rel":"mw:ExtLink/Numbered"}},"type":"link/ExtLink/Numbered"}': {
 						'type': 'link/ExtLink/Numbered',
 						'data': {
 							'href': 'http://www.mediawiki.org/',
@@ -586,7 +586,7 @@ ve.dm.example.domToDataCases = {
 			[
 				']',
 				{
-					'{"type":"link/ExtLink/Numbered","data":{"href":"http://www.mediawiki.org/","htmlAttributes":{"href":"http://www.mediawiki.org/","rel":"mw:ExtLink/Numbered"}}}': {
+					'{"data":{"href":"http://www.mediawiki.org/","htmlAttributes":{"href":"http://www.mediawiki.org/","rel":"mw:ExtLink/Numbered"}},"type":"link/ExtLink/Numbered"}': {
 						'type': 'link/ExtLink/Numbered',
 						'data': {
 							'href': 'http://www.mediawiki.org/',
@@ -608,7 +608,7 @@ ve.dm.example.domToDataCases = {
 			[
 				'm',
 				{
-					'{"type":"link/ExtLink/URL","data":{"href":"http://www.mediawiki.org/","htmlAttributes":{"href":"http://www.mediawiki.org/","rel":"mw:ExtLink/URL"}}}': {
+					'{"data":{"href":"http://www.mediawiki.org/","htmlAttributes":{"href":"http://www.mediawiki.org/","rel":"mw:ExtLink/URL"}},"type":"link/ExtLink/URL"}': {
 						'type': 'link/ExtLink/URL',
 						'data': {
 							'href': 'http://www.mediawiki.org/',
@@ -623,7 +623,7 @@ ve.dm.example.domToDataCases = {
 			[
 				'w',
 				{
-					'{"type":"link/ExtLink/URL","data":{"href":"http://www.mediawiki.org/","htmlAttributes":{"href":"http://www.mediawiki.org/","rel":"mw:ExtLink/URL"}}}': {
+					'{"data":{"href":"http://www.mediawiki.org/","htmlAttributes":{"href":"http://www.mediawiki.org/","rel":"mw:ExtLink/URL"}},"type":"link/ExtLink/URL"}': {
 						'type': 'link/ExtLink/URL',
 						'data': {
 							'href': 'http://www.mediawiki.org/',
