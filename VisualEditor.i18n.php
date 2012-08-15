@@ -445,6 +445,24 @@ $messages['frp'] = array(
 	'visualeditor-desc' => 'Èditor visuâl por MediaWiki',
 	'visualeditor-feedback-prompt' => 'Balyér voutron avis',
 	'visualeditor-feedback-dialog-title' => 'Balyér voutron avis sur la bouèta de sabla de l’èditor visuâl',
+	'visualeditor-ca-editsource' => 'Changiér la sôrsa',
+	'visualeditor-linkinspector-title' => 'Changiér lo lim',
+	'visualeditor-linkinspector-label-pagetitle' => 'Titro de la pâge',
+	'visualeditor-formatdropdown-title' => 'Changiér lo format',
+	'visualeditor-formatdropdown-format-paragraph' => 'Paragrafo',
+	'visualeditor-formatdropdown-format-heading1' => 'Titro 1',
+	'visualeditor-formatdropdown-format-heading2' => 'Titro 2',
+	'visualeditor-formatdropdown-format-heading3' => 'Titro 3',
+	'visualeditor-formatdropdown-format-heading4' => 'Titro 4',
+	'visualeditor-formatdropdown-format-heading5' => 'Titro 5',
+	'visualeditor-formatdropdown-format-heading6' => 'Titro 6',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Grâs',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Étalico',
+	'visualeditor-annotationbutton-link-tooltip' => 'Lim',
+	'visualeditor-listbutton-number-tooltip' => 'Lista numerotâye',
+	'visualeditor-listbutton-bullet-tooltip' => 'Lista de puges',
+	'visualeditor-historybutton-undo-tooltip' => 'Dèfâre',
+	'visualeditor-historybutton-redo-tooltip' => 'Refâre',
 );
 
 /** Galician (galego)
@@ -687,7 +705,10 @@ $messages['ka'] = array(
 	'visualeditor-annotationbutton-bold-tooltip' => 'მუქი',
 	'visualeditor-annotationbutton-italic-tooltip' => 'კურსივი',
 	'visualeditor-annotationbutton-link-tooltip' => 'ბმული',
+	'visualeditor-listbutton-number-tooltip' => 'დანომრილი სია',
+	'visualeditor-listbutton-bullet-tooltip' => 'მარკირებული სია',
 	'visualeditor-historybutton-undo-tooltip' => 'დაბრუნება',
+	'visualeditor-historybutton-redo-tooltip' => 'განმეორება',
 );
 
 /** Korean (한국어)
