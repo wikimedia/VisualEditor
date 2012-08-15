@@ -43,7 +43,7 @@ ve.ui.Context = function ( surfaceView, $overlay ) {
 		null,
 		this.$
 	);
-	
+
 	// Events
 	this.$icon.on( {
 		'mousedown': ve.bind( this.onMouseDown, this ),
@@ -62,23 +62,33 @@ ve.ui.Context = function ( surfaceView, $overlay ) {
 
 ve.ui.Context.prototype.setupInspectorFrame = function () {
 	var $styleLink;
+
+	// Inspector container
+	this.$inspectors = $( '<div />' )
+		.addClass( 'es-contextView-inspectors' )
+		.appendTo( this.$ );
+
+	// Iframe overlay
+	this.$iframeOverlay = $('<div />')
+		.addClass( 've-iframe-overlay' )
+		.appendTo( this.$inspectors );
+
 	// Create and append an iframe for inspectors.
 	// Use of iframe is required to retain selection while inspector controls are focused.
-	this.$inspectors =
-		$( '<iframe class="es-contextView-inspectors"></iframe>' )
+	this.$inspectorFrame = $( '<iframe></iframe>' )
 			.attr({
 				'frameborder': '0'
 			})
-			.appendTo( this.$ );
+			.appendTo( this.$inspectors );
 
 	// Stash iframe document reference to properly create & append elements.
-	this.inspectorDoc = this.$inspectors.prop( 'contentWindow' ).document;
+	this.inspectorDoc = this.$inspectorFrame.prop( 'contentWindow' ).document;
 
 	// Cross browser trick to append content to an iframe
 	// Write a containing element to the iframe
-	this.inspectorDoc.write( '<div class="ve-inspector-wrapper"></div>' );
+	this.inspectorDoc.write( '<div class="ve-iframe-wrapper"></div>' );
 	this.inspectorDoc.close();
-	this.$inspectorWrapper = $( this.inspectorDoc ).find( '.ve-inspector-wrapper' );
+	this.$inspectorWrapper = $( this.inspectorDoc ).find( '.ve-iframe-wrapper' );
 
 	// Create style element in iframe document scope
 	$styleLink =
@@ -94,12 +104,10 @@ ve.ui.Context.prototype.setupInspectorFrame = function () {
 	$( this.inspectorDoc ).find( 'head' ).append( $styleLink );
 
 	// Adjust iframe body styles.
-	$( this.inspectorDoc ).find( 'body' ).css( {
-		'padding': '0px 5px 10px 5px',
+	$( 'body', this.inspectorDoc ).css( {
+		'padding': '0px 5px',
 		'margin': 0
 	} );
-
-	this.hideInspectorFrame();
 };
 
 ve.ui.Context.prototype.onDocumentFocus = function () {
@@ -220,6 +228,31 @@ ve.ui.Context.prototype.positionOverlay = function ( $overlay ) {
 
 };
 
+// Method to position iframe overlay above or below an element.
+ve.ui.Context.prototype.positionIframeOverlay = function( config ) {
+	var left, top;
+	if (
+		config === undefined ||
+		! ( 'overlay' in config )
+	) {
+		return;
+	}
+	// Set iframe overlay below element.
+	if ( 'below' in config ) {
+		left = config.below.offset().left;
+		top = config.below.offset().top + config.below.outerHeight();
+	// Set iframe overlay above element.
+	} else if ( 'above' in config ) {
+		left = config.above.offset().left;
+		top = config.above.offset().top;
+	}
+	// Set position.
+	config.overlay.css( {
+		'left': left,
+		'top': top
+	} );
+};
+
 ve.ui.Context.prototype.clear = function () {
 	if ( this.inspector ) {
 		this.closeInspector();
@@ -234,6 +267,12 @@ ve.ui.Context.prototype.openInspector = function ( name ) {
 	}
 	this.inspectors[name].open();
 	this.resizeInspectorFrame( this.inspectors[name] );
+	// Setting this to auto makes position overlay work correctly.
+	this.$inspectors.css({
+		'height': 'auto',
+		'width': 'auto',
+		'visibility': 'visible'
+	});
 	this.positionOverlay( this.$inspectors );
 	this.inspector = name;
 };
@@ -241,9 +280,11 @@ ve.ui.Context.prototype.openInspector = function ( name ) {
 ve.ui.Context.prototype.closeInspector = function ( accept ) {
 	if ( this.inspector ) {
 		this.inspectors[this.inspector].close( accept );
-		this.hideInspectorFrame();
 		this.inspector = null;
 	}
+	this.$inspectors.css({
+		'visibility': 'hidden'
+	});
 };
 
 ve.ui.Context.prototype.getInspector = function ( name ) {
@@ -262,19 +303,13 @@ ve.ui.Context.prototype.addInspector = function ( name, inspector ) {
 	this.$inspectorWrapper.append( inspector.$ );
 };
 
-ve.ui.Context.prototype.hideInspectorFrame = function () {
-	this.$inspectors.css({
-		'width': 0,
-		'height': 0,
-		'visibility': 'hidden'
-	});
-};
-
+//TODO: need better iframe resizing. Currently sizes to dimensions of specified inspector.
 ve.ui.Context.prototype.resizeInspectorFrame = function ( inspector ) {
-	this.$inspectors.css( {
-		'width': inspector.$.outerWidth( true ) + 10,
-		'height': inspector.$.outerHeight( true ) + 10,
-		'visibility': 'visible'
+	var width = inspector.$.outerWidth(),
+		height = inspector.$.outerHeight();
+	this.$inspectorFrame.css( {
+		'width': width + 10,
+		'height': height + 10
 	} );
 };
 

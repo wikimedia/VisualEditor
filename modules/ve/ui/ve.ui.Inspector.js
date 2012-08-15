@@ -19,6 +19,7 @@ ve.ui.Inspector = function ( toolbar, context ) {
 	if ( !toolbar || !context ) {
 		return;
 	}
+	var inspector = this;
 
 	// Properties
 	this.toolbar = toolbar;
@@ -32,32 +33,39 @@ ve.ui.Inspector = function ( toolbar, context ) {
 		.appendTo( this.$ );
 	this.$form = $( '<form>', context.inspectorDoc ).appendTo( this.$ );
 
-	// Events
-	var inspector = this;
-	this.$closeButton.click( function () {
-		inspector.context.closeInspector( false );
-	} );
-	this.$acceptButton.click( function () {
-		if ( !$(this).is( '.es-inspector-button-disabled' ) ) {
-			inspector.context.closeInspector( true );
+	// Inspector Events
+	this.$closeButton.on( {
+		'click': function() {
+			context.closeInspector( false );
 		}
 	} );
-	this.$form.submit( function ( e ) {
-		inspector.context.closeInspector( true );
-		e.preventDefault();
-		return false;
-	} );
-	this.$form.keydown( function ( e ) {
-		// Escape
-		if ( e.which === 27 ) {
-			inspector.context.closeInspector( false );
-			e.preventDefault();
-			return false;
+	this.$acceptButton.on( {
+		'click': function() {
+			context.closeInspector ( true );
 		}
+	} );
+	this.$form.on( {
+		'submit': ve.bind( this.onSubmit, this ),
+		'keydown': ve.bind( this.onKeyDown, this )
 	} );
 };
 
 /* Methods */
+
+ve.ui.Inspector.prototype.onSubmit = function( e ) {
+	e.preventDefault();
+	this.context.closeInspector( true );
+	return false;
+};
+
+ve.ui.Inspector.prototype.onKeyDown = function( e ) {
+	// Escape
+	if ( e.which === 27 ) {
+		this.context.closeInspector( false );
+		e.preventDefault();
+		return false;
+	}
+};
 
 ve.ui.Inspector.prototype.open = function () {
 	// Prepare to open

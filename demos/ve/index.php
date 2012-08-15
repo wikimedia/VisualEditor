@@ -57,6 +57,7 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 		<!-- ve -->
 		<script src="../../modules/jquery/jquery.js"></script>
 		<script src="../../modules/jquery/jquery.json.js"></script>
+		<script src="../../modules/jquery/jquery.multiSuggest.js"></script>
 		<script src="../../modules/ve/ve.js"></script>
 		<script src="../../modules/ve/ve.debug.js"></script>
 		<script src="../../modules/ve/ve.EventEmitter.js"></script>

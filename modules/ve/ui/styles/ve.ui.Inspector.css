@@ -73,7 +73,7 @@
 
 .es-inspector form input {
 	display: inline-block;
-	width: 14em;
+	width: 20em;
 	font-size: 1em;
 	padding: 0.25em;
 }
@@ -92,3 +92,77 @@
 	font-weight: bold;
 	color: #666;
 }
+
+.ve-iframe-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.ve-ui-suggest-select {
+	position: absolute;
+	background: #FFFFFF;
+	/* @embed */
+	background-image: url(images/gray.png);
+	background-position: 8em top;
+	background-repeat: repeat-y;
+	padding: 0.5em 0;
+	width: 20em;
+	font-size: 1em;
+	z-index: 101;
+	-webkit-border-bottom-left-radius: 0.25em;
+	-webkit-border-bottom-right-radius: 0.25em;
+	-moz-border-bottom-left-radius: 0.25em;
+	-moz-border-bottom-right-radius: 0.25em;
+	-o-border-bottom-left-radius: 0.25em;
+	-o-border-bottom-right-radius: 0.25em;
+	border-bottom-left-radius: 0.25em;
+	border-bottom-right-radius: 0.25em;
+	background-color: rgba(255,255,255,0.95);
+	-webkit-box-shadow: 0 .15em .5em 0 rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 0 .15em .5em 0 rgba(0, 0, 0, 0.2);
+	box-shadow: 0 .15em .5em 0 rgba(0, 0, 0, 0.2);
+}
+.ve-ui-suggest-label {
+	float: left;
+	width: 6.5em;
+	padding: 0.33em 0.75em;
+	text-align: right;
+	color: rgb(78, 78, 78);
+}
+
+.ve-ui-suggest-wrap {
+	float:left;
+}
+
+.ve-ui-suggest-dummy-item {
+	padding: 0.33em 0.75em;
+	width: 10.5em;
+}
+
+.ve-ui-suggest-item {
+	padding: 0.33em 0.75em;
+	width: 10.5em;
+
+	/* CSS Elipsis */
+	white-space: nowrap;
+	overflow: hidden;
+	-o-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+}
+
+.ve-ui-suggest-item.new {
+	color: #BA0000;
+}
+.ve-ui-suggest-item.existing {
+	color: rgb(68, 125, 214);
+}
+
+.ve-ui-suggest-item.selected {
+	background-color: rgb(68, 125, 214);
+	color: #FFFFFF;
+}
+.ve-ui-suggest-item > a {
+	text-decoration: none;
+}
+

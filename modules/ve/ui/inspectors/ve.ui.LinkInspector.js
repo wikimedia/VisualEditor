@@ -18,21 +18,22 @@ ve.ui.LinkInspector = function ( toolbar, context ) {
 	// Inheritance
 	ve.ui.Inspector.call( this, toolbar, context );
 
-	// Properties
+	var inspector = this;
+	this.context = context;
+
+	// Elements
 	this.$clearButton = $( '<div class="es-inspector-button es-inspector-clearButton"></div>', context.inspectorDoc )
 		.prependTo( this.$ );
 	this.$.prepend(
 		$( '<div class="es-inspector-title"></div>', context.inspectorDoc )
 			.text( ve.msg( 'visualeditor-linkinspector-title' ) )
 	);
-	this.$locationLabel = $( '<label>', context.inspectorDoc )
-		.text( ve.msg( 'visualeditor-linkinspector-label-pagetitle' ) )
-		.appendTo( this.$form );
+	// Target
 	this.$locationInput = $( '<input type="text">', context.inspectorDoc ).appendTo( this.$form );
+
 	this.initialValue = null;
 
 	// Events
-	var inspector = this;
 	this.$clearButton.click( function () {
 		if ( $(this).is( '.es-inspector-button-disabled' ) ) {
 			return;
@@ -48,15 +49,24 @@ ve.ui.LinkInspector = function ( toolbar, context ) {
 		inspector.$locationInput.val( '' );
 		inspector.context.closeInspector();
 	} );
-	this.$locationInput.on( 'mousedown keydown cut paste', function () {
+
+	// Bind events to location input.
+	this.$locationInput.on( 'change mousedown keydown cut paste', function () {
 		setTimeout( function () {
+			// Toggle disabled class
 			if ( inspector.$locationInput.val() !== '' ) {
 				inspector.$acceptButton.removeClass( 'es-inspector-button-disabled' );
 			} else {
 				inspector.$acceptButton.addClass( 'es-inspector-button-disabled' );
 			}
+
 		}, 0 );
 	} );
+
+	// Init multiSuggest for MediaWiki
+	if ( 'mw' in window ) {
+		this.initMultiSuggest();
+	}
 };
 
 /* Methods */
@@ -69,7 +79,6 @@ ve.ui.LinkInspector.prototype.getAllLinkAnnotationsFromSelection = function () {
 		linkAnnotations = {};
 
 		annotations = documentModel.getAnnotationsFromRange( surfaceModel.getSelection(), true );
-		// XXX: '.' is not escaped, is the '.*' part redundant?
 		linkAnnotations = ve.dm.Document.getMatchingAnnotations ( annotations,  /^link\//  );
 		if ( !ve.isEmptyObject( linkAnnotations ) ) {
 			return linkAnnotations;
@@ -165,7 +174,6 @@ ve.ui.LinkInspector.prototype.onOpen = function () {
 		this.$locationInput.val( initialValue );
 		this.$clearButton.removeClass( 'es-inspector-button-disabled' );
 	}
-
 	this.initialValue = initialValue;
 	if ( this.$locationInput.val().length === 0 ) {
 		this.$acceptButton.addClass( 'es-inspector-button-disabled' );
@@ -228,6 +236,96 @@ ve.ui.LinkInspector.getAnnotationForTarget = function ( target ) {
 			'data': { 'title': target }
 		};
 	}
+};
+
+ve.ui.LinkInspector.prototype.initMultiSuggest = function() {
+	var inspector = this,
+		context = inspector.context,
+		$overlay = context.$iframeOverlay,
+		options;
+
+	// Multi Suggest configuration.
+	options = {
+		'parent': $overlay,
+		'prefix': 've-ui',
+	    // Build suggestion groups in order.
+	    'suggestions': function( params ) {
+			var groups = {},
+				results = params.results,
+				query = params.query,
+				modifiedQuery,
+				title,
+				prot;
+
+			// Add existing pages.
+			if ( results.length > 0 ) {
+				groups.internal = {
+					label: ve.msg( 'visualeditor-linkinspector-suggest-existing-page' ),
+					items: results,
+					itemClass: 'existing'
+				};
+			}
+			// Run the query through the mw.Title object to handle correct capitalization.
+			try {
+				title = new mw.Title( query );
+				modifiedQuery = title.getPrefixedText();
+				// If page doesn't exist, add New Page group.
+				if ( ve.inArray( modifiedQuery, results ) === -1 ) {
+					groups['new'] = {
+						label: ve.msg( 'visualeditor-linkinspector-suggest-new-page' ),
+						items: [modifiedQuery],
+						itemClass: 'new'
+					};
+				}
+			} catch ( e ) {
+				// invalid input
+				ve.log( e );
+			}
+			// Add external
+			groups.external = {
+				label: ve.msg( 'visualeditor-linkinspector-suggest-external-link' ),
+				items: [],
+				itemClass: 'existing'
+			};
+			// Find a protocol and suggest an external link.
+			prot = query.match(
+				ve.init.platform.getExternalLinkUrlProtocolsRegExp()
+			);
+			if ( prot ) {
+				groups.external.items = [query];
+			// No protocol, default to http
+			} else {
+				groups.external.items = ['http://' + query];
+			}
+			return groups;
+		},
+		// Called on succesfull input.
+		'input': function( callback ) {
+			var $input = $( this ),
+				query = $input.val(),
+				api = new mw.Api();
+			// Make AJAX Request.
+			api.get( {
+				action: 'opensearch',
+				search: query
+			}, {
+				ok: function( data ) {
+					// Position the iframe overlay below the input.
+					context.positionIframeOverlay( {
+						overlay: $overlay,
+						below: $input
+					} );
+					// Build
+					callback( {
+						query: query,
+						results: data[1]
+					} );
+				}
+			} );
+		}
+	};
+	// Setup Multi Suggest
+	this.$locationInput.multiSuggest( options );
 };
 
 /* Inheritance */
