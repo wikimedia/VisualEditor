@@ -391,6 +391,7 @@ $messages['fa'] = array(
 );
 
 /** Finnish (suomi)
+ * @author Beluga
  * @author Nike
  * @author Olli
  */
@@ -399,6 +400,24 @@ $messages['fi'] = array(
 	'visualeditor-desc' => 'Visuaalinen muokkain MediaWikille',
 	'visualeditor-feedback-prompt' => 'Jätä palautetta',
 	'visualeditor-feedback-dialog-title' => 'Jätä palautetta visuaalisen muokkaimen hiekkalaatikosta.',
+	'visualeditor-ca-editsource' => 'Muokkaa lähdetekstiä',
+	'visualeditor-linkinspector-title' => 'Muokkauslinkki',
+	'visualeditor-linkinspector-label-pagetitle' => 'Sivun otsikko',
+	'visualeditor-formatdropdown-format-paragraph' => 'Kappale',
+	'visualeditor-formatdropdown-format-heading1' => 'Otsikko 1',
+	'visualeditor-formatdropdown-format-heading2' => 'Otsikko 2',
+	'visualeditor-formatdropdown-format-heading3' => 'Otsikko 3',
+	'visualeditor-formatdropdown-format-heading4' => 'Otsikko 4',
+	'visualeditor-formatdropdown-format-heading5' => 'Otsikko 5',
+	'visualeditor-formatdropdown-format-heading6' => 'Otsikko 6',
+	'visualeditor-formatdropdown-format-preformatted' => 'Esimuotoiltu',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Lihavointi',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Kursiivi',
+	'visualeditor-annotationbutton-link-tooltip' => 'Linkki',
+	'visualeditor-listbutton-number-tooltip' => 'Numeroitu luettelo',
+	'visualeditor-clearbutton-tooltip' => 'Poista muotoilu',
+	'visualeditor-historybutton-undo-tooltip' => 'Kumoa',
+	'visualeditor-historybutton-redo-tooltip' => 'Tee uudelleen',
 );
 
 /** French (français)
@@ -1075,12 +1094,38 @@ $messages['ro'] = array(
 /** Russian (русский)
  * @author Amire80
  * @author Eugrus
+ * @author Kalan
  */
 $messages['ru'] = array(
 	'visualeditor' => 'VisualEditor',
 	'visualeditor-desc' => 'Визуальный редактор для MediaWiki',
 	'visualeditor-feedback-prompt' => 'Оставить отзыв',
 	'visualeditor-feedback-dialog-title' => 'Оставить отзыв о песочнице с VisualEditor',
+	'visualeditor-ca-editsource' => 'Править исходный текст',
+	'visualeditor-linkinspector-title' => 'Править ссылку',
+	'visualeditor-linkinspector-label-pagetitle' => 'Название страницы',
+	'visualeditor-formatdropdown-title' => 'Форматирование',
+	'visualeditor-formatdropdown-format-paragraph' => 'Абзац',
+	'visualeditor-formatdropdown-format-heading1' => 'Заголовок 1',
+	'visualeditor-formatdropdown-format-heading2' => 'Заголовок 2',
+	'visualeditor-formatdropdown-format-heading3' => 'Заголовок 3',
+	'visualeditor-formatdropdown-format-heading4' => 'Заголовок 4',
+	'visualeditor-formatdropdown-format-heading5' => 'Заголовок 5',
+	'visualeditor-formatdropdown-format-heading6' => 'Заголовок 6',
+	'visualeditor-formatdropdown-format-preformatted' => 'Преформатированный',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Жирный',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Курсив',
+	'visualeditor-annotationbutton-link-tooltip' => 'Ссылка',
+	'visualeditor-indentationbutton-indent-tooltip' => 'Увеличить отступ',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Уменьшить отступ',
+	'visualeditor-listbutton-number-tooltip' => 'Нумерованный список',
+	'visualeditor-listbutton-bullet-tooltip' => 'Маркированный список',
+	'visualeditor-clearbutton-tooltip' => 'Очистить форматирование',
+	'visualeditor-historybutton-undo-tooltip' => 'Отменить',
+	'visualeditor-historybutton-redo-tooltip' => 'Вернуть',
+	'visualeditor-viewpage-savewarning' => 'Вы точно хотите вернуться в режим просмотра, не сохранив изменения?',
+	'visualeditor-loadwarning' => 'Ошибка при загрузке данных: $1. Попробовать снова?',
+	'visualeditor-saveerror' => 'Ошибка при сохранении данных: $1.',
 );
 
 /** Rusyn (русиньскый)
