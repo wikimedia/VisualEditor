@@ -9,9 +9,10 @@ QUnit.module( 've.Factory' );
 
 /* Stubs */
 
-ve.FactoryObjectStub = function ( a, b ) {
+ve.FactoryObjectStub = function ( a, b, c ) {
 	this.a = a;
 	this.b = b;
+	this.c = c;
 };
 
 /* Tests */
@@ -31,15 +32,15 @@ QUnit.test( 'create', 2, function ( assert ) {
 	var factory = new ve.Factory();
 	assert.throws(
 		function () {
-			factory.create( 'factory-object-stub', 23, { 'bar': 'baz' } );
+			factory.create( 'factory-object-stub', 23, 'foo', { 'bar': 'baz' } );
 		},
 		Error,
 		'throws an exception when trying to create a object of an unregistered type'
 	);
 	factory.register( 'factory-object-stub', ve.FactoryObjectStub );
 	assert.deepEqual(
-		factory.create( 'factory-object-stub', 16, { 'baz': 'quux' } ),
-		new ve.FactoryObjectStub( 16, { 'baz': 'quux' } ),
+		factory.create( 'factory-object-stub', 16, 'foo', { 'baz': 'quux' } ),
+		new ve.FactoryObjectStub( 16, 'foo', { 'baz': 'quux' } ),
 		'creates objects of a registered type and passes through arguments'
 	);
 } );

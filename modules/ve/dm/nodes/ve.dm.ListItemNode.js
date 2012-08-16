@@ -13,10 +13,11 @@
  * @extends {ve.dm.BranchNode}
  * @param {ve.dm.BranchNode[]} [children] Child nodes to attach
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
+ * @param {Object} [internal] Reference to internal data object
  */
-ve.dm.ListItemNode = function ( children, attributes ) {
+ve.dm.ListItemNode = function ( children, attributes, internal ) {
 	// Inheritance
-	ve.dm.BranchNode.call( this, 'listItem', children, attributes );
+	ve.dm.BranchNode.call( this, 'listItem', children, attributes, internal );
 };
 
 /* Static Members */

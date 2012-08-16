@@ -335,15 +335,23 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 				}
 
 				// Strip leading and trailing whitespace
-				// but only in non-annotation nodes
+				// (but only in non-annotation nodes)
+				// and store it so it can be restored later.
+				// whitespace = [ outerPre, innerPre, innerPost, outerPost ]
+				//           <tag>         text           </tag>          <nextTag>
+				// ^^^^^^^^^^     ^^^^^^^^^    ^^^^^^^^^^^      ^^^^^^^^^^
+				//  outerPre      innerPre      innerPost        outerPost
 				if ( annotations.length === 0 && i === 0 && wrapperElement ) {
 					// Strip leading whitespace from the first child
 					matches = text.match( /^\s+/ );
 					if ( matches && matches[0] !== '' ) {
-						if ( !wrapperElement.fringeWhitespace ) {
-							wrapperElement.fringeWhitespace = {};
+						if ( !wrapperElement.internal ) {
+							wrapperElement.internal = {};
 						}
-						wrapperElement.fringeWhitespace.innerPre = matches[0];
+						if ( !wrapperElement.internal.whitespace ) {
+							wrapperElement.internal.whitespace = [];
+						}
+						wrapperElement.internal.whitespace[1] = matches[0];
 						text = text.substring( matches[0].length );
 					}
 				}
@@ -355,10 +363,13 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 					// Strip trailing whitespace from the last child
 					matches = text.match( /\s+$/ );
 					if ( matches && matches[0] !== '' ) {
-						if ( !wrapperElement.fringeWhitespace ) {
-							wrapperElement.fringeWhitespace = {};
+						if ( !wrapperElement.internal ) {
+							wrapperElement.internal = {};
 						}
-						wrapperElement.fringeWhitespace.innerPost = matches[0];
+						if ( !wrapperElement.internal.whitespace ) {
+							wrapperElement.internal.whitespace = [];
+						}
+						wrapperElement.internal.whitespace[2] = matches[0];
 						text = text.substring( 0,
 							text.length - matches[0].length );
 					}
@@ -532,9 +543,10 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 				// Make sure the alien closing is skipped
 				i++;
 			} else if ( dataElement.type.charAt( 0 ) === '/' ) {
-				// Process whitespace
-				if ( domElement.veWhitespace ) {
-					pre = domElement.veWhitespace.innerPre;
+				// Process inner whitespace
+				// whitespace = [ outerPre, innerPre, innerPost, outerPost ]
+				if ( domElement.veInternal && domElement.veInternal.whitespace ) {
+					pre = domElement.veInternal.whitespace[1];
 					if ( pre ) {
 						if ( domElement.firstChild.nodeType === 3 ) {
 							// First child is a TextNode, prepend to it
@@ -547,7 +559,7 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 							);
 						}
 					}
-					post = domElement.veWhitespace.innerPost;
+					post = domElement.veInternal.whitespace[2];
 					if ( post ) {
 						if ( domElement.lastChild.nodeType === 3 ) {
 							// Last child is a TextNode, append to it
@@ -559,16 +571,16 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 							);
 						}
 					}
-					delete domElement.veWhitespace;
 				}
+				delete domElement.veInternal;
 				// Ascend to parent node
 				domElement = domElement.parentNode;
 			} else {
 				// Create node from data
 				childDomElement = this.getDomElementFromDataElement( dataElement );
-				// Add whitespace info
-				if ( dataElement.fringeWhitespace ) {
-					childDomElement.veWhitespace = dataElement.fringeWhitespace;
+				// Add reference to internal data to propagate whitespace info
+				if ( dataElement.internal ) {
+					childDomElement.veInternal = dataElement.internal;
 				}
 				// Add element
 				domElement.appendChild( childDomElement );

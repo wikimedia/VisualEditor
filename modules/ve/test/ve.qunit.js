@@ -4,7 +4,7 @@
  * Builds a summary of a node tree.
  *
  * Generated summaries contain node types, lengths, outer lengths, attributes and summaries for
- * each child recusively. It's simple and fast to use deepEqual on this.
+ * each child recursively. It's simple and fast to use deepEqual on this.
  *
  * @method
  * @param {ve.Node} node Node tree to summarize
@@ -17,7 +17,8 @@ function getNodeTreeSummary( node, shallow ) {
 		'getType': node.getType(),
 		'getLength': node.getLength(),
 		'getOuterLength': node.getOuterLength(),
-		'attributes': node.attributes
+		'attributes': node.attributes,
+		'internal': node.internal
 	};
 	if ( node.children !== undefined ) {
 		summary['children.length'] = node.children.length;

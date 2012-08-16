@@ -13,10 +13,11 @@
  * @extends {ve.dm.LeafNode}
  * @param {Integer} [length] Length of content data in document
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
+ * @param {Object} [internal] Reference to internal data object
  */
-ve.dm.AlienInlineNode = function ( length, attributes ) {
+ve.dm.AlienInlineNode = function ( length, attributes, internal ) {
 	// Inheritance
-	ve.dm.LeafNode.call( this, 'alienInline', 0, attributes );
+	ve.dm.LeafNode.call( this, 'alienInline', 0, attributes, internal );
 };
 
 /* Static Members */
