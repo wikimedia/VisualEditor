@@ -18,7 +18,7 @@ ve.dm.Surface = function ( doc ) {
 	ve.EventEmitter.call( this );
 	// Properties
 	this.documentModel = doc;
-	this.selection = null;
+	this.selection = new ve.Range( 0, 0 );
 	this.smallStack = [];
 	this.bigStack = [];
 	this.undoIndex = 0;
