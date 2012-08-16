@@ -8,6 +8,13 @@
 /**
  * DataModel document.
  *
+ * WARNING: Data passed into a new document will be sliced, creating a shallow copy. This is done to
+ * prevent multiple documents sharing references to the same data, which causes very strange and
+ * difficult to diagnose issues. By slicing by default, this issue is dealt with automatically. This
+ * comes at a price however. While a slice is much faster than a deep copy, it may still be a
+ * problem with really big data sets. We do not know that this is an issue yet, but consider it a
+ * likely area to cause performance problems in the future.
+ *
  * @class
  * @extends {ve.Document}
  * @constructor
@@ -20,7 +27,7 @@ ve.dm.Document = function ( data, parentDocument ) {
 
 	// Properties
 	this.parentDocument = parentDocument;
-	this.data = data || [];
+	this.data = ve.isArray( data ) ? data.slice( 0 ) : [];
 
 	// Initialization
 	/*
