@@ -252,7 +252,12 @@ ve.ce.BranchNode.prototype.hasSlugAtOffset = function ( offset ) {
 };
 
 ve.ce.BranchNode.prototype.clean = function () {
-	this.$.empty();
+	// Detach all child nodes from this.$
+	// We can't use this.$.empty() because that destroys .data() and event handlers
+	this.$.contents().each( function () {
+		$(this).detach();
+	} );
+	// Reattach the child nodes we're supposed to have
 	for ( var i = 0; i < this.children.length; i++ ) {
 		this.$.append( this.children[i].$ );
 	}
