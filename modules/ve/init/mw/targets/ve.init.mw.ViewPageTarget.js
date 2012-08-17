@@ -234,6 +234,7 @@ ve.init.mw.ViewPageTarget.prototype.onSave = function ( html ) {
 		this.replacePageContent( html );
 		this.teardownBeforeUnloadHandler();
 		this.deactivate( true );
+		mw.util.jsMessage( ve.msg( 'visualeditor-notification-saved' ) );
 	}
 };
 

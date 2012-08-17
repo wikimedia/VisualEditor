@@ -9,6 +9,7 @@ $messages['en'] = array(
 	'visualeditor-desc' => 'Visual editor for MediaWiki',
 	'visualeditor-feedback-prompt' => 'Leave feedback',
 	'visualeditor-feedback-dialog-title' => 'Leave feedback about VisualEditor Sandbox',
+	'visualeditor-notification-saved' => 'Your changes have been saved.',
 	'visualeditor-ca-editsource' => 'Edit source',
 	'visualeditor-linkinspector-title' => 'Edit link',
 	'visualeditor-linkinspector-label-pagetitle' => 'Page title',
