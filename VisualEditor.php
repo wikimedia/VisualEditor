@@ -69,9 +69,17 @@ $wgResourceModules += array(
 		),
 		'styles' => array(
 			've/init/mw/styles/ve.init.mw.ViewPageTarget.css',
-			've/init/mw/styles/ve.init.mw.ViewPageTarget-hd.css' => array(
-				'media' => 'screen and (min-width: 982px)'
+		),
+		'skinStyles' => array(
+			'vector' => array(
+				've/init/mw/styles/ve.init.mw.ViewPageTarget-vector.css',
+				've/init/mw/styles/ve.init.mw.ViewPageTarget-vector-hd.css' => array(
+					'media' => 'screen and (min-width: 982px)'
+				),
 			),
+			'apex' => array(
+				've/init/mw/styles/ve.init.mw.ViewPageTarget-apex.css',
+			)
 		),
 		'dependencies' => array(
 			'ext.visualEditor.base',
