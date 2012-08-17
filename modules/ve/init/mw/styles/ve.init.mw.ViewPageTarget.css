@@ -20,9 +20,13 @@
 	overflow: hidden;
 }
 
-.ve-init-mw-viewPageTarget-loadingSpinner {
+.ve-init-mw-viewPageTarget-loadingSpinner,
+.ve-init-mw-viewPageTarget-saveDialog-saving {
 	/* @embed */
 	background-image: url(images/loading.gif);
+}
+
+.ve-init-mw-viewPageTarget-loadingSpinner {
 	width: 128px;
 	height: 15px;
 	float: right;
@@ -84,6 +88,16 @@
 	height: 2em;
 	line-height: 1.25em;
 	margin-right: 0;
+}
+
+.ve-init-mw-viewPageTarget-saveDialog-saving {
+	display: none;
+	float: right;
+	height: 2em;
+	width: 128px;
+	margin-right: 1em;
+	background-position: right center;
+	background-repeat: no-repeat;
 }
 
 .ve-init-mw-viewPageTarget-toolbar-saveButton:before {

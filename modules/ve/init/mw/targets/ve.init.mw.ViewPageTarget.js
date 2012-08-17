@@ -112,6 +112,7 @@ ve.init.mw.ViewPageTarget.saveDialogTemplate = '\
 		<button class="ve-init-mw-viewPageTarget-saveDialog-saveButton">\
 			<span class="ve-init-mw-viewPageTarget-saveDialog-saveButton-label"></span>\
 		</button>\
+		<div class="ve-init-mw-viewPageTarget-saveDialog-saving"></div>\
 		<div style="clear: both;"></div>\
 	</div>\
 	<div class="ve-init-mw-viewPageTarget-saveDialog-foot">\
@@ -327,6 +328,7 @@ ve.init.mw.ViewPageTarget.prototype.onSurfaceModelTransact = function () {
  */
 ve.init.mw.ViewPageTarget.prototype.onSaveDialogSaveButtonClick = function () {
 	this.lockSaveDialogSaveButton();
+	this.$saveDialogLoadingIcon.show();
 	this.save(
 		ve.dm.converter.getDomFromData( this.surface.getDocumentModel().getData() ),
 		{
@@ -609,7 +611,8 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 			);
 	this.$saveDialogSaveButton = this.$saveDialog
 		.find( '.ve-init-mw-viewPageTarget-saveDialog-saveButton' );
-
+	this.$saveDialogLoadingIcon = this.$saveDialog
+		.find( '.ve-init-mw-viewPageTarget-saveDialog-saving' );
 	// Hook onto the 'watch' event on by mediawiki.page.watch.ajax.js
 	// Triggered when mw.page.watch.updateWatchLink(link, action) is called
 	$( '#ca-watch, #ca-unwatch' )
@@ -747,6 +750,7 @@ ve.init.mw.ViewPageTarget.prototype.hideTableOfContents = function () {
 ve.init.mw.ViewPageTarget.prototype.showSaveDialog = function () {
 	var viewPage = this;
 	this.unlockSaveDialogSaveButton();
+	this.$saveDialogLoadingIcon.hide();
 	this.$saveDialog.fadeIn( 'fast' ).find( 'textarea' ).eq( 0 ).focus();
 	$( document ).on( 'keydown', function ( e ) {
 		if ( e.which === 27 ) {
