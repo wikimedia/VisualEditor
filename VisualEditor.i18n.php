@@ -703,6 +703,41 @@ $messages['ja'] = array(
 	'visualeditor-feedback-dialog-title' => '視覚的エディターのサンドボックスについてフィードバックを残す',
 );
 
+/** Javanese (Basa Jawa)
+ * @author NoiX180
+ */
+$messages['jv'] = array(
+	'visualeditor' => 'PanyuntingVisual',
+	'visualeditor-desc' => 'Panyunting visual kanggo MediaWiki',
+	'visualeditor-feedback-prompt' => 'Tinggalaké lebon saran',
+	'visualeditor-feedback-dialog-title' => 'Tinggalaké lebon saran bab KothakWedhi PanyuntingVisual',
+	'visualeditor-ca-editsource' => 'Sunting sumber',
+	'visualeditor-linkinspector-title' => 'Sunting pranala',
+	'visualeditor-linkinspector-label-pagetitle' => 'Judhul kaca',
+	'visualeditor-formatdropdown-title' => 'Ganti format',
+	'visualeditor-formatdropdown-format-paragraph' => 'Paragraf',
+	'visualeditor-formatdropdown-format-heading1' => 'Irah-irahan 1',
+	'visualeditor-formatdropdown-format-heading2' => 'Irah-irahan 2',
+	'visualeditor-formatdropdown-format-heading3' => 'Irah-irahan 3',
+	'visualeditor-formatdropdown-format-heading4' => 'Irah-irahan 4',
+	'visualeditor-formatdropdown-format-heading5' => 'Irah-irahan 5',
+	'visualeditor-formatdropdown-format-heading6' => 'Irah-irahan 6',
+	'visualeditor-formatdropdown-format-preformatted' => 'Kapraformat',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Kandel',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Miring',
+	'visualeditor-annotationbutton-link-tooltip' => 'Pranala',
+	'visualeditor-indentationbutton-indent-tooltip' => 'Tambah legokan',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Suda legokan',
+	'visualeditor-listbutton-number-tooltip' => 'Daptar angka',
+	'visualeditor-listbutton-bullet-tooltip' => 'Daptar poin',
+	'visualeditor-clearbutton-tooltip' => 'Resiki pamormatan',
+	'visualeditor-historybutton-undo-tooltip' => 'Batalaké',
+	'visualeditor-historybutton-redo-tooltip' => 'Pilih manèh',
+	'visualeditor-viewpage-savewarning' => 'Sampéyan yakin arep mbalik nèng mode pandelokan tanpa nyimpen dhisik?',
+	'visualeditor-loadwarning' => 'Kasalahan nalika ngemot data saka sasana: $1. Sampéyan pingin njajal manèh?',
+	'visualeditor-saveerror' => 'Kasalahan nalika nyimpen data nèng sasana: $1.',
+);
+
 /** Georgian (ქართული)
  * @author David1010
  */
@@ -1282,6 +1317,20 @@ $messages['tl'] = array(
 	'visualeditor-viewpage-savewarning' => 'Nakakatiyak ka bang nais mong magbalik sa gawi na nakikita na hindi muna nagsasagip?',
 	'visualeditor-loadwarning' => 'Kamalian sa pagkakarga ng dato mula sa tagapaghain: $1. Nais mo bang subukan ulit?',
 	'visualeditor-saveerror' => 'Kamalian sa pagsagip ng dato sa tagapaghain: $1.',
+);
+
+/** Urdu (اردو)
+ * @author පසිඳු කාවින්ද
+ */
+$messages['ur'] = array(
+	'visualeditor-feedback-prompt' => 'آپ کی رائے کو چھوڑ دو',
+	'visualeditor-ca-editsource' => 'ذریعہ میں ترمیم کریں',
+	'visualeditor-linkinspector-title' => 'لنک میں ترمیم کریں',
+	'visualeditor-linkinspector-label-pagetitle' => 'صفحہ کا عنوان',
+	'visualeditor-formatdropdown-title' => 'تبدیلی کی شکل',
+	'visualeditor-formatdropdown-format-paragraph' => 'پیرا',
+	'visualeditor-listbutton-number-tooltip' => 'نمبر والی فہرست',
+	'visualeditor-listbutton-bullet-tooltip' => 'شق کی فہرست',
 );
 
 /** Vietnamese (Tiếng Việt)
