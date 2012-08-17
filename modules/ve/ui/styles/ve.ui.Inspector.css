@@ -106,7 +106,7 @@
 	background-image: url(images/gray.png);
 	background-position: 8em top;
 	background-repeat: repeat-y;
-	padding: 0.5em 0;
+	padding: 0.5em 0 0 0;
 	width: 20em;
 	font-size: 1em;
 	z-index: 101;
@@ -123,6 +123,11 @@
 	-moz-box-shadow: 0 .15em .5em 0 rgba(0, 0, 0, 0.2);
 	box-shadow: 0 .15em .5em 0 rgba(0, 0, 0, 0.2);
 }
+
+.ve-ui-suggest-container {
+	margin-bottom: 0.5em;
+}
+
 .ve-ui-suggest-label {
 	float: left;
 	width: 6.5em;

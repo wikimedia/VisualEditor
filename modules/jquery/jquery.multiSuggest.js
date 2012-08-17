@@ -120,28 +120,8 @@
 							visible = true;
 							$multiSuggest.show();
 						}
-						bindKeyDown();
 					}
 				}
-			}
-			// Binds a keydown event to override default behavior for enter key.
-			// Binds on open, unbinds on close.
-			function bindKeyDown() {
-				$input.on( 'keydown', function( e ) {
-					var $item;
-					// Enter key.
-					if ( e.which === 13 ) {
-						e.preventDefault();
-						$item = $multiSuggest
-							.find( '.' + options.prefix + '-suggest-item.selected' );
-						if ( $item.length > 0 ) {
-							select.call( this, $item.text() );
-						} else {
-							close();
-						}
-						return;
-					}
-				} );
 			}
 			// Closes the dropdown.
 			function close() {
@@ -149,7 +129,6 @@
 					setTimeout( function() {
 						visible = false;
 						$multiSuggest.hide();
-						$input.unbind( 'keydown' );
 					}, 100 );
 				}
 			}
@@ -186,14 +165,13 @@
 					).append(
 						$( '<div>', options.doc )
 							.prop( 'class', options.prefix + '-suggest-wrap' )
-				);
-				// Add group
-				$multiSuggest
-					.append( $group )
 					// Add a clear break.
-					.append(
+					).append(
 						$( '<div>', options.doc ).css( 'clear', 'both' )
 					);
+				// Add group
+				$multiSuggest.append( $group );
+
 				// Find the group wrapper element.
 				$groupWrap = $group.find( '.' + options.prefix + '-suggest-wrap' );
 				// If no items, add a dummy element to take up space.
@@ -212,7 +190,7 @@
 						.on( 'mousedown', onItemMousedown )
 						.appendTo( $groupWrap );
 					// Select this item by default
-					if ( group.items[i] === $input.val() ) {
+					if ( group.items[i].toLowerCase() === $input.val().toLowerCase() ) {
 						$item.addClass( 'selected' );
 					}
 				}
@@ -258,7 +236,7 @@
 					}, 250 );
 				},
 				// Handle arrow up and down keys.
-				'keyup': function( e ) {
+				'keydown': function( e ) {
 					var $item,
 						$items = $multiSuggest
 							.find( '.' + options.prefix + '-suggest-item' ),
@@ -292,6 +270,20 @@
 						selected = ( selected + $items.length - 1 ) % $items.length;
 						$items.removeClass( 'selected' );
 						$( $items[selected] ).addClass( 'selected' );
+					// Enter key.
+					} else if ( e.which === 13 ) {
+						// Only if the dropdown is open.
+						if ( visible ) {
+							e.preventDefault();
+							$item = $multiSuggest
+								.find( '.' + options.prefix + '-suggest-item.selected' );
+							if ( $item.length > 0 ) {
+								select.call( this, $item.text() );
+							} else {
+								close();
+							}
+							return;
+						}
 					}
 				},
 				'focus': function(){
