@@ -456,7 +456,6 @@ ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
 		$( pVeEdit ).click( ve.bind( this.onEditTabClick, this ) );
 		// Allow instant switching back to view mode, without refresh
 		$( '#ca-view a, #ca-nstab-visualeditor a' )
-			.attr( 'href', '#' )
 			.click( ve.bind( this.onViewTabClick, this ) );
 	}
 	// Source editing shouldn't highlight the edit tab
@@ -620,7 +619,7 @@ ve.init.mw.ViewPageTarget.prototype.attachSaveDialog = function () {
 		.html( ve.msg( 'minoredit' ) );
 	this.$saveDialog.find( '.ve-init-mw-viewPageTarget-saveDialog-watchList-label' )
 		.html( ve.msg( 'watchthis' ) );
-	this.$saveDialog.appendTo( this.$toolbarWrapper );
+	this.$toolbarWrapper.append( this.$saveDialog );
 };
 
 /**
@@ -817,7 +816,8 @@ ve.init.mw.ViewPageTarget.prototype.attachToolbar = function () {
 	this.$toolbarWrapper = this.$surface.find( '.es-toolbar-wrapper' )
 		.insertBefore( $( '#firstHeading' ) )
 		.find( '.es-toolbar' )
-			.slideDown( 'fast' );
+			.slideDown( 'fast' )
+			.end();
 };
 
 /**
