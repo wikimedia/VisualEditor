@@ -16,10 +16,11 @@
  * @param {String} type Symbolic name of node type
  * @param {ve.dm.Node[]} [children] Child nodes to attach
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
+ * @param {Object} [internal] Reference to internal data object
  */
-ve.dm.BranchNode = function ( type, children, attributes ) {
+ve.dm.BranchNode = function ( type, children, attributes, internal ) {
 	// Inheritance
-	ve.dm.Node.call( this, type, 0, attributes );
+	ve.dm.Node.call( this, type, 0, attributes, internal );
 	ve.BranchNode.call( this );
 
 	if ( ve.isArray( children ) && children.length ) {

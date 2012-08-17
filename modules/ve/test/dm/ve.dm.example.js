@@ -442,7 +442,7 @@ ve.dm.example.domToDataCases = {
 		'data': [
 			{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
 			{ 'type': 'listItem' },
-			{ 'type': 'paragraph', 'fringeWhitespace': { 'innerPre': ' ' } },
+			{ 'type': 'paragraph', 'internal': { 'whitespace': [ undefined, ' ' ] } },
 			[
 				'b',
 				{
@@ -649,7 +649,7 @@ ve.dm.example.domToDataCases = {
 			{
 				'type': 'heading',
 				'attributes': { 'level': 2 },
-				'fringeWhitespace': { 'innerPre': ' ' }
+				'internal': { 'whitespace': [ undefined, ' ' ] }
 			},
 			'B',
 			'a',
@@ -658,7 +658,7 @@ ve.dm.example.domToDataCases = {
 			{
 				'type': 'heading',
 				'attributes': { 'level': 2 },
-				'fringeWhitespace': { 'innerPost': ' ' }
+				'internal': { 'whitespace': [ undefined, undefined, ' ' ] }
 			},
 			'B',
 			'a',
@@ -667,7 +667,7 @@ ve.dm.example.domToDataCases = {
 			{
 				'type': 'heading',
 				'attributes': { 'level': 2 },
-				'fringeWhitespace': { 'innerPre': '  ', 'innerPost': '   ' }
+				'internal': { 'whitespace': [ undefined, '  ', '   ' ] }
 			},
 			'Q',
 			'u',
@@ -689,16 +689,14 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/paragraph' },
 			{ 'type': '/listItem' },
 			{ 'type': 'listItem' },
-			{ 'type': 'paragraph', 'fringeWhitespace': { 'innerPre': ' ' }
-			},
+			{ 'type': 'paragraph', 'internal': { 'whitespace': [ undefined, ' ' ] } },
 			'B',
 			'a',
 			'r',
 			{ 'type': '/paragraph' },
 			{ 'type': '/listItem' },
 			{ 'type': 'listItem' },
-			{ 'type': 'paragraph', 'fringeWhitespace': { 'innerPost': ' ' }
-			},
+			{ 'type': 'paragraph', 'internal': { 'whitespace': [ undefined, undefined, ' ' ] } },
 			'B',
 			'a',
 			'z',
@@ -707,7 +705,7 @@ ve.dm.example.domToDataCases = {
 			{ 'type': 'listItem' },
 			{
 				'type': 'paragraph',
-				'fringeWhitespace': { 'innerPre': '  ', 'innerPost': '   ' }
+				'internal': { 'whitespace': [ undefined, '  ', '   ' ] }
 			},
 			'Q',
 			'u',
@@ -723,7 +721,7 @@ ve.dm.example.domToDataCases = {
 		'data': [
 			{
 				'type': 'paragraph',
-				'fringeWhitespace': { 'innerPre': ' ', 'innerPost': '    '}
+				'internal': { 'whitespace': [ undefined, ' ', '    ' ] }
 			},
 			[ ' ', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
 			[ ' ', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],

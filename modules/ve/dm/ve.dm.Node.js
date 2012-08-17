@@ -15,15 +15,16 @@
  * @param {String} type Symbolic name of node type
  * @param {Integer} [length] Length of content data in document
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
+ * @param {Object} [internal] Object with internal data to store for this node
  */
-ve.dm.Node = function ( type, length, attributes ) {
+ve.dm.Node = function ( type, length, attributes, internal ) {
 	// Inheritance
 	ve.Node.call( this, type );
 
 	// Properties
 	this.length = length || 0;
 	this.attributes = attributes || {};
-	this.fringeWhitespace = {};
+	this.internal = internal || {};
 	this.doc = undefined;
 };
 
@@ -225,8 +226,8 @@ ve.dm.Node.prototype.getClonedElement = function () {
 	if ( !ve.isEmptyObject( this.attributes ) ) {
 		retval.attributes = ve.copyObject( this.attributes );
 	}
-	if ( !ve.isEmptyObject( this.fringeWhitespace ) ) {
-		retval.fringeWhitespace = ve.copyObject( this.fringeWhitespace );
+	if ( !ve.isEmptyObject( this.internal ) ) {
+		retval.internal = ve.copyObject( this.internal );
 	}
 	return retval;
 };
@@ -261,29 +262,6 @@ ve.dm.Node.prototype.canBeMergedWith = function ( node ) {
 		n2 = n2.getParent();
 	}
 	return true;
-};
-
-/**
- * Store whitespace that was stripped from the fringes of this node, so it can be restored when
- * converting back to HTML.
- *
- * This function can be passed an object with multiple position-value pairs:
- * setFringeWhitespace( { 'innerPre': ' ', 'outerPost': '\n' } ) is equivalent to:
- * setFringeWhitespace( 'innerPre', ' ' ); setFringeWhitespace( 'outerPost', '\n' );
- *
- * @param {String} position Position where the whitespace occurred:
- *                           'innerPre', 'innerPost', 'outerPre' or 'outerPost'
- * @param {String} value The whitespace
- */
-ve.dm.Node.prototype.setFringeWhitespace = function ( position, value ) {
-	var k;
-	if ( typeof position === 'object' ) {
-		for ( k in position ) {
-			this.fringeWhitespace[k] = position[k];
-		}
-	} else {
-		this.fringeWhitespace[position] = value;
-	}
 };
 
 /* Inheritance */
