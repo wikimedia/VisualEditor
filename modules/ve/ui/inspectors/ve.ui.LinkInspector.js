@@ -270,7 +270,7 @@ ve.ui.LinkInspector.prototype.initMultiSuggest = function() {
 				title = new mw.Title( query );
 				modifiedQuery = title.getPrefixedText();
 				// If page doesn't exist, add New Page group.
-				if ( ve.inArray( modifiedQuery, results ) === -1 ) {
+				if ( ve.indexOf( modifiedQuery, results ) === -1 ) {
 					groups['new'] = {
 						label: ve.msg( 'visualeditor-linkinspector-suggest-new-page' ),
 						items: [modifiedQuery],
