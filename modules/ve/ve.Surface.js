@@ -162,7 +162,8 @@ ve.Surface.prototype.floatTopToolbar = function () {
 	$window.scroll( function () {
 		var left, right,
 			toolbarWrapperOffset = $toolbarWrapper.offset(),
-			$editorDocument = $toolbarWrapper.parent().find('.ve-surface .ve-ce-documentNode');
+			$editorDocument = $toolbarWrapper.parent().find('.ve-surface .ve-ce-documentNode'),
+			$lastBranch = $editorDocument.children( '.ve-ce-branchNode:last' );
 
 		if ( $window.scrollTop() > toolbarWrapperOffset.top ) {
 			left = toolbarWrapperOffset.left;
@@ -179,9 +180,10 @@ ve.Surface.prototype.floatTopToolbar = function () {
 			} else {
 				// Toolbar is floated
 				if (
+					// There's at least one branch
+					$lastBranch.length &&
 					// Toolbar is at or below the top of last node in the document
-					$window.scrollTop() + $toolbar.height() >=
-						$editorDocument.children( '.ve-ce-branchNode:last' ).offset().top
+					$window.scrollTop() + $toolbar.height() >= $lastBranch.offset().top
 				) {
 					// XXX: Use less generic class names (not "bottom" and "float")
 					if( !$toolbarWrapper.hasClass( 'bottom' ) ) {
