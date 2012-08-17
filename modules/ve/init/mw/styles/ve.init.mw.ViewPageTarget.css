@@ -206,7 +206,8 @@
 	margin: 0;
 	padding: 0;
 	resize: none;
-	font-size: 0.8em
+	font-size: 0.8em;
+	font-family: sans-serif;
 }
 
 .ve-init-mw-viewPageTarget-saveDialog-editSummary:focus {
