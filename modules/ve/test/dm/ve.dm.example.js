@@ -13,6 +13,7 @@ ve.dm.example = {};
  * Serialized HTML.
  *
  * This is what the parser will emit.
+ * TODO remove some of the <p>s here to test automatic wrapping
  */
 ve.dm.example.html =
 	'<h1>a<b>b</b><i>c</i></h1>' +
@@ -677,26 +678,25 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'whitespace preservation in list items': {
-		'normalizedHtml': '<ul><li><p>Foo</p></li><li><p> Bar</p></li><li><p>Baz </p></li><li><p>  Quux   </p></li></ul>',
 		'html': '<ul><li>Foo</li><li> Bar</li><li>Baz </li><li>  Quux   </li></ul>',
 		'data': [
 			{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
 			{ 'type': 'listItem' },
-			{ 'type': 'paragraph' },
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			'F',
 			'o',
 			'o',
 			{ 'type': '/paragraph' },
 			{ 'type': '/listItem' },
 			{ 'type': 'listItem' },
-			{ 'type': 'paragraph', 'internal': { 'whitespace': [ undefined, ' ' ] } },
+			{ 'type': 'paragraph', 'internal': { 'whitespace': [ undefined, ' ' ], 'generated': 'wrapper' } },
 			'B',
 			'a',
 			'r',
 			{ 'type': '/paragraph' },
 			{ 'type': '/listItem' },
 			{ 'type': 'listItem' },
-			{ 'type': 'paragraph', 'internal': { 'whitespace': [ undefined, undefined, ' ' ] } },
+			{ 'type': 'paragraph', 'internal': { 'whitespace': [ undefined, undefined, ' ' ], 'generated': 'wrapper' } },
 			'B',
 			'a',
 			'z',
@@ -705,7 +705,7 @@ ve.dm.example.domToDataCases = {
 			{ 'type': 'listItem' },
 			{
 				'type': 'paragraph',
-				'internal': { 'whitespace': [ undefined, '  ', '   ' ] }
+				'internal': { 'whitespace': [ undefined, '  ', '   ' ], 'generated': 'wrapper' }
 			},
 			'Q',
 			'u',
