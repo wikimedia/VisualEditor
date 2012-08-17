@@ -10,13 +10,13 @@ QUnit.module( 've.dm.DocumentSynchronizer' );
 /* Tests */
 
 QUnit.test( 'getDocument', 1, function ( assert ) {
-	var doc = new ve.dm.Document( ve.dm.example.data.slice( 0 ) ),
+	var doc = new ve.dm.Document( ve.dm.example.data ),
 		ds = new ve.dm.DocumentSynchronizer( doc );
 	assert.strictEqual( ds.getDocument(), doc );
 } );
 
 QUnit.test( 'synchronize', 2, function ( assert ) {
-	var doc = new ve.dm.Document( ve.dm.example.data.slice( 0 ) ),
+	var doc = new ve.dm.Document( ve.dm.example.data ),
 		ds = new ve.dm.DocumentSynchronizer( doc );
 
 	// Annotate "a" with bold formatting

@@ -898,7 +898,7 @@ QUnit.test( 'isContentData', 1, function ( assert ) {
 
 QUnit.test( 'rebuildNodes', function ( assert ) {
 	var tree,
-		doc = new ve.dm.Document( ve.dm.example.data.slice( 0 ) ),
+		doc = new ve.dm.Document( ve.dm.example.data ),
 		documentNode = doc.getDocumentNode();
 	// Rebuild table without changes
 	doc.rebuildNodes( documentNode, 1, 1, 5, 32 );
