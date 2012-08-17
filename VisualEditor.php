@@ -78,13 +78,13 @@ $wgResourceModules += array(
 			'mediawiki.util',
 			'mediawiki.feedback',
 			'mediawiki.Uri',
-			'mediawiki.Title'
+			'mediawiki.Title',
+			'jquery.placeholder'
 		),
 		'messages' => array(
 			'minoredit',
 			'savearticle',
 			'watchthis',
-			'summary',
 			'tooltip-save',
 			'copyrightwarning',
 			'copyrightpage',
@@ -96,7 +96,8 @@ $wgResourceModules += array(
 			'visualeditor-ca-editsource',
 			'visualeditor-loadwarning',
 			'visualeditor-feedback-prompt',
-			'visualeditor-feedback-dialog-title'
+			'visualeditor-feedback-dialog-title',
+			'visualeditor-editsummary',
 		),
 	),
 	'ext.visualEditor.base' => $wgVisualEditorResourceTemplate + array(

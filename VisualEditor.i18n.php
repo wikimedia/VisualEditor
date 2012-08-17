@@ -34,6 +34,7 @@ $messages['en'] = array(
 	'visualeditor-viewpage-savewarning' => 'Are you sure you want to go back to view mode without saving first?',
 	'visualeditor-loadwarning' => 'Error loading data from server: $1. Would you like to retry?',
 	'visualeditor-saveerror' => 'Error saving data to server: $1.',
+	'visualeditor-editsummary' => 'Describe what you changed',
 );
 
 /** Message documentation (Message documentation)

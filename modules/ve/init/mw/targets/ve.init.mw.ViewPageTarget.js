@@ -59,6 +59,7 @@ ve.init.mw.ViewPageTarget = function () {
 		this.namespaceName === 'VisualEditor' ||
 		this.pageName.indexOf( 'VisualEditor:' ) === 0
 	);
+	this.editSummaryByteLimit = 255;
 
 	// Events
 	this.addListenerMethods( this, {
@@ -90,24 +91,26 @@ ve.init.mw.ViewPageTarget.saveDialogTemplate = '\
 	<div class="es-inspector-title ve-init-mw-viewPageTarget-saveDialog-title"></div>\
 	<div class="es-inspector-button ve-init-mw-viewPageTarget-saveDialog-closeButton"></div>\
 	<div class="ve-init-mw-viewPageTarget-saveDialog-body">\
-		<div class="ve-init-mw-viewPageTarget-saveDialog-editSummary-label"></div>\
-		<input name="editSummary" id="ve-init-mw-viewPageTarget-saveDialog-editSummary"\
-			type="text">\
-		<div class="clear:both"></div>\
+		<div class="ve-init-mw-viewPageTarget-saveDialog-summary">\
+			<label class="ve-init-mw-viewPageTarget-saveDialog-editSummary-label"\
+				for="ve-init-mw-viewPageTarget-saveDialog-editSummary"></label>\
+			<textarea name="editSummary" class="ve-init-mw-viewPageTarget-saveDialog-editSummary"\
+				id="ve-init-mw-viewPageTarget-saveDialog-editSummary" type="text"\
+				rows="4"></textarea>\
+		</div>\
 		<div class="ve-init-mw-viewPageTarget-saveDialog-options">\
 			<input type="checkbox" name="minorEdit" \
 				id="ve-init-mw-viewPageTarget-saveDialog-minorEdit">\
 			<label class="ve-init-mw-viewPageTarget-saveDialog-minorEdit-label" \
 				for="ve-init-mw-viewPageTarget-saveDialog-minorEdit"></label>\
-			<div style="clear: both;"></div>\
 			<input type="checkbox" name="watchList" \
 				id="ve-init-mw-viewPageTarget-saveDialog-watchList">\
 			<label class="ve-init-mw-viewPageTarget-saveDialog-watchList-label" \
 				for="ve-init-mw-viewPageTarget-saveDialog-watchList"></label>\
+			<label class="ve-init-mw-viewPageTarget-saveDialog-editSummaryCount"></label>\
 		</div>\
 		<button class="ve-init-mw-viewPageTarget-saveDialog-saveButton">\
 			<span class="ve-init-mw-viewPageTarget-saveDialog-saveButton-label"></span>\
-			<div class="ve-init-mw-viewPageTarget-saveDialog-saveButton-icon"></div>\
 		</button>\
 		<div style="clear: both;"></div>\
 	</div>\
@@ -499,7 +502,6 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarSaveButton = function () {
 			$( '<span class="ve-init-mw-viewPageTarget-toolbar-saveButton-label"></span>' )
 				.text( ve.msg( 'savearticle' ) )
 		)
-		.append( $( '<span class="ve-init-mw-viewPageTarget-toolbar-saveButton-icon"></span>' ) )
 		.on( {
 			'mousedown': function ( e ) {
 				$(this).addClass( 've-init-mw-viewPageTarget-toolbar-saveButton-down' );
@@ -547,16 +549,31 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 		.find( '.ve-init-mw-viewPageTarget-saveDialog-closeButton' )
 			.click( ve.bind( this.onSaveDialogCloseButtonClick, this ) )
 			.end()
-		.find( '.ve-init-mw-viewPageTarget-saveDialog-editSummary-label' )
-			// This will be updated to use ve.specialMessages.summary later
-			.text( ve.msg( 'summary' ) )
-			.end()
 		.find( '#ve-init-mw-viewPageTarget-saveDialog-editSummary' )
+			.attr( {
+				'maxlength': this.editSummaryByteLimit,
+				'placeholder': ve.msg( 'visualeditor-editsummary' )
+			} )
+			.placeholder()
 			.on( 'keydown', function ( e ) {
 				if ( e.which === 13 ) {
 					viewPage.onSaveDialogSaveButtonClick();
 				}
 			} )
+			.on( 'keydown mouseup cut paste change focus blur', function () {
+				var $textarea = $(this),
+					$editSummaryCount = $textarea
+						.closest( '.ve-init-mw-viewPageTarget-saveDialog-body' )
+							.find( '.ve-init-mw-viewPageTarget-saveDialog-editSummaryCount' );
+				setTimeout( function () {
+					$editSummaryCount.text(
+						viewPage.editSummaryByteLimit - $textarea.val().length
+					);
+				}, 0 );
+			} )
+			.end()
+		.find( '.ve-init-mw-viewPageTarget-saveDialog-editSummaryCount' )
+			.text( this.editSummaryByteLimit )
 			.end()
 		.find( '.ve-init-mw-viewPageTarget-saveDialog-minorEdit-label' )
 			.text( ve.msg( 'minoredit' ) )
@@ -612,9 +629,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.attachSaveDialog = function () {
-	// Update the summary, minoredit and watchthis messages (which came through the message module)
-	this.$saveDialog.find( '.ve-init-mw-viewPageTarget-saveDialog-editSummary-label' )
-		.html( ve.msg( 'summary' ) );
+	// Update the minoredit and watchthis messages (which came through the message module)
 	this.$saveDialog.find( '.ve-init-mw-viewPageTarget-saveDialog-minorEdit-label' )
 		.html( ve.msg( 'minoredit' ) );
 	this.$saveDialog.find( '.ve-init-mw-viewPageTarget-saveDialog-watchList-label' )
@@ -732,7 +747,7 @@ ve.init.mw.ViewPageTarget.prototype.hideTableOfContents = function () {
 ve.init.mw.ViewPageTarget.prototype.showSaveDialog = function () {
 	var viewPage = this;
 	this.unlockSaveDialogSaveButton();
-	this.$saveDialog.fadeIn( 'fast' ).find( 'input' ).eq( 0 ).focus();
+	this.$saveDialog.fadeIn( 'fast' ).find( 'textarea' ).eq( 0 ).focus();
 	$( document ).on( 'keydown', function ( e ) {
 		if ( e.which === 27 ) {
 			viewPage.onSaveDialogCloseButtonClick();

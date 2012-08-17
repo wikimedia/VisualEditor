@@ -83,12 +83,13 @@
 	display: inline-block;
 	vertical-align: middle;
 	height: 32px;
-	padding-left: 4px;
-	padding-right: 4px;
+	margin-left: 4px;
+	margin-right: 4px;
 	font-size: 0.8em;
 }
 
-.ve-init-mw-viewPageTarget-toolbar-saveButton {
+.ve-init-mw-viewPageTarget-toolbar-saveButton,
+.ve-init-mw-viewPageTarget-saveDialog-saveButton {
 	display: inline-block;
 	border: solid 1px #c3e59a;
 	-webkit-border-radius: 0.25em;
@@ -98,9 +99,7 @@
 	cursor: pointer;
 	vertical-align: top;
 	font-size: 1em;
-	padding: 0.25em 0.5em;
-	height: 22px;
-	margin-right: 0.25em;
+	padding: 0.25em 0.75em;
 	/* Fancy CSS background */
 	background-image: -webkit-gradient(
 		linear,
@@ -114,6 +113,18 @@
 	background-image: -ms-linear-gradient(bottom, #c3e59a 0%, #f0fbe1 100%);
 	background-image: -o-linear-gradient(bottom, #c3e59a 0%, #f0fbe1 100%);
 	background-image: linear-gradient(bottom, #c3e59a 0%, #f0fbe1 100%);
+}
+
+.ve-init-mw-viewPageTarget-toolbar-saveButton {
+	height: 22px;
+	margin-right: 0.25em;
+}
+
+.ve-init-mw-viewPageTarget-saveDialog-saveButton {
+	float: right;
+	height: 2em;
+	line-height: 1.25em;
+	margin-right: 0;
 }
 
 .ve-init-mw-viewPageTarget-toolbar-saveButton:before {
@@ -123,125 +134,42 @@
 	height: 22px;
 }
 
-.ve-init-mw-viewPageTarget-toolbar-saveButton:hover {
+.ve-init-mw-viewPageTarget-toolbar-saveButton:hover,
+.ve-init-mw-viewPageTarget-saveDialog-saveButton:hover {
 	border-color: #eee;
 }
 
 .ve-init-mw-viewPageTarget-toolbar-saveButton:active,
-.ve-init-mw-viewPageTarget-toolbar-saveButton-down {
+.ve-init-mw-viewPageTarget-toolbar-saveButton-down,
+.ve-init-mw-viewPageTarget-saveDialog-saveButton:active,
+.ve-init-mw-viewPageTarget-saveDialog-saveButton-down {
 	border-color: #ddd;
 	-webkit-box-shadow: inset 0px 1px 4px 0px rgba(0, 0, 0, 0.07);
 	-moz-box-shadow: inset 0px 1px 4px 0px rgba(0, 0, 0, 0.07);
 	box-shadow: inset 0px 1px 4px 0px rgba(0, 0, 0, 0.07);
 }
 
-.ve-init-mw-viewPageTarget-toolbar-saveButton-disabled {
+.ve-init-mw-viewPageTarget-toolbar-saveButton-disabled,
+.ve-init-mw-viewPageTarget-saveDialog-saveButton-saving {
 	filter: alpha(opacity=50);
 	opacity: 0.5;
 }
 
-.ve-init-mw-viewPageTarget-toolbar-saveButton-label {
-	display: inline-block;
-	vertical-align: middle;
-	height: 32px;
-	padding-left: 4px;
-	font-size: 0.8em;
-}
-
-/* mini save button */
-.ve-init-mw-viewPageTarget-saveDialog-closeButton {
-	right: .025em;
-	width: 22px;
-	/* @embed */
-	background-image: url(../../../ui/styles/images/close.png);
-	background-position: center center;
-	background-repeat: no-repeat;
-}
-
-.ve-init-mw-viewPageTarget-saveDialog-saveButton {
-	position: absolute;
-	cursor: pointer;
-	border: 1px solid #c3e59a;
-	margin-top: 10px;
-	right: 10px;
-	font-size: 1em;
-	padding: 0.5em 1em;
-	-webkit-border-radius: 0.25em;
-	-moz-border-radius: 0.25em;
-	-o-border-radius: 0.25em;
-	border-radius: 0.25em;
-	/* Fancy CSS background */
-	background-image: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0, #c3e59a),
-		color-stop(1, #f0fbe1)
-	);
-	background-image: -webkit-linear-gradient(bottom, #c3e59a 0%, #f0fbe1 100%);
-	background-image: -moz-linear-gradient(bottom, #c3e59a 0%, #f0fbe1 100%);
-	background-image: -ms-linear-gradient(bottom, #c3e59a 0%, #f0fbe1 100%);
-	background-image: -o-linear-gradient(bottom, #c3e59a 0%, #f0fbe1 100%);
-	background-image: linear-gradient(bottom, #c3e59a 0%, #f0fbe1 100%);
-}
-
-.ve-init-mw-viewPageTarget-saveDialog-saveButton:active,
-.ve-init-mw-viewPageTarget-saveDialog-saveButton-down {
-	/* Fancy CSS background */
-	background-image: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0, #f0fbe1),
-		color-stop(1, #c3e59a)
-	);
-	background-image: -webkit-linear-gradient(bottom, #f0fbe1 0%, #c3e59a 100%);
-	background-image: -moz-linear-gradient(bottom, #f0fbe1 0%, #c3e59a 100%);
-	background-image: -ms-linear-gradient(bottom, #f0fbe1 0%, #c3e59a 100%);
-	background-image: -o-linear-gradient(bottom, #f0fbe1 0%, #c3e59a 100%);
-	background-image: linear-gradient(bottom, #f0fbe1 0%, #c3e59a 100%);
-}
-
-.ve-init-mw-viewPageTarget-saveDialog-saveButton:hover {
-	border-color: #a7cd76;
-}
-
-.ve-init-mw-viewPageTarget-saveDialog-saveButton-saving,
-.ve-init-mw-viewPageTarget-saveDialog-saveButton-saving:hover {
-	background-color: #e6f2cc;
-	background-image: none;
-	color: #ccc;
-	border-color: #e3f0c6;
-}
-
-.ve-init-mw-viewPageTarget-toolbar-saveButton-icon,
-.ve-init-mw-viewPageTarget-saveDialog-saveButton-icon {
-	display: inline-block;
-	vertical-align: middle;
-	height: 2em;
-	width: 28px;
-	margin-right: -4px;
-	background: transparent;
-	/* @embed */
-	background-image: url(../../../ui/styles/images/accept-clear.png);
-	background-position: right top;
-	background-repeat: no-repeat;
-}
-
+.ve-init-mw-viewPageTarget-toolbar-saveButton-label,
 .ve-init-mw-viewPageTarget-saveDialog-saveButton-label {
 	display: inline-block;
 	vertical-align: middle;
 	height: 32px;
-	line-height: 2.125em;
-	padding-left: 4px;
-	font-size: 1.2em;
+	font-size: 0.8em;
 }
 
-.ve-init-mw-viewPageTarget-saveDialog-saveButton-saving
-.ve-init-mw-viewPageTarget-saveDialog-saveButton-icon {
+.ve-init-mw-viewPageTarget-saveDialog-closeButton {
+	right: .025em;
+	width: 22px;
 	/* @embed */
-	background-image: url(images/saving.gif);
-	background-position: right 46%;
+	background-image: url(../../../ui/styles/images/collapse.png);
+	background-position: center center;
+	background-repeat: no-repeat;
 }
 
 /* Save dialog styles */
@@ -255,26 +183,73 @@
 
 .ve-init-mw-viewPageTarget-saveDialog-body {
 	border-top: 1px solid #ddd;
-	padding: 10px 0;
-	font-size: 12px;
+	padding: 1em 0;
 }
 
 .ve-init-mw-viewPageTarget-saveDialog-license {
 	font-size: 0.7em;
+	line-height: 1.25em;
+	padding: 0;
+	margin: 0;
 	color: #999;
 }
 
-.ve-init-mw-viewPageTarget-saveDialog-options {
-	float: left;	
+.ve-init-mw-viewPageTarget-saveDialog-summary {
+	background-color: #fff;
+	border: solid 1px #cccccc;
+	border-bottom: none;
+	padding: 0.5em;
+	-webkit-border-radius: 0.25em 0.25em 0 0;
+	-moz-border-radius: 0.25em 0.25em 0 0;
+	-o-border-radius: 0.25em 0.25em 0 0;
+	border-radius: 0.25em 0.25em 0 0;
 }
 
-.ve-init-mw-viewPageTarget-saveDialog input[type="text"] {
-	width: 98%;
-	font-size: 12px;
-	padding: 4px;
-	margin: 10px 0;
+.ve-init-mw-viewPageTarget-saveDialog-options {
+	position: relative;
+	background-color: #f7f7f7;
+	margin-bottom: 1em;
+	border: solid 1px #cccccc;
+	-webkit-border-radius: 0 0 0.25em 0.25em;
+	-moz-border-radius: 0 0 0.25em 0.25em;
+	-o-border-radius: 0 0 0.25em 0.25em;
+	border-radius: 0 0 0.25em 0.25em;
+}
+
+.ve-init-mw-viewPageTarget-saveDialog-body label {
+	font-size: 0.8em;
+	line-height: 3em;
 }
 
 .ve-init-mw-viewPageTarget-saveDialog input[type="checkbox"] {
-	margin-right: 5px;
+	margin: 0 0.5em 0 1em;
+	line-height: 3em;
+}
+
+.ve-init-mw-viewPageTarget-saveDialog-editSummary-label {
+	display: none;
+}
+
+.ve-init-mw-viewPageTarget-saveDialog-editSummaryCount {
+	position: absolute;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	border-left: solid 1px #eee;
+	line-height: 3em;
+	padding: 0 1em;
+	color: #aaa;
+}
+
+.ve-init-mw-viewPageTarget-saveDialog-editSummary {
+	border: none;
+	background-color: transparent;
+	margin: 0;
+	padding: 0;
+	resize: none;
+	font-size: 0.8em
+}
+
+.ve-init-mw-viewPageTarget-saveDialog-editSummary:focus {
+	outline: none;
 }
