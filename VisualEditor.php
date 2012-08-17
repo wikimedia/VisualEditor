@@ -209,6 +209,7 @@ $wgResourceModules += array(
 			've/ui/ve.ui.Toolbar.js',
 			've/ui/ve.ui.Context.js',
 			've/ui/ve.ui.Menu.js',
+			'jquery/jquery.multiSuggest.js',
 
 			've/ui/inspectors/ve.ui.LinkInspector.js',
 
@@ -243,6 +244,9 @@ $wgResourceModules += array(
 			'visualeditor',
 			'visualeditor-linkinspector-title',
 			'visualeditor-linkinspector-label-pagetitle',
+			'visualeditor-linkinspector-suggest-existing-page',
+			'visualeditor-linkinspector-suggest-new-page',
+			'visualeditor-linkinspector-suggest-external-link',
 			'visualeditor-formatdropdown-title',
 			'visualeditor-formatdropdown-format-paragraph',
 			'visualeditor-formatdropdown-format-heading1',
