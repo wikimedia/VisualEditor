@@ -1,0 +1,24 @@
+/**
+ * VisualEditor initialization ViewPageTarget Vector skin styles.
+ *
+ * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+.ve-surface {
+	margin-top: 0.8em;
+}
+
+.ve-ce-documentNode {
+	font-size: 0.8em;
+}
+
+.es-toolbar-wrapper {
+	margin: -1em -1em 1em -1em;
+	position: relative;
+}
+
+.es-toolbar {
+	display: none;
+	margin-left: 1px;
+}
