@@ -240,13 +240,11 @@ ve.ce.Surface.prototype.onKeyDown = function ( e ) {
 			break;
 		// Backspace
 		case 8:
-			this.handleDelete( true );
-			e.preventDefault();
+			this.handleDelete( e, true );
 			break;
 		// Delete
 		case 46:
-			this.handleDelete( false );
-			e.preventDefault();
+			this.handleDelete( e, false );
 			break;
 		// B
 		case 66:
@@ -668,21 +666,52 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 		fromLeft = 0,
 		fromRight = 0;
 
+	var isSomethingFishy = function() {
+		if ( lengthDiff > 0 ) {
+			// Adding text
+			if (
+				previous.text.substring( 0, previous.range.start - nodeOffset - lengthDiff ) ===
+				next.text.substring( 0, previous.range.start - nodeOffset - lengthDiff ) &&
+				previous.text.substring( previous.range.start - nodeOffset + lengthDiff) ===
+				next.text.substring( next.range.start - nodeOffset + lengthDiff)
+			) {
+				// Leading and trailing chars are the same
+				return false;
+			}
+		} else if ( lengthDiff < 0) {
+			// Removing text
+			if (
+				previous.text.substring( 0, next.range.start - nodeOffset -1 ) ===
+				next.text.substring( 0, next.range.start - nodeOffset - 1 ) &&
+				previous.text.substring( next.range.start - nodeOffset - lengthDiff - 1 ) ===
+				next.text.substring( next.range.start - nodeOffset - 1)
+			) {
+				// Leading and trailing chars are the same
+				return false;
+			}
+		}
+		return true;
+	}
+
 	if (
+		lengthDiff > 0 &&
 		offsetDiff === lengthDiff &&
-		previous.text.substring( 0, previous.range.start - nodeOffset - 1 ) ===
-		next.text.substring( 0, previous.range.start - nodeOffset - 1 )
+		!isSomethingFishy()
 	) {
+		// Something simple was added, figure out what it is and transact.
+		ve.log('simple addition');
 		data = next.text.substring(
 				previous.range.start - nodeOffset - 1,
 				next.range.start - nodeOffset - 1
 			).split( '' );
-		annotations = this.model.getDocument().getAnnotationsFromOffset( previous.range.start - 1 );
 
+		// Get annotations to the left of new content and apply
+		annotations = this.model.getDocument().getAnnotationsFromOffset( previous.range.start - 1 );
 		if ( !ve.isEmptyObject( annotations ) ) {
 			ve.dm.Document.addAnnotationsToData( data, annotations );
 		}
 
+		// Prevent re-rendering and transact
 		this.render = false;
 		this.model.change(
 			ve.dm.Transaction.newFromInsertion(
@@ -692,12 +721,40 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 		);
 		this.render = true;
 
+	} else if (
+		( offsetDiff == 0 || offsetDiff == lengthDiff ) &&
+		!isSomethingFishy()
+	) {
+		// Something simple was removed
+		ve.log('simple deletion');
+
+		// Figure out range
+		var range = null;
+		if (offsetDiff == 0) {
+			ve.log('delete');
+			range = new ve.Range( previous.range.start, next.range.start - lengthDiff );
+		} else {
+			ve.log('backspace');
+			range = new ve.Range( previous.range.start, next.range.start );
+		}
+
+		// Prevent re-rendering and transact
+		this.render = false;
+		this.model.change(
+			ve.dm.Transaction.newFromRemoval( this.documentView.model, range ),
+			next.range
+		);
+		this.render = true;
+
 	} else {
+		ve.log('complex text change');
 		len = Math.min( previous.text.length, next.text.length );
 
+		// Count same characters from left
 		while ( fromLeft < len && previous.text[fromLeft] === next.text[fromLeft] ) {
 			++fromLeft;
 		}
+		// Count same characters from right
 		while (
 			fromRight < len - fromLeft &&
 			previous.text[previous.text.length - 1 - fromRight] ===
@@ -706,10 +763,10 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 			++fromRight;
 		}
 
-		annotations = this.model.getDocument()
-			.getAnnotationsFromOffset( nodeOffset + 1 + fromLeft );
 		data = next.text.substring( fromLeft, next.text.length - fromRight ).split( '' );
 
+		// Get annotations to the left of new content and apply
+		annotations = this.model.getDocument().getAnnotationsFromOffset( nodeOffset + 1 + fromLeft );
 		if ( !ve.isEmptyObject( annotations ) ) {
 			ve.dm.Document.addAnnotationsToData( data, annotations );
 		}
@@ -736,6 +793,11 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 		);
 	}
 	this.sluggable = true;
+
+	// TODO: Not sure if this is needed
+	setTimeout( ve.bind( this.pollChanges, this ), 1);
+
+	// ve.log('onContentChange');
 };
 
 /**
@@ -746,7 +808,7 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
  * @param {ve.Range|undefined} selection
  */
 ve.ce.Surface.prototype.onChange = function ( transaction, selection ) {
-	ve.log( 'onChange' );
+	// ve.log( 'onChange' );
 
 	if ( selection ) {
 		this.showSelection( selection );
@@ -895,9 +957,7 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
  * @method
  * @param {Boolean} Key was a backspace
  */
-ve.ce.Surface.prototype.handleDelete = function ( backspace ) {
-	this.stopPolling();
-
+ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 	var selection = this.model.getSelection(),
 		sourceOffset,
 		targetOffset,
@@ -911,15 +971,30 @@ ve.ce.Surface.prototype.handleDelete = function ( backspace ) {
 		nodeToDelete;
 
 	if ( selection.from === selection.to ) {
-		if ( backspace || selection.to === this.model.getDocument().data.length - 1) {
+		// Set source and target linmod offsets
+		if ( backspace ) {
 			sourceOffset = selection.to;
 			targetOffset = this.getNearestCorrectOffset( sourceOffset - 1, -1 );
+
+			// At the beginning of the document - don't do anything and preventDefault
+			if ( sourceOffset === targetOffset ) {
+				e.preventDefault();
+				return;
+			}
+
 		} else {
 			sourceOffset = this.model.getDocument().getRelativeContentOffset( selection.to, 1 );
 			targetOffset = selection.to;
+
+			// At the end of the document - don't do anything and preventDefault
+			if ( sourceOffset <= targetOffset ) {
+				e.preventDefault();
+				return;
+			}
 		}
 
-		sourceNode = this.documentView.getNodeFromOffset( sourceOffset, false );
+		// Set source and target nodes
+		sourceNode = this.documentView.getNodeFromOffset( sourceOffset, false ),
 		targetNode = this.documentView.getNodeFromOffset( targetOffset, false );
 
 		if ( sourceNode.type === targetNode.type ) {
@@ -928,7 +1003,34 @@ ve.ce.Surface.prototype.handleDelete = function ( backspace ) {
 		}
 		//ve.log(sourceSplitableNode, targetSplitableNode);
 
+		// Save target location of cursor
 		cursorAt = targetOffset;
+
+		// Get text from cursor location to end of node in the proper direction
+		var adjacentData = null,
+			adjacentText = '';
+
+		if (backspace) {
+			adjacentData = sourceNode.model.doc.data.slice( sourceNode.model.getOffset() + ( sourceNode.model.isWrapped() ? 1 : 0) , sourceOffset );
+		} else {
+			var endOffset = targetNode.model.getOffset() + targetNode.model.getLength() + ( targetNode.model.isWrapped() ? 1 : 0 );
+			adjacentData = targetNode.model.doc.data.slice( targetOffset, endOffset );
+		}
+
+		for( var i = 0; i < adjacentData.length; i++ ) {
+			adjacentText += adjacentData[i][0];
+		}
+
+		var adjacentTextAfterMatch = adjacentText.match(/[a-zA-Z\-_’'‘ÆÐƎƏƐƔĲŊŒẞÞǷȜæðǝəɛɣĳŋœĸſßþƿȝĄƁÇĐƊĘĦĮƘŁØƠŞȘŢȚŦŲƯY̨Ƴąɓçđɗęħįƙłøơşșţțŧųưy̨ƴÁÀÂÄǍĂĀÃÅǺĄÆǼǢƁĆĊĈČÇĎḌĐƊÐÉÈĖÊËĚĔĒĘẸƎƏƐĠĜǦĞĢƔáàâäǎăāãåǻąæǽǣɓćċĉčçďḍđɗðéèėêëěĕēęẹǝəɛġĝǧğģɣĤḤĦIÍÌİÎÏǏĬĪĨĮỊĲĴĶƘĹĻŁĽĿʼNŃN̈ŇÑŅŊÓÒÔÖǑŎŌÕŐỌØǾƠŒĥḥħıíìiîïǐĭīĩįịĳĵķƙĸĺļłľŀŉńn̈ňñņŋóòôöǒŏōõőọøǿơœŔŘŖŚŜŠŞȘṢẞŤŢṬŦÞÚÙÛÜǓŬŪŨŰŮŲỤƯẂẀŴẄǷÝỲŶŸȲỸƳŹŻŽẒŕřŗſśŝšşșṣßťţṭŧþúùûüǔŭūũűůųụưẃẁŵẅƿýỳŷÿȳỹƴźżžẓ]/g);
+
+		// If there are "normal" characters in the adjacent text, let the browser handle natively.
+		if( adjacentTextAfterMatch !== null && adjacentTextAfterMatch.length > 0 ) {
+			return;
+		}
+
+		ve.log('handleDelete programatically');
+		e.preventDefault();
+		this.stopPolling();
 
 		if (
 			// Source and target are the same node
@@ -948,9 +1050,10 @@ ve.ce.Surface.prototype.handleDelete = function ( backspace ) {
 			// Source is a slug - move the cursor somewhere useful
 			this.model.change( null, new ve.Range( cursorAt ) );
 		} else {
-			// Source and target are different nodes and do not share a parent, perform tricky merge
+			// Source and target are different nodes or do not share a parent, perform tricky merge
 			// Get the data for the source node
 			sourceData = this.documentView.model.getData( sourceNode.model.getRange() );
+
 			// Find the node that should be completely removed
 			nodeToDelete = sourceNode;
 			ve.Node.traverseUpstream( nodeToDelete, function ( node ) {
@@ -961,20 +1064,25 @@ ve.ce.Surface.prototype.handleDelete = function ( backspace ) {
 					return false;
 				}
 			} );
-			// Remove source node or source node ancestor
-			this.model.change( ve.dm.Transaction.newFromRemoval(
-				this.documentView.model, nodeToDelete.getModel().getOuterRange()
-			) );
-			// Append source data to target
+
 			this.model.change(
-				ve.dm.Transaction.newFromInsertion(
-					this.documentView.model, targetOffset, sourceData
-				),
+				[
+					// Remove source node or source node ancestor
+					ve.dm.Transaction.newFromRemoval(
+						this.documentView.model, nodeToDelete.getModel().getOuterRange()
+					),
+					// Append source data to target
+					ve.dm.Transaction.newFromInsertion(
+						this.documentView.model, targetOffset, sourceData
+					)
+				],
 				new ve.Range( cursorAt )
 			);
 		}
 	} else {
 		// Selection removal
+		ve.log('selection removal - handle programatically');
+		e.preventDefault();
 		this.model.change(
 			ve.dm.Transaction.newFromRemoval( this.documentView.model, selection ),
 			new ve.Range( selection.start )
