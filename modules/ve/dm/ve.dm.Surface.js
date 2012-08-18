@@ -85,25 +85,34 @@ ve.dm.Surface.prototype.getFragment = function ( autoSelect ) {
  * Applies a series of transactions to the content data and sets the selection.
  *
  * @method
- * @param {ve.dm.Transaction|null} transaction Transaction to apply to the document
+ * @param {ve.dm.Transaction|ve.dm.Transaction[]|null} transactions One or more transactions to
+ *     process, or null to process none
  * @param {ve.Range|undefined} selection
  */
-ve.dm.Surface.prototype.change = function ( transaction, selection ) {
-	if ( transaction && !transaction.isNoOp() ) {
-		this.bigStack = this.bigStack.slice( 0, this.bigStack.length - this.undoIndex );
-		this.undoIndex = 0;
-		this.smallStack.push( transaction );
-		ve.dm.TransactionProcessor.commit( this.getDocument(), transaction );
+ve.dm.Surface.prototype.change = function ( transactions, selection ) {
+	if ( transactions ) {
+		if ( transactions instanceof ve.dm.Transaction ) {
+			transactions = [transactions];
+		}
+
+		for( var i = 0; i < transactions.length; i++ ) {
+			if ( !transactions[i].isNoOp() ) {
+				this.bigStack = this.bigStack.slice( 0, this.bigStack.length - this.undoIndex );
+				this.undoIndex = 0;
+				this.smallStack.push( transactions[i] );
+				ve.dm.TransactionProcessor.commit( this.getDocument(), transactions[i] );
+			}
+		}
 	}
 	if ( selection && ( !this.selection || !this.selection.equals ( selection ) ) ) {
 		selection.normalize();
 		this.selection = selection;
 		this.emit('select', this.selection.clone() );
 	}
-	if ( transaction ) {
-		this.emit( 'transact', transaction );
+	if ( transactions ) {
+		this.emit( 'transact', transactions );
 	}
-	this.emit( 'change', transaction, selection );
+	this.emit( 'change', transactions, selection );
 };
 
 /**
