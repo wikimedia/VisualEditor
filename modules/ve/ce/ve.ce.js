@@ -26,10 +26,9 @@ ve.ce.whitespacePattern = /[\u0020\u00A0]/g;
 /**
  * Gets the plain text of a DOM element.
  *
- * In the returned string only the contents of text nodes are included.
- *
- * TODO: The idea of using this method over jQuery's .text() was that it will not traverse into
- * elements that are not contentEditable, however this appears to be missing.
+ * In the returned string only the contents of text nodes are included, and the contents of
+ * non-editable elements are excluded (but replaced with the appropriate number of characters
+ * so the offsets match up with the linear model).
  *
  * @static
  * @member
@@ -39,14 +38,14 @@ ve.ce.whitespacePattern = /[\u0020\u00A0]/g;
 ve.ce.getDomText = function ( element ) {
 	var func = function ( element ) {
 		var nodeType = element.nodeType,
-			text = '';
+			text = '',
+			numChars;
 		if ( nodeType === 1 || nodeType === 9 || nodeType === 11 ) {
-			// Use textContent || innerText for elements
-			if ( typeof element.textContent === 'string' ) {
-				return element.textContent;
-			} else if ( typeof element.innerText === 'string' ) {
-				// Replace IE's carriage returns
-				return element.innerText.replace( /\r\n/g, '' );
+			if ( element.contentEditable === 'false' ) {
+				// For non-editable nodes, don't return the content, but return
+				// the right amount of characters so the offsets match up
+				numChars = $( element ).data( 'node' ).getOuterLength();
+				return new Array( numChars + 1 ).join( '\u2603' );
 			} else {
 				// Traverse its children
 				for ( element = element.firstChild; element; element = element.nextSibling) {
@@ -66,9 +65,9 @@ ve.ce.getDomText = function ( element ) {
 /**
  * Gets a hash of a DOM element's structure.
  *
- * In the returned string text nodes are repesented as "#" and elements are represented as "<type>"
+ * In the returned string text nodes are represented as "#" and elements are represented as "<type>"
  * and "</type>" where "type" is their element name. This effectively generates an HTML
- * serialization without any attributes or text contents. This can be used to observer structural
+ * serialization without any attributes or text contents. This can be used to observe structural
  * changes.
  *
  * @static
