@@ -234,15 +234,20 @@ $messages['cs'] = array(
 
 /** German (Deutsch)
  * @author Kghbln
+ * @author Metalhead64
  */
 $messages['de'] = array(
 	'visualeditor' => 'WYSIWYG-Editor',
 	'visualeditor-desc' => 'Ermöglicht einen WYSIWYG-Editor',
 	'visualeditor-feedback-prompt' => 'Rückmeldung geben',
 	'visualeditor-feedback-dialog-title' => 'Rückmeldung zur Spielwiese für den WYSIWYG-Editor geben',
+	'visualeditor-notification-saved' => 'Deine Änderungen wurden gespeichert.',
 	'visualeditor-ca-editsource' => 'Quelltext bearbeiten',
 	'visualeditor-linkinspector-title' => 'Link bearbeiten',
 	'visualeditor-linkinspector-label-pagetitle' => 'Seitenname',
+	'visualeditor-linkinspector-suggest-existing-page' => 'Vorhandene Seite',
+	'visualeditor-linkinspector-suggest-new-page' => 'Neue Seite',
+	'visualeditor-linkinspector-suggest-external-link' => 'Weblink',
 	'visualeditor-formatdropdown-title' => 'Format ändern',
 	'visualeditor-formatdropdown-format-paragraph' => 'Absatz',
 	'visualeditor-formatdropdown-format-heading1' => 'Überschrift 1',
@@ -265,6 +270,7 @@ $messages['de'] = array(
 	'visualeditor-viewpage-savewarning' => 'Bist du sicher, dass du zum Ansichtsmodus wechseln möchtest, ohne vorher zu speichern?',
 	'visualeditor-loadwarning' => 'Fehler beim Laden der Daten vom Server: $1. Soll der Vorgang erneut durchgeführt werden?',
 	'visualeditor-saveerror' => 'Fehler beim Speichern der Daten auf dem Server: $1.',
+	'visualeditor-editsummary' => 'Beschreibe, was du geändert hast.',
 );
 
 /** German (formal address) (‪Deutsch (Sie-Form)‬)
@@ -367,9 +373,11 @@ $messages['es'] = array(
  * @author Pikne
  */
 $messages['et'] = array(
+	'visualeditor' => 'Visuaaltoimetaja',
+	'visualeditor-desc' => 'MediaWiki visuaaltoimetaja',
 	'visualeditor-ca-editsource' => 'Muuda allikat',
-	'visualeditor-linkinspector-title' => 'Redigeeri linki',
-	'visualeditor-linkinspector-label-pagetitle' => 'Lehekülje pealkiri',
+	'visualeditor-linkinspector-title' => 'Lingi muutmine',
+	'visualeditor-linkinspector-label-pagetitle' => 'Lehekülg',
 	'visualeditor-formatdropdown-title' => 'Muuda vormingut',
 	'visualeditor-formatdropdown-format-paragraph' => 'Lõik',
 	'visualeditor-formatdropdown-format-heading1' => 'Pealkiri 1',
@@ -382,6 +390,16 @@ $messages['et'] = array(
 	'visualeditor-annotationbutton-bold-tooltip' => 'Rasvane kiri',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Kaldkiri',
 	'visualeditor-annotationbutton-link-tooltip' => 'Link',
+	'visualeditor-indentationbutton-indent-tooltip' => 'Suurenda taanet',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Vähenda taanet',
+	'visualeditor-listbutton-number-tooltip' => 'Numberloend',
+	'visualeditor-listbutton-bullet-tooltip' => 'Täpploend',
+	'visualeditor-clearbutton-tooltip' => 'Eemalda vorming',
+	'visualeditor-historybutton-undo-tooltip' => 'Võta tagasi',
+	'visualeditor-historybutton-redo-tooltip' => 'Tee uuesti',
+	'visualeditor-viewpage-savewarning' => 'Kas oled kindel, et tahad mina tagasi vaatamisrežiimi ilma kõigepealt salvestamata?',
+	'visualeditor-loadwarning' => 'Tõrge andmete laadimisel serverist: $1. Ehk proovid uuesti?',
+	'visualeditor-saveerror' => 'Tõrge andmete salvestamisel serverisse: $1.',
 );
 
 /** Persian (فارسی)
@@ -497,9 +515,13 @@ $messages['gl'] = array(
 	'visualeditor-desc' => 'Editor visual para MediaWiki',
 	'visualeditor-feedback-prompt' => 'Deixe un comentario',
 	'visualeditor-feedback-dialog-title' => 'Deixe un comentario sobre a zona de probas do editor visual',
+	'visualeditor-notification-saved' => 'Gardáronse os seus cambios.',
 	'visualeditor-ca-editsource' => 'Editar a fonte',
 	'visualeditor-linkinspector-title' => 'Ligazón de edición',
 	'visualeditor-linkinspector-label-pagetitle' => 'Título da páxina',
+	'visualeditor-linkinspector-suggest-existing-page' => 'Páxina existente',
+	'visualeditor-linkinspector-suggest-new-page' => 'Páxina nova',
+	'visualeditor-linkinspector-suggest-external-link' => 'Ligazón web',
 	'visualeditor-formatdropdown-title' => 'Cambiar o formato',
 	'visualeditor-formatdropdown-format-paragraph' => 'Parágrafo',
 	'visualeditor-formatdropdown-format-heading1' => 'Cabeceira 1',
@@ -522,6 +544,7 @@ $messages['gl'] = array(
 	'visualeditor-viewpage-savewarning' => 'Está seguro de querer volver ao modo de lectura sen gardar primeiro?',
 	'visualeditor-loadwarning' => 'Erro ao cargar os datos desde o servidor: $1. Quéreo intentar de novo?',
 	'visualeditor-saveerror' => 'Erro ao gardar os datos no servidor: $1.',
+	'visualeditor-editsummary' => 'Describa os seus cambios',
 );
 
 /** Hebrew (עברית)
@@ -1000,9 +1023,13 @@ $messages['nl'] = array(
 	'visualeditor-desc' => 'Vereenvoudigde tekstverwerker voor MediaWiki',
 	'visualeditor-feedback-prompt' => 'Terugkoppeling achterlaten',
 	'visualeditor-feedback-dialog-title' => 'Terugkoppeling geven over de visuele tekstverwerker',
+	'visualeditor-notification-saved' => 'Uw wijzigingen zijn opgeslagen',
 	'visualeditor-ca-editsource' => 'Bron bewerken',
 	'visualeditor-linkinspector-title' => 'Bewerken',
 	'visualeditor-linkinspector-label-pagetitle' => 'Paginanaam',
+	'visualeditor-linkinspector-suggest-existing-page' => 'Bestaande pagina',
+	'visualeditor-linkinspector-suggest-new-page' => 'Nieuwe pagina',
+	'visualeditor-linkinspector-suggest-external-link' => 'Webverwijzing',
 	'visualeditor-formatdropdown-title' => 'Opmaak wijzigen',
 	'visualeditor-formatdropdown-format-paragraph' => 'Paragraaf',
 	'visualeditor-formatdropdown-format-heading1' => 'Kop 1',
@@ -1025,6 +1052,7 @@ $messages['nl'] = array(
 	'visualeditor-viewpage-savewarning' => 'Weet u zeker dat u wilt teruggaan naar de modus bekijken zonder eerst op te slaan?',
 	'visualeditor-loadwarning' => 'Fout tijdens het laden van gegevens van de server: $1. Wilt u het opnieuw proberen?',
 	'visualeditor-saveerror' => 'Fout tijdens het opslaan van gegevens naar de server: $1.',
+	'visualeditor-editsummary' => 'Beschrijf wat u hebt gewijzigd',
 );
 
 /** Polish (polski)
