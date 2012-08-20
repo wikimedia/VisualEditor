@@ -775,14 +775,15 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 
 		// TODO: combine newFromRemoval and newFromInsertion into one newFromReplacement
 		if ( fromLeft + fromRight < previous.text.length ) {
+			// Don't set the selection here: next.range might be out of bounds after
+			// the removal
 			this.model.change(
 				ve.dm.Transaction.newFromRemoval(
 					this.documentView.model,
 					new ve.Range(
 						nodeOffset + 1 + fromLeft, nodeOffset + 1 + previous.text.length - fromRight
 					)
-				),
-				next.range
+				)
 			);
 		}
 		this.model.change(
