@@ -24,7 +24,7 @@
 	user-select: none;
 }
 
-.es-toolbar-wrapper.float .es-toolbar {
+.es-toolbar-wrapper.es-toolbar-wrapper-floating .es-toolbar {
 	top: 0;
 	position: fixed;
 	-webkit-border-radius: 0;
@@ -35,7 +35,11 @@
 	border-top: none;
 }
 
-.es-toolbar-wrapper.bottom .es-toolbar {
+.es-toolbar-wrapper.es-toolbar-wrapper-bottom {
+	position: static;
+}
+
+.es-toolbar-wrapper.es-toolbar-wrapper-bottom .es-toolbar {
 	position: absolute;
 	-webkit-border-radius: 0;
 	-moz-border-radius: 0;
@@ -63,7 +67,7 @@
 	opacity: 0.125;
 }
 
-.es-toolbar.float .es-toolbar-shadow {
+.es-toolbar.es-toolbar-wrapper-floating .es-toolbar-shadow {
 	filter: alpha(opacity=50);
 	opacity: 0.5;
 }

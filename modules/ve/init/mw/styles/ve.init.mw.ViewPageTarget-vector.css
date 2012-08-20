@@ -15,6 +15,10 @@
 
 .es-toolbar-wrapper {
 	margin: -1em -1em 1em -1em;
+	-webkit-transition: margin 200ms ease-out;
+	-moz-transition: margin 200ms ease-out;
+	-o-transition: margin 200ms ease-out;
+	transition: margin 200ms ease-out;
 	position: relative;
 }
 
