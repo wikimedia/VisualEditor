@@ -29,7 +29,10 @@ ve.ui.LinkInspector = function ( toolbar, context ) {
 			.text( ve.msg( 'visualeditor-linkinspector-title' ) )
 	);
 	// Target
-	this.$locationInput = $( '<input type="text">', context.inspectorDoc ).appendTo( this.$form );
+	this.$locationInput = $( '<input>', context.inspectorDoc )
+		.attr( 'type', 'text' )
+		.prop( 'class', 've-ui-linkInspector-location' )
+		.appendTo( this.$form );
 
 	this.initialValue = null;
 
