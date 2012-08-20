@@ -592,9 +592,9 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 				// to the parent would be tricky.
 				parentDomElement = domElement.parentNode;
 				if ( domElement.veInternal && domElement.veInternal.generated === 'wrapper' ) {
-					for ( j = 0; j < domElement.childNodes.length; j++ ) {
+					while ( domElement.firstChild ) {
 						parentDomElement.insertBefore(
-							domElement.childNodes[j],
+							domElement.firstChild,
 							domElement
 						);
 					}
