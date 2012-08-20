@@ -277,7 +277,9 @@ $messages['de'] = array(
  * @author Kghbln
  */
 $messages['de-formal'] = array(
+	'visualeditor-notification-saved' => 'Ihre Änderungen wurden gespeichert.',
 	'visualeditor-viewpage-savewarning' => 'Sind Sie sicher, dass Sie zum Ansichtsmodus wechseln möchten, ohne vorher zu speichern?',
+	'visualeditor-editsummary' => 'Beschreiben Sie, was Sie geändert haben.',
 );
 
 /** Zazaki (Zazaki)
@@ -555,9 +557,13 @@ $messages['he'] = array(
 	'visualeditor-desc' => 'עורך חזותי למדיה־ויקי',
 	'visualeditor-feedback-prompt' => 'שליחת משוב',
 	'visualeditor-feedback-dialog-title' => 'שליחת משוב על ארגז החול של העורך החזותי',
+	'visualeditor-notification-saved' => 'השינויים שלך לא נשמרו.',
 	'visualeditor-ca-editsource' => 'עריכת קוד מקור',
 	'visualeditor-linkinspector-title' => 'עריכת קישור',
 	'visualeditor-linkinspector-label-pagetitle' => 'כותרת דף',
+	'visualeditor-linkinspector-suggest-existing-page' => 'דף קיים',
+	'visualeditor-linkinspector-suggest-new-page' => 'דף חדש',
+	'visualeditor-linkinspector-suggest-external-link' => 'קישור לרשת',
 	'visualeditor-formatdropdown-title' => 'שינוי סגנון',
 	'visualeditor-formatdropdown-format-paragraph' => 'פסקה',
 	'visualeditor-formatdropdown-format-heading1' => 'כותרת רמה 1',
@@ -580,6 +586,7 @@ $messages['he'] = array(
 	'visualeditor-viewpage-savewarning' => 'האם ברצונך לשוב למצב תצוגה ללא שמירה?',
 	'visualeditor-loadwarning' => 'שגיאה בטעינת מידע מהשרת: $1. האם לנסות שוב?',
 	'visualeditor-saveerror' => 'שגיאה בשמירת נתונים לשרת: $1.',
+	'visualeditor-editsummary' => 'נא לתאר מה שינית',
 );
 
 /** Hindi (हिन्दी)
@@ -597,9 +604,13 @@ $messages['hsb'] = array(
 	'visualeditor-desc' => 'WYSIWYG-editor za MediaWiki',
 	'visualeditor-feedback-prompt' => 'Komentar zawostajić',
 	'visualeditor-feedback-dialog-title' => 'Zawostaj komentar wo hrajkanišću VisualEditora',
+	'visualeditor-notification-saved' => 'Twoje změny su so składowali.',
 	'visualeditor-ca-editsource' => 'Žórłowy tekst wobdźěłać',
 	'visualeditor-linkinspector-title' => 'Wotkaz wobdźěłać',
 	'visualeditor-linkinspector-label-pagetitle' => 'Titul strony',
+	'visualeditor-linkinspector-suggest-existing-page' => 'Eksistowaca strona',
+	'visualeditor-linkinspector-suggest-new-page' => 'Nowa strona',
+	'visualeditor-linkinspector-suggest-external-link' => 'Webwotkaz',
 	'visualeditor-formatdropdown-title' => 'Format změnić',
 	'visualeditor-formatdropdown-format-paragraph' => 'Wotstawk',
 	'visualeditor-formatdropdown-format-heading1' => 'Nadpis 1',
@@ -622,6 +633,7 @@ $messages['hsb'] = array(
 	'visualeditor-viewpage-savewarning' => 'Chceš so woprawdźe k napohladowemu modusej wróćić, bjeztoho zo by prjedy składował?',
 	'visualeditor-loadwarning' => 'Zmylk při začitowanju datow ze serwera: $1. Chceš znowa spytać?',
 	'visualeditor-saveerror' => 'Zmylk při składowanju datow na serwerje: $1.',
+	'visualeditor-editsummary' => 'Wopisaj, štož sy změnił',
 );
 
 /** Hungarian (magyar)
@@ -908,9 +920,13 @@ $messages['mk'] = array(
 	'visualeditor-desc' => 'Визуелен уредник за МедијаВики',
 	'visualeditor-feedback-prompt' => 'Дајте мислење',
 	'visualeditor-feedback-dialog-title' => 'Дајте мислење за Песочникот на ВизуеленУредник',
+	'visualeditor-notification-saved' => 'Вашите измени се зачувани',
 	'visualeditor-ca-editsource' => 'Уреди извор',
 	'visualeditor-linkinspector-title' => 'Уреди врска',
 	'visualeditor-linkinspector-label-pagetitle' => 'Наслов на страницата',
+	'visualeditor-linkinspector-suggest-existing-page' => 'Постоечка страница',
+	'visualeditor-linkinspector-suggest-new-page' => 'Нова страница',
+	'visualeditor-linkinspector-suggest-external-link' => 'Надворешна врска',
 	'visualeditor-formatdropdown-title' => 'Смени формат',
 	'visualeditor-formatdropdown-format-paragraph' => 'Пасус',
 	'visualeditor-formatdropdown-format-heading1' => 'Наслов 1',
@@ -933,6 +949,7 @@ $messages['mk'] = array(
 	'visualeditor-viewpage-savewarning' => 'Дали сте сигурни дека сакате да се вратите на прегледниот режим без прво да ги ачувате измените?',
 	'visualeditor-loadwarning' => 'Грешка при вчитување на податоците од опслужувачот: $1. Дали сакате да пробате одново?',
 	'visualeditor-saveerror' => 'Грешка при зачувување на податоците во опслужувачот: $1.',
+	'visualeditor-editsummary' => 'Опишете ги направените измени',
 );
 
 /** Malayalam (മലയാളം)
@@ -1325,9 +1342,13 @@ $messages['tl'] = array(
 	'visualeditor-desc' => 'Pampatnugot na pampaningin para sa MediaWiki',
 	'visualeditor-feedback-prompt' => 'Mag-iwan ng tugon',
 	'visualeditor-feedback-dialog-title' => 'Mag-iwan ng tugon hinggil sa Subukan ng Pampatnugot na Pampaningin',
+	'visualeditor-notification-saved' => 'Nasagip na ang mga binago mo.',
 	'visualeditor-ca-editsource' => 'Baguhin ang pinagmulan',
 	'visualeditor-linkinspector-title' => 'Baguhin ang kawing',
 	'visualeditor-linkinspector-label-pagetitle' => 'Pamagat ng pahina',
+	'visualeditor-linkinspector-suggest-existing-page' => 'Umiiral na pahina',
+	'visualeditor-linkinspector-suggest-new-page' => 'Bagong pahina',
+	'visualeditor-linkinspector-suggest-external-link' => 'Kawing sa Web',
 	'visualeditor-formatdropdown-title' => 'Baguhin ang anyo',
 	'visualeditor-formatdropdown-format-paragraph' => 'Talata',
 	'visualeditor-formatdropdown-format-heading1' => 'Pamuhatan 1',
@@ -1350,6 +1371,7 @@ $messages['tl'] = array(
 	'visualeditor-viewpage-savewarning' => 'Nakakatiyak ka bang nais mong magbalik sa gawi na nakikita na hindi muna nagsasagip?',
 	'visualeditor-loadwarning' => 'Kamalian sa pagkakarga ng dato mula sa tagapaghain: $1. Nais mo bang subukan ulit?',
 	'visualeditor-saveerror' => 'Kamalian sa pagsagip ng dato sa tagapaghain: $1.',
+	'visualeditor-editsummary' => 'Ilarawan kung ano ang binago mo',
 );
 
 /** Urdu (اردو)
@@ -1374,9 +1396,13 @@ $messages['vi'] = array(
 	'visualeditor-desc' => 'Trình soạn thị giác MediaWiki',
 	'visualeditor-feedback-prompt' => 'Gửi phản hồi',
 	'visualeditor-feedback-dialog-title' => 'Gửi phản hồi về chỗ thử Trình soạn thị giác',
+	'visualeditor-notification-saved' => 'Đã lưu các thay đổi của bạn.',
 	'visualeditor-ca-editsource' => 'Sửa đổi mã nguồn',
 	'visualeditor-linkinspector-title' => 'Sửa đổi liên kết',
 	'visualeditor-linkinspector-label-pagetitle' => 'Tên trang',
+	'visualeditor-linkinspector-suggest-existing-page' => 'Trang đã tồn tại',
+	'visualeditor-linkinspector-suggest-new-page' => 'Trang mới',
+	'visualeditor-linkinspector-suggest-external-link' => 'Liên kết Web',
 	'visualeditor-formatdropdown-title' => 'Thay đổi định dạng',
 	'visualeditor-formatdropdown-format-paragraph' => 'Đoạn văn',
 	'visualeditor-formatdropdown-format-heading1' => 'Đề mục cấp 1',
@@ -1399,6 +1425,7 @@ $messages['vi'] = array(
 	'visualeditor-viewpage-savewarning' => 'Bạn có chắc chắn muốn quay trở về chế độ xem mà không lưu giữ trước tiên?',
 	'visualeditor-loadwarning' => 'Lỗi tải dữ liệu từ máy chủ: $1. Bạn có muốn thử lại không?',
 	'visualeditor-saveerror' => 'Lỗi lưu dữ liệu trên máy chủ: $1.',
+	'visualeditor-editsummary' => 'Miêu tả các thay đổi của bạn',
 );
 
 /** Simplified Chinese (‪中文（简体）‬)
