@@ -5,12 +5,12 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-.es-contextView {
+.ve-ui-context {
 	position: absolute;
 	z-index: 2;
 }
 
-.es-contextView-icon {
+.ve-ui-context-icon {
 	position: absolute;
 	background-repeat: no-repeat;
 	width: 15px;
@@ -29,53 +29,53 @@
 	z-index: 4;
 }
 
-.es-contextView-position-start .es-contextView-icon {
+.ve-ui-context-position-start .ve-ui-context-icon {
 	top: -12px;
 	left: -8px;
 }
 
-.es-contextView-position-end .es-contextView-icon {
+.ve-ui-context-position-end .ve-ui-context-icon {
 	top: -6px;
 	left: -8px;
 }
 
-.es-contextView-position-above .es-contextView-icon {
+.ve-ui-context-position-above .ve-ui-context-icon {
 	/* @embed */
 	background-image: url(images/arrow-up.png);
 	background-position: 50% 4px;
 }
 
-.es-contextView-position-below .es-contextView-icon {
+.ve-ui-context-position-below .ve-ui-context-icon {
 	/* @embed */
 	background-image: url(images/arrow-down.png);
 	background-position: 50% 5px;
 }
-.es-contextView-position-above .es-contextView-icon:hover,
-.es-contextView-position-below .es-contextView-icon:hover {
+.ve-ui-context-position-above .ve-ui-context-icon:hover,
+.ve-ui-context-position-below .ve-ui-context-icon:hover {
 	border-color: #b3d6f6;
 }
 
-.es-contextView-position-above .es-menuView {
+.ve-ui-context-position-above .ve-menuView {
 	bottom: 2px;
 }
 
-.es-contextView-position-below .es-menuView {
+.ve-ui-context-position-below .ve-menuView {
 	top: 2px;
 }
 
-.es-contextView-inspectors {
+.ve-ui-context-inspectors {
 	position: absolute;
 }
 
-.es-contextView-position-above .es-contextView-inspectors {
+.ve-ui-context-position-above .ve-ui-context-inspectors {
 	bottom: -8px;
 }
 
-.es-contextView-position-below .es-contextView-inspectors {
+.ve-ui-context-position-below .ve-ui-context-inspectors {
 	top: 2px;
 }
 
-.es-contextView-panels {
+.ve-ui-context-panels {
 	position: absolute;
 	border: solid 1px #ccc;
 	-webkit-border-radius: 0.25em;
@@ -89,16 +89,16 @@
 	padding: 0.33em 0;
 }
 
-.es-contextView-panel {
+.ve-ui-context-panel {
 	display: none;
 	padding: 1em;
 }
 
-.es-contextView-toolbar {
+.ve-ui-context-toolbar {
 	padding: 0.33em 0.66em;
 	white-space: nowrap;
 }
 
-.es-contextView .es-toolbarGroup {
+.ve-ui-context .es-toolbarGroup {
 	border: none;
 }
