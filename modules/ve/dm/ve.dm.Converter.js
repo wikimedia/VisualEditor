@@ -152,8 +152,7 @@ ve.dm.Converter.prototype.getDomElementFromDataElement = function ( dataElement 
 /**
  * Get the linear model data element for a given DOM element.
  *
- * This invokes the toDataElement function registered for the element type, after checking that
- * there is no data-mw-gc attribute.
+ * This invokes the toDataElement function registered for the element type
  *
  * @method
  * @param {HTMLElement} domElement DOM element
@@ -163,10 +162,9 @@ ve.dm.Converter.prototype.getDataElementFromDomElement = function ( domElement )
 	var dataElement, domElementAttributes, dataElementAttributes, domElementAttribute, i,
 		domElementType = domElement.nodeName.toLowerCase();
 	if (
-		// Generated elements
-		domElement.hasAttribute( 'data-mw-gc' ) ||
 		// Unsupported elements
 		!( domElementType in this.elements.toDataElement )
+		// TODO check for generated elements
 	) {
 		return false;
 	}
@@ -264,12 +262,6 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 		childDomElement = domElement.childNodes[i];
 		switch ( childDomElement.nodeType ) {
 			case Node.ELEMENT_NODE:
-				// Detect generated content and wrap it in an alien node
-				if ( childDomElement.hasAttribute( 'data-mw-gc' ) ) {
-					// FIXME Parsoid outputs RDFa now, address this in API rewrite
-					data = data.concat( createAlien( childDomElement, branchIsContent ) );
-					break;
-				}
 				// Detect and handle annotated content
 				annotation = this.getDataAnnotationFromDomElement( childDomElement );
 				if ( annotation ) {
