@@ -37,11 +37,13 @@ QUnit.test( 'getDataFromDom', function ( assert ) {
 	var msg,
 		cases = ve.dm.example.domToDataCases;
 	for ( msg in cases ) {
-		assert.deepEqual(
-			ve.dm.converter.getDataFromDom( $( '<div>' ).html( cases[msg].html )[0] ),
-			cases[msg].data,
-			msg
-		);
+		if ( cases[msg].html !== null ) {
+			assert.deepEqual(
+				ve.dm.converter.getDataFromDom( $( '<div>' ).html( cases[msg].html )[0] ),
+				cases[msg].data,
+				msg
+			);
+		}
 	}
 } );
 
