@@ -343,9 +343,13 @@ $messages['es'] = array(
 	'visualeditor-desc' => 'Editor visual para MediaWiki',
 	'visualeditor-feedback-prompt' => 'Comentar',
 	'visualeditor-feedback-dialog-title' => "Comentar sobre la zona segura (''sandbox'') del Editor Visual",
+	'visualeditor-notification-saved' => 'Tus cambios han sido guardados',
 	'visualeditor-ca-editsource' => 'Editar fuente',
 	'visualeditor-linkinspector-title' => 'Editar enlace',
 	'visualeditor-linkinspector-label-pagetitle' => 'Título de la página',
+	'visualeditor-linkinspector-suggest-existing-page' => 'Página existente',
+	'visualeditor-linkinspector-suggest-new-page' => 'Nueva página',
+	'visualeditor-linkinspector-suggest-external-link' => 'Enlace web',
 	'visualeditor-formatdropdown-title' => 'Cambiar formato',
 	'visualeditor-formatdropdown-format-paragraph' => 'Párrafo',
 	'visualeditor-formatdropdown-format-heading1' => 'Encabezado 1',
@@ -368,6 +372,7 @@ $messages['es'] = array(
 	'visualeditor-viewpage-savewarning' => '¿Estás seguro que quieres volver al modo de visualización sin guardar primero?',
 	'visualeditor-loadwarning' => 'Error al cargar los datos del servidor: $1. ¿Le gustaría volver a intentarlo?',
 	'visualeditor-saveerror' => 'Error al guardar datos en el servidor: $1.',
+	'visualeditor-editsummary' => 'Describe lo que has cambiado',
 );
 
 /** Estonian (eesti)
@@ -377,9 +382,13 @@ $messages['es'] = array(
 $messages['et'] = array(
 	'visualeditor' => 'Visuaaltoimetaja',
 	'visualeditor-desc' => 'MediaWiki visuaaltoimetaja',
+	'visualeditor-notification-saved' => 'Sinu muudatused on salvestatud.',
 	'visualeditor-ca-editsource' => 'Muuda allikat',
 	'visualeditor-linkinspector-title' => 'Lingi muutmine',
 	'visualeditor-linkinspector-label-pagetitle' => 'Lehekülg',
+	'visualeditor-linkinspector-suggest-existing-page' => 'Olemasolev lehekülg',
+	'visualeditor-linkinspector-suggest-new-page' => 'Uus lehekülg',
+	'visualeditor-linkinspector-suggest-external-link' => 'Võrgulink',
 	'visualeditor-formatdropdown-title' => 'Muuda vormingut',
 	'visualeditor-formatdropdown-format-paragraph' => 'Lõik',
 	'visualeditor-formatdropdown-format-heading1' => 'Pealkiri 1',
@@ -402,6 +411,7 @@ $messages['et'] = array(
 	'visualeditor-viewpage-savewarning' => 'Kas oled kindel, et tahad mina tagasi vaatamisrežiimi ilma kõigepealt salvestamata?',
 	'visualeditor-loadwarning' => 'Tõrge andmete laadimisel serverist: $1. Ehk proovid uuesti?',
 	'visualeditor-saveerror' => 'Tõrge andmete salvestamisel serverisse: $1.',
+	'visualeditor-editsummary' => 'Kirjelda, mida muutsid',
 );
 
 /** Persian (فارسی)
@@ -1018,6 +1028,42 @@ $messages['ms'] = array(
 	'visualeditor-viewpage-savewarning' => 'Adakah anda benar-benar ingin kembali ke ragam paparan tanpa menyimpan terlebih dahulu?',
 	'visualeditor-loadwarning' => 'Ralat ketika memuatkan data dari pelayan: $1. Adakah anda hendak mencuba lagi?',
 	'visualeditor-saveerror' => 'Ralat ketika memuatkan data dari pelayan: $1',
+);
+
+/** Norwegian Bokmål (‪norsk (bokmål)‬)
+ * @author Danmichaelo
+ */
+$messages['nb'] = array(
+	'visualeditor-feedback-prompt' => 'Gi tilbakemelding',
+	'visualeditor-notification-saved' => 'Dine endringer har blitt lagret.',
+	'visualeditor-ca-editsource' => 'Rediger kilde',
+	'visualeditor-linkinspector-title' => 'Rediger lenke',
+	'visualeditor-linkinspector-label-pagetitle' => 'Sidetittel',
+	'visualeditor-linkinspector-suggest-existing-page' => 'Eksisterende side',
+	'visualeditor-linkinspector-suggest-new-page' => 'Ny side',
+	'visualeditor-linkinspector-suggest-external-link' => 'Weblenke',
+	'visualeditor-formatdropdown-title' => 'Endre format',
+	'visualeditor-formatdropdown-format-paragraph' => 'Avsnitt',
+	'visualeditor-formatdropdown-format-heading1' => 'Overskrift 1',
+	'visualeditor-formatdropdown-format-heading2' => 'Overskrift 2',
+	'visualeditor-formatdropdown-format-heading3' => 'Overskrift 3',
+	'visualeditor-formatdropdown-format-heading4' => 'Overskrift 4',
+	'visualeditor-formatdropdown-format-heading5' => 'Overskrift 5',
+	'visualeditor-formatdropdown-format-heading6' => 'Overskrift 6',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Fet',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Kursiv',
+	'visualeditor-annotationbutton-link-tooltip' => 'Lenke',
+	'visualeditor-indentationbutton-indent-tooltip' => 'Øk innrykk',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Reduser innrykk',
+	'visualeditor-listbutton-number-tooltip' => 'Nummerert liste',
+	'visualeditor-listbutton-bullet-tooltip' => 'Punktliste',
+	'visualeditor-clearbutton-tooltip' => 'Fjern formatering',
+	'visualeditor-historybutton-undo-tooltip' => 'Angre',
+	'visualeditor-historybutton-redo-tooltip' => 'Gjør om',
+	'visualeditor-viewpage-savewarning' => 'Er du sikker på at du vil gå tilbake til visningsmodus uten å lagre først?',
+	'visualeditor-loadwarning' => 'Det oppsto en feil ved henting av data fra serveren: $1. Vil du prøve på nytt?',
+	'visualeditor-saveerror' => 'Det oppsto et problem ved lagring av data til serveren: $1.',
+	'visualeditor-editsummary' => 'Beskriv hva du endret',
 );
 
 /** Nepali (नेपाली)
