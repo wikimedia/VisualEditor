@@ -471,7 +471,8 @@ ve.ce.Surface.prototype.onKeyPress = function ( e ) {
 		this.startPolling();
 	}
 
-	if ( selection.getLength() > 0 && e.which !== 0 ) {
+	// Is there an expanded range and something other than keycodes 0 (nothing) or 27 (esc) were pressed?
+	if ( selection.getLength() > 0 && ( e.which !== 0 || e.which !== 27 ) {
 		this.stopPolling();
 		this.model.change(
 			ve.dm.Transaction.newFromRemoval(
