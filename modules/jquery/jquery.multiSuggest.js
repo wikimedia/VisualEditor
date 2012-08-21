@@ -70,8 +70,9 @@
 				visible = false,
 				focused = false,
 				$input = $( this ),
-				cachedInput = '',
-				$multiSuggest;
+				currentInput = '',
+				$multiSuggest,
+				cache = {};
 
 			// Merge options with default configuration.
 			$.extend( {
@@ -98,11 +99,36 @@
 			}
 			// Call configured input method and supply the private build method as callback.
 			function onInput() {
-				if ( typeof options.input === 'function' ) {
-					options.input.call( $input, function( params, callback ){
-						build( params );
-					} );
-				}
+				// Throttle
+				clearTimeout( inputTimer );
+				inputTimer = setTimeout( function() {
+					var txt = $input.val().toLowerCase();
+					if ( txt !== '' ) {
+						// Check for query in cache object.
+						if (
+							!( txt in cache ) &&
+							typeof options.input === 'function'
+						) {
+							options.input.call( $input, function( params, callback ){
+								build( params );
+								cache[txt] = params;
+							} );
+						} else {
+							// Rebuild from cache only if query has changed.
+							// This prevents disrupting the menu on keypress.
+							if ( txt !== currentInput ) {
+								build( cache[txt] );
+							}
+						}
+						// Set current input.
+						currentInput = txt;
+					} else {
+						// No Text, close.
+						if ( visible ) {
+							close();
+						}
+					}
+				}, 250 );
 			}
 			// Opens the MultiSuggest dropdown.
 			function open() {
@@ -110,9 +136,9 @@
 					// Call input method if cached value is stale
 					if (
 						$input.val() !== '' &&
-						$input.val() !== cachedInput
+						$input.val() !== currentInput
 					) {
-						cachedInput = $input.val();
+						currentInput = $input.val();
 						onInput();
 					} else {
 						// Show if there are suggestions.
@@ -135,7 +161,7 @@
 			// When an item is selected in the dropdown.
 			function select( text ) {
 				// Cache input.
-				cachedInput = text;
+				currentInput = text;
 				$input.val( text );
 				close();
 			}
@@ -215,26 +241,7 @@
 			// Bind target input events
 			$input.on( {
 				// Handle any change to the input.
-				'keyup change cut paste': function( e ) {
-					var input = this;
-					// Throttle input.
-					clearTimeout( inputTimer );
-					inputTimer = setTimeout( function() {
-						if ( $input.val() !== '' ) {
-							// Check for difference.
-							if ( $input.val() !== cachedInput ) {
-								onInput();
-							}
-						} else if ( $input.val() === '' ) {
-							// No Text, close.
-							if ( visible ) {
-								close();
-							}
-						}
-						// Cache
-						cachedInput = $input.val();
-					}, 250 );
-				},
+				'keyup change cut paste': onInput,
 				// Handle arrow up and down keys.
 				'keydown': function( e ) {
 					var $item,
