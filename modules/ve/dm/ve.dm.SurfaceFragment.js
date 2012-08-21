@@ -50,10 +50,12 @@ ve.dm.SurfaceFragment = function ( surface, range, autoSelect ) {
  * This keeps the range of this fragment valid, even while other transactions are being processed.
  *
  * @method
- * @param {ve.dm.Transaction} tx Transaction that's just been processed
+ * @param {ve.dm.Transaction[]} txs Transactions that's just been processed
  */
-ve.dm.SurfaceFragment.prototype.onTransact = function( tx ) {
-	this.range = tx.translateRange( this.range );
+ve.dm.SurfaceFragment.prototype.onTransact = function( txs ) {
+	for( var i = 0; i < txs.length; i++ ) {
+		this.range = txs[i].translateRange( this.range );
+	}
 };
 
 /**
