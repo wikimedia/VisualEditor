@@ -403,13 +403,13 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'paragraph with alienInline inside': {
-		'html': '<p>a<a href="b.html" data-mw-gc="">b</a>c</p>',
+		'html': '<p>a<tt class="foo">b</tt>c</p>',
 		'data': [
 			{ 'type': 'paragraph' },
 			'a',
 			{
 				'type': 'alienInline',
-				'attributes': { 'html': '<a href="b.html" data-mw-gc="">b</a>' }
+				'attributes': { 'html': '<tt class="foo">b</tt>' }
 			},
 			{ 'type': '/alienInline' },
 			'c',
@@ -418,14 +418,14 @@ ve.dm.example.domToDataCases = {
 	},
 	// TODO these last two are broken due to newline hacks, will be unbroken once we remove the newline hacks
 	'paragraphs with an alienBlock between them': {
-		'html': '<p>abc</p><p data-mw-gc="">abc</p><p>def</p>',
+		'html': '<p>abc</p><figure>abc</figure><p>def</p>',
 		'data': [
 			{ 'type': 'paragraph' },
 			'a',
 			'b',
 			'c',
 			{ 'type': '/paragraph' },
-			{ 'type': 'alienBlock', 'attributes': { 'html': '<p data-mw-gc="">abc</p>' } },
+			{ 'type': 'alienBlock', 'attributes': { 'html': '<figure>abc</figure>' } },
 			{ 'type': '/alienBlock' },
 			{ 'type': 'paragraph' },
 			'd',
