@@ -13,8 +13,10 @@
  * @method
  * @param {Mixed} [...] Data to log
  */
-ve.log = window.console && console.log ?
-	ve.bind( console.log, console ) : ve.log;
+ve.log = function() {
+	Function.prototype.apply.call( console.log, console, arguments );
+};
+
 
 /**
  * Logs an object to the console.
@@ -23,5 +25,6 @@ ve.log = window.console && console.log ?
  * @method
  * @param {Object} obj Object to log
  */
-ve.dir = window.console && console.dir ?
-	ve.bind( console.dir, console ) : ve.dir;
+ve.dir = function() {
+	Function.prototype.apply.call( console.dir, console, arguments );
+};
