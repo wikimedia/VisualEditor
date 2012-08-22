@@ -24,7 +24,7 @@ ve.ce = {
 ve.ce.whitespacePattern = /[\u0020\u00A0]/g;
 
 /**
- * Gets the plain text of a DOM element.
+ * Gets the plain text of a DOM element (that is a node canContainContent === true)
  *
  * In the returned string only the contents of text nodes are included, and the contents of
  * non-editable elements are excluded (but replaced with the appropriate number of characters
@@ -39,12 +39,14 @@ ve.ce.getDomText = function ( element ) {
 	var func = function ( element ) {
 		var nodeType = element.nodeType,
 			text = '',
-			numChars;
+			numChars,
+			$element = $( element );
+
 		if ( nodeType === 1 || nodeType === 9 || nodeType === 11 ) {
-			if ( element.contentEditable === 'false' ) {
-				// For non-editable nodes, don't return the content, but return
+			if ( $element.hasClass( 've-ce-leafNode' ) ) {
+				// For leaf nodes, don't return the content, but return
 				// the right amount of characters so the offsets match up
-				numChars = $( element ).data( 'node' ).getOuterLength();
+				numChars = $element.data( 'node' ).getOuterLength();
 				return new Array( numChars + 1 ).join( '\u2603' );
 			} else {
 				// Traverse its children
