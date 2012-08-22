@@ -159,66 +159,81 @@ ve.Surface.prototype.floatTopToolbar = function () {
 		$toolbar = $toolbarWrapper.find( '.es-toolbar' ),
 		$window = $( window );
 
-	$window.scroll( function () {
-		var left, right,
-			toolbarWrapperOffset = $toolbarWrapper.offset(),
-			$editorDocument = $toolbarWrapper.parent().find('.ve-surface .ve-ce-documentNode'),
-			$lastBranch = $editorDocument.children( '.ve-ce-branchNode:last' );
-
-		if ( $window.scrollTop() > toolbarWrapperOffset.top ) {
-			left = toolbarWrapperOffset.left;
-			right = $window.width() - $toolbarWrapper.outerWidth() - left;
-			// If not floating, set float
-			if ( !$toolbarWrapper.hasClass( 'float' ) ) {
-				$toolbarWrapper
-					.css( 'height', $toolbarWrapper.height() )
-					.addClass( 'float' );
+	$window.on( {
+		'resize': function () {
+			if ( $toolbarWrapper.hasClass( 'es-toolbar-wrapper-floating' ) ) {
+				var toolbarWrapperOffset = $toolbarWrapper.offset(),
+					left = toolbarWrapperOffset.left,
+					right = $window.width() - $toolbarWrapper.outerWidth() - left;
 				$toolbar.css( {
 					'left': left,
 					'right': right
 				} );
-			} else {
-				// Toolbar is floated
-				if (
-					// There's at least one branch
-					$lastBranch.length &&
-					// Toolbar is at or below the top of last node in the document
-					$window.scrollTop() + $toolbar.height() >= $lastBranch.offset().top
-				) {
-					// XXX: Use less generic class names (not "bottom" and "float")
-					if( !$toolbarWrapper.hasClass( 'bottom' ) ) {
-						$toolbarWrapper
-							.removeClass( 'float' )
-							.addClass( 'bottom' );
-						$toolbar.css({
-							'top': $window.scrollTop() + 'px',
-							'left': left,
-							'right': right
-						});
-					}
-				} else { // Unattach toolbar
-					if ( $toolbarWrapper.hasClass( 'bottom' ) ) {
-						$toolbarWrapper
-							.removeClass( 'bottom' )
-							.addClass( 'float' );
-						$toolbar.css( {
-							'top': 0,
-							'left': left,
-							'right': right
-						} );
+			}
+		},
+		'scroll': function () {
+			var left, right,
+				toolbarWrapperOffset = $toolbarWrapper.offset(),
+				$editorDocument = $toolbarWrapper.parent().find('.ve-surface .ve-ce-documentNode'),
+				$lastBranch = $editorDocument.children( '.ve-ce-branchNode:last' );
+
+			if ( $window.scrollTop() > toolbarWrapperOffset.top ) {
+				left = toolbarWrapperOffset.left;
+				right = $window.width() - $toolbarWrapper.outerWidth() - left;
+				// If not floating, set float
+				if ( !$toolbarWrapper.hasClass( 'es-toolbar-wrapper-floating' ) ) {
+					$toolbarWrapper
+						.css( 'height', $toolbarWrapper.height() )
+						.addClass( 'es-toolbar-wrapper-floating' );
+					$toolbar.css( {
+						'left': left,
+						'right': right
+					} );
+				} else {
+					// Toolbar is floated
+					if (
+						// There's at least one branch
+						$lastBranch.length &&
+						// Toolbar is at or below the top of last node in the document
+						$window.scrollTop() + $toolbar.height() >= $lastBranch.offset().top
+					) {
+						if ( !$toolbarWrapper.hasClass( 'es-toolbar-wrapper-bottom' ) ) {
+							$toolbarWrapper
+								.removeClass( 'es-toolbar-wrapper-floating' )
+								.addClass( 'es-toolbar-wrapper-bottom' );
+							$toolbar.css({
+								'top': $window.scrollTop() + 'px',
+								'left': left,
+								'right': right
+							});
+						}
+					} else { // Unattach toolbar
+						if ( $toolbarWrapper.hasClass( 'es-toolbar-wrapper-bottom' ) ) {
+							$toolbarWrapper
+								.removeClass( 'es-toolbar-wrapper-bottom' )
+								.addClass( 'es-toolbar-wrapper-floating' );
+							$toolbar.css( {
+								'top': 0,
+								'left': left,
+								'right': right
+							} );
+						}
 					}
 				}
-			}
-		} else { // Return toolbar to top position
-			if ( $toolbarWrapper.hasClass( 'float' ) || $toolbarWrapper.hasClass( 'bottom' ) ) {
-				$toolbarWrapper.css( 'height', 'auto' )
-					.removeClass( 'float' )
-					.removeClass( 'bottom' );
-				$toolbar.css( {
-					'top': 0,
-					'left': 0,
-					'right': 0
-				} );
+			} else { // Return toolbar to top position
+				if (
+					$toolbarWrapper.hasClass( 'es-toolbar-wrapper-floating' ) ||
+					$toolbarWrapper.hasClass( 'es-toolbar-wrapper-bottom' )
+				) {
+					$toolbarWrapper.css( 'height', 'auto' )
+						.removeClass( 'es-toolbar-wrapper-floating' )
+						.removeClass( 'es-toolbar-wrapper-bottom' );
+					$toolbar.css( {
+						'top': 0,
+						'left': 0,
+						'right': 0
+					} );
+				}
 			}
 		}
 	} );
