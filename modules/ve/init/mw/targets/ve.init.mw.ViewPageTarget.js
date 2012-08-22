@@ -56,8 +56,14 @@ ve.init.mw.ViewPageTarget = function () {
 		this.currentUri.query.diff === undefined
 	);
 	this.canBeActivated = (
-		this.namespaceName === 'VisualEditor' ||
-		this.pageName.indexOf( 'VisualEditor:' ) === 0
+		(
+			this.namespaceName === 'VisualEditor' ||
+			this.pageName.indexOf( 'VisualEditor:' ) === 0
+		) &&
+		(
+			$.client.test( ve.init.mw.ViewPageTarget.compatibility ) ||
+			'vewhitelist' in this.currentUri.query
+		)
 	);
 	this.editSummaryByteLimit = 255;
 
@@ -85,6 +91,35 @@ ve.init.mw.ViewPageTarget = function () {
 };
 
 /* Static Members */
+
+/**
+ * Compatibility map used with jQuery.client to black-list incompatible browsers.
+ *
+ * @static
+ * @member
+ */
+ve.init.mw.ViewPageTarget.compatibility = {
+	// Left-to-right languages
+	ltr: {
+		msie: [['>=', 9]],
+		firefox: [['>=', 11]],
+		safari: [['>=', 5]],
+		chrome: [['>=', 19]],
+		opera: false,
+		netscape: false,
+		blackberry: false
+	},
+	// Right-to-left languages
+	rtl: {
+		msie: [['>=', 9]],
+		firefox: [['>=', 11]],
+		safari: [['>=', 5]],
+		chrome: [['>=', 19]],
+		opera: false,
+		netscape: false,
+		blackberry: false
+	}
+};
 
 /*jshint multistr: true*/
 ve.init.mw.ViewPageTarget.saveDialogTemplate = '\
