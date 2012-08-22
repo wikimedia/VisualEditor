@@ -1003,9 +1003,13 @@ $messages['ms'] = array(
 	'visualeditor-desc' => 'Alat penyuntingan visual untuk MediaWiki',
 	'visualeditor-feedback-prompt' => 'Tinggalkan maklum balas',
 	'visualeditor-feedback-dialog-title' => 'Tinggalkan maklum balas tentang Kotak Pasir VisualEditor',
+	'visualeditor-notification-saved' => 'Perubahan anda telah disimpan.',
 	'visualeditor-ca-editsource' => 'Sunting sumber',
 	'visualeditor-linkinspector-title' => 'Sunting pautan',
 	'visualeditor-linkinspector-label-pagetitle' => 'Tajuk halaman',
+	'visualeditor-linkinspector-suggest-existing-page' => 'Halaman sedia ada',
+	'visualeditor-linkinspector-suggest-new-page' => 'Halaman baru',
+	'visualeditor-linkinspector-suggest-external-link' => 'Pautan sesawang',
 	'visualeditor-formatdropdown-title' => 'Tukar format',
 	'visualeditor-formatdropdown-format-paragraph' => 'Perenggan',
 	'visualeditor-formatdropdown-format-heading1' => 'Pengatas 1',
@@ -1028,6 +1032,7 @@ $messages['ms'] = array(
 	'visualeditor-viewpage-savewarning' => 'Adakah anda benar-benar ingin kembali ke ragam paparan tanpa menyimpan terlebih dahulu?',
 	'visualeditor-loadwarning' => 'Ralat ketika memuatkan data dari pelayan: $1. Adakah anda hendak mencuba lagi?',
 	'visualeditor-saveerror' => 'Ralat ketika memuatkan data dari pelayan: $1',
+	'visualeditor-editsummary' => 'Terangkan suntingan anda',
 );
 
 /** Norwegian Bokmål (‪norsk (bokmål)‬)
