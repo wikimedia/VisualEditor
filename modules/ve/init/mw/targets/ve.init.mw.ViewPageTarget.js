@@ -357,6 +357,8 @@ ve.init.mw.ViewPageTarget.prototype.onSaveDialogCloseButtonClick = function () {
  * @param {HTMLElement} dom HTML DOM to edit
  */
 ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( dom ) {
+	var $contentText = $( '#mw-content-text' );
+
 	// Initialize surface
 	this.attachSurface();
 	this.surface = new ve.Surface( this.$surface, dom, this.surfaceOptions );
@@ -370,6 +372,10 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( dom ) {
 	this.hideSpinner();
 	this.disableToolbarSaveButton();
 	this.active = true;
+	this.$document.attr( {
+		'lang': $contentText.attr( 'lang' ),
+		'dir': $contentText.attr( 'dir' )
+	} );
 };
 
 /**
