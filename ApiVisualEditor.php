@@ -18,13 +18,21 @@ class ApiVisualEditor extends ApiBase {
 		$params = $this->extractRequestParams();
 		$page = Title::newFromText( $params['page'] );
 
+		$parserParams = array();
+		if ( is_numeric( $params['oldid'] ) ) {
+			$parserParams['oldid'] = intval( $params['oldid'] );
+		}
+
 		if ( $params['paction'] === 'parse' ) {
 			if ( $page->exists() ) {
 				$parsed = Http::get(
 					// Insert slash since wgVisualEditorParsoidURL does not
 					// end in a slash
-					$parsoid . '/' . $wgVisualEditorParsoidPrefix . '/' .
-						urlencode( $page->getPrefixedDBkey() )
+					wfAppendQuery(
+						$parsoid . '/' . $wgVisualEditorParsoidPrefix . '/' .
+							urlencode( $page->getPrefixedDBkey() ),
+						$parserParams
+					)
 				);
 
 				if ( $parsed ) {
@@ -48,7 +56,8 @@ class ApiVisualEditor extends ApiBase {
 		} elseif ( $params['paction'] === 'save' /* means user is not blocked */ ) {
 			// API Posts HTML to Parsoid Service, receives Wikitext,
 			// API Saves Wikitext to page.
-			$wikitext = Http::post( $parsoid . '/' . $page->getPrefixedDBkey(),
+			$wikitext = Http::post(
+				$parsoid . '/' . $page->getPrefixedDBkey(),
 				array( 'postData' => array( 'content' => $params['html'] ) )
 			);
 
@@ -122,6 +131,9 @@ class ApiVisualEditor extends ApiBase {
 			'paction' => array(
 				ApiBase::PARAM_REQUIRED => true,
 			),
+			'oldid' => array(
+				ApiBase::PARAM_REQUIRED => false,
+			),
 			'minor' => array(
 				ApiBase::PARAM_REQUIRED => false,
 			),
@@ -147,6 +159,7 @@ class ApiVisualEditor extends ApiBase {
 		return array(
 			'page' => 'The page to perform actions on.',
 			'paction' => 'Which action? parse or save.',
+			'oldid' => 'The revision number to use.',
 			'minor' => 'Flag for minor edit.',
 			'html' => 'HTML to send to parsoid in exchange for wikitext'
 		);

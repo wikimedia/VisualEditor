@@ -16,8 +16,12 @@
  * @param {String} title Page title of target
  */
 ve.init.mw.ViewPageTarget = function () {
+	var currentUri = new mw.Uri( window.location.toString() );
+
 	// Inheritance
-	ve.init.mw.Target.call( this, mw.config.get( 'wgRelevantPageName' ) );
+	ve.init.mw.Target.call(
+		this, mw.config.get( 'wgRelevantPageName' ), currentUri.query.oldid
+	);
 
 	// Properties
 	this.$surface = $( '<div class="ve-surface"></div>' );
@@ -45,15 +49,15 @@ ve.init.mw.ViewPageTarget = function () {
 			}
 		}
 	};
-	this.currentUri = new mw.Uri( window.location.toString() );
-	this.section = this.currentUri.query.vesection || null;
+	this.currentUri = currentUri;
+	this.section = currentUri.query.vesection || null;
 	this.namespaceName = mw.config.get( 'wgCanonicalNamespace' );
 	this.viewUri = new mw.Uri( mw.util.wikiGetlink( this.pageName ) );
 	this.veEditUri = this.viewUri.clone().extend( { 'veaction': 'edit' } );
 	this.isViewPage = (
 		this.namespaceName === 'VisualEditor' &&
 		mw.config.get( 'wgAction' ) === 'view' &&
-		this.currentUri.query.diff === undefined
+		currentUri.query.diff === undefined
 	);
 	this.canBeActivated = (
 		(
@@ -62,7 +66,7 @@ ve.init.mw.ViewPageTarget = function () {
 		) &&
 		(
 			$.client.test( ve.init.mw.ViewPageTarget.compatibility ) ||
-			'vewhitelist' in this.currentUri.query
+			'vewhitelist' in currentUri.query
 		)
 	);
 	this.editSummaryByteLimit = 255;
@@ -77,13 +81,22 @@ ve.init.mw.ViewPageTarget = function () {
 
 	// Initialization
 	if ( this.canBeActivated ) {
+		if ( currentUri.query.venotify ) {
+			mw.util.jsMessage(
+				ve.msg( 'visualeditor-notification-' + currentUri.query.venotify, this.pageName )
+			);
+			if ( window.history.replaceState ) {
+				delete currentUri.query.venotify;
+				window.history.replaceState( null, document.title, currentUri );
+			}
+		}
 		this.setupSkinTabs();
 		this.setupSectionEditLinks();
 		if ( this.isViewPage ) {
 			this.setupToolbarSaveButton();
 			this.setupToolbarFeedbackButton();
 			this.setupSaveDialog();
-			if ( this.currentUri.query.veaction === 'edit' ) {
+			if ( currentUri.query.veaction === 'edit' ) {
 				this.activate();
 			}
 		}
@@ -250,10 +263,12 @@ ve.init.mw.ViewPageTarget.prototype.onLoadError = function ( response, status ) 
  * @param {HTMLElement} html Rendered HTML from server
  */
 ve.init.mw.ViewPageTarget.prototype.onSave = function ( html ) {
-	if ( Number( mw.config.get( 'wgArticleId', 0 ) ) === 0 ) {
+	if ( Number( mw.config.get( 'wgArticleId', 0 ) ) === 0 || this.oldId ) {
 		// This is a page creation, refresh the page
 		this.teardownBeforeUnloadHandler();
-		window.location.href = this.viewUri;
+		window.location.href = this.viewUri.extend( {
+			'venotify': this.oldId ? 'saved' : 'created'
+		} );
 	} else {
 		// Update watch link to match 'watch checkbox' in save dialog.
 		// User logged in if module loaded.
@@ -273,7 +288,7 @@ ve.init.mw.ViewPageTarget.prototype.onSave = function ( html ) {
 		this.replacePageContent( html );
 		this.teardownBeforeUnloadHandler();
 		this.deactivate( true );
-		mw.util.jsMessage( ve.msg( 'visualeditor-notification-saved' ) );
+		mw.util.jsMessage( ve.msg( 'visualeditor-notification-saved', this.pageName ) );
 	}
 };
 
@@ -747,7 +762,7 @@ ve.init.mw.ViewPageTarget.prototype.showPageContent = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.mutePageContent = function () {
-	$( '#bodyContent > :visible:not(#siteSub)' )
+	$( '#bodyContent > :visible:not(#siteSub,#contentSub)' )
 		.addClass( 've-init-mw-viewPageTarget-content' )
 		.fadeTo( 'fast', 0.6 );
 };
@@ -758,7 +773,7 @@ ve.init.mw.ViewPageTarget.prototype.mutePageContent = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.hidePageContent = function () {
-	$( '#bodyContent > :visible:not(#siteSub)' )
+	$( '#bodyContent > :visible:not(#siteSub,#contentSub)' )
 		.addClass( 've-init-mw-viewPageTarget-content' )
 		.hide();
 };
@@ -906,7 +921,7 @@ ve.init.mw.ViewPageTarget.prototype.transformPageTitle = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.mutePageTitle = function  () {
-	$( '#firstHeading, #siteSub:visible' ).fadeTo( 'fast', 0.6 );
+	$( '#firstHeading, #siteSub:visible, #contentSub:visible' ).fadeTo( 'fast', 0.6 );
 };
 
 /**
@@ -915,7 +930,7 @@ ve.init.mw.ViewPageTarget.prototype.mutePageTitle = function  () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.restorePageTitle = function () {
-	$( '#firstHeading, #siteSub:visible' ).fadeTo( 'fast', 1 );
+	$( '#firstHeading, #siteSub:visible, #contentSub:visible' ).fadeTo( 'fast', 1 );
 	setTimeout( function () {
 		$( '#firstHeading' ).removeClass( 've-init-mw-viewPageTarget-pageTitle' );
 	}, 1000 );

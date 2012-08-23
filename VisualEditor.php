@@ -106,6 +106,7 @@ $wgResourceModules += array(
 			'tooltip-ca-edit',
 			'viewsource',
 			'visualeditor-notification-saved',
+			'visualeditor-notification-created',
 			'visualeditor-ca-editsource',
 			'visualeditor-loadwarning',
 			'visualeditor-feedback-prompt',

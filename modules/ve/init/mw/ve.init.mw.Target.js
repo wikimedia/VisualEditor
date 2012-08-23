@@ -14,12 +14,13 @@
  * @constructor
  * @param {String} pageName Name of target page
  */
-ve.init.mw.Target = function ( pageName ) {
+ve.init.mw.Target = function ( pageName, oldId ) {
 	// Inheritance
 	ve.EventEmitter.call( this );
 
 	// Properties
 	this.pageName = pageName;
+	this.oldId = oldId;
 	this.editToken = mw.user.tokens.get( 'editToken' );
 	this.apiUrl = mw.util.wikiScript( 'api' );
 	this.modules = ['ext.visualEditor.core', 'ext.visualEditor.specialMessages'];
@@ -175,6 +176,7 @@ ve.init.mw.Target.prototype.load = function () {
 			'action': 've-parsoid',
 			'paction': 'parse',
 			'page': this.pageName,
+			'oldid': this.oldId,
 			'format': 'json'
 		},
 		'dataType': 'json',
@@ -225,6 +227,7 @@ ve.init.mw.Target.prototype.save = function ( dom, options ) {
 			'action': 've-parsoid',
 			'paction': 'save',
 			'page': this.pageName,
+			'oldid': this.oldId,
 			'html': $( dom ).html(),
 			'token': this.editToken,
 			'summary': options.summary,
