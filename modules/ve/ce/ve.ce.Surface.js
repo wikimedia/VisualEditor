@@ -928,6 +928,7 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 			tx = ve.dm.Transaction.newFromInsertion(
 				documentModel, list.getOuterRange().to, emptyParagraph
 			);
+			this.model.change( tx );
 
 			advanceCursor = false;
 		} else {
