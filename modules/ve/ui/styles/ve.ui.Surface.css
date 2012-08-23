@@ -8,14 +8,9 @@
 .es-toolbar {
 	border-bottom: solid 1px #ccc;
 	position: relative;
-/*	-webkit-border-radius: 0.25em;
-	-moz-border-radius: 0.25em;
-	-o-border-radius: 0.25em;
-	border-radius: 0.25em;
-*/
 	/* @embed */
 	background-image: url(images/fade-up.png);
-	background-position: bottom left;
+	background-position: left bottom;
 	background-repeat: repeat-x;
 	-webkit-user-select: none;
 	-moz-user-select: none;
