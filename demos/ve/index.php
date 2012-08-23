@@ -189,10 +189,77 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 			<a href="#" id="ve-get-range">Get range from the editor</a>
 			<br/>
 			<a href="#" id="ve-dump-data">Dump data to the console</a>
+			<br/>
+			<a href="#" id="ve-dump-all">Dump all data</a>
+			<br/><br/>
+			<table id="ve-dump" border="1" width="100%" style="display: none;">
+				<tr>
+					<td>Linear model</td>
+					<td>View tree</td>
+					<td>Model tree</td>
+				</tr>
+				<tr>
+					<td width="30%" id="ve-linear-model-dump"></td>
+					<td id="ve-view-tree-dump" style="vertical-align: top;"></td>
+					<td id="ve-model-tree-dump" style="vertical-align: top;"></td>
+				</tr>
+			</table>
 		</div>
 
 		<script>
 		$( function() {
+			$( '#ve-dump-all' ).on( "click", function( e ) {
+				// linear model dump
+				var $ol = $('<ol start=0></ol>'),
+					$li,
+					element,
+					html,
+					annotations;
+
+				for ( var i = 0; i < ve.instances[0].documentModel.data.length; i++ ) {
+					$li = $('<li></li>');
+					element = ve.instances[0].documentModel.data[i];
+					if( element.type ) {
+						html = element.type;
+					} else if ( element.length > 1 ){
+						annotations = [];
+						$.each(element[1], function(index, val) {
+							annotations.push( val.type );
+
+						});
+						html = element[0] + ' [' + annotations.join(', ') + ']';
+					} else {
+						html = element;
+					}
+
+					$li.html ( html );
+					$ol.append($li);
+				}
+				$('#ve-linear-model-dump').html($ol);
+
+				// tree dump
+				var getKids = function( obj ) {
+					var $ol = $('<ol start=0></ol>'),
+						$li;
+					for( var i = 0; i < obj.children.length; i++ ) {
+						$li = $('<li></li>');
+						$li.html(obj.children[i].type);
+
+						if ( obj.children[i].children ) {
+							$li.append(getKids(obj.children[i]));
+						}
+
+
+						$ol.append($li);
+					}
+					return $ol;
+				}
+				$('#ve-model-tree-dump').html(getKids(ve.instances[0].documentModel.documentNode));
+				$('#ve-view-tree-dump').html(getKids(ve.instances[0].view.documentView.documentNode));
+				$('#ve-dump').show();
+				e.preventDefault();
+				return false;
+			} );
 			$( '#ve-get-range' ).on( "click", function( e ) {
 				var range = ve.instances[0].view.model.getSelection();
 				$( '#ve-debug-start' ).val( range.start );
