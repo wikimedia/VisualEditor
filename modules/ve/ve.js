@@ -489,3 +489,44 @@ ve.debounce = function ( func, wait, immediate ) {
 ve.msg = function () {
 	return ve.init.platform.getMessage.apply( ve.init.platform, arguments );
 };
+
+/**
+ * Escapes non-word characters so they can be safely used as HTML attribute values.
+ *
+ * This method is basically a copy of mw.html.escape.
+ *
+ * @static
+ * @method
+ * @param {String} value Attribute value to escape
+ * @returns {String} Escaped attribute value
+ */
+ve.escapeHtml = function( value ) {
+	return value.replace( /['"<>&]/g, ve.escapeHtml.escapeHtmlCharacter );
+};
+
+/**
+ * Helper function for ve.escapeHtml which escapes a character for use in HTML.
+ *
+ * This is a callback passed into String.prototype.replace.
+ *
+ * @static
+ * @method
+ * @param {String} key Property name of value being replaced
+ * @returns {String} Escaped charcater
+ */
+ve.escapeHtml.escapeHtmlCharacter = function ( value ) {
+	switch ( value ) {
+		case "'":
+			return '&#039;';
+		case '"':
+			return '&quot;';
+		case '<':
+			return '&lt;';
+		case '>':
+			return '&gt;';
+		case '&':
+			return '&amp;';
+		default:
+			return value;
+	}
+};
