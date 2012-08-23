@@ -87,7 +87,8 @@ $wgResourceModules += array(
 			'mediawiki.feedback',
 			'mediawiki.Uri',
 			'mediawiki.Title',
-			'jquery.placeholder'
+			'jquery.placeholder',
+			'jquery.client'
 		),
 		'messages' => array(
 			'minoredit',
