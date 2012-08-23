@@ -295,7 +295,9 @@ ve.ui.Context.prototype.closeInspector = function ( accept ) {
 		this.inspector = null;
 	}
 	this.$inspectors.css( {
-		'visibility': 'hidden'
+		'visibility': 'hidden',
+		'width': 0,
+		'height': 0
 	} );
 };
 
