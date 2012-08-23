@@ -61,9 +61,10 @@ ve.dm.LinkAnnotation.converters = {
 			// Get title from href
 			// The href is simply the title, unless we're dealing with a page that
 			// has slashes in its name in which case it's preceded by one or more
-			// instances of "../", so strip those.
+			// instances of "./" or "../", so strip those.
 			// FIXME Both this and _ -> space are MW-specific
-			retval.data.title = href.replace( /^(\.\.\/)*/, '' ).replace( /_/g, ' ' );
+			// FIXME We should restore these on the way out
+			retval.data.title = href.replace( /^(\.\.?\/)*/, '' ).replace( /_/g, ' ' );
 		} else if ( subType === 'ExtLink' || subType === 'ExtLink/Numbered' || subType === 'ExtLink/URL' ) {
 			retval.data.href = href;
 		}
