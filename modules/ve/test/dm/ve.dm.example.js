@@ -497,20 +497,20 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/list' }
 		]
 	},
-	'internal link with ../': {
-		'html': '<p><a rel="mw:WikiLink" href="../../../Foo/Bar">Foo</a></p>',
+	'internal link with ./ and ../': {
+		'html': '<p><a rel="mw:WikiLink" href="./../../../Foo/Bar">Foo</a></p>',
 		'normalizedHtml': '<p><a rel="mw:WikiLink" href="Foo/Bar">Foo</a></p>',
 		'data': [
 			{ 'type': 'paragraph' },
 			[
 				'F',
 				{
-					'{"data":{"htmlAttributes":{"href":"../../../Foo/Bar","rel":"mw:WikiLink"},"title":"Foo/Bar"},"type":"link/WikiLink"}': {
+					'{"data":{"htmlAttributes":{"href":"./../../../Foo/Bar","rel":"mw:WikiLink"},"title":"Foo/Bar"},"type":"link/WikiLink"}': {
 						'type': 'link/WikiLink',
 						'data': {
 							'title': 'Foo/Bar',
 							'htmlAttributes': {
-								'href': '../../../Foo/Bar',
+								'href': './../../../Foo/Bar',
 								'rel': 'mw:WikiLink'
 							}
 						}
@@ -520,12 +520,12 @@ ve.dm.example.domToDataCases = {
 			[
 				'o',
 				{
-					'{"data":{"htmlAttributes":{"href":"../../../Foo/Bar","rel":"mw:WikiLink"},"title":"Foo/Bar"},"type":"link/WikiLink"}': {
+					'{"data":{"htmlAttributes":{"href":"./../../../Foo/Bar","rel":"mw:WikiLink"},"title":"Foo/Bar"},"type":"link/WikiLink"}': {
 						'type': 'link/WikiLink',
 						'data': {
 							'title': 'Foo/Bar',
 							'htmlAttributes': {
-								'href': '../../../Foo/Bar',
+								'href': './../../../Foo/Bar',
 								'rel': 'mw:WikiLink'
 							}
 						}
@@ -535,12 +535,12 @@ ve.dm.example.domToDataCases = {
 			[
 				'o',
 				{
-					'{"data":{"htmlAttributes":{"href":"../../../Foo/Bar","rel":"mw:WikiLink"},"title":"Foo/Bar"},"type":"link/WikiLink"}': {
+					'{"data":{"htmlAttributes":{"href":"./../../../Foo/Bar","rel":"mw:WikiLink"},"title":"Foo/Bar"},"type":"link/WikiLink"}': {
 						'type': 'link/WikiLink',
 						'data': {
 							'title': 'Foo/Bar',
 							'htmlAttributes': {
-								'href': '../../../Foo/Bar',
+								'href': './../../../Foo/Bar',
 								'rel': 'mw:WikiLink'
 							}
 						}
