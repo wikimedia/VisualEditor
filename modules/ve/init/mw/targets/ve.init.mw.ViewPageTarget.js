@@ -483,7 +483,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
 	// into editsource, add a new "VisualEditor" Edit tab
 	action = mw.config.get( 'wgArticleId', 0 ) === 0 ? 'create' : 'edit';
 	pVeEdit = mw.util.addPortletLink(
-		'p-views',
+		$( '#p-views' ).length ? 'p-views' : 'p-cactions',
 		// Use url instead of '#'.
 		// So that 1) one can always open it in a new tab, even when
 		// onEditTabClick is bound.
@@ -927,7 +927,8 @@ ve.init.mw.ViewPageTarget.prototype.restorePageTitle = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.transformSkinTabs = function () {
-	$( '#p-views' ).find( 'li.selected' ).removeClass( 'selected' );
+	$( $( '#p-views' ).length ? '#p-views' : '#p-cactions' )
+		.find( 'li.selected' ).removeClass( 'selected' );
 	$( '#ca-edit' ).addClass( 'selected' );
 };
 
@@ -937,7 +938,8 @@ ve.init.mw.ViewPageTarget.prototype.transformSkinTabs = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.restoreSkinTabs = function () {
-	$( '#p-views' ).find( 'li.selected' ).removeClass( 'selected' );
+	$( $( '#p-views' ).length ? '#p-views' : '#p-cactions' )
+		.find( 'li.selected' ).removeClass( 'selected' );
 	$( '#ca-view' ).addClass( 'selected' );
 };
 

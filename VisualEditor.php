@@ -79,6 +79,9 @@ $wgResourceModules += array(
 			),
 			'apex' => array(
 				've/init/mw/styles/ve.init.mw.ViewPageTarget-apex.css',
+			),
+			'monobook' => array(
+				've/init/mw/styles/ve.init.mw.ViewPageTarget-monobook.css',
 			)
 		),
 		'dependencies' => array(

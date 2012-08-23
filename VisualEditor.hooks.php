@@ -10,7 +10,7 @@
 
 class VisualEditorHooks {
 	/** List of skins VisualEditor integration supports */
-	protected static $supportedSkins = array( 'vector', 'apex' );
+	protected static $supportedSkins = array( 'vector', 'apex', 'monobook' );
 
 	/**
 	 * Adds VisualEditor JS to the output if in the correct namespace.
