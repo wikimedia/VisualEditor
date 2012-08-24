@@ -104,30 +104,31 @@
 				inputTimer = setTimeout( function() {
 					var txt = $input.val().toLowerCase();
 					if ( txt !== '' ) {
-						// Check for query in cache object.
-						if (
-							!( txt in cache ) &&
-							typeof options.input === 'function'
-						) {
-							options.input.call( $input, function( params, callback ){
-								build( params );
-								cache[txt] = params;
-							} );
-						} else {
-							// Rebuild from cache only if query has changed.
-							// This prevents disrupting the menu on keypress.
-							if ( txt !== currentInput ) {
+						// Be sure that input has changed.
+						if ( txt !== currentInput ) {
+							// Build fresh if query not in cache.
+							if (
+								!( txt in cache ) &&
+								typeof options.input === 'function'
+							) {
+								options.input.call( $input, function( params, callback ){
+									build( params );
+									cache[txt] = params;
+								} );
+							} else {
+								// Rebuild from cache.
 								build( cache[txt] );
 							}
 						}
-						// Set current input.
-						currentInput = txt;
 					} else {
 						// No Text, close.
 						if ( visible ) {
 							close();
 						}
 					}
+					// Set current input.
+					currentInput = txt;
+
 				}, 250 );
 			}
 			// Opens the MultiSuggest dropdown.
@@ -136,9 +137,8 @@
 					// Call input method if cached value is stale
 					if (
 						$input.val() !== '' &&
-						$input.val() !== currentInput
+						$input.val().toLowerCase() !== currentInput
 					) {
-						currentInput = $input.val();
 						onInput();
 					} else {
 						// Show if there are suggestions.
@@ -241,9 +241,7 @@
 			// Bind target input events
 			$input.on( {
 				// Handle any change to the input.
-				'keyup change cut paste': onInput,
-				// Handle arrow up and down keys.
-				'keydown': function( e ) {
+				'keydown cut paste': function( e ) {
 					var $item,
 						$items = $multiSuggest
 							.find( '.' + options.prefix + '-suggest-item' ),
@@ -292,6 +290,8 @@
 							return;
 						}
 					}
+					// Handle normal input.
+					onInput();
 				},
 				'focus': function(){
 					focused = true;
