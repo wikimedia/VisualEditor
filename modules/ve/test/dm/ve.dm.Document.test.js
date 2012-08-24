@@ -34,8 +34,8 @@ QUnit.test( 'constructor', 4, function ( assert ) {
 	doc = new ve.dm.Document( [ { 'type': 'paragraph' }, { 'type': '/paragraph' } ] );
 	assert.equalNodeTree(
 		doc.getDocumentNode(),
-		new ve.dm.DocumentNode( [ new ve.dm.ParagraphNode( [ new ve.dm.TextNode( 0 ) ] ) ] ),
-		'empty paragraph gets a zero-length text node'
+		new ve.dm.DocumentNode( [ new ve.dm.ParagraphNode( [ ] ) ] ),
+		'empty paragraph does not get a zero-length text node'
 	);
 } );
 

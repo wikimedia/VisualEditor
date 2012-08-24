@@ -224,21 +224,26 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 			),
 			'leaves'
 		);
-		if ( removeHasStructure || insertHasStructure ) {
-			// Replacement is not exclusively text
+		firstNode = selection[0].node;
+		if (
+			// Replacement is text only
+			!removeHasStructure && !insertHasStructure &&
+			// firstNode is a text node
+			firstNode.getType() === 'text' &&
+			// We're not blanking the text node
+			firstNode.getLength() + insert.length - remove.length > 0
+		) {
+			// Resize firstNode
+			this.synchronizer.pushResize( firstNode, insert.length - remove.length );
+		} else {
 			// Rebuild all covered nodes
 			range = new ve.Range(
-				selection[0].nodeRange.start, selection[selection.length - 1].nodeRange.end
+				selection[0].nodeOuterRange.start, selection[selection.length - 1].nodeOuterRange.end
 			);
 			this.synchronizer.pushRebuild( range,
 				new ve.Range( range.start + this.adjustment,
 					range.end + this.adjustment + insert.length - remove.length )
 			);
-		} else {
-			// Text-only replacement
-			// Queue a resize for this node
-			node = selection[0].node;
-			this.synchronizer.pushResize( node, insert.length - remove.length );
 		}
 		// Advance the cursor
 		this.cursor += insert.length;
@@ -270,16 +275,7 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 						prevCursor + opRemove.length - this.adjustment
 					), 'siblings' );
 					for ( i = 0; i < selection.length; i++ ) {
-						// .nodeRange is the inner range, we need the
-						// outer range (including opening and closing)
-						if ( selection[i].node.isWrapped() ) {
-							affectedRanges.push( new ve.Range(
-								selection[i].nodeRange.start - 1,
-								selection[i].nodeRange.end + 1
-							) );
-						} else {
-							affectedRanges.push( selection[i].nodeRange );
-						}
+						affectedRanges.push( selection[i].nodeOuterRange );
 					}
 				}
 				// Walk through the remove and insert data
