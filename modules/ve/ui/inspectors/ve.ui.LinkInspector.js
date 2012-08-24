@@ -245,6 +245,7 @@ ve.ui.LinkInspector.prototype.initMultiSuggest = function() {
 	var inspector = this,
 		context = inspector.context,
 		$overlay = context.$iframeOverlay,
+		cache = {},
 		options;
 
 	// Multi Suggest configuration.
@@ -306,24 +307,41 @@ ve.ui.LinkInspector.prototype.initMultiSuggest = function() {
 		'input': function( callback ) {
 			var $input = $( this ),
 				query = $input.val(),
+				cKey = query.toLowerCase(),
+				api = null;
+
+			// Set overlay position.
+			options.position();
+			// Build from cache.
+			if ( cache[cKey] !== undefined ) {
+				callback( {
+					query: query,
+					results: cache[cKey]
+				} );
+			} else {
+				// No cache, build fresh.
 				api = new mw.Api();
-			// Make AJAX Request.
-			api.get( {
-				action: 'opensearch',
-				search: query
-			}, {
-				ok: function( data ) {
-					// Position the iframe overlay below the input.
-					context.positionIframeOverlay( {
-						overlay: $overlay,
-						below: $input
-					} );
-					// Build
-					callback( {
-						query: query,
-						results: data[1]
-					} );
-				}
+				// MW api request.
+				api.get( {
+					action: 'opensearch',
+					search: query
+				}, {
+					ok: function( data ) {
+						cache[cKey] = data[1];
+						// Build
+						callback( {
+							query: query,
+							results: data[1]
+						} );
+					}
+				} );
+			}
+		},
+		// Position the iframe overlay below the input.
+		'position': function() {
+			context.positionIframeOverlay( {
+				overlay: $overlay,
+				below: inspector.$locationInput
 			} );
 		}
 	};
