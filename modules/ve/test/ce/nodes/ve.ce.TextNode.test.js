@@ -26,9 +26,9 @@ QUnit.test( 'getHtml', 22, function ( assert ) {
 		{
 			'data': [
 				{ 'type': 'paragraph' },
-				['a', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } }],
-				['b', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } }],
-				['c', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } }],
+				['a', [ { 'type': 'textStyle/bold' } ]],
+				['b', [ { 'type': 'textStyle/bold' } ]],
+				['c', [ { 'type': 'textStyle/bold' } ]],
 				{ 'type': '/paragraph' }
 			],
 			'html': '<b>abc</b>'
@@ -36,9 +36,9 @@ QUnit.test( 'getHtml', 22, function ( assert ) {
 		{
 			'data': [
 				{ 'type': 'paragraph' },
-				['a', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } }],
+				['a', [ { 'type': 'textStyle/bold' } ]],
 				'b',
-				['c', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } }],
+				['c', [ { 'type': 'textStyle/italic' } ]],
 				{ 'type': '/paragraph' }
 			],
 			'html': '<b>a</b>b<i>c</i>'
@@ -46,21 +46,21 @@ QUnit.test( 'getHtml', 22, function ( assert ) {
 		{
 			'data': [
 				{ 'type': 'paragraph' },
-				['a', {
-					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
-					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' }
-				}],
-				['b', {
-					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
-					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' }
-				}],
-				['c', {
-					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
-					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' }
-				}],
+				['a', [
+					{ 'type': 'textStyle/bold' },
+					{ 'type': 'textStyle/italic' },
+					{ 'type': 'textStyle/underline' }
+				]],
+				['b', [
+					{ 'type': 'textStyle/bold' },
+					{ 'type': 'textStyle/italic' },
+					{ 'type': 'textStyle/underline' }
+				]],
+				['c', [
+					{ 'type': 'textStyle/bold' },
+					{ 'type': 'textStyle/italic' },
+					{ 'type': 'textStyle/underline' }
+				]],
 				{ 'type': '/paragraph' }
 			],
 			'html': '<b><i><u>abc</u></i></b>'
@@ -68,21 +68,21 @@ QUnit.test( 'getHtml', 22, function ( assert ) {
 		{
 			'data': [
 				{ 'type': 'paragraph' },
-				['a', {
-					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
-					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' }
-				}],
-				['b', {
-					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
-					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
-					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }
-				}],
-				['c', {
-					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
-					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' }
-				}],
+				['a', [
+					{ 'type': 'textStyle/bold' },
+					{ 'type': 'textStyle/italic' },
+					{ 'type': 'textStyle/underline' }
+				]],
+				['b', [
+					{ 'type': 'textStyle/italic' },
+					{ 'type': 'textStyle/underline' },
+					{ 'type': 'textStyle/bold' }
+				]],
+				['c', [
+					{ 'type': 'textStyle/underline' },
+					{ 'type': 'textStyle/bold' },
+					{ 'type': 'textStyle/italic' }
+				]],
 				{ 'type': '/paragraph' }
 			],
 			'html': '<b><i><u>abc</u></i></b>'
@@ -90,17 +90,17 @@ QUnit.test( 'getHtml', 22, function ( assert ) {
 		{
 			'data': [
 				{ 'type': 'paragraph' },
-				['a', {
-					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
-					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' }
-				}],
+				['a', [
+					{ 'type': 'textStyle/bold' },
+					{ 'type': 'textStyle/italic' },
+					{ 'type': 'textStyle/underline' }
+				]],
 				'b',
-				['c', {
-					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
-					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' }
-				}],
+				['c', [
+					{ 'type': 'textStyle/underline' },
+					{ 'type': 'textStyle/bold' },
+					{ 'type': 'textStyle/italic' }
+				]],
 				{ 'type': '/paragraph' }
 			],
 			'html': '<b><i><u>a</u></i></b>b<u><b><i>c</i></b></u>'
@@ -111,21 +111,21 @@ QUnit.test( 'getHtml', 22, function ( assert ) {
 				'a',
 				'b',
 				'c',
-				['d', {
-					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
-					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' }
-				}],
-				['e', {
-					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
-					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
-					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }
-				}],
-				['f', {
-					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
-					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' }
-				}],
+				['d', [
+					{ 'type': 'textStyle/bold' },
+					{ 'type': 'textStyle/italic' },
+					{ 'type': 'textStyle/underline' }
+				]],
+				['e', [
+					{ 'type': 'textStyle/italic' },
+					{ 'type': 'textStyle/underline' },
+					{ 'type': 'textStyle/bold' }
+				]],
+				['f', [
+					{ 'type': 'textStyle/underline' },
+					{ 'type': 'textStyle/bold' },
+					{ 'type': 'textStyle/italic' }
+				]],
 				'g',
 				'h',
 				'i',
@@ -139,20 +139,20 @@ QUnit.test( 'getHtml', 22, function ( assert ) {
 				'a',
 				'b',
 				'c',
-				['d', {
-					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
-					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' }
-				}],
-				['e', {
-					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
-					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' }
-				}],
-				['f', {
-					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
-					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' }
-				}],
+				['d', [
+					{ 'type': 'textStyle/bold' },
+					{ 'type': 'textStyle/italic' },
+					{ 'type': 'textStyle/underline' }
+				]],
+				['e', [
+					{ 'type': 'textStyle/italic' },
+					{ 'type': 'textStyle/underline' }
+				]],
+				['f', [
+					{ 'type': 'textStyle/underline' },
+					{ 'type': 'textStyle/bold' },
+					{ 'type': 'textStyle/italic' }
+				]],
 				'g',
 				'h',
 				'i',
@@ -166,20 +166,20 @@ QUnit.test( 'getHtml', 22, function ( assert ) {
 				'a',
 				'b',
 				'c',
-				['d', {
-					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
-					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
-					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }
-				}],
-				['e', {
-					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
-					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' }
-				}],
-				['f', {
-					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
-					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' }
-				}],
+				['d', [
+					{ 'type': 'textStyle/italic' },
+					{ 'type': 'textStyle/underline' },
+					{ 'type': 'textStyle/bold' }
+				]],
+				['e', [
+					{ 'type': 'textStyle/italic' },
+					{ 'type': 'textStyle/underline' }
+				]],
+				['f', [
+					{ 'type': 'textStyle/underline' },
+					{ 'type': 'textStyle/bold' },
+					{ 'type': 'textStyle/italic' }
+				]],
 				'g',
 				'h',
 				'i',
@@ -193,19 +193,19 @@ QUnit.test( 'getHtml', 22, function ( assert ) {
 				'a',
 				'b',
 				'c',
-				['d', {
-					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' },
-					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
-					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }
-				}],
-				['e', {
-					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' }
-				}],
-				['f', {
-					'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' },
-					'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }
-				}],
+				['d', [
+					{ 'type': 'textStyle/italic' },
+					{ 'type': 'textStyle/underline' },
+					{ 'type': 'textStyle/bold' }
+				]],
+				['e', [
+					{ 'type': 'textStyle/bold' },
+					{ 'type': 'textStyle/underline' }
+				]],
+				['f', [
+					{ 'type': 'textStyle/underline' },
+					{ 'type': 'textStyle/bold' }
+				]],
 				'g',
 				'h',
 				'i',
@@ -275,6 +275,7 @@ QUnit.test( 'getHtml', 22, function ( assert ) {
 		}
 	];
 	for ( i = 0, len = cases.length; i < len; i++ ) {
+		ve.dm.example.preprocessAnnotations( cases[i].data );
 		assert.equal(
 			( new ve.ce.TextNode(
 				( new ve.dm.Document( cases[i].data ) )

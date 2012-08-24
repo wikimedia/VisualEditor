@@ -140,15 +140,15 @@ ve.dm.Document = function ( data, parentDocument ) {
  *
  * @method
  * @param {Array} data Data to remove annotations from
- * @param {Array} annotations Annotations to apply
+ * @param {ve.AnnotationSet} annotationSet Annotations to apply
  */
-ve.dm.Document.addAnnotationsToData = function ( data, annotations ) {
+ve.dm.Document.addAnnotationsToData = function ( data, annotationSet ) {
 	// Apply annotations to data
 	for ( var i = 0; i < data.length; i++ ) {
 		if ( !ve.isArray( data[i] ) ) {
-			data[i] = [data[i]];
+			data[i] = [data[i], new ve.AnnotationSet()];
 		}
-		data[i][1] = ve.extendObject( data[i][1], annotations );
+		data[i][1].addSet( annotationSet );
 	}
 };
 
@@ -479,17 +479,19 @@ ve.dm.Document.prototype.getDataFromNode = function ( node ) {
 /**
  * Gets a list of annotations that a given offset is covered by.
  *
+ * This method returns a clone of the AnnotationSet in the linear model.
+ *
  * @method
  * @param {Integer} offset Offset to get annotations for
- * @returns {Object} A copy of all annotation objects offset is covered by
+ * @returns {ve.AnnotationSet} A set of all annotation objects offset is covered by
  */
 ve.dm.Document.prototype.getAnnotationsFromOffset = function ( offset ) {
-	var annotations;
 	// Since annotations are not stored on a closing leaf node,
 	// rewind offset by 1 to return annotations for that structure
+	var set;
 	if (
 		ve.isPlainObject( this.data[offset] ) && // structural offset
-		this.data[offset].hasOwnProperty('type') && // just in case
+		this.data[offset].hasOwnProperty( 'type' ) && // just in case
 		this.data[offset].type.charAt( 0 ) === '/' && // closing offset
 		ve.dm.nodeFactory.canNodeHaveChildren(
 			this.data[offset].type.substr( 1 )
@@ -498,13 +500,8 @@ ve.dm.Document.prototype.getAnnotationsFromOffset = function ( offset ) {
 		offset = this.getRelativeContentOffset( offset, -1 );
 	}
 
-	annotations = ve.isArray( this.data[offset] ) ?
-		this.data[offset][1] : this.data[offset].annotations;
-
-	if ( ve.isPlainObject( annotations ) ) {
-		return ve.extendObject( {}, annotations );
-	}
-	return {};
+	set = this.data[offset].annotations || this.data[offset][1];
+	return set ? set.clone() : new ve.AnnotationSet();
 };
 
 /**
@@ -516,13 +513,8 @@ ve.dm.Document.prototype.getAnnotationsFromOffset = function ( offset ) {
  * @returns {Boolean} Whether an offset contains the specified annotation
  */
 ve.dm.Document.prototype.offsetContainsAnnotation = function ( offset, annotation ) {
-	var hash, annotations = this.getAnnotationsFromOffset( offset );
-	for ( hash in annotations ) {
-		if ( ve.compareObjects( annotations[hash], annotation ) ) {
-			return true;
-		}
-	}
-	return false;
+	// TODO inline this
+	return this.getAnnotationsFromOffset( offset ).contains( annotation );
 };
 
 /**
@@ -582,84 +574,7 @@ ve.dm.Document.prototype.getAnnotatedRangeFromSelection = function ( range, anno
 };
 
 /**
- * Checks if a character has matching annotations.
- *
- * @static
- * @method
- * @param {Integer} offset Offset of annotated character
- * @param {RegExp} pattern Regular expression pattern to match with
- * @returns {Boolean} Character has matching annotations
- */
-ve.dm.Document.prototype.offsetContainsMatchingAnnotations = function ( offset, pattern ) {
-	if ( !( pattern instanceof RegExp ) ) {
-		throw new Error( 'Invalid Pattern. Pattern not instance of RegExp' );
-	}
-	var hash,
-		annotations = ve.isArray( this.data[offset] ) ?
-		this.data[offset][1] : this.data[offset].annotations;
-	if ( ve.isPlainObject( annotations ) ) {
-		for ( hash in annotations ) {
-			if ( pattern.test( annotations[hash].type ) ) {
-				return true;
-			}
-		}
-	}
-	return false;
-};
-
-/**
- * Gets a list of annotations that match a regular expression at an offset
- *
- * @method
- * @param {Integer} offset Offset of annotated character
- * @param {RegExp} pattern Regular expression pattern to match with
- * @returns {Object} Annotations that match the pattern
- */
-ve.dm.Document.prototype.getMatchingAnnotationsFromOffset = function ( offset, pattern ) {
-	if ( !( pattern instanceof RegExp ) ) {
-		throw new Error( 'Invalid Pattern. Pattern not instance of RegExp' );
-	}
-	var hash,
-		matches = {},
-		annotations = ve.isArray( this.data[offset] ) ?
-			this.data[offset][1] : this.data[offset].annotations;
-	if ( ve.isPlainObject( annotations ) ) {
-		for ( hash in annotations ) {
-			if ( pattern.test( annotations[hash].type ) ) {
-				matches[hash] = annotations[hash];
-			}
-		}
-	}
-	return matches;
-};
-
-/**
- * Gets a list of annotations annotations that match a regular expression.
- *
- * @static
- * @method
- * @param {Array} annotations Annotations to search through
- * @param {RegExp} pattern Regular expression pattern to match with
- * @returns {Object} Annotations that match the pattern
- */
-ve.dm.Document.getMatchingAnnotations = function ( annotations, pattern ) {
-	if ( !( pattern instanceof RegExp ) ) {
-		throw new Error( 'Invalid Pattern. Pattern not instance of RegExp' );
-	}
-	var hash,
-		matches = {};
-	if ( ve.isPlainObject( annotations ) ) {
-		for ( hash in annotations ) {
-			if ( pattern.test( annotations[hash].type ) ) {
-				matches[hash] = annotations[hash];
-			}
-		}
-	}
-	return matches;
-};
-
-/**
- * Gets an array of common annnotations across a range.
+ * Gets an array of common annotations across a range.
  *
  * @method
  * @param {Integer} offset Offset to get annotations for
@@ -672,13 +587,13 @@ ve.dm.Document.prototype.getAnnotationsFromRange = function ( range, all ) {
 		right,
 		hash;
 	range.normalize();
-	// Shorcut for zero-length ranges
+	// Shortcut for zero-length ranges
 	if ( range.getLength() === 0 ) {
-		return {};
+		return new ve.AnnotationSet();
 	}
 	// There's at least one character, get its annotations
 	left = this.getAnnotationsFromOffset( range.start );
-	// Shorcut for single character ranges
+	// Shortcut for single character ranges
 	if ( range.getLength() === 1 ) {
 		return left;
 	}
@@ -690,21 +605,17 @@ ve.dm.Document.prototype.getAnnotationsFromRange = function ( range, all ) {
 		}
 		// Current character annotations
 		right = this.getAnnotationsFromOffset( i );
-		if ( all && right !== undefined ) {
-			ve.extendObject( left, right );
+		if ( all && !right.isEmpty() ) {
+			left.addSet( right );
 		} else if ( !all ) {
 			// A non annotated character indicates there's no full coverage
-			if ( right === undefined ) {
-				return {};
+			if ( right.isEmpty() ) {
+				return new ve.AnnotationSet();
 			}
 			// Exclude annotations that are in left but not right
-			for ( hash in left ) {
-				if ( right[hash] === undefined ) {
-					delete left[hash];
-				}
-			}
+			left.removeNotInSet( right );
 			// If we've reduced left down to nothing, just stop looking
-			if ( ve.isEmptyObject( left ) ) {
+			if ( left.isEmpty() ) {
 				break;
 			}
 		}

@@ -45,6 +45,7 @@ function runConstructorTests( assert, constructor, cases ) {
 QUnit.test( 'newFromInsertion', function ( assert ) {
 	var doc = new ve.dm.Document( ve.dm.example.data ),
 		doc2 = new ve.dm.Document( [ { 'type': 'paragraph' }, { 'type': '/paragraph' } ] ),
+		i, key,
 		cases = {
 		'paragraph before first element': {
 			'args': [doc, 0, [{ 'type': 'paragraph' }, '1', { 'type': '/paragraph' }]],
@@ -205,12 +206,23 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 		// TODO test cases for (currently failing) unopened closings use case
 		// TODO analyze other possible cases (substrings of linmod data)
 	};
+	for ( key in cases ) {
+		for ( i = 0; i < cases[key].ops.length; i++ ) {
+			if ( cases[key].ops[i].remove ) {
+				ve.dm.example.preprocessAnnotations( cases[key].ops[i].remove );
+			}
+			if ( cases[key].ops[i].insert ) {
+				ve.dm.example.preprocessAnnotations( cases[key].ops[i].insert );
+			}
+		}
+	}
 	runConstructorTests( assert, ve.dm.Transaction.newFromInsertion, cases );
 } );
 
 QUnit.test( 'newFromRemoval', function ( assert ) {
 	var alienDoc = new ve.dm.Document( ve.dm.example.alienData ),
 		doc = new ve.dm.Document( ve.dm.example.data ),
+		i, key,
 		cases = {
 		'content in first element': {
 			'args': [doc, new ve.Range( 1, 3 )],
@@ -220,7 +232,7 @@ QUnit.test( 'newFromRemoval', function ( assert ) {
 					'type': 'replace',
 					'remove': [
 						'a',
-						['b', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } }]
+						['b', [ { 'type': 'textStyle/bold' } ]]
 					],
 					'insert': []
 				},
@@ -247,8 +259,8 @@ QUnit.test( 'newFromRemoval', function ( assert ) {
 					'remove': [
 						{ 'type': 'heading', 'attributes': { 'level': 1 } },
 						'a',
-						['b', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } }],
-						['c', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } }],
+						['b', [ { 'type': 'textStyle/bold' } ]],
+						['c', [ { 'type': 'textStyle/italic' } ]],
 						{ 'type': '/heading' }
 					],
 					'insert': []
@@ -281,8 +293,8 @@ QUnit.test( 'newFromRemoval', function ( assert ) {
 					'remove': [
 						{ 'type': 'heading', 'attributes': { 'level': 1 } },
 						'a',
-						['b', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } }],
-						['c', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } }],
+						['b', [ { 'type': 'textStyle/bold' } ]],
+						['c', [ { 'type': 'textStyle/italic' } ]],
 						{ 'type': '/heading' }
 					],
 					'insert': []
@@ -438,6 +450,16 @@ QUnit.test( 'newFromRemoval', function ( assert ) {
 			]
 		}
 	};
+	for ( key in cases ) {
+		for ( i = 0; i < cases[key].ops.length; i++ ) {
+			if ( cases[key].ops[i].remove ) {
+				ve.dm.example.preprocessAnnotations( cases[key].ops[i].remove );
+			}
+			if ( cases[key].ops[i].insert ) {
+				ve.dm.example.preprocessAnnotations( cases[key].ops[i].insert );
+			}
+		}
+	}
 	runConstructorTests( assert, ve.dm.Transaction.newFromRemoval, cases );
 } );
 
@@ -584,6 +606,7 @@ QUnit.test( 'newFromAnnotation', function ( assert ) {
 
 QUnit.test( 'newFromContentBranchConversion', function ( assert ) {
 	var doc = new ve.dm.Document( ve.dm.example.data ),
+		i, key,
 		cases = {
 		'range inside a heading, convert to paragraph': {
 			'args': [doc, new ve.Range( 1, 2 ), 'paragraph'],
@@ -633,6 +656,16 @@ QUnit.test( 'newFromContentBranchConversion', function ( assert ) {
 			]
 		}
 	};
+	for ( key in cases ) {
+		for ( i = 0; i < cases[key].ops.length; i++ ) {
+			if ( cases[key].ops[i].remove ) {
+				ve.dm.example.preprocessAnnotations( cases[key].ops[i].remove );
+			}
+			if ( cases[key].ops[i].insert ) {
+				ve.dm.example.preprocessAnnotations( cases[key].ops[i].insert );
+			}
+		}
+	}
 	runConstructorTests(
 		assert,
 		ve.dm.Transaction.newFromContentBranchConversion,
@@ -642,6 +675,7 @@ QUnit.test( 'newFromContentBranchConversion', function ( assert ) {
 
 QUnit.test( 'newFromWrap', function ( assert ) {
 	var doc = new ve.dm.Document( ve.dm.example.data ),
+		i, key,
 		cases = {
 		'changes a heading to a paragraph': {
 			'args': [doc, new ve.Range( 1, 4 ), [ { 'type': 'heading', 'attributes': { 'level': 1 } } ], [ { 'type': 'paragraph' } ], [], []],
@@ -715,6 +749,16 @@ QUnit.test( 'newFromWrap', function ( assert ) {
 			'exception': Error
 		}
 	};
+	for ( key in cases ) {
+		for ( i = 0; cases[key].ops && i < cases[key].ops.length; i++ ) {
+			if ( cases[key].ops[i].remove ) {
+				ve.dm.example.preprocessAnnotations( cases[key].ops[i].remove );
+			}
+			if ( cases[key].ops[i].insert ) {
+				ve.dm.example.preprocessAnnotations( cases[key].ops[i].insert );
+			}
+		}
+	}
 	runConstructorTests(
 		assert,
 		ve.dm.Transaction.newFromWrap,
@@ -898,6 +942,22 @@ QUnit.test( 'pushReplace', function ( assert ) {
 			'diff': 0
 		}
 	};
+	for ( key in cases ) {
+		for ( i = 0; i < cases[key].ops.length; i++ ) {
+			if ( cases[key].ops[i].remove ) {
+				ve.dm.example.preprocessAnnotations( cases[key].ops[i].remove );
+			}
+			if ( cases[key].ops[i].insert ) {
+				ve.dm.example.preprocessAnnotations( cases[key].ops[i].insert );
+			}
+		}
+		for ( i = 0; i < cases[key].calls.length; i++ ) {
+			if ( cases[key].calls[i][0] === 'pushReplace' ) {
+				ve.dm.example.preprocessAnnotations( cases[key].calls[i][1] );
+				ve.dm.example.preprocessAnnotations( cases[key].calls[i][2] );
+			}
+		}
+	}
 	runBuilderTests( assert, cases );
 } );
 

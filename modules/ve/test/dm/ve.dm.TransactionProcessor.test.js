@@ -10,7 +10,7 @@ QUnit.module( 've.dm.TransactionProcessor' );
 /* Tests */
 
 QUnit.test( 'commit/rollback', function ( assert ) {
-	var i, originalData, originalDoc, msg, testDocument, tx, expectedData, expectedDocument,
+	var i, key, originalData, originalDoc, msg, testDocument, tx, expectedData, expectedDocument,
 		cases = {
 		'no operations': {
 			'calls': [],
@@ -36,11 +36,11 @@ QUnit.test( 'commit/rollback', function ( assert ) {
 				['pushStopAnnotating', 'set', { 'type': 'textStyle/underline' }]
 			],
 			'expected': function ( data ) {
-				var b = { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } },
-					u = { '{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' } };
-				data[1] = ['a', b];
-				data[2] = ['b', b];
-				data[3] = ['c', ve.extendObject( {}, b, u )];
+				var b = { 'type': 'textStyle/bold' },
+					u = { 'type': 'textStyle/underline' };
+				data[1] = ['a', new ve.AnnotationSet( [ b ] )];
+				data[2] = ['b', new ve.AnnotationSet( [ b ] )];
+				data[3] = ['c', new ve.AnnotationSet( [ b, u ] )];
 			}
 		},
 		'annotating content and leaf elements': {
@@ -51,9 +51,9 @@ QUnit.test( 'commit/rollback', function ( assert ) {
 				['pushStopAnnotating', 'set', { 'type': 'textStyle/bold' }]
 			],
 			'expected': function ( data ) {
-				var b = { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } };
-				data[38] = ['h', b];
-				data[39].annotations = b;
+				var b = [ { 'type': 'textStyle/bold' } ];
+				data[38] = ['h', new ve.AnnotationSet( b )];
+				data[39].annotations = new ve.AnnotationSet( b );
 			}
 		},
 		'using an annotation method other than set or clear throws an exception': {
@@ -210,7 +210,7 @@ QUnit.test( 'commit/rollback', function ( assert ) {
 				['pushRetain', 3],
 				[
 					'pushReplace',
-					[['c', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } }]],
+					[['c', [ { 'type': 'textStyle/italic' } ]]],
 					[]
 				],
 				['pushRetain', 6],
@@ -226,6 +226,15 @@ QUnit.test( 'commit/rollback', function ( assert ) {
 			}
 		}
 	};
+	for ( key in cases ) {
+		for ( i = 0; i < cases[key].calls.length; i++ ) {
+			if ( cases[key].calls[i][0] === 'pushReplace' ) {
+				ve.dm.example.preprocessAnnotations( cases[key].calls[i][1] );
+				ve.dm.example.preprocessAnnotations( cases[key].calls[i][2] );
+			}
+		}
+	}
+
 	// Generate original document
 	originalData = ve.dm.example.data;
 	originalDoc = new ve.dm.Document( originalData );

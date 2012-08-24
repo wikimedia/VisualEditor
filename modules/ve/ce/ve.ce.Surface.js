@@ -254,7 +254,7 @@ ve.ce.Surface.prototype.onKeyDown = function ( e ) {
 				annotations = this.documentView.model.getAnnotationsFromRange( this.model.getSelection() );
 				annotation = { 'type': 'textStyle/bold' };
 
-				this.model.annotate( annotations[ve.getHash(annotation)] ? 'clear' : 'set', annotation );
+				this.model.annotate( annotations.contains( annotation ) ? 'clear' : 'set', annotation );
 			}
 			break;
 		// I
@@ -265,7 +265,7 @@ ve.ce.Surface.prototype.onKeyDown = function ( e ) {
 				annotations = this.documentView.model.getAnnotationsFromRange( this.model.getSelection() );
 				annotation = { 'type': 'textStyle/italic' };
 
-				this.model.annotate( annotations[ve.getHash(annotation)] ? 'clear' : 'set', annotation );
+				this.model.annotate( annotations.contains( annotation ) ? 'clear' : 'set', annotation );
 			}
 			break;
 		// K
@@ -700,7 +700,7 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 
 		// Get annotations to the left of new content and apply
 		annotations = this.model.getDocument().getAnnotationsFromOffset( previous.range.start - 1 );
-		if ( !ve.isEmptyObject( annotations ) ) {
+		if ( !annotations.isEmpty() ) {
 			ve.dm.Document.addAnnotationsToData( data, annotations );
 		}
 
@@ -760,7 +760,7 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 
 		// Get annotations to the left of new content and apply
 		annotations = this.model.getDocument().getAnnotationsFromOffset( nodeOffset + 1 + fromLeft );
-		if ( !ve.isEmptyObject( annotations ) ) {
+		if ( annotations.getLength() > 0 ) {
 			ve.dm.Document.addAnnotationsToData( data, annotations );
 		}
 

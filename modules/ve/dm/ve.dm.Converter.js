@@ -35,26 +35,26 @@ ve.dm.Converter = function ( nodeFactory, annotationFactory ) {
  */
 ve.dm.Converter.getDataContentFromText = function ( text, annotations ) {
 	var characters = text.split( '' ),
-		annotationMap = {},
+		annotationSet = new ve.AnnotationSet(),
 		i;
 	if ( !annotations || annotations.length === 0 ) {
 		return characters;
 	}
-	// Build annotation map
+	// Build annotation set
 	for ( i = 0; i < annotations.length; i++ ) {
 		if ( annotations[i].data && ve.isEmptyObject( annotations[i].data ) ) {
 			// Cleanup empty data property
 			delete annotations[i].data;
 		}
-		annotationMap[ve.getHash( annotations[i] )] = annotations[i];
+		annotationSet.push( annotations[i] );
 	}
 	// Apply annotations to characters
 	for ( i = 0; i < characters.length; i++ ) {
-		// Make a shallow copy of the annotationMap object, otherwise adding an annotation to one
+		// Make a shallow copy of the annotationSet object, otherwise adding an annotation to one
 		// character automatically adds it to all of others as well, annotations should be treated
-		// as immutable, so it's OK to share references, but annotation maps are not immutable, so
-		// its not safe to share references - each annotated character needs its own map
-		characters[i] = [characters[i], ve.extendObject( {}, annotationMap )];
+		// as immutable, so it's OK to share references, but annotation sets are not immutable, so
+		// it's not safe to share references - each annotated character needs its own set
+		characters[i] = [characters[i], annotationSet.clone()];
 	}
 	return characters;
 };
@@ -310,7 +310,7 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 					// Append child element data
 					data = data.concat(
 						this.getDataFromDom(
-							childDomElement, annotations.concat( annotation ), undefined, path, wrapping
+							childDomElement, annotations.concat( [ annotation ] ), undefined, path, wrapping
 						)
 					);
 					break;
@@ -540,11 +540,11 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
  * @returns {HTMLElement} Wrapper div containing the resulting HTML
  */
 ve.dm.Converter.prototype.getDomFromData = function ( data ) {
-	var text, i, j, annotations, hash, annotationElement, done, dataElement, wrapper,
-		childDomElement, pre, post, ours, theirs, parentDomElement,
+	var text, i, j, annotations, annotation, hash, annotationElement, done, dataElement, arr,
+		wrapper, childDomElement, pre, post, ours, theirs, parentDomElement, startClosingAt,
 		container = document.createElement( 'div' ),
 		domElement = container,
-		annotationStack = {}; // { hash: DOMnode }
+		annotationStack = new ve.AnnotationSet();
 	for ( i = 0; i < data.length; i++ ) {
 		if ( typeof data[i] === 'string' ) {
 			// Text
@@ -565,7 +565,7 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 				ve.dm.nodeFactory.isNodeContent( data[i].type )
 			)
 		) {
-			// Annotated text
+			// Annotated text or annotated nodes
 			text = '';
 			while (
 				ve.isArray( data[i] ) ||
@@ -575,51 +575,58 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 				)
 			) {
 				annotations = data[i].annotations || data[i][1];
-				// Check for closed annotations
-				for ( hash in annotationStack ) {
-					if ( !( hash in annotations ) ) {
-						// It's closed
-						// Traverse up until we hit the node we need to close, and then
-						// traverse up one more time to close that node
-						done = false;
-						while ( !done ) {
-							done = domElement === annotationStack[hash];
-							// Remove the annotation from the stack
-							delete annotationStack[domElement.veAnnotationHash];
-							// Remove the temporary veAnnotationHash property
-							delete domElement.veAnnotationHash;
-							// Add text if needed
-							if ( text.length > 0 ) {
-								domElement.appendChild( document.createTextNode( text ) );
-								text = '';
-							}
-							// Traverse up
-							domElement = domElement.parentNode;
-						}
+				// Close annotations as needed
+				// Go through annotationStack from bottom to top (low to high),
+				// and find the first annotation that's not in annotations.
+				startClosingAt = undefined;
+				arr = annotationStack.get();
+				for ( j = 0; j < arr.length; j++ ) {
+					annotation = arr[j];
+					if ( !annotations.contains( annotation ) ) {
+						startClosingAt = j;
+						break;
 					}
 				}
-				// Check for opened annotations
-				for ( hash in annotations ) {
-					if ( !( hash in annotationStack ) ) {
-						// It's opened
-						annotationElement = this.getDomElementFromDataAnnotation( annotations[hash] );
-						// Temporary property, will remove this when closing the annotation
-						annotationElement.veAnnotationHash = hash;
-						// Add to the annotation stack
-						annotationStack[hash] = annotationElement;
+				if ( startClosingAt !== undefined ) {
+					// Close all annotations from top to bottom (high to low)
+					// until we reach startClosingAt
+					for ( j = annotationStack.getLength() - 1; j >= startClosingAt; j-- ) {
 						// Add text if needed
 						if ( text.length > 0 ) {
 							domElement.appendChild( document.createTextNode( text ) );
 							text = '';
 						}
-						// Attach new node and descend into it
-						domElement.appendChild( annotationElement );
-						domElement = annotationElement;
+						// Traverse up
+						domElement = domElement.parentNode;
+						// Remove from annotationStack
+						annotationStack.removeAt( j );
 					}
 				}
+
+				// Open annotations as needed
+				arr = annotations.get();
+				for ( j = 0; j < arr.length; j++ ) {
+					annotation = arr[j];
+					if ( !annotationStack.contains( annotation ) ) {
+						// Add text if needed
+						if ( text.length > 0 ) {
+							domElement.appendChild( document.createTextNode( text ) );
+							text = '';
+						}
+						// Create new node and descend into it
+						annotationElement = this.getDomElementFromDataAnnotation( annotation );
+						domElement.appendChild( annotationElement );
+						domElement = annotationElement;
+						// Add to annotationStack
+						annotationStack.push( annotation );
+					}
+				}
+
 				if ( data[i].annotations === undefined ) {
+					// Annotated text
 					text += data[i][0];
 				} else {
+					// Annotated node
 					// Add text if needed
 					if ( text.length > 0 ) {
 						domElement.appendChild( document.createTextNode( text ) );
@@ -641,11 +648,12 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 				text = '';
 			}
 			// Close any remaining annotation nodes
-			while ( domElement.veAnnotationHash !== undefined ) {
-				delete annotationStack[domElement.veAnnotationHash];
-				delete domElement.veAnnotationHash;
+			for ( j = annotationStack.getLength() - 1; j >= 0; j-- ) {
+				// Traverse up
 				domElement = domElement.parentNode;
 			}
+			// Clear annotationStack
+			annotationStack = new ve.AnnotationSet();
 		} else if ( data[i].type !== undefined ) {
 			dataElement = data[i];
 			// Element

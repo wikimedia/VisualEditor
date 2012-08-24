@@ -38,6 +38,7 @@ QUnit.test( 'getDataFromDom', function ( assert ) {
 		cases = ve.dm.example.domToDataCases;
 	for ( msg in cases ) {
 		if ( cases[msg].html !== null ) {
+			ve.dm.example.preprocessAnnotations( cases[msg].data );
 			assert.deepEqual(
 				ve.dm.converter.getDataFromDom( $( '<div>' ).html( cases[msg].html )[0] ),
 				cases[msg].data,
@@ -51,6 +52,7 @@ QUnit.test( 'getDomFromData', function ( assert ) {
 	var msg,
 		cases = ve.dm.example.domToDataCases;
 	for ( msg in cases ) {
+		ve.dm.example.preprocessAnnotations( cases[msg].data );
 		assert.equalDomElement(
 			ve.dm.converter.getDomFromData( cases[msg].data ),
 			$( '<div>' ).html( cases[msg].normalizedHtml || cases[msg].html )[0],

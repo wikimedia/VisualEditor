@@ -20,7 +20,7 @@ ve.ce.TextNode = function ( model ) {
 	// Events
 	this.model.addListenerMethod( this, 'update', 'onUpdate' );
 
-	// Intialization
+	// Initialization
 	this.onUpdate( true );
 };
 
@@ -185,6 +185,7 @@ ve.ce.TextNode.prototype.getHtml = function () {
 		out = '',
 		i,
 		j,
+		arr,
 		hash,
 		left = '',
 		right,
@@ -192,11 +193,11 @@ ve.ce.TextNode.prototype.getHtml = function () {
 		nextCharacter,
 		open,
 		close,
-		index,
+		startedClosing,
+		annotation,
 		leftPlain,
 		rightPlain,
-		hashStack = [],
-		annotationStack = {},
+		annotationStack = new ve.AnnotationSet(),
 		chr;
 
 	function replaceWithNonBreakingSpace( index, data ) {
@@ -237,28 +238,28 @@ ve.ce.TextNode.prototype.getHtml = function () {
 
 	function openAnnotations( annotations ) {
 		var out = '',
-			annotation, hash;
-		for ( hash in annotations ) {
-			annotation = annotations[hash];
+			annotation, i, arr;
+		arr = annotations.get();
+		for ( i = 0; i < arr.length; i++ ) {
+			annotation = arr[i];
 			out += typeof renderers[annotation.type].open === 'function' ?
 				renderers[annotation.type].open( annotation.data ) :
 				renderers[annotation.type].open;
-			hashStack.push( hash );
-			annotationStack[hash] = annotation;
+			annotationStack.push( annotation );
 		}
 		return out;
 	}
 
 	function closeAnnotations( annotations ) {
 		var out = '',
-			annotation, hash;
-		for ( hash in annotations ) {
-			annotation = annotations[hash];
+			annotation, i, arr;
+		arr = annotations.get();
+		for ( i = 0; i < arr.length; i++ ) {
+			annotation = arr[i];
 			out += typeof renderers[annotation.type].close === 'function' ?
 				renderers[annotation.type].close( annotation.data ) :
 				renderers[annotation.type].close;
-			hashStack.pop();
-			delete annotationStack[hash];
+			annotationStack.remove( annotation );
 		}
 		return out;
 	}
@@ -270,50 +271,45 @@ ve.ce.TextNode.prototype.getHtml = function () {
 		
 		if ( !leftPlain && rightPlain ) {
 			// [formatted][plain]
-			close = {};
-			for ( j = hashStack.length - 1; j >= 0; j-- ) {
-				close[hashStack[j]] = annotationStack[hashStack[j]];
-			}
-			out += closeAnnotations( close );
+			// Close all open annotations, in reverse order
+			out += closeAnnotations( annotationStack.reversed() );
 		} else if ( leftPlain && !rightPlain ) {
 			// [plain][formatted]
 			out += openAnnotations( right[1] );
 		} else if ( !leftPlain && !rightPlain ) {
 			// [formatted][formatted]
+			open = new ve.AnnotationSet();
+			close = new ve.AnnotationSet();
 
-			// setting index to undefined is is necessary to it does not use value from
-			// the previous iteration
-			open = {};
-			index = undefined;
-
-			for ( hash in left[1] ) {
-				if ( !( hash in right[1] ) ) {
-					index = ( index === undefined ) ?
-						hashStack.indexOf( hash ) :
-						Math.min( index, hashStack.indexOf( hash ) );
+			// Go through annotationStack from bottom to top (left to right), and
+			// close all annotations starting at the first one that's in left[1] but
+			// not in right[1]. Then reopen the ones that are in right[1].
+			startedClosing = false;
+			arr = annotationStack.get();
+			for ( j = 0; j < arr.length; j++ ) {
+				annotation = arr[j];
+				if (
+					!startedClosing &&
+					left[1].contains( annotation ) &&
+					!right[1].contains( annotation )
+				) {
+					startedClosing = true;
 				}
-			}
-
-			if ( index !== undefined ) {
-				close = {};
-				for ( j = hashStack.length - 1; j >= index; j-- ) {
-					close[hashStack[j]] = annotationStack[hashStack[j]];
-				}
-
-				for ( j = index; j < hashStack.length; j++ ) {
-					if ( hashStack[j] in right[1] && hashStack[j] in left[1] ) {
-						open[hashStack[j]] = annotationStack[hashStack[j]];
+				if ( startedClosing ) {
+					// Because we're processing these in reverse order, we need
+					// to put these in close in reverse order
+					close.add( annotation, 0 );
+					if ( right[1].contains( annotation ) ) {
+						// open needs to be reversed with respect to close
+						open.push( annotation );
 					}
 				}
-				out += closeAnnotations( close );
 			}
 
-			for ( hash in right[1] ) {
-				if ( !( hash in left[1] ) ) {
-					open[hash] = right[1][hash];
-				}
-			}
+			// Open all annotations that are in right but not in left
+			open.addSet( right[1].diffWith( left[1] ) );
 
+			out += closeAnnotations( close );
 			out += openAnnotations( open );
 		}
 
@@ -322,11 +318,8 @@ ve.ce.TextNode.prototype.getHtml = function () {
 		left = right;
 	}
 
-	close = {};
-	for ( j = hashStack.length - 1; j >= 0; j-- ) {
-		close[hashStack[j]] = annotationStack[hashStack[j]];
-	}
-	out += closeAnnotations( close );
+	// Close all remaining open annotations
+	out += closeAnnotations( annotationStack.reversed() );
 	return out;
 };
 

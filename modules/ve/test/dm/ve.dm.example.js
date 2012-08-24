@@ -9,6 +9,16 @@
 
 ve.dm.example = {};
 
+ve.dm.example.preprocessAnnotations = function ( data ) {
+	var i, key;
+	for ( i = 0; i < data.length; i++ ) {
+		key = data[i].annotations ? 'annotations' : 1;
+		if ( ve.isArray( data[i][key] ) ) {
+			data[i][key] = new ve.AnnotationSet( data[i][key] );
+		}
+	}
+};
+
 /**
  * Serialized HTML.
  *
@@ -75,9 +85,9 @@ ve.dm.example.data = [
 	//  1 - Plain "a"
 	'a',
 	//  2 - Bold "b"
-	['b', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } }],
+	['b', [ { 'type': 'textStyle/bold' } ]],
 	//  3 - Italic "c"
-	['c', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } }],
+	['c', [ { 'type': 'textStyle/italic' } ]],
 	//  4 - End of heading
 	{ 'type': '/heading' },
 	//  5 - Beginning of table
@@ -194,6 +204,7 @@ ve.dm.example.data = [
 	{ 'type': '/paragraph' }
 	// 61 - End of document
 ];
+ve.dm.example.preprocessAnnotations( ve.dm.example.data );
 
 ve.dm.example.alienData = [
 	// 0 - Open alienBlock
@@ -389,9 +400,9 @@ ve.dm.example.domToDataCases = {
 		'html': '<p><b>a</b><i>b</i><u>c</u></p>',
 		'data': [
 			{ 'type': 'paragraph' },
-			['a', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } }],
-			['b', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } }],
-			['c', { '{"type":"textStyle/underline"}': { 'type': 'textStyle/underline' } }],
+			['a', [ { 'type': 'textStyle/bold' } ]],
+			['b', [ { 'type': 'textStyle/italic' } ]],
+			['c', [ { 'type': 'textStyle/underline' } ]],
 			{ 'type': '/paragraph' }
 		]
 	},
@@ -446,54 +457,48 @@ ve.dm.example.domToDataCases = {
 			{ 'type': 'paragraph', 'internal': { 'whitespace': [ undefined, ' ' ] } },
 			[
 				'b',
-				{
-					'{"data":{"hrefPrefix":"","htmlAttributes":{"data-rt":"{\\"sHref\\":\\"foo bar\\"}","href":"Foo_bar","rel":"mw:WikiLink"},"title":"Foo bar"},"type":"link/WikiLink"}': {
-						'type': 'link/WikiLink',
-						'data': {
-							'hrefPrefix': '',
-							'htmlAttributes': {
-								'data-rt': '{"sHref":"foo bar"}',
-								'href': 'Foo_bar',
-								'rel': 'mw:WikiLink'
-							},
-							'title': 'Foo bar'
+				[ {
+					'type': 'link/WikiLink',
+					'data': {
+						'title': 'Foo bar',
+						'hrefPrefix': '',
+						'htmlAttributes': {
+							'data-rt': '{"sHref":"foo bar"}',
+							'href': 'Foo_bar',
+							'rel': 'mw:WikiLink'
 						}
 					}
-				}
+				} ]
 			],
 			[
 				'a',
-				{
-					'{"data":{"hrefPrefix":"","htmlAttributes":{"data-rt":"{\\"sHref\\":\\"foo bar\\"}","href":"Foo_bar","rel":"mw:WikiLink"},"title":"Foo bar"},"type":"link/WikiLink"}': {
-						'type': 'link/WikiLink',
-						'data': {
-							'hrefPrefix': '',
-							'htmlAttributes': {
-								'data-rt': '{"sHref":"foo bar"}',
-								'href': 'Foo_bar',
-								'rel': 'mw:WikiLink'
-							},
-							'title': 'Foo bar'
+				[ {
+					'type': 'link/WikiLink',
+					'data': {
+						'title': 'Foo bar',
+						'hrefPrefix': '',
+						'htmlAttributes': {
+							'data-rt': '{"sHref":"foo bar"}',
+							'href': 'Foo_bar',
+							'rel': 'mw:WikiLink'
 						}
 					}
-				}
+				} ]
 			],
 			[
 				'r',
-				{
-					'{"data":{"hrefPrefix":"","htmlAttributes":{"data-rt":"{\\"sHref\\":\\"foo bar\\"}","href":"Foo_bar","rel":"mw:WikiLink"},"title":"Foo bar"},"type":"link/WikiLink"}': {
-						'type': 'link/WikiLink',
-						'data': {
-							'hrefPrefix': '',
-							'htmlAttributes': {
-								'data-rt': '{"sHref":"foo bar"}',
-								'href': 'Foo_bar',
-								'rel': 'mw:WikiLink'
-							},
-							'title': 'Foo bar'
+				[ {
+					'type': 'link/WikiLink',
+					'data': {
+						'title': 'Foo bar',
+						'hrefPrefix': '',
+						'htmlAttributes': {
+							'data-rt': '{"sHref":"foo bar"}',
+							'href': 'Foo_bar',
+							'rel': 'mw:WikiLink'
 						}
 					}
-				}
+				} ]
 			],
 			{ 'type': '/paragraph' },
 			{ 'type': '/listItem' },
@@ -507,51 +512,45 @@ ve.dm.example.domToDataCases = {
 			{ 'type': 'paragraph' },
 			[
 				'F',
-				{
-					'{"data":{"hrefPrefix":"./../../../","htmlAttributes":{"href":"./../../../Foo/Bar","rel":"mw:WikiLink"},"title":"Foo/Bar"},"type":"link/WikiLink"}': {
-						'type': 'link/WikiLink',
-						'data': {
-							'hrefPrefix': './../../../',
-							'htmlAttributes': {
-								'href': './../../../Foo/Bar',
-								'rel': 'mw:WikiLink'
-							},
-							'title': 'Foo/Bar'
+				[ {
+					'type': 'link/WikiLink',
+					'data': {
+						'title': 'Foo/Bar',
+						'hrefPrefix': './../../../',
+						'htmlAttributes': {
+							'href': './../../../Foo/Bar',
+							'rel': 'mw:WikiLink'
 						}
 					}
-				}
+				} ]
 			],
 			[
 				'o',
-				{
-					'{"data":{"hrefPrefix":"./../../../","htmlAttributes":{"href":"./../../../Foo/Bar","rel":"mw:WikiLink"},"title":"Foo/Bar"},"type":"link/WikiLink"}': {
-						'type': 'link/WikiLink',
-						'data': {
-							'hrefPrefix': './../../../',
-							'htmlAttributes': {
-								'href': './../../../Foo/Bar',
-								'rel': 'mw:WikiLink'
-							},
-							'title': 'Foo/Bar'
+				[ {
+					'type': 'link/WikiLink',
+					'data': {
+						'title': 'Foo/Bar',
+						'hrefPrefix': './../../../',
+						'htmlAttributes': {
+							'href': './../../../Foo/Bar',
+							'rel': 'mw:WikiLink'
 						}
 					}
-				}
+				} ]
 			],
 			[
 				'o',
-				{
-					'{"data":{"hrefPrefix":"./../../../","htmlAttributes":{"href":"./../../../Foo/Bar","rel":"mw:WikiLink"},"title":"Foo/Bar"},"type":"link/WikiLink"}': {
-						'type': 'link/WikiLink',
-						'data': {
-							'hrefPrefix': './../../../',
-							'htmlAttributes': {
-								'href': './../../../Foo/Bar',
-								'rel': 'mw:WikiLink'
-							},
-							'title': 'Foo/Bar'
+				[ {
+					'type': 'link/WikiLink',
+					'data': {
+						'title': 'Foo/Bar',
+						'hrefPrefix': './../../../',
+						'htmlAttributes': {
+							'href': './../../../Foo/Bar',
+							'rel': 'mw:WikiLink'
 						}
 					}
-				}
+				} ]
 			],
 			{ 'type': '/paragraph' }
 		]
@@ -562,48 +561,42 @@ ve.dm.example.domToDataCases = {
 			{ 'type': 'paragraph' },
 			[
 				'[',
-				{
-					'{"data":{"href":"http://www.mediawiki.org/","htmlAttributes":{"href":"http://www.mediawiki.org/","rel":"mw:ExtLink/Numbered"}},"type":"link/ExtLink/Numbered"}': {
-						'type': 'link/ExtLink/Numbered',
-						'data': {
+				[ {
+					'type': 'link/ExtLink/Numbered',
+					'data': {
+						'href': 'http://www.mediawiki.org/',
+						'htmlAttributes': {
 							'href': 'http://www.mediawiki.org/',
-							'htmlAttributes': {
-								'href': 'http://www.mediawiki.org/',
-								'rel': 'mw:ExtLink/Numbered'
-							}
+							'rel': 'mw:ExtLink/Numbered'
 						}
 					}
-				}
+				} ]
 			],
 			[
 				'1',
-				{
-					'{"data":{"href":"http://www.mediawiki.org/","htmlAttributes":{"href":"http://www.mediawiki.org/","rel":"mw:ExtLink/Numbered"}},"type":"link/ExtLink/Numbered"}': {
-						'type': 'link/ExtLink/Numbered',
-						'data': {
+				[ {
+					'type': 'link/ExtLink/Numbered',
+					'data': {
+						'href': 'http://www.mediawiki.org/',
+						'htmlAttributes': {
 							'href': 'http://www.mediawiki.org/',
-							'htmlAttributes': {
-								'href': 'http://www.mediawiki.org/',
-								'rel': 'mw:ExtLink/Numbered'
-							}
+							'rel': 'mw:ExtLink/Numbered'
 						}
 					}
-				}
+				} ]
 			],
 			[
 				']',
-				{
-					'{"data":{"href":"http://www.mediawiki.org/","htmlAttributes":{"href":"http://www.mediawiki.org/","rel":"mw:ExtLink/Numbered"}},"type":"link/ExtLink/Numbered"}': {
-						'type': 'link/ExtLink/Numbered',
-						'data': {
+				[ {
+					'type': 'link/ExtLink/Numbered',
+					'data': {
+						'href': 'http://www.mediawiki.org/',
+						'htmlAttributes': {
 							'href': 'http://www.mediawiki.org/',
-							'htmlAttributes': {
-								'href': 'http://www.mediawiki.org/',
-								'rel': 'mw:ExtLink/Numbered'
-							}
+							'rel': 'mw:ExtLink/Numbered'
 						}
 					}
-				}
+				} ]
 			],
 			{ 'type': '/paragraph' }
 		]
@@ -614,33 +607,29 @@ ve.dm.example.domToDataCases = {
 			{ 'type': 'paragraph' },
 			[
 				'm',
-				{
-					'{"data":{"href":"http://www.mediawiki.org/","htmlAttributes":{"href":"http://www.mediawiki.org/","rel":"mw:ExtLink/URL"}},"type":"link/ExtLink/URL"}': {
-						'type': 'link/ExtLink/URL',
-						'data': {
+				[ {
+					'type': 'link/ExtLink/URL',
+					'data': {
+						'href': 'http://www.mediawiki.org/',
+						'htmlAttributes': {
 							'href': 'http://www.mediawiki.org/',
-							'htmlAttributes': {
-								'href': 'http://www.mediawiki.org/',
-								'rel': 'mw:ExtLink/URL'
-							}
+							'rel': 'mw:ExtLink/URL'
 						}
 					}
-				}
+				} ]
 			],
 			[
 				'w',
-				{
-					'{"data":{"href":"http://www.mediawiki.org/","htmlAttributes":{"href":"http://www.mediawiki.org/","rel":"mw:ExtLink/URL"}},"type":"link/ExtLink/URL"}': {
-						'type': 'link/ExtLink/URL',
-						'data': {
+				[ {
+					'type': 'link/ExtLink/URL',
+					'data': {
+						'href': 'http://www.mediawiki.org/',
+						'htmlAttributes': {
 							'href': 'http://www.mediawiki.org/',
-							'htmlAttributes': {
-								'href': 'http://www.mediawiki.org/',
-								'rel': 'mw:ExtLink/URL'
-							}
+							'rel': 'mw:ExtLink/URL'
 						}
 					}
-				}
+				} ]
 			],
 			{ 'type': '/paragraph' }
 		]
@@ -729,14 +718,14 @@ ve.dm.example.domToDataCases = {
 				'type': 'paragraph',
 				'internal': { 'whitespace': [ undefined, ' ', '    ' ] }
 			},
-			[ ' ', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
-			[ ' ', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
-			[ 'F', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
-			[ 'o', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
-			[ 'o', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
-			[ ' ', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
-			[ ' ', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
-			[ ' ', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
+			[ ' ', [ { 'type': 'textStyle/italic' } ] ],
+			[ ' ', [ { 'type': 'textStyle/italic' } ] ],
+			[ 'F', [ { 'type': 'textStyle/italic' } ] ],
+			[ 'o', [ { 'type': 'textStyle/italic' } ] ],
+			[ 'o', [ { 'type': 'textStyle/italic' } ] ],
+			[ ' ', [ { 'type': 'textStyle/italic' } ] ],
+			[ ' ', [ { 'type': 'textStyle/italic' } ] ],
+			[ ' ', [ { 'type': 'textStyle/italic' } ] ],
 			{ 'type': '/paragraph' }
 		]
 	},
@@ -795,12 +784,12 @@ ve.dm.example.domToDataCases = {
 			' ',
 			' ',
 			' ',
-			[ ' ', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
-			[ ' ', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
-			[ ' ', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
-			[ ' ', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
-			[ 'C', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
-			[ '\t', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
+			[ ' ', [ { 'type': 'textStyle/bold' } ] ],
+			[ ' ', [ { 'type': 'textStyle/bold' } ] ],
+			[ ' ', [ { 'type': 'textStyle/bold' } ] ],
+			[ ' ', [ { 'type': 'textStyle/bold' } ] ],
+			[ 'C', [ { 'type': 'textStyle/bold' } ] ],
+			[ '\t', [ { 'type': 'textStyle/bold' } ] ],
 			'\t',
 			'\t',
 			'D',
@@ -813,12 +802,12 @@ ve.dm.example.domToDataCases = {
 			'\n',
 			'\n',
 			'\n',
-			[ '\n', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
-			[ '\n', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
-			[ '\n', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
-			[ '\n', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
-			[ 'G', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
-			[ ' ', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
+			[ '\n', [ { 'type': 'textStyle/bold' } ] ],
+			[ '\n', [ { 'type': 'textStyle/bold' } ] ],
+			[ '\n', [ { 'type': 'textStyle/bold' } ] ],
+			[ '\n', [ { 'type': 'textStyle/bold' } ] ],
+			[ 'G', [ { 'type': 'textStyle/bold' } ] ],
+			[ ' ', [ { 'type': 'textStyle/bold' } ] ],
 			' ',
 			' ',
 			'H',
@@ -836,24 +825,24 @@ ve.dm.example.domToDataCases = {
 			' ',
 			' ',
 			' ',
-			[ ' ', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
-			[ ' ', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
-			[ ' ', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
-			[ ' ', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
-			[ 'C', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
-			[ '\t', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
-			[ '\t', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }, '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
-			[ '\t', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }, '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
-			[ 'D', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }, '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
-			[ '\t', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }, '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
-			[ '\t', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }, '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
-			[ '\t', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }, '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
-			[ '\t', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
-			[ '\t', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
-			[ '\t', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
-			[ '\t', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
-			[ 'E', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
-			[ '\n', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
+			[ ' ', [ { 'type': 'textStyle/bold' } ] ],
+			[ ' ', [ { 'type': 'textStyle/bold' } ] ],
+			[ ' ', [ { 'type': 'textStyle/bold' } ] ],
+			[ ' ', [ { 'type': 'textStyle/bold' } ] ],
+			[ 'C', [ { 'type': 'textStyle/bold' } ] ],
+			[ '\t', [ { 'type': 'textStyle/bold' } ] ],
+			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
+			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
+			[ 'D', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
+			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
+			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
+			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
+			[ '\t', [ { 'type': 'textStyle/bold' } ] ],
+			[ '\t', [ { 'type': 'textStyle/bold' } ] ],
+			[ '\t', [ { 'type': 'textStyle/bold' } ] ],
+			[ '\t', [ { 'type': 'textStyle/bold' } ] ],
+			[ 'E', [ { 'type': 'textStyle/bold' } ] ],
+			[ '\n', [ { 'type': 'textStyle/bold' } ] ],
 			'\n',
 			'\n',
 			'F',
@@ -871,12 +860,12 @@ ve.dm.example.domToDataCases = {
 			' ',
 			' ',
 			' ',
-			[ '\t', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }, '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
-			[ '\t', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }, '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
-			[ 'C', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }, '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
-			[ '\t', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }, '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
-			[ '\t', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }, '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
-			[ '\t', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }, '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
+			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
+			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
+			[ 'C', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
+			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
+			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
+			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
 			'\n',
 			'\n',
 			'D',
@@ -894,14 +883,14 @@ ve.dm.example.domToDataCases = {
 			' ',
 			' ',
 			' ',
-			[ '\n', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
-			[ '\t', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
-			[ '\t', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }, '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
-			[ '\t', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }, '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
-			[ 'C', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }, '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
-			[ '\t', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }, '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
-			[ '\t', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }, '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
-			[ '\t', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }, '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
+			[ '\n', [ { 'type': 'textStyle/bold' } ] ],
+			[ '\t', [ { 'type': 'textStyle/bold' } ] ],
+			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
+			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
+			[ 'C', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
+			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
+			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
+			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
 			'\n',
 			'\n',
 			'D',
@@ -919,14 +908,14 @@ ve.dm.example.domToDataCases = {
 			' ',
 			' ',
 			' ',
-			[ '\t', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }, '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
-			[ '\t', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }, '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
-			[ 'C', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }, '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
-			[ '\t', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }, '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
-			[ '\t', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }, '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
-			[ '\t', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' }, '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
-			[ '\n', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
-			[ '\t', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
+			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
+			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
+			[ 'C', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
+			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
+			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
+			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
+			[ '\n', [ { 'type': 'textStyle/bold' } ] ],
+			[ '\t', [ { 'type': 'textStyle/bold' } ] ],
 			'\n',
 			'\n',
 			'D',

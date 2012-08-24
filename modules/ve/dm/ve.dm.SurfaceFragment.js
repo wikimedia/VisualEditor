@@ -395,7 +395,7 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
 	if ( content.length ) {
 		if ( annotate ) {
 			annotations = this.document.getAnnotationsFromOffset( this.range.start - 1 );
-			if ( !ve.isEmptyObject( annotations ) ) {
+			if ( annotations.getLength() > 0 ) {
 				ve.dm.Document.addAnnotationsToData( content, annotations );
 			}
 		}

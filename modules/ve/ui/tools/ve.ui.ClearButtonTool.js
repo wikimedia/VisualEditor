@@ -32,12 +32,13 @@ ve.ui.ClearButtonTool.prototype.getAnnotations = function () {
 };
 
 ve.ui.ClearButtonTool.prototype.onClick = function () {
-	var hash,
+	var i,
 		surfaceView = this.toolbar.getSurfaceView(),
 		model = surfaceView.getModel(),
-		annotations = this.getAnnotations();
-	for ( hash in annotations ) {
-		model.annotate( 'clear', annotations[hash] );
+		annotations = this.getAnnotations(),
+		arr = annotations.get();
+	for ( i = 0; i < arr.length; i++ ) {
+		model.annotate( 'clear', arr[i] );
 	}
 	surfaceView.showSelection( model.getSelection() );
 	surfaceView.contextView.closeInspector();
@@ -46,7 +47,7 @@ ve.ui.ClearButtonTool.prototype.onClick = function () {
 ve.ui.ClearButtonTool.prototype.updateState = function ( annotations ) {
 	var allAnnotations = this.getAnnotations();
 
-	if ( ve.isEmptyObject( allAnnotations ) ) {
+	if ( allAnnotations.isEmpty() ) {
 		this.$.addClass( 've-ui-toolbarButtonTool-disabled' );
 	} else {
 		this.$.removeClass( 've-ui-toolbarButtonTool-disabled' );

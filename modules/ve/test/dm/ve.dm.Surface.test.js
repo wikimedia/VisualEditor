@@ -73,35 +73,35 @@ QUnit.test( 'annotate', 1, function ( assert ) {
 			[
 				[
 					'b',
-						{
-							'{"type":"textStyle/bold"}': {
+						[
+							{
 								'type': 'textStyle/bold'
 							}
-						}
+						]
 				],
 				[
 					'o',
-						{
-							'{"type":"textStyle/bold"}': {
+						[
+							{
 								'type': 'textStyle/bold'
 							}
-						}
+						]
 				],
 				[
 					'l',
-						{
-							'{"type":"textStyle/bold"}': {
+						[
+							{
 								'type': 'textStyle/bold'
 							}
-						}
+						]
 				],
 				[
 					'd',
-						{
-							'{"type":"textStyle/bold"}': {
+						[
+							{
 								'type': 'textStyle/bold'
 							}
-						}
+						]
 				]
 			],
 			'annotate': {
@@ -113,6 +113,8 @@ QUnit.test( 'annotate', 1, function ( assert ) {
 
 	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
+		ve.dm.example.preprocessAnnotations( cases[i].data );
+		ve.dm.example.preprocessAnnotations( cases[i].expected );
 		surface = new ve.dm.SurfaceStub( cases[i].data );
 		surface.change( null, new ve.Range( 0, surface.getDocument().getData().length ) );
 		surface.annotate( cases[i].annotate.method, cases[i].annotate.annotation );

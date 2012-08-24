@@ -41,15 +41,12 @@ ve.ui.AnnotationButtonTool.prototype.onClick = function () {
 };
 
 ve.ui.AnnotationButtonTool.prototype.updateState = function ( annotations, nodes ) {
-	var matches = ve.dm.Document.getMatchingAnnotations(
-		annotations, new RegExp( '^' + this.annotation.type + '$' )
-	);
-	if ( ve.isEmptyObject( matches ) ) {
-		this.$.removeClass( 've-ui-toolbarButtonTool-down' );
-		this.active = false;
-	} else {
+	if ( annotations.hasAnnotationOfType( this.annotation.type ) ) {
 		this.$.addClass( 've-ui-toolbarButtonTool-down' );
 		this.active = true;
+	} else {
+		this.$.removeClass( 've-ui-toolbarButtonTool-down' );
+		this.active = false;
 	}
 };
 

@@ -29,11 +29,10 @@ ve.dm.TransactionProcessor = function ( doc, transaction, reversed ) {
 	// Adjustment used to convert between linear model offsets in the original linear model and
 	// in the half-updated linear model.
 	this.adjustment = 0;
-	// Set and clear are lists of annotations which should be added or removed to content being
-	// inserted or retained. The format of these objects is { hash: annotationObjectReference }
-	// where hash is the result of ve.getHash( annotationObjectReference ).
-	this.set = {};
-	this.clear = {};
+	// Set and clear are sets of annotations which should be added or removed to content being
+	// inserted or retained.
+	this.set = new ve.AnnotationSet();
+	this.clear = new ve.AnnotationSet();
 };
 
 /* Static Members */
@@ -104,12 +103,12 @@ ve.dm.TransactionProcessor.processors.retain = function ( op ) {
  * @method
  * @param {Object} op Operation object
  * @param {String} op.method Annotation method, either 'set' to add or 'clear' to remove
- * @param {String} op.bias Endpoint of marker, either 'start' to begin or 'stop' to end
+ * @param {String} op.bias End point of marker, either 'start' to begin or 'stop' to end
  * @param {String} op.annotation Annotation object to set or clear from content
  * @throws 'Invalid annotation method'
  */
 ve.dm.TransactionProcessor.processors.annotate = function ( op ) {
-	var target, hash;
+	var target;
 	if ( op.method === 'set' ) {
 		target = this.reversed ? this.clear : this.set;
 	} else if ( op.method === 'clear' ) {
@@ -117,14 +116,11 @@ ve.dm.TransactionProcessor.processors.annotate = function ( op ) {
 	} else {
 		throw new Error( 'Invalid annotation method ' + op.method );
 	}
-	
-	hash = ve.getHash( op.annotation );
 	if ( op.bias === 'start' ) {
-		target[hash] = op.annotation;
+		target.push( op.annotation );
 	} else {
-		delete target[hash];
+		target.remove( op.annotation );
 	}
-	
 	// Tree sync is done by applyAnnotations()
 };
 
@@ -418,7 +414,7 @@ ve.dm.TransactionProcessor.prototype.process = function () {
  */
 ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 	var item, element, annotated, annotations, hash, i;
-	if ( ve.isEmptyObject( this.set ) && ve.isEmptyObject( this.clear ) ) {
+	if ( this.set.isEmpty() && this.clear.isEmpty() ) {
 		return;
 	}
 	for ( i = this.cursor; i < to; i++ ) {
@@ -432,30 +428,29 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 			}
 		}
 		annotated = element ? 'annotations' in item : ve.isArray( item );
-		annotations = annotated ? ( element ? item.annotations : item[1] ) : {};
+		annotations = annotated ? ( element ? item.annotations : item[1] ) :
+			new ve.AnnotationSet();
 		// Set and clear annotations
-		for ( hash in this.set ) {
-			if ( hash in annotations ) {
-				throw new Error( 'Invalid transaction, annotation to be set is already set' );
-			}
-			annotations[hash] = this.set[hash];
+		if ( annotations.containsAnyOf( this.set ) ) {
+			throw new Error( 'Invalid transaction, annotation to be set is already set' );
+		} else {
+			annotations.addSet( this.set );
 		}
-		for ( hash in this.clear ) {
-			if ( !( hash in annotations ) ) {
-				throw new Error( 'Invalid transaction, annotation to be cleared is not set' );
-			}
-			delete annotations[hash];
+		if ( !annotations.containsAllOf( this.clear ) ) {
+			throw new Error( 'Invalid transaction, annotation to be cleared is not set' );
+		} else {
+			annotations.removeSet( this.clear );
 		}
 		// Auto initialize/cleanup
-		if ( !ve.isEmptyObject( annotations ) && !annotated ) {
+		if ( !annotations.isEmpty() && !annotated ) {
 			if ( element ) {
 				// Initialize new element annotation
-				item.annotations = annotations;
+				item.annotations = new ve.AnnotationSet( annotations );
 			} else {
 				// Initialize new character annotation
-				this.document.data[i] = [item, annotations];
+				this.document.data[i] = [item, new ve.AnnotationSet( annotations )];
 			}
-		} else if ( ve.isEmptyObject( annotations ) && annotated ) {
+		} else if ( annotations.isEmpty() && annotated ) {
 			if ( element ) {
 				// Cleanup empty element annotation
 				delete item.annotations;

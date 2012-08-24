@@ -197,7 +197,7 @@ ve.dm.Transaction.newFromAttributeChange = function ( doc, offset, key, value ) 
  *     'set': Adds annotation to all content in range
  *     'clear': Removes instances of annotation from content in range
  * @param {Object} annotation Annotation to set or clear
- * @returns {ve.dm.Transaction} Transcation that annotates content
+ * @returns {ve.dm.Transaction} Transaction that annotates content
  */
 ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation ) {
 	var covered,
@@ -258,7 +258,7 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
  * @param {ve.Range} range Range to convert
  * @param {String} type Symbolic name of element type to convert to
  * @param {Object} attr Attributes to initialize element with
- * @returns {ve.dm.Transaction} Transaction that annotates content
+ * @returns {ve.dm.Transaction} Transaction that converts content branches
  */
 ve.dm.Transaction.newFromContentBranchConversion = function ( doc, range, type, attr ) {
 	var i, selected, branch, branchOuterRange,

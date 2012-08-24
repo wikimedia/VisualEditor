@@ -155,6 +155,8 @@ $wgResourceModules += array(
 			've/ve.LeafNode.js',
 			've/ve.Surface.js',
 			've/ve.Document.js',
+			've/ve.OrderedHashSet.js',
+			've/ve.AnnotationSet.js',
 
 			// dm
 			've/dm/ve.dm.js',

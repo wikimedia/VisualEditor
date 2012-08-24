@@ -151,42 +151,44 @@ QUnit.test( 'getAnnotationsFromOffset', 1, function ( assert ) {
 		{
 			'msg': ['bold #1', 'bold #2'],
 			'data': [
-				['a', { '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } }],
-				['b', { '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } }]
+				['a', [ { 'type': 'textStyle/bold' } ]],
+				['b', [ { 'type': 'textStyle/bold' } ]]
 			],
 			'expected': [
-				{ '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } },
-				{ '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } }
+				[ { 'type': 'textStyle/bold' } ],
+				[ { 'type': 'textStyle/bold' } ]
 			]
 		},
 		{
 			'msg': ['bold #3', 'italic #1'],
 			'data': [
-				['a', { '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } }],
-				['b', { '{"type:"textStyle/italic"}': { 'type': 'textStyle/italic' } }]
+				['a', [ { 'type': 'textStyle/bold' } ]],
+				['b', [ { 'type': 'textStyle/italic' } ]]
 			],
 			'expected': [
-				{ '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } },
-				{ '{"type:"textStyle/italic"}': { 'type': 'textStyle/italic' } }
+				[ { 'type': 'textStyle/bold' } ],
+				[ { 'type': 'textStyle/italic' } ]
 			]
 		},
 		{
 			'msg': ['bold, italic & underline'],
 			'data': [
-				['a',
-					{
-						'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-						'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic'},
-						'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline'}
-					}]
+				[
+					'a',
+					[
+						{ 'type': 'textStyle/bold' },
+						{ 'type': 'textStyle/italic'},
+						{ 'type': 'textStyle/underline'}
+					]
+				]
 			],
 			'expected':
 				[
-					{
-						'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-						'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic'},
-						'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline'}
-					}
+					[
+						{ 'type': 'textStyle/bold' },
+						{ 'type': 'textStyle/italic'},
+						{ 'type': 'textStyle/underline'}
+					]
 				]
 		}
 
@@ -196,14 +198,18 @@ QUnit.test( 'getAnnotationsFromOffset', 1, function ( assert ) {
 	for ( c = 0; c < cases.length; c++ ) {
 		expectCount += cases[c].data.length;
 	}
-	QUnit.expect ( expectCount );
+	QUnit.expect( expectCount );
 
 	// Run tests
 	for ( i = 0; i < cases.length; i++ ) {
-		doc = new ve.dm.Document ( cases[i].data );
+		ve.dm.example.preprocessAnnotations( cases[i].data );
+		doc = new ve.dm.Document( cases[i].data );
 		for ( j = 0; j < doc.getData().length; j++ ) {
 			annotations = doc.getAnnotationsFromOffset( j );
-			assert.deepEqual( annotations, cases[i].expected[j], cases[i].msg[j] );
+			assert.deepEqual( annotations,
+				new ve.AnnotationSet( cases[i].expected[j] ),
+				cases[i].msg[j]
+			);
 		}
 	}
 } );
@@ -214,58 +220,57 @@ QUnit.test( 'getAnnotationsFromRange', 1, function ( assert ) {
 		{
 			'msg': 'single annotations',
 			'data': [
-				['a', { '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
-				['b', { '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } } ]
+				['a', [ { 'type': 'textStyle/bold' } ] ],
+				['b', [ { 'type': 'textStyle/bold' } ] ]
 			],
-			'expected': { '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } }
+			'expected': [ { 'type': 'textStyle/bold' } ]
 		},
 		{
-			'msg': 'mutliple annotations',
+			'msg': 'multiple annotations',
 			'data': [
 				[
 					'a',
-					{
-						'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-						'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic'}
-					}
+					[
+						{ 'type': 'textStyle/bold' },
+						{ 'type': 'textStyle/italic'}
+					]
 				],
 				[
 					'b',
-					{
-						'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-						'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic'}
-					}
+					[
+						{ 'type': 'textStyle/bold' },
+						{ 'type': 'textStyle/italic' }
+					]
 				]
 			],
-			'expected': {
-				'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-				'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic'}
-			}
-				
+			'expected': [
+				{ 'type': 'textStyle/bold' },
+				{ 'type': 'textStyle/italic' }
+			]
 		},
 		{
 			'msg': 'lowest common coverage',
 			'data': [
 				[
 					'a',
-					{
-						'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-						'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic'}
-					}
+					[
+						{ 'type': 'textStyle/bold' },
+						{ 'type': 'textStyle/italic' }
+					]
 				],
 				[
 					'b',
-					{
-						'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-						'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic'},
-						'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline'}
-					}
+					[
+						{ 'type': 'textStyle/bold' },
+						{ 'type': 'textStyle/italic' },
+						{ 'type': 'textStyle/underline' }
+					]
 				]
 			],
-			'expected': {
-				'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-				'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic'}
-			}
+			'expected': [
+				{ 'type': 'textStyle/bold' },
+				{ 'type': 'textStyle/italic' }
+			]
 		},
 		{
 			'msg': 'no common coverage due to plain character at the start',
@@ -273,124 +278,124 @@ QUnit.test( 'getAnnotationsFromRange', 1, function ( assert ) {
 				['a'],
 				[
 					'b',
-					{
-						'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-						'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic'},
-						'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline'}
-					}
+					[
+						{ 'type': 'textStyle/bold' },
+						{ 'type': 'textStyle/italic' },
+						{ 'type': 'textStyle/underline' }
+					]
 				],
 				[
 					'c',
-					{
-						'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-						'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic'}
-					}
-				]
+					[
+						{ 'type': 'textStyle/bold' },
+						{ 'type': 'textStyle/italic' }
+					]
+			]
 			],
-			'expected': {}
+			'expected': []
 		},
 		{
 			'msg': 'no common coverage due to plain character in the middle',
 			'data': [
 				[
 					'a',
-					{
-						'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-						'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic'},
-						'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline'}
-					}
+					[
+						{ 'type': 'textStyle/bold' },
+						{ 'type': 'textStyle/italic' },
+						{ 'type': 'textStyle/underline' }
+					]
 				],
 				['b'],
 				[
 					'c',
-					{
-						'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-						'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic'}
-					}
+					[
+						{ 'type': 'textStyle/bold' },
+						{ 'type': 'textStyle/italic' }
+					]
 				]
 			],
-			'expected': {}
+			'expected': []
 		},
 		{
 			'msg': 'no common coverage due to plain character at the end',
 			'data': [
 				[
 					'a',
-					{
-						'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-						'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic'}
-					}
+					[
+						{ 'type': 'textStyle/bold' },
+						{ 'type': 'textStyle/italic' }
+					]
 				],
 				[
 					'b',
-					{
-						'{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' },
-						'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic'},
-						'{"type":"textStyle/underline"}': { 'type': 'textStyle/underline'}
-					}
+					[
+						{ 'type': 'textStyle/bold' },
+						{ 'type': 'textStyle/italic' },
+						{ 'type': 'textStyle/underline' }
+					]
 				],
 				['c']
 			],
-			'expected': {}
+			'expected': []
 		},
 		{
 			'msg': 'no common coverage due to mismatched annotations',
 			'data': [
-				['a', { '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
-				['b', { '{"type:"textStyle/italic"}': { 'type': 'textStyle/italic' } } ]
+				['a', [ { 'type': 'textStyle/bold' } ] ],
+				['b', [ { 'type': 'textStyle/italic' } ] ]
 			],
-			'expected': {}
+			'expected': []
 		},
 		{
 			'msg': 'annotations are collected using all with mismatched annotations',
 			'data': [
-				['a', { '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
-				['b', { '{"type:"textStyle/italic"}': { 'type': 'textStyle/italic' } } ]
+				['a', [ { 'type': 'textStyle/bold' } ] ],
+				['b', [ { 'type': 'textStyle/italic' } ] ]
 			],
 			'all': true,
-			'expected': {
-				'{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' },
-				'{"type:"textStyle/italic"}': { 'type': 'textStyle/italic' }
-			}
+			'expected': [
+				{ 'type': 'textStyle/bold' },
+				{ 'type': 'textStyle/italic' }
+			]
 		},
 		{
 			'msg': 'annotations are collected using all, even with a plain character at the start',
 			'data': [
-				['a', { '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
-				['b', { '{"type:"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
+				['a', [ { 'type': 'textStyle/bold' } ] ],
+				['b', [ { 'type': 'textStyle/italic' } ] ],
 				['c']
 			],
 			'all': true,
-			'expected': {
-				'{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' },
-				'{"type:"textStyle/italic"}': { 'type': 'textStyle/italic' }
-			}
+			'expected': [
+				{ 'type': 'textStyle/bold' },
+				{ 'type': 'textStyle/italic' }
+			]
 		},
 		{
 			'msg': 'annotations are collected using all, even with a plain character at the middle',
 			'data': [
-				['a', { '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
-				['b', { '{"type:"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
+				['a', [ { 'type': 'textStyle/bold' } ] ],
+				['b', [ { 'type': 'textStyle/italic' } ] ],
 				['c']
 			],
 			'all': true,
-			'expected': {
-				'{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' },
-				'{"type:"textStyle/italic"}': { 'type': 'textStyle/italic' }
-			}
+			'expected': [
+				{ 'type': 'textStyle/bold' },
+				{ 'type': 'textStyle/italic' }
+			]
 		},
 		{
 			'msg': 'annotations are collected using all, even with a plain character at the end',
 			'data': [
-				['a', { '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } } ],
-				['b', { '{"type:"textStyle/italic"}': { 'type': 'textStyle/italic' } } ],
+				['a', [ { 'type': 'textStyle/bold' } ] ],
+				['b', [ { 'type': 'textStyle/italic' } ] ],
 				['c']
 			],
 			'all': true,
-			'expected': {
-				'{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' },
-				'{"type:"textStyle/italic"}': { 'type': 'textStyle/italic' }
-			}
+			'expected': [
+				{ 'type': 'textStyle/bold' },
+				{ 'type': 'textStyle/italic' }
+			]
 		},
 		{
 			'msg': 'no common coverage from all plain characters',
@@ -408,10 +413,11 @@ QUnit.test( 'getAnnotationsFromRange', 1, function ( assert ) {
 	QUnit.expect( cases.length );
 
 	for ( i = 0; i < cases.length; i++ ) {
-		doc = new ve.dm.Document ( cases[i].data );
+		ve.dm.example.preprocessAnnotations( cases[i].data );
+		doc = new ve.dm.Document( cases[i].data );
 		assert.deepEqual(
 			doc.getAnnotationsFromRange( new ve.Range( 0, cases[i].data.length ), cases[i].all ),
-			cases[i].expected,
+			new ve.AnnotationSet( cases[i].expected ),
 			cases[i].msg
 		);
 	}
@@ -431,7 +437,7 @@ QUnit.test( 'offsetContainsAnnotation', 1, function ( assert ) {
 		{
 			msg: 'contains bold',
 			data: [
-				['a', { '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } } ]
+				['a', [ { 'type': 'textStyle/bold' } ] ]
 			],
 			lookFor: {'type': 'textStyle/bold'},
 			expected: true
@@ -439,10 +445,10 @@ QUnit.test( 'offsetContainsAnnotation', 1, function ( assert ) {
 		{
 			msg: 'contains bold',
 			data: [
-				['a', {
-					'{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' },
-					'{"type":"textStyle/italic"}': { 'type': 'textStyle/italic'}
-					}
+				['a', [
+					{ 'type': 'textStyle/bold' },
+					{ 'type': 'textStyle/italic'}
+					]
 				]
 			],
 			lookFor: {'type': 'textStyle/bold'},
@@ -453,6 +459,7 @@ QUnit.test( 'offsetContainsAnnotation', 1, function ( assert ) {
 	QUnit.expect( cases.length );
 
 	for ( i = 0;i < cases.length; i++ ) {
+		ve.dm.example.preprocessAnnotations( cases[i].data );
 		doc = new ve.dm.Document( cases[i].data );
 		assert.deepEqual(
 			doc.offsetContainsAnnotation( 0, cases[i].lookFor ),
@@ -471,13 +478,13 @@ QUnit.test( 'getAnnotatedRangeFromOffset', 1, function ( assert ) {
 				// 0
 				'a',
 				// 1
-				['b', { '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } }],
+				['b', [ { 'type': 'textStyle/bold' } ]],
 				// 2
-				['o', { '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } }],
+				['o', [ { 'type': 'textStyle/bold' } ]],
 				// 3
-				['l', { '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } }],
+				['l', [ { 'type': 'textStyle/bold' } ]],
 				// 4
-				['d', { '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } }],
+				['d', [ { 'type': 'textStyle/bold' } ]],
 				// 5
 				'w',
 				// 6
@@ -501,13 +508,13 @@ QUnit.test( 'getAnnotatedRangeFromOffset', 1, function ( assert ) {
 				// 2
 				'x',
 				// 3
-				['l', { '{"type:"link/internal"}': { 'type': 'link/internal' } }],
+				['l', [ { 'type': 'link/internal' } ]],
 				// 4
-				['i', { '{"type:"link/internal"}': { 'type': 'link/internal' } }],
+				['i', [ { 'type': 'link/internal' } ]],
 				// 5
-				['n', { '{"type:"link/internal"}': { 'type': 'link/internal' } }],
+				['n', [ { 'type': 'link/internal' } ]],
 				// 6
-				['k', { '{"type:"link/internal"}': { 'type': 'link/internal' } }],
+				['k', [ { 'type': 'link/internal' } ]],
 				// 7
 				'x',
 				// 8
@@ -525,21 +532,21 @@ QUnit.test( 'getAnnotatedRangeFromOffset', 1, function ( assert ) {
 				// 0
 				'h',
 				// 1
-				['b', { '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } }],
+				['b', [ { 'type': 'textStyle/bold' } ]],
 				// 2
-				['o', { '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } }],
+				['o', [ { 'type': 'textStyle/bold' } ]],
 				// 3
 				{
 					'type': 'image',
 					'attributes': { 'html/src': 'image.png' },
-					'annotations': {'{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' }}
+					'annotations': [ { 'type': 'textStyle/bold' }]
 				},
 				// 4
 				{ 'type': '/image' },
 				// 5
-				['l', { '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } }],
+				['l', [ { 'type': 'textStyle/bold' } ]],
 				// 6
-				['d', { '{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' } }],
+				['d', [ { 'type': 'textStyle/bold' } ]],
 				// 7
 				'i'
 			],
@@ -552,71 +559,12 @@ QUnit.test( 'getAnnotatedRangeFromOffset', 1, function ( assert ) {
 	QUnit.expect( cases.length );
 
 	for ( i = 0; i < cases.length; i++ ) {
+		ve.dm.example.preprocessAnnotations( cases[i].data );
 		doc = new ve.dm.Document( cases[i].data );
 		assert.deepEqual(
 			doc.getAnnotatedRangeFromOffset(cases[i].offset, cases[i].annotation),
 			cases[i].expected,
 			cases[i].msg
-		);
-	}
-} );
-
-QUnit.test( 'getMatchingAnnotationsFromOffset', 1, function ( assert ) {
-	var msg,
-		cases = {
-		'finds two out of three': {
-			'pattern': /^textStyle\//,
-			'character': [
-				'a',
-				{
-					'{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' },
-					'{"type:"textStyle/italic"}': { 'type': 'textStyle/italic' },
-					'{"type:"link/internal"}': { 'type': 'link/internal' }
-				}
-			],
-			'expected': {
-				'{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' },
-				'{"type:"textStyle/italic"}': { 'type': 'textStyle/italic' }
-			}
-		},
-		'finds 3 out of 3': {
-			'pattern': /^textStyle\//,
-			'character': [
-				'a',
-				{
-					'{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' },
-					'{"type:"textStyle/italic"}': { 'type': 'textStyle/italic' },
-					'{"type:"textStyle/undeline"}': { 'type': 'textStyle/undeline' }
-				}
-			],
-			'expected': {
-				'{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' },
-				'{"type:"textStyle/italic"}': { 'type': 'textStyle/italic' },
-				'{"type:"textStyle/undeline"}': { 'type': 'textStyle/undeline' }
-			}
-		},
-		'finds none': {
-			'pattern': /^link\//,
-			'character': [
-				'a',
-				{
-					'{"type:"textStyle/bold"}': { 'type': 'textStyle/bold' },
-					'{"type:"textStyle/italic"}': { 'type': 'textStyle/italic' },
-					'{"type:"textStyle/undeline"}': { 'type': 'textStyle/undeline' }
-				}
-			],
-			'expected': {}
-		}
-	};
-
-	QUnit.expect( ve.getObjectKeys( cases ).length );
-
-	for ( msg in cases ) {
-		assert.deepEqual(
-			( new ve.dm.Document( [cases[msg].character] ) )
-				.getMatchingAnnotationsFromOffset( 0, cases[msg].pattern ),
-			cases[msg].expected,
-			msg
 		);
 	}
 } );
@@ -1375,15 +1323,15 @@ QUnit.test( 'getBalancedData', function ( assert ) {
 			'msg': 'range with one character',
 			'range': new ve.Range( 2, 3 ),
 			'expected': [
-				['b', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } }]
+				['b', [ { 'type': 'textStyle/bold' } ]]
 			]
 		},
 		{
 			'msg': 'range with two characters',
 			'range': new ve.Range( 2, 4 ),
 			'expected': [
-				['b', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } }],
-				['c', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } }]
+				['b', [ { 'type': 'textStyle/bold' } ]],
+				['c', [ { 'type': 'textStyle/italic' } ]]
 			]
 		},
 		{
@@ -1391,8 +1339,8 @@ QUnit.test( 'getBalancedData', function ( assert ) {
 			'range': new ve.Range( 2, 5 ),
 			'expected': [
 				{ 'type': 'heading', 'attributes': { 'level': 1 } },
-				['b', { '{"type":"textStyle/bold"}': { 'type': 'textStyle/bold' } }],
-				['c', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } }],
+				['b', [ { 'type': 'textStyle/bold' } ]],
+				['c', [ { 'type': 'textStyle/italic' } ]],
 				{ 'type': '/heading' }
 			]
 		},
@@ -1401,7 +1349,7 @@ QUnit.test( 'getBalancedData', function ( assert ) {
 			'range': new ve.Range( 3, 6 ),
 			'expected': [
 				{ 'type': 'heading', 'attributes': { 'level': 1 } },
-				['c', { '{"type":"textStyle/italic"}': { 'type': 'textStyle/italic' } }],
+				['c', [ { 'type': 'textStyle/italic' } ]],
 				{ 'type': '/heading' },
 				{ 'type': 'table' },
 				{ 'type': '/table' }
@@ -1477,6 +1425,7 @@ QUnit.test( 'getBalancedData', function ( assert ) {
 	];
 	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
+		ve.dm.example.preprocessAnnotations( cases[i].expected );
 		assert.deepEqual(
 			doc.getBalancedData( cases[i].range ),
 			cases[i].expected,

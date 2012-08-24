@@ -39,12 +39,13 @@ ve.ui.LinkInspector = function ( toolbar, context ) {
 		if ( $(this).is( '.ve-ui-inspector-button-disabled' ) ) {
 			return;
 		}
-		var hash,
+		var i, arr,
 			surfaceModel = inspector.context.getSurfaceView().getModel(),
 			annotations = inspector.getAllLinkAnnotationsFromSelection();
 		// Clear all link annotations.
-		for ( hash in annotations ) {
-			surfaceModel.annotate( 'clear', annotations[hash] );
+		arr = annotations.get();
+		for ( i = 0; i < arr.length; i++ ) {
+			surfaceModel.annotate( 'clear', arr[i] );
 		}
 		inspector.$locationInput.val( '' );
 		inspector.context.closeInspector();
@@ -76,30 +77,24 @@ ve.ui.LinkInspector = function ( toolbar, context ) {
 ve.ui.LinkInspector.prototype.getAllLinkAnnotationsFromSelection = function () {
 	var surfaceView = this.context.getSurfaceView(),
 		surfaceModel = surfaceView.getModel(),
-		documentModel = surfaceModel.getDocument(),
-		annotations,
-		linkAnnotations = {};
-
-		annotations = documentModel.getAnnotationsFromRange( surfaceModel.getSelection(), true );
-		linkAnnotations = ve.dm.Document.getMatchingAnnotations ( annotations, /^link\// );
-		if ( !ve.isEmptyObject( linkAnnotations ) ) {
-			return linkAnnotations;
-		}
-
-	return null;
+		documentModel = surfaceModel.getDocument();
+	return documentModel
+			.getAnnotationsFromRange( surfaceModel.getSelection() )
+			.getAnnotationsOfType( /^link\// );
 };
 
 ve.ui.LinkInspector.prototype.getFirstLinkAnnotation = function ( annotations ) {
-	var hash;
-	for ( hash in annotations ) {
+	var i, annotation, arr = annotations.get();
+	for ( i = 0; i < arr.length; i++ ) {
 		// Use the first one with a recognized type (there should only be one, this is just in case)
+		annotation = arr[i];
 		if (
-			annotations[hash].type === 'link/WikiLink' ||
-			annotations[hash].type === 'link/ExtLink' ||
-			annotations[hash].type === 'link/ExtLink/Numbered' ||
-			annotations[hash].type === 'link/ExtLink/URL'
+			annotation.type === 'link/WikiLink' ||
+			annotation.type === 'link/ExtLink' ||
+			annotation.type === 'link/ExtLink/Numbered' ||
+			annotation.type === 'link/ExtLink/URL'
 		) {
-			return annotations[hash];
+			return annotation;
 		}
 	}
 	return null;
@@ -193,14 +188,15 @@ ve.ui.LinkInspector.prototype.onClose = function ( accept ) {
 		surfaceModel = surfaceView.getModel(),
 		annotations = this.getAllLinkAnnotationsFromSelection(),
 		target = this.$locationInput.val(),
-		hash, annotation;
+		i, annotation, arr;
 	if ( accept ) {
 		if ( !target ) {
 			return;
 		}
 		// Clear link annotation if it exists
-		for ( hash in annotations ) {
-			surfaceModel.annotate( 'clear', annotations[hash] );
+		arr = annotations.get();
+		for ( i = 0; i < arr.length; i++ ) {
+			surfaceModel.annotate( 'clear', arr[i] );
 		}
 		surfaceModel.annotate( 'set', ve.ui.LinkInspector.getAnnotationForTarget( target ) );
 
