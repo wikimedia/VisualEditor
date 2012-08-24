@@ -70,3 +70,45 @@ QUnit.test( 'expandRange', 1, function ( assert ) {
 	);
 } );
 
+QUnit.test( 'removeContent', 2, function ( assert ) {
+	var doc = new ve.dm.Document( ve.dm.example.data ),
+		surface = new ve.dm.Surface( doc ),
+		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 1, 56 ) );
+	fragment.removeContent();
+	assert.deepEqual(
+		doc.getData(),
+		ve.dm.example.data.slice( 0, 1 )
+			.concat( ve.dm.example.data.slice( 4, 5 ) )
+			.concat( ve.dm.example.data.slice( 55 )
+		),
+		'removing content drops fully covered nodes and strips partially covered ones'
+	);
+	assert.deepEqual(
+		fragment.getRange(),
+		new ve.Range( 1, 1 ),
+		'removing content results in a zero-length fragment'
+	);
+} );
+
+QUnit.test( 'insertContent', 3, function ( assert ) {
+	var doc = new ve.dm.Document( ve.dm.example.data ),
+		surface = new ve.dm.Surface( doc ),
+		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 1, 4 ) );
+	fragment.insertContent( ['1', '2', '3'] );
+	assert.deepEqual(
+		doc.getData( new ve.Range( 1, 4 ) ),
+		['1', '2', '3'],
+		'inserting content replaces selection with new content'
+	);
+	assert.deepEqual(
+		fragment.getRange(),
+		new ve.Range( 4, 4 ),
+		'inserting content results in a zero-length fragment'
+	);
+	fragment.insertContent( '321' );
+	assert.deepEqual(
+		doc.getData( new ve.Range( 4, 7 ) ),
+		['3', '2', '1'],
+		'strings get converted into data when inserting content'
+	);
+} );

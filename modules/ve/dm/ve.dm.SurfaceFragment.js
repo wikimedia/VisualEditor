@@ -364,8 +364,7 @@ ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, type, data 
 	}
 	if ( this.range.getLength() ) {
 		tx = ve.dm.Transaction.newFromAnnotation( this.document, this.range, method, annotation );
-		this.range = tx.translateRange( this.range );
-		this.surface.change( tx, this.autoSelect && this.range );
+		this.surface.change( tx, this.autoSelect && tx.translateRange( this.range ) );
 	}
 	return this;
 };
@@ -400,9 +399,8 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
 				ve.dm.Document.addAnnotationsToData( content, annotations );
 			}
 		}
-		tx = ve.dm.Transaction.newFromInsertion( this.document, content );
-		this.range = tx.translateRange( this.range );
-		this.surface.change( tx, this.autoSelect && this.range );
+		tx = ve.dm.Transaction.newFromInsertion( this.document, this.range.start, content );
+		this.surface.change( tx, this.autoSelect && tx.translateRange( this.range ) );
 	}
 	return this;
 };
@@ -421,8 +419,19 @@ ve.dm.SurfaceFragment.prototype.removeContent = function () {
 	var tx;
 	if ( this.range.getLength() ) {
 		tx = ve.dm.Transaction.newFromRemoval( this.document, this.range );
-		this.range = tx.translateRange( this.range );
-		this.surface.change( tx, this.autoSelect && this.range );
+		// this.range will be translated via the onTransact event handler
+		this.surface.change( tx, this.autoSelect && tx.translateRange( this.range ) );
+		// Check if the range didn't get collapsed automatically - this will occur when removing
+		// content across un-mergable nodes because the delete only strips out content leaving
+		// structure at the beginning and end of the range in place
+		if ( this.range.getLength() ) {
+			// Collapse the range manually
+			this.range = new ve.Range( this.range.start );
+			if ( this.autoSelect ) {
+				// Update the surface selection
+				this.surface.setSelection( this.range );
+			}
+		}
 	}
 	return this;
 };
@@ -441,8 +450,7 @@ ve.dm.SurfaceFragment.prototype.convertNodes = function ( type, attr ) {
 		return this;
 	}
 	var tx = ve.dm.Transaction.newFromContentBranchConversion( this.document, this.range, type, attr );
-	this.range = tx.translateRange( this.range );
-	this.surface.change( tx, this.autoSelect && this.range );
+	this.surface.change( tx, this.autoSelect && tx.translateRange( this.range ) );
 	return this;
 };
 
