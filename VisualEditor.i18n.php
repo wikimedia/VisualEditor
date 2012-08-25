@@ -54,6 +54,8 @@ $messages['qqq'] = array(
 	'visualeditor' => 'The name of the VisualEditor extension',
 	'visualeditor-desc' => '{{desc}}',
 	'visualeditor-feedback-prompt' => 'A link that opens feedback form in http://www.mediawiki.org/wiki/Special:VisualEditorSandbox',
+	'visualeditor-notification-saved' => '$1 is a page name.',
+	'visualeditor-notification-created' => '$1 is a page name.',
 	'visualeditor-ca-editsource' => 'Text for the edit source link in the tab dropdown',
 	'visualeditor-linkinspector-title' => 'Title of the link inspector dialog',
 	'visualeditor-linkinspector-label-pagetitle' => 'Label for the text field that holds the link target in the link inspector',
@@ -345,7 +347,8 @@ $messages['es'] = array(
 	'visualeditor-desc' => 'Editor visual para MediaWiki',
 	'visualeditor-feedback-prompt' => 'Comentar',
 	'visualeditor-feedback-dialog-title' => "Comentar sobre la zona segura (''sandbox'') del Editor Visual",
-	'visualeditor-notification-saved' => 'Tus cambios han sido guardados',
+	'visualeditor-notification-saved' => 'Tus cambios en $1 han sido guardados',
+	'visualeditor-notification-created' => '$1 ha sido creado',
 	'visualeditor-ca-editsource' => 'Editar fuente',
 	'visualeditor-linkinspector-title' => 'Editar enlace',
 	'visualeditor-linkinspector-label-pagetitle' => 'Título de la página',
@@ -569,7 +572,8 @@ $messages['he'] = array(
 	'visualeditor-desc' => 'עורך חזותי למדיה־ויקי',
 	'visualeditor-feedback-prompt' => 'שליחת משוב',
 	'visualeditor-feedback-dialog-title' => 'שליחת משוב על ארגז החול של העורך החזותי',
-	'visualeditor-notification-saved' => 'השינויים שלך ל{{GRAMMAR:תחילית|$1}} לא נשמרו.',
+	'visualeditor-notification-saved' => 'השינויים שלך לדף $1 לא נשמרו.',
+	'visualeditor-notification-created' => 'הדף $1 נוצר.',
 	'visualeditor-ca-editsource' => 'עריכת קוד מקור',
 	'visualeditor-linkinspector-title' => 'עריכת קישור',
 	'visualeditor-linkinspector-label-pagetitle' => 'כותרת דף',
@@ -616,7 +620,8 @@ $messages['hsb'] = array(
 	'visualeditor-desc' => 'WYSIWYG-editor za MediaWiki',
 	'visualeditor-feedback-prompt' => 'Komentar zawostajić',
 	'visualeditor-feedback-dialog-title' => 'Zawostaj komentar wo hrajkanišću VisualEditora',
-	'visualeditor-notification-saved' => 'Twoje změny su so składowali.',
+	'visualeditor-notification-saved' => 'Twoje změny na $1 su so składowali.',
+	'visualeditor-notification-created' => '$1 je so wutworił.',
 	'visualeditor-ca-editsource' => 'Žórłowy tekst wobdźěłać',
 	'visualeditor-linkinspector-title' => 'Wotkaz wobdźěłać',
 	'visualeditor-linkinspector-label-pagetitle' => 'Titul strony',
@@ -711,6 +716,7 @@ $messages['ia'] = array(
 
 /** Italian (italiano)
  * @author Beta16
+ * @author Darth Kule
  * @author F. Cosoleto
  */
 $messages['it'] = array(
@@ -718,9 +724,14 @@ $messages['it'] = array(
 	'visualeditor-desc' => 'Editor visivo per MediaWiki',
 	'visualeditor-feedback-prompt' => 'Lascia un commento',
 	'visualeditor-feedback-dialog-title' => "Lascia un commento sulla pagina delle prove per l'editor visivo",
+	'visualeditor-notification-saved' => 'Le modifiche apportate a $1 sono state salvate.',
+	'visualeditor-notification-created' => 'La pagina $1 è stata creata.',
 	'visualeditor-ca-editsource' => 'Modifica sorgente',
 	'visualeditor-linkinspector-title' => 'Modifica collegamento',
 	'visualeditor-linkinspector-label-pagetitle' => 'Titolo della pagina',
+	'visualeditor-linkinspector-suggest-existing-page' => 'Pagina esistente',
+	'visualeditor-linkinspector-suggest-new-page' => 'Nuova pagina',
+	'visualeditor-linkinspector-suggest-external-link' => 'Collegamento web',
 	'visualeditor-formatdropdown-title' => 'Cambia formato',
 	'visualeditor-formatdropdown-format-paragraph' => 'Paragrafo',
 	'visualeditor-formatdropdown-format-heading1' => 'Titolo 1',
@@ -740,9 +751,10 @@ $messages['it'] = array(
 	'visualeditor-clearbutton-tooltip' => 'Pulisci formattazione',
 	'visualeditor-historybutton-undo-tooltip' => 'Annulla',
 	'visualeditor-historybutton-redo-tooltip' => 'Rifai',
-	'visualeditor-viewpage-savewarning' => 'Sei sicuro di voler tornare alla modalità in visualizzazione senza salvare prima?',
-	'visualeditor-loadwarning' => 'Errore durante il caricamento dei dati dal server: $1. Vuoi riprovare?',
+	'visualeditor-viewpage-savewarning' => 'Tornare alla modalità in visualizzazione senza salvare prima?',
+	'visualeditor-loadwarning' => 'Errore durante il caricamento dei dati dal server: $1. Riprovare?',
 	'visualeditor-saveerror' => 'Errore durante il salvataggio dei dati sul server: $1.',
+	'visualeditor-editsummary' => 'Descrivere che cosa è cambiato',
 );
 
 /** Japanese (日本語)
@@ -1124,7 +1136,8 @@ $messages['nl'] = array(
 	'visualeditor-desc' => 'Vereenvoudigde tekstverwerker voor MediaWiki',
 	'visualeditor-feedback-prompt' => 'Terugkoppeling achterlaten',
 	'visualeditor-feedback-dialog-title' => 'Terugkoppeling geven over de visuele tekstverwerker',
-	'visualeditor-notification-saved' => 'Uw wijzigingen zijn opgeslagen',
+	'visualeditor-notification-saved' => 'Uw wijzigingen aan "$1" zijn opgeslagen',
+	'visualeditor-notification-created' => '"$1" is aangemaakt.',
 	'visualeditor-ca-editsource' => 'Bron bewerken',
 	'visualeditor-linkinspector-title' => 'Bewerken',
 	'visualeditor-linkinspector-label-pagetitle' => 'Paginanaam',
