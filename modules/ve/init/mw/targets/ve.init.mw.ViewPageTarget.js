@@ -82,6 +82,9 @@ ve.init.mw.ViewPageTarget = function () {
 	// Initialization
 	if ( this.canBeActivated ) {
 		if ( currentUri.query.venotify ) {
+			// The following messages can be used here:
+			// visualeditor-notification-saved
+			// visualeditor-notification-created
 			mw.util.jsMessage(
 				ve.msg( 'visualeditor-notification-' + currentUri.query.venotify, this.pageName )
 			);
