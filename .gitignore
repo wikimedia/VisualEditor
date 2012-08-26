@@ -3,7 +3,3 @@
 *.kate-swp
 .*.swp
 .DS_Store
-
-api/npm-debug.log
-modules/parser/node_modules/
-api/localsettings.js
