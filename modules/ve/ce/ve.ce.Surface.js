@@ -171,7 +171,7 @@ ve.ce.Surface.prototype.onKeyDown = function ( e ) {
 			// If possible, trigger a list indent/outdent
 			// FIXME this way of checking whether indenting is possible is extremely hacky
 			// Instead, we should allow toolbar tools to subscribe to and intercept keydowns
-			if ( $( '.es-toolbarButtonTool-indent' ).is( ':not(.es-toolbarButtonTool-disabled)' ) ) {
+			if ( $( '.ve-ui-toolbarButtonTool-indent' ).is( ':not(.ve-ui-toolbarButtonTool-disabled)' ) ) {
 				e.preventDefault();
 				if ( e.shiftKey ) {
 					ve.ui.IndentationButtonTool.outdentListItem( this.model );

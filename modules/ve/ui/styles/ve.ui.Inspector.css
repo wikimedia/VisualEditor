@@ -5,7 +5,7 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-.es-inspector {
+.ve-ui-inspector {
 	font-family: sans-serif;
 	position: absolute;
 	border: solid 1px #ccc;
@@ -14,7 +14,6 @@
 	-o-border-radius: 0.25em;
 	border-radius: 0.25em;
 	background-color: #fff;
-	background-color: rgba(255, 255, 255, 0.95);
 	-webkit-box-shadow: 0 0.15em 0.5em 0 rgba(0, 0, 0, 0.2);
 	-moz-box-shadow: 0 0.15em 0.5em 0 rgba(0, 0, 0, 0.2);
 	box-shadow: 0 0.15em 0.5em 0 rgba(0, 0, 0, 0.2);
@@ -24,7 +23,7 @@
 	z-index: 3;
 }
 
-.es-inspector-button {
+.ve-ui-inspector-button {
 	position: absolute;
 	top: 0.25em;
 	width: 2em;
@@ -36,36 +35,36 @@
 	opacity: 0.75;
 }
 
-.es-inspector-button:hover {
+.ve-ui-inspector-button:hover {
 	filter: alpha(opacity=100);
 	opacity: 1;
 }
 
-.es-inspector-button.es-inspector-button-disabled,
-.es-inspector-button.es-inspector-button-disabled:hover {
+.ve-ui-inspector-button.ve-ui-inspector-button-disabled,
+.ve-ui-inspector-button.ve-ui-inspector-button-disabled:hover {
 	filter: alpha(opacity=25);
 	opacity: 0.25;
 }
 
-.es-inspector-closeButton {
+.ve-ui-inspector-closeButton {
 	right: 0.25em;
 	/* @embed */
 	background-image: url(images/close.png);
 }
 
-.es-inspector-acceptButton {
+.ve-ui-inspector-acceptButton {
 	right: 2.25em;
 	/* @embed */
 	background-image: url(images/accept.png);
 }
 
-.es-inspector-clearButton {
+.ve-ui-inspector-clearButton {
 	right: 4.25em;
 	/* @embed */
 	background-image: url(images/clear.png);
 }
 
-.es-inspector form {
+.ve-ui-inspector form {
 	margin: 0;
 	padding: 0.75em 0 0 0;
 	border-top: solid 1px #ddd;
@@ -73,7 +72,7 @@
 	font-size: 0.8em;
 }
 
-.es-inspector form input {
+.ve-ui-inspector form input {
 	display: inline-block;
 	width: 20em;
 	font-size: 1em;
@@ -86,7 +85,7 @@
 	-o-border-radius: 0.25em;
 	border-radius: 0.25em;
 }
-.es-inspector form input:focus {
+.ve-ui-inspector form input:focus {
 	outline: none;
 }
 
@@ -97,12 +96,12 @@
 	background-repeat: no-repeat;
 }
 
-.es-inspector form label {
+.ve-ui-inspector form label {
 	display: inline-block;
 	width: 6em;
 }
 
-.es-inspector-title {
+.ve-ui-inspector-title {
 	position: absolute;
 	top: 0;
 	left: 0.75em;
@@ -110,12 +109,6 @@
 	line-height: 2.5em;
 	font-weight: bold;
 	color: #666;
-}
-
-.ve-iframe-overlay {
-	position: absolute;
-	top: 0;
-	left: 0;
 }
 
 .ve-ui-suggest-select {
@@ -169,6 +162,7 @@
 	overflow: hidden;
 	-o-text-overflow: ellipsis;
 	text-overflow: ellipsis;
+	color: #0645AD;
 }
 
 .ve-ui-suggest-item-newPage {
@@ -183,6 +177,7 @@
 .ve-ui-suggest-item.selected {
 	background-color: #b3d6f6;
 }
+
 .ve-ui-suggest-item > a {
 	text-decoration: none;
 }

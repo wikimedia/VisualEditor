@@ -82,7 +82,7 @@
 			// DOM Setup.
 			$multiSuggest =
 				$( '<div>', options.doc )
-					.prop( 'class', options.prefix + '-suggest-select' )
+					.addClass( options.prefix + '-suggest-select' )
 					.hide()
 					.appendTo( options.parent );
 
@@ -175,14 +175,14 @@
 					i;
 				// Add a container with a label for this group.
 				$group = $( '<div>', options.doc )
-					.prop( 'class', options.prefix + '-suggest-container' )
+					.addClass( options.prefix + '-suggest-container' )
 					.append(
 						$( '<div>', options.doc )
-							.prop( 'class', options.prefix + '-suggest-label' )
+							.addClass( options.prefix + '-suggest-label' )
 							.text( group.label )
 					).append(
 						$( '<div>', options.doc )
-							.prop( 'class', options.prefix + '-suggest-wrap' )
+							.addClass( options.prefix + '-suggest-wrap' )
 					// Add a clear break.
 					).append(
 						$( '<div>', options.doc ).css( 'clear', 'both' )
@@ -196,14 +196,14 @@
 				if ( group.items.length === 0 ) {
 					$groupWrap.append(
 						$( '<div>', options.doc )
-							.prop( 'class',  options.prefix + '-suggest-dummy-item' )
+							.addClass( options.prefix + '-suggest-dummy-item' )
 							.text( ' ' )
 					);
 				}
 				// Add each item.
 				for( i = 0; i < group.items.length; i++ ) {
 					$item = $( '<div>', options.doc )
-						.prop( 'class', options.prefix + '-suggest-item' )
+						.addClass( options.prefix + '-suggest-item' )
 						.text( group.items[i] )
 						.on( 'mousedown', onItemMousedown )
 						.appendTo( $groupWrap );

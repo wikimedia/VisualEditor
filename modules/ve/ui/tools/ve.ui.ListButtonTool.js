@@ -165,7 +165,7 @@ ve.ui.ListButtonTool.prototype.unlist = function ( node ) {
 
 ve.ui.ListButtonTool.prototype.onClick = function () {
 	this.toolbar.surfaceView.model.breakpoint();
-	if ( !this.$.hasClass( 'es-toolbarButtonTool-down' ) ) {
+	if ( !this.$.hasClass( 've-ui-toolbarButtonTool-down' ) ) {
 		this.list( this.nodes, this.name );
 	} else {
 		this.unlist( this.nodes );
@@ -200,9 +200,9 @@ ve.ui.ListButtonTool.prototype.updateState = function ( annotations, nodes ) {
 	}
 
 	if ( areListItemsOfStyle( leaves, this.name ) ) {
-		this.$.addClass( 'es-toolbarButtonTool-down' );
+		this.$.addClass( 've-ui-toolbarButtonTool-down' );
 	} else {
-		this.$.removeClass( 'es-toolbarButtonTool-down' );
+		this.$.removeClass( 've-ui-toolbarButtonTool-down' );
 	}
 };
 

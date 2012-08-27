@@ -21,7 +21,7 @@ ve.ui.Toolbar = function ( $container, surfaceView, config ) {
 	// Properties
 	this.surfaceView = surfaceView;
 	this.$ = $container;
-	this.$groups = $( '<div class="es-toolbarGroups"></div>' ).prependTo( this.$ );
+	this.$groups = $( '<div class="ve-ui-toolbarGroups"></div>' ).prependTo( this.$ );
 	this.tools = [];
 
 	// Update tools on selection and all transactions.
@@ -111,11 +111,11 @@ ve.ui.Toolbar.prototype.setup = function () {
 	var i, j, $group, tool, toolDefintion;
 	for ( i = 0; i < this.config.length; i++ ) {
 		$group = $( '<div>' )
-			.addClass( 'es-toolbarGroup' )
-			.addClass( 'es-toolbarGroup-' + this.config[i].name );
+			.addClass( 've-ui-toolbarGroup' )
+			.addClass( 've-ui-toolbarGroup-' + this.config[i].name );
 		if ( this.config[i].label ) {
 			$group.append(
-				$( '<div>' ).addClass( 'es-toolbarLabel' ).html( this.config[i].label )
+				$( '<div>' ).addClass( 've-ui-toolbarLabel' ).html( this.config[i].label )
 			);
 		}
 

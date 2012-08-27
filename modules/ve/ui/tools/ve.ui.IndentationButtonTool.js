@@ -22,7 +22,7 @@
 /* Methods */
 
 ve.ui.IndentationButtonTool.prototype.onClick = function () {
-	if ( !this.$.hasClass( 'es-toolbarButtonTool-disabled' ) ) {
+	if ( !this.$.hasClass( 've-ui-toolbarButtonTool-disabled' ) ) {
 		var listItems = [],
 			listItem,
 			i;
@@ -260,9 +260,9 @@ ve.ui.IndentationButtonTool.prototype.updateState = function ( annotations, node
 
 	this.nodes = nodes;
 	if ( areListItems( this.nodes ) ) {
-		this.$.removeClass( 'es-toolbarButtonTool-disabled' );
+		this.$.removeClass( 've-ui-toolbarButtonTool-disabled' );
 	} else {
-		this.$.addClass( 'es-toolbarButtonTool-disabled' );
+		this.$.addClass( 've-ui-toolbarButtonTool-disabled' );
 	}
 };
 

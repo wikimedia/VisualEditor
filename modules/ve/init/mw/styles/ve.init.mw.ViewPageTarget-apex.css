@@ -9,18 +9,17 @@
 	margin-top: 0.8em;
 }
 
-.es-toolbar-wrapper {
+.ve-ui-toolbar-wrapper {
 	margin: -0.6em -3em 0.8em -3em;
 	position: relative;
 	font-size: 1.3em;
 }
 
-.es-toolbar {
+.ve-ui-toolbar {
 	display: none;
 	line-height: 1.5em;
 }
 
-.es-menuView-item:hover {
+.ve-ui-menu-item:hover {
 	background-color: #d5eaed;
-	background-color: rgba(213, 234, 237, 0.75);
 }

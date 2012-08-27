@@ -196,9 +196,9 @@ ve.FormatDropdownTool.prototype.updateState = function ( annotations, nodes ) {
 	if ( nodes.length ) {
 		var items = this.getMatchingMenuItems( nodes );
 		if ( items.length === 1 ) {
-			this.$label.text( items[0].label );
+			this.$labelText.text( items[0].label );
 		} else {
-			this.$label.html( '&nbsp;' );
+			this.$labelText.html( '&nbsp;' );
 		}
 	}
 };

@@ -28,7 +28,11 @@
 	box-shadow: 0 0.25em 1em 0 rgba(0, 0, 0, 0.25);
 	z-index: 4;
 }
-
+.ve-ui-context-icon-active {
+	-webkit-box-shadow: 0 0.125em 0.25em 0 rgba(0, 0, 0, 0.125);
+	-moz-box-shadow: 0 0.125em 0.25em 0 rgba(0, 0, 0, 0.125);
+	box-shadow: 0 0.125em 0.25em 0 rgba(0, 0, 0, 0.125);
+}
 .ve-ui-context-position-start .ve-ui-context-icon {
 	top: -12px;
 	left: -8px;
@@ -82,7 +86,7 @@
 	-moz-border-radius: 0.25em;
 	-o-border-radius: 0.25em;
 	border-radius: 0.25em;
-	background-color: rgba(255, 255, 255, 0.95);
+	background-color: #fff;
 	-webkit-box-shadow: 0 0.25em 1em 0 rgba(0, 0, 0, 0.25);
 	-moz-box-shadow: 0 0.25em 1em 0 rgba(0, 0, 0, 0.25);
 	box-shadow: 0 0.25em 1em 0 rgba(0, 0, 0, 0.25);
@@ -99,6 +103,12 @@
 	white-space: nowrap;
 }
 
-.ve-ui-context .es-toolbarGroup {
+.ve-ui-context .ve-ui-toolbarGroup {
 	border: none;
+}
+
+.ve-ui-context-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
 }

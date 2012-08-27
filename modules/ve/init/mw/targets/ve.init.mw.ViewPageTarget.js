@@ -24,14 +24,13 @@ ve.init.mw.ViewPageTarget = function () {
 	);
 
 	// Properties
-	this.$surface = $( '<div class="ve-surface"></div>' );
 	this.$document = null;
 	this.$spinner = $( '<div class="ve-init-mw-viewPageTarget-loadingSpinner"></div>' );
 	this.$toolbarSaveButton =
 		$( '<div class="ve-init-mw-viewPageTarget-toolbar-saveButton"></div>' );
 	this.$toolbarFeedbackButton =
 		$( '<div class="ve-init-mw-viewPageTarget-toolbar-feedbackButton"><a href="#"></a></div>' );
-	this.$saveDialog = $( '<div class="es-inspector ve-init-mw-viewPageTarget-saveDialog"></div>' );
+	this.$saveDialog = $( '<div class="ve-ui-inspector ve-init-mw-viewPageTarget-saveDialog"></div>' );
 	this.$saveDialogSaveButton = null;
 	this.onBeforeUnloadFallback = null;
 	this.proxiedOnBeforeUnload = null;
@@ -139,8 +138,8 @@ ve.init.mw.ViewPageTarget.compatibility = {
 
 /*jshint multistr: true*/
 ve.init.mw.ViewPageTarget.saveDialogTemplate = '\
-	<div class="es-inspector-title ve-init-mw-viewPageTarget-saveDialog-title"></div>\
-	<div class="es-inspector-button ve-init-mw-viewPageTarget-saveDialog-closeButton"></div>\
+	<div class="ve-ui-inspector-title ve-init-mw-viewPageTarget-saveDialog-title"></div>\
+	<div class="ve-ui-inspector-button ve-init-mw-viewPageTarget-saveDialog-closeButton"></div>\
 	<div class="ve-init-mw-viewPageTarget-saveDialog-body">\
 		<div class="ve-init-mw-viewPageTarget-saveDialog-summary">\
 			<label class="ve-init-mw-viewPageTarget-saveDialog-editSummary-label"\
@@ -413,9 +412,8 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( dom ) {
 	var $contentText = $( '#mw-content-text' );
 
 	// Initialize surface
-	this.attachSurface();
-	this.surface = new ve.Surface( this.$surface, dom, this.surfaceOptions );
-	this.$document = this.$surface.find( '.ve-ce-documentNode' );
+	this.surface = new ve.Surface( $( '#content' ), dom, this.surfaceOptions );
+	this.$document = this.surface.$.find( '.ve-ce-documentNode' );
 	this.surface.getModel().on( 'transact', this.proxiedOnSurfaceModelTransact );
 	// Transplant the toolbar
 	this.attachToolbar();
@@ -442,8 +440,8 @@ ve.init.mw.ViewPageTarget.prototype.tearDownSurface = function () {
 	// Update UI
 	this.$document.blur();
 	this.$document = null;
-	this.$surface.empty().detach();
-	$( '.es-contextView' ).remove();
+	this.surface.$.empty().detach();
+	$( '.ve-ui-context' ).remove();
 	this.detachToolbar();
 	this.hideSpinner();
 	this.showPageContent();
@@ -582,7 +580,7 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarSaveButton = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.attachToolbarSaveButton = function () {
-	$( '.es-toolbar .es-modes' ).append( this.$toolbarSaveButton );
+	$( '.ve-ui-toolbar .ve-ui-actions' ).append( this.$toolbarSaveButton );
 	this.disableToolbarSaveButton();
 };
 
@@ -891,9 +889,9 @@ ve.init.mw.ViewPageTarget.prototype.lockSaveDialogSaveButton = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.attachToolbar = function () {
-	this.$toolbarWrapper = this.$surface.find( '.es-toolbar-wrapper' )
+	this.$toolbarWrapper = $( '.ve-ui-toolbar-wrapper' )
 		.insertBefore( $( '#firstHeading' ) )
-		.find( '.es-toolbar' )
+		.find( '.ve-ui-toolbar' )
 			.slideDown( 'fast' )
 			.end();
 };
@@ -904,7 +902,7 @@ ve.init.mw.ViewPageTarget.prototype.attachToolbar = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.detachToolbar = function () {
-	$( '.es-toolbar' ).slideUp( 'fast', function () {
+	$( '.ve-ui-toolbar' ).slideUp( 'fast', function () {
 		$(this).parent().remove();
 	} );
 };
@@ -990,25 +988,6 @@ ve.init.mw.ViewPageTarget.prototype.restoreSiteNotice = function () {
  */
 ve.init.mw.ViewPageTarget.prototype.replacePageContent = function ( html ) {
 	$( '#mw-content-text' ).html( html );
-};
-
-/**
- * Attaches the surface to the page.
- *
- * @method
- */
-ve.init.mw.ViewPageTarget.prototype.attachSurface = function () {
-	$( '#content' ).append( this.$surface );
-};
-
-/**
- * Attaches the surface to the page.
- *
- * @method
- */
-ve.init.mw.ViewPageTarget.prototype.detachSurface = function () {
-	this.$surface.detach();
-	$( '.es-contextView' ).remove();
 };
 
 /**
@@ -1168,7 +1147,7 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarFeedbackButton = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.attachToolbarFeedbackButton = function () {
-	$( '.es-toolbar .es-modes' ).prepend( this.$toolbarFeedbackButton );
+	$( '.ve-ui-toolbar .ve-ui-actions' ).prepend( this.$toolbarFeedbackButton );
 };
 
 /**

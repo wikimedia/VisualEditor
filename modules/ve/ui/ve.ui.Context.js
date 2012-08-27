@@ -29,17 +29,17 @@ ve.ui.Context = function ( surfaceView, $overlay ) {
 	$overlay = $overlay || $( 'body' );
 
 	// Setup contextView
-	this.$ = $( '<div>' ).prop( 'class', 've-ui-context' );
+	this.$ = $( '<div>' ).addClass( 've-ui-context' );
 	$overlay.append( this.$ );
 
 	// Icon
 	this.$icon = $( '<div>' )
-		.prop( 'class' , 've-ui-context-icon' )
+		.addClass( 've-ui-context-icon' )
 		.appendTo( this.$ );
 
 	// Toolbar
 	this.$toolbar = $( '<div>' )
-		.prop( 'class', 've-ui-context-toolbar');
+		.addClass( 've-ui-context-toolbar');
 
 	// Toolbar view
 	this.toolbarView = new ve.ui.Toolbar(
@@ -78,12 +78,12 @@ ve.ui.Context.prototype.setupInspectorSpace = function () {
 
 	// Inspector container
 	this.$inspectors = $( '<div>' )
-		.prop( 'class', 've-ui-context-inspectors' )
+		.addClass( 've-ui-context-inspectors' )
 		.appendTo( this.$ );
 
 	// Overlay in main document scope for positioning elements over iframe.
 	this.$iframeOverlay = $( '<div>' )
-		.prop( 'class', 've-iframe-overlay' )
+		.addClass( 've-ui-context-overlay' )
 		.appendTo( this.$inspectors );
 
 	// Create and append an iframe to contain inspectors.
@@ -95,9 +95,9 @@ ve.ui.Context.prototype.setupInspectorSpace = function () {
 
 	// Write a container element to the iframe.
 	// NOTE: This is required for cross browser appending.
-	this.inspectorDoc.write( '<div class="ve-iframe-wrapper"></div>' );
+	this.inspectorDoc.write( '<div class="ve-ui-context-overlay-wrapper"></div>' );
 	this.inspectorDoc.close();
-	this.$inspectorWrapper = $( this.inspectorDoc ).find( '.ve-iframe-wrapper' );
+	this.$inspectorWrapper = $( this.inspectorDoc ).find( '.ve-ui-context-overlay-wrapper' );
 
 	// Create iframe style element.
 	$styleLink =
@@ -157,10 +157,12 @@ ve.ui.Context.prototype.getSurfaceView = function () {
 
 ve.ui.Context.prototype.openMenu = function () {
 	this.menuView.open();
+	this.$icon.addClass( 've-ui-context-icon-active' );
 };
 
 ve.ui.Context.prototype.closeMenu = function () {
 	this.menuView.close();
+	this.$icon.removeClass( 've-ui-context-icon-active' );
 };
 
 ve.ui.Context.prototype.isMenuOpen = function () {

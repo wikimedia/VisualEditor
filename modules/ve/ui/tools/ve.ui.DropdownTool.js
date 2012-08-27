@@ -25,10 +25,11 @@ ve.ui.DropdownTool = function ( toolbar, name, title, items ) {
 	var tool = this;
 	this.menuView = new ve.ui.Menu( items, function ( item ) {
 		tool.onSelect( item );
-		tool.$label.text( item.label );
+		tool.$labelText.text( item.label );
 	}, this.$ );
-	this.$icon = $( '<div class="es-toolbarDropdownTool-icon"></div>' ).appendTo( this.$ );
-	this.$label = $( '<div class="es-toolbarDropdownTool-label">&nbsp;</div>' ).appendTo( this.$ );
+	this.$icon = $( '<div>' ).addClass( 've-ui-toolbarDropdownTool-icon' );
+	this.$label = $( '<div>' ).addClass( 've-ui-toolbarDropdownTool-label' );
+	this.$labelText = $( '<span>' ).html( '&nbsp;' );
 
 	// Events
 	$( document )
@@ -47,7 +48,7 @@ ve.ui.DropdownTool = function ( toolbar, name, title, items ) {
 		},
 		'mouseup': function ( e ) {
 			// Don't respond to menu clicks
-			var $item = $( e.target ).closest( '.es-menuView' );
+			var $item = $( e.target ).closest( '.ve-ui-menu' );
 			if ( e.which === 1 && $item.length === 0 ) {
 				tool.menuView.open();
 			} else {
@@ -57,7 +58,10 @@ ve.ui.DropdownTool = function ( toolbar, name, title, items ) {
 	} );
 
 	// DOM Changes
-	this.$.addClass( 'es-toolbarDropdownTool es-toolbarDropdownTool-' + name );
+	this.$
+		.append( this.$icon, this.$label )
+		.addClass( 've-ui-toolbarDropdownTool ve-ui-toolbarDropdownTool-' + name );
+	this.$label.append( this.$labelText );
 };
 
 /* Methods */

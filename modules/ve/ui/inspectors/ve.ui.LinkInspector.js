@@ -23,25 +23,25 @@ ve.ui.LinkInspector = function ( toolbar, context ) {
 
 	// Elements
 	this.$clearButton = $(
-			'<div class="es-inspector-button es-inspector-clearButton"></div>',
+			'<div class="ve-ui-inspector-button ve-ui-inspector-clearButton"></div>',
 			context.inspectorDoc
 		)
 		.prependTo( this.$ );
 	this.$.prepend(
-		$( '<div class="es-inspector-title"></div>', context.inspectorDoc )
+		$( '<div class="ve-ui-inspector-title"></div>', context.inspectorDoc )
 			.text( ve.msg( 'visualeditor-linkinspector-title' ) )
 	);
 	// Target
 	this.$locationInput = $( '<input>', context.inspectorDoc )
 		.attr( 'type', 'text' )
-		.prop( 'class', 've-ui-linkInspector-location' )
+		.addClass( 've-ui-linkInspector-location' )
 		.appendTo( this.$form );
 
 	this.initialValue = null;
 
 	// Events
 	this.$clearButton.click( function () {
-		if ( $(this).is( '.es-inspector-button-disabled' ) ) {
+		if ( $(this).is( '.ve-ui-inspector-button-disabled' ) ) {
 			return;
 		}
 
@@ -61,9 +61,9 @@ ve.ui.LinkInspector = function ( toolbar, context ) {
 		setTimeout( function () {
 			// Toggle disabled class
 			if ( inspector.$locationInput.val() !== '' ) {
-				inspector.$acceptButton.removeClass( 'es-inspector-button-disabled' );
+				inspector.$acceptButton.removeClass( 've-ui-inspector-button-disabled' );
 			} else {
-				inspector.$acceptButton.addClass( 'es-inspector-button-disabled' );
+				inspector.$acceptButton.addClass( 've-ui-inspector-button-disabled' );
 			}
 
 		}, 0 );
@@ -168,23 +168,23 @@ ve.ui.LinkInspector.prototype.onOpen = function () {
 		initialValue = '';
 	if ( annotation === null ) {
 		this.$locationInput.val( this.getSelectionText() );
-		this.$clearButton.addClass( 'es-inspector-button-disabled' );
+		this.$clearButton.addClass( 've-ui-inspector-button-disabled' );
 	} else if ( annotation.type === 'link/WikiLink' ) {
 		// Internal link
 		initialValue = annotation.data.title || '';
 		this.$locationInput.val( initialValue );
-		this.$clearButton.removeClass( 'es-inspector-button-disabled' );
+		this.$clearButton.removeClass( 've-ui-inspector-button-disabled' );
 	} else {
 		// External link
 		initialValue = annotation.data.href || '';
 		this.$locationInput.val( initialValue );
-		this.$clearButton.removeClass( 'es-inspector-button-disabled' );
+		this.$clearButton.removeClass( 've-ui-inspector-button-disabled' );
 	}
 	this.initialValue = initialValue;
 	if ( this.$locationInput.val().length === 0 ) {
-		this.$acceptButton.addClass( 'es-inspector-button-disabled' );
+		this.$acceptButton.addClass( 've-ui-inspector-button-disabled' );
 	} else {
-		this.$acceptButton.removeClass( 'es-inspector-button-disabled' );
+		this.$acceptButton.removeClass( 've-ui-inspector-button-disabled' );
 	}
 
 	setTimeout( ve.bind( function () {

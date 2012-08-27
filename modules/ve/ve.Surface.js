@@ -13,54 +13,50 @@
  * @class
  * @constructor
  * @param {String} parent Selector of element to attach to
- * @param {HTMLElement} html Document html
+ * @param {HTMLElement} dom HTML element of document to edit
  * @param {Object} options Configuration options
  */
 ve.Surface = function ( parent, dom, options ) {
-	// Create linear model from HTML5 DOM
-	var data = ve.dm.converter.getDataFromDom( dom );
 	// Properties
-	this.parent = parent;
-	this.currentMode = null;
-	/* Extend VE configuration recursively */
-	this.options = ve.extendObject( true, {
-		// Default options
-		toolbars: {
-			top: {
-				tools: [{ 'name': 'history', 'items' : ['undo', 'redo'] },
-						{ 'name': 'textStyle', 'items' : ['format'] },
-						{ 'name': 'textStyle', 'items' : ['bold', 'italic', 'link', 'clear'] },
-						{ 'name': 'list', 'items' : ['number', 'bullet', 'outdent', 'indent'] }]
-			}
-		}
-	}, options );
-
-	// A place to store element references
-	this.$base = null;
-	this.$surface = null;
-	this.toolbarWrapper = {};
-
-	// Create document model object with the linear model
-	this.documentModel = new ve.dm.Document( data );
+	this.$ = $( '<div>' )
+		.addClass( 've-surface' )
+		.appendTo( $( parent ) );
+	this.documentModel = new ve.dm.Document( ve.dm.converter.getDataFromDom( dom ) );
+	this.options = ve.extendObject( true, ve.Surface.defaultOptions, options );
 	this.model = new ve.dm.Surface( this.documentModel );
+	this.view = new ve.ce.Surface( this.$, this.model );
+	this.toolbars = {};
 
-	// Setup VE DOM Skeleton
-	this.setupBaseElements();
-
-	this.$surface = $( '<div>' ).addClass( 'es-editor' );
-	this.$base.find( '.es-visual' ).append( this.$surface );
-
-	/* Instantiate surface layer */
-	this.view = new ve.ce.Surface( $( '.es-editor' ), this.model );
-
-	// Setup toolbars based on this.options
+	// Initialization
 	this.setupToolbars();
-
-	// Registration
 	ve.instances.push( this );
-
-	// Start tracking changes
 	this.model.startHistoryTracking();
+	this.$.append(
+		// Contain floating content
+		$( '<div>' ).css( 'clear', 'both' ),
+		// Temporary paste buffer
+		$( '<div>' ).attr( {
+			// TODO: make 'paste' in surface stateful and remove this attrib
+			'id': 'paste',
+			'class': 'paste',
+			'contenteditable': 'true'
+		} )
+	);
+};
+
+/* Static Members */
+
+ve.Surface.defaultOptions = {
+	'toolbars': {
+		'top': {
+			'tools': [
+				{ 'name': 'history', 'items' : ['undo', 'redo'] },
+				{ 'name': 'textStyle', 'items' : ['format'] },
+				{ 'name': 'textStyle', 'items' : ['bold', 'italic', 'link', 'clear'] },
+				{ 'name': 'list', 'items' : ['number', 'bullet', 'outdent', 'indent'] }
+			]
+		}
+	}
 };
 
 /* Methods */
@@ -77,67 +73,33 @@ ve.Surface.prototype.getView = function () {
 	return this.view;
 };
 
-ve.Surface.prototype.getContext = function () {
-	return this.context;
-};
-
-ve.Surface.prototype.getParent = function () {
-	return this.parent;
-};
-
-ve.Surface.prototype.setupBaseElements = function () {
-	// Make new base element
-	this.$base = $( '<div>' )
-		.addClass( 'es-base' )
-		.append(
-			$( '<div>' ).addClass( 'es-panes' )
-				.append( $( '<div>' ).addClass( 'es-visual' ) )
-				.append( $( '<div>' ).addClass( 'es-panels' ) )
-				.append( $( '<div>' ).css( 'clear', 'both' ) )
-		)
-		.append(
-			$( '<div>' ).attr( {
-				// TODO: make 'paste' in surface stateful and remove this attrib
-				'id': 'paste',
-				'class': 'paste',
-				'contenteditable': 'true'
-			} )
-		);
-	// Attach the base the the parent
-	$( this.getParent() ).append( this.$base );
-};
-
 ve.Surface.prototype.setupToolbars = function () {
 	var surface = this;
 
 	// Build each toolbar
 	$.each( this.options.toolbars, function ( name, config ) {
 		if ( config !== null ) {
-			if( name === 'top' ) {
-				// Append toolbar wrapper at the top, just above .es-panes
-				surface.toolbarWrapper[name] = $( '<div>' )
-					.addClass( 'es-toolbar-wrapper' )
-					.append(
-						$( '<div>' ).addClass( 'es-toolbar' )
-							.append(
-								$( '<div>' ).addClass( 'es-modes' )
-							).append(
-								$( '<div>' ).css( 'clear', 'both' )
-							).append(
-								$( '<div>' ).addClass( 'es-toolbar-shadow' )
-							)
-				);
-
-				surface.$base.find( '.es-panes' ).before( surface.toolbarWrapper[name] );
+			if ( name === 'top' ) {
+				surface.toolbars[name] = {
+					'$wrapper': $( '<div>' ).addClass( 've-ui-toolbar-wrapper' ),
+					'$': $( '<div>' )
+						.addClass( 've-ui-toolbar' )
+						.append(
+							$( '<div>' ).addClass( 've-ui-actions' ),
+							$( '<div>' ).css( 'clear', 'both' ),
+							$( '<div>' ).addClass( 've-ui-toolbar-shadow' )
+						)
+				};
+				surface.toolbars[name].$wrapper.append( surface.toolbars[name].$ );
+				surface.$.before( surface.toolbars[name].$wrapper );
 
 				if ( 'float' in config && config.float === true ) {
 					// Float top toolbar
 					surface.floatTopToolbar();
 				}
 			}
-			// Instantiate the toolbar
-			surface['toolbar-' + name] = new ve.ui.Toolbar(
-				surface.$base.find( '.es-toolbar' ),
+			surface.toolbars[name].instance = new ve.ui.Toolbar(
+				surface.toolbars[name].$,
 				surface.view,
 				config.tools
 			);
@@ -152,19 +114,19 @@ ve.Surface.prototype.setupToolbars = function () {
  * TODO: This needs to be refactored so that it only works on the main editor top tool bar.
  */
 ve.Surface.prototype.floatTopToolbar = function () {
-	if ( !this.toolbarWrapper.top ) {
+	if ( !this.toolbars.top ) {
 		return;
 	}
-	var $toolbarWrapper = this.toolbarWrapper.top,
-		$toolbar = $toolbarWrapper.find( '.es-toolbar' ),
+	var $wrapper = this.toolbars.top.$wrapper,
+		$toolbar = this.toolbars.top.$,
 		$window = $( window );
 
 	$window.on( {
 		'resize': function () {
-			if ( $toolbarWrapper.hasClass( 'es-toolbar-wrapper-floating' ) ) {
-				var toolbarWrapperOffset = $toolbarWrapper.offset(),
-					left = toolbarWrapperOffset.left,
-					right = $window.width() - $toolbarWrapper.outerWidth() - left;
+			if ( $wrapper.hasClass( 've-ui-toolbar-wrapper-floating' ) ) {
+				var toolbarsOffset = $wrapper.offset(),
+					left = toolbarsOffset.left,
+					right = $window.width() - $wrapper.outerWidth() - left;
 				$toolbar.css( {
 					'left': left,
 					'right': right
@@ -173,18 +135,18 @@ ve.Surface.prototype.floatTopToolbar = function () {
 		},
 		'scroll': function () {
 			var left, right,
-				toolbarWrapperOffset = $toolbarWrapper.offset(),
-				$editorDocument = $toolbarWrapper.parent().find('.ve-surface .ve-ce-documentNode'),
+				toolbarsOffset = $wrapper.offset(),
+				$editorDocument = $wrapper.parent().find('.ve-surface .ve-ce-documentNode'),
 				$lastBranch = $editorDocument.children( '.ve-ce-branchNode:last' );
 
-			if ( $window.scrollTop() > toolbarWrapperOffset.top ) {
-				left = toolbarWrapperOffset.left;
-				right = $window.width() - $toolbarWrapper.outerWidth() - left;
+			if ( $window.scrollTop() > toolbarsOffset.top ) {
+				left = toolbarsOffset.left;
+				right = $window.width() - $wrapper.outerWidth() - left;
 				// If not floating, set float
-				if ( !$toolbarWrapper.hasClass( 'es-toolbar-wrapper-floating' ) ) {
-					$toolbarWrapper
-						.css( 'height', $toolbarWrapper.height() )
-						.addClass( 'es-toolbar-wrapper-floating' );
+				if ( !$wrapper.hasClass( 've-ui-toolbar-wrapper-floating' ) ) {
+					$wrapper
+						.css( 'height', $wrapper.height() )
+						.addClass( 've-ui-toolbar-wrapper-floating' );
 					$toolbar.css( {
 						'left': left,
 						'right': right
@@ -197,10 +159,10 @@ ve.Surface.prototype.floatTopToolbar = function () {
 						// Toolbar is at or below the top of last node in the document
 						$window.scrollTop() + $toolbar.height() >= $lastBranch.offset().top
 					) {
-						if ( !$toolbarWrapper.hasClass( 'es-toolbar-wrapper-bottom' ) ) {
-							$toolbarWrapper
-								.removeClass( 'es-toolbar-wrapper-floating' )
-								.addClass( 'es-toolbar-wrapper-bottom' );
+						if ( !$wrapper.hasClass( 've-ui-toolbar-wrapper-bottom' ) ) {
+							$wrapper
+								.removeClass( 've-ui-toolbar-wrapper-floating' )
+								.addClass( 've-ui-toolbar-wrapper-bottom' );
 							$toolbar.css({
 								'top': $window.scrollTop() + 'px',
 								'left': left,
@@ -208,10 +170,10 @@ ve.Surface.prototype.floatTopToolbar = function () {
 							});
 						}
 					} else { // Unattach toolbar
-						if ( $toolbarWrapper.hasClass( 'es-toolbar-wrapper-bottom' ) ) {
-							$toolbarWrapper
-								.removeClass( 'es-toolbar-wrapper-bottom' )
-								.addClass( 'es-toolbar-wrapper-floating' );
+						if ( $wrapper.hasClass( 've-ui-toolbar-wrapper-bottom' ) ) {
+							$wrapper
+								.removeClass( 've-ui-toolbar-wrapper-bottom' )
+								.addClass( 've-ui-toolbar-wrapper-floating' );
 							$toolbar.css( {
 								'top': 0,
 								'left': left,
@@ -222,12 +184,12 @@ ve.Surface.prototype.floatTopToolbar = function () {
 				}
 			} else { // Return toolbar to top position
 				if (
-					$toolbarWrapper.hasClass( 'es-toolbar-wrapper-floating' ) ||
-					$toolbarWrapper.hasClass( 'es-toolbar-wrapper-bottom' )
+					$wrapper.hasClass( 've-ui-toolbar-wrapper-floating' ) ||
+					$wrapper.hasClass( 've-ui-toolbar-wrapper-bottom' )
 				) {
-					$toolbarWrapper.css( 'height', 'auto' )
-						.removeClass( 'es-toolbar-wrapper-floating' )
-						.removeClass( 'es-toolbar-wrapper-bottom' );
+					$wrapper.css( 'height', 'auto' )
+						.removeClass( 've-ui-toolbar-wrapper-floating' )
+						.removeClass( 've-ui-toolbar-wrapper-bottom' );
 					$toolbar.css( {
 						'top': 0,
 						'left': 0,

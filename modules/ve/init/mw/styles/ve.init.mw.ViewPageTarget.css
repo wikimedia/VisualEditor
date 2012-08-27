@@ -7,6 +7,10 @@
 
 /* VisualEditor */
 
+.ve-ui-menu {
+	font-size: 0.9em;
+}
+
 .ve-init-mw-viewPageTarget-pageTitle {
 	-webkit-transition: opacity 200ms ease-out;
 	-moz-transition: opacity 200ms ease-out;

@@ -13,7 +13,7 @@
 	font-size: 0.8em;
 }
 
-.es-toolbar-wrapper {
+.ve-ui-toolbar-wrapper {
 	margin: -1em -1em 1em -1em;
 	-webkit-transition: margin 200ms ease-out;
 	-moz-transition: margin 200ms ease-out;
@@ -22,7 +22,7 @@
 	position: relative;
 }
 
-.es-toolbar {
+.ve-ui-toolbar {
 	display: none;
 	margin-left: 1px;
 }

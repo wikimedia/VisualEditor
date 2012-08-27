@@ -45,10 +45,10 @@ ve.ui.AnnotationButtonTool.prototype.updateState = function ( annotations, nodes
 		annotations, new RegExp( '^' + this.annotation.type + '$' )
 	);
 	if ( ve.isEmptyObject( matches ) ) {
-		this.$.removeClass( 'es-toolbarButtonTool-down' );
+		this.$.removeClass( 've-ui-toolbarButtonTool-down' );
 		this.active = false;
 	} else {
-		this.$.addClass( 'es-toolbarButtonTool-down' );
+		this.$.addClass( 've-ui-toolbarButtonTool-down' );
 		this.active = true;
 	}
 };

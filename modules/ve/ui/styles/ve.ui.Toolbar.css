@@ -5,14 +5,14 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-.es-toolbarGroup {
+.ve-ui-toolbarGroup {
 	display: inline-block;
 	padding: 0.25em;
 	border-right: solid 1px #f0f3f5;
 	vertical-align: middle;
 }
 
-.es-toolbarDivider {
+.ve-ui-toolbarDivider {
 	display: inline-block;
 	width: 1px;
 	height: 24px;
@@ -20,7 +20,7 @@
 	background-color: #ddd;
 }
 
-.es-toolbarLabel {
+.ve-ui-toolbarLabel {
 	display: inline-block;
 	padding: 0.5em 0.75em;
 	line-height: 22px;
@@ -29,8 +29,8 @@
 	vertical-align: top;
 }
 
-.es-toolbarButtonTool,
-.es-toolbarDropdownTool {
+.ve-ui-toolbarButtonTool,
+.ve-ui-toolbarDropdownTool {
 	display: inline-block;
 	border: solid 1px transparent;
 	-webkit-border-radius: 0.125em;
@@ -41,14 +41,14 @@
 	vertical-align: top;
 }
 
-.es-toolbarButtonTool {
+.ve-ui-toolbarButtonTool {
 	padding: 0.25em;
 	width: 22px;
 	height: 22px;
 	margin-right: 0.125em;
 }
 
-.es-toolbarButtonTool:before {
+.ve-ui-toolbarButtonTool:before {
 	content: " ";
 	position: absolute;
 	display: block;
@@ -56,86 +56,75 @@
 	width: 22px;
 }
 
-.es-toolbarButtonTool:hover,
-.es-toolbarDropdownTool:hover {
+.ve-ui-toolbarButtonTool:hover,
+.ve-ui-toolbarDropdownTool:hover {
 	border-color: #eee;
 }
 
-.es-toolbarButtonTool:active,
-.es-toolbarButtonTool-down {
+.ve-ui-toolbarButtonTool:active,
+.ve-ui-toolbarButtonTool-down {
 	border-color: #ddd;
 	/* @embed */
 	background-image: url(images/fade-down.png);
-	background-position: top left;
+	background-position: left top;
 	background-repeat: repeat-x;
-	-webkit-box-shadow: inset 0px 1px 4px 0px rgba(0, 0, 0, 0.07);
-	-moz-box-shadow: inset 0px 1px 4px 0px rgba(0, 0, 0, 0.07);
-	box-shadow: inset 0px 1px 4px 0px rgba(0, 0, 0, 0.07);
+	-webkit-box-shadow: inset 0 0.05em 0.125em 0 rgba(0, 0, 0, 0.07);
+	-moz-box-shadow: inset 0 0.05em 0.125em 0 rgba(0, 0, 0, 0.07);
+	box-shadow: inset 0 0.05em 0.125em 0 rgba(0, 0, 0, 0.07);
 }
 
-.es-toolbarButtonTool-undo:before {
+.ve-ui-toolbarButtonTool-undo:before {
 	/* @embed */
 	background-image: url(images/undo.png);
 }
-.es-toolbarButtonTool-redo:before {
+.ve-ui-toolbarButtonTool-redo:before {
 	/* @embed */
 	background-image: url(images/redo.png);
 }
-.es-toolbarButtonTool-bold:before {
+.ve-ui-toolbarButtonTool-bold:before {
 	/* @embed */
 	background-image: url(images/bold.png);
 }
-.es-toolbarButtonTool-italic:before {
+.ve-ui-toolbarButtonTool-italic:before {
 	/* @embed */
 	background-image: url(images/italic.png);
 }
-.es-toolbarButtonTool-link:before {
+.ve-ui-toolbarButtonTool-link:before {
 	/* @embed */
 	background-image: url(images/link.png);
 }
-.es-toolbarButtonTool-clear:before {
+.ve-ui-toolbarButtonTool-clear:before {
 	/* @embed */
 	background-image: url(images/clear.png);
 }
-.es-toolbarButtonTool-number:before {
+.ve-ui-toolbarButtonTool-number:before {
 	/* @embed */
 	background-image: url(images/number.png);
 }
-.es-toolbarButtonTool-bullet:before {
+.ve-ui-toolbarButtonTool-bullet:before {
 	/* @embed */
 	background-image: url(images/bullet.png);
 }
-.es-toolbarButtonTool-indent:before {
+.ve-ui-toolbarButtonTool-indent:before {
 	/* @embed */
 	background-image: url(images/indent.png);
 }
-.es-toolbarButtonTool-outdent:before {
+.ve-ui-toolbarButtonTool-outdent:before {
 	/* @embed */
 	background-image: url(images/outdent.png);
 }
 
-.es-toolbarButtonTool-disabled {
-	filter: alpha(opacity=25);
-	opacity: 0.25;
+.ve-ui-toolbarButtonTool-disabled,
+.ve-ui-toolbarButtonTool-disabled:before {
+	filter: alpha(opacity=50);
+	opacity: 0.5;
 }
 
-.es-toolbarButtonTool-disabled.es-toolbarButtonTool-clear:before,
-.es-toolbarButtonTool-disabled.es-toolbarButtonTool-indent:before,
-.es-toolbarButtonTool-disabled.es-toolbarButtonTool-outdent:before {
-	filter: alpha(opacity=25);
-	opacity: 0.25;
-}
-
-.es-toolbarButtonTool-disabled:hover {
+.ve-ui-toolbarButtonTool-disabled:hover {
 	border-color: transparent;
 }
 
-.es-toolbarButtonTool-clear:before {
-	/* @embed */
-	background-image: url(images/clear.png);
-}
-
-.es-toolbarDropdownTool {
+.ve-ui-toolbarDropdownTool {
 	position: relative;
 	border-color: #ddd;
 	-webkit-border-radius: 0.25em;
@@ -144,65 +133,68 @@
 	border-radius: 0.25em;
 	background-color: white;
 }
-.es-toolbarDropdownTool-label {
+.ve-ui-toolbarDropdownTool-label {
 	overflow: hidden;
 	height: 2em;
-	padding: 0.25em 0.25em 0.25em .75em;
-	font-size: 0.8em;
-	line-height: 24px;
+	padding-right: 0.25em;
+	padding-left: 0.75em;
+	line-height: 2em;
 }
 
-.es-toolbarDropdownTool-icon {
+.ve-ui-toolbarDropdownTool-label span {
+	font-size: 0.8em;
+}
+
+.ve-ui-toolbarDropdownTool-icon {
 	position: absolute;
 	right: 0;
-	width: 5px;
+	width: 1.5em;
 	height: 2em;
-	padding: 0 .5em;
 	/* @embed */
 	background-image: url(images/arrow-down.png);
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
 }
 
-.es-toolbarDropdownTool .es-menuView {
+.ve-ui-toolbarDropdownTool .ve-ui-menu {
 	left: -1px;
 	top: -1px;
 }
 
-.es-toolbarDropdownTool-format {
+.ve-ui-toolbarDropdownTool-format {
 	width: 8em;
 }
 
-.es-menuView-item[rel="heading-1"] span {
+.ve-ui-menu-item[rel="heading-1"] span {
 	font-size: 188%;
 	font-weight: normal;
 }
 
-.es-menuView-item[rel="heading-2"] span {
+.ve-ui-menu-item[rel="heading-2"] span {
 	font-size: 150%;
 	font-weight: normal;
 }
 
-.es-menuView-item[rel="heading-3"] span {
+.ve-ui-menu-item[rel="heading-3"] span {
 	font-size: 132%;
 	font-weight: bold;
 }
 
-.es-menuView-item[rel="heading-4"] span {
+.ve-ui-menu-item[rel="heading-4"] span {
 	font-size: 116%;
 	font-weight: bold;
 }
 
-.es-menuView-item[rel="heading-5"] span {
+.ve-ui-menu-item[rel="heading-5"] span {
 	font-size: 100%;
 	font-weight: bold;
 }
 
-.es-menuView-item[rel="heading-6"] span {
+.ve-ui-menu-item[rel="heading-6"] span {
 	font-size: 80%;
 	font-weight: bold;
 }
 
-.es-menuView-item[rel="pre"] span {
+.ve-ui-menu-item[rel="pre"] span {
 	font-family: monospace, "Courier New";
 }

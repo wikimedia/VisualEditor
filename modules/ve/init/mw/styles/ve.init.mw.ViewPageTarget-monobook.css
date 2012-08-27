@@ -5,11 +5,11 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-.es-toolbar-wrapper {
+.ve-ui-toolbar-wrapper {
 	margin: 0 -1em;
 }
 
-.es-toolbar,
+.ve-ui-toolbar,
 .ve-init-mw-viewPageTarget-saveDialog {
 	font-size: 1.25em;
 	line-height: 1.5em;

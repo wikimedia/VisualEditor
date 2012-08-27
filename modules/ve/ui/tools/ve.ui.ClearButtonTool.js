@@ -19,7 +19,7 @@ ve.ui.ClearButtonTool = function ( toolbar, name, title ) {
 	ve.ui.ButtonTool.call( this, toolbar, name, title );
 
 	// Properties
-	this.$.addClass( 'es-toolbarButtonTool-disabled' );
+	this.$.addClass( 've-ui-toolbarButtonTool-disabled' );
 	this.pattern = /^(textStyle|link)\//;
 };
 
@@ -47,9 +47,9 @@ ve.ui.ClearButtonTool.prototype.updateState = function ( annotations ) {
 	var allAnnotations = this.getAnnotations();
 
 	if ( ve.isEmptyObject( allAnnotations ) ) {
-		this.$.addClass( 'es-toolbarButtonTool-disabled' );
+		this.$.addClass( 've-ui-toolbarButtonTool-disabled' );
 	} else {
-		this.$.removeClass( 'es-toolbarButtonTool-disabled' );
+		this.$.removeClass( 've-ui-toolbarButtonTool-disabled' );
 	}
 };
 

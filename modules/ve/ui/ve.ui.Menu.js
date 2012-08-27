@@ -18,7 +18,7 @@ ve.ui.Menu = function ( items, callback, $overlay ) {
 	var i, menu;
 
 	// Properties
-	this.$ = $( '<div class="es-menuView"></div>' ).appendTo( $overlay || $( 'body' ) );
+	this.$ = $( '<div class="ve-ui-menu"></div>' ).appendTo( $overlay || $( 'body' ) );
 	this.items = [];
 	this.autoNamedBreaks = 0;
 	this.callback = callback;
@@ -42,7 +42,7 @@ ve.ui.Menu = function ( items, callback, $overlay ) {
 		'mouseup': function ( e ) {
 			if ( e.which === 1 ) {
 				var name, i,
-					$item = $( e.target ).closest( '.es-menuView-item' );
+					$item = $( e.target ).closest( '.ve-ui-menu-item' );
 				if ( $item.length ) {
 					name = $item.attr( 'rel' );
 					for ( i = 0; i < menu.items.length; i++ ) {
@@ -71,13 +71,13 @@ ve.ui.Menu.prototype.addItem = function ( item, before ) {
 			throw new Error( 'Invalid menu item error. Items must have a name property.' );
 		}
 		if ( item.label ) {
-			item.$ = $( '<div class="es-menuView-item"></div>' )
+			item.$ = $( '<div class="ve-ui-menu-item"></div>' )
 				.attr( 'rel', item.name )
 				// TODO: this should take a labelmsg instead and call ve.msg()
 				.append( $( '<span>' ).text( item.label ) );
 		} else {
 			// No label, must be a break
-			item.$ = $( '<div class="es-menuView-break"></div>' )
+			item.$ = $( '<div class="ve-ui-menu-break"></div>' )
 				.attr( 'rel', item.name );
 		}
 		// TODO: Keyboard shortcut (and icons for them), support for keyboard accelerators, etc.

@@ -17,7 +17,7 @@ ve.ui.Tool = function ( toolbar, name, title ) {
 	this.toolbar = toolbar;
 	this.name = name;
 	this.title = title;
-	this.$ = $( '<div class="es-tool"></div>' ).attr( 'title', this.title );
+	this.$ = $( '<div class="ve-ui-tool"></div>' ).attr( 'title', this.title );
 };
 
 /* Static Members */
@@ -31,5 +31,5 @@ ve.ui.Tool.prototype.updateState = function () {
 };
 
 ve.ui.Tool.prototype.clearState = function () {
-	this.$.removeClass( 'es-toolbarButtonTool-down' );
+	this.$.removeClass( 've-ui-toolbarButtonTool-down' );
 };

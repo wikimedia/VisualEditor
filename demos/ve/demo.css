@@ -32,7 +32,7 @@ body {
 
 /* Editor */
 
-.es-base {
+.ve-surface {
 	margin: 2em;
 	margin-top: 0;
 	-webkit-box-shadow: 0 0.25em 1.5em 0 #ddd;
@@ -50,7 +50,7 @@ body {
 	padding: 0.75em 1.5em;
 }
 
-.es-toolbar {
+.ve-ui-toolbar {
 	border: solid 1px #ccc;
 	position: relative;
 	-webkit-border-radius: 0;
@@ -76,7 +76,11 @@ body {
 	user-select: none;
 }
 
-.es-toolbar-wrapper.float .es-toolbar {
+.ve-ui-toolbar-wrapper {
+	margin: 0 2em;
+}
+
+.ve-ui-toolbar-wrapper.float .ve-ui-toolbar {
 	top: 0;
 	position: fixed;
 	-webkit-border-radius: 0;
@@ -87,7 +91,7 @@ body {
 	border-top: none;
 }
 
-.es-toolbar-shadow {
+.ve-ui-toolbar-shadow {
 	/* @embed */
 	background-image: url(../../modules/ve/ui/styles/images/toolbar-shadow.png);
 	background-position: left top;
@@ -106,7 +110,7 @@ body {
 	opacity: 0.125;
 }
 
-.es-toolbar-wrapper.float .es-toolbar-shadow {
+.ve-ui-toolbar-wrapper.float .ve-ui-toolbar-shadow {
 	filter: alpha(opacity=50);
 	opacity: 0.5;
 }

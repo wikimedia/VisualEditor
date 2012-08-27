@@ -22,7 +22,7 @@ ve.ui.ButtonTool = function ( toolbar, name, title ) {
 	}
 
 	// Properties
-	this.$.addClass( 'es-toolbarButtonTool es-toolbarButtonTool-' + name );
+	this.$.addClass( 've-ui-toolbarButtonTool ve-ui-toolbarButtonTool-' + name );
 
 	// Events
 	var tool = this;
@@ -49,9 +49,9 @@ ve.ui.ButtonTool.prototype.onClick = function () {
 
 ve.ui.ButtonTool.prototype.updateEnabled = function () {
 	if ( this.enabled ) {
-		this.$.removeClass( 'es-toolbarButtonTool-disabled' );
+		this.$.removeClass( 've-ui-toolbarButtonTool-disabled' );
 	} else {
-		this.$.addClass( 'es-toolbarButtonTool-disabled' );
+		this.$.addClass( 've-ui-toolbarButtonTool-disabled' );
 	}
 };
 
