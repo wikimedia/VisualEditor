@@ -22,7 +22,10 @@ ve.ui.LinkInspector = function ( toolbar, context ) {
 	this.context = context;
 
 	// Elements
-	this.$clearButton = $( '<div class="es-inspector-button es-inspector-clearButton"></div>', context.inspectorDoc )
+	this.$clearButton = $(
+			'<div class="es-inspector-button es-inspector-clearButton"></div>',
+			context.inspectorDoc
+		)
 		.prependTo( this.$ );
 	this.$.prepend(
 		$( '<div class="es-inspector-title"></div>', context.inspectorDoc )
@@ -241,7 +244,7 @@ ve.ui.LinkInspector.getAnnotationForTarget = function ( target ) {
 	}
 };
 
-ve.ui.LinkInspector.prototype.initMultiSuggest = function() {
+ve.ui.LinkInspector.prototype.initMultiSuggest = function () {
 	var inspector = this,
 		context = inspector.context,
 		$overlay = context.$iframeOverlay,
@@ -253,7 +256,7 @@ ve.ui.LinkInspector.prototype.initMultiSuggest = function() {
 		'parent': $overlay,
 		'prefix': 've-ui',
 	    // Build suggestion groups in order.
-	    'suggestions': function( params ) {
+	    'suggestions': function ( params ) {
 			var groups = {},
 				results = params.results,
 				query = params.query,
@@ -263,10 +266,10 @@ ve.ui.LinkInspector.prototype.initMultiSuggest = function() {
 
 			// Add existing pages.
 			if ( results.length > 0 ) {
-				groups.internal = {
-					label: ve.msg( 'visualeditor-linkinspector-suggest-existing-page' ),
-					items: results,
-					itemClass: 'existing'
+				groups.existingPage = {
+					'label': ve.msg( 'visualeditor-linkinspector-suggest-existing-page' ),
+					'items': results,
+					'itemClass': 've-ui-suggest-item-existingPage'
 				};
 			}
 			// Run the query through the mw.Title object to handle correct capitalization.
@@ -275,10 +278,10 @@ ve.ui.LinkInspector.prototype.initMultiSuggest = function() {
 				modifiedQuery = title.getPrefixedText();
 				// If page doesn't exist, add New Page group.
 				if ( ve.indexOf( modifiedQuery, results ) === -1 ) {
-					groups['new'] = {
-						label: ve.msg( 'visualeditor-linkinspector-suggest-new-page' ),
-						items: [modifiedQuery],
-						itemClass: 'new'
+					groups.newPage = {
+						'label': ve.msg( 'visualeditor-linkinspector-suggest-new-page' ),
+						'items': [modifiedQuery],
+						'itemClass': 've-ui-suggest-item-newPage'
 					};
 				}
 			} catch ( e ) {
@@ -286,25 +289,25 @@ ve.ui.LinkInspector.prototype.initMultiSuggest = function() {
 				ve.log( e );
 			}
 			// Add external
-			groups.external = {
-				label: ve.msg( 'visualeditor-linkinspector-suggest-external-link' ),
-				items: [],
-				itemClass: 'existing'
+			groups.externalLink = {
+				'label': ve.msg( 'visualeditor-linkinspector-suggest-external-link' ),
+				'items': [],
+				'itemClass': 've-ui-suggest-item-externalLink'
 			};
 			// Find a protocol and suggest an external link.
 			prot = query.match(
 				ve.init.platform.getExternalLinkUrlProtocolsRegExp()
 			);
 			if ( prot ) {
-				groups.external.items = [query];
+				groups.externalLink.items = [query];
 			// No protocol, default to http
 			} else {
-				groups.external.items = ['http://' + query];
+				groups.externalLink.items = ['http://' + query];
 			}
 			return groups;
 		},
 		// Called on succesfull input.
-		'input': function( callback ) {
+		'input': function ( callback ) {
 			var $input = $( this ),
 				query = $input.val(),
 				cKey = query.toLowerCase(),
@@ -315,33 +318,33 @@ ve.ui.LinkInspector.prototype.initMultiSuggest = function() {
 			// Build from cache.
 			if ( cache[cKey] !== undefined ) {
 				callback( {
-					query: query,
-					results: cache[cKey]
+					'query': query,
+					'results': cache[cKey]
 				} );
 			} else {
 				// No cache, build fresh.
 				api = new mw.Api();
 				// MW api request.
 				api.get( {
-					action: 'opensearch',
-					search: query
+					'action': 'opensearch',
+					'search': query
 				}, {
-					ok: function( data ) {
+					'ok': function ( data ) {
 						cache[cKey] = data[1];
 						// Build
 						callback( {
-							query: query,
-							results: data[1]
+							'query': query,
+							'results': data[1]
 						} );
 					}
 				} );
 			}
 		},
 		// Position the iframe overlay below the input.
-		'position': function() {
+		'position': function () {
 			context.positionIframeOverlay( {
-				overlay: $overlay,
-				below: inspector.$locationInput
+				'overlay': $overlay,
+				'below': inspector.$locationInput
 			} );
 		}
 	};

@@ -16,42 +16,42 @@
 		'prefix': 'example-multi',
 
 		// Build suggestion groups in order.
-		'suggestions': function( params ) {
+		'suggestions': function ( params ) {
 			// Generic params object.
 			var example = params.example,
 				example2 = params.example2,
 				query = params.query;
 				groups = {
 					// Set 1
-					query: {
-						label: 'Query',
-						items: [query],
-						itemClass: 'query-class'
+					'query': {
+						'label': 'Query',
+						'items': [query],
+						'itemClass': 'query-class'
 					},
 					// Set 2
-					exampleGroup: {
-						label: 'Example 1',
-						items: example,
-						itemClass: 'example-class'
+					'exampleGroup': {
+						'label': 'Example 1',
+						'items': example,
+						'itemClass': 'example-class'
 					},
 					// Set 3
-					exampleGroup2: {
-						label: 'Example 2',
-						items: example2,
-						itemClass: 'example-class'
+					'exampleGroup2': {
+						'label': 'Example 2',
+						'items': example2,
+						'itemClass': 'example-class'
 					}
 				};
 			// Return the groups object.
 			return groups;
 		},
 		// Called on succesfull input.
-		'input': function( callback ) {
+		'input': function ( callback ) {
 			var query = $input.val();
 			// Example params object.
 			var params = {
-					query: query,
-					example: ['example item 1', 'example item 2', 'example item 3', 'example item 4'],
-					example2: ['example item 5', 'example item 6']
+					'query': query,
+					'example': ['example item 1', 'example item 2', 'example item 3', 'example item 4'],
+					'example2': ['example item 5', 'example item 6']
 			};
 			// Build with params.
 			callback( params );
@@ -64,7 +64,7 @@
  */
 ( function ( $ ) {
 	$.fn.multiSuggest = function ( options ) {
-		return this.each( function() {
+		return this.each( function () {
 			// Private members.
 			var inputTimer = null,
 				visible = false,
@@ -75,8 +75,8 @@
 
 			// Merge options with default configuration.
 			$.extend( {
-				doc: document,
-				prefix: 'multi'
+				'doc': document,
+				'prefix': 'multi'
 			}, options );
 
 			// DOM Setup.
@@ -100,7 +100,7 @@
 			function onInput() {
 				// Throttle
 				clearTimeout( inputTimer );
-				inputTimer = setTimeout( function() {
+				inputTimer = setTimeout( function () {
 					var txt = $input.val();
 					if ( txt !== '' ) {
 						// Be sure that input has changed.
@@ -108,7 +108,7 @@
 							txt !== currentInput &&
 							typeof options.input === 'function'
 						) {
-							options.input.call( $input, function( params, callback ){
+							options.input.call( $input, function ( params, callback ) {
 								build( params );
 							} );
 						}
@@ -144,7 +144,7 @@
 			// Closes the dropdown.
 			function close() {
 				if ( visible ) {
-					setTimeout( function() {
+					setTimeout( function () {
 						visible = false;
 						$multiSuggest.hide();
 					}, 100 );
@@ -203,10 +203,13 @@
 				// Add each item.
 				for( i = 0; i < group.items.length; i++ ) {
 					$item = $( '<div>', options.doc )
-						.prop( 'class', options.prefix + '-suggest-item ' + group.itemClass )
+						.prop( 'class', options.prefix + '-suggest-item' )
 						.text( group.items[i] )
 						.on( 'mousedown', onItemMousedown )
 						.appendTo( $groupWrap );
+					if ( 'itemClass' in group ) {
+						$item.addClass( group.itemClass );
+					}
 					// Select this item by default
 					if ( group.items[i].toLowerCase() === $input.val().toLowerCase() ) {
 						$item.addClass( 'selected' );
@@ -233,14 +236,14 @@
 			// Bind target input events
 			$input.on( {
 				// Handle any change to the input.
-				'keydown cut paste': function( e ) {
+				'keydown cut paste': function ( e ) {
 					var $item,
 						$items = $multiSuggest
 							.find( '.' + options.prefix + '-suggest-item' ),
 						selected = 0;
 
 					// Find the selected index.
-					$.each( $items, function( i, e ){
+					$.each( $items, function ( i, e ) {
 						if( $( this ).hasClass( 'selected' ) ) {
 							selected = i;
 						}
@@ -285,15 +288,15 @@
 					// Handle normal input.
 					onInput();
 				},
-				'focus': function(){
+				'focus': function () {
 					focused = true;
 					open();
 				},
-				'blur': function(){
+				'blur': function () {
 					focused = false;
 					close();
 				},
-				'mousedown': function(){
+				'mousedown': function () {
 					if ( focused ) {
 						toggle();
 					}

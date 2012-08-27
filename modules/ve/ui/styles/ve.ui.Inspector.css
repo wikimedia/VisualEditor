@@ -171,11 +171,12 @@
 	text-overflow: ellipsis;
 }
 
-.ve-ui-suggest-item.new {
+.ve-ui-suggest-item-newPage {
 	color: #BA0000;
 }
 
-.ve-ui-suggest-item.existing {
+.ve-ui-suggest-item-externalLink,
+.ve-ui-suggest-item-existingPage {
 	color: #0645AD;
 }
 
