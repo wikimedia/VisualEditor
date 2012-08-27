@@ -71,8 +71,7 @@
 				focused = false,
 				$input = $( this ),
 				currentInput = '',
-				$multiSuggest,
-				cache = {};
+				$multiSuggest;
 
 			// Merge options with default configuration.
 			$.extend( {
@@ -102,23 +101,16 @@
 				// Throttle
 				clearTimeout( inputTimer );
 				inputTimer = setTimeout( function() {
-					var txt = $input.val().toLowerCase();
+					var txt = $input.val();
 					if ( txt !== '' ) {
 						// Be sure that input has changed.
-						if ( txt !== currentInput ) {
-							// Build fresh if query not in cache.
-							if (
-								!( txt in cache ) &&
-								typeof options.input === 'function'
-							) {
-								options.input.call( $input, function( params, callback ){
-									build( params );
-									cache[txt] = params;
-								} );
-							} else {
-								// Rebuild from cache.
-								build( cache[txt] );
-							}
+						if (
+							txt !== currentInput &&
+							typeof options.input === 'function'
+						) {
+							options.input.call( $input, function( params, callback ){
+								build( params );
+							} );
 						}
 					} else {
 						// No Text, close.
@@ -137,7 +129,7 @@
 					// Call input method if cached value is stale
 					if (
 						$input.val() !== '' &&
-						$input.val().toLowerCase() !== currentInput
+						$input.val() !== currentInput
 					) {
 						onInput();
 					} else {
