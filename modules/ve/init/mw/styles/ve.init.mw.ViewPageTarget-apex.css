@@ -10,8 +10,9 @@
 }
 
 .es-toolbar-wrapper {
-	margin: -0.9em -3em 0.8em -3em;
+	margin: -0.6em -3em 0.8em -3em;
 	position: relative;
+	font-size: 1.3em;
 }
 
 .es-toolbar {
