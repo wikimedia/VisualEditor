@@ -15,7 +15,7 @@
  */
 ve.ce.PreformattedNode = function ( model ) {
 	// Inheritance
-	ve.ce.BranchNode.call( this, 'preformatted', model, $( '<pre></pre>' ) );
+	ve.ce.BranchNode.call( this, 'preformatted', model, $( '<pre>' ) );
 };
 
 /* Static Members */

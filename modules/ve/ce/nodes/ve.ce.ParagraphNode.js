@@ -15,7 +15,7 @@
  */
 ve.ce.ParagraphNode = function ( model ) {
 	// Inheritance
-	ve.ce.BranchNode.call( this, 'paragraph', model, $( '<p></p>' ) );
+	ve.ce.BranchNode.call( this, 'paragraph', model, $( '<p>' ) );
 };
 
 /* Static Members */

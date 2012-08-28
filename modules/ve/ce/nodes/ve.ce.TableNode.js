@@ -15,7 +15,9 @@
  */
 ve.ce.TableNode = function ( model ) {
 	// Inheritance
-	ve.ce.BranchNode.call( this, 'table', model, $( '<table border="1" cellpadding="5" cellspacing="5"></table>' ) );
+	ve.ce.BranchNode.call(
+		this, 'table', model, $( '<table border="1" cellpadding="5" cellspacing="5"></table>' )
+	);
 };
 
 /* Static Members */

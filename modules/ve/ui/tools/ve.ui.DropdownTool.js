@@ -27,9 +27,9 @@ ve.ui.DropdownTool = function ( toolbar, name, title, items ) {
 		tool.onSelect( item );
 		tool.$labelText.text( item.label );
 	}, this.$ );
-	this.$icon = $( '<div>' ).addClass( 've-ui-toolbarDropdownTool-icon' );
-	this.$label = $( '<div>' ).addClass( 've-ui-toolbarDropdownTool-label' );
-	this.$labelText = $( '<span>' ).html( '&nbsp;' );
+	this.$icon = $( '<div class="ve-ui-toolbarDropdownTool-icon"></div>' );
+	this.$label = $( '<div class="ve-ui-toolbarDropdownTool-label"></div>' );
+	this.$labelText = $( '<span>&nbsp;</span>' );
 
 	// Events
 	$( document )

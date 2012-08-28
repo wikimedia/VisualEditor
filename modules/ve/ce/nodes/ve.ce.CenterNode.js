@@ -16,7 +16,7 @@
 ve.ce.CenterNode = function ( model ) {
 	// Inheritance
 	ve.ce.BranchNode.call(
-		this, 'center', model, $( '<center></center>')
+		this, 'center', model, $( '<center>')
 	);
 };
 

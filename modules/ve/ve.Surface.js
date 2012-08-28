@@ -18,30 +18,26 @@
  */
 ve.Surface = function ( parent, dom, options ) {
 	// Properties
-	this.$ = $( '<div>' )
-		.addClass( 've-surface' )
-		.appendTo( $( parent ) );
+	this.$ = $( '<div class="ve-surface"></div>' );
 	this.documentModel = new ve.dm.Document( ve.dm.converter.getDataFromDom( dom ) );
 	this.options = ve.extendObject( true, ve.Surface.defaultOptions, options );
 	this.model = new ve.dm.Surface( this.documentModel );
 	this.view = new ve.ce.Surface( this.$, this.model );
 	this.toolbars = {};
 
+	// DOM Changes
+	$( parent ).append( this.$ );
+	this.$.append(
+		// Contain floating content
+		$( '<div style="clear: both;"></div>' ),
+		// Temporary paste buffer - TODO: make 'paste' in surface stateful and remove this attrib
+		$( '<div id="paste" class="paste" contenteditable="true"></div>' )
+	);
+
 	// Initialization
 	this.setupToolbars();
 	ve.instances.push( this );
 	this.model.startHistoryTracking();
-	this.$.append(
-		// Contain floating content
-		$( '<div>' ).css( 'clear', 'both' ),
-		// Temporary paste buffer
-		$( '<div>' ).attr( {
-			// TODO: make 'paste' in surface stateful and remove this attrib
-			'id': 'paste',
-			'class': 'paste',
-			'contenteditable': 'true'
-		} )
-	);
 };
 
 /* Static Members */
@@ -81,13 +77,12 @@ ve.Surface.prototype.setupToolbars = function () {
 		if ( config !== null ) {
 			if ( name === 'top' ) {
 				surface.toolbars[name] = {
-					'$wrapper': $( '<div>' ).addClass( 've-ui-toolbar-wrapper' ),
-					'$': $( '<div>' )
-						.addClass( 've-ui-toolbar' )
+					'$wrapper': $( '<div class="ve-ui-toolbar-wrapper"></div>' ),
+					'$': $( '<div class="ve-ui-toolbar"></div>' )
 						.append(
-							$( '<div>' ).addClass( 've-ui-actions' ),
-							$( '<div>' ).css( 'clear', 'both' ),
-							$( '<div>' ).addClass( 've-ui-toolbar-shadow' )
+							$( '<div class="ve-ui-actions"></div>' ),
+							$( '<div style="clear:both"></div>' ),
+							$( '<div class="ve-ui-toolbar-shadow"></div>' )
 						)
 				};
 				surface.toolbars[name].$wrapper.append( surface.toolbars[name].$ );

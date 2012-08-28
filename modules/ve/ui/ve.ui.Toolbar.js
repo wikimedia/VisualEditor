@@ -21,18 +21,22 @@ ve.ui.Toolbar = function ( $container, surfaceView, config ) {
 	// Properties
 	this.surfaceView = surfaceView;
 	this.$ = $container;
-	this.$groups = $( '<div class="ve-ui-toolbarGroups"></div>' ).prependTo( this.$ );
+	this.$groups = $( '<div class="ve-ui-toolbarGroups"></div>' );
 	this.tools = [];
-
-	// Update tools on selection and all transactions.
-	this.surfaceView.model.on( 'change', ve.bind( this.updateTools, this ) );
-
 	this.config = config || [
 		{ 'name': 'history', 'items' : ['undo', 'redo'] },
 		{ 'name': 'textStyle', 'items' : ['format'] },
 		{ 'name': 'textStyle', 'items' : ['bold', 'italic', 'link', 'clear'] },
 		{ 'name': 'list', 'items' : ['number', 'bullet', 'outdent', 'indent'] }
 	];
+
+	// DOM Changes
+	this.$.prepend( this.$groups );
+
+	// Events
+	this.surfaceView.model.on( 'change', ve.bind( this.updateTools, this ) );
+
+	// Initialization
 	this.setup();
 };
 
@@ -110,12 +114,11 @@ ve.ui.Toolbar.prototype.getSurfaceView = function () {
 ve.ui.Toolbar.prototype.setup = function () {
 	var i, j, $group, tool, toolDefintion;
 	for ( i = 0; i < this.config.length; i++ ) {
-		$group = $( '<div>' )
-			.addClass( 've-ui-toolbarGroup' )
+		$group = $( '<div class="ve-ui-toolbarGroup"></div>' )
 			.addClass( 've-ui-toolbarGroup-' + this.config[i].name );
 		if ( this.config[i].label ) {
 			$group.append(
-				$( '<div>' ).addClass( 've-ui-toolbarLabel' ).html( this.config[i].label )
+				$( '<div class="ve-ui-toolbarLabel"></div>' ).html( this.config[i].label )
 			);
 		}
 

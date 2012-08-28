@@ -15,36 +15,30 @@
  * @param {ve.ui.Toolbar} toolbar
  */
 ve.ui.LinkInspector = function ( toolbar, context ) {
+	var inspector = this;
+
 	// Inheritance
 	ve.ui.Inspector.call( this, toolbar, context );
 
-	var inspector = this;
+	// Properties
 	this.context = context;
-
-	// Elements
-	this.$clearButton = $(
-			'<div class="ve-ui-inspector-button ve-ui-inspector-clearButton"></div>',
-			context.inspectorDoc
-		)
-		.prependTo( this.$ );
-	this.$.prepend(
-		$( '<div class="ve-ui-inspector-title"></div>', context.inspectorDoc )
-			.text( ve.msg( 'visualeditor-linkinspector-title' ) )
-	);
-	// Target
-	this.$locationInput = $( '<input>', context.inspectorDoc )
-		.attr( 'type', 'text' )
-		.addClass( 've-ui-linkInspector-location' )
-		.appendTo( this.$form );
-
 	this.initialValue = null;
+	this.$clearButton = $(
+		'<div class="ve-ui-inspector-button ve-ui-inspector-clearButton"></div>',
+		context.inspectorDoc
+	);
+	this.$title = $( '<div class="ve-ui-inspector-title"></div>', context.inspectorDoc )
+		.text( ve.msg( 'visualeditor-linkinspector-title' ) );
+	this.$locationInput = $(
+		'<input type="text" class="ve-ui-linkInspector-location" />',
+		context.inspectorDoc
+	);
 
 	// Events
 	this.$clearButton.click( function () {
 		if ( $(this).is( '.ve-ui-inspector-button-disabled' ) ) {
 			return;
 		}
-
 		var hash,
 			surfaceModel = inspector.context.getSurfaceView().getModel(),
 			annotations = inspector.getAllLinkAnnotationsFromSelection();
@@ -55,8 +49,6 @@ ve.ui.LinkInspector = function ( toolbar, context ) {
 		inspector.$locationInput.val( '' );
 		inspector.context.closeInspector();
 	} );
-
-	// Bind events to location input.
 	this.$locationInput.on( 'change mousedown keydown cut paste', function () {
 		setTimeout( function () {
 			// Toggle disabled class
@@ -68,6 +60,10 @@ ve.ui.LinkInspector = function ( toolbar, context ) {
 
 		}, 0 );
 	} );
+
+	// DOM Changes
+	this.$.prepend( this.$title, this.$clearButton );
+	this.$form.append( this.$locationInput );
 
 	// Init multiSuggest for MediaWiki
 	if ( 'mw' in window ) {

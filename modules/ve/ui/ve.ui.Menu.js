@@ -15,13 +15,17 @@
  * @param {jQuery} [$overlay=$( 'body' )] DOM selection to add nodes to
  */
 ve.ui.Menu = function ( items, callback, $overlay ) {
-	var i, menu;
+	var i,
+		menu = this;
 
 	// Properties
-	this.$ = $( '<div class="ve-ui-menu"></div>' ).appendTo( $overlay || $( 'body' ) );
+	this.$ = $( '<div class="ve-ui-menu"></div>' );
 	this.items = [];
 	this.autoNamedBreaks = 0;
 	this.callback = callback;
+
+	// DOM Changes
+	( $overlay || $( 'body' ) ).append( this.$ );
 
 	// Items
 	if ( ve.isArray( items ) ) {
@@ -31,7 +35,6 @@ ve.ui.Menu = function ( items, callback, $overlay ) {
 	}
 
 	// Events
-	menu = this;
 	menu.$.on( {
 		'mousedown': function ( e ) {
 			if ( e.which === 1 ) {

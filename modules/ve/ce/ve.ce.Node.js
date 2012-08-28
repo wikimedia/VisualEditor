@@ -22,7 +22,7 @@ ve.ce.Node = function ( type, model, $element ) {
 
 	// Properties
 	this.model = model;
-	this.$ = $element || $( '<div></div>' );
+	this.$ = $element || $( '<div>' );
 	this.parent = null;
 
 	this.$.data( 'node', this );

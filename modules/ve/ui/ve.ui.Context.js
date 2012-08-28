@@ -13,7 +13,6 @@
  * @param {jQuery} $overlay DOM selection to add nodes to
  */
 ve.ui.Context = function ( surfaceView, $overlay ) {
-	// Inheritance
 	if ( !surfaceView ) {
 		return;
 	}
@@ -24,38 +23,19 @@ ve.ui.Context = function ( surfaceView, $overlay ) {
 	this.inspector = null;
 	this.position = null;
 	this.clicking = false;
-
-	// Default to body as parent.
-	$overlay = $overlay || $( 'body' );
-
-	// Setup contextView
-	this.$ = $( '<div>' ).addClass( 've-ui-context' );
-	$overlay.append( this.$ );
-
-	// Icon
-	this.$icon = $( '<div>' )
-		.addClass( 've-ui-context-icon' )
-		.appendTo( this.$ );
-
-	// Toolbar
-	this.$toolbar = $( '<div>' )
-		.addClass( 've-ui-context-toolbar');
-
-	// Toolbar view
+	this.$ = $( '<div class="ve-ui-context"></div>' );
+	this.$icon = $( '<div class="ve-ui-context-icon"></div>' );
+	this.$toolbar = $( '<div class="ve-ui-context-toolbar"></div>' );
 	this.toolbarView = new ve.ui.Toolbar(
 		this.$toolbar,
 		this.surfaceView,
 		[{ 'name': 'textStyle', 'items' : [ 'bold', 'italic', 'link', 'clear' ] }]
 	);
+	this.menuView = new ve.ui.Menu( [ { 'name': 'tools', '$': this.$toolbar } ], null, this.$ );
 
-	// Context Menu
-	this.menuView = new ve.ui.Menu( [
-			// Example menu items
-			{ 'name': 'tools', '$': this.$toolbar }
-		],
-		null,
-		this.$
-	);
+	// DOM Changes
+	this.$.append( this.$icon );
+	( $overlay || $( 'body' ) ).append( this.$ );
 
 	// Events
 	this.$icon.on( {
@@ -67,7 +47,7 @@ ve.ui.Context = function ( surfaceView, $overlay ) {
 		'blur': ve.bind( this.onDocumentBlur, this )
 	} );
 
-	// Setup Inspectors.
+	// Initialization
 	this.setupInspectorSpace();
 };
 
@@ -77,18 +57,17 @@ ve.ui.Context.prototype.setupInspectorSpace = function () {
 	var $styleLink;
 
 	// Inspector container
-	this.$inspectors = $( '<div>' )
-		.addClass( 've-ui-context-inspectors' )
-		.appendTo( this.$ );
+	this.$inspectors = $( '<div class="ve-ui-context-inspectors"></div>' );
 
 	// Overlay in main document scope for positioning elements over iframe.
-	this.$iframeOverlay = $( '<div>' )
-		.addClass( 've-ui-context-overlay' )
-		.appendTo( this.$inspectors );
+	this.$iframeOverlay = $( '<div class="ve-ui-context-overlay"></div>' );
 
 	// Create and append an iframe to contain inspectors.
 	// NOTE: Inspectors are required to be inside the iframe to prevent loss of content selection.
-	this.$inspectorFrame = $( '<iframe>' ).attr( 'frameborder', '0' ).appendTo( this.$inspectors );
+	this.$inspectorFrame = $( '<iframe frameborder="0"></iframe>' );
+
+	// Attach inspectors and overlays
+	this.$.append( this.$inspectors.append( this.$iframeOverlay, this.$inspectorFrame ) );
 
 	// Iframe document reference.
 	this.inspectorDoc = this.$inspectorFrame.prop( 'contentWindow' ).document;

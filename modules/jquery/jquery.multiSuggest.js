@@ -80,11 +80,10 @@
 			}, options );
 
 			// DOM Setup.
-			$multiSuggest =
-				$( '<div>', options.doc )
-					.addClass( options.prefix + '-suggest-select' )
-					.hide()
-					.appendTo( options.parent );
+			$multiSuggest = $( '<div>', options.doc )
+				.addClass( options.prefix + '-suggest-select' )
+				.hide();
+			$( options.parent ).append( $multiSuggest );
 
 			/* Methods */
 
@@ -180,13 +179,12 @@
 						$( '<div>', options.doc )
 							.addClass( options.prefix + '-suggest-label' )
 							.text( group.label )
-					).append(
-						$( '<div>', options.doc )
-							.addClass( options.prefix + '-suggest-wrap' )
+					)
+					.append(
+						$( '<div>', options.doc ).addClass( options.prefix + '-suggest-wrap' )
+					)
 					// Add a clear break.
-					).append(
-						$( '<div>', options.doc ).css( 'clear', 'both' )
-					);
+					.append( $( '<div style="clear: both;">', options.doc ) );
 				// Add group
 				$multiSuggest.append( $group );
 
@@ -195,9 +193,8 @@
 				// If no items, add a dummy element to take up space.
 				if ( group.items.length === 0 ) {
 					$groupWrap.append(
-						$( '<div>', options.doc )
+						$( '<div>&nbsp;</div>', options.doc )
 							.addClass( options.prefix + '-suggest-dummy-item' )
-							.text( ' ' )
 					);
 				}
 				// Add each item.
@@ -205,8 +202,7 @@
 					$item = $( '<div>', options.doc )
 						.addClass( options.prefix + '-suggest-item' )
 						.text( group.items[i] )
-						.on( 'mousedown', onItemMousedown )
-						.appendTo( $groupWrap );
+						.on( 'mousedown', onItemMousedown );
 					if ( 'itemClass' in group ) {
 						$item.addClass( group.itemClass );
 					}
@@ -214,6 +210,7 @@
 					if ( group.items[i].toLowerCase() === $input.val().toLowerCase() ) {
 						$item.addClass( 'selected' );
 					}
+					$groupWrap.append( $item );
 				}
 			}
 			// Build the dropdown.

@@ -15,7 +15,7 @@
  */
 ve.ce.ListItemNode = function ( model ) {
 	// Inheritance
-	ve.ce.BranchNode.call( this, 'listItem', model, $( '<li></li>' ) );
+	ve.ce.BranchNode.call( this, 'listItem', model, $( '<li>' ) );
 };
 
 /* Static Members */

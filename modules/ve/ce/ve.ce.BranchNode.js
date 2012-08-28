@@ -87,29 +87,29 @@ ve.ce.BranchNode.getDomWrapperType = function ( model, key ) {
  */
 ve.ce.BranchNode.getDomWrapper = function ( model, key ) {
 	var type = ve.ce.BranchNode.getDomWrapperType( model, key );
-	return $( '<' + type + '></' + type + '>' );
+	return $( document.createElement( type ) );
 };
 
 /* Methods */
 
 ve.ce.BranchNode.prototype.addSlugs = function () {
-	var i, $slug;
+	var i, $slug, $slugTemplate;
 
 	// Remove all slugs in this branch
 	this.$slugs.remove();
 
-	$slug = ve.ce.BranchNode.$slugTemplate.clone();
+	$slugTemplate = ve.ce.BranchNode.$slugTemplate.clone();
 
 	if ( this.canHaveGrandchildren() ) {
-		$slug.css( 'display', 'block');
+		$slugTemplate.css( 'display', 'block');
 	}
 
 	// Iterate over all children of this branch and add slugs in appropriate places
 	if ( this.getLength() === 0 ) {
 		this.$.empty();
-		this.$slugs = this.$slugs.add(
-			$slug.clone().appendTo( this.$ )
-		);
+		$slug = $slugTemplate.clone();
+		this.$slugs = this.$slugs.add( $slug );
+		this.$.append( $slug );
 	}
 	// TODO the before/after logic below is duplicated from hasSlugAtOffset(), refactor this
 	for ( i = 0; i < this.children.length; i++ ) {
@@ -120,17 +120,16 @@ ve.ce.BranchNode.prototype.addSlugs = function () {
 				// Sluggable child followed by another sluggable child (in between)
 				( this.children[i + 1] && this.children[i + 1].canHaveSlugBefore() )
 			) {
-				this.$slugs = this.$slugs.add(
-					$slug.clone().insertAfter( this.children[i].$ )
-				);
+				$slug = $slugTemplate.clone();
+				this.$slugs = this.$slugs.add( $slug );
+				this.children[i].$.after( $slug );
 			}
 		}
 		// First sluggable child (left side)
 		if ( i === 0 && this.children[i].canHaveSlugBefore() ) {
-			this.$slugs = this.$slugs.add(
-				$slug.clone().insertBefore( this.children[i].$ )
-			);
-
+			$slug = $slugTemplate.clone();
+			this.$slugs = this.$slugs.add( $slug );
+			this.children[i].$.before( $slug );
 		}
 	}
 };
@@ -154,7 +153,7 @@ ve.ce.BranchNode.prototype.updateDomWrapper = function ( key ) {
 		type = ve.ce.BranchNode.getDomWrapperType( this.model, key );
 
 	if ( type !== this.domWrapperElementType ) {
-		$element = $( '<' + type + '></' + type + '>' );
+		$element = $( document.createElement( type ) );
 		// Copy classes
 		$element.attr( 'class', this.$.attr( 'class' ) );
 		// Copy .data( 'node' )

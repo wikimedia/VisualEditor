@@ -30,7 +30,8 @@ ve.init.mw.ViewPageTarget = function () {
 		$( '<div class="ve-init-mw-viewPageTarget-toolbar-saveButton"></div>' );
 	this.$toolbarFeedbackButton =
 		$( '<div class="ve-init-mw-viewPageTarget-toolbar-feedbackButton"><a href="#"></a></div>' );
-	this.$saveDialog = $( '<div class="ve-ui-inspector ve-init-mw-viewPageTarget-saveDialog"></div>' );
+	this.$saveDialog =
+		$( '<div class="ve-ui-inspector ve-init-mw-viewPageTarget-saveDialog"></div>' );
 	this.$saveDialogSaveButton = null;
 	this.onBeforeUnloadFallback = null;
 	this.proxiedOnBeforeUnload = null;
@@ -733,7 +734,7 @@ ve.init.mw.ViewPageTarget.prototype.restoreScrollPosition = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.showSpinner = function () {
-	this.$spinner.prependTo( '#firstHeading' );
+	$( '#firstHeading' ).prepend( this.$spinner );
 };
 
 /**
