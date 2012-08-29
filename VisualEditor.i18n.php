@@ -869,9 +869,14 @@ $messages['ko'] = array(
 	'visualeditor-desc' => '미디어위키를 위한 시각적 편집기',
 	'visualeditor-feedback-prompt' => '피드백 남기기',
 	'visualeditor-feedback-dialog-title' => '시각적편집기 실험실에 대한 피드백 남기기',
+	'visualeditor-notification-saved' => '$1 문서에 바뀜을 저장했습니다.',
+	'visualeditor-notification-created' => '$1 문서를 만들었습니다.',
 	'visualeditor-ca-editsource' => '자료 편집',
 	'visualeditor-linkinspector-title' => '링크 편집',
 	'visualeditor-linkinspector-label-pagetitle' => '문서 제목',
+	'visualeditor-linkinspector-suggest-existing-page' => '기존 문서',
+	'visualeditor-linkinspector-suggest-new-page' => '새 문서',
+	'visualeditor-linkinspector-suggest-external-link' => '웹 링크',
 	'visualeditor-formatdropdown-title' => '서식 바꾸기',
 	'visualeditor-formatdropdown-format-paragraph' => '문단',
 	'visualeditor-formatdropdown-format-heading1' => '1단계 문단 제목',
@@ -894,6 +899,7 @@ $messages['ko'] = array(
 	'visualeditor-viewpage-savewarning' => '먼저 저장하지 않고 보기 모드로 돌아가겠습니까?',
 	'visualeditor-loadwarning' => '서버에서 데이터를 불러오는 중 오류: $1. 다시 시도하겠습니까?',
 	'visualeditor-saveerror' => '서버에 데이터를 저장하는 중 오류: $1.',
+	'visualeditor-editsummary' => '바꾼 내용 설명',
 );
 
 /** Colognian (Ripoarisch)
@@ -1218,9 +1224,14 @@ $messages['pt-br'] = array(
 	'visualeditor-desc' => 'Editor visual para o MediaWiki',
 	'visualeditor-feedback-prompt' => 'Forneça o feedback',
 	'visualeditor-feedback-dialog-title' => 'Forneça o feedback sobre a página de testes do editor visual',
+	'visualeditor-notification-saved' => 'Suas alterações para $1 foram salvas.',
+	'visualeditor-notification-created' => 'A página $1 foi criada.',
 	'visualeditor-ca-editsource' => 'Editar código-fonte',
 	'visualeditor-linkinspector-title' => 'Editar link',
 	'visualeditor-linkinspector-label-pagetitle' => 'Título da página',
+	'visualeditor-linkinspector-suggest-existing-page' => 'Página existente',
+	'visualeditor-linkinspector-suggest-new-page' => 'Página nova',
+	'visualeditor-linkinspector-suggest-external-link' => 'Link da Web',
 	'visualeditor-formatdropdown-title' => 'Alterar o formato',
 	'visualeditor-formatdropdown-format-paragraph' => 'Parágrafo',
 	'visualeditor-formatdropdown-format-heading1' => 'Nível 1',
@@ -1243,6 +1254,7 @@ $messages['pt-br'] = array(
 	'visualeditor-viewpage-savewarning' => 'Tem certeza que deseja voltar para a página sem querer salvar a edição?',
 	'visualeditor-loadwarning' => 'Erro ao carregar dados do servidor:  $1. Gostaria de tentar novamente?',
 	'visualeditor-saveerror' => 'Erro ao salvar dados para o servidor:  $1.',
+	'visualeditor-editsummary' => 'Por favor, descreva o que você mudou',
 );
 
 /** Romanian (română)
