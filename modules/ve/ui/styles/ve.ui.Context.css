@@ -44,15 +44,13 @@
 }
 
 .ve-ui-context-position-above .ve-ui-context-icon {
-	/* @embed */
-	background-image: url(images/arrow-up.png);
-	background-position: 50% 4px;
+	/* @see ve.ui.Icons */
+	background-position: 50% 1px;
 }
 
 .ve-ui-context-position-below .ve-ui-context-icon {
-	/* @embed */
-	background-image: url(images/arrow-down.png);
-	background-position: 50% 5px;
+	/* @see ve.ui.Icons */
+	background-position: 50% 2px;
 }
 .ve-ui-context-position-above .ve-ui-context-icon:hover,
 .ve-ui-context-position-below .ve-ui-context-icon:hover {

@@ -48,20 +48,17 @@
 
 .ve-ui-inspector-closeButton {
 	right: 0.25em;
-	/* @embed */
-	background-image: url(images/close.png);
+	/* @see ve.ui.Icons */
 }
 
 .ve-ui-inspector-acceptButton {
 	right: 2.25em;
-	/* @embed */
-	background-image: url(images/accept.png);
+	/* @see ve.ui.Icons */
 }
 
 .ve-ui-inspector-clearButton {
 	right: 4.25em;
-	/* @embed */
-	background-image: url(images/clear.png);
+	/* @see ve.ui.Icons */
 }
 
 .ve-ui-inspector form {
@@ -90,9 +87,8 @@
 }
 
 .ve-ui-linkInspector-location {
-	/* @embed */
-	background-image: url(images/arrow-down.png);
-	background-position: 18.75em center;
+	/* @see ve.ui.Icons */
+	background-position: 18.125em center;
 	background-repeat: no-repeat;
 }
 

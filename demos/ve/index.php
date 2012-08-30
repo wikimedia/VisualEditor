@@ -35,6 +35,13 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 		<link rel="stylesheet" href="../../modules/ve/ui/styles/ve.ui.Menu.css">
 		<link rel="stylesheet" href="../../modules/ve/ui/styles/ve.ui.Surface.css">
 		<link rel="stylesheet" href="../../modules/ve/ui/styles/ve.ui.Toolbar.css">
+		<script>
+			if ( window.devicePixelRatio > 1 ) {
+				document.write( '<link rel="stylesheet" href="../../modules/ve/ui/styles/ve.ui.Icons-vector.css">' );
+			} else {
+				document.write( '<link rel="stylesheet" href="../../modules/ve/ui/styles/ve.ui.Icons-raster.css">' );
+			}
+		</script>
 		<!-- demo -->
 		<link rel="stylesheet" href="demo.css">
 	</head>

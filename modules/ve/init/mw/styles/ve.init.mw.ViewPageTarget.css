@@ -1,5 +1,5 @@
 /**
- * VisualEditor initialization ViewPageTarget styles.
+ * VisualEditor MediaWiki initialization ViewPageTarget styles.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -143,8 +143,7 @@
 .ve-init-mw-viewPageTarget-saveDialog-closeButton {
 	right: .025em;
 	width: 22px;
-	/* @embed */
-	background-image: url(../../../ui/styles/images/collapse.png);
+	/* @see ve.init.mw.Icons */
 	background-position: center center;
 	background-repeat: no-repeat;
 }

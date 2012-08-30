@@ -43,8 +43,8 @@
 
 .ve-ui-toolbarButtonTool {
 	padding: 0.25em;
-	width: 22px;
-	height: 22px;
+	height: 1.5em;
+	width: 1.5em;
 	margin-right: 0.125em;
 }
 
@@ -52,8 +52,10 @@
 	content: " ";
 	position: absolute;
 	display: block;
-	height: 22px;
-	width: 22px;
+	height: 1.5em;
+	width: 1.5em;
+	background-position: center center;
+	background-repeat: no-repeat;
 }
 
 .ve-ui-toolbarButtonTool:hover,
@@ -71,47 +73,6 @@
 	-webkit-box-shadow: inset 0 0.05em 0.125em 0 rgba(0, 0, 0, 0.07);
 	-moz-box-shadow: inset 0 0.05em 0.125em 0 rgba(0, 0, 0, 0.07);
 	box-shadow: inset 0 0.05em 0.125em 0 rgba(0, 0, 0, 0.07);
-}
-
-.ve-ui-toolbarButtonTool-undo:before {
-	/* @embed */
-	background-image: url(images/undo.png);
-}
-.ve-ui-toolbarButtonTool-redo:before {
-	/* @embed */
-	background-image: url(images/redo.png);
-}
-.ve-ui-toolbarButtonTool-bold:before {
-	/* @embed */
-	background-image: url(images/bold.png);
-}
-.ve-ui-toolbarButtonTool-italic:before {
-	/* @embed */
-	background-image: url(images/italic.png);
-}
-.ve-ui-toolbarButtonTool-link:before {
-	/* @embed */
-	background-image: url(images/link.png);
-}
-.ve-ui-toolbarButtonTool-clear:before {
-	/* @embed */
-	background-image: url(images/clear.png);
-}
-.ve-ui-toolbarButtonTool-number:before {
-	/* @embed */
-	background-image: url(images/number.png);
-}
-.ve-ui-toolbarButtonTool-bullet:before {
-	/* @embed */
-	background-image: url(images/bullet.png);
-}
-.ve-ui-toolbarButtonTool-indent:before {
-	/* @embed */
-	background-image: url(images/indent.png);
-}
-.ve-ui-toolbarButtonTool-outdent:before {
-	/* @embed */
-	background-image: url(images/outdent.png);
 }
 
 .ve-ui-toolbarButtonTool-disabled,
@@ -148,10 +109,9 @@
 .ve-ui-toolbarDropdownTool-icon {
 	position: absolute;
 	right: 0;
-	width: 1.5em;
+	width: 2em;
 	height: 2em;
-	/* @embed */
-	background-image: url(images/arrow-down.png);
+	/* @see ve.ui.Icons */
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
 }

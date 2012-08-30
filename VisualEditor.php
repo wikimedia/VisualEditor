@@ -60,6 +60,16 @@ $wgResourceModules += array(
 			'ext.visualEditor.viewPageTarget',
 		)
 	),
+	'ext.visualEditor.viewPageTarget.icons-raster' => $wgVisualEditorResourceTemplate + array(
+		'styles' => array(
+			've/init/mw/styles/ve.init.mw.ViewPageTarget.Icons-raster.css',
+		),
+	),
+	'ext.visualEditor.viewPageTarget.icons-vector' => $wgVisualEditorResourceTemplate + array(
+		'styles' => array(
+			've/init/mw/styles/ve.init.mw.ViewPageTarget.Icons-vector.css',
+		),
+	),
 	'ext.visualEditor.viewPageTarget' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
 			've/init/mw/ve.init.mw.js',
@@ -274,7 +284,17 @@ $wgResourceModules += array(
 			'visualeditor-viewpage-savewarning',
 			'visualeditor-saveerror',
 		),
-	)
+	),
+	'ext.visualEditor.icons-raster' => $wgVisualEditorResourceTemplate + array(
+		'styles' => array(
+			've/ui/styles/ve.ui.Icons-raster.css',
+		),
+	),
+	'ext.visualEditor.icons-vector' => $wgVisualEditorResourceTemplate + array(
+		'styles' => array(
+			've/ui/styles/ve.ui.Icons-vector.css',
+		),
+	),
 );
 
 /*
