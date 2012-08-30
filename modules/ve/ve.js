@@ -307,7 +307,7 @@ ve.compareArrays = function ( a, b, objectsByValue ) {
 };
 
 /**
- * Gets a deep copy of an array's string, number, array and plain-object contents.
+ * Gets a deep copy of an array's string, number, array, plain-object and cloneable object contents.
  *
  * @static
  * @method
@@ -326,6 +326,8 @@ ve.copyArray = function ( source ) {
 			destination.push( ve.copyObject( sourceValue ) );
 		} else if ( ve.isArray( sourceValue ) ) {
 			destination.push( ve.copyArray( sourceValue ) );
+		} else if ( typeof sourceValue.clone === 'function' ) {
+			destination.push( sourceValue.clone() );
 		}
 	}
 	return destination;
