@@ -835,12 +835,14 @@ $messages['jv'] = array(
 );
 
 /** Georgian (ქართული)
+ * @author BRUTE
  * @author David1010
  */
 $messages['ka'] = array(
 	'visualeditor' => 'ვიზუალური რედაქტორი',
 	'visualeditor-desc' => 'მედიავიკის ვიზუალური რედაქტორი',
 	'visualeditor-feedback-prompt' => 'გამოხმაურების დატოვება',
+	'visualeditor-notification-created' => '$1 შეიქმნა.',
 	'visualeditor-ca-editsource' => 'წყაროს რედაქტირება',
 	'visualeditor-linkinspector-title' => 'ბმულის რედაქტირება',
 	'visualeditor-linkinspector-label-pagetitle' => 'გვერდის სათაური',
