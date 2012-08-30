@@ -733,9 +733,11 @@ QUnit.test( 'translateOffset', function ( assert ) {
 	tx.pushStartAnnotating( 'set', { 'type': 'textStyle/bold' } );
 	tx.pushRetain( 1 );
 	tx.pushReplace( ['h'], ['i', 'j', 'k', 'l', 'm'] );
+	tx.pushRetain( 2 );
+	tx.pushReplace( [], ['n', 'o', 'p'] );
 
 	mapping = {
-		0: 0,
+		0: 3,
 		1: 4,
 		2: 5,
 		3: 6,
@@ -747,10 +749,13 @@ QUnit.test( 'translateOffset', function ( assert ) {
 		9: 8,
 		10: 9,
 		11: 10,
-		12: 11,
-		13: 16
+		12: 16,
+		13: 16,
+		14: 17,
+		15: 21,
+		16: 22
 	};
-	QUnit.expect( 14 );
+	QUnit.expect( 17 );
 	for ( offset in mapping ) {
 		assert.strictEqual( tx.translateOffset( Number( offset ) ), mapping[offset] );
 	}

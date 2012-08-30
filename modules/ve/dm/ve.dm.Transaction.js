@@ -495,9 +495,6 @@ ve.dm.Transaction.prototype.getLengthDifference = function () {
  */
 ve.dm.Transaction.prototype.translateOffset = function ( offset ) {
 	var i, cursor = 0, adjustment = 0, op;
-	if ( offset === 0 ) {
-		return 0;
-	}
 	for ( i = 0; i < this.operations.length; i++ ) {
 		op = this.operations[i];
 		if ( op.type === 'replace' ) {
@@ -505,13 +502,13 @@ ve.dm.Transaction.prototype.translateOffset = function ( offset ) {
 			if ( offset === cursor + op.remove.length ) {
 				// Offset points to right after the removal, translate it
 				return offset + adjustment;
-			} else if ( offset > cursor && offset < cursor + op.remove.length ) {
+			} else if ( offset >= cursor && offset < cursor + op.remove.length ) {
 				// The offset points inside of the removal
 				return cursor + op.remove.length + adjustment;
 			}
 			cursor += op.remove.length;
 		} else if ( op.type === 'retain' ) {
-			if ( offset > cursor && offset <= cursor + op.length ) {
+			if ( offset >= cursor && offset < cursor + op.length ) {
 				return offset + adjustment;
 			}
 			cursor += op.length;
