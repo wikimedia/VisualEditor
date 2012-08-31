@@ -118,7 +118,7 @@ ve.dm.TransactionProcessor.processors.annotate = function ( op ) {
 		throw new Error( 'Invalid annotation method ' + op.method );
 	}
 	
-	hash = $.toJSON( op.annotation );
+	hash = ve.getHash( op.annotation );
 	if ( op.bias === 'start' ) {
 		target[hash] = op.annotation;
 	} else {
