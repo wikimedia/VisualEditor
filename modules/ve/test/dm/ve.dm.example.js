@@ -937,5 +937,166 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/list' }
 		],
 		'normalizedHtml': ' <ul><li><p>\tA\n</p>  <p>B</p></li></ul>    '
+	},
+	'order of nested annotations is preserved': {
+		'html': '<p><b><a rel="mw:WikiLink" href="Foo"><i>Foo</i></a></b></p>',
+		'data': [
+			{ 'type': 'paragraph' },
+			[
+				'F',
+				[
+					{ 'type': 'textStyle/bold' },
+					{
+						'type': 'link/WikiLink',
+						'data': {
+							'title': 'Foo',
+							'htmlAttributes': {
+								'href': 'Foo',
+								'rel': 'mw:WikiLink'
+							}
+						}
+					},
+					{ 'type': 'textStyle/italic' }
+				]
+			],
+			[
+				'o',
+				[
+					{ 'type': 'textStyle/bold' },
+					{
+						'type': 'link/WikiLink',
+						'data': {
+							'title': 'Foo',
+							'htmlAttributes': {
+								'href': 'Foo',
+								'rel': 'mw:WikiLink'
+							}
+						}
+					},
+					{ 'type': 'textStyle/italic' }
+				]
+			],
+			[
+				'o',
+				[
+					{ 'type': 'textStyle/bold' },
+					{
+						'type': 'link/WikiLink',
+						'data': {
+							'title': 'Foo',
+							'htmlAttributes': {
+								'href': 'Foo',
+								'rel': 'mw:WikiLink'
+							}
+						}
+					},
+					{ 'type': 'textStyle/italic' }
+				]
+			],
+			{ 'type': '/paragraph' }
+		]
+	},
+	'nested annotations are closed and reopened in the correct order': {
+		'html': '<p><a rel="mw:WikiLink" href="Foo">F<b>o<i>o</i></b><i>b</i></a><i>a<b>r</b>b<u>a</u>z</i></p>',
+		'data': [
+			{ 'type': 'paragraph' },
+			[
+				'F',
+				[
+					{
+						'type': 'link/WikiLink',
+						'data': {
+							'title': 'Foo',
+							'htmlAttributes': {
+								'href': 'Foo',
+								'rel': 'mw:WikiLink'
+							}
+						}
+					}
+				]
+			],
+			[
+				'o',
+				[
+					{
+						'type': 'link/WikiLink',
+						'data': {
+							'title': 'Foo',
+							'htmlAttributes': {
+								'href': 'Foo',
+								'rel': 'mw:WikiLink'
+							}
+						}
+					},
+					{ 'type': 'textStyle/bold' }
+				]
+			],
+			[
+				'o',
+				[
+					{
+						'type': 'link/WikiLink',
+						'data': {
+							'title': 'Foo',
+							'htmlAttributes': {
+								'href': 'Foo',
+								'rel': 'mw:WikiLink'
+							}
+						}
+					},
+					{ 'type': 'textStyle/bold' },
+					{ 'type': 'textStyle/italic' }
+				]
+			],
+			[
+				'b',
+				[
+					{
+						'type': 'link/WikiLink',
+						'data': {
+							'title': 'Foo',
+							'htmlAttributes': {
+								'href': 'Foo',
+								'rel': 'mw:WikiLink'
+							}
+						}
+					},
+					{ 'type': 'textStyle/italic' }
+				]
+			],
+			[
+				'a',
+				[
+					{ 'type': 'textStyle/italic' }
+				]
+			],
+			[
+				'r',
+				[
+					{ 'type': 'textStyle/italic' },
+					{ 'type': 'textStyle/bold' }
+				]
+			],
+			[
+				'b',
+				[
+					{ 'type': 'textStyle/italic' }
+				]
+			],
+			[
+				'a',
+				[
+					{ 'type': 'textStyle/italic' },
+					{ 'type': 'textStyle/underline' }
+				]
+			],
+			[
+				'z',
+				[
+					{ 'type': 'textStyle/italic' }
+				]
+			],
+			{ 'type': '/paragraph' }
+		]
 	}
 };
