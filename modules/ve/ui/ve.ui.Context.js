@@ -242,7 +242,9 @@ ve.ui.Context.prototype.positionIframeOverlay = function( config ) {
 	// Set position.
 	config.overlay.css( {
 		'left': left,
-		'top': top
+		'top': top,
+		// RTL position fix.
+		'width': config.overlay.children().outerWidth( true )
 	} );
 };
 

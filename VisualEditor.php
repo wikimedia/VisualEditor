@@ -254,6 +254,7 @@ $wgResourceModules += array(
 			'rangy',
 			'ext.visualEditor.base',
 			'mediawiki.Title',
+			'jquery.autoEllipsis'
 		),
 		'messages' => array(
 			'visualeditor',

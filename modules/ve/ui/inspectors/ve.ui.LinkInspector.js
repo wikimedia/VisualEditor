@@ -251,8 +251,11 @@ ve.ui.LinkInspector.prototype.initMultiSuggest = function () {
 	options = {
 		'parent': $overlay,
 		'prefix': 've-ui',
-	    // Build suggestion groups in order.
-	    'suggestions': function ( params ) {
+		// Disable CSS Ellipsis.
+		// Using MediaWiki jQuery.autoEllipsis() for center ellipsis.
+		'cssEllipsis': false,
+		// Build suggestion groups in order.
+		'suggestions': function ( params ) {
 			var groups = {},
 				results = params.results,
 				query = params.query,
@@ -335,6 +338,15 @@ ve.ui.LinkInspector.prototype.initMultiSuggest = function () {
 					}
 				} );
 			}
+		},
+		// Called when multiSuggest dropdown is updated.
+		'update': function() {
+			// Ellipsis
+			$( '.ve-ui-suggest-item' )
+				.autoEllipsis( {
+					'hasSpan': true,
+					'tooltip': true
+				} );
 		},
 		// Position the iframe overlay below the input.
 		'position': function () {

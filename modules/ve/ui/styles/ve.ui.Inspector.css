@@ -86,10 +86,11 @@
 	outline: none;
 }
 
-.ve-ui-linkInspector-location {
+.ve-ui-inspector form input.ve-ui-linkInspector-location {
 	/* @see ve.ui.Icons */
-	background-position: 18.125em center;
+	background-position: 18.75em center;
 	background-repeat: no-repeat;
+	padding-right: 1.5em;
 }
 
 .ve-ui-inspector form label {
@@ -105,6 +106,11 @@
 	line-height: 2.5em;
 	font-weight: bold;
 	color: #666;
+}
+
+.ve-iframe-overlay {
+	position: absolute;
+	top: 0;
 }
 
 .ve-ui-suggest-select {
@@ -126,6 +132,11 @@
 	-webkit-box-shadow: 0 0.15em 1em 0 rgba(0, 0, 0, 0.2);
 	-moz-box-shadow: 0 0.15em 1em 0 rgba(0, 0, 0, 0.2);
 	box-shadow: 0 0.15em 1em 0 rgba(0, 0, 0, 0.2);
+}
+
+/* @noflip */
+body.rtl .ve-ui-suggest-select {
+	background-position: 12em top;
 }
 
 .ve-ui-suggest-container {
@@ -153,11 +164,6 @@
 	padding: 0.33em 0.75em;
 	width: 10.5em;
 	cursor: pointer;
-	/* CSS Elipsis */
-	white-space: nowrap;
-	overflow: hidden;
-	-o-text-overflow: ellipsis;
-	text-overflow: ellipsis;
 	color: #0645AD;
 }
 

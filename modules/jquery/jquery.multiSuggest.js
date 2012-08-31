@@ -76,7 +76,8 @@
 			// Merge options with default configuration.
 			$.extend( {
 				'doc': document,
-				'prefix': 'multi'
+				'prefix': 'multi',
+				'cssEllipsis': true
 			}, options );
 
 			// DOM Setup.
@@ -164,7 +165,7 @@
 					.find( '.' + options.prefix + '-suggest-item' )
 					.removeClass( 'selected' );
 				$( this ).addClass( 'selected' );
-				select.call( this, $( this ).text() );
+				select.call( this, $( this ).data( 'text' ) );
 			}
 			// Adds a group to the dropdown.
 			function addGroup( name, group ) {
@@ -201,16 +202,30 @@
 				for( i = 0; i < group.items.length; i++ ) {
 					$item = $( '<div>', options.doc )
 						.addClass( options.prefix + '-suggest-item' )
-						.text( group.items[i] )
+						.data( 'text', group.items[i] )
 						.on( 'mousedown', onItemMousedown );
 					if ( 'itemClass' in group ) {
 						$item.addClass( group.itemClass );
 					}
+					$groupWrap.append( $item );
+					// Wrap in span
+					$item.append( $( '<span>' )
+						.css( 'whiteSpace', 'nowrap' )
+						.text( group.items[i] )
+					);
 					// Select this item by default
 					if ( group.items[i].toLowerCase() === $input.val().toLowerCase() ) {
 						$item.addClass( 'selected' );
 					}
-					$groupWrap.append( $item );
+					// CSS Ellipsis
+					if ( options.cssEllipsis ) {
+						$item.css( {
+							'white-space': 'nowrap',
+							'overflow': 'hidden',
+							'-o-text-overflow': 'ellipsis',
+							'text-overflow': 'ellipsis'
+						} );
+					}
 				}
 			}
 			// Build the dropdown.
@@ -228,6 +243,10 @@
 					}
 					// Open dropdown.
 					open();
+					// Run update method supplied in configuration.
+					if ( typeof options.update === 'function' ) {
+						options.update();
+					}
 				}
 			}
 			// Bind target input events
@@ -275,7 +294,7 @@
 							$item = $multiSuggest
 								.find( '.' + options.prefix + '-suggest-item.selected' );
 							if ( $item.length > 0 ) {
-								select.call( this, $item.text() );
+								select.call( this, $item.data( 'text' ) );
 							} else {
 								close();
 							}
