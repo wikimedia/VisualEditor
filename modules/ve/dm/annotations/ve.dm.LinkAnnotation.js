@@ -29,7 +29,7 @@ ve.dm.LinkAnnotation = function () {
 ve.dm.LinkAnnotation.converters = {
 	'domElementTypes': ['a'],
 	'toDomElement': function ( subType, annotation ) {
-		var link = document.createElement( 'a' ), key, attributes;
+		var link = document.createElement( 'a' ), key, attributes, href;
 		// Restore html/* attributes
 		// TODO this should be done for all annotations, factor this out in the new API
 		attributes = annotation.data.htmlAttributes;
@@ -41,7 +41,11 @@ ve.dm.LinkAnnotation.converters = {
 		if ( subType === 'WikiLink' ) {
 			// Set href to title
 			// FIXME space -> _ is MW-specific
-			link.setAttribute( 'href', annotation.data.title.replace( / /g, '_' ) );
+			href = annotation.data.title.replace( / /g, '_' );
+			if ( annotation.data.hrefPrefix ) {
+				href = annotation.data.hrefPrefix + href;
+			}
+			link.setAttribute( 'href', href );
 		} else if ( subType === 'ExtLink' || subType === 'ExtLink/Numbered' || subType === 'ExtLink/URL' ) {
 			// Set href directly
 			link.setAttribute( 'href', annotation.data.href );
@@ -56,15 +60,17 @@ ve.dm.LinkAnnotation.converters = {
 				'type': 'link/' + subType,
 				'data': {}
 			},
-			i, attribute;
+			i, attribute, matches;
 		if ( subType === 'WikiLink' ) {
 			// Get title from href
 			// The href is simply the title, unless we're dealing with a page that
 			// has slashes in its name in which case it's preceded by one or more
 			// instances of "./" or "../", so strip those.
 			// FIXME Both this and _ -> space are MW-specific
-			// FIXME We should restore these on the way out
-			retval.data.title = href.replace( /^(\.\.?\/)*/, '' ).replace( /_/g, ' ' );
+			matches = href.match( /^((?:\.\.?\/)*)(.*)$/ );
+			// Store the ./ and ../ prefixes so we can restore them on the way out
+			retval.data.hrefPrefix = matches[1];
+			retval.data.title = matches[2].replace( /_/g, ' ' );
 		} else if ( subType === 'ExtLink' || subType === 'ExtLink/Numbered' || subType === 'ExtLink/URL' ) {
 			retval.data.href = href;
 		}
