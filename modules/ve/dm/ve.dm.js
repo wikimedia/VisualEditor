@@ -11,4 +11,5 @@
 ve.dm = {
 	//'nodeFactory': Initialized in ve.dm.NodeFactory.js
 	//'converter': Initialized in ve.dm.Converter.js
+	//'annotationFactory': Initialized in ve.dm.AnnotationFactory.js
 };
