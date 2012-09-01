@@ -1377,13 +1377,22 @@ $messages['si'] = array(
 );
 
 /** Swedish (svenska)
+ * @author Ainali
  * @author WikiPhoenix
  */
 $messages['sv'] = array(
+	'visualeditor' => 'VisualEditor',
+	'visualeditor-desc' => 'Visuell redigerare för MediaWiki',
 	'visualeditor-feedback-prompt' => 'Lämna feedback',
+	'visualeditor-feedback-dialog-title' => 'Ge feedback om VisualEditor sandlåda',
+	'visualeditor-notification-saved' => 'Dina ändringar i $1 har sparats.',
+	'visualeditor-notification-created' => '$1 har skapats.',
 	'visualeditor-ca-editsource' => 'Redigera källa',
 	'visualeditor-linkinspector-title' => 'Redigera länk',
 	'visualeditor-linkinspector-label-pagetitle' => 'Sidtitel',
+	'visualeditor-linkinspector-suggest-existing-page' => 'Befintlig sida',
+	'visualeditor-linkinspector-suggest-new-page' => 'Ny sida',
+	'visualeditor-linkinspector-suggest-external-link' => 'Webblänk',
 	'visualeditor-formatdropdown-title' => 'Ändra format',
 	'visualeditor-formatdropdown-format-paragraph' => 'Paragraf',
 	'visualeditor-formatdropdown-format-heading1' => 'Rubrik 1',
@@ -1392,6 +1401,7 @@ $messages['sv'] = array(
 	'visualeditor-formatdropdown-format-heading4' => 'Rubrik 4',
 	'visualeditor-formatdropdown-format-heading5' => 'Rubrik 5',
 	'visualeditor-formatdropdown-format-heading6' => 'Rubrik 6',
+	'visualeditor-formatdropdown-format-preformatted' => 'Förformaterad',
 	'visualeditor-annotationbutton-bold-tooltip' => 'Fet',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Kursiv',
 	'visualeditor-annotationbutton-link-tooltip' => 'Länk',
@@ -1405,6 +1415,7 @@ $messages['sv'] = array(
 	'visualeditor-viewpage-savewarning' => 'Är du säker på att du vill gå tillbaka till visningsläget utan att spara först?',
 	'visualeditor-loadwarning' => 'Fel uppstod vid inläsning av data från server: $1. Vill du försöka igen?',
 	'visualeditor-saveerror' => 'Fel uppstod vid sparande av data till server: $1.',
+	'visualeditor-editsummary' => 'Beskriv vad du har ändrat',
 );
 
 /** Tamil (தமிழ்)
