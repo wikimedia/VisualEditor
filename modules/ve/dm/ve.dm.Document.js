@@ -754,7 +754,7 @@ ve.dm.Document.prototype.trimOuterSpaceFromRange = function ( range ) {
  *   - If {numNodes} == 0: Index to insert nodes at
  *   - If {numNodes} >= 1: Index of first node to rebuild
  * @param {Integer} numNodes Total number of nodes to rebuild
- *   - If {numNodes} == 0: Nothing  will be rebuilt, but the node(s) built from data will be
+ *   - If {numNodes} == 0: Nothing will be rebuilt, but the node(s) built from data will be
  *     inserted before {index}. To insert nodes at the end, use number of children in {parent}
  *   - If {numNodes} == 1: Only the node at {index} will be rebuilt
  *   - If {numNodes} > 1: The node at {index} and the next {numNodes-1} nodes will be rebuilt
@@ -1101,7 +1101,7 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 			parentType = openingStack.length > 0 ?
 				openingStack[openingStack.length - 1] : parentNode.getType();
 		}
-		if ( data[i].type === undefined ||  data[i].type.charAt( 0 ) !== '/' ) {
+		if ( data[i].type === undefined || data[i].type.charAt( 0 ) !== '/' ) {
 			childType = data[i].type || 'text';
 			openings = [];
 			closings = [];
@@ -1174,7 +1174,7 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 						parentType = parentNode.getType();
 					}
 				}
-			} while( !childrenOK );
+			} while ( !childrenOK );
 
 			for ( j = 0; j < closings.length; j++ ) {
 				// writeElement() would update openingStack/closingStack, but we've already done
@@ -1300,7 +1300,7 @@ ve.dm.Document.prototype.getBalancedData = function ( range ) {
 	}
 
 	if ( first.range ) {
-		while( true ) {
+		while ( true ) {
 			while ( !node.isWrapped() ) {
 				node = node.getParent();
 			}

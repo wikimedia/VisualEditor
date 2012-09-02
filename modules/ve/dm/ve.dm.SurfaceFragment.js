@@ -52,8 +52,8 @@ ve.dm.SurfaceFragment = function ( surface, range, autoSelect ) {
  * @method
  * @param {ve.dm.Transaction[]} txs Transactions that have just been processed
  */
-ve.dm.SurfaceFragment.prototype.onTransact = function( txs ) {
-	for( var i = 0; i < txs.length; i++ ) {
+ve.dm.SurfaceFragment.prototype.onTransact = function ( txs ) {
+	for ( var i = 0; i < txs.length; i++ ) {
 		this.range = txs[i].translateRange( this.range );
 	}
 };
@@ -64,7 +64,7 @@ ve.dm.SurfaceFragment.prototype.onTransact = function( txs ) {
  * @method
  * @returns {ve.dm.Surface} Surface of fragment
  */
-ve.dm.SurfaceFragment.prototype.getSurface = function() {
+ve.dm.SurfaceFragment.prototype.getSurface = function () {
 	return this.surface;
 };
 
@@ -74,7 +74,7 @@ ve.dm.SurfaceFragment.prototype.getSurface = function() {
  * @method
  * @returns {ve.dm.Document} Document of surface of fragment
  */
-ve.dm.SurfaceFragment.prototype.getDocument = function() {
+ve.dm.SurfaceFragment.prototype.getDocument = function () {
 	return this.document;
 };
 
@@ -84,7 +84,7 @@ ve.dm.SurfaceFragment.prototype.getDocument = function() {
  * @method
  * @returns {ve.Range} Surface range
  */
-ve.dm.SurfaceFragment.prototype.getRange = function() {
+ve.dm.SurfaceFragment.prototype.getRange = function () {
 	return this.range.clone();
 };
 
@@ -94,7 +94,7 @@ ve.dm.SurfaceFragment.prototype.getRange = function() {
  * @method
  * @returns {Boolean} Fragment is a null fragment
  */
-ve.dm.SurfaceFragment.prototype.isNull = function() {
+ve.dm.SurfaceFragment.prototype.isNull = function () {
 	return this.surface === undefined;
 };
 
@@ -113,7 +113,7 @@ ve.dm.SurfaceFragment.prototype.adjustRange = function ( start, end ) {
 	}
 	return new ve.dm.SurfaceFragment(
 		this.surface,
-		new ve.Range( this.range.start + ( start || 0 ),  this.range.end + ( end || 0 ) ),
+		new ve.Range( this.range.start + ( start || 0 ), this.range.end + ( end || 0 ) ),
 		this.autoSelect
 	);
 };

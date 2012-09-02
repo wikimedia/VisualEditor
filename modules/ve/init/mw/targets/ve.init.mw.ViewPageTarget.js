@@ -659,11 +659,11 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 			// FIXME license text is hardcoded English
 			.html(
 				'By editing this page, you agree to irrevocably release your \
-				contributions under the CC-BY-SA 3.0 License.  If you don\'t want your \
+				contributions under the CC-BY-SA 3.0 License. If you don\'t want your \
 				writing to be edited mercilessly and redistrubuted at will, then \
 				don\'t submit it here.<br/><br/>You are also confirming that you \
 				wrote this yourself, or copied it from a public domain or similar free \
-				resource.  See Project:Copyright for full details of the licenses \
+				resource. See Project:Copyright for full details of the licenses \
 				used on this site.\
 				<b>DO NOT SUBMIT COPYRIGHTED WORK WITHOUT PERMISSION!</b>'
 			);
@@ -922,7 +922,7 @@ ve.init.mw.ViewPageTarget.prototype.transformPageTitle = function () {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.mutePageTitle = function  () {
+ve.init.mw.ViewPageTarget.prototype.mutePageTitle = function () {
 	$( '#firstHeading, #siteSub:visible, #contentSub:visible' ).fadeTo( 'fast', 0.6 );
 };
 

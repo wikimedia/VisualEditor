@@ -644,7 +644,7 @@ QUnit.test( 'newFromWrap', function ( assert ) {
 	var doc = new ve.dm.Document( ve.dm.example.data ),
 		cases = {
 		'changes a heading to a paragraph': {
-			'args': [doc, new ve.Range( 1, 4 ),  [ { 'type': 'heading', 'attributes': { 'level': 1 } } ], [ { 'type': 'paragraph' } ], [], []],
+			'args': [doc, new ve.Range( 1, 4 ), [ { 'type': 'heading', 'attributes': { 'level': 1 } } ], [ { 'type': 'paragraph' } ], [], []],
 			'ops': [
 				{ 'type': 'replace', 'remove': [ { 'type': 'heading', 'attributes': { 'level': 1 } } ], 'insert': [ { 'type': 'paragraph' } ] },
 				{ 'type': 'retain', 'length': 3 },

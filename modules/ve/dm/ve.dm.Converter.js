@@ -375,11 +375,10 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 									// First child, store as inner
 									// whitespace in the parent
 									addWhitespace( dataElement, 1, text );
-								} else {
-									// WTF?!? This is not supposed to
-									// happen, but it's not worth
-									// throwing an exception over.
 								}
+								// Else, WTF?!? This is not supposed to
+								// happen, but it's not worth
+								// throwing an exception over.
 							} else {
 								addWhitespace( prevElement, 3, text );
 							}
@@ -415,11 +414,10 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 										// First child, store as inner
 										// whitespace in the parent
 										addWhitespace( dataElement, 1, matches[1] );
-									} else {
-										// WTF?!? This is not supposed to
-										// happen, but it's not worth
-										// throwing an exception over.
 									}
+									// Else, WTF?!? This is not supposed to
+									// happen, but it's not worth
+									// throwing an exception over.
 								} else {
 									addWhitespace( prevElement, 3, matches[1] );
 								}

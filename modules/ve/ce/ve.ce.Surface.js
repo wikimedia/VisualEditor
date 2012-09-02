@@ -655,7 +655,7 @@ ve.ce.Surface.prototype.pollChanges = function ( async ) {
  * @param {Object} next.range New selection
  */
 ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
-	var data, annotations, len,
+	var data, annotations, len, range,
 		nodeOffset = $( node ).data( 'node' ).model.getOffset(),
 		offsetDiff = (
 			previous.range !== null &&
@@ -665,34 +665,33 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 		) ? next.range.start - previous.range.start : null,
 		lengthDiff = next.text.length - previous.text.length,
 		fromLeft = 0,
-		fromRight = 0;
-
-	var isSomethingFishy = function() {
-		if ( lengthDiff > 0 ) {
-			// Adding text
-			if (
-				previous.text.substring( 0, previous.range.start - nodeOffset - lengthDiff ) ===
-				next.text.substring( 0, previous.range.start - nodeOffset - lengthDiff ) &&
-				previous.text.substring( previous.range.start - nodeOffset + lengthDiff) ===
-				next.text.substring( next.range.start - nodeOffset + lengthDiff)
-			) {
-				// Leading and trailing chars are the same
-				return false;
+		fromRight = 0,
+		isSomethingFishy = function () {
+			if ( lengthDiff > 0 ) {
+				// Adding text
+				if (
+					previous.text.substring( 0, previous.range.start - nodeOffset - lengthDiff ) ===
+					next.text.substring( 0, previous.range.start - nodeOffset - lengthDiff ) &&
+					previous.text.substring( previous.range.start - nodeOffset + lengthDiff) ===
+					next.text.substring( next.range.start - nodeOffset + lengthDiff)
+				) {
+					// Leading and trailing chars are the same
+					return false;
+				}
+			} else if ( lengthDiff < 0) {
+				// Removing text
+				if (
+					previous.text.substring( 0, next.range.start - nodeOffset -1 ) ===
+					next.text.substring( 0, next.range.start - nodeOffset - 1 ) &&
+					previous.text.substring( next.range.start - nodeOffset - lengthDiff - 1 ) ===
+					next.text.substring( next.range.start - nodeOffset - 1)
+				) {
+					// Leading and trailing chars are the same
+					return false;
+				}
 			}
-		} else if ( lengthDiff < 0) {
-			// Removing text
-			if (
-				previous.text.substring( 0, next.range.start - nodeOffset -1 ) ===
-				next.text.substring( 0, next.range.start - nodeOffset - 1 ) &&
-				previous.text.substring( next.range.start - nodeOffset - lengthDiff - 1 ) ===
-				next.text.substring( next.range.start - nodeOffset - 1)
-			) {
-				// Leading and trailing chars are the same
-				return false;
-			}
-		}
-		return true;
-	}
+			return true;
+		};
 
 	if (
 		lengthDiff > 0 &&
@@ -723,15 +722,15 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 		this.render = true;
 
 	} else if (
-		( offsetDiff == 0 || offsetDiff == lengthDiff ) &&
+		( offsetDiff === 0 || offsetDiff === lengthDiff ) &&
 		!isSomethingFishy()
 	) {
 		// Something simple was removed
 		ve.log('simple deletion');
 
 		// Figure out range
-		var range = null;
-		if (offsetDiff == 0) {
+		range = null;
+		if ( offsetDiff === 0 ) {
 			ve.log('delete');
 			range = new ve.Range( previous.range.start, next.range.start - lengthDiff );
 		} else {
@@ -971,7 +970,12 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 		sourceNode,
 		targetNode,
 		sourceData,
-		nodeToDelete;
+		nodeToDelete,
+		adjacentData,
+		adjacentText,
+		adjacentTextAfterMatch,
+		endOffset,
+		i;
 
 	if ( selection.from === selection.to ) {
 		// Set source and target linmod offsets
@@ -1010,24 +1014,31 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 		cursorAt = targetOffset;
 
 		// Get text from cursor location to end of node in the proper direction
-		var adjacentData = null,
-			adjacentText = '';
+		adjacentData = null;
+		adjacentText = '';
 
-		if (backspace) {
-			adjacentData = sourceNode.model.doc.data.slice( sourceNode.model.getOffset() + ( sourceNode.model.isWrapped() ? 1 : 0) , sourceOffset );
+		if ( backspace ) {
+			adjacentData = sourceNode.model.doc.data.slice(
+				sourceNode.model.getOffset() + ( sourceNode.model.isWrapped() ? 1 : 0 ) ,
+				sourceOffset
+			);
 		} else {
-			var endOffset = targetNode.model.getOffset() + targetNode.model.getLength() + ( targetNode.model.isWrapped() ? 1 : 0 );
+			endOffset = targetNode.model.getOffset() +
+				targetNode.model.getLength() +
+				( targetNode.model.isWrapped() ? 1 : 0 );
 			adjacentData = targetNode.model.doc.data.slice( targetOffset, endOffset );
 		}
 
-		for( var i = 0; i < adjacentData.length; i++ ) {
+		for ( i = 0; i < adjacentData.length; i++ ) {
 			adjacentText += adjacentData[i][0];
 		}
 
-		var adjacentTextAfterMatch = adjacentText.match(/[a-zA-Z\-_’'‘ÆÐƎƏƐƔĲŊŒẞÞǷȜæðǝəɛɣĳŋœĸſßþƿȝĄƁÇĐƊĘĦĮƘŁØƠŞȘŢȚŦŲƯY̨Ƴąɓçđɗęħįƙłøơşșţțŧųưy̨ƴÁÀÂÄǍĂĀÃÅǺĄÆǼǢƁĆĊĈČÇĎḌĐƊÐÉÈĖÊËĚĔĒĘẸƎƏƐĠĜǦĞĢƔáàâäǎăāãåǻąæǽǣɓćċĉčçďḍđɗðéèėêëěĕēęẹǝəɛġĝǧğģɣĤḤĦIÍÌİÎÏǏĬĪĨĮỊĲĴĶƘĹĻŁĽĿʼNŃN̈ŇÑŅŊÓÒÔÖǑŎŌÕŐỌØǾƠŒĥḥħıíìiîïǐĭīĩįịĳĵķƙĸĺļłľŀŉńn̈ňñņŋóòôöǒŏōõőọøǿơœŔŘŖŚŜŠŞȘṢẞŤŢṬŦÞÚÙÛÜǓŬŪŨŰŮŲỤƯẂẀŴẄǷÝỲŶŸȲỸƳŹŻŽẒŕřŗſśŝšşșṣßťţṭŧþúùûüǔŭūũűůųụưẃẁŵẅƿýỳŷÿȳỹƴźżžẓ]/g);
+		adjacentTextAfterMatch = adjacentText.match(
+			/[a-zA-Z\-_’'‘ÆÐƎƏƐƔĲŊŒẞÞǷȜæðǝəɛɣĳŋœĸſßþƿȝĄƁÇĐƊĘĦĮƘŁØƠŞȘŢȚŦŲƯY̨Ƴąɓçđɗęħįƙłøơşșţțŧųưy̨ƴÁÀÂÄǍĂĀÃÅǺĄÆǼǢƁĆĊĈČÇĎḌĐƊÐÉÈĖÊËĚĔĒĘẸƎƏƐĠĜǦĞĢƔáàâäǎăāãåǻąæǽǣɓćċĉčçďḍđɗðéèėêëěĕēęẹǝəɛġĝǧğģɣĤḤĦIÍÌİÎÏǏĬĪĨĮỊĲĴĶƘĹĻŁĽĿʼNŃN̈ŇÑŅŊÓÒÔÖǑŎŌÕŐỌØǾƠŒĥḥħıíìiîïǐĭīĩįịĳĵķƙĸĺļłľŀŉńn̈ňñņŋóòôöǒŏōõőọøǿơœŔŘŖŚŜŠŞȘṢẞŤŢṬŦÞÚÙÛÜǓŬŪŨŰŮŲỤƯẂẀŴẄǷÝỲŶŸȲỸƳŹŻŽẒŕřŗſśŝšşșṣßťţṭŧþúùûüǔŭūũűůųụưẃẁŵẅƿýỳŷÿȳỹƴźżžẓ]/g
+		);
 
 		// If there are "normal" characters in the adjacent text, let the browser handle natively.
-		if( adjacentTextAfterMatch !== null && adjacentTextAfterMatch.length > 0 ) {
+		if ( adjacentTextAfterMatch !== null && adjacentTextAfterMatch.length ) {
 			return;
 		}
 
@@ -1175,6 +1186,7 @@ ve.ce.Surface.prototype.showSelection = function ( range ) {
  * @param {Number} [direction=-1] Direction to look in, +1 or -1
  */
 ve.ce.Surface.prototype.getNearestCorrectOffset = function ( offset, direction ) {
+	var contentOffset, structuralOffset;
 	direction = direction > 0 ? 1 : -1;
 
 	if (
@@ -1184,9 +1196,8 @@ ve.ce.Surface.prototype.getNearestCorrectOffset = function ( offset, direction )
 		return offset;
 	}
 
-	var contentOffset = this.documentView.model.getNearestContentOffset( offset, direction ),
-		structuralOffset =
-			this.documentView.model.getNearestStructuralOffset( offset, direction, true );
+	contentOffset = this.documentView.model.getNearestContentOffset( offset, direction );
+	structuralOffset = this.documentView.model.getNearestStructuralOffset( offset, direction, true );
 
 	if ( !this.hasSlugAtOffset( structuralOffset ) ) {
 		return contentOffset;

@@ -51,7 +51,7 @@ ve.ui.HistoryButtonTool.prototype.updateState = function ( annotations ) {
 
 ve.ui.HistoryButtonTool.prototype.isButtonEnabled = function ( name ) {
 	var surfaceModel = this.toolbar.getSurfaceView().getModel();
-	switch( name ) {
+	switch ( name ) {
 		case 'undo':
 			return surfaceModel.bigStack.length - surfaceModel.undoIndex > 0;
 		case 'redo':

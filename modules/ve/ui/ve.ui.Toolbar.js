@@ -65,7 +65,7 @@ ve.ui.Toolbar.prototype.updateTools = function () {
 			startNode = doc.getNodeFromOffset( range.from );
 			endNode = doc.getNodeFromOffset ( range.end );
 
-			if(startNode.type === 'document' || endNode.type === 'document') {
+			if ( startNode.type === 'document' || endNode.type === 'document' ) {
 				// Clear state
 				for ( i = 0; i < this.tools.length; i++ ) {
 					this.tools[i].clearState();
@@ -79,7 +79,7 @@ ve.ui.Toolbar.prototype.updateTools = function () {
 			} else {
 				model.getDocument().getDocumentNode().traverseLeafNodes( function ( node ) {
 					nodes.push( node );
-					if( node === endNode ) {
+					if ( node === endNode ) {
 						return false;
 					}
 				}, startNode );

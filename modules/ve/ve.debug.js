@@ -13,7 +13,7 @@
  * @method
  * @param {Mixed} [...] Data to log
  */
-ve.log = function() {
+ve.log = function () {
 	Function.prototype.apply.call( console.log, console, arguments );
 };
 
@@ -25,6 +25,6 @@ ve.log = function() {
  * @method
  * @param {Object} obj Object to log
  */
-ve.dir = function() {
+ve.dir = function () {
 	Function.prototype.apply.call( console.dir, console, arguments );
 };

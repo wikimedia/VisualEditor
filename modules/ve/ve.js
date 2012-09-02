@@ -488,7 +488,7 @@ ve.msg = function () {
  * @param {String} value Attribute value to escape
  * @returns {String} Escaped attribute value
  */
-ve.escapeHtml = function( value ) {
+ve.escapeHtml = function ( value ) {
 	return value.replace( /['"<>&]/g, ve.escapeHtml.escapeHtmlCharacter );
 };
 

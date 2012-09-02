@@ -222,7 +222,7 @@ ve.ui.Context.prototype.positionOverlay = function ( $overlay ) {
 };
 
 // Method to position iframe overlay above or below an element.
-ve.ui.Context.prototype.positionIframeOverlay = function( config ) {
+ve.ui.Context.prototype.positionIframeOverlay = function ( config ) {
 	var left, top;
 	if (
 		config === undefined ||

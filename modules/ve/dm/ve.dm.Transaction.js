@@ -220,7 +220,7 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
 		} else {
 			// Content
 			covered = doc.offsetContainsAnnotation( i, annotation );
-			if ( ( covered && method === 'set' ) || ( !covered  && method === 'clear' ) ) {
+			if ( ( covered && method === 'set' ) || ( !covered && method === 'clear' ) ) {
 				// Skip annotated content
 				if ( on ) {
 					tx.pushRetain( span );

@@ -81,7 +81,7 @@ ve.ui.LinkInspector.prototype.getAllLinkAnnotationsFromSelection = function () {
 		linkAnnotations = {};
 
 		annotations = documentModel.getAnnotationsFromRange( surfaceModel.getSelection(), true );
-		linkAnnotations = ve.dm.Document.getMatchingAnnotations ( annotations,  /^link\//  );
+		linkAnnotations = ve.dm.Document.getMatchingAnnotations ( annotations, /^link\// );
 		if ( !ve.isEmptyObject( linkAnnotations ) ) {
 			return linkAnnotations;
 		}
@@ -117,7 +117,7 @@ ve.ui.LinkInspector.prototype.getSelectionText = function () {
 	for ( i = 0; i < max; i++ ) {
 		if ( ve.isArray( data[i] ) ) {
 			str += data[i][0];
-		} else if( typeof data[i] === 'string' ) {
+		} else if ( typeof data[i] === 'string' ) {
 			str += data[i];
 		}
 	}

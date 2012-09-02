@@ -462,7 +462,7 @@ QUnit.test( 'offsetContainsAnnotation', 1, function ( assert ) {
 	}
 });
 
-QUnit.test( 'getAnnotatedRangeFromOffset', 1,  function ( assert ) {
+QUnit.test( 'getAnnotatedRangeFromOffset', 1, function ( assert ) {
 	var i, doc,
 		cases = [
 		{
@@ -1415,7 +1415,7 @@ QUnit.test( 'getBalancedData', function ( assert ) {
 				'e',
 				{ 'type': '/paragraph' },
 				{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
-				{ 'type': 'listItem'  },
+				{ 'type': 'listItem' },
 				{ 'type': 'paragraph' },
 				'f',
 				{ 'type': '/paragraph' },

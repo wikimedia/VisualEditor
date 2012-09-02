@@ -107,7 +107,7 @@ ve.dm.example.data = [
 	// 17 - Beginning of nested bullet list
 	{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
 	// 18 - Beginning of nested bullet list item
-	{ 'type': 'listItem'  },
+	{ 'type': 'listItem' },
 	// 19 - Beginning of paragraph
 	{ 'type': 'paragraph' },
 	// 20 - Plain "f"
@@ -260,7 +260,7 @@ ve.dm.example.tree = new ve.dm.DocumentNode( [
 								] )
 							], ve.dm.example.data[17].attributes )
 						] )
-					], ve.dm.example.data[12].attributes  ),
+					], ve.dm.example.data[12].attributes ),
 					new ve.dm.ListNode( [
 						// Numbered list item with "g"
 						new ve.dm.ListItemNode( [

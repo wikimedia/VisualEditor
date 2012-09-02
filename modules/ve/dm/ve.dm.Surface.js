@@ -95,7 +95,7 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 			transactions = [transactions];
 		}
 
-		for( var i = 0; i < transactions.length; i++ ) {
+		for ( var i = 0; i < transactions.length; i++ ) {
 			if ( !transactions[i].isNoOp() ) {
 				this.bigStack = this.bigStack.slice( 0, this.bigStack.length - this.undoIndex );
 				this.undoIndex = 0;

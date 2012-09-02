@@ -15,7 +15,7 @@ ve.ce = {
 /**
  * RegExp pattern for matching all whitespaces in HTML text.
  *
- * \u0020 (32)  space
+ * \u0020 (32) space
  * \u00A0 (160) non-breaking space
  *
  * @static

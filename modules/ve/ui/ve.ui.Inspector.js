@@ -41,12 +41,12 @@ ve.ui.Inspector = function ( toolbar, context ) {
 
 	// Events
 	this.$closeButton.on( {
-		'click': function() {
+		'click': function () {
 			context.closeInspector( false );
 		}
 	} );
 	this.$acceptButton.on( {
-		'click': function() {
+		'click': function () {
 			context.closeInspector ( true );
 		}
 	} );
@@ -58,13 +58,13 @@ ve.ui.Inspector = function ( toolbar, context ) {
 
 /* Methods */
 
-ve.ui.Inspector.prototype.onSubmit = function( e ) {
+ve.ui.Inspector.prototype.onSubmit = function ( e ) {
 	e.preventDefault();
 	this.context.closeInspector( true );
 	return false;
 };
 
-ve.ui.Inspector.prototype.onKeyDown = function( e ) {
+ve.ui.Inspector.prototype.onKeyDown = function ( e ) {
 	// Escape
 	if ( e.which === 27 ) {
 		this.context.closeInspector( false );
