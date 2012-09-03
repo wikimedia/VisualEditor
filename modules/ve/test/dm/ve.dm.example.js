@@ -447,15 +447,16 @@ ve.dm.example.domToDataCases = {
 			[
 				'b',
 				{
-					'{"data":{"htmlAttributes":{"data-rt":"{\\"sHref\\":\\"foo bar\\"}","href":"Foo_bar","rel":"mw:WikiLink"},"title":"Foo bar"},"type":"link/WikiLink"}': {
+					'{"data":{"hrefPrefix":"","htmlAttributes":{"data-rt":"{\\"sHref\\":\\"foo bar\\"}","href":"Foo_bar","rel":"mw:WikiLink"},"title":"Foo bar"},"type":"link/WikiLink"}': {
 						'type': 'link/WikiLink',
 						'data': {
-							'title': 'Foo bar',
+							'hrefPrefix': '',
 							'htmlAttributes': {
 								'data-rt': '{"sHref":"foo bar"}',
 								'href': 'Foo_bar',
 								'rel': 'mw:WikiLink'
-							}
+							},
+							'title': 'Foo bar'
 						}
 					}
 				}
@@ -463,15 +464,16 @@ ve.dm.example.domToDataCases = {
 			[
 				'a',
 				{
-					'{"data":{"htmlAttributes":{"data-rt":"{\\"sHref\\":\\"foo bar\\"}","href":"Foo_bar","rel":"mw:WikiLink"},"title":"Foo bar"},"type":"link/WikiLink"}': {
+					'{"data":{"hrefPrefix":"","htmlAttributes":{"data-rt":"{\\"sHref\\":\\"foo bar\\"}","href":"Foo_bar","rel":"mw:WikiLink"},"title":"Foo bar"},"type":"link/WikiLink"}': {
 						'type': 'link/WikiLink',
 						'data': {
-							'title': 'Foo bar',
+							'hrefPrefix': '',
 							'htmlAttributes': {
 								'data-rt': '{"sHref":"foo bar"}',
 								'href': 'Foo_bar',
 								'rel': 'mw:WikiLink'
-							}
+							},
+							'title': 'Foo bar'
 						}
 					}
 				}
@@ -479,15 +481,16 @@ ve.dm.example.domToDataCases = {
 			[
 				'r',
 				{
-					'{"data":{"htmlAttributes":{"data-rt":"{\\"sHref\\":\\"foo bar\\"}","href":"Foo_bar","rel":"mw:WikiLink"},"title":"Foo bar"},"type":"link/WikiLink"}': {
+					'{"data":{"hrefPrefix":"","htmlAttributes":{"data-rt":"{\\"sHref\\":\\"foo bar\\"}","href":"Foo_bar","rel":"mw:WikiLink"},"title":"Foo bar"},"type":"link/WikiLink"}': {
 						'type': 'link/WikiLink',
 						'data': {
-							'title': 'Foo bar',
+							'hrefPrefix': '',
 							'htmlAttributes': {
 								'data-rt': '{"sHref":"foo bar"}',
 								'href': 'Foo_bar',
 								'rel': 'mw:WikiLink'
-							}
+							},
+							'title': 'Foo bar'
 						}
 					}
 				}
@@ -499,20 +502,21 @@ ve.dm.example.domToDataCases = {
 	},
 	'internal link with ./ and ../': {
 		'html': '<p><a rel="mw:WikiLink" href="./../../../Foo/Bar">Foo</a></p>',
-		'normalizedHtml': '<p><a rel="mw:WikiLink" href="Foo/Bar">Foo</a></p>', // FIXME preserve ./ and ../
+		'normalizedHtml': '<p><a rel="mw:WikiLink" href="./../../../Foo/Bar">Foo</a></p>',
 		'data': [
 			{ 'type': 'paragraph' },
 			[
 				'F',
 				{
-					'{"data":{"htmlAttributes":{"href":"./../../../Foo/Bar","rel":"mw:WikiLink"},"title":"Foo/Bar"},"type":"link/WikiLink"}': {
+					'{"data":{"hrefPrefix":"./../../../","htmlAttributes":{"href":"./../../../Foo/Bar","rel":"mw:WikiLink"},"title":"Foo/Bar"},"type":"link/WikiLink"}': {
 						'type': 'link/WikiLink',
 						'data': {
-							'title': 'Foo/Bar',
+							'hrefPrefix': './../../../',
 							'htmlAttributes': {
 								'href': './../../../Foo/Bar',
 								'rel': 'mw:WikiLink'
-							}
+							},
+							'title': 'Foo/Bar'
 						}
 					}
 				}
@@ -520,14 +524,15 @@ ve.dm.example.domToDataCases = {
 			[
 				'o',
 				{
-					'{"data":{"htmlAttributes":{"href":"./../../../Foo/Bar","rel":"mw:WikiLink"},"title":"Foo/Bar"},"type":"link/WikiLink"}': {
+					'{"data":{"hrefPrefix":"./../../../","htmlAttributes":{"href":"./../../../Foo/Bar","rel":"mw:WikiLink"},"title":"Foo/Bar"},"type":"link/WikiLink"}': {
 						'type': 'link/WikiLink',
 						'data': {
-							'title': 'Foo/Bar',
+							'hrefPrefix': './../../../',
 							'htmlAttributes': {
 								'href': './../../../Foo/Bar',
 								'rel': 'mw:WikiLink'
-							}
+							},
+							'title': 'Foo/Bar'
 						}
 					}
 				}
@@ -535,14 +540,15 @@ ve.dm.example.domToDataCases = {
 			[
 				'o',
 				{
-					'{"data":{"htmlAttributes":{"href":"./../../../Foo/Bar","rel":"mw:WikiLink"},"title":"Foo/Bar"},"type":"link/WikiLink"}': {
+					'{"data":{"hrefPrefix":"./../../../","htmlAttributes":{"href":"./../../../Foo/Bar","rel":"mw:WikiLink"},"title":"Foo/Bar"},"type":"link/WikiLink"}': {
 						'type': 'link/WikiLink',
 						'data': {
-							'title': 'Foo/Bar',
+							'hrefPrefix': './../../../',
 							'htmlAttributes': {
 								'href': './../../../Foo/Bar',
 								'rel': 'mw:WikiLink'
-							}
+							},
+							'title': 'Foo/Bar'
 						}
 					}
 				}
