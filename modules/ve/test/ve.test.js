@@ -176,3 +176,49 @@ QUnit.test( 'getObjectValues', 6, function ( assert ) {
 		'Throw exception for non-object (null)'
 	);
 } );
+
+QUnit.test( 'copyArray', 6, function ( assert ) {
+	var simpleArray = [ 'foo', 3 ],
+		withObj = [ { 'bar': 'baz', 'quux': 3 }, 5 ],
+		nestedArray = [ [ 'a', 'b' ], [ 1, 3, 4 ] ],
+		sparseArray = [ 'a', undefined, undefined, 'b' ],
+		withSparseArray = [ [ 'a', undefined, undefined, 'b' ] ],
+		Cloneable = function ( p ) {
+			this.p = p;
+		};
+
+	Cloneable.prototype.clone = function () {
+		return new Cloneable( this.p + '-clone' );
+	};
+
+	assert.deepEqual(
+		ve.copyArray( simpleArray ),
+		simpleArray,
+		'Simple array'
+	);
+	assert.deepEqual(
+		ve.copyArray( withObj ),
+		withObj,
+		'Array containing object'
+	);
+	assert.deepEqual(
+		ve.copyArray( [ new Cloneable( 'bar' ) ] ),
+		[ new Cloneable( 'bar-clone' ) ],
+		'Use the .clone() method if available'
+	);
+	assert.deepEqual(
+		ve.copyArray( nestedArray ),
+		nestedArray,
+		'Nested array'
+	);
+	assert.deepEqual(
+		ve.copyArray( sparseArray ),
+		sparseArray,
+		'Sparse array'
+	);
+	assert.deepEqual(
+		ve.copyArray( withSparseArray ),
+		withSparseArray,
+		'Nested sparse array'
+	);
+} );
