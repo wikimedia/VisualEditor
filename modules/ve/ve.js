@@ -320,13 +320,13 @@ ve.copyArray = function ( source ) {
 	for ( i = 0; i < source.length; i++ ) {
 		sourceValue = source[i];
 		sourceType = typeof sourceValue;
-		if ( sourceType === 'string' || sourceType === 'number' ) {
+		if ( sourceType === 'string' || sourceType === 'number' || sourceType === 'undefined' ) {
 			destination.push( sourceValue );
 		} else if ( ve.isPlainObject( sourceValue ) ) {
 			destination.push( ve.copyObject( sourceValue ) );
 		} else if ( ve.isArray( sourceValue ) ) {
 			destination.push( ve.copyArray( sourceValue ) );
-		} else if ( typeof sourceValue.clone === 'function' ) {
+		} else if ( sourceValue && typeof sourceValue.clone === 'function' ) {
 			destination.push( sourceValue.clone() );
 		}
 	}
