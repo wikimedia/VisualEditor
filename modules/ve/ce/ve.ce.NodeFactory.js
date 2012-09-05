@@ -12,10 +12,14 @@
  * @extends {ve.Factory}
  * @constructor
  */
-ve.ce.NodeFactory = function () {
-	// Inheritance
+ve.ce.NodeFactory = function ve_ce_NodeFactory() {
+	// Parent constructor
 	ve.Factory.call( this );
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.ce.NodeFactory, ve.Factory );
 
 /* Methods */
 
@@ -33,10 +37,7 @@ ve.ce.NodeFactory.prototype.canNodeBeSplit = function ( type ) {
 	throw new Error( 'Unknown node type: ' + type );
 };
 
-/* Inheritance */
-
-ve.extendClass( ve.ce.NodeFactory, ve.Factory );
-
 /* Initialization */
 
+// TODO: Move instantiation to a different file
 ve.ce.nodeFactory = new ve.ce.NodeFactory();

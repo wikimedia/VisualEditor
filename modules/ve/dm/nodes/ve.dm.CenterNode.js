@@ -15,10 +15,14 @@
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  * @param {Object} [internal] Reference to internal data object
  */
-ve.dm.CenterNode = function ( children, attributes, internal ) {
-	// Inheritance
+ve.dm.CenterNode = function ve_dm_CenterNode( children, attributes, internal ) {
+	// Parent constructor
 	ve.dm.BranchNode.call( this, 'center', children, attributes, internal );
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.dm.CenterNode, ve.dm.BranchNode );
 
 /* Static Members */
 
@@ -57,7 +61,3 @@ ve.dm.CenterNode.converters = {
 /* Registration */
 
 ve.dm.nodeFactory.register( 'center', ve.dm.CenterNode );
-
-/* Inheritance */
-
-ve.extendClass( ve.dm.CenterNode, ve.dm.BranchNode );

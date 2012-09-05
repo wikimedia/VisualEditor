@@ -11,12 +11,16 @@
  * @class
  * @abstract
  * @constructor
- * @param {String} pageName Name of target page
+ * @extends {ve.EventEmitter}
  */
-ve.init.Platform = function () {
-	// Inheritance
+ve.init.Platform = function ve_init_Platform() {
+	// Parent constructor
 	ve.EventEmitter.call( this );
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.init.Platform, ve.EventEmitter );
 
 /* Methods */
 
@@ -65,7 +69,3 @@ ve.init.Platform.prototype.addMessages = function ( messages ) {
 ve.init.Platform.prototype.getMessage = function ( key ) {
 	throw new Error( 've.init.Platform.getMessage must be overridden in subclass' );
 };
-
-/* Inheritance */
-
-ve.extendClass( ve.init.Platform, ve.EventEmitter );

@@ -9,16 +9,16 @@ QUnit.module( 've.ce.LeafNode' );
 
 /* Stubs */
 
-ve.ce.LeafNodeStub = function ( model ) {
-	// Inheritance
+ve.ce.LeafNodeStub = function ve_ce_LeafNodeStub( model ) {
+	// Parent constructor
 	ve.ce.LeafNode.call( this, 'leaf-stub', model );
 };
+
+ve.inheritClass( ve.ce.LeafNodeStub, ve.ce.LeafNode );
 
 ve.ce.LeafNodeStub.rules = {
 	'canBeSplit': false
 };
-
-ve.extendClass( ve.ce.LeafNodeStub, ve.ce.LeafNode );
 
 ve.ce.nodeFactory.register( 'leaf-stub', ve.ce.LeafNodeStub );
 

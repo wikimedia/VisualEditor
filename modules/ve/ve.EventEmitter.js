@@ -13,7 +13,7 @@
  * @constructor
  * @property events {Object}
  */
-ve.EventEmitter = function () {
+ve.EventEmitter = function ve_EventEmitter() {
 	this.events = {};
 };
 

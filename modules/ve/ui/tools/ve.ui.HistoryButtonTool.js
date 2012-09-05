@@ -13,9 +13,11 @@
  * @extends {ve.ui.ButtonTool}
  * @param {ve.ui.Toolbar} toolbar
  * @param {String} name
+ * @param title
+ * @param data
  */
-ve.ui.HistoryButtonTool = function ( toolbar, name, title, data ) {
-	// Inheritance
+ve.ui.HistoryButtonTool = function ve_ui_HistoryButtonTool( toolbar, name, title, data ) {
+	// Parent constructor
 	ve.ui.ButtonTool.call( this, toolbar, name, title );
 
 	// Properties
@@ -24,6 +26,10 @@ ve.ui.HistoryButtonTool = function ( toolbar, name, title, data ) {
 	
 	this.toolbar.getSurfaceView().model.on( 'history', ve.bind( this.updateState, this ) );
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.ui.HistoryButtonTool, ve.ui.ButtonTool );
 
 /* Methods */
 
@@ -74,7 +80,3 @@ ve.ui.Tool.tools.redo = {
 	'name': 'redo',
 	'title': ve.msg( 'visualeditor-historybutton-redo-tooltip' )
 };
-
-/* Inhertiance */
-
-ve.extendClass( ve.ui.HistoryButtonTool, ve.ui.ButtonTool );

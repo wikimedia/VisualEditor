@@ -14,8 +14,8 @@
  * @extends {ve.EventEmitter}
  * @param {String} type Symbolic name of node type
  */
-ve.Node = function ( type ) {
-	// Inheritance
+ve.Node = function ve_Node( type ) {
+	// Parent constructor
 	ve.EventEmitter.call( this );
 
 	// Properties
@@ -31,6 +31,10 @@ ve.Node = function ( type ) {
 		node.emit( 'update' );
 	};
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.Node, ve.EventEmitter );
 
 /* Abstract Methods */
 
@@ -75,7 +79,7 @@ ve.Node.prototype.isWrapped = function () {
  *
  * @method
  * @abstract
- * @returns {Integer} Node length
+ * @returns {Number} Node length
  * @throws {Error} if not overridden
  */
 ve.Node.prototype.getLength = function () {
@@ -87,7 +91,7 @@ ve.Node.prototype.getLength = function () {
  *
  * @method
  * @abstract
- * @returns {Integer} Node outer length
+ * @returns {Number} Node outer length
  * @throws {Error} if not overridden
  */
 ve.Node.prototype.getOuterLength = function () {
@@ -204,7 +208,3 @@ ve.Node.traverseUpstream = function ( node, callback ) {
 		node = node.getParent();
 	}
 };
-
-/* Inheritance */
-
-ve.extendClass( ve.Node, ve.EventEmitter );

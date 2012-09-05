@@ -9,12 +9,12 @@ QUnit.module( 've.BranchNode' );
 
 /* Stubs */
 
-ve.BranchNodeStub = function ( children ) {
-	// Inheritance
+ve.BranchNodeStub = function ve_BranchNodeStub( children ) {
 	ve.BranchNode.call( this, children );
 };
 
-ve.extendClass( ve.BranchNodeStub, ve.BranchNode );
+ve.inheritClass( ve.BranchNodeStub, ve.Node );
+ve.mixinClass( ve.BranchNodeStub, ve.BranchNode );
 
 /* Tests */
 

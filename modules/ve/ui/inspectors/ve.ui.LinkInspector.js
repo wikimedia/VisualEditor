@@ -1,4 +1,4 @@
-/*global mw*/
+/*global mw */
 
 /**
  * VisualEditor user interface LinkInspector class.
@@ -12,9 +12,11 @@
  *
  * @class
  * @constructor
+ * @extends {ve.ui.Inspector}
  * @param {ve.ui.Toolbar} toolbar
+ * @param context
  */
-ve.ui.LinkInspector = function ( toolbar, context ) {
+ve.ui.LinkInspector = function ve_ui_LinkInspector( toolbar, context ) {
 	var inspector = this;
 
 	// Inheritance
@@ -66,11 +68,15 @@ ve.ui.LinkInspector = function ( toolbar, context ) {
 	this.$.prepend( this.$title, this.$clearButton );
 	this.$form.append( this.$locationInput );
 
-	// Init multiSuggest for MediaWiki
+	// FIXME: MediaWiki-specific
 	if ( 'mw' in window ) {
 		this.initMultiSuggest();
 	}
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.ui.LinkInspector, ve.ui.Inspector );
 
 /* Methods */
 
@@ -216,10 +222,10 @@ ve.ui.LinkInspector.getAnnotationForTarget = function ( target ) {
 		};
 	} else {
 		// Internal link
-		// TODO in the longer term we'll want to have autocompletion and existence&validity
-		// checks using AJAX
+		// TODO: In the longer term we'll want to have autocompletion and existence
+		// and validity checks using AJAX
 		try {
-			// FIXME mw dependency
+			// FIXME: MediaWiki-specific
 			title = new mw.Title( target );
 			if ( title.getNamespaceId() === 6 || title.getNamespaceId() === 14 ) {
 				// File: or Category: link
@@ -355,7 +361,3 @@ ve.ui.LinkInspector.prototype.initMultiSuggest = function () {
 	// Setup Multi Suggest
 	this.$locationInput.multiSuggest( options );
 };
-
-/* Inheritance */
-
-ve.extendClass( ve.ui.LinkInspector, ve.ui.Inspector );

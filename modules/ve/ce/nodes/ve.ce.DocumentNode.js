@@ -13,8 +13,8 @@
  * @extends {ve.ce.BranchNode}
  * @param model {ve.dm.DocumentNode} Model to observe
  */
-ve.ce.DocumentNode = function ( model, surface ) {
-	// Inheritance
+ve.ce.DocumentNode = function ve_ce_DocumentNode( model, surface ) {
+	// Parent constructor
 	ve.ce.BranchNode.call( this, 'document', model );
 
 	// Properties
@@ -25,6 +25,10 @@ ve.ce.DocumentNode = function ( model, surface ) {
 	this.$.attr('contentEditable', 'true');
 	this.$.attr('spellcheck', 'true');
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.ce.DocumentNode, ve.ce.BranchNode );
 
 /* Static Members */
 
@@ -45,7 +49,7 @@ ve.ce.DocumentNode.rules = {
  * Gets the outer length, which for a document node is the same as the inner length.
  *
  * @method
- * @returns {Integer} Length of the entire node
+ * @returns {Number} Length of the entire node
  */
 ve.ce.DocumentNode.prototype.getOuterLength = function () {
 	return this.length;
@@ -64,7 +68,3 @@ ve.ce.DocumentNode.prototype.getSurface = function () {
 /* Registration */
 
 ve.ce.nodeFactory.register( 'document', ve.ce.DocumentNode );
-
-/* Inheritance */
-
-ve.extendClass( ve.ce.DocumentNode, ve.ce.BranchNode );

@@ -11,21 +11,23 @@
  * @class
  * @abstract
  * @constructor
- * @extends {ve.LeafNode}
  * @extends {ve.dm.Node}
  * @param {String} type Symbolic name of node type
- * @param {Integer} [length] Length of content data in document
+ * @param {Number} [length] Length of content data in document
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  * @param {Object} [internal] Reference to internal data object
  */
-ve.dm.LeafNode = function ( type, length, attributes, internal ) {
-	// Inheritance
-	ve.dm.Node.call( this, type, length, attributes, internal );
+ve.dm.LeafNode = function ve_dm_LeafNode( type, length, attributes, internal ) {
 	ve.LeafNode.call( this );
-};
 
-/* Methods */
+	// Parent constructor
+	ve.dm.Node.call( this, type, length, attributes, internal );
+};
 
 /* Inheritance */
 
-ve.extendClass( ve.dm.LeafNode, ve.LeafNode, ve.dm.Node );
+ve.inheritClass( ve.dm.LeafNode, ve.dm.Node );
+
+ve.mixinClass( ve.dm.LeafNode, ve.LeafNode );
+
+/* Methods */

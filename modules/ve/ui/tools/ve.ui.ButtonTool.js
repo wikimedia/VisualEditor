@@ -10,11 +10,13 @@
  *
  * @class
  * @constructor
+ * @extends {ve.ui.Tool}
  * @param {ve.ui.Toolbar} toolbar
  * @param {String} name
+ * @param title
  */
-ve.ui.ButtonTool = function ( toolbar, name, title ) {
-	// Inheritance
+ve.ui.ButtonTool = function ve_ui_ButtonTool( toolbar, name, title ) {
+	// Parent constructor
 	ve.ui.Tool.call( this, toolbar, name, title );
 
 	if ( !name ) {
@@ -41,6 +43,10 @@ ve.ui.ButtonTool = function ( toolbar, name, title ) {
 	} );
 };
 
+/* Inheritance */
+
+ve.inheritClass( ve.ui.ButtonTool, ve.ui.Tool );
+
 /* Methods */
 
 ve.ui.ButtonTool.prototype.onClick = function () {
@@ -54,8 +60,3 @@ ve.ui.ButtonTool.prototype.updateEnabled = function () {
 		this.$.addClass( 've-ui-toolbarButtonTool-disabled' );
 	}
 };
-
-
-/* Inheritance */
-
-ve.extendClass( ve.ui.ButtonTool, ve.ui.Tool );

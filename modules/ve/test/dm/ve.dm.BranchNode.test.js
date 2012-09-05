@@ -9,10 +9,12 @@ QUnit.module( 've.dm.BranchNode' );
 
 /* Stubs */
 
-ve.dm.BranchNodeStub = function ( children, attributes ) {
-	// Inheritance
+ve.dm.BranchNodeStub = function ve_dm_BranchNodeStub( children, attributes ) {
+	// Parent constructor
 	ve.dm.BranchNode.call( this, 'branch-stub', children, attributes );
 };
+
+ve.inheritClass( ve.dm.BranchNodeStub, ve.dm.BranchNode );
 
 ve.dm.BranchNodeStub.rules = {
 	'isWrapped': true,
@@ -22,8 +24,6 @@ ve.dm.BranchNodeStub.rules = {
 };
 
 ve.dm.BranchNodeStub.converters = null;
-
-ve.extendClass( ve.dm.BranchNodeStub, ve.dm.BranchNode );
 
 ve.dm.nodeFactory.register( 'branch-stub', ve.dm.BranchNodeStub );
 

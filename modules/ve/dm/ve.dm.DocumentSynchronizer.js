@@ -21,7 +21,7 @@
  * @constructor
  * @param {ve.dm.Document} doc Document to synchronize
  */
-ve.dm.DocumentSynchronizer = function ( doc ) {
+ve.dm.DocumentSynchronizer = function ve_dm_DocumentSynchronizer( doc ) {
 	// Properties
 	this.document = doc;
 	this.actionQueue = [];
@@ -186,7 +186,7 @@ ve.dm.DocumentSynchronizer.prototype.pushAttributeChange = function ( node, key,
  *
  * @method
  * @param {ve.dm.TextNode} node Node to resize
- * @param {Integer} adjustment Length adjustment to apply to the node
+ * @param {Number} adjustment Length adjustment to apply to the node
  */
 ve.dm.DocumentSynchronizer.prototype.pushResize = function ( node, adjustment ) {
 	this.actionQueue.push( {

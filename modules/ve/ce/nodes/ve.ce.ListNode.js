@@ -13,13 +13,17 @@
  * @extends {ve.ce.BranchNode}
  * @param model {ve.dm.ListNode} Model to observe
  */
-ve.ce.ListNode = function ( model ) {
-	// Inheritance
+ve.ce.ListNode = function ve_ce_ListNode( model ) {
+	// Parent constructor
 	ve.ce.BranchNode.call( this, 'list', model, ve.ce.BranchNode.getDomWrapper( model, 'style' ) );
 
 	// Events
 	this.model.addListenerMethod( this, 'update', 'onUpdate' );
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.ce.ListNode, ve.ce.BranchNode );
 
 /* Static Members */
 
@@ -84,7 +88,3 @@ ve.ce.ListNode.prototype.canHaveSlugAfter = function () {
 /* Registration */
 
 ve.ce.nodeFactory.register( 'list', ve.ce.ListNode );
-
-/* Inheritance */
-
-ve.extendClass( ve.ce.ListNode, ve.ce.BranchNode );

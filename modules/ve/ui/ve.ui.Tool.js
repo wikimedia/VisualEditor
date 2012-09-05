@@ -9,11 +9,12 @@
  * Creates an ve.ui.Tool object.
  *
  * @class
+ * @abstract
  * @constructor
  * @param {ve.ui.Toolbar} toolbar
  * @param {String} name
  */
-ve.ui.Tool = function ( toolbar, name, title ) {
+ve.ui.Tool = function ve_ui_Tool( toolbar, name, title ) {
 	this.toolbar = toolbar;
 	this.name = name;
 	this.title = title;

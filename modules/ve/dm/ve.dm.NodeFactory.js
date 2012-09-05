@@ -12,10 +12,14 @@
  * @extends {ve.Factory}
  * @constructor
  */
-ve.dm.NodeFactory = function () {
-	// Inheritance
+ve.dm.NodeFactory = function ve_dm_NodeFactory() {
+	// Parent constructor
 	ve.Factory.call( this );
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.dm.NodeFactory, ve.Factory );
 
 /* Methods */
 
@@ -128,10 +132,6 @@ ve.dm.NodeFactory.prototype.isNodeContent = function ( type ) {
 	}
 	throw new Error( 'Unknown node type: ' + type );
 };
-
-/* Inheritance */
-
-ve.extendClass( ve.dm.NodeFactory, ve.Factory );
 
 /* Initialization */
 

@@ -10,10 +10,10 @@
  *
  * @class
  * @constructor
- * @param {String} pageName Name of target page
+ * @extends {ve.init.Platform}
  */
-ve.init.sa.Platform = function () {
-	// Inheritance
+ve.init.sa.Platform = function ve_init_SaPlatform() {
+	// Parent constructor
 	ve.init.Platform.call( this );
 
 	// Properties
@@ -21,6 +21,10 @@ ve.init.sa.Platform = function () {
 	this.modulesUrl = 'extensions/VisualEditor/modules';
 	this.messages = {};
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.init.sa.Platform, ve.init.Platform );
 
 /* Methods */
 
@@ -85,10 +89,6 @@ ve.init.sa.Platform.prototype.getMessage = function ( key ) {
 	}
 	return '<' + key + '>';
 };
-
-/* Inheritance */
-
-ve.extendClass( ve.init.sa.Platform, ve.init.Platform );
 
 /* Initialization */
 

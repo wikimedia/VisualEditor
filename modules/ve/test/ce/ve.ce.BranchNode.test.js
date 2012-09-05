@@ -9,10 +9,12 @@ QUnit.module( 've.ce.BranchNode' );
 
 /* Stubs */
 
-ve.ce.BranchNodeStub = function ( model, $element ) {
-	// Inheritance
+ve.ce.BranchNodeStub = function ve_ce_BranchNodeStub( model, $element ) {
+	// Parent constructor
 	ve.ce.BranchNode.call( this, 'branch-stub', model, $element );
 };
+
+ve.inheritClass( ve.ce.BranchNodeStub, ve.ce.BranchNode );
 
 ve.ce.BranchNodeStub.rules = {
 	'canBeSplit': true
@@ -22,8 +24,6 @@ ve.ce.BranchNodeStub.domWrapperElementTypes = {
 	'a': 'a',
 	'b': 'b'
 };
-
-ve.extendClass( ve.ce.BranchNodeStub, ve.ce.BranchNode );
 
 ve.ce.nodeFactory.register( 'branch-stub', ve.ce.BranchNodeStub );
 

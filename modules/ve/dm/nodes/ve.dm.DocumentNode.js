@@ -13,10 +13,14 @@
  * @extends {ve.dm.BranchNode}
  * @param {ve.dm.BranchNode[]} [children] Child nodes to attach
  */
-ve.dm.DocumentNode = function ( children ) {
-	// Inheritance
+ve.dm.DocumentNode = function ve_dm_DocumentNode( children ) {
+	// Parent constructor
 	ve.dm.BranchNode.call( this, 'document', children );
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.dm.DocumentNode, ve.dm.BranchNode );
 
 /* Static Members */
 
@@ -43,7 +47,3 @@ ve.dm.DocumentNode.converters = null;
 ve.dm.nodeFactory.register( 'document', ve.dm.DocumentNode );
 
 // This is a special node, no converter registration is required
-
-/* Inheritance */
-
-ve.extendClass( ve.dm.DocumentNode, ve.dm.BranchNode );

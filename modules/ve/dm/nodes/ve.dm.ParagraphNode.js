@@ -15,10 +15,14 @@
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  * @param {Object} [internal] Reference to internal data object
  */
-ve.dm.ParagraphNode = function ( children, attributes, internal ) {
-	// Inheritance
+ve.dm.ParagraphNode = function ve_dm_ParagraphNode( children, attributes, internal ) {
+	// Parent constructor
 	ve.dm.BranchNode.call( this, 'paragraph', children, attributes, internal );
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.dm.ParagraphNode, ve.dm.BranchNode );
 
 /* Static Members */
 
@@ -57,7 +61,3 @@ ve.dm.ParagraphNode.converters = {
 /* Registration */
 
 ve.dm.nodeFactory.register( 'paragraph', ve.dm.ParagraphNode );
-
-/* Inheritance */
-
-ve.extendClass( ve.dm.ParagraphNode, ve.dm.BranchNode );

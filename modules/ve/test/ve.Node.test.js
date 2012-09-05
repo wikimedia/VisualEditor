@@ -10,12 +10,12 @@ QUnit.module( 've.Node' );
 /* Stubs */
 
 ve.NodeStub = function () {
-	// Inheritance
+	// Parent constructor
 	ve.Node.call( this, 'stub' );
 };
 
-ve.extendClass( ve.NodeStub, ve.Node );
- 
+ve.inheritClass( ve.NodeStub, ve.Node );
+
 /* Tests */
 
 QUnit.test( 'getType', 1, function ( assert ) {

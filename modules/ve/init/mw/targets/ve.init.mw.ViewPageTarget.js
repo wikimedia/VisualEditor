@@ -1,4 +1,4 @@
-/*global mw,confirm,alert */
+/*global mw, confirm, alert */
 
 /**
  * VisualEditor MediaWiki initialization ViewPageTarget class.
@@ -13,9 +13,8 @@
  * @class
  * @constructor
  * @extends {ve.init.mw.Target}
- * @param {String} title Page title of target
  */
-ve.init.mw.ViewPageTarget = function () {
+ve.init.mw.ViewPageTarget = function ve_init_MwViewPageTarget() {
 	var currentUri = new mw.Uri( window.location.toString() );
 
 	// Inheritance
@@ -105,6 +104,10 @@ ve.init.mw.ViewPageTarget = function () {
 		}
 	}
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.init.mw.ViewPageTarget, ve.init.mw.Target );
 
 /* Static Members */
 
@@ -1163,10 +1166,6 @@ ve.init.mw.ViewPageTarget.prototype.attachToolbarFeedbackButton = function () {
 ve.init.mw.ViewPageTarget.prototype.detachToolbarFeedbackButton = function () {
 	this.$toolbarFeedbackButton.detach();
 };
-
-/* Inheritance */
-
-ve.extendClass( ve.init.mw.ViewPageTarget, ve.init.mw.Target );
 
 /* Initialization */
 

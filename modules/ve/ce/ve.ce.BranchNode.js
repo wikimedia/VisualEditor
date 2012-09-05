@@ -11,19 +11,19 @@
  * @class
  * @abstract
  * @constructor
- * @extends {ve.BranchNode}
  * @extends {ve.ce.Node}
  * @param {String} type Symbolic name of node type
  * @param model {ve.dm.BranchNode} Model to observe
  * @param {jQuery} [$element] Element to use as a container
  */
-ve.ce.BranchNode = function ( type, model, $element ) {
-	// Inheritance
+ve.ce.BranchNode = function ve_ce_BranchNode( type, model, $element ) {
 	ve.BranchNode.call( this );
+
+	// Parent constructor
 	ve.ce.Node.call( this, type, model, $element );
 
 	// Properties
-	this.domWrapperElementType = this.$.get(0).nodeName.toLowerCase();
+	this.domWrapperElementType = this.$.get( 0 ).nodeName.toLowerCase();
 	this.$slugs = $();
 
 	// Events
@@ -37,6 +37,12 @@ ve.ce.BranchNode = function ( type, model, $element ) {
 		this.onSplice.apply( this, [0, 0].concat( model.getChildren() ) );
 	}
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.ce.BranchNode, ve.ce.Node );
+
+ve.mixinClass( ve.ce.BranchNode, ve.BranchNode );
 
 /* Static Members */
 
@@ -178,8 +184,8 @@ ve.ce.BranchNode.prototype.updateDomWrapper = function ( key ) {
  * mirror of its model.
  *
  * @method
- * @param {Integer} index Index to remove and or insert nodes at
- * @param {Integer} howmany Number of nodes to remove
+ * @param {Number} index Index to remove and or insert nodes at
+ * @param {Number} howmany Number of nodes to remove
  * @param {ve.dm.BranchNode} [...] Variadic list of nodes to insert
  */
 ve.ce.BranchNode.prototype.onSplice = function ( index ) {
@@ -262,7 +268,3 @@ ve.ce.BranchNode.prototype.clean = function () {
 	}
 	this.addSlugs();
 };
-
-/* Inheritance */
-
-ve.extendClass( ve.ce.BranchNode, ve.BranchNode, ve.ce.Node );

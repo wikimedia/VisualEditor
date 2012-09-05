@@ -14,7 +14,7 @@
  * @param {Function} callback Function to call if an item doesn't have its own callback
  * @param {jQuery} [$overlay=$( 'body' )] DOM selection to add nodes to
  */
-ve.ui.Menu = function ( items, callback, $overlay ) {
+ve.ui.Menu = function ve_ui_Menu( items, callback, $overlay ) {
 	var i,
 		menu = this;
 

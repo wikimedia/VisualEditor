@@ -10,13 +10,16 @@
  *
  * @class
  * @constructor
+ * @extends {ve.ui.Tool}
  * @param {ve.ui.Toolbar} toolbar
  * @param {String} name
+ * @param title
  * @param {Object[]} items
  */
-ve.ui.DropdownTool = function ( toolbar, name, title, items ) {
-	// Inheritance
+ve.ui.DropdownTool = function ve_ui_DropdownTool( toolbar, name, title, items ) {
+	// Parent constructor
 	ve.ui.Tool.call( this, toolbar, name, title );
+
 	if ( !name ) {
 		return;
 	}
@@ -39,6 +42,7 @@ ve.ui.DropdownTool = function ( toolbar, name, title, items ) {
 					tool.menuView.close();
 				}
 			} );
+
 	this.$.on( {
 		'mousedown': function ( e ) {
 			if ( e.which === 1 ) {
@@ -64,12 +68,12 @@ ve.ui.DropdownTool = function ( toolbar, name, title, items ) {
 	this.$label.append( this.$labelText );
 };
 
+/* Inheritance */
+
+ve.inheritClass( ve.ui.DropdownTool, ve.ui.Tool );
+
 /* Methods */
 
 ve.ui.DropdownTool.prototype.onSelect = function ( item ) {
 	throw new Error( 'DropdownTool.onSelect not implemented in this subclass:' + this.constructor );
 };
-
-/* Inheritance */
-
-ve.extendClass( ve.ui.DropdownTool, ve.ui.Tool );

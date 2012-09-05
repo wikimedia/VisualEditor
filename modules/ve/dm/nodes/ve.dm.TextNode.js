@@ -11,12 +11,16 @@
  * @class
  * @constructor
  * @extends {ve.dm.LeafNode}
- * @param {Integer} [length] Length of content data in document
+ * @param {Number} [length] Length of content data in document
  */
-ve.dm.TextNode = function ( length ) {
-	// Inheritance
+ve.dm.TextNode = function ve_dm_TextNode( length ) {
+	// Parent constructor
 	ve.dm.LeafNode.call( this, 'text', length );
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.dm.TextNode, ve.dm.LeafNode );
 
 /* Static Members */
 
@@ -41,7 +45,3 @@ ve.dm.TextNode.converters = null;
 /* Registration */
 
 ve.dm.nodeFactory.register( 'text', ve.dm.TextNode );
-
-/* Inheritance */
-
-ve.extendClass( ve.dm.TextNode, ve.dm.LeafNode );

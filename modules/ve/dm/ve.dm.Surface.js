@@ -13,8 +13,8 @@
  * @extends {ve.EventEmitter}
  * @param {ve.dm.Document} doc Document model to create surface for
  */
-ve.dm.Surface = function ( doc ) {
-	// Inheritance
+ve.dm.Surface = function ve_dm_Surface( doc ) {
+	// Parent constructor
 	ve.EventEmitter.call( this );
 	// Properties
 	this.documentModel = doc;
@@ -24,6 +24,10 @@ ve.dm.Surface = function ( doc ) {
 	this.undoIndex = 0;
 	this.historyTrackingInterval = null;
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.dm.Surface, ve.EventEmitter );
 
 /* Methods */
 
@@ -184,7 +188,3 @@ ve.dm.Surface.prototype.redo = function () {
 	}
 	return null;
 };
-
-/* Inheritance */
-
-ve.extendClass( ve.dm.Surface, ve.EventEmitter );

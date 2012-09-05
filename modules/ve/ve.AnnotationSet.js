@@ -10,6 +10,8 @@ ve.AnnotationSet = function ( annotations ) {
 	ve.OrderedHashSet.call( this, ve.getHash, annotations );
 };
 
+ve.inheritClass( ve.AnnotationSet, ve.OrderedHashSet );
+
 ve.AnnotationSet.prototype.clone = function () {
 	return new ve.AnnotationSet( this );
 };
@@ -21,5 +23,3 @@ ve.AnnotationSet.prototype.getAnnotationsOfType = function ( type ) {
 ve.AnnotationSet.prototype.hasAnnotationOfType = function ( type ) {
 	return this.containsMatching( 'type', type );
 };
-
-ve.extendClass( ve.AnnotationSet, ve.OrderedHashSet );

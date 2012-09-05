@@ -12,10 +12,11 @@
  *
  * @class
  * @constructor
+ * @extends {ve.EventEmitter}
  * @param {String} pageName Name of target page
  */
-ve.init.mw.Target = function ( pageName, oldId ) {
-	// Inheritance
+ve.init.mw.Target = function ve_init_MwTarget( pageName, oldId ) {
+	// Parent constructor
 	ve.EventEmitter.call( this );
 
 	// Properties
@@ -37,6 +38,10 @@ ve.init.mw.Target = function ( pageName, oldId ) {
 		( window.DocumentTouch && document instanceof window.DocumentTouch )
 	);
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.init.mw.Target, ve.EventEmitter );
 
 /* Static Methods */
 
@@ -248,7 +253,3 @@ ve.init.mw.Target.prototype.save = function ( dom, options ) {
 	} );
 	return true;
 };
-
-/* Inheritance */
-
-ve.extendClass( ve.init.mw.Target, ve.EventEmitter );

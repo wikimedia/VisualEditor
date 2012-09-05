@@ -11,14 +11,18 @@
  * @class
  * @constructor
  * @extends {ve.dm.LeafNode}
- * @param {Integer} [length] Length of content data in document
+ * @param {Number} [length] Length of content data in document
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  * @param {Object} [internal] Reference to internal data object
  */
-ve.dm.ImageNode = function ( length, attributes, internal ) {
-	// Inheritance
+ve.dm.ImageNode = function ve_dm_ImageNode( length, attributes, internal ) {
+	// Parent constructor
 	ve.dm.LeafNode.call( this, 'image', 0, attributes, internal );
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.dm.ImageNode, ve.dm.LeafNode );
 
 /* Static Members */
 
@@ -57,7 +61,3 @@ ve.dm.ImageNode.converters = {
 /* Registration */
 
 ve.dm.nodeFactory.register( 'image', ve.dm.ImageNode );
-
-/* Inheritance */
-
-ve.extendClass( ve.dm.ImageNode, ve.dm.LeafNode );

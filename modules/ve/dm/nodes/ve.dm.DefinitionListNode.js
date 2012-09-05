@@ -15,10 +15,14 @@
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  * @param {Object} [internal] Reference to internal data object
  */
-ve.dm.DefinitionListNode = function ( children, attributes, internal ) {
-	// Inheritance
+ve.dm.DefinitionListNode = function ve_dm_DefinitionListNode( children, attributes, internal ) {
+	// Parent constructor
 	ve.dm.BranchNode.call( this, 'definitionList', children, attributes, internal );
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.dm.DefinitionListNode, ve.dm.BranchNode );
 
 /* Static Members */
 
@@ -57,7 +61,3 @@ ve.dm.DefinitionListNode.converters = {
 /* Registration */
 
 ve.dm.nodeFactory.register( 'definitionList', ve.dm.DefinitionListNode );
-
-/* Inheritance */
-
-ve.extendClass( ve.dm.DefinitionListNode, ve.dm.BranchNode );

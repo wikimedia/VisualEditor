@@ -7,20 +7,18 @@
 
 QUnit.module( 've.dm.Surface' );
 
-ve.dm.SurfaceStub = function ( data ) {
-	// Inheritance
-
+ve.dm.SurfaceStub = function ve_dm_SurfaceStub( data ) {
 	if ( data !== undefined ) {
-		this.dm = new ve.dm.Document ( data );
+		this.dm = new ve.dm.Document( data );
 	} else {
-		this.dm = new ve.dm.Document ( [{ 'type': 'paragraph' }, 'h', 'i', { 'type': '/paragraph' }] );
+		this.dm = new ve.dm.Document( [{ 'type': 'paragraph' }, 'h', 'i', { 'type': '/paragraph' }] );
 	}
+
+	// Inheritance
 	ve.dm.Surface.call( this, this.dm );
 };
 
-// Inheritance
-
-ve.extendClass( ve.dm.SurfaceStub, ve.dm.Surface );
+ve.inheritClass( ve.dm.SurfaceStub, ve.dm.Surface );
 
 // Tests
 

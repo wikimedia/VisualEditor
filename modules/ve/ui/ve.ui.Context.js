@@ -10,9 +10,10 @@
  *
  * @class
  * @constructor
+ * @param surfaceView
  * @param {jQuery} $overlay DOM selection to add nodes to
  */
-ve.ui.Context = function ( surfaceView, $overlay ) {
+ve.ui.Context = function ve_ui_Context( surfaceView, $overlay ) {
 	if ( !surfaceView ) {
 		return;
 	}
@@ -314,7 +315,8 @@ ve.ui.Context.prototype.addInspector = function ( name, inspector ) {
 	this.$inspectorWrapper.append( inspector.$ );
 };
 
-//TODO: need better iframe resizing. Currently sizes to dimensions of specified inspector.
+// TODO: need better iframe resizing.
+// Currently sizes to dimensions of specified inspector.
 ve.ui.Context.prototype.resizeInspectorFrame = function ( inspector ) {
 	var width = inspector.$.outerWidth(),
 		height = inspector.$.outerHeight();

@@ -13,16 +13,20 @@
  * @extends {ve.ce.LeafNode}
  * @param model {ve.dm.TextNode} Model to observe
  */
-ve.ce.TextNode = function ( model ) {
-	// Inheritance
-	ve.ce.LeafNode.call( this, 'text', model, $( document.createTextNode('') ) );
-	
+ve.ce.TextNode = function ve_ce_TextNode( model ) {
+	// Parent constructor
+	ve.ce.LeafNode.call( this, 'text', model, $( document.createTextNode( '' ) ) );
+
 	// Events
 	this.model.addListenerMethod( this, 'update', 'onUpdate' );
 
 	// Initialization
 	this.onUpdate( true );
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.ce.TextNode, ve.ce.LeafNode );
 
 /* Static Members */
 
@@ -326,7 +330,3 @@ ve.ce.TextNode.prototype.getHtml = function () {
 /* Registration */
 
 ve.ce.nodeFactory.register( 'text', ve.ce.TextNode );
-
-/* Inheritance */
-
-ve.extendClass( ve.ce.TextNode, ve.ce.LeafNode );

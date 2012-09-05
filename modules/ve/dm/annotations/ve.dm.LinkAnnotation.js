@@ -12,10 +12,14 @@
  * @constructor
  * @extends {ve.dm.Annotation}
  */
-ve.dm.LinkAnnotation = function () {
-	// Inheritance
+ve.dm.LinkAnnotation = function ve_dm_LinkAnnotation() {
+	// Parent constructor
 	ve.dm.Annotation.call( this );
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.dm.LinkAnnotation, ve.dm.Annotation );
 
 /* Static Members */
 
@@ -89,7 +93,3 @@ ve.dm.LinkAnnotation.converters = {
 /* Registration */
 
 ve.dm.annotationFactory.register( 'link', ve.dm.LinkAnnotation );
-
-/* Inheritance */
-
-ve.extendClass( ve.dm.LinkAnnotation, ve.dm.Annotation );

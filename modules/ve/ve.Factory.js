@@ -13,13 +13,17 @@
  * @constructor
  * @extends {ve.EventEmitter}
  */
-ve.Factory = function () {
-	// Inheritance
+ve.Factory = function ve_Factory() {
+	// Parent constructor
 	ve.EventEmitter.call( this );
 
 	// Properties
 	this.registry = [];
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.Factory, ve.EventEmitter );
 
 /* Methods */
 
@@ -76,7 +80,3 @@ ve.Factory.prototype.create = function ( type, a, b, c ) {
 ve.Factory.prototype.lookup = function ( type ) {
 	return this.registry[type];
 };
-
-/* Inheritance */
-
-ve.extendClass( ve.Factory, ve.EventEmitter );

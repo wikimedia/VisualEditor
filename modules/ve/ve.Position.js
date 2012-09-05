@@ -13,14 +13,14 @@
  *
  * @class
  * @constructor
- * @param left {Integer} Horizontal position
- * @param top {Integer} Vertical top position
- * @param bottom {Integer} Vertical bottom position of bottom (optional, default: top)
- * @property left {Integer} Horizontal position
- * @property top {Integer} Vertical top position
- * @property bottom {Integer} Vertical bottom position of bottom
+ * @param left {Number} Horizontal position
+ * @param top {Number} Vertical top position
+ * @param bottom {Number} Vertical bottom position of bottom (optional, default: top)
+ * @property left {Number} Horizontal position
+ * @property top {Number} Vertical top position
+ * @property bottom {Number} Vertical bottom position of bottom
  */
-ve.Position = function ( left, top, bottom ) {
+ve.Position = function ve_Position( left, top, bottom ) {
 	this.left = left || 0;
 	this.top = top || 0;
 	this.bottom = bottom || this.top;
@@ -167,7 +167,7 @@ ve.Position.prototype.plumbWith = function ( position ) {
  *
  * @method
  * @param position {ve.Position} Position to compare with
- * @param radius {Integer} Pixel distance from this position to consider "near-by"
+ * @param radius {Number} Pixel distance from this position to consider "near-by"
  * @returns {Boolean} If positions are near-by each other
  */
 ve.Position.prototype.near = function ( position, radius ) {

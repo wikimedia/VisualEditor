@@ -15,10 +15,14 @@
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  * @param {Object} [internal] Reference to internal data object
  */
-ve.dm.HeadingNode = function ( children, attributes, internal ) {
-	// Inheritance
+ve.dm.HeadingNode = function ve_dm_HeadingNode( children, attributes, internal ) {
+	// Parent constructor
 	ve.dm.BranchNode.call( this, 'heading', children, attributes, internal );
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.dm.HeadingNode, ve.dm.BranchNode );
 
 /* Static Members */
 
@@ -71,7 +75,3 @@ ve.dm.HeadingNode.converters = {
 /* Registration */
 
 ve.dm.nodeFactory.register( 'heading', ve.dm.HeadingNode );
-
-/* Inheritance */
-
-ve.extendClass( ve.dm.HeadingNode, ve.dm.BranchNode );

@@ -12,10 +12,14 @@
  * @constructor
  * @extends {ve.dm.Annotation}
  */
-ve.dm.TextStyleAnnotation = function () {
-	// Inheritance
+ve.dm.TextStyleAnnotation = function ve_dm_TextStyleAnnotation() {
+	// Parent constructor
 	ve.dm.Annotation.call( this );
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.dm.TextStyleAnnotation, ve.dm.Annotation );
 
 /* Static Members */
 
@@ -84,7 +88,3 @@ ve.dm.TextStyleAnnotation.converters = {
 /* Registration */
 
 ve.dm.annotationFactory.register( 'textStyle', ve.dm.TextStyleAnnotation );
-
-/* Inheritance */
-
-ve.extendClass( ve.dm.TextStyleAnnotation, ve.dm.Annotation );

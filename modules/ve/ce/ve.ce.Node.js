@@ -16,8 +16,8 @@
  * @param {ve.dm.Node} model Model to observe
  * @param {jQuery} [$element] Element to use as a container
  */
-ve.ce.Node = function ( type, model, $element ) {
-	// Inheritance
+ve.ce.Node = function ve_ce_Node( type, model, $element ) {
+	// Parent constructor
 	ve.Node.call( this, type );
 
 	// Properties
@@ -27,6 +27,10 @@ ve.ce.Node = function ( type, model, $element ) {
 
 	this.$.data( 'node', this );
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.ce.Node, ve.Node );
 
 /* Methods */
 
@@ -148,7 +152,7 @@ ve.ce.Node.prototype.canHaveSlugAfter = ve.ce.Node.prototype.canHaveSlugBefore;
  * This method passes through to the model.
  *
  * @method
- * @returns {Integer} Model length
+ * @returns {Number} Model length
  */
 ve.ce.Node.prototype.getLength = function () {
 	return this.model.getLength();
@@ -160,7 +164,7 @@ ve.ce.Node.prototype.getLength = function () {
  * This method passes through to the model.
  *
  * @method
- * @returns {Integer} Model outer length
+ * @returns {Number} Model outer length
  */
 ve.ce.Node.prototype.getOuterLength = function () {
 	return this.model.getOuterLength();
@@ -200,7 +204,3 @@ ve.ce.Node.getSplitableNode = function ( node ) {
 	
 	return splitableNode;
 };
-
-/* Inheritance */
-
-ve.extendClass( ve.ce.Node, ve.Node );

@@ -13,15 +13,20 @@
  * @extends {ve.ui.ButtonTool}
  * @param {ve.ui.Toolbar} toolbar
  * @param {String} name
+ * @param title
  */
-ve.ui.ClearButtonTool = function ( toolbar, name, title ) {
-	// Inheritance
+ve.ui.ClearButtonTool = function ve_ui_ClearButtonTool( toolbar, name, title ) {
+	// Parent constructor
 	ve.ui.ButtonTool.call( this, toolbar, name, title );
 
 	// Properties
 	this.$.addClass( 've-ui-toolbarButtonTool-disabled' );
 	this.pattern = /^(textStyle|link)\//;
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.ui.ClearButtonTool, ve.ui.ButtonTool );
 
 /* Methods */
 
@@ -61,7 +66,3 @@ ve.ui.Tool.tools.clear = {
 	'name': 'clear',
 	'title': ve.msg( 'visualeditor-clearbutton-tooltip' )
 };
-
-/* Inheritance */
-
-ve.extendClass( ve.ui.ClearButtonTool, ve.ui.ButtonTool );

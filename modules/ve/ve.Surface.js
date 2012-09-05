@@ -16,7 +16,7 @@
  * @param {HTMLElement} dom HTML element of document to edit
  * @param {Object} options Configuration options
  */
-ve.Surface = function ( parent, dom, options ) {
+ve.Surface = function ve_Surface( parent, dom, options ) {
 	// Properties
 	this.$ = $( '<div class="ve-surface"></div>' );
 	this.documentModel = new ve.dm.Document( ve.dm.converter.getDataFromDom( dom ) );
@@ -30,7 +30,9 @@ ve.Surface = function ( parent, dom, options ) {
 	this.$.append(
 		// Contain floating content
 		$( '<div style="clear: both;"></div>' ),
-		// Temporary paste buffer - TODO: make 'paste' in surface stateful and remove this attrib
+		// Temporary paste buffer
+		// TODO: make 'paste' in surface stateful and remove this attrib
+		// TODO: Use a less generic id than "paste", or get rid of the ID alltogether
 		$( '<div id="paste" class="paste" contenteditable="true"></div>' )
 	);
 

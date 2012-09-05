@@ -17,7 +17,7 @@
  * @class
  * @constructor
  */
-ve.dm.TransactionProcessor = function ( doc, transaction, reversed ) {
+ve.dm.TransactionProcessor = function ve_dm_TransactionProcessor( doc, transaction, reversed ) {
 	// Properties
 	this.document = doc;
 	this.operations = transaction.getOperations();
@@ -85,7 +85,7 @@ ve.dm.TransactionProcessor.rollback = function ( doc, transaction ) {
  * @static
  * @method
  * @param {Object} op Operation object:
- * @param {Integer} op.length Number of elements to retain
+ * @param {Number} op.length Number of elements to retain
  */
 ve.dm.TransactionProcessor.processors.retain = function ( op ) {
 	this.applyAnnotations( this.cursor + op.length );

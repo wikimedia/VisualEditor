@@ -11,14 +11,18 @@
  * @class
  * @constructor
  * @extends {ve.dm.LeafNode}
- * @param {Integer} [length] Length of content data in document
+ * @param {Number} [length] Length of content data in document
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  * @param {Object} [internal] Reference to internal data object
  */
-ve.dm.AlienInlineNode = function ( length, attributes, internal ) {
-	// Inheritance
+ve.dm.AlienInlineNode = function ve_dm_AlienInlineNode( length, attributes, internal ) {
+	// Parent constructor
 	ve.dm.LeafNode.call( this, 'alienInline', 0, attributes, internal );
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.dm.AlienInlineNode, ve.dm.LeafNode );
 
 /* Static Members */
 
@@ -43,7 +47,3 @@ ve.dm.AlienInlineNode.converters = null;
 /* Registration */
 
 ve.dm.nodeFactory.register( 'alienInline', ve.dm.AlienInlineNode );
-
-/* Inheritance */
-
-ve.extendClass( ve.dm.AlienInlineNode, ve.dm.LeafNode );

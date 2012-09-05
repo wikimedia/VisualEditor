@@ -1,5 +1,5 @@
 /**
- * VisualEditor LeafNode class.
+ * VisualEditor LeafNode mixin.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -8,11 +8,11 @@
 /**
  * Mixin for leaf nodes.
  *
- * @class
+ * @mixin
  * @abstract
  * @constructor
  */
-ve.LeafNode = function () {
+ve.LeafNode = function ve_LeafNode() {
 	//
 };
 

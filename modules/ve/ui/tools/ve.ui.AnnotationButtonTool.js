@@ -13,10 +13,11 @@
  * @extends {ve.ui.ButtonTool}
  * @param {ve.ui.Toolbar} toolbar
  * @param {String} name
- * @param {Object} annotation
+ * @param title
+ * @param {Object} data
  */
-ve.ui.AnnotationButtonTool = function ( toolbar, name, title, data ) {
-	// Inheritance
+ve.ui.AnnotationButtonTool = function ve_ui_AnnotationButtonTool( toolbar, name, title, data ) {
+	// Parent constructor
 	ve.ui.ButtonTool.call( this, toolbar, name, title );
 
 	// Properties
@@ -24,6 +25,10 @@ ve.ui.AnnotationButtonTool = function ( toolbar, name, title, data ) {
 	this.inspector = data.inspector;
 	this.active = false;
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.ui.AnnotationButtonTool, ve.ui.ButtonTool );
 
 /* Methods */
 
@@ -79,7 +84,3 @@ ve.ui.Tool.tools.link = {
 		'inspector': 'link'
 	}
 };
-
-/* Inheritance */
-
-ve.extendClass( ve.ui.AnnotationButtonTool, ve.ui.ButtonTool );

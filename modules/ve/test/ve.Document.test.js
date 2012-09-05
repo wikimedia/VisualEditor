@@ -10,11 +10,11 @@ QUnit.module( 've.Document' );
 /* Stubs */
 
 ve.DocumentStub = function ( documentNode ) {
-	// Inheritance
+	// Parent constructor
 	ve.Document.call( this, documentNode );
 };
 
-ve.extendClass( ve.DocumentStub, ve.Document );
+ve.inheritClass( ve.DocumentStub, ve.Document );
 
 /* Tests */
 

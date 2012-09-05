@@ -10,14 +10,16 @@
  *
  * @class
  * @constructor
+ * @extends {ve.EventEmitter}
  * @param {ve.ui.Toolbar} toolbar
- * @param {String} name
+ * @param {ve.ui.Context} context
  */
-ve.ui.Inspector = function ( toolbar, context ) {
+ve.ui.Inspector = function ve_ui_Inspector( toolbar, context ) {
 	var inspector = this;
 
 	// Inheritance
 	ve.EventEmitter.call( this );
+
 	if ( !toolbar || !context ) {
 		return;
 	}
@@ -55,6 +57,10 @@ ve.ui.Inspector = function ( toolbar, context ) {
 		'keydown': ve.bind( this.onKeyDown, this )
 	} );
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.ui.Inspector, ve.EventEmitter );
 
 /* Methods */
 
@@ -95,7 +101,3 @@ ve.ui.Inspector.prototype.close = function ( accept ) {
 	}
 	this.emit( 'close' );
 };
-
-/* Inheritance */
-
-ve.extendClass( ve.ui.Inspector, ve.EventEmitter );

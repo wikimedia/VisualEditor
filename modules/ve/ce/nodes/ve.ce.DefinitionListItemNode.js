@@ -13,8 +13,8 @@
  * @extends {ve.ce.BranchNode}
  * @param model {ve.dm.DefinitionListItemNode} Model to observe
  */
-ve.ce.DefinitionListItemNode = function ( model ) {
-	// Inheritance
+ve.ce.DefinitionListItemNode = function ve_ce_DefinitionListItemNode( model ) {
+	// Parent constructor
 	ve.ce.BranchNode.call(
 		this, 'definitionListItem', model, ve.ce.BranchNode.getDomWrapper( model, 'style' )
 	);
@@ -22,6 +22,10 @@ ve.ce.DefinitionListItemNode = function ( model ) {
 	// Events
 	this.model.addListenerMethod( this, 'update', 'onUpdate' );
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.ce.DefinitionListItemNode, ve.ce.BranchNode );
 
 /* Static Members */
 
@@ -63,7 +67,3 @@ ve.ce.DefinitionListItemNode.prototype.onUpdate = function () {
 /* Registration */
 
 ve.ce.nodeFactory.register( 'definitionListItem', ve.ce.DefinitionListItemNode );
-
-/* Inheritance */
-
-ve.extendClass( ve.ce.DefinitionListItemNode, ve.ce.BranchNode );

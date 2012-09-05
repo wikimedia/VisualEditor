@@ -13,12 +13,16 @@
  * @extends {ve.ce.BranchNode}
  * @param model {ve.dm.CenterNode} Model to observe
  */
-ve.ce.CenterNode = function ( model ) {
-	// Inheritance
+ve.ce.CenterNode = function ve_ce_CenterNode( model ) {
+	// Parent constructor
 	ve.ce.BranchNode.call(
 		this, 'center', model, $( '<center>')
 	);
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.ce.CenterNode, ve.ce.BranchNode );
 
 /* Static Members */
 
@@ -36,7 +40,3 @@ ve.ce.CenterNode.rules = {
 /* Registration */
 
 ve.ce.nodeFactory.register( 'center', ve.ce.CenterNode );
-
-/* Inheritance */
-
-ve.extendClass( ve.ce.CenterNode, ve.ce.BranchNode );

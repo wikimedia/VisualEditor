@@ -15,10 +15,15 @@
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  * @param {Object} [internal] Reference to internal data object
  */
-ve.dm.TableRowNode = function ( children, attributes, internal ) {
-	// Inheritance
+ve.dm.TableRowNode = function ve_dm_TableRowNode( children, attributes, internal ) {
+	// Parent constructor
 	ve.dm.BranchNode.call( this, 'tableRow', children, attributes, internal );
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.dm.TableRowNode, ve.dm.BranchNode );
+
 
 /* Static Members */
 
@@ -57,7 +62,3 @@ ve.dm.TableRowNode.converters = {
 /* Registration */
 
 ve.dm.nodeFactory.register( 'tableRow', ve.dm.TableRowNode );
-
-/* Inheritance */
-
-ve.extendClass( ve.dm.TableRowNode, ve.dm.BranchNode );

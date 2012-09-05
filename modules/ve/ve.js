@@ -20,40 +20,139 @@
 	hasOwn = Object.prototype.hasOwnProperty;
 
 	/**
-	 * Extends a constructor with the prototype of another.
+	 * Create an object that inherits from another object.
 	 *
-	 * When using this, it's required to include a call to the constructor of the parent class as the
-	 * first code in the child class's constructor.
+	 * @until ES5: Object.create.
+	 * @source https://github.com/Krinkle/K-js.
+	 * @param {Object} origin Object to inherit from.
+	 * @return {Object} Empty object that inherits from origin.
+	 */
+	ve.createObject =  Object.hasOwnProperty( 'create' ) ? Object.create : function ( origin ) {
+		function O() {}
+		O.prototype = origin;
+		var r = new O();
+
+		return r;
+	};
+
+	/**
+	 * Utility for common usage of ve.createObject for inheriting from one
+	 * prototype to another.
+	 *
+	 * Beware: This redefines the prototype, call before setting your prototypes.
+	 * Beware: This redefines the prototype, can only be called once on a function.
+	 *  If called multiple times on the same function, the previous prototype is lost.
+	 *  This is how prototypal inheritance works, it can only be one straight chain
+	 *  (just like classical inheritance in PHP for example). If you need to work with
+	 *  multiple constructors consider storing an instance of the other constructor in a
+	 *  property instead, or perhaps use a mixin (see ve.mixinClass).
 	 *
 	 * @example
-	 *     // Define parent class
-	 *     function Foo() {
-	 *         // code here
-	 *     }
-	 *     // Define child class
-	 *     function Bar() {
-	 *         // Call parent constructor
-	 *         Foo.call( this );
-	 *     }
-	 *     // Extend prototype
-	 *     ve.extendClass( Bar, Foo );
+	 * <code>
+	 *     function Foo() {}
+	 *     Foo.prototype.jump = function () {};
 	 *
-	 * @static
-	 * @method
-	 * @param {Function} dst Class to extend
-	 * @param {Function} [..] List of base classed to use methods from
+	 *     function FooBar() {}
+	 *     ve.inheritClass( FooBar, Foo );
+	 *     FooBar.prototype.walk = function () {};
+	 *
+	 *     var fb = new FooBar();
+	 *     fb.jump();
+	 *     fb.walk();
+	 *     fb instanceof Foo && fb instanceof FooBar;
+	 * </code>
+	 *
+	 * @source https://github.com/Krinkle/K-js.
+	 * @param {Function} targetFn
+	 * @param {Function} originFn
 	 */
-	ve.extendClass = function ( dst ) {
-		var i, method, base,
-			length = arguments.length;
-		for ( i = 1; i < length; i++ ) {
-			base = arguments[i].prototype;
-			for ( method in base ) {
-				if ( typeof base[method] === 'function' && !( method in dst.prototype ) ) {
-					dst.prototype[method] = base[method];
-				}
+	ve.inheritClass = function ( targetFn, originFn ) {
+		var tmp = targetFn.prototype.constructor;
+
+		targetFn.prototype = ve.createObject( originFn.prototype );
+
+		// Restore original constructor property
+		targetFn.prototype.constructor = tmp;
+	};
+
+	/**
+	 * Utility to copy over *own* prototype properties of a mixin.
+	 * The 'constructor' (whether implicit or explicit) is not copied over.
+	 *
+	 * This does not create inheritance to the origin. If inheritance is needed
+	 * use ve.inheritClass instead.
+	 *
+	 * Beware: This can redefine a prototype property, call before setting your prototypes.
+	 * Beware: Don't call before ve.inheritClass.
+	 *
+	 * @example
+	 * <code>
+	 *     function Foo() {}
+	 *     function Context() {}
+	 *
+	 *     // Avoid repeating this code
+	 *     function ContextLazyLoad() {}
+	 *     ContextLazyLoad.prototype.getContext = function () {
+	 *         if ( !this.context ) {
+	 *             this.context = new Context();
+	 *         }
+	 *         return this.context;
+	 *     };
+	 *
+	 *     function FooBar() {}
+	 *     ve.inheritClass( FooBar, Foo );
+	 *     ve.mixinClass( FooBar, ContextLazyLoad );
+	 * </code>
+	 *
+	 * @source https://github.com/Krinkle/K-js.
+	 * @param {Function} targetFn
+	 * @param {Function} originFn
+	 */
+	ve.mixinClass = function ( targetFn, originFn ) {
+		for ( var key in originFn.prototype ) {
+			if ( key !== 'constructor' && hasOwn.call( originFn.prototype, key ) ) {
+				targetFn.prototype[key] = originFn.prototype[key];
 			}
 		}
+	};
+
+	/**
+	 * Create a new object that is an instance of the same
+	 * constructor as the input, inherits from the same object
+	 * and contains the same own properties.
+	 *
+	 * This makes a shallow non-recursive copy of own properties.
+	 * To create a recursive copy of plain objects, use ve.copyObject.
+	 *
+	 * @example
+	 * <code>
+	 * var foo = new Person( mom, dad );
+	 * foo.setAge( 21 );
+	 * var foo2 = ve.cloneObject( foo );
+	 * foo.setAge( 22 );
+	 * // Then
+	 * foo2 !== foo; // true
+	 * foo2 instanceof Person; // true
+	 * foo2.getAge(); // 21
+	 * foo.getAge(); // 22
+	 * </code>
+	 *
+	 * @source https://github.com/Krinkle/K-js.
+	 * @param {Object} origin
+	 * @return {Object} Clone of origin.
+	 */
+	ve.cloneObject = function ( origin ) {
+		var key, r;
+
+		r = ve.createObject( origin.constructor.prototype );
+
+		for ( key in origin ) {
+			if ( hasOwn.call( origin, key ) ) {
+				r[key] = origin[key];
+			}
+		}
+
+		return r;
 	};
 
 	ve.isPlainObject = $.isPlainObject;
@@ -97,7 +196,7 @@
 	 * @until ES5
 	 * @param {Mixed} value Element to search for.
 	 * @param {Array} array Array to search in.
-	 * @param {Integer} [fromIndex=0] Index to being searching from.
+	 * @param {Number} [fromIndex=0] Index to being searching from.
 	 * @return {Number} Index of value in array, or -1 if not found.
 	 * Values are compared without type coersion.
 	 */

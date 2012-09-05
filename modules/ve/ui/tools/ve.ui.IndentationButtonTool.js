@@ -13,11 +13,19 @@
  * @extends {ve.ui.ButtonTool}
  * @param {ve.ui.Toolbar} toolbar
  * @param {String} name
+ * @param title
+ * @param data
  */
- ve.ui.IndentationButtonTool = function ( toolbar, name, title, data ) {
+ve.ui.IndentationButtonTool = function ve_ui_IndentationButtonTool( toolbar, name, title, data ) {
+	// Parent constructor
 	ve.ui.ButtonTool.call( this, toolbar, name, title );
+
 	this.data = data;
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.ui.IndentationButtonTool, ve.ui.ButtonTool );
 
 /* Methods */
 
@@ -279,8 +287,3 @@ ve.ui.Tool.tools.outdent = {
 	'name': 'outdent',
 	'title': ve.msg( 'visualeditor-indentationbutton-outdent-tooltip' )
 };
-
-
-/* Inheritance */
-
-ve.extendClass( ve.ui.IndentationButtonTool, ve.ui.ButtonTool );

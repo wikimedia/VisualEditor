@@ -6,17 +6,17 @@
  */
 
 /**
- * Creates an ve.FormatDropdownTool object.
+ * Creates an ve.ui.FormatDropdownTool object.
  *
  * @class
  * @constructor
  * @extends {ve.ui.DropdownTool}
  * @param {ve.ui.Toolbar} toolbar
  * @param {String} name
- * @param {Object[]} items
+ * @param title
  */
-ve.FormatDropdownTool = function ( toolbar, name, title ) {
-	// Inheritance
+ve.ui.FormatDropdownTool = function ve_ui_FormatDropdownTool( toolbar, name, title ) {
+	// Parent constructor
 	ve.ui.DropdownTool.call( this, toolbar, name, title, [
 		{
 			'name': 'paragraph',
@@ -67,9 +67,13 @@ ve.FormatDropdownTool = function ( toolbar, name, title ) {
 	] );
 };
 
+/* Inheritance */
+
+ve.inheritClass( ve.ui.FormatDropdownTool, ve.ui.DropdownTool );
+
 /* Methods */
 
-ve.FormatDropdownTool.splitAndUnwrap = function ( model, list, firstItem, lastItem, selection ) {
+ve.ui.FormatDropdownTool.splitAndUnwrap = function ( model, list, firstItem, lastItem, selection ) {
 	var doc = model.getDocument(),
 		start = firstItem.getOuterRange().start,
 		end = lastItem.getOuterRange().end,
@@ -101,7 +105,7 @@ ve.FormatDropdownTool.splitAndUnwrap = function ( model, list, firstItem, lastIt
 	return selection;
 };
 
-ve.FormatDropdownTool.prototype.onSelect = function ( item ) {
+ve.ui.FormatDropdownTool.prototype.onSelect = function ( item ) {
 	var selected, prevList, firstInList, lastInList, i, contentBranch, listItem, txs,
 		surfaceView = this.toolbar.getSurfaceView(),
 		model = surfaceView.getModel(),
@@ -124,7 +128,7 @@ ve.FormatDropdownTool.prototype.onSelect = function ( item ) {
 				// Not in a list or in a different list
 				if ( prevList ) {
 					// Split and unwrap prevList
-					selection = ve.FormatDropdownTool.splitAndUnwrap(
+					selection = ve.ui.FormatDropdownTool.splitAndUnwrap(
 						model, prevList, firstInList, lastInList, selection
 					);
 				}
@@ -140,7 +144,7 @@ ve.FormatDropdownTool.prototype.onSelect = function ( item ) {
 		}
 		if ( prevList ) {
 			// Split and unwrap prevList
-			selection = ve.FormatDropdownTool.splitAndUnwrap(
+			selection = ve.ui.FormatDropdownTool.splitAndUnwrap(
 				model, prevList, firstInList, lastInList, selection
 			);
 		}
@@ -155,7 +159,7 @@ ve.FormatDropdownTool.prototype.onSelect = function ( item ) {
 	surfaceView.showSelection( selection );
 };
 
-ve.FormatDropdownTool.prototype.getMatchingMenuItems = function ( nodes ) {
+ve.ui.FormatDropdownTool.prototype.getMatchingMenuItems = function ( nodes ) {
 	var i, j, nodeType, nodeAttributes, item, key,
 		matches = [],
 		items = this.menuView.getItems();
@@ -192,7 +196,7 @@ ve.FormatDropdownTool.prototype.getMatchingMenuItems = function ( nodes ) {
 	return matches;
 };
 
-ve.FormatDropdownTool.prototype.updateState = function ( annotations, nodes ) {
+ve.ui.FormatDropdownTool.prototype.updateState = function ( annotations, nodes ) {
 	if ( nodes.length ) {
 		var items = this.getMatchingMenuItems( nodes );
 		if ( items.length === 1 ) {
@@ -206,11 +210,7 @@ ve.FormatDropdownTool.prototype.updateState = function ( annotations, nodes ) {
 /* Registration */
 
 ve.ui.Tool.tools.format = {
-	'constructor': ve.FormatDropdownTool,
+	'constructor': ve.ui.FormatDropdownTool,
 	'name': 'format',
 	'title': ve.msg( 'visualeditor-formatdropdown-title' )
 };
-
-/* Inheritance */
-
-ve.extendClass( ve.FormatDropdownTool, ve.ui.DropdownTool );

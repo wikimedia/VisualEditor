@@ -9,7 +9,7 @@ QUnit.module( 've.dm.NodeFactory' );
 
 /* Stubs */
 
-ve.dm.NodeFactoryNodeStub = function ( a, b ) {
+ve.dm.NodeFactoryNodeStub = function ve_dm_NodeFactoryNodeStub( a, b ) {
 	this.a = a;
 	this.b = b;
 };

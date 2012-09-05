@@ -10,14 +10,14 @@
  *
  * @class
  * @constructor
- * @param from {Integer} Starting offset
- * @param [to=from] {Integer} Ending offset
- * @property from {Integer} Starting offset
- * @property to {Integer} Ending offset
- * @property start {Integer} Normalized starting offset
- * @property end {Integer} Normalized ending offset
+ * @param from {Number} Starting offset
+ * @param [to=from] {Number} Ending offset
+ * @property from {Number} Starting offset
+ * @property to {Number} Ending offset
+ * @property start {Number} Normalized starting offset
+ * @property end {Number} Normalized ending offset
  */
-ve.Range = function ( from, to ) {
+ve.Range = function veRange( from, to ) {
 	this.from = from || 0;
 	this.to = typeof to === 'undefined' ? this.from : to;
 	this.normalize();
@@ -28,7 +28,7 @@ ve.Range = function ( from, to ) {
  *
  * @method
  * @param {ve.Range} range Range to base new range on
- * @param {Integer} distance Distance to move range by
+ * @param {Number} distance Distance to move range by
  * @returns {ve.Range} New translated range
  */
 ve.Range.newFromTranslatedRange = function ( range, distance ) {
@@ -76,7 +76,7 @@ ve.Range.prototype.clone = function () {
  * Checks if an offset is within this range.
  *
  * @method
- * @param offset {Integer} Offset to check
+ * @param offset {Number} Offset to check
  * @returns {Boolean} If offset is within this range
  */
 ve.Range.prototype.containsOffset = function ( offset ) {
@@ -88,7 +88,7 @@ ve.Range.prototype.containsOffset = function ( offset ) {
  * Gets the length of the range.
  *
  * @method
- * @returns {Integer} Length of range
+ * @returns {Number} Length of range
  */
 ve.Range.prototype.getLength = function () {
 	return Math.abs( this.from - this.to );

@@ -11,14 +11,18 @@
  * @class
  * @constructor
  * @extends {ve.dm.LeafNode}
- * @param {Integer} [length] Length of content data in document
+ * @param {Number} [length] Length of content data in document
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  * @param {Object} [internal] Reference to internal data object
  */
-ve.dm.BreakNode = function ( length, attributes, internal ) {
-	// Inheritance
+ve.dm.BreakNode = function ve_dm_BreakNode( length, attributes, internal ) {
+	// Parent constructor
 	ve.dm.LeafNode.call( this, 'break', 0, attributes, internal );
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.dm.BreakNode, ve.dm.LeafNode );
 
 /* Static Members */
 
@@ -57,7 +61,3 @@ ve.dm.BreakNode.converters = {
 /* Registration */
 
 ve.dm.nodeFactory.register( 'break', ve.dm.BreakNode );
-
-/* Inheritance */
-
-ve.extendClass( ve.dm.BreakNode, ve.dm.LeafNode );

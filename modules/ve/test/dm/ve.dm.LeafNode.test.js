@@ -9,10 +9,12 @@ QUnit.module( 've.dm.LeafNode' );
 
 /* Stubs */
 
-ve.dm.LeafNodeStub = function () {
-	// Inheritance
+ve.dm.LeafNodeStub = function ve_dm_LeafNodeStub() {
+	// Parent constructor
 	ve.dm.LeafNode.call( this, 'leaf-stub' );
 };
+
+ve.inheritClass( ve.dm.LeafNodeStub, ve.dm.LeafNode );
 
 ve.dm.LeafNodeStub.rules = {
 	'isWrapped': true,
@@ -22,9 +24,6 @@ ve.dm.LeafNodeStub.rules = {
 };
 
 ve.dm.LeafNodeStub.converters = null;
-
-ve.extendClass( ve.dm.LeafNodeStub, ve.dm.LeafNode );
-
 ve.dm.nodeFactory.register( 'leaf-stub', ve.dm.LeafNodeStub );
 
 /* Tests */

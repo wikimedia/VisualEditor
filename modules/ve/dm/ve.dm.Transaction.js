@@ -11,7 +11,7 @@
  * @class
  * @constructor
  */
-ve.dm.Transaction = function () {
+ve.dm.Transaction = function ve_dm_Transaction() {
 	this.operations = [];
 	this.lengthDifference = 0;
 };
@@ -24,7 +24,7 @@ ve.dm.Transaction = function () {
  * @static
  * @method
  * @param {ve.dm.Document} doc Document to create transaction for
- * @param {Integer} offset Offset to insert at
+ * @param {Number} offset Offset to insert at
  * @param {Array} data Data to insert
  * @returns {ve.dm.Transaction} Transcation that inserts data
  */
@@ -157,7 +157,7 @@ ve.dm.Transaction.newFromRemoval = function ( doc, range ) {
  * @static
  * @method
  * @param {ve.dm.Document} doc Document to create transaction for
- * @param {Integer} offset Offset of element
+ * @param {Number} offset Offset of element
  * @param {String} key Attribute name
  * @param {Mixed} value New value, or undefined to remove the attribute
  * @returns {ve.dm.Transaction} Transcation that changes an element
@@ -477,7 +477,7 @@ ve.dm.Transaction.prototype.getOperations = function () {
  * Gets the difference in content length this transaction will cause if applied.
  *
  * @method
- * @returns {Integer} Difference in content length
+ * @returns {Number} Difference in content length
  */
 ve.dm.Transaction.prototype.getLengthDifference = function () {
 	return this.lengthDifference;
@@ -536,7 +536,7 @@ ve.dm.Transaction.prototype.translateRange = function ( range ) {
  * Adds a retain operation.
  *
  * @method
- * @param {Integer} length Length of content data to retain
+ * @param {Number} length Length of content data to retain
  * @throws 'Invalid retain length, can not retain backwards: {length}'
  */
 ve.dm.Transaction.prototype.pushRetain = function ( length ) {

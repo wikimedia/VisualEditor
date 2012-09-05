@@ -13,8 +13,8 @@
  * @extends {ve.ce.LeafNode}
  * @param model {ve.dm.AlienInlineNode} Model to observe
  */
-ve.ce.AlienInlineNode = function ( model ) {
-	// Inheritance
+ve.ce.AlienInlineNode = function ve_ce_AlienInlineNode( model ) {
+	// Parent constructor
 	ve.ce.LeafNode.call( this, 'alienInline', model );
 
 	// DOM Changes
@@ -27,6 +27,10 @@ ve.ce.AlienInlineNode = function ( model ) {
 	// Intialization
 	this.onUpdate();
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.ce.AlienInlineNode, ve.ce.LeafNode );
 
 /* Static Members */
 
@@ -50,7 +54,3 @@ ve.ce.AlienInlineNode.prototype.onUpdate = function () {
 /* Registration */
 
 ve.ce.nodeFactory.register( 'alienInline', ve.ce.AlienInlineNode );
-
-/* Inheritance */
-
-ve.extendClass( ve.ce.AlienInlineNode, ve.ce.LeafNode );

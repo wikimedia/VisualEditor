@@ -12,10 +12,12 @@
  *
  * @class
  * @constructor
+ * @extends {ve.EventEmitter}
+ * @param $container {jQuery}
  * @param model {ve.dm.Surface} Model to observe
  */
-ve.ce.Surface = function ( $container, model ) {
-	// Inheritance
+ve.ce.Surface = function ve_ce_Surface( $container, model ) {
+	// Parent constructor
 	ve.EventEmitter.call( this );
 
 	// Properties
@@ -83,6 +85,10 @@ ve.ce.Surface = function ( $container, model ) {
 		'blur': ve.bind( this.documentOnBlur, this )
 	} );
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.ce.Surface, ve.EventEmitter );
 
 /* Methods */
 
@@ -1235,7 +1241,7 @@ ve.ce.Surface.prototype.hasSlugAtOffset = function ( offset ) {
  * The results of this function are meant to be used with rangy.
  *
  * @method
- * @param offset {Integer} Linear model offset
+ * @param offset {Number} Linear model offset
  * @returns {Object} Object containing a node and offset property where node is an HTML element and
  * offset is the position within the element
  */
@@ -1302,8 +1308,8 @@ ve.ce.Surface.prototype.getNodeAndOffset = function ( offset ) {
  *
  * @method
  * @param {DOM Node} domNode DOM node
- * @param {Integer} domOffset DOM offset within the DOM Element
- * @returns {Integer} Linear model offset
+ * @param {Number} domOffset DOM offset within the DOM Element
+ * @returns {Number} Linear model offset
  */
 ve.ce.Surface.prototype.getOffset = function ( domNode, domOffset ) {
 	if ( domNode.nodeType === Node.TEXT_NODE ) {
@@ -1318,8 +1324,8 @@ ve.ce.Surface.prototype.getOffset = function ( domNode, domOffset ) {
  *
  * @method
  * @param {DOM Node} domNode DOM node
- * @param {Integer} domOffset DOM offset within the DOM Element
- * @returns {Integer} Linear model offset
+ * @param {Number} domOffset DOM offset within the DOM Element
+ * @returns {Number} Linear model offset
  */
 ve.ce.Surface.prototype.getOffsetFromTextNode = function ( domNode, domOffset ) {
 	var $node, nodeModel, current, stack, item, offset, $item;
@@ -1378,9 +1384,9 @@ ve.ce.Surface.prototype.getOffsetFromTextNode = function ( domNode, domOffset ) 
  *
  * @method
  * @param {DOM Node} domNode DOM node
- * @param {Integer} domOffset DOM offset within the DOM Element
+ * @param {Number} domOffset DOM offset within the DOM Element
  * @param {Boolean} [addOuterLength] Use outer length, which includes wrappers if any exist
- * @returns {Integer} Linear model offset
+ * @returns {Number} Linear model offset
  */
 ve.ce.Surface.prototype.getOffsetFromElementNode = function ( domNode, domOffset, addOuterLength ) {
 	var $domNode = $( domNode ),
@@ -1514,7 +1520,3 @@ ve.ce.Surface.prototype.getModel = function () {
 ve.ce.Surface.prototype.getDocument = function () {
 	return this.documentView;
 };
-
-/* Inheritance */
-
-ve.extendClass( ve.ce.Surface, ve.EventEmitter );

@@ -12,7 +12,7 @@
  * @constructor
  * @param {Object} options Conversion options
  */
-ve.dm.Converter = function ( nodeFactory, annotationFactory ) {
+ve.dm.Converter = function ve_dm_Converter( nodeFactory, annotationFactory ) {
 	// Properties
 	this.nodeFactory = nodeFactory;
 	this.annotationFactory = annotationFactory;

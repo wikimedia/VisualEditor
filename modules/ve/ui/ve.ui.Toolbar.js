@@ -10,10 +10,16 @@
  *
  * @class
  * @constructor
+ * @extends {ve.EventEmitter}
+ * @param {jQuery} $container
+ * @param {ve.ce.Surface} surfaceView
+ * @param {Array} config
  */
-ve.ui.Toolbar = function ( $container, surfaceView, config ) {
-	// Inheritance TODO: Do we still need it?
+ve.ui.Toolbar = function ve_ui_Toolbar( $container, surfaceView, config ) {
+	// Parent constructor
 	ve.EventEmitter.call( this );
+	// TODO: Do we still need EventEmitter here?
+
 	if ( !surfaceView ) {
 		return;
 	}
@@ -39,6 +45,10 @@ ve.ui.Toolbar = function ( $container, surfaceView, config ) {
 	// Initialization
 	this.setup();
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.ui.Toolbar, ve.EventEmitter );
 
 /* Methods */
 
@@ -137,5 +147,3 @@ ve.ui.Toolbar.prototype.setup = function () {
 	}
 
 };
-
-ve.extendClass( ve.ui.Toolbar, ve.EventEmitter );

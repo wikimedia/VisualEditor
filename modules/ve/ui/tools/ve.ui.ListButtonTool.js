@@ -13,15 +13,21 @@
  * @extends {ve.ui.ButtonTool}
  * @param {ve.ui.Toolbar} toolbar
  * @param {String} name
+ * @param title
+ * @param data
  */
- ve.ui.ListButtonTool = function ( toolbar, name, title, data ) {
-	// Inheritance
+ve.ui.ListButtonTool = function ve_ui_ListButtonTool( toolbar, name, title, data ) {
+	// Parent constructor
 	ve.ui.ButtonTool.call( this, toolbar, name, title );
 
 	// Properties
 	this.data = data;
 	this.nodes = [];
 };
+
+/* Inheritance */
+
+ve.inheritClass( ve.ui.ListButtonTool, ve.ui.ButtonTool );
 
 /* Methods */
 
@@ -219,7 +225,3 @@ ve.ui.Tool.tools.bullet = {
 	'name': 'bullet',
 	'title': ve.msg( 'visualeditor-listbutton-bullet-tooltip' )
 };
-
-/* Inheritance */
-
-ve.extendClass( ve.ui.ListButtonTool, ve.ui.ButtonTool );

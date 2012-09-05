@@ -10,10 +10,10 @@ QUnit.module( 've.LeafNode' );
 /* Stubs */
 
 ve.LeafNodeStub = function () {
-	// Inheritance
+	// Parent constructor
 	ve.LeafNode.call( this );
 };
 
-ve.extendClass( ve.LeafNodeStub, ve.LeafNode );
+ve.inheritClass( ve.LeafNodeStub, ve.LeafNode );
 
 /* Tests */
