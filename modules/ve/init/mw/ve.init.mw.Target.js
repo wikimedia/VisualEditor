@@ -23,7 +23,12 @@ ve.init.mw.Target = function ( pageName, oldId ) {
 	this.oldId = oldId;
 	this.editToken = mw.user.tokens.get( 'editToken' );
 	this.apiUrl = mw.util.wikiScript( 'api' );
-	this.modules = ['ext.visualEditor.core', 'ext.visualEditor.specialMessages'];
+	this.modules = ['ext.visualEditor.core', 'ext.visualEditor.specialMessages']
+		.concat(
+			window.devicePixelRatio > 1 ?
+				['ext.visualEditor.viewPageTarget.icons-vector', 'ext.visualEditor.icons-vector'] :
+				['ext.visualEditor.viewPageTarget.icons-raster', 'ext.visualEditor.icons-raster']
+		);
 	this.loading = false;
 	this.saving = false;
 	this.dom = null;
