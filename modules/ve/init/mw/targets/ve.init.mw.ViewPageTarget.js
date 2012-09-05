@@ -764,7 +764,7 @@ ve.init.mw.ViewPageTarget.prototype.showPageContent = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.mutePageContent = function () {
-	$( '#bodyContent > :visible:not(#siteSub,#contentSub)' )
+	$( '#bodyContent > :visible:not(#siteSub, #contentSub)' )
 		.addClass( 've-init-mw-viewPageTarget-content' )
 		.fadeTo( 'fast', 0.6 );
 };
@@ -775,7 +775,7 @@ ve.init.mw.ViewPageTarget.prototype.mutePageContent = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.hidePageContent = function () {
-	$( '#bodyContent > :visible:not(#siteSub,#contentSub)' )
+	$( '#bodyContent > :visible:not(#siteSub, #contentSub)' )
 		.addClass( 've-init-mw-viewPageTarget-content' )
 		.hide();
 };
@@ -786,9 +786,13 @@ ve.init.mw.ViewPageTarget.prototype.hidePageContent = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.showTableOfContents = function () {
-	$( '#toc' ).slideDown( 'fast', function () {
-		$(this).removeClass( 've-init-mw-viewPageTarget-pageToc' );
-	} );
+	var $toc = $( '#toc' ),
+		$wrap = $toc.parent();
+	if ( $wrap.data( 've.hideTableOfContents' ) ) {
+		$wrap.slideDown(function () {
+			$toc.unwrap();
+		});
+	}
 };
 
 /**
@@ -797,7 +801,11 @@ ve.init.mw.ViewPageTarget.prototype.showTableOfContents = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.hideTableOfContents = function () {
-	$( '#toc' ).addClass( 've-init-mw-viewPageTarget-pageToc' ).slideUp( 'fast' );
+	$( '#toc' )
+		.wrap( '<div>' )
+		.parent()
+			.data( 've.hideTableOfContents', true )
+			.slideUp();
 };
 
 /**

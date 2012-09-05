@@ -19,11 +19,6 @@
 	cursor: default;
 }
 
-.ve-init-mw-viewPageTarget-pageToc {
-	display: inline-block;
-	overflow: hidden;
-}
-
 .ve-init-mw-viewPageTarget-loadingSpinner,
 .ve-init-mw-viewPageTarget-saveDialog-saving {
 	/* @embed */
