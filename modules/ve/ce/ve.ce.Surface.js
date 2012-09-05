@@ -666,37 +666,30 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 		lengthDiff = next.text.length - previous.text.length,
 		fromLeft = 0,
 		fromRight = 0,
-		isSomethingFishy = function () {
-			if ( lengthDiff > 0 ) {
+		somethingIsFishy = !(
+			(
 				// Adding text
-				if (
-					previous.text.substring( 0, previous.range.start - nodeOffset - lengthDiff ) ===
+				lengthDiff > 0 &&
+				// Leading and trailing chars are the same
+				previous.text.substring( 0, previous.range.start - nodeOffset - lengthDiff ) ===
 					next.text.substring( 0, previous.range.start - nodeOffset - lengthDiff ) &&
-					previous.text.substring( previous.range.start - nodeOffset + lengthDiff) ===
-					next.text.substring( next.range.start - nodeOffset + lengthDiff)
-				) {
-					// Leading and trailing chars are the same
-					return false;
-				}
-			} else if ( lengthDiff < 0) {
+				previous.text.substring( previous.range.start - nodeOffset + lengthDiff ) ===
+					next.text.substring( next.range.start - nodeOffset + lengthDiff )
+			) ||
+			(
 				// Removing text
-				if (
-					previous.text.substring( 0, next.range.start - nodeOffset -1 ) ===
+				lengthDiff < 0 &&
+				// Leading and trailing chars are the same
+				previous.text.substring( 0, next.range.start - nodeOffset -1 ) ===
 					next.text.substring( 0, next.range.start - nodeOffset - 1 ) &&
-					previous.text.substring( next.range.start - nodeOffset - lengthDiff - 1 ) ===
-					next.text.substring( next.range.start - nodeOffset - 1)
-				) {
-					// Leading and trailing chars are the same
-					return false;
-				}
-			}
-			return true;
-		};
-
+				previous.text.substring( next.range.start - nodeOffset - lengthDiff - 1 ) ===
+					next.text.substring( next.range.start - nodeOffset - 1 )
+			)
+		);
 	if (
 		lengthDiff > 0 &&
 		offsetDiff === lengthDiff &&
-		!isSomethingFishy()
+		!somethingIsFishy
 	) {
 		// Something simple was added, figure out what it is and transact.
 		ve.log('simple addition');
@@ -723,7 +716,7 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 
 	} else if (
 		( offsetDiff === 0 || offsetDiff === lengthDiff ) &&
-		!isSomethingFishy()
+		!somethingIsFishy
 	) {
 		// Something simple was removed
 		ve.log('simple deletion');
