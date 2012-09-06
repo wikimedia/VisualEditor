@@ -601,39 +601,43 @@ ve.init.mw.ViewPageTarget.prototype.detachToolbarSaveButton = function () {
  */
 ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 	var viewPage = this;
-	this.$saveDialog
+	viewPage.$saveDialog
 		.html( ve.init.mw.ViewPageTarget.saveDialogTemplate )
 		.find( '.ve-init-mw-viewPageTarget-saveDialog-title' )
 			.text( ve.msg( 'tooltip-save' ) )
 			.end()
 		.find( '.ve-init-mw-viewPageTarget-saveDialog-closeButton' )
-			.click( ve.bind( this.onSaveDialogCloseButtonClick, this ) )
+			.click( ve.bind( viewPage.onSaveDialogCloseButtonClick, viewPage ) )
 			.end()
 		.find( '#ve-init-mw-viewPageTarget-saveDialog-editSummary' )
 			.attr( {
-				'maxlength': this.editSummaryByteLimit,
 				'placeholder': ve.msg( 'visualeditor-editsummary' )
 			} )
 			.placeholder()
 			.on( 'keydown', function ( e ) {
 				if ( e.which === 13 ) {
+					// TODO: Hijacking Enter in a textarea is bad (bug 39558)
 					viewPage.onSaveDialogSaveButtonClick();
 				}
 			} )
+			.byteLimit( viewPage.editSummaryByteLimit )
 			.on( 'keydown mouseup cut paste change focus blur', function () {
 				var $textarea = $(this),
 					$editSummaryCount = $textarea
 						.closest( '.ve-init-mw-viewPageTarget-saveDialog-body' )
 							.find( '.ve-init-mw-viewPageTarget-saveDialog-editSummaryCount' );
+				// TODO: This looks a bit weird, there is no unit in the UI, just numbers
+				// Users likely assume characters but then it seems to count down quicker
+				// than expected. Facing users with the word "byte" is bad? (bug 40035)
 				setTimeout( function () {
 					$editSummaryCount.text(
-						viewPage.editSummaryByteLimit - $textarea.val().length
+						viewPage.editSummaryByteLimit - $.byteLength( $textarea.val() )
 					);
 				}, 0 );
 			} )
 			.end()
 		.find( '.ve-init-mw-viewPageTarget-saveDialog-editSummaryCount' )
-			.text( this.editSummaryByteLimit )
+			.text( viewPage.editSummaryByteLimit )
 			.end()
 		.find( '.ve-init-mw-viewPageTarget-saveDialog-minorEdit-label' )
 			.text( ve.msg( 'minoredit' ) )
@@ -649,7 +653,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 				'mouseleave mouseup': function () {
 					$(this).removeClass( 've-init-mw-viewPageTarget-saveDialog-saveButton-down' );
 				},
-				'click': ve.bind( this.onSaveDialogSaveButtonClick, this )
+				'click': ve.bind( viewPage.onSaveDialogSaveButtonClick, viewPage )
 			} )
 			.end()
 		.find( '.ve-init-mw-viewPageTarget-saveDialog-saveButton-label' )
@@ -667,20 +671,20 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 				used on this site.\
 				<b>DO NOT SUBMIT COPYRIGHTED WORK WITHOUT PERMISSION!</b>'
 			);
-	this.$saveDialogSaveButton = this.$saveDialog
+	viewPage.$saveDialogSaveButton = viewPage.$saveDialog
 		.find( '.ve-init-mw-viewPageTarget-saveDialog-saveButton' );
-	this.$saveDialogLoadingIcon = this.$saveDialog
+	viewPage.$saveDialogLoadingIcon = viewPage.$saveDialog
 		.find( '.ve-init-mw-viewPageTarget-saveDialog-saving' );
 	// Hook onto the 'watch' event on by mediawiki.page.watch.ajax.js
 	// Triggered when mw.page.watch.updateWatchLink(link, action) is called
 	$( '#ca-watch, #ca-unwatch' )
 		.on(
 			'watchpage.mw',
-			ve.bind( function ( e, action ) {
-				this.$saveDialog
-					.find( '#ve-init-mw-viewPageTarget-saveDialog-watchList')
-					.prop( 'checked', ( action === 'watch') );
-			}, this )
+			function ( e, action ) {
+				viewPage.$saveDialog
+					.find( '#ve-init-mw-viewPageTarget-saveDialog-watchList' )
+					.prop( 'checked', ( action === 'watch' ) );
+			}
 		);
 };
 

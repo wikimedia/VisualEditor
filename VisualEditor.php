@@ -101,7 +101,9 @@ $wgResourceModules += array(
 			'mediawiki.Uri',
 			'mediawiki.Title',
 			'jquery.placeholder',
-			'jquery.client'
+			'jquery.client',
+			'jquery.byteLimit',
+			'jquery.byteLength'
 		),
 		'messages' => array(
 			'minoredit',
