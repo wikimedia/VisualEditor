@@ -1,0 +1,19 @@
+.ve-ui-inspector-clearButton {
+	/* @embed */
+	background-image: url(images/icons/clear.png);
+}
+
+.ve-ui-linkInspector-location {
+	/* @embed */
+	background-image: url(images/icons/down.png);
+}
+
+.ve-ui-inspector-closeButton {
+	/* @embed */
+	background-image: url(images/icons/close.png);
+}
+
+.ve-ui-inspector-acceptButton {
+	/* @embed */
+	background-image: url(images/icons/accept.png);
+}

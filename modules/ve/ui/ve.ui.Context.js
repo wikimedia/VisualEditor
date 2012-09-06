@@ -54,7 +54,8 @@ ve.ui.Context = function ( surfaceView, $overlay ) {
 /* Methods */
 
 ve.ui.Context.prototype.setupInspectorSpace = function () {
-	var $styleLink;
+	var $styleLink,
+		$iconLink;
 
 	// Inspector container
 	this.$inspectors = $( '<div class="ve-ui-context-inspectors"></div>' );
@@ -87,9 +88,22 @@ ve.ui.Context.prototype.setupInspectorSpace = function () {
 				'media': 'screen',
 				'href': ve.init.platform.getModulesUrl() + '/ve/ui/styles/ve.ui.Inspector.css'
 			} );
+	// Create vector or raster icon style element.
+	$iconLink =
+		$( '<link>', this.inspectorDoc )
+			.attr( {
+				'rel': 'stylesheet',
+				'type': 'text/css',
+				'media': 'screen',
+				'href': ve.init.platform.getModulesUrl() +
+						( window.devicePixelRatio > 1 ? '/ve/ui/styles/ve.ui.Icons-vector.css' :
+						'/ve/ui/styles/ve.ui.Icons-raster.css' )
+			} );
 
-	// Append style element to head.
-	$( this.inspectorDoc ).find( 'head' ).append( $styleLink );
+	// Append style elements to head.
+	$( this.inspectorDoc ).find( 'head' )
+		.append( $styleLink )
+		.append( $iconLink );
 
 	// Set iframe body styles.
 	$( 'body', this.inspectorDoc ).css( {
