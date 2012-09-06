@@ -13,7 +13,7 @@
  * @extends {ve.ce.BranchNode}
  * @param model {ve.dm.ParagraphNode} Model to observe
  */
-ve.ce.ParagraphNode = function ve_ce_ParagraphNode( model ) {
+ve.ce.ParagraphNode = function VeCeParagraphNode( model ) {
 	// Parent constructor
 	ve.ce.BranchNode.call( this, 'paragraph', model, $( '<p>' ) );
 };

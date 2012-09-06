@@ -14,7 +14,7 @@
  * @extends {ve.EventEmitter}
  * @param {String} type Symbolic name of node type
  */
-ve.Node = function ve_Node( type ) {
+ve.Node = function VeNode( type ) {
 	// Parent constructor
 	ve.EventEmitter.call( this );
 

@@ -15,7 +15,7 @@
  * @param {String} name
  * @param title
  */
-ve.ui.ClearButtonTool = function ve_ui_ClearButtonTool( toolbar, name, title ) {
+ve.ui.ClearButtonTool = function VeUiClearButtonTool( toolbar, name, title ) {
 	// Parent constructor
 	ve.ui.ButtonTool.call( this, toolbar, name, title );
 

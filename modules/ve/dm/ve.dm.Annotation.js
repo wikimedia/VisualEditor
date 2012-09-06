@@ -11,5 +11,5 @@
  * @class
  * @constructor
  */
-ve.dm.Annotation = function ve_dm_Annotation() {
+ve.dm.Annotation = function VeDmAnnotation() {
 };

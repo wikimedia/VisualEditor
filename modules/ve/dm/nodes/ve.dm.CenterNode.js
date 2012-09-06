@@ -15,7 +15,7 @@
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  * @param {Object} [internal] Reference to internal data object
  */
-ve.dm.CenterNode = function ve_dm_CenterNode( children, attributes, internal ) {
+ve.dm.CenterNode = function VeDmCenterNode( children, attributes, internal ) {
 	// Parent constructor
 	ve.dm.BranchNode.call( this, 'center', children, attributes, internal );
 };

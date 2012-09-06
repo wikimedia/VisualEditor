@@ -13,7 +13,7 @@
  * @extends {ve.ce.BranchNode}
  * @param model {ve.dm.DocumentNode} Model to observe
  */
-ve.ce.DocumentNode = function ve_ce_DocumentNode( model, surface ) {
+ve.ce.DocumentNode = function VeCeDocumentNode( model, surface ) {
 	// Parent constructor
 	ve.ce.BranchNode.call( this, 'document', model );
 

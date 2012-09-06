@@ -15,7 +15,7 @@
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  * @param {Object} [internal] Reference to internal data object
  */
-ve.dm.BreakNode = function ve_dm_BreakNode( length, attributes, internal ) {
+ve.dm.BreakNode = function VeDmBreakNode( length, attributes, internal ) {
 	// Parent constructor
 	ve.dm.LeafNode.call( this, 'break', 0, attributes, internal );
 };

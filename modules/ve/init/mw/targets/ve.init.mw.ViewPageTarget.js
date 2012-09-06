@@ -14,7 +14,7 @@
  * @constructor
  * @extends {ve.init.mw.Target}
  */
-ve.init.mw.ViewPageTarget = function ve_init_MwViewPageTarget() {
+ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	var currentUri = new mw.Uri( window.location.toString() );
 
 	// Inheritance

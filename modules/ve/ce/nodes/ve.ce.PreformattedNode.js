@@ -13,7 +13,7 @@
  * @extends {ve.ce.BranchNode}
  * @param model {ve.dm.PreformattedNode} Model to observe
  */
-ve.ce.PreformattedNode = function ve_ce_PreformattedNode( model ) {
+ve.ce.PreformattedNode = function VeCePreformattedNode( model ) {
 	// Parent constructor
 	ve.ce.BranchNode.call( this, 'preformatted', model, $( '<pre>' ) );
 };

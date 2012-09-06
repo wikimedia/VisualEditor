@@ -13,7 +13,7 @@
  * @extends {ve.ce.BranchNode}
  * @param model {ve.dm.CenterNode} Model to observe
  */
-ve.ce.CenterNode = function ve_ce_CenterNode( model ) {
+ve.ce.CenterNode = function VeCeCenterNode( model ) {
 	// Parent constructor
 	ve.ce.BranchNode.call(
 		this, 'center', model, $( '<center>')

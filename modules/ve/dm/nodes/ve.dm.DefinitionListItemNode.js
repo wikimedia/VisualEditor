@@ -15,7 +15,7 @@
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  * @param {Object} [internal] Reference to internal data object
  */
-ve.dm.DefinitionListItemNode = function ve_dm_DefinitionListItemNode( children, attributes, internal ) {
+ve.dm.DefinitionListItemNode = function VeDmDefinitionListItemNode( children, attributes, internal ) {
 	// Parent constructor
 	ve.dm.BranchNode.call( this, 'definitionListItem', children, attributes, internal );
 };

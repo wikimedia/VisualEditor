@@ -15,7 +15,7 @@
  * @param {ve.ce.Surface} surfaceView
  * @param {Array} config
  */
-ve.ui.Toolbar = function ve_ui_Toolbar( $container, surfaceView, config ) {
+ve.ui.Toolbar = function VeUiToolbar( $container, surfaceView, config ) {
 	// Parent constructor
 	ve.EventEmitter.call( this );
 	// TODO: Do we still need EventEmitter here?

@@ -12,7 +12,7 @@
  * @constructor
  * @extends {ve.Factory}
  */
-ve.dm.AnnotationFactory = function ve_dm_AnnotationFactory() {
+ve.dm.AnnotationFactory = function VeDmAnnotationFactory() {
 	// Parent constructor
 	ve.Factory.call( this );
 };

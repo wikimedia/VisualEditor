@@ -9,7 +9,7 @@ QUnit.module( 've.ce.Node' );
 
 /* Stubs */
 
-ve.ce.NodeStub = function ve_ce_NodeStub( model ) {
+ve.ce.NodeStub = function VeCeNodeStub( model ) {
 	// Parent constructor
 	ve.ce.Node.call( this, 'stub', model );
 };

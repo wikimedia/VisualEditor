@@ -13,7 +13,7 @@
  * @param surfaceView
  * @param {jQuery} $overlay DOM selection to add nodes to
  */
-ve.ui.Context = function ve_ui_Context( surfaceView, $overlay ) {
+ve.ui.Context = function VeUiContext( surfaceView, $overlay ) {
 	if ( !surfaceView ) {
 		return;
 	}

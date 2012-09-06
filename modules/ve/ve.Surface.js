@@ -16,7 +16,7 @@
  * @param {HTMLElement} dom HTML element of document to edit
  * @param {Object} options Configuration options
  */
-ve.Surface = function ve_Surface( parent, dom, options ) {
+ve.Surface = function VeSurface( parent, dom, options ) {
 	// Properties
 	this.$ = $( '<div class="ve-surface"></div>' );
 	this.documentModel = new ve.dm.Document( ve.dm.converter.getDataFromDom( dom ) );

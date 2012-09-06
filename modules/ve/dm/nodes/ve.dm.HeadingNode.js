@@ -15,7 +15,7 @@
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  * @param {Object} [internal] Reference to internal data object
  */
-ve.dm.HeadingNode = function ve_dm_HeadingNode( children, attributes, internal ) {
+ve.dm.HeadingNode = function VeDmHeadingNode( children, attributes, internal ) {
 	// Parent constructor
 	ve.dm.BranchNode.call( this, 'heading', children, attributes, internal );
 };

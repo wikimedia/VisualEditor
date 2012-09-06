@@ -12,7 +12,7 @@
  * @abstract
  * @constructor
  */
-ve.LeafNode = function ve_LeafNode() {
+ve.LeafNode = function VeLeafNode() {
 	//
 };
 

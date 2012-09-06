@@ -13,7 +13,7 @@
  * @constructor
  * @extends {ve.EventEmitter}
  */
-ve.Factory = function ve_Factory() {
+ve.Factory = function VeFactory() {
 	// Parent constructor
 	ve.EventEmitter.call( this );
 

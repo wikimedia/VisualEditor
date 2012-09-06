@@ -9,7 +9,7 @@ QUnit.module( 've.ce.BranchNode' );
 
 /* Stubs */
 
-ve.ce.BranchNodeStub = function ve_ce_BranchNodeStub( model, $element ) {
+ve.ce.BranchNodeStub = function VeCeBranchNodeStub( model, $element ) {
 	// Parent constructor
 	ve.ce.BranchNode.call( this, 'branch-stub', model, $element );
 };

@@ -15,7 +15,7 @@
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  * @param {Object} [internal] Reference to internal data object
  */
-ve.dm.AlienBlockNode = function ve_dm_AlienBlockNode( length, attributes, internal ) {
+ve.dm.AlienBlockNode = function VeDmAlienBlockNode( length, attributes, internal ) {
 	// Parent constructor
 	ve.dm.LeafNode.call( this, 'alienBlock', 0, attributes, internal );
 };

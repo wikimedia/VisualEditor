@@ -14,7 +14,7 @@
  * @param {ve.Range} [range] Range within target document, current selection used by default
  * @param {Boolean} [autoSelect] Update the surface's selection when making changes
  */
-ve.dm.SurfaceFragment = function ve_dm_SurfaceFragment( surface, range, autoSelect ) {
+ve.dm.SurfaceFragment = function VeDmSurfaceFragment( surface, range, autoSelect ) {
 	// Short-circuit for missing-surface null fragment
 	if ( !surface ) {
 		return this;

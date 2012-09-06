@@ -16,7 +16,7 @@
  * @param {ve.dm.Node} model Model to observe
  * @param {jQuery} [$element] Element to use as a container
  */
-ve.ce.Node = function ve_ce_Node( type, model, $element ) {
+ve.ce.Node = function VeCeNode( type, model, $element ) {
 	// Parent constructor
 	ve.Node.call( this, type );
 

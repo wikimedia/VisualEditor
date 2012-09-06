@@ -13,7 +13,7 @@
  * @extends {ve.ce.LeafNode}
  * @param model {ve.dm.TextNode} Model to observe
  */
-ve.ce.TextNode = function ve_ce_TextNode( model ) {
+ve.ce.TextNode = function VeCeTextNode( model ) {
 	// Parent constructor
 	ve.ce.LeafNode.call( this, 'text', model, $( document.createTextNode( '' ) ) );
 

@@ -21,7 +21,7 @@
  * @constructor
  * @param {ve.dm.Document} doc Document to synchronize
  */
-ve.dm.DocumentSynchronizer = function ve_dm_DocumentSynchronizer( doc ) {
+ve.dm.DocumentSynchronizer = function VeDmDocumentSynchronizer( doc ) {
 	// Properties
 	this.document = doc;
 	this.actionQueue = [];

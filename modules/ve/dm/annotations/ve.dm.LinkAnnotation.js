@@ -12,7 +12,7 @@
  * @constructor
  * @extends {ve.dm.Annotation}
  */
-ve.dm.LinkAnnotation = function ve_dm_LinkAnnotation() {
+ve.dm.LinkAnnotation = function VeDmLinkAnnotation() {
 	// Parent constructor
 	ve.dm.Annotation.call( this );
 };

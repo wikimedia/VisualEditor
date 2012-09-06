@@ -16,7 +16,7 @@
  * @param $container {jQuery}
  * @param model {ve.dm.Surface} Model to observe
  */
-ve.ce.Surface = function ve_ce_Surface( $container, model ) {
+ve.ce.Surface = function VeCeSurface( $container, model ) {
 	// Parent constructor
 	ve.EventEmitter.call( this );
 

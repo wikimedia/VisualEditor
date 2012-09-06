@@ -13,7 +13,7 @@
  * @extends {ve.EventEmitter}
  * @param {ve.dm.Document} doc Document model to create surface for
  */
-ve.dm.Surface = function ve_dm_Surface( doc ) {
+ve.dm.Surface = function VeDmSurface( doc ) {
 	// Parent constructor
 	ve.EventEmitter.call( this );
 	// Properties

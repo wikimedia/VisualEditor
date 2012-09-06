@@ -13,7 +13,7 @@
  * @constructor
  * @extends {ve.EventEmitter}
  */
-ve.init.Platform = function ve_init_Platform() {
+ve.init.Platform = function VeInitPlatform() {
 	// Parent constructor
 	ve.EventEmitter.call( this );
 };

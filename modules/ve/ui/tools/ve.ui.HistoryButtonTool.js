@@ -16,7 +16,7 @@
  * @param title
  * @param data
  */
-ve.ui.HistoryButtonTool = function ve_ui_HistoryButtonTool( toolbar, name, title, data ) {
+ve.ui.HistoryButtonTool = function VeUiHistoryButtonTool( toolbar, name, title, data ) {
 	// Parent constructor
 	ve.ui.ButtonTool.call( this, toolbar, name, title );
 

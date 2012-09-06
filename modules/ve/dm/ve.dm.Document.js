@@ -21,7 +21,7 @@
  * @param {Array} data Linear model data to start with
  * @param {ve.dm.Document} [parentDocument] Document to use as root for created nodes
  */
-ve.dm.Document = function ve_dm_Document( data, parentDocument ) {
+ve.dm.Document = function VeDmDocument( data, parentDocument ) {
 	// Parent constructor
 	ve.Document.call( this, new ve.dm.DocumentNode() );
 

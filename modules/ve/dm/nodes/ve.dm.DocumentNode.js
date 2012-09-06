@@ -13,7 +13,7 @@
  * @extends {ve.dm.BranchNode}
  * @param {ve.dm.BranchNode[]} [children] Child nodes to attach
  */
-ve.dm.DocumentNode = function ve_dm_DocumentNode( children ) {
+ve.dm.DocumentNode = function VeDmDocumentNode( children ) {
 	// Parent constructor
 	ve.dm.BranchNode.call( this, 'document', children );
 };

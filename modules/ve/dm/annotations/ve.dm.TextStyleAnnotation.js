@@ -12,7 +12,7 @@
  * @constructor
  * @extends {ve.dm.Annotation}
  */
-ve.dm.TextStyleAnnotation = function ve_dm_TextStyleAnnotation() {
+ve.dm.TextStyleAnnotation = function VeDmTextStyleAnnotation() {
 	// Parent constructor
 	ve.dm.Annotation.call( this );
 };

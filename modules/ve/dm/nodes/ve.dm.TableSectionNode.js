@@ -15,7 +15,7 @@
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  * @param {Object} [internal] Reference to internal data object
  */
-ve.dm.TableSectionNode = function ve_dm_TableSectionNode( children, attributes, internal ) {
+ve.dm.TableSectionNode = function VeDmTableSectionNode( children, attributes, internal ) {
 	// Parent constructor
 	ve.dm.BranchNode.call( this, 'tableSection', children, attributes, internal );
 };

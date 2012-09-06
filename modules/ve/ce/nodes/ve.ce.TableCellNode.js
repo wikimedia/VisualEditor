@@ -13,7 +13,7 @@
  * @extends {ve.ce.BranchNode}
  * @param model {ve.dm.TableCellNode} Model to observe
  */
-ve.ce.TableCellNode = function ve_ce_TableCellNode( model ) {
+ve.ce.TableCellNode = function VeCeTableCellNode( model ) {
 	// Parent constructor
 	ve.ce.BranchNode.call(
 		this, 'tableCell', model, ve.ce.BranchNode.getDomWrapper( model, 'style' )

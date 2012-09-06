@@ -9,7 +9,7 @@ QUnit.module( 've.BranchNode' );
 
 /* Stubs */
 
-ve.BranchNodeStub = function ve_BranchNodeStub( children ) {
+ve.BranchNodeStub = function VeBranchNodeStub( children ) {
 	ve.BranchNode.call( this, children );
 };
 

@@ -15,7 +15,7 @@
  * @extends {ve.EventEmitter}
  * @param {String} pageName Name of target page
  */
-ve.init.mw.Target = function ve_init_MwTarget( pageName, oldId ) {
+ve.init.mw.Target = function VeInitMwTarget( pageName, oldId ) {
 	// Parent constructor
 	ve.EventEmitter.call( this );
 

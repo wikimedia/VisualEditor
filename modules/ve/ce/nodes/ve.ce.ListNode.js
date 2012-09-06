@@ -13,7 +13,7 @@
  * @extends {ve.ce.BranchNode}
  * @param model {ve.dm.ListNode} Model to observe
  */
-ve.ce.ListNode = function ve_ce_ListNode( model ) {
+ve.ce.ListNode = function VeCeListNode( model ) {
 	// Parent constructor
 	ve.ce.BranchNode.call( this, 'list', model, ve.ce.BranchNode.getDomWrapper( model, 'style' ) );
 

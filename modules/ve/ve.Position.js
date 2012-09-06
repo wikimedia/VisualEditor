@@ -20,7 +20,7 @@
  * @property top {Number} Vertical top position
  * @property bottom {Number} Vertical bottom position of bottom
  */
-ve.Position = function ve_Position( left, top, bottom ) {
+ve.Position = function VePosition( left, top, bottom ) {
 	this.left = left || 0;
 	this.top = top || 0;
 	this.bottom = bottom || this.top;

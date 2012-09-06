@@ -7,7 +7,7 @@
 
 QUnit.module( 've.dm.Surface' );
 
-ve.dm.SurfaceStub = function ve_dm_SurfaceStub( data ) {
+ve.dm.SurfaceStub = function VeDmSurfaceStub( data ) {
 	if ( data !== undefined ) {
 		this.dm = new ve.dm.Document( data );
 	} else {

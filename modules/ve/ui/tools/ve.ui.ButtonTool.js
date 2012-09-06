@@ -15,7 +15,7 @@
  * @param {String} name
  * @param title
  */
-ve.ui.ButtonTool = function ve_ui_ButtonTool( toolbar, name, title ) {
+ve.ui.ButtonTool = function VeUiButtonTool( toolbar, name, title ) {
 	// Parent constructor
 	ve.ui.Tool.call( this, toolbar, name, title );
 

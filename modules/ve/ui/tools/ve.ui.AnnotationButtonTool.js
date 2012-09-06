@@ -16,7 +16,7 @@
  * @param title
  * @param {Object} data
  */
-ve.ui.AnnotationButtonTool = function ve_ui_AnnotationButtonTool( toolbar, name, title, data ) {
+ve.ui.AnnotationButtonTool = function VeUiAnnotationButtonTool( toolbar, name, title, data ) {
 	// Parent constructor
 	ve.ui.ButtonTool.call( this, toolbar, name, title );
 

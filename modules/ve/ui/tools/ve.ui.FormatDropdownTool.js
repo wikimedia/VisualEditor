@@ -15,7 +15,7 @@
  * @param {String} name
  * @param title
  */
-ve.ui.FormatDropdownTool = function ve_ui_FormatDropdownTool( toolbar, name, title ) {
+ve.ui.FormatDropdownTool = function VeUiFormatDropdownTool( toolbar, name, title ) {
 	// Parent constructor
 	ve.ui.DropdownTool.call( this, toolbar, name, title, [
 		{

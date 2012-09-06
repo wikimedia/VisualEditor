@@ -13,7 +13,7 @@
  * @constructor
  * @param model {ve.dm.Document} Model to observe
  */
-ve.ce.Document = function ve_ce_Document( model, surface ) {
+ve.ce.Document = function VeCeDocument( model, surface ) {
 	// Parent constructor
 	ve.Document.call( this, new ve.ce.DocumentNode( model.getDocumentNode(), surface ) );
 

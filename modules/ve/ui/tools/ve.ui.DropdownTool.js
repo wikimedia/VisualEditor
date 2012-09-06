@@ -16,7 +16,7 @@
  * @param title
  * @param {Object[]} items
  */
-ve.ui.DropdownTool = function ve_ui_DropdownTool( toolbar, name, title, items ) {
+ve.ui.DropdownTool = function VeUiDropdownTool( toolbar, name, title, items ) {
 	// Parent constructor
 	ve.ui.Tool.call( this, toolbar, name, title );
 

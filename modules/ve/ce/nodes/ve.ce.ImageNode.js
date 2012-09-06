@@ -13,7 +13,7 @@
  * @extends {ve.ce.LeafNode}
  * @param model {ve.dm.ImageNode} Model to observe
  */
-ve.ce.ImageNode = function ve_ce_ImageNode( model ) {
+ve.ce.ImageNode = function VeCeImageNode( model ) {
 	// Parent constructor
 	ve.ce.LeafNode.call( this, 'image', model, $( '<img>' ) );
 

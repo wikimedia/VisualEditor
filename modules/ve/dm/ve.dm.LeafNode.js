@@ -17,7 +17,7 @@
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  * @param {Object} [internal] Reference to internal data object
  */
-ve.dm.LeafNode = function ve_dm_LeafNode( type, length, attributes, internal ) {
+ve.dm.LeafNode = function VeDmLeafNode( type, length, attributes, internal ) {
 	ve.LeafNode.call( this );
 
 	// Parent constructor

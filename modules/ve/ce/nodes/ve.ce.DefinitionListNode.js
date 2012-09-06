@@ -13,7 +13,7 @@
  * @extends {ve.ce.BranchNode}
  * @param model {ve.dm.DefinitionListNode} Model to observe
  */
-ve.ce.DefinitionListNode = function ve_ce_DefinitionListNode( model ) {
+ve.ce.DefinitionListNode = function VeCeDefinitionListNode( model ) {
 	// Parent constructor
 	ve.ce.BranchNode.call( this, 'definitionList', model, $( '<dl>' ) );
 };

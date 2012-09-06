@@ -16,7 +16,7 @@
  * @param title
  * @param data
  */
-ve.ui.IndentationButtonTool = function ve_ui_IndentationButtonTool( toolbar, name, title, data ) {
+ve.ui.IndentationButtonTool = function VeUiIndentationButtonTool( toolbar, name, title, data ) {
 	// Parent constructor
 	ve.ui.ButtonTool.call( this, toolbar, name, title );
 

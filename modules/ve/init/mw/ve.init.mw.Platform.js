@@ -14,7 +14,7 @@
  * @constructor
  * @extends {ve.init.Platform}
  */
-ve.init.mw.Platform = function ve_init_MwPlatform() {
+ve.init.mw.Platform = function VeInitMwPlatform() {
 	// Parent constructor
 	ve.init.Platform.call( this );
 

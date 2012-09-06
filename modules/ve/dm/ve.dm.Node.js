@@ -17,7 +17,7 @@
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  * @param {Object} [internal] Object with internal data to store for this node
  */
-ve.dm.Node = function ve_dm_Node( type, length, attributes, internal ) {
+ve.dm.Node = function VeDmNode( type, length, attributes, internal ) {
 	// Parent constructor
 	ve.Node.call( this, type );
 

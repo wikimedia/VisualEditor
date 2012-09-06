@@ -12,7 +12,7 @@
  * @constructor
  * @extends {ve.init.Platform}
  */
-ve.init.sa.Platform = function ve_init_SaPlatform() {
+ve.init.sa.Platform = function VeInitSaPlatform() {
 	// Parent constructor
 	ve.init.Platform.call( this );
 

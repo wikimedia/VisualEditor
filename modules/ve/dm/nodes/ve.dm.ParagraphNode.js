@@ -15,7 +15,7 @@
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  * @param {Object} [internal] Reference to internal data object
  */
-ve.dm.ParagraphNode = function ve_dm_ParagraphNode( children, attributes, internal ) {
+ve.dm.ParagraphNode = function VeDmParagraphNode( children, attributes, internal ) {
 	// Parent constructor
 	ve.dm.BranchNode.call( this, 'paragraph', children, attributes, internal );
 };

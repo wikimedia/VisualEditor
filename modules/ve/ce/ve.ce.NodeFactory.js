@@ -12,7 +12,7 @@
  * @extends {ve.Factory}
  * @constructor
  */
-ve.ce.NodeFactory = function ve_ce_NodeFactory() {
+ve.ce.NodeFactory = function VeCeNodeFactory() {
 	// Parent constructor
 	ve.Factory.call( this );
 };

@@ -13,7 +13,7 @@
  * @extends {ve.ce.BranchNode}
  * @param model {ve.dm.HeadingNode} Model to observe
  */
-ve.ce.HeadingNode = function ve_ce_HeadingNode( model ) {
+ve.ce.HeadingNode = function VeCeHeadingNode( model ) {
 	// Parent constructor
 	ve.ce.BranchNode.call(
 		this, 'heading', model, ve.ce.BranchNode.getDomWrapper( model, 'level' )

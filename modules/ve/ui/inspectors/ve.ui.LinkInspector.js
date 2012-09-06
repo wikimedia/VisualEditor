@@ -16,7 +16,7 @@
  * @param {ve.ui.Toolbar} toolbar
  * @param context
  */
-ve.ui.LinkInspector = function ve_ui_LinkInspector( toolbar, context ) {
+ve.ui.LinkInspector = function VeUiLinkInspector( toolbar, context ) {
 	var inspector = this;
 
 	// Inheritance

@@ -17,7 +17,7 @@
  * @class
  * @constructor
  */
-ve.dm.TransactionProcessor = function ve_dm_TransactionProcessor( doc, transaction, reversed ) {
+ve.dm.TransactionProcessor = function VeDmTransactionProcessor( doc, transaction, reversed ) {
 	// Properties
 	this.document = doc;
 	this.operations = transaction.getOperations();

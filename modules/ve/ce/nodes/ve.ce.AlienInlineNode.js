@@ -13,7 +13,7 @@
  * @extends {ve.ce.LeafNode}
  * @param model {ve.dm.AlienInlineNode} Model to observe
  */
-ve.ce.AlienInlineNode = function ve_ce_AlienInlineNode( model ) {
+ve.ce.AlienInlineNode = function VeCeAlienInlineNode( model ) {
 	// Parent constructor
 	ve.ce.LeafNode.call( this, 'alienInline', model );
 

@@ -11,7 +11,7 @@
  * @class
  * @constructor
  */
-ve.dm.Transaction = function ve_dm_Transaction() {
+ve.dm.Transaction = function VeDmTransaction() {
 	this.operations = [];
 	this.lengthDifference = 0;
 };
