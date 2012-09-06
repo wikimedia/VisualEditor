@@ -273,7 +273,7 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 	annotations = annotations || [];
 	path = path || ['document'];
 	var i, childDomElement, annotation, childDataElement, text, childTypes, matches,
-		wrappingParagraph, prevElement, alien,
+		wrappingParagraph, prevElement, alien, rdfaType,
 		data = [],
 		branchType = path[path.length - 1],
 		branchIsContent = ve.dm.nodeFactory.canNodeContainContent( branchType ),
@@ -290,6 +290,25 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 		childDomElement = domElement.childNodes[i];
 		switch ( childDomElement.nodeType ) {
 			case Node.ELEMENT_NODE:
+				// Alienate anything with a mw: type that isn't registered
+				// HACK because we don't actually have an RDFa type registry yet,
+				// this hardcodes the set of recognized types
+				rdfaType = childDomElement.getAttribute( 'rel' ) ||
+					childDomElement.getAttribute( 'typeof' ) ||
+					childDomElement.getAttribute( 'property' );
+				if (
+					rdfaType &&
+					rdfaType.match( /^mw:/ ) &&
+					!rdfaType.match( /^mw:WikiLink/ ) &&
+					!rdfaType.match( /^mw:ExtLink/ )
+				) {
+					alien = createAlien( childDomElement, branchIsContent );
+					data = data.concat( alien );
+					processNextWhitespace( alien );
+					prevElement = alien;
+					break;
+				}
+
 				// Detect and handle annotated content
 				annotation = this.getDataAnnotationFromDomElement( childDomElement );
 				if ( annotation ) {
