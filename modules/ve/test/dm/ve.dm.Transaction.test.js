@@ -822,7 +822,7 @@ QUnit.test( 'pushRetain', function ( assert ) {
 } );
 
 QUnit.test( 'pushReplace', function ( assert ) {
-	var cases = {
+	var i, key, cases = {
 		'insert': {
 			'calls': [
 				['pushReplace', [], [{ 'type': 'paragraph' }, 'a', 'b', 'c', { 'type': '/paragraph' }]]
