@@ -222,3 +222,45 @@ QUnit.test( 'copyArray', 6, function ( assert ) {
 		'Nested sparse array'
 	);
 } );
+
+QUnit.test( 'copyObject', 6, function ( assert ) {
+	var simpleObj = { 'foo': 'bar', 'baz': 3 },
+		nestedObj = { 'foo': { 'bar': 'baz', 'quux': 3 }, 'whee': 5 },
+		withArray = { 'foo': [ 'a', 'b' ], 'bar': [ 1, 3, 4 ] },
+		withSparseArray = { 'foo': [ 'a', undefined, undefined, 'b' ] },
+		Cloneable = function ( p ) {
+			this.p = p;
+		};
+	Cloneable.prototype.clone = function () { return new Cloneable( this.p + '-clone' ); };
+
+	assert.deepEqual(
+		ve.copyObject( simpleObj ),
+		simpleObj,
+		'Simple object'
+	);
+	assert.deepEqual(
+		ve.copyObject( nestedObj ),
+		nestedObj,
+		'Nested object'
+	);
+	assert.deepEqual(
+		ve.copyObject( new Cloneable( 'foo' ) ),
+		new Cloneable( 'foo-clone' ),
+		'Cloneable object'
+	);
+	assert.deepEqual(
+		ve.copyObject( { 'foo': new Cloneable( 'bar' ) } ),
+		{ 'foo': new Cloneable( 'bar-clone' ) },
+		'Object containing object'
+	);
+	assert.deepEqual(
+		ve.copyObject( withArray ),
+		withArray,
+		'Object with array'
+	);
+	assert.deepEqual(
+		ve.copyObject( withSparseArray ),
+		withSparseArray,
+		'Object with sparse array'
+	);
+} );

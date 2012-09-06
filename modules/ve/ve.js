@@ -344,15 +344,20 @@ ve.copyArray = function ( source ) {
 ve.copyObject = function ( source ) {
 	var key, sourceValue, sourceType,
 		destination = {};
+	if ( typeof source.clone === 'function' ) {
+		return source.clone();
+	}
 	for ( key in source ) {
 		sourceValue = source[key];
 		sourceType = typeof sourceValue;
-		if ( sourceType === 'string' || sourceType === 'number' ) {
+		if ( sourceType === 'string' || sourceType === 'number' || sourceType === 'undefined' ) {
 			destination[key] = sourceValue;
 		} else if ( ve.isPlainObject( sourceValue ) ) {
 			destination[key] = ve.copyObject( sourceValue );
 		} else if ( ve.isArray( sourceValue ) ) {
 			destination[key] = ve.copyArray( sourceValue );
+		} else if ( sourceValue && typeof sourceValue.clone === 'function' ) {
+			destination[key] = sourceValue.clone();
 		}
 	}
 	return destination;
