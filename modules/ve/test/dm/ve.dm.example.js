@@ -949,6 +949,7 @@ ve.dm.example.domToDataCases = {
 					{
 						'type': 'link/WikiLink',
 						'data': {
+							'hrefPrefix': '',
 							'title': 'Foo',
 							'htmlAttributes': {
 								'href': 'Foo',
@@ -966,6 +967,7 @@ ve.dm.example.domToDataCases = {
 					{
 						'type': 'link/WikiLink',
 						'data': {
+							'hrefPrefix': '',
 							'title': 'Foo',
 							'htmlAttributes': {
 								'href': 'Foo',
@@ -983,6 +985,7 @@ ve.dm.example.domToDataCases = {
 					{
 						'type': 'link/WikiLink',
 						'data': {
+							'hrefPrefix': '',
 							'title': 'Foo',
 							'htmlAttributes': {
 								'href': 'Foo',
@@ -1006,6 +1009,7 @@ ve.dm.example.domToDataCases = {
 					{
 						'type': 'link/WikiLink',
 						'data': {
+							'hrefPrefix': '',
 							'title': 'Foo',
 							'htmlAttributes': {
 								'href': 'Foo',
@@ -1021,6 +1025,7 @@ ve.dm.example.domToDataCases = {
 					{
 						'type': 'link/WikiLink',
 						'data': {
+							'hrefPrefix': '',
 							'title': 'Foo',
 							'htmlAttributes': {
 								'href': 'Foo',
@@ -1037,6 +1042,7 @@ ve.dm.example.domToDataCases = {
 					{
 						'type': 'link/WikiLink',
 						'data': {
+							'hrefPrefix': '',
 							'title': 'Foo',
 							'htmlAttributes': {
 								'href': 'Foo',
@@ -1054,6 +1060,7 @@ ve.dm.example.domToDataCases = {
 					{
 						'type': 'link/WikiLink',
 						'data': {
+							'hrefPrefix': '',
 							'title': 'Foo',
 							'htmlAttributes': {
 								'href': 'Foo',
