@@ -5,15 +5,22 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-.ve-ce-alienBlockNode {
+
+.ve-ce-alienBlockNode,
+.ve-ce-alienInlineNode,
+.ve-ce-metaBlockNode,
+.ve-ce-metaInlineNode {
 	background-color: rgb(255, 255, 186) rgba(255, 255, 186, 0.3);
 	border: rgba(0, 0, 0, 0.3) dashed 1px;
+}
+
+.ve-ce-alienBlockNode,
+.ve-ce-metaBlockNode {
 	display: block;
 }
 
-.ve-ce-alienInlineNode {
-	background-color: rgb(255, 255, 186) rgba(255, 255, 186, 0.3);
-	border: rgba(0, 0, 0, 0.3) dashed 1px;
+.ve-ce-alienInlineNode,
+.ve-ce-metaInlineNode {
 	display: inline;
 }
 
