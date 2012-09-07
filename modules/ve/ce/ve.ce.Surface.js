@@ -812,15 +812,7 @@ ve.ce.Surface.prototype.onChange = function ( transaction, selection ) {
 		// TODO: Use ve.debounce method to abstract usage of setTimeout
 		clearTimeout( this.selectionTimeout );
 		this.selectionTimeout = setTimeout(
-			ve.bind( function () {
-				if ( this.contextView ) {
-					if ( selection.getLength() > 0 ) {
-						this.contextView.set();
-					} else {
-						this.contextView.clear();
-					}
-				}
-			}, this ),
+			ve.bind( this.updateContextIcon, this ),
 			250
 		);
 	}
@@ -1427,9 +1419,10 @@ ve.ce.Surface.prototype.getOffsetFromElementNode = function ( domNode, domOffset
  * @method
  */
 ve.ce.Surface.prototype.updateContextIcon = function () {
-	var selection = this.model.getSelection();
+	var selection = this.model.getSelection(),
+		doc = this.model.getDocument();
 	if ( this.contextView ) {
-		if ( selection.getLength() > 0 ) {
+		if ( doc.getText( selection ).length > 0 ) {
 			this.contextView.set();
 		} else {
 			this.contextView.clear();

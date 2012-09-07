@@ -105,25 +105,6 @@ ve.ui.LinkInspector.prototype.getFirstLinkAnnotation = function ( annotations ) 
 	return null;
 };
 
-// TODO: This should probably be somewhere else but I needed this here for now.
-ve.ui.LinkInspector.prototype.getSelectionText = function () {
-	var i,
-		surfaceView = this.context.getSurfaceView(),
-		surfaceModel = surfaceView.getModel(),
-		documentModel = surfaceModel.getDocument(),
-		data = documentModel.getData( surfaceModel.getSelection() ),
-		str = '',
-		max = Math.min( data.length, 255 );
-	for ( i = 0; i < max; i++ ) {
-		if ( ve.isArray( data[i] ) ) {
-			str += data[i][0];
-		} else if ( typeof data[i] === 'string' ) {
-			str += data[i];
-		}
-	}
-	return str;
-};
-
 /*
  * Method called prior to opening inspector which fixes up
  * selection to contain the complete annotated link range
@@ -161,9 +142,13 @@ ve.ui.LinkInspector.prototype.prepareOpen = function () {
 
 ve.ui.LinkInspector.prototype.onOpen = function () {
 	var	annotation = this.getFirstLinkAnnotation( this.getAllLinkAnnotationsFromSelection() ),
-		initialValue = '';
+		surfaceModel = this.context.getSurfaceView().getModel(),
+		documentModel = surfaceModel.getDocument(),
+		selection = surfaceModel.getSelection().truncate( 255 ),
+		initialValue = documentModel.getText( selection );
+
 	if ( annotation === null ) {
-		this.$locationInput.val( this.getSelectionText() );
+		this.$locationInput.val( initialValue );
 		this.$clearButton.addClass( 've-ui-inspector-button-disabled' );
 	} else if ( annotation.type === 'link/WikiLink' ) {
 		// Internal link
