@@ -76,6 +76,8 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 		<script src="../../modules/ve/ve.LeafNode.js"></script>
 		<script src="../../modules/ve/ve.Surface.js"></script>
 		<script src="../../modules/ve/ve.Document.js"></script>
+		<script src="../../modules/ve/ve.OrderedHashSet.js"></script>
+		<script src="../../modules/ve/ve.AnnotationSet.js"></script>
 
 		<!-- init -->
 		<script src="../../modules/ve/init/ve.init.js"></script>
