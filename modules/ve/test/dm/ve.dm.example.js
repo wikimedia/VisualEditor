@@ -922,6 +922,59 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/paragraph' }
 		]
 	},
+	'whitespace preservation with aliens': {
+		'html': ' <p typeof="mw:Placeholder">  <br>   </p>    <p>\tFoo\t\t<tt>\t\t\tBar\t\t\t\t</tt>\nBaz\n\n<span typeof="mw:Placeholder">\n\n\nQuux\n\n\n\n</span> \tWhee \n</p>\t\n<figure>\n\tYay \t </figure> \n ',
+		'data': [
+			{
+				'type': 'alienBlock',
+				'attributes': {
+					'html': '<p typeof="mw:Placeholder">  <br>   </p>'
+				},
+				'internal': {
+					'whitespace': [ ' ', undefined, undefined, '    ' ]
+				}
+			},
+			{ 'type': '/alienBlock' },
+			{ 'type': 'paragraph', 'internal': { 'whitespace': [ '    ', '\t', ' \n', '\t\n' ] } },
+			'F',
+			'o',
+			'o',
+			'\t',
+			'\t',
+			{ 'type': 'alienInline', 'attributes': { 'html': '<tt>\t\t\tBar\t\t\t\t</tt>' } },
+			{ 'type': '/alienInline' },
+			'\n',
+			'B',
+			'a',
+			'z',
+			'\n',
+			'\n',
+			{
+				'type': 'alienInline',
+				'attributes': {
+					'html': '<span typeof="mw:Placeholder">\n\n\nQuux\n\n\n\n</span>'
+				}
+			},
+			{ 'type': '/alienInline' },
+			' ',
+			'\t',
+			'W',
+			'h',
+			'e',
+			'e',
+			{ 'type': '/paragraph' },
+			{
+				'type': 'alienBlock',
+				'attributes': {
+					'html': '<figure>\n\tYay \t </figure>'
+				},
+				'internal': {
+					'whitespace': [ '\t\n', undefined, undefined, ' \n ' ]
+				}
+			},
+			{ 'type': '/alienBlock' }
+		]
+	},
 	'mismatching whitespace data is ignored': {
 		'html': null,
 		'data': [
