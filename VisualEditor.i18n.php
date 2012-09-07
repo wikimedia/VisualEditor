@@ -1025,9 +1025,14 @@ $messages['ml'] = array(
 	'visualeditor-desc' => 'മീഡിയവിക്കിയ്ക്കായുള്ള കണ്ടുതിരുത്തൽ ഉപകരണം',
 	'visualeditor-feedback-prompt' => 'അഭിപ്രായമിടുക',
 	'visualeditor-feedback-dialog-title' => 'കണ്ടുതിരുത്തൽ ഉപകരണ എഴുത്തുകളരിയെപ്പറ്റിയുള്ള അഭിപ്രായം അറിയിക്കുക',
+	'visualeditor-notification-saved' => '$1താളിൽ വരുത്തിയ മാറ്റങ്ങൾ സേവ് ചെയ്തിരിക്കുന്നു.',
+	'visualeditor-notification-created' => '$1 എന്ന താൾ സൃഷ്ടിച്ചിരിക്കുന്നു.',
 	'visualeditor-ca-editsource' => 'മൂലരൂപം തിരുത്തുക',
 	'visualeditor-linkinspector-title' => 'കണ്ണി തിരുത്തുക',
 	'visualeditor-linkinspector-label-pagetitle' => 'താളിന്റെ തലക്കെട്ട്',
+	'visualeditor-linkinspector-suggest-existing-page' => 'നിലവിലുള്ള താൾ',
+	'visualeditor-linkinspector-suggest-new-page' => 'പുതിയ താൾ',
+	'visualeditor-linkinspector-suggest-external-link' => 'വെബ് കണ്ണി',
 	'visualeditor-formatdropdown-title' => 'തരം മാറ്റുക',
 	'visualeditor-formatdropdown-format-paragraph' => 'ഖണ്ഡിക',
 	'visualeditor-formatdropdown-format-heading1' => 'തലക്കെട്ട് 1',
@@ -1040,6 +1045,8 @@ $messages['ml'] = array(
 	'visualeditor-annotationbutton-bold-tooltip' => 'കടുപ്പിക്കുക',
 	'visualeditor-annotationbutton-italic-tooltip' => 'ചെരിച്ച്',
 	'visualeditor-annotationbutton-link-tooltip' => 'കണ്ണി',
+	'visualeditor-indentationbutton-indent-tooltip' => 'അരികിലെ ഇട കൂട്ടുക',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'അരികിലെ ഇട കുറയ്ക്കുക',
 	'visualeditor-listbutton-number-tooltip' => 'എണ്ണമിട്ട ലിസ്റ്റ്',
 	'visualeditor-listbutton-bullet-tooltip' => 'എണ്ണമിടാത്ത ലിസ്റ്റ്',
 	'visualeditor-clearbutton-tooltip' => 'രൂപഘടന നീക്കംചെയ്യുക',
@@ -1048,6 +1055,7 @@ $messages['ml'] = array(
 	'visualeditor-viewpage-savewarning' => 'സേവ് ചെയ്യാതെ തന്നെ കണ്ടുനോക്കൽ തലത്തിലേയ്ക്ക് തിരിച്ചു പോകണം എന്ന് താങ്കൾക്കുറപ്പാണോ?',
 	'visualeditor-loadwarning' => 'സെർവറിൽ നിന്നും വിവരങ്ങൾ ശേഖരിക്കുന്നതിൽ പിഴവുണ്ടായി: $1. വീണ്ടും ശ്രമിക്കണോ?',
 	'visualeditor-saveerror' => 'സെർവറിൽ വിവരങ്ങൾ ശേഖരിക്കുന്നതിൽ പിഴവുണ്ടായി: $1',
+	'visualeditor-editsummary' => 'താങ്കൾ എന്താണ് മാറ്റം വരുത്തിയതെന്ന് വിവരിക്കുക',
 );
 
 /** Malay (Bahasa Melayu)
