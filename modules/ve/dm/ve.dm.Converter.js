@@ -304,8 +304,8 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 				) {
 					alien = createAlien( childDomElement, branchIsContent );
 					data = data.concat( alien );
-					processNextWhitespace( alien );
-					prevElement = alien;
+					processNextWhitespace( alien[0] );
+					prevElement = alien[0];
 					break;
 				}
 
@@ -366,8 +366,8 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 				// We don't know what this is, fall back to alien
 				alien = createAlien( childDomElement, branchIsContent );
 				data = data.concat( alien );
-				processNextWhitespace( alien );
-				prevElement = alien;
+				processNextWhitespace( alien[0] );
+				prevElement = alien[0];
 				break;
 			case Node.TEXT_NODE:
 				text = childDomElement.data;
@@ -561,6 +561,7 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 	var text, i, j, annotations, annotation, hash, annotationElement, done, dataElement, arr,
 		wrapper, childDomElement, pre, post, ours, theirs, parentDomElement, startClosingAt,
+		isContentNode,
 		container = document.createElement( 'div' ),
 		domElement = container,
 		annotationStack = new ve.AnnotationSet();
@@ -676,21 +677,16 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 		} else if ( data[i].type !== undefined ) {
 			dataElement = data[i];
 			// Element
-			if ( dataElement.type === 'alienBlock' || dataElement.type === 'alienInline' ) {
-				// Create nodes from source
-				wrapper = document.createElement( 'div' );
-				wrapper.innerHTML = dataElement.attributes.html;
-				// Add element - adds all child elements, but there really should only be 1
-				while ( wrapper.firstChild ) {
-					domElement.appendChild( wrapper.firstChild );
-				}
-				// Make sure the alien closing is skipped
-				i++;
-			} else if ( dataElement.type.charAt( 0 ) === '/' ) {
+			if ( dataElement.type.charAt( 0 ) === '/' ) {
 				parentDomElement = domElement.parentNode;
+				isContentNode = ve.dm.nodeFactory.isNodeContent( data[i].type.substr( 1 ) );
 				// Process whitespace
 				// whitespace = [ outerPre, innerPre, innerPost, outerPost ]
-				if ( domElement.veInternal && domElement.veInternal.whitespace ) {
+				if (
+					!isContentNode &&
+					domElement.veInternal &&
+					domElement.veInternal.whitespace
+				) {
 					// Process inner whitespace. innerPre is for sure legitimate
 					// whitespace that should be inserted; if it was a duplicate
 					// of our child's outerPre, we would have cleared it.
@@ -735,11 +731,12 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 					}
 					// Tell the parent about our outerPost
 					parentDomElement.lastOuterPost = domElement.veInternal.whitespace[3] || '';
-				} else {
+				} else if ( !isContentNode ) {
 					// Use empty string, because undefined means there were no
 					// structural children
 					parentDomElement.lastOuterPost = '';
 				}
+				// else don't touch lastOuterPost
 
 				// If closing a generated wrapper node, unwrap it
 				// It would be nicer if we could avoid generating in the first
@@ -760,8 +757,21 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 				// Ascend to parent node
 				domElement = parentDomElement;
 			} else {
-				// Create node from data
-				childDomElement = this.getDomElementFromDataElement( dataElement );
+				if ( dataElement.type === 'alienBlock' || dataElement.type === 'alienInline' ) {
+					// Create nodes from source
+					wrapper = document.createElement( 'div' );
+					wrapper.innerHTML = dataElement.attributes.html;
+					// Add element - adds first child element, any other
+					// children are ignored but shouldn't exist
+					//parentDomElement = domElement;
+					childDomElement = wrapper.firstChild;
+					//parentDomElement.appendChild( domElement );
+					// Make sure the alien closing is skipped
+					//parentDomElement = domElement; domElement = wrapper; //i++;
+				} else {
+					// Create node from data
+					childDomElement = this.getDomElementFromDataElement( dataElement );
+				}
 				// Add reference to internal data
 				if ( dataElement.internal ) {
 					childDomElement.veInternal = dataElement.internal;
