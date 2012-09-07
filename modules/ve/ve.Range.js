@@ -136,3 +136,19 @@ ve.Range.prototype.flip = function () {
 ve.Range.prototype.equals = function ( other ) {
 	return this.from === other.from && this.to === other.to;
 };
+
+/**
+ * Creates a new ve.Range object.
+ *
+ * @method
+ * @param {Integer} Length of the new range.
+ * @returns {ve.Range} A new range.
+ */
+ve.Range.prototype.truncate = function ( length ) {
+	var diff = 0;
+	this.normalize();
+	if ( this.getLength() > length ) {
+		diff = this.getLength() - length;
+	}
+	return new ve.Range( this.from, this.to - diff );
+};

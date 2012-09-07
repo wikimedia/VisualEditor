@@ -117,7 +117,8 @@ ve.ui.Context.prototype.setupInspectorSpace = function () {
 };
 
 ve.ui.Context.prototype.onDocumentFocus = function () {
-	$( window ).on( 'resize.ve-ui-context scroll.ve-ui-context', ve.bind( this.set, this ) );
+	$( window ).on( 'resize.ve-ui-context scroll.ve-ui-context',
+		ve.bind( this.surfaceView.updateContextIcon, this.surfaceView ) );
 };
 
 ve.ui.Context.prototype.onDocumentBlur = function () {
