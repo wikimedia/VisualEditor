@@ -15,8 +15,6 @@
  * @param {ve.ui.Context} context
  */
 ve.ui.Inspector = function VeUiInspector( toolbar, context ) {
-	var inspector = this;
-
 	// Inheritance
 	ve.EventEmitter.call( this );
 
@@ -49,7 +47,10 @@ ve.ui.Inspector = function VeUiInspector( toolbar, context ) {
 	} );
 	this.$acceptButton.on( {
 		'click': function () {
-			context.closeInspector ( true );
+			if ( $( this ).hasClass( 've-ui-inspector-button-disabled' ) ) {
+				return;
+			}
+			context.closeInspector( true );
 		}
 	} );
 	this.$form.on( {
@@ -66,6 +67,9 @@ ve.inheritClass( ve.ui.Inspector, ve.EventEmitter );
 
 ve.ui.Inspector.prototype.onSubmit = function ( e ) {
 	e.preventDefault();
+	if ( this.$acceptButton.hasClass( 've-ui-inspector-button-disabled' ) ) {
+		return;
+	}
 	this.context.closeInspector( true );
 	return false;
 };
