@@ -111,6 +111,8 @@ ve.ui.Context.prototype.setupInspectorSpace = function () {
 		'padding': '0px 5px',
 		'margin': 0
 	} );
+	// Hide inspectors.
+	this.hideInspectors();
 
 	// Intitialize link inspector.
 	this.addInspector( 'link', new ve.ui.LinkInspector( this.toolbarView, this ) );
@@ -293,11 +295,7 @@ ve.ui.Context.prototype.closeInspector = function ( accept ) {
 		this.inspectors[this.inspector].close( accept );
 		this.inspector = null;
 	}
-	this.$inspectors.css( {
-		'visibility': 'hidden',
-		'width': 0,
-		'height': 0
-	} );
+	this.hideInspectors();
 };
 
 ve.ui.Context.prototype.getInspector = function ( name ) {
@@ -324,6 +322,18 @@ ve.ui.Context.prototype.resizeInspectorFrame = function ( inspector ) {
 	this.$inspectorFrame.css( {
 		'width': width + 10,
 		'height': height + 10
+	} );
+};
+
+ve.ui.Context.prototype.hideInspectors = function () {
+	this.$inspectors.css( {
+		'visibility': 'hidden',
+		'width': 0,
+		'height': 0
+	} );
+	this.$inspectorFrame.css( {
+		'width': 0,
+		'height': 0
 	} );
 };
 
