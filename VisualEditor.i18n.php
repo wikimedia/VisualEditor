@@ -40,7 +40,6 @@ $messages['en'] = array(
 	'visualeditor-loadwarning' => 'Error loading data from server: $1. Would you like to retry?',
 	'visualeditor-saveerror' => 'Error saving data to server: $1.',
 	'visualeditor-editsummary' => 'Describe what you changed',
-	'visualeditor-editsummary-byte-limit' => ' {{PLURAL:$1|byte|bytes}}',
 );
 
 /** Message documentation (Message documentation)

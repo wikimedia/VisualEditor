@@ -124,7 +124,6 @@ $wgResourceModules += array(
 			'visualeditor-feedback-prompt',
 			'visualeditor-feedback-dialog-title',
 			'visualeditor-editsummary',
-			'visualeditor-editsummary-byte-limit',
 		),
 	),
 	'ext.visualEditor.base' => $wgVisualEditorResourceTemplate + array(

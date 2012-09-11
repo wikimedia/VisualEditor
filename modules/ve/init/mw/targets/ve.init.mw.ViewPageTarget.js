@@ -619,15 +619,16 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 			.placeholder()
 			.byteLimit( viewPage.editSummaryByteLimit )
 			.on( 'keydown mouseup cut paste change focus blur', function () {
-				var $textarea = $( this ),
+				var $textarea = $(this),
 					$editSummaryCount = $textarea
 						.closest( '.ve-init-mw-viewPageTarget-saveDialog-body' )
 							.find( '.ve-init-mw-viewPageTarget-saveDialog-editSummaryCount' );
+				// TODO: This looks a bit weird, there is no unit in the UI, just numbers
+				// Users likely assume characters but then it seems to count down quicker
+				// than expected. Facing users with the word "byte" is bad? (bug 40035)
 				setTimeout( function () {
-					var remainingBytes = viewPage.editSummaryByteLimit - $.byteLength( $textarea.val() );
 					$editSummaryCount.text(
-						remainingBytes +
-						ve.msg( 'visualeditor-editsummary-byte-limit', remainingBytes )
+						viewPage.editSummaryByteLimit - $.byteLength( $textarea.val() )
 					);
 				}, 0 );
 			} )
