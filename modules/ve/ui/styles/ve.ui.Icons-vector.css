@@ -29,12 +29,12 @@
 
 .ve-ui-toolbarButtonTool-undo:before {
 	/* @embed */
-	background-image: url(images/icons/undo.svg);
+	background-image: url(images/icons/arched-arrow-rtl.svg);
 }
 
 .ve-ui-toolbarButtonTool-redo:before {
 	/* @embed */
-	background-image: url(images/icons/redo.svg);
+	background-image: url(images/icons/arched-arrow-ltr.svg);
 }
 
 .ve-ui-toolbarButtonTool-bold:before {
