@@ -617,12 +617,6 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 				'placeholder': ve.msg( 'visualeditor-editsummary' )
 			} )
 			.placeholder()
-			.on( 'keydown', function ( e ) {
-				if ( e.which === 13 ) {
-					// TODO: Hijacking Enter in a textarea is bad (bug 39558)
-					viewPage.onSaveDialogSaveButtonClick();
-				}
-			} )
 			.byteLimit( viewPage.editSummaryByteLimit )
 			.on( 'keydown mouseup cut paste change focus blur', function () {
 				var $textarea = $(this),
