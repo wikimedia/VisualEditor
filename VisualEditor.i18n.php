@@ -1019,6 +1019,7 @@ $messages['mk'] = array(
 
 /** Malayalam (മലയാളം)
  * @author Praveenp
+ * @author Santhosh.thottingal
  */
 $messages['ml'] = array(
 	'visualeditor' => 'കണ്ടുതിരുത്തൽ ഉപകരണം',
@@ -1050,8 +1051,8 @@ $messages['ml'] = array(
 	'visualeditor-listbutton-number-tooltip' => 'എണ്ണമിട്ട ലിസ്റ്റ്',
 	'visualeditor-listbutton-bullet-tooltip' => 'എണ്ണമിടാത്ത ലിസ്റ്റ്',
 	'visualeditor-clearbutton-tooltip' => 'രൂപഘടന നീക്കംചെയ്യുക',
-	'visualeditor-historybutton-undo-tooltip' => 'തിരസ്കരിക്കുക',
-	'visualeditor-historybutton-redo-tooltip' => 'വീണ്ടും വരുത്തുക',
+	'visualeditor-historybutton-undo-tooltip' => 'വേണ്ട',
+	'visualeditor-historybutton-redo-tooltip' => 'വീണ്ടും',
 	'visualeditor-viewpage-savewarning' => 'സേവ് ചെയ്യാതെ തന്നെ കണ്ടുനോക്കൽ തലത്തിലേയ്ക്ക് തിരിച്ചു പോകണം എന്ന് താങ്കൾക്കുറപ്പാണോ?',
 	'visualeditor-loadwarning' => 'സെർവറിൽ നിന്നും വിവരങ്ങൾ ശേഖരിക്കുന്നതിൽ പിഴവുണ്ടായി: $1. വീണ്ടും ശ്രമിക്കണോ?',
 	'visualeditor-saveerror' => 'സെർവറിൽ വിവരങ്ങൾ ശേഖരിക്കുന്നതിൽ പിഴവുണ്ടായി: $1',
@@ -1213,6 +1214,7 @@ $messages['pms'] = array(
  * @author Ahmed-Najib-Biabani-Ibrahimkhel
  */
 $messages['ps'] = array(
+	'visualeditor-formatdropdown-format-heading1' => 'سرليک 1',
 	'visualeditor-annotationbutton-bold-tooltip' => 'زغرد',
 	'visualeditor-annotationbutton-italic-tooltip' => 'رېوند',
 	'visualeditor-annotationbutton-link-tooltip' => 'تړنه',
