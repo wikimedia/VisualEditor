@@ -156,6 +156,9 @@
 				currentInput = text;
 				$input.val( text );
 				close();
+				if ( typeof options.select === 'function' ) {
+					options.select.call( this );
+				}
 			}
 			// When an item is "clicked".
 			// Use of mousedown to prevent blur.

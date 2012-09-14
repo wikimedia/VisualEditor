@@ -317,7 +317,7 @@ ve.ce.Surface.prototype.onKeyDown = function ( e ) {
  * @method
  * @param {jQuery.Event} e
  */
-ve.ce.Surface.prototype.onCopy = function ( e ) {
+ve.ce.Surface.prototype.onCopy = function () {
 	var sel = rangy.getSelection(),
 		$frag = $( sel.getRangeAt(0).cloneContents() ),
 		dataArray = ve.copyArray( this.documentView.model.getData( this.model.getSelection() ) ),

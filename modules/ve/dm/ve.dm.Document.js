@@ -609,8 +609,7 @@ ve.dm.Document.prototype.getAnnotatedRangeFromSelection = function ( range, anno
 ve.dm.Document.prototype.getAnnotationsFromRange = function ( range, all ) {
 	var i,
 		left,
-		right,
-		hash;
+		right;
 	range.normalize();
 	// Shortcut for zero-length ranges
 	if ( range.getLength() === 0 ) {

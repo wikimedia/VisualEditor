@@ -38,7 +38,7 @@ ve.ui.LinkInspector = function VeUiLinkInspector( toolbar, context ) {
 
 	// Events
 	this.$clearButton.click( function () {
-		if ( $(this).is( '.ve-ui-inspector-button-disabled' ) ) {
+		if ( $( this ).hasClass( 've-ui-inspector-button-disabled' ) ) {
 			return;
 		}
 		var i, arr,
@@ -53,9 +53,13 @@ ve.ui.LinkInspector = function VeUiLinkInspector( toolbar, context ) {
 		inspector.context.closeInspector();
 	} );
 	this.$locationInput.on( 'change mousedown keydown cut paste', function () {
+		var $input = $( this );
 		setTimeout( function () {
 			// Toggle disabled class
-			if ( inspector.$locationInput.val() !== '' ) {
+			if (
+				$input.val() !== '' &&
+				$input.data( 'status' ) !== 'invalid'
+			) {
 				inspector.$acceptButton.removeClass( 've-ui-inspector-button-disabled' );
 			} else {
 				inspector.$acceptButton.addClass( 've-ui-inspector-button-disabled' );
@@ -179,7 +183,7 @@ ve.ui.LinkInspector.prototype.onClose = function ( accept ) {
 		surfaceModel = surfaceView.getModel(),
 		annotations = this.getAllLinkAnnotationsFromSelection(),
 		target = this.$locationInput.val(),
-		i, annotation, arr;
+		i, arr;
 	if ( accept ) {
 		if ( !target ) {
 			return;
@@ -228,11 +232,22 @@ ve.ui.LinkInspector.getAnnotationForTarget = function ( target ) {
 };
 
 ve.ui.LinkInspector.prototype.initMultiSuggest = function () {
-	var inspector = this,
+	var options,
+		inspector = this,
 		context = inspector.context,
 		$overlay = context.$iframeOverlay,
-		cache = {},
-		options;
+		suggestionCache = {},
+		pageStatusCache = {},
+		api = new mw.Api();
+
+	function updateAcceptButtonAndLocationStatus( status ) {
+		if ( status !== 'invalid' ) {
+			inspector.$acceptButton.removeClass( 've-ui-inspector-button-disabled' );
+		} else {
+			inspector.$acceptButton.addClass( 've-ui-inspector-button-disabled' );
+		}
+		inspector.$locationInput.data( 'status', status );
+	}
 
 	// Multi Suggest configuration.
 	options = {
@@ -258,7 +273,8 @@ ve.ui.LinkInspector.prototype.initMultiSuggest = function () {
 					'itemClass': 've-ui-suggest-item-existingPage'
 				};
 			}
-			// Run the query through the mw.Title object to handle correct capitalization.
+			// Run the query through the mw.Title object to handle correct capitalization,
+			// whitespace and and namespace alias/localization resolution.
 			try {
 				title = new mw.Title( query );
 				modifiedQuery = title.getPrefixedText();
@@ -296,33 +312,56 @@ ve.ui.LinkInspector.prototype.initMultiSuggest = function () {
 		'input': function ( callback ) {
 			var $input = $( this ),
 				query = $input.val(),
-				cKey = query.toLowerCase(),
-				api = null;
+				cKey = query.toLowerCase();
+
+			// Query page and set status data on the location input.
+			if ( pageStatusCache[query] !== undefined ) {
+				updateAcceptButtonAndLocationStatus( pageStatusCache[query] );
+			} else {
+				api.get( {
+					'action': 'query',
+					'indexpageids': '',
+					'titles': query,
+					'converttitles': ''
+				} )
+				.done( function( data ) {
+					var status, page;
+					if ( data.query ) {
+						page = data.query.pages[data.query.pageids[0]];
+						status = 'exists';
+						if ( page.missing !== undefined ) {
+							status = 'notexists';
+						} else if ( page.invalid !== undefined ) {
+							status = 'invalid';
+						}
+					}
+					// Cache the status of the link query.
+					pageStatusCache[query] = status;
+					updateAcceptButtonAndLocationStatus( status );
+				} );
+			}
 
 			// Set overlay position.
 			options.position();
 			// Build from cache.
-			if ( cache[cKey] !== undefined ) {
+			if ( suggestionCache[cKey] !== undefined ) {
 				callback( {
 					'query': query,
-					'results': cache[cKey]
+					'results': suggestionCache[cKey]
 				} );
 			} else {
-				// No cache, build fresh.
-				api = new mw.Api();
-				// MW api request.
+				// No cache, build fresh api request.
 				api.get( {
 					'action': 'opensearch',
 					'search': query
-				}, {
-					'ok': function ( data ) {
-						cache[cKey] = data[1];
-						// Build
-						callback( {
-							'query': query,
-							'results': data[1]
-						} );
-					}
+				} )
+				.done( function ( data ) {
+					suggestionCache[cKey] = data[1];
+					// Build
+					callback( {
+						'query': query,
+						'results': data[1]
+					} );
 				} );
 			}
 		},
@@ -341,6 +380,11 @@ ve.ui.LinkInspector.prototype.initMultiSuggest = function () {
 				'overlay': $overlay,
 				'below': inspector.$locationInput
 			} );
+		},
+		// Fired when a suggestion is selected.
+		'select': function () {
+			// Assume page suggestion is valid.
+			updateAcceptButtonAndLocationStatus( 'valid' );
 		}
 	};
 	// Setup Multi Suggest
