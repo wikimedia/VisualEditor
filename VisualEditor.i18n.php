@@ -144,9 +144,14 @@ $messages['be-tarask'] = array(
 	'visualeditor-desc' => 'Візуальны рэдактар для MediaWiki',
 	'visualeditor-feedback-prompt' => 'Пакінуць водгук',
 	'visualeditor-feedback-dialog-title' => 'Пакіньце водгук пра пясочніцу візуальнага рэдактара',
+	'visualeditor-notification-saved' => 'Вашыя зьмены ў «$1» захаваныя.',
+	'visualeditor-notification-created' => 'Старонка «$1» створаная.',
 	'visualeditor-ca-editsource' => 'Рэдагаваць крыніцу',
 	'visualeditor-linkinspector-title' => 'Рэдагаваньне спасылкі',
 	'visualeditor-linkinspector-label-pagetitle' => 'Назва старонкі',
+	'visualeditor-linkinspector-suggest-existing-page' => 'Існуючая старонка',
+	'visualeditor-linkinspector-suggest-new-page' => 'Новая старонка',
+	'visualeditor-linkinspector-suggest-external-link' => 'Вэб-спасылка',
 	'visualeditor-formatdropdown-title' => 'Зьмяніць фарматаваньне',
 	'visualeditor-formatdropdown-format-paragraph' => 'Параграф',
 	'visualeditor-formatdropdown-format-heading1' => 'Загаловак 1',
@@ -169,6 +174,7 @@ $messages['be-tarask'] = array(
 	'visualeditor-viewpage-savewarning' => 'Вы ўпэўненыя, што жадаеце перайсьці ў рэжым прагляду без папярэдняга захаваньня?',
 	'visualeditor-loadwarning' => 'Памылка ў час загрузкі зьвестак з сэрвэру: $1. Жадаеце паўтарыць?',
 	'visualeditor-saveerror' => 'Памылка ў час захаваньня зьвестак на сэрвэры: $1.',
+	'visualeditor-editsummary' => 'Апішыце вашыя зьмены',
 );
 
 /** Breton (brezhoneg)
