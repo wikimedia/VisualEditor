@@ -11,7 +11,7 @@
  * @class
  * @constructor
  * @extends {ve.ce.BranchNode}
- * @param model {ve.dm.CenterNode} Model to observe
+ * @param {ve.dm.CenterNode} model Model to observe
  */
 ve.ce.CenterNode = function VeCeCenterNode( model ) {
 	// Parent constructor

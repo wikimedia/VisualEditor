@@ -11,7 +11,7 @@
  * @class
  * @constructor
  * @extends {ve.ce.BranchNode}
- * @param model {ve.dm.HeadingNode} Model to observe
+ * @param {ve.dm.HeadingNode} model Model to observe
  */
 ve.ce.HeadingNode = function VeCeHeadingNode( model ) {
 	// Parent constructor

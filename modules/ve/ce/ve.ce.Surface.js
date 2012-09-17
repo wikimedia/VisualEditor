@@ -13,8 +13,8 @@
  * @class
  * @constructor
  * @extends {ve.EventEmitter}
- * @param $container {jQuery}
- * @param model {ve.dm.Surface} Model to observe
+ * @param {jQuery} $container
+ * @param {ve.dm.Surface} model Model to observe
  */
 ve.ce.Surface = function VeCeSurface( $container, model ) {
 	// Parent constructor
@@ -384,9 +384,9 @@ ve.ce.Surface.prototype.onCut = function ( e ) {
  * @param {jQuery.Event} e
  */
 ve.ce.Surface.prototype.onPaste = function () {
-	var view = this,
-		selection = this.model.getSelection(),
-		tx = null;
+	var tx,
+		view = this,
+		selection = this.model.getSelection();
 
 	this.stopPolling();
 
@@ -839,7 +839,6 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 		node = this.documentView.getNodeFromOffset( selection.from ),
 		nodeModel = node.getModel(),
 		cursor = selection.from,
-		nodeOffset = nodeModel.getOffset(),
 		contentBranchModel = nodeModel.isContent() ? nodeModel.getParent() : nodeModel,
 		contentBranchModelRange = contentBranchModel.getRange(),
 		stack = [],
@@ -1233,7 +1232,7 @@ ve.ce.Surface.prototype.hasSlugAtOffset = function ( offset ) {
  * The results of this function are meant to be used with rangy.
  *
  * @method
- * @param offset {Number} Linear model offset
+ * @param {Number} offset Linear model offset
  * @returns {Object} Object containing a node and offset property where node is an HTML element and
  * offset is the position within the element
  */
@@ -1299,7 +1298,7 @@ ve.ce.Surface.prototype.getNodeAndOffset = function ( offset ) {
  * Gets the linear offset from a given DOM node and offset within it.
  *
  * @method
- * @param {DOM Node} domNode DOM node
+ * @param {DOMElement} domNode DOM node
  * @param {Number} domOffset DOM offset within the DOM Element
  * @returns {Number} Linear model offset
  */
@@ -1315,7 +1314,7 @@ ve.ce.Surface.prototype.getOffset = function ( domNode, domOffset ) {
  * Gets the linear offset from a given text node and offset within it.
  *
  * @method
- * @param {DOM Node} domNode DOM node
+ * @param {DOMElement} domNode DOM node
  * @param {Number} domOffset DOM offset within the DOM Element
  * @returns {Number} Linear model offset
  */
@@ -1375,7 +1374,7 @@ ve.ce.Surface.prototype.getOffsetFromTextNode = function ( domNode, domOffset ) 
  * Gets the linear offset from a given element node and offset within it.
  *
  * @method
- * @param {DOM Node} domNode DOM node
+ * @param {DOMElement} domNode DOM node
  * @param {Number} domOffset DOM offset within the DOM Element
  * @param {Boolean} [addOuterLength] Use outer length, which includes wrappers if any exist
  * @returns {Number} Linear model offset

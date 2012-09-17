@@ -11,7 +11,7 @@
  * @class
  * @constructor
  * @extends {ve.ce.BranchNode}
- * @param model {ve.dm.DefinitionListItemNode} Model to observe
+ * @param {ve.dm.DefinitionListItemNode} model Model to observe
  */
 ve.ce.DefinitionListItemNode = function VeCeDefinitionListItemNode( model ) {
 	// Parent constructor

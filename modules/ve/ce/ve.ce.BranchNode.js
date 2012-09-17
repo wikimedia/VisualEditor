@@ -13,7 +13,7 @@
  * @constructor
  * @extends {ve.ce.Node}
  * @param {String} type Symbolic name of node type
- * @param model {ve.dm.BranchNode} Model to observe
+ * @param {ve.dm.BranchNode} model Model to observe
  * @param {jQuery} [$element] Element to use as a container
  */
 ve.ce.BranchNode = function VeCeBranchNode( type, model, $element ) {

@@ -324,7 +324,7 @@ ve.ui.LinkInspector.prototype.initMultiSuggest = function () {
 					'titles': query,
 					'converttitles': ''
 				} )
-				.done( function( data ) {
+				.done( function ( data ) {
 					var status, page;
 					if ( data.query ) {
 						page = data.query.pages[data.query.pageids[0]];
@@ -366,7 +366,7 @@ ve.ui.LinkInspector.prototype.initMultiSuggest = function () {
 			}
 		},
 		// Called when multiSuggest dropdown is updated.
-		'update': function() {
+		'update': function () {
 			// Ellipsis
 			$( '.ve-ui-suggest-item' )
 				.autoEllipsis( {

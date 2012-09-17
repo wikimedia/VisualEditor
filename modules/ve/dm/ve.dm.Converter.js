@@ -16,8 +16,15 @@ ve.dm.Converter = function VeDmConverter( nodeFactory, annotationFactory ) {
 	// Properties
 	this.nodeFactory = nodeFactory;
 	this.annotationFactory = annotationFactory;
-	this.elements = { 'toDomElement': {}, 'toDataElement': {}, 'dataElementTypes': {} };
-	this.annotations = { 'toDomElement': {}, 'toDataAnnotation': {} };
+	this.elements = {
+		'toDomElement': {},
+		'toDataElement': {},
+		'dataElementTypes': {}
+	};
+	this.annotations = {
+		'toDomElement': {},
+		'toDataAnnotation': {}
+	};
 
 	// Events
 	this.nodeFactory.addListenerMethod( this, 'register', 'onNodeRegister' );
@@ -559,8 +566,8 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
  * @returns {HTMLElement} Wrapper div containing the resulting HTML
  */
 ve.dm.Converter.prototype.getDomFromData = function ( data ) {
-	var text, i, j, annotations, annotation, hash, annotationElement, done, dataElement, arr,
-		wrapper, childDomElement, pre, post, ours, theirs, parentDomElement, startClosingAt,
+	var text, i, j, annotations, annotation, annotationElement, dataElement, arr,
+		wrapper, childDomElement, pre, ours, theirs, parentDomElement, startClosingAt,
 		isContentNode,
 		container = document.createElement( 'div' ),
 		domElement = container,

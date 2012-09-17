@@ -50,11 +50,13 @@ ve.dm.PreformattedNode.rules = {
  */
 ve.dm.PreformattedNode.converters = {
 	'domElementTypes': ['pre'],
-	'toDomElement': function ( type, element ) {
+	'toDomElement': function () {
 		return document.createElement( 'pre' );
 	},
-	'toDataElement': function ( tag, element ) {
-		return { 'type': 'preformatted' };
+	'toDataElement': function () {
+		return {
+			'type': 'preformatted'
+		};
 	}
 };
 

@@ -58,7 +58,7 @@ ve.inheritClass( ve.init.mw.Target, ve.EventEmitter );
  * @param {String} status Text status message
  * @emits loadError (null, message, null)
  */
-ve.init.mw.Target.onLoad = function ( response, status ) {
+ve.init.mw.Target.onLoad = function ( response ) {
 	var data = response['ve-parsoid'];
 	if ( !data ) {
 		this.loading = false;
@@ -122,7 +122,7 @@ ve.init.mw.Target.onLoadError = function ( response, text, exception ) {
  * @emits save (html)
  * @emits saveError (null, message, null)
  */
-ve.init.mw.Target.onSave = function ( response, status ) {
+ve.init.mw.Target.onSave = function ( response ) {
 	this.saving = false;
 	var data = response['ve-parsoid'];
 	if ( !data ) {

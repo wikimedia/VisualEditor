@@ -413,7 +413,7 @@ ve.dm.TransactionProcessor.prototype.process = function () {
  * @throws 'Invalid transaction, annotation to be cleared is not set'
  */
 ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
-	var item, element, annotated, annotations, hash, i;
+	var item, element, annotated, annotations, i;
 	if ( this.set.isEmpty() && this.clear.isEmpty() ) {
 		return;
 	}

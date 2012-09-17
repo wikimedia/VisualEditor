@@ -51,11 +51,13 @@ ve.dm.TableRowNode.rules = {
  */
 ve.dm.TableRowNode.converters = {
 	'domElementTypes': ['tr'],
-	'toDomElement': function ( type, element ) {
+	'toDomElement': function () {
 		return document.createElement( 'tr' );
 	},
-	'toDataElement': function ( tag, element ) {
-		return { 'type': 'tableRow' };
+	'toDataElement': function () {
+		return {
+			'type': 'tableRow'
+		};
 	}
 };
 

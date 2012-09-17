@@ -11,7 +11,7 @@
  * @class
  * @constructor
  * @extends {ve.ce.LeafNode}
- * @param model {ve.dm.TextNode} Model to observe
+ * @param {ve.dm.TextNode} model Model to observe
  */
 ve.ce.TextNode = function VeCeTextNode( model ) {
 	// Parent constructor
@@ -190,7 +190,6 @@ ve.ce.TextNode.prototype.getHtml = function () {
 		i,
 		j,
 		arr,
-		hash,
 		left = '',
 		right,
 		character,

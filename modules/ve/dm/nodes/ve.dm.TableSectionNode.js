@@ -57,7 +57,7 @@ ve.dm.TableSectionNode.converters = {
 			'footer': document.createElement( 'tfoot' )
 		} )[element.attributes.style];
 	},
-	'toDataElement': function ( tag, element ) {
+	'toDataElement': function ( tag ) {
 		return ( {
 			'thead': { 'type': 'tableSection', 'attributes': { 'style': 'header' } },
 			'tbody': { 'type': 'tableSection', 'attributes': { 'style': 'body' } },

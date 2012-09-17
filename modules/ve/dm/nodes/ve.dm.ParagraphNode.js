@@ -50,11 +50,13 @@ ve.dm.ParagraphNode.rules = {
  */
 ve.dm.ParagraphNode.converters = {
 	'domElementTypes': ['p'],
-	'toDomElement': function ( type, element ) {
+	'toDomElement': function () {
 		return document.createElement( 'p' );
 	},
-	'toDataElement': function ( tag, element ) {
-		return { 'type': 'paragraph' };
+	'toDataElement': function () {
+		return {
+			'type': 'paragraph'
+		};
 	}
 };
 

@@ -74,6 +74,6 @@ ve.inheritClass( ve.ui.DropdownTool, ve.ui.Tool );
 
 /* Methods */
 
-ve.ui.DropdownTool.prototype.onSelect = function ( item ) {
+ve.ui.DropdownTool.prototype.onSelect = function () {
 	throw new Error( 'DropdownTool.onSelect not implemented in this subclass:' + this.constructor );
 };

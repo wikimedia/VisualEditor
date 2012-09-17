@@ -1,7 +1,6 @@
 {
 	"predef": [
 		"ve",
-
 		"QUnit"
 	],
 
@@ -20,7 +19,7 @@
 	"quotmark": "single",
 	"regexp": true,
 	"undef": true,
-	"unused": false,
+	"unused": true,
 	"strict": false,
 	"trailing": true,
 

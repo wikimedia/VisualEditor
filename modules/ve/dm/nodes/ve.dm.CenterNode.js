@@ -50,11 +50,13 @@ ve.dm.CenterNode.rules = {
  */
 ve.dm.CenterNode.converters = {
 	'domElementTypes': ['center'],
-	'toDomElement': function ( type, element ) {
+	'toDomElement': function () {
 		return document.createElement( 'center' );
 	},
-	'toDataElement': function ( tag, element ) {
-		return { 'type': 'center' };
+	'toDataElement': function () {
+		return {
+			'type': 'center'
+		};
 	}
 };
 

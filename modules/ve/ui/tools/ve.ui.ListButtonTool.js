@@ -82,7 +82,7 @@ ve.ui.ListButtonTool.prototype.list = function ( nodes, style ) {
 	}
 };
 
-ve.ui.ListButtonTool.prototype.unlist = function ( node ) {
+ve.ui.ListButtonTool.prototype.unlist = function () {
 	/**
 	 * Recursively prepare to unwrap all lists in a given range.
 	 *
@@ -179,7 +179,7 @@ ve.ui.ListButtonTool.prototype.onClick = function () {
 	this.toolbar.surfaceView.model.breakpoint();
 };
 
-ve.ui.ListButtonTool.prototype.updateState = function ( annotations, nodes ) {
+ve.ui.ListButtonTool.prototype.updateState = function () {
 	var surfaceView = this.toolbar.getSurfaceView(),
 		surfaceModel = surfaceView.getModel(),
 		doc = surfaceView.getDocument(),

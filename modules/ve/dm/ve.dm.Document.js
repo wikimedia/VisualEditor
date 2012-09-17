@@ -686,13 +686,13 @@ ve.dm.Document.prototype.trimOuterSpaceFromRange = function ( range ) {
  *
  * @param {ve.dm.Node} parent Parent of the node(s) being rebuilt
  * @param {Number} index Index within parent to rebuild or insert nodes
- *   - If {numNodes} == 0: Index to insert nodes at
- *   - If {numNodes} >= 1: Index of first node to rebuild
- * @param {Integer} numNodes Total number of nodes to rebuild
- *   - If {numNodes} == 0: Nothing will be rebuilt, but the node(s) built from data will be
- *     inserted before {index}. To insert nodes at the end, use number of children in {parent}
- *   - If {numNodes} == 1: Only the node at {index} will be rebuilt
- *   - If {numNodes} > 1: The node at {index} and the next {numNodes-1} nodes will be rebuilt
+ *  - If {numNodes} == 0: Index to insert nodes at
+ *  - If {numNodes} >= 1: Index of first node to rebuild
+ * @param {Number} numNodes Total number of nodes to rebuild
+ *  - If {numNodes} == 0: Nothing will be rebuilt, but the node(s) built from data will be
+ *    inserted before {index}. To insert nodes at the end, use number of children in 'parent'
+ *  - If {numNodes} == 1: Only the node at {index} will be rebuilt
+ *  - If {numNodes} > 1: The node at {index} and the next {numNodes-1} nodes will be rebuilt
  * @param {Number} offset Linear model offset to rebuild from
  * @param {Number} newLength Length of data in linear model to rebuild or insert nodes for
  * @returns {ve.dm.Node[]} Array containing the rebuilt/inserted nodes
@@ -891,8 +891,8 @@ ve.dm.Document.prototype.getNearestStructuralOffset = function ( offset, directi
 // TODO this function needs more work but it seems to work, mostly
 /**
  * Fix up data so it can safely be inserted into the linear model at offset.
- * @param data {Array} Snippet of linear model data to insert
- * @param offset {Number} Offset in the linear model where the caller wants to insert data
+ * @param {Array} data Snippet of linear model data to insert
+ * @param {Number} offset Offset in the linear model where the caller wants to insert data
  * @returns {Array} A (possibly modified) copy of data
  */
 ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {

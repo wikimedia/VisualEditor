@@ -60,7 +60,7 @@ ve.dm.HeadingNode.converters = {
 			6: document.createElement( 'h6' )
 		} )[element.attributes.level];
 	},
-	'toDataElement': function ( tag, element ) {
+	'toDataElement': function ( tag ) {
 		return ( {
 			'h1': { 'type': 'heading', 'attributes': { 'level': 1 } },
 			'h2': { 'type': 'heading', 'attributes': { 'level': 2 } },

@@ -50,11 +50,13 @@ ve.dm.DefinitionListNode.rules = {
  */
 ve.dm.DefinitionListNode.converters = {
 	'domElementTypes': ['dl'],
-	'toDomElement': function ( type, element ) {
+	'toDomElement': function () {
 		return document.createElement( 'dl' );
 	},
-	'toDataElement': function ( tag, element ) {
-		return { 'type': 'definitionList' };
+	'toDataElement': function () {
+		return {
+			'type': 'definitionList'
+		};
 	}
 };
 

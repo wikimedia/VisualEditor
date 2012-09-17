@@ -11,7 +11,7 @@
  * @class
  * @constructor
  * @extends {ve.ce.LeafNode}
- * @param model {ve.dm.AlienInlineNode} Model to observe
+ * @param {ve.dm.AlienInlineNode} model Model to observe.
  */
 ve.ce.AlienInlineNode = function VeCeAlienInlineNode( model ) {
 	// Parent constructor
@@ -24,7 +24,7 @@ ve.ce.AlienInlineNode = function VeCeAlienInlineNode( model ) {
 	// Events
 	this.model.addListenerMethod( this, 'update', 'onUpdate' );
 
-	// Intialization
+	// Initialization
 	this.onUpdate();
 };
 

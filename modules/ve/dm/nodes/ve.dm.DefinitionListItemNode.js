@@ -56,7 +56,7 @@ ve.dm.DefinitionListItemNode.converters = {
 			'definition': document.createElement( 'dd' )
 		} )[element.attributes.style];
 	},
-	'toDataElement': function ( tag, element ) {
+	'toDataElement': function ( tag ) {
 		return ( {
 			'dt': { 'type': 'definitionListItem', 'attributes': { 'style': 'term' } },
 			'dd': { 'type': 'definitionListItem', 'attributes': { 'style': 'definition' } }

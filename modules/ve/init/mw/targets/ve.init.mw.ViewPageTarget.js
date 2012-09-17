@@ -464,7 +464,7 @@ ve.init.mw.ViewPageTarget.prototype.tearDownSurface = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
-	var action, $viewSource, title, pTmp, pVeEdit;
+	var action, $viewSource, pVeEdit;
 
 	// Only sysop users will have a native edit tab in this namespace
 	// If there isn't an edit tab, there's a view source tab we'll move into
