@@ -50,11 +50,13 @@ ve.dm.TableNode.rules = {
  */
 ve.dm.TableNode.converters = {
 	'domElementTypes': ['table'],
-	'toDomElement': function ( type, element ) {
+	'toDomElement': function () {
 		return document.createElement( 'table' );
 	},
-	'toDataElement': function ( tag, element ) {
-		return { 'type': 'table' };
+	'toDataElement': function () {
+		return {
+			'type': 'table'
+		};
 	}
 };
 

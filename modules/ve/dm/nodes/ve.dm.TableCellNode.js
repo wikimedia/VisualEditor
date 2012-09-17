@@ -56,7 +56,7 @@ ve.dm.TableCellNode.converters = {
 			'header': document.createElement( 'th' )
 		} )[element.attributes.style];
 	},
-	'toDataElement': function ( tag, element ) {
+	'toDataElement': function ( tag ) {
 		return ( {
 			'td': { 'type': 'tableCell', 'attributes': { 'style': 'data' } },
 			'th': { 'type': 'tableCell', 'attributes': { 'style': 'header' } }

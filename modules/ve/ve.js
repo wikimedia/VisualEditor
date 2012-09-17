@@ -22,6 +22,8 @@
 	/**
 	 * Create an object that inherits from another object.
 	 *
+	 * @static
+	 * @method
 	 * @until ES5: Object.create.
 	 * @source https://github.com/Krinkle/K-js.
 	 * @param {Object} origin Object to inherit from.
@@ -62,6 +64,8 @@
 	 *     fb instanceof Foo && fb instanceof FooBar;
 	 * </code>
 	 *
+	 * @static
+	 * @method
 	 * @source https://github.com/Krinkle/K-js.
 	 * @param {Function} targetFn
 	 * @param {Function} originFn
@@ -104,6 +108,8 @@
 	 *     ve.mixinClass( FooBar, ContextLazyLoad );
 	 * </code>
 	 *
+	 * @static
+	 * @method
 	 * @source https://github.com/Krinkle/K-js.
 	 * @param {Function} targetFn
 	 * @param {Function} originFn
@@ -137,6 +143,8 @@
 	 * foo.getAge(); // 22
 	 * </code>
 	 *
+	 * @static
+	 * @method
 	 * @source https://github.com/Krinkle/K-js.
 	 * @param {Object} origin
 	 * @return {Object} Clone of origin.
@@ -190,7 +198,8 @@
 	ve.bind = $.proxy;
 
 	/**
-	 * Wrapper for Array.prototype.indexOf
+	 * Wrapper for Array.prototype.indexOf.
+	 *
 	 * @static
 	 * @method
 	 * @until ES5
@@ -211,6 +220,8 @@
 	 * 'target' as 'source' and 'this' as 'target'. Which means
 	 * ve.extendObject( { a: 1 } ); sets ve.a = 1;
 	 *
+	 * @static
+	 * @method
 	 * @param {Boolean} [recursive=false]
 	 * @param {Mixed} target Object that will receive the new properties.
 	 * @param {Mixed} [..] Variadic list of objects containing properties
@@ -248,7 +259,6 @@
 	 * @returns {Mixed} Replacement value
 	 */
 	ve.getHash.keySortReplacer = function ( key, val ) {
-		/*jshint newcap: false */
 		var normalized, keys, i, len;
 		// Only normalize objects when the key-order is ambiguous
 		// (e.g. any object not an array).
@@ -542,6 +552,9 @@
 	 *
 	 * @static
 	 * @method
+	 * @param func
+	 * @param wait
+	 * @param immediate
 	 */
 	ve.debounce = function ( func, wait, immediate ) {
 		var timeout;

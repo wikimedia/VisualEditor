@@ -10,7 +10,7 @@ QUnit.module( 've' );
 /* Tests */
 
 QUnit.test( 'getHash: Basic usage', 5, function ( assert ) {
-	var tmp, hash, objects, example;
+	var tmp, hash, objects;
 
 	objects = {};
 

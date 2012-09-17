@@ -11,7 +11,7 @@
  * @class
  * @constructor
  * @extends {ve.ce.LeafNode}
- * @param model {ve.dm.BreakNode} Model to observe
+ * @param {ve.dm.BreakNode} model Model to observe
  */
 ve.ce.BreakNode = function VeCeBreakNode( model ) {
 	// Parent constructor

@@ -13,12 +13,12 @@
  *
  * @class
  * @constructor
- * @param left {Number} Horizontal position
- * @param top {Number} Vertical top position
- * @param bottom {Number} Vertical bottom position of bottom (optional, default: top)
- * @property left {Number} Horizontal position
- * @property top {Number} Vertical top position
- * @property bottom {Number} Vertical bottom position of bottom
+ * @param {Number} left Horizontal position
+ * @param {Number} top Vertical top position
+ * @param {Number} bottom Vertical bottom position of bottom (optional, default: top)
+ * @property {Number} left Horizontal position
+ * @property {Number} top Vertical top position
+ * @property {Number} bottom Vertical bottom position of bottom
  */
 ve.Position = function VePosition( left, top, bottom ) {
 	this.left = left || 0;
@@ -33,7 +33,7 @@ ve.Position = function VePosition( left, top, bottom ) {
  *
  * @static
  * @method
- * @param $element {jQuery} Element to get offset from
+ * @param {jQuery} $element Element to get offset from
  * @returns {ve.Position} Position with element data applied
  */
 ve.Position.newFromElementPagePosition = function ( $element ) {
@@ -46,7 +46,7 @@ ve.Position.newFromElementPagePosition = function ( $element ) {
  *
  * @static
  * @method
- * @param $element {jQuery} Element to get position from
+ * @param {jQuery} $element Element to get position from
  * @returns {ve.Position} Position with element data applied
  */
 ve.Position.newFromElementLayerPosition = function ( $element ) {
@@ -59,7 +59,7 @@ ve.Position.newFromElementLayerPosition = function ( $element ) {
  *
  * @static
  * @method
- * @param event {Event} Event to get position data from
+ * @param {Event} event Event to get position data from
  * @returns {ve.Position} Position with event data applied
  */
 ve.Position.newFromEventScreenPosition = function ( event ) {
@@ -71,7 +71,7 @@ ve.Position.newFromEventScreenPosition = function ( event ) {
  *
  * @static
  * @method
- * @param event {Event} Event to get position data from
+ * @param {Event} event Event to get position data from
  * @returns {ve.Position} Position with event data applied
  */
 ve.Position.newFromEventPagePosition = function ( event ) {
@@ -83,7 +83,7 @@ ve.Position.newFromEventPagePosition = function ( event ) {
  *
  * @static
  * @method
- * @param event {Event} Event to get position data from
+ * @param {Event} event Event to get position data from
  * @returns {ve.Position} Position with event data applied
  */
 ve.Position.newFromEventLayerPosition = function ( event ) {
@@ -96,7 +96,7 @@ ve.Position.newFromEventLayerPosition = function ( event ) {
  * Adds the values of a given position to this one.
  *
  * @method
- * @param position {ve.Position} Position to add values from
+ * @param {ve.Position} position Position to add values from
  */
 ve.Position.prototype.add = function ( position ) {
 	this.top += position.top;
@@ -108,7 +108,7 @@ ve.Position.prototype.add = function ( position ) {
  * Subtracts the values of a given position to this one.
  *
  * @method
- * @param position {ve.Position} Position to subtract values from
+ * @param {ve.Position} position Position to subtract values from
  */
 ve.Position.prototype.subtract = function ( position ) {
 	this.top -= position.top;
@@ -120,7 +120,7 @@ ve.Position.prototype.subtract = function ( position ) {
  * Checks if this position is the same as another one.
  *
  * @method
- * @param position {ve.Position} Position to compare with
+ * @param {ve.Position} position Position to compare with
  * @returns {Boolean} If positions have the same left and top values
  */
 ve.Position.prototype.at = function ( position ) {
@@ -131,7 +131,7 @@ ve.Position.prototype.at = function ( position ) {
  * Checks if this position perpendicular with another one, sharing either a top or left value.
  *
  * @method
- * @param position {ve.Position} Position to compare with
+ * @param {ve.Position} position Position to compare with
  * @returns {Boolean} If positions share a top or a left value
  */
 ve.Position.prototype.perpendicularWith = function ( position ) {
@@ -142,7 +142,7 @@ ve.Position.prototype.perpendicularWith = function ( position ) {
  * Checks if this position is level with another one, having the same top value.
  *
  * @method
- * @param position {ve.Position} Position to compare with
+ * @param {ve.Position} position Position to compare with
  * @returns {Boolean} If positions have the same top value
  */
 ve.Position.prototype.levelWith = function ( position ) {
@@ -153,7 +153,7 @@ ve.Position.prototype.levelWith = function ( position ) {
  * Checks if this position is plumb with another one, having the same left value.
  *
  * @method
- * @param position {ve.Position} Position to compare with
+ * @param {ve.Position} position Position to compare with
  * @returns {Boolean} If positions have the same left value
  */
 ve.Position.prototype.plumbWith = function ( position ) {
@@ -166,8 +166,8 @@ ve.Position.prototype.plumbWith = function ( position ) {
  * Distance is measured radially.
  *
  * @method
- * @param position {ve.Position} Position to compare with
- * @param radius {Number} Pixel distance from this position to consider "near-by"
+ * @param {ve.Position} position Position to compare with
+ * @param {Number} radius Pixel distance from this position to consider "near-by"
  * @returns {Boolean} If positions are near-by each other
  */
 ve.Position.prototype.near = function ( position, radius ) {
@@ -183,7 +183,7 @@ ve.Position.prototype.near = function ( position, radius ) {
  * This method utilizes the bottom property.
  *
  * @method
- * @param position {ve.Position} Position to compare with
+ * @param {ve.Position} position Position to compare with
  * @returns {Boolean} If this position is above the other
  */
 ve.Position.prototype.above = function ( position ) {
@@ -196,7 +196,7 @@ ve.Position.prototype.above = function ( position ) {
  * This method utilizes the bottom property.
  *
  * @method
- * @param position {ve.Position} Position to compare with
+ * @param {ve.Position} position Position to compare with
  * @returns {Boolean} If this position is below the other
  */
 ve.Position.prototype.below = function ( position ) {
@@ -207,7 +207,7 @@ ve.Position.prototype.below = function ( position ) {
  * Checks if this position is to the left of another one.
  *
  * @method
- * @param position {ve.Position} Position to compare with
+ * @param {ve.Position} position Position to compare with
  * @returns {Boolean} If this position is the left the other
  */
 ve.Position.prototype.leftOf = function ( left ) {
@@ -218,7 +218,7 @@ ve.Position.prototype.leftOf = function ( left ) {
  * Checks if this position is to the right of another one.
  *
  * @method
- * @param position {ve.Position} Position to compare with
+ * @param {ve.Position} position Position to compare with
  * @returns {Boolean} If this position is the right the other
  */
 ve.Position.prototype.rightOf = function ( left ) {

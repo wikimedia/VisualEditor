@@ -53,7 +53,7 @@ ve.init.Platform.prototype.getModulesUrl = function () {
  * @abstract
  * @param {Object} messages Map of message-key/message-string pairs
  */
-ve.init.Platform.prototype.addMessages = function ( messages ) {
+ve.init.Platform.prototype.addMessages = function () {
 	throw new Error( 've.init.Platform.addMessages must be overridden in subclass' );
 };
 
@@ -66,6 +66,6 @@ ve.init.Platform.prototype.addMessages = function ( messages ) {
  * @param {Mixed} [...] List of arguments which will be injected at $1, $2, etc. in the messaage
  * @returns {String} Localized message
  */
-ve.init.Platform.prototype.getMessage = function ( key ) {
+ve.init.Platform.prototype.getMessage = function () {
 	throw new Error( 've.init.Platform.getMessage must be overridden in subclass' );
 };

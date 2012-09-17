@@ -144,7 +144,6 @@ QUnit.test( 'getDataFromNode', 3, function ( assert ) {
 QUnit.test( 'getAnnotationsFromOffset', 1, function ( assert ) {
 	var c, i, j,
 		doc,
-		range,
 		annotations,
 		expectCount = 0,
 		cases = [
@@ -877,7 +876,7 @@ QUnit.test( 'getRelativeOffset', function ( assert ) {
 			'offset': 0,
 			'distance': 1,
 			'data': [],
-			'callback': function ( data, offset ) {
+			'callback': function () {
 				return false;
 			},
 			'expected': -1
@@ -887,7 +886,7 @@ QUnit.test( 'getRelativeOffset', function ( assert ) {
 			'offset': 0,
 			'distance': 2,
 			'data': ['a', 'b'],
-			'callback': function ( data, offset ) {
+			'callback': function () {
 				return true;
 			},
 			'expected': 2

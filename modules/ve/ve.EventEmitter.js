@@ -11,7 +11,7 @@
  * @class
  * @abstract
  * @constructor
- * @property events {Object}
+ * @property {Object} events
  */
 ve.EventEmitter = function VeEventEmitter() {
 	this.events = {};
@@ -23,8 +23,8 @@ ve.EventEmitter = function VeEventEmitter() {
  * Emits an event.
  *
  * @method
- * @param type {String} Type of event
- * @param args {Mixed} First in a list of variadic arguments passed to event handler (optional)
+ * @param {String} type Type of event
+ * @param {Mixed} args First in a list of variadic arguments passed to event handler (optional)
  * @returns {Boolean} If event was handled by at least one listener
  */
 ve.EventEmitter.prototype.emit = function ( type ) {
@@ -48,8 +48,8 @@ ve.EventEmitter.prototype.emit = function ( type ) {
  * Adds a listener to events of a specific type.
  *
  * @method
- * @param type {String} Type of event to listen to
- * @param listener {Function} Listener to call when event occurs
+ * @param {String} type Type of event to listen to
+ * @param {Function} listener Listener to call when event occurs
  * @returns {ve.EventEmitter} This object
  * @throws "Invalid listener error" if listener argument is not a function
  */
@@ -70,7 +70,7 @@ ve.EventEmitter.prototype.addListener = function ( type, listener ) {
  * Add multiple listeners at once.
  *
  * @method
- * @param listeners {Object} List of event/callback pairs
+ * @param {Object} listeners List of event/callback pairs
  * @returns {ve.EventEmitter} This object
  */
 ve.EventEmitter.prototype.addListeners = function ( listeners ) {
@@ -84,9 +84,9 @@ ve.EventEmitter.prototype.addListeners = function ( listeners ) {
  * Add a listener, mapped to a method on a target object.
  *
  * @method
- * @param target {Object} Object to call methods on when events occur
- * @param event {String} Name of event to trigger on
- * @param method {String} Name of method to call
+ * @param {Object} target Object to call methods on when events occur
+ * @param {String} event Name of event to trigger on
+ * @param {String} method Name of method to call
  * @returns {ve.EventEmitter} This object
  */
 ve.EventEmitter.prototype.addListenerMethod = function ( target, event, method ) {
@@ -103,8 +103,8 @@ ve.EventEmitter.prototype.addListenerMethod = function ( target, event, method )
  * Add multiple listeners, each mapped to a method on a target object.
  *
  * @method
- * @param target {Object} Object to call methods on when events occur
- * @param methods {Object} List of event/method name pairs
+ * @param {Object} target Object to call methods on when events occur
+ * @param {Object} methods List of event/method name pairs
  * @returns {ve.EventEmitter} This object
  */
 ve.EventEmitter.prototype.addListenerMethods = function ( target, methods ) {
@@ -125,8 +125,8 @@ ve.EventEmitter.prototype.on = ve.EventEmitter.prototype.addListener;
  * Adds a one-time listener to a specific event.
  *
  * @method
- * @param type {String} Type of event to listen to
- * @param listener {Function} Listener to call when event occurs
+ * @param {String} type Type of event to listen to
+ * @param {Function} listener Listener to call when event occurs
  * @returns {ve.EventEmitter} This object
  */
 ve.EventEmitter.prototype.once = function ( type, listener ) {
@@ -141,8 +141,8 @@ ve.EventEmitter.prototype.once = function ( type, listener ) {
  * Removes a specific listener from a specific event.
  *
  * @method
- * @param type {String} Type of event to remove listener from
- * @param listener {Function} Listener to remove
+ * @param {String} type Type of event to remove listener from
+ * @param {Function} listener Listener to remove
  * @returns {ve.EventEmitter} This object
  * @throws "Invalid listener error" if listener argument is not a function
  */
@@ -174,7 +174,7 @@ ve.EventEmitter.prototype.removeListener = function ( type, listener ) {
  * Removes all listeners from a specific event.
  *
  * @method
- * @param type {String} Type of event to remove listeners from
+ * @param {String} type Type of event to remove listeners from
  * @returns {ve.EventEmitter} This object
  */
 ve.EventEmitter.prototype.removeAllListeners = function ( type ) {
@@ -188,7 +188,7 @@ ve.EventEmitter.prototype.removeAllListeners = function ( type ) {
  * Gets a list of listeners attached to a specific event.
  *
  * @method
- * @param type {String} Type of event to get listeners for
+ * @param {String} type Type of event to get listeners for
  * @returns {Array} List of listeners to an event
  */
 ve.EventEmitter.prototype.listeners = function ( type ) {

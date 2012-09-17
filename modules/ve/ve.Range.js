@@ -10,12 +10,12 @@
  *
  * @class
  * @constructor
- * @param from {Number} Starting offset
- * @param [to=from] {Number} Ending offset
- * @property from {Number} Starting offset
- * @property to {Number} Ending offset
- * @property start {Number} Normalized starting offset
- * @property end {Number} Normalized ending offset
+ * @param {Number} from Starting offset
+ * @param {Number} [to=from] Ending offset
+ * @property {Number} from Starting offset
+ * @property {Number} to Ending offset
+ * @property {Number} start Normalized starting offset
+ * @property {Number} end Normalized ending offset
  */
 ve.Range = function veRange( from, to ) {
 	this.from = from || 0;
@@ -76,7 +76,7 @@ ve.Range.prototype.clone = function () {
  * Checks if an offset is within this range.
  *
  * @method
- * @param offset {Number} Offset to check
+ * @param {Number} offset Offset to check
  * @returns {Boolean} If offset is within this range
  */
 ve.Range.prototype.containsOffset = function ( offset ) {
@@ -141,7 +141,7 @@ ve.Range.prototype.equals = function ( other ) {
  * Creates a new ve.Range object.
  *
  * @method
- * @param {Integer} Length of the new range.
+ * @param {Number} Length of the new range.
  * @returns {ve.Range} A new range.
  */
 ve.Range.prototype.truncate = function ( length ) {

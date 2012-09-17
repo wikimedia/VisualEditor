@@ -11,7 +11,7 @@
  * @class
  * @constructor
  * @extends {ve.ce.BranchNode}
- * @param model {ve.dm.DocumentNode} Model to observe
+ * @param {ve.dm.DocumentNode} model Model to observe
  */
 ve.ce.DocumentNode = function VeCeDocumentNode( model, surface ) {
 	// Parent constructor

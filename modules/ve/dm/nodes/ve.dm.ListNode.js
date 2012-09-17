@@ -56,7 +56,7 @@ ve.dm.ListNode.converters = {
 			'number': document.createElement( 'ol' )
 		} )[element.attributes.style];
 	},
-	'toDataElement': function ( tag, element ) {
+	'toDataElement': function ( tag ) {
 		return ( {
 			'ul': { 'type': 'list', 'attributes': { 'style': 'bullet' } },
 			'ol': { 'type': 'list', 'attributes': { 'style': 'number' } }

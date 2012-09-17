@@ -227,7 +227,7 @@ ve.dm.DocumentSynchronizer.prototype.pushRebuild = function ( oldRange, newRange
  * @param {String} event Event name
  * @param {Mixed} [...] Additional arguments to be passed to the event when fired
  */
-ve.dm.DocumentSynchronizer.prototype.queueEvent = function ( node, event ) {
+ve.dm.DocumentSynchronizer.prototype.queueEvent = function ( node ) {
 	// Check if this is already queued
 	var
 		args = Array.prototype.slice.call( arguments, 1 ),

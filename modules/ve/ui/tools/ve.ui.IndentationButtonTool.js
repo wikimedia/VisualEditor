@@ -53,11 +53,11 @@ ve.ui.IndentationButtonTool.prototype.onClick = function () {
 	}
 };
 
-ve.ui.IndentationButtonTool.prototype.indent = function ( listItems ) {
+ve.ui.IndentationButtonTool.prototype.indent = function () {
 	ve.ui.IndentationButtonTool.indentListItem( this.toolbar.getSurfaceView().getModel() );
 };
 
-ve.ui.IndentationButtonTool.prototype.outdent = function ( listItems ) {
+ve.ui.IndentationButtonTool.prototype.outdent = function () {
 	ve.ui.IndentationButtonTool.outdentListItem( this.toolbar.getSurfaceView().getModel() );
 };
 
@@ -157,10 +157,9 @@ ve.ui.IndentationButtonTool.outdentListItem = function ( surfaceModel ) {
 		 * 3b. Split the listItem after the list if it's not the last child
 		 * 4. Unwrap the now-isolated listItem and the isolated list
 		 */
-		// TODO child list handling, gotta figure that out
+		// TODO: Child list handling, gotta figure that out.
 		var tx,
 			list = listItem.getParent(),
-			listType = list.getAttribute( 'style' ),
 			listElement = list.getClonedElement(),
 			grandParentType = list.getParent().getType(),
 			listItemRange = listItem.getOuterRange(),

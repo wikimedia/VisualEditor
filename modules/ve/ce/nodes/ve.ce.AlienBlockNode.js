@@ -11,7 +11,7 @@
  * @class
  * @constructor
  * @extends {ve.ce.LeafNode}
- * @param model {ve.dm.AlienBlockNode} Model to observe
+ * @param {ve.dm.AlienBlockNode} model Model to observe.
  */
 ve.ce.AlienBlockNode = function VeCeAlienBlockNode( model ) {
 	// Parent constructor
@@ -24,7 +24,7 @@ ve.ce.AlienBlockNode = function VeCeAlienBlockNode( model ) {
 	// Events
 	this.model.addListenerMethod( this, 'update', 'onUpdate' );
 
-	// Intialization
+	// Initialization
 	this.onUpdate();
 };
 

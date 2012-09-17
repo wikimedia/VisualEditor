@@ -49,7 +49,7 @@ ve.ui.ClearButtonTool.prototype.onClick = function () {
 	surfaceView.contextView.closeInspector();
 };
 
-ve.ui.ClearButtonTool.prototype.updateState = function ( annotations ) {
+ve.ui.ClearButtonTool.prototype.updateState = function () {
 	var allAnnotations = this.getAnnotations();
 
 	if ( allAnnotations.isEmpty() ) {

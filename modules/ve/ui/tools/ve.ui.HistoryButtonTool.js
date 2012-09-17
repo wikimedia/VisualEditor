@@ -50,7 +50,7 @@ ve.ui.HistoryButtonTool.prototype.onClick = function () {
 	}
 };
 
-ve.ui.HistoryButtonTool.prototype.updateState = function ( annotations ) {
+ve.ui.HistoryButtonTool.prototype.updateState = function () {
 	this.enabled = this.isButtonEnabled( this.name );
 	this.updateEnabled();
 };

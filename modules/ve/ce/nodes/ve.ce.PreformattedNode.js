@@ -11,7 +11,7 @@
  * @class
  * @constructor
  * @extends {ve.ce.BranchNode}
- * @param model {ve.dm.PreformattedNode} Model to observe
+ * @param {ve.dm.PreformattedNode} model Model to observe
  */
 ve.ce.PreformattedNode = function VeCePreformattedNode( model ) {
 	// Parent constructor

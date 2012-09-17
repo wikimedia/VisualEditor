@@ -50,11 +50,13 @@ ve.dm.ImageNode.rules = {
  */
 ve.dm.ImageNode.converters = {
 	'domElementTypes': ['img'],
-	'toDomElement': function ( type, element ) {
+	'toDomElement': function () {
 		return document.createElement( 'img' );
 	},
-	'toDataElement': function ( tag, element ) {
-		return { 'type': 'image' };
+	'toDataElement': function () {
+		return {
+			'type': 'image'
+		};
 	}
 };
 

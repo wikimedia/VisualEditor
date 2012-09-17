@@ -466,7 +466,7 @@ ve.dm.SurfaceFragment.prototype.convertNodes = function ( type, attr ) {
  * @param {Object} [wrapper.attributes] Attributes of wrapper
  * @returns {ve.dm.SurfaceFragment} This fragment
  */
-ve.dm.SurfaceFragment.prototype.wrapNodes = function ( wrapper ) {
+ve.dm.SurfaceFragment.prototype.wrapNodes = function () {
 	// Handle null fragment
 	if ( !this.surface ) {
 		return this;
@@ -482,7 +482,7 @@ ve.dm.SurfaceFragment.prototype.wrapNodes = function ( wrapper ) {
  * @param {String|String[]} type Node types to unwrap, or array of node types to unwrap
  * @returns {ve.dm.SurfaceFragment} This fragment
  */
-ve.dm.SurfaceFragment.prototype.unwrapNodes = function ( type ) {
+ve.dm.SurfaceFragment.prototype.unwrapNodes = function () {
 	// Handle null fragment
 	if ( !this.surface ) {
 		return this;
@@ -504,7 +504,7 @@ ve.dm.SurfaceFragment.prototype.unwrapNodes = function ( type ) {
  * @param {Object} [wrapper.attributes] Attributes of wrapper
  * @returns {ve.dm.SurfaceFragment} This fragment
  */
-ve.dm.SurfaceFragment.prototype.rewrapNodes = function ( type, wrapper ) {
+ve.dm.SurfaceFragment.prototype.rewrapNodes = function () {
 	// Handle null fragment
 	if ( !this.surface ) {
 		return this;
@@ -525,7 +525,7 @@ ve.dm.SurfaceFragment.prototype.rewrapNodes = function ( type, wrapper ) {
  * @param {Object} [wrapper.attributes] Attributes of wrapper
  * @returns {ve.dm.SurfaceFragment} This fragment
  */
-ve.dm.SurfaceFragment.prototype.wrapAllNodes = function ( wrapper ) {
+ve.dm.SurfaceFragment.prototype.wrapAllNodes = function () {
 	// Handle null fragment
 	if ( !this.surface ) {
 		return this;
@@ -543,7 +543,7 @@ ve.dm.SurfaceFragment.prototype.wrapAllNodes = function ( wrapper ) {
  * @param {String|String[]} type Node types to unwrap, or array of node types to unwrap
  * @returns {ve.dm.SurfaceFragment} This fragment
  */
-ve.dm.SurfaceFragment.prototype.unwrapAllNodes = function ( type ) {
+ve.dm.SurfaceFragment.prototype.unwrapAllNodes = function () {
 	// Handle null fragment
 	if ( !this.surface ) {
 		return this;
@@ -565,7 +565,7 @@ ve.dm.SurfaceFragment.prototype.unwrapAllNodes = function ( type ) {
  * @param {Object} [wrapper.attributes] Attributes of wrapper
  * @returns {ve.dm.SurfaceFragment} This fragment
  */
-ve.dm.SurfaceFragment.prototype.rewrapAllNodes = function ( type, wrapper ) {
+ve.dm.SurfaceFragment.prototype.rewrapAllNodes = function () {
 	// Handle null fragment
 	if ( !this.surface ) {
 		return this;

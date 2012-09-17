@@ -11,7 +11,7 @@
  * @class
  * @constructor
  * @extends {ve.ce.BranchNode}
- * @param model {ve.dm.ParagraphNode} Model to observe
+ * @param {ve.dm.ParagraphNode} model Model to observe
  */
 ve.ce.ParagraphNode = function VeCeParagraphNode( model ) {
 	// Parent constructor

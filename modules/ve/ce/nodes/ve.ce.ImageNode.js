@@ -11,7 +11,7 @@
  * @class
  * @constructor
  * @extends {ve.ce.LeafNode}
- * @param model {ve.dm.ImageNode} Model to observe
+ * @param {ve.dm.ImageNode} model Model to observe.
  */
 ve.ce.ImageNode = function VeCeImageNode( model ) {
 	// Parent constructor
@@ -32,7 +32,7 @@ ve.ce.ImageNode = function VeCeImageNode( model ) {
 	});
 	*/
 
-	// Intialization
+	// Initialization
 	this.onUpdate();
 };
 

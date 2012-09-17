@@ -50,10 +50,10 @@ ve.dm.BreakNode.rules = {
  */
 ve.dm.BreakNode.converters = {
 	'domElementTypes': ['br'],
-	'toDomElement': function ( type, element ) {
+	'toDomElement': function () {
 		return document.createElement( 'br' );
 	},
-	'toDataElement': function ( tag, element ) {
+	'toDataElement': function () {
 		return { 'type': 'break' };
 	}
 };
