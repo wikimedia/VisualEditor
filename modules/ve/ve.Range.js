@@ -23,6 +23,8 @@ ve.Range = function veRange( from, to ) {
 	this.normalize();
 };
 
+/* Static Methods */
+
 /**
  * Creates a new ve.Range object that's a translated version of another.
  *

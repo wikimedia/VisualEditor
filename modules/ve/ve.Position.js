@@ -5,7 +5,6 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-
 /**
  * Pixel position.
  *

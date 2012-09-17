@@ -120,8 +120,6 @@ QUnit.test( 'getHash: Complex usage', 4, function ( assert ) {
 		// window's "Object".
 		'Treat objects constructed by a another window as well'
 	);
-
-
 } );
 
 QUnit.test( 'getObjectValues', 6, function ( assert ) {

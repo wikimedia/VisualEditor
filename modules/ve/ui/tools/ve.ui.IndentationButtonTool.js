@@ -20,6 +20,7 @@ ve.ui.IndentationButtonTool = function VeUiIndentationButtonTool( toolbar, name,
 	// Parent constructor
 	ve.ui.ButtonTool.call( this, toolbar, name, title );
 
+	// Properties
 	this.data = data;
 };
 

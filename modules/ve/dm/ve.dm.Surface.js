@@ -16,6 +16,7 @@
 ve.dm.Surface = function VeDmSurface( doc ) {
 	// Parent constructor
 	ve.EventEmitter.call( this );
+
 	// Properties
 	this.documentModel = doc;
 	this.selection = new ve.Range( 0, 0 );

@@ -16,8 +16,11 @@
 		'instances': []
 	};
 
-	/* Utility functions */
+	/* Utility Functions */
+
 	hasOwn = Object.prototype.hasOwnProperty;
+
+	/* Static Methods */
 
 	/**
 	 * Create an object that inherits from another object.

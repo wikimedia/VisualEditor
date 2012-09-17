@@ -24,7 +24,6 @@ ve.dm.TableRowNode = function VeDmTableRowNode( children, attributes, internal )
 
 ve.inheritClass( ve.dm.TableRowNode, ve.dm.BranchNode );
 
-
 /* Static Members */
 
 /**

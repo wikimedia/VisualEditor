@@ -6,6 +6,8 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
+/* Static Methods */
+
 /**
  * Logs data to the console.
  *
@@ -16,7 +18,6 @@
 ve.log = function () {
 	Function.prototype.apply.call( console.log, console, arguments );
 };
-
 
 /**
  * Logs an object to the console.
