@@ -18,7 +18,6 @@
 ve.ui.Toolbar = function VeUiToolbar( $container, surfaceView, config ) {
 	// Parent constructor
 	ve.EventEmitter.call( this );
-	// TODO: Do we still need EventEmitter here?
 
 	if ( !surfaceView ) {
 		return;
@@ -53,67 +52,66 @@ ve.inheritClass( ve.ui.Toolbar, ve.EventEmitter );
 /* Methods */
 
 /**
- * Triggers update events on all tools.
- *
+ * Triggers updateState & clearState events on all tools.
+ * on updateState, annotations and nodes are passed as params to tools.
  * @method
  */
 ve.ui.Toolbar.prototype.updateTools = function () {
 	var model = this.surfaceView.getModel(),
+		range = model.getSelection(),
 		doc = model.getDocument(),
+		selectNodes = [],
 		annotations,
 		nodes = [],
-		range = model.getSelection(),
 		startNode,
 		endNode,
-		tool = this,
 		i;
 
 	if ( range !== null ) {
+		// Cursor
 		if ( range.from === range.to ) {
-			nodes.push( doc.getNodeFromOffset( range.from ) );
+			selectNodes = doc.selectNodes( range, 'leaves' );
+			// Get the parent node.
+			if ( selectNodes[0].node.parent ) {
+				nodes.push( selectNodes[0].node.getParent() );
+			}
 		} else {
 			startNode = doc.getNodeFromOffset( range.from );
 			endNode = doc.getNodeFromOffset ( range.end );
-
+			// Bail if selection contains document node.
 			if ( startNode.type === 'document' || endNode.type === 'document' ) {
 				// Clear state
-				for ( i = 0; i < this.tools.length; i++ ) {
-					this.tools[i].clearState();
-				}
+				this.emit( 'clearState' );
 				return;
 			}
-
-			// These should be different, alas just in case.
+			// Text selection inside the same node.
 			if ( startNode === endNode ) {
 				nodes.push( startNode );
+			// Select nodes.
 			} else {
-				model.getDocument().getDocumentNode().traverseLeafNodes( function ( node ) {
-					nodes.push( node );
-					if ( node === endNode ) {
-						return false;
-					}
-				}, startNode );
+				selectNodes = doc.selectNodes( range, 'leaves' );
 			}
 		}
-
+		// If selection.
 		if ( range.getLength() > 0 ) {
 			annotations = doc.getAnnotationsFromRange( range );
+		// Cursor only, get annotations from the left.
 		} else {
 			// Clear context
-			tool.surfaceView.contextView.clear();
+			this.surfaceView.contextView.clear();
 			annotations = doc.getAnnotationsFromOffset(
 				doc.getNearestContentOffset( range.start - 1 )
 			);
 		}
-		// Update state
-		for ( i = 0; i < this.tools.length; i++ ) {
-			this.tools[i].updateState( annotations, nodes );
+		// Normalize nodes returned from selectNodes and add to nodes list.
+		// Fire toolbar update state to update tools.
+		for( i = 0; i < selectNodes.length; i++ ) {
+			nodes.push( selectNodes[i].node );
 		}
+		this.emit( 'updateState', annotations, nodes );
 	} else {
 		// Clear state
-		for ( i = 0; i < this.tools.length; i++ ) {
-			this.tools[i].clearState();
-		}
+		this.emit( 'clearState' );
 	}
 };
 

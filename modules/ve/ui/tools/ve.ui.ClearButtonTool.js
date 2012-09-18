@@ -49,10 +49,8 @@ ve.ui.ClearButtonTool.prototype.onClick = function () {
 	surfaceView.contextView.closeInspector();
 };
 
-ve.ui.ClearButtonTool.prototype.updateState = function () {
-	var allAnnotations = this.getAnnotations();
-
-	if ( allAnnotations.isEmpty() ) {
+ve.ui.ClearButtonTool.prototype.onUpdateState = function ( annotations ) {
+	if ( annotations.isEmpty() ) {
 		this.$.addClass( 've-ui-toolbarButtonTool-disabled' );
 	} else {
 		this.$.removeClass( 've-ui-toolbarButtonTool-disabled' );
