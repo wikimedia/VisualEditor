@@ -179,7 +179,7 @@ ve.dm.Converter.prototype.getDataElementFromDomElement = function ( domElement )
 	domElementAttributes = domElement.attributes;
 	if ( domElementAttributes.length ) {
 		dataElementAttributes = dataElement.attributes = dataElement.attributes || {};
-		// Inlcude all attributes and prepend 'html/' to each attribute name
+		// Include all attributes and prepend 'html/' to each attribute name
 		for ( i = 0; i < domElementAttributes.length; i++ ) {
 			domElementAttribute = domElementAttributes[i];
 			dataElementAttributes['html/' + domElementAttribute.name] = domElementAttribute.value;
@@ -279,8 +279,8 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 	// Fallback to defaults
 	annotations = annotations || [];
 	path = path || ['document'];
-	var i, childDomElement, annotation, childDataElement, text, childTypes, matches,
-		wrappingParagraph, prevElement, alien, rdfaType,
+	var i, j, childDomElement, annotation, childDataElement, text, childTypes, matches,
+		wrappingParagraph, prevElement, alien, rdfaType, isLink,
 		data = [],
 		branchType = path[path.length - 1],
 		branchIsContent = ve.dm.nodeFactory.canNodeContainContent( branchType ),
@@ -297,6 +297,43 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 		childDomElement = domElement.childNodes[i];
 		switch ( childDomElement.nodeType ) {
 			case Node.ELEMENT_NODE:
+				// HACK handle <meta>/<link> separately because of the
+				// metaInline/metaBlock distinction
+				if (
+					childDomElement.nodeName.toLowerCase() === 'meta' ||
+					childDomElement.nodeName.toLowerCase() === 'link'
+				) {
+					isLink = childDomElement.nodeName.toLowerCase() === 'link';
+					childDataElement = {
+						'type': branchIsContent ? 'metaInline' : 'metaBlock',
+						'attributes': {
+							'style': isLink ? 'link' : 'meta',
+							'key': childDomElement.getAttribute( isLink ? 'rel' : 'property' )
+						}
+					};
+					if ( childDomElement.hasAttribute( isLink ? 'href' : 'content' ) ) {
+						childDataElement.attributes.value = childDomElement.getAttribute( isLink ? 'href' : 'content' );
+					}
+					// Preserve HTML attributes
+					// FIXME the following is duplicated from getDataElementFromDomElement()
+					// Include all attributes and prepend 'html/' to each attribute name
+					for ( j = 0; j < childDomElement.attributes.length; j++ ) {
+						// ..but exclude attributes we've already processed,
+						// because they'll be overwritten otherwise *sigh*
+						// FIXME this sucks, we need a new node type API so bad
+						if (
+							childDomElement.attributes[j].name !== ( isLink ? 'rel' : 'property' ) &&
+							childDomElement.attributes[j].name !== ( isLink ? 'href' : 'content' )
+						) {
+							childDataElement.attributes['html/' + childDomElement.attributes[j].name] = childDomElement.attributes[j].value;
+						}
+					}
+					data.push( childDataElement );
+					data.push( { 'type': branchIsContent ? '/metaInline' : '/metaBlock' } );
+					processNextWhitespace( childDataElement );
+					prevElement = childDataElement;
+					break;
+				}
 				// Alienate anything with a mw: type that isn't registered
 				// HACK because we don't actually have an RDFa type registry yet,
 				// this hardcodes the set of recognized types

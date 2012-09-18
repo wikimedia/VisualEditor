@@ -1158,5 +1158,80 @@ ve.dm.example.domToDataCases = {
 			],
 			{ 'type': '/paragraph' }
 		]
+	},
+	'document with meta elements': {
+		'html': '<meta property="mw:PageProp/nocc" /><p>Foo' +
+			'<link rel="mw:WikiLink/Category" href="./Category:Bar" />Bar' +
+			'<meta property="mw:foo" content="bar" />Baz</p>' +
+			'<meta property="mw:bar" content="baz" />' +
+			'<link rel="mw:WikiLink/Category" href="./Category:Foo#Bar baz%23quux" />' +
+			'<meta typeof="mw:Placeholder" data-parsoid="foobar" />',
+		'data': [
+			{
+				'type': 'metaBlock',
+				'attributes': {
+					'style': 'meta',
+					'key': 'mw:PageProp/nocc'
+				}
+			},
+			{ 'type': '/metaBlock' },
+			{ 'type': 'paragraph' },
+			'F',
+			'o',
+			'o',
+			{
+				'type': 'metaInline',
+				'attributes': {
+					'style': 'link',
+					'key': 'mw:WikiLink/Category',
+					'value': './Category:Bar'
+				}
+			},
+			{ 'type': '/metaInline' },
+			'B',
+			'a',
+			'r',
+			{
+				'type': 'metaInline',
+				'attributes': {
+					'style': 'meta',
+					'key': 'mw:foo',
+					'value': 'bar'
+				}
+			},
+			{ 'type': '/metaInline' },
+			'B',
+			'a',
+			'z',
+			{ 'type': '/paragraph' },
+			{
+				'type': 'metaBlock',
+				'attributes': {
+					'style': 'meta',
+					'key': 'mw:bar',
+					'value': 'baz'
+				}
+			},
+			{ 'type': '/metaBlock' },
+			{
+				'type': 'metaBlock',
+				'attributes': {
+					'style': 'link',
+					'key': 'mw:WikiLink/Category',
+					'value': './Category:Foo#Bar baz%23quux'
+				}
+			},
+			{ 'type': '/metaBlock' },
+			{
+				'type': 'metaBlock',
+				'attributes': {
+					'style': 'meta',
+					'key': null,
+					'html/typeof': 'mw:Placeholder',
+					'html/data-parsoid': 'foobar'
+				}
+			},
+			{ 'type': '/metaBlock' }
+		]
 	}
 };
