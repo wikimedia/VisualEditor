@@ -45,7 +45,7 @@ ve.ui.AnnotationButtonTool.prototype.onClick = function () {
 	}
 };
 
-ve.ui.AnnotationButtonTool.prototype.updateState = function ( annotations ) {
+ve.ui.AnnotationButtonTool.prototype.onUpdateState = function ( annotations ) {
 	if ( annotations.hasAnnotationOfType( this.annotation.type ) ) {
 		this.$.addClass( 've-ui-toolbarButtonTool-down' );
 		this.active = true;

@@ -24,7 +24,7 @@ ve.ui.HistoryButtonTool = function VeUiHistoryButtonTool( toolbar, name, title, 
 	this.data = data;
 	this.enabled = false;
 	
-	this.toolbar.getSurfaceView().model.on( 'history', ve.bind( this.updateState, this ) );
+	this.toolbar.getSurfaceView().model.addListenerMethod( this, 'history', 'onUpdateState' );
 };
 
 /* Inheritance */
@@ -50,7 +50,7 @@ ve.ui.HistoryButtonTool.prototype.onClick = function () {
 	}
 };
 
-ve.ui.HistoryButtonTool.prototype.updateState = function () {
+ve.ui.HistoryButtonTool.prototype.onUpdateState = function () {
 	this.enabled = this.isButtonEnabled( this.name );
 	this.updateEnabled();
 };

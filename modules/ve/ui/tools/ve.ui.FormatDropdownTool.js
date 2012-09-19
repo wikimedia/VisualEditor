@@ -196,7 +196,7 @@ ve.ui.FormatDropdownTool.prototype.getMatchingMenuItems = function ( nodes ) {
 	return matches;
 };
 
-ve.ui.FormatDropdownTool.prototype.updateState = function ( annotations, nodes ) {
+ve.ui.FormatDropdownTool.prototype.onUpdateState = function ( annotations, nodes ) {
 	if ( nodes.length ) {
 		var items = this.getMatchingMenuItems( nodes );
 		if ( items.length === 1 ) {

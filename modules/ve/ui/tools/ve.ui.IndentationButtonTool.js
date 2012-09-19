@@ -252,7 +252,7 @@ ve.ui.IndentationButtonTool.outdentListItem = function ( surfaceModel ) {
 	}
 };
 
-ve.ui.IndentationButtonTool.prototype.updateState = function ( annotations, nodes ) {
+ve.ui.IndentationButtonTool.prototype.onUpdateState = function ( annotations, nodes ) {
 	function areListItems( nodes ) {
 		for ( var i = 0; i < nodes.length; i++ ) {
 			if (

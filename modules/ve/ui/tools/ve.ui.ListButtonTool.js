@@ -179,18 +179,11 @@ ve.ui.ListButtonTool.prototype.onClick = function () {
 	this.toolbar.surfaceView.model.breakpoint();
 };
 
-ve.ui.ListButtonTool.prototype.updateState = function () {
-	var surfaceView = this.toolbar.getSurfaceView(),
-		surfaceModel = surfaceView.getModel(),
-		doc = surfaceView.getDocument(),
-		selection = surfaceModel.getSelection(),
-		leaves = doc.selectNodes( selection, 'leaves' );
-
-	function areListItemsOfStyle( leaves, style ) {
+ve.ui.ListButtonTool.prototype.onUpdateState = function ( annotations, nodes ) {
+	function areListItemsOfStyle( nodes, style ) {
 		var i, listNode;
-
-		for ( i = 0; i < leaves.length; i++ ) {
-			listNode = leaves[i].node;
+		for ( i = 0; i < nodes.length; i++ ) {
+			listNode = nodes[i];
 			// Get the list node
 			while ( listNode && listNode.getType() !== 'list' ) {
 				listNode = listNode.getParent();
@@ -198,14 +191,14 @@ ve.ui.ListButtonTool.prototype.updateState = function () {
 					return false;
 				}
 			}
-			if ( listNode.getModel().getAttribute('style') !== style ) {
+			if ( listNode.getAttribute( 'style' ) !== style ) {
 				return false;
 			}
 		}
 		return true;
 	}
 
-	if ( areListItemsOfStyle( leaves, this.name ) ) {
+	if ( areListItemsOfStyle( nodes, this.name ) ) {
 		this.$.addClass( 've-ui-toolbarButtonTool-down' );
 	} else {
 		this.$.removeClass( 've-ui-toolbarButtonTool-down' );
