@@ -97,8 +97,9 @@ ve.ui.Context.prototype.setupInspectorSpace = function () {
 				'type': 'text/css',
 				'media': 'screen',
 				'href': ve.init.platform.getModulesUrl() +
-						( window.devicePixelRatio > 1 ? '/ve/ui/styles/ve.ui.Icons-vector.css' :
-						'/ve/ui/styles/ve.ui.Icons-raster.css' )
+						( window.devicePixelRatio > 1 ?
+							'/ve/ui/styles/ve.ui.Inspector.Icons-vector.css' :
+							'/ve/ui/styles/ve.ui.Inspector.Icons-raster.css' )
 			} );
 
 	// Append style elements to head.
