@@ -31,7 +31,7 @@ ve.inheritClass( ve.dm.TextStyleAnnotation, ve.dm.Annotation );
  * @member
  */
 ve.dm.TextStyleAnnotation.converters = {
-	'domElementTypes': ['i', 'b', 'u', 's', 'small', 'big', 'span'],
+	'domElementTypes': ['i', 'b', 'u', 's', 'small', 'big', 'span', 'strong', 'em', 'sup', 'sub'],
 	'toDomElement': function ( subType, annotation ) {
 		var map = {
 			'italic': 'i',
