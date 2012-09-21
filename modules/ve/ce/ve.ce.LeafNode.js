@@ -17,6 +17,7 @@
  * @param {jQuery} [$element] Element to use as a container
  */
 ve.ce.LeafNode = function VeCeLeafNode( type, model, $element ) {
+	// Mixin constructor
 	ve.LeafNode.call( this );
 
 	// Parent constructor

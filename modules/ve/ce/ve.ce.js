@@ -12,6 +12,8 @@ ve.ce = {
 	//'nodeFactory': Initialized in ve.ce.NodeFactory.js
 };
 
+/* Static Members */
+
 /**
  * RegExp pattern for matching all whitespaces in HTML text.
  *
@@ -22,6 +24,8 @@ ve.ce = {
  * @member
  */
 ve.ce.whitespacePattern = /[\u0020\u00A0]/g;
+
+/* Static Methods */
 
 /**
  * Gets the plain text of a DOM element (that is a node canContainContent === true)

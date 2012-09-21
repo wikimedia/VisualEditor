@@ -19,7 +19,7 @@
 ve.ui.LinkInspector = function VeUiLinkInspector( toolbar, context ) {
 	var inspector = this;
 
-	// Inheritance
+	// Parent constructor
 	ve.ui.Inspector.call( this, toolbar, context );
 
 	// Properties

@@ -17,7 +17,7 @@
 ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	var currentUri = new mw.Uri( window.location.toString() );
 
-	// Inheritance
+	// Parent constructor
 	ve.init.mw.Target.call(
 		this, mw.config.get( 'wgRelevantPageName' ), currentUri.query.oldid
 	);

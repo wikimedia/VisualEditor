@@ -14,6 +14,7 @@
  * @property {Object} events
  */
 ve.EventEmitter = function VeEventEmitter() {
+	// Properties
 	this.events = {};
 };
 

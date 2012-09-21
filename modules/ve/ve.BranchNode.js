@@ -22,6 +22,8 @@ ve.BranchNode = function ( children ) {
 	this.children = ve.isArray( children ) ? children : [];
 };
 
+/* Methods */
+
 /**
  * Checks if this node has child nodes.
  *

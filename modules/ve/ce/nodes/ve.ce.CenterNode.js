@@ -15,9 +15,7 @@
  */
 ve.ce.CenterNode = function VeCeCenterNode( model ) {
 	// Parent constructor
-	ve.ce.BranchNode.call(
-		this, 'center', model, $( '<center>')
-	);
+	ve.ce.BranchNode.call( this, 'center', model, $( '<center>') );
 };
 
 /* Inheritance */

@@ -18,6 +18,7 @@
  * @param {Object} [internal] Reference to internal data object
  */
 ve.dm.LeafNode = function VeDmLeafNode( type, length, attributes, internal ) {
+	// Mixin constructor
 	ve.LeafNode.call( this );
 
 	// Parent constructor
