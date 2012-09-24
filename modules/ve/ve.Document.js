@@ -36,11 +36,12 @@ ve.Document.prototype.getDocumentNode = function () {
  * @param {ve.Range} range Range within document to select nodes
  * @param {String} [mode='leaves'] Type of selection to perform
  *     'leaves': Return all leaf nodes in the given range (descends all the way down)
- *     'coveredNodes': Do not descend into nodes that are entirely covered by the range. The result
- *                     is similar to that of 'leaves' except that if a node is entirely covered, its
- *                     children aren't returned separately.
+ *     'branches': Return all branch nodes in the given range
+ *     'covered': Do not descend into nodes that are entirely covered by the range. The result
+ *                is similar to that of 'leaves' except that if a node is entirely covered, its
+ *                children aren't returned separately.
  *     'siblings': Return a set of adjacent siblings covered by the range (descends as long as the
- *                    range is in a single node)
+ *                 range is in a single node)
  * @returns {Array} List of objects describing nodes in the selection and the ranges therein
  *                  'node': Reference to a ve.dm.Node
  *                  'range': ve.Range, missing if the entire node is covered
@@ -84,7 +85,7 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 		isWrapped;
 
 	mode = mode || 'leaves';
-	if ( mode !== 'leaves' && mode !== 'covered' && mode !== 'siblings' ) {
+	if ( mode !== 'leaves' && mode !== 'branches' && mode !== 'covered' && mode !== 'siblings' ) {
 		throw new Error( 'Invalid mode: ' + mode );
 	}
 
@@ -173,8 +174,11 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 			
 			// Descend if
 			// * we are in leaves mode, OR
-			// * we are in covered mode and the end is inside node
-			if ( ( mode === 'leaves' || ( mode === 'covered' && endInside ) ) &&
+			// * we are in covered mode and the end is inside node OR
+			// * we are in branches mode and node is a branch (can have grandchildren)
+			if ( ( mode === 'leaves' ||
+					( mode === 'covered' && endInside ) ||
+					( mode === 'branches' && node.canHaveGrandchildren() ) ) &&
 				node.children && node.children.length
 			) {
 				// Descend into node
@@ -211,7 +215,9 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 				} ];
 			}
 		} else if ( startInside && endInside ) {
-			if ( node.children && node.children.length ) {
+			if ( node.children && node.children.length && 
+				( mode !== 'branches' ||
+					( mode === 'branches' && node.canHaveGrandchildren() ) ) ) {
 				// Descend into node
 				currentFrame = {
 					'node': node,
@@ -235,10 +241,10 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 				} ];
 			}
 		} else if ( startInside ) {
-			if (
-				( mode === 'leaves' || mode === 'covered' ) &&
-				node.children &&
-				node.children.length
+			if ( ( mode === 'leaves' ||
+					mode === 'covered' ||
+					( mode === 'branches' && node.canHaveGrandchildren() ) ) &&
+				node.children && node.children.length
 			) {
 				// node is a branch node and the start is inside it
 				// Descend into it
@@ -270,7 +276,10 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 			// start is not inside node, so the selection covers
 			// all of node, then ends
 			
-			if ( mode === 'leaves' && node.children && node.children.length ) {
+			if (
+				( mode === 'leaves' || ( mode === 'branches' && node.canHaveGrandchildren() ) ) &&
+				node.children && node.children.length
+			) {
 				// Descend into node
 				currentFrame = {
 					'node': node,
@@ -295,10 +304,10 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 				return retval;
 			}
 		} else if ( endInside ) {
-			if (
-				( mode === 'leaves' || mode === 'covered' ) &&
-				node.children &&
-				node.children.length
+			if ( ( mode === 'leaves' ||
+					mode === 'covered' ||
+					( mode === 'branches' && node.canHaveGrandchildren() ) ) &&
+				node.children && node.children.length
 			) {
 				// node is a branch node and the end is inside it
 				// Descend into it
@@ -329,8 +338,11 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 			// Neither the start nor the end is inside node, but we found the start earlier,
 			// so node must be between the start and the end
 			// Add the entire node, so no range property
-			
-			if ( mode === 'leaves' && node.children && node.children.length ) {
+
+			if (
+				( mode === 'leaves' || ( mode === 'branches' && node.canHaveGrandchildren() ) ) &&
+				node.children && node.children.length
+			) {
 				// Descend into node
 				currentFrame = {
 					'node': node,
