@@ -41,13 +41,12 @@ ve.ui.LinkInspector = function VeUiLinkInspector( toolbar, context ) {
 		if ( $( this ).hasClass( 've-ui-inspector-button-disabled' ) ) {
 			return;
 		}
-		var i, arr,
+		var i,
 			surfaceModel = inspector.context.getSurfaceView().getModel(),
 			annotations = inspector.getAllLinkAnnotationsFromSelection();
 		// Clear all link annotations.
-		arr = annotations.get();
-		for ( i = 0; i < arr.length; i++ ) {
-			surfaceModel.annotate( 'clear', arr[i] );
+		for ( i = 0; i < annotations.length; i++ ) {
+			surfaceModel.annotate( 'clear', annotations[i] );
 		}
 		inspector.$locationInput.val( '' );
 		inspector.context.closeInspector();
@@ -90,7 +89,8 @@ ve.ui.LinkInspector.prototype.getAllLinkAnnotationsFromSelection = function () {
 		documentModel = surfaceModel.getDocument();
 	return documentModel
 			.getAnnotationsFromRange( surfaceModel.getSelection() )
-			.getAnnotationsOfType( /^link\// );
+			.getAnnotationsOfType( /^link\// )
+			.get();
 };
 
 ve.ui.LinkInspector.prototype.getFirstLinkAnnotation = function ( annotations ) {
@@ -181,17 +181,16 @@ ve.ui.LinkInspector.prototype.onOpen = function () {
 ve.ui.LinkInspector.prototype.onClose = function ( accept ) {
 	var surfaceView = this.context.getSurfaceView(),
 		surfaceModel = surfaceView.getModel(),
-		annotations = this.getAllLinkAnnotationsFromSelection(),
+		linkAnnotations = this.getAllLinkAnnotationsFromSelection(),
 		target = this.$locationInput.val(),
-		i, arr;
+		i;
 	if ( accept ) {
 		if ( !target ) {
 			return;
 		}
 		// Clear link annotation if it exists
-		arr = annotations.get();
-		for ( i = 0; i < arr.length; i++ ) {
-			surfaceModel.annotate( 'clear', arr[i] );
+		for ( i = 0; i < linkAnnotations.length; i++ ) {
+			surfaceModel.annotate( 'clear', linkAnnotations[i] );
 		}
 		surfaceModel.annotate( 'set', ve.ui.LinkInspector.getAnnotationForTarget( target ) );
 
