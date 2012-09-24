@@ -35,13 +35,30 @@ ve.inheritClass( ve.ui.AnnotationButtonTool, ve.ui.ButtonTool );
 ve.ui.AnnotationButtonTool.prototype.onClick = function () {
 	var surfaceView = this.toolbar.getSurfaceView(),
 		surfaceModel = surfaceView.model,
-		selection = surfaceModel.getSelection();
+		documentModel = surfaceModel.getDocument(),
+		selection = surfaceModel.getSelection(),
+		annotations,
+		i;
+
 	if ( this.inspector ) {
 		if ( selection && selection.getLength() ) {
 			surfaceView.contextView.openInspector( this.inspector );
 		}
 	} else {
-		surfaceModel.annotate( this.active ? 'clear' : 'set', this.annotation );
+		if ( this.active ) {
+			// Get all annotations by type.
+			annotations = documentModel
+				.getAnnotationsFromRange( surfaceModel.getSelection() )
+				.getAnnotationsOfType( this.annotation.type )
+				.get();
+			// Clear each selected annotation.
+			for( i = 0; i < annotations.length; i++ ) {
+				surfaceModel.annotate( 'clear', annotations[i] );
+			}
+		} else {
+			// Set annotation.
+			surfaceModel.annotate( 'set', this.annotation );
+		}
 	}
 };
 
