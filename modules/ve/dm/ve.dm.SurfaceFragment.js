@@ -460,6 +460,13 @@ ve.dm.SurfaceFragment.prototype.convertNodes = function ( type, attr ) {
  * A wrapper object is a linear model element; a plain object containing a type property and an
  * optional attributes property.
  *
+ * Example:
+ *     // fragment is a selection of: <p>a</p><p>b</p>
+ *     fragment.wrapNodes(
+ *         [{ 'type': 'list', 'attributes': { 'style': 'bullet' } }, { 'type': 'listItem' }]
+ *     )
+ *     // fragment is now a selection of: <ul><li><p>a</p></li></ul><ul><li><p>b</p></li></ul>
+ *
  * @method
  * @param {Object|Object[]} wrapper Wrapper object, or array of wrapper objects (see above)
  * @param {String} wrapper.type Node type of wrapper
@@ -471,7 +478,12 @@ ve.dm.SurfaceFragment.prototype.wrapNodes = function () {
 	if ( !this.surface ) {
 		return this;
 	}
-	// TODO: Implement
+	if ( !ve.isArray( wrapper ) ) {
+		wrapper = [wrapper];
+	}
+	var tx = ve.dm.Transaction.newFromWrap( this.document, this.range, [], [], [], wrapper );
+	this.range = tx.translateRange( this.range );
+	this.surface.change( tx, this.autoSelect && this.range );
 	return this;
 };
 
@@ -519,6 +531,13 @@ ve.dm.SurfaceFragment.prototype.rewrapNodes = function () {
  * A wrapper object is a linear model element; a plain object containing a type property and an
  * optional attributes property.
  *
+ * Example:
+ *     // fragment is a selection of: <p>a</p><p>b</p>
+ *     fragment.wrapAllNodes(
+ *         [{ 'type': 'list', 'attributes': { 'style': 'bullet' } }, { 'type': 'listItem' }]
+ *     )
+ *     // fragment is now a selection of: <ul><li><p>a</p><p>b</p></li></ul>
+ *
  * @method
  * @param {Object|Object[]} wrapper Wrapper object, or array of wrapper objects (see above)
  * @param {String} wrapper.type Node type of wrapper
@@ -530,7 +549,12 @@ ve.dm.SurfaceFragment.prototype.wrapAllNodes = function () {
 	if ( !this.surface ) {
 		return this;
 	}
-	// TODO: Implement
+	if ( !ve.isArray( wrapper ) ) {
+		wrapper = [wrapper];
+	}
+	var tx = ve.dm.Transaction.newFromWrap( this.document, this.range, [], wrapper, [], [] );
+	this.range = tx.translateRange( this.range );
+	this.surface.change( tx, this.autoSelect && this.range );
 	return this;
 };
 

@@ -112,3 +112,95 @@ QUnit.test( 'insertContent', 3, function ( assert ) {
 		'strings get converted into data when inserting content'
 	);
 } );
+
+QUnit.test( 'wrapNodes', 2, function ( assert ) {
+	var doc = new ve.dm.Document( ve.dm.example.data ),
+		surface = new ve.dm.Surface( doc ),
+		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 55, 61 ) );
+	// Make 2 paragraphs into 2 lists of 1 item each
+	fragment.wrapNodes(
+		[{ 'type': 'list', 'attributes': { 'style': 'bullet' } }, { 'type': 'listItem' }]
+	);
+	assert.deepEqual(
+		doc.getData( new ve.Range( 55, 69 ) ),
+		[
+			{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
+			{ 'type': 'listItem' },
+			{ 'type': 'paragraph' },
+			'l',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': '/list' },
+			{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
+			{ 'type': 'listItem' },
+			{ 'type': 'paragraph' },
+			'm',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': '/list' }
+		],
+		'wrapping nodes can add multiple levels of wrapping to multiple elements'
+	);
+	// Make a 1 paragraph into 1 list with 1 item
+	fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 9, 12 ) );
+	fragment.wrapNodes(
+		[{ 'type': 'list', 'attributes': { 'style': 'bullet' } }, { 'type': 'listItem' }]
+	);
+	assert.deepEqual(
+		doc.getData( new ve.Range( 9, 16 ) ),
+		[
+			{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
+			{ 'type': 'listItem' },
+			{ 'type': 'paragraph' },
+			'd',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': '/list' }
+		],
+		'wrapping nodes can add multiple levels of wrapping to a single element'
+	);
+} );
+
+QUnit.test( 'wrapAllNodes', 2, function ( assert ) {
+	var doc = new ve.dm.Document( ve.dm.example.data ),
+		surface = new ve.dm.Surface( doc ),
+		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 55, 61 ) );
+	// Make 2 paragraphs into 1 lists of 1 item with 2 paragraphs
+	fragment.wrapAllNodes(
+		[{ 'type': 'list', 'attributes': { 'style': 'bullet' } }, { 'type': 'listItem' }]
+	);
+	assert.deepEqual(
+		doc.getData( new ve.Range( 55, 65 ) ),
+		[
+			{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
+			{ 'type': 'listItem' },
+			{ 'type': 'paragraph' },
+			'l',
+			{ 'type': '/paragraph' },
+			{ 'type': 'paragraph' },
+			'm',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': '/list' }
+		],
+		'wrapping nodes can add multiple levels of wrapping to multiple elements'
+	);
+	// Make a 1 paragraph into 1 list with 1 item
+	fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 9, 12 ) );
+	fragment.wrapAllNodes(
+		[{ 'type': 'list', 'attributes': { 'style': 'bullet' } }, { 'type': 'listItem' }]
+	);
+	assert.deepEqual(
+		doc.getData( new ve.Range( 9, 16 ) ),
+		[
+			{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
+			{ 'type': 'listItem' },
+			{ 'type': 'paragraph' },
+			'd',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': '/list' }
+		],
+		'wrapping nodes can add multiple levels of wrapping to a single element'
+	);
+} );

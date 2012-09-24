@@ -75,6 +75,7 @@ class VisualEditorHooks {
 				'dm/ve.dm.Transaction.test.js',
 				'dm/ve.dm.TransactionProcessor.test.js',
 				'dm/ve.dm.Surface.test.js',
+				'dm/ve.dm.SurfaceFragment.test.js',
 				// VisualEditor ContentEditable Tests
 				'ce/ve.ce.test.js',
 				'ce/ve.ce.Document.test.js',
