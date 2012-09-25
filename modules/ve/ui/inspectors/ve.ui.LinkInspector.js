@@ -94,17 +94,16 @@ ve.ui.LinkInspector.prototype.getAllLinkAnnotationsFromSelection = function () {
 };
 
 ve.ui.LinkInspector.prototype.getFirstLinkAnnotation = function ( annotations ) {
-	var i, annotation, arr = annotations.get();
-	for ( i = 0; i < arr.length; i++ ) {
+	var i;
+	for ( i = 0; i < annotations.length; i++ ) {
 		// Use the first one with a recognized type (there should only be one, this is just in case)
-		annotation = arr[i];
 		if (
-			annotation.type === 'link/WikiLink' ||
-			annotation.type === 'link/ExtLink' ||
-			annotation.type === 'link/ExtLink/Numbered' ||
-			annotation.type === 'link/ExtLink/URL'
+			annotations[i].type === 'link/WikiLink' ||
+			annotations[i].type === 'link/ExtLink' ||
+			annotations[i].type === 'link/ExtLink/Numbered' ||
+			annotations[i].type === 'link/ExtLink/URL'
 		) {
-			return annotation;
+			return annotations[i];
 		}
 	}
 	return null;
