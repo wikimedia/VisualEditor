@@ -771,8 +771,8 @@ $messages['it'] = array(
 $messages['ja'] = array(
 	'visualeditor' => '視覚的エディター',
 	'visualeditor-desc' => 'MediaWiki用の視覚的エディター',
-	'visualeditor-feedback-prompt' => 'フィードバックを残す',
-	'visualeditor-feedback-dialog-title' => '視覚的エディターのサンドボックスについてフィードバックを残す',
+	'visualeditor-feedback-prompt' => 'フィードバックを送信',
+	'visualeditor-feedback-dialog-title' => '視覚的エディターのサンドボックスについてフィードバックを送信',
 	'visualeditor-notification-saved' => '$1への変更を保存しました。',
 	'visualeditor-notification-created' => '$1を作成しました。',
 	'visualeditor-ca-editsource' => 'ソースを編集',
@@ -1610,7 +1610,7 @@ $messages['zh-hans'] = array(
 	'visualeditor-saveerror' => '向服务器保存数据错误：$1。',
 );
 
-/** Traditional Chinese (‪中文（繁體）‬)
+/** Traditional Chinese (中文（繁體）‎)
  * @author Anakmalaysia
  * @author Simon Shek
  */
@@ -1619,6 +1619,8 @@ $messages['zh-hant'] = array(
 	'visualeditor-desc' => 'MediaWiki的可視化編輯器',
 	'visualeditor-feedback-prompt' => '留下反饋',
 	'visualeditor-feedback-dialog-title' => '留下關於可視化編輯器的反饋',
+	'visualeditor-ca-editsource' => '編輯源代碼',
+	'visualeditor-linkinspector-title' => '編輯鏈接',
 	'visualeditor-linkinspector-label-pagetitle' => '頁面標題',
 	'visualeditor-formatdropdown-title' => '更改格式',
 	'visualeditor-formatdropdown-format-paragraph' => '段落',
@@ -1628,9 +1630,19 @@ $messages['zh-hant'] = array(
 	'visualeditor-formatdropdown-format-heading4' => '標題 4',
 	'visualeditor-formatdropdown-format-heading5' => '標題 5',
 	'visualeditor-formatdropdown-format-heading6' => '標題 6',
+	'visualeditor-formatdropdown-format-preformatted' => '預格式化文本',
 	'visualeditor-annotationbutton-bold-tooltip' => '粗體',
 	'visualeditor-annotationbutton-italic-tooltip' => '斜體',
 	'visualeditor-annotationbutton-link-tooltip' => '連結',
+	'visualeditor-indentationbutton-indent-tooltip' => '增加縮進',
+	'visualeditor-indentationbutton-outdent-tooltip' => '減少縮進',
+	'visualeditor-listbutton-number-tooltip' => '有序列表',
+	'visualeditor-listbutton-bullet-tooltip' => '無序列表',
 	'visualeditor-clearbutton-tooltip' => '清除格式',
+	'visualeditor-historybutton-undo-tooltip' => '撤銷',
+	'visualeditor-historybutton-redo-tooltip' => '重做',
+	'visualeditor-viewpage-savewarning' => '您確實要不保存而回到查看模式嗎？',
+	'visualeditor-loadwarning' => '從服務器載入數據錯誤：$1。您想重試嗎？',
+	'visualeditor-saveerror' => '向服務器保存數據錯誤：$1。',
 );
 
