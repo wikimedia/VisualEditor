@@ -12,6 +12,11 @@
 	background-image: url(images/fade-up.png);
 	background-position: left bottom;
 	background-repeat: repeat-x;
+}
+
+.ve-ui-toolbarGroups,
+.ve-ui-actions,
+.ve-ui-toolbar-shadow {
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
