@@ -60,20 +60,20 @@
 
 .ve-ui-toolbarButtonTool-number:before {
 	/* @embed */
-	background-image: url(images/icons/number.svg);
+	background-image: url(images/icons/number-list-ltr.svg);
 }
 
 .ve-ui-toolbarButtonTool-bullet:before {
 	/* @embed */
-	background-image: url(images/icons/bullet.svg);
+	background-image: url(images/icons/bullet-list-ltr.svg);
 }
 
 .ve-ui-toolbarButtonTool-indent:before {
 	/* @embed */
-	background-image: url(images/icons/indent.svg);
+	background-image: url(images/icons/indent-list-ltr.svg);
 }
 
 .ve-ui-toolbarButtonTool-outdent:before {
 	/* @embed */
-	background-image: url(images/icons/outdent.svg);
+	background-image: url(images/icons/outdent-list-ltr.svg);
 }
