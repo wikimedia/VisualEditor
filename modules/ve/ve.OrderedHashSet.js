@@ -151,12 +151,17 @@ ve.OrderedHashSet.prototype.indexOf = function ( value ) {
 ve.OrderedHashSet.prototype.filter = function ( property, filter, returnBool ) {
 	var i, result;
 	if ( !returnBool ) {
+		// TODO: Consider alternative ways to instantiate a new set of the same type as the subclass
 		result = this.clone();
+		// TODO: Should we be returning this on all methods that modify the original? Might help
+		// with chainability, but perhaps it's also confusing because most chainable methods return
+		// a new hash set.
+		result.removeAll();
 	}
 	for ( i = 0; i < this.arr.length; i++ ) {
 		if (
-			( filter instanceof RegExp && filter.exec( this.arr[i][property] ) ) ||
-			this.arr[i][property] === filter
+			( filter instanceof RegExp && filter.test( this.arr[i][property] ) ) ||
+			( typeof filter === 'string' && this.arr[i][property] === filter )
 		) {
 			if ( returnBool ) {
 				return true;
@@ -260,6 +265,17 @@ ve.OrderedHashSet.prototype.remove = function ( value ) {
 		delete this.map[hash];
 		this.arr.splice( index, 1 );
 	}
+};
+
+/**
+ * Remove all values.
+ */
+ve.OrderedHashSet.prototype.removeAll = function () {
+	var i;
+	for ( i = 0; i < this.arr.length; i++ ) {
+		this.remove( this.arr[i] );
+	}
+	return this;
 };
 
 /**
