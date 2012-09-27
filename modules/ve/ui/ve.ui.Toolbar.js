@@ -39,7 +39,7 @@ ve.ui.Toolbar = function VeUiToolbar( $container, surfaceView, config ) {
 	this.$.prepend( this.$groups );
 
 	// Events
-	this.surfaceView.model.on( 'change', ve.bind( this.updateTools, this ) );
+	this.surfaceView.model.on( 'annotationChange', ve.bind( this.updateTools, this ) );
 
 	// Initialization
 	this.setup();
@@ -99,9 +99,7 @@ ve.ui.Toolbar.prototype.updateTools = function () {
 		} else {
 			// Clear context
 			this.surfaceView.contextView.clear();
-			annotations = doc.getAnnotationsFromOffset(
-				doc.getNearestContentOffset( range.start - 1 )
-			);
+			annotations = doc.insertAnnotations;
 		}
 		// Normalize nodes returned from selectNodes and add to nodes list.
 		// Fire toolbar update state to update tools.

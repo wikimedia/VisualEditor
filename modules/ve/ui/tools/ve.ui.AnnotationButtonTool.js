@@ -47,10 +47,18 @@ ve.ui.AnnotationButtonTool.prototype.onClick = function () {
 	} else {
 		if ( this.active ) {
 			// Get all annotations by type.
-			annotations = documentModel
-				.getAnnotationsFromRange( surfaceModel.getSelection() )
-				.getAnnotationsOfType( this.annotation.type )
-				.get();
+			if ( surfaceModel.getSelection().getLength() ) {
+				annotations = documentModel
+					.getAnnotationsFromRange( surfaceModel.getSelection() )
+					.getAnnotationsOfType( this.annotation.type )
+					.get();
+			} else {
+				annotations = documentModel
+					.insertAnnotations
+					.getAnnotationsOfType( this.annotation.type )
+					.get();
+			}
+
 			// Clear each selected annotation.
 			for( i = 0; i < annotations.length; i++ ) {
 				surfaceModel.annotate( 'clear', annotations[i] );

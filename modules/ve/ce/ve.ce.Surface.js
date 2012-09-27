@@ -257,7 +257,11 @@ ve.ce.Surface.prototype.onKeyDown = function ( e ) {
 			if ( ve.ce.Surface.isShortcutKey( e ) ) {
 				// Ctrl+B / Cmd+B, annotate with bold
 				e.preventDefault();
-				annotations = this.documentView.model.getAnnotationsFromRange( this.model.getSelection() );
+				if ( this.model.getSelection().getLength() ) {
+					annotations = this.documentView.model.getAnnotationsFromRange( this.model.getSelection() );
+				} else {
+					annotations = this.model.documentModel.insertAnnotations;
+				}
 				annotation = { 'type': 'textStyle/bold' };
 
 				this.model.annotate( annotations.contains( annotation ) ? 'clear' : 'set', annotation );
@@ -268,7 +272,11 @@ ve.ce.Surface.prototype.onKeyDown = function ( e ) {
 			if ( ve.ce.Surface.isShortcutKey( e ) ) {
 				// Ctrl+I / Cmd+I, annotate with italic
 				e.preventDefault();
-				annotations = this.documentView.model.getAnnotationsFromRange( this.model.getSelection() );
+				if ( this.model.getSelection().getLength() ) {
+					annotations = this.documentView.model.getAnnotationsFromRange( this.model.getSelection() );
+				} else {
+					annotations = this.model.documentModel.insertAnnotations;
+				}
 				annotation = { 'type': 'textStyle/italic' };
 
 				this.model.annotate( annotations.contains( annotation ) ? 'clear' : 'set', annotation );
@@ -310,6 +318,50 @@ ve.ce.Surface.prototype.onKeyDown = function ( e ) {
 			}
 	}
 };
+
+ve.ce.Surface.prototype.handleInsertAnnotations = function () {
+	var selection = this.model.getSelection();
+
+	// compare annotation stack to annotation for offset - 1, do pawn trick if necessary
+	var leftAnnotations = this.model.documentModel.data[selection.start - 1][1];
+	var insertAnnotations = this.model.documentModel.insertAnnotations;
+
+	if ( leftAnnotations == undefined && insertAnnotations.getLength() == 0 ) {
+		// plain text for both, do nothing
+	} else if ( leftAnnotations != undefined && ve.compareObjects ( leftAnnotations, insertAnnotations ) ) {
+		// objects are the same, do nothing
+	} else {
+		this.model.insertingAnnotations = true;
+
+		// Add the pawn with annotation, re-render, select pawn
+		this.model.change(
+			ve.dm.Transaction.newFromInsertion(
+				this.documentView.model,
+				selection.start,
+				[['\u2659', this.model.documentModel.insertAnnotations]]
+			),
+			new ve.Range( selection.start, selection.start + 1 )
+		);
+
+		// Remove pawn from the model and do not re-render
+		this.render = false;
+		this.model.change(
+			ve.dm.Transaction.newFromRemoval(
+				this.documentView.model,
+				this.model.getSelection()
+			)
+		);
+		this.render = true;
+
+		// Reset the pawn trick when current event handling is done
+		var _this = this;
+		setTimeout(function() {
+			_this.model.insertingAnnotations = false;
+			_this.pollChanges();
+		}, 0);
+	}
+};
+
 
 /**
  * Responds to copy events.
@@ -476,6 +528,8 @@ ve.ce.Surface.prototype.onKeyPress = function ( e ) {
 		this.clearPollData();
 		this.startPolling();
 	}
+
+	this.handleInsertAnnotations();
 
 	// Is there an expanded range and something other than keycodes 0 (nothing) or 27 (esc) were pressed?
 	if ( selection.getLength() > 0 && ( e.which !== 0 || e.which !== 27 ) ) {
@@ -699,16 +753,14 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 	) {
 		// Something simple was added, figure out what it is and transact.
 		ve.log('simple addition');
+
 		data = next.text.substring(
 				previous.range.start - nodeOffset - 1,
 				next.range.start - nodeOffset - 1
 			).split( '' );
 
-		// Get annotations to the left of new content and apply
-		annotations = this.model.getDocument().getAnnotationsFromOffset( previous.range.start - 1 );
-		if ( !annotations.isEmpty() ) {
-			ve.dm.Document.addAnnotationsToData( data, annotations );
-		}
+		// Apply insertAnnotations
+		ve.dm.Document.addAnnotationsToData( data, this.model.getDocument().insertAnnotations );
 
 		// Prevent re-rendering and transact
 		this.render = false;

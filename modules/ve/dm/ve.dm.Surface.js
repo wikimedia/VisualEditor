@@ -117,6 +117,18 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 	if ( transactions ) {
 		this.emit( 'transact', transactions );
 	}
+
+	// Clear and add annotations to stack if insertingAnnotations isn't happening
+	if (!this.insertingAnnotations) {
+		var annotations = this.documentModel.getAnnotationsFromOffset( this.getSelection().start - 1 );
+
+		// Reset insertAnnotations
+		this.documentModel.insertAnnotations = new ve.AnnotationSet();
+		this.documentModel.insertAnnotations.addSet( annotations );
+
+		this.emit( 'annotationChange' );
+	}
+
 	this.emit( 'change', transactions, selection );
 };
 
@@ -131,12 +143,21 @@ ve.dm.Surface.prototype.annotate = function ( method, annotation ) {
 	var tx,
 		selection = this.getSelection();
 	if ( selection.getLength() ) {
+		// Apply annotation immediately to selection
 		selection = this.getDocument().trimOuterSpaceFromRange( selection );
 		tx = ve.dm.Transaction.newFromAnnotation(
 			this.getDocument(), selection, method, annotation
 		);
 		this.change( tx, selection );
+	} else {
+		// Apply annotation to stack
+		if ( method == 'set' ) {
+			this.documentModel.insertAnnotations.push( annotation );
+		} else if ( method == 'clear' ) {
+			this.documentModel.insertAnnotations.remove( annotation );
+		}
 	}
+	this.emit( 'annotationChange' );
 };
 
 ve.dm.Surface.prototype.breakpoint = function ( selection ) {
