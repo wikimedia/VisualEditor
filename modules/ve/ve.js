@@ -32,7 +32,7 @@
 	 * @param {Object} origin Object to inherit from.
 	 * @return {Object} Empty object that inherits from origin.
 	 */
-	ve.createObject =  Object.hasOwnProperty( 'create' ) ? Object.create : function ( origin ) {
+	ve.createObject = Object.hasOwnProperty( 'create' ) ? Object.create : function ( origin ) {
 		function O() {}
 		O.prototype = origin;
 		var r = new O();
