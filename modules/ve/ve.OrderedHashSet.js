@@ -271,11 +271,10 @@ ve.OrderedHashSet.prototype.remove = function ( value ) {
  * Remove all values.
  */
 ve.OrderedHashSet.prototype.removeAll = function () {
-	var i;
-	for ( i = 0; i < this.arr.length; i++ ) {
+	var i = this.arr.length;
+	while ( i-- ) {
 		this.remove( this.arr[i] );
 	}
-	return this;
 };
 
 /**
