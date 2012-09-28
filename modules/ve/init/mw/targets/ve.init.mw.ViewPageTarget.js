@@ -696,7 +696,7 @@ ve.init.mw.ViewPageTarget.prototype.attachSaveDialog = function () {
 		.html( ve.msg( 'minoredit' ) );
 	this.$saveDialog.find( '.ve-init-mw-viewPageTarget-saveDialog-watchList-label' )
 		.html( ve.msg( 'watchthis' ) );
-	this.$toolbarWrapper.append( this.$saveDialog );
+	this.$toolbarWrapper.find( '.ve-ui-toolbar' ).append( this.$saveDialog );
 };
 
 /**
