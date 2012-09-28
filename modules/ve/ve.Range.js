@@ -154,3 +154,12 @@ ve.Range.prototype.truncate = function ( length ) {
 	}
 	return new ve.Range( this.from, this.to - diff );
 };
+
+/**
+ * Determines if Range is collapsed or not.
+ * @method
+ * @returns {Boolean}
+ */
+ve.Range.prototype.isCollapsed = function () {
+	return this.from === this.to;
+};
