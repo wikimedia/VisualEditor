@@ -1221,10 +1221,20 @@ $messages['pms'] = array(
  * @author Ahmed-Najib-Biabani-Ibrahimkhel
  */
 $messages['ps'] = array(
+	'visualeditor-linkinspector-title' => 'تړنه سمول',
+	'visualeditor-linkinspector-label-pagetitle' => 'مخ سرليک',
+	'visualeditor-linkinspector-suggest-external-link' => 'جال تړنه',
 	'visualeditor-formatdropdown-format-heading1' => 'سرليک 1',
+	'visualeditor-formatdropdown-format-heading2' => 'سرليک 2',
+	'visualeditor-formatdropdown-format-heading3' => 'سرليک 3',
+	'visualeditor-formatdropdown-format-heading4' => 'سرليک 4',
+	'visualeditor-formatdropdown-format-heading5' => 'سرليک 5',
+	'visualeditor-formatdropdown-format-heading6' => 'سرليک 6',
 	'visualeditor-annotationbutton-bold-tooltip' => 'زغرد',
 	'visualeditor-annotationbutton-italic-tooltip' => 'رېوند',
 	'visualeditor-annotationbutton-link-tooltip' => 'تړنه',
+	'visualeditor-listbutton-number-tooltip' => 'شمېرن لړليک',
+	'visualeditor-listbutton-bullet-tooltip' => 'ګولۍ داره لړليک',
 	'visualeditor-historybutton-undo-tooltip' => 'ناکړل',
 	'visualeditor-historybutton-redo-tooltip' => 'بياکړل',
 );
