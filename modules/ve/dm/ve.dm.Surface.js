@@ -120,7 +120,8 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 
 	// Clear and add annotations to stack if insertingAnnotations isn't happening
 	if (!this.insertingAnnotations) {
-		var annotations = this.documentModel.getAnnotationsFromOffset( this.getSelection().start - 1 );
+		var contentOffset = this.documentModel.getNearestContentOffset( this.getSelection().start - 1, -1 ),
+			annotations = this.documentModel.getAnnotationsFromOffset( contentOffset );
 
 		// Reset insertAnnotations
 		this.documentModel.insertAnnotations = new ve.AnnotationSet();
