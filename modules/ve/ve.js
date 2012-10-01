@@ -631,6 +631,18 @@
 		}
 	};
 
+	/**
+	 * Get the attributes of a DOM element as an object with key/value pairs
+	 * @param {HTMLElement} element
+	 * @returns {Object}
+	 */
+	ve.getDOMAttributes = function ( element ) {
+		var result = {}, i;
+		for ( i = 0; i < element.attributes.length; i++ ) {
+			result[element.attributes[i].name] = element.attributes[i].value;
+		}
+	};
+
 	// Expose
 	window.ve = ve;
 }() );
