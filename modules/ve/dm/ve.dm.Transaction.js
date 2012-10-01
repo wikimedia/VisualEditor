@@ -272,6 +272,8 @@ ve.dm.Transaction.newFromContentBranchConversion = function ( doc, range, type, 
 	// Add attributes to opening if needed
 	if ( ve.isPlainObject( attr ) ) {
 		opening.attributes = attr;
+	} else {
+		attr = {};
 	}
 	// Replace the wrappings of each content branch in the range
 	for ( i = 0; i < selection.length; i++ ) {
