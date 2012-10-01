@@ -47,14 +47,19 @@ ve.ce.getDomText = function ( element ) {
 			$element = $( element );
 
 		if ( nodeType === 1 || nodeType === 9 || nodeType === 11 ) {
-			if ( $element.hasClass( 've-ce-leafNode' ) ) {
+			if ( $element.hasClass( 've-ce-slug' ) ) {
+				// Slugs are not represented in the model at all, but they do
+				// contain a single nbsp/FEFF character in the DOM, so make sure
+				// that character isn't counted
+				return '';
+			} else if ( $element.hasClass( 've-ce-leafNode' ) ) {
 				// For leaf nodes, don't return the content, but return
 				// the right amount of characters so the offsets match up
 				numChars = $element.data( 'node' ).getOuterLength();
 				return new Array( numChars + 1 ).join( '\u2603' );
 			} else {
 				// Traverse its children
-				for ( element = element.firstChild; element; element = element.nextSibling) {
+				for ( element = element.firstChild; element; element = element.nextSibling ) {
 					text += func( element );
 				}
 			}
