@@ -176,6 +176,7 @@ ve.dm.Surface.prototype.undo = function () {
 	this.breakpoint();
 	this.undoIndex++;
 	if ( this.bigStack[this.bigStack.length - this.undoIndex] ) {
+		this.emit( 'lock' );
 		diff = 0;
 		item = this.bigStack[this.bigStack.length - this.undoIndex];
 		for ( i = item.stack.length - 1; i >= 0; i-- ) {
@@ -184,6 +185,7 @@ ve.dm.Surface.prototype.undo = function () {
 		}
 		selection = item.selection;
 		selection.end -= diff;
+		this.emit( 'unlock' );
 		this.emit( 'history' );
 		return selection;
 	}
@@ -194,6 +196,7 @@ ve.dm.Surface.prototype.redo = function () {
 	var selection, diff, item, i;
 	this.breakpoint();
 	if ( this.undoIndex > 0 ) {
+		this.emit( 'lock' );
 		if ( this.bigStack[this.bigStack.length - this.undoIndex] ) {
 			diff = 0;
 			item = this.bigStack[this.bigStack.length - this.undoIndex];
@@ -205,6 +208,7 @@ ve.dm.Surface.prototype.redo = function () {
 			selection.end += diff;
 		}
 		this.undoIndex--;
+		this.emit( 'unlock' );
 		this.emit( 'history' );
 		return selection;
 	}

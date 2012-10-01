@@ -48,7 +48,9 @@ ve.ce.Surface = function VeCeSurface( $container, model ) {
 	};
 
 	// Events
-	this.model.on( 'change', ve.bind( this.onChange, this ) );
+	this.model.addListenerMethods(
+		this, { 'change': 'onChange', 'lock': 'onLock', 'unlock': 'onUnlock' }
+	);
 	this.on( 'contentChange', ve.bind( this.onContentChange, this ) );
 	this.$.on( {
 		'cut': ve.bind( this.onCut, this ),
@@ -91,6 +93,25 @@ ve.ce.Surface = function VeCeSurface( $container, model ) {
 ve.inheritClass( ve.ce.Surface, ve.EventEmitter );
 
 /* Methods */
+
+/**
+ * Responds to surface lock events.
+ *
+ * @method
+ */
+ve.ce.Surface.prototype.onLock = function () {
+	this.stopPolling();
+};
+
+/**
+ * Responds to surface lock events.
+ *
+ * @method
+ */
+ve.ce.Surface.prototype.onUnlock = function () {
+	this.clearPollData();
+	this.startPolling();
+};
 
 /**
  * Responds to document focus events.
