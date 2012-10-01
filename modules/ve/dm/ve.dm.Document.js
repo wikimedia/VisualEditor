@@ -453,6 +453,9 @@ ve.dm.Document.prototype.getLength = function () {
 
 ve.dm.Document.prototype.getNodeFromOffset = function ( offset ) {
 	// FIXME duplicated from ve.ce.Document
+	if ( offset < 0 || offset > this.data.length ) {
+		throw new Error( 've.dm.Document.getNodeFromOffset(): offset ' + offset + ' is out of bounds' );
+	}
 	var node = this.documentNode.getNodeFromOffset( offset );
 	if ( !node.canHaveChildren() ) {
 		node = node.getParent();
