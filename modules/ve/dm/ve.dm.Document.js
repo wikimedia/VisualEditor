@@ -512,6 +512,9 @@ ve.dm.Document.prototype.getText = function ( range ) {
  * @returns {ve.AnnotationSet} A set of all annotation objects offset is covered by
  */
 ve.dm.Document.prototype.getAnnotationsFromOffset = function ( offset ) {
+	if ( offset < 0 || offset > this.data.length ) {
+		throw new Error( 've.dm.Document.getAnnotationsFromOffset: offset ' + offset + ' out of bounds' );
+	}
 	// Since annotations are not stored on a closing leaf node,
 	// rewind offset by 1 to return annotations for that structure
 	var set;
