@@ -6,85 +6,112 @@
  */
 
 /**
- * DataModel annotation for a text style.
- *
- * @class
- * @constructor
- * @extends {ve.dm.Annotation}
+ * Abstract annotation for text styles. Should not be instantiated directly, only use this for
+ * subclassing.
  */
-ve.dm.TextStyleAnnotation = function VeDmTextStyleAnnotation() {
-	// Parent constructor
-	ve.dm.Annotation.call( this );
+ve.dm.TextStyleAnnotation = function VeDmTextStyleAnnotation( element ) {
+	ve.dm.Annotation.call( this, element );
 };
-
-/* Inheritance */
 
 ve.inheritClass( ve.dm.TextStyleAnnotation, ve.dm.Annotation );
 
-/* Static Members */
+ve.dm.TextStyleAnnotation.static.name = 'textStyle';
+ve.dm.TextStyleAnnotation.static.matchTagNames = [];
 
-/**
- * Converters.
- *
- * @see {ve.dm.Converter}
- * @static
- * @member
- */
-ve.dm.TextStyleAnnotation.converters = {
-	'domElementTypes': ['i', 'b', 'u', 's', 'small', 'big', 'span', 'strong', 'em', 'sup', 'sub'],
-	'toDomElement': function ( subType, annotation ) {
-		var map = {
-			'italic': 'i',
-			'bold': 'b',
-			'underline': 'u',
-			'strike': 's',
-			'small': 'small',
-			'big': 'big',
-			'span': 'span',
-			'strong': 'strong',
-			'emphasize': 'em',
-			'superScript': 'sup',
-			'subScript': 'sub'
-			// TODO: Add other supported inline DOM elements to this list
-		};
-		return $( document.createElement( map[subType] ) )
-			// Restore HTML attributes
-			// Will be done for us in the new annotation API
-			.attr( annotation.htmlAttributes || {} )
-			.get( 0 );
-	},
-	'toDataAnnotation': function ( tag, element ) {
-		var annotation, i, length,
-			map = {
-				'i': 'italic',
-				'b': 'bold',
-				'u': 'underline',
-				's': 'strike',
-				'small': 'small',
-				'big': 'big',
-				'span': 'span',
-				'strong': 'strong',
-				'em': 'emphasize',
-				'sup': 'superScript',
-				'sub': 'subScript'
-				// TODO: Add other supported inline DOM elements to this list
-			};
-		annotation = {
-			type: 'textStyle/' + map[tag]
-		};
-		// Preserve HTML attributes
-		// Will be done for us in the new annotation API
-		length = element.attributes.length;
-		if ( length > 0 ) {
-			annotation.htmlAttributes = {};
-			for ( i = 0; i < length; i++ ) {
-				annotation.htmlAttributes[element.attributes[i].name] = element.attributes[i].value;
-			}
-		}
-		return annotation;
-	}
+ve.dm.TextStyleAnnotation.prototype.toHTML = function () {
+	var parentResult = ve.dm.Annotation.prototype.toHTML.call( this );
+	parentResult.tag = parentResult.tag || this.constructor.static.matchTagNames[0];
+	return parentResult;
 };
 
-/* Registration */
-
 ve.dm.annotationFactory.register( 'textStyle', ve.dm.TextStyleAnnotation );
+
+// Concrete subclasses
+
+ve.dm.TextStyleBoldAnnotation = function VeDmTextStyleBoldAnnotation( element ) {
+	ve.dm.TextStyleAnnotation.call( this, element );
+};
+ve.inheritClass( ve.dm.TextStyleBoldAnnotation, ve.dm.TextStyleAnnotation );
+ve.dm.TextStyleBoldAnnotation.static.name = 'textStyle/bold';
+ve.dm.TextStyleBoldAnnotation.static.matchTagNames = ['b'];
+ve.dm.annotationFactory.register( 'textStyle/bold', ve.dm.TextStyleBoldAnnotation );
+
+ve.dm.TextStyleItalicAnnotation = function VeDmTextStyleItalicAnnotation( element ) {
+	ve.dm.TextStyleAnnotation.call( this, element );
+};
+ve.inheritClass( ve.dm.TextStyleItalicAnnotation, ve.dm.TextStyleAnnotation );
+ve.dm.TextStyleItalicAnnotation.static.name = 'textStyle/italic';
+ve.dm.TextStyleItalicAnnotation.static.matchTagNames = ['i'];
+ve.dm.annotationFactory.register( 'textStyle/italic', ve.dm.TextStyleItalicAnnotation );
+
+ve.dm.TextStyleUnderlineAnnotation = function VeDmTextStyleUnderlineAnnotation( element ) {
+	ve.dm.TextStyleAnnotation.call( this, element );
+};
+ve.inheritClass( ve.dm.TextStyleUnderlineAnnotation, ve.dm.TextStyleAnnotation );
+ve.dm.TextStyleUnderlineAnnotation.static.name = 'textStyle/underline';
+ve.dm.TextStyleUnderlineAnnotation.static.matchTagNames = ['u'];
+ve.dm.annotationFactory.register( 'textStyle/underline', ve.dm.TextStyleUnderlineAnnotation );
+
+ve.dm.TextStyleStrikeAnnotation = function VeDmTextStyleStrikeAnnotation( element ) {
+	ve.dm.TextStyleAnnotation.call( this, element );
+};
+ve.inheritClass( ve.dm.TextStyleStrikeAnnotation, ve.dm.TextStyleAnnotation );
+ve.dm.TextStyleStrikeAnnotation.static.name = 'textStyle/strike';
+ve.dm.TextStyleStrikeAnnotation.static.matchTagNames = ['s'];
+ve.dm.annotationFactory.register( 'textStyle/strike', ve.dm.TextStyleStrikeAnnotation );
+
+ve.dm.TextStyleSmallAnnotation = function VeDmTextStyleSmallAnnotation( element ) {
+	ve.dm.TextStyleAnnotation.call( this, element );
+};
+ve.inheritClass( ve.dm.TextStyleSmallAnnotation, ve.dm.TextStyleAnnotation );
+ve.dm.TextStyleSmallAnnotation.static.name = 'textStyle/small';
+ve.dm.TextStyleSmallAnnotation.static.matchTagNames = ['small'];
+ve.dm.annotationFactory.register( 'textStyle/small', ve.dm.TextStyleSmallAnnotation );
+
+ve.dm.TextStyleBigAnnotation = function VeDmTextStyleBigAnnotation( element ) {
+	ve.dm.TextStyleAnnotation.call( this, element );
+};
+ve.inheritClass( ve.dm.TextStyleBigAnnotation, ve.dm.TextStyleAnnotation );
+ve.dm.TextStyleBigAnnotation.static.name = 'textStyle/big';
+ve.dm.TextStyleBigAnnotation.static.matchTagNames = ['big'];
+ve.dm.annotationFactory.register( 'textStyle/big', ve.dm.TextStyleBigAnnotation );
+
+ve.dm.TextStyleSpanAnnotation = function VeDmTextStyleSpanAnnotation( element ) {
+	ve.dm.TextStyleAnnotation.call( this, element );
+};
+ve.inheritClass( ve.dm.TextStyleSpanAnnotation, ve.dm.TextStyleAnnotation );
+ve.dm.TextStyleSpanAnnotation.static.name = 'textStyle/span';
+ve.dm.TextStyleSpanAnnotation.static.matchTagNames = ['span'];
+ve.dm.annotationFactory.register( 'textStyle/span', ve.dm.TextStyleSpanAnnotation );
+
+ve.dm.TextStyleStrongAnnotation = function VeDmTextStyleStrongAnnotation( element ) {
+	ve.dm.TextStyleAnnotation.call( this, element );
+};
+ve.inheritClass( ve.dm.TextStyleStrongAnnotation, ve.dm.TextStyleAnnotation );
+ve.dm.TextStyleStrongAnnotation.static.name = 'textStyle/strong';
+ve.dm.TextStyleStrongAnnotation.static.matchTagNames = ['strong'];
+ve.dm.annotationFactory.register( 'textStyle/strong', ve.dm.TextStyleStrongAnnotation );
+
+ve.dm.TextStyleEmphasizeAnnotation = function VeDmTextStyleEmphasizeAnnotation( element ) {
+	ve.dm.TextStyleAnnotation.call( this, element );
+};
+ve.inheritClass( ve.dm.TextStyleEmphasizeAnnotation, ve.dm.TextStyleAnnotation );
+ve.dm.TextStyleEmphasizeAnnotation.static.name = 'textStyle/emphasize';
+ve.dm.TextStyleEmphasizeAnnotation.static.matchTagNames = ['em'];
+ve.dm.annotationFactory.register( 'textStyle/emphasize', ve.dm.TextStyleEmphasizeAnnotation );
+
+ve.dm.TextStyleSuperScriptAnnotation = function VeDmTextStyleSuperScriptAnnotation( element ) {
+	ve.dm.TextStyleAnnotation.call( this, element );
+};
+ve.inheritClass( ve.dm.TextStyleSuperScriptAnnotation, ve.dm.TextStyleAnnotation );
+ve.dm.TextStyleSuperScriptAnnotation.static.name = 'textStyle/superScript';
+ve.dm.TextStyleSuperScriptAnnotation.static.matchTagNames = ['sup'];
+ve.dm.annotationFactory.register( 'textStyle/superScript', ve.dm.TextStyleSuperScriptAnnotation );
+
+ve.dm.TextStyleSubScriptAnnotation = function VeDmTextStyleSubScriptAnnotation( element ) {
+	ve.dm.TextStyleAnnotation.call( this, element );
+};
+ve.inheritClass( ve.dm.TextStyleSubScriptAnnotation, ve.dm.TextStyleAnnotation );
+ve.dm.TextStyleSubScriptAnnotation.static.name = 'textStyle/subScript';
+ve.dm.TextStyleSubScriptAnnotation.static.matchTagNames = ['sub'];
+ve.dm.annotationFactory.register( 'textStyle/subScript', ve.dm.TextStyleSubScriptAnnotation );

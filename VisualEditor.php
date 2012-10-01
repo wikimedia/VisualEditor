@@ -195,6 +195,8 @@ $wgResourceModules += array(
 			've/dm/nodes/ve.dm.TextNode.js',
 
 			've/dm/annotations/ve.dm.LinkAnnotation.js',
+			've/dm/annotations/ve.dm.MWExternalLinkAnnotation.js',
+			've/dm/annotations/ve.dm.MWInternalLinkAnnotation.js',
 			've/dm/annotations/ve.dm.TextStyleAnnotation.js',
 
 			// ce
