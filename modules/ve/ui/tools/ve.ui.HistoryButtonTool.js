@@ -34,19 +34,12 @@ ve.inheritClass( ve.ui.HistoryButtonTool, ve.ui.ButtonTool );
 /* Methods */
 
 ve.ui.HistoryButtonTool.prototype.onClick = function () {
-	switch ( this.name ) {
-		case 'undo':
-		case 'redo':
-			if ( this.isButtonEnabled( this.name ) ) {
-				var surfaceView = this.toolbar.getSurfaceView();
-				surfaceView.stopPolling();
-				surfaceView.showSelection(
-					surfaceView.getModel()[this.name]( 1 ) || surfaceView.model.selection
-				);
-				surfaceView.clearPollData();
-				surfaceView.startPolling();
-			}
-			break;
+	if ( ( this.name === 'undo' || this.name === 'redo' ) && this.isButtonEnabled() ) {
+		var surfaceView = this.toolbar.getSurfaceView(),
+			surfaceModel = surfaceView.getModel();
+		surfaceView.showSelection(
+			surfaceModel[this.name]( 1 ) || surfaceModel.getSelection()
+		);
 	}
 };
 
@@ -55,16 +48,14 @@ ve.ui.HistoryButtonTool.prototype.onUpdateState = function () {
 	this.updateEnabled();
 };
 
-ve.ui.HistoryButtonTool.prototype.isButtonEnabled = function ( name ) {
+ve.ui.HistoryButtonTool.prototype.isButtonEnabled = function () {
 	var surfaceModel = this.toolbar.getSurfaceView().getModel();
-	switch ( name ) {
-		case 'undo':
-			return surfaceModel.bigStack.length - surfaceModel.undoIndex > 0;
-		case 'redo':
-			return surfaceModel.undoIndex > 0;
-		default:
-			return false;
+	if ( this.name === 'undo' ) {
+		return surfaceModel.bigStack.length - surfaceModel.undoIndex > 0;
+	} else if ( this.name === 'redo' ) {
+		return surfaceModel.undoIndex > 0;
 	}
+	return false;
 };
 
 /* Registration */
