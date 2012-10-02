@@ -135,7 +135,7 @@ $messages['ba'] = array(
 	'visualeditor-annotationbutton-link-tooltip' => 'Һылтанма',
 );
 
-/** Belarusian (Taraškievica orthography) (‪беларуская (тарашкевіца)‬)
+/** Belarusian (Taraškievica orthography) (беларуская (тарашкевіца)‎)
  * @author EugeneZelenko
  * @author Wizardist
  */
@@ -283,7 +283,7 @@ $messages['de'] = array(
 	'visualeditor-editsummary' => 'Beschreibe, was du geändert hast.',
 );
 
-/** German (formal address) (‪Deutsch (Sie-Form)‬)
+/** German (formal address) (Deutsch (Sie-Form)‎)
  * @author Kghbln
  */
 $messages['de-formal'] = array(
@@ -1107,7 +1107,7 @@ $messages['ms'] = array(
 	'visualeditor-editsummary' => 'Terangkan suntingan anda',
 );
 
-/** Norwegian Bokmål (‪norsk (bokmål)‬)
+/** Norwegian Bokmål (norsk (bokmål)‎)
  * @author Danmichaelo
  */
 $messages['nb'] = array(
@@ -1582,7 +1582,7 @@ $messages['vi'] = array(
 	'visualeditor-editsummary' => 'Miêu tả các thay đổi của bạn',
 );
 
-/** Simplified Chinese (‪中文（简体）‬)
+/** Simplified Chinese (中文（简体）‎)
  * @author Anakmalaysia
  * @author Liangent
  * @author Shirayuki
