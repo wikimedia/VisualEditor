@@ -1029,10 +1029,10 @@ $messages['mk'] = array(
  * @author Santhosh.thottingal
  */
 $messages['ml'] = array(
-	'visualeditor' => 'കണ്ടുതിരുത്തൽ ഉപകരണം',
-	'visualeditor-desc' => 'മീഡിയവിക്കിയ്ക്കായുള്ള കണ്ടുതിരുത്തൽ ഉപകരണം',
+	'visualeditor' => 'കണ്ടുതിരുത്തൽ സൗകര്യം',
+	'visualeditor-desc' => 'മീഡിയവിക്കിയ്ക്കായുള്ള കണ്ടുതിരുത്തൽ സൗകര്യം',
 	'visualeditor-feedback-prompt' => 'പ്രതികരണം ചേർക്കുക',
-	'visualeditor-feedback-dialog-title' => 'കണ്ടുതിരുത്തൽ ഉപകരണ എഴുത്തുകളരിയെപ്പറ്റിയുള്ള അഭിപ്രായം അറിയിക്കുക',
+	'visualeditor-feedback-dialog-title' => 'കണ്ടുതിരുത്തൽ സൗകര്യ എഴുത്തുകളരിയെപ്പറ്റിയുള്ള അഭിപ്രായം അറിയിക്കുക',
 	'visualeditor-notification-saved' => 'താങ്കൾ $1 എന്ന താളിൽ വരുത്തിയ മാറ്റങ്ങൾ സേവ് ചെയ്തിരിക്കുന്നു.',
 	'visualeditor-notification-created' => '$1 എന്ന താൾ സൃഷ്ടിച്ചിരിക്കുന്നു.',
 	'visualeditor-ca-editsource' => 'മൂലരൂപം തിരുത്തുക',
