@@ -1134,7 +1134,7 @@ ve.init.mw.ViewPageTarget.prototype.onBeforeUnload = function () {
  */
 ve.init.mw.ViewPageTarget.prototype.setupToolbarFeedbackButton = function () {
 	var feedback = new mw.Feedback( {
-		'title': new mw.Title( 'Visual editor/Feedback' ),
+		'title': new mw.Title( 'VisualEditor/Feedback' ),
 		'dialogTitleMessageKey': 'visualeditor-feedback-dialog-title',
 		'bugsLink': new mw.Uri(
 			'https://bugzilla.wikimedia.org/enter_bug.cgi?product=VisualEditor'
