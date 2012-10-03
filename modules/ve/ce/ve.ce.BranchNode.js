@@ -25,7 +25,7 @@ ve.ce.BranchNode = function VeCeBranchNode( type, model, $element ) {
 
 	// Properties
 	this.domWrapperElementType = this.$.get( 0 ).nodeName.toLowerCase();
-	this.$slugs = $();
+	this.slugs = { };
 
 	// Events
 	this.model.addListenerMethod( this, 'splice', 'onSplice' );
@@ -34,9 +34,7 @@ ve.ce.BranchNode = function VeCeBranchNode( type, model, $element ) {
 	this.$.addClass( 've-ce-branchNode' );
 
 	// Initialization
-	if ( model.getChildren().length ) {
-		this.onSplice.apply( this, [0, 0].concat( model.getChildren() ) );
-	}
+	this.onSplice.apply( this, [0, 0].concat( model.getChildren() ) );
 };
 
 /* Inheritance */
@@ -47,11 +45,16 @@ ve.mixinClass( ve.ce.BranchNode, ve.BranchNode );
 
 /* Static Members */
 
+// TODO: Consider using different (or additional) CSS classes for inline and block aliens
+
 if ( $.browser.msie ) {
-	ve.ce.BranchNode.$slugTemplate = $( '<span class="ve-ce-slug">&nbsp;</span>' );
+	ve.ce.BranchNode.$inlineSlugTemplate = $( '<span class="ve-ce-slug">&nbsp;</span>' );
 } else {
-	ve.ce.BranchNode.$slugTemplate = $( '<span class="ve-ce-slug">&#xFEFF;</span>' );
+	ve.ce.BranchNode.$inlineSlugTemplate = $( '<span class="ve-ce-slug">&#xFEFF;</span>' );
 }
+
+ve.ce.BranchNode.$blockSlugTemplate =
+	ve.ce.BranchNode.$inlineSlugTemplate.clone().css( 'display', 'block' );
 
 /* Static Methods */
 
@@ -98,48 +101,6 @@ ve.ce.BranchNode.getDomWrapper = function ( model, key ) {
 };
 
 /* Methods */
-
-ve.ce.BranchNode.prototype.addSlugs = function () {
-	var i, $slug, $slugTemplate;
-
-	// Remove all slugs in this branch
-	this.$slugs.remove();
-
-	$slugTemplate = ve.ce.BranchNode.$slugTemplate.clone();
-
-	if ( this.canHaveGrandchildren() ) {
-		$slugTemplate.css( 'display', 'block');
-	}
-
-	// Iterate over all children of this branch and add slugs in appropriate places
-	if ( this.getLength() === 0 ) {
-		this.$.empty();
-		$slug = $slugTemplate.clone();
-		this.$slugs = this.$slugs.add( $slug );
-		this.$.append( $slug );
-	}
-	// TODO the before/after logic below is duplicated from hasSlugAtOffset(), refactor this
-	for ( i = 0; i < this.children.length; i++ ) {
-		if ( this.children[i].canHaveSlugAfter() ) {
-			if (
-				// Last sluggable child (right side)
-				i === this.children.length - 1 ||
-				// Sluggable child followed by another sluggable child (in between)
-				( this.children[i + 1] && this.children[i + 1].canHaveSlugBefore() )
-			) {
-				$slug = $slugTemplate.clone();
-				this.$slugs = this.$slugs.add( $slug );
-				this.children[i].$.after( $slug );
-			}
-		}
-		// First sluggable child (left side)
-		if ( i === 0 && this.children[i].canHaveSlugBefore() ) {
-			$slug = $slugTemplate.clone();
-			this.$slugs = this.$slugs.add( $slug );
-			this.children[i].$.before( $slug );
-		}
-	}
-};
 
 /**
  * Updates the DOM wrapper of this node if needed.
@@ -222,39 +183,58 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
 		}
 	}
 
-	this.addSlugs();
+	this.setupSlugs();
 };
 
-ve.ce.BranchNode.prototype.hasSlugAtOffset = function ( offset ) {
-	var i, nodeOffset, nodeLength;
-	if ( this.getLength() === 0 ) {
-		return true;
+ve.ce.BranchNode.prototype.setupSlugs = function () {
+	var key, $slug, i;
+
+	// Remove all slugs in this branch
+	for( key in this.slugs ) {
+		this.slugs[key].remove();
 	}
-	for ( i = 0; i < this.children.length; i++ ) {
-		if ( this.children[i].canHaveSlugAfter() || this.children[i].canHaveSlugBefore() ) {
-			nodeOffset = this.children[i].model.getRoot().getOffsetFromNode( this.children[i].model );
-			if ( this.children[i].canHaveSlugAfter() ) {
-				nodeLength = this.children[i].model.getOuterLength();
-				if (
-					// Offset is after this child
-					offset === nodeOffset + nodeLength &&
-					(
-						// Last sluggable child (right side)
-						i === this.children.length - 1 ||
-						// Sluggable child followed by another sluggable child (in between)
-						( this.children[i + 1] && this.children[i + 1].canHaveSlugBefore() )
-					)
-				) {
-					return true;
-				}
-			}
+
+	if ( this.canHaveGrandchildren() ) {
+		$slug = ve.ce.BranchNode.$blockSlugTemplate.clone();
+	} else {
+		$slug = ve.ce.BranchNode.$inlineSlugTemplate.clone();
+	}
+
+	if ( this.getLength() === 0 ) {
+		this.slugs[0] = $slug.clone().appendTo( this.$ )
+	} else {
+		// Iterate over all children of this branch and add slugs in appropriate places
+		for ( i = 0; i < this.children.length; i++ ) {
 			// First sluggable child (left side)
-			if ( i === 0 && offset === nodeOffset && this.children[i].canHaveSlugBefore() ) {
-				return true;
+			if ( i === 0 && this.children[i].canHaveSlugBefore() ) {
+				this.slugs[i] = $slug.clone().insertBefore( this.children[i].$ );
+			}
+			if ( this.children[i].canHaveSlugAfter() ) {
+				if (
+					// Last sluggable child (right side)
+					i === this.children.length - 1 ||
+					// Sluggable child followed by another sluggable child (in between)
+					( this.children[i + 1] && this.children[i + 1].canHaveSlugBefore() )
+				) {
+					this.slugs[i + 1] = $slug.clone().insertAfter( this.children[i].$ );
+				}
 			}
 		}
 	}
-	return false;
+};
+
+ve.ce.BranchNode.prototype.getSlugAtOffset = function( offset ) {
+	var startOffset = this.model.getOffset() + ( this.isWrapped() ? 1 : 0 );
+
+	if ( offset === startOffset ) {
+		return this.slugs[0] || null;
+	}
+	for ( i = 0; i < this.children.length; i++ ) {
+		startOffset += this.children[i].model.getOuterLength();
+		if ( offset === startOffset ) {
+			return this.slugs[i + 1] || null;
+		}
+	}
 };
 
 ve.ce.BranchNode.prototype.clean = function () {
@@ -267,5 +247,5 @@ ve.ce.BranchNode.prototype.clean = function () {
 	for ( var i = 0; i < this.children.length; i++ ) {
 		this.$.append( this.children[i].$ );
 	}
-	this.addSlugs();
+	this.setupSlugs();
 };

@@ -243,7 +243,7 @@ ve.ce.Surface.prototype.onKeyDown = function ( e ) {
 				relativeContentOffset = this.documentView.model.getRelativeContentOffset( offset, 1 );
 				relativeStructuralOffset = this.documentView.model.getRelativeStructuralOffset( offset + 1, 1, true );
 				relativeStructuralOffsetNode = this.documentView.documentNode.getNodeFromOffset( relativeStructuralOffset );
-				hasSlug = relativeStructuralOffsetNode.hasSlugAtOffset( relativeStructuralOffset );
+				hasSlug = this.documentView.getSlugAtOffset( relativeStructuralOffset ) || false;
 				if ( hasSlug ) {
 					if ( relativeContentOffset < offset ) {
 						newOffset = relativeStructuralOffset;
@@ -1291,12 +1291,7 @@ ve.ce.Surface.prototype.getNearestCorrectOffset = function ( offset, direction )
  * @returns {Boolean} A slug exists at the given offset
  */
 ve.ce.Surface.prototype.hasSlugAtOffset = function ( offset ) {
-	var node = this.documentView.documentNode.getNodeFromOffset( offset );
-	if ( node && node.canHaveChildren() ) {
-		return node.hasSlugAtOffset( offset );
-	} else {
-		return false;
-	}
+	return this.documentView.getSlugAtOffset( offset ) || false;
 };
 
 /**

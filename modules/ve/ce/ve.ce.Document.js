@@ -34,3 +34,8 @@ ve.ce.Document.prototype.getNodeFromOffset = function ( offset ) {
 	}
 	return node;
 };
+
+ve.ce.Document.prototype.getSlugAtOffset = function ( offset ) {
+	var node = this.getNodeFromOffset( offset );
+	return node.getSlugAtOffset( offset );
+};
