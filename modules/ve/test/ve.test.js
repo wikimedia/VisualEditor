@@ -262,3 +262,27 @@ QUnit.test( 'copyObject', 6, function ( assert ) {
 		'Object with sparse array'
 	);
 } );
+
+QUnit.test( 'getDOMAttributes', 1, function ( assert ) {
+	assert.deepEqual(
+		ve.getDOMAttributes( $( '<div foo="bar" baz quux=3></div>').get( 0 ) ),
+		{ 'foo': 'bar', 'baz': '', 'quux': '3' },
+		'getDOMAttributes() returns object with correct attributes'
+	);
+} );
+
+QUnit.test( 'setDOMAttributes', 2, function ( assert ) {
+	var element = document.createElement( 'div' );
+	ve.setDOMAttributes( element, { 'foo': 'bar', 'baz': '', 'quux': 3 } );
+	assert.deepEqual(
+		ve.getDOMAttributes( element ),
+		{ 'foo': 'bar', 'baz': '', 'quux': '3' },
+		'setDOMAttributes() sets attributes correctly'
+	);
+	ve.setDOMAttributes( element, { 'foo': null, 'bar': 1, 'baz': undefined, 'quux': 5, 'whee': 'yay' } );
+	assert.deepEqual(
+		ve.getDOMAttributes( element ),
+		{ 'bar': '1', 'quux': '5', 'whee': 'yay' },
+		'setDOMAttributes() overwrites attributes, removes attributes, and sets new attributes'
+	);
+} );
