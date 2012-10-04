@@ -16,6 +16,99 @@ ve.example.getSelectNodesCases = function ( doc ) {
 		documentNode = doc.getDocumentNode();
 	return [
 		{
+			'actual': doc.selectNodes( new ve.Range( 1 ), 'branches' ),
+			'expected': [
+				// heading
+				{
+					'node': lookup( documentNode, 0 ),
+					'range': new ve.Range( 1 ),
+					'index': 0,
+					'nodeRange': new ve.Range( 1, 4 ),
+					'nodeOuterRange': new ve.Range( 0, 5 )
+				}
+			]
+		},
+		{
+			'actual': doc.selectNodes( new ve.Range( 10 ), 'branches' ),
+			'expected': [
+				// paragraph
+				{
+					'node': lookup( documentNode, 1, 0, 0, 0, 0 ),
+					'range': new ve.Range( 10 ),
+					'index': 0,
+					'nodeRange': new ve.Range( 10, 11 ),
+					'nodeOuterRange': new ve.Range( 9, 12 )
+				}
+			]
+		},
+		{
+			'actual': doc.selectNodes( new ve.Range( 20 ), 'branches' ),
+			'expected': [
+				// paragraph
+				{
+					'node': lookup( documentNode, 1, 0, 0, 0, 1, 0, 0 ),
+					'range': new ve.Range( 20 ),
+					'index': 0,
+					'nodeRange': new ve.Range( 20, 21 ),
+					'nodeOuterRange': new ve.Range( 19, 22 )
+				}
+			]
+		},
+		{
+			'actual': doc.selectNodes( new ve.Range( 1, 20 ), 'branches' ),
+			'expected': [
+				// heading
+				{
+					'node': lookup( documentNode, 0 ),
+					'range': new ve.Range( 1, 4 ),
+					'index': 0,
+					'nodeRange': new ve.Range( 1, 4 ),
+					'nodeOuterRange': new ve.Range( 0, 5 )
+				},
+
+				// paragraph
+				{
+					'node': lookup( documentNode, 1, 0, 0, 0, 0 ),
+					'index': 0,
+					'nodeRange': new ve.Range( 10, 11 ),
+					'nodeOuterRange': new ve.Range( 9, 12 )
+				},
+
+				// paragraph
+				{
+					'node': lookup( documentNode, 1, 0, 0, 0, 1, 0, 0 ),
+					'index': 0,
+					'nodeRange': new ve.Range( 15, 16 ),
+					'nodeOuterRange': new ve.Range( 14, 17 )
+				},
+
+				// paragraph
+				{
+					'node': lookup( documentNode, 1, 0, 0, 0, 2, 0, 0 ),
+					'range': new ve.Range( 20 ),
+					'index': 0,
+					'nodeRange': new ve.Range( 20, 21 ),
+					'nodeOuterRange': new ve.Range( 19, 22 )
+				},
+
+			]
+		},
+		{
+			'actual': doc.selectNodes( new ve.Range( 1 ), 'branches' ),
+			'expected': [
+				// heading
+				{
+					'node': lookup( documentNode, 0 ),
+					'range': new ve.Range( 1 ),
+					'index': 0,
+					'nodeRange': new ve.Range( 1, 4 ),
+					'nodeOuterRange': new ve.Range( 0, 5 )
+				}
+			]
+		},
+
+
+		{
 			'actual': doc.selectNodes( new ve.Range( 0, 3 ), 'leaves' ),
 			'expected': [
 				// heading/text

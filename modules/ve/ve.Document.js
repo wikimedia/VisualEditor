@@ -215,9 +215,8 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 				} ];
 			}
 		} else if ( startInside && endInside ) {
-			if ( node.children && node.children.length && 
-				( mode !== 'branches' ||
-					( mode === 'branches' && node.canHaveGrandchildren() ) ) ) {
+			if ( node.children && node.children.length &&
+				( mode !== 'branches' || node.canHaveGrandchildren() ) ) {
 				// Descend into node
 				currentFrame = {
 					'node': node,
