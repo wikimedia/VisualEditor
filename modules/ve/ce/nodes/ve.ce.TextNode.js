@@ -157,7 +157,7 @@ ve.ce.TextNode.prototype.onUpdate = function ( force ) {
 	if ( !force && !this.root.getSurface ) {
 		throw new Error( 'Can not update a text node that is not attached to a document' );
 	}
-	if ( force === true || this.root.getSurface().render === true ) {
+	if ( force === true || !this.root.getSurface().isLocked() ) {
 		var $new = $( '<span>' ).html( this.getHtml() ).contents();
 		if ( $new.length === 0 ) {
 			$new = $new.add( document.createTextNode( '' ) );

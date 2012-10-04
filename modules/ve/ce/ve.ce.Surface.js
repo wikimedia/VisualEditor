@@ -28,7 +28,7 @@ ve.ce.Surface = function VeCeSurface( $container, model ) {
 	this.$ = $container;
 	this.$document = $( document );
 	this.clipboard = {};
-	this.render = true; // Used in ve.ce.TextNode
+	this.locked = false;
 	this.sluggable = true;
 
 	this.poll = {
@@ -365,14 +365,14 @@ ve.ce.Surface.prototype.handleInsertAnnotations = function () {
 		);
 
 		// Remove pawn from the model and do not re-render
-		this.render = false;
+		this.lock();
 		this.model.change(
 			ve.dm.Transaction.newFromRemoval(
 				this.documentView.model,
 				this.model.getSelection()
 			)
 		);
-		this.render = true;
+		this.unlock();
 
 		// Reset the pawn trick when current event handling is done
 		var _this = this;
@@ -784,14 +784,14 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 		ve.dm.Document.addAnnotationsToData( data, this.model.getDocument().insertAnnotations );
 
 		// Prevent re-rendering and transact
-		this.render = false;
+		this.lock();
 		this.model.change(
 			ve.dm.Transaction.newFromInsertion(
 				this.documentView.model, previous.range.start, data
 			),
 			next.range
 		);
-		this.render = true;
+		this.unlock();
 
 	} else if (
 		( offsetDiff === 0 || offsetDiff === lengthDiff ) &&
@@ -811,12 +811,12 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 		}
 
 		// Prevent re-rendering and transact
-		this.render = false;
+		this.lock();
 		this.model.change(
 			ve.dm.Transaction.newFromRemoval( this.documentView.model, range ),
 			next.range
 		);
-		this.render = true;
+		this.unlock();
 
 	} else {
 		ve.log('complex text change');
@@ -1579,4 +1579,25 @@ ve.ce.Surface.prototype.getModel = function () {
  */
 ve.ce.Surface.prototype.getDocument = function () {
 	return this.documentView;
+};
+
+/**
+ * @method
+ */
+ve.ce.Surface.prototype.lock = function() {
+	this.locked = true;
+};
+
+/**
+ * @method
+ */
+ve.ce.Surface.prototype.unlock = function() {
+	this.locked = false;
+};
+
+/**
+ * @method
+ */
+ve.ce.Surface.prototype.isLocked = function() {
+	return this.locked;
 };
