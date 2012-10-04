@@ -18,7 +18,7 @@ ve.FactoryObjectStub = function VeFactoryObjectStub( a, b, c, d ) {
 
 /* Tests */
 
-QUnit.test( 'register', 1, function ( assert ) {
+QUnit.test( 'register', 3, function ( assert ) {
 	var factory = new ve.Factory();
 	assert.throws(
 		function () {
@@ -27,6 +27,10 @@ QUnit.test( 'register', 1, function ( assert ) {
 		Error,
 		'Throws an exception when trying to register a non-function value as a constructor'
 	);
+
+	factory.register( ['factory-object-stub-1', 'factory-object-stub-2'], ve.FactoryObjectStub );
+	assert.strictEqual( factory.lookup( 'factory-object-stub-1' ), ve.FactoryObjectStub );
+	assert.strictEqual( factory.lookup( 'factory-object-stub-2' ), ve.FactoryObjectStub );
 } );
 
 QUnit.test( 'create', 3, function ( assert ) {

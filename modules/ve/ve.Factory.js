@@ -34,43 +34,52 @@ ve.inheritClass( ve.Factory, ve.EventEmitter );
  * @see {ve.Factory.prototype.create}
  *
  * @method
- * @param {String} type Object type
+ * @param {String|String[]} name Symbolic name or list of symbolic names
  * @param {Function} constructor Constructor to use when creating object
  * @throws 'Constructor must be a function, cannot be a string'
  */
-ve.Factory.prototype.register = function ( type, constructor ) {
+ve.Factory.prototype.register = function ( name, constructor ) {
+	var i, len;
 	if ( typeof constructor !== 'function' ) {
 		throw new Error( 'Constructor must be a function, cannot be a ' + typeof constructor );
 	}
-	this.registry[type] = constructor;
-	this.emit( 'register', type, constructor );
+	if ( ve.isArray( name ) ) {
+		for ( i = 0, len = name.length; i < len; i++ ) {
+			this.register( name[i], constructor );
+		}
+	} else if ( typeof name === 'string' ) {
+		this.registry[name] = constructor;
+		this.emit( 'register', name, constructor );
+	} else {
+		throw new Error( 'Name must be a string or array of strings, cannot be a ' + typeof name );
+	}
 };
 
 /**
- * Create an object based on a type.
+ * Create an object based on a name.
  *
- * Type is used to look up the constructor to use, while all additional arguments are passed to the
+ * Name is used to look up the constructor to use, while all additional arguments are passed to the
  * constructor directly, so leaving one out will pass an undefined to the constructor.
  *
  * @method
- * @param {string} type Object type.
+ * @param {string} name Object name.
  * @param {mixed} [...] Arguments to pass to the constructor.
  * @returns {Object} The new object.
- * @throws 'Unknown object type'
+ * @throws 'Unknown object name'
  */
-ve.Factory.prototype.create = function ( type ) {
+ve.Factory.prototype.create = function ( name ) {
 	var args, obj,
-		constructor = this.registry[type];
+		constructor = this.registry[name];
 
 	if ( constructor === undefined ) {
-		throw new Error( 'Unknown object type: ' + type );
+		throw new Error( 'Unknown object name: ' + name );
 	}
 
-	// Convert arguments to array and shift the first argument (type) off
+	// Convert arguments to array and shift the first argument (name) off
 	args = Array.prototype.slice.call( arguments, 1 );
 
 	// We can't use the "new" operator with .apply directly because apply needs a
-	// context. So instead just do what "new" does: Create an object that inherits from
+	// context. So instead just do what "new" does: create an object that inherits from
 	// the constructor's prototype (which also makes it an "instanceof" the constructor),
 	// then invoke the constructor with the object as context, and return it (ignoring
 	// the constructor's return value).
@@ -80,12 +89,12 @@ ve.Factory.prototype.create = function ( type ) {
 };
 
 /**
- * Gets a constructor for a given type.
+ * Gets a constructor for a given name.
  *
  * @method
- * @param {String} type Object type
- * @returns {Function|undefined} Constructor for type
+ * @param {String} name Object name
+ * @returns {Function|undefined} Constructor for name
  */
-ve.Factory.prototype.lookup = function ( type ) {
-	return this.registry[type];
+ve.Factory.prototype.lookup = function ( name ) {
+	return this.registry[name];
 };
