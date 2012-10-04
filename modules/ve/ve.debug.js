@@ -6,6 +6,10 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
+/* Static variables */
+
+ve.debug = true;
+
 /* Static Methods */
 
 /**
