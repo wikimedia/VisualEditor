@@ -328,7 +328,7 @@ ve.ce.Surface.prototype.onKeyDown = function ( e ) {
 				relativeContentOffset = this.documentView.model.getRelativeContentOffset( offset, -1 );
 				relativeStructuralOffset = this.documentView.model.getRelativeStructuralOffset( offset - 1, -1, true );
 				relativeStructuralOffsetNode = this.documentView.documentNode.getNodeFromOffset( relativeStructuralOffset );
-				hasSlug = relativeStructuralOffsetNode.hasSlugAtOffset( relativeStructuralOffset );
+				hasSlug = this.documentView.getSlugAtOffset( relativeStructuralOffset ) || false;
 				if ( hasSlug ) {
 					if ( relativeContentOffset > offset ) {
 						newOffset = relativeStructuralOffset;
