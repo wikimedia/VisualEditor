@@ -103,3 +103,129 @@ ve.ce.getDomHash = function ( element ) {
 	}
 	return hash;
 };
+
+/**
+ * Gets the linear offset from a given DOM node and offset within it.
+ *
+ * @static
+ * @member
+ * @param {DOM Node} domNode DOM node
+ * @param {Integer} domOffset DOM offset within the DOM node
+ * @returns {Integer} Linear model offset
+ */
+ve.ce.getOffset = function ( domNode, domOffset ) {
+	if ( domNode.nodeType === Node.TEXT_NODE ) {
+		return ve.ce.getOffsetFromTextNode( domNode, domOffset );
+	} else if ( domNode.nodeType === Node.ELEMENT_NODE ) {
+		return ve.ce.getOffsetFromElementNode( domNode, domOffset );
+	} else {
+		throw "Unknown node type.";
+	}
+};
+
+/**
+ * Gets the linear offset from a given text node and offset within it.
+ * TODO: Consider using .childNodes instead of .contents() for small performance improvement.
+ *
+ * @static
+ * @member
+ * @param {DOM Node} domNode DOM text node
+ * @param {Integer} domOffset DOM offset within the DOM text node
+ * @returns {Integer} Linear model offset
+ */
+ve.ce.getOffsetFromTextNode  = function ( domNode, domOffset ) {
+	var $node, model, current, stack, offset, item, $item;
+
+	$node = $( domNode ).closest( '.ve-ce-branchNode, .ve-ce-slug, .ve-ce-alienBlockNode, .ve-ce-alienInlineNode' );
+	if ( $node.hasClass( 've-ce-slug' ) ) {
+		return ve.ce.getOffsetOfSlug( $node );
+	}
+
+	model = $node.data( 'node' ).getModel();
+	if ( ! $node.hasClass( 've-ce-branchNode' ) ) {
+		return model.getOffset();
+	}
+
+	current = [ $node.contents(), 0 ];
+	stack = [ current ];
+	offset = 0;
+
+	while ( stack.length > 0 ) {
+		if ( current[1] >= current[0].length ) {
+			stack.pop();
+			current = stack[ stack.length - 1 ];
+			continue;
+		}
+		item = current[0][current[1]];
+		if ( item.nodeType === Node.TEXT_NODE ) {
+			if ( item === domNode ) {
+				offset += domOffset;
+				break;
+			} else {
+				offset += item.textContent.length;
+			}
+		} else if ( item.nodeType === Node.ELEMENT_NODE ) {
+			$item = current[0].eq( current[1] );
+			if ( $item.hasClass( 've-ce-slug' ) ) {
+				if ( $item.contents()[0] === domNode ) {
+					break;
+				}
+			} else if ( $item.hasClass( 've-ce-leafNode' ) ) {
+				offset += $item.data( 'node' ).getOuterLength();
+			} else {
+				stack.push( [ $item.contents(), 0 ] );
+				current[1]++;
+				current = stack[ stack.length-1 ];
+				continue;
+			}
+		}
+		current[1]++;
+	}
+	return offset + model.getOffset() + ( model.isWrapped() ? 1 : 0 );
+};
+
+/**
+ * Gets the linear offset from a given element node and offset within it.
+ *
+ * @static
+ * @member
+ * @param {DOM Node} domNode DOM element node
+ * @param {Integer} domOffset DOM offset within the DOM element node
+ * @returns {Integer} Linear model offset
+ */
+ve.ce.getOffsetFromElementNode  = function ( domNode, domOffset ) {
+	var $node = $( domNode );
+	if ( $node.hasClass( 've-ce-slug' ) ) {
+		return ve.ce.getOffsetOfSlug( $node );
+	} else if ( domOffset === 0 ) {
+		return $node.data( 'node' ).getModel().getOffset();
+	} else {
+		$node = $node.contents().eq( domOffset - 1 );
+		if ( $node[0].nodeType === Node.TEXT_NODE ) {
+			return ve.ce.getOffsetFromTextNode( $node[0], 0 );
+		} else if ( $node[0].nodeType === Node.ELEMENT_NODE ) {
+			return $node.data( 'node' ).getModel().getOffset();
+		}
+	}
+};
+
+/**
+ * Gets the linear offset of a given slug
+ *
+ * @static
+ * @member
+ * @param {jQuery} $node jQuery slug selection
+ * @returns {Integer} Linear model offset
+ */
+ve.ce.getOffsetOfSlug  = function ( $node ) {
+	var model;
+	if ( $node.index() === 0 ) {
+		model = $node.parent().data( 'node' ).getModel();
+		return model.getOffset() + ( model.isWrapped() ? 1 : 0 );
+	} else if ( $node.prev().length ) {
+		model = $node.prev().data( 'node' ).getModel();
+		return model.getOffset() + model.getOuterLength();
+	} else {
+		throw "Incorrect slug location";
+	}
+};
