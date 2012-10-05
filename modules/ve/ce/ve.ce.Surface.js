@@ -258,7 +258,7 @@ ve.ce.Surface.prototype.documentOnBlur = function () {
  */
 ve.ce.Surface.prototype.onMouseDown = function ( e ) {
 	// Old code to figure out if user clicked inside the document or not - leave it here for now
-	// $( e.target ).closest( '.ve-ce-documentNode' ).length === 0 
+	// $( e.target ).closest( '.ve-ce-documentNode' ).length === 0
 
 	if ( e.which === 1 ) {
 		this.surfaceObserver.stop( true );
@@ -482,7 +482,7 @@ ve.ce.Surface.prototype.handleInsertAnnotations = function () {
 		var _this = this;
 		setTimeout(function() {
 			_this.model.insertingAnnotations = false;
-			_this.pollChanges();
+			_this.surfaceObserver.start();
 		}, 0);
 	}
 };
@@ -616,7 +616,6 @@ ve.ce.Surface.prototype.onPaste = function () {
  * @param {jQuery.Event} e
  */
 ve.ce.Surface.prototype.onKeyPress = function ( e ) {
-	return;
 	var node, selection, data;
 
 	ve.log( 'onKeyPress' );
