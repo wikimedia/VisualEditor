@@ -321,7 +321,7 @@ ve.dm.SurfaceFragment.prototype.getSiblingNodes = function () {
  * @param {Boolean} [value=true] Automatically update surface selection
  * @returns {ve.dm.SurfaceFragment} This fragment
  */
-ve.dm.SurfaceFragment.prototype.autoSelect = function ( value ) {
+ve.dm.SurfaceFragment.prototype.setAutoSelect = function ( value ) {
 	this.autoSelect = value === undefined || !!value;
 	return this;
 };
