@@ -473,7 +473,7 @@ ve.dm.SurfaceFragment.prototype.convertNodes = function ( type, attr ) {
  * @param {Object} [wrapper.attributes] Attributes of wrapper
  * @returns {ve.dm.SurfaceFragment} This fragment
  */
-ve.dm.SurfaceFragment.prototype.wrapNodes = function () {
+ve.dm.SurfaceFragment.prototype.wrapNodes = function ( wrapper ) {
 	// Handle null fragment
 	if ( !this.surface ) {
 		return this;
@@ -544,7 +544,7 @@ ve.dm.SurfaceFragment.prototype.rewrapNodes = function () {
  * @param {Object} [wrapper.attributes] Attributes of wrapper
  * @returns {ve.dm.SurfaceFragment} This fragment
  */
-ve.dm.SurfaceFragment.prototype.wrapAllNodes = function () {
+ve.dm.SurfaceFragment.prototype.wrapAllNodes = function ( wrapper ) {
 	// Handle null fragment
 	if ( !this.surface ) {
 		return this;
