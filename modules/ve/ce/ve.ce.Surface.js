@@ -203,7 +203,7 @@ ve.ce.Surface.prototype.onSelectionChange = function ( oldRange, newRange ) {
  * @method
  */
 ve.ce.Surface.prototype.onLock = function () {
-	this.stopPolling();
+	this.surfaceObserver.stop();
 };
 
 /**
@@ -212,8 +212,8 @@ ve.ce.Surface.prototype.onLock = function () {
  * @method
  */
 ve.ce.Surface.prototype.onUnlock = function () {
-	this.clearPollData();
-	this.startPolling();
+	this.surfaceObserver.clear();
+	this.surfaceObserver.start();
 };
 
 /**
@@ -421,17 +421,17 @@ ve.ce.Surface.prototype.onKeyDown = function ( e ) {
 				if ( e.shiftKey ) {
 					// Ctrl+Shift+Z / Cmd+Shift+Z, redo
 					e.preventDefault();
-					this.stopPolling();
+					this.surfaceObserver.stop();
 					this.showSelection( this.model.redo() );
-					this.clearPollData();
-					this.startPolling();
+					this.surfaceObserver.clear();
+					this.surfaceObserver.start();
 				} else {
 					// Ctrl+Z / Cmd+Z, undo
 					e.preventDefault();
-					this.stopPolling();
+					this.surfaceObserver.stop();
 					this.showSelection( this.model.undo() );
-					this.clearPollData();
-					this.startPolling();
+					this.surfaceObserver.clear();
+					this.surfaceObserver.start();
 				}
 			}
 			break;
@@ -530,7 +530,7 @@ ve.ce.Surface.prototype.onCopy = function () {
 ve.ce.Surface.prototype.onCut = function ( e ) {
 	var surface = this;
 
-	this.stopPolling();
+	this.surfaceObserver.stop();
 
 	this.onCopy( e );
 
@@ -544,13 +544,13 @@ ve.ce.Surface.prototype.onCut = function ( e ) {
 		selection = surface.model.getSelection();
 
 		// Transact
-		surface.autoRender = true;
+		surface.lock();
 		tx = ve.dm.Transaction.newFromRemoval( surface.documentView.model, selection );
 		surface.model.change( tx, new ve.Range( selection.start ) );
-		surface.autoRender = false;
+		surface.unlock();
 
-		surface.clearPollData();
-		surface.startPolling();
+		surface.surfaceObserver.clear();
+		surface.surfaceObserver.start();
 	}, 1 );
 };
 
@@ -565,7 +565,7 @@ ve.ce.Surface.prototype.onPaste = function () {
 		view = this,
 		selection = this.model.getSelection();
 
-	this.stopPolling();
+	this.surfaceObserver.stop();
 
 	// Pasting into a range? Remove first.
 	if ( !rangy.getSelection().isCollapsed ) {
@@ -604,8 +604,8 @@ ve.ce.Surface.prototype.onPaste = function () {
 		view.model.change( tx, new ve.Range( selection.start + pasteData.length ) );
 		view.documentView.documentNode.$.focus();
 
-		view.clearPollData();
-		view.startPolling();
+		view.surfaceObserver.clear();
+		view.surfaceObserver.start();
 	}, 1 );
 };
 
@@ -633,7 +633,7 @@ ve.ce.Surface.prototype.onKeyPress = function ( e ) {
 		this.hasSlugAtOffset( selection.start )
 	) {
 		this.sluggable = false;
-		this.stopPolling();
+		this.surfaceObserver.stop();
 		if ( this.documentView.getNodeFromOffset( selection.start ).getLength() !== 0 ) {
 			data = [ { 'type' : 'paragraph' }, { 'type' : '/paragraph' } ];
 			this.model.change(
@@ -651,15 +651,15 @@ ve.ce.Surface.prototype.onKeyPress = function ( e ) {
 		node.$.empty();
 		// TODO: Can this be chained to the above line?
 		node.$.append( document.createTextNode( '' ) );
-		this.clearPollData();
-		this.startPolling();
+		this.surfaceObserver.clear();
+		this.surfaceObserver.start();
 	}
 
 	this.handleInsertAnnotations();
 
 	// Is there an expanded range and something other than keycodes 0 (nothing) or 27 (esc) were pressed?
 	if ( selection.getLength() > 0 && ( e.which !== 0 || e.which !== 27 ) ) {
-		this.stopPolling();
+		this.surfaceObserver.stop();
 		this.model.change(
 			ve.dm.Transaction.newFromRemoval(
 				this.documentView.model,
@@ -667,8 +667,8 @@ ve.ce.Surface.prototype.onKeyPress = function ( e ) {
 			),
 			new ve.Range( selection.start )
 		);
-		this.clearPollData();
-		this.startPolling();
+		this.surfaceObserver.clear();
+		this.surfaceObserver.start();
 	}
 
 };
@@ -716,7 +716,7 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 		outermostNode = null;
 
 	// Stop polling while we work
-	this.stopPolling();
+	this.surfaceObserver.stop();
 
 	// Handle removal first
 	if ( selection.from !== selection.to ) {
@@ -810,8 +810,8 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 		);
 	}
 	// Reset and resume polling
-	this.clearPollData();
-	this.startPolling();
+	this.surfaceObserver.clear();
+	this.surfaceObserver.start();
 };
 
 /**
@@ -905,7 +905,7 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 
 		ve.log('handleDelete programatically');
 		e.preventDefault();
-		this.stopPolling();
+		this.surfaceObserver.stop();
 
 		if (
 			// Source and target are the same node
@@ -964,8 +964,8 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 		);
 	}
 
-	this.clearPollData();
-	this.startPolling();
+	this.surfaceObserver.clear();
+	this.surfaceObserver.start();
 };
 
 /**
