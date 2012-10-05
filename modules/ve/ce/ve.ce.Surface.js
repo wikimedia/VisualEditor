@@ -22,9 +22,9 @@ ve.ce.Surface = function VeCeSurface( $container, model ) {
 
 	// Properties
 	this.model = model;
-	this.documentView = null; // See initialization below
-	this.contextView = null; // See initialization below
-	this.surfaceObserver = null; // See initialization below
+	this.documentView = new ve.ce.Document( model.getDocument(), this );
+	this.contextView = new ve.ui.Context( this );
+	this.surfaceObserver = new ve.ce.SurfaceObserver( this.documentView );
 	this.selectionTimeout = null;
 	this.$ = $container;
 	this.$document = $( document );
@@ -33,10 +33,16 @@ ve.ce.Surface = function VeCeSurface( $container, model ) {
 	this.sluggable = true;
 
 	// Events
+	this.surfaceObserver.addListenerMethods(
+		this, { 'contentChange': 'onContentChange', 'selectionChange': 'onSelectionChange' }
+	);
 	this.model.addListenerMethods(
 		this, { 'change': 'onChange', 'lock': 'onLock', 'unlock': 'onUnlock' }
 	);
-	this.on( 'contentChange', ve.bind( this.onContentChange, this ) );
+	this.documentView.getDocumentNode().$.on( {
+		'focus': ve.bind( this.documentOnFocus, this ),
+		'blur': ve.bind( this.documentOnBlur, this )
+	} );
 	this.$.on( {
 		'cut': ve.bind( this.onCut, this ),
 		'copy': ve.bind( this.onCopy, this ),
@@ -55,27 +61,10 @@ ve.ce.Surface = function VeCeSurface( $container, model ) {
 	try {
 		document.execCommand( 'enableObjectResizing', false, false );
 		document.execCommand( 'enableInlineTableEditing', false, false );
-	} catch ( e ) {
-		// Silently ignore
-	}
+	} catch ( e ) { /* Silently ignore */ }
 	rangy.init();
 	ve.ce.Surface.clearLocalStorage();
-
-	// Must be initialized after select and transact listeners are added to model so respond first
-	this.documentView = new ve.ce.Document( model.getDocument(), this );
-	this.contextView = new ve.ui.Context( this );
-	this.surfaceObserver = new ve.ce.SurfaceObserver( this.documentView );
 	this.$.append( this.documentView.getDocumentNode().$ );
-
-	// DocumentNode Events
-	this.documentView.getDocumentNode().$.on( {
-		'focus': ve.bind( this.documentOnFocus, this ),
-		'blur': ve.bind( this.documentOnBlur, this )
-	} );
-
-	// SurfaceObserver Events
-	this.surfaceObserver.on( 'contentChange', ve.bind( this.onContentChange, this ) );
-	this.surfaceObserver.on( 'selectionChange', ve.bind( this.onSelectionChange, this ) );
 };
 
 /* Inheritance */
