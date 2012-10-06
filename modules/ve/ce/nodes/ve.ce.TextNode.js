@@ -57,93 +57,6 @@ ve.ce.TextNode.htmlCharacters = {
 	'\t': '&#10142;'
 };
 
-/**
- * List of annotation rendering implementations.
- *
- * Each supported annotation renderer must have an open and close property, each either a string or
- * a function which accepts a data argument.
- *
- * @static
- * @member
- */
-ve.ce.TextNode.annotationRenderers = {
-	'textStyle/italic': {
-		'open': '<i>',
-		'close': '</i>'
-	},
-	'textStyle/bold': {
-		'open': '<b>',
-		'close': '</b>'
-	},
-	'textStyle/underline': {
-		'open': '<u>',
-		'close': '</u>'
-	},
-	'textStyle/strike': {
-		'open': '<s>',
-		'close': '</s>'
-	},
-	'textStyle/small': {
-		'open': '<small>',
-		'close': '</small>'
-	},
-	'textStyle/big': {
-		'open': '<big>',
-		'close': '</big>'
-	},
-	'textStyle/span': {
-		// TODO recognize attributes
-		'open': '<span>',
-		'close': '</span>'
-	},
-	'textStyle/strong': {
-		'open': '<strong>',
-		'close': '</strong>'
-	},
-	'textStyle/emphasize': {
-		'open': '<em>',
-		'close': '<em>'
-	},
-	'textStyle/superScript': {
-		'open': '<sup>',
-		'close': '</sup>'
-	},
-	'textStyle/subScript': {
-		'open': '<sub>',
-		'close': '</sub>'
-	},
-	'link/ExtLink': {
-		'open': function ( data ) {
-			return '<a href="#" title="' + ve.escapeHtml( data.href ) + '">';
-		},
-		'close': '</a>'
-	},
-	'link/ExtLink/Numbered': {
-		'open': function ( data ) {
-			return '<a href="#" title="' + ve.escapeHtml( data.href ) + '">';
-		},
-		'close': '</a>'
-	},
-	'link/ExtLink/URL': {
-		'open': function ( data ) {
-			return '<a href="#" title="' + ve.escapeHtml( data.href ) + '">';
-		},
-		'close': '</a>'
-	},
-	'link/WikiLink': {
-		'open': function ( data ) {
-			return '<a href="#" title="' + ve.escapeHtml( data.title ) + '">';
-		},
-		'close': '</a>'
-	},
-	'link/unknown': {
-		'open': function () {
-			return '<a href="#">';
-		},
-		'close': '</a>'
-	}
-};
-
 /* Methods */
 
 /**
@@ -185,7 +98,6 @@ ve.ce.TextNode.prototype.onUpdate = function ( force ) {
 ve.ce.TextNode.prototype.getHtml = function () {
 	var data = this.model.getDocument().getDataFromNode( this.model ),
 		htmlChars = ve.ce.TextNode.htmlCharacters,
-		renderers = ve.ce.TextNode.annotationRenderers,
 		out = '',
 		i,
 		j,
@@ -241,13 +153,12 @@ ve.ce.TextNode.prototype.getHtml = function () {
 
 	function openAnnotations( annotations ) {
 		var out = '',
-			annotation, i, arr;
+			annotation, i, arr, rendered;
 		arr = annotations.get();
 		for ( i = 0; i < arr.length; i++ ) {
 			annotation = arr[i];
-			out += typeof renderers[annotation.type].open === 'function' ?
-				renderers[annotation.type].open( annotation.data ) :
-				renderers[annotation.type].open;
+			rendered = annotation.renderHTML();
+			out += ve.getOpeningHtmlTag( rendered.tag, rendered.attributes );
 			annotationStack.push( annotation );
 		}
 		return out;
@@ -259,9 +170,7 @@ ve.ce.TextNode.prototype.getHtml = function () {
 		arr = annotations.get();
 		for ( i = 0; i < arr.length; i++ ) {
 			annotation = arr[i];
-			out += typeof renderers[annotation.type].close === 'function' ?
-				renderers[annotation.type].close( annotation.data ) :
-				renderers[annotation.type].close;
+			out += '</' + annotation.renderHTML().tag + '>';
 			annotationStack.remove( annotation );
 		}
 		return out;
