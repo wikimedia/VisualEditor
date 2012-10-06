@@ -11,6 +11,9 @@ QUnit.module( 've.dm.TransactionProcessor' );
 
 QUnit.test( 'commit/rollback', function ( assert ) {
 	var i, key, originalData, originalDoc, msg, testDocument, tx, expectedData, expectedDocument,
+		bold = ve.dm.example.createAnnotation( ve.dm.example.bold ),
+		italic = ve.dm.example.createAnnotation( ve.dm.example.italic ),
+		underline = ve.dm.example.createAnnotation( ve.dm.example.underline ),
 		cases = {
 		'no operations': {
 			'calls': [],
@@ -23,79 +26,76 @@ QUnit.test( 'commit/rollback', function ( assert ) {
 		'annotating content': {
 			'calls': [
 				['pushRetain', 1],
-				['pushStartAnnotating', 'set', { 'type': 'textStyle/bold' }],
+				['pushStartAnnotating', 'set', bold],
 				['pushRetain', 1],
-				['pushStopAnnotating', 'set', { 'type': 'textStyle/bold' }],
+				['pushStopAnnotating', 'set', bold],
 				['pushRetain', 1],
-				['pushStartAnnotating', 'clear', { 'type': 'textStyle/italic' }],
-				['pushStartAnnotating', 'set', { 'type': 'textStyle/bold' }],
-				['pushStartAnnotating', 'set', { 'type': 'textStyle/underline' }],
+				['pushStartAnnotating', 'clear', italic],
+				['pushStartAnnotating', 'set', bold],
+				['pushStartAnnotating', 'set', underline],
 				['pushRetain', 1],
-				['pushStopAnnotating', 'clear', { 'type': 'textStyle/italic' }],
-				['pushStopAnnotating', 'set', { 'type': 'textStyle/bold' }],
-				['pushStopAnnotating', 'set', { 'type': 'textStyle/underline' }]
+				['pushStopAnnotating', 'clear', italic],
+				['pushStopAnnotating', 'set', bold],
+				['pushStopAnnotating', 'set', underline]
 			],
 			'expected': function ( data ) {
-				var b = { 'type': 'textStyle/bold' },
-					u = { 'type': 'textStyle/underline' };
-				data[1] = ['a', new ve.AnnotationSet( [ b ] )];
-				data[2] = ['b', new ve.AnnotationSet( [ b ] )];
-				data[3] = ['c', new ve.AnnotationSet( [ b, u ] )];
+				data[1] = ['a', new ve.AnnotationSet( [ bold ] )];
+				data[2] = ['b', new ve.AnnotationSet( [ bold ] )];
+				data[3] = ['c', new ve.AnnotationSet( [ bold, underline ] )];
 			}
 		},
 		'annotating content and leaf elements': {
 			'calls': [
 				['pushRetain', 38],
-				['pushStartAnnotating', 'set', { 'type': 'textStyle/bold' }],
+				['pushStartAnnotating', 'set', bold],
 				['pushRetain', 2],
-				['pushStopAnnotating', 'set', { 'type': 'textStyle/bold' }]
+				['pushStopAnnotating', 'set', bold]
 			],
 			'expected': function ( data ) {
-				var b = [ { 'type': 'textStyle/bold' } ];
-				data[38] = ['h', new ve.AnnotationSet( b )];
-				data[39].annotations = new ve.AnnotationSet( b );
+				data[38] = ['h', new ve.AnnotationSet( [ bold ] )];
+				data[39].annotations = new ve.AnnotationSet( [ bold ] );
 			}
 		},
 		'using an annotation method other than set or clear throws an exception': {
 			'calls': [
-				['pushStartAnnotating', 'invalid-method', { 'type': 'textStyle/bold' }],
+				['pushStartAnnotating', 'invalid-method', bold],
 				['pushRetain', 1],
-				['pushStopAnnotating', 'invalid-method', { 'type': 'textStyle/bold' }]
+				['pushStopAnnotating', 'invalid-method', bold]
 			],
 			'exception': Error
 		},
 		'annotating branch opening element throws an exception': {
 			'calls': [
-				['pushStartAnnotating', 'set', { 'type': 'textStyle/bold' }],
+				['pushStartAnnotating', 'set', bold],
 				['pushRetain', 1],
-				['pushStopAnnotating', 'set', { 'type': 'textStyle/bold' }]
+				['pushStopAnnotating', 'set', bold]
 			],
 			'exception': Error
 		},
 		'annotating branch closing element throws an exception': {
 			'calls': [
 				['pushRetain', 4],
-				['pushStartAnnotating', 'set', { 'type': 'textStyle/bold' }],
+				['pushStartAnnotating', 'set', bold],
 				['pushRetain', 1],
-				['pushStopAnnotating', 'set', { 'type': 'textStyle/bold' }]
+				['pushStopAnnotating', 'set', bold]
 			],
 			'exception': Error
 		},
 		'setting duplicate annotations throws an exception': {
 			'calls': [
 				['pushRetain', 2],
-				['pushStartAnnotating', 'set', { 'type': 'textStyle/bold' }],
+				['pushStartAnnotating', 'set', bold],
 				['pushRetain', 1],
-				['pushStopAnnotating', 'set', { 'type': 'textStyle/bold' }]
+				['pushStopAnnotating', 'set', bold]
 			],
 			'exception': Error
 		},
 		'removing non-existent annotations throws an exception': {
 			'calls': [
 				['pushRetain', 1],
-				['pushStartAnnotating', 'clear', { 'type': 'textStyle/bold' }],
+				['pushStartAnnotating', 'clear', bold],
 				['pushRetain', 1],
-				['pushStopAnnotating', 'clear', { 'type': 'textStyle/bold' }]
+				['pushStopAnnotating', 'clear', bold]
 			],
 			'exception': Error
 		},
@@ -210,7 +210,7 @@ QUnit.test( 'commit/rollback', function ( assert ) {
 				['pushRetain', 3],
 				[
 					'pushReplace',
-					[['c', [ { 'type': 'textStyle/italic' } ]]],
+					[['c', [ ve.dm.example.italic ]]],
 					[]
 				],
 				['pushRetain', 6],

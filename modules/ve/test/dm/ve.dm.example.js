@@ -9,15 +9,65 @@
 
 ve.dm.example = {};
 
+/**
+ * Convert arrays of shorthand annotations in a data fragment to AnnotationSets with real
+ * annotation objects.
+ *
+ * Shorthand notation for annotations is:
+ * [ 'a', [ { 'type': 'link', 'data': { 'href': '...' }, 'htmlTagName': 'a', 'htmlAttributes': { ... } } ] ]
+ *
+ * The actual storage format has an instance of ve.dm.LinkAnnotation instead of the plain object,
+ * and an instance of ve.AnnotationSet instead of the array.
+ *
+ * @param {Array} data Linear model data. Will be modified.
+ */
 ve.dm.example.preprocessAnnotations = function ( data ) {
 	var i, key;
 	for ( i = 0; i < data.length; i++ ) {
 		key = data[i].annotations ? 'annotations' : 1;
 		if ( ve.isArray( data[i][key] ) ) {
-			data[i][key] = new ve.AnnotationSet( data[i][key] );
+			data[i][key] = ve.dm.example.createAnnotationSet( data[i][key] );
 		}
 	}
 };
+
+/**
+ * Create an annotation object from shorthand notation.
+ * @param {Object} annotation Plain object with type, data, htmlTagName and htmlAttributes properties
+ * @return {ve.dm.Annotation} Instance of the right ve.dm.Annotation subclass
+ */
+ve.dm.example.createAnnotation = function ( annotation ) {
+	var ann, annKey;
+	ann = ve.dm.annotationFactory.create( annotation.type );
+	for ( annKey in annotation ) {
+		if ( annKey !== 'type' ) {
+			ann[annKey] = annotation[annKey];
+		}
+	}
+	return ann;
+};
+
+/**
+ * Create an AnnotationSet from an array of shorthand annotations.
+ *
+ * This calls ve.dm.example.createAnnotation() for each element and puts the result in an
+ * AnnotationSet.
+ *
+ * @param {Array} annotations Array of annotations in shorthand format
+ * @return {ve.AnnotationSet}
+ */
+ve.dm.example.createAnnotationSet = function ( annotations ) {
+	var i;
+	for ( i = 0; i < annotations.length; i++ ) {
+		annotations[i] = ve.dm.example.createAnnotation( annotations[i] );
+	}
+	return new ve.AnnotationSet( annotations );
+};
+
+/* Some common annotations in shorthand format */
+ve.dm.example.bold = { 'type': 'textStyle/bold', 'htmlTagName': 'b', 'htmlAttributes': {} };
+ve.dm.example.italic = { 'type': 'textStyle/italic', 'htmlTagName': 'i', 'htmlAttributes': {} };
+ve.dm.example.underline = { 'type': 'textStyle/underline', 'htmlTagName': 'u', 'htmlAttributes': {} };
 
 /**
  * Serialized HTML.
@@ -85,9 +135,9 @@ ve.dm.example.data = [
 	//  1 - Plain "a"
 	'a',
 	//  2 - Bold "b"
-	['b', [ { 'type': 'textStyle/bold' } ]],
+	['b', [ ve.dm.example.bold ]],
 	//  3 - Italic "c"
-	['c', [ { 'type': 'textStyle/italic' } ]],
+	['c', [ ve.dm.example.italic ]],
 	//  4 - End of heading
 	{ 'type': '/heading' },
 	//  5 - Beginning of table
@@ -400,9 +450,9 @@ ve.dm.example.domToDataCases = {
 		'html': '<p><b>a</b><i>b</i><u>c</u></p>',
 		'data': [
 			{ 'type': 'paragraph' },
-			['a', [ { 'type': 'textStyle/bold' } ]],
-			['b', [ { 'type': 'textStyle/italic' } ]],
-			['c', [ { 'type': 'textStyle/underline' } ]],
+			['a', [ ve.dm.example.bold ]],
+			['b', [ ve.dm.example.italic ]],
+			['c', [ ve.dm.example.underline ]],
 			{ 'type': '/paragraph' }
 		]
 	},
@@ -458,45 +508,48 @@ ve.dm.example.domToDataCases = {
 			[
 				'b',
 				[ {
-					'type': 'link/WikiLink',
+					'type': 'link/MWinternal',
 					'data': {
 						'title': 'Foo bar',
-						'hrefPrefix': '',
-						'htmlAttributes': {
-							'data-rt': '{"sHref":"foo bar"}',
-							'href': 'Foo_bar',
-							'rel': 'mw:WikiLink'
-						}
+						'hrefPrefix': ''
+					},
+					'htmlTagName': 'a',
+					'htmlAttributes': {
+						'data-rt': '{"sHref":"foo bar"}',
+						'href': 'Foo_bar',
+						'rel': 'mw:WikiLink'
 					}
 				} ]
 			],
 			[
 				'a',
 				[ {
-					'type': 'link/WikiLink',
+					'type': 'link/MWinternal',
 					'data': {
 						'title': 'Foo bar',
-						'hrefPrefix': '',
-						'htmlAttributes': {
-							'data-rt': '{"sHref":"foo bar"}',
-							'href': 'Foo_bar',
-							'rel': 'mw:WikiLink'
-						}
+						'hrefPrefix': ''
+					},
+					'htmlTagName': 'a',
+					'htmlAttributes': {
+						'data-rt': '{"sHref":"foo bar"}',
+						'href': 'Foo_bar',
+						'rel': 'mw:WikiLink'
 					}
 				} ]
 			],
 			[
 				'r',
 				[ {
-					'type': 'link/WikiLink',
+					'type': 'link/MWinternal',
 					'data': {
 						'title': 'Foo bar',
-						'hrefPrefix': '',
-						'htmlAttributes': {
-							'data-rt': '{"sHref":"foo bar"}',
-							'href': 'Foo_bar',
-							'rel': 'mw:WikiLink'
-						}
+						'hrefPrefix': ''
+					},
+					'htmlTagName': 'a',
+					'htmlAttributes': {
+						'data-rt': '{"sHref":"foo bar"}',
+						'href': 'Foo_bar',
+						'rel': 'mw:WikiLink'
 					}
 				} ]
 			],
@@ -513,42 +566,45 @@ ve.dm.example.domToDataCases = {
 			[
 				'F',
 				[ {
-					'type': 'link/WikiLink',
+					'type': 'link/MWinternal',
 					'data': {
 						'title': 'Foo/Bar',
-						'hrefPrefix': './../../../',
-						'htmlAttributes': {
-							'href': './../../../Foo/Bar',
-							'rel': 'mw:WikiLink'
-						}
+						'hrefPrefix': './../../../'
+					},
+					'htmlTagName': 'a',
+					'htmlAttributes': {
+						'href': './../../../Foo/Bar',
+						'rel': 'mw:WikiLink'
 					}
 				} ]
 			],
 			[
 				'o',
 				[ {
-					'type': 'link/WikiLink',
+					'type': 'link/MWinternal',
 					'data': {
 						'title': 'Foo/Bar',
-						'hrefPrefix': './../../../',
-						'htmlAttributes': {
-							'href': './../../../Foo/Bar',
-							'rel': 'mw:WikiLink'
-						}
+						'hrefPrefix': './../../../'
+					},
+					'htmlTagName': 'a',
+					'htmlAttributes': {
+						'href': './../../../Foo/Bar',
+						'rel': 'mw:WikiLink'
 					}
 				} ]
 			],
 			[
 				'o',
 				[ {
-					'type': 'link/WikiLink',
+					'type': 'link/MWinternal',
 					'data': {
 						'title': 'Foo/Bar',
-						'hrefPrefix': './../../../',
-						'htmlAttributes': {
-							'href': './../../../Foo/Bar',
-							'rel': 'mw:WikiLink'
-						}
+						'hrefPrefix': './../../../'
+					},
+					'htmlTagName': 'a',
+					'htmlAttributes': {
+						'href': './../../../Foo/Bar',
+						'rel': 'mw:WikiLink'
 					}
 				} ]
 			],
@@ -562,39 +618,42 @@ ve.dm.example.domToDataCases = {
 			[
 				'[',
 				[ {
-					'type': 'link/ExtLink/Numbered',
+					'type': 'link/MWexternal',
 					'data': {
 						'href': 'http://www.mediawiki.org/',
-						'htmlAttributes': {
-							'href': 'http://www.mediawiki.org/',
-							'rel': 'mw:ExtLink/Numbered'
-						}
+					},
+					'htmlTagName': 'a',
+					'htmlAttributes': {
+						'href': 'http://www.mediawiki.org/',
+						'rel': 'mw:ExtLink/Numbered'
 					}
 				} ]
 			],
 			[
 				'1',
 				[ {
-					'type': 'link/ExtLink/Numbered',
+					'type': 'link/MWexternal',
 					'data': {
 						'href': 'http://www.mediawiki.org/',
-						'htmlAttributes': {
-							'href': 'http://www.mediawiki.org/',
-							'rel': 'mw:ExtLink/Numbered'
-						}
+					},
+					'htmlTagName': 'a',
+					'htmlAttributes': {
+						'href': 'http://www.mediawiki.org/',
+						'rel': 'mw:ExtLink/Numbered'
 					}
 				} ]
 			],
 			[
 				']',
 				[ {
-					'type': 'link/ExtLink/Numbered',
+					'type': 'link/MWexternal',
 					'data': {
 						'href': 'http://www.mediawiki.org/',
-						'htmlAttributes': {
-							'href': 'http://www.mediawiki.org/',
-							'rel': 'mw:ExtLink/Numbered'
-						}
+					},
+					'htmlTagName': 'a',
+					'htmlAttributes': {
+						'href': 'http://www.mediawiki.org/',
+						'rel': 'mw:ExtLink/Numbered'
 					}
 				} ]
 			],
@@ -608,26 +667,28 @@ ve.dm.example.domToDataCases = {
 			[
 				'm',
 				[ {
-					'type': 'link/ExtLink/URL',
+					'type': 'link/MWexternal',
 					'data': {
 						'href': 'http://www.mediawiki.org/',
-						'htmlAttributes': {
-							'href': 'http://www.mediawiki.org/',
-							'rel': 'mw:ExtLink/URL'
-						}
+					},
+					'htmlTagName': 'a',
+					'htmlAttributes': {
+						'href': 'http://www.mediawiki.org/',
+						'rel': 'mw:ExtLink/URL'
 					}
 				} ]
 			],
 			[
 				'w',
 				[ {
-					'type': 'link/ExtLink/URL',
+					'type': 'link/MWexternal',
 					'data': {
 						'href': 'http://www.mediawiki.org/',
-						'htmlAttributes': {
-							'href': 'http://www.mediawiki.org/',
-							'rel': 'mw:ExtLink/URL'
-						}
+					},
+					'htmlTagName': 'a',
+					'htmlAttributes': {
+						'href': 'http://www.mediawiki.org/',
+						'rel': 'mw:ExtLink/URL'
 					}
 				} ]
 			],
@@ -718,14 +779,14 @@ ve.dm.example.domToDataCases = {
 				'type': 'paragraph',
 				'internal': { 'whitespace': [ undefined, ' ', '    ' ] }
 			},
-			[ ' ', [ { 'type': 'textStyle/italic' } ] ],
-			[ ' ', [ { 'type': 'textStyle/italic' } ] ],
-			[ 'F', [ { 'type': 'textStyle/italic' } ] ],
-			[ 'o', [ { 'type': 'textStyle/italic' } ] ],
-			[ 'o', [ { 'type': 'textStyle/italic' } ] ],
-			[ ' ', [ { 'type': 'textStyle/italic' } ] ],
-			[ ' ', [ { 'type': 'textStyle/italic' } ] ],
-			[ ' ', [ { 'type': 'textStyle/italic' } ] ],
+			[ ' ', [ ve.dm.example.italic ] ],
+			[ ' ', [ ve.dm.example.italic ] ],
+			[ 'F', [ ve.dm.example.italic ] ],
+			[ 'o', [ ve.dm.example.italic ] ],
+			[ 'o', [ ve.dm.example.italic ] ],
+			[ ' ', [ ve.dm.example.italic ] ],
+			[ ' ', [ ve.dm.example.italic ] ],
+			[ ' ', [ ve.dm.example.italic ] ],
 			{ 'type': '/paragraph' }
 		]
 	},
@@ -784,12 +845,12 @@ ve.dm.example.domToDataCases = {
 			' ',
 			' ',
 			' ',
-			[ ' ', [ { 'type': 'textStyle/bold' } ] ],
-			[ ' ', [ { 'type': 'textStyle/bold' } ] ],
-			[ ' ', [ { 'type': 'textStyle/bold' } ] ],
-			[ ' ', [ { 'type': 'textStyle/bold' } ] ],
-			[ 'C', [ { 'type': 'textStyle/bold' } ] ],
-			[ '\t', [ { 'type': 'textStyle/bold' } ] ],
+			[ ' ', [ ve.dm.example.bold ] ],
+			[ ' ', [ ve.dm.example.bold ] ],
+			[ ' ', [ ve.dm.example.bold ] ],
+			[ ' ', [ ve.dm.example.bold ] ],
+			[ 'C', [ ve.dm.example.bold ] ],
+			[ '\t', [ ve.dm.example.bold ] ],
 			'\t',
 			'\t',
 			'D',
@@ -802,12 +863,12 @@ ve.dm.example.domToDataCases = {
 			'\n',
 			'\n',
 			'\n',
-			[ '\n', [ { 'type': 'textStyle/bold' } ] ],
-			[ '\n', [ { 'type': 'textStyle/bold' } ] ],
-			[ '\n', [ { 'type': 'textStyle/bold' } ] ],
-			[ '\n', [ { 'type': 'textStyle/bold' } ] ],
-			[ 'G', [ { 'type': 'textStyle/bold' } ] ],
-			[ ' ', [ { 'type': 'textStyle/bold' } ] ],
+			[ '\n', [ ve.dm.example.bold ] ],
+			[ '\n', [ ve.dm.example.bold ] ],
+			[ '\n', [ ve.dm.example.bold ] ],
+			[ '\n', [ ve.dm.example.bold ] ],
+			[ 'G', [ ve.dm.example.bold ] ],
+			[ ' ', [ ve.dm.example.bold ] ],
 			' ',
 			' ',
 			'H',
@@ -825,24 +886,24 @@ ve.dm.example.domToDataCases = {
 			' ',
 			' ',
 			' ',
-			[ ' ', [ { 'type': 'textStyle/bold' } ] ],
-			[ ' ', [ { 'type': 'textStyle/bold' } ] ],
-			[ ' ', [ { 'type': 'textStyle/bold' } ] ],
-			[ ' ', [ { 'type': 'textStyle/bold' } ] ],
-			[ 'C', [ { 'type': 'textStyle/bold' } ] ],
-			[ '\t', [ { 'type': 'textStyle/bold' } ] ],
-			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
-			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
-			[ 'D', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
-			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
-			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
-			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
-			[ '\t', [ { 'type': 'textStyle/bold' } ] ],
-			[ '\t', [ { 'type': 'textStyle/bold' } ] ],
-			[ '\t', [ { 'type': 'textStyle/bold' } ] ],
-			[ '\t', [ { 'type': 'textStyle/bold' } ] ],
-			[ 'E', [ { 'type': 'textStyle/bold' } ] ],
-			[ '\n', [ { 'type': 'textStyle/bold' } ] ],
+			[ ' ', [ ve.dm.example.bold ] ],
+			[ ' ', [ ve.dm.example.bold ] ],
+			[ ' ', [ ve.dm.example.bold ] ],
+			[ ' ', [ ve.dm.example.bold ] ],
+			[ 'C', [ ve.dm.example.bold ] ],
+			[ '\t', [ ve.dm.example.bold ] ],
+			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
+			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
+			[ 'D', [ ve.dm.example.bold, ve.dm.example.italic ] ],
+			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
+			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
+			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
+			[ '\t', [ ve.dm.example.bold ] ],
+			[ '\t', [ ve.dm.example.bold ] ],
+			[ '\t', [ ve.dm.example.bold ] ],
+			[ '\t', [ ve.dm.example.bold ] ],
+			[ 'E', [ ve.dm.example.bold ] ],
+			[ '\n', [ ve.dm.example.bold ] ],
 			'\n',
 			'\n',
 			'F',
@@ -860,12 +921,12 @@ ve.dm.example.domToDataCases = {
 			' ',
 			' ',
 			' ',
-			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
-			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
-			[ 'C', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
-			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
-			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
-			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
+			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
+			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
+			[ 'C', [ ve.dm.example.bold, ve.dm.example.italic ] ],
+			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
+			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
+			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
 			'\n',
 			'\n',
 			'D',
@@ -883,14 +944,14 @@ ve.dm.example.domToDataCases = {
 			' ',
 			' ',
 			' ',
-			[ '\n', [ { 'type': 'textStyle/bold' } ] ],
-			[ '\t', [ { 'type': 'textStyle/bold' } ] ],
-			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
-			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
-			[ 'C', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
-			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
-			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
-			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
+			[ '\n', [ ve.dm.example.bold ] ],
+			[ '\t', [ ve.dm.example.bold ] ],
+			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
+			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
+			[ 'C', [ ve.dm.example.bold, ve.dm.example.italic ] ],
+			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
+			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
+			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
 			'\n',
 			'\n',
 			'D',
@@ -908,14 +969,14 @@ ve.dm.example.domToDataCases = {
 			' ',
 			' ',
 			' ',
-			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
-			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
-			[ 'C', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
-			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
-			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
-			[ '\t', [ { 'type': 'textStyle/bold' }, { 'type': 'textStyle/italic' } ] ],
-			[ '\n', [ { 'type': 'textStyle/bold' } ] ],
-			[ '\t', [ { 'type': 'textStyle/bold' } ] ],
+			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
+			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
+			[ 'C', [ ve.dm.example.bold, ve.dm.example.italic ] ],
+			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
+			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
+			[ '\t', [ ve.dm.example.bold, ve.dm.example.italic ] ],
+			[ '\n', [ ve.dm.example.bold ] ],
+			[ '\t', [ ve.dm.example.bold ] ],
 			'\n',
 			'\n',
 			'D',
@@ -998,55 +1059,58 @@ ve.dm.example.domToDataCases = {
 			[
 				'F',
 				[
-					{ 'type': 'textStyle/bold' },
+					ve.dm.example.bold,
 					{
-						'type': 'link/WikiLink',
+						'type': 'link/MWinternal',
 						'data': {
 							'hrefPrefix': '',
-							'title': 'Foo',
-							'htmlAttributes': {
-								'href': 'Foo',
-								'rel': 'mw:WikiLink'
-							}
+							'title': 'Foo'
+						},
+						'htmlTagName': 'a',
+						'htmlAttributes': {
+							'href': 'Foo',
+							'rel': 'mw:WikiLink'
 						}
 					},
-					{ 'type': 'textStyle/italic' }
+					ve.dm.example.italic
 				]
 			],
 			[
 				'o',
 				[
-					{ 'type': 'textStyle/bold' },
+					ve.dm.example.bold,
 					{
-						'type': 'link/WikiLink',
+						'type': 'link/MWinternal',
 						'data': {
 							'hrefPrefix': '',
-							'title': 'Foo',
-							'htmlAttributes': {
-								'href': 'Foo',
-								'rel': 'mw:WikiLink'
-							}
+							'title': 'Foo'
+						},
+						'htmlTagName': 'a',
+						'htmlAttributes': {
+							'href': 'Foo',
+							'rel': 'mw:WikiLink'
 						}
 					},
-					{ 'type': 'textStyle/italic' }
+					ve.dm.example.italic
 				]
 			],
 			[
 				'o',
 				[
-					{ 'type': 'textStyle/bold' },
+					ve.dm.example.bold,
 					{
-						'type': 'link/WikiLink',
+						'type': 'link/MWinternal',
 						'data': {
 							'hrefPrefix': '',
-							'title': 'Foo',
-							'htmlAttributes': {
-								'href': 'Foo',
-								'rel': 'mw:WikiLink'
-							}
+							'title': 'Foo'
+						},
+						'htmlTagName': 'a',
+						'htmlAttributes': {
+							'href': 'Foo',
+							'rel': 'mw:WikiLink'
 						}
 					},
-					{ 'type': 'textStyle/italic' }
+					ve.dm.example.italic
 				]
 			],
 			{ 'type': '/paragraph' }
@@ -1060,14 +1124,15 @@ ve.dm.example.domToDataCases = {
 				'F',
 				[
 					{
-						'type': 'link/WikiLink',
+						'type': 'link/MWinternal',
 						'data': {
 							'hrefPrefix': '',
-							'title': 'Foo',
-							'htmlAttributes': {
-								'href': 'Foo',
-								'rel': 'mw:WikiLink'
-							}
+							'title': 'Foo'
+						},
+						'htmlTagName': 'a',
+						'htmlAttributes': {
+							'href': 'Foo',
+							'rel': 'mw:WikiLink'
 						}
 					}
 				]
@@ -1076,84 +1141,87 @@ ve.dm.example.domToDataCases = {
 				'o',
 				[
 					{
-						'type': 'link/WikiLink',
+						'type': 'link/MWinternal',
 						'data': {
 							'hrefPrefix': '',
-							'title': 'Foo',
-							'htmlAttributes': {
-								'href': 'Foo',
-								'rel': 'mw:WikiLink'
-							}
+							'title': 'Foo'
+						},
+						'htmlTagName': 'a',
+						'htmlAttributes': {
+							'href': 'Foo',
+							'rel': 'mw:WikiLink'
 						}
 					},
-					{ 'type': 'textStyle/bold' }
+					ve.dm.example.bold
 				]
 			],
 			[
 				'o',
 				[
 					{
-						'type': 'link/WikiLink',
+						'type': 'link/MWinternal',
 						'data': {
 							'hrefPrefix': '',
-							'title': 'Foo',
-							'htmlAttributes': {
-								'href': 'Foo',
-								'rel': 'mw:WikiLink'
-							}
+							'title': 'Foo'
+						},
+						'htmlTagName': 'a',
+						'htmlAttributes': {
+							'href': 'Foo',
+							'rel': 'mw:WikiLink'
 						}
 					},
-					{ 'type': 'textStyle/bold' },
-					{ 'type': 'textStyle/italic' }
+					ve.dm.example.bold,
+					ve.dm.example.italic
 				]
 			],
 			[
 				'b',
 				[
 					{
-						'type': 'link/WikiLink',
+						'type': 'link/MWinternal',
 						'data': {
 							'hrefPrefix': '',
-							'title': 'Foo',
-							'htmlAttributes': {
-								'href': 'Foo',
-								'rel': 'mw:WikiLink'
-							}
+							'title': 'Foo'
+						},
+						'htmlTagName': 'a',
+						'htmlAttributes': {
+							'href': 'Foo',
+							'rel': 'mw:WikiLink'
 						}
 					},
-					{ 'type': 'textStyle/italic' }
+					ve.dm.example.italic
 				]
 			],
 			[
 				'a',
 				[
-					{ 'type': 'textStyle/italic' }
+					ve.dm.example.italic
 				]
 			],
 			[
 				'r',
 				[
-					{ 'type': 'textStyle/italic' },
-					{ 'type': 'textStyle/bold' }
+					ve.dm.example.italic,
+					ve.dm.example.bold
 				]
 			],
 			[
 				'b',
 				[
-					{ 'type': 'textStyle/italic' }
+					ve.dm.example.italic
 				]
 			],
 			[
 				'a',
 				[
-					{ 'type': 'textStyle/italic' },
-					{ 'type': 'textStyle/underline' }
+					ve.dm.example.italic,
+					ve.dm.example.underline
 				]
 			],
 			[
 				'z',
 				[
-					{ 'type': 'textStyle/italic' }
+					ve.dm.example.italic
 				]
 			],
 			{ 'type': '/paragraph' }

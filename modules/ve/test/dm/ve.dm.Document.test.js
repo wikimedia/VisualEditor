@@ -206,7 +206,7 @@ QUnit.test( 'getAnnotationsFromOffset', 1, function ( assert ) {
 		for ( j = 0; j < doc.getData().length; j++ ) {
 			annotations = doc.getAnnotationsFromOffset( j );
 			assert.deepEqual( annotations,
-				new ve.AnnotationSet( cases[i].expected[j] ),
+				ve.dm.example.createAnnotationSet( cases[i].expected[j] ),
 				cases[i].msg[j]
 			);
 		}
@@ -416,7 +416,7 @@ QUnit.test( 'getAnnotationsFromRange', 1, function ( assert ) {
 		doc = new ve.dm.Document( cases[i].data );
 		assert.deepEqual(
 			doc.getAnnotationsFromRange( new ve.Range( 0, cases[i].data.length ), cases[i].all ),
-			new ve.AnnotationSet( cases[i].expected ),
+			ve.dm.example.createAnnotationSet( cases[i].expected ),
 			cases[i].msg
 		);
 	}
@@ -461,7 +461,8 @@ QUnit.test( 'offsetContainsAnnotation', 1, function ( assert ) {
 		ve.dm.example.preprocessAnnotations( cases[i].data );
 		doc = new ve.dm.Document( cases[i].data );
 		assert.deepEqual(
-			doc.offsetContainsAnnotation( 0, cases[i].lookFor ),
+			doc.offsetContainsAnnotation( 0,
+				ve.dm.example.createAnnotation( cases[i].lookFor ) ),
 			cases[i].expected,
 			cases[i].msg
 		);
@@ -507,13 +508,13 @@ QUnit.test( 'getAnnotatedRangeFromOffset', 1, function ( assert ) {
 				// 2
 				'x',
 				// 3
-				['l', [ { 'type': 'link/internal' } ]],
+				['l', [ { 'type': 'link' } ]],
 				// 4
-				['i', [ { 'type': 'link/internal' } ]],
+				['i', [ { 'type': 'link' } ]],
 				// 5
-				['n', [ { 'type': 'link/internal' } ]],
+				['n', [ { 'type': 'link' } ]],
 				// 6
-				['k', [ { 'type': 'link/internal' } ]],
+				['k', [ { 'type': 'link' } ]],
 				// 7
 				'x',
 				// 8
@@ -521,7 +522,7 @@ QUnit.test( 'getAnnotatedRangeFromOffset', 1, function ( assert ) {
 				// 9
 				'x'
 			],
-			'annotation': { 'type': 'link/internal' },
+			'annotation': { 'type': 'link' },
 			'offset': 3,
 			'expected': new ve.Range( 3, 7 )
 		},
@@ -561,7 +562,8 @@ QUnit.test( 'getAnnotatedRangeFromOffset', 1, function ( assert ) {
 		ve.dm.example.preprocessAnnotations( cases[i].data );
 		doc = new ve.dm.Document( cases[i].data );
 		assert.deepEqual(
-			doc.getAnnotatedRangeFromOffset(cases[i].offset, cases[i].annotation),
+			doc.getAnnotatedRangeFromOffset( cases[i].offset,
+				ve.dm.example.createAnnotation( cases[i].annotation ) ),
 			cases[i].expected,
 			cases[i].msg
 		);
@@ -1322,15 +1324,15 @@ QUnit.test( 'getBalancedData', function ( assert ) {
 			'msg': 'range with one character',
 			'range': new ve.Range( 2, 3 ),
 			'expected': [
-				['b', [ { 'type': 'textStyle/bold' } ]]
+				['b', [ ve.dm.example.bold ]]
 			]
 		},
 		{
 			'msg': 'range with two characters',
 			'range': new ve.Range( 2, 4 ),
 			'expected': [
-				['b', [ { 'type': 'textStyle/bold' } ]],
-				['c', [ { 'type': 'textStyle/italic' } ]]
+				['b', [ ve.dm.example.bold ]],
+				['c', [ ve.dm.example.italic ]]
 			]
 		},
 		{
@@ -1338,8 +1340,8 @@ QUnit.test( 'getBalancedData', function ( assert ) {
 			'range': new ve.Range( 2, 5 ),
 			'expected': [
 				{ 'type': 'heading', 'attributes': { 'level': 1 } },
-				['b', [ { 'type': 'textStyle/bold' } ]],
-				['c', [ { 'type': 'textStyle/italic' } ]],
+				['b', [ ve.dm.example.bold ]],
+				['c', [ ve.dm.example.italic ]],
 				{ 'type': '/heading' }
 			]
 		},
@@ -1348,7 +1350,7 @@ QUnit.test( 'getBalancedData', function ( assert ) {
 			'range': new ve.Range( 3, 6 ),
 			'expected': [
 				{ 'type': 'heading', 'attributes': { 'level': 1 } },
-				['c', [ { 'type': 'textStyle/italic' } ]],
+				['c', [ ve.dm.example.italic ]],
 				{ 'type': '/heading' },
 				{ 'type': 'table' },
 				{ 'type': '/table' }

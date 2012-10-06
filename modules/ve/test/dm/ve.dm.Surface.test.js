@@ -72,39 +72,31 @@ QUnit.test( 'annotate', 1, function ( assert ) {
 				[
 					'b',
 						[
-							{
-								'type': 'textStyle/bold'
-							}
+							ve.dm.example.bold
 						]
 				],
 				[
 					'o',
 						[
-							{
-								'type': 'textStyle/bold'
-							}
+							ve.dm.example.bold
 						]
 				],
 				[
 					'l',
 						[
-							{
-								'type': 'textStyle/bold'
-							}
+							ve.dm.example.bold
 						]
 				],
 				[
 					'd',
 						[
-							{
-								'type': 'textStyle/bold'
-							}
+							ve.dm.example.bold
 						]
 				]
 			],
 			'annotate': {
 				'method': 'set',
-				'annotation': { 'type': 'textStyle/bold' }
+				'annotation': ve.dm.example.bold
 			}
 		}
 	];
@@ -115,7 +107,8 @@ QUnit.test( 'annotate', 1, function ( assert ) {
 		ve.dm.example.preprocessAnnotations( cases[i].expected );
 		surface = new ve.dm.SurfaceStub( cases[i].data );
 		surface.change( null, new ve.Range( 0, surface.getDocument().getData().length ) );
-		surface.annotate( cases[i].annotate.method, cases[i].annotate.annotation );
+		surface.annotate( cases[i].annotate.method,
+			ve.dm.example.createAnnotation( cases[i].annotate.annotation ) );
 		assert.deepEqual( surface.getDocument().getData(), cases[i].expected, cases[i].msg );
 	}
 } );

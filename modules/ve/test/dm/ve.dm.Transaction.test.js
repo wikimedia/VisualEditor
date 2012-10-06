@@ -232,7 +232,7 @@ QUnit.test( 'newFromRemoval', function ( assert ) {
 					'type': 'replace',
 					'remove': [
 						'a',
-						['b', [ { 'type': 'textStyle/bold' } ]]
+						['b', [ ve.dm.example.bold ]]
 					],
 					'insert': []
 				},
@@ -259,8 +259,8 @@ QUnit.test( 'newFromRemoval', function ( assert ) {
 					'remove': [
 						{ 'type': 'heading', 'attributes': { 'level': 1 } },
 						'a',
-						['b', [ { 'type': 'textStyle/bold' } ]],
-						['c', [ { 'type': 'textStyle/italic' } ]],
+						['b', [ ve.dm.example.bold ]],
+						['c', [ ve.dm.example.italic ]],
 						{ 'type': '/heading' }
 					],
 					'insert': []
@@ -293,8 +293,8 @@ QUnit.test( 'newFromRemoval', function ( assert ) {
 					'remove': [
 						{ 'type': 'heading', 'attributes': { 'level': 1 } },
 						'a',
-						['b', [ { 'type': 'textStyle/bold' } ]],
-						['c', [ { 'type': 'textStyle/italic' } ]],
+						['b', [ ve.dm.example.bold ]],
+						['c', [ ve.dm.example.italic ]],
 						{ 'type': '/heading' }
 					],
 					'insert': []
@@ -504,98 +504,99 @@ QUnit.test( 'newFromAttributeChange', function ( assert ) {
 } );
 
 QUnit.test( 'newFromAnnotation', function ( assert ) {
-	var doc = new ve.dm.Document( ve.dm.example.data ),
+	var bold = ve.dm.example.createAnnotation( ve.dm.example.bold ),
+		doc = new ve.dm.Document( ve.dm.example.data ),
 		cases = {
 		'over plain text': {
-			'args': [doc, new ve.Range( 1, 2 ), 'set', { 'type': 'textStyle/bold' }],
+			'args': [doc, new ve.Range( 1, 2 ), 'set', bold],
 			'ops': [
 				{ 'type': 'retain', 'length': 1 },
 				{
 					'type': 'annotate',
 					'method': 'set',
 					'bias': 'start',
-					'annotation': { 'type': 'textStyle/bold' }
+					'annotation': bold
 				},
 				{ 'type': 'retain', 'length': 1 },
 				{
 					'type': 'annotate',
 					'method': 'set',
 					'bias': 'stop',
-					'annotation': { 'type': 'textStyle/bold' }
+					'annotation': bold
 				},
 				{ 'type': 'retain', 'length': 59 }
 			]
 		},
 		'over annotated text': {
-			'args': [doc, new ve.Range( 1, 4 ), 'set', { 'type': 'textStyle/bold' }],
+			'args': [doc, new ve.Range( 1, 4 ), 'set', bold],
 			'ops': [
 				{ 'type': 'retain', 'length': 1 },
 				{
 					'type': 'annotate',
 					'method': 'set',
 					'bias': 'start',
-					'annotation': { 'type': 'textStyle/bold' }
+					'annotation': bold
 				},
 				{ 'type': 'retain', 'length': 1 },
 				{
 					'type': 'annotate',
 					'method': 'set',
 					'bias': 'stop',
-					'annotation': { 'type': 'textStyle/bold' }
+					'annotation': bold
 				},
 				{ 'type': 'retain', 'length': 1 },
 				{
 					'type': 'annotate',
 					'method': 'set',
 					'bias': 'start',
-					'annotation': { 'type': 'textStyle/bold' }
+					'annotation': bold
 				},
 				{ 'type': 'retain', 'length': 1 },
 				{
 					'type': 'annotate',
 					'method': 'set',
 					'bias': 'stop',
-					'annotation': { 'type': 'textStyle/bold' }
+					'annotation': bold
 				},
 				{ 'type': 'retain', 'length': 57 }
 			]
 		},
 		'over elements': {
-			'args': [doc, new ve.Range( 4, 9 ), 'set', { 'type': 'textStyle/bold' }],
+			'args': [doc, new ve.Range( 4, 9 ), 'set', bold],
 			'ops': [
 				{ 'type': 'retain', 'length': 61 }
 			]
 		},
 		'over elements and content': {
-			'args': [doc, new ve.Range( 3, 11 ), 'set', { 'type': 'textStyle/bold' }],
+			'args': [doc, new ve.Range( 3, 11 ), 'set', bold],
 			'ops': [
 				{ 'type': 'retain', 'length': 3 },
 				{
 					'type': 'annotate',
 					'method': 'set',
 					'bias': 'start',
-					'annotation': { 'type': 'textStyle/bold' }
+					'annotation': bold
 				},
 				{ 'type': 'retain', 'length': 1 },
 				{
 					'type': 'annotate',
 					'method': 'set',
 					'bias': 'stop',
-					'annotation': { 'type': 'textStyle/bold' }
+					'annotation': bold
 				},
 				{ 'type': 'retain', 'length': 6 },
 				{
 					'type': 'annotate',
 					'method': 'set',
 					'bias': 'start',
-					'annotation': { 'type': 'textStyle/bold' }
+					'annotation': bold
 				},
 				{ 'type': 'retain', 'length': 1 },
 				{
 					'type': 'annotate',
 					'method': 'set',
 					'bias': 'stop',
-					'annotation': { 'type': 'textStyle/bold' }
+					'annotation': bold
 				},
 				{ 'type': 'retain', 'length': 50 }
 			]
