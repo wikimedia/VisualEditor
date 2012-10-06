@@ -21,14 +21,9 @@ ve.dm.Converter = function VeDmConverter( nodeFactory, annotationFactory ) {
 		'toDataElement': {},
 		'dataElementTypes': {}
 	};
-	this.annotations = {
-		'toDomElement': {},
-		'toDataAnnotation': {}
-	};
 
 	// Events
 	this.nodeFactory.addListenerMethod( this, 'register', 'onNodeRegister' );
-	this.annotationFactory.addListenerMethod( this, 'register', 'onAnnotationRegister' );
 };
 
 /* Static Methods */
@@ -49,10 +44,6 @@ ve.dm.Converter.getDataContentFromText = function ( text, annotations ) {
 	}
 	// Build annotation set
 	for ( i = 0; i < annotations.length; i++ ) {
-		if ( annotations[i].data && ve.isEmptyObject( annotations[i].data ) ) {
-			// Cleanup empty data property
-			delete annotations[i].data;
-		}
 		annotationSet.push( annotations[i] );
 	}
 	// Apply annotations to characters
@@ -93,30 +84,6 @@ ve.dm.Converter.prototype.onNodeRegister = function ( dataElementType, construct
 		for ( i = 0; i < domElementTypes.length; i++ ) {
 			this.elements.toDataElement[domElementTypes[i]] = toDataElement;
 			this.elements.dataElementTypes[domElementTypes[i]] = dataElementType;
-		}
-	}
-};
-
-/**
- * Responds to register events from the annotation factory.
- *
- * @method
- * @param {String} type Base annotation type
- * @param {Function} constructor Annotation constructor
- * @throws 'Missing conversion data in annotation implementation of {type}'
- */
-ve.dm.Converter.prototype.onAnnotationRegister = function ( dataElementType, constructor ) {
-	if ( constructor.converters === undefined ) {
-		throw new Error( 'Missing conversion data in annotation implementation of ' + dataElementType );
-	} else if ( constructor.converters !== null ) {
-		var i,
-			domElementTypes = constructor.converters.domElementTypes,
-			toDomElement = constructor.converters.toDomElement,
-			toDataAnnotation = constructor.converters.toDataAnnotation;
-		// Registration
-		this.annotations.toDomElement[dataElementType] = toDomElement;
-		for ( i = 0; i < domElementTypes.length; i++ ) {
-			this.annotations.toDataAnnotation[domElementTypes[i]] = toDataAnnotation;
 		}
 	}
 };
@@ -198,12 +165,7 @@ ve.dm.Converter.prototype.getDataElementFromDomElement = function ( domElement )
  * @returns {Object|false} Annotation object, or false if this node is not an annotation
  */
 ve.dm.Converter.prototype.getDataAnnotationFromDomElement = function ( domElement ) {
-	var domElementType = domElement.nodeName.toLowerCase(),
-		toDataAnnotation = this.annotations.toDataAnnotation[domElementType];
-	if ( typeof toDataAnnotation === 'function' ) {
-		return toDataAnnotation( domElementType, domElement );
-	}
-	return false;
+	return ve.dm.annotationFactory.createFromElement( domElement ) || false;
 };
 
 /**
@@ -211,17 +173,13 @@ ve.dm.Converter.prototype.getDataAnnotationFromDomElement = function ( domElemen
  *
  * @method
  * @param {Object} dataAnnotation Annotation object
- * @returns {HTMLElement|false} HTML DOM node, or false if this annotation is not known
+ * @returns {HTMLElement} HTML DOM node
  */
 ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function ( dataAnnotation ) {
-	var split = dataAnnotation.type.split( '/' ),
-		baseType = split[0],
-		subType = split.slice( 1 ).join( '/' ),
-		toDomElement = this.annotations.toDomElement[baseType];
-	if ( typeof toDomElement === 'function' ) {
-		return toDomElement( subType, dataAnnotation );
-	}
-	return false;
+	var htmlData = dataAnnotation.toHTML(),
+		domElement = document.createElement( htmlData.tag );
+	ve.setDOMAttributes( domElement, htmlData.attributes );
+	return domElement;
 };
 
 /**
