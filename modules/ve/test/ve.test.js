@@ -286,3 +286,31 @@ QUnit.test( 'setDOMAttributes', 2, function ( assert ) {
 		'setDOMAttributes() overwrites attributes, removes attributes, and sets new attributes'
 	);
 } );
+
+QUnit.test( 'getOpeningHtmlTag', 5, function ( assert ) {
+	assert.deepEqual(
+		ve.getOpeningHtmlTag( 'code', {} ),
+		'<code>',
+		'opening tag without attributes'
+	);
+	assert.deepEqual(
+		ve.getOpeningHtmlTag( 'img', { 'src': 'foo' } ),
+		'<img src="foo">',
+		'opening tag with one attribute'
+	);
+	assert.deepEqual(
+		ve.getOpeningHtmlTag( 'a', { 'href': 'foo', 'rel': 'bar' } ),
+		'<a href="foo" rel="bar">',
+		'tag with two attributes'
+	);
+	assert.deepEqual(
+		ve.getOpeningHtmlTag( 'option', { 'selected': true, 'blah': false, 'value': 3 } ),
+		'<option selected="selected" value="3">',
+		'handling of booleans and numbers'
+	);
+	assert.deepEqual(
+		ve.getOpeningHtmlTag( 'input', { 'placeholder': '<foo>&"bar"&\'baz\'' } ),
+		'<input placeholder="&lt;foo&gt;&amp;&quot;bar&quot;&amp;&#039;baz&#039;">',
+		'escaping of attribute values'
+	);
+} );
