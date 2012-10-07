@@ -55,16 +55,32 @@
 	 * @example
 	 * <code>
 	 *     function Foo() {}
+	 *
 	 *     Foo.prototype.jump = function () {};
+	 *
+	 *     -------
 	 *
 	 *     function FooBar() {}
 	 *     ve.inheritClass( FooBar, Foo );
+	 *
+	 *     FooBar.prop.feet = 2;
+	 *
 	 *     FooBar.prototype.walk = function () {};
 	 *
+	 *     -------
+	 *
+	 *     function FooBarQuux() {}
+	 *     ve.inheritClass( FooBarQuux, FooBar );
+	 *
+	 *     FooBarQuux.prototype.jump = function () {};
+	 *
+	 *     -------
+	 *
+	 *     FooBarQuux.prop.feet === 2;
 	 *     var fb = new FooBar();
 	 *     fb.jump();
 	 *     fb.walk();
-	 *     fb instanceof Foo && fb instanceof FooBar;
+	 *     fb instanceof Foo && fb instanceof FooBar && fb instanceof FooBarQuux;
 	 * </code>
 	 *
 	 * @static
@@ -74,12 +90,20 @@
 	 * @param {Function} originFn
 	 */
 	ve.inheritClass = function ( targetFn, originFn ) {
-		var tmp = targetFn.prototype.constructor;
+		// Doesn't really require ES5 (jshint/jshint#74@github)
+		/*jshint es5: true */
+		var targetConstructor = targetFn.prototype.constructor;
 
 		targetFn.prototype = ve.createObject( originFn.prototype );
 
-		// Restore original constructor property
-		targetFn.prototype.constructor = tmp;
+		// Restore constructor property of targetFn
+		targetFn.prototype.constructor = targetConstructor;
+
+		// Messing with static properties can be harmful, but we've agreed on one
+		// common property that will be inherited, and that one only. Use this for
+		// for making static values visible in child classes
+		originFn.static = originFn.static || {}; // Lazy-init
+		targetFn.static = ve.createObject( originFn.static );
 	};
 
 	/**

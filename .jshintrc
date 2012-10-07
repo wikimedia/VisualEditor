@@ -23,8 +23,9 @@
 	"strict": false,
 	"trailing": true,
 
-	"smarttabs": true,
+	"es5": true,
 	"multistr": true,
+	"smarttabs": true,
 
 	"browser": true,
 	"jquery": true,

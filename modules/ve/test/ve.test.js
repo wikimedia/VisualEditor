@@ -9,6 +9,121 @@ QUnit.module( 've' );
 
 /* Tests */
 
+// ve.createObject: Tested upstream (K-js)
+
+QUnit.test( 'inheritClass', 16, function ( assert ) {
+	var foo, bar;
+
+	function Foo() {
+		this.constructedFoo = true;
+	}
+
+	Foo.a = 'prop of Foo';
+	Foo.b = 'prop of Foo';
+	Foo.prototype.b = 'proto of Foo';
+	Foo.prototype.c = 'proto of Foo';
+	Foo.prototype.bFn = function () {
+		return 'proto of Foo';
+	};
+	Foo.prototype.cFn = function () {
+		return 'proto of Foo';
+	};
+
+	foo = new Foo();
+
+	function Bar() {
+		this.constructedBar = true;
+	}
+	ve.inheritClass( Bar, Foo );
+
+	assert.deepEqual(
+		Foo.static,
+		{},
+		'A "static" property (empty object) is automatically created if absent'
+	);
+
+	Foo.static.a = 'static of Foo';
+	Foo.static.b = 'static of Foo';
+
+	assert.notStrictEqual( Foo.static, Bar.static, 'Static property is not copied, but inheriting' );
+	assert.equal( Bar.static.a, 'static of Foo', 'Foo.static inherits from Bar.static' );
+
+	Bar.static.b = 'static of Bar';
+
+	assert.equal( Foo.static.b, 'static of Foo', 'Change to Bar.static does not affect Foo.static' );
+
+	Bar.a = 'prop of Bar';
+	Bar.prototype.b = 'proto of Bar';
+	Bar.prototype.bFn = function () {
+		return 'proto of Bar';
+	};
+
+	bar = new Bar();
+
+	assert.strictEqual(
+		Bar.b,
+		undefined,
+		'Constructor properties are not inherited'
+	);
+
+	assert.strictEqual(
+		foo instanceof Foo,
+		true,
+		'foo instance of Foo'
+	);
+	assert.strictEqual(
+		foo instanceof Bar,
+		false,
+		'foo not instance of Bar'
+	);
+
+	assert.strictEqual(
+		bar instanceof Foo,
+		true,
+		'bar instance of Foo'
+	);
+	assert.strictEqual(
+		bar instanceof Bar,
+		true,
+		'bar instance of Bar'
+	);
+
+	assert.equal( bar.constructor, Bar, 'constructor property is restored' );
+	assert.equal( bar.b, 'proto of Bar', 'own methods go first' );
+	assert.equal( bar.bFn(), 'proto of Bar', 'own properties go first' );
+	assert.equal( bar.c, 'proto of Foo', 'prototype properties are inherited' );
+	assert.equal( bar.cFn(), 'proto of Foo', 'prototype methods are inherited' );
+
+	Bar.prototype.dFn = function () {
+		return 'proto of Bar';
+	};
+	Foo.prototype.dFn = function () {
+		return 'proto of Foo';
+	};
+	Foo.prototype.eFn = function () {
+		return 'proto of Foo';
+	};
+
+	assert.equal( bar.dFn(), 'proto of Bar', 'inheritance is live (overwriting an inherited method)' );
+	assert.equal( bar.eFn(), 'proto of Foo', 'inheritance is live (adding a new method deeper in the chain)' );
+});
+
+// ve.mixinClass: Tested upstream (K-js)
+
+// ve.cloneObject: Tested upstream (K-js)
+
+// ve.isPlainObject: Tested upstream (jQuery)
+
+// ve.isEmptyObject: Tested upstream (jQuery)
+
+// ve.isArray: Tested upstream (jQuery)
+
+// ve.bind: Tested upstream (jQuery)
+
+// ve.indexOf: Tested upstream (jQuery)
+
+// ve.extendObject: Tested upstream (jQuery)
+
 QUnit.test( 'getHash: Basic usage', 5, function ( assert ) {
 	var tmp, hash, objects;
 
@@ -147,7 +262,7 @@ QUnit.test( 'getObjectValues', 6, function ( assert ) {
 	assert.deepEqual(
 		ve.getObjectValues( tmp ),
 		['foo', 'bar'],
-		'Function with static members'
+		'Function with properties'
 	);
 
 	assert.throws(
