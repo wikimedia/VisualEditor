@@ -15,7 +15,7 @@
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  * @param {Object} [internal] Reference to internal data object
  */
-ve.dm.MetaBlockNode = function ( length, attributes, internal ) {
+ve.dm.MetaBlockNode = function VeDmMetaBlockNode( length, attributes, internal ) {
 	// Parent constructor
 	ve.dm.BranchNode.call( this, 'metaBlock', 0, attributes, internal );
 };

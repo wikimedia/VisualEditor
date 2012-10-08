@@ -21,7 +21,7 @@
  * @param {Function} hash Hash function
  * @param {Array|ve.OrderedHashSet} [items] Items to populate this set with
  */
-ve.OrderedHashSet = function ( hash, items ) {
+ve.OrderedHashSet = function VeOrderedHashSet( hash, items ) {
 	var i;
 	this.hash = hash;
 	// Array of object references

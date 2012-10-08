@@ -13,7 +13,7 @@
  * @extends {ve.ce.LeafNode}
  * @param model {ve.dm.MetaInlineNode} Model to observe
  */
-ve.ce.MetaInlineNode = function ( model ) {
+ve.ce.MetaInlineNode = function VeCeMetaInlineNode( model ) {
 	// Parent constructor
 	ve.ce.LeafNode.call( this, 'metaInline', model );
 

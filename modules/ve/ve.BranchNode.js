@@ -18,7 +18,7 @@
  * @constructor
  * @param {ve.Node[]} children Array of children to add
  */
-ve.BranchNode = function ( children ) {
+ve.BranchNode = function VeBranchNode( children ) {
 	this.children = ve.isArray( children ) ? children : [];
 };
 

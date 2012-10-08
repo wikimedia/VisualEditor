@@ -32,7 +32,7 @@
 	 * @param {Object} origin Object to inherit from.
 	 * @return {Object} Empty object that inherits from origin.
 	 */
-	ve.createObject = Object.hasOwnProperty( 'create' ) ? Object.create : function ( origin ) {
+	ve.createObject = Object.create || function ( origin ) {
 		function O() {}
 		O.prototype = origin;
 		var r = new O();
@@ -294,7 +294,7 @@
 	 * @param {Object} Object to get properties from
 	 * @returns {String[]} List of object keys
 	 */
-	ve.getObjectKeys = Object.hasOwnProperty( 'keys' ) ? Object.keys : function ( obj ) {
+	ve.getObjectKeys = Object.keys || function ( obj ) {
 		var key, keys;
 
 		if ( Object( obj ) !== obj ) {

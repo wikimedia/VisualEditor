@@ -12,7 +12,7 @@
  * @extends {ve.OrderedHashSet}
  * @param {Object[]} annotations Array of annotation objects
  */
-ve.AnnotationSet = function ( annotations ) {
+ve.AnnotationSet = function VeAnnotationSet( annotations ) {
 	// Parent constructor
 	ve.OrderedHashSet.call( this, ve.getHash, annotations );
 };

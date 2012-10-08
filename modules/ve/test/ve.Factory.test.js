@@ -9,7 +9,7 @@ QUnit.module( 've.Factory' );
 
 /* Stubs */
 
-ve.FactoryObjectStub = function ( a, b, c ) {
+ve.FactoryObjectStub = function VeFactoryObjectStub( a, b, c ) {
 	this.a = a;
 	this.b = b;
 	this.c = c;

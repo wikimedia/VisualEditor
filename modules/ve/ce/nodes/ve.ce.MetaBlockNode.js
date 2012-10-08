@@ -13,7 +13,7 @@
  * @extends {ve.ce.BranchNode}
  * @param model {ve.dm.MetaBlockNode} Model to observe
  */
-ve.ce.MetaBlockNode = function ( model ) {
+ve.ce.MetaBlockNode = function VeCeMetaBlockNode( model ) {
 	// Parent constructor
 	ve.ce.BranchNode.call( this, 'metaBlock', model );
 

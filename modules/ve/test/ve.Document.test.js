@@ -9,7 +9,7 @@ QUnit.module( 've.Document' );
 
 /* Stubs */
 
-ve.DocumentStub = function ( documentNode ) {
+ve.DocumentStub = function VeDocumentStub( documentNode ) {
 	// Parent constructor
 	ve.Document.call( this, documentNode );
 };

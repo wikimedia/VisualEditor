@@ -15,7 +15,7 @@
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
  * @param {Object} [internal] Reference to internal data object
  */
-ve.dm.MetaInlineNode = function ( length, attributes, internal ) {
+ve.dm.MetaInlineNode = function VeDmMetaInlineNode( length, attributes, internal ) {
 	// Parent constructor
 	ve.dm.LeafNode.call( this, 'metaInline', 0, attributes, internal );
 };

@@ -12,7 +12,7 @@
  * @constructor
  * @param {ve.Node} model Model to observe
  */
-ve.Document = function veDocument( documentNode ) {
+ve.Document = function VeDocument( documentNode ) {
 	// Properties
 	this.documentNode = documentNode;
 };

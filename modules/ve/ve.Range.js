@@ -17,7 +17,7 @@
  * @property {Number} start Normalized starting offset
  * @property {Number} end Normalized ending offset
  */
-ve.Range = function veRange( from, to ) {
+ve.Range = function VeRange( from, to ) {
 	this.from = from || 0;
 	this.to = typeof to === 'undefined' ? this.from : to;
 	this.normalize();
