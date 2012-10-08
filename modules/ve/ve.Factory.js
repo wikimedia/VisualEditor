@@ -52,22 +52,31 @@ ve.Factory.prototype.register = function ( type, constructor ) {
  * Type is used to look up the constructor to use, while all additional arguments are passed to the
  * constructor directly, so leaving one out will pass an undefined to the constructor.
  *
- * WARNING: JavaScript does not allow using new and .apply together, so we just pass through 3
- * arguments here since we know we only need that many at this time. If we need more in the future
- * we should change this to suit that use case. Because of undefined pass through, there's no harm
- * in adding more.
- *
  * @method
- * @param {String} type Object type
- * @param {Mixed} [...] Up to 3 additional arguments to pass through to the constructor
- * @returns {Object} The new object
+ * @param {string} type Object type.
+ * @param {mixed} [...] Arguments to pass to the constructor.
+ * @returns {Object} The new object.
  * @throws 'Unknown object type'
  */
-ve.Factory.prototype.create = function ( type, a, b, c ) {
-	if ( type in this.registry ) {
-		return new this.registry[type]( a, b, c );
+ve.Factory.prototype.create = function ( type ) {
+	var args, obj,
+		constructor = this.registry[type];
+
+	if ( constructor === undefined ) {
+		throw new Error( 'Unknown object type: ' + type );
 	}
-	throw new Error( 'Unknown object type: ' + type );
+
+	// Convert arguments to array and shift the first argument (type) off
+	args = Array.prototype.slice.call( arguments, 1 );
+
+	// We can't use the "new" operator with .apply directly because apply needs a
+	// context. So instead just do what "new" does: Create an object that inherits from
+	// the constructor's prototype (which also makes it an "instanceof" the constructor),
+	// then invoke the constructor with the object as context, and return it (ignoring
+	// the constructor's return value).
+	obj = ve.createObject( constructor.prototype );
+	constructor.apply( obj, args );
+	return obj;
 };
 
 /**
