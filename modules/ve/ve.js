@@ -641,6 +641,7 @@
 		for ( i = 0; i < element.attributes.length; i++ ) {
 			result[element.attributes[i].name] = element.attributes[i].value;
 		}
+		return result;
 	};
 
 	// Expose
