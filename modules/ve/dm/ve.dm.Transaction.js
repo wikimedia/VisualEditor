@@ -495,20 +495,22 @@ ve.dm.Transaction.prototype.getLengthDifference = function () {
  * @param {Number} offset Offset in the linear model before the transaction has been processed
  * @returns {Number} Translated offset, as it will be after processing transaction
  */
-ve.dm.Transaction.prototype.translateOffset = function ( offset ) {
-	var i, cursor = 0, adjustment = 0, op;
+ve.dm.Transaction.prototype.translateOffset = function ( offset, reversed ) {
+	var i, cursor = 0, adjustment = 0, op, insertLength, removeLength;
 	for ( i = 0; i < this.operations.length; i++ ) {
 		op = this.operations[i];
 		if ( op.type === 'replace' ) {
-			adjustment += op.insert.length - op.remove.length;
-			if ( offset === cursor + op.remove.length ) {
+			insertLength = reversed ? op.remove.length : op.insert.length;
+			removeLength = reversed ? op.insert.length : op.remove.length;
+			adjustment += insertLength - removeLength;
+			if ( offset === cursor + removeLength ) {
 				// Offset points to right after the removal, translate it
 				return offset + adjustment;
-			} else if ( offset >= cursor && offset < cursor + op.remove.length ) {
+			} else if ( offset >= cursor && offset < cursor + removeLength ) {
 				// The offset points inside of the removal
-				return cursor + op.remove.length + adjustment;
+				return cursor + removeLength + adjustment;
 			}
-			cursor += op.remove.length;
+			cursor += removeLength;
 		} else if ( op.type === 'retain' ) {
 			if ( offset >= cursor && offset < cursor + op.length ) {
 				return offset + adjustment;
@@ -530,8 +532,8 @@ ve.dm.Transaction.prototype.translateOffset = function ( offset ) {
  * @param {ve.Range} range Range in the linear model before the transaction has been processed
  * @returns {ve.Range} Translated range, as it will be after processing transaction
  */
-ve.dm.Transaction.prototype.translateRange = function ( range ) {
-	return new ve.Range( this.translateOffset( range.from ), this.translateOffset( range.to ) );
+ve.dm.Transaction.prototype.translateRange = function ( range, reversed ) {
+	return new ve.Range( this.translateOffset( range.from, reversed ), this.translateOffset( range.to, reversed ) );
 };
 
 /**

@@ -805,6 +805,45 @@ QUnit.test( 'translateOffset', function ( assert ) {
 	}
 } );
 
+QUnit.test( 'translateOffsetReversed', function ( assert ) {
+	var tx, mapping, offset;
+	// Populate a transaction with bogus data
+	tx = new ve.dm.Transaction();
+	tx.pushReplace( [], ['a','b','c'] );
+	tx.pushRetain ( 5 );
+	tx.pushReplace( ['d', 'e', 'f', 'g'], [] );
+	tx.pushRetain( 2 );
+	tx.pushStartAnnotating( 'set', { 'type': 'textStyle/bold' } );
+	tx.pushRetain( 1 );
+	tx.pushReplace( ['h'], ['i', 'j', 'k', 'l', 'm'] );
+	tx.pushRetain( 2 );
+	tx.pushReplace( [], ['n', 'o', 'p'] );
+
+	mapping = {
+		0: 0,
+		1: 0,
+		2: 0,
+		3: 0,
+		4: 1,
+		5: 2,
+		6: 3,
+		7: 4,
+		8: 9,
+		9: 10,
+		10: 11,
+		11: 13,
+		12: 13,
+		13: 13,
+		14: 13,
+		15: 13,
+		16: 13
+	};
+	QUnit.expect( 17 );
+	for ( offset in mapping ) {
+		assert.strictEqual( tx.translateOffset( Number( offset ), true ), mapping[offset] );
+	}
+} );
+
 QUnit.test( 'pushRetain', function ( assert ) {
 	var cases = {
 		'retain': {
