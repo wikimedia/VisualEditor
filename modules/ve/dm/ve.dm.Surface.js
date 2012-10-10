@@ -173,19 +173,20 @@ ve.dm.Surface.prototype.breakpoint = function ( selection ) {
 };
 
 ve.dm.Surface.prototype.undo = function () {
-	var diff, item, i, selection;
+	var item, i, transaction, selection;
 	this.breakpoint();
 	this.undoIndex++;
+
 	if ( this.bigStack[this.bigStack.length - this.undoIndex] ) {
 		this.emit( 'lock' );
-		diff = 0;
 		item = this.bigStack[this.bigStack.length - this.undoIndex];
-		for ( i = item.stack.length - 1; i >= 0; i-- ) {
-			this.documentModel.rollback( item.stack[i] );
-			diff += item.stack[i].lengthDifference;
-		}
 		selection = item.selection;
-		selection.end -= diff;
+
+		for ( i = item.stack.length - 1; i >= 0; i-- ) {
+			transaction = item.stack[i];
+			selection = transaction.translateRange( selection, true );
+			this.documentModel.rollback( item.stack[i] );
+		}
 		this.emit( 'unlock' );
 		this.emit( 'history' );
 		return selection;
@@ -194,19 +195,15 @@ ve.dm.Surface.prototype.undo = function () {
 };
 
 ve.dm.Surface.prototype.redo = function () {
-	var selection, diff, item, i;
+	var selection, item, i;
 	this.breakpoint();
-	if ( this.undoIndex > 0 ) {
+
+	if ( this.undoIndex > 0 && this.bigStack[this.bigStack.length - this.undoIndex] ) {
 		this.emit( 'lock' );
-		if ( this.bigStack[this.bigStack.length - this.undoIndex] ) {
-			diff = 0;
-			item = this.bigStack[this.bigStack.length - this.undoIndex];
-			for ( i = 0; i < item.stack.length; i++ ) {
-				this.documentModel.commit( item.stack[i] );
-				diff += item.stack[i].lengthDifference;
-			}
-			selection = item.selection;
-			selection.end += diff;
+		item = this.bigStack[this.bigStack.length - this.undoIndex];
+		selection = item.selection;
+		for ( i = 0; i < item.stack.length; i++ ) {
+			this.documentModel.commit( item.stack[i] );
 		}
 		this.undoIndex--;
 		this.emit( 'unlock' );
