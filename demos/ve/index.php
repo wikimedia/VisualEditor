@@ -205,6 +205,8 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 			<a href="#" id="ve-dump-data">Dump data to the console</a>
 			<br/>
 			<a href="#" id="ve-dump-all">Dump all data</a>
+			<br/>
+			<a href="#" id="ve-validate">Validate (DOM Data vs. Model Data)</a>
 			<br/><br/>
 			<table id="ve-dump" border="1" width="100%" style="display: none;">
 				<tr>
@@ -222,6 +224,33 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 
 		<script>
 		$( function() {
+			$( '#ve-validate' ).on( "click", function( e ) {
+				var failed = false;
+				$('.ve-ce-branchNode').each( function( index, element ) {
+					var	$element = $( element ),
+						view = $element.data( 'node' );
+					if ( view.canContainContent() ) {
+						var nodeRange = view.model.getRange();
+						var textModel = ve.instances[0].view.model.getDocument().getText( nodeRange );
+						var textDom = ve.ce.getDomText( view.$[0] );
+						if ( textModel !== textDom ) {
+							failed = true;
+							console.log('Inconsistent data', {
+								'textModel' : textModel,
+								'textDom' : textDom,
+								'element' : element
+							} )
+						}
+					}
+				});
+				if ( failed ) {
+					alert( 'Not valid - check JS console for details' );
+				} else {
+					alert( 'Valid' );
+				}
+				e.preventDefault();
+				return false;
+			} );
 			$( '#ve-dump-all' ).on( "click", function( e ) {
 				// linear model dump
 				var $ol = $('<ol start=0></ol>'),
