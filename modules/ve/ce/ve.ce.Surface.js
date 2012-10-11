@@ -74,8 +74,8 @@ ve.inheritClass( ve.ce.Surface, ve.EventEmitter );
 
 /* Methods */
 
-ve.ce.Surface.prototype.handleInsertion = function() {
-	var selection = this.model.getSelection(), slug, isStructuralOffset, data, range, left;
+ve.ce.Surface.prototype.handleInsertion = function () {
+	var selection = this.model.getSelection(), slug, data, range;
 
 	// Handles removing expanded selection before inserting new text
 	if ( selection.isCollapsed() === false ) {
@@ -90,29 +90,20 @@ ve.ce.Surface.prototype.handleInsertion = function() {
 		selection = this.model.getSelection();
 	}
 
-	/*
-	TODO: Rearrange the code below into structure more similar to this
-	if ( slug || insertAnnotationsDiff.length > 0 ) {
-		//...
-		if ( slug && structureal ) {
-			// ...
-		} else {
-			// ...
-		}
-		// ...
-	}
-	*/
-
-	// Handles turning slug into paragraph or text node before inserting new text
 	if ( selection.isCollapsed() ) {
 		slug = this.documentView.getSlugAtOffset( selection.start );
-		if ( slug ) {
+		// is this a slug or are the annotations to the left different than the insertAnnotations?
+		if ( slug || (
+			selection.start > 0 &&
+			!ve.compareObjects (
+				this.model.getDocument().getAnnotationsFromOffset( selection.start - 1 ),
+				this.model.documentModel.insertAnnotations
+			) ) ) {
 			this.model.insertingAnnotations = true;
-			isStructuralOffset = ve.dm.Document.isStructuralOffset(
-				this.documentView.model.data,
-				selection.start
-			);
-			if ( isStructuralOffset ) {
+			// is this a slug and if so, is this a block slug?
+			if ( slug && ve.dm.Document.isStructuralOffset(
+				this.documentView.model.data, selection.start
+			) ) {
 				range = new ve.Range( selection.start + 1, selection.start + 2 );
 				data = [
 					{ 'type' : 'paragraph' },
@@ -126,24 +117,10 @@ ve.ce.Surface.prototype.handleInsertion = function() {
 				];
 			}
 			this.model.change(
-				ve.dm.Transaction.newFromInsertion( this.documentView.model, selection.start, data ),
-				range
-			);
-			this.surfaceObserver.clear();
-		}
-	}
-
-	if ( !slug ) {
-		left = this.model.getDocument().getAnnotationsFromOffset( selection.start - 1 );
-		if ( !ve.compareObjects ( left, this.model.documentModel.insertAnnotations ) ) {
-			this.model.insertingAnnotations = true;
-			this.model.change(
 				ve.dm.Transaction.newFromInsertion(
-					this.documentView.model,
-					selection.start,
-					[['\u2659', this.model.documentModel.insertAnnotations]]
+					this.documentView.model, selection.start, data
 				),
-				new ve.Range( selection.start, selection.start + 1 )
+				range
 			);
 			this.surfaceObserver.clear();
 		}
@@ -677,7 +654,7 @@ ve.ce.Surface.prototype.onKeyPress = function ( e ) {
 	this.handleInsertion();
 
 	var _this = this;
-	setTimeout( function() {
+	setTimeout( function () {
 		_this.model.insertingAnnotations = false;
 		_this.surfaceObserver.start();
 	}, 0 );
@@ -1268,20 +1245,20 @@ ve.ce.Surface.prototype.getDocument = function () {
 /**
  * @method
  */
-ve.ce.Surface.prototype.lock = function() {
+ve.ce.Surface.prototype.lock = function () {
 	this.locked = true;
 };
 
 /**
  * @method
  */
-ve.ce.Surface.prototype.unlock = function() {
+ve.ce.Surface.prototype.unlock = function () {
 	this.locked = false;
 };
 
 /**
  * @method
  */
-ve.ce.Surface.prototype.isLocked = function() {
+ve.ce.Surface.prototype.isLocked = function () {
 	return this.locked;
 };
