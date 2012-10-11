@@ -205,6 +205,7 @@ $wgResourceModules += array(
 			've/ce/ve.ce.BranchNode.js',
 			've/ce/ve.ce.LeafNode.js',
 			've/ce/ve.ce.Surface.js',
+			've/ce/ve.ce.SurfaceObserver.js',
 
 			've/ce/nodes/ve.ce.AlienInlineNode.js',
 			've/ce/nodes/ve.ce.AlienBlockNode.js',
