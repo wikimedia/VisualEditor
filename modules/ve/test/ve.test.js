@@ -429,3 +429,60 @@ QUnit.test( 'getOpeningHtmlTag', 5, function ( assert ) {
 		'escaping of attribute values'
 	);
 } );
+
+QUnit.test( 'getProp', 9, function ( assert ) {
+	var obj = {
+		'foo': 3,
+		'bar': {
+			'baz': null,
+			'quux': {
+				'whee': 'yay'
+			}
+		}
+	};
+	assert.deepEqual(
+		ve.getProp( obj, 'foo' ),
+		3,
+		'single key'
+	);
+	assert.deepEqual(
+		ve.getProp( obj, 'bar' ),
+		{ 'baz': null, 'quux': { 'whee': 'yay' } },
+		'singe key, returns object'
+	);
+	assert.deepEqual(
+		ve.getProp( obj, 'bar', 'baz' ),
+		null,
+		'two keys, returns null'
+	);
+	assert.deepEqual(
+		ve.getProp( obj, 'bar', 'quux', 'whee' ),
+		'yay',
+		'three keys'
+	);
+	assert.deepEqual(
+		ve.getProp( obj, 'x' ),
+		undefined,
+		'missing property returns undefined'
+	);
+	assert.deepEqual(
+		ve.getProp( obj, 'foo', 'bar' ),
+		undefined,
+		'missing 2nd-level property returns undefined'
+	);
+	assert.deepEqual(
+		ve.getProp( obj, 'foo', 'bar', 'baz', 'quux', 'whee' ),
+		undefined,
+		'multiple missing properties don\'t cause an error'
+	);
+	assert.deepEqual(
+		ve.getProp( obj, 'bar', 'baz', 'quux' ),
+		undefined,
+		'accessing property of null returns undefined, doesn\'t cause an error'
+	);
+	assert.deepEqual(
+		ve.getProp( obj, 'bar', 'baz', 'quux', 'whee', 'yay' ),
+		undefined,
+		'accessing multiple properties of null'
+	);
+} );

@@ -552,6 +552,30 @@
 	};
 
 	/**
+	 * Get a deeply nested property of an object using variadic arguments, protecting against
+	 * undefined property errors.
+	 *
+	 * quux = getProp( obj, 'foo', 'bar', 'baz' ); is equivalent to quux = obj.foo.bar.baz;
+	 * except that the former protects against JS errors if one of the intermediate properties
+	 * is undefined. Instead of throwing an error, this function will return undefined in
+	 * that case.
+	 *
+	 * @param {Object} obj
+	 * @returns obj[arguments[1]][arguments[2]].... or undefined
+	 */
+	ve.getProp = function ( obj /*, keys ... */ ) {
+		var retval = obj;
+		for ( i = 1; i < arguments.length; i++ ) {
+			if ( retval === undefined || retval === null ) {
+				// Trying to access a property of undefined or null causes an error
+				return undefined;
+			}
+			retval = retval[arguments[i]];
+		}
+		return retval;
+	};
+
+	/**
 	 * Logs data to the console.
 	 *
 	 * This implementation does nothing, to add a real implmementation ve.debug needs to be loaded.
