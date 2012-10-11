@@ -265,6 +265,10 @@
 	 * argument of JSON.stringify and sort the object by key as it's being serialized. This may or may
 	 * not be the fastest way to do this; we should investigate this further.
 	 *
+	 * Objects an arrays are hashed recursively. When hashing an object that has a .getHash()
+	 * function, we call that function and use its return value rather than hashing the object
+	 * ourselves. This allows classes to define custom hashing.
+	 *
 	 * @static
 	 * @method
 	 * @param {Object} val Object to generate hash for
@@ -287,9 +291,13 @@
 	 */
 	ve.getHash.keySortReplacer = function ( key, val ) {
 		var normalized, keys, i, len;
-		// Only normalize objects when the key-order is ambiguous
-		// (e.g. any object not an array).
+		if ( val && typeof val.getHash === 'function' ) {
+			// This object has its own custom hash function, use it
+			return val.getHash();
+		}
 		if ( !ve.isArray( val ) && Object( val ) === val ) {
+			// Only normalize objects when the key-order is ambiguous
+			// (e.g. any object not an array).
 			normalized = {};
 			keys = ve.getObjectKeys( val ).sort();
 			i = 0;
