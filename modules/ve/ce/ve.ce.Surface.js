@@ -21,6 +21,7 @@ ve.ce.Surface = function VeCeSurface( $container, model ) {
 	ve.EventEmitter.call( this );
 
 	// Properties
+	this.inIme = false;
 	this.model = model;
 	this.documentView = new ve.ce.Document( model.getDocument(), this );
 	this.contextView = new ve.ui.Context( this );
@@ -72,6 +73,83 @@ ve.ce.Surface = function VeCeSurface( $container, model ) {
 ve.inheritClass( ve.ce.Surface, ve.EventEmitter );
 
 /* Methods */
+
+ve.ce.Surface.prototype.handleInsertion = function() {
+	var selection = this.model.getSelection(), slug, isStructuralOffset, data, range, left;
+
+	// Handles removing expanded selection before inserting new text
+	if ( selection.isCollapsed() === false ) {
+		this.model.change(
+			ve.dm.Transaction.newFromRemoval(
+				this.documentView.model,
+				selection
+			),
+			new ve.Range( selection.start )
+		);
+		selection = this.model.getSelection();
+	}
+
+	/*
+	TODO: Rearrange the code below into structure more similar to this
+	if ( slug || insertAnnotationsDiff.length > 0 ) {
+		//...
+		if ( slug && structureal ) {
+			// ...
+		} else {
+			// ...
+		}
+		// ...
+	}
+	*/
+
+	// Handles turning slug into paragraph or text node before inserting new text
+	if ( selection.isCollapsed() ) {
+		slug = this.documentView.getSlugAtOffset( selection.start );
+		if ( slug ) {
+			this.model.insertingAnnotations = true;
+			isStructuralOffset = ve.dm.Document.isStructuralOffset(
+				this.documentView.model.data,
+				selection.start
+			);
+			if ( isStructuralOffset ) {
+				range = new ve.Range( selection.start + 1, selection.start + 2 );
+				data = [
+					{ 'type' : 'paragraph' },
+					['\u2659', this.model.documentModel.insertAnnotations],
+					{ 'type' : '/paragraph' }
+				];
+			} else {
+				range = new ve.Range( selection.start, selection.start + 1 );
+				data = [
+					['\u2659', this.model.documentModel.insertAnnotations]
+				];
+			}
+			this.model.change(
+				ve.dm.Transaction.newFromInsertion( this.documentView.model, selection.start, data ),
+				range
+			);
+			this.surfaceObserver.clear();
+		}
+	}
+
+	if ( !slug && this.model.documentModel.insertAnnotations.getLength() > 0 ) {
+		left = this.model.getDocument().getAnnotationsFromOffset( selection.start - 1 );
+		if ( !ve.compareObjects ( left, this.model.documentModel.insertAnnotations ) ) {
+			this.model.insertingAnnotations = true;
+			this.model.change(
+				ve.dm.Transaction.newFromInsertion(
+					this.documentView.model,
+					selection.start,
+					[['\u2659', this.model.documentModel.insertAnnotations]]
+				),
+				new ve.Range( selection.start, selection.start + 1 )
+			);
+			this.surfaceObserver.clear();
+		}
+	}
+
+	this.surfaceObserver.stop( true );
+};
 
 /**
  * Responds to 'contentChange' events emitted in {ve.ce.SurfaceObserver.prototype.poll}.
@@ -229,10 +307,21 @@ ve.ce.Surface.prototype.documentOnFocus = function () {
 		'keypress.ve-ce-Surface': ve.bind( this.onKeyPress, this ),
 		'mousedown.ve-ce-Surface': ve.bind( this.onMouseDown, this ),
 		'mouseup.ve-ce-Surface': ve.bind( this.onMouseUp, this ),
-		//'compositionstart.ve-ce-Surface': ve.bind( this.onCompositionStart, this ),
-		//'compositionend.ve-ce-Surface': ve.bind( this.onCompositionEnd, this ),
+		'compositionstart.ve-ce-Surface': ve.bind( this.onCompositionStart, this ),
+		'compositionend.ve-ce-Surface': ve.bind( this.onCompositionEnd, this ),
 	} );
 	this.surfaceObserver.start( true );
+};
+
+ve.ce.Surface.prototype.onCompositionStart = function () {
+	this.inIme = true;
+	this.handleInsertion();
+};
+
+ve.ce.Surface.prototype.onCompositionEnd = function () {
+	this.inIme = false;
+	this.model.insertingAnnotations = false;
+	this.surfaceObserver.start();
 };
 
 /**
@@ -287,6 +376,10 @@ ve.ce.Surface.prototype.onMouseUp = function ( e ) {
  * @param {jQuery.Event} e
  */
 ve.ce.Surface.prototype.onKeyDown = function ( e ) {
+	if ( this.inIme === true ) {
+		return;
+	}
+
 	var offset,
 		relativeContentOffset,
 		relativeStructuralOffset,
@@ -444,50 +537,6 @@ ve.ce.Surface.prototype.onKeyDown = function ( e ) {
 	}
 };
 
-ve.ce.Surface.prototype.handleInsertAnnotations = function () {
-	var selection = this.model.getSelection();
-
-	// compare annotation stack to annotation for offset - 1, do pawn trick if necessary
-	var leftAnnotations = this.model.documentModel.data[selection.start - 1][1];
-	var insertAnnotations = this.model.documentModel.insertAnnotations;
-
-	if ( leftAnnotations == undefined && insertAnnotations.getLength() == 0 ) {
-		// plain text for both, do nothing
-	} else if ( leftAnnotations != undefined && ve.compareObjects ( leftAnnotations, insertAnnotations ) ) {
-		// objects are the same, do nothing
-	} else {
-		this.model.insertingAnnotations = true;
-
-		// Add the pawn with annotation, re-render, select pawn
-		this.model.change(
-			ve.dm.Transaction.newFromInsertion(
-				this.documentView.model,
-				selection.start,
-				[['\u2659', this.model.documentModel.insertAnnotations]]
-			),
-			new ve.Range( selection.start, selection.start + 1 )
-		);
-
-		// Remove pawn from the model and do not re-render
-		this.lock();
-		this.model.change(
-			ve.dm.Transaction.newFromRemoval(
-				this.documentView.model,
-				this.model.getSelection()
-			)
-		);
-		this.unlock();
-
-		// Reset the pawn trick when current event handling is done
-		var _this = this;
-		setTimeout(function() {
-			_this.model.insertingAnnotations = false;
-			_this.surfaceObserver.start();
-		}, 0);
-	}
-};
-
-
 /**
  * Responds to copy events.
  *
@@ -616,60 +665,17 @@ ve.ce.Surface.prototype.onPaste = function () {
  * @param {jQuery.Event} e
  */
 ve.ce.Surface.prototype.onKeyPress = function ( e ) {
-	var node, selection, data;
-
-	ve.log( 'onKeyPress' );
-
 	if ( ve.ce.Surface.isShortcutKey( e ) || e.which === 13 ) {
 		return;
 	}
 
-	selection = this.model.getSelection();
+	this.handleInsertion();
 
-	if (
-		selection.getLength() === 0 &&
-		this.sluggable === true &&
-		this.hasSlugAtOffset( selection.start )
-	) {
-		this.sluggable = false;
-		this.surfaceObserver.stop();
-		if ( this.documentView.getNodeFromOffset( selection.start ).getLength() !== 0 ) {
-			data = [ { 'type' : 'paragraph' }, { 'type' : '/paragraph' } ];
-			this.model.change(
-				ve.dm.Transaction.newFromInsertion(
-					this.documentView.model,
-					selection.start,
-					data
-				),
-				new ve.Range( selection.start + 1 )
-			);
-			node = this.documentView.getNodeFromOffset( selection.start + 1 );
-		} else {
-			node = this.documentView.getNodeFromOffset( selection.start );
-		}
-		node.$.empty();
-		// TODO: Can this be chained to the above line?
-		node.$.append( document.createTextNode( '' ) );
-		this.surfaceObserver.clear();
-		this.surfaceObserver.start();
-	}
-
-	this.handleInsertAnnotations();
-
-	// Is there an expanded range and something other than keycodes 0 (nothing) or 27 (esc) were pressed?
-	if ( selection.getLength() > 0 && ( e.which !== 0 || e.which !== 27 ) ) {
-		this.surfaceObserver.stop();
-		this.model.change(
-			ve.dm.Transaction.newFromRemoval(
-				this.documentView.model,
-				selection
-			),
-			new ve.Range( selection.start )
-		);
-		this.surfaceObserver.clear();
-		this.surfaceObserver.start();
-	}
-
+	var _this = this;
+	setTimeout( function() {
+		_this.model.insertingAnnotations = false;
+		_this.surfaceObserver.start();
+	}, 0 );
 };
 
 /**
@@ -993,7 +999,7 @@ ve.ce.Surface.prototype.showSelection = function ( range ) {
 		start = this.getNodeAndOffset( range.start );
 		end = this.getNodeAndOffset( range.end );
 
-		if ( $.browser.msie ) {
+		if ( false && $.browser.msie ) {
 			if ( range.start === range.from ) {
 				if (
 					start.node === this.poll.rangySelection.anchorNode &&
@@ -1022,7 +1028,7 @@ ve.ce.Surface.prototype.showSelection = function ( range ) {
 	} else {
 		start = end = this.getNodeAndOffset( range.start );
 
-		if ( $.browser.msie ) {
+		if ( false && $.browser.msie ) {
 			if (
 				start.node === this.poll.rangySelection.anchorNode &&
 				start.offset === this.poll.rangySelection.anchorOffset
