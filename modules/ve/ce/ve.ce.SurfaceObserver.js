@@ -125,19 +125,19 @@ ve.ce.SurfaceObserver.prototype.poll = function( async ) {
 			ve.ce.getOffset( rangySelection.focusNode, rangySelection.focusOffset )
 		);
 
-		if ( range.getLength() === 0 ) {
+		//if ( range.getLength() === 0 ) {
 			node = $( rangySelection.anchorNode ).closest( '.ve-ce-branchNode' ).data( 'node' );
 			if ( node.canHaveGrandchildren() === true ) {
 				node = null;
 			}
-		} else {
+		/*} else {
 			nodes = this.documentView.selectNodes( range, 'branches' );
 			if ( nodes.length === 1 && nodes[0].node.canHaveGrandchildren() === false ) {
 				node = nodes[0].node;
 			} else {
 				node = null;
 			}
-		}
+		}*/
 	}
 
 	if ( this.node !== node ) {
