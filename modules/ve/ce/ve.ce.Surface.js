@@ -406,21 +406,26 @@ ve.ce.Surface.prototype.onKeyDown = function ( e ) {
 			break;
 		// Left arrow
 		case 37:
-			if ( !e.metaKey && !e.altKey && !e.shiftKey && this.model.getSelection().getLength() === 0 ) {
-				offset = this.model.getSelection().start;
-				relativeContentOffset = this.documentView.model.getRelativeContentOffset( offset, -1 );
-				relativeStructuralOffset = this.documentView.model.getRelativeStructuralOffset( offset - 1, -1, true );
-				relativeStructuralOffsetNode = this.documentView.documentNode.getNodeFromOffset( relativeStructuralOffset );
-				hasSlug = this.documentView.getSlugAtOffset( relativeStructuralOffset ) || false;
-				if ( hasSlug ) {
-					if ( relativeContentOffset > offset ) {
-						newOffset = relativeStructuralOffset;
-					} else {
-						newOffset = Math.max( relativeContentOffset, relativeStructuralOffset );
-					}
+			offset = this.model.getSelection().start;
+			relativeContentOffset = this.documentView.model.getRelativeContentOffset( offset, -1 );
+			relativeStructuralOffset = this.documentView.model.getRelativeStructuralOffset( offset - 1, -1, true );
+			relativeStructuralOffsetNode = this.documentView.documentNode.getNodeFromOffset( relativeStructuralOffset );
+			hasSlug = this.documentView.getSlugAtOffset( relativeStructuralOffset ) || false;
+
+			if ( hasSlug ) {
+				if ( relativeContentOffset > offset ) {
+					// If relativeContentOffset returns a greater number, there's nowhere to go toward the left. Go right.
+					newOffset = relativeStructuralOffset;
 				} else {
-					newOffset = Math.min( offset, relativeContentOffset );
+					// Move cursor to whichever is nearest to the original offset.
+					newOffset = Math.max( relativeContentOffset, relativeStructuralOffset );
 				}
+			} else if (relativeContentOffset != offset - 1) {
+				// The closest content offet is further away than just one offset. Don't trust the browser. Move programatically.
+				newOffset = relativeContentOffset;
+			}
+
+			if ( newOffset ) {
 				this.model.change(
 					null,
 					new ve.Range( newOffset )
@@ -430,26 +435,25 @@ ve.ce.Surface.prototype.onKeyDown = function ( e ) {
 			break;
 		// Right arrow
 		case 39:
-			if (
-				!e.metaKey &&
-				!e.altKey &&
-				!e.shiftKey &&
-				this.model.getSelection().getLength() === 0
-			) {
-				offset = this.model.getSelection().start;
-				relativeContentOffset = this.documentView.model.getRelativeContentOffset( offset, 1 );
-				relativeStructuralOffset = this.documentView.model.getRelativeStructuralOffset( offset + 1, 1, true );
-				relativeStructuralOffsetNode = this.documentView.documentNode.getNodeFromOffset( relativeStructuralOffset );
-				hasSlug = this.documentView.getSlugAtOffset( relativeStructuralOffset ) || false;
-				if ( hasSlug ) {
-					if ( relativeContentOffset < offset ) {
-						newOffset = relativeStructuralOffset;
-					} else {
-						newOffset = Math.min( relativeContentOffset, relativeStructuralOffset );
-					}
+			offset = this.model.getSelection().start;
+			relativeContentOffset = this.documentView.model.getRelativeContentOffset( offset, 1 );
+			relativeStructuralOffset = this.documentView.model.getRelativeStructuralOffset( offset + 1, 1, true );
+			relativeStructuralOffsetNode = this.documentView.documentNode.getNodeFromOffset( relativeStructuralOffset );
+			hasSlug = this.documentView.getSlugAtOffset( relativeStructuralOffset ) || false;
+
+			if ( hasSlug ) {
+				if ( relativeContentOffset < offset ) {
+					// If relativeContentOffset returns a lesser number, there's nowhere to go toward the right. Go left.
+					newOffset = relativeStructuralOffset;
 				} else {
-					newOffset = Math.max( offset, relativeContentOffset );
+					// Move cursor to whichever is nearest to the original offset.
+					newOffset = Math.min( relativeContentOffset, relativeStructuralOffset );
 				}
+			} else if ( relativeContentOffset != offset + 1 ) {
+				newOffset = relativeContentOffset;
+			}
+
+			if ( newOffset ) {
 				this.model.change(
 					null,
 					new ve.Range( newOffset )
