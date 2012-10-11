@@ -132,7 +132,7 @@ ve.ce.Surface.prototype.handleInsertion = function() {
 		}
 	}
 
-	if ( !slug && this.model.documentModel.insertAnnotations.getLength() > 0 ) {
+	if ( !slug ) {
 		left = this.model.getDocument().getAnnotationsFromOffset( selection.start - 1 );
 		if ( !ve.compareObjects ( left, this.model.documentModel.insertAnnotations ) ) {
 			this.model.insertingAnnotations = true;
