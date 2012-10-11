@@ -668,6 +668,22 @@
 		return result;
 	};
 
+	/**
+	 * Set the attributes of a DOM element as an object with key/value pairs
+	 * @param {HTMLElement} element
+	 * @param {Object} attributes
+	 */
+	ve.setDOMAttributes = function ( element, attributes ) {
+		var key;
+		for ( key in attributes ) {
+			if ( attributes[key] === undefined || attributes[key] === null ) {
+				element.removeAttribute( key );
+			} else {
+				element.setAttribute( key, attributes[key] );
+			}
+		}
+	};
+
 	// Expose
 	window.ve = ve;
 }() );
