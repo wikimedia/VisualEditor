@@ -86,6 +86,7 @@ ve.ce.Surface.prototype.handleInsertion = function() {
 			),
 			new ve.Range( selection.start )
 		);
+		this.surfaceObserver.clear();
 		selection = this.model.getSelection();
 	}
 
