@@ -9,7 +9,7 @@ QUnit.module( 've.ce.TextNode' );
 
 /* Tests */
 
-QUnit.test( 'getHtml', function ( assert ) {
+QUnit.test( 'getHtml', 22, function ( assert ) {
 	var i, len, cases;
 
 	cases = [
@@ -215,6 +215,11 @@ QUnit.test( 'getHtml', function ( assert ) {
 		},
 		{
 			// [ ]
+			'data': [{ 'type': 'paragraph' },{ 'type': '/paragraph' }],
+			'html': ''
+		},
+		{
+			// [ ]
 			'data': [{ 'type': 'paragraph' },' ',{ 'type': '/paragraph' }],
 			'html': '&nbsp;'
 		},
@@ -269,7 +274,6 @@ QUnit.test( 'getHtml', function ( assert ) {
 			'html': '&nbsp; &nbsp; &nbsp;A'
 		}
 	];
-	expect( cases.length );
 	for ( i = 0, len = cases.length; i < len; i++ ) {
 		ve.dm.example.preprocessAnnotations( cases[i].data );
 		assert.equal(
