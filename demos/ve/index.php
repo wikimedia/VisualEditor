@@ -103,6 +103,7 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 		<script src="../../modules/ve/dm/ve.dm.TransactionProcessor.js"></script>
 		<script src="../../modules/ve/dm/ve.dm.Transaction.js"></script>
 		<script src="../../modules/ve/dm/ve.dm.Surface.js"></script>
+		<script src="../../modules/ve/dm/ve.dm.SurfaceFragment.js"></script>
 		<script src="../../modules/ve/dm/ve.dm.Document.js"></script>
 		<script src="../../modules/ve/dm/ve.dm.DocumentSynchronizer.js"></script>
 		<script src="../../modules/ve/dm/ve.dm.Transaction.js"></script>
