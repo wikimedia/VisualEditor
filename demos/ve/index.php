@@ -131,8 +131,8 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 		<script src="../../modules/ve/dm/nodes/ve.dm.TextNode.js"></script>
 
 		<script src="../../modules/ve/dm/annotations/ve.dm.LinkAnnotation.js"></script>
-		<script src="../../modules/ve/dm/annotations/ve.dm.MWExternalLink.js"></script>
-		<script src="../../modules/ve/dm/annotations/ve.dm.MWInternalLink.js"></script>
+		<script src="../../modules/ve/dm/annotations/ve.dm.MWExternalLinkAnnotation.js"></script>
+		<script src="../../modules/ve/dm/annotations/ve.dm.MWInternalLinkAnnotation.js"></script>
 		<script src="../../modules/ve/dm/annotations/ve.dm.TextStyleAnnotation.js"></script>
 
 		<!-- ce -->
