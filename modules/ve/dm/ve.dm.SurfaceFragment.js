@@ -12,9 +12,9 @@
  * @constructor
  * @param {ve.dm.Surface} surface Target surface
  * @param {ve.Range} [range] Range within target document, current selection used by default
- * @param {Boolean} [autoSelect] Update the surface's selection when making changes
+ * @param {Boolean} [noAutoSelect] Update the surface's selection when making changes
  */
-ve.dm.SurfaceFragment = function VeDmSurfaceFragment( surface, range, autoSelect ) {
+ve.dm.SurfaceFragment = function VeDmSurfaceFragment( surface, range, noAutoSelect ) {
 	// Short-circuit for missing-surface null fragment
 	if ( !surface ) {
 		return this;
@@ -28,7 +28,7 @@ ve.dm.SurfaceFragment = function VeDmSurfaceFragment( surface, range, autoSelect
 	}
 	this.surface = surface;
 	this.document = surface.getDocument();
-	this.autoSelect = !!autoSelect;
+	this.noAutoSelect = !!noAutoSelect;
 
 	// Events
 	surface.on( 'transact', ve.bind( this.onTransact, this ) );
@@ -114,7 +114,7 @@ ve.dm.SurfaceFragment.prototype.adjustRange = function ( start, end ) {
 	return new ve.dm.SurfaceFragment(
 		this.surface,
 		new ve.Range( this.range.start + ( start || 0 ), this.range.end + ( end || 0 ) ),
-		this.autoSelect
+		this.noAutoSelect
 	);
 };
 
@@ -130,7 +130,7 @@ ve.dm.SurfaceFragment.prototype.collapseRange = function () {
 		return this;
 	}
 	return new ve.dm.SurfaceFragment(
-		this.surface, new ve.Range( this.range.start ), this.autoSelect
+		this.surface, new ve.Range( this.range.start ), this.noAutoSelect
 	);
 };
 
@@ -146,7 +146,7 @@ ve.dm.SurfaceFragment.prototype.trimRange = function () {
 		return this;
 	}
 	return new ve.dm.SurfaceFragment(
-		this.surface, this.document.trimOuterSpaceFromRange( this.range ), this.autoSelect
+		this.surface, this.document.trimOuterSpaceFromRange( this.range ), this.noAutoSelect
 	);
 };
 
@@ -209,7 +209,7 @@ ve.dm.SurfaceFragment.prototype.expandRange = function ( scope, type ) {
 		default:
 			throw new Error( 'Invalid scope argument: ' + scope );
 	}
-	return new ve.dm.SurfaceFragment( this.surface, range, this.autoSelect );
+	return new ve.dm.SurfaceFragment( this.surface, range, this.noAutoSelect );
 };
 
 /**
@@ -219,7 +219,7 @@ ve.dm.SurfaceFragment.prototype.expandRange = function ( scope, type ) {
  * @returns {Boolean} Will automatically update surface selection
  */
 ve.dm.SurfaceFragment.prototype.willAutoSelect = function () {
-	return this.autoSelect;
+	return !this.noAutoSelect;
 };
 
 /**
@@ -322,7 +322,7 @@ ve.dm.SurfaceFragment.prototype.getSiblingNodes = function () {
  * @returns {ve.dm.SurfaceFragment} This fragment
  */
 ve.dm.SurfaceFragment.prototype.setAutoSelect = function ( value ) {
-	this.autoSelect = value === undefined || !!value;
+	this.noAutoSelect = !value;
 	return this;
 };
 
@@ -337,7 +337,7 @@ ve.dm.SurfaceFragment.prototype.select = function () {
 	if ( !this.surface ) {
 		return this;
 	}
-	this.surface.setSelection( this.range );
+	this.surface.change( null, this.range );
 	return this;
 };
 
@@ -364,7 +364,7 @@ ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, type, data 
 	}
 	if ( this.range.getLength() ) {
 		tx = ve.dm.Transaction.newFromAnnotation( this.document, this.range, method, annotation );
-		this.surface.change( tx, this.autoSelect && tx.translateRange( this.range ) );
+		this.surface.change( tx, !this.noAutoSelect && tx.translateRange( this.range ) );
 	}
 	return this;
 };
@@ -400,7 +400,7 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
 			}
 		}
 		tx = ve.dm.Transaction.newFromInsertion( this.document, this.range.start, content );
-		this.surface.change( tx, this.autoSelect && tx.translateRange( this.range ) );
+		this.surface.change( tx, !this.noAutoSelect && tx.translateRange( this.range ) );
 	}
 	return this;
 };
@@ -420,16 +420,16 @@ ve.dm.SurfaceFragment.prototype.removeContent = function () {
 	if ( this.range.getLength() ) {
 		tx = ve.dm.Transaction.newFromRemoval( this.document, this.range );
 		// this.range will be translated via the onTransact event handler
-		this.surface.change( tx, this.autoSelect && tx.translateRange( this.range ) );
+		this.surface.change( tx, !this.noAutoSelect && tx.translateRange( this.range ) );
 		// Check if the range didn't get collapsed automatically - this will occur when removing
 		// content across un-mergable nodes because the delete only strips out content leaving
 		// structure at the beginning and end of the range in place
 		if ( this.range.getLength() ) {
 			// Collapse the range manually
 			this.range = new ve.Range( this.range.start );
-			if ( this.autoSelect ) {
+			if ( !this.noAutoSelect ) {
 				// Update the surface selection
-				this.surface.setSelection( this.range );
+				this.surface.change( null, this.range );
 			}
 		}
 	}
@@ -450,7 +450,7 @@ ve.dm.SurfaceFragment.prototype.convertNodes = function ( type, attr ) {
 		return this;
 	}
 	var tx = ve.dm.Transaction.newFromContentBranchConversion( this.document, this.range, type, attr );
-	this.surface.change( tx, this.autoSelect && tx.translateRange( this.range ) );
+	this.surface.change( tx, !this.noAutoSelect && tx.translateRange( this.range ) );
 	return this;
 };
 
@@ -483,7 +483,7 @@ ve.dm.SurfaceFragment.prototype.wrapNodes = function ( wrapper ) {
 	}
 	var tx = ve.dm.Transaction.newFromWrap( this.document, this.range, [], [], [], wrapper );
 	this.range = tx.translateRange( this.range );
-	this.surface.change( tx, this.autoSelect && this.range );
+	this.surface.change( tx, !this.noAutoSelect && this.range );
 	return this;
 };
 
@@ -554,7 +554,7 @@ ve.dm.SurfaceFragment.prototype.wrapAllNodes = function ( wrapper ) {
 	}
 	var tx = ve.dm.Transaction.newFromWrap( this.document, this.range, [], wrapper, [], [] );
 	this.range = tx.translateRange( this.range );
-	this.surface.change( tx, this.autoSelect && this.range );
+	this.surface.change( tx, !this.noAutoSelect && this.range );
 	return this;
 };
 
