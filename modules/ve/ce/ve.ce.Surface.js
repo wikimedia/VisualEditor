@@ -668,9 +668,10 @@ ve.ce.Surface.prototype.onKeyPress = function ( e ) {
  * @param {ve.Range|undefined} selection
  */
 ve.ce.Surface.prototype.onChange = function ( transaction, selection ) {
-	if ( selection && !this.isLocked() ) {
-		this.showSelection( selection );
-
+	if ( selection ) {
+		if ( !this.isLocked() ) {
+			this.showSelection( selection );
+		}
 		// Responsible for Debouncing the ContextView Icon until select events are finished being
 		// fired.
 		// TODO: Use ve.debounce method to abstract usage of setTimeout
