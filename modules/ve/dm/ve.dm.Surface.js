@@ -79,11 +79,11 @@ ve.dm.Surface.prototype.getSelection = function () {
  * Gets a fragment from this document and selection.
  *
  * @method
- * @returns {ve.dm.SurfaceFragment} Surface fragment
- * @param {Boolean} [autoSelect] Update the surface's selection when making changes
+ * @param {ve.Range} [range] Range within target document, current selection used by default
+ * @param {Boolean} [noAutoSelect] Don't update the surface's selection when making changes
  */
-ve.dm.Surface.prototype.getFragment = function ( autoSelect ) {
-	return new ve.dm.SurfaceFragment( this, this.selection, autoSelect );
+ve.dm.Surface.prototype.getFragment = function ( range, noAutoSelect ) {
+	return new ve.dm.SurfaceFragment( this, range || this.selection, noAutoSelect );
 };
 
 /**

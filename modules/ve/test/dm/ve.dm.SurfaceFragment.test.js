@@ -17,13 +17,13 @@ QUnit.test( 'constructor', 8, function ( assert ) {
 	assert.strictEqual( fragment.getSurface(), surface, 'surface reference is stored' );
 	assert.strictEqual( fragment.getDocument(), doc, 'document reference is stored' );
 	assert.deepEqual( fragment.getRange(), new ve.Range( 0, 0 ), 'range is taken from surface' );
-	assert.strictEqual( fragment.willAutoSelect(), false, 'autoSelect defaults to false' );
+	assert.strictEqual( fragment.willAutoSelect(), true, 'auto select by default' );
 	assert.strictEqual( fragment.isNull(), false, 'valid fragment is not null' );
 	// Invalid range and autoSelect
 	fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( -100, 100 ), 'truthy' );
 	assert.equal( fragment.getRange().from, 0, 'range is clamped between 0 and document length' );
 	assert.equal( fragment.getRange().to, 61, 'range is clamped between 0 and document length' );
-	assert.strictEqual( fragment.willAutoSelect(), true, 'autoSelect values are cast to boolean' );
+	assert.strictEqual( fragment.willAutoSelect(), false, 'noAutoSelect values are boolean' );
 } );
 
 QUnit.test( 'onTransact', 1, function ( assert ) {
