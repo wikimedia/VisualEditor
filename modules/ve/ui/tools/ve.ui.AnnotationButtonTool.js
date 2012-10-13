@@ -50,12 +50,12 @@ ve.ui.AnnotationButtonTool.prototype.onClick = function () {
 			if ( surfaceModel.getSelection().getLength() ) {
 				annotations = documentModel
 					.getAnnotationsFromRange( surfaceModel.getSelection() )
-					.getAnnotationsOfType( this.annotation.type )
+					.getAnnotationsByName( this.annotation )
 					.get();
 			} else {
 				annotations = documentModel
 					.insertAnnotations
-					.getAnnotationsOfType( this.annotation.type )
+					.getAnnotationsByName( this.annotation )
 					.get();
 			}
 
@@ -65,13 +65,15 @@ ve.ui.AnnotationButtonTool.prototype.onClick = function () {
 			}
 		} else {
 			// Set annotation.
-			surfaceModel.annotate( 'set', this.annotation );
+			surfaceModel.annotate( 'set',
+				ve.dm.annotationFactory.create( this.annotation )
+			);
 		}
 	}
 };
 
 ve.ui.AnnotationButtonTool.prototype.onUpdateState = function ( annotations ) {
-	if ( annotations.hasAnnotationOfType( this.annotation.type ) ) {
+	if ( annotations.hasAnnotationWithName( this.annotation ) ) {
 		this.$.addClass( 've-ui-toolbarButtonTool-down' );
 		this.active = true;
 	} else {
@@ -87,7 +89,7 @@ ve.ui.Tool.tools.bold = {
 	'name': 'bold',
 	'title': ve.msg( 'visualeditor-annotationbutton-bold-tooltip' ),
 	'data': {
-		'annotation': { 'type': 'textStyle/bold' }
+		'annotation': 'textStyle/bold'
 	}
 };
 
@@ -96,7 +98,7 @@ ve.ui.Tool.tools.italic = {
 	'name': 'italic',
 	'title': ve.msg( 'visualeditor-annotationbutton-italic-tooltip' ),
 	'data': {
-		'annotation': { 'type': 'textStyle/italic' }
+		'annotation': 'textStyle/italic'
 	}
 };
 
@@ -105,7 +107,6 @@ ve.ui.Tool.tools.link = {
 	'name': 'link',
 	'title': ve.msg( 'visualeditor-annotationbutton-link-tooltip' ),
 	'data': {
-		'annotation': { 'type': 'link/WikiLink', 'data': { 'title': '' } },
 		'inspector': 'link'
 	}
 };

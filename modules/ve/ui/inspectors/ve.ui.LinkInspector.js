@@ -89,7 +89,7 @@ ve.ui.LinkInspector.prototype.getAllLinkAnnotationsFromSelection = function () {
 		documentModel = surfaceModel.getDocument();
 	return documentModel
 			.getAnnotationsFromRange( surfaceModel.getSelection() )
-			.getAnnotationsOfType( /^link\// )
+			.getAnnotationsByName( /^link\/MW(in|ex)ternal$/ )
 			.get();
 };
 
@@ -98,10 +98,8 @@ ve.ui.LinkInspector.prototype.getFirstLinkAnnotation = function ( annotations ) 
 	for ( i = 0; i < annotations.length; i++ ) {
 		// Use the first one with a recognized type (there should only be one, this is just in case)
 		if (
-			annotations[i].type === 'link/WikiLink' ||
-			annotations[i].type === 'link/ExtLink' ||
-			annotations[i].type === 'link/ExtLink/Numbered' ||
-			annotations[i].type === 'link/ExtLink/URL'
+			annotations[i] instanceof ve.dm.MWInternalLinkAnnotation ||
+			annotations[i] instanceof ve.dm.MWExternalLinkAnnotation
 		) {
 			return annotations[i];
 		}
@@ -154,7 +152,7 @@ ve.ui.LinkInspector.prototype.onOpen = function () {
 	if ( annotation === null ) {
 		this.$locationInput.val( initialValue );
 		this.$clearButton.addClass( 've-ui-inspector-button-disabled' );
-	} else if ( annotation.type === 'link/WikiLink' ) {
+	} else if ( annotation instanceof ve.dm.MWInternalLinkAnnotation ) {
 		// Internal link
 		initialValue = annotation.data.title || '';
 		this.$locationInput.val( initialValue );
@@ -199,14 +197,12 @@ ve.ui.LinkInspector.prototype.onClose = function ( accept ) {
 };
 
 ve.ui.LinkInspector.getAnnotationForTarget = function ( target ) {
-	var title;
+	var title, annotation;
 	// Figure out if this is an internal or external link
 	if ( target.match( /^(https?:)?\/\// ) ) {
 		// External link
-		return {
-			'type': 'link/ExtLink',
-			'data': { 'href': target }
-		};
+		annotation = new ve.dm.MWExternalLinkAnnotation();
+		annotation.data.href = target;
 	} else {
 		// Internal link
 		// TODO: In the longer term we'll want to have autocompletion and existence
@@ -222,11 +218,10 @@ ve.ui.LinkInspector.getAnnotationForTarget = function ( target ) {
 			}
 		} catch ( e ) { }
 
-		return {
-			'type': 'link/WikiLink',
-			'data': { 'title': target }
-		};
+		annotation = new ve.dm.MWInternalLinkAnnotation();
+		annotation.data.title = target;
 	}
+	return annotation;
 };
 
 ve.ui.LinkInspector.prototype.initMultiSuggest = function () {

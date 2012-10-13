@@ -34,23 +34,23 @@ ve.AnnotationSet.prototype.clone = function () {
 };
 
 /**
- * Gets an annotation set containing only annotations within this set of a given type.
+ * Gets an annotation set containing only annotations within this set with a given name.
  *
  * @method
- * @param {String|RegExp} type Regular expression or string to compare types with
+ * @param {String|RegExp} name Regular expression or string to compare types with
  * @returns {ve.AnnotationSet} Copy of annotation set
  */
-ve.AnnotationSet.prototype.getAnnotationsOfType = function ( type ) {
-	return this.filter( 'type', type );
+ve.AnnotationSet.prototype.getAnnotationsByName = function ( name ) {
+	return this.filter( 'name', name );
 };
 
 /**
- * Checks if any annotations in this set are of a given type.
+ * Checks if any annotations in this set have a given name
  *
  * @method
- * @param {String|RegExp} type Regular expression or string to compare types with
+ * @param {String|RegExp} name Regular expression or string to compare names with
  * @returns {Boolean} Annotation of given type exists in this set
  */
-ve.AnnotationSet.prototype.hasAnnotationOfType = function ( type ) {
-	return this.containsMatching( 'type', type );
+ve.AnnotationSet.prototype.hasAnnotationWithName = function ( name ) {
+	return this.containsMatching( 'name', name );
 };
