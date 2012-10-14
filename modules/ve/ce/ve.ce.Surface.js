@@ -292,6 +292,9 @@ ve.ce.Surface.prototype.documentOnFocus = function () {
 };
 
 ve.ce.Surface.prototype.onCompositionStart = function () {
+	if ( $.browser.msie === true ) {
+		return;
+	}
 	this.inIme = true;
 	this.handleInsertion();
 };
@@ -355,6 +358,12 @@ ve.ce.Surface.prototype.onMouseUp = function ( e ) {
  */
 ve.ce.Surface.prototype.onKeyDown = function ( e ) {
 	if ( this.inIme === true ) {
+		return;
+	}
+
+	if ( e.which === 229 && $.browser.msie === true ) {
+		this.inIme = true;
+		this.handleInsertion();
 		return;
 	}
 
