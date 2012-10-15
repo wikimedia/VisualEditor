@@ -470,8 +470,7 @@ ve.ce.Surface.prototype.onKeyDown = function ( e ) {
 				} else {
 					annotations = this.model.documentModel.insertAnnotations;
 				}
-				annotation = { 'type': 'textStyle/bold' };
-
+				annotation = ve.dm.annotationFactory.create( 'textStyle/bold' );
 				this.model.annotate( annotations.contains( annotation ) ? 'clear' : 'set', annotation );
 			}
 			break;
@@ -485,8 +484,7 @@ ve.ce.Surface.prototype.onKeyDown = function ( e ) {
 				} else {
 					annotations = this.model.documentModel.insertAnnotations;
 				}
-				annotation = { 'type': 'textStyle/italic' };
-
+				annotation = ve.dm.annotationFactory.create( 'textStyle/italic' );
 				this.model.annotate( annotations.contains( annotation ) ? 'clear' : 'set', annotation );
 			}
 			break;
