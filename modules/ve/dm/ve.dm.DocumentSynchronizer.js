@@ -112,10 +112,12 @@ ve.dm.DocumentSynchronizer.synchronizers.rebuild = function ( action ) {
 		return;
 	}
 	
-	if ( 'indexInNode' in selection[0] ) {
+	// If the document is empty, selection[0].node will be the document (so no parent)
+	// but we won't get indexInNode either. Detect this and use index=0 in that case.
+	if ( 'indexInNode' in selection[0] || !selection[0].node.getParent() ) {
 		// Insertion
 		parent = selection[0].node;
-		index = selection[0].indexInNode;
+		index = selection[0].indexInNode || 0;
 		numNodes = 0;
 	} else {
 		// Rebuild
