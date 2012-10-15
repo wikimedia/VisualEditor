@@ -6,22 +6,45 @@
  */
 
 /**
- * Annotation representing an internal link in MediaWiki, i.e. <a rel="mw:WikiLink">
+ * MediaWiki internal link annotation.
+ *
+ * Example HTML sources:
+ *     <a rel="mw:WikiLink">
+ *
+ * @class
+ * @constructor
+ * @extends {ve.dm.LinkAnnotation}
+ * @param {HTMLElement} element
  */
 ve.dm.MWInternalLinkAnnotation = function VeDmMWInternalLinkAnnotation( element ) {
+	// Parent constructor
 	ve.dm.LinkAnnotation.call( this, element );
 };
 
+/* Inheritance */
+
 ve.inheritClass( ve.dm.MWInternalLinkAnnotation, ve.dm.LinkAnnotation );
 
+/* Static Members */
+
 ve.dm.MWInternalLinkAnnotation.static.name = 'link/MWinternal';
+
 ve.dm.MWInternalLinkAnnotation.static.matchRdfaTypes = ['mw:WikiLink'];
 
+/* Methods */
+
+/**
+ * Get annotation data, especially the href of the link.
+ *
+ * @method
+ * @param {HTMLElement} element
+ * @returns {Object} Annotation data, containing 'hrefPrefix' and 'title' properties
+ */
 ve.dm.MWInternalLinkAnnotation.prototype.getAnnotationData = function( element ) {
 	// Get title from href
-	// The href is simply the title, unless we're dealing with a page that
-	// has slashes in its name in which case it's preceded by one or more
-	// instances of "./" or "../", so strip those.
+	// The href is simply the title, unless we're dealing with a page that has slashes in its name
+	// in which case it's preceded by one or more instances of "./" or "../", so strip those
+	/*jshint regexp:false */
 	var matches = element.getAttribute( 'href' ).match( /^((?:\.\.?\/)*)(.*)$/ );
 	return {
 		// Store the ./ and ../ prefixes so we can restore them on the way out
@@ -30,6 +53,12 @@ ve.dm.MWInternalLinkAnnotation.prototype.getAnnotationData = function( element )
 	};
 };
 
+/**
+ * Convert to an object with HTML element information.
+ *
+ * @method
+ * @returns {Object} HTML element information, including tag and attributes properties
+ */
 ve.dm.MWInternalLinkAnnotation.prototype.toHTML = function () {
 	var href,
 		parentResult = ve.dm.LinkAnnotation.prototype.toHTML.call( this );
@@ -42,5 +71,7 @@ ve.dm.MWInternalLinkAnnotation.prototype.toHTML = function () {
 	parentResult.attributes.rel = 'mw:WikiLink';
 	return parentResult;
 };
+
+/* Registration */
 
 ve.dm.annotationFactory.register( 'link/MWinternal', ve.dm.MWInternalLinkAnnotation );

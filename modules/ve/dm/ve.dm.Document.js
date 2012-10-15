@@ -663,7 +663,7 @@ ve.dm.Document.prototype.getAnnotationsFromRange = function ( range, all ) {
  */
 ve.dm.Document.prototype.trimOuterSpaceFromRange = function ( range ) {
 	range.normalize();
-	var	start = range.start,
+	var start = range.start,
 		end = range.end;
 	while ( this.data[start] === ' ' ) {
 		start++;

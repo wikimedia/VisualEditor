@@ -113,7 +113,7 @@ ve.ui.LinkInspector.prototype.getFirstLinkAnnotation = function ( annotations ) 
  * OR unwrap outer whitespace from selection.
  */
 ve.ui.LinkInspector.prototype.prepareOpen = function () {
-	var	surfaceView = this.context.getSurfaceView(),
+	var surfaceView = this.context.getSurfaceView(),
 		surfaceModel = surfaceView.getModel(),
 		doc = surfaceModel.getDocument(),
 		annotations = this.getAllLinkAnnotationsFromSelection(),
@@ -143,7 +143,7 @@ ve.ui.LinkInspector.prototype.prepareOpen = function () {
 };
 
 ve.ui.LinkInspector.prototype.onOpen = function () {
-	var	annotation = this.getFirstLinkAnnotation( this.getAllLinkAnnotationsFromSelection() ),
+	var annotation = this.getFirstLinkAnnotation( this.getAllLinkAnnotationsFromSelection() ),
 		surfaceModel = this.context.getSurfaceView().getModel(),
 		documentModel = surfaceModel.getDocument(),
 		selection = surfaceModel.getSelection().truncate( 255 ),

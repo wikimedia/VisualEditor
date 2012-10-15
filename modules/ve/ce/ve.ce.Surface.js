@@ -146,7 +146,7 @@ ve.ce.Surface.prototype.handleInsertion = function () {
  * @param {Object} next.range New selection
  */
 ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
-	var	nodeOffset = node.model.getOffset(), // TODO: call getModel() or add getOffset() to view
+	var nodeOffset = node.model.getOffset(), // TODO: call getModel() or add getOffset() to view
 		offsetDiff = ( previous.range.isCollapsed() && next.range.isCollapsed() )
 			? next.range.start - previous.range.start : null,
 		lengthDiff = next.text.length - previous.text.length,
@@ -575,7 +575,7 @@ ve.ce.Surface.prototype.onCut = function ( e ) {
 	this.onCopy( e );
 
 	setTimeout( function () {
-		var	selection,
+		var selection,
 			tx;
 
 		// We don't like how browsers cut, so let's undo it and do it ourselves.
