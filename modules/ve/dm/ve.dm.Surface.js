@@ -95,6 +95,7 @@ ve.dm.Surface.prototype.getFragment = function ( range, noAutoSelect ) {
  * @param {ve.Range|undefined} selection
  */
 ve.dm.Surface.prototype.change = function ( transactions, selection ) {
+	var leftOffset, contentOffset, annotations;
 	if ( transactions ) {
 		if ( transactions instanceof ve.dm.Transaction ) {
 			transactions = [transactions];
@@ -119,9 +120,16 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 	}
 
 	// Clear and add annotations to stack if insertingAnnotations isn't happening
-	if (!this.insertingAnnotations) {
-		var contentOffset = this.documentModel.getNearestContentOffset( this.getSelection().start - 1, -1 ),
-			annotations = this.documentModel.getAnnotationsFromOffset( contentOffset );
+	if ( !this.insertingAnnotations ) {
+		leftOffset = this.getSelection().start - 1;
+		if ( leftOffset == -1 ) {
+			leftOffset = 0;
+		}
+		contentOffset = this.documentModel.getNearestContentOffset( leftOffset, -1 );
+		// contentOffset may be -1 if the document is empty
+		annotations = contentOffset > - 1 ?
+			this.documentModel.getAnnotationsFromOffset( contentOffset ) :
+			new ve.AnnotationSet();
 
 		// Reset insertAnnotations
 		this.documentModel.insertAnnotations = new ve.AnnotationSet();
