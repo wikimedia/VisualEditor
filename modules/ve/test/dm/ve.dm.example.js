@@ -477,7 +477,6 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/paragraph' }
 		]
 	},
-	// TODO these last two are broken due to newline hacks, will be unbroken once we remove the newline hacks
 	'paragraphs with an alienBlock between them': {
 		'html': '<p>abc</p><figure>abc</figure><p>def</p>',
 		'data': [
@@ -492,6 +491,88 @@ ve.dm.example.domToDataCases = {
 			'd',
 			'e',
 			'f',
+			{ 'type': '/paragraph' }
+		]
+	},
+	'wrapping of bare content': {
+		'html': 'abc',
+		'data': [
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			'a',
+			'b',
+			'c',
+			{ 'type': '/paragraph' }
+		]
+	},
+	'wrapping of bare content with inline node': {
+		'html': '1<br/>2',
+		'data': [
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			'1',
+			{ 'type': 'break' },
+			{ 'type': '/break' },
+			'2',
+			{ 'type': '/paragraph' }
+		]
+	},
+	'wrapping of bare content with inline alien': {
+		'html': '1<tt class="bar">baz</tt>2',
+		'data': [
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			'1',
+			{
+				'type': 'alienInline',
+				'attributes': { 'html': '<tt class="bar">baz</tt>' }
+			},
+			{ 'type': '/alienInline' },
+			'2',
+			{ 'type': '/paragraph' }
+		]
+	},
+	'wrapping of bare content with block alien': {
+		'html': '1<figure class="bar">baz</figure>2',
+		'data': [
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			'1',
+			{ 'type': '/paragraph' },
+			{
+				'type': 'alienBlock',
+				'attributes': { 'html': '<figure class="bar">baz</figure>' }
+			},
+			{ 'type': '/alienBlock' },
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			'2',
+			{ 'type': '/paragraph' }
+		]
+	},
+	'wrapping of bare content between structural nodes': {
+		'html': '<table></table>abc<table></table>',
+		'data': [
+			{ 'type': 'table' },
+			{ 'type': '/table' },
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			'a',
+			'b',
+			'c',
+			{ 'type': '/paragraph' },
+			{ 'type': 'table' },
+			{ 'type': '/table' }
+		]
+	},
+	'wrapping of bare content between paragraphs': {
+		'html': '<p>abc</p>def<p></p>',
+		'data': [
+			{ 'type': 'paragraph' },
+			'a',
+			'b',
+			'c',
+			{ 'type': '/paragraph' },
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			'd',
+			'e',
+			'f',
+			{ 'type': '/paragraph' },
+			{ 'type': 'paragraph' },
 			{ 'type': '/paragraph' }
 		]
 	},

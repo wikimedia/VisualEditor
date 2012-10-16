@@ -336,8 +336,23 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 					);
 					break;
 				}
+
+				// Look up child element type
+				childDataElement = this.getDataElementFromDomElement( childDomElement );
 				// End auto-wrapping of bare content from a previously processed node
-				if ( wrapping ) {
+				// but only if childDataElement is a non-content element or if
+				// we are about to produce a block alien
+				if (
+					wrapping && (
+						(
+							childDataElement &&
+							!ve.dm.nodeFactory.isNodeContent( childDataElement.type )
+						) || (
+							!childDataElement &&
+							ve.isBlockElement( childDomElement )
+						)
+					)
+				) {
 					if ( wrappedWhitespace !== '' ) {
 						// Remove wrappedWhitespace from data
 						data.splice( -wrappedWhitespace.length, wrappedWhitespace.length );
@@ -350,7 +365,6 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 					wrappingIsOurs = false;
 				}
 				// Append child element data
-				childDataElement = this.getDataElementFromDomElement( childDomElement );
 				if ( childDataElement ) {
 					data = data.concat(
 						this.getDataFromDom(
@@ -365,8 +379,13 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 					prevElement = childDataElement;
 					break;
 				}
-				// We don't know what this is, fall back to alien
-				alien = createAlien( childDomElement, branchIsContent );
+				// We don't know what this is, fall back to alien.
+				// If we're in wrapping mode, we don't know if this alien is
+				// supposed to be block or inline, so detect it based on the HTML
+				// tag name.
+				alien = createAlien( childDomElement, wrapping ?
+					!ve.isBlockElement( childDomElement ) : branchIsContent
+				);
 				data = data.concat( alien );
 				processNextWhitespace( alien[0] );
 				prevElement = alien[0];

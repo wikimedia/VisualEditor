@@ -748,6 +748,44 @@
 		}
 	};
 
+	/**
+	 * Check whether a given DOM element is of a block or inline type
+	 * @param {HTMLElement} element
+	 * @returns {Boolean} True if element is block, false if it is inline
+	 */
+	ve.isBlockElement = function ( element ) {
+		return ve.isBlockElementType( element.nodeName.toLowerCase() );
+	};
+
+	/**
+	 * Check whether a given tag name is a block or inline tag
+	 * @param {String} nodeName All-lowercase HTML tag name
+	 * @returns {Boolean} True if block, false if inline
+	 */
+	ve.isBlockElementType = function ( nodeName ) {
+		return ve.indexOf( nodeName, ve.isBlockElementType.blockTypes ) !== -1;
+	};
+
+	/**
+	 * Private data for ve.isBlockElementType()
+	 */
+	ve.isBlockElementType.blockTypes = [
+		'div', 'p',
+		// tables
+		'table', 'tbody', 'thead', 'tfoot', 'caption',  'th', 'tr', 'td',
+		// lists
+		'ul', 'ol', 'li', 'dl', 'dt', 'dd',
+		// HTML5 heading content
+		'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hgroup',
+		// HTML5 sectioning content
+		'article', 'aside', 'body', 'nav', 'section', 'footer', 'header', 'figure',
+		'figcaption', 'fieldset', 'details', 'blockquote',
+		// other
+		'br', 'hr', 'button', 'canvas', 'center', 'col', 'colgroup', 'embed',
+		// 'img', // Really?
+		'map', 'object', 'pre', 'progress', 'video'
+	];
+
 	// Expose
 	window.ve = ve;
 }() );
