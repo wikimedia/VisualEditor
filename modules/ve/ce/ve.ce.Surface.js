@@ -654,7 +654,7 @@ ve.ce.Surface.prototype.onPaste = function () {
  * @param {jQuery.Event} e
  */
 ve.ce.Surface.prototype.onKeyPress = function ( e ) {
-	if ( ve.ce.Surface.isShortcutKey( e ) || e.which === 13 ) {
+	if ( ve.ce.Surface.isShortcutKey( e ) || e.which === 13 || e.which === 0 ) {
 		return;
 	}
 
