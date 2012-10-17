@@ -1099,7 +1099,7 @@ ve.ce.Surface.prototype.hasSlugAtOffset = function ( offset ) {
  */
 ve.ce.Surface.prototype.getNodeAndOffset = function ( offset ) {
 	var slug = this.documentView.getSlugAtOffset( offset ),
-		node, startOffset, current, stack, item, $item length;
+		node, startOffset, current, stack, item, $item, length;
 	if ( slug ) {
 		return { node: slug[0].childNodes[0], offset: 0 };
 	}
