@@ -75,10 +75,11 @@ ve.inheritClass( ve.ce.Surface, ve.EventEmitter );
 /* Methods */
 
 ve.ce.Surface.prototype.handleInsertion = function () {
-	var selection = this.model.getSelection(), slug, data, range;
+	var selection = this.model.getSelection(), slug, data, range, annotations;
 
 	// Handles removing expanded selection before inserting new text
 	if ( selection.isCollapsed() === false ) {
+		annotations = this.model.documentModel.getAnnotationsFromRange( new ve.Range( selection.start, selection.start + 1 ) );
 		this.model.change(
 			ve.dm.Transaction.newFromRemoval(
 				this.documentView.model,
@@ -88,6 +89,7 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 		);
 		this.surfaceObserver.clear();
 		selection = this.model.getSelection();
+		this.model.documentModel.insertAnnotations = annotations;
 	}
 
 	if ( selection.isCollapsed() ) {
