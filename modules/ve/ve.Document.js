@@ -120,10 +120,14 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 		endInside = end >= left && end <= right;
 		// Does the node have wrapping elements around it
 		isWrapped = node.isWrapped();
-		// Is the start between prevNode and node or between the parent's opening and node?
-		startBetween = isWrapped ? start === left - 1 : start === left;
-		// Is the end between node and nextNode or between node and the parent's closing?
-		endBetween = isWrapped ? end === right + 1 : end === right;
+		// Is there an unwrapped node right before this node?
+		isPrevUnwrapped = prevNode ? !prevNode.isWrapped() : false;
+		// Is there an unwrapped node right after this node?
+		isNextUnwrapped = nextNode ? !nextNode.isWrapped() : false;
+		// Is the start between prevNode's closing and node or between the parent's opening and node?
+		startBetween = ( isWrapped ? start === left - 1 : start === left ) && !isPrevUnwrapped;
+		// Is the end between node and nextNode's opening or between node and the parent's closing?
+		endBetween = ( isWrapped ? end === right + 1 : end === right ) && !isNextUnwrapped;
 
 		if ( isWrapped && end === left - 1 && currentFrame.index === 0 ) {
 			// The selection ends here with an empty range at the beginning of the node
@@ -148,7 +152,7 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 			return retval;
 		}
 
-		if ( start === end && ( startBetween || endBetween ) && node.isWrapped() ) {
+		if ( start === end && ( startBetween || endBetween ) && isWrapped ) {
 			// Empty range in the parent, outside of any child
 			nodeRange = new ve.Range( currentFrame.startOffset,
 				currentFrame.startOffset + currentFrame.node.getLength()
