@@ -192,6 +192,7 @@ ve.ce.BranchNode.prototype.setupSlugs = function () {
 	// Remove all slugs in this branch
 	for( key in this.slugs ) {
 		this.slugs[key].remove();
+		delete this.slugs[key];
 	}
 
 	if ( this.canHaveGrandchildren() ) {
