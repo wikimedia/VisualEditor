@@ -413,6 +413,34 @@ ve.example.getSelectNodesCases = function ( doc ) {
 				}
 			],
 			'msg': 'range covering a list closing and a list opening'
+		},
+		{
+			'actual': doc.selectNodes( new ve.Range( 39, 39 ), 'leaves' ),
+			'expected': [
+				// preformatted/text
+				{
+					'node': lookup( documentNode, 2, 0 ),
+					'range': new ve.Range( 39, 39 ),
+					'index': 0,
+					'nodeRange': new ve.Range( 38, 39 ),
+					'nodeOuterRange': new ve.Range( 38, 39 )
+				}
+			],
+			'msg': 'zero-length range in text node before inline node'
+		},
+		{
+			'actual': doc.selectNodes( new ve.Range( 41, 41 ), 'leaves' ),
+			'expected': [
+				// preformatted/text
+				{
+					'node': lookup( documentNode, 2, 2 ),
+					'range': new ve.Range( 41, 41 ),
+					'index': 2,
+					'nodeRange': new ve.Range( 41, 42 ),
+					'nodeOuterRange': new ve.Range( 41, 42 )
+				}
+			],
+			'msg': 'zero-length range in text node after inline node'
 		}
 	];
 };
