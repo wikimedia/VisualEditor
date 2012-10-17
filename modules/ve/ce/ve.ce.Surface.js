@@ -1098,14 +1098,16 @@ ve.ce.Surface.prototype.hasSlugAtOffset = function ( offset ) {
  * offset is the position within the element
  */
 ve.ce.Surface.prototype.getNodeAndOffset = function ( offset ) {
-	var node = this.documentView.getNodeFromOffset( offset ),
-		startOffset = this.documentView.getDocumentNode().getOffsetFromNode( node ) +
-			( ( node.isWrapped() ) ? 1 : 0 ),
-		current = [node.$.contents(), 0],
-		stack = [current],
-		item,
-		$item,
-		length;
+	var slug = this.documentView.getSlugAtOffset( offset ),
+		node, startOffset, current, stack, item, $item length;
+	if ( slug ) {
+		return { node: slug[0].childNodes[0], offset: 0 };
+	}
+	node = this.documentView.getNodeFromOffset( offset );
+	startOffset = this.documentView.getDocumentNode().getOffsetFromNode( node ) +
+		( ( node.isWrapped() ) ? 1 : 0 );
+	current = [node.$.contents(), 0];
+	stack = [current];
 
 	while ( stack.length > 0 ) {
 		if ( current[1] >= current[0].length ) {
