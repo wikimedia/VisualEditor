@@ -582,10 +582,8 @@ ve.ce.Surface.prototype.onCut = function ( e ) {
 		selection = surface.model.getSelection();
 
 		// Transact
-		surface.lock();
 		tx = ve.dm.Transaction.newFromRemoval( surface.documentView.model, selection );
 		surface.model.change( tx, new ve.Range( selection.start ) );
-		surface.unlock();
 
 		surface.surfaceObserver.clear();
 		surface.surfaceObserver.start();
