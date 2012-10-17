@@ -222,12 +222,15 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 		if ( annotations.getLength() > 0 ) {
 			ve.dm.Document.addAnnotationsToData( data, annotations );
 		}
-		this.model.change(
-			ve.dm.Transaction.newFromInsertion(
-				this.documentView.model, nodeOffset + 1 + fromLeft, data
-			),
-			next.range
-		);
+		if ( data.length > 0)
+		{
+			this.model.change(
+				ve.dm.Transaction.newFromInsertion(
+					this.documentView.model, nodeOffset + 1 + fromLeft, data
+				),
+				next.range
+			);
+		}
 		if ( fromLeft + fromRight < previous.text.length ) {
 			this.model.change(
 				ve.dm.Transaction.newFromRemoval(
