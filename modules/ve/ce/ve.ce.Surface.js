@@ -618,6 +618,7 @@ ve.ce.Surface.prototype.onPaste = function () {
 
 	setTimeout( function () {
 		var key = '',
+			pasteText,
 			pasteData,
 			tx;
 
@@ -630,10 +631,15 @@ ve.ce.Surface.prototype.onPaste = function () {
 		// Get linear model from clipboard, localStorage, or create array from unknown pasted content
 		if ( view.clipboard[key] ) {
 			pasteData = view.clipboard[key];
-		} else if ( localStorage.getItem( key ) ) {
-			pasteData = JSON.parse( localStorage.getItem( key ) ).data;
-		} else {
-			pasteData = $( '#paste' ).text().split( '' );
+		}
+		/*
+		else if ( localStorage.getItem( key ) ) {
+			pasteData = localStorage.getItem( key ).data;
+		}
+		*/
+		else {
+			pasteText = $('#paste').text().replace( /\n/gm, '');
+			pasteData = pasteText.split( '' );
 		}
 
 		// Transact
@@ -647,7 +653,7 @@ ve.ce.Surface.prototype.onPaste = function () {
 
 		view.surfaceObserver.clear();
 		view.surfaceObserver.start();
-	}, 1 );
+	}, 0 );
 };
 
 /**
