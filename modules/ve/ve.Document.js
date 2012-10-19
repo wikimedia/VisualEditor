@@ -50,7 +50,10 @@ ve.Document.prototype.getDocumentNode = function () {
  *                                 this is set to the index of the child following range (or to
  *                                 node.children.length+1 if range is between the last child and
  *                                 the end). Missing in all other cases
- *                  'nodeRange': Range covering the inside of the entire node
+ *                  'nodeRange': Range covering the inside of the entire node, not including wrapper
+ *                  'nodeOuterRange': Range covering the entire node, including wrapper
+ *                  'parentOuterRange': Outer range of node's parent. Missing if there is no parent
+ *                                      or if indexInNode is set.
  * @throws 'Invalid start offset' if range.start is out of range
  * @throws 'Invalid end offset' if range.end is out of range
  */
@@ -82,6 +85,7 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 		endBetween,
 		startFound = false,
 		nodeRange,
+		parentRange,
 		isWrapped;
 
 	mode = mode || 'leaves';
@@ -128,21 +132,22 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 		startBetween = ( isWrapped ? start === left - 1 : start === left ) && !isPrevUnwrapped;
 		// Is the end between node and nextNode's opening or between node and the parent's closing?
 		endBetween = ( isWrapped ? end === right + 1 : end === right ) && !isNextUnwrapped;
+		parentRange = new ve.Range(
+			currentFrame.startOffset,
+			currentFrame.startOffset + currentFrame.node.getLength()
+		);
 
 		if ( isWrapped && end === left - 1 && currentFrame.index === 0 ) {
 			// The selection ends here with an empty range at the beginning of the node
 			// TODO duplicated code
-			nodeRange = new ve.Range( currentFrame.startOffset,
-				currentFrame.startOffset + currentFrame.node.getLength()
-			);
 			isWrapped = currentFrame.node.isWrapped();
 			retval.push( {
 				'node': currentFrame.node,
 				'indexInNode': 0,
 				'range': new ve.Range( end, end ),
-				'nodeRange': nodeRange,
+				'nodeRange': parentRange,
 				'nodeOuterRange': new ve.Range(
-					nodeRange.start - isWrapped, nodeRange.end + isWrapped
+					parentRange.start - isWrapped, parentRange.end + isWrapped
 				)
 			} );
 			parentFrame = stack[stack.length - 2];
@@ -154,17 +159,14 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 
 		if ( start === end && ( startBetween || endBetween ) && isWrapped ) {
 			// Empty range in the parent, outside of any child
-			nodeRange = new ve.Range( currentFrame.startOffset,
-				currentFrame.startOffset + currentFrame.node.getLength()
-			);
 			isWrapped = currentFrame.node.isWrapped();
 			retval = [ {
 				'node': currentFrame.node,
 				'indexInNode': currentFrame.index + ( endBetween ? 1 : 0 ),
 				'range': new ve.Range( start, end ),
-				'nodeRange': nodeRange,
+				'nodeRange': parentRange,
 				'nodeOuterRange': new ve.Range(
-					nodeRange.start - isWrapped, nodeRange.end + isWrapped
+					parentRange.start - isWrapped, parentRange.end + isWrapped
 				)
 			} ];
 			parentFrame = stack[stack.length - 2];
@@ -205,7 +207,11 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 					// no 'range' because the entire node is covered
 					'index': currentFrame.index,
 					'nodeRange': new ve.Range( left, right ),
-					'nodeOuterRange': new ve.Range( left - isWrapped, right + isWrapped )
+					'nodeOuterRange': new ve.Range( left - isWrapped, right + isWrapped ),
+					'parentOuterRange': new ve.Range(
+						parentRange.start - currentFrame.node.isWrapped(),
+						parentRange.end + currentFrame.node.isWrapped()
+					)
 				} );
 				startFound = true;
 			} else {
@@ -215,7 +221,11 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 					'range': new ve.Range( start, end ),
 					'index': currentFrame.index,
 					'nodeRange': new ve.Range( left, right ),
-					'nodeOuterRange': new ve.Range( left - isWrapped, right + isWrapped )
+					'nodeOuterRange': new ve.Range( left - isWrapped, right + isWrapped ),
+					'parentOuterRange': new ve.Range(
+						parentRange.start - currentFrame.node.isWrapped(),
+						parentRange.end + currentFrame.node.isWrapped()
+					)
 				} ];
 			}
 		} else if ( startInside && endInside ) {
@@ -240,7 +250,11 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 					'range': new ve.Range( start, end ),
 					'index': currentFrame.index,
 					'nodeRange': new ve.Range( left, right ),
-					'nodeOuterRange': new ve.Range( left - isWrapped, right + isWrapped )
+					'nodeOuterRange': new ve.Range( left - isWrapped, right + isWrapped ),
+					'parentOuterRange': new ve.Range(
+						parentRange.start - currentFrame.node.isWrapped(),
+						parentRange.end + currentFrame.node.isWrapped()
+					)
 				} ];
 			}
 		} else if ( startInside ) {
@@ -270,7 +284,11 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 					'range': new ve.Range( start, right ),
 					'index': currentFrame.index,
 					'nodeRange': new ve.Range( left, right ),
-					'nodeOuterRange': new ve.Range( left - isWrapped, right + isWrapped )
+					'nodeOuterRange': new ve.Range( left - isWrapped, right + isWrapped ),
+					'parentOuterRange': new ve.Range(
+						parentRange.start - currentFrame.node.isWrapped(),
+						parentRange.end + currentFrame.node.isWrapped()
+					)
 				} );
 				startFound = true;
 			}
@@ -302,7 +320,11 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 					// no 'range' because the entire node is covered
 					'index': currentFrame.index,
 					'nodeRange': new ve.Range( left, right ),
-					'nodeOuterRange': new ve.Range( left - isWrapped, right + isWrapped )
+					'nodeOuterRange': new ve.Range( left - isWrapped, right + isWrapped ),
+					'parentOuterRange': new ve.Range(
+						parentRange.start - currentFrame.node.isWrapped(),
+						parentRange.end + currentFrame.node.isWrapped()
+					)
 				} );
 				return retval;
 			}
@@ -333,7 +355,11 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 					'range': new ve.Range( left, end ),
 					'index': currentFrame.index,
 					'nodeRange': new ve.Range( left, right ),
-					'nodeOuterRange': new ve.Range( left - isWrapped, right + isWrapped )
+					'nodeOuterRange': new ve.Range( left - isWrapped, right + isWrapped ),
+					'parentOuterRange': new ve.Range(
+						parentRange.start - currentFrame.node.isWrapped(),
+						parentRange.end + currentFrame.node.isWrapped()
+					)
 				} );
 				return retval;
 			}
@@ -365,7 +391,11 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 					// no 'range' because the entire node is covered
 					'index': currentFrame.index,
 					'nodeRange': new ve.Range( left, right ),
-					'nodeOuterRange': new ve.Range( left - isWrapped, right + isWrapped )
+					'nodeOuterRange': new ve.Range( left - isWrapped, right + isWrapped ),
+					'parentOuterRange': new ve.Range(
+						parentRange.start - currentFrame.node.isWrapped(),
+						parentRange.end + currentFrame.node.isWrapped()
+					)
 				} );
 			}
 		}
@@ -392,7 +422,7 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 				// the parent
 				if ( node.isWrapped() && start === left ) {
 					// TODO duplicated code
-					nodeRange = new ve.Range( currentFrame.startOffset,
+					parentRange = new ve.Range( currentFrame.startOffset,
 						currentFrame.startOffset + currentFrame.node.getLength()
 					);
 					isWrapped = currentFrame.node.isWrapped();
@@ -400,9 +430,9 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 						'node': currentFrame.node,
 						'indexInNode': currentFrame.index + 1,
 						'range': new ve.Range( left, left ),
-						'nodeRange': nodeRange,
+						'nodeRange': parentRange,
 						'nodeOuterRange': new ve.Range(
-							nodeRange.start - isWrapped, nodeRange.end + isWrapped
+							parentRange.start - isWrapped, parentRange.end + isWrapped
 						)
 					} ];
 					parentFrame = stack[stack.length - 2];
