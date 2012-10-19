@@ -460,10 +460,14 @@ ve.ce.Surface.prototype.onKeyDown = function ( e ) {
 		// Backspace
 		case 8:
 			this.handleDelete( e, true );
+			this.surfaceObserver.stop(true);
+			this.surfaceObserver.start();
 			break;
 		// Delete
 		case 46:
 			this.handleDelete( e, false );
+			this.surfaceObserver.stop(true);
+			this.surfaceObserver.start();
 			break;
 		// B
 		case 66:
