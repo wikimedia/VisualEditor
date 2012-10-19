@@ -261,9 +261,8 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 						html = element.type;
 					} else if ( element.length > 1 ){
 						annotations = [];
-						$.each(element[1], function(index, val) {
-							annotations.push( val.type );
-
+						$.each(element[1].arr, function(index, val) {
+							annotations.push( val.name );
 						});
 						html = element[0] + ' [' + annotations.join(', ') + ']';
 					} else {
