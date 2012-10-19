@@ -448,7 +448,7 @@ QUnit.test( 'getProp', 9, function ( assert ) {
 	assert.deepEqual(
 		ve.getProp( obj, 'bar' ),
 		{ 'baz': null, 'quux': { 'whee': 'yay' } },
-		'singe key, returns object'
+		'single key, returns object'
 	);
 	assert.deepEqual(
 		ve.getProp( obj, 'bar', 'baz' ),
@@ -485,4 +485,28 @@ QUnit.test( 'getProp', 9, function ( assert ) {
 		undefined,
 		'accessing multiple properties of null'
 	);
+} );
+
+QUnit.test( 'setProp', function ( assert ) {
+	var obj = {
+		'foo': 3,
+		'bar': {
+			'baz': null,
+			'quux': {
+				'whee': 'yay'
+			}
+		}
+	};
+	ve.setProp( obj, 'foo', 4 );
+	assert.deepEqual( 4, obj.foo, 'setting an existing key with depth 1' );
+	ve.setProp( obj, 'test', 'TEST' );
+	assert.deepEqual( 'TEST', obj.test, 'setting a new key with depth 1' );
+	ve.setProp( obj, 'bar', 'quux', 'whee', 'YAY' );
+	assert.deepEqual( 'YAY', obj.bar.quux.whee, 'setting an existing key with depth 3' );
+	ve.setProp( obj, 'bar', 'a', 'b', 'c' );
+	assert.deepEqual( 'c', obj.bar.a.b, 'setting two new keys within an existing key' );
+	ve.setProp( obj, 'a', 'b', 'c', 'd', 'e', 'f' );
+	assert.deepEqual( 'f', obj.a.b.c.d.e, 'setting new keys with depth 5' );
+	ve.setProp( obj, 'bar', 'baz', 'whee', 'wheee', 'wheeee' );
+	assert.deepEqual( null, obj.bar.baz, 'descending into null fails silently' );
 } );

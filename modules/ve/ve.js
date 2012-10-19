@@ -576,6 +576,35 @@
 	};
 
 	/**
+	 * Set a deeply nested property of an object using variadic arguments, protecting against
+	 * undefined property errors.
+	 *
+	 * ve.setProp( obj, 'foo', 'bar', 'baz' ); is equivalent to obj.foo.bar = baz; except that
+	 * the former protects against JS errors if one of the intermediate properties is
+	 * undefined. Instead of throwing an error, undefined intermediate properties will be
+	 * initialized to an empty object. If an intermediate property is null, or if obj itself
+	 * is undefined or null, this function will silently abort.
+	 *
+	 * @param {Object} obj
+	 */
+	ve.setProp = function ( obj /*, keys ... , value */ ) {
+		var i, prop = obj;
+		if ( obj === undefined || obj === null ) {
+			return;
+		}
+		for ( i = 1; i < arguments.length - 2; i++ ) {
+			if ( prop[arguments[i]] === null ) {
+				return;
+			}
+			if ( prop[arguments[i]] === undefined ) {
+				prop[arguments[i]] = {};
+			}
+			prop = prop[arguments[i]];
+		}
+		prop[arguments[arguments.length - 2]] = arguments[arguments.length - 1];
+	}
+
+	/**
 	 * Logs data to the console.
 	 *
 	 * This implementation does nothing, to add a real implmementation ve.debug needs to be loaded.
