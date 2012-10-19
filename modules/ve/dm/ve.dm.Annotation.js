@@ -127,7 +127,7 @@ ve.dm.Annotation.prototype.renderHTML = function () {
  * Custom hash function for ve.getHash(). Should not be overridden by subclasses.
  */
 ve.dm.Annotation.prototype.getHash = function () {
-	var keys = [ 'name', 'htmlTagName', 'htmlAttributes', 'data' ], obj = {}, i;
+	var keys = [ 'name', 'data' ], obj = {}, i;
 	for ( i = 0; i < keys.length; i++ ) {
 		if ( this[keys[i]] !== undefined ) {
 			obj[keys[i]] = this[keys[i]];
