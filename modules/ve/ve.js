@@ -564,7 +564,7 @@
 	 * @returns obj[arguments[1]][arguments[2]].... or undefined
 	 */
 	ve.getProp = function ( obj /*, keys ... */ ) {
-		var retval = obj;
+		var i, retval = obj;
 		for ( i = 1; i < arguments.length; i++ ) {
 			if ( retval === undefined || retval === null ) {
 				// Trying to access a property of undefined or null causes an error
