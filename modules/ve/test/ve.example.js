@@ -31,7 +31,7 @@ ve.example.getSelectNodesCases = function ( doc ) {
 		{
 			'actual': doc.selectNodes( new ve.Range( 10 ), 'branches' ),
 			'expected': [
-				// paragraph
+				// table/tableSection/tableRow/tableCell/paragraph
 				{
 					'node': lookup( documentNode, 1, 0, 0, 0, 0 ),
 					'range': new ve.Range( 10 ),
@@ -44,9 +44,9 @@ ve.example.getSelectNodesCases = function ( doc ) {
 		{
 			'actual': doc.selectNodes( new ve.Range( 20 ), 'branches' ),
 			'expected': [
-				// paragraph
+				// table/tableSection/tableRow/tableCell/list/listItem/list/listItem/paragraph
 				{
-					'node': lookup( documentNode, 1, 0, 0, 0, 1, 0, 0 ),
+					'node': lookup( documentNode, 1, 0, 0, 0, 1, 0, 1, 0, 0 ),
 					'range': new ve.Range( 20 ),
 					'index': 0,
 					'nodeRange': new ve.Range( 20, 21 ),
@@ -66,7 +66,7 @@ ve.example.getSelectNodesCases = function ( doc ) {
 					'nodeOuterRange': new ve.Range( 0, 5 )
 				},
 
-				// paragraph
+				// table/tableSection/tableRow/tableCell/paragraph
 				{
 					'node': lookup( documentNode, 1, 0, 0, 0, 0 ),
 					'index': 0,
@@ -74,7 +74,7 @@ ve.example.getSelectNodesCases = function ( doc ) {
 					'nodeOuterRange': new ve.Range( 9, 12 )
 				},
 
-				// paragraph
+				// table/tableSection/tableRow/tableCell/list/listItem/paragraph
 				{
 					'node': lookup( documentNode, 1, 0, 0, 0, 1, 0, 0 ),
 					'index': 0,
@@ -82,15 +82,14 @@ ve.example.getSelectNodesCases = function ( doc ) {
 					'nodeOuterRange': new ve.Range( 14, 17 )
 				},
 
-				// paragraph
+				// table/tableSection/tableRow/tableCell/list/listItem/list/listItem/paragraph
 				{
-					'node': lookup( documentNode, 1, 0, 0, 0, 2, 0, 0 ),
+					'node': lookup( documentNode, 1, 0, 0, 0, 1, 0, 1, 0, 0 ),
 					'range': new ve.Range( 20 ),
 					'index': 0,
 					'nodeRange': new ve.Range( 20, 21 ),
 					'nodeOuterRange': new ve.Range( 19, 22 )
-				},
-
+				}
 			]
 		},
 		{
@@ -106,8 +105,6 @@ ve.example.getSelectNodesCases = function ( doc ) {
 				}
 			]
 		},
-
-
 		{
 			'actual': doc.selectNodes( new ve.Range( 0, 3 ), 'leaves' ),
 			'expected': [
