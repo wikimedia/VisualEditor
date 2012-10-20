@@ -22,8 +22,8 @@ ve.ce.SurfaceObserver = function VeCeSurfaceObserver( documentView ) {
 	// Properties
 	this.documentView = documentView;
 	this.polling = false;
-	this.timeout = null;
-	this.frequency = 250;
+	this.timeoutId = null;
+	this.frequency = 250; //ms
 	this.clear();
 };
 
@@ -74,8 +74,8 @@ ve.ce.SurfaceObserver.prototype.stop = function( poll ) {
 			this.poll();
 		}
 		this.polling = false;
-		clearTimeout( this.timeout );
-		this.timeout = null;
+		clearTimeout( this.timeoutId );
+		this.timeoutId = null;
 	}
 };
 
@@ -88,13 +88,13 @@ ve.ce.SurfaceObserver.prototype.stop = function( poll ) {
 ve.ce.SurfaceObserver.prototype.poll = function( async ) {
 	var delayPoll, rangySelection, range, node, nodes, text, hash;
 
-	if ( this.timeout !== null ) {
-		clearTimeout( this.timeout );
-		this.timeout = null;
+	if ( this.timeoutId !== null ) {
+		clearTimeout( this.timeoutId );
+		this.timeoutId = null;
 	}
 
 	delayPoll = ve.bind( function (async ) {
-		this.timeout = setTimeout(
+		this.timeoutId = setTimeout(
 			ve.bind( this.poll, this ),
 			async === true ? 0 : this.frequency
 		);
