@@ -111,44 +111,38 @@ ve.ce.getDomHash = function ( element ) {
  * @member
  * @param {DOM Node} domNode DOM node
  * @param {Integer} domOffset DOM offset within the DOM node
- * @returns {Integer} Linear model offset
- * @throws Error
+ * @returns {Number} Linear model offset
  */
 ve.ce.getOffset = function ( domNode, domOffset ) {
 	if ( domNode.nodeType === Node.TEXT_NODE ) {
 		return ve.ce.getOffsetFromTextNode( domNode, domOffset );
-	} else if ( domNode.nodeType === Node.ELEMENT_NODE ) {
-		return ve.ce.getOffsetFromElementNode( domNode, domOffset );
 	} else {
-		throw new Error( 'Unknown node type.' );
+		return ve.ce.getOffsetFromElementNode( domNode, domOffset );
 	}
 };
 
 /**
  * Gets the linear offset from a given text node and offset within it.
- * TODO: Consider using .childNodes instead of .contents() for small performance improvement.
  *
- * @static
- * @member
- * @param {DOM Node} domNode DOM text node
- * @param {Integer} domOffset DOM offset within the DOM text node
- * @returns {Integer} Linear model offset
+ * @method
+ * @param {DOMElement} domNode DOM node
+ * @param {Number} domOffset DOM offset within the DOM Element
+ * @returns {Number} Linear model offset
  */
-ve.ce.getOffsetFromTextNode  = function ( domNode, domOffset ) {
-	var $node, model, current, stack, offset, item, $item;
+ve.ce.getOffsetFromTextNode = function ( domNode, domOffset ) {
+	var $node, nodeModel, current, stack, item, offset, $item;
 
-	$node = $( domNode ).closest( '.ve-ce-branchNode, .ve-ce-slug, .ve-ce-alienBlockNode, .ve-ce-alienInlineNode' );
-	if ( $node.hasClass( 've-ce-slug' ) ) {
-		return ve.ce.getOffsetOfSlug( $node );
-	}
+	$node = $( domNode ).closest(
+		'.ve-ce-branchNode, .ve-ce-alienBlockNode, .ve-ce-alienInlineNode'
+	);
+	nodeModel = $node.data( 'node' ).getModel();
 
-	model = $node.data( 'node' ).getModel();
 	if ( ! $node.hasClass( 've-ce-branchNode' ) ) {
-		return model.getOffset();
+		return nodeModel.getOffset();
 	}
 
-	current = [ $node.contents(), 0 ];
-	stack = [ current ];
+	current = [$node.contents(), 0];
+	stack = [current];
 	offset = 0;
 
 	while ( stack.length > 0 ) {
@@ -172,41 +166,66 @@ ve.ce.getOffsetFromTextNode  = function ( domNode, domOffset ) {
 					break;
 				}
 			} else if ( $item.hasClass( 've-ce-leafNode' ) ) {
+				offset += 2;
+			} else if ( $item.hasClass( 've-ce-branchNode' ) ) {
 				offset += $item.data( 'node' ).getOuterLength();
 			} else {
-				stack.push( [ $item.contents(), 0 ] );
+				stack.push( [$item.contents(), 0 ] );
 				current[1]++;
-				current = stack[ stack.length-1 ];
+				current = stack[stack.length-1];
 				continue;
 			}
 		}
 		current[1]++;
 	}
-	return offset + model.getOffset() + ( model.isWrapped() ? 1 : 0 );
+	return offset + nodeModel.getOffset() + ( nodeModel.isWrapped() ? 1 : 0 );
 };
 
 /**
  * Gets the linear offset from a given element node and offset within it.
  *
- * @static
- * @member
- * @param {DOM Node} domNode DOM element node
- * @param {Integer} domOffset DOM offset within the DOM element node
- * @returns {Integer} Linear model offset
+ * @method
+ * @param {DOMElement} domNode DOM node
+ * @param {Number} domOffset DOM offset within the DOM Element
+ * @param {Boolean} [addOuterLength] Use outer length, which includes wrappers if any exist
+ * @returns {Number} Linear model offset
  */
-ve.ce.getOffsetFromElementNode  = function ( domNode, domOffset ) {
-	var $node = $( domNode );
-	if ( $node.hasClass( 've-ce-slug' ) ) {
-		return ve.ce.getOffsetOfSlug( $node );
-	} else if ( domOffset === 0 ) {
-		return $node.data( 'node' ).getModel().getOffset();
-	} else {
-		$node = $node.contents().eq( domOffset - 1 );
-		if ( $node[0].nodeType === Node.TEXT_NODE ) {
-			return ve.ce.getOffsetFromTextNode( $node[0], 0 );
-		} else if ( $node[0].nodeType === Node.ELEMENT_NODE ) {
-			return $node.data( 'node' ).getModel().getOffset();
+ve.ce.getOffsetFromElementNode = function ( domNode, domOffset, addOuterLength ) {
+	var $domNode = $( domNode ),
+		nodeModel,
+		node;
+
+	if ( $domNode.hasClass( 've-ce-slug' ) ) {
+		if ( $domNode.prev().length ) {
+			nodeModel = $domNode.prev().data( 'node' ).getModel();
+			return nodeModel.getOffset() + nodeModel.getOuterLength();
 		}
+		if ( $domNode.next().length ) {
+			nodeModel = $domNode.next().data( 'node' ).getModel();
+			return nodeModel.getOffset();
+		}
+	}
+
+	if ( domOffset === 0 ) {
+		node = $domNode.data( 'node' );
+		if ( node ) {
+			nodeModel = $domNode.data( 'node' ).getModel();
+			if ( addOuterLength === true ) {
+				return nodeModel.getOffset() + nodeModel.getOuterLength();
+			} else {
+				return nodeModel.getOffset();
+			}
+		} else {
+			node = $domNode.contents().last()[0];
+		}
+	} else {
+		node = $domNode.contents()[ domOffset - 1 ];
+	}
+
+	if ( node.nodeType === Node.TEXT_NODE ) {
+		return ve.ce.getOffsetFromTextNode( node, node.length );
+	} else {
+		return ve.ce.getOffsetFromElementNode( node, 0, true );
 	}
 };
 
