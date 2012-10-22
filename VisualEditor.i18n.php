@@ -918,9 +918,14 @@ $messages['ksh'] = array(
 	'visualeditor-desc' => 'Määd_et müjjelesch, em MedijaWikki Sigge beldlesch ze beärbeide.',
 	'visualeditor-feedback-prompt' => 'Jivv_en Röckmäldong',
 	'visualeditor-feedback-dialog-title' => 'Donn en Röckmäldong övver et Ußprobeere vum  Sigge beldlesch Beärbeide jävve',
+	'visualeditor-notification-saved' => 'Ding Änderonge aan dä Sigg „$1“ sin faßjehalde.',
+	'visualeditor-notification-created' => 'Di Sigg „$1“ es aanjelaat woode.',
 	'visualeditor-ca-editsource' => 'der Quälltäx ändere',
 	'visualeditor-linkinspector-title' => 'Lengk ändere',
 	'visualeditor-linkinspector-label-pagetitle' => 'Siggetittel',
+	'visualeditor-linkinspector-suggest-existing-page' => 'En Sigg, di ald doh es',
+	'visualeditor-linkinspector-suggest-new-page' => 'En neue Sigg',
+	'visualeditor-linkinspector-suggest-external-link' => 'Ene Wäblengk',
 	'visualeditor-formatdropdown-title' => 'De Fommateerong ändere',
 	'visualeditor-formatdropdown-format-paragraph' => 'Afschnett',
 	'visualeditor-formatdropdown-format-heading1' => 'Övverschreff 1',
@@ -943,6 +948,7 @@ $messages['ksh'] = array(
 	'visualeditor-viewpage-savewarning' => 'Wells De verhaftesch retuur jonn op et beldlesch Beärbeide, der ohne eeds_ens di Sigg met Dinge Änderonge em Wiki faßzehallde?',
 	'visualeditor-loadwarning' => 'Ene Fähler es opjetrodde beim Daate Laade vum däm ẞööver: <i lang="en">$1</i>.',
 	'visualeditor-saveerror' => 'Ene Fähler es opjetrodde beim Daate Faßhallde op däm ẞööver: <i lang="en">$1</i>.',
+	'visualeditor-editsummary' => 'Donn beschriive, wat De jeändert häs.',
 );
 
 /** Luxembourgish (Lëtzebuergesch)
@@ -1112,7 +1118,7 @@ $messages['ms'] = array(
  */
 $messages['nb'] = array(
 	'visualeditor-feedback-prompt' => 'Gi tilbakemelding',
-	'visualeditor-notification-saved' => 'Dine endringer har blitt lagret.',
+	'visualeditor-notification-saved' => 'Dine endringer har blitt lagret.', # Fuzzy
 	'visualeditor-ca-editsource' => 'Rediger kilde',
 	'visualeditor-linkinspector-title' => 'Rediger lenke',
 	'visualeditor-linkinspector-label-pagetitle' => 'Sidetittel',
@@ -1655,4 +1661,3 @@ $messages['zh-hant'] = array(
 	'visualeditor-loadwarning' => '從服務器載入數據錯誤：$1。您想重試嗎？',
 	'visualeditor-saveerror' => '向服務器保存數據錯誤：$1。',
 );
-
