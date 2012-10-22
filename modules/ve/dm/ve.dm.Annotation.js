@@ -91,7 +91,7 @@ ve.dm.Annotation.static.matchFunction = null;
  * @param {HTMLElement} element HTML element this annotation will represent
  * @returns {Object} Annotation data
  */
-ve.dm.Annotation.prototype.getAnnotationData = function ( element ) {
+ve.dm.Annotation.prototype.getAnnotationData = function () {
 	return {};
 };
 

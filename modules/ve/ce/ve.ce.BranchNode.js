@@ -202,7 +202,7 @@ ve.ce.BranchNode.prototype.setupSlugs = function () {
 	}
 
 	if ( this.getLength() === 0 ) {
-		this.slugs[0] = $slug.clone().appendTo( this.$ )
+		this.slugs[0] = $slug.clone().appendTo( this.$ );
 	} else {
 		// Iterate over all children of this branch and add slugs in appropriate places
 		for ( i = 0; i < this.children.length; i++ ) {
@@ -224,8 +224,9 @@ ve.ce.BranchNode.prototype.setupSlugs = function () {
 	}
 };
 
-ve.ce.BranchNode.prototype.getSlugAtOffset = function( offset ) {
-	var startOffset = this.model.getOffset() + ( this.isWrapped() ? 1 : 0 );
+ve.ce.BranchNode.prototype.getSlugAtOffset = function ( offset ) {
+	var i,
+		startOffset = this.model.getOffset() + ( this.isWrapped() ? 1 : 0 );
 
 	if ( offset === startOffset ) {
 		return this.slugs[0] || null;

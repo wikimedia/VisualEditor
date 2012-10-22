@@ -147,8 +147,9 @@ ve.ce.Surface.prototype.handleInsertion = function () {
  */
 ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 	var nodeOffset = node.model.getOffset(), // TODO: call getModel() or add getOffset() to view
-		offsetDiff = ( previous.range.isCollapsed() && next.range.isCollapsed() )
-			? next.range.start - previous.range.start : null,
+		offsetDiff = ( previous.range.isCollapsed() && next.range.isCollapsed() ) ?
+			next.range.start - previous.range.start :
+			null,
 		lengthDiff = next.text.length - previous.text.length,
 		sameLeadingAndTrailing = offsetDiff !== null && ( // TODO: rewrite to static method with tests
 			(
@@ -171,8 +172,7 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 		len,
 		fromLeft = 0,
 		fromRight = 0,
-		transactions = [],
-		complex;
+		annotations;
 
 	if ( lengthDiff > 0 && offsetDiff === lengthDiff /* && sameLeadingAndTrailing */) {
 		data = next.text.substring(
@@ -351,7 +351,7 @@ ve.ce.Surface.prototype.onMouseDown = function ( e ) {
  * @method
  * @param {jQuery.Event} e
  */
-ve.ce.Surface.prototype.onMouseUp = function ( e ) {
+ve.ce.Surface.prototype.onMouseUp = function () {
 	this.surfaceObserver.start();
 };
 
@@ -411,7 +411,7 @@ ve.ce.Surface.prototype.onKeyDown = function ( e ) {
 					// Move cursor to whichever is nearest to the original offset.
 					newOffset = Math.max( relativeContentOffset, relativeStructuralOffset );
 				}
-			} else if (relativeContentOffset != offset - 1) {
+			} else if ( relativeContentOffset !== offset - 1 ) {
 				// The closest content offet is further away than just one offset. Don't trust the browser. Move programatically.
 				newOffset = relativeContentOffset;
 			}
@@ -440,7 +440,7 @@ ve.ce.Surface.prototype.onKeyDown = function ( e ) {
 					// Move cursor to whichever is nearest to the original offset.
 					newOffset = Math.min( relativeContentOffset, relativeStructuralOffset );
 				}
-			} else if ( relativeContentOffset != offset + 1 ) {
+			} else if ( relativeContentOffset !== offset + 1 ) {
 				newOffset = relativeContentOffset;
 			}
 
@@ -673,10 +673,10 @@ ve.ce.Surface.prototype.onKeyPress = function ( e ) {
 
 	this.handleInsertion();
 
-	var _this = this;
+	var view = this;
 	setTimeout( function () {
-		_this.model.insertingAnnotations = false;
-		_this.surfaceObserver.start();
+		view.model.insertingAnnotations = false;
+		view.surfaceObserver.start();
 	}, 0 );
 };
 

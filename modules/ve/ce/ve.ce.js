@@ -112,6 +112,7 @@ ve.ce.getDomHash = function ( element ) {
  * @param {DOM Node} domNode DOM node
  * @param {Integer} domOffset DOM offset within the DOM node
  * @returns {Integer} Linear model offset
+ * @throws Error
  */
 ve.ce.getOffset = function ( domNode, domOffset ) {
 	if ( domNode.nodeType === Node.TEXT_NODE ) {
@@ -119,7 +120,7 @@ ve.ce.getOffset = function ( domNode, domOffset ) {
 	} else if ( domNode.nodeType === Node.ELEMENT_NODE ) {
 		return ve.ce.getOffsetFromElementNode( domNode, domOffset );
 	} else {
-		throw "Unknown node type.";
+		throw new Error( 'Unknown node type.' );
 	}
 };
 
@@ -216,6 +217,7 @@ ve.ce.getOffsetFromElementNode  = function ( domNode, domOffset ) {
  * @member
  * @param {jQuery} $node jQuery slug selection
  * @returns {Integer} Linear model offset
+ * @throws Error
  */
 ve.ce.getOffsetOfSlug  = function ( $node ) {
 	var model;
@@ -226,6 +228,6 @@ ve.ce.getOffsetOfSlug  = function ( $node ) {
 		model = $node.prev().data( 'node' ).getModel();
 		return model.getOffset() + model.getOuterLength();
 	} else {
-		throw "Incorrect slug location";
+		throw new Error( 'Incorrect slug location' );
 	}
 };

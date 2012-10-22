@@ -80,11 +80,14 @@ ve.dm.AnnotationFactory.prototype.register = function ( name, constructor ) {
 	// Call parent implementation
 	ve.Factory.prototype.register.call( this, name, constructor );
 
+	name = constructor.static.name;
+
 	var i, j,
-		name = constructor.static.name,
-		tags = constructor.static.matchTagNames === null ? [ '' ] :
+		tags = constructor.static.matchTagNames === null ?
+			[ '' ] :
 			constructor.static.matchTagNames,
-		types = constructor.static.matchRdfaTypes === null ? [ '' ] :
+		types = constructor.static.matchRdfaTypes === null ?
+			[ '' ] :
 			constructor.static.matchRdfaTypes;
 
 	for ( i = 0; i < tags.length; i++ ) {

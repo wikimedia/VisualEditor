@@ -106,7 +106,8 @@ QUnit.assert.equalNodeTree = function ( actual, expected, shallow, message ) {
 };
 
 QUnit.assert.equalNodeSelection = function ( actual, expected, message ) {
-	var actualSummary = getNodeSelectionSummary( actual ),
+	var i,
+		actualSummary = getNodeSelectionSummary( actual ),
 		expectedSummary = getNodeSelectionSummary( expected );
 	for ( i = 0; i < actual.length; i++ ) {
 		if ( expected[i] && expected[i].node !== actual[i].node ) {

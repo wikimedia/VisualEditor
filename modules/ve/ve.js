@@ -602,7 +602,7 @@
 			prop = prop[arguments[i]];
 		}
 		prop[arguments[arguments.length - 2]] = arguments[arguments.length - 1];
-	}
+	};
 
 	/**
 	 * Logs data to the console.

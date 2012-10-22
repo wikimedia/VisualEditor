@@ -95,13 +95,13 @@ ve.dm.Surface.prototype.getFragment = function ( range, noAutoSelect ) {
  * @param {ve.Range|undefined} selection
  */
 ve.dm.Surface.prototype.change = function ( transactions, selection ) {
-	var leftOffset, contentOffset, annotations;
+	var i, leftOffset, contentOffset, annotations;
 	if ( transactions ) {
 		if ( transactions instanceof ve.dm.Transaction ) {
 			transactions = [transactions];
 		}
 
-		for ( var i = 0; i < transactions.length; i++ ) {
+		for ( i = 0; i < transactions.length; i++ ) {
 			if ( !transactions[i].isNoOp() ) {
 				this.bigStack = this.bigStack.slice( 0, this.bigStack.length - this.undoIndex );
 				this.undoIndex = 0;
@@ -122,7 +122,7 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 	// Clear and add annotations to stack if insertingAnnotations isn't happening
 	if ( !this.insertingAnnotations ) {
 		leftOffset = this.getSelection().start - 1;
-		if ( leftOffset == -1 ) {
+		if ( leftOffset === -1 ) {
 			leftOffset = 0;
 		}
 		contentOffset = this.documentModel.getNearestContentOffset( leftOffset, -1 );
@@ -160,9 +160,9 @@ ve.dm.Surface.prototype.annotate = function ( method, annotation ) {
 		this.change( tx, selection );
 	} else {
 		// Apply annotation to stack
-		if ( method == 'set' ) {
+		if ( method === 'set' ) {
 			this.documentModel.insertAnnotations.push( annotation );
-		} else if ( method == 'clear' ) {
+		} else if ( method === 'clear' ) {
 			this.documentModel.insertAnnotations.remove( annotation );
 		}
 	}

@@ -38,7 +38,7 @@ ve.inheritClass( ve.ce.SurfaceObserver, ve.EventEmitter );
  *
  * @method
  */
-ve.ce.SurfaceObserver.prototype.clear = function( ) {
+ve.ce.SurfaceObserver.prototype.clear = function () {
 	this.rangySelection = {
 		anchorNode: null,
 		anchorOffset: null,
@@ -57,7 +57,7 @@ ve.ce.SurfaceObserver.prototype.clear = function( ) {
  * @method
  * @param {boolean} async
  */
-ve.ce.SurfaceObserver.prototype.start = function( async ) {
+ve.ce.SurfaceObserver.prototype.start = function ( async ) {
 	this.polling = true;
 	this.poll( async );
 };
@@ -68,7 +68,7 @@ ve.ce.SurfaceObserver.prototype.start = function( async ) {
  * @method
  * @param {boolean} poll
  */
-ve.ce.SurfaceObserver.prototype.stop = function( poll ) {
+ve.ce.SurfaceObserver.prototype.stop = function ( poll ) {
 	if ( this.polling === true ) {
 		if ( poll === true ) {
 			this.poll();
@@ -85,8 +85,8 @@ ve.ce.SurfaceObserver.prototype.stop = function( poll ) {
  * @method
  * @param {boolean} async
  */
-ve.ce.SurfaceObserver.prototype.poll = function( async ) {
-	var delayPoll, rangySelection, range, node, nodes, text, hash;
+ve.ce.SurfaceObserver.prototype.poll = function ( async ) {
+	var delayPoll, rangySelection, range, node, text, hash;
 
 	if ( this.timeoutId !== null ) {
 		clearTimeout( this.timeoutId );

@@ -86,7 +86,9 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 		startFound = false,
 		nodeRange,
 		parentRange,
-		isWrapped;
+		isWrapped,
+		isPrevUnwrapped,
+		isNextUnwrapped;
 
 	mode = mode || 'leaves';
 	if ( mode !== 'leaves' && mode !== 'branches' && mode !== 'covered' && mode !== 'siblings' ) {
