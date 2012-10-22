@@ -24,7 +24,8 @@ ve.example.getSelectNodesCases = function ( doc ) {
 					'range': new ve.Range( 1 ),
 					'index': 0,
 					'nodeRange': new ve.Range( 1, 4 ),
-					'nodeOuterRange': new ve.Range( 0, 5 )
+					'nodeOuterRange': new ve.Range( 0, 5 ),
+					'parentOuterRange': new ve.Range( 0, 61 )
 				}
 			]
 		},
@@ -37,7 +38,8 @@ ve.example.getSelectNodesCases = function ( doc ) {
 					'range': new ve.Range( 10 ),
 					'index': 0,
 					'nodeRange': new ve.Range( 10, 11 ),
-					'nodeOuterRange': new ve.Range( 9, 12 )
+					'nodeOuterRange': new ve.Range( 9, 12 ),
+					'parentOuterRange': new ve.Range( 8, 34 )
 				}
 			]
 		},
@@ -50,7 +52,8 @@ ve.example.getSelectNodesCases = function ( doc ) {
 					'range': new ve.Range( 20 ),
 					'index': 0,
 					'nodeRange': new ve.Range( 20, 21 ),
-					'nodeOuterRange': new ve.Range( 19, 22 )
+					'nodeOuterRange': new ve.Range( 19, 22 ),
+					'parentOuterRange': new ve.Range( 18, 23 )
 				}
 			]
 		},
@@ -63,7 +66,8 @@ ve.example.getSelectNodesCases = function ( doc ) {
 					'range': new ve.Range( 1, 4 ),
 					'index': 0,
 					'nodeRange': new ve.Range( 1, 4 ),
-					'nodeOuterRange': new ve.Range( 0, 5 )
+					'nodeOuterRange': new ve.Range( 0, 5 ),
+					'parentOuterRange': new ve.Range( 0, 61 )
 				},
 
 				// table/tableSection/tableRow/tableCell/paragraph
@@ -71,7 +75,8 @@ ve.example.getSelectNodesCases = function ( doc ) {
 					'node': lookup( documentNode, 1, 0, 0, 0, 0 ),
 					'index': 0,
 					'nodeRange': new ve.Range( 10, 11 ),
-					'nodeOuterRange': new ve.Range( 9, 12 )
+					'nodeOuterRange': new ve.Range( 9, 12 ),
+					'parentOuterRange': new ve.Range( 8, 34 )
 				},
 
 				// table/tableSection/tableRow/tableCell/list/listItem/paragraph
@@ -79,7 +84,8 @@ ve.example.getSelectNodesCases = function ( doc ) {
 					'node': lookup( documentNode, 1, 0, 0, 0, 1, 0, 0 ),
 					'index': 0,
 					'nodeRange': new ve.Range( 15, 16 ),
-					'nodeOuterRange': new ve.Range( 14, 17 )
+					'nodeOuterRange': new ve.Range( 14, 17 ),
+					'parentOuterRange': new ve.Range( 13, 25 )
 				},
 
 				// table/tableSection/tableRow/tableCell/list/listItem/list/listItem/paragraph
@@ -88,7 +94,8 @@ ve.example.getSelectNodesCases = function ( doc ) {
 					'range': new ve.Range( 20 ),
 					'index': 0,
 					'nodeRange': new ve.Range( 20, 21 ),
-					'nodeOuterRange': new ve.Range( 19, 22 )
+					'nodeOuterRange': new ve.Range( 19, 22 ),
+					'parentOuterRange': new ve.Range( 18, 23 )
 				}
 			]
 		},
@@ -101,7 +108,8 @@ ve.example.getSelectNodesCases = function ( doc ) {
 					'range': new ve.Range( 1 ),
 					'index': 0,
 					'nodeRange': new ve.Range( 1, 4 ),
-					'nodeOuterRange': new ve.Range( 0, 5 )
+					'nodeOuterRange': new ve.Range( 0, 5 ),
+					'parentOuterRange': new ve.Range( 0, 61 )
 				}
 			]
 		},
@@ -114,7 +122,8 @@ ve.example.getSelectNodesCases = function ( doc ) {
 					'range': new ve.Range( 1, 3 ),
 					'index': 0,
 					'nodeRange': new ve.Range( 1, 4 ),
-					'nodeOuterRange': new ve.Range( 1, 4 )
+					'nodeOuterRange': new ve.Range( 1, 4 ),
+					'parentOuterRange': new ve.Range( 0, 5 )
 				}
 			],
 			'msg': 'partial leaf results have ranges with global offsets'
@@ -127,14 +136,16 @@ ve.example.getSelectNodesCases = function ( doc ) {
 					'node': lookup( documentNode, 0, 0 ),
 					'index': 0,
 					'nodeRange': new ve.Range( 1, 4 ),
-					'nodeOuterRange': new ve.Range( 1, 4 )
+					'nodeOuterRange': new ve.Range( 1, 4 ),
+					'parentOuterRange': new ve.Range( 0, 5 )
 				},
 				// table/tableSection/tableRow/tableCell/paragraph/text
 				{
 					'node': lookup( documentNode, 1, 0, 0, 0, 0, 0 ),
 					'index': 0,
 					'nodeRange': new ve.Range( 10, 11 ),
-					'nodeOuterRange': new ve.Range( 10, 11 )
+					'nodeOuterRange': new ve.Range( 10, 11 ),
+					'parentOuterRange': new ve.Range( 9, 12 )
 				}
 			],
 			'msg': 'leaf nodes do not have ranges, leaf nodes from different levels'
@@ -147,28 +158,32 @@ ve.example.getSelectNodesCases = function ( doc ) {
 					'node': lookup( documentNode, 1, 0, 0, 0, 2, 0, 0, 0 ),
 					'index': 0,
 					'nodeRange': new ve.Range( 29, 30 ),
-					'nodeOuterRange': new ve.Range( 29, 30 )
+					'nodeOuterRange': new ve.Range( 29, 30 ),
+					'parentOuterRange': new ve.Range( 28, 31 )
 				},
 				// preformatted/text
 				{
 					'node': lookup( documentNode, 2, 0 ),
 					'index': 0,
 					'nodeRange': new ve.Range( 38, 39 ),
-					'nodeOuterRange': new ve.Range( 38, 39 )
+					'nodeOuterRange': new ve.Range( 38, 39 ),
+					'parentOuterRange': new ve.Range( 37, 43 )
 				},
 				// preformatted/image
 				{
 					'node': lookup( documentNode, 2, 1 ),
 					'index': 1,
 					'nodeRange': new ve.Range( 40, 40 ),
-					'nodeOuterRange': new ve.Range( 39, 41 )
+					'nodeOuterRange': new ve.Range( 39, 41 ),
+					'parentOuterRange': new ve.Range( 37, 43 )
 				},
 				// preformatted/text
 				{
 					'node': lookup( documentNode, 2, 2 ),
 					'index': 2,
 					'nodeRange': new ve.Range( 41, 42 ),
-					'nodeOuterRange': new ve.Range( 41, 42 )
+					'nodeOuterRange': new ve.Range( 41, 42 ),
+					'parentOuterRange': new ve.Range( 37, 43 )
 				}
 			],
 			'msg': 'leaf nodes that are not text nodes'
@@ -182,7 +197,8 @@ ve.example.getSelectNodesCases = function ( doc ) {
 					'range': new ve.Range( 2, 4 ),
 					'index': 0,
 					'nodeRange': new ve.Range( 1, 4 ),
-					'nodeOuterRange': new ve.Range( 0, 5 )
+					'nodeOuterRange': new ve.Range( 0, 5 ),
+					'parentOuterRange': new ve.Range( 0, 61 )
 				},
 				// table
 				{
@@ -190,7 +206,8 @@ ve.example.getSelectNodesCases = function ( doc ) {
 					'range': new ve.Range( 6, 16 ),
 					'index': 1,
 					'nodeRange': new ve.Range( 6, 36 ),
-					'nodeOuterRange': new ve.Range( 5, 37 )
+					'nodeOuterRange': new ve.Range( 5, 37 ),
+					'parentOuterRange': new ve.Range( 0, 61 )
 				}
 			],
 			'msg': 'siblings at the document level'
@@ -204,21 +221,24 @@ ve.example.getSelectNodesCases = function ( doc ) {
 					'range': new ve.Range( 2, 4 ),
 					'index': 0,
 					'nodeRange': new ve.Range( 1, 4 ),
-					'nodeOuterRange': new ve.Range( 0, 5 )
+					'nodeOuterRange': new ve.Range( 0, 5 ),
+					'parentOuterRange': new ve.Range( 0, 61 )
 				},
 				// table
 				{
 					'node': lookup( documentNode, 1 ),
 					'index': 1,
 					'nodeRange': new ve.Range( 6, 36 ),
-					'nodeOuterRange': new ve.Range( 5, 37 )
+					'nodeOuterRange': new ve.Range( 5, 37 ),
+					'parentOuterRange': new ve.Range( 0, 61 )
 				},
 				// preformatted
 				{
 					'node': lookup( documentNode, 2 ),
 					'index': 2,
 					'nodeRange': new ve.Range( 38, 42 ),
-					'nodeOuterRange': new ve.Range( 37, 43 )
+					'nodeOuterRange': new ve.Range( 37, 43 ),
+					'parentOuterRange': new ve.Range( 0, 61 )
 				},
 				// definitionList
 				{
@@ -226,7 +246,8 @@ ve.example.getSelectNodesCases = function ( doc ) {
 					'range': new ve.Range( 44, 51 ),
 					'index': 3,
 					'nodeRange': new ve.Range( 44, 54 ),
-					'nodeOuterRange': new ve.Range( 43, 55 )
+					'nodeOuterRange': new ve.Range( 43, 55 ),
+					'parentOuterRange': new ve.Range( 0, 61 )
 				}
 			],
 			'msg': 'more than 2 siblings at the document level'
@@ -240,7 +261,8 @@ ve.example.getSelectNodesCases = function ( doc ) {
 					'range': new ve.Range( 1, 1 ),
 					'index': 0,
 					'nodeRange': new ve.Range( 1, 4 ),
-					'nodeOuterRange': new ve.Range( 1, 4 )
+					'nodeOuterRange': new ve.Range( 1, 4 ),
+					'parentOuterRange': new ve.Range( 0, 5 )
 				}
 			],
 			'msg': 'zero-length range at the start of a text node returns text node rather than parent'
@@ -254,7 +276,8 @@ ve.example.getSelectNodesCases = function ( doc ) {
 					'range': new ve.Range( 4, 4 ),
 					'index': 0,
 					'nodeRange': new ve.Range( 1, 4 ),
-					'nodeOuterRange': new ve.Range( 1, 4 )
+					'nodeOuterRange': new ve.Range( 1, 4 ),
+					'parentOuterRange': new ve.Range( 0, 5 )
 				}
 			],
 			'msg': 'zero-length range at the end of a text node returns text node rather than parent'
@@ -268,7 +291,8 @@ ve.example.getSelectNodesCases = function ( doc ) {
 					'range': new ve.Range( 2, 3 ),
 					'index': 0,
 					'nodeRange': new ve.Range( 1, 4 ),
-					'nodeOuterRange': new ve.Range( 1, 4 )
+					'nodeOuterRange': new ve.Range( 1, 4 ),
+					'parentOuterRange': new ve.Range( 0, 5 )
 				}
 			],
 			'msg': 'range entirely within one leaf node'
@@ -321,7 +345,8 @@ ve.example.getSelectNodesCases = function ( doc ) {
 					// no 'range' because the text node is covered completely
 					'index': 0,
 					'nodeRange': new ve.Range( 38, 39 ),
-					'nodeOuterRange': new ve.Range( 38, 39 )
+					'nodeOuterRange': new ve.Range( 38, 39 ),
+					'parentOuterRange': new ve.Range( 37, 43 )
 				}
 			],
 			'msg': 'range with 5 closings and a text node'
@@ -335,7 +360,8 @@ ve.example.getSelectNodesCases = function ( doc ) {
 					'range': new ve.Range( 2, 4 ),
 					'index': 0,
 					'nodeRange': new ve.Range( 1, 4 ),
-					'nodeOuterRange': new ve.Range( 1, 4 )
+					'nodeOuterRange': new ve.Range( 1, 4 ),
+					'parentOuterRange': new ve.Range( 0, 5 )
 				},
 				// table
 				{
@@ -343,7 +369,8 @@ ve.example.getSelectNodesCases = function ( doc ) {
 					// no 'range' because the table is covered completely
 					'index': 1,
 					'nodeRange': new ve.Range( 6, 36 ),
-					'nodeOuterRange': new ve.Range( 5, 37 )
+					'nodeOuterRange': new ve.Range( 5, 37 ),
+					'parentOuterRange': new ve.Range( 0, 61 )
 				},
 				// preformatted
 				{
@@ -351,7 +378,8 @@ ve.example.getSelectNodesCases = function ( doc ) {
 					// no 'range' because the node is covered completely
 					'index': 2,
 					'nodeRange': new ve.Range( 38, 42 ),
-					'nodeOuterRange': new ve.Range( 37, 43 )
+					'nodeOuterRange': new ve.Range( 37, 43 ),
+					'parentOuterRange': new ve.Range( 0, 61 )
 				},
 				// definitionList
 				{
@@ -359,7 +387,8 @@ ve.example.getSelectNodesCases = function ( doc ) {
 					// no 'range' because the node is covered completely
 					'index': 3,
 					'nodeRange': new ve.Range( 44, 54 ),
-					'nodeOuterRange': new ve.Range( 43, 55 )
+					'nodeOuterRange': new ve.Range( 43, 55 ),
+					'parentOuterRange': new ve.Range( 0, 61 )
 				},
 				// paragraph/text
 				{
@@ -367,7 +396,8 @@ ve.example.getSelectNodesCases = function ( doc ) {
 					// no 'range' because the text node is covered completely
 					'index': 0,
 					'nodeRange': new ve.Range( 56, 57 ),
-					'nodeOuterRange': new ve.Range( 56, 57 )
+					'nodeOuterRange': new ve.Range( 56, 57 ),
+					'parentOuterRange': new ve.Range( 55, 58 )
 				}
 			],
 			'msg': 'range from the first heading into the second-to-last paragraph, in covered mode'
@@ -420,7 +450,8 @@ ve.example.getSelectNodesCases = function ( doc ) {
 					'range': new ve.Range( 39, 39 ),
 					'index': 0,
 					'nodeRange': new ve.Range( 38, 39 ),
-					'nodeOuterRange': new ve.Range( 38, 39 )
+					'nodeOuterRange': new ve.Range( 38, 39 ),
+					'parentOuterRange': new ve.Range( 37, 43 )
 				}
 			],
 			'msg': 'zero-length range in text node before inline node'
@@ -434,7 +465,8 @@ ve.example.getSelectNodesCases = function ( doc ) {
 					'range': new ve.Range( 41, 41 ),
 					'index': 2,
 					'nodeRange': new ve.Range( 41, 42 ),
-					'nodeOuterRange': new ve.Range( 41, 42 )
+					'nodeOuterRange': new ve.Range( 41, 42 ),
+					'parentOuterRange': new ve.Range( 37, 43 )
 				}
 			],
 			'msg': 'zero-length range in text node after inline node'

@@ -56,7 +56,8 @@ function getNodeSelectionSummary( selection ) {
 				'index': selection[i].index,
 				'indexInNode': selection[i].indexInNode,
 				'nodeRange': selection[i].nodeRange,
-				'nodeOuterRange': selection[i].nodeOuterRange
+				'nodeOuterRange': selection[i].nodeOuterRange,
+				'parentOuterRange': selection[i].parentOuterRange
 			} );
 		}
 	}
