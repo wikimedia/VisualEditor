@@ -10,7 +10,7 @@ QUnit.module( 've.dm.SurfaceFragment' );
 // Tests
 
 QUnit.test( 'constructor', 8, function ( assert ) {
-	var doc = new ve.dm.Document( ve.dm.example.data ),
+	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		surface = new ve.dm.Surface( doc ),
 		fragment = new ve.dm.SurfaceFragment( surface );
 	// Default range and autoSelect
@@ -27,7 +27,7 @@ QUnit.test( 'constructor', 8, function ( assert ) {
 } );
 
 QUnit.test( 'onTransact', 1, function ( assert ) {
-	var doc = new ve.dm.Document( ve.dm.example.data ),
+	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		surface = new ve.dm.Surface( doc ),
 		fragment1 = new ve.dm.SurfaceFragment( surface, new ve.Range( 1, 56 ) ),
 		fragment2 = new ve.dm.SurfaceFragment( surface, new ve.Range( 2, 4 ) );
@@ -40,7 +40,7 @@ QUnit.test( 'onTransact', 1, function ( assert ) {
 } );
 
 QUnit.test( 'adjustRange', 3, function ( assert ) {
-	var doc = new ve.dm.Document( ve.dm.example.data ),
+	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		surface = new ve.dm.Surface( doc ),
 		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 20, 21 ) ),
 		adjustedFragment = fragment.adjustRange( -19, 35 );
@@ -50,7 +50,7 @@ QUnit.test( 'adjustRange', 3, function ( assert ) {
 } );
 
 QUnit.test( 'collapseRange', 3, function ( assert ) {
-	var doc = new ve.dm.Document( ve.dm.example.data ),
+	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		surface = new ve.dm.Surface( doc ),
 		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 20, 21 ) ),
 		collapsedFragment = fragment.collapseRange();
@@ -60,7 +60,7 @@ QUnit.test( 'collapseRange', 3, function ( assert ) {
 } );
 
 QUnit.test( 'expandRange', 1, function ( assert ) {
-	var doc = new ve.dm.Document( ve.dm.example.data ),
+	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		surface = new ve.dm.Surface( doc ),
 		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 20, 21 ) );
 	assert.strictEqual(
@@ -71,7 +71,7 @@ QUnit.test( 'expandRange', 1, function ( assert ) {
 } );
 
 QUnit.test( 'removeContent', 2, function ( assert ) {
-	var doc = new ve.dm.Document( ve.dm.example.data ),
+	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		surface = new ve.dm.Surface( doc ),
 		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 1, 56 ) );
 	fragment.removeContent();
@@ -91,7 +91,7 @@ QUnit.test( 'removeContent', 2, function ( assert ) {
 } );
 
 QUnit.test( 'insertContent', 3, function ( assert ) {
-	var doc = new ve.dm.Document( ve.dm.example.data ),
+	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		surface = new ve.dm.Surface( doc ),
 		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 1, 4 ) );
 	fragment.insertContent( ['1', '2', '3'] );
@@ -114,7 +114,7 @@ QUnit.test( 'insertContent', 3, function ( assert ) {
 } );
 
 QUnit.test( 'wrapNodes', 2, function ( assert ) {
-	var doc = new ve.dm.Document( ve.dm.example.data ),
+	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		surface = new ve.dm.Surface( doc ),
 		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 55, 61 ) );
 	// Make 2 paragraphs into 2 lists of 1 item each
@@ -162,7 +162,7 @@ QUnit.test( 'wrapNodes', 2, function ( assert ) {
 } );
 
 QUnit.test( 'wrapAllNodes', 2, function ( assert ) {
-	var doc = new ve.dm.Document( ve.dm.example.data ),
+	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		surface = new ve.dm.Surface( doc ),
 		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 55, 61 ) );
 	// Make 2 paragraphs into 1 lists of 1 item with 2 paragraphs

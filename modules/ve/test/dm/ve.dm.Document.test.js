@@ -10,7 +10,7 @@ QUnit.module( 've.dm.Document' );
 /* Tests */
 
 QUnit.test( 'constructor', 4, function ( assert ) {
-	var doc = new ve.dm.Document( ve.dm.example.data );
+	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) );
 	assert.equalNodeTree( doc.getDocumentNode(), ve.dm.example.tree, 'node tree matches example data' );
 	assert.throws(
 		function () {
@@ -40,13 +40,13 @@ QUnit.test( 'constructor', 4, function ( assert ) {
 } );
 
 QUnit.test( 'getData', 1, function ( assert ) {
-	var doc = new ve.dm.Document( ve.dm.example.data );
+	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) );
 	assert.deepEqual( doc.getData(), ve.dm.example.data );
 } );
 
 QUnit.test( 'getNodeFromOffset', function ( assert ) {
 	var i, j, node,
-		doc = new ve.dm.Document( ve.dm.example.data ),
+		doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		root = doc.getDocumentNode().getRoot(),
 		expected = [
 		[], // 0 - document
@@ -123,7 +123,7 @@ QUnit.test( 'getNodeFromOffset', function ( assert ) {
 } );
 
 QUnit.test( 'getDataFromNode', 3, function ( assert ) {
-	var doc = new ve.dm.Document( ve.dm.example.data );
+	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) );
 	assert.deepEqual(
 		doc.getDataFromNode( doc.getDocumentNode().getChildren()[0] ),
 		ve.dm.example.data.slice( 1, 4 ),
@@ -571,7 +571,7 @@ QUnit.test( 'getAnnotatedRangeFromOffset', 1, function ( assert ) {
 } );
 
 QUnit.test( 'getOuterLength', 1, function ( assert ) {
-	var doc = new ve.dm.Document( ve.dm.example.data );
+	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) );
 	assert.strictEqual(
 		doc.getDocumentNode().getOuterLength(),
 		ve.dm.example.data.length,
@@ -847,7 +847,7 @@ QUnit.test( 'isContentData', 1, function ( assert ) {
 
 QUnit.test( 'rebuildNodes', function ( assert ) {
 	var tree,
-		doc = new ve.dm.Document( ve.dm.example.data ),
+		doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		documentNode = doc.getDocumentNode();
 	// Rebuild table without changes
 	doc.rebuildNodes( documentNode, 1, 1, 5, 32 );
@@ -914,7 +914,7 @@ QUnit.test( 'getRelativeOffset', function ( assert ) {
 
 QUnit.test( 'getRelativeContentOffset', function ( assert ) {
 	var i,
-		doc = new ve.dm.Document( ve.dm.example.data ),
+		doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		cases = [
 		{
 			'msg': 'invalid starting offset with zero distance gets corrected',
@@ -1019,7 +1019,7 @@ QUnit.test( 'getRelativeContentOffset', function ( assert ) {
 
 QUnit.test( 'getNearestContentOffset', function ( assert ) {
 	var i,
-		doc = new ve.dm.Document( ve.dm.example.data ),
+		doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		cases = [
 		{
 			'msg': 'unspecified direction results in shortest distance',
@@ -1075,7 +1075,7 @@ QUnit.test( 'getNearestContentOffset', function ( assert ) {
 
 QUnit.test( 'getRelativeStructuralOffset', function ( assert ) {
 	var i,
-		doc = new ve.dm.Document( ve.dm.example.data ),
+		doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		cases = [
 		{
 			'msg': 'invalid starting offset with zero distance gets corrected',
@@ -1186,7 +1186,7 @@ QUnit.test( 'getRelativeStructuralOffset', function ( assert ) {
 
 QUnit.test( 'getNearestStructuralOffset', function ( assert ) {
 	var i,
-		doc = new ve.dm.Document( ve.dm.example.data ),
+		doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		cases = [
 		{
 			'msg': 'unspecified direction results in shortest distance',
@@ -1304,7 +1304,7 @@ QUnit.test( 'getNearestStructuralOffset', function ( assert ) {
 
 QUnit.test( 'selectNodes', function ( assert ) {
 	var i,
-		doc = new ve.dm.Document( ve.dm.example.data ),
+		doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		cases = ve.example.getSelectNodesCases( doc );
 	for ( i = 0; i < cases.length; i++ ) {
 		assert.equalNodeSelection( cases[i].actual, cases[i].expected, cases[i].msg );
@@ -1313,7 +1313,7 @@ QUnit.test( 'selectNodes', function ( assert ) {
 
 QUnit.test( 'getBalancedData', function ( assert ) {
 	var i,
-		doc = new ve.dm.Document( ve.dm.example.data ),
+		doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		cases = [
 		{
 			'msg': 'empty range',
