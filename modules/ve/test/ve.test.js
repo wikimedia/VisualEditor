@@ -430,8 +430,9 @@ QUnit.test( 'getOpeningHtmlTag', 5, function ( assert ) {
 	);
 } );
 
-QUnit.test( 'getProp', 9, function ( assert ) {
-	var obj = {
+( function () {
+	var plainObj, funcObj, arrObj;
+	plainObj = {
 		'foo': 3,
 		'bar': {
 			'baz': null,
@@ -440,73 +441,99 @@ QUnit.test( 'getProp', 9, function ( assert ) {
 			}
 		}
 	};
-	assert.deepEqual(
-		ve.getProp( obj, 'foo' ),
-		3,
-		'single key'
-	);
-	assert.deepEqual(
-		ve.getProp( obj, 'bar' ),
-		{ 'baz': null, 'quux': { 'whee': 'yay' } },
-		'single key, returns object'
-	);
-	assert.deepEqual(
-		ve.getProp( obj, 'bar', 'baz' ),
-		null,
-		'two keys, returns null'
-	);
-	assert.deepEqual(
-		ve.getProp( obj, 'bar', 'quux', 'whee' ),
-		'yay',
-		'three keys'
-	);
-	assert.deepEqual(
-		ve.getProp( obj, 'x' ),
-		undefined,
-		'missing property returns undefined'
-	);
-	assert.deepEqual(
-		ve.getProp( obj, 'foo', 'bar' ),
-		undefined,
-		'missing 2nd-level property returns undefined'
-	);
-	assert.deepEqual(
-		ve.getProp( obj, 'foo', 'bar', 'baz', 'quux', 'whee' ),
-		undefined,
-		'multiple missing properties don\'t cause an error'
-	);
-	assert.deepEqual(
-		ve.getProp( obj, 'bar', 'baz', 'quux' ),
-		undefined,
-		'accessing property of null returns undefined, doesn\'t cause an error'
-	);
-	assert.deepEqual(
-		ve.getProp( obj, 'bar', 'baz', 'quux', 'whee', 'yay' ),
-		undefined,
-		'accessing multiple properties of null'
-	);
-} );
+	funcObj = function abc( d ) { return d; };
+	funcObj.foo = 3;
+	funcObj.bar = {
+		'baz': null,
+		'quux': {
+			'whee': 'yay'
+		}
+	};
+	arrObj = ['a', 'b', 'c'];
+	arrObj.foo = 3;
+	arrObj.bar = {
+		'baz': null,
+		'quux': {
+			'whee': 'yay'
+		}
+	};
 
-QUnit.test( 'setProp', function ( assert ) {
-	var obj = {
-		'foo': 3,
-		'bar': {
-			'baz': null,
-			'quux': {
-				'whee': 'yay'
-			}
-		}
-	};
-	ve.setProp( obj, 'foo', 4 );
-	assert.deepEqual( 4, obj.foo, 'setting an existing key with depth 1' );
-	ve.setProp( obj, 'test', 'TEST' );
-	assert.deepEqual( 'TEST', obj.test, 'setting a new key with depth 1' );
-	ve.setProp( obj, 'bar', 'quux', 'whee', 'YAY' );
-	assert.deepEqual( 'YAY', obj.bar.quux.whee, 'setting an existing key with depth 3' );
-	ve.setProp( obj, 'bar', 'a', 'b', 'c' );
-	assert.deepEqual( 'c', obj.bar.a.b, 'setting two new keys within an existing key' );
-	ve.setProp( obj, 'a', 'b', 'c', 'd', 'e', 'f' );
-	assert.deepEqual( 'f', obj.a.b.c.d.e, 'setting new keys with depth 5' );
-	ve.setProp( obj, 'bar', 'baz', 'whee', 'wheee', 'wheeee' );
-	assert.deepEqual( null, obj.bar.baz, 'descending into null fails silently' );
-} );
+	$.each( {
+		'Object': plainObj,
+		'Function': funcObj,
+		'Array': arrObj
+	}, function ( type, obj ) {
+
+		QUnit.test( 'getProp( ' + type + ' )', 9, function ( assert ) {
+			assert.deepEqual(
+				ve.getProp( obj, 'foo' ),
+				3,
+				'single key'
+			);
+			assert.deepEqual(
+				ve.getProp( obj, 'bar' ),
+				{ 'baz': null, 'quux': { 'whee': 'yay' } },
+				'single key, returns object'
+			);
+			assert.deepEqual(
+				ve.getProp( obj, 'bar', 'baz' ),
+				null,
+				'two keys, returns null'
+			);
+			assert.deepEqual(
+				ve.getProp( obj, 'bar', 'quux', 'whee' ),
+				'yay',
+				'three keys'
+			);
+			assert.deepEqual(
+				ve.getProp( obj, 'x' ),
+				undefined,
+				'missing property returns undefined'
+			);
+			assert.deepEqual(
+				ve.getProp( obj, 'foo', 'bar' ),
+				undefined,
+				'missing 2nd-level property returns undefined'
+			);
+			assert.deepEqual(
+				ve.getProp( obj, 'foo', 'bar', 'baz', 'quux', 'whee' ),
+				undefined,
+				'multiple missing properties don\'t cause an error'
+			);
+			assert.deepEqual(
+				ve.getProp( obj, 'bar', 'baz', 'quux' ),
+				undefined,
+				'accessing property of null returns undefined, doesn\'t cause an error'
+			);
+			assert.deepEqual(
+				ve.getProp( obj, 'bar', 'baz', 'quux', 'whee', 'yay' ),
+				undefined,
+				'accessing multiple properties of null'
+			);
+		} );
+
+		QUnit.test( 'setProp( ' + type + ' )' , 7, function ( assert ) {
+			ve.setProp( obj, 'foo', 4 );
+			assert.deepEqual( 4, obj.foo, 'setting an existing key with depth 1' );
+
+			ve.setProp( obj, 'test', 'TEST' );
+			assert.deepEqual( 'TEST', obj.test, 'setting a new key with depth 1' );
+
+			ve.setProp( obj, 'bar', 'quux', 'whee', 'YAY' );
+			assert.deepEqual( 'YAY', obj.bar.quux.whee, 'setting an existing key with depth 3' );
+
+			ve.setProp( obj, 'bar', 'a', 'b', 'c' );
+			assert.deepEqual( 'c', obj.bar.a.b, 'setting two new keys within an existing key' );
+
+			ve.setProp( obj, 'a', 'b', 'c', 'd', 'e', 'f' );
+			assert.deepEqual( 'f', obj.a.b.c.d.e, 'setting new keys with depth 5' );
+
+			ve.setProp( obj, 'bar', 'baz', 'whee', 'wheee', 'wheeee' );
+			assert.deepEqual( null, obj.bar.baz, 'descending into null fails silently' );
+
+			ve.setProp( obj, 'foo', 'bar', 'baz', 5 );
+			assert.deepEqual( undefined, obj.foo.bar, 'descending into a non-object fails silently' );
+		} );
+	} );
+
+}() );
