@@ -15,14 +15,13 @@
  * @param {String} type Symbolic name of node type
  * @param {Number} [length] Length of content data in document
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
- * @param {Object} [internal] Reference to internal data object
  */
-ve.dm.LeafNode = function VeDmLeafNode( type, length, attributes, internal ) {
+ve.dm.LeafNode = function VeDmLeafNode( type, length, attributes ) {
 	// Mixin constructor
 	ve.LeafNode.call( this );
 
 	// Parent constructor
-	ve.dm.Node.call( this, type, length, attributes, internal );
+	ve.dm.Node.call( this, type, length, attributes );
 };
 
 /* Inheritance */

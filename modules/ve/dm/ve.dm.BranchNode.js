@@ -15,14 +15,13 @@
  * @param {String} type Symbolic name of node type
  * @param {ve.dm.Node[]} [children] Child nodes to attach
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
- * @param {Object} [internal] Reference to internal data object
  */
-ve.dm.BranchNode = function VeDmBranchNode( type, children, attributes, internal ) {
+ve.dm.BranchNode = function VeDmBranchNode( type, children, attributes ) {
 	// Mixin constructor
 	ve.BranchNode.call( this );
 
 	// Parent constructor
-	ve.dm.Node.call( this, type, 0, attributes, internal );
+	ve.dm.Node.call( this, type, 0, attributes );
 
 	if ( ve.isArray( children ) && children.length ) {
 		this.splice.apply( this, [0, 0].concat( children ) );

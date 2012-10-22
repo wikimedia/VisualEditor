@@ -13,11 +13,10 @@
  * @extends {ve.dm.BranchNode}
  * @param {ve.dm.LeafNode[]} [children] Child nodes to attach
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
- * @param {Object} [internal] Reference to internal data object
  */
-ve.dm.PreformattedNode = function VeDmPreformattedNode( children, attributes, internal ) {
+ve.dm.PreformattedNode = function VeDmPreformattedNode( children, attributes ) {
 	// Parent constructor
-	ve.dm.BranchNode.call( this, 'preformatted', children, attributes, internal );
+	ve.dm.BranchNode.call( this, 'preformatted', children, attributes );
 };
 
 /* Inheritance */

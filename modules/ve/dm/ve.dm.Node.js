@@ -15,16 +15,14 @@
  * @param {String} type Symbolic name of node type
  * @param {Number} [length] Length of content data in document
  * @param {Object} [attributes] Reference to map of attribute key/value pairs
- * @param {Object} [internal] Object with internal data to store for this node
  */
-ve.dm.Node = function VeDmNode( type, length, attributes, internal ) {
+ve.dm.Node = function VeDmNode( type, length, attributes ) {
 	// Parent constructor
 	ve.Node.call( this, type );
 
 	// Properties
 	this.length = length || 0;
 	this.attributes = attributes || {};
-	this.internal = internal || {};
 	this.doc = undefined;
 };
 
@@ -229,9 +227,6 @@ ve.dm.Node.prototype.getClonedElement = function () {
 	var retval = { 'type': this.type };
 	if ( !ve.isEmptyObject( this.attributes ) ) {
 		retval.attributes = ve.copyObject( this.attributes );
-	}
-	if ( !ve.isEmptyObject( this.internal ) ) {
-		retval.internal = ve.copyObject( this.internal );
 	}
 	return retval;
 };

@@ -17,8 +17,7 @@ function getNodeTreeSummary( node, shallow ) {
 		'getType': node.getType(),
 		'getLength': node.getLength(),
 		'getOuterLength': node.getOuterLength(),
-		'attributes': node.attributes,
-		'internal': node.internal
+		'attributes': node.attributes
 	};
 	if ( node.children !== undefined ) {
 		summary['children.length'] = node.children.length;
