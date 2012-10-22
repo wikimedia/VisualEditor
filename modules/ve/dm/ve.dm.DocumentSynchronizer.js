@@ -9,7 +9,7 @@
  * Creates an ve.dm.DocumentSynchronizer object.
  *
  * This object is a utility for collecting actions to be performed on the model tree in multiple
- * steps as the linear model is modified my a transaction processor and then processing those queued
+ * steps as the linear model is modified by a transaction processor and then processing those queued
  * actions when the transaction is done being processed.
  *
  * IMPORTANT NOTE: It is assumed that:
@@ -55,9 +55,12 @@ ve.dm.DocumentSynchronizer.synchronizers = {};
  */
 ve.dm.DocumentSynchronizer.synchronizers.annotation = function ( action ) {
 	// Queue events for all leaf nodes covered by the range
-	// TODO test me
-	var i, selection = this.document.selectNodes( action.range, 'leaves' );
+	var i,
+		adjustedRange = ve.Range.newFromTranslatedRange( action.range, this.adjustment ),
+		selection = this.document.selectNodes( adjustedRange, 'leaves' );
 	for ( i = 0; i < selection.length; i++ ) {
+		// No tree synchronization needed
+		// Queue events
 		this.queueEvent( selection[i].node, 'annotation' );
 		this.queueEvent( selection[i].node, 'update' );
 	}
@@ -73,6 +76,8 @@ ve.dm.DocumentSynchronizer.synchronizers.annotation = function ( action ) {
  * @param {Object} action
  */
 ve.dm.DocumentSynchronizer.synchronizers.attributeChange = function ( action ) {
+	// No tree synchronization needed
+	// Queue events
 	this.queueEvent( action.node, 'attributeChange', action.key, action.from, action.to );
 	this.queueEvent( action.node, 'update' );
 };
@@ -87,9 +92,12 @@ ve.dm.DocumentSynchronizer.synchronizers.attributeChange = function ( action ) {
  * @param {Object} action
  */
 ve.dm.DocumentSynchronizer.synchronizers.resize = function ( action ) {
+	// Apply length change to tree
 	action.node.adjustLength( action.adjustment );
+	// no update event needed, adjustLength causes an update event on its own
+	// FIXME however, any queued update event will still be emitted, resulting in a duplicate
+	// Update adjustment
 	this.adjustment += action.adjustment;
-	// no update needed, adjustLength causes an update event on its own
 };
 
 /**
@@ -107,11 +115,6 @@ ve.dm.DocumentSynchronizer.synchronizers.rebuild = function ( action ) {
 		adjustedOldRange = ve.Range.newFromTranslatedRange( action.oldRange, this.adjustment ),
 		selection = this.document.selectNodes( adjustedOldRange, 'siblings' );
 
-	if ( selection.length === 0 ) {
-		// WTF? Nothing to rebuild, I guess. Whatever.
-		return;
-	}
-	
 	// If the document is empty, selection[0].node will be the document (so no parent)
 	// but we won't get indexInNode either. Detect this and use index=0 in that case.
 	if ( 'indexInNode' in selection[0] || !selection[0].node.getParent() ) {
@@ -126,9 +129,11 @@ ve.dm.DocumentSynchronizer.synchronizers.rebuild = function ( action ) {
 		index = selection[0].index;
 		numNodes = selection.length;
 	}
+	// Perform rebuild in tree
 	this.document.rebuildNodes( parent, index, numNodes, adjustedOldRange.from,
 		action.newRange.getLength()
 	);
+	// Update adjustment
 	this.adjustment += action.newRange.getLength() - adjustedOldRange.getLength();
 };
 
