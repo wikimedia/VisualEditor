@@ -233,6 +233,7 @@ $wgResourceModules += array(
 
 			// ui
 			've/ui/ve.ui.js',
+			've/ui/ve.ui.CommandFactory.js',
 			've/ui/ve.ui.Inspector.js',
 			've/ui/ve.ui.Tool.js',
 			've/ui/ve.ui.Toolbar.js',

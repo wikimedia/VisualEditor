@@ -24,10 +24,12 @@ here for consistency.
 * @abstract
 * @constructor
 * @extends {Type}
+* @private
 * @static
 * @method
 * @until Text: Optional details.
 * @source
+* @context {Type} The type of the `this` value.
 * @param {Type} varName Optional description.
 * @returns {Type} Optional description.
 
