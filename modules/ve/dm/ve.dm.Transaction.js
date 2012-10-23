@@ -15,6 +15,7 @@ ve.dm.Transaction = function VeDmTransaction() {
 	this.operations = [];
 	this.lengthDifference = 0;
 	this.applied = false;
+	this.changeMarkers = {};
 };
 
 /* Static Methods */
@@ -651,4 +652,69 @@ ve.dm.Transaction.prototype.pushStopAnnotating = function ( method, annotation )
 		'bias': 'stop',
 		'annotation': annotation
 	} );
+};
+
+/**
+ * Get the change markers for this transaction. Change markers are added using setChangeMarker().
+ *
+ * @returns {Object} { offset: { markerType: number } }
+ */
+ve.dm.Transaction.prototype.getChangeMarkers = function () {
+	return this.changeMarkers;
+};
+
+/**
+ * Store a change marker to mark a change made while applying the transaction. Markers are stored
+ * in the .internal.changed property of elements in the linear model, as well as in the Transaction
+ * that effected the changes.
+ *
+ * The purpose of storing change markers in the linear model is so the linmod->HTML converter can
+ * mark what has changed relative to the HTML we originally received. For that reason, change
+ * markers only track what has changed relative to the original state of the document. This means
+ * we avoid reporting changes that cancel each other out, where possible. For instance, if an
+ * element marked 'created' is changed, this doesn't result in an additional change marker.
+ * In particular, rolling back a transaction causes all change marking done by that transaction to
+ * be undone. For that reason, change markers are stored in the Transaction object as well, so it's
+ * easy to undo a transaction's markers when rolling back.
+ *
+ * Marker types:
+ * - 'created': This element was newly created and did not exist in the original document
+ * - 'attributes': This element's attributes have changed
+ * - 'content': This element's content changed (content-containing elements only)
+ * - 'annotations': The annotations within this element changed (content-containing elements only)
+ * - 'rebuilt': This element and its children/contents changed in some way, no details available
+ *
+ * Change markers are numbers, which are incremented when setting a marker and decremented when
+ * unsetting it. This is because the same event can occur multiple times for the same element, and
+ * we want to be able to keep track of whether all the changes have canceled each other out.
+ *
+ * @param {Number} offset Linear model offset (post-transaction) of the element to mark
+ * @param {String} marker Marker type
+ * @param {Number} [increment=1] Number to add to the change marker counter
+ */
+ve.dm.Transaction.prototype.setChangeMarker = function ( offset, marker, increment ) {
+	increment = increment || 1;
+	if ( this.changeMarkers[offset] === undefined ) {
+		this.changeMarkers[offset] = {};
+	}
+	if ( this.changeMarkers[offset].created ) {
+		// Can't set any other markers on a 'created' element
+		return;
+	}
+	if ( marker === 'created' ) {
+		// Clear other markers prior to setting 'created'
+		this.changeMarkers[offset] = {};
+	}
+	if ( this.changeMarkers[offset][marker] === undefined ) {
+		this.changeMarkers[offset][marker] = increment;
+	} else {
+		this.changeMarkers[offset][marker] += increment;
+	}
+};
+
+/**
+ * Clear all change markers.
+ */
+ve.dm.Transaction.prototype.clearChangeMarkers = function () {
+	this.changeMarkers = {};
 };

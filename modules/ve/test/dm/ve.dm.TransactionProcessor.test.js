@@ -74,6 +74,7 @@ QUnit.test( 'commit/rollback', 58, function ( assert ) {
 					data[1] = ['a', new ve.AnnotationSet( [ bold ] )];
 					data[2] = ['b', new ve.AnnotationSet( [ bold ] )];
 					data[3] = ['c', new ve.AnnotationSet( [ bold, underline ] )];
+					ve.setProp( data[0], 'internal', 'changed', 'annotations', 2 );
 				}
 			},
 			'annotating content and leaf elements': {
@@ -86,6 +87,8 @@ QUnit.test( 'commit/rollback', 58, function ( assert ) {
 				'expected': function ( data ) {
 					data[38] = ['h', new ve.AnnotationSet( [ bold ] )];
 					data[39].annotations = new ve.AnnotationSet( [ bold ] );
+					ve.setProp( data[37], 'internal', 'changed', 'annotations', 1 );
+					ve.setProp( data[39], 'internal', 'changed', 'annotations', 1 );
 				}
 			},
 			'using an annotation method other than set or clear throws an exception': {
@@ -145,6 +148,9 @@ QUnit.test( 'commit/rollback', 58, function ( assert ) {
 					data[12].attributes.style = 'number';
 					data[12].attributes.test = 'abcd';
 					delete data[39].attributes['html/src'];
+					ve.setProp( data[0], 'internal', 'changed', 'attributes', 1 );
+					ve.setProp( data[12], 'internal', 'changed', 'attributes', 2 );
+					ve.setProp( data[39], 'internal', 'changed', 'attributes', 1 );
 				}
 			},
 			'changing attributes on non-element data throws an exception': {
@@ -161,6 +167,7 @@ QUnit.test( 'commit/rollback', 58, function ( assert ) {
 				],
 				'expected': function ( data ) {
 					data.splice( 1, 0, 'F', 'O', 'O' );
+					ve.setProp( data[0], 'internal', 'changed', 'content', 1 );
 				}
 			},
 			'removing text': {
@@ -170,6 +177,7 @@ QUnit.test( 'commit/rollback', 58, function ( assert ) {
 				],
 				'expected': function ( data ) {
 					data.splice( 1, 1 );
+					ve.setProp( data[0], 'internal', 'changed', 'content', 1 );
 				}
 			},
 			'replacing text': {
@@ -179,6 +187,7 @@ QUnit.test( 'commit/rollback', 58, function ( assert ) {
 				],
 				'expected': function ( data ) {
 					data.splice( 1, 1, 'F', 'O', 'O' );
+					ve.setProp( data[0], 'internal', 'changed', 'content', 1 );
 				}
 			},
 			'inserting mixed content': {
@@ -188,6 +197,7 @@ QUnit.test( 'commit/rollback', 58, function ( assert ) {
 				],
 				'expected': function ( data ) {
 					data.splice( 1, 1, 'F', 'O', 'O', {'type':'image'}, {'type':'/image'}, 'B', 'A', 'R' );
+					ve.setProp( data[0], 'internal', 'changed', 'content', 1 );
 				}
 			},
 			'converting an element': {
@@ -204,6 +214,7 @@ QUnit.test( 'commit/rollback', 58, function ( assert ) {
 					data[0].type = 'paragraph';
 					delete data[0].attributes;
 					data[4].type = '/paragraph';
+					ve.setProp( data[0], 'internal', 'changed', 'created', 1 );
 				}
 			},
 			'splitting an element': {
@@ -222,6 +233,8 @@ QUnit.test( 'commit/rollback', 58, function ( assert ) {
 						{ 'type': '/heading' },
 						{ 'type': 'heading', 'attributes': { 'level': 1 } }
 					);
+					ve.setProp( data[0], 'internal', 'changed', 'rebuilt', 1 );
+					ve.setProp( data[3], 'internal', 'changed', 'created', 1 );
 				}
 			},
 			'merging an element': {
@@ -235,6 +248,7 @@ QUnit.test( 'commit/rollback', 58, function ( assert ) {
 				],
 				'expected': function ( data ) {
 					data.splice( 57, 2 );
+					ve.setProp( data[55], 'internal', 'changed', 'content', 1 );
 				}
 			},
 			'stripping elements': {
@@ -255,6 +269,8 @@ QUnit.test( 'commit/rollback', 58, function ( assert ) {
 				'expected': function ( data ) {
 					data.splice( 10, 1 );
 					data.splice( 3, 1 );
+					ve.setProp( data[0], 'internal', 'changed', 'content', 1 );
+					ve.setProp( data[8], 'internal', 'changed', 'content', 1 );
 				}
 			}
 		};

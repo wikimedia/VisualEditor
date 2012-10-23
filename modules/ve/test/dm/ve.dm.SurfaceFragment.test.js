@@ -73,14 +73,15 @@ QUnit.test( 'expandRange', 1, function ( assert ) {
 QUnit.test( 'removeContent', 2, function ( assert ) {
 	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		surface = new ve.dm.Surface( doc ),
-		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 1, 56 ) );
+		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 1, 56 ) ),
+		expectedData = ve.copyArray( ve.dm.example.data.slice( 0, 1 ) )
+			.concat( ve.copyArray( ve.dm.example.data.slice( 4, 5 ) ) )
+			.concat( ve.copyArray( ve.dm.example.data.slice( 55 ) ) );
+	ve.setProp( expectedData[0], 'internal', 'changed', 'content', 1 );
 	fragment.removeContent();
 	assert.deepEqual(
 		doc.getData(),
-		ve.dm.example.data.slice( 0, 1 )
-			.concat( ve.dm.example.data.slice( 4, 5 ) )
-			.concat( ve.dm.example.data.slice( 55 )
-		),
+		expectedData,
 		'removing content drops fully covered nodes and strips partially covered ones'
 	);
 	assert.deepEqual(
@@ -124,15 +125,23 @@ QUnit.test( 'wrapNodes', 2, function ( assert ) {
 	assert.deepEqual(
 		doc.getData( new ve.Range( 55, 69 ) ),
 		[
-			{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
-			{ 'type': 'listItem' },
+			{
+				'type': 'list',
+				'attributes': { 'style': 'bullet' },
+				'internal': { 'changed': { 'created': 1 } }
+			},
+			{ 'type': 'listItem', 'internal': { 'changed': { 'created': 1 } } },
 			{ 'type': 'paragraph' },
 			'l',
 			{ 'type': '/paragraph' },
 			{ 'type': '/listItem' },
 			{ 'type': '/list' },
-			{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
-			{ 'type': 'listItem' },
+			{
+				'type': 'list',
+				'attributes': { 'style': 'bullet' },
+				'internal': { 'changed': { 'created': 1 } }
+			},
+			{ 'type': 'listItem', 'internal': { 'changed': { 'created': 1 } } },
 			{ 'type': 'paragraph' },
 			'm',
 			{ 'type': '/paragraph' },
@@ -149,8 +158,12 @@ QUnit.test( 'wrapNodes', 2, function ( assert ) {
 	assert.deepEqual(
 		doc.getData( new ve.Range( 9, 16 ) ),
 		[
-			{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
-			{ 'type': 'listItem' },
+			{
+				'type': 'list',
+				'attributes': { 'style': 'bullet' },
+				'internal': { 'changed': { 'created': 1 } }
+			},
+			{ 'type': 'listItem', 'internal': { 'changed': { 'created': 1 } } },
 			{ 'type': 'paragraph' },
 			'd',
 			{ 'type': '/paragraph' },
@@ -172,8 +185,12 @@ QUnit.test( 'wrapAllNodes', 2, function ( assert ) {
 	assert.deepEqual(
 		doc.getData( new ve.Range( 55, 65 ) ),
 		[
-			{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
-			{ 'type': 'listItem' },
+			{
+				'type': 'list',
+				'attributes': { 'style': 'bullet' },
+				'internal': { 'changed': { 'created': 1 } }
+			},
+			{ 'type': 'listItem', 'internal': { 'changed': { 'created': 1 } } },
 			{ 'type': 'paragraph' },
 			'l',
 			{ 'type': '/paragraph' },
@@ -193,8 +210,12 @@ QUnit.test( 'wrapAllNodes', 2, function ( assert ) {
 	assert.deepEqual(
 		doc.getData( new ve.Range( 9, 16 ) ),
 		[
-			{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
-			{ 'type': 'listItem' },
+			{
+				'type': 'list',
+				'attributes': { 'style': 'bullet' },
+				'internal': { 'changed': { 'created': 1 } }
+			},
+			{ 'type': 'listItem', 'internal': { 'changed': { 'created': 1 } } },
 			{ 'type': 'paragraph' },
 			'd',
 			{ 'type': '/paragraph' },
