@@ -59,14 +59,32 @@ ve.Surface.defaultOptions = {
 
 /* Methods */
 
+/**
+ * Gets a reference to the surface model.
+ *
+ * @method
+ * @returns {ve.dm.Surface} Surface model
+ */
 ve.Surface.prototype.getModel = function () {
 	return this.model;
 };
 
+/**
+ * Gets a reference to the document model.
+ *
+ * @method
+ * @returns {ve.dm.Document} Document model
+ */
 ve.Surface.prototype.getDocumentModel = function () {
 	return this.documentModel;
 };
 
+/**
+ * Gets a reference to the surface view.
+ *
+ * @method
+ * @returns {ve.ce.Surface} Surface view
+ */
 ve.Surface.prototype.getView = function () {
 	return this.view;
 };

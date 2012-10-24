@@ -609,9 +609,9 @@ ve.dm.Document.prototype.getAnnotatedRangeFromSelection = function ( range, anno
  * Gets an array of common annotations across a range.
  *
  * @method
- * @param {Number} offset Offset to get annotations for
+ * @param {ve.Range} range Range to get annotations for
  * @param {Boolean} [all] Get all annotations found within the range, not just those that cover it
- * @returns {Object} A copy of all annotation objects offset is covered by
+ * @returns {ve.AnnotationSet} All annotation objects range is covered by
  */
 ve.dm.Document.prototype.getAnnotationsFromRange = function ( range, all ) {
 	var i,

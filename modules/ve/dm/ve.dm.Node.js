@@ -211,7 +211,7 @@ ve.dm.Node.prototype.getAttribute = function ( key ) {
 };
 
 /**
- * Gets a reference to this node's attributes object
+ * Gets a reference to this node's attributes object.
  *
  * @method
  * @returns {Object} Attributes object (by reference)
