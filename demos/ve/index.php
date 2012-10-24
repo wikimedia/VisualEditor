@@ -153,6 +153,7 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 		<script src="../../modules/ve/ce/nodes/ve.ce.TableSectionNode.js"></script>
 		<script src="../../modules/ve/ce/nodes/ve.ce.TextNode.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.js"></script>
+		<script src="../../modules/ve/ui/ve.ui.CommandFactory.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.Inspector.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.Tool.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.Toolbar.js"></script>
