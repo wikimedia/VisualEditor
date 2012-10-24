@@ -103,6 +103,34 @@ ve.dm.Node.prototype.isContent = function () {
 };
 
 /**
+ * Checks if this node has an ancestor with given type and attributes.
+ *
+ * @method
+ * @returns {Boolean} Node is content
+ */
+ve.dm.Node.prototype.hasMatchingAncestor = function ( type, attributes ) {
+	var key,
+		node = this;
+	// Traverse up to matching node
+	while ( node && node.getType() !== type ) {
+		node = node.getParent();
+		// Stop at root
+		if ( node === null ) {
+			return false;
+		}
+	}
+	// Check attributes
+	if ( attributes ) {
+		for ( key in attributes ) {
+			if ( node.getAttribute( key ) !== attributes[key] ) {
+				return false;
+			}
+		}
+	}
+	return true;
+};
+
+/**
  * Gets the inner length.
  *
  * @method
