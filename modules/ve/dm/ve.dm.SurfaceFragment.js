@@ -261,6 +261,28 @@ ve.dm.SurfaceFragment.prototype.getText = function () {
 };
 
 /**
+ * Get annotations in fragment.
+ *
+ * By default, this will only get annotations that completely cover the fragment. Use the {all}
+ * argument to get all annotations that occur within the fragment.
+ *
+ * @method
+ * @param {Boolean} [all] Get annotations cover some of the fragment
+ * @returns {ve.AnnotationSet} All annotation objects range is covered by
+ */
+ve.dm.SurfaceFragment.prototype.getAnnotations = function ( all ) {
+	// Handle null fragment
+	if ( !this.surface ) {
+		return new ve.AnnotationSet();
+	}
+	if ( this.range.getLength() ) {
+		return this.document.getAnnotationsFromRange( this.range, all );
+	} else {
+		return this.document.getAnnotationsFromOffset( this.range.from );
+	}
+};
+
+/**
  * Get all leaf nodes covered by the fragment.
  *
  * @see {ve.Document.selectNodes} for more information about the return value.
