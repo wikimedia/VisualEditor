@@ -1,31 +1,35 @@
 /**
- * VisualEditor user interface AnnotationButtonTool class.
+ * VisualEditor user interface ClearButtonTool class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Creates an ve.ui.AnnotationButtonTool object.
+ * Creates an ve.ui.ClearButtonTool object.
  *
- * @abstract
  * @class
  * @constructor
  * @extends {ve.ui.ButtonTool}
  * @param {ve.ui.Toolbar} toolbar
- * @param {Object} annotation
  */
-ve.ui.AnnotationButtonTool = function VeUiAnnotationButtonTool( toolbar, annotation ) {
+ve.ui.ClearButtonTool = function VeUiClearButtonTool( toolbar ) {
 	// Parent constructor
 	ve.ui.ButtonTool.call( this, toolbar );
 
-	// Properties
-	this.annotation = annotation;
+	// Initialization
+	this.setDisabled( true );
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.AnnotationButtonTool, ve.ui.ButtonTool );
+ve.inheritClass( ve.ui.ClearButtonTool, ve.ui.ButtonTool );
+
+/* Static Members */
+
+ve.ui.ClearButtonTool.static.name = 'clear';
+
+ve.ui.ClearButtonTool.static.titleMessage = 'visualeditor-clearbutton-tooltip';
 
 /* Methods */
 
@@ -34,8 +38,8 @@ ve.inheritClass( ve.ui.AnnotationButtonTool, ve.ui.ButtonTool );
  *
  * @method
  */
-ve.ui.AnnotationButtonTool.prototype.onClick = function () {
-	this.toolbar.getSurface().execute( 'annotation', 'toggle', this.annotation.name );
+ve.ui.ClearButtonTool.prototype.onClick = function () {
+	this.toolbar.getSurface().execute( 'annotation', 'clearAll' );
 };
 
 /**
@@ -46,6 +50,10 @@ ve.ui.AnnotationButtonTool.prototype.onClick = function () {
  * @param {ve.dm.AnnotationSet} full Annotations that cover all of the current selection
  * @param {ve.dm.AnnotationSet} partial Annotations that cover some or all of the current selection
  */
-ve.ui.AnnotationButtonTool.prototype.onUpdateState = function ( nodes, full ) {
-	this.setActive( full.hasAnnotationWithName( this.annotation.name ) );
+ve.ui.ClearButtonTool.prototype.onUpdateState = function ( nodes, full, partial ) {
+	this.setDisabled( partial.isEmpty() );
 };
+
+/* Registration */
+
+ve.ui.toolFactory.register( 'clear', ve.ui.ClearButtonTool );

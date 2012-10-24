@@ -5,6 +5,10 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
+.ve-ui-toolbar {
+	padding-bottom: 1px;
+}
+
 .ve-ui-toolbarGroup {
 	display: inline-block;
 	padding: 0.25em;
@@ -27,134 +31,4 @@
 	font-size: 0.8em;
 	color: #555;
 	vertical-align: top;
-}
-
-.ve-ui-toolbarButtonTool,
-.ve-ui-toolbarDropdownTool {
-	display: inline-block;
-	border: solid 1px transparent;
-	-webkit-border-radius: 0.125em;
-	-moz-border-radius: 0.125em;
-	-o-border-radius: 0.125em;
-	border-radius: 0.125em;
-	cursor: pointer;
-	vertical-align: top;
-}
-
-.ve-ui-toolbarButtonTool {
-	padding: 0.25em;
-	height: 1.5em;
-	width: 1.5em;
-	margin-right: 0.125em;
-}
-
-.ve-ui-toolbarButtonTool:before {
-	content: " ";
-	position: absolute;
-	display: block;
-	height: 1.5em;
-	width: 1.5em;
-	background-position: center center;
-	background-repeat: no-repeat;
-}
-
-.ve-ui-toolbarButtonTool:hover,
-.ve-ui-toolbarDropdownTool:hover {
-	border-color: #eee;
-}
-
-.ve-ui-toolbarButtonTool:active,
-.ve-ui-toolbarButtonTool-down {
-	border-color: #ddd;
-	/* @embed */
-	background-image: url(images/fade-down.png);
-	background-position: left top;
-	background-repeat: repeat-x;
-	-webkit-box-shadow: inset 0 0.05em 0.125em 0 rgba(0, 0, 0, 0.07);
-	-moz-box-shadow: inset 0 0.05em 0.125em 0 rgba(0, 0, 0, 0.07);
-	box-shadow: inset 0 0.05em 0.125em 0 rgba(0, 0, 0, 0.07);
-}
-
-.ve-ui-toolbarButtonTool-disabled,
-.ve-ui-toolbarButtonTool-disabled:before {
-	filter: alpha(opacity=50);
-	opacity: 0.5;
-}
-
-.ve-ui-toolbarButtonTool-disabled:hover {
-	border-color: transparent;
-}
-
-.ve-ui-toolbarDropdownTool {
-	position: relative;
-	border-color: #ddd;
-	-webkit-border-radius: 0.25em;
-	-moz-border-radius: 0.25em;
-	-o-border-radius: 0.25em;
-	border-radius: 0.25em;
-	background-color: white;
-}
-.ve-ui-toolbarDropdownTool-label {
-	overflow: hidden;
-	height: 2em;
-	padding-right: 0.25em;
-	padding-left: 0.75em;
-	line-height: 2em;
-}
-
-.ve-ui-toolbarDropdownTool-label span {
-	font-size: 0.8em;
-}
-
-.ve-ui-toolbarDropdownTool-icon {
-	position: absolute;
-	right: 0;
-	width: 2em;
-	height: 2em;
-	/* @see ve.ui.Icons */
-	background-position: 50% 50%;
-	background-repeat: no-repeat;
-}
-
-.ve-ui-toolbarDropdownTool .ve-ui-menu {
-	left: -1px;
-	top: -1px;
-}
-
-.ve-ui-toolbarDropdownTool-format {
-	width: 8em;
-}
-
-.ve-ui-menu-item[rel="heading-1"] span {
-	font-size: 188%;
-	font-weight: normal;
-}
-
-.ve-ui-menu-item[rel="heading-2"] span {
-	font-size: 150%;
-	font-weight: normal;
-}
-
-.ve-ui-menu-item[rel="heading-3"] span {
-	font-size: 132%;
-	font-weight: bold;
-}
-
-.ve-ui-menu-item[rel="heading-4"] span {
-	font-size: 116%;
-	font-weight: bold;
-}
-
-.ve-ui-menu-item[rel="heading-5"] span {
-	font-size: 100%;
-	font-weight: bold;
-}
-
-.ve-ui-menu-item[rel="heading-6"] span {
-	font-size: 80%;
-	font-weight: bold;
-}
-
-.ve-ui-menu-item[rel="pre"] span {
-	font-family: monospace, "Courier New";
 }

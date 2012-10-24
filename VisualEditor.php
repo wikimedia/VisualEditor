@@ -251,18 +251,30 @@ $wgResourceModules += array(
 			've/ui/ve.ui.Menu.js',
 			've/ui/ve.ui.Tool.js',
 			've/ui/ve.ui.Toolbar.js',
+			've/ui/ve.ui.ToolFactory.js',
 			'jquery/jquery.multiSuggest.js',
 
 			've/ui/inspectors/ve.ui.LinkInspector.js',
 
 			've/ui/tools/ve.ui.ButtonTool.js',
 			've/ui/tools/ve.ui.AnnotationButtonTool.js',
-			've/ui/tools/ve.ui.ClearButtonTool.js',
-			've/ui/tools/ve.ui.HistoryButtonTool.js',
-			've/ui/tools/ve.ui.ListButtonTool.js',
+			've/ui/tools/ve.ui.InspectorButtonTool.js',
 			've/ui/tools/ve.ui.IndentationButtonTool.js',
+			've/ui/tools/ve.ui.ListButtonTool.js',
 			've/ui/tools/ve.ui.DropdownTool.js',
-			've/ui/tools/ve.ui.FormatDropdownTool.js'
+
+			've/ui/tools/buttons/ve.ui.BoldButtonTool.js',
+			've/ui/tools/buttons/ve.ui.ItalicButtonTool.js',
+			've/ui/tools/buttons/ve.ui.ClearButtonTool.js',
+			've/ui/tools/buttons/ve.ui.LinkButtonTool.js',
+			've/ui/tools/buttons/ve.ui.BulletButtonTool.js',
+			've/ui/tools/buttons/ve.ui.NumberButtonTool.js',
+			've/ui/tools/buttons/ve.ui.IndentButtonTool.js',
+			've/ui/tools/buttons/ve.ui.OutdentButtonTool.js',
+			've/ui/tools/buttons/ve.ui.RedoButtonTool.js',
+			've/ui/tools/buttons/ve.ui.UndoButtonTool.js',
+
+			've/ui/tools/dropdowns/ve.ui.FormatDropdownTool.js',
 		),
 		'styles' => array(
 			// ce
@@ -275,6 +287,7 @@ $wgResourceModules += array(
 			've/ui/styles/ve.ui.Menu.css',
 			've/ui/styles/ve.ui.Surface.css',
 			've/ui/styles/ve.ui.Toolbar.css',
+			've/ui/styles/ve.ui.Tool.css',
 		),
 		'dependencies' => array(
 			'jquery',

@@ -118,6 +118,13 @@ ve.Surface.prototype.execute = function ( action, method ) {
 	obj[method].apply( obj, Array.prototype.slice.call( arguments, 2 ) );
 };
 
+/**
+ * Initializes the toolbar.
+ *
+ * This method uses {this.options} for it's configuration.
+ *
+ * @method
+ */
 ve.Surface.prototype.setupToolbars = function () {
 	var surface = this;
 
@@ -144,7 +151,7 @@ ve.Surface.prototype.setupToolbars = function () {
 			}
 			surface.toolbars[name].instance = new ve.ui.Toolbar(
 				surface.toolbars[name].$,
-				surface.view,
+				surface,
 				config.tools
 			);
 		}
@@ -152,10 +159,12 @@ ve.Surface.prototype.setupToolbars = function () {
 };
 
 /*
- * This code is responsible for switching toolbar into floating mode when scrolling ( with
- * keyboard or mouse ).
+ * Overlays the toolbar to the top of the screen when it would normally be out of view.
+ *
  * TODO: Determine if this would be better in ui.toolbar vs here.
  * TODO: This needs to be refactored so that it only works on the main editor top tool bar.
+ *
+ * @method
  */
 ve.Surface.prototype.floatTopToolbar = function () {
 	if ( !this.toolbars.top ) {

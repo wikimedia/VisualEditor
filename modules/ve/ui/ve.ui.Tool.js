@@ -12,32 +12,40 @@
  * @abstract
  * @constructor
  * @param {ve.ui.Toolbar} toolbar
- * @param {String} name
  */
-ve.ui.Tool = function VeUiTool( toolbar, name, title ) {
+ve.ui.Tool = function VeUiTool( toolbar ) {
 	// Properties
 	this.toolbar = toolbar;
-	this.name = name;
-	this.title = title;
-	this.$ = $( '<div class="ve-ui-tool"></div>' ).attr( 'title', this.title );
+	this.$ = $( '<div class="ve-ui-tool"></div>' );
 
 	// Events
-	this.toolbar.addListenerMethods( this, {
-		'updateState': 'onUpdateState',
-		'clearState': 'onClearState'
-	} );
+	this.toolbar.addListenerMethods(
+		this, { 'updateState': 'onUpdateState', 'clearState': 'onClearState' }
+	);
 };
-
-/* Static Members */
-
-ve.ui.Tool.tools = {};
 
 /* Methods */
 
+/**
+ * Responds to the toolbar state being updated.
+ *
+ * This is an abstract method that must be overridden in a concrete subclass.
+ *
+ * @abstract
+ * @method
+ */
 ve.ui.Tool.prototype.onUpdateState = function () {
 	throw new Error( 'Tool.onUpdateState not implemented in this subclass:' + this.constructor );
 };
 
+/**
+ * Responds to the toolbar state being cleared.
+ *
+ * This is an abstract method that must be overridden in a concrete subclass.
+ *
+ * @abstract
+ * @method
+ */
 ve.ui.Tool.prototype.onClearState = function () {
-	this.$.removeClass( 've-ui-toolbarButtonTool-down' );
+	throw new Error( 'Tool.onClearState not implemented in this subclass:' + this.constructor );
 };

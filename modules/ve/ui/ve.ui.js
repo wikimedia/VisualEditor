@@ -10,4 +10,5 @@
  */
 ve.ui = {
 	//'inspectorFactory': Initialized in ve.ui.InspectorFactory.js
+	//'toolFactory': Initialized in ve.ui.ToolFactory.js
 };
