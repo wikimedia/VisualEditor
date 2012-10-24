@@ -11,45 +11,36 @@
  * @class
  * @constructor
  * @extends {ve.EventEmitter}
- * @param {ve.ui.Toolbar} toolbar
  * @param {ve.ui.Context} context
  */
-ve.ui.Inspector = function VeUiInspector( toolbar, context ) {
+ve.ui.Inspector = function VeUiInspector( context ) {
 	// Inheritance
 	ve.EventEmitter.call( this );
 
-	if ( !toolbar || !context ) {
+	if ( !context ) {
 		return;
 	}
 
 	// Properties
-	this.toolbar = toolbar;
 	this.context = context;
-	this.$ = $( '<div class="ve-ui-inspector"></div>', context.inspectorDoc );
+	this.$ = $( '<div class="ve-ui-inspector"></div>', context.frameView.doc );
 	this.$closeButton = $(
-		'<div class="ve-ui-inspector-button ve-ui-inspector-closeButton"></div>',
-		context.inspectorDoc
+		'<div class="ve-ui-inspector-button ve-ui-inspector-closeButton ve-ui-icon-close"></div>',
+		context.frameView.doc
 	);
-	this.$acceptButton = $(
-		'<div class="ve-ui-inspector-button ve-ui-inspector-acceptButton"></div>',
-		context.inspectorDoc
-	);
-	this.$form = $( '<form>', context.inspectorDoc );
+	this.$form = $( '<form>', context.frameView.doc );
 
 	// DOM Changes
-	this.$.append( this.$closeButton, this.$acceptButton, this.$form );
+	this.$.append(
+		this.$closeButton,
+		$( '<div class="ve-ui-inspector-icon ve-ui-icon-' + this.constructor.static.icon + '"></div>' ),
+		this.$form
+	);
 
 	// Events
 	this.$closeButton.on( {
 		'click': function () {
-			context.closeInspector( false );
-		}
-	} );
-	this.$acceptButton.on( {
-		'click': function () {
-			if ( $( this ).hasClass( 've-ui-inspector-button-disabled' ) ) {
-				return;
-			}
+			// Close inspector with save.
 			context.closeInspector( true );
 		}
 	} );
@@ -63,11 +54,13 @@ ve.ui.Inspector = function VeUiInspector( toolbar, context ) {
 
 ve.inheritClass( ve.ui.Inspector, ve.EventEmitter );
 
+ve.ui.Inspector.static.icon = 'button';
+
 /* Methods */
 
 ve.ui.Inspector.prototype.onSubmit = function ( e ) {
 	e.preventDefault();
-	if ( this.$acceptButton.hasClass( 've-ui-inspector-button-disabled' ) ) {
+	if ( this.$.hasClass( 've-ui-inspector-disabled' ) ) {
 		return;
 	}
 	this.context.closeInspector( true );
@@ -90,7 +83,6 @@ ve.ui.Inspector.prototype.open = function () {
 	}
 	// Show
 	this.$.show();
-	this.context.closeMenu();
 	// Open
 	if ( this.onOpen ) {
 		this.onOpen();

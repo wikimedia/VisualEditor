@@ -22,7 +22,8 @@ ve.Surface = function VeSurface( parent, dom, options ) {
 	this.documentModel = new ve.dm.Document( ve.dm.converter.getDataFromDom( dom ) );
 	this.options = ve.extendObject( true, ve.Surface.defaultOptions, options );
 	this.model = new ve.dm.Surface( this.documentModel );
-	this.view = new ve.ce.Surface( this.$, this.model );
+	this.view = new ve.ce.Surface( this.$, this.model, this );
+	this.context = new ve.ui.Context( this );
 	this.toolbars = {};
 
 	// DOM Changes
@@ -87,6 +88,16 @@ ve.Surface.prototype.getDocumentModel = function () {
  */
 ve.Surface.prototype.getView = function () {
 	return this.view;
+};
+
+/**
+ * Gets a reference to the context user interface.
+ *
+ * @method
+ * @returns {ve.ui.Context} Context user interface
+ */
+ve.Surface.prototype.getContext = function () {
+	return this.context;
 };
 
 /**

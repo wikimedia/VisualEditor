@@ -9,5 +9,5 @@
  * Namespace for all VisualEditor user interface classes, static methods and static properties.
  */
 ve.ui = {
-	//
+	//'inspectorFactory': Initialized in ve.ui.InspectorFactory.js
 };

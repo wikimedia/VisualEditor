@@ -243,12 +243,14 @@ $wgResourceModules += array(
 
 			// ui
 			've/ui/ve.ui.js',
+			've/ui/ve.ui.Context.js',
+			've/ui/ve.ui.Frame.js',
 			've/ui/ve.ui.CommandFactory.js',
 			've/ui/ve.ui.Inspector.js',
+			've/ui/ve.ui.InspectorFactory.js',
+			've/ui/ve.ui.Menu.js',
 			've/ui/ve.ui.Tool.js',
 			've/ui/ve.ui.Toolbar.js',
-			've/ui/ve.ui.Context.js',
-			've/ui/ve.ui.Menu.js',
 			'jquery/jquery.multiSuggest.js',
 
 			've/ui/inspectors/ve.ui.LinkInspector.js',

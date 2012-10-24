@@ -8,105 +8,80 @@
 .ve-ui-context {
 	position: absolute;
 	z-index: 2;
+	visibility: hidden;
 }
 
-.ve-ui-context-icon {
+.ve-ui-context-callout {
 	position: absolute;
+	/* @embed */
+	background-image: url(images/callout.svg);
 	background-repeat: no-repeat;
 	width: 15px;
-	height: 15px;
-	display: none;
+	height: 8px;
 	cursor: pointer;
-	border: solid 1px #ccc;
-	-webkit-border-radius: 1em;
-	-moz-border-radius: 1em;
-	-o-border-radius: 1em;
-	border-radius: 1em;
-	background-color: #fff;
-	-webkit-box-shadow: 0 0.25em 1em 0 rgba(0, 0, 0, 0.25);
-	-moz-box-shadow: 0 0.25em 1em 0 rgba(0, 0, 0, 0.25);
-	box-shadow: 0 0.25em 1em 0 rgba(0, 0, 0, 0.25);
+	right: -7px;
 	z-index: 4;
 }
-.ve-ui-context-icon-active {
-	-webkit-box-shadow: 0 0.125em 0.25em 0 rgba(0, 0, 0, 0.125);
-	-moz-box-shadow: 0 0.125em 0.25em 0 rgba(0, 0, 0, 0.125);
-	box-shadow: 0 0.125em 0.25em 0 rgba(0, 0, 0, 0.125);
-}
-.ve-ui-context-position-start .ve-ui-context-icon {
-	top: -12px;
-	left: -8px;
-}
 
-.ve-ui-context-position-end .ve-ui-context-icon {
-	top: -6px;
-	left: -8px;
-}
-
-.ve-ui-context-position-above .ve-ui-context-icon {
-	/* @see ve.ui.Icons */
-	background-position: 50% 1px;
-}
-
-.ve-ui-context-position-below .ve-ui-context-icon {
-	/* @see ve.ui.Icons */
-	background-position: 50% 2px;
-}
-.ve-ui-context-position-above .ve-ui-context-icon:hover,
-.ve-ui-context-position-below .ve-ui-context-icon:hover {
-	border-color: #b3d6f6;
-}
-
-.ve-ui-context-position-above .ve-menuView {
-	bottom: 2px;
-}
-
-.ve-ui-context-position-below .ve-menuView {
-	top: 2px;
-}
-
-.ve-ui-context-inspectors {
+.ve-ui-context-inner {
+	margin-top: 7px;
 	position: absolute;
-}
-
-.ve-ui-context-position-above .ve-ui-context-inspectors {
-	bottom: -8px;
-}
-
-.ve-ui-context-position-below .ve-ui-context-inspectors {
-	top: 2px;
-}
-
-.ve-ui-context-panels {
-	position: absolute;
+	overflow: hidden;
 	border: solid 1px #ccc;
 	-webkit-border-radius: 0.25em;
 	-moz-border-radius: 0.25em;
 	-o-border-radius: 0.25em;
 	border-radius: 0.25em;
 	background-color: #fff;
-	-webkit-box-shadow: 0 0.25em 1em 0 rgba(0, 0, 0, 0.25);
-	-moz-box-shadow: 0 0.25em 1em 0 rgba(0, 0, 0, 0.25);
-	box-shadow: 0 0.25em 1em 0 rgba(0, 0, 0, 0.25);
-	padding: 0.33em 0;
+	-webkit-box-shadow: 0 0.15em 0.5em 0 rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 0 0.15em 0.5em 0 rgba(0, 0, 0, 0.2);
+	box-shadow: 0 0.15em 0.5em 0 rgba(0, 0, 0, 0.2);
 }
 
-.ve-ui-context-panel {
-	display: none;
-	padding: 1em;
+.ve-ui-context-inspectors, .ve-ui-context-menu {
+	position: absolute;
+	z-index: 2;
 }
 
 .ve-ui-context-toolbar {
-	padding: 0.33em 0.66em;
 	white-space: nowrap;
 }
 
-.ve-ui-context .ve-ui-toolbarGroup {
+.ve-ui-context-toolbar .ve-ui-toolbarGroup {
 	border: none;
 }
 
-.ve-ui-context-overlay {
+.ve-ui-context-toolbar .ve-ui-buttonTool {
+	padding: 0.25em;
+	height: 1.25em;
+	width: 1.25em;
+	margin: 0.05em;
+	border: none;
+}
+
+.ve-ui-context-toolbar .ve-ui-buttonTool:before {
+	content: " ";
+	position: absolute;
+	display: block;
+	height: 1.25em;
+	width: 1.25em;
+	background-position: center center;
+	background-repeat: no-repeat;
+	border: none;
+}
+
+.ve-ui-context-toolbar .ve-ui-buttonTool:hover {
+	border: none;
+}
+
+.ve-ui-context-toolbar .ve-ui-buttonTool:active,
+.ve-ui-context-toolbar .ve-ui-buttonTool-active {
+	background-image: none;
+}
+
+.ve-ui-context-frame-overlay {
 	position: absolute;
 	top: 0;
 	left: 0;
+	margin-top: 4px;
 }

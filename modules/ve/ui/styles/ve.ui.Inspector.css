@@ -8,15 +8,6 @@
 .ve-ui-inspector {
 	font-family: sans-serif;
 	position: absolute;
-	border: solid 1px #ccc;
-	-webkit-border-radius: 0.25em;
-	-moz-border-radius: 0.25em;
-	-o-border-radius: 0.25em;
-	border-radius: 0.25em;
-	background-color: #fff;
-	-webkit-box-shadow: 0 0.15em 0.5em 0 rgba(0, 0, 0, 0.2);
-	-moz-box-shadow: 0 0.15em 0.5em 0 rgba(0, 0, 0, 0.2);
-	box-shadow: 0 0.15em 0.5em 0 rgba(0, 0, 0, 0.2);
 	padding: 0.75em;
 	padding-top: 2.5em;
 	min-width: 15em;
@@ -25,14 +16,14 @@
 
 .ve-ui-inspector-button {
 	position: absolute;
-	top: 0.25em;
-	width: 2em;
-	height: 2em;
+	top: 0.5em;
+	width: 1.5em;
+	height: 1.5em;
 	background-position: center center;
 	background-repeat: no-repeat;
 	cursor: pointer;
-	filter: alpha(opacity=75);
-	opacity: 0.75;
+	filter: alpha(opacity=8);
+	opacity: 0.8;
 }
 
 .ve-ui-inspector-button:hover {
@@ -42,29 +33,36 @@
 
 .ve-ui-inspector-button.ve-ui-inspector-button-disabled,
 .ve-ui-inspector-button.ve-ui-inspector-button-disabled:hover {
-	filter: alpha(opacity=25);
-	opacity: 0.25;
+	filter: alpha(opacity=50);
+	opacity: 0.5;
 }
 
 .ve-ui-inspector-closeButton {
-	right: 0.25em;
+	left: 0.5em;
 	/* @see ve.ui.Icons */
 }
 
-.ve-ui-inspector-acceptButton {
-	right: 2.25em;
-	/* @see ve.ui.Icons */
+.ve-ui-inspector-icon {
+	position: absolute;
+	left: 2.25em;
+	top: 0.5em;
+	width: 2em;
+	height: 1.5em;
+	background-position: right center;
+	background-repeat: no-repeat;
+	border-left: solid 1px #eee;
+	filter: alpha(opacity=8);
+	opacity: 0.8;
 }
 
 .ve-ui-inspector-clearButton {
-	right: 4.25em;
+	right: 0.25em;
 	/* @see ve.ui.Icons */
 }
 
 .ve-ui-inspector form {
 	margin: 0;
-	padding: 0.75em 0 0 0;
-	border-top: solid 1px #ddd;
+	padding: 0;
 	white-space: nowrap;
 	font-size: 0.8em;
 }
@@ -101,11 +99,11 @@
 .ve-ui-inspector-title {
 	position: absolute;
 	top: 0;
-	left: 0.75em;
-	height: 2.5em;
-	line-height: 2.5em;
-	font-weight: bold;
-	color: #666;
+	left: 5.125em;
+	height: 2.8em;
+	line-height: 2.8em;
+	color: #333;
+	font-size: 0.9em;
 }
 
 .ve-iframe-overlay {
