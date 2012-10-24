@@ -358,7 +358,8 @@ ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, type, data 
 		return this;
 	}
 	var tx,
-		annotation = { 'type': type };
+		annotation = ve.dm.annotationFactory.create( type );
+	// HACK: This seems wrong, the way we create annotations should be refactored
 	if ( data ) {
 		annotation.data = data;
 	}
