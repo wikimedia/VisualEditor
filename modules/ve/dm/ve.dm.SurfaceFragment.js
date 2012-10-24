@@ -368,6 +368,9 @@ ve.dm.SurfaceFragment.prototype.select = function () {
  *
  * To avoid problems identified in bug 33108, use the {ve.dm.SurfaceFragment.trimRange} method.
  *
+ * TODO: Optionally take an annotation set instead of type and data arguments and set/clear multiple
+ * annotations in a single transaction.
+ *
  * @method
  * @param {String} method Mode of annotation, either 'set' or 'clear'
  * @param {String} type Annotation type, for example: 'textStyle/bold'

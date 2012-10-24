@@ -157,6 +157,16 @@ $wgResourceModules += array(
 			've/ve.Document.js',
 			've/ve.OrderedHashSet.js',
 			've/ve.AnnotationSet.js',
+			've/ve.Action.js',
+			've/ve.ActionFactory.js',
+
+			// actions
+			've/actions/ve.AnnotationAction.js',
+			've/actions/ve.FormatAction.js',
+			've/actions/ve.HistoryAction.js',
+			've/actions/ve.IndentationAction.js',
+			've/actions/ve.InspectorAction.js',
+			've/actions/ve.ListAction.js',
 
 			// dm
 			've/dm/ve.dm.js',

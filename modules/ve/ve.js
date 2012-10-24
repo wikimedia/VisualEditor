@@ -14,6 +14,7 @@
 	ve = {
 		// List of instances of ve.Surface
 		'instances': []
+		//'actionFactory' instantiated in ve.ActionFactory.js
 	};
 
 	/* Utility Functions */

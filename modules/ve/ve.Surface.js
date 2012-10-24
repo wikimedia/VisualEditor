@@ -89,6 +89,24 @@ ve.Surface.prototype.getView = function () {
 	return this.view;
 };
 
+/**
+ * Executes an action.
+ *
+ * @method
+ * @param {String} action Name of action
+ * @param {String} method Name of method
+ * @param {Mixed} [...] Additional arguments for action
+ */
+ve.Surface.prototype.execute = function ( action, method ) {
+	// Validate method
+	if ( !ve.actionFactory.doesActionSupportMethod( action, method ) ) {
+		throw new Error( 'Invalid method: ' + method );
+	}
+	// Create an action object and execute the method on it
+	var obj = ve.actionFactory.create( action, this );
+	obj[method].apply( obj, Array.prototype.slice.call( arguments, 2 ) );
+};
+
 ve.Surface.prototype.setupToolbars = function () {
 	var surface = this;
 
