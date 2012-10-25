@@ -766,13 +766,14 @@ $messages['it'] = array(
 );
 
 /** Japanese (日本語)
+ * @author Penn Station
  * @author Shirayuki
  */
 $messages['ja'] = array(
-	'visualeditor' => '視覚的エディター',
-	'visualeditor-desc' => 'MediaWiki用の視覚的エディター',
+	'visualeditor' => 'ビジュアルエディター',
+	'visualeditor-desc' => 'MediaWiki用のビジュアルエディター',
 	'visualeditor-feedback-prompt' => 'フィードバックを送信',
-	'visualeditor-feedback-dialog-title' => '視覚的エディターのサンドボックスについてフィードバックを送信',
+	'visualeditor-feedback-dialog-title' => 'ビジュアルエディターのサンドボックスについてフィードバックを送信',
 	'visualeditor-notification-saved' => '$1への変更を保存しました。',
 	'visualeditor-notification-created' => '$1を作成しました。',
 	'visualeditor-ca-editsource' => 'ソースを編集',
