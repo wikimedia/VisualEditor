@@ -20,6 +20,7 @@
 ve.dm.TransactionProcessor = function VeDmTransactionProcessor( doc, transaction, reversed ) {
 	// Properties
 	this.document = doc;
+	this.transaction = transaction;
 	this.operations = transaction.getOperations();
 	this.synchronizer = new ve.dm.DocumentSynchronizer( doc );
 	this.reversed = reversed;
@@ -59,6 +60,9 @@ ve.dm.TransactionProcessor.processors = {};
  * @param {ve.dm.Transaction} transaction Transaction to apply
  */
 ve.dm.TransactionProcessor.commit = function ( doc, transaction ) {
+	if ( transaction.hasBeenApplied() ) {
+		throw new Error( 'Cannot commit a transaction that has already been committed' );
+	}
 	new ve.dm.TransactionProcessor( doc, transaction, false ).process();
 };
 
@@ -71,6 +75,9 @@ ve.dm.TransactionProcessor.commit = function ( doc, transaction ) {
  * @param {ve.dm.Transaction} transaction Transaction to apply
  */
 ve.dm.TransactionProcessor.rollback = function ( doc, transaction ) {
+	if ( !transaction.hasBeenApplied() ) {
+		throw new Error( 'Cannot roll back a transaction that has not been committed' );
+	}
 	new ve.dm.TransactionProcessor( doc, transaction, true ).process();
 };
 
@@ -400,6 +407,7 @@ ve.dm.TransactionProcessor.prototype.process = function () {
 		this.executeOperation( op );
 	}
 	this.synchronizer.synchronize();
+	this.transaction.toggleApplied();
 };
 
 /**

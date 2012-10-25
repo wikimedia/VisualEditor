@@ -14,6 +14,7 @@
 ve.dm.Transaction = function VeDmTransaction() {
 	this.operations = [];
 	this.lengthDifference = 0;
+	this.applied = false;
 };
 
 /* Static Methods */
@@ -484,6 +485,29 @@ ve.dm.Transaction.prototype.getOperations = function () {
 ve.dm.Transaction.prototype.getLengthDifference = function () {
 	return this.lengthDifference;
 };
+
+/**
+ * Checks whether this transaction has already been applied.
+ *
+ * A transaction that has been applied can be rolled back, at which point it will no longer be
+ * considered applied. In other words, this function returns false if the transaction can be
+ * committed, and true if the transaction can be rolled back.
+ *
+ * @method
+ * @returns {Boolean}
+ */
+ve.dm.Transaction.prototype.hasBeenApplied = function () {
+	return this.applied;
+};
+
+/**
+ * Toggle the 'applied' state of this transaction. Should only be called after committing or
+ * rolling back the transaction.
+ * @see {ve.dm.Transaction.prototype.hasBeenApplied}
+ */
+ve.dm.Transaction.prototype.toggleApplied = function () {
+	this.applied = !this.applied;
+}
 
 /**
  * Translate an offset based on a transaction.
