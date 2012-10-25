@@ -589,15 +589,15 @@
 	 */
 	ve.setProp = function ( obj /*, keys ... , value */ ) {
 		var i, prop = obj;
-		if ( obj === undefined || obj === null ) {
+		if ( Object( obj ) !== obj ) {
 			return;
 		}
 		for ( i = 1; i < arguments.length - 2; i++ ) {
-			if ( prop[arguments[i]] === null ) {
-				return;
-			}
 			if ( prop[arguments[i]] === undefined ) {
 				prop[arguments[i]] = {};
+			}
+			if ( prop[arguments[i]] === null || typeof prop[arguments[i]] !== 'object' ) {
+				return;
 			}
 			prop = prop[arguments[i]];
 		}
