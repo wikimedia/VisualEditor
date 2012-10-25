@@ -231,21 +231,26 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 			),
 			'leaves'
 		);
-		if ( removeHasStructure || insertHasStructure ) {
+		node = selection[0].node;
+		if (
+			!removeHasStructure && !insertHasStructure &&
+			selection.length === 1 &&
+			node && node.getType() === 'text'
+		) {
+			// Text-only replacement
+			// Queue a resize for the text node
+			this.synchronizer.pushResize( node, insert.length - remove.length );
+		} else {
 			// Replacement is not exclusively text
 			// Rebuild all covered nodes
 			range = new ve.Range(
-				selection[0].nodeRange.start, selection[selection.length - 1].nodeRange.end
+				selection[0].nodeRange.start,
+				selection[selection.length - 1].nodeRange.end
 			);
 			this.synchronizer.pushRebuild( range,
 				new ve.Range( range.start + this.adjustment,
 					range.end + this.adjustment + insert.length - remove.length )
 			);
-		} else {
-			// Text-only replacement
-			// Queue a resize for this node
-			node = selection[0].node;
-			this.synchronizer.pushResize( node, insert.length - remove.length );
 		}
 		// Advance the cursor
 		this.cursor += insert.length;
