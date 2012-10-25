@@ -1,5 +1,7 @@
 ( function ( QUnit ) {
 
+QUnit.config.requireExpects = true;
+
 /**
  * Builds a summary of a node tree.
  *
@@ -14,11 +16,12 @@
 function getNodeTreeSummary( node, shallow ) {
 	var i,
 		summary = {
-		'getType': node.getType(),
-		'getLength': node.getLength(),
-		'getOuterLength': node.getOuterLength(),
-		'attributes': node.attributes
-	};
+			'getType': node.getType(),
+			'getLength': node.getLength(),
+			'getOuterLength': node.getOuterLength(),
+			'attributes': node.attributes
+		};
+
 	if ( node.children !== undefined ) {
 		summary['children.length'] = node.children.length;
 		if ( !shallow ) {
@@ -44,8 +47,9 @@ function getNodeTreeSummary( node, shallow ) {
 function getNodeSelectionSummary( selection ) {
 	var i,
 		summary = {
-		'length': selection.length
-	};
+			'length': selection.length
+		};
+
 	if ( selection.length ) {
 		summary.results = [];
 		for ( i = 0; i < selection.length; i++ ) {
@@ -69,18 +73,19 @@ function getNodeSelectionSummary( selection ) {
  * Summaries include node name, text, attributes and recursive summaries of children.
  *
  * @method
- * @param {HTMLElement} element Element to summarize
- * @returns {Object} Summary of element
+ * @param {HTMLElement} element Element to summarize.
+ * @returns {Object} Summary of element.
  */
 function getDomElementSummary( element ) {
-	var $element = $( element ),
+	var i,
+		$element = $( element ),
 		summary = {
 			'type': element.nodeName.toLowerCase(),
 			'text': $element.text(),
 			'attributes': {},
 			'children': []
-		},
-		i;
+		};
+
 	// Gather attributes
 	for ( i = 0; i < element.attributes.length; i++ ) {
 		summary.attributes[element.attributes[i].name] = element.attributes[i].value;
@@ -108,6 +113,7 @@ QUnit.assert.equalNodeSelection = function ( actual, expected, message ) {
 	var i,
 		actualSummary = getNodeSelectionSummary( actual ),
 		expectedSummary = getNodeSelectionSummary( expected );
+
 	for ( i = 0; i < actual.length; i++ ) {
 		if ( expected[i] && expected[i].node !== actual[i].node ) {
 			QUnit.push( false, actualSummary, expectedSummary,
@@ -124,6 +130,7 @@ QUnit.assert.equalNodeSelection = function ( actual, expected, message ) {
 QUnit.assert.equalDomElement = function ( actual, expected, message ) {
 	var actualSummary = getDomElementSummary( actual ),
 		expectedSummary = getDomElementSummary( expected );
+
 	QUnit.push(
 		QUnit.equiv( actualSummary, expectedSummary ), actualSummary, expectedSummary, message
 	);

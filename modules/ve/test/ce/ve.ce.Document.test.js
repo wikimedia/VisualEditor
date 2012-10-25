@@ -9,7 +9,7 @@ QUnit.module( 've.ce.Document' );
 
 /* Tests */
 
-QUnit.test( 'selectNodes', function ( assert ) {
+QUnit.test( 'selectNodes', 21, function ( assert ) {
 	var i, len,
 		doc = new ve.ce.Document( new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ) ),
 		cases = ve.example.getSelectNodesCases( doc );
