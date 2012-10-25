@@ -43,7 +43,7 @@ function runConstructorTests( assert, constructor, cases ) {
 /* Tests */
 
 QUnit.test( 'newFromInsertion', function ( assert ) {
-	var doc = new ve.dm.Document( ve.dm.example.data ),
+	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		doc2 = new ve.dm.Document( [ { 'type': 'paragraph' }, { 'type': '/paragraph' } ] ),
 		i, key,
 		cases = {
@@ -220,8 +220,8 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 } );
 
 QUnit.test( 'newFromRemoval', function ( assert ) {
-	var alienDoc = new ve.dm.Document( ve.dm.example.alienData ),
-		doc = new ve.dm.Document( ve.dm.example.data ),
+	var alienDoc = new ve.dm.Document( ve.copyArray( ve.dm.example.alienData ) ),
+		doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		i, key,
 		cases = {
 		'content in first element': {
@@ -464,7 +464,7 @@ QUnit.test( 'newFromRemoval', function ( assert ) {
 } );
 
 QUnit.test( 'newFromAttributeChange', function ( assert ) {
-	var doc = new ve.dm.Document( ve.dm.example.data ),
+	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		cases = {
 		'first element': {
 			'args': [doc, 0, 'level', 2],
@@ -505,7 +505,7 @@ QUnit.test( 'newFromAttributeChange', function ( assert ) {
 
 QUnit.test( 'newFromAnnotation', function ( assert ) {
 	var bold = ve.dm.example.createAnnotation( ve.dm.example.bold ),
-		doc = new ve.dm.Document( ve.dm.example.data ),
+		doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		cases = {
 		'over plain text': {
 			'args': [doc, new ve.Range( 1, 2 ), 'set', bold],
@@ -606,7 +606,7 @@ QUnit.test( 'newFromAnnotation', function ( assert ) {
 } );
 
 QUnit.test( 'newFromContentBranchConversion', function ( assert ) {
-	var doc = new ve.dm.Document( ve.dm.example.data ),
+	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		i, key,
 		cases = {
 		'range inside a heading, convert to paragraph': {
@@ -675,7 +675,7 @@ QUnit.test( 'newFromContentBranchConversion', function ( assert ) {
 } );
 
 QUnit.test( 'newFromWrap', function ( assert ) {
-	var doc = new ve.dm.Document( ve.dm.example.data ),
+	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		i, key,
 		cases = {
 		'changes a heading to a paragraph': {
