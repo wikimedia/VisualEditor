@@ -15,7 +15,7 @@ QUnit.test( 'getDocument', 1, function ( assert ) {
 	assert.strictEqual( ds.getDocument(), doc );
 } );
 
-QUnit.test( 'synchronize', 2, function ( assert ) {
+QUnit.test( 'synchronize', 6, function ( assert ) {
 	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		ds = new ve.dm.DocumentSynchronizer( doc ),
 		firstTextNodeUpdates = 0,
