@@ -282,16 +282,7 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 						prevCursor + opRemove.length - this.adjustment
 					), 'siblings' );
 					for ( i = 0; i < selection.length; i++ ) {
-						// .nodeRange is the inner range, we need the
-						// outer range (including opening and closing)
-						if ( selection[i].node.isWrapped() ) {
-							affectedRanges.push( new ve.Range(
-								selection[i].nodeRange.start - 1,
-								selection[i].nodeRange.end + 1
-							) );
-						} else {
-							affectedRanges.push( selection[i].nodeRange );
-						}
+						affectedRanges.push( selection[i].nodeOuterRange );
 					}
 				}
 				// Walk through the remove and insert data
