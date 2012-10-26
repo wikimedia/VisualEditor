@@ -845,7 +845,7 @@ QUnit.test( 'isContentData', 1, function ( assert ) {
 	}
 } );
 
-QUnit.test( 'rebuildNodes', function ( assert ) {
+QUnit.test( 'rebuildNodes', 2, function ( assert ) {
 	var tree,
 		doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		documentNode = doc.getDocumentNode();
@@ -1302,10 +1302,11 @@ QUnit.test( 'getNearestStructuralOffset', function ( assert ) {
 	}
 } );
 
-QUnit.test( 'selectNodes', function ( assert ) {
+QUnit.test( 'selectNodes', 21, function ( assert ) {
 	var i,
 		doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		cases = ve.example.getSelectNodesCases( doc );
+
 	for ( i = 0; i < cases.length; i++ ) {
 		assert.equalNodeSelection( cases[i].actual, cases[i].expected, cases[i].msg );
 	}

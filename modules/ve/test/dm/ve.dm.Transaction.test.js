@@ -42,10 +42,10 @@ function runConstructorTests( assert, constructor, cases ) {
 
 /* Tests */
 
-QUnit.test( 'newFromInsertion', function ( assert ) {
-	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
+QUnit.test( 'newFromInsertion', 13, function ( assert ) {
+	var i, key,
+		doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		doc2 = new ve.dm.Document( [ { 'type': 'paragraph' }, { 'type': '/paragraph' } ] ),
-		i, key,
 		cases = {
 		'paragraph before first element': {
 			'args': [doc, 0, [{ 'type': 'paragraph' }, '1', { 'type': '/paragraph' }]],
@@ -219,10 +219,10 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 	runConstructorTests( assert, ve.dm.Transaction.newFromInsertion, cases );
 } );
 
-QUnit.test( 'newFromRemoval', function ( assert ) {
-	var alienDoc = new ve.dm.Document( ve.copyArray( ve.dm.example.alienData ) ),
+QUnit.test( 'newFromRemoval', 15, function ( assert ) {
+	var i, key,
+		alienDoc = new ve.dm.Document( ve.copyArray( ve.dm.example.alienData ) ),
 		doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
-		i, key,
 		cases = {
 		'content in first element': {
 			'args': [doc, new ve.Range( 1, 3 )],
@@ -463,7 +463,7 @@ QUnit.test( 'newFromRemoval', function ( assert ) {
 	runConstructorTests( assert, ve.dm.Transaction.newFromRemoval, cases );
 } );
 
-QUnit.test( 'newFromAttributeChange', function ( assert ) {
+QUnit.test( 'newFromAttributeChange', 4, function ( assert ) {
 	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		cases = {
 		'first element': {
@@ -503,7 +503,7 @@ QUnit.test( 'newFromAttributeChange', function ( assert ) {
 	runConstructorTests( assert, ve.dm.Transaction.newFromAttributeChange, cases );
 } );
 
-QUnit.test( 'newFromAnnotation', function ( assert ) {
+QUnit.test( 'newFromAnnotation', 4, function ( assert ) {
 	var bold = ve.dm.example.createAnnotation( ve.dm.example.bold ),
 		doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		cases = {
@@ -605,7 +605,7 @@ QUnit.test( 'newFromAnnotation', function ( assert ) {
 	runConstructorTests( assert, ve.dm.Transaction.newFromAnnotation, cases );
 } );
 
-QUnit.test( 'newFromContentBranchConversion', function ( assert ) {
+QUnit.test( 'newFromContentBranchConversion', 2, function ( assert ) {
 	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		i, key,
 		cases = {
@@ -674,9 +674,9 @@ QUnit.test( 'newFromContentBranchConversion', function ( assert ) {
 	);
 } );
 
-QUnit.test( 'newFromWrap', function ( assert ) {
-	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
-		i, key,
+QUnit.test( 'newFromWrap', 8, function ( assert ) {
+	var i, key,
+		doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		cases = {
 		'changes a heading to a paragraph': {
 			'args': [doc, new ve.Range( 1, 4 ), [ { 'type': 'heading', 'attributes': { 'level': 1 } } ], [ { 'type': 'paragraph' } ], [], []],
@@ -845,7 +845,7 @@ QUnit.test( 'translateOffsetReversed', function ( assert ) {
 	}
 } );
 
-QUnit.test( 'pushRetain', function ( assert ) {
+QUnit.test( 'pushRetain', 4, function ( assert ) {
 	var cases = {
 		'retain': {
 			'calls': [['pushRetain', 5]],
@@ -861,7 +861,7 @@ QUnit.test( 'pushRetain', function ( assert ) {
 	runBuilderTests( assert, cases );
 } );
 
-QUnit.test( 'pushReplace', function ( assert ) {
+QUnit.test( 'pushReplace', 16, function ( assert ) {
 	var i, key, cases = {
 		'insert': {
 			'calls': [
@@ -1001,7 +1001,7 @@ QUnit.test( 'pushReplace', function ( assert ) {
 	runBuilderTests( assert, cases );
 } );
 
-QUnit.test( 'pushReplaceElementAttribute', function ( assert ) {
+QUnit.test( 'pushReplaceElementAttribute', 4, function ( assert ) {
 	var cases = {
 		'replace element attribute': {
 			'calls': [
@@ -1042,7 +1042,7 @@ QUnit.test( 'pushReplaceElementAttribute', function ( assert ) {
 	runBuilderTests( assert, cases );
 } );
 
-QUnit.test( 'push*Annotating', function ( assert ) {
+QUnit.test( 'push*Annotating', 8, function ( assert ) {
 	var cases = {
 		'start annotating': {
 			'calls': [

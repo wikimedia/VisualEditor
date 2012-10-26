@@ -9,8 +9,9 @@ QUnit.module( 've.dm.Converter' );
 
 /* Tests */
 
-QUnit.test( 'getDataElementFromDomElement', function ( assert ) {
+QUnit.test( 'getDataElementFromDomElement', 20, function ( assert ) {
 	var msg, conversion;
+
 	for ( msg in ve.dm.example.conversions ) {
 		conversion = ve.dm.example.conversions[msg];
 		assert.deepEqual(
@@ -21,8 +22,9 @@ QUnit.test( 'getDataElementFromDomElement', function ( assert ) {
 	}
 } );
 
-QUnit.test( 'getDomElementFromDataElement', function ( assert ) {
+QUnit.test( 'getDomElementFromDataElement', 20, function ( assert ) {
 	var msg, conversion;
+
 	for ( msg in ve.dm.example.conversions ) {
 		conversion = ve.dm.example.conversions[msg];
 		assert.equalDomElement(
@@ -33,9 +35,10 @@ QUnit.test( 'getDomElementFromDataElement', function ( assert ) {
 	}
 } );
 
-QUnit.test( 'getDataFromDom', function ( assert ) {
+QUnit.test( 'getDataFromDom', 30, function ( assert ) {
 	var msg,
 		cases = ve.dm.example.domToDataCases;
+
 	for ( msg in cases ) {
 		if ( cases[msg].html !== null ) {
 			ve.dm.example.preprocessAnnotations( cases[msg].data );
@@ -48,9 +51,10 @@ QUnit.test( 'getDataFromDom', function ( assert ) {
 	}
 } );
 
-QUnit.test( 'getDomFromData', function ( assert ) {
+QUnit.test( 'getDomFromData', 31, function ( assert ) {
 	var msg,
 		cases = ve.dm.example.domToDataCases;
+
 	for ( msg in cases ) {
 		ve.dm.example.preprocessAnnotations( cases[msg].data );
 		assert.equalDomElement(

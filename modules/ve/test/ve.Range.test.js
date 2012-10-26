@@ -9,7 +9,7 @@ QUnit.module( 've.Range' );
 
 /* Tests */
 
-QUnit.test( 'Basic usage', function ( assert ) {
+QUnit.test( 'Basic usage', 8, function ( assert ) {
 	var range;
 
 	range = new ve.Range( 100 , 200 );
