@@ -24,6 +24,8 @@ ve.ce.SurfaceObserver = function VeCeSurfaceObserver( documentView ) {
 	this.polling = false;
 	this.timeoutId = null;
 	this.frequency = 250; //ms
+
+	// Initialization
 	this.clear();
 };
 
@@ -54,8 +56,10 @@ ve.ce.SurfaceObserver.prototype.clear = function () {
 /**
  * Starts polling.
  *
+ * If {async} is false or undefined the first poll cycle will occur immediately and synchronously.
+ *
  * @method
- * @param {boolean} async
+ * @param {Boolean} async Poll the first time asynchronously
  */
 ve.ce.SurfaceObserver.prototype.start = function ( async ) {
 	this.polling = true;
@@ -65,8 +69,11 @@ ve.ce.SurfaceObserver.prototype.start = function ( async ) {
 /**
  * Stops polling.
  *
+ * If {poll} is false or undefined than no final poll cycle will occur and changes can be lost. If
+ * it's true then a final poll cycle will occur immediately and synchronously.
+ *
  * @method
- * @param {boolean} poll
+ * @param {Boolean} poll Poll one last time before stopping future polling
  */
 ve.ce.SurfaceObserver.prototype.stop = function ( poll ) {
 	if ( this.polling === true ) {
@@ -80,10 +87,14 @@ ve.ce.SurfaceObserver.prototype.stop = function ( poll ) {
 };
 
 /**
+ * Poll for changes.
+ *
+ * If {async} is false or undefined then polling will occcur asynchronously.
+ *
  * TODO: fixing selection in certain cases, handling selection across multiple nodes in Firefox
  *
  * @method
- * @param {boolean} async
+ * @param {Boolean} async Poll asynchronously
  */
 ve.ce.SurfaceObserver.prototype.poll = function ( async ) {
 	var delayPoll, rangySelection, range, node, text, hash;
@@ -93,7 +104,7 @@ ve.ce.SurfaceObserver.prototype.poll = function ( async ) {
 		this.timeoutId = null;
 	}
 
-	delayPoll = ve.bind( function (async ) {
+	delayPoll = ve.bind( function ( async ) {
 		this.timeoutId = setTimeout(
 			ve.bind( this.poll, this ),
 			async === true ? 0 : this.frequency
