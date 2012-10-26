@@ -35,7 +35,7 @@ class ApiVisualEditor extends ApiBase {
 					)
 				);
 
-				if ( $parsed ) {
+				if ( $parsed !== false ) {
 					$result = array(
 						'result' => 'success',
 						'parsed' => $parsed
