@@ -22,13 +22,15 @@ ve.Action = function VeAction( surface ) {
 
 /* Static Members */
 
-/**
- * List of allowed methods for this action.
- *
- * To avoid use of methods not intended to be executed via surface.execute(), the methods must be
- * whitelisted here. This information is checked by ve.Surface before executing an action.
- *
- * @static
- * @member
- */
-ve.FormatAction.static.methods = [];
+ve.FormatAction.static = {
+	/**
+	 * List of allowed methods for this action.
+	 *
+	 * To avoid use of methods not intended to be executed via surface.execute(), the methods must be
+	 * whitelisted here. This information is checked by ve.Surface before executing an action.
+	 *
+	 * @static
+	 * @member
+	 */
+	'methods': []
+};
