@@ -22,7 +22,7 @@ ve.Action = function VeAction( surface ) {
 
 /* Static Members */
 
-ve.FormatAction.static = {
+ve.Action.static = {
 	/**
 	 * List of allowed methods for this action.
 	 *
