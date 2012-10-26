@@ -19,6 +19,8 @@
  * this.data by overriding getAnnotationData(). Subclasses can read from this.data but must not
  * write to it directly.
  *
+ * TODO: Make this constructor optionally accept a data object instead of an element.
+ *
  * @class
  * @abstract
  * @constructor
