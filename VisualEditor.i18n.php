@@ -722,6 +722,40 @@ $messages['ia'] = array(
 	'visualeditor-saveerror' => 'Error durante le salveguarda del datos in le servitor: $1.',
 );
 
+/** Icelandic (íslenska)
+ * @author Snævar
+ */
+$messages['is'] = array(
+	'visualeditor-feedback-prompt' => 'Skilja eftir svörun',
+	'visualeditor-notification-saved' => 'Breytingarnar þínar á $1 hafa verið vistaðar.',
+	'visualeditor-notification-created' => '$1 hefur verið búin til.',
+	'visualeditor-ca-editsource' => 'Breyta uppruna',
+	'visualeditor-linkinspector-title' => 'Breyta tengli',
+	'visualeditor-linkinspector-label-pagetitle' => 'Titill síðu',
+	'visualeditor-linkinspector-suggest-new-page' => 'Ný síða',
+	'visualeditor-linkinspector-suggest-external-link' => 'Veftengill',
+	'visualeditor-formatdropdown-title' => 'Breyta fyrirsögn',
+	'visualeditor-formatdropdown-format-paragraph' => 'Fyrirsögn',
+	'visualeditor-formatdropdown-format-heading1' => 'Fyrirsögn 1',
+	'visualeditor-formatdropdown-format-heading2' => 'Fyrirsögn 2',
+	'visualeditor-formatdropdown-format-heading3' => 'Fyrirsögn 3',
+	'visualeditor-formatdropdown-format-heading4' => 'Fyrirsögn 4',
+	'visualeditor-formatdropdown-format-heading5' => 'Fyrirsögn 5',
+	'visualeditor-formatdropdown-format-heading6' => 'Fyrirsögn 6',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Feitletra',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Skáletra',
+	'visualeditor-annotationbutton-link-tooltip' => 'Tengill',
+	'visualeditor-indentationbutton-indent-tooltip' => 'Auka inndrátt',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Minnka inndrátt',
+	'visualeditor-listbutton-number-tooltip' => 'Tölusettur listi',
+	'visualeditor-listbutton-bullet-tooltip' => 'Punktalisti',
+	'visualeditor-clearbutton-tooltip' => 'Fjarlægja stílsnið',
+	'visualeditor-historybutton-undo-tooltip' => 'Taka aftur',
+	'visualeditor-historybutton-redo-tooltip' => 'Endurgera',
+	'visualeditor-viewpage-savewarning' => 'Ertu viss um að þú viljir fara í skoðunarham án þess að vista fyrst ?',
+	'visualeditor-editsummary' => 'Lýstu því hvað þú hefur breytt',
+);
+
 /** Italian (italiano)
  * @author Beta16
  * @author Darth Kule
@@ -781,6 +815,7 @@ $messages['ja'] = array(
 	'visualeditor-linkinspector-label-pagetitle' => 'ページ名',
 	'visualeditor-linkinspector-suggest-existing-page' => '既存のページ',
 	'visualeditor-linkinspector-suggest-new-page' => '新規ページ',
+	'visualeditor-linkinspector-suggest-external-link' => 'ウェブ リンク',
 	'visualeditor-formatdropdown-title' => '書式の変更',
 	'visualeditor-formatdropdown-format-paragraph' => '段落',
 	'visualeditor-formatdropdown-format-heading1' => '見出し 1',
