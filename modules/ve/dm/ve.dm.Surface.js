@@ -32,14 +32,29 @@ ve.inheritClass( ve.dm.Surface, ve.EventEmitter );
 
 /* Methods */
 
+/**
+ * Start tracking state changes in history.
+ *
+ * @method
+ */
 ve.dm.Surface.prototype.startHistoryTracking = function () {
 	this.historyTrackingInterval = setInterval( ve.bind( this.breakpoint, this ), 750 );
 };
 
+/**
+ * Stop tracking state changes in history.
+ *
+ * @method
+ */
 ve.dm.Surface.prototype.stopHistoryTracking = function () {
 	clearInterval( this.historyTrackingInterval );
 };
 
+/**
+ * Removes all states from history.
+ *
+ * @method
+ */
 ve.dm.Surface.prototype.purgeHistory = function () {
 	this.selection = null;
 	this.smallStack = [];
@@ -47,12 +62,38 @@ ve.dm.Surface.prototype.purgeHistory = function () {
 	this.undoIndex = 0;
 };
 
+/**
+ * Gets a list of all history states.
+ *
+ * @method
+ * @returns {Array[]} List of transaction stacks
+ */
 ve.dm.Surface.prototype.getHistory = function () {
 	if ( this.smallStack.length > 0 ) {
 		return this.bigStack.slice( 0 ).concat( [{ 'stack': this.smallStack.slice(0) }] );
 	} else {
 		return this.bigStack.slice( 0 );
 	}
+};
+
+/**
+ * Checks if there is a state to redo.
+ *
+ * @method
+ * @returns {Boolean} Has a future state
+ */
+ve.dm.Surface.prototype.hasFutureState = function() {
+	return this.undoIndex > 0;
+};
+
+/**
+ * Checks if there is a state to undo.
+ *
+ * @method
+ * @returns {Boolean} Has a past state
+ */
+ve.dm.Surface.prototype.hasPastState = function() {
+	return this.bigStack.length - this.undoIndex > 0;
 };
 
 /**
@@ -169,6 +210,12 @@ ve.dm.Surface.prototype.annotate = function ( method, annotation ) {
 	this.emit( 'annotationChange' );
 };
 
+/**
+ * Sets a history state breakpoint.
+ *
+ * @method
+ * @param {ve.Range} selection New selection range
+ */
 ve.dm.Surface.prototype.breakpoint = function ( selection ) {
 	if ( this.smallStack.length > 0 ) {
 		this.bigStack.push( {
@@ -180,6 +227,12 @@ ve.dm.Surface.prototype.breakpoint = function ( selection ) {
 	}
 };
 
+/**
+ * Steps backwards in history.
+ *
+ * @method
+ * @returns {ve.Range} Selection or null if no further state could be reached
+ */
 ve.dm.Surface.prototype.undo = function () {
 	var item, i, transaction, selection;
 	this.breakpoint();
@@ -202,6 +255,12 @@ ve.dm.Surface.prototype.undo = function () {
 	return null;
 };
 
+/**
+ * Steps forwards in history.
+ *
+ * @method
+ * @returns {ve.Range} Selection or null if no further state could be reached
+ */
 ve.dm.Surface.prototype.redo = function () {
 	var selection, item, i;
 	this.breakpoint();

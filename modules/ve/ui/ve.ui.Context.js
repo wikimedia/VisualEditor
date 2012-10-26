@@ -10,238 +10,216 @@
  *
  * @class
  * @constructor
- * @param surfaceView
+ * @param surface
  * @param {jQuery} $overlay DOM selection to add nodes to
  */
-ve.ui.Context = function VeUiContext( surfaceView, $overlay ) {
-	if ( !surfaceView ) {
+ve.ui.Context = function VeUiContext( surface, $overlay ) {
+	if ( !surface ) {
 		return;
 	}
 
 	// Properties
-	this.surfaceView = surfaceView;
+	this.surface = surface;
+	this.surfaceModel = surface.getModel();
+
 	this.inspectors = {};
 	this.inspector = null;
 	this.position = null;
-	this.clicking = false;
-	this.$ = $( '<div class="ve-ui-context"></div>' );
-	this.$icon = $( '<div class="ve-ui-context-icon"></div>' );
-	this.$toolbar = $( '<div class="ve-ui-context-toolbar"></div>' );
-	this.toolbarView = new ve.ui.Toolbar(
-		this.$toolbar,
-		this.surfaceView,
-		[{ 'name': 'textStyle', 'items' : [ 'bold', 'italic', 'link', 'clear' ] }]
-	);
-	this.menuView = new ve.ui.Menu( [ { 'name': 'tools', '$': this.$toolbar } ], null, this.$ );
+	this.visible = false;
 
-	// DOM Changes
-	this.$.append( this.$icon );
+	// Base elements
+	this.$ = $( '<div class="ve-ui-context"></div>' );
+	this.$callout = $( '<div class="ve-ui-context-callout"></div>' );
+	this.$inner = $( '<div class="ve-ui-context-inner"></div>' )
+		.appendTo( this.$ );
+	this.$menu = $( '<div class="ve-ui-context-menu"></div>' )
+		.appendTo( this.$inner );
+
+	// Inspectors
+	this.$inspectors = $( '<div class="ve-ui-context-inspectors"></div>' )
+		.appendTo ( this.$inner );
+	this.$overlay = $( '<div class="ve-ui-context-frame-overlay"></div>' )
+		.appendTo( this.$ );
+
+	// Append base
+	this.$.prepend( this.$callout );
 	( $overlay || $( 'body' ) ).append( this.$ );
 
-	// Events
-	this.$icon.on( {
-		'mousedown': ve.bind( this.onMouseDown, this ),
-		'mouseup': ve.bind( this.onMouseUp, this )
-	} );
-	this.surfaceView.getDocument().getDocumentNode().$.on( {
+	// Create Frame for inspectors.
+	this.frameView = new ve.ui.Frame( {
+		'stylesheets': [
+			ve.init.platform.getModulesUrl() + '/ve/ui/styles/ve.ui.Inspector.css',
+			ve.init.platform.getModulesUrl() +
+						( window.devicePixelRatio > 1 ?
+							'/ve/ui/styles/ve.ui.Inspector.Icons-vector.css' :
+							'/ve/ui/styles/ve.ui.Inspector.Icons-raster.css' )
+		]
+	}, this.$inspectors );
+
+	this.surface.getView().getDocument().getDocumentNode().$.on( {
 		'focus': ve.bind( this.onDocumentFocus, this ),
 		'blur': ve.bind( this.onDocumentBlur, this )
 	} );
 
-	// Initialization
-	this.setupInspectorSpace();
+	this.surfaceModel.on( 'change', ve.bind( this.onChange, this ) );
 };
 
-/* Methods */
+/* Static Members */
 
-ve.ui.Context.prototype.setupInspectorSpace = function () {
-	var $styleLink,
-		$iconLink;
+// Debounced onChange method bound to model change event triggers context update
+ve.ui.Context.prototype.onChange = ve.debounce( function ( transaction, selection ) {
+	if ( selection ) {
+		ve.bind( ve.ui.Context.prototype.update.call( this ), this );
+	}
+}, 250 );
 
-	// Inspector container
-	this.$inspectors = $( '<div class="ve-ui-context-inspectors"></div>' );
+/**
+ * Updates the context icon.
+ *
+ * @method
+ */
+ve.ui.Context.prototype.update = function () {
+	var doc = this.surfaceModel.getDocument(),
+		sel = this.surfaceModel.getSelection(),
+		annotations = null,
+		inspectors = [],
+		name,
+		i;
 
-	// Overlay in main document scope for positioning elements over iframe.
-	this.$iframeOverlay = $( '<div class="ve-ui-context-overlay"></div>' );
-
-	// Create and append an iframe to contain inspectors.
-	// NOTE: Inspectors are required to be inside the iframe to prevent loss of content selection.
-	this.$inspectorFrame = $( '<iframe frameborder="0"></iframe>' );
-
-	// Attach inspectors and overlays
-	this.$.append( this.$inspectors.append( this.$iframeOverlay, this.$inspectorFrame ) );
-
-	// Iframe document reference.
-	this.inspectorDoc = this.$inspectorFrame.prop( 'contentWindow' ).document;
-
-	// Write a container element to the iframe.
-	// NOTE: This is required for cross browser appending.
-	this.inspectorDoc.write( '<div class="ve-ui-context-overlay-wrapper"></div>' );
-	this.inspectorDoc.close();
-	this.$inspectorWrapper = $( this.inspectorDoc ).find( '.ve-ui-context-overlay-wrapper' );
-
-	// Create iframe style element.
-	$styleLink =
-		$( '<link>', this.inspectorDoc )
-			.attr( {
-				'rel': 'stylesheet',
-				'type': 'text/css',
-				'media': 'screen',
-				'href': ve.init.platform.getModulesUrl() + '/ve/ui/styles/ve.ui.Inspector.css'
-			} );
-	// Create vector or raster icon style element.
-	$iconLink =
-		$( '<link>', this.inspectorDoc )
-			.attr( {
-				'rel': 'stylesheet',
-				'type': 'text/css',
-				'media': 'screen',
-				'href': ve.init.platform.getModulesUrl() +
-						( window.devicePixelRatio > 1 ?
-							'/ve/ui/styles/ve.ui.Inspector.Icons-vector.css' :
-							'/ve/ui/styles/ve.ui.Inspector.Icons-raster.css' )
-			} );
-
-	// Append style elements to head.
-	$( this.inspectorDoc ).find( 'head' )
-		.append( $styleLink )
-		.append( $iconLink );
-
-	// Set iframe body styles.
-	$( 'body', this.inspectorDoc ).css( {
-		'padding': '0px 5px',
-		'margin': 0
-	} );
-	// Hide inspectors.
-	this.hideInspectors();
-
-	// Intitialize link inspector.
-	this.addInspector( 'link', new ve.ui.LinkInspector( this.toolbarView, this ) );
-};
-
-ve.ui.Context.prototype.onDocumentFocus = function () {
-	$( window ).on( 'resize.ve-ui-context scroll.ve-ui-context',
-		ve.bind( this.surfaceView.updateContextIcon, this.surfaceView ) );
-};
-
-ve.ui.Context.prototype.onDocumentBlur = function () {
-	$( window ).off( 'resize.ve-ui-context scroll.ve-ui-context' );
-};
-
-ve.ui.Context.prototype.onMouseDown = function ( e ) {
-	this.clicking = true;
-	e.preventDefault();
-	return false;
-};
-
-ve.ui.Context.prototype.onMouseUp = function ( e ) {
-	if ( this.clicking && e.which === 1 ) {
-		if ( this.inspector ) {
-			this.closeInspector();
-		} else {
-			if ( this.isMenuOpen() ) {
-				this.closeMenu();
-			} else {
-				this.openMenu();
+	if ( doc.getText( sel ).length > 0 ) {
+		// Clearing out the toolbar & menu to rebuild.
+		// TODO: Consider more efficient implementation.
+		this.$menu.empty();
+		// Get annotations.
+		annotations = doc.getAnnotationsFromRange( sel ).get();
+		// Look for inspectors that match annotations.
+		for ( i = 0; i < annotations.length; i++ ) {
+			name = annotations[i].name.split('/')[0];
+			// Add inspector on demand.
+			if ( this.initInspector( name ) ) {
+				inspectors.push( name );
 			}
 		}
+		if ( inspectors.length > 0 ) {
+			// Toolbar
+			this.$toolbar = $( '<div class="ve-ui-context-toolbar"></div>' );
+			// Create inspector toolbar
+			this.toolbarView = new ve.ui.Toolbar(
+				this.$toolbar,
+				this.surface,
+				[{ 'name': 'inspectors', 'items' : inspectors }]
+			);
+			// Note: Menu attaches the provided $tool element to the container.
+			this.menuView = new ve.ui.Menu(
+				[ { 'name': 'tools', '$': this.$toolbar } ], // Tools
+				null, // Callback
+				this.$menu, // Container
+				this.$inner // Parent
+			);
+			this.set();
+		} else if ( !this.inspector ) {
+			this.unset();
+		}
+	} else {
+		this.unset();
 	}
-	this.clicking = false;
 };
 
-ve.ui.Context.prototype.getSurfaceView = function () {
-	return this.surfaceView;
+ve.ui.Context.prototype.unset = function () {
+	if ( this.inspector ) {
+		this.closeInspector( false );
+		this.obscure( this.$inspectors );
+		this.$overlay.hide();
+	}
+	if ( this.menuView ) {
+		this.obscure( this.$menu );
+	}
+	this.close();
 };
 
-ve.ui.Context.prototype.openMenu = function () {
-	this.menuView.open();
-	this.$icon.addClass( 've-ui-context-icon-active' );
+ve.ui.Context.prototype.obscure = function ( el ) {
+	el.css( {
+		'top': -5000
+	} );
 };
 
-ve.ui.Context.prototype.closeMenu = function () {
-	this.menuView.close();
-	this.$icon.removeClass( 've-ui-context-icon-active' );
+ve.ui.Context.prototype.reveal = function ( el ) {
+	el.css( {
+		'top': 0
+	} );
 };
 
-ve.ui.Context.prototype.isMenuOpen = function () {
-	return this.menuView.isOpen();
+ve.ui.Context.prototype.getSelectionPosition = function () {
+	var selectionRect = this.surface.getView().getSelectionRect();
+	return new ve.Position( selectionRect.end.x, selectionRect.end.y );
 };
 
-ve.ui.Context.prototype.areChildrenCurrentlyVisible = function () {
-	return this.inspector !== null || this.menuView.isOpen();
+ve.ui.Context.prototype.open = function () {
+	this.$.css( 'visibility', 'visible' );
+};
+
+ve.ui.Context.prototype.close = function () {
+	this.$.css( 'visibility', 'hidden' );
 };
 
 ve.ui.Context.prototype.set = function () {
-	if ( this.surfaceView.getModel().getSelection().getLength() > 0 ) {
-		this.positionIcon();
-		if ( this.position ) {
-			this.positionOverlay( this.menuView.$ );
-			if ( this.inspector ) {
-				this.positionOverlay ( this.$inspectors );
-			}
-		}
-	}
-};
-
-ve.ui.Context.prototype.positionIcon = function () {
-	this.$.removeClass( 've-ui-context-position-start ve-ui-context-position-end' );
-
-	var selection = this.surfaceView.model.getSelection(),
-		selectionRect = this.surfaceView.getSelectionRect();
-
-	if ( selection.to > selection.from ) {
-		this.position = new ve.Position( selectionRect.end.x, selectionRect.end.y );
-		this.$.addClass( 've-ui-context-position-end' );
-	} else {
-		this.position = new ve.Position( selectionRect.start.x, selectionRect.start.y );
-		this.$.addClass( 've-ui-context-position-start' );
-	}
-
+	this.position = this.getSelectionPosition();
 	this.$.css( {
 		'left': this.position.left,
 		'top': this.position.top
 	} );
-	this.$icon.fadeIn( 'fast' );
-};
+	// Open context.
+	this.open();
 
-ve.ui.Context.prototype.positionOverlay = function ( $overlay ) {
-	var overlayMargin = 5,
-		overlayWidth = $overlay.outerWidth(),
-		overlayHeight = $overlay.outerHeight(),
-		$window = $( window ),
-		windowWidth = $window.width(),
-		windowHeight = $window.height(),
-		windowScrollTop = $window.scrollTop(),
-		selection = this.surfaceView.model.getSelection(),
-		// Center align overlay
-		overlayLeft = -Math.round( overlayWidth / 2 );
-
-	// Adjust overlay left or right depending on viewport
-	if ( ( this.position.left - overlayMargin ) + overlayLeft < 0 ) {
-		// Move right a bit past center
-		overlayLeft -= this.position.left + overlayLeft - overlayMargin;
-	} else if ( ( overlayMargin + this.position.left ) - overlayLeft > windowWidth ) {
-		// Move left a bit past center
-		overlayLeft += windowWidth - overlayMargin - ( this.position.left - overlayLeft );
+	function getDimensions () {
+		var height, width;
+		if ( this.inspector ) {
+			height = this.$inspectors.outerHeight( true );
+			width = this.$inspectors.outerWidth( true );
+		} else {
+			height = this.$menu.outerHeight( true );
+			width = this.$menu.outerWidth( true );
+		}
+		return {
+			'height': height,
+			'width': width
+		};
+	}
+	function getLeft () {
+		var width = getDimensions.call( this ).width,
+			left = -( width / 2 );
+		// Boundary checking left.
+		if ( this.position.left < width / 2 ) {
+			left = -( this.$.children().outerWidth( true ) / 2 ) - ( this.position.left / 2 );
+		// Checking right.
+		} else if ( $( 'body' ).width() - this.position.left < width ) {
+			left = -( width - ( ( $( 'body' ).width() - this.position.left ) / 2) );
+		}
+		return left;
 	}
 
-	$overlay.css( 'left', overlayLeft );
-
-	// Position overlay on top or bottom depending on viewport
-	this.$.removeClass( 've-ui-context-position-below ve-ui-context-position-above' );
-	if (
-		selection.from < selection.to &&
-		this.position.top + overlayHeight + ( overlayMargin * 2 ) < windowHeight + windowScrollTop
-	) {
-		this.$.addClass( 've-ui-context-position-below' );
+	if ( this.inspector ) {
+		// Reveal inspector
+		this.reveal( this.$inspectors );
 	} else {
-		this.$.addClass( 've-ui-context-position-above' );
+		if ( !this.visible ) {
+			// Fade in the context.
+			this.$.fadeIn( 'fast' );
+			this.visible = true;
+		}
+		// Reveal menu
+		this.reveal( this.$menu );
 	}
-
+	// Position inner context.
+	this.$inner.css( {
+		'left': getLeft.call( this ),
+		'height': getDimensions.call( this ).height,
+		'width': getDimensions.call( this ).width
+	} );
 };
 
 // Method to position iframe overlay above or below an element.
-ve.ui.Context.prototype.positionIframeOverlay = function ( config ) {
+ve.ui.Context.prototype.setOverlayPosition = function ( config ) {
 	var left, top;
 	if (
 		config === undefined ||
@@ -250,14 +228,8 @@ ve.ui.Context.prototype.positionIframeOverlay = function ( config ) {
 		return;
 	}
 	// Set iframe overlay below element.
-	if ( 'below' in config ) {
-		left = config.below.offset().left;
-		top = config.below.offset().top + config.below.outerHeight();
-	// Set iframe overlay above element.
-	} else if ( 'above' in config ) {
-		left = config.above.offset().left;
-		top = config.above.offset().top;
-	}
+	left = -( this.$inner.width() / 2 ) + config.el.offset().left;
+	top = config.el.offset().top + config.el.outerHeight( true );
 	// Set position.
 	config.overlay.css( {
 		'left': left,
@@ -267,43 +239,20 @@ ve.ui.Context.prototype.positionIframeOverlay = function ( config ) {
 	} );
 };
 
-ve.ui.Context.prototype.clear = function () {
-	if ( this.inspector ) {
-		this.closeInspector();
-	}
-	this.$icon.hide();
-	this.menuView.close();
-};
+/* Inspector methods */
 
-ve.ui.Context.prototype.openInspector = function ( name ) {
-	if ( !( name in this.inspectors ) ) {
-		throw new Error( 'Missing inspector error. Can not open nonexistent inspector: ' + name );
-	}
-	this.inspectors[name].open();
-	this.resizeInspectorFrame( this.inspectors[name] );
-	// Setting this to auto makes position overlay work correctly.
-	this.$inspectors.css({
-		'height': 'auto',
-		'width': 'auto',
-		'visibility': 'visible'
-	});
-	this.positionOverlay( this.$inspectors );
-	this.inspector = name;
-};
 
-ve.ui.Context.prototype.closeInspector = function ( accept ) {
-	if ( this.inspector ) {
-		this.inspectors[this.inspector].close( accept );
-		this.inspector = null;
+/* Lazy load inspectors on demand */
+ve.ui.Context.prototype.initInspector = function ( name ) {
+	// Add inspector on demand.
+	if ( ve.ui.inspectorFactory.lookup( name ) ) {
+		if ( !( name in this.inspectors ) ) {
+			this.addInspector( name, ve.ui.inspectorFactory.create( name, this ) );
+			this.obscure( this.$inspectors );
+		}
+		return true;
 	}
-	this.hideInspectors();
-};
-
-ve.ui.Context.prototype.getInspector = function ( name ) {
-	if ( name in this.inspectors ) {
-		return this.inspectors[name];
-	}
-	return null;
+	return false;
 };
 
 ve.ui.Context.prototype.addInspector = function ( name, inspector ) {
@@ -312,37 +261,65 @@ ve.ui.Context.prototype.addInspector = function ( name, inspector ) {
 	}
 	inspector.$.hide();
 	this.inspectors[name] = inspector;
-	this.$inspectorWrapper.append( inspector.$ );
+	this.frameView.$.append( inspector.$ );
 };
 
-// TODO: need better iframe resizing.
+ve.ui.Context.prototype.openInspector = function ( name ) {
+	if ( !this.initInspector( name ) ) {
+		throw new Error( 'Missing inspector. Can not open nonexistent inspector: ' + name );
+	}
+	// Close menu
+	if ( this.menuView ) {
+		this.obscure( this.$menu );
+	}
+	// Fade in context if menu is closed.
+	// At this point, menuView could be undefined or not open.
+	if ( this.menuView === undefined || !this.menuView.isOpen() ) {
+		this.$.fadeIn( 'fast' );
+	}
+	// Open the inspector by name.
+	this.inspectors[name].open();
+	// Resize frame to the size of the inspector.
+	this.resizeFrame( this.inspectors[name] );
+	// Save name of inspector open.
+	this.inspector = name;
+	// Set inspector
+	this.set();
+};
+
+ve.ui.Context.prototype.closeInspector = function ( accept ) {
+	if ( this.inspector ) {
+		this.obscure( this.$inspectors );
+		this.inspectors[this.inspector].close( accept );
+		this.inspector = null;
+		this.close();
+	}
+	this.update();
+};
+
 // Currently sizes to dimensions of specified inspector.
-ve.ui.Context.prototype.resizeInspectorFrame = function ( inspector ) {
+ve.ui.Context.prototype.resizeFrame = function ( inspector ) {
 	var width = inspector.$.outerWidth(),
 		height = inspector.$.outerHeight();
-	this.$inspectorFrame.css( {
-		'width': width + 10,
-		'height': height + 10
+	this.frameView.$frame.css( {
+		'width': width,
+		'height': height
 	} );
 };
 
-ve.ui.Context.prototype.hideInspectors = function () {
-	this.$inspectors.css( {
-		'visibility': 'hidden',
-		'width': 0,
-		'height': 0
-	} );
-	this.$inspectorFrame.css( {
-		'width': 0,
-		'height': 0
-	} );
+ve.ui.Context.prototype.getSurface = function () {
+	return this.surface;
 };
 
-ve.ui.Context.prototype.removeInspector = function ( name ) {
-	if ( name in this.inspectors ) {
-		throw new Error( 'Missing inspector error. Can not remove nonexistent inspector: ' + name );
+/* Events */
+
+ve.ui.Context.prototype.onDocumentFocus = function () {
+	$( window ).on( 'resize.ve-ui-context scroll.ve-ui-context',
+		ve.bind( this.set, this ) );
+};
+
+ve.ui.Context.prototype.onDocumentBlur = function () {
+	if ( !this.inspector ) {
+		$( window ).off( 'resize.ve-ui-context scroll.ve-ui-context' );
 	}
-	this.inspectors[name].detach();
-	delete this.inspectors[name];
-	this.inspector = null;
 };

@@ -22,8 +22,10 @@ ve.Surface = function VeSurface( parent, dom, options ) {
 	this.documentModel = new ve.dm.Document( ve.dm.converter.getDataFromDom( dom ) );
 	this.options = ve.extendObject( true, ve.Surface.defaultOptions, options );
 	this.model = new ve.dm.Surface( this.documentModel );
-	this.view = new ve.ce.Surface( this.$, this.model );
+	this.view = new ve.ce.Surface( this.$, this.model, this );
+	this.context = new ve.ui.Context( this );
 	this.toolbars = {};
+	this.commands = {};
 
 	// DOM Changes
 	$( parent ).append( this.$ );
@@ -38,6 +40,7 @@ ve.Surface = function VeSurface( parent, dom, options ) {
 
 	// Initialization
 	this.setupToolbars();
+	this.addCommands( this.options.commands );
 	ve.instances.push( this );
 	this.model.startHistoryTracking();
 };
@@ -54,7 +57,53 @@ ve.Surface.defaultOptions = {
 				{ 'name': 'list', 'items' : ['number', 'bullet', 'outdent', 'indent'] }
 			]
 		}
+	},
+	// Items can either be symbolic names or objects with trigger and action properties
+	'commands': ['bold', 'italic', 'link', 'undo', 'redo']
+};
+
+/**
+ * Common commands that can be invoked by their symbolic names.
+ *
+ * @static
+ * @member
+ */
+ve.Surface.commands = {
+	'bold': {
+		'trigger': ['command+b', 'control+b'],
+		'action': ['annotation', 'toggle', 'textStyle/bold']
+	},
+	'italic': {
+		'trigger': ['command+i', 'control+i'],
+		'action': ['annotation', 'toggle', 'textStyle/italic']
+	},
+	'link': {
+		'trigger': ['command+k', 'control+k'],
+		'action': ['inspector', 'open', 'link']
+	},
+	'undo': {
+		'trigger': ['command+z', 'control+z'],
+		'action': ['history', 'undo']
+	},
+	'redo': {
+		'trigger': ['command+shift+z', 'control+shift+z'],
+		'action': ['history', 'redo']
 	}
+};
+
+/* Static Methods */
+
+/**
+ * Adds a command that can be referenced by a symbolic name.
+ *
+ * @static
+ * @method
+ * @param {String} name Symbolic name of command
+ * @param {String|String[]} trigger One or more canonical representations of keyboard triggers
+ * @param {Array} action Array containing the action name, method and additional arguments
+ */
+ve.Surface.registerCommand = function ( name, trigger, action ) {
+	ve.Surface.commands[name] = { 'trigger': trigger, 'action': action };
 };
 
 /* Methods */
@@ -89,6 +138,109 @@ ve.Surface.prototype.getView = function () {
 	return this.view;
 };
 
+/**
+ * Gets a reference to the context user interface.
+ *
+ * @method
+ * @returns {ve.ui.Context} Context user interface
+ */
+ve.Surface.prototype.getContext = function () {
+	return this.context;
+};
+
+/**
+ * Executes an action.
+ *
+ * @method
+ * @param {String} action Name of action
+ * @param {String} method Name of method
+ * @param {Mixed} [...] Additional arguments for action
+ */
+ve.Surface.prototype.execute = function ( action, method ) {
+	// Validate method
+	if ( !ve.actionFactory.doesActionSupportMethod( action, method ) ) {
+		throw new Error( 'Invalid method: ' + method );
+	}
+	// Create an action object and execute the method on it
+	var obj = ve.actionFactory.create( action, this );
+	obj[method].apply( obj, Array.prototype.slice.call( arguments, 2 ) );
+};
+
+/**
+ * Adds a link between a keyboard trigger and an action.
+ *
+ * @method
+ * @param {String|String[]} trigger One or more canonical representations of keyboard triggers
+ * @param {Array} action Array containing the action name, method and additional arguments
+ */
+ve.Surface.prototype.addCommand = function ( trigger, action ) {
+	var i, len;
+	if ( !ve.isArray( trigger ) ) {
+		trigger = [trigger];
+	}
+	for ( i = 0, len = trigger.length; i < len; i++ ) {
+		this.commands[trigger[i]] = action;
+	}
+};
+
+/**
+ * Adds multiple links between a keyboard triggers and an actions.
+ *
+ * Each object's trigger and action properties will be passed directly into
+ * {ve.Surface.prototype.addCommand}.
+ *
+ * @method
+ * @param {String[]|Object[]} commands Array of symbolic names of known commands, or objects that
+ * each contain a trigger and action property
+ */
+ve.Surface.prototype.addCommands = function ( commands ) {
+	var i, len;
+	for ( i = 0, len = commands.length; i < len; i++ ) {
+		if ( typeof commands[i] === 'string' ) {
+			if ( !( commands[i] in ve.Surface.commands ) ) {
+				throw new Error( 'Unknown command: ' + commands[i] );
+			}
+			this.addCommand(
+				ve.Surface.commands[commands[i]].trigger,
+				ve.Surface.commands[commands[i]].action
+			);
+		} else if ( ve.isPlainObject( commands[i] ) ) {
+			this.addCommand( commands[i].trigger, commands[i].action );
+		} else {
+			throw new Error( 'Invalid command, must be name of known command or command object' );
+		}
+	}
+};
+
+/**
+ * Checks if a given trigger is linked to an action.
+ *
+ * @method
+ * @returns {Boolean} Trigger is linked to an action
+ */
+ve.Surface.prototype.isCommand = function( trigger ) {
+	return trigger in this.commands;
+};
+
+/**
+ * Runs a command.
+ *
+ * @method
+ * @param {String} trigger Canonical representation of a keyboard trigger
+ */
+ve.Surface.prototype.command = function( trigger ) {
+	if ( trigger in this.commands ) {
+		this.execute.apply( this, this.commands[trigger] );
+	}
+};
+
+/**
+ * Initializes the toolbar.
+ *
+ * This method uses {this.options} for it's configuration.
+ *
+ * @method
+ */
 ve.Surface.prototype.setupToolbars = function () {
 	var surface = this;
 
@@ -115,7 +267,7 @@ ve.Surface.prototype.setupToolbars = function () {
 			}
 			surface.toolbars[name].instance = new ve.ui.Toolbar(
 				surface.toolbars[name].$,
-				surface.view,
+				surface,
 				config.tools
 			);
 		}
@@ -123,10 +275,12 @@ ve.Surface.prototype.setupToolbars = function () {
 };
 
 /*
- * This code is responsible for switching toolbar into floating mode when scrolling ( with
- * keyboard or mouse ).
+ * Overlays the toolbar to the top of the screen when it would normally be out of view.
+ *
  * TODO: Determine if this would be better in ui.toolbar vs here.
  * TODO: This needs to be refactored so that it only works on the main editor top tool bar.
+ *
+ * @method
  */
 ve.Surface.prototype.floatTopToolbar = function () {
 	if ( !this.toolbars.top ) {

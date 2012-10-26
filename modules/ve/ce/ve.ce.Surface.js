@@ -15,16 +15,17 @@
  * @extends {ve.EventEmitter}
  * @param {jQuery} $container
  * @param {ve.dm.Surface} model Model to observe
+ * @param {ve.Surface} surface The surface of this view
  */
-ve.ce.Surface = function VeCeSurface( $container, model ) {
+ve.ce.Surface = function VeCeSurface( $container, model, surface ) {
 	// Parent constructor
 	ve.EventEmitter.call( this );
 
 	// Properties
+	this.surface = surface;
 	this.inIme = false;
 	this.model = model;
 	this.documentView = new ve.ce.Document( model.getDocument(), this );
-	this.contextView = new ve.ui.Context( this );
 	this.surfaceObserver = new ve.ce.SurfaceObserver( this.documentView );
 	this.selectionTimeout = null;
 	this.$ = $container;
@@ -319,10 +320,6 @@ ve.ce.Surface.prototype.onCompositionEnd = function () {
 ve.ce.Surface.prototype.documentOnBlur = function () {
 	this.$document.off( '.ve-ce-Surface' );
 	this.surfaceObserver.stop( true );
-
-	if ( this.contextView && !this.contextView.areChildrenCurrentlyVisible() ) {
-		this.contextView.clear();
-	}
 };
 
 /**
@@ -502,7 +499,7 @@ ve.ce.Surface.prototype.onKeyDown = function ( e ) {
 			if ( ve.ce.Surface.isShortcutKey( e ) ) {
 				if ( this.model.getSelection() && this.model.getSelection().getLength() ) {
 					e.preventDefault();
-					this.contextView.openInspector( 'link' );
+					this.surface.getContext().openInspector( 'link' );
 				}
 			}
 			break;
@@ -688,18 +685,8 @@ ve.ce.Surface.prototype.onKeyPress = function ( e ) {
  * @param {ve.Range|undefined} selection
  */
 ve.ce.Surface.prototype.onChange = function ( transaction, selection ) {
-	if ( selection ) {
-		if ( !this.isLocked() ) {
-			this.showSelection( selection );
-		}
-		// Responsible for Debouncing the ContextView Icon until select events are finished being
-		// fired.
-		// TODO: Use ve.debounce method to abstract usage of setTimeout
-		clearTimeout( this.selectionTimeout );
-		this.selectionTimeout = setTimeout(
-			ve.bind( this.updateContextIcon, this ),
-			250
-		);
+	if ( selection && !this.isLocked() ) {
+		this.showSelection( selection );
 	}
 };
 
@@ -1167,23 +1154,6 @@ ve.ce.Surface.prototype.getNodeAndOffset = function ( offset ) {
 
 		}
 		current[1]++;
-	}
-};
-
-/**
- * Updates the context icon.
- *
- * @method
- */
-ve.ce.Surface.prototype.updateContextIcon = function () {
-	var selection = this.model.getSelection(),
-		doc = this.model.getDocument();
-	if ( this.contextView ) {
-		if ( doc.getText( selection ).length > 0 ) {
-			this.contextView.set();
-		} else {
-			this.contextView.clear();
-		}
 	}
 };
 

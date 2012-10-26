@@ -5,75 +5,57 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-.ve-ui-context-position-above .ve-ui-context-icon {
-	/* @embed */
-	background-image: url(images/icons/up.png);
-}
-
-.ve-ui-toolbarDropdownTool-icon,
-.ve-ui-linkInspector-location,
-.ve-ui-context-position-below .ve-ui-context-icon {
+.ve-ui-icon-down {
 	/* @embed */
 	background-image: url(images/icons/down.png);
 }
 
-.ve-ui-inspector-closeButton {
-	/* @embed */
-	background-image: url(images/icons/close.png);
-}
-
-.ve-ui-inspector-acceptButton {
-	/* @embed */
-	background-image: url(images/icons/accept.png);
-}
-
-.ve-ui-toolbarButtonTool-undo:before {
+.ve-ui-icon-undo:before {
 	/* @embed */
 	background-image: url(images/icons/arched-arrow-rtl.png);
 }
 
-.ve-ui-toolbarButtonTool-redo:before {
+.ve-ui-icon-redo:before {
 	/* @embed */
 	background-image: url(images/icons/arched-arrow-ltr.png);
 }
 
-.ve-ui-toolbarButtonTool-bold:before {
+.ve-ui-icon-bold:before {
 	/* @embed */
 	background-image: url(images/icons/bold.png);
 }
 
-.ve-ui-toolbarButtonTool-italic:before {
+.ve-ui-icon-italic:before {
 	/* @embed */
 	background-image: url(images/icons/italic.png);
 }
 
-.ve-ui-toolbarButtonTool-link:before {
+.ve-ui-icon-link:before {
 	/* @embed */
 	background-image: url(images/icons/link.png);
 }
 
-.ve-ui-inspector-clearButton,
-.ve-ui-toolbarButtonTool-clear:before {
+.ve-ui-icon-clear:before {
 	/* @embed */
 	background-image: url(images/icons/clear.png);
 }
 
-.ve-ui-toolbarButtonTool-number:before {
+.ve-ui-icon-number:before {
 	/* @embed */
 	background-image: url(images/icons/number-list-ltr.png);
 }
 
-.ve-ui-toolbarButtonTool-bullet:before {
+.ve-ui-icon-bullet:before {
 	/* @embed */
 	background-image: url(images/icons/bullet-list-ltr.png);
 }
 
-.ve-ui-toolbarButtonTool-indent:before {
+.ve-ui-icon-indent:before {
 	/* @embed */
 	background-image: url(images/icons/indent-list-ltr.png);
 }
 
-.ve-ui-toolbarButtonTool-outdent:before {
+.ve-ui-icon-outdent:before {
 	/* @embed */
 	background-image: url(images/icons/outdent-list-ltr.png);
 }
