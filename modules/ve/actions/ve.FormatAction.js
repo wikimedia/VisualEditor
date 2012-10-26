@@ -71,6 +71,8 @@ ve.FormatAction.prototype.convert = function ( type, attributes ) {
 					selection = ve.FormatAction.splitAndUnwrap(
 						surfaceModel, prevList, firstInList, lastInList, selection
 					);
+					// Reset
+					prevList = firstInList = lastInList = undefined;
 				}
 				if ( listItem ) {
 					prevList = listItem.getParent();
