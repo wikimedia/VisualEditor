@@ -13,19 +13,27 @@
  * @constructor
  * @extends {ve.ui.ButtonTool}
  * @param {ve.ui.Toolbar} toolbar
- * @param {Object} annotation
  */
-ve.ui.AnnotationButtonTool = function VeUiAnnotationButtonTool( toolbar, annotation ) {
+ve.ui.AnnotationButtonTool = function VeUiAnnotationButtonTool( toolbar ) {
 	// Parent constructor
 	ve.ui.ButtonTool.call( this, toolbar );
-
-	// Properties
-	this.annotation = annotation;
 };
 
 /* Inheritance */
 
 ve.inheritClass( ve.ui.AnnotationButtonTool, ve.ui.ButtonTool );
+
+/* Static Members */
+
+/**
+ * Annotation name and data this button applies.
+ *
+ * @abstract
+ * @static
+ * @member
+ * @type {Object}
+ */
+ve.ui.AnnotationButtonTool.static.annotation = { 'name': '' };
 
 /* Methods */
 
@@ -35,7 +43,9 @@ ve.inheritClass( ve.ui.AnnotationButtonTool, ve.ui.ButtonTool );
  * @method
  */
 ve.ui.AnnotationButtonTool.prototype.onClick = function () {
-	this.toolbar.getSurface().execute( 'annotation', 'toggle', this.annotation.name );
+	this.toolbar.getSurface().execute(
+		'annotation', 'toggle', this.constructor.static.annotation.name
+	);
 };
 
 /**
@@ -47,5 +57,5 @@ ve.ui.AnnotationButtonTool.prototype.onClick = function () {
  * @param {ve.dm.AnnotationSet} partial Annotations that cover some or all of the current selection
  */
 ve.ui.AnnotationButtonTool.prototype.onUpdateState = function ( nodes, full ) {
-	this.setActive( full.hasAnnotationWithName( this.annotation.name ) );
+	this.setActive( full.hasAnnotationWithName( this.constructor.static.annotation.name ) );
 };

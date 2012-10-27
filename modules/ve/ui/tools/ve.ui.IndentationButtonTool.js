@@ -13,19 +13,27 @@
  * @constructor
  * @extends {ve.ui.ButtonTool}
  * @param {ve.ui.Toolbar} toolbar
- * @param {String} method
  */
-ve.ui.IndentationButtonTool = function VeUiIndentationButtonTool( toolbar, method ) {
+ve.ui.IndentationButtonTool = function VeUiIndentationButtonTool( toolbar ) {
 	// Parent constructor
 	ve.ui.ButtonTool.call( this, toolbar );
-
-	// Properties
-	this.method = method;
 };
 
 /* Inheritance */
 
 ve.inheritClass( ve.ui.IndentationButtonTool, ve.ui.ButtonTool );
+
+/* Static Members */
+
+/**
+ * Indentation method this button applies.
+ *
+ * @abstract
+ * @static
+ * @member
+ * @type {String}
+ */
+ve.ui.IndentationButtonTool.static.method = '';
 
 /* Methods */
 
@@ -35,7 +43,7 @@ ve.inheritClass( ve.ui.IndentationButtonTool, ve.ui.ButtonTool );
  * @method
  */
 ve.ui.IndentationButtonTool.prototype.onClick = function () {
-	this.toolbar.getSurface().execute( 'indentation', this.method );
+	this.toolbar.getSurface().execute( 'indentation', this.constructor.static.method );
 };
 
 /**

@@ -13,19 +13,25 @@
  * @constructor
  * @extends {ve.ui.ButtonTool}
  * @param {ve.ui.Toolbar} toolbar
- * @param {String} style
  */
-ve.ui.ListButtonTool = function VeUiListButtonTool( toolbar, style ) {
+ve.ui.ListButtonTool = function VeUiListButtonTool( toolbar ) {
 	// Parent constructor
 	ve.ui.ButtonTool.call( this, toolbar );
-
-	// Properties
-	this.style = style;
 };
 
 /* Inheritance */
 
 ve.inheritClass( ve.ui.ListButtonTool, ve.ui.ButtonTool );
+
+/**
+ * List style this button applies.
+ *
+ * @abstract
+ * @static
+ * @member
+ * @type {String}
+ */
+ve.ui.ListButtonTool.static.style = '';
 
 /* Methods */
 
@@ -36,7 +42,7 @@ ve.inheritClass( ve.ui.ListButtonTool, ve.ui.ButtonTool );
  */
 ve.ui.ListButtonTool.prototype.onClick = function () {
 	if ( !this.active ) {
-		this.toolbar.surface.execute( 'list', 'wrap', this.style );
+		this.toolbar.surface.execute( 'list', 'wrap', this.constructor.static.style );
 	} else {
 		this.toolbar.surface.execute( 'list', 'unwrap' );
 	}
@@ -52,9 +58,10 @@ ve.ui.ListButtonTool.prototype.onClick = function () {
  */
 ve.ui.ListButtonTool.prototype.onUpdateState = function ( nodes ) {
 	var i, len,
+		style = this.constructor.static.style,
 		all = true;
 	for ( i = 0, len = nodes.length; i < len; i++ ) {
-		if ( !nodes[i].hasMatchingAncestor( 'list', { 'style': this.style } ) ) {
+		if ( !nodes[i].hasMatchingAncestor( 'list', { 'style': style } ) ) {
 			all = false;
 			break;
 		}

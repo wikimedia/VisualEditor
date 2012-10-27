@@ -15,7 +15,7 @@
  */
 ve.ui.LinkButtonTool = function VeUiLinkButtonTool( toolbar ) {
 	// Parent constructor
-	ve.ui.InspectorButtonTool.call( this, toolbar, 'link' );
+	ve.ui.InspectorButtonTool.call( this, toolbar );
 };
 
 /* Inheritance */
@@ -28,19 +28,7 @@ ve.ui.LinkButtonTool.static.name = 'link';
 
 ve.ui.LinkButtonTool.static.titleMessage = 'visualeditor-annotationbutton-link-tooltip';
 
-/* Methods */
-
-/**
- * Responds to the toolbar state being updated.
- *
- * @method
- * @param {ve.dm.Node[]} nodes List of nodes covered by the current selection
- * @param {ve.dm.AnnotationSet} full Annotations that cover all of the current selection
- * @param {ve.dm.AnnotationSet} partial Annotations that cover some or all of the current selection
- */
-ve.ui.LinkButtonTool.prototype.onUpdateState = function ( nodes, full ) {
-	this.setActive( full.hasAnnotationWithName( /^link\/MW(in|ex)ternal$/ ) );
-};
+ve.ui.LinkButtonTool.static.inspector = 'link';
 
 /* Registration */
 

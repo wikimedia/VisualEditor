@@ -85,6 +85,8 @@ ve.inheritClass( ve.ui.LinkInspector, ve.ui.Inspector );
 
 ve.ui.LinkInspector.static.icon = 'link';
 
+ve.ui.LinkInspector.static.typePattern = /^link\/MW(in|ex)ternal$/;
+
 /* Methods */
 
 ve.ui.LinkInspector.prototype.getAllLinkAnnotationsFromSelection = function () {
@@ -93,7 +95,7 @@ ve.ui.LinkInspector.prototype.getAllLinkAnnotationsFromSelection = function () {
 		documentModel = surfaceModel.getDocument();
 	return documentModel
 		.getAnnotationsFromRange( surfaceModel.getSelection() )
-		.getAnnotationsByName( /^link\/MW(in|ex)ternal$/ )
+		.getAnnotationsByName( this.constructor.static.typePattern )
 		.get();
 };
 

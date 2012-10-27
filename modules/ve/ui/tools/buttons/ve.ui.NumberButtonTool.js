@@ -15,7 +15,7 @@
  */
 ve.ui.NumberButtonTool = function VeUiNumberListButtonTool( toolbar ) {
 	// Parent constructor
-	ve.ui.ListButtonTool.call( this, toolbar, 'number' );
+	ve.ui.ListButtonTool.call( this, toolbar );
 };
 
 /* Inheritance */
@@ -27,6 +27,8 @@ ve.inheritClass( ve.ui.NumberButtonTool, ve.ui.ListButtonTool );
 ve.ui.NumberButtonTool.static.name = 'number';
 
 ve.ui.NumberButtonTool.static.titleMessage = 'visualeditor-listbutton-number-tooltip';
+
+ve.ui.NumberButtonTool.static.style = 'number';
 
 /* Registration */
 

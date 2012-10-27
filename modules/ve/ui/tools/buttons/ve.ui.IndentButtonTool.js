@@ -15,7 +15,7 @@
  */
 ve.ui.IndentButtonTool = function VeUiIndentButtonTool( toolbar ) {
 	// Parent constructor
-	ve.ui.IndentationButtonTool.call( this, toolbar, 'increase' );
+	ve.ui.IndentationButtonTool.call( this, toolbar );
 };
 
 /* Inheritance */
@@ -27,6 +27,8 @@ ve.inheritClass( ve.ui.IndentButtonTool, ve.ui.IndentationButtonTool );
 ve.ui.IndentButtonTool.static.name = 'indent';
 
 ve.ui.IndentButtonTool.static.titleMessage = 'visualeditor-indentationbutton-indent-tooltip';
+
+ve.ui.IndentButtonTool.static.method = 'increase';
 
 /* Registration */
 

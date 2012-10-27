@@ -28,6 +28,8 @@ ve.ui.BulletButtonTool.static.name = 'bullet';
 
 ve.ui.BulletButtonTool.static.titleMessage = 'visualeditor-listbutton-bullet-tooltip';
 
+ve.ui.BulletButtonTool.static.style = 'bullet';
+
 /* Registration */
 
 ve.ui.toolFactory.register( 'bullet', ve.ui.BulletButtonTool );

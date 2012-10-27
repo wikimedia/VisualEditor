@@ -22,7 +22,34 @@ ve.ui.Tool = function VeUiTool( toolbar ) {
 	this.toolbar.addListenerMethods(
 		this, { 'updateState': 'onUpdateState', 'clearState': 'onClearState' }
 	);
+
+	// Intialization
+	this.$.attr( 'title', ve.msg( this.constructor.static.titleMessage ) );
 };
+
+/* Static Members */
+
+ve.ui.Tool.static = {};
+
+/**
+ * Symbolic name of tool.
+ *
+ * @abstract
+ * @static
+ * @member
+ * @type {String}
+ */
+ve.ui.Tool.static.name = '';
+
+/**
+ * Message key for tool title.
+ *
+ * @abstract
+ * @static
+ * @member
+ * @type {String}
+ */
+ve.ui.Tool.static.titleMessage = '';
 
 /* Methods */
 
