@@ -471,15 +471,20 @@ $messages['fi'] = array(
 /** French (français)
  * @author Crochet.david
  * @author Gomoko
+ * @author Hello71
  */
 $messages['fr'] = array(
 	'visualeditor' => 'VisualEditor',
 	'visualeditor-desc' => 'Éditeur visuel pour MediaWiki',
 	'visualeditor-feedback-prompt' => 'Laisser un commentaire',
 	'visualeditor-feedback-dialog-title' => "Laissez un commentaire sur le bac à sable de l'éditeur visuel",
+	'visualeditor-notification-saved' => 'Vos modifications à $1 ont été enregistrés.',
+	'visualeditor-notification-created' => '$1 a été créé!',
 	'visualeditor-ca-editsource' => 'Modifier la source',
 	'visualeditor-linkinspector-title' => 'Modifier le lien', # Fuzzy
 	'visualeditor-linkinspector-label-pagetitle' => 'Titre de la page',
+	'visualeditor-linkinspector-suggest-existing-page' => 'Page existante',
+	'visualeditor-linkinspector-suggest-new-page' => 'Nouvelle page',
 	'visualeditor-formatdropdown-title' => 'Modifier le format',
 	'visualeditor-formatdropdown-format-paragraph' => 'Paragraphe',
 	'visualeditor-formatdropdown-format-heading1' => 'Titre 1',
