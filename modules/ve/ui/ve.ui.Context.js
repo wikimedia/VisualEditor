@@ -201,6 +201,7 @@ ve.ui.Context.prototype.set = function () {
 	if ( this.inspector ) {
 		// Reveal inspector
 		this.reveal( this.$inspectors );
+		this.$overlay.show();
 	} else {
 		if ( !this.visible ) {
 			// Fade in the context.
