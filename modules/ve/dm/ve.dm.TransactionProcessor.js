@@ -221,7 +221,7 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 	if ( removeIsContent && insertIsContent ) {
 		// Content replacement
 		// Update the linear model
-		ve.batchSplice( this.document.data, this.cursor, remove.length, insert );
+		this.document.spliceData( this.cursor, remove.length, insert );
 		this.applyAnnotations( this.cursor + insert.length );
 		// Get the node containing the replaced content
 		selection = this.document.selectNodes(
@@ -267,7 +267,7 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 				opRemove = this.reversed ? operation.insert : operation.remove;
 				opInsert = this.reversed ? operation.remove : operation.insert;
 				// Update the linear model for this insert
-				ve.batchSplice( this.document.data, this.cursor, opRemove.length, opInsert );
+				this.document.spliceData( this.cursor, opRemove.length, opInsert );
 				affectedRanges.push( new ve.Range(
 					this.cursor - this.adjustment,
 					this.cursor - this.adjustment + opRemove.length

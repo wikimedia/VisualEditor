@@ -29,7 +29,7 @@ QUnit.test( 'synchronize', 6, function ( assert ) {
 	doc.data[1] = ['a', new ve.AnnotationSet( [ new ve.dm.TextStyleBoldAnnotation() ] )];
 	ds.pushAnnotation( new ve.Range( 1, 2 ) );
 	// Insert "xyz" between "a" and "b"
-	doc.data.splice( 2, 0, [ 'x', 'y', 'z' ] );
+	doc.spliceData( 2, 0, [ 'x', 'y', 'z' ] );
 	ds.pushResize( doc.getDocumentNode().getNodeFromOffset( 2 ), 3 );
 	// Annotate "d" with italic formatting (was at 10, now at 13)
 	doc.data[13] = ['d', new ve.AnnotationSet( [ new ve.dm.TextStyleItalicAnnotation() ] )];

@@ -280,6 +280,155 @@ ve.dm.example.alienData = [
 	// 10 - End of document
 ];
 
+ve.dm.example.withMeta = [
+	{
+		'type': 'metaBlock',
+		'attributes': {
+			'style': 'meta',
+			'key': 'mw:PageProp/nocc'
+		}
+	},
+	{ 'type': '/metaBlock' },
+	{ 'type': 'paragraph' },
+	'F',
+	'o',
+	'o',
+	{
+		'type': 'metaInline',
+		'attributes': {
+			'style': 'link',
+			'key': 'mw:WikiLink/Category',
+			'value': './Category:Bar'
+		}
+	},
+	{ 'type': '/metaInline' },
+	'B',
+	'a',
+	'r',
+	{
+		'type': 'metaInline',
+		'attributes': {
+			'style': 'meta',
+			'key': 'mw:foo',
+			'value': 'bar'
+		}
+	},
+	{ 'type': '/metaInline' },
+	'B',
+	'a',
+	'z',
+	{ 'type': '/paragraph' },
+	{
+		'type': 'metaBlock',
+		'attributes': {
+			'style': 'meta',
+			'key': 'mw:bar',
+			'value': 'baz'
+		}
+	},
+	{ 'type': '/metaBlock' },
+	{
+		'type': 'metaBlock',
+		'attributes': {
+			'style': 'link',
+			'key': 'mw:WikiLink/Category',
+			'value': './Category:Foo#Bar baz%23quux'
+		}
+	},
+	{ 'type': '/metaBlock' },
+	{
+		'type': 'metaBlock',
+		'attributes': {
+			'style': 'meta',
+			'key': null,
+			'html/typeof': 'mw:Placeholder',
+			'html/data-parsoid': 'foobar'
+		}
+	},
+	{ 'type': '/metaBlock' }
+];
+
+ve.dm.example.withMetaPlainData = [
+	{ 'type': 'paragraph' },
+	'F',
+	'o',
+	'o',
+	'B',
+	'a',
+	'r',
+	'B',
+	'a',
+	'z',
+	{ 'type': '/paragraph' }
+];
+
+ve.dm.example.withMetaMetaData = [
+	[
+		{
+			'type': 'metaBlock',
+			'attributes': {
+				'style': 'meta',
+				'key': 'mw:PageProp/nocc'
+			}
+		}
+	],
+	undefined,
+	undefined,
+	undefined,
+	[
+		{
+			'type': 'metaInline',
+			'attributes': {
+				'style': 'link',
+				'key': 'mw:WikiLink/Category',
+				'value': './Category:Bar'
+			}
+		}
+	],
+	undefined,
+	undefined,
+	[
+		{
+			'type': 'metaInline',
+			'attributes': {
+				'style': 'meta',
+				'key': 'mw:foo',
+				'value': 'bar'
+			}
+		}
+	],
+	undefined,
+	undefined,
+	undefined,
+	[
+		{
+			'type': 'metaBlock',
+			'attributes': {
+				'style': 'meta',
+				'key': 'mw:bar',
+				'value': 'baz'
+			}
+		},
+		{
+			'type': 'metaBlock',
+			'attributes': {
+				'style': 'link',
+				'key': 'mw:WikiLink/Category',
+				'value': './Category:Foo#Bar baz%23quux'
+			}
+		},
+		{
+			'type': 'metaBlock',
+			'attributes': {
+				'style': 'meta',
+				'key': null,
+				'html/typeof': 'mw:Placeholder',
+				'html/data-parsoid': 'foobar'
+			}
+		}
+	]
+];
+
 /**
  * Sample content data index.
  *
@@ -1315,72 +1464,6 @@ ve.dm.example.domToDataCases = {
 			'<meta property="mw:bar" content="baz" />' +
 			'<link rel="mw:WikiLink/Category" href="./Category:Foo#Bar baz%23quux" />' +
 			'<meta typeof="mw:Placeholder" data-parsoid="foobar" />',
-		'data': [
-			{
-				'type': 'metaBlock',
-				'attributes': {
-					'style': 'meta',
-					'key': 'mw:PageProp/nocc'
-				}
-			},
-			{ 'type': '/metaBlock' },
-			{ 'type': 'paragraph' },
-			'F',
-			'o',
-			'o',
-			{
-				'type': 'metaInline',
-				'attributes': {
-					'style': 'link',
-					'key': 'mw:WikiLink/Category',
-					'value': './Category:Bar'
-				}
-			},
-			{ 'type': '/metaInline' },
-			'B',
-			'a',
-			'r',
-			{
-				'type': 'metaInline',
-				'attributes': {
-					'style': 'meta',
-					'key': 'mw:foo',
-					'value': 'bar'
-				}
-			},
-			{ 'type': '/metaInline' },
-			'B',
-			'a',
-			'z',
-			{ 'type': '/paragraph' },
-			{
-				'type': 'metaBlock',
-				'attributes': {
-					'style': 'meta',
-					'key': 'mw:bar',
-					'value': 'baz'
-				}
-			},
-			{ 'type': '/metaBlock' },
-			{
-				'type': 'metaBlock',
-				'attributes': {
-					'style': 'link',
-					'key': 'mw:WikiLink/Category',
-					'value': './Category:Foo#Bar baz%23quux'
-				}
-			},
-			{ 'type': '/metaBlock' },
-			{
-				'type': 'metaBlock',
-				'attributes': {
-					'style': 'meta',
-					'key': null,
-					'html/typeof': 'mw:Placeholder',
-					'html/data-parsoid': 'foobar'
-				}
-			},
-			{ 'type': '/metaBlock' }
-		]
+		'data': ve.dm.example.withMeta
 	}
 };

@@ -26,6 +26,11 @@ ve.dm.Document = function VeDmDocument( data, parentDocument ) {
 	// Properties
 	this.parentDocument = parentDocument;
 	this.data = ve.isArray( data ) ? data : [];
+	// Sparse array containing the metadata for each offset
+	// Each element is either undefined, or an array of metadata elements
+	// Because the indexes in the metadata array represent offsets in the data array, the
+	// metadata array has one element more than the data array.
+	this.metadata = new Array( this.data.length + 1 );
 
 	// Initialization
 	/*
@@ -33,7 +38,7 @@ ve.dm.Document = function VeDmDocument( data, parentDocument ) {
 	 * then from the bottom up add nodes to their potential parents. This avoids massive length
 	 * updates being broadcast upstream constantly while building is underway.
 	 */
-	var i, length, node, children,
+	var i, node, children, meta,
 		doc = parentDocument || this,
 		root = doc.getDocumentNode(),
 		textLength = 0,
@@ -46,7 +51,7 @@ ve.dm.Document = function VeDmDocument( data, parentDocument ) {
 	this.insertAnnotations = new ve.AnnotationSet();
 	this.documentNode.setDocument( doc );
 	this.documentNode.setRoot( root );
-	for ( i = 0, length = this.data.length; i < length; i++ ) {
+	for ( i = 0; i < this.data.length; i++ ) {
 		// Infer that if an item in the linear model has a type attribute than it must be an element
 		if ( this.data[i].type === undefined ) {
 			// Text node opening
@@ -64,6 +69,21 @@ ve.dm.Document = function VeDmDocument( data, parentDocument ) {
 			// Track the length
 			textLength++;
 		} else {
+			if ( this.data[i].type === 'metaInline' || this.data[i].type === 'metaBlock' ) {
+				// Metadata
+				// Splice the meta element and its closing out of the linmod
+				meta = this.data[i];
+				this.spliceData( i, 2 );
+				// Put the metadata in the meta-linmod
+				if ( !this.metadata[i] ) {
+					this.metadata[i] = [];
+				}
+				this.metadata[i].push( meta );
+				// Make sure the loop doesn't skip the next element
+				i--;
+				continue;
+			}
+
 			// Text node closing
 			if ( inTextNode ) {
 				// Finish the text node by setting the length
@@ -447,6 +467,57 @@ ve.dm.Document.prototype.getData = function ( range, deep ) {
  */
 ve.dm.Document.prototype.getLength = function () {
 	return this.data.length;
+};
+
+/**
+ * Splice data into or out of the linear model and update this.metadata accordingly.
+ *
+ * Always use this function, never use this.data.splice() directly, otherwise the linear model
+ * (this.data) and the meta-linmod (this.metadata) can get out of sync. The semantics of the
+ * parameters are identical to those of ve.batchSplice()
+ *
+ * @method
+ * @see {ve.batchSplice}
+ */
+ve.dm.Document.prototype.spliceData = function ( offset, remove, insert ) {
+	var spliced, reaped, reapedFlat, i;
+	insert = insert || [];
+	spliced = ve.batchSplice( this.data, offset, remove, insert );
+	reaped = ve.batchSplice( this.metadata, offset, remove, new Array( insert.length ) );
+	// reaped will be an array of arrays, flatten it
+	reapedFlat = [];
+	for ( i = 0; i < reaped.length; i++ ) {
+		if ( reaped[i] !== undefined ) {
+			reapedFlat = reapedFlat.concat( reaped[i] );
+		}
+	}
+	// Add reaped metadata to the metadata that is now at offset (and used to be immediately
+	// after the removed data). Add it to the front, because it came from something that was
+	// before it.
+	if ( reapedFlat.length > 0 ) {
+		this.metadata[offset] = reapedFlat.concat( this.metadata[offset] || [] );
+	}
+	return spliced;
+};
+
+/**
+ * Get the full data, with the metadata spliced back in.
+ * @returns {Array} Data with metadata interleaved
+ */
+ve.dm.Document.prototype.getFullData = function () {
+	var result = [], i, j, len = this.data.length;
+	for ( i = 0; i <= len; i++ ) {
+		if ( this.metadata[i] ) {
+			for ( j = 0; j < this.metadata[i].length; j++ ) {
+				result.push( this.metadata[i][j] );
+				result.push( { 'type': '/' + this.metadata[i][j].type } );
+			}
+		}
+		if ( i < len ) {
+			result.push( this.data[i] );
+		}
+	}
+	return result;
 };
 
 ve.dm.Document.prototype.getNodeFromOffset = function ( offset ) {
