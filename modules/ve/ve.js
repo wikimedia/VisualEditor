@@ -459,7 +459,7 @@
 		for ( i = 0; i < source.length; i++ ) {
 			sourceValue = source[i];
 			sourceType = typeof sourceValue;
-			if ( sourceType === 'string' || sourceType === 'number' || sourceType === 'undefined' ) {
+			if ( sourceType === 'string' || sourceType === 'number' || sourceType === 'undefined' || sourceValue === null ) {
 				destination.push( sourceValue );
 			} else if ( ve.isPlainObject( sourceValue ) ) {
 				destination.push( ve.copyObject( sourceValue ) );
@@ -489,7 +489,7 @@
 		for ( key in source ) {
 			sourceValue = source[key];
 			sourceType = typeof sourceValue;
-			if ( sourceType === 'string' || sourceType === 'number' || sourceType === 'undefined' ) {
+			if ( sourceType === 'string' || sourceType === 'number' || sourceType === 'undefined' || sourceValue === null ) {
 				destination[key] = sourceValue;
 			} else if ( ve.isPlainObject( sourceValue ) ) {
 				destination[key] = ve.copyObject( sourceValue );
