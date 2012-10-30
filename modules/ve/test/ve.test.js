@@ -537,3 +537,32 @@ QUnit.test( 'getOpeningHtmlTag', 5, function ( assert ) {
 	} );
 
 }() );
+
+QUnit.test( 'batchSplice', 8, function ( assert ) {
+	var actual = [ 'a', 'b', 'c', 'd', 'e' ], expected = actual.slice( 0 ), bigArr = [],
+		actualRet, expectedRet, i;
+
+	actualRet = ve.batchSplice( actual, 1, 1, [] );
+	expectedRet = expected.splice( 1, 1 );
+	deepEqual( expectedRet, actualRet, 'removing 1 element (return value)' );
+	deepEqual( expected, actual, 'removing 1 element (array)' );
+
+	actualRet = ve.batchSplice( actual, 3, 2, [ 'w', 'x', 'y', 'z' ] );
+	expectedRet = expected.splice( 3, 2, 'w', 'x', 'y', 'z' );
+	deepEqual( expectedRet, actualRet, 'replacing 2 elements with 4 elements (return value)' );
+	deepEqual( expected, actual, 'replacing 2 elements with 4 elements (array)' );
+
+	actualRet = ve.batchSplice( actual, 0, 0, [ 'f', 'o', 'o' ] );
+	expectedRet = expected.splice( 0, 0, 'f', 'o', 'o' );
+	deepEqual( expectedRet, actualRet, 'inserting 3 elements (return value)' );
+	deepEqual( expected, actual, 'inserting 3 elements (array)' );
+
+	for ( i = 0; i < 2100; i++ ) {
+		bigArr[i] = i;
+	}
+	actualRet = ve.batchSplice( actual, 2, 3, bigArr );
+	expectedRet = expected.splice.apply( expected, [2, 3].concat( bigArr.slice( 0, 1050 ) ) );
+	expected.splice.apply( expected, [1052, 0].concat( bigArr.slice( 1050 ) ) );
+	deepEqual( expectedRet, actualRet, 'replacing 3 elements with 2100 elements (return value)' );
+	deepEqual( expected, actual, 'replacing 3 elements with 2100 elements (array)' );
+} );

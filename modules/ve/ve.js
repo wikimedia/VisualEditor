@@ -515,30 +515,33 @@
 	 * @static
 	 * @method
 	 * @param {Array} arr Array to remove from and insert into. Will be modified
-	 * @param {Number} offset Offset in arr to splice at. May be negative; see the 'index'
-	 * parameter for Array.prototype.splice()
+	 * @param {Number} offset Offset in arr to splice at. This may NOT be negative, unlike the
+	 *                         'index' parameter in Array.prototype.splice
 	 * @param {Number} remove Number of elements to remove at the offset. May be zero
-	 * @param {Array} data Array of items to insert at the offset
+	 * @param {Array} data Array of items to insert at the offset. May not be empty if remove=0
 	 */
 	ve.batchSplice = function ( arr, offset, remove, data ) {
 		// We need to splice insertion in in batches, because of parameter list length limits which vary
 		// cross-browser - 1024 seems to be a safe batch size on all browsers
-		var index = 0, batchSize = 1024, toRemove = remove;
+		var index = 0, batchSize = 1024, toRemove = remove, spliced, removed = [];
 		if ( data.length === 0 ) {
 			// Special case: data is empty, so we're just doing a removal
 			// The code below won't handle that properly, so we do it here
-			arr.splice( offset, remove );
-			return;
+			return arr.splice( offset, remove );
 		}
 		while ( index < data.length ) {
 			// Call arr.splice( offset, remove, i0, i1, i2, ..., i1023 );
 			// Only set remove on the first call, and set it to zero on subsequent calls
-			arr.splice.apply(
+			spliced = arr.splice.apply(
 				arr, [index + offset, toRemove].concat( data.slice( index, index + batchSize ) )
 			);
+			if ( toRemove > 0 ) {
+				removed = spliced;
+			}
 			index += batchSize;
 			toRemove = 0;
 		}
+		return removed;
 	};
 
 	/**
