@@ -292,7 +292,7 @@ QUnit.test( 'getObjectValues', 6, function ( assert ) {
 
 QUnit.test( 'copyArray', 6, function ( assert ) {
 	var simpleArray = [ 'foo', 3 ],
-		withObj = [ { 'bar': 'baz', 'quux': 3 }, 5 ],
+		withObj = [ { 'bar': 'baz', 'quux': 3 }, 5, null ],
 		nestedArray = [ [ 'a', 'b' ], [ 1, 3, 4 ] ],
 		sparseArray = [ 'a', undefined, undefined, 'b' ],
 		withSparseArray = [ [ 'a', undefined, undefined, 'b' ] ],
@@ -337,7 +337,7 @@ QUnit.test( 'copyArray', 6, function ( assert ) {
 } );
 
 QUnit.test( 'copyObject', 6, function ( assert ) {
-	var simpleObj = { 'foo': 'bar', 'baz': 3 },
+	var simpleObj = { 'foo': 'bar', 'baz': 3, 'quux': null },
 		nestedObj = { 'foo': { 'bar': 'baz', 'quux': 3 }, 'whee': 5 },
 		withArray = { 'foo': [ 'a', 'b' ], 'bar': [ 1, 3, 4 ] },
 		withSparseArray = { 'foo': [ 'a', undefined, undefined, 'b' ] },
