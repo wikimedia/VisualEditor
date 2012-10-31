@@ -81,54 +81,52 @@ ve.ui.Context.prototype.onChange = ve.debounce( function ( transaction, selectio
 ve.ui.Context.prototype.update = function () {
 	var doc = this.surfaceModel.getDocument(),
 		sel = this.surfaceModel.getSelection(),
-		annotations = null,
+		annotations = doc.getAnnotationsFromRange( sel ).get(),
 		inspectors = [],
 		name,
 		i;
 
-	if ( doc.getText( sel ).length > 0 ) {
-		// Clearing out the toolbar & menu to rebuild.
-		// TODO: Consider more efficient implementation.
-		this.$menu.empty();
-		// Get annotations.
-		annotations = doc.getAnnotationsFromRange( sel ).get();
+	if ( annotations.length > 0 ) {
 		// Look for inspectors that match annotations.
 		for ( i = 0; i < annotations.length; i++ ) {
-			name = annotations[i].name.split('/')[0];
+			name = annotations[i].name.split( '/' )[0];
 			// Add inspector on demand.
 			if ( this.initInspector( name ) ) {
 				inspectors.push( name );
 			}
 		}
-		if ( inspectors.length > 0 ) {
-			// Toolbar
-			this.$toolbar = $( '<div class="ve-ui-context-toolbar"></div>' );
-			// Create inspector toolbar
-			this.toolbarView = new ve.ui.Toolbar(
-				this.$toolbar,
-				this.surface,
-				[{ 'name': 'inspectors', 'items' : inspectors }]
-			);
-			// Note: Menu attaches the provided $tool element to the container.
-			this.menuView = new ve.ui.Menu(
-				[ { 'name': 'tools', '$': this.$toolbar } ], // Tools
-				null, // Callback
-				this.$menu, // Container
-				this.$inner // Parent
-			);
-			this.set();
-		} else if ( !this.inspector ) {
-			this.unset();
-		}
-	} else {
+	}
+
+	// Build inspector menu.
+	if ( inspectors.length > 0 && !this.inspector ) {
+		this.$menu.empty();
+		// Toolbar
+		this.$toolbar = $( '<div class="ve-ui-context-toolbar"></div>' );
+		// Create inspector toolbar
+		this.toolbarView = new ve.ui.Toolbar(
+			this.$toolbar,
+			this.surface,
+			[{ 'name': 'inspectors', 'items' : inspectors }]
+		);
+		// Note: Menu attaches the provided $tool element to the container.
+		this.menuView = new ve.ui.Menu(
+			[ { 'name': 'tools', '$': this.$toolbar } ], // Tools
+			null, // Callback
+			this.$menu, // Container
+			this.$inner // Parent
+		);
+		this.set();
+	} else if ( this.selection !== sel ) {
+		// Cache current selection
+		this.selection = sel;
 		this.unset();
+		this.update();
 	}
 };
 
 ve.ui.Context.prototype.unset = function () {
 	if ( this.inspector ) {
 		this.closeInspector( false );
-		this.obscure( this.$inspectors );
 		this.$overlay.hide();
 	}
 	if ( this.menuView ) {
@@ -283,6 +281,8 @@ ve.ui.Context.prototype.openInspector = function ( name ) {
 	this.resizeFrame( this.inspectors[name] );
 	// Save name of inspector open.
 	this.inspector = name;
+	// Cache selection, in the case of manually opened inspector.
+	this.selection = this.surfaceModel.getSelection();
 	// Set inspector
 	this.set();
 };
@@ -299,11 +299,9 @@ ve.ui.Context.prototype.closeInspector = function ( accept ) {
 
 // Currently sizes to dimensions of specified inspector.
 ve.ui.Context.prototype.resizeFrame = function ( inspector ) {
-	var width = inspector.$.outerWidth(),
-		height = inspector.$.outerHeight();
 	this.frameView.$frame.css( {
-		'width': width,
-		'height': height
+		'width': inspector.$.outerWidth(),
+		'height': inspector.$.outerHeight()
 	} );
 };
 
