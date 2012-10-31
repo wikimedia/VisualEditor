@@ -26,19 +26,21 @@ ve.inheritClass( ve.ui.InspectorFactory, ve.Factory );
 /**
  * Gets an inspector constructor for a given annotation type.
  *
- * TODO: Use this in inspector tools to determine their state.
+ * If {static.typePattern} is not defined in an inspector subclass a regular expression that matches
+ * nothing will be returned.
  *
  * @method
- * @param {String} type Annotation type
- * @returns {Function} Matching inspector constructor
+ * @param {String} name Symbolic name of inspector to get pattern for
+ * @returns {RegExp} Regular expression matching annotations relevant to a given inspector
  */
-ve.ui.InspectorFactory.prototype.lookupByAnnotationType = function ( type ) {
-	for ( var name in this.registry ) {
-		// name = link
-		if ( this.registry[name].static.matchingTypes.indexOf( type ) !== -1 ) {
-			return this.registry[name];
+ve.ui.InspectorFactory.prototype.getTypePattern = function ( name ) {
+	if ( name in this.registry ) {
+		if ( this.registry[name].static && this.registry[name].static.typePattern ) {
+			return this.registry[name].static.typePattern;
 		}
+		return new RegExp();
 	}
+	throw new Error( 'Unknown inspector: ' + name );
 };
 
 /* Initialization */

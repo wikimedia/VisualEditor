@@ -15,7 +15,7 @@
  */
 ve.ui.ItalicButtonTool = function VeUiItalicButtonTool( toolbar ) {
 	// Parent constructor
-	ve.ui.AnnotationButtonTool.call( this, toolbar, { 'name': 'textStyle/italic' } );
+	ve.ui.AnnotationButtonTool.call( this, toolbar );
 };
 
 /* Inheritance */
@@ -27,6 +27,8 @@ ve.inheritClass( ve.ui.ItalicButtonTool, ve.ui.AnnotationButtonTool );
 ve.ui.ItalicButtonTool.static.name = 'italic';
 
 ve.ui.ItalicButtonTool.static.titleMessage = 'visualeditor-annotationbutton-italic-tooltip';
+
+ve.ui.ItalicButtonTool.static.annotation = { 'name': 'textStyle/italic' };
 
 /* Registration */
 

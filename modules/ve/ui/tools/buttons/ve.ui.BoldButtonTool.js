@@ -15,7 +15,7 @@
  */
 ve.ui.BoldButtonTool = function VeUiBoldButtonTool( toolbar ) {
 	// Parent constructor
-	ve.ui.AnnotationButtonTool.call( this, toolbar, { 'name': 'textStyle/bold' } );
+	ve.ui.AnnotationButtonTool.call( this, toolbar );
 };
 
 /* Inheritance */
@@ -27,6 +27,8 @@ ve.inheritClass( ve.ui.BoldButtonTool, ve.ui.AnnotationButtonTool );
 ve.ui.BoldButtonTool.static.name = 'bold';
 
 ve.ui.BoldButtonTool.static.titleMessage = 'visualeditor-annotationbutton-bold-tooltip';
+
+ve.ui.BoldButtonTool.static.annotation = { 'name': 'textStyle/bold' };
 
 /* Registration */
 

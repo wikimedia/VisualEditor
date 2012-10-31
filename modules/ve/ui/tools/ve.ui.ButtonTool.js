@@ -29,9 +29,7 @@ ve.ui.ButtonTool = function VeUiButtonTool( toolbar ) {
 	} );
 
 	// Initialization
-	this.$
-		.addClass( 've-ui-buttonTool ve-ui-icon-' + this.constructor.static.name )
-		.attr( 'title', ve.msg( this.constructor.static.titleMessage ) );
+	this.$.addClass( 've-ui-buttonTool ve-ui-icon-' + this.constructor.static.name );
 };
 
 /* Inheritance */
