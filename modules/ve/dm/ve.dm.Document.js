@@ -586,7 +586,6 @@ ve.dm.Document.prototype.getAnnotatedRangeFromOffset = function ( offset, annota
 ve.dm.Document.prototype.getAnnotatedRangeFromSelection = function ( range, annotation ) {
 	var start = range.start,
 		end = range.end;
-
 	while ( start > 0 ) {
 		start--;
 		if ( this.offsetContainsAnnotation( start, annotation ) === false ) {
@@ -616,14 +615,10 @@ ve.dm.Document.prototype.getAnnotationsFromRange = function ( range, all ) {
 		left,
 		right;
 	range.normalize();
-	// Shortcut for zero-length ranges
-	if ( range.getLength() === 0 ) {
-		return new ve.AnnotationSet();
-	}
-	// There's at least one character, get its annotations
+	// Look at left side of range for annotations
 	left = this.getAnnotationsFromOffset( range.start );
-	// Shortcut for single character ranges
-	if ( range.getLength() === 1 ) {
+	// Shortcut for single character and zero-length ranges
+	if ( range.getLength() === 0 || range.getLength() === 1 ) {
 		return left;
 	}
 	// Iterator over the range, looking for annotations, starting at the 2nd character

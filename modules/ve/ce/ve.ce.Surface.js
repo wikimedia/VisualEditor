@@ -497,7 +497,7 @@ ve.ce.Surface.prototype.onKeyDown = function ( e ) {
 		// K
 		case 75:
 			if ( ve.ce.Surface.isShortcutKey( e ) ) {
-				if ( this.model.getSelection() && this.model.getSelection().getLength() ) {
+				if ( this.model.getSelection() ) {
 					e.preventDefault();
 					this.surface.getContext().openInspector( 'link' );
 				}

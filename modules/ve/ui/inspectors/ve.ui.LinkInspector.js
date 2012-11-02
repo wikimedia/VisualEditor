@@ -139,7 +139,6 @@ ve.ui.LinkInspector.prototype.prepareOpen = function () {
 
 	if ( annotation !== null ) {
 		annotatedRange = doc.getAnnotatedRangeFromSelection( newSelection, annotation );
-
 		// Adjust selection if it does not contain the annotated range
 		if ( selection.start > annotatedRange.start ||
 			 selection.end < annotatedRange.end
