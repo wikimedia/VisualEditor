@@ -20,12 +20,12 @@ ve.ui.Context = function VeUiContext( surface, $overlay ) {
 
 	// Properties
 	this.surface = surface;
-	this.surfaceModel = surface.getModel();
 
 	this.inspectors = {};
 	this.inspector = null;
 	this.position = null;
 	this.visible = false;
+	this.selecting = false;
 
 	// Base elements
 	this.$ = $( '<div class="ve-ui-context"></div>' );
@@ -56,31 +56,63 @@ ve.ui.Context = function VeUiContext( surface, $overlay ) {
 		]
 	}, this.$inspectors );
 
-	this.surface.getView().getDocument().getDocumentNode().$.on( {
-		'focus': ve.bind( this.onDocumentFocus, this ),
-		'blur': ve.bind( this.onDocumentBlur, this )
-	} );
-
-	this.surfaceModel.on( 'change', ve.bind( this.onChange, this ) );
+	// Events
+	this.surface.getModel().addListenerMethods( this, { 'change': 'onChange' } );
+	this.surface.getView()
+		.addListenerMethods( this, {
+			'selectionStart': 'onSelectionStart',
+			'selectionEnd': 'onSelectionEnd'
+		} )
+		.getDocument().getDocumentNode().$.on( {
+			'focus': ve.bind( this.onDocumentFocus, this ),
+			'blur': ve.bind( this.onDocumentBlur, this )
+		} );
 };
 
-/* Static Members */
-
-// Debounced onChange method bound to model change event triggers context update
-ve.ui.Context.prototype.onChange = ve.debounce( function ( transaction, selection ) {
-	if ( selection ) {
-		ve.bind( ve.ui.Context.prototype.update.call( this ), this );
-	}
-}, 250 );
+/* Methods */
 
 /**
- * Updates the context icon.
+ * Responds to change events on the model.
+ *
+ * @method
+ * @param {ve.dm.Transaction} tx Change transaction
+ * @param {ve.Range} selection Change selection
+ */
+ve.ui.Context.prototype.onChange = function ( tx, selection ) {
+	if ( selection && !this.selecting ) {
+		this.update();
+	}
+};
+
+/**
+ * Responds to selection start events on the view.
+ *
+ * @method
+ */
+ve.ui.Context.prototype.onSelectionStart = function () {
+	this.selecting = true;
+	this.unset();
+};
+
+/**
+ * Responds to selection end events on the view.
+ *
+ * @method
+ */
+ve.ui.Context.prototype.onSelectionEnd = function () {
+	this.selecting = false;
+	this.update();
+};
+
+/**
+ * Updates the context menu.
  *
  * @method
  */
 ve.ui.Context.prototype.update = function () {
-	var doc = this.surfaceModel.getDocument(),
-		sel = this.surfaceModel.getSelection(),
+	var surfaceModel = this.surface.getModel(),
+		doc = surfaceModel.getDocument(),
+		sel = surfaceModel.getSelection(),
 		annotations = doc.getAnnotationsFromRange( sel ).get(),
 		inspectors = [],
 		name,
@@ -116,11 +148,13 @@ ve.ui.Context.prototype.update = function () {
 			this.$inner // Parent
 		);
 		this.set();
-	} else if ( this.selection !== sel ) {
+	} else if ( !this.selection || !this.selection.equals( sel ) ) {
 		// Cache current selection
 		this.selection = sel;
 		this.unset();
 		this.update();
+	} else {
+		this.unset();
 	}
 };
 
@@ -283,7 +317,7 @@ ve.ui.Context.prototype.openInspector = function ( name ) {
 	// Save name of inspector open.
 	this.inspector = name;
 	// Cache selection, in the case of manually opened inspector.
-	this.selection = this.surfaceModel.getSelection();
+	this.selection = this.surface.getModel().getSelection();
 	// Set inspector
 	this.set();
 };
@@ -314,7 +348,7 @@ ve.ui.Context.prototype.getSurface = function () {
 
 ve.ui.Context.prototype.onDocumentFocus = function () {
 	$( window ).on( 'resize.ve-ui-context scroll.ve-ui-context',
-		ve.bind( this.set, this ) );
+		ve.bind( this.update, this ) );
 };
 
 ve.ui.Context.prototype.onDocumentBlur = function () {
