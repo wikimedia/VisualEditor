@@ -485,6 +485,7 @@ $messages['fr'] = array(
 	'visualeditor-linkinspector-label-pagetitle' => 'Titre de la page',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Page existante',
 	'visualeditor-linkinspector-suggest-new-page' => 'Nouvelle page',
+	'visualeditor-linkinspector-suggest-external-link' => 'Lien Web',
 	'visualeditor-formatdropdown-title' => 'Modifier le format',
 	'visualeditor-formatdropdown-format-paragraph' => 'Paragraphe',
 	'visualeditor-formatdropdown-format-heading1' => 'Titre 1',
@@ -507,6 +508,7 @@ $messages['fr'] = array(
 	'visualeditor-viewpage-savewarning' => "Êtes-vous sûr de vouloir retourner au mode lecture sans enregistrer d'abord?",
 	'visualeditor-loadwarning' => 'Erreur lors du chargement des données du serveur: $1. Voulez-vous réessayer?',
 	'visualeditor-saveerror' => "Erreur d'enregistrement des données sur le serveur: $1.",
+	'visualeditor-editsummary' => 'Décrire ce que vous avez modifié',
 );
 
 /** Franco-Provençal (arpetan)
