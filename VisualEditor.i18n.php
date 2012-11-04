@@ -177,6 +177,21 @@ $messages['be-tarask'] = array(
 	'visualeditor-editsummary' => 'Апішыце вашыя зьмены',
 );
 
+/** Bengali (বাংলা)
+ * @author Bellayet
+ */
+$messages['bn'] = array(
+	'visualeditor-ca-editsource' => 'উৎস সম্পাদনা',
+	'visualeditor-linkinspector-label-pagetitle' => 'পাতার শিরোনাম',
+	'visualeditor-linkinspector-suggest-new-page' => 'নতুন পাতা',
+	'visualeditor-annotationbutton-bold-tooltip' => 'গাঢ়',
+	'visualeditor-annotationbutton-italic-tooltip' => 'ইটালিক',
+	'visualeditor-annotationbutton-link-tooltip' => 'লিংক',
+	'visualeditor-listbutton-number-tooltip' => 'সংখ্যায়িত তালিকা',
+	'visualeditor-listbutton-bullet-tooltip' => 'বুলেটকৃত তালিকা',
+	'visualeditor-historybutton-undo-tooltip' => 'পূর্বাবস্থায় ফেরাও',
+);
+
 /** Breton (brezhoneg)
  * @author Fulup
  * @author Y-M D
