@@ -16,6 +16,8 @@ $wgVisualEditorParsoidURL = 'http://localhost:8000';
 // Interwiki prefix to pass to the Parsoid instance
 // Parsoid will be called as $url/$prefix/$pagename
 $wgVisualEditorParsoidPrefix = 'localhost';
+// Namespaces to enable VisualEditor in
+$wgVisualEditorNamespaces = array( NS_MAIN );
 
 /* Setup */
 
@@ -338,28 +340,6 @@ $wgResourceModules += array(
 	),
 );
 
-/*
- * VisualEditor Namespace
- * Using 2500 and 2501 as per registration on mediawiki.org.
- *
- * @todo FIXME: Move these demonstration settings out of the extension
- * (or commented out as example).
- *
- * @see https://www.mediawiki.org/wiki/Extension_default_namespaces
- */
-define( 'NS_VISUALEDITOR', 2500 );
-define( 'NS_VISUALEDITOR_TALK', 2501 );
-$wgExtraNamespaces[NS_VISUALEDITOR] = 'VisualEditor';
-$wgExtraNamespaces[NS_VISUALEDITOR_TALK] = 'VisualEditor_talk';
-$wgContentNamespaces[] = NS_VISUALEDITOR;
-$wgContentNamespaces[] = NS_VISUALEDITOR_TALK;
-
-// VE Namespace protection
-$wgNamespaceProtection[NS_VISUALEDITOR] = array( 've-edit' );
-$wgGroupPermissions['sysop']['ve-edit'] = true;
-
-
-
 // Parsoid Wrapper API
 $wgAutoloadClasses['ApiVisualEditor'] = $dir . 'ApiVisualEditor.php';
 $wgAPIModules['ve-parsoid'] = 'ApiVisualEditor';
@@ -367,6 +347,7 @@ $wgAPIModules['ve-parsoid'] = 'ApiVisualEditor';
 // Integration Hooks
 $wgAutoloadClasses['VisualEditorHooks'] = $dir . 'VisualEditor.hooks.php';
 $wgHooks['BeforePageDisplay'][] = 'VisualEditorHooks::onBeforePageDisplay';
+$wgHooks['GetPreferences'][] = 'VisualEditorHooks::onGetPreferences';
 $wgHooks['MakeGlobalVariablesScript'][] = 'VisualEditorHooks::onMakeGlobalVariablesScript';
 $wgHooks['ResourceLoaderTestModules'][] = 'VisualEditorHooks::onResourceLoaderTestModules';
 

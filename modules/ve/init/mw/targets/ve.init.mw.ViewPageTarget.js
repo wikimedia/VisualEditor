@@ -54,19 +54,12 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	this.viewUri = new mw.Uri( mw.util.wikiGetlink( this.pageName ) );
 	this.veEditUri = this.viewUri.clone().extend( { 'veaction': 'edit' } );
 	this.isViewPage = (
-		this.namespaceName === 'VisualEditor' &&
 		mw.config.get( 'wgAction' ) === 'view' &&
 		currentUri.query.diff === undefined
 	);
 	this.canBeActivated = (
-		(
-			this.namespaceName === 'VisualEditor' ||
-			this.pageName.indexOf( 'VisualEditor:' ) === 0
-		) &&
-		(
-			$.client.test( ve.init.mw.ViewPageTarget.compatibility ) ||
-			'vewhitelist' in currentUri.query
-		)
+		$.client.test( ve.init.mw.ViewPageTarget.compatibility ) ||
+		'vewhitelist' in currentUri.query
 	);
 	this.editSummaryByteLimit = 255;
 
