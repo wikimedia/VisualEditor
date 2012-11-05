@@ -30,7 +30,7 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	this.$toolbarFeedbackButton =
 		$( '<div class="ve-init-mw-viewPageTarget-toolbar-feedbackButton"><a href="#"></a></div>' );
 	this.$saveDialog =
-		$( '<div class="ve-ui-inspector ve-init-mw-viewPageTarget-saveDialog"></div>' );
+		$( '<div class="ve-init-mw-viewPageTarget-saveDialog"></div>' );
 	this.$saveDialogSaveButton = null;
 	this.onBeforeUnloadFallback = null;
 	this.proxiedOnBeforeUnload = null;
@@ -142,8 +142,8 @@ ve.init.mw.ViewPageTarget.compatibility = {
 
 /*jshint multistr: true*/
 ve.init.mw.ViewPageTarget.saveDialogTemplate = '\
-	<div class="ve-ui-inspector-title ve-init-mw-viewPageTarget-saveDialog-title"></div>\
-	<div class="ve-ui-inspector-button ve-init-mw-viewPageTarget-saveDialog-closeButton"></div>\
+	<div class="ve-init-mw-viewPageTarget-saveDialog-title"></div>\
+	<div class="ve-init-mw-viewPageTarget-saveDialog-closeButton"></div>\
 	<div class="ve-init-mw-viewPageTarget-saveDialog-body">\
 		<div class="ve-init-mw-viewPageTarget-saveDialog-summary">\
 			<label class="ve-init-mw-viewPageTarget-saveDialog-editSummary-label"\
