@@ -33,8 +33,11 @@ ve.ce.Surface = function VeCeSurface( $container, model, surface ) {
 	this.clipboard = {};
 	this.locked = false;
 	this.sluggable = true;
+	this.dragging = false;
+	this.selecting = false;
 
 	// Events
+
 	this.surfaceObserver.addListenerMethods(
 		this, { 'contentChange': 'onContentChange', 'selectionChange': 'onSelectionChange' }
 	);
@@ -288,9 +291,11 @@ ve.ce.Surface.prototype.documentOnFocus = function () {
 	this.$document.off( '.ve-ce-Surface' );
 	this.$document.on( {
 		'keydown.ve-ce-Surface': ve.bind( this.onKeyDown, this ),
+		'keyup.ve-ce-Surface': ve.bind( this.onKeyUp, this ),
 		'keypress.ve-ce-Surface': ve.bind( this.onKeyPress, this ),
 		'mousedown.ve-ce-Surface': ve.bind( this.onMouseDown, this ),
 		'mouseup.ve-ce-Surface': ve.bind( this.onMouseUp, this ),
+		'mousemove.ve-ce-Surface': ve.bind( this.onMouseMove, this ),
 		'compositionstart.ve-ce-Surface': ve.bind( this.onCompositionStart, this ),
 		'compositionend.ve-ce-Surface': ve.bind( this.onCompositionEnd, this ),
 	} );
@@ -329,6 +334,9 @@ ve.ce.Surface.prototype.documentOnBlur = function () {
  * @param {jQuery.Event} e
  */
 ve.ce.Surface.prototype.onMouseDown = function ( e ) {
+	// Remember the mouse is down
+	this.dragging = true;
+
 	// Old code to figure out if user clicked inside the document or not - leave it here for now
 	// $( e.target ).closest( '.ve-ce-documentNode' ).length === 0
 
@@ -348,8 +356,41 @@ ve.ce.Surface.prototype.onMouseDown = function ( e ) {
  * @method
  * @param {jQuery.Event} e
  */
-ve.ce.Surface.prototype.onMouseUp = function () {
+ve.ce.Surface.prototype.onMouseUp = function ( e ) {
 	this.surfaceObserver.start();
+	if ( !e.shiftKey && this.selecting ) {
+		this.emit( 'selectionEnd' );
+		this.selecting = false;
+	}
+	this.dragging = false;
+};
+
+/**
+ * Responds to document mouse move events.
+ *
+ * @method
+ * @param {jQuery.Event} e
+ */
+ve.ce.Surface.prototype.onMouseMove = function () {
+	// Detect beginning of selection by moving mouse while dragging
+	if ( this.dragging && !this.selecting ) {
+		this.selecting = true;
+		this.emit( 'selectionStart' );
+	}
+};
+
+/**
+ * Responds to document key up events.
+ *
+ * @method
+ * @param {jQuery.Event} e
+ */
+ve.ce.Surface.prototype.onKeyUp = function ( e ) {
+	// Detect end of selecting by letting go of shift
+	if ( !this.dragging && this.selecting && e.keyCode === 16 ) {
+		this.selecting = false;
+		this.emit( 'selectionEnd' );
+	}
 };
 
 /**
@@ -367,6 +408,12 @@ ve.ce.Surface.prototype.onKeyDown = function ( e ) {
 		this.inIme = true;
 		this.handleInsertion();
 		return;
+	}
+
+	// Detect start of selecting using shift+arrow keys
+	if ( !this.dragging && !this.selecting && e.shiftKey && e.keyCode >= 37 && e.keyCode <= 40 ) {
+		this.selecting = true;
+		this.emit( 'selectionStart' );
 	}
 
 	var offset,
