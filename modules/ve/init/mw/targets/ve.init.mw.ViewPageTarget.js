@@ -386,7 +386,7 @@ ve.init.mw.ViewPageTarget.prototype.onSaveDialogSaveButtonClick = function () {
 	this.lockSaveDialogSaveButton();
 	this.$saveDialogLoadingIcon.show();
 	this.save(
-		ve.dm.converter.getDomFromData( this.surface.getDocumentModel().getData() ),
+		ve.dm.converter.getDomFromData( this.surface.getDocumentModel().getFullData() ),
 		{
 			'summary': $( '#ve-init-mw-viewPageTarget-saveDialog-editSummary' ).val(),
 			'minor': $( '#ve-init-mw-viewPageTarget-saveDialog-minorEdit' ).prop( 'checked' ),
