@@ -172,6 +172,6 @@
 	font-weight: bold;
 }
 
-.ve-ui-dropdownTool-format .ve-ui-menu-item[rel="pre"] span {
+.ve-ui-dropdownTool-format .ve-ui-menu-item[rel="preformatted"] span {
 	font-family: monospace, "Courier New";
 }
