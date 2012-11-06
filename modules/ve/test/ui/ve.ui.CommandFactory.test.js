@@ -46,6 +46,8 @@
 		var i;
 
 		chars = chars.split( ' ' );
+		// Add a little time buffer between sequences so adjacent ones don't end up overlapping
+		sequenceSimulatorOffset += 100;
 
 		/**
 		 * Utility function to avoid making functions
