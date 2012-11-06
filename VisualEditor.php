@@ -56,6 +56,11 @@ $wgResourceModules += array(
 			'rangy/rangy-position.js',
 		),
 	),
+	'jquery.multiSuggest' => $wgVisualEditorResourceTemplate + array(
+		'scripts' => array(
+			'jquery/jquery.multiSuggest.js'
+		),
+	),
 	// Alias for backwards compat, safe to remove after
 	'ext.visualEditor.editPageInit' => $wgVisualEditorResourceTemplate + array(
 		'dependencies' => array(
@@ -254,7 +259,6 @@ $wgResourceModules += array(
 			've/ui/ve.ui.Tool.js',
 			've/ui/ve.ui.Toolbar.js',
 			've/ui/ve.ui.ToolFactory.js',
-			'jquery/jquery.multiSuggest.js',
 
 			've/ui/inspectors/ve.ui.LinkInspector.js',
 
@@ -296,7 +300,8 @@ $wgResourceModules += array(
 			'rangy',
 			'ext.visualEditor.base',
 			'mediawiki.Title',
-			'jquery.autoEllipsis'
+			'jquery.autoEllipsis',
+			'jquery.multiSuggest'
 		),
 		'messages' => array(
 			'visualeditor',

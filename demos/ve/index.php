@@ -182,7 +182,6 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 		<script src="../../modules/ve/ui/ve.ui.Tool.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.Toolbar.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.ToolFactory.js"></script>
-		<script src="../../modules/jquery/jquery.multiSuggest.js"></script>
 		<script src="../../modules/ve/ui/inspectors/ve.ui.LinkInspector.js"></script>
 		<script src="../../modules/ve/ui/tools/ve.ui.ButtonTool.js"></script>
 		<script src="../../modules/ve/ui/tools/ve.ui.AnnotationButtonTool.js"></script>
