@@ -143,12 +143,13 @@ $messages['ba'] = array(
 $messages['be-tarask'] = array(
 	'visualeditor' => 'Візуальны рэдактар',
 	'visualeditor-desc' => 'Візуальны рэдактар для MediaWiki',
+	'visualeditor-preference-enable' => 'Уключыць візуальны рэдактар (толькі ў асноўнай прасторы)',
 	'visualeditor-feedback-prompt' => 'Пакінуць водгук',
-	'visualeditor-feedback-dialog-title' => 'Пакіньце водгук пра пясочніцу візуальнага рэдактара',
+	'visualeditor-feedback-dialog-title' => 'Пакіньце водгук пра візуальны рэдактар',
 	'visualeditor-notification-saved' => 'Вашыя зьмены ў «$1» захаваныя.',
 	'visualeditor-notification-created' => 'Старонка «$1» створаная.',
 	'visualeditor-ca-editsource' => 'Рэдагаваць крыніцу',
-	'visualeditor-linkinspector-title' => 'Рэдагаваньне спасылкі', # Fuzzy
+	'visualeditor-linkinspector-title' => 'Гіпэрспасылка',
 	'visualeditor-linkinspector-label-pagetitle' => 'Назва старонкі',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Існуючая старонка',
 	'visualeditor-linkinspector-suggest-new-page' => 'Новая старонка',
@@ -258,15 +259,16 @@ $messages['cs'] = array(
 );
 
 /** German (Deutsch)
+ * @author G.Hagedorn
  * @author Kghbln
  * @author Metalhead64
  */
 $messages['de'] = array(
 	'visualeditor' => 'WYSIWYG-Editor',
 	'visualeditor-desc' => 'Ermöglicht einen WYSIWYG-Editor',
-	'visualeditor-preference-enable' => 'WYSIWYG-Editor aktivieren (nur Hauptnamensraum)',
+	'visualeditor-preference-enable' => 'VisualEditor (WYSIWYG) aktivieren (nur für den Artikelnamensraum)',
 	'visualeditor-feedback-prompt' => 'Rückmeldung geben',
-	'visualeditor-feedback-dialog-title' => 'Rückmeldung für den WYSIWYG-Editor geben',
+	'visualeditor-feedback-dialog-title' => 'Rückmeldungen zum VisualEditor (WYSIWYG) erstellen',
 	'visualeditor-notification-saved' => 'Deine Änderungen an $1 wurden gespeichert.',
 	'visualeditor-notification-created' => '$1 wurde erstellt.',
 	'visualeditor-ca-editsource' => 'Quelltext bearbeiten',
@@ -489,6 +491,7 @@ $messages['fi'] = array(
  * @author Crochet.david
  * @author Gomoko
  * @author Hello71
+ * @author Urhixidur
  */
 $messages['fr'] = array(
 	'visualeditor' => 'VisualEditor',
@@ -516,16 +519,16 @@ $messages['fr'] = array(
 	'visualeditor-annotationbutton-bold-tooltip' => 'Gras',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Italique',
 	'visualeditor-annotationbutton-link-tooltip' => 'Lien',
-	'visualeditor-indentationbutton-indent-tooltip' => "Augmenter l'indentation",
-	'visualeditor-indentationbutton-outdent-tooltip' => "Diminuer l'indentation",
+	'visualeditor-indentationbutton-indent-tooltip' => 'Augmenter l’indentation',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Diminuer l’indentation',
 	'visualeditor-listbutton-number-tooltip' => 'Liste numérotée',
 	'visualeditor-listbutton-bullet-tooltip' => 'Liste à puces',
 	'visualeditor-clearbutton-tooltip' => 'Effacer la mise en forme',
 	'visualeditor-historybutton-undo-tooltip' => 'Annuler',
 	'visualeditor-historybutton-redo-tooltip' => 'Refaire',
-	'visualeditor-viewpage-savewarning' => "Êtes-vous sûr de vouloir retourner au mode lecture sans enregistrer d'abord?",
+	'visualeditor-viewpage-savewarning' => 'Êtes-vous sûr de vouloir retourner au mode lecture sans d’abord enregistrer ?',
 	'visualeditor-loadwarning' => 'Erreur lors du chargement des données du serveur: $1. Voulez-vous réessayer?',
-	'visualeditor-saveerror' => "Erreur d'enregistrement des données sur le serveur: $1.",
+	'visualeditor-saveerror' => 'Erreur d’enregistrement des données sur le serveur : $1.',
 	'visualeditor-editsummary' => 'Décrire ce que vous avez modifié',
 );
 
@@ -605,12 +608,13 @@ $messages['gl'] = array(
 $messages['he'] = array(
 	'visualeditor' => 'עורך חזותי',
 	'visualeditor-desc' => 'עורך חזותי למדיה־ויקי',
+	'visualeditor-preference-enable' => 'להפעיל את העורך החזותי (במרחב השמות הראשי בלבד)',
 	'visualeditor-feedback-prompt' => 'שליחת משוב',
-	'visualeditor-feedback-dialog-title' => 'שליחת משוב על ארגז החול של העורך החזותי',
+	'visualeditor-feedback-dialog-title' => 'שליחת משוב על העורך החזותי',
 	'visualeditor-notification-saved' => 'השינויים שלך לדף $1 לא נשמרו.',
 	'visualeditor-notification-created' => 'הדף $1 נוצר.',
 	'visualeditor-ca-editsource' => 'עריכת קוד מקור',
-	'visualeditor-linkinspector-title' => 'עריכת קישור', # Fuzzy
+	'visualeditor-linkinspector-title' => 'היפר־קישור',
 	'visualeditor-linkinspector-label-pagetitle' => 'כותרת דף',
 	'visualeditor-linkinspector-suggest-existing-page' => 'דף קיים',
 	'visualeditor-linkinspector-suggest-new-page' => 'דף חדש',
@@ -1144,8 +1148,9 @@ $messages['ml'] = array(
 $messages['ms'] = array(
 	'visualeditor' => 'VisualEditor',
 	'visualeditor-desc' => 'Alat penyuntingan visual untuk MediaWiki',
+	'visualeditor-preference-enable' => 'Hidupkan VisualEditor (ruang nama utama sahaja)',
 	'visualeditor-feedback-prompt' => 'Tinggalkan maklum balas',
-	'visualeditor-feedback-dialog-title' => 'Tinggalkan maklum balas tentang Kotak Pasir VisualEditor',
+	'visualeditor-feedback-dialog-title' => 'Tinggalkan maklum balas tentang VisualEditor',
 	'visualeditor-notification-saved' => 'Perubahan yang anda lakukan pada $1 telah disimpan.',
 	'visualeditor-notification-created' => '$1 telah diwujudkan.',
 	'visualeditor-ca-editsource' => 'Sunting sumber',
@@ -1181,12 +1186,18 @@ $messages['ms'] = array(
 
 /** Norwegian Bokmål (norsk (bokmål)‎)
  * @author Danmichaelo
+ * @author Event
  */
 $messages['nb'] = array(
+	'visualeditor' => 'VisualEditor',
+	'visualeditor-desc' => 'Visuell redigering for MediaWiki',
+	'visualeditor-preference-enable' => 'Aktiviser VisualEditor (bare for hovednavnerommet)',
 	'visualeditor-feedback-prompt' => 'Gi tilbakemelding',
-	'visualeditor-notification-saved' => 'Dine endringer har blitt lagret.', # Fuzzy
+	'visualeditor-feedback-dialog-title' => 'Gi tilbakemeldinger om VisualEditor',
+	'visualeditor-notification-saved' => 'Dine endringer av $1 er blitt lagret.',
+	'visualeditor-notification-created' => '$1 er blitt opprettet.',
 	'visualeditor-ca-editsource' => 'Rediger kilde',
-	'visualeditor-linkinspector-title' => 'Rediger lenke', # Fuzzy
+	'visualeditor-linkinspector-title' => 'Hyperlenke',
 	'visualeditor-linkinspector-label-pagetitle' => 'Sidetittel',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Eksisterende side',
 	'visualeditor-linkinspector-suggest-new-page' => 'Ny side',
@@ -1199,6 +1210,7 @@ $messages['nb'] = array(
 	'visualeditor-formatdropdown-format-heading4' => 'Overskrift 4',
 	'visualeditor-formatdropdown-format-heading5' => 'Overskrift 5',
 	'visualeditor-formatdropdown-format-heading6' => 'Overskrift 6',
+	'visualeditor-formatdropdown-format-preformatted' => 'Preformatert',
 	'visualeditor-annotationbutton-bold-tooltip' => 'Fet',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Kursiv',
 	'visualeditor-annotationbutton-link-tooltip' => 'Lenke',
@@ -1233,6 +1245,7 @@ $messages['ne'] = array(
 $messages['nl'] = array(
 	'visualeditor' => 'Vereenvoudigde tekstverwerker',
 	'visualeditor-desc' => 'Vereenvoudigde tekstverwerker voor MediaWiki',
+	'visualeditor-preference-enable' => 'Visuele tekstverwerker inschakelen (alleen voor de hoofdnaamruimte)',
 	'visualeditor-feedback-prompt' => 'Terugkoppeling achterlaten',
 	'visualeditor-feedback-dialog-title' => 'Terugkoppeling geven over de visuele tekstverwerker',
 	'visualeditor-notification-saved' => 'Uw wijzigingen aan "$1" zijn opgeslagen',
