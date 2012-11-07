@@ -18,6 +18,12 @@
 	position: static !important;
 }
 
+/* Fix weird Chrome native selection involving floated elements */
+.ve-ce-alienBlockNode:before,
+.ve-ce-alienBlockNode:after {
+	content: '';
+}
+
 .ve-ce-alienBlockNode,
 .ve-ce-metaBlockNode {
 	display: block;
