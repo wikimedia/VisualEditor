@@ -66,3 +66,5 @@ ve.commandRegistry.register(
 ve.commandRegistry.register( 'link', ['cmd+k', 'ctrl+k'], 'inspector', 'open', 'link' );
 ve.commandRegistry.register( 'undo', ['cmd+z', 'ctrl+z'], 'history', 'undo' );
 ve.commandRegistry.register( 'redo', ['cmd+shift+z', 'ctrl+shift+z'], 'history', 'redo' );
+ve.commandRegistry.register( 'indent', ['tab'], 'indentation', 'increase' );
+ve.commandRegistry.register( 'unindent', ['shift+tab'], 'indentation', 'decrease' );

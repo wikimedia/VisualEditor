@@ -40,9 +40,11 @@ ve.IndentationAction.static.methods = ['increase', 'decrease'];
  * TODO: Refactor functionality into {ve.dm.SurfaceFragment}.
  *
  * @method
+ * @returns {Boolean} Indentation increase occured
  */
 ve.IndentationAction.prototype.increase = function () {
 	var i, group,
+		increased = false,
 		surfaceModel = this.surface.getModel(),
 		documentModel = surfaceModel.getDocument(),
 		selection = surfaceModel.getSelection(),
@@ -53,8 +55,10 @@ ve.IndentationAction.prototype.increase = function () {
 		if ( group.grandparent && group.grandparent.getType() === 'list' ) {
 			// FIXME this doesn't work when trying to work with multiple list items
 			this.indentListItem( group.parent );
+			increased = true;
 		}
 	}
+	return increased;
 };
 
 /**
@@ -63,9 +67,11 @@ ve.IndentationAction.prototype.increase = function () {
  * TODO: Refactor functionality into {ve.dm.SurfaceFragment}.
  *
  * @method
+ * @returns {Boolean} Indentation decrease occured
  */
 ve.IndentationAction.prototype.decrease = function () {
 	var i, group,
+		decreased = false,
 		surfaceModel = this.surface.getModel(),
 		documentModel = surfaceModel.getDocument(),
 		selection = surfaceModel.getSelection(),
@@ -76,8 +82,10 @@ ve.IndentationAction.prototype.decrease = function () {
 		if ( group.grandparent && group.grandparent.getType() === 'list' ) {
 			// FIXME this doesn't work when trying to work with multiple list items
 			this.outdentListItem( group.parent );
+			decreased = true;
 		}
 	}
+	return decreased;
 };
 
 /**

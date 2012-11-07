@@ -423,20 +423,6 @@ ve.ce.Surface.prototype.onKeyDown = function ( e ) {
 		hasSlug,
 		newOffset;
 	switch ( e.keyCode ) {
-		// Tab Key
-		case 9:
-			// If possible, trigger a list indent/outdent
-			// FIXME this way of checking whether indenting is possible is extremely hacky
-			// Instead, we should allow toolbar tools to subscribe to and intercept keydowns
-			if ( $( '.ve-ui-toolbarButtonTool-indent' ).is( ':not(.ve-ui-toolbarButtonTool-disabled)' ) ) {
-				e.preventDefault();
-				if ( e.shiftKey ) {
-					ve.ui.IndentationButtonTool.outdentListItem( this.model );
-				} else {
-					ve.ui.IndentationButtonTool.indentListItem( this.model );
-				}
-			}
-			break;
 		// Left arrow
 		case 37:
 			offset = this.model.getSelection().start;
