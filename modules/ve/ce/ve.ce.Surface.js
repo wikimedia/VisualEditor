@@ -421,9 +421,7 @@ ve.ce.Surface.prototype.onKeyDown = function ( e ) {
 		relativeStructuralOffset,
 		relativeStructuralOffsetNode,
 		hasSlug,
-		newOffset,
-		annotations,
-		annotation;
+		newOffset;
 	switch ( e.keyCode ) {
 		// Tab Key
 		case 9:
@@ -504,76 +502,24 @@ ve.ce.Surface.prototype.onKeyDown = function ( e ) {
 		// Backspace
 		case 8:
 			this.handleDelete( e, true );
-			this.surfaceObserver.stop(true);
+			this.surfaceObserver.stop( true );
 			this.surfaceObserver.start();
 			break;
 		// Delete
 		case 46:
 			this.handleDelete( e, false );
-			this.surfaceObserver.stop(true);
+			this.surfaceObserver.stop( true );
 			this.surfaceObserver.start();
 			break;
-		// B
-		case 66:
-			if ( ve.ce.Surface.isShortcutKey( e ) ) {
-				// Ctrl+B / Cmd+B, annotate with bold
-				e.preventDefault();
-				if ( this.model.getSelection().getLength() ) {
-					annotations = this.documentView.model.getAnnotationsFromRange( this.model.getSelection() );
-				} else {
-					annotations = this.model.documentModel.insertAnnotations;
-				}
-				annotation = ve.dm.annotationFactory.create( 'textStyle/bold' );
-				this.model.annotate( annotations.contains( annotation ) ? 'clear' : 'set', annotation );
-			}
-			break;
-		// I
-		case 73:
-			if ( ve.ce.Surface.isShortcutKey( e ) ) {
-				// Ctrl+I / Cmd+I, annotate with italic
-				e.preventDefault();
-				if ( this.model.getSelection().getLength() ) {
-					annotations = this.documentView.model.getAnnotationsFromRange( this.model.getSelection() );
-				} else {
-					annotations = this.model.documentModel.insertAnnotations;
-				}
-				annotation = ve.dm.annotationFactory.create( 'textStyle/italic' );
-				this.model.annotate( annotations.contains( annotation ) ? 'clear' : 'set', annotation );
-			}
-			break;
-		// K
-		case 75:
-			if ( ve.ce.Surface.isShortcutKey( e ) ) {
-				if ( this.model.getSelection() ) {
-					e.preventDefault();
-					this.surface.getContext().openInspector( 'link' );
-				}
-			}
-			break;
-		// Z
-		case 90:
-			if ( ve.ce.Surface.isShortcutKey( e ) ) {
-				if ( e.shiftKey ) {
-					// Ctrl+Shift+Z / Cmd+Shift+Z, redo
-					e.preventDefault();
-					this.surfaceObserver.stop();
-					this.showSelection( this.model.redo() );
-					this.surfaceObserver.clear();
-					this.surfaceObserver.start();
-				} else {
-					// Ctrl+Z / Cmd+Z, undo
-					e.preventDefault();
-					this.surfaceObserver.stop();
-					this.showSelection( this.model.undo() );
-					this.surfaceObserver.clear();
-					this.surfaceObserver.start();
-				}
-			}
-			break;
 		default:
+			// Execute key command if available
+			if ( this.surface.execute( new ve.Command( e ) ) ) {
+				e.preventDefault();
+				break;
+			}
 			// TODO: Filter (do not call stop and start) for [a-zA-Z0-9]
 			//if ( this.model.getSelection().isCollapsed() === false ) {
-				this.surfaceObserver.stop(true);
+				this.surfaceObserver.stop( true );
 				this.surfaceObserver.start();
 			//}
 	}

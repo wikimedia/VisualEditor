@@ -156,6 +156,7 @@ $wgResourceModules += array(
 			// ve
 			've/ve.Factory.js',
 			've/ve.Position.js',
+			've/ve.Command.js',
 			've/ve.Range.js',
 			've/ve.Node.js',
 			've/ve.BranchNode.js',
@@ -252,7 +253,6 @@ $wgResourceModules += array(
 			've/ui/ve.ui.js',
 			've/ui/ve.ui.Context.js',
 			've/ui/ve.ui.Frame.js',
-			've/ui/ve.ui.CommandFactory.js',
 			've/ui/ve.ui.Inspector.js',
 			've/ui/ve.ui.InspectorFactory.js',
 			've/ui/ve.ui.Menu.js',

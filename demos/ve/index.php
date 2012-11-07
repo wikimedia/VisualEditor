@@ -90,6 +90,7 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 		<!-- ext.visualEditor.core -->
 		<script src="../../modules/ve/ve.Factory.js"></script>
 		<script src="../../modules/ve/ve.Position.js"></script>
+		<script src="../../modules/ve/ve.Command.js"></script>
 		<script src="../../modules/ve/ve.Range.js"></script>
 		<script src="../../modules/ve/ve.Node.js"></script>
 		<script src="../../modules/ve/ve.BranchNode.js"></script>
@@ -175,7 +176,6 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 		<script src="../../modules/ve/ui/ve.ui.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.Context.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.Frame.js"></script>
-		<script src="../../modules/ve/ui/ve.ui.CommandFactory.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.Inspector.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.InspectorFactory.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.Menu.js"></script>
