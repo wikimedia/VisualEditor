@@ -1266,6 +1266,28 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/alienBlock' }
 		]
 	},
+	'whitespace preservation not triggered inside <pre>': {
+		'html': '\n<pre>\n\n\nFoo\n\n\nBar\n\n\n\n</pre>\n\n\n\n\n',
+		'data': [
+			{ 'type': 'preformatted', 'internal': { 'whitespace': ['\n', undefined, undefined, '\n\n\n\n\n' ] } },
+			'\n',
+			'\n',
+			'F',
+			'o',
+			'o',
+			'\n',
+			'\n',
+			'\n',
+			'B',
+			'a',
+			'r',
+			'\n',
+			'\n',
+			'\n',
+			'\n',
+			{ 'type': '/preformatted' }
+		]
+	},
 	'mismatching whitespace data is ignored': {
 		'html': null,
 		'data': [

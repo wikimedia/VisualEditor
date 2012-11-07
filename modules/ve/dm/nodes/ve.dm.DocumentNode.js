@@ -35,6 +35,7 @@ ve.dm.DocumentNode.rules = {
 	'isWrapped': false,
 	'isContent': false,
 	'canContainContent': false,
+	'hasSignificantWhitespace': false,
 	'childNodeTypes': null,
 	'parentNodeTypes': []
 };

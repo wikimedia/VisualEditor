@@ -9,7 +9,7 @@ QUnit.module( 've.ce.TextNode' );
 
 /* Tests */
 
-QUnit.test( 'getHtml', 22, function ( assert ) {
+QUnit.test( 'getHtml', function ( assert ) {
 	var i, len, cases;
 
 	cases = [
@@ -272,8 +272,30 @@ QUnit.test( 'getHtml', 22, function ( assert ) {
 			// [ ][ ][ ][ ][ ][A]
 			'data': [{ 'type': 'paragraph' },' ', ' ', ' ', ' ', ' ', 'A',{ 'type': '/paragraph' }],
 			'html': '&nbsp; &nbsp; &nbsp;A'
+		},
+		{
+			'data': [{ 'type': 'paragraph' }, '\n', 'A', '\n', 'B', '\n', { 'type': '/paragraph' }],
+			'html': '&crarr;A&crarr;B&crarr;'
+		},
+		{
+			'data': [{ 'type': 'paragraph' }, '\t', 'A', '\t', 'B', '\t', { 'type': '/paragraph' }],
+			'html': '&#10142;A&#10142;B&#10142;'
+		},
+		{
+			'data': [{ 'type': 'preformatted' }, '\n', 'A', '\n', 'B', '\n', { 'type': '/preformatted' }],
+			'html': '\nA\nB\n'
+		},
+		{
+			'data': [{ 'type': 'preformatted' }, '\t', 'A', '\t', 'B', '\t', { 'type': '/preformatted' }],
+			'html': '\tA\tB\t'
+		},
+		{
+			// [ ][ ][ ][A][ ][ ]
+			'data': [{ 'type': 'preformatted' },' ', ' ', ' ', 'A', ' ', ' ',{ 'type': '/preformatted' }],
+			'html': '   A  '
 		}
 	];
+	QUnit.expect( cases.length );
 	for ( i = 0, len = cases.length; i < len; i++ ) {
 		ve.dm.example.preprocessAnnotations( cases[i].data );
 		assert.equal(

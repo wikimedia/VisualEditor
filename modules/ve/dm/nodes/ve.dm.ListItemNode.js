@@ -36,6 +36,7 @@ ve.dm.ListItemNode.rules = {
 	'isWrapped': true,
 	'isContent': false,
 	'canContainContent': false,
+	'hasSignificantWhitespace': false,
 	'childNodeTypes': null,
 	'parentNodeTypes': ['list']
 };

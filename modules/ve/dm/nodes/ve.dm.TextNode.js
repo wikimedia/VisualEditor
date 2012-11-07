@@ -35,6 +35,7 @@ ve.dm.TextNode.rules = {
 	'isWrapped': false,
 	'isContent': true,
 	'canContainContent': false,
+	'hasSignificantWhitespace': false,
 	'childNodeTypes': [],
 	'parentNodeTypes': null
 };
