@@ -349,7 +349,7 @@
 			// is not a modifier key then we should reset all sequences
 			// that were not matched by this key event
 			if ( e.type === cf.isInsideSequence && !isModifier( character ) ) {
-				cf.resetSequences(doNotReset);
+				cf.resetSequences( doNotReset );
 			}
 		}
 
@@ -534,7 +534,7 @@
 
 			// weird race condition if a sequence ends with the key
 			// another sequence begins with
-			setTimeout( cf.resetSequences, 10 );
+			setTimeout( ve.bind( cf.resetSequences, cf ), 10 );
 		}
 
 		// start off by adding a sequence level record for this combo
