@@ -40,7 +40,7 @@ ve.Surface = function VeSurface( parent, dom, options ) {
 
 	// Initialization
 	this.setupToolbars();
-	this.addCommands( this.options.commands );
+	this.setupCommands();
 	ve.instances.push( this );
 	this.model.startHistoryTracking();
 };
@@ -50,6 +50,7 @@ ve.Surface = function VeSurface( parent, dom, options ) {
 ve.Surface.defaultOptions = {
 	'toolbars': {
 		'top': {
+			'float': true,
 			'tools': [
 				{ 'name': 'history', 'items' : ['undo', 'redo'] },
 				{ 'name': 'textStyle', 'items' : ['format'] },
@@ -60,50 +61,6 @@ ve.Surface.defaultOptions = {
 	},
 	// Items can either be symbolic names or objects with trigger and action properties
 	'commands': ['bold', 'italic', 'link', 'undo', 'redo']
-};
-
-/**
- * Common commands that can be invoked by their symbolic names.
- *
- * @static
- * @member
- */
-ve.Surface.commands = {
-	'bold': {
-		'trigger': ['cmd+b', 'ctrl+b'],
-		'action': ['annotation', 'toggle', 'textStyle/bold']
-	},
-	'italic': {
-		'trigger': ['cmd+i', 'ctrl+i'],
-		'action': ['annotation', 'toggle', 'textStyle/italic']
-	},
-	'link': {
-		'trigger': ['cmd+k', 'ctrl+k'],
-		'action': ['inspector', 'open', 'link']
-	},
-	'undo': {
-		'trigger': ['cmd+z', 'ctrl+z'],
-		'action': ['history', 'undo']
-	},
-	'redo': {
-		'trigger': ['cmd+shift+z', 'ctrl+shift+z'],
-		'action': ['history', 'redo']
-	}
-};
-
-/* Static Methods */
-
-/**
- * Adds a command that can be referenced by a symbolic name.
- *
- * @static
- * @method
- * @param {String} name Symbolic name of command
- * @param {String|String[]} trigger One or more canonical representations of keyboard triggers
- * @param {Array} action Array containing the action name, method and additional arguments
- */
-ve.Surface.registerCommand = function ( name, trigger, action ) {
-	ve.Surface.commands[name] = { 'trigger': trigger, 'action': action };
 };
 
 /* Methods */
@@ -176,53 +133,33 @@ ve.Surface.prototype.execute = function ( action, method ) {
 };
 
 /**
- * Adds a link between a keyboard trigger and an action.
+ * Adds all commands from initialization options.
+ *
+ * Commands must be registered through {ve.commandRegsitry} prior to constructing the surface.
  *
  * @method
- * @param {String|String[]} trigger One or more canonical representations of keyboard triggers
- * @param {Array} action Array containing the action name, method and additional arguments
+ * @param {String[]} commands Array of symbolic names of registered commands
  */
-ve.Surface.prototype.addCommand = function ( triggers, action ) {
-	var i, len, trigger;
-	if ( !ve.isArray( triggers ) ) {
-		triggers = [triggers];
-	}
-	for ( i = 0, len = triggers.length; i < len; i++ ) {
-		// Normalize
-		trigger = ( new ve.Command( triggers[i] ) ).toString();
-		// Validate
-		if ( trigger.length === 0 ) {
-			throw new Error( 'Incomplete command: ' + triggers[i] );
+ve.Surface.prototype.setupCommands = function () {
+	var i, iLen, j, jLen, triggers, trigger, command,
+		commands = this.options.commands;
+	for ( i = 0, iLen = commands.length; i < iLen; i++ ) {
+		command = ve.commandRegistry.lookup( commands[i] );
+		if ( !command ) {
+			throw new Error( 'No command registered by that name: ' + commands[i] );
 		}
-		this.commands[trigger] = action;
-	}
-};
-
-/**
- * Adds multiple links between a keyboard triggers and an actions.
- *
- * Each object's trigger and action properties will be passed directly into
- * {ve.Surface.prototype.addCommand}.
- *
- * @method
- * @param {String[]|Object[]} commands Array of symbolic names of known commands, or objects that
- * each contain a trigger and action property
- */
-ve.Surface.prototype.addCommands = function ( commands ) {
-	var i, len;
-	for ( i = 0, len = commands.length; i < len; i++ ) {
-		if ( typeof commands[i] === 'string' ) {
-			if ( !( commands[i] in ve.Surface.commands ) ) {
-				throw new Error( 'Unknown command: ' + commands[i] );
+		triggers = command.trigger;
+		if ( !ve.isArray( triggers ) ) {
+			triggers = [triggers];
+		}
+		for ( j = 0, jLen = triggers.length; j < jLen; j++ ) {
+			// Normalize
+			trigger = ( new ve.Command( triggers[j] ) ).toString();
+			// Validate
+			if ( trigger.length === 0 ) {
+				throw new Error( 'Incomplete command: ' + triggers[j] );
 			}
-			this.addCommand(
-				ve.Surface.commands[commands[i]].trigger,
-				ve.Surface.commands[commands[i]].action
-			);
-		} else if ( ve.isPlainObject( commands[i] ) ) {
-			this.addCommand( commands[i].trigger, commands[i].action );
-		} else {
-			throw new Error( 'Invalid command, must be name of known command or command object' );
+			this.commands[trigger] = command.action;
 		}
 	}
 };
@@ -235,36 +172,32 @@ ve.Surface.prototype.addCommands = function ( commands ) {
  * @method
  */
 ve.Surface.prototype.setupToolbars = function () {
-	var surface = this;
-
-	// Build each toolbar
-	$.each( this.options.toolbars, function ( name, config ) {
-		if ( config !== null ) {
+	var name, config, toolbar,
+		toolbars = this.options.toolbars;
+	for ( name in toolbars ) {
+		config = toolbars[name];
+		if ( ve.isPlainObject( config ) ) {
+			this.toolbars[name] = toolbar = { '$': $( '<div class="ve-ui-toolbar"></div>' ) };
 			if ( name === 'top' ) {
-				surface.toolbars[name] = {
-					'$wrapper': $( '<div class="ve-ui-toolbar-wrapper"></div>' ),
-					'$': $( '<div class="ve-ui-toolbar"></div>' )
-						.append(
-							$( '<div class="ve-ui-actions"></div>' ),
-							$( '<div style="clear:both"></div>' ),
-							$( '<div class="ve-ui-toolbar-shadow"></div>' )
-						)
-				};
-				surface.toolbars[name].$wrapper.append( surface.toolbars[name].$ );
-				surface.$.before( surface.toolbars[name].$wrapper );
-
+				// Add extra sections to the toolbar
+				toolbar.$.append(
+					'<div class="ve-ui-actions"></div>' +
+					'<div style="clear:both"></div>' +
+					'<div class="ve-ui-toolbar-shadow"></div>'
+				);
+				// Wrap toolbar for floating
+				toolbar.$wrapper = $( '<div class="ve-ui-toolbar-wrapper"></div>' )
+					.append( this.toolbars[name].$ );
+				// Add toolbar to surface
+				this.$.before( toolbar.$wrapper );
 				if ( 'float' in config && config.float === true ) {
 					// Float top toolbar
-					surface.floatTopToolbar();
+					this.floatTopToolbar();
 				}
 			}
-			surface.toolbars[name].instance = new ve.ui.Toolbar(
-				surface.toolbars[name].$,
-				surface,
-				config.tools
-			);
+			toolbar.instance = new ve.ui.Toolbar( toolbar.$, this, config.tools );
 		}
-	} );
+	}
 };
 
 /*
