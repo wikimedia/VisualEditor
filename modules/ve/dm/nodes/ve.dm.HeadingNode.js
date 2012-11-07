@@ -36,6 +36,7 @@ ve.dm.HeadingNode.rules = {
 	'isWrapped': true,
 	'isContent': false,
 	'canContainContent': true,
+	'hasSignificantWhitespace': false,
 	'childNodeTypes': null,
 	'parentNodeTypes': null
 };

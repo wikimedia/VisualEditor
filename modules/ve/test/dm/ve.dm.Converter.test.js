@@ -35,7 +35,7 @@ QUnit.test( 'getDomElementFromDataElement', 20, function ( assert ) {
 	}
 } );
 
-QUnit.test( 'getDataFromDom', 30, function ( assert ) {
+QUnit.test( 'getDataFromDom', 31, function ( assert ) {
 	var msg,
 		cases = ve.dm.example.domToDataCases;
 
@@ -51,7 +51,7 @@ QUnit.test( 'getDataFromDom', 30, function ( assert ) {
 	}
 } );
 
-QUnit.test( 'getDomFromData', 32, function ( assert ) {
+QUnit.test( 'getDomFromData', 33, function ( assert ) {
 	var msg,
 		cases = ve.dm.example.domToDataCases;
 

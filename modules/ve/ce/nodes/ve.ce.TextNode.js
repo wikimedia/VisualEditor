@@ -52,7 +52,10 @@ ve.ce.TextNode.htmlCharacters = {
 	'<': '&lt;',
 	'>': '&gt;',
 	'\'': '&#039;',
-	'"': '&quot;',
+	'"': '&quot;'
+};
+
+ve.ce.TextNode.whitespaceHtmlCharacters = {
 	'\n': '&crarr;',
 	'\t': '&#10142;'
 };
@@ -98,6 +101,8 @@ ve.ce.TextNode.prototype.onUpdate = function ( force ) {
 ve.ce.TextNode.prototype.getHtml = function () {
 	var data = this.model.getDocument().getDataFromNode( this.model ),
 		htmlChars = ve.ce.TextNode.htmlCharacters,
+		whitespaceHtmlChars = ve.ce.TextNode.whitespaceHtmlCharacters,
+		significantWhitespace = this.getModel().getParent().hasSignificantWhitespace(),
 		out = '',
 		i,
 		j,
@@ -125,28 +130,35 @@ ve.ce.TextNode.prototype.getHtml = function () {
 		}
 	}
 
-	if ( data.length > 0 ) {
-		character = data[0];
-		if ( ve.isArray( character ) ? character[0] === ' ' : character === ' ' ) {
-			replaceWithNonBreakingSpace( 0, data );
+	if ( !significantWhitespace ) {
+		// Replace spaces with &nbsp; where needed
+		if ( data.length > 0 ) {
+			// Leading space
+			character = data[0];
+			if ( ve.isArray( character ) ? character[0] === ' ' : character === ' ' ) {
+				replaceWithNonBreakingSpace( 0, data );
+			}
 		}
-	}
-	if ( data.length > 1 ) {
-		character = data[data.length - 1];
-		if ( ve.isArray( character ) ? character[0] === ' ' : character === ' ' ) {
-			replaceWithNonBreakingSpace( data.length - 1, data );
+		if ( data.length > 1 ) {
+			// Trailing space
+			character = data[data.length - 1];
+			if ( ve.isArray( character ) ? character[0] === ' ' : character === ' ' ) {
+				replaceWithNonBreakingSpace( data.length - 1, data );
+			}
 		}
-	}
-	if ( data.length > 2 ) {
-		for ( i = 1; i < data.length - 1; i++ ) {
-			character = data[i];
-			nextCharacter = data[i + 1];
-			if (
-				( ve.isArray( character ) ? character[0] === ' ' : character === ' ' ) &&
-				( ve.isArray( nextCharacter ) ? nextCharacter[0] === ' ' : nextCharacter === ' ' )
-			) {
-				replaceWithNonBreakingSpace( i + 1, data );
-				i++;
+		if ( data.length > 2 ) {
+			// Replace any sequence of 2+ spaces with an alternating pattern
+			// (space-nbsp-space-nbsp-...)
+			for ( i = 1; i < data.length - 1; i++ ) {
+				character = data[i];
+				nextCharacter = data[i + 1];
+				if (
+					( ve.isArray( character ) ? character[0] === ' ' : character === ' ' ) &&
+					( ve.isArray( nextCharacter ) ? nextCharacter[0] === ' ' : nextCharacter === ' ' )
+				) {
+					replaceWithNonBreakingSpace( i + 1, data );
+					i++;
+				}
 			}
 		}
 	}
@@ -226,6 +238,9 @@ ve.ce.TextNode.prototype.getHtml = function () {
 		}
 
 		chr = rightPlain ? right : right[0];
+		if ( !significantWhitespace && chr in whitespaceHtmlChars ) {
+			chr = whitespaceHtmlChars[chr];
+		}
 		out += chr in htmlChars ? htmlChars[chr] : chr;
 		left = right;
 	}

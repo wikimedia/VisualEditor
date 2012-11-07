@@ -36,6 +36,7 @@ ve.dm.DefinitionListNode.rules = {
 	'isWrapped': true,
 	'isContent': false,
 	'canContainContent': false,
+	'hasSignificantWhitespace': false,
 	'childNodeTypes': ['definitionListItem'],
 	'parentNodeTypes': null
 };

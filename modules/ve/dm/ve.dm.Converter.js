@@ -503,7 +503,10 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 				// Strip leading and trailing inner whitespace
 				// (but only in non-annotation nodes)
 				// and store it so it can be restored later.
-				if ( annotations.length === 0 && i === 0 && dataElement ) {
+				if (
+					annotations.length === 0 && i === 0 && dataElement &&
+					!ve.dm.nodeFactory.doesNodeHaveSignificantWhitespace( dataElement.type )
+				) {
 					// Strip leading whitespace from the first child
 					matches = text.match( /^\s+/ );
 					if ( matches && matches[0] !== '' ) {
@@ -514,7 +517,8 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 				if (
 					annotations.length === 0 &&
 					i === domElement.childNodes.length - 1 &&
-					dataElement
+					dataElement &&
+					!ve.dm.nodeFactory.doesNodeHaveSignificantWhitespace( dataElement.type )
 				) {
 					// Strip trailing whitespace from the last child
 					matches = text.match( /\s+$/ );

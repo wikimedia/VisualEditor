@@ -103,6 +103,17 @@ ve.dm.Node.prototype.isContent = function () {
 };
 
 /**
+ * Checks if this node has significant whitespace. Can only be true if canContainContent is
+ * also true.
+ *
+ * @method
+ * @returns {Boolean} Node has significant whitespace
+ */
+ve.dm.Node.prototype.hasSignificantWhitespace = function () {
+	return ve.dm.nodeFactory.doesNodeHaveSignificantWhitespace( this.type );
+};
+
+/**
  * Checks if this node has an ancestor with given type and attributes.
  *
  * @method

@@ -36,6 +36,7 @@ ve.dm.PreformattedNode.rules = {
 	'isWrapped': true,
 	'isContent': false,
 	'canContainContent': true,
+	'hasSignificantWhitespace': true,
 	'childNodeTypes': null,
 	'parentNodeTypes': null
 };

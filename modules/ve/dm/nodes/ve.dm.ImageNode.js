@@ -36,6 +36,7 @@ ve.dm.ImageNode.rules = {
 	'isWrapped': true,
 	'isContent': true,
 	'canContainContent': false,
+	'hasSignificantWhitespace': false,
 	'childNodeTypes': [],
 	'parentNodeTypes': null
 };

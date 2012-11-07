@@ -133,6 +133,22 @@ ve.dm.NodeFactory.prototype.isNodeContent = function ( type ) {
 	throw new Error( 'Unknown node type: ' + type );
 };
 
+/**
+ * Checks if a given node has significant whitespace. Can only be true if canContainContent is
+ * also true.
+ *
+ * @method
+ * @param {String} type Node type
+ * @returns {Boolean} The node has significant whitespace
+ * @throws 'Unknown node type: {type}'
+ */
+ve.dm.NodeFactory.prototype.doesNodeHaveSignificantWhitespace = function ( type ) {
+	if ( type in this.registry ) {
+		return this.registry[type].rules.hasSignificantWhitespace;
+	}
+	throw new Error( 'Unknown node type: ' + type );
+};
+
 /* Initialization */
 
 ve.dm.nodeFactory = new ve.dm.NodeFactory();

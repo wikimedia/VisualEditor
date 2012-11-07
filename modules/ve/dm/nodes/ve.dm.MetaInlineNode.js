@@ -37,6 +37,7 @@ ve.dm.MetaInlineNode.rules = {
 	'isWrapped': true,
 	'isContent': true,
 	'canContainContent': false,
+	'hasSignificantWhitespace': false,
 	'childNodeTypes': [],
 	'parentNodeTypes': null
 };

@@ -36,6 +36,7 @@ ve.dm.MetaBlockNode.rules = {
 	'isWrapped': true,
 	'isContent': false,
 	'canContainContent': false,
+	'hasSignificantWhitespace': false,
 	'childNodeTypes': [],
 	'parentNodeTypes': null
 };

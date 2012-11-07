@@ -36,6 +36,7 @@ ve.dm.BreakNode.rules = {
 	'isWrapped': true,
 	'isContent': true,
 	'canContainContent': false,
+	'hasSignificantWhitespace': false,
 	'childNodeTypes': [],
 	'parentNodeTypes': null
 };

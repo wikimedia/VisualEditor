@@ -36,6 +36,7 @@ ve.dm.TableRowNode.rules = {
 	'isWrapped': true,
 	'isContent': false,
 	'canContainContent': false,
+	'hasSignificantWhitespace': false,
 	'childNodeTypes': ['tableCell'],
 	'parentNodeTypes': ['tableSection']
 };
