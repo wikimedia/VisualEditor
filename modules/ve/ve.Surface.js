@@ -70,23 +70,23 @@ ve.Surface.defaultOptions = {
  */
 ve.Surface.commands = {
 	'bold': {
-		'trigger': ['command+b', 'control+b'],
+		'trigger': ['cmd+b', 'ctrl+b'],
 		'action': ['annotation', 'toggle', 'textStyle/bold']
 	},
 	'italic': {
-		'trigger': ['command+i', 'control+i'],
+		'trigger': ['cmd+i', 'ctrl+i'],
 		'action': ['annotation', 'toggle', 'textStyle/italic']
 	},
 	'link': {
-		'trigger': ['command+k', 'control+k'],
+		'trigger': ['cmd+k', 'ctrl+k'],
 		'action': ['inspector', 'open', 'link']
 	},
 	'undo': {
-		'trigger': ['command+z', 'control+z'],
+		'trigger': ['cmd+z', 'ctrl+z'],
 		'action': ['history', 'undo']
 	},
 	'redo': {
-		'trigger': ['command+shift+z', 'control+shift+z'],
+		'trigger': ['cmd+shift+z', 'ctrl+shift+z'],
 		'action': ['history', 'redo']
 	}
 };
@@ -149,21 +149,30 @@ ve.Surface.prototype.getContext = function () {
 };
 
 /**
- * Executes an action.
+ * Executes an action or command.
  *
  * @method
- * @param {String} action Name of action
- * @param {String} method Name of method
+ * @param {String|Command} action Name of action or command object
+ * @param {String} [method] Name of method
  * @param {Mixed} [...] Additional arguments for action
+ * @returns {Boolean} Action or command was executed
  */
 ve.Surface.prototype.execute = function ( action, method ) {
-	// Validate method
-	if ( !ve.actionFactory.doesActionSupportMethod( action, method ) ) {
-		throw new Error( 'Invalid method: ' + method );
+	var trigger, obj;
+	if ( action instanceof ve.Command ) {
+		trigger = action.toString();
+		if ( trigger in this.commands ) {
+			this.execute.apply( this, this.commands[trigger] );
+		}
+	} else if ( typeof action === 'string' && typeof method === 'string' ) {
+		// Validate method
+		if ( ve.actionFactory.doesActionSupportMethod( action, method ) ) {
+			// Create an action object and execute the method on it
+			obj = ve.actionFactory.create( action, this );
+			obj[method].apply( obj, Array.prototype.slice.call( arguments, 2 ) );
+		}
 	}
-	// Create an action object and execute the method on it
-	var obj = ve.actionFactory.create( action, this );
-	obj[method].apply( obj, Array.prototype.slice.call( arguments, 2 ) );
+	return false;
 };
 
 /**
@@ -173,13 +182,19 @@ ve.Surface.prototype.execute = function ( action, method ) {
  * @param {String|String[]} trigger One or more canonical representations of keyboard triggers
  * @param {Array} action Array containing the action name, method and additional arguments
  */
-ve.Surface.prototype.addCommand = function ( trigger, action ) {
-	var i, len;
-	if ( !ve.isArray( trigger ) ) {
-		trigger = [trigger];
+ve.Surface.prototype.addCommand = function ( triggers, action ) {
+	var i, len, trigger;
+	if ( !ve.isArray( triggers ) ) {
+		triggers = [triggers];
 	}
-	for ( i = 0, len = trigger.length; i < len; i++ ) {
-		this.commands[trigger[i]] = action;
+	for ( i = 0, len = triggers.length; i < len; i++ ) {
+		// Normalize
+		trigger = ( new ve.Command( triggers[i] ) ).toString();
+		// Validate
+		if ( trigger.length === 0 ) {
+			throw new Error( 'Incomplete command: ' + triggers[i] );
+		}
+		this.commands[trigger] = action;
 	}
 };
 
@@ -209,28 +224,6 @@ ve.Surface.prototype.addCommands = function ( commands ) {
 		} else {
 			throw new Error( 'Invalid command, must be name of known command or command object' );
 		}
-	}
-};
-
-/**
- * Checks if a given trigger is linked to an action.
- *
- * @method
- * @returns {Boolean} Trigger is linked to an action
- */
-ve.Surface.prototype.isCommand = function( trigger ) {
-	return trigger in this.commands;
-};
-
-/**
- * Runs a command.
- *
- * @method
- * @param {String} trigger Canonical representation of a keyboard trigger
- */
-ve.Surface.prototype.command = function( trigger ) {
-	if ( trigger in this.commands ) {
-		this.execute.apply( this, this.commands[trigger] );
 	}
 };
 
