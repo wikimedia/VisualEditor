@@ -36,7 +36,7 @@
 	cursor: pointer;
 	vertical-align: top;
 	padding: 0.25em;
-	height: 22px;
+	height: 1.5em;
 	margin-right: 0.25em;
 	border: solid 1px transparent;
 }
@@ -44,10 +44,10 @@
 .ve-init-mw-viewPageTarget-toolbar-feedbackButton a {
 	display: inline-block;
 	vertical-align: middle;
-	height: 32px;
 	margin-left: 4px;
 	margin-right: 4px;
 	font-size: 0.8em;
+	line-height: 1.8em;
 }
 
 .ve-init-mw-viewPageTarget-toolbar-saveButton,
@@ -78,7 +78,7 @@
 }
 
 .ve-init-mw-viewPageTarget-toolbar-saveButton {
-	height: 22px;
+	height: 1.5em;
 	margin-right: 0.25em;
 }
 
@@ -131,7 +131,7 @@
 .ve-init-mw-viewPageTarget-saveDialog-saveButton-label {
 	display: inline-block;
 	vertical-align: middle;
-	height: 32px;
+	line-height: 1.8em;
 	font-size: 0.8em;
 }
 
