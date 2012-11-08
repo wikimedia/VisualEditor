@@ -30,6 +30,12 @@ ve.Action.static = {};
  * To avoid use of methods not intended to be executed via surface.execute(), the methods must be
  * whitelisted here. This information is checked by ve.Surface before executing an action.
  *
+ * If a method returns a value, it will be cast to boolean and be used to determine if the action
+ * was canceled. Not returning anything, or returning undefined will be treated the same as
+ * returning true. A canceled action will yield to other default behavior. For example, when
+ * triggering an action from a keystroke, a canceled action will allow normal insertion behavior to
+ * be carried out.
+ *
  * @static
  * @member
  */

@@ -60,7 +60,7 @@ ve.Surface.defaultOptions = {
 		}
 	},
 	// Items can either be symbolic names or objects with trigger and action properties
-	'commands': ['bold', 'italic', 'link', 'undo', 'redo']
+	'commands': ['bold', 'italic', 'link', 'undo', 'redo', 'indent', 'unindent']
 };
 
 /* Methods */
@@ -115,18 +115,19 @@ ve.Surface.prototype.getContext = function () {
  * @returns {Boolean} Action or command was executed
  */
 ve.Surface.prototype.execute = function ( action, method ) {
-	var trigger, obj;
+	var trigger, obj, ret;
 	if ( action instanceof ve.Command ) {
 		trigger = action.toString();
 		if ( trigger in this.commands ) {
-			this.execute.apply( this, this.commands[trigger] );
+			return this.execute.apply( this, this.commands[trigger] );
 		}
 	} else if ( typeof action === 'string' && typeof method === 'string' ) {
 		// Validate method
 		if ( ve.actionFactory.doesActionSupportMethod( action, method ) ) {
 			// Create an action object and execute the method on it
 			obj = ve.actionFactory.create( action, this );
-			obj[method].apply( obj, Array.prototype.slice.call( arguments, 2 ) );
+			ret = obj[method].apply( obj, Array.prototype.slice.call( arguments, 2 ) );
+			return ret === undefined || !!ret;
 		}
 	}
 	return false;
