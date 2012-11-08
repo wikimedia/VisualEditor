@@ -206,13 +206,18 @@ ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function ( dataAnnot
  * @returns {Array} Linear model data
  */
 ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, dataElement, path, alreadyWrapped ) {
-	function createAlien( domElement, isInline ) {
-		var type = isInline ? 'alienInline' : 'alienBlock';
+	function createAlien( domElement, isInline, isWrapper ) {
+		var type = isInline ? 'alienInline' : 'alienBlock', html;
+		if ( isWrapper ) {
+			html =  $( domElement ).html();
+		} else {
+			html = $( '<div>' ).append( $( domElement ).clone() ).html();
+		}
 		return [
 			{
 				'type': type,
 				'attributes': {
-					'html': $( '<div>' ).append( $( domElement ).clone() ).html()
+					'html': html
 				}
 			},
 			{ 'type': '/' + type }
@@ -243,6 +248,64 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 		}
 	}
 
+	/**
+	 * Helper function to group adjacent child elements with the same about attribute together.
+	 * If there are multiple adjacent child nodes with the same about attribute, they are
+	 * wrapped in a <div> with the data-ve-aboutgroup attribute set.
+	 *
+	 * This function does not wrap single-element about groups, and does not descend into the
+	 * child elements.
+	 *
+	 * @param element {HTMLElement} Element to process
+	 */
+	function doAboutGrouping( element ) {
+		var child = element.firstChild, textNodes = [],
+			prevChild, aboutGroup, aboutWrapper, childAbout, nextChild, i;
+		while ( child ) {
+			nextChild = child.nextSibling;
+			if ( !child.getAttribute ) {
+				// Text nodes don't have a getAttribute() method. Thanks HTML DOM,
+				// that's really helpful ^^
+				textNodes.push( child );
+				child = nextChild;
+				continue;
+			}
+			childAbout = child.getAttribute( 'about' );
+			if ( childAbout && !aboutGroup ) {
+				// Start of a new about group
+				aboutGroup = childAbout;
+			} else if ( childAbout && childAbout === aboutGroup ) {
+				// Continuation of the current about group
+				if ( !aboutWrapper ) {
+					// This is the second child in this group, so the
+					// previous child is the first child in this group.
+					// Wrap the previous child
+					aboutWrapper = document.createElement( 'div' );
+					aboutWrapper.setAttribute( 'data-ve-aboutgroup', aboutGroup );
+					element.insertBefore( aboutWrapper, prevChild );
+					aboutWrapper.appendChild( prevChild );
+				}
+				// Append any outstanding text nodes to the wrapper
+				for ( i = 0; i < textNodes.length; i++ ) {
+					aboutWrapper.appendChild( textNodes[i] );
+				}
+				// Append this child to the wrapper
+				aboutWrapper.appendChild( child );
+			} else if ( aboutGroup ) {
+				// This child isn't in the current about group
+				aboutGroup = undefined;
+				aboutWrapper = undefined;
+				if ( childAbout ) {
+					// Start of a new about group
+					aboutGroup = childAbout;
+				}
+			}
+			prevChild = child;
+			child = nextChild;
+			textNodes = [];
+		}
+	}
+
 	// Fallback to defaults
 	annotations = annotations || [];
 	path = path || ['document'];
@@ -259,11 +322,23 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 	if ( dataElement ) {
 		data.push( dataElement );
 	}
+	// Do about grouping
+	// FIXME this assumes every about group is an alien
+	doAboutGrouping( domElement );
 	// Add contents
 	for ( i = 0; i < domElement.childNodes.length; i++ ) {
 		childDomElement = domElement.childNodes[i];
 		switch ( childDomElement.nodeType ) {
 			case Node.ELEMENT_NODE:
+				// Alienate about groups
+				if ( childDomElement.hasAttribute( 'data-ve-aboutgroup' ) ) {
+					alien = createAlien( childDomElement, branchIsContent, true );
+					data = data.concat( alien );
+					processNextWhitespace( alien[0] );
+					prevElement = alien[0];
+					break;
+				}
+
 				// HACK handle <meta>/<link> separately because of the
 				// metaInline/metaBlock distinction
 				if (
@@ -795,13 +870,18 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 					// Create nodes from source
 					wrapper = document.createElement( 'div' );
 					wrapper.innerHTML = dataElement.attributes.html;
-					// Add element - adds first child element, any other
-					// children are ignored but shouldn't exist
-					//parentDomElement = domElement;
-					childDomElement = wrapper.firstChild;
-					//parentDomElement.appendChild( domElement );
-					// Make sure the alien closing is skipped
-					//parentDomElement = domElement; domElement = wrapper; //i++;
+					if ( wrapper.childNodes.length > 1 ) {
+						// Wrap the HTML in a single element, this makes
+						// it much easier to deal with. It'll be unwrapped
+						// at the end of this function.
+						childDomElement = document.createElement( 'div' );
+						childDomElement.setAttribute( 'data-ve-multi-child-alien-wrapper', 'true' );
+						while ( wrapper.firstChild ) {
+							childDomElement.appendChild( wrapper.firstChild );
+						}
+					} else {
+						childDomElement = wrapper.firstChild;
+					}
 				} else {
 					// Create node from data
 					childDomElement = this.getDomElementFromDataElement( dataElement );
@@ -870,6 +950,11 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 		}
 		delete container.lastOuterPost;
 	}
+
+	// Unwrap multi-child alien wrappers
+	$( container ).find( '[data-ve-multi-child-alien-wrapper]' ) .each( function() {
+		$( this ).replaceWith( $( this ).contents() );
+	} );
 	return container;
 };
 

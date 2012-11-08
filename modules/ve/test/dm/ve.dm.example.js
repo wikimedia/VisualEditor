@@ -1507,5 +1507,70 @@ ve.dm.example.domToDataCases = {
 		'normalizedHtml': '<p data-ve-changed="{&quot;content&quot;:1}">' +
 				'Foo<img data-ve-changed="{&quot;attributes&quot;:2}" />' +
 				'</p><p data-ve-changed="{&quot;created&quot;:1}">Bar</p>'
+	},
+	'about grouping': {
+		'html': '<div typeof="mw:Placeholder" about="#mwt1">Foo</div>' +
+			'<figure typeof="mw:Placeholder" about="#mwt1">Bar</figure>' +
+			'<figure typeof="mw:Placeholder" about="#mwt2">Baz</figure>' +
+			'<span typeof="mw:Placeholder" about="#mwt2">Quux</span>' +
+			'<p>Whee</p><span typeof="mw:Placeholder" about="#mwt2">Yay</span>' +
+			'<div typeof="mw:Placeholder" about="#mwt2">Blah</div>' +
+			'<span typeof="mw:Placeholder" about="#mwt3">Meh</span>',
+		'data': [
+			{
+				'type': 'alienBlock',
+				'attributes': {
+					'html': '<div typeof="mw:Placeholder" about="#mwt1">Foo</div>' +
+						'<figure typeof="mw:Placeholder" about="#mwt1">Bar</figure>'
+				}
+			},
+			{ 'type': '/alienBlock' },
+			{
+				'type': 'alienBlock',
+				'attributes': {
+					'html': '<figure typeof="mw:Placeholder" about="#mwt2">Baz</figure>' +
+						'<span typeof="mw:Placeholder" about="#mwt2">Quux</span>'
+				}
+			},
+			{ 'type': '/alienBlock' },
+			{ 'type': 'paragraph' },
+			'W',
+			'h',
+			'e',
+			'e',
+			{ 'type': '/paragraph' },
+			{
+				'type': 'alienBlock',
+				'attributes': {
+					'html': '<span typeof="mw:Placeholder" about="#mwt2">Yay</span>' +
+						'<div typeof="mw:Placeholder" about="#mwt2">Blah</div>'
+				}
+			},
+			{ 'type': '/alienBlock' },
+			{
+				'type': 'alienBlock',
+				'attributes': {
+					'html': '<span typeof="mw:Placeholder" about="#mwt3">Meh</span>'
+				}
+			},
+			{ 'type': '/alienBlock' }
+		]
+	},
+	'whitespace preservation with an about group': {
+		'html': ' <div typeof="mw:Placeholder" about="#mwt1">\tFoo\t\t</div>\t\t\t' +
+			'<div typeof="mw:Placeholder" about="#mwt1">  Bar   </div>    ',
+		'data': [
+			{
+				'type': 'alienBlock',
+				'attributes': {
+					'html': '<div typeof="mw:Placeholder" about="#mwt1">\tFoo\t\t</div>\t\t\t' +
+						'<div typeof="mw:Placeholder" about="#mwt1">  Bar   </div>'
+				},
+				'internal': {
+					'whitespace': [ ' ', undefined, undefined, '    ' ]
+				}
+			},
+			{ 'type': '/alienBlock' }
+		]
 	}
 };
