@@ -111,8 +111,6 @@ ve.Command.static.keyAliases = {
 /**
  * Mapping of key codes and symbolic key names.
  *
- * TODO: Fill in some of the non-standard key mappings listed here: http://unixpapa.com/js/key.html
- *
  * @static
  * @member
  */
@@ -122,6 +120,8 @@ ve.Command.static.primaryKeyMap = {
 	36: 'home', 37: 'left', 38: 'up', 39: 'right', 40: 'down', 46: 'delete',
 	// Numbers
 	48: '0', 49: '1', 50: '2', 51: '3', 52: '4', 53: '5', 54: '6', 55: '7', 56: '8', 57: '9',
+	// Punctuation
+	59: ';', 61: '=',
 	// Letters
 	65: 'a', 66: 'b', 67: 'c', 68: 'd', 69: 'e', 70: 'f', 71: 'g', 72: 'h', 73: 'i', 74: 'j',
 	75: 'k', 76: 'l', 77: 'm', 78: 'n', 79: 'o', 80: 'p', 81: 'q', 82: 'r', 83: 's', 84: 't',
