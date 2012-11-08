@@ -418,7 +418,9 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( dom ) {
 	// Update UI
 	this.hidePageContent();
 	this.hideSpinner();
-	this.disableToolbarSaveButton();
+	if ( !this.currentUri.query.oldid ) {
+		this.disableToolbarSaveButton();
+	}
 	this.active = true;
 	this.$document.attr( {
 		'lang': $contentText.attr( 'lang' ),
@@ -578,7 +580,6 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarSaveButton = function () {
  */
 ve.init.mw.ViewPageTarget.prototype.attachToolbarSaveButton = function () {
 	$( '.ve-ui-toolbar .ve-ui-actions' ).append( this.$toolbarSaveButton );
-	this.disableToolbarSaveButton();
 };
 
 /**
