@@ -32,6 +32,23 @@ ve.ce.Node = function VeCeNode( type, model, $element ) {
 
 ve.inheritClass( ve.ce.Node, ve.Node );
 
+/* Static Memebers */
+
+ve.ce.Node.static = {};
+
+/**
+ * Template for shield elements.
+ *
+ * Uses data URI to inject a 1x1 transparent GIF image into the DOM.
+ *
+ * @static
+ * @member
+ */
+ve.ce.Node.static.$shieldTemplate = $(
+	'<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" ' +
+		'class="ve-ce-node-shield">'
+);
+
 /* Methods */
 
 /**
