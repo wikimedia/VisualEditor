@@ -325,7 +325,7 @@ $messages['dsb'] = array(
 	'visualeditor' => 'VisualEditor',
 	'visualeditor-desc' => 'WYSIWYG-editor za MediaWiki',
 	'visualeditor-feedback-prompt' => 'Komentar zawóstajiś',
-	'visualeditor-feedback-dialog-title' => 'Komentar wó grajkanišću VisualEditora zawóstajiś',
+	'visualeditor-feedback-dialog-title' => 'Komentar wó VisualEditorje zawóstajiś',
 );
 
 /** British English (British English)
@@ -657,12 +657,13 @@ $messages['hi'] = array(
 $messages['hsb'] = array(
 	'visualeditor' => 'VisualEditor',
 	'visualeditor-desc' => 'WYSIWYG-editor za MediaWiki',
+	'visualeditor-preference-enable' => 'VisualEditor zmóžnić (jenož hłowny mjenowy rum)',
 	'visualeditor-feedback-prompt' => 'Komentar zawostajić',
-	'visualeditor-feedback-dialog-title' => 'Zawostaj komentar wo hrajkanišću VisualEditora',
+	'visualeditor-feedback-dialog-title' => 'Komentar wo VisualEditorje zawostajić',
 	'visualeditor-notification-saved' => 'Twoje změny na $1 su so składowali.',
 	'visualeditor-notification-created' => '$1 je so wutworił.',
 	'visualeditor-ca-editsource' => 'Žórłowy tekst wobdźěłać',
-	'visualeditor-linkinspector-title' => 'Wotkaz wobdźěłać', # Fuzzy
+	'visualeditor-linkinspector-title' => 'Wotkaz',
 	'visualeditor-linkinspector-label-pagetitle' => 'Titul strony',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Eksistowaca strona',
 	'visualeditor-linkinspector-suggest-new-page' => 'Nowa strona',
