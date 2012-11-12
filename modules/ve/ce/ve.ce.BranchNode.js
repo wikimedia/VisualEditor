@@ -208,7 +208,7 @@ ve.ce.BranchNode.prototype.setupSlugs = function () {
 		for ( i = 0; i < this.children.length; i++ ) {
 			// First sluggable child (left side)
 			if ( i === 0 && this.children[i].canHaveSlugBefore() ) {
-				this.slugs[i] = $slug.clone().insertBefore( this.children[i].$ );
+				this.slugs[i] = $slug.clone().insertBefore( this.children[i].$.first() );
 			}
 			if ( this.children[i].canHaveSlugAfter() ) {
 				if (
@@ -217,7 +217,7 @@ ve.ce.BranchNode.prototype.setupSlugs = function () {
 					// Sluggable child followed by another sluggable child (in between)
 					( this.children[i + 1] && this.children[i + 1].canHaveSlugBefore() )
 				) {
-					this.slugs[i + 1] = $slug.clone().insertAfter( this.children[i].$ );
+					this.slugs[i + 1] = $slug.clone().insertAfter( this.children[i].$.last() );
 				}
 			}
 		}
