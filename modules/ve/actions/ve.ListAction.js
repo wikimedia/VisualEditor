@@ -178,7 +178,7 @@ ve.ListAction.prototype.getUnlistRanges = function( range ) {
 						if ( subList.getType() === 'list' ) {
 							// Recurse
 							unlistRanges = ve.extendObject( unlistRanges, this.getUnlistRanges(
-								documentModel, subList.getRange()
+								subList.getRange()
 							) );
 						}
 					}
