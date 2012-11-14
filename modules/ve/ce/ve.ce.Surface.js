@@ -35,9 +35,9 @@ ve.ce.Surface = function VeCeSurface( $container, model, surface ) {
 	this.sluggable = true;
 	this.dragging = false;
 	this.selecting = false;
+	this.$phantoms = $( '<div class="ve-ce-phantoms">' );
 
 	// Events
-
 	this.surfaceObserver.addListenerMethods(
 		this, { 'contentChange': 'onContentChange', 'selectionChange': 'onSelectionChange' }
 	);
@@ -61,6 +61,9 @@ ve.ce.Surface = function VeCeSurface( $container, model, surface ) {
 	if ( $.browser.msie ) {
 		this.$.on( 'beforepaste', ve.bind( this.onPaste, this ) );
 	}
+	this.$phantoms.on( 'mouseleave', ve.bind( function () {
+		this.$phantoms.empty();
+	}, this ) );
 
 	// Initialization
 	try {
@@ -70,11 +73,20 @@ ve.ce.Surface = function VeCeSurface( $container, model, surface ) {
 	rangy.init();
 	ve.ce.Surface.clearLocalStorage();
 	this.$.append( this.documentView.getDocumentNode().$ );
+	this.$.append( this.$phantoms );
 };
 
 /* Inheritance */
 
 ve.inheritClass( ve.ce.Surface, ve.EventEmitter );
+
+/* Static Members */
+
+ve.ce.Surface.static = {};
+
+ve.ce.Surface.static.$phantomTemplate = $( '<div class="ve-ce-phantom" draggable="false"></div>' )
+	// TODO: I18N
+	.attr( 'title', 'Sorry, this element cannot be edited with the Visual Editor' );
 
 /* Methods */
 

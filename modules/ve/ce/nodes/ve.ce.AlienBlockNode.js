@@ -23,6 +23,7 @@ ve.ce.AlienBlockNode = function VeCeAlienBlockNode( model ) {
 
 	// Events
 	this.model.addListenerMethod( this, 'update', 'onUpdate' );
+	this.$.on( 'mouseenter', ve.bind( this.onMouseEnter, this ) );
 
 	// Initialization
 	this.onUpdate();
@@ -59,6 +60,25 @@ ve.ce.AlienBlockNode.prototype.onUpdate = function () {
 			$this.append( $shieldTemplate.clone() );
 		}
 	} );
+};
+
+ve.ce.AlienBlockNode.prototype.onMouseEnter = function () {
+	var	$phantoms = $( [] ),
+		$phantomTemplate = ve.ce.Surface.static.$phantomTemplate;
+	this.$.find( '.ve-ce-node-shield' ).each( function () {
+		var	$shield = $( this ),
+			offset = $shield.offset();
+		$phantoms = $phantoms.add(
+			$phantomTemplate.clone().css( {
+				'top': offset.top,
+				'left': offset.left,
+				'height': $shield.height(),
+				'width': $shield.width(),
+				'background-position': -offset.left + 'px ' + -offset.top + 'px'
+			} )
+		);
+	} );
+	this.root.getSurface().$phantoms.empty().append( $phantoms );
 };
 
 /* Registration */
