@@ -110,7 +110,8 @@ $wgResourceModules += array(
 			'jquery.placeholder',
 			'jquery.client',
 			'jquery.byteLimit',
-			'jquery.byteLength'
+			'jquery.byteLength',
+			'user.tokens'
 		),
 		'messages' => array(
 			'minoredit',

@@ -60,10 +60,10 @@ ve.inheritClass( ve.init.mw.Target, ve.EventEmitter );
  */
 ve.init.mw.Target.onLoad = function ( response ) {
 	var data = response['ve-parsoid'];
-	if ( !data ) {
+	if ( !data && !response.error ) {
 		this.loading = false;
 		this.emit( 'loadError', null, 'Invalid response from server', null );
-	} else if ( typeof data.result === 'error' ) {
+	} else if ( response.error || data.result === 'error' ) {
 		this.loading = false;
 		this.emit( 'loadError', null, 'Server error', null );
 	} else if ( typeof data.parsed !== 'string' ) {
@@ -125,9 +125,9 @@ ve.init.mw.Target.onLoadError = function ( response, text, exception ) {
 ve.init.mw.Target.onSave = function ( response ) {
 	this.saving = false;
 	var data = response['ve-parsoid'];
-	if ( !data ) {
+	if ( !data && !response.error ) {
 		this.emit( 'saveError', null, 'Invalid response from server', null );
-	} else if ( data.result !== 'success' ) {
+	} else if ( response.error || data.result !== 'success' ) {
 		this.emit( 'saveError', null, 'Unsuccessful request: ' + data.result, null );
 	} else if ( typeof data.content !== 'string' ) {
 		this.emit( 'saveError', null, 'Invalid HTML content in response from server', null );
@@ -187,10 +187,11 @@ ve.init.mw.Target.prototype.load = function () {
 			'paction': 'parse',
 			'page': this.pageName,
 			'oldid': this.oldId,
+			'token': this.editToken,
 			'format': 'json'
 		},
 		'dataType': 'json',
-		'type': 'GET',
+		'type': 'POST',
 		// Wait up to 10 seconds before giving up
 		'timeout': 10000,
 		'cache': 'false',
