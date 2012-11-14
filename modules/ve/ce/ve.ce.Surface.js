@@ -205,7 +205,7 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 			next.range
 		);
 		this.unlock();
-	} else if ( ( offsetDiff === 0 || offsetDiff === lengthDiff ) && sameLeadingAndTrailing ) {
+	} else if ( false /* temporary quick fix for BugId: 41223 */ && ( offsetDiff === 0 || offsetDiff === lengthDiff ) && sameLeadingAndTrailing ) {
 		if ( offsetDiff === 0 ) {
 			range = new ve.Range( next.range.start, next.range.start - lengthDiff );
 		} else {
