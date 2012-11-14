@@ -5,13 +5,11 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-
 /* Alien styling */
 .ve-ce-alienBlockNode,
 .ve-ce-alienInlineNode,
 .ve-ce-alienBlockNode *,
 .ve-ce-alienInlineNode * {
-	background-color: #FFFFBA !important;
 	position: relative !important;
 	top: 0 !important;
 	left: 0 !important;
