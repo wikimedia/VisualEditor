@@ -814,8 +814,7 @@
 		'article', 'aside', 'body', 'nav', 'section', 'footer', 'header', 'figure',
 		'figcaption', 'fieldset', 'details', 'blockquote',
 		// other
-		'br', 'hr', 'button', 'canvas', 'center', 'col', 'colgroup', 'embed',
-		// 'img', // Really?
+		'hr', 'button', 'canvas', 'center', 'col', 'colgroup', 'embed',
 		'map', 'object', 'pre', 'progress', 'video'
 	];
 
