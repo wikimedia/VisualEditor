@@ -47,6 +47,16 @@ ve.init.Platform.prototype.getModulesUrl = function () {
 };
 
 /**
+ * Whether to use change markers
+ *
+ * @method
+ * @returns {Boolean}
+ */
+ve.init.Platform.prototype.useChangeMarkers = function () {
+	return true;
+};
+
+/**
  * Adds multiple messages to the localization system.
  *
  * @method

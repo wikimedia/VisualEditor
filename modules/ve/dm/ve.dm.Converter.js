@@ -123,7 +123,8 @@ ve.dm.Converter.prototype.getDomElementFromDataElement = function ( dataElement 
 	// Change markers
 	if (
 		dataElement.internal && dataElement.internal.changed &&
-		!ve.isEmptyObject( dataElement.internal.changed )
+		!ve.isEmptyObject( dataElement.internal.changed ) &&
+		ve.init.platform.useChangeMarkers()
 	) {
 		domElement.setAttribute( 'data-ve-changed',
 			JSON.stringify( dataElement.internal.changed )
