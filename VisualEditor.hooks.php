@@ -23,7 +23,10 @@ class VisualEditorHooks {
 	public static function onBeforePageDisplay( &$output, &$skin ) {
 		global $wgVisualEditorNamespaces;
 		if (
-			$skin->getUser()->getOption( 'visualeditor-enable' ) &&
+			// HACK ignoring hidden-ness so we can do dark launches
+			$skin->getUser()->getOption( 'visualeditor-enable',
+				/*default=*/ false, /*ignoreHidden=*/true
+			) &&
 			in_array( $skin->getSkinName(), self::$supportedSkins ) &&
 			(
 				// Article in the VisualEditor namespace
