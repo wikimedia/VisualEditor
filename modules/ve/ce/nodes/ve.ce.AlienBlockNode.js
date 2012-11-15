@@ -10,29 +10,24 @@
  *
  * @class
  * @constructor
- * @extends {ve.ce.LeafNode}
+ * @extends {ve.ce.AlienNode}
  * @param {ve.dm.AlienBlockNode} model Model to observe.
  */
 ve.ce.AlienBlockNode = function VeCeAlienBlockNode( model ) {
 	// Parent constructor
-	ve.ce.LeafNode.call( this, 'alienBlock', model );
+	ve.ce.AlienNode.call( this, 'alienBlock', model );
 
 	// DOM Changes
 	this.$.addClass( 've-ce-alienBlockNode' );
-	this.$.attr( 'contenteditable', false );
 
 	// Events
-	this.model.addListenerMethod( this, 'update', 'onUpdate' );
-	this.$.on( 'mouseenter', ve.bind( this.onMouseEnter, this ) );
 	this.addListenerMethod( this, 'live', 'onLive' );
-
-	// Initialization
-	this.onUpdate();
+	this.$.on( 'mouseenter', ve.bind( this.onMouseEnter, this ) );
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.AlienBlockNode, ve.ce.LeafNode );
+ve.inheritClass( ve.ce.AlienBlockNode, ve.ce.AlienNode );
 
 /* Static Members */
 
@@ -48,6 +43,27 @@ ve.ce.AlienBlockNode.rules = {
 };
 
 /* Methods */
+ve.ce.AlienBlockNode.prototype.onMouseEnter = function () {
+	var	$phantoms = $( [] ),
+		$phantomTemplate = ve.ce.Surface.static.$phantomTemplate,
+		surface = this.root.getSurface();
+
+	this.$.find( '.ve-ce-node-shield' ).each( function () {
+		var	$shield = $( this ),
+			offset = $shield.offset();
+		$phantoms = $phantoms.add(
+			$phantomTemplate.clone().css( {
+				'top': offset.top,
+				'left': offset.left,
+				'height': $shield.height(),
+				'width': $shield.width(),
+				'background-position': -offset.left + 'px ' + -offset.top + 'px'
+			} )
+		);
+	} );
+	surface.$phantoms.empty().append( $phantoms );
+	surface.$.on( 'mousemove.phantoms', ve.bind( this.onSurfaceMouseMove, this ) );
+};
 
 ve.ce.AlienBlockNode.prototype.onLive = function (live) {
 	if( this.live === true ) {
@@ -65,29 +81,6 @@ ve.ce.AlienBlockNode.prototype.onLive = function (live) {
 			}
 		} );
 	}
-};
-
-ve.ce.AlienBlockNode.prototype.onUpdate = function () {
-	this.$.html( this.model.getAttribute( 'html' ) );
-};
-
-ve.ce.AlienBlockNode.prototype.onMouseEnter = function () {
-	var	$phantoms = $( [] ),
-		$phantomTemplate = ve.ce.Surface.static.$phantomTemplate;
-	this.$.find( '.ve-ce-node-shield' ).each( function () {
-		var	$shield = $( this ),
-			offset = $shield.offset();
-		$phantoms = $phantoms.add(
-			$phantomTemplate.clone().css( {
-				'top': offset.top,
-				'left': offset.left,
-				'height': $shield.height(),
-				'width': $shield.width(),
-				'background-position': -offset.left + 'px ' + -offset.top + 'px'
-			} )
-		);
-	} );
-	this.root.getSurface().$phantoms.empty().append( $phantoms );
 };
 
 /* Registration */
