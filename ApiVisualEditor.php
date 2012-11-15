@@ -10,7 +10,8 @@
 
 class ApiVisualEditor extends ApiBase {
 	protected function getHTML( $title, $parserParams ) {
-		global $wgVisualEditorParsoidURL, $wgVisualEditorParsoidPrefix;
+		global $wgVisualEditorParsoidURL, $wgVisualEditorParsoidPrefix,
+			$wgVisualEditorParsoidTimeout;
 		if ( !$title->exists() ) {
 			return '';
 		}
@@ -21,15 +22,19 @@ class ApiVisualEditor extends ApiBase {
 				$wgVisualEditorParsoidURL . '/' . $wgVisualEditorParsoidPrefix .
 					'/' . urlencode( $title->getPrefixedDBkey() ),
 				$parserParams
-			)
+			),
+			$wgVisualEditorParsoidTimeout
 		);
 	}
 
 	protected function postHTML( $title, $html ) {
-		global $wgVisualEditorParsoidURL;
+		global $wgVisualEditorParsoidURL, $wgVisualEditorParsoidTimeout;
 		return Http::post(
 			$wgVisualEditorParsoidURL . '/' . urlencode( $title->getPrefixedDBkey() ),
-			array( 'postData' => array( 'content' => $html ) )
+			array(
+				'postData' => array( 'content' => $html ),
+				'timeout' => $wgVisualEditorParsoidTimeout
+			)
 		);
 	}
 

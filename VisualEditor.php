@@ -16,6 +16,8 @@ $wgVisualEditorParsoidURL = 'http://localhost:8000';
 // Interwiki prefix to pass to the Parsoid instance
 // Parsoid will be called as $url/$prefix/$pagename
 $wgVisualEditorParsoidPrefix = 'localhost';
+// Timeout for HTTP requests to Parsoid in seconds
+$wgVisualEditorParsoidTimeout = 100;
 // Namespaces to enable VisualEditor in
 $wgVisualEditorNamespaces = array( NS_MAIN );
 
