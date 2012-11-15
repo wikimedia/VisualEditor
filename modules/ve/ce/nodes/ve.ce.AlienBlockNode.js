@@ -52,9 +52,12 @@ ve.ce.AlienBlockNode.prototype.onUpdate = function () {
 	var $shieldTemplate = this.constructor.static.$shieldTemplate;
 	this.$.html( this.model.getAttribute( 'html' ) );
 	this.$.add( this.$.find( '*' ) ).each( function () {
-		var $this = $(this);
+		var $this = $( this );
 		if ( this.nodeType === Node.ELEMENT_NODE ) {
-			if ( !$this.css( 'float' ) && !$this.hasClass( 've-ce-alienBlockNode' ) ) {
+			if (
+				( $this.css( 'float' ) === 'none' || $this.css( 'float' ) === '' ) &&
+				!$this.hasClass( 've-ce-alienBlockNode' )
+			) {
 				return;
 			}
 			$this.append( $shieldTemplate.clone() );
