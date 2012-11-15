@@ -23,6 +23,7 @@ ve.ce.AlienInlineNode = function VeCeAlienInlineNode( model ) {
 
 	// Events
 	this.model.addListenerMethod( this, 'update', 'onUpdate' );
+	this.$.on( 'mouseenter', ve.bind( this.onMouseEnter, this ) );
 
 	// Initialization
 	this.onUpdate();
@@ -49,6 +50,18 @@ ve.ce.AlienInlineNode.rules = {
 
 ve.ce.AlienInlineNode.prototype.onUpdate = function () {
 	this.$.html( this.model.getAttribute( 'html' ) );
+};
+
+ve.ce.AlienInlineNode.prototype.onMouseEnter = function () {
+	var	$phantom = ve.ce.Surface.static.$phantomTemplate.clone(),
+		offset = this.$.offset();
+	$phantom.css( {
+		'top': offset.top,
+		'left': offset.left,
+		'height': this.$.height(),
+		'width': this.$.width()
+	} );
+	this.root.getSurface().$phantoms.empty().append( $phantom );
 };
 
 /* Registration */
