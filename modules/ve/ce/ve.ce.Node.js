@@ -26,6 +26,16 @@ ve.ce.Node = function VeCeNode( type, model, $element ) {
 	this.parent = null;
 
 	this.$.data( 'node', this );
+
+	// Walk through node model attributes and pick just the HTML ones,
+	// then apply them to the DOM element
+	var	attributes = this.model.getAttributes(),
+		attribute;
+	for ( attribute in attributes ) {
+		if ( attribute.indexOf( 'html/' ) === 0 ) {
+			this.$.attr( attribute.substr( 5 ), attributes[attribute] );
+		}
+	}
 };
 
 /* Inheritance */
