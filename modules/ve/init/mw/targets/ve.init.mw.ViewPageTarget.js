@@ -27,8 +27,6 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	this.$spinner = $( '<div class="ve-init-mw-viewPageTarget-loadingSpinner"></div>' );
 	this.$toolbarSaveButton =
 		$( '<div class="ve-init-mw-viewPageTarget-toolbar-saveButton"></div>' );
-	this.$toolbarFeedbackButton =
-		$( '<div class="ve-init-mw-viewPageTarget-toolbar-feedbackButton"><a href="#"></a></div>' );
 	this.$saveDialog =
 		$( '<div class="ve-init-mw-viewPageTarget-saveDialog"></div>' );
 	this.$saveDialogSaveButton = null;
@@ -89,7 +87,6 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 		this.setupSectionEditLinks();
 		if ( this.isViewPage ) {
 			this.setupToolbarSaveButton();
-			this.setupToolbarFeedbackButton();
 			this.setupSaveDialog();
 			if ( currentUri.query.veaction === 'edit' ) {
 				this.activate();
@@ -206,7 +203,6 @@ ve.init.mw.ViewPageTarget.prototype.deactivate = function ( override ) {
 			this.restoreSiteNotice();
 			this.hideSpinner();
 			this.detachToolbarSaveButton();
-			this.detachToolbarFeedbackButton();
 			this.detachSaveDialog();
 			this.tearDownSurface();
 			this.showTableOfContents();
@@ -225,7 +221,6 @@ ve.init.mw.ViewPageTarget.prototype.onLoad = function ( dom ) {
 	this.edited = false;
 	this.setUpSurface( dom );
 	this.attachToolbarSaveButton();
-	this.attachToolbarFeedbackButton();
 	this.attachSaveDialog();
 	this.restoreScrollPosition();
 	this.restoreEditSection();
@@ -1119,48 +1114,6 @@ ve.init.mw.ViewPageTarget.prototype.onBeforeUnload = function () {
 		}, 1 );
 		return message;
 	}
-};
-
-/**
- * Sets up the feedback button.
- *
- * @method
- */
-ve.init.mw.ViewPageTarget.prototype.setupToolbarFeedbackButton = function () {
-	var feedback = new mw.Feedback( {
-		'title': new mw.Title( 'VisualEditor/Feedback' ),
-		'dialogTitleMessageKey': 'visualeditor-feedback-dialog-title',
-		'bugsLink': new mw.Uri(
-			'https://bugzilla.wikimedia.org/enter_bug.cgi?product=VisualEditor'
-		),
-		'bugsListLink': new mw.Uri(
-			'https://bugzilla.wikimedia.org/buglist.cgi?query_format=advanced&resolution=---&' +
-				'resolution=LATER&resolution=DUPLICATE&product=VisualEditor'
-		)
-	} );
-	this.$toolbarFeedbackButton.find( 'a' )
-		.text( ve.msg( 'visualeditor-feedback-prompt' ) )
-		.click( function () {
-			feedback.launch();
-		} );
-};
-
-/**
- * Adds the feedback button to the user interface.
- *
- * @method
- */
-ve.init.mw.ViewPageTarget.prototype.attachToolbarFeedbackButton = function () {
-	$( '.ve-ui-toolbar .ve-ui-actions' ).prepend( this.$toolbarFeedbackButton );
-};
-
-/**
- * Removes the feedback button from the user interface.
- *
- * @method
- */
-ve.init.mw.ViewPageTarget.prototype.detachToolbarFeedbackButton = function () {
-	this.$toolbarFeedbackButton.detach();
 };
 
 /* Initialization */
