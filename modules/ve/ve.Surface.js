@@ -43,6 +43,12 @@ ve.Surface = function VeSurface( parent, dom, options ) {
 	this.setupCommands();
 	ve.instances.push( this );
 	this.model.startHistoryTracking();
+
+	// Turn off native object editing. This must be tried after the surface has been added to DOM.
+	try {
+		document.execCommand( 'enableObjectResizing', false, false );
+		document.execCommand( 'enableInlineTableEditing', false, false );
+	} catch ( e ) { /* Silently ignore */ }
 };
 
 /* Static Members */

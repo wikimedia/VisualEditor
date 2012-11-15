@@ -66,10 +66,6 @@ ve.ce.Surface = function VeCeSurface( $container, model, surface ) {
 	}, this ) );
 
 	// Initialization
-	try {
-		document.execCommand( 'enableObjectResizing', false, false );
-		document.execCommand( 'enableInlineTableEditing', false, false );
-	} catch ( e ) { /* Silently ignore */ }
 	rangy.init();
 	ve.ce.Surface.clearLocalStorage();
 	this.$.append( this.documentView.getDocumentNode().$ );
