@@ -192,8 +192,8 @@ ve.init.mw.Target.prototype.load = function () {
 		},
 		'dataType': 'json',
 		'type': 'POST',
-		// Wait up to 10 seconds before giving up
-		'timeout': 10000,
+		// Wait up to 100 seconds before giving up
+		'timeout': 100000,
 		'cache': 'false',
 		'success': ve.bind( ve.init.mw.Target.onLoad, this ),
 		'error': ve.bind( ve.init.mw.Target.onLoadError, this )
