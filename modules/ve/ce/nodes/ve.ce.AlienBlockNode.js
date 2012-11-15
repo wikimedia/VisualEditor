@@ -24,6 +24,7 @@ ve.ce.AlienBlockNode = function VeCeAlienBlockNode( model ) {
 	// Events
 	this.model.addListenerMethod( this, 'update', 'onUpdate' );
 	this.$.on( 'mouseenter', ve.bind( this.onMouseEnter, this ) );
+	this.addListenerMethod( this, 'live', 'onLive' );
 
 	// Initialization
 	this.onUpdate();
@@ -48,21 +49,26 @@ ve.ce.AlienBlockNode.rules = {
 
 /* Methods */
 
-ve.ce.AlienBlockNode.prototype.onUpdate = function () {
-	var $shieldTemplate = this.constructor.static.$shieldTemplate;
-	this.$.html( this.model.getAttribute( 'html' ) );
-	this.$.add( this.$.find( '*' ) ).each( function () {
-		var $this = $( this );
-		if ( this.nodeType === Node.ELEMENT_NODE ) {
-			if (
-				( $this.css( 'float' ) === 'none' || $this.css( 'float' ) === '' ) &&
-				!$this.hasClass( 've-ce-alienBlockNode' )
-			) {
-				return;
+ve.ce.AlienBlockNode.prototype.onLive = function (live) {
+	if( this.live === true ) {
+		var $shieldTemplate = this.constructor.static.$shieldTemplate;
+		this.$.add( this.$.find( '*' ) ).each( function () {
+			var $this = $( this );
+			if ( this.nodeType === Node.ELEMENT_NODE ) {
+				if (
+					( $this.css( 'float' ) === 'none' || $this.css( 'float' ) === '' ) &&
+					!$this.hasClass( 've-ce-alienBlockNode' )
+				) {
+					return;
+				}
+				$this.append( $shieldTemplate.clone() );
 			}
-			$this.append( $shieldTemplate.clone() );
-		}
-	} );
+		} );
+	}
+};
+
+ve.ce.AlienBlockNode.prototype.onUpdate = function () {
+	this.$.html( this.model.getAttribute( 'html' ) );
 };
 
 ve.ce.AlienBlockNode.prototype.onMouseEnter = function () {

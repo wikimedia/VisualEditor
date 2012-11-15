@@ -167,6 +167,7 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
 		removals[i].detach();
 		// Update DOM
 		removals[i].$.detach();
+		removals[i].setLive( false );
 	}
 	if ( args.length >= 3 ) {
 		if ( index ) {
@@ -179,6 +180,9 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
 				$anchor.after( args[i].$ );
 			} else {
 				this.$.prepend( args[i].$ );
+			}
+			if ( this.live !== args[i].isLive() ) {
+				args[i].setLive( this.live );
 			}
 		}
 	}
@@ -250,4 +254,15 @@ ve.ce.BranchNode.prototype.clean = function () {
 		this.$.append( this.children[i].$ );
 	}
 	this.setupSlugs();
+};
+
+/**
+ * @method
+ */
+ve.ce.BranchNode.prototype.setLive = function ( live ) {
+	this.live = live;
+	this.emit( 'live' );
+	for ( var i = 0; i < this.children.length; i++ ) {
+		this.children[i].setLive( live );
+	}
 };

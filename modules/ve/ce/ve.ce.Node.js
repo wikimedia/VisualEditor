@@ -24,6 +24,8 @@ ve.ce.Node = function VeCeNode( type, model, $element ) {
 	this.model = model;
 	this.$ = $element || $( '<div>' );
 	this.parent = null;
+	// Holds the information about whether or not the node is attached to the live DOM
+	this.live = false;
 
 	this.$.data( 'node', this );
 
@@ -230,4 +232,20 @@ ve.ce.Node.getSplitableNode = function ( node ) {
 	} );
 	
 	return splitableNode;
+};
+
+/**
+ * @method
+ * @returns {Boolean} Node is attached to the live DOM
+ */
+ve.ce.Node.prototype.isLive = function () {
+	return this.live;
+};
+
+/**
+ * @method
+ */
+ve.ce.Node.prototype.setLive = function ( live ) {
+	this.live = live;
+	this.emit( 'live' );
 };
