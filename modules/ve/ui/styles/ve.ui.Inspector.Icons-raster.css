@@ -5,13 +5,12 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-.ve-ui-icon-clear {
+.ve-ui-icon-remove {
 	/* @embed */
 	background-image: url(images/icons/remove.png);
 }
 
-.ve-ui-icon-down,
-.ve-ui-linkInspector-location {
+.ve-ui-icon-down {
 	/* @embed */
 	background-image: url(images/icons/down.png);
 }
@@ -19,6 +18,11 @@
 .ve-ui-icon-close {
 	/* @embed */
 	background-image: url(images/icons/move-rtl.png);
+}
+
+.ve-ui-icon-inspector {
+	/* @embed */
+	background-image: url(images/icons/inspector.png);
 }
 
 .ve-ui-icon-link {

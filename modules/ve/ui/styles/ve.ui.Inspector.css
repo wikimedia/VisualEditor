@@ -31,18 +31,12 @@
 	opacity: 1;
 }
 
-.ve-ui-inspector-button.ve-ui-inspector-button-disabled,
-.ve-ui-inspector-button.ve-ui-inspector-button-disabled:hover {
-	filter: alpha(opacity=50);
-	opacity: 0.5;
-}
-
 .ve-ui-inspector-closeButton {
 	left: 0.5em;
 	/* @see ve.ui.Icons */
 }
 
-.ve-ui-inspector-icon {
+.ve-ui-inspector-titleIcon {
 	position: absolute;
 	left: 2.25em;
 	top: 0.5em;
@@ -55,7 +49,7 @@
 	opacity: 0.8;
 }
 
-.ve-ui-inspector-clearButton {
+.ve-ui-inspector-removeButton {
 	right: 0.25em;
 	/* @see ve.ui.Icons */
 }
@@ -73,7 +67,7 @@
 	font-size: 1em;
 	font-family: sans-serif;
 	background-color: #fff;
-	border: solid 1px #cccccc;
+	border: solid 1px #ccc;
 	padding: 0.5em;
 	-webkit-border-radius: 0.25em;
 	-moz-border-radius: 0.25em;

@@ -589,7 +589,7 @@ ve.dm.Document.prototype.getAnnotationsFromOffset = function ( offset ) {
 	}
 	// Since annotations are not stored on a closing leaf node,
 	// rewind offset by 1 to return annotations for that structure
-	var set;
+	var annotations;
 	if (
 		ve.isPlainObject( this.data[offset] ) && // structural offset
 		this.data[offset].hasOwnProperty( 'type' ) && // just in case
@@ -601,8 +601,8 @@ ve.dm.Document.prototype.getAnnotationsFromOffset = function ( offset ) {
 		offset = this.getRelativeContentOffset( offset, -1 );
 	}
 
-	set = this.data[offset].annotations || this.data[offset][1];
-	return set ? set.clone() : new ve.AnnotationSet();
+	annotations = this.data[offset].annotations || this.data[offset][1];
+	return annotations ? annotations.clone() : new ve.AnnotationSet();
 };
 
 /**

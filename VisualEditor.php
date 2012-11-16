@@ -307,6 +307,7 @@ $wgResourceModules += array(
 		),
 		'messages' => array(
 			'visualeditor',
+			'visualeditor-inspector-title',
 			'visualeditor-linkinspector-title',
 			'visualeditor-linkinspector-label-pagetitle',
 			'visualeditor-linkinspector-suggest-existing-page',
