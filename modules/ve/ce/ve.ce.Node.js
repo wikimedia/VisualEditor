@@ -24,20 +24,15 @@ ve.ce.Node = function VeCeNode( type, model, $element ) {
 	this.model = model;
 	this.$ = $element || $( '<div>' );
 	this.parent = null;
-	// Holds the information about whether or not the node is attached to the live DOM
 	this.live = false;
 
+	// Initialization
 	this.$.data( 'node', this );
-
-	// Walk through node model attributes and pick just the HTML ones,
-	// then apply them to the DOM element
-	var	attributes = this.model.getAttributes(),
-		attribute;
-	for ( attribute in attributes ) {
-		if ( attribute.indexOf( 'html/' ) === 0 ) {
-			this.$.attr( attribute.substr( 5 ), attributes[attribute] );
-		}
-	}
+	ve.setDomAttributes(
+		this.$[0],
+		this.model.getAttributes( 'html/' ),
+		this.constructor.static.domAttributeWhitelist
+	);
 };
 
 /* Inheritance */
@@ -47,6 +42,26 @@ ve.inheritClass( ve.ce.Node, ve.Node );
 /* Static Memebers */
 
 ve.ce.Node.static = {};
+
+/**
+ * Allowed attributes for DOM elements.
+ *
+ * This list includes attributes that are generally safe to include in HTML loaded from a
+ * foreign source and displaying it inside the browser. It doesn't include any event attributes,
+ * for instance, which would allow arbitrary JavaScript execution. This alone is not enough to
+ * make HTML safe to display, but it helps.
+ *
+ * TODO: Rather than use a single global list, set these on a per-node basis to something that makes
+ * sense for that node in particular.
+ */
+ve.ce.Node.static.domAttributeWhitelist = [
+	'abbr', 'about', 'align', 'alt', 'axis', 'bgcolor', 'border', 'cellpadding', 'cellspacing',
+	'char', 'charoff', 'cite', 'class', 'clear', 'color', 'colspan', 'datatype', 'datetime',
+	'dir', 'face', 'frame', 'headers', 'height', 'href', 'id', 'itemid', 'itemprop', 'itemref',
+	'itemscope', 'itemtype', 'lang', 'noshade', 'nowrap', 'property', 'rbspan', 'rel',
+	'resource', 'rev', 'rowspan', 'rules', 'scope', 'size', 'span', 'src', 'start', 'style',
+	'summary', 'title', 'type', 'typeof', 'valign', 'value', 'width'
+];
 
 /**
  * Template for shield elements.

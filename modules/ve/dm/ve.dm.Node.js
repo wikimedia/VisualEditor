@@ -240,6 +240,8 @@ ve.dm.Node.prototype.getOffset = function () {
 /**
  * Gets an element attribute value.
  *
+ * Return value is by reference if array or object.
+ *
  * @method
  * @returns {Mixed} Value of attribute, or undefined if no such attribute exists
  */
@@ -248,13 +250,26 @@ ve.dm.Node.prototype.getAttribute = function ( key ) {
 };
 
 /**
- * Gets a reference to this node's attributes object.
+ * Gets a copy of this node's attributes.
+ *
+ * Values are by reference if array or object, similar to using the getAttribute method.
  *
  * @method
- * @returns {Object} Attributes object (by reference)
+ * @param {String} prefix Only return attributes with this prefix, and remove the prefix from them
+ * @returns {Object} Attributes
  */
-ve.dm.Node.prototype.getAttributes = function () {
-	return this.attributes;
+ve.dm.Node.prototype.getAttributes = function ( prefix ) {
+	if ( prefix ) {
+		var key,
+			attr = {};
+		for ( key in this.attributes ) {
+			if ( key.indexOf( prefix ) === 0 ) {
+				attr[key.substr( prefix.length )] = this.attributes[key];
+			}
+		}
+		return attr;
+	}
+	return ve.extendObject( {}, this.attributes );
 };
 
 /**
