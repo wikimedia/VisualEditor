@@ -669,9 +669,9 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
  * @returns {HTMLElement} Wrapper div containing the resulting HTML
  */
 ve.dm.Converter.prototype.getDomFromData = function ( data ) {
-	var text, i, j, annotations, annotation, annotationElement, dataElement, arr,
+	var text, i, j, k, annotations, annotation, annotationElement, dataElement, arr,
 		wrapper, childDomElement, pre, ours, theirs, parentDomElement, startClosingAt,
-		isContentNode,
+		isContentNode, changed, parentChanged,
 		container = document.createElement( 'div' ),
 		domElement = container,
 		annotationStack = new ve.AnnotationSet();
@@ -858,6 +858,27 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 							domElement.firstChild,
 							domElement
 						);
+					}
+					// Transfer change markers
+					changed = domElement.getAttribute( 'data-ve-changed' );
+					if ( changed ) {
+						parentChanged = parentDomElement.getAttribute( 'data-ve-changed' );
+						if ( parentChanged ) {
+							changed = $.parseJSON( changed );
+							parentChanged = $.parseJSON( parentChanged );
+							for ( k in changed ) {
+								if ( k in parentChanged ) {
+									parentChanged[k] += changed[k];
+								} else {
+									parentChanged[k] = changed[k];
+								}
+							}
+							parentDomElement.setAttribute( 'data-ve-changed',
+								$.toJSON( parentChanged ) );
+						} else {
+							parentDomElement.setAttribute( 'data-ve-changed',
+								changed );
+						}
 					}
 					parentDomElement.removeChild( domElement );
 				}

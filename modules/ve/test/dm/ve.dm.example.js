@@ -1502,11 +1502,27 @@ ve.dm.example.domToDataCases = {
 			'B',
 			'a',
 			'r',
-			{ 'type': '/paragraph' }
+			{ 'type': '/paragraph' },
+			{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
+			{ 'type': 'listItem' },
+			{
+				'type': 'paragraph',
+				'internal': {
+					'generated': 'wrapper',
+					'changed': { 'content': 1 }
+				}
+			},
+			'B',
+			'a',
+			'z',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': '/list' }
 		],
 		'normalizedHtml': '<p data-ve-changed="{&quot;content&quot;:1}">' +
 				'Foo<img data-ve-changed="{&quot;attributes&quot;:2}" />' +
-				'</p><p data-ve-changed="{&quot;created&quot;:1}">Bar</p>'
+				'</p><p data-ve-changed="{&quot;created&quot;:1}">Bar</p>' +
+				'<ul><li data-ve-changed="{&quot;content&quot;:1}">Baz</li></ul>'
 	},
 	'about grouping': {
 		'html': '<div typeof="mw:Placeholder" about="#mwt1">Foo</div>' +
