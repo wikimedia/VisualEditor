@@ -61,9 +61,6 @@ ve.ce.Surface = function VeCeSurface( $container, model, surface ) {
 	if ( $.browser.msie ) {
 		this.$.on( 'beforepaste', ve.bind( this.onPaste, this ) );
 	}
-	this.$phantoms.on( 'mouseleave', ve.bind( function () {
-		this.$phantoms.empty();
-	}, this ) );
 
 	// Initialization
 	rangy.init();
