@@ -83,34 +83,38 @@ ve.ce.Surface.static.$phantomTemplate = $( '<div class="ve-ce-phantom" draggable
 /* Methods */
 
 ve.ce.Surface.prototype.handleInsertion = function () {
-	var slug, data, range, annotations,
+	var slug, data, range, annotations, insertionAnnotations,
 		selection = this.model.getSelection();
 
 	// Handles removing expanded selection before inserting new text
-	if ( selection.isCollapsed() === false ) {
-		annotations = this.model.documentModel.getAnnotationsFromRange( new ve.Range( selection.start, selection.start + 1 ) );
+	if ( !selection.isCollapsed() ) {
+		// Pull annotations from the first character in the selection
+		annotations = this.model.documentModel.getAnnotationsFromRange(
+			new ve.Range( selection.start, selection.start + 1 )
+		);
 		this.model.change(
-			ve.dm.Transaction.newFromRemoval(
-				this.documentView.model,
-				selection
-			),
+			ve.dm.Transaction.newFromRemoval( this.documentView.model, selection ),
 			new ve.Range( selection.start )
 		);
 		this.surfaceObserver.clear();
 		selection = this.model.getSelection();
-		this.model.documentModel.insertAnnotations = annotations;
+		this.model.setInsertionAnnotations( annotations );
 	}
-
+	insertionAnnotations = this.model.getInsertionAnnotations() || new ve.AnnotationSet();
 	if ( selection.isCollapsed() ) {
 		slug = this.documentView.getSlugAtOffset( selection.start );
-		// is this a slug or are the annotations to the left different than the insertAnnotations?
-		if ( slug || (
-			selection.start > 0 &&
-			!ve.compareObjects (
-				this.model.getDocument().getAnnotationsFromOffset( selection.start - 1 ),
-				this.model.documentModel.insertAnnotations
-			) ) ) {
-			this.model.insertingAnnotations = true;
+		// Is this a slug or are the annotations to the left different than the insertion
+		// annotations?
+		if (
+			slug || (
+				selection.start > 0 &&
+				!ve.compareObjects (
+					this.model.getDocument().getAnnotationsFromOffset( selection.start - 1 ),
+					insertionAnnotations
+				)
+			)
+		) {
+			this.model.enableInsertionAnnotations();
 			// is this a slug and if so, is this a block slug?
 			if ( slug && ve.dm.Document.isStructuralOffset(
 				this.documentView.model.data, selection.start
@@ -118,13 +122,13 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 				range = new ve.Range( selection.start + 1, selection.start + 2 );
 				data = [
 					{ 'type' : 'paragraph' },
-					['\u2659', this.model.documentModel.insertAnnotations],
+					['\u2659', insertionAnnotations],
 					{ 'type' : '/paragraph' }
 				];
 			} else {
 				range = new ve.Range( selection.start, selection.start + 1 );
 				data = [
-					['\u2659', this.model.documentModel.insertAnnotations]
+					['\u2659', insertionAnnotations]
 				];
 			}
 			this.model.change(
@@ -184,8 +188,11 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 			previous.range.start - nodeOffset - 1,
 			next.range.start - nodeOffset - 1
 		).split( '' );
-		// Apply insertAnnotations
-		ve.dm.Document.addAnnotationsToData( data, this.model.getDocument().insertAnnotations );
+		// Apply insertion annotations
+		annotations = this.model.getInsertionAnnotations();
+		if ( annotations instanceof ve.AnnotationSet ) {
+			ve.dm.Document.addAnnotationsToData( data, this.model.getInsertionAnnotations() );
+		}
 		this.lock();
 		this.model.change(
 			ve.dm.Transaction.newFromInsertion(
@@ -223,12 +230,12 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 		data = next.text.substring( fromLeft, next.text.length - fromRight ).split( '' );
 
 		// Get annotations to the left of new content and apply
-		annotations = this.model.getDocument().getAnnotationsFromOffset( nodeOffset + 1 + fromLeft );
-		if ( annotations.getLength() > 0 ) {
+		annotations =
+			this.model.getDocument().getAnnotationsFromOffset( nodeOffset + 1 + fromLeft );
+		if ( annotations.getLength() ) {
 			ve.dm.Document.addAnnotationsToData( data, annotations );
 		}
-		if ( data.length > 0)
-		{
+		if ( data.length > 0 ) {
 			this.model.change(
 				ve.dm.Transaction.newFromInsertion(
 					this.documentView.model, nodeOffset + 1 + fromLeft, data
@@ -313,7 +320,7 @@ ve.ce.Surface.prototype.onCompositionStart = function () {
 
 ve.ce.Surface.prototype.onCompositionEnd = function () {
 	this.inIme = false;
-	this.model.insertingAnnotations = false;
+	this.model.disableInsertionAnnotations();
 	this.surfaceObserver.start();
 };
 
@@ -645,14 +652,11 @@ ve.ce.Surface.prototype.onKeyPress = function ( e ) {
 	if ( ve.ce.Surface.isShortcutKey( e ) || e.which === 13 || e.which === 8 || e.which === 0 ) {
 		return;
 	}
-
 	this.handleInsertion();
-
-	var view = this;
-	setTimeout( function () {
-		view.model.insertingAnnotations = false;
-		view.surfaceObserver.start();
-	}, 0 );
+	setTimeout( ve.bind( function () {
+		this.surfaceObserver.start();
+		this.model.disableInsertionAnnotations();
+	}, this ), 0 );
 };
 
 /**
