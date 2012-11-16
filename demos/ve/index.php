@@ -104,6 +104,7 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 		<script src="../../modules/ve/ve.Action.js"></script>
 		<script src="../../modules/ve/ve.ActionFactory.js"></script>
 		<script src="../../modules/ve/actions/ve.AnnotationAction.js"></script>
+		<script src="../../modules/ve/actions/ve.ContentAction.js"></script>
 		<script src="../../modules/ve/actions/ve.FormatAction.js"></script>
 		<script src="../../modules/ve/actions/ve.HistoryAction.js"></script>
 		<script src="../../modules/ve/actions/ve.IndentationAction.js"></script>
