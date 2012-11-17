@@ -771,6 +771,50 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/paragraph' }
 		]
 	},
+	'wrapping prevents empty list items': {
+		'html': '<ul><li></li></ul>',
+		'data': [
+			{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
+			{ 'type': 'listItem' },
+			{ 'type': 'paragraph', 'internal': { 'generated': 'empty' } },
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': '/list' }
+		]
+	},
+	'empty document': {
+		'html': '',
+		'data': [
+			{ 'type': 'paragraph', 'internal': { 'generated': 'empty' } },
+			{ 'type': '/paragraph' }
+		]
+	},
+	'empty document with content added by the editor': {
+		'html': null,
+		'data': [
+			{ 'type': 'paragraph', 'internal': { 'generated': 'empty' } },
+			'F',
+			'o',
+			'o',
+			{ 'type': '/paragraph' }
+		],
+		'normalizedHtml': '<p>Foo</p>'
+	},
+	'empty list item with content added by the editor': {
+		'html': null,
+		'data': [
+			{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
+			{ 'type': 'listItem' },
+			{ 'type': 'paragraph', 'internal': { 'generated': 'empty' } },
+			'F',
+			'o',
+			'o',
+			{ 'type': '/paragraph' },
+			{ 'type': '/listItem' },
+			{ 'type': '/list' }
+		],
+		'normalizedHtml': '<ul><li><p>Foo</p></li></ul>'
+	},
 	'example document': {
 		'html': ve.dm.example.html,
 		'data': ve.dm.example.data

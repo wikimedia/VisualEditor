@@ -641,7 +641,7 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 		!ve.dm.nodeFactory.isNodeContent( branchType ) &&
 		( childTypes === null || ve.indexOf( 'paragraph', childTypes ) !== -1 )
 	) {
-		data.push( { 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } } );
+		data.push( { 'type': 'paragraph', 'internal': { 'generated': 'empty' } } );
 		data.push( { 'type': '/paragraph' } );
 	}
 
@@ -657,7 +657,7 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 	// Don't return an empty document
 	if ( branchType === 'document' && data.length === 0 ) {
 		return [
-			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			{ 'type': 'paragraph', 'internal': { 'generated': 'empty' } },
 			{ 'type': '/paragraph' }
 		];
 	}
@@ -855,7 +855,16 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 				// It would be nicer if we could avoid generating in the first
 				// place, but then remembering where we have to skip ascending
 				// to the parent would be tricky.
-				if ( domElement.veInternal && domElement.veInternal.generated === 'wrapper' ) {
+				// We unwrap all nodes with generated=wrapper, as well as nodes that
+				// have generated=empty and are empty.
+				if (
+					domElement.veInternal && (
+						domElement.veInternal.generated === 'wrapper' || (
+							domElement.veInternal.generated === 'empty' &&
+							domElement.childNodes.length === 0
+						)
+					)
+				) {
 					while ( domElement.firstChild ) {
 						parentDomElement.insertBefore(
 							domElement.firstChild,
