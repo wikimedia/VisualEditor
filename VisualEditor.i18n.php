@@ -327,6 +327,7 @@ $messages['de'] = array(
 	'visualeditor-loadwarning' => 'Fehler beim Laden der Daten vom Server: $1. Soll der Vorgang erneut durchgeführt werden?',
 	'visualeditor-saveerror' => 'Fehler beim Speichern der Daten auf dem Server: $1.',
 	'visualeditor-editsummary' => 'Beschreibe, was du geändert hast.',
+	'visualeditor-aliennode-tooltip' => 'Dieses Element kann leider nicht mit dem WYSIWYG-Editor bearbeitet werden.',
 );
 
 /** German (formal address) (Deutsch (Sie-Form)‎)
@@ -862,8 +863,6 @@ $messages['ja'] = array(
 	'visualeditor' => 'ビジュアルエディター',
 	'visualeditor-desc' => 'MediaWiki 用のビジュアルエディター',
 	'visualeditor-preference-enable' => 'ビジュアルエディターを有効にする (標準名前空間のみ)',
-	'visualeditor-feedback-prompt' => 'フィードバックを送信',
-	'visualeditor-feedback-dialog-title' => 'ビジュアルエディターについてフィードバックを送信',
 	'visualeditor-notification-saved' => '$1への変更を保存しました。',
 	'visualeditor-notification-created' => '$1を作成しました。',
 	'visualeditor-ca-editsource' => 'ソースを編集',
@@ -895,6 +894,7 @@ $messages['ja'] = array(
 	'visualeditor-loadwarning' => 'サーバからのデータの読み込みでエラーが発生しました: $1。再試行してください。',
 	'visualeditor-saveerror' => 'サーバにデータを保存する際にエラーが発生しました: $1',
 	'visualeditor-editsummary' => '編集内容を説明してください',
+	'visualeditor-aliennode-tooltip' => '申し訳ありませんが、この要素はビジュアルエディターでは編集できません',
 );
 
 /** Javanese (Basa Jawa)
@@ -1685,6 +1685,7 @@ $messages['vi'] = array(
 	'visualeditor-loadwarning' => 'Lỗi tải dữ liệu từ máy chủ: $1. Bạn có muốn thử lại không?',
 	'visualeditor-saveerror' => 'Lỗi lưu dữ liệu trên máy chủ: $1.',
 	'visualeditor-editsummary' => 'Miêu tả các thay đổi của bạn',
+	'visualeditor-aliennode-tooltip' => 'Rất tiếc, không thể sửa đổi phần tử này dùng Trình soạn thị giác',
 );
 
 /** Simplified Chinese (中文（简体）‎)
