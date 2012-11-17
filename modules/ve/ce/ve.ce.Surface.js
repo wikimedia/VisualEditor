@@ -78,8 +78,7 @@ ve.inheritClass( ve.ce.Surface, ve.EventEmitter );
 ve.ce.Surface.static = {};
 
 ve.ce.Surface.static.$phantomTemplate = $( '<div class="ve-ce-phantom" draggable="false"></div>' )
-	// TODO: I18N
-	.attr( 'title', 'Sorry, this element cannot be edited with the Visual Editor' );
+	.attr( 'title', ve.msg ( 'visualeditor-aliennode-tooltip' ) );
 
 /* Methods */
 

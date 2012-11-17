@@ -334,6 +334,7 @@ $wgResourceModules += array(
 			'visualeditor-historybutton-redo-tooltip',
 			'visualeditor-viewpage-savewarning',
 			'visualeditor-saveerror',
+			'visualeditor-aliennode-tooltip',
 		),
 	),
 	'ext.visualEditor.icons-raster' => $wgVisualEditorResourceTemplate + array(
