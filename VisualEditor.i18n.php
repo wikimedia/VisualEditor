@@ -41,6 +41,7 @@ $messages['en'] = array(
 	'visualeditor-loadwarning' => 'Error loading data from server: $1. Would you like to retry?',
 	'visualeditor-saveerror' => 'Error saving data to server: $1.',
 	'visualeditor-editsummary' => 'Describe what you changed',
+	'visualeditor-aliennode-tooltip' => 'Sorry, this element cannot be edited using the VisualEditor',
 );
 
 /** Message documentation (Message documentation)
