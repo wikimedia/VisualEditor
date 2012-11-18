@@ -634,8 +634,6 @@ $messages['he'] = array(
 	'visualeditor' => 'עורך חזותי',
 	'visualeditor-desc' => 'עורך חזותי למדיה־ויקי',
 	'visualeditor-preference-enable' => 'להפעיל את העורך החזותי (במרחב השמות הראשי בלבד)',
-	'visualeditor-feedback-prompt' => 'שליחת משוב',
-	'visualeditor-feedback-dialog-title' => 'שליחת משוב על העורך החזותי',
 	'visualeditor-notification-saved' => 'השינויים שלך לדף $1 לא נשמרו.',
 	'visualeditor-notification-created' => 'הדף $1 נוצר.',
 	'visualeditor-ca-editsource' => 'עריכת קוד מקור',
@@ -667,6 +665,7 @@ $messages['he'] = array(
 	'visualeditor-loadwarning' => 'שגיאה בטעינת מידע מהשרת: $1. האם לנסות שוב?',
 	'visualeditor-saveerror' => 'שגיאה בשמירת נתונים לשרת: $1.',
 	'visualeditor-editsummary' => 'נא לתאר מה שינית',
+	'visualeditor-aliennode-tooltip' => 'סליחה, אי־אפשר לערוך את המרכיב הזה באמצעות העורך החזותי',
 );
 
 /** Hindi (हिन्दी)
@@ -999,6 +998,7 @@ $messages['ko'] = array(
 	'visualeditor-loadwarning' => '서버에서 데이터를 불러오는 중 오류: $1. 다시 시도하겠습니까?',
 	'visualeditor-saveerror' => '서버에 데이터를 저장하는 중 오류: $1.',
 	'visualeditor-editsummary' => '바꾼 내용 설명',
+	'visualeditor-aliennode-tooltip' => '죄송합니다, 이 요소는 시각적편집기를 사용하여 편집할 수 없습니다',
 );
 
 /** Colognian (Ripoarisch)
@@ -1087,8 +1087,6 @@ $messages['mk'] = array(
 	'visualeditor' => 'Визуелен уредник',
 	'visualeditor-desc' => 'Визуелен уредник за МедијаВики',
 	'visualeditor-preference-enable' => 'Овозможи ЛиковенУредник (само главен имен. простор)',
-	'visualeditor-feedback-prompt' => 'Дајте мислење',
-	'visualeditor-feedback-dialog-title' => 'Мислења за ВизуеленУредник во живо',
 	'visualeditor-notification-saved' => 'Измените во $1 се зачувани',
 	'visualeditor-notification-created' => 'Создавањето на $1 заврши успешно!',
 	'visualeditor-ca-editsource' => 'Уреди извор',
@@ -1120,6 +1118,7 @@ $messages['mk'] = array(
 	'visualeditor-loadwarning' => 'Грешка при вчитување на податоците од опслужувачот: $1. Дали сакате да пробате одново?',
 	'visualeditor-saveerror' => 'Грешка при зачувување на податоците во опслужувачот: $1.',
 	'visualeditor-editsummary' => 'Опишете ги направените измени',
+	'visualeditor-aliennode-tooltip' => 'Нажалост, овој елемент не може да се уредува со ВизуеленУредник',
 );
 
 /** Malayalam (മലയാളം)
