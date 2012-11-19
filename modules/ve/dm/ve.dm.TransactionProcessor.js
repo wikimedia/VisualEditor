@@ -255,10 +255,8 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 		}
 		// Set change markers on the parents of the affected nodes
 		for ( i = 0; i < selection.length; i++ ) {
-			this.setChangeMarker(
-				selection[i].parentOuterRange.start + this.adjustment,
-				'content'
-			);
+			parentOffset = ( selection[i].parentOuterRange || selection[i].nodeOuterRange ).start;
+			this.setChangeMarker( parentOffset + this.adjustment, 'content' );
 		}
 		// Advance the cursor
 		this.cursor += insert.length;
@@ -515,9 +513,9 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 			'leaves'
 		);
 		for ( i = 0; i < selection.length; i++ ) {
-			offset = selection[i].node.isWrapped() ?
-				selection[i].nodeOuterRange.start :
-				selection[i].parentOuterRange.start;
+			offset = !selection[i].node.isWrapped() && selection[i].parentOuterRange ?
+				selection[i].parentOuterRange.start :
+				selection[i].nodeOuterRange.start;
 			this.setChangeMarker( offset + this.adjustment, 'annotations' );
 		}
 		this.synchronizer.pushAnnotation( new ve.Range( this.cursor, to ) );
