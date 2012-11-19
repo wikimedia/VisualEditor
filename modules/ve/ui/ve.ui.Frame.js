@@ -6,60 +6,58 @@
  */
 
 /**
- * UI Frame.
+ * I-Frame abstraction.
  *
  * @class
  * @constructor
  */
-
 ve.ui.Frame = function VeUiFrame( config, $container ) {
-	// Container must be in the dom already.
-	if ( !config || !$container || $container.length === 0 ) {
-		return;
-	}
+	var i, len;
 
-	var frame = this;
+	// Properties
+	this.$frame = $( '<iframe frameborder="0" scrolling="no"></iframe>' );
+	this.frameDocument = this.createFrame( this.$frame, $container );
+	this.$ = this.$$( '.ve-ui-frame-container' );
 
-	// Create Iframe
-	this.$frame = $( '<iframe frameborder="0" scrolling="no"></iframe>' )
-		.appendTo ( $container );
-
-	// Iframe document
-	this.doc = this.$frame.prop( 'contentWindow' ).document;
-
-	// Create an inner frame container ( x-browser iframe append )
-	this.doc.write( '<div class="ve-ui-frame-container"></div>' );
-	this.doc.close();
-
-	// Iframe inner container
-	// Append elements created in the Frame doc scope to instance.$
-	this.$ = $( this.doc ).find( '.ve-ui-frame-container' );
-
-	// Base dynamic iframe styles.
-	$( 'body', this.doc ).css( {
-		'padding': 0,
-		'margin': 0
-	} );
-
-	// Add each stylesheet
+	// Initialization
 	if ( 'stylesheets' in config ) {
-		$.each( config.stylesheets, function( i, path ) {
-			frame.loadStylesheet( path );
-		} );
+		for ( i = 0, len = config.stylesheets.length; i < len; i++ ) {
+			this.loadStylesheet( config.stylesheets[i] );
+		}
 	}
 };
 
-ve.ui.Frame.prototype.loadStylesheet = function ( path ) {
-	var $link =
-		$( '<link>', this.doc )
-			.attr( {
-				'rel': 'stylesheet',
-				'type': 'text/css',
-				'media': 'screen',
-				'href': path
-			} );
+/* Methods */
 
+ve.ui.Frame.prototype.setSize = function ( width, height ) {
+	this.$frame.css( { 'width': width, 'height': height } );
+};
+
+ve.ui.Frame.prototype.$$ = function ( selector ) {
+	return $( selector, this.frameDocument );
+};
+
+ve.ui.Frame.prototype.createFrame = function ( $frame, $container ) {
+	var doc;
+	// Attach to a document to initialze for real
+	$container.append( $frame );
+	// Get the frame document
+	doc = $frame.prop( 'contentWindow' ).document;
+	// Create an inner frame container
+	doc.write( '<div class="ve-ui-frame-container"></div>' );
+	// Finish the frame to make all browsers happy
+	doc.close();
+	// Basic styles
+	$( 'body', doc ).css( {
+		'padding': 0,
+		'margin': 0
+	} );
+	return doc;
+};
+
+ve.ui.Frame.prototype.loadStylesheet = function ( path ) {
 	// Append style elements to head.
-	$( this.doc ).find( 'head' )
-		.append( $link );
+	this.$$( 'head' ).append(
+		this.$$( '<link rel="stylesheet" type="text/css" media="screen">' ).attr( 'href', path )
+	);
 };
