@@ -555,6 +555,7 @@ $messages['fr'] = array(
 	'visualeditor-loadwarning' => 'Erreur lors du chargement des données du serveur: $1. Voulez-vous réessayer?',
 	'visualeditor-saveerror' => 'Erreur d’enregistrement des données sur le serveur : $1.',
 	'visualeditor-editsummary' => 'Décrire ce que vous avez modifié',
+	'visualeditor-aliennode-tooltip' => 'Désolé, cet élément ne peut pas être modifié en utilisant VisualEditor',
 );
 
 /** Franco-Provençal (arpetan)
@@ -592,8 +593,6 @@ $messages['gl'] = array(
 	'visualeditor' => 'Editor visual',
 	'visualeditor-desc' => 'Editor visual para MediaWiki',
 	'visualeditor-preference-enable' => 'Activar o editor visual (só no espazo de nomes principal)',
-	'visualeditor-feedback-prompt' => 'Deixe un comentario',
-	'visualeditor-feedback-dialog-title' => 'Deixe un comentario sobre o editor visual',
 	'visualeditor-notification-saved' => 'Gardáronse os cambios feitos en "$1".',
 	'visualeditor-notification-created' => 'Creouse "$1".',
 	'visualeditor-ca-editsource' => 'Editar a fonte',
@@ -625,6 +624,7 @@ $messages['gl'] = array(
 	'visualeditor-loadwarning' => 'Erro ao cargar os datos desde o servidor: $1. Quéreo intentar de novo?',
 	'visualeditor-saveerror' => 'Erro ao gardar os datos no servidor: $1.',
 	'visualeditor-editsummary' => 'Describa os seus cambios',
+	'visualeditor-aliennode-tooltip' => 'Sentímolo, o editor visual non pode editar este elemento.',
 );
 
 /** Hebrew (עברית)
