@@ -194,7 +194,7 @@ ve.ui.Context.prototype.show = function () {
 
 ve.ui.Context.prototype.hide = function () {
 	if ( this.inspector ) {
-		this.closeInspector( false );
+		this.closeInspector( true );
 		this.$overlay.hide();
 	}
 	if ( this.menu ) {

@@ -20,6 +20,7 @@ ve.ui.Inspector = function VeUiInspector( context ) {
 	// Properties
 	this.context = context;
 	this.disabled = false;
+	this.initialSelection = null;
 	this.frame = context.getFrame();
 	this.$ = $( '<div class="ve-ui-inspector"></div>' );
 	this.$form = this.frame.$$( '<form></form>' );
@@ -201,11 +202,11 @@ ve.ui.Inspector.prototype.prepareSelection = function () {
  * Gets a list of matching annotations in selection.
  *
  * @method
+ * @param {ve.dm.SurfaceFragment} fragment Fragment to get matching annotations within
  * @returns {ve.AnnotationSet} Matching annotations
  */
-ve.ui.Inspector.prototype.getMatchingAnnotations = function () {
-	return this.context.getSurface().getModel().getFragment().getAnnotations()
-		.getAnnotationsByName( this.constructor.static.typePattern );
+ve.ui.Inspector.prototype.getMatchingAnnotations = function ( fragment ) {
+	return fragment.getAnnotations().getAnnotationsByName( this.constructor.static.typePattern );
 };
 
 /**
@@ -216,6 +217,7 @@ ve.ui.Inspector.prototype.getMatchingAnnotations = function () {
  */
 ve.ui.Inspector.prototype.open = function () {
 	this.$.show();
+	this.initialSelection = this.context.getSurface().getModel().getSelection();
 	this.onOpen();
 	this.emit( 'open' );
 };

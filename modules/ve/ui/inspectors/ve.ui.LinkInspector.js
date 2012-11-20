@@ -76,7 +76,8 @@ ve.ui.LinkInspector.prototype.onLocationInputChange = function() {
  */
 ve.ui.LinkInspector.prototype.onOpen = function () {
 	var target = '',
-		annotation = this.getMatchingAnnotations().get( 0 );
+		fragment = this.context.getSurface().getModel().getFragment(),
+		annotation = this.getMatchingAnnotations( fragment ).get( 0 );
 
 	if ( annotation ) {
 		if ( annotation instanceof ve.dm.MWInternalLinkAnnotation ) {
@@ -106,9 +107,11 @@ ve.ui.LinkInspector.prototype.onOpen = function () {
  * @method
  */
 ve.ui.LinkInspector.prototype.onClose = function ( accept ) {
-	var target = this.$locationInput.val(),
+	var i, len, annotations,
+		target = this.$locationInput.val(),
 		surface = this.context.getSurface(),
-		selection = surface.getModel().getSelection();
+		selection = surface.getModel().getSelection(),
+		fragment = surface.getModel().getFragment( this.initialSelection );
 	if ( accept && target && target !== this.initialTarget ) {
 		if ( this.isNewAnnotation ) {
 			// Go back to before we add an annotation in prepareSelection
@@ -117,10 +120,12 @@ ve.ui.LinkInspector.prototype.onClose = function ( accept ) {
 			surface.execute( 'content', 'select', selection );
 		} else {
 			// Clear all existing annotations
-			surface.execute( 'annotation', 'clearAll', this.constructor.static.typePattern );
+			annotations = this.getMatchingAnnotations( fragment ).get();
+			for ( i = 0, len = annotations.length; i < len; i++ ) {
+				fragment.annotateContent( 'clear', annotations[i] );
+			}
 		}
-		// Apply the new annotation
-		surface.execute( 'annotation', 'set', this.getAnnotationFromTarget( target ) );
+		fragment.annotateContent( 'set', this.getAnnotationFromTarget( target ) );
 	}
 	this.isNewAnnotation = false;
 	this.context.getSurface().getView().getDocument().getDocumentNode().$.focus();
@@ -145,7 +150,7 @@ ve.ui.LinkInspector.prototype.reset = function () {
  */
 ve.ui.LinkInspector.prototype.prepareSelection = function () {
 	var fragment = this.context.getSurface().getModel().getFragment(),
-		annotation = this.getMatchingAnnotations().get( 0 );
+		annotation = this.getMatchingAnnotations( fragment ).get( 0 );
 	if ( !annotation ) {
 		// Create annotation from selection
 		fragment = fragment.trimRange();
