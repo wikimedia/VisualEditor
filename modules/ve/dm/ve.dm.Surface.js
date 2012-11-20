@@ -218,6 +218,7 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 			transactions = [transactions];
 		}
 
+		this.emit( 'lock' );
 		for ( i = 0; i < transactions.length; i++ ) {
 			if ( !transactions[i].isNoOp() ) {
 				this.bigStack = this.bigStack.slice( 0, this.bigStack.length - this.undoIndex );
@@ -226,6 +227,7 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 				ve.dm.TransactionProcessor.commit( this.getDocument(), transactions[i] );
 			}
 		}
+		this.emit( 'unlock' );
 	}
 	if ( selection && ( !this.selection || !this.selection.equals ( selection ) ) ) {
 		selection.normalize();

@@ -51,22 +51,40 @@ ve.ui.LinkInspector.static.typePattern = /^link(\/MW(in|ex)ternal)?$/;
 /* Methods */
 
 /**
- * Responds to location input change events.
+ * Responds to the inspector being initialized.
  *
- * This will be triggered from a variety of events including those from mouse, keyboard and
- * clipboard actions.
+ * There are 4 scenarios:
+ *     * Zero-length selection not near a word -> no change, text will be inserted on close
+ *     * Zero-length selection inside or adjacent to a word -> expand selection to cover word
+ *     * Selection covering non-link text -> trim selection to remove leading/trailing whitespace
+ *     * Selection covering link text -> expand selection to cover link
  *
  * @method
  */
-ve.ui.LinkInspector.prototype.onLocationInputChange = function() {
-	// Some events, such as keydown, fire before the value has actually changed - waiting for the
-	// call stack to clear will ensure that we have access to the new value as soon as possible
-	setTimeout( ve.bind( function () {
-		this.setDisabled(
-			this.$locationInput.val() === '' ||
-			this.$locationInput.data( 'status' ) === 'invalid'
-		);
-	}, this ), 0 );
+ve.ui.LinkInspector.prototype.onInitialize = function () {
+	var fragment = this.context.getSurface().getModel().getFragment(),
+		annotation = this.getMatchingAnnotations( fragment ).get( 0 );
+	if ( !annotation ) {
+		if ( fragment.getRange().isCollapsed() ) {
+			// Expand to nearest word
+			fragment = fragment.expandRange( 'word' );
+		} else {
+			// Trim whitespace
+			fragment = fragment.trimRange();
+		}
+		if ( !fragment.getRange().isCollapsed() ) {
+			// Create annotation from selection
+			fragment.annotateContent(
+				'set', this.getAnnotationFromTarget( fragment.truncateRange( 255 ).getText() )
+			);
+			this.isNewAnnotation = true;
+		}
+	} else {
+		// Expand range to cover annotation
+		fragment = fragment.expandRange( 'annotation', annotation );
+	}
+	// Update selection
+	fragment.select();
 };
 
 /**
@@ -90,10 +108,8 @@ ve.ui.LinkInspector.prototype.onOpen = function () {
 	}
 	this.initialTarget = target;
 
-	// Update controls
-	this.reset();
+	// Initialize form
 	this.$locationInput.val( target );
-	this.setDisabled( this.$locationInput.val().length === 0 );
 
 	// Set focus on the location input
 	setTimeout( ve.bind( function () {
@@ -105,64 +121,60 @@ ve.ui.LinkInspector.prototype.onOpen = function () {
  * Responds to the inspector being opened.
  *
  * @method
+ * @param {Boolean} remove Annotation should be removed
  */
-ve.ui.LinkInspector.prototype.onClose = function ( accept ) {
+ve.ui.LinkInspector.prototype.onClose = function ( remove ) {
 	var i, len, annotations,
+		insert = false,
+		undo = false,
+		clear = false,
+		set = false,
 		target = this.$locationInput.val(),
 		surface = this.context.getSurface(),
 		selection = surface.getModel().getSelection(),
-		fragment = surface.getModel().getFragment( this.initialSelection );
-	if ( accept && target && target !== this.initialTarget ) {
-		if ( this.isNewAnnotation ) {
-			// Go back to before we add an annotation in prepareSelection
-			surface.execute( 'history', 'undo' );
-			// Restore selection to be sure we are still working on the same range
-			surface.execute( 'content', 'select', selection );
-		} else {
-			// Clear all existing annotations
-			annotations = this.getMatchingAnnotations( fragment ).get();
-			for ( i = 0, len = annotations.length; i < len; i++ ) {
-				fragment.annotateContent( 'clear', annotations[i] );
-			}
+		fragment = surface.getModel().getFragment( this.initialSelection, false );
+	// Empty target is a shortcut for removal
+	if ( target === '' ) {
+		remove = true;
+	}
+	if ( remove ) {
+		clear = true;
+	} else {
+		if ( this.initialSelection.isCollapsed() ) {
+			insert = true;
 		}
+		if ( target !== this.initialTarget ) {
+			if ( this.isNewAnnotation ) {
+				undo = true;
+			} else {
+				clear = true;
+			}
+			set = true;
+		}
+	}
+	if ( insert ) {
+		// Insert default text and select it
+		fragment = fragment.insertContent( target, false ).adjustRange( -target.length );
+	}
+	if ( undo ) {
+		// Go back to before we added an annotation in an onInitialize handler
+		surface.execute( 'history', 'undo' );
+	}
+	if ( clear ) {
+		// Clear all existing annotations
+		annotations = this.getMatchingAnnotations( fragment ).get();
+		for ( i = 0, len = annotations.length; i < len; i++ ) {
+			fragment.annotateContent( 'clear', annotations[i] );
+		}
+	}
+	if ( set ) {
+		// Apply new annotation
 		fragment.annotateContent( 'set', this.getAnnotationFromTarget( target ) );
 	}
+	// Selection changes may have occured in the insertion and annotation hullabaloo - restore it
+	surface.execute( 'content', 'select', selection );
+	// Reset state
 	this.isNewAnnotation = false;
-	this.context.getSurface().getView().getDocument().getDocumentNode().$.focus();
-};
-
-/**
- * Returns the form to it's initial state.
- *
- * @method
- */
-ve.ui.LinkInspector.prototype.reset = function () {
-	this.$locationInput.val( '' );
-};
-
-/**
- * Prepares the inspector to be opened.
- *
- * Selection will be fixed up so that if there's an existing link the complete link is selected,
- * otherwise the range will be contracted so there is no leading and trailing whitespace.
- *
- * @method
- */
-ve.ui.LinkInspector.prototype.prepareSelection = function () {
-	var fragment = this.context.getSurface().getModel().getFragment(),
-		annotation = this.getMatchingAnnotations( fragment ).get( 0 );
-	if ( !annotation ) {
-		// Create annotation from selection
-		fragment = fragment.trimRange();
-		fragment.annotateContent(
-			'set', this.getAnnotationFromTarget( fragment.truncateRange( 255 ).getText() )
-		);
-	} else {
-		// Expand range to cover annotation
-		fragment = fragment.expandRange( 'annotation', annotation );
-	}
-	// Update selection
-	fragment.select();
 };
 
 /**
@@ -223,11 +235,6 @@ ve.ui.LinkInspector.prototype.initMultiSuggest = function () {
 		pageStatusCache = {},
 		api = new mw.Api();
 	function updateLocationStatus( status ) {
-		if ( status !== 'invalid' ) {
-			inspector.$.removeClass( 've-ui-inspector-disabled' );
-		} else {
-			inspector.$.addClass( 've-ui-inspector-disabled' );
-		}
 		inspector.$locationInput.data( 'status', status );
 	}
 

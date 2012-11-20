@@ -19,8 +19,8 @@ ve.ui.Inspector = function VeUiInspector( context ) {
 
 	// Properties
 	this.context = context;
-	this.disabled = false;
 	this.initialSelection = null;
+	this.closing = false;
 	this.frame = context.getFrame();
 	this.$ = $( '<div class="ve-ui-inspector"></div>' );
 	this.$form = this.frame.$$( '<form></form>' );
@@ -45,6 +45,11 @@ ve.ui.Inspector = function VeUiInspector( context ) {
 	this.$form.on( {
 		'submit': ve.bind( this.onFormSubmit, this ),
 		'keydown': ve.bind( this.onFormKeyDown, this )
+	} );
+	this.addListenerMethods( this, {
+		'initialize': 'onInitialize',
+		'open': 'onOpen',
+		'close': 'onClose'
 	} );
 
 	// Initialization
@@ -72,38 +77,13 @@ ve.ui.Inspector.static.typePattern = new RegExp();
 /* Methods */
 
 /**
- * Checks if this inspector is disabled.
- *
- * @method
- * @param {Boolean} Inspector is disabled
- */
-ve.ui.Inspector.prototype.isDisabled = function () {
-	return this.disabled;
-};
-
-/**
- * Disables inspector.
- *
- * @method
- * @param {Boolean} state Disable inspector
- */
-ve.ui.Inspector.prototype.setDisabled = function ( state ) {
-	this.disabled = !!state;
-	if ( this.disabled ) {
-		this.$.addClass( 've-ui-inspector-disabled' );
-	} else {
-		this.$.removeClass( 've-ui-inspector-disabled' );
-	}
-};
-
-/**
  * Responds to close button click events.
  *
  * @method
  * @param {jQuery.Event} e Click event
  */
 ve.ui.Inspector.prototype.onCloseButtonClick = function () {
-	this.context.closeInspector( true );
+	this.close();
 };
 
 /**
@@ -114,14 +94,7 @@ ve.ui.Inspector.prototype.onCloseButtonClick = function () {
  * @emits 'remove'
  */
 ve.ui.Inspector.prototype.onRemoveButtonClick = function() {
-	if ( !this.disabled ) {
-		this.context.getSurface().execute(
-			'annotation', 'clearAll', this.constructor.static.typePattern
-		);
-		this.onRemove();
-		this.emit( 'remove' );
-	}
-	this.context.closeInspector();
+	this.close( true );
 };
 
 /**
@@ -131,11 +104,8 @@ ve.ui.Inspector.prototype.onRemoveButtonClick = function() {
  * @param {jQuery.Event} e Submit event
  */
 ve.ui.Inspector.prototype.onFormSubmit = function ( e ) {
+	this.close();
 	e.preventDefault();
-	if ( this.$.hasClass( 've-ui-inspector-disabled' ) ) {
-		return;
-	}
-	this.context.closeInspector( true );
 	return false;
 };
 
@@ -148,10 +118,22 @@ ve.ui.Inspector.prototype.onFormSubmit = function ( e ) {
 ve.ui.Inspector.prototype.onFormKeyDown = function ( e ) {
 	// Escape
 	if ( e.which === 27 ) {
-		this.context.closeInspector( true );
+		this.close();
 		e.preventDefault();
 		return false;
 	}
+};
+
+/**
+ * Responds to the inspector being initialized.
+ *
+ * This gives an inspector an opportunity to make selection and annotation changes prior to the
+ * inspector being opened.
+ *
+ * @method
+ */
+ve.ui.Inspector.prototype.onInitialize = function () {
+	// This is a stub, override functionality in child classes
 };
 
 /**
@@ -187,18 +169,6 @@ ve.ui.Inspector.prototype.onRemove = function () {
 };
 
 /**
- * Prepares the inspector to be opened.
- *
- * This gives an inspector an opportunity to make selection and annotation changes prior to the
- * inspector being opened.
- *
- * @method
- */
-ve.ui.Inspector.prototype.prepareSelection = function () {
-	// This is a stub, override functionality in child classes
-};
-
-/**
  * Gets a list of matching annotations in selection.
  *
  * @method
@@ -213,23 +183,32 @@ ve.ui.Inspector.prototype.getMatchingAnnotations = function ( fragment ) {
  * Opens inspector.
  *
  * @method
+ * @emits 'initialize'
  * @emits 'open'
  */
 ve.ui.Inspector.prototype.open = function () {
 	this.$.show();
+	this.emit( 'initialize' );
 	this.initialSelection = this.context.getSurface().getModel().getSelection();
-	this.onOpen();
 	this.emit( 'open' );
 };
 
 /**
  * Closes inspector.
  *
+ * This method guards against recursive calling internally. Recursion on this method is caused by
+ * changes to the document occuring in a close handler which in turn produce document model change
+ * events, which in turn cause the context to close the inspector again, and so on.
+ *
  * @method
- * @emits 'close'
+ * @emits 'close' (remove)
  */
-ve.ui.Inspector.prototype.close = function ( accept ) {
-	this.$.hide();
-	this.onClose( accept );
-	this.emit( 'close' );
+ve.ui.Inspector.prototype.close = function ( remove ) {
+	if ( !this.closing ) {
+		this.closing = true;
+		this.$.hide();
+		this.emit( 'close', remove );
+		this.context.getSurface().getView().getDocument().getDocumentNode().$.focus();
+		this.closing = false;
+	}
 };
