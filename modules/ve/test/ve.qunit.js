@@ -87,12 +87,18 @@ function getDomElementSummary( element ) {
 		};
 
 	// Gather attributes
-	for ( i = 0; i < element.attributes.length; i++ ) {
-		summary.attributes[element.attributes[i].name] = element.attributes[i].value;
+	if ( element.attributes ) {
+		for ( i = 0; i < element.attributes.length; i++ ) {
+			summary.attributes[element.attributes[i].name] = element.attributes[i].value;
+		}
 	}
 	// Summarize children
-	for ( i = 0; i < element.children.length; i++ ) {
-		summary.children.push( getDomElementSummary( element.children[i] ) );
+	if ( element.childNodes ) {
+		for ( i = 0; i < element.childNodes.length; i++ ) {
+			if ( element.childNodes[i].nodeType !== Node.TEXT_NODE ) {
+				summary.children.push( getDomElementSummary( element.childNodes[i] ) );
+			}
+		}
 	}
 	return summary;
 }

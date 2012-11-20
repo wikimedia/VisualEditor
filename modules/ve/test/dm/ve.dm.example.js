@@ -284,6 +284,14 @@ ve.dm.example.withMeta = [
 	{
 		'type': 'metaBlock',
 		'attributes': {
+			'style': 'comment',
+			'text': ' No content conversion '
+		}
+	},
+	{ 'type': '/metaBlock' },
+	{
+		'type': 'metaBlock',
+		'attributes': {
 			'style': 'meta',
 			'key': 'mw:PageProp/nocc'
 		}
@@ -316,6 +324,14 @@ ve.dm.example.withMeta = [
 	{ 'type': '/metaInline' },
 	'B',
 	'a',
+	{
+		'type': 'metaInline',
+		'attributes': {
+			'style': 'comment',
+			'text': ' inline '
+		}
+	},
+	{ 'type': '/metaInline' },
 	'z',
 	{ 'type': '/paragraph' },
 	{
@@ -324,6 +340,14 @@ ve.dm.example.withMeta = [
 			'style': 'meta',
 			'key': 'mw:bar',
 			'value': 'baz'
+		}
+	},
+	{ 'type': '/metaBlock' },
+	{
+		'type': 'metaBlock',
+		'attributes': {
+			'style': 'comment',
+			'text': 'barbaz'
 		}
 	},
 	{ 'type': '/metaBlock' },
@@ -367,6 +391,13 @@ ve.dm.example.withMetaMetaData = [
 		{
 			'type': 'metaBlock',
 			'attributes': {
+				'style': 'comment',
+				'text': ' No content conversion '
+			}
+		},
+		{
+			'type': 'metaBlock',
+			'attributes': {
 				'style': 'meta',
 				'key': 'mw:PageProp/nocc'
 			}
@@ -398,7 +429,15 @@ ve.dm.example.withMetaMetaData = [
 		}
 	],
 	undefined,
-	undefined,
+	[
+		{
+			'type': 'metaInline',
+			'attributes': {
+				'style': 'comment',
+				'text': ' inline '
+			}
+		}
+	],
 	undefined,
 	[
 		{
@@ -407,6 +446,13 @@ ve.dm.example.withMetaMetaData = [
 				'style': 'meta',
 				'key': 'mw:bar',
 				'value': 'baz'
+			}
+		},
+		{
+			'type': 'metaBlock',
+			'attributes': {
+				'style': 'comment',
+				'text': 'barbaz'
 			}
 		},
 		{
@@ -1480,10 +1526,10 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'document with meta elements': {
-		'html': '<meta property="mw:PageProp/nocc" /><p>Foo' +
+		'html': '<!-- No content conversion --><meta property="mw:PageProp/nocc" /><p>Foo' +
 			'<link rel="mw:WikiLink/Category" href="./Category:Bar" />Bar' +
-			'<meta property="mw:foo" content="bar" />Baz</p>' +
-			'<meta property="mw:bar" content="baz" />' +
+			'<meta property="mw:foo" content="bar" />Ba<!-- inline -->z</p>' +
+			'<meta property="mw:bar" content="baz" /><!--barbaz-->' +
 			'<link rel="mw:WikiLink/Category" href="./Category:Foo#Bar baz%23quux" />' +
 			'<meta typeof="mw:Placeholder" data-parsoid="foobar" />',
 		'data': ve.dm.example.withMeta

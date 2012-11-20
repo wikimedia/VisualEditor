@@ -611,9 +611,17 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 				);
 				break;
 			case Node.COMMENT_NODE:
-				// TODO: Preserve comments by inserting them into the linear model too
-				// Could use placeholders for this too, although they'd need to be
-				// inline in certain cases
+				childDataElement = {
+					'type': branchIsContent ? 'metaInline' : 'metaBlock',
+					'attributes': {
+						'style': 'comment',
+						'text': childDomElement.data
+					}
+				};
+				data.push( childDataElement );
+				data.push( { 'type': branchIsContent ? '/metaInline' : '/metaBlock' } );
+				processNextWhitespace( childDataElement );
+				prevElement = childDataElement;
 				break;
 		}
 	}
