@@ -83,7 +83,8 @@ ve.ce.Surface.static.$phantomTemplate = $( '<div class="ve-ce-phantom" draggable
 /* Methods */
 
 ve.ce.Surface.prototype.handleInsertion = function () {
-	var selection = this.model.getSelection(), slug, data, range, annotations;
+	var slug, data, range, annotations,
+		selection = this.model.getSelection();
 
 	// Handles removing expanded selection before inserting new text
 	if ( selection.isCollapsed() === false ) {
@@ -154,10 +155,12 @@ ve.ce.Surface.prototype.handleInsertion = function () {
  * @param {Object} next.range New selection
  */
 ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
-	var nodeOffset = node.model.getOffset(), // TODO: call getModel() or add getOffset() to view
+	var data, range, len, annotations,
+		fromLeft = 0,
+		fromRight = 0,
+		nodeOffset = node.model.getOffset(), // TODO: call getModel() or add getOffset() to view
 		offsetDiff = ( previous.range.isCollapsed() && next.range.isCollapsed() ) ?
-			next.range.start - previous.range.start :
-			null,
+			next.range.start - previous.range.start : null,
 		lengthDiff = next.text.length - previous.text.length,
 		sameLeadingAndTrailing = offsetDiff !== null && ( // TODO: rewrite to static method with tests
 			(
@@ -174,13 +177,7 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 				previous.text.substring( previous.range.start - nodeOffset - 1 - lengthDiff + offsetDiff) ===
 					next.text.substring( next.range.start - nodeOffset - 1 )
 			)
-		),
-		data,
-		range,
-		len,
-		fromLeft = 0,
-		fromRight = 0,
-		annotations;
+		);
 
 	if ( lengthDiff > 0 && offsetDiff === lengthDiff /* && sameLeadingAndTrailing */) {
 		data = next.text.substring(
@@ -601,10 +598,8 @@ ve.ce.Surface.prototype.onPaste = function () {
 	$( '#paste' ).html( '' ).show().focus();
 
 	setTimeout( function () {
-		var key = '',
-			pasteText,
-			pasteData,
-			tx;
+		var pasteText, pasteData, tx,
+			key = '';
 
 		// Create key from text and element names
 		$( '#paste' ).hide().contents().each( function () {
@@ -799,8 +794,7 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
  * @param {Boolean} Key was a backspace
  */
 ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
-	var selection = this.model.getSelection(),
-		sourceOffset,
+	var sourceOffset,
 		targetOffset,
 		sourceSplitableNode,
 		targetSplitableNode,
@@ -814,7 +808,8 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 		adjacentText,
 		adjacentTextAfterMatch,
 		endOffset,
-		i;
+		i,
+		selection = this.model.getSelection();
 
 	if ( selection.from === selection.to ) {
 		// Set source and target linmod offsets
@@ -963,10 +958,9 @@ ve.ce.Surface.prototype.showCursor = function ( offset ) {
  * @param {ve.Range} range Range to show selection on
  */
 ve.ce.Surface.prototype.showSelection = function ( range ) {
-	var rangySel = rangy.getSelection(),
-		rangyRange = rangy.createRange(),
-		start,
-		end;
+	var start, end,
+		rangySel = rangy.getSelection(),
+		rangyRange = rangy.createRange();
 
 	if ( range.start !== range.end ) {
 		start = this.getNodeAndOffset( range.start );
@@ -1026,8 +1020,8 @@ ve.ce.Surface.prototype.showSelection = function ( range ) {
  */
 ve.ce.Surface.prototype.getNearestCorrectOffset = function ( offset, direction ) {
 	var contentOffset, structuralOffset;
-	direction = direction > 0 ? 1 : -1;
 
+	direction = direction > 0 ? 1 : -1;
 	if (
 		ve.dm.Document.isContentOffset( this.documentView.model.data, offset ) ||
 		this.hasSlugAtOffset( offset )
@@ -1081,8 +1075,8 @@ ve.ce.Surface.prototype.hasSlugAtOffset = function ( offset ) {
  * offset is the position within the element
  */
 ve.ce.Surface.prototype.getNodeAndOffset = function ( offset ) {
-	var slug = this.documentView.getSlugAtOffset( offset ),
-		node, startOffset, current, stack, item, $item, length;
+	var node, startOffset, current, stack, item, $item, length,
+		slug = this.documentView.getSlugAtOffset( offset );
 	if ( slug ) {
 		return { node: slug[0].childNodes[0], offset: 0 };
 	}
@@ -1172,8 +1166,7 @@ ve.ce.Surface.isShortcutKey = function ( e ) {
  * @method
  */
 ve.ce.Surface.clearLocalStorage = function () {
-	var i, len, key,
-		time, now,
+	var i, len, key, time, now,
 		keysToRemove = [];
 
 	for ( i = 0, len = localStorage.length; i < len; i++ ) {

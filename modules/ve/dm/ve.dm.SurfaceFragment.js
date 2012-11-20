@@ -513,7 +513,8 @@ ve.dm.SurfaceFragment.prototype.convertNodes = function ( type, attr ) {
 	if ( !this.surface ) {
 		return this;
 	}
-	var tx = ve.dm.Transaction.newFromContentBranchConversion( this.document, this.range, type, attr );
+	var tx =
+		ve.dm.Transaction.newFromContentBranchConversion( this.document, this.range, type, attr );
 	this.surface.change( tx, !this.noAutoSelect && tx.translateRange( this.range ) );
 	return this;
 };

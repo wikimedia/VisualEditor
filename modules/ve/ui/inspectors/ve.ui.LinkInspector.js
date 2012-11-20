@@ -226,12 +226,10 @@ ve.ui.LinkInspector.prototype.initMultiSuggest = function () {
 		'cssEllipsis': false,
 		// Build suggestion groups in order.
 		'suggestions': function ( params ) {
-			var groups = {},
+			var modifiedQuery, title, prot,
+				groups = {},
 				results = params.results,
-				query = params.query,
-				modifiedQuery,
-				title,
-				prot;
+				query = params.query;
 
 			// Add existing pages.
 			if ( results.length > 0 ) {
