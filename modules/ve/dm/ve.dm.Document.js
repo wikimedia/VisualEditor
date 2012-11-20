@@ -48,7 +48,6 @@ ve.dm.Document = function VeDmDocument( data, parentDocument ) {
 		currentStack = stack[1],
 		parentStack = stack[0],
 		currentNode = this.documentNode;
-	this.insertAnnotations = new ve.AnnotationSet();
 	this.documentNode.setDocument( doc );
 	this.documentNode.setRoot( root );
 	for ( i = 0; i < this.data.length; i++ ) {

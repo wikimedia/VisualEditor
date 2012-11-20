@@ -310,7 +310,7 @@ ve.dm.SurfaceFragment.prototype.getAnnotations = function ( all ) {
 	if ( this.range.getLength() ) {
 		return this.document.getAnnotationsFromRange( this.range, all );
 	} else {
-		return this.document.getAnnotationsFromOffset( this.range.from );
+		return this.surface.getInsertionAnnotations();
 	}
 };
 
@@ -427,8 +427,16 @@ ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, name, data 
 		annotation.data = data;
 	}
 	if ( this.range.getLength() ) {
+		// Apply to selection
 		tx = ve.dm.Transaction.newFromAnnotation( this.document, this.range, method, annotation );
 		this.surface.change( tx, !this.noAutoSelect && tx.translateRange( this.range ) );
+	} else {
+		// Apply annotation to stack
+		if ( method === 'set' ) {
+			this.surface.addInsertionAnnotation( annotation );
+		} else if ( method === 'clear' ) {
+			this.surface.removeInsertionAnnotation( annotation );
+		}
 	}
 	return this;
 };

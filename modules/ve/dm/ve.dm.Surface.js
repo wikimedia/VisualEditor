@@ -24,6 +24,8 @@ ve.dm.Surface = function VeDmSurface( doc ) {
 	this.bigStack = [];
 	this.undoIndex = 0;
 	this.historyTrackingInterval = null;
+	this.insertionAnnotations = new ve.AnnotationSet();
+	this.useInsertionAnnotations = true;
 };
 
 /* Inheritance */
@@ -74,6 +76,80 @@ ve.dm.Surface.prototype.getHistory = function () {
 	} else {
 		return this.bigStack.slice( 0 );
 	}
+};
+
+/**
+ * Enables insertion annotations.
+ *
+ * @method
+ */
+ve.dm.Surface.prototype.enableInsertionAnnotations = function () {
+	this.useInsertionAnnotations = true;
+};
+
+/**
+ * Disables insertion annotations.
+ *
+ * @method
+ */
+ve.dm.Surface.prototype.disableInsertionAnnotations = function () {
+	this.useInsertionAnnotations = false;
+};
+
+/**
+ * Checks if insertion annotations are enabled.
+ *
+ * @method
+ * @returns {Boolean} Insertion annotations are enabled
+ */
+ve.dm.Surface.prototype.areInsertionAnnotationsEnabled = function () {
+	return this.useInsertionAnnotations;
+};
+
+/**
+ * Gets annotations that will be used upon insertion.
+ *
+ * @method
+ * @returns {ve.AnnotationSet|null} Insertion anotations or null if not being used
+ */
+ve.dm.Surface.prototype.getInsertionAnnotations = function () {
+	return this.insertionAnnotations.clone();
+};
+
+/**
+ * Sets annotations that will be used upon insertion.
+ *
+ * @method
+ * @param {ve.AnnotationSet|null} Insertion anotations to use or null to disable them
+ * @emits 'annotationChange'
+ */
+ve.dm.Surface.prototype.setInsertionAnnotations = function ( annotations ) {
+	this.insertionAnnotations = annotations.clone();
+	this.emit( 'annotationChange' );
+};
+
+/**
+ * Adds an annotation to the insertion annotations.
+ *
+ * @method
+ * @param {ve.AnnotationSet} Insertion anotation to add
+ * @emits 'annotationChange'
+ */
+ve.dm.Surface.prototype.addInsertionAnnotation = function ( annotation ) {
+	this.insertionAnnotations.push( annotation );
+	this.emit( 'annotationChange' );
+};
+
+/**
+ * Removes an annotation from the insertion annotations.
+ *
+ * @method
+ * @param {ve.AnnotationSet} Insertion anotation to remove
+ * @emits 'annotationChange'
+ */
+ve.dm.Surface.prototype.removeInsertionAnnotation = function ( annotation ) {
+	this.insertionAnnotations.remove( annotation );
+	this.emit( 'annotationChange' );
 };
 
 /**
@@ -136,7 +212,7 @@ ve.dm.Surface.prototype.getFragment = function ( range, noAutoSelect ) {
  * @param {ve.Range|undefined} selection
  */
 ve.dm.Surface.prototype.change = function ( transactions, selection ) {
-	var i, leftOffset, contentOffset, annotations;
+	var i, offset;
 	if ( transactions ) {
 		if ( transactions instanceof ve.dm.Transaction ) {
 			transactions = [transactions];
@@ -160,54 +236,21 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 		this.emit( 'transact', transactions );
 	}
 
-	// Clear and add annotations to stack if insertingAnnotations isn't happening
-	if ( !this.insertingAnnotations ) {
-		leftOffset = this.getSelection().start - 1;
-		if ( leftOffset === -1 ) {
-			leftOffset = 0;
+	// Clear and add annotations to stack if insertion annotations aren't being used
+	if ( this.useInsertionAnnotations ) {
+		offset = this.documentModel.getNearestContentOffset(
+			Math.max( 0, this.getSelection().start - 1 ), -1
+		);
+		if ( offset === -1 ) {
+			// Document is empty, use empty set
+			this.insertionAnnotations = new ve.AnnotationSet();
+		} else {
+			this.insertionAnnotations = this.documentModel.getAnnotationsFromOffset( offset );
 		}
-		contentOffset = this.documentModel.getNearestContentOffset( leftOffset, -1 );
-		// contentOffset may be -1 if the document is empty
-		annotations = contentOffset > - 1 ?
-			this.documentModel.getAnnotationsFromOffset( contentOffset ) :
-			new ve.AnnotationSet();
-
-		// Reset insertAnnotations
-		this.documentModel.insertAnnotations = new ve.AnnotationSet();
-		this.documentModel.insertAnnotations.addSet( annotations );
-
 		this.emit( 'annotationChange' );
 	}
 
 	this.emit( 'change', transactions, selection );
-};
-
-/**
- * Applies an annotation to the current selection
- *
- * @method
- * @param {String} annotation action: toggle, clear, set
- * @param {Object} annotation object to apply.
- */
-ve.dm.Surface.prototype.annotate = function ( method, annotation ) {
-	var tx,
-		selection = this.getSelection();
-	if ( selection.getLength() ) {
-		// Apply annotation immediately to selection
-		selection = this.getDocument().trimOuterSpaceFromRange( selection );
-		tx = ve.dm.Transaction.newFromAnnotation(
-			this.getDocument(), selection, method, annotation
-		);
-		this.change( tx, selection );
-	} else {
-		// Apply annotation to stack
-		if ( method === 'set' ) {
-			this.documentModel.insertAnnotations.push( annotation );
-		} else if ( method === 'clear' ) {
-			this.documentModel.insertAnnotations.remove( annotation );
-		}
-	}
-	this.emit( 'annotationChange' );
 };
 
 /**
