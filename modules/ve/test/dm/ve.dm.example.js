@@ -1588,5 +1588,60 @@ ve.dm.example.domToDataCases = {
 			},
 			{ 'type': '/alienBlock' }
 		]
+	},
+	'mw:Entity': {
+		'html': '<p>a<span typeof="mw:Entity">¢</span>b<span typeof="mw:Entity">¥</span><span typeof="mw:Entity">™</span></p>',
+		'data': [
+			{ 'type': 'paragraph' },
+			'a',
+			{ 'type': 'MWentity', 'attributes': { 'character': '¢', 'html/typeof': 'mw:Entity' } },
+			{ 'type': '/MWentity' },
+			'b',
+			{ 'type': 'MWentity', 'attributes': { 'character': '¥', 'html/typeof': 'mw:Entity' } },
+			{ 'type': '/MWentity' },
+			{ 'type': 'MWentity', 'attributes': { 'character': '™', 'html/typeof': 'mw:Entity' } },
+			{ 'type': '/MWentity' },
+			{ 'type': '/paragraph' }
+		]
+	},
+	'wrapping with mw:Entity': {
+		'html': 'a<span typeof="mw:Entity">¢</span>b<span typeof="mw:Entity">¥</span><span typeof="mw:Entity">™</span>',
+		'data': [
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			'a',
+			{ 'type': 'MWentity', 'attributes': { 'character': '¢', 'html/typeof': 'mw:Entity' } },
+			{ 'type': '/MWentity' },
+			'b',
+			{ 'type': 'MWentity', 'attributes': { 'character': '¥', 'html/typeof': 'mw:Entity' } },
+			{ 'type': '/MWentity' },
+			{ 'type': 'MWentity', 'attributes': { 'character': '™', 'html/typeof': 'mw:Entity' } },
+			{ 'type': '/MWentity' },
+			{ 'type': '/paragraph' }
+		]
+	},
+	'whitespace preservation with mw:Entity': {
+		'html': '<p> a  <span typeof="mw:Entity"> </span>   b    <span typeof="mw:Entity">¥</span>\t<span typeof="mw:Entity">™</span></p>',
+		'data': [
+			{ 'type': 'paragraph', 'internal': { 'whitespace': [ undefined, ' ' ] } },
+			'a',
+			' ',
+			' ',
+			{ 'type': 'MWentity', 'attributes': { 'character': ' ', 'html/typeof': 'mw:Entity' } },
+			{ 'type': '/MWentity' },
+			' ',
+			' ',
+			' ',
+			'b',
+			' ',
+			' ',
+			' ',
+			' ',
+			{ 'type': 'MWentity', 'attributes': { 'character': '¥', 'html/typeof': 'mw:Entity' } },
+			{ 'type': '/MWentity' },
+			'\t',
+			{ 'type': 'MWentity', 'attributes': { 'character': '™', 'html/typeof': 'mw:Entity' } },
+			{ 'type': '/MWentity' },
+			{ 'type': '/paragraph' }
+		]
 	}
 };
