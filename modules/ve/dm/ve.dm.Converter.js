@@ -207,8 +207,11 @@ ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function ( dataAnnot
  * @returns {Array} Linear model data
  */
 ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, dataElement, path, alreadyWrapped ) {
-	function createAlien( domElement, isInline, isWrapper ) {
-		var type = isInline ? 'alienInline' : 'alienBlock', html;
+	function createAlien( domElement, branchIsContent, isWrapper ) {
+		// If we're in wrapping mode, we don't know if this alien is supposed to be block
+		// or inline, so detect it based on the HTML tag name.
+		var isInline = wrapping ? !ve.isBlockElement( domElement ) : branchIsContent,
+			type = isInline ? 'alienInline' : 'alienBlock', html;
 		if ( isWrapper ) {
 			html =  $( domElement ).html();
 		} else {
@@ -247,6 +250,18 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 			addWhitespace( element, 0, nextWhitespace );
 			nextWhitespace = '';
 		}
+	}
+	function stopWrapping() {
+		if ( wrappedWhitespace !== '' ) {
+			// Remove wrappedWhitespace from data
+			data.splice( -wrappedWhitespace.length, wrappedWhitespace.length );
+			addWhitespace( wrappingParagraph, 3, wrappedWhitespace );
+			nextWhitespace = wrappedWhitespace;
+		}
+		data.push( { 'type': '/paragraph' } );
+		wrappingParagraph = undefined;
+		wrapping = false;
+		wrappingIsOurs = false;
 	}
 
 	/**
@@ -334,6 +349,9 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 				// Alienate about groups
 				if ( childDomElement.hasAttribute( 'data-ve-aboutgroup' ) ) {
 					alien = createAlien( childDomElement, branchIsContent, true );
+					if ( wrapping && alien[0].type === 'alienBlock' ) {
+						stopWrapping();
+					}
 					data = data.concat( alien );
 					processNextWhitespace( alien[0] );
 					prevElement = alien[0];
@@ -391,6 +409,9 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 					!rdfaType.match( /^mw:Entity/ )
 				) {
 					alien = createAlien( childDomElement, branchIsContent );
+					if ( wrapping && alien[0].type === 'alienBlock' ) {
+						stopWrapping();
+					}
 					data = data.concat( alien );
 					processNextWhitespace( alien[0] );
 					prevElement = alien[0];
@@ -426,32 +447,12 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 
 				// Look up child element type
 				childDataElement = this.getDataElementFromDomElement( childDomElement );
-				// End auto-wrapping of bare content from a previously processed node
-				// but only if childDataElement is a non-content element or if
-				// we are about to produce a block alien
-				if (
-					wrapping && (
-						(
-							childDataElement &&
-							!ve.dm.nodeFactory.isNodeContent( childDataElement.type )
-						) || (
-							!childDataElement &&
-							ve.isBlockElement( childDomElement )
-						)
-					)
-				) {
-					if ( wrappedWhitespace !== '' ) {
-						// Remove wrappedWhitespace from data
-						data.splice( -wrappedWhitespace.length, wrappedWhitespace.length );
-						addWhitespace( wrappingParagraph, 3, wrappedWhitespace );
-						nextWhitespace = wrappedWhitespace;
-					}
-					data.push( { 'type': '/paragraph' } );
-					wrappingParagraph = undefined;
-					wrapping = false;
-					wrappingIsOurs = false;
-				}
 				if ( childDataElement ) {
+					// End auto-wrapping of bare content from a previously processed node
+					// but only if childDataElement is a non-content element
+					if ( wrapping && !ve.dm.nodeFactory.isNodeContent( childDataElement.type ) ) {
+						stopWrapping();
+					}
 					if ( ve.dm.nodeFactory.canNodeHaveChildren( childDataElement.type ) ) {
 						// Append child element data
 						data = data.concat(
@@ -473,12 +474,12 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 					break;
 				}
 				// We don't know what this is, fall back to alien.
-				// If we're in wrapping mode, we don't know if this alien is
-				// supposed to be block or inline, so detect it based on the HTML
-				// tag name.
-				alien = createAlien( childDomElement, wrapping ?
-					!ve.isBlockElement( childDomElement ) : branchIsContent
-				);
+				alien = createAlien( childDomElement, branchIsContent );
+				// End auto-wrapping of bare content from a previously processed node
+				// but only if we produced an alienBlock
+				if ( wrapping && alien[0].type === 'alienBlock' ) {
+					stopWrapping();
+				}
 				data = data.concat( alien );
 				processNextWhitespace( alien[0] );
 				prevElement = alien[0];
@@ -627,15 +628,9 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 	}
 	// End auto-wrapping of bare content
 	if ( wrapping && wrappingIsOurs ) {
-		if ( wrappedWhitespace !== '' ) {
-			// Remove wrappedWhitespace from data
-			data.splice( -wrappedWhitespace.length, wrappedWhitespace.length );
-			addWhitespace( wrappingParagraph, 3, wrappedWhitespace );
-			nextWhitespace = wrappedWhitespace;
-		}
-		data.push( { 'type': '/paragraph' } );
+		stopWrapping();
 		// Don't set wrapping = false here because it's checked below
-		wrappingParagraph = undefined;
+		wrapping = true;
 	}
 
 	// If we're closing a node that doesn't have any children, but could contain a paragraph,

@@ -694,6 +694,52 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/paragraph' }
 		]
 	},
+	'wrapping of bare content with mw:unrecognized inline alien': {
+		'html': '1<span typeof="mw:Placeholder">baz</span>2',
+		'data': [
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			'1',
+			{
+				'type': 'alienInline',
+				'attributes': { 'html': '<span typeof="mw:Placeholder">baz</span>' }
+			},
+			{ 'type': '/alienInline' },
+			'2',
+			{ 'type': '/paragraph' }
+		]
+	},
+	'wrapping of bare content with mw:unrecognized block alien': {
+		'html': '1<div typeof="mw:Placeholder">baz</div>2',
+		'data': [
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			'1',
+			{ 'type': '/paragraph' },
+			{
+				'type': 'alienBlock',
+				'attributes': { 'html': '<div typeof="mw:Placeholder">baz</div>' }
+			},
+			{ 'type': '/alienBlock' },
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			'2',
+			{ 'type': '/paragraph' }
+		]
+	},
+	'wrapping of bare content with about group': {
+		'html': '1<tt about="#mwt1">foo</tt><tt about="#mwt1">bar</tt>2',
+		'data': [
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			'1',
+			{ 'type': '/paragraph' },
+			{
+				'type': 'alienBlock',
+				'attributes': { 'html': '<tt about="#mwt1">foo</tt><tt about="#mwt1">bar</tt>' }
+			},
+			{ 'type': '/alienBlock' },
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			'2',
+			{ 'type': '/paragraph' }
+		]
+	},
 	'wrapping of bare content between structural nodes': {
 		'html': '<table></table>abc<table></table>',
 		'data': [
