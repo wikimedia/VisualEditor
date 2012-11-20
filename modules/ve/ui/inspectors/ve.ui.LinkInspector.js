@@ -22,6 +22,7 @@ ve.ui.LinkInspector = function VeUiLinkInspector( context ) {
 	// Properties
 	this.context = context;
 	this.initialTarget = null;
+	this.isNewAnnotation = false;
 	this.$locationInput = this.frame.$$(
 		'<input type="text" class="ve-ui-linkInspector-location ve-ui-icon-down" />'
 	);
@@ -106,14 +107,22 @@ ve.ui.LinkInspector.prototype.onOpen = function () {
  */
 ve.ui.LinkInspector.prototype.onClose = function ( accept ) {
 	var target = this.$locationInput.val(),
-		surface = this.context.getSurface();
-	if ( accept ) {
-		if ( target && target !== this.initialTarget ) {
+		surface = this.context.getSurface(),
+		selection = surface.getModel().getSelection();
+	if ( accept && target && target !== this.initialTarget ) {
+		if ( this.isNewAnnotation ) {
+			// Go back to before we add an annotation in prepareSelection
+			surface.execute( 'history', 'undo' );
+			// Restore selection to be sure we are still working on the same range
+			surface.execute( 'content', 'select', selection );
+		} else {
 			// Clear all existing annotations
 			surface.execute( 'annotation', 'clearAll', this.constructor.static.typePattern );
-			surface.execute( 'annotation', 'set', this.getAnnotationFromTarget( target ) );
 		}
+		// Apply the new annotation
+		surface.execute( 'annotation', 'set', this.getAnnotationFromTarget( target ) );
 	}
+	this.isNewAnnotation = false;
 	this.context.getSurface().getView().getDocument().getDocumentNode().$.focus();
 };
 

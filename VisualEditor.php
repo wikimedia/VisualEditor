@@ -172,6 +172,7 @@ $wgResourceModules += array(
 
 			// actions
 			've/actions/ve.AnnotationAction.js',
+			've/actions/ve.ContentAction.js',
 			've/actions/ve.FormatAction.js',
 			've/actions/ve.HistoryAction.js',
 			've/actions/ve.IndentationAction.js',
