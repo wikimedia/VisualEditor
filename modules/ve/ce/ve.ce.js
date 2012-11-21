@@ -133,7 +133,7 @@ ve.ce.getOffsetFromTextNode = function ( domNode, domOffset ) {
 	var $node, nodeModel, current, stack, item, offset, $item;
 
 	$node = $( domNode ).closest(
-		'.ve-ce-branchNode, .ve-ce-alienBlockNode, .ve-ce-alienInlineNode'
+		'.ve-ce-branchNode, .ve-ce-leafNode'
 	);
 	nodeModel = $node.data( 'node' ).getModel();
 

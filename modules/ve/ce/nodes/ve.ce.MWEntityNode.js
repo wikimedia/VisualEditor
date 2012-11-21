@@ -19,6 +19,8 @@ ve.ce.MWEntityNode = function VeCeMWEntityNode( model ) {
 
 	// DOM Changes
 	this.$.addClass( 've-ce-MWEntityNode' );
+	// Need cE=false to prevent selection issues
+	this.$.attr( 'contenteditable', false );
 
 	// Properties
 	this.currentSource = null;
