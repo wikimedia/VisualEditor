@@ -51,13 +51,18 @@ ve.dm.MetaBlockNode.rules = {
 ve.dm.MetaBlockNode.converters = {
 	'domElementTypes': ['meta', 'link'],
 	'toDomElement': function ( type, element ) {
-		var isLink = element.attributes.style === 'link',
+		var isLink, domElement;
+		if ( element.attributes.style === 'comment' ) {
+			domElement = document.createComment( element.attributes.text );
+		} else {
+			isLink = element.attributes.style === 'link';
 			domElement = document.createElement( isLink ? 'link' : 'meta' );
-		if ( element.attributes.key !== null ) {
-			domElement.setAttribute( isLink ? 'rel' : 'property', element.attributes.key );
-		}
-		if ( element.attributes.value ) {
-			domElement.setAttribute( isLink ? 'href' : 'content', element.attributes.value );
+			if ( element.attributes.key !== null ) {
+				domElement.setAttribute( isLink ? 'rel' : 'property', element.attributes.key );
+			}
+			if ( element.attributes.value ) {
+				domElement.setAttribute( isLink ? 'href' : 'content', element.attributes.value );
+			}
 		}
 		return domElement;
 	},
