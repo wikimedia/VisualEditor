@@ -52,8 +52,8 @@ ve.InspectorAction.prototype.open = function ( name ) {
  * @method
  * @param {Boolean} accept Accept changes
  */
-ve.InspectorAction.prototype.close = function ( accept ) {
-	this.surface.getContext().closeInspector( accept );
+ve.InspectorAction.prototype.close = function ( remove ) {
+	this.surface.getContext().closeInspector( remove );
 };
 
 /* Registration */

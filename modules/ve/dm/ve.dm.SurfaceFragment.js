@@ -42,6 +42,12 @@ ve.dm.SurfaceFragment = function VeDmSurfaceFragment( surface, range, noAutoSele
 	);
 };
 
+/* Static Members */
+
+ve.dm.SurfaceFragment.static = {};
+
+ve.dm.SurfaceFragment.static.wordPattern = /[^\w']+/;
+
 /* Methods */
 
 /**
@@ -174,6 +180,7 @@ ve.dm.SurfaceFragment.prototype.trimRange = function () {
  *
  * @method
  * @param {String} [scope=parent] Method of expansion:
+ *     'word': Expands to cover the nearest word by looking for word boundary characters
  *     'annotation': Expands to cover a given annotation (argument) within the current range
  *     'root': Expands to cover the entire document
  *     'siblings': Expands to cover all sibling nodes
@@ -187,8 +194,27 @@ ve.dm.SurfaceFragment.prototype.expandRange = function ( scope, type ) {
 	if ( !this.surface ) {
 		return this;
 	}
-	var range, node, nodes, parent;
+	var before, after, range, node, nodes, parent,
+		wordPattern = this.constructor.static.wordPattern;
 	switch ( scope || 'parent' ) {
+		case 'word':
+			before = this.document.getText(
+				new ve.Range(
+					this.document.getNearestContentOffset( this.range.start - 64 ),
+					this.document.getNearestContentOffset( this.range.start )
+				)
+			).split( wordPattern );
+			after = this.document.getText(
+				new ve.Range(
+					this.document.getNearestContentOffset( this.range.end ),
+					this.document.getNearestContentOffset( this.range.end + 64 )
+				)
+			).split( wordPattern );
+			range = new ve.Range(
+				this.range.start - before[before.length - 1].length,
+				this.range.start + after[0].length
+			);
+			break;
 		case 'annotation':
 			range = this.document.getAnnotatedRangeFromSelection( this.range, type );
 			// Adjust selection if it does not contain the annotated range

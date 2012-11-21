@@ -101,6 +101,46 @@ ve.ui.Context.prototype.onSelectionEnd = function () {
 };
 
 /**
+ * Responds to an inspector being opened.
+ *
+ * @method
+ * @param {String} name Name of inspector being opened
+ */
+ve.ui.Context.prototype.onInspectorOpen = function ( name ) {
+	var inspector = this.inspectors[name];
+	// Close menu
+	if ( this.menu ) {
+		this.obscure( this.$menu );
+	}
+	// Fade in context if menu is closed - at this point, menu could be null or not open
+	if ( this.menu === null || !this.menu.isOpen() ) {
+		this.$.fadeIn( 'fast' );
+	}
+	// Remember which inspector is open
+	this.inspector = name;
+	// Resize frame to the size of the inspector.
+	this.frame.setSize( inspector.$.outerWidth(), inspector.$.outerHeight() );
+	// Cache selection, in the case of manually opened inspector.
+	this.selection = this.surface.getModel().getSelection();
+	// Show context
+	this.show();
+};
+
+/**
+ * Responds to an inspector being closed.
+ *
+ * @method
+ * @param {String} name Name of inspector being closed
+ * @param {Boolean} remove Annotation should be removed
+ */
+ve.ui.Context.prototype.onInspectorClose = function () {
+	this.obscure( this.$inspectors );
+	this.inspector = null;
+	this.hide();
+	this.update();
+};
+
+/**
  * Gets the surface this context is being used in.
  *
  * @method
@@ -194,7 +234,7 @@ ve.ui.Context.prototype.show = function () {
 
 ve.ui.Context.prototype.hide = function () {
 	if ( this.inspector ) {
-		this.closeInspector( true );
+		this.closeInspector();
 		this.$overlay.hide();
 	}
 	if ( this.menu ) {
@@ -251,6 +291,8 @@ ve.ui.Context.prototype.initInspector = function ( name ) {
 	if ( ve.ui.inspectorFactory.lookup( name ) ) {
 		if ( !( name in this.inspectors ) ) {
 			inspector = this.inspectors[name] = ve.ui.inspectorFactory.create( name, this );
+			inspector.on( 'open', ve.bind( this.onInspectorOpen, this, name ) );
+			inspector.on( 'close', ve.bind( this.onInspectorClose, this ) );
 			inspector.$.hide();
 			this.frame.$.append( inspector.$ );
 			this.obscure( this.$inspectors );
@@ -261,48 +303,24 @@ ve.ui.Context.prototype.initInspector = function ( name ) {
 };
 
 ve.ui.Context.prototype.openInspector = function ( name ) {
+	// Auto-initialize the inspector
 	if ( !this.initInspector( name ) ) {
 		throw new Error( 'Missing inspector. Can not open nonexistent inspector: ' + name );
 	}
-	var inspector = this.inspectors[name];
-
-	// Prepare the inspector to be opened
-	inspector.prepareSelection();
-
-	// HACK: prepareSelection probably caused an annotationChange event which closed the context
-	// before we could even open it - by executing the rest of this function later we can let the
-	// stack clear and then finally open the context and inspector once the dust has settled.
-	setTimeout( ve.bind( function () {
-		// Close menu
-		if ( this.menu ) {
-			this.obscure( this.$menu );
-		}
-		// Fade in context if menu is closed.
-		// At this point, menu could be null or not open.
-		if ( this.menu === null || !this.menu.isOpen() ) {
-			this.$.fadeIn( 'fast' );
-		}
-		// Open the inspector by name.
-		inspector.open();
-		// Resize frame to the size of the inspector.
-		this.frame.setSize( inspector.$.outerWidth(), inspector.$.outerHeight() );
-		// Save name of inspector open.
-		this.inspector = name;
-		// Cache selection, in the case of manually opened inspector.
-		this.selection = this.surface.getModel().getSelection();
-		// Set inspector
-		this.show();
-	}, this ), 0 );
+	// Only allow one inspector open at a time
+	if ( this.inspector ) {
+		this.closeInspector();
+	}
+	// Open the inspector
+	this.inspectors[name].open();
 };
 
-ve.ui.Context.prototype.closeInspector = function ( accept ) {
+ve.ui.Context.prototype.closeInspector = function ( remove ) {
+	// Quietly ignore if nothing is open
 	if ( this.inspector ) {
-		this.obscure( this.$inspectors );
-		this.inspectors[this.inspector].close( accept );
-		this.inspector = null;
-		this.hide();
+		// Close the current inspector
+		this.inspectors[this.inspector].close( remove );
 	}
-	this.update();
 };
 
 ve.ui.Context.prototype.reveal = function ( $element ) {
