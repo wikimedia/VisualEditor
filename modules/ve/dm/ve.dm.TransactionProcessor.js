@@ -245,8 +245,8 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 			// Replacement is not exclusively text
 			// Rebuild all covered nodes
 			range = new ve.Range(
-				selection[0].nodeRange.start,
-				selection[selection.length - 1].nodeRange.end
+				selection[0].nodeOuterRange.start,
+				selection[selection.length - 1].nodeOuterRange.end
 			);
 			this.synchronizer.pushRebuild( range,
 				new ve.Range( range.start + this.adjustment,
@@ -335,7 +335,8 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 								// Lazy-initialize scope
 								scope = scope || this.document.getNodeFromOffset( prevCursor );
 								// Push the full range of the old scope as an affected range
-								scopeStart = this.document.getDocumentNode().getOffsetFromNode( scope );
+								scopeStart =
+									this.document.getDocumentNode().getOffsetFromNode( scope );
 								scopeEnd = scopeStart + scope.getOuterLength();
 								affectedRanges.push( new ve.Range( scopeStart, scopeEnd ) );
 								// Update scope
