@@ -49,7 +49,8 @@ ve.dm.MWInternalLinkAnnotation.prototype.getAnnotationData = function( element )
 	return {
 		// Store the ./ and ../ prefixes so we can restore them on the way out
 		'hrefPrefix': matches[1],
-		'title': matches[2].replace( /_/g, ' ' )
+		'title': matches[2].replace( /_/g, ' ' ),
+		'origTitle': matches[2]
 	};
 };
 
@@ -62,10 +63,18 @@ ve.dm.MWInternalLinkAnnotation.prototype.getAnnotationData = function( element )
 ve.dm.MWInternalLinkAnnotation.prototype.toHTML = function () {
 	var href,
 		parentResult = ve.dm.LinkAnnotation.prototype.toHTML.call( this );
-	// Set href to title
-	href = this.data.title.replace( / /g, '_' );
-	if ( this.data.hrefPrefix ) {
-		href = this.data.hrefPrefix + href;
+	if (
+		this.data.origTitle &&
+		this.data.origTitle.replace( /_/g, ' ' ) === this.data.title
+	) {
+		// Restore href from origTitle
+		href = this.data.origTitle;
+		// Only use hrefPrefix if restoring from origTitle
+		if ( this.data.hrefPrefix ) {
+			href = this.data.hrefPrefix + href;
+		}
+	} else {
+		href = this.data.title;
 	}
 	parentResult.attributes.href = href;
 	parentResult.attributes.rel = 'mw:WikiLink';
