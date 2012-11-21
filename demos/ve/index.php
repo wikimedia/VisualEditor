@@ -287,18 +287,18 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 					$li = $('<li>');
 					element = ve.instances[0].documentModel.data[i];
 					if( element.type ) {
-						html = element.type;
+						text = element.type;
 					} else if ( element.length > 1 ){
 						annotations = [];
 						$.each(element[1].arr, function(index, val) {
 							annotations.push( val.name );
 						});
-						html = element[0] + ' [' + annotations.join(', ') + ']';
+						text = element[0] + ' [' + annotations.join(', ') + ']';
 					} else {
-						html = element;
+						text = element;
 					}
 
-					$li.html ( html );
+					$li.text( text );
 					$ol.append($li);
 				}
 				$('#ve-linear-model-dump').html($ol);
@@ -309,7 +309,14 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 						$li;
 					for( var i = 0; i < obj.children.length; i++ ) {
 						$li = $('<li>');
-						$li.html(obj.children[i].type);
+						if ( obj.children[i].length !== undefined ) {
+							$li.text(
+								obj.children[i].type + ' (' +
+								obj.children[i].length + ')'
+							);
+						} else {
+							$li.text( obj.children[i].type );
+						}
 
 						if ( obj.children[i].children ) {
 							$li.append(getKids(obj.children[i]));
