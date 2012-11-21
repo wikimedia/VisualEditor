@@ -39,15 +39,16 @@ ve.inheritClass( ve.ce.SurfaceObserver, ve.EventEmitter );
  * Clears polling data.
  *
  * @method
+ * @param {ve.Range} range Initial range to use
  */
-ve.ce.SurfaceObserver.prototype.clear = function () {
+ve.ce.SurfaceObserver.prototype.clear = function ( range ) {
 	this.rangySelection = {
 		anchorNode: null,
 		anchorOffset: null,
 		focusNode: null,
 		focusOffset: null
 	};
-	this.range = null;
+	this.range = range || null;
 	this.node = null;
 	this.text = null;
 	this.hash = null;
@@ -178,7 +179,8 @@ ve.ce.SurfaceObserver.prototype.poll = function ( async ) {
 		}
 	}
 
-	if ( this.range !== range ) {
+	// Only emit selectionChange event if there's a meaningful range difference
+	if ( ( this.range && range ) ? !this.range.equals( range ) : ( this.range !== range ) ) {
 		this.emit(
 			'selectionChange',
 			this.range,

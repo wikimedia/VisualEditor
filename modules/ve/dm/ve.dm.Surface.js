@@ -25,7 +25,6 @@ ve.dm.Surface = function VeDmSurface( doc ) {
 	this.undoIndex = 0;
 	this.historyTrackingInterval = null;
 	this.insertionAnnotations = new ve.AnnotationSet();
-	this.useInsertionAnnotations = true;
 };
 
 /* Inheritance */
@@ -76,34 +75,6 @@ ve.dm.Surface.prototype.getHistory = function () {
 	} else {
 		return this.bigStack.slice( 0 );
 	}
-};
-
-/**
- * Enables insertion annotations.
- *
- * @method
- */
-ve.dm.Surface.prototype.enableInsertionAnnotations = function () {
-	this.useInsertionAnnotations = true;
-};
-
-/**
- * Disables insertion annotations.
- *
- * @method
- */
-ve.dm.Surface.prototype.disableInsertionAnnotations = function () {
-	this.useInsertionAnnotations = false;
-};
-
-/**
- * Checks if insertion annotations are enabled.
- *
- * @method
- * @returns {Boolean} Insertion annotations are enabled
- */
-ve.dm.Surface.prototype.areInsertionAnnotationsEnabled = function () {
-	return this.useInsertionAnnotations;
 };
 
 /**
@@ -212,12 +183,13 @@ ve.dm.Surface.prototype.getFragment = function ( range, noAutoSelect ) {
  * @param {ve.Range|undefined} selection
  */
 ve.dm.Surface.prototype.change = function ( transactions, selection ) {
-	var i, offset;
+	var i, offset, annotations;
+
+	// Process transactions and apply selection changes
 	if ( transactions ) {
 		if ( transactions instanceof ve.dm.Transaction ) {
 			transactions = [transactions];
 		}
-
 		this.emit( 'lock' );
 		for ( i = 0; i < transactions.length; i++ ) {
 			if ( !transactions[i].isNoOp() ) {
@@ -229,26 +201,41 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 		}
 		this.emit( 'unlock' );
 	}
+
+	// Only emit a select event if the selection actually changed
 	if ( selection && ( !this.selection || !this.selection.equals ( selection ) ) ) {
 		selection.normalize();
 		this.selection = selection;
-		this.emit('select', this.selection.clone() );
+		this.emit( 'select', this.selection.clone() );
 	}
+
+	// Only emit a transact event if transactions were actually processed
 	if ( transactions ) {
 		this.emit( 'transact', transactions );
 	}
 
-	// Clear and add annotations to stack if insertion annotations aren't being used
-	if ( this.useInsertionAnnotations ) {
+	// Figure out which offset which we should get insertion annotations from
+	if ( this.selection.isCollapsed() ) {
+		// Get annotations from the left of the cursor
 		offset = this.documentModel.getNearestContentOffset(
-			Math.max( 0, this.getSelection().start - 1 ), -1
+			Math.max( 0, this.selection.start - 1 ), -1
 		);
-		if ( offset === -1 ) {
-			// Document is empty, use empty set
-			this.insertionAnnotations = new ve.AnnotationSet();
-		} else {
-			this.insertionAnnotations = this.documentModel.getAnnotationsFromOffset( offset );
-		}
+	} else {
+		// Get annotations from the first character of the selection
+		offset = this.documentModel.getNearestContentOffset( this.selection.start );
+	}
+	if ( offset === -1 ) {
+		// Document is empty, use empty set
+		annotations = new ve.AnnotationSet();
+	} else {
+		annotations = this.documentModel.getAnnotationsFromOffset( offset );
+	}
+	// Only emit an annotations change event if there's a meaningful difference
+	if (
+		!annotations.containsAllOf( this.insertionAnnotations ) ||
+		!this.insertionAnnotations.containsAllOf( annotations )
+	) {
+		this.insertionAnnotations = annotations;
 		this.emit( 'annotationChange' );
 	}
 

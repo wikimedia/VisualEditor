@@ -156,6 +156,23 @@ ve.inheritClass( ve.dm.Document, ve.Document );
 /* Static methods */
 
 /**
+ * Pattern that matches anything that's not considered part of a word.
+ *
+ * This is a very loose definition, it includes some punctuation that can occur around or inside of
+ * a word. This may need to be added to for some locales and perhaps made to be extendable for
+ * better internationalization support.
+ *
+ * Allowed characters:
+ *     * Numbers and letters: a-z, A-Z, 0-9
+ *     * Underscores and dashes: _, -
+ *     * Brackets and parenthesis: (), []
+ *     * Apostrophes and double quotes: ', "
+ *
+ * This pattern is tested against one character at a time.
+ */
+ve.dm.SurfaceFragment.wordBoundaryPattern = /[^\w'"-\(\)\[\]]+/;
+
+/**
  * Applies annotations to content data.
  *
  * This method modifies data in place.
@@ -955,6 +972,46 @@ ve.dm.Document.prototype.getNearestStructuralOffset = function ( offset, directi
 		return this.getRelativeOffset(
 			offset, direction > 0 ? 1 : -1, ve.dm.Document.isStructuralOffset, unrestricted
 		);
+	}
+};
+
+/**
+ * Gets the nearest word boundary.
+ *
+ * The offset will first be moved to the nearest content offset if it's not at one already. If a
+ * direction was given, the boundary will be found in that direction, otherwise both directions will
+ * be calculated and the one with the lowest distance from offset will be returned. Elements are
+ * always word boundaries. For more information about what is considered to be a word character,
+ * see {ve.dm.SurfaceFragment.wordPattern}.
+ *
+ * @method
+ * @param {Number} offset Offset to start from
+ * @param {Number} [direction] Direction to prefer matching offset in, -1 for left and 1 for right
+ * @returns {Number} Nearest word boundary
+ */
+ve.dm.Document.prototype.getNearestWordBoundary = function ( offset, direction ) {
+	var left, right, i, inc,
+		pattern = ve.dm.SurfaceFragment.wordBoundaryPattern,
+		data = this.data;
+	offset = this.getNearestContentOffset( offset );
+	if ( !direction ) {
+		left = this.getNearestWordBoundary( offset, -1 );
+		right = this.getNearestWordBoundary( offset, +1 );
+		return offset - left < right - offset ? left : right;
+	} else {
+		inc = direction > 0 ? 1 : -1;
+		i = offset + ( inc > 0 ? 0 : -1 );
+		do {
+			if ( data[i].type === undefined ) {
+				// Plain text extraction
+				if ( pattern.test( typeof data[i] === 'string' ? data[i] : data[i][0] ) ) {
+					break;
+				}
+			} else {
+				break;
+			}
+		} while ( data[i += inc] );
+		return i + ( inc > 0 ? 0 : 1 );
 	}
 };
 

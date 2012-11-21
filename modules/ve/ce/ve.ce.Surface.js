@@ -83,7 +83,7 @@ ve.ce.Surface.static.$phantomTemplate = $( '<div class="ve-ce-phantom" draggable
 /* Methods */
 
 ve.ce.Surface.prototype.handleInsertion = function () {
-	var slug, data, range, annotations, insertionAnnotations,
+	var slug, data, range, annotations, insertionAnnotations, placeholder,
 		selection = this.model.getSelection();
 
 	// Handles removing expanded selection before inserting new text
@@ -114,22 +114,19 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 				)
 			)
 		) {
-			this.model.enableInsertionAnnotations();
+			placeholder = '\u2659';
+			if ( !insertionAnnotations.isEmpty() ) {
+				placeholder = [placeholder, insertionAnnotations];
+			}
 			// is this a slug and if so, is this a block slug?
 			if ( slug && ve.dm.Document.isStructuralOffset(
 				this.documentView.model.data, selection.start
 			) ) {
 				range = new ve.Range( selection.start + 1, selection.start + 2 );
-				data = [
-					{ 'type' : 'paragraph' },
-					['\u2659', insertionAnnotations],
-					{ 'type' : '/paragraph' }
-				];
+				data = [{ 'type' : 'paragraph' }, placeholder, { 'type' : '/paragraph' }];
 			} else {
 				range = new ve.Range( selection.start, selection.start + 1 );
-				data = [
-					['\u2659', insertionAnnotations]
-				];
+				data = [placeholder];
 			}
 			this.model.change(
 				ve.dm.Transaction.newFromInsertion(
@@ -193,26 +190,22 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 		if ( annotations instanceof ve.AnnotationSet ) {
 			ve.dm.Document.addAnnotationsToData( data, this.model.getInsertionAnnotations() );
 		}
-		this.lock();
 		this.model.change(
 			ve.dm.Transaction.newFromInsertion(
 				this.documentView.model, previous.range.start, data
 			),
 			next.range
 		);
-		this.unlock();
 	} else if ( false /* temporary quick fix for BugId: 41223 */ && ( offsetDiff === 0 || offsetDiff === lengthDiff ) && sameLeadingAndTrailing ) {
 		if ( offsetDiff === 0 ) {
 			range = new ve.Range( next.range.start, next.range.start - lengthDiff );
 		} else {
 			range = new ve.Range( next.range.start, previous.range.start );
 		}
-		this.lock();
 		this.model.change(
 			ve.dm.Transaction.newFromRemoval( this.documentView.model, range ),
 			next.range
 		);
-		this.unlock();
 	} else {
 		len = Math.min( previous.text.length, next.text.length );
 		// Count same characters from left
@@ -264,10 +257,7 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
  * @method
  */
 ve.ce.Surface.prototype.onSelectionChange = function ( oldRange, newRange ) {
-	// TODO: Explain why we lock here.
-	this.lock();
 	this.model.change( null, newRange );
-	this.unlock();
 };
 
 /**
@@ -285,7 +275,7 @@ ve.ce.Surface.prototype.onLock = function () {
  * @method
  */
 ve.ce.Surface.prototype.onUnlock = function () {
-	this.surfaceObserver.clear();
+	this.surfaceObserver.clear( this.model.getSelection() );
 	this.surfaceObserver.start();
 };
 
@@ -320,7 +310,6 @@ ve.ce.Surface.prototype.onCompositionStart = function () {
 
 ve.ce.Surface.prototype.onCompositionEnd = function () {
 	this.inIme = false;
-	this.model.disableInsertionAnnotations();
 	this.surfaceObserver.start();
 };
 
@@ -507,15 +496,11 @@ ve.ce.Surface.prototype.onKeyDown = function ( e ) {
 			break;
 		default:
 			// Execute key command if available
+			this.surfaceObserver.stop( true );
 			if ( this.surface.execute( new ve.Command( e ) ) ) {
 				e.preventDefault();
-				break;
 			}
-			// TODO: Filter (do not call stop and start) for [a-zA-Z0-9]
-			//if ( this.model.getSelection().isCollapsed() === false ) {
-				this.surfaceObserver.stop( true );
-				this.surfaceObserver.start();
-			//}
+			this.surfaceObserver.start();
 	}
 };
 
@@ -655,7 +640,6 @@ ve.ce.Surface.prototype.onKeyPress = function ( e ) {
 	this.handleInsertion();
 	setTimeout( ve.bind( function () {
 		this.surfaceObserver.start();
-		this.model.disableInsertionAnnotations();
 	}, this ), 0 );
 };
 

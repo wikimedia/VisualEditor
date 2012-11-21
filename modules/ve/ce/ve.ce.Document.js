@@ -29,7 +29,7 @@ ve.inheritClass( ve.ce.Document, ve.Document );
 
 ve.ce.Document.prototype.getNodeFromOffset = function ( offset ) {
 	var node = this.documentNode.getNodeFromOffset( offset );
-	if ( !node.canHaveChildren() ) {
+	if ( node && !node.canHaveChildren() ) {
 		node = node.getParent();
 	}
 	return node;
@@ -37,5 +37,5 @@ ve.ce.Document.prototype.getNodeFromOffset = function ( offset ) {
 
 ve.ce.Document.prototype.getSlugAtOffset = function ( offset ) {
 	var node = this.getNodeFromOffset( offset );
-	return node.getSlugAtOffset( offset );
+	return node ? node.getSlugAtOffset( offset ) : null;
 };

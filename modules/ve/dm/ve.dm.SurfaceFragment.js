@@ -46,8 +46,6 @@ ve.dm.SurfaceFragment = function VeDmSurfaceFragment( surface, range, noAutoSele
 
 ve.dm.SurfaceFragment.static = {};
 
-ve.dm.SurfaceFragment.static.wordPattern = /[^\w']+/;
-
 /* Methods */
 
 /**
@@ -194,25 +192,12 @@ ve.dm.SurfaceFragment.prototype.expandRange = function ( scope, type ) {
 	if ( !this.surface ) {
 		return this;
 	}
-	var before, after, range, node, nodes, parent,
-		wordPattern = this.constructor.static.wordPattern;
+	var range, node, nodes, parent;
 	switch ( scope || 'parent' ) {
 		case 'word':
-			before = this.document.getText(
-				new ve.Range(
-					this.document.getNearestContentOffset( this.range.start - 64 ),
-					this.document.getNearestContentOffset( this.range.start )
-				)
-			).split( wordPattern );
-			after = this.document.getText(
-				new ve.Range(
-					this.document.getNearestContentOffset( this.range.end ),
-					this.document.getNearestContentOffset( this.range.end + 64 )
-				)
-			).split( wordPattern );
 			range = new ve.Range(
-				this.range.start - before[before.length - 1].length,
-				this.range.start + after[0].length
+				this.document.getNearestWordBoundary( this.range.start, -1 ),
+				this.document.getNearestWordBoundary( this.range.end, 1 )
 			);
 			break;
 		case 'annotation':
