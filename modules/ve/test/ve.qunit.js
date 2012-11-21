@@ -20,14 +20,21 @@ function getNodeTreeSummary( node, shallow ) {
 			'getLength': node.getLength(),
 			'getOuterLength': node.getOuterLength(),
 			'attributes': node.attributes
-		};
+		},
+		numChildren;
 
 	if ( node.children !== undefined ) {
-		summary['children.length'] = node.children.length;
+		// Count children manually to exclude zero-length text nodes
+		numChildren = 0;
 		if ( !shallow ) {
 			summary.children = [];
-			for ( i = 0; i < node.children.length; i++ ) {
-				summary.children.push( getNodeTreeSummary( node.children[i] ) );
+		}
+		for ( i = 0; i < node.children.length; i++ ) {
+			if ( node.children[i].getType() !== 'text' || node.children[i].getLength() > 0 ) {
+				numChildren++;
+				if ( !shallow ) {
+					summary.children.push( getNodeTreeSummary( node.children[i] ) );
+				}
 			}
 		}
 	}

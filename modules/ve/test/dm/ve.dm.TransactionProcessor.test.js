@@ -40,7 +40,7 @@ QUnit.test( 'protection against double application', 3, function ( assert ) {
 	);
 } );
 
-QUnit.test( 'commit/rollback', 58, function ( assert ) {
+QUnit.test( 'commit/rollback', 62, function ( assert ) {
 	var i, key, originalData, originalDoc, msg, testDocument, tx,
 		expectedData, expectedDocument,
 		bold = ve.dm.example.createAnnotation( ve.dm.example.bold ),
@@ -272,6 +272,23 @@ QUnit.test( 'commit/rollback', 58, function ( assert ) {
 					ve.setProp( data[0], 'internal', 'changed', 'content', 1 );
 					ve.setProp( data[8], 'internal', 'changed', 'content', 1 );
 				}
+			},
+			'inserting text after alien node at the end': {
+				'data': [
+					{ 'type': 'paragraph' },
+					'a',
+					{ 'type': 'alienInline' },
+					{ 'type': '/alienInline' },
+					{ 'type': '/paragraph' }
+				],
+				'calls': [
+					['pushRetain', 4],
+					['pushReplace', [], ['b']]
+				],
+				'expected': function ( data ) {
+					data.splice( 4, 0, 'b' );
+					ve.setProp( data[0], 'internal', 'changed', 'content', 1 );
+				}
 			}
 		};
 
@@ -284,17 +301,17 @@ QUnit.test( 'commit/rollback', 58, function ( assert ) {
 		}
 	}
 
-	// Generate original document
-	originalData = ve.dm.example.data;
-	originalDoc = new ve.dm.Document( originalData );
 	// Run tests
 	for ( msg in cases ) {
-		testDocument = new ve.dm.Document( ve.copyArray( originalData ) );
 		tx = new ve.dm.Transaction();
 		for ( i = 0; i < cases[msg].calls.length; i++ ) {
 			tx[cases[msg].calls[i][0]].apply( tx, cases[msg].calls[i].slice( 1 ) );
 		}
 		if ( 'expected' in cases[msg] ) {
+			// Generate original document
+			originalData = cases[msg].data || ve.dm.example.data;
+			originalDoc = new ve.dm.Document( originalData );
+			testDocument = new ve.dm.Document( ve.copyArray( originalData ) );
 			// Generate expected document
 			expectedData = ve.copyArray( originalData );
 			cases[msg].expected( expectedData );
@@ -309,7 +326,7 @@ QUnit.test( 'commit/rollback', 58, function ( assert ) {
 			);
 			// Rollback
 			ve.dm.TransactionProcessor.rollback( testDocument, tx );
-			assert.deepEqual( testDocument.getData(), ve.dm.example.data, 'rollback (data): ' + msg );
+			assert.deepEqual( testDocument.getData(), originalData, 'rollback (data): ' + msg );
 			assert.equalNodeTree(
 				testDocument.getDocumentNode(),
 				originalDoc.getDocumentNode(),
