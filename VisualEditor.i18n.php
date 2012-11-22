@@ -41,6 +41,8 @@ $messages['en'] = array(
 	'visualeditor-saveerror' => 'Error saving data to server: $1.',
 	'visualeditor-editsummary' => 'Describe what you changed',
 	'visualeditor-aliennode-tooltip' => 'Sorry, this element cannot be edited using the VisualEditor',
+	'tag-visualeditor' => '[[Special:Tags|Tag]]: [[Project:VisualEditor|VisualEditor]]',
+	'tag-visualeditor-description' => 'Edit made using the [[Project:VisualEditor|VisualEditor]]',
 );
 
 /** Message documentation (Message documentation)

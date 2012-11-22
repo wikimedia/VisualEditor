@@ -106,7 +106,7 @@ class ApiVisualEditor extends ApiBase {
 	}
 
 	public function execute() {
-		global $wgVisualEditorNamespaces;
+		global $wgVisualEditorNamespaces, $wgVisualEditorUseChangeTagging;
 		$user = $this->getUser();
 		$params = $this->extractRequestParams();
 		$page = Title::newFromText( $params['page'] );
@@ -151,6 +151,12 @@ class ApiVisualEditor extends ApiBase {
 						'edit' => $editResult['edit']
 					);
 				} else {
+					if ( isset ( $editResult['edit']['newrevid'] ) && $wgVisualEditorUseChangeTagging ) {
+						ChangeTags::addTags( 'visualeditor', null,
+							intval( $editResult['edit']['newrevid'] ),
+							null
+						);
+					}
 					$parsed = $this->parseWikitext( $page );
 					$result = array( 'result' => 'success' );
 					if ( $parsed !== false ) {
