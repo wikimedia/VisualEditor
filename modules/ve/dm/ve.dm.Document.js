@@ -182,6 +182,10 @@ ve.dm.SurfaceFragment.wordBoundaryPattern = /[^\w'"-\(\)\[\]]+/;
  * @param {ve.AnnotationSet} annotationSet Annotations to apply
  */
 ve.dm.Document.addAnnotationsToData = function ( data, annotationSet ) {
+	if ( annotationSet.isEmpty() ) {
+		// Nothing to do
+		return;
+	}
 	// Apply annotations to data
 	for ( var i = 0; i < data.length; i++ ) {
 		if ( !ve.isArray( data[i] ) ) {
