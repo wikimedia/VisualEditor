@@ -286,16 +286,21 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 				for ( var i = 0; i < ve.instances[0].documentModel.data.length; i++ ) {
 					$li = $('<li>');
 					element = ve.instances[0].documentModel.data[i];
-					if( element.type ) {
+					if ( element.type ) {
 						text = element.type;
+						annotations = element.annotations;
 					} else if ( element.length > 1 ){
-						annotations = [];
-						$.each(element[1].arr, function(index, val) {
-							annotations.push( val.name );
-						});
-						text = element[0] + ' [' + annotations.join(', ') + ']';
+						text = element[0];
+						annotations = element[1];
 					} else {
 						text = element;
+						annotations = undefined;
+					}
+					if ( annotations ) {
+						text += ' [' + annotations.get().map(
+							function( ann ) {
+								return ann.name;
+							} ).join(', ') + ']';
 					}
 
 					$li.text( text );
