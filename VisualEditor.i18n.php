@@ -403,6 +403,7 @@ $messages['es'] = array(
 	'visualeditor-notification-saved' => 'Tus cambios en $1 han sido guardados',
 	'visualeditor-notification-created' => '$1 ha sido creado',
 	'visualeditor-ca-editsource' => 'Editar fuente',
+	'visualeditor-inspector-title' => 'Inspeccionar',
 	'visualeditor-linkinspector-title' => 'Hiperenlace',
 	'visualeditor-linkinspector-label-pagetitle' => 'Título de la página',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Página existente',
@@ -431,6 +432,7 @@ $messages['es'] = array(
 	'visualeditor-loadwarning' => 'Error al cargar los datos del servidor: $1. ¿Le gustaría volver a intentarlo?',
 	'visualeditor-saveerror' => 'Error al guardar datos en el servidor: $1.',
 	'visualeditor-editsummary' => 'Describe lo que has cambiado',
+	'visualeditor-aliennode-tooltip' => 'Lo sentimos, este elemento no se puede editar mediante el editor visual',
 );
 
 /** Estonian (eesti)
