@@ -6,7 +6,7 @@
  */
 
 /**
- * DataModel node that can not have children.
+ * DataModel node that cannot have children.
  *
  * @class
  * @abstract
@@ -14,14 +14,14 @@
  * @extends {ve.dm.Node}
  * @param {String} type Symbolic name of node type
  * @param {Number} [length] Length of content data in document
- * @param {Object} [attributes] Reference to map of attribute key/value pairs
+ * @param {Object} [element] Reference to element in linear model
  */
-ve.dm.LeafNode = function VeDmLeafNode( type, length, attributes ) {
+ve.dm.LeafNode = function VeDmLeafNode( type, length, element ) {
 	// Mixin constructor
 	ve.LeafNode.call( this );
 
 	// Parent constructor
-	ve.dm.Node.call( this, type, length, attributes );
+	ve.dm.Node.call( this, type, length, element );
 };
 
 /* Inheritance */
@@ -31,3 +31,14 @@ ve.inheritClass( ve.dm.LeafNode, ve.dm.Node );
 ve.mixinClass( ve.dm.LeafNode, ve.LeafNode );
 
 /* Methods */
+
+/**
+ * Get the annotations that apply to this node. Annotations are grabbed directly from the linear
+ * model, so they are updated live. If the linear model element doesn't have a .annotations
+ * property, an empty set is returned.
+ *
+ * @return {ve.AnnotationSet} Annotation set (by reference!)
+ */
+ve.dm.LeafNode.prototype.getAnnotations = function () {
+	return this.element.annotations || new ve.AnnotationSet();
+};

@@ -12,11 +12,11 @@
  * @constructor
  * @extends {ve.dm.LeafNode}
  * @param {Integer} [length] Length of content data in document
- * @param {Object} [attributes] Reference to map of attribute key/value pairs
+ * @param {Object} [element] Reference to element in linear model
  */
-ve.dm.MetaInlineNode = function VeDmMetaInlineNode( length, attributes ) {
+ve.dm.MetaInlineNode = function VeDmMetaInlineNode( length, element ) {
 	// Parent constructor
-	ve.dm.LeafNode.call( this, 'metaInline', 0, attributes );
+	ve.dm.LeafNode.call( this, 'metaInline', 0, element );
 };
 
 /* Inheritance */

@@ -12,11 +12,11 @@
  * @constructor
  * @extends {ve.dm.BranchNode}
  * @param {ve.dm.LeafNode[]} [children] Child nodes to attach
- * @param {Object} [attributes] Reference to map of attribute key/value pairs
+ * @param {Object} [element] Reference to element in linear model
  */
-ve.dm.PreformattedNode = function VeDmPreformattedNode( children, attributes ) {
+ve.dm.PreformattedNode = function VeDmPreformattedNode( children, element ) {
 	// Parent constructor
-	ve.dm.BranchNode.call( this, 'preformatted', children, attributes );
+	ve.dm.BranchNode.call( this, 'preformatted', children, element );
 };
 
 /* Inheritance */

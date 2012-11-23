@@ -12,11 +12,11 @@
  * @constructor
  * @extends {ve.dm.LeafNode}
  * @param {Number} [length] Length of content data in document
- * @param {Object} [attributes] Reference to map of attribute key/value pairs
+ * @param {Object} [element] Reference to element in linear model
  */
-ve.dm.BreakNode = function VeDmBreakNode( length, attributes ) {
+ve.dm.BreakNode = function VeDmBreakNode( length, element ) {
 	// Parent constructor
-	ve.dm.LeafNode.call( this, 'break', 0, attributes );
+	ve.dm.LeafNode.call( this, 'break', 0, element );
 };
 
 /* Inheritance */

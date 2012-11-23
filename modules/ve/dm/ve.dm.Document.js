@@ -97,7 +97,7 @@ ve.dm.Document = function VeDmDocument( data, parentDocument ) {
 				// Branch or leaf node opening
 				// Create a childless node
 				node = ve.dm.nodeFactory.create( this.data[i].type, [],
-					this.data[i].attributes
+					this.data[i]
 				);
 				// Set the root pointer now, to prevent cascading updates
 				node.setRoot( root );

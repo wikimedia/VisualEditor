@@ -12,11 +12,11 @@
  * @constructor
  * @extends {ve.dm.LeafNode}
  * @param {Number} [length] Length of content data in document
- * @param {Object} [attributes] Reference to map of attribute key/value pairs
+ * @param {Object} [element] Reference to element in linear model
  */
-ve.dm.ImageNode = function VeDmImageNode( length, attributes ) {
+ve.dm.ImageNode = function VeDmImageNode( length, element ) {
 	// Parent constructor
-	ve.dm.LeafNode.call( this, 'image', 0, attributes );
+	ve.dm.LeafNode.call( this, 'image', 0, element );
 };
 
 /* Inheritance */

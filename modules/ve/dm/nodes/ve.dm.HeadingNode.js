@@ -12,11 +12,11 @@
  * @constructor
  * @extends {ve.dm.BranchNode}
  * @param {ve.dm.LeafNode[]} [children] Child nodes to attach
- * @param {Object} [attributes] Reference to map of attribute key/value pairs
+ * @param {Object} [element] Reference to element in linear model
  */
-ve.dm.HeadingNode = function VeDmHeadingNode( children, attributes ) {
+ve.dm.HeadingNode = function VeDmHeadingNode( children, element ) {
 	// Parent constructor
-	ve.dm.BranchNode.call( this, 'heading', children, attributes );
+	ve.dm.BranchNode.call( this, 'heading', children, element );
 };
 
 /* Inheritance */
