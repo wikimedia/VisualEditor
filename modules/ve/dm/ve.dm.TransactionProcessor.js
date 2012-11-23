@@ -457,7 +457,7 @@ ve.dm.TransactionProcessor.prototype.process = function () {
  * @throws 'Invalid transaction, annotation to be cleared is not set'
  */
 ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
-	var item, element, annotated, annotations, i, range, selection, offset;
+	var item, element, type, annotated, annotations, i, range, selection, offset;
 	if ( this.set.isEmpty() && this.clear.isEmpty() ) {
 		return;
 	}
@@ -465,10 +465,16 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 		item = this.document.data[i];
 		element = item.type !== undefined;
 		if ( element ) {
+			type = item.type;
 			if ( item.type.charAt( 0 ) === '/' ) {
-				throw new Error( 'Invalid transaction, cannot annotate a branch closing element' );
-			} else if ( ve.dm.nodeFactory.canNodeHaveChildren( item.type ) ) {
-				throw new Error( 'Invalid transaction, cannot annotate a branch opening element' );
+				type = type.substr( 1 );
+			}
+			if ( !ve.dm.nodeFactory.isNodeContent( type ) ) {
+				throw new Error( 'Invalid transaction, cannot annotate a non-content element' );
+			}
+			if ( item.type.charAt( 0 ) === '/' ) {
+				// Closing content element, ignore
+				continue;
 			}
 		}
 		annotated = element ? 'annotations' in item : ve.isArray( item );
