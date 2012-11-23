@@ -877,6 +877,7 @@ ve.dm.example.domToDataCases = {
 					'type': 'link/MWinternal',
 					'data': {
 						'title': 'Foo bar',
+						'origTitle': 'Foo_bar',
 						'hrefPrefix': ''
 					},
 					'htmlTagName': 'a',
@@ -893,6 +894,7 @@ ve.dm.example.domToDataCases = {
 					'type': 'link/MWinternal',
 					'data': {
 						'title': 'Foo bar',
+						'origTitle': 'Foo_bar',
 						'hrefPrefix': ''
 					},
 					'htmlTagName': 'a',
@@ -909,6 +911,7 @@ ve.dm.example.domToDataCases = {
 					'type': 'link/MWinternal',
 					'data': {
 						'title': 'Foo bar',
+						'origTitle': 'Foo_bar',
 						'hrefPrefix': ''
 					},
 					'htmlTagName': 'a',
@@ -935,6 +938,7 @@ ve.dm.example.domToDataCases = {
 					'type': 'link/MWinternal',
 					'data': {
 						'title': 'Foo/Bar',
+						'origTitle': 'Foo/Bar',
 						'hrefPrefix': './../../../'
 					},
 					'htmlTagName': 'a',
@@ -950,6 +954,7 @@ ve.dm.example.domToDataCases = {
 					'type': 'link/MWinternal',
 					'data': {
 						'title': 'Foo/Bar',
+						'origTitle': 'Foo/Bar',
 						'hrefPrefix': './../../../'
 					},
 					'htmlTagName': 'a',
@@ -965,6 +970,7 @@ ve.dm.example.domToDataCases = {
 					'type': 'link/MWinternal',
 					'data': {
 						'title': 'Foo/Bar',
+						'origTitle': 'Foo/Bar',
 						'hrefPrefix': './../../../'
 					},
 					'htmlTagName': 'a',
@@ -1452,6 +1458,7 @@ ve.dm.example.domToDataCases = {
 						'type': 'link/MWinternal',
 						'data': {
 							'hrefPrefix': '',
+							'origTitle': 'Foo',
 							'title': 'Foo'
 						},
 						'htmlTagName': 'a',
@@ -1471,6 +1478,7 @@ ve.dm.example.domToDataCases = {
 						'type': 'link/MWinternal',
 						'data': {
 							'hrefPrefix': '',
+							'origTitle': 'Foo',
 							'title': 'Foo'
 						},
 						'htmlTagName': 'a',
@@ -1490,6 +1498,7 @@ ve.dm.example.domToDataCases = {
 						'type': 'link/MWinternal',
 						'data': {
 							'hrefPrefix': '',
+							'origTitle': 'Foo',
 							'title': 'Foo'
 						},
 						'htmlTagName': 'a',
@@ -1515,6 +1524,7 @@ ve.dm.example.domToDataCases = {
 						'type': 'link/MWinternal',
 						'data': {
 							'hrefPrefix': '',
+							'origTitle': 'Foo',
 							'title': 'Foo'
 						},
 						'htmlTagName': 'a',
@@ -1532,6 +1542,7 @@ ve.dm.example.domToDataCases = {
 						'type': 'link/MWinternal',
 						'data': {
 							'hrefPrefix': '',
+							'origTitle': 'Foo',
 							'title': 'Foo'
 						},
 						'htmlTagName': 'a',
@@ -1550,6 +1561,7 @@ ve.dm.example.domToDataCases = {
 						'type': 'link/MWinternal',
 						'data': {
 							'hrefPrefix': '',
+							'origTitle': 'Foo',
 							'title': 'Foo'
 						},
 						'htmlTagName': 'a',
@@ -1569,6 +1581,7 @@ ve.dm.example.domToDataCases = {
 						'type': 'link/MWinternal',
 						'data': {
 							'hrefPrefix': '',
+							'origTitle': 'Foo',
 							'title': 'Foo'
 						},
 						'htmlTagName': 'a',
