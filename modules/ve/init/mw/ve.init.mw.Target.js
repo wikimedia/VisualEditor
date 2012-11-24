@@ -126,11 +126,13 @@ ve.init.mw.Target.onSave = function ( response ) {
 	this.saving = false;
 	var data = response['ve-parsoid'];
 	if ( !data && !response.error ) {
-		this.emit( 'saveError', null, 'Invalid response from server', null );
-	} else if ( response.error || data.result !== 'success' ) {
-		this.emit( 'saveError', null, 'Unsuccessful request: ' + data.result, null );
+		this.emit( 'saveError', null, 'Invalid response from server', null ); // TODO: I18n
+	} else if ( response.error ) {
+		this.emit( 'saveError', null, 'Unsuccessful request: ' + response.error.info , null ); // TODO: I18n
+	} else if ( data.result !== 'success' ) {
+		this.emit( 'saveError', null, 'Failed request: ' + data.result, null ); // TODO: I18n
 	} else if ( typeof data.content !== 'string' ) {
-		this.emit( 'saveError', null, 'Invalid HTML content in response from server', null );
+		this.emit( 'saveError', null, 'Invalid HTML content in response from server', null ); // TODO: I18n
 	} else {
 		this.emit( 'save', data.content );
 	}
