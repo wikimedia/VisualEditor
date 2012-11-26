@@ -40,7 +40,7 @@ ve.Surface = function VeSurface( parent, dom, options ) {
 
 	// Initialization
 	// Propagate to each node information that it is live (attached to the live DOM)
-	this.view.getDocument().getDocumentNode().setLive( true ); 
+	this.view.getDocument().getDocumentNode().setLive( true );
 	this.setupToolbars();
 	this.setupCommands();
 	ve.instances.push( this );

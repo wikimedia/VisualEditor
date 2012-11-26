@@ -533,7 +533,7 @@ ve.dm.TransactionProcessor.prototype.setChangeMarker = function ( offset, type, 
 	if ( !this.reversed ) {
 		this.transaction.setChangeMarker( offset, type, increment );
 	}
-}
+};
 
 /**
  * Apply the change markers on this.transaction to this.document . Change markers are set
@@ -549,7 +549,7 @@ ve.dm.TransactionProcessor.prototype.applyChangeMarkers = function () {
 			element = this.document.data[offset];
 			previousValue = ve.getProp( element, 'internal', 'changed', type );
 			newValue = ( previousValue || 0 ) + m*markers[offset][type];
-			if ( newValue != 0 ) {
+			if ( newValue !== 0 ) {
 				ve.setProp( element, 'internal', 'changed', type, newValue );
 			} else if ( previousValue !== undefined ) {
 				// Value was set but becomes zero, delete the key

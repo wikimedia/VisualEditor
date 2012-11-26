@@ -52,12 +52,12 @@ ve.ce.AlienNode.prototype.onUpdate = function () {
 };
 
 ve.ce.AlienNode.prototype.onSurfaceMouseMove = function( e ) {
-	$target = $( e.target );
+	var surface, $target = $( e.target );
 	if (
 		!$target.hasClass( 've-ce-phantom' ) &&
 		$target.closest( '.ve-ce-alienNode' ).length === 0
 	) {
-		var surface = this.root.getSurface();
+		surface = this.root.getSurface();
 		surface.$phantoms.empty();
 		surface.$.unbind( 'mousemove.phantoms' );
 	}

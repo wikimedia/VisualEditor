@@ -65,7 +65,7 @@ ve.ce.AlienBlockNode.prototype.onMouseEnter = function () {
 	surface.$.on( 'mousemove.phantoms', ve.bind( this.onSurfaceMouseMove, this ) );
 };
 
-ve.ce.AlienBlockNode.prototype.onLive = function (live) {
+ve.ce.AlienBlockNode.prototype.onLive = function () {
 	if( this.live === true ) {
 		var $shieldTemplate = this.constructor.static.$shieldTemplate;
 		this.$.add( this.$.find( '*' ) ).each( function () {

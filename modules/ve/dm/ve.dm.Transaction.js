@@ -508,7 +508,7 @@ ve.dm.Transaction.prototype.hasBeenApplied = function () {
  */
 ve.dm.Transaction.prototype.toggleApplied = function () {
 	this.applied = !this.applied;
-}
+};
 
 /**
  * Translate an offset based on a transaction.
