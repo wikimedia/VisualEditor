@@ -950,6 +950,13 @@ ve.ce.Surface.prototype.showSelection = function ( range ) {
 		rangySel = rangy.getSelection(),
 		rangyRange = rangy.createRange();
 
+	// Ensure the range we are asking to select is from and to correct offsets - failure to do so
+	// may cause getNodeAndOffset to throw an exception
+	range = new ve.Range(
+		this.getNearestCorrectOffset( range.start ),
+		this.getNearestCorrectOffset( range.end )
+	);
+
 	if ( range.start !== range.end ) {
 		start = this.getNodeAndOffset( range.start );
 		end = this.getNodeAndOffset( range.end );
@@ -1061,6 +1068,7 @@ ve.ce.Surface.prototype.hasSlugAtOffset = function ( offset ) {
  * @param {Number} offset Linear model offset
  * @returns {Object} Object containing a node and offset property where node is an HTML element and
  * offset is the position within the element
+ * @throws {Error} Offset could not be translated to a DOM element and offset
  */
 ve.ce.Surface.prototype.getNodeAndOffset = function ( offset ) {
 	var node, startOffset, current, stack, item, $item, length,
@@ -1116,10 +1124,10 @@ ve.ce.Surface.prototype.getNodeAndOffset = function ( offset ) {
 				current = stack[stack.length-1];
 				continue;
 			}
-
 		}
 		current[1]++;
 	}
+	throw new Error( 'Offset could not be translated to a DOM element and offset: ' + offset );
 };
 
 /**
