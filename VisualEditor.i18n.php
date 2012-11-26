@@ -641,6 +641,7 @@ $messages['he'] = array(
 	'visualeditor-notification-saved' => 'השינויים שלך לדף $1 לא נשמרו.',
 	'visualeditor-notification-created' => 'הדף $1 נוצר.',
 	'visualeditor-ca-editsource' => 'עריכת קוד מקור',
+	'visualeditor-inspector-title' => 'חקירה',
 	'visualeditor-linkinspector-title' => 'היפר־קישור',
 	'visualeditor-linkinspector-label-pagetitle' => 'כותרת דף',
 	'visualeditor-linkinspector-suggest-existing-page' => 'דף קיים',
