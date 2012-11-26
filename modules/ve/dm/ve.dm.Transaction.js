@@ -478,6 +478,52 @@ ve.dm.Transaction.prototype.getOperations = function () {
 };
 
 /**
+ * Checks if this transaction has operations of a given type.
+ *
+ * @method
+ * @returns {Boolean} Has operations of a given type
+ */
+ve.dm.Transaction.prototype.hasOperationWithType = function ( type ) {
+	var i, len;
+	for ( i = 0, len = this.operations.length; i < len; i++ ) {
+		if ( this.operations[i].type  === type ) {
+			return true;
+		}
+	}
+	return false;
+};
+
+/**
+ * Checks if this transaction has content data operations, such as insertion or deletion.
+ *
+ * @method
+ * @returns {Boolean} Has content data operations
+ */
+ve.dm.Transaction.prototype.hasContentDataOperations = function () {
+	return this.hasOperationWithType( 'replace' );
+};
+
+/**
+ * Checks if this transaction has element attribute operations.
+ *
+ * @method
+ * @returns {Boolean} Has element attribute operations
+ */
+ve.dm.Transaction.prototype.hasElementAttributeOperations = function () {
+	return this.hasOperationWithType( 'attribute' );
+};
+
+/**
+ * Checks if this transaction has annotation operations.
+ *
+ * @method
+ * @returns {Boolean} Has annotation operations
+ */
+ve.dm.Transaction.prototype.hasAnnotationOperations = function () {
+	return this.hasOperationWithType( 'annotate' );
+};
+
+/**
  * Gets the difference in content length this transaction will cause if applied.
  *
  * @method

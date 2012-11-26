@@ -92,11 +92,11 @@ ve.dm.Surface.prototype.getInsertionAnnotations = function () {
  *
  * @method
  * @param {ve.AnnotationSet|null} Insertion anotations to use or null to disable them
- * @emits 'annotationChange'
+ * @emits 'contextChange'
  */
 ve.dm.Surface.prototype.setInsertionAnnotations = function ( annotations ) {
 	this.insertionAnnotations = annotations.clone();
-	this.emit( 'annotationChange' );
+	this.emit( 'contextChange' );
 };
 
 /**
@@ -104,11 +104,11 @@ ve.dm.Surface.prototype.setInsertionAnnotations = function ( annotations ) {
  *
  * @method
  * @param {ve.AnnotationSet} Insertion anotation to add
- * @emits 'annotationChange'
+ * @emits 'contextChange'
  */
 ve.dm.Surface.prototype.addInsertionAnnotation = function ( annotation ) {
 	this.insertionAnnotations.push( annotation );
-	this.emit( 'annotationChange' );
+	this.emit( 'contextChange' );
 };
 
 /**
@@ -116,11 +116,11 @@ ve.dm.Surface.prototype.addInsertionAnnotation = function ( annotation ) {
  *
  * @method
  * @param {ve.AnnotationSet} Insertion anotation to remove
- * @emits 'annotationChange'
+ * @emits 'contextChange'
  */
 ve.dm.Surface.prototype.removeInsertionAnnotation = function ( annotation ) {
 	this.insertionAnnotations.remove( annotation );
-	this.emit( 'annotationChange' );
+	this.emit( 'contextChange' );
 };
 
 /**
@@ -183,7 +183,8 @@ ve.dm.Surface.prototype.getFragment = function ( range, noAutoSelect ) {
  * @param {ve.Range|undefined} selection
  */
 ve.dm.Surface.prototype.change = function ( transactions, selection ) {
-	var i, offset, annotations;
+	var i, len, offset, annotations,
+		contextChange = false;
 
 	// Process transactions and apply selection changes
 	if ( transactions ) {
@@ -191,20 +192,32 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 			transactions = [transactions];
 		}
 		this.emit( 'lock' );
-		for ( i = 0; i < transactions.length; i++ ) {
+		for ( i = 0, len = transactions.length; i < len; i++ ) {
 			if ( !transactions[i].isNoOp() ) {
 				this.bigStack = this.bigStack.slice( 0, this.bigStack.length - this.undoIndex );
 				this.undoIndex = 0;
 				this.smallStack.push( transactions[i] );
-				ve.dm.TransactionProcessor.commit( this.getDocument(), transactions[i] );
+				ve.dm.TransactionProcessor.commit( this.documentModel, transactions[i] );
 			}
 		}
 		this.emit( 'unlock' );
 	}
 
 	// Only emit a select event if the selection actually changed
-	if ( selection && ( !this.selection || !this.selection.equals ( selection ) ) ) {
+	if ( selection && ( !this.selection || !this.selection.equals( selection ) ) ) {
 		selection.normalize();
+		// Detect context change
+		if (
+			this.documentModel.getNodeFromOffset( selection.start ) !==
+				this.documentModel.getNodeFromOffset( this.selection.start ) ||
+			(
+				selection.getLength() &&
+				this.documentModel.getNodeFromOffset( selection.end ) !==
+					this.documentModel.getNodeFromOffset( this.selection.end )
+			)
+		) {
+			contextChange = true;
+		}
 		this.selection = selection;
 		this.emit( 'select', this.selection.clone() );
 	}
@@ -212,6 +225,15 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 	// Only emit a transact event if transactions were actually processed
 	if ( transactions ) {
 		this.emit( 'transact', transactions );
+		// Detect context change, if not detected already, when element attributes have changed
+		if ( !contextChange ) {
+			for ( i = 0, len = transactions.length; i < len; i++ ) {
+				if ( transactions[i].hasElementAttributeOperations() ) {
+					contextChange = true;
+					break;
+				}
+			}
+		}
 	}
 
 	// Figure out which offset which we should get insertion annotations from
@@ -236,7 +258,11 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 		!this.insertionAnnotations.containsAllOf( annotations )
 	) {
 		this.insertionAnnotations = annotations;
-		this.emit( 'annotationChange' );
+		contextChange = true;
+	}
+	// Only emit one context change event
+	if ( contextChange ) {
+		this.emit( 'contextChange' );
 	}
 
 	this.emit( 'change', transactions, selection );

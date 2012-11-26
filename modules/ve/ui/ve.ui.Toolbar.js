@@ -26,7 +26,7 @@ ve.ui.Toolbar = function VeUiToolbar( $container, surface, config ) {
 	this.config = config || {};
 
 	// Events
-	this.surface.getModel().on( 'annotationChange', ve.bind( this.onAnnotationChange, this ) );
+	this.surface.getModel().on( 'contextChange', ve.bind( this.onContextChange, this ) );
 
 	// Initialization
 	this.$.prepend( this.$groups );
@@ -50,13 +50,13 @@ ve.ui.Toolbar.prototype.getSurface = function () {
 };
 
 /**
- * Responds to annotation changes on the surface.
+ * Responds to context changes on the surface.
  *
  * @method
  * @emits "updateState" (nodes, full, partial)
  * @emits "clearState"
  */
-ve.ui.Toolbar.prototype.onAnnotationChange = function () {
+ve.ui.Toolbar.prototype.onContextChange = function () {
 	var i, len, leafNodes,
 		fragment = this.surface.getModel().getFragment(),
 		nodes = [];
