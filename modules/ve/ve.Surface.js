@@ -43,6 +43,7 @@ ve.Surface = function VeSurface( parent, dom, options ) {
 	this.view.getDocument().getDocumentNode().setLive( true );
 	this.setupToolbars();
 	this.setupCommands();
+	this.resetSelection();
 	ve.instances.push( this );
 	this.model.startHistoryTracking();
 
@@ -111,6 +112,17 @@ ve.Surface.prototype.getView = function () {
  */
 ve.Surface.prototype.getContext = function () {
 	return this.context;
+};
+
+/**
+ * Fix up the initial selection.
+ *
+ * Reselect the selection and force a poll. This forces the selection to be something reasonable.
+ * In Firefox, the initial selection is (0,0), which causes problems (bug 42277).
+ */
+ve.Surface.prototype.resetSelection = function () {
+	this.model.getFragment().select();
+	this.view.surfaceObserver.poll();
 };
 
 /**
