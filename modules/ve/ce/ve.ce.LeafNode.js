@@ -34,3 +34,25 @@ ve.ce.LeafNode = function VeCeLeafNode( type, model, $element ) {
 ve.inheritClass( ve.ce.LeafNode, ve.ce.Node );
 
 ve.mixinClass( ve.ce.LeafNode, ve.LeafNode );
+
+/* Methods */
+
+/**
+ * Gets an sets of annotated HTML fragments for rendering by ve.ce.ContentBranchNode.
+ *
+ * An HTML fragment can be:
+ * - an HTML string
+ * - a jQuery object
+ * - an array with an HTML string or jQuery object at index 0 and a ve.AnnotationSet at index 1,
+ *   i.e. ['htmlstring', ve.AnnotationSet] or [$jQueryObj, ve.AnnotationSet]
+ *
+ * The default implementation should be fine in most cases. A subclass only needs to override this
+ * if the annotations aren't necessarily the same across the entire node (like in ve.ce.TextNode).
+ *
+ * @method
+ * @returns {Array} Array of HTML fragments, i.e
+ *                   [ string | jQuery | [string|jQuery, ve.AnnotationSet] ]
+ */
+ve.ce.LeafNode.prototype.getAnnotatedHtml = function () {
+	return [ [ this.$, this.getModel().getAnnotations() ] ];
+};
