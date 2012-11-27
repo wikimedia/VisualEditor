@@ -49,6 +49,11 @@ class VisualEditorHooks {
 		return true;
 	}
 
+	public static function onListDefinedTags( &$tags ) {
+		$tags[] = 'visualeditor';
+		return true;
+	}
+
 	/**
 	 * Adds extra variables to the page config.
 	 *

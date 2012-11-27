@@ -20,6 +20,8 @@ $wgVisualEditorParsoidPrefix = 'localhost';
 $wgVisualEditorParsoidTimeout = 100;
 // Namespaces to enable VisualEditor in
 $wgVisualEditorNamespaces = array( NS_MAIN );
+// Whether to use change tagging for VisualEditor edits
+$wgVisualEditorUseChangeTagging = true;
 
 /* Setup */
 
@@ -361,6 +363,7 @@ $wgAPIModules['ve-parsoid'] = 'ApiVisualEditor';
 $wgAutoloadClasses['VisualEditorHooks'] = $dir . 'VisualEditor.hooks.php';
 $wgHooks['BeforePageDisplay'][] = 'VisualEditorHooks::onBeforePageDisplay';
 $wgHooks['GetPreferences'][] = 'VisualEditorHooks::onGetPreferences';
+$wgHooks['ListDefinedTags'][] = 'VisualEditorHooks::onListDefinedTags';
 $wgHooks['MakeGlobalVariablesScript'][] = 'VisualEditorHooks::onMakeGlobalVariablesScript';
 $wgHooks['ResourceLoaderTestModules'][] = 'VisualEditorHooks::onResourceLoaderTestModules';
 
