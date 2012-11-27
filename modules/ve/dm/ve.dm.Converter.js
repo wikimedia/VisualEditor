@@ -92,24 +92,38 @@ ve.dm.Converter.prototype.onNodeRegister = function ( dataElementType, construct
  * Get the DOM element for a given linear model element.
  *
  * This invokes the toDomElement function registered for the element type.
- * NOTE: alienBlock and alienInline elements are not supported, if you pass them this function
- * will return false. (Opposite of District 9: no aliens allowed.)
  *
  * @method
  * @param {Object} dataElement Linear model element
  * @returns {HTMLElement|false} DOM element, or false if this element cannot be converted
  */
 ve.dm.Converter.prototype.getDomElementFromDataElement = function ( dataElement ) {
-	var key, domElement, dataElementAttributes,
+	var key, domElement, dataElementAttributes, wrapper,
 		dataElementType = dataElement.type;
-	if (
-		// Aliens
-		dataElementType === 'alienInline' || dataElementType === 'alienBlock' ||
-		// Unsupported elements
-		!( dataElementType in this.elements.toDomElement)
-	) {
+	if ( dataElementType === 'alienInline' || dataElementType === 'alienBlock' ) {
+		// Alien
+		// Create nodes from source
+		wrapper = document.createElement( 'div' );
+		wrapper.innerHTML = dataElement.attributes.html;
+		if ( wrapper.childNodes.length > 1 ) {
+			// Wrap the HTML in a single element, this makes
+			// it much easier to deal with. It'll be unwrapped
+			// at the end of getDomFromData().
+			domElement = document.createElement( 'div' );
+			domElement.setAttribute( 'data-ve-multi-child-alien-wrapper', 'true' );
+			while ( wrapper.firstChild ) {
+				domElement.appendChild( wrapper.firstChild );
+			}
+		} else {
+			domElement = wrapper.firstChild;
+		}
+		return domElement;
+	}
+	if ( !( dataElementType in this.elements.toDomElement ) ) {
+		// Unsupported element
 		return false;
 	}
+
 	domElement = this.elements.toDomElement[dataElementType]( dataElementType, dataElement );
 	dataElementAttributes = dataElement.attributes;
 	if ( dataElementAttributes ) {
@@ -140,11 +154,13 @@ ve.dm.Converter.prototype.getDomElementFromDataElement = function ( dataElement 
  *
  * @method
  * @param {HTMLElement} domElement DOM element
+ * @param {Array} annotations Annotations to apply if the node is a content node
  * @returns {Object|false} Linear model element, or false if this node cannot be converted
  */
-ve.dm.Converter.prototype.getDataElementFromDomElement = function ( domElement ) {
+ve.dm.Converter.prototype.getDataElementFromDomElement = function ( domElement, annotations ) {
 	var dataElement, domElementAttributes, dataElementAttributes, domElementAttribute, i,
-		domElementType = domElement.nodeName.toLowerCase();
+		annotationSet, domElementType = domElement.nodeName.toLowerCase();
+	annotations = annotations || [];
 	if (
 		// Unsupported elements
 		!( domElementType in this.elements.toDataElement )
@@ -161,6 +177,14 @@ ve.dm.Converter.prototype.getDataElementFromDomElement = function ( domElement )
 			domElementAttribute = domElementAttributes[i];
 			dataElementAttributes['html/' + domElementAttribute.name] = domElementAttribute.value;
 		}
+	}
+	if ( ve.dm.nodeFactory.isNodeContent( dataElement.type ) && annotations.length > 0 ) {
+		// Build annotation set
+		annotationSet = new ve.AnnotationSet();
+		for ( i = 0; i < annotations.length; i++ ) {
+			annotationSet.push( annotations[i] );
+		}
+		dataElement.annotations = annotationSet;
 	}
 	return dataElement;
 };
@@ -211,13 +235,14 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 		// If we're in wrapping mode, we don't know if this alien is supposed to be block
 		// or inline, so detect it based on the HTML tag name.
 		var isInline = wrapping ? !ve.isBlockElement( domElement ) : branchIsContent,
-			type = isInline ? 'alienInline' : 'alienBlock', html;
+			type = isInline ? 'alienInline' : 'alienBlock',
+			html, alien, annotationSet, i;
 		if ( isWrapper ) {
 			html =  $( domElement ).html();
 		} else {
 			html = $( '<div>' ).append( $( domElement ).clone() ).html();
 		}
-		return [
+		alien = [
 			{
 				'type': type,
 				'attributes': {
@@ -226,6 +251,14 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 			},
 			{ 'type': '/' + type }
 		];
+		if ( annotations.length > 0 ) {
+			annotationSet = new ve.AnnotationSet();
+			for ( i = 0; i < annotations.length; i++ ) {
+				annotationSet.push( annotations[i] );
+			}
+			alien[0].annotations = annotationSet;
+		}
+		return alien;
 	}
 	function addWhitespace( element, index, whitespace ) {
 		if ( !element.internal ) {
@@ -446,7 +479,7 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 				}
 
 				// Look up child element type
-				childDataElement = this.getDataElementFromDomElement( childDomElement );
+				childDataElement = this.getDataElementFromDomElement( childDomElement, annotations );
 				if ( childDataElement ) {
 					// End auto-wrapping of bare content from a previously processed node
 					// but only if childDataElement is a non-content element
@@ -681,11 +714,12 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
  */
 ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 	var text, i, j, k, annotations, annotation, annotationElement, dataElement, arr,
-		wrapper, childDomElement, pre, ours, theirs, parentDomElement, startClosingAt,
+		childDomElement, pre, ours, theirs, parentDomElement, startClosingAt,
 		isContentNode, changed, parentChanged,
 		container = document.createElement( 'div' ),
 		domElement = container,
 		annotationStack = new ve.AnnotationSet();
+
 	for ( i = 0; i < data.length; i++ ) {
 		if ( typeof data[i] === 'string' ) {
 			// Text
@@ -908,26 +942,8 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 				// Ascend to parent node
 				domElement = parentDomElement;
 			} else {
-				if ( dataElement.type === 'alienBlock' || dataElement.type === 'alienInline' ) {
-					// Create nodes from source
-					wrapper = document.createElement( 'div' );
-					wrapper.innerHTML = dataElement.attributes.html;
-					if ( wrapper.childNodes.length > 1 ) {
-						// Wrap the HTML in a single element, this makes
-						// it much easier to deal with. It'll be unwrapped
-						// at the end of this function.
-						childDomElement = document.createElement( 'div' );
-						childDomElement.setAttribute( 'data-ve-multi-child-alien-wrapper', 'true' );
-						while ( wrapper.firstChild ) {
-							childDomElement.appendChild( wrapper.firstChild );
-						}
-					} else {
-						childDomElement = wrapper.firstChild;
-					}
-				} else {
-					// Create node from data
-					childDomElement = this.getDomElementFromDataElement( dataElement );
-				}
+				// Create node from data
+				childDomElement = this.getDomElementFromDataElement( dataElement );
 				// Add reference to internal data
 				if ( dataElement.internal ) {
 					childDomElement.veInternal = dataElement.internal;

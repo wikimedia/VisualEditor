@@ -699,6 +699,34 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/paragraph' }
 		]
 	},
+	'annotated inline nodes': {
+		'html': '<p>a<b><tt class="foo">b</tt><i><span typeof="mw:Entity">c</span></i></b>' +
+			'<i><br/>d</i>e</p>',
+		'data': [
+			{ 'type': 'paragraph' },
+			'a',
+			{
+				'type': 'alienInline',
+				'attributes': { 'html': '<tt class="foo">b</tt>' },
+				'annotations': [ ve.dm.example.bold ]
+			},
+			{ 'type': '/alienInline' },
+			{
+				'type': 'MWentity',
+				'attributes': { 'character': 'c', 'html/typeof': 'mw:Entity' },
+				'annotations': [ ve.dm.example.bold, ve.dm.example.italic ]
+			},
+			{ 'type': '/MWentity' },
+			{
+				'type': 'break',
+				'annotations': [ ve.dm.example.italic ]
+			},
+			{ 'type': '/break' },
+			['d', [ ve.dm.example.italic ]],
+			'e',
+			{ 'type': '/paragraph' }
+		]
+	},
 	'wrapping of bare content': {
 		'html': 'abc',
 		'data': [
