@@ -202,7 +202,7 @@ ve.dm.Transaction.newFromAttributeChange = function ( doc, offset, key, value ) 
  * @returns {ve.dm.Transaction} Transaction that annotates content
  */
 ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation ) {
-	var covered,
+	var covered, type,
 		tx = new ve.dm.Transaction(),
 		data = doc.getData(),
 		i = range.start,
@@ -211,16 +211,20 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
 	// Iterate over all data in range, annotating where appropriate
 	range.normalize();
 	while ( i < range.end ) {
-		if ( data[i].type !== undefined ) {
-			// Element
+		type = data[i].type;
+		if ( type && type.charAt( 0 ) === '/' ) {
+			type = type.substr( 1 );
+		}
+		if ( data[i].type !== undefined && !ve.dm.nodeFactory.isNodeContent( type ) ) {
+			// Structural element opening or closing
 			if ( on ) {
 				tx.pushRetain( span );
 				tx.pushStopAnnotating( method, annotation );
 				span = 0;
 				on = false;
 			}
-		} else {
-			// Content
+		} else if ( data[i].type === undefined || data[i].type.charAt( 0 ) !== '/' ) {
+			// Character or content element opening
 			covered = doc.offsetContainsAnnotation( i, annotation );
 			if ( ( covered && method === 'set' ) || ( !covered && method === 'clear' ) ) {
 				// Skip annotated content
@@ -239,7 +243,7 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
 					on = true;
 				}
 			}
-		}
+		} // otherwise it's a content closing, skip those
 		span++;
 		i++;
 	}

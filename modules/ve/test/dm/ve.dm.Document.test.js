@@ -34,7 +34,9 @@ QUnit.test( 'constructor', 7, function ( assert ) {
 	doc = new ve.dm.Document( [ { 'type': 'paragraph' }, { 'type': '/paragraph' } ] );
 	assert.equalNodeTree(
 		doc.getDocumentNode(),
-		new ve.dm.DocumentNode( [ new ve.dm.ParagraphNode( [ new ve.dm.TextNode( 0 ) ] ) ] ),
+		new ve.dm.DocumentNode( [ new ve.dm.ParagraphNode(
+			[ new ve.dm.TextNode( 0 ) ], { 'type': 'paragraph' }
+		) ] ),
 		'empty paragraph gets a zero-length text node'
 	);
 
@@ -47,7 +49,8 @@ QUnit.test( 'constructor', 7, function ( assert ) {
 	);
 	assert.equalNodeTree(
 		doc.getDocumentNode(),
-		new ve.dm.DocumentNode( [ new ve.dm.ParagraphNode( [ new ve.dm.TextNode( 9 ) ] ) ] ),
+		new ve.dm.DocumentNode( [ new ve.dm.ParagraphNode(
+			[ new ve.dm.TextNode( 9 ) ], ve.dm.example.withMetaPlainData[0] ) ] ),
 		'node tree does not contain metadata'
 	);
 } );
@@ -923,7 +926,9 @@ QUnit.test( 'rebuildNodes', 2, function ( assert ) {
 	tree = new ve.dm.DocumentNode( ve.dm.example.tree.getChildren() );
 	// Replace table with paragraph
 	doc.spliceData( 5, 32, [ { 'type': 'paragraph' }, 'a', 'b', 'c', { 'type': '/paragraph' } ] );
-	tree.splice( 1, 1, new ve.dm.ParagraphNode( [new ve.dm.TextNode( 3 )] ) );
+	tree.splice( 1, 1, new ve.dm.ParagraphNode(
+		[new ve.dm.TextNode( 3 )], doc.data[5]
+	) );
 	// Rebuild with changes
 	doc.rebuildNodes( documentNode, 1, 1, 5, 5 );
 	assert.equalNodeTree(

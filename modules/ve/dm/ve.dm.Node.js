@@ -14,15 +14,15 @@
  * @extends {ve.Node}
  * @param {String} type Symbolic name of node type
  * @param {Number} [length] Length of content data in document
- * @param {Object} [attributes] Reference to map of attribute key/value pairs
+ * @param {Object} [element] Reference to element in linear model
  */
-ve.dm.Node = function VeDmNode( type, length, attributes ) {
+ve.dm.Node = function VeDmNode( type, length, element ) {
 	// Parent constructor
 	ve.Node.call( this, type );
 
 	// Properties
 	this.length = length || 0;
-	this.attributes = attributes || {};
+	this.element = element;
 	this.doc = undefined;
 };
 
@@ -240,21 +240,37 @@ ve.dm.Node.prototype.getOffset = function () {
 /**
  * Gets an element attribute value.
  *
+ * Return value is by reference if array or object.
+ *
  * @method
  * @returns {Mixed} Value of attribute, or undefined if no such attribute exists
  */
 ve.dm.Node.prototype.getAttribute = function ( key ) {
-	return this.attributes[key];
+	return this.element && this.element.attributes ? this.element.attributes[key] : undefined;
 };
 
 /**
- * Gets a reference to this node's attributes object.
+ * Gets a copy of this node's attributes.
+ *
+ * Values are by reference if array or object, similar to using the getAttribute method.
  *
  * @method
- * @returns {Object} Attributes object (by reference)
+ * @param {String} prefix Only return attributes with this prefix, and remove the prefix from them
+ * @returns {Object} Attributes
  */
-ve.dm.Node.prototype.getAttributes = function () {
-	return this.attributes;
+ve.dm.Node.prototype.getAttributes = function ( prefix ) {
+	var key, filtered,
+		attributes = this.element && this.element.attributes ? this.element.attributes : {};
+	if ( prefix ) {
+		filtered = {};
+		for ( key in this.attributes ) {
+			if ( key.indexOf( prefix ) === 0 ) {
+				filtered[key.substr( prefix.length )] = this.attributes[key];
+			}
+		}
+		return filtered;
+	}
+	return ve.extendObject( {}, attributes );
 };
 
 /**
@@ -270,15 +286,16 @@ ve.dm.Node.prototype.getAttributes = function () {
  * @returns {Boolean} Node has attributes
  */
 ve.dm.Node.prototype.hasAttributes = function ( attributes, strict ) {
-	var key, i, len;
+	var key, i, len,
+		ourAttributes = this.getAttributes() || {};
 	if ( ve.isPlainObject( attributes ) ) {
 		// Node must have all the required attributes
 		for ( key in attributes ) {
 			if (
-				!( key in this.attributes ) ||
+				!( key in ourAttributes ) ||
 				( strict ?
-					attributes[key] !== this.attributes[key] :
-					String( attributes[key] ) !== String( this.attributes[key] )
+					attributes[key] !== ourAttributes[key] :
+					String( attributes[key] ) !== String( ourAttributes[key] )
 				)
 			) {
 				return false;
@@ -286,7 +303,7 @@ ve.dm.Node.prototype.hasAttributes = function ( attributes, strict ) {
 		}
 	} else if ( ve.isArray( attributes ) ) {
 		for ( i = 0, len = attributes.length; i < len; i++ ) {
-			if ( !( attributes[i] in this.attributes ) ) {
+			if ( !( attributes[i] in ourAttributes ) ) {
 				return false;
 			}
 		}
@@ -297,14 +314,10 @@ ve.dm.Node.prototype.hasAttributes = function ( attributes, strict ) {
 /**
  * Get a clone of the linear model element for this node. The attributes object is deep-copied.
  *
- * @returns {Object} Element object with 'type' and (optionally) 'attributes' fields
+ * @returns {Object} Cloned element object
  */
 ve.dm.Node.prototype.getClonedElement = function () {
-	var retval = { 'type': this.type };
-	if ( !ve.isEmptyObject( this.attributes ) ) {
-		retval.attributes = ve.copyObject( this.attributes );
-	}
-	return retval;
+	return ve.copyObject( this.element );
 };
 
 /**

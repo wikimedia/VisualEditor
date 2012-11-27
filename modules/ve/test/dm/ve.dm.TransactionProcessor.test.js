@@ -81,13 +81,14 @@ QUnit.test( 'commit/rollback', 62, function ( assert ) {
 				'calls': [
 					['pushRetain', 38],
 					['pushStartAnnotating', 'set', bold],
-					['pushRetain', 2],
+					['pushRetain', 4],
 					['pushStopAnnotating', 'set', bold]
 				],
 				'expected': function ( data ) {
 					data[38] = ['h', new ve.AnnotationSet( [ bold ] )];
 					data[39].annotations = new ve.AnnotationSet( [ bold ] );
-					ve.setProp( data[37], 'internal', 'changed', 'annotations', 1 );
+					data[41] = ['i', new ve.AnnotationSet( [ bold ] )];
+					ve.setProp( data[37], 'internal', 'changed', 'annotations', 2 );
 					ve.setProp( data[39], 'internal', 'changed', 'annotations', 1 );
 				}
 			},

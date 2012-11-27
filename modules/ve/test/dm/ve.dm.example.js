@@ -498,53 +498,63 @@ ve.dm.example.withMetaMetaData = [
  */
 ve.dm.example.tree = new ve.dm.DocumentNode( [
 	// Heading with "abc"
-	new ve.dm.HeadingNode( [new ve.dm.TextNode( 3 )], ve.dm.example.data[0].attributes ),
+	new ve.dm.HeadingNode( [new ve.dm.TextNode( 3 )], ve.dm.example.data[0] ),
 	new ve.dm.TableNode( [
 		new ve.dm.TableSectionNode( [
 			new ve.dm.TableRowNode( [
 				new ve.dm.TableCellNode( [
 					// Paragraph with "d"
-					new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] ),
+					new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )],
+						ve.dm.example.data[9] ),
 					new ve.dm.ListNode( [
 						// 1st level bullet list item with "e"
 						new ve.dm.ListItemNode( [
-							new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] ),
+							new ve.dm.ParagraphNode(
+								[new ve.dm.TextNode( 1 )],
+								ve.dm.example.data[14]
+							),
 							new ve.dm.ListNode( [
 								// 2nd level bullet list item with "f"
 								new ve.dm.ListItemNode( [
-									new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] )
-								] )
-							], ve.dm.example.data[17].attributes )
-						] )
-					], ve.dm.example.data[12].attributes ),
+									new ve.dm.ParagraphNode(
+										[new ve.dm.TextNode( 1 )],
+										ve.dm.example.data[19]
+									)
+								], ve.dm.example.data[18] )
+							], ve.dm.example.data[17] )
+						], ve.dm.example.data[13] )
+					], ve.dm.example.data[12] ),
 					new ve.dm.ListNode( [
 						// Numbered list item with "g"
 						new ve.dm.ListItemNode( [
-							new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] )
-						] )
-					], ve.dm.example.data[26].attributes )
-				], ve.dm.example.data[8].attributes )
-			] )
-		], ve.dm.example.data[6].attributes )
-	] ),
+							new ve.dm.ParagraphNode(
+								[new ve.dm.TextNode( 1 )],
+								ve.dm.example.data[28]
+							)
+						], ve.dm.example.data[27] )
+					], ve.dm.example.data[26] )
+				], ve.dm.example.data[8] )
+			], ve.dm.example.data[7] )
+		], ve.dm.example.data[6] )
+	], ve.dm.example.data[5] ),
 	// Preformatted with "h[image.png]i"
 	new ve.dm.PreformattedNode( [
 		new ve.dm.TextNode( 1 ),
-		new ve.dm.ImageNode( [], ve.dm.example.data[39].attributes ),
+		new ve.dm.ImageNode( [], ve.dm.example.data[39] ),
 		new ve.dm.TextNode( 1 )
-	] ),
+	], ve.dm.example.data[37] ),
 	new ve.dm.DefinitionListNode( [
 		// Definition list term item with "j"
 		new ve.dm.DefinitionListItemNode( [
-			new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] )
-		], ve.dm.example.data[44].attributes ),
+			new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )], ve.dm.example.data[45] )
+		], ve.dm.example.data[44] ),
 		// Definition list definition item with "k"
 		new ve.dm.DefinitionListItemNode( [
-			new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] )
-		], ve.dm.example.data[49].attributes )
-	] ),
-	new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] ),
-	new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )] )
+			new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )], ve.dm.example.data[50] )
+		], ve.dm.example.data[49] )
+	], ve.dm.example.data[43] ),
+	new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )], ve.dm.example.data[55] ),
+	new ve.dm.ParagraphNode( [new ve.dm.TextNode( 1 )], ve.dm.example.data[58] )
 ] );
 
 ve.dm.example.conversions = {

@@ -48,16 +48,17 @@ QUnit.test( 'canHaveGrandchildren', 1, function ( assert ) {
 } );
 
 QUnit.test( 'updateDomWrapper', 3, function ( assert ) {
-	var node = new ve.ce.BranchNodeStub( new ve.dm.BranchNodeStub( [], {
-		'type': 'a'
+	var attributes = { 'style': 'a' },
+		node = new ve.ce.BranchNodeStub( new ve.dm.BranchNodeStub( [], {
+		'type': 'branch-stub', 'attributes': attributes
 	} ) );
 
 	// Add classes and content to the node
 	node.$.addClass( 'test' ).text( 'hello' );
 
 	// Modify attribute
-	node.getModel().attributes.type = 'b';
-	node.updateDomWrapper( 'type' );
+	attributes.style = 'b';
+	node.updateDomWrapper( 'style' );
 
 	assert.equal( node.$.get( 0 ).nodeName.toLowerCase(), 'b', 'DOM element type gets converted' );
 	assert.equal( node.$.hasClass( 'test' ), true, 'old classes are added to new wrapper' );

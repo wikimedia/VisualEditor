@@ -32,7 +32,7 @@ ve.dm.Annotation = function VeDmAnnotation( element ) {
 	this.data = {};
 	if ( element ) {
 		this.htmlTagName = element.nodeName.toLowerCase();
-		this.htmlAttributes = ve.getDOMAttributes( element );
+		this.htmlAttributes = ve.getDomAttributes( element );
 		this.data = this.getAnnotationData( element );
 	}
 };

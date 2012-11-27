@@ -19,7 +19,7 @@ function getNodeTreeSummary( node, shallow ) {
 			'getType': node.getType(),
 			'getLength': node.getLength(),
 			'getOuterLength': node.getOuterLength(),
-			'attributes': node.attributes
+			'element': node.element
 		},
 		numChildren;
 

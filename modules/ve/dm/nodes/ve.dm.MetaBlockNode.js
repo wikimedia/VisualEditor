@@ -12,11 +12,11 @@
  * @constructor
  * @extends {ve.dm.BranchNode}
  * @param {Integer} [length] Length of content data in document
- * @param {Object} [attributes] Reference to map of attribute key/value pairs
+ * @param {Object} [element] Reference to element in linear model
  */
-ve.dm.MetaBlockNode = function VeDmMetaBlockNode( length, attributes ) {
+ve.dm.MetaBlockNode = function VeDmMetaBlockNode( length, element ) {
 	// Parent constructor
-	ve.dm.BranchNode.call( this, 'metaBlock', 0, attributes );
+	ve.dm.BranchNode.call( this, 'metaBlock', 0, element );
 };
 
 /* Inheritance */

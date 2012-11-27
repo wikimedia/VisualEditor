@@ -757,7 +757,7 @@
 	 * @param {HTMLElement} element
 	 * @returns {Object}
 	 */
-	ve.getDOMAttributes = function ( element ) {
+	ve.getDomAttributes = function ( element ) {
 		var result = {}, i;
 		for ( i = 0; i < element.attributes.length; i++ ) {
 			result[element.attributes[i].name] = element.attributes[i].value;
@@ -767,15 +767,24 @@
 
 	/**
 	 * Set the attributes of a DOM element as an object with key/value pairs
-	 * @param {HTMLElement} element
-	 * @param {Object} attributes
+	 *
+	 * @param {HTMLElement} element DOM element to apply attributes to
+	 * @param {Object} attributes Attributes to apply
+	 * @param {String[]} [whitelist] List of attributes to exclusively allow (all lower case names)
 	 */
-	ve.setDOMAttributes = function ( element, attributes ) {
+	ve.setDomAttributes = function ( element, attributes, whitelist ) {
 		var key;
+		// Duck-typing for attribute setting
+		if ( !element.setAttribute || !element.removeAttribute ) {
+			return;
+		}
 		for ( key in attributes ) {
 			if ( attributes[key] === undefined || attributes[key] === null ) {
 				element.removeAttribute( key );
 			} else {
+				if ( whitelist && whitelist.indexOf( key.toLowerCase() ) === -1 ) {
+					continue;
+				}
 				element.setAttribute( key, attributes[key] );
 			}
 		}

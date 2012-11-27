@@ -188,7 +188,7 @@ ve.dm.Converter.prototype.getDataAnnotationFromDomElement = function ( domElemen
 ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function ( dataAnnotation ) {
 	var htmlData = dataAnnotation.toHTML(),
 		domElement = document.createElement( htmlData.tag );
-	ve.setDOMAttributes( domElement, htmlData.attributes );
+	ve.setDomAttributes( domElement, htmlData.attributes );
 	return domElement;
 };
 

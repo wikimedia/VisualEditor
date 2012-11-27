@@ -9,9 +9,9 @@ QUnit.module( 've.dm.Node' );
 
 /* Stubs */
 
-ve.dm.NodeStub = function VeDmNodeStub( length, attributes ) {
+ve.dm.NodeStub = function VeDmNodeStub( length, element ) {
 	// Parent constructor
-	ve.dm.Node.call( this, 'stub', length, attributes );
+	ve.dm.Node.call( this, 'stub', length, element );
 };
 
 ve.inheritClass( ve.dm.NodeStub, ve.dm.Node );
@@ -74,7 +74,7 @@ QUnit.test( 'adjustLength', 1, function ( assert ) {
 } );
 
 QUnit.test( 'getAttribute', 2, function ( assert ) {
-	var node = new ve.dm.NodeStub( 0, { 'a': 1, 'b': 2 } );
+	var node = new ve.dm.NodeStub( 0, { 'type': 'stub', 'attributes': { 'a': 1, 'b': 2 } } );
 	assert.strictEqual( node.getAttribute( 'a' ), 1 );
 	assert.strictEqual( node.getAttribute( 'b' ), 2 );
 } );
