@@ -819,6 +819,7 @@ $messages['is'] = array(
  * @author Beta16
  * @author Darth Kule
  * @author F. Cosoleto
+ * @author Gianfranco
  */
 $messages['it'] = array(
 	'visualeditor' => 'VisualEditor',
@@ -827,6 +828,7 @@ $messages['it'] = array(
 	'visualeditor-notification-saved' => 'Le modifiche apportate a $1 sono state salvate.',
 	'visualeditor-notification-created' => 'La pagina $1 è stata creata.',
 	'visualeditor-ca-editsource' => 'Modifica sorgente',
+	'visualeditor-inspector-title' => 'Ispeziona',
 	'visualeditor-linkinspector-title' => 'Collegamento ipertestuale',
 	'visualeditor-linkinspector-label-pagetitle' => 'Titolo della pagina',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Pagina esistente',
@@ -1167,6 +1169,13 @@ $messages['ml'] = array(
 	'visualeditor-loadwarning' => 'സെർവറിൽ നിന്നും വിവരങ്ങൾ ശേഖരിക്കുന്നതിൽ പിഴവുണ്ടായി: $1. വീണ്ടും ശ്രമിക്കണോ?',
 	'visualeditor-saveerror' => 'സെർവറിൽ വിവരങ്ങൾ ശേഖരിക്കുന്നതിൽ പിഴവുണ്ടായി: $1',
 	'visualeditor-editsummary' => 'താങ്കൾ എന്താണ് മാറ്റം വരുത്തിയതെന്ന് വിവരിക്കുക',
+);
+
+/** Marathi (मराठी)
+ * @author Ydyashad
+ */
+$messages['mr'] = array(
+	'visualeditor-inspector-title' => 'तपास',
 );
 
 /** Malay (Bahasa Melayu)
