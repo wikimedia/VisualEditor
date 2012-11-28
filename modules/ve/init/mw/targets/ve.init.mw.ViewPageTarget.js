@@ -70,7 +70,8 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 		'load': 'onLoad',
 		'save': 'onSave',
 		'loadError': 'onLoadError',
-		'saveError': 'onSaveError'
+		'saveError': 'onSaveError',
+		'editConflict': 'onEditConflict'
 	} );
 
 	// Initialization
@@ -306,6 +307,31 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( response, status ) 
 };
 
 /**
+ * Handles edit conflict event.
+ *
+ * TODO: Don't use an operating system confirm box. Parsing may take quite some time and we should
+ * be showing the user some sort of progress indicator. Ideally this would be integrated into the
+ * save dialog.
+ *
+ * @method
+ */
+ve.init.mw.ViewPageTarget.prototype.onEditConflict = function () {
+	if ( confirm( ve.msg( 'visualeditor-editconflict', status ) ) ) {
+		// Get Wikitext from the DOM, and setup a submit call when it's done
+		this.serialize(
+			ve.dm.converter.getDomFromData( this.surface.getDocumentModel().getFullData() ),
+			ve.bind( function ( wikitext ) {
+				this.submit( wikitext, this.getSaveOptions() );
+			}, this )
+		);
+	} else {
+		// Return to editing
+		this.hideSaveDialog();
+		this.resetSaveDialog();
+	}
+};
+
+/**
  * Handles clicks on the edit tab.
  *
  * @method
@@ -381,13 +407,23 @@ ve.init.mw.ViewPageTarget.prototype.onSaveDialogSaveButtonClick = function () {
 	this.$saveDialogLoadingIcon.show();
 	this.save(
 		ve.dm.converter.getDomFromData( this.surface.getDocumentModel().getFullData() ),
-		{
-			'summary': $( '#ve-init-mw-viewPageTarget-saveDialog-editSummary' ).val(),
-			'minor': $( '#ve-init-mw-viewPageTarget-saveDialog-minorEdit' ).prop( 'checked' ),
-			'watch': $( '#ve-init-mw-viewPageTarget-saveDialog-watchList' ).prop( 'checked' )
-		},
+		this.getSaveOptions(),
 		ve.bind( this.onSave, this )
 	);
+};
+
+/**
+ * Gets save options from the save dialog form.
+ *
+ * @method
+ * @returns {Object} Save options, including summary, minor and watch properties
+ */
+ve.init.mw.ViewPageTarget.prototype.getSaveOptions = function () {
+	return {
+		'summary': $( '#ve-init-mw-viewPageTarget-saveDialog-editSummary' ).val(),
+		'minor': $( '#ve-init-mw-viewPageTarget-saveDialog-minorEdit' ).prop( 'checked' ),
+		'watch': $( '#ve-init-mw-viewPageTarget-saveDialog-watchList' ).prop( 'checked' )
+	};
 };
 
 /**
@@ -1113,6 +1149,10 @@ ve.init.mw.ViewPageTarget.prototype.onBeforeUnload = function () {
 		// Exit here, returning their message
 		message = fallbackResult;
 	} else {
+		// Override if submitting
+		if ( this.submitting ) {
+			return null;
+		}
 		// Check if there's been an edit
 		if ( this.surface && this.surface.getModel().getHistory().length ) {
 			// Return our message

@@ -345,6 +345,7 @@ $wgResourceModules += array(
 			'visualeditor-historybutton-redo-tooltip',
 			'visualeditor-viewpage-savewarning',
 			'visualeditor-saveerror',
+			'visualeditor-editconflict',
 			'visualeditor-aliennode-tooltip',
 		),
 	),

@@ -43,6 +43,7 @@ $messages['en'] = array(
 	'visualeditor-viewpage-savewarning' => 'Are you sure you want to go back to view mode without saving first?',
 	'visualeditor-loadwarning' => 'Error loading data from server: $1. Would you like to retry?',
 	'visualeditor-saveerror' => 'Error saving data to server: $1.',
+	'visualeditor-editconflict' => 'Your changes could not be saved because of an edit conflict. Would you like to resolve the conflict manually?',
 	'visualeditor-editsummary' => 'Describe what you changed',
 	'visualeditor-aliennode-tooltip' => 'Sorry, this element cannot be edited using the VisualEditor',
 	'tag-visualeditor' => '[[Special:Tags|Tag]]: [[Project:VisualEditor|VisualEditor]]',
