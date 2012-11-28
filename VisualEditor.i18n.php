@@ -84,6 +84,8 @@ $messages['qqq'] = array(
 	'visualeditor-viewpage-savewarning' => 'Text shown when the user tries to leave the editor without saving their changes',
 	'visualeditor-loadwarning' => 'Text shown when the editor fails to load properly. $1 is the error message from the server, in English.',
 	'visualeditor-saveerror' => 'Text shown when the editor fails to save properly. $1 is an error message, in English.',
+	'tag-visualeditor' => 'Short description of the visualeditor tag. Shown on lists of changes (history, recentchanges, etc.) for each edit made using VisualEditor.',
+	'tag-visualeditor-description' => 'Long description of the visualeditor tag. Shown on [[Special:Tags]]',
 );
 
 /** Assamese (অসমীয়া)
