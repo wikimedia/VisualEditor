@@ -154,6 +154,7 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 		<script src="../../modules/ve/ce/ve.ce.Document.js"></script>
 		<script src="../../modules/ve/ce/ve.ce.Node.js"></script>
 		<script src="../../modules/ve/ce/ve.ce.BranchNode.js"></script>
+		<script src="../../modules/ve/ce/ve.ce.ContentBranchNode.js"></script>
 		<script src="../../modules/ve/ce/ve.ce.LeafNode.js"></script>
 		<script src="../../modules/ve/ce/ve.ce.Surface.js"></script>
 		<script src="../../modules/ve/ce/ve.ce.SurfaceObserver.js"></script>

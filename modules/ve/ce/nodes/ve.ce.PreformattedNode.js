@@ -15,12 +15,12 @@
  */
 ve.ce.PreformattedNode = function VeCePreformattedNode( model ) {
 	// Parent constructor
-	ve.ce.BranchNode.call( this, 'preformatted', model, $( '<pre>' ) );
+	ve.ce.ContentBranchNode.call( this, 'preformatted', model, $( '<pre>' ) );
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.PreformattedNode, ve.ce.BranchNode );
+ve.inheritClass( ve.ce.PreformattedNode, ve.ce.ContentBranchNode );
 
 /* Static Members */
 

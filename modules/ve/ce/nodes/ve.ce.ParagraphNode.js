@@ -15,12 +15,12 @@
  */
 ve.ce.ParagraphNode = function VeCeParagraphNode( model ) {
 	// Parent constructor
-	ve.ce.BranchNode.call( this, 'paragraph', model, $( '<p>' ) );
+	ve.ce.ContentBranchNode.call( this, 'paragraph', model, $( '<p>' ) );
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.ParagraphNode, ve.ce.BranchNode );
+ve.inheritClass( ve.ce.ParagraphNode, ve.ce.ContentBranchNode );
 
 /* Static Members */
 
