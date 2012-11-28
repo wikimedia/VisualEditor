@@ -263,9 +263,9 @@ ve.dm.Node.prototype.getAttributes = function ( prefix ) {
 		attributes = this.element && this.element.attributes ? this.element.attributes : {};
 	if ( prefix ) {
 		filtered = {};
-		for ( key in this.attributes ) {
+		for ( key in attributes ) {
 			if ( key.indexOf( prefix ) === 0 ) {
-				filtered[key.substr( prefix.length )] = this.attributes[key];
+				filtered[key.substr( prefix.length )] = attributes[key];
 			}
 		}
 		return filtered;
