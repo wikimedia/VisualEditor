@@ -60,6 +60,10 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 		'vewhitelist' in currentUri.query
 	);
 	this.editSummaryByteLimit = 255;
+	// Tab layout.
+	// * add: Adds #ca-ve-edit.
+	// * replace: Re-creates #ca-edit for VisualEditor and adds #ca-editsource.
+	this.tabLayout = 'add';
 
 	// Events
 	this.addListenerMethods( this, {
@@ -456,71 +460,78 @@ ve.init.mw.ViewPageTarget.prototype.tearDownSurface = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
-	var action, $viewSource, pVeEdit;
+	var action, pTabsId, $caSource, $caEdit, caVeEdit;
+	$caEdit = $( '#ca-edit' );
+	$caSource = $( '#ca-viewsource' );
 
-	// Only sysop users will have a native edit tab in this namespace
-	// If there isn't an edit tab, there's a view source tab we'll move into
-	// p-cactions.
-	if ( $( '#ca-edit' ).length === 0 ) {
+	if ( !$caEdit.length || $caSource.length ) {
+		// If there is no edit tab or a view-source tab,
+		// the user doesn't have permission to edit.
+		return;
+	}
 
-		$viewSource = $( '#ca-viewsource' );
-		if ( $viewSource.length > 0 ) {
-			// Re-create instead of moving the original one since we don't want to copy
-			// over accesskey etc., access+e should trigger VE edit.
-			mw.util.addPortletLink(
-				'p-cactions',
-				$viewSource.find( 'a' ).attr( 'href' ),
-				$viewSource.find( 'a' ).text(),
-				$viewSource.attr( 'id' )
-			);
-			$viewSource.remove();
-		}
+	action = mw.config.get( 'wgArticleId', 0 ) === 0 ? 'create' : 'edit';
+	pTabsId = $( '#p-views' ).length ? 'p-views' : 'p-cactions';
 
-	// For sysops, remove the native edit tab in favour
-	// of an editsource link in p-cactions.
-	// Re-create instead of moving the original one since we don't want to copy
-	// over accesskey etc., access+e should trigger VE edit.
+	// Add independent ve-edit tab.
+	if ( this.tabLayout === 'add' ) {
+		// Create "Edit" tab.
+		caVeEdit = mw.util.addPortletLink(
+			pTabsId,
+			// Use url instead of '#'.
+			// So that 1) one can always open it in a new tab, even when
+			// onEditTabClick is bound.
+			// 2) when onEditTabClick is not bound (!isViewPage) it will
+			// just work.
+			this.veEditUri,
+			// Message: 'visualeditor-ca-ve-edit' or 'visualeditor-ca-ve-create'
+			ve.msg( 'visualeditor-ca-ve-' + action ),
+			'ca-ve-edit',
+			ve.msg( 'tooltip-ca-ve-edit' ),
+			ve.msg( 'accesskey-ca-ve-edit' ),
+			'#ca-history'
+		);
+
+	// Replace edit with ve version, add editsource link.
 	} else {
+		// Create "Edit source" link.
+		// Re-create instead of convert ca-edit since we don't want to copy over accesskey etc.
 		mw.util.addPortletLink(
 			'p-cactions',
 			// Use original href to preserve oldid etc. (bug 38125)
-			$( '#ca-edit a' ).attr( 'href' ),
+			$caEdit.find( 'a' ).attr( 'href' ),
 			ve.msg( 'visualeditor-ca-editsource' ),
 			'ca-editsource'
 		);
-		$( '#ca-edit' ).remove();
-	}
+		$caEdit.remove();
 
-	// Whether we moved viewsource or transformed edit
-	// into editsource, add a new "VisualEditor" Edit tab
-	action = mw.config.get( 'wgArticleId', 0 ) === 0 ? 'create' : 'edit';
-	pVeEdit = mw.util.addPortletLink(
-		$( '#p-views' ).length ? 'p-views' : 'p-cactions',
-		// Use url instead of '#'.
-		// So that 1) one can always open it in a new tab, even when
-		// onEditTabClick is bound.
-		// 2) when onEditTabClick is not bound (!isViewPage) it will
-		// just work.
-		this.veEditUri,
-		ve.msg( action ), // 'edit' or 'create'
-		'ca-edit',
-		ve.msg( 'tooltip-ca-edit' ),
-		ve.msg( 'accesskey-ca-edit' ),
-		'#ca-history'
-	);
+		// Create "Edit" tab.
+		caVeEdit = mw.util.addPortletLink(
+			pTabsId ,
+			// Use url instead of '#'.
+			// So that 1) one can always open it in a new tab, even when
+			// onEditTabClick is bound.
+			// 2) when onEditTabClick is not bound (!isViewPage) it will
+			// just work.
+			this.veEditUri,
+			// Message: 'edit' or 'create'
+			ve.msg( action ),
+			'ca-edit',
+			ve.msg( 'tooltip-ca-edit' ),
+			ve.msg( 'accesskey-ca-edit' ),
+			'#ca-history'
+		);
+	}
 
 	if ( this.isViewPage ) {
 		// Allow instant switching to edit mode, without refresh
-		$( pVeEdit ).click( ve.bind( this.onEditTabClick, this ) );
+		$( caVeEdit ).click( ve.bind( this.onEditTabClick, this ) );
 		// Allow instant switching back to view mode, without refresh
 		$( '#ca-view a, #ca-nstab-visualeditor a' )
 			.click( ve.bind( this.onViewTabClick, this ) );
 	}
-	// Source editing shouldn't highlight the edit tab
-	if ( mw.config.get( 'wgAction' ) === 'edit' ) {
-		$( '#ca-edit' ).removeClass( 'selected' );
-	}
-	// Fix the URL if there was a veaction param in it
+
+	// If there got here via veaction=edit, hide it from the URL.
 	if ( this.currentUri.query.veaction === 'edit' && window.history.replaceState ) {
 		window.history.replaceState( null, document.title, this.viewUri );
 	}
@@ -946,7 +957,8 @@ ve.init.mw.ViewPageTarget.prototype.restorePageTitle = function () {
 ve.init.mw.ViewPageTarget.prototype.transformSkinTabs = function () {
 	$( $( '#p-views' ).length ? '#p-views' : '#p-cactions' )
 		.find( 'li.selected' ).removeClass( 'selected' );
-	$( '#ca-edit' ).addClass( 'selected' );
+	$( this.tabLayout === 'add' ? '#ca-ve-edit' : '#ca-edit' )
+		.addClass( 'selected' );
 };
 
 /**

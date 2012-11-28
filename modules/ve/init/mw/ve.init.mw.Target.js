@@ -35,7 +35,7 @@ ve.init.mw.Target = function VeInitMwTarget( pageName, oldId ) {
 	this.dom = null;
 	this.isMobileDevice = (
 		'ontouchstart' in window ||
-		( window.DocumentTouch && document instanceof window.DocumentTouch )
+			( window.DocumentTouch && document instanceof window.DocumentTouch )
 	);
 };
 
