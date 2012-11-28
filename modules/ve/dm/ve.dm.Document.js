@@ -805,6 +805,8 @@ ve.dm.Document.prototype.rebuildNodes = function ( parent, index, numNodes, offs
  * Gets an offset a given distance from another using a callback to check if offsets are valid.
  *
  * - If {offset} is not already valid, one step will be used to move it to an valid one.
+ * - If {offset} is already valid and can not be moved in the direction of {distance} and still be
+ *   valid, it will be left where it is
  * - If {distance} is zero the result will either be {offset} if it's already valid or the
  *   nearest valid offset to the right if possible and to the left otherwise.
  * - If {offset} is after the last valid offset and {distance} is >= 1, or if {offset} if
@@ -862,6 +864,11 @@ ve.dm.Document.prototype.getRelativeOffset = function ( offset, distance, callba
 			// Only turn around if we're about to reach the edge
 			( ( direction < 0 && i === 0 ) || ( direction > 0 && i === this.data.length ) )
 		) {
+			// Before we turn around, let's see if we are at a valid position
+			if ( callback.apply( window, [this.data, start].concat( args ) ) ) {
+				// Stay where we are
+				return start;
+			}
 			// Start over going in the opposite direction
 			direction *= -1;
 			i = start;

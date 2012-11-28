@@ -204,7 +204,8 @@ ve.dm.SurfaceFragment.prototype.expandRange = function ( scope, type ) {
 			range = this.document.getAnnotatedRangeFromSelection( this.range, type );
 			// Adjust selection if it does not contain the annotated range
 			if ( this.range.start > range.start || this.range.end < range.end ) {
-				if ( this.range.from > this.range.start ) {
+				// Maintain range direction
+				if ( this.range.from > this.range.to ) {
 					range.flip();
 				}
 			} else {

@@ -413,67 +413,16 @@ ve.ce.Surface.prototype.onKeyDown = function ( e ) {
 		this.emit( 'selectionStart' );
 	}
 
-	var offset,
-		relativeContentOffset,
-		relativeStructuralOffset,
-		relativeStructuralOffsetNode,
-		hasSlug,
-		newOffset;
 	switch ( e.keyCode ) {
 		// Left arrow
 		case 37:
-			offset = this.model.getSelection().start;
-			relativeContentOffset = this.documentView.model.getRelativeContentOffset( offset, -1 );
-			relativeStructuralOffset = this.documentView.model.getRelativeStructuralOffset( offset - 1, -1, true );
-			relativeStructuralOffsetNode = this.documentView.documentNode.getNodeFromOffset( relativeStructuralOffset );
-			hasSlug = this.documentView.getSlugAtOffset( relativeStructuralOffset ) || false;
-
-			if ( hasSlug ) {
-				if ( relativeContentOffset > offset ) {
-					// If relativeContentOffset returns a greater number, there's nowhere to go toward the left. Go right.
-					newOffset = relativeStructuralOffset;
-				} else {
-					// Move cursor to whichever is nearest to the original offset.
-					newOffset = Math.max( relativeContentOffset, relativeStructuralOffset );
-				}
-			} else if ( relativeContentOffset !== offset - 1 ) {
-				// The closest content offet is further away than just one offset. Don't trust the browser. Move programatically.
-				newOffset = relativeContentOffset;
-			}
-
-			if ( newOffset ) {
-				this.model.change(
-					null,
-					new ve.Range( newOffset )
-				);
+			if ( this.adjustCursor( -1 ) ) {
 				e.preventDefault();
 			}
 			break;
 		// Right arrow
 		case 39:
-			offset = this.model.getSelection().start;
-			relativeContentOffset = this.documentView.model.getRelativeContentOffset( offset, 1 );
-			relativeStructuralOffset = this.documentView.model.getRelativeStructuralOffset( offset + 1, 1, true );
-			relativeStructuralOffsetNode = this.documentView.documentNode.getNodeFromOffset( relativeStructuralOffset );
-			hasSlug = this.documentView.getSlugAtOffset( relativeStructuralOffset ) || false;
-
-			if ( hasSlug ) {
-				if ( relativeContentOffset < offset ) {
-					// If relativeContentOffset returns a lesser number, there's nowhere to go toward the right. Go left.
-					newOffset = relativeStructuralOffset;
-				} else {
-					// Move cursor to whichever is nearest to the original offset.
-					newOffset = Math.min( relativeContentOffset, relativeStructuralOffset );
-				}
-			} else if ( relativeContentOffset !== offset + 1 ) {
-				newOffset = relativeContentOffset;
-			}
-
-			if ( newOffset ) {
-				this.model.change(
-					null,
-					new ve.Range( newOffset )
-				);
+			if ( this.adjustCursor( 1 ) ) {
 				e.preventDefault();
 			}
 			break;
@@ -776,6 +725,62 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 };
 
 /**
+ * Adjusts the cursor position in a given distance.
+ *
+ * This method only affects the selection target, preserving selections that are not collapsed and
+ * the direction of the selection.
+ *
+ * @method
+ * @param {Number} adjustment Distance to adjust the cursor, can be positive or negative
+ * @returns {Boolean} Cursor was moved
+ */
+ve.ce.Surface.prototype.adjustCursor = function ( adjustment ) {
+	// Bypass for zero-adjustment
+	if ( !adjustment ) {
+		return false;
+	}
+	var adjustedTargetOffset,
+		bias = adjustment > 0 ? 1 : -1,
+		selection = this.model.getSelection(),
+		targetOffset = selection.to,
+		documentModel = this.model.getDocument(),
+		relativeContentOffset = documentModel.getRelativeContentOffset( targetOffset, adjustment ),
+		relativeStructuralOffset = documentModel.getRelativeStructuralOffset(
+			targetOffset + bias, adjustment, true
+		);
+	// Check if we've moved into a slug
+	if ( this.hasSlugAtOffset( relativeStructuralOffset ) ) {
+		// Check if the relative content offset is in the opposite direction we are trying to go
+		if ( ( relativeContentOffset - targetOffset < 0 ? -1 : 1 ) !== bias ) {
+			// There's nothing past the slug we are already in, stay in it
+			adjustedTargetOffset = relativeStructuralOffset;
+		} else {
+			// There's a slug neaby, go into it if it's closer
+			adjustedTargetOffset = adjustment < 0 ?
+				Math.max( relativeContentOffset, relativeStructuralOffset ) :
+				Math.min( relativeContentOffset, relativeStructuralOffset );
+		}
+	}
+	// Check if we've moved a different distance than we asked for
+	else if ( relativeContentOffset !== targetOffset + adjustment ) {
+		// We can't trust the browser, move programatically
+		adjustedTargetOffset = relativeContentOffset;
+	}
+	// If the target changed, update the model
+	if ( adjustedTargetOffset ) {
+		this.model.change(
+			null,
+			new ve.Range(
+				selection.isCollapsed() ?
+					adjustedTargetOffset : selection.from, adjustedTargetOffset
+			)
+		);
+		return true;
+	}
+	return false;
+};
+
+/**
  * Responds to backspace and delete key events.
  *
  * @method
@@ -1062,7 +1067,7 @@ ve.ce.Surface.prototype.getNearestCorrectOffset = function ( offset, direction )
  * @returns {Boolean} A slug exists at the given offset
  */
 ve.ce.Surface.prototype.hasSlugAtOffset = function ( offset ) {
-	return this.documentView.getSlugAtOffset( offset ) || false;
+	return !!this.documentView.getSlugAtOffset( offset );
 };
 
 /**
