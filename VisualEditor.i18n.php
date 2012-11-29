@@ -56,6 +56,7 @@ $messages['en'] = array(
  * @author Jdforrester
  * @author Nike
  * @author Purodha
+ * @author Shirayuki
  * @author Trevor Parscal
  */
 $messages['qqq'] = array(
@@ -63,8 +64,12 @@ $messages['qqq'] = array(
 	'visualeditor-desc' => '{{desc}}',
 	'visualeditor-notification-saved' => '$1 is a page name.',
 	'visualeditor-notification-created' => '$1 is a page name.',
-	'visualeditor-ca-editsource' => '{{Optional}} {{Identical|visualeditor}} Text for the edit source link in the tab dropdown',
-	'visualeditor-ca-ve-edit' => '{{Optional}} {{Identical|visualeditor}} Link text of the dedicated VisualEditor Edit tab.',
+	'visualeditor-ca-editsource' => '{{Optional}}
+Text for the edit source link in the tab dropdown
+{{Identical|visualeditor}}',
+	'visualeditor-ca-ve-edit' => '{{Optional}}
+Link text of the dedicated VisualEditor Edit tab.
+{{Identical|visualeditor}}',
 	'visualeditor-ca-ve-create' => 'Link text of the dedicated VisualEditor Create tab.',
 	'tooltip-ca-ve-edit' => 'Tooltip of the dedicated VisualEditor Edit tab.',
 	'accesskey-ca-ve-edit' => '{{Ignore}}',
@@ -187,11 +192,12 @@ $messages['be-tarask'] = array(
 	'visualeditor' => 'Візуальны рэдактар',
 	'visualeditor-desc' => 'Візуальны рэдактар для MediaWiki',
 	'visualeditor-preference-enable' => 'Уключыць візуальны рэдактар (толькі ў асноўнай прасторы)',
-	'visualeditor-feedback-prompt' => 'Пакінуць водгук',
-	'visualeditor-feedback-dialog-title' => 'Пакіньце водгук пра візуальны рэдактар',
 	'visualeditor-notification-saved' => 'Вашыя зьмены ў «$1» захаваныя.',
 	'visualeditor-notification-created' => 'Старонка «$1» створаная.',
 	'visualeditor-ca-editsource' => 'Рэдагаваць крыніцу',
+	'visualeditor-ca-ve-edit' => 'Візуальны рэдактар',
+	'visualeditor-ca-ve-create' => 'Візуальны рэдактар',
+	'tooltip-ca-ve-edit' => 'Рэдагаваць гэтую старонку ў Візуальным рэдактары',
 	'visualeditor-linkinspector-title' => 'Гіпэрспасылка',
 	'visualeditor-linkinspector-label-pagetitle' => 'Назва старонкі',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Існуючая старонка',
@@ -219,7 +225,10 @@ $messages['be-tarask'] = array(
 	'visualeditor-viewpage-savewarning' => 'Вы ўпэўненыя, што жадаеце перайсьці ў рэжым прагляду без папярэдняга захаваньня?',
 	'visualeditor-loadwarning' => 'Памылка ў час загрузкі зьвестак з сэрвэру: $1. Жадаеце паўтарыць?',
 	'visualeditor-saveerror' => 'Памылка ў час захаваньня зьвестак на сэрвэры: $1.',
+	'visualeditor-editconflict' => 'Не атрымалася захаваць вашыя зьмены з-за канфлікту рэдагаваньняў. Ці не жадаеце разьвязаць канфлікт уласнаруч?',
 	'visualeditor-editsummary' => 'Апішыце вашыя зьмены',
+	'visualeditor-aliennode-tooltip' => 'Даруйце, у Візуальным рэдактары гэты элемэнт зьмяніць немагчыма',
+	'tag-visualeditor' => '[[Special:Tags|Тэг]]: [[Project:VisualEditor|VisualEditor]]',
 );
 
 /** Bengali (বাংলা)
@@ -313,6 +322,9 @@ $messages['de'] = array(
 	'visualeditor-notification-saved' => 'Deine Änderungen an $1 wurden gespeichert.',
 	'visualeditor-notification-created' => '$1 wurde erstellt.',
 	'visualeditor-ca-editsource' => 'Quelltext bearbeiten',
+	'visualeditor-ca-ve-edit' => 'WYSIWYG-Editor',
+	'visualeditor-ca-ve-create' => 'WYSIWYG-Editor',
+	'tooltip-ca-ve-edit' => 'Diese Seite mit dem WYSIWYG-Editor bearbeiten',
 	'visualeditor-inspector-title' => 'Inspizieren',
 	'visualeditor-linkinspector-title' => 'Hyperlink',
 	'visualeditor-linkinspector-label-pagetitle' => 'Seitenname',
@@ -341,8 +353,11 @@ $messages['de'] = array(
 	'visualeditor-viewpage-savewarning' => 'Bist du sicher, dass du zum Ansichtsmodus wechseln möchtest, ohne vorher zu speichern?',
 	'visualeditor-loadwarning' => 'Fehler beim Laden der Daten vom Server: $1. Soll der Vorgang erneut durchgeführt werden?',
 	'visualeditor-saveerror' => 'Fehler beim Speichern der Daten auf dem Server: $1.',
+	'visualeditor-editconflict' => 'Deine Änderungen konnten aufgrund eines Bearbeitungskonflikts nicht gespeichert werden. Willst du den Konflikt manuell beheben?',
 	'visualeditor-editsummary' => 'Beschreibe, was du geändert hast.',
 	'visualeditor-aliennode-tooltip' => 'Dieses Element kann leider nicht mit dem WYSIWYG-Editor bearbeitet werden.',
+	'tag-visualeditor' => '[[Special:Tags|Markierungen]]: [[Project:VisualEditor|WYSIWYG-Editor]]',
+	'tag-visualeditor-description' => 'Bearbeitet mit dem [[Project:VisualEditor|WYSIWYG-Editor]]',
 );
 
 /** German (formal address) (Deutsch (Sie-Form)‎)
@@ -446,6 +461,8 @@ $messages['es'] = array(
 	'visualeditor-saveerror' => 'Error al guardar datos en el servidor: $1.',
 	'visualeditor-editsummary' => 'Describe lo que has cambiado',
 	'visualeditor-aliennode-tooltip' => 'Lo sentimos, este elemento no se puede editar mediante el editor visual',
+	'tag-visualeditor' => '[[Special:Etiquetas|Etiqueta]]: [[Project:VisualEditor|VisualEditor]]', # Fuzzy
+	'tag-visualeditor-description' => 'Edición realizada con [[Project:VisualEditor|VisualEditor]]',
 );
 
 /** Estonian (eesti)
@@ -501,17 +518,17 @@ $messages['fa'] = array(
 
 /** Finnish (suomi)
  * @author Beluga
+ * @author Nedergard
  * @author Nike
  * @author Olli
  */
 $messages['fi'] = array(
 	'visualeditor' => 'Visuaalinen muokkain',
 	'visualeditor-desc' => 'Visuaalinen muokkain MediaWikille',
-	'visualeditor-feedback-prompt' => 'Jätä palautetta',
-	'visualeditor-feedback-dialog-title' => 'Jätä palautetta visuaalisen muokkaimen hiekkalaatikosta.',
 	'visualeditor-ca-editsource' => 'Muokkaa lähdetekstiä',
-	'visualeditor-linkinspector-title' => 'Muokkauslinkki', # Fuzzy
+	'visualeditor-linkinspector-title' => 'Hyperlinkki',
 	'visualeditor-linkinspector-label-pagetitle' => 'Sivun otsikko',
+	'visualeditor-linkinspector-suggest-new-page' => 'Uusi sivu',
 	'visualeditor-formatdropdown-format-paragraph' => 'Kappale',
 	'visualeditor-formatdropdown-format-heading1' => 'Otsikko 1',
 	'visualeditor-formatdropdown-format-heading2' => 'Otsikko 2',
@@ -542,6 +559,9 @@ $messages['fr'] = array(
 	'visualeditor-notification-saved' => 'Vos modifications à $1 ont été enregistrés.',
 	'visualeditor-notification-created' => '$1 a été créé!',
 	'visualeditor-ca-editsource' => 'Modifier la source',
+	'visualeditor-ca-ve-edit' => 'VisualEditor',
+	'visualeditor-ca-ve-create' => 'VisualEditor',
+	'tooltip-ca-ve-edit' => 'Modifier cette page avec VisualEditor',
 	'visualeditor-inspector-title' => 'Inspecter',
 	'visualeditor-linkinspector-title' => 'Hyperlien',
 	'visualeditor-linkinspector-label-pagetitle' => 'Titre de la page',
@@ -570,8 +590,11 @@ $messages['fr'] = array(
 	'visualeditor-viewpage-savewarning' => 'Êtes-vous sûr de vouloir retourner au mode lecture sans d’abord enregistrer ?',
 	'visualeditor-loadwarning' => 'Erreur lors du chargement des données du serveur: $1. Voulez-vous réessayer?',
 	'visualeditor-saveerror' => 'Erreur d’enregistrement des données sur le serveur : $1.',
+	'visualeditor-editconflict' => "Vos modifications n'ont pas pu être enregistrés à cause d'un conflit d'édition. Voulez-vous résoudre ce conflit manuellement?",
 	'visualeditor-editsummary' => 'Décrire ce que vous avez modifié',
 	'visualeditor-aliennode-tooltip' => 'Désolé, cet élément ne peut pas être modifié en utilisant VisualEditor',
+	'tag-visualeditor' => '[[Special:Tags|Tag]]: [[Project:VisualEditor|VisualEditor]]',
+	'tag-visualeditor-description' => 'Modification faite en utilisant [[Project:VisualEditor|VisualEditor]]',
 );
 
 /** Franco-Provençal (arpetan)
@@ -841,6 +864,9 @@ $messages['it'] = array(
 	'visualeditor-notification-saved' => 'Le modifiche apportate a $1 sono state salvate.',
 	'visualeditor-notification-created' => 'La pagina $1 è stata creata.',
 	'visualeditor-ca-editsource' => 'Modifica sorgente',
+	'visualeditor-ca-ve-edit' => 'VisualEditor',
+	'visualeditor-ca-ve-create' => 'VisualEditor',
+	'tooltip-ca-ve-edit' => 'Modifica questa pagina con VisualEditor',
 	'visualeditor-inspector-title' => 'Ispeziona',
 	'visualeditor-linkinspector-title' => 'Collegamento ipertestuale',
 	'visualeditor-linkinspector-label-pagetitle' => 'Titolo della pagina',
@@ -869,8 +895,11 @@ $messages['it'] = array(
 	'visualeditor-viewpage-savewarning' => 'Tornare alla modalità in visualizzazione senza salvare prima?',
 	'visualeditor-loadwarning' => 'Errore durante il caricamento dei dati dal server: $1. Riprovare?',
 	'visualeditor-saveerror' => 'Errore durante il salvataggio dei dati sul server: $1.',
+	'visualeditor-editconflict' => 'Le modifiche apportate non possono essere salvate a causa di un conflitto di edizione. Vuoi risolvere il conflitto manualmente?',
 	'visualeditor-editsummary' => 'Descrivere che cosa è cambiato',
 	'visualeditor-aliennode-tooltip' => 'Spiacenti, questo elemento non può essere modificato utilizzando VisualEditor',
+	'tag-visualeditor' => '[[Special:Tags|Etichetta]]: [[Project:VisualEditor|VisualEditor]]',
+	'tag-visualeditor-description' => 'Modifica eseguita usando [[Project:VisualEditor|VisualEditor]]',
 );
 
 /** Japanese (日本語)
@@ -884,6 +913,9 @@ $messages['ja'] = array(
 	'visualeditor-notification-saved' => '$1への変更を保存しました。',
 	'visualeditor-notification-created' => '$1を作成しました。',
 	'visualeditor-ca-editsource' => 'ソースを編集',
+	'visualeditor-ca-ve-edit' => 'ビジュアルエディター',
+	'visualeditor-ca-ve-create' => 'ビジュアルエディター',
+	'tooltip-ca-ve-edit' => 'このページをビジュアルエディターで編集する',
 	'visualeditor-inspector-title' => '調査',
 	'visualeditor-linkinspector-title' => 'ハイパーリンク',
 	'visualeditor-linkinspector-label-pagetitle' => 'ページ名',
@@ -912,8 +944,11 @@ $messages['ja'] = array(
 	'visualeditor-viewpage-savewarning' => 'まだ保存していませんが、表示モードに本当に戻りますか?',
 	'visualeditor-loadwarning' => 'サーバからのデータの読み込みでエラーが発生しました: $1。再試行してください。',
 	'visualeditor-saveerror' => 'サーバにデータを保存する際にエラーが発生しました: $1',
+	'visualeditor-editconflict' => '編集競合のため、編集内容を保存できませんでした。この競合を手動で解決しますか?',
 	'visualeditor-editsummary' => '編集内容を説明してください',
 	'visualeditor-aliennode-tooltip' => '申し訳ありませんが、この要素はビジュアルエディターでは編集できません',
+	'tag-visualeditor' => '[[Special:Tags|タグ]]: [[Project:VisualEditor|ビジュアルエディター]]',
+	'tag-visualeditor-description' => '[[Project:VisualEditor|ビジュアルエディター]]を使用した編集',
 );
 
 /** Javanese (Basa Jawa)
@@ -1111,6 +1146,9 @@ $messages['mk'] = array(
 	'visualeditor-notification-saved' => 'Измените во $1 се зачувани',
 	'visualeditor-notification-created' => 'Создавањето на $1 заврши успешно!',
 	'visualeditor-ca-editsource' => 'Уреди извор',
+	'visualeditor-ca-ve-edit' => 'ВизуеленУредник',
+	'visualeditor-ca-ve-create' => 'ВизуеленУредник',
+	'tooltip-ca-ve-edit' => 'Уреди ја страницава со ВизуеленУредник',
 	'visualeditor-inspector-title' => 'Контр. преглед',
 	'visualeditor-linkinspector-title' => 'Хиперврска',
 	'visualeditor-linkinspector-label-pagetitle' => 'Наслов на страницата',
@@ -1139,8 +1177,11 @@ $messages['mk'] = array(
 	'visualeditor-viewpage-savewarning' => 'Дали сте сигурни дека сакате да се вратите на прегледниот режим без прво да ги ачувате измените?',
 	'visualeditor-loadwarning' => 'Грешка при вчитување на податоците од опслужувачот: $1. Дали сакате да пробате одново?',
 	'visualeditor-saveerror' => 'Грешка при зачувување на податоците во опслужувачот: $1.',
+	'visualeditor-editconflict' => 'Не можев да ги зачувам вашите промени поради спротиставеност во уредувања. Дали би сакале да го решите ова рачно?',
 	'visualeditor-editsummary' => 'Опишете ги направените измени',
 	'visualeditor-aliennode-tooltip' => 'Нажалост, овој елемент не може да се уредува со ВизуеленУредник',
+	'tag-visualeditor' => '[[Special:Tags|Ознака]]: [[Project:VisualEditor|ВизуеленУредник]]',
+	'tag-visualeditor-description' => 'Уредувањето е извршено со [[Project:VisualEditor|ВизуеленУредник]]',
 );
 
 /** Malayalam (മലയാളം)
@@ -1684,6 +1725,9 @@ $messages['vi'] = array(
 	'visualeditor-notification-saved' => 'Đã lưu các thay đổi của bạn tại $1.',
 	'visualeditor-notification-created' => 'Đã tạo ra $1.',
 	'visualeditor-ca-editsource' => 'Sửa đổi mã nguồn',
+	'visualeditor-ca-ve-edit' => 'Trình soạn thị giác',
+	'visualeditor-ca-ve-create' => 'Trình soạn thị giác',
+	'tooltip-ca-ve-edit' => 'Sửa đổi trang này dùng Trình soạn thị giác',
 	'visualeditor-inspector-title' => 'Kiểm tra',
 	'visualeditor-linkinspector-title' => 'Liên kết',
 	'visualeditor-linkinspector-label-pagetitle' => 'Tên trang',
@@ -1712,8 +1756,11 @@ $messages['vi'] = array(
 	'visualeditor-viewpage-savewarning' => 'Bạn có chắc chắn muốn quay trở về chế độ xem mà không lưu giữ trước tiên?',
 	'visualeditor-loadwarning' => 'Lỗi tải dữ liệu từ máy chủ: $1. Bạn có muốn thử lại không?',
 	'visualeditor-saveerror' => 'Lỗi lưu dữ liệu trên máy chủ: $1.',
+	'visualeditor-editconflict' => 'Không thể lưu các thay đổi của bạn do mâu thuẫn sửa đổi. Bạn có muốn giải quyết mâu thuẫn một cách thủ công?',
 	'visualeditor-editsummary' => 'Miêu tả các thay đổi của bạn',
 	'visualeditor-aliennode-tooltip' => 'Rất tiếc, không thể sửa đổi phần tử này dùng Trình soạn thị giác',
+	'tag-visualeditor' => '[[Special:Tags|Thẻ]]: [[Project:VisualEditor|Trình soạn thị giác]]',
+	'tag-visualeditor-description' => 'Sửa đổi dùng [[Project:VisualEditor|Trình soạn thị giác]]',
 );
 
 /** Simplified Chinese (中文（简体）‎)
