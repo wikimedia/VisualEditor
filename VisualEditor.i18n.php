@@ -11,6 +11,10 @@ $messages['en'] = array(
 	'visualeditor-notification-saved' => 'Your changes to $1 have been saved.',
 	'visualeditor-notification-created' => '$1 has been created.',
 	'visualeditor-ca-editsource' => 'Edit source',
+	'visualeditor-ca-ve-edit' => 'VisualEditor',
+	'visualeditor-ca-ve-create' => 'VisualEditor',
+	'tooltip-ca-ve-edit' => 'Edit this page with VisualEditor',
+	'accesskey-ca-ve-edit' => '',
 	'visualeditor-inspector-title' => 'Inspect',
 	'visualeditor-linkinspector-title' => 'Hyperlink',
 	'visualeditor-linkinspector-label-pagetitle' => 'Page title',
@@ -58,7 +62,11 @@ $messages['qqq'] = array(
 	'visualeditor-desc' => '{{desc}}',
 	'visualeditor-notification-saved' => '$1 is a page name.',
 	'visualeditor-notification-created' => '$1 is a page name.',
-	'visualeditor-ca-editsource' => 'Text for the edit source link in the tab dropdown',
+	'visualeditor-ca-editsource' => '{{Optional}} {{Identical|visualeditor}} Text for the edit source link in the tab dropdown',
+	'visualeditor-ca-ve-edit' => '{{Optional}} {{Identical|visualeditor}} Link text of the dedicated VisualEditor Edit tab.',
+	'visualeditor-ca-ve-create' => 'Link text of the dedicated VisualEditor Create tab.',
+	'tooltip-ca-ve-edit' => 'Tooltip of the dedicated VisualEditor Edit tab.',
+	'accesskey-ca-ve-edit' => '{{Ignore}}',
 	'visualeditor-inspector-title' => 'Title of an unnamed inspector',
 	'visualeditor-linkinspector-title' => 'Title of the link inspector dialog', # Fuzzy
 	'visualeditor-linkinspector-label-pagetitle' => 'Label for the text field that holds the link target in the link inspector',
@@ -84,6 +92,8 @@ $messages['qqq'] = array(
 	'visualeditor-viewpage-savewarning' => 'Text shown when the user tries to leave the editor without saving their changes',
 	'visualeditor-loadwarning' => 'Text shown when the editor fails to load properly. $1 is the error message from the server, in English.',
 	'visualeditor-saveerror' => 'Text shown when the editor fails to save properly. $1 is an error message, in English.',
+	'tag-visualeditor' => 'Short description of the visualeditor tag. Shown on lists of changes (history, recentchanges, etc.) for each edit made using VisualEditor.',
+	'tag-visualeditor-description' => 'Long description of the visualeditor tag. Shown on [[Special:Tags]]',
 );
 
 /** Assamese (অসমীয়া)
@@ -332,8 +342,6 @@ $messages['de'] = array(
 	'visualeditor-saveerror' => 'Fehler beim Speichern der Daten auf dem Server: $1.',
 	'visualeditor-editsummary' => 'Beschreibe, was du geändert hast.',
 	'visualeditor-aliennode-tooltip' => 'Dieses Element kann leider nicht mit dem WYSIWYG-Editor bearbeitet werden.',
-	'tag-visualeditor' => '[[Special:Tags|Markierungen]]: [[Project:VisualEditor|WYSIWYG-Editor]]',
-	'tag-visualeditor-description' => 'Bearbeitung durchgeführt mit dem [[Project:VisualEditor|WYSIWYG-Editor]]',
 );
 
 /** German (formal address) (Deutsch (Sie-Form)‎)
@@ -437,8 +445,6 @@ $messages['es'] = array(
 	'visualeditor-saveerror' => 'Error al guardar datos en el servidor: $1.',
 	'visualeditor-editsummary' => 'Describe lo que has cambiado',
 	'visualeditor-aliennode-tooltip' => 'Lo sentimos, este elemento no se puede editar mediante el editor visual',
-	'tag-visualeditor' => '[[Special:Etiquetas|Etiqueta]]: [[Project:VisualEditor|VisualEditor]]', # Fuzzy
-	'tag-visualeditor-description' => 'Edición realizada con [[Project:VisualEditor|VisualEditor]]',
 );
 
 /** Estonian (eesti)
@@ -565,8 +571,6 @@ $messages['fr'] = array(
 	'visualeditor-saveerror' => 'Erreur d’enregistrement des données sur le serveur : $1.',
 	'visualeditor-editsummary' => 'Décrire ce que vous avez modifié',
 	'visualeditor-aliennode-tooltip' => 'Désolé, cet élément ne peut pas être modifié en utilisant VisualEditor',
-	'tag-visualeditor' => '[[Special:Tags|Tag]]: [[Project:VisualEditor|VisualEditor]]',
-	'tag-visualeditor-description' => 'Modification faite en utilisant [[Project:VisualEditor|VisualEditor]]',
 );
 
 /** Franco-Provençal (arpetan)
@@ -866,7 +870,6 @@ $messages['it'] = array(
 	'visualeditor-saveerror' => 'Errore durante il salvataggio dei dati sul server: $1.',
 	'visualeditor-editsummary' => 'Descrivere che cosa è cambiato',
 	'visualeditor-aliennode-tooltip' => 'Spiacenti, questo elemento non può essere modificato utilizzando VisualEditor',
-	'tag-visualeditor-description' => 'Modifica eseguita usando [[Project:VisualEditor|VisualEditor]]',
 );
 
 /** Japanese (日本語)
@@ -910,8 +913,6 @@ $messages['ja'] = array(
 	'visualeditor-saveerror' => 'サーバにデータを保存する際にエラーが発生しました: $1',
 	'visualeditor-editsummary' => '編集内容を説明してください',
 	'visualeditor-aliennode-tooltip' => '申し訳ありませんが、この要素はビジュアルエディターでは編集できません',
-	'tag-visualeditor' => '[[Special:Tags|タグ]]: [[Project:VisualEditor|ビジュアルエディター]]',
-	'tag-visualeditor-description' => '[[Project:VisualEditor|ビジュアルエディター]]を使用した編集',
 );
 
 /** Javanese (Basa Jawa)
@@ -1139,8 +1140,6 @@ $messages['mk'] = array(
 	'visualeditor-saveerror' => 'Грешка при зачувување на податоците во опслужувачот: $1.',
 	'visualeditor-editsummary' => 'Опишете ги направените измени',
 	'visualeditor-aliennode-tooltip' => 'Нажалост, овој елемент не може да се уредува со ВизуеленУредник',
-	'tag-visualeditor' => '[[Special:Tags|Ознака]]: [[Project:VisualEditor|ВизуеленУредник]]',
-	'tag-visualeditor-description' => 'Уредувањето е извршено со [[Project:VisualEditor|ВизуеленУредник]]',
 );
 
 /** Malayalam (മലയാളം)
@@ -1714,8 +1713,6 @@ $messages['vi'] = array(
 	'visualeditor-saveerror' => 'Lỗi lưu dữ liệu trên máy chủ: $1.',
 	'visualeditor-editsummary' => 'Miêu tả các thay đổi của bạn',
 	'visualeditor-aliennode-tooltip' => 'Rất tiếc, không thể sửa đổi phần tử này dùng Trình soạn thị giác',
-	'tag-visualeditor' => '[[Special:Tags|Thẻ]]: [[Project:VisualEditor|Trình soạn thị giác]]',
-	'tag-visualeditor-description' => 'Sửa đổi dùng [[Project:VisualEditor|Trình soạn thị giác]]',
 );
 
 /** Simplified Chinese (中文（简体）‎)
