@@ -797,7 +797,8 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 		adjacentTextAfterMatch,
 		endOffset,
 		i,
-		selection = this.model.getSelection();
+		selection = this.model.getSelection(),
+		containsInlineElements = false;
 
 	if ( selection.from === selection.to ) {
 		// Set source and target linmod offsets
@@ -852,16 +853,21 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 		}
 
 		for ( i = 0; i < adjacentData.length; i++ ) {
+			if ( adjacentData[i].type !== undefined ) {
+				containsInlineElements = true;
+				break;
+			}
 			adjacentText += adjacentData[i][0];
 		}
 
-		adjacentTextAfterMatch = adjacentText.match(
-			/[a-zA-Z\-_’'‘ÆÐƎƏƐƔĲŊŒẞÞǷȜæðǝəɛɣĳŋœĸſßþƿȝĄƁÇĐƊĘĦĮƘŁØƠŞȘŢȚŦŲƯY̨Ƴąɓçđɗęħįƙłøơşșţțŧųưy̨ƴÁÀÂÄǍĂĀÃÅǺĄÆǼǢƁĆĊĈČÇĎḌĐƊÐÉÈĖÊËĚĔĒĘẸƎƏƐĠĜǦĞĢƔáàâäǎăāãåǻąæǽǣɓćċĉčçďḍđɗðéèėêëěĕēęẹǝəɛġĝǧğģɣĤḤĦIÍÌİÎÏǏĬĪĨĮỊĲĴĶƘĹĻŁĽĿʼNŃN̈ŇÑŅŊÓÒÔÖǑŎŌÕŐỌØǾƠŒĥḥħıíìiîïǐĭīĩįịĳĵķƙĸĺļłľŀŉńn̈ňñņŋóòôöǒŏōõőọøǿơœŔŘŖŚŜŠŞȘṢẞŤŢṬŦÞÚÙÛÜǓŬŪŨŰŮŲỤƯẂẀŴẄǷÝỲŶŸȲỸƳŹŻŽẒŕřŗſśŝšşșṣßťţṭŧþúùûüǔŭūũűůųụưẃẁŵẅƿýỳŷÿȳỹƴźżžẓ]/g
-		);
-
-		// If there are "normal" characters in the adjacent text, let the browser handle natively.
-		if ( adjacentTextAfterMatch !== null && adjacentTextAfterMatch.length ) {
-			return;
+		if ( !containsInlineElements ) {
+			adjacentTextAfterMatch = adjacentText.match(
+				/[a-zA-Z\-_’'‘ÆÐƎƏƐƔĲŊŒẞÞǷȜæðǝəɛɣĳŋœĸſßþƿȝĄƁÇĐƊĘĦĮƘŁØƠŞȘŢȚŦŲƯY̨Ƴąɓçđɗęħįƙłøơşșţțŧųưy̨ƴÁÀÂÄǍĂĀÃÅǺĄÆǼǢƁĆĊĈČÇĎḌĐƊÐÉÈĖÊËĚĔĒĘẸƎƏƐĠĜǦĞĢƔáàâäǎăāãåǻąæǽǣɓćċĉčçďḍđɗðéèėêëěĕēęẹǝəɛġĝǧğģɣĤḤĦIÍÌİÎÏǏĬĪĨĮỊĲĴĶƘĹĻŁĽĿʼNŃN̈ŇÑŅŊÓÒÔÖǑŎŌÕŐỌØǾƠŒĥḥħıíìiîïǐĭīĩįịĳĵķƙĸĺļłľŀŉńn̈ňñņŋóòôöǒŏōõőọøǿơœŔŘŖŚŜŠŞȘṢẞŤŢṬŦÞÚÙÛÜǓŬŪŨŰŮŲỤƯẂẀŴẄǷÝỲŶŸȲỸƳŹŻŽẒŕřŗſśŝšşșṣßťţṭŧþúùûüǔŭūũűůųụưẃẁŵẅƿýỳŷÿȳỹƴźżžẓ]/g
+			);
+			// If there are "normal" characters in the adjacent text, let the browser handle natively.
+			if ( adjacentTextAfterMatch !== null && adjacentTextAfterMatch.length ) {
+				return;
+			}
 		}
 
 		ve.log('handleDelete programatically');
