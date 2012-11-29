@@ -21,11 +21,11 @@ ve.ce.ContentBranchNode = function VeCeContentBranchNode( type, model, $element 
 	ve.ce.BranchNode.call( this, type, model, $element );
 
 	// Events
-	this.model.addListenerMethod( this, 'update', 'onUpdate' );
-	this.addListenerMethod( this, 'childUpdate', 'onUpdate' );
+	this.model.addListenerMethod( this, 'update', 'renderContents' );
+	this.addListenerMethod( this, 'childUpdate', 'renderContents' );
 
 	// Initialization
-	this.onUpdate();
+	this.renderContents();
 };
 
 /* Inheritance */
@@ -34,32 +34,14 @@ ve.inheritClass( ve.ce.ContentBranchNode, ve.ce.BranchNode );
 
 /* Methods */
 
-ve.ce.ContentBranchNode.prototype.onUpdate = function () {
-	// Detach all child nodes from this.$
-	// We can't use this.$.empty() because that destroys .data() and event handlers
-	this.$.contents().each( function () {
-		$(this).detach();
-	} );
-	// Reattach child nodes with the right annotations
-	this.$.append( this.renderContents() );
-	this.setupSlugs();
-	// Highlight the node in debug mode
-	if ( ve.debug ) {
-		this.$.css( 'backgroundColor', '#F6F6F6' );
-		setTimeout( ve.bind( function () {
-			this.$.css( 'backgroundColor', 'transparent' );
-		}, this ), 350 );
-	}
-};
-
 ve.ce.ContentBranchNode.prototype.onSplice = function () {
 	// Call parent implementation
 	ve.ce.BranchNode.prototype.onSplice.apply( this, arguments );
 	// Rerender to make sure annotations are applied correctly
-	this.onUpdate();
+	this.renderContents();
 };
 
-ve.ce.ContentBranchNode.prototype.renderContents = function () {
+ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 	var i, j, open, close, startedClosing, arr, annotation, itemAnnotations, itemHtml, $wrapper,
 		html = '', annotationStack = new ve.AnnotationSet(), annotatedHtml = [];
 
@@ -154,5 +136,29 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 		var $this = $( this ), item = annotatedHtml[$this.attr( 'rel' )];
 		$this.replaceWith( ve.isArray( item ) ? item[0] : item );
 	} );
+
 	return $wrapper.contents();
+};
+
+ve.ce.ContentBranchNode.prototype.renderContents = function () {
+
+	// Detach all child nodes from this.$
+	// We can't use this.$.empty() because that destroys .data() and event handlers
+	this.$.contents().each( function () {
+		$(this).detach();
+	} );
+
+	// Reattach child nodes with the right annotations
+	this.$.append( this.getRenderedContents() );
+
+	// Add slugs
+	this.setupSlugs();
+
+	// Highlight the node in debug mode
+	if ( ve.debug ) {
+		this.$.css( 'backgroundColor', '#F6F6F6' );
+		setTimeout( ve.bind( function () {
+			this.$.css( 'backgroundColor', 'transparent' );
+		}, this ), 350 );
+	}
 };

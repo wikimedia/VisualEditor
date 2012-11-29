@@ -9,7 +9,7 @@ QUnit.module( 've.ce.ContentBranchNode' );
 
 /* Tests */
 
-QUnit.test( 'renderContents', function ( assert ) {
+QUnit.test( 'getRenderedContents', function ( assert ) {
 	var i, len, $rendered, cases = [
 		{
 			'data': [
@@ -243,7 +243,7 @@ QUnit.test( 'renderContents', function ( assert ) {
 		$rendered = ( new ve.ce.ParagraphNode(
 				( new ve.dm.Document( cases[i].data ) )
 					.documentNode.getChildren()[0] )
-			).renderContents();
+			).getRenderedContents();
 		assert.deepEqual( $( '<div>' ).append( $rendered ).html(), cases[i].html );
 	}
 } );
