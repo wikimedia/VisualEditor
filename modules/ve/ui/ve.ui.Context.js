@@ -167,16 +167,18 @@ ve.ui.Context.prototype.getFrame = function () {
  */
 ve.ui.Context.prototype.update = function () {
 	var inspectors,
-		hide = true,
 		fragment = this.surface.getModel().getFragment(),
 		selection = fragment.getRange(),
 		annotations = fragment.getAnnotations();
-	
+
+	// Update the inspector if the change didn't affect the selection
 	if ( this.inspector && selection.equals( this.selection ) ) {
-		// Something other than the selection has changed
 		this.show();
-		hide = false;
 	} else {
+		this.hide();
+	}
+
+	if ( !this.inspector ) {
 		inspectors = ve.ui.inspectorFactory.getInspectorsForAnnotations( annotations );
 		if ( inspectors.length ) {
 			// The selection is inspectable but not being inspected
@@ -194,14 +196,12 @@ ve.ui.Context.prototype.update = function () {
 				this.$menu, // Container
 				this.$inner // Parent
 			);
-			this.show();
-			hide = false;
+			if ( !this.visible ) {
+				this.show();
+			}
 		}
 	}
-	if ( hide ) {
-		this.hide();
-		this.menu = null;
-	}
+
 	// Remember selection for next time
 	this.selection = selection.clone();
 };
@@ -239,6 +239,7 @@ ve.ui.Context.prototype.hide = function () {
 	}
 	if ( this.menu ) {
 		this.obscure( this.$menu );
+		this.menu = null;
 	}
 	this.$.css( 'visibility', 'hidden' );
 	this.visible = false;
