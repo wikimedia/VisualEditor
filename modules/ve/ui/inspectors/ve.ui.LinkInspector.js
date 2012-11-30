@@ -337,7 +337,12 @@ ve.ui.LinkInspector.prototype.initMultiSuggest = function () {
 					'results': suggestionCache[cKey]
 				} );
 			} else {
-				// No cache, build fresh api request.
+				// Load immediate suggestions
+				callback( {
+					'query': query,
+					'results': []
+				} );
+				// Build from fresh api request.
 				api.get( {
 					'action': 'opensearch',
 					'search': query

@@ -125,20 +125,19 @@
 			}
 			// Opens the MultiSuggest dropdown.
 			function open() {
-				if ( !visible ) {
-					// Call input method if cached value is stale
-					if (
-						$input.val() !== '' &&
-						$input.val() !== currentInput
-					) {
-						onInput();
-					} else {
-						// Show if there are suggestions.
-						if ( $multiSuggest.children().length > 0 ) {
-							visible = true;
-							$multiSuggest.show();
-						}
-					}
+				// Call onInput if cached value is stale
+				if (
+					$input.val() !== '' &&
+					$input.val() !== currentInput
+				) {
+					onInput();
+				}
+				if (
+					!visible &&
+					$multiSuggest.children().length > 0
+				) {
+					$multiSuggest.show();
+					visible = true;
 				}
 			}
 			// Closes the dropdown.
