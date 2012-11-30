@@ -13,6 +13,7 @@ $messages['en'] = array(
 	'visualeditor-ca-editsource' => 'Edit source',
 	'visualeditor-ca-ve-edit' => 'VisualEditor',
 	'visualeditor-ca-ve-create' => 'VisualEditor',
+	'visualeditor-editnotices-button' => '$1 {{PLURAL:$1|notice|notices}}',
 	'tooltip-ca-ve-edit' => 'Edit this page with VisualEditor',
 	'accesskey-ca-ve-edit' => '',
 	'visualeditor-inspector-title' => 'Inspect',
@@ -71,6 +72,7 @@ Text for the edit source link in the tab dropdown
 Link text of the dedicated VisualEditor Edit tab.
 {{Identical|visualeditor}}',
 	'visualeditor-ca-ve-create' => 'Link text of the dedicated VisualEditor Create tab.',
+	'visualeditor-editnotices-button' => 'Text of button in the toolbar that shows edit notices (such as MediaWiki:editnotice-0) as a pop-up',
 	'tooltip-ca-ve-edit' => 'Tooltip of the dedicated VisualEditor Edit tab.',
 	'accesskey-ca-ve-edit' => '{{Ignore}}',
 	'visualeditor-inspector-title' => 'Title of an unnamed inspector',

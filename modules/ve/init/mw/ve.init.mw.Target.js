@@ -39,6 +39,7 @@ ve.init.mw.Target = function VeInitMwTarget( pageName, oldId ) {
 	this.baseTimeStamp = null;
 	this.startTimeStamp = null;
 	this.dom = null;
+	this.editNotices = null;
 	this.isMobileDevice = (
 		'ontouchstart' in window ||
 			( window.DocumentTouch && document instanceof window.DocumentTouch )
@@ -78,6 +79,7 @@ ve.init.mw.Target.onLoad = function ( response ) {
 		);
 	} else {
 		this.dom = $( '<div>' ).html( data.content )[0];
+		this.editNotices = data.notices;
 		this.baseTimeStamp = data.basetimestamp;
 		this.startTimeStamp = data.starttimestamp;
 		// Everything worked, the page was loaded, continue as soon as the module is ready

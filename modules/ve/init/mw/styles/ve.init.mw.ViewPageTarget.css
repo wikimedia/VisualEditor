@@ -31,6 +31,48 @@
 	float: right;
 }
 
+.ve-init-mw-viewPageTarget-toolbar-editNoticesButton {
+	position: relative;
+	display: inline-block;
+	vertical-align: top;
+	line-height: 2.125em;
+	margin-right: 1em;
+	padding-left: 30px;
+	cursor: pointer;
+	background-repeat: no-repeat;
+	background-position: left center;
+}
+
+.ve-init-mw-viewPageTarget-toolbar-editNotices {
+	display: none;
+	position: absolute;
+	right: -0.5em;
+	top: 30px;
+	width: 29em;
+	font-family: sans-serif;
+	border: solid 1px #ccc;
+	padding: 0 0.75em 0 0.75em;
+	border-radius: 0.25em;
+	background-color: #fff;
+	-webkit-box-shadow: 0 0.15em 0.5em 0 rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 0 0.15em 0.5em 0 rgba(0, 0, 0, 0.2);
+	box-shadow: 0 0.15em 0.5em 0 rgba(0, 0, 0, 0.2);
+	z-index: 3;
+}
+
+.ve-init-mw-viewPageTarget-toolbar-editNoticesButton-label {
+	font-size: 0.8em;
+	color: #555555;
+}
+
+.ve-init-mw-viewPageTarget-toolbar-editNotices-notice {
+	padding: 0.5em 0;
+	font-size: 0.8em;
+	line-height: 1.5em;
+	border-top: solid 1px #ccc;
+	margin-top: -1px;
+}
+
 .ve-init-mw-viewPageTarget-toolbar-saveButton,
 .ve-init-mw-viewPageTarget-saveDialog-saveButton {
 	display: inline-block;
