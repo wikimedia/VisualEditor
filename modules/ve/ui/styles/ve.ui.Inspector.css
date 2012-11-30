@@ -85,11 +85,6 @@
 	padding-right: 1.5em;
 }
 
-.ve-ui-inspector form label {
-	display: inline-block;
-	width: 6em;
-}
-
 .ve-ui-inspector-title {
 	position: absolute;
 	top: 0;
@@ -108,10 +103,6 @@
 .ve-ui-suggest-select {
 	position: absolute;
 	background: #FFFFFF;
-	/* @embed */
-	background-image: url(images/gray.png);
-	background-position: 8em top;
-	background-repeat: repeat-y;
 	width: 20em;
 	margin-top: -1px;
 	font-size: 0.8em;
@@ -136,15 +127,8 @@ body.rtl .ve-ui-suggest-select {
 }
 
 .ve-ui-suggest-label {
-	float: left;
-	width: 6.5em;
 	padding: 0.33em 0.75em;
-	text-align: right;
 	color: #888;
-}
-
-.ve-ui-suggest-wrap {
-	float: left;
 }
 
 .ve-ui-suggest-dummy-item {
@@ -153,8 +137,7 @@ body.rtl .ve-ui-suggest-select {
 }
 
 .ve-ui-suggest-item {
-	padding: 0.33em 0.75em;
-	width: 10.5em;
+	padding: 0.33em 1.25em;
 	cursor: pointer;
 	color: #0645AD;
 }
