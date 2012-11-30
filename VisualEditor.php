@@ -363,7 +363,7 @@ $wgResourceModules += array(
 
 // Parsoid Wrapper API
 $wgAutoloadClasses['ApiVisualEditor'] = $dir . 'ApiVisualEditor.php';
-$wgAPIModules['ve-parsoid'] = 'ApiVisualEditor';
+$wgAPIModules['visualeditor'] = 'ApiVisualEditor';
 
 // Integration Hooks
 $wgAutoloadClasses['VisualEditorHooks'] = $dir . 'VisualEditor.hooks.php';
