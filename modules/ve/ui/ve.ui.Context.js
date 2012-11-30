@@ -45,7 +45,11 @@ ve.ui.Context = function VeUiContext( surface, $overlay ) {
 			'selectionStart': 'onSelectionStart',
 			'selectionEnd': 'onSelectionEnd'
 		} );
-	$(window).on( 'resize', ve.bind( this.update, this ) );
+
+	$( window ).on( {
+		'resize': ve.bind( this.update, this ),
+		'focus': ve.bind( this.onWindowFocus, this )
+	} );
 };
 
 /* Static Members */
@@ -98,6 +102,10 @@ ve.ui.Context.prototype.onSelectionStart = function () {
 ve.ui.Context.prototype.onSelectionEnd = function () {
 	this.selecting = false;
 	this.update();
+};
+
+ve.ui.Context.prototype.onWindowFocus = function () {
+	this.hide();
 };
 
 /**
