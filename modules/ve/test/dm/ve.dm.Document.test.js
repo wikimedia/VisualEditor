@@ -1014,6 +1014,18 @@ QUnit.test( 'getRelativeContentOffset', function ( assert ) {
 			'expected': 60
 		},
 		{
+			'msg': 'stop at left edge if already valid',
+			'offset': 1,
+			'distance': -1,
+			'expected': 1
+		},
+		{
+			'msg': 'stop at right edge if already valid',
+			'offset': 60,
+			'distance': 1,
+			'expected': 60
+		},
+		{
 			'msg': 'first content offset is farthest left',
 			'offset': 2,
 			'distance': -2,
