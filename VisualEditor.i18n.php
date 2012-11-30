@@ -635,6 +635,9 @@ $messages['gl'] = array(
 	'visualeditor-notification-saved' => 'Gardáronse os cambios feitos en "$1".',
 	'visualeditor-notification-created' => 'Creouse "$1".',
 	'visualeditor-ca-editsource' => 'Editar a fonte',
+	'visualeditor-ca-ve-edit' => 'Editor visual',
+	'visualeditor-ca-ve-create' => 'Editor visual',
+	'tooltip-ca-ve-edit' => 'Editar esta páxina co editor visual',
 	'visualeditor-inspector-title' => 'Inspeccionar',
 	'visualeditor-linkinspector-title' => 'Hiperligazón',
 	'visualeditor-linkinspector-label-pagetitle' => 'Título da páxina',
@@ -663,8 +666,11 @@ $messages['gl'] = array(
 	'visualeditor-viewpage-savewarning' => 'Está seguro de querer volver ao modo de lectura sen gardar primeiro?',
 	'visualeditor-loadwarning' => 'Erro ao cargar os datos desde o servidor: $1. Quéreo intentar de novo?',
 	'visualeditor-saveerror' => 'Erro ao gardar os datos no servidor: $1.',
+	'visualeditor-editconflict' => 'Non se puideron gardar os cambios debido a un conflito de edición. Quere resolver o conflito manualmente?',
 	'visualeditor-editsummary' => 'Describa os seus cambios',
 	'visualeditor-aliennode-tooltip' => 'Sentímolo, o editor visual non pode editar este elemento.',
+	'tag-visualeditor' => '[[Special:Tags|Etiqueta]]: [[Project:VisualEditor|Editor visual]]',
+	'tag-visualeditor-description' => 'Edición feita mediante o [[Project:VisualEditor|editor visual]]',
 );
 
 /** Hebrew (עברית)
@@ -1195,6 +1201,10 @@ $messages['ml'] = array(
 	'visualeditor-notification-saved' => 'താങ്കൾ $1 എന്ന താളിൽ വരുത്തിയ മാറ്റങ്ങൾ സേവ് ചെയ്തിരിക്കുന്നു.',
 	'visualeditor-notification-created' => '$1 എന്ന താൾ സൃഷ്ടിച്ചിരിക്കുന്നു.',
 	'visualeditor-ca-editsource' => 'മൂലരൂപം തിരുത്തുക',
+	'visualeditor-ca-ve-edit' => 'കണ്ടുതിരുത്തൽ സൗകര്യം',
+	'visualeditor-ca-ve-create' => 'കണ്ടുതിരുത്തൽ സൗകര്യം',
+	'tooltip-ca-ve-edit' => 'ഈ താൾ കണ്ടുതിരുത്തൽ സൗകര്യമുപയോഗിച്ച് തിരുത്തുക',
+	'visualeditor-inspector-title' => 'പരിശോധിക്കുക',
 	'visualeditor-linkinspector-title' => 'ഹൈപ്പർലിങ്ക്',
 	'visualeditor-linkinspector-label-pagetitle' => 'താളിന്റെ തലക്കെട്ട്',
 	'visualeditor-linkinspector-suggest-existing-page' => 'നിലവിലുള്ള താൾ',
@@ -1222,7 +1232,11 @@ $messages['ml'] = array(
 	'visualeditor-viewpage-savewarning' => 'സേവ് ചെയ്യാതെ തന്നെ കണ്ടുനോക്കൽ തലത്തിലേയ്ക്ക് തിരിച്ചു പോകണം എന്ന് താങ്കൾക്കുറപ്പാണോ?',
 	'visualeditor-loadwarning' => 'സെർവറിൽ നിന്നും വിവരങ്ങൾ ശേഖരിക്കുന്നതിൽ പിഴവുണ്ടായി: $1. വീണ്ടും ശ്രമിക്കണോ?',
 	'visualeditor-saveerror' => 'സെർവറിൽ വിവരങ്ങൾ ശേഖരിക്കുന്നതിൽ പിഴവുണ്ടായി: $1',
+	'visualeditor-editconflict' => 'താങ്കൾ വരുത്തിയ മാറ്റങ്ങൾ ഇടയ്ക്ക് മറ്റാരോ മാറ്റങ്ങൾ വരുത്തിയതിനാൽ സേവ് ചെയ്യാൻ കഴിയില്ല. തിരുത്തലുകൾ ഒത്തുചേരാത്തത് താങ്കൾ തന്നെ പരിഹരിക്കുന്നോ?',
 	'visualeditor-editsummary' => 'താങ്കൾ എന്താണ് മാറ്റം വരുത്തിയതെന്ന് വിവരിക്കുക',
+	'visualeditor-aliennode-tooltip' => 'ക്ഷമിക്കുക, ഈ ഘടകം കണ്ടുതിരുത്തൽ സൗകര്യമുപയോഗിച്ച് തിരുത്താനാവില്ല',
+	'tag-visualeditor' => '[[Special:Tags|ടാഗ്]]: [[Project:VisualEditor|കണ്ടുതിരുത്തൽസൗകര്യം]]',
+	'tag-visualeditor-description' => '[[Project:VisualEditor|കണ്ടുതിരുത്തൽ സൗകര്യമുപയോഗിച്ച്]] നടത്തിയ തിരുത്തൽ',
 );
 
 /** Marathi (मराठी)
