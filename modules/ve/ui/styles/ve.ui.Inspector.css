@@ -142,6 +142,10 @@ body.rtl .ve-ui-suggest-select {
 	color: #0645AD;
 }
 
+.ve-ui-suggest-item.hover {
+	background: #E5F3FF;
+}
+
 .ve-ui-suggest-item-newPage {
 	color: #BA0000;
 }

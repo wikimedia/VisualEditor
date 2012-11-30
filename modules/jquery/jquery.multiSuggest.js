@@ -169,6 +169,15 @@
 				$( this ).addClass( 'selected' );
 				select.call( this, $( this ).data( 'text' ) );
 			}
+
+			function onItemMouseenter () {
+				$( this ).addClass( 'hover' );
+			}
+
+			function onItemMouseleave () {
+				$( this ).removeClass( 'hover' );
+			}
+
 			// Adds a group to the dropdown.
 			function addGroup( name, group ) {
 				var $groupWrap,
@@ -205,7 +214,12 @@
 					$item = $( '<div>', options.doc )
 						.addClass( options.prefix + '-suggest-item' )
 						.data( 'text', group.items[i] )
-						.on( 'mousedown', onItemMousedown );
+						.on( {
+							'mousedown': onItemMousedown,
+							'mouseenter': onItemMouseenter,
+							'mouseleave': onItemMouseleave
+						} );
+
 					if ( 'itemClass' in group ) {
 						$item.addClass( group.itemClass );
 					}
