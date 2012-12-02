@@ -65,7 +65,7 @@ ve.inheritClass( ve.init.mw.Target, ve.EventEmitter );
  * @emits loadError (null, message, null)
  */
 ve.init.mw.Target.onLoad = function ( response ) {
-	var data = response['ve-parsoid'];
+	var data = response.visualeditor;
 	if ( !data && !response.error ) {
 		ve.init.mw.Target.onLoadError.call(
 			this, null, 'Invalid response in response from server', null
@@ -133,7 +133,7 @@ ve.init.mw.Target.onLoadError = function ( response, status, error ) {
  */
 ve.init.mw.Target.onSave = function ( response ) {
 	this.saving = false;
-	var data = response['ve-parsoid'];
+	var data = response.visualeditor;
 	if ( !data && !response.error ) {
 		ve.init.mw.Target.onSaveError.call( this, null, 'Invalid response from server', null );
 	} else if ( response.error ) {
@@ -186,7 +186,7 @@ ve.init.mw.Target.onSaveError = function ( response, status, error ) {
  */
 ve.init.mw.Target.onSerialize = function ( response ) {
 	this.serializing = false;
-	var data = response['ve-parsoid'];
+	var data = response.visualeditor;
 	if ( !data && !response.error ) {
 		ve.init.mw.Target.onSerializeError.call( this, null, 'Invalid response from server', null );
 	} else if ( response.error || data.result === 'error' ) {
@@ -244,7 +244,7 @@ ve.init.mw.Target.prototype.load = function () {
 	$.ajax( {
 		'url': this.apiUrl,
 		'data': {
-			'action': 've-parsoid',
+			'action': 'visualeditor',
 			'paction': 'parse',
 			'page': this.pageName,
 			'oldid': this.oldId,
@@ -289,7 +289,7 @@ ve.init.mw.Target.prototype.save = function ( dom, options ) {
 		'url': this.apiUrl,
 		'data': {
 			'format': 'json',
-			'action': 've-parsoid',
+			'action': 'visualeditor',
 			'paction': 'save',
 			'page': this.pageName,
 			'oldid': this.oldId,
@@ -386,7 +386,7 @@ ve.init.mw.Target.prototype.serialize = function ( dom, callback ) {
 	$.ajax( {
 		'url': this.apiUrl,
 		'data': {
-			'action': 've-parsoid',
+			'action': 'visualeditor',
 			'paction': 'serialize',
 			'html': $( dom ).html(),
 			'page': this.pageName,
