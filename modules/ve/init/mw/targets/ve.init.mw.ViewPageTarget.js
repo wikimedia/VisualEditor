@@ -137,7 +137,6 @@ ve.init.mw.ViewPageTarget.compatibility = {
 	}
 };
 
-/*jshint multistr: true*/
 ve.init.mw.ViewPageTarget.saveDialogTemplate = '\
 	<div class="ve-init-mw-viewPageTarget-saveDialog-title"></div>\
 	<div class="ve-init-mw-viewPageTarget-saveDialog-closeButton"></div>\
@@ -637,80 +636,103 @@ ve.init.mw.ViewPageTarget.prototype.detachToolbarSaveButton = function () {
 };
 
 /**
+ * Asynchronously provides the template for the save dialog wrapped in a
+ * plain <div> jQuery collection.
+ *
+ * @method
+ */
+ve.init.mw.ViewPageTarget.prototype.getSaveDialogHtml = function ( callback ) {
+	var $wrap = $( '<div>' ).html( this.constructor.saveDialogTemplate );
+
+	mw.user.getRights( function ( rights ) {
+		if ( ve.indexOf( 'minoredit', rights ) === -1 ) {
+			$wrap
+				.find( '.ve-init-mw-viewPageTarget-saveDialog-minorEdit-label, #ve-init-mw-viewPageTarget-saveDialog-minorEdit' )
+				.remove();
+		}
+		callback( $wrap );
+	} );
+};
+
+/**
  * Adds content and event bindings to the save dialog.
  *
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 	var viewPage = this;
-	viewPage.$saveDialog
-		.html( ve.init.mw.ViewPageTarget.saveDialogTemplate )
-		.find( '.ve-init-mw-viewPageTarget-saveDialog-title' )
-			.text( ve.msg( 'tooltip-save' ) )
-			.end()
-		.find( '.ve-init-mw-viewPageTarget-saveDialog-closeButton' )
-			.click( ve.bind( viewPage.onSaveDialogCloseButtonClick, viewPage ) )
-			.end()
-		.find( '#ve-init-mw-viewPageTarget-saveDialog-editSummary' )
-			.attr( {
-				'placeholder': ve.msg( 'visualeditor-editsummary' )
-			} )
-			.placeholder()
-			.byteLimit( viewPage.editSummaryByteLimit )
-			.on( 'keydown mouseup cut paste change focus blur', function () {
-				var $textarea = $(this),
-					$editSummaryCount = $textarea
-						.closest( '.ve-init-mw-viewPageTarget-saveDialog-body' )
-							.find( '.ve-init-mw-viewPageTarget-saveDialog-editSummaryCount' );
-				// TODO: This looks a bit weird, there is no unit in the UI, just numbers
-				// Users likely assume characters but then it seems to count down quicker
-				// than expected. Facing users with the word "byte" is bad? (bug 40035)
-				setTimeout( function () {
-					$editSummaryCount.text(
-						viewPage.editSummaryByteLimit - $.byteLength( $textarea.val() )
-					);
-				}, 0 );
-			} )
-			.end()
-		.find( '.ve-init-mw-viewPageTarget-saveDialog-editSummaryCount' )
-			.text( viewPage.editSummaryByteLimit )
-			.end()
-		.find( '.ve-init-mw-viewPageTarget-saveDialog-minorEdit-label' )
-			.text( ve.msg( 'minoredit' ) )
-			.end()
-		.find( '#ve-init-mw-viewPageTarget-saveDialog-watchList' )
-			.prop( 'checked', mw.config.get( 'wgVisualEditor' ).isPageWatched )
-			.end()
-		.find( '.ve-init-mw-viewPageTarget-saveDialog-saveButton' )
-			.on( {
-				'mousedown': function () {
-					$(this).addClass( 've-init-mw-viewPageTarget-saveDialog-saveButton-down' );
-				},
-				'mouseleave mouseup': function () {
-					$(this).removeClass( 've-init-mw-viewPageTarget-saveDialog-saveButton-down' );
-				},
-				'click': ve.bind( viewPage.onSaveDialogSaveButtonClick, viewPage )
-			} )
-			.end()
-		.find( '.ve-init-mw-viewPageTarget-saveDialog-saveButton-label' )
-			.text( ve.msg( 'savearticle' ) )
-			.end()
-		.find( '.ve-init-mw-viewPageTarget-saveDialog-license' )
-			// FIXME license text is hardcoded English
-			.html(
-				'By editing this page, you agree to irrevocably release your \
-				contributions under the CC-BY-SA 3.0 License. If you don\'t want your \
-				writing to be edited mercilessly and redistrubuted at will, then \
-				don\'t submit it here.<br/><br/>You are also confirming that you \
-				wrote this yourself, or copied it from a public domain or similar free \
-				resource. See Project:Copyright for full details of the licenses \
-				used on this site.\
-				<b>DO NOT SUBMIT COPYRIGHTED WORK WITHOUT PERMISSION!</b>'
-			);
-	viewPage.$saveDialogSaveButton = viewPage.$saveDialog
-		.find( '.ve-init-mw-viewPageTarget-saveDialog-saveButton' );
-	viewPage.$saveDialogLoadingIcon = viewPage.$saveDialog
-		.find( '.ve-init-mw-viewPageTarget-saveDialog-saving' );
+	viewPage.getSaveDialogHtml( function ( $wrap ) {
+		viewPage.$saveDialog
+			// Must not use replaceWith because that can't be used on fragement roots,
+			// plus, we want to preserve the reference and class names of the wrapper.
+			.empty().append( $wrap.contents() )
+			.find( '.ve-init-mw-viewPageTarget-saveDialog-title' )
+				.text( ve.msg( 'tooltip-save' ) )
+				.end()
+			.find( '.ve-init-mw-viewPageTarget-saveDialog-closeButton' )
+				.click( ve.bind( viewPage.onSaveDialogCloseButtonClick, viewPage ) )
+				.end()
+			.find( '#ve-init-mw-viewPageTarget-saveDialog-editSummary' )
+				.attr( {
+					'placeholder': ve.msg( 'visualeditor-editsummary' )
+				} )
+				.placeholder()
+				.byteLimit( viewPage.editSummaryByteLimit )
+				.on( 'keydown mouseup cut paste change focus blur', function () {
+					var $textarea = $(this),
+						$editSummaryCount = $textarea
+							.closest( '.ve-init-mw-viewPageTarget-saveDialog-body' )
+								.find( '.ve-init-mw-viewPageTarget-saveDialog-editSummaryCount' );
+					// TODO: This looks a bit weird, there is no unit in the UI, just numbers
+					// Users likely assume characters but then it seems to count down quicker
+					// than expected. Facing users with the word "byte" is bad? (bug 40035)
+					setTimeout( function () {
+						$editSummaryCount.text(
+							viewPage.editSummaryByteLimit - $.byteLength( $textarea.val() )
+						);
+					}, 0 );
+				} )
+				.end()
+			.find( '.ve-init-mw-viewPageTarget-saveDialog-editSummaryCount' )
+				.text( viewPage.editSummaryByteLimit )
+				.end()
+			.find( '.ve-init-mw-viewPageTarget-saveDialog-minorEdit-label' )
+				.text( ve.msg( 'minoredit' ) )
+				.end()
+			.find( '#ve-init-mw-viewPageTarget-saveDialog-watchList' )
+				.prop( 'checked', mw.config.get( 'wgVisualEditor' ).isPageWatched )
+				.end()
+			.find( '.ve-init-mw-viewPageTarget-saveDialog-saveButton' )
+				.on( {
+					'mousedown': function () {
+						$(this).addClass( 've-init-mw-viewPageTarget-saveDialog-saveButton-down' );
+					},
+					'mouseleave mouseup': function () {
+						$(this).removeClass( 've-init-mw-viewPageTarget-saveDialog-saveButton-down' );
+					},
+					'click': ve.bind( viewPage.onSaveDialogSaveButtonClick, viewPage )
+				} )
+				.end()
+			.find( '.ve-init-mw-viewPageTarget-saveDialog-saveButton-label' )
+				.text( ve.msg( 'savearticle' ) )
+				.end()
+			.find( '.ve-init-mw-viewPageTarget-saveDialog-license' )
+				// FIXME license text is hardcoded English
+				.html(
+					'By editing this page, you agree to irrevocably release your \
+					contributions under the CC-BY-SA 3.0 License. If you don\'t want your \
+					writing to be edited mercilessly and redistrubuted at will, then \
+					don\'t submit it here.<br/><br/>You are also confirming that you \
+					wrote this yourself, or copied it from a public domain or similar free \
+					resource. See Project:Copyright for full details of the licenses \
+					used on this site.\
+					<b>DO NOT SUBMIT COPYRIGHTED WORK WITHOUT PERMISSION!</b>'
+				);
+		viewPage.$saveDialogSaveButton = viewPage.$saveDialog
+			.find( '.ve-init-mw-viewPageTarget-saveDialog-saveButton' );
+		viewPage.$saveDialogLoadingIcon = viewPage.$saveDialog
+			.find( '.ve-init-mw-viewPageTarget-saveDialog-saving' );
+	} );
 	// Hook onto the 'watch' event on by mediawiki.page.watch.ajax.js
 	// Triggered when mw.page.watch.updateWatchLink(link, action) is called
 	$( '#ca-watch, #ca-unwatch' )
@@ -732,9 +754,9 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 ve.init.mw.ViewPageTarget.prototype.attachSaveDialog = function () {
 	// Update the minoredit and watchthis messages (which came through the message module)
 	this.$saveDialog.find( '.ve-init-mw-viewPageTarget-saveDialog-minorEdit-label' )
-		.html( ve.msg( 'minoredit' ) );
+		.text( ve.msg( 'minoredit' ) );
 	this.$saveDialog.find( '.ve-init-mw-viewPageTarget-saveDialog-watchList-label' )
-		.html( ve.msg( 'watchthis' ) );
+		.text( ve.msg( 'watchthis' ) );
 	this.$toolbarWrapper.find( '.ve-ui-toolbar' ).append( this.$saveDialog );
 };
 

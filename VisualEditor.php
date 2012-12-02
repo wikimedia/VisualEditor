@@ -107,14 +107,16 @@ $wgResourceModules += array(
 		),
 		'dependencies' => array(
 			'ext.visualEditor.base',
-			'mediawiki.util',
-			'mediawiki.Uri',
-			'mediawiki.Title',
-			'jquery.placeholder',
-			'jquery.client',
-			'jquery.byteLimit',
 			'jquery.byteLength',
-			'user.tokens'
+			'jquery.byteLimit',
+			'jquery.client',
+			'jquery.placeholder',
+			'mediawiki.Title',
+			'mediawiki.Uri',
+			'mediawiki.user',
+			'mediawiki.util',
+			'user.options',
+			'user.tokens',
 		),
 		'messages' => array(
 			'minoredit',
