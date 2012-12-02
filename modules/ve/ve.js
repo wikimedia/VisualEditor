@@ -208,9 +208,9 @@
 	ve.isArray = $.isArray;
 
 	/**
-	 * Create a function calls the given function in a certain context.
+	 * Create a function that calls the given function in a certain context.
 	 * If a function does not have an explicit context, it is determined at
-	 * executin time based on how it is invoked (e.g. object member, call/apply,
+	 * execution time based on how it is invoked (e.g. object member, call/apply,
 	 * global scope, etc.).
 	 * Performance optimization: http://jsperf.com/function-bind-shim-perf
 	 *
@@ -676,6 +676,8 @@
 	 * @param {Mixed} [...] Message parameters
 	 */
 	ve.msg = function () {
+		// Avoid using ve.bind because ve.init.platform doesn't exist yet.
+		// TODO: Fix dependency issues between ve.js and ve.init.platform
 		return ve.init.platform.getMessage.apply( ve.init.platform, arguments );
 	};
 
