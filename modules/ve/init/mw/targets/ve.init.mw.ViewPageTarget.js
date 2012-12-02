@@ -18,9 +18,7 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	var currentUri = new mw.Uri( window.location.toString() );
 
 	// Parent constructor
-	ve.init.mw.Target.call(
-		this, mw.config.get( 'wgRelevantPageName' ), currentUri.query.oldid
-	);
+	ve.init.mw.Target.call( this, mw.config.get( 'wgRelevantPageName' ) );
 
 	// Properties
 	this.$document = null;
@@ -263,11 +261,11 @@ ve.init.mw.ViewPageTarget.prototype.onLoadError = function ( response, status ) 
  * @param {HTMLElement} html Rendered HTML from server
  */
 ve.init.mw.ViewPageTarget.prototype.onSave = function ( html ) {
-	if ( Number( mw.config.get( 'wgArticleId', 0 ) ) === 0 || this.oldId ) {
+	if ( !this.pageExists || this.pageRevId ) {
 		// This is a page creation, refresh the page
 		this.teardownBeforeUnloadHandler();
 		window.location.href = this.viewUri.extend( {
-			'venotify': this.oldId ? 'saved' : 'created'
+			'venotify': this.pageExists ? 'saved' : 'created'
 		} );
 	} else {
 		// Update watch link to match 'watch checkbox' in save dialog.
@@ -506,7 +504,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
 		return;
 	}
 
-	action = mw.config.get( 'wgArticleId', 0 ) === 0 ? 'create' : 'edit';
+	action = this.pageExists ? 'edit' : 'create';
 	pTabsId = $( '#p-views' ).length ? 'p-views' : 'p-cactions';
 
 	// Add independent ve-edit tab.

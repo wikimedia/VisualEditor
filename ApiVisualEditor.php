@@ -13,11 +13,6 @@ class ApiVisualEditor extends ApiBase {
 		global $wgVisualEditorParsoidURL, $wgVisualEditorParsoidPrefix,
 			$wgVisualEditorParsoidTimeout;
 		if ( $title->exists() ) {
-			// Don't allow race condition where the latest revision ID changes while we are waiting
-			// for a response from Parsoid
-			if ( !isset( $parserParams['oldid'] ) ) {
-				$parserParams['oldid'] = $title->getLatestRevId();
-			}
 			$revision = Revision::newFromId( $parserParams['oldid'] );
 			if ( $content === false || $revision === null ) {
 				return false;
@@ -153,6 +148,10 @@ class ApiVisualEditor extends ApiBase {
 		$parserParams = array();
 		if ( is_numeric( $params['oldid'] ) ) {
 			$parserParams['oldid'] = intval( $params['oldid'] );
+		} else {
+			// Don't allow race condition where the latest revision ID changes while we are waiting
+			// for a response from Parsoid
+			$parserParams['oldid'] = $page->getLatestRevId();
 		}
 
 		if ( $params['paction'] === 'parse' ) {
