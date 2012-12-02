@@ -495,7 +495,7 @@ ve.init.mw.ViewPageTarget.prototype.tearDownSurface = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
-	var action, pTabsId, $caSource, $caEdit, caVeEdit, caVeEditNextnode;
+	var action, pTabsId, $caSource, $caEdit, caVeEdit, caVeEditNextnode, uriClone;
 	$caEdit = $( '#ca-edit' );
 	$caSource = $( '#ca-viewsource' );
 	caVeEditNextnode = $caEdit.next().get( 0 );
@@ -569,7 +569,17 @@ ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
 
 	// If there got here via veaction=edit, hide it from the URL.
 	if ( this.currentUri.query.veaction === 'edit' && window.history.replaceState ) {
-		window.history.replaceState( null, document.title, this.viewUri );
+		// Remove the veaction query parameter, but don't affect the original mw.Uri instance
+		uriClone = this.currentUri.clone();
+		delete uriClone.query.veaction;
+
+		// If there are other query parameters, set the url to the current one
+		// (with veaction removed). Otherwise use the canonical style view url (bug 42553).
+		if ( ve.getObjectValues( uriClone.query ).length ) {
+			window.history.replaceState( null, document.title, uriClone );
+		} else {
+			window.history.replaceState( null, document.title, this.viewUri );
+		}
 	}
 };
 
