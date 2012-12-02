@@ -650,10 +650,14 @@ ve.init.mw.ViewPageTarget.prototype.detachToolbarSaveButton = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.getSaveDialogHtml = function ( callback ) {
-	var $wrap = $( '<div>' ).html( this.constructor.saveDialogTemplate );
+	var viewPage = this,
+		$wrap = $( '<div>' ).html( this.constructor.saveDialogTemplate );
 
 	mw.user.getRights( function ( rights ) {
-		if ( ve.indexOf( 'minoredit', rights ) === -1 ) {
+		// MediaWiki only allows usage of minor flag when editing an existing page
+		// and the user has the right to use the feature.
+		// If either is not the case, remove it from the form.
+		if ( !viewPage.pageExists || ve.indexOf( 'minoredit', rights ) === -1 ) {
 			$wrap
 				.find( '.ve-init-mw-viewPageTarget-saveDialog-minorEdit-label, #ve-init-mw-viewPageTarget-saveDialog-minorEdit' )
 				.remove();
