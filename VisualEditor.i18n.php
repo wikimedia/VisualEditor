@@ -431,6 +431,9 @@ $messages['es'] = array(
 	'visualeditor-notification-saved' => 'Tus cambios en $1 han sido guardados',
 	'visualeditor-notification-created' => '$1 ha sido creado',
 	'visualeditor-ca-editsource' => 'Editar fuente',
+	'visualeditor-ca-ve-edit' => 'Editor visual',
+	'visualeditor-ca-ve-create' => 'Editor visual',
+	'tooltip-ca-ve-edit' => 'Editar esta página con el editor visual VisualEditor',
 	'visualeditor-inspector-title' => 'Inspeccionar',
 	'visualeditor-linkinspector-title' => 'Hiperenlace',
 	'visualeditor-linkinspector-label-pagetitle' => 'Título de la página',
@@ -459,9 +462,10 @@ $messages['es'] = array(
 	'visualeditor-viewpage-savewarning' => '¿Estás seguro que quieres volver al modo de visualización sin guardar primero?',
 	'visualeditor-loadwarning' => 'Error al cargar los datos del servidor: $1. ¿Le gustaría volver a intentarlo?',
 	'visualeditor-saveerror' => 'Error al guardar datos en el servidor: $1.',
+	'visualeditor-editconflict' => 'No se pudieran guardar sus cambios debido a un conflicto de edición. ¿Le gustaría resolver el conflicto manualmente?',
 	'visualeditor-editsummary' => 'Describe lo que has cambiado',
 	'visualeditor-aliennode-tooltip' => 'Lo sentimos, este elemento no se puede editar mediante el editor visual',
-	'tag-visualeditor' => '[[Special:Etiquetas|Etiqueta]]: [[Project:VisualEditor|VisualEditor]]', # Fuzzy
+	'tag-visualeditor' => '[[Special:Tags|Etiqueta]]: [[Project:VisualEditor|Editor visual]]',
 	'tag-visualeditor-description' => 'Edición realizada con [[Project:VisualEditor|VisualEditor]]',
 );
 
@@ -683,6 +687,9 @@ $messages['he'] = array(
 	'visualeditor-notification-saved' => 'השינויים שלך לדף $1 לא נשמרו.',
 	'visualeditor-notification-created' => 'הדף $1 נוצר.',
 	'visualeditor-ca-editsource' => 'עריכת קוד מקור',
+	'visualeditor-ca-ve-edit' => 'עורך חזותי',
+	'visualeditor-ca-ve-create' => 'עורך חזותי',
+	'tooltip-ca-ve-edit' => 'עריכה באמצעות עורך חזותי',
 	'visualeditor-inspector-title' => 'חקירה',
 	'visualeditor-linkinspector-title' => 'היפר־קישור',
 	'visualeditor-linkinspector-label-pagetitle' => 'כותרת דף',
@@ -711,8 +718,11 @@ $messages['he'] = array(
 	'visualeditor-viewpage-savewarning' => 'האם ברצונך לשוב למצב תצוגה ללא שמירה?',
 	'visualeditor-loadwarning' => 'שגיאה בטעינת מידע מהשרת: $1. האם לנסות שוב?',
 	'visualeditor-saveerror' => 'שגיאה בשמירת נתונים לשרת: $1.',
+	'visualeditor-editconflict' => 'השינויים שלך לא נשמרו בגלל התנגשות עריכה. האם ברצונך לפתור את ההתנגשות ידנית?',
 	'visualeditor-editsummary' => 'נא לתאר מה שינית',
 	'visualeditor-aliennode-tooltip' => 'סליחה, אי־אפשר לערוך את המרכיב הזה באמצעות העורך החזותי',
+	'tag-visualeditor' => '[[Special:Tags|תג]]: [[Project:VisualEditor|עורך חזותי]]',
+	'tag-visualeditor-description' => 'העריכה נעשתה באמצעות [[Project:VisualEditor|העורך החזותי]]',
 );
 
 /** Hindi (हिन्दी)
