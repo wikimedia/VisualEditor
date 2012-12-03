@@ -38,9 +38,6 @@ body {
 	-webkit-box-shadow: 0 0.25em 1.5em 0 #ddd;
 	-moz-box-shadow: 0 0.25em 1.5em 0 #ddd;
 	box-shadow: 0 0.25em 1.5em 0 #ddd;
-	-webkit-border-radius: 0.5em;
-	-moz-border-radius: 0.5em;
-	-o-border-radius: 0.5em;
 	border-radius: 0.5em;
 }
 
@@ -53,9 +50,6 @@ body {
 .ve-ui-toolbar {
 	border: solid 1px #ccc;
 	position: relative;
-	-webkit-border-radius: 0;
-	-moz-border-radius: 0;
-	-o-border-radius: 0;
 	border-radius: 0;
 	-webkit-border-top-right-radius: 0.25em;
 	-moz-border-top-right-radius: 0.25em;
@@ -83,9 +77,6 @@ body {
 .ve-ui-toolbar-wrapper.float .ve-ui-toolbar {
 	top: 0;
 	position: fixed;
-	-webkit-border-radius: 0;
-	-moz-border-radius: 0;
-	-o-border-radius: 0;
 	border-radius: 0;
 	z-index: 100;
 	border-top: none;

@@ -9,9 +9,6 @@
 	display: none;
 	position: absolute;
 	border: solid 1px #ccc;
-	-webkit-border-radius: 0.25em;
-	-moz-border-radius: 0.25em;
-	-o-border-radius: 0.25em;
 	border-radius: 0.25em;
 	background-color: #fff;
 	-webkit-box-shadow: 0 0.25em 1em 0 rgba(0, 0, 0, 0.25);

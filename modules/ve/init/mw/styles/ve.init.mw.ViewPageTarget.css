@@ -77,9 +77,6 @@
 .ve-init-mw-viewPageTarget-saveDialog-saveButton {
 	display: inline-block;
 	border: solid 1px #c3e59a;
-	-webkit-border-radius: 0.25em;
-	-moz-border-radius: 0.25em;
-	-o-border-radius: 0.25em;
 	border-radius: 0.25em;
 	cursor: pointer;
 	vertical-align: top;
@@ -182,9 +179,6 @@
 	font-family: sans-serif;
 	position: absolute;
 	border: solid 1px #ccc;
-	-webkit-border-radius: 0.25em;
-	-moz-border-radius: 0.25em;
-	-o-border-radius: 0.25em;
 	border-radius: 0.25em;
 	background-color: #fff;
 	-webkit-box-shadow: 0 0.15em 0.5em 0 rgba(0, 0, 0, 0.2);
@@ -224,9 +218,6 @@
 	border: solid 1px #cccccc;
 	border-bottom: none;
 	padding: 0.5em;
-	-webkit-border-radius: 0.25em 0.25em 0 0;
-	-moz-border-radius: 0.25em 0.25em 0 0;
-	-o-border-radius: 0.25em 0.25em 0 0;
 	border-radius: 0.25em 0.25em 0 0;
 }
 
@@ -235,9 +226,6 @@
 	background-color: #f7f7f7;
 	margin-bottom: 1em;
 	border: solid 1px #cccccc;
-	-webkit-border-radius: 0 0 0.25em 0.25em;
-	-moz-border-radius: 0 0 0.25em 0.25em;
-	-o-border-radius: 0 0 0.25em 0.25em;
 	border-radius: 0 0 0.25em 0.25em;
 }
 
