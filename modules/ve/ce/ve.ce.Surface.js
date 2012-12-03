@@ -82,6 +82,16 @@ ve.ce.Surface.static.$phantomTemplate = $( '<div class="ve-ce-phantom" draggable
 
 /* Methods */
 
+/**
+ * Destroy the surface, removing all DOM elements.
+ *
+ * @method
+ * @returns {ve.ui.Context} Context user interface
+ */
+ve.ce.Surface.prototype.destroy = function () {
+	this.$.remove();
+};
+
 ve.ce.Surface.prototype.handleInsertion = function () {
 	var slug, data, range, annotations, insertionAnnotations, placeholder,
 		selection = this.model.getSelection();

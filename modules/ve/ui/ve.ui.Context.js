@@ -161,6 +161,16 @@ ve.ui.Context.prototype.getFrame = function () {
 };
 
 /**
+ * Destroy the context, removing all DOM elements.
+ *
+ * @method
+ * @returns {ve.ui.Context} Context user interface
+ */
+ve.ui.Context.prototype.destroy = function () {
+	this.$.remove();
+};
+
+/**
  * Updates the context menu.
  *
  * @method

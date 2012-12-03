@@ -476,16 +476,13 @@ ve.init.mw.ViewPageTarget.prototype.tearDownSurface = function () {
 	// Update UI
 	this.$document.blur();
 	this.$document = null;
-	this.surface.$.empty().detach();
-	$( '.ve-ui-context' ).remove();
 	this.detachToolbar();
 	this.hideSpinner();
 	this.showPageContent();
 	this.restorePageTitle();
 	this.showTableOfContents();
-	// Remove handler if it's still active
-	this.surface.getModel().removeListener( 'transact', this.proxiedOnSurfaceModelTransact );
 	// Destroy editor
+	this.surface.destroy();
 	this.surface = null;
 	this.active = false;
 };
