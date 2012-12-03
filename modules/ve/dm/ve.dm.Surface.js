@@ -20,6 +20,7 @@ ve.dm.Surface = function VeDmSurface( doc ) {
 	// Properties
 	this.documentModel = doc;
 	this.selection = new ve.Range( 0, 0 );
+	this.selectedNodes = {};
 	this.smallStack = [];
 	this.bigStack = [];
 	this.undoIndex = 0;
@@ -184,6 +185,9 @@ ve.dm.Surface.prototype.getFragment = function ( range, noAutoSelect ) {
  */
 ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 	var i, len, offset, annotations,
+		selectedNodes = {},
+		selectionChange = false,
+		nodeChange = false,
 		contextChange = false;
 
 	// Process transactions and apply selection changes
@@ -203,23 +207,28 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 		this.emit( 'unlock' );
 	}
 
-	// Only emit a select event if the selection actually changed
-	if ( selection && ( !this.selection || !this.selection.equals( selection ) ) ) {
-		selection.normalize();
-		// Detect context change
+	if ( selection ) {
+		// Detect if selection range changed
+		if ( !this.selection || !this.selection.equals( selection ) ) {
+			selection.normalize();
+			selectionChange = true;
+		}
+		// Detect if selected nodes changed
+		selectedNodes.start = this.documentModel.getNodeFromOffset( selection.start );
+		if ( selection.getLength() ) {
+			selectedNodes.end = this.documentModel.getNodeFromOffset( selection.end );
+		}
 		if (
-			this.documentModel.getNodeFromOffset( selection.start ) !==
-				this.documentModel.getNodeFromOffset( this.selection.start ) ||
-			(
-				selection.getLength() &&
-				this.documentModel.getNodeFromOffset( selection.end ) !==
-					this.documentModel.getNodeFromOffset( this.selection.end )
-			)
+			selectedNodes.start !== this.selectedNodes.start ||
+			selectedNodes.end !== this.selectedNodes.end
 		) {
-			contextChange = true;
+			nodeChange = true;
+		}
+		this.selectedNodes = selectedNodes;
+		if ( selectionChange || nodeChange ) {
+			this.emit( 'select', this.selection.clone() );
 		}
 		this.selection = selection;
-		this.emit( 'select', this.selection.clone() );
 	}
 
 	// Only emit a transact event if transactions were actually processed
