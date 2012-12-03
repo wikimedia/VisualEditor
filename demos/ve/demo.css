@@ -35,8 +35,6 @@ body {
 .ve-surface {
 	margin: 2em;
 	margin-top: 0;
-	-webkit-box-shadow: 0 0.25em 1.5em 0 #ddd;
-	-moz-box-shadow: 0 0.25em 1.5em 0 #ddd;
 	box-shadow: 0 0.25em 1.5em 0 #ddd;
 	border-radius: 0.5em;
 }

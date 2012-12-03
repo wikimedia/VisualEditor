@@ -58,15 +58,11 @@
 	background-image: url(images/fade-down.png);
 	background-position: left top;
 	background-repeat: repeat-x;
-	-webkit-box-shadow: inset 0 0.07em 0.07em 0 rgba(0, 0, 0, 0.07);
-	-moz-box-shadow: inset 0 0.07em 0.07em 0 rgba(0, 0, 0, 0.07);
 	box-shadow: inset 0 0.07em 0.07em 0 rgba(0, 0, 0, 0.07);
 }
 
 .ve-ui-buttonTool-disabled:active {
 	background-image: none;
-	-webkit-box-shadow: none;
-	-moz-box-shadow: none;
 	box-shadow: none;
 }
 
@@ -84,8 +80,6 @@
 	border-color: #ddd;
 	border-radius: 0.25em;
 	background-color: white;
-	-webkit-box-shadow: inset 0 0.07em 0.07em 0 rgba(0, 0, 0, 0.07);
-	-moz-box-shadow: inset 0 0.07em 0.07em 0 rgba(0, 0, 0, 0.07);
 	box-shadow: inset 0 0.07em 0.07em 0 rgba(0, 0, 0, 0.07);
 }
 

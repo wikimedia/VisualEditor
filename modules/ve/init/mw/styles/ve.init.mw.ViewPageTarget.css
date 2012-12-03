@@ -54,8 +54,6 @@
 	padding: 0 0.75em 0 0.75em;
 	border-radius: 0.25em;
 	background-color: #fff;
-	-webkit-box-shadow: 0 0.15em 0.5em 0 rgba(0, 0, 0, 0.2);
-	-moz-box-shadow: 0 0.15em 0.5em 0 rgba(0, 0, 0, 0.2);
 	box-shadow: 0 0.15em 0.5em 0 rgba(0, 0, 0, 0.2);
 	z-index: 3;
 }
@@ -136,9 +134,7 @@
 .ve-init-mw-viewPageTarget-saveDialog-saveButton:active,
 .ve-init-mw-viewPageTarget-saveDialog-saveButton-down {
 	border-color: #ddd;
-	-webkit-box-shadow: inset 0px 1px 4px 0px rgba(0, 0, 0, 0.07);
-	-moz-box-shadow: inset 0px 1px 4px 0px rgba(0, 0, 0, 0.07);
-	box-shadow: inset 0px 1px 4px 0px rgba(0, 0, 0, 0.07);
+	box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.07);
 }
 
 .ve-init-mw-viewPageTarget-toolbar-saveButton-disabled,
@@ -181,8 +177,6 @@
 	border: solid 1px #ccc;
 	border-radius: 0.25em;
 	background-color: #fff;
-	-webkit-box-shadow: 0 0.15em 0.5em 0 rgba(0, 0, 0, 0.2);
-	-moz-box-shadow: 0 0.15em 0.5em 0 rgba(0, 0, 0, 0.2);
 	box-shadow: 0 0.15em 0.5em 0 rgba(0, 0, 0, 0.2);
 	padding: 0.75em;
 	padding-top: 2.5em;

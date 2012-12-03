@@ -30,8 +30,6 @@
 	border: solid 1px #ccc;
 	border-radius: 0.25em;
 	background-color: #fff;
-	-webkit-box-shadow: 0 0.15em 0.5em 0 rgba(0, 0, 0, 0.2);
-	-moz-box-shadow: 0 0.15em 0.5em 0 rgba(0, 0, 0, 0.2);
 	box-shadow: 0 0.15em 0.5em 0 rgba(0, 0, 0, 0.2);
 }
 
