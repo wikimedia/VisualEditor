@@ -25,6 +25,10 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	this.$spinner = $( '<div class="ve-init-mw-viewPageTarget-loadingSpinner"></div>' );
 	this.$toolbarSaveButton =
 		$( '<div class="ve-init-mw-viewPageTarget-toolbar-saveButton"></div>' );
+	this.$toolbarEditNotices =
+		$( '<div class="ve-init-mw-viewPageTarget-toolbar-editNotices"></div>' );
+	this.$toolbarEditNoticesButton =
+		$( '<div class="ve-init-mw-viewPageTarget-toolbar-editNoticesButton"></div>' );
 	this.$saveDialog =
 		$( '<div class="ve-init-mw-viewPageTarget-saveDialog"></div>' );
 	this.$saveDialogSaveButton = null;
@@ -89,8 +93,6 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 		this.setupSkinTabs();
 		this.setupSectionEditLinks();
 		if ( this.isViewPage ) {
-			this.setupToolbarSaveButton();
-			this.setupSaveDialog();
 			if ( currentUri.query.veaction === 'edit' ) {
 				this.activate();
 			}
@@ -206,7 +208,8 @@ ve.init.mw.ViewPageTarget.prototype.deactivate = function ( override ) {
 			this.restoreSkinTabs();
 			this.restoreSiteNotice();
 			this.hideSpinner();
-			this.detachToolbarSaveButton();
+			this.tearDownToolbarButtons();
+			this.detachToolbarButtons();
 			this.detachSaveDialog();
 			this.tearDownSurface();
 			this.showTableOfContents();
@@ -224,7 +227,10 @@ ve.init.mw.ViewPageTarget.prototype.deactivate = function ( override ) {
 ve.init.mw.ViewPageTarget.prototype.onLoad = function ( dom ) {
 	this.edited = false;
 	this.setUpSurface( dom );
-	this.attachToolbarSaveButton();
+	this.setupToolbarEditNotices();
+	this.setupToolbarButtons();
+	this.setupSaveDialog();
+	this.attachToolbarButtons();
 	this.attachSaveDialog();
 	this.restoreScrollPosition();
 	this.restoreEditSection();
@@ -263,7 +269,7 @@ ve.init.mw.ViewPageTarget.prototype.onLoadError = function ( response, status ) 
 ve.init.mw.ViewPageTarget.prototype.onSave = function ( html ) {
 	if ( !this.pageExists || this.pageRevId ) {
 		// This is a page creation, refresh the page
-		this.teardownBeforeUnloadHandler();
+		this.tearDownBeforeUnloadHandler();
 		window.location.href = this.viewUri.extend( {
 			'venotify': this.pageExists ? 'saved' : 'created'
 		} );
@@ -284,7 +290,7 @@ ve.init.mw.ViewPageTarget.prototype.onSave = function ( html ) {
 		this.hideSaveDialog();
 		this.resetSaveDialog();
 		this.replacePageContent( html );
-		this.teardownBeforeUnloadHandler();
+		this.tearDownBeforeUnloadHandler();
 		this.deactivate( true );
 		mw.util.jsMessage( ve.msg( 'visualeditor-notification-saved', this.pageName ) );
 	}
@@ -380,6 +386,16 @@ ve.init.mw.ViewPageTarget.prototype.onToolbarSaveButtonClick = function () {
 };
 
 /**
+ * Handles clicks on the edit notices button in the toolbar.
+ *
+ * @method
+ * @param {jQuery.Event} e
+ */
+ve.init.mw.ViewPageTarget.prototype.onToolbarEditNoticesClick = function () {
+	this.$toolbarEditNotices.fadeToggle( 'fast' );
+};
+
+/**
  * Handles the first transaction in the surface model.
  *
  * This handler is removed the first time it's used, but added each time the surface is setup.
@@ -431,6 +447,24 @@ ve.init.mw.ViewPageTarget.prototype.getSaveOptions = function () {
  */
 ve.init.mw.ViewPageTarget.prototype.onSaveDialogCloseButtonClick = function () {
 	this.hideSaveDialog();
+};
+
+/**
+ * Gets a list of edit notices.
+ *
+ * @method
+ * @returns {String[]} HTML strings for each edit notice
+ */
+ve.init.mw.ViewPageTarget.prototype.setupToolbarEditNotices = function () {
+	var key;
+	this.$toolbarEditNotices.empty();
+	for ( key in this.editNotices ) {
+		this.$toolbarEditNotices.append(
+			$( '<div>' )
+				.addClass( 've-init-mw-viewPageTarget-toolbar-editNotices-notice' )
+				.attr( 'rel', key ).html( this.editNotices[key] )
+		);
+	}
 };
 
 /**
@@ -602,11 +636,13 @@ ve.init.mw.ViewPageTarget.prototype.setupSectionEditLinks = function () {
 };
 
 /**
- * Adds content and event bindings to the save button.
+ * Adds content and event bindings to toolbar buttons.
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.setupToolbarSaveButton = function () {
+ve.init.mw.ViewPageTarget.prototype.setupToolbarButtons = function () {
+	var editNoticeCount = this.$toolbarEditNotices
+		.find( '.ve-init-mw-viewPageTarget-toolbar-editNotices-notice' ).length;
 	this.$toolbarSaveButton
 		.append(
 			$( '<span class="ve-init-mw-viewPageTarget-toolbar-saveButton-label"></span>' )
@@ -623,6 +659,28 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarSaveButton = function () {
 			},
 			'click': ve.bind( this.onToolbarSaveButtonClick, this )
 		} );
+	if ( editNoticeCount ) {
+		this.$toolbarEditNoticesButton
+			.addClass( 've-ui-icon-alert' )
+			.append(
+				$( '<span>' )
+					.addClass( 've-init-mw-viewPageTarget-toolbar-editNoticesButton-label' )
+					.text( ve.msg( 'visualeditor-editnotices-button', editNoticeCount ) )
+			)
+			.append( this.$toolbarEditNotices )
+			.click( ve.bind( this.onToolbarEditNoticesClick, this ) );
+		this.$toolbarEditNotices.fadeIn( 'fast' );
+	}
+};
+
+/**
+ * Removes content and event bindings from toolbar buttons.
+ *
+ * @method
+ */
+ve.init.mw.ViewPageTarget.prototype.tearDownToolbarButtons = function () {
+	this.$toolbarSaveButton.empty().off( 'click' );
+	this.$toolbarEditNoticesButton.empty().off( 'click' );
 };
 
 /**
@@ -630,8 +688,10 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarSaveButton = function () {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.attachToolbarSaveButton = function () {
-	$( '.ve-ui-toolbar .ve-ui-actions' ).append( this.$toolbarSaveButton );
+ve.init.mw.ViewPageTarget.prototype.attachToolbarButtons = function () {
+	$( '.ve-ui-toolbar .ve-ui-actions' )
+		.append( this.$toolbarEditNoticesButton )
+		.append( this.$toolbarSaveButton );
 };
 
 /**
@@ -639,8 +699,9 @@ ve.init.mw.ViewPageTarget.prototype.attachToolbarSaveButton = function () {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.detachToolbarSaveButton = function () {
+ve.init.mw.ViewPageTarget.prototype.detachToolbarButtons = function () {
 	this.$toolbarSaveButton.detach();
+	this.$toolbarEditNoticesButton.detach();
 };
 
 /**
@@ -889,6 +950,7 @@ ve.init.mw.ViewPageTarget.prototype.hideTableOfContents = function () {
  */
 ve.init.mw.ViewPageTarget.prototype.showSaveDialog = function () {
 	var viewPage = this;
+	this.$toolbarEditNotices.fadeOut( 'fast' );
 	this.unlockSaveDialogSaveButton();
 	this.$saveDialogLoadingIcon.hide();
 	this.$saveDialog.fadeIn( 'fast' ).find( 'textarea' ).eq( 0 ).focus();
@@ -1150,7 +1212,7 @@ ve.init.mw.ViewPageTarget.prototype.setupBeforeUnloadHandler = function () {
  *
  * @method
  */
-ve.init.mw.ViewPageTarget.prototype.teardownBeforeUnloadHandler = function () {
+ve.init.mw.ViewPageTarget.prototype.tearDownBeforeUnloadHandler = function () {
 	// Restore whatever previous onbeforeload hook existed
 	window.onbeforeunload = this.onBeforeUnloadFallback;
 };

@@ -139,6 +139,7 @@ $wgResourceModules += array(
 			'visualeditor-ca-editsource',
 			'visualeditor-loadwarning',
 			'visualeditor-editsummary',
+			'visualeditor-editnotices-button'
 		),
 	),
 	'ext.visualEditor.base' => $wgVisualEditorResourceTemplate + array(

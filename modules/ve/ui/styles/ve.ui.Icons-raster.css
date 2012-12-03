@@ -5,6 +5,11 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
+.ve-ui-icon-alert {
+	/* @embed */
+	background-image: url(images/icons/alert.png);
+}
+
 .ve-ui-icon-down {
 	/* @embed */
 	background-image: url(images/icons/down.png);

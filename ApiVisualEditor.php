@@ -156,10 +156,13 @@ class ApiVisualEditor extends ApiBase {
 
 		if ( $params['paction'] === 'parse' ) {
 			$parsed = $this->getHTML( $page, $parserParams );
+			$notices = $page->getEditNotices();
 			if ( $parsed === false ) {
 				$this->dieUsage( 'Error contacting the Parsoid server', 'parsoidserver' );
 			} else {
-				$result = array_merge( array( 'result' => 'success' ), $parsed );
+				$result = array_merge(
+					array( 'result' => 'success', 'notices' => $notices ), $parsed
+				);
 			}
 		} else if ( $params['paction'] === 'serialize' ) {
 			if ( $params['html'] === null ) {
@@ -210,7 +213,6 @@ class ApiVisualEditor extends ApiBase {
 					'diff' => $diff
 				);
 			}
-
 		}
 
 		$this->getResult()->addValue( null, $this->getModuleName(), $result );
