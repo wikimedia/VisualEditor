@@ -69,9 +69,6 @@
 	background-color: #fff;
 	border: solid 1px #ccc;
 	padding: 0.5em;
-	-webkit-border-radius: 0.25em;
-	-moz-border-radius: 0.25em;
-	-o-border-radius: 0.25em;
 	border-radius: 0.25em;
 }
 .ve-ui-inspector form input:focus {
@@ -108,9 +105,6 @@
 	font-size: 0.8em;
 	z-index: 101;
 	border: solid 1px #ccc;
-	-webkit-border-radius: 0 0 0.25em 0.25em;
-	-moz-border-radius: 0 0 0.25em 0.25em;
-	-o-border-radius: 0 0 0.25em 0.25em;
 	border-radius: 0 0 0.25em 0.25em;
 	-webkit-box-shadow: 0 0.15em 1em 0 rgba(0, 0, 0, 0.2);
 	-moz-box-shadow: 0 0.15em 1em 0 rgba(0, 0, 0, 0.2);
