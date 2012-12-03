@@ -496,9 +496,10 @@ ve.init.mw.ViewPageTarget.prototype.tearDownSurface = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
-	var action, pTabsId, $caSource, $caEdit, caVeEdit;
+	var action, pTabsId, $caSource, $caEdit, caVeEdit, caVeEditNextnode;
 	$caEdit = $( '#ca-edit' );
 	$caSource = $( '#ca-viewsource' );
+	caVeEditNextnode = $caEdit.next().get( 0 );
 
 	if ( !$caEdit.length || $caSource.length ) {
 		// If there is no edit tab or a view-source tab,
@@ -525,7 +526,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
 			'ca-ve-edit',
 			ve.msg( 'tooltip-ca-ve-edit' ),
 			ve.msg( 'accesskey-ca-ve-edit' ),
-			'#ca-history'
+			caVeEditNextnode
 		);
 
 	// Replace edit with ve version, add editsource link.
@@ -555,7 +556,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
 			'ca-edit',
 			ve.msg( 'tooltip-ca-edit' ),
 			ve.msg( 'accesskey-ca-edit' ),
-			'#ca-history'
+			caVeEditNextnode
 		);
 	}
 
