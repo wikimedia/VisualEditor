@@ -103,6 +103,8 @@ class VisualEditorHooks {
 				'ce/ve.ce.BranchNode.test.js',
 				'ce/ve.ce.LeafNode.test.js',
 				'ce/nodes/ve.ce.TextNode.test.js',
+				// VisualEditor initialization Tests
+				'init/ve.init.Platform.test.js',
 			),
 			'dependencies' => array(
 				'ext.visualEditor.core',

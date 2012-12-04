@@ -20,6 +20,7 @@ ve.init.sa.Platform = function VeInitSaPlatform() {
 	this.externalLinkUrlProtocolsRegExp = /^https?\:\/\//;
 	this.modulesUrl = 'extensions/VisualEditor/modules';
 	this.messages = {};
+	this.parsedMessages = {};
 };
 
 /* Inheritance */
@@ -88,6 +89,50 @@ ve.init.sa.Platform.prototype.getMessage = function ( key ) {
 		} );
 	}
 	return '<' + key + '>';
+};
+
+/**
+ * Adds multiple parsed messages to the localization system.
+ *
+ * @method
+ * @param {Object} messages Map of message-key/html pairs
+ */
+ve.init.sa.Platform.prototype.addParsedMessages = function ( messages ) {
+	for ( var key in messages ) {
+		this.parsedMessages[key] = messages[key];
+	}
+};
+
+/**
+ * Gets a parsed message as HTML string.
+ *
+ * Falls back to mw.messsage with .escaped().
+ * Does not support $# replacements.
+ *
+ * @method
+ * @param {String} key Message key
+ * @returns {String} Parsed localized message as HTML string.
+ */
+ve.init.sa.Platform.prototype.getParsedMessage = function ( key ) {
+	if ( key in this.parsedMessages ) {
+		// Prefer parsed results from VisualEditorMessagesModule.php if available.
+		return this.parsedMessages[key];
+	}
+	// Fallback to regular messages, html escaping applied.
+	return this.getMessage( key ).replace( /['"<>&]/g, function escapeCallback( s ) {
+		switch ( s ) {
+			case '\'':
+				return '&#039;';
+			case '"':
+				return '&quot;';
+			case '<':
+				return '&lt;';
+			case '>':
+				return '&gt;';
+			case '&':
+				return '&amp;';
+		}
+	} );
 };
 
 /* Initialization */

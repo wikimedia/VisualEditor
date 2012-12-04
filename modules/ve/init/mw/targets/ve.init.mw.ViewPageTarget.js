@@ -768,7 +768,10 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 				.text( viewPage.editSummaryByteLimit )
 				.end()
 			.find( '.ve-init-mw-viewPageTarget-saveDialog-minorEdit-label' )
-				.text( ve.msg( 'minoredit' ) )
+				.html( ve.init.platform.getParsedMessage( 'minoredit' ) )
+				.end()
+			.find( '.ve-init-mw-viewPageTarget-saveDialog-watchList-label' )
+				.html( ve.init.platform.getParsedMessage( 'watchthis' ) )
 				.end()
 			.find( '#ve-init-mw-viewPageTarget-saveDialog-watchList' )
 				.prop( 'checked', mw.config.get( 'wgVisualEditor' ).isPageWatched )
@@ -823,11 +826,6 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.attachSaveDialog = function () {
-	// Update the minoredit and watchthis messages (which came through the message module)
-	this.$saveDialog.find( '.ve-init-mw-viewPageTarget-saveDialog-minorEdit-label' )
-		.text( ve.msg( 'minoredit' ) );
-	this.$saveDialog.find( '.ve-init-mw-viewPageTarget-saveDialog-watchList-label' )
-		.text( ve.msg( 'watchthis' ) );
 	this.$toolbarWrapper.find( '.ve-ui-toolbar' ).append( this.$saveDialog );
 };
 

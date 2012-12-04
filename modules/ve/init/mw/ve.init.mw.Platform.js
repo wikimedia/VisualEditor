@@ -21,6 +21,7 @@ ve.init.mw.Platform = function VeInitMwPlatform() {
 	// Properties
 	this.externalLinkUrlProtocolsRegExp = new RegExp( '^' + mw.config.get( 'wgUrlProtocols' ) );
 	this.modulesUrl = mw.config.get( 'wgExtensionAssetsPath' ) + '/VisualEditor/modules';
+	this.parsedMessages = {};
 };
 
 /* Inheritance */
@@ -89,9 +90,40 @@ ve.init.mw.Platform.prototype.addMessages = function ( messages ) {
  * @method
  * @param {String} key Message key
  * @param {Mixed} [...] List of arguments which will be injected at $1, $2, etc. in the messaage
- * @returns {String} Localized message
+ * @returns {String} Localized message (plain, unescaped)
  */
 ve.init.mw.Platform.prototype.getMessage = ve.bind( mw.msg, mw );
+
+/**
+ * Adds multiple parsed messages to the localization system.
+ *
+ * @method
+ * @param {Object} messages Map of message-key/html pairs
+ */
+ve.init.mw.Platform.prototype.addParsedMessages = function ( messages ) {
+	for ( var key in messages ) {
+		this.parsedMessages[key] = messages[key];
+	}
+};
+
+/**
+ * Gets a parsed message as HTML string.
+ *
+ * Falls back to mw.messsage with .escaped().
+ * Does not support $# replacements.
+ *
+ * @method
+ * @param {String} key Message key
+ * @returns {String} Parsed localized message as HTML string.
+ */
+ve.init.mw.Platform.prototype.getParsedMessage = function ( key ) {
+	if ( key in this.parsedMessages ) {
+		// Prefer parsed results from VisualEditorMessagesModule.php if available.
+		return this.parsedMessages[key];
+	}
+	// Fallback to regular messages, with mw.message html escaping applied.
+	return mw.message( key ).escaped();
+};
 
 /* Initialization */
 
