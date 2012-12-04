@@ -98,7 +98,8 @@ ve.ce.SurfaceObserver.prototype.stop = function ( poll ) {
  * @param {Boolean} async Poll asynchronously
  */
 ve.ce.SurfaceObserver.prototype.poll = function ( async ) {
-	var delayPoll, rangySelection, range, node, text, hash;
+	var delayPoll, rangySelection, $branch, node, text, hash,
+		range = null;
 
 	if ( this.timeoutId !== null ) {
 		clearTimeout( this.timeoutId );
@@ -118,7 +119,6 @@ ve.ce.SurfaceObserver.prototype.poll = function ( async ) {
 	}
 
 	rangySelection = rangy.getSelection();
-	range = this.range;
 	node = this.node;
 
 	if (
@@ -132,24 +132,18 @@ ve.ce.SurfaceObserver.prototype.poll = function ( async ) {
 		this.rangySelection.focusNode = rangySelection.focusNode;
 		this.rangySelection.focusOffset = rangySelection.focusOffset;
 
-		range = new ve.Range(
-			ve.ce.getOffset( rangySelection.anchorNode, rangySelection.anchorOffset ),
-			ve.ce.getOffset( rangySelection.focusNode, rangySelection.focusOffset )
-		);
-
-		//if ( range.getLength() === 0 ) {
-			node = $( rangySelection.anchorNode ).closest( '.ve-ce-branchNode' ).data( 'node' );
-			if ( node.canHaveGrandchildren() === true ) {
+		$branch = $( rangySelection.anchorNode ).closest( '.ve-ce-branchNode' );
+		if ( $branch.length ) {
+			node = $branch.data( 'node' );
+			if ( node.canHaveGrandchildren() ) {
 				node = null;
-			}
-		/*} else {
-			nodes = this.documentView.selectNodes( range, 'branches' );
-			if ( nodes.length === 1 && nodes[0].node.canHaveGrandchildren() === false ) {
-				node = nodes[0].node;
 			} else {
-				node = null;
+				range = new ve.Range(
+					ve.ce.getOffset( rangySelection.anchorNode, rangySelection.anchorOffset ),
+					ve.ce.getOffset( rangySelection.focusNode, rangySelection.focusOffset )
+				);
 			}
-		}*/
+		}
 	}
 
 	if ( this.node !== node ) {

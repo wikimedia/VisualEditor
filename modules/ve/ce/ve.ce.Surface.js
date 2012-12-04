@@ -156,98 +156,115 @@ ve.ce.Surface.prototype.handleInsertion = function () {
  * @param {Object} next.range New selection
  */
 ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
-	var data, range, len, annotations,
+	var data, range, len, annotations, offsetDiff, lengthDiff, sameLeadingAndTrailing,
+		previousStart, nextStart,
 		fromLeft = 0,
 		fromRight = 0,
-		nodeOffset = node.model.getOffset(), // TODO: call getModel() or add getOffset() to view
+		nodeOffset = node.getModel().getOffset();
+
+	if ( previous.range && next.range ) {
 		offsetDiff = ( previous.range.isCollapsed() && next.range.isCollapsed() ) ?
-			next.range.start - previous.range.start : null,
-		lengthDiff = next.text.length - previous.text.length,
-		sameLeadingAndTrailing = offsetDiff !== null && ( // TODO: rewrite to static method with tests
+			next.range.start - previous.range.start : null;
+		lengthDiff = next.text.length - previous.text.length;
+		previousStart = previous.range.start - nodeOffset - 1;
+		nextStart = next.range.start - nodeOffset - 1;
+		sameLeadingAndTrailing = offsetDiff !== null && (
+			// TODO: rewrite to static method with tests
 			(
 				lengthDiff > 0 &&
-				previous.text.substring( 0, previous.range.start - nodeOffset - 1 ) ===
-					next.text.substring( 0, previous.range.start - nodeOffset - 1  ) &&
-				previous.text.substring( previous.range.start - nodeOffset - 1 ) ===
-					next.text.substring( next.range.start - nodeOffset - 1  )
+				previous.text.substring( 0, previousStart ) ===
+					next.text.substring( 0, previousStart  ) &&
+				previous.text.substring( previousStart ) ===
+					next.text.substring( nextStart  )
 			) ||
 			(
 				lengthDiff < 0 &&
-				previous.text.substring( 0, next.range.start - nodeOffset - 1 ) ===
-					next.text.substring( 0, next.range.start - nodeOffset - 1 ) &&
-				previous.text.substring( previous.range.start - nodeOffset - 1 - lengthDiff + offsetDiff) ===
-					next.text.substring( next.range.start - nodeOffset - 1 )
+				previous.text.substring( 0, nextStart ) ===
+					next.text.substring( 0, nextStart ) &&
+				previous.text.substring( previousStart - lengthDiff + offsetDiff) ===
+					next.text.substring( nextStart )
 			)
 		);
 
-	if ( lengthDiff > 0 && offsetDiff === lengthDiff /* && sameLeadingAndTrailing */) {
-		data = next.text.substring(
-			previous.range.start - nodeOffset - 1,
-			next.range.start - nodeOffset - 1
-		).split( '' );
-		// Apply insertion annotations
-		annotations = this.model.getInsertionAnnotations();
-		if ( annotations instanceof ve.AnnotationSet ) {
-			ve.dm.Document.addAnnotationsToData( data, this.model.getInsertionAnnotations() );
+		// Simple insertion
+		if ( lengthDiff > 0 && offsetDiff === lengthDiff /* && sameLeadingAndTrailing */) {
+			data = next.text.substring(
+				previous.range.start - nodeOffset - 1,
+				next.range.start - nodeOffset - 1
+			).split( '' );
+			// Apply insertion annotations
+			annotations = this.model.getInsertionAnnotations();
+			if ( annotations instanceof ve.AnnotationSet ) {
+				ve.dm.Document.addAnnotationsToData( data, this.model.getInsertionAnnotations() );
+			}
+			this.model.change(
+				ve.dm.Transaction.newFromInsertion(
+					this.documentView.model, previous.range.start, data
+				),
+				next.range
+			);
+			return;
 		}
+
+		// Simple deletion
+		if (
+				false /* temporary quick fix for BugId: 41223 */ &&
+				( offsetDiff === 0 || offsetDiff === lengthDiff ) && sameLeadingAndTrailing
+		) {
+			if ( offsetDiff === 0 ) {
+				range = new ve.Range( next.range.start, next.range.start - lengthDiff );
+			} else {
+				range = new ve.Range( next.range.start, previous.range.start );
+			}
+			this.model.change(
+				ve.dm.Transaction.newFromRemoval( this.documentView.model, range ),
+				next.range
+			);
+			return;
+		}
+	}
+
+	// Complex change
+
+	len = Math.min( previous.text.length, next.text.length );
+	// Count same characters from left
+	while ( fromLeft < len && previous.text[fromLeft] === next.text[fromLeft] ) {
+		++fromLeft;
+	}
+	// Count same characters from right
+	while (
+		fromRight < len - fromLeft &&
+		previous.text[previous.text.length - 1 - fromRight] ===
+		next.text[next.text.length - 1 - fromRight]
+	) {
+		++fromRight;
+	}
+	data = next.text.substring( fromLeft, next.text.length - fromRight ).split( '' );
+	// Get annotations to the left of new content and apply
+	annotations =
+		this.model.getDocument().getAnnotationsFromOffset( nodeOffset + 1 + fromLeft );
+	if ( annotations.getLength() ) {
+		ve.dm.Document.addAnnotationsToData( data, annotations );
+	}
+	if ( data.length > 0 ) {
 		this.model.change(
 			ve.dm.Transaction.newFromInsertion(
-				this.documentView.model, previous.range.start, data
+				this.documentView.model, nodeOffset + 1 + fromLeft, data
 			),
 			next.range
 		);
-	} else if ( false /* temporary quick fix for BugId: 41223 */ && ( offsetDiff === 0 || offsetDiff === lengthDiff ) && sameLeadingAndTrailing ) {
-		if ( offsetDiff === 0 ) {
-			range = new ve.Range( next.range.start, next.range.start - lengthDiff );
-		} else {
-			range = new ve.Range( next.range.start, previous.range.start );
-		}
+	}
+	if ( fromLeft + fromRight < previous.text.length ) {
 		this.model.change(
-			ve.dm.Transaction.newFromRemoval( this.documentView.model, range ),
+			ve.dm.Transaction.newFromRemoval(
+				this.documentView.model,
+				new ve.Range(
+					data.length + nodeOffset + 1 + fromLeft,
+					data.length + nodeOffset + 1 + previous.text.length - fromRight
+				)
+			),
 			next.range
 		);
-	} else {
-		len = Math.min( previous.text.length, next.text.length );
-		// Count same characters from left
-		while ( fromLeft < len && previous.text[fromLeft] === next.text[fromLeft] ) {
-			++fromLeft;
-		}
-		// Count same characters from right
-		while (
-			fromRight < len - fromLeft &&
-			previous.text[previous.text.length - 1 - fromRight] ===
-			next.text[next.text.length - 1 - fromRight]
-		) {
-			++fromRight;
-		}
-		data = next.text.substring( fromLeft, next.text.length - fromRight ).split( '' );
-
-		// Get annotations to the left of new content and apply
-		annotations =
-			this.model.getDocument().getAnnotationsFromOffset( nodeOffset + 1 + fromLeft );
-		if ( annotations.getLength() ) {
-			ve.dm.Document.addAnnotationsToData( data, annotations );
-		}
-		if ( data.length > 0 ) {
-			this.model.change(
-				ve.dm.Transaction.newFromInsertion(
-					this.documentView.model, nodeOffset + 1 + fromLeft, data
-				),
-				next.range
-			);
-		}
-		if ( fromLeft + fromRight < previous.text.length ) {
-			this.model.change(
-				ve.dm.Transaction.newFromRemoval(
-					this.documentView.model,
-					new ve.Range(
-						data.length + nodeOffset + 1 + fromLeft,
-						data.length + nodeOffset + 1 + previous.text.length - fromRight
-					)
-				),
-				next.range
-			);
-		}
 	}
 };
 
