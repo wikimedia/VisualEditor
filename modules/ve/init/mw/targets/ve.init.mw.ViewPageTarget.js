@@ -478,6 +478,7 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( dom ) {
 
 	// Initialize surface
 	this.surface = new ve.Surface( $( '#content' ), dom, this.surfaceOptions );
+	this.surface.getContext().hide();
 	this.$document = this.surface.$.find( '.ve-ce-documentNode' );
 	this.surface.getModel().on( 'transact', this.proxiedOnSurfaceModelTransact );
 	// Transplant the toolbar
@@ -1034,7 +1035,9 @@ ve.init.mw.ViewPageTarget.prototype.attachToolbar = function () {
 	this.$toolbarWrapper = $( '.ve-ui-toolbar-wrapper' )
 		.insertBefore( $( '#firstHeading' ) )
 		.find( '.ve-ui-toolbar' )
-			.slideDown( 'fast' )
+			.slideDown( 'fast', ve.bind( function() {
+				this.surface.getContext().update();
+			}, this ) )
 			.end();
 };
 
