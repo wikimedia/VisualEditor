@@ -115,6 +115,19 @@ ve.Surface.prototype.getContext = function () {
 };
 
 /**
+ * Destroy the surface, releasing all memory and removing all DOM elements.
+ *
+ * @method
+ * @returns {ve.ui.Context} Context user interface
+ */
+ve.Surface.prototype.destroy = function () {
+	ve.instances.splice( ve.instances.indexOf( this ), 1 );
+	this.$.remove();
+	this.view.destroy();
+	this.context.destroy();
+};
+
+/**
  * Fix up the initial selection.
  *
  * Reselect the selection and force a poll. This forces the selection to be something reasonable.
