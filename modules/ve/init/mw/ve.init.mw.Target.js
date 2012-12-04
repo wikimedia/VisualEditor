@@ -14,15 +14,16 @@
  * @constructor
  * @extends {ve.EventEmitter}
  * @param {String} pageName Name of target page
+ * @param {Number} [revision] Revision ID
  */
-ve.init.mw.Target = function VeInitMwTarget( pageName ) {
+ve.init.mw.Target = function VeInitMwTarget( pageName, revision ) {
 	// Parent constructor
 	ve.EventEmitter.call( this );
 
 	// Properties
 	this.pageName = pageName;
 	this.pageExists = mw.config.get( 'wgArticleId', 0 ) !== 0;
-	this.pageRevId = mw.config.get( 'wgCurRevisionId' );
+	this.oldid = revision || '';
 	this.editToken = mw.user.tokens.get( 'editToken' );
 	this.apiUrl = mw.util.wikiScript( 'api' );
 	this.submitUrl = ( new mw.Uri( mw.util.wikiGetlink( this.pageName ) ) )
@@ -250,7 +251,7 @@ ve.init.mw.Target.prototype.load = function () {
 			'action': 'visualeditor',
 			'paction': 'parse',
 			'page': this.pageName,
-			'oldid': this.pageRevId,
+			'oldid': this.oldid,
 			'token': this.editToken,
 			'format': 'json'
 		},
@@ -295,7 +296,7 @@ ve.init.mw.Target.prototype.save = function ( dom, options ) {
 			'action': 'visualeditor',
 			'paction': 'save',
 			'page': this.pageName,
-			'oldid': this.pageRevId,
+			'oldid': this.oldid,
 			'basetimestamp': this.baseTimeStamp,
 			'starttimestamp': this.startTimeStamp,
 			'html': $( dom ).html(),
@@ -341,7 +342,7 @@ ve.init.mw.Target.prototype.submit = function ( wikitext, options ) {
 		$form = $( '<form method="post" enctype="multipart/form-data"></form>' ),
 		params = {
 			'format': 'text/x-wiki',
-			'oldid': this.pageRevId || 0,
+			'oldid': this.oldid,
 			'wpStarttime': this.baseTimeStamp,
 			'wpEdittime': this.startTimeStamp,
 			'wpTextbox1': wikitext,
