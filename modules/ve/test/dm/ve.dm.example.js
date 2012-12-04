@@ -1466,7 +1466,11 @@ ve.dm.example.domToDataCases = {
 			'\n',
 			'\n',
 			{ 'type': '/preformatted' }
-		]
+		],
+		// pre newline hack
+		// TODO we should test this using a better, more .innerHTML-based mechanism for
+		// comparing DOM trees
+		'normalizedHtml': '\n<pre>\n\n\n\nFoo\n\n\nBar\n\n\n\n</pre>\n\n\n\n\n'
 	},
 	'mismatching whitespace data is ignored': {
 		'html': null,

@@ -1010,8 +1010,24 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 	}
 
 	// Unwrap multi-child alien wrappers
-	$( container ).find( '[data-ve-multi-child-alien-wrapper]' ) .each( function() {
+	$( container ).find( '[data-ve-multi-child-alien-wrapper]' ).each( function() {
 		$( this ).replaceWith( $( this ).contents() );
+	} );
+
+	// Workaround for bug 42469: if a <pre> starts with a newline, that means .innerHTML will
+	// screw up and stringify it with one fewer newline. Work around this by adding a newline.
+	// If we don't see a leading newline, we still don't know if the original HTML was
+	// <pre>Foo</pre> or <pre>\nFoo</pre> , but that's a syntactic difference, not a semantic
+	// one, and handling that is Parsoid's job.
+	$( container ).find( 'pre' ).each( function() {
+		var matches;
+		if ( this.firstChild.nodeType === Node.TEXT_NODE ) {
+			matches = this.firstChild.data.match( /^(\r\n|\r|\n)/ );
+			if ( matches && matches[1] ) {
+				// Prepend a newline exactly like the one we saw
+				this.firstChild.insertData( 0, matches[1] );
+			}
+		}
 	} );
 	return container;
 };
