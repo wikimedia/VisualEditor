@@ -13,9 +13,9 @@ class MakeStaticLoader extends Maintenance {
 	public function __construct() {
 		parent::__construct();
 
-			$this->addOption( 'format', 'Custom format ("demo" or "test"), also sets ve-path', false, true );
+			$this->addOption( 'target', 'Which target to use ("demo" or "test"). Default: false', false, true );
 			$this->addOption( 'indent', 'Indentation prefix to use (number of tabs or a string)', false, true );
-			$this->addOption( 've-path', 'Path to "modules/"', false, true );
+			$this->addOption( 've-path', 'Override path to "/modules/". Default by --target', false, true );
 	}
 
 	public function execute() {
@@ -23,6 +23,20 @@ class MakeStaticLoader extends Maintenance {
 
 		$wgHtml5 = true;
 		$wgWellFormedXml = false;
+
+		$target = $this->getOption( 'target', 'demo' );
+		$indent = $this->getOption( 'indent', 2 );
+		if ( is_numeric( $indent ) ) {
+			$indent = str_repeat( "\t", $indent );
+		}
+		// Path to /modules/
+		$vePath = $this->getOption( 've-path',
+			$target === 'demo'
+			// From /demos/ve/index.php
+			? '../../modules/'
+			// From /modules/ve/test/index.html
+			: '../../'
+		);
 
 		$wgResourceModules['Dependencies'] = array(
 			'scripts' => array(
@@ -42,20 +56,15 @@ class MakeStaticLoader extends Maintenance {
 				've/init/sa/ve.init.sa.js',
 				've/init/sa/ve.init.sa.Platform.js',
 			),
+			'bodyAdd' => '<script>
+	<?php
+		require( \'' . $vePath . '../VisualEditor.i18n.php\' );
+		echo \'ve.init.platform.addMessages( \' . json_encode( $messages[\'en\'] ) . \');\';
+	?>
+	ve.init.platform.setModulesUrl( \'' . $vePath . '\' );
+</script>'
 		);
 
-		$format = $this->getOption( 'format', false );
-		$indent = $this->getOption( 'indent', 2 );
-		if ( is_numeric( $indent ) ) {
-			$indent = str_repeat( "\t", $indent );
-		}
-		$vePath = $this->getOption( 've-path',
-				$format === 'demo'
-					// From /demo/index.php
-					? '../../modules/'
-					// From /modules/ve/index.html
-					: '../../'
-		);
 		$self = isset( $_SERVER['PHP_SELF'] ) ? $_SERVER['PHP_SELF'] :  ( lcfirst( __CLASS__ ) . '.php' );
 
 		$head = $body = "";
@@ -68,11 +77,14 @@ class MakeStaticLoader extends Maintenance {
 		);
 		foreach ( $modules as $module ) {
 			if ( !isset( $wgResourceModules[$module] ) ) {
-				continue;
+				echo "\nError: File group $module\n not found!\n";
+				exit( 1 );
 			}
-			$headAdd = $bodyAdd = '';
 			$registry = $wgResourceModules[$module];
-			if ( isset( $registry['styles'] ) && $format !== 'test' ){
+
+			$headAdd = $bodyAdd = '';
+
+			if ( isset( $registry['styles'] ) && $target !== 'test' ){
 				foreach ($registry['styles'] as $style) {
 					$headAdd .= $indent . Html::element( 'link', array( 'rel' => 'stylesheet', 'href' => "$vePath$style" ) ) . "\n";
 				}
@@ -87,6 +99,13 @@ class MakeStaticLoader extends Maintenance {
 					$bodyAdd .= $indent . Html::element( 'script', array( 'src' => "$vePath$script" ) ) . "\n";
 				}
 			}
+			if ( isset( $registry['headAdd'] ) ) {
+				$headAdd .= $indent . implode( "\n$indent", explode( "\n", $registry['headAdd'] ) ) . "\n";
+			}
+			if ( isset( $registry['bodyAdd'] ) ) {
+				$bodyAdd .= $indent . implode( "\n$indent", explode( "\n", $registry['bodyAdd'] ) ) . "\n";
+			}
+
 			if ( $headAdd ) {
 				$head .= "$indent<!-- $module -->\n$headAdd";
 			}

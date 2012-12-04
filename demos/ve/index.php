@@ -8,7 +8,7 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-$path = dirname( __FILE__ ) . '/pages';
+$path = __DIR__ . '/pages';
 $pages = glob( $path . '/*.html' );
 $page = current( $pages );
 if ( isset( $_GET['page'] ) && in_array( $path . '/' . $_GET['page'] . '.html', $pages ) ) {
@@ -39,9 +39,9 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 
 		<script>
 			if ( window.devicePixelRatio > 1 ) {
-				document.write( '<link rel="stylesheet" href="../../modules/ve/ui/styles/ve.ui.Icons-vector.css">' );
+				document.write( '<link rel="stylesheet" href="../../modules/ve/ui/styles/ve.ui.Inspector.Icons-vector.css">' );
 			} else {
-				document.write( '<link rel="stylesheet" href="../../modules/ve/ui/styles/ve.ui.Icons-raster.css">' );
+				document.write( '<link rel="stylesheet" href="../../modules/ve/ui/styles/ve.ui.Inspector.Icons-raster.css">' );
 			}
 		</script>
 
@@ -76,6 +76,13 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 		<!-- Standalone Init -->
 		<script src="../../modules/ve/init/sa/ve.init.sa.js"></script>
 		<script src="../../modules/ve/init/sa/ve.init.sa.Platform.js"></script>
+		<script>
+			<?php
+				require( '../../modules/../VisualEditor.i18n.php' );
+				echo 've.init.platform.addMessages( ' . json_encode( $messages['en'] ) . ');';
+			?>
+			ve.init.platform.setModulesUrl( '../../modules/' );
+		</script>
 		<!-- ext.visualEditor.core -->
 		<script src="../../modules/ve/ve.Registry.js"></script>
 		<script src="../../modules/ve/ve.Factory.js"></script>
@@ -196,16 +203,6 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 		<script src="../../modules/ve/ui/tools/buttons/ve.ui.RedoButtonTool.js"></script>
 		<script src="../../modules/ve/ui/tools/buttons/ve.ui.UndoButtonTool.js"></script>
 		<script src="../../modules/ve/ui/tools/dropdowns/ve.ui.FormatDropdownTool.js"></script>
-
-		<!-- i18n -->
-		<script>
-			<?php
-				require( dirname( dirname( __DIR__ ) ) . '/VisualEditor.i18n.php' );
-				echo 've.init.platform.addMessages( ' . json_encode( $messages['en'] ) . ');';
-			?>
-			ve.init.platform.setModulesUrl( '../../modules' );
-		</script>
-
 		<!-- demo -->
 		<script>
 			$(document).ready( function () {
@@ -247,7 +244,7 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 
 		<script>
 		$( function () {
-			$( '#ve-validate' ).on( "click", function ( e ) {
+			$( '#ve-validate' ).on( 'click', function ( e ) {
 				var failed = false;
 				$('.ve-ce-branchNode').each( function ( index, element ) {
 					var	$element = $( element ),
@@ -272,9 +269,8 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 					alert( 'Valid' );
 				}
 				e.preventDefault();
-				return false;
 			} );
-			$( '#ve-dump-all' ).on( "click", function ( e ) {
+			$( '#ve-dump-all' ).on( 'click', function ( e ) {
 				// linear model dump
 				var $ol = $('<ol start="0"></ol>'),
 					$li,
@@ -337,14 +333,14 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 				e.preventDefault();
 				return false;
 			} );
-			$( '#ve-get-range' ).on( "click", function ( e ) {
+			$( '#ve-get-range' ).on( 'click', function ( e ) {
 				var range = ve.instances[0].view.model.getSelection();
 				$( '#ve-debug-start' ).val( range.start );
 				$( '#ve-debug-end' ).val( range.end );
 				e.preventDefault();
 				return false;
 			} );
-			$( '#ve-dump-data' ).on( "click", function ( e ) {
+			$( '#ve-dump-data' ).on( 'click', function ( e ) {
 				var	start = $( '#ve-debug-start' ).val(),
 					end = $( '#ve-debug-end' ).val();
 				// TODO: Validate input

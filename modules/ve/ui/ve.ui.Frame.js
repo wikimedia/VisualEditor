@@ -58,6 +58,6 @@ ve.ui.Frame.prototype.createFrame = function ( $frame, $container ) {
 ve.ui.Frame.prototype.loadStylesheet = function ( path ) {
 	// Append style elements to head.
 	this.$$( 'head' ).append(
-		this.$$( '<link rel="stylesheet" type="text/css" media="screen">' ).attr( 'href', path )
+		this.$$( '<link rel="stylesheet">' ).attr( 'href', path )
 	);
 };
