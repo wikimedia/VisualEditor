@@ -44,20 +44,31 @@ ve.IndentationAction.static.methods = ['increase', 'decrease'];
  */
 ve.IndentationAction.prototype.increase = function () {
 	var i, group,
+		fragments = [],
 		increased = false,
 		surfaceModel = this.surface.getModel(),
 		documentModel = surfaceModel.getDocument(),
-		selection = surfaceModel.getSelection(),
-		groups = documentModel.getCoveredSiblingGroups( selection );
+		selected = surfaceModel.getFragment(),
+		groups = documentModel.getCoveredSiblingGroups( selected.getRange() );
 
+	// Build fragments from groups (we need their ranges since the nodes will be rebuilt on change)
 	for ( i = 0; i < groups.length; i++ ) {
 		group = groups[i];
 		if ( group.grandparent && group.grandparent.getType() === 'list' ) {
-			// FIXME this doesn't work when trying to work with multiple list items
-			this.indentListItem( group.parent );
+			fragments.push( surfaceModel.getFragment( group.parent.getOuterRange(), true ) );
 			increased = true;
 		}
 	}
+
+	// Process each fragment (their ranges are automatically adjusted on change)
+	for ( i = 0; i < fragments.length; i++ ) {
+		this.indentListItem(
+			documentModel.getNodeFromOffset( fragments[i].getRange().start + 1 )
+		);
+	}
+
+	selected.select();
+
 	return increased;
 };
 
@@ -71,20 +82,31 @@ ve.IndentationAction.prototype.increase = function () {
  */
 ve.IndentationAction.prototype.decrease = function () {
 	var i, group,
+		fragments = [],
 		decreased = false,
 		surfaceModel = this.surface.getModel(),
 		documentModel = surfaceModel.getDocument(),
-		selection = surfaceModel.getSelection(),
-		groups = documentModel.getCoveredSiblingGroups( selection );
+		selected = surfaceModel.getFragment(),
+		groups = documentModel.getCoveredSiblingGroups( selected.getRange() );
 
+	// Build fragments from groups (we need their ranges since the nodes will be rebuilt on change)
 	for ( i = 0; i < groups.length; i++ ) {
 		group = groups[i];
 		if ( group.grandparent && group.grandparent.getType() === 'list' ) {
-			// FIXME this doesn't work when trying to work with multiple list items
-			this.outdentListItem( group.parent );
+			fragments.push( surfaceModel.getFragment( group.parent.getOuterRange(), true ) );
 			decreased = true;
 		}
 	}
+
+	// Process each fragment (their ranges are automatically adjusted on change)
+	for ( i = 0; i < fragments.length; i++ ) {
+		this.outdentListItem(
+			documentModel.getNodeFromOffset( fragments[i].getRange().start + 1 )
+		);
+	}
+
+	selected.select();
+
 	return decreased;
 };
 
@@ -176,7 +198,6 @@ ve.IndentationAction.prototype.outdentListItem = function ( listItem ) {
 	var tx,
 		surfaceModel = this.surface.getModel(),
 		documentModel = surfaceModel.getDocument(),
-		selection = surfaceModel.getSelection(),
 		list = listItem.getParent(),
 		listElement = list.getClonedElement(),
 		grandParentType = list.getParent().getType(),
@@ -195,7 +216,6 @@ ve.IndentationAction.prototype.outdentListItem = function ( listItem ) {
 			[ { 'type': '/list' }, listElement ]
 		);
 		surfaceModel.change( tx );
-		selection = tx.translateRange( selection );
 		// tx.translateRange( listItemRange ) doesn't do what we want
 		listItemRange = ve.Range.newFromTranslatedRange( listItemRange, 2 );
 	}
@@ -205,7 +225,6 @@ ve.IndentationAction.prototype.outdentListItem = function ( listItem ) {
 			[ { 'type': '/list' }, listElement ]
 		);
 		surfaceModel.change( tx );
-		selection = tx.translateRange( selection );
 		// listItemRange is not affected by this transaction
 	}
 	splitListRange = new ve.Range( listItemRange.start - 1, listItemRange.end + 1 );
@@ -222,7 +241,6 @@ ve.IndentationAction.prototype.outdentListItem = function ( listItem ) {
 			[]
 		);
 		surfaceModel.change( tx );
-		selection = tx.translateRange( selection );
 	} else {
 		// (3) Split the list away from parentListItem into its own listItem
 		// TODO factor common split logic somehow?
@@ -232,7 +250,6 @@ ve.IndentationAction.prototype.outdentListItem = function ( listItem ) {
 				[ { 'type': '/listItem' }, { 'type': 'listItem' } ]
 			);
 			surfaceModel.change( tx );
-			selection = tx.translateRange( selection );
 			// tx.translateRange( splitListRange ) doesn't do what we want
 			splitListRange = ve.Range.newFromTranslatedRange( splitListRange, 2 );
 		}
@@ -242,7 +259,6 @@ ve.IndentationAction.prototype.outdentListItem = function ( listItem ) {
 				[ { 'type': '/listItem' }, { 'type': 'listItem' } ]
 			);
 			surfaceModel.change( tx );
-			selection = tx.translateRange( selection );
 			// splitListRange is not affected by this transaction
 		}
 
@@ -255,10 +271,7 @@ ve.IndentationAction.prototype.outdentListItem = function ( listItem ) {
 			[]
 		);
 		surfaceModel.change( tx );
-		selection = tx.translateRange( selection );
 	}
-
-	surfaceModel.change( null, selection );
 };
 
 /* Registration */
