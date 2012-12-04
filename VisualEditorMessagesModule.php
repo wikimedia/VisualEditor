@@ -21,7 +21,7 @@ class VisualEditorMessagesModule extends ResourceLoaderModule {
 
 	public function getScript( ResourceLoaderContext $context ) {
 		$parsedMesssages = array();
-		foreach ( $this>getMessages() as $msgKey ) {
+		foreach ( $this->getMessages() as $msgKey ) {
 			$parsedMesssages[$msgKey] = wfMessage( $msgKey )->parse();
 		}
 		return 've.init.target.addParsedMessages(' . FormatJson::encode( $parsedMesssages ) . ');';
