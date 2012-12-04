@@ -229,8 +229,11 @@
 						.css( 'whiteSpace', 'nowrap' )
 						.text( group.items[i] )
 					);
-					// Select this item by default
-					if ( group.items[i].toLowerCase() === $input.val().toLowerCase() ) {
+					// Select the first item by default
+					if (
+						$multiSuggest.find( '.selected' ).length === 0 &&
+						group.items[i].toLowerCase() === $input.val().toLowerCase() )
+					{
 						$item.addClass( 'selected' );
 					}
 					// CSS Ellipsis
