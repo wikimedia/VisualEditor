@@ -24,6 +24,13 @@
 		<!-- Standalone Init -->
 		<script src="../../ve/init/sa/ve.init.sa.js"></script>
 		<script src="../../ve/init/sa/ve.init.sa.Platform.js"></script>
+		<script>
+			<?php
+				require( '../../../VisualEditor.i18n.php' );
+				echo 've.init.platform.addMessages( ' . json_encode( $messages['en'] ) . ');';
+			?>
+			ve.init.platform.setModulesUrl( '../../' );
+		</script>
 		<!-- ext.visualEditor.core -->
 		<script src="../../ve/ve.Registry.js"></script>
 		<script src="../../ve/ve.Factory.js"></script>
