@@ -47,14 +47,16 @@ ve.ce.AlienInlineNode.prototype.onMouseEnter = function () {
 	var	$phantom = ve.ce.Surface.static.$phantomTemplate.clone(),
 		offset = this.$.offset(),
 		surface = this.root.getSurface();
-	$phantom.css( {
-		'top': offset.top,
-		'left': offset.left,
-		'height': this.$.height(),
-		'width': this.$.width()
-	} );
-	surface.$phantoms.empty().append( $phantom );
-	surface.$.on( 'mousemove.phantoms', ve.bind( this.onSurfaceMouseMove, this ) );
+	if ( !surface.dragging ) {
+		$phantom.css( {
+			'top': offset.top,
+			'left': offset.left,
+			'height': this.$.height(),
+			'width': this.$.width()
+		} );
+		surface.$phantoms.empty().append( $phantom );
+		surface.$.on( 'mousemove.phantoms', ve.bind( this.onSurfaceMouseMove, this ) );
+	}
 };
 
 /* Registration */
