@@ -111,6 +111,7 @@ $wgResourceModules += array(
 			'jquery.byteLimit',
 			'jquery.client',
 			'jquery.placeholder',
+			'mediawiki.jqueryMsg',
 			'mediawiki.Title',
 			'mediawiki.Uri',
 			'mediawiki.user',
