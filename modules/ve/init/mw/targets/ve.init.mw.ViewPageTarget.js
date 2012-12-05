@@ -23,6 +23,8 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	// Properties
 	this.$document = null;
 	this.$spinner = $( '<div class="ve-init-mw-viewPageTarget-loadingSpinner"></div>' );
+	this.$toolbarCancelButton =
+		$( '<div class="ve-init-mw-viewPageTarget-toolbar-cancelButton"></div>' );
 	this.$toolbarSaveButton =
 		$( '<div class="ve-init-mw-viewPageTarget-toolbar-saveButton"></div>' );
 	this.$toolbarEditNotices =
@@ -388,6 +390,20 @@ ve.init.mw.ViewPageTarget.prototype.onToolbarSaveButtonClick = function () {
 };
 
 /**
+ * Handles clicks on the save button in the toolbar.
+ *
+ * @method
+ * @param {jQuery.Event} e
+ */
+ve.init.mw.ViewPageTarget.prototype.onToolbarCancelButtonClick = function () {
+	this.hideSaveDialog();
+	this.resetSaveDialog();
+	this.showPageContent();
+	this.tearDownBeforeUnloadHandler();
+	this.deactivate( true );
+};
+
+/**
  * Handles clicks on the edit notices button in the toolbar.
  *
  * @method
@@ -643,6 +659,22 @@ ve.init.mw.ViewPageTarget.prototype.setupSectionEditLinks = function () {
 ve.init.mw.ViewPageTarget.prototype.setupToolbarButtons = function () {
 	var editNoticeCount = this.$toolbarEditNotices
 		.find( '.ve-init-mw-viewPageTarget-toolbar-editNotices-notice' ).length;
+	this.$toolbarCancelButton
+		.append(
+			$( '<span class="ve-init-mw-viewPageTarget-toolbar-cancelButton-label"></span>' )
+				.text( ve.msg( 'cancel' ) )
+		)
+		.on( {
+			'mousedown': function ( e ) {
+				$(this).addClass( 've-init-mw-viewPageTarget-toolbar-cancelButton-down' );
+				e.preventDefault();
+			},
+			'mouseleave mouseup': function ( e ) {
+				$(this).removeClass( 've-init-mw-viewPageTarget-toolbar-cancelButton-down' );
+				e.preventDefault();
+			},
+			'click': ve.bind( this.onToolbarCancelButtonClick, this )
+		} );
 	this.$toolbarSaveButton
 		.append(
 			$( '<span class="ve-init-mw-viewPageTarget-toolbar-saveButton-label"></span>' )
@@ -679,6 +711,7 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarButtons = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.tearDownToolbarButtons = function () {
+	this.$toolbarCancelButton.empty().off( 'click' );
 	this.$toolbarSaveButton.empty().off( 'click' );
 	this.$toolbarEditNoticesButton.empty().off( 'click' );
 };
@@ -691,6 +724,7 @@ ve.init.mw.ViewPageTarget.prototype.tearDownToolbarButtons = function () {
 ve.init.mw.ViewPageTarget.prototype.attachToolbarButtons = function () {
 	$( '.ve-ui-toolbar .ve-ui-actions' )
 		.append( this.$toolbarEditNoticesButton )
+		.append( this.$toolbarCancelButton )
 		.append( this.$toolbarSaveButton );
 };
 
@@ -700,6 +734,7 @@ ve.init.mw.ViewPageTarget.prototype.attachToolbarButtons = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.detachToolbarButtons = function () {
+	this.$toolbarCancelButton.detach();
 	this.$toolbarSaveButton.detach();
 	this.$toolbarEditNoticesButton.detach();
 };

@@ -80,6 +80,7 @@
 	vertical-align: top;
 	font-size: 1em;
 	padding: 0.25em 0.75em;
+	text-shadow: 1px 1px #fff
 	/* Fancy CSS background */
 	background-image: -webkit-gradient(
 		linear,
@@ -95,9 +96,37 @@
 	background-image: linear-gradient(bottom, #c3e59a 0%, #f0fbe1 100%);
 }
 
-.ve-init-mw-viewPageTarget-toolbar-saveButton {
+.ve-init-mw-viewPageTarget-toolbar-saveButton,
+.ve-init-mw-viewPageTarget-toolbar-cancelButton {
 	height: 1.5em;
 	margin-right: 0.25em;
+}
+
+.ve-init-mw-viewPageTarget-toolbar-cancelButton {
+	display: inline-block;
+	border: 1px #c9c9c9 solid;
+	border-radius: 0.25em;
+	cursor: pointer;
+	vertical-align: top;
+	font-size: 1em;
+	padding: 0.25em 0.75em;
+	text-shadow: 1px 1px #fff
+	/* Fancy CSS background */
+	color: #252525;
+	text-align: center;
+	text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+	background-color: #f0f0f0;
+	background-image: -webkit-gradient(
+		linear,
+		left top,
+		left bottom,
+		color-stop(0%, #ffffff),
+		color-stop(100%, #f0f0f0)
+	);
+	background-image: -webkit-linear-gradient(top, #ffffff, #f0f0f0);
+	background-image: -moz-linear-gradient(top, #ffffff, #f0f0f0);
+	background-image: -ms-linear-gradient(top, #ffffff, #f0f0f0);
+	background-image: linear-gradient(#ffffff, #f0f0f0);
 }
 
 .ve-init-mw-viewPageTarget-saveDialog-saveButton {
@@ -117,7 +146,8 @@
 	background-repeat: no-repeat;
 }
 
-.ve-init-mw-viewPageTarget-toolbar-saveButton:before {
+.ve-init-mw-viewPageTarget-toolbar-saveButton:before,
+.ve-init-mw-viewPageTarget-toolbar-cancelButton:before {
 	content: " ";
 	position: absolute;
 	display: block;
@@ -125,12 +155,15 @@
 }
 
 .ve-init-mw-viewPageTarget-toolbar-saveButton:hover,
+.ve-init-mw-viewPageTarget-toolbar-cancelButton:hover,
 .ve-init-mw-viewPageTarget-saveDialog-saveButton:hover {
-	border-color: #eee;
+	border-color: #aaa;
 }
 
 .ve-init-mw-viewPageTarget-toolbar-saveButton:active,
 .ve-init-mw-viewPageTarget-toolbar-saveButton-down,
+.ve-init-mw-viewPageTarget-toolbar-cancelButton:active,
+.ve-init-mw-viewPageTarget-toolbar-cancelButton-down,
 .ve-init-mw-viewPageTarget-saveDialog-saveButton:active,
 .ve-init-mw-viewPageTarget-saveDialog-saveButton-down {
 	border-color: #ddd;
@@ -141,9 +174,17 @@
 .ve-init-mw-viewPageTarget-saveDialog-saveButton-saving {
 	filter: alpha(opacity=50);
 	opacity: 0.5;
+	cursor: default;
+}
+
+.ve-init-mw-viewPageTarget-toolbar-saveButton-disabled:hover,
+.ve-init-mw-viewPageTarget-saveDialog-saveButton-saving:hover {
+	border-color: #ccc;
+	box-shadow: none;
 }
 
 .ve-init-mw-viewPageTarget-toolbar-saveButton-label,
+.ve-init-mw-viewPageTarget-toolbar-cancelButton-label,
 .ve-init-mw-viewPageTarget-saveDialog-saveButton-label {
 	display: inline-block;
 	vertical-align: middle;

@@ -122,7 +122,7 @@ $wgResourceModules += array(
 		'messages' => array(
 			'minoredit',
 			'savearticle',
-			'visualeditor-restore-page',
+			'cancel',
 			'watchthis',
 			'tooltip-save',
 			'copyrightwarning',
@@ -142,7 +142,8 @@ $wgResourceModules += array(
 			'visualeditor-ca-editsource',
 			'visualeditor-loadwarning',
 			'visualeditor-editsummary',
-			'visualeditor-editnotices-button'
+			'visualeditor-editnotices-button',
+			'visualeditor-restore-page',
 		),
 	),
 	'ext.visualEditor.base' => $wgVisualEditorResourceTemplate + array(
