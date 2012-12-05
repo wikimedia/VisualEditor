@@ -68,6 +68,7 @@ ve.dm.example.createAnnotationSet = function ( annotations ) {
 ve.dm.example.bold = { 'type': 'textStyle/bold', 'htmlTagName': 'b', 'htmlAttributes': {} };
 ve.dm.example.italic = { 'type': 'textStyle/italic', 'htmlTagName': 'i', 'htmlAttributes': {} };
 ve.dm.example.underline = { 'type': 'textStyle/underline', 'htmlTagName': 'u', 'htmlAttributes': {} };
+ve.dm.example.span = { 'type': 'textStyle/span', 'htmlTagName': 'span', 'htmlAttributes': {} };
 
 /**
  * Serialized HTML.
@@ -1832,6 +1833,64 @@ ve.dm.example.domToDataCases = {
 			'\t',
 			{ 'type': 'MWentity', 'attributes': { 'character': '™', 'html/typeof': 'mw:Entity' } },
 			{ 'type': '/MWentity' },
+			{ 'type': '/paragraph' }
+		]
+	},
+	'block node inside annotation node is alienated': {
+		'html': '<span>\n<p>Bar</p></span>',
+		'data': [
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			[ '\n', [ ve.dm.example.span ] ],
+			{
+				'type': 'alienInline',
+				'attributes': {
+					'html': '<p>Bar</p>'
+				},
+				'annotations': [ ve.dm.example.span ]
+			},
+			{ 'type': '/alienInline' },
+			{ 'type': '/paragraph' }
+		]
+	},
+	'block node inside annotation node surrounded by tables': {
+		'html': '<table></table><span>\n<p>Bar</p></span><table></table>',
+		'data': [
+			{ 'type': 'table' },
+			{ 'type': '/table' },
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			[ '\n', [ ve.dm.example.span ] ],
+			{
+				'type': 'alienInline',
+				'attributes': {
+					'html': '<p>Bar</p>'
+				},
+				'annotations': [ ve.dm.example.span ]
+			},
+			{ 'type': '/alienInline' },
+			{ 'type': '/paragraph' },
+			{ 'type': 'table' },
+			{ 'type': '/table' }
+		]
+	},
+	'block node inside annotation node is alienated and continues wrapping': {
+		'html': 'Foo<span>\n<p>Bar</p></span>Baz',
+		'data': [
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			'F',
+			'o',
+			'o',
+			[ '\n', [ ve.dm.example.span ] ],
+			{
+				'type': 'alienInline',
+				'attributes': {
+					'html': '<p>Bar</p>'
+				},
+				'annotations': [ ve.dm.example.span ]
+			},
+			{ 'type': '/alienInline' },
+			'B',
+			'a',
+			'z',
 			{ 'type': '/paragraph' }
 		]
 	}
