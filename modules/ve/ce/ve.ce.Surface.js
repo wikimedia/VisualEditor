@@ -32,7 +32,6 @@ ve.ce.Surface = function VeCeSurface( $container, model, surface ) {
 	this.$document = $( document );
 	this.clipboard = {};
 	this.locked = false;
-	this.sluggable = true;
 	this.dragging = false;
 	this.selecting = false;
 	this.$phantoms = $( '<div class="ve-ce-phantoms">' );
