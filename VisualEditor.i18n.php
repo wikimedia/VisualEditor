@@ -10,9 +10,11 @@ $messages['en'] = array(
 	'visualeditor-preference-enable' => 'Enable VisualEditor (main namespace only)',
 	'visualeditor-notification-saved' => 'Your changes to $1 have been saved.',
 	'visualeditor-notification-created' => '$1 has been created.',
+	'visualeditor-notification-restored' => '$1 has been restored.',
 	'visualeditor-ca-editsource' => 'Edit source',
 	'visualeditor-ca-ve-edit' => 'VisualEditor',
 	'visualeditor-ca-ve-create' => 'VisualEditor',
+	'visualeditor-restore-page' => 'Restore page',
 	'visualeditor-editnotices-button' => '$1 {{PLURAL:$1|notice|notices}}',
 	'tooltip-ca-ve-edit' => 'Edit this page with VisualEditor',
 	'accesskey-ca-ve-edit' => '',
@@ -63,8 +65,9 @@ $messages['en'] = array(
 $messages['qqq'] = array(
 	'visualeditor' => 'The name of the VisualEditor extension',
 	'visualeditor-desc' => '{{desc}}',
-	'visualeditor-notification-saved' => '$1 is a page name.',
-	'visualeditor-notification-created' => '$1 is a page name.',
+	'visualeditor-notification-saved' => 'Shown after a user saves a page, $1 is a page name.',
+	'visualeditor-notification-created' => 'Shown after a user creates a page, $1 is a page name.',
+	'visualeditor-notification-restored' => 'Shown after a user restores a page to a previous revision, $1 is a page name.',
 	'visualeditor-ca-editsource' => '{{Optional}}
 Text for the edit source link in the tab dropdown
 {{Identical|visualeditor}}',
@@ -72,6 +75,7 @@ Text for the edit source link in the tab dropdown
 Link text of the dedicated VisualEditor Edit tab.
 {{Identical|visualeditor}}',
 	'visualeditor-ca-ve-create' => 'Link text of the dedicated VisualEditor Create tab.',
+	'visualeditor-restore-page' => 'Label text for save button when the user is editing a previous revision',
 	'visualeditor-editnotices-button' => 'Text of button in the toolbar that shows edit notices (such as MediaWiki:editnotice-0 and [[MediaWiki:editnotice-8/en]]) as a pop-up',
 	'tooltip-ca-ve-edit' => 'Tooltip of the dedicated VisualEditor Edit tab.',
 	'accesskey-ca-ve-edit' => '{{Ignore}}',

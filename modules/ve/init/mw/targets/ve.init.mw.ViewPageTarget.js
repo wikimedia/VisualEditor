@@ -18,7 +18,7 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	var currentUri = new mw.Uri( window.location.toString() );
 
 	// Parent constructor
-	ve.init.mw.Target.call( this, mw.config.get( 'wgRelevantPageName' ) );
+	ve.init.mw.Target.call( this, mw.config.get( 'wgRelevantPageName' ), currentUri.query.oldid );
 
 	// Properties
 	this.$document = null;
@@ -49,6 +49,7 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 		}
 	};
 	this.currentUri = currentUri;
+	this.restoring = !!this.oldid;
 	this.section = currentUri.query.vesection || null;
 	this.namespaceName = mw.config.get( 'wgCanonicalNamespace' );
 	this.viewUri = new mw.Uri( mw.util.wikiGetlink( this.pageName ) );
@@ -82,6 +83,7 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 			// The following messages can be used here:
 			// visualeditor-notification-saved
 			// visualeditor-notification-created
+			// visualeditor-notification-restored
 			mw.util.jsMessage(
 				ve.msg( 'visualeditor-notification-' + currentUri.query.venotify, this.pageName )
 			);
@@ -267,11 +269,11 @@ ve.init.mw.ViewPageTarget.prototype.onLoadError = function ( response, status ) 
  * @param {HTMLElement} html Rendered HTML from server
  */
 ve.init.mw.ViewPageTarget.prototype.onSave = function ( html ) {
-	if ( !this.pageExists || this.pageRevId ) {
-		// This is a page creation, refresh the page
+	if ( !this.pageExists || this.restoring ) {
+		// This is a page creation or restoration, refresh the page
 		this.tearDownBeforeUnloadHandler();
 		window.location.href = this.viewUri.extend( {
-			'venotify': this.pageExists ? 'saved' : 'created'
+			'venotify': this.restoring ? 'restored' : 'created'
 		} );
 	} else {
 		// Update watch link to match 'watch checkbox' in save dialog.
@@ -380,7 +382,7 @@ ve.init.mw.ViewPageTarget.prototype.onViewTabClick = function ( e ) {
  * @param {jQuery.Event} e
  */
 ve.init.mw.ViewPageTarget.prototype.onToolbarSaveButtonClick = function () {
-	if ( this.edited ) {
+	if ( this.edited || this.restoring ) {
 		this.showSaveDialog();
 	}
 };
@@ -487,7 +489,7 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( dom ) {
 	// Update UI
 	this.hidePageContent();
 	this.hideSpinner();
-	if ( !this.currentUri.query.oldid ) {
+	if ( !this.restoring ) {
 		this.disableToolbarSaveButton();
 	}
 	this.active = true;
@@ -644,7 +646,7 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarButtons = function () {
 	this.$toolbarSaveButton
 		.append(
 			$( '<span class="ve-init-mw-viewPageTarget-toolbar-saveButton-label"></span>' )
-				.text( ve.msg( 'savearticle' ) )
+				.text( ve.msg( this.restoring ? 'visualeditor-restore-page': 'savearticle' ) )
 		)
 		.on( {
 			'mousedown': function ( e ) {
@@ -788,7 +790,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 				} )
 				.end()
 			.find( '.ve-init-mw-viewPageTarget-saveDialog-saveButton-label' )
-				.text( ve.msg( 'savearticle' ) )
+				.text( ve.msg( viewPage.restoring ? 'visualeditor-restore-page' : 'savearticle' ) )
 				.end()
 			.find( '.ve-init-mw-viewPageTarget-saveDialog-license' )
 				// FIXME license text is hardcoded English
