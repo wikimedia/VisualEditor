@@ -98,8 +98,7 @@ ve.ce.SurfaceObserver.prototype.stop = function ( poll ) {
  * @param {Boolean} async Poll asynchronously
  */
 ve.ce.SurfaceObserver.prototype.poll = function ( async ) {
-	var delayPoll, rangySelection, $branch, node, text, hash,
-		range = null;
+	var delayPoll, rangySelection, $branch, node, text, hash, range;
 
 	if ( this.timeoutId !== null ) {
 		clearTimeout( this.timeoutId );
@@ -118,6 +117,7 @@ ve.ce.SurfaceObserver.prototype.poll = function ( async ) {
 		return;
 	}
 
+	range = this.range;
 	rangySelection = rangy.getSelection();
 	node = this.node;
 
