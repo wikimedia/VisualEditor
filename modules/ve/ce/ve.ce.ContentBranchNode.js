@@ -140,6 +140,9 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 };
 
 ve.ce.ContentBranchNode.prototype.renderContents = function () {
+	if ( this.root instanceof ve.ce.DocumentNode && !this.root.getSurface().isRenderingEnabled() ) {
+		return;
+	}
 
 	// Detach all child nodes from this.$
 	// We can't use this.$.empty() because that destroys .data() and event handlers

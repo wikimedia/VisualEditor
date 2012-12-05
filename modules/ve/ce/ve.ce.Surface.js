@@ -31,7 +31,7 @@ ve.ce.Surface = function VeCeSurface( $container, model, surface ) {
 	this.$ = $container;
 	this.$document = $( document );
 	this.clipboard = {};
-	this.locked = false;
+	this.renderingEnabled = true;
 	this.dragging = false;
 	this.selecting = false;
 	this.$phantoms = $( '<div class="ve-ce-phantoms">' );
@@ -206,12 +206,14 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 			if ( annotations instanceof ve.AnnotationSet ) {
 				ve.dm.Document.addAnnotationsToData( data, this.model.getInsertionAnnotations() );
 			}
+			this.disableRendering();
 			this.model.change(
 				ve.dm.Transaction.newFromInsertion(
 					this.documentView.model, previous.range.start, data
 				),
 				next.range
 			);
+			this.enableRendering();
 			return;
 		}
 
@@ -225,10 +227,12 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 			} else {
 				range = new ve.Range( next.range.start, previous.range.start );
 			}
+			this.disableRendering();
 			this.model.change(
 				ve.dm.Transaction.newFromRemoval( this.documentView.model, range ),
 				next.range
 			);
+			this.enableRendering();
 			return;
 		}
 	}
@@ -626,7 +630,7 @@ ve.ce.Surface.prototype.onKeyPress = function ( e ) {
  * @param {ve.Range|undefined} selection
  */
 ve.ce.Surface.prototype.onChange = function ( transaction, selection ) {
-	if ( selection && !this.isLocked() ) {
+	if ( selection && this.isRenderingEnabled() ) {
 		this.showSelection( selection );
 	}
 };
@@ -1247,20 +1251,20 @@ ve.ce.Surface.prototype.getDocument = function () {
 /**
  * @method
  */
-ve.ce.Surface.prototype.lock = function () {
-	this.locked = true;
+ve.ce.Surface.prototype.enableRendering = function () {
+	this.renderingEnabled = true;
 };
 
 /**
  * @method
  */
-ve.ce.Surface.prototype.unlock = function () {
-	this.locked = false;
+ve.ce.Surface.prototype.disableRendering = function () {
+	this.renderingEnabled = false;
 };
 
 /**
  * @method
  */
-ve.ce.Surface.prototype.isLocked = function () {
-	return this.locked;
+ve.ce.Surface.prototype.isRenderingEnabled = function () {
+	return this.renderingEnabled;
 };
