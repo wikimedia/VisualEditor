@@ -39,7 +39,7 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 
 		<script>
 			if ( window.devicePixelRatio > 1 ) {
-				document.write( '<link rel="stylesheet" href="../../modules/ve/ui/styles/ve.ui.ve.ui.Icons-vector.css">' );
+				document.write( '<link rel="stylesheet" href="../../modules/ve/ui/styles/ve.ui.Icons-vector.css">' );
 			} else {
 				document.write( '<link rel="stylesheet" href="../../modules/ve/ui/styles/ve.ui.Icons-raster.css">' );
 			}
