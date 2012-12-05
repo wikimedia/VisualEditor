@@ -21,7 +21,6 @@ ve.ce.ContentBranchNode = function VeCeContentBranchNode( type, model, $element 
 	ve.ce.BranchNode.call( this, type, model, $element );
 
 	// Events
-	this.model.addListenerMethod( this, 'update', 'renderContents' );
 	this.addListenerMethod( this, 'childUpdate', 'renderContents' );
 
 	// Initialization
