@@ -678,7 +678,11 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarButtons = function () {
 	this.$toolbarSaveButton
 		.append(
 			$( '<span class="ve-init-mw-viewPageTarget-toolbar-saveButton-label"></span>' )
-				.text( ve.msg( this.restoring ? 'visualeditor-restore-page': 'savearticle' ) )
+				.text( ve.msg(
+					this.restoring ? 'visualeditor-restore-page': (
+						this.pageExists ? 'savearticle' : 'visualeditor-create-page'
+					)
+				) )
 		)
 		.on( {
 			'mousedown': function ( e ) {
