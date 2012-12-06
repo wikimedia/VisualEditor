@@ -166,7 +166,7 @@ ve.ce.Surface.prototype.handleInsertion = function () {
  */
 ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 	var data, range, len, annotations, offsetDiff, lengthDiff, sameLeadingAndTrailing,
-		previousStart, nextStart,
+		previousStart, nextStart, newRange,
 		fromLeft = 0,
 		fromRight = 0,
 		nodeOffset = node.getModel().getOffset();
@@ -259,12 +259,16 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 	if ( annotations.getLength() ) {
 		ve.dm.Document.addAnnotationsToData( data, annotations );
 	}
+	newRange = next.range;
+	if ( newRange.isCollapsed() ) {
+		newRange = new ve.Range( this.getNearestCorrectOffset( newRange.start, 1 ) );
+	}
 	if ( data.length > 0 ) {
 		this.model.change(
 			ve.dm.Transaction.newFromInsertion(
 				this.documentView.model, nodeOffset + 1 + fromLeft, data
 			),
-			next.range
+			newRange
 		);
 	}
 	if ( fromLeft + fromRight < previous.text.length ) {
@@ -276,7 +280,7 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 					data.length + nodeOffset + 1 + previous.text.length - fromRight
 				)
 			),
-			next.range
+			newRange
 		);
 	}
 };
