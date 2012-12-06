@@ -331,9 +331,11 @@ $messages['de'] = array(
 	'visualeditor-preference-enable' => 'VisualEditor (WYSIWYG) aktivieren (nur für den Artikelnamensraum)',
 	'visualeditor-notification-saved' => 'Deine Änderungen an $1 wurden gespeichert.',
 	'visualeditor-notification-created' => '$1 wurde erstellt.',
+	'visualeditor-notification-restored' => '„$1“ wurde wiederhergestellt.',
 	'visualeditor-ca-editsource' => 'Quelltext bearbeiten',
 	'visualeditor-ca-ve-edit' => 'WYSIWYG-Editor',
 	'visualeditor-ca-ve-create' => 'WYSIWYG-Editor',
+	'visualeditor-restore-page' => 'Seite wiederherstellen',
 	'visualeditor-editnotices-button' => '{{PLURAL:$1|Eine Notiz|$1 Notizen}}',
 	'tooltip-ca-ve-edit' => 'Diese Seite mit dem WYSIWYG-Editor bearbeiten',
 	'visualeditor-inspector-title' => 'Inspizieren',
@@ -580,9 +582,11 @@ $messages['fr'] = array(
 	'visualeditor-preference-enable' => 'Activer VisualEditor (espace de noms principal uniquement)',
 	'visualeditor-notification-saved' => 'Vos modifications à $1 ont été enregistrés.',
 	'visualeditor-notification-created' => '$1 a été créé!',
+	'visualeditor-notification-restored' => '$1 a été récupéré.',
 	'visualeditor-ca-editsource' => 'Modifier la source',
 	'visualeditor-ca-ve-edit' => 'VisualEditor',
 	'visualeditor-ca-ve-create' => 'VisualEditor',
+	'visualeditor-restore-page' => 'Restaurer la page',
 	'visualeditor-editnotices-button' => '$1 {{PLURAL:$1|avertissement|avertissements}}',
 	'tooltip-ca-ve-edit' => 'Modifier cette page avec VisualEditor',
 	'visualeditor-inspector-title' => 'Inspecter',
@@ -657,9 +661,11 @@ $messages['gl'] = array(
 	'visualeditor-preference-enable' => 'Activar o editor visual (só no espazo de nomes principal)',
 	'visualeditor-notification-saved' => 'Gardáronse os cambios feitos en "$1".',
 	'visualeditor-notification-created' => 'Creouse "$1".',
+	'visualeditor-notification-restored' => 'Restaurouse "$1".',
 	'visualeditor-ca-editsource' => 'Editar a fonte',
 	'visualeditor-ca-ve-edit' => 'Editor visual',
 	'visualeditor-ca-ve-create' => 'Editor visual',
+	'visualeditor-restore-page' => 'Restaurar a páxina',
 	'visualeditor-editnotices-button' => '$1 {{PLURAL:$1|aviso|avisos}}',
 	'tooltip-ca-ve-edit' => 'Editar esta páxina co editor visual',
 	'visualeditor-inspector-title' => 'Inspeccionar',
@@ -949,9 +955,12 @@ $messages['ja'] = array(
 	'visualeditor-preference-enable' => 'ビジュアルエディターを有効にする (標準名前空間のみ)',
 	'visualeditor-notification-saved' => '$1への変更を保存しました。',
 	'visualeditor-notification-created' => '$1を作成しました。',
+	'visualeditor-notification-restored' => '$1を復元しました。',
 	'visualeditor-ca-editsource' => 'ソースを編集',
 	'visualeditor-ca-ve-edit' => 'ビジュアルエディター',
 	'visualeditor-ca-ve-create' => 'ビジュアルエディター',
+	'visualeditor-restore-page' => 'ページを復元',
+	'visualeditor-editnotices-button' => '$1 {{PLURAL:$1|件のお知らせ}}',
 	'tooltip-ca-ve-edit' => 'このページをビジュアルエディターで編集する',
 	'visualeditor-inspector-title' => '調査',
 	'visualeditor-linkinspector-title' => 'ハイパーリンク',
@@ -1182,9 +1191,11 @@ $messages['mk'] = array(
 	'visualeditor-preference-enable' => 'Овозможи ЛиковенУредник (само главен имен. простор)',
 	'visualeditor-notification-saved' => 'Измените во $1 се зачувани',
 	'visualeditor-notification-created' => 'Создавањето на $1 заврши успешно!',
+	'visualeditor-notification-restored' => '$1 е повратена.',
 	'visualeditor-ca-editsource' => 'Уреди извор',
 	'visualeditor-ca-ve-edit' => 'ВизуеленУредник',
 	'visualeditor-ca-ve-create' => 'ВизуеленУредник',
+	'visualeditor-restore-page' => 'Поврати страница',
 	'visualeditor-editnotices-button' => '$1 {{PLURAL:$1|известување|известувања}}',
 	'tooltip-ca-ve-edit' => 'Уреди ја страницава со ВизуеленУредник',
 	'visualeditor-inspector-title' => 'Контр. преглед',
@@ -1748,6 +1759,14 @@ $messages['tl'] = array(
 	'visualeditor-editsummary' => 'Ilarawan kung ano ang binago mo',
 );
 
+/** Ukrainian (українська)
+ * @author AS
+ */
+$messages['uk'] = array(
+	'visualeditor-notification-restored' => '«$1» відновлено.',
+	'visualeditor-restore-page' => 'Відновити',
+);
+
 /** Urdu (اردو)
  * @author පසිඳු කාවින්ද
  */
@@ -1771,9 +1790,11 @@ $messages['vi'] = array(
 	'visualeditor-preference-enable' => 'Sử dụng Trình soạn thị giác (chỉ có trong không gian tên chính)',
 	'visualeditor-notification-saved' => 'Đã lưu các thay đổi của bạn tại $1.',
 	'visualeditor-notification-created' => 'Đã tạo ra $1.',
+	'visualeditor-notification-restored' => '$1 đã được phục hồi.',
 	'visualeditor-ca-editsource' => 'Sửa đổi mã nguồn',
 	'visualeditor-ca-ve-edit' => 'Trình soạn thị giác',
 	'visualeditor-ca-ve-create' => 'Trình soạn thị giác',
+	'visualeditor-restore-page' => 'Phục hồi trang',
 	'visualeditor-editnotices-button' => '$1 thông báo',
 	'tooltip-ca-ve-edit' => 'Sửa đổi trang này dùng Trình soạn thị giác',
 	'visualeditor-inspector-title' => 'Kiểm tra',
