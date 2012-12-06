@@ -351,6 +351,8 @@ $wgResourceModules += array(
 			'visualeditor-clearbutton-tooltip',
 			'visualeditor-historybutton-undo-tooltip',
 			'visualeditor-historybutton-redo-tooltip',
+			'visualeditor-inspector-close-tooltip',
+			'visualeditor-inspector-remove-tooltip',
 			'visualeditor-viewpage-savewarning',
 			'visualeditor-saveerror',
 			'visualeditor-editconflict',
