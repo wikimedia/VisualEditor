@@ -599,11 +599,8 @@ ve.ce.Surface.prototype.onPaste = function () {
 			selection.start,
 			pasteData
 		);
-		view.model.change( tx, new ve.Range( selection.start + pasteData.length ) );
 		view.documentView.documentNode.$.focus();
-
-		view.surfaceObserver.clear();
-		view.surfaceObserver.start();
+		view.model.change( tx, new ve.Range( selection.start + pasteData.length ) );
 	}, 0 );
 };
 
