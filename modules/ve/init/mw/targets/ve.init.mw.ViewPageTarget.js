@@ -201,7 +201,7 @@ ve.init.mw.ViewPageTarget.prototype.activate = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.deactivate = function ( override ) {
-	if ( this.active && !this.deactivating ) {
+	if ( override || ( this.active && !this.deactivating ) ) {
 		if (
 			override ||
 			!this.surface.getModel().getHistory().length ||
@@ -256,11 +256,8 @@ ve.init.mw.ViewPageTarget.prototype.onLoadError = function ( response, status ) 
 		this.load();
 	} else {
 		this.activating = false;
-		this.restoreSkinTabs();
-		this.hideSpinner();
-		this.showTableOfContents();
-		this.showPageContent();
-		this.restorePageTitle();
+		// User interface changes
+		this.deactivate( true );
 	}
 };
 
@@ -311,6 +308,8 @@ ve.init.mw.ViewPageTarget.prototype.onSave = function ( html ) {
 ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( response, status ) {
 	// TODO: Don't use alert.
 	alert( ve.msg( 'visualeditor-saveerror', status ) );
+	this.unlockSaveDialogSaveButton();
+	this.$saveDialogLoadingIcon.hide();
 };
 
 /**
@@ -524,16 +523,20 @@ ve.init.mw.ViewPageTarget.prototype.tearDownSurface = function () {
 	// Reset tabs
 	this.restoreSkinTabs();
 	// Update UI
-	this.$document.blur();
-	this.$document = null;
+	if ( this.$document ) {
+		this.$document.blur();
+		this.$document = null;
+	}
 	this.detachToolbar();
 	this.hideSpinner();
 	this.showPageContent();
 	this.restorePageTitle();
 	this.showTableOfContents();
 	// Destroy editor
-	this.surface.destroy();
-	this.surface = null;
+	if ( this.surface ) {
+		this.surface.destroy();
+		this.surface = null;
+	}
 	this.active = false;
 };
 
