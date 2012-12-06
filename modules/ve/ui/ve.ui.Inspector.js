@@ -30,10 +30,10 @@ ve.ui.Inspector = function VeUiInspector( context ) {
 		.addClass( 've-ui-icon-' + this.constructor.static.icon );
 	this.$closeButton = this.frame.$$(
 		'<div class="ve-ui-inspector-button ve-ui-inspector-closeButton ve-ui-icon-close"></div>'
-	);
+	).attr( 'title', ve.msg( 'visualeditor-inspector-close-tooltip' ) );
 	this.$removeButton = this.frame.$$(
 		'<div class="ve-ui-inspector-button ve-ui-inspector-removeButton ve-ui-icon-remove"></div>'
-	);
+	).attr( 'title', ve.msg( 'visualeditor-inspector-remove-tooltip' ) );
 
 	// Events
 	this.$closeButton.on( {
