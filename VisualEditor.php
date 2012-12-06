@@ -144,6 +144,7 @@ $wgResourceModules += array(
 			'visualeditor-editsummary',
 			'visualeditor-editnotices-button',
 			'visualeditor-restore-page',
+			'visualeditor-create-page',
 		),
 	),
 	'ext.visualEditor.base' => $wgVisualEditorResourceTemplate + array(
