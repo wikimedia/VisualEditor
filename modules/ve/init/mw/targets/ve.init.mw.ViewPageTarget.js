@@ -756,6 +756,8 @@ ve.init.mw.ViewPageTarget.prototype.getSaveDialogHtml = function ( callback ) {
 	var viewPage = this,
 		$wrap = $( '<div>' ).html( this.constructor.saveDialogTemplate );
 
+	// Based on EditPage::getCheckboxes and EditPage::initialiseForm
+
 	mw.user.getRights( function ( rights ) {
 		// MediaWiki only allows usage of minor flag when editing an existing page
 		// and the user has the right to use the feature.
@@ -764,6 +766,20 @@ ve.init.mw.ViewPageTarget.prototype.getSaveDialogHtml = function ( callback ) {
 			$wrap
 				.find( '.ve-init-mw-viewPageTarget-saveDialog-minorEdit-label, #ve-init-mw-viewPageTarget-saveDialog-minorEdit' )
 				.remove();
+		}
+
+		if ( mw.user.isAnon() ) {
+			$wrap
+				.find( '.ve-init-mw-viewPageTarget-saveDialog-watchList-label, #ve-init-mw-viewPageTarget-saveDialog-watchList' )
+				.remove();
+		} else if (
+			mw.user.options.get( 'watchdefault' ) ||
+			( mw.user.options.get( 'watchcreations' ) && !viewPage.pageExists ) ||
+			mw.config.get( 'wgVisualEditor' ).isPageWatched
+		) {
+			$wrap
+				.find( '#ve-init-mw-viewPageTarget-saveDialog-watchList' )
+				.prop( 'checked', true );
 		}
 		callback( $wrap );
 	} );
@@ -819,9 +835,6 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 				.end()
 			.find( '.ve-init-mw-viewPageTarget-saveDialog-watchList-label' )
 				.html( ve.init.platform.getParsedMessage( 'watchthis' ) )
-				.end()
-			.find( '#ve-init-mw-viewPageTarget-saveDialog-watchList' )
-				.prop( 'checked', mw.config.get( 'wgVisualEditor' ).isPageWatched )
 				.end()
 			.find( '.ve-init-mw-viewPageTarget-saveDialog-saveButton' )
 				.on( {

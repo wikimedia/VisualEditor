@@ -56,14 +56,12 @@ class VisualEditorHooks {
 
 	/**
 	 * Adds extra variables to the page config.
-	 *
-	 * This is attached to the MediaWiki 'MakeGlobalVariablesScript' hook.
 	 */
-	public static function onMakeGlobalVariablesScript( &$vars ) {
-		global $wgUser, $wgTitle;
+	public static function onMakeGlobalVariablesScript( array &$vars, OutputPage $out ) {
 		$vars['wgVisualEditor'] = array(
-			'isPageWatched' => $wgUser->isWatched( $wgTitle )
+			'isPageWatched' => $out->getUser()->isWatched( $out->getTitle() )
 		);
+
 		return true;
 	}
 
