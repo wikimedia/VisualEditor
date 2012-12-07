@@ -113,14 +113,14 @@ ve.init.mw.Target.onReady = function () {
  *
  * @static
  * @method
- * @param {Object} response XHR Response object
+ * @param {Object} jqXHR
  * @param {String} status Text status message
- * @param {Mixed} error Thrown exception or HTTP error string
- * @emits loadError (response, status, error)
+ * @param {mixed} error HTTP status text
+ * @emits loadError (jqXHR, status, error)
  */
-ve.init.mw.Target.onLoadError = function ( response, status, error ) {
+ve.init.mw.Target.onLoadError = function ( jqXHR, status, error ) {
 	this.loading = false;
-	this.emit( 'loadError', response, status, error );
+	this.emit( 'loadError', jqXHR, status, error );
 };
 
 /**
@@ -130,7 +130,7 @@ ve.init.mw.Target.onLoadError = function ( response, status, error ) {
  *
  * @static
  * @method
- * @param {Object} response XHR Response object
+ * @param {Object} response Response data
  * @param {String} status Text status message
  * @emits save (html)
  * @emits saveError (null, message, null)
@@ -162,18 +162,63 @@ ve.init.mw.Target.onSave = function ( response ) {
 /**
  * Respond to an unsuccessful save request.
  *
- * This method is called within the context of a target instance.
+ * @static
+ * @method
+ * @context {ve.init.mw.Target}
+ * @param {Object} jqXHR
+ * @param {String} status Text status message
+ * @param {mixed} error HTTP status text
+ * @emits saveError (jqXHR, status, error)
+ */
+ve.init.mw.Target.onSaveError = function ( jqXHR, status, error ) {
+	this.saving = false;
+	this.emit( 'saveError', jqXHR, status, error );
+};
+
+
+/**
+ * Respond to a successful show changes request.
  *
  * @static
  * @method
- * @param {Object} data HTTP Response object
+ * @param {Object} response Response data
  * @param {String} status Text status message
- * @param {Mixed} error Thrown exception or HTTP error string
- * @emits saveError (response, status, error)
+ * @emits save (diffHtml)
+ * @emits saveError (null, message, null)
  */
-ve.init.mw.Target.onSaveError = function ( response, status, error ) {
+ve.init.mw.Target.onShowChanges = function ( response ) {
+	var data = response.visualeditor;
+	if ( !data && !response.error ) {
+		ve.init.mw.Target.onShowChangesError.call( this, null, 'Invalid response from server', null );
+	} else if ( response.error ) {
+		ve.init.mw.Target.onShowChangesError.call(
+			this, null, 'Unsuccessful request: ' + response.error.info, null
+		);
+	} else if ( data.result !== 'success' ) {
+		ve.init.mw.Target.onShowChangesError.call( this, null, 'Failed request: ' + data.result, null );
+	} else if ( typeof data.diff !== 'string' ) {
+		ve.init.mw.Target.onShowChangesError.call(
+			this, null, 'Invalid HTML content in response from server', null
+		);
+	} else {
+		this.emit( 'showChanges', data.diff );
+	}
+};
+
+/**
+ * Respond to error during saveChanges action.
+ *
+ * @static
+ * @method
+ * @context {ve.init.mw.Target}
+ * @param {Object} jqXHR
+ * @param {String} status Text status message
+ * @param {mixed} error HTTP status text
+ * @emits showChangesError (jqXHR, status, error)
+ */
+ve.init.mw.Target.onShowChangesError = function ( jqXHR, status, error ) {
 	this.saving = false;
-	this.emit( 'saveError', response, status, error );
+	this.emit( 'showChangesError', jqXHR, status, error );
 };
 
 /**
@@ -313,6 +358,33 @@ ve.init.mw.Target.prototype.save = function ( dom, options ) {
 		'error': ve.bind( ve.init.mw.Target.onSaveError, this )
 	} );
 	return true;
+};
+
+/**
+ * Posts DOM to Parsoid API to retreive wikitext diff.
+ *
+ * @method
+ * @param {HTMLElement} dom DOM to compare against (via wikitext).
+*/
+ve.init.mw.Target.prototype.showChanges = function ( dom ) {
+	$.ajax( {
+		'url': this.apiUrl,
+		'data': {
+			'format': 'json',
+			'action': 'visualeditor',
+			'paction': 'diff',
+			'page': this.pageName,
+			'html': $( dom ).html(),
+			// TODO: API required editToken, though not relevant for diff
+			'token': this.editToken
+		},
+		'dataType': 'json',
+		'type': 'POST',
+		// Wait up to 10 seconds before giving up
+		'timeout': 10000,
+		'success': ve.bind( ve.init.mw.Target.onShowChanges, this ),
+		'error': ve.bind( ve.init.mw.Target.onShowChangesError, this )
+	} );
 };
 
 /**

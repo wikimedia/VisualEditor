@@ -72,16 +72,20 @@
 }
 
 .ve-init-mw-viewPageTarget-toolbar-saveButton,
-.ve-init-mw-viewPageTarget-saveDialog-saveButton {
+.ve-init-mw-viewPageTarget-saveDialog-saveButton,
+.ve-init-mw-viewPageTarget-saveDialog-diffButton {
 	display: inline-block;
-	border: solid 1px #c3e59a;
 	border-radius: 0.25em;
 	cursor: pointer;
 	vertical-align: top;
 	font-size: 1em;
 	padding: 0.25em 0.75em;
 	text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
-	/* Fancy CSS background */
+}
+
+.ve-init-mw-viewPageTarget-toolbar-saveButton,
+.ve-init-mw-viewPageTarget-saveDialog-saveButton {
+	border: solid 1px #c3e59a;
 	background-image: -webkit-gradient(
 		linear,
 		left bottom,
@@ -94,6 +98,22 @@
 	background-image: -ms-linear-gradient(bottom, #c3e59a 0%, #f0fbe1 100%);
 	background-image: -o-linear-gradient(bottom, #c3e59a 0%, #f0fbe1 100%);
 	background-image: linear-gradient(bottom, #c3e59a 0%, #f0fbe1 100%);
+}
+
+.ve-init-mw-viewPageTarget-saveDialog-diffButton {
+	border: solid 1px #b0d9ee;
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, #b0d9ee),
+		color-stop(1, #eaf4fa)
+	);
+	background-image: -webkit-linear-gradient(bottom, #b0d9ee 0%, #eaf4fa 100%);
+	background-image: -moz-linear-gradient(bottom, #b0d9ee 0%, #eaf4fa 100%);
+	background-image: -ms-linear-gradient(bottom, #b0d9ee 0%, #eaf4fa 100%);
+	background-image: -o-linear-gradient(bottom, #b0d9ee 0%, #eaf4fa 100%);
+	background-image: linear-gradient(bottom, #b0d9ee 0%, #eaf4fa 100%);
 }
 
 .ve-init-mw-viewPageTarget-toolbar-saveButton,
@@ -128,11 +148,13 @@
 	background-image: linear-gradient(#ffffff, #f0f0f0);
 }
 
-.ve-init-mw-viewPageTarget-saveDialog-saveButton {
+.ve-init-mw-viewPageTarget-saveDialog-saveButton,
+.ve-init-mw-viewPageTarget-saveDialog-diffButton {
 	float: right;
 	height: 2em;
 	line-height: 1.25em;
 	margin-right: 0;
+	margin-left: 1em;
 }
 
 .ve-init-mw-viewPageTarget-saveDialog-saving {
@@ -155,7 +177,8 @@
 
 .ve-init-mw-viewPageTarget-toolbar-saveButton:hover,
 .ve-init-mw-viewPageTarget-toolbar-cancelButton:hover,
-.ve-init-mw-viewPageTarget-saveDialog-saveButton:hover {
+.ve-init-mw-viewPageTarget-saveDialog-saveButton:hover,
+.ve-init-mw-viewPageTarget-saveDialog-diffButton:hover {
 	border-color: #aaa;
 }
 
@@ -164,45 +187,35 @@
 .ve-init-mw-viewPageTarget-toolbar-cancelButton:active,
 .ve-init-mw-viewPageTarget-toolbar-cancelButton-down,
 .ve-init-mw-viewPageTarget-saveDialog-saveButton:active,
-.ve-init-mw-viewPageTarget-saveDialog-saveButton-down {
+.ve-init-mw-viewPageTarget-saveDialog-saveButton-down,
+.ve-init-mw-viewPageTarget-saveDialog-diffButton:active {
 	border-color: #ddd;
 	box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.07);
 }
 
 .ve-init-mw-viewPageTarget-toolbar-saveButton-disabled,
-.ve-init-mw-viewPageTarget-saveDialog-saveButton-saving {
+.ve-init-mw-viewPageTarget-saveDialog-saveButton-disabled,
+.ve-init-mw-viewPageTarget-saveDialog-diffButton-disabled {
 	filter: alpha(opacity=50);
 	opacity: 0.5;
 	cursor: default;
 }
 
 .ve-init-mw-viewPageTarget-toolbar-saveButton-disabled:hover,
-.ve-init-mw-viewPageTarget-saveDialog-saveButton-saving:hover {
+.ve-init-mw-viewPageTarget-saveDialog-saveButton-disabled:hover,
+.ve-init-mw-viewPageTarget-saveDialog-diffButton-disabled:hover {
 	border-color: #ccc;
 	box-shadow: none;
 }
 
 .ve-init-mw-viewPageTarget-toolbar-saveButton-label,
 .ve-init-mw-viewPageTarget-toolbar-cancelButton-label,
-.ve-init-mw-viewPageTarget-saveDialog-saveButton-label {
+.ve-init-mw-viewPageTarget-saveDialog-saveButton-label,
+.ve-init-mw-viewPageTarget-saveDialog-diffButton-label {
 	display: inline-block;
 	vertical-align: middle;
 	line-height: 1.8em;
 	font-size: 0.8em;
-}
-
-.ve-init-mw-viewPageTarget-saveDialog-closeButton {
-	position: absolute;
-	top: 0.5em;
-	right: 0.5em;
-	width: 1.5em;
-	height: 1.5em;
-	cursor: pointer;
-	filter: alpha(opacity=8);
-	opacity: 0.8;
-	/* @see ve.init.mw.Icons */
-	background-position: center center;
-	background-repeat: no-repeat;
 }
 
 /* Save dialog styles */
@@ -212,6 +225,7 @@
 	top: 0.25em;
 	right: 0.5em;
 	width: 29em;
+	min-width: 29em;
 	font-family: sans-serif;
 	position: absolute;
 	border: solid 1px #ccc;
@@ -220,13 +234,75 @@
 	box-shadow: 0 0.15em 0.5em 0 rgba(0, 0, 0, 0.2);
 	padding: 0.75em;
 	padding-top: 2.5em;
-	min-width: 15em;
 	z-index: 3;
+
+	/* slide-diff can get quite long, handle overflow */
+	/* max-height set from javascript */
+	overflow-x: auto;
+}
+
+.ve-init-mw-viewPageTarget-saveDialog-head {
+	position: absolute;
+	top: 0.4em;
+	left: 0.5em;
+	right: 0.5em;
+}
+
+.ve-init-mw-viewPageTarget-saveDialog-title {
+	height: 2em;
+	line-height: 2em;
+	color: #333;
+	font-size: 0.9em;
+	float: left;
+	margin: 0 0.5em;
+}
+
+.ve-init-mw-viewPageTarget-saveDialog-prevButton {
+	float: left;
+	position: relative;
+	top: 0.1em;
+	width: 1.5em;
+	height: 1.5em;
+	cursor: pointer;
+	filter: alpha(opacity=8);
+	opacity: 0.8;
+	/* @see ve.init.mw.Icons */
+	background-position: left top;
+	background-repeat: no-repeat;
+
+	padding-right: 0.5em;
+	border-right: 1px solid #eee;
+	margin-right: 0.5em;
+}
+
+.ve-init-mw-viewPageTarget-saveDialog-closeButton {
+	float: right;
+	position: relative;
+	top: 0.1em;
+	width: 1.5em;
+	height: 1.5em;
+	cursor: pointer;
+	filter: alpha(opacity=8);
+	opacity: 0.8;
+	/* @see ve.init.mw.Icons */
+	background-position: right top;
+	background-repeat: no-repeat;
 }
 
 .ve-init-mw-viewPageTarget-saveDialog-body {
 	border-top: 1px solid #ddd;
-	padding: 1em 0;
+	padding-top: 1em;
+	overflow: hidden;
+}
+
+#ve-init-mw-viewPageTarget-saveDialog-slide-diff .diff {
+	width: auto;
+	table-layout: auto;
+	font-size: 0.8em;
+}
+
+.ve-init-mw-viewPageTarget-saveDialog-foot {
+	padding-top: 1em;
 }
 
 .ve-init-mw-viewPageTarget-saveDialog-license {
@@ -235,16 +311,6 @@
 	padding: 0;
 	margin: 0;
 	color: #999;
-}
-
-.ve-init-mw-viewPageTarget-saveDialog-title {
-	position: absolute;
-	top: 0;
-	left: 1em;
-	height: 2.8em;
-	line-height: 2.8em;
-	color: #333;
-	font-size: 0.9em;
 }
 
 .ve-init-mw-viewPageTarget-saveDialog-summary {

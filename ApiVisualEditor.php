@@ -135,9 +135,19 @@ class ApiVisualEditor extends ApiBase {
 		);
 		$api->execute();
 		$result = $api->getResultData();
-		return isset( $result['query']['pages'][$title->getArticleID()]['revisions'][0]['diff']['*'] ) ?
-			$result['query']['pages'][$title->getArticleID()]['revisions'][0]['diff']['*'] :
-			false;
+		if ( !isset( $result['query']['pages'][$title->getArticleID()]['revisions'][0]['diff']['*'] ) ) {
+			return false;
+		}
+		$diffRows = $result['query']['pages'][$title->getArticleID()]['revisions'][0]['diff']['*'];
+
+		$context = new DerivativeContext( $this->getContext() );
+		$context->setTitle( $title );
+		$engine = new DifferenceEngine( $context );
+		return $engine->addHeader(
+			$diffRows,
+			wfMessage( 'currentrev' )->parse(),
+			wfMessage( 'yourtext' )->parse()
+		);
 	}
 
 	public function execute() {

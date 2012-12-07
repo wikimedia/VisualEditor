@@ -5,6 +5,11 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
+.ve-init-mw-viewPageTarget-saveDialog-prevButton {
+	/* @embed */
+	background-image: url(../../../ui/styles/images/icons/move-rtl.png);
+}
+
 .ve-init-mw-viewPageTarget-saveDialog-closeButton {
 	/* @embed */
 	background-image: url(../../../ui/styles/images/icons/collapse.png);

@@ -122,9 +122,9 @@ $wgResourceModules += array(
 		'messages' => array(
 			'minoredit',
 			'savearticle',
+			'showdiff',
 			'cancel',
 			'watchthis',
-			'tooltip-save',
 			'copyrightwarning',
 			'copyrightpage',
 			'edit',
@@ -145,6 +145,8 @@ $wgResourceModules += array(
 			'visualeditor-editnotices-button',
 			'visualeditor-restore-page',
 			'visualeditor-create-page',
+			'visualeditor-save-title',
+			'visualeditor-showchanges-title',
 		),
 	),
 	'ext.visualEditor.base' => $wgVisualEditorResourceTemplate + array(
@@ -355,6 +357,7 @@ $wgResourceModules += array(
 			'visualeditor-inspector-close-tooltip',
 			'visualeditor-inspector-remove-tooltip',
 			'visualeditor-viewpage-savewarning',
+			'visualeditor-differror',
 			'visualeditor-saveerror',
 			'visualeditor-editconflict',
 			'visualeditor-aliennode-tooltip',
