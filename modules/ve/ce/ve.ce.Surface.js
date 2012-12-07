@@ -35,6 +35,7 @@ ve.ce.Surface = function VeCeSurface( $container, model, surface ) {
 	this.dragging = false;
 	this.selecting = false;
 	this.$phantoms = $( '<div class="ve-ce-phantoms">' );
+	this.pasting = false;
 
 	// Events
 	this.surfaceObserver.addListenerMethods(
@@ -556,8 +557,16 @@ ve.ce.Surface.prototype.onCut = function ( e ) {
  * @method
  * @param {jQuery.Event} e
  */
-ve.ce.Surface.prototype.onPaste = function () {
-	var tx,
+ve.ce.Surface.prototype.onPaste = function ( e ) {
+	// Prevent pasting until after we are done
+	if ( this.pasting ) {
+		e.preventDefault();
+		return false;
+	}
+	this.pasting = true;
+
+	var tx, scrollTop,
+		$window = $( window ),
 		view = this,
 		selection = this.model.getSelection();
 
@@ -569,6 +578,8 @@ ve.ce.Surface.prototype.onPaste = function () {
 		view.model.change( tx );
 	}
 
+	// Save scroll position and change focus to "offscreen" paste target
+	scrollTop = $window.scrollTop();
 	$( '#paste' ).html( '' ).show().focus();
 
 	setTimeout( function () {
@@ -591,7 +602,7 @@ ve.ce.Surface.prototype.onPaste = function () {
 		}
 		*/
 		else {
-			pasteText = $('#paste').text().replace( /\n/gm, '');
+			pasteText = $( '#paste' ).text().replace( /\n/gm, '');
 			pasteData = new ve.dm.DocumentSlice( pasteText.split( '' ) );
 		}
 
@@ -609,8 +620,15 @@ ve.ce.Surface.prototype.onPaste = function () {
 				pasteData.getBalancedData()
 			);
 		}
+
+		// Restore focus and scroll position
 		view.documentView.documentNode.$.focus();
+		$window.scrollTop( scrollTop );
+
 		view.model.change( tx, tx.translateRange( selection ).truncate( 0 ) );
+
+		// Allow pasting again
+		view.pasting = false;
 	}, 0 );
 };
 
