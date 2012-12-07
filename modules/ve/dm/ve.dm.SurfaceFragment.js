@@ -168,6 +168,13 @@ ve.dm.SurfaceFragment.prototype.trimRange = function () {
 	if ( !this.surface ) {
 		return this;
 	}
+	// If range is only whitespace
+	if ( this.document.getText( this.range ).trim().length === 0 ) {
+		// Collapse range
+		return new ve.dm.SurfaceFragment(
+			this.surface, new ve.Range( this.range.start ), this.noAutoSelect
+		);
+	}
 	return new ve.dm.SurfaceFragment(
 		this.surface, this.document.trimOuterSpaceFromRange( this.range ), this.noAutoSelect
 	);
