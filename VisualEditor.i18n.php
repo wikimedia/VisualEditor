@@ -7,7 +7,7 @@ $messages = array();
 $messages['en'] = array(
 	'visualeditor' => 'VisualEditor',
 	'visualeditor-desc' => 'Visual editor for MediaWiki',
-	'visualeditor-preference-enable' => 'Enable VisualEditor (main namespace only)',
+	'visualeditor-preference-enable' => 'Enable VisualEditor (only in the [[Project:Main namespace|main namespace]])',
 	'visualeditor-notification-saved' => 'Your changes to $1 have been saved.',
 	'visualeditor-notification-created' => '$1 has been created.',
 	'visualeditor-notification-restored' => '$1 has been restored.',
@@ -45,7 +45,7 @@ $messages['en'] = array(
 	'visualeditor-historybutton-undo-tooltip' => 'Undo',
 	'visualeditor-historybutton-redo-tooltip' => 'Redo',
 	'visualeditor-inspector-close-tooltip' => 'Close',
-	'Visualeditor-inspector-remove-tooltip' => 'Remove',
+	'visualeditor-inspector-remove-tooltip' => 'Remove',
 	'visualeditor-viewpage-savewarning' => 'Are you sure you want to go back to view mode without saving first?',
 	'visualeditor-loadwarning' => 'Error loading data from server: $1. Would you like to retry?',
 	'visualeditor-saveerror' => 'Error saving data to server: $1.',
@@ -68,6 +68,7 @@ $messages['en'] = array(
 $messages['qqq'] = array(
 	'visualeditor' => 'The name of the VisualEditor extension',
 	'visualeditor-desc' => '{{desc}}',
+	'visualeditor-preference-enable' => 'Label for the user preference to enable the VisualEditor',
 	'visualeditor-notification-saved' => 'Shown after a user saves a page, $1 is a page name.',
 	'visualeditor-notification-created' => 'Shown after a user creates a page, $1 is a page name.',
 	'visualeditor-notification-restored' => 'Shown after a user restores a page to a previous revision, $1 is a page name.',
@@ -77,7 +78,9 @@ Text for the edit source link in the tab dropdown
 	'visualeditor-ca-ve-edit' => '{{Optional}}
 Link text of the dedicated VisualEditor Edit tab.
 {{Identical|visualeditor}}',
-	'visualeditor-ca-ve-create' => 'Link text of the dedicated VisualEditor Create tab.',
+	'visualeditor-ca-ve-create' => '{{Optional}}
+Link text of the dedicated VisualEditor Create tab.
+{{Identical|visualeditor}}',
 	'visualeditor-restore-page' => 'Label text for save button when the user is editing a previous revision',
 	'visualeditor-create-page' => 'Label text for save button when the user is creating a new page',
 	'visualeditor-editnotices-button' => 'Text of button in the toolbar that shows edit notices (such as MediaWiki:editnotice-0 and [[MediaWiki:editnotice-8/en]]) as a pop-up',
@@ -86,6 +89,9 @@ Link text of the dedicated VisualEditor Edit tab.
 	'visualeditor-inspector-title' => 'Title of an unnamed inspector',
 	'visualeditor-linkinspector-title' => 'Title of the link inspector dialog', # Fuzzy
 	'visualeditor-linkinspector-label-pagetitle' => 'Label for the text field that holds the link target in the link inspector',
+	'visualeditor-linkinspector-suggest-existing-page' => 'Label for suggested existing pages in the link inspector',
+	'visualeditor-linkinspector-suggest-new-page' => 'Label for a new page in the link inspector',
+	'visualeditor-linkinspector-suggest-external-link' => 'Label for an external (Web) link in the link inspector',
 	'visualeditor-formatdropdown-title' => 'This is a tooltip for the drop-down box for choosing the formatting style of the selected text, such as "Heading 1", "Heading 2" or "Plain text". (This is not related to "file format" or "data format", such as "Wikitext", "HTML", "PDF" etc.)',
 	'visualeditor-formatdropdown-format-paragraph' => 'Item in the formatting dropdown for paragraphs (normal text)',
 	'visualeditor-formatdropdown-format-heading1' => 'Item in the formatting dropdown for a level 1 heading',
@@ -105,9 +111,14 @@ Link text of the dedicated VisualEditor Edit tab.
 	'visualeditor-clearbutton-tooltip' => 'Tooltip for the clear formatting button',
 	'visualeditor-historybutton-undo-tooltip' => 'Tooltip for the undo button',
 	'visualeditor-historybutton-redo-tooltip' => 'Tooltip for the redo button',
+	'visualeditor-inspector-close-tooltip' => 'Tooltip for the button to close an inspector',
+	'visualeditor-inspector-remove-tooltip' => 'Tooltip for the button to remove an annotation in an inspector',
 	'visualeditor-viewpage-savewarning' => 'Text shown when the user tries to leave the editor without saving their changes',
 	'visualeditor-loadwarning' => 'Text shown when the editor fails to load properly. $1 is the error message from the server, in English.',
 	'visualeditor-saveerror' => 'Text shown when the editor fails to save properly. $1 is an error message, in English.',
+	'visualeditor-editconflict' => 'Alert message when saving a page causes an edit conflict',
+	'visualeditor-editsummary' => 'Label for edit summary box',
+	'visualeditor-aliennode-tooltip' => 'Tooltip for items that the VisualEditor cannot edit',
 	'tag-visualeditor' => 'Short description of the visualeditor tag. Shown on lists of changes (history, recentchanges, etc.) for each edit made using VisualEditor.',
 	'tag-visualeditor-description' => 'Long description of the visualeditor tag. Shown on [[Special:Tags]]',
 );
