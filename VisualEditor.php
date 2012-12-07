@@ -206,6 +206,7 @@ $wgResourceModules += array(
 			've/dm/ve.dm.Surface.js',
 			've/dm/ve.dm.SurfaceFragment.js',
 			've/dm/ve.dm.Document.js',
+			've/dm/ve.dm.DocumentSlice.js',
 			've/dm/ve.dm.DocumentSynchronizer.js',
 			've/dm/ve.dm.Converter.js',
 
