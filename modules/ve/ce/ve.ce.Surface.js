@@ -610,7 +610,7 @@ ve.ce.Surface.prototype.onPaste = function () {
 			);
 		}
 		view.documentView.documentNode.$.focus();
-		view.model.change( tx, new ve.Range( selection.start + pasteData.length ) );
+		view.model.change( tx, tx.translateRange( selection ).truncate( 0 ) );
 	}, 0 );
 };
 

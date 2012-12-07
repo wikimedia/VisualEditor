@@ -1366,11 +1366,11 @@ ve.dm.Document.prototype.getSlice = function ( range ) {
 		addOpenings = [],
 		addClosings = [];
 	if ( selection.length === 0 ) {
-		return [];
+		return new ve.dm.DocumentSlice( [] );
 	}
 	if ( selection.length === 1 && selection[0].range.equals( range ) ) {
 		// Nothing to fix up
-		return this.data.slice( range.start, range.end );
+		return new ve.dm.DocumentSlice( this.data.slice( range.start, range.end ) );
 	}
 
 	first = selection[0];
