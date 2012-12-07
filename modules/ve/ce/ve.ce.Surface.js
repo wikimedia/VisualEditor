@@ -288,7 +288,9 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
  * @method
  */
 ve.ce.Surface.prototype.onSelectionChange = function ( oldRange, newRange ) {
+	this.disableRendering();
 	this.model.change( null, newRange );
+	this.enableRendering();
 };
 
 /**
