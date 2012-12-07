@@ -25,6 +25,10 @@ ve.inheritClass( ve.dm.HeadingNode, ve.dm.BranchNode );
 
 /* Static Members */
 
+ve.dm.HeadingNode.defaultAttributes = {
+	'level': 1
+};
+
 /**
  * Node rules.
  *

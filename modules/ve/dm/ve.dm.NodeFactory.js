@@ -24,6 +24,29 @@ ve.inheritClass( ve.dm.NodeFactory, ve.Factory );
 /* Methods */
 
 /**
+ * Gets a data element with fallback attributes.
+ *
+ * @method
+ * @param {String} type Node type
+ * @param {Object} attributes Node attributes, defaults will be used where needed
+ * @returns {Object} Data element
+ * @throws 'Unknown node type: {type}'
+ */
+ve.dm.NodeFactory.prototype.getDataElement = function ( type, attributes ) {
+	var element = { 'type': type };
+	if ( type in this.registry ) {
+		if ( this.registry[type].defaultAttributes ) {
+			attributes = ve.extendObject( {}, this.registry[type].defaultAttributes, attributes );
+		}
+		if ( ve.isPlainObject( attributes ) && !ve.isEmptyObject( attributes ) ) {
+			element.attributes = ve.copyObject( attributes );
+		}
+		return element;
+	}
+	throw new Error( 'Unknown node type: ' + type );
+};
+
+/**
  * Gets a list of allowed child node types for a given node.
  *
  * @method

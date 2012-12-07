@@ -25,6 +25,10 @@ ve.inheritClass( ve.dm.ListNode, ve.dm.BranchNode );
 
 /* Static Members */
 
+ve.dm.ListNode.defaultAttributes = {
+	'style': 'bullet'
+};
+
 /**
  * Node rules.
  *

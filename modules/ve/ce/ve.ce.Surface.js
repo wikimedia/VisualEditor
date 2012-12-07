@@ -495,7 +495,7 @@ ve.ce.Surface.prototype.onKeyDown = function ( e ) {
 ve.ce.Surface.prototype.onCopy = function () {
 	var sel = rangy.getSelection(),
 		$frag = $( sel.getRangeAt(0).cloneContents() ),
-		dataArray = ve.copyArray( this.documentView.model.getData( this.model.getSelection() ) ),
+		slice = this.documentView.model.getSlice( this.model.getSelection() ),
 		key = '';
 
 	// Create key from text and element names
@@ -505,13 +505,13 @@ ve.ce.Surface.prototype.onCopy = function () {
 	key = 've-' + key.replace( /\s/gm, '' );
 
 	// Set clipboard and localStorage
-	this.clipboard[key] = dataArray;
+	this.clipboard[key] = slice;
 	try {
 		localStorage.setItem(
 			key,
 			JSON.stringify( {
 				'time': new Date().getTime(),
-				'data': dataArray
+				'data': slice
 			} )
 		);
 	} catch ( e ) {
@@ -592,15 +592,23 @@ ve.ce.Surface.prototype.onPaste = function () {
 		*/
 		else {
 			pasteText = $('#paste').text().replace( /\n/gm, '');
-			pasteData = pasteText.split( '' );
+			pasteData = new ve.dm.DocumentSlice( pasteText.split( '' ) );
 		}
 
 		// Transact
-		tx = ve.dm.Transaction.newFromInsertion(
-			view.documentView.model,
-			selection.start,
-			pasteData
-		);
+		try {
+			tx = ve.dm.Transaction.newFromInsertion(
+				view.documentView.model,
+				selection.start,
+				pasteData.getData()
+			);
+		} catch ( e ) {
+			tx = ve.dm.Transaction.newFromInsertion(
+				view.documentView.model,
+				selection.start,
+				pasteData.getBalancedData()
+			);
+		}
 		view.documentView.documentNode.$.focus();
 		view.model.change( tx, new ve.Range( selection.start + pasteData.length ) );
 	}, 0 );

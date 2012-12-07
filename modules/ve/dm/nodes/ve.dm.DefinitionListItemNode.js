@@ -25,6 +25,10 @@ ve.inheritClass( ve.dm.DefinitionListItemNode, ve.dm.BranchNode );
 
 /* Static Members */
 
+ve.dm.DefinitionListItemNode.defaultAttributes = {
+	'style': 'term'
+};
+
 /**
  * Node rules.
  *

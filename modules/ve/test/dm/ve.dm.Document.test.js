@@ -1391,7 +1391,7 @@ QUnit.test( 'selectNodes', 21, function ( assert ) {
 	}
 } );
 
-QUnit.test( 'getBalancedData', function ( assert ) {
+QUnit.test( 'getSlice', function ( assert ) {
 	var i,
 		doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		cases = [
@@ -1508,7 +1508,7 @@ QUnit.test( 'getBalancedData', function ( assert ) {
 	for ( i = 0; i < cases.length; i++ ) {
 		ve.dm.example.preprocessAnnotations( cases[i].expected );
 		assert.deepEqual(
-			doc.getBalancedData( cases[i].range ),
+			doc.getSlice( cases[i].range ).getBalancedData(),
 			cases[i].expected,
 			cases[i].msg
 		);

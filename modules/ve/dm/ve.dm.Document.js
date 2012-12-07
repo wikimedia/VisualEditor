@@ -1141,9 +1141,21 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 
 					// Validate
 					// FIXME this breaks certain input, should fix it up, not scream and die
-					if ( element.type !== '/' + expectedType ) {
-						throw new Error( 'Type mismatch, expected /' + expectedType +
-							' but got ' + element.type + ' (at index ' + index + ')' );
+					// For now we fall back to inserting balanced data, but then we miss out on
+					// a lot of the nice content adoption abilities of just fixing up the data in
+					// the context of the insertion point - an example of how this will fail is if
+					// you try to insert "b</p></li></ul><p>c" into "<p>a[cursor]d</p>"
+					if (
+						element.type !== '/' + expectedType &&
+						(
+							// Only throw an error if the content can't be adopted from one content
+							// branch to another
+							!ve.dm.nodeFactory.canNodeContainContent( element.type.substr( 1 ) ) ||
+							!ve.dm.nodeFactory.canNodeContainContent( expectedType )
+						)
+					) {
+						throw new Error( 'Cannot adopt content from ' + element.type +
+							' nodes into ' + expectedType + ' nodes (at index ' + index + ')' );
 					}
 				}
 			}
@@ -1172,7 +1184,7 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 				}
 			}
 			parentType = openingStack.length > 0 ?
-				openingStack[openingStack.length - 1] : parentNode.getType();
+				openingStack[openingStack.length - 1].type : parentNode.getType();
 		}
 		if ( data[i].type === undefined || data[i].type.charAt( 0 ) !== '/' ) {
 			childType = data[i].type || 'text';
@@ -1189,7 +1201,7 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 				!ve.dm.nodeFactory.canNodeContainContent( parentType )
 			) {
 				childType = 'paragraph';
-				openings.unshift ( { 'type': 'paragraph' } );
+				openings.unshift( ve.dm.nodeFactory.getDataElement( childType ) );
 			}
 
 			// Check that this node is allowed to have the containing node as its parent. If not,
@@ -1206,7 +1218,7 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 					}
 					// Open an allowed node around this node
 					childType = allowedParents[0];
-					openings.unshift( { 'type': childType } );
+					openings.unshift( ve.dm.nodeFactory.getDataElement( childType ) );
 				}
 			} while ( !parentsOK );
 
@@ -1299,7 +1311,7 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 				}
 			}
 			parentType = openingStack.length > 0 ?
-				openingStack[openingStack.length - 1] : parentNode.getType();
+				openingStack[openingStack.length - 1].type : parentNode.getType();
 		}
 	}
 
@@ -1320,7 +1332,7 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 			}
 		}
 		parentType = openingStack.length > 0 ?
-			openingStack[openingStack.length - 1] : parentNode.getType();
+			openingStack[openingStack.length - 1].type : parentNode.getType();
 	}
 
 	// Close unclosed openings
@@ -1335,7 +1347,7 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 		popped = closingStack[closingStack.length - 1];
 		// writeElement() will perform the actual pop() that removes
 		// popped from closingStack
-		writeElement( { 'type': popped.getType() }, i );
+		writeElement( popped.getClonedElement(), i );
 	}
 
 	return newData;
@@ -1345,9 +1357,9 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
  * Get the linear model data for the given range, but fix up unopened closings and unclosed openings
  * in the data snippet such that the returned snippet is balanced.
  *
- * @returns {Array} Balanced snippet of linear model data
+ * @returns {ve.dm.DocumentSlice} Balanced snippet of linear model data
  */
-ve.dm.Document.prototype.getBalancedData = function ( range ) {
+ve.dm.Document.prototype.getSlice = function ( range ) {
 	var first, last, firstNode, lastNode,
 		node = this.getNodeFromOffset( range.start ),
 		selection = this.selectNodes( range, 'siblings' ),
@@ -1399,7 +1411,10 @@ ve.dm.Document.prototype.getBalancedData = function ( range ) {
 		}
 	}
 
-	return addOpenings.reverse()
-		.concat( this.data.slice( range.start, range.end ) )
-		.concat( addClosings );
+	return new ve.dm.DocumentSlice(
+		addOpenings.reverse()
+			.concat( this.data.slice( range.start, range.end ) )
+			.concat( addClosings ),
+		new ve.Range( addOpenings.length, addOpenings.length + range.getLength() )
+	);
 };

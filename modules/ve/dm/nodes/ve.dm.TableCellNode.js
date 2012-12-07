@@ -25,6 +25,10 @@ ve.inheritClass( ve.dm.TableCellNode, ve.dm.BranchNode );
 
 /* Static Members */
 
+ve.dm.TableCellNode.defaultAttributes = {
+	'style': 'data'
+};
+
 /**
  * Node rules.
  *

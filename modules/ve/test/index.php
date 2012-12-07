@@ -66,6 +66,7 @@
 		<script src="../../ve/dm/ve.dm.Surface.js"></script>
 		<script src="../../ve/dm/ve.dm.SurfaceFragment.js"></script>
 		<script src="../../ve/dm/ve.dm.Document.js"></script>
+		<script src="../../ve/dm/ve.dm.DocumentSlice.js"></script>
 		<script src="../../ve/dm/ve.dm.DocumentSynchronizer.js"></script>
 		<script src="../../ve/dm/ve.dm.Converter.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.AlienInlineNode.js"></script>
