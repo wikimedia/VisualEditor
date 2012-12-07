@@ -66,13 +66,14 @@ ve.ce.Node.static.domAttributeWhitelist = [
 /**
  * Template for shield elements.
  *
- * Uses data URI to inject a 1x1 transparent GIF image into the DOM.
+ * Uses data URI to inject a 1x1 transparent PNG image into the DOM.
  *
  * @static
  * @member
  */
+// Using transparent png instead of gif because IE 10 renders gif as solid red when used as img src.
 ve.ce.Node.static.$shieldTemplate = $(
-	'<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" ' +
+	'<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAFElEQVR4XgXAAQ0AAABAMP1L30IDCPwC/o5WcS4AAAAASUVORK5CYII=" ' +
 		'class="ve-ce-node-shield">'
 );
 
@@ -236,7 +237,7 @@ ve.ce.Node.prototype.getModel = function () {
 
 ve.ce.Node.getSplitableNode = function ( node ) {
 	var splitableNode = null;
-	
+
 	ve.Node.traverseUpstream( node, function ( node ) {
 		if ( node.canBeSplit() ) {
 			splitableNode = node;
@@ -245,7 +246,7 @@ ve.ce.Node.getSplitableNode = function ( node ) {
 			return false;
 		}
 	} );
-	
+
 	return splitableNode;
 };
 
