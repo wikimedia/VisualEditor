@@ -187,7 +187,6 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 	var i, len, offset, annotations,
 		selectedNodes = {},
 		selectionChange = false,
-		nodeChange = false,
 		contextChange = false;
 
 	// Process transactions and apply selection changes
@@ -222,10 +221,10 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 			selectedNodes.start !== this.selectedNodes.start ||
 			selectedNodes.end !== this.selectedNodes.end
 		) {
-			nodeChange = true;
+			contextChange = true;
 		}
 		this.selectedNodes = selectedNodes;
-		if ( selectionChange || nodeChange ) {
+		if ( selectionChange ) {
 			this.emit( 'select', this.selection.clone() );
 		}
 		this.selection = selection;
@@ -270,7 +269,7 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 		contextChange = true;
 	}
 	// Only emit one context change event
-	if ( contextChange ) {
+	if ( contextChange  ) {
 		this.emit( 'contextChange' );
 	}
 
