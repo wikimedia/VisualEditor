@@ -40,7 +40,7 @@ ve.dm.MWInternalLinkAnnotation.static.matchRdfaTypes = ['mw:WikiLink'];
  * @param {HTMLElement} element
  * @returns {Object} Annotation data, containing 'hrefPrefix' and 'title' properties
  */
-ve.dm.MWInternalLinkAnnotation.prototype.getAnnotationData = function( element ) {
+ve.dm.MWInternalLinkAnnotation.prototype.getAnnotationData = function ( element ) {
 	// Get title from href
 	// The href is simply the title, unless we're dealing with a page that has slashes in its name
 	// in which case it's preceded by one or more instances of "./" or "../", so strip those
@@ -49,7 +49,7 @@ ve.dm.MWInternalLinkAnnotation.prototype.getAnnotationData = function( element )
 	return {
 		// Store the ./ and ../ prefixes so we can restore them on the way out
 		'hrefPrefix': matches[1],
-		'title': matches[2].replace( /_/g, ' ' ),
+		'title': decodeURIComponent( matches[2] ).replace( /_/g, ' ' ),
 		'origTitle': matches[2]
 	};
 };
@@ -65,7 +65,7 @@ ve.dm.MWInternalLinkAnnotation.prototype.toHTML = function () {
 		parentResult = ve.dm.LinkAnnotation.prototype.toHTML.call( this );
 	if (
 		this.data.origTitle &&
-		this.data.origTitle.replace( /_/g, ' ' ) === this.data.title
+		decodeURIComponent( this.data.origTitle ).replace( /_/g, ' ' ) === this.data.title
 	) {
 		// Restore href from origTitle
 		href = this.data.origTitle;
@@ -74,7 +74,7 @@ ve.dm.MWInternalLinkAnnotation.prototype.toHTML = function () {
 			href = this.data.hrefPrefix + href;
 		}
 	} else {
-		href = this.data.title;
+		href = encodeURIComponent( this.data.title );
 	}
 	parentResult.attributes.href = href;
 	parentResult.attributes.rel = 'mw:WikiLink';
