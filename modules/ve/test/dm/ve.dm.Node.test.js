@@ -59,7 +59,7 @@ QUnit.test( 'setLength', 2, function ( assert ) {
 	assert.strictEqual( node.getLength(), 1234 );
 	assert.throws(
 		function () {
-			// Length can not be negative
+			// Length cannot be negative
 			node.setLength( -1 );
 		},
 		Error,

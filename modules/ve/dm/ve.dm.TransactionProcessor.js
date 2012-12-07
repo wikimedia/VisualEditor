@@ -153,7 +153,7 @@ ve.dm.TransactionProcessor.processors.attribute = function ( op ) {
 		to = this.reversed ? op.from : op.to,
 		from = this.reversed ? op.to : op.from;
 	if ( element.type === undefined ) {
-		throw new Error( 'Invalid element error, can not set attributes on non-element data' );
+		throw new Error( 'Invalid element error, cannot set attributes on non-element data' );
 	}
 	if ( to === undefined ) {
 		// Clear
@@ -452,7 +452,7 @@ ve.dm.TransactionProcessor.prototype.process = function () {
  *
  * @method
  * @param {Number} to Offset to stop annotating at. Annotating starts at this.cursor
- * @throws 'Invalid transaction, can not annotate a branch element'
+ * @throws 'Invalid transaction, cannot annotate a branch element'
  * @throws 'Invalid transaction, annotation to be set is already set'
  * @throws 'Invalid transaction, annotation to be cleared is not set'
  */

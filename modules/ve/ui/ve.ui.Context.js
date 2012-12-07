@@ -324,7 +324,7 @@ ve.ui.Context.prototype.initInspector = function ( name ) {
 ve.ui.Context.prototype.openInspector = function ( name ) {
 	// Auto-initialize the inspector
 	if ( !this.initInspector( name ) ) {
-		throw new Error( 'Missing inspector. Can not open nonexistent inspector: ' + name );
+		throw new Error( 'Missing inspector. Cannot open nonexistent inspector: ' + name );
 	}
 	// Only allow one inspector open at a time
 	if ( this.inspector ) {

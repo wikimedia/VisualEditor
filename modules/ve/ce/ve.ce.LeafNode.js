@@ -6,7 +6,7 @@
  */
 
 /**
- * ContentEditable node that can not have any children.
+ * ContentEditable node that cannot have any children.
  *
  * @class
  * @abstract

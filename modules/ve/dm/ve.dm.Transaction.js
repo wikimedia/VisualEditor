@@ -64,7 +64,7 @@ ve.dm.Transaction.newFromInsertion = function ( doc, offset, insertion ) {
  * @param {ve.dm.Document} doc Document to create transaction for
  * @param {ve.Range} range Range of data to remove
  * @returns {ve.dm.Transaction} Transcation that removes data
- * @throws 'Invalid range, can not remove from {range.start} to {range.end}'
+ * @throws 'Invalid range, cannot remove from {range.start} to {range.end}'
  */
 ve.dm.Transaction.newFromRemoval = function ( doc, range ) {
 	var i, selection, first, last, nodeStart, nodeEnd,
@@ -163,19 +163,19 @@ ve.dm.Transaction.newFromRemoval = function ( doc, range ) {
  * @param {String} key Attribute name
  * @param {Mixed} value New value, or undefined to remove the attribute
  * @returns {ve.dm.Transaction} Transcation that changes an element
- * @throws 'Can not set attributes to non-element data'
- * @throws 'Can not set attributes on closing element'
+ * @throws 'Cannot set attributes to non-element data'
+ * @throws 'Cannot set attributes on closing element'
  */
 ve.dm.Transaction.newFromAttributeChange = function ( doc, offset, key, value ) {
 	var tx = new ve.dm.Transaction(),
 		data = doc.getData();
 	// Verify element exists at offset
 	if ( data[offset].type === undefined ) {
-		throw new Error( 'Can not set attributes to non-element data' );
+		throw new Error( 'Cannot set attributes to non-element data' );
 	}
 	// Verify element is not a closing
 	if ( data[offset].type.charAt( 0 ) === '/' ) {
-		throw new Error( 'Can not set attributes on closing element' );
+		throw new Error( 'Cannot set attributes on closing element' );
 	}
 	// Retain up to element
 	tx.pushRetain( offset );
@@ -616,11 +616,11 @@ ve.dm.Transaction.prototype.translateRange = function ( range, reversed ) {
  *
  * @method
  * @param {Number} length Length of content data to retain
- * @throws 'Invalid retain length, can not retain backwards: {length}'
+ * @throws 'Invalid retain length, cannot retain backwards: {length}'
  */
 ve.dm.Transaction.prototype.pushRetain = function ( length ) {
 	if ( length < 0 ) {
-		throw new Error( 'Invalid retain length, can not retain backwards:' + length );
+		throw new Error( 'Invalid retain length, cannot retain backwards:' + length );
 	}
 	if ( length ) {
 		var end = this.operations.length - 1;
