@@ -80,7 +80,7 @@
 	vertical-align: top;
 	font-size: 1em;
 	padding: 0.25em 0.75em;
-	text-shadow: 1px 1px #fff
+	text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
 	/* Fancy CSS background */
 	background-image: -webkit-gradient(
 		linear,
@@ -110,11 +110,10 @@
 	vertical-align: top;
 	font-size: 1em;
 	padding: 0.25em 0.75em;
-	text-shadow: 1px 1px #fff
-	/* Fancy CSS background */
 	color: #252525;
 	text-align: center;
 	text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+	/* Fancy CSS background */
 	background-color: #f0f0f0;
 	background-image: -webkit-gradient(
 		linear,
