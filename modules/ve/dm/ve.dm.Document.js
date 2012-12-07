@@ -805,7 +805,7 @@ ve.dm.Document.prototype.rebuildNodes = function ( parent, index, numNodes, offs
  * Gets an offset a given distance from another using a callback to check if offsets are valid.
  *
  * - If {offset} is not already valid, one step will be used to move it to an valid one.
- * - If {offset} is already valid and can not be moved in the direction of {distance} and still be
+ * - If {offset} is already valid and cannot be moved in the direction of {distance} and still be
  *   valid, it will be left where it is
  * - If {distance} is zero the result will either be {offset} if it's already valid or the
  *   nearest valid offset to the right if possible and to the left otherwise.
