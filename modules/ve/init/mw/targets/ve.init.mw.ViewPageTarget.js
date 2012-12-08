@@ -87,7 +87,9 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 			// visualeditor-notification-created
 			// visualeditor-notification-restored
 			mw.util.jsMessage(
-				ve.msg( 'visualeditor-notification-' + currentUri.query.venotify, this.pageName )
+				ve.msg( 'visualeditor-notification-' + currentUri.query.venotify,
+					new mw.Title( this.pageName ).toText()
+				)
 			);
 			if ( window.history.replaceState ) {
 				delete currentUri.query.venotify;
@@ -293,7 +295,11 @@ ve.init.mw.ViewPageTarget.prototype.onSave = function ( html ) {
 		this.replacePageContent( html );
 		this.tearDownBeforeUnloadHandler();
 		this.deactivate( true );
-		mw.util.jsMessage( ve.msg( 'visualeditor-notification-saved', this.pageName ) );
+		mw.util.jsMessage(
+			ve.msg( 'visualeditor-notification-saved',
+				new mw.Title( this.pageName ).toText()
+			)
+		);
 	}
 };
 
