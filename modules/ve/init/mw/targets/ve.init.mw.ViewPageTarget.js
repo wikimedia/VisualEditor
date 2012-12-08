@@ -410,6 +410,7 @@ ve.init.mw.ViewPageTarget.prototype.onToolbarCancelButtonClick = function () {
  */
 ve.init.mw.ViewPageTarget.prototype.onToolbarEditNoticesClick = function () {
 	this.$toolbarEditNotices.fadeToggle( 'fast' );
+	this.$document.focus();
 };
 
 /**
