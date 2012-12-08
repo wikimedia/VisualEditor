@@ -79,6 +79,9 @@ ve.ui.Context.static.frameOptions = {
  * @param {ve.Range} selection Change selection
  */
 ve.ui.Context.prototype.onChange = function ( tx, selection ) {
+	if ( selection && selection.start === 0 ) {
+		return;
+	}
 	if ( selection && !this.selecting ) {
 		this.update();
 	}
