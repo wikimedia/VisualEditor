@@ -60,18 +60,23 @@ $messages['en'] = array(
  * @author Amire80
  * @author Erik Moeller
  * @author Jdforrester
+ * @author Lloffiwr
  * @author Nike
  * @author Purodha
  * @author Shirayuki
+ * @author Siebrand
  * @author Trevor Parscal
  */
 $messages['qqq'] = array(
 	'visualeditor' => 'The name of the VisualEditor extension',
 	'visualeditor-desc' => '{{desc}}',
-	'visualeditor-preference-enable' => 'Label for the user preference to enable the VisualEditor',
+	'visualeditor-preference-enable' => 'Label for the user preference to enable the VisualEditor.
+
+See [[Thread:Support/About MediaWiki:Visualeditor-preference-enable/en/reply]]',
 	'visualeditor-notification-saved' => 'Shown after a user saves a page, $1 is a page name.',
 	'visualeditor-notification-created' => 'Shown after a user creates a page, $1 is a page name.',
-	'visualeditor-notification-restored' => 'Shown after a user restores a page to a previous revision, $1 is a page name.',
+	'visualeditor-notification-restored' => 'Shown after a user restores a page to a previous revision. Parameters:
+* $1 is a page name.',
 	'visualeditor-ca-editsource' => '{{Optional}}
 Text for the edit source link in the tab dropdown
 {{Identical|visualeditor}}',
@@ -462,6 +467,7 @@ $messages['en-gb'] = array(
 
 /** Spanish (español)
  * @author Armando-Martin
+ * @author Erdemaslancan
  * @author Imre
  * @author Ralgis
  */
@@ -474,6 +480,7 @@ $messages['es'] = array(
 	'visualeditor-ca-editsource' => 'Editar fuente',
 	'visualeditor-ca-ve-edit' => 'Editor visual',
 	'visualeditor-ca-ve-create' => 'Editor visual',
+	'visualeditor-create-page' => 'Crear página',
 	'tooltip-ca-ve-edit' => 'Editar esta página con el editor visual VisualEditor',
 	'visualeditor-inspector-title' => 'Inspeccionar',
 	'visualeditor-linkinspector-title' => 'Hiperenlace',
@@ -500,6 +507,8 @@ $messages['es'] = array(
 	'visualeditor-clearbutton-tooltip' => 'Borrar formato',
 	'visualeditor-historybutton-undo-tooltip' => 'Deshacer',
 	'visualeditor-historybutton-redo-tooltip' => 'Rehacer',
+	'visualeditor-inspector-close-tooltip' => 'Cerrar',
+	'visualeditor-inspector-remove-tooltip' => 'Borrar',
 	'visualeditor-viewpage-savewarning' => '¿Estás seguro que quieres volver al modo de visualización sin guardar primero?',
 	'visualeditor-loadwarning' => 'Error al cargar los datos del servidor: $1. ¿Le gustaría volver a intentarlo?',
 	'visualeditor-saveerror' => 'Error al guardar datos en el servidor: $1.',
@@ -570,7 +579,15 @@ $messages['fa'] = array(
 $messages['fi'] = array(
 	'visualeditor' => 'Visuaalinen muokkain',
 	'visualeditor-desc' => 'Visuaalinen muokkain MediaWikille',
+	'visualeditor-preference-enable' => 'Käytä VisualEditor-muokkainta (vain [[Project:Päänimiavaruus|päänimiavaruudessa]])', # Fuzzy
+	'visualeditor-notification-restored' => '$1 on palautettu.',
 	'visualeditor-ca-editsource' => 'Muokkaa lähdetekstiä',
+	'visualeditor-ca-ve-edit' => 'Visuaalinen muokkain',
+	'visualeditor-ca-ve-create' => 'Visuaalinen muokkain',
+	'visualeditor-restore-page' => 'Palauta sivu',
+	'visualeditor-create-page' => 'Luo sivu',
+	'visualeditor-editnotices-button' => '$1 {{PLURAL:$1|ilmoitus|ilmoitusta}}',
+	'tooltip-ca-ve-edit' => 'Muokkaa tätä sivua VisualEditor-muokkaimella',
 	'visualeditor-linkinspector-title' => 'Hyperlinkki',
 	'visualeditor-linkinspector-label-pagetitle' => 'Sivun otsikko',
 	'visualeditor-linkinspector-suggest-new-page' => 'Uusi sivu',
@@ -589,6 +606,11 @@ $messages['fi'] = array(
 	'visualeditor-clearbutton-tooltip' => 'Poista muotoilu',
 	'visualeditor-historybutton-undo-tooltip' => 'Kumoa',
 	'visualeditor-historybutton-redo-tooltip' => 'Tee uudelleen',
+	'visualeditor-inspector-close-tooltip' => 'Sulje',
+	'visualeditor-inspector-remove-tooltip' => 'Poista',
+	'visualeditor-editconflict' => 'Muutoksiasi ei voitu tallentaa samanaikaisen muokkauksen takia. Haluatko ratkaista päällekkäiset muutokset manuaalisesti?',
+	'tag-visualeditor' => '[[Special:Tags|tägi]]: [[Project:VisualEditor|VisualEditor]]',
+	'tag-visualeditor-description' => 'Muutos tehtiin [[Project:VisualEditor|VisualEditor]]-muokkaimella',
 );
 
 /** French (français)
@@ -737,12 +759,15 @@ $messages['gl'] = array(
 $messages['he'] = array(
 	'visualeditor' => 'עורך חזותי',
 	'visualeditor-desc' => 'עורך חזותי למדיה־ויקי',
-	'visualeditor-preference-enable' => 'להפעיל את העורך החזותי (במרחב השמות הראשי בלבד)', # Fuzzy
+	'visualeditor-preference-enable' => 'להפעיל את העורך החזותי (רק ב[[Project:Main namespace|מרחב השמות הראשי]])',
 	'visualeditor-notification-saved' => 'השינויים שלך לדף $1 לא נשמרו.',
 	'visualeditor-notification-created' => 'הדף $1 נוצר.',
+	'visualeditor-notification-restored' => 'הדף $1 שוחזר.',
 	'visualeditor-ca-editsource' => 'עריכת קוד מקור',
 	'visualeditor-ca-ve-edit' => 'עורך חזותי',
 	'visualeditor-ca-ve-create' => 'עורך חזותי',
+	'visualeditor-restore-page' => 'שחזור דף',
+	'visualeditor-create-page' => 'יצירת דף',
 	'visualeditor-editnotices-button' => '{{PLURAL:$1|הודעה אחת|$1 הודעות}}',
 	'tooltip-ca-ve-edit' => 'עריכה באמצעות עורך חזותי',
 	'visualeditor-inspector-title' => 'חקירה',
@@ -770,6 +795,8 @@ $messages['he'] = array(
 	'visualeditor-clearbutton-tooltip' => 'ניקוי עיצוב',
 	'visualeditor-historybutton-undo-tooltip' => 'ביטול',
 	'visualeditor-historybutton-redo-tooltip' => 'חזרה על פעולה',
+	'visualeditor-inspector-close-tooltip' => 'סגירה',
+	'visualeditor-inspector-remove-tooltip' => 'הסרה',
 	'visualeditor-viewpage-savewarning' => 'האם ברצונך לשוב למצב תצוגה ללא שמירה?',
 	'visualeditor-loadwarning' => 'שגיאה בטעינת מידע מהשרת: $1. האם לנסות שוב?',
 	'visualeditor-saveerror' => 'שגיאה בשמירת נתונים לשרת: $1.',
@@ -931,12 +958,15 @@ $messages['is'] = array(
 $messages['it'] = array(
 	'visualeditor' => 'VisualEditor',
 	'visualeditor-desc' => 'Editor visivo per MediaWiki',
-	'visualeditor-preference-enable' => 'Abilita VisualEditor (solo nel namespace principale)',
+	'visualeditor-preference-enable' => 'Abilita VisualEditor (solo nel namespace principale)', # Fuzzy
 	'visualeditor-notification-saved' => 'Le modifiche apportate a $1 sono state salvate.',
 	'visualeditor-notification-created' => 'La pagina $1 è stata creata.',
+	'visualeditor-notification-restored' => '$1 è stata ripristinata.',
 	'visualeditor-ca-editsource' => 'Modifica sorgente',
 	'visualeditor-ca-ve-edit' => 'VisualEditor',
 	'visualeditor-ca-ve-create' => 'VisualEditor',
+	'visualeditor-restore-page' => 'Ripristina pagina',
+	'visualeditor-create-page' => 'Crea pagina',
 	'tooltip-ca-ve-edit' => 'Modifica questa pagina con VisualEditor',
 	'visualeditor-inspector-title' => 'Ispeziona',
 	'visualeditor-linkinspector-title' => 'Collegamento ipertestuale',
@@ -963,6 +993,8 @@ $messages['it'] = array(
 	'visualeditor-clearbutton-tooltip' => 'Pulisci formattazione',
 	'visualeditor-historybutton-undo-tooltip' => 'Annulla',
 	'visualeditor-historybutton-redo-tooltip' => 'Rifai',
+	'visualeditor-inspector-close-tooltip' => 'Chiudi',
+	'visualeditor-inspector-remove-tooltip' => 'Rimuovi',
 	'visualeditor-viewpage-savewarning' => 'Tornare alla modalità in visualizzazione senza salvare prima?',
 	'visualeditor-loadwarning' => 'Errore durante il caricamento dei dati dal server: $1. Riprovare?',
 	'visualeditor-saveerror' => 'Errore durante il salvataggio dei dati sul server: $1.',
@@ -1227,11 +1259,12 @@ $messages['lt'] = array(
 
 /** Macedonian (македонски)
  * @author Bjankuloski06
+ * @author Brest
  */
 $messages['mk'] = array(
 	'visualeditor' => 'Визуелен уредник',
 	'visualeditor-desc' => 'Визуелен уредник за МедијаВики',
-	'visualeditor-preference-enable' => 'Овозможи ЛиковенУредник (само главен имен. простор)', # Fuzzy
+	'visualeditor-preference-enable' => 'Овозможи ВизуеленУредник (само во [[Project:Main namespace|главниот именски простор]])',
 	'visualeditor-notification-saved' => 'Измените во $1 се зачувани',
 	'visualeditor-notification-created' => 'Создавањето на $1 заврши успешно!',
 	'visualeditor-notification-restored' => '$1 е повратена.',
@@ -1342,12 +1375,18 @@ $messages['mr'] = array(
 $messages['ms'] = array(
 	'visualeditor' => 'VisualEditor',
 	'visualeditor-desc' => 'Alat penyuntingan visual untuk MediaWiki',
-	'visualeditor-preference-enable' => 'Hidupkan VisualEditor (ruang nama utama sahaja)',
-	'visualeditor-feedback-prompt' => 'Tinggalkan maklum balas',
-	'visualeditor-feedback-dialog-title' => 'Tinggalkan maklum balas tentang VisualEditor',
+	'visualeditor-preference-enable' => 'Hidupkan VisualEditor (hanya di [[Project:Main namespace|ruang nama utama]])',
 	'visualeditor-notification-saved' => 'Perubahan yang anda lakukan pada $1 telah disimpan.',
 	'visualeditor-notification-created' => '$1 telah diwujudkan.',
+	'visualeditor-notification-restored' => '$1 telah dipulihkan.',
 	'visualeditor-ca-editsource' => 'Sunting sumber',
+	'visualeditor-ca-ve-edit' => 'VisualEditor',
+	'visualeditor-ca-ve-create' => 'VisualEditor',
+	'visualeditor-restore-page' => 'Pulihkan halaman',
+	'visualeditor-create-page' => 'Wujudkan halaman baru',
+	'visualeditor-editnotices-button' => '$1 pemberitahuan',
+	'tooltip-ca-ve-edit' => 'Sunting halaman ini dengan VisualEditor',
+	'visualeditor-inspector-title' => 'Periksa',
 	'visualeditor-linkinspector-title' => 'Hiperpautan',
 	'visualeditor-linkinspector-label-pagetitle' => 'Tajuk halaman',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Halaman sedia ada',
@@ -1372,10 +1411,16 @@ $messages['ms'] = array(
 	'visualeditor-clearbutton-tooltip' => 'Buang pemformatan',
 	'visualeditor-historybutton-undo-tooltip' => 'Batalkan',
 	'visualeditor-historybutton-redo-tooltip' => 'Pulihkan',
+	'visualeditor-inspector-close-tooltip' => 'Tutup',
+	'visualeditor-inspector-remove-tooltip' => 'Buang',
 	'visualeditor-viewpage-savewarning' => 'Adakah anda benar-benar ingin kembali ke ragam paparan tanpa menyimpan terlebih dahulu?',
 	'visualeditor-loadwarning' => 'Ralat ketika memuatkan data dari pelayan: $1. Adakah anda hendak mencuba lagi?',
 	'visualeditor-saveerror' => 'Ralat ketika memuatkan data dari pelayan: $1',
+	'visualeditor-editconflict' => 'Suntingan anda tidak dapat disimpan disebabkan percanggahan antara suntingan. Adakah anda ingin menyelesaikan percanggahan ini sendiri?',
 	'visualeditor-editsummary' => 'Terangkan suntingan anda',
+	'visualeditor-aliennode-tooltip' => 'Maaf, unsur ini tidak dapat disunting dengan VisualEditor',
+	'tag-visualeditor' => '[[Special:Tags|Teg]]: [[Project:VisualEditor|VisualEditor]]',
+	'tag-visualeditor-description' => 'Disunting dengan menggunakan [[Project:VisualEditor|VisualEditor]]',
 );
 
 /** Norwegian Bokmål (norsk (bokmål)‎)
@@ -1437,10 +1482,17 @@ $messages['ne'] = array(
 $messages['nl'] = array(
 	'visualeditor' => 'Vereenvoudigde tekstverwerker',
 	'visualeditor-desc' => 'Vereenvoudigde tekstverwerker voor MediaWiki',
-	'visualeditor-preference-enable' => 'Visuele tekstverwerker inschakelen (alleen voor de hoofdnaamruimte)',
+	'visualeditor-preference-enable' => 'Visuele tekstverwerker inschakelen (alleen voor de hoofdnaamruimte)', # Fuzzy
 	'visualeditor-notification-saved' => 'Uw wijzigingen aan "$1" zijn opgeslagen',
 	'visualeditor-notification-created' => '"$1" is aangemaakt.',
+	'visualeditor-notification-restored' => '$1 is teruggeplaatst.',
 	'visualeditor-ca-editsource' => 'Bron bewerken',
+	'visualeditor-ca-ve-edit' => 'Visueel',
+	'visualeditor-ca-ve-create' => 'Visueel',
+	'visualeditor-restore-page' => 'Pagina terugplaatsen',
+	'visualeditor-create-page' => 'Pagina aanmaken',
+	'visualeditor-editnotices-button' => '$1 {{PLURAL:$1|melding|meldingen}}',
+	'tooltip-ca-ve-edit' => 'Deze pagina visueel bewerken',
 	'visualeditor-inspector-title' => 'Inspecteren',
 	'visualeditor-linkinspector-title' => 'Hyperlink',
 	'visualeditor-linkinspector-label-pagetitle' => 'Paginanaam',
@@ -1466,6 +1518,8 @@ $messages['nl'] = array(
 	'visualeditor-clearbutton-tooltip' => 'Opmaak wissen',
 	'visualeditor-historybutton-undo-tooltip' => 'Ongedaan maken',
 	'visualeditor-historybutton-redo-tooltip' => 'Opnieuw uitvoeren',
+	'visualeditor-inspector-close-tooltip' => 'Sluiten',
+	'visualeditor-inspector-remove-tooltip' => 'Verwijderen',
 	'visualeditor-viewpage-savewarning' => 'Weet u zeker dat u wilt teruggaan naar de modus bekijken zonder eerst op te slaan?',
 	'visualeditor-loadwarning' => 'Fout tijdens het laden van gegevens van de server: $1. Wilt u het opnieuw proberen?',
 	'visualeditor-saveerror' => 'Fout tijdens het opslaan van gegevens naar de server: $1.',
@@ -1894,7 +1948,7 @@ $messages['ur'] = array(
 $messages['vi'] = array(
 	'visualeditor' => 'Trình soạn thị giác',
 	'visualeditor-desc' => 'Trình soạn thị giác MediaWiki',
-	'visualeditor-preference-enable' => 'Sử dụng Trình soạn thị giác (chỉ có trong không gian tên chính)', # Fuzzy
+	'visualeditor-preference-enable' => 'Sử dụng Trình soạn thị giác (chỉ có trong [[Project:Không gian tên chính|không gian tên chính]])', # Fuzzy
 	'visualeditor-notification-saved' => 'Đã lưu các thay đổi của bạn tại $1.',
 	'visualeditor-notification-created' => 'Đã tạo ra $1.',
 	'visualeditor-notification-restored' => '$1 đã được phục hồi.',
@@ -1902,6 +1956,7 @@ $messages['vi'] = array(
 	'visualeditor-ca-ve-edit' => 'Trình soạn thị giác',
 	'visualeditor-ca-ve-create' => 'Trình soạn thị giác',
 	'visualeditor-restore-page' => 'Phục hồi trang',
+	'visualeditor-create-page' => 'Tạo trang',
 	'visualeditor-editnotices-button' => '$1 thông báo',
 	'tooltip-ca-ve-edit' => 'Sửa đổi trang này dùng Trình soạn thị giác',
 	'visualeditor-inspector-title' => 'Kiểm tra',
@@ -1929,6 +1984,8 @@ $messages['vi'] = array(
 	'visualeditor-clearbutton-tooltip' => 'Xóa định dạng',
 	'visualeditor-historybutton-undo-tooltip' => 'Hoàn tác',
 	'visualeditor-historybutton-redo-tooltip' => 'Làm lại',
+	'visualeditor-inspector-close-tooltip' => 'Đóng',
+	'visualeditor-inspector-remove-tooltip' => 'Dời',
 	'visualeditor-viewpage-savewarning' => 'Bạn có chắc chắn muốn quay trở về chế độ xem mà không lưu giữ trước tiên?',
 	'visualeditor-loadwarning' => 'Lỗi tải dữ liệu từ máy chủ: $1. Bạn có muốn thử lại không?',
 	'visualeditor-saveerror' => 'Lỗi lưu dữ liệu trên máy chủ: $1.',
