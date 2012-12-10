@@ -115,17 +115,14 @@ ve.ui.Context.prototype.onWindowFocus = function () {
  * Responds to an inspector being opened.
  *
  * @method
- * @param {String} name Name of inspector being opened
+ * @param {String} name Name of inspector being opened (this is not part of the normal event, it's
+ * mixed in when we bound to the event in {initInspector})
  */
-ve.ui.Context.prototype.onInspectorOpen = function ( name ) {
+ve.ui.Context.prototype.onBeforeInspectorOpen = function ( name ) {
 	var inspector = this.inspectors[name];
 	// Close menu
 	if ( this.menu ) {
 		this.obscure( this.$menu );
-	}
-	// Fade in context if menu is closed - at this point, menu could be null or not open
-	if ( this.menu === null || !this.menu.isOpen() ) {
-		this.$.fadeIn( 'fast' );
 	}
 	// Remember which inspector is open
 	this.inspector = name;
@@ -144,7 +141,7 @@ ve.ui.Context.prototype.onInspectorOpen = function ( name ) {
  * @param {String} name Name of inspector being closed
  * @param {Boolean} remove Annotation should be removed
  */
-ve.ui.Context.prototype.onInspectorClose = function () {
+ve.ui.Context.prototype.onAfterInspectorClose = function () {
 	this.obscure( this.$inspectors );
 	this.inspector = null;
 	this.hide();
@@ -313,8 +310,8 @@ ve.ui.Context.prototype.initInspector = function ( name ) {
 	if ( ve.ui.inspectorFactory.lookup( name ) ) {
 		if ( !( name in this.inspectors ) ) {
 			inspector = this.inspectors[name] = ve.ui.inspectorFactory.create( name, this );
-			inspector.on( 'open', ve.bind( this.onInspectorOpen, this, name ) );
-			inspector.on( 'close', ve.bind( this.onInspectorClose, this ) );
+			inspector.on( 'beforeOpen', ve.bind( this.onBeforeInspectorOpen, this, name ) );
+			inspector.on( 'afterClose', ve.bind( this.onAfterInspectorClose, this ) );
 			inspector.$.hide();
 			this.frame.$.append( inspector.$ );
 			this.obscure( this.$inspectors );

@@ -189,12 +189,14 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 		selectionChange = false,
 		contextChange = false;
 
+	// Stop observation polling, things changing right now are known already
+	this.emit( 'lock' );
+
 	// Process transactions and apply selection changes
 	if ( transactions ) {
 		if ( transactions instanceof ve.dm.Transaction ) {
 			transactions = [transactions];
 		}
-		this.emit( 'lock' );
 		for ( i = 0, len = transactions.length; i < len; i++ ) {
 			if ( !transactions[i].isNoOp() ) {
 				this.bigStack = this.bigStack.slice( 0, this.bigStack.length - this.undoIndex );
@@ -203,7 +205,6 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 				ve.dm.TransactionProcessor.commit( this.documentModel, transactions[i] );
 			}
 		}
-		this.emit( 'unlock' );
 	}
 
 	if ( selection ) {
@@ -268,12 +269,16 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 		this.insertionAnnotations = annotations;
 		contextChange = true;
 	}
+
 	// Only emit one context change event
 	if ( contextChange  ) {
 		this.emit( 'contextChange' );
 	}
 
 	this.emit( 'change', transactions, selection );
+
+	// Continue observation polling, we want to know about things that change from here on out
+	this.emit( 'unlock' );
 };
 
 /**

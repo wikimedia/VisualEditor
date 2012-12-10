@@ -213,7 +213,7 @@ ve.dm.SurfaceFragment.prototype.expandRange = function ( scope, type ) {
 			if ( this.range.start > range.start || this.range.end < range.end ) {
 				// Maintain range direction
 				if ( this.range.from > this.range.to ) {
-					range.flip();
+					range = range.flip();
 				}
 			} else {
 				// Otherwise just keep the range as is

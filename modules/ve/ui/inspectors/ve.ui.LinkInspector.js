@@ -62,7 +62,7 @@ ve.ui.LinkInspector.static.typePattern = /^link(\/MW(in|ex)ternal)?$/;
  * @method
  */
 ve.ui.LinkInspector.prototype.onInitialize = function () {
-	var fragment = this.context.getSurface().getModel().getFragment(),
+	var fragment = this.context.getSurface().getModel().getFragment( null, true ),
 		annotation = this.getMatchingAnnotations( fragment ).get( 0 );
 	if ( !annotation ) {
 		if ( fragment.getRange().isCollapsed() ) {
@@ -94,7 +94,7 @@ ve.ui.LinkInspector.prototype.onInitialize = function () {
  */
 ve.ui.LinkInspector.prototype.onOpen = function () {
 	var target = '',
-		fragment = this.context.getSurface().getModel().getFragment(),
+		fragment = this.context.getSurface().getModel().getFragment( null, true ),
 		annotation = this.getMatchingAnnotations( fragment ).get( 0 );
 
 	if ( annotation ) {

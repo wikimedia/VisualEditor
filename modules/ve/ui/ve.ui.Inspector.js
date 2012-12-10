@@ -46,11 +46,6 @@ ve.ui.Inspector = function VeUiInspector( context ) {
 		'submit': ve.bind( this.onFormSubmit, this ),
 		'keydown': ve.bind( this.onFormKeyDown, this )
 	} );
-	this.addListenerMethods( this, {
-		'initialize': 'onInitialize',
-		'open': 'onOpen',
-		'close': 'onClose'
-	} );
 
 	// Initialization
 	this.$.append(
@@ -160,15 +155,6 @@ ve.ui.Inspector.prototype.onClose = function () {
 };
 
 /**
- * Responds to the annotation being inspected being removed.
- *
- * @method
- */
-ve.ui.Inspector.prototype.onRemove = function () {
-	// This is a stub, override functionality in child classes
-};
-
-/**
  * Gets a list of matching annotations in selection.
  *
  * @method
@@ -188,9 +174,17 @@ ve.ui.Inspector.prototype.getMatchingAnnotations = function ( fragment ) {
  */
 ve.ui.Inspector.prototype.open = function () {
 	this.$.show();
-	this.emit( 'initialize' );
+	this.emit( 'beforeInitialize' );
+	if ( this.onInitialize ) {
+		this.onInitialize();
+	}
+	this.emit( 'afterInitialize' );
 	this.initialSelection = this.context.getSurface().getModel().getSelection();
-	this.emit( 'open' );
+	this.emit( 'beforeOpen' );
+	if ( this.onOpen ) {
+		this.onOpen();
+	}
+	this.emit( 'afterOpen' );
 };
 
 /**
@@ -204,11 +198,11 @@ ve.ui.Inspector.prototype.open = function () {
  * @emits 'close' (remove)
  */
 ve.ui.Inspector.prototype.close = function ( remove ) {
-	if ( !this.closing ) {
-		this.closing = true;
-		this.$.hide();
-		this.emit( 'close', remove );
-		this.context.getSurface().getView().getDocument().getDocumentNode().$.focus();
-		this.closing = false;
+	this.$.hide();
+	this.emit( 'beforeClose', remove );
+	if ( this.onClose ) {
+		this.onClose( remove );
 	}
+	this.emit( 'afterClose', remove );
+	this.context.getSurface().getView().getDocument().getDocumentNode().$.focus();
 };

@@ -749,10 +749,10 @@ ve.dm.Document.prototype.trimOuterSpaceFromRange = function ( range ) {
 	range.normalize();
 	var start = range.start,
 		end = range.end;
-	while ( this.data[start] === ' ' ) {
+	while ( this.data[start][0] === ' ' ) {
 		start++;
 	}
-	while ( this.data[end - 1] === ' ' ) {
+	while ( this.data[end - 1][0] === ' ' ) {
 		end--;
 	}
 	return range.to < range.end ? new ve.Range( end, start ) : new ve.Range( start, end );
