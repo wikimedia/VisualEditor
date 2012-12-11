@@ -10,6 +10,11 @@
 	background-image: url(images/icons/alert.png);
 }
 
+.ve-ui-icon-comment {
+	/* @embed */
+	background-image: url(images/icons/comment.png);
+}
+
 .ve-ui-icon-down {
 	/* @embed */
 	background-image: url(images/icons/down.png);

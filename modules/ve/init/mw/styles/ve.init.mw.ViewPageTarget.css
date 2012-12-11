@@ -28,18 +28,6 @@
 
 /* Edit notices */
 
-.ve-init-mw-viewPageTarget-toolbar-editNoticesButton {
-	position: relative;
-	display: inline-block;
-	vertical-align: top;
-	line-height: 2.125em;
-	margin-right: 1em;
-	padding-left: 30px;
-	cursor: pointer;
-	background-repeat: no-repeat;
-	background-position: left center;
-}
-
 .ve-init-mw-viewPageTarget-toolbar-editNotices {
 	display: none;
 	position: absolute;
@@ -55,17 +43,35 @@
 	z-index: 3;
 }
 
-.ve-init-mw-viewPageTarget-toolbar-editNoticesButton-label {
-	font-size: 0.8em;
-	color: #555555;
-}
-
 .ve-init-mw-viewPageTarget-toolbar-editNotices-notice {
 	padding: 0.5em 0;
 	font-size: 0.8em;
 	line-height: 1.5em;
 	border-top: solid 1px #ccc;
 	margin-top: -1px;
+}
+
+/* Tools */
+
+.ve-init-mw-viewPageTarget-tool {
+	position: relative;
+	display: inline-block;
+	vertical-align: top;
+	line-height: 2.125em;
+	margin-right: 1em;
+	padding-left: 30px;
+	cursor: pointer;
+	background-repeat: no-repeat;
+	background-position: left center;
+}
+
+.ve-init-mw-viewPageTarget-tool-label {
+	font-size: 0.8em;
+	color: #555555;
+}
+
+.ve-init-mw-viewPageTarget-tool:hover .ve-init-mw-viewPageTarget-tool-label {
+	text-decoration: underline;
 }
 
 /* Buttons */
