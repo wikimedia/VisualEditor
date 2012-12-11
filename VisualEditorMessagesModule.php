@@ -37,6 +37,7 @@ class VisualEditorMessagesModule extends ResourceLoaderModule {
 		$msgArgs = array(
 			'minoredit' => array( 'minoredit' ),
 			'watchthis' => array( 'watchthis' ),
+			'visualeditor-report-notice' => array( 'visualeditor-report-notice' ),
 		);
 
 		// Copyright warning (based on EditPage::getCopyrightWarning)

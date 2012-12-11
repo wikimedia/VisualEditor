@@ -194,7 +194,6 @@
 	right: 0.5em;
 	width: 29em;
 	min-width: 29em;
-	min-height: 10em;
 	font-family: sans-serif;
 	position: absolute;
 	border: solid 1px #ccc;
@@ -267,7 +266,15 @@
 	display: none;
 }
 
-.ve-init-mw-viewPageTarget-saveDialog-slide-diff .diff {
+.ve-init-mw-viewPageTarget-saveDialog-slide-review .ve-init-mw-viewPageTarget-saveDialog-viewer {
+	margin-bottom: 1em;
+}
+
+.ve-init-mw-viewPageTarget-saveDialog-slide-review .ve-init-mw-viewPageTarget-saveDialog-viewer pre {
+	margin: 0;
+}
+
+.ve-init-mw-viewPageTarget-saveDialog-slide-review .ve-init-mw-viewPageTarget-saveDialog-viewer .diff {
 	width: auto;
 	table-layout: auto;
 	font-size: 0.8em;
@@ -277,7 +284,8 @@
 	padding-top: 1em;
 }
 
-.ve-init-mw-viewPageTarget-saveDialog-license {
+.ve-init-mw-viewPageTarget-saveDialog-license,
+.ve-init-mw-viewPageTarget-saveDialog-report-notice {
 	font-size: 0.7em;
 	line-height: 1.25em;
 	padding: 0;
@@ -285,14 +293,21 @@
 	color: #999;
 }
 
-.ve-init-mw-viewPageTarget-saveDialog-summary {
+.ve-init-mw-viewPageTarget-saveDialog-summary,
+.ve-init-mw-viewPageTarget-saveDialog-report {
 	background-color: #fff;
 	border: solid 1px #cccccc;
 	padding: 0.5em;
 	border-radius: 0.25em 0.25em 0 0;
 }
 
-.ve-init-mw-viewPageTarget-saveDialog-summary-focused {
+.ve-init-mw-viewPageTarget-saveDialog-report {
+	margin-bottom: 1em;
+	border-radius: 0.25em;
+}
+
+.ve-init-mw-viewPageTarget-saveDialog-summary-focused,
+.ve-init-mw-viewPageTarget-saveDialog-report-focused {
 	border-color: #aaa;
 }
 
@@ -316,10 +331,6 @@
 	line-height: 3em;
 }
 
-.ve-init-mw-viewPageTarget-saveDialog-editSummary-label {
-	display: none;
-}
-
 .ve-init-mw-viewPageTarget-saveDialog-editSummaryCount {
 	position: absolute;
 	right: 0;
@@ -331,7 +342,8 @@
 	color: #aaa;
 }
 
-.ve-init-mw-viewPageTarget-saveDialog-editSummary {
+.ve-init-mw-viewPageTarget-saveDialog-editSummary,
+.ve-init-mw-viewPageTarget-saveDialog-problem {
 	border: none;
 	background-color: transparent;
 	margin: 0;
@@ -339,9 +351,11 @@
 	resize: none;
 	font-size: 0.8em;
 	font-family: sans-serif;
+	height: 5em;
 }
 
-.ve-init-mw-viewPageTarget-saveDialog-editSummary:focus {
+.ve-init-mw-viewPageTarget-saveDialog-editSummary:focus,
+.ve-init-mw-viewPageTarget-saveDialog-problem:focus {
 	outline: none;
 }
 
