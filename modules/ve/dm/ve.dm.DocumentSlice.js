@@ -24,7 +24,7 @@ ve.dm.DocumentSlice = function VeDmDocumentSlice( data, range ) {
 /* Methods */
 
 /**
- * Gets a deep copy the sliced data.
+ * Gets a deep copy of the sliced data.
  *
  * @method
  * @returns {Array} Document data
