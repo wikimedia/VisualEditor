@@ -151,7 +151,8 @@ class ApiVisualEditor extends ApiBase {
 	}
 
 	public function execute() {
-		global $wgVisualEditorNamespaces, $wgVisualEditorUseChangeTagging;
+		global $wgVisualEditorNamespaces, $wgVisualEditorUseChangeTagging,
+			$wgVisualEditorEditNotices;
 		$user = $this->getUser();
 		$params = $this->extractRequestParams();
 		$page = Title::newFromText( $params['page'] );
@@ -171,6 +172,11 @@ class ApiVisualEditor extends ApiBase {
 		if ( $params['paction'] === 'parse' ) {
 			$parsed = $this->getHTML( $page, $parserParams );
 			$notices = $page->getEditNotices();
+			if ( count( $wgVisualEditorEditNotices ) ) {
+				foreach ( $wgVisualEditorEditNotices as $key ) {
+					$notices[] = wfMessage( $key )->parseAsBlock();
+				}
+			}
 			if ( $parsed === false ) {
 				$this->dieUsage( 'Error contacting the Parsoid server', 'parsoidserver' );
 			} else {

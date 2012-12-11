@@ -60,6 +60,7 @@ $messages['en'] = array(
 	'tag-visualeditor' => '[[Special:Tags|Tag]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => 'Edit made using the [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
+	'visualeditor-alphawarning' => 'You are using an alpha version of the [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]. It may be slow and make erroneous changes - please check each edit that you make.'
 );
 
 /** Message documentation (Message documentation)
@@ -136,6 +137,7 @@ Link text of the dedicated VisualEditor Create tab.
 	'tag-visualeditor' => 'Short description of the visualeditor tag. Shown on lists of changes (history, recentchanges, etc.) for each edit made using VisualEditor.',
 	'tag-visualeditor-description' => 'Long description of the visualeditor tag. Shown on [[Special:Tags]]',
 	'visualeditor-descriptionpagelink' => 'Name of a page describing the use of the VisualEditor in this project.',
+	'visualeditor-alphawarning' => 'Edit notice shown when the VisualEditor loads, warning users that the software may have issues',
 );
 
 /** Assamese (অসমীয়া)

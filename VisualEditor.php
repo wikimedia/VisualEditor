@@ -53,6 +53,8 @@ $wgVisualEditorResourceTemplate = array(
 	'group' => 'ext.visualEditor',
 );
 
+$wgVisualEditorEditNotices = array( 'visualeditor-alphawarning' );
+
 $wgResourceModules += array(
 	'rangy' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
