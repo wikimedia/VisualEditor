@@ -12,21 +12,33 @@
  * @abstract
  * @constructor
  * @extends {ve.Node}
- * @param {Array} data Balanced sliced data
+ * @param {Array} data Balanced sliced data (will be deep copied internally)
  * @param {ve.Range} [range] Original context within data
  */
 ve.dm.DocumentSlice = function VeDmDocumentSlice( data, range ) {
 	// Properties
-	this.data = data;
+	this.data = ve.copyArray( data );
 	this.range = range || new ve.Range( 0, data.length );
 };
 
 /* Methods */
 
+/**
+ * Gets a deep copy the sliced data.
+ *
+ * @method
+ * @returns {Array} Document data
+ */
 ve.dm.DocumentSlice.prototype.getData = function () {
 	return this.data.slice( this.range.start, this.range.end );
 };
 
+/**
+ * Gets a balanced version of the sliced data.
+ *
+ * @method
+ * @returns {Array} Document data
+ */
 ve.dm.DocumentSlice.prototype.getBalancedData = function () {
 	return this.data.slice( 0 );
 };
