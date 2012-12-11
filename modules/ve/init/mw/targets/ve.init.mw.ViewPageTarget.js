@@ -1224,7 +1224,9 @@ ve.init.mw.ViewPageTarget.prototype.onResizeSaveDialog = function () {
  */
 ve.init.mw.ViewPageTarget.prototype.hideSaveDialog = function () {
 	this.$saveDialog.fadeOut( 'fast' );
-	this.$document.focus();
+	if ( this.$document ) {
+		this.$document.focus();
+	}
 	$( document ).off( 'keydown.ve-savedialog' );
 	$( window ).off( 'resize', this.onResizeSaveDialog );
 };
