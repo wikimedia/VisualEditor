@@ -1010,6 +1010,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 					},
 					'click': ve.bind( viewPage.onSaveDialogDiffButtonClick, viewPage )
 				} )
+				.css( 'display', viewPage.pageExists ? 'block' : 'none' )
 				.end()
 			.find( '.ve-init-mw-viewPageTarget-saveDialog-license' )
 				.html( ve.init.platform.getParsedMessage( 'copyrightwarning' ) );
