@@ -242,6 +242,8 @@ ve.init.mw.ViewPageTarget.prototype.deactivate = function ( override ) {
 			this.hideSpinner();
 			this.tearDownToolbarButtons();
 			this.detachToolbarButtons();
+			this.resetSaveDialog();
+			this.hideSaveDialog();
 			this.detachSaveDialog();
 			this.tearDownSurface();
 			this.showTableOfContents();
@@ -480,11 +482,7 @@ ve.init.mw.ViewPageTarget.prototype.onToolbarSaveButtonClick = function () {
  * @param {jQuery.Event} e
  */
 ve.init.mw.ViewPageTarget.prototype.onToolbarCancelButtonClick = function () {
-	this.hideSaveDialog();
-	this.resetSaveDialog();
-	this.showPageContent();
-	this.tearDownBeforeUnloadHandler();
-	this.deactivate( true );
+	this.deactivate();
 };
 
 /**
