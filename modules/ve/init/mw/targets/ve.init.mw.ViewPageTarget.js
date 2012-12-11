@@ -887,7 +887,6 @@ ve.init.mw.ViewPageTarget.prototype.getSaveDialogHtml = function ( callback ) {
 		$wrap = $( '<div>' ).html( this.constructor.saveDialogTemplate );
 
 	// Based on EditPage::getCheckboxes and EditPage::initialiseForm
-	// TODO: Remove saveDialog-diffButton if this is a page creation.
 
 	mw.user.getRights( function ( rights ) {
 		// MediaWiki only allows usage of minor flag when editing an existing page
@@ -897,6 +896,10 @@ ve.init.mw.ViewPageTarget.prototype.getSaveDialogHtml = function ( callback ) {
 			$wrap
 				.find( '.ve-init-mw-viewPageTarget-saveDialog-minorEdit-label, #ve-init-mw-viewPageTarget-saveDialog-minorEdit' )
 				.remove();
+		}
+
+		if ( !viewPage.pageExists ) {
+			$wrap.find( '.ve-init-mw-viewPageTarget-saveDialog-diffButton' ).remove();
 		}
 
 		if ( mw.user.isAnon() ) {
@@ -912,6 +915,7 @@ ve.init.mw.ViewPageTarget.prototype.getSaveDialogHtml = function ( callback ) {
 				.find( '#ve-init-mw-viewPageTarget-saveDialog-watchList' )
 				.prop( 'checked', true );
 		}
+
 		callback( $wrap );
 	} );
 };
@@ -1010,7 +1014,6 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 					},
 					'click': ve.bind( viewPage.onSaveDialogDiffButtonClick, viewPage )
 				} )
-				.css( 'display', viewPage.pageExists ? 'block' : 'none' )
 				.end()
 			.find( '.ve-init-mw-viewPageTarget-saveDialog-license' )
 				.html( ve.init.platform.getParsedMessage( 'copyrightwarning' ) );

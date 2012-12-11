@@ -195,6 +195,7 @@
 	right: 0.5em;
 	width: 29em;
 	min-width: 29em;
+	min-height: 10em;
 	font-family: sans-serif;
 	position: absolute;
 	border: solid 1px #ccc;
