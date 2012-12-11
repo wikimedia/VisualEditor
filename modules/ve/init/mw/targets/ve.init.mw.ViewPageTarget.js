@@ -23,21 +23,23 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	// Properties
 	this.$document = null;
 	this.$spinner = $( '<div class="ve-init-mw-viewPageTarget-loading"></div>' );
-	this.$toolbarCancelButton =
-		$( '<div class="ve-init-mw-viewPageTarget-button\
-				ve-init-mw-viewPageTarget-toolbar-cancelButton"></div>' );
-	this.$toolbarSaveButton =
-		$( '<div class="ve-init-mw-viewPageTarget-button\
-				ve-init-mw-viewPageTarget-button-constructive\
-				ve-init-mw-viewPageTarget-toolbar-saveButton"></div>' );
-	this.$toolbarEditNotices =
-		$( '<div class="ve-init-mw-viewPageTarget-toolbar-editNotices"></div>' );
-	this.$toolbarEditNoticesTool =
-		$( '<div class="ve-init-mw-viewPageTarget-tool"></div>' );
-	this.$toolbarFeedbackTool =
-		$( '<div class="ve-init-mw-viewPageTarget-tool"></div>' );
-	this.$saveDialog =
-		$( '<div class="ve-init-mw-viewPageTarget-saveDialog"></div>' );
+	this.$toolbarCancelButton = $( '<div>' ).addClass(
+		've-init-mw-viewPageTarget-button ve-init-mw-viewPageTarget-toolbar-cancelButton'
+	);
+	this.$toolbarSaveButton = $( '<div>' ).addClass(
+		've-init-mw-viewPageTarget-button ve-init-mw-viewPageTarget-button-constructive ' +
+		've-init-mw-viewPageTarget-toolbar-saveButton'
+	);
+	this.$toolbarEditNotices = $( '<div>' ).addClass(
+		've-init-mw-viewPageTarget-toolbar-editNotices'
+	);
+	this.$toolbarEditNoticesTool = $( '<div>' ).addClass(
+		've-init-mw-viewPageTarget-tool'
+	);
+	this.$toolbarFeedbackTool = $( '<div>' ).addClass(
+		've-init-mw-viewPageTarget-tool'
+	);
+	this.$saveDialog = $( '<div>' ).addClass( 've-init-mw-viewPageTarget-saveDialog' );
 	this.$saveDialogSaveButton = null;
 	this.$saveDialogDiffButton = null;
 	this.onBeforeUnloadFallback = null;
@@ -175,21 +177,19 @@ ve.init.mw.ViewPageTarget.saveDialogTemplate = '\
 			<div class="ve-init-mw-viewPageTarget-saveDialog-options">\
 				<input type="checkbox" name="minorEdit" \
 					id="ve-init-mw-viewPageTarget-saveDialog-minorEdit">\
-				<label class="ve-init-mw-viewPageTarget-saveDialog-minorEdit-label" \
+				<label class="ve-init-mw-viewPageTarget-saveDialog-minorEdit-label"\
 					for="ve-init-mw-viewPageTarget-saveDialog-minorEdit"></label>\
-				<input type="checkbox" name="watchList" \
+				<input type="checkbox" name="watchList"\
 					id="ve-init-mw-viewPageTarget-saveDialog-watchList">\
-				<label class="ve-init-mw-viewPageTarget-saveDialog-watchList-label" \
+				<label class="ve-init-mw-viewPageTarget-saveDialog-watchList-label"\
 					for="ve-init-mw-viewPageTarget-saveDialog-watchList"></label>\
 				<label class="ve-init-mw-viewPageTarget-saveDialog-editSummaryCount"></label>\
 			</div>\
 			<div class="ve-init-mw-viewPageTarget-saveDialog-actions">\
-			<div class="ve-init-mw-viewPageTarget-button ve-init-mw-viewPageTarget-button-constructive\
-				ve-init-mw-viewPageTarget-saveDialog-saveButton">\
+			<div class="ve-init-mw-viewPageTarget-button ve-init-mw-viewPageTarget-button-constructive ve-init-mw-viewPageTarget-saveDialog-saveButton">\
 				<span class="ve-init-mw-viewPageTarget-button-label"></span>\
 			</div>\
-			<div class="ve-init-mw-viewPageTarget-button ve-init-mw-viewPageTarget-button-primary\
-				ve-init-mw-viewPageTarget-saveDialog-diffButton">\
+			<div class="ve-init-mw-viewPageTarget-button ve-init-mw-viewPageTarget-button-primary ve-init-mw-viewPageTarget-saveDialog-diffButton">\
 				<span class="ve-init-mw-viewPageTarget-button-label"></span>\
 			</div>\
 			<div class="ve-init-mw-viewPageTarget-saveDialog-working"></div>\
