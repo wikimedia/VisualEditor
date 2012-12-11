@@ -112,7 +112,6 @@ QUnit.test( 'newFromInsertion', 13, function ( assert ) {
 				{
 					'type': 'replace',
 					'remove': [],
-					// FIXME tableSection should have type=body
 					'insert': [{ 'type': 'table' }, { 'type': 'tableSection', 'attributes': { 'style': 'body' } }, { 'type': 'tableRow' }, { 'type': 'tableCell', 'attributes': { 'style': 'data' } }, { 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': '/tableCell' }, { 'type': '/tableRow' }, { 'type': '/tableSection' }, { 'type': '/table' }]
 				},
 				{ 'type': 'retain', 'length': 18 }
@@ -125,7 +124,6 @@ QUnit.test( 'newFromInsertion', 13, function ( assert ) {
 				{
 					'type': 'replace',
 					'remove': [],
-					// FIXME tableSection should have type=body
 					'insert': [{ 'type': '/paragraph' }, { 'type': 'table' }, { 'type': 'tableSection', 'attributes': { 'style': 'body' } }, { 'type': 'tableRow' }, { 'type': 'tableCell', 'attributes': { 'style': 'data' } }, { 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': '/tableCell' }, { 'type': '/tableRow' }, { 'type': '/tableSection' }, { 'type': '/table' }, { 'type': 'paragraph' }]
 				},
 				{ 'type': 'retain', 'length': 9 }
