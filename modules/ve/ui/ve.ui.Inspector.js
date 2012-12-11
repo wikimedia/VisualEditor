@@ -99,8 +99,8 @@ ve.ui.Inspector.prototype.onRemoveButtonClick = function() {
  * @param {jQuery.Event} e Submit event
  */
 ve.ui.Inspector.prototype.onFormSubmit = function ( e ) {
-	this.close();
 	e.preventDefault();
+	this.close();
 	return false;
 };
 
