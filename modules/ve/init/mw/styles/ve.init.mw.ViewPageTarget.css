@@ -201,8 +201,8 @@
 	border-radius: 0.25em;
 	background-color: #fff;
 	box-shadow: 0 0.15em 0.5em 0 rgba(0, 0, 0, 0.2);
-	padding: 0.75em;
-	padding-top: 2.5em;
+	padding: 2.5em 0.75em 0.75em 0.75em;
+	margin: 0 0 0 0.5em;
 	z-index: 3;
 
 	/* slide-diff can get quite long, handle overflow */
