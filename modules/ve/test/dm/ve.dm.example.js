@@ -1893,5 +1893,42 @@ ve.dm.example.domToDataCases = {
 			'z',
 			{ 'type': '/paragraph' }
 		]
+	},
+	'whitespace before meta node in wrapping mode': {
+		'html': '<table><tbody><tr><td>Foo\n<meta property="mw:foo" content="bar" /></td></tr></tbody></table>',
+		'data': [
+			{ 'type': 'table' },
+			{ 'type': 'tableSection', 'attributes': { 'style': 'body' } },
+			{ 'type': 'tableRow' },
+			{
+				'type': 'tableCell',
+				'attributes': { 'style': 'data' },
+				'internal': { 'whitespace': [ undefined, undefined, '\n' ] }
+			},
+			{
+				'type': 'paragraph',
+				'internal': {
+					'generated': 'wrapper',
+					'whitespace': [ undefined, undefined, undefined, '\n' ]
+				}
+			},
+			'F',
+			'o',
+			'o',
+			{
+				'type': 'metaBlock',
+				'attributes': {
+					'style': 'meta',
+					'key': 'mw:foo',
+					'value': 'bar'
+				}
+			},
+			{ 'type': '/metaBlock' },
+			{ 'type': '/paragraph' },
+			{ 'type': '/tableCell' },
+			{ 'type': '/tableRow' },
+			{ 'type': '/tableSection' },
+			{ 'type': '/table' }
+		]
 	}
 };
