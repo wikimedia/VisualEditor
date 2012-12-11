@@ -64,10 +64,10 @@ ve.init.mw.Platform.prototype.getModulesUrl = function () {
  */
 ve.init.mw.Platform.prototype.useChangeMarkers = function () {
 	var currentUri = new mw.Uri( window.location.toString() );
-	if ( currentUri && 'vechangemarkers' in currentUri.query ) {
-		return true;
+	if ( currentUri && 'venochangemarkers' in currentUri.query ) {
+		return false;
 	}
-	return false;
+	return true;
 };
 
 /**
