@@ -289,7 +289,7 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 	function stopWrapping() {
 		if ( wrappedWhitespace !== '' ) {
 			// Remove wrappedWhitespace from data
-			data.splice( -wrappedWhitespace.length, wrappedWhitespace.length );
+			data.splice( wrappedWhitespaceIndex, wrappedWhitespace.length );
 			addWhitespace( wrappingParagraph, 3, wrappedWhitespace );
 			nextWhitespace = wrappedWhitespace;
 		}
@@ -368,6 +368,7 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 		childIsContent,
 		nextWhitespace = '',
 		wrappedWhitespace = '',
+		wrappedWhitespaceIndex,
 		wrapping = alreadyWrapped,
 		wrappingIsOurs = false;
 	// Open element
@@ -547,6 +548,7 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 							// and store it in wrappedWhitespace (see
 							// comment about wrappedWhitespace below)
 							wrappedWhitespace = text;
+							wrappedWhitespaceIndex = data.length;
 							data = data.concat(
 								ve.dm.Converter.getDataContentFromText( wrappedWhitespace, annotations )
 							);
@@ -625,6 +627,7 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 						// the last text node. We can't output it later
 						// because we have to apply the correct annotations.
 						wrappedWhitespace = matches[3];
+						wrappedWhitespaceIndex = data.length;
 						data = data.concat(
 							ve.dm.Converter.getDataContentFromText( wrappedWhitespace, annotations )
 						);
