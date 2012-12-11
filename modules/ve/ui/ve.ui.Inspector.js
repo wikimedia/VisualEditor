@@ -198,11 +198,15 @@ ve.ui.Inspector.prototype.open = function () {
  * @emits 'close' (remove)
  */
 ve.ui.Inspector.prototype.close = function ( remove ) {
-	this.$.hide();
-	this.emit( 'beforeClose', remove );
-	if ( this.onClose ) {
-		this.onClose( remove );
+	if ( !this.closing ) {
+		this.closing = true;
+		this.$.hide();
+		this.emit( 'beforeClose', remove );
+		if ( this.onClose ) {
+			this.onClose( remove );
+		}
+		this.emit( 'afterClose', remove );
+		this.context.getSurface().getView().getDocument().getDocumentNode().$.focus();
+		this.closing = false;
 	}
-	this.emit( 'afterClose', remove );
-	this.context.getSurface().getView().getDocument().getDocumentNode().$.focus();
 };
