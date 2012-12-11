@@ -153,7 +153,7 @@
 	border-color: #aaa;
 }
 
-.ve-init-mw-viewPageTarget-button-down {
+.ve-init-mw-viewPageTarget-button:active {
 	border-color: #ddd;
 	box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.07);
 }
@@ -263,7 +263,11 @@
 	overflow: hidden;
 }
 
-#ve-init-mw-viewPageTarget-saveDialog-slide-diff .diff {
+.ve-init-mw-viewPageTarget-saveDialog-slide {
+	display: none;
+}
+
+.ve-init-mw-viewPageTarget-saveDialog-slide-diff .diff {
 	width: auto;
 	table-layout: auto;
 	font-size: 0.8em;

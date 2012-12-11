@@ -118,6 +118,7 @@ $wgResourceModules += array(
 			'mediawiki.Uri',
 			'mediawiki.user',
 			'mediawiki.util',
+			'mediawiki.notify',
 			'mediawiki.feedback',
 			'user.options',
 			'user.tokens',
