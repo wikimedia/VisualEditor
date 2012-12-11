@@ -353,6 +353,8 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status ) {
  * @param {string} diffHtml
  */
 ve.init.mw.ViewPageTarget.prototype.onShowChanges = function ( diffHtml ) {
+	// Store the diff for reporting purposes
+	this.diffHtml = diffHtml;
 	mw.loader.using( 'mediawiki.action.history.diff', ve.bind( function () {
 		var $slide = this.$saveDialog.find( '#ve-init-mw-viewPageTarget-saveDialog-slide-diff' );
 		if ( !$slide.length ) {
@@ -617,6 +619,8 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( dom ) {
 	this.surface.getContext().hide();
 	this.$document = this.surface.$.find( '.ve-ce-documentNode' );
 	this.surface.getModel().on( 'transact', this.proxiedOnSurfaceModelTransact );
+	// Store the HTML for reporting purposes
+	this.originalHtml = dom.innerHTML;
 	// Transplant the toolbar
 	this.attachToolbar();
 	this.transformPageTitle();
@@ -1550,6 +1554,24 @@ ve.init.mw.ViewPageTarget.prototype.onBeforeUnload = function () {
 		}, 1 );
 		return message;
 	}
+};
+
+ve.init.mw.ViewPageTarget.prototype.reportProblem = function ( message ) {
+	// Gather reporting information
+	var now = new Date(),
+		editedData = this.surface.getDocumentModel().getFullData(),
+		report = {
+			'title': this.pageName,
+			'oldid': this.oldid,
+			'timestamp': now.getTime() + 60000 * now.getTimezoneOffset(),
+			'message': message,
+			'diff': this.diffHtml,
+			'originalHtml': this.originalHtml,
+			'originalData': ve.dm.converter.getDataFromDom( $( '<div>' ).html( this.originalHtml )[0] ),
+			'editedData': editedData,
+			'editedHtml': ve.dm.converter.getDomFromData( editedData ).innerHTML
+		};
+	$.post( 'http://parsoid.wmflabs.org/_bugs/', { 'data': $.toJSON( report ) }, function () {}, 'text' );
 };
 
 /* Initialization */
