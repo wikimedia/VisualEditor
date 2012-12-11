@@ -380,8 +380,8 @@ ve.init.mw.Target.prototype.showChanges = function ( dom ) {
 		},
 		'dataType': 'json',
 		'type': 'POST',
-		// Wait up to 10 seconds before giving up
-		'timeout': 10000,
+		// Wait up to 100 seconds before giving up
+		'timeout': 100000,
 		'success': ve.bind( ve.init.mw.Target.onShowChanges, this ),
 		'error': ve.bind( ve.init.mw.Target.onShowChangesError, this )
 	} );
