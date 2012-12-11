@@ -22,6 +22,8 @@ class ApiVisualEditor extends ApiBase {
 			if ( $revision === null ) {
 				return false;
 			}
+			$parserParams['touched'] = $title->getTouched();
+			$parserParams['cache'] = 1;
 			$content = Http::get(
 				// Insert slash since $wgVisualEditorParsoidURL does not
 				// end in a slash
