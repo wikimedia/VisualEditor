@@ -7,7 +7,8 @@ $messages = array();
 $messages['en'] = array(
 	'visualeditor' => 'VisualEditor',
 	'visualeditor-desc' => 'Visual editor for MediaWiki',
-	'visualeditor-preference-enable' => 'Enable VisualEditor (only in the [[Project:Main namespace|main namespace]])',
+	'visualeditor-preference-enable' => 'Enable VisualEditor (only in the [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|main namespace]])',
+	'visualeditor-mainnamespacepagelink' => 'Project:Main namespace',
 	'visualeditor-notification-saved' => 'Your changes to $1 have been saved.',
 	'visualeditor-notification-created' => '$1 has been created.',
 	'visualeditor-notification-restored' => '$1 has been restored.',
@@ -55,8 +56,9 @@ $messages['en'] = array(
 	'visualeditor-editconflict' => 'Your changes could not be saved because of an edit conflict. Would you like to resolve the conflict manually?',
 	'visualeditor-editsummary' => 'Describe what you changed',
 	'visualeditor-aliennode-tooltip' => 'Sorry, this element cannot be edited using the VisualEditor',
-	'tag-visualeditor' => '[[Special:Tags|Tag]]: [[Project:VisualEditor|VisualEditor]]',
-	'tag-visualeditor-description' => 'Edit made using the [[Project:VisualEditor|VisualEditor]]',
+	'tag-visualeditor' => '[[Special:Tags|Tag]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'tag-visualeditor-description' => 'Edit made using the [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
 );
 
 /** Message documentation (Message documentation)
@@ -73,9 +75,8 @@ $messages['en'] = array(
 $messages['qqq'] = array(
 	'visualeditor' => 'The name of the VisualEditor extension',
 	'visualeditor-desc' => '{{desc}}',
-	'visualeditor-preference-enable' => 'Label for the user preference to enable the VisualEditor.
-
-See [[Thread:Support/About MediaWiki:Visualeditor-preference-enable/en/reply]]',
+	'visualeditor-preference-enable' => 'Label for the user preference to enable the VisualEditor.',
+	'visualeditor-mainnamespacepagelink' => 'Name of a page describing the main namespace (NS0) in this project.',
 	'visualeditor-notification-saved' => 'Shown after a user saves a page, $1 is a page name.',
 	'visualeditor-notification-created' => 'Shown after a user creates a page, $1 is a page name.',
 	'visualeditor-notification-restored' => 'Shown after a user restores a page to a previous revision. Parameters:
@@ -132,6 +133,7 @@ Link text of the dedicated VisualEditor Create tab.
 	'visualeditor-aliennode-tooltip' => 'Tooltip for items that the VisualEditor cannot edit',
 	'tag-visualeditor' => 'Short description of the visualeditor tag. Shown on lists of changes (history, recentchanges, etc.) for each edit made using VisualEditor.',
 	'tag-visualeditor-description' => 'Long description of the visualeditor tag. Shown on [[Special:Tags]]',
+	'visualeditor-descriptionpagelink' => 'Name of a page describing the use of the VisualEditor in this project.',
 );
 
 /** Assamese (অসমীয়া)
