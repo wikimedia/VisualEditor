@@ -141,14 +141,20 @@ ve.Range.prototype.equals = function ( other ) {
  * Creates a new ve.Range object.
  *
  * @method
- * @param {Number} Length of the new range.
+ * @param {Number} Length of the new range (negative for left-side truncation)
  * @returns {ve.Range} A new range.
  */
 ve.Range.prototype.truncate = function ( length ) {
 	this.normalize();
-	return new ve.Range(
-		this.start, Math.max( this.start, Math.min( this.start + length, this.end ) )
-	);
+	if ( length >= 0 ) {
+		return new ve.Range(
+			this.start, Math.min( this.start + length, this.end )
+		);
+	} else {
+		return new ve.Range(
+			Math.max( this.end + length, this.start ), this.end
+		);
+	}
 };
 
 /**

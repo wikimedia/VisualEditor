@@ -126,7 +126,7 @@ ve.dm.SurfaceFragment.prototype.adjustRange = function ( start, end ) {
  * Gets a new fragment with a truncated length.
  *
  * @method
- * @param {Number} limit Maximum length of range
+ * @param {Number} limit Maximum length of range (negative for left-side truncation)
  * @returns {ve.dm.SurfaceFragment} Truncated fragment
  */
 ve.dm.SurfaceFragment.prototype.truncateRange = function ( limit ) {
