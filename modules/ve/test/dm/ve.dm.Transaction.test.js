@@ -113,7 +113,7 @@ QUnit.test( 'newFromInsertion', 13, function ( assert ) {
 					'type': 'replace',
 					'remove': [],
 					// FIXME tableSection should have type=body
-					'insert': [{ 'type': 'table' }, { 'type': 'tableSection' }, { 'type': 'tableRow' }, { 'type': 'tableCell', 'attributes': { 'style': 'data' } }, { 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': '/tableCell' }, { 'type': '/tableRow' }, { 'type': '/tableSection' }, { 'type': '/table' }]
+					'insert': [{ 'type': 'table' }, { 'type': 'tableSection', 'attributes': { 'style': 'body' } }, { 'type': 'tableRow' }, { 'type': 'tableCell', 'attributes': { 'style': 'data' } }, { 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': '/tableCell' }, { 'type': '/tableRow' }, { 'type': '/tableSection' }, { 'type': '/table' }]
 				},
 				{ 'type': 'retain', 'length': 18 }
 			]
@@ -126,7 +126,7 @@ QUnit.test( 'newFromInsertion', 13, function ( assert ) {
 					'type': 'replace',
 					'remove': [],
 					// FIXME tableSection should have type=body
-					'insert': [{ 'type': '/paragraph' }, { 'type': 'table' }, { 'type': 'tableSection' }, { 'type': 'tableRow' }, { 'type': 'tableCell', 'attributes': { 'style': 'data' } }, { 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': '/tableCell' }, { 'type': '/tableRow' }, { 'type': '/tableSection' }, { 'type': '/table' }, { 'type': 'paragraph' }]
+					'insert': [{ 'type': '/paragraph' }, { 'type': 'table' }, { 'type': 'tableSection', 'attributes': { 'style': 'body' } }, { 'type': 'tableRow' }, { 'type': 'tableCell', 'attributes': { 'style': 'data' } }, { 'type': 'paragraph' }, 'F', 'O', 'O', { 'type': '/paragraph' }, { 'type': '/tableCell' }, { 'type': '/tableRow' }, { 'type': '/tableSection' }, { 'type': '/table' }, { 'type': 'paragraph' }]
 				},
 				{ 'type': 'retain', 'length': 9 }
 			]
@@ -700,7 +700,7 @@ QUnit.test( 'newFromWrap', 8, function ( assert ) {
 			]
 		},
 		'replaces a table with a list': {
-			'args': [doc, new ve.Range( 9, 33 ), [ { 'type': 'table' }, { 'type': 'tableSection' }, { 'type': 'tableRow' }, { 'type': 'tableCell' } ], [ { 'type': 'list' }, { 'type': 'listItem' } ], [], []],
+			'args': [doc, new ve.Range( 9, 33 ), [ { 'type': 'table' }, { 'type': 'tableSection', 'attributes': { 'style': 'body' } }, { 'type': 'tableRow' }, { 'type': 'tableCell' } ], [ { 'type': 'list' }, { 'type': 'listItem' } ], [], []],
 			'ops': [
 				{ 'type': 'retain', 'length': 5 },
 				{ 'type': 'replace', 'remove': [ { 'type': 'table' }, { 'type': 'tableSection', 'attributes': { 'style': 'body' } }, { 'type': 'tableRow' }, { 'type': 'tableCell', 'attributes': { 'style': 'data' } } ], 'insert': [ { 'type': 'list' }, { 'type': 'listItem' } ] },
