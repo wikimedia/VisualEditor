@@ -154,7 +154,9 @@ ve.ui.LinkInspector.prototype.onClose = function ( remove ) {
 	}
 	if ( insert ) {
 		// Insert default text and select it
-		fragment = fragment.insertContent( target, false ).adjustRange( -target.length );
+		fragment = fragment.insertContent( target, false );
+		// Move cursor to the end of the inserted content
+		selection = new ve.Range( this.initialSelection.start + target.length );
 	}
 	if ( undo ) {
 		// Go back to before we added an annotation in an onInitialize handler
