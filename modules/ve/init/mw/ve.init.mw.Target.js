@@ -69,7 +69,7 @@ ve.inheritClass( ve.init.mw.Target, ve.EventEmitter );
  */
 ve.init.mw.Target.onLoad = function ( response ) {
 	var key, tmp, el,
-		data = response.visualeditor;
+		data = response ? response.visualeditor : null;
 
 	if ( !data && !response.error ) {
 		ve.init.mw.Target.onLoadError.call(
