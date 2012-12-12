@@ -26,6 +26,7 @@ ve.dm.Surface = function VeDmSurface( doc ) {
 	this.undoIndex = 0;
 	this.historyTrackingInterval = null;
 	this.insertionAnnotations = new ve.AnnotationSet();
+	this.enabled = true;
 };
 
 /* Inheritance */
@@ -35,11 +36,34 @@ ve.inheritClass( ve.dm.Surface, ve.EventEmitter );
 /* Methods */
 
 /**
+ * Disables changes.
+ *
+ * @method
+ */
+ve.dm.Surface.prototype.disable = function () {
+	this.stopHistoryTracking();
+	this.enabled = false;
+};
+
+/**
+ * Enables changes.
+ *
+ * @method
+ */
+ve.dm.Surface.prototype.enable = function () {
+	this.enabled = true;
+	this.startHistoryTracking();
+};
+
+/**
  * Start tracking state changes in history.
  *
  * @method
  */
 ve.dm.Surface.prototype.startHistoryTracking = function () {
+	if ( !this.enabled ) {
+		return;
+	}
 	this.historyTrackingInterval = setInterval( ve.bind( this.breakpoint, this ), 750 );
 };
 
@@ -49,6 +73,9 @@ ve.dm.Surface.prototype.startHistoryTracking = function () {
  * @method
  */
 ve.dm.Surface.prototype.stopHistoryTracking = function () {
+	if ( !this.enabled ) {
+		return;
+	}
 	clearInterval( this.historyTrackingInterval );
 };
 
@@ -58,6 +85,9 @@ ve.dm.Surface.prototype.stopHistoryTracking = function () {
  * @method
  */
 ve.dm.Surface.prototype.purgeHistory = function () {
+	if ( !this.enabled ) {
+		return;
+	}
 	this.selection = null;
 	this.smallStack = [];
 	this.bigStack = [];
@@ -96,6 +126,9 @@ ve.dm.Surface.prototype.getInsertionAnnotations = function () {
  * @emits 'contextChange'
  */
 ve.dm.Surface.prototype.setInsertionAnnotations = function ( annotations ) {
+	if ( !this.enabled ) {
+		return;
+	}
 	this.insertionAnnotations = annotations.clone();
 	this.emit( 'contextChange' );
 };
@@ -108,6 +141,9 @@ ve.dm.Surface.prototype.setInsertionAnnotations = function ( annotations ) {
  * @emits 'contextChange'
  */
 ve.dm.Surface.prototype.addInsertionAnnotation = function ( annotation ) {
+	if ( !this.enabled ) {
+		return;
+	}
 	this.insertionAnnotations.push( annotation );
 	this.emit( 'contextChange' );
 };
@@ -120,6 +156,9 @@ ve.dm.Surface.prototype.addInsertionAnnotation = function ( annotation ) {
  * @emits 'contextChange'
  */
 ve.dm.Surface.prototype.removeInsertionAnnotation = function ( annotation ) {
+	if ( !this.enabled ) {
+		return;
+	}
 	this.insertionAnnotations.remove( annotation );
 	this.emit( 'contextChange' );
 };
@@ -184,6 +223,9 @@ ve.dm.Surface.prototype.getFragment = function ( range, noAutoSelect ) {
  * @param {ve.Range|undefined} selection
  */
 ve.dm.Surface.prototype.change = function ( transactions, selection ) {
+	if ( !this.enabled ) {
+		return;
+	}
 	var i, len, offset, annotations,
 		selectedNodes = {},
 		selectionChange = false,
@@ -288,6 +330,9 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
  * @param {ve.Range} selection New selection range
  */
 ve.dm.Surface.prototype.breakpoint = function ( selection ) {
+	if ( !this.enabled ) {
+		return;
+	}
 	if ( this.smallStack.length > 0 ) {
 		this.bigStack.push( {
 			stack: this.smallStack,
@@ -305,6 +350,9 @@ ve.dm.Surface.prototype.breakpoint = function ( selection ) {
  * @returns {ve.Range} Selection or null if no further state could be reached
  */
 ve.dm.Surface.prototype.undo = function () {
+	if ( !this.enabled ) {
+		return;
+	}
 	var item, i, transaction, selection;
 	this.breakpoint();
 	this.undoIndex++;
@@ -333,6 +381,9 @@ ve.dm.Surface.prototype.undo = function () {
  * @returns {ve.Range} Selection or null if no further state could be reached
  */
 ve.dm.Surface.prototype.redo = function () {
+	if ( !this.enabled ) {
+		return;
+	}
 	var selection, item, i;
 	this.breakpoint();
 

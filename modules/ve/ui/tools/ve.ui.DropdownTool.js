@@ -104,8 +104,10 @@ ve.ui.DropdownTool.prototype.onBlur = function ( e ) {
  * @param {Object} item Menu item
  */
 ve.ui.DropdownTool.prototype.onMenuItemSelect = function ( item ) {
-	this.setLabel( item.label );
-	this.onSelect( item );
+	if ( this.toolbar.getSurface().isEnabled() ) {
+		this.setLabel( item.label );
+		this.onSelect( item );
+	}
 };
 
 /**

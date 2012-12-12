@@ -26,6 +26,7 @@ ve.Surface = function VeSurface( parent, dom, options ) {
 	this.context = new ve.ui.Context( this );
 	this.toolbars = {};
 	this.commands = {};
+	this.enabled = true;
 
 	// DOM Changes
 	$( parent ).append( this.$ );
@@ -128,6 +129,37 @@ ve.Surface.prototype.destroy = function () {
 };
 
 /**
+ * Disables editing.
+ *
+ * @method
+ */
+ve.Surface.prototype.disable = function () {
+	this.view.disable();
+	this.model.disable();
+	this.enabled = false;
+};
+
+/**
+ * Enables editing.
+ *
+ * @method
+ */
+ve.Surface.prototype.enable = function () {
+	this.enabled = true;
+	this.view.enable();
+	this.model.enable();
+};
+
+/**
+ * Enables editing.
+ *
+ * @method
+ */
+ve.Surface.prototype.isEnabled = function () {
+	return this.enabled;
+};
+
+/**
  * Fix up the initial selection.
  *
  * Reselect the selection and force a poll. This forces the selection to be something reasonable.
@@ -148,6 +180,9 @@ ve.Surface.prototype.resetSelection = function () {
  * @returns {Boolean} Action or command was executed
  */
 ve.Surface.prototype.execute = function ( action, method ) {
+	if ( !this.enabled ) {
+		return;
+	}
 	var trigger, obj, ret;
 	if ( action instanceof ve.Command ) {
 		trigger = action.toString();

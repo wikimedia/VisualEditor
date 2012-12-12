@@ -92,6 +92,29 @@ ve.ce.Surface.prototype.destroy = function () {
 	this.$.remove();
 };
 
+/**
+ * Disables editing.
+ *
+ * @method
+ */
+ve.ce.Surface.prototype.disable = function () {
+	this.documentView.getDocumentNode().disable();
+};
+
+/**
+ * Enables editing.
+ *
+ * @method
+ */
+ve.ce.Surface.prototype.enable = function () {
+	this.documentView.getDocumentNode().enable();
+};
+
+/**
+ * Handles insertion of content.
+ *
+ * @method
+ */
 ve.ce.Surface.prototype.handleInsertion = function () {
 	var slug, data, range, annotations, insertionAnnotations, placeholder,
 		selection = this.model.getSelection();
