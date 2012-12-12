@@ -55,6 +55,8 @@ $wgVisualEditorResourceTemplate = array(
 
 $wgVisualEditorEditNotices = array( 'visualeditor-alphawarning' );
 
+$wgVisualEditorEnableSectionEditLinks = false;
+
 $wgResourceModules += array(
 	'rangy' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(

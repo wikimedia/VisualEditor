@@ -59,8 +59,10 @@ class VisualEditorHooks {
 	 * Adds extra variables to the page config.
 	 */
 	public static function onMakeGlobalVariablesScript( array &$vars, OutputPage $out ) {
+		global $wgVisualEditorEnableSectionEditLinks;
 		$vars['wgVisualEditor'] = array(
-			'isPageWatched' => $out->getUser()->isWatched( $out->getTitle() )
+			'isPageWatched' => $out->getUser()->isWatched( $out->getTitle() ),
+			'enableSectionEditLinks' => $wgVisualEditorEnableSectionEditLinks
 		);
 
 		return true;
