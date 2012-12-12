@@ -7,8 +7,9 @@ $messages = array();
 $messages['en'] = array(
 	'visualeditor' => 'VisualEditor',
 	'visualeditor-desc' => 'Visual editor for MediaWiki',
-	'visualeditor-preference-enable' => 'Enable VisualEditor (only in the [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|main namespace]] and the User namespace)',
+	'visualeditor-preference-enable' => 'Enable VisualEditor (only in the [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|main]] and [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|user]] namespaces)',
 	'visualeditor-mainnamespacepagelink' => 'Project:Main namespace',
+	'visualeditor-usernamespacepagelink' => 'Project:User namespace',
 	'visualeditor-notification-saved' => 'Your changes to $1 have been saved.',
 	'visualeditor-notification-created' => '$1 has been created.',
 	'visualeditor-notification-restored' => '$1 has been restored.',
@@ -89,8 +90,10 @@ $messages['qqq'] = array(
 	'visualeditor' => 'The name of the VisualEditor extension',
 	'visualeditor-desc' => '{{desc}}',
 	'visualeditor-preference-enable' => 'Label for the user preference to enable the VisualEditor.
-Link is in {{msg-mw|Visualeditor-mainnamespacepagelink}}.',
+Links are in {{msg-mw|Visualeditor-mainnamespacepagelink}} and {{msg-mw|visualeditor-usernamespacepagelink}}.',
 	'visualeditor-mainnamespacepagelink' => 'Name of a page describing the main namespace (NS0) in this project.
+{{doc-important|Don’t translate “Project”; it is automatically converted to the wiki’s project namespace.}}',
+	'visualeditor-usernamespacepagelink' => 'Name of a page describing the user namespace (NS2) in this project.
 {{doc-important|Don’t translate “Project”; it is automatically converted to the wiki’s project namespace.}}',
 	'visualeditor-notification-saved' => 'Shown after a user saves a page, $1 is a page name.',
 	'visualeditor-notification-created' => 'Shown after a user creates a page, $1 is a page name.',
