@@ -97,7 +97,8 @@
 				}
 			}
 			// Call configured input method and supply the private build method as callback.
-			function onInput() {
+			function onInput( immediate ) {
+				var delay = immediate ? 0 : 250;
 				// Throttle
 				clearTimeout( inputTimer );
 				inputTimer = setTimeout( function () {
@@ -111,6 +112,8 @@
 							options.input.call( $input, function ( params, callback ) {
 								build( params );
 							} );
+						} else if ( !visible && txt === currentInput ) {
+							open();
 						}
 					} else {
 						// No Text, close.
@@ -121,21 +124,11 @@
 					// Set current input.
 					currentInput = txt;
 
-				}, 250 );
+				}, delay );
 			}
 			// Opens the MultiSuggest dropdown.
 			function open() {
-				// Call onInput if cached value is stale
-				if (
-					$input.val() !== '' &&
-					$input.val() !== currentInput
-				) {
-					onInput();
-				}
-				if (
-					!visible &&
-					$multiSuggest.children().length > 0
-				) {
+				if ( !visible ) {
 					$multiSuggest.show();
 					visible = true;
 				}
@@ -161,7 +154,7 @@
 			}
 			// When an item is "clicked".
 			// Use of mousedown to prevent blur.
-			function onItemMousedown ( e ) {
+			function onItemMousedown( e ) {
 				e.preventDefault();
 				$multiSuggest
 					.find( '.' + options.prefix + '-suggest-item' )
@@ -170,11 +163,11 @@
 				select.call( this, $( this ).data( 'text' ) );
 			}
 
-			function onItemMouseenter () {
+			function onItemMouseenter() {
 				$( this ).addClass( 'hover' );
 			}
 
-			function onItemMouseleave () {
+			function onItemMouseleave() {
 				$( this ).removeClass( 'hover' );
 			}
 
@@ -319,13 +312,14 @@
 							}
 							return;
 						}
+					// Normal input.
+					} else {
+						onInput();
 					}
-					// Handle normal input.
-					onInput();
 				},
 				'focus': function () {
 					focused = true;
-					open();
+					onInput( true );
 				},
 				'blur': function () {
 					focused = false;
