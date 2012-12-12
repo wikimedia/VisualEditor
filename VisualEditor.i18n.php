@@ -69,7 +69,8 @@ $messages['en'] = array(
 	'tag-visualeditor-description' => 'Edit made using the [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
 	'visualeditor-alphawarning' => 'You are using an alpha version of the [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]. It may be slow and make erroneous changes - please check each edit that you make.',
-	'visualeditor-report-notice' => 'I understand that by clicking submit I will transmit my changes and my feedback which will be stored for analysis. I agree to provide feedback in accordance with the [//wikimediafoundation.org/wiki/Terms_of_Use Terms of Use].',
+	'visualeditor-report-notice' => 'I understand that by clicking submit I will transmit my changes and my feedback which will be stored for analysis. I agree to provide feedback in accordance with the [[{{MediaWiki:Visualeditor-report-link}}|Terms of Use]].',
+	'visualeditor-report-link' => 'foundation:Terms of Use',
 );
 
 /** Message documentation (Message documentation)
@@ -88,13 +89,14 @@ $messages['qqq'] = array(
 	'visualeditor' => 'The name of the VisualEditor extension',
 	'visualeditor-desc' => '{{desc}}',
 	'visualeditor-preference-enable' => 'Label for the user preference to enable the VisualEditor.
-Link is in {{msg-mw|Visualeditor-mainnamespacepagelink}}.', # Fuzzy
+Link is in {{msg-mw|Visualeditor-mainnamespacepagelink}}.',
 	'visualeditor-mainnamespacepagelink' => 'Name of a page describing the main namespace (NS0) in this project.
 {{doc-important|Don’t translate “Project”; it is automatically converted to the wiki’s project namespace.}}',
 	'visualeditor-notification-saved' => 'Shown after a user saves a page, $1 is a page name.',
 	'visualeditor-notification-created' => 'Shown after a user creates a page, $1 is a page name.',
 	'visualeditor-notification-restored' => 'Shown after a user restores a page to a previous revision. Parameters:
 * $1 is a page name.',
+	'visualeditor-notification-reported' => 'Thank you message shown after a user reports a problematic page edit.',
 	'visualeditor-ca-editsource' => '{{Optional}}
 Text for the edit source link in the tab dropdown
 {{Identical|visualeditor}}',
@@ -102,16 +104,24 @@ Text for the edit source link in the tab dropdown
 Link text of the dedicated VisualEditor Edit tab.
 {{Identical|visualeditor}}',
 	'visualeditor-ca-ve-create' => '{{Optional}}
-Link text of the dedicated VisualEditor Create tab.
+	Link text of the dedicated VisualEditor Create tab.
 {{Identical|visualeditor}}',
-	'visualeditor-savedialog-label-restore' => 'Label text for save button when the user is editing a previous revision',
+	'visualeditor-toolbar-savedialog' => 'Label text for button to trigger review and save interface',
+	'visualeditor-savedialog-title-review' => 'Title for reviewing slide',
+	'visualeditor-savedialog-title-report' => 'Title for reporting slide',
+	'visualeditor-savedialog-title-save' => 'Title for saving slide',
+	'visualeditor-savedialog-label-review-wrong' => 'Label for button to trigger report dialog',
+	'visualeditor-savedialog-label-review-good' => 'Label for button to progress to save dialog',
+	'visualeditor-savedialog-label-report' => 'Label for button to trigger report',
 	'visualeditor-savedialog-label-create' => 'Label text for save button when the user is creating a new page',
-	'visualeditor-editnotices-tool' => 'Text of tool in the toolbar that shows edit notices (such as MediaWiki:editnotice-0 and [[MediaWiki:editnotice-8/en]]) as a pop-up',
+	'visualeditor-savedialog-label-save' => 'Label text for save button when the user is editing a current revision of an extant page',
+	'visualeditor-savedialog-label-restore' => 'Label text for save button when the user is editing a previous revision',
+	'visualeditor-editnotices-tool' => 'Text of tool in the toolbar that shows edit notices (such as [[MediaWiki:editnotice-0]] and [[MediaWiki:editnotice-8/en]]) as a pop-up',
 	'visualeditor-feedback-tool' => 'Text of tool in the toolbar that lets user provide feedback',
 	'tooltip-ca-ve-edit' => 'Tooltip of the dedicated VisualEditor Edit tab.',
 	'accesskey-ca-ve-edit' => '{{Ignore}}',
 	'visualeditor-inspector-title' => 'Title of an unnamed inspector',
-	'visualeditor-linkinspector-title' => 'Title of the link inspector dialog', # Fuzzy
+	'visualeditor-linkinspector-title' => 'Title of the link inspector dialog',
 	'visualeditor-linkinspector-label-pagetitle' => 'Label for the text field that holds the link target in the link inspector',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Label for suggested existing pages in the link inspector',
 	'visualeditor-linkinspector-suggest-new-page' => 'Label for a new page in the link inspector',
@@ -139,18 +149,20 @@ Link text of the dedicated VisualEditor Create tab.
 	'visualeditor-inspector-remove-tooltip' => 'Tooltip for the button to remove an annotation in an inspector',
 	'visualeditor-viewpage-savewarning' => 'Text shown when the user tries to leave the editor without saving their changes',
 	'visualeditor-loadwarning' => 'Text shown when the editor fails to load properly. $1 is the error message from the server, in English.',
-	'visualeditor-savedialog-title-save' => 'Save your changes',
 	'visualeditor-differror' => 'Text shown when the editor fails to load the diff. $1 is an error message, in English.',
 	'visualeditor-saveerror' => 'Text shown when the editor fails to save properly. $1 is an error message, in English.',
 	'visualeditor-editconflict' => 'Alert message when saving a page causes an edit conflict',
 	'visualeditor-editsummary' => 'Label for edit summary box',
 	'visualeditor-problem' => 'Label for problem description box',
 	'visualeditor-aliennode-tooltip' => 'Tooltip for items that the VisualEditor cannot edit',
-	'tag-visualeditor' => 'Short description of the visualeditor tag. Shown on lists of changes (history, recentchanges, etc.) for each edit made using VisualEditor.', # Fuzzy
-	'tag-visualeditor-description' => 'Long description of the visualeditor tag. Shown on [[Special:Tags]]', # Fuzzy
+	'tag-visualeditor' => 'Short description of the visualeditor tag. Shown on lists of changes (history, recentchanges, etc.) for each edit made using VisualEditor.',
+	'tag-visualeditor-description' => 'Long description of the visualeditor tag. Shown on [[Special:Tags]]',
 	'visualeditor-descriptionpagelink' => 'Name of a page describing the use of the VisualEditor in this project.
 {{doc-important|Don’t translate “Project”; it is automatically converted to the wiki’s project namespace.}}',
 	'visualeditor-alphawarning' => 'Edit notice shown when the VisualEditor loads, warning users that the software may have issues',
+	'visualeditor-report-notice' => 'Notice to user that their data will be sent for analysis.
+	Link is in {{msg-mw|Visualeditor-report-link}}.',
+	'visualeditor-report-link' => 'Name of a page describing the terms of use for this project.',
 );
 
 /** Assamese (অসমীয়া)
