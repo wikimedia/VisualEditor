@@ -173,6 +173,9 @@ class ApiVisualEditor extends ApiBase {
 
 		if ( $params['paction'] === 'parse' ) {
 			$parsed = $this->getHTML( $page, $parserParams );
+			// Dirty hack to provide the correct context for edit notices
+			global $wgTitle; // FIXME NOOOOOOOOES
+			$wgTitle = $page;
 			$notices = $page->getEditNotices();
 			if ( count( $wgVisualEditorEditNotices ) ) {
 				foreach ( $wgVisualEditorEditNotices as $key ) {
