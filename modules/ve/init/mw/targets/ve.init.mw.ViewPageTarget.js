@@ -623,13 +623,13 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarEditNotices = function () {
 ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( dom ) {
 	var $contentText = $( '#mw-content-text' );
 
+	// Store the HTML for reporting purposes
+	this.originalHtml = dom.innerHTML;
 	// Initialize surface
 	this.surface = new ve.Surface( $( '#content' ), dom, this.surfaceOptions );
 	this.surface.getContext().hide();
 	this.$document = this.surface.$.find( '.ve-ce-documentNode' );
 	this.surface.getModel().on( 'transact', this.proxiedOnSurfaceModelTransact );
-	// Store the HTML for reporting purposes
-	this.originalHtml = dom.innerHTML;
 	// Transplant the toolbar
 	this.attachToolbar();
 	this.transformPageTitle();
