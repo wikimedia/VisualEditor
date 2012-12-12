@@ -479,3 +479,30 @@ ve.init.mw.Target.prototype.serialize = function ( dom, callback ) {
 	} );
 	return true;
 };
+
+ve.init.mw.Target.prototype.reportProblem = function ( message ) {
+	// Gather reporting information
+	var now = new Date(),
+		editedData = this.surface.getDocumentModel().getFullData(),
+		report = {
+			'title': this.pageName,
+			'oldid': this.oldid,
+			'timestamp': now.getTime() + 60000 * now.getTimezoneOffset(),
+			'message': message,
+			'diff': this.diffHtml,
+			'originalHtml': this.originalHtml,
+			'originalData':
+				ve.dm.converter.getDataFromDom( $( '<div>' ).html( this.originalHtml )[0] ),
+			'editedData': editedData,
+			'editedHtml': ve.dm.converter.getDomFromData( editedData ).innerHTML,
+			'wiki': mw.config.get( 'wgDBname' )
+		};
+	$.post(
+		'http://parsoid.wmflabs.org/_bugs/',
+		{ 'data': $.toJSON( report ) },
+		function () {
+			// This space intentionally left blank
+		},
+		'text'
+	);
+};
