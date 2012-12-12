@@ -1219,7 +1219,7 @@ ve.init.mw.ViewPageTarget.prototype.swapSaveDialog = function ( slide ) {
 				);
 			}
 		}
-		this.$saveDialog.css( 'width', 'auto' );
+		this.$saveDialog.css( 'width', '100%' );
 	} else {
 		this.$saveDialog.css( 'width', '' );
 	}
