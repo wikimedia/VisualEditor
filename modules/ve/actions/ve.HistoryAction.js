@@ -41,7 +41,9 @@ ve.HistoryAction.static.methods = ['undo', 'redo'];
  */
 ve.HistoryAction.prototype.undo = function () {
 	var range = this.surface.getModel().undo();
-	this.surface.getView().showSelection( range );
+	if ( range ) {
+		this.surface.getView().showSelection( range );
+	}
 };
 
 /**
@@ -51,7 +53,9 @@ ve.HistoryAction.prototype.undo = function () {
  */
 ve.HistoryAction.prototype.redo = function () {
 	var range = this.surface.getModel().redo();
-	this.surface.getView().showSelection( range );
+	if ( range ) {
+		this.surface.getView().showSelection( range );
+	}
 };
 
 /* Registration */
