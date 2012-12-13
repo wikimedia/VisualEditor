@@ -499,7 +499,7 @@ ve.init.mw.Target.prototype.reportProblem = function ( message ) {
 		};
 	$.post(
 		'http://parsoid.wmflabs.org/_bugs/',
-		{ 'data': $.toJSON( report ) },
+		{ 'data': JSON.stringify( report ) },
 		function () {
 			// This space intentionally left blank
 		},

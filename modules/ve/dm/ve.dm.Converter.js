@@ -946,7 +946,7 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 								}
 							}
 							parentDomElement.setAttribute( 'data-ve-changed',
-								$.toJSON( parentChanged ) );
+								JSON.stringify( parentChanged ) );
 						} else {
 							parentDomElement.setAttribute( 'data-ve-changed',
 								changed );
