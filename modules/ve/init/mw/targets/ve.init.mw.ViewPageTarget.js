@@ -648,11 +648,7 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarEditNotices = function () {
 	var key;
 	this.$toolbarEditNotices.empty();
 	for ( key in this.editNotices ) {
-		this.$toolbarEditNotices.append(
-			$( '<div>' )
-				.addClass( 've-init-mw-viewPageTarget-toolbar-editNotices-notice' )
-				.attr( 'rel', key ).html( this.editNotices[key] )
-		);
+		this.$toolbarEditNotices.append( this.editNotices[key] );
 	}
 };
 
