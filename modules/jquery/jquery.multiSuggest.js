@@ -312,6 +312,10 @@
 							}
 							return;
 						}
+					// Escape
+					} else if ( e.which === 27 ) {
+						close();
+						return;
 					// Normal input.
 					} else {
 						onInput();
