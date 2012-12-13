@@ -68,7 +68,9 @@ ve.inheritClass( ve.init.mw.Target, ve.EventEmitter );
  * @emits loadError (null, message, null)
  */
 ve.init.mw.Target.onLoad = function ( response ) {
-	var data = response.visualeditor;
+	var key, tmp, el,
+		data = response.visualeditor;
+
 	if ( !data && !response.error ) {
 		ve.init.mw.Target.onLoadError.call(
 			this, null, 'Invalid response in response from server', null
@@ -81,7 +83,40 @@ ve.init.mw.Target.onLoad = function ( response ) {
 		);
 	} else {
 		this.dom = $( '<div>' ).html( data.content )[0];
-		this.editNotices = data.notices;
+
+		/**
+		 * Don't show notices with no visible html (bug 43013).
+		 */
+
+		// Since we're going to parse them, we might as well save these nodes
+		// so we don't have to parse them again later.
+		this.editNotices = {};
+
+		// This is a temporary container for parsed notices in the <body>.
+		// We need the elements to be in the DOM in order for stylesheets to apply
+		// and jquery.visibleText to determine whether a node is visible.
+		tmp = document.createElement( 'div' );
+
+		// The following is essentially display none, but we can't use that
+		// since then then all descendants will be considered invisible too.
+		tmp.style.cssText = 'position: static; top: 0; width: 0; height: 0; border: 0; visibility: hidden';
+
+		document.body.appendChild( tmp );
+		for ( key in data.notices ) {
+			el = $( '<div>' )
+				.addClass( 've-init-mw-viewPageTarget-toolbar-editNotices-notice' )
+				.attr( 'rel', key )
+				.html( data.notices[key] )
+				.get( 0 );
+
+			tmp.appendChild( el );
+			if ( $.getVisibleText( el ).trim() !== '' ) {
+				this.editNotices[key] = el;
+			}
+			tmp.removeChild( el );
+		}
+		document.body.removeChild( tmp );
+
 		this.baseTimeStamp = data.basetimestamp;
 		this.startTimeStamp = data.starttimestamp;
 		// Everything worked, the page was loaded, continue as soon as the module is ready

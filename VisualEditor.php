@@ -67,6 +67,11 @@ $wgResourceModules += array(
 			'jquery/jquery.multiSuggest.js'
 		),
 	),
+	'jquery.visibleText' => $wgVisualEditorResourceTemplate + array(
+		'scripts' => array(
+			'jquery/jquery.visibleText.js'
+		),
+	),
 	// Alias for backwards compat, safe to remove after
 	'ext.visualEditor.editPageInit' => $wgVisualEditorResourceTemplate + array(
 		'dependencies' => array(
@@ -113,6 +118,7 @@ $wgResourceModules += array(
 			'jquery.byteLimit',
 			'jquery.client',
 			'jquery.placeholder',
+			'jquery.visibleText',
 			'mediawiki.jqueryMsg',
 			'mediawiki.Title',
 			'mediawiki.Uri',
