@@ -98,7 +98,7 @@ ve.init.mw.Target.onLoad = function ( response ) {
 		tmp = document.createElement( 'div' );
 
 		// The following is essentially display none, but we can't use that
-		// since then then all descendants will be considered invisible too.
+		// since then all descendants will be considered invisible too.
 		tmp.style.cssText = 'position: static; top: 0; width: 0; height: 0; border: 0; visibility: hidden';
 
 		document.body.appendChild( tmp );
