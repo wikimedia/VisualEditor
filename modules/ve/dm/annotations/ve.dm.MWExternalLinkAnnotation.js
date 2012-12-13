@@ -46,6 +46,7 @@ ve.dm.MWExternalLinkAnnotation.static.matchRdfaTypes = [
 ve.dm.MWExternalLinkAnnotation.prototype.toHTML = function () {
 	var parentResult = ve.dm.LinkAnnotation.prototype.toHTML.call( this );
 	parentResult.attributes.rel = parentResult.attributes.rel || 'mw:ExtLink';
+	parentResult.attributes.title = this.data.href;
 	return parentResult;
 };
 
