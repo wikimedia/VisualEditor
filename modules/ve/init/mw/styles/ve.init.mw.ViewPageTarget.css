@@ -259,7 +259,6 @@
 .ve-init-mw-viewPageTarget-saveDialog-body {
 	border-top: 1px solid #ddd;
 	padding-top: 1em;
-	overflow: hidden;
 }
 
 .ve-init-mw-viewPageTarget-saveDialog-slide {
@@ -275,8 +274,6 @@
 }
 
 .ve-init-mw-viewPageTarget-saveDialog-slide-review .ve-init-mw-viewPageTarget-saveDialog-viewer .diff {
-	width: auto;
-	table-layout: auto;
 	font-size: 0.8em;
 }
 
