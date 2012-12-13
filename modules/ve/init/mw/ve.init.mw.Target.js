@@ -382,8 +382,8 @@ ve.init.mw.Target.prototype.save = function ( dom, options ) {
 			'html': $( dom ).html(),
 			'token': this.editToken,
 			'summary': options.summary,
-			'minor': options.minor,
-			'watch': options.watch
+			'minor': Number( options.minor ),
+			'watch': Number( options.watch )
 		},
 		'dataType': 'json',
 		'type': 'POST',
@@ -454,8 +454,8 @@ ve.init.mw.Target.prototype.submit = function ( wikitext, options ) {
 			'wpEdittime': this.startTimeStamp,
 			'wpTextbox1': wikitext,
 			'wpSummary': options.summary,
-			'wpWatchthis': options.watch,
-			'wpMinoredit': options.minor,
+			'wpWatchthis': Number( options.watch ),
+			'wpMinoredit': Number( options.minor ),
 			'wpEditToken': this.editToken,
 			'wpSave': 1
 		};
