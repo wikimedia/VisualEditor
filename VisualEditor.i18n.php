@@ -387,6 +387,48 @@ $messages['br'] = array(
 	'visualeditor-historybutton-redo-tooltip' => 'Adober',
 );
 
+/** Catalan (català)
+ * @author Vriullop
+ */
+$messages['ca'] = array(
+	'visualeditor-desc' => 'Editor visual per a MediaWiki',
+	'visualeditor-preference-enable' => "Habilita l'editor visual (només en els espais de noms [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|principal]] i d'[[{{MediaWiki:Visualeditor-usernamespacepagelink}}|usuari]])",
+	'visualeditor-mainnamespacepagelink' => 'Project:Espai principal',
+	'visualeditor-usernamespacepagelink' => "Project:Espai d'usuari",
+	'visualeditor-notification-saved' => 'Els canvis a $1 han estat desats.',
+	'visualeditor-notification-created' => '$1 ha estat creat.',
+	'visualeditor-notification-restored' => '$1 ha estat restaurada.',
+	'visualeditor-ca-ve-edit' => 'Editor visual',
+	'visualeditor-toolbar-savedialog' => 'Revisa i desa',
+	'visualeditor-savedialog-title-review' => 'Reviseu els canvis',
+	'visualeditor-savedialog-title-save' => 'Desant el canvis',
+	'visualeditor-savedialog-label-review-wrong' => 'No ha anat bé',
+	'visualeditor-savedialog-label-review-good' => 'Està bé',
+	'visualeditor-savedialog-label-save' => 'Desa la pàgina',
+	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|avís|avisos}}',
+	'visualeditor-feedback-tool' => 'Comentaris',
+	'visualeditor-formatdropdown-format-paragraph' => 'Paràgraf',
+	'visualeditor-formatdropdown-format-heading1' => 'Encapçalament 1',
+	'visualeditor-formatdropdown-format-heading2' => 'Encapçalament 2',
+	'visualeditor-formatdropdown-format-heading3' => 'Encapçalament 3',
+	'visualeditor-formatdropdown-format-heading4' => 'Encapçalament 4',
+	'visualeditor-formatdropdown-format-heading5' => 'Encapçalament 5',
+	'visualeditor-formatdropdown-format-heading6' => 'Encapçalament 6',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Negreta',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Cursiva',
+	'visualeditor-annotationbutton-link-tooltip' => 'Enllaç',
+	'visualeditor-indentationbutton-indent-tooltip' => 'Augmenta el sagnat',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Disminueix el sagnat',
+	'visualeditor-listbutton-number-tooltip' => 'Llista numerada',
+	'visualeditor-listbutton-bullet-tooltip' => 'Llista amb pics',
+	'visualeditor-historybutton-undo-tooltip' => 'Desfés',
+	'visualeditor-historybutton-redo-tooltip' => 'Refés',
+	'visualeditor-viewpage-savewarning' => 'Esteu segurs que voleu tornar a la pàgina sense desar abans?',
+	'visualeditor-editsummary' => 'Descriviu el que heu canviat',
+	'visualeditor-aliennode-tooltip' => "Disculpeu, aquest element no es pot modificar amb l'editor visual",
+	'visualeditor-alphawarning' => "Esteu utilitzant una versió alfa de l'[[{{MediaWiki:Visualeditor-descriptionpagelink}}|editor visual]]. Pot ser lent i fer canvis erronis - comproveu tots els canvis fets.",
+);
+
 /** Czech (česky)
  * @author Chmee2
  */
@@ -1482,8 +1524,9 @@ $messages['lt'] = array(
 $messages['mk'] = array(
 	'visualeditor' => 'Визуелен уредник',
 	'visualeditor-desc' => 'Визуелен уредник за МедијаВики',
-	'visualeditor-preference-enable' => 'Овозможи ВизуеленУредник (само во [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|главниот именски простор]] и именскиот простор „Корисник“)', # Fuzzy
+	'visualeditor-preference-enable' => 'Овозможи ВизуеленУредник (само во [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|главен]] и [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|кориснички]] именски простор)',
 	'visualeditor-mainnamespacepagelink' => 'Project:Главен именски простор',
+	'visualeditor-usernamespacepagelink' => 'Project:Главен именски простор',
 	'visualeditor-notification-saved' => 'Измените во $1 се зачувани',
 	'visualeditor-notification-created' => 'Создавањето на $1 заврши успешно!',
 	'visualeditor-notification-restored' => '$1 е повратена.',
@@ -1735,8 +1778,9 @@ $messages['ne'] = array(
 $messages['nl'] = array(
 	'visualeditor' => 'Vereenvoudigde tekstverwerker',
 	'visualeditor-desc' => 'Vereenvoudigde tekstverwerker voor MediaWiki',
-	'visualeditor-preference-enable' => 'Visuele tekstverwerker inschakelen (alleen voor de [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|hoofdnaamruimte]] en de gebruikersnaamruimte)', # Fuzzy
+	'visualeditor-preference-enable' => 'Visuele tekstverwerker inschakelen (alleen voor de [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|hoofdnaamruimte]] en de [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|gebruikersnaamruimte]])',
 	'visualeditor-mainnamespacepagelink' => 'Project:Hoofdnaamruimte',
+	'visualeditor-usernamespacepagelink' => 'Project:Gebruikersnaamruimte',
 	'visualeditor-notification-saved' => 'Uw wijzigingen aan "$1" zijn opgeslagen',
 	'visualeditor-notification-created' => '"$1" is aangemaakt.',
 	'visualeditor-notification-restored' => '$1 is teruggeplaatst.',
