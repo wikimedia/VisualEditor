@@ -26,7 +26,7 @@ ve.inheritClass( ve.ui.OutdentButtonTool, ve.ui.IndentationButtonTool );
 
 ve.ui.OutdentButtonTool.static.name = 'outdent';
 
-ve.ui.OutdentButtonTool.static.titleMessage = 'visualeditor-outdentationbutton-outdent-tooltip';
+ve.ui.OutdentButtonTool.static.titleMessage = 'visualeditor-indentationbutton-outdent-tooltip';
 
 ve.ui.OutdentButtonTool.static.method = 'decrease';
 
