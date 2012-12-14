@@ -6,10 +6,9 @@
  */
 
 /* Alien styling */
-.ve-ce-alienBlockNode,
-.ve-ce-alienInlineNode,
-.ve-ce-alienBlockNode *,
-.ve-ce-alienInlineNode * {
+
+.ve-ce-alienNode,
+.ve-ce-alienNode * {
 	position: relative !important;
 	top: 0 !important;
 	left: 0 !important;
@@ -17,17 +16,24 @@
 	right: 0 !important;
 }
 
-/* Highlightable alien blocks */
+.ve-ce-alienNode {
+	z-index: 0;
+}
+
+/* Alien blocks and their contents are unselectable / unclickable */
 .ve-ce-alienBlockNode,
 .ve-ce-alienBlockNode * {
 	-webkit-user-select: none;
 	-moz-user-select: none;
+	-ms-user-select: none;
 	user-select: none;
 }
+
 .ve-ce-alienBlockNode::-moz-selection,
 .ve-ce-alienBlockNode *::-moz-selection {
 	background: transparent;
 }
+
 .ve-ce-node-shield {
 	position: absolute !important;
 	top: 0;
@@ -36,6 +42,9 @@
 	width: 100%;
 	background-color: transparent !important;
 	-webkit-user-select: auto;
+	-moz-user-select: element;
+	-ms-user-select: element;
+	user-select: element;
 }
 
 /* Fix weird Chrome native selection involving floated elements */
