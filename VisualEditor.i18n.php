@@ -992,6 +992,9 @@ $messages['gl'] = array(
 	'tag-visualeditor' => '[[Special:Tags|Etiqueta]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Editor visual]]',
 	'tag-visualeditor-description' => 'Edición feita mediante o [[{{MediaWiki:Visualeditor-descriptionpagelink}}|editor visual]]',
 	'visualeditor-descriptionpagelink' => 'Project:Editor visual',
+	'visualeditor-alphawarning' => 'Está utilizando a versión alpha do [[{{MediaWiki:Visualeditor-descriptionpagelink}}|editor visual]]. Pode ser lenta e facer modificacións erróneas. Comprobe todas as edicións que faga.',
+	'visualeditor-report-notice' => 'Entendo que ao premer no botón "Enviar" hei transmitir as miñas modificacións e os meus comentarios, que quedarán rexistrados para a súa análise. Acepto achegar os comentarios de acordo cos [[{{MediaWiki:Visualeditor-report-link}}|termos de uso]].',
+	'visualeditor-report-link' => 'foundation:Terms of Use/gl',
 );
 
 /** Hebrew (עברית)
