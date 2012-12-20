@@ -216,9 +216,9 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 		</script>
 
 		<div style="margin-left: 2em; margin-right: 2em; margin-bottom: 1em;">
-			<labe>Start</label>
+			<label>Start</label>
 			<input type="text" style="width: 3em" id="ve-debug-start"/>
-			<labe>End</label>
+			<label>End</label>
 			<input type="text" style="width: 3em" id="ve-debug-end"/>
 			<br/>
 			<a href="#" id="ve-get-range">Get range from the editor</a>
