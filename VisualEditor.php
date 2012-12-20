@@ -283,8 +283,6 @@ $wgResourceModules += array(
 			've/ce/nodes/ve.ce.ImageNode.js',
 			've/ce/nodes/ve.ce.ListItemNode.js',
 			've/ce/nodes/ve.ce.ListNode.js',
-			've/ce/nodes/ve.ce.MetaBlockNode.js',
-			've/ce/nodes/ve.ce.MetaInlineNode.js',
 			've/ce/nodes/ve.ce.MWEntityNode.js',
 			've/ce/nodes/ve.ce.ParagraphNode.js',
 			've/ce/nodes/ve.ce.PreformattedNode.js',

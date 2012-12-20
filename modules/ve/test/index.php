@@ -114,8 +114,6 @@
 		<script src="../../ve/ce/nodes/ve.ce.ImageNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.ListItemNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.ListNode.js"></script>
-		<script src="../../ve/ce/nodes/ve.ce.MetaBlockNode.js"></script>
-		<script src="../../ve/ce/nodes/ve.ce.MetaInlineNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.MWEntityNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.ParagraphNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.PreformattedNode.js"></script>
