@@ -828,11 +828,12 @@ $messages['fi'] = array(
  * @author Hello71
  * @author Nicolas NALLET
  * @author Urhixidur
+ * @author Wyz
  */
 $messages['fr'] = array(
 	'visualeditor' => 'VisualEditor',
 	'visualeditor-desc' => 'Éditeur visuel pour MediaWiki',
-	'visualeditor-preference-enable' => 'Activer VisualEditor (seulement dans les espaces de noms [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|principal]]) et [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|utilisateur]])', # Fuzzy
+	'visualeditor-preference-enable' => 'Activer VisualEditor (seulement dans les espaces de noms [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|principal]] et [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|utilisateur]])',
 	'visualeditor-mainnamespacepagelink' => 'Project:Main namespace',
 	'visualeditor-usernamespacepagelink' => 'Espace de noms Project:User', # Fuzzy
 	'visualeditor-notification-saved' => 'Vos modifications à $1 ont été enregistrés.',
@@ -847,7 +848,7 @@ $messages['fr'] = array(
 	'visualeditor-savedialog-title-report' => 'Signaler un problème',
 	'visualeditor-savedialog-title-save' => 'Enregistrer vos modifications',
 	'visualeditor-savedialog-label-review-wrong' => 'Quelque chose ne va pas',
-	'visualeditor-savedialog-label-review-good' => 'Semble bon pour moi',
+	'visualeditor-savedialog-label-review-good' => 'Me paraît correct',
 	'visualeditor-savedialog-label-report' => 'Signaler un problème',
 	'visualeditor-savedialog-label-create' => 'Créer la page',
 	'visualeditor-savedialog-label-save' => 'Enregistrer la page',
@@ -2027,11 +2028,12 @@ $messages['pt'] = array(
 
 /** Brazilian Portuguese (português do Brasil)
  * @author Jaideraf
+ * @author 555
  */
 $messages['pt-br'] = array(
 	'visualeditor' => 'VisualEditor',
 	'visualeditor-desc' => 'Editor visual para o MediaWiki',
-	'visualeditor-preference-enable' => 'Ativar VisualEditor (apenas no domínio principal)', # Fuzzy
+	'visualeditor-preference-enable' => 'Ativar VisualEditor (apenas nos espaços nominais [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|principal]] e de [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|usuário]])',
 	'visualeditor-notification-saved' => 'Suas alterações para $1 foram salvas.',
 	'visualeditor-notification-created' => 'A página $1 foi criada.',
 	'visualeditor-notification-restored' => '$1 foi restaurado.',
@@ -2075,8 +2077,8 @@ $messages['pt-br'] = array(
 	'visualeditor-editconflict' => 'Suas alterações não puderam ser salvas por causa de um conflito de edição. Você gostaria de resolver o conflito manualmente?',
 	'visualeditor-editsummary' => 'Por favor, descreva o que você mudou',
 	'visualeditor-aliennode-tooltip' => 'Desculpe, esse elemento não pode ser editado utilizando o VisualEditor',
-	'tag-visualeditor' => '[[Special:Tags|Tag]]: [[Project:VisualEditor|VisualEditor]]', # Fuzzy
-	'tag-visualeditor-description' => 'Edição realizada utilizando o [[Project:VisualEditor|VisualEditor]]', # Fuzzy
+	'tag-visualeditor' => '[[Special:Tags|Tag]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'tag-visualeditor-description' => 'Edição realizada utilizando o [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 );
 
 /** Romanian (română)
