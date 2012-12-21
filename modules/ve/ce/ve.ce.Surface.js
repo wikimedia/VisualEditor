@@ -36,6 +36,7 @@ ve.ce.Surface = function VeCeSurface( $container, model, surface ) {
 	this.selecting = false;
 	this.$phantoms = $( '<div class="ve-ce-phantoms">' );
 	this.pasting = false;
+	this.clickHistory = [];
 
 	// Events
 	this.surfaceObserver.addListenerMethods(
@@ -399,7 +400,7 @@ ve.ce.Surface.prototype.onMouseDown = function ( e ) {
 	}
 
 	// Block / prevent triple click
-	if ( e.originalEvent.detail > 2 ) {
+	if ( this.getClickCount( e.originalEvent ) > 2 ) {
 		e.preventDefault();
 	}
 };
@@ -1316,4 +1317,48 @@ ve.ce.Surface.prototype.disableRendering = function () {
  */
 ve.ce.Surface.prototype.isRenderingEnabled = function () {
 	return this.renderingEnabled;
+};
+
+/**
+ * Determines the number of clicks in a user action
+ *
+ * @method
+ * @param {MouseEvent} e Original event (not jQuery)
+ * @returns {int} Number of clicks detected
+ */
+ve.ce.Surface.prototype.getClickCount = function ( e ) {
+	if ( !$.browser.msie ) {
+		return e.detail;
+	}
+
+	var i, response = 1;
+
+	// Add select MouseEvent properties to the beginning of the clickHistory
+	this.clickHistory.unshift({
+		x: e.x,
+		y: e.y,
+		timeStamp: e.timeStamp
+	});
+
+	// Compare history
+	if ( this.clickHistory.length > 1 ) {
+		for ( i = 0; i < this.clickHistory.length - 1; i++ ) {
+			if (
+				this.clickHistory[i].x === this.clickHistory[i + 1].x &&
+				this.clickHistory[i].y === this.clickHistory[i + 1].y &&
+				this.clickHistory[i].timeStamp - this.clickHistory[i + 1].timeStamp < 500
+			) {
+				response++;
+			} else {
+				break;
+			}
+		}
+	}
+
+	// Trim old history if necessary
+	if ( this.clickHistory.length > 2 ) {
+		this.clickHistory.pop();
+	}
+
+	return response;
 };
