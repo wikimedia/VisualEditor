@@ -759,6 +759,8 @@ $messages['et'] = array(
 	'visualeditor-clearbutton-tooltip' => 'Eemalda vorming',
 	'visualeditor-historybutton-undo-tooltip' => 'Võta tagasi',
 	'visualeditor-historybutton-redo-tooltip' => 'Tee uuesti',
+	'visualeditor-inspector-close-tooltip' => 'Sulge',
+	'visualeditor-inspector-remove-tooltip' => 'Eemalda',
 	'visualeditor-viewpage-savewarning' => 'Kas oled kindel, et tahad mina tagasi vaatamisrežiimi ilma kõigepealt salvestamata?',
 	'visualeditor-loadwarning' => 'Tõrge andmete laadimisel serverist: $1. Ehk proovid uuesti?',
 	'visualeditor-saveerror' => 'Tõrge andmete salvestamisel serverisse: $1.',
@@ -771,11 +773,34 @@ $messages['et'] = array(
  */
 $messages['fa'] = array(
 	'visualeditor-mainnamespacepagelink' => 'Project:فضای_نام_اصلی',
+	'visualeditor-notification-created' => '$1 ایجاد شد.',
+	'visualeditor-notification-restored' => '$1 بازیابی شد.',
+	'visualeditor-ca-editsource' => 'ویرایش مبدأ',
+	'visualeditor-ca-ve-edit' => 'ویرایش‌گر بصری',
+	'visualeditor-ca-ve-create' => 'ویرایش‌گر بصری',
+	'visualeditor-savedialog-label-report' => 'گزارش مشکل',
+	'visualeditor-savedialog-label-create' => 'ایجاد صفحه',
+	'visualeditor-savedialog-label-save' => 'ذخیره صفحه',
+	'visualeditor-linkinspector-title' => 'فراپیوند',
+	'visualeditor-linkinspector-label-pagetitle' => 'عنوان صفحه',
+	'visualeditor-linkinspector-suggest-new-page' => 'صفحهٔ جدید',
+	'visualeditor-formatdropdown-format-paragraph' => 'پاراگراف',
+	'visualeditor-formatdropdown-format-heading1' => 'سرعنوان ۱',
+	'visualeditor-formatdropdown-format-heading2' => 'سرعنوان ۲',
+	'visualeditor-formatdropdown-format-heading3' => 'سرعنوان ۳',
+	'visualeditor-formatdropdown-format-heading4' => 'سرعنوان ۴',
+	'visualeditor-formatdropdown-format-heading5' => 'سرعنوان ۵',
+	'visualeditor-formatdropdown-format-heading6' => 'سرعنوان ۶',
 	'visualeditor-annotationbutton-bold-tooltip' => 'ضخیم',
 	'visualeditor-annotationbutton-italic-tooltip' => 'مورب',
 	'visualeditor-annotationbutton-link-tooltip' => 'پیوند',
+	'visualeditor-listbutton-number-tooltip' => 'فهرست شماره‌دار',
+	'visualeditor-listbutton-bullet-tooltip' => 'فهرست گلوله‌ای',
+	'visualeditor-clearbutton-tooltip' => 'پاک‌سازی قالب‌بندی',
 	'visualeditor-historybutton-undo-tooltip' => 'خنثی‌سازی',
 	'visualeditor-historybutton-redo-tooltip' => 'انجام دوباره',
+	'visualeditor-inspector-close-tooltip' => 'بستن',
+	'visualeditor-inspector-remove-tooltip' => 'حذف',
 );
 
 /** Finnish (suomi)
@@ -827,6 +852,7 @@ $messages['fi'] = array(
  * @author Gomoko
  * @author Hello71
  * @author Nicolas NALLET
+ * @author Npettiaux
  * @author Urhixidur
  * @author Wyz
  */
@@ -835,7 +861,7 @@ $messages['fr'] = array(
 	'visualeditor-desc' => 'Éditeur visuel pour MediaWiki',
 	'visualeditor-preference-enable' => 'Activer VisualEditor (seulement dans les espaces de noms [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|principal]] et [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|utilisateur]])',
 	'visualeditor-mainnamespacepagelink' => 'Project:Main namespace',
-	'visualeditor-usernamespacepagelink' => 'Espace de noms Project:User', # Fuzzy
+	'visualeditor-usernamespacepagelink' => 'Project:Espace de nom utilisateur',
 	'visualeditor-notification-saved' => 'Vos modifications à $1 ont été enregistrés.',
 	'visualeditor-notification-created' => '$1 a été créé!',
 	'visualeditor-notification-restored' => '$1 a été récupéré.',
@@ -2492,11 +2518,35 @@ $messages['vi'] = array(
 $messages['zh-hans'] = array(
 	'visualeditor' => '可视化编辑器',
 	'visualeditor-desc' => 'MediaWiki的可视化编辑器',
-	'visualeditor-feedback-prompt' => '留下反馈',
-	'visualeditor-feedback-dialog-title' => '留下关于可视化编辑器的反馈',
+	'visualeditor-preference-enable' => '启用可视化编辑器（仅在[[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|主]]和[[{{MediaWiki:Visualeditor-usernamespacepagelink}}|用户]]名字空间）',
+	'visualeditor-mainnamespacepagelink' => 'Project:主名字空间',
+	'visualeditor-usernamespacepagelink' => 'Project:用户名字空间',
+	'visualeditor-notification-saved' => '您对$1的更改已保存。',
+	'visualeditor-notification-created' => '$1已创建。',
+	'visualeditor-notification-restored' => '$1已恢复。',
+	'visualeditor-notification-reported' => '您的问题已经报告。谢谢您。',
 	'visualeditor-ca-editsource' => '编辑源代码',
-	'visualeditor-linkinspector-title' => '编辑链接', # Fuzzy
+	'visualeditor-ca-ve-edit' => '可视化编辑器',
+	'visualeditor-ca-ve-create' => '可视化编辑器',
+	'visualeditor-toolbar-savedialog' => '复查并保存',
+	'visualeditor-savedialog-title-review' => '复查您的更高',
+	'visualeditor-savedialog-title-report' => '报告问题',
+	'visualeditor-savedialog-title-save' => '保存您的更高',
+	'visualeditor-savedialog-label-review-wrong' => '一些地方有问题',
+	'visualeditor-savedialog-label-review-good' => '看起来很好',
+	'visualeditor-savedialog-label-report' => '报告问题',
+	'visualeditor-savedialog-label-create' => '创建页面',
+	'visualeditor-savedialog-label-save' => '保存页面',
+	'visualeditor-savedialog-label-restore' => '恢复页面',
+	'visualeditor-editnotices-tool' => '$1条通知',
+	'visualeditor-feedback-tool' => '留下反馈',
+	'tooltip-ca-ve-edit' => '使用可视化编辑器编辑此页面',
+	'visualeditor-inspector-title' => '检查',
+	'visualeditor-linkinspector-title' => '超链接',
 	'visualeditor-linkinspector-label-pagetitle' => '页面标题',
+	'visualeditor-linkinspector-suggest-existing-page' => '现有页面',
+	'visualeditor-linkinspector-suggest-new-page' => '新页面',
+	'visualeditor-linkinspector-suggest-external-link' => 'Web链接',
 	'visualeditor-formatdropdown-title' => '更改格式',
 	'visualeditor-formatdropdown-format-paragraph' => '段落',
 	'visualeditor-formatdropdown-format-heading1' => '标题1',
@@ -2516,20 +2566,31 @@ $messages['zh-hans'] = array(
 	'visualeditor-clearbutton-tooltip' => '清除格式',
 	'visualeditor-historybutton-undo-tooltip' => '撤销',
 	'visualeditor-historybutton-redo-tooltip' => '重做',
+	'visualeditor-inspector-close-tooltip' => '关闭',
+	'visualeditor-inspector-remove-tooltip' => '移除',
 	'visualeditor-viewpage-savewarning' => '您确实要不保存而回到查看模式吗？',
 	'visualeditor-loadwarning' => '从服务器载入数据错误：$1。您想重试吗？',
+	'visualeditor-differror' => '从服务器载入数据时出现错误：$1。',
 	'visualeditor-saveerror' => '向服务器保存数据错误：$1。',
+	'visualeditor-editconflict' => '由于编辑冲突，无法保存您的更改。你想要手动解决冲突吗？',
+	'visualeditor-editsummary' => '描述您的更改',
+	'visualeditor-problem' => '描述发生了什么问题',
+	'visualeditor-aliennode-tooltip' => '抱歉，此元素无法使用可视化编辑器编辑',
+	'tag-visualeditor' => '[[Special:Tags|标签]]：[[{{MediaWiki:Visualeditor-descriptionpagelink}}|可视化编辑器]]',
+	'tag-visualeditor-description' => '使用[[{{MediaWiki:Visualeditor-descriptionpagelink}}|可视化编辑器]]进行的编辑',
+	'visualeditor-descriptionpagelink' => 'Project:可视化编辑器',
+	'visualeditor-alphawarning' => '您正在使用alpha版本的[[{{MediaWiki:Visualeditor-descriptionpagelink}}|可视化编辑器]]。它可能会很慢，并制造错误的更改 - 请检查每个您所做的编辑。',
+	'visualeditor-report-notice' => '我理解通过按下提交按钮，我将传送我的更改和我的反馈，它们将被储存以供分析。我同意按照[[{{MediaWiki:Visualeditor-report-link}}|使用条款]]提供反馈内容。',
 );
 
 /** Traditional Chinese (中文（繁體）‎)
  * @author Anakmalaysia
+ * @author Shirayuki
  * @author Simon Shek
  */
 $messages['zh-hant'] = array(
 	'visualeditor' => '可視化編輯器',
 	'visualeditor-desc' => 'MediaWiki的可視化編輯器',
-	'visualeditor-feedback-prompt' => '留下反饋',
-	'visualeditor-feedback-dialog-title' => '留下關於可視化編輯器的反饋',
 	'visualeditor-ca-editsource' => '編輯源代碼',
 	'visualeditor-linkinspector-title' => '編輯鏈接', # Fuzzy
 	'visualeditor-linkinspector-label-pagetitle' => '頁面標題',
@@ -2552,6 +2613,7 @@ $messages['zh-hant'] = array(
 	'visualeditor-clearbutton-tooltip' => '清除格式',
 	'visualeditor-historybutton-undo-tooltip' => '撤銷',
 	'visualeditor-historybutton-redo-tooltip' => '重做',
+	'visualeditor-inspector-remove-tooltip' => '移除',
 	'visualeditor-viewpage-savewarning' => '您確實要不保存而回到查看模式嗎？',
 	'visualeditor-loadwarning' => '從服務器載入數據錯誤：$1。您想重試嗎？',
 	'visualeditor-saveerror' => '向服務器保存數據錯誤：$1。',
