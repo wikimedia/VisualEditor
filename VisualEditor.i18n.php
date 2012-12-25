@@ -2119,10 +2119,9 @@ $messages['pt-br'] = array(
 
 /** Romanian (română)
  * @author Firilacroco
+ * @author Minisarm
  */
 $messages['ro'] = array(
-	'visualeditor-feedback-prompt' => 'Lăsați un comentariu',
-	'visualeditor-feedback-dialog-title' => 'Lăsați un comentariu despre cutia cu nisip a editorului vizual',
 	'visualeditor-ca-editsource' => 'Modificați sursa',
 	'visualeditor-linkinspector-title' => 'Modificați legătura', # Fuzzy
 	'visualeditor-linkinspector-label-pagetitle' => 'Titlul paginii',
@@ -2145,6 +2144,7 @@ $messages['ro'] = array(
 	'visualeditor-clearbutton-tooltip' => 'Curățați formatarea',
 	'visualeditor-historybutton-undo-tooltip' => 'Anulare',
 	'visualeditor-historybutton-redo-tooltip' => 'Refacere',
+	'visualeditor-inspector-close-tooltip' => 'Închidere',
 );
 
 /** Russian (русский)
