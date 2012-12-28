@@ -2037,12 +2037,16 @@ $messages['pl'] = array(
 /** Piedmontese (Piemontèis)
  * @author Borichèt
  * @author Dragonòt
+ * @author පසිඳු කාවින්ද
  */
 $messages['pms'] = array(
 	'visualeditor' => 'Editor Visual',
 	'visualeditor-desc' => 'Editor visual për MediaWiki',
-	'visualeditor-feedback-prompt' => "Lassé n'opinion",
-	'visualeditor-feedback-dialog-title' => "Lassé n'opinion a propòsit dl'Ambient ëd preuva ëd VisualEditor",
+	'visualeditor-annotationbutton-bold-tooltip' => 'Grassèt',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Corsiv',
+	'visualeditor-annotationbutton-link-tooltip' => 'Anliura',
+	'visualeditor-inspector-close-tooltip' => 'Sara',
+	'visualeditor-inspector-remove-tooltip' => 'Gava',
 );
 
 /** Pashto (پښتو)
