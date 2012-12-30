@@ -1976,6 +1976,14 @@ $messages['nl'] = array(
 	'visualeditor-report-link' => 'foundation:Terms_of_Use/nl',
 );
 
+/** Ossetic (Ирон)
+ * @author Bouron
+ */
+$messages['os'] = array(
+	'visualeditor' => 'VisualEditor',
+	'visualeditor-desc' => 'Visual MediaWiki-йæн',
+);
+
 /** Polish (polski)
  * @author Matma Rex
  * @author Mikołka
@@ -2429,6 +2437,8 @@ $messages['si'] = array(
 	'visualeditor-saveerror' => 'සර්වරය වෙත දත්ත සුරැකීමේ දෝෂය: $1.',
 	'visualeditor-editsummary' => 'ඔබ වෙනස් කලේ කුමක්දැයි පහදන්න',
 	'visualeditor-problem' => 'ඔබට වැරදුනේ කුමක්දැයි පහදන්න',
+	'tag-visualeditor' => '[[Special:Tags|ටැගය]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|දෘශ්‍යසංස්කාරක]]',
+	'tag-visualeditor-description' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|දෘශ්‍යසංස්කාරක]] භාවිතා කොට සංස්කරණය සිදු කරන ලදී',
 	'visualeditor-descriptionpagelink' => 'Project:දෘශ්‍යසංස්කාරක',
 );
 
