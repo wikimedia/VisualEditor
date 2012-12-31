@@ -1938,7 +1938,7 @@ $messages['nl'] = array(
 	'visualeditor-linkinspector-label-pagetitle' => 'Paginanaam',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Bestaande pagina',
 	'visualeditor-linkinspector-suggest-new-page' => 'Nieuwe pagina',
-	'visualeditor-linkinspector-suggest-external-link' => 'Webverwijzing',
+	'visualeditor-linkinspector-suggest-external-link' => 'Webkoppeling',
 	'visualeditor-formatdropdown-title' => 'Opmaak wijzigen',
 	'visualeditor-formatdropdown-format-paragraph' => 'Paragraaf',
 	'visualeditor-formatdropdown-format-heading1' => 'Kop 1',
@@ -1950,7 +1950,7 @@ $messages['nl'] = array(
 	'visualeditor-formatdropdown-format-preformatted' => 'Vooraf opgemaakt',
 	'visualeditor-annotationbutton-bold-tooltip' => 'Vet',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Cursief',
-	'visualeditor-annotationbutton-link-tooltip' => 'Verwijzing',
+	'visualeditor-annotationbutton-link-tooltip' => 'Koppeling',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Inspringing vergroten',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Inspringing verkleinen',
 	'visualeditor-listbutton-number-tooltip' => 'Genummerde lijst',
@@ -2259,11 +2259,20 @@ $messages['pt-br'] = array(
 /** Romanian (română)
  * @author Firilacroco
  * @author Minisarm
+ * @author Stelistcristi
  */
 $messages['ro'] = array(
 	'visualeditor-ca-editsource' => 'Modificați sursa',
+	'visualeditor-savedialog-label-create' => 'Creare pagină',
+	'visualeditor-savedialog-label-save' => 'Salvare pagină',
+	'visualeditor-savedialog-label-restore' => 'Restaurare pagină',
+	'visualeditor-feedback-tool' => 'Lăsați o părere',
+	'visualeditor-inspector-title' => 'Inspectare',
 	'visualeditor-linkinspector-title' => 'Modificați legătura', # Fuzzy
 	'visualeditor-linkinspector-label-pagetitle' => 'Titlul paginii',
+	'visualeditor-linkinspector-suggest-existing-page' => 'Pagină existentă',
+	'visualeditor-linkinspector-suggest-new-page' => 'Pagină nouă',
+	'visualeditor-linkinspector-suggest-external-link' => 'Legătură web',
 	'visualeditor-formatdropdown-title' => 'Modificați formatul',
 	'visualeditor-formatdropdown-format-paragraph' => 'Paragraf',
 	'visualeditor-formatdropdown-format-heading1' => 'Titlu 1',
@@ -2284,6 +2293,7 @@ $messages['ro'] = array(
 	'visualeditor-historybutton-undo-tooltip' => 'Anulare',
 	'visualeditor-historybutton-redo-tooltip' => 'Refacere',
 	'visualeditor-inspector-close-tooltip' => 'Închidere',
+	'visualeditor-inspector-remove-tooltip' => 'Eliminare',
 );
 
 /** Russian (русский)
@@ -2580,6 +2590,32 @@ $messages['tl'] = array(
 	'visualeditor-loadwarning' => 'Kamalian sa pagkakarga ng dato mula sa tagapaghain: $1. Nais mo bang subukan ulit?',
 	'visualeditor-saveerror' => 'Kamalian sa pagsagip ng dato sa tagapaghain: $1.',
 	'visualeditor-editsummary' => 'Ilarawan kung ano ang binago mo',
+);
+
+/** Uyghur (Arabic script) (ئۇيغۇرچە)
+ * @author Sahran
+ */
+$messages['ug-arab'] = array(
+	'visualeditor-savedialog-title-save' => 'ئۆزگەرتىشىڭىزنى ساقلاڭ',
+	'visualeditor-savedialog-label-create' => 'بەت قۇر',
+	'visualeditor-savedialog-label-save' => 'بەت ساقلا',
+	'visualeditor-inspector-title' => 'تەكشۈر',
+	'visualeditor-linkinspector-label-pagetitle' => 'بەت ماۋزۇسى',
+	'visualeditor-linkinspector-suggest-new-page' => 'يېڭى بەت',
+	'visualeditor-formatdropdown-format-paragraph' => 'ئابزاس',
+	'visualeditor-formatdropdown-format-heading1' => 'ماۋزۇ 1',
+	'visualeditor-formatdropdown-format-heading2' => 'ماۋزۇ 2',
+	'visualeditor-formatdropdown-format-heading3' => 'ماۋزۇ 3',
+	'visualeditor-formatdropdown-format-heading4' => 'ماۋزۇ 4',
+	'visualeditor-formatdropdown-format-heading5' => 'ماۋزۇ 5',
+	'visualeditor-formatdropdown-format-heading6' => 'ماۋزۇ 6',
+	'visualeditor-annotationbutton-bold-tooltip' => 'توم',
+	'visualeditor-annotationbutton-italic-tooltip' => 'يانتۇ',
+	'visualeditor-annotationbutton-link-tooltip' => 'ئۇلانما',
+	'visualeditor-historybutton-undo-tooltip' => 'يېنىۋال',
+	'visualeditor-historybutton-redo-tooltip' => 'قايتىلا',
+	'visualeditor-inspector-close-tooltip' => 'ياپ',
+	'visualeditor-inspector-remove-tooltip' => 'چىقىرىۋەت',
 );
 
 /** Ukrainian (українська)
