@@ -942,7 +942,7 @@ $messages['frp'] = array(
 	'visualeditor-savedialog-label-review-good' => 'Mè parêt justo',
 	'visualeditor-savedialog-label-report' => 'Signalar un problèmo',
 	'visualeditor-savedialog-label-create' => 'Fâre la pâge',
-	'visualeditor-savedialog-label-save' => 'Sôvar la pâge',
+	'visualeditor-savedialog-label-save' => 'Encartar la pâge',
 	'visualeditor-savedialog-label-restore' => 'Refâre la pâge',
 	'visualeditor-editnotices-tool' => '$1 avèrtissement{{PLURAL:$1||s}}',
 	'visualeditor-feedback-tool' => 'Balyér voutron avis',
@@ -1276,6 +1276,7 @@ $messages['is'] = array(
 /** Italian (italiano)
  * @author Beta16
  * @author Darth Kule
+ * @author Doc.mari
  * @author Eleonora negri
  * @author F. Cosoleto
  * @author Gianfranco
@@ -1345,7 +1346,7 @@ $messages['it'] = array(
 	'tag-visualeditor' => '[[Special:Tags|Etichetta]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => 'Modifica eseguita usando [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
-	'visualeditor-alphawarning' => 'Stai utilizzando una versione alpha di [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]. Può essere lenta e fare modifiche sbagliate - controlla ogni modifica che fai.',
+	'visualeditor-alphawarning' => 'Stai utilizzando una versione alfa di [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]. Può essere lenta e fare modifiche sbagliate - controlla ogni modifica che fai.',
 	'visualeditor-report-notice' => "Capisco che cliccando su invia trasmetto le mie modifiche e il mio feedback che verranno conservati per l'analisi. Sono d'accordo a fornire i feedback in conformità alle [[{{MediaWiki:Visualeditor-report-link}}|Condizioni di Utilizzo]].",
 	'visualeditor-report-link' => 'foundation:Terms of Use/it',
 );
