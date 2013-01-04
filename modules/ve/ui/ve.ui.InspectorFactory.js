@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor data model InspectorFactory class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * DataModel Inspector factory.
  *
  * @class
+ * @extends ve.Factory
  * @constructor
- * @extends {ve.Factory}
  */
 ve.ui.InspectorFactory = function VeDmInspectorFactory() {
 	// Parent constructor
@@ -27,7 +27,7 @@ ve.inheritClass( ve.ui.InspectorFactory, ve.Factory );
  * Gets an inspector constructor for a given annotation type.
  *
  * @method
- * @param {String} name Symbolic name of inspector to get pattern for
+ * @param {string} name Symbolic name of inspector to get pattern for
  * @returns {RegExp} Regular expression matching annotations relevant to a given inspector
  * @throws {Error} Unknown inspector
  */

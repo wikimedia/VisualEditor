@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor Position class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -12,12 +12,12 @@
  *
  * @class
  * @constructor
- * @param {Number} left Horizontal position
- * @param {Number} top Vertical top position
- * @param {Number} bottom Vertical bottom position of bottom (optional, default: top)
- * @property {Number} left Horizontal position
- * @property {Number} top Vertical top position
- * @property {Number} bottom Vertical bottom position of bottom
+ * @param {number} left Horizontal position
+ * @param {number} top Vertical top position
+ * @param {number} bottom Vertical bottom position of bottom (optional, default: top)
+ * @property {number} left Horizontal position
+ * @property {number} top Vertical top position
+ * @property {number} bottom Vertical bottom position of bottom
  */
 ve.Position = function VePosition( left, top, bottom ) {
 	this.left = left || 0;
@@ -120,7 +120,7 @@ ve.Position.prototype.subtract = function ( position ) {
  *
  * @method
  * @param {ve.Position} position Position to compare with
- * @returns {Boolean} If positions have the same left and top values
+ * @returns {boolean} If positions have the same left and top values
  */
 ve.Position.prototype.at = function ( position ) {
 	return this.left === position.left && this.top === position.top;
@@ -131,7 +131,7 @@ ve.Position.prototype.at = function ( position ) {
  *
  * @method
  * @param {ve.Position} position Position to compare with
- * @returns {Boolean} If positions share a top or a left value
+ * @returns {boolean} If positions share a top or a left value
  */
 ve.Position.prototype.perpendicularWith = function ( position ) {
 	return this.left === position.left || this.top === position.top;
@@ -142,7 +142,7 @@ ve.Position.prototype.perpendicularWith = function ( position ) {
  *
  * @method
  * @param {ve.Position} position Position to compare with
- * @returns {Boolean} If positions have the same top value
+ * @returns {boolean} If positions have the same top value
  */
 ve.Position.prototype.levelWith = function ( position ) {
 	return this.top === position.top;
@@ -153,7 +153,7 @@ ve.Position.prototype.levelWith = function ( position ) {
  *
  * @method
  * @param {ve.Position} position Position to compare with
- * @returns {Boolean} If positions have the same left value
+ * @returns {boolean} If positions have the same left value
  */
 ve.Position.prototype.plumbWith = function ( position ) {
 	return this.left === position.left;
@@ -166,8 +166,8 @@ ve.Position.prototype.plumbWith = function ( position ) {
  *
  * @method
  * @param {ve.Position} position Position to compare with
- * @param {Number} radius Pixel distance from this position to consider "near-by"
- * @returns {Boolean} If positions are near-by each other
+ * @param {number} radius Pixel distance from this position to consider "near-by"
+ * @returns {boolean} If positions are near-by each other
  */
 ve.Position.prototype.near = function ( position, radius ) {
 	return Math.sqrt(
@@ -183,7 +183,7 @@ ve.Position.prototype.near = function ( position, radius ) {
  *
  * @method
  * @param {ve.Position} position Position to compare with
- * @returns {Boolean} If this position is above the other
+ * @returns {boolean} If this position is above the other
  */
 ve.Position.prototype.above = function ( position ) {
 	return this.bottom < position.top;
@@ -196,7 +196,7 @@ ve.Position.prototype.above = function ( position ) {
  *
  * @method
  * @param {ve.Position} position Position to compare with
- * @returns {Boolean} If this position is below the other
+ * @returns {boolean} If this position is below the other
  */
 ve.Position.prototype.below = function ( position ) {
 	return this.top > position.bottom;
@@ -207,7 +207,7 @@ ve.Position.prototype.below = function ( position ) {
  *
  * @method
  * @param {ve.Position} position Position to compare with
- * @returns {Boolean} If this position is the left the other
+ * @returns {boolean} If this position is the left the other
  */
 ve.Position.prototype.leftOf = function ( left ) {
 	return this.left < left;
@@ -218,7 +218,7 @@ ve.Position.prototype.leftOf = function ( left ) {
  *
  * @method
  * @param {ve.Position} position Position to compare with
- * @returns {Boolean} If this position is the right the other
+ * @returns {boolean} If this position is the right the other
  */
 ve.Position.prototype.rightOf = function ( left ) {
 	return this.left > left;

@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor Document class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -34,28 +34,31 @@ ve.Document.prototype.getDocumentNode = function () {
  *
  * @method
  * @param {ve.Range} range Range within document to select nodes
- * @param {String} [mode='leaves'] Type of selection to perform
- *     'leaves': Return all leaf nodes in the given range (descends all the way down)
- *     'branches': Return all branch nodes in the given range
- *     'covered': Do not descend into nodes that are entirely covered by the range. The result
- *                is similar to that of 'leaves' except that if a node is entirely covered, its
- *                children aren't returned separately.
- *     'siblings': Return a set of adjacent siblings covered by the range (descends as long as the
- *                 range is in a single node)
- * @returns {Array} List of objects describing nodes in the selection and the ranges therein
- *                  'node': Reference to a ve.dm.Node
- *                  'range': ve.Range, missing if the entire node is covered
- *                  'index': Index of the node in its parent, missing if node has no parent
- *                  'indexInNode': If range is a zero-length range between two children of node,
- *                                 this is set to the index of the child following range (or to
- *                                 node.children.length+1 if range is between the last child and
- *                                 the end). Missing in all other cases
- *                  'nodeRange': Range covering the inside of the entire node, not including wrapper
- *                  'nodeOuterRange': Range covering the entire node, including wrapper
- *                  'parentOuterRange': Outer range of node's parent. Missing if there is no parent
- *                                      or if indexInNode is set.
- * @throws 'Invalid start offset' if range.start is out of range
- * @throws 'Invalid end offset' if range.end is out of range
+ * @param {string} [mode='leaves'] Type of selection to perform:
+ *
+ * - `leaves`: Return all leaf nodes in the given range (descends all the way down)
+ * - `branches`': Return all branch nodes in the given range
+ * - `covered`: Do not descend into nodes that are entirely covered by the range. The result
+ *    is similar to that of 'leaves' except that if a node is entirely covered, its
+ *    children aren't returned separately.
+ * - `siblings`: Return a set of adjacent siblings covered by the range (descends as long as the
+ *   range is in a single node)
+ * @returns {Array} List of objects describing nodes in the selection and the ranges therein:
+ *
+ * - `node`: Reference to a ve.dm.Node
+ * - `range`: ve.Range, missing if the entire node is covered
+ * - `index`: Index of the node in its parent, missing if node has no parent
+ * - `indexInNode`: If range is a zero-length range between two children of node,
+ *   this is set to the index of the child following range (or to
+ *   `node.children.length + 1` if range is between the last child and
+ *   the end). Missing in all other cases.
+ * - `nodeRange`: Range covering the inside of the entire node, not including wrapper
+ * - `nodeOuterRange`: Range covering the entire node, including wrapper
+ * - `parentOuterRange`: Outer range of node's parent. Missing if there is no parent
+ *    or if indexInNode is set.
+ *
+ * @throws {Error} Range.start is out of range
+ * @throws {Error} Range.end is out of range
  */
 ve.Document.prototype.selectNodes = function ( range, mode ) {
 	range.normalize();

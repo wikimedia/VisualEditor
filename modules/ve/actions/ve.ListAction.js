@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor ListAction class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * List action.
  *
  * @class
+ * @extends ve.Action
  * @constructor
- * @extends {ve.Action}
  * @param {ve.Surface} surface Surface to act on
  */
 ve.ListAction = function VeListAction( surface ) {
@@ -28,7 +28,7 @@ ve.inheritClass( ve.ListAction, ve.Action );
  * List of allowed methods for this action.
  *
  * @static
- * @member
+ * @property
  */
 ve.ListAction.static.methods = ['wrap', 'unwrap'];
 
@@ -40,7 +40,7 @@ ve.ListAction.static.methods = ['wrap', 'unwrap'];
  * TODO: Refactor functionality into {ve.dm.SurfaceFragment}.
  *
  * @method
- * @param {String} style List style, e.g. 'number' or 'bullet'
+ * @param {string} style List style, e.g. 'number' or 'bullet'
  */
 ve.ListAction.prototype.wrap = function ( style ) {
 	var tx, i, previousList, groupRange, group,

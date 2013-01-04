@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor content editable TableCellNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * ContentEditable node for a table cell.
  *
  * @class
+ * @extends ve.ce.BranchNode
  * @constructor
- * @extends {ve.ce.BranchNode}
  * @param {ve.dm.TableCellNode} model Model to observe
  */
 ve.ce.TableCellNode = function VeCeTableCellNode( model ) {
@@ -34,7 +34,7 @@ ve.inheritClass( ve.ce.TableCellNode, ve.ce.BranchNode );
  *
  * @see ve.ce.NodeFactory
  * @static
- * @member
+ * @property
  */
 ve.ce.TableCellNode.rules = {
 	'canBeSplit': false
@@ -44,7 +44,7 @@ ve.ce.TableCellNode.rules = {
  * Mapping of list item style values and DOM wrapper element types.
  *
  * @static
- * @member
+ * @property
  */
 ve.ce.TableCellNode.domWrapperElementTypes = {
 	'data': 'td',

@@ -3,14 +3,22 @@
 QUnit.config.requireExpects = true;
 
 /**
+ * VisualEditor plugin for QUnit.
+ *
+ * @class ve.QUnit
+ * @extends QUnit
+ */
+
+/**
  * Builds a summary of a node tree.
  *
  * Generated summaries contain node types, lengths, outer lengths, attributes and summaries for
  * each child recursively. It's simple and fast to use deepEqual on this.
  *
  * @method
+ * @private
  * @param {ve.Node} node Node tree to summarize
- * @param {Boolean} [shallow] Do not summarize each child recursively
+ * @param {boolean} [shallow] Do not summarize each child recursively
  * @returns {Object} Summary of node tree
  */
 function getNodeTreeSummary( node, shallow ) {
@@ -48,6 +56,7 @@ function getNodeTreeSummary( node, shallow ) {
  * within parent and node ranges for each result. It's simple and fast to use deepEqual on this.
  *
  * @method
+ * @private
  * @param {Object[]} selection Selection to summarize
  * @returns {Object} Summary of selection
  */
@@ -80,6 +89,7 @@ function getNodeSelectionSummary( selection ) {
  * Summaries include node name, text, attributes and recursive summaries of children.
  *
  * @method
+ * @private
  * @param {HTMLElement} element Element to summarize.
  * @returns {Object} Summary of element.
  */
@@ -110,6 +120,17 @@ function getDomElementSummary( element ) {
 	return summary;
 }
 
+
+/**
+ * Assertion helpers for VisualEditor test suite.
+ * @class ve.QUnit.assert
+ */
+
+/**
+ * Assert that summaries of two node trees are equal.
+ * @method
+ * @static
+ */
 QUnit.assert.equalNodeTree = function ( actual, expected, shallow, message ) {
 	if ( typeof shallow === 'string' && arguments.length === 3 ) {
 		message = shallow;
@@ -122,6 +143,10 @@ QUnit.assert.equalNodeTree = function ( actual, expected, shallow, message ) {
 	);
 };
 
+/**
+ * @method
+ * @static
+ */
 QUnit.assert.equalNodeSelection = function ( actual, expected, message ) {
 	var i,
 		actualSummary = getNodeSelectionSummary( actual ),
@@ -140,6 +165,10 @@ QUnit.assert.equalNodeSelection = function ( actual, expected, message ) {
 	);
 };
 
+/**
+ * @method
+ * @static
+ */
 QUnit.assert.equalDomElement = function ( actual, expected, message ) {
 	var actualSummary = getDomElementSummary( actual ),
 		expectedSummary = getDomElementSummary( expected );

@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor data model Document class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -14,8 +14,8 @@
  * copy.
  *
  * @class
+ * @extends ve.Document
  * @constructor
- * @extends {ve.Document}
  * @param {Array} data Linear model data to start with
  * @param {ve.dm.Document} [parentDocument] Document to use as root for created nodes
  */
@@ -200,19 +200,19 @@ ve.dm.Document.addAnnotationsToData = function ( data, annotationSet ) {
  *
  * This method assumes that any value that has a type property that's a string is an element object.
  *
- * @example Content offsets:
+ * Content offsets:
  *      <heading> a </heading> <paragraph> b c <img> </img> </paragraph>
  *     .         ^ ^          .           ^ ^ ^     .      ^            .
  *
- * @example Content offsets:
+ * Content offsets:
  *      <list> <listItem> </listItem> <list>
  *     .      .          .           .      .
  *
  * @static
  * @method
  * @param {Array} data Document data
- * @param {Number} offset Document offset
- * @returns {Boolean} Content can be inserted at offset
+ * @param {number} offset Document offset
+ * @returns {boolean} Content can be inserted at offset
  */
 ve.dm.Document.isContentOffset = function ( data, offset ) {
 	// Edges are never content
@@ -275,28 +275,28 @@ ve.dm.Document.isContentOffset = function ( data, offset ) {
  *
  * This method assumes that any value that has a type property that's a string is an element object.
  *
- * @example Structural offsets (unrestricted = false):
+ * Structural offsets (unrestricted = false):
  *      <heading> a </heading> <paragraph> b c <img> </img> </paragraph>
  *     ^         . .          ^           . . .     .      .            ^
  *
- * @example Structural offsets (unrestricted = true):
+ * Structural offsets (unrestricted = true):
  *      <heading> a </heading> <paragraph> b c <img> </img> </paragraph>
  *     ^         . .          ^           . . .     .      .            ^
  *
- * @example Structural offsets (unrestricted = false):
+ * Structural offsets (unrestricted = false):
  *      <list> <listItem> </listItem> <list>
  *     ^      ^          ^           ^      ^
  *
- * @example Content branch offsets (unrestricted = true):
+ * Content branch offsets (unrestricted = true):
  *      <list> <listItem> </listItem> <list>
  *     ^      .          ^           .      ^
  *
  * @static
  * @method
  * @param {Array} data Document data
- * @param {Number} offset Document offset
- * @param {Boolean} [unrestricted] Only return true if any kind of element can be inserted at offset
- * @returns {Boolean} Structure can be inserted at offset
+ * @param {number} offset Document offset
+ * @param {boolean} [unrestricted] Only return true if any kind of element can be inserted at offset
+ * @returns {boolean} Structure can be inserted at offset
  */
 ve.dm.Document.isStructuralOffset = function ( data, offset, unrestricted ) {
 	// Edges are always structural
@@ -376,15 +376,15 @@ ve.dm.Document.isStructuralOffset = function ( data, offset, unrestricted ) {
  *
  * This method assumes that any value that has a type property that's a string is an element object.
  *
- * @example Element data:
+ * Element data:
  *      <heading> a </heading> <paragraph> b c <img></img> </paragraph>
  *     ^         . ^          ^           . . ^     ^     ^            .
  *
  * @static
  * @method
  * @param {Array} data Document data
- * @param {Number} offset Document offset
- * @returns {Boolean} Data at offset is an element
+ * @param {number} offset Document offset
+ * @returns {boolean} Data at offset is an element
  */
 ve.dm.Document.isElementData = function ( data, offset ) {
 	// Data exists at offset and appears to be an element
@@ -400,7 +400,7 @@ ve.dm.Document.isElementData = function ( data, offset ) {
  * @static
  * @method
  * @param {Array} data Document data
- * @returns {Boolean} At least one elements exists in data
+ * @returns {boolean} At least one elements exists in data
  */
 ve.dm.Document.containsElementData = function ( data ) {
 	var i = data.length;
@@ -421,7 +421,7 @@ ve.dm.Document.containsElementData = function ( data ) {
  * @static
  * @method
  * @param {Array} data Document data
- * @returns {Boolean} True if all elements in data are content elements
+ * @returns {boolean} True if all elements in data are content elements
  */
 ve.dm.Document.isContentData = function ( data ) {
 	for ( var i = 0, len = data.length; i < len; i++ ) {
@@ -462,7 +462,7 @@ ve.dm.Document.prototype.commit = function ( transaction ) {
  *
  * @method
  * @param {ve.Range} [range] Range of data to get, all data will be given by default
- * @param {Boolean} [deep=false] Whether to return a deep copy (WARNING! This may be very slow)
+ * @param {boolean} [deep=false] Whether to return a deep copy (WARNING! This may be very slow)
  * @returns {Array} Slice or copy of document data
  */
 ve.dm.Document.prototype.getData = function ( range, deep ) {
@@ -483,7 +483,7 @@ ve.dm.Document.prototype.getData = function ( range, deep ) {
  * Gets the length of the document.
  *
  * @method
- * @returns {Number} Document data length
+ * @returns {number} Document data length
  */
 ve.dm.Document.prototype.getLength = function () {
 	return this.data.length;
@@ -497,7 +497,10 @@ ve.dm.Document.prototype.getLength = function () {
  * parameters are identical to those of ve.batchSplice()
  *
  * @method
- * @see {ve.batchSplice}
+ * @see ve#batchSplice
+ * @param offset
+ * @param remove
+ * @param insert
  */
 ve.dm.Document.prototype.spliceData = function ( offset, remove, insert ) {
 	var spliced, reaped, reapedFlat, i;
@@ -540,6 +543,10 @@ ve.dm.Document.prototype.getFullData = function () {
 	return result;
 };
 
+/**
+ * @method
+ * @param offset
+ */
 ve.dm.Document.prototype.getNodeFromOffset = function ( offset ) {
 	// FIXME duplicated from ve.ce.Document
 	if ( offset < 0 || offset > this.data.length ) {
@@ -600,7 +607,7 @@ ve.dm.Document.prototype.getText = function ( range ) {
  * This method returns a clone of the AnnotationSet in the linear model.
  *
  * @method
- * @param {Number} offset Offset to get annotations for
+ * @param {number} offset Offset to get annotations for
  * @returns {ve.AnnotationSet} A set of all annotation objects offset is covered by
  */
 ve.dm.Document.prototype.getAnnotationsFromOffset = function ( offset ) {
@@ -629,9 +636,9 @@ ve.dm.Document.prototype.getAnnotationsFromOffset = function ( offset ) {
  * Does this offset contain the specified annotation
  *
  * @method
- * @param {Number} offset Offset to look at
+ * @param {number} offset Offset to look at
  * @param {Object} annotation Object to look for
- * @returns {Boolean} Whether an offset contains the specified annotation
+ * @returns {boolean} Whether an offset contains the specified annotation
  */
 ve.dm.Document.prototype.offsetContainsAnnotation = function ( offset, annotation ) {
 	// TODO inline this
@@ -641,7 +648,7 @@ ve.dm.Document.prototype.offsetContainsAnnotation = function ( offset, annotatio
 /**
  * Gets the range of content surrounding a given offset that's covered by a given annotation.
  *
- * @param {Number} offset Offset to begin looking forward and backward from
+ * @param {number} offset Offset to begin looking forward and backward from
  * @param {Object} annotation Annotation to test for coverage with
  * @returns {ve.Range|null} Range of content covered by annotation, or null if offset is not covered
  */
@@ -670,7 +677,7 @@ ve.dm.Document.prototype.getAnnotatedRangeFromOffset = function ( offset, annota
 /**
  * Gets the range of an annotation found in the selection range.
  *
- * @param {Number} offset Offset to begin looking forward and backward from
+ * @param {number} offset Offset to begin looking forward and backward from
  * @param {Object} annotation Annotation to test for coverage with
  * @returns {ve.Range|null} Range of content covered by annotation, or a copy of the range.
  */
@@ -698,7 +705,7 @@ ve.dm.Document.prototype.getAnnotatedRangeFromSelection = function ( range, anno
  *
  * @method
  * @param {ve.Range} range Range to get annotations for
- * @param {Boolean} [all] Get all annotations found within the range, not just those that cover it
+ * @param {boolean} [all] Get all annotations found within the range, not just those that cover it
  * @returns {ve.AnnotationSet} All annotation objects range is covered by
  */
 ve.dm.Document.prototype.getAnnotationsFromRange = function ( range, all ) {
@@ -776,16 +783,16 @@ ve.dm.Document.prototype.trimOuterSpaceFromRange = function ( range ) {
  *  2. Insert new nodes and offset data after a insertion in the linear model.
  *
  * @param {ve.dm.Node} parent Parent of the node(s) being rebuilt
- * @param {Number} index Index within parent to rebuild or insert nodes
+ * @param {number} index Index within parent to rebuild or insert nodes
  *  - If {numNodes} == 0: Index to insert nodes at
  *  - If {numNodes} >= 1: Index of first node to rebuild
- * @param {Number} numNodes Total number of nodes to rebuild
+ * @param {number} numNodes Total number of nodes to rebuild
  *  - If {numNodes} == 0: Nothing will be rebuilt, but the node(s) built from data will be
  *    inserted before {index}. To insert nodes at the end, use number of children in 'parent'
  *  - If {numNodes} == 1: Only the node at {index} will be rebuilt
  *  - If {numNodes} > 1: The node at {index} and the next {numNodes-1} nodes will be rebuilt
- * @param {Number} offset Linear model offset to rebuild from
- * @param {Number} newLength Length of data in linear model to rebuild or insert nodes for
+ * @param {number} offset Linear model offset to rebuild from
+ * @param {number} newLength Length of data in linear model to rebuild or insert nodes for
  * @returns {ve.dm.Node[]} Array containing the rebuilt/inserted nodes
  */
 ve.dm.Document.prototype.rebuildNodes = function ( parent, index, numNodes, offset, newLength ) {
@@ -815,12 +822,12 @@ ve.dm.Document.prototype.rebuildNodes = function ( parent, index, numNodes, offs
  * - If the document does not contain a single valid offset the result will be -1
  *
  * @method
- * @param {Number} offset Offset to start from
- * @param {Number} distance Number of valid offsets to move
+ * @param {number} offset Offset to start from
+ * @param {number} distance Number of valid offsets to move
  * @param {Function} callback Function to call to check if an offset is valid which will be
  * given two intital arguments of data and offset
- * @param {Mixed} [...] Additional arguments to pass to the callback
- * @returns {Number} Relative valid offset or -1 if there are no valid offsets in document
+ * @param {Mixed...} [args] Additional arguments to pass to the callback
+ * @returns {number} Relative valid offset or -1 if there are no valid offsets in document
  */
 ve.dm.Document.prototype.getRelativeOffset = function ( offset, distance, callback ) {
 	var i, direction,
@@ -887,9 +894,9 @@ ve.dm.Document.prototype.getRelativeOffset = function ( offset, distance, callba
  * the offset validation callback.
  *
  * @method
- * @param {Number} offset Offset to start from
- * @param {Number} distance Number of content offsets to move
- * @returns {Number} Relative content offset or -1 if there are no valid offsets in document
+ * @param {number} offset Offset to start from
+ * @param {number} distance Number of content offsets to move
+ * @returns {number} Relative content offset or -1 if there are no valid offsets in document
  */
 ve.dm.Document.prototype.getRelativeContentOffset = function ( offset, distance ) {
 	return this.getRelativeOffset( offset, distance, ve.dm.Document.isContentOffset );
@@ -908,9 +915,9 @@ ve.dm.Document.prototype.getRelativeContentOffset = function ( offset, distance 
  * the offset validation callback.
  *
  * @method
- * @param {Number} offset Offset to start from
- * @param {Number} [direction] Direction to prefer matching offset in, -1 for left and 1 for right
- * @returns {Number} Nearest content offset or -1 if there are no valid offsets in document
+ * @param {number} offset Offset to start from
+ * @param {number} [direction] Direction to prefer matching offset in, -1 for left and 1 for right
+ * @returns {number} Nearest content offset or -1 if there are no valid offsets in document
  */
 ve.dm.Document.prototype.getNearestContentOffset = function ( offset, direction ) {
 	if ( ve.dm.Document.isContentOffset( this.data, offset ) ) {
@@ -934,10 +941,10 @@ ve.dm.Document.prototype.getNearestContentOffset = function ( offset, direction 
  * the offset validation callback.
  *
  * @method
- * @param {Number} offset Offset to start from
- * @param {Number} distance Number of structural offsets to move
- * @param {Boolean} [unrestricted] Only return true if any kind of element can be inserted at offset
- * @returns {Number} Relative structural offset
+ * @param {number} offset Offset to start from
+ * @param {number} distance Number of structural offsets to move
+ * @param {boolean} [unrestricted] Only return true if any kind of element can be inserted at offset
+ * @returns {number} Relative structural offset
  */
 ve.dm.Document.prototype.getRelativeStructuralOffset = function ( offset, distance, unrestricted ) {
 	// Optimization: start and end are always unrestricted structural offsets
@@ -962,10 +969,10 @@ ve.dm.Document.prototype.getRelativeStructuralOffset = function ( offset, distan
  * the offset validation callback.
  *
  * @method
- * @param {Number} offset Offset to start from
- * @param {Number} [direction] Direction to prefer matching offset in, -1 for left and 1 for right
- * @param {Boolean} [unrestricted] Only return true if any kind of element can be inserted at offset
- * @returns {Number} Nearest structural offset
+ * @param {number} offset Offset to start from
+ * @param {number} [direction] Direction to prefer matching offset in, -1 for left and 1 for right
+ * @param {boolean} [unrestricted] Only return true if any kind of element can be inserted at offset
+ * @returns {number} Nearest structural offset
  */
 ve.dm.Document.prototype.getNearestStructuralOffset = function ( offset, direction, unrestricted ) {
 	if ( ve.dm.Document.isStructuralOffset( this.data, offset, unrestricted ) ) {
@@ -996,9 +1003,9 @@ ve.dm.Document.prototype.getNearestStructuralOffset = function ( offset, directi
  * see {ve.dm.SurfaceFragment.wordPattern}.
  *
  * @method
- * @param {Number} offset Offset to start from
- * @param {Number} [direction] Direction to prefer matching offset in, -1 for left and 1 for right
- * @returns {Number} Nearest word boundary
+ * @param {number} offset Offset to start from
+ * @param {number} [direction] Direction to prefer matching offset in, -1 for left and 1 for right
+ * @returns {number} Nearest word boundary
  */
 ve.dm.Document.prototype.getNearestWordBoundary = function ( offset, direction ) {
 	var left, right, i, inc,
@@ -1030,7 +1037,7 @@ ve.dm.Document.prototype.getNearestWordBoundary = function ( offset, direction )
 /**
  * Fix up data so it can safely be inserted into the linear model at offset.
  * @param {Array} data Snippet of linear model data to insert
- * @param {Number} offset Offset in the linear model where the caller wants to insert data
+ * @param {number} offset Offset in the linear model where the caller wants to insert data
  * @returns {Array} A (possibly modified) copy of data
  */
 ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
@@ -1093,7 +1100,7 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 	 * This function updates parentNode, parentType, openingStack and closingStack.
 	 *
 	 * @param {Object|Array|String} element Linear model element
-	 * @param {Number} index Index in data that this element came from (for error reporting only)
+	 * @param {number} index Index in data that this element came from (for error reporting only)
 	 */
 	function writeElement( element, index ) {
 		var expectedType;

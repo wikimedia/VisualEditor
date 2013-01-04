@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor content editable LeafNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -8,11 +8,11 @@
 /**
  * ContentEditable node that cannot have any children.
  *
- * @class
  * @abstract
+ * @extends ve.ce.Node
+ * @mixins ve.LeafNode
  * @constructor
- * @extends {ve.ce.Node}
- * @param {String} type Symbolic name of node type
+ * @param {string} type Symbolic name of node type
  * @param {ve.dm.LeafNode} model Model to observe
  * @param {jQuery} [$element] Element to use as a container
  */

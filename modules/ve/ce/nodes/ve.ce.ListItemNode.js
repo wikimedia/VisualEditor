@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor content editable ListItemNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * ContentEditable node for a list item.
  *
  * @class
+ * @extends ve.ce.BranchNode
  * @constructor
- * @extends {ve.ce.BranchNode}
  * @param {ve.dm.ListItemNode} model Model to observe
  */
 ve.ce.ListItemNode = function VeCeListItemNode( model ) {
@@ -29,7 +29,7 @@ ve.inheritClass( ve.ce.ListItemNode, ve.ce.BranchNode );
  *
  * @see ve.ce.NodeFactory
  * @static
- * @member
+ * @property
  */
 ve.ce.ListItemNode.rules = {
 	'canBeSplit': true

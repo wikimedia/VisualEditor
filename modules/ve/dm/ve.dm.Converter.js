@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor data model Converter class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -31,7 +31,8 @@ ve.dm.Converter = function VeDmConverter( nodeFactory, annotationFactory ) {
 /**
  * Get linear model data from a string optionally applying annotations
  *
- * @param {String} text Plain text to convert
+ * @static
+ * @param {string} text Plain text to convert
  * @param {Array} [annotations] Array of annotation objects to apply
  * @returns {Array} Linear model data, one element per character
  */
@@ -67,7 +68,7 @@ ve.dm.Converter.getDataContentFromText = function ( text, annotations ) {
  * forgotten to implement converters for.
  *
  * @method
- * @param {String} type Node type
+ * @param {string} type Node type
  * @param {Function} constructor Node constructor
  * @throws 'Missing conversion data in node implementation of {type}'
  */
@@ -95,7 +96,7 @@ ve.dm.Converter.prototype.onNodeRegister = function ( dataElementType, construct
  *
  * @method
  * @param {Object} dataElement Linear model element
- * @returns {HTMLElement|false} DOM element, or false if this element cannot be converted
+ * @returns {HTMLElement|boolean} DOM element, or false if this element cannot be converted
  */
 ve.dm.Converter.prototype.getDomElementFromDataElement = function ( dataElement ) {
 	var key, domElement, dataElementAttributes, wrapper,
@@ -155,7 +156,7 @@ ve.dm.Converter.prototype.getDomElementFromDataElement = function ( dataElement 
  * @method
  * @param {HTMLElement} domElement DOM element
  * @param {Array} annotations Annotations to apply if the node is a content node
- * @returns {Object|false} Linear model element, or false if this node cannot be converted
+ * @returns {Object|boolean} Linear model element, or false if this node cannot be converted
  */
 ve.dm.Converter.prototype.getDataElementFromDomElement = function ( domElement, annotations ) {
 	var dataElement, domElementAttributes, dataElementAttributes, domElementAttribute, i,
@@ -192,11 +193,11 @@ ve.dm.Converter.prototype.getDataElementFromDomElement = function ( domElement, 
 /**
  * Check if an HTML DOM node represents an annotation, and if so, build an annotation object for it.
  *
- * @example Annotation Object
- *    { 'type': 'type', data: { 'key': 'value', ... } }
+ * Annotation Object:
+ *     { 'type': 'type', data: { 'key': 'value', ... } }
  *
  * @param {HTMLElement} domElement HTML DOM node
- * @returns {Object|false} Annotation object, or false if this node is not an annotation
+ * @returns {Object|boolean} Annotation object, or false if this node is not an annotation
  */
 ve.dm.Converter.prototype.getDataAnnotationFromDomElement = function ( domElement ) {
 	return ve.dm.annotationFactory.createFromElement( domElement ) || false;
@@ -227,7 +228,7 @@ ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function ( dataAnnot
  * @param {Array} [annotations] Array of annotations (objects) to apply to the generated data
  * @param {Object} [dataElement] Data element to wrap the returned data in
  * @param {Array} [path] Array of linear model element types
- * @param {Boolean} [alreadyWrapped] Whether the caller has already started wrapping bare content in a paragraph
+ * @param {boolean} [alreadyWrapped] Whether the caller has already started wrapping bare content in a paragraph
  * @returns {Array} Linear model data
  */
 ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, dataElement, path, alreadyWrapped ) {
@@ -302,11 +303,12 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 	/**
 	 * Helper function to group adjacent child elements with the same about attribute together.
 	 * If there are multiple adjacent child nodes with the same about attribute, they are
-	 * wrapped in a <div> with the data-ve-aboutgroup attribute set.
+	 * wrapped in a `<div>` with the data-ve-aboutgroup attribute set.
 	 *
 	 * This function does not wrap single-element about groups, and does not descend into the
 	 * child elements.
 	 *
+	 * @private
 	 * @param element {HTMLElement} Element to process
 	 */
 	function doAboutGrouping( element ) {

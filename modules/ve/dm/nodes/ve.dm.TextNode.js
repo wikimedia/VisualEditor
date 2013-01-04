@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor data model TextNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,9 +9,9 @@
  * DataModel node for a document.
  *
  * @class
+ * @extends ve.dm.LeafNode
  * @constructor
- * @extends {ve.dm.LeafNode}
- * @param {Number} [length] Length of content data in document
+ * @param {number} [length] Length of content data in document
  */
 ve.dm.TextNode = function VeDmTextNode( length ) {
 	// Parent constructor
@@ -29,7 +29,7 @@ ve.inheritClass( ve.dm.TextNode, ve.dm.LeafNode );
  *
  * @see ve.dm.NodeFactory
  * @static
- * @member
+ * @property
  */
 ve.dm.TextNode.rules = {
 	'isWrapped': false,

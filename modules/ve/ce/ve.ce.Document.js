@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor content editable Document class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,7 +9,7 @@
  * ContentEditable document.
  *
  * @class
- * @extends {ve.Document}
+ * @extends ve.Document
  * @constructor
  * @param {ve.dm.Document} model Model to observe
  */

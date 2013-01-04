@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor data model LinkAnnotation class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -11,8 +11,8 @@
  * Represents <a> tags that don't have a specific type.
  *
  * @class
+ * @extends ve.dm.Annotation
  * @constructor
- * @extends {ve.dm.Annotation}
  * @param {HTMLElement} element
  */
 ve.dm.LinkAnnotation = function VeDmLinkAnnotation( element ) {
@@ -26,8 +26,18 @@ ve.inheritClass( ve.dm.LinkAnnotation, ve.dm.Annotation );
 
 /* Static Members */
 
+/**
+ * @static
+ * @property static.name
+ * @inheritdoc
+ */
 ve.dm.LinkAnnotation.static.name = 'link';
 
+/**
+ * @static
+ * @property static.matchTagNames
+ * @inheritdoc
+ */
 ve.dm.LinkAnnotation.static.matchTagNames = ['a'];
 
 /* Methods */

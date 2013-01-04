@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor user interface namespace.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -7,6 +7,8 @@
 
 /**
  * Namespace for all VisualEditor user interface classes, static methods and static properties.
+ * @class
+ * @singleton
  */
 ve.ui = {
 	//'inspectorFactory': Initialized in ve.ui.InspectorFactory.js

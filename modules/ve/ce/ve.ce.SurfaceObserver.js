@@ -1,6 +1,6 @@
 /*global rangy */
 
-/**
+/*!
  * VisualEditor content editable Surface class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -11,8 +11,8 @@
  * Surface observer.
  *
  * @class
+ * @extends ve.EventEmitter
  * @constructor
- * @extends {ve.EventEmitter}
  * @param {ve.ce.Document} documentView Document to observe
  */
 ve.ce.SurfaceObserver = function VeCeSurfaceObserver( documentView ) {
@@ -60,7 +60,7 @@ ve.ce.SurfaceObserver.prototype.clear = function ( range ) {
  * If {async} is false or undefined the first poll cycle will occur immediately and synchronously.
  *
  * @method
- * @param {Boolean} async Poll the first time asynchronously
+ * @param {boolean} async Poll the first time asynchronously
  */
 ve.ce.SurfaceObserver.prototype.start = function ( async ) {
 	this.polling = true;
@@ -74,7 +74,7 @@ ve.ce.SurfaceObserver.prototype.start = function ( async ) {
  * it's true then a final poll cycle will occur immediately and synchronously.
  *
  * @method
- * @param {Boolean} poll Poll one last time before stopping future polling
+ * @param {boolean} poll Poll one last time before stopping future polling
  */
 ve.ce.SurfaceObserver.prototype.stop = function ( poll ) {
 	if ( this.polling === true ) {
@@ -95,7 +95,7 @@ ve.ce.SurfaceObserver.prototype.stop = function ( poll ) {
  * TODO: fixing selection in certain cases, handling selection across multiple nodes in Firefox
  *
  * @method
- * @param {Boolean} async Poll asynchronously
+ * @param {boolean} async Poll asynchronously
  */
 ve.ce.SurfaceObserver.prototype.poll = function ( async ) {
 	var delayPoll, rangySelection, $branch, node, text, hash, range;

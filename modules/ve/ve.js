@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor namespace.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -10,6 +10,8 @@
 
 	/**
 	 * Namespace for all VisualEditor classes, static methods and static properties.
+	 * @class
+	 * @singleton
 	 */
 	ve = {
 		// List of instances of ve.Surface
@@ -26,10 +28,9 @@
 	/**
 	 * Create an object that inherits from another object.
 	 *
-	 * @static
 	 * @method
 	 * @until ES5: Object.create.
-	 * @source https://github.com/Krinkle/K-js.
+	 * @source <https://github.com/Krinkle/K-js>
 	 * @param {Object} origin Object to inherit from.
 	 * @return {Object} Empty object that inherits from origin.
 	 */
@@ -53,40 +54,26 @@
 	 *  multiple constructors consider storing an instance of the other constructor in a
 	 *  property instead, or perhaps use a mixin (see ve.mixinClass).
 	 *
-	 * @example
-	 * <code>
 	 *     function Foo() {}
-	 *
 	 *     Foo.prototype.jump = function () {};
-	 *
-	 *     -------
 	 *
 	 *     function FooBar() {}
 	 *     ve.inheritClass( FooBar, Foo );
-	 *
 	 *     FooBar.prop.feet = 2;
-	 *
 	 *     FooBar.prototype.walk = function () {};
-	 *
-	 *     -------
 	 *
 	 *     function FooBarQuux() {}
 	 *     ve.inheritClass( FooBarQuux, FooBar );
-	 *
 	 *     FooBarQuux.prototype.jump = function () {};
-	 *
-	 *     -------
 	 *
 	 *     FooBarQuux.prop.feet === 2;
 	 *     var fb = new FooBar();
 	 *     fb.jump();
 	 *     fb.walk();
 	 *     fb instanceof Foo && fb instanceof FooBar && fb instanceof FooBarQuux;
-	 * </code>
 	 *
-	 * @static
 	 * @method
-	 * @source https://github.com/Krinkle/K-js.
+	 * @source <https://github.com/Krinkle/K-js>
 	 * @param {Function} targetFn
 	 * @param {Function} originFn
 	 */
@@ -117,8 +104,6 @@
 	 * Beware: This can redefine a prototype property, call before setting your prototypes.
 	 * Beware: Don't call before ve.inheritClass.
 	 *
-	 * @example
-	 * <code>
 	 *     function Foo() {}
 	 *     function Context() {}
 	 *
@@ -134,11 +119,9 @@
 	 *     function FooBar() {}
 	 *     ve.inheritClass( FooBar, Foo );
 	 *     ve.mixinClass( FooBar, ContextLazyLoad );
-	 * </code>
 	 *
-	 * @static
 	 * @method
-	 * @source https://github.com/Krinkle/K-js.
+	 * @source <https://github.com/Krinkle/K-js>
 	 * @param {Function} targetFn
 	 * @param {Function} originFn
 	 */
@@ -158,22 +141,19 @@
 	 * This makes a shallow non-recursive copy of own properties.
 	 * To create a recursive copy of plain objects, use ve.copyObject.
 	 *
-	 * @example
-	 * <code>
-	 * var foo = new Person( mom, dad );
-	 * foo.setAge( 21 );
-	 * var foo2 = ve.cloneObject( foo );
-	 * foo.setAge( 22 );
-	 * // Then
-	 * foo2 !== foo; // true
-	 * foo2 instanceof Person; // true
-	 * foo2.getAge(); // 21
-	 * foo.getAge(); // 22
-	 * </code>
+	 *     var foo = new Person( mom, dad );
+	 *     foo.setAge( 21 );
+	 *     var foo2 = ve.cloneObject( foo );
+	 *     foo.setAge( 22 );
 	 *
-	 * @static
+	 *     // Then
+	 *     foo2 !== foo; // true
+	 *     foo2 instanceof Person; // true
+	 *     foo2.getAge(); // 21
+	 *     foo.getAge(); // 22
+	 *
 	 * @method
-	 * @source https://github.com/Krinkle/K-js.
+	 * @source <https://github.com/Krinkle/K-js>
 	 * @param {Object} origin
 	 * @return {Object} Clone of origin.
 	 */
@@ -191,19 +171,33 @@
 		return r;
 	};
 
+	/**
+	 * Check to see if an object is a plain object (created using "{}" or "new Object").
+	 * @method
+	 * @source <http://api.jquery.com/jQuery.isPlainObject/>
+	 * @param {Object} obj The object that will be checked to see if it's a plain object.
+	 * @return {boolean}
+	 */
 	ve.isPlainObject = $.isPlainObject;
 
+	/**
+	 * Check to see if an object is empty (contains no properties).
+	 * @method
+	 * @source <http://api.jquery.com/jQuery.isEmptyObject/>
+	 * @param {Object} obj The object that will be checked to see if it's empty.
+	 * @return {boolean}
+	 */
 	ve.isEmptyObject = $.isEmptyObject;
 
 	/**
 	 * Check whether given variable is an array. Should not use `instanceof` or
 	 * `constructor` due to the inability to detect arrays from a different
 	 * scope.
-	 * @static
 	 * @method
+	 * @source <http://api.jquery.com/jQuery.isArray/>
 	 * @until ES5: Array.isArray.
 	 * @param {Mixed} x
-	 * @return {Boolean}
+	 * @return {boolean}
 	 */
 	ve.isArray = $.isArray;
 
@@ -214,12 +208,11 @@
 	 * global scope, etc.).
 	 * Performance optimization: http://jsperf.com/function-bind-shim-perf
 	 *
-	 * @static
 	 * @method
 	 * @until ES5: Function.prototype.bind.
 	 * @param {Function} func Function to bind.
 	 * @param {Object} context Context for the function.
-	 * @param {Mixed} [..] Variadic list of arguments to prepend to arguments
+	 * @param {Mixed...} [args] Variadic list of arguments to prepend to arguments
 	 * to the bound function.
 	 * @return {Function} The bound.
 	 */
@@ -228,13 +221,12 @@
 	/**
 	 * Wrapper for Array.prototype.indexOf.
 	 *
-	 * @static
 	 * @method
 	 * @until ES5
 	 * @param {Mixed} value Element to search for.
 	 * @param {Array} array Array to search in.
-	 * @param {Number} [fromIndex=0] Index to being searching from.
-	 * @return {Number} Index of value in array, or -1 if not found.
+	 * @param {number} [fromIndex=0] Index to being searching from.
+	 * @return {number} Index of value in array, or -1 if not found.
 	 * Values are compared without type coersion.
 	 */
 	ve.indexOf = $.inArray;
@@ -248,11 +240,10 @@
 	 * 'target' as 'source' and 'this' as 'target'. Which means
 	 * ve.extendObject( { a: 1 } ); sets ve.a = 1;
 	 *
-	 * @static
 	 * @method
-	 * @param {Boolean} [recursive=false]
-	 * @param {Mixed} target Object that will receive the new properties.
-	 * @param {Mixed} [..] Variadic list of objects containing properties
+	 * @param {boolean} [recursive=false]
+	 * @param {Mixed} [target] Object that will receive the new properties.
+	 * @param {Mixed...} [sources] Variadic list of objects containing properties
 	 * to be merged into the targe.
 	 * @return {Mixed} Modified version of first or second argument.
 	 */
@@ -270,10 +261,9 @@
 	 * function, we call that function and use its return value rather than hashing the object
 	 * ourselves. This allows classes to define custom hashing.
 	 *
-	 * @static
 	 * @method
 	 * @param {Object} val Object to generate hash for
-	 * @returns {String} Hash of object
+	 * @returns {string} Hash of object
 	 */
 	ve.getHash = function ( val ) {
 		return JSON.stringify( val, ve.getHash.keySortReplacer );
@@ -284,9 +274,8 @@
 	 *
 	 * This is a callback passed into JSON.stringify.
 	 *
-	 * @static
 	 * @method
-	 * @param {String} key Property name of value being replaced
+	 * @param {string} key Property name of value being replaced
 	 * @param {Mixed} val Property value to replace
 	 * @returns {Mixed} Replacement value
 	 */
@@ -321,7 +310,6 @@
 	 * This falls back to the native impelentation of Object.keys if available.
 	 * Performance optimization: http://jsperf.com/object-keys-shim-perf#/fnHasown_fnForIfcallLength
 	 *
-	 * @static
 	 * @method
 	 * @until ES5
 	 * @param {Object} Object to get properties from
@@ -347,7 +335,6 @@
 	/**
 	 * Gets an array of all property values in an object.
 	 *
-	 * @static
 	 * @method
 	 * @param {Object} Object to get values from
 	 * @returns {Array} List of object values
@@ -376,12 +363,11 @@
 	 * the other. An asymmetrical test may also be performed, which checks only that properties in the
 	 * first object are present in the second object, but not the inverse.
 	 *
-	 * @static
 	 * @method
 	 * @param {Object} a First object to compare
 	 * @param {Object} b Second object to compare
-	 * @param {Boolean} [asymmetrical] Whether to check only that b contains values from a
-	 * @returns {Boolean} If the objects contain the same values as each other
+	 * @param {boolean} [asymmetrical] Whether to check only that b contains values from a
+	 * @returns {boolean} If the objects contain the same values as each other
 	 */
 	ve.compareObjects = function ( a, b, asymmetrical ) {
 		var aValue, bValue, aType, bType, k;
@@ -403,11 +389,10 @@
 	/**
 	 * Recursively compare two arrays.
 	 *
-	 * @static
 	 * @method
 	 * @param {Array} a First array to compare
 	 * @param {Array} b Second array to compare
-	 * @param {Boolean} [objectsByValue] Use ve.compareObjects() to compare objects instead of ===
+	 * @param {boolean} [objectsByValue] Use ve.compareObjects() to compare objects instead of ===
 	 */
 	ve.compareArrays = function ( a, b, objectsByValue ) {
 		var i,
@@ -448,7 +433,6 @@
 	/**
 	 * Gets a deep copy of an array's string, number, array, plain-object and cloneable object contents.
 	 *
-	 * @static
 	 * @method
 	 * @param {Array} source Array to copy
 	 * @returns {Array} Copy of source array
@@ -475,7 +459,6 @@
 	/**
 	 * Gets a deep copy of an object's string, number, array and plain-object properties.
 	 *
-	 * @static
 	 * @method
 	 * @param {Object} source Object to copy
 	 * @returns {Object} Copy of source object
@@ -512,12 +495,11 @@
 	 * performance tests should be conducted on each use of this method to verify this is true for the
 	 * particular use. Also, browsers change fast, never assume anything, always test everything.
 	 *
-	 * @static
 	 * @method
 	 * @param {Array} arr Array to remove from and insert into. Will be modified
-	 * @param {Number} offset Offset in arr to splice at. This may NOT be negative, unlike the
+	 * @param {number} offset Offset in arr to splice at. This may NOT be negative, unlike the
 	 *                         'index' parameter in Array.prototype.splice
-	 * @param {Number} remove Number of elements to remove at the offset. May be zero
+	 * @param {number} remove Number of elements to remove at the offset. May be zero
 	 * @param {Array} data Array of items to insert at the offset. May not be empty if remove=0
 	 */
 	ve.batchSplice = function ( arr, offset, remove, data ) {
@@ -545,11 +527,10 @@
 	};
 
 	/**
-	 * Insert one array into another. This just calls ve.batchSplice( dst, offset, 0, src )
+	 * Insert one array into another. This just calls `ve.batchSplice( dst, offset, 0, src )`.
 	 *
-	 * @static
 	 * @method
-	 * @see ve.batchSplice
+	 * @see #batchSplice
 	 */
 	ve.insertIntoArray = function ( dst, offset, src ) {
 		ve.batchSplice( dst, offset, 0, src );
@@ -559,15 +540,16 @@
 	 * Get a deeply nested property of an object using variadic arguments, protecting against
 	 * undefined property errors.
 	 *
-	 * quux = getProp( obj, 'foo', 'bar', 'baz' ); is equivalent to quux = obj.foo.bar.baz;
+	 * `quux = getProp( obj, 'foo', 'bar', 'baz' );` is equivalent to `quux = obj.foo.bar.baz;`
 	 * except that the former protects against JS errors if one of the intermediate properties
 	 * is undefined. Instead of throwing an error, this function will return undefined in
 	 * that case.
 	 *
 	 * @param {Object} obj
+	 * @param {Mixed...} [keys]
 	 * @returns obj[arguments[1]][arguments[2]].... or undefined
 	 */
-	ve.getProp = function ( obj /*, keys ... */ ) {
+	ve.getProp = function ( obj ) {
 		var i, retval = obj;
 		for ( i = 1; i < arguments.length; i++ ) {
 			if ( retval === undefined || retval === null ) {
@@ -583,13 +565,15 @@
 	 * Set a deeply nested property of an object using variadic arguments, protecting against
 	 * undefined property errors.
 	 *
-	 * ve.setProp( obj, 'foo', 'bar', 'baz' ); is equivalent to obj.foo.bar = baz; except that
+	 * `ve.setProp( obj, 'foo', 'bar', 'baz' );` is equivalent to `obj.foo.bar = baz;` except that
 	 * the former protects against JS errors if one of the intermediate properties is
 	 * undefined. Instead of throwing an error, undefined intermediate properties will be
 	 * initialized to an empty object. If an intermediate property is null, or if obj itself
 	 * is undefined or null, this function will silently abort.
 	 *
 	 * @param {Object} obj
+	 * @param {Mixed...} [keys]
+	 * @param {Mixed} [value]
 	 */
 	ve.setProp = function ( obj /*, keys ... , value */ ) {
 		var i, prop = obj;
@@ -613,9 +597,8 @@
 	 *
 	 * This implementation does nothing, to add a real implmementation ve.debug needs to be loaded.
 	 *
-	 * @static
 	 * @method
-	 * @param {Mixed} [...] Data to log
+	 * @param {Mixed...} [args] Data to log
 	 */
 	ve.log = function () {
 		// don't do anything, this is just a stub
@@ -626,9 +609,8 @@
 	 *
 	 * This implementation does nothing, to add a real implmementation ve.debug needs to be loaded.
 	 *
-	 * @static
 	 * @method
-	 * @param {Object} obj Object to log
+	 * @param {Object} obj
 	 */
 	ve.dir = function () {
 		// don't do anything, this is just a stub
@@ -642,7 +624,6 @@
 	 * N milliseconds. If `immediate` is passed, trigger the function on the
 	 * leading edge, instead of the trailing.
 	 *
-	 * @static
 	 * @method
 	 * @param func
 	 * @param wait
@@ -670,10 +651,9 @@
 	/**
 	 * Gets a localized message.
 	 *
-	 * @static
 	 * @method
-	 * @param {String} key Message key
-	 * @param {Mixed} [...] Message parameters
+	 * @param {string} key Message key
+	 * @param {Mixed...} [params] Message parameters
 	 */
 	ve.msg = function () {
 		// Avoid using ve.bind because ve.init.platform doesn't exist yet.
@@ -686,10 +666,10 @@
 	 *
 	 * This method is basically a copy of mw.html.escape.
 	 *
-	 * @static
+	 * @see #escapeHtml_escapeHtmlCharacter
 	 * @method
-	 * @param {String} value Attribute value to escape
-	 * @returns {String} Escaped attribute value
+	 * @param {string} value Attribute value to escape
+	 * @returns {string} Escaped attribute value
 	 */
 	ve.escapeHtml = function ( value ) {
 		return value.replace( /['"<>&]/g, ve.escapeHtml.escapeHtmlCharacter );
@@ -700,10 +680,10 @@
 	 *
 	 * This is a callback passed into String.prototype.replace.
 	 *
-	 * @static
-	 * @method
-	 * @param {String} key Property name of value being replaced
-	 * @returns {String} Escaped charcater
+	 * @method escapeHtml_escapeHtmlCharacter
+	 * @private
+	 * @param {string} key Property name of value being replaced
+	 * @returns {string} Escaped charcater
 	 */
 	ve.escapeHtml.escapeHtmlCharacter = function ( value ) {
 		switch ( value ) {
@@ -732,9 +712,9 @@
 	 * responsible for making sure these are sane tag/attribute names and do not contain
 	 * unsanitized content from an external source (e.g. from the user or from the web).
 	 *
-	 * @param {String} tag HTML tag name
+	 * @param {string} tag HTML tag name
 	 * @param {Object} attributes Key-value map of attributes for the tag
-	 * @return {String} Opening HTML tag
+	 * @return {string} Opening HTML tag
 	 */
 	ve.getOpeningHtmlTag = function ( tagName, attributes ) {
 		var html, attrName, attrValue;
@@ -795,7 +775,7 @@
 	/**
 	 * Check whether a given DOM element is of a block or inline type
 	 * @param {HTMLElement} element
-	 * @returns {Boolean} True if element is block, false if it is inline
+	 * @returns {boolean} True if element is block, false if it is inline
 	 */
 	ve.isBlockElement = function ( element ) {
 		return ve.isBlockElementType( element.nodeName.toLowerCase() );
@@ -803,8 +783,8 @@
 
 	/**
 	 * Check whether a given tag name is a block or inline tag
-	 * @param {String} nodeName All-lowercase HTML tag name
-	 * @returns {Boolean} True if block, false if inline
+	 * @param {string} nodeName All-lowercase HTML tag name
+	 * @returns {boolean} True if block, false if inline
 	 */
 	ve.isBlockElementType = function ( nodeName ) {
 		return ve.indexOf( nodeName, ve.isBlockElementType.blockTypes ) !== -1;

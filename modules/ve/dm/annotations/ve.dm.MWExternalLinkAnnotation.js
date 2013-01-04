@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor data model MWExternalLinkAnnotation class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -16,8 +16,8 @@
  * Each example is semantically slightly different, but don't need special treatment (yet).
  *
  * @class
+ * @extends ve.dm.LinkAnnotation
  * @constructor
- * @extends {ve.dm.LinkAnnotation}
  * @param {HTMLElement} element
  */
 ve.dm.MWExternalLinkAnnotation = function VeDmMWExternalLinkAnnotation( element ) {
@@ -31,8 +31,18 @@ ve.inheritClass( ve.dm.MWExternalLinkAnnotation, ve.dm.LinkAnnotation );
 
 /* Static Members */
 
+/**
+ * @static
+ * @property static.name
+ * @inheritdoc
+ */
 ve.dm.MWExternalLinkAnnotation.static.name = 'link/MWexternal';
 
+/**
+ * @static
+ * @property static.matchTagNames
+ * @inheritdoc
+ */
 ve.dm.MWExternalLinkAnnotation.static.matchRdfaTypes = [
 	'mw:ExtLink', 'mw:ExtLink/Numbered', 'mw:ExtLink/URL'
 ];

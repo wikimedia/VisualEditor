@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor Surface class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -12,7 +12,7 @@
  *
  * @class
  * @constructor
- * @param {String} parent Selector of element to attach to
+ * @param {string} parent Selector of element to attach to
  * @param {HTMLElement} dom HTML element of document to edit
  * @param {Object} options Configuration options
  */
@@ -174,10 +174,10 @@ ve.Surface.prototype.resetSelection = function () {
  * Executes an action or command.
  *
  * @method
- * @param {String|Command} action Name of action or command object
- * @param {String} [method] Name of method
- * @param {Mixed} [...] Additional arguments for action
- * @returns {Boolean} Action or command was executed
+ * @param {string|ve.Command} action Name of action or command object
+ * @param {string} [method] Name of method
+ * @param {Mixed...} [args] Additional arguments for action
+ * @returns {boolean} Action or command was executed
  */
 ve.Surface.prototype.execute = function ( action, method ) {
 	if ( !this.enabled ) {

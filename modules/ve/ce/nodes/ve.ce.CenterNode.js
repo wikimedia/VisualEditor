@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor content editable CenterNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * ContentEditable node for a center tag.
  *
  * @class
+ * @extends ve.ce.BranchNode
  * @constructor
- * @extends {ve.ce.BranchNode}
  * @param {ve.dm.CenterNode} model Model to observe
  */
 ve.ce.CenterNode = function VeCeCenterNode( model ) {
@@ -29,7 +29,7 @@ ve.inheritClass( ve.ce.CenterNode, ve.ce.BranchNode );
  *
  * @see ve.ce.NodeFactory
  * @static
- * @member
+ * @property
  */
 ve.ce.CenterNode.rules = {
 	'canBeSplit': false

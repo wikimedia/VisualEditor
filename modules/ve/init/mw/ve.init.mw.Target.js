@@ -1,6 +1,6 @@
 /*global mw */
 
-/**
+/*!
  * VisualEditor MediaWiki initialization Target class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -11,10 +11,10 @@
  * MediaWiki target.
  *
  * @class
+ * @extends ve.EventEmitter
  * @constructor
- * @extends {ve.EventEmitter}
- * @param {String} pageName Name of target page
- * @param {Number} [revision] Revision ID
+ * @param {string} pageName Name of target page
+ * @param {number} [revision] Revision ID
  */
 ve.init.mw.Target = function VeInitMwTarget( pageName, revision ) {
 	// Parent constructor
@@ -48,6 +48,26 @@ ve.init.mw.Target = function VeInitMwTarget( pageName, revision ) {
 	);
 };
 
+/**
+ * @event load
+ */
+
+/**
+ * @event save
+ */
+
+/**
+ * @event loadError
+ */
+
+/**
+ * @event saveError
+ */
+
+/**
+ * @event showChangesError
+ */
+
 /* Inheritance */
 
 ve.inheritClass( ve.init.mw.Target, ve.EventEmitter );
@@ -64,7 +84,7 @@ ve.inheritClass( ve.init.mw.Target, ve.EventEmitter );
  * @static
  * @method
  * @param {Object} response XHR Response object
- * @param {String} status Text status message
+ * @param {string} status Text status message
  * @emits loadError (null, message, null)
  */
 ve.init.mw.Target.onLoad = function ( response ) {
@@ -84,9 +104,7 @@ ve.init.mw.Target.onLoad = function ( response ) {
 	} else {
 		this.dom = $( '<div>' ).html( data.content )[0];
 
-		/**
-		 * Don't show notices with no visible html (bug 43013).
-		 */
+		/* Don't show notices with no visible html (bug 43013). */
 
 		// Since we're going to parse them, we might as well save these nodes
 		// so we don't have to parse them again later.
@@ -149,8 +167,8 @@ ve.init.mw.Target.onReady = function () {
  * @static
  * @method
  * @param {Object} jqXHR
- * @param {String} status Text status message
- * @param {mixed} error HTTP status text
+ * @param {string} status Text status message
+ * @param {Mixed} error HTTP status text
  * @emits loadError (jqXHR, status, error)
  */
 ve.init.mw.Target.onLoadError = function ( jqXHR, status, error ) {
@@ -166,7 +184,7 @@ ve.init.mw.Target.onLoadError = function ( jqXHR, status, error ) {
  * @static
  * @method
  * @param {Object} response Response data
- * @param {String} status Text status message
+ * @param {string} status Text status message
  * @emits save (html)
  * @emits saveError (null, message, null)
  */
@@ -199,10 +217,10 @@ ve.init.mw.Target.onSave = function ( response ) {
  *
  * @static
  * @method
- * @context {ve.init.mw.Target}
+ * @this ve.init.mw.Target
  * @param {Object} jqXHR
- * @param {String} status Text status message
- * @param {mixed} error HTTP status text
+ * @param {string} status Text status message
+ * @param {Mixed} error HTTP status text
  * @emits saveError (jqXHR, status, error)
  */
 ve.init.mw.Target.onSaveError = function ( jqXHR, status, error ) {
@@ -217,7 +235,7 @@ ve.init.mw.Target.onSaveError = function ( jqXHR, status, error ) {
  * @static
  * @method
  * @param {Object} response Response data
- * @param {String} status Text status message
+ * @param {string} status Text status message
  * @emits save (diffHtml)
  * @emits saveError (null, message, null)
  */
@@ -245,10 +263,10 @@ ve.init.mw.Target.onShowChanges = function ( response ) {
  *
  * @static
  * @method
- * @context {ve.init.mw.Target}
+ * @this ve.init.mw.Target
  * @param {Object} jqXHR
- * @param {String} status Text status message
- * @param {mixed} error HTTP status text
+ * @param {string} status Text status message
+ * @param {Mixed} error HTTP status text
  * @emits showChangesError (jqXHR, status, error)
  */
 ve.init.mw.Target.onShowChangesError = function ( jqXHR, status, error ) {
@@ -264,7 +282,7 @@ ve.init.mw.Target.onShowChangesError = function ( jqXHR, status, error ) {
  * @static
  * @method
  * @param {Object} response XHR Response object
- * @param {String} status Text status message
+ * @param {string} status Text status message
  * @emits save (html)
  * @emits saveError (null, message, null)
  */
@@ -295,7 +313,7 @@ ve.init.mw.Target.onSerialize = function ( response ) {
  * @static
  * @method
  * @param {Object} data HTTP Response object
- * @param {String} status Text status message
+ * @param {string} status Text status message
  * @param {Mixed} error Thrown exception or HTTP error string
  * @emits saveError (response, status, error)
  */
@@ -314,7 +332,7 @@ ve.init.mw.Target.onSerializeError = function ( response, status, error ) {
  * A side-effect of calling this method is that it requests {this.modules} be loaded.
  *
  * @method
- * @returns {Boolean} Loading has been started
+ * @returns {boolean} Loading has been started
 */
 ve.init.mw.Target.prototype.load = function () {
 	// Prevent duplicate requests
@@ -351,16 +369,15 @@ ve.init.mw.Target.prototype.load = function () {
  *
  * This method performs an asynchronous action and uses a callback function to handle the result.
  *
- * @example
  *     target.save( dom, { 'summary': 'test', 'minor': true, 'watch': false } );
  *
  * @method
  * @param {HTMLElement} dom DOM to save
  * @param {Object} options Saving options
- *  - {String} summary Edit summary
- *  - {Boolean} minor Edit is a minor edit
- *  - {Boolean} watch Watch this page
- * @returns {Boolean} Saving has been started
+ *  - {string} summary Edit summary
+ *  - {boolean} minor Edit is a minor edit
+ *  - {boolean} watch Watch this page
+ * @returns {boolean} Saving has been started
 */
 ve.init.mw.Target.prototype.save = function ( dom, options ) {
 	// Prevent duplicate requests
@@ -427,16 +444,15 @@ ve.init.mw.Target.prototype.showChanges = function ( dom ) {
  *
  * This method performs a synchronous action and will take the user to a new page when complete.
  *
- * @example
  *     target.submit( wikitext, { 'summary': 'test', 'minor': true, 'watch': false } );
  *
  * @method
- * @param {String} wikitext Wikitext to submit
+ * @param {string} wikitext Wikitext to submit
  * @param {Object} options Saving options
- *  - {String} summary Edit summary
- *  - {Boolean} minor Edit is a minor edit
- *  - {Boolean} watch Watch this page
- * @returns {Boolean} Submitting has been started
+ *  - {string} summary Edit summary
+ *  - {boolean} minor Edit is a minor edit
+ *  - {boolean} watch Watch this page
+ * @returns {boolean} Submitting has been started
 */
 ve.init.mw.Target.prototype.submit = function ( wikitext, options ) {
 	// Prevent duplicate requests
@@ -473,7 +489,6 @@ ve.init.mw.Target.prototype.submit = function ( wikitext, options ) {
  *
  * This method performs an asynchronous action and uses a callback function to handle the result.
  *
- * @example
  *     target.serialize(
  *         dom,
  *         function ( wikitext ) {
@@ -484,7 +499,7 @@ ve.init.mw.Target.prototype.submit = function ( wikitext, options ) {
  * @method
  * @param {HTMLElement} dom DOM to serialize
  * @param {Function} callback Function to call when complete, accepts error and wikitext arguments
- * @returns {Boolean} Serializing has beeen started
+ * @returns {boolean} Serializing has beeen started
 */
 ve.init.mw.Target.prototype.serialize = function ( dom, callback ) {
 	// Prevent duplicate requests

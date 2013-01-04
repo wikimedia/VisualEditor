@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor BranchNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -13,7 +13,7 @@
  * DataModel classes will add this functionality, and other subclasses will implement behavior that
  * mimcs changes made to data model nodes.
  *
- * @mixin
+ * @class
  * @abstract
  * @constructor
  * @param {ve.Node[]} children Array of children to add
@@ -28,8 +28,7 @@ ve.BranchNode = function VeBranchNode( children ) {
  * Checks if this node has child nodes.
  *
  * @method
- * @see {ve.Node.prototype.hasChildren}
- * @returns {Boolean} Whether this node has children
+ * @returns {boolean} Whether this node has children
  */
 ve.BranchNode.prototype.hasChildren = function () {
 	return true;
@@ -50,7 +49,7 @@ ve.BranchNode.prototype.getChildren = function () {
  *
  * @method
  * @param {ve.dm.Node} node Child node to find index of
- * @returns {Number} Index of child node or -1 if node was not found
+ * @returns {number} Index of child node or -1 if node was not found
  */
 ve.BranchNode.prototype.indexOf = function ( node ) {
 	return ve.indexOf( node, this.children );
@@ -60,7 +59,7 @@ ve.BranchNode.prototype.indexOf = function ( node ) {
  * Sets the root node this node is a descendent of.
  *
  * @method
- * @see {ve.Node.prototype.setRoot}
+ * @see ve.Node#setRoot
  * @param {ve.Node} root Node to use as root
  */
 ve.BranchNode.prototype.setRoot = function ( root ) {
@@ -78,7 +77,7 @@ ve.BranchNode.prototype.setRoot = function ( root ) {
  * Sets the document this node is a part of.
  *
  * @method
- * @see {ve.Node.prototype.setDocument}
+ * @see ve.Node#setDocument
  * @param {ve.Document} root Node to use as root
  */
 ve.BranchNode.prototype.setDocument = function ( doc ) {
@@ -101,8 +100,8 @@ ve.BranchNode.prototype.setDocument = function ( doc ) {
  * TODO: Rewrite this method to not use recursion, because the function call overhead is expensive
  *
  * @method
- * @param {Number} offset Offset get node for
- * @param {Boolean} [shallow] Do not iterate into child nodes of child nodes
+ * @param {number} offset Offset get node for
+ * @param {boolean} [shallow] Do not iterate into child nodes of child nodes
  * @returns {ve.Node|null} Node at offset, or null if non was found
  */
 ve.BranchNode.prototype.getNodeFromOffset = function ( offset, shallow ) {
@@ -146,7 +145,7 @@ ve.BranchNode.prototype.getNodeFromOffset = function ( offset, shallow ) {
  *
  * @method
  * @param {ve.Node} node Node to get offset of
- * @returns {Number} Offset of node or -1 of node was not found
+ * @returns {number} Offset of node or -1 of node was not found
  */
 ve.BranchNode.prototype.getOffsetFromNode = function ( node ) {
 	if ( node === this ) {

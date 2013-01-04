@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor content editable ParagraphNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * ContentEditable node for a paragraph.
  *
  * @class
+ * @extends ve.ce.BranchNode
  * @constructor
- * @extends {ve.ce.BranchNode}
  * @param {ve.dm.ParagraphNode} model Model to observe
  */
 ve.ce.ParagraphNode = function VeCeParagraphNode( model ) {
@@ -29,7 +29,7 @@ ve.inheritClass( ve.ce.ParagraphNode, ve.ce.ContentBranchNode );
  *
  * @see ve.ce.NodeFactory
  * @static
- * @member
+ * @property
  */
 ve.ce.ParagraphNode.rules = {
 	'canBeSplit': true

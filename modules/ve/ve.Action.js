@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor Action class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -37,6 +37,6 @@ ve.Action.static = {};
  * be carried out.
  *
  * @static
- * @member
+ * @property
  */
 ve.Action.static.methods = [];

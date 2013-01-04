@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor content editable Node class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -8,11 +8,11 @@
 /**
  * Generic ContentEditable node.
  *
- * @class
  * @abstract
+ * @extends ve.Node
+ *
  * @constructor
- * @extends {ve.Node}
- * @param {String} type Symbolic name of node type
+ * @param {string} type Symbolic name of node type
  * @param {ve.dm.Node} model Model to observe
  * @param {jQuery} [$element] Element to use as a container
  */
@@ -41,6 +41,11 @@ ve.inheritClass( ve.ce.Node, ve.Node );
 
 /* Static Memebers */
 
+/**
+ * @static
+ * @property
+ * @inheritable
+ */
 ve.ce.Node.static = {};
 
 /**
@@ -53,6 +58,10 @@ ve.ce.Node.static = {};
  *
  * TODO: Rather than use a single global list, set these on a per-node basis to something that makes
  * sense for that node in particular.
+ *
+ * @static
+ * @property static.domAttributeWhitelist
+ * @inheritable
  */
 ve.ce.Node.static.domAttributeWhitelist = [
 	'abbr', 'about', 'align', 'alt', 'axis', 'bgcolor', 'border', 'cellpadding', 'cellspacing',
@@ -69,7 +78,8 @@ ve.ce.Node.static.domAttributeWhitelist = [
  * Uses data URI to inject a 1x1 transparent PNG image into the DOM.
  *
  * @static
- * @member
+ * @property static.$shieldTemplate
+ * @inheritable
  */
 // Using transparent png instead of gif because IE 10 renders gif as solid red when used as img src.
 ve.ce.Node.static.$shieldTemplate = $(
@@ -109,19 +119,7 @@ ve.ce.Node.prototype.getParentNodeTypes = function () {
  * This method passes through to the model.
  *
  * @method
- * @returns {Boolean} Model node can have children
- */
-ve.ce.Node.prototype.canHaveChildren = function () {
-	return this.model.canHaveChildren();
-};
-
-/**
- * Checks if model is for a node that can have children.
- *
- * This method passes through to the model.
- *
- * @method
- * @returns {Boolean} Model node can have children
+ * @returns {boolean} Model node can have children
  */
 ve.ce.Node.prototype.canHaveChildren = function () {
 	return this.model.canHaveChildren();
@@ -133,7 +131,7 @@ ve.ce.Node.prototype.canHaveChildren = function () {
  * This method passes through to the model.
  *
  * @method
- * @returns {Boolean} Model node can have grandchildren
+ * @returns {boolean} Model node can have grandchildren
  */
 ve.ce.Node.prototype.canHaveGrandchildren = function () {
 	return this.model.canHaveGrandchildren();
@@ -145,7 +143,7 @@ ve.ce.Node.prototype.canHaveGrandchildren = function () {
  * This method passes through to the model.
  *
  * @method
- * @returns {Boolean} Model node is a wrapped element
+ * @returns {boolean} Model node is a wrapped element
  */
 ve.ce.Node.prototype.isWrapped = function () {
 	return this.model.isWrapped();
@@ -155,7 +153,7 @@ ve.ce.Node.prototype.isWrapped = function () {
  * Checks if this node can contain content.
  *
  * @method
- * @returns {Boolean} Node can contain content
+ * @returns {boolean} Node can contain content
  */
 ve.ce.Node.prototype.canContainContent = function () {
 	return this.model.canContainContent();
@@ -165,7 +163,7 @@ ve.ce.Node.prototype.canContainContent = function () {
  * Checks if this node is content.
  *
  * @method
- * @returns {Boolean} Node is content
+ * @returns {boolean} Node is content
  */
 ve.ce.Node.prototype.isContent = function () {
 	return this.model.isContent();
@@ -176,7 +174,7 @@ ve.ce.Node.prototype.isContent = function () {
  *
  * @static
  * @method
- * @returns {Boolean} Whether the node can have a slug before it
+ * @returns {boolean} Whether the node can have a slug before it
  */
 ve.ce.Node.prototype.canHaveSlugBefore = function () {
 	return !this.canContainContent() && this.getParentNodeTypes() === null && this.type !== 'text';
@@ -187,7 +185,7 @@ ve.ce.Node.prototype.canHaveSlugBefore = function () {
  *
  * @static
  * @method
- * @returns {Boolean} Whether the node can have a slug after it
+ * @returns {boolean} Whether the node can have a slug after it
  */
 ve.ce.Node.prototype.canHaveSlugAfter = ve.ce.Node.prototype.canHaveSlugBefore;
 
@@ -197,7 +195,7 @@ ve.ce.Node.prototype.canHaveSlugAfter = ve.ce.Node.prototype.canHaveSlugBefore;
  * This method passes through to the model.
  *
  * @method
- * @returns {Number} Model length
+ * @returns {number} Model length
  */
 ve.ce.Node.prototype.getLength = function () {
 	return this.model.getLength();
@@ -209,7 +207,7 @@ ve.ce.Node.prototype.getLength = function () {
  * This method passes through to the model.
  *
  * @method
- * @returns {Number} Model outer length
+ * @returns {number} Model outer length
  */
 ve.ce.Node.prototype.getOuterLength = function () {
 	return this.model.getOuterLength();
@@ -219,7 +217,7 @@ ve.ce.Node.prototype.getOuterLength = function () {
  * Checks if this node can be split.
  *
  * @method
- * @returns {Boolean} Node can be split
+ * @returns {boolean} Node can be split
  */
 ve.ce.Node.prototype.canBeSplit = function () {
 	return ve.ce.nodeFactory.canNodeBeSplit( this.type );
@@ -252,7 +250,7 @@ ve.ce.Node.getSplitableNode = function ( node ) {
 
 /**
  * @method
- * @returns {Boolean} Node is attached to the live DOM
+ * @returns {boolean} Node is attached to the live DOM
  */
 ve.ce.Node.prototype.isLive = function () {
 	return this.live;

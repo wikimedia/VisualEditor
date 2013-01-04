@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor user interface OutdentButtonTool class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * Creates an ve.ui.OutdentButtonTool object.
  *
  * @class
+ * @extends ve.ui.IndentationButtonTool
  * @constructor
- * @extends {ve.ui.IndentationButtonTool}
  * @param {ve.ui.Toolbar} toolbar
  */
 ve.ui.OutdentButtonTool = function VeUiOutdentButtonTool( toolbar ) {

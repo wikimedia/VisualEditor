@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor data model DocumentNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * DataModel node for a document.
  *
  * @class
+ * @extends ve.dm.BranchNode
  * @constructor
- * @extends {ve.dm.BranchNode}
  * @param {ve.dm.BranchNode[]} [children] Child nodes to attach
  */
 ve.dm.DocumentNode = function VeDmDocumentNode( children ) {
@@ -29,7 +29,7 @@ ve.inheritClass( ve.dm.DocumentNode, ve.dm.BranchNode );
  *
  * @see ve.dm.NodeFactory
  * @static
- * @member
+ * @property
  */
 ve.dm.DocumentNode.rules = {
 	'isWrapped': false,

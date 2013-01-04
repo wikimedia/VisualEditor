@@ -1,6 +1,6 @@
 /*global mw */
 
-/**
+/*!
  * VisualEditor MediaWiki initialization Target class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -11,8 +11,8 @@
  * MediaWiki platform.
  *
  * @class
+ * @extends ve.init.Platform
  * @constructor
- * @extends {ve.init.Platform}
  */
 ve.init.mw.Platform = function VeInitMwPlatform() {
 	// Parent constructor
@@ -48,7 +48,7 @@ ve.init.mw.Platform.prototype.getExternalLinkUrlProtocolsRegExp = function () {
  * Uses MediaWiki's {wgExtensionAssetsPath} variable.
  *
  * @method
- * @returns {String} Remote modules URL
+ * @returns {string} Remote modules URL
  */
 ve.init.mw.Platform.prototype.getModulesUrl = function () {
 	return this.modulesUrl;
@@ -60,7 +60,7 @@ ve.init.mw.Platform.prototype.getModulesUrl = function () {
  * Uses the vechangemarkers query string variable.
  *
  * @method
- * @return {Boolean}
+ * @return {boolean}
  */
 ve.init.mw.Platform.prototype.useChangeMarkers = function () {
 	var currentUri = new mw.Uri( window.location.toString() );
@@ -88,9 +88,9 @@ ve.init.mw.Platform.prototype.addMessages = function ( messages ) {
  * Wrapper for mw.msg system.
  *
  * @method
- * @param {String} key Message key
- * @param {Mixed} [...] List of arguments which will be injected at $1, $2, etc. in the messaage
- * @returns {String} Localized message (plain, unescaped)
+ * @param {string} key Message key
+ * @param {Mixed...} [args] List of arguments which will be injected at $1, $2, etc. in the messaage
+ * @returns {string} Localized message (plain, unescaped)
  */
 ve.init.mw.Platform.prototype.getMessage = ve.bind( mw.msg, mw );
 
@@ -113,8 +113,8 @@ ve.init.mw.Platform.prototype.addParsedMessages = function ( messages ) {
  * Does not support $# replacements.
  *
  * @method
- * @param {String} key Message key
- * @returns {String} Parsed localized message as HTML string.
+ * @param {string} key Message key
+ * @returns {string} Parsed localized message as HTML string.
  */
 ve.init.mw.Platform.prototype.getParsedMessage = function ( key ) {
 	if ( key in this.parsedMessages ) {

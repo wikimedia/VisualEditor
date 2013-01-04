@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor data model TextStyleAnnotation class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -11,8 +11,8 @@
  * Should not be instantiated directly, only use this for subclassing.
  *
  * @class
+ * @extends ve.dm.Annotation
  * @constructor
- * @extends {ve.dm.Annotation}
  * @param {HTMLElement} element
  */
 ve.dm.TextStyleAnnotation = function VeDmTextStyleAnnotation( element ) {
@@ -25,7 +25,18 @@ ve.inheritClass( ve.dm.TextStyleAnnotation, ve.dm.Annotation );
 
 /* Static Members */
 
+/**
+ * @static
+ * @property static.name
+ * @inheritdoc
+ */
 ve.dm.TextStyleAnnotation.static.name = 'textStyle';
+
+/**
+ * @static
+ * @property static.matchTagNames
+ * @inheritdoc
+ */
 ve.dm.TextStyleAnnotation.static.matchTagNames = [];
 
 /**
@@ -50,8 +61,8 @@ ve.dm.annotationFactory.register( 'textStyle', ve.dm.TextStyleAnnotation );
  * Bold annotation.
  *
  * @class
+ * @extends ve.dm.TextStyleAnnotation
  * @constructor
- * @extends {ve.dm.TextStyleAnnotation}
  * @param {HTMLElement} element
  */
 ve.dm.TextStyleBoldAnnotation = function VeDmTextStyleBoldAnnotation( element ) {
@@ -66,8 +77,8 @@ ve.dm.annotationFactory.register( 'textStyle/bold', ve.dm.TextStyleBoldAnnotatio
  * Italic annotation.
  *
  * @class
+ * @extends ve.dm.TextStyleAnnotation
  * @constructor
- * @extends {ve.dm.TextStyleAnnotation}
  * @param {HTMLElement} element
  */
 ve.dm.TextStyleItalicAnnotation = function VeDmTextStyleItalicAnnotation( element ) {
@@ -82,8 +93,8 @@ ve.dm.annotationFactory.register( 'textStyle/italic', ve.dm.TextStyleItalicAnnot
  * Underline annotation.
  *
  * @class
+ * @extends ve.dm.TextStyleAnnotation
  * @constructor
- * @extends {ve.dm.TextStyleAnnotation}
  * @param {HTMLElement} element
  */
 ve.dm.TextStyleUnderlineAnnotation = function VeDmTextStyleUnderlineAnnotation( element ) {
@@ -98,8 +109,8 @@ ve.dm.annotationFactory.register( 'textStyle/underline', ve.dm.TextStyleUnderlin
  * Strike annotation.
  *
  * @class
+ * @extends ve.dm.TextStyleAnnotation
  * @constructor
- * @extends {ve.dm.TextStyleAnnotation}
  * @param {HTMLElement} element
  */
 ve.dm.TextStyleStrikeAnnotation = function VeDmTextStyleStrikeAnnotation( element ) {
@@ -114,8 +125,8 @@ ve.dm.annotationFactory.register( 'textStyle/strike', ve.dm.TextStyleStrikeAnnot
  * Small annotation.
  *
  * @class
+ * @extends ve.dm.TextStyleAnnotation
  * @constructor
- * @extends {ve.dm.TextStyleAnnotation}
  * @param {HTMLElement} element
  */
 ve.dm.TextStyleSmallAnnotation = function VeDmTextStyleSmallAnnotation( element ) {
@@ -130,8 +141,8 @@ ve.dm.annotationFactory.register( 'textStyle/small', ve.dm.TextStyleSmallAnnotat
  * Big annotation.
  *
  * @class
+ * @extends ve.dm.TextStyleAnnotation
  * @constructor
- * @extends {ve.dm.TextStyleAnnotation}
  * @param {HTMLElement} element
  */
 ve.dm.TextStyleBigAnnotation = function VeDmTextStyleBigAnnotation( element ) {
@@ -146,8 +157,8 @@ ve.dm.annotationFactory.register( 'textStyle/big', ve.dm.TextStyleBigAnnotation 
  * Span annotation.
  *
  * @class
+ * @extends ve.dm.TextStyleAnnotation
  * @constructor
- * @extends {ve.dm.TextStyleAnnotation}
  * @param {HTMLElement} element
  */
 ve.dm.TextStyleSpanAnnotation = function VeDmTextStyleSpanAnnotation( element ) {
@@ -162,8 +173,8 @@ ve.dm.annotationFactory.register( 'textStyle/span', ve.dm.TextStyleSpanAnnotatio
  * Strong annotation.
  *
  * @class
+ * @extends ve.dm.TextStyleAnnotation
  * @constructor
- * @extends {ve.dm.TextStyleAnnotation}
  * @param {HTMLElement} element
  */
 ve.dm.TextStyleStrongAnnotation = function VeDmTextStyleStrongAnnotation( element ) {
@@ -178,8 +189,8 @@ ve.dm.annotationFactory.register( 'textStyle/strong', ve.dm.TextStyleStrongAnnot
  * Emphasis annotation.
  *
  * @class
+ * @extends ve.dm.TextStyleAnnotation
  * @constructor
- * @extends {ve.dm.TextStyleAnnotation}
  * @param {HTMLElement} element
  */
 ve.dm.TextStyleEmphasizeAnnotation = function VeDmTextStyleEmphasizeAnnotation( element ) {
@@ -194,8 +205,8 @@ ve.dm.annotationFactory.register( 'textStyle/emphasize', ve.dm.TextStyleEmphasiz
  * SuperScript annotation.
  *
  * @class
+ * @extends ve.dm.TextStyleAnnotation
  * @constructor
- * @extends {ve.dm.TextStyleAnnotation}
  * @param {HTMLElement} element
  */
 ve.dm.TextStyleSuperScriptAnnotation = function VeDmTextStyleSuperScriptAnnotation( element ) {
@@ -210,8 +221,8 @@ ve.dm.annotationFactory.register( 'textStyle/superScript', ve.dm.TextStyleSuperS
  * SubScript annotation.
  *
  * @class
+ * @extends ve.dm.TextStyleAnnotation
  * @constructor
- * @extends {ve.dm.TextStyleAnnotation}
  * @param {HTMLElement} element
  */
 ve.dm.TextStyleSubScriptAnnotation = function VeDmTextStyleSubScriptAnnotation( element ) {

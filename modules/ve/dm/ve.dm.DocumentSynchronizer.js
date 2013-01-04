@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor data model DocumentSynchronizer class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -38,7 +38,7 @@ ve.dm.DocumentSynchronizer = function VeDmDocumentSynchronizer( doc ) {
  * synchronizer, so they work similar to normal methods on the object.
  *
  * @static
- * @member
+ * @property
  */
 ve.dm.DocumentSynchronizer.synchronizers = {};
 
@@ -172,7 +172,7 @@ ve.dm.DocumentSynchronizer.prototype.pushAnnotation = function ( range ) {
  *
  * @method
  * @param {ve.dm.Node} node Node whose attribute changed
- * @param {String} key Key of the attribute that changed
+ * @param {string} key Key of the attribute that changed
  * @param {Mixed} from Old value of the attribute
  * @param {Mixed} to New value of the attribute
  */
@@ -193,7 +193,7 @@ ve.dm.DocumentSynchronizer.prototype.pushAttributeChange = function ( node, key,
  *
  * @method
  * @param {ve.dm.TextNode} node Node to resize
- * @param {Number} adjustment Length adjustment to apply to the node
+ * @param {number} adjustment Length adjustment to apply to the node
  */
 ve.dm.DocumentSynchronizer.prototype.pushResize = function ( node, adjustment ) {
 	this.actionQueue.push( {
@@ -231,8 +231,8 @@ ve.dm.DocumentSynchronizer.prototype.pushRebuild = function ( oldRange, newRange
  *
  * @method
  * @param {ve.dm.Node} node
- * @param {String} event Event name
- * @param {Mixed} [...] Additional arguments to be passed to the event when fired
+ * @param {string} event Event name
+ * @param {Mixed...} [args] Additional arguments to be passed to the event when fired
  */
 ve.dm.DocumentSynchronizer.prototype.queueEvent = function ( node ) {
 	// Check if this is already queued

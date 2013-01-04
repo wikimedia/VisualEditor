@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor user interface Toolbar class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * Editing toolbar.
  *
  * @class
+ * @extends ve.EventEmitter
  * @constructor
- * @extends {ve.EventEmitter}
  * @param {jQuery} $container
  * @param {ve.Surface} surface
  * @param {Array} config

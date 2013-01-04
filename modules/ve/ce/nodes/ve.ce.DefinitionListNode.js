@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor content editable DefinitionListNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * ContentEditable node for a definition list.
  *
  * @class
+ * @extends ve.ce.BranchNode
  * @constructor
- * @extends {ve.ce.BranchNode}
  * @param {ve.dm.DefinitionListNode} model Model to observe
  */
 ve.ce.DefinitionListNode = function VeCeDefinitionListNode( model ) {
@@ -29,7 +29,7 @@ ve.inheritClass( ve.ce.DefinitionListNode, ve.ce.BranchNode );
  *
  * @see ve.ce.NodeFactory
  * @static
- * @member
+ * @property
  */
 ve.ce.DefinitionListNode.rules = {
 	'canBeSplit': false

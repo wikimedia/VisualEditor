@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor content editable ImageNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * ContentEditable node for an image.
  *
  * @class
+ * @extends ve.ce.LeafNode
  * @constructor
- * @extends {ve.ce.LeafNode}
  * @param {ve.dm.ImageNode} model Model to observe.
  */
 ve.ce.ImageNode = function VeCeImageNode( model ) {
@@ -47,7 +47,7 @@ ve.inheritClass( ve.ce.ImageNode, ve.ce.LeafNode );
  *
  * @see ve.ce.NodeFactory
  * @static
- * @member
+ * @property
  */
 ve.ce.ImageNode.rules = {
 	'canBeSplit': false

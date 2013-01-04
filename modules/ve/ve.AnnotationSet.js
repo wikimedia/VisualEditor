@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor AnnotationSet class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -8,8 +8,8 @@
 /**
  * Ordered set of annotations.
  *
+ * @extends ve.OrderedHashSet
  * @constructor
- * @extends {ve.OrderedHashSet}
  * @param {Object[]} annotations Array of annotation objects
  */
 ve.AnnotationSet = function VeAnnotationSet( annotations ) {
@@ -49,7 +49,7 @@ ve.AnnotationSet.prototype.getAnnotationsByName = function ( name ) {
  *
  * @method
  * @param {String|RegExp} name Regular expression or string to compare names with
- * @returns {Boolean} Annotation of given type exists in this set
+ * @returns {boolean} Annotation of given type exists in this set
  */
 ve.AnnotationSet.prototype.hasAnnotationWithName = function ( name ) {
 	return this.containsMatching( 'name', name );

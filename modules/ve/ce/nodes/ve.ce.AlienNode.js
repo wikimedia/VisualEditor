@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor content editable AlienNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,9 +9,9 @@
  * ContentEditable node for an alien node.
  *
  * @class
+ * @extends ve.ce.LeafNode
  * @constructor
- * @extends {ve.ce.LeafNode}
- * @param {ve.dm.AlienNode} model Model to observe.
+ * @param {ve.dm.AlienInlineNode|ve.dm.AlienBlockNode} model Model to observe.
  */
 ve.ce.AlienNode = function VeCeAlienNode( type, model ) {
 	// Parent constructor
@@ -39,7 +39,7 @@ ve.inheritClass( ve.ce.AlienNode, ve.ce.LeafNode );
  *
  * @see ve.ce.NodeFactory
  * @static
- * @member
+ * @property
  */
 ve.ce.AlienNode.rules = {
 	'canBeSplit': false

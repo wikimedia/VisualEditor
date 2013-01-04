@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor AnnotationFactory class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -11,10 +11,9 @@
  *
  * To register a new annotation type, call ve.dm.annotationFactory.register()
  *
- * @class
  * @abstract
+ * @extends ve.EventEmitter
  * @constructor
- * @extends {ve.EventEmitter}
  */
 ve.dm.AnnotationFactory = function () {
 	// Parent constructor
@@ -44,10 +43,10 @@ ve.inheritClass( ve.dm.AnnotationFactory, ve.Factory );
  * addType( obj, keyA, keyB, value ) does obj[keyA][keyB].unshift( value );
  *
  * @param {Object} obj Object to add to
- * @param {String} keyA Key into obj
- * @param {String} keyB Key into obj[keyA]
- * @param {String|any} keyC Key into obj[keyA][keyB], or value to add to array if value not set
- * @param {any} [value] Value to add to the array
+ * @param {string} keyA Key into obj
+ * @param {string} keyB Key into obj[keyA]
+ * @param {string|Mixed} keyC Key into obj[keyA][keyB], or value to add to array if value not set
+ * @param {Mixed} [value] Value to add to the array
  */
 function addType( obj, keyA, keyB, keyC, value ) {
 	if ( obj[keyA] === undefined ) {
@@ -70,7 +69,7 @@ function addType( obj, keyA, keyB, keyC, value ) {
 
 /**
  * Register an annotation type.
- * @param {String} name Symbolic name for the annotation
+ * @param {string} name Symbolic name for the annotation
  * @param {ve.dm.Annotation} constructor Subclass of ve.dm.Annotation
  */
 ve.dm.AnnotationFactory.prototype.register = function ( name, constructor ) {

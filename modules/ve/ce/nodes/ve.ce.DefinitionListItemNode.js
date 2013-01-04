@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor content editable DefinitionListItemNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * ContentEditable node for a definition list item.
  *
  * @class
+ * @extends ve.ce.BranchNode
  * @constructor
- * @extends {ve.ce.BranchNode}
  * @param {ve.dm.DefinitionListItemNode} model Model to observe
  */
 ve.ce.DefinitionListItemNode = function VeCeDefinitionListItemNode( model ) {
@@ -34,7 +34,7 @@ ve.inheritClass( ve.ce.DefinitionListItemNode, ve.ce.BranchNode );
  *
  * @see ve.ce.NodeFactory
  * @static
- * @member
+ * @property
  */
 ve.ce.DefinitionListItemNode.rules = {
 	'canBeSplit': false
@@ -44,7 +44,7 @@ ve.ce.DefinitionListItemNode.rules = {
  * Mapping of list item style values and DOM wrapper element types.
  *
  * @static
- * @member
+ * @property
  */
 ve.ce.DefinitionListItemNode.domWrapperElementTypes = {
 	'definition': 'dd',

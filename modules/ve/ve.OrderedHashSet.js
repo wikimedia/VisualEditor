@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor OrderedHashSet class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -15,7 +15,6 @@
  * to the individual objects will be maintained, but references to the original array or
  * ve.OrderedHashSet will not be.
  *
- * @class
  * @abstract
  * @constructor
  * @param {Function} hash Hash function
@@ -58,26 +57,26 @@ ve.OrderedHashSet.prototype.clone = function () {
  * set.get( 5 ) returns the object at index 5, set.get() returns an array with all objects in
  * the entire set.
  *
- * @param {Number} [index] If set, only get the element at this index
+ * @param {number} [index] If set, only get the element at this index
  * @returns {Array|Object|undefined} The object at index, or an array of all objects in the set
  */
 ve.OrderedHashSet.prototype.get = function ( index ) {
 	if ( index !== undefined ) {
 		return this.arr[index];
 	} else {
-		return this.arr.slice( 0 );
+		return this.arr.slice();
 	}
 };
 
 /**
- * @returns {Number} The number of objects in the set
+ * @returns {number} The number of objects in the set
  */
 ve.OrderedHashSet.prototype.getLength = function () {
 	return this.arr.length;
 };
 
 /**
- * @returns {Boolean} True if the set is empty, false otherwise
+ * @returns {boolean} True if the set is empty, false otherwise
  */
 ve.OrderedHashSet.prototype.isEmpty = function () {
 	return this.arr.length === 0;
@@ -86,7 +85,7 @@ ve.OrderedHashSet.prototype.isEmpty = function () {
 /**
  * Check whether a given value occurs in the set. Values are compared by hash.
  *
- * @returns {Boolean} True if there is an object in the set with the same hash as value, false otherwise
+ * @returns {boolean} True if there is an object in the set with the same hash as value, false otherwise
  */
 ve.OrderedHashSet.prototype.contains = function ( value ) {
 	return this.hash( value ) in this.map;
@@ -96,7 +95,7 @@ ve.OrderedHashSet.prototype.contains = function ( value ) {
  * Check whether this set contains any of the values in another set.
  *
  * @param {ve.OrderedHashSet} set Set to compare this set with
- * @returns {Boolean} True if there is at least one value in set that is also in this set, false otherwise
+ * @returns {boolean} True if there is at least one value in set that is also in this set, false otherwise
  */
 ve.OrderedHashSet.prototype.containsAnyOf = function ( set ) {
 	var key;
@@ -112,7 +111,7 @@ ve.OrderedHashSet.prototype.containsAnyOf = function ( set ) {
  * Check whether this set contains all of the values in another set.
  *
  * @param {ve.OrderedHashSet} set Set to compare this set with
- * @returns {Boolean} True if all values in set are also in this set, false otherwise
+ * @returns {boolean} True if all values in set are also in this set, false otherwise
  */
 ve.OrderedHashSet.prototype.containsAllOf = function ( set ) {
 	var key;
@@ -128,7 +127,7 @@ ve.OrderedHashSet.prototype.containsAllOf = function ( set ) {
  * Get the index of a given value in this set.
  *
  * @param {Object} value Value to search for
- * @returns {Number} Index of value in this set, or -1 if value is not in this set.
+ * @returns {number} Index of value in this set, or -1 if value is not in this set.
  */
 ve.OrderedHashSet.prototype.indexOf = function ( value ) {
 	var hash = this.hash( value );
@@ -143,9 +142,10 @@ ve.OrderedHashSet.prototype.indexOf = function ( value ) {
  * Filter this set by a given property. This returns a new set with all values in this set for
  * which value.property matches filter (if filter is a RegExp) or is equal to filter,
  *
- * @param {String} property Property to check
+ * @method
+ * @param {string} property Property to check
  * @param {Mixed|RegExp} filter Regular expression or value to filter for
- * @param {Boolean} [returnBool] For internal use only
+ * @param {boolean} [returnBool] For internal use only
  * @returns {ve.OrderedHashSet} New set containing only the matching values
  */
 ve.OrderedHashSet.prototype.filter = function ( property, filter, returnBool ) {
@@ -176,12 +176,13 @@ ve.OrderedHashSet.prototype.filter = function ( property, filter, returnBool ) {
 /**
  * Check if this set contains at least one value where a given property matches a given filter.
  *
- * This is equivalent to (but more efficient than) !this.filter( .. ).isEmpty()
- * @see ve.OrderedHashSet.prototype.filter
+ * This is equivalent to (but more efficient than) `!this.filter( .. ).isEmpty()`.
  *
- * @param {String} property
+ * @see ve.OrderedHashSet#filter
+ * @method
+ * @param {string} property
  * @param {Mixed|RegExp} filter
- * @returns {Boolean} True if at least one value matches, false otherwise
+ * @returns {boolean} True if at least one value matches, false otherwise
  */
 ve.OrderedHashSet.prototype.containsMatching = function ( property, filter ) {
 	return this.filter( property, filter, true );
@@ -194,8 +195,9 @@ ve.OrderedHashSet.prototype.containsMatching = function ( property, filter ) {
  * negative, it will be counted from the end (i.e. index -1 is the last item, -2 the second-to-last,
  * etc.). If index is out of bounds, the value will be added to the end of the set.
  *
+ * @method
  * @param {Object} value Value to add
- * @param {Number} index Index to add the value at
+ * @param {number} index Index to add the value at
  */
 ve.OrderedHashSet.prototype.add = function ( value, index ) {
 	var hash;
@@ -240,8 +242,8 @@ ve.OrderedHashSet.prototype.push = function ( value ) {
 
 /**
  * Remove the value at a given index
- * @param {Number} index Index to remove item at. If negative, this counts from the end, see add()
- * @throws {Error} 'Index out of bounds'
+ * @param {number} index Index to remove item at. If negative, this counts from the end, see add()
+ * @throws {Error} Index out of bounds.
  */
 ve.OrderedHashSet.prototype.removeAt = function ( index ) {
 	if ( index < 0 ) {

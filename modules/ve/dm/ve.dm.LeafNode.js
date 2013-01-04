@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor data model LeafNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -8,12 +8,12 @@
 /**
  * DataModel node that cannot have children.
  *
- * @class
  * @abstract
+ * @extends ve.dm.Node
+ * @mixins ve.LeafNode
  * @constructor
- * @extends {ve.dm.Node}
- * @param {String} type Symbolic name of node type
- * @param {Number} [length] Length of content data in document
+ * @param {string} type Symbolic name of node type
+ * @param {number} [length] Length of content data in document
  * @param {Object} [element] Reference to element in linear model
  */
 ve.dm.LeafNode = function VeDmLeafNode( type, length, element ) {

@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor content editable HeadingNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * ContentEditable node for a heading.
  *
  * @class
+ * @extends ve.ce.BranchNode
  * @constructor
- * @extends {ve.ce.BranchNode}
  * @param {ve.dm.HeadingNode} model Model to observe
  */
 ve.ce.HeadingNode = function VeCeHeadingNode( model ) {
@@ -34,7 +34,7 @@ ve.inheritClass( ve.ce.HeadingNode, ve.ce.ContentBranchNode );
  *
  * @see ve.ce.NodeFactory
  * @static
- * @member
+ * @property
  */
 ve.ce.HeadingNode.rules = {
 	'canBeSplit': true
@@ -44,7 +44,7 @@ ve.ce.HeadingNode.rules = {
  * Mapping of heading level values and DOM wrapper element types.
  *
  * @static
- * @member
+ * @property
  */
 ve.ce.HeadingNode.domWrapperElementTypes = {
 	'1': 'h1',

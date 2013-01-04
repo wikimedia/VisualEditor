@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor content editable namespace.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -7,6 +7,8 @@
 
 /**
  * Namespace for all VisualEditor content editable classes, static methods and static properties.
+ * @class
+ * @singleton
  */
 ve.ce = {
 	//'nodeFactory': Initialized in ve.ce.NodeFactory.js
@@ -20,8 +22,7 @@ ve.ce = {
  * \u0020 (32) space
  * \u00A0 (160) non-breaking space
  *
- * @static
- * @member
+ * @property
  */
 ve.ce.whitespacePattern = /[\u0020\u00A0]/g;
 
@@ -34,10 +35,9 @@ ve.ce.whitespacePattern = /[\u0020\u00A0]/g;
  * non-editable elements are excluded (but replaced with the appropriate number of characters
  * so the offsets match up with the linear model).
  *
- * @static
- * @member
- * @param {DOMElement} element DOM element to get text of
- * @returns {String} Plain text of DOM element
+ * @method
+ * @param {HTMLElement} element DOM element to get text of
+ * @returns {string} Plain text of DOM element
  */
 ve.ce.getDomText = function ( element ) {
 	var func = function ( element ) {
@@ -81,10 +81,9 @@ ve.ce.getDomText = function ( element ) {
  * serialization without any attributes or text contents. This can be used to observe structural
  * changes.
  *
- * @static
- * @member
- * @param {DOMElement} element DOM element to get hash of
- * @returns {String} Hash of DOM element
+ * @method
+ * @param {HTMLElement} element DOM element to get hash of
+ * @returns {string} Hash of DOM element
  */
 ve.ce.getDomHash = function ( element ) {
 	var nodeType = element.nodeType,
@@ -107,11 +106,10 @@ ve.ce.getDomHash = function ( element ) {
 /**
  * Gets the linear offset from a given DOM node and offset within it.
  *
- * @static
- * @member
- * @param {DOM Node} domNode DOM node
- * @param {Integer} domOffset DOM offset within the DOM node
- * @returns {Number} Linear model offset
+ * @method
+ * @param {HTMLElement} domNode DOM node
+ * @param {number} domOffset DOM offset within the DOM node
+ * @returns {number} Linear model offset
  */
 ve.ce.getOffset = function ( domNode, domOffset ) {
 	if ( domNode.nodeType === Node.TEXT_NODE ) {
@@ -125,9 +123,9 @@ ve.ce.getOffset = function ( domNode, domOffset ) {
  * Gets the linear offset from a given text node and offset within it.
  *
  * @method
- * @param {DOMElement} domNode DOM node
- * @param {Number} domOffset DOM offset within the DOM Element
- * @returns {Number} Linear model offset
+ * @param {HTMLElement} domNode DOM node
+ * @param {number} domOffset DOM offset within the DOM Element
+ * @returns {number} Linear model offset
  */
 ve.ce.getOffsetFromTextNode = function ( domNode, domOffset ) {
 	var $node, nodeModel, current, stack, item, offset, $item;
@@ -185,10 +183,10 @@ ve.ce.getOffsetFromTextNode = function ( domNode, domOffset ) {
  * Gets the linear offset from a given element node and offset within it.
  *
  * @method
- * @param {DOMElement} domNode DOM node
- * @param {Number} domOffset DOM offset within the DOM Element
- * @param {Boolean} [addOuterLength] Use outer length, which includes wrappers if any exist
- * @returns {Number} Linear model offset
+ * @param {HTMLElement} domNode DOM node
+ * @param {number} domOffset DOM offset within the DOM Element
+ * @param {boolean} [addOuterLength] Use outer length, which includes wrappers if any exist
+ * @returns {number} Linear model offset
  */
 ve.ce.getOffsetFromElementNode = function ( domNode, domOffset, addOuterLength ) {
 	var $domNode = $( domNode ),
@@ -232,11 +230,10 @@ ve.ce.getOffsetFromElementNode = function ( domNode, domOffset, addOuterLength )
 /**
  * Gets the linear offset of a given slug
  *
- * @static
- * @member
+ * @method
  * @param {jQuery} $node jQuery slug selection
- * @returns {Integer} Linear model offset
- * @throws Error
+ * @returns {number} Linear model offset
+ * @throws {Error}
  */
 ve.ce.getOffsetOfSlug  = function ( $node ) {
 	var model;

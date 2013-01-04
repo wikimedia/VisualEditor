@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor data model Node class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -8,12 +8,11 @@
 /**
  * Generic DataModel node.
  *
- * @class
  * @abstract
+ * @extends ve.Node
  * @constructor
- * @extends {ve.Node}
- * @param {String} type Symbolic name of node type
- * @param {Number} [length] Length of content data in document
+ * @param {string} type Symbolic name of node type
+ * @param {number} [length] Length of content data in document
  * @param {Object} [element] Reference to element in linear model
  */
 ve.dm.Node = function VeDmNode( type, length, element ) {
@@ -25,6 +24,15 @@ ve.dm.Node = function VeDmNode( type, length, element ) {
 	this.element = element;
 	this.doc = undefined;
 };
+
+/**
+ * @event lengthChange
+ * @param diff
+ */
+
+/**
+ * @event update
+ */
 
 /* Inheritance */
 
@@ -56,7 +64,7 @@ ve.dm.Node.prototype.getParentNodeTypes = function () {
  * Checks if this node can have child nodes.
  *
  * @method
- * @returns {Boolean} Node can have children
+ * @returns {boolean} Node can have children
  */
 ve.dm.Node.prototype.canHaveChildren = function () {
 	return ve.dm.nodeFactory.canNodeHaveChildren( this.type );
@@ -66,7 +74,7 @@ ve.dm.Node.prototype.canHaveChildren = function () {
  * Checks if this node can have child nodes which can also have child nodes.
  *
  * @method
- * @returns {Boolean} Node can have grandchildren
+ * @returns {boolean} Node can have grandchildren
  */
 ve.dm.Node.prototype.canHaveGrandchildren = function () {
 	return ve.dm.nodeFactory.canNodeHaveGrandchildren( this.type );
@@ -76,7 +84,7 @@ ve.dm.Node.prototype.canHaveGrandchildren = function () {
  * Checks if this node represents a wrapped element in the linear model.
  *
  * @method
- * @returns {Boolean} Node represents a wrapped element
+ * @returns {boolean} Node represents a wrapped element
  */
 ve.dm.Node.prototype.isWrapped = function () {
 	return ve.dm.nodeFactory.isNodeWrapped( this.type );
@@ -86,7 +94,7 @@ ve.dm.Node.prototype.isWrapped = function () {
  * Checks if this node can contain content.
  *
  * @method
- * @returns {Boolean} Node can contain content
+ * @returns {boolean} Node can contain content
  */
 ve.dm.Node.prototype.canContainContent = function () {
 	return ve.dm.nodeFactory.canNodeContainContent( this.type );
@@ -96,7 +104,7 @@ ve.dm.Node.prototype.canContainContent = function () {
  * Checks if this node is content.
  *
  * @method
- * @returns {Boolean} Node is content
+ * @returns {boolean} Node is content
  */
 ve.dm.Node.prototype.isContent = function () {
 	return ve.dm.nodeFactory.isNodeContent( this.type );
@@ -107,7 +115,7 @@ ve.dm.Node.prototype.isContent = function () {
  * also true.
  *
  * @method
- * @returns {Boolean} Node has significant whitespace
+ * @returns {boolean} Node has significant whitespace
  */
 ve.dm.Node.prototype.hasSignificantWhitespace = function () {
 	return ve.dm.nodeFactory.doesNodeHaveSignificantWhitespace( this.type );
@@ -117,7 +125,7 @@ ve.dm.Node.prototype.hasSignificantWhitespace = function () {
  * Checks if this node has an ancestor with given type and attributes.
  *
  * @method
- * @returns {Boolean} Node is content
+ * @returns {boolean} Node is content
  */
 ve.dm.Node.prototype.hasMatchingAncestor = function ( type, attributes ) {
 	var key,
@@ -145,7 +153,7 @@ ve.dm.Node.prototype.hasMatchingAncestor = function ( type, attributes ) {
  * Gets the inner length.
  *
  * @method
- * @returns {Number} Length of the node's contents
+ * @returns {number} Length of the node's contents
  */
 ve.dm.Node.prototype.getLength = function () {
 	return this.length;
@@ -155,7 +163,7 @@ ve.dm.Node.prototype.getLength = function () {
  * Gets the outer length, including any opening/closing elements.
  *
  * @method
- * @returns {Number} Length of the entire node
+ * @returns {number} Length of the entire node
  */
 ve.dm.Node.prototype.getOuterLength = function () {
 	return this.length + ( this.isWrapped() ? 2 : 0 );
@@ -190,9 +198,9 @@ ve.dm.Node.prototype.getOuterRange = function () {
  * Sets the inner length.
  *
  * @method
- * @param {Number} length Length of content
+ * @param {number} length Length of content
  * @throws Invalid content length error if length is less than 0
- * @emits lengthChange (diff)
+ * @emits lengthChange
  * @emits update
  */
 ve.dm.Node.prototype.setLength = function ( length ) {
@@ -216,7 +224,7 @@ ve.dm.Node.prototype.setLength = function ( length ) {
  * Adjust the length.
  *
  * @method
- * @param {Number} adjustment Amount to adjust length by
+ * @param {number} adjustment Amount to adjust length by
  * @throws Invalid adjustment error if resulting length is less than 0
  * @emits lengthChange (diff)
  * @emits update
@@ -231,7 +239,7 @@ ve.dm.Node.prototype.adjustLength = function ( adjustment ) {
  * If this node has no parent than the result will always be 0.
  *
  * @method
- * @returns {Number} Offset of node
+ * @returns {number} Offset of node
  */
 ve.dm.Node.prototype.getOffset = function () {
 	return this.root === this ? 0 : this.root.getOffsetFromNode( this );
@@ -255,7 +263,7 @@ ve.dm.Node.prototype.getAttribute = function ( key ) {
  * Values are by reference if array or object, similar to using the getAttribute method.
  *
  * @method
- * @param {String} prefix Only return attributes with this prefix, and remove the prefix from them
+ * @param {string} prefix Only return attributes with this prefix, and remove the prefix from them
  * @returns {Object} Attributes
  */
 ve.dm.Node.prototype.getAttributes = function ( prefix ) {
@@ -282,8 +290,8 @@ ve.dm.Node.prototype.getAttributes = function ( prefix ) {
  *
  * @method
  * @param {String[]|Object} attributes Array of keys or object of keys and values
- * @param {Boolean} strict Use strict comparison when checking if values match
- * @returns {Boolean} Node has attributes
+ * @param {boolean} strict Use strict comparison when checking if values match
+ * @returns {boolean} Node has attributes
  */
 ve.dm.Node.prototype.hasAttributes = function ( attributes, strict ) {
 	var key, i, len,
@@ -330,7 +338,7 @@ ve.dm.Node.prototype.getClonedElement = function () {
  *
  * @method
  * @param {ve.dm.Node} node Node to consider merging with
- * @returns {Boolean} Nodes can be merged
+ * @returns {boolean} Nodes can be merged
  */
 ve.dm.Node.prototype.canBeMergedWith = function ( node ) {
 	var n1 = this,

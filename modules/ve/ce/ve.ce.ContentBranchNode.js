@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor content editable ContentBranchNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -8,11 +8,10 @@
 /**
  * ContentEditable node that has content nodes as its children.
  *
- * @class
  * @abstract
+ * @extends ve.ce.BranchNode
  * @constructor
- * @extends {ve.ce.BranchNode}
- * @param {String} type Symbolic name of node type
+ * @param {string} type Symbolic name of node type
  * @param {ve.dm.BranchNode} model Model to observe
  * @param {jQuery} [$element] Element to use as a container
  */

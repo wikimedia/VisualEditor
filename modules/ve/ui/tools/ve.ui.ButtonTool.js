@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor user interface ButtonTool class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -10,8 +10,8 @@
  *
  * @abstract
  * @class
+ * @extends ve.ui.Tool
  * @constructor
- * @extends {ve.ui.Tool}
  * @param {ve.ui.Toolbar} toolbar
  */
 ve.ui.ButtonTool = function VeUiButtonTool( toolbar ) {
@@ -90,7 +90,7 @@ ve.ui.ButtonTool.prototype.onClearState = function () {
  * Checks if this button is active.
  *
  * @method
- * @param {Boolean} Button is active
+ * @param {boolean} Button is active
  */
 ve.ui.ButtonTool.prototype.isActive = function () {
 	return this.active;
@@ -100,7 +100,7 @@ ve.ui.ButtonTool.prototype.isActive = function () {
  * Makes button appear active or inactive.
  *
  * @method
- * @param {Boolean} state Make button appear active
+ * @param {boolean} state Make button appear active
  */
 ve.ui.ButtonTool.prototype.setActive = function ( state ) {
 	this.active = !!state;
@@ -115,7 +115,7 @@ ve.ui.ButtonTool.prototype.setActive = function ( state ) {
  * Checks if this button is disabled.
  *
  * @method
- * @param {Boolean} Button is disabled
+ * @param {boolean} Button is disabled
  */
 ve.ui.ButtonTool.prototype.isDisabled = function () {
 	return this.disabled;
@@ -127,7 +127,7 @@ ve.ui.ButtonTool.prototype.isDisabled = function () {
  * This will change the button's appearance and prevent the {onClick} from being called.
  *
  * @method
- * @param {Boolean} state Disable button
+ * @param {boolean} state Disable button
  */
 ve.ui.ButtonTool.prototype.setDisabled = function ( state ) {
 	this.disabled = !!state;

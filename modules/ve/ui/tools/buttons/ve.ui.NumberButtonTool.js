@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor user interface NumberListButtonTool class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * Creates an ve.ui.NumberButtonTool object.
  *
  * @class
+ * @extends ve.ui.ListButtonTool
  * @constructor
- * @extends {ve.ui.ListButtonTool}
  * @param {ve.ui.Toolbar} toolbar
  */
 ve.ui.NumberButtonTool = function VeUiNumberListButtonTool( toolbar ) {

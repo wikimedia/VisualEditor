@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor content editable PreformattedNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * ContentEditable node for preformatted content.
  *
  * @class
+ * @extends ve.ce.BranchNode
  * @constructor
- * @extends {ve.ce.BranchNode}
  * @param {ve.dm.PreformattedNode} model Model to observe
  */
 ve.ce.PreformattedNode = function VeCePreformattedNode( model ) {
@@ -29,7 +29,7 @@ ve.inheritClass( ve.ce.PreformattedNode, ve.ce.ContentBranchNode );
  *
  * @see ve.ce.NodeFactory
  * @static
- * @member
+ * @property
  */
 ve.ce.PreformattedNode.rules = {
 	'canBeSplit': true

@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor IndentationAction class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * Indentation action.
  *
  * @class
+ * @extends ve.Action
  * @constructor
- * @extends {ve.Action}
  * @param {ve.Surface} surface Surface to act on
  */
 ve.IndentationAction = function VeIndentationAction( surface ) {
@@ -28,7 +28,7 @@ ve.inheritClass( ve.IndentationAction, ve.Action );
  * List of allowed methods for this action.
  *
  * @static
- * @member
+ * @property
  */
 ve.IndentationAction.static.methods = ['increase', 'decrease'];
 
@@ -40,7 +40,7 @@ ve.IndentationAction.static.methods = ['increase', 'decrease'];
  * TODO: Refactor functionality into {ve.dm.SurfaceFragment}.
  *
  * @method
- * @returns {Boolean} Indentation increase occured
+ * @returns {boolean} Indentation increase occured
  */
 ve.IndentationAction.prototype.increase = function () {
 	var i, group,
@@ -78,7 +78,7 @@ ve.IndentationAction.prototype.increase = function () {
  * TODO: Refactor functionality into {ve.dm.SurfaceFragment}.
  *
  * @method
- * @returns {Boolean} Indentation decrease occured
+ * @returns {boolean} Indentation decrease occured
  */
 ve.IndentationAction.prototype.decrease = function () {
 	var i, group,

@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor Registry class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -8,10 +8,9 @@
 /**
  * Generic object factory.
  *
- * @class
  * @abstract
+ * @extends ve.EventEmitter
  * @constructor
- * @extends {ve.EventEmitter}
  */
 ve.Registry = function VeRegistry() {
 	// Parent constructor
@@ -56,7 +55,7 @@ ve.Registry.prototype.register = function ( name, data ) {
  * Gets data for a given symbolic name.
  *
  * @method
- * @param {String} name Symbolic name
+ * @param {string} name Symbolic name
  * @returns {Mixed|undefined} Data associated with symbolic name
  */
 ve.Registry.prototype.lookup = function ( name ) {

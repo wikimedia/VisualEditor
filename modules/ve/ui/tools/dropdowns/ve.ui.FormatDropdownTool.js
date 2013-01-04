@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor user interface FormatDropdownTool class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * Creates an ve.ui.FormatDropdownTool object.
  *
  * @class
+ * @extends ve.ui.DropdownTool
  * @constructor
- * @extends {ve.ui.DropdownTool}
  * @param {ve.ui.Toolbar} toolbar
  */
 ve.ui.FormatDropdownTool = function VeUiFormatDropdownTool( toolbar ) {
@@ -94,8 +94,8 @@ ve.ui.FormatDropdownTool.prototype.onSelect = function ( item ) {
  *
  * @method
  * @param {ve.dm.Node[]} nodes List of nodes covered by the current selection
- * @param {ve.dm.AnnotationSet} full Annotations that cover all of the current selection
- * @param {ve.dm.AnnotationSet} partial Annotations that cover some or all of the current selection
+ * @param {ve.AnnotationSet} full Annotations that cover all of the current selection
+ * @param {ve.AnnotationSet} partial Annotations that cover some or all of the current selection
  */
 ve.ui.FormatDropdownTool.prototype.onUpdateState = function ( nodes ) {
 	var i, nodesLength, node, j, itemsLength, item,

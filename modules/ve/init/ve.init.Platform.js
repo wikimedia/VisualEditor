@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor initialization Target class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -8,10 +8,9 @@
 /**
  * Generic platform.
  *
- * @class
  * @abstract
+ * @extends ve.EventEmitter
  * @constructor
- * @extends {ve.EventEmitter}
  */
 ve.init.Platform = function VeInitPlatform() {
 	// Parent constructor
@@ -40,7 +39,7 @@ ve.init.Platform.prototype.getExternalLinkUrlProtocolsRegExp = function () {
  *
  * @method
  * @abstract
- * @returns {String} Remote modules URL
+ * @returns {string} Remote modules URL
  */
 ve.init.Platform.prototype.getModulesUrl = function () {
 	throw new Error( 've.init.Platform.getModulesUrl must be overridden in subclass' );
@@ -50,7 +49,7 @@ ve.init.Platform.prototype.getModulesUrl = function () {
  * Whether to use change markers
  *
  * @method
- * @returns {Boolean}
+ * @returns {boolean}
  */
 ve.init.Platform.prototype.useChangeMarkers = function () {
 	return true;
@@ -72,9 +71,9 @@ ve.init.Platform.prototype.addMessages = function () {
  *
  * @method
  * @abstract
- * @param {String} key Message key
- * @param {Mixed} [...] List of arguments which will be injected at $1, $2, etc. in the messaage
- * @returns {String} Localized message
+ * @param {string} key Message key
+ * @param {Mixed...} [args] List of arguments which will be injected at $1, $2, etc. in the messaage
+ * @returns {string} Localized message
  */
 ve.init.Platform.prototype.getMessage = function () {
 	throw new Error( 've.init.Platform.getMessage must be overridden in subclass' );
@@ -97,8 +96,8 @@ ve.init.Platform.prototype.addParsedMessages = function () {
  *
  * @method
  * @abstract
- * @param {String} key Message key
- * @returns {String} Parsed localized message as HTML string.
+ * @param {string} key Message key
+ * @returns {string} Parsed localized message as HTML string.
  */
 ve.init.Platform.prototype.getParsedMessage = function () {
 	throw new Error( 've.init.Platform.getParsedMessage must be overridden in subclass' );
