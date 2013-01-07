@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor data model DocumentSlice class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -8,10 +8,9 @@
 /**
  * Document slice.
  *
- * @class
  * @abstract
+ * @extends ve.Node
  * @constructor
- * @extends {ve.Node}
  * @param {Array} data Balanced sliced data (will be deep copied internally)
  * @param {ve.Range} [range] Original context within data
  */

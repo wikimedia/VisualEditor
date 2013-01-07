@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor user interface ClearButtonTool class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * Creates an ve.ui.ClearButtonTool object.
  *
  * @class
+ * @extends ve.ui.ButtonTool
  * @constructor
- * @extends {ve.ui.ButtonTool}
  * @param {ve.ui.Toolbar} toolbar
  */
 ve.ui.ClearButtonTool = function VeUiClearButtonTool( toolbar ) {
@@ -47,8 +47,8 @@ ve.ui.ClearButtonTool.prototype.onClick = function () {
  *
  * @method
  * @param {ve.dm.Node[]} nodes List of nodes covered by the current selection
- * @param {ve.dm.AnnotationSet} full Annotations that cover all of the current selection
- * @param {ve.dm.AnnotationSet} partial Annotations that cover some or all of the current selection
+ * @param {ve.AnnotationSet} full Annotations that cover all of the current selection
+ * @param {ve.AnnotationSet} partial Annotations that cover some or all of the current selection
  */
 ve.ui.ClearButtonTool.prototype.onUpdateState = function ( nodes, full, partial ) {
 	this.setDisabled( partial.isEmpty() );

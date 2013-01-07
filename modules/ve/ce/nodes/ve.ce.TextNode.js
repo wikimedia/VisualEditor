@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor content editable TextNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * ContentEditable node for text.
  *
  * @class
+ * @extends ve.ce.LeafNode
  * @constructor
- * @extends {ve.ce.LeafNode}
  * @param {ve.dm.TextNode} model Model to observe
  */
 ve.ce.TextNode = function VeCeTextNode( model ) {
@@ -29,7 +29,7 @@ ve.inheritClass( ve.ce.TextNode, ve.ce.LeafNode );
  *
  * @see ve.ce.NodeFactory
  * @static
- * @member
+ * @property
  */
 ve.ce.TextNode.rules = {
 	'canBeSplit': true
@@ -39,7 +39,7 @@ ve.ce.TextNode.rules = {
  * Mapping of character and HTML entities or renderings.
  *
  * @static
- * @member
+ * @property
  */
 ve.ce.TextNode.htmlCharacters = {
 	'&': '&amp;',

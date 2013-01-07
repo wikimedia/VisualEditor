@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor content editable ListNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * ContentEditable node for a list.
  *
  * @class
+ * @extends ve.ce.BranchNode
  * @constructor
- * @extends {ve.ce.BranchNode}
  * @param {ve.dm.ListNode} model Model to observe
  */
 ve.ce.ListNode = function VeCeListNode( model ) {
@@ -32,7 +32,7 @@ ve.inheritClass( ve.ce.ListNode, ve.ce.BranchNode );
  *
  * @see ve.ce.NodeFactory
  * @static
- * @member
+ * @property
  */
 ve.ce.ListNode.rules = {
 	'canBeSplit': false
@@ -42,7 +42,7 @@ ve.ce.ListNode.rules = {
  * Mapping of list style values and DOM wrapper element types.
  *
  * @static
- * @member
+ * @property
  */
 ve.ce.ListNode.domWrapperElementTypes = {
 	'bullet': 'ul',

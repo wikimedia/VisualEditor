@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor Factory class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -8,10 +8,9 @@
 /**
  * Generic object factory.
  *
- * @class
  * @abstract
+ * @extends ve.Registry
  * @constructor
- * @extends {ve.Registry}
  */
 ve.Factory = function VeFactory() {
 	// Parent constructor
@@ -33,7 +32,7 @@ ve.inheritClass( ve.Factory, ve.Registry );
  * @method
  * @param {String|String[]} name Symbolic name or list of symbolic names
  * @param {Function} constructor Constructor to use when creating object
- * @throws 'constructor must be a function'
+ * @throws {Error} Constructor must be a function
  */
 ve.Factory.prototype.register = function ( name, constructor ) {
 	if ( typeof constructor !== 'function' ) {
@@ -50,9 +49,9 @@ ve.Factory.prototype.register = function ( name, constructor ) {
  *
  * @method
  * @param {string} name Object name.
- * @param {mixed} [...] Arguments to pass to the constructor.
+ * @param {Mixed...} [args] Arguments to pass to the constructor.
  * @returns {Object} The new object.
- * @throws 'Unknown object name'
+ * @throws {Error} Unknown object name
  */
 ve.Factory.prototype.create = function ( name ) {
 	var args, obj,

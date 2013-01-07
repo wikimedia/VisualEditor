@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor user interface Inspector class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * Creates an ve.ui.Inspector object.
  *
  * @class
+ * @extends ve.EventEmitter
  * @constructor
- * @extends {ve.EventEmitter}
  * @param {ve.ui.Context} context
  */
 ve.ui.Inspector = function VeUiInspector( context ) {
@@ -148,7 +148,7 @@ ve.ui.Inspector.prototype.onOpen = function () {
  * This is when an inspector would apply any changes made in the form to the selection.
  *
  * @method
- * @param {Boolean} accept Changes to the form should be applied
+ * @param {boolean} accept Changes to the form should be applied
  */
 ve.ui.Inspector.prototype.onClose = function () {
 	// This is a stub, override functionality in child classes

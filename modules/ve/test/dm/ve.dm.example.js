@@ -1,13 +1,18 @@
-/**
+/*!
  * VisualEditor data model example data sets.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-/* Static Members */
-
+/**
+ * @class
+ * @singleton
+ * @ignore
+ */
 ve.dm.example = {};
+
+/* Methods */
 
 /**
  * Convert arrays of shorthand annotations in a data fragment to AnnotationSets with real
@@ -19,6 +24,7 @@ ve.dm.example = {};
  * The actual storage format has an instance of ve.dm.LinkAnnotation instead of the plain object,
  * and an instance of ve.AnnotationSet instead of the array.
  *
+ * @method
  * @param {Array} data Linear model data. Will be modified.
  */
 ve.dm.example.preprocessAnnotations = function ( data ) {
@@ -33,6 +39,7 @@ ve.dm.example.preprocessAnnotations = function ( data ) {
 
 /**
  * Create an annotation object from shorthand notation.
+ * @method
  * @param {Object} annotation Plain object with type, data, htmlTagName and htmlAttributes properties
  * @return {ve.dm.Annotation} Instance of the right ve.dm.Annotation subclass
  */
@@ -53,6 +60,7 @@ ve.dm.example.createAnnotation = function ( annotation ) {
  * This calls ve.dm.example.createAnnotation() for each element and puts the result in an
  * AnnotationSet.
  *
+ * @method
  * @param {Array} annotations Array of annotations in shorthand format
  * @return {ve.AnnotationSet}
  */
@@ -119,15 +127,15 @@ ve.dm.example.html =
  *
  * There are three types of components in content data:
  *
- *     {String} Plain text character
+ *     {string} Plain text character
  *
  *     {Array} Annotated character
- *         0: {String} Character
+ *         0: {string} Character
  *         1: {Object} List of references to immutable annotation objects, keyed by JSON
  *            serializations of their values (hashes)
  *
  *     {Object} Opening or closing structural element
- *         type: {String} Symbolic node type name, if closing element first character will be "/"
+ *         type: {string} Symbolic node type name, if closing element first character will be "/"
  *         [attributes]: {Object} List of symbolic attribute name and literal value pairs
  */
 ve.dm.example.data = [

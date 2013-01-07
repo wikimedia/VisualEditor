@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor data model Surface class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * DataModel surface.
  *
  * @class
+ * @extends ve.EventEmitter
  * @constructor
- * @extends {ve.EventEmitter}
  * @param {ve.dm.Document} doc Document model to create surface for
  */
 ve.dm.Surface = function VeDmSurface( doc ) {
@@ -167,7 +167,7 @@ ve.dm.Surface.prototype.removeInsertionAnnotation = function ( annotation ) {
  * Checks if there is a state to redo.
  *
  * @method
- * @returns {Boolean} Has a future state
+ * @returns {boolean} Has a future state
  */
 ve.dm.Surface.prototype.hasFutureState = function() {
 	return this.undoIndex > 0;
@@ -177,7 +177,7 @@ ve.dm.Surface.prototype.hasFutureState = function() {
  * Checks if there is a state to undo.
  *
  * @method
- * @returns {Boolean} Has a past state
+ * @returns {boolean} Has a past state
  */
 ve.dm.Surface.prototype.hasPastState = function() {
 	return this.bigStack.length - this.undoIndex > 0;
@@ -208,7 +208,7 @@ ve.dm.Surface.prototype.getSelection = function () {
  *
  * @method
  * @param {ve.Range} [range] Range within target document, current selection used by default
- * @param {Boolean} [noAutoSelect] Don't update the surface's selection when making changes
+ * @param {boolean} [noAutoSelect] Don't update the surface's selection when making changes
  */
 ve.dm.Surface.prototype.getFragment = function ( range, noAutoSelect ) {
 	return new ve.dm.SurfaceFragment( this, range || this.selection, noAutoSelect );

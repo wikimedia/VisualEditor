@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor data model Transaction class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -26,7 +26,7 @@ ve.dm.Transaction = function VeDmTransaction() {
  * @static
  * @method
  * @param {ve.dm.Document} doc Document to create transaction for
- * @param {Number} offset Offset to insert at
+ * @param {number} offset Offset to insert at
  * @param {Array} data Data to insert
  * @returns {ve.dm.Transaction} Transcation that inserts data
  */
@@ -48,23 +48,25 @@ ve.dm.Transaction.newFromInsertion = function ( doc, offset, insertion ) {
  * Generates a transaction which removes data from a given range.
  *
  * There are three possible results from a removal:
- *    1. Remove content only
- *       - Occurs when the range starts and ends on elements of different type, depth or ancestry
- *    2. Remove entire elements and their content
- *       - Occurs when the range spans across an entire element
- *    3. Merge two elements by removing the end of one and the beginning of another
- *       - Occurs when the range starts and ends on elements of similar type, depth and ancestry
+ *
+ * - Remove content only
+ *    - Occurs when the range starts and ends on elements of different type, depth or ancestry
+ * - Remove entire elements and their content
+ *    - Occurs when the range spans across an entire element
+ * - Merge two elements by removing the end of one and the beginning of another
+ *    - Occurs when the range starts and ends on elements of similar type, depth and ancestry
  *
  * This function uses the following logic to decide what to actually remove:
- *     1. Elements are only removed if range being removed covers the entire element
- *     2. Elements can only be merged if ve.dm.Node.canBeMergedWith() returns true
- *     3. Merges take place at the highest common ancestor
+ *
+ * 1. Elements are only removed if range being removed covers the entire element
+ * 2. Elements can only be merged if {@link ve.dm.Node#canBeMergedWith} returns true
+ * 3. Merges take place at the highest common ancestor
  *
  * @method
  * @param {ve.dm.Document} doc Document to create transaction for
  * @param {ve.Range} range Range of data to remove
  * @returns {ve.dm.Transaction} Transcation that removes data
- * @throws 'Invalid range, cannot remove from {range.start} to {range.end}'
+ * @throws {Error} Invalid range
  */
 ve.dm.Transaction.newFromRemoval = function ( doc, range ) {
 	var i, selection, first, last, nodeStart, nodeEnd,
@@ -159,12 +161,12 @@ ve.dm.Transaction.newFromRemoval = function ( doc, range ) {
  * @static
  * @method
  * @param {ve.dm.Document} doc Document to create transaction for
- * @param {Number} offset Offset of element
- * @param {String} key Attribute name
+ * @param {number} offset Offset of element
+ * @param {string} key Attribute name
  * @param {Mixed} value New value, or undefined to remove the attribute
  * @returns {ve.dm.Transaction} Transcation that changes an element
- * @throws 'Cannot set attributes to non-element data'
- * @throws 'Cannot set attributes on closing element'
+ * @throws {Error} Cannot set attributes to non-element data
+ * @throws {Error} Cannot set attributes on closing element
  */
 ve.dm.Transaction.newFromAttributeChange = function ( doc, offset, key, value ) {
 	var tx = new ve.dm.Transaction(),
@@ -195,9 +197,9 @@ ve.dm.Transaction.newFromAttributeChange = function ( doc, offset, key, value ) 
  * @method
  * @param {ve.dm.Document} doc Document to create transaction for
  * @param {ve.Range} range Range to annotate
- * @param {String} method Annotation mode
- *     'set': Adds annotation to all content in range
- *     'clear': Removes instances of annotation from content in range
+ * @param {string} method Annotation mode
+ *  - `set`: Adds annotation to all content in range
+ *  - `clear`: Removes instances of annotation from content in range
  * @param {Object} annotation Annotation to set or clear
  * @returns {ve.dm.Transaction} Transaction that annotates content
  */
@@ -262,7 +264,7 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
  * @method
  * @param {ve.dm.Document} doc Document to create transaction for
  * @param {ve.Range} range Range to convert
- * @param {String} type Symbolic name of element type to convert to
+ * @param {string} type Symbolic name of element type to convert to
  * @param {Object} attr Attributes to initialize element with
  * @returns {ve.dm.Transaction} Transaction that converts content branches
  */
@@ -330,25 +332,25 @@ ve.dm.Transaction.newFromContentBranchConversion = function ( doc, range, type, 
  * ask it to do. We'll probably fix this later but for now the caller is responsible for giving
  * valid instructions.
  *
- * @param {ve.dm.Document} doc Document to generate a transaction for
- * @param {ve.Range} range Range to wrap/unwrap/replace around
- * @param {Array} unwrapOuter Array of opening elements to unwrap. These must be immediately *outside* the range.
- * @param {Array} wrapOuter Array of opening elements to wrap around the range.
- * @param {Array} unwrapEach Array of opening elements to unwrap from each top-level element in the range.
- * @param {Array} wrapEach Array of opening elements to wrap around each top-level element in the range.
- * @returns {ve.dm.Transaction}
- *
- * @example Changing a paragraph to a header:
+ * Changing a paragraph to a header:
  *     Before: [ {'type': 'paragraph'}, 'a', 'b', 'c', {'type': '/paragraph'} ]
  *     newFromWrap( new ve.Range( 1, 4 ), [ {'type': 'paragraph'} ], [ {'type': 'heading', 'level': 1 } ] );
  *     After: [ {'type': 'heading', 'level': 1 }, 'a', 'b', 'c', {'type': '/heading'} ]
  *
- * @example Changing a set of paragraphs to a list:
+ * Changing a set of paragraphs to a list:
  *     Before: [ {'type': 'paragraph'}, 'a', {'type': '/paragraph'}, {'type':'paragraph'}, 'b', {'type':'/paragraph'} ]
  *     newFromWrap( new ve.Range( 0, 6 ), [], [ {'type': 'list' } ], [], [ {'type': 'listItem', 'attributes': {'styles': ['bullet']}} ] );
  *     After: [ {'type': 'list'}, {'type': 'listItem', 'attributes': {'styles': ['bullet']}}, {'type':'paragraph'} 'a',
  *              {'type': '/paragraph'}, {'type': '/listItem'}, {'type': 'listItem', 'attributes': {'styles': ['bullet']}},
  *              {'type': 'paragraph'}, 'b', {'type': '/paragraph'}, {'type': '/listItem'}, {'type': '/list'} ]
+ *
+ * @param {ve.dm.Document} doc Document to generate a transaction for
+ * @param {ve.Range} range Range to wrap/unwrap/replace around
+ * @param {Array} unwrapOuter Oopening elements to unwrap. These must be immediately *outside* the range.
+ * @param {Array} wrapOuter Opening elements to wrap around the range.
+ * @param {Array} unwrapEach Opening elements to unwrap from each top-level element in the range.
+ * @param {Array} wrapEach Opening elements to wrap around each top-level element in the range.
+ * @returns {ve.dm.Transaction}
  */
 ve.dm.Transaction.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, unwrapEach, wrapEach ) {
 	var i, j, unwrapOuterData, startOffset, unwrapEachData, closingUnwrapEach, closingWrapEach,
@@ -462,7 +464,7 @@ ve.dm.Transaction.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, u
  * with identical content, but such transactions probably should not be created in the first place.
  *
  * @method
- * @returns {Boolean} Transaction is no-op
+ * @returns {boolean} Transaction is no-op
  */
 ve.dm.Transaction.prototype.isNoOp = function () {
 	return (
@@ -485,7 +487,7 @@ ve.dm.Transaction.prototype.getOperations = function () {
  * Checks if this transaction has operations of a given type.
  *
  * @method
- * @returns {Boolean} Has operations of a given type
+ * @returns {boolean} Has operations of a given type
  */
 ve.dm.Transaction.prototype.hasOperationWithType = function ( type ) {
 	var i, len;
@@ -501,7 +503,7 @@ ve.dm.Transaction.prototype.hasOperationWithType = function ( type ) {
  * Checks if this transaction has content data operations, such as insertion or deletion.
  *
  * @method
- * @returns {Boolean} Has content data operations
+ * @returns {boolean} Has content data operations
  */
 ve.dm.Transaction.prototype.hasContentDataOperations = function () {
 	return this.hasOperationWithType( 'replace' );
@@ -511,7 +513,7 @@ ve.dm.Transaction.prototype.hasContentDataOperations = function () {
  * Checks if this transaction has element attribute operations.
  *
  * @method
- * @returns {Boolean} Has element attribute operations
+ * @returns {boolean} Has element attribute operations
  */
 ve.dm.Transaction.prototype.hasElementAttributeOperations = function () {
 	return this.hasOperationWithType( 'attribute' );
@@ -521,7 +523,7 @@ ve.dm.Transaction.prototype.hasElementAttributeOperations = function () {
  * Checks if this transaction has annotation operations.
  *
  * @method
- * @returns {Boolean} Has annotation operations
+ * @returns {boolean} Has annotation operations
  */
 ve.dm.Transaction.prototype.hasAnnotationOperations = function () {
 	return this.hasOperationWithType( 'annotate' );
@@ -531,7 +533,7 @@ ve.dm.Transaction.prototype.hasAnnotationOperations = function () {
  * Gets the difference in content length this transaction will cause if applied.
  *
  * @method
- * @returns {Number} Difference in content length
+ * @returns {number} Difference in content length
  */
 ve.dm.Transaction.prototype.getLengthDifference = function () {
 	return this.lengthDifference;
@@ -545,7 +547,7 @@ ve.dm.Transaction.prototype.getLengthDifference = function () {
  * committed, and true if the transaction can be rolled back.
  *
  * @method
- * @returns {Boolean}
+ * @returns {boolean}
  */
 ve.dm.Transaction.prototype.hasBeenApplied = function () {
 	return this.applied;
@@ -554,7 +556,7 @@ ve.dm.Transaction.prototype.hasBeenApplied = function () {
 /**
  * Toggle the 'applied' state of this transaction. Should only be called after committing or
  * rolling back the transaction.
- * @see {ve.dm.Transaction.prototype.hasBeenApplied}
+ * @see ve.dm.Transaction#hasBeenApplied
  */
 ve.dm.Transaction.prototype.toggleApplied = function () {
 	this.applied = !this.applied;
@@ -567,8 +569,8 @@ ve.dm.Transaction.prototype.toggleApplied = function () {
  * processed.
  *
  * @method
- * @param {Number} offset Offset in the linear model before the transaction has been processed
- * @returns {Number} Translated offset, as it will be after processing transaction
+ * @param {number} offset Offset in the linear model before the transaction has been processed
+ * @returns {number} Translated offset, as it will be after processing transaction
  */
 ve.dm.Transaction.prototype.translateOffset = function ( offset, reversed ) {
 	var i, cursor = 0, adjustment = 0, op, insertLength, removeLength;
@@ -603,7 +605,7 @@ ve.dm.Transaction.prototype.translateOffset = function ( offset, reversed ) {
  * processed.
  *
  * @method
- * @see {translateOffset}
+ * @see #translateOffset
  * @param {ve.Range} range Range in the linear model before the transaction has been processed
  * @returns {ve.Range} Translated range, as it will be after processing transaction
  */
@@ -615,8 +617,8 @@ ve.dm.Transaction.prototype.translateRange = function ( range, reversed ) {
  * Adds a retain operation.
  *
  * @method
- * @param {Number} length Length of content data to retain
- * @throws 'Invalid retain length, cannot retain backwards: {length}'
+ * @param {number} length Length of content data to retain
+ * @throws {Error} Cannot retain backwards.
  */
 ve.dm.Transaction.prototype.pushRetain = function ( length ) {
 	if ( length < 0 ) {
@@ -640,7 +642,7 @@ ve.dm.Transaction.prototype.pushRetain = function ( length ) {
  *
  * @method
  * @param {Array} remove Data to remove
- * @param {Array] insert Data to replace 'remove' with
+ * @param {Array} insert Data to replace 'remove' with
  */
 ve.dm.Transaction.prototype.pushReplace = function ( remove, insert ) {
 	if ( remove.length === 0 && insert.length === 0 ) {
@@ -659,7 +661,7 @@ ve.dm.Transaction.prototype.pushReplace = function ( remove, insert ) {
  * Adds an element attribute change operation.
  *
  * @method
- * @param {String} key Name of attribute to change
+ * @param {string} key Name of attribute to change
  * @param {Mixed} from Value change attribute from, or undefined if not previously set
  * @param {Mixed} to Value to change attribute to, or undefined to remove
  */
@@ -676,7 +678,7 @@ ve.dm.Transaction.prototype.pushReplaceElementAttribute = function ( key, from, 
  * Adds a start annotating operation.
  *
  * @method
- * @param {String} method Method to use, either "set" or "clear"
+ * @param {string} method Method to use, either "set" or "clear"
  * @param {Object} annotation Annotation object to start setting or clearing from content data
  */
 ve.dm.Transaction.prototype.pushStartAnnotating = function ( method, annotation ) {
@@ -692,7 +694,7 @@ ve.dm.Transaction.prototype.pushStartAnnotating = function ( method, annotation 
  * Adds a stop annotating operation.
  *
  * @method
- * @param {String} method Method to use, either "set" or "clear"
+ * @param {string} method Method to use, either "set" or "clear"
  * @param {Object} annotation Annotation object to stop setting or clearing from content data
  */
 ve.dm.Transaction.prototype.pushStopAnnotating = function ( method, annotation ) {
@@ -738,9 +740,9 @@ ve.dm.Transaction.prototype.getChangeMarkers = function () {
  * unsetting it. This is because the same event can occur multiple times for the same element, and
  * we want to be able to keep track of whether all the changes have canceled each other out.
  *
- * @param {Number} offset Linear model offset (post-transaction) of the element to mark
- * @param {String} marker Marker type
- * @param {Number} [increment=1] Number to add to the change marker counter
+ * @param {number} offset Linear model offset (post-transaction) of the element to mark
+ * @param {string} marker Marker type
+ * @param {number} [increment=1] Number to add to the change marker counter
  */
 ve.dm.Transaction.prototype.setChangeMarker = function ( offset, marker, increment ) {
 	increment = increment || 1;

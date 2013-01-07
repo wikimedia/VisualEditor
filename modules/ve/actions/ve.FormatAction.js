@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor FormatAction class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * Format action.
  *
  * @class
+ * @extends ve.Action
  * @constructor
- * @extends {ve.Action}
  * @param {ve.Surface} surface Surface to act on
  */
 ve.FormatAction = function VeFormatAction( surface ) {
@@ -28,7 +28,7 @@ ve.inheritClass( ve.FormatAction, ve.Action );
  * List of allowed methods for this action.
  *
  * @static
- * @member
+ * @property
  */
 ve.FormatAction.static.methods = ['convert'];
 
@@ -41,7 +41,7 @@ ve.FormatAction.static.methods = ['convert'];
  *
  * TODO: Refactor functionality into {ve.dm.SurfaceFragment}.
  *
- * @param {String} type
+ * @param {string} type
  * @param {Object} attributes
  */
 ve.FormatAction.prototype.convert = function ( type, attributes ) {

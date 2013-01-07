@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor data model TransactionProcessor class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -36,17 +36,9 @@ ve.dm.TransactionProcessor = function VeDmTransactionProcessor( doc, transaction
 	this.clear = new ve.AnnotationSet();
 };
 
-/* Static Members */
+/* Static members */
 
-/**
- * Processing methods.
- *
- * Each method is specific to a type of action. Methods are called in the context of a transaction
- * processor, so they work similar to normal methods on the object.
- *
- * @static
- * @member
- */
+/* See ve.dm.TransactionProcessor.processors */
 ve.dm.TransactionProcessor.processors = {};
 
 /* Static methods */
@@ -81,6 +73,206 @@ ve.dm.TransactionProcessor.rollback = function ( doc, transaction ) {
 	new ve.dm.TransactionProcessor( doc, transaction, true ).process();
 };
 
+/* Methods */
+
+/**
+ * Gets the next operation.
+ *
+ * @method
+ */
+ve.dm.TransactionProcessor.prototype.nextOperation = function () {
+	return this.operations[this.operationIndex++] || false;
+};
+
+/**
+ * Executes an operation.
+ *
+ * @method
+ * @param {Object} op Operation object to execute
+ * @throws {Error} Operation type is not supported.
+ */
+ve.dm.TransactionProcessor.prototype.executeOperation = function ( op ) {
+	if ( op.type in ve.dm.TransactionProcessor.processors ) {
+		ve.dm.TransactionProcessor.processors[op.type].call( this, op );
+	} else {
+		throw new Error( 'Invalid operation error. Operation type is not supported: ' + op.type );
+	}
+};
+
+/**
+ * Processes all operations.
+ *
+ * When all operations are done being processed, the document will be synchronized.
+ *
+ * @method
+ */
+ve.dm.TransactionProcessor.prototype.process = function () {
+	var op;
+	if ( this.reversed ) {
+		// Undo change markers before rolling back the transaction, because the offsets
+		// are relevant to the post-commit state
+		this.applyChangeMarkers();
+		// Unset the change markers we've just undone
+		this.transaction.clearChangeMarkers();
+	}
+
+	// This loop is factored this way to allow operations to be skipped over or executed
+	// from within other operations
+	this.operationIndex = 0;
+	while ( ( op = this.nextOperation() ) ) {
+		this.executeOperation( op );
+	}
+	this.synchronizer.synchronize();
+
+	if ( !this.reversed ) {
+		// Apply the change markers we've accumulated while processing the transaction
+		this.applyChangeMarkers();
+	}
+	// Mark the transaction as committed or rolled back, as appropriate
+	this.transaction.toggleApplied();
+};
+
+/**
+ * Apply the current annotation stacks. This will set all annotations in this.set and clear all
+ * annotations in `this.clear` on the data between the offsets `this.cursor` and `this.cursor + to`.
+ *
+ * @method
+ * @param {number} to Offset to stop annotating at. Annotating starts at this.cursor
+ * @throws {Error} Cannot annotate a branch element.
+ * @throws {Error} Annotation to be set is already set.
+ * @throws {Error} Annotation to be cleared is not set.
+ */
+ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
+	var item, element, type, annotated, annotations, i, range, selection, offset;
+	if ( this.set.isEmpty() && this.clear.isEmpty() ) {
+		return;
+	}
+	for ( i = this.cursor; i < to; i++ ) {
+		item = this.document.data[i];
+		element = item.type !== undefined;
+		if ( element ) {
+			type = item.type;
+			if ( item.type.charAt( 0 ) === '/' ) {
+				type = type.substr( 1 );
+			}
+			if ( !ve.dm.nodeFactory.isNodeContent( type ) ) {
+				throw new Error( 'Invalid transaction, cannot annotate a non-content element' );
+			}
+			if ( item.type.charAt( 0 ) === '/' ) {
+				// Closing content element, ignore
+				continue;
+			}
+		}
+		annotated = element ? 'annotations' in item : ve.isArray( item );
+		annotations = annotated ? ( element ? item.annotations : item[1] ) :
+			new ve.AnnotationSet();
+		// Set and clear annotations
+		if ( annotations.containsAnyOf( this.set ) ) {
+			throw new Error( 'Invalid transaction, annotation to be set is already set' );
+		} else {
+			annotations.addSet( this.set );
+		}
+		if ( !annotations.containsAllOf( this.clear ) ) {
+			throw new Error( 'Invalid transaction, annotation to be cleared is not set' );
+		} else {
+			annotations.removeSet( this.clear );
+		}
+		// Auto initialize/cleanup
+		if ( !annotations.isEmpty() && !annotated ) {
+			if ( element ) {
+				// Initialize new element annotation
+				item.annotations = new ve.AnnotationSet( annotations );
+			} else {
+				// Initialize new character annotation
+				this.document.data[i] = [item, new ve.AnnotationSet( annotations )];
+			}
+		} else if ( annotations.isEmpty() && annotated ) {
+			if ( element ) {
+				// Cleanup empty element annotation
+				delete item.annotations;
+			} else {
+				// Cleanup empty character annotation
+				this.document.data[i] = item[0];
+			}
+		}
+	}
+	if ( this.cursor < to ) {
+		range = new ve.Range( this.cursor, to );
+		selection = this.document.selectNodes(
+			new ve.Range(
+				this.cursor - this.adjustment,
+				to - this.adjustment
+			),
+			'leaves'
+		);
+		for ( i = 0; i < selection.length; i++ ) {
+			offset = !selection[i].node.isWrapped() && selection[i].parentOuterRange ?
+				selection[i].parentOuterRange.start :
+				selection[i].nodeOuterRange.start;
+			this.setChangeMarker( offset + this.adjustment, 'annotations' );
+		}
+		this.synchronizer.pushAnnotation( new ve.Range( this.cursor, to ) );
+	}
+};
+
+/**
+ * Set a change marker on our transaction, if we are in commit mode. This function is a no-op in
+ * rollback mode.
+ * @see ve.dm.Transaction#setChangeMarker
+ */
+ve.dm.TransactionProcessor.prototype.setChangeMarker = function ( offset, type, increment ) {
+	// Refuse to set any new change markers while reversing transactions
+	if ( !this.reversed ) {
+		this.transaction.setChangeMarker( offset, type, increment );
+	}
+};
+
+/**
+ * Apply the change markers on this.transaction to this.document . Change markers are set
+ * (incremented) in commit mode, and unset (decremented) in rollback mode.
+ */
+ve.dm.TransactionProcessor.prototype.applyChangeMarkers = function () {
+	var offset, type, previousValue, newValue, element,
+		markers = this.transaction.getChangeMarkers(),
+		m = this.reversed ? -1 : 1;
+	for ( offset in markers ) {
+		for ( type in markers[offset] ) {
+			offset = Number( offset );
+			element = this.document.data[offset];
+			previousValue = ve.getProp( element, 'internal', 'changed', type );
+			newValue = ( previousValue || 0 ) + m*markers[offset][type];
+			if ( newValue !== 0 ) {
+				ve.setProp( element, 'internal', 'changed', type, newValue );
+			} else if ( previousValue !== undefined ) {
+				// Value was set but becomes zero, delete the key
+				delete element.internal.changed[type];
+				// If that made .changed empty, delete it
+				if ( ve.isEmptyObject( element.internal.changed ) ) {
+					delete element.internal.changed;
+				}
+				// If that made .internal empty, delete it
+				if ( ve.isEmptyObject( element.internal ) ) {
+					delete element.internal;
+				}
+			}
+		}
+	}
+};
+
+
+
+
+
+/**
+ * Processing methods.
+ *
+ * Each method is specific to a type of action. Methods are called in the context of a transaction
+ * processor, so they work similar to normal methods on the object.
+ *
+ * @class ve.dm.TransactionProcessor.processors
+ * @singleton
+ */
+
 /**
  * Execute a retain operation.
  *
@@ -89,10 +281,9 @@ ve.dm.TransactionProcessor.rollback = function ( doc, transaction ) {
  * This moves the cursor by op.length and applies annotations to the characters that the cursor
  * moved over.
  *
- * @static
  * @method
  * @param {Object} op Operation object:
- * @param {Number} op.length Number of elements to retain
+ * @param {number} op.length Number of elements to retain
  */
 ve.dm.TransactionProcessor.processors.retain = function ( op ) {
 	this.applyAnnotations( this.cursor + op.length );
@@ -104,15 +295,14 @@ ve.dm.TransactionProcessor.processors.retain = function ( op ) {
  *
  * This method is called within the context of a document synchronizer instance.
  *
- * This will add an annotation to or remove an annotation from {this.set} or {this.clear}.
+ * This will add an annotation to or remove an annotation from `this.set`or `this.clear`.
  *
- * @static
  * @method
  * @param {Object} op Operation object
- * @param {String} op.method Annotation method, either 'set' to add or 'clear' to remove
- * @param {String} op.bias End point of marker, either 'start' to begin or 'stop' to end
- * @param {String} op.annotation Annotation object to set or clear from content
- * @throws 'Invalid annotation method'
+ * @param {string} op.method Annotation method, either 'set' to add or 'clear' to remove
+ * @param {string} op.bias End point of marker, either 'start' to begin or 'stop' to end
+ * @param {string} op.annotation Annotation object to set or clear from content
+ * @throws {Error} Invalid annotation method.
  */
 ve.dm.TransactionProcessor.processors.annotate = function ( op ) {
 	var target;
@@ -136,17 +326,16 @@ ve.dm.TransactionProcessor.processors.annotate = function ( op ) {
  *
  * This method is called within the context of a document synchronizer instance.
  *
- * This sets the attribute named op.key on the element at this.cursor to op.to , or unsets it if
- * op.to === undefined . op.from is not checked against the old value, but is used instead of op.to
- * in reverse mode. So if op.from is incorrect, the transaction will commit fine, but won't roll
+ * This sets the attribute named `op.key` on the element at `this.cursor` to `op.to`, or unsets it if
+ * `op.to === undefined`. `op.from `is not checked against the old value, but is used instead of `op.to`
+ * in reverse mode. So if `op.from` is incorrect, the transaction will commit fine, but won't roll
  * back correctly.
  *
- * @static
  * @method
  * @param {Object} op Operation object
- * @param {String} op.key: Attribute name
- * @param {Mixed} op.from: Old attribute value, or undefined if not previously set
- * @param {Mixed} op.to: New attribute value, or undefined to unset
+ * @param {string} op.key Attribute name
+ * @param {Mixed} op.from Old attribute value, or undefined if not previously set
+ * @param {Mixed} op.to New attribute value, or undefined to unset
  */
 ve.dm.TransactionProcessor.processors.attribute = function ( op ) {
 	var element = this.document.data[this.cursor],
@@ -190,7 +379,6 @@ ve.dm.TransactionProcessor.processors.attribute = function ( op ) {
  * op.remove is incorrect but of the right length, the transaction will commit fine, but won't roll
  * back correctly.
  *
- * @static
  * @method
  * @param {Object} op Operation object
  * @param {Array} op.remove Linear model data to remove
@@ -384,191 +572,5 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 				coveringRange.end + this.adjustment
 			)
 		);
-	}
-};
-
-/* Methods */
-
-/**
- * Gets the next operation.
- *
- * @method
- */
-ve.dm.TransactionProcessor.prototype.nextOperation = function () {
-	return this.operations[this.operationIndex++] || false;
-};
-
-/**
- * Executes an operation.
- *
- * @method
- * @param {Object} op Operation object to execute
- * @throws 'Invalid operation error. Operation type is not supported'
- */
-ve.dm.TransactionProcessor.prototype.executeOperation = function ( op ) {
-	if ( op.type in ve.dm.TransactionProcessor.processors ) {
-		ve.dm.TransactionProcessor.processors[op.type].call( this, op );
-	} else {
-		throw new Error( 'Invalid operation error. Operation type is not supported: ' + op.type );
-	}
-};
-
-/**
- * Processes all operations.
- *
- * When all operations are done being processed, the document will be synchronized.
- *
- * @method
- */
-ve.dm.TransactionProcessor.prototype.process = function () {
-	var op;
-	if ( this.reversed ) {
-		// Undo change markers before rolling back the transaction, because the offsets
-		// are relevant to the post-commit state
-		this.applyChangeMarkers();
-		// Unset the change markers we've just undone
-		this.transaction.clearChangeMarkers();
-	}
-
-	// This loop is factored this way to allow operations to be skipped over or executed
-	// from within other operations
-	this.operationIndex = 0;
-	while ( ( op = this.nextOperation() ) ) {
-		this.executeOperation( op );
-	}
-	this.synchronizer.synchronize();
-
-	if ( !this.reversed ) {
-		// Apply the change markers we've accumulated while processing the transaction
-		this.applyChangeMarkers();
-	}
-	// Mark the transaction as committed or rolled back, as appropriate
-	this.transaction.toggleApplied();
-};
-
-/**
- * Apply the current annotation stacks. This will set all annotations in this.set and clear all
- * annotations in this.clear on the data between the offsets this.cursor and this.cursor + to
- *
- * @method
- * @param {Number} to Offset to stop annotating at. Annotating starts at this.cursor
- * @throws 'Invalid transaction, cannot annotate a branch element'
- * @throws 'Invalid transaction, annotation to be set is already set'
- * @throws 'Invalid transaction, annotation to be cleared is not set'
- */
-ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
-	var item, element, type, annotated, annotations, i, range, selection, offset;
-	if ( this.set.isEmpty() && this.clear.isEmpty() ) {
-		return;
-	}
-	for ( i = this.cursor; i < to; i++ ) {
-		item = this.document.data[i];
-		element = item.type !== undefined;
-		if ( element ) {
-			type = item.type;
-			if ( item.type.charAt( 0 ) === '/' ) {
-				type = type.substr( 1 );
-			}
-			if ( !ve.dm.nodeFactory.isNodeContent( type ) ) {
-				throw new Error( 'Invalid transaction, cannot annotate a non-content element' );
-			}
-			if ( item.type.charAt( 0 ) === '/' ) {
-				// Closing content element, ignore
-				continue;
-			}
-		}
-		annotated = element ? 'annotations' in item : ve.isArray( item );
-		annotations = annotated ? ( element ? item.annotations : item[1] ) :
-			new ve.AnnotationSet();
-		// Set and clear annotations
-		if ( annotations.containsAnyOf( this.set ) ) {
-			throw new Error( 'Invalid transaction, annotation to be set is already set' );
-		} else {
-			annotations.addSet( this.set );
-		}
-		if ( !annotations.containsAllOf( this.clear ) ) {
-			throw new Error( 'Invalid transaction, annotation to be cleared is not set' );
-		} else {
-			annotations.removeSet( this.clear );
-		}
-		// Auto initialize/cleanup
-		if ( !annotations.isEmpty() && !annotated ) {
-			if ( element ) {
-				// Initialize new element annotation
-				item.annotations = new ve.AnnotationSet( annotations );
-			} else {
-				// Initialize new character annotation
-				this.document.data[i] = [item, new ve.AnnotationSet( annotations )];
-			}
-		} else if ( annotations.isEmpty() && annotated ) {
-			if ( element ) {
-				// Cleanup empty element annotation
-				delete item.annotations;
-			} else {
-				// Cleanup empty character annotation
-				this.document.data[i] = item[0];
-			}
-		}
-	}
-	if ( this.cursor < to ) {
-		range = new ve.Range( this.cursor, to );
-		selection = this.document.selectNodes(
-			new ve.Range(
-				this.cursor - this.adjustment,
-				to - this.adjustment
-			),
-			'leaves'
-		);
-		for ( i = 0; i < selection.length; i++ ) {
-			offset = !selection[i].node.isWrapped() && selection[i].parentOuterRange ?
-				selection[i].parentOuterRange.start :
-				selection[i].nodeOuterRange.start;
-			this.setChangeMarker( offset + this.adjustment, 'annotations' );
-		}
-		this.synchronizer.pushAnnotation( new ve.Range( this.cursor, to ) );
-	}
-};
-
-/**
- * Set a change marker on our transaction, if we are in commit mode. This function is a no-op in
- * rollback mode.
- * @see {ve.dm.Transaction.setChangeMarker}
- */
-ve.dm.TransactionProcessor.prototype.setChangeMarker = function ( offset, type, increment ) {
-	// Refuse to set any new change markers while reversing transactions
-	if ( !this.reversed ) {
-		this.transaction.setChangeMarker( offset, type, increment );
-	}
-};
-
-/**
- * Apply the change markers on this.transaction to this.document . Change markers are set
- * (incremented) in commit mode, and unset (decremented) in rollback mode.
- */
-ve.dm.TransactionProcessor.prototype.applyChangeMarkers = function () {
-	var offset, type, previousValue, newValue, element,
-		markers = this.transaction.getChangeMarkers(),
-		m = this.reversed ? -1 : 1;
-	for ( offset in markers ) {
-		for ( type in markers[offset] ) {
-			offset = Number( offset );
-			element = this.document.data[offset];
-			previousValue = ve.getProp( element, 'internal', 'changed', type );
-			newValue = ( previousValue || 0 ) + m*markers[offset][type];
-			if ( newValue !== 0 ) {
-				ve.setProp( element, 'internal', 'changed', type, newValue );
-			} else if ( previousValue !== undefined ) {
-				// Value was set but becomes zero, delete the key
-				delete element.internal.changed[type];
-				// If that made .changed empty, delete it
-				if ( ve.isEmptyObject( element.internal.changed ) ) {
-					delete element.internal.changed;
-				}
-				// If that made .internal empty, delete it
-				if ( ve.isEmptyObject( element.internal ) ) {
-					delete element.internal;
-				}
-			}
-		}
 	}
 };

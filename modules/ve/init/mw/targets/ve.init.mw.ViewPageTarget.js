@@ -1,6 +1,6 @@
 /*global mw, confirm, alert */
 
-/**
+/*!
  * VisualEditor MediaWiki initialization ViewPageTarget class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -11,8 +11,8 @@
  * MediaWiki Edit page target.
  *
  * @class
+ * @extends ve.init.mw.Target
  * @constructor
- * @extends {ve.init.mw.Target}
  */
 ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	var currentUri = new mw.Uri( window.location.toString() );
@@ -134,7 +134,7 @@ ve.inheritClass( ve.init.mw.ViewPageTarget, ve.init.mw.Target );
  * Compatibility map used with jQuery.client to black-list incompatible browsers.
  *
  * @static
- * @member
+ * @property
  */
 ve.init.mw.ViewPageTarget.compatibility = {
 	// Left-to-right languages
@@ -306,7 +306,7 @@ ve.init.mw.ViewPageTarget.prototype.onLoad = function ( dom ) {
  *
  * @method
  * @param {Object} data HTTP Response object
- * @param {String} status Text status message
+ * @param {string} status Text status message
  * @param {Mixed} error Thrown exception or HTTP error string
  */
 ve.init.mw.ViewPageTarget.prototype.onLoadError = function ( response, status ) {
@@ -364,7 +364,7 @@ ve.init.mw.ViewPageTarget.prototype.onSave = function ( html ) {
  *
  * @method
  * @param {Object} jqXHR
- * @param {String} status Text status message
+ * @param {string} status Text status message
  * @param {Mixed} error Thrown exception or HTTP error string
  */
 ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status ) {
@@ -406,7 +406,7 @@ ve.init.mw.ViewPageTarget.prototype.onShowChanges = function ( diffHtml ) {
  *
  * @method
  * @param {Object} jqXHR
- * @param {String} status Text status message
+ * @param {string} status Text status message
  * @param {Mixed} error Thrown exception or HTTP error string
  */
 ve.init.mw.ViewPageTarget.prototype.onShowChangesError = function ( jqXHR, status ) {
@@ -529,7 +529,7 @@ ve.init.mw.ViewPageTarget.prototype.onToolbarFeedbackToolClick = function () {
  * This handler is removed the first time it's used, but added each time the surface is setup.
  *
  * @method
- * @param {ve.Transaction} tx Processed transaction
+ * @param {ve.dm.Transaction} tx Processed transaction
  */
 ve.init.mw.ViewPageTarget.prototype.onSurfaceModelTransact = function () {
 	this.edited = true;
@@ -1585,7 +1585,7 @@ ve.init.mw.ViewPageTarget.prototype.saveEditSection = function ( heading ) {
  * Moves the cursor in the editor to a given section.
  *
  * @method
- * @param {Number} section Section to move cursor to
+ * @param {number} section Section to move cursor to
  */
 ve.init.mw.ViewPageTarget.prototype.restoreEditSection = function () {
 	if ( this.section !== null ) {

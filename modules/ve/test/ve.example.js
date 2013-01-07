@@ -1,12 +1,15 @@
-/**
+/*!
  * VisualEditor example data sets and helper functions.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-/* Static Members */
-
+/**
+ * @class
+ * @singleton
+ * @ignore
+ */
 ve.example = {};
 
 /* Methods */
@@ -479,8 +482,8 @@ ve.example.getSelectNodesCases = function ( doc ) {
  *
  * @method
  * @param {ve.Node} root Root node to lookup from
- * @param {Number} [...] Index path
- * @param {ve.Node} Node at given path
+ * @param {number...} [paths] Index path
+ * @return {ve.Node} Node at given path
  */
 ve.example.lookupNode = function ( root ) {
 	var i,

@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor user interface ItalicButtonTool class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * Creates an ve.ui.ItalicButtonTool object.
  *
  * @class
+ * @extends ve.ui.AnnotationButtonTool
  * @constructor
- * @extends {ve.ui.AnnotationButtonTool}
  * @param {ve.ui.Toolbar} toolbar
  */
 ve.ui.ItalicButtonTool = function VeUiItalicButtonTool( toolbar ) {

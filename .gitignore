@@ -1,5 +1,11 @@
-.svn
+# Editors
 *~
 *.kate-swp
 .*.swp
+sublime-*
+
+# Install and build artifacts
+/docs
+
+# OS
 .DS_Store

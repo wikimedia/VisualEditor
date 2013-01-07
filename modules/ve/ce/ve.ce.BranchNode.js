@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor content editable BranchNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -10,9 +10,10 @@
  *
  * @class
  * @abstract
+ * @extends ve.ce.Node
+ * @mixins ve.BranchNode
  * @constructor
- * @extends {ve.ce.Node}
- * @param {String} type Symbolic name of node type
+ * @param {string} type Symbolic name of node type
  * @param {ve.dm.BranchNode} model Model to observe
  * @param {jQuery} [$element] Element to use as a container
  */
@@ -40,6 +41,12 @@ ve.ce.BranchNode = function VeCeBranchNode( type, model, $element ) {
 	this.onSplice.apply( this, [0, 0].concat( model.getChildren() ) );
 };
 
+/**
+ * @event rewrap
+ * @param {jQuery} $old
+ * @param {jQuery} $new
+ */
+
 /* Inheritance */
 
 ve.inheritClass( ve.ce.BranchNode, ve.ce.Node );
@@ -64,16 +71,16 @@ ve.ce.BranchNode.$blockSlugTemplate =
 /**
  * Gets the appropriate element type for the DOM wrapper of a node.
  *
- * This method reads the {key} attribute from a {model} and looks up a type in the node's statically
- * defined {domWrapperElementTypes} member, which is a mapping of possible values of that attribute
+ * This method reads the `key` attribute from a `model` and looks up a type in the node's statically
+ * defined `domWrapperElementTypes` member, which is a mapping of possible values of that attribute
  * and DOM element types.
  *
  * @method
  * @param {ve.dm.BranchNode} model Model node is based on
- * @param {String} key Attribute name to read type value from
- * @returns {String} DOM element type for wrapper
- * @throws 'Undefined attribute' if attribute is not defined in the model
- * @throws 'Invalid attribute value' if attribute value is not a key in {domWrapperElementTypes}
+ * @param {string} key Attribute name to read type value from
+ * @returns {string} DOM element type for wrapper
+ * @throws {Error} Attribute is not defined in the model
+ * @throws {Error} Attribute value is not a key in `domWrapperElementTypes`
  */
 ve.ce.BranchNode.getDomWrapperType = function ( model, key ) {
 	var types,
@@ -91,11 +98,11 @@ ve.ce.BranchNode.getDomWrapperType = function ( model, key ) {
 /**
  * Gets a jQuery selection of a new DOM wrapper for a node.
  *
- * This method uses {getDomWrapperType} to determine the proper element type to use.
+ * This method uses #getDomWrapperType to determine the proper element type to use.
  *
  * @method
  * @param {ve.dm.BranchNode} model Model node is based on
- * @param {String} key Attribute name to read type value from
+ * @param {string} key Attribute name to read type value from
  * @returns {jQuery} Selection of DOM wrapper
  */
 ve.ce.BranchNode.getDomWrapper = function ( model, key ) {
@@ -116,8 +123,8 @@ ve.ce.BranchNode.getDomWrapper = function ( model, key ) {
  * 'rewrap' event and copy information from the {$old} wrapper the {$new} wrapper.
  *
  * @method
- * @param {String} key Attribute name to read type value from
- * @emits rewrap ($old, $new)
+ * @param {string} key Attribute name to read type value from
+ * @emits rewrap
  */
 ve.ce.BranchNode.prototype.updateDomWrapper = function ( key ) {
 	var $element,
@@ -149,9 +156,9 @@ ve.ce.BranchNode.prototype.updateDomWrapper = function ( key ) {
  * mirror of its model.
  *
  * @method
- * @param {Number} index Index to remove and or insert nodes at
- * @param {Number} howmany Number of nodes to remove
- * @param {ve.dm.BranchNode} [...] Variadic list of nodes to insert
+ * @param {number} index Index to remove and or insert nodes at
+ * @param {number} howmany Number of nodes to remove
+ * @param {ve.dm.BranchNode...} [nodes] Variadic list of nodes to insert
  */
 ve.ce.BranchNode.prototype.onSplice = function ( index ) {
 	var i,
@@ -195,6 +202,9 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
 	this.setupSlugs();
 };
 
+/**
+ * @method
+ */
 ve.ce.BranchNode.prototype.setupSlugs = function () {
 	var key, $slug, i;
 
@@ -233,6 +243,10 @@ ve.ce.BranchNode.prototype.setupSlugs = function () {
 	}
 };
 
+/**
+ * @method
+ * @param offset
+ */
 ve.ce.BranchNode.prototype.getSlugAtOffset = function ( offset ) {
 	var i,
 		startOffset = this.model.getOffset() + ( this.isWrapped() ? 1 : 0 );
@@ -250,6 +264,7 @@ ve.ce.BranchNode.prototype.getSlugAtOffset = function ( offset ) {
 
 /**
  * @method
+ * @param live
  */
 ve.ce.BranchNode.prototype.setLive = function ( live ) {
 	this.live = live;

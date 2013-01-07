@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor Node class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -8,11 +8,11 @@
 /**
  * Generic node.
  *
- * @class
  * @abstract
+ * @extends ve.EventEmitter
+ *
  * @constructor
- * @extends {ve.EventEmitter}
- * @param {String} type Symbolic name of node type
+ * @param {string} type Symbolic name of node type
  */
 ve.Node = function VeNode( type ) {
 	// Parent constructor
@@ -32,6 +32,15 @@ ve.Node = function VeNode( type ) {
 	};
 };
 
+/**
+ * @event attach
+ * @param parent
+ */
+
+/**
+ * @event detach
+ */
+
 /* Inheritance */
 
 ve.inheritClass( ve.Node, ve.EventEmitter );
@@ -43,7 +52,7 @@ ve.inheritClass( ve.Node, ve.EventEmitter );
  *
  * @method
  * @abstract
- * @returns {Boolean} Node can have children
+ * @returns {boolean} Node can have children
  * @throws {Error} if not overridden
  */
 ve.Node.prototype.canHaveChildren = function () {
@@ -55,7 +64,7 @@ ve.Node.prototype.canHaveChildren = function () {
  *
  * @method
  * @abstract
- * @returns {Boolean} Node can have grandchildren
+ * @returns {boolean} Node can have grandchildren
  * @throws {Error} if not overridden
  */
 ve.Node.prototype.canHaveGrandchildren = function () {
@@ -67,7 +76,7 @@ ve.Node.prototype.canHaveGrandchildren = function () {
  *
  * @method
  * @abstract
- * @returns {Boolean} Node represents a wrapped element
+ * @returns {boolean} Node represents a wrapped element
  * @throws {Error} if not overridden
  */
 ve.Node.prototype.isWrapped = function () {
@@ -79,7 +88,7 @@ ve.Node.prototype.isWrapped = function () {
  *
  * @method
  * @abstract
- * @returns {Number} Node length
+ * @returns {number} Node length
  * @throws {Error} if not overridden
  */
 ve.Node.prototype.getLength = function () {
@@ -91,7 +100,7 @@ ve.Node.prototype.getLength = function () {
  *
  * @method
  * @abstract
- * @returns {Number} Node outer length
+ * @returns {number} Node outer length
  * @throws {Error} if not overridden
  */
 ve.Node.prototype.getOuterLength = function () {
@@ -104,7 +113,7 @@ ve.Node.prototype.getOuterLength = function () {
  * Gets the symbolic node type name.
  *
  * @method
- * @returns {String} Symbolic name of element type
+ * @returns {string} Symbolic name of element type
  */
 ve.Node.prototype.getType = function () {
 	return this.type;
@@ -169,7 +178,7 @@ ve.Node.prototype.setDocument = function ( doc ) {
  *
  * @method
  * @param {ve.Node} parent Node to attach to
- * @emits attach (parent)
+ * @emits attach
  */
 ve.Node.prototype.attach = function ( parent ) {
 	this.parent = parent;
@@ -197,7 +206,7 @@ ve.Node.prototype.detach = function () {
  * Callback function is called for node passed as node paramter as well.
  *
  * @param {ve.Node} node Node from which to start traversing
- * @param {function} callback Callback method to be called for every traversed node
+ * @param {Function} callback Callback method to be called for every traversed node
  * @method
  */
 ve.Node.traverseUpstream = function ( node, callback ) {

@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor data model MetaInlineNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,9 +9,9 @@
  * DataModel node for an inline meta node.
  *
  * @class
+ * @extends ve.dm.LeafNode
  * @constructor
- * @extends {ve.dm.LeafNode}
- * @param {Integer} [length] Length of content data in document
+ * @param {number} [length] Length of content data in document
  * @param {Object} [element] Reference to element in linear model
  */
 ve.dm.MetaInlineNode = function VeDmMetaInlineNode( length, element ) {
@@ -31,7 +31,7 @@ ve.inheritClass( ve.dm.MetaInlineNode, ve.dm.LeafNode );
  *
  * @see ve.dm.NodeFactory
  * @static
- * @member
+ * @property
  */
 ve.dm.MetaInlineNode.rules = {
 	'isWrapped': true,
@@ -45,9 +45,9 @@ ve.dm.MetaInlineNode.rules = {
 /**
  * Node converters.
  *
- * @see {ve.dm.Converter}
+ * @see ve.dm.Converter
  * @static
- * @member
+ * @property
  */
 ve.dm.MetaInlineNode.converters = ve.dm.MetaBlockNode.converters;
 

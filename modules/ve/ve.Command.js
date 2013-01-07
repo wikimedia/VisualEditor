@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor user interface Command class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -64,7 +64,7 @@ ve.Command.static = {};
  * The order of this array affects the canonical order of a command string.
  *
  * @static
- * @member
+ * @property
  */
 ve.Command.static.modifierKeys = ['meta', 'ctrl', 'alt', 'shift'];
 
@@ -72,7 +72,7 @@ ve.Command.static.modifierKeys = ['meta', 'ctrl', 'alt', 'shift'];
  * Symbolic primary key names.
  *
  * @static
- * @member
+ * @property
  */
 ve.Command.static.primaryKeys = [
 	// Special keys
@@ -95,7 +95,7 @@ ve.Command.static.primaryKeys = [
  * Aliases for modifier or primary key names.
  *
  * @static
- * @member
+ * @property
  */
 ve.Command.static.keyAliases = {
 	// Platform differences
@@ -112,7 +112,7 @@ ve.Command.static.keyAliases = {
  * Mapping of key codes and symbolic key names.
  *
  * @static
- * @member
+ * @property
  */
 ve.Command.static.primaryKeyMap = {
 	// Special keys
@@ -146,7 +146,7 @@ ve.Command.static.primaryKeyMap = {
  * For a command to be complete, there must be a valid primary key.
  *
  * @method
- * @returns {Boolean} Command is complete
+ * @returns {boolean} Command is complete
  */
 ve.Command.prototype.isComplete = function () {
 	return this.primary in ve.Command.static.primaryKeyMap;
@@ -163,7 +163,7 @@ ve.Command.prototype.isComplete = function () {
  * An incomplete command will return an empty string.
  *
  * @method
- * @returns {String} Canonical command string
+ * @returns {string} Canonical command string
  */
 ve.Command.prototype.toString = function () {
 	var i, len,

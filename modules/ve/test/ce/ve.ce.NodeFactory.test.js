@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor content editable NodeFactory tests.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt

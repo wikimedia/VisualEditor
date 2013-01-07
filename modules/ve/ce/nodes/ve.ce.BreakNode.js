@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor content editable BreakNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * ContentEditable node for a line break.
  *
  * @class
+ * @extends ve.ce.LeafNode
  * @constructor
- * @extends {ve.ce.LeafNode}
  * @param {ve.dm.BreakNode} model Model to observe
  */
 ve.ce.BreakNode = function VeCeBreakNode( model ) {
@@ -32,7 +32,7 @@ ve.inheritClass( ve.ce.BreakNode, ve.ce.LeafNode );
  *
  * @see ve.ce.NodeFactory
  * @static
- * @member
+ * @property
  */
 ve.ce.BreakNode.rules = {
 	'canBeSplit': false

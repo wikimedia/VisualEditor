@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor content editable MWEntityNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * ContentEditable node for an entity.
  *
  * @class
+ * @extends ve.ce.LeafNode
  * @constructor
- * @extends {ve.ce.LeafNode}
  * @param {ve.dm.MWEntityNode} model Model to observe.
  */
 ve.ce.MWEntityNode = function VeCeMWEntityNode( model ) {
@@ -43,7 +43,7 @@ ve.inheritClass( ve.ce.MWEntityNode, ve.ce.LeafNode );
  *
  * @see ve.ce.NodeFactory
  * @static
- * @member
+ * @property
  */
 ve.ce.MWEntityNode.rules = {
 	'canBeSplit': false

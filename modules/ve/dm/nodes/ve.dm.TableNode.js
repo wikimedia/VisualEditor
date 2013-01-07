@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor data model TableNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * DataModel node for a table.
  *
  * @class
+ * @extends ve.dm.BranchNode
  * @constructor
- * @extends {ve.dm.BranchNode}
  * @param {ve.dm.BranchNode[]} [children] Child nodes to attach
  * @param {Object} [element] Reference to element in linear model
  */
@@ -30,7 +30,7 @@ ve.inheritClass( ve.dm.TableNode, ve.dm.BranchNode );
  *
  * @see ve.dm.NodeFactory
  * @static
- * @member
+ * @property
  */
 ve.dm.TableNode.rules = {
 	'isWrapped': true,
@@ -44,9 +44,9 @@ ve.dm.TableNode.rules = {
 /**
  * Node converters.
  *
- * @see {ve.dm.Converter}
+ * @see ve.dm.Converter
  * @static
- * @member
+ * @property
  */
 ve.dm.TableNode.converters = {
 	'domElementTypes': ['table'],

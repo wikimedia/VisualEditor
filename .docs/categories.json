@@ -1,0 +1,120 @@
+[
+	{
+		"name": "Actions",
+		"groups": [
+			{
+				"name": "Actions",
+				"classes": ["ve.*Action"]
+			}
+		]
+	},
+	{
+		"name": "ContentEditable",
+		"groups": [
+			{
+				"name": "General",
+				"classes": ["ve.ce", "ve.ce.NodeFactory", "ve.ce.Surface", "ve.ce.SurfaceObserver"]
+			},
+			{
+				"name": "Nodes",
+				"classes": ["ve.ce.Document", "ve.ce.*Node"]
+			}
+		]
+	},
+	{
+		"name": "DataModel",
+		"groups": [
+			{
+				"name": "General",
+				"classes": [
+					"ve.dm",
+					"ve.dm.AnnotationFactory",
+					"ve.dm.Converter",
+					"ve.dm.DocumentSlice",
+					"ve.dm.DocumentSynchronizer",
+					"ve.dm.NodeFactory",
+					"ve.dm.Surface",
+					"ve.dm.SurfaceFragment",
+					"ve.dm.Transaction",
+					"ve.dm.TransactionProcessor",
+					"ve.dm.TransactionProcessor.processors"
+				]
+			},
+			{
+				"name": "Annotations",
+				"classes": ["ve.dm.*Annotation"]
+			},
+			{
+				"name": "Nodes",
+				"classes": ["ve.dm.Document", "ve.dm.*Node"]
+			}
+		]
+	},
+	{
+		"name": "Initialization",
+		"groups": [
+			{
+				"name": "General",
+				"classes": ["ve.init", "ve.init.Platform"]
+			},
+			{
+				"name": "MediaWiki integration",
+				"classes": ["ve.init.mw*"]
+			},
+			{
+				"name": "Stand-alone",
+				"classes": ["ve.init.sa*"]
+			}
+		]
+	},
+	{
+		"name": "User Interface",
+		"groups": [
+			{
+				"name": "General",
+				"classes": ["ve.ui", "ve.ui.Context", "ve.ui.Frame", "ve.ui.InspectorFactory", "ve.ui.Menu", "ve.ui.Toolbar"]
+			},
+			{
+				"name": "Tools",
+				"classes": ["ve.ui.*Tool"]
+			},
+			{
+				"name": "Inspectors",
+				"classes": ["ve.ui.*Inspector"]
+			}
+		]
+	},
+	{
+		"name": "General",
+		"groups": [
+			{
+				"name": "Utilities",
+				"classes": ["ve", "ve.EventEmitter", "ve.Registry", "ve.Factory", "ve.Position", "ve.Range"]
+			},
+			{
+				"name": "Registries",
+				"classes": ["ve.CommandRegistry"]
+			},
+			{
+				"name": "Factories",
+				"classes": ["ve.ActionFactory", "ve.ToolFactory"]
+			},
+			{
+				"name": "Nodes",
+				"classes": ["ve.Node", "ve.BranchNode", "ve.LeafNode", "ve.Document"]
+			},
+			{
+				"name": "Misc",
+				"classes": ["ve.Command", "ve.AnnotationSet", "ve.OrderedHashSet", "ve.Surface"]
+			},
+			{
+				"name": "Native",
+				"classes": ["Array", "Boolean", "Date", "Function", "Number", "Object", "RegExp", "String"]
+			},
+			{
+				"name": "Test",
+				"classes": ["ve.QUnit", "ve.QUnit.assert"]
+			}
+		]
+	}
+]

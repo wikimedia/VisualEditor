@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor data model DefinitionListNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * DataModel node for a definition list.
  *
  * @class
+ * @extends ve.dm.BranchNode
  * @constructor
- * @extends {ve.dm.BranchNode}
  * @param {ve.dm.BranchNode[]} [children] Child nodes to attach
  * @param {Object} [element] Reference to element in linear model
  */
@@ -30,7 +30,7 @@ ve.inheritClass( ve.dm.DefinitionListNode, ve.dm.BranchNode );
  *
  * @see ve.dm.NodeFactory
  * @static
- * @member
+ * @property
  */
 ve.dm.DefinitionListNode.rules = {
 	'isWrapped': true,
@@ -44,9 +44,9 @@ ve.dm.DefinitionListNode.rules = {
 /**
  * Node converters.
  *
- * @see {ve.dm.Converter}
+ * @see ve.dm.Converter
  * @static
- * @member
+ * @property
  */
 ve.dm.DefinitionListNode.converters = {
 	'domElementTypes': ['dl'],

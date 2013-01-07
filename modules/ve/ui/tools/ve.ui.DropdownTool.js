@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor user interface DropdownTool class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -10,8 +10,8 @@
  *
  * @abstract
  * @class
+ * @extends ve.ui.Tool
  * @constructor
- * @extends {ve.ui.Tool}
  * @param {ve.ui.Toolbar} toolbar
  * @param {Object[]} items
  */

@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor data model MWInternalLinkAnnotation class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -12,8 +12,8 @@
  *     <a rel="mw:WikiLink">
  *
  * @class
+ * @extends ve.dm.LinkAnnotation
  * @constructor
- * @extends {ve.dm.LinkAnnotation}
  * @param {HTMLElement} element
  */
 ve.dm.MWInternalLinkAnnotation = function VeDmMWInternalLinkAnnotation( element ) {
@@ -27,8 +27,18 @@ ve.inheritClass( ve.dm.MWInternalLinkAnnotation, ve.dm.LinkAnnotation );
 
 /* Static Members */
 
+/**
+ * @static
+ * @property static.name
+ * @inheritdoc
+ */
 ve.dm.MWInternalLinkAnnotation.static.name = 'link/MWinternal';
 
+/**
+ * @static
+ * @property static.matchTagNames
+ * @inheritdoc
+ */
 ve.dm.MWInternalLinkAnnotation.static.matchRdfaTypes = ['mw:WikiLink'];
 
 /* Methods */

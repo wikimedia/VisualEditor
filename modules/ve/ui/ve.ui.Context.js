@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor user interface Context class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -115,7 +115,7 @@ ve.ui.Context.prototype.onWindowFocus = function () {
  * Responds to an inspector being opened.
  *
  * @method
- * @param {String} name Name of inspector being opened (this is not part of the normal event, it's
+ * @param {string} name Name of inspector being opened (this is not part of the normal event, it's
  * mixed in when we bound to the event in {initInspector})
  */
 ve.ui.Context.prototype.onBeforeInspectorOpen = function ( name ) {
@@ -138,8 +138,8 @@ ve.ui.Context.prototype.onBeforeInspectorOpen = function ( name ) {
  * Responds to an inspector being closed.
  *
  * @method
- * @param {String} name Name of inspector being closed
- * @param {Boolean} remove Annotation should be removed
+ * @param {string} name Name of inspector being closed
+ * @param {boolean} remove Annotation should be removed
  */
 ve.ui.Context.prototype.onAfterInspectorClose = function () {
 	this.obscure( this.$inspectors );

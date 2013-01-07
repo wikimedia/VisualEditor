@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor content editable MetaInlineNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * ContentEditable node for a list.
  *
  * @class
+ * @extends ve.ce.LeafNode
  * @constructor
- * @extends {ve.ce.LeafNode}
  * @param model {ve.dm.MetaInlineNode} Model to observe
  */
 ve.ce.MetaInlineNode = function VeCeMetaInlineNode( model ) {
@@ -44,7 +44,7 @@ ve.inheritClass( ve.ce.MetaInlineNode, ve.ce.LeafNode );
  *
  * @see ve.ce.NodeFactory
  * @static
- * @member
+ * @property
  */
 ve.ce.MetaInlineNode.rules = {
 	'canBeSplit': false

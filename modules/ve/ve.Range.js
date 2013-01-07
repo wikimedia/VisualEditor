@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor Range class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -10,12 +10,12 @@
  *
  * @class
  * @constructor
- * @param {Number} from Starting offset
- * @param {Number} [to=from] Ending offset
- * @property {Number} from Starting offset
- * @property {Number} to Ending offset
- * @property {Number} start Normalized starting offset
- * @property {Number} end Normalized ending offset
+ * @param {number} from Starting offset
+ * @param {number} [to=from] Ending offset
+ * @property {number} from Starting offset
+ * @property {number} to Ending offset
+ * @property {number} start Normalized starting offset
+ * @property {number} end Normalized ending offset
  */
 ve.Range = function VeRange( from, to ) {
 	this.from = from || 0;
@@ -30,7 +30,7 @@ ve.Range = function VeRange( from, to ) {
  *
  * @method
  * @param {ve.Range} range Range to base new range on
- * @param {Number} distance Distance to move range by
+ * @param {number} distance Distance to move range by
  * @returns {ve.Range} New translated range
  */
 ve.Range.newFromTranslatedRange = function ( range, distance ) {
@@ -78,8 +78,8 @@ ve.Range.prototype.clone = function () {
  * Checks if an offset is within this range.
  *
  * @method
- * @param {Number} offset Offset to check
- * @returns {Boolean} If offset is within this range
+ * @param {number} offset Offset to check
+ * @returns {boolean} If offset is within this range
  */
 ve.Range.prototype.containsOffset = function ( offset ) {
 	this.normalize();
@@ -90,7 +90,7 @@ ve.Range.prototype.containsOffset = function ( offset ) {
  * Gets the length of the range.
  *
  * @method
- * @returns {Number} Length of range
+ * @returns {number} Length of range
  */
 ve.Range.prototype.getLength = function () {
 	return Math.abs( this.from - this.to );
@@ -130,7 +130,7 @@ ve.Range.prototype.flip = function () {
  *
  * @method
  * @param {ve.Range}
- * @returns {Boolean}
+ * @returns {boolean}
  */
 ve.Range.prototype.equals = function ( other ) {
 	return this.from === other.from && this.to === other.to;
@@ -141,7 +141,7 @@ ve.Range.prototype.equals = function ( other ) {
  * Creates a new ve.Range object.
  *
  * @method
- * @param {Number} Length of the new range (negative for left-side truncation)
+ * @param {number} Length of the new range (negative for left-side truncation)
  * @returns {ve.Range} A new range.
  */
 ve.Range.prototype.truncate = function ( length ) {
@@ -160,7 +160,7 @@ ve.Range.prototype.truncate = function ( length ) {
 /**
  * Determines if Range is collapsed or not.
  * @method
- * @returns {Boolean}
+ * @returns {boolean}
  */
 ve.Range.prototype.isCollapsed = function () {
 	return this.from === this.to;

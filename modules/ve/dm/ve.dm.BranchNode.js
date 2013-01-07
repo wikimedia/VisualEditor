@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor data model BranchNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -8,11 +8,11 @@
 /**
  * DataModel node that can have branch or leaf children.
  *
- * @class
  * @abstract
+ * @extends ve.dm.Node
+ * @mixins ve.BranchNode
  * @constructor
- * @extends {ve.dm.Node}
- * @param {String} type Symbolic name of node type
+ * @param {string} type Symbolic name of node type
  * @param {ve.dm.Node[]} [children] Child nodes to attach
  * @param {Object} [element] Reference to element in linear model
  */
@@ -28,6 +28,18 @@ ve.dm.BranchNode = function VeDmBranchNode( type, children, element ) {
 	}
 };
 
+/**
+ * @event splice
+ * @see #method-splice
+ * @param {number} index
+ * @param {number} howmany
+ * @param {ve.dm.BranchNode} [childModel]
+ */
+
+/**
+ * @event update
+ */
+
 /* Inheritance */
 
 ve.inheritClass( ve.dm.BranchNode, ve.dm.Node );
@@ -41,8 +53,8 @@ ve.mixinClass( ve.dm.BranchNode, ve.BranchNode );
  *
  * @method
  * @param {ve.dm.BranchNode} childModel Item to add
- * @returns {Number} New number of children
- * @emits splice (index, 0, [childModel])
+ * @returns {number} New number of children
+ * @emits splice
  * @emits update
  */
 ve.dm.BranchNode.prototype.push = function ( childModel ) {
@@ -55,7 +67,7 @@ ve.dm.BranchNode.prototype.push = function ( childModel ) {
  *
  * @method
  * @returns {ve.dm.BranchNode} Removed childModel
- * @emits splice (index, 1, [])
+ * @emits splice
  * @emits update
  */
 ve.dm.BranchNode.prototype.pop = function () {
@@ -71,8 +83,8 @@ ve.dm.BranchNode.prototype.pop = function () {
  *
  * @method
  * @param {ve.dm.BranchNode} childModel Item to add
- * @returns {Number} New number of children
- * @emits splice (0, 0, [childModel])
+ * @returns {number} New number of children
+ * @emits splice
  * @emits update
  */
 ve.dm.BranchNode.prototype.unshift = function ( childModel ) {
@@ -85,7 +97,7 @@ ve.dm.BranchNode.prototype.unshift = function ( childModel ) {
  *
  * @method
  * @returns {ve.dm.BranchNode} Removed childModel
- * @emits splice (0, 1, [])
+ * @emits splice
  * @emits update
  */
 ve.dm.BranchNode.prototype.shift = function () {
@@ -100,11 +112,11 @@ ve.dm.BranchNode.prototype.shift = function () {
  * Adds and removes nodes from this node's children.
  *
  * @method
- * @param {Number} index Index to remove and or insert nodes at
- * @param {Number} howmany Number of nodes to remove
- * @param {ve.dm.BranchNode} [...] Variadic list of nodes to insert
+ * @param {number} index Index to remove and or insert nodes at
+ * @param {number} howmany Number of nodes to remove
+ * @param {ve.dm.BranchNode...} [nodes] Variadic list of nodes to insert
  * @returns {ve.dm.BranchNode[]} Removed nodes
- * @emits splice (index, howmany, [...])
+ * @emits splice
  */
 ve.dm.BranchNode.prototype.splice = function () {
 	var i,

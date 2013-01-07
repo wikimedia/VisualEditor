@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor data model namespace.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -7,6 +7,8 @@
 
 /**
  * Namespace for all VisualEditor data model classes, static methods and static properties.
+ * @class
+ * @singleton
  */
 ve.dm = {
 	//'nodeFactory': Initialized in ve.dm.NodeFactory.js

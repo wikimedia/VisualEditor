@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor data model Annotation class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -21,7 +21,6 @@
  *
  * TODO: Make this constructor optionally accept a data object instead of an element.
  *
- * @class
  * @abstract
  * @constructor
  *
@@ -40,13 +39,19 @@ ve.dm.Annotation = function VeDmAnnotation( element ) {
 /* Static properties */
 
 /**
- * Object containing static properties. ve.inheritClass() contains special logic to make sure these
+ * Object containing static properties. ve#inheritClass contains special logic to make sure these
  * properties are inherited by subclasses.
+ * @static
+ * @property
+ * @inheritable
  */
 ve.dm.Annotation.static = {};
 
 /**
  * Symbolic name for the annotation class. Must be set to a unique string by every subclass.
+ * @static
+ * @property {string} [static.name=null]
+ * @inheritable
  */
 ve.dm.Annotation.static.name = null;
 
@@ -54,6 +59,9 @@ ve.dm.Annotation.static.name = null;
  * Array of HTML tag names that this annotation should be a match candidate for.
  * Empty array means none, null means any.
  * For more information about annotation matching, see ve.dm.AnnotationFactory.
+ * @static
+ * @property {Array} static.matchTagNames
+ * @inheritable
  */
 ve.dm.Annotation.static.matchTagNames = null;
 
@@ -61,6 +69,9 @@ ve.dm.Annotation.static.matchTagNames = null;
  * Array of RDFa types that this annotation should be a match candidate for.
  * Empty array means none, null means any.
  * For more information about annotation matching, see ve.dm.AnnotationFactory.
+ * @static
+ * @property {Array} static.matchRdfaType
+ * @inheritable
  */
 ve.dm.Annotation.static.matchRdfaTypes = null;
 
@@ -75,6 +86,9 @@ ve.dm.Annotation.static.matchRdfaTypes = null;
  *
  * NOTE: This function is NOT a method, within this function "this" will not refer to an instance
  * of this class (or to anything reasonable, for that matter).
+ * @static
+ * @property {Function} static.matchFunction
+ * @inheritable
  */
 ve.dm.Annotation.static.matchFunction = null;
 
@@ -115,10 +129,10 @@ ve.dm.Annotation.prototype.toHTML = function () {
 };
 
 /**
- * Convert this annotation to HTML for rendering purposes. By default, this just calls toHTML(),
+ * Convert this annotation to HTML for rendering purposes. By default, this just calls #toHTML,
  * but it may be customized if the rendering should be different from the output.
  *
- * @see ve.dm.Annotation.toHTML
+ * @see #toHTML
  * @returns {Object} Object with 'tag' (tag name) and 'attributes' (object with attribute key/values)
  */
 ve.dm.Annotation.prototype.renderHTML = function () {
@@ -126,7 +140,7 @@ ve.dm.Annotation.prototype.renderHTML = function () {
 };
 
 /**
- * Custom hash function for ve.getHash(). Should not be overridden by subclasses.
+ * Custom hash function for ve#getHash. Should not be overridden by subclasses.
  */
 ve.dm.Annotation.prototype.getHash = function () {
 	var keys = [ 'name', 'data' ], obj = {}, i;

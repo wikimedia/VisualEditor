@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor ContentAction class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * Content action.
  *
  * @class
+ * @extends ve.Action
  * @constructor
- * @extends {ve.Action}
  * @param {ve.Surface} surface Surface to act on
  */
 ve.ContentAction = function VeContentAction( surface ) {
@@ -28,7 +28,7 @@ ve.inheritClass( ve.ContentAction, ve.Action );
  * List of allowed methods for this action.
  *
  * @static
- * @member
+ * @property
  */
 ve.ContentAction.static.methods = ['insert', 'remove', 'select'];
 
@@ -39,7 +39,7 @@ ve.ContentAction.static.methods = ['insert', 'remove', 'select'];
  *
  * @method
  * @param {String|Array} content Content to insert, can be either a string or array of data
- * @param {Boolean} annotate Content should be automatically annotated to match surrounding content
+ * @param {boolean} annotate Content should be automatically annotated to match surrounding content
  */
 ve.ContentAction.prototype.insert = function ( content, annotate ) {
 	this.surface.getModel().getFragment().insertContent( content, annotate );

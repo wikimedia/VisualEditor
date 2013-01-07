@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor content editable TableNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * ContentEditable node for a table.
  *
  * @class
+ * @extends ve.ce.BranchNode
  * @constructor
- * @extends {ve.ce.BranchNode}
  * @param {ve.dm.TableNode} model Model to observe
  */
 ve.ce.TableNode = function VeCeTableNode( model ) {
@@ -31,7 +31,7 @@ ve.inheritClass( ve.ce.TableNode, ve.ce.BranchNode );
  *
  * @see ve.ce.NodeFactory
  * @static
- * @member
+ * @property
  */
 ve.ce.TableNode.rules = {
 	'canBeSplit': false

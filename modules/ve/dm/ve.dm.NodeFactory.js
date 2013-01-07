@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor data model NodeFactory class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,7 +9,7 @@
  * DataModel node factory.
  *
  * @class
- * @extends {ve.Factory}
+ * @extends ve.Factory
  * @constructor
  */
 ve.dm.NodeFactory = function VeDmNodeFactory() {
@@ -27,7 +27,7 @@ ve.inheritClass( ve.dm.NodeFactory, ve.Factory );
  * Gets a data element with fallback attributes.
  *
  * @method
- * @param {String} type Node type
+ * @param {string} type Node type
  * @param {Object} attributes Node attributes, defaults will be used where needed
  * @returns {Object} Data element
  * @throws 'Unknown node type: {type}'
@@ -50,7 +50,7 @@ ve.dm.NodeFactory.prototype.getDataElement = function ( type, attributes ) {
  * Gets a list of allowed child node types for a given node.
  *
  * @method
- * @param {String} type Node type
+ * @param {string} type Node type
  * @returns {String[]|null} List of node types allowed as children or null if any type is allowed
  * @throws 'Unknown node type: {type}'
  */
@@ -65,7 +65,7 @@ ve.dm.NodeFactory.prototype.getChildNodeTypes = function ( type ) {
  * Gets a list of allowed parent node types for a given node.
  *
  * @method
- * @param {String} type Node type
+ * @param {string} type Node type
  * @returns {String[]|null} List of node types allowed as parents or null if any type is allowed
  * @throws 'Unknown node type: {type}'
  */
@@ -80,8 +80,8 @@ ve.dm.NodeFactory.prototype.getParentNodeTypes = function ( type ) {
  * Checks if a given node type can have child nodes.
  *
  * @method
- * @param {String} type Node type
- * @returns {Boolean} The node can have children
+ * @param {string} type Node type
+ * @returns {boolean} The node can have children
  * @throws 'Unknown node type: {type}'
  */
 ve.dm.NodeFactory.prototype.canNodeHaveChildren = function ( type ) {
@@ -98,8 +98,8 @@ ve.dm.NodeFactory.prototype.canNodeHaveChildren = function ( type ) {
  * Checks if a given node type can have grandchild nodes.
  *
  * @method
- * @param {String} type Node type
- * @returns {Boolean} The node can have grandchildren
+ * @param {string} type Node type
+ * @returns {boolean} The node can have grandchildren
  * @throws 'Unknown node type: {type}'
  */
 ve.dm.NodeFactory.prototype.canNodeHaveGrandchildren = function ( type ) {
@@ -115,8 +115,8 @@ ve.dm.NodeFactory.prototype.canNodeHaveGrandchildren = function ( type ) {
  * Checks if a given node type has a wrapping element.
  *
  * @method
- * @param {String} type Node type
- * @returns {Boolean} Whether the node has a wrapping element
+ * @param {string} type Node type
+ * @returns {boolean} Whether the node has a wrapping element
  * @throws 'Unknown node type: {type}'
  */
 ve.dm.NodeFactory.prototype.isNodeWrapped = function ( type ) {
@@ -130,8 +130,8 @@ ve.dm.NodeFactory.prototype.isNodeWrapped = function ( type ) {
  * Checks if a given node contains content.
  *
  * @method
- * @param {String} type Node type
- * @returns {Boolean} The node contains content
+ * @param {string} type Node type
+ * @returns {boolean} The node contains content
  * @throws 'Unknown node type: {type}'
  */
 ve.dm.NodeFactory.prototype.canNodeContainContent = function ( type ) {
@@ -145,8 +145,8 @@ ve.dm.NodeFactory.prototype.canNodeContainContent = function ( type ) {
  * Checks if a given node is content.
  *
  * @method
- * @param {String} type Node type
- * @returns {Boolean} The node is content
+ * @param {string} type Node type
+ * @returns {boolean} The node is content
  * @throws 'Unknown node type: {type}'
  */
 ve.dm.NodeFactory.prototype.isNodeContent = function ( type ) {
@@ -161,8 +161,8 @@ ve.dm.NodeFactory.prototype.isNodeContent = function ( type ) {
  * also true.
  *
  * @method
- * @param {String} type Node type
- * @returns {Boolean} The node has significant whitespace
+ * @param {string} type Node type
+ * @returns {boolean} The node has significant whitespace
  * @throws 'Unknown node type: {type}'
  */
 ve.dm.NodeFactory.prototype.doesNodeHaveSignificantWhitespace = function ( type ) {

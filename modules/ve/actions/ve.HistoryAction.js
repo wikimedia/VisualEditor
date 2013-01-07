@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor HistoryAction class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * History action.
  *
  * @class
+ * @extends ve.Action
  * @constructor
- * @extends {ve.Action}
  * @param {ve.Surface} surface Surface to act on
  */
 ve.HistoryAction = function VeHistoryAction( surface ) {
@@ -28,7 +28,7 @@ ve.inheritClass( ve.HistoryAction, ve.Action );
  * List of allowed methods for this action.
  *
  * @static
- * @member
+ * @property
  */
 ve.HistoryAction.static.methods = ['undo', 'redo'];
 

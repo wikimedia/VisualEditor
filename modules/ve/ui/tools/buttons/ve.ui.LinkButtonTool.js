@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor user interface LinkButtonTool class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * Creates an ve.ui.LinkButtonTool object.
  *
  * @class
+ * @extends ve.ui.InspectorButtonTool
  * @constructor
- * @extends {ve.ui.InspectorButtonTool}
  * @param {ve.ui.Toolbar} toolbar
  */
 ve.ui.LinkButtonTool = function VeUiLinkButtonTool( toolbar ) {

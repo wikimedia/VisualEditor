@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor CommandRegistry class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * Command registry.
  *
  * @class
+ * @extends ve.Registry
  * @constructor
- * @extends {ve.Registry}
  */
 ve.CommandRegistry = function VeCommandRegistry() {
 	// Parent constructor
@@ -27,14 +27,14 @@ ve.inheritClass( ve.CommandRegistry, ve.Registry );
  * Register a constructor with the factory.
  *
  * @method
- * @param {String|String[]} name Symbolic name or list of symbolic names
- * @param {String|String[]} trigger Command string of keys that should trigger the command
- * @param {String} action Action to execute when command is triggered
- * @param {String} method Method to call on action when executing
- * @param {Mixed} [...] Additional data to pass to the action when executing
- * @throws 'trigger must be a string or array'
- * @throws 'action must be a string'
- * @throws 'method must be a string'
+ * @param {string|String[]} name Symbolic name or list of symbolic names
+ * @param {string|String[]} trigger Command string of keys that should trigger the command
+ * @param {string} action Action to execute when command is triggered
+ * @param {string} method Method to call on action when executing
+ * @param {Mixed...} [data] Additional data to pass to the action when executing
+ * @throws {Error} Trigger must be a string or array
+ * @throws {Error} Action must be a string
+ * @throws {Error} Method must be a string
  */
 ve.CommandRegistry.prototype.register = function ( name, trigger, action, method ) {
 	if ( typeof trigger !== 'string' && !ve.isArray( trigger ) ) {

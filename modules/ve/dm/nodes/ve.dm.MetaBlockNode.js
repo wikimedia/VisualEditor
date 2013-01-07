@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor data model MetaBlockNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,9 +9,9 @@
  * DataModel node for an alien block node.
  *
  * @class
+ * @extends ve.dm.BranchNode
  * @constructor
- * @extends {ve.dm.BranchNode}
- * @param {Integer} [length] Length of content data in document
+ * @param {number} [length] Length of content data in document
  * @param {Object} [element] Reference to element in linear model
  */
 ve.dm.MetaBlockNode = function VeDmMetaBlockNode( length, element ) {
@@ -30,7 +30,7 @@ ve.inheritClass( ve.dm.MetaBlockNode, ve.dm.BranchNode );
  *
  * @see ve.dm.NodeFactory
  * @static
- * @member
+ * @property
  */
 ve.dm.MetaBlockNode.rules = {
 	'isWrapped': true,
@@ -44,9 +44,9 @@ ve.dm.MetaBlockNode.rules = {
 /**
  * Node converters.
  *
- * @see {ve.dm.Converter}
+ * @see ve.dm.Converter
  * @static
- * @member
+ * @property
  */
 ve.dm.MetaBlockNode.converters = {
 	'domElementTypes': ['meta', 'link'],

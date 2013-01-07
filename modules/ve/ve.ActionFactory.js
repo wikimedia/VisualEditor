@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor ActionFactory class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * Action factory.
  *
  * @class
+ * @extends ve.Factory
  * @constructor
- * @extends {ve.Factory}
  */
 ve.ActionFactory = function VeActionFactory() {
 	// Parent constructor
@@ -27,9 +27,9 @@ ve.inheritClass( ve.ActionFactory, ve.Factory );
  * Checks if a given action supports a given method.
  *
  * @method
- * @param {String} action Name of action
- * @param {String} method Name of method
- * @returns {Boolean} The action supports the method
+ * @param {string} action Name of action
+ * @param {string} method Name of method
+ * @returns {boolean} The action supports the method
  */
 ve.ActionFactory.prototype.doesActionSupportMethod = function ( action, method ) {
 	if ( action in this.registry ) {

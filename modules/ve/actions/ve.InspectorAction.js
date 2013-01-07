@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor InspectorAction class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * List action.
  *
  * @class
+ * @extends ve.Action
  * @constructor
- * @extends {ve.Action}
  * @param {ve.Surface} surface Surface to act on
  */
 ve.InspectorAction = function VeListAction( surface ) {
@@ -28,7 +28,7 @@ ve.inheritClass( ve.InspectorAction, ve.Action );
  * List of allowed methods for this action.
  *
  * @static
- * @member
+ * @property
  */
 ve.InspectorAction.static.methods = ['open', 'close'];
 
@@ -38,7 +38,7 @@ ve.InspectorAction.static.methods = ['open', 'close'];
  * Opens an inspector.
  *
  * @method
- * @param {String} name Symbolic name of inspector
+ * @param {string} name Symbolic name of inspector
  */
 ve.InspectorAction.prototype.open = function ( name ) {
 	this.surface.getContext().openInspector( name );
@@ -50,7 +50,7 @@ ve.InspectorAction.prototype.open = function ( name ) {
  * If changes are not accepted, the inspector will close without modifying the document.
  *
  * @method
- * @param {Boolean} accept Accept changes
+ * @param {boolean} accept Accept changes
  */
 ve.InspectorAction.prototype.close = function ( remove ) {
 	this.surface.getContext().closeInspector( remove );

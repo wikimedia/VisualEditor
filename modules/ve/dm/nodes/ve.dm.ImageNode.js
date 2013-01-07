@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor data model ImageNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,9 +9,9 @@
  * DataModel node for a document.
  *
  * @class
+ * @extends ve.dm.LeafNode
  * @constructor
- * @extends {ve.dm.LeafNode}
- * @param {Number} [length] Length of content data in document
+ * @param {number} [length] Length of content data in document
  * @param {Object} [element] Reference to element in linear model
  */
 ve.dm.ImageNode = function VeDmImageNode( length, element ) {
@@ -30,7 +30,7 @@ ve.inheritClass( ve.dm.ImageNode, ve.dm.LeafNode );
  *
  * @see ve.dm.NodeFactory
  * @static
- * @member
+ * @property
  */
 ve.dm.ImageNode.rules = {
 	'isWrapped': true,
@@ -44,9 +44,9 @@ ve.dm.ImageNode.rules = {
 /**
  * Node converters.
  *
- * @see {ve.dm.Converter}
+ * @see ve.dm.Converter
  * @static
- * @member
+ * @property
  */
 ve.dm.ImageNode.converters = {
 	'domElementTypes': ['img'],

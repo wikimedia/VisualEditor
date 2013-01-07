@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor user interface Tool class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -8,7 +8,6 @@
 /**
  * Creates an ve.ui.Tool object.
  *
- * @class
  * @abstract
  * @constructor
  * @param {ve.ui.Toolbar} toolbar
@@ -36,8 +35,8 @@ ve.ui.Tool.static = {};
  *
  * @abstract
  * @static
- * @member
- * @type {String}
+ * @property
+ * @type {string}
  */
 ve.ui.Tool.static.name = '';
 
@@ -46,8 +45,8 @@ ve.ui.Tool.static.name = '';
  *
  * @abstract
  * @static
- * @member
- * @type {String}
+ * @property
+ * @type {string}
  */
 ve.ui.Tool.static.titleMessage = '';
 

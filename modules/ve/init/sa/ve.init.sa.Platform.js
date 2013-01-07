@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor stand-alone initialization Target class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * Stand-alone platform.
  *
  * @class
+ * @extends ve.init.Platform
  * @constructor
- * @extends {ve.init.Platform}
  */
 ve.init.sa.Platform = function VeInitSaPlatform() {
 	// Parent constructor
@@ -43,7 +43,7 @@ ve.init.sa.Platform.prototype.getExternalLinkUrlProtocolsRegExp = function () {
  * Sets the remotely accessible URL to the modules directory.
  *
  * @method
- * @param {String} url Remote modules URL
+ * @param {string} url Remote modules URL
  */
 ve.init.sa.Platform.prototype.setModulesUrl = function ( url ) {
 	this.modulesUrl = url;
@@ -53,7 +53,7 @@ ve.init.sa.Platform.prototype.setModulesUrl = function ( url ) {
  * Gets a remotely accessible URL to the modules directory.
  *
  * @method
- * @returns {String} Remote modules URL
+ * @returns {string} Remote modules URL
  */
 ve.init.sa.Platform.prototype.getModulesUrl = function () {
 	return this.modulesUrl;
@@ -75,9 +75,9 @@ ve.init.sa.Platform.prototype.addMessages = function ( messages ) {
  * Gets a message from the localization system.
  *
  * @method
- * @param {String} key Message key
- * @param {Mixed} [...] List of arguments which will be injected at $1, $2, etc. in the messaage
- * @returns {String} Localized message
+ * @param {string} key Message key
+ * @param {Mixed...} [args] List of arguments which will be injected at $1, $2, etc. in the messaage
+ * @returns {string} Localized message
  */
 ve.init.sa.Platform.prototype.getMessage = function ( key ) {
 	if ( key in this.messages ) {
@@ -110,8 +110,8 @@ ve.init.sa.Platform.prototype.addParsedMessages = function ( messages ) {
  * Does not support $# replacements.
  *
  * @method
- * @param {String} key Message key
- * @returns {String} Parsed localized message as HTML string.
+ * @param {string} key Message key
+ * @returns {string} Parsed localized message as HTML string.
  */
 ve.init.sa.Platform.prototype.getParsedMessage = function ( key ) {
 	if ( key in this.parsedMessages ) {

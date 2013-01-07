@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor LeafNode mixin.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -8,7 +8,7 @@
 /**
  * Mixin for leaf nodes.
  *
- * @mixin
+ * @class
  * @abstract
  * @constructor
  */
@@ -22,8 +22,7 @@ ve.LeafNode = function VeLeafNode() {
  * Checks if this node has child nodes.
  *
  * @method
- * @see {ve.Node.prototype.hasChildren}
- * @returns {Boolean} Whether this node has children
+ * @returns {boolean} Whether this node has children
  */
 ve.LeafNode.prototype.hasChildren = function () {
 	return false;

@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor user interface InspectorButtonTool class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -10,8 +10,8 @@
  *
  * @abstract
  * @class
+ * @extends ve.ui.ButtonTool
  * @constructor
- * @extends {ve.ui.ButtonTool}
  * @param {ve.ui.Toolbar} toolbar
  */
 ve.ui.InspectorButtonTool = function VeUiInspectorButtonTool( toolbar ) {
@@ -30,8 +30,8 @@ ve.inheritClass( ve.ui.InspectorButtonTool, ve.ui.ButtonTool );
  *
  * @abstract
  * @static
- * @member
- * @type {String}
+ * @property
+ * @type {string}
  */
 ve.ui.InspectorButtonTool.static.inspector = '';
 
@@ -51,8 +51,8 @@ ve.ui.InspectorButtonTool.prototype.onClick = function () {
  *
  * @method
  * @param {ve.dm.Node[]} nodes List of nodes covered by the current selection
- * @param {ve.dm.AnnotationSet} full Annotations that cover all of the current selection
- * @param {ve.dm.AnnotationSet} partial Annotations that cover some or all of the current selection
+ * @param {ve.AnnotationSet} full Annotations that cover all of the current selection
+ * @param {ve.AnnotationSet} partial Annotations that cover some or all of the current selection
  */
 ve.ui.InspectorButtonTool.prototype.onUpdateState = function ( nodes, full ) {
 	this.setActive(

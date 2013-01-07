@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor content editable TableSectionNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * ContentEditable node for a table section.
  *
  * @class
+ * @extends ve.ce.BranchNode
  * @constructor
- * @extends {ve.ce.BranchNode}
  * @param {ve.dm.TableSectionNode} model Model to observe
  */
 ve.ce.TableSectionNode = function VeCeTableSectionNode( model ) {
@@ -34,7 +34,7 @@ ve.inheritClass( ve.ce.TableSectionNode, ve.ce.BranchNode );
  *
  * @see ve.ce.NodeFactory
  * @static
- * @member
+ * @property
  */
 ve.ce.TableSectionNode.rules = {
 	'canBeSplit': false
@@ -44,7 +44,7 @@ ve.ce.TableSectionNode.rules = {
  * Mapping of list item style values and DOM wrapper element types.
  *
  * @static
- * @member
+ * @property
  */
 ve.ce.TableSectionNode.domWrapperElementTypes = {
 	'header': 'thead',

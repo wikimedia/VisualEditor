@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor AnnotationAction class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * Annotate action.
  *
  * @class
+ * @extends ve.Action
  * @constructor
- * @extends {ve.Action}
  * @param {ve.Surface} surface Surface to act on
  */
 ve.AnnotationAction = function VeAnnotationAction( surface ) {
@@ -28,7 +28,7 @@ ve.inheritClass( ve.AnnotationAction, ve.Action );
  * List of allowed methods for this action.
  *
  * @static
- * @member
+ * @property
  */
 ve.AnnotationAction.static.methods = ['set', 'clear', 'toggle', 'clearAll'];
 
@@ -38,7 +38,7 @@ ve.AnnotationAction.static.methods = ['set', 'clear', 'toggle', 'clearAll'];
  * Sets a given annotation.
  *
  * @method
- * @param {String} name Annotation name, for example: 'textStyle/bold'
+ * @param {string} name Annotation name, for example: 'textStyle/bold'
  * @param {Object} [data] Additional annotation data
  */
 ve.AnnotationAction.prototype.set = function ( name, data ) {
@@ -49,7 +49,7 @@ ve.AnnotationAction.prototype.set = function ( name, data ) {
  * Clears a given annotation.
  *
  * @method
- * @param {String} name Annotation name, for example: 'textStyle/bold'
+ * @param {string} name Annotation name, for example: 'textStyle/bold'
  * @param {Object} [data] Additional annotation data
  */
 ve.AnnotationAction.prototype.clear = function ( name, data ) {
@@ -63,7 +63,7 @@ ve.AnnotationAction.prototype.clear = function ( name, data ) {
  * cleared. Otherwise the annotation will be set.
  *
  * @method
- * @param {String} name Annotation name, for example: 'textStyle/bold'
+ * @param {string} name Annotation name, for example: 'textStyle/bold'
  * @param {Object} [data] Additional annotation data
  */
 ve.AnnotationAction.prototype.toggle = function ( name, data ) {

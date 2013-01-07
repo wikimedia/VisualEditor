@@ -1,6 +1,6 @@
 /*global mw */
 
-/**
+/*!
  * VisualEditor user interface LinkInspector class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -11,8 +11,8 @@
  * Creates an ve.ui.LinkInspector object.
  *
  * @class
+ * @extends ve.ui.Inspector
  * @constructor
- * @extends {ve.ui.Inspector}
  * @param context
  */
 ve.ui.LinkInspector = function VeUiLinkInspector( context ) {
@@ -121,7 +121,7 @@ ve.ui.LinkInspector.prototype.onOpen = function () {
  * Responds to the inspector being opened.
  *
  * @method
- * @param {Boolean} remove Annotation should be removed
+ * @param {boolean} remove Annotation should be removed
  */
 ve.ui.LinkInspector.prototype.onClose = function ( remove ) {
 	var i, len, annotations,
@@ -185,7 +185,7 @@ ve.ui.LinkInspector.prototype.onClose = function ( remove ) {
  * The type of link is automatically detected based on some crude heuristics.
  *
  * @method
- * @param {String} target Link target
+ * @param {string} target Link target
  * @returns {ve.dm.Annotation}
  */
 ve.ui.LinkInspector.prototype.getAnnotationFromTarget = function ( target ) {

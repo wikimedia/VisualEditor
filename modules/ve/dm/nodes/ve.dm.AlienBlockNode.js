@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor data model AlienBlockNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,9 +9,9 @@
  * DataModel node for an alien block node.
  *
  * @class
+ * @extends ve.dm.LeafNode
  * @constructor
- * @extends {ve.dm.LeafNode}
- * @param {Number} [length] Length of content data in document
+ * @param {number} [length] Length of content data in document
  * @param {Object} [element] Reference to element in linear model
  */
 ve.dm.AlienBlockNode = function VeDmAlienBlockNode( length, element ) {
@@ -30,7 +30,7 @@ ve.inheritClass( ve.dm.AlienBlockNode, ve.dm.LeafNode );
  *
  * @see ve.dm.NodeFactory
  * @static
- * @member
+ * @property
  */
 ve.dm.AlienBlockNode.rules = {
 	'isWrapped': true,

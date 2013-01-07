@@ -1,6 +1,6 @@
 /*global rangy */
 
-/**
+/*!
  * VisualEditor content editable Surface class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -11,8 +11,8 @@
  * ContentEditable surface.
  *
  * @class
+ * @extends ve.EventEmitter
  * @constructor
- * @extends {ve.EventEmitter}
  * @param {jQuery} $container
  * @param {ve.dm.Surface} model Model to observe
  * @param {ve.Surface} surface The surface of this view
@@ -810,8 +810,8 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
  * the direction of the selection.
  *
  * @method
- * @param {Number} adjustment Distance to adjust the cursor, can be positive or negative
- * @returns {Boolean} Cursor was moved
+ * @param {number} adjustment Distance to adjust the cursor, can be positive or negative
+ * @returns {boolean} Cursor was moved
  */
 ve.ce.Surface.prototype.adjustCursor = function ( adjustment ) {
 	// Bypass for zero-adjustment
@@ -863,7 +863,7 @@ ve.ce.Surface.prototype.adjustCursor = function ( adjustment ) {
  * Responds to backspace and delete key events.
  *
  * @method
- * @param {Boolean} Key was a backspace
+ * @param {boolean} Key was a backspace
  */
 ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 	var sourceOffset,
@@ -1023,7 +1023,7 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
  * Shows the cursor at a given offset.
  *
  * @method
- * @param {Number} offset Offset to show cursor at
+ * @param {number} offset Offset to show cursor at
  */
 ve.ce.Surface.prototype.showCursor = function ( offset ) {
 	this.showSelection( new ve.Range( offset ) );
@@ -1100,8 +1100,8 @@ ve.ce.Surface.prototype.showSelection = function ( range ) {
  * TODO: Find a better name and a better place for this method
  *
  * @method
- * @param {Number} offset Offset to start looking at
- * @param {Number} [direction=-1] Direction to look in, +1 or -1
+ * @param {number} offset Offset to start looking at
+ * @param {number} [direction=-1] Direction to look in, +1 or -1
  */
 ve.ce.Surface.prototype.getNearestCorrectOffset = function ( offset, direction ) {
 	var contentOffset, structuralOffset;
@@ -1142,8 +1142,8 @@ ve.ce.Surface.prototype.getNearestCorrectOffset = function ( offset, direction )
  * TODO: Find a better name and a better place for this method - probably in a document view?
  *
  * @method
- * @param {Number} offset Offset to check for a slug at
- * @returns {Boolean} A slug exists at the given offset
+ * @param {number} offset Offset to check for a slug at
+ * @returns {boolean} A slug exists at the given offset
  */
 ve.ce.Surface.prototype.hasSlugAtOffset = function ( offset ) {
 	return !!this.documentView.getSlugAtOffset( offset );
@@ -1155,7 +1155,7 @@ ve.ce.Surface.prototype.hasSlugAtOffset = function ( offset ) {
  * The results of this function are meant to be used with rangy.
  *
  * @method
- * @param {Number} offset Linear model offset
+ * @param {number} offset Linear model offset
  * @returns {Object} Object containing a node and offset property where node is an HTML element and
  * offset is the position within the element
  * @throws {Error} Offset could not be translated to a DOM element and offset

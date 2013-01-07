@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor content editable MetaBlockNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * ContentEditable node for a list.
  *
  * @class
+ * @extends ve.ce.BranchNode
  * @constructor
- * @extends {ve.ce.BranchNode}
  * @param model {ve.dm.MetaBlockNode} Model to observe
  */
 ve.ce.MetaBlockNode = function VeCeMetaBlockNode( model ) {
@@ -43,7 +43,7 @@ ve.inheritClass( ve.ce.MetaBlockNode, ve.ce.BranchNode );
  *
  * @see ve.ce.NodeFactory
  * @static
- * @member
+ * @property
  */
 ve.ce.MetaBlockNode.rules = {
 	'canBeSplit': false

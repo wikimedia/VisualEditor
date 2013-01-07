@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor ToolFactory class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -9,8 +9,8 @@
  * Tool factory.
  *
  * @class
+ * @extends ve.Factory
  * @constructor
- * @extends {ve.Factory}
  */
 ve.ToolFactory = function VeToolFactory() {
 	// Parent constructor
