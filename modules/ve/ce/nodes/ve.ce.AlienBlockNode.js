@@ -19,10 +19,6 @@ ve.ce.AlienBlockNode = function VeCeAlienBlockNode( model ) {
 
 	// DOM Changes
 	this.$.addClass( 've-ce-alienBlockNode' );
-
-	// Events
-	this.addListenerMethod( this, 'live', 'onLive' );
-	this.$.on( 'mouseenter', ve.bind( this.onMouseEnter, this ) );
 };
 
 /* Inheritance */
@@ -43,45 +39,6 @@ ve.ce.AlienBlockNode.rules = {
 };
 
 /* Methods */
-ve.ce.AlienBlockNode.prototype.onMouseEnter = function () {
-	var	$phantoms = $( [] ),
-		$phantomTemplate = ve.ce.Surface.static.$phantomTemplate,
-		surface = this.root.getSurface();
-
-	this.$.find( '.ve-ce-node-shield' ).each( function () {
-		var	$shield = $( this ),
-			offset = $shield.offset();
-		$phantoms = $phantoms.add(
-			$phantomTemplate.clone().css( {
-				'top': offset.top,
-				'left': offset.left,
-				'height': $shield.height(),
-				'width': $shield.width(),
-				'background-position': -offset.left + 'px ' + -offset.top + 'px'
-			} )
-		);
-	} );
-	surface.$phantoms.empty().append( $phantoms );
-	surface.$.on( 'mousemove.phantoms', ve.bind( this.onSurfaceMouseMove, this ) );
-};
-
-ve.ce.AlienBlockNode.prototype.onLive = function () {
-	if( this.live === true ) {
-		var $shieldTemplate = this.constructor.static.$shieldTemplate;
-		this.$.add( this.$.find( '*' ) ).each( function () {
-			var $this = $( this );
-			if ( this.nodeType === Node.ELEMENT_NODE ) {
-				if (
-					( $this.css( 'float' ) === 'none' || $this.css( 'float' ) === '' ) &&
-					!$this.hasClass( 've-ce-alienBlockNode' )
-				) {
-					return;
-				}
-				$this.append( $shieldTemplate.clone() );
-			}
-		} );
-	}
-};
 
 /* Registration */
 

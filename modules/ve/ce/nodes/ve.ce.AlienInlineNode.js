@@ -19,9 +19,6 @@ ve.ce.AlienInlineNode = function VeCeAlienInlineNode( model ) {
 
 	// DOM Changes
 	this.$.addClass( 've-ce-alienInlineNode' );
-
-	// Events
-	this.$.on( 'mouseenter', ve.bind( this.onMouseEnter, this ) );
 };
 
 /* Inheritance */
@@ -42,22 +39,6 @@ ve.ce.AlienInlineNode.rules = {
 };
 
 /* Methods */
-
-ve.ce.AlienInlineNode.prototype.onMouseEnter = function () {
-	var	$phantom = ve.ce.Surface.static.$phantomTemplate.clone(),
-		offset = this.$.offset(),
-		surface = this.root.getSurface();
-	if ( !surface.dragging ) {
-		$phantom.css( {
-			'top': offset.top,
-			'left': offset.left,
-			'height': this.$.height(),
-			'width': this.$.width()
-		} );
-		surface.$phantoms.empty().append( $phantom );
-		surface.$.on( 'mousemove.phantoms', ve.bind( this.onSurfaceMouseMove, this ) );
-	}
-};
 
 /* Registration */
 
