@@ -30,7 +30,7 @@ ve.inheritClass( ve.Registry, ve.EventEmitter );
  * Associate one or more symbolic names with some data.
  *
  * @method
- * @param {String|String[]} name Symbolic name or list of symbolic names
+ * @param {string|string[]} name Symbolic name or list of symbolic names
  * @param {Mixed} data Data to associate with symbolic name
  * @throws 'name must be a string'
  */

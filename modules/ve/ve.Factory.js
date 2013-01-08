@@ -30,7 +30,7 @@ ve.inheritClass( ve.Factory, ve.Registry );
  * Register a constructor with the factory.
  *
  * @method
- * @param {String|String[]} name Symbolic name or list of symbolic names
+ * @param {string|string[]} name Symbolic name or list of symbolic names
  * @param {Function} constructor Constructor to use when creating object
  * @throws {Error} Constructor must be a function
  */

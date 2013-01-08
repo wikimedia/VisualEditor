@@ -37,7 +37,7 @@ ve.AnnotationSet.prototype.clone = function () {
  * Gets an annotation set containing only annotations within this set with a given name.
  *
  * @method
- * @param {String|RegExp} name Regular expression or string to compare types with
+ * @param {string|RegExp} name Regular expression or string to compare types with
  * @returns {ve.AnnotationSet} Copy of annotation set
  */
 ve.AnnotationSet.prototype.getAnnotationsByName = function ( name ) {
@@ -48,7 +48,7 @@ ve.AnnotationSet.prototype.getAnnotationsByName = function ( name ) {
  * Checks if any annotations in this set have a given name
  *
  * @method
- * @param {String|RegExp} name Regular expression or string to compare names with
+ * @param {string|RegExp} name Regular expression or string to compare names with
  * @returns {boolean} Annotation of given type exists in this set
  */
 ve.AnnotationSet.prototype.hasAnnotationWithName = function ( name ) {

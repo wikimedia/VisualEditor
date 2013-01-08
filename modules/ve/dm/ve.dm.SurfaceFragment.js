@@ -429,7 +429,7 @@ ve.dm.SurfaceFragment.prototype.select = function () {
  *
  * @method
  * @param {string} method Mode of annotation, either 'set' or 'clear'
- * @param {String|ve.dm.Annotation} name Annotation name, for example: 'textStyle/bold' or
+ * @param {string|ve.dm.Annotation} name Annotation name, for example: 'textStyle/bold' or
  * Annotation object
  * @param {Object} [data] Additional annotation data (not used if annotation object is given)
  * @returns {ve.dm.SurfaceFragment} This fragment
@@ -471,7 +471,7 @@ ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, name, data 
  * This will move the fragment's range to the end of the insertion and make it zero-length.
  *
  * @method
- * @param {String|Array} content Content to insert, can be either a string or array of data
+ * @param {string|Array} content Content to insert, can be either a string or array of data
  * @param {boolean} annotate Content should be automatically annotated to match surrounding content
  * @returns {ve.dm.SurfaceFragment} This fragment
  */
@@ -588,7 +588,7 @@ ve.dm.SurfaceFragment.prototype.wrapNodes = function ( wrapper ) {
  * Unwraps each node in the fragment out of one or more elements.
  *
  * @method
- * @param {String|String[]} type Node types to unwrap, or array of node types to unwrap
+ * @param {string|string[]} type Node types to unwrap, or array of node types to unwrap
  * @returns {ve.dm.SurfaceFragment} This fragment
  */
 ve.dm.SurfaceFragment.prototype.unwrapNodes = function () {
@@ -607,7 +607,7 @@ ve.dm.SurfaceFragment.prototype.unwrapNodes = function () {
  * optional attributes property.
  *
  * @method
- * @param {String|String[]} type Node types to unwrap, or array of node types to unwrap
+ * @param {string|string[]} type Node types to unwrap, or array of node types to unwrap
  * @param {Object|Object[]} wrapper Wrapper object, or array of wrapper objects (see above)
  * @param {string} wrapper.type Node type of wrapper
  * @param {Object} [wrapper.attributes] Attributes of wrapper
@@ -661,7 +661,7 @@ ve.dm.SurfaceFragment.prototype.wrapAllNodes = function ( wrapper ) {
  * TODO: Figure out what the arguments for this function should be
  *
  * @method
- * @param {String|String[]} type Node types to unwrap, or array of node types to unwrap
+ * @param {string|string[]} type Node types to unwrap, or array of node types to unwrap
  * @returns {ve.dm.SurfaceFragment} This fragment
  */
 ve.dm.SurfaceFragment.prototype.unwrapAllNodes = function () {
@@ -680,7 +680,7 @@ ve.dm.SurfaceFragment.prototype.unwrapAllNodes = function () {
  * optional attributes property.
  *
  * @method
- * @param {String|String[]} type Node types to unwrap, or array of node types to unwrap
+ * @param {string|string[]} type Node types to unwrap, or array of node types to unwrap
  * @param {Object|Object[]} wrapper Wrapper object, or array of wrapper objects (see above)
  * @param {string} wrapper.type Node type of wrapper
  * @param {Object} [wrapper.attributes] Attributes of wrapper

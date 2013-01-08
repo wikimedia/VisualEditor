@@ -642,7 +642,7 @@ ve.init.mw.ViewPageTarget.prototype.onSaveDialogPrevButtonClick = function () {
  * Gets a list of edit notices.
  *
  * @method
- * @returns {String[]} HTML strings for each edit notice
+ * @returns {string[]} HTML strings for each edit notice
  */
 ve.init.mw.ViewPageTarget.prototype.setupToolbarEditNotices = function () {
 	var key;

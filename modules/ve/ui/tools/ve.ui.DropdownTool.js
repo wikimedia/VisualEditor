@@ -140,7 +140,7 @@ ve.ui.DropdownTool.prototype.onClearState = function () {
  * If the label value is empty, undefined or only contains whitespace an empty label will be used.
  *
  * @method
- * @param {jQuery|String} [value] jQuery HTML node selection or string text value to use for label
+ * @param {jQuery|string} [value] jQuery HTML node selection or string text value to use for label
  */
 ve.ui.DropdownTool.prototype.setLabel = function ( value ) {
 	if ( typeof value === 'string' && value.length && /[^\s]*/.test( value ) ) {

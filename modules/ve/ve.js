@@ -313,7 +313,7 @@
 	 * @method
 	 * @until ES5
 	 * @param {Object} Object to get properties from
-	 * @returns {String[]} List of object keys
+	 * @returns {string[]} List of object keys
 	 */
 	ve.getObjectKeys = Object.keys || function ( obj ) {
 		var key, keys;
@@ -752,7 +752,7 @@
 	 *
 	 * @param {HTMLElement} element DOM element to apply attributes to
 	 * @param {Object} attributes Attributes to apply
-	 * @param {String[]} [whitelist] List of attributes to exclusively allow (all lower case names)
+	 * @param {string[]} [whitelist] List of attributes to exclusively allow (all lower case names)
 	 */
 	ve.setDomAttributes = function ( element, attributes, whitelist ) {
 		var key;
