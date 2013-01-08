@@ -1136,7 +1136,9 @@ ve.init.mw.ViewPageTarget.prototype.hideSaveDialog = function () {
 	$( document ).off( 'keydown.ve-savedialog' );
 	$( window ).off( 'resize', this.onResizeSaveDialog );
 
-	this.surface.enable();
+	if ( this.surface ) {
+		this.surface.enable();
+	}
 };
 
 /**
