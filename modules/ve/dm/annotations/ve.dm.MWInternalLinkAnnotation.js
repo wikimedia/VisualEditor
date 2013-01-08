@@ -87,6 +87,7 @@ ve.dm.MWInternalLinkAnnotation.prototype.toHTML = function () {
 		href = encodeURIComponent( this.data.title );
 	}
 	parentResult.attributes.href = href;
+	parentResult.attributes.title = this.data.title;
 	parentResult.attributes.rel = 'mw:WikiLink';
 	return parentResult;
 };
