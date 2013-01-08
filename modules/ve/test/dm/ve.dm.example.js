@@ -817,6 +817,36 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/paragraph' }
 		]
 	},
+	'wrapping of bare content starting with mw:unrecognized inline alien': {
+		'html': '<span typeof="mw:Placeholder">Foo</span>Bar',
+		'data': [
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			{
+				'type': 'alienInline',
+				'attributes': { 'html': '<span typeof="mw:Placeholder">Foo</span>' }
+			},
+			{ 'type': '/alienInline' },
+			'B',
+			'a',
+			'r',
+			{ 'type': '/paragraph' }
+		]
+	},
+	'wrapping of bare content ending with mw:unrecognized inline alien': {
+		'html': 'Foo<span typeof="mw:Placeholder">Bar</span>',
+		'data': [
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			'F',
+			'o',
+			'o',
+			{
+				'type': 'alienInline',
+				'attributes': { 'html': '<span typeof="mw:Placeholder">Bar</span>' }
+			},
+			{ 'type': '/alienInline' },
+			{ 'type': '/paragraph' }
+		]
+	},
 	'wrapping of bare content with about group': {
 		'html': '1<tt about="#mwt1">foo</tt><tt about="#mwt1">bar</tt>2',
 		'data': [
@@ -1763,13 +1793,15 @@ ve.dm.example.domToDataCases = {
 				}
 			},
 			{ 'type': '/alienBlock' },
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			{
-				'type': 'alienBlock',
+				'type': 'alienInline',
 				'attributes': {
 					'html': '<span typeof="mw:Placeholder" about="#mwt3">Meh</span>'
 				}
 			},
-			{ 'type': '/alienBlock' }
+			{ 'type': '/alienInline' },
+			{ 'type': '/paragraph' }
 		]
 	},
 	'whitespace preservation with an about group': {
