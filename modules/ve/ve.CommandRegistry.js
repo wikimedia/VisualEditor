@@ -27,8 +27,8 @@ ve.inheritClass( ve.CommandRegistry, ve.Registry );
  * Register a constructor with the factory.
  *
  * @method
- * @param {string|String[]} name Symbolic name or list of symbolic names
- * @param {string|String[]} trigger Command string of keys that should trigger the command
+ * @param {string|string[]} name Symbolic name or list of symbolic names
+ * @param {string|string[]} trigger Command string of keys that should trigger the command
  * @param {string} action Action to execute when command is triggered
  * @param {string} method Method to call on action when executing
  * @param {Mixed...} [data] Additional data to pass to the action when executing

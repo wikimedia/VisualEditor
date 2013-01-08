@@ -10,7 +10,7 @@
  *
  * @class
  * @constructor
- * @param {jQuery.Event|String} [e] Event or string to create command from
+ * @param {jQuery.Event|string} [e] Event or string to create command from
  */
 ve.Command = function ( e ) {
 	// Properties

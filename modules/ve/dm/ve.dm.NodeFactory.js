@@ -51,7 +51,7 @@ ve.dm.NodeFactory.prototype.getDataElement = function ( type, attributes ) {
  *
  * @method
  * @param {string} type Node type
- * @returns {String[]|null} List of node types allowed as children or null if any type is allowed
+ * @returns {string[]|null} List of node types allowed as children or null if any type is allowed
  * @throws 'Unknown node type: {type}'
  */
 ve.dm.NodeFactory.prototype.getChildNodeTypes = function ( type ) {
@@ -66,7 +66,7 @@ ve.dm.NodeFactory.prototype.getChildNodeTypes = function ( type ) {
  *
  * @method
  * @param {string} type Node type
- * @returns {String[]|null} List of node types allowed as parents or null if any type is allowed
+ * @returns {string[]|null} List of node types allowed as parents or null if any type is allowed
  * @throws 'Unknown node type: {type}'
  */
 ve.dm.NodeFactory.prototype.getParentNodeTypes = function ( type ) {

@@ -44,7 +44,7 @@ ve.inheritClass( ve.dm.Node, ve.Node );
  * Gets a list of allowed child node types.
  *
  * @method
- * @returns {String[]|null} List of node types allowed as children or null if any type is allowed
+ * @returns {string[]|null} List of node types allowed as children or null if any type is allowed
  */
 ve.dm.Node.prototype.getChildNodeTypes = function () {
 	return ve.dm.nodeFactory.getChildNodeTypes( this.type );
@@ -54,7 +54,7 @@ ve.dm.Node.prototype.getChildNodeTypes = function () {
  * Gets a list of allowed parent node types.
  *
  * @method
- * @returns {String[]|null} List of node types allowed as parents or null if any type is allowed
+ * @returns {string[]|null} List of node types allowed as parents or null if any type is allowed
  */
 ve.dm.Node.prototype.getParentNodeTypes = function () {
 	return ve.dm.nodeFactory.getParentNodeTypes( this.type );
@@ -289,7 +289,7 @@ ve.dm.Node.prototype.getAttributes = function ( prefix ) {
  * checked. Comparison of values is done by casting to strings unless the strict argument is used.
  *
  * @method
- * @param {String[]|Object} attributes Array of keys or object of keys and values
+ * @param {string[]|Object} attributes Array of keys or object of keys and values
  * @param {boolean} strict Use strict comparison when checking if values match
  * @returns {boolean} Node has attributes
  */

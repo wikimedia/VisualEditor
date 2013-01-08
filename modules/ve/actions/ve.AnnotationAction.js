@@ -77,7 +77,7 @@ ve.AnnotationAction.prototype.toggle = function ( name, data ) {
  * Clears all annotations.
  *
  * @method
- * @param {String|RegExp} [filter] Annotation name or RegExp that matches types
+ * @param {string|RegExp} [filter] Annotation name or RegExp that matches types
  */
 ve.AnnotationAction.prototype.clearAll = function ( filter ) {
 	var i, len, arr,

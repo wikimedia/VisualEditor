@@ -43,7 +43,7 @@ ve.ui.InspectorFactory.prototype.getTypePattern = function ( name ) {
  *
  * @method
  * @param {ve.AnnotationSet} annotations Annotations to be inspected
- * @returns {String[]} Symbolic names of inspectors that can be used to inspect annotations
+ * @returns {string[]} Symbolic names of inspectors that can be used to inspect annotations
  */
 ve.ui.InspectorFactory.prototype.getInspectorsForAnnotations = function ( annotations ) {
 	var name,

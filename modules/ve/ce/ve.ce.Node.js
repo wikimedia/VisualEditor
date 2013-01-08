@@ -95,7 +95,7 @@ ve.ce.Node.static.$shieldTemplate = $(
  * This method passes through to the model.
  *
  * @method
- * @returns {String[]|null} List of node types allowed as children or null if any type is allowed
+ * @returns {string[]|null} List of node types allowed as children or null if any type is allowed
  */
 ve.ce.Node.prototype.getChildNodeTypes = function () {
 	return this.model.getChildNodeTypes();
@@ -107,7 +107,7 @@ ve.ce.Node.prototype.getChildNodeTypes = function () {
  * This method passes through to the model.
  *
  * @method
- * @returns {String[]|null} List of node types allowed as parents or null if any type is allowed
+ * @returns {string[]|null} List of node types allowed as parents or null if any type is allowed
  */
 ve.ce.Node.prototype.getParentNodeTypes = function () {
 	return this.model.getParentNodeTypes();

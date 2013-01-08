@@ -38,7 +38,7 @@ ve.ContentAction.static.methods = ['insert', 'remove', 'select'];
  * Sets a given Content.
  *
  * @method
- * @param {String|Array} content Content to insert, can be either a string or array of data
+ * @param {string|Array} content Content to insert, can be either a string or array of data
  * @param {boolean} annotate Content should be automatically annotated to match surrounding content
  */
 ve.ContentAction.prototype.insert = function ( content, annotate ) {

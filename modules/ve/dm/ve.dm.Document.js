@@ -585,7 +585,7 @@ ve.dm.Document.prototype.getDataFromNode = function ( node ) {
  *
  * @method
  * @param {ve.Range} [range] Range of data to get the text of.
- * @returns {String|''} Selected text or an empty string.
+ * @returns {string|''} Selected text or an empty string.
  */
 ve.dm.Document.prototype.getText = function ( range ) {
 	var data = this.getData( range ),
@@ -1099,7 +1099,7 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 	 *
 	 * This function updates parentNode, parentType, openingStack and closingStack.
 	 *
-	 * @param {Object|Array|String} element Linear model element
+	 * @param {Object|Array|string} element Linear model element
 	 * @param {number} index Index in data that this element came from (for error reporting only)
 	 */
 	function writeElement( element, index ) {

@@ -125,7 +125,7 @@ ve.dm.AnnotationFactory.prototype.register = function ( name, constructor ) {
  * The highest-ranking annotation whose test function does not return false, wins.
  *
  * @param {HTMLElement} element Element to match
- * @returns {String|null} Annotation type, or null if none found
+ * @returns {string|null} Annotation type, or null if none found
  */
 ve.dm.AnnotationFactory.prototype.matchElement = function ( element ) {
 	var i, name, ann, matches, winner, types,

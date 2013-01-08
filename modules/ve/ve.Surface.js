@@ -207,7 +207,7 @@ ve.Surface.prototype.execute = function ( action, method ) {
  * Commands must be registered through {ve.commandRegsitry} prior to constructing the surface.
  *
  * @method
- * @param {String[]} commands Array of symbolic names of registered commands
+ * @param {string[]} commands Array of symbolic names of registered commands
  */
 ve.Surface.prototype.setupCommands = function () {
 	var i, iLen, j, jLen, triggers, trigger, command,
