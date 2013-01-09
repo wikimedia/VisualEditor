@@ -1,12 +1,12 @@
 /*!
- * VisualEditor user interface Menu class.
+ * VisualEditor user interface MenuWidget class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Creates an ve.ui.Menu object.
+ * Creates an ve.ui.MenuWidget object.
  *
  * @class
  * @constructor
@@ -15,12 +15,12 @@
  * @param {jQuery} [$container] Container to render menu into
  * @param {jQuery} [$overlay=$( 'body' )] Element to append menu to
  */
-ve.ui.Menu = function VeUiMenu( items, callback, $container, $overlay ) {
+ve.ui.MenuWidget = function VeUiMenuWidget( items, callback, $container, $overlay ) {
 	// Properties
 	this.items = [];
 	this.autoNamedBreaks = 0;
 	this.callback = callback;
-	this.$ = $container || $( '<div class="ve-ui-menu"></div>' );
+	this.$ = $container || $( '<div class="ve-ui-menuWidget"></div>' );
 
 	// Events
 	this.$.on( {
@@ -35,22 +35,40 @@ ve.ui.Menu = function VeUiMenu( items, callback, $container, $overlay ) {
 
 /* Methods */
 
-ve.ui.Menu.prototype.onMouseDown = function ( e ) {
+/**
+ * Handles mouse down events.
+ *
+ * @method
+ * @param {jQuery.Event} e Event
+ */
+ve.ui.MenuWidget.prototype.onMouseDown = function ( e ) {
 	if ( e.which === 1 ) {
 		e.preventDefault();
 		return false;
 	}
 };
 
-ve.ui.Menu.prototype.onMouseUp = function ( e ) {
-	var name, i, len, $item;
+/**
+ * Handles mouse up events.
+ *
+ * @method
+ * @param {jQuery.Event} e Event
+ */
+ve.ui.MenuWidget.prototype.onMouseUp = function ( e ) {
+	var name, i, len, $item, item;
 	if ( e.which === 1 ) {
-		$item = $( e.target ).closest( '.ve-ui-menu-item' );
+		$item = $( e.target ).closest( '.ve-ui-menuWidget-item' );
 		if ( $item.length ) {
 			name = $item.attr( 'rel' );
 			for ( i = 0, len = this.items.length; i < len; i++ ) {
-				if ( this.items[i].name === name ) {
-					this.onSelect( this.items[i], e );
+				item = this.items[i];
+				if ( item.name === name ) {
+					if ( typeof item.callback === 'function' ) {
+						item.callback( item );
+					} else if ( typeof this.callback === 'function' ) {
+						this.callback( item );
+					}
+					this.close();
 					return true;
 				}
 			}
@@ -58,7 +76,14 @@ ve.ui.Menu.prototype.onMouseUp = function ( e ) {
 	}
 };
 
-ve.ui.Menu.prototype.addItems = function ( items, before ) {
+/**
+ * Adds items to the menu.
+ *
+ * @method
+ * @param {Object[]} items List of item objects
+ * @param {Object} before Menu item to add items before
+ */
+ve.ui.MenuWidget.prototype.addItems = function ( items, before ) {
 	var i, len;
 	if ( !ve.isArray( items ) ) {
 		throw new Error( 'Invalid items, must be array of objects.' );
@@ -68,7 +93,16 @@ ve.ui.Menu.prototype.addItems = function ( items, before ) {
 	}
 };
 
-ve.ui.Menu.prototype.addItem = function ( item, before ) {
+/**
+ * Adds item to the menu.
+ *
+ * @method
+ * @param {Object} item Item object
+ * @param {string} item.name Symbolic name of item
+ * @param {string} item.label Item label
+ * @param {Object} before Menu item to add item before
+ */
+ve.ui.MenuWidget.prototype.addItem = function ( item, before ) {
 	if ( item === '-' ) {
 		item = {
 			'name': 'break-' + this.autoNamedBreaks++
@@ -80,13 +114,13 @@ ve.ui.Menu.prototype.addItem = function ( item, before ) {
 			throw new Error( 'Invalid menu item error. Items must have a name property.' );
 		}
 		if ( item.label ) {
-			item.$ = $( '<div class="ve-ui-menu-item"></div>' )
+			item.$ = $( '<div class="ve-ui-menuWidget-item"></div>' )
 				.attr( 'rel', item.name )
 				// TODO: this should take a labelmsg instead and call ve.msg()
 				.append( $( '<span>' ).text( item.label ) );
 		} else {
 			// No label, must be a break
-			item.$ = $( '<div class="ve-ui-menu-break"></div>' )
+			item.$ = $( '<div class="ve-ui-menuWidget-break"></div>' )
 				.attr( 'rel', item.name );
 		}
 		// TODO: Keyboard shortcut (and icons for them), support for keyboard accelerators, etc.
@@ -104,7 +138,13 @@ ve.ui.Menu.prototype.addItem = function ( item, before ) {
 	this.$.append( item.$ );
 };
 
-ve.ui.Menu.prototype.removeItem = function ( name ) {
+/**
+ * Removes item from the menu.
+ *
+ * @method
+ * @param {string} name Symbolic name of item
+ */
+ve.ui.MenuWidget.prototype.removeItem = function ( name ) {
 	for ( var i = 0; i < this.items.length; i++ ) {
 		if ( this.items[i].name === name ) {
 			this.items.splice( i, 1 );
@@ -113,34 +153,53 @@ ve.ui.Menu.prototype.removeItem = function ( name ) {
 	}
 };
 
-ve.ui.Menu.prototype.getItems = function () {
+/**
+ * Gets a list of all menu items.
+ *
+ * @method
+ * @returns {Object[]} Menu item objects
+ */
+ve.ui.MenuWidget.prototype.getItems = function () {
 	return this.items;
 };
 
-ve.ui.Menu.prototype.setPosition = function ( position ) {
+/**
+ * Sets the position of the menu.
+ *
+ * @method
+ * @returns {ve.Position} New menu position
+ */
+ve.ui.MenuWidget.prototype.setPosition = function ( position ) {
 	return this.$.css( {
 		'top': position.top,
 		'left': position.left
 	} );
 };
 
-ve.ui.Menu.prototype.open = function () {
+/**
+ * Opens the menu.
+ *
+ * @method
+ */
+ve.ui.MenuWidget.prototype.open = function () {
 	this.$.show();
 };
 
-ve.ui.Menu.prototype.close = function () {
+/**
+ * Closes the menu.
+ *
+ * @method
+ */
+ve.ui.MenuWidget.prototype.close = function () {
 	this.$.hide();
 };
 
-ve.ui.Menu.prototype.isOpen = function () {
+/**
+ * Checks if the menu is currently open.
+ *
+ * @method
+ * @returns {boolean} Menu is open
+ */
+ve.ui.MenuWidget.prototype.isOpen = function () {
 	return this.$.is( ':visible' );
-};
-
-ve.ui.Menu.prototype.onSelect = function ( item ) {
-	if ( typeof item.callback === 'function' ) {
-		item.callback( item );
-	} else if ( typeof this.callback === 'function' ) {
-		this.callback( item );
-	}
-	this.close();
 };

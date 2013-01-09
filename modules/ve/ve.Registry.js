@@ -17,7 +17,7 @@ ve.Registry = function VeRegistry() {
 	ve.EventEmitter.call( this );
 
 	// Properties
-	this.registry = [];
+	this.registry = {};
 };
 
 /* Inheritance */

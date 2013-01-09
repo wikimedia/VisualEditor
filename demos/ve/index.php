@@ -32,10 +32,10 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 		<link rel=stylesheet href="../../modules/ve/ce/styles/ve.ce.Surface.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Context.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Inspector.css">
-		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Menu.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Surface.css">
-		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Toolbar.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Tool.css">
+		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Toolbar.css">
+		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Widget.css">
 
 		<script>
 			if ( window.devicePixelRatio > 1 ) {
@@ -177,11 +177,10 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 		<script src="../../modules/ve/ui/ve.ui.Frame.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.Inspector.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.InspectorFactory.js"></script>
-		<script src="../../modules/ve/ui/ve.ui.Menu.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.Tool.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.Toolbar.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.ToolFactory.js"></script>
-		<script src="../../modules/ve/ui/inspectors/ve.ui.LinkInspector.js"></script>
+		<script src="../../modules/ve/ui/ve.ui.Widget.js"></script>
 		<script src="../../modules/ve/ui/tools/ve.ui.ButtonTool.js"></script>
 		<script src="../../modules/ve/ui/tools/ve.ui.AnnotationButtonTool.js"></script>
 		<script src="../../modules/ve/ui/tools/ve.ui.InspectorButtonTool.js"></script>
@@ -192,6 +191,7 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 		<script src="../../modules/ve/ui/tools/buttons/ve.ui.ItalicButtonTool.js"></script>
 		<script src="../../modules/ve/ui/tools/buttons/ve.ui.ClearButtonTool.js"></script>
 		<script src="../../modules/ve/ui/tools/buttons/ve.ui.LinkButtonTool.js"></script>
+		<script src="../../modules/ve/ui/tools/buttons/ve.ui.MWLinkButtonTool.js"></script>
 		<script src="../../modules/ve/ui/tools/buttons/ve.ui.BulletButtonTool.js"></script>
 		<script src="../../modules/ve/ui/tools/buttons/ve.ui.NumberButtonTool.js"></script>
 		<script src="../../modules/ve/ui/tools/buttons/ve.ui.IndentButtonTool.js"></script>
@@ -199,6 +199,14 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 		<script src="../../modules/ve/ui/tools/buttons/ve.ui.RedoButtonTool.js"></script>
 		<script src="../../modules/ve/ui/tools/buttons/ve.ui.UndoButtonTool.js"></script>
 		<script src="../../modules/ve/ui/tools/dropdowns/ve.ui.FormatDropdownTool.js"></script>
+		<script src="../../modules/ve/ui/widgets/ve.ui.InputWidget.js"></script>
+		<script src="../../modules/ve/ui/widgets/ve.ui.TextInputWidget.js"></script>
+		<script src="../../modules/ve/ui/widgets/ve.ui.TextInputMenuWidget.js"></script>
+		<script src="../../modules/ve/ui/widgets/ve.ui.LinkTargetInputWidget.js"></script>
+		<script src="../../modules/ve/ui/widgets/ve.ui.MWLinkTargetInputWidget.js"></script>
+		<script src="../../modules/ve/ui/widgets/ve.ui.MenuWidget.js"></script>
+		<script src="../../modules/ve/ui/inspectors/ve.ui.LinkInspector.js"></script>
+		<script src="../../modules/ve/ui/inspectors/ve.ui.MWLinkInspector.js"></script>
 		<!-- demo -->
 		<script>
 			$(document).ready( function () {

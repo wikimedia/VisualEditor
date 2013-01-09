@@ -56,8 +56,17 @@ ve.ui.Context = function VeUiContext( surface, $overlay ) {
 
 ve.ui.Context.static = {};
 
+/**
+ * Options for frame object.
+ *
+ * @static
+ * @property
+ * @type {Object}
+ * @see ve.ui.Frame
+ */
 ve.ui.Context.static.frameOptions = {
 	'stylesheets': [
+		ve.init.platform.getModulesUrl() + '/ve/ui/styles/ve.ui.Widget.css',
 		ve.init.platform.getModulesUrl() + '/ve/ui/styles/ve.ui.Inspector.css',
 		ve.init.platform.getModulesUrl() + (
 			window.devicePixelRatio > 1 ?
@@ -208,7 +217,7 @@ ve.ui.Context.prototype.update = function () {
 				[{ 'name': 'inspectors', 'items' : inspectors }]
 			);
 			// Note: Menu attaches the provided $tool element to the container.
-			this.menu = new ve.ui.Menu(
+			this.menu = new ve.ui.MenuWidget(
 				[ { 'name': 'tools', '$': this.toolbar.$ } ], // Tools
 				null, // Callback
 				this.$menu, // Container
@@ -224,6 +233,11 @@ ve.ui.Context.prototype.update = function () {
 	this.selection = selection.clone();
 };
 
+/**
+ * Shows the context menu.
+ *
+ * @method
+ */
 ve.ui.Context.prototype.show = function () {
 	var selectionRect = this.surface.getView().getSelectionRect();
 
@@ -250,6 +264,11 @@ ve.ui.Context.prototype.show = function () {
 	this.positionInner();
 };
 
+/**
+ * Hides the context menu.
+ *
+ * @method
+ */
 ve.ui.Context.prototype.hide = function () {
 	if ( this.inspector ) {
 		this.closeInspector();
@@ -284,26 +303,16 @@ ve.ui.Context.prototype.positionInner = function () {
 	}
 	// Apply dimensions to inner
 	this.$inner.css( { 'left': left, 'height': height, 'width': width } );
+	this.$overlay.css( { 'left': left, 'width': width } );
 };
 
 /**
- * Positions an overlay element below another element.
+ * Initializes a given inspector.
  *
- * TODO: Does this really need to be here? Why are we halving the width of $inner?
- *
- * @param {jQuery} $overlay
- * @param {jQuery} $element
+ * @method
+ * @param {string} name Symbolic name of inspector
+ * @returns {boolean} Inspector had to be created
  */
-ve.ui.Context.prototype.positionOverlayBelow = function ( $overlay, $element ) {
-	// Set iframe overlay below element.
-	$overlay.css( {
-		'left': $element.offset().left - ( this.$inner.width() / 2 ),
-		'top': $element.offset().top + $element.outerHeight( true ),
-		// RTL position fix.
-		'width': $overlay.children().outerWidth( true )
-	} );
-};
-
 ve.ui.Context.prototype.initInspector = function ( name ) {
 	var inspector;
 	// Add inspector on demand.
@@ -321,6 +330,12 @@ ve.ui.Context.prototype.initInspector = function ( name ) {
 	return false;
 };
 
+/**
+ * Opens a given inspector.
+ *
+ * @method
+ * @param {string} name Symbolic name of inspector
+ */
 ve.ui.Context.prototype.openInspector = function ( name ) {
 	// Auto-initialize the inspector
 	if ( !this.initInspector( name ) ) {
@@ -334,6 +349,12 @@ ve.ui.Context.prototype.openInspector = function ( name ) {
 	this.inspectors[name].open();
 };
 
+/**
+ * Closes currently open inspector.
+ *
+ * @method
+ * @param {boolean} remove Remove annotation while closing
+ */
 ve.ui.Context.prototype.closeInspector = function ( remove ) {
 	// Quietly ignore if nothing is open
 	if ( this.inspector ) {
@@ -342,10 +363,20 @@ ve.ui.Context.prototype.closeInspector = function ( remove ) {
 	}
 };
 
+/**
+ * Brings inspector into view.
+ *
+ * @method
+ */
 ve.ui.Context.prototype.reveal = function ( $element ) {
 	$element.css( 'top', 0 );
 };
 
+/**
+ * Make inspector invisible without affecting it's visiblity or display properties.
+ *
+ * @method
+ */
 ve.ui.Context.prototype.obscure = function ( $element ) {
 	$element.css( 'top', -5000 );
 };

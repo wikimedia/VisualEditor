@@ -116,7 +116,7 @@
 	opacity: 1;
 }
 
-.ve-ui-dropdownTool .ve-ui-menu {
+.ve-ui-dropdownTool .ve-ui-menuWidget {
 	left: -1px;
 	top: -1px;
 }
@@ -125,41 +125,41 @@
 	width: 8em;
 }
 
-.ve-ui-dropdownTool-format .ve-ui-menu-item[rel="paragraph"] span {
+.ve-ui-dropdownTool-format .ve-ui-menuWidget-item[rel="paragraph"] span {
 	font-size: 90%;
 	font-weight: normal;
 }
 
-.ve-ui-dropdownTool-format .ve-ui-menu-item[rel="heading-1"] span {
+.ve-ui-dropdownTool-format .ve-ui-menuWidget-item[rel="heading-1"] span {
 	font-size: 188%;
 	font-weight: normal;
 }
 
-.ve-ui-dropdownTool-format .ve-ui-menu-item[rel="heading-2"] span {
+.ve-ui-dropdownTool-format .ve-ui-menuWidget-item[rel="heading-2"] span {
 	font-size: 150%;
 	font-weight: normal;
 }
 
-.ve-ui-dropdownTool-format .ve-ui-menu-item[rel="heading-3"] span {
+.ve-ui-dropdownTool-format .ve-ui-menuWidget-item[rel="heading-3"] span {
 	font-size: 132%;
 	font-weight: bold;
 }
 
-.ve-ui-dropdownTool-format .ve-ui-menu-item[rel="heading-4"] span {
+.ve-ui-dropdownTool-format .ve-ui-menuWidget-item[rel="heading-4"] span {
 	font-size: 116%;
 	font-weight: bold;
 }
 
-.ve-ui-dropdownTool-format .ve-ui-menu-item[rel="heading-5"] span {
+.ve-ui-dropdownTool-format .ve-ui-menuWidget-item[rel="heading-5"] span {
 	font-size: 100%;
 	font-weight: bold;
 }
 
-.ve-ui-dropdownTool-format .ve-ui-menu-item[rel="heading-6"] span {
+.ve-ui-dropdownTool-format .ve-ui-menuWidget-item[rel="heading-6"] span {
 	font-size: 80%;
 	font-weight: bold;
 }
 
-.ve-ui-dropdownTool-format .ve-ui-menu-item[rel="preformatted"] span {
+.ve-ui-dropdownTool-format .ve-ui-menuWidget-item[rel="preformatted"] span {
 	font-family: monospace, "Courier New";
 }

@@ -64,6 +64,7 @@ ve.commandRegistry.register(
 	'italic', ['cmd+i', 'ctrl+i'], 'annotation', 'toggle', 'textStyle/italic'
 );
 ve.commandRegistry.register( 'link', ['cmd+k', 'ctrl+k'], 'inspector', 'open', 'link' );
+ve.commandRegistry.register( 'mwLink', ['cmd+k', 'ctrl+k'], 'inspector', 'open', 'mwLink' );
 ve.commandRegistry.register( 'undo', ['cmd+z', 'ctrl+z'], 'history', 'undo' );
 ve.commandRegistry.register( 'redo', ['cmd+shift+z', 'ctrl+shift+z'], 'history', 'redo' );
 ve.commandRegistry.register( 'indent', ['tab'], 'indentation', 'increase' );

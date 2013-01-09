@@ -55,9 +55,18 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	this.surfaceOptions = {
 		'toolbars': {
 			'top': {
-				'float': !this.isMobileDevice
+				'float': !this.isMobileDevice,
+				// HACK: The toolbar configuration isn't very extendable, so this is mostly
+				// copy-pasted from ve.Surface except using mwLink for the link tool
+				'tools': [
+					{ 'name': 'history', 'items' : ['undo', 'redo'] },
+					{ 'name': 'textStyle', 'items' : ['format'] },
+					{ 'name': 'textStyle', 'items' : ['bold', 'italic', 'mwLink', 'clear'] },
+					{ 'name': 'list', 'items' : ['number', 'bullet', 'outdent', 'indent'] }
+				]
 			}
-		}
+		},
+		'commands': ['bold', 'italic', 'mwLink', 'undo', 'redo', 'indent', 'unindent']
 	};
 	this.currentUri = currentUri;
 	this.restoring = !!this.oldid;

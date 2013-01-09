@@ -20,7 +20,7 @@ ve.ui.DropdownTool = function VeUiDropdownTool( toolbar, items ) {
 	ve.ui.Tool.call( this, toolbar );
 
 	// Properties
-	this.menuView = new ve.ui.Menu( items, ve.bind( this.onMenuItemSelect, this ), null, this.$ );
+	this.menuView = new ve.ui.MenuWidget( items, ve.bind( this.onMenuItemSelect, this ), null, this.$ );
 	this.$icon = $( '<div class="ve-ui-dropdownTool-icon ve-ui-icon-down"></div>' );
 	this.$label = $( '<div class="ve-ui-dropdownTool-label"></div>' );
 	this.$labelText = $( '<span>&nbsp;</span>' );
@@ -70,7 +70,7 @@ ve.ui.DropdownTool.prototype.onMousedown = function ( e ) {
 ve.ui.DropdownTool.prototype.onMouseup = function ( e ) {
 	if ( e.which === 1 ) {
 		// Don't respond to menu clicks
-		var $item = $( e.target ).closest( '.ve-ui-menu' );
+		var $item = $( e.target ).closest( '.ve-ui-menuWidget' );
 		if ( e.which === 1 && $item.length === 0 ) {
 			this.menuView.open();
 		} else {

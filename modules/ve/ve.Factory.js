@@ -17,7 +17,7 @@ ve.Factory = function VeFactory() {
 	ve.Registry.call( this );
 
 	// Properties
-	this.registry = [];
+	this.entries = [];
 };
 
 /* Inheritance */
@@ -39,6 +39,7 @@ ve.Factory.prototype.register = function ( name, constructor ) {
 		throw new Error( 'constructor must be a function, cannot be a ' + typeof constructor );
 	}
 	ve.Registry.prototype.register.call( this, name, constructor );
+	this.entries.push( name );
 };
 
 /**

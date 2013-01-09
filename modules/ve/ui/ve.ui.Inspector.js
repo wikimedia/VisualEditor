@@ -63,10 +63,31 @@ ve.inheritClass( ve.ui.Inspector, ve.EventEmitter );
 
 /* Static Members */
 
+/**
+ * Symbolic name of icon.
+ *
+ * @static
+ * @property
+ * @type {string}
+ */
 ve.ui.Inspector.static.icon = 'inspector';
 
+/**
+ * Localized message for title.
+ *
+ * @static
+ * @property
+ * @type {string}
+ */
 ve.ui.Inspector.static.titleMessage = 'visualeditor-inspector-title';
 
+/**
+ * Pattern to use when matching against annotation type strings.
+ *
+ * @static
+ * @property
+ * @type {RegExp}
+ */
 ve.ui.Inspector.static.typePattern = new RegExp();
 
 /* Methods */
@@ -184,6 +205,7 @@ ve.ui.Inspector.prototype.open = function () {
 	if ( this.onOpen ) {
 		this.onOpen();
 	}
+	this.$form.find( ':input:visible:first' ).focus();
 	this.emit( 'afterOpen' );
 };
 
@@ -205,8 +227,8 @@ ve.ui.Inspector.prototype.close = function ( remove ) {
 		if ( this.onClose ) {
 			this.onClose( remove );
 		}
-		this.emit( 'afterClose', remove );
 		this.context.getSurface().getView().getDocument().getDocumentNode().$.focus();
+		this.emit( 'afterClose', remove );
 		this.closing = false;
 	}
 };

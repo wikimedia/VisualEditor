@@ -1,5 +1,3 @@
-/*global mw */
-
 /*!
  * VisualEditor user interface LinkInspector class.
  *
@@ -21,19 +19,12 @@ ve.ui.LinkInspector = function VeUiLinkInspector( context ) {
 
 	// Properties
 	this.context = context;
-	this.initialTarget = null;
+	this.initialAnnotationHash = null;
 	this.isNewAnnotation = false;
-	this.$locationInput = this.frame.$$(
-		'<input type="text" class="ve-ui-linkInspector-location ve-ui-icon-down" />'
-	);
+	this.targetInput = new this.constructor.static.inputWidget( this.frame.$$, context.$overlay );
 
 	// Initialization
-	this.$form.append( this.$locationInput );
-
-	// FIXME: MediaWiki-specific
-	if ( 'mw' in window ) {
-		this.initMultiSuggest();
-	}
+	this.$form.append( this.targetInput.$ );
 };
 
 /* Inheritance */
@@ -46,7 +37,9 @@ ve.ui.LinkInspector.static.icon = 'link';
 
 ve.ui.LinkInspector.static.titleMessage = 'visualeditor-linkinspector-title';
 
-ve.ui.LinkInspector.static.typePattern = /^link(\/MW(in|ex)ternal)?$/;
+ve.ui.LinkInspector.static.typePattern = /^link(\/|$)/;
+
+ve.ui.LinkInspector.static.inputWidget = ve.ui.LinkTargetInputWidget;
 
 /* Methods */
 
@@ -93,27 +86,15 @@ ve.ui.LinkInspector.prototype.onInitialize = function () {
  * @method
  */
 ve.ui.LinkInspector.prototype.onOpen = function () {
-	var target = '',
-		fragment = this.context.getSurface().getModel().getFragment( null, true ),
+	var fragment = this.context.getSurface().getModel().getFragment( null, true ),
 		annotation = this.getMatchingAnnotations( fragment ).get( 0 );
 
-	if ( annotation ) {
-		if ( annotation instanceof ve.dm.MWInternalLinkAnnotation ) {
-			// Internal link
-			target = annotation.data.title || '';
-		} else {
-			// External link
-			target = annotation.data.href || '';
-		}
-	}
-	this.initialTarget = target;
-
-	// Initialize form
-	this.$locationInput.val( target );
+	this.initialAnnotationHash = annotation && annotation.getHash();
+	this.targetInput.setAnnotation( annotation );
 
 	// Set focus on the location input
 	setTimeout( ve.bind( function () {
-		this.$locationInput.focus().select();
+		this.targetInput.$.focus().select();
 	}, this ), 0 );
 };
 
@@ -129,12 +110,13 @@ ve.ui.LinkInspector.prototype.onClose = function ( remove ) {
 		undo = false,
 		clear = false,
 		set = false,
-		target = this.$locationInput.val(),
+		target = this.targetInput.getValue(),
+		annotation = this.targetInput.getAnnotation(),
 		surface = this.context.getSurface(),
 		selection = surface.getModel().getSelection(),
 		fragment = surface.getModel().getFragment( this.initialSelection, false );
-	// Empty target is a shortcut for removal
-	if ( target === '' ) {
+	// Undefined annotation causes removal
+	if ( !annotation ) {
 		remove = true;
 	}
 	if ( remove ) {
@@ -143,7 +125,7 @@ ve.ui.LinkInspector.prototype.onClose = function ( remove ) {
 		if ( this.initialSelection.isCollapsed() ) {
 			insert = true;
 		}
-		if ( target !== this.initialTarget ) {
+		if ( annotation.getHash() !== this.initialAnnotationHash ) {
 			if ( this.isNewAnnotation ) {
 				undo = true;
 			} else {
@@ -171,7 +153,7 @@ ve.ui.LinkInspector.prototype.onClose = function ( remove ) {
 	}
 	if ( set ) {
 		// Apply new annotation
-		fragment.annotateContent( 'set', this.getAnnotationFromTarget( target ) );
+		fragment.annotateContent( 'set', annotation );
 	}
 	// Selection changes may have occured in the insertion and annotation hullabaloo - restore it
 	surface.execute( 'content', 'select', selection );
@@ -182,204 +164,15 @@ ve.ui.LinkInspector.prototype.onClose = function ( remove ) {
 /**
  * Gets an annotation object from a target.
  *
- * The type of link is automatically detected based on some crude heuristics.
- *
  * @method
  * @param {string} target Link target
- * @returns {ve.dm.Annotation}
+ * @returns {ve.dm.LinkAnnotation}
  */
 ve.ui.LinkInspector.prototype.getAnnotationFromTarget = function ( target ) {
-	var title, annotation;
-	// FIXME: MediaWiki-specific
-	if ( 'mw' in window ) {
-		// Figure out if this is an internal or external link
-		if ( target.match( /^(https?:)?\/\// ) ) {
-			// External link
-			annotation = new ve.dm.MWExternalLinkAnnotation();
-			annotation.data.href = target;
-		} else {
-			// Internal link
-			// TODO: In the longer term we'll want to have autocompletion and existence and validity
-			// checks using AJAX
-			try {
-				title = new mw.Title( target );
-				if ( title.getNamespaceId() === 6 || title.getNamespaceId() === 14 ) {
-					// File: or Category: link
-					// We have to prepend a colon so this is interpreted as a link
-					// rather than an image inclusion or categorization
-					target = ':' + target;
-				}
-			} catch ( e ) { }
-			annotation = new ve.dm.MWInternalLinkAnnotation();
-			annotation.data.title = target;
-		}
-	} else {
-		// Default to generic external link
-		annotation = new ve.dm.LinkAnnotation();
-		annotation.data.href = target;
-	}
+	var annotation;
+	annotation = new ve.dm.LinkAnnotation();
+	annotation.data.href = target;
 	return annotation;
-};
-
-/**
- * Initalizes the multi-suggest plugin for the location input.
- *
- * TODO: Consider cleaning up and organizing this all a bit.
- *
- * @method
- */
-ve.ui.LinkInspector.prototype.initMultiSuggest = function () {
-	var options,
-		inspector = this,
-		context = inspector.context,
-		$overlay = context.$overlay,
-		suggestionCache = {},
-		pageStatusCache = {},
-		api = new mw.Api();
-	function updateLocationStatus( status ) {
-		inspector.$locationInput.data( 'status', status );
-	}
-
-	// Multi Suggest configuration.
-	options = {
-		'parent': $overlay,
-		'prefix': 've-ui',
-		// Disable CSS Ellipsis.
-		// Using MediaWiki jQuery.autoEllipsis() for center ellipsis.
-		'cssEllipsis': false,
-		// Build suggestion groups in order.
-		'suggestions': function ( params ) {
-			var modifiedQuery, title, prot,
-				groups = {},
-				results = params.results,
-				query = params.query;
-
-			// Add existing pages.
-			if ( results.length > 0 ) {
-				groups.existingPage = {
-					'label': ve.msg( 'visualeditor-linkinspector-suggest-existing-page' ),
-					'items': results,
-					'itemClass': 've-ui-suggest-item-existingPage'
-				};
-			}
-			// Run the query through the mw.Title object to handle correct capitalization,
-			// whitespace and and namespace alias/localization resolution.
-			try {
-				title = new mw.Title( query );
-				modifiedQuery = title.getPrefixedText();
-				// If page doesn't exist, add New Page group.
-				if ( ve.indexOf( modifiedQuery, results ) === -1 ) {
-					groups.newPage = {
-						'label': ve.msg( 'visualeditor-linkinspector-suggest-new-page' ),
-						'items': [modifiedQuery],
-						'itemClass': 've-ui-suggest-item-newPage'
-					};
-				}
-			} catch ( e ) {
-				// invalid input
-				ve.log( e );
-			}
-			// Add external
-			groups.externalLink = {
-				'label': ve.msg( 'visualeditor-linkinspector-suggest-external-link' ),
-				'items': [],
-				'itemClass': 've-ui-suggest-item-externalLink'
-			};
-			// Find a protocol and suggest an external link.
-			prot = query.match(
-				ve.init.platform.getExternalLinkUrlProtocolsRegExp()
-			);
-			if ( prot ) {
-				groups.externalLink.items = [query];
-			// No protocol, default to http
-			} else {
-				groups.externalLink.items = ['http://' + query];
-			}
-			return groups;
-		},
-		// Called on succesfull input.
-		'input': function ( callback ) {
-			var $input = $( this ),
-				query = $input.val(),
-				cKey = query.toLowerCase();
-
-			// Query page and set status data on the location input.
-			if ( pageStatusCache[query] !== undefined ) {
-				updateLocationStatus( pageStatusCache[query] );
-			} else {
-				api.get( {
-					'action': 'query',
-					'indexpageids': '',
-					'titles': query,
-					'converttitles': ''
-				} )
-				.done( function ( data ) {
-					var status, page;
-					if ( data.query ) {
-						page = data.query.pages[data.query.pageids[0]];
-						status = 'exists';
-						if ( page.missing !== undefined ) {
-							status = 'notexists';
-						} else if ( page.invalid !== undefined ) {
-							status = 'invalid';
-						}
-					}
-					// Cache the status of the link query.
-					pageStatusCache[query] = status;
-					updateLocationStatus( status );
-				} );
-			}
-
-			// Set overlay position.
-			options.position();
-			// Build from cache.
-			if ( suggestionCache[cKey] !== undefined ) {
-				callback( {
-					'query': query,
-					'results': suggestionCache[cKey]
-				} );
-			} else {
-				// Load immediate suggestions
-				callback( {
-					'query': query,
-					'results': []
-				} );
-				// Build from fresh api request.
-				api.get( {
-					'action': 'opensearch',
-					'search': query
-				} )
-				.done( function ( data ) {
-					suggestionCache[cKey] = data[1];
-					// Build
-					callback( {
-						'query': query,
-						'results': data[1]
-					} );
-				} );
-			}
-		},
-		// Called when multiSuggest dropdown is updated.
-		'update': function () {
-			// Ellipsis
-			$( '.ve-ui-suggest-item' )
-				.autoEllipsis( {
-					'hasSpan': true,
-					'tooltip': true
-				} );
-		},
-		// Position the iframe overlay below the input.
-		'position': function () {
-			context.positionOverlayBelow( $overlay, inspector.$locationInput );
-		},
-		// Fired when a suggestion is selected.
-		'select': function () {
-			// Assume page suggestion is valid.
-			updateLocationStatus( 'valid' );
-		}
-	};
-	// Setup Multi Suggest
-	this.$locationInput.multiSuggest( options );
 };
 
 /* Registration */

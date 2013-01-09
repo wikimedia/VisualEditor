@@ -6,7 +6,7 @@
  */
 
 /**
- * I-Frame abstraction.
+ * HTML Iframe abstraction.
  *
  * @class
  * @constructor
@@ -16,8 +16,9 @@ ve.ui.Frame = function VeUiFrame( config, $container ) {
 
 	// Properties
 	this.$frame = $( '<iframe frameborder="0" scrolling="no"></iframe>' );
-	this.frameDocument = this.createFrame( this.$frame, $container );
+	this.frameDocument = this.attachFrame( this.$frame, $container );
 	this.$ = this.$$( '.ve-ui-frame-container' );
+	this.$$ = ve.bind( this.$$, this );
 
 	// Initialization
 	if ( 'stylesheets' in config ) {
@@ -29,15 +30,38 @@ ve.ui.Frame = function VeUiFrame( config, $container ) {
 
 /* Methods */
 
+/**
+ * Sets the size of the frame.
+ *
+ * @method
+ * @param {number} width Frame width in pixels
+ * @param {number} height Frame height in pixels
+ */
 ve.ui.Frame.prototype.setSize = function ( width, height ) {
 	this.$frame.css( { 'width': width, 'height': height } );
 };
 
+/**
+ * Execute jQuery function within the context of this frame.
+ *
+ * @method
+ * @param {string} selector jQuery selector
+ * @returns {jQuery} jQuery selection
+ */
 ve.ui.Frame.prototype.$$ = function ( selector ) {
 	return $( selector, this.frameDocument );
 };
 
-ve.ui.Frame.prototype.createFrame = function ( $frame, $container ) {
+/**
+ * Attaches and initializes a frame within a given container.
+ *
+ * @method
+ * @private
+ * @param {jQuery} $frame Frame to attach and initialize
+ * @param {jQuery} $container Container to append frame to
+ * @returns {HTMLDocument} Frame document
+ */
+ve.ui.Frame.prototype.attachFrame = function ( $frame, $container ) {
 	var doc;
 	// Attach to a document to initialze for real
 	$container.append( $frame );
@@ -55,6 +79,12 @@ ve.ui.Frame.prototype.createFrame = function ( $frame, $container ) {
 	return doc;
 };
 
+/**
+ * Adds a stylesheet to the frame.
+ *
+ * @method
+ * @param {string} path Full path to stylesheet
+ */
 ve.ui.Frame.prototype.loadStylesheet = function ( path ) {
 	// Append style elements to head.
 	this.$$( 'head' ).append(

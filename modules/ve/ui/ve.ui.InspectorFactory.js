@@ -46,16 +46,28 @@ ve.ui.InspectorFactory.prototype.getTypePattern = function ( name ) {
  * @returns {string[]} Symbolic names of inspectors that can be used to inspect annotations
  */
 ve.ui.InspectorFactory.prototype.getInspectorsForAnnotations = function ( annotations ) {
-	var name,
-		names = [];
-	if ( !annotations.isEmpty() ) {
-		for ( name in this.registry ) {
-			if ( annotations.hasAnnotationWithName( this.registry[name].static.typePattern ) ) {
-				names.push( name );
+	if ( annotations.isEmpty() ) {
+		return [];
+	}
+
+	var i, len, j, annotation,
+		matches = [],
+		inspectors = this.entries.slice( 0 ),
+		inspector,
+		arr = annotations.get();
+
+	for ( i = 0, len = arr.length; i < len; i++ ) {
+		annotation = arr[i];
+		j = inspectors.length;
+		while ( inspectors[--j] ) {
+			inspector = inspectors[j];
+			if ( this.registry[inspector].static.typePattern.test( annotation.name ) ) {
+				matches.push( inspector );
+				break;
 			}
 		}
 	}
-	return names;
+	return matches;
 };
 
 /* Initialization */

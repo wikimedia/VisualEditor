@@ -61,7 +61,9 @@ ve.ui.Tool.static.titleMessage = '';
  * @method
  */
 ve.ui.Tool.prototype.onUpdateState = function () {
-	throw new Error( 'Tool.onUpdateState not implemented in this subclass:' + this.constructor );
+	throw new Error(
+		've.ui.Tool.onUpdateState not implemented in this subclass:' + this.constructor
+	);
 };
 
 /**
@@ -73,5 +75,7 @@ ve.ui.Tool.prototype.onUpdateState = function () {
  * @method
  */
 ve.ui.Tool.prototype.onClearState = function () {
-	throw new Error( 'Tool.onClearState not implemented in this subclass:' + this.constructor );
+	throw new Error(
+		've.ui.Tool.onClearState not implemented in this subclass:' + this.constructor
+	);
 };

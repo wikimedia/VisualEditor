@@ -292,12 +292,10 @@ $wgResourceModules += array(
 			've/ui/ve.ui.Frame.js',
 			've/ui/ve.ui.Inspector.js',
 			've/ui/ve.ui.InspectorFactory.js',
-			've/ui/ve.ui.Menu.js',
 			've/ui/ve.ui.Tool.js',
 			've/ui/ve.ui.Toolbar.js',
 			've/ui/ve.ui.ToolFactory.js',
-
-			've/ui/inspectors/ve.ui.LinkInspector.js',
+			've/ui/ve.ui.Widget.js',
 
 			've/ui/tools/ve.ui.ButtonTool.js',
 			've/ui/tools/ve.ui.AnnotationButtonTool.js',
@@ -310,6 +308,7 @@ $wgResourceModules += array(
 			've/ui/tools/buttons/ve.ui.ItalicButtonTool.js',
 			've/ui/tools/buttons/ve.ui.ClearButtonTool.js',
 			've/ui/tools/buttons/ve.ui.LinkButtonTool.js',
+			've/ui/tools/buttons/ve.ui.MWLinkButtonTool.js',
 			've/ui/tools/buttons/ve.ui.BulletButtonTool.js',
 			've/ui/tools/buttons/ve.ui.NumberButtonTool.js',
 			've/ui/tools/buttons/ve.ui.IndentButtonTool.js',
@@ -318,6 +317,16 @@ $wgResourceModules += array(
 			've/ui/tools/buttons/ve.ui.UndoButtonTool.js',
 
 			've/ui/tools/dropdowns/ve.ui.FormatDropdownTool.js',
+
+			've/ui/widgets/ve.ui.InputWidget.js',
+			've/ui/widgets/ve.ui.TextInputWidget.js',
+			've/ui/widgets/ve.ui.TextInputMenuWidget.js',
+			've/ui/widgets/ve.ui.LinkTargetInputWidget.js',
+			've/ui/widgets/ve.ui.MWLinkTargetInputWidget.js',
+			've/ui/widgets/ve.ui.MenuWidget.js',
+
+			've/ui/inspectors/ve.ui.LinkInspector.js',
+			've/ui/inspectors/ve.ui.MWLinkInspector.js',
 		),
 		'styles' => array(
 			// ce
@@ -327,10 +336,10 @@ $wgResourceModules += array(
 			// ui
 			've/ui/styles/ve.ui.Context.css',
 			've/ui/styles/ve.ui.Inspector.css',
-			've/ui/styles/ve.ui.Menu.css',
 			've/ui/styles/ve.ui.Surface.css',
 			've/ui/styles/ve.ui.Toolbar.css',
 			've/ui/styles/ve.ui.Tool.css',
+			've/ui/styles/ve.ui.Widget.css',
 		),
 		'dependencies' => array(
 			'jquery',

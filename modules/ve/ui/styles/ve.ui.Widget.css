@@ -1,0 +1,103 @@
+/**
+ * VisualEditor user interface Widget styles.
+ *
+ * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+/* ve.ui.MenuWidget */
+
+.ve-ui-menuWidget {
+	display: none;
+	position: absolute;
+	border: solid 1px #ccc;
+	border-radius: 0.25em;
+	background-color: #fff;
+	box-shadow: 0 0.25em 1em 0 rgba(0, 0, 0, 0.25);
+	z-index: 3;
+}
+
+.ve-ui-menuWidget-item {
+	padding: 0.6em 0.8em;
+	cursor: pointer;
+	white-space: nowrap;
+}
+
+.ve-ui-menuWidget-item:hover {
+	background-color: #b3d6f6;
+}
+
+.ve-ui-menuWidget-break {
+	margin: 0.33em 0;
+	border-top: solid 1px #ddd;
+}
+
+/* ve.ui.TextInputMenuWidget */
+
+.ve-ui-textInputMenuWidget {
+	position: absolute;
+	background: #FFFFFF;
+	width: 20em;
+	margin-top: -1px;
+	font-size: 0.8em;
+	z-index: 101;
+	border: solid 1px #ccc;
+	border-radius: 0 0 0.25em 0.25em;
+	box-shadow: 0 0.15em 1em 0 rgba(0, 0, 0, 0.2);
+}
+
+.ve-ui-textInputMenuWidget-groups {
+	margin: 0.5em 0;
+	padding: 0;
+	list-style: none;
+}
+
+.ve-ui-textInputMenuWidget-group {
+	margin: 0;
+	padding: 0;
+}
+
+.ve-ui-textInputMenuWidget-group-label {
+	padding: 0.33em 0.75em;
+	color: #888;
+}
+
+.ve-ui-textInputMenuWidget-items {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.ve-ui-textInputMenuWidget-item {
+	padding: 0.33em 1.25em;
+	margin: 0;
+	cursor: pointer;
+	color: #0645AD;
+}
+
+.ve-ui-textInputMenuWidget-item-label {
+	white-space: nowrap;
+}
+
+.ve-ui-textInputMenuWidget-item:hover {
+	background: #E5F3FF;
+}
+
+.ve-ui-textInputMenuWidget-item-selected,
+.ve-ui-textInputMenuWidget-item-selected:hover {
+	background-color: #b3d6f6;
+}
+
+.ve-ui-textInputMenuWidget-group[rel=newPage] .ve-ui-textInputMenuWidget-item-label {
+	color: #BA0000;
+}
+
+.ve-ui-textInputMenuWidget-group[rel=existingPage] .ve-ui-textInputMenuWidget-item-label,
+.ve-ui-textInputMenuWidget-group[rel=matchingPage] .ve-ui-textInputMenuWidget-item-label,
+.ve-ui-textInputMenuWidget-group[rel=externalLink] .ve-ui-textInputMenuWidget-item-label {
+	color: #0645AD;
+}
+
+.ve-ui-mwLinkTargetInputWidget-pending input {
+	background-image: url(images/pending.gif);
+}

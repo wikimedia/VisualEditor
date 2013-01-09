@@ -28,6 +28,13 @@ ve.ui.FormatDropdownTool.static.name = 'format';
 
 ve.ui.FormatDropdownTool.static.titleMessage = 'visualeditor-formatdropdown-title';
 
+/**
+ * Options given to ve.ui.DropdownTool.
+ *
+ * @static
+ * @property
+ * @type {Object[]}
+ */
 ve.ui.FormatDropdownTool.static.options = [
 	{
 		'name': 'paragraph',
