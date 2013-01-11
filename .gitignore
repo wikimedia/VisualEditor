@@ -3,6 +3,8 @@
 *.kate-swp
 .*.swp
 sublime-*
+.project
+.settings
 
 # Install and build artifacts
 /docs
