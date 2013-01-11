@@ -45,28 +45,20 @@ ve.dm.ListNode.rules = {
 	'parentNodeTypes': null
 };
 
-/**
- * Node converters.
- *
- * @see ve.dm.Converter
- * @static
- * @property
- */
-ve.dm.ListNode.converters = {
-	'domElementTypes': ['ul', 'ol'],
-	'toDomElement': function ( type, element ) {
-		return element.attributes && ( {
-			'bullet': document.createElement( 'ul' ),
-			'number': document.createElement( 'ol' )
-		} )[element.attributes.style];
-	},
-	'toDataElement': function ( tag ) {
-		return ( {
-			'ul': { 'type': 'list', 'attributes': { 'style': 'bullet' } },
-			'ol': { 'type': 'list', 'attributes': { 'style': 'number' } }
-		} )[tag];
-	}
+ve.dm.ListNode.static.name = 'list';
+
+ve.dm.ListNode.static.matchTagNames = [ 'ul', 'ol' ];
+
+ve.dm.ListNode.static.toDataElement = function ( domElement ) {
+	var style = domElement.nodeName.toLowerCase() === 'ol' ? 'number' : 'bullet';
+	return { 'type': 'list', 'attributes': { 'style': style } };
 };
+
+ve.dm.ListNode.static.toDomElement = function ( dataElement ) {
+	var tag = dataElement.attributes && dataElement.attributes.style === 'number' ? 'ol' : 'ul';
+	return document.createElement( tag );
+};
+
 
 /* Registration */
 

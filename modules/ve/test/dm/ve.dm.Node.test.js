@@ -23,7 +23,9 @@ ve.dm.NodeStub.rules = {
 	'childNodeTypes': []
 };
 
-ve.dm.NodeStub.converters = null;
+ve.dm.NodeStub.static.name = 'stub';
+
+ve.dm.NodeStub.static.matchTagNames = [];
 
 ve.dm.nodeFactory.register( 'stub', ve.dm.NodeStub );
 

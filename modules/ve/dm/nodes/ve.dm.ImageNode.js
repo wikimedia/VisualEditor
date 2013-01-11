@@ -41,23 +41,16 @@ ve.dm.ImageNode.rules = {
 	'parentNodeTypes': null
 };
 
-/**
- * Node converters.
- *
- * @see ve.dm.Converter
- * @static
- * @property
- */
-ve.dm.ImageNode.converters = {
-	'domElementTypes': ['img'],
-	'toDomElement': function () {
-		return document.createElement( 'img' );
-	},
-	'toDataElement': function () {
-		return {
-			'type': 'image'
-		};
-	}
+ve.dm.ImageNode.static.name = 'image';
+
+ve.dm.ImageNode.static.matchTagNames = [ 'img' ];
+
+ve.dm.ImageNode.static.toDataElement = function () {
+	return { 'type': 'image' };
+};
+
+ve.dm.ImageNode.static.toDomElement = function () {
+	return document.createElement( 'img' );
 };
 
 /* Registration */

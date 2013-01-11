@@ -41,23 +41,16 @@ ve.dm.PreformattedNode.rules = {
 	'parentNodeTypes': null
 };
 
-/**
- * Node converters.
- *
- * @see ve.dm.Converter
- * @static
- * @property
- */
-ve.dm.PreformattedNode.converters = {
-	'domElementTypes': ['pre'],
-	'toDomElement': function () {
-		return document.createElement( 'pre' );
-	},
-	'toDataElement': function () {
-		return {
-			'type': 'preformatted'
-		};
-	}
+ve.dm.PreformattedNode.static.name = 'preformatted';
+
+ve.dm.PreformattedNode.static.matchTagNames = [ 'pre' ];
+
+ve.dm.PreformattedNode.static.toDataElement = function () {
+	return { 'type': 'preformatted' };
+};
+
+ve.dm.PreformattedNode.static.toDomElement = function () {
+	return document.createElement( 'pre' );
 };
 
 /* Registration */

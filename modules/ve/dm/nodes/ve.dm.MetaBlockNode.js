@@ -41,32 +41,29 @@ ve.dm.MetaBlockNode.rules = {
 	'parentNodeTypes': null
 };
 
-/**
- * Node converters.
- *
- * @see ve.dm.Converter
- * @static
- * @property
- */
-ve.dm.MetaBlockNode.converters = {
-	'domElementTypes': ['meta', 'link'],
-	'toDomElement': function ( type, element ) {
-		var isLink, domElement;
-		if ( element.attributes.style === 'comment' ) {
-			domElement = document.createComment( element.attributes.text );
-		} else {
-			isLink = element.attributes.style === 'link';
-			domElement = document.createElement( isLink ? 'link' : 'meta' );
-			if ( element.attributes.key !== null ) {
-				domElement.setAttribute( isLink ? 'rel' : 'property', element.attributes.key );
-			}
-			if ( element.attributes.value ) {
-				domElement.setAttribute( isLink ? 'href' : 'content', element.attributes.value );
-			}
-		}
-		return domElement;
-	},
-	'toDataElement': null // Special handling in ve.dm.Converter
+ve.dm.MetaBlockNode.static.name = 'metaBlock';
+
+ve.dm.MetaBlockNode.static.matchTagNames = [ 'meta' ];
+
+ve.dm.MetaBlockNode.static.toDataElement = function () {
+	throw new Error( 'No toDataElement for metaBlock, supposed to be handled by converter hack' );
+};
+
+ve.dm.MetaBlockNode.static.toDomElement = function ( dataElement ) {
+	var style = dataElement.attributes && dataElement.attributes.style || 'meta',
+		isLink = style === 'link',
+		domElement;
+	if ( style === 'comment' ) {
+		return document.createComment( dataElement.attributes && dataElement.attributes.text || '' );
+	}
+	domElement = document.createElement( isLink ? 'link' : 'meta' );
+	if ( dataElement.attributes && dataElement.attributes.key !== null ) {
+		domElement.setAttribute( isLink ? 'rel' : 'property', dataElement.attributes.key );
+	}
+	if ( dataElement.attributes && dataElement.attributes.value ) {
+		domElement.setAttribute( isLink ? 'href' : 'content', dataElement.attributes.value );
+	}
+	return domElement;
 };
 
 /* Registration */

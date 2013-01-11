@@ -23,7 +23,10 @@ ve.dm.LeafNodeStub.rules = {
 	'childNodeTypes': []
 };
 
-ve.dm.LeafNodeStub.converters = null;
+ve.dm.LeafNodeStub.static.name = 'leaf-stub';
+
+ve.dm.LeafNodeStub.static.matchTagNames = [];
+
 ve.dm.nodeFactory.register( 'leaf-stub', ve.dm.LeafNodeStub );
 
 /* Tests */

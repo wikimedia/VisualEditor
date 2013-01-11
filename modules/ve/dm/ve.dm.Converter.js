@@ -65,6 +65,7 @@ ve.dm.Converter.getDataContentFromText = function ( text, annotations ) {
 /**
  * Handle register events from the node factory.
  *
+ * FIXME
  * If a node is special; such as document, alienInline, alienBlock and text; its {converters}
  * property should be set to null, as to distinguish it from a new node type that someone has simply
  * forgotten to implement converters for.
@@ -75,13 +76,15 @@ ve.dm.Converter.getDataContentFromText = function ( text, annotations ) {
  * @throws {Error} Missing conversion data in node implementation
  */
 ve.dm.Converter.prototype.onNodeRegister = function ( dataElementType, constructor ) {
-	if ( constructor.converters === undefined ) {
-		throw new Error( 'Missing conversion data in node implementation of ' + dataElementType );
-	} else if ( constructor.converters !== null ) {
+	if ( !constructor.static.matchTagNames || !constructor.static.toDomElement ||
+		!constructor.static.toDataElement
+	) {
+		throw new Error( 'Missing static properties in node implementation of ' + dataElementType );
+	} else {
 		var i,
-			domElementTypes = constructor.converters.domElementTypes,
-			toDomElement = constructor.converters.toDomElement,
-			toDataElement = constructor.converters.toDataElement;
+			domElementTypes = constructor.static.matchTagNames,
+			toDomElement = constructor.static.toDomElement,
+			toDataElement = constructor.static.toDataElement;
 		// Registration
 		this.elements.toDomElement[dataElementType] = toDomElement;
 		for ( i = 0; i < domElementTypes.length; i++ ) {
@@ -127,7 +130,7 @@ ve.dm.Converter.prototype.getDomElementFromDataElement = function ( dataElement 
 		return false;
 	}
 
-	domElement = this.elements.toDomElement[dataElementType]( dataElementType, dataElement );
+	domElement = this.elements.toDomElement[dataElementType]( dataElement );
 	dataElementAttributes = dataElement.attributes;
 	if ( dataElementAttributes ) {
 		for ( key in dataElementAttributes ) {
@@ -171,7 +174,7 @@ ve.dm.Converter.prototype.getDataElementFromDomElement = function ( domElement, 
 	) {
 		return false;
 	}
-	dataElement = this.elements.toDataElement[domElementType]( domElementType, domElement );
+	dataElement = this.elements.toDataElement[domElementType]( domElement );
 	domElementAttributes = domElement.attributes;
 	if ( domElementAttributes.length ) {
 		dataElementAttributes = dataElement.attributes = dataElement.attributes || {};

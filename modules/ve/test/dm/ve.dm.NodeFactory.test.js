@@ -24,9 +24,9 @@ ve.dm.NodeFactoryNodeStub.rules = {
 	'parentNodeTypes': null
 };
 
-ve.dm.NodeFactoryNodeStub.converters = null;
+ve.dm.NodeFactoryNodeStub.static.name = 'node-factory-node-stub';
 
-ve.dm.NodeFactoryNodeStub.converters = null;
+ve.dm.NodeFactoryNodeStub.static.matchTagNames = [];
 
 /* Tests */
 

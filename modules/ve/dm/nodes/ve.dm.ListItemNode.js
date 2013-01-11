@@ -41,23 +41,16 @@ ve.dm.ListItemNode.rules = {
 	'parentNodeTypes': ['list']
 };
 
-/**
- * Node converters.
- *
- * @see ve.dm.Converter
- * @static
- * @property
- */
-ve.dm.ListItemNode.converters = {
-	'domElementTypes': ['li'],
-	'toDomElement': function () {
-		return document.createElement( 'li' );
-	},
-	'toDataElement': function () {
-		return {
-			'type': 'listItem'
-		};
-	}
+ve.dm.ListItemNode.static.name = 'listItem';
+
+ve.dm.ListItemNode.static.matchTagNames = [ 'li' ];
+
+ve.dm.ListItemNode.static.toDataElement = function () {
+	return { 'type': 'listItem' };
+};
+
+ve.dm.ListItemNode.static.toDomElement = function () {
+	return document.createElement( 'li' );
 };
 
 /* Registration */

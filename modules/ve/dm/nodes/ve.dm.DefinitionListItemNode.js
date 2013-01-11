@@ -45,27 +45,18 @@ ve.dm.DefinitionListItemNode.rules = {
 	'parentNodeTypes': ['definitionList']
 };
 
-/**
- * Node converters.
- *
- * @see ve.dm.Converter
- * @static
- * @property
- */
-ve.dm.DefinitionListItemNode.converters = {
-	'domElementTypes': ['dt', 'dd'],
-	'toDomElement': function ( type, element ) {
-		return element.attributes && ( {
-			'term': document.createElement( 'dt' ),
-			'definition': document.createElement( 'dd' )
-		} )[element.attributes.style];
-	},
-	'toDataElement': function ( tag ) {
-		return ( {
-			'dt': { 'type': 'definitionListItem', 'attributes': { 'style': 'term' } },
-			'dd': { 'type': 'definitionListItem', 'attributes': { 'style': 'definition' } }
-		} )[tag];
-	}
+ve.dm.DefinitionListItemNode.static.name = 'definitionListItem';
+
+ve.dm.DefinitionListItemNode.static.matchTagNames = [ 'dt', 'dd' ];
+
+ve.dm.DefinitionListItemNode.static.toDataElement = function ( domElement ) {
+	var style = domElement.nodeName.toLowerCase() === 'dt' ? 'term' : 'definition';
+	return { 'type': 'definitionListItem', 'attributes': { 'style': style } };
+};
+
+ve.dm.DefinitionListItemNode.static.toDomElement = function ( dataElement ) {
+	var tag = dataElement.attributes && dataElement.attributes.style === 'term' ? 'dt' : 'dd';
+	return document.createElement( tag );
 };
 
 /* Registration */

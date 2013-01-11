@@ -40,8 +40,9 @@ ve.dm.DocumentNode.rules = {
 	'parentNodeTypes': []
 };
 
-// This is a special node, no converter registration is required
-ve.dm.DocumentNode.converters = null;
+ve.dm.DocumentNode.static.name = 'document';
+
+ve.dm.DocumentNode.static.matchTagNames = [];
 
 /* Registration */
 

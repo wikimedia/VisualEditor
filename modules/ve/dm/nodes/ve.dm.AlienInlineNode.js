@@ -41,8 +41,9 @@ ve.dm.AlienInlineNode.rules = {
 	'parentNodeTypes': null
 };
 
-// This is a special node, no converter registration is required
-ve.dm.AlienInlineNode.converters = null;
+ve.dm.AlienInlineNode.static.name = 'alienInline';
+
+ve.dm.AlienInlineNode.static.matchTagNames = [];
 
 /* Registration */
 

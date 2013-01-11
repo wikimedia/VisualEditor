@@ -41,21 +41,16 @@ ve.dm.BreakNode.rules = {
 	'parentNodeTypes': null
 };
 
-/**
- * Node converters.
- *
- * @see ve.dm.Converter
- * @static
- * @property
- */
-ve.dm.BreakNode.converters = {
-	'domElementTypes': ['br'],
-	'toDomElement': function () {
-		return document.createElement( 'br' );
-	},
-	'toDataElement': function () {
-		return { 'type': 'break' };
-	}
+ve.dm.BreakNode.static.name = 'break';
+
+ve.dm.BreakNode.static.matchTagNames = [ 'br' ];
+
+ve.dm.BreakNode.static.toDataElement = function () {
+	return { 'type': 'break' };
+};
+
+ve.dm.BreakNode.static.toDomElement = function () {
+	return document.createElement( 'br' );
 };
 
 /* Registration */

@@ -45,35 +45,26 @@ ve.dm.HeadingNode.rules = {
 	'parentNodeTypes': null
 };
 
-/**
- * Node converters.
- *
- * @see ve.dm.Converter
- * @static
- * @property
- */
-ve.dm.HeadingNode.converters = {
-	'domElementTypes': ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
-	'toDomElement': function ( type, element ) {
-		return element.attributes && ( {
-			1: document.createElement( 'h1' ),
-			2: document.createElement( 'h2' ),
-			3: document.createElement( 'h3' ),
-			4: document.createElement( 'h4' ),
-			5: document.createElement( 'h5' ),
-			6: document.createElement( 'h6' )
-		} )[element.attributes.level];
-	},
-	'toDataElement': function ( tag ) {
-		return ( {
-			'h1': { 'type': 'heading', 'attributes': { 'level': 1 } },
-			'h2': { 'type': 'heading', 'attributes': { 'level': 2 } },
-			'h3': { 'type': 'heading', 'attributes': { 'level': 3 } },
-			'h4': { 'type': 'heading', 'attributes': { 'level': 4 } },
-			'h5': { 'type': 'heading', 'attributes': { 'level': 5 } },
-			'h6': { 'type': 'heading', 'attributes': { 'level': 6 } }
-		} )[tag];
-	}
+ve.dm.HeadingNode.static.name = 'heading';
+
+ve.dm.HeadingNode.static.matchTagNames = [ 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' ];
+
+ve.dm.HeadingNode.static.toDataElement = function ( domElement ) {
+	var levels = {
+			'h1': 1,
+			'h2': 2,
+			'h3': 3,
+			'h4': 4,
+			'h5': 5,
+			'h6': 6
+		},
+		level = levels[domElement.nodeName.toLowerCase()];
+	return { 'type': 'heading', 'attributes': { 'level': level } };
+};
+
+ve.dm.HeadingNode.static.toDomElement = function ( dataElement ) {
+	var level = dataElement.attributes && dataElement.attributes.level || 1;
+	return document.createElement( 'h' + level );
 };
 
 /* Registration */

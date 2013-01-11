@@ -41,30 +41,22 @@ ve.dm.MWEntityNode.rules = {
 	'parentNodeTypes': null
 };
 
-/**
- * Node converters.
- *
- * @see ve.dm.Converter
- * @static
- * @property
- */
-ve.dm.MWEntityNode.converters = {
-	'domElementTypes': ['span'], // HACK uses special treatment in ve.dm.Converter instead
-	'toDomElement': function ( type, dataElement ) {
-		var domElement = document.createElement( 'span' ),
-			textNode = document.createTextNode( dataElement.attributes.character );
-		domElement.setAttribute( 'typeof', 'mw:Entity' );
-		domElement.appendChild( textNode );
-		return domElement;
-	},
-	'toDataElement': function ( tag, domElement ) {
-		return {
-			'type': 'MWentity',
-			'attributes': {
-				'character': domElement.textContent
-			}
-		};
-	}
+ve.dm.MWEntityNode.static.name = 'MWentity';
+
+ve.dm.MWEntityNode.static.matchTagNames = [ 'span' ];
+
+ve.dm.MWEntityNode.static.matchRdfaTypes = [ 'mw:Entity' ]; // TODO ignored, still using a converter hack
+
+ve.dm.MWEntityNode.static.toDataElement = function ( domElement ) {
+	return { 'type': 'MWentity', 'attributes': { 'character': domElement.textContent } };
+};
+
+ve.dm.MWEntityNode.static.toDomElement = function ( dataElement ) {
+	var domElement = document.createElement( 'span' ),
+		textNode = document.createTextNode( dataElement.attributes.character );
+	domElement.setAttribute( 'typeof', 'mw:Entity' );
+	domElement.appendChild( textNode );
+	return domElement;
 };
 
 /* Registration */

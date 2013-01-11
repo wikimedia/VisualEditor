@@ -40,8 +40,9 @@ ve.dm.TextNode.rules = {
 	'parentNodeTypes': null
 };
 
-// This is a special node, no converter registration is required
-ve.dm.TextNode.converters = null;
+ve.dm.TextNode.static.name = 'text';
+
+ve.dm.TextNode.static.matchTagNames = [];
 
 /* Registration */
 

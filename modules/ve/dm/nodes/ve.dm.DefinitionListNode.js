@@ -41,23 +41,16 @@ ve.dm.DefinitionListNode.rules = {
 	'parentNodeTypes': null
 };
 
-/**
- * Node converters.
- *
- * @see ve.dm.Converter
- * @static
- * @property
- */
-ve.dm.DefinitionListNode.converters = {
-	'domElementTypes': ['dl'],
-	'toDomElement': function () {
-		return document.createElement( 'dl' );
-	},
-	'toDataElement': function () {
-		return {
-			'type': 'definitionList'
-		};
-	}
+ve.dm.DefinitionListNode.static.name = 'definitionList';
+
+ve.dm.DefinitionListNode.static.matchTagNames = [ 'dl' ];
+
+ve.dm.DefinitionListNode.static.toDataElement = function () {
+	return { 'type': 'definitionList' };
+};
+
+ve.dm.DefinitionListNode.static.toDomElement = function () {
+	return document.createElement( 'dl' );
 };
 
 /* Registration */
