@@ -64,11 +64,6 @@ $wgResourceModules += array(
 			'rangy/rangy-position.js',
 		),
 	),
-	'jquery.multiSuggest' => $wgVisualEditorResourceTemplate + array(
-		'scripts' => array(
-			'jquery/jquery.multiSuggest.js'
-		),
-	),
 	'jquery.visibleText' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
 			'jquery/jquery.visibleText.js'
@@ -193,7 +188,6 @@ $wgResourceModules += array(
 			// ve
 			've/ve.Registry.js',
 			've/ve.Factory.js',
-			've/ve.Position.js',
 			've/ve.Command.js',
 			've/ve.CommandRegistry.js',
 			've/ve.Range.js',
@@ -344,7 +338,6 @@ $wgResourceModules += array(
 			'ext.visualEditor.base',
 			'mediawiki.Title',
 			'jquery.autoEllipsis',
-			'jquery.multiSuggest'
 		),
 		'messages' => array(
 			'visualeditor',

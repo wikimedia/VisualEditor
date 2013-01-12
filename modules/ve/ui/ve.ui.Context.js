@@ -227,7 +227,7 @@ ve.ui.Context.prototype.update = function () {
 ve.ui.Context.prototype.show = function () {
 	var selectionRect = this.surface.getView().getSelectionRect();
 
-	this.position = new ve.Position( selectionRect.end.x, selectionRect.end.y );
+	this.position = { 'left': selectionRect.end.x, 'top': selectionRect.end.y };
 	this.$.css( this.position );
 
 	// Show context
