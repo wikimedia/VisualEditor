@@ -21,7 +21,7 @@ ve.dm.MetaBlockNode = function VeDmMetaBlockNode( length, element ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.dm.MetaBlockNode, ve.dm.BranchNode );
+ve.inheritClass( ve.dm.MetaBlockNode, ve.dm.LeafNode );
 
 /* Static Members */
 
