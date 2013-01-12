@@ -25,23 +25,9 @@ ve.inheritClass( ve.dm.DefinitionListNode, ve.dm.BranchNode );
 
 /* Static Properties */
 
-/**
- * Node rules.
- *
- * @see ve.dm.NodeFactory
- * @static
- * @property
- */
-ve.dm.DefinitionListNode.rules = {
-	'isWrapped': true,
-	'isContent': false,
-	'canContainContent': false,
-	'hasSignificantWhitespace': false,
-	'childNodeTypes': ['definitionListItem'],
-	'parentNodeTypes': null
-};
-
 ve.dm.DefinitionListNode.static.name = 'definitionList';
+
+ve.dm.DefinitionListNode.static.childNodeTypes = [ 'definitionListItem' ];
 
 ve.dm.DefinitionListNode.static.matchTagNames = [ 'dl' ];
 

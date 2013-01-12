@@ -25,22 +25,6 @@ ve.inheritClass( ve.dm.AlienBlockNode, ve.dm.LeafNode );
 
 /* Static Properties */
 
-/**
- * Node rules.
- *
- * @see ve.dm.NodeFactory
- * @static
- * @property
- */
-ve.dm.AlienBlockNode.rules = {
-	'isWrapped': true,
-	'isContent': false,
-	'canContainContent': false,
-	'hasSignificantWhitespace': false,
-	'childNodeTypes': [],
-	'parentNodeTypes': null
-};
-
 ve.dm.AlienBlockNode.static.name = 'alienBlock';
 
 ve.dm.AlienBlockNode.static.matchTagNames = [];

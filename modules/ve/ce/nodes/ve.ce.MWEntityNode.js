@@ -36,19 +36,6 @@ ve.ce.MWEntityNode = function VeCeMWEntityNode( model ) {
 
 ve.inheritClass( ve.ce.MWEntityNode, ve.ce.LeafNode );
 
-/* Static Properties */
-
-/**
- * Node rules.
- *
- * @see ve.ce.NodeFactory
- * @static
- * @property
- */
-ve.ce.MWEntityNode.rules = {
-	'canBeSplit': false
-};
-
 /* Methods */
 
 /**

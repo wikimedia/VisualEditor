@@ -26,22 +26,6 @@ ve.inheritClass( ve.dm.MetaInlineNode, ve.dm.LeafNode );
 
 /* Static Properties */
 
-/**
- * Node rules.
- *
- * @see ve.dm.NodeFactory
- * @static
- * @property
- */
-ve.dm.MetaInlineNode.rules = {
-	'isWrapped': true,
-	'isContent': true,
-	'canContainContent': false,
-	'hasSignificantWhitespace': false,
-	'childNodeTypes': [],
-	'parentNodeTypes': null
-};
-
 // TODO hybrid-ify meta nodes
 
 ve.dm.MetaInlineNode.static.name = 'metaInline';

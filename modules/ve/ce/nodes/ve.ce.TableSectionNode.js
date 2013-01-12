@@ -30,17 +30,6 @@ ve.inheritClass( ve.ce.TableSectionNode, ve.ce.BranchNode );
 /* Static Properties */
 
 /**
- * Node rules.
- *
- * @see ve.ce.NodeFactory
- * @static
- * @property
- */
-ve.ce.TableSectionNode.rules = {
-	'canBeSplit': false
-};
-
-/**
  * Mapping of list item style values and DOM wrapper element types.
  *
  * @static

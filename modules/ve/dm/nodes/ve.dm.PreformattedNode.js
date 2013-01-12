@@ -25,23 +25,11 @@ ve.inheritClass( ve.dm.PreformattedNode, ve.dm.BranchNode );
 
 /* Static Properties */
 
-/**
- * Node rules.
- *
- * @see ve.dm.NodeFactory
- * @static
- * @property
- */
-ve.dm.PreformattedNode.rules = {
-	'isWrapped': true,
-	'isContent': false,
-	'canContainContent': true,
-	'hasSignificantWhitespace': true,
-	'childNodeTypes': null,
-	'parentNodeTypes': null
-};
-
 ve.dm.PreformattedNode.static.name = 'preformatted';
+
+ve.dm.PreformattedNode.static.canContainContent = true;
+
+ve.dm.PreformattedNode.static.hasSignificantWhitespace = true;
 
 ve.dm.PreformattedNode.static.matchTagNames = [ 'pre' ];
 

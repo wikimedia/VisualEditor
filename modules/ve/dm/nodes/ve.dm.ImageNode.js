@@ -25,23 +25,9 @@ ve.inheritClass( ve.dm.ImageNode, ve.dm.LeafNode );
 
 /* Static Properties */
 
-/**
- * Node rules.
- *
- * @see ve.dm.NodeFactory
- * @static
- * @property
- */
-ve.dm.ImageNode.rules = {
-	'isWrapped': true,
-	'isContent': true,
-	'canContainContent': false,
-	'hasSignificantWhitespace': false,
-	'childNodeTypes': [],
-	'parentNodeTypes': null
-};
-
 ve.dm.ImageNode.static.name = 'image';
+
+ve.dm.ImageNode.static.isContent = true;
 
 ve.dm.ImageNode.static.matchTagNames = [ 'img' ];
 

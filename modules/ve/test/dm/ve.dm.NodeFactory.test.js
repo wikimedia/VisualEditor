@@ -16,15 +16,9 @@ ve.dm.NodeFactoryNodeStub = function VeDmNodeFactoryNodeStub( a, b ) {
 
 ve.inheritClass( ve.dm.NodeFactoryNodeStub, ve.dm.LeafNode );
 
-ve.dm.NodeFactoryNodeStub.rules = {
-	'isContent': true,
-	'canContainContent': false,
-	'isWrapped': true,
-	'childNodeTypes': [],
-	'parentNodeTypes': null
-};
-
 ve.dm.NodeFactoryNodeStub.static.name = 'node-factory-node-stub';
+
+ve.dm.NodeFactoryNodeStub.static.isContent = true;
 
 ve.dm.NodeFactoryNodeStub.static.matchTagNames = [];
 

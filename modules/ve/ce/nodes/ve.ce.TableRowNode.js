@@ -22,19 +22,6 @@ ve.ce.TableRowNode = function VeCeTableRowNode( model ) {
 
 ve.inheritClass( ve.ce.TableRowNode, ve.ce.BranchNode );
 
-/* Static Properties */
-
-/**
- * Node rules.
- *
- * @see ve.ce.NodeFactory
- * @static
- * @property
- */
-ve.ce.TableRowNode.rules = {
-	'canBeSplit': false
-};
-
 /* Registration */
 
 ve.ce.nodeFactory.register( 'tableRow', ve.ce.TableRowNode );

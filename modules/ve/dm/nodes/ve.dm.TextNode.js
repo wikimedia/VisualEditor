@@ -24,23 +24,11 @@ ve.inheritClass( ve.dm.TextNode, ve.dm.LeafNode );
 
 /* Static Properties */
 
-/**
- * Node rules.
- *
- * @see ve.dm.NodeFactory
- * @static
- * @property
- */
-ve.dm.TextNode.rules = {
-	'isWrapped': false,
-	'isContent': true,
-	'canContainContent': false,
-	'hasSignificantWhitespace': false,
-	'childNodeTypes': [],
-	'parentNodeTypes': null
-};
-
 ve.dm.TextNode.static.name = 'text';
+
+ve.dm.TextNode.static.isWrapped = false;
+
+ve.dm.TextNode.static.isContent = true;
 
 ve.dm.TextNode.static.matchTagNames = [];
 

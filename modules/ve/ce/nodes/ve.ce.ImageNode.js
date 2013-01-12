@@ -25,19 +25,6 @@ ve.ce.ImageNode = function VeCeImageNode( model ) {
 
 ve.inheritClass( ve.ce.ImageNode, ve.ce.LeafNode );
 
-/* Static Properties */
-
-/**
- * Node rules.
- *
- * @see ve.ce.NodeFactory
- * @static
- * @property
- */
-ve.ce.ImageNode.rules = {
-	'canBeSplit': false
-};
-
 /* Registration */
 
 ve.ce.nodeFactory.register( 'image', ve.ce.ImageNode );

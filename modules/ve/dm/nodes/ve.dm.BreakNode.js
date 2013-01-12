@@ -25,23 +25,9 @@ ve.inheritClass( ve.dm.BreakNode, ve.dm.LeafNode );
 
 /* Static Properties */
 
-/**
- * Node rules.
- *
- * @see ve.dm.NodeFactory
- * @static
- * @property
- */
-ve.dm.BreakNode.rules = {
-	'isWrapped': true,
-	'isContent': true,
-	'canContainContent': false,
-	'hasSignificantWhitespace': false,
-	'childNodeTypes': [],
-	'parentNodeTypes': null
-};
-
 ve.dm.BreakNode.static.name = 'break';
+
+ve.dm.BreakNode.static.isContent = true;
 
 ve.dm.BreakNode.static.matchTagNames = [ 'br' ];
 

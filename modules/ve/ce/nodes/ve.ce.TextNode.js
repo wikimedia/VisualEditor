@@ -24,16 +24,7 @@ ve.inheritClass( ve.ce.TextNode, ve.ce.LeafNode );
 
 /* Static Properties */
 
-/**
- * Node rules.
- *
- * @see ve.ce.NodeFactory
- * @static
- * @property
- */
-ve.ce.TextNode.rules = {
-	'canBeSplit': true
-};
+ve.ce.TextNode.static.canBeSplit = true;
 
 /**
  * Mapping of character and HTML entities or renderings.

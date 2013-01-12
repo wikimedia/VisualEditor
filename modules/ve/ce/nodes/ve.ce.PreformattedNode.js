@@ -24,16 +24,7 @@ ve.inheritClass( ve.ce.PreformattedNode, ve.ce.ContentBranchNode );
 
 /* Static Properties */
 
-/**
- * Node rules.
- *
- * @see ve.ce.NodeFactory
- * @static
- * @property
- */
-ve.ce.PreformattedNode.rules = {
-	'canBeSplit': true
-};
+ve.ce.PreformattedNode.static.canBeSplit = true;
 
 /* Registration */
 

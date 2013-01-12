@@ -16,10 +16,6 @@ ve.ce.NodeFactoryNodeStub = function VeCeNodeFactoryNodeStub( a, b ) {
 
 ve.inheritClass( ve.ce.NodeFactoryNodeStub, ve.ce.LeafNode );
 
-ve.ce.NodeFactoryNodeStub.rules = {
-	'canBeSplit': false
-};
-
 /* Tests */
 
 QUnit.test( 'canNodeBeSplit', 2, function ( assert ) {

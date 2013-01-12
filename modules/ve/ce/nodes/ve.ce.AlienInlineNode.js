@@ -25,21 +25,6 @@ ve.ce.AlienInlineNode = function VeCeAlienInlineNode( model ) {
 
 ve.inheritClass( ve.ce.AlienInlineNode, ve.ce.AlienNode );
 
-/* Static Properties */
-
-/**
- * Node rules.
- *
- * @see ve.ce.NodeFactory
- * @static
- * @property
- */
-ve.ce.AlienInlineNode.rules = {
-	'canBeSplit': false
-};
-
-/* Methods */
-
 /* Registration */
 
 ve.ce.nodeFactory.register( 'alienInline', ve.ce.AlienInlineNode );

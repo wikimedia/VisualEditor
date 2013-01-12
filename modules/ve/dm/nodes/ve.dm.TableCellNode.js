@@ -29,23 +29,9 @@ ve.dm.TableCellNode.defaultAttributes = {
 	'style': 'data'
 };
 
-/**
- * Node rules.
- *
- * @see ve.dm.NodeFactory
- * @static
- * @property
- */
-ve.dm.TableCellNode.rules = {
-	'isWrapped': true,
-	'isContent': false,
-	'canContainContent': false,
-	'hasSignificantWhitespace': false,
-	'childNodeTypes': null,
-	'parentNodeTypes': ['tableRow']
-};
-
 ve.dm.TableCellNode.static.name = 'tableCell';
+
+ve.dm.TableCellNode.static.parentNodeTypes = [ 'tableRow' ];
 
 ve.dm.TableCellNode.static.matchTagNames = [ 'td', 'th' ];
 

@@ -29,23 +29,11 @@ ve.dm.TableSectionNode.defaultAttributes = {
 	'style': 'body'
 };
 
-/**
- * Node rules.
- *
- * @see ve.dm.NodeFactory
- * @static
- * @property
- */
-ve.dm.TableSectionNode.rules = {
-	'isWrapped': true,
-	'isContent': false,
-	'canContainContent': false,
-	'hasSignificantWhitespace': false,
-	'childNodeTypes': ['tableRow'],
-	'parentNodeTypes': ['table']
-};
-
 ve.dm.TableSectionNode.static.name = 'tableSection';
+
+ve.dm.TableSectionNode.static.childNodeTypes = [ 'tableRow' ];
+
+ve.dm.TableSectionNode.static.parentNodeTypes = [ 'table' ];
 
 ve.dm.TableSectionNode.static.matchTagNames = [ 'thead', 'tbody', 'tfoot' ];
 

@@ -34,19 +34,6 @@ ve.ce.AlienNode = function VeCeAlienNode( type, model ) {
 
 ve.inheritClass( ve.ce.AlienNode, ve.ce.LeafNode );
 
-/* Static Properties */
-
-/**
- * Node rules.
- *
- * @see ve.ce.NodeFactory
- * @static
- * @property
- */
-ve.ce.AlienNode.rules = {
-	'canBeSplit': false
-};
-
 /* Methods */
 
 /**

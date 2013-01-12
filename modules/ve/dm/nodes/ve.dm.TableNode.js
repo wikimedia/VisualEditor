@@ -25,23 +25,9 @@ ve.inheritClass( ve.dm.TableNode, ve.dm.BranchNode );
 
 /* Static Properties */
 
-/**
- * Node rules.
- *
- * @see ve.dm.NodeFactory
- * @static
- * @property
- */
-ve.dm.TableNode.rules = {
-	'isWrapped': true,
-	'isContent': false,
-	'canContainContent': false,
-	'hasSignificantWhitespace': false,
-	'childNodeTypes': ['tableSection'],
-	'parentNodeTypes': null
-};
-
 ve.dm.TableNode.static.name = 'table';
+
+ve.dm.TableNode.static.childNodeTypes = [ 'tableSection' ];
 
 ve.dm.TableNode.static.matchTagNames = [ 'table' ];
 

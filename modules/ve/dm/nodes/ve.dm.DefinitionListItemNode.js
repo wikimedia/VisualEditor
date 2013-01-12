@@ -29,23 +29,9 @@ ve.dm.DefinitionListItemNode.defaultAttributes = {
 	'style': 'term'
 };
 
-/**
- * Node rules.
- *
- * @see ve.dm.NodeFactory
- * @static
- * @property
- */
-ve.dm.DefinitionListItemNode.rules = {
-	'isWrapped': true,
-	'isContent': false,
-	'canContainContent': false,
-	'hasSignificantWhitespace': false,
-	'childNodeTypes': null,
-	'parentNodeTypes': ['definitionList']
-};
-
 ve.dm.DefinitionListItemNode.static.name = 'definitionListItem';
+
+ve.dm.DefinitionListItemNode.static.parentNodeTypes = [ 'definitionList' ];
 
 ve.dm.DefinitionListItemNode.static.matchTagNames = [ 'dt', 'dd' ];
 

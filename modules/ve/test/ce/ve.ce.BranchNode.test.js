@@ -16,9 +16,7 @@ ve.ce.BranchNodeStub = function VeCeBranchNodeStub( model, $element ) {
 
 ve.inheritClass( ve.ce.BranchNodeStub, ve.ce.BranchNode );
 
-ve.ce.BranchNodeStub.rules = {
-	'canBeSplit': true
-};
+ve.ce.BranchNodeStub.static.canBeSplit = true;
 
 ve.ce.BranchNodeStub.domWrapperElementTypes = {
 	'a': 'a',

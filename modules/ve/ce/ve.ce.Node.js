@@ -42,7 +42,7 @@ ve.ce.Node = function VeCeNode( type, model, $element ) {
 
 ve.inheritClass( ve.ce.Node, ve.Node );
 
-/* Static Memebers */
+/* Static Members */
 
 /**
  * @static
@@ -50,6 +50,18 @@ ve.inheritClass( ve.ce.Node, ve.Node );
  * @inheritable
  */
 ve.ce.Node.static = {};
+
+/**
+ * Whether this node type can be split.
+ *
+ * When the user presses Enter, we split the node they're in (if splittable), then split its parent
+ * if splittable, and continue traversing up the tree and stop at the first non-splittable node.
+ *
+ * @static
+ * @property static.canBeSplit
+ * @inheritable
+ */
+ve.ce.Node.static.canBeSplit = false;
 
 /**
  * Allowed attributes for DOM elements.

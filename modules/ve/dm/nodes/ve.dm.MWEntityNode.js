@@ -25,23 +25,9 @@ ve.inheritClass( ve.dm.MWEntityNode, ve.dm.LeafNode );
 
 /* Static Properties */
 
-/**
- * Node rules.
- *
- * @see ve.dm.NodeFactory
- * @static
- * @property
- */
-ve.dm.MWEntityNode.rules = {
-	'isWrapped': true,
-	'isContent': true,
-	'canContainContent': false,
-	'hasSignificantWhitespace': false,
-	'childNodeTypes': [],
-	'parentNodeTypes': null
-};
-
 ve.dm.MWEntityNode.static.name = 'MWentity';
+
+ve.dm.MWEntityNode.static.isContent = true;
 
 ve.dm.MWEntityNode.static.matchTagNames = [ 'span' ];
 

@@ -25,22 +25,6 @@ ve.inheritClass( ve.dm.MetaBlockNode, ve.dm.LeafNode );
 
 /* Static Properties */
 
-/**
- * Node rules.
- *
- * @see ve.dm.NodeFactory
- * @static
- * @property
- */
-ve.dm.MetaBlockNode.rules = {
-	'isWrapped': true,
-	'isContent': false,
-	'canContainContent': false,
-	'hasSignificantWhitespace': false,
-	'childNodeTypes': [],
-	'parentNodeTypes': null
-};
-
 ve.dm.MetaBlockNode.static.name = 'metaBlock';
 
 ve.dm.MetaBlockNode.static.matchTagNames = [ 'meta' ];

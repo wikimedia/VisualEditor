@@ -29,23 +29,9 @@ ve.dm.HeadingNode.defaultAttributes = {
 	'level': 1
 };
 
-/**
- * Node rules.
- *
- * @see ve.dm.NodeFactory
- * @static
- * @property
- */
-ve.dm.HeadingNode.rules = {
-	'isWrapped': true,
-	'isContent': false,
-	'canContainContent': true,
-	'hasSignificantWhitespace': false,
-	'childNodeTypes': null,
-	'parentNodeTypes': null
-};
-
 ve.dm.HeadingNode.static.name = 'heading';
+
+ve.dm.HeadingNode.static.canContainContent = true;
 
 ve.dm.HeadingNode.static.matchTagNames = [ 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' ];
 
