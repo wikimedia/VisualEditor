@@ -140,7 +140,8 @@ Link text of the dedicated VisualEditor Edit tab.
 	'visualeditor-formatdropdown-format-heading6' => 'Item in the formatting dropdown for a level 6 heading',
 	'visualeditor-formatdropdown-format-preformatted' => 'Item in the formatting dropdown for preformatted text',
 	'visualeditor-annotationbutton-bold-tooltip' => 'Tooltip for the bold button',
-	'visualeditor-annotationbutton-italic-tooltip' => 'Tooltip for the italic button',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Tooltip for the italic button.
+{{Identical|Italic}}',
 	'visualeditor-annotationbutton-link-tooltip' => 'Tooltip for the link button',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Tooltip for the list indent button',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Tooltip for the list outdent button',
