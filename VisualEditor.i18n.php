@@ -301,13 +301,24 @@ $messages['be-tarask'] = array(
 	'visualeditor-notification-saved' => 'Вашыя зьмены ў «$1» захаваныя.',
 	'visualeditor-notification-created' => 'Старонка «$1» створаная.',
 	'visualeditor-notification-restored' => '«$1» адноўлена.',
+	'visualeditor-notification-reported' => 'Зьвесткі пра вашую праблему адпраўленыя. Дзякуй.',
 	'visualeditor-ca-editsource' => 'Рэдагаваць крыніцу',
 	'visualeditor-ca-ve-edit' => 'Візуальны рэдактар',
 	'visualeditor-ca-ve-create' => 'Візуальны рэдактар',
+	'visualeditor-toolbar-savedialog' => 'Праверыць і захаваць',
+	'visualeditor-savedialog-title-review' => 'Праверыць зьмены',
+	'visualeditor-savedialog-title-report' => 'Паведаміць пра праблему',
+	'visualeditor-savedialog-title-save' => 'Захаваць зьмены',
+	'visualeditor-savedialog-label-review-wrong' => 'Нешта ня так',
+	'visualeditor-savedialog-label-review-good' => 'Як на мяне, выглядае добра',
+	'visualeditor-savedialog-label-report' => 'Паведаміць пра праблему',
 	'visualeditor-savedialog-label-create' => 'Стварыць старонку',
+	'visualeditor-savedialog-label-save' => 'Захаваць старонку',
 	'visualeditor-savedialog-label-restore' => 'Аднавіць старонку',
 	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|паведамленьне|паведамленьні|паведамленьняў}}',
+	'visualeditor-feedback-tool' => 'Пакінуць водгук',
 	'tooltip-ca-ve-edit' => 'Рэдагаваць гэтую старонку ў Візуальным рэдактары',
+	'visualeditor-inspector-title' => 'Дасьледваць',
 	'visualeditor-linkinspector-title' => 'Гіпэрспасылка',
 	'visualeditor-linkinspector-label-pagetitle' => 'Назва старонкі',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Існуючая старонка',
@@ -336,12 +347,15 @@ $messages['be-tarask'] = array(
 	'visualeditor-inspector-remove-tooltip' => 'Выдаліць',
 	'visualeditor-viewpage-savewarning' => 'Вы ўпэўненыя, што жадаеце перайсьці ў рэжым прагляду без папярэдняга захаваньня?',
 	'visualeditor-loadwarning' => 'Памылка ў час загрузкі зьвестак з сэрвэру: $1. Жадаеце паўтарыць?',
+	'visualeditor-differror' => 'Памылка ў час атрыманьня зьвестак з сэрвэру: $1.',
 	'visualeditor-saveerror' => 'Памылка ў час захаваньня зьвестак на сэрвэры: $1.',
 	'visualeditor-editconflict' => 'Не атрымалася захаваць вашыя зьмены з-за канфлікту рэдагаваньняў. Ці не жадаеце разьвязаць канфлікт уласнаруч?',
 	'visualeditor-editsummary' => 'Апішыце вашыя зьмены',
+	'visualeditor-problem' => 'Апішыце, што здарылася',
 	'visualeditor-aliennode-tooltip' => 'Даруйце, у Візуальным рэдактары гэты элемэнт зьмяніць немагчыма',
-	'tag-visualeditor' => '[[Special:Tags|Тэг]]: [[Project:VisualEditor|VisualEditor]]', # Fuzzy
-	'tag-visualeditor-description' => 'Праўка зробленая [[Project:VisualEditor|Візуальным рэдактарам]]', # Fuzzy
+	'tag-visualeditor' => '[[Special:Tags|Тэг]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'tag-visualeditor-description' => 'Праўка зробленая празь [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Візуальны рэдактар]]',
+	'visualeditor-descriptionpagelink' => 'Project:Візуальны рэдактар',
 );
 
 /** Bulgarian (български)
@@ -1478,11 +1492,18 @@ $messages['jv'] = array(
 /** Georgian (ქართული)
  * @author BRUTE
  * @author David1010
+ * @author ITshnik
  */
 $messages['ka'] = array(
 	'visualeditor' => 'ვიზუალური რედაქტორი',
 	'visualeditor-desc' => 'მედიავიკის ვიზუალური რედაქტორი',
+	'visualeditor-preference-enable' => 'ვიზუალური რედაქტორის ჩართვა(მხოლოდ [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|მთავარ]] და [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|მომხმარებლის]] სახელთა სივრცეში)',
+	'visualeditor-mainnamespacepagelink' => 'Project:მთავარი სახელთა სივრცე',
+	'visualeditor-usernamespacepagelink' => 'Project:მომხმარებლის სახელთა სივრცე',
+	'visualeditor-notification-saved' => 'თქვენი ცვლილებები გვერდზე $1 შენახულია.',
 	'visualeditor-notification-created' => '$1 შეიქმნა.',
+	'visualeditor-notification-restored' => '$1 აღდგენილია.',
+	'visualeditor-notification-reported' => 'თქვენი პრობლემა მიღებულია. მადლობა.',
 	'visualeditor-ca-editsource' => 'წყაროს რედაქტირება',
 	'visualeditor-linkinspector-title' => 'ჰიპერბმული',
 	'visualeditor-linkinspector-label-pagetitle' => 'გვერდის სათაური',
@@ -2437,7 +2458,7 @@ $messages['si'] = array(
 	'visualeditor-feedback-tool' => 'ප්‍රතිචාරය ලබා දෙන්න',
 	'tooltip-ca-ve-edit' => 'දෘශ්‍යසංස්කාරක සමඟ මෙම පිටුව සංස්කරණය කරන්න',
 	'visualeditor-inspector-title' => 'පිරික්සන්න',
-	'visualeditor-linkinspector-title' => 'සබැඳිය සංස්කරණය කරන්න', # Fuzzy
+	'visualeditor-linkinspector-title' => 'අධිසබැඳුම',
 	'visualeditor-linkinspector-label-pagetitle' => 'පිටුවේ මාතෘකාව',
 	'visualeditor-linkinspector-suggest-existing-page' => 'දැනටමත් පවතින පිටුව',
 	'visualeditor-linkinspector-suggest-new-page' => 'නව පිටුව',
