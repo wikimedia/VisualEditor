@@ -87,6 +87,7 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 		<script src="../../modules/ve/ve.Factory.js"></script>
 		<script src="../../modules/ve/ve.Command.js"></script>
 		<script src="../../modules/ve/ve.CommandRegistry.js"></script>
+		<script src="../../modules/ve/ve.TriggerRegistry.js"></script>
 		<script src="../../modules/ve/ve.Range.js"></script>
 		<script src="../../modules/ve/ve.Node.js"></script>
 		<script src="../../modules/ve/ve.BranchNode.js"></script>

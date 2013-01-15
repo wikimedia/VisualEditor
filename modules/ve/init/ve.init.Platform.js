@@ -102,3 +102,25 @@ ve.init.Platform.prototype.addParsedMessages = function () {
 ve.init.Platform.prototype.getParsedMessage = function () {
 	throw new Error( 've.init.Platform.getParsedMessage must be overridden in subclass' );
 };
+
+/**
+ * Gets client platform string from browser.
+ *
+ * @method
+ * @abstract
+ * @returns {string} Client platform string.
+ */
+ve.init.Platform.prototype.getSystemPlatform = function () {
+	throw new Error( 've.init.Platform.getSystemPlatform must be overridden in subclass' );
+};
+
+/**
+ * Gets the user language from the browser.
+ *
+ * @method
+ * @abstract
+ * @returns {string} User language string.
+ */
+ve.init.Platform.prototype.getUserLanguage = function () {
+	throw new Error( 've.init.Platform.getUserLanugage must be overridden in subclass' );
+};

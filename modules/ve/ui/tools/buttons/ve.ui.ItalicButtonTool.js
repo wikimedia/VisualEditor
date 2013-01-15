@@ -33,3 +33,19 @@ ve.ui.ItalicButtonTool.static.annotation = { 'name': 'textStyle/italic' };
 /* Registration */
 
 ve.ui.toolFactory.register( 'italic', ve.ui.ItalicButtonTool );
+
+ve.commandRegistry.register(
+	'italic', 'annotation', 'toggle', 'textStyle/italic'
+);
+
+ve.triggerRegistry.register( {
+	'name': ve.init.platform.getUserLanguage() + '.italic',
+	'trigger': {
+		'mac': 'cmd+i',
+		'pc': 'ctrl+i'
+	},
+	'labelMessage': {
+		'mac': 'visualeditor-annotationbutton-italic-tooltip-trigger-mac',
+		'pc': 'visualeditor-annotationbutton-italic-tooltip-trigger-pc'
+	}
+} );

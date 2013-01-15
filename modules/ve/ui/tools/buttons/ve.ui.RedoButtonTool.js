@@ -60,3 +60,20 @@ ve.ui.RedoButtonTool.prototype.onUpdateState = function () {
 /* Registration */
 
 ve.ui.toolFactory.register( 'redo', ve.ui.RedoButtonTool );
+
+ve.commandRegistry.register(
+	'redo', 'history', 'redo'
+);
+
+ve.triggerRegistry.register( {
+	'name': ve.init.platform.getUserLanguage() + '.redo',
+	'trigger': {
+		'mac': 'cmd+shift+z',
+		'pc': 'ctrl+shift+z'
+	},
+	'labelMessage': {
+		'mac': 'visualeditor-historybutton-redo-tooltip-trigger-mac',
+		'pc': 'visualeditor-historybutton-redo-tooltip-trigger-pc'
+	}
+} );
+
