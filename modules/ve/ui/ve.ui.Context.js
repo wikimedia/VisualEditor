@@ -1,12 +1,12 @@
 /*!
- * VisualEditor user interface Context class.
+ * VisualEditor UserInterface Context class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Creates an ve.ui.Context object.
+ * UserInterface context.
  *
  * @class
  * @constructor
@@ -52,17 +52,23 @@ ve.ui.Context = function VeUiContext( surface, $overlay ) {
 	} );
 };
 
-/* Static Members */
+/* Static Properties */
 
+/**
+ * @static
+ * @property
+ * @inheritable
+ */
 ve.ui.Context.static = {};
 
 /**
- * Options for frame object.
+ * Options for iframe.
+ *
+ * @see ve#ui#Frame
  *
  * @static
  * @property
  * @type {Object}
- * @see ve.ui.Frame
  */
 ve.ui.Context.static.frameOptions = {
 	'stylesheets': [
@@ -79,7 +85,7 @@ ve.ui.Context.static.frameOptions = {
 /* Methods */
 
 /**
- * Responds to change events on the model.
+ * Handle change events on the model.
  *
  * Changes are ignored while the user is selecting text.
  *
@@ -97,7 +103,7 @@ ve.ui.Context.prototype.onChange = function ( tx, selection ) {
 };
 
 /**
- * Responds to selection start events on the view.
+ * Handle selection start events on the view.
  *
  * @method
  */
@@ -107,7 +113,7 @@ ve.ui.Context.prototype.onSelectionStart = function () {
 };
 
 /**
- * Responds to selection end events on the view.
+ * Handle selection end events on the view.
  *
  * @method
  */
@@ -121,7 +127,7 @@ ve.ui.Context.prototype.onWindowFocus = function () {
 };
 
 /**
- * Responds to an inspector being opened.
+ * Handle an inspector being opened.
  *
  * @method
  * @param {string} name Name of inspector being opened (this is not part of the normal event, it's
@@ -144,7 +150,7 @@ ve.ui.Context.prototype.onBeforeInspectorOpen = function ( name ) {
 };
 
 /**
- * Responds to an inspector being closed.
+ * Handle an inspector being closed.
  *
  * @method
  * @param {string} name Name of inspector being closed
@@ -158,7 +164,7 @@ ve.ui.Context.prototype.onAfterInspectorClose = function () {
 };
 
 /**
- * Gets the surface this context is being used in.
+ * Gets the surface the context is being used in.
  *
  * @method
  * @returns {ve.Surface} Surface of context
@@ -181,7 +187,7 @@ ve.ui.Context.prototype.getFrame = function () {
  * Destroy the context, removing all DOM elements.
  *
  * @method
- * @returns {ve.ui.Context} Context user interface
+ * @returns {ve.ui.Context} Context UserInterface
  */
 ve.ui.Context.prototype.destroy = function () {
 	this.$.remove();

@@ -1,12 +1,12 @@
 /*!
- * VisualEditor content editable TableSectionNode class.
+ * VisualEditor ContentEditable TableSectionNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * ContentEditable node for a table section.
+ * ContentEditable table section node.
  *
  * @class
  * @extends ve.ce.BranchNode
@@ -27,7 +27,7 @@ ve.ce.TableSectionNode = function VeCeTableSectionNode( model ) {
 
 ve.inheritClass( ve.ce.TableSectionNode, ve.ce.BranchNode );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * Node rules.
@@ -55,7 +55,7 @@ ve.ce.TableSectionNode.domWrapperElementTypes = {
 /* Methods */
 
 /**
- * Responds to model update events.
+ * Handle model update events.
  *
  * If the style changed since last update the DOM wrapper will be replaced with an appropriate one.
  *

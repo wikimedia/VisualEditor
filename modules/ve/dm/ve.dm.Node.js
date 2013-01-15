@@ -1,5 +1,5 @@
 /*!
- * VisualEditor data model Node class.
+ * VisualEditor DataModel Node class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -41,7 +41,7 @@ ve.inheritClass( ve.dm.Node, ve.Node );
 /* Methods */
 
 /**
- * Gets a list of allowed child node types.
+ * Get allowed child node types.
  *
  * @method
  * @returns {string[]|null} List of node types allowed as children or null if any type is allowed
@@ -51,7 +51,7 @@ ve.dm.Node.prototype.getChildNodeTypes = function () {
 };
 
 /**
- * Gets a list of allowed parent node types.
+ * Get allowed parent node types.
  *
  * @method
  * @returns {string[]|null} List of node types allowed as parents or null if any type is allowed
@@ -61,7 +61,7 @@ ve.dm.Node.prototype.getParentNodeTypes = function () {
 };
 
 /**
- * Checks if this node can have child nodes.
+ * Check if the node can have children.
  *
  * @method
  * @returns {boolean} Node can have children
@@ -71,7 +71,7 @@ ve.dm.Node.prototype.canHaveChildren = function () {
 };
 
 /**
- * Checks if this node can have child nodes which can also have child nodes.
+ * Check if the node can have grandchildren.
  *
  * @method
  * @returns {boolean} Node can have grandchildren
@@ -81,7 +81,7 @@ ve.dm.Node.prototype.canHaveGrandchildren = function () {
 };
 
 /**
- * Checks if this node represents a wrapped element in the linear model.
+ * Check if the node has a wrapped element in the document data.
  *
  * @method
  * @returns {boolean} Node represents a wrapped element
@@ -91,7 +91,7 @@ ve.dm.Node.prototype.isWrapped = function () {
 };
 
 /**
- * Checks if this node can contain content.
+ * Check if the node can contain content.
  *
  * @method
  * @returns {boolean} Node can contain content
@@ -101,7 +101,7 @@ ve.dm.Node.prototype.canContainContent = function () {
 };
 
 /**
- * Checks if this node is content.
+ * Check if the node is content.
  *
  * @method
  * @returns {boolean} Node is content
@@ -111,8 +111,9 @@ ve.dm.Node.prototype.isContent = function () {
 };
 
 /**
- * Checks if this node has significant whitespace. Can only be true if canContainContent is
- * also true.
+ * Check if the node has significant whitespace.
+ *
+ * Can only be true if canContainContent is also true.
  *
  * @method
  * @returns {boolean} Node has significant whitespace
@@ -122,7 +123,7 @@ ve.dm.Node.prototype.hasSignificantWhitespace = function () {
 };
 
 /**
- * Checks if this node has an ancestor with given type and attributes.
+ * Check if the node has an ancestor with matching type and attribute values.
  *
  * @method
  * @returns {boolean} Node is content
@@ -150,7 +151,7 @@ ve.dm.Node.prototype.hasMatchingAncestor = function ( type, attributes ) {
 };
 
 /**
- * Gets the inner length.
+ * Get the length of the node.
  *
  * @method
  * @returns {number} Length of the node's contents
@@ -160,7 +161,7 @@ ve.dm.Node.prototype.getLength = function () {
 };
 
 /**
- * Gets the outer length, including any opening/closing elements.
+ * Get the outer length of the node, which includes wrappers if present.
  *
  * @method
  * @returns {number} Length of the entire node
@@ -170,7 +171,7 @@ ve.dm.Node.prototype.getOuterLength = function () {
 };
 
 /**
- * Gets the range inside the node.
+ * Get the range inside the node.
  *
  * @method
  * @returns {ve.Range} Inner node range
@@ -184,7 +185,7 @@ ve.dm.Node.prototype.getRange = function () {
 };
 
 /**
- * Gets the range outside the node.
+ * Get the range outside the node.
  *
  * @method
  * @returns {ve.Range} Outer node range
@@ -195,11 +196,14 @@ ve.dm.Node.prototype.getOuterRange = function () {
 };
 
 /**
- * Sets the inner length.
+ * Set the inner length of the node.
+ *
+ * This should only be called after a relevant change to the document data. Calling this method will
+ * not change the document data.
  *
  * @method
  * @param {number} length Length of content
- * @throws Invalid content length error if length is less than 0
+ * @throws {Error} Invalid content length error if length is less than 0
  * @emits lengthChange
  * @emits update
  */
@@ -223,9 +227,12 @@ ve.dm.Node.prototype.setLength = function ( length ) {
 /**
  * Adjust the length.
  *
+ * This should only be called after a relevant change to the document data. Calling this method will
+ * not change the document data.
+ *
  * @method
  * @param {number} adjustment Amount to adjust length by
- * @throws Invalid adjustment error if resulting length is less than 0
+ * @throws {Error} Invalid adjustment error if resulting length is less than 0
  * @emits lengthChange (diff)
  * @emits update
  */
@@ -234,9 +241,9 @@ ve.dm.Node.prototype.adjustLength = function ( adjustment ) {
 };
 
 /**
- * Gets the offset of this node within the document.
+ * Get the offset of the node within the document.
  *
- * If this node has no parent than the result will always be 0.
+ * If the node has no parent than the result will always be 0.
  *
  * @method
  * @returns {number} Offset of node
@@ -246,7 +253,7 @@ ve.dm.Node.prototype.getOffset = function () {
 };
 
 /**
- * Gets an element attribute value.
+ * Get the value of an attribute.
  *
  * Return value is by reference if array or object.
  *
@@ -258,7 +265,7 @@ ve.dm.Node.prototype.getAttribute = function ( key ) {
 };
 
 /**
- * Gets a copy of this node's attributes.
+ * Get a copy of all attributes.
  *
  * Values are by reference if array or object, similar to using the getAttribute method.
  *
@@ -282,7 +289,7 @@ ve.dm.Node.prototype.getAttributes = function ( prefix ) {
 };
 
 /**
- * Checks if this node has certain attributes.
+ * Check if the node has certain attributes.
  *
  * If an array of keys is provided only the presence of the attributes will be checked. If an object
  * with keys and values is provided both the presence of the attributes and their values will be
@@ -320,7 +327,9 @@ ve.dm.Node.prototype.hasAttributes = function ( attributes, strict ) {
 };
 
 /**
- * Get a clone of the linear model element for this node. The attributes object is deep-copied.
+ * Get a clone of the node's document data element.
+ *
+ * The attributes object will be deep-copied.
  *
  * @returns {Object} Cloned element object
  */
@@ -329,9 +338,9 @@ ve.dm.Node.prototype.getClonedElement = function () {
 };
 
 /**
- * Checks if this node can be merged with another.
+ * Check if the node can be merged with another.
  *
- * For two nodes to be mergeable, this node and the given node must either be the same node or:
+ * For two nodes to be mergeable, the two nodes must either be the same node or:
  *  - Have the same type
  *  - Have the same depth
  *  - Have similar ancestory (each node upstream must have the same type)

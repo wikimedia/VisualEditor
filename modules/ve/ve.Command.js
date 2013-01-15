@@ -54,8 +54,13 @@ ve.Command = function ( e ) {
 	}
 };
 
-/* Static Members */
+/* Static Properties */
 
+/**
+ * @static
+ * @property
+ * @inheritable
+ */
 ve.Command.static = {};
 
 /**

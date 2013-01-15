@@ -1,12 +1,12 @@
 /*!
- * VisualEditor user interface IndentButtonTool class.
+ * VisualEditor UserInterface IndentButtonTool class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Creates an ve.ui.IndentButtonTool object.
+ * UserInterface indent button tool.
  *
  * @class
  * @extends ve.ui.IndentationButtonTool
@@ -22,7 +22,7 @@ ve.ui.IndentButtonTool = function VeUiIndentButtonTool( toolbar ) {
 
 ve.inheritClass( ve.ui.IndentButtonTool, ve.ui.IndentationButtonTool );
 
-/* Static Members */
+/* Static Properties */
 
 ve.ui.IndentButtonTool.static.name = 'indent';
 

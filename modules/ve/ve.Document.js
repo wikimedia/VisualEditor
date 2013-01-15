@@ -20,7 +20,7 @@ ve.Document = function VeDocument( documentNode ) {
 /* Methods */
 
 /**
- * Gets the root of the document's node tree.
+ * Get the root of the document's node tree.
  *
  * @method
  * @returns {ve.Node} Root of node tree
@@ -473,7 +473,8 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 };
 
 /**
- * Return groups of sibling nodes covered by the given range
+ * Get groups of sibling nodes covered by the given range.
+ *
  * @param {ve.Range} selection Range
  * @return {Array} Array of objects. Each object has the following keys:
  *     nodes: Array of sibling nodes covered by a part of range

@@ -1,12 +1,12 @@
 /*!
- * VisualEditor content editable HeadingNode class.
+ * VisualEditor ContentEditable HeadingNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * ContentEditable node for a heading.
+ * ContentEditable heading node.
  *
  * @class
  * @extends ve.ce.BranchNode
@@ -27,7 +27,7 @@ ve.ce.HeadingNode = function VeCeHeadingNode( model ) {
 
 ve.inheritClass( ve.ce.HeadingNode, ve.ce.ContentBranchNode );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * Node rules.
@@ -58,7 +58,7 @@ ve.ce.HeadingNode.domWrapperElementTypes = {
 /* Methods */
 
 /**
- * Responds to model update events.
+ * Handle model update events.
  *
  * If the level changed since last update the DOM wrapper will be replaced with an appropriate one.
  *

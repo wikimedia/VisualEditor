@@ -1,12 +1,12 @@
 /*!
- * VisualEditor initialization Target class.
+ * VisualEditor Initialization Target class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Generic platform.
+ * Generic Initialization platform.
  *
  * @abstract
  * @extends ve.EventEmitter
@@ -24,7 +24,7 @@ ve.inheritClass( ve.init.Platform, ve.EventEmitter );
 /* Methods */
 
 /**
- * Gets a regular expression that matches allowed external link URLs.
+ * Get a regular expression that matches allowed external link URLs.
  *
  * @method
  * @abstract
@@ -35,7 +35,7 @@ ve.init.Platform.prototype.getExternalLinkUrlProtocolsRegExp = function () {
 };
 
 /**
- * Gets a remotely accessible URL to the modules directory.
+ * Get a remotely accessible URL to the modules directory.
  *
  * @method
  * @abstract
@@ -46,7 +46,7 @@ ve.init.Platform.prototype.getModulesUrl = function () {
 };
 
 /**
- * Whether to use change markers
+ * Check whether to use change markers.
  *
  * @method
  * @returns {boolean}
@@ -56,7 +56,7 @@ ve.init.Platform.prototype.useChangeMarkers = function () {
 };
 
 /**
- * Adds multiple messages to the localization system.
+ * Add multiple messages to the localization system.
  *
  * @method
  * @abstract
@@ -67,7 +67,7 @@ ve.init.Platform.prototype.addMessages = function () {
 };
 
 /**
- * Gets a message from the localization system.
+ * Get a message from the localization system.
  *
  * @method
  * @abstract
@@ -80,7 +80,7 @@ ve.init.Platform.prototype.getMessage = function () {
 };
 
 /**
- * Adds multiple parsed messages to the localization system.
+ * Add multiple parsed messages to the localization system.
  *
  * @method
  * @abstract
@@ -91,7 +91,7 @@ ve.init.Platform.prototype.addParsedMessages = function () {
 };
 
 /**
- * Gets a parsed message as HTML string.
+ * Get a parsed message as HTML string.
  * Does not support $# replacements.
  *
  * @method

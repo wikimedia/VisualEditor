@@ -1,12 +1,12 @@
 /*!
- * VisualEditor data model ListNode class.
+ * VisualEditor DataModel ListNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * DataModel node for a list.
+ * DataModel list node.
  *
  * @class
  * @extends ve.dm.BranchNode
@@ -23,7 +23,7 @@ ve.dm.ListNode = function VeDmListNode( children, element ) {
 
 ve.inheritClass( ve.dm.ListNode, ve.dm.BranchNode );
 
-/* Static Members */
+/* Static Properties */
 
 ve.dm.ListNode.defaultAttributes = {
 	'style': 'bullet'

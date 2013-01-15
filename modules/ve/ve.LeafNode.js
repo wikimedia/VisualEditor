@@ -6,7 +6,7 @@
  */
 
 /**
- * Mixin for leaf nodes.
+ * Leaf node mixin.
  *
  * @class
  * @abstract
@@ -19,10 +19,10 @@ ve.LeafNode = function VeLeafNode() {
 /* Methods */
 
 /**
- * Checks if this node has child nodes.
+ * Check if the node has children.
  *
  * @method
- * @returns {boolean} Whether this node has children
+ * @returns {boolean} Whether the node has children
  */
 ve.LeafNode.prototype.hasChildren = function () {
 	return false;

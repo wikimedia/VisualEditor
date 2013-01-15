@@ -1,14 +1,14 @@
 /*global mw, confirm, alert */
 
 /*!
- * VisualEditor MediaWiki initialization ViewPageTarget class.
+ * VisualEditor MediaWiki Initialization ViewPageTarget class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * MediaWiki Edit page target.
+ * Initialization MediaWiki view page target.
  *
  * @class
  * @extends ve.init.mw.Target
@@ -137,7 +137,7 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 
 ve.inheritClass( ve.init.mw.ViewPageTarget, ve.init.mw.Target );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * Compatibility map used with jQuery.client to black-list incompatible browsers.
@@ -241,7 +241,7 @@ ve.init.mw.ViewPageTarget.saveDialogTemplate = '\
 /* Methods */
 
 /**
- * Switches to edit mode.
+ * Switch to edit mode.
  *
  * @method
  */
@@ -261,7 +261,7 @@ ve.init.mw.ViewPageTarget.prototype.activate = function () {
 };
 
 /**
- * Switches to view mode.
+ * Switch to view mode.
  *
  * @method
  */
@@ -290,7 +290,7 @@ ve.init.mw.ViewPageTarget.prototype.deactivate = function ( override ) {
 };
 
 /**
- * Handles successful DOM load event.
+ * Handle successful DOM load event.
  *
  * @method
  * @param {HTMLElement} dom Parsed DOM from server
@@ -311,7 +311,7 @@ ve.init.mw.ViewPageTarget.prototype.onLoad = function ( dom ) {
 };
 
 /**
- * Handles failed DOM load event.
+ * Handle failed DOM load event.
  *
  * @method
  * @param {Object} data HTTP Response object
@@ -329,7 +329,7 @@ ve.init.mw.ViewPageTarget.prototype.onLoadError = function ( response, status ) 
 };
 
 /**
- * Handles successful DOM save event.
+ * Handle successful DOM save event.
  *
  * @method
  * @param {HTMLElement} html Rendered HTML from server
@@ -369,7 +369,7 @@ ve.init.mw.ViewPageTarget.prototype.onSave = function ( html ) {
 };
 
 /**
- * Handles failed DOM save event.
+ * Handle failed DOM save event.
  *
  * @method
  * @param {Object} jqXHR
@@ -384,7 +384,7 @@ ve.init.mw.ViewPageTarget.prototype.onSaveError = function ( jqXHR, status ) {
 };
 
 /**
- * Handles Show changes event.
+ * Handle Show changes event.
  *
  * @method
  * @param {string} diffHtml
@@ -411,7 +411,7 @@ ve.init.mw.ViewPageTarget.prototype.onShowChanges = function ( diffHtml ) {
 };
 
 /**
- * Handles failed Show changes event.
+ * Handle failed show changes event.
  *
  * @method
  * @param {Object} jqXHR
@@ -425,7 +425,7 @@ ve.init.mw.ViewPageTarget.prototype.onShowChangesError = function ( jqXHR, statu
 };
 
 /**
- * Handles edit conflict event.
+ * Handle edit conflict event.
  *
  * TODO: Don't use an operating system confirm box. Parsing may take quite some time and we should
  * be showing the user some sort of progress indicator. Ideally this would be integrated into the
@@ -450,7 +450,7 @@ ve.init.mw.ViewPageTarget.prototype.onEditConflict = function () {
 };
 
 /**
- * Handles clicks on the edit tab.
+ * Handle clicks on the edit tab.
  *
  * @method
  * @param {jQuery.Event} e
@@ -462,7 +462,7 @@ ve.init.mw.ViewPageTarget.prototype.onEditTabClick = function ( e ) {
 };
 
 /**
- * Handles clicks on a section edit link.
+ * Handle clicks on a section edit link.
  *
  * @method
  * @param {jQuery.Event} e
@@ -475,7 +475,7 @@ ve.init.mw.ViewPageTarget.prototype.onEditSectionLinkClick = function ( e ) {
 };
 
 /**
- * Handles clicks on the view tab.
+ * Handle clicks on the view tab.
  *
  * @method
  * @param {jQuery.Event} e
@@ -489,7 +489,7 @@ ve.init.mw.ViewPageTarget.prototype.onViewTabClick = function ( e ) {
 };
 
 /**
- * Handles clicks on the save button in the toolbar.
+ * Handle clicks on the save button in the toolbar.
  *
  * @method
  * @param {jQuery.Event} e
@@ -501,7 +501,7 @@ ve.init.mw.ViewPageTarget.prototype.onToolbarSaveButtonClick = function () {
 };
 
 /**
- * Handles clicks on the save button in the toolbar.
+ * Handle clicks on the save button in the toolbar.
  *
  * @method
  * @param {jQuery.Event} e
@@ -511,7 +511,7 @@ ve.init.mw.ViewPageTarget.prototype.onToolbarCancelButtonClick = function () {
 };
 
 /**
- * Handles clicks on the edit notices tool in the toolbar.
+ * Handle clicks on the edit notices tool in the toolbar.
  *
  * @method
  * @param {jQuery.Event} e
@@ -522,7 +522,7 @@ ve.init.mw.ViewPageTarget.prototype.onToolbarEditNoticesToolClick = function () 
 };
 
 /**
- * Handles clicks on the feedback tool in the toolbar.
+ * Handle clicks on the feedback tool in the toolbar.
  *
  * @method
  * @param {jQuery.Event} e
@@ -533,7 +533,7 @@ ve.init.mw.ViewPageTarget.prototype.onToolbarFeedbackToolClick = function () {
 };
 
 /**
- * Handles the first transaction in the surface model.
+ * Handle the first transaction in the surface model.
  *
  * This handler is removed the first time it's used, but added each time the surface is setup.
  *
@@ -553,7 +553,7 @@ ve.init.mw.ViewPageTarget.prototype.onSurfaceModelTransact = function () {
 };
 
 /**
- * Handles clicks on the save button in the save dialog.
+ * Handle clicks on the save button in the save dialog.
  *
  * @method
  * @param {jQuery.Event} e
@@ -573,7 +573,7 @@ ve.init.mw.ViewPageTarget.prototype.onSaveDialogSaveButtonClick = function ( e )
 };
 
 /**
- * Handles clicks on the review "Wrong" button in the save dialog.
+ * Handle clicks on the review "Wrong" button in the save dialog.
  *
  * @method
  * @param {jQuery.Event} e
@@ -588,7 +588,7 @@ ve.init.mw.ViewPageTarget.prototype.onSaveDialogReviewWrongButtonClick = functio
 };
 
 /**
- * Handles clicks on the review "Good" button in the save dialog.
+ * Handle clicks on the review "Good" button in the save dialog.
  *
  * @method
  * @param {jQuery.Event} e
@@ -603,7 +603,7 @@ ve.init.mw.ViewPageTarget.prototype.onSaveDialogReviewGoodButtonClick = function
 };
 
 /**
- * Handles clicks on the report a problem button in the save dialog.
+ * Handle clicks on the report a problem button in the save dialog.
  *
  * @method
  * @param {jQuery.Event} e
@@ -616,7 +616,7 @@ ve.init.mw.ViewPageTarget.prototype.onSaveDialogReportButtonClick = function () 
 };
 
 /**
- * Gets save options from the save dialog form.
+ * Get save options from the save dialog form.
  *
  * @method
  * @returns {Object} Save options, including summary, minor and watch properties
@@ -630,7 +630,7 @@ ve.init.mw.ViewPageTarget.prototype.getSaveOptions = function () {
 };
 
 /**
- * Handles clicks on the close button in the save dialog.
+ * Handle clicks on the close button in the save dialog.
  *
  * @method
  * @param {jQuery.Event} e
@@ -639,6 +639,12 @@ ve.init.mw.ViewPageTarget.prototype.onSaveDialogCloseButtonClick = function () {
 	this.hideSaveDialog();
 };
 
+/**
+ * Handle clicks on the previous view button in the save dialog.
+ *
+ * @method
+ * @param {jQuery.Event} e
+ */
 ve.init.mw.ViewPageTarget.prototype.onSaveDialogPrevButtonClick = function () {
 	// Hard code "review" for now.
 	// Although we have more than 2 slides, slide "report" and "save" are both
@@ -648,7 +654,7 @@ ve.init.mw.ViewPageTarget.prototype.onSaveDialogPrevButtonClick = function () {
 };
 
 /**
- * Gets a list of edit notices.
+ * Get a list of edit notices.
  *
  * @method
  * @returns {string[]} HTML strings for each edit notice
@@ -662,7 +668,7 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarEditNotices = function () {
 };
 
 /**
- * Switches to editing mode.
+ * Switch to editing mode.
  *
  * @method
  * @param {HTMLElement} dom HTML DOM to edit
@@ -694,7 +700,7 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( dom ) {
 };
 
 /**
- * Switches to viewing mode.
+ * Switch to viewing mode.
  *
  * @method
  */
@@ -720,7 +726,7 @@ ve.init.mw.ViewPageTarget.prototype.tearDownSurface = function () {
 };
 
 /**
- * Modifies tabs in the skin to support in-place editing.
+ * Modify tabs in the skin to support in-place editing.
  *
  * @method
  */
@@ -814,7 +820,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
 };
 
 /**
- * Modifies page content to make section edit links activate the editor.
+ * Modify page content to make section edit links activate the editor.
  *
  * @method
  */
@@ -834,7 +840,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSectionEditLinks = function () {
 };
 
 /**
- * Adds content and event bindings to toolbar buttons.
+ * Add content and event bindings to toolbar buttons.
  *
  * @method
  */
@@ -875,7 +881,7 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarButtons = function () {
 };
 
 /**
- * Removes content and event bindings from toolbar buttons.
+ * Remove content and event bindings from toolbar buttons.
  *
  * @method
  */
@@ -887,7 +893,7 @@ ve.init.mw.ViewPageTarget.prototype.tearDownToolbarButtons = function () {
 };
 
 /**
- * Adds the save button to the user interface.
+ * Add the save button to the user interface.
  *
  * @method
  */
@@ -901,7 +907,7 @@ ve.init.mw.ViewPageTarget.prototype.attachToolbarButtons = function () {
 };
 
 /**
- * Removes the save button from the user interface.
+ * Remove the save button from the user interface.
  *
  * @method
  */
@@ -913,10 +919,13 @@ ve.init.mw.ViewPageTarget.prototype.detachToolbarButtons = function () {
 };
 
 /**
- * Asynchronously provides the template for the save dialog wrapped in a
- * plain <div> jQuery collection.
+ * Get a template for the save dialog.
+ *
+ * The result of this function depends on an API call, so the result it provided asynchronously.
+ * The template will be wrapped in a plain <div> jQuery collection.
  *
  * @method
+ * @param {Function} callback
  */
 ve.init.mw.ViewPageTarget.prototype.getSaveDialogHtml = function ( callback ) {
 	var viewPage = this,
@@ -953,7 +962,7 @@ ve.init.mw.ViewPageTarget.prototype.getSaveDialogHtml = function ( callback ) {
 };
 
 /**
- * Adds content and event bindings to the save dialog.
+ * Add content and event bindings to the save dialog.
  *
  * @method
  */
@@ -1085,7 +1094,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 };
 
 /**
- * Shows the save dialog.
+ * Show the save dialog.
  *
  * @method
  */
@@ -1133,7 +1142,7 @@ ve.init.mw.ViewPageTarget.prototype.onResizeSaveDialog = function () {
 };
 
 /**
- * Hides the save dialog
+ * Hide the save dialog
  *
  * @method
  */
@@ -1151,10 +1160,10 @@ ve.init.mw.ViewPageTarget.prototype.hideSaveDialog = function () {
 };
 
 /**
- * Resets the fields of the save dialog.
- * TODO: Maybe call this more cleverly only when the document
- * changes, so that closing and re-opening the saveDialog doesn't
- * remove the user input and the diff cache.
+ * Reset the fields of the save dialog.
+ *
+ * TODO: Maybe call this more cleverly only when the document changes, so that closing and
+ * re-opening the saveDialog doesn't remove the user input and the diff cache.
  *
  * @method
  */
@@ -1180,7 +1189,7 @@ ve.init.mw.ViewPageTarget.prototype.resetSaveDialog = function () {
  * @method
  * @param {string} slide One of 'review', 'report' or 'save'.
  * @return {jQuery} The now active slide.
- * @throws Error
+ * @throws {Error} Unknown saveDialog slide
  */
 ve.init.mw.ViewPageTarget.prototype.swapSaveDialog = function ( slide ) {
 	var $slide, $viewer;
@@ -1246,7 +1255,7 @@ ve.init.mw.ViewPageTarget.prototype.swapSaveDialog = function ( slide ) {
 };
 
 /**
- * Adds the save dialog to the user interface.
+ * Add the save dialog to the user interface.
  *
  * @method
  */
@@ -1255,7 +1264,7 @@ ve.init.mw.ViewPageTarget.prototype.attachSaveDialog = function () {
 };
 
 /**
- * Removes the save dialog from the user interface.
+ * Remove the save dialog from the user interface.
  *
  * @method
  */
@@ -1264,7 +1273,7 @@ ve.init.mw.ViewPageTarget.prototype.detachSaveDialog = function () {
 };
 
 /**
- * Remembers the window's scroll position.
+ * Remember the window's scroll position.
  *
  * @method
  */
@@ -1273,7 +1282,7 @@ ve.init.mw.ViewPageTarget.prototype.saveScrollPosition = function () {
 };
 
 /**
- * Restores the window's scroll position.
+ * Restore the window's scroll position.
  *
  * @method
  */
@@ -1285,7 +1294,7 @@ ve.init.mw.ViewPageTarget.prototype.restoreScrollPosition = function () {
 };
 
 /**
- * Shows the loading spinner.
+ * Show the loading spinner.
  *
  * @method
  */
@@ -1294,7 +1303,7 @@ ve.init.mw.ViewPageTarget.prototype.showSpinner = function () {
 };
 
 /**
- * Hides the loading spinner.
+ * Hide the loading spinner.
  *
  * @method
  */
@@ -1303,7 +1312,7 @@ ve.init.mw.ViewPageTarget.prototype.hideSpinner = function () {
 };
 
 /**
- * Shows the page content.
+ * Show the page content.
  *
  * @method
  */
@@ -1315,7 +1324,7 @@ ve.init.mw.ViewPageTarget.prototype.showPageContent = function () {
 };
 
 /**
- * Mutes the page content.
+ * Mute the page content.
  *
  * @method
  */
@@ -1326,7 +1335,7 @@ ve.init.mw.ViewPageTarget.prototype.mutePageContent = function () {
 };
 
 /**
- * Hides the page content.
+ * Hide the page content.
  *
  * @method
  */
@@ -1337,7 +1346,7 @@ ve.init.mw.ViewPageTarget.prototype.hidePageContent = function () {
 };
 
 /**
- * Shows the table of contents in the view mode.
+ * Show the table of contents in the view mode.
  *
  * @method
  */
@@ -1352,7 +1361,7 @@ ve.init.mw.ViewPageTarget.prototype.showTableOfContents = function () {
 };
 
 /**
- * Hides the table of contents in the view mode.
+ * Hide the table of contents in the view mode.
  *
  * @method
  */
@@ -1365,7 +1374,7 @@ ve.init.mw.ViewPageTarget.prototype.hideTableOfContents = function () {
 };
 
 /**
- * Enables the toolbar save button.
+ * Enable the toolbar save button.
  *
  * @method
  */
@@ -1376,7 +1385,7 @@ ve.init.mw.ViewPageTarget.prototype.enableToolbarSaveButton = function () {
 };
 
 /**
- * Disables the toolbar save button.
+ * Disable the toolbar save button.
  *
  * @method
  */
@@ -1387,7 +1396,7 @@ ve.init.mw.ViewPageTarget.prototype.disableToolbarSaveButton = function () {
 };
 
 /**
- * Enables the save dialog save page button.
+ * Enable the save dialog save page button.
  *
  * @method
  */
@@ -1398,7 +1407,7 @@ ve.init.mw.ViewPageTarget.prototype.enableSaveDialogSaveButton = function () {
 };
 
 /**
- * Disables the save dialog save page button.
+ * Disable the save dialog save page button.
  *
  * @method
  */
@@ -1409,7 +1418,7 @@ ve.init.mw.ViewPageTarget.prototype.disableSaveDialogSaveButton = function () {
 };
 
 /**
- * Enables the save dialog review "Good" button.
+ * Enable the save dialog review "looks good" button.
  *
  * @method
  */
@@ -1420,7 +1429,7 @@ ve.init.mw.ViewPageTarget.prototype.enableSaveDialogReviewGoodButton = function 
 };
 
 /**
- * Disables the save dialog review "Good" button.
+ * Disable the save dialog review "looks good" button.
  *
  * @method
  */
@@ -1431,7 +1440,7 @@ ve.init.mw.ViewPageTarget.prototype.disableSaveDialogReviewGoodButton = function
 };
 
 /**
- * Enables the save dialog review "Wrong" button.
+ * Enable the save dialog review "something's wrong" button.
  *
  * @method
  */
@@ -1442,7 +1451,7 @@ ve.init.mw.ViewPageTarget.prototype.enableSaveDialogReviewWrongButton = function
 };
 
 /**
- * Disables the save dialog review "Wrong" button.
+ * Disable the save dialog review "something's wrong" button.
  *
  * @method
  */
@@ -1453,7 +1462,7 @@ ve.init.mw.ViewPageTarget.prototype.disableSaveDialogReviewWrongButton = functio
 };
 
 /**
- * Shows the toolbar.
+ * Show the toolbar.
  *
  * This also transplants the toolbar to a new location.
  *
@@ -1470,7 +1479,7 @@ ve.init.mw.ViewPageTarget.prototype.attachToolbar = function () {
 };
 
 /**
- * Hides the toolbar.
+ * Hide the toolbar.
  *
  * @method
  */
@@ -1481,7 +1490,7 @@ ve.init.mw.ViewPageTarget.prototype.detachToolbar = function () {
 };
 
 /**
- * Enables the toolbar save button.
+ * Enable the toolbar save button.
  *
  * @method
  */
@@ -1490,7 +1499,7 @@ ve.init.mw.ViewPageTarget.prototype.transformPageTitle = function () {
 };
 
 /**
- * Enables the toolbar save button.
+ * Enable the toolbar save button.
  *
  * @method
  */
@@ -1499,7 +1508,7 @@ ve.init.mw.ViewPageTarget.prototype.mutePageTitle = function () {
 };
 
 /**
- * Disables the toolbar save button.
+ * Disable the toolbar save button.
  *
  * @method
  */
@@ -1511,7 +1520,7 @@ ve.init.mw.ViewPageTarget.prototype.restorePageTitle = function () {
 };
 
 /**
- * Modifies page tabs to show that editing is taking place.
+ * Modify page tabs to show that editing is taking place.
  *
  * @method
  */
@@ -1523,7 +1532,7 @@ ve.init.mw.ViewPageTarget.prototype.transformSkinTabs = function () {
 };
 
 /**
- * Modifies page tabs to show that viewing is taking place.
+ * Modify page tabs to show that viewing is taking place.
  *
  * @method
  */
@@ -1534,7 +1543,7 @@ ve.init.mw.ViewPageTarget.prototype.restoreSkinTabs = function () {
 };
 
 /**
- * Hides site notice on page if present.
+ * Hide site notice on page if present.
  *
  * @method
  */
@@ -1555,7 +1564,7 @@ ve.init.mw.ViewPageTarget.prototype.restoreSiteNotice = function () {
 };
 
 /**
- * Replaces the page content with new HTML.
+ * Replace the page content with new HTML.
  *
  * @method
  * @param {HTMLElement} html Rendered HTML from server
@@ -1565,7 +1574,7 @@ ve.init.mw.ViewPageTarget.prototype.replacePageContent = function ( html ) {
 };
 
 /**
- * Gets the numeric index of a section in the page.
+ * Get the numeric index of a section in the page.
  *
  * @method
  * @param {HTMLElement} heading Heading element of section
@@ -1583,7 +1592,7 @@ ve.init.mw.ViewPageTarget.prototype.getEditSection = function ( heading ) {
 };
 
 /**
- * Gets the numeric index of a section in the page.
+ * Get the numeric index of a section in the page.
  *
  * @method
  * @param {HTMLElement} heading Heading element of section
@@ -1593,7 +1602,7 @@ ve.init.mw.ViewPageTarget.prototype.saveEditSection = function ( heading ) {
 };
 
 /**
- * Moves the cursor in the editor to a given section.
+ * Move the cursor in the editor to a given section.
  *
  * @method
  * @param {number} section Section to move cursor to
@@ -1618,7 +1627,7 @@ ve.init.mw.ViewPageTarget.prototype.restoreEditSection = function () {
 };
 
 /**
- * Adds onbeforunload handler.
+ * Add onbeforunload handler.
  *
  * @method
  */
@@ -1636,7 +1645,7 @@ ve.init.mw.ViewPageTarget.prototype.setupBeforeUnloadHandler = function () {
 };
 
 /**
- * Removes onbeforunload handler.
+ * Remove onbeforunload handler.
  *
  * @method
  */
@@ -1646,7 +1655,7 @@ ve.init.mw.ViewPageTarget.prototype.tearDownBeforeUnloadHandler = function () {
 };
 
 /**
- * Responds to page show event.
+ * Handle page show event.
  *
  * @method
  */
@@ -1656,7 +1665,7 @@ ve.init.mw.ViewPageTarget.prototype.onPageShow = function () {
 };
 
 /**
- * Responds to before unload event.
+ * Handle before unload event.
  *
  * @method
  */

@@ -1,12 +1,12 @@
 /*!
- * VisualEditor data model Annotation class.
+ * VisualEditor DataModel Annotation class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Generic data model annotation.
+ * Generic DataModel annotation.
  *
  * This is an abstract class, annotations should extend this and call this constructor from their
  * constructor. You should not instantiate this class directly.
@@ -21,10 +21,9 @@
  *
  * TODO: Make this constructor optionally accept a data object instead of an element.
  *
- * @abstract
+ * @class
  * @constructor
- *
- * @param {HTMLElement} [element] HTML element this annotation was converted from, if any
+ * @param {HTMLElement} [element] HTML element the annotation was converted from, if any
  */
 ve.dm.Annotation = function VeDmAnnotation( element ) {
 	this.name = this.constructor.static.name; // Needed for proper hashing
@@ -39,8 +38,9 @@ ve.dm.Annotation = function VeDmAnnotation( element ) {
 /* Static properties */
 
 /**
- * Object containing static properties. ve#inheritClass contains special logic to make sure these
- * properties are inherited by subclasses.
+ * Object containing static properties.
+ *
+ * ve#inheritClass contains special logic to make sure these properties are inherited by subclasses.
  * @static
  * @property
  * @inheritable
@@ -48,7 +48,10 @@ ve.dm.Annotation = function VeDmAnnotation( element ) {
 ve.dm.Annotation.static = {};
 
 /**
- * Symbolic name for the annotation class. Must be set to a unique string by every subclass.
+ * Symbolic name for the annotation class.
+ *
+ * Must be set to a unique string by every subclass.
+ *
  * @static
  * @property {string} [static.name=null]
  * @inheritable
@@ -56,9 +59,12 @@ ve.dm.Annotation.static = {};
 ve.dm.Annotation.static.name = null;
 
 /**
- * Array of HTML tag names that this annotation should be a match candidate for.
+ * Array of HTML tag names that the annotation should be a match candidate for.
+ *
  * Empty array means none, null means any.
- * For more information about annotation matching, see ve.dm.AnnotationFactory.
+ *
+ * @see ve#dm#AnnotationFactory
+ *
  * @static
  * @property {Array} static.matchTagNames
  * @inheritable
@@ -66,9 +72,12 @@ ve.dm.Annotation.static.name = null;
 ve.dm.Annotation.static.matchTagNames = null;
 
 /**
- * Array of RDFa types that this annotation should be a match candidate for.
+ * Array of RDFa types that the annotation should be a match candidate for.
+ *
  * Empty array means none, null means any.
- * For more information about annotation matching, see ve.dm.AnnotationFactory.
+ *
+ * @see ve#dm#AnnotationFactory
+ *
  * @static
  * @property {Array} static.matchRdfaType
  * @inheritable
@@ -76,8 +85,10 @@ ve.dm.Annotation.static.matchTagNames = null;
 ve.dm.Annotation.static.matchRdfaTypes = null;
 
 /**
- * Optional function to determine whether this annotation should match a given element.
+ * Optional function to determine whether the annotation should match a given element.
+ *
  * Takes an HTMLElement and returns true or false.
+ *
  * This function is only called if this annotation has a chance of "winning"; see
  * ve.dm.AnnotationFactory for more information about annotation matching.
  * If set to null, this property is ignored. Setting this to null is not the same as unconditionally
@@ -95,8 +106,9 @@ ve.dm.Annotation.static.matchFunction = null;
 /* Methods */
 
 /**
- * Get annotation data for the linear model. Called when building a new annotation from an HTML
- * element.
+ * Get annotation data for the linear model.
+ *
+ * Called when building a new annotation from an HTML element.
  *
  * This annotation data object is completely free-form. It's stored in the linear model, it can be
  * manipulated by UI widgets, and you access it as this.data in toHTML() on the way out and in
@@ -104,7 +116,8 @@ ve.dm.Annotation.static.matchFunction = null;
  * any information from the HTML element that you'll need later should be extracted into the data
  * object here.
  *
- * @param {HTMLElement} element HTML element this annotation will represent
+ * @method
+ * @param {HTMLElement} element HTML element the annotation will represent
  * @returns {Object} Annotation data
  */
 ve.dm.Annotation.prototype.getAnnotationData = function () {
@@ -112,13 +125,14 @@ ve.dm.Annotation.prototype.getAnnotationData = function () {
 };
 
 /**
- * Convert this annotation back to HTML for output purposes.
+ * Convert the annotation back to HTML for output purposes.
  *
  * You should only use this.data here, you cannot reliably use any of the other properties.
  * The default action is to restore the original HTML element's tag name and attributes (if this
  * annotation was created based on an element). If a subclass wants to do this too (this is common),
  * it should call its parent's implementation first, then manipulate the return value.
  *
+ * @method
  * @returns {Object} Object with 'tag' (tag name) and 'attributes' (object with attribute key/values)
  */
 ve.dm.Annotation.prototype.toHTML = function () {
@@ -129,10 +143,14 @@ ve.dm.Annotation.prototype.toHTML = function () {
 };
 
 /**
- * Convert this annotation to HTML for rendering purposes. By default, this just calls #toHTML,
- * but it may be customized if the rendering should be different from the output.
+ * Convert the annotation to HTML for rendering purposes.
+ *
+ * By default, this just calls #toHTML, but it may be customized if the rendering should be
+ * different from the output.
  *
  * @see #toHTML
+ *
+ * @method
  * @returns {Object} Object with 'tag' (tag name) and 'attributes' (object with attribute key/values)
  */
 ve.dm.Annotation.prototype.renderHTML = function () {
@@ -140,7 +158,12 @@ ve.dm.Annotation.prototype.renderHTML = function () {
 };
 
 /**
- * Custom hash function for ve#getHash. Should not be overridden by subclasses.
+ * Get a hash of the annotation.
+ *
+ * This is a custom hash function for ve#getHash and should not be overridden by subclasses.
+ *
+ * @method
+ * @returns {string} Hash string
  */
 ve.dm.Annotation.prototype.getHash = function () {
 	var keys = [ 'name', 'data' ], obj = {}, i;

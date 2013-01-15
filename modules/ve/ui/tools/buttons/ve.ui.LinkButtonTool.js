@@ -1,12 +1,12 @@
 /*!
- * VisualEditor user interface LinkButtonTool class.
+ * VisualEditor UserInterface LinkButtonTool class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Creates an ve.ui.LinkButtonTool object.
+ * UserInterface link button tool.
  *
  * @class
  * @extends ve.ui.InspectorButtonTool
@@ -22,7 +22,7 @@ ve.ui.LinkButtonTool = function VeUiLinkButtonTool( toolbar ) {
 
 ve.inheritClass( ve.ui.LinkButtonTool, ve.ui.InspectorButtonTool );
 
-/* Static Members */
+/* Static Properties */
 
 ve.ui.LinkButtonTool.static.name = 'link';
 

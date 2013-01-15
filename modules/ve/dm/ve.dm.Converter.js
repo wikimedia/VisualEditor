@@ -1,12 +1,14 @@
 /*!
- * VisualEditor data model Converter class.
+ * VisualEditor DataModel Converter class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Converter between HTML DOM and VisualEditor linear data.
+ * DataModel converter.
+ *
+ * Converts between HTML DOM and VisualEditor linear data.
  *
  * @class
  * @constructor
@@ -61,7 +63,7 @@ ve.dm.Converter.getDataContentFromText = function ( text, annotations ) {
 /* Methods */
 
 /**
- * Responds to register events from the node factory.
+ * Handle register events from the node factory.
  *
  * If a node is special; such as document, alienInline, alienBlock and text; its {converters}
  * property should be set to null, as to distinguish it from a new node type that someone has simply
@@ -70,7 +72,7 @@ ve.dm.Converter.getDataContentFromText = function ( text, annotations ) {
  * @method
  * @param {string} type Node type
  * @param {Function} constructor Node constructor
- * @throws 'Missing conversion data in node implementation of {type}'
+ * @throws {Error} Missing conversion data in node implementation
  */
 ve.dm.Converter.prototype.onNodeRegister = function ( dataElementType, constructor ) {
 	if ( constructor.converters === undefined ) {
@@ -96,7 +98,7 @@ ve.dm.Converter.prototype.onNodeRegister = function ( dataElementType, construct
  *
  * @method
  * @param {Object} dataElement Linear model element
- * @returns {HTMLElement|boolean} DOM element, or false if this element cannot be converted
+ * @returns {HTMLElement|boolean} DOM element, or false if the element cannot be converted
  */
 ve.dm.Converter.prototype.getDomElementFromDataElement = function ( dataElement ) {
 	var key, domElement, dataElementAttributes, wrapper,
@@ -156,7 +158,7 @@ ve.dm.Converter.prototype.getDomElementFromDataElement = function ( dataElement 
  * @method
  * @param {HTMLElement} domElement DOM element
  * @param {Array} annotations Annotations to apply if the node is a content node
- * @returns {Object|boolean} Linear model element, or false if this node cannot be converted
+ * @returns {Object|boolean} Linear model element, or false if the node cannot be converted
  */
 ve.dm.Converter.prototype.getDataElementFromDomElement = function ( domElement, annotations ) {
 	var dataElement, domElementAttributes, dataElementAttributes, domElementAttribute, i,
@@ -197,7 +199,7 @@ ve.dm.Converter.prototype.getDataElementFromDomElement = function ( domElement, 
  *     { 'type': 'type', data: { 'key': 'value', ... } }
  *
  * @param {HTMLElement} domElement HTML DOM node
- * @returns {Object|boolean} Annotation object, or false if this node is not an annotation
+ * @returns {Object|boolean} Annotation object, or false if the node is not an annotation
  */
 ve.dm.Converter.prototype.getDataAnnotationFromDomElement = function ( domElement ) {
 	return ve.dm.annotationFactory.createFromElement( domElement ) || false;

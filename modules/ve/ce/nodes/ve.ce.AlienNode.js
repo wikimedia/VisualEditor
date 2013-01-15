@@ -1,12 +1,12 @@
 /*!
- * VisualEditor content editable AlienNode class.
+ * VisualEditor ContentEditable AlienNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * ContentEditable node for an alien node.
+ * ContentEditable alien node.
  *
  * @class
  * @extends ve.ce.LeafNode
@@ -34,7 +34,7 @@ ve.ce.AlienNode = function VeCeAlienNode( type, model ) {
 
 ve.inheritClass( ve.ce.AlienNode, ve.ce.LeafNode );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * Node rules.
@@ -49,6 +49,12 @@ ve.ce.AlienNode.rules = {
 
 /* Methods */
 
+/**
+ * Handle mouse enter events.
+ *
+ * @method
+ * @param {jQuery.Event} e
+ */
 ve.ce.AlienNode.prototype.onMouseEnter = function () {
 	var	$phantoms = $( [] ),
 		$phantomTemplate = ve.ce.Surface.static.$phantomTemplate,
@@ -71,6 +77,11 @@ ve.ce.AlienNode.prototype.onMouseEnter = function () {
 	surface.$.on( 'mousemove.phantoms', ve.bind( this.onSurfaceMouseMove, this ) );
 };
 
+/**
+ * Handle live events.
+ *
+ * @method
+ */
 ve.ce.AlienNode.prototype.onLive = function () {
 	if( this.live === true ) {
 		var $shieldTemplate = this.constructor.static.$shieldTemplate;
@@ -89,11 +100,22 @@ ve.ce.AlienNode.prototype.onLive = function () {
 	}
 };
 
+/**
+ * Handle update events.
+ *
+ * @method
+ */
 ve.ce.AlienNode.prototype.onUpdate = function () {
 	this.$.html( this.model.getAttribute( 'html' ) );
 };
 
-ve.ce.AlienNode.prototype.onSurfaceMouseMove = function( e ) {
+/**
+ * Handle surface mouse move events.
+ *
+ * @method
+ * @param {jQuery.Event} e
+ */
+ve.ce.AlienNode.prototype.onSurfaceMouseMove = function ( e ) {
 	var surface, $target = $( e.target );
 	if (
 		!$target.hasClass( 've-ce-phantom' ) &&

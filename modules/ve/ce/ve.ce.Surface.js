@@ -1,5 +1,5 @@
 /*!
- * VisualEditor content editable Surface class.
+ * VisualEditor ContentEditable Surface class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -13,8 +13,8 @@
  * @extends ve.EventEmitter
  * @constructor
  * @param {jQuery} $container
- * @param {ve.dm.Surface} model Model to observe
- * @param {ve.Surface} surface The surface of this view
+ * @param {ve.dm.Surface} model Surface model to observe
+ * @param {ve.Surface} surface Surface to view
  */
 ve.ce.Surface = function VeCeSurface( $container, model, surface ) {
 	// Parent constructor
@@ -64,7 +64,7 @@ ve.ce.Surface = function VeCeSurface( $container, model, surface ) {
 
 	// Initialization
 	rangy.init();
-	ve.ce.Surface.clearLocalStorage();
+	ve.ce.Surface.cleanLocalStorage();
 	this.$.append( this.documentView.getDocumentNode().$ );
 	this.$.append( this.$phantoms );
 };
@@ -73,12 +73,39 @@ ve.ce.Surface = function VeCeSurface( $container, model, surface ) {
 
 ve.inheritClass( ve.ce.Surface, ve.EventEmitter );
 
-/* Static Members */
+/* Static Properties */
 
+/**
+ * @static
+ * @property
+ * @inheritable
+ */
 ve.ce.Surface.static = {};
 
+/**
+ * Phantom element template.
+ *
+ * @static
+ * @property
+ * @type {jQuery}
+ */
 ve.ce.Surface.static.$phantomTemplate = $( '<div class="ve-ce-phantom" draggable="false"></div>' )
 	.attr( 'title', ve.msg ( 'visualeditor-aliennode-tooltip' ) );
+
+/**
+ * Pattern matching "normal" characters which we can let the browser handle natively.
+ *
+ * @static
+ * @property
+ * @type {RegExp}
+ */
+ve.ve.Surface.static.textPattern = new RegExp(
+	'[a-zA-Z\\-_’\'‘ÆÐƎƏƐƔĲŊŒẞÞǷȜæðǝəɛɣĳŋœĸſßþƿȝĄƁÇĐƊĘĦĮƘŁØƠŞȘŢȚŦŲƯY̨Ƴąɓçđɗęħįƙłøơşșţțŧųưy̨ƴÁÀÂÄ' +
+	'ǍĂĀÃÅǺĄÆǼǢƁĆĊĈČÇĎḌĐƊÐÉÈĖÊËĚĔĒĘẸƎƏƐĠĜǦĞĢƔáàâäǎăāãåǻąæǽǣɓćċĉčçďḍđɗðéèėêëěĕēęẹǝəɛġĝǧğģɣĤḤĦIÍÌİ' +
+	'ÎÏǏĬĪĨĮỊĲĴĶƘĹĻŁĽĿʼNŃN̈ŇÑŅŊÓÒÔÖǑŎŌÕŐỌØǾƠŒĥḥħıíìiîïǐĭīĩįịĳĵķƙĸĺļłľŀŉńn̈ňñņŋóòôöǒŏōõőọøǿơœŔŘŖŚŜ' +
+	'ŠŞȘṢẞŤŢṬŦÞÚÙÛÜǓŬŪŨŰŮŲỤƯẂẀŴẄǷÝỲŶŸȲỸƳŹŻŽẒŕřŗſśŝšşșṣßťţṭŧþúùûüǔŭūũűůųụưẃẁŵẅƿýỳŷÿȳỹƴźżžẓ]',
+	'g'
+);
 
 /* Methods */
 
@@ -93,7 +120,7 @@ ve.ce.Surface.prototype.destroy = function () {
 };
 
 /**
- * Disables editing.
+ * Disable editing.
  *
  * @method
  */
@@ -102,7 +129,7 @@ ve.ce.Surface.prototype.disable = function () {
 };
 
 /**
- * Enables editing.
+ * Enable editing.
  *
  * @method
  */
@@ -111,7 +138,7 @@ ve.ce.Surface.prototype.enable = function () {
 };
 
 /**
- * Handles insertion of content.
+ * Handle insertion of content.
  *
  * @method
  */
@@ -175,7 +202,9 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 };
 
 /**
- * Responds to 'contentChange' events emitted in {ve.ce.SurfaceObserver.prototype.poll}.
+ * Handle content change events.
+ *
+ * @see ve.ce.SurfaceObserver.prototype.poll
  *
  * @method
  * @param {HTMLElement} node DOM node the change occured in
@@ -307,9 +336,13 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 };
 
 /**
- * Responds to 'selectionChange' events emitted in {ve.ce.SurfaceObserver.prototype.poll}.
+ * Handle selection change events.
+ *
+ * @see ve.ce.SurfaceObserver.prototype.poll
  *
  * @method
+ * @param {ve.Range} oldRange
+ * @param {ve.Range} newRange
  */
 ve.ce.Surface.prototype.onSelectionChange = function ( oldRange, newRange ) {
 	this.disableRendering();
@@ -318,7 +351,7 @@ ve.ce.Surface.prototype.onSelectionChange = function ( oldRange, newRange ) {
 };
 
 /**
- * Responds to surface lock events.
+ * Handle surface lock events.
  *
  * @method
  */
@@ -327,7 +360,7 @@ ve.ce.Surface.prototype.onLock = function () {
 };
 
 /**
- * Responds to surface lock events.
+ * Handle surface unlock events.
  *
  * @method
  */
@@ -337,7 +370,7 @@ ve.ce.Surface.prototype.onUnlock = function () {
 };
 
 /**
- * Responds to document focus events.
+ * Handle document focus events.
  *
  * @method
  * @param {jQuery.Event} e
@@ -345,19 +378,25 @@ ve.ce.Surface.prototype.onUnlock = function () {
 ve.ce.Surface.prototype.documentOnFocus = function () {
 	this.$document.off( '.ve-ce-Surface' );
 	this.$document.on( {
-		'keydown.ve-ce-Surface': ve.bind( this.onKeyDown, this ),
-		'keyup.ve-ce-Surface': ve.bind( this.onKeyUp, this ),
-		'keypress.ve-ce-Surface': ve.bind( this.onKeyPress, this ),
-		'mousedown.ve-ce-Surface': ve.bind( this.onMouseDown, this ),
-		'mouseup.ve-ce-Surface': ve.bind( this.onMouseUp, this ),
-		'mousemove.ve-ce-Surface': ve.bind( this.onMouseMove, this ),
-		'compositionstart.ve-ce-Surface': ve.bind( this.onCompositionStart, this ),
-		'compositionend.ve-ce-Surface': ve.bind( this.onCompositionEnd, this ),
+		'keydown.ve-ce-Surface': ve.bind( this.onDocumentKeyDown, this ),
+		'keyup.ve-ce-Surface': ve.bind( this.onDocumentKeyUp, this ),
+		'keypress.ve-ce-Surface': ve.bind( this.onDocumentKeyPress, this ),
+		'mousedown.ve-ce-Surface': ve.bind( this.onDocumentMouseDown, this ),
+		'mouseup.ve-ce-Surface': ve.bind( this.onDocumentMouseUp, this ),
+		'mousemove.ve-ce-Surface': ve.bind( this.onDocumentMouseMove, this ),
+		'compositionstart.ve-ce-Surface': ve.bind( this.onDocumentCompositionStart, this ),
+		'compositionend.ve-ce-Surface': ve.bind( this.onDocumentCompositionEnd, this ),
 	} );
 	this.surfaceObserver.start( true );
 };
 
-ve.ce.Surface.prototype.onCompositionStart = function () {
+/**
+ * Handle document composition start events.
+ *
+ * @method
+ * @param {jQuery.Event} e
+ */
+ve.ce.Surface.prototype.onDocumentCompositionStart = function () {
 	if ( $.browser.msie === true ) {
 		return;
 	}
@@ -365,13 +404,19 @@ ve.ce.Surface.prototype.onCompositionStart = function () {
 	this.handleInsertion();
 };
 
-ve.ce.Surface.prototype.onCompositionEnd = function () {
+/**
+ * Handle document composition end events.
+ *
+ * @method
+ * @param {jQuery.Event} e
+ */
+ve.ce.Surface.prototype.onDocumentCompositionEnd = function () {
 	this.inIme = false;
 	this.surfaceObserver.start();
 };
 
 /**
- * Responds to document blur events.
+ * Handle document blur events.
  *
  * @method
  * @param {jQuery.Event} e
@@ -382,12 +427,12 @@ ve.ce.Surface.prototype.documentOnBlur = function () {
 };
 
 /**
- * Responds to document mouse down events.
+ * Handle document mouse down events.
  *
  * @method
  * @param {jQuery.Event} e
  */
-ve.ce.Surface.prototype.onMouseDown = function ( e ) {
+ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 	// Remember the mouse is down
 	this.dragging = true;
 
@@ -405,12 +450,12 @@ ve.ce.Surface.prototype.onMouseDown = function ( e ) {
 };
 
 /**
- * Responds to document mouse up events.
+ * Handle document mouse up events.
  *
  * @method
  * @param {jQuery.Event} e
  */
-ve.ce.Surface.prototype.onMouseUp = function ( e ) {
+ve.ce.Surface.prototype.onDocumentMouseUp = function ( e ) {
 	this.surfaceObserver.start();
 	if ( !e.shiftKey && this.selecting ) {
 		this.emit( 'selectionEnd' );
@@ -420,12 +465,12 @@ ve.ce.Surface.prototype.onMouseUp = function ( e ) {
 };
 
 /**
- * Responds to document mouse move events.
+ * Handle document mouse move events.
  *
  * @method
  * @param {jQuery.Event} e
  */
-ve.ce.Surface.prototype.onMouseMove = function () {
+ve.ce.Surface.prototype.onDocumentMouseMove = function () {
 	// Detect beginning of selection by moving mouse while dragging
 	if ( this.dragging && !this.selecting ) {
 		this.selecting = true;
@@ -434,12 +479,12 @@ ve.ce.Surface.prototype.onMouseMove = function () {
 };
 
 /**
- * Responds to document key up events.
+ * Handle document key up events.
  *
  * @method
  * @param {jQuery.Event} e
  */
-ve.ce.Surface.prototype.onKeyUp = function ( e ) {
+ve.ce.Surface.prototype.onDocumentKeyUp = function ( e ) {
 	// Detect end of selecting by letting go of shift
 	if ( !this.dragging && this.selecting && e.keyCode === 16 ) {
 		this.selecting = false;
@@ -448,12 +493,12 @@ ve.ce.Surface.prototype.onKeyUp = function ( e ) {
 };
 
 /**
- * Responds to document key down events.
+ * Handle document key down events.
  *
  * @method
  * @param {jQuery.Event} e
  */
-ve.ce.Surface.prototype.onKeyDown = function ( e ) {
+ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 	if ( this.inIme === true ) {
 		return;
 	}
@@ -511,7 +556,7 @@ ve.ce.Surface.prototype.onKeyDown = function ( e ) {
 };
 
 /**
- * Responds to copy events.
+ * Handle copy events.
  *
  * @method
  * @param {jQuery.Event} e
@@ -544,7 +589,7 @@ ve.ce.Surface.prototype.onCopy = function () {
 };
 
 /**
- * Responds to cut events.
+ * Handle cut events.
  *
  * @method
  * @param {jQuery.Event} e
@@ -575,7 +620,7 @@ ve.ce.Surface.prototype.onCut = function ( e ) {
 };
 
 /**
- * Responds to paste events.
+ * Handle paste events.
  *
  * @method
  * @param {jQuery.Event} e
@@ -615,7 +660,7 @@ ve.ce.Surface.prototype.onPaste = function ( e ) {
 		} );
 		key = 've-' + key.replace( /\s/gm, '' );
 
-		// Get linear model from clipboard, localStorage, or create array from unknown pasted content
+		// Get linear model from clipboard, localStorage or create array from unknown pasted content
 		if ( view.clipboard[key] ) {
 			pasteData = view.clipboard[key];
 		}
@@ -656,12 +701,12 @@ ve.ce.Surface.prototype.onPaste = function ( e ) {
 };
 
 /**
- * Responds to document key press events.
+ * Handle document key press events.
  *
  * @method
  * @param {jQuery.Event} e
  */
-ve.ce.Surface.prototype.onKeyPress = function ( e ) {
+ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
 	if ( ve.ce.Surface.isShortcutKey( e ) || e.which === 13 || e.which === 8 || e.which === 0 ) {
 		return;
 	}
@@ -672,7 +717,9 @@ ve.ce.Surface.prototype.onKeyPress = function ( e ) {
 };
 
 /**
- * Called from ve.dm.Surface.prototype.change.
+ * Handle change events.
+ *
+ * @see ve.dm.Surface.prototype.change.
  *
  * @method
  * @param {ve.dm.Transaction|null} transaction
@@ -685,7 +732,7 @@ ve.ce.Surface.prototype.onChange = function ( transaction, selection ) {
 };
 
 /**
- * Responds to enter key events.
+ * Handle enter key events.
  *
  * @method
  * @param {jQuery.Event} e
@@ -804,7 +851,7 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 };
 
 /**
- * Adjusts the cursor position in a given distance.
+ * Adjust the cursor position in a given distance.
  *
  * This method only affects the selection target, preserving selections that are not collapsed and
  * the direction of the selection.
@@ -860,7 +907,7 @@ ve.ce.Surface.prototype.adjustCursor = function ( adjustment ) {
 };
 
 /**
- * Responds to backspace and delete key events.
+ * Handle backspace and delete key down events.
  *
  * @method
  * @param {jQuery.Event} e
@@ -946,10 +993,8 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 		}
 
 		if ( !containsInlineElements ) {
-			adjacentTextAfterMatch = adjacentText.match(
-				/[a-zA-Z\-_’'‘ÆÐƎƏƐƔĲŊŒẞÞǷȜæðǝəɛɣĳŋœĸſßþƿȝĄƁÇĐƊĘĦĮƘŁØƠŞȘŢȚŦŲƯY̨Ƴąɓçđɗęħįƙłøơşșţțŧųưy̨ƴÁÀÂÄǍĂĀÃÅǺĄÆǼǢƁĆĊĈČÇĎḌĐƊÐÉÈĖÊËĚĔĒĘẸƎƏƐĠĜǦĞĢƔáàâäǎăāãåǻąæǽǣɓćċĉčçďḍđɗðéèėêëěĕēęẹǝəɛġĝǧğģɣĤḤĦIÍÌİÎÏǏĬĪĨĮỊĲĴĶƘĹĻŁĽĿʼNŃN̈ŇÑŅŊÓÒÔÖǑŎŌÕŐỌØǾƠŒĥḥħıíìiîïǐĭīĩįịĳĵķƙĸĺļłľŀŉńn̈ňñņŋóòôöǒŏōõőọøǿơœŔŘŖŚŜŠŞȘṢẞŤŢṬŦÞÚÙÛÜǓŬŪŨŰŮŲỤƯẂẀŴẄǷÝỲŶŸȲỸƳŹŻŽẒŕřŗſśŝšşșṣßťţṭŧþúùûüǔŭūũűůųụưẃẁŵẅƿýỳŷÿȳỹƴźżžẓ]/g
-			);
-			// If there are "normal" characters in the adjacent text, let the browser handle natively.
+			adjacentTextAfterMatch = adjacentText.match( this.constructor.static.textPattern );
+			// If there are "normal" characters in the adjacent text let the browser handle natively
 			if ( adjacentTextAfterMatch !== null && adjacentTextAfterMatch.length ) {
 				return;
 			}
@@ -1021,7 +1066,7 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 };
 
 /**
- * Shows the cursor at a given offset.
+ * Show the cursor at an offset.
  *
  * @method
  * @param {number} offset Offset to show cursor at
@@ -1031,7 +1076,7 @@ ve.ce.Surface.prototype.showCursor = function ( offset ) {
 };
 
 /**
- * Shows selection on a given range.
+ * Show selection on a range.
  *
  * @method
  * @param {ve.Range} range Range to show selection on
@@ -1096,7 +1141,7 @@ ve.ce.Surface.prototype.showSelection = function ( range ) {
 };
 
 /**
- * Gets the nearest offset that a cursor can actually be placed at.
+ * Get the nearest offset that a cursor can be placed at.
  *
  * TODO: Find a better name and a better place for this method
  *
@@ -1116,7 +1161,8 @@ ve.ce.Surface.prototype.getNearestCorrectOffset = function ( offset, direction )
 	}
 
 	contentOffset = this.documentView.model.getNearestContentOffset( offset, direction );
-	structuralOffset = this.documentView.model.getNearestStructuralOffset( offset, direction, true );
+	structuralOffset =
+		this.documentView.model.getNearestStructuralOffset( offset, direction, true );
 
 	if ( !this.hasSlugAtOffset( structuralOffset ) ) {
 		return contentOffset;
@@ -1138,7 +1184,7 @@ ve.ce.Surface.prototype.getNearestCorrectOffset = function ( offset, direction )
 };
 
 /**
- * Checks if a given offset is inside a slug.
+ * Check if an offset is inside a slug.
  *
  * TODO: Find a better name and a better place for this method - probably in a document view?
  *
@@ -1151,7 +1197,7 @@ ve.ce.Surface.prototype.hasSlugAtOffset = function ( offset ) {
 };
 
 /**
- * Gets a DOM node and offset that can be used to place a cursor, based on a given offset.
+ * Get a DOM node and DOM element offset for a document offset.
  *
  * The results of this function are meant to be used with rangy.
  *
@@ -1222,7 +1268,7 @@ ve.ce.Surface.prototype.getNodeAndOffset = function ( offset ) {
 };
 
 /**
- * Gets the coordinates of the selection anchor.
+ * Get the coordinates of the selection anchor.
  *
  * @method
  */
@@ -1235,7 +1281,7 @@ ve.ce.Surface.prototype.getSelectionRect = function () {
 };
 
 /**
- * Tests if the modifier key for keyboard shortcuts is pressed.
+ * Check if keyboard shortcut modifier key is pressed.
  *
  * @method
  * @param {jQuery.Event} e
@@ -1248,11 +1294,11 @@ ve.ce.Surface.isShortcutKey = function ( e ) {
 };
 
 /**
- * Removes localStorage keys for copy and paste after a day.
+ * Clean copy and paste data that's at least a day old in localStorage.
  *
  * @method
  */
-ve.ce.Surface.clearLocalStorage = function () {
+ve.ce.Surface.cleanLocalStorage = function () {
 	var i, len, key, time, now,
 		keysToRemove = [];
 
@@ -1279,7 +1325,7 @@ ve.ce.Surface.clearLocalStorage = function () {
 };
 
 /**
- * Gets the surface model.
+ * Get the surface model.
  *
  * @method
  * @returns {ve.dm.Surface} Surface model
@@ -1289,7 +1335,7 @@ ve.ce.Surface.prototype.getModel = function () {
 };
 
 /**
- * Gets the document view.
+ * Get the document view.
  *
  * @method
  * @returns {ve.ce.Document} Document view
@@ -1299,6 +1345,8 @@ ve.ce.Surface.prototype.getDocument = function () {
 };
 
 /**
+ * Enable rendering.
+ *
  * @method
  */
 ve.ce.Surface.prototype.enableRendering = function () {
@@ -1306,6 +1354,8 @@ ve.ce.Surface.prototype.enableRendering = function () {
 };
 
 /**
+ * Disable rendering.
+ *
  * @method
  */
 ve.ce.Surface.prototype.disableRendering = function () {
@@ -1313,14 +1363,19 @@ ve.ce.Surface.prototype.disableRendering = function () {
 };
 
 /**
+ * Check if rendering is enabled.
+ *
  * @method
+ * @returns {boolean} Render is enabled
  */
 ve.ce.Surface.prototype.isRenderingEnabled = function () {
 	return this.renderingEnabled;
 };
 
 /**
- * Determines the number of clicks in a user action
+ * Get the number of consecutive clicks the user has performed.
+ *
+ * This is required for supporting double, tripple, etc. clicking across all browsers.
  *
  * @method
  * @param {Event} e Native event object.
@@ -1334,11 +1389,11 @@ ve.ce.Surface.prototype.getClickCount = function ( e ) {
 	var i, response = 1;
 
 	// Add select MouseEvent properties to the beginning of the clickHistory
-	this.clickHistory.unshift({
+	this.clickHistory.unshift( {
 		x: e.x,
 		y: e.y,
 		timeStamp: e.timeStamp
-	});
+	} );
 
 	// Compare history
 	if ( this.clickHistory.length > 1 ) {

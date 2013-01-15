@@ -1,12 +1,12 @@
 /*!
- * VisualEditor data model ImageNode class.
+ * VisualEditor DataModel ImageNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * DataModel node for a document.
+ * DataModel image node.
  *
  * @class
  * @extends ve.dm.LeafNode
@@ -23,7 +23,7 @@ ve.dm.ImageNode = function VeDmImageNode( length, element ) {
 
 ve.inheritClass( ve.dm.ImageNode, ve.dm.LeafNode );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * Node rules.

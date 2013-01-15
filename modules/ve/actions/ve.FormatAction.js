@@ -22,7 +22,7 @@ ve.FormatAction = function VeFormatAction( surface ) {
 
 ve.inheritClass( ve.FormatAction, ve.Action );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * List of allowed methods for this action.
@@ -35,7 +35,7 @@ ve.FormatAction.static.methods = ['convert'];
 /* Methods */
 
 /**
- * Converts content to a given format.
+ * Convert the format of content.
  *
  * Conversion splits and unwraps all lists and replaces content branch nodes.
  *
@@ -97,7 +97,15 @@ ve.FormatAction.prototype.convert = function ( type, attributes ) {
 };
 
 /**
+ * Split a list up by unwrapping some of it's items.
+ *
  * TODO: Refactor functionality into {ve.dm.SurfaceFragment}.
+ *
+ * @param {ve.dm.Surface} model
+ * @param {ve.dm.ListNode} list
+ * @param {ve.dm.ListItemNode} firstItem
+ * @param {ve.dm.ListItemNode} lastItem
+ * @param {ve.Range} selection
  */
 ve.FormatAction.splitAndUnwrap = function ( model, list, firstItem, lastItem, selection ) {
 	var doc = model.getDocument(),

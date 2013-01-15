@@ -1,12 +1,12 @@
 /*!
- * VisualEditor data model TextStyleAnnotation class.
+ * VisualEditor DataModel TextStyleAnnotation class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * TextStyle annotation.
+ * DataModel text style annotation.
  *
  * Should not be instantiated directly, only use this for subclassing.
  *
@@ -23,7 +23,7 @@ ve.dm.TextStyleAnnotation = function VeDmTextStyleAnnotation( element ) {
 
 ve.inheritClass( ve.dm.TextStyleAnnotation, ve.dm.Annotation );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * @static
@@ -58,7 +58,7 @@ ve.dm.annotationFactory.register( 'textStyle', ve.dm.TextStyleAnnotation );
 /* Concrete Subclasses */
 
 /**
- * Bold annotation.
+ * DataModel bold annotation.
  *
  * @class
  * @extends ve.dm.TextStyleAnnotation
@@ -74,7 +74,7 @@ ve.dm.TextStyleBoldAnnotation.static.matchTagNames = ['b'];
 ve.dm.annotationFactory.register( 'textStyle/bold', ve.dm.TextStyleBoldAnnotation );
 
 /**
- * Italic annotation.
+ * DataModel italic annotation.
  *
  * @class
  * @extends ve.dm.TextStyleAnnotation
@@ -90,7 +90,7 @@ ve.dm.TextStyleItalicAnnotation.static.matchTagNames = ['i'];
 ve.dm.annotationFactory.register( 'textStyle/italic', ve.dm.TextStyleItalicAnnotation );
 
 /**
- * Underline annotation.
+ * DataModel underline annotation.
  *
  * @class
  * @extends ve.dm.TextStyleAnnotation
@@ -106,7 +106,7 @@ ve.dm.TextStyleUnderlineAnnotation.static.matchTagNames = ['u'];
 ve.dm.annotationFactory.register( 'textStyle/underline', ve.dm.TextStyleUnderlineAnnotation );
 
 /**
- * Strike annotation.
+ * DataModel strike annotation.
  *
  * @class
  * @extends ve.dm.TextStyleAnnotation
@@ -122,7 +122,7 @@ ve.dm.TextStyleStrikeAnnotation.static.matchTagNames = ['s'];
 ve.dm.annotationFactory.register( 'textStyle/strike', ve.dm.TextStyleStrikeAnnotation );
 
 /**
- * Small annotation.
+ * DataModel small annotation.
  *
  * @class
  * @extends ve.dm.TextStyleAnnotation
@@ -138,7 +138,7 @@ ve.dm.TextStyleSmallAnnotation.static.matchTagNames = ['small'];
 ve.dm.annotationFactory.register( 'textStyle/small', ve.dm.TextStyleSmallAnnotation );
 
 /**
- * Big annotation.
+ * DataModel big annotation.
  *
  * @class
  * @extends ve.dm.TextStyleAnnotation
@@ -154,7 +154,7 @@ ve.dm.TextStyleBigAnnotation.static.matchTagNames = ['big'];
 ve.dm.annotationFactory.register( 'textStyle/big', ve.dm.TextStyleBigAnnotation );
 
 /**
- * Span annotation.
+ * DataModel span annotation.
  *
  * @class
  * @extends ve.dm.TextStyleAnnotation
@@ -170,7 +170,7 @@ ve.dm.TextStyleSpanAnnotation.static.matchTagNames = ['span'];
 ve.dm.annotationFactory.register( 'textStyle/span', ve.dm.TextStyleSpanAnnotation );
 
 /**
- * Strong annotation.
+ * DataModel strong annotation.
  *
  * @class
  * @extends ve.dm.TextStyleAnnotation
@@ -186,7 +186,7 @@ ve.dm.TextStyleStrongAnnotation.static.matchTagNames = ['strong'];
 ve.dm.annotationFactory.register( 'textStyle/strong', ve.dm.TextStyleStrongAnnotation );
 
 /**
- * Emphasis annotation.
+ * DataModel emphasis annotation.
  *
  * @class
  * @extends ve.dm.TextStyleAnnotation
@@ -202,7 +202,7 @@ ve.dm.TextStyleEmphasizeAnnotation.static.matchTagNames = ['em'];
 ve.dm.annotationFactory.register( 'textStyle/emphasize', ve.dm.TextStyleEmphasizeAnnotation );
 
 /**
- * SuperScript annotation.
+ * DataModel super script annotation.
  *
  * @class
  * @extends ve.dm.TextStyleAnnotation
@@ -218,7 +218,7 @@ ve.dm.TextStyleSuperScriptAnnotation.static.matchTagNames = ['sup'];
 ve.dm.annotationFactory.register( 'textStyle/superScript', ve.dm.TextStyleSuperScriptAnnotation );
 
 /**
- * SubScript annotation.
+ * DataModel sub script annotation.
  *
  * @class
  * @extends ve.dm.TextStyleAnnotation

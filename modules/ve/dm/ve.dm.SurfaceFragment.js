@@ -1,12 +1,12 @@
 /*!
- * VisualEditor data model Fragment class.
+ * VisualEditor DataModel Fragment class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * DataModel document fragment.
+ * DataModel surface fragment.
  *
  * @class
  * @constructor
@@ -42,7 +42,7 @@ ve.dm.SurfaceFragment = function VeDmSurfaceFragment( surface, range, noAutoSele
 	);
 };
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * @static
@@ -54,9 +54,9 @@ ve.dm.SurfaceFragment.static = {};
 /* Methods */
 
 /**
- * Responds to transactions being processed on the document.
+ * Handle transactions being processed on the document.
  *
- * This keeps the range of this fragment valid, even while other transactions are being processed.
+ * This keeps the range of the fragment valid, even while other transactions are being processed.
  *
  * @method
  * @param {ve.dm.Transaction[]} txs Transactions that have just been processed
@@ -68,7 +68,7 @@ ve.dm.SurfaceFragment.prototype.onTransact = function ( txs ) {
 };
 
 /**
- * Gets the surface this fragment is a part of.
+ * Get the surface the fragment is a part of.
  *
  * @method
  * @returns {ve.dm.Surface} Surface of fragment
@@ -78,7 +78,7 @@ ve.dm.SurfaceFragment.prototype.getSurface = function () {
 };
 
 /**
- * Gets the document of the surface this fragment is a part of.
+ * Get the document of the surface the fragment is a part of.
  *
  * @method
  * @returns {ve.dm.Document} Document of surface of fragment
@@ -88,7 +88,7 @@ ve.dm.SurfaceFragment.prototype.getDocument = function () {
 };
 
 /**
- * Gets the range of this fragment within the surface.
+ * Get the range of the fragment within the surface.
  *
  * @method
  * @returns {ve.Range} Surface range
@@ -98,7 +98,7 @@ ve.dm.SurfaceFragment.prototype.getRange = function () {
 };
 
 /**
- * Checks if this is a null fragment.
+ * Check if the fragment is null.
  *
  * @method
  * @returns {boolean} Fragment is a null fragment
@@ -108,7 +108,7 @@ ve.dm.SurfaceFragment.prototype.isNull = function () {
 };
 
 /**
- * Gets a new fragment with an adjusted position
+ * Get a new fragment with an adjusted position
  *
  * @method
  * @param {number} [start] Adjustment for start position
@@ -128,7 +128,7 @@ ve.dm.SurfaceFragment.prototype.adjustRange = function ( start, end ) {
 };
 
 /**
- * Gets a new fragment with a truncated length.
+ * Get a new fragment with a truncated length.
  *
  * @method
  * @param {number} limit Maximum length of range (negative for left-side truncation)
@@ -147,7 +147,7 @@ ve.dm.SurfaceFragment.prototype.truncateRange = function ( limit ) {
 };
 
 /**
- * Gets a new fragment with a zero-length selection at the start offset.
+ * Get a new fragment with a zero-length selection at the start offset.
  *
  * @method
  * @returns {ve.dm.SurfaceFragment} Collapsed fragment
@@ -163,7 +163,7 @@ ve.dm.SurfaceFragment.prototype.collapseRange = function () {
 };
 
 /**
- * Gets a new fragment with a range that no longer includes leading and trailing whitespace.
+ * Get a new fragment with a range that no longer includes leading and trailing whitespace.
  *
  * @method
  * @returns {ve.dm.SurfaceFragment} Trimmed fragment
@@ -186,7 +186,7 @@ ve.dm.SurfaceFragment.prototype.trimRange = function () {
 };
 
 /**
- * Gets a new fragment that covers an expanded range of the document.
+ * Get a new fragment that covers an expanded range of the document.
  *
  * @method
  * @param {string} [scope='parent'] Method of expansion:
@@ -269,7 +269,7 @@ ve.dm.SurfaceFragment.prototype.expandRange = function ( scope, type ) {
 };
 
 /**
- * Checks if the surface's selection will be updated automatically when changes are made.
+ * Check if the surface's selection will be updated automatically when changes are made.
  *
  * @method
  * @returns {boolean} Will automatically update surface selection
@@ -393,7 +393,7 @@ ve.dm.SurfaceFragment.prototype.getSiblingNodes = function () {
 };
 
 /**
- * Chooses whether to automatically update the surface selection when making changes.
+ * Change whether to automatically update the surface selection when making changes.
  *
  * @method
  * @param {boolean} [value=true] Automatically update surface selection
@@ -405,7 +405,7 @@ ve.dm.SurfaceFragment.prototype.setAutoSelect = function ( value ) {
 };
 
 /**
- * Applies the fragment's range to the surface as a selection.
+ * Apply the fragment's range to the surface as a selection.
  *
  * @method
  * @returns {ve.dm.SurfaceFragment} This fragment
@@ -420,7 +420,7 @@ ve.dm.SurfaceFragment.prototype.select = function () {
 };
 
 /**
- * Applies an annotation to content in the fragment.
+ * Apply an annotation to content in the fragment.
  *
  * To avoid problems identified in bug 33108, use the {ve.dm.SurfaceFragment.trimRange} method.
  *
@@ -502,7 +502,7 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
 };
 
 /**
- * Removes content in the fragment.
+ * Remove content in the fragment.
  *
  * @method
  * @returns {ve.dm.SurfaceFragment} This fragment
@@ -533,7 +533,7 @@ ve.dm.SurfaceFragment.prototype.removeContent = function () {
 };
 
 /**
- * Converts each content branch in the fragment from one type to another.
+ * Convert each content branch in the fragment from one type to another.
  *
  * @method
  * @param {string} type Element type to convert to
@@ -552,7 +552,7 @@ ve.dm.SurfaceFragment.prototype.convertNodes = function ( type, attr ) {
 };
 
 /**
- * Wraps each node in the fragment with one or more elements.
+ * Wrap each node in the fragment with one or more elements.
  *
  * A wrapper object is a linear model element; a plain object containing a type property and an
  * optional attributes property.
@@ -585,7 +585,7 @@ ve.dm.SurfaceFragment.prototype.wrapNodes = function ( wrapper ) {
 };
 
 /**
- * Unwraps each node in the fragment out of one or more elements.
+ * Unwrap each node in the fragment out of one or more elements.
  *
  * @method
  * @param {string|string[]} type Node types to unwrap, or array of node types to unwrap
@@ -601,7 +601,7 @@ ve.dm.SurfaceFragment.prototype.unwrapNodes = function () {
 };
 
 /**
- * Changes the wrapping of each node in the fragment from one type to another.
+ * Change the wrapping of each node in the fragment from one type to another.
  *
  * A wrapper object is a linear model element; a plain object containing a type property and an
  * optional attributes property.
@@ -623,7 +623,7 @@ ve.dm.SurfaceFragment.prototype.rewrapNodes = function () {
 };
 
 /**
- * Wraps nodes in the fragment with one or more elements.
+ * Wrap nodes in the fragment with one or more elements.
  *
  * A wrapper object is a linear model element; a plain object containing a type property and an
  * optional attributes property.
@@ -656,7 +656,7 @@ ve.dm.SurfaceFragment.prototype.wrapAllNodes = function ( wrapper ) {
 };
 
 /**
- * Unwraps nodes in the fragment out of one or more elements.
+ * Unwrap nodes in the fragment out of one or more elements.
  *
  * TODO: Figure out what the arguments for this function should be
  *
@@ -674,7 +674,7 @@ ve.dm.SurfaceFragment.prototype.unwrapAllNodes = function () {
 };
 
 /**
- * Changes the wrapping of nodes in the fragment from one type to another.
+ * Change the wrapping of nodes in the fragment from one type to another.
  *
  * A wrapper object is a linear model element; a plain object containing a type property and an
  * optional attributes property.

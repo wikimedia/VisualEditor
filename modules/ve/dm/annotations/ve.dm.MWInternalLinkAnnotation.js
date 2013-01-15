@@ -1,12 +1,12 @@
 /*!
- * VisualEditor data model MWInternalLinkAnnotation class.
+ * VisualEditor DataModel MWInternalLinkAnnotation class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * MediaWiki internal link annotation.
+ * DataModel MediaWiki internal link annotation.
  *
  * Example HTML sources:
  *     <a rel="mw:WikiLink">
@@ -25,7 +25,7 @@ ve.dm.MWInternalLinkAnnotation = function VeDmMWInternalLinkAnnotation( element 
 
 ve.inheritClass( ve.dm.MWInternalLinkAnnotation, ve.dm.LinkAnnotation );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * @static

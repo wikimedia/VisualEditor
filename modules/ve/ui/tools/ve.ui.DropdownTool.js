@@ -1,12 +1,12 @@
 /*!
- * VisualEditor user interface DropdownTool class.
+ * VisualEditor UserInterface DropdownTool class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Creates an ve.ui.DropdownTool object.
+ * UserInterface dropdown tool.
  *
  * @abstract
  * @class
@@ -49,7 +49,7 @@ ve.inheritClass( ve.ui.DropdownTool, ve.ui.Tool );
 /* Methods */
 
 /**
- * Responds to the mouse button being pressed.
+ * Handle the mouse button being pressed.
  *
  * @method
  * @param {jQuery.Event} e Normalized event
@@ -62,7 +62,7 @@ ve.ui.DropdownTool.prototype.onMousedown = function ( e ) {
 };
 
 /**
- * Responds to the mouse button being released.
+ * Handle the mouse button being released.
  *
  * @method
  * @param {jQuery.Event} e Normalized event
@@ -80,7 +80,7 @@ ve.ui.DropdownTool.prototype.onMouseup = function ( e ) {
 };
 
 /**
- * Responds to focus being lost.
+ * Handle focus being lost.
  *
  * The event is actually generated from a mousedown on an element outside the menu, so it is not
  * a normal blur event object.
@@ -95,7 +95,7 @@ ve.ui.DropdownTool.prototype.onBlur = function ( e ) {
 };
 
 /**
- * Responds to one of the items in the menu being selected.
+ * Handle one of the items in the menu being selected.
  *
  * This should not be overridden in subclasses, it simple connects events from the internal menu
  * to the onSelect method.
@@ -111,7 +111,7 @@ ve.ui.DropdownTool.prototype.onMenuItemSelect = function ( item ) {
 };
 
 /**
- * Responds to dropdown option being selected.
+ * Handle dropdown option being selected.
  *
  * This is an abstract method that must be overridden in a concrete subclass.
  *
@@ -126,7 +126,7 @@ ve.ui.DropdownTool.prototype.onSelect = function () {
 };
 
 /**
- * Responds to toolbar state being cleared.
+ * Handle toolbar state being cleared.
  *
  * @method
  */
@@ -135,7 +135,7 @@ ve.ui.DropdownTool.prototype.onClearState = function () {
 };
 
 /**
- * Sets the label.
+ * Set the label.
  *
  * If the label value is empty, undefined or only contains whitespace an empty label will be used.
  *

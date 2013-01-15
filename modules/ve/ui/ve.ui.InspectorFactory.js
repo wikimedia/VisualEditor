@@ -1,18 +1,18 @@
 /*!
- * VisualEditor data model InspectorFactory class.
+ * VisualEditor UserInterface InspectorFactory class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * DataModel Inspector factory.
+ * UserInterface inspector factory.
  *
  * @class
  * @extends ve.Factory
  * @constructor
  */
-ve.ui.InspectorFactory = function VeDmInspectorFactory() {
+ve.ui.InspectorFactory = function VeUiInspectorFactory() {
 	// Parent constructor
 	ve.Factory.call( this );
 };
@@ -24,7 +24,7 @@ ve.inheritClass( ve.ui.InspectorFactory, ve.Factory );
 /* Methods */
 
 /**
- * Gets an inspector constructor for a given annotation type.
+ * Get an inspector constructor for a given annotation type.
  *
  * @method
  * @param {string} name Symbolic name of inspector to get pattern for
@@ -39,7 +39,7 @@ ve.ui.InspectorFactory.prototype.getTypePattern = function ( name ) {
 };
 
 /**
- * Reduces an annotations set to only those which can be inspected by given inspector.
+ * Reduce an annotation set to only those which can be inspected by given inspector.
  *
  * @method
  * @param {ve.AnnotationSet} annotations Annotations to be inspected

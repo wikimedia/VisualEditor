@@ -1,12 +1,12 @@
 /*!
- * VisualEditor content editable AlienInlineNode class.
+ * VisualEditor ContentEditable AlienInlineNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * ContentEditable node for an alien inline node.
+ * ContentEditable alien inline node.
  *
  * @class
  * @extends ve.ce.AlienNode
@@ -25,7 +25,7 @@ ve.ce.AlienInlineNode = function VeCeAlienInlineNode( model ) {
 
 ve.inheritClass( ve.ce.AlienInlineNode, ve.ce.AlienNode );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * Node rules.

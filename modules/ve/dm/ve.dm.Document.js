@@ -1,5 +1,5 @@
 /*!
- * VisualEditor data model Document class.
+ * VisualEditor DataModel Document class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -173,7 +173,7 @@ ve.inheritClass( ve.dm.Document, ve.Document );
 ve.dm.SurfaceFragment.wordBoundaryPattern = /[^\w'"-\(\)\[\]]+/;
 
 /**
- * Applies annotations to content data.
+ * Apply annotations to content data.
  *
  * This method modifies data in place.
  *
@@ -196,7 +196,7 @@ ve.dm.Document.addAnnotationsToData = function ( data, annotationSet ) {
 };
 
 /**
- * Checks if content can be inserted at an offset in document data.
+ * Check if content can be inserted at an offset in document data.
  *
  * This method assumes that any value that has a type property that's a string is an element object.
  *
@@ -267,7 +267,7 @@ ve.dm.Document.isContentOffset = function ( data, offset ) {
 };
 
 /**
- * Checks if structure can be inserted at an offset in document data.
+ * Check if structure can be inserted at an offset in document data.
  *
  * If the {unrestricted} param is true than only offsets where any kind of element can be inserted
  * will return true. This can be used to detect the difference between a location that a paragraph
@@ -372,7 +372,7 @@ ve.dm.Document.isStructuralOffset = function ( data, offset, unrestricted ) {
 };
 
 /**
- * Checks if a data at a given offset is an element.
+ * Check if data at a given offset is an element.
  *
  * This method assumes that any value that has a type property that's a string is an element object.
  *
@@ -392,7 +392,7 @@ ve.dm.Document.isElementData = function ( data, offset ) {
 };
 
 /**
- * Checks for elements in document data.
+ * Check for elements in document data.
  *
  * This method assumes that any value that has a type property that's a string is an element object.
  * Elements are discovered by iterating through the entire data array (backwards).
@@ -413,7 +413,7 @@ ve.dm.Document.containsElementData = function ( data ) {
 };
 
 /**
- * Checks for non-content elements in document data.
+ * Check for non-content elements in document data.
  *
  * This method assumes that any value that has a type property that's a string is an element object.
  * Elements are discovered by iterating through the entire data array.
@@ -438,7 +438,7 @@ ve.dm.Document.isContentData = function ( data ) {
 /* Methods */
 
 /**
- * Reverses a transaction's effects on the content data.
+ * Reverse a transaction's effects on the content data.
  *
  * @method
  * @param {ve.dm.Transaction}
@@ -448,7 +448,7 @@ ve.dm.Document.prototype.rollback = function ( transaction ) {
 };
 
 /**
- * Commits a transaction's effects on the content data.
+ * Apply a transaction's effects on the content data.
  *
  * @method
  * @param {ve.dm.Transaction}
@@ -458,7 +458,7 @@ ve.dm.Document.prototype.commit = function ( transaction ) {
 };
 
 /**
- * Gets slice or copy of the document data.
+ * Get a slice or copy of the document data.
  *
  * @method
  * @param {ve.Range} [range] Range of data to get, all data will be given by default
@@ -480,7 +480,7 @@ ve.dm.Document.prototype.getData = function ( range, deep ) {
 };
 
 /**
- * Gets the length of the document.
+ * Get the length of the document.
  *
  * @method
  * @returns {number} Document data length
@@ -490,7 +490,9 @@ ve.dm.Document.prototype.getLength = function () {
 };
 
 /**
- * Splice data into or out of the linear model and update this.metadata accordingly.
+ * Splice data into and/or out of the linear model.
+ *
+ * {@link #metadata} will be updated accordingly.
  *
  * Always use this function, never use this.data.splice() directly, otherwise the linear model
  * (this.data) and the meta-linmod (this.metadata) can get out of sync. The semantics of the
@@ -524,7 +526,10 @@ ve.dm.Document.prototype.spliceData = function ( offset, remove, insert ) {
 };
 
 /**
- * Get the full data, with the metadata spliced back in.
+ * Get the full document data including metadata.
+ *
+ * Metadata will be into the document data to produce the "full data" result.
+ *
  * @returns {Array} Data with metadata interleaved
  */
 ve.dm.Document.prototype.getFullData = function () {
@@ -544,6 +549,8 @@ ve.dm.Document.prototype.getFullData = function () {
 };
 
 /**
+ * Get a node from an offset.
+ *
  * @method
  * @param offset
  */
@@ -560,7 +567,7 @@ ve.dm.Document.prototype.getNodeFromOffset = function ( offset ) {
 };
 
 /**
- * Gets the content data of a node.
+ * Get the content data of a node.
  *
  * @method
  * @param {ve.dm.Node} node Node to get content data for
@@ -581,7 +588,7 @@ ve.dm.Document.prototype.getDataFromNode = function ( node ) {
 };
 
 /**
- * Returns plain text from a selected range.
+ * Get plain text of a range.
  *
  * @method
  * @param {ve.Range} [range] Range of data to get the text of.
@@ -602,9 +609,9 @@ ve.dm.Document.prototype.getText = function ( range ) {
 };
 
 /**
- * Gets a list of annotations that a given offset is covered by.
+ * Get annotations covered by an offset.
  *
- * This method returns a clone of the AnnotationSet in the linear model.
+ * The returned AnnotationSet is a clone of the one in the document data.
  *
  * @method
  * @param {number} offset Offset to get annotations for
@@ -633,7 +640,7 @@ ve.dm.Document.prototype.getAnnotationsFromOffset = function ( offset ) {
 };
 
 /**
- * Does this offset contain the specified annotation
+ * Check if an offset contains an annotation.
  *
  * @method
  * @param {number} offset Offset to look at
@@ -646,7 +653,7 @@ ve.dm.Document.prototype.offsetContainsAnnotation = function ( offset, annotatio
 };
 
 /**
- * Gets the range of content surrounding a given offset that's covered by a given annotation.
+ * Get the range of content surrounding an offset that's covered by an annotation.
  *
  * @param {number} offset Offset to begin looking forward and backward from
  * @param {Object} annotation Annotation to test for coverage with
@@ -675,7 +682,7 @@ ve.dm.Document.prototype.getAnnotatedRangeFromOffset = function ( offset, annota
 };
 
 /**
- * Gets the range of an annotation found in the selection range.
+ * Get the range of an annotation found within a range.
  *
  * @param {number} offset Offset to begin looking forward and backward from
  * @param {Object} annotation Annotation to test for coverage with
@@ -701,7 +708,7 @@ ve.dm.Document.prototype.getAnnotatedRangeFromSelection = function ( range, anno
 };
 
 /**
- * Gets an array of common annotations across a range.
+ * Get annotations common to all content in a range.
  *
  * @method
  * @param {ve.Range} range Range to get annotations for
@@ -746,7 +753,7 @@ ve.dm.Document.prototype.getAnnotationsFromRange = function ( range, all ) {
 };
 
 /**
- * Returns ve.Range free of outer whitespace.
+ * Get a range without any whitespace content at the beginning and end.
  *
  * @method
  * @param {ve.Range} [range] Range of data to get, all data will be given by default
@@ -766,7 +773,7 @@ ve.dm.Document.prototype.trimOuterSpaceFromRange = function ( range ) {
 };
 
 /**
- * Rebuild one or more nodes following a change in linear model data.
+ * Rebuild one or more nodes following a change in document data.
  *
  * The data provided to this method may contain either one node or multiple sibling nodes, but it
  * must be balanced and valid. Data provided to this method also may not contain any content at the
@@ -809,7 +816,7 @@ ve.dm.Document.prototype.rebuildNodes = function ( parent, index, numNodes, offs
 };
 
 /**
- * Gets an offset a given distance from another using a callback to check if offsets are valid.
+ * Get an offset at a distance to an offset that passes a validity test.
  *
  * - If {offset} is not already valid, one step will be used to move it to an valid one.
  * - If {offset} is already valid and cannot be moved in the direction of {distance} and still be
@@ -888,7 +895,7 @@ ve.dm.Document.prototype.getRelativeOffset = function ( offset, distance, callba
 };
 
 /**
- * Gets a content offset a given distance forwards or backwards from another.
+ * Get a content offset at a distance from an offset.
  *
  * This method is a wrapper around {getRelativeOffset}, using {ve.dm.Document.isContentOffset} as
  * the offset validation callback.
@@ -903,7 +910,7 @@ ve.dm.Document.prototype.getRelativeContentOffset = function ( offset, distance 
 };
 
 /**
- * Gets the nearest content offset to a given offset.
+ * Get the nearest content offset to an offset.
  *
  * If the offset is already a valid offset, it will be returned unchanged. This method differs from
  * calling {getRelativeContentOffset} with a zero length differece because the direction can be
@@ -935,7 +942,7 @@ ve.dm.Document.prototype.getNearestContentOffset = function ( offset, direction 
 };
 
 /**
- * Gets a structural offset a given distance forwards or backwards from another.
+ * Get a structural offset at a distance from an offset.
  *
  * This method is a wrapper around {getRelativeOffset}, using {ve.dm.Document.isStructuralOffset} as
  * the offset validation callback.
@@ -957,7 +964,7 @@ ve.dm.Document.prototype.getRelativeStructuralOffset = function ( offset, distan
 };
 
 /**
- * Gets the nearest structural offset to a given offset.
+ * Get the nearest structural offset to an offset.
  *
  * If the offset is already a valid offset, it will be returned unchanged. This method differs from
  * calling {getRelativeStructuralOffset} with a zero length differece because the direction can be
@@ -994,7 +1001,7 @@ ve.dm.Document.prototype.getNearestStructuralOffset = function ( offset, directi
 };
 
 /**
- * Gets the nearest word boundary.
+ * Get the nearest word boundary.
  *
  * The offset will first be moved to the nearest content offset if it's not at one already. If a
  * direction was given, the boundary will be found in that direction, otherwise both directions will
@@ -1033,9 +1040,12 @@ ve.dm.Document.prototype.getNearestWordBoundary = function ( offset, direction )
 	}
 };
 
-// TODO this function needs more work but it seems to work, mostly
 /**
- * Fix up data so it can safely be inserted into the linear model at offset.
+ * Fix up data so it can safely be inserted into the document data at an offset.
+ *
+ * TODO: this function needs more work but it seems to work, mostly
+ *
+ * @method
  * @param {Array} data Snippet of linear model data to insert
  * @param {number} offset Offset in the linear model where the caller wants to insert data
  * @returns {Array} A (possibly modified) copy of data
@@ -1099,8 +1109,10 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 	 *
 	 * This function updates parentNode, parentType, openingStack and closingStack.
 	 *
+	 * @private
+	 * @function
 	 * @param {Object|Array|string} element Linear model element
-	 * @param {number} index Index in data that this element came from (for error reporting only)
+	 * @param {number} index Index in data that the element came from (for error reporting only)
 	 */
 	function writeElement( element, index ) {
 		var expectedType;
@@ -1361,10 +1373,12 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 };
 
 /**
- * Get the linear model data for the given range, but fix up unopened closings and unclosed openings
- * in the data snippet such that the returned snippet is balanced.
+ * Get the document data for a range.
  *
- * @returns {ve.dm.DocumentSlice} Balanced snippet of linear model data
+ * Data will be fixed up so that unopened closings and unclosed openings in the document data slice
+ * are balanced.
+ *
+ * @returns {ve.dm.DocumentSlice} Balanced slice of linear model data
  */
 ve.dm.Document.prototype.getSlice = function ( range ) {
 	var first, last, firstNode, lastNode,

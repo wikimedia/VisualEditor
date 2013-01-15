@@ -1,12 +1,12 @@
 /*!
- * VisualEditor content editable DefinitionListNode class.
+ * VisualEditor ContentEditable DefinitionListNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * ContentEditable node for a definition list.
+ * ContentEditable definition list node.
  *
  * @class
  * @extends ve.ce.BranchNode
@@ -22,7 +22,7 @@ ve.ce.DefinitionListNode = function VeCeDefinitionListNode( model ) {
 
 ve.inheritClass( ve.ce.DefinitionListNode, ve.ce.BranchNode );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * Node rules.

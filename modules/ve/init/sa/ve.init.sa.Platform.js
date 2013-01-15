@@ -1,12 +1,12 @@
 /*!
- * VisualEditor stand-alone initialization Target class.
+ * VisualEditor stand-alone Initialization Target class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Stand-alone platform.
+ * Initialization stand-alone platform.
  *
  * @class
  * @extends ve.init.Platform
@@ -30,7 +30,7 @@ ve.inheritClass( ve.init.sa.Platform, ve.init.Platform );
 /* Methods */
 
 /**
- * Gets a regular expression that matches allowed external link URLs.
+ * Get a regular expression that matches allowed external link URLs.
  *
  * @method
  * @returns {RegExp} Regular expression object
@@ -40,7 +40,7 @@ ve.init.sa.Platform.prototype.getExternalLinkUrlProtocolsRegExp = function () {
 };
 
 /**
- * Sets the remotely accessible URL to the modules directory.
+ * Set the remotely accessible URL to the modules directory.
  *
  * @method
  * @param {string} url Remote modules URL
@@ -50,7 +50,7 @@ ve.init.sa.Platform.prototype.setModulesUrl = function ( url ) {
 };
 
 /**
- * Gets a remotely accessible URL to the modules directory.
+ * Get a remotely accessible URL to the modules directory.
  *
  * @method
  * @returns {string} Remote modules URL
@@ -60,7 +60,7 @@ ve.init.sa.Platform.prototype.getModulesUrl = function () {
 };
 
 /**
- * Adds multiple messages to the localization system.
+ * Add multiple messages to the localization system.
  *
  * @method
  * @param {Object} messages Map of message-key/message-string pairs
@@ -72,7 +72,7 @@ ve.init.sa.Platform.prototype.addMessages = function ( messages ) {
 };
 
 /**
- * Gets a message from the localization system.
+ * Get a message from the localization system.
  *
  * @method
  * @param {string} key Message key
@@ -92,7 +92,7 @@ ve.init.sa.Platform.prototype.getMessage = function ( key ) {
 };
 
 /**
- * Adds multiple parsed messages to the localization system.
+ * Add multiple parsed messages to the localization system.
  *
  * @method
  * @param {Object} messages Map of message-key/html pairs
@@ -104,7 +104,7 @@ ve.init.sa.Platform.prototype.addParsedMessages = function ( messages ) {
 };
 
 /**
- * Gets a parsed message as HTML string.
+ * Get a parsed message as HTML string.
  *
  * Falls back to mw.messsage with .escaped().
  * Does not support $# replacements.

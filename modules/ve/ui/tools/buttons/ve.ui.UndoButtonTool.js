@@ -1,12 +1,12 @@
 /*!
- * VisualEditor user interface UndoButtonTool class.
+ * VisualEditor UserInterface UndoButtonTool class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Creates an ve.ui.UndoButtonTool object.
+ * UserInterface undo button tool.
  *
  * @class
  * @extends ve.ui.ButtonTool
@@ -28,7 +28,7 @@ ve.ui.UndoButtonTool = function VeUiUndoButtonTool( toolbar ) {
 
 ve.inheritClass( ve.ui.UndoButtonTool, ve.ui.ButtonTool );
 
-/* Static Members */
+/* Static Properties */
 
 ve.ui.UndoButtonTool.static.name = 'undo';
 
@@ -37,7 +37,7 @@ ve.ui.UndoButtonTool.static.titleMessage = 'visualeditor-historybutton-undo-tool
 /* Methods */
 
 /**
- * Responds to the button being clicked.
+ * Handle the button being clicked.
  *
  * @method
  */
@@ -46,7 +46,7 @@ ve.ui.UndoButtonTool.prototype.onClick = function () {
 };
 
 /**
- * Responds to the toolbar state being updated.
+ * Handle the toolbar state being updated.
  *
  * @method
  * @param {ve.dm.Node[]} nodes List of nodes covered by the current selection

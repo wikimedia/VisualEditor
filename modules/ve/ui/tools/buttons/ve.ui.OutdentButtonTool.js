@@ -1,12 +1,12 @@
 /*!
- * VisualEditor user interface OutdentButtonTool class.
+ * VisualEditor UserInterface OutdentButtonTool class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Creates an ve.ui.OutdentButtonTool object.
+ * UserInterface outdent button tool.
  *
  * @class
  * @extends ve.ui.IndentationButtonTool
@@ -22,7 +22,7 @@ ve.ui.OutdentButtonTool = function VeUiOutdentButtonTool( toolbar ) {
 
 ve.inheritClass( ve.ui.OutdentButtonTool, ve.ui.IndentationButtonTool );
 
-/* Static Members */
+/* Static Properties */
 
 ve.ui.OutdentButtonTool.static.name = 'outdent';
 

@@ -1,12 +1,12 @@
 /*!
- * VisualEditor user interface Frame class.
+ * VisualEditor UserInterface Frame class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * HTML Iframe abstraction.
+ * UserInterface iframe abstraction.
  *
  * @class
  * @constructor
@@ -42,7 +42,7 @@ ve.ui.Frame.prototype.setSize = function ( width, height ) {
 };
 
 /**
- * Execute jQuery function within the context of this frame.
+ * Execute jQuery function within the context of the frame.
  *
  * @method
  * @param {string} selector jQuery selector

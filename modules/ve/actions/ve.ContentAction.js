@@ -22,10 +22,10 @@ ve.ContentAction = function VeContentAction( surface ) {
 
 ve.inheritClass( ve.ContentAction, ve.Action );
 
-/* Static Members */
+/* Static Properties */
 
 /**
- * List of allowed methods for this action.
+ * List of allowed methods for the action.
  *
  * @static
  * @property
@@ -35,7 +35,7 @@ ve.ContentAction.static.methods = ['insert', 'remove', 'select'];
 /* Methods */
 
 /**
- * Sets a given Content.
+ * Insert content.
  *
  * @method
  * @param {string|Array} content Content to insert, can be either a string or array of data
@@ -46,7 +46,7 @@ ve.ContentAction.prototype.insert = function ( content, annotate ) {
 };
 
 /**
- * Clears a given Content.
+ * Remove content.
  *
  * @method
  */
@@ -55,7 +55,7 @@ ve.ContentAction.prototype.remove = function () {
 };
 
 /**
- * Selects content in a given range.
+ * Select content.
  *
  * @method
  * @param {ve.Range} range Range to select

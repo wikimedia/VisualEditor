@@ -1,12 +1,12 @@
 /*!
- * VisualEditor user interface BoldButtonTool class.
+ * VisualEditor UserInterface BoldButtonTool class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Creates an ve.ui.BoldButtonTool object.
+ * UserInterface bold button tool.
  *
  * @class
  * @extends ve.ui.AnnotationButtonTool
@@ -22,7 +22,7 @@ ve.ui.BoldButtonTool = function VeUiBoldButtonTool( toolbar ) {
 
 ve.inheritClass( ve.ui.BoldButtonTool, ve.ui.AnnotationButtonTool );
 
-/* Static Members */
+/* Static Properties */
 
 ve.ui.BoldButtonTool.static.name = 'bold';
 

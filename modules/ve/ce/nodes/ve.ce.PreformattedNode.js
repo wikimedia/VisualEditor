@@ -1,12 +1,12 @@
 /*!
- * VisualEditor content editable PreformattedNode class.
+ * VisualEditor ContentEditable PreformattedNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * ContentEditable node for preformatted content.
+ * ContentEditable preformatted node.
  *
  * @class
  * @extends ve.ce.BranchNode
@@ -22,7 +22,7 @@ ve.ce.PreformattedNode = function VeCePreformattedNode( model ) {
 
 ve.inheritClass( ve.ce.PreformattedNode, ve.ce.ContentBranchNode );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * Node rules.

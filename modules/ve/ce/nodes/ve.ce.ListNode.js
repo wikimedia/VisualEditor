@@ -1,12 +1,12 @@
 /*!
- * VisualEditor content editable ListNode class.
+ * VisualEditor ContentEditable ListNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * ContentEditable node for a list.
+ * ContentEditable list node.
  *
  * @class
  * @extends ve.ce.BranchNode
@@ -25,7 +25,7 @@ ve.ce.ListNode = function VeCeListNode( model ) {
 
 ve.inheritClass( ve.ce.ListNode, ve.ce.BranchNode );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * Node rules.
@@ -52,7 +52,7 @@ ve.ce.ListNode.domWrapperElementTypes = {
 /* Methods */
 
 /**
- * Responds to model update events.
+ * Handle model update events.
  *
  * If the style changed since last update the DOM wrapper will be replaced with an appropriate one.
  *
@@ -63,18 +63,28 @@ ve.ce.ListNode.prototype.onUpdate = function () {
 };
 
 /**
- * Supplement onSplice() to work around a rendering bug in Firefox
+ * Handle splice events.
+ *
+ * This is used to solve a rendering bug in Firefox.
+ * @see ve.ce.BranchNode.prototype.onSplice
+ *
+ * @method
  */
 ve.ce.ListNode.prototype.onSplice = function () {
-	// Call ve.ce.BranchNode's implementation
-	var args = Array.prototype.slice.call( arguments, 0 );
-	ve.ce.BranchNode.prototype.onSplice.apply( this, args );
+	// Call parent implementation
+	ve.ce.BranchNode.prototype.onSplice.apply( this, Array.prototype.slice.call( arguments, 0 ) );
 
 	// There's a bug in Firefox where numbered lists aren't renumbered after in/outdenting
 	// list items. Force renumbering by requesting the height, which causes a reflow
 	this.$.css( 'height' );
 };
 
+/**
+ * Check if a slug be placed after the node.
+ *
+ * @method
+ * @returns {boolean} A slug can be placed after the node
+ */
 ve.ce.ListNode.prototype.canHaveSlugAfter = function () {
 	if ( this.getParent().getType() === 'listItem' ) {
 		// Nested lists should not have slugs after them

@@ -1,12 +1,12 @@
 /*!
- * VisualEditor content editable MWEntityNode class.
+ * VisualEditor ContentEditable MWEntityNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * ContentEditable node for an entity.
+ * ContentEditable MediaWiki entity node.
  *
  * @class
  * @extends ve.ce.LeafNode
@@ -36,7 +36,7 @@ ve.ce.MWEntityNode = function VeCeMWEntityNode( model ) {
 
 ve.inheritClass( ve.ce.MWEntityNode, ve.ce.LeafNode );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * Node rules.
@@ -52,7 +52,7 @@ ve.ce.MWEntityNode.rules = {
 /* Methods */
 
 /**
- * Responds to model update events.
+ * Handle model update events.
  *
  * If the source changed since last update the image's src attribute will be updated accordingly.
  *

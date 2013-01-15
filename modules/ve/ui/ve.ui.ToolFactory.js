@@ -1,26 +1,26 @@
 /*!
- * VisualEditor ToolFactory class.
+ * VisualEditor UserInterface ToolFactory class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Tool factory.
+ * UserInterface tool factory.
  *
  * @class
  * @extends ve.Factory
  * @constructor
  */
-ve.ToolFactory = function VeToolFactory() {
+ve.ui.ToolFactory = function VeUiToolFactory() {
 	// Parent constructor
 	ve.Factory.call( this );
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.ToolFactory, ve.Factory );
+ve.inheritClass( ve.ui.ToolFactory, ve.Factory );
 
 /* Initialization */
 
-ve.ui.toolFactory = new ve.ToolFactory();
+ve.ui.toolFactory = new ve.ui.ToolFactory();

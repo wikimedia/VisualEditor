@@ -1,12 +1,12 @@
 /*!
- * VisualEditor user interface ButtonTool class.
+ * VisualEditor UserInterface ButtonTool class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Creates an ve.ui.ButtonTool object.
+ * UserInterface button tool.
  *
  * @abstract
  * @class
@@ -39,7 +39,7 @@ ve.inheritClass( ve.ui.ButtonTool, ve.ui.Tool );
 /* Methods */
 
 /**
- * Responds to the mouse button being pressed.
+ * Handle the mouse button being pressed.
  *
  * @method
  * @param {jQuery.Event} e Normalized event
@@ -52,7 +52,7 @@ ve.ui.ButtonTool.prototype.onMouseDown = function ( e ) {
 };
 
 /**
- * Responds to the mouse button being released.
+ * Handle the mouse button being released.
  *
  * @method
  * @param {jQuery.Event} e Normalized event
@@ -64,7 +64,7 @@ ve.ui.ButtonTool.prototype.onMouseUp = function ( e ) {
 };
 
 /**
- * Responds to the button being clicked.
+ * Handle the button being clicked.
  *
  * This is an abstract method that must be overridden in a concrete subclass.
  *
@@ -78,7 +78,7 @@ ve.ui.ButtonTool.prototype.onClick = function () {
 };
 
 /**
- * Responds to the toolbar state being cleared.
+ * Handle the toolbar state being cleared.
  *
  * @method
  */
@@ -87,7 +87,7 @@ ve.ui.ButtonTool.prototype.onClearState = function () {
 };
 
 /**
- * Checks if this button is active.
+ * Check if the button is active.
  *
  * @method
  * @param {boolean} Button is active
@@ -97,7 +97,7 @@ ve.ui.ButtonTool.prototype.isActive = function () {
 };
 
 /**
- * Makes button appear active or inactive.
+ * Make the button appear active or inactive.
  *
  * @method
  * @param {boolean} state Make button appear active
@@ -112,7 +112,7 @@ ve.ui.ButtonTool.prototype.setActive = function ( state ) {
 };
 
 /**
- * Checks if this button is disabled.
+ * Check if the button is disabled.
  *
  * @method
  * @param {boolean} Button is disabled
@@ -122,7 +122,7 @@ ve.ui.ButtonTool.prototype.isDisabled = function () {
 };
 
 /**
- * Disables button.
+ * Set the disabled state of the button.
  *
  * This will change the button's appearance and prevent the {onClick} from being called.
  *

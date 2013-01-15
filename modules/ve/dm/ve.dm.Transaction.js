@@ -1,5 +1,5 @@
 /*!
- * VisualEditor data model Transaction class.
+ * VisualEditor DataModel Transaction class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -21,7 +21,7 @@ ve.dm.Transaction = function VeDmTransaction() {
 /* Static Methods */
 
 /**
- * Generates a transaction that inserts data at a given offset.
+ * Generate a transaction that inserts data at an offset.
  *
  * @static
  * @method
@@ -45,7 +45,7 @@ ve.dm.Transaction.newFromInsertion = function ( doc, offset, insertion ) {
 };
 
 /**
- * Generates a transaction which removes data from a given range.
+ * Generate a transaction that removes data from a range.
  *
  * There are three possible results from a removal:
  *
@@ -156,7 +156,7 @@ ve.dm.Transaction.newFromRemoval = function ( doc, range ) {
 };
 
 /**
- * Generates a transaction that changes an attribute.
+ * Generate a transaction that changes an attribute.
  *
  * @static
  * @method
@@ -191,7 +191,7 @@ ve.dm.Transaction.newFromAttributeChange = function ( doc, offset, key, value ) 
 };
 
 /**
- * Generates a transaction that annotates content.
+ * Generate a transaction that annotates content.
  *
  * @static
  * @method
@@ -258,7 +258,7 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
 };
 
 /**
- * Generates a transaction that converts elements that can contain content.
+ * Generate a transaction that converts elements that can contain content.
  *
  * @static
  * @method
@@ -320,7 +320,7 @@ ve.dm.Transaction.newFromContentBranchConversion = function ( doc, range, type, 
 };
 
 /**
- * Generates a transaction which wraps, unwraps or replaces structure.
+ * Generate a transaction that wraps, unwraps or replaces structure.
  *
  * The unwrap parameters are checked against the actual model data, and
  * an exception is thrown if the type fields don't match. This means you
@@ -458,7 +458,7 @@ ve.dm.Transaction.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, u
 /* Methods */
 
 /**
- * Checks if transaction would make any actual changes if processed.
+ * Check if the transaction would make any actual changes if processed.
  *
  * There may be more sophisticated checks that can be done, like looking for things being replaced
  * with identical content, but such transactions probably should not be created in the first place.
@@ -474,7 +474,7 @@ ve.dm.Transaction.prototype.isNoOp = function () {
 };
 
 /**
- * Gets a list of all operations.
+ * Get all operations.
  *
  * @method
  * @returns {Object[]} List of operations
@@ -484,7 +484,7 @@ ve.dm.Transaction.prototype.getOperations = function () {
 };
 
 /**
- * Checks if this transaction has operations of a given type.
+ * Check if the transaction has any operations with a certain type.
  *
  * @method
  * @returns {boolean} Has operations of a given type
@@ -500,7 +500,7 @@ ve.dm.Transaction.prototype.hasOperationWithType = function ( type ) {
 };
 
 /**
- * Checks if this transaction has content data operations, such as insertion or deletion.
+ * Check if the transaction has any content data operations, such as insertion or deletion.
  *
  * @method
  * @returns {boolean} Has content data operations
@@ -510,7 +510,7 @@ ve.dm.Transaction.prototype.hasContentDataOperations = function () {
 };
 
 /**
- * Checks if this transaction has element attribute operations.
+ * Check if the transaction has any element attribute operations.
  *
  * @method
  * @returns {boolean} Has element attribute operations
@@ -520,7 +520,7 @@ ve.dm.Transaction.prototype.hasElementAttributeOperations = function () {
 };
 
 /**
- * Checks if this transaction has annotation operations.
+ * Check if the transaction has any annotation operations.
  *
  * @method
  * @returns {boolean} Has annotation operations
@@ -530,7 +530,7 @@ ve.dm.Transaction.prototype.hasAnnotationOperations = function () {
 };
 
 /**
- * Gets the difference in content length this transaction will cause if applied.
+ * Get the difference in content length the transaction will cause if applied.
  *
  * @method
  * @returns {number} Difference in content length
@@ -540,7 +540,7 @@ ve.dm.Transaction.prototype.getLengthDifference = function () {
 };
 
 /**
- * Checks whether this transaction has already been applied.
+ * Check whether the transaction has already been applied.
  *
  * A transaction that has been applied can be rolled back, at which point it will no longer be
  * considered applied. In other words, this function returns false if the transaction can be
@@ -554,8 +554,10 @@ ve.dm.Transaction.prototype.hasBeenApplied = function () {
 };
 
 /**
- * Toggle the 'applied' state of this transaction. Should only be called after committing or
- * rolling back the transaction.
+ * Toggle the applied state of the transaction.
+ *
+ * Should only be called after committing or rolling back the transaction.
+ *
  * @see ve.dm.Transaction#hasBeenApplied
  */
 ve.dm.Transaction.prototype.toggleApplied = function () {
@@ -614,7 +616,7 @@ ve.dm.Transaction.prototype.translateRange = function ( range, reversed ) {
 };
 
 /**
- * Adds a retain operation.
+ * Add a retain operation.
  *
  * @method
  * @param {number} length Length of content data to retain
@@ -638,7 +640,7 @@ ve.dm.Transaction.prototype.pushRetain = function ( length ) {
 };
 
 /**
- * Adds a replace operation
+ * Add a replace operation
  *
  * @method
  * @param {Array} remove Data to remove
@@ -658,7 +660,7 @@ ve.dm.Transaction.prototype.pushReplace = function ( remove, insert ) {
 };
 
 /**
- * Adds an element attribute change operation.
+ * Add an element attribute change operation.
  *
  * @method
  * @param {string} key Name of attribute to change
@@ -675,7 +677,7 @@ ve.dm.Transaction.prototype.pushReplaceElementAttribute = function ( key, from, 
 };
 
 /**
- * Adds a start annotating operation.
+ * Add a start annotating operation.
  *
  * @method
  * @param {string} method Method to use, either "set" or "clear"
@@ -691,7 +693,7 @@ ve.dm.Transaction.prototype.pushStartAnnotating = function ( method, annotation 
 };
 
 /**
- * Adds a stop annotating operation.
+ * Add a stop annotating operation.
  *
  * @method
  * @param {string} method Method to use, either "set" or "clear"
@@ -707,7 +709,9 @@ ve.dm.Transaction.prototype.pushStopAnnotating = function ( method, annotation )
 };
 
 /**
- * Get the change markers for this transaction. Change markers are added using setChangeMarker().
+ * Get the change markers for the transaction.
+ *
+ * Change markers are added using setChangeMarker().
  *
  * @returns {Object} { offset: { markerType: number } }
  */
@@ -716,9 +720,10 @@ ve.dm.Transaction.prototype.getChangeMarkers = function () {
 };
 
 /**
- * Store a change marker to mark a change made while applying the transaction. Markers are stored
- * in the .internal.changed property of elements in the linear model, as well as in the Transaction
- * that effected the changes.
+ * Store a change marker to mark a change made while applying the transaction.
+ *
+ * Markers are stored in the .internal.changed property of elements in the linear model, as well as
+ * in the Transaction that effected the changes.
  *
  * The purpose of storing change markers in the linear model is so the linmod->HTML converter can
  * mark what has changed relative to the HTML we originally received. For that reason, change

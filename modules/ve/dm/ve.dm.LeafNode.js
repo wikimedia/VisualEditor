@@ -1,12 +1,14 @@
 /*!
- * VisualEditor data model LeafNode class.
+ * VisualEditor DataModel LeafNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * DataModel node that cannot have children.
+ * DataModel leaf node.
+ *
+ * Leaf nodes can not have any children.
  *
  * @abstract
  * @extends ve.dm.Node
@@ -33,11 +35,13 @@ ve.mixinClass( ve.dm.LeafNode, ve.LeafNode );
 /* Methods */
 
 /**
- * Get the annotations that apply to this node. Annotations are grabbed directly from the linear
- * model, so they are updated live. If the linear model element doesn't have a .annotations
- * property, an empty set is returned.
+ * Get the annotations that apply to the node.
  *
- * @return {ve.AnnotationSet} Annotation set (by reference!)
+ * Annotations are grabbed directly from the linear model, so they are updated live. If the linear
+ * model element doesn't have a .annotations property, an empty set is returned.
+ *
+ * @method
+ * @returns {ve.AnnotationSet} Annotation set (by reference!)
  */
 ve.dm.LeafNode.prototype.getAnnotations = function () {
 	return this.element.annotations || new ve.AnnotationSet();

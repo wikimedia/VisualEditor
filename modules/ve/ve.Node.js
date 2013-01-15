@@ -48,7 +48,7 @@ ve.inheritClass( ve.Node, ve.EventEmitter );
 /* Abstract Methods */
 
 /**
- * Checks if node can have children.
+ * Check if the node can have children.
  *
  * @method
  * @abstract
@@ -60,7 +60,7 @@ ve.Node.prototype.canHaveChildren = function () {
 };
 
 /**
- * Checks if node can have grandchildren.
+ * Check if the node can have grandchildren.
  *
  * @method
  * @abstract
@@ -72,7 +72,7 @@ ve.Node.prototype.canHaveGrandchildren = function () {
 };
 
 /**
- * Checks if node represents a wrapped element.
+ * Check if the node has a wrapped element in the document data.
  *
  * @method
  * @abstract
@@ -84,7 +84,7 @@ ve.Node.prototype.isWrapped = function () {
 };
 
 /**
- * Gets node length.
+ * Get the length of the node.
  *
  * @method
  * @abstract
@@ -96,7 +96,7 @@ ve.Node.prototype.getLength = function () {
 };
 
 /**
- * Gets node outer length.
+ * Get the outer length of the node, which includes wrappers if present.
  *
  * @method
  * @abstract
@@ -110,7 +110,7 @@ ve.Node.prototype.getOuterLength = function () {
 /* Methods */
 
 /**
- * Gets the symbolic node type name.
+ * Get the symbolic node type name.
  *
  * @method
  * @returns {string} Symbolic name of element type
@@ -120,17 +120,17 @@ ve.Node.prototype.getType = function () {
 };
 
 /**
- * Gets a reference to this node's parent.
+ * Get a reference to the node's parent.
  *
  * @method
- * @returns {ve.Node} Reference to this node's parent
+ * @returns {ve.Node} Reference to the node's parent
  */
 ve.Node.prototype.getParent = function () {
 	return this.parent;
 };
 
 /**
- * Gets the root node in the tree this node is currently attached to.
+ * Get the root node of the tree the node is currently attached to.
  *
  * @method
  * @returns {ve.Node} Root node
@@ -140,7 +140,7 @@ ve.Node.prototype.getRoot = function () {
 };
 
 /**
- * Sets the root node this node is a descendent of.
+ * Set the root node.
  *
  * This method is overridden by nodes with children.
  *
@@ -152,17 +152,17 @@ ve.Node.prototype.setRoot = function ( root ) {
 };
 
 /**
- * Gets the document this node is a part of.
+ * Get the document the node is a part of.
  *
  * @method
- * @returns {ve.Document} Document this node is a part of
+ * @returns {ve.Document} Document the node is a part of
  */
 ve.Node.prototype.getDocument = function () {
 	return this.doc;
 };
 
 /**
- * Sets the document this node is a part of.
+ * Set the document the node is a part of.
  *
  * This method is overridden by nodes with children.
  *
@@ -174,7 +174,7 @@ ve.Node.prototype.setDocument = function ( doc ) {
 };
 
 /**
- * Attaches this node to another as a child.
+ * Attach the node to another as a child.
  *
  * @method
  * @param {ve.Node} parent Node to attach to
@@ -188,7 +188,7 @@ ve.Node.prototype.attach = function ( parent ) {
 };
 
 /**
- * Detaches this node from its parent.
+ * Detach the node from its parent.
  *
  * @method
  * @emits detach
@@ -202,8 +202,9 @@ ve.Node.prototype.detach = function () {
 };
 
 /**
- * Traverse tree of nodes (model or view) upstream and for each traversed node call callback function passing traversed node as a parameter.
- * Callback function is called for node passed as node paramter as well.
+ * Traverse tree of nodes (model or view) upstream.
+ *
+ * For each traversed node, the callback function will be passed the traversed node as a parameter.
  *
  * @param {ve.Node} node Node from which to start traversing
  * @param {Function} callback Callback method to be called for every traversed node

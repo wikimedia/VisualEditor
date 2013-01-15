@@ -1,12 +1,14 @@
 /*!
- * VisualEditor data model BranchNode class.
+ * VisualEditor DataModel BranchNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * DataModel node that can have branch or leaf children.
+ * DataModel branch node.
+ *
+ * Branch nodes can have branch or leaf nodes as children.
  *
  * @abstract
  * @extends ve.dm.Node
@@ -49,7 +51,7 @@ ve.mixinClass( ve.dm.BranchNode, ve.BranchNode );
 /* Methods */
 
 /**
- * Adds a node to the end of this node's children.
+ * Add a child node to the end of the list.
  *
  * @method
  * @param {ve.dm.BranchNode} childModel Item to add
@@ -63,7 +65,7 @@ ve.dm.BranchNode.prototype.push = function ( childModel ) {
 };
 
 /**
- * Removes a node from the end of this node's children
+ * Remove a child node from the end of the list.
  *
  * @method
  * @returns {ve.dm.BranchNode} Removed childModel
@@ -79,7 +81,7 @@ ve.dm.BranchNode.prototype.pop = function () {
 };
 
 /**
- * Adds a node to the beginning of this node's children.
+ * Add a child node to the beginning of the list.
  *
  * @method
  * @param {ve.dm.BranchNode} childModel Item to add
@@ -93,7 +95,7 @@ ve.dm.BranchNode.prototype.unshift = function ( childModel ) {
 };
 
 /**
- * Removes a node from the beginning of this node's children
+ * Remove a child node from the beginning of the list.
  *
  * @method
  * @returns {ve.dm.BranchNode} Removed childModel
@@ -109,7 +111,7 @@ ve.dm.BranchNode.prototype.shift = function () {
 };
 
 /**
- * Adds and removes nodes from this node's children.
+ * Add and/or remove child nodes at an offset.
  *
  * @method
  * @param {number} index Index to remove and or insert nodes at

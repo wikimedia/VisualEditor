@@ -1,12 +1,12 @@
 /*!
- * VisualEditor data model TableNode class.
+ * VisualEditor DataModel TableNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * DataModel node for a table.
+ * DataModel table node.
  *
  * @class
  * @extends ve.dm.BranchNode
@@ -23,7 +23,7 @@ ve.dm.TableNode = function VeDmTableNode( children, element ) {
 
 ve.inheritClass( ve.dm.TableNode, ve.dm.BranchNode );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * Node rules.

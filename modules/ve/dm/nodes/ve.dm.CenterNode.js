@@ -1,12 +1,12 @@
 /*!
- * VisualEditor data model CenterNode class.
+ * VisualEditor DataModel CenterNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * DataModel node for a center tag.
+ * DataModel center node.
  *
  * @class
  * @extends ve.dm.BranchNode
@@ -23,7 +23,7 @@ ve.dm.CenterNode = function VeDmCenterNode( children, element ) {
 
 ve.inheritClass( ve.dm.CenterNode, ve.dm.BranchNode );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * Node rules.

@@ -1,12 +1,12 @@
 /*!
- * VisualEditor data model BreakNode class.
+ * VisualEditor DataModel BreakNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * DataModel node for a line break.
+ * DataModel break node.
  *
  * @class
  * @extends ve.dm.LeafNode
@@ -23,7 +23,7 @@ ve.dm.BreakNode = function VeDmBreakNode( length, element ) {
 
 ve.inheritClass( ve.dm.BreakNode, ve.dm.LeafNode );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * Node rules.

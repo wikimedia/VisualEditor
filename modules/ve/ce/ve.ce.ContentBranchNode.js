@@ -1,12 +1,14 @@
 /*!
- * VisualEditor content editable ContentBranchNode class.
+ * VisualEditor ContentEditable ContentBranchNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * ContentEditable node that has content nodes as its children.
+ * ContentEditable content branch node.
+ *
+ * Content branch nodes can only have content nodes as children.
  *
  * @abstract
  * @extends ve.ce.BranchNode
@@ -32,6 +34,14 @@ ve.inheritClass( ve.ce.ContentBranchNode, ve.ce.BranchNode );
 
 /* Methods */
 
+/**
+ * Handle splice events.
+ *
+ * This is used to automatically render contents.
+ * @see ve.ce.BranchNode.prototype.onSplice
+ *
+ * @method
+ */
 ve.ce.ContentBranchNode.prototype.onSplice = function () {
 	// Call parent implementation
 	ve.ce.BranchNode.prototype.onSplice.apply( this, arguments );
@@ -39,6 +49,12 @@ ve.ce.ContentBranchNode.prototype.onSplice = function () {
 	this.renderContents();
 };
 
+/**
+ * Get an HTML rendering of contents.
+ *
+ * @method
+ * @returns {string} HTML rendering
+ */
 ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 	var i, j, open, close, startedClosing, arr, annotation, itemAnnotations, itemHtml, $wrapper,
 		html = '', annotationStack = new ve.AnnotationSet(), annotatedHtml = [];
@@ -138,6 +154,11 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 	return $wrapper.contents();
 };
 
+/**
+ * Render contents.
+ *
+ * @method
+ */
 ve.ce.ContentBranchNode.prototype.renderContents = function () {
 	if ( this.root instanceof ve.ce.DocumentNode && !this.root.getSurface().isRenderingEnabled() ) {
 		return;

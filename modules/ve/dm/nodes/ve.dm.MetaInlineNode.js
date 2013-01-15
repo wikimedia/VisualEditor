@@ -1,12 +1,12 @@
 /*!
- * VisualEditor data model MetaInlineNode class.
+ * VisualEditor DataModel MetaInlineNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * DataModel node for an inline meta node.
+ * DataModel inline meta node.
  *
  * @class
  * @extends ve.dm.LeafNode
@@ -24,7 +24,7 @@ ve.dm.MetaInlineNode = function VeDmMetaInlineNode( length, element ) {
 ve.inheritClass( ve.dm.MetaInlineNode, ve.dm.LeafNode );
 
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * Node rules.

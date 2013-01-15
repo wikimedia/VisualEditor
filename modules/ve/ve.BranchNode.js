@@ -6,12 +6,13 @@
  */
 
 /**
- * Mixin for branch nodes.
+ * Branch node mixin.
+ *
  * Extenders are expected to inherit from ve.Node.
  *
  * Branch nodes are immutable, which is why there are no methods for adding or removing children.
  * DataModel classes will add this functionality, and other subclasses will implement behavior that
- * mimcs changes made to data model nodes.
+ * mimcs changes made to DataModel nodes.
  *
  * @class
  * @abstract
@@ -25,17 +26,17 @@ ve.BranchNode = function VeBranchNode( children ) {
 /* Methods */
 
 /**
- * Checks if this node has child nodes.
+ * Check if the node has children.
  *
  * @method
- * @returns {boolean} Whether this node has children
+ * @returns {boolean} Whether the node has children
  */
 ve.BranchNode.prototype.hasChildren = function () {
 	return true;
 };
 
 /**
- * Gets a list of child nodes.
+ * Get child nodes.
  *
  * @method
  * @returns {ve.Node[]} List of child nodes
@@ -45,7 +46,7 @@ ve.BranchNode.prototype.getChildren = function () {
 };
 
 /**
- * Gets the index of a given child node.
+ * Get the index of a child node.
  *
  * @method
  * @param {ve.dm.Node} node Child node to find index of
@@ -56,7 +57,7 @@ ve.BranchNode.prototype.indexOf = function ( node ) {
 };
 
 /**
- * Sets the root node this node is a descendent of.
+ * Set the root node.
  *
  * @method
  * @see ve.Node#setRoot
@@ -74,7 +75,7 @@ ve.BranchNode.prototype.setRoot = function ( root ) {
 };
 
 /**
- * Sets the document this node is a part of.
+ * Set the document the node is a part of.
  *
  * @method
  * @see ve.Node#setDocument
@@ -92,7 +93,7 @@ ve.BranchNode.prototype.setDocument = function ( doc ) {
 };
 
 /**
- * Gets the node at a given offset.
+ * Get a node from an offset.
  *
  * This method is pretty expensive. If you need to get different slices of the same content, get
  * the content first, then slice it up locally.
@@ -139,7 +140,7 @@ ve.BranchNode.prototype.getNodeFromOffset = function ( offset, shallow ) {
 };
 
 /**
- * Gets the content offset of a node.
+ * Get the content offset of a node.
  *
  * TODO: Rewrite this method to not use recursion, because the function call overhead is expensive
  *

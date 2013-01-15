@@ -1,12 +1,12 @@
 /*!
- * VisualEditor user interface Tool class.
+ * VisualEditor UserInterface Tool class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Creates an ve.ui.Tool object.
+ * UserInterface tool.
  *
  * @abstract
  * @constructor
@@ -26,8 +26,13 @@ ve.ui.Tool = function VeUiTool( toolbar ) {
 	this.$.attr( 'title', ve.msg( this.constructor.static.titleMessage ) );
 };
 
-/* Static Members */
+/* Static Properties */
 
+/**
+ * @static
+ * @property
+ * @inheritable
+ */
 ve.ui.Tool.static = {};
 
 /**
@@ -53,7 +58,7 @@ ve.ui.Tool.static.titleMessage = '';
 /* Methods */
 
 /**
- * Responds to the toolbar state being updated.
+ * Handle the toolbar state being updated.
  *
  * This is an abstract method that must be overridden in a concrete subclass.
  *
@@ -67,7 +72,7 @@ ve.ui.Tool.prototype.onUpdateState = function () {
 };
 
 /**
- * Responds to the toolbar state being cleared.
+ * Handle the toolbar state being cleared.
  *
  * This is an abstract method that must be overridden in a concrete subclass.
  *

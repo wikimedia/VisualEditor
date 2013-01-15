@@ -1,12 +1,12 @@
 /*!
- * VisualEditor data model TextNode class.
+ * VisualEditor DataModel TextNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * DataModel node for a document.
+ * DataModel text node.
  *
  * @class
  * @extends ve.dm.LeafNode
@@ -22,7 +22,7 @@ ve.dm.TextNode = function VeDmTextNode( length ) {
 
 ve.inheritClass( ve.dm.TextNode, ve.dm.LeafNode );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * Node rules.

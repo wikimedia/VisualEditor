@@ -1,5 +1,5 @@
 /*!
- * VisualEditor content editable Document class.
+ * VisualEditor ContentEditable Document class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -27,6 +27,12 @@ ve.inheritClass( ve.ce.Document, ve.Document );
 
 /* Methods */
 
+/**
+ * Get a node a an offset.
+ *
+ * @method
+ * @returns {ve.ce.Node} Node at offset
+ */
 ve.ce.Document.prototype.getNodeFromOffset = function ( offset ) {
 	var node = this.documentNode.getNodeFromOffset( offset );
 	if ( node && !node.canHaveChildren() ) {
@@ -35,6 +41,12 @@ ve.ce.Document.prototype.getNodeFromOffset = function ( offset ) {
 	return node;
 };
 
+/**
+ * Get a slug a an offset.
+ *
+ * @method
+ * @returns {jQuery} Slug at offset
+ */
 ve.ce.Document.prototype.getSlugAtOffset = function ( offset ) {
 	var node = this.getNodeFromOffset( offset );
 	return node ? node.getSlugAtOffset( offset ) : null;

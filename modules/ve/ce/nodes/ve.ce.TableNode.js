@@ -1,12 +1,12 @@
 /*!
- * VisualEditor content editable TableNode class.
+ * VisualEditor ContentEditable TableNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * ContentEditable node for a table.
+ * ContentEditable table node.
  *
  * @class
  * @extends ve.ce.BranchNode
@@ -24,7 +24,7 @@ ve.ce.TableNode = function VeCeTableNode( model ) {
 
 ve.inheritClass( ve.ce.TableNode, ve.ce.BranchNode );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * Node rules.

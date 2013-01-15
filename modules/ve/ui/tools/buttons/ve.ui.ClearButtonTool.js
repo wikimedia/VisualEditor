@@ -1,12 +1,12 @@
 /*!
- * VisualEditor user interface ClearButtonTool class.
+ * VisualEditor UserInterface ClearButtonTool class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Creates an ve.ui.ClearButtonTool object.
+ * UserInterface clear button tool.
  *
  * @class
  * @extends ve.ui.ButtonTool
@@ -25,7 +25,7 @@ ve.ui.ClearButtonTool = function VeUiClearButtonTool( toolbar ) {
 
 ve.inheritClass( ve.ui.ClearButtonTool, ve.ui.ButtonTool );
 
-/* Static Members */
+/* Static Properties */
 
 ve.ui.ClearButtonTool.static.name = 'clear';
 
@@ -34,7 +34,7 @@ ve.ui.ClearButtonTool.static.titleMessage = 'visualeditor-clearbutton-tooltip';
 /* Methods */
 
 /**
- * Responds to the button being clicked.
+ * Handle the button being clicked.
  *
  * @method
  */
@@ -43,7 +43,7 @@ ve.ui.ClearButtonTool.prototype.onClick = function () {
 };
 
 /**
- * Responds to the toolbar state being updated.
+ * Handle the toolbar state being updated.
  *
  * @method
  * @param {ve.dm.Node[]} nodes List of nodes covered by the current selection

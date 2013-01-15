@@ -1,12 +1,12 @@
 /*!
- * VisualEditor user interface FormatDropdownTool class.
+ * VisualEditor UserInterface FormatDropdownTool class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Creates an ve.ui.FormatDropdownTool object.
+ * UserInterface format dropdown tool.
  *
  * @class
  * @extends ve.ui.DropdownTool
@@ -22,7 +22,7 @@ ve.ui.FormatDropdownTool = function VeUiFormatDropdownTool( toolbar ) {
 
 ve.inheritClass( ve.ui.FormatDropdownTool, ve.ui.DropdownTool );
 
-/* Static Members */
+/* Static Properties */
 
 ve.ui.FormatDropdownTool.static.name = 'format';
 
@@ -87,7 +87,7 @@ ve.ui.FormatDropdownTool.static.options = [
 /* Methods */
 
 /**
- * Responds to dropdown option being selected.
+ * Handle dropdown option being selected.
  *
  * @method
  * @param {Object} item Menu item
@@ -97,7 +97,7 @@ ve.ui.FormatDropdownTool.prototype.onSelect = function ( item ) {
 };
 
 /**
- * Responds to the toolbar state being updated.
+ * Handle the toolbar state being updated.
  *
  * @method
  * @param {ve.dm.Node[]} nodes List of nodes covered by the current selection

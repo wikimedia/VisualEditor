@@ -1,5 +1,5 @@
 /*!
- * VisualEditor content editable Node class.
+ * VisualEditor ContentEditable Node class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -77,20 +77,21 @@ ve.ce.Node.static.domAttributeWhitelist = [
  *
  * Uses data URI to inject a 1x1 transparent PNG image into the DOM.
  *
+ * Using transparent png instead of gif because IE 10 renders gif as solid red when used as img src.
+ *
  * @static
  * @property static.$shieldTemplate
  * @inheritable
  */
-// Using transparent png instead of gif because IE 10 renders gif as solid red when used as img src.
 ve.ce.Node.static.$shieldTemplate = $(
-	'<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAFElEQVR4XgXAAQ0AAABAMP1L30IDCPwC/o5WcS4AAAAASUVORK5CYII=" ' +
-		'class="ve-ce-node-shield">'
+	'<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAFElEQVR4XgXA' +
+		'AQ0AAABAMP1L30IDCPwC/o5WcS4AAAAASUVORK5CYII=" class="ve-ce-node-shield">'
 );
 
 /* Methods */
 
 /**
- * Gets a list of allowed child node types.
+ * Get allowed child node types.
  *
  * This method passes through to the model.
  *
@@ -102,7 +103,7 @@ ve.ce.Node.prototype.getChildNodeTypes = function () {
 };
 
 /**
- * Gets a list of allowed parent node types.
+ * Get allowed parent node types.
  *
  * This method passes through to the model.
  *
@@ -114,7 +115,7 @@ ve.ce.Node.prototype.getParentNodeTypes = function () {
 };
 
 /**
- * Checks if model is for a node that can have children.
+ * Check if the node can have children.
  *
  * This method passes through to the model.
  *
@@ -126,7 +127,7 @@ ve.ce.Node.prototype.canHaveChildren = function () {
 };
 
 /**
- * Checks if model is for a node that can have grandchildren.
+ * Check if the node can have grandchildren.
  *
  * This method passes through to the model.
  *
@@ -138,7 +139,7 @@ ve.ce.Node.prototype.canHaveGrandchildren = function () {
 };
 
 /**
- * Checks if model is for a wrapped element.
+ * Check if the node has a wrapped element in the document data.
  *
  * This method passes through to the model.
  *
@@ -150,7 +151,9 @@ ve.ce.Node.prototype.isWrapped = function () {
 };
 
 /**
- * Checks if this node can contain content.
+ * Check if the node can contain content.
+ *
+ * This method passes through to the model.
  *
  * @method
  * @returns {boolean} Node can contain content
@@ -160,7 +163,9 @@ ve.ce.Node.prototype.canContainContent = function () {
 };
 
 /**
- * Checks if this node is content.
+ * Check if the node is content.
+ *
+ * This method passes through to the model.
  *
  * @method
  * @returns {boolean} Node is content
@@ -170,7 +175,9 @@ ve.ce.Node.prototype.isContent = function () {
 };
 
 /**
- * Checks if this node can have a slug before it
+ * Check if the node can have a slug before it.
+ *
+ * TODO: Figure out a way to remove the hard-coding for text nodes here.
  *
  * @static
  * @method
@@ -181,7 +188,7 @@ ve.ce.Node.prototype.canHaveSlugBefore = function () {
 };
 
 /**
- * Checks if this node can have a slug after it
+ * Check if the node can have a slug after it.
  *
  * @static
  * @method
@@ -190,7 +197,7 @@ ve.ce.Node.prototype.canHaveSlugBefore = function () {
 ve.ce.Node.prototype.canHaveSlugAfter = ve.ce.Node.prototype.canHaveSlugBefore;
 
 /**
- * Gets model length.
+ * Get the length of the node.
  *
  * This method passes through to the model.
  *
@@ -202,7 +209,7 @@ ve.ce.Node.prototype.getLength = function () {
 };
 
 /**
- * Gets model outer length.
+ * Get the outer length of the node, which includes wrappers if present.
  *
  * This method passes through to the model.
  *
@@ -214,7 +221,7 @@ ve.ce.Node.prototype.getOuterLength = function () {
 };
 
 /**
- * Checks if this node can be split.
+ * Check if the node can be split.
  *
  * @method
  * @returns {boolean} Node can be split
@@ -224,15 +231,21 @@ ve.ce.Node.prototype.canBeSplit = function () {
 };
 
 /**
- * Gets a reference to the model this node observes.
+ * Get the model the node observes.
  *
  * @method
- * @returns {ve.dm.Node} Reference to the model this node observes
+ * @returns {ve.dm.Node} Model the node observes
  */
 ve.ce.Node.prototype.getModel = function () {
 	return this.model;
 };
 
+/**
+ * Get the closest splittable node upstream.
+ *
+ * @method
+ * @returns {ve.ce.Node} Closest splittable node
+ */
 ve.ce.Node.getSplitableNode = function ( node ) {
 	var splitableNode = null;
 
@@ -249,6 +262,8 @@ ve.ce.Node.getSplitableNode = function ( node ) {
 };
 
 /**
+ * Check if the node is attached to the live DOM.
+ *
  * @method
  * @returns {boolean} Node is attached to the live DOM
  */
@@ -257,7 +272,10 @@ ve.ce.Node.prototype.isLive = function () {
 };
 
 /**
+ * Set live state.
+ *
  * @method
+ * @param {boolean} live The node has been attached to the live DOM (use false on detach)
  */
 ve.ce.Node.prototype.setLive = function ( live ) {
 	this.live = live;

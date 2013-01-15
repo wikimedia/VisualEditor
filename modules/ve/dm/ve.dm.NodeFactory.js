@@ -1,5 +1,5 @@
 /*!
- * VisualEditor data model NodeFactory class.
+ * VisualEditor DataModel NodeFactory class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -24,13 +24,13 @@ ve.inheritClass( ve.dm.NodeFactory, ve.Factory );
 /* Methods */
 
 /**
- * Gets a data element with fallback attributes.
+ * Get a document data element.
  *
  * @method
  * @param {string} type Node type
  * @param {Object} attributes Node attributes, defaults will be used where needed
  * @returns {Object} Data element
- * @throws 'Unknown node type: {type}'
+ * @throws {Error} Unknown node type
  */
 ve.dm.NodeFactory.prototype.getDataElement = function ( type, attributes ) {
 	var element = { 'type': type };
@@ -47,12 +47,12 @@ ve.dm.NodeFactory.prototype.getDataElement = function ( type, attributes ) {
 };
 
 /**
- * Gets a list of allowed child node types for a given node.
+ * Get allowed child node types for a node.
  *
  * @method
  * @param {string} type Node type
  * @returns {string[]|null} List of node types allowed as children or null if any type is allowed
- * @throws 'Unknown node type: {type}'
+ * @throws {Error} Unknown node type
  */
 ve.dm.NodeFactory.prototype.getChildNodeTypes = function ( type ) {
 	if ( type in this.registry ) {
@@ -62,12 +62,12 @@ ve.dm.NodeFactory.prototype.getChildNodeTypes = function ( type ) {
 };
 
 /**
- * Gets a list of allowed parent node types for a given node.
+ * Get allowed parent node types for a node.
  *
  * @method
  * @param {string} type Node type
  * @returns {string[]|null} List of node types allowed as parents or null if any type is allowed
- * @throws 'Unknown node type: {type}'
+ * @throws {Error} Unknown node type
  */
 ve.dm.NodeFactory.prototype.getParentNodeTypes = function ( type ) {
 	if ( type in this.registry ) {
@@ -77,12 +77,12 @@ ve.dm.NodeFactory.prototype.getParentNodeTypes = function ( type ) {
 };
 
 /**
- * Checks if a given node type can have child nodes.
+ * Check if a node can have children.
  *
  * @method
  * @param {string} type Node type
  * @returns {boolean} The node can have children
- * @throws 'Unknown node type: {type}'
+ * @throws {Error} Unknown node type
  */
 ve.dm.NodeFactory.prototype.canNodeHaveChildren = function ( type ) {
 	if ( type in this.registry ) {
@@ -95,12 +95,12 @@ ve.dm.NodeFactory.prototype.canNodeHaveChildren = function ( type ) {
 };
 
 /**
- * Checks if a given node type can have grandchild nodes.
+ * Check if a node can have grandchildren.
  *
  * @method
  * @param {string} type Node type
  * @returns {boolean} The node can have grandchildren
- * @throws 'Unknown node type: {type}'
+ * @throws {Error} Unknown node type
  */
 ve.dm.NodeFactory.prototype.canNodeHaveGrandchildren = function ( type ) {
 	if ( type in this.registry ) {
@@ -112,12 +112,12 @@ ve.dm.NodeFactory.prototype.canNodeHaveGrandchildren = function ( type ) {
 };
 
 /**
- * Checks if a given node type has a wrapping element.
+ * Check if a node has a wrapped element in the document data.
  *
  * @method
  * @param {string} type Node type
  * @returns {boolean} Whether the node has a wrapping element
- * @throws 'Unknown node type: {type}'
+ * @throws {Error} Unknown node type
  */
 ve.dm.NodeFactory.prototype.isNodeWrapped = function ( type ) {
 	if ( type in this.registry ) {
@@ -127,12 +127,12 @@ ve.dm.NodeFactory.prototype.isNodeWrapped = function ( type ) {
 };
 
 /**
- * Checks if a given node contains content.
+ * Check if a node can contain content.
  *
  * @method
  * @param {string} type Node type
  * @returns {boolean} The node contains content
- * @throws 'Unknown node type: {type}'
+ * @throws {Error} Unknown node type
  */
 ve.dm.NodeFactory.prototype.canNodeContainContent = function ( type ) {
 	if ( type in this.registry ) {
@@ -142,12 +142,12 @@ ve.dm.NodeFactory.prototype.canNodeContainContent = function ( type ) {
 };
 
 /**
- * Checks if a given node is content.
+ * Check if a node is content.
  *
  * @method
  * @param {string} type Node type
  * @returns {boolean} The node is content
- * @throws 'Unknown node type: {type}'
+ * @throws {Error} Unknown node type
  */
 ve.dm.NodeFactory.prototype.isNodeContent = function ( type ) {
 	if ( type in this.registry ) {
@@ -157,13 +157,14 @@ ve.dm.NodeFactory.prototype.isNodeContent = function ( type ) {
 };
 
 /**
- * Checks if a given node has significant whitespace. Can only be true if canContainContent is
- * also true.
+ * Check if the node has significant whitespace.
+ *
+ * Can only be true if canContainContent is also true.
  *
  * @method
  * @param {string} type Node type
  * @returns {boolean} The node has significant whitespace
- * @throws 'Unknown node type: {type}'
+ * @throws {Error} Unknown node type
  */
 ve.dm.NodeFactory.prototype.doesNodeHaveSignificantWhitespace = function ( type ) {
 	if ( type in this.registry ) {

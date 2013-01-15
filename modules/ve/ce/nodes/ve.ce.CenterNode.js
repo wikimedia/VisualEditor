@@ -1,12 +1,12 @@
 /*!
- * VisualEditor content editable CenterNode class.
+ * VisualEditor ContentEditable CenterNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * ContentEditable node for a center tag.
+ * ContentEditable center node.
  *
  * @class
  * @extends ve.ce.BranchNode
@@ -22,7 +22,7 @@ ve.ce.CenterNode = function VeCeCenterNode( model ) {
 
 ve.inheritClass( ve.ce.CenterNode, ve.ce.BranchNode );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * Node rules.

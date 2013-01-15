@@ -6,7 +6,7 @@
  */
 
 /**
- * Ordered set of annotations.
+ * Annotation set.
  *
  * @extends ve.OrderedHashSet
  * @constructor
@@ -24,7 +24,7 @@ ve.inheritClass( ve.AnnotationSet, ve.OrderedHashSet );
 /* Methods */
 
 /**
- * Gets a clone.
+ * Get a clone.
  *
  * @method
  * @returns {ve.AnnotationSet} Copy of annotation set
@@ -34,7 +34,7 @@ ve.AnnotationSet.prototype.clone = function () {
 };
 
 /**
- * Gets an annotation set containing only annotations within this set with a given name.
+ * Get an annotation set containing only annotations within the set with a specific name.
  *
  * @method
  * @param {string|RegExp} name Regular expression or string to compare types with
@@ -45,11 +45,11 @@ ve.AnnotationSet.prototype.getAnnotationsByName = function ( name ) {
 };
 
 /**
- * Checks if any annotations in this set have a given name
+ * Check if any annotations in the set have a specific name.
  *
  * @method
  * @param {string|RegExp} name Regular expression or string to compare names with
- * @returns {boolean} Annotation of given type exists in this set
+ * @returns {boolean} Annotation of given type exists in the set
  */
 ve.AnnotationSet.prototype.hasAnnotationWithName = function ( name ) {
 	return this.containsMatching( 'name', name );

@@ -1,5 +1,5 @@
 /*!
- * VisualEditor content editable NodeFactory class.
+ * VisualEditor ContentEditable NodeFactory class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -24,11 +24,11 @@ ve.inheritClass( ve.ce.NodeFactory, ve.Factory );
 /* Methods */
 
 /**
- * Checks if a given node type can be split.
+ * Check if a node type can be split.
  *
  * @param {string} type Node type
  * @returns {boolean} The node can have grandchildren
- * @throws 'Unknown node type'
+ * @throws {Error} Unknown node type
  */
 ve.ce.NodeFactory.prototype.canNodeBeSplit = function ( type ) {
 	if ( type in this.registry ) {

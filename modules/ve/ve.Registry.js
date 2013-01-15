@@ -6,7 +6,7 @@
  */
 
 /**
- * Generic object factory.
+ * Generic data registry.
  *
  * @abstract
  * @extends ve.EventEmitter
@@ -32,11 +32,11 @@ ve.inheritClass( ve.Registry, ve.EventEmitter );
  * @method
  * @param {string|string[]} name Symbolic name or list of symbolic names
  * @param {Mixed} data Data to associate with symbolic name
- * @throws 'name must be a string'
+ * @throws {Error} Name argument must be a string or array
  */
 ve.Registry.prototype.register = function ( name, data ) {
 	if ( typeof name !== 'string' && !ve.isArray( name ) ) {
-		throw new Error( 'name must be a string or array, cannot be a ' + typeof name );
+		throw new Error( 'Name argument must be a string or array, cannot be a ' + typeof name );
 	}
 	var i, len;
 	if ( ve.isArray( name ) ) {

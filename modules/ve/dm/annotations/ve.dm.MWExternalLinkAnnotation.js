@@ -1,12 +1,12 @@
 /*!
- * VisualEditor data model MWExternalLinkAnnotation class.
+ * VisualEditor DataModel MWExternalLinkAnnotation class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * MediaWiki external link annotation.
+ * DataModel MediaWiki external link annotation.
  *
  * Example HTML sources:
  *     <a rel="mw:ExtLink">
@@ -29,7 +29,7 @@ ve.dm.MWExternalLinkAnnotation = function VeDmMWExternalLinkAnnotation( element 
 
 ve.inheritClass( ve.dm.MWExternalLinkAnnotation, ve.dm.LinkAnnotation );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * @static

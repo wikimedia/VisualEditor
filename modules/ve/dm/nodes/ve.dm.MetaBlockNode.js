@@ -1,12 +1,12 @@
 /*!
- * VisualEditor data model MetaBlockNode class.
+ * VisualEditor DataModel MetaBlockNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * DataModel node for an alien block node.
+ * DataModel meta block node.
  *
  * @class
  * @extends ve.dm.BranchNode
@@ -23,7 +23,7 @@ ve.dm.MetaBlockNode = function VeDmMetaBlockNode( length, element ) {
 
 ve.inheritClass( ve.dm.MetaBlockNode, ve.dm.LeafNode );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * Node rules.

@@ -6,7 +6,7 @@
  */
 
 /**
- * Annotate action.
+ * Annotation action.
  *
  * @class
  * @extends ve.Action
@@ -22,10 +22,10 @@ ve.AnnotationAction = function VeAnnotationAction( surface ) {
 
 ve.inheritClass( ve.AnnotationAction, ve.Action );
 
-/* Static Members */
+/* Static Properties */
 
 /**
- * List of allowed methods for this action.
+ * List of allowed methods for the action.
  *
  * @static
  * @property
@@ -35,7 +35,7 @@ ve.AnnotationAction.static.methods = ['set', 'clear', 'toggle', 'clearAll'];
 /* Methods */
 
 /**
- * Sets a given annotation.
+ * Set an annotation.
  *
  * @method
  * @param {string} name Annotation name, for example: 'textStyle/bold'
@@ -46,7 +46,7 @@ ve.AnnotationAction.prototype.set = function ( name, data ) {
 };
 
 /**
- * Clears a given annotation.
+ * Clear an annotation.
  *
  * @method
  * @param {string} name Annotation name, for example: 'textStyle/bold'
@@ -57,9 +57,9 @@ ve.AnnotationAction.prototype.clear = function ( name, data ) {
 };
 
 /**
- * Toggles a given annotation.
+ * Toggle an annotation.
  *
- * If the selected text is completely covered with this annotation already the annotation will be
+ * If the selected text is completely covered with the annotation already the annotation will be
  * cleared. Otherwise the annotation will be set.
  *
  * @method
@@ -74,7 +74,7 @@ ve.AnnotationAction.prototype.toggle = function ( name, data ) {
 };
 
 /**
- * Clears all annotations.
+ * Clear all annotations.
  *
  * @method
  * @param {string|RegExp} [filter] Annotation name or RegExp that matches types

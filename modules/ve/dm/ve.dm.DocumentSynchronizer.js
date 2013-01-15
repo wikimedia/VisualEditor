@@ -1,12 +1,12 @@
 /*!
- * VisualEditor data model DocumentSynchronizer class.
+ * VisualEditor DataModel DocumentSynchronizer class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Creates an ve.dm.DocumentSynchronizer object.
+ * DataModel document synchronizer.
  *
  * This object is a utility for collecting actions to be performed on the model tree in multiple
  * steps as the linear model is modified by a transaction processor and then processing those queued
@@ -29,7 +29,7 @@ ve.dm.DocumentSynchronizer = function VeDmDocumentSynchronizer( doc ) {
 	this.adjustment = 0;
 };
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * Synchronization methods.
@@ -45,7 +45,7 @@ ve.dm.DocumentSynchronizer.synchronizers = {};
 /* Static Methods */
 
 /**
- * Synchronizes an annotation action.
+ * Synchronize an annotation action.
  *
  * This method is called within the context of a document synchronizer instance.
  *
@@ -67,7 +67,7 @@ ve.dm.DocumentSynchronizer.synchronizers.annotation = function ( action ) {
 };
 
 /**
- * Synchronizes an attribute change action.
+ * Synchronize an attribute change action.
  *
  * This method is called within the context of a document synchronizer instance.
  *
@@ -83,7 +83,7 @@ ve.dm.DocumentSynchronizer.synchronizers.attributeChange = function ( action ) {
 };
 
 /**
- * Synchronizes a resize action.
+ * Synchronize a resize action.
  *
  * This method is called within the context of a document synchronizer instance.
  *
@@ -101,7 +101,7 @@ ve.dm.DocumentSynchronizer.synchronizers.resize = function ( action ) {
 };
 
 /**
- * Synchronizes a rebuild action.
+ * Synchronize a rebuild action.
  *
  * This method is called within the context of a document synchronizer instance.
  *
@@ -140,7 +140,7 @@ ve.dm.DocumentSynchronizer.synchronizers.rebuild = function ( action ) {
 /* Methods */
 
 /**
- * Gets the document being synchronized.
+ * Get the document being synchronized.
  *
  * @method
  * @returns {ve.dm.Document} Document being synchronized
@@ -253,7 +253,7 @@ ve.dm.DocumentSynchronizer.prototype.queueEvent = function ( node ) {
 };
 
 /**
- * Synchronizes node tree using queued actions.
+ * Synchronize node tree using queued actions.
  *
  * This method uses the static methods defined in {ve.dm.DocumentSynchronizer.synchronizers} and
  * calls them in the context of {this}.

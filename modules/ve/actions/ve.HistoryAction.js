@@ -22,10 +22,10 @@ ve.HistoryAction = function VeHistoryAction( surface ) {
 
 ve.inheritClass( ve.HistoryAction, ve.Action );
 
-/* Static Members */
+/* Static Properties */
 
 /**
- * List of allowed methods for this action.
+ * List of allowed methods for the action.
  *
  * @static
  * @property
@@ -35,7 +35,7 @@ ve.HistoryAction.static.methods = ['undo', 'redo'];
 /* Methods */
 
 /**
- * Steps backwards in time.
+ * Step backwards in time.
  *
  * @method
  */
@@ -47,7 +47,7 @@ ve.HistoryAction.prototype.undo = function () {
 };
 
 /**
- * Steps forwards in time.
+ * Step forwards in time.
  *
  * @method
  */

@@ -6,7 +6,7 @@
  */
 
 /**
- * Creates an ve.Surface object.
+ * Surface.
  *
  * A surface is a top-level object which contains both a surface model and a surface view.
  *
@@ -55,7 +55,7 @@ ve.Surface = function VeSurface( parent, dom, options ) {
 	} catch ( e ) { /* Silently ignore */ }
 };
 
-/* Static Members */
+/* Static Properties */
 
 ve.Surface.defaultOptions = {
 	'toolbars': {
@@ -76,7 +76,7 @@ ve.Surface.defaultOptions = {
 /* Methods */
 
 /**
- * Gets a reference to the surface model.
+ * Get the surface model.
  *
  * @method
  * @returns {ve.dm.Surface} Surface model
@@ -86,7 +86,7 @@ ve.Surface.prototype.getModel = function () {
 };
 
 /**
- * Gets a reference to the document model.
+ * Get the document model.
  *
  * @method
  * @returns {ve.dm.Document} Document model
@@ -96,7 +96,7 @@ ve.Surface.prototype.getDocumentModel = function () {
 };
 
 /**
- * Gets a reference to the surface view.
+ * Get the surface view.
  *
  * @method
  * @returns {ve.ce.Surface} Surface view
@@ -106,7 +106,7 @@ ve.Surface.prototype.getView = function () {
 };
 
 /**
- * Gets a reference to the context user interface.
+ * Get the context menu.
  *
  * @method
  * @returns {ve.ui.Context} Context user interface
@@ -129,7 +129,7 @@ ve.Surface.prototype.destroy = function () {
 };
 
 /**
- * Disables editing.
+ * Disable editing.
  *
  * @method
  */
@@ -140,7 +140,7 @@ ve.Surface.prototype.disable = function () {
 };
 
 /**
- * Enables editing.
+ * Enable editing.
  *
  * @method
  */
@@ -151,9 +151,10 @@ ve.Surface.prototype.enable = function () {
 };
 
 /**
- * Enables editing.
+ * Check if editing is enabled.
  *
  * @method
+ * @returns {boolean} Editing is enabled
  */
 ve.Surface.prototype.isEnabled = function () {
 	return this.enabled;
@@ -164,6 +165,8 @@ ve.Surface.prototype.isEnabled = function () {
  *
  * Reselect the selection and force a poll. This forces the selection to be something reasonable.
  * In Firefox, the initial selection is (0,0), which causes problems (bug 42277).
+ *
+ * @method
  */
 ve.Surface.prototype.resetSelection = function () {
 	this.model.getFragment().select();
@@ -171,7 +174,7 @@ ve.Surface.prototype.resetSelection = function () {
 };
 
 /**
- * Executes an action or command.
+ * Execute an action or command.
  *
  * @method
  * @param {string|ve.Command} action Name of action or command object
@@ -202,7 +205,7 @@ ve.Surface.prototype.execute = function ( action, method ) {
 };
 
 /**
- * Adds all commands from initialization options.
+ * Add all commands from initialization options.
  *
  * Commands must be registered through {ve.commandRegsitry} prior to constructing the surface.
  *
@@ -234,7 +237,7 @@ ve.Surface.prototype.setupCommands = function () {
 };
 
 /**
- * Initializes the toolbar.
+ * Initialize the toolbar.
  *
  * This method uses {this.options} for it's configuration.
  *
@@ -270,7 +273,7 @@ ve.Surface.prototype.setupToolbars = function () {
 };
 
 /*
- * Overlays the toolbar to the top of the screen when it would normally be out of view.
+ * Move the toolbar to the top of the screen if it would normally be out of view.
  *
  * TODO: Determine if this would be better in ui.toolbar vs here.
  * TODO: This needs to be refactored so that it only works on the main editor top tool bar.

@@ -1,5 +1,5 @@
 /*!
- * VisualEditor data model SurfaceFragment tests.
+ * VisualEditor DataModel SurfaceFragment tests.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt

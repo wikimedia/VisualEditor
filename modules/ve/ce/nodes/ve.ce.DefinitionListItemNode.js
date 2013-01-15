@@ -1,12 +1,12 @@
 /*!
- * VisualEditor content editable DefinitionListItemNode class.
+ * VisualEditor ContentEditable DefinitionListItemNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * ContentEditable node for a definition list item.
+ * ContentEditable definition list item node.
  *
  * @class
  * @extends ve.ce.BranchNode
@@ -27,7 +27,7 @@ ve.ce.DefinitionListItemNode = function VeCeDefinitionListItemNode( model ) {
 
 ve.inheritClass( ve.ce.DefinitionListItemNode, ve.ce.BranchNode );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * Node rules.
@@ -54,7 +54,7 @@ ve.ce.DefinitionListItemNode.domWrapperElementTypes = {
 /* Methods */
 
 /**
- * Responds to model update events.
+ * Handle model update events.
  *
  * If the style changed since last update the DOM wrapper will be replaced with an appropriate one.
  *

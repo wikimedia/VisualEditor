@@ -1,12 +1,12 @@
 /*!
- * VisualEditor user interface ItalicButtonTool class.
+ * VisualEditor UserInterface ItalicButtonTool class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Creates an ve.ui.ItalicButtonTool object.
+ * UserInterface italic button tool.
  *
  * @class
  * @extends ve.ui.AnnotationButtonTool
@@ -22,7 +22,7 @@ ve.ui.ItalicButtonTool = function VeUiItalicButtonTool( toolbar ) {
 
 ve.inheritClass( ve.ui.ItalicButtonTool, ve.ui.AnnotationButtonTool );
 
-/* Static Members */
+/* Static Properties */
 
 ve.ui.ItalicButtonTool.static.name = 'italic';
 

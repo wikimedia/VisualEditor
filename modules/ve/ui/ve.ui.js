@@ -1,12 +1,12 @@
 /*!
- * VisualEditor user interface namespace.
+ * VisualEditor UserInterface namespace.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Namespace for all VisualEditor user interface classes, static methods and static properties.
+ * Namespace for all VisualEditor UserInterface classes, static methods and static properties.
  * @class
  * @singleton
  */

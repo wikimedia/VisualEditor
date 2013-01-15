@@ -1,5 +1,5 @@
 /*!
- * VisualEditor data model Surface class.
+ * VisualEditor DataModel Surface class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -36,7 +36,7 @@ ve.inheritClass( ve.dm.Surface, ve.EventEmitter );
 /* Methods */
 
 /**
- * Disables changes.
+ * Disable changes.
  *
  * @method
  */
@@ -46,7 +46,7 @@ ve.dm.Surface.prototype.disable = function () {
 };
 
 /**
- * Enables changes.
+ * Enable changes.
  *
  * @method
  */
@@ -80,7 +80,7 @@ ve.dm.Surface.prototype.stopHistoryTracking = function () {
 };
 
 /**
- * Removes all states from history.
+ * Remove all states from history.
  *
  * @method
  */
@@ -95,7 +95,7 @@ ve.dm.Surface.prototype.purgeHistory = function () {
 };
 
 /**
- * Gets a list of all history states.
+ * Get a list of all history states.
  *
  * @method
  * @returns {Array[]} List of transaction stacks
@@ -109,7 +109,7 @@ ve.dm.Surface.prototype.getHistory = function () {
 };
 
 /**
- * Gets annotations that will be used upon insertion.
+ * Get annotations that will be used upon insertion.
  *
  * @method
  * @returns {ve.AnnotationSet|null} Insertion anotations or null if not being used
@@ -119,7 +119,7 @@ ve.dm.Surface.prototype.getInsertionAnnotations = function () {
 };
 
 /**
- * Sets annotations that will be used upon insertion.
+ * Set annotations that will be used upon insertion.
  *
  * @method
  * @param {ve.AnnotationSet|null} Insertion anotations to use or null to disable them
@@ -134,7 +134,7 @@ ve.dm.Surface.prototype.setInsertionAnnotations = function ( annotations ) {
 };
 
 /**
- * Adds an annotation to the insertion annotations.
+ * Add an annotation to be used upon insertion.
  *
  * @method
  * @param {ve.AnnotationSet} Insertion anotation to add
@@ -149,7 +149,7 @@ ve.dm.Surface.prototype.addInsertionAnnotation = function ( annotation ) {
 };
 
 /**
- * Removes an annotation from the insertion annotations.
+ * Remove an annotation from those that will be used upon insertion.
  *
  * @method
  * @param {ve.AnnotationSet} Insertion anotation to remove
@@ -164,7 +164,7 @@ ve.dm.Surface.prototype.removeInsertionAnnotation = function ( annotation ) {
 };
 
 /**
- * Checks if there is a state to redo.
+ * Check if there is a state to redo.
  *
  * @method
  * @returns {boolean} Has a future state
@@ -174,7 +174,7 @@ ve.dm.Surface.prototype.hasFutureState = function() {
 };
 
 /**
- * Checks if there is a state to undo.
+ * Check if there is a state to undo.
  *
  * @method
  * @returns {boolean} Has a past state
@@ -184,7 +184,7 @@ ve.dm.Surface.prototype.hasPastState = function() {
 };
 
 /**
- * Gets the document model of the surface.
+ * Get the document model.
  *
  * @method
  * @returns {ve.dm.DocumentNode} Document model of the surface
@@ -194,7 +194,7 @@ ve.dm.Surface.prototype.getDocument = function () {
 };
 
 /**
- * Gets the selection
+ * Get the selection.
  *
  * @method
  * @returns {ve.Range} Current selection
@@ -204,7 +204,7 @@ ve.dm.Surface.prototype.getSelection = function () {
 };
 
 /**
- * Gets a fragment from this document and selection.
+ * Get a fragment for a range.
  *
  * @method
  * @param {ve.Range} [range] Range within target document, current selection used by default
@@ -215,7 +215,7 @@ ve.dm.Surface.prototype.getFragment = function ( range, noAutoSelect ) {
 };
 
 /**
- * Applies a series of transactions to the content data and sets the selection.
+ * Apply a transactions and selection changes to the document.
  *
  * @method
  * @param {ve.dm.Transaction|ve.dm.Transaction[]|null} transactions One or more transactions to
@@ -324,7 +324,7 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 };
 
 /**
- * Sets a history state breakpoint.
+ * Set a history state breakpoint.
  *
  * @method
  * @param {ve.Range} selection New selection range
@@ -344,7 +344,7 @@ ve.dm.Surface.prototype.breakpoint = function ( selection ) {
 };
 
 /**
- * Steps backwards in history.
+ * Step backwards in history.
  *
  * @method
  * @returns {ve.Range} Selection or null if no further state could be reached
@@ -375,7 +375,7 @@ ve.dm.Surface.prototype.undo = function () {
 };
 
 /**
- * Steps forwards in history.
+ * Step forwards in history.
  *
  * @method
  * @returns {ve.Range} Selection or null if no further state could be reached

@@ -1,12 +1,12 @@
 /*!
- * VisualEditor user interface MenuWidget class.
+ * VisualEditor UserInterface MenuWidget class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Creates an ve.ui.MenuWidget object.
+ * UserInterface menu widget.
  *
  * @class
  * @constructor

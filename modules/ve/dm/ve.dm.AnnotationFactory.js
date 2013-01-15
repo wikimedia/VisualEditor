@@ -11,7 +11,6 @@
  *
  * To register a new annotation type, call ve.dm.annotationFactory.register()
  *
- * @abstract
  * @extends ve.EventEmitter
  * @constructor
  */

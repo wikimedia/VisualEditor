@@ -1,12 +1,12 @@
 /*!
- * VisualEditor data model AlienInlineNode class.
+ * VisualEditor DataModel AlienInlineNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * DataModel node for an alien inline node.
+ * DataModel inline alien node.
  *
  * @class
  * @extends ve.dm.LeafNode
@@ -23,7 +23,7 @@ ve.dm.AlienInlineNode = function VeDmAlienInlineNode( length, element ) {
 
 ve.inheritClass( ve.dm.AlienInlineNode, ve.dm.LeafNode );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * Node rules.

@@ -1,12 +1,12 @@
 /*!
- * VisualEditor content editable DocumentNode class.
+ * VisualEditor ContentEditable DocumentNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * ContentEditable node for a document.
+ * ContentEditable document node.
  *
  * @class
  * @extends ve.ce.BranchNode
@@ -30,7 +30,7 @@ ve.ce.DocumentNode = function VeCeDocumentNode( model, surface ) {
 
 ve.inheritClass( ve.ce.DocumentNode, ve.ce.BranchNode );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * Node rules.
@@ -46,7 +46,9 @@ ve.ce.DocumentNode.rules = {
 /* Methods */
 
 /**
- * Gets the outer length, which for a document node is the same as the inner length.
+ * Get the outer length.
+ *
+ * For a document node is the same as the inner length, which is why we override it here.
  *
  * @method
  * @returns {number} Length of the entire node
@@ -56,17 +58,17 @@ ve.ce.DocumentNode.prototype.getOuterLength = function () {
 };
 
 /**
- * Gets the surface this document is attached to.
+ * Get the surface the document is attached to.
  *
  * @method
- * @returns {ve.ce.Surface} Surface this document is attached to
+ * @returns {ve.ce.Surface} Surface the document is attached to
  */
 ve.ce.DocumentNode.prototype.getSurface = function () {
 	return this.surface;
 };
 
 /**
- * Disables editing.
+ * Disable editing.
  *
  * @method
  */
@@ -75,7 +77,7 @@ ve.ce.DocumentNode.prototype.disable = function () {
 };
 
 /**
- * Disables editing.
+ * Enable editing.
  *
  * @method
  */

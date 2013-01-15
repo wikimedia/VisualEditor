@@ -1,12 +1,12 @@
 /*!
- * VisualEditor content editable BreakNode class.
+ * VisualEditor ContentEditable BreakNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * ContentEditable node for a line break.
+ * ContentEditable break node.
  *
  * @class
  * @extends ve.ce.LeafNode
@@ -25,7 +25,7 @@ ve.ce.BreakNode = function VeCeBreakNode( model ) {
 
 ve.inheritClass( ve.ce.BreakNode, ve.ce.LeafNode );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * Node rules.

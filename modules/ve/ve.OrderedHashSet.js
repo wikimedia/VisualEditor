@@ -6,9 +6,11 @@
  */
 
 /**
- * Ordered set of objects. Objects are treated as equal if their hashes are equal. This means that
- * you can't add two objects with the same hash, and it also means that you can search for one
- * object and get a different one back that has the same hash.
+ * Ordered hash set.
+ *
+ * Objects are treated as equal if their hashes are equal. This means that you can't add two objects
+ * with the same hash, and it also means that you can search for one object and get a different one
+ * back that has the same hash.
  *
  * The second parameter to this constructor can be an array of objects, or an existing
  * ve.OrderedHashSet object. In both cases, the new Set will be a shallow copy: object references
@@ -18,7 +20,7 @@
  * @abstract
  * @constructor
  * @param {Function} hash Hash function
- * @param {Array|ve.OrderedHashSet} [items] Items to populate this set with
+ * @param {Array|ve.OrderedHashSet} [items] Items to populate the set with
  */
 ve.OrderedHashSet = function VeOrderedHashSet( hash, items ) {
 	var i;
@@ -44,7 +46,9 @@ ve.OrderedHashSet = function VeOrderedHashSet( hash, items ) {
 /* Methods */
 
 /**
- * Create a clone of this set, with the same hash function and the same contents.
+ * Create a clone of the set, with the same hash function and the same contents.
+ *
+ * @method
  * @returns {ve.OrderedHashSet}
  */
 ve.OrderedHashSet.prototype.clone = function () {
@@ -57,7 +61,8 @@ ve.OrderedHashSet.prototype.clone = function () {
  * set.get( 5 ) returns the object at index 5, set.get() returns an array with all objects in
  * the entire set.
  *
- * @param {number} [index] If set, only get the element at this index
+ * @method
+ * @param {number} [index] If set, only get the element at the index
  * @returns {Array|Object|undefined} The object at index, or an array of all objects in the set
  */
 ve.OrderedHashSet.prototype.get = function ( index ) {
@@ -69,6 +74,9 @@ ve.OrderedHashSet.prototype.get = function ( index ) {
 };
 
 /**
+ * Get the length of the set.
+ *
+ * @method
  * @returns {number} The number of objects in the set
  */
 ve.OrderedHashSet.prototype.getLength = function () {
@@ -76,6 +84,9 @@ ve.OrderedHashSet.prototype.getLength = function () {
 };
 
 /**
+ * Check if the set is empty.
+ *
+ * @method
  * @returns {boolean} True if the set is empty, false otherwise
  */
 ve.OrderedHashSet.prototype.isEmpty = function () {
@@ -83,19 +94,23 @@ ve.OrderedHashSet.prototype.isEmpty = function () {
 };
 
 /**
- * Check whether a given value occurs in the set. Values are compared by hash.
+ * Check whether a given value occurs in the set.
  *
- * @returns {boolean} True if there is an object in the set with the same hash as value, false otherwise
+ * Values are compared by hash.
+ *
+ * @method
+ * @returns {boolean} There is an object in the set with the same hash as value
  */
 ve.OrderedHashSet.prototype.contains = function ( value ) {
 	return this.hash( value ) in this.map;
 };
 
 /**
- * Check whether this set contains any of the values in another set.
+ * Check whether the set contains any of the values in another set.
  *
- * @param {ve.OrderedHashSet} set Set to compare this set with
- * @returns {boolean} True if there is at least one value in set that is also in this set, false otherwise
+ * @method
+ * @param {ve.OrderedHashSet} set Set to compare the set with
+ * @returns {boolean} There is at least one value in set that is also in the set
  */
 ve.OrderedHashSet.prototype.containsAnyOf = function ( set ) {
 	var key;
@@ -108,10 +123,11 @@ ve.OrderedHashSet.prototype.containsAnyOf = function ( set ) {
 };
 
 /**
- * Check whether this set contains all of the values in another set.
+ * Check whether the set contains all of the values in another set.
  *
- * @param {ve.OrderedHashSet} set Set to compare this set with
- * @returns {boolean} True if all values in set are also in this set, false otherwise
+ * @method
+ * @param {ve.OrderedHashSet} set Set to compare the set with
+ * @returns {boolean} All values in set are also in the set
  */
 ve.OrderedHashSet.prototype.containsAllOf = function ( set ) {
 	var key;
@@ -124,10 +140,11 @@ ve.OrderedHashSet.prototype.containsAllOf = function ( set ) {
 };
 
 /**
- * Get the index of a given value in this set.
+ * Get the index of a given value in the set.
  *
+ * @method
  * @param {Object} value Value to search for
- * @returns {number} Index of value in this set, or -1 if value is not in this set.
+ * @returns {number} Index of value in the set, or -1 if value is not in the set.
  */
 ve.OrderedHashSet.prototype.indexOf = function ( value ) {
 	var hash = this.hash( value );
@@ -139,8 +156,10 @@ ve.OrderedHashSet.prototype.indexOf = function ( value ) {
 };
 
 /**
- * Filter this set by a given property. This returns a new set with all values in this set for
- * which value.property matches filter (if filter is a RegExp) or is equal to filter,
+ * Filter the set by an item property.
+ *
+ * This returns a new set with all values in the set for which value.property matches filter (if
+ * filter is a RegExp) or is equal to filter,
  *
  * @method
  * @param {string} property Property to check
@@ -174,11 +193,12 @@ ve.OrderedHashSet.prototype.filter = function ( property, filter, returnBool ) {
 };
 
 /**
- * Check if this set contains at least one value where a given property matches a given filter.
+ * Check if the set contains at least one value where a given property matches a given filter.
  *
  * This is equivalent to (but more efficient than) `!this.filter( .. ).isEmpty()`.
  *
  * @see ve.OrderedHashSet#filter
+ *
  * @method
  * @param {string} property
  * @param {Mixed|RegExp} filter
@@ -189,7 +209,9 @@ ve.OrderedHashSet.prototype.containsMatching = function ( property, filter ) {
 };
 
 /**
- * Add a value to this set. If the value is already present in this set, nothing happens.
+ * Add a value to the set.
+ *
+ * If the value is already present in the set, nothing happens.
  *
  * The value will be inserted before the value that is currently at the given index. If index is
  * negative, it will be counted from the end (i.e. index -1 is the last item, -2 the second-to-last,
@@ -217,9 +239,12 @@ ve.OrderedHashSet.prototype.add = function ( value, index ) {
 };
 
 /**
- * Add all values in the given set to the end of this set. Values from the other set that are
- * already in this set will not be added again.
- * @param {ve.OrderedHashSet} set Set to add to this set
+ * Add all values in the given set to the end of the set.
+ *
+ * Values from the other set that are already in the set will not be added again.
+ *
+ * @method
+ * @param {ve.OrderedHashSet} set Set to add to the set
  */
 ve.OrderedHashSet.prototype.addSet = function ( set ) {
 	var i;
@@ -229,7 +254,11 @@ ve.OrderedHashSet.prototype.addSet = function ( set ) {
 };
 
 /**
- * Add a value at the end of this set. If the value is already present in this set, nothing happens.
+ * Add a value at the end of the set.
+ *
+ * If the value is already present in the set, nothing happens.
+ *
+ * @method
  * @param {Object} value Value to add
  */
 ve.OrderedHashSet.prototype.push = function ( value ) {
@@ -241,8 +270,10 @@ ve.OrderedHashSet.prototype.push = function ( value ) {
 };
 
 /**
- * Remove the value at a given index
- * @param {number} index Index to remove item at. If negative, this counts from the end, see add()
+ * Remove the value at a given index.
+ *
+ * @method
+ * @param {number} index Index to remove item at. If negative, the counts from the end, see add()
  * @throws {Error} Index out of bounds.
  */
 ve.OrderedHashSet.prototype.removeAt = function ( index ) {
@@ -257,7 +288,11 @@ ve.OrderedHashSet.prototype.removeAt = function ( index ) {
 };
 
 /**
- * Remove a given value from the set. If the value isn't in the set, nothing happens.
+ * Remove a given value from the set.
+ *
+ * If the value isn't in the set, nothing happens.
+ *
+ * @method
  * @param {Object} value Value to remove
  */
 ve.OrderedHashSet.prototype.remove = function ( value ) {
@@ -271,6 +306,8 @@ ve.OrderedHashSet.prototype.remove = function ( value ) {
 
 /**
  * Remove all values.
+ *
+ * @method
  */
 ve.OrderedHashSet.prototype.removeAll = function () {
 	var i = this.arr.length;
@@ -280,8 +317,12 @@ ve.OrderedHashSet.prototype.removeAll = function () {
 };
 
 /**
- * Remove all values in a given set from this set. Values that aren't in this set are ignored.
- * @param {ve.OrderedHashSet} set Set to remove from this set
+ * Remove all values in a given set from the set.
+ *
+ * Values that aren't in the set are ignored.
+ *
+ * @method
+ * @param {ve.OrderedHashSet} set Set to remove from the set
  */
 ve.OrderedHashSet.prototype.removeSet = function ( set ) {
 	var i;
@@ -291,8 +332,10 @@ ve.OrderedHashSet.prototype.removeSet = function ( set ) {
 };
 
 /**
- * Remove all values that are not also in a given other set from this set.
- * @param {ve.OrderedHashSet} set Set to intersect with this set
+ * Remove all values that are not also in a given other set from the set.
+ *
+ * @method
+ * @param {ve.OrderedHashSet} set Set to intersect with the set
  */
 ve.OrderedHashSet.prototype.removeNotInSet = function ( set ) {
 	var i;
@@ -304,11 +347,12 @@ ve.OrderedHashSet.prototype.removeNotInSet = function ( set ) {
 };
 
 /**
- * Reverse this set.
+ * Reverse the set.
  *
  * This returns a copy, the original set is not modified.
  *
- * @returns {ve.OrderedHashSet} Copy of this set with the order reversed.
+ * @method
+ * @returns {ve.OrderedHashSet} Copy of the set with the order reversed.
  */
 ve.OrderedHashSet.prototype.reversed = function () {
 	var newSet = this.clone();
@@ -317,12 +361,13 @@ ve.OrderedHashSet.prototype.reversed = function () {
 };
 
 /**
- * Merge another set into this set.
+ * Merge another set into the set.
  *
  * This returns a copy, the original set is not modified.
  *
+ * @method
  * @param {ve.OrderedHashSet} set Other set
- * @returns {ve.OrderedHashSet} Set containing all values in this set as well as all values in set
+ * @returns {ve.OrderedHashSet} Set containing all values in the set as well as all values in set
  */
 ve.OrderedHashSet.prototype.mergeWith = function ( set ) {
 	var newSet = this.clone();
@@ -331,10 +376,11 @@ ve.OrderedHashSet.prototype.mergeWith = function ( set ) {
 };
 
 /**
- * Get the difference between this set and another set.
+ * Get the difference between the set and another set.
  *
+ * @method
  * @param {ve.OrderedHashSet} set Other set
- * @returns {ve.OrderedHashSet} New set containing all values that are in this set but not in set
+ * @returns {ve.OrderedHashSet} New set containing all values that are in the set but not in set
  */
 ve.OrderedHashSet.prototype.diffWith = function ( set ) {
 	var newSet = this.clone();
@@ -343,10 +389,11 @@ ve.OrderedHashSet.prototype.diffWith = function ( set ) {
 };
 
 /**
- * Get the intersection of this set with another set.
+ * Get the intersection of the set with another set.
  *
+ * @method
  * @param {ve.OrderedHashSet} set Other set
- * @returns {ve.OrderedHashSet} New set containing all values that are both in this set and in set
+ * @returns {ve.OrderedHashSet} New set containing all values that are both in the set and in set
  */
 ve.OrderedHashSet.prototype.intersectWith = function ( set ) {
 	var newSet = this.clone();

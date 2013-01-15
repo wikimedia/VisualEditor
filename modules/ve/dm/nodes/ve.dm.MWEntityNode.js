@@ -1,12 +1,12 @@
 /*!
- * VisualEditor data model MWEntityNode class.
+ * VisualEditor DataModel MWEntityNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * DataModel node for a document.
+ * DataModel MediaWiki entitiy node.
  *
  * @class
  * @extends ve.dm.LeafNode
@@ -23,7 +23,7 @@ ve.dm.MWEntityNode = function VeDmMWEntityNode( length, element ) {
 
 ve.inheritClass( ve.dm.MWEntityNode, ve.dm.LeafNode );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * Node rules.

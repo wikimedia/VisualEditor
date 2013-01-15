@@ -1,12 +1,12 @@
 /*!
- * VisualEditor data model LinkAnnotation class.
+ * VisualEditor DataModel LinkAnnotation class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Generic link annotation.
+ * DataModel link annotation.
  *
  * Represents <a> tags that don't have a specific type.
  *
@@ -24,7 +24,7 @@ ve.dm.LinkAnnotation = function VeDmLinkAnnotation( element ) {
 
 ve.inheritClass( ve.dm.LinkAnnotation, ve.dm.Annotation );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * @static

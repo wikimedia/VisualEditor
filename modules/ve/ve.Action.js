@@ -20,12 +20,17 @@ ve.Action = function VeAction( surface ) {
 	this.surface = surface;
 };
 
-/* Static Members */
+/* Static Properties */
 
+/**
+ * @static
+ * @property
+ * @inheritable
+ */
 ve.Action.static = {};
 
 /**
- * List of allowed methods for this action.
+ * List of allowed methods for the action.
  *
  * To avoid use of methods not intended to be executed via surface.execute(), the methods must be
  * whitelisted here. This information is checked by ve.Surface before executing an action.

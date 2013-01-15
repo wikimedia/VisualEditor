@@ -1,12 +1,12 @@
 /*!
- * VisualEditor user interface Inspector class.
+ * VisualEditor UserInterface Inspector class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Creates an ve.ui.Inspector object.
+ * UserInterface inspector.
  *
  * @class
  * @extends ve.EventEmitter
@@ -61,7 +61,7 @@ ve.ui.Inspector = function VeUiInspector( context ) {
 
 ve.inheritClass( ve.ui.Inspector, ve.EventEmitter );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * Symbolic name of icon.
@@ -93,7 +93,7 @@ ve.ui.Inspector.static.typePattern = new RegExp();
 /* Methods */
 
 /**
- * Responds to close button click events.
+ * Handle close button click events.
  *
  * @method
  * @param {jQuery.Event} e Click event
@@ -103,7 +103,7 @@ ve.ui.Inspector.prototype.onCloseButtonClick = function () {
 };
 
 /**
- * Responds to remove button click events.
+ * Handle remove button click events.
  *
  * @method
  * @param {jQuery.Event} e Click event
@@ -114,7 +114,7 @@ ve.ui.Inspector.prototype.onRemoveButtonClick = function() {
 };
 
 /**
- * Responds to form submission events.
+ * Handle form submission events.
  *
  * @method
  * @param {jQuery.Event} e Submit event
@@ -126,7 +126,7 @@ ve.ui.Inspector.prototype.onFormSubmit = function ( e ) {
 };
 
 /**
- * Responds to form keydown events.
+ * Handle form keydown events.
  *
  * @method
  * @param {jQuery.Event} e Keydown event
@@ -141,7 +141,7 @@ ve.ui.Inspector.prototype.onFormKeyDown = function ( e ) {
 };
 
 /**
- * Responds to the inspector being initialized.
+ * Handle the inspector being initialized.
  *
  * This gives an inspector an opportunity to make selection and annotation changes prior to the
  * inspector being opened.
@@ -153,7 +153,7 @@ ve.ui.Inspector.prototype.onInitialize = function () {
 };
 
 /**
- * Responds to the inspector being opened.
+ * Handle the inspector being opened.
  *
  * This is when an inspector would initialize it's form with data from the selection.
  *
@@ -164,7 +164,7 @@ ve.ui.Inspector.prototype.onOpen = function () {
 };
 
 /**
- * Responds to the inspector being closed.
+ * Handle the inspector being closed.
  *
  * This is when an inspector would apply any changes made in the form to the selection.
  *
@@ -176,7 +176,7 @@ ve.ui.Inspector.prototype.onClose = function () {
 };
 
 /**
- * Gets a list of matching annotations in selection.
+ * Get matching annotations within a fragment.
  *
  * @method
  * @param {ve.dm.SurfaceFragment} fragment Fragment to get matching annotations within
@@ -187,7 +187,7 @@ ve.ui.Inspector.prototype.getMatchingAnnotations = function ( fragment ) {
 };
 
 /**
- * Opens inspector.
+ * Open inspector.
  *
  * @method
  * @emits 'initialize'
@@ -210,7 +210,7 @@ ve.ui.Inspector.prototype.open = function () {
 };
 
 /**
- * Closes inspector.
+ * Close inspector.
  *
  * This method guards against recursive calling internally. Recursion on this method is caused by
  * changes to the document occuring in a close handler which in turn produce document model change

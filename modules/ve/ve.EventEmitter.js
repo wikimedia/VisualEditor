@@ -20,7 +20,7 @@ ve.EventEmitter = function VeEventEmitter() {
 /* Methods */
 
 /**
- * Emits an event.
+ * Emit an event.
  *
  * @method
  * @param {string} type Type of event
@@ -45,7 +45,7 @@ ve.EventEmitter.prototype.emit = function ( type ) {
 };
 
 /**
- * Adds a listener to events of a specific type.
+ * Add a listener to events of a specific type.
  *
  * @method
  * @param {string} type Type of event to listen to
@@ -138,7 +138,7 @@ ve.EventEmitter.prototype.once = function ( type, listener ) {
 };
 
 /**
- * Removes a specific listener from a specific event.
+ * Remove a specific listener from a specific event.
  *
  * @method
  * @param {string} type Type of event to remove listener from
@@ -171,7 +171,7 @@ ve.EventEmitter.prototype.removeListener = function ( type, listener ) {
 };
 
 /**
- * Removes all listeners from a specific event.
+ * Remove all listeners from a specific event.
  *
  * @method
  * @param {string} type Type of event to remove listeners from
@@ -185,7 +185,7 @@ ve.EventEmitter.prototype.removeAllListeners = function ( type ) {
 };
 
 /**
- * Gets a list of listeners attached to a specific event.
+ * Get a list of listeners attached to a specific event.
  *
  * @method
  * @param {string} type Type of event to get listeners for

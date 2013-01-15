@@ -1,12 +1,12 @@
 /*!
- * VisualEditor content editable ParagraphNode class.
+ * VisualEditor ContentEditable ParagraphNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * ContentEditable node for a paragraph.
+ * ContentEditable paragraph node.
  *
  * @class
  * @extends ve.ce.BranchNode
@@ -22,7 +22,7 @@ ve.ce.ParagraphNode = function VeCeParagraphNode( model ) {
 
 ve.inheritClass( ve.ce.ParagraphNode, ve.ce.ContentBranchNode );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * Node rules.

@@ -1,12 +1,12 @@
 /*!
- * VisualEditor data model HeadingNode class.
+ * VisualEditor DataModel HeadingNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * DataModel node for a heading.
+ * DataModel heading node.
  *
  * @class
  * @extends ve.dm.BranchNode
@@ -23,7 +23,7 @@ ve.dm.HeadingNode = function VeDmHeadingNode( children, element ) {
 
 ve.inheritClass( ve.dm.HeadingNode, ve.dm.BranchNode );
 
-/* Static Members */
+/* Static Properties */
 
 ve.dm.HeadingNode.defaultAttributes = {
 	'level': 1

@@ -1,14 +1,14 @@
 /*global mw */
 
 /*!
- * VisualEditor MediaWiki initialization Target class.
+ * VisualEditor MediaWiki Initialization Target class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * MediaWiki target.
+ * Initialization MediaWiki target.
  *
  * @class
  * @extends ve.EventEmitter
@@ -143,7 +143,7 @@ ve.init.mw.Target.onLoad = function ( response ) {
 };
 
 /**
- * Respond to both DOM and modules being loaded and ready.
+ * Handle both DOM and modules being loaded and ready.
  *
  * This method is called within the context of a target instance. After the load event is emitted
  * this.dom is cleared, allowing it to be garbage collected.
@@ -160,7 +160,7 @@ ve.init.mw.Target.onReady = function () {
 };
 
 /**
- * Respond to an unsuccessful load request.
+ * Handle an unsuccessful load request.
  *
  * This method is called within the context of a target instance.
  *
@@ -177,7 +177,7 @@ ve.init.mw.Target.onLoadError = function ( jqXHR, status, error ) {
 };
 
 /**
- * Respond to a successful save request.
+ * Handle a successful save request.
  *
  * This method is called within the context of a target instance.
  *
@@ -213,7 +213,7 @@ ve.init.mw.Target.onSave = function ( response ) {
 };
 
 /**
- * Respond to an unsuccessful save request.
+ * Handle an unsuccessful save request.
  *
  * @static
  * @method
@@ -230,7 +230,7 @@ ve.init.mw.Target.onSaveError = function ( jqXHR, status, error ) {
 
 
 /**
- * Respond to a successful show changes request.
+ * Handle a successful show changes request.
  *
  * @static
  * @method
@@ -259,7 +259,7 @@ ve.init.mw.Target.onShowChanges = function ( response ) {
 };
 
 /**
- * Respond to error during saveChanges action.
+ * Handle errors during saveChanges action.
  *
  * @static
  * @method
@@ -275,7 +275,7 @@ ve.init.mw.Target.onShowChangesError = function ( jqXHR, status, error ) {
 };
 
 /**
- * Respond to a successful serialize request.
+ * Handle a successful serialize request.
  *
  * This method is called within the context of a target instance.
  *
@@ -306,7 +306,7 @@ ve.init.mw.Target.onSerialize = function ( response ) {
 };
 
 /**
- * Respond to an unsuccessful serialize request.
+ * Handle an unsuccessful serialize request.
  *
  * This method is called within the context of a target instance.
  *
@@ -325,7 +325,7 @@ ve.init.mw.Target.onSerializeError = function ( response, status, error ) {
 /* Methods */
 
 /**
- * Gets DOM from Parsoid API.
+ * Get DOM data from the Parsoid API.
  *
  * This method performs an asynchronous action and uses a callback function to handle the result.
  *
@@ -365,7 +365,7 @@ ve.init.mw.Target.prototype.load = function () {
 };
 
 /**
- * Posts DOM to Parsoid API.
+ * Post DOM data to the Parsoid API.
  *
  * This method performs an asynchronous action and uses a callback function to handle the result.
  *
@@ -376,7 +376,7 @@ ve.init.mw.Target.prototype.load = function () {
  * @param {Object} options Saving options
  *  - {string} summary Edit summary
  *  - {boolean} minor Edit is a minor edit
- *  - {boolean} watch Watch this page
+ *  - {boolean} watch Watch the page
  * @returns {boolean} Saving has been started
 */
 ve.init.mw.Target.prototype.save = function ( dom, options ) {
@@ -413,7 +413,7 @@ ve.init.mw.Target.prototype.save = function ( dom, options ) {
 };
 
 /**
- * Posts DOM to Parsoid API to retreive wikitext diff.
+ * Post DOM data to the Parsoid API to retreive wikitext diff.
  *
  * @method
  * @param {HTMLElement} dom DOM to compare against (via wikitext).
@@ -440,7 +440,7 @@ ve.init.mw.Target.prototype.showChanges = function ( dom ) {
 };
 
 /**
- * Posts DOM to Parsoid API.
+ * Post DOM data to the Parsoid API.
  *
  * This method performs a synchronous action and will take the user to a new page when complete.
  *
@@ -451,7 +451,7 @@ ve.init.mw.Target.prototype.showChanges = function ( dom ) {
  * @param {Object} options Saving options
  *  - {string} summary Edit summary
  *  - {boolean} minor Edit is a minor edit
- *  - {boolean} watch Watch this page
+ *  - {boolean} watch Watch the page
  * @returns {boolean} Submitting has been started
 */
 ve.init.mw.Target.prototype.submit = function ( wikitext, options ) {
@@ -485,7 +485,7 @@ ve.init.mw.Target.prototype.submit = function ( wikitext, options ) {
 };
 
 /**
- * Gets Wikitext from Parsoid API.
+ * Get Wikitext data from the Parsoid API.
  *
  * This method performs an asynchronous action and uses a callback function to handle the result.
  *
@@ -530,6 +530,12 @@ ve.init.mw.Target.prototype.serialize = function ( dom, callback ) {
 	return true;
 };
 
+/**
+ * Send a problem report to the Parsoid API.
+ *
+ * @method
+ * @param {string} message
+ */
 ve.init.mw.Target.prototype.reportProblem = function ( message ) {
 	// Gather reporting information
 	var now = new Date(),

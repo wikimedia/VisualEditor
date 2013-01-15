@@ -1,12 +1,12 @@
 /*!
- * VisualEditor data model AlienBlockNode class.
+ * VisualEditor DataModel AlienBlockNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * DataModel node for an alien block node.
+ * DataModel alien block node.
  *
  * @class
  * @extends ve.dm.LeafNode
@@ -23,7 +23,7 @@ ve.dm.AlienBlockNode = function VeDmAlienBlockNode( length, element ) {
 
 ve.inheritClass( ve.dm.AlienBlockNode, ve.dm.LeafNode );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * Node rules.

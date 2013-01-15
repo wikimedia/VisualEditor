@@ -1,12 +1,12 @@
 /*!
- * VisualEditor data model DefinitionListNode class.
+ * VisualEditor DataModel DefinitionListNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * DataModel node for a definition list.
+ * DataModel definition list node.
  *
  * @class
  * @extends ve.dm.BranchNode
@@ -23,7 +23,7 @@ ve.dm.DefinitionListNode = function VeDmDefinitionListNode( children, element ) 
 
 ve.inheritClass( ve.dm.DefinitionListNode, ve.dm.BranchNode );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * Node rules.

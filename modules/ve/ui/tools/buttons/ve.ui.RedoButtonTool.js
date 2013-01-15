@@ -1,12 +1,12 @@
 /*!
- * VisualEditor user interface RedoButtonTool class.
+ * VisualEditor UserInterface RedoButtonTool class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Creates an ve.ui.RedoButtonTool object.
+ * UserInterface redo button tool.
  *
  * @class
  * @extends ve.ui.ButtonTool
@@ -28,7 +28,7 @@ ve.ui.RedoButtonTool = function VeUiRedoButtonTool( toolbar ) {
 
 ve.inheritClass( ve.ui.RedoButtonTool, ve.ui.ButtonTool );
 
-/* Static Members */
+/* Static Properties */
 
 ve.ui.RedoButtonTool.static.name = 'redo';
 
@@ -37,7 +37,7 @@ ve.ui.RedoButtonTool.static.titleMessage = 'visualeditor-historybutton-redo-tool
 /* Methods */
 
 /**
- * Responds to the button being clicked.
+ * Handle the button being clicked.
  *
  * @method
  */
@@ -46,7 +46,7 @@ ve.ui.RedoButtonTool.prototype.onClick = function () {
 };
 
 /**
- * Responds to the toolbar state being updated.
+ * Handle the toolbar state being updated.
  *
  * @method
  * @param {ve.dm.Node[]} nodes List of nodes covered by the current selection

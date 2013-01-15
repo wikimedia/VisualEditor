@@ -1,19 +1,19 @@
 /*!
- * VisualEditor user interface NumberListButtonTool class.
+ * VisualEditor UserInterface NumberListButtonTool class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Creates an ve.ui.NumberButtonTool object.
+ * UserInterface number button tool.
  *
  * @class
  * @extends ve.ui.ListButtonTool
  * @constructor
  * @param {ve.ui.Toolbar} toolbar
  */
-ve.ui.NumberButtonTool = function VeUiNumberListButtonTool( toolbar ) {
+ve.ui.NumberButtonTool = function VeUiNumberButtonTool( toolbar ) {
 	// Parent constructor
 	ve.ui.ListButtonTool.call( this, toolbar );
 };
@@ -22,7 +22,7 @@ ve.ui.NumberButtonTool = function VeUiNumberListButtonTool( toolbar ) {
 
 ve.inheritClass( ve.ui.NumberButtonTool, ve.ui.ListButtonTool );
 
-/* Static Members */
+/* Static Properties */
 
 ve.ui.NumberButtonTool.static.name = 'number';
 

@@ -1,5 +1,5 @@
 /*!
- * VisualEditor data model TransactionProcessor class.
+ * VisualEditor DataModel TransactionProcessor class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -59,7 +59,9 @@ ve.dm.TransactionProcessor.commit = function ( doc, transaction ) {
 };
 
 /**
- * Roll back a transaction; this applies the transaction to the document in reverse.
+ * Roll back a transaction.
+ *
+ * This applies the transaction to the document in reverse.
  *
  * @static
  * @method
@@ -76,7 +78,7 @@ ve.dm.TransactionProcessor.rollback = function ( doc, transaction ) {
 /* Methods */
 
 /**
- * Gets the next operation.
+ * Get the next operation.
  *
  * @method
  */
@@ -85,7 +87,7 @@ ve.dm.TransactionProcessor.prototype.nextOperation = function () {
 };
 
 /**
- * Executes an operation.
+ * Execute an operation.
  *
  * @method
  * @param {Object} op Operation object to execute
@@ -100,7 +102,7 @@ ve.dm.TransactionProcessor.prototype.executeOperation = function ( op ) {
 };
 
 /**
- * Processes all operations.
+ * Process all operations.
  *
  * When all operations are done being processed, the document will be synchronized.
  *
@@ -133,11 +135,13 @@ ve.dm.TransactionProcessor.prototype.process = function () {
 };
 
 /**
- * Apply the current annotation stacks. This will set all annotations in this.set and clear all
- * annotations in `this.clear` on the data between the offsets `this.cursor` and `this.cursor + to`.
+ * Apply the current annotation stacks.
+ *
+ * This will set all annotations in this.set and clear all annotations in `this.clear` on the data
+ * between the offsets `this.cursor` and `this.cursor + to`.
  *
  * @method
- * @param {number} to Offset to stop annotating at. Annotating starts at this.cursor
+ * @param {number} to Offset to stop annotating at, annotating starts at this.cursor
  * @throws {Error} Cannot annotate a branch element.
  * @throws {Error} Annotation to be set is already set.
  * @throws {Error} Annotation to be cleared is not set.
@@ -216,9 +220,16 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 };
 
 /**
- * Set a change marker on our transaction, if we are in commit mode. This function is a no-op in
- * rollback mode.
+ * Set a change marker on the transaction when in commit mode.
+ *
+ * This function is a no-op in rollback mode.
+ *
  * @see ve.dm.Transaction#setChangeMarker
+ *
+ * @method
+ * @param {number} offset
+ * @param {string} type
+ * @param {boolean} increment
  */
 ve.dm.TransactionProcessor.prototype.setChangeMarker = function ( offset, type, increment ) {
 	// Refuse to set any new change markers while reversing transactions
@@ -228,8 +239,11 @@ ve.dm.TransactionProcessor.prototype.setChangeMarker = function ( offset, type, 
 };
 
 /**
- * Apply the change markers on this.transaction to this.document . Change markers are set
- * (incremented) in commit mode, and unset (decremented) in rollback mode.
+ * Apply the change markers on this.transaction to this.document.
+ *
+ * Change markers are set (incremented) in commit mode, and unset (decremented) in rollback mode.
+ *
+ * @method
  */
 ve.dm.TransactionProcessor.prototype.applyChangeMarkers = function () {
 	var offset, type, previousValue, newValue, element,
@@ -258,10 +272,6 @@ ve.dm.TransactionProcessor.prototype.applyChangeMarkers = function () {
 		}
 	}
 };
-
-
-
-
 
 /**
  * Processing methods.

@@ -24,7 +24,7 @@ ve.inheritClass( ve.ActionFactory, ve.Factory );
 /* Methods */
 
 /**
- * Checks if a given action supports a given method.
+ * Check if an action supports a method.
  *
  * @method
  * @param {string} action Name of action

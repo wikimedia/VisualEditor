@@ -1,14 +1,14 @@
 /*global rangy */
 
 /*!
- * VisualEditor content editable Surface class.
+ * VisualEditor ContentEditable Surface class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Surface observer.
+ * ContentEditable surface observer.
  *
  * @class
  * @extends ve.EventEmitter
@@ -36,7 +36,7 @@ ve.inheritClass( ve.ce.SurfaceObserver, ve.EventEmitter );
 /* Methods */
 
 /**
- * Clears polling data.
+ * Clear polling data.
  *
  * @method
  * @param {ve.Range} range Initial range to use
@@ -55,7 +55,7 @@ ve.ce.SurfaceObserver.prototype.clear = function ( range ) {
 };
 
 /**
- * Starts polling.
+ * Start polling.
  *
  * If {async} is false or undefined the first poll cycle will occur immediately and synchronously.
  *
@@ -68,7 +68,7 @@ ve.ce.SurfaceObserver.prototype.start = function ( async ) {
 };
 
 /**
- * Stops polling.
+ * Stop polling.
  *
  * If {poll} is false or undefined than no final poll cycle will occur and changes can be lost. If
  * it's true then a final poll cycle will occur immediately and synchronously.

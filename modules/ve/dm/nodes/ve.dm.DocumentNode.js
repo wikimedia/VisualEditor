@@ -1,12 +1,12 @@
 /*!
- * VisualEditor data model DocumentNode class.
+ * VisualEditor DataModel DocumentNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * DataModel node for a document.
+ * DataModel document node.
  *
  * @class
  * @extends ve.dm.BranchNode
@@ -22,7 +22,7 @@ ve.dm.DocumentNode = function VeDmDocumentNode( children ) {
 
 ve.inheritClass( ve.dm.DocumentNode, ve.dm.BranchNode );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * Node rules.
@@ -46,5 +46,3 @@ ve.dm.DocumentNode.converters = null;
 /* Registration */
 
 ve.dm.nodeFactory.register( 'document', ve.dm.DocumentNode );
-
-// This is a special node, no converter registration is required

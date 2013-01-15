@@ -1,14 +1,13 @@
 /*!
- * VisualEditor data model DocumentSlice class.
+ * VisualEditor DataModel DocumentSlice class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Document slice.
+ * DataModel document slice.
  *
- * @abstract
  * @extends ve.Node
  * @constructor
  * @param {Array} data Balanced sliced data (will be deep copied internally)
@@ -23,7 +22,7 @@ ve.dm.DocumentSlice = function VeDmDocumentSlice( data, range ) {
 /* Methods */
 
 /**
- * Gets a deep copy of the sliced data.
+ * Get a deep copy of the sliced data.
  *
  * @method
  * @returns {Array} Document data
@@ -33,7 +32,7 @@ ve.dm.DocumentSlice.prototype.getData = function () {
 };
 
 /**
- * Gets a balanced version of the sliced data.
+ * Get a balanced version of the sliced data.
  *
  * @method
  * @returns {Array} Document data

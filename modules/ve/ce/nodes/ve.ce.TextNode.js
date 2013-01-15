@@ -1,12 +1,12 @@
 /*!
- * VisualEditor content editable TextNode class.
+ * VisualEditor ContentEditable TextNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * ContentEditable node for text.
+ * ContentEditable text node.
  *
  * @class
  * @extends ve.ce.LeafNode
@@ -22,7 +22,7 @@ ve.ce.TextNode = function VeCeTextNode( model ) {
 
 ve.inheritClass( ve.ce.TextNode, ve.ce.LeafNode );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * Node rules.
@@ -57,7 +57,7 @@ ve.ce.TextNode.whitespaceHtmlCharacters = {
 /* Methods */
 
 /**
- * Gets an HTML rendering of data within content model.
+ * Get an HTML rendering of the text.
  *
  * @method
  * @returns {Array} Array of rendered HTML fragments with annotations

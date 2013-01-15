@@ -1,14 +1,14 @@
 /*global mw */
 
 /*!
- * VisualEditor MediaWiki initialization Target class.
+ * VisualEditor MediaWiki Initialization Target class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * MediaWiki platform.
+ * Initialization MediaWiki platform.
  *
  * @class
  * @extends ve.init.Platform
@@ -31,7 +31,7 @@ ve.inheritClass( ve.init.mw.Platform, ve.init.Platform );
 /* Methods */
 
 /**
- * Gets a regular expression that matches allowed external link URLs.
+ * Get a regular expression that matches allowed external link URLs.
  *
  * Uses the mw.config wgUrlProtocols variable.
  *
@@ -43,7 +43,7 @@ ve.init.mw.Platform.prototype.getExternalLinkUrlProtocolsRegExp = function () {
 };
 
 /**
- * Gets a remotely accessible URL to the modules directory.
+ * Get a remotely accessible URL to the modules directory.
  *
  * Uses MediaWiki's {wgExtensionAssetsPath} variable.
  *
@@ -55,7 +55,7 @@ ve.init.mw.Platform.prototype.getModulesUrl = function () {
 };
 
 /**
- * Whether to use change markers.
+ * Check whether to use change markers.
  *
  * Uses the vechangemarkers query string variable.
  *
@@ -71,7 +71,7 @@ ve.init.mw.Platform.prototype.useChangeMarkers = function () {
 };
 
 /**
- * Adds multiple messages to the localization system.
+ * Add multiple messages to the localization system.
  *
  * Wrapper for mw.msg system.
  *
@@ -83,7 +83,7 @@ ve.init.mw.Platform.prototype.addMessages = function ( messages ) {
 };
 
 /**
- * Gets a message from the localization system.
+ * Get a message from the localization system.
  *
  * Wrapper for mw.msg system.
  *
@@ -95,7 +95,7 @@ ve.init.mw.Platform.prototype.addMessages = function ( messages ) {
 ve.init.mw.Platform.prototype.getMessage = ve.bind( mw.msg, mw );
 
 /**
- * Adds multiple parsed messages to the localization system.
+ * Add multiple parsed messages to the localization system.
  *
  * @method
  * @param {Object} messages Map of message-key/html pairs
@@ -107,7 +107,7 @@ ve.init.mw.Platform.prototype.addParsedMessages = function ( messages ) {
 };
 
 /**
- * Gets a parsed message as HTML string.
+ * Get a parsed message as HTML string.
  *
  * Falls back to mw.messsage with .escaped().
  * Does not support $# replacements.

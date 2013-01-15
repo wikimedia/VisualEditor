@@ -1,12 +1,12 @@
 /*!
- * VisualEditor content editable ListItemNode class.
+ * VisualEditor ContentEditable ListItemNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * ContentEditable node for a list item.
+ * ContentEditable list item node.
  *
  * @class
  * @extends ve.ce.BranchNode
@@ -22,7 +22,7 @@ ve.ce.ListItemNode = function VeCeListItemNode( model ) {
 
 ve.inheritClass( ve.ce.ListItemNode, ve.ce.BranchNode );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * Node rules.

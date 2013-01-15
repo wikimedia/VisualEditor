@@ -1,12 +1,12 @@
 /*!
- * VisualEditor user interface LinkInspector class.
+ * VisualEditor UserInterface LinkInspector class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Creates an ve.ui.LinkInspector object.
+ * UserInterface link inspector.
  *
  * @class
  * @extends ve.ui.Inspector
@@ -44,7 +44,7 @@ ve.ui.LinkInspector.static.inputWidget = ve.ui.LinkTargetInputWidget;
 /* Methods */
 
 /**
- * Responds to the inspector being initialized.
+ * Handle the inspector being initialized.
  *
  * There are 4 scenarios:
  *     * Zero-length selection not near a word -> no change, text will be inserted on close
@@ -81,7 +81,7 @@ ve.ui.LinkInspector.prototype.onInitialize = function () {
 };
 
 /**
- * Responds to the inspector being opened.
+ * Handle the inspector being opened.
  *
  * @method
  */
@@ -99,7 +99,7 @@ ve.ui.LinkInspector.prototype.onOpen = function () {
 };
 
 /**
- * Responds to the inspector being opened.
+ * Handle the inspector being opened.
  *
  * @method
  * @param {boolean} remove Annotation should be removed
@@ -162,7 +162,7 @@ ve.ui.LinkInspector.prototype.onClose = function ( remove ) {
 };
 
 /**
- * Gets an annotation object from a target.
+ * Get an annotation object from a target.
  *
  * @method
  * @param {string} target Link target

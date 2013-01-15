@@ -1,12 +1,14 @@
 /*!
- * VisualEditor content editable BranchNode class.
+ * VisualEditor ContentEditable BranchNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * ContentEditable node that can have branch or leaf children.
+ * ContentEditable branch node.
+ *
+ * Branch nodes can have branch or leaf nodes as children.
  *
  * @class
  * @abstract
@@ -53,23 +55,37 @@ ve.inheritClass( ve.ce.BranchNode, ve.ce.Node );
 
 ve.mixinClass( ve.ce.BranchNode, ve.BranchNode );
 
-/* Static Members */
+/* Static Properties */
 
-// TODO: Consider using different (or additional) CSS classes for inline and block aliens
 
-if ( $.browser.msie ) {
-	ve.ce.BranchNode.$inlineSlugTemplate = $( '<span class="ve-ce-slug">&nbsp;</span>' );
-} else {
-	ve.ce.BranchNode.$inlineSlugTemplate = $( '<span class="ve-ce-slug">&#xFEFF;</span>' );
-}
+/**
+ * Inline slug template.
+ *
+ * TODO: Consider adding a CSS class.
+ *
+ * @static
+ * @property
+ * @type {jQuery}
+ */
+ve.ce.BranchNode.$inlineSlugTemplate = $( '<span class="ve-ce-slug"></span>' )
+	.html( $.browser.msie ? '&nbsp;' : '&#xFEFF;' );
 
+/**
+ * Inline slug template.
+ *
+ * TODO: Consider adding a CSS class.
+ *
+ * @static
+ * @property
+ * @type {jQuery}
+ */
 ve.ce.BranchNode.$blockSlugTemplate =
 	ve.ce.BranchNode.$inlineSlugTemplate.clone().css( 'display', 'block' );
 
 /* Static Methods */
 
 /**
- * Gets the appropriate element type for the DOM wrapper of a node.
+ * Get the appropriate element type for the DOM wrapper of a node.
  *
  * This method reads the `key` attribute from a `model` and looks up a type in the node's statically
  * defined `domWrapperElementTypes` member, which is a mapping of possible values of that attribute
@@ -96,7 +112,7 @@ ve.ce.BranchNode.getDomWrapperType = function ( model, key ) {
 };
 
 /**
- * Gets a jQuery selection of a new DOM wrapper for a node.
+ * Get a new DOM wrapper.
  *
  * This method uses #getDomWrapperType to determine the proper element type to use.
  *
@@ -113,7 +129,7 @@ ve.ce.BranchNode.getDomWrapper = function ( model, key ) {
 /* Methods */
 
 /**
- * Updates the DOM wrapper of this node if needed.
+ * Update the DOM wrapper.
  *
  * This method uses {getDomWrapperType} to determine the proper element type to use.
  *
@@ -150,7 +166,7 @@ ve.ce.BranchNode.prototype.updateDomWrapper = function ( key ) {
 };
 
 /**
- * Responds to splice events on a ve.dm.BranchNode.
+ * Handle splice events.
  *
  * ve.ce.Node objects are generated from the inserted ve.dm.Node objects, producing a view that's a
  * mirror of its model.
@@ -203,6 +219,10 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
 };
 
 /**
+ * Setup slugs where needed.
+ *
+ * Existing slugs will be removed before new ones are added.
+ *
  * @method
  */
 ve.ce.BranchNode.prototype.setupSlugs = function () {
@@ -244,8 +264,10 @@ ve.ce.BranchNode.prototype.setupSlugs = function () {
 };
 
 /**
+ * Get a slug at an offset.
+ *
  * @method
- * @param offset
+ * @param {number} offset Offset to get slug at
  */
 ve.ce.BranchNode.prototype.getSlugAtOffset = function ( offset ) {
 	var i,
@@ -263,8 +285,10 @@ ve.ce.BranchNode.prototype.getSlugAtOffset = function ( offset ) {
 };
 
 /**
+ * Set live state on child nodes.
+ *
  * @method
- * @param live
+ * @param {boolean} live New live state
  */
 ve.ce.BranchNode.prototype.setLive = function ( live ) {
 	this.live = live;

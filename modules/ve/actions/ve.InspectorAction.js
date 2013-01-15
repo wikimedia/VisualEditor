@@ -6,14 +6,14 @@
  */
 
 /**
- * List action.
+ * Inspector action.
  *
  * @class
  * @extends ve.Action
  * @constructor
  * @param {ve.Surface} surface Surface to act on
  */
-ve.InspectorAction = function VeListAction( surface ) {
+ve.InspectorAction = function VeInspectorAction( surface ) {
 	// Parent constructor
 	ve.Action.call( this, surface );
 };
@@ -22,10 +22,10 @@ ve.InspectorAction = function VeListAction( surface ) {
 
 ve.inheritClass( ve.InspectorAction, ve.Action );
 
-/* Static Members */
+/* Static Properties */
 
 /**
- * List of allowed methods for this action.
+ * List of allowed methods for the action.
  *
  * @static
  * @property
@@ -35,22 +35,20 @@ ve.InspectorAction.static.methods = ['open', 'close'];
 /* Methods */
 
 /**
- * Opens an inspector.
+ * Open an inspector.
  *
  * @method
- * @param {string} name Symbolic name of inspector
+ * @param {string} name Symbolic name of inspector to open
  */
 ve.InspectorAction.prototype.open = function ( name ) {
 	this.surface.getContext().openInspector( name );
 };
 
 /**
- * Wraps content in a list.
- *
- * If changes are not accepted, the inspector will close without modifying the document.
+ * Close any open inspector.
  *
  * @method
- * @param {boolean} accept Accept changes
+ * @param {boolean} remove Remove annotation being inspected
  */
 ve.InspectorAction.prototype.close = function ( remove ) {
 	this.surface.getContext().closeInspector( remove );

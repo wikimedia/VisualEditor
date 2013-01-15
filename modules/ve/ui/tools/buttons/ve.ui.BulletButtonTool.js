@@ -1,19 +1,19 @@
 /*!
- * VisualEditor user interface BulletListButtonTool class.
+ * VisualEditor UserInterface BulletListButtonTool class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Creates an ve.ui.BulletButtonTool object.
+ * UserInterface bullet button tool.
  *
  * @class
  * @extends ve.ui.ListButtonTool
  * @constructor
  * @param {ve.ui.Toolbar} toolbar
  */
-ve.ui.BulletButtonTool = function VeUiBulletListButtonTool( toolbar ) {
+ve.ui.BulletButtonTool = function VeUiBulletButtonTool( toolbar ) {
 	// Parent constructor
 	ve.ui.ListButtonTool.call( this, toolbar, 'bullet' );
 };
@@ -22,7 +22,7 @@ ve.ui.BulletButtonTool = function VeUiBulletListButtonTool( toolbar ) {
 
 ve.inheritClass( ve.ui.BulletButtonTool, ve.ui.ListButtonTool );
 
-/* Static Members */
+/* Static Properties */
 
 ve.ui.BulletButtonTool.static.name = 'bullet';
 

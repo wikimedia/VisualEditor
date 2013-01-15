@@ -1,12 +1,12 @@
 /*!
- * VisualEditor user interface Toolbar class.
+ * VisualEditor UserInterface Toolbar class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Editing toolbar.
+ * UserInterface toolbar.
  *
  * @class
  * @extends ve.EventEmitter
@@ -50,7 +50,7 @@ ve.ui.Toolbar.prototype.getSurface = function () {
 };
 
 /**
- * Responds to context changes on the surface.
+ * Handle context changes on the surface.
  *
  * @method
  * @emits "updateState" (nodes, full, partial)
@@ -69,7 +69,7 @@ ve.ui.Toolbar.prototype.onContextChange = function () {
 };
 
 /**
- * Initializes all tools and groups.
+ * Initialize all tools and groups.
  *
  * @method
  */

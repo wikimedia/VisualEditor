@@ -1,12 +1,12 @@
 /*!
- * VisualEditor content editable AlienBlockNode class.
+ * VisualEditor ContentEditable AlienBlockNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * ContentEditable node for an alien block node.
+ * ContentEditable alien block node.
  *
  * @class
  * @extends ve.ce.AlienNode
@@ -25,7 +25,7 @@ ve.ce.AlienBlockNode = function VeCeAlienBlockNode( model ) {
 
 ve.inheritClass( ve.ce.AlienBlockNode, ve.ce.AlienNode );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * Node rules.

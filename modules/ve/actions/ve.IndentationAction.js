@@ -22,10 +22,10 @@ ve.IndentationAction = function VeIndentationAction( surface ) {
 
 ve.inheritClass( ve.IndentationAction, ve.Action );
 
-/* Static Members */
+/* Static Properties */
 
 /**
- * List of allowed methods for this action.
+ * List of allowed methods for the action.
  *
  * @static
  * @property
@@ -35,7 +35,7 @@ ve.IndentationAction.static.methods = ['increase', 'decrease'];
 /* Methods */
 
 /**
- * Increases indentation level.
+ * Indent content.
  *
  * TODO: Refactor functionality into {ve.dm.SurfaceFragment}.
  *
@@ -73,7 +73,7 @@ ve.IndentationAction.prototype.increase = function () {
 };
 
 /**
- * Decreses indentation level.
+ * Unindent content.
  *
  * TODO: Refactor functionality into {ve.dm.SurfaceFragment}.
  *
@@ -100,7 +100,7 @@ ve.IndentationAction.prototype.decrease = function () {
 
 	// Process each fragment (their ranges are automatically adjusted on change)
 	for ( i = 0; i < fragments.length; i++ ) {
-		this.outdentListItem(
+		this.unindentListItem(
 			documentModel.getNodeFromOffset( fragments[i].getRange().start + 1 )
 		);
 	}
@@ -111,7 +111,12 @@ ve.IndentationAction.prototype.decrease = function () {
 };
 
 /**
+ * Indent a list item.
+ *
  * TODO: Refactor functionality into {ve.dm.SurfaceFragment}.
+ *
+ * @method
+ * @param {ve.dm.ListItemNode} listItem List item to indent
  */
 ve.IndentationAction.prototype.indentListItem = function ( listItem ) {
 	/*
@@ -180,9 +185,14 @@ ve.IndentationAction.prototype.indentListItem = function ( listItem ) {
 };
 
 /**
+ * Unindent a list item.
+ *
  * TODO: Refactor functionality into {ve.dm.SurfaceFragment}.
+ *
+ * @method
+ * @param {ve.dm.ListItemNode} listItem List item to unindent
  */
-ve.IndentationAction.prototype.outdentListItem = function ( listItem ) {
+ve.IndentationAction.prototype.unindentListItem = function ( listItem ) {
 	/*
 	 * Outdenting a list item is done as follows:
 	 * 1. Split the parent list to isolate the listItem in its own list

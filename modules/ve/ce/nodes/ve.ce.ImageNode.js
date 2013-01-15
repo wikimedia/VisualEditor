@@ -1,12 +1,12 @@
 /*!
- * VisualEditor content editable ImageNode class.
+ * VisualEditor ContentEditable ImageNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * ContentEditable node for an image.
+ * ContentEditable image node.
  *
  * @class
  * @extends ve.ce.LeafNode
@@ -25,12 +25,6 @@ ve.ce.ImageNode = function VeCeImageNode( model ) {
 
 	// Events
 	this.model.addListenerMethod( this, 'update', 'onUpdate' );
-	/*
-	TODO: Remove this?
-	this.$.on('mousedown', function () {
-		return false;
-	});
-	*/
 
 	// Initialization
 	this.onUpdate();
@@ -40,7 +34,7 @@ ve.ce.ImageNode = function VeCeImageNode( model ) {
 
 ve.inheritClass( ve.ce.ImageNode, ve.ce.LeafNode );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * Node rules.
@@ -56,7 +50,7 @@ ve.ce.ImageNode.rules = {
 /* Methods */
 
 /**
- * Responds to model update events.
+ * Handle model update events.
  *
  * If the source changed since last update the image's src attribute will be updated accordingly.
  *

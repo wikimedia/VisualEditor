@@ -1,12 +1,12 @@
 /*!
- * VisualEditor content editable namespace.
+ * VisualEditor ContentEditable namespace.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Namespace for all VisualEditor content editable classes, static methods and static properties.
+ * Namespace for all VisualEditor ContentEditable classes, static methods and static properties.
  * @class
  * @singleton
  */
@@ -14,7 +14,7 @@ ve.ce = {
 	//'nodeFactory': Initialized in ve.ce.NodeFactory.js
 };
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * RegExp pattern for matching all whitespaces in HTML text.

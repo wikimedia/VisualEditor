@@ -1,12 +1,12 @@
 /*!
- * VisualEditor data model ParagraphNode class.
+ * VisualEditor DataModel ParagraphNode class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * DataModel node for a paragraph.
+ * DataModel paragraph node.
  *
  * @class
  * @extends ve.dm.BranchNode
@@ -23,7 +23,7 @@ ve.dm.ParagraphNode = function VeDmParagraphNode( children, element ) {
 
 ve.inheritClass( ve.dm.ParagraphNode, ve.dm.BranchNode );
 
-/* Static Members */
+/* Static Properties */
 
 /**
  * Node rules.

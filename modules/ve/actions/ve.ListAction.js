@@ -22,10 +22,10 @@ ve.ListAction = function VeListAction( surface ) {
 
 ve.inheritClass( ve.ListAction, ve.Action );
 
-/* Static Members */
+/* Static Properties */
 
 /**
- * List of allowed methods for this action.
+ * List of allowed methods for the action.
  *
  * @static
  * @property
@@ -35,7 +35,7 @@ ve.ListAction.static.methods = ['wrap', 'unwrap'];
 /* Methods */
 
 /**
- * Wraps content in a list.
+ * Add a list around content.
  *
  * TODO: Refactor functionality into {ve.dm.SurfaceFragment}.
  *
@@ -93,7 +93,7 @@ ve.ListAction.prototype.wrap = function ( style ) {
 };
 
 /**
- * Removes list wrapping.
+ * Remove list around content.
  *
  * TODO: Refactor functionality into {ve.dm.SurfaceFragment}.
  *

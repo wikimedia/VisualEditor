@@ -6,7 +6,7 @@
  */
 
 /**
- * Range of content.
+ * Range.
  *
  * @class
  * @constructor
@@ -26,7 +26,7 @@ ve.Range = function VeRange( from, to ) {
 /* Static Methods */
 
 /**
- * Creates a new ve.Range object that's a translated version of another.
+ * Create a new range that's a translated version of another.
  *
  * @method
  * @param {ve.Range} range Range to base new range on
@@ -38,7 +38,7 @@ ve.Range.newFromTranslatedRange = function ( range, distance ) {
 };
 
 /**
- * Creates a new ve.Range object that covers all of the given ranges
+ * Create a range object that covers all of the given ranges.
  *
  * @method
  * @param {Array} ranges Array of ve.Range objects (at least one)
@@ -65,7 +65,7 @@ ve.Range.newCoveringRange = function ( ranges ) {
 /* Methods */
 
 /**
- * Gets a clone of this object.
+ * Get a clone.
  *
  * @method
  * @returns {ve.Range} Clone of range
@@ -75,11 +75,11 @@ ve.Range.prototype.clone = function () {
 };
 
 /**
- * Checks if an offset is within this range.
+ * Check if an offset is within the range.
  *
  * @method
  * @param {number} offset Offset to check
- * @returns {boolean} If offset is within this range
+ * @returns {boolean} If offset is within the range
  */
 ve.Range.prototype.containsOffset = function ( offset ) {
 	this.normalize();
@@ -87,7 +87,7 @@ ve.Range.prototype.containsOffset = function ( offset ) {
 };
 
 /**
- * Gets the length of the range.
+ * Get the length of the range.
  *
  * @method
  * @returns {number} Length of range
@@ -97,7 +97,7 @@ ve.Range.prototype.getLength = function () {
 };
 
 /**
- * Sets start and end properties, ensuring start is always before end.
+ * Set start and end properties, ensuring start is always before end.
  *
  * This should always be called before using the start or end properties. Do not call this unless
  * you are about to use these properties.
@@ -115,7 +115,7 @@ ve.Range.prototype.normalize = function () {
 };
 
 /**
- * Swaps from and to values, effectively changing the direction.
+ * Swap from and to values, effectively changing the direction.
  *
  * The range will also be normalized when this is called.
  *
@@ -126,7 +126,7 @@ ve.Range.prototype.flip = function () {
 };
 
 /**
- * Determines if two Ranges are equal. Direction counts.
+ * Check if two ranges are equal, taking direction into account.
  *
  * @method
  * @param {ve.Range}
@@ -138,7 +138,7 @@ ve.Range.prototype.equals = function ( other ) {
 
 
 /**
- * Creates a new ve.Range object.
+ * Create a new range with a limited length.
  *
  * @method
  * @param {number} Length of the new range (negative for left-side truncation)
@@ -158,9 +158,12 @@ ve.Range.prototype.truncate = function ( length ) {
 };
 
 /**
- * Determines if Range is collapsed or not.
+ * Check if the range is collapsed.
+ *
+ * A collapsed range has equal start and end values making its length zero.
+ *
  * @method
- * @returns {boolean}
+ * @returns {boolean} Range is collapsed.
  */
 ve.Range.prototype.isCollapsed = function () {
 	return this.from === this.to;
