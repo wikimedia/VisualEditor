@@ -89,7 +89,7 @@
 		"groups": [
 			{
 				"name": "Utilities",
-				"classes": ["ve", "ve.EventEmitter", "ve.Registry", "ve.Factory", "ve.Position", "ve.Range"]
+				"classes": ["ve", "ve.EventEmitter", "ve.Registry", "ve.Factory", "ve.Range"]
 			},
 			{
 				"name": "Registries",
@@ -114,6 +114,15 @@
 			{
 				"name": "Test",
 				"classes": ["ve.QUnit", "ve.QUnit.assert"]
+			}
+		]
+	},
+	{
+		"name": "Upstream",
+		"groups": [
+			{
+				"name": "jQuery",
+				"classes": ["jQuery", "jQuery.Event", "QUnit"]
 			}
 		]
 	}

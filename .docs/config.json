@@ -3,10 +3,10 @@
 	"--categories": "../.docs/categories.json",
 	"--meta-tags": "../.docs/MetaTags.rb",
 	"--warnings": ["-no_doc"],
-	"--external": ["jQuery", "jQuery.Event"],
 	"--builtin-classes": true,
 	"--output": "../docs",
 	"--": [
+		"./external.js",
 		"../modules/ve"
 	]
 }

@@ -1,11 +1,10 @@
-/*global rangy */
-
 /*!
  * VisualEditor content editable Surface class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
+/*global rangy */
 
 /**
  * ContentEditable surface.
@@ -864,7 +863,8 @@ ve.ce.Surface.prototype.adjustCursor = function ( adjustment ) {
  * Responds to backspace and delete key events.
  *
  * @method
- * @param {boolean} Key was a backspace
+ * @param {jQuery.Event} e
+ * @param {boolean} backspace Key was a backspace
  */
 ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 	var sourceOffset,
@@ -1323,8 +1323,8 @@ ve.ce.Surface.prototype.isRenderingEnabled = function () {
  * Determines the number of clicks in a user action
  *
  * @method
- * @param {MouseEvent} e Original event (not jQuery)
- * @returns {int} Number of clicks detected
+ * @param {Event} e Native event object.
+ * @returns {number} Number of clicks detected.
  */
 ve.ce.Surface.prototype.getClickCount = function ( e ) {
 	if ( !$.browser.msie ) {
