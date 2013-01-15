@@ -14,7 +14,7 @@ ve.dm.NodeStub = function VeDmNodeStub( length, element ) {
 	ve.dm.Node.call( this, 'stub', length, element );
 };
 
-ve.inheritClass( ve.dm.NodeStub, ve.dm.Node );
+ve.inheritClass( ve.dm.NodeStub, ve.dm.LeafNode );
 
 ve.dm.NodeStub.rules = {
 	'isWrapped': true,
