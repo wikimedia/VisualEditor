@@ -87,9 +87,14 @@ ve.dm.MWInternalLinkAnnotation.prototype.toHTML = function () {
 		href = encodeURIComponent( this.data.title );
 	}
 	parentResult.attributes.href = href;
-	parentResult.attributes.title = this.data.title;
 	parentResult.attributes.rel = 'mw:WikiLink';
 	return parentResult;
+};
+
+ve.dm.MWInternalLinkAnnotation.prototype.renderHTML = function () {
+	var result = this.toHTML();
+	result.attributes.title = this.data.title;
+	return result;
 };
 
 /* Registration */

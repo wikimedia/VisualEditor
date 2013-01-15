@@ -56,8 +56,13 @@ ve.dm.MWExternalLinkAnnotation.static.matchRdfaTypes = [
 ve.dm.MWExternalLinkAnnotation.prototype.toHTML = function () {
 	var parentResult = ve.dm.LinkAnnotation.prototype.toHTML.call( this );
 	parentResult.attributes.rel = parentResult.attributes.rel || 'mw:ExtLink';
-	parentResult.attributes.title = this.data.href;
 	return parentResult;
+};
+
+ve.dm.MWExternalLinkAnnotation.prototype.renderHTML = function () {
+	var result = this.toHTML();
+	result.attributes.title = this.data.href;
+	return result;
 };
 
 /* Registration */
