@@ -184,6 +184,20 @@ ve.dm.Node.static.childNodeTypes = null;
  */
 ve.dm.Node.static.parentNodeTypes = null;
 
+/**
+ * Default attributes to set for newly created linear model elements. These defaults will be used
+ * when creating a new element in ve.dm.NodeFactory#getDataElement when there is no DOM node or
+ * existing linear model element to base the attributes on.
+ *
+ * This property is an object with attribute names as keys and attribute values as values.
+ * Attributes may be omitted, in which case they'll simply be undefined.
+ *
+ * @static
+ * @property {Object} static.defaultAttributes
+ * @inheritable
+ */
+ve.dm.Node.static.defaultAttributes = {};
+
 /* Methods */
 
 /**

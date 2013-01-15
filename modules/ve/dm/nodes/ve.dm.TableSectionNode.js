@@ -25,15 +25,15 @@ ve.inheritClass( ve.dm.TableSectionNode, ve.dm.BranchNode );
 
 /* Static Properties */
 
-ve.dm.TableSectionNode.defaultAttributes = {
-	'style': 'body'
-};
-
 ve.dm.TableSectionNode.static.name = 'tableSection';
 
 ve.dm.TableSectionNode.static.childNodeTypes = [ 'tableRow' ];
 
 ve.dm.TableSectionNode.static.parentNodeTypes = [ 'table' ];
+
+ve.dm.TableSectionNode.static.defaultAttributes = {
+	'style': 'body'
+};
 
 ve.dm.TableSectionNode.static.matchTagNames = [ 'thead', 'tbody', 'tfoot' ];
 

@@ -25,13 +25,13 @@ ve.inheritClass( ve.dm.HeadingNode, ve.dm.BranchNode );
 
 /* Static Properties */
 
-ve.dm.HeadingNode.defaultAttributes = {
-	'level': 1
-};
-
 ve.dm.HeadingNode.static.name = 'heading';
 
 ve.dm.HeadingNode.static.canContainContent = true;
+
+ve.dm.HeadingNode.static.defaultAttributes = {
+	'level': 1
+};
 
 ve.dm.HeadingNode.static.matchTagNames = [ 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' ];
 

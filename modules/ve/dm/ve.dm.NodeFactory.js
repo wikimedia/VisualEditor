@@ -35,10 +35,8 @@ ve.inheritClass( ve.dm.NodeFactory, ve.Factory );
 ve.dm.NodeFactory.prototype.getDataElement = function ( type, attributes ) {
 	var element = { 'type': type };
 	if ( type in this.registry ) {
-		if ( this.registry[type].defaultAttributes ) {
-			attributes = ve.extendObject( {}, this.registry[type].defaultAttributes, attributes );
-		}
-		if ( ve.isPlainObject( attributes ) && !ve.isEmptyObject( attributes ) ) {
+		attributes = ve.extendObject( {}, this.registry[type].static.defaultAttributes, attributes );
+		if ( !ve.isEmptyObject( attributes ) ) {
 			element.attributes = ve.copyObject( attributes );
 		}
 		return element;
