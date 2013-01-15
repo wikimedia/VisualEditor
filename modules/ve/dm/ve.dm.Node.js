@@ -193,7 +193,7 @@ ve.dm.Node.static.parentNodeTypes = null;
  * @returns {string[]|null} List of node types allowed as children or null if any type is allowed
  */
 ve.dm.Node.prototype.getChildNodeTypes = function () {
-	return ve.dm.nodeFactory.getChildNodeTypes( this.type );
+	return this.constructor.static.childNodeTypes;
 };
 
 /**
@@ -203,7 +203,7 @@ ve.dm.Node.prototype.getChildNodeTypes = function () {
  * @returns {string[]|null} List of node types allowed as parents or null if any type is allowed
  */
 ve.dm.Node.prototype.getParentNodeTypes = function () {
-	return ve.dm.nodeFactory.getParentNodeTypes( this.type );
+	return this.constructor.static.parentNodeTypes;
 };
 
 /**
@@ -233,7 +233,7 @@ ve.dm.Node.prototype.canHaveGrandchildren = function () {
  * @returns {boolean} Node represents a wrapped element
  */
 ve.dm.Node.prototype.isWrapped = function () {
-	return ve.dm.nodeFactory.isNodeWrapped( this.type );
+	return this.constructor.static.isWrapped;
 };
 
 /**
@@ -243,7 +243,7 @@ ve.dm.Node.prototype.isWrapped = function () {
  * @returns {boolean} Node can contain content
  */
 ve.dm.Node.prototype.canContainContent = function () {
-	return ve.dm.nodeFactory.canNodeContainContent( this.type );
+	return this.constructor.static.canContainContent;
 };
 
 /**
@@ -253,7 +253,7 @@ ve.dm.Node.prototype.canContainContent = function () {
  * @returns {boolean} Node is content
  */
 ve.dm.Node.prototype.isContent = function () {
-	return ve.dm.nodeFactory.isNodeContent( this.type );
+	return this.constructor.static.isContent;
 };
 
 /**
@@ -265,7 +265,7 @@ ve.dm.Node.prototype.isContent = function () {
  * @returns {boolean} Node has significant whitespace
  */
 ve.dm.Node.prototype.hasSignificantWhitespace = function () {
-	return ve.dm.nodeFactory.doesNodeHaveSignificantWhitespace( this.type );
+	return this.constructor.static.hasSignificantWhitespace;
 };
 
 /**
