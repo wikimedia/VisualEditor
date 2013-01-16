@@ -63,11 +63,11 @@ ve.ce.TextNode.whitespaceHtmlCharacters = {
  * @returns {Array} Array of rendered HTML fragments with annotations
  */
 ve.ce.TextNode.prototype.getAnnotatedHtml = function () {
-	var	data = this.model.getDocument().getDataFromNode( this.model ),
+	var i, chr, character, nextCharacter,
+		data = this.model.getDocument().getDataFromNode( this.model ),
 		htmlChars = ve.ce.TextNode.htmlCharacters,
 		whitespaceHtmlChars = ve.ce.TextNode.whitespaceHtmlCharacters,
-		significantWhitespace = this.getModel().getParent().hasSignificantWhitespace(),
-		i, chr, character, nextCharacter;
+		significantWhitespace = this.getModel().getParent().hasSignificantWhitespace();
 
 	function setChar( chr, index, data ) {
 		if ( ve.isArray( data[index] ) ) {
@@ -95,25 +95,19 @@ ve.ce.TextNode.prototype.getAnnotatedHtml = function () {
 				setChar( '&nbsp;', data.length - 1, data );
 			}
 		}
-		if ( data.length > 2 ) {
-			// Replace any sequence of 2+ spaces with an alternating pattern
-			// (space-nbsp-space-nbsp-...)
-			for ( i = 1; i < data.length - 1; i++ ) { // TODO fold into loop below
-				character = data[i];
-				nextCharacter = data[i + 1];
-				if (
-					( ve.isArray( character ) ? character[0] === ' ' : character === ' ' ) &&
-					( ve.isArray( nextCharacter ) ? nextCharacter[0] === ' ' : nextCharacter === ' ' )
-				) {
-					setChar( '&nbsp;', i + 1, data );
-					i++;
-				}
-			}
-		}
 	}
 
 	for ( i = 0; i < data.length; i++ ) {
 		chr = typeof data[i] === 'string' ? data[i] : data[i][0];
+
+		if ( chr === ' ' && !significantWhitespace && data.length > 2 && i !== 0 && i !== data.length - 1 ) {
+			// Replace any sequence of 2+ spaces with an alternating pattern
+			// (space-nbsp-space-nbsp-...)
+			nextCharacter = typeof data[i + 1] === 'string' ? data[i + 1] : data[i + 1][0];
+			if ( nextCharacter === ' ' ) {
+				setChar( '&nbsp;', i + 1, data );
+			}
+		}
 		if ( !significantWhitespace && chr in whitespaceHtmlChars ) {
 			chr = whitespaceHtmlChars[chr];
 		}
