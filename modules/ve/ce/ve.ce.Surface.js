@@ -53,11 +53,7 @@ ve.ce.Surface = function VeCeSurface( $container, model, surface ) {
 		'cut': ve.bind( this.onCut, this ),
 		'copy': ve.bind( this.onCopy, this ),
 		'paste': ve.bind( this.onPaste, this ),
-		'dragover drop': function ( e ) {
-			// Prevent content drag & drop
-			e.preventDefault();
-			return false;
-		}
+		'dragover drop': ve.bind( this.onDragoverDrop, this ),
 	} );
 	if ( $.browser.msie ) {
 		this.$.on( 'beforepaste', ve.bind( this.onPaste, this ) );
@@ -65,7 +61,7 @@ ve.ce.Surface = function VeCeSurface( $container, model, surface ) {
 
 	// Initialization
 	rangy.init();
-	//ve.ce.Surface.clearLocalStorage();
+	this.cleanLocalStorage();
 	this.$phantoms.addClass( 've-ce-phantoms' );
 	this.$pasteTarget.addClass( 've-ce-surface-paste' ).prop( 'contenteditable', true );
 	this.$.append( this.documentView.getDocumentNode().$, this.$phantoms, this.$pasteTarget );
@@ -115,14 +111,15 @@ ve.ce.Surface.static.textPattern = new RegExp(
 
 /* Methods */
 
+/*! Initialization */
+
 /**
- * Destroy the surface, removing all DOM elements.
+ * Enable editing.
  *
  * @method
- * @returns {ve.ui.Context} Context user interface
  */
-ve.ce.Surface.prototype.destroy = function () {
-	this.$.remove();
+ve.ce.Surface.prototype.enable = function () {
+	this.documentView.getDocumentNode().enable();
 };
 
 /**
@@ -135,76 +132,438 @@ ve.ce.Surface.prototype.disable = function () {
 };
 
 /**
- * Enable editing.
+ * Destroy the surface, removing all DOM elements.
  *
  * @method
+ * @returns {ve.ui.Context} Context user interface
  */
-ve.ce.Surface.prototype.enable = function () {
-	this.documentView.getDocumentNode().enable();
+ve.ce.Surface.prototype.destroy = function () {
+	this.$.remove();
 };
 
 /**
- * Handle insertion of content.
+ * Clean copy and paste data that's at least a day old in localStorage.
  *
  * @method
  */
-ve.ce.Surface.prototype.handleInsertion = function () {
-	var slug, data, range, annotations, insertionAnnotations, placeholder,
-		selection = this.model.getSelection();
+ve.ce.Surface.prototype.cleanLocalStorage = function () {
+	var i, len, key, time, now,
+		keysToRemove = [];
 
-	// Handles removing expanded selection before inserting new text
-	if ( !selection.isCollapsed() ) {
-		// Pull annotations from the first character in the selection
-		annotations = this.model.documentModel.getAnnotationsFromRange(
-			new ve.Range( selection.start, selection.start + 1 )
-		);
-		this.model.change(
-			ve.dm.Transaction.newFromRemoval( this.documentView.model, selection ),
-			new ve.Range( selection.start )
-		);
-		this.surfaceObserver.clear();
-		selection = this.model.getSelection();
-		this.model.setInsertionAnnotations( annotations );
-	}
-	insertionAnnotations = this.model.getInsertionAnnotations() || new ve.AnnotationSet();
-	if ( selection.isCollapsed() ) {
-		slug = this.documentView.getSlugAtOffset( selection.start );
-		// Is this a slug or are the annotations to the left different than the insertion
-		// annotations?
-		if (
-			slug || (
-				selection.start > 0 &&
-				!ve.compareObjects (
-					this.model.getDocument().getAnnotationsFromOffset( selection.start - 1 ),
-					insertionAnnotations
-				)
-			)
-		) {
-			placeholder = '\u2659';
-			if ( !insertionAnnotations.isEmpty() ) {
-				placeholder = [placeholder, insertionAnnotations];
-			}
-			// is this a slug and if so, is this a block slug?
-			if ( slug && ve.dm.Document.isStructuralOffset(
-				this.documentView.model.data, selection.start
-			) ) {
-				range = new ve.Range( selection.start + 1, selection.start + 2 );
-				data = [{ 'type' : 'paragraph' }, placeholder, { 'type' : '/paragraph' }];
-			} else {
-				range = new ve.Range( selection.start, selection.start + 1 );
-				data = [placeholder];
-			}
-			this.model.change(
-				ve.dm.Transaction.newFromInsertion(
-					this.documentView.model, selection.start, data
-				),
-				range
-			);
-			this.surfaceObserver.clear();
+	for ( i = 0, len = localStorage.length; i < len; i++ ) {
+		key = localStorage.key( i );
+
+		if ( key.indexOf( 've-' ) !== 0 ) {
+			return false;
+		}
+
+		time = JSON.parse( localStorage.getItem( key ) ).time;
+		now = new Date().getTime();
+
+		// Offset: 24 days (in miliseconds)
+		if ( now - time > ( 24 * 3600 * 1000 ) ) {
+			// Don't remove keys while iterating. Store them for later removal.
+			keysToRemove.push( key );
 		}
 	}
 
+	$.each( keysToRemove, function ( i, val ) {
+		localStorage.removeItem( val );
+	} );
+};
+
+/*! Native Browser Events */
+
+/**
+ * Handle document focus events.
+ *
+ * @method
+ * @param {jQuery.Event} e
+ */
+ve.ce.Surface.prototype.documentOnFocus = function () {
+	this.$document.off( '.ve-ce-Surface' );
+	this.$document.on( {
+		'keydown.ve-ce-Surface': ve.bind( this.onDocumentKeyDown, this ),
+		'keyup.ve-ce-Surface': ve.bind( this.onDocumentKeyUp, this ),
+		'keypress.ve-ce-Surface': ve.bind( this.onDocumentKeyPress, this ),
+		'mousedown.ve-ce-Surface': ve.bind( this.onDocumentMouseDown, this ),
+		'mouseup.ve-ce-Surface': ve.bind( this.onDocumentMouseUp, this ),
+		'mousemove.ve-ce-Surface': ve.bind( this.onDocumentMouseMove, this ),
+		'compositionstart.ve-ce-Surface': ve.bind( this.onDocumentCompositionStart, this ),
+		'compositionend.ve-ce-Surface': ve.bind( this.onDocumentCompositionEnd, this ),
+	} );
+	this.surfaceObserver.start( true );
+};
+
+/**
+ * Handle document blur events.
+ *
+ * @method
+ * @param {jQuery.Event} e
+ */
+ve.ce.Surface.prototype.documentOnBlur = function () {
+	this.$document.off( '.ve-ce-Surface' );
 	this.surfaceObserver.stop( true );
+};
+
+/**
+ * Handle document mouse down events.
+ *
+ * @method
+ * @param {jQuery.Event} e
+ */
+ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
+	// Remember the mouse is down
+	this.dragging = true;
+
+	// Old code to figure out if user clicked inside the document or not - leave it here for now
+	// $( e.target ).closest( '.ve-ce-documentNode' ).length === 0
+
+	if ( e.which === 1 ) {
+		this.surfaceObserver.stop( true );
+	}
+
+	// Block / prevent triple click
+	if ( this.getClickCount( e.originalEvent ) > 2 ) {
+		e.preventDefault();
+	}
+};
+
+/**
+ * Handle document mouse up events.
+ *
+ * @method
+ * @param {jQuery.Event} e
+ */
+ve.ce.Surface.prototype.onDocumentMouseUp = function ( e ) {
+	this.surfaceObserver.start();
+	if ( !e.shiftKey && this.selecting ) {
+		this.emit( 'selectionEnd' );
+		this.selecting = false;
+	}
+	this.dragging = false;
+};
+
+/**
+ * Handle document mouse move events.
+ *
+ * @method
+ * @param {jQuery.Event} e
+ */
+ve.ce.Surface.prototype.onDocumentMouseMove = function () {
+	// Detect beginning of selection by moving mouse while dragging
+	if ( this.dragging && !this.selecting ) {
+		this.selecting = true;
+		this.emit( 'selectionStart' );
+	}
+};
+
+/**
+ * Handle document dragover and drop events.
+ *
+ * Prevents native dragging and dropping of content.
+ *
+ * @method
+ * @param {jQuery.Event} e
+ */
+ve.ce.Surface.prototype.onDocumentDragoverDrop = function ( e ) {
+	e.preventDefault();
+	return false;
+};
+
+/**
+ * Handle document key down events.
+ *
+ * @method
+ * @param {jQuery.Event} e
+ */
+ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
+	if ( this.inIme === true ) {
+		return;
+	}
+
+	if ( e.which === 229 && $.browser.msie === true ) {
+		this.inIme = true;
+		this.handleInsertion();
+		return;
+	}
+
+	// Detect start of selecting using shift+arrow keys
+	if ( !this.dragging && !this.selecting && e.shiftKey && e.keyCode >= 37 && e.keyCode <= 40 ) {
+		this.selecting = true;
+		this.emit( 'selectionStart' );
+	}
+
+	switch ( e.keyCode ) {
+		// Left arrow
+		case 37:
+			if ( this.adjustCursor( -1 ) ) {
+				e.preventDefault();
+			}
+			break;
+		// Right arrow
+		case 39:
+			if ( this.adjustCursor( 1 ) ) {
+				e.preventDefault();
+			}
+			break;
+		// Enter
+		case 13:
+			e.preventDefault();
+			this.handleEnter( e );
+			break;
+		// Backspace
+		case 8:
+			this.handleDelete( e, true );
+			this.surfaceObserver.stop( true );
+			this.surfaceObserver.start();
+			break;
+		// Delete
+		case 46:
+			this.handleDelete( e, false );
+			this.surfaceObserver.stop( true );
+			this.surfaceObserver.start();
+			break;
+		default:
+			// Execute key command if available
+			this.surfaceObserver.stop( true );
+			if ( this.surface.execute( new ve.Command( e ) ) ) {
+				e.preventDefault();
+			}
+			this.surfaceObserver.start();
+	}
+};
+
+/**
+ * Handle document key press events.
+ *
+ * @method
+ * @param {jQuery.Event} e
+ */
+ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
+	if ( ve.ce.Surface.isShortcutKey( e ) || e.which === 13 || e.which === 8 || e.which === 0 ) {
+		return;
+	}
+	this.handleInsertion();
+	setTimeout( ve.bind( function () {
+		this.surfaceObserver.start();
+	}, this ), 0 );
+};
+
+/**
+ * Handle document key up events.
+ *
+ * @method
+ * @param {jQuery.Event} e
+ */
+ve.ce.Surface.prototype.onDocumentKeyUp = function ( e ) {
+	// Detect end of selecting by letting go of shift
+	if ( !this.dragging && this.selecting && e.keyCode === 16 ) {
+		this.selecting = false;
+		this.emit( 'selectionEnd' );
+	}
+};
+
+/**
+ * Handle cut events.
+ *
+ * @method
+ * @param {jQuery.Event} e
+ */
+ve.ce.Surface.prototype.onCut = function ( e ) {
+	var surface = this;
+
+	this.surfaceObserver.stop();
+
+	this.onCopy( e );
+
+	setTimeout( function () {
+		var selection,
+			tx;
+
+		// We don't like how browsers cut, so let's undo it and do it ourselves.
+		document.execCommand( 'undo', false, false );
+
+		selection = surface.model.getSelection();
+
+		// Transact
+		tx = ve.dm.Transaction.newFromRemoval( surface.documentView.model, selection );
+		surface.model.change( tx, new ve.Range( selection.start ) );
+
+		surface.surfaceObserver.clear();
+		surface.surfaceObserver.start();
+	}, 1 );
+};
+
+/**
+ * Handle copy events.
+ *
+ * @method
+ * @param {jQuery.Event} e
+ */
+ve.ce.Surface.prototype.onCopy = function () {
+	var sel = rangy.getSelection(),
+		$frag = $( sel.getRangeAt(0).cloneContents() ),
+		slice = this.documentView.model.getSlice( this.model.getSelection() ),
+		key = '';
+
+	// Create key from text and element names
+	$frag.contents().each( function () {
+		key += this.textContent || this.nodeName;
+	} );
+	key = 've-' + key.replace( /\s/gm, '' );
+
+	// Set clipboard and localStorage
+	this.clipboard[key] = slice;
+	try {
+		localStorage.setItem(
+			key,
+			JSON.stringify( {
+				'time': new Date().getTime(),
+				'data': slice
+			} )
+		);
+	} catch ( e ) {
+		// Silently ignore
+	}
+};
+
+/**
+ * Handle paste events.
+ *
+ * @method
+ * @param {jQuery.Event} e
+ */
+ve.ce.Surface.prototype.onPaste = function ( e ) {
+	// Prevent pasting until after we are done
+	if ( this.pasting ) {
+		e.preventDefault();
+		return false;
+	}
+	this.pasting = true;
+
+	var tx, scrollTop,
+		$window = $( window ),
+		view = this,
+		selection = this.model.getSelection();
+
+	this.surfaceObserver.stop();
+
+	// Pasting into a range? Remove first.
+	if ( !rangy.getSelection().isCollapsed ) {
+		tx = ve.dm.Transaction.newFromRemoval( view.documentView.model, selection );
+		view.model.change( tx );
+	}
+
+	// Save scroll position and change focus to "offscreen" paste target
+	scrollTop = $window.scrollTop();
+	this.$pasteTarget.html( '' ).show().focus();
+
+	setTimeout( function () {
+		var pasteText, pasteData, tx,
+			key = '';
+
+		// Create key from text and element names
+		view.$pasteTarget.hide().contents().each( function () {
+			key += this.textContent || this.nodeName;
+		} );
+		key = 've-' + key.replace( /\s/gm, '' );
+
+		// Get linear model from clipboard, localStorage or create array from unknown pasted content
+		if ( view.clipboard[key] ) {
+			pasteData = view.clipboard[key];
+		}
+		/*
+		else if ( localStorage.getItem( key ) ) {
+			pasteData = localStorage.getItem( key ).data;
+		}
+		*/
+		else {
+			pasteText = view.$pasteTarget.text().replace( /\n/gm, '');
+			pasteData = new ve.dm.DocumentSlice( pasteText.split( '' ) );
+		}
+
+		// Transact
+		try {
+			tx = ve.dm.Transaction.newFromInsertion(
+				view.documentView.model,
+				selection.start,
+				pasteData.getData()
+			);
+		} catch ( e ) {
+			tx = ve.dm.Transaction.newFromInsertion(
+				view.documentView.model,
+				selection.start,
+				pasteData.getBalancedData()
+			);
+		}
+
+		// Restore focus and scroll position
+		view.documentView.documentNode.$.focus();
+		$window.scrollTop( scrollTop );
+
+		view.model.change( tx, tx.translateRange( selection ).truncate( 0 ) );
+
+		// Allow pasting again
+		view.pasting = false;
+	}, 0 );
+};
+
+/**
+ * Handle document composition start events.
+ *
+ * @method
+ * @param {jQuery.Event} e
+ */
+ve.ce.Surface.prototype.onDocumentCompositionStart = function () {
+	if ( $.browser.msie === true ) {
+		return;
+	}
+	this.inIme = true;
+	this.handleInsertion();
+};
+
+/**
+ * Handle document composition end events.
+ *
+ * @method
+ * @param {jQuery.Event} e
+ */
+ve.ce.Surface.prototype.onDocumentCompositionEnd = function () {
+	this.inIme = false;
+	this.surfaceObserver.start();
+};
+
+/*! Custom Events */
+
+/**
+ * Handle change events.
+ *
+ * @see ve.dm.Surface.prototype.change.
+ *
+ * @method
+ * @param {ve.dm.Transaction|null} transaction
+ * @param {ve.Range|undefined} selection
+ */
+ve.ce.Surface.prototype.onChange = function ( transaction, selection ) {
+	if ( selection && this.isRenderingEnabled() ) {
+		this.showSelection( selection );
+	}
+};
+
+/**
+ * Handle selection change events.
+ *
+ * @see ve.ce.SurfaceObserver.prototype.poll
+ *
+ * @method
+ * @param {ve.Range} oldRange
+ * @param {ve.Range} newRange
+ */
+ve.ce.Surface.prototype.onSelectionChange = function ( oldRange, newRange ) {
+	this.disableRendering();
+	this.model.change( null, newRange );
+	this.enableRendering();
 };
 
 /**
@@ -342,21 +701,6 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 };
 
 /**
- * Handle selection change events.
- *
- * @see ve.ce.SurfaceObserver.prototype.poll
- *
- * @method
- * @param {ve.Range} oldRange
- * @param {ve.Range} newRange
- */
-ve.ce.Surface.prototype.onSelectionChange = function ( oldRange, newRange ) {
-	this.disableRendering();
-	this.model.change( null, newRange );
-	this.enableRendering();
-};
-
-/**
  * Handle surface lock events.
  *
  * @method
@@ -375,366 +719,70 @@ ve.ce.Surface.prototype.onUnlock = function () {
 	this.surfaceObserver.start();
 };
 
-/**
- * Handle document focus events.
- *
- * @method
- * @param {jQuery.Event} e
- */
-ve.ce.Surface.prototype.documentOnFocus = function () {
-	this.$document.off( '.ve-ce-Surface' );
-	this.$document.on( {
-		'keydown.ve-ce-Surface': ve.bind( this.onDocumentKeyDown, this ),
-		'keyup.ve-ce-Surface': ve.bind( this.onDocumentKeyUp, this ),
-		'keypress.ve-ce-Surface': ve.bind( this.onDocumentKeyPress, this ),
-		'mousedown.ve-ce-Surface': ve.bind( this.onDocumentMouseDown, this ),
-		'mouseup.ve-ce-Surface': ve.bind( this.onDocumentMouseUp, this ),
-		'mousemove.ve-ce-Surface': ve.bind( this.onDocumentMouseMove, this ),
-		'compositionstart.ve-ce-Surface': ve.bind( this.onDocumentCompositionStart, this ),
-		'compositionend.ve-ce-Surface': ve.bind( this.onDocumentCompositionEnd, this ),
-	} );
-	this.surfaceObserver.start( true );
-};
+/*! Utilities */
 
 /**
- * Handle document composition start events.
+ * Handle insertion of content.
  *
  * @method
- * @param {jQuery.Event} e
  */
-ve.ce.Surface.prototype.onDocumentCompositionStart = function () {
-	if ( $.browser.msie === true ) {
-		return;
-	}
-	this.inIme = true;
-	this.handleInsertion();
-};
-
-/**
- * Handle document composition end events.
- *
- * @method
- * @param {jQuery.Event} e
- */
-ve.ce.Surface.prototype.onDocumentCompositionEnd = function () {
-	this.inIme = false;
-	this.surfaceObserver.start();
-};
-
-/**
- * Handle document blur events.
- *
- * @method
- * @param {jQuery.Event} e
- */
-ve.ce.Surface.prototype.documentOnBlur = function () {
-	this.$document.off( '.ve-ce-Surface' );
-	this.surfaceObserver.stop( true );
-};
-
-/**
- * Handle document mouse down events.
- *
- * @method
- * @param {jQuery.Event} e
- */
-ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
-	// Remember the mouse is down
-	this.dragging = true;
-
-	// Old code to figure out if user clicked inside the document or not - leave it here for now
-	// $( e.target ).closest( '.ve-ce-documentNode' ).length === 0
-
-	if ( e.which === 1 ) {
-		this.surfaceObserver.stop( true );
-	}
-
-	// Block / prevent triple click
-	if ( this.getClickCount( e.originalEvent ) > 2 ) {
-		e.preventDefault();
-	}
-};
-
-/**
- * Handle document mouse up events.
- *
- * @method
- * @param {jQuery.Event} e
- */
-ve.ce.Surface.prototype.onDocumentMouseUp = function ( e ) {
-	this.surfaceObserver.start();
-	if ( !e.shiftKey && this.selecting ) {
-		this.emit( 'selectionEnd' );
-		this.selecting = false;
-	}
-	this.dragging = false;
-};
-
-/**
- * Handle document mouse move events.
- *
- * @method
- * @param {jQuery.Event} e
- */
-ve.ce.Surface.prototype.onDocumentMouseMove = function () {
-	// Detect beginning of selection by moving mouse while dragging
-	if ( this.dragging && !this.selecting ) {
-		this.selecting = true;
-		this.emit( 'selectionStart' );
-	}
-};
-
-/**
- * Handle document key up events.
- *
- * @method
- * @param {jQuery.Event} e
- */
-ve.ce.Surface.prototype.onDocumentKeyUp = function ( e ) {
-	// Detect end of selecting by letting go of shift
-	if ( !this.dragging && this.selecting && e.keyCode === 16 ) {
-		this.selecting = false;
-		this.emit( 'selectionEnd' );
-	}
-};
-
-/**
- * Handle document key down events.
- *
- * @method
- * @param {jQuery.Event} e
- */
-ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
-	if ( this.inIme === true ) {
-		return;
-	}
-
-	if ( e.which === 229 && $.browser.msie === true ) {
-		this.inIme = true;
-		this.handleInsertion();
-		return;
-	}
-
-	// Detect start of selecting using shift+arrow keys
-	if ( !this.dragging && !this.selecting && e.shiftKey && e.keyCode >= 37 && e.keyCode <= 40 ) {
-		this.selecting = true;
-		this.emit( 'selectionStart' );
-	}
-
-	switch ( e.keyCode ) {
-		// Left arrow
-		case 37:
-			if ( this.adjustCursor( -1 ) ) {
-				e.preventDefault();
-			}
-			break;
-		// Right arrow
-		case 39:
-			if ( this.adjustCursor( 1 ) ) {
-				e.preventDefault();
-			}
-			break;
-		// Enter
-		case 13:
-			e.preventDefault();
-			this.handleEnter( e );
-			break;
-		// Backspace
-		case 8:
-			this.handleDelete( e, true );
-			this.surfaceObserver.stop( true );
-			this.surfaceObserver.start();
-			break;
-		// Delete
-		case 46:
-			this.handleDelete( e, false );
-			this.surfaceObserver.stop( true );
-			this.surfaceObserver.start();
-			break;
-		default:
-			// Execute key command if available
-			this.surfaceObserver.stop( true );
-			if ( this.surface.execute( new ve.Command( e ) ) ) {
-				e.preventDefault();
-			}
-			this.surfaceObserver.start();
-	}
-};
-
-/**
- * Handle copy events.
- *
- * @method
- * @param {jQuery.Event} e
- */
-ve.ce.Surface.prototype.onCopy = function () {
-	var sel = rangy.getSelection(),
-		$frag = $( sel.getRangeAt(0).cloneContents() ),
-		slice = this.documentView.model.getSlice( this.model.getSelection() ),
-		key = '';
-
-	// Create key from text and element names
-	$frag.contents().each( function () {
-		key += this.textContent || this.nodeName;
-	} );
-	key = 've-' + key.replace( /\s/gm, '' );
-
-	// Set clipboard and localStorage
-	this.clipboard[key] = slice;
-	try {
-		localStorage.setItem(
-			key,
-			JSON.stringify( {
-				'time': new Date().getTime(),
-				'data': slice
-			} )
-		);
-	} catch ( e ) {
-		// Silently ignore
-	}
-};
-
-/**
- * Handle cut events.
- *
- * @method
- * @param {jQuery.Event} e
- */
-ve.ce.Surface.prototype.onCut = function ( e ) {
-	var surface = this;
-
-	this.surfaceObserver.stop();
-
-	this.onCopy( e );
-
-	setTimeout( function () {
-		var selection,
-			tx;
-
-		// We don't like how browsers cut, so let's undo it and do it ourselves.
-		document.execCommand( 'undo', false, false );
-
-		selection = surface.model.getSelection();
-
-		// Transact
-		tx = ve.dm.Transaction.newFromRemoval( surface.documentView.model, selection );
-		surface.model.change( tx, new ve.Range( selection.start ) );
-
-		surface.surfaceObserver.clear();
-		surface.surfaceObserver.start();
-	}, 1 );
-};
-
-/**
- * Handle paste events.
- *
- * @method
- * @param {jQuery.Event} e
- */
-ve.ce.Surface.prototype.onPaste = function ( e ) {
-	// Prevent pasting until after we are done
-	if ( this.pasting ) {
-		e.preventDefault();
-		return false;
-	}
-	this.pasting = true;
-
-	var tx, scrollTop,
-		$window = $( window ),
-		view = this,
+ve.ce.Surface.prototype.handleInsertion = function () {
+	var slug, data, range, annotations, insertionAnnotations, placeholder,
 		selection = this.model.getSelection();
 
-	this.surfaceObserver.stop();
-
-	// Pasting into a range? Remove first.
-	if ( !rangy.getSelection().isCollapsed ) {
-		tx = ve.dm.Transaction.newFromRemoval( view.documentView.model, selection );
-		view.model.change( tx );
+	// Handles removing expanded selection before inserting new text
+	if ( !selection.isCollapsed() ) {
+		// Pull annotations from the first character in the selection
+		annotations = this.model.documentModel.getAnnotationsFromRange(
+			new ve.Range( selection.start, selection.start + 1 )
+		);
+		this.model.change(
+			ve.dm.Transaction.newFromRemoval( this.documentView.model, selection ),
+			new ve.Range( selection.start )
+		);
+		this.surfaceObserver.clear();
+		selection = this.model.getSelection();
+		this.model.setInsertionAnnotations( annotations );
 	}
-
-	// Save scroll position and change focus to "offscreen" paste target
-	scrollTop = $window.scrollTop();
-	this.$pasteTarget.html( '' ).show().focus();
-
-	setTimeout( function () {
-		var pasteText, pasteData, tx,
-			key = '';
-
-		// Create key from text and element names
-		view.$pasteTarget.hide().contents().each( function () {
-			key += this.textContent || this.nodeName;
-		} );
-		key = 've-' + key.replace( /\s/gm, '' );
-
-		// Get linear model from clipboard, localStorage or create array from unknown pasted content
-		if ( view.clipboard[key] ) {
-			pasteData = view.clipboard[key];
-		}
-		/*
-		else if ( localStorage.getItem( key ) ) {
-			pasteData = localStorage.getItem( key ).data;
-		}
-		*/
-		else {
-			pasteText = view.$pasteTarget.text().replace( /\n/gm, '');
-			pasteData = new ve.dm.DocumentSlice( pasteText.split( '' ) );
-		}
-
-		// Transact
-		try {
-			tx = ve.dm.Transaction.newFromInsertion(
-				view.documentView.model,
-				selection.start,
-				pasteData.getData()
+	insertionAnnotations = this.model.getInsertionAnnotations() || new ve.AnnotationSet();
+	if ( selection.isCollapsed() ) {
+		slug = this.documentView.getSlugAtOffset( selection.start );
+		// Is this a slug or are the annotations to the left different than the insertion
+		// annotations?
+		if (
+			slug || (
+				selection.start > 0 &&
+				!ve.compareObjects (
+					this.model.getDocument().getAnnotationsFromOffset( selection.start - 1 ),
+					insertionAnnotations
+				)
+			)
+		) {
+			placeholder = '\u2659';
+			if ( !insertionAnnotations.isEmpty() ) {
+				placeholder = [placeholder, insertionAnnotations];
+			}
+			// is this a slug and if so, is this a block slug?
+			if ( slug && ve.dm.Document.isStructuralOffset(
+				this.documentView.model.data, selection.start
+			) ) {
+				range = new ve.Range( selection.start + 1, selection.start + 2 );
+				data = [{ 'type' : 'paragraph' }, placeholder, { 'type' : '/paragraph' }];
+			} else {
+				range = new ve.Range( selection.start, selection.start + 1 );
+				data = [placeholder];
+			}
+			this.model.change(
+				ve.dm.Transaction.newFromInsertion(
+					this.documentView.model, selection.start, data
+				),
+				range
 			);
-		} catch ( e ) {
-			tx = ve.dm.Transaction.newFromInsertion(
-				view.documentView.model,
-				selection.start,
-				pasteData.getBalancedData()
-			);
+			this.surfaceObserver.clear();
 		}
-
-		// Restore focus and scroll position
-		view.documentView.documentNode.$.focus();
-		$window.scrollTop( scrollTop );
-
-		view.model.change( tx, tx.translateRange( selection ).truncate( 0 ) );
-
-		// Allow pasting again
-		view.pasting = false;
-	}, 0 );
-};
-
-/**
- * Handle document key press events.
- *
- * @method
- * @param {jQuery.Event} e
- */
-ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
-	if ( ve.ce.Surface.isShortcutKey( e ) || e.which === 13 || e.which === 8 || e.which === 0 ) {
-		return;
 	}
-	this.handleInsertion();
-	setTimeout( ve.bind( function () {
-		this.surfaceObserver.start();
-	}, this ), 0 );
-};
 
-/**
- * Handle change events.
- *
- * @see ve.dm.Surface.prototype.change.
- *
- * @method
- * @param {ve.dm.Transaction|null} transaction
- * @param {ve.Range|undefined} selection
- */
-ve.ce.Surface.prototype.onChange = function ( transaction, selection ) {
-	if ( selection && this.isRenderingEnabled() ) {
-		this.showSelection( selection );
-	}
+	this.surfaceObserver.stop( true );
 };
 
 /**
@@ -854,62 +902,6 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 	// Reset and resume polling
 	this.surfaceObserver.clear();
 	this.surfaceObserver.start();
-};
-
-/**
- * Adjust the cursor position in a given distance.
- *
- * This method only affects the selection target, preserving selections that are not collapsed and
- * the direction of the selection.
- *
- * @method
- * @param {number} adjustment Distance to adjust the cursor, can be positive or negative
- * @returns {boolean} Cursor was moved
- */
-ve.ce.Surface.prototype.adjustCursor = function ( adjustment ) {
-	// Bypass for zero-adjustment
-	if ( !adjustment ) {
-		return false;
-	}
-	var adjustedTargetOffset,
-		bias = adjustment > 0 ? 1 : -1,
-		selection = this.model.getSelection(),
-		targetOffset = selection.to,
-		documentModel = this.model.getDocument(),
-		relativeContentOffset = documentModel.getRelativeContentOffset( targetOffset, adjustment ),
-		relativeStructuralOffset = documentModel.getRelativeStructuralOffset(
-			targetOffset + bias, adjustment, true
-		);
-	// Check if we've moved into a slug
-	if ( this.hasSlugAtOffset( relativeStructuralOffset ) ) {
-		// Check if the relative content offset is in the opposite direction we are trying to go
-		if ( ( relativeContentOffset - targetOffset < 0 ? -1 : 1 ) !== bias ) {
-			// There's nothing past the slug we are already in, stay in it
-			adjustedTargetOffset = relativeStructuralOffset;
-		} else {
-			// There's a slug neaby, go into it if it's closer
-			adjustedTargetOffset = adjustment < 0 ?
-				Math.max( relativeContentOffset, relativeStructuralOffset ) :
-				Math.min( relativeContentOffset, relativeStructuralOffset );
-		}
-	}
-	// Check if we've moved a different distance than we asked for
-	else if ( relativeContentOffset !== targetOffset + adjustment ) {
-		// We can't trust the browser, move programatically
-		adjustedTargetOffset = relativeContentOffset;
-	}
-	// If the target changed, update the model
-	if ( adjustedTargetOffset ) {
-		this.model.change(
-			null,
-			new ve.Range(
-				selection.isCollapsed() ?
-					adjustedTargetOffset : selection.from, adjustedTargetOffset
-			)
-		);
-		return true;
-	}
-	return false;
 };
 
 /**
@@ -1072,6 +1064,62 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 };
 
 /**
+ * Adjust the cursor position in a given distance.
+ *
+ * This method only affects the selection target, preserving selections that are not collapsed and
+ * the direction of the selection.
+ *
+ * @method
+ * @param {number} adjustment Distance to adjust the cursor, can be positive or negative
+ * @returns {boolean} Cursor was moved
+ */
+ve.ce.Surface.prototype.adjustCursor = function ( adjustment ) {
+	// Bypass for zero-adjustment
+	if ( !adjustment ) {
+		return false;
+	}
+	var adjustedTargetOffset,
+		bias = adjustment > 0 ? 1 : -1,
+		selection = this.model.getSelection(),
+		targetOffset = selection.to,
+		documentModel = this.model.getDocument(),
+		relativeContentOffset = documentModel.getRelativeContentOffset( targetOffset, adjustment ),
+		relativeStructuralOffset = documentModel.getRelativeStructuralOffset(
+			targetOffset + bias, adjustment, true
+		);
+	// Check if we've moved into a slug
+	if ( this.hasSlugAtOffset( relativeStructuralOffset ) ) {
+		// Check if the relative content offset is in the opposite direction we are trying to go
+		if ( ( relativeContentOffset - targetOffset < 0 ? -1 : 1 ) !== bias ) {
+			// There's nothing past the slug we are already in, stay in it
+			adjustedTargetOffset = relativeStructuralOffset;
+		} else {
+			// There's a slug neaby, go into it if it's closer
+			adjustedTargetOffset = adjustment < 0 ?
+				Math.max( relativeContentOffset, relativeStructuralOffset ) :
+				Math.min( relativeContentOffset, relativeStructuralOffset );
+		}
+	}
+	// Check if we've moved a different distance than we asked for
+	else if ( relativeContentOffset !== targetOffset + adjustment ) {
+		// We can't trust the browser, move programatically
+		adjustedTargetOffset = relativeContentOffset;
+	}
+	// If the target changed, update the model
+	if ( adjustedTargetOffset ) {
+		this.model.change(
+			null,
+			new ve.Range(
+				selection.isCollapsed() ?
+					adjustedTargetOffset : selection.from, adjustedTargetOffset
+			)
+		);
+		return true;
+	}
+	return false;
+};
+
+/**
  * Show the cursor at an offset.
  *
  * @method
@@ -1145,6 +1193,8 @@ ve.ce.Surface.prototype.showSelection = function ( range ) {
 		rangySel.setSingleRange( rangyRange );
 	}
 };
+
+/*! Helpers */
 
 /**
  * Get the nearest offset that a cursor can be placed at.
@@ -1274,19 +1324,6 @@ ve.ce.Surface.prototype.getNodeAndOffset = function ( offset ) {
 };
 
 /**
- * Get the coordinates of the selection anchor.
- *
- * @method
- */
-ve.ce.Surface.prototype.getSelectionRect = function () {
-	var rangySel = rangy.getSelection();
-	return {
-		start: rangySel.getStartDocumentPos(),
-		end: rangySel.getEndDocumentPos()
-	};
-};
-
-/**
  * Check if keyboard shortcut modifier key is pressed.
  *
  * @method
@@ -1297,85 +1334,6 @@ ve.ce.Surface.isShortcutKey = function ( e ) {
 		return true;
 	}
 	return false;
-};
-
-/**
- * Clean copy and paste data that's at least a day old in localStorage.
- *
- * @method
- */
-ve.ce.Surface.cleanLocalStorage = function () {
-	var i, len, key, time, now,
-		keysToRemove = [];
-
-	for ( i = 0, len = localStorage.length; i < len; i++ ) {
-		key = localStorage.key( i );
-
-		if ( key.indexOf( 've-' ) !== 0 ) {
-			return false;
-		}
-
-		time = JSON.parse( localStorage.getItem( key ) ).time;
-		now = new Date().getTime();
-
-		// Offset: 24 days (in miliseconds)
-		if ( now - time > ( 24 * 3600 * 1000 ) ) {
-			// Don't remove keys while iterating. Store them for later removal.
-			keysToRemove.push( key );
-		}
-	}
-
-	$.each( keysToRemove, function ( i, val ) {
-		localStorage.removeItem( val );
-	} );
-};
-
-/**
- * Get the surface model.
- *
- * @method
- * @returns {ve.dm.Surface} Surface model
- */
-ve.ce.Surface.prototype.getModel = function () {
-	return this.model;
-};
-
-/**
- * Get the document view.
- *
- * @method
- * @returns {ve.ce.Document} Document view
- */
-ve.ce.Surface.prototype.getDocument = function () {
-	return this.documentView;
-};
-
-/**
- * Enable rendering.
- *
- * @method
- */
-ve.ce.Surface.prototype.enableRendering = function () {
-	this.renderingEnabled = true;
-};
-
-/**
- * Disable rendering.
- *
- * @method
- */
-ve.ce.Surface.prototype.disableRendering = function () {
-	this.renderingEnabled = false;
-};
-
-/**
- * Check if rendering is enabled.
- *
- * @method
- * @returns {boolean} Render is enabled
- */
-ve.ce.Surface.prototype.isRenderingEnabled = function () {
-	return this.renderingEnabled;
 };
 
 /**
@@ -1422,4 +1380,67 @@ ve.ce.Surface.prototype.getClickCount = function ( e ) {
 	}
 
 	return response;
+};
+
+/*! Getters */
+
+/**
+ * Get the coordinates of the selection anchor.
+ *
+ * @method
+ */
+ve.ce.Surface.prototype.getSelectionRect = function () {
+	var rangySel = rangy.getSelection();
+	return {
+		start: rangySel.getStartDocumentPos(),
+		end: rangySel.getEndDocumentPos()
+	};
+};
+
+/**
+ * Get the surface model.
+ *
+ * @method
+ * @returns {ve.dm.Surface} Surface model
+ */
+ve.ce.Surface.prototype.getModel = function () {
+	return this.model;
+};
+
+/**
+ * Get the document view.
+ *
+ * @method
+ * @returns {ve.ce.Document} Document view
+ */
+ve.ce.Surface.prototype.getDocument = function () {
+	return this.documentView;
+};
+
+/**
+ * Check if rendering is enabled.
+ *
+ * @method
+ * @returns {boolean} Render is enabled
+ */
+ve.ce.Surface.prototype.isRenderingEnabled = function () {
+	return this.renderingEnabled;
+};
+
+/**
+ * Enable rendering.
+ *
+ * @method
+ */
+ve.ce.Surface.prototype.enableRendering = function () {
+	this.renderingEnabled = true;
+};
+
+/**
+ * Disable rendering.
+ *
+ * @method
+ */
+ve.ce.Surface.prototype.disableRendering = function () {
+	this.renderingEnabled = false;
 };
