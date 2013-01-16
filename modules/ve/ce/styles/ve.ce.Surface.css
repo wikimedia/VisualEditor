@@ -34,7 +34,7 @@
 	display: none;
 }
 
-.ve-ce-phantoms {
+.ve-ce-surface-phantoms {
 	cursor: not-allowed;
 	left: 0;
 	opacity: .85;
@@ -42,7 +42,7 @@
 	top: 0;
 }
 
-.ve-ce-phantom {
+.ve-ce-surface-phantom {
 	background-color: #C3E59A;
 	background-image: -ms-repeating-linear-gradient(-45deg, white 0px, white 5px, #C3E59A 5px, #C3E59A 10px );
 	background-image: -webkit-repeating-linear-gradient(-45deg, white 0px, white 5px, #C3E59A 5px, #C3E59A 10px );
@@ -52,7 +52,7 @@
 	position: absolute;
 }
 
-#paste {
+.ve-ce-surface-paste {
 	display: none;
 	height: 1px;
 	left: 0;
@@ -64,7 +64,7 @@
 	width: 1px;
 }
 
-#paste * {
+.ve-ce-surface-paste * {
 	height: 1px !important;
 	width: 1px !important;
 }

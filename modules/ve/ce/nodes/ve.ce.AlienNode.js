@@ -118,7 +118,7 @@ ve.ce.AlienNode.prototype.onUpdate = function () {
 ve.ce.AlienNode.prototype.onSurfaceMouseMove = function ( e ) {
 	var surface, $target = $( e.target );
 	if (
-		!$target.hasClass( 've-ce-phantom' ) &&
+		!$target.hasClass( 've-ce-surface-phantom' ) &&
 		$target.closest( '.ve-ce-alienNode' ).length === 0
 	) {
 		surface = this.root.getSurface();
