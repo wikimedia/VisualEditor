@@ -469,7 +469,6 @@ ve.dm.Document.prototype.getData = function ( range, deep ) {
 	var end, data,
 		start = 0;
 	if ( range !== undefined ) {
-		range.normalize();
 		start = Math.max( 0, Math.min( this.data.length, range.start ) );
 		end = Math.max( 0, Math.min( this.data.length, range.end ) );
 	}
@@ -719,7 +718,6 @@ ve.dm.Document.prototype.getAnnotationsFromRange = function ( range, all ) {
 	var i,
 		left,
 		right;
-	range.normalize();
 	// Look at left side of range for annotations
 	left = this.getAnnotationsFromOffset( range.start );
 	// Shortcut for single character and zero-length ranges
@@ -760,7 +758,6 @@ ve.dm.Document.prototype.getAnnotationsFromRange = function ( range, all ) {
  * @returns {Object} A new range if modified, otherwise returns passed range.
  */
 ve.dm.Document.prototype.trimOuterSpaceFromRange = function ( range ) {
-	range.normalize();
 	var start = range.start,
 		end = range.end;
 	while ( this.data[start][0] === ' ' ) {

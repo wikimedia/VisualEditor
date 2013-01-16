@@ -252,7 +252,6 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 	if ( selection ) {
 		// Detect if selection range changed
 		if ( !this.selection || !this.selection.equals( selection ) ) {
-			selection.normalize();
 			selectionChange = true;
 		}
 		// Detect if selected nodes changed

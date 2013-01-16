@@ -932,7 +932,7 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 		selection = this.model.getSelection(),
 		containsInlineElements = false;
 
-	if ( selection.from === selection.to ) {
+	if ( selection.isCollapsed() ) {
 		// Set source and target linmod offsets
 		if ( backspace ) {
 			sourceOffset = selection.to;
@@ -1093,7 +1093,7 @@ ve.ce.Surface.prototype.showSelection = function ( range ) {
 		this.getNearestCorrectOffset( range.end )
 	);
 
-	if ( range.start !== range.end ) {
+	if ( !range.isCollapsed() ) {
 		start = this.getNodeAndOffset( range.start );
 		end = this.getNodeAndOffset( range.end );
 

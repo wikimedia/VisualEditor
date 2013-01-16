@@ -75,9 +75,8 @@ ve.dm.Transaction.newFromRemoval = function ( doc, range ) {
 		removeEnd = null,
 		tx = new ve.dm.Transaction(),
 		data = doc.getData();
-	// Normalize and validate range
-	range.normalize();
-	if ( range.start === range.end ) {
+	// Validate range
+	if ( range.isCollapsed() ) {
 		// Empty range, nothing to remove, retain up to the end of the document (for completeness)
 		tx.pushRetain( data.length );
 		return tx;
@@ -211,7 +210,6 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
 		span = i,
 		on = false;
 	// Iterate over all data in range, annotating where appropriate
-	range.normalize();
 	while ( i < range.end ) {
 		type = data[i].type;
 		if ( type && type.charAt( 0 ) === '/' ) {
@@ -369,7 +367,6 @@ ve.dm.Transaction.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, u
 	closingWrapEach = closingArray( wrapEach );
 
 	// TODO: check for and fix nesting validity like fixupInsertion does
-	range.normalize();
 	if ( range.start > unwrapOuter.length ) {
 		// Retain up to the first thing we're unwrapping
 		// The outer unwrapping takes place *outside*

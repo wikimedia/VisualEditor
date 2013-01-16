@@ -14,13 +14,14 @@
  * @param {number} [to=from] Ending offset
  * @property {number} from Starting offset
  * @property {number} to Ending offset
- * @property {number} start Normalized starting offset
- * @property {number} end Normalized ending offset
+ * @property {number} start Starting offset (the lesser of #to and #from)
+ * @property {number} end Ending offset (the greater of #to and #from)
  */
 ve.Range = function VeRange( from, to ) {
 	this.from = from || 0;
-	this.to = typeof to === 'undefined' ? this.from : to;
-	this.normalize();
+	this.to = to === undefined ? this.from : to;
+	this.start = this.from < this.to ? this.from : this.to;
+	this.end = this.from < this.to ? this.to : this.from;
 };
 
 /* Static Methods */
@@ -82,7 +83,6 @@ ve.Range.prototype.clone = function () {
  * @returns {boolean} If offset is within the range
  */
 ve.Range.prototype.containsOffset = function ( offset ) {
-	this.normalize();
 	return offset >= this.start && offset < this.end;
 };
 
@@ -97,27 +97,7 @@ ve.Range.prototype.getLength = function () {
 };
 
 /**
- * Set start and end properties, ensuring start is always before end.
- *
- * This should always be called before using the start or end properties. Do not call this unless
- * you are about to use these properties.
- *
- * @method
- */
-ve.Range.prototype.normalize = function () {
-	if ( this.from < this.to ) {
-		this.start = this.from;
-		this.end = this.to;
-	} else {
-		this.start = this.to;
-		this.end = this.from;
-	}
-};
-
-/**
- * Swap from and to values, effectively changing the direction.
- *
- * The range will also be normalized when this is called.
+ * Gets a range with reversed direction.
  *
  * @method
  */
@@ -136,7 +116,6 @@ ve.Range.prototype.equals = function ( other ) {
 	return this.from === other.from && this.to === other.to;
 };
 
-
 /**
  * Create a new range with a limited length.
  *
@@ -145,7 +124,6 @@ ve.Range.prototype.equals = function ( other ) {
  * @returns {ve.Range} A new range.
  */
 ve.Range.prototype.truncate = function ( length ) {
-	this.normalize();
 	if ( length >= 0 ) {
 		return new ve.Range(
 			this.start, Math.min( this.start + length, this.end )
