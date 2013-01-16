@@ -15,7 +15,7 @@
  * @extends ve.EventEmitter
  * @constructor
  */
-ve.dm.AnnotationFactory = function () {
+ve.dm.AnnotationFactory = function VeDmAnnotationFactory() {
 	// Parent constructor
 	ve.Factory.call( this );
 	// [ { tagName: [annotationNamesWithoutFunc] }, { tagName: [annotationNamesWithFunc] } ]
