@@ -487,53 +487,6 @@ QUnit.test( 'getAnnotationsFromRange', 1, function ( assert ) {
 	}
 } );
 
-QUnit.test( 'offsetContainsAnnotation', 1, function ( assert ) {
-	var i, doc,
-		cases = [
-		{
-			msg: 'contains no annotations',
-			data: [
-				'a'
-			],
-			lookFor: {'type': 'textStyle/bold'},
-			expected: false
-		},
-		{
-			msg: 'contains bold',
-			data: [
-				['a', [ { 'type': 'textStyle/bold' } ] ]
-			],
-			lookFor: {'type': 'textStyle/bold'},
-			expected: true
-		},
-		{
-			msg: 'contains bold',
-			data: [
-				['a', [
-					{ 'type': 'textStyle/bold' },
-					{ 'type': 'textStyle/italic'}
-					]
-				]
-			],
-			lookFor: {'type': 'textStyle/bold'},
-			expected: true
-		}
-	];
-
-	QUnit.expect( cases.length );
-
-	for ( i = 0;i < cases.length; i++ ) {
-		ve.dm.example.preprocessAnnotations( cases[i].data );
-		doc = new ve.dm.Document( cases[i].data );
-		assert.deepEqual(
-			doc.offsetContainsAnnotation( 0,
-				ve.dm.example.createAnnotation( cases[i].lookFor ) ),
-			cases[i].expected,
-			cases[i].msg
-		);
-	}
-});
-
 QUnit.test( 'getAnnotatedRangeFromOffset', 1, function ( assert ) {
 	var i, doc,
 		cases = [
