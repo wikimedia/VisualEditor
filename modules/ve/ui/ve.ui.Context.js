@@ -379,7 +379,7 @@ ve.ui.Context.prototype.reveal = function ( $element ) {
 };
 
 /**
- * Make inspector invisible without affecting it's visiblity or display properties.
+ * Make inspector invisible without affecting its visiblity or display properties.
  *
  * @method
  */

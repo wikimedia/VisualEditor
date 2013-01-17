@@ -31,6 +31,7 @@ ve.inheritClass( ve.ce.Document, ve.Document );
  * Get a node a an offset.
  *
  * @method
+ * @param {number} offset Offset to get node at
  * @returns {ve.ce.Node} Node at offset
  */
 ve.ce.Document.prototype.getNodeFromOffset = function ( offset ) {
@@ -45,6 +46,7 @@ ve.ce.Document.prototype.getNodeFromOffset = function ( offset ) {
  * Get a slug a an offset.
  *
  * @method
+ * @param {number} offset Offset to get slug at
  * @returns {jQuery} Slug at offset
  */
 ve.ce.Document.prototype.getSlugAtOffset = function ( offset ) {

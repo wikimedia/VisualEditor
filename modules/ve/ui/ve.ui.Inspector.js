@@ -155,7 +155,7 @@ ve.ui.Inspector.prototype.onInitialize = function () {
 /**
  * Handle the inspector being opened.
  *
- * This is when an inspector would initialize it's form with data from the selection.
+ * This is when an inspector would initialize its form with data from the selection.
  *
  * @method
  */

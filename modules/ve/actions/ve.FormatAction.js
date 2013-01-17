@@ -97,7 +97,7 @@ ve.FormatAction.prototype.convert = function ( type, attributes ) {
 };
 
 /**
- * Split a list up by unwrapping some of it's items.
+ * Split a list up by unwrapping some of its items.
  *
  * TODO: Refactor functionality into {ve.dm.SurfaceFragment}.
  *
@@ -105,7 +105,7 @@ ve.FormatAction.prototype.convert = function ( type, attributes ) {
  * @param {ve.dm.ListNode} list
  * @param {ve.dm.ListItemNode} firstItem
  * @param {ve.dm.ListItemNode} lastItem
- * @param {ve.Range} selection
+ * @returns {ve.Range} selection
  */
 ve.FormatAction.splitAndUnwrap = function ( model, list, firstItem, lastItem, selection ) {
 	var	doc = model.getDocument(),
