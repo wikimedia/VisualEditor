@@ -61,12 +61,8 @@
 	display: inline;
 }
 
-.ve-ce-slug {
-	/*
-	display: inline-block;
-	margin-right: -1px;
-	width: 1px;
-	*/
+.ve-ce-slugBlock {
+	display: block;
 }
 
 .ve-ce-branchNode h1:empty:before,
