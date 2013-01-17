@@ -66,7 +66,7 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 				]
 			}
 		},
-		'commands': ['bold', 'italic', 'mwLink', 'undo', 'redo', 'indent', 'unindent']
+		'commands': ['bold', 'italic', 'mwLink', 'undo', 'redo', 'indent', 'outdent']
 	};
 	this.currentUri = currentUri;
 	this.restoring = !!this.oldid;

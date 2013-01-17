@@ -135,6 +135,32 @@ ve.init.sa.Platform.prototype.getParsedMessage = function ( key ) {
 	} );
 };
 
+/**
+ * Gets client platform string from browser.
+ *
+ * @method
+ * @returns {string} Client platform string.
+ */
+ve.init.sa.Platform.prototype.getSystemPlatform = function () {
+	var platforms = ['win', 'mac', 'linux', 'sunos', 'solaris', 'iphone'],
+		match = new RegExp( '(' + platforms.join( '|' ) + ')' ).exec( window.navigator.platform.toLowerCase() );
+	if ( match ) {
+		return match[1];
+	}
+};
+
+/**
+ * Gets the user language from the browser.
+ *
+ * @method
+ * @returns {string} User language string.
+ */
+ve.init.sa.Platform.prototype.getUserLanguage = function () {
+	// IE or Firefox Safari Opera
+	var lang = window.navigator.userLanguage || window.navigator.language;
+	return lang.split( '-' )[0];
+};
+
 /* Initialization */
 
 ve.init.platform = new ve.init.sa.Platform();

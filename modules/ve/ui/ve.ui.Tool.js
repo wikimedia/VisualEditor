@@ -13,6 +13,7 @@
  * @param {ve.ui.Toolbar} toolbar
  */
 ve.ui.Tool = function VeUiTool( toolbar ) {
+	var tool = this;
 	// Properties
 	this.toolbar = toolbar;
 	this.$ = $( '<div class="ve-ui-tool"></div>' );
@@ -22,8 +23,14 @@ ve.ui.Tool = function VeUiTool( toolbar ) {
 		this, { 'updateState': 'onUpdateState', 'clearState': 'onClearState' }
 	);
 
-	// Intialization
-	this.$.attr( 'title', ve.msg( this.constructor.static.titleMessage ) );
+	ve.triggerRegistry.on( 'register', function ( name ) {
+		if ( name === ve.init.platform.getUserLanguage() + '.' + tool.constructor.static.name ) {
+			tool.setTitle();
+		}
+	} );
+
+	// Initialization
+	this.setTitle();
 };
 
 /* Static Properties */
@@ -56,6 +63,27 @@ ve.ui.Tool.static.name = '';
 ve.ui.Tool.static.titleMessage = '';
 
 /* Methods */
+
+/**
+ * Sets the tool title attribute in the dom.
+ *
+ * Combines trigger i18n with tooltip message if trigger exists.
+ * Otherwise defaults to titleMessage value.
+ *
+ * @abstract
+ * @method
+ */
+ve.ui.Tool.prototype.setTitle = function () {
+	var trigger = ve.triggerRegistry.lookup(
+			ve.init.platform.getUserLanguage() + '.' +
+			this.constructor.static.name
+		),
+		labelMessage = ve.msg( this.constructor.static.titleMessage );
+	if ( trigger ) {
+		labelMessage = labelMessage.replace( '$1', ve.msg( trigger.labelMessage ) );
+	}
+	this.$.attr( 'title', labelMessage );
+};
 
 /**
  * Handle the toolbar state being updated.

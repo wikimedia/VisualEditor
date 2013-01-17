@@ -60,3 +60,20 @@ ve.ui.UndoButtonTool.prototype.onUpdateState = function () {
 /* Registration */
 
 ve.ui.toolFactory.register( 'undo', ve.ui.UndoButtonTool );
+
+ve.commandRegistry.register(
+	'undo', 'history', 'undo'
+);
+
+ve.triggerRegistry.register( {
+	'name': ve.init.platform.getUserLanguage() + '.undo',
+	'trigger': {
+		'mac': 'cmd+z',
+		'pc': 'ctrl+z'
+	},
+	'labelMessage': {
+		'mac': 'visualeditor-historybutton-undo-tooltip-trigger-mac',
+		'pc': 'visualeditor-historybutton-undo-tooltip-trigger-pc'
+	}
+} );
+

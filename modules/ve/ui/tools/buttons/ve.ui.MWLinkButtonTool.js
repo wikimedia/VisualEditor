@@ -31,3 +31,17 @@ ve.ui.MWLinkButtonTool.static.inspector = 'mwLink';
 /* Registration */
 
 ve.ui.toolFactory.register( 'mwLink', ve.ui.MWLinkButtonTool );
+
+ve.commandRegistry.register( 'mwLink', 'inspector', 'open', 'mwLink' );
+
+ve.triggerRegistry.register( {
+	'name': ve.init.platform.getUserLanguage() + '.mwLink',
+	'trigger': {
+		'mac': 'cmd+k',
+		'pc': 'ctrl+k'
+	},
+	'labelMessage': {
+		'mac': 'visualeditor-annotationbutton-link-tooltip-trigger-mac',
+		'pc': 'visualeditor-annotationbutton-link-tooltip-trigger-pc'
+	}
+} );

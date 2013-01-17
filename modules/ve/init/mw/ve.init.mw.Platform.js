@@ -125,6 +125,26 @@ ve.init.mw.Platform.prototype.getParsedMessage = function ( key ) {
 	return mw.message( key ).escaped();
 };
 
+/**
+ * Gets client platform string from browser.
+ *
+ * @method
+ * @returns {string} Client platform string.
+ */
+ve.init.mw.Platform.prototype.getSystemPlatform = function () {
+	return $.client.profile().platform;
+};
+
+/**
+ * Gets the user language from the browser.
+ *
+ * @method
+ * @returns {string} User language string.
+ */
+ve.init.mw.Platform.prototype.getUserLanguage = function () {
+	return mw.config.get( 'wgUserLanguage' );
+};
+
 /* Initialization */
 
 ve.init.platform = new ve.init.mw.Platform();

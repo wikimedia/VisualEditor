@@ -63,7 +63,7 @@ ve.Surface.defaultOptions = {
 		}
 	},
 	// Items can either be symbolic names or objects with trigger and action properties
-	'commands': ['bold', 'italic', 'link', 'undo', 'redo', 'indent', 'unindent']
+	'commands': ['bold', 'italic', 'link', 'undo', 'redo', 'indent', 'outdent']
 };
 
 /* Methods */
@@ -201,32 +201,49 @@ ve.Surface.prototype.execute = function ( action, method ) {
  * Add all commands from initialization options.
  *
  * Commands must be registered through {ve.commandRegsitry} prior to constructing the surface.
+ * Setup Triggers registered through {ve.triggerRegistry} prior to constructing the surface.
+ * Add listener method to {ve.triggerRegistry} to lazy load triggers.
  *
  * @method
  * @param {string[]} commands Array of symbolic names of registered commands
  */
 ve.Surface.prototype.setupCommands = function () {
-	var i, iLen, j, jLen, triggers, trigger, command,
-		commands = this.options.commands;
-	for ( i = 0, iLen = commands.length; i < iLen; i++ ) {
+	var i, len, command,
+		commands = this.options.commands,
+		surface = this;
+
+	function loadTriggers( triggers, command ) {
+		var i, len, trigger;
+		if ( !ve.isArray( triggers ) ) {
+			triggers = [triggers];
+		}
+		for ( i = 0, len = triggers.length; i < len; i++ ) {
+			// Normalize
+			trigger = ( new ve.Command( triggers[i] ) ).toString();
+			// Validate
+			if ( trigger.length === 0 ) {
+				throw new Error( 'Incomplete command: ' + triggers[i] );
+			}
+			surface.commands[trigger] = command.action;
+		}
+	}
+
+	for ( i = 0, len = commands.length; i < len; i++ ) {
 		command = ve.commandRegistry.lookup( commands[i] );
 		if ( !command ) {
 			throw new Error( 'No command registered by that name: ' + commands[i] );
 		}
-		triggers = command.trigger;
-		if ( !ve.isArray( triggers ) ) {
-			triggers = [triggers];
-		}
-		for ( j = 0, jLen = triggers.length; j < jLen; j++ ) {
-			// Normalize
-			trigger = ( new ve.Command( triggers[j] ) ).toString();
-			// Validate
-			if ( trigger.length === 0 ) {
-				throw new Error( 'Incomplete command: ' + triggers[j] );
-			}
-			this.commands[trigger] = command.action;
-		}
+		loadTriggers( ve.triggerRegistry.lookup(
+			ve.init.platform.getUserLanguage() + '.' +
+			commands[i] ).trigger, command
+		);
 	}
+
+	// Bind register event to lazy load triggers
+	ve.triggerRegistry.on( 'register', function ( name, data ) {
+		loadTriggers( data.trigger, ve.commandRegistry.lookup( name.split('.')[1] ) );
+	} );
+
 };
 
 /**

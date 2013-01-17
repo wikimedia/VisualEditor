@@ -33,3 +33,17 @@ ve.ui.BoldButtonTool.static.annotation = { 'name': 'textStyle/bold' };
 /* Registration */
 
 ve.ui.toolFactory.register( 'bold', ve.ui.BoldButtonTool );
+
+ve.commandRegistry.register( 'bold', 'annotation', 'toggle', 'textStyle/bold' );
+
+ve.triggerRegistry.register( {
+	'name': ve.init.platform.getUserLanguage() + '.bold',
+	'trigger': {
+		'mac': 'cmd+b',
+		'pc': 'ctrl+b'
+	},
+	'labelMessage': {
+		'mac': 'visualeditor-annotationbutton-bold-tooltip-trigger-mac',
+		'pc': 'visualeditor-annotationbutton-bold-tooltip-trigger-pc'
+	}
+} );
