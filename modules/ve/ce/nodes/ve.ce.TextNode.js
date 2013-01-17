@@ -63,7 +63,7 @@ ve.ce.TextNode.whitespaceHtmlCharacters = {
  * @returns {Array} Array of rendered HTML fragments with annotations
  */
 ve.ce.TextNode.prototype.getAnnotatedHtml = function () {
-	var data = this.model.getDocument().getDataFromNode( this.model ),
+	var	data = this.model.getDocument().getDataFromNode( this.model ),
 		htmlChars = ve.ce.TextNode.htmlCharacters,
 		whitespaceHtmlChars = ve.ce.TextNode.whitespaceHtmlCharacters,
 		significantWhitespace = this.getModel().getParent().hasSignificantWhitespace(),

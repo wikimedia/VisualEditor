@@ -108,7 +108,7 @@ ve.FormatAction.prototype.convert = function ( type, attributes ) {
  * @param {ve.Range} selection
  */
 ve.FormatAction.splitAndUnwrap = function ( model, list, firstItem, lastItem, selection ) {
-	var doc = model.getDocument(),
+	var	doc = model.getDocument(),
 		start = firstItem.getOuterRange().start,
 		end = lastItem.getOuterRange().end,
 		tx;
