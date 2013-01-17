@@ -19,15 +19,6 @@ ve.ce.ImageNode = function VeCeImageNode( model ) {
 
 	// DOM Changes
 	this.$.addClass( 've-ce-imageNode' );
-
-	// Properties
-	this.currentSource = null;
-
-	// Events
-	this.model.addListenerMethod( this, 'update', 'onUpdate' );
-
-	// Initialization
-	this.onUpdate();
 };
 
 /* Inheritance */
@@ -45,24 +36,6 @@ ve.inheritClass( ve.ce.ImageNode, ve.ce.LeafNode );
  */
 ve.ce.ImageNode.rules = {
 	'canBeSplit': false
-};
-
-/* Methods */
-
-/**
- * Handle model update events.
- *
- * If the source changed since last update the image's src attribute will be updated accordingly.
- *
- * @method
- */
-ve.ce.ImageNode.prototype.onUpdate = function () {
-	// TODO needs to support height/width
-	var source = this.model.getAttribute( 'html/src' );
-	if ( source !== this.currentSource ) {
-		this.currentSource = source;
-		this.$.attr( 'src', source );
-	}
 };
 
 /* Registration */

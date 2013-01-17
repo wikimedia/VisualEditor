@@ -26,6 +26,9 @@ ve.ce.Node = function VeCeNode( type, model, $element ) {
 	this.parent = null;
 	this.live = false;
 
+	// Events
+	this.model.on( 'attributeChange', ve.bind( this.onAttributeChange, this ) );
+
 	// Initialization
 	this.$.data( 'node', this );
 	ve.setDomAttributes(
@@ -89,6 +92,32 @@ ve.ce.Node.static.$shieldTemplate = $( '<img>' )
 		'XgXAAQ0AAABAMP1L30IDCPwC/o5WcS4AAAAASUVORK5CYII=' );
 
 /* Methods */
+
+/**
+ * Handle attribute change events.
+ *
+ * Whitelisted attributes will be added or removed in sync with the DOM. They are initially set in
+ * the constructor.
+ *
+ * @method
+ * @param {string} key Attribute key
+ * @param {string} from Old value
+ * @param {string} to New value
+ */
+ve.ce.Node.prototype.onAttributeChange = function ( key, from, to ) {
+	var htmlKey = key.substr( 5 ).toLowerCase();
+	if (
+		key.indexOf( 'html/' ) === 0 &&
+		htmlKey.length &&
+		this.constructor.static.domAttributeWhitelist.indexOf( htmlKey ) !== -1
+	) {
+		if ( to === undefined ) {
+			this.$.removeAttr( htmlKey );
+		} else {
+			this.$.attr( htmlKey, to );
+		}
+	}
+};
 
 /**
  * Get allowed child node types.
