@@ -33,7 +33,8 @@ ve.ce.Surface = function VeCeSurface( $container, model, surface ) {
 	this.renderingEnabled = true;
 	this.dragging = false;
 	this.selecting = false;
-	this.$phantoms = $( '<div class="ve-ce-phantoms">' );
+	this.$phantoms = $( '<div>' );
+	this.$pasteTarget = $( '<div>' );
 	this.pasting = false;
 	this.clickHistory = [];
 
@@ -64,9 +65,10 @@ ve.ce.Surface = function VeCeSurface( $container, model, surface ) {
 
 	// Initialization
 	rangy.init();
-	ve.ce.Surface.cleanLocalStorage();
-	this.$.append( this.documentView.getDocumentNode().$ );
-	this.$.append( this.$phantoms );
+	//ve.ce.Surface.clearLocalStorage();
+	this.$phantoms.addClass( 've-ce-phantoms' );
+	this.$pasteTarget.addClass( 've-ce-surface-paste' ).prop( 'contenteditable', true );
+	this.$.append( this.documentView.getDocumentNode().$, this.$phantoms, this.$pasteTarget );
 };
 
 /* Inheritance */
@@ -89,8 +91,12 @@ ve.ce.Surface.static = {};
  * @property
  * @type {jQuery}
  */
-ve.ce.Surface.static.$phantomTemplate = $( '<div class="ve-ce-phantom" draggable="false"></div>' )
-	.attr( 'title', ve.msg ( 'visualeditor-aliennode-tooltip' ) );
+ve.ce.Surface.static.$phantomTemplate = $( '<div>' )
+	.addClass( 've-ce-surface-phantom' )
+	.attr( {
+		'title': ve.msg ( 'visualeditor-aliennode-tooltip' ),
+		'draggable': false
+	} );
 
 /**
  * Pattern matching "normal" characters which we can let the browser handle natively.
@@ -648,14 +654,14 @@ ve.ce.Surface.prototype.onPaste = function ( e ) {
 
 	// Save scroll position and change focus to "offscreen" paste target
 	scrollTop = $window.scrollTop();
-	$( '#paste' ).html( '' ).show().focus();
+	this.$pasteTarget.html( '' ).show().focus();
 
 	setTimeout( function () {
 		var pasteText, pasteData, tx,
 			key = '';
 
 		// Create key from text and element names
-		$( '#paste' ).hide().contents().each( function () {
+		view.$pasteTarget.hide().contents().each( function () {
 			key += this.textContent || this.nodeName;
 		} );
 		key = 've-' + key.replace( /\s/gm, '' );
@@ -670,7 +676,7 @@ ve.ce.Surface.prototype.onPaste = function ( e ) {
 		}
 		*/
 		else {
-			pasteText = $( '#paste' ).text().replace( /\n/gm, '');
+			pasteText = view.$pasteTarget.text().replace( /\n/gm, '');
 			pasteData = new ve.dm.DocumentSlice( pasteText.split( '' ) );
 		}
 

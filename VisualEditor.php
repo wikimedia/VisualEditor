@@ -329,6 +329,8 @@ $wgResourceModules += array(
 			've/ui/inspectors/ve.ui.MWLinkInspector.js',
 		),
 		'styles' => array(
+			// ve
+			've/styles/ve.Surface.css',
 			// ce
 			've/ce/styles/ve.ce.DocumentNode.css',
 			've/ce/styles/ve.ce.Node.css',

@@ -67,7 +67,8 @@ ve.mixinClass( ve.ce.BranchNode, ve.BranchNode );
  * @property
  * @type {jQuery}
  */
-ve.ce.BranchNode.$inlineSlugTemplate = $( '<span class="ve-ce-slug"></span>' )
+ve.ce.BranchNode.$inlineSlugTemplate = $( '<span>' )
+	.addClass( 've-ce-slug' )
 	.html( $.browser.msie ? '&nbsp;' : '&#xFEFF;' );
 
 /**

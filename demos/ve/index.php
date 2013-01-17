@@ -27,6 +27,7 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 		<!-- Standalone Init -->
 		<link rel=stylesheet href="../../modules/ve/init/sa/styles/ve.init.sa.css">
 		<!-- ext.visualEditor.core -->
+		<link rel=stylesheet href="../../modules/ve/styles/ve.Surface.css">
 		<link rel=stylesheet href="../../modules/ve/ce/styles/ve.ce.DocumentNode.css">
 		<link rel=stylesheet href="../../modules/ve/ce/styles/ve.ce.Node.css">
 		<link rel=stylesheet href="../../modules/ve/ce/styles/ve.ce.Surface.css">

@@ -83,10 +83,10 @@ ve.ce.Node.static.domAttributeWhitelist = [
  * @property static.$shieldTemplate
  * @inheritable
  */
-ve.ce.Node.static.$shieldTemplate = $(
-	'<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAFElEQVR4XgXA' +
-		'AQ0AAABAMP1L30IDCPwC/o5WcS4AAAAASUVORK5CYII=" class="ve-ce-node-shield">'
-);
+ve.ce.Node.static.$shieldTemplate = $( '<img>' )
+	.addClass( 've-ce-node-shield' )
+	.attr( 'src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAFElEQVR4' +
+		'XgXAAQ0AAABAMP1L30IDCPwC/o5WcS4AAAAASUVORK5CYII=' );
 
 /* Methods */
 
