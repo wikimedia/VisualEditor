@@ -73,7 +73,7 @@ ve.ce.AlienNode.prototype.onMouseEnter = function () {
 			} )
 		);
 	} );
-	surface.$phantoms.empty().append( $phantoms );
+	surface.replacePhantoms( $phantoms );
 	surface.$.on( 'mousemove.phantoms', ve.bind( this.onSurfaceMouseMove, this ) );
 };
 
@@ -122,7 +122,7 @@ ve.ce.AlienNode.prototype.onSurfaceMouseMove = function ( e ) {
 		$target.closest( '.ve-ce-alienNode' ).length === 0
 	) {
 		surface = this.root.getSurface();
-		surface.$phantoms.empty();
+		surface.replacePhantoms( null );
 		surface.$.unbind( 'mousemove.phantoms' );
 	}
 };

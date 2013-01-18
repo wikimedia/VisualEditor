@@ -1194,6 +1194,16 @@ ve.ce.Surface.prototype.showSelection = function ( range ) {
 	}
 };
 
+/**
+ * Append passed phantoms to phantoms container after emptying it first.
+ *
+ * @method
+ * @param {jQuery} $phantoms Phantoms to append
+ */
+ve.ce.Surface.prototype.replacePhantoms = function( $phantoms ) {
+	this.$phantoms.empty().append( $phantoms );
+};
+
 /*! Helpers */
 
 /**
