@@ -12,7 +12,8 @@
  *
  * @class
  * @constructor
- * @param {Object} options Conversion options
+ * @param {ve.dm.NodeFactory} nodeFactory
+ * @param {ve.dm.AnnotationFactory} annotationFactory
  */
 ve.dm.Converter = function VeDmConverter( nodeFactory, annotationFactory ) {
 	// Properties
@@ -184,7 +185,7 @@ ve.dm.Converter.prototype.getDataElementFromDomElement = function ( domElement, 
 			dataElementAttributes['html/' + domElementAttribute.name] = domElementAttribute.value;
 		}
 	}
-	if ( ve.dm.nodeFactory.isNodeContent( dataElement.type ) && annotations.length > 0 ) {
+	if ( this.nodeFactory.isNodeContent( dataElement.type ) && annotations.length > 0 ) {
 		// Build annotation set
 		annotationSet = new ve.AnnotationSet();
 		for ( i = 0; i < annotations.length; i++ ) {
@@ -205,7 +206,7 @@ ve.dm.Converter.prototype.getDataElementFromDomElement = function ( domElement, 
  * @returns {Object|boolean} Annotation object, or false if the node is not an annotation
  */
 ve.dm.Converter.prototype.getDataAnnotationFromDomElement = function ( domElement ) {
-	return ve.dm.annotationFactory.createFromElement( domElement ) || false;
+	return this.annotationFactory.createFromElement( domElement ) || false;
 };
 
 /**
@@ -388,7 +389,7 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 		wrappingParagraph, prevElement, alien, rdfaType, isLink,
 		data = [],
 		branchType = path[path.length - 1],
-		branchHasContent = ve.dm.nodeFactory.canNodeContainContent( branchType ),
+		branchHasContent = this.nodeFactory.canNodeContainContent( branchType ),
 		childIsContent,
 		nextWhitespace = '',
 		wrappedWhitespace = '',
@@ -510,7 +511,7 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 				// Look up child element type
 				childDataElement = this.getDataElementFromDomElement( childDomElement, annotations );
 				if ( childDataElement ) {
-					childIsContent = ve.dm.nodeFactory.isNodeContent( childDataElement.type );
+					childIsContent = this.nodeFactory.isNodeContent( childDataElement.type );
 					// Check that something isn't terribly wrong
 					if ( !(
 						// Non-content child in a content container
@@ -524,7 +525,7 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 						if ( wrapping && wrappingIsOurs && !childIsContent ) {
 							stopWrapping();
 						}
-						if ( ve.dm.nodeFactory.canNodeHaveChildren( childDataElement.type ) ) {
+						if ( this.nodeFactory.canNodeHaveChildren( childDataElement.type ) ) {
 							// Append child element data
 							data = data.concat(
 								this.getDataFromDom(
@@ -660,7 +661,7 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 				// and store it so it can be restored later.
 				if (
 					annotations.length === 0 && i === 0 && dataElement &&
-					!ve.dm.nodeFactory.doesNodeHaveSignificantWhitespace( dataElement.type )
+					!this.nodeFactory.doesNodeHaveSignificantWhitespace( dataElement.type )
 				) {
 					// Strip leading whitespace from the first child
 					matches = text.match( /^\s+/ );
@@ -673,7 +674,7 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 					annotations.length === 0 &&
 					i === domElement.childNodes.length - 1 &&
 					dataElement &&
-					!ve.dm.nodeFactory.doesNodeHaveSignificantWhitespace( dataElement.type )
+					!this.nodeFactory.doesNodeHaveSignificantWhitespace( dataElement.type )
 				) {
 					// Strip trailing whitespace from the last child
 					matches = text.match( /\s+$/ );
@@ -713,10 +714,10 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 
 	// If we're closing a node that doesn't have any children, but could contain a paragraph,
 	// add a paragraph. This prevents things like empty list items
-	childTypes = ve.dm.nodeFactory.getChildNodeTypes( branchType );
+	childTypes = this.nodeFactory.getChildNodeTypes( branchType );
 	if ( branchType !== 'paragraph' && dataElement && data[data.length - 1] === dataElement &&
-		!wrapping && !ve.dm.nodeFactory.canNodeContainContent( branchType ) &&
-		!ve.dm.nodeFactory.isNodeContent( branchType ) &&
+		!wrapping && !this.nodeFactory.canNodeContainContent( branchType ) &&
+		!this.nodeFactory.isNodeContent( branchType ) &&
 		( childTypes === null || ve.indexOf( 'paragraph', childTypes ) !== -1 )
 	) {
 		data.push( { 'type': 'paragraph', 'internal': { 'generated': 'empty' } } );
@@ -774,7 +775,7 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 			ve.isArray( data[i] ) ||
 			(
 				data[i].annotations !== undefined &&
-				ve.dm.nodeFactory.isNodeContent( data[i].type )
+				this.nodeFactory.isNodeContent( data[i].type )
 			)
 		) {
 			// Annotated text or annotated nodes
@@ -783,7 +784,7 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 				ve.isArray( data[i] ) ||
 				(
 					data[i].annotations !== undefined &&
-					ve.dm.nodeFactory.isNodeContent( data[i].type )
+					this.nodeFactory.isNodeContent( data[i].type )
 				)
 			) {
 				annotations = data[i].annotations || data[i][1];
@@ -871,7 +872,7 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 			// Element
 			if ( dataElement.type.charAt( 0 ) === '/' ) {
 				parentDomElement = domElement.parentNode;
-				isContentNode = ve.dm.nodeFactory.isNodeContent( data[i].type.substr( 1 ) );
+				isContentNode = this.nodeFactory.isNodeContent( data[i].type.substr( 1 ) );
 				// Process whitespace
 				// whitespace = [ outerPre, innerPre, innerPost, outerPost ]
 				if (
