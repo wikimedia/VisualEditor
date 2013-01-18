@@ -249,7 +249,7 @@ ve.Surface.prototype.setupCommands = function () {
 /**
  * Initialize the toolbar.
  *
- * This method uses {this.options} for it's configuration.
+ * This method uses {this.options} for its configuration.
  *
  * @method
  */

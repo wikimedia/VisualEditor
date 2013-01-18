@@ -230,7 +230,7 @@ ve.ui.TextInputMenuWidget.prototype.clearItems = function () {
 };
 
 /**
- * Gets an item from it's data.
+ * Gets an item from its data.
  *
  * This performs a hash comparison, not an identity comparison.
  *
