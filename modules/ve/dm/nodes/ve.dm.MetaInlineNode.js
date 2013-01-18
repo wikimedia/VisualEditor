@@ -38,4 +38,4 @@ ve.dm.MetaInlineNode.static.toDomElement = ve.dm.MetaBlockNode.static.toDomEleme
 
 /* Registration */
 
-ve.dm.modelRegistry.register( 'metaInline', ve.dm.MetaInlineNode );
+ve.dm.modelRegistry.register( ve.dm.MetaInlineNode );

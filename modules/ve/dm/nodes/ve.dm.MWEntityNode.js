@@ -47,4 +47,4 @@ ve.dm.MWEntityNode.static.toDomElement = function ( dataElement ) {
 
 /* Registration */
 
-ve.dm.modelRegistry.register( 'MWentity', ve.dm.MWEntityNode );
+ve.dm.modelRegistry.register( ve.dm.MWEntityNode );

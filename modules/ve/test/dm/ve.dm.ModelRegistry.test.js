@@ -79,14 +79,14 @@ QUnit.test( 'matchElement', 9, function ( assert ) {
 	element = document.createElement( 'a' );
 	assert.deepEqual( registry.matchElement( element ), null, 'matchElement() returns null if registry empty' );
 
-	registry.register( 'stubnothingset', ve.dm.StubNothingSetAnnotation );
-	registry.register( 'stubsingletag', ve.dm.StubSingleTagAnnotation );
-	registry.register( 'stubsingletype', ve.dm.StubSingleTypeAnnotation );
-	registry.register( 'stubsingletagandtype', ve.dm.StubSingleTagAndTypeAnnotation );
-	registry.register( 'stubfunc', ve.dm.StubFuncAnnotation );
-	registry.register( 'stubsingletagandfunc', ve.dm.StubSingleTagAndFuncAnnotation );
-	registry.register( 'stubsingletypeandfunc', ve.dm.StubSingleTypeAndFuncAnnotation );
-	registry.register( 'stubsingletagandtypeandfunc', ve.dm.StubSingleTagAndTypeAndFuncAnnotation );
+	registry.register( ve.dm.StubNothingSetAnnotation );
+	registry.register( ve.dm.StubSingleTagAnnotation );
+	registry.register( ve.dm.StubSingleTypeAnnotation );
+	registry.register( ve.dm.StubSingleTagAndTypeAnnotation );
+	registry.register( ve.dm.StubFuncAnnotation );
+	registry.register( ve.dm.StubSingleTagAndFuncAnnotation );
+	registry.register( ve.dm.StubSingleTypeAndFuncAnnotation );
+	registry.register( ve.dm.StubSingleTagAndTypeAndFuncAnnotation );
 
 	element = document.createElement( 'b' );
 	assert.deepEqual( registry.matchElement( element ), 'stubnothingset', 'nothingset matches anything' );

@@ -55,4 +55,4 @@ ve.dm.HeadingNode.static.toDomElement = function ( dataElement ) {
 
 /* Registration */
 
-ve.dm.modelRegistry.register( 'heading', ve.dm.HeadingNode );
+ve.dm.modelRegistry.register( ve.dm.HeadingNode );

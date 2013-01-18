@@ -41,4 +41,4 @@ ve.dm.ListItemNode.static.toDomElement = function () {
 
 /* Registration */
 
-ve.dm.modelRegistry.register( 'listItem', ve.dm.ListItemNode );
+ve.dm.modelRegistry.register( ve.dm.ListItemNode );

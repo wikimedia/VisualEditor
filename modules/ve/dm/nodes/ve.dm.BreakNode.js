@@ -41,4 +41,4 @@ ve.dm.BreakNode.static.toDomElement = function () {
 
 /* Registration */
 
-ve.dm.modelRegistry.register( 'break', ve.dm.BreakNode );
+ve.dm.modelRegistry.register( ve.dm.BreakNode );

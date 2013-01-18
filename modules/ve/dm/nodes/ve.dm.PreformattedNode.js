@@ -43,4 +43,4 @@ ve.dm.PreformattedNode.static.toDomElement = function () {
 
 /* Registration */
 
-ve.dm.modelRegistry.register( 'preformatted', ve.dm.PreformattedNode );
+ve.dm.modelRegistry.register( ve.dm.PreformattedNode );

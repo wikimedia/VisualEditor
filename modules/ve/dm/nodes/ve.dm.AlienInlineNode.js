@@ -33,4 +33,4 @@ ve.dm.AlienInlineNode.static.isContent = true;
 
 /* Registration */
 
-ve.dm.modelRegistry.register( 'alienInline', ve.dm.AlienInlineNode );
+ve.dm.modelRegistry.register( ve.dm.AlienInlineNode );

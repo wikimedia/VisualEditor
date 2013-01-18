@@ -67,4 +67,4 @@ ve.dm.MWExternalLinkAnnotation.prototype.renderHTML = function () {
 
 /* Registration */
 
-ve.dm.modelRegistry.register( 'link/MWexternal', ve.dm.MWExternalLinkAnnotation );
+ve.dm.modelRegistry.register( ve.dm.MWExternalLinkAnnotation );

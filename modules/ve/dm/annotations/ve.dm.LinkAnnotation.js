@@ -68,4 +68,4 @@ ve.dm.LinkAnnotation.prototype.toHTML = function () {
 
 /* Registration */
 
-ve.dm.modelRegistry.register( 'link', ve.dm.LinkAnnotation );
+ve.dm.modelRegistry.register( ve.dm.LinkAnnotation );

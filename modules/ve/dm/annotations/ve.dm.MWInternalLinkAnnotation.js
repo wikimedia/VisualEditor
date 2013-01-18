@@ -99,4 +99,4 @@ ve.dm.MWInternalLinkAnnotation.prototype.renderHTML = function () {
 
 /* Registration */
 
-ve.dm.modelRegistry.register( 'link/MWinternal', ve.dm.MWInternalLinkAnnotation );
+ve.dm.modelRegistry.register( ve.dm.MWInternalLinkAnnotation );

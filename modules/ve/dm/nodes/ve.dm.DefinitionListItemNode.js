@@ -47,4 +47,4 @@ ve.dm.DefinitionListItemNode.static.toDomElement = function ( dataElement ) {
 
 /* Registration */
 
-ve.dm.modelRegistry.register( 'definitionListItem', ve.dm.DefinitionListItemNode );
+ve.dm.modelRegistry.register( ve.dm.DefinitionListItemNode );

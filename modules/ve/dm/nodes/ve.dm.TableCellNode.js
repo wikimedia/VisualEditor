@@ -47,4 +47,4 @@ ve.dm.TableCellNode.static.toDomElement = function ( dataElement ) {
 
 /* Registration */
 
-ve.dm.modelRegistry.register( 'tableCell', ve.dm.TableCellNode );
+ve.dm.modelRegistry.register( ve.dm.TableCellNode );

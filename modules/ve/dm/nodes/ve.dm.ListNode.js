@@ -48,4 +48,4 @@ ve.dm.ListNode.static.toDomElement = function ( dataElement ) {
 
 /* Registration */
 
-ve.dm.modelRegistry.register( 'list', ve.dm.ListNode );
+ve.dm.modelRegistry.register( ve.dm.ListNode );

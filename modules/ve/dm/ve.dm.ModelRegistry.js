@@ -71,7 +71,8 @@ function addType( obj, keyA, keyB, keyC, value ) {
  * @param {string} name Symbolic name for the model
  * @param {ve.dm.Annotation|ve.dm.Node} constructor Subclass of ve.dm.Annotation or ve.dm.Node
  */
-ve.dm.ModelRegistry.prototype.register = function ( name, constructor ) {
+ve.dm.ModelRegistry.prototype.register = function ( constructor ) {
+	var i, j, tags, types, name = constructor.static && constructor.static.name;
 	if ( typeof name !== 'string' || name === '' ) {
 		throw new Error( 'Model names must be strings and must not be empty' );
 	}
@@ -90,15 +91,12 @@ ve.dm.ModelRegistry.prototype.register = function ( name, constructor ) {
 	// Call parent implementation
 	ve.Registry.prototype.register.call( this, name, constructor );
 
-	name = constructor.static.name;
-
-	var i, j,
-		tags = constructor.static.matchTagNames === null ?
-			[ '' ] :
-			constructor.static.matchTagNames,
-		types = constructor.static.matchRdfaTypes === null ?
-			[ '' ] :
-			constructor.static.matchRdfaTypes;
+	tags = constructor.static.matchTagNames === null ?
+		[ '' ] :
+		constructor.static.matchTagNames;
+	types = constructor.static.matchRdfaTypes === null ?
+		[ '' ] :
+		constructor.static.matchRdfaTypes;
 
 	for ( i = 0; i < tags.length; i++ ) {
 		// +!!foo is a shorter equivalent of Number( Boolean( foo ) ) or foo ? 1 : 0

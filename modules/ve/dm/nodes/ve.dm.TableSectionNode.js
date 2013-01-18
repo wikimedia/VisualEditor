@@ -58,4 +58,4 @@ ve.dm.TableSectionNode.static.toDomElement = function ( dataElement ) {
 };
 /* Registration */
 
-ve.dm.modelRegistry.register( 'tableSection', ve.dm.TableSectionNode );
+ve.dm.modelRegistry.register( ve.dm.TableSectionNode );

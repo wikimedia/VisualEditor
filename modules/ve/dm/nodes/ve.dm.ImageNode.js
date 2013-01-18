@@ -41,4 +41,4 @@ ve.dm.ImageNode.static.toDomElement = function () {
 
 /* Registration */
 
-ve.dm.modelRegistry.register( 'image', ve.dm.ImageNode );
+ve.dm.modelRegistry.register( ve.dm.ImageNode );

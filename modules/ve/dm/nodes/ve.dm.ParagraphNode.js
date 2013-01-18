@@ -41,4 +41,4 @@ ve.dm.ParagraphNode.static.toDomElement = function () {
 
 /* Registration */
 
-ve.dm.modelRegistry.register( 'paragraph', ve.dm.ParagraphNode );
+ve.dm.modelRegistry.register( ve.dm.ParagraphNode );

@@ -34,4 +34,4 @@ ve.dm.DocumentNode.static.matchTagNames = [];
 
 /* Registration */
 
-ve.dm.modelRegistry.register( 'document', ve.dm.DocumentNode );
+ve.dm.modelRegistry.register( ve.dm.DocumentNode );
