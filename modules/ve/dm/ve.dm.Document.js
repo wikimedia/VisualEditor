@@ -639,20 +639,7 @@ ve.dm.Document.prototype.getAnnotationsFromOffset = function ( offset ) {
 };
 
 /**
- * Check if an offset contains an annotation.
- *
- * @method
- * @param {number} offset Offset to look at
- * @param {Object} annotation Object to look for
- * @returns {boolean} Whether an offset contains the specified annotation
- */
-ve.dm.Document.prototype.offsetContainsAnnotation = function ( offset, annotation ) {
-	// TODO inline this
-	return this.getAnnotationsFromOffset( offset ).contains( annotation );
-};
-
-/**
- * Get the range of content surrounding an offset that's covered by an annotation.
+ * Gets the range of content surrounding a given offset that's covered by a given annotation.
  *
  * @param {number} offset Offset to begin looking forward and backward from
  * @param {Object} annotation Annotation to test for coverage with
@@ -661,18 +648,18 @@ ve.dm.Document.prototype.offsetContainsAnnotation = function ( offset, annotatio
 ve.dm.Document.prototype.getAnnotatedRangeFromOffset = function ( offset, annotation ) {
 	var start = offset,
 		end = offset;
-	if ( this.offsetContainsAnnotation( offset, annotation ) === false ) {
+	if ( this.getAnnotationsFromOffset( offset ).contains( annotation ) === false ) {
 		return null;
 	}
 	while ( start > 0 ) {
 		start--;
-		if ( this.offsetContainsAnnotation( start, annotation ) === false ) {
+		if ( this.getAnnotationsFromOffset( start ).contains( annotation ) === false ) {
 			start++;
 			break;
 		}
 	}
 	while ( end < this.data.length ) {
-		if ( this.offsetContainsAnnotation( end, annotation ) === false ) {
+		if ( this.getAnnotationsFromOffset( end ).contains( annotation ) === false ) {
 			break;
 		}
 		end++;
@@ -692,13 +679,13 @@ ve.dm.Document.prototype.getAnnotatedRangeFromSelection = function ( range, anno
 		end = range.end;
 	while ( start > 0 ) {
 		start--;
-		if ( this.offsetContainsAnnotation( start, annotation ) === false ) {
+		if ( this.getAnnotationsFromOffset( start ).contains( annotation ) === false ) {
 			start++;
 			break;
 		}
 	}
 	while ( end < this.data.length ) {
-		if ( this.offsetContainsAnnotation( end, annotation ) === false ) {
+		if ( this.getAnnotationsFromOffset( end ).contains( annotation ) === false ) {
 			break;
 		}
 		end++;

@@ -225,7 +225,7 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
 			}
 		} else if ( data[i].type === undefined || data[i].type.charAt( 0 ) !== '/' ) {
 			// Character or content element opening
-			covered = doc.offsetContainsAnnotation( i, annotation );
+			covered = doc.getAnnotationsFromOffset( i ).contains( annotation );
 			if ( ( covered && method === 'set' ) || ( !covered && method === 'clear' ) ) {
 				// Skip annotated content
 				if ( on ) {
