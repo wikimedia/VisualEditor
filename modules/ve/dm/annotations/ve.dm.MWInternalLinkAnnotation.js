@@ -71,7 +71,7 @@ ve.dm.MWInternalLinkAnnotation.prototype.getAnnotationData = function ( element 
  * @returns {Object} HTML element information, including tag and attributes properties
  */
 ve.dm.MWInternalLinkAnnotation.prototype.toHTML = function () {
-	var	href,
+	var href,
 		parentResult = ve.dm.LinkAnnotation.prototype.toHTML.call( this );
 	if (
 		this.data.origTitle &&

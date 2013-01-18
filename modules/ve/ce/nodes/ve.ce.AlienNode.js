@@ -56,12 +56,12 @@ ve.ce.AlienNode.rules = {
  * @param {jQuery.Event} e
  */
 ve.ce.AlienNode.prototype.onMouseEnter = function () {
-	var	$phantoms = $( [] ),
+	var $phantoms = $( [] ),
 		$phantomTemplate = ve.ce.Surface.static.$phantomTemplate,
 		surface = this.root.getSurface();
 
 	this.$.find( '.ve-ce-node-shield' ).each( function () {
-		var	$shield = $( this ),
+		var $shield = $( this ),
 			offset = $shield.offset();
 		$phantoms = $phantoms.add(
 			$phantomTemplate.clone().css( {
