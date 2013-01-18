@@ -62,7 +62,7 @@ ve.ce.Surface = function VeCeSurface( $container, model, surface ) {
 	// Initialization
 	rangy.init();
 	this.cleanLocalStorage();
-	this.$phantoms.addClass( 've-ce-phantoms' );
+	this.$phantoms.addClass( 've-ce-surface-phantoms' );
 	this.$pasteTarget.addClass( 've-ce-surface-paste' ).prop( 'contenteditable', true );
 	this.$.append( this.documentView.getDocumentNode().$, this.$phantoms, this.$pasteTarget );
 };
