@@ -34,4 +34,4 @@ ve.dm.TextNode.static.matchTagNames = [];
 
 /* Registration */
 
-ve.dm.nodeFactory.register( 'text', ve.dm.TextNode );
+ve.dm.modelRegistry.register( 'text', ve.dm.TextNode );

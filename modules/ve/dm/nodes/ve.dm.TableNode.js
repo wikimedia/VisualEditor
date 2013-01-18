@@ -41,4 +41,4 @@ ve.dm.TableNode.static.toDomElement = function () {
 
 /* Registration */
 
-ve.dm.nodeFactory.register( 'table', ve.dm.TableNode );
+ve.dm.modelRegistry.register( 'table', ve.dm.TableNode );

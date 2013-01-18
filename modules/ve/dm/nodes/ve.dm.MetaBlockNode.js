@@ -52,4 +52,4 @@ ve.dm.MetaBlockNode.static.toDomElement = function ( dataElement ) {
 
 /* Registration */
 
-ve.dm.nodeFactory.register( 'metaBlock', ve.dm.MetaBlockNode );
+ve.dm.modelRegistry.register( 'metaBlock', ve.dm.MetaBlockNode );

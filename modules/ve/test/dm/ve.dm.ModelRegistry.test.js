@@ -1,11 +1,11 @@
 /*!
- * VisualEditor AnnotationFactory tests.
+ * VisualEditor ModelRegistry tests.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-QUnit.module( 've.dm.AnnotationFactory' );
+QUnit.module( 've.dm.ModelRegistry' );
 
 /* Stubs */
 function checkForPickMe( element ) {
@@ -75,34 +75,34 @@ ve.dm.StubSingleTagAndTypeAndFuncAnnotation.static.matchFunction = checkForPickM
 /* Tests */
 
 QUnit.test( 'matchElement', 9, function ( assert ) {
-	var factory = new ve.dm.AnnotationFactory(), element;
+	var registry = new ve.dm.ModelRegistry(), element;
 	element = document.createElement( 'a' );
-	assert.deepEqual( factory.matchElement( element ), null, 'matchElement() returns null if registry empty' );
+	assert.deepEqual( registry.matchElement( element ), null, 'matchElement() returns null if registry empty' );
 
-	factory.register( 'stubnothingset', ve.dm.StubNothingSetAnnotation );
-	factory.register( 'stubsingletag', ve.dm.StubSingleTagAnnotation );
-	factory.register( 'stubsingletype', ve.dm.StubSingleTypeAnnotation );
-	factory.register( 'stubsingletagandtype', ve.dm.StubSingleTagAndTypeAnnotation );
-	factory.register( 'stubfunc', ve.dm.StubFuncAnnotation );
-	factory.register( 'stubsingletagandfunc', ve.dm.StubSingleTagAndFuncAnnotation );
-	factory.register( 'stubsingletypeandfunc', ve.dm.StubSingleTypeAndFuncAnnotation );
-	factory.register( 'stubsingletagandtypeandfunc', ve.dm.StubSingleTagAndTypeAndFuncAnnotation );
+	registry.register( 'stubnothingset', ve.dm.StubNothingSetAnnotation );
+	registry.register( 'stubsingletag', ve.dm.StubSingleTagAnnotation );
+	registry.register( 'stubsingletype', ve.dm.StubSingleTypeAnnotation );
+	registry.register( 'stubsingletagandtype', ve.dm.StubSingleTagAndTypeAnnotation );
+	registry.register( 'stubfunc', ve.dm.StubFuncAnnotation );
+	registry.register( 'stubsingletagandfunc', ve.dm.StubSingleTagAndFuncAnnotation );
+	registry.register( 'stubsingletypeandfunc', ve.dm.StubSingleTypeAndFuncAnnotation );
+	registry.register( 'stubsingletagandtypeandfunc', ve.dm.StubSingleTagAndTypeAndFuncAnnotation );
 
 	element = document.createElement( 'b' );
-	assert.deepEqual( factory.matchElement( element ), 'stubnothingset', 'nothingset matches anything' );
+	assert.deepEqual( registry.matchElement( element ), 'stubnothingset', 'nothingset matches anything' );
 	element.setAttribute( 'rel', 'mw:foo' );
-	assert.deepEqual( factory.matchElement( element ), 'stubsingletype', 'type-only match' );
+	assert.deepEqual( registry.matchElement( element ), 'stubsingletype', 'type-only match' );
 	element = document.createElement( 'a' );
-	assert.deepEqual( factory.matchElement( element ), 'stubsingletag', 'tag-only match' );
+	assert.deepEqual( registry.matchElement( element ), 'stubsingletag', 'tag-only match' );
 	element.setAttribute( 'rel', 'mw:foo' );
-	assert.deepEqual( factory.matchElement( element ), 'stubsingletagandtype', 'tag and type match' );
+	assert.deepEqual( registry.matchElement( element ), 'stubsingletagandtype', 'tag and type match' );
 	element.setAttribute( 'pickme', 'true' );
-	assert.deepEqual( factory.matchElement( element ), 'stubsingletagandtypeandfunc', 'tag, type and func match' );
+	assert.deepEqual( registry.matchElement( element ), 'stubsingletagandtypeandfunc', 'tag, type and func match' );
 	element.setAttribute( 'rel', 'mw:bar' );
-	assert.deepEqual( factory.matchElement( element ), 'stubsingletagandfunc', 'tag and func match' );
+	assert.deepEqual( registry.matchElement( element ), 'stubsingletagandfunc', 'tag and func match' );
 	element = document.createElement( 'b' );
 	element.setAttribute( 'pickme', 'true' );
-	assert.deepEqual( factory.matchElement( element ), 'stubfunc', 'func-only match' );
+	assert.deepEqual( registry.matchElement( element ), 'stubfunc', 'func-only match' );
 	element.setAttribute( 'rel', 'mw:foo' );
-	assert.deepEqual( factory.matchElement( element ), 'stubsingletypeandfunc', 'type and func match' );
+	assert.deepEqual( registry.matchElement( element ), 'stubsingletypeandfunc', 'type and func match' );
 } );

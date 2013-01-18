@@ -63,7 +63,7 @@ ve.dm.Annotation.static.name = null;
  *
  * Empty array means none, null means any.
  *
- * @see ve.dm.AnnotationFactory
+ * @see ve.dm.ModelRegistry
  *
  * @static
  * @property {Array} static.matchTagNames
@@ -76,7 +76,7 @@ ve.dm.Annotation.static.matchTagNames = null;
  *
  * Empty array means none, null means any.
  *
- * @see ve.dm.AnnotationFactory
+ * @see ve.dm.ModelRegistry
  *
  * @static
  * @property {Array} static.matchRdfaType
@@ -90,7 +90,7 @@ ve.dm.Annotation.static.matchRdfaTypes = null;
  * Takes an HTMLElement and returns true or false.
  *
  * This function is only called if this annotation has a chance of "winning"; see
- * ve.dm.AnnotationFactory for more information about annotation matching.
+ * ve.dm.ModelRegistry for more information about element matching.
  * If set to null, this property is ignored. Setting this to null is not the same as unconditionally
  * returning true, because the presence or absence of a matchFunction affects the annotation's
  * specificity.

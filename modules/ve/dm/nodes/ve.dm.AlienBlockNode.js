@@ -31,4 +31,4 @@ ve.dm.AlienBlockNode.static.matchTagNames = [];
 
 /* Registration */
 
-ve.dm.nodeFactory.register( 'alienBlock', ve.dm.AlienBlockNode );
+ve.dm.modelRegistry.register( 'alienBlock', ve.dm.AlienBlockNode );

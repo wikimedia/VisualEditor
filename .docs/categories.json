@@ -29,6 +29,7 @@
 				"classes": [
 					"ve.dm",
 					"ve.dm.AnnotationFactory",
+					"ve.dm.ModelRegistry",
 					"ve.dm.Converter",
 					"ve.dm.DocumentSlice",
 					"ve.dm.DocumentSynchronizer",

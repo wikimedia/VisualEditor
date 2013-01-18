@@ -53,6 +53,7 @@
 		<script src="../../ve/actions/ve.InspectorAction.js"></script>
 		<script src="../../ve/actions/ve.ListAction.js"></script>
 		<script src="../../ve/dm/ve.dm.js"></script>
+		<script src="../../ve/dm/ve.dm.ModelRegistry.js"></script>
 		<script src="../../ve/dm/ve.dm.NodeFactory.js"></script>
 		<script src="../../ve/dm/ve.dm.AnnotationFactory.js"></script>
 		<script src="../../ve/dm/ve.dm.Node.js"></script>
@@ -183,7 +184,7 @@
 		<script src="dm/ve.dm.TransactionProcessor.test.js"></script>
 		<script src="dm/ve.dm.Surface.test.js"></script>
 		<script src="dm/ve.dm.SurfaceFragment.test.js"></script>
-		<script src="dm/ve.dm.AnnotationFactory.test.js"></script>
+		<script src="dm/ve.dm.ModelRegistry.test.js"></script>
 		<script src="ce/ve.ce.test.js"></script>
 		<script src="ce/ve.ce.Document.test.js"></script>
 		<script src="ce/ve.ce.NodeFactory.test.js"></script>

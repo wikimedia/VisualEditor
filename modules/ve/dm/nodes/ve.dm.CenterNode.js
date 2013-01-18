@@ -39,4 +39,4 @@ ve.dm.CenterNode.static.toDomElement = function () {
 
 /* Registration */
 
-ve.dm.nodeFactory.register( 'center', ve.dm.CenterNode );
+ve.dm.modelRegistry.register( 'center', ve.dm.CenterNode );

@@ -106,6 +106,7 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 		<script src="../../modules/ve/actions/ve.InspectorAction.js"></script>
 		<script src="../../modules/ve/actions/ve.ListAction.js"></script>
 		<script src="../../modules/ve/dm/ve.dm.js"></script>
+		<script src="../../modules/ve/dm/ve.dm.ModelRegistry.js"></script>
 		<script src="../../modules/ve/dm/ve.dm.NodeFactory.js"></script>
 		<script src="../../modules/ve/dm/ve.dm.AnnotationFactory.js"></script>
 		<script src="../../modules/ve/dm/ve.dm.Node.js"></script>
