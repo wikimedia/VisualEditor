@@ -34,6 +34,7 @@
 		<script src="../../ve/ve.Factory.js"></script>
 		<script src="../../ve/ve.Command.js"></script>
 		<script src="../../ve/ve.CommandRegistry.js"></script>
+		<script src="../../ve/ve.TriggerRegistry.js"></script>
 		<script src="../../ve/ve.Range.js"></script>
 		<script src="../../ve/ve.Node.js"></script>
 		<script src="../../ve/ve.BranchNode.js"></script>
