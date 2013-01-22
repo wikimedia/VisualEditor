@@ -148,8 +148,7 @@ ve.inheritClass( ve.init.mw.ViewPageTarget, ve.init.mw.Target );
 ve.init.mw.ViewPageTarget.compatibility = {
 	// Left-to-right languages
 	ltr: {
-		msie: false, // FIXME: Bug 42335 (temporarily added IE to blacklist for December release)
-		// msie: [['>=', 9]],
+		msie: [['>=', 9]],
 		firefox: [['>=', 11]],
 		safari: [['>=', 5]],
 		chrome: [['>=', 19]],
@@ -159,8 +158,7 @@ ve.init.mw.ViewPageTarget.compatibility = {
 	},
 	// Right-to-left languages
 	rtl: {
-		msie: false, // FIXME: Bug 42335 (temporarily added IE to blacklist for December release)
-		// msie: [['>=', 9]],
+		msie: [['>=', 9]],
 		firefox: [['>=', 11]],
 		safari: [['>=', 5]],
 		chrome: [['>=', 19]],
