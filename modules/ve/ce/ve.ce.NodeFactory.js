@@ -32,7 +32,7 @@ ve.inheritClass( ve.ce.NodeFactory, ve.Factory );
  */
 ve.ce.NodeFactory.prototype.canNodeBeSplit = function ( type ) {
 	if ( type in this.registry ) {
-		return this.registry[type].rules.canBeSplit;
+		return this.registry[type].static.canBeSplit;
 	}
 	throw new Error( 'Unknown node type: ' + type );
 };

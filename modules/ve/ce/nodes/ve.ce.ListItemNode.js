@@ -24,16 +24,7 @@ ve.inheritClass( ve.ce.ListItemNode, ve.ce.BranchNode );
 
 /* Static Properties */
 
-/**
- * Node rules.
- *
- * @see ve.ce.NodeFactory
- * @static
- * @property
- */
-ve.ce.ListItemNode.rules = {
-	'canBeSplit': true
-};
+ve.ce.ListItemNode.canBeSplit = true;
 
 /* Registration */
 

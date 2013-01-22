@@ -24,23 +24,11 @@ ve.inheritClass( ve.dm.DocumentNode, ve.dm.BranchNode );
 
 /* Static Properties */
 
-/**
- * Node rules.
- *
- * @see ve.dm.NodeFactory
- * @static
- * @property
- */
-ve.dm.DocumentNode.rules = {
-	'isWrapped': false,
-	'isContent': false,
-	'canContainContent': false,
-	'hasSignificantWhitespace': false,
-	'childNodeTypes': null,
-	'parentNodeTypes': []
-};
-
 ve.dm.DocumentNode.static.name = 'document';
+
+ve.dm.DocumentNode.static.isWrapped = false;
+
+ve.dm.DocumentNode.static.parentNodeTypes = [];
 
 ve.dm.DocumentNode.static.matchTagNames = [];
 

@@ -16,10 +16,6 @@ ve.ce.LeafNodeStub = function VeCeLeafNodeStub( model ) {
 
 ve.inheritClass( ve.ce.LeafNodeStub, ve.ce.LeafNode );
 
-ve.ce.LeafNodeStub.rules = {
-	'canBeSplit': false
-};
-
 ve.ce.nodeFactory.register( 'leaf-stub', ve.ce.LeafNodeStub );
 
 /* Tests */

@@ -29,16 +29,7 @@ ve.inheritClass( ve.ce.HeadingNode, ve.ce.ContentBranchNode );
 
 /* Static Properties */
 
-/**
- * Node rules.
- *
- * @see ve.ce.NodeFactory
- * @static
- * @property
- */
-ve.ce.HeadingNode.rules = {
-	'canBeSplit': true
-};
+ve.ce.HeadingNode.static.canBeSplit = true;
 
 /**
  * Mapping of heading level values and DOM wrapper element types.

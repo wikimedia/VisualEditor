@@ -56,7 +56,7 @@ ve.dm.NodeFactory.prototype.getDataElement = function ( type, attributes ) {
  */
 ve.dm.NodeFactory.prototype.getChildNodeTypes = function ( type ) {
 	if ( type in this.registry ) {
-		return this.registry[type].rules.childNodeTypes;
+		return this.registry[type].static.childNodeTypes;
 	}
 	throw new Error( 'Unknown node type: ' + type );
 };
@@ -71,7 +71,7 @@ ve.dm.NodeFactory.prototype.getChildNodeTypes = function ( type ) {
  */
 ve.dm.NodeFactory.prototype.getParentNodeTypes = function ( type ) {
 	if ( type in this.registry ) {
-		return this.registry[type].rules.parentNodeTypes;
+		return this.registry[type].static.parentNodeTypes;
 	}
 	throw new Error( 'Unknown node type: ' + type );
 };
@@ -88,7 +88,7 @@ ve.dm.NodeFactory.prototype.canNodeHaveChildren = function ( type ) {
 	if ( type in this.registry ) {
 		// If childNodeTypes is null any child is allowed, if it's an array of at least one element
 		// than at least one kind of node is allowed
-		var types = this.registry[type].rules.childNodeTypes;
+		var types = this.registry[type].static.childNodeTypes;
 		return types === null || ( ve.isArray( types ) && types.length > 0 );
 	}
 	throw new Error( 'Unknown node type: ' + type );
@@ -105,8 +105,8 @@ ve.dm.NodeFactory.prototype.canNodeHaveChildren = function ( type ) {
 ve.dm.NodeFactory.prototype.canNodeHaveGrandchildren = function ( type ) {
 	if ( type in this.registry ) {
 		return this.canNodeHaveChildren( type ) &&
-			!this.registry[type].rules.canContainContent &&
-			!this.registry[type].rules.isContent;
+			!this.registry[type].static.canContainContent &&
+			!this.registry[type].static.isContent;
 	}
 	throw new Error( 'Unknown node type: ' + type );
 };
@@ -121,7 +121,7 @@ ve.dm.NodeFactory.prototype.canNodeHaveGrandchildren = function ( type ) {
  */
 ve.dm.NodeFactory.prototype.isNodeWrapped = function ( type ) {
 	if ( type in this.registry ) {
-		return this.registry[type].rules.isWrapped;
+		return this.registry[type].static.isWrapped;
 	}
 	throw new Error( 'Unknown node type: ' + type );
 };
@@ -136,7 +136,7 @@ ve.dm.NodeFactory.prototype.isNodeWrapped = function ( type ) {
  */
 ve.dm.NodeFactory.prototype.canNodeContainContent = function ( type ) {
 	if ( type in this.registry ) {
-		return this.registry[type].rules.canContainContent;
+		return this.registry[type].static.canContainContent;
 	}
 	throw new Error( 'Unknown node type: ' + type );
 };
@@ -151,7 +151,7 @@ ve.dm.NodeFactory.prototype.canNodeContainContent = function ( type ) {
  */
 ve.dm.NodeFactory.prototype.isNodeContent = function ( type ) {
 	if ( type in this.registry ) {
-		return this.registry[type].rules.isContent;
+		return this.registry[type].static.isContent;
 	}
 	throw new Error( 'Unknown node type: ' + type );
 };
@@ -168,7 +168,7 @@ ve.dm.NodeFactory.prototype.isNodeContent = function ( type ) {
  */
 ve.dm.NodeFactory.prototype.doesNodeHaveSignificantWhitespace = function ( type ) {
 	if ( type in this.registry ) {
-		return this.registry[type].rules.hasSignificantWhitespace;
+		return this.registry[type].static.hasSignificantWhitespace;
 	}
 	throw new Error( 'Unknown node type: ' + type );
 };

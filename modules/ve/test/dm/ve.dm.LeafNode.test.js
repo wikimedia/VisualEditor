@@ -16,13 +16,6 @@ ve.dm.LeafNodeStub = function VeDmLeafNodeStub( length, element ) {
 
 ve.inheritClass( ve.dm.LeafNodeStub, ve.dm.LeafNode );
 
-ve.dm.LeafNodeStub.rules = {
-	'isWrapped': true,
-	'isContent': true,
-	'canContainContent': false,
-	'childNodeTypes': []
-};
-
 ve.dm.LeafNodeStub.static.name = 'leaf-stub';
 
 ve.dm.LeafNodeStub.static.matchTagNames = [];

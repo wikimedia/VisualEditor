@@ -22,19 +22,6 @@ ve.ce.DefinitionListNode = function VeCeDefinitionListNode( model ) {
 
 ve.inheritClass( ve.ce.DefinitionListNode, ve.ce.BranchNode );
 
-/* Static Properties */
-
-/**
- * Node rules.
- *
- * @see ve.ce.NodeFactory
- * @static
- * @property
- */
-ve.ce.DefinitionListNode.rules = {
-	'canBeSplit': false
-};
-
 /* Registration */
 
 ve.ce.nodeFactory.register( 'definitionList', ve.ce.DefinitionListNode );

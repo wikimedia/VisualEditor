@@ -24,16 +24,7 @@ ve.inheritClass( ve.ce.ParagraphNode, ve.ce.ContentBranchNode );
 
 /* Static Properties */
 
-/**
- * Node rules.
- *
- * @see ve.ce.NodeFactory
- * @static
- * @property
- */
-ve.ce.ParagraphNode.rules = {
-	'canBeSplit': true
-};
+ve.ce.ParagraphNode.static.canBeSplit = true;
 
 /* Registration */
 

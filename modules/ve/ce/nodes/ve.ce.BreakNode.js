@@ -25,19 +25,6 @@ ve.ce.BreakNode = function VeCeBreakNode( model ) {
 
 ve.inheritClass( ve.ce.BreakNode, ve.ce.LeafNode );
 
-/* Static Properties */
-
-/**
- * Node rules.
- *
- * @see ve.ce.NodeFactory
- * @static
- * @property
- */
-ve.ce.BreakNode.rules = {
-	'canBeSplit': false
-};
-
 /* Registration */
 
 ve.ce.nodeFactory.register( 'break', ve.ce.BreakNode );

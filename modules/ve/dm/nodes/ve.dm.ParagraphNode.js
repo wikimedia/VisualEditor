@@ -25,23 +25,9 @@ ve.inheritClass( ve.dm.ParagraphNode, ve.dm.BranchNode );
 
 /* Static Properties */
 
-/**
- * Node rules.
- *
- * @see ve.dm.NodeFactory
- * @static
- * @property
- */
-ve.dm.ParagraphNode.rules = {
-	'isWrapped': true,
-	'isContent': false,
-	'canContainContent': true,
-	'hasSignificantWhitespace': false,
-	'childNodeTypes': null,
-	'parentNodeTypes': null
-};
-
 ve.dm.ParagraphNode.static.name = 'paragraph';
+
+ve.dm.ParagraphNode.static.canContainContent = true;
 
 ve.dm.ParagraphNode.static.matchTagNames = [ 'p' ];
 

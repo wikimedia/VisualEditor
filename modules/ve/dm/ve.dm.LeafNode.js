@@ -32,6 +32,10 @@ ve.inheritClass( ve.dm.LeafNode, ve.dm.Node );
 
 ve.mixinClass( ve.dm.LeafNode, ve.LeafNode );
 
+/* Static properties */
+
+ve.dm.LeafNode.static.childNodeTypes = [];
+
 /* Methods */
 
 /**

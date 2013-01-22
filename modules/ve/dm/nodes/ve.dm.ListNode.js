@@ -29,23 +29,9 @@ ve.dm.ListNode.defaultAttributes = {
 	'style': 'bullet'
 };
 
-/**
- * Node rules.
- *
- * @see ve.dm.NodeFactory
- * @static
- * @property
- */
-ve.dm.ListNode.rules = {
-	'isWrapped': true,
-	'isContent': false,
-	'canContainContent': false,
-	'hasSignificantWhitespace': false,
-	'childNodeTypes': ['listItem'],
-	'parentNodeTypes': null
-};
-
 ve.dm.ListNode.static.name = 'list';
+
+ve.dm.ListNode.static.childNodeTypes = [ 'listItem' ];
 
 ve.dm.ListNode.static.matchTagNames = [ 'ul', 'ol' ];
 

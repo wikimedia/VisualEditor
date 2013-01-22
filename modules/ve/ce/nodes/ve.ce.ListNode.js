@@ -28,17 +28,6 @@ ve.inheritClass( ve.ce.ListNode, ve.ce.BranchNode );
 /* Static Properties */
 
 /**
- * Node rules.
- *
- * @see ve.ce.NodeFactory
- * @static
- * @property
- */
-ve.ce.ListNode.rules = {
-	'canBeSplit': false
-};
-
-/**
  * Mapping of list style values and DOM wrapper element types.
  *
  * @static

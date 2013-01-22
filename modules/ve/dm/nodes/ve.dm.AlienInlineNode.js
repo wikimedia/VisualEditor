@@ -25,25 +25,11 @@ ve.inheritClass( ve.dm.AlienInlineNode, ve.dm.LeafNode );
 
 /* Static Properties */
 
-/**
- * Node rules.
- *
- * @see ve.dm.NodeFactory
- * @static
- * @property
- */
-ve.dm.AlienInlineNode.rules = {
-	'isWrapped': true,
-	'isContent': true,
-	'canContainContent': false,
-	'hasSignificantWhitespace': false,
-	'childNodeTypes': [],
-	'parentNodeTypes': null
-};
-
 ve.dm.AlienInlineNode.static.name = 'alienInline';
 
 ve.dm.AlienInlineNode.static.matchTagNames = [];
+
+ve.dm.AlienInlineNode.static.isContent = true;
 
 /* Registration */
 

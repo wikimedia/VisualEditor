@@ -30,19 +30,6 @@ ve.ce.DocumentNode = function VeCeDocumentNode( model, surface ) {
 
 ve.inheritClass( ve.ce.DocumentNode, ve.ce.BranchNode );
 
-/* Static Properties */
-
-/**
- * Node rules.
- *
- * @see ve.ce.NodeFactory
- * @static
- * @property
- */
-ve.ce.DocumentNode.rules = {
-	'canBeSplit': false
-};
-
 /* Methods */
 
 /**

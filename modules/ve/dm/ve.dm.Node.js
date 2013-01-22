@@ -117,6 +117,73 @@ ve.dm.Node.static.toDomElement = function ( /*dataElement*/ ) {
 	throw new Error( 've.dm.Node subclass must implement toDomElement' );
 };
 
+/**
+ * Whether this node type has a wrapping element in the linear model. Most node types are wrapped,
+ * only special node types are not wrapped.
+ *
+ * @static
+ * @property {Boolean} static.isWrapped
+ * @inheritable
+ */
+ve.dm.Node.static.isWrapped = true;
+
+/**
+ * Whether this node type is a content node type. This means the node represents content, cannot
+ * have children, and can only appear as children of a content container node. Content nodes are
+ * also known as inline nodes.
+ *
+ * @static
+ * @property {Boolean} static.isContent
+ * @inheritable
+ */
+ve.dm.Node.static.isContent = false;
+
+/**
+ * Whether this node type can contain content. The children of content container nodes must be
+ * content nodes.
+ *
+ * @static
+ * @property {Boolean} static.canContainContent
+ * @inheritable
+ */
+ve.dm.Node.static.canContainContent = false;
+
+/**
+ * Whether this node type has significant whitespace. Only applies to content container nodes
+ * (i.e. can only be true if canContainContent is also true).
+ *
+ * If a content node has significant whitespace, the text inside it is not subject to whitespace
+ * stripping and preservation.
+ *
+ * @static
+ * @property {Boolean} static.hasSignificantWhitespace
+ * @inheritable
+ */
+ve.dm.Node.static.hasSignificantWhitespace = false;
+
+/**
+ * Array of allowed child node types for this node type.
+ *
+ * An empty array means no children are allowed. null means any node type is allowed as a child.
+ *
+ * @static
+ * @property {string[]|null} static.childNodeTypes
+ * @inheritable
+ */
+ve.dm.Node.static.childNodeTypes = null;
+
+/**
+ * Array of allowed parent node types for this node type.
+ *
+ * An empty array means this node type cannot be the child of any node. null means this node type
+ * can be the child of any node type.
+ *
+ * @static
+ * @property {string[]|null} static.parentNodeTypes
+ * @inheritable
+ */
+ve.dm.Node.static.parentNodeTypes = null;
+
 /* Methods */
 
 /**

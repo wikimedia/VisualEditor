@@ -16,13 +16,6 @@ ve.dm.BranchNodeStub = function VeDmBranchNodeStub( children, element ) {
 
 ve.inheritClass( ve.dm.BranchNodeStub, ve.dm.BranchNode );
 
-ve.dm.BranchNodeStub.rules = {
-	'isWrapped': true,
-	'isContent': false,
-	'canContainContent': false,
-	'childNodeTypes': null
-};
-
 ve.dm.BranchNodeStub.static.name = 'branch-stub';
 
 ve.dm.BranchNodeStub.static.matchTagNames = [];

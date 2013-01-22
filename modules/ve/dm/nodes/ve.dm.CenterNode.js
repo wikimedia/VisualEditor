@@ -25,22 +25,6 @@ ve.inheritClass( ve.dm.CenterNode, ve.dm.BranchNode );
 
 /* Static Properties */
 
-/**
- * Node rules.
- *
- * @see ve.dm.NodeFactory
- * @static
- * @property
- */
-ve.dm.CenterNode.rules = {
-	'isWrapped': true,
-	'isContent': false,
-	'canContainContent': false,
-	'hasSignificantWhitespace': false,
-	'childNodeTypes': null,
-	'parentNodeTypes': null
-};
-
 ve.dm.CenterNode.static.name = 'center';
 
 ve.dm.CenterNode.static.matchTagNames = [ 'center' ];

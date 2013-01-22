@@ -25,23 +25,9 @@ ve.inheritClass( ve.dm.ListItemNode, ve.dm.BranchNode );
 
 /* Static Properties */
 
-/**
- * Node rules.
- *
- * @see ve.dm.NodeFactory
- * @static
- * @property
- */
-ve.dm.ListItemNode.rules = {
-	'isWrapped': true,
-	'isContent': false,
-	'canContainContent': false,
-	'hasSignificantWhitespace': false,
-	'childNodeTypes': null,
-	'parentNodeTypes': ['list']
-};
-
 ve.dm.ListItemNode.static.name = 'listItem';
+
+ve.dm.ListItemNode.static.parentNodeTypes = [ 'list' ];
 
 ve.dm.ListItemNode.static.matchTagNames = [ 'li' ];
 

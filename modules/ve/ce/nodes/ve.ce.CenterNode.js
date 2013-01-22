@@ -22,19 +22,6 @@ ve.ce.CenterNode = function VeCeCenterNode( model ) {
 
 ve.inheritClass( ve.ce.CenterNode, ve.ce.BranchNode );
 
-/* Static Properties */
-
-/**
- * Node rules.
- *
- * @see ve.ce.NodeFactory
- * @static
- * @property
- */
-ve.ce.CenterNode.rules = {
-	'canBeSplit': false
-};
-
 /* Registration */
 
 ve.ce.nodeFactory.register( 'center', ve.ce.CenterNode );
