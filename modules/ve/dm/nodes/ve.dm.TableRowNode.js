@@ -41,23 +41,16 @@ ve.dm.TableRowNode.rules = {
 	'parentNodeTypes': ['tableSection']
 };
 
-/**
- * Node converters.
- *
- * @see ve.dm.Converter
- * @static
- * @property
- */
-ve.dm.TableRowNode.converters = {
-	'domElementTypes': ['tr'],
-	'toDomElement': function () {
-		return document.createElement( 'tr' );
-	},
-	'toDataElement': function () {
-		return {
-			'type': 'tableRow'
-		};
-	}
+ve.dm.TableRowNode.static.name = 'tableRow';
+
+ve.dm.TableRowNode.static.matchTagNames = [ 'tr' ];
+
+ve.dm.TableRowNode.static.toDataElement = function () {
+	return { 'type': 'tableRow' };
+};
+
+ve.dm.TableRowNode.static.toDomElement = function () {
+	return document.createElement( 'tr' );
 };
 
 /* Registration */

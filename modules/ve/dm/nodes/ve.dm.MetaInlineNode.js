@@ -42,14 +42,15 @@ ve.dm.MetaInlineNode.rules = {
 	'parentNodeTypes': null
 };
 
-/**
- * Node converters.
- *
- * @see ve.dm.Converter
- * @static
- * @property
- */
-ve.dm.MetaInlineNode.converters = ve.dm.MetaBlockNode.converters;
+// TODO hybrid-ify meta nodes
+
+ve.dm.MetaInlineNode.static.name = 'metaInline';
+
+ve.dm.MetaInlineNode.static.matchTagNames = ve.dm.MetaBlockNode.static.matchTagNames;
+
+ve.dm.MetaInlineNode.static.toDataElement = ve.dm.MetaBlockNode.static.toDataElement;
+
+ve.dm.MetaInlineNode.static.toDomElement = ve.dm.MetaBlockNode.static.toDomElement;
 
 /* Registration */
 

@@ -41,23 +41,16 @@ ve.dm.CenterNode.rules = {
 	'parentNodeTypes': null
 };
 
-/**
- * Node converters.
- *
- * @see ve.dm.Converter
- * @static
- * @property
- */
-ve.dm.CenterNode.converters = {
-	'domElementTypes': ['center'],
-	'toDomElement': function () {
-		return document.createElement( 'center' );
-	},
-	'toDataElement': function () {
-		return {
-			'type': 'center'
-		};
-	}
+ve.dm.CenterNode.static.name = 'center';
+
+ve.dm.CenterNode.static.matchTagNames = [ 'center' ];
+
+ve.dm.CenterNode.static.toDataElement = function () {
+	return { 'type': 'center' };
+};
+
+ve.dm.CenterNode.static.toDomElement = function () {
+	return document.createElement( 'center' );
 };
 
 /* Registration */

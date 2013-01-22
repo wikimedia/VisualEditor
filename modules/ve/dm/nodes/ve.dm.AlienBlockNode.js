@@ -41,8 +41,9 @@ ve.dm.AlienBlockNode.rules = {
 	'parentNodeTypes': null
 };
 
-// This is a special node, no converter registration is required
-ve.dm.AlienBlockNode.converters = null;
+ve.dm.AlienBlockNode.static.name = 'alienBlock';
+
+ve.dm.AlienBlockNode.static.matchTagNames = [];
 
 /* Registration */
 

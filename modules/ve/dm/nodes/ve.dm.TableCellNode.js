@@ -45,27 +45,18 @@ ve.dm.TableCellNode.rules = {
 	'parentNodeTypes': ['tableRow']
 };
 
-/**
- * Node converters.
- *
- * @see ve.dm.Converter
- * @static
- * @property
- */
-ve.dm.TableCellNode.converters = {
-	'domElementTypes': ['td', 'th'],
-	'toDomElement': function ( type, element ) {
-		return element.attributes && ( {
-			'data': document.createElement( 'td' ),
-			'header': document.createElement( 'th' )
-		} )[element.attributes.style];
-	},
-	'toDataElement': function ( tag ) {
-		return ( {
-			'td': { 'type': 'tableCell', 'attributes': { 'style': 'data' } },
-			'th': { 'type': 'tableCell', 'attributes': { 'style': 'header' } }
-		} )[tag];
-	}
+ve.dm.TableCellNode.static.name = 'tableCell';
+
+ve.dm.TableCellNode.static.matchTagNames = [ 'td', 'th' ];
+
+ve.dm.TableCellNode.static.toDataElement = function ( domElement ) {
+	var style = domElement.nodeName.toLowerCase() === 'th' ? 'header' : 'data';
+	return { 'type': 'tableCell', 'attributes': { 'style': style } };
+};
+
+ve.dm.TableCellNode.static.toDomElement = function ( dataElement ) {
+	var tag = dataElement.attributes && dataElement.attributes.style === 'header' ? 'th' : 'td';
+	return document.createElement( tag );
 };
 
 /* Registration */

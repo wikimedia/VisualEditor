@@ -45,31 +45,29 @@ ve.dm.TableSectionNode.rules = {
 	'parentNodeTypes': ['table']
 };
 
-/**
- * Node converters.
- *
- * @see ve.dm.Converter
- * @static
- * @property
- */
-ve.dm.TableSectionNode.converters = {
-	'domElementTypes': ['thead', 'tbody', 'tfoot'],
-	'toDomElement': function ( type, element ) {
-		return element.attributes && ( {
-			'header': document.createElement( 'thead' ),
-			'body': document.createElement( 'tbody' ),
-			'footer': document.createElement( 'tfoot' )
-		} )[element.attributes.style];
-	},
-	'toDataElement': function ( tag ) {
-		return ( {
-			'thead': { 'type': 'tableSection', 'attributes': { 'style': 'header' } },
-			'tbody': { 'type': 'tableSection', 'attributes': { 'style': 'body' } },
-			'tfoot': { 'type': 'tableSection', 'attributes': { 'style': 'footer' } }
-		} )[tag];
-	}
+ve.dm.TableSectionNode.static.name = 'tableSection';
+
+ve.dm.TableSectionNode.static.matchTagNames = [ 'thead', 'tbody', 'tfoot' ];
+
+ve.dm.TableSectionNode.static.toDataElement = function ( domElement ) {
+	var styles = {
+			'thead': 'header',
+			'tbody': 'body',
+			'tfoot': 'footer'
+		},
+		style = styles[domElement.nodeName.toLowerCase()] || 'body';
+	return { 'type': 'tableSection', 'attributes': { 'style': style } };
 };
 
+ve.dm.TableSectionNode.static.toDomElement = function ( dataElement ) {
+	var tags = {
+			'header': 'thead',
+			'body': 'tbody',
+			'footer': 'tfoot'
+		},
+		tag = tags[dataElement.attributes && dataElement.attributes.style || 'body'];
+	return document.createElement( tag );
+};
 /* Registration */
 
 ve.dm.nodeFactory.register( 'tableSection', ve.dm.TableSectionNode );

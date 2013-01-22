@@ -41,23 +41,16 @@ ve.dm.ParagraphNode.rules = {
 	'parentNodeTypes': null
 };
 
-/**
- * Node converters.
- *
- * @see ve.dm.Converter
- * @static
- * @property
- */
-ve.dm.ParagraphNode.converters = {
-	'domElementTypes': ['p'],
-	'toDomElement': function () {
-		return document.createElement( 'p' );
-	},
-	'toDataElement': function () {
-		return {
-			'type': 'paragraph'
-		};
-	}
+ve.dm.ParagraphNode.static.name = 'paragraph';
+
+ve.dm.ParagraphNode.static.matchTagNames = [ 'p' ];
+
+ve.dm.ParagraphNode.static.toDataElement = function () {
+	return { 'type': 'paragraph' };
+};
+
+ve.dm.ParagraphNode.static.toDomElement = function () {
+	return document.createElement( 'p' );
 };
 
 /* Registration */

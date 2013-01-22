@@ -23,7 +23,9 @@ ve.dm.BranchNodeStub.rules = {
 	'childNodeTypes': null
 };
 
-ve.dm.BranchNodeStub.converters = null;
+ve.dm.BranchNodeStub.static.name = 'branch-stub';
+
+ve.dm.BranchNodeStub.static.matchTagNames = [];
 
 ve.dm.nodeFactory.register( 'branch-stub', ve.dm.BranchNodeStub );
 

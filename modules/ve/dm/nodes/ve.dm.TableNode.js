@@ -41,23 +41,16 @@ ve.dm.TableNode.rules = {
 	'parentNodeTypes': null
 };
 
-/**
- * Node converters.
- *
- * @see ve.dm.Converter
- * @static
- * @property
- */
-ve.dm.TableNode.converters = {
-	'domElementTypes': ['table'],
-	'toDomElement': function () {
-		return document.createElement( 'table' );
-	},
-	'toDataElement': function () {
-		return {
-			'type': 'table'
-		};
-	}
+ve.dm.TableNode.static.name = 'table';
+
+ve.dm.TableNode.static.matchTagNames = [ 'table' ];
+
+ve.dm.TableNode.static.toDataElement = function () {
+	return { 'type': 'table' };
+};
+
+ve.dm.TableNode.static.toDomElement = function () {
+	return document.createElement( 'table' );
 };
 
 /* Registration */

@@ -38,6 +38,85 @@ ve.dm.Node = function VeDmNode( type, length, element ) {
 
 ve.inheritClass( ve.dm.Node, ve.Node );
 
+/* Static members */
+
+/**
+ * Symbolic name for the node class. Must be set to a unique string by every subclass. Must not
+ * conflict with other node names or other annotation names.
+ * @static
+ * @property {string} [static.name=null]
+ * @inheritable
+ */
+ve.dm.Node.static.name = null;
+
+/**
+ * Array of HTML tag names that this node should be a match candidate for.
+ * Empty array means none, null means any.
+ * For more information about element matching, see ve.dm.ModelRegistry.
+ * @static
+ * @property {Array} static.matchTagNames
+ * @inheritable
+ */
+ve.dm.Node.static.matchTagNames = null;
+
+/**
+ * Array of RDFa types that this node should be a match candidate for.
+ * Empty array means none, null means any.
+ * For more information about element matching, see ve.dm.ModelRegistry.
+ * @static
+ * @property {Array} static.matchRdfaType
+ * @inheritable
+ */
+ve.dm.Node.static.matchRdfaTypes = null;
+
+/**
+ * Optional function to determine whether this node should match a given element.
+ * Takes an HTMLElement and returns true or false.
+ * This function is only called if this node has a chance of "winning"; see
+ * ve.dm.ModelRegistry for more information about element matching.
+ * If set to null, this property is ignored. Setting this to null is not the same as unconditionally
+ * returning true, because the presence or absence of a matchFunction affects the node's
+ * specificity.
+ *
+ * NOTE: This function is NOT a method, within this function "this" will not refer to an instance
+ * of this class (or to anything reasonable, for that matter).
+ * @static
+ * @property {Function} static.matchFunction
+ * @inheritable
+ */
+ve.dm.Node.static.matchFunction = null;
+
+/**
+ * Static function to convert a DOM element to a linear model data element for this node type.
+ *
+ * This function is only called if this node "won" the matching for the DOM element, so domElement
+ * will match this node's matching rule.
+ *
+ * The returned linear model element must have a type property set to a registered node name
+ * (usually the node's .static.name, but that's not required). It may optionally have an attributes
+ * property set to an object with key-value pairs. Any other properties are not allowed.
+ *
+ * @static
+ * @method
+ * @param {HTMLElement} domElement DOM element to convert
+ * @returns {Object} Linear model element
+ */
+ve.dm.Node.static.toDataElement = function ( /*domElement*/ ) {
+	throw new Error( 've.dm.Node subclass must implement toDataElement' );
+};
+
+/**
+ * Static function to convert a linear model data element for this node type back to a DOM element.
+ *
+ * @static
+ * @method
+ * @param {Object} Linear model element with a type property and optionally an attributes property
+ * @returns {HTMLElement} DOM element
+ */
+ve.dm.Node.static.toDomElement = function ( /*dataElement*/ ) {
+	throw new Error( 've.dm.Node subclass must implement toDomElement' );
+};
+
 /* Methods */
 
 /**
