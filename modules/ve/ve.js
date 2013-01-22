@@ -227,9 +227,36 @@
 	 * @param {Array} array Array to search in.
 	 * @param {number} [fromIndex=0] Index to being searching from.
 	 * @return {number} Index of value in array, or -1 if not found.
-	 * Values are compared without type coersion.
+	 * Values are compared without type coercion.
 	 */
 	ve.indexOf = $.inArray;
+
+	/**
+	 * Array.prototype.filter
+	 *
+	 * @method
+	 * @until ES5
+	 * @param {Array} array Array to filter
+	 * @param {Function} callback Callback to call on each element of array
+	 * @param {Mixed} [context] Context (this object) for callback
+	 * @returns {Array} Array of elements in array for which callback returned true
+	 */
+	ve.filterArray = function ( array, callback, context ) {
+		var i, len, value, result = [];
+		if ( Array.prototype.filter ) {
+			return array.filter( callback, context );
+		} else {
+			for ( i = 0, len = array.length; i < len; i++ ) {
+				if ( i in array ) {
+					value = array[i];
+					if ( callback.call( context, value, i, array ) ) {
+						result.push( value );
+					}
+				}
+			}
+			return result;
+		}
+	};
 
 	/**
 	 * Merge properties of one or more objects into another.
