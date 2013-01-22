@@ -64,7 +64,7 @@ ve.ui.Context.static = {};
 /**
  * Options for iframe.
  *
- * @see ve#ui#Frame
+ * @see ve.ui.Frame
  *
  * @static
  * @property

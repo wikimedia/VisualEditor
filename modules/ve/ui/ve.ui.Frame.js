@@ -59,7 +59,7 @@ ve.ui.Frame.prototype.$$ = function ( selector ) {
  * @private
  * @param {jQuery} $frame Frame to attach and initialize
  * @param {jQuery} $container Container to append frame to
- * @returns {HTMLDocument} Frame document
+ * @returns {HTMLElement} Frame document
  */
 ve.ui.Frame.prototype.attachFrame = function ( $frame, $container ) {
 	var doc;

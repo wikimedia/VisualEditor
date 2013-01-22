@@ -55,7 +55,7 @@ ve.ce.ListNode.prototype.onUpdate = function () {
  * Handle splice events.
  *
  * This is used to solve a rendering bug in Firefox.
- * @see ve.ce.BranchNode.prototype.onSplice
+ * @see ve.ce.BranchNode#onSplice
  *
  * @method
  */

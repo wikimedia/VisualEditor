@@ -63,7 +63,7 @@ ve.dm.Annotation.static.name = null;
  *
  * Empty array means none, null means any.
  *
- * @see ve#dm#AnnotationFactory
+ * @see ve.dm.AnnotationFactory
  *
  * @static
  * @property {Array} static.matchTagNames
@@ -76,7 +76,7 @@ ve.dm.Annotation.static.matchTagNames = null;
  *
  * Empty array means none, null means any.
  *
- * @see ve#dm#AnnotationFactory
+ * @see ve.dm.AnnotationFactory
  *
  * @static
  * @property {Array} static.matchRdfaType

@@ -8,7 +8,7 @@
 /**
  * DataModel link annotation.
  *
- * Represents <a> tags that don't have a specific type.
+ * Represents `<a>` tags that don't have a specific type.
  *
  * @class
  * @extends ve.dm.Annotation

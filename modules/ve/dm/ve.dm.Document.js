@@ -491,11 +491,11 @@ ve.dm.Document.prototype.getLength = function () {
 /**
  * Splice data into and/or out of the linear model.
  *
- * {@link #metadata} will be updated accordingly.
+ * `this.metadata` will be updated accordingly.
  *
- * Always use this function, never use this.data.splice() directly, otherwise the linear model
- * (this.data) and the meta-linmod (this.metadata) can get out of sync. The semantics of the
- * parameters are identical to those of ve.batchSplice()
+ * Always use this function, never use `this.data.splice()` directly, otherwise the linear model
+ * (`this.data`) and the meta-linmod (`this.metadata`) can get out of sync. The semantics of the
+ * parameters are identical to those of ve#batchSplice
  *
  * @method
  * @see ve#batchSplice
@@ -1094,7 +1094,7 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 	 * This function updates parentNode, parentType, openingStack and closingStack.
 	 *
 	 * @private
-	 * @function
+	 * @method
 	 * @param {Object|Array|string} element Linear model element
 	 * @param {number} index Index in data that the element came from (for error reporting only)
 	 */

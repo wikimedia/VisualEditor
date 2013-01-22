@@ -1,11 +1,11 @@
-/*global mw */
-
 /*!
  * VisualEditor user interface LinkInspector class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
+
+/*global mw */
 
 /**
  * Creates an ve.ui.LinkInspector object.

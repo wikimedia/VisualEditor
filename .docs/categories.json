@@ -72,7 +72,7 @@
 		"groups": [
 			{
 				"name": "General",
-				"classes": ["ve.ui", "ve.ui.Context", "ve.ui.Frame", "ve.ui.InspectorFactory", "ve.ui.Menu", "ve.ui.Toolbar"]
+				"classes": ["ve.ui", "ve.ui.Context", "ve.ui.Frame", "ve.ui.InspectorFactory", "ve.ui.Toolbar", "ve.ui.ToolFactory"]
 			},
 			{
 				"name": "Tools",
@@ -81,6 +81,10 @@
 			{
 				"name": "Inspectors",
 				"classes": ["ve.ui.*Inspector"]
+			},
+			{
+				"name": "Widgets",
+				"classes": ["ve.ui.*Widget"]
 			}
 		]
 	},
@@ -93,11 +97,11 @@
 			},
 			{
 				"name": "Registries",
-				"classes": ["ve.CommandRegistry"]
+				"classes": ["ve.CommandRegistry", "ve.TriggerRegistry"]
 			},
 			{
 				"name": "Factories",
-				"classes": ["ve.ActionFactory", "ve.ToolFactory"]
+				"classes": ["ve.ActionFactory"]
 			},
 			{
 				"name": "Nodes",

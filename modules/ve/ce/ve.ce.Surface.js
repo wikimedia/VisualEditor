@@ -539,7 +539,7 @@ ve.ce.Surface.prototype.onDocumentCompositionEnd = function () {
 /**
  * Handle change events.
  *
- * @see ve.dm.Surface.prototype.change.
+ * @see ve.dm.Surface#change
  *
  * @method
  * @param {ve.dm.Transaction|null} transaction
@@ -554,7 +554,7 @@ ve.ce.Surface.prototype.onChange = function ( transaction, selection ) {
 /**
  * Handle selection change events.
  *
- * @see ve.ce.SurfaceObserver.prototype.poll
+ * @see ve.ce.SurfaceObserver#poll
  *
  * @method
  * @param {ve.Range} oldRange
@@ -569,7 +569,7 @@ ve.ce.Surface.prototype.onSelectionChange = function ( oldRange, newRange ) {
 /**
  * Handle content change events.
  *
- * @see ve.ce.SurfaceObserver.prototype.poll
+ * @see ve.ce.SurfaceObserver#poll
  *
  * @method
  * @param {HTMLElement} node DOM node the change occured in

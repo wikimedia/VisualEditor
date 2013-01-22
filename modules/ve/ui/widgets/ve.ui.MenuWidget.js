@@ -167,10 +167,9 @@ ve.ui.MenuWidget.prototype.getItems = function () {
  * Sets the position of the menu.
  *
  * @method
- * @returns {ve.Position} New menu position
  */
 ve.ui.MenuWidget.prototype.setPosition = function ( position ) {
-	return this.$.css( {
+	this.$.css( {
 		'top': position.top,
 		'left': position.left
 	} );

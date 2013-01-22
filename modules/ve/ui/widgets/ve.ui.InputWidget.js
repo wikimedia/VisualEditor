@@ -1,4 +1,4 @@
-/**
+/*!
  * VisualEditor user interface InputWidget class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
@@ -47,6 +47,12 @@ ve.ui.InputWidget = function VeUiInputWidget( $$, type, name, value ) {
 
 ve.inheritClass( ve.ui.InputWidget, ve.ui.Widget );
 
+/**
+ * @event change
+ * @param value
+ * @param origin
+ */
+
 /* Methods */
 
 /**
@@ -65,7 +71,7 @@ ve.ui.InputWidget.prototype.getValue = function () {
  * @method
  * @param {string} value New value
  * @param {string} [origin] Origin of change
- * @emits change (value, origin)
+ * @emits change
  */
 ve.ui.InputWidget.prototype.setValue = function ( value, origin ) {
 	var domValue = this.$input.val();

@@ -38,7 +38,7 @@ ve.inheritClass( ve.ce.ContentBranchNode, ve.ce.BranchNode );
  * Handle splice events.
  *
  * This is used to automatically render contents.
- * @see ve.ce.BranchNode.prototype.onSplice
+ * @see ve.ce.BranchNode#onSplice
  *
  * @method
  */

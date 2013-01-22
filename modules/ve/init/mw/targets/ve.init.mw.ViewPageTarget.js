@@ -1,11 +1,11 @@
-/*global mw, confirm, alert */
-
 /*!
  * VisualEditor MediaWiki Initialization ViewPageTarget class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
+
+/*global mw, confirm, alert */
 
 /**
  * Initialization MediaWiki view page target.
@@ -920,7 +920,7 @@ ve.init.mw.ViewPageTarget.prototype.detachToolbarButtons = function () {
  * Get a template for the save dialog.
  *
  * The result of this function depends on an API call, so the result it provided asynchronously.
- * The template will be wrapped in a plain <div> jQuery collection.
+ * The template will be wrapped in a plain `<div>` jQuery collection.
  *
  * @method
  * @param {Function} callback
