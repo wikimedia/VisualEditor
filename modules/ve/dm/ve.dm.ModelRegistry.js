@@ -25,6 +25,7 @@ ve.dm.ModelRegistry = function VeDmModelRegistry() {
 	// { nameA: 0, nameB: 1, ... }
 	this.registrationOrder = {};
 	this.nextNumber = 0;
+	this.extSpecificTypes = [];
 };
 
 /* Inheritance */
@@ -82,9 +83,6 @@ ve.dm.ModelRegistry.prototype.register = function ( constructor ) {
 		ve.dm.annotationFactory.register( name, constructor );
 	} else if ( constructor.prototype instanceof ve.dm.Node ) {
 		ve.dm.nodeFactory.register( name, constructor );
-		// TODO handle things properly so we don't need this
-		// HACK don't actually register nodes here, the converter isn't ready for that yet
-		return;
 	} else {
 		throw new Error( 'Models must be subclasses of ve.dm.Annotation or ve.dm.Node' );
 	}
@@ -116,6 +114,38 @@ ve.dm.ModelRegistry.prototype.register = function ( constructor ) {
 };
 
 /**
+ * Register an extension-specific RDFa type or set of types. Unrecognized extension-specific types
+ * skip non-type matches and are alienated.
+ *
+ * If a DOM node has RDFa types that are extension-specific, any matches that do not involve one of
+ * those extension-specific types will be ignored. This means that if 'bar' is an
+ * extension-specific type, and there are no models specifying 'bar' in their .matchRdfaTypes, then
+ * <foo typeof="bar baz"> will not match anything, not even a model with .matchTagNames=['foo']
+ * or one with .matchRdfaTypes=['baz'] .
+ *
+ * @param {string|RegExp} type Type, or regex matching types, to designate as extension-specifics
+ */
+ve.dm.ModelRegistry.prototype.registerExtensionSpecificType = function ( type ) {
+	this.extSpecificTypes.push( type );
+};
+
+/**
+ * Checks whether a given type matches one of the registered extension-specific types.
+ * @param {string} type Type to check
+ * @returns {boolean} Whether type is extension-specific
+ */
+ve.dm.ModelRegistry.prototype.isExtensionSpecificType = function ( type ) {
+	var i, len, t;
+	for ( i = 0, len = this.extSpecificTypes.length; i < len; i++ ) {
+		t = this.extSpecificTypes[i];
+		if ( t === type || ( t instanceof RegExp && type.match( t ) ) ) {
+			return true;
+		}
+	}
+	return false;
+};
+
+/**
  * Determine which model best matches the given element
  *
  * Model matching works as follows:
@@ -137,7 +167,7 @@ ve.dm.ModelRegistry.prototype.register = function ( constructor ) {
  * @returns {string|null} Model type, or null if none found
  */
 ve.dm.ModelRegistry.prototype.matchElement = function ( element ) {
-	var i, name, model, matches, winner, types,
+	var i, name, model, matches, winner, types, elementExtSpecificTypes, matchTypes,
 		tag = element.nodeName.toLowerCase(),
 		typeAttr = element.getAttribute( 'typeof' ) || element.getAttribute( 'rel' ),
 		reg = this;
@@ -180,9 +210,13 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element ) {
 	}
 
 	types = typeAttr ? typeAttr.split( ' ' ) : [];
+	elementExtSpecificTypes = ve.filterArray( types, ve.bind( this.isExtensionSpecificType, this ) );
+	// If the element has extension-specific types, only use those for matching and ignore its
+	// other types. If it has no extension-specific types, use all of its types.
+	matchTypes = elementExtSpecificTypes.length === 0 ? types : elementExtSpecificTypes;
 	if ( types.length ) {
 		// func+tag+type match
-		winner = matchWithFunc( types, tag );
+		winner = matchWithFunc( matchTypes, tag );
 		if ( winner !== null ) {
 			return winner;
 		}
@@ -190,42 +224,45 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element ) {
 		// func+type match
 		// Only look at rules with no tag specified; if a rule does specify a tag, we've
 		// either already processed it above, or the tag doesn't match
-		winner = matchWithFunc( types, '' );
+		winner = matchWithFunc( matchTypes, '' );
 		if ( winner !== null ) {
 			return winner;
 		}
 	}
 
-	// func+tag match
-	matches = ve.getProp( this.modelsByTag, 1, tag ) || [];
-	// No need to sort because individual arrays in modelsByTag are already sorted
-	// correctly
-	for ( i = 0; i < matches.length; i++ ) {
-		name = matches[i];
-		model = this.registry[name];
-		// Only process this one if it doesn't specify types
-		// If it does specify types, then we've either already processed it in the
-		// func+tag+type step above, or its type rule doesn't match
-		if ( model.static.matchRdfaTypes === null && model.static.matchFunction( element ) ) {
-			return matches[i];
+	// Do not check for type-less matches if the element has extension-specific types
+	if ( elementExtSpecificTypes.length === 0 ) {
+		// func+tag match
+		matches = ve.getProp( this.modelsByTag, 1, tag ) || [];
+		// No need to sort because individual arrays in modelsByTag are already sorted
+		// correctly
+		for ( i = 0; i < matches.length; i++ ) {
+			name = matches[i];
+			model = this.registry[name];
+			// Only process this one if it doesn't specify types
+			// If it does specify types, then we've either already processed it in the
+			// func+tag+type step above, or its type rule doesn't match
+			if ( model.static.matchRdfaTypes === null && model.static.matchFunction( element ) ) {
+				return matches[i];
+			}
 		}
-	}
 
-	// func only
-	// We only need to get the [''][''] array because the other arrays were either
-	// already processed during the steps above, or have a type or tag rule that doesn't
-	// match this element.
-	// No need to sort because individual arrays in modelsByTypeAndTag are already sorted
-	// correctly
-	matches = ve.getProp( this.modelsByTypeAndTag, 1, '', '' ) || [];
-	for ( i = 0; i < matches.length; i++ ) {
-		if ( this.registry[matches[i]].static.matchFunction( element ) ) {
-			return matches[i];
+		// func only
+		// We only need to get the [''][''] array because the other arrays were either
+		// already processed during the steps above, or have a type or tag rule that doesn't
+		// match this element.
+		// No need to sort because individual arrays in modelsByTypeAndTag are already sorted
+		// correctly
+		matches = ve.getProp( this.modelsByTypeAndTag, 1, '', '' ) || [];
+		for ( i = 0; i < matches.length; i++ ) {
+			if ( this.registry[matches[i]].static.matchFunction( element ) ) {
+				return matches[i];
+			}
 		}
 	}
 
 	// tag+type
-	winner = matchWithoutFunc( types, tag );
+	winner = matchWithoutFunc( matchTypes, tag );
 	if ( winner !== null ) {
 		return winner;
 	}
@@ -233,14 +270,20 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element ) {
 	// type only
 	// Only look at rules with no tag specified; if a rule does specify a tag, we've
 	// either already processed it above, or the tag doesn't match
-	winner = matchWithoutFunc( types, '' );
+	winner = matchWithoutFunc( matchTypes, '' );
 	if ( winner !== null ) {
 		return winner;
 	}
 
+	if ( elementExtSpecificTypes.length > 0 ) {
+		// There are only type-less matches beyond this point, so if we have any
+		// extension-specific types, we give up now.
+		return null;
+	}
+
 	// tag only
 	matches = ve.getProp( this.modelsByTag, 0, tag ) || [];
-	// No need to track winningName because the individual arrays in nodelsByTag are
+	// No need to track winningName because the individual arrays in modelsByTag are
 	// already sorted correctly
 	for ( i = 0; i < matches.length; i++ ) {
 		name = matches[i];

@@ -72,9 +72,20 @@ ve.dm.StubSingleTagAndTypeAndFuncAnnotation.static.matchTagNames = ['a'];
 ve.dm.StubSingleTagAndTypeAndFuncAnnotation.static.matchRdfaTypes = ['mw:foo'];
 ve.dm.StubSingleTagAndTypeAndFuncAnnotation.static.matchFunction = checkForPickMe;
 
+ve.dm.StubBarNode = function VeDmStubBarNode( children, element ) {
+	ve.dm.BranchNode.call( this, 'stub-bar', children, element );
+};
+ve.inheritClass( ve.dm.StubBarNode, ve.dm.BranchNode );
+ve.dm.StubBarNode.static.name = 'stub-bar';
+ve.dm.StubBarNode.static.matchRdfaTypes = ['bar'];
+// HACK keep ve.dm.Converter happy for now
+// TODO once ve.dm.Converter is rewritten, this can be removed
+ve.dm.StubBarNode.static.toDataElement = function () {};
+ve.dm.StubBarNode.static.toDomElement = function () {};
+
 /* Tests */
 
-QUnit.test( 'matchElement', 9, function ( assert ) {
+QUnit.test( 'matchElement', 16, function ( assert ) {
 	var registry = new ve.dm.ModelRegistry(), element;
 	element = document.createElement( 'a' );
 	assert.deepEqual( registry.matchElement( element ), null, 'matchElement() returns null if registry empty' );
@@ -87,6 +98,7 @@ QUnit.test( 'matchElement', 9, function ( assert ) {
 	registry.register( ve.dm.StubSingleTagAndFuncAnnotation );
 	registry.register( ve.dm.StubSingleTypeAndFuncAnnotation );
 	registry.register( ve.dm.StubSingleTagAndTypeAndFuncAnnotation );
+	registry.register( ve.dm.StubBarNode );
 
 	element = document.createElement( 'b' );
 	assert.deepEqual( registry.matchElement( element ), 'stubnothingset', 'nothingset matches anything' );
@@ -105,4 +117,22 @@ QUnit.test( 'matchElement', 9, function ( assert ) {
 	assert.deepEqual( registry.matchElement( element ), 'stubfunc', 'func-only match' );
 	element.setAttribute( 'rel', 'mw:foo' );
 	assert.deepEqual( registry.matchElement( element ), 'stubsingletypeandfunc', 'type and func match' );
+
+	registry.registerExtensionSpecificType( /^mw:/ );
+	registry.registerExtensionSpecificType( 'foo' );
+	element = document.createElement( 'a' );
+	element.setAttribute( 'rel', 'bar baz' );
+	assert.deepEqual( registry.matchElement( element ), 'stub-bar', 'incomplete non-extension-specific type match' );
+	element.setAttribute( 'pickme', 'true' );
+	assert.deepEqual( registry.matchElement( element ), 'stubsingletagandfunc', 'incomplete non-extension-specific type match is trumped by tag&func match' );
+	element.setAttribute( 'rel', 'mw:bogus' );
+	assert.deepEqual( registry.matchElement( element ), null, 'extension-specific type matching regex prevents tag-only and func-only matches' );
+	element.setAttribute( 'rel', 'foo' );
+	assert.deepEqual( registry.matchElement( element ), null, 'extension-specific type matching string prevents tag-only and func-only matches' );
+	element.setAttribute( 'rel', 'mw:bogus bar' );
+	assert.deepEqual( registry.matchElement( element ), null, 'extension-specific type matching regex prevents type match' );
+	element.setAttribute( 'rel', 'foo bar' );
+	assert.deepEqual( registry.matchElement( element ), null, 'extension-specific type matching string prevents type match' );
+	element.setAttribute( 'rel', 'foo bar mw:bogus' );
+	assert.deepEqual( registry.matchElement( element ), null, 'two extension-specific types prevent non-extension-specific type match' );
 } );
