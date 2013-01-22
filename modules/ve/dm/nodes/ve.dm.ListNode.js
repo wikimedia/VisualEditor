@@ -25,13 +25,13 @@ ve.inheritClass( ve.dm.ListNode, ve.dm.BranchNode );
 
 /* Static Properties */
 
-ve.dm.ListNode.defaultAttributes = {
-	'style': 'bullet'
-};
-
 ve.dm.ListNode.static.name = 'list';
 
 ve.dm.ListNode.static.childNodeTypes = [ 'listItem' ];
+
+ve.dm.ListNode.static.defaultAttributes = {
+	'style': 'bullet'
+};
 
 ve.dm.ListNode.static.matchTagNames = [ 'ul', 'ol' ];
 

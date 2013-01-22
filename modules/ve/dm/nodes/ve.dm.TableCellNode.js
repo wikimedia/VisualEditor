@@ -25,13 +25,13 @@ ve.inheritClass( ve.dm.TableCellNode, ve.dm.BranchNode );
 
 /* Static Properties */
 
-ve.dm.TableCellNode.defaultAttributes = {
-	'style': 'data'
-};
-
 ve.dm.TableCellNode.static.name = 'tableCell';
 
 ve.dm.TableCellNode.static.parentNodeTypes = [ 'tableRow' ];
+
+ve.dm.TableCellNode.static.defaultAttributes = {
+	'style': 'data'
+};
 
 ve.dm.TableCellNode.static.matchTagNames = [ 'td', 'th' ];
 

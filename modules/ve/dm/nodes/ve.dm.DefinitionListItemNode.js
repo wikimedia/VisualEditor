@@ -25,13 +25,13 @@ ve.inheritClass( ve.dm.DefinitionListItemNode, ve.dm.BranchNode );
 
 /* Static Properties */
 
-ve.dm.DefinitionListItemNode.defaultAttributes = {
-	'style': 'term'
-};
-
 ve.dm.DefinitionListItemNode.static.name = 'definitionListItem';
 
 ve.dm.DefinitionListItemNode.static.parentNodeTypes = [ 'definitionList' ];
+
+ve.dm.DefinitionListItemNode.static.defaultAttributes = {
+	'style': 'term'
+};
 
 ve.dm.DefinitionListItemNode.static.matchTagNames = [ 'dt', 'dd' ];
 
