@@ -77,13 +77,11 @@ ve.dm.Converter.getDataContentFromText = function ( text, annotations ) {
  * @throws {Error} Missing conversion data in node implementation
  */
 ve.dm.Converter.prototype.onNodeRegister = function ( dataElementType, constructor ) {
-	if ( !constructor.static.matchTagNames || !constructor.static.toDomElement ||
-		!constructor.static.toDataElement
-	) {
+	if ( !constructor.static.toDomElement || !constructor.static.toDataElement ) {
 		throw new Error( 'Missing static properties in node implementation of ' + dataElementType );
 	} else {
 		var i,
-			domElementTypes = constructor.static.matchTagNames,
+			domElementTypes = constructor.static.matchTagNames || [],
 			toDomElement = constructor.static.toDomElement,
 			toDataElement = constructor.static.toDataElement;
 		// Registration
