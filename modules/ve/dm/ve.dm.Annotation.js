@@ -19,16 +19,17 @@
  * this.data by overriding getAnnotationData(). Subclasses can read from this.data but must not
  * write to it directly.
  *
- * TODO: Make this constructor optionally accept a data object instead of an element.
- *
  * @class
  * @constructor
- * @param {HTMLElement} [element] HTML element the annotation was converted from, if any
+ * @param {HTMLElement|Object} [element] HTML element the annotation was converted from, if any, or
+ * an object to copy into the annotation's data property
  */
 ve.dm.Annotation = function VeDmAnnotation( element ) {
 	this.name = this.constructor.static.name; // Needed for proper hashing
 	this.data = {};
-	if ( element ) {
+	if ( ve.isPlainObject( element ) ) {
+		this.data = ve.copyObject( element );
+	} else if ( element && element.nodeType === Node.ELEMENT_NODE ) {
 		this.htmlTagName = element.nodeName.toLowerCase();
 		this.htmlAttributes = ve.getDomAttributes( element );
 		this.data = this.getAnnotationData( element );

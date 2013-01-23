@@ -13,7 +13,7 @@
  * @class
  * @extends ve.dm.Annotation
  * @constructor
- * @param {HTMLElement} element
+ * @param {HTMLElement|Object} element
  */
 ve.dm.TextStyleAnnotation = function VeDmTextStyleAnnotation( element ) {
 	ve.dm.Annotation.call( this, element );
@@ -63,7 +63,7 @@ ve.dm.modelRegistry.register( ve.dm.TextStyleAnnotation );
  * @class
  * @extends ve.dm.TextStyleAnnotation
  * @constructor
- * @param {HTMLElement} element
+ * @param {HTMLElement|Object} element
  */
 ve.dm.TextStyleBoldAnnotation = function VeDmTextStyleBoldAnnotation( element ) {
 	ve.dm.TextStyleAnnotation.call( this, element );
@@ -79,7 +79,7 @@ ve.dm.modelRegistry.register( ve.dm.TextStyleBoldAnnotation );
  * @class
  * @extends ve.dm.TextStyleAnnotation
  * @constructor
- * @param {HTMLElement} element
+ * @param {HTMLElement|Object} element
  */
 ve.dm.TextStyleItalicAnnotation = function VeDmTextStyleItalicAnnotation( element ) {
 	ve.dm.TextStyleAnnotation.call( this, element );
@@ -95,7 +95,7 @@ ve.dm.modelRegistry.register( ve.dm.TextStyleItalicAnnotation );
  * @class
  * @extends ve.dm.TextStyleAnnotation
  * @constructor
- * @param {HTMLElement} element
+ * @param {HTMLElement|Object} element
  */
 ve.dm.TextStyleUnderlineAnnotation = function VeDmTextStyleUnderlineAnnotation( element ) {
 	ve.dm.TextStyleAnnotation.call( this, element );
@@ -111,7 +111,7 @@ ve.dm.modelRegistry.register( ve.dm.TextStyleUnderlineAnnotation );
  * @class
  * @extends ve.dm.TextStyleAnnotation
  * @constructor
- * @param {HTMLElement} element
+ * @param {HTMLElement|Object} element
  */
 ve.dm.TextStyleStrikeAnnotation = function VeDmTextStyleStrikeAnnotation( element ) {
 	ve.dm.TextStyleAnnotation.call( this, element );
@@ -127,7 +127,7 @@ ve.dm.modelRegistry.register( ve.dm.TextStyleStrikeAnnotation );
  * @class
  * @extends ve.dm.TextStyleAnnotation
  * @constructor
- * @param {HTMLElement} element
+ * @param {HTMLElement|Object} element
  */
 ve.dm.TextStyleSmallAnnotation = function VeDmTextStyleSmallAnnotation( element ) {
 	ve.dm.TextStyleAnnotation.call( this, element );
@@ -143,7 +143,7 @@ ve.dm.modelRegistry.register( ve.dm.TextStyleSmallAnnotation );
  * @class
  * @extends ve.dm.TextStyleAnnotation
  * @constructor
- * @param {HTMLElement} element
+ * @param {HTMLElement|Object} element
  */
 ve.dm.TextStyleBigAnnotation = function VeDmTextStyleBigAnnotation( element ) {
 	ve.dm.TextStyleAnnotation.call( this, element );
@@ -159,7 +159,7 @@ ve.dm.modelRegistry.register( ve.dm.TextStyleBigAnnotation );
  * @class
  * @extends ve.dm.TextStyleAnnotation
  * @constructor
- * @param {HTMLElement} element
+ * @param {HTMLElement|Object} element
  */
 ve.dm.TextStyleSpanAnnotation = function VeDmTextStyleSpanAnnotation( element ) {
 	ve.dm.TextStyleAnnotation.call( this, element );
@@ -175,7 +175,7 @@ ve.dm.modelRegistry.register( ve.dm.TextStyleSpanAnnotation );
  * @class
  * @extends ve.dm.TextStyleAnnotation
  * @constructor
- * @param {HTMLElement} element
+ * @param {HTMLElement|Object} element
  */
 ve.dm.TextStyleStrongAnnotation = function VeDmTextStyleStrongAnnotation( element ) {
 	ve.dm.TextStyleAnnotation.call( this, element );
@@ -191,7 +191,7 @@ ve.dm.modelRegistry.register( ve.dm.TextStyleStrongAnnotation );
  * @class
  * @extends ve.dm.TextStyleAnnotation
  * @constructor
- * @param {HTMLElement} element
+ * @param {HTMLElement|Object} element
  */
 ve.dm.TextStyleEmphasizeAnnotation = function VeDmTextStyleEmphasizeAnnotation( element ) {
 	ve.dm.TextStyleAnnotation.call( this, element );
@@ -207,7 +207,7 @@ ve.dm.modelRegistry.register( ve.dm.TextStyleEmphasizeAnnotation );
  * @class
  * @extends ve.dm.TextStyleAnnotation
  * @constructor
- * @param {HTMLElement} element
+ * @param {HTMLElement|Object} element
  */
 ve.dm.TextStyleSuperScriptAnnotation = function VeDmTextStyleSuperScriptAnnotation( element ) {
 	ve.dm.TextStyleAnnotation.call( this, element );
@@ -223,7 +223,7 @@ ve.dm.modelRegistry.register( ve.dm.TextStyleSuperScriptAnnotation );
  * @class
  * @extends ve.dm.TextStyleAnnotation
  * @constructor
- * @param {HTMLElement} element
+ * @param {HTMLElement|Object} element
  */
 ve.dm.TextStyleSubScriptAnnotation = function VeDmTextStyleSubScriptAnnotation( element ) {
 	ve.dm.TextStyleAnnotation.call( this, element );

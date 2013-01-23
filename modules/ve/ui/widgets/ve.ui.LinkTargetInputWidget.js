@@ -46,9 +46,7 @@ ve.ui.LinkTargetInputWidget.prototype.onChange = function ( value ) {
 	if ( value === '' ) {
 		this.annotation = null;
 	} else {
-		var annotation = new ve.dm.LinkAnnotation();
-		annotation.data.href = value;
-		this.setAnnotation( annotation );
+		this.setAnnotation( new ve.dm.LinkAnnotation( { 'href': value } ) );
 	}
 };
 

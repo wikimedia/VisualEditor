@@ -445,11 +445,7 @@ ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, name, data 
 		name = name.name;
 	}
 	var tx,
-		annotation = ve.dm.annotationFactory.create( name );
-	// HACK: This seems wrong, the way we create annotations should be refactored
-	if ( data ) {
-		annotation.data = data;
-	}
+		annotation = ve.dm.annotationFactory.create( name, data );
 	if ( this.range.getLength() ) {
 		// Apply to selection
 		tx = ve.dm.Transaction.newFromAnnotation( this.document, this.range, method, annotation );

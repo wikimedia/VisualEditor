@@ -169,10 +169,7 @@ ve.ui.LinkInspector.prototype.onClose = function ( remove ) {
  * @returns {ve.dm.LinkAnnotation}
  */
 ve.ui.LinkInspector.prototype.getAnnotationFromTarget = function ( target ) {
-	var annotation;
-	annotation = new ve.dm.LinkAnnotation();
-	annotation.data.href = target;
-	return annotation;
+	return new ve.dm.LinkAnnotation( { 'href': target } );
 };
 
 /* Registration */

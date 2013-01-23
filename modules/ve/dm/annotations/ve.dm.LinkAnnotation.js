@@ -13,7 +13,7 @@
  * @class
  * @extends ve.dm.Annotation
  * @constructor
- * @param {HTMLElement} element
+ * @param {HTMLElement|Object} element
  */
 ve.dm.LinkAnnotation = function VeDmLinkAnnotation( element ) {
 	// Parent constructor

@@ -18,7 +18,7 @@
  * @class
  * @extends ve.dm.LinkAnnotation
  * @constructor
- * @param {HTMLElement} element
+ * @param {HTMLElement|Object} element
  */
 ve.dm.MWExternalLinkAnnotation = function VeDmMWExternalLinkAnnotation( element ) {
 	// Parent constructor

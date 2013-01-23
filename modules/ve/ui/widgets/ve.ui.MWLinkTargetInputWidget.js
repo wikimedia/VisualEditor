@@ -180,8 +180,7 @@ ve.ui.MWLinkTargetInputWidget.prototype.populateMenu = function () {
 	}
 	if ( matchingPages ) {
 		for ( i = 0, len = matchingPages.length; i < len; i++ ) {
-			internalLink = new ve.dm.MWInternalLinkAnnotation();
-			internalLink.data.title = matchingPages[i];
+			internalLink = new ve.dm.MWInternalLinkAnnotation( { 'title': matchingPages[i] } );
 			this.menu.addItem(
 				this.value === matchingPages[i] ? 'existingPage' : 'matchingPage',
 				matchingPages[i],
@@ -229,16 +228,14 @@ ve.ui.MWLinkTargetInputWidget.prototype.popPending = function () {
  * @returns {ve.dm.MWInternalLinkAnnotation}
  */
 ve.ui.MWLinkTargetInputWidget.prototype.getInternalLinkAnnotationFromTitle = function ( target ) {
-	var title, annotation;
+	var title;
 	try {
 		title = new mw.Title( target );
 		if ( title.getNamespaceId() === 6 || title.getNamespaceId() === 14 ) {
 			target = ':' + target;
 		}
 	} catch ( e ) { }
-	annotation = new ve.dm.MWInternalLinkAnnotation();
-	annotation.data.title = target;
-	return annotation;
+	return new ve.dm.MWInternalLinkAnnotation( { 'title': target } );
 };
 
 /**
@@ -249,9 +246,7 @@ ve.ui.MWLinkTargetInputWidget.prototype.getInternalLinkAnnotationFromTitle = fun
  * @returns {ve.dm.MWExternalLinkAnnotation}
  */
 ve.ui.MWLinkTargetInputWidget.prototype.getExternalLinkAnnotationFromUrl = function ( target ) {
-	var annotation = new ve.dm.MWExternalLinkAnnotation();
-	annotation.data.href = target;
-	return annotation;
+	return new ve.dm.MWExternalLinkAnnotation( { 'href': target } );
 };
 
 /**
