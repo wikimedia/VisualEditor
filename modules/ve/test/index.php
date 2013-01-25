@@ -78,8 +78,7 @@
 		<script src="../../ve/dm/nodes/ve.dm.ImageNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.ListItemNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.ListNode.js"></script>
-		<script src="../../ve/dm/nodes/ve.dm.MetaBlockNode.js"></script>
-		<script src="../../ve/dm/nodes/ve.dm.MetaInlineNode.js"></script>
+		<script src="../../ve/dm/nodes/ve.dm.MetaNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.MWEntityNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.ParagraphNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.PreformattedNode.js"></script>
