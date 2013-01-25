@@ -229,8 +229,7 @@ $wgResourceModules += array(
 			've/dm/ve.dm.DocumentSynchronizer.js',
 			've/dm/ve.dm.Converter.js',
 
-			've/dm/nodes/ve.dm.AlienInlineNode.js',
-			've/dm/nodes/ve.dm.AlienBlockNode.js',
+			've/dm/nodes/ve.dm.AlienNode.js',
 			've/dm/nodes/ve.dm.BreakNode.js',
 			've/dm/nodes/ve.dm.CenterNode.js',
 			've/dm/nodes/ve.dm.DefinitionListItemNode.js',

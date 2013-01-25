@@ -68,8 +68,7 @@
 		<script src="../../ve/dm/ve.dm.DocumentSlice.js"></script>
 		<script src="../../ve/dm/ve.dm.DocumentSynchronizer.js"></script>
 		<script src="../../ve/dm/ve.dm.Converter.js"></script>
-		<script src="../../ve/dm/nodes/ve.dm.AlienInlineNode.js"></script>
-		<script src="../../ve/dm/nodes/ve.dm.AlienBlockNode.js"></script>
+		<script src="../../ve/dm/nodes/ve.dm.AlienNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.BreakNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.CenterNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.DefinitionListItemNode.js"></script>
