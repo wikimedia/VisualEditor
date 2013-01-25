@@ -36,19 +36,14 @@ ve.dm.Converter = function VeDmConverter( nodeFactory, annotationFactory ) {
  *
  * @static
  * @param {string} text Plain text to convert
- * @param {Array} [annotations] Array of annotation objects to apply
+ * @param {ve.AnnotationSet} [annotations] Annotations to apply
  * @returns {Array} Linear model data, one element per character
  */
 ve.dm.Converter.getDataContentFromText = function ( text, annotations ) {
 	var characters = text.split( '' ),
-		annotationSet = new ve.AnnotationSet(),
 		i;
-	if ( !annotations || annotations.length === 0 ) {
+	if ( !annotations || annotations.isEmpty() ) {
 		return characters;
-	}
-	// Build annotation set
-	for ( i = 0; i < annotations.length; i++ ) {
-		annotationSet.push( annotations[i] );
 	}
 	// Apply annotations to characters
 	for ( i = 0; i < characters.length; i++ ) {
@@ -56,7 +51,7 @@ ve.dm.Converter.getDataContentFromText = function ( text, annotations ) {
 		// character automatically adds it to all of others as well, annotations should be treated
 		// as immutable, so it's OK to share references, but annotation sets are not immutable, so
 		// it's not safe to share references - each annotated character needs its own set
-		characters[i] = [characters[i], annotationSet.clone()];
+		characters[i] = [characters[i], annotations.clone()];
 	}
 	return characters;
 };
@@ -159,13 +154,13 @@ ve.dm.Converter.prototype.getDomElementFromDataElement = function ( dataElement 
  *
  * @method
  * @param {HTMLElement} domElement DOM element
- * @param {Array} annotations Annotations to apply if the node is a content node
+ * @param {ve.AnnotationSet} annotations Annotations to apply if the node is a content node
  * @returns {Object|boolean} Linear model element, or false if the node cannot be converted
  */
 ve.dm.Converter.prototype.getDataElementFromDomElement = function ( domElement, annotations ) {
 	var dataElement, domElementAttributes, dataElementAttributes, domElementAttribute, i,
-		annotationSet, domElementType = domElement.nodeName.toLowerCase();
-	annotations = annotations || [];
+		domElementType = domElement.nodeName.toLowerCase();
+	annotations = annotations || new ve.AnnotationSet();
 	if (
 		// Unsupported elements
 		!( domElementType in this.elements.toDataElement )
@@ -183,13 +178,8 @@ ve.dm.Converter.prototype.getDataElementFromDomElement = function ( domElement, 
 			dataElementAttributes['html/' + domElementAttribute.name] = domElementAttribute.value;
 		}
 	}
-	if ( this.nodeFactory.isNodeContent( dataElement.type ) && annotations.length > 0 ) {
-		// Build annotation set
-		annotationSet = new ve.AnnotationSet();
-		for ( i = 0; i < annotations.length; i++ ) {
-			annotationSet.push( annotations[i] );
-		}
-		dataElement.annotations = annotationSet;
+	if ( this.nodeFactory.isNodeContent( dataElement.type ) && !annotations.isEmpty() ) {
+		dataElement.annotations = annotations.clone();
 	}
 	return dataElement;
 };
@@ -229,7 +219,7 @@ ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function ( dataAnnot
  *
  * @method
  * @param {HTMLElement} domElement Wrapper div containing the HTML to convert
- * @param {Array} [annotations] Array of annotations (objects) to apply to the generated data
+ * @param {ve.AnnotationSet} [annotations] Annotations to apply to the generated data
  * @param {Object} [dataElement] Data element to wrap the returned data in
  * @param {Array} [path] Array of linear model element types
  * @param {boolean} [alreadyWrapped] Whether the caller has already started wrapping bare content in a paragraph
@@ -242,13 +232,13 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 		// but to generate an alienInline element.
 		var isInline =
 				// Force inline in content locations (but not wrappers)
-				( !wrapping && ( branchHasContent || annotations.length > 0 ) ) ||
+				( !wrapping && ( branchHasContent || !annotations.isEmpty() ) ) ||
 				// Also force inline in wrappers that aren't ours
 				( wrapping && !wrappingIsOurs ) ||
 				// Look at the tag name otherwise
 				!ve.isBlockElement( domElement ),
 			type = isInline ? 'alienInline' : 'alienBlock',
-			html, alien, annotationSet, i;
+			html, alien;
 		if ( isWrapper ) {
 			html =  $( domElement ).html();
 		} else {
@@ -263,12 +253,8 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 			},
 			{ 'type': '/' + type }
 		];
-		if ( annotations.length > 0 ) {
-			annotationSet = new ve.AnnotationSet();
-			for ( i = 0; i < annotations.length; i++ ) {
-				annotationSet.push( annotations[i] );
-			}
-			alien[0].annotations = annotationSet;
+		if ( !annotations.isEmpty() ) {
+			alien[0].annotations = annotations.clone();
 		}
 		return alien;
 	}
@@ -381,10 +367,10 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 	}
 
 	// Fallback to defaults
-	annotations = annotations || [];
+	annotations = annotations || new ve.AnnotationSet();
 	path = path || ['document'];
 	var i, j, childDomElement, annotation, childDataElement, text, childTypes, matches,
-		wrappingParagraph, prevElement, alien, rdfaType, isLink,
+		wrappingParagraph, prevElement, alien, rdfaType, isLink, childAnnotations,
 		data = [],
 		branchType = path[path.length - 1],
 		branchHasContent = this.nodeFactory.canNodeContainContent( branchType ),
@@ -498,9 +484,12 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 						prevElement = wrappingParagraph;
 					}
 					// Append child element data
+					childAnnotations = annotations.clone();
+					childAnnotations.push( annotation );
 					data = data.concat(
 						this.getDataFromDom(
-							childDomElement, annotations.concat( [ annotation ] ), undefined, path, wrapping
+							childDomElement, childAnnotations,
+							undefined, path, wrapping
 						)
 					);
 					break;
@@ -528,7 +517,7 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 							data = data.concat(
 								this.getDataFromDom(
 									childDomElement,
-									[],
+									new ve.AnnotationSet(),
 									childDataElement,
 									path.concat( childDataElement.type ),
 									wrapping
@@ -658,7 +647,7 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 				// (but only in non-annotation nodes)
 				// and store it so it can be restored later.
 				if (
-					annotations.length === 0 && i === 0 && dataElement &&
+					annotations.isEmpty() && i === 0 && dataElement &&
 					!this.nodeFactory.doesNodeHaveSignificantWhitespace( dataElement.type )
 				) {
 					// Strip leading whitespace from the first child
@@ -669,7 +658,7 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 					}
 				}
 				if (
-					annotations.length === 0 &&
+					annotations.isEmpty() &&
 					i === domElement.childNodes.length - 1 &&
 					dataElement &&
 					!this.nodeFactory.doesNodeHaveSignificantWhitespace( dataElement.type )
