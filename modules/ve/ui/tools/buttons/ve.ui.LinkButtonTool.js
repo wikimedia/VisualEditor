@@ -36,14 +36,6 @@ ve.ui.toolFactory.register( 'link', ve.ui.LinkButtonTool );
 
 ve.commandRegistry.register( 'link', 'inspector', 'open', 'link' );
 
-ve.triggerRegistry.register( {
-	'name': ve.init.platform.getUserLanguage() + '.link',
-	'trigger': {
-		'mac': 'cmd+k',
-		'pc': 'ctrl+k'
-	},
-	'labelMessage': {
-		'mac': 'visualeditor-annotationbutton-link-tooltip-trigger-mac',
-		'pc': 'visualeditor-annotationbutton-link-tooltip-trigger-pc'
-	}
-} );
+ve.triggerRegistry.register(
+	'link', { 'mac': new ve.Trigger( 'cmd+k' ), 'pc': new ve.Trigger( 'ctrl+k' ) }
+);

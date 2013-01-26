@@ -32,7 +32,7 @@
 		<!-- ext.visualEditor.core -->
 		<script src="../../ve/ve.Registry.js"></script>
 		<script src="../../ve/ve.Factory.js"></script>
-		<script src="../../ve/ve.Command.js"></script>
+		<script src="../../ve/ve.Trigger.js"></script>
 		<script src="../../ve/ve.CommandRegistry.js"></script>
 		<script src="../../ve/ve.TriggerRegistry.js"></script>
 		<script src="../../ve/ve.Range.js"></script>
@@ -165,7 +165,7 @@
 		<script src="ve.test.js"></script>
 		<script src="ve.example.js"></script>
 		<script src="ve.Range.test.js"></script>
-		<script src="ve.Command.test.js"></script>
+		<script src="ve.Trigger.test.js"></script>
 		<script src="ve.Document.test.js"></script>
 		<script src="ve.Node.test.js"></script>
 		<script src="ve.BranchNode.test.js"></script>

@@ -170,7 +170,7 @@ ve.Surface.prototype.resetSelection = function () {
  * Execute an action or command.
  *
  * @method
- * @param {string|ve.Command} action Name of action or command object
+ * @param {string|ve.Trigger} action Name of action or command object
  * @param {string} [method] Name of method
  * @param {Mixed...} [args] Additional arguments for action
  * @returns {boolean} Action or command was executed
@@ -180,7 +180,7 @@ ve.Surface.prototype.execute = function ( action, method ) {
 		return;
 	}
 	var trigger, obj, ret;
-	if ( action instanceof ve.Command ) {
+	if ( action instanceof ve.Trigger ) {
 		trigger = action.toString();
 		if ( trigger in this.commands ) {
 			return this.execute.apply( this, this.commands[trigger] );
@@ -219,10 +219,10 @@ ve.Surface.prototype.setupCommands = function () {
 		}
 		for ( i = 0, len = triggers.length; i < len; i++ ) {
 			// Normalize
-			trigger = ( new ve.Command( triggers[i] ) ).toString();
+			trigger = triggers[i].toString();
 			// Validate
 			if ( trigger.length === 0 ) {
-				throw new Error( 'Incomplete command: ' + triggers[i] );
+				throw new Error( 'Incomplete trigger: ' + triggers[i] );
 			}
 			surface.commands[trigger] = command.action;
 		}
@@ -233,15 +233,12 @@ ve.Surface.prototype.setupCommands = function () {
 		if ( !command ) {
 			throw new Error( 'No command registered by that name: ' + commands[i] );
 		}
-		loadTriggers( ve.triggerRegistry.lookup(
-			ve.init.platform.getUserLanguage() + '.' +
-			commands[i] ).trigger, command
-		);
+		loadTriggers( ve.triggerRegistry.lookup( commands[i] ), command );
 	}
 
 	// Bind register event to lazy load triggers
-	ve.triggerRegistry.on( 'register', function ( name, data ) {
-		loadTriggers( data.trigger, ve.commandRegistry.lookup( name.split('.')[1] ) );
+	ve.triggerRegistry.on( 'register', function ( name, trigger ) {
+		loadTriggers( trigger, ve.commandRegistry.lookup( name ) );
 	} );
 
 };

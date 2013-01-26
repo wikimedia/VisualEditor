@@ -85,7 +85,7 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 		<!-- ext.visualEditor.core -->
 		<script src="../../modules/ve/ve.Registry.js"></script>
 		<script src="../../modules/ve/ve.Factory.js"></script>
-		<script src="../../modules/ve/ve.Command.js"></script>
+		<script src="../../modules/ve/ve.Trigger.js"></script>
 		<script src="../../modules/ve/ve.CommandRegistry.js"></script>
 		<script src="../../modules/ve/ve.TriggerRegistry.js"></script>
 		<script src="../../modules/ve/ve.Range.js"></script>

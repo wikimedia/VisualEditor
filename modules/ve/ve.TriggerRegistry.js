@@ -26,31 +26,38 @@ ve.inheritClass( ve.TriggerRegistry, ve.Registry );
 /**
  * Register a constructor with the factory.
  *
+ * The only supported platforms are 'mac' and 'pc'. All platforms not identified as 'mac' will be
+ * considered to be 'pc', including 'win', 'linux', 'solaris', etc.
+ *
  * @method
- * @param {string|string[]} config.name Symbolic name or list of symbolic names
- * @param {object} config.trigger Command string of keys that should trigger the command
- * @param {string|string[]} config.trigger Command string of keys that should trigger the command
+ * @param {string|string[]} name Symbolic name or list of symbolic names
+ * @param {ve.Trigger|Object} trigger Trigger object, or map of trigger objects keyed by
+ * platform name e.g. 'mac' or 'pc'
  */
-ve.TriggerRegistry.prototype.register = function ( config ) {
+ve.TriggerRegistry.prototype.register = function ( name, trigger ) {
 	var platform = ve.init.platform.getSystemPlatform(),
-		key = platform === 'mac' ? 'mac' : 'pc';
+		platformKey = platform === 'mac' ? 'mac' : 'pc';
 
-	if ( typeof config.name !== 'string' && !ve.isArray( config.name ) ) {
-		throw new Error( 'name must be a string or array, cannot be a ' + typeof config.name );
+	// Validate arguments
+	if ( typeof name !== 'string' && !ve.isArray( name ) ) {
+		throw new Error( 'name must be a string or array, cannot be a ' + typeof name );
 	}
-	if ( typeof config.trigger !== 'string' && !ve.isPlainObject( config.trigger ) ) {
-		throw new Error( 'trigger must be a string or an object, cannot be a ' + typeof config.trigger );
+	if  ( !( trigger instanceof ve.Trigger ) && !ve.isPlainObject( trigger ) ) {
+		throw new Error(
+			'trigger must be an instance of ve.Trigger or an object containing instances of ' +
+				've.Trigger, cannot be a ' + typeof trigger
+		);
 	}
-	if ( typeof config.labelMessage !== 'string' && !ve.isPlainObject( config.labelMessage ) ) {
-		throw new Error( 'label must be a string or an object, cannot be a ' + typeof config.labelMessage );
-	}
-	ve.Registry.prototype.register.call(
-		this, config.name,
-		{
-			'trigger': ve.isPlainObject( config.trigger ) ? config.trigger[key] : config.trigger,
-			'labelMessage': ve.isPlainObject( config.labelMessage ) ? config.labelMessage[key] : config.labelMessage
+
+	// Check for platform-specific trigger
+	if ( ve.isPlainObject( trigger ) ) {
+		// Only register if the current platform is supported
+		if ( platformKey in trigger ) {
+			ve.Registry.prototype.register.call( this, name, trigger[platformKey] );
 		}
-	);
+	} else {
+		ve.Registry.prototype.register.call( this, name, trigger );
+	}
 };
 
 /* Initialization */
