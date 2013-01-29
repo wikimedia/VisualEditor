@@ -92,10 +92,18 @@ ve.dm.DocumentSynchronizer.synchronizers.attributeChange = function ( action ) {
  * @param {Object} action
  */
 ve.dm.DocumentSynchronizer.synchronizers.resize = function ( action ) {
-	// Apply length change to tree
-	action.node.adjustLength( action.adjustment );
-	// no update event needed, adjustLength causes an update event on its own
-	// FIXME however, any queued update event will still be emitted, resulting in a duplicate
+	var node = action.node,
+		parent = node.getParent();
+
+	if ( parent && node.getType() === 'text' && node.getLength() + action.adjustment === 0 ) {
+		// Auto-prune empty text nodes
+		parent.splice( parent.indexOf( node ), 1 );
+	} else {
+		// Apply length change to tree
+		// No update event needed, adjustLength causes an update event on its own
+		// FIXME however, any queued update event will still be emitted, resulting in a duplicate
+		node.adjustLength( action.adjustment );
+	}
 	// Update adjustment
 	this.adjustment += action.adjustment;
 };
