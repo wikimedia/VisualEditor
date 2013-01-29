@@ -42,12 +42,11 @@ ve.ui.MWLinkInspector.static.inputWidget = ve.ui.MWLinkTargetInputWidget;
  * @returns {ve.dm.MWInternalLinkAnnotation|ve.dm.MWExternalLinkAnnotation}
  */
 ve.ui.MWLinkInspector.prototype.getAnnotationFromTarget = function ( target ) {
-	var title, annotation;
+	var title;
 	// Figure out if this is an internal or external link
 	if ( ve.init.platform.getExternalLinkUrlProtocolsRegExp().test( target ) ) {
 		// External link
-		annotation = new ve.dm.MWExternalLinkAnnotation();
-		annotation.data.href = target;
+		return new ve.dm.MWExternalLinkAnnotation( { 'href': target } );
 	} else {
 		// Internal link
 		// TODO: In the longer term we'll want to have autocompletion and existence and validity
@@ -61,10 +60,8 @@ ve.ui.MWLinkInspector.prototype.getAnnotationFromTarget = function ( target ) {
 				target = ':' + target;
 			}
 		} catch ( e ) { }
-		annotation = new ve.dm.MWInternalLinkAnnotation();
-		annotation.data.title = target;
+		return new ve.dm.MWInternalLinkAnnotation( { 'title': target } );
 	}
-	return annotation;
 };
 
 /* Registration */
