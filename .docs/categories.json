@@ -110,7 +110,7 @@
 			},
 			{
 				"name": "Misc",
-				"classes": ["ve.Command", "ve.AnnotationSet", "ve.OrderedHashSet", "ve.Surface"]
+				"classes": ["ve.Trigger", "ve.AnnotationSet", "ve.OrderedHashSet", "ve.Surface"]
 			},
 			{
 				"name": "Native",

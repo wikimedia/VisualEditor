@@ -36,8 +36,4 @@ ve.ui.toolFactory.register( 'indent', ve.ui.IndentButtonTool );
 
 ve.commandRegistry.register( 'indent', 'indentation', 'increase' );
 
-ve.triggerRegistry.register( {
-	'name': ve.init.platform.getUserLanguage() + '.indent',
-	'trigger': 'tab',
-	'labelMessage': 'visualeditor-indentationbutton-indent-tooltip-trigger'
-} );
+ve.triggerRegistry.register( 'indent', new ve.Trigger( 'tab' ) );

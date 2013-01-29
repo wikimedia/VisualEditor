@@ -22,9 +22,8 @@ ve.ui.Tool = function VeUiTool( toolbar ) {
 	this.toolbar.addListenerMethods(
 		this, { 'updateState': 'onUpdateState', 'clearState': 'onClearState' }
 	);
-
 	ve.triggerRegistry.on( 'register', function ( name ) {
-		if ( name === ve.init.platform.getUserLanguage() + '.' + tool.constructor.static.name ) {
+		if ( name === tool.constructor.static.name ) {
 			tool.setTitle();
 		}
 	} );
@@ -74,13 +73,10 @@ ve.ui.Tool.static.titleMessage = '';
  * @method
  */
 ve.ui.Tool.prototype.setTitle = function () {
-	var trigger = ve.triggerRegistry.lookup(
-			ve.init.platform.getUserLanguage() + '.' +
-			this.constructor.static.name
-		),
+	var trigger = ve.triggerRegistry.lookup( this.constructor.static.name ),
 		labelMessage = ve.msg( this.constructor.static.titleMessage );
 	if ( trigger ) {
-		labelMessage = labelMessage.replace( '$1', ve.msg( trigger.labelMessage ) );
+		labelMessage += ' [' + trigger.getMessage() + ']';
 	}
 	this.$.attr( 'title', labelMessage );
 };

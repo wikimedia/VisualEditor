@@ -38,14 +38,6 @@ ve.commandRegistry.register(
 	'italic', 'annotation', 'toggle', 'textStyle/italic'
 );
 
-ve.triggerRegistry.register( {
-	'name': ve.init.platform.getUserLanguage() + '.italic',
-	'trigger': {
-		'mac': 'cmd+i',
-		'pc': 'ctrl+i'
-	},
-	'labelMessage': {
-		'mac': 'visualeditor-annotationbutton-italic-tooltip-trigger-mac',
-		'pc': 'visualeditor-annotationbutton-italic-tooltip-trigger-pc'
-	}
-} );
+ve.triggerRegistry.register(
+	'italic', { 'mac': new ve.Trigger( 'cmd+i' ), 'pc': new ve.Trigger( 'ctrl+i' ) }
+);

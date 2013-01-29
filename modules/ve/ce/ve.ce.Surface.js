@@ -327,7 +327,7 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 		default:
 			// Execute key command if available
 			this.surfaceObserver.stop( true );
-			if ( this.surface.execute( new ve.Command( e ) ) ) {
+			if ( this.surface.execute( new ve.Trigger( e ) ) ) {
 				e.preventDefault();
 			}
 			this.surfaceObserver.start();

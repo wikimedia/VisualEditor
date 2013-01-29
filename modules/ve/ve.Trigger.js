@@ -1,18 +1,18 @@
 /*!
- * VisualEditor user interface Command class.
+ * VisualEditor user interface Trigger class.
  *
  * @copyright 2011-2012 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Key command.
+ * Key trigger.
  *
  * @class
  * @constructor
- * @param {jQuery.Event|string} [e] Event or string to create command from
+ * @param {jQuery.Event|string} [e] Event or string to create trigger from
  */
-ve.Command = function ( e ) {
+ve.Trigger = function ( e ) {
 	// Properties
 	this.modifiers = {
 		'meta': false,
@@ -24,9 +24,9 @@ ve.Command = function ( e ) {
 
 	// Initialiation
 	var i, len, key, parts,
-		keyAliases = ve.Command.static.keyAliases,
-		primaryKeys = ve.Command.static.primaryKeys,
-		primaryKeyMap = ve.Command.static.primaryKeyMap;
+		keyAliases = ve.Trigger.static.keyAliases,
+		primaryKeys = ve.Trigger.static.primaryKeys,
+		primaryKeyMap = ve.Trigger.static.primaryKeyMap;
 	if ( e instanceof jQuery.Event ) {
 		this.modifiers.meta = e.metaKey || false;
 		this.modifiers.ctrl = e.ctrlKey || false;
@@ -42,7 +42,7 @@ ve.Command = function ( e ) {
 			if ( key in keyAliases ) {
 				key = keyAliases[key];
 			}
-			// Apply key to command
+			// Apply key to trigger
 			if ( key in this.modifiers ) {
 				// Modifier key
 				this.modifiers[key] = true;
@@ -61,17 +61,17 @@ ve.Command = function ( e ) {
  * @property
  * @inheritable
  */
-ve.Command.static = {};
+ve.Trigger.static = {};
 
 /**
  * Symbolic modifier key names.
  *
- * The order of this array affects the canonical order of a command string.
+ * The order of this array affects the canonical order of a trigger string.
  *
  * @static
  * @property
  */
-ve.Command.static.modifierKeys = ['meta', 'ctrl', 'alt', 'shift'];
+ve.Trigger.static.modifierKeys = ['meta', 'ctrl', 'alt', 'shift'];
 
 /**
  * Symbolic primary key names.
@@ -79,7 +79,7 @@ ve.Command.static.modifierKeys = ['meta', 'ctrl', 'alt', 'shift'];
  * @static
  * @property
  */
-ve.Command.static.primaryKeys = [
+ve.Trigger.static.primaryKeys = [
 	// Special keys
 	'backspace', 'tab', 'enter', 'escape', 'page-up', 'page-down', 'end', 'home', 'left', 'up',
 	'right', 'down', 'delete',
@@ -97,12 +97,38 @@ ve.Command.static.primaryKeys = [
 ];
 
 /**
+ * Filter to use when rendering string for a specific platform.
+ *
+ * @static
+ * @property
+ */
+ve.Trigger.static.platformFilters = {
+	'mac': ( function () {
+		var names = {
+			'meta': '⌘',
+			'shift': '⇧',
+			'backspace': '⌫',
+			'ctrl': '^',
+			'alt': '⎇',
+			'escape': '⎋'
+		};
+		return function ( keys ) {
+			var i, len;
+			for ( i = 0, len = keys.length; i < len; i++ ) {
+				keys[i] = names[keys[i]] || keys[i];
+			}
+			return keys.join( '' ).toUpperCase();
+		};
+	} )()
+};
+
+/**
  * Aliases for modifier or primary key names.
  *
  * @static
  * @property
  */
-ve.Command.static.keyAliases = {
+ve.Trigger.static.keyAliases = {
 	// Platform differences
 	'command': 'meta', 'apple': 'meta', 'windows': 'meta', 'option': 'alt', 'return': 'enter',
 	// Shorthand
@@ -119,7 +145,7 @@ ve.Command.static.keyAliases = {
  * @static
  * @property
  */
-ve.Command.static.primaryKeyMap = {
+ve.Trigger.static.primaryKeyMap = {
 	// Special keys
 	8: 'backspace', 9: 'tab', 13: 'enter', 27: 'escape', 33: 'page-up', 34: 'page-down', 35: 'end',
 	36: 'home', 37: 'left', 38: 'up', 39: 'right', 40: 'down', 46: 'delete',
@@ -146,33 +172,33 @@ ve.Command.static.primaryKeyMap = {
 /* Methods */
 
 /**
- * Checks if command is complete.
+ * Checks if trigger is complete.
  *
- * For a command to be complete, there must be a valid primary key.
+ * For a trigger to be complete, there must be a valid primary key.
  *
  * @method
- * @returns {boolean} Command is complete
+ * @returns {boolean} Trigger is complete
  */
-ve.Command.prototype.isComplete = function () {
-	return this.primary in ve.Command.static.primaryKeyMap;
+ve.Trigger.prototype.isComplete = function () {
+	return this.primary in ve.Trigger.static.primaryKeyMap;
 };
 
 /**
- * Gets a command string.
+ * Gets a trigger string.
  *
- * Command strings are canonical representations of commands made up of the symbolic names of all
+ * Trigger strings are canonical representations of triggers made up of the symbolic names of all
  * active modifier keys and the primary key joined together with a '+' sign.
  *
- * To normalize a command string simply create a new command from a string and then run this method.
+ * To normalize a trigger string simply create a new trigger from a string and then run this method.
  *
- * An incomplete command will return an empty string.
+ * An incomplete trigger will return an empty string.
  *
  * @method
- * @returns {string} Canonical command string
+ * @returns {string} Canonical trigger string
  */
-ve.Command.prototype.toString = function () {
+ve.Trigger.prototype.toString = function () {
 	var i, len,
-		modifierKeys = ve.Command.static.modifierKeys,
+		modifierKeys = ve.Trigger.static.modifierKeys,
 		keys = [];
 	// Add modifier keywords in the correct order
 	for ( i = 0, len = modifierKeys.length; i < len; i++ ) {
@@ -184,9 +210,29 @@ ve.Command.prototype.toString = function () {
 	if ( this.primary ) {
 		// Add a symbolic name for the primary key
 		keys.push( this.primary );
-		// Join all key names together to form a canonical string
 		return keys.join( '+' );
 	}
 	// Alternatively return an empty string
 	return '';
+};
+
+/**
+ * Gets a trigger message.
+ *
+ * This is similar to #toString but the resulting string will be formatted in a way that makes it
+ * appear more native for the platform.
+ *
+ * @method
+ * @returns {string} Message for trigger
+ */
+ve.Trigger.prototype.getMessage = function () {
+	var keys,
+		platformFilters = ve.Trigger.static.platformFilters,
+		platform = ve.init.platform.getSystemPlatform();
+
+	keys = this.toString().split( '+' );
+	if ( platform in platformFilters ) {
+		return platformFilters[platform]( keys );
+	}
+	return keys.join( '+' ).toUpperCase();
 };

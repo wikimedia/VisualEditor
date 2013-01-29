@@ -188,7 +188,7 @@ $wgResourceModules += array(
 			// ve
 			've/ve.Registry.js',
 			've/ve.Factory.js',
-			've/ve.Command.js',
+			've/ve.Trigger.js',
 			've/ve.CommandRegistry.js',
 			've/ve.TriggerRegistry.js',
 			've/ve.Range.js',

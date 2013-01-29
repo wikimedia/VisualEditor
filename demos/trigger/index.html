@@ -1,6 +1,6 @@
 <!--
 /**
- * VisualEditor command demo
+ * VisualEditor trigger demo
  *
  * @file
  * @ingroup Extensions
@@ -12,7 +12,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>VisualEditor Command Demo</title>
+		<title>VisualEditor Trigger Demo</title>
 		<style>
 			body {
 				font-size: 1em;
@@ -79,7 +79,7 @@
 		</style>
 	</head>
 	<body>
-		<h1><span class="title">Key command: </span><span id="command"></span></h1>
+		<h1><span class="title">Key sequence: </span><span id="trigger"></span></h1>
 		<table>
 			<tr>
 				<td>
@@ -100,13 +100,13 @@
 		</table>
 		<script src="../../modules/jquery/jquery.js"></script>
 		<script src="../../modules/ve/ve.js"></script>
-		<script src="../../modules/ve/ve.Command.js"></script>
+		<script src="../../modules/ve/ve.Trigger.js"></script>
 		<script>
-			function setCommand( command ) {
+			function setTrigger( trigger ) {
 				var i, len, key,
-					trigger = command.toString(),
+					trigger = trigger.toString(),
 					parts = trigger.split( '+' );
-				$( '#command' ).text( trigger );
+				$( '#trigger' ).text( trigger );
 				for ( i = 0, len = parts.length; i < len; i++ ) {
 					key = parts[i].replace( '\\', '\\\\' ).replace( '"', '\\"' );
 					$( '.key[rel="' + key + '"]' ).addClass( 'active' );
@@ -119,9 +119,9 @@
 				$primary = $( '#primary' ),
 				$modifiers = $( '#modifiers' ),
 				$aliases = $( '#aliases' ),
-				primaryKeys = ve.Command.static.primaryKeys,
-				modifierKeys = ve.Command.static.modifierKeys,
-				keyAliases = ve.Command.static.keyAliases;
+				primaryKeys = ve.Trigger.static.primaryKeys,
+				modifierKeys = ve.Trigger.static.modifierKeys,
+				keyAliases = ve.Trigger.static.keyAliases;
 
 			for ( i = 0, len = modifierKeys.length; i < len; i++ ) {
 				$modifiers.append(
@@ -155,7 +155,7 @@
 			$( 'body' ).on( {
 				'keydown': function ( e ) {
 					$( '.active' ).removeClass( 'active' );
-					setCommand( new ve.Command( e ) );
+					setTrigger( new ve.Trigger( e ) );
 					e.preventDefault();
 				}
 			} );
@@ -182,7 +182,7 @@
 						$( '.active' ).each( function () {
 							parts.push( $(this).attr( 'rel' ) );
 						} );
-						setCommand( new ve.Command( parts.join( '+' ) ) );
+						setTrigger( new ve.Trigger( parts.join( '+' ) ) );
 					}
 				}
 			} );

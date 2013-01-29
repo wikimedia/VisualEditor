@@ -65,15 +65,7 @@ ve.commandRegistry.register(
 	'undo', 'history', 'undo'
 );
 
-ve.triggerRegistry.register( {
-	'name': ve.init.platform.getUserLanguage() + '.undo',
-	'trigger': {
-		'mac': 'cmd+z',
-		'pc': 'ctrl+z'
-	},
-	'labelMessage': {
-		'mac': 'visualeditor-historybutton-undo-tooltip-trigger-mac',
-		'pc': 'visualeditor-historybutton-undo-tooltip-trigger-pc'
-	}
-} );
+ve.triggerRegistry.register(
+	'undo', { 'mac': new ve.Trigger( 'cmd+z' ), 'pc': new ve.Trigger( 'ctrl+z' ) }
+);
 

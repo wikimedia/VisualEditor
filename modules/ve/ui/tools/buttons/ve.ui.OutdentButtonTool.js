@@ -37,8 +37,4 @@ ve.ui.toolFactory.register( 'outdent', ve.ui.OutdentButtonTool );
 // TODO: Consistency between outdent and unindent.
 ve.commandRegistry.register( 'outdent', 'indentation', 'decrease' );
 
-ve.triggerRegistry.register( {
-	'name': ve.init.platform.getUserLanguage() + '.outdent',
-	'trigger': 'shift+tab',
-	'labelMessage': 'visualeditor-indentationbutton-outdent-tooltip-trigger'
-} );
+ve.triggerRegistry.register( 'outdent', new ve.Trigger( 'shift+tab' ) );
