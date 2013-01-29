@@ -32,17 +32,11 @@ function getNodeTreeSummary( node, shallow ) {
 		numChildren;
 
 	if ( node.children !== undefined ) {
-		// Count children manually to exclude zero-length text nodes
-		numChildren = 0;
+		numChildren = node.children.length;
 		if ( !shallow ) {
 			summary.children = [];
-		}
-		for ( i = 0; i < node.children.length; i++ ) {
-			if ( node.children[i].getType() !== 'text' || node.children[i].getLength() > 0 ) {
-				numChildren++;
-				if ( !shallow ) {
-					summary.children.push( getNodeTreeSummary( node.children[i] ) );
-				}
+			for ( i = 0; i < numChildren; i++ ) {
+				summary.children.push( getNodeTreeSummary( node.children[i] ) );
 			}
 		}
 	}

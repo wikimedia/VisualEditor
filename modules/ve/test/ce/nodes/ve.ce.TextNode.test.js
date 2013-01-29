@@ -53,11 +53,6 @@ QUnit.test( 'getAnnotatedHtml', function ( assert ) {
 		},
 		{
 			// [ ]
-			'data': [{ 'type': 'paragraph' },{ 'type': '/paragraph' }],
-			'html': []
-		},
-		{
-			// [ ]
 			'data': [{ 'type': 'paragraph' },' ',{ 'type': '/paragraph' }],
 			'html': [ '&nbsp;' ]
 		},
