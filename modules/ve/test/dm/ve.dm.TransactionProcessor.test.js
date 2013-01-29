@@ -40,7 +40,7 @@ QUnit.test( 'protection against double application', 3, function ( assert ) {
 	);
 } );
 
-QUnit.test( 'commit/rollback', 62, function ( assert ) {
+QUnit.test( 'commit/rollback', 66, function ( assert ) {
 	var i, key, originalData, originalDoc, msg, testDocument, tx,
 		expectedData, expectedDocument,
 		bold = ve.dm.example.createAnnotation( ve.dm.example.bold ),
@@ -189,6 +189,16 @@ QUnit.test( 'commit/rollback', 62, function ( assert ) {
 				'expected': function ( data ) {
 					data.splice( 1, 1, 'F', 'O', 'O' );
 					ve.setProp( data[0], 'internal', 'changed', 'content', 1 );
+				}
+			},
+			'emptying text': {
+				'calls': [
+					['pushRetain', 10],
+					['pushReplace', ['d'], []]
+				],
+				'expected': function ( data ) {
+					data.splice( 10, 1 );
+					ve.setProp( data[9], 'internal', 'changed', 'content', 1 );
 				}
 			},
 			'inserting mixed content': {
