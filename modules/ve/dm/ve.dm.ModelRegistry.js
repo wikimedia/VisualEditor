@@ -120,7 +120,7 @@ ve.dm.ModelRegistry.prototype.register = function ( constructor ) {
  * If a DOM node has RDFa types that are extension-specific, any matches that do not involve one of
  * those extension-specific types will be ignored. This means that if 'bar' is an
  * extension-specific type, and there are no models specifying 'bar' in their .matchRdfaTypes, then
- * <foo typeof="bar baz"> will not match anything, not even a model with .matchTagNames=['foo']
+ * `<foo typeof="bar baz">` will not match anything, not even a model with .matchTagNames=['foo']
  * or one with .matchRdfaTypes=['baz'] .
  *
  * @param {string|RegExp} type Type, or regex matching types, to designate as extension-specifics
