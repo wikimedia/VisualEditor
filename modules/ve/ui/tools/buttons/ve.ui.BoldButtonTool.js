@@ -26,6 +26,12 @@ ve.inheritClass( ve.ui.BoldButtonTool, ve.ui.AnnotationButtonTool );
 
 ve.ui.BoldButtonTool.static.name = 'bold';
 
+ve.ui.BoldButtonTool.static.icon = {
+	'default': 'bold-a',
+	'en': 'bold-b',
+	'de': 'bold-f'
+};
+
 ve.ui.BoldButtonTool.static.titleMessage = 'visualeditor-annotationbutton-bold-tooltip';
 
 ve.ui.BoldButtonTool.static.annotation = { 'name': 'textStyle/bold' };

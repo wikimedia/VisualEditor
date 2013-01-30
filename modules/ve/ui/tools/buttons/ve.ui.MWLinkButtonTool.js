@@ -24,7 +24,7 @@ ve.inheritClass( ve.ui.MWLinkButtonTool, ve.ui.LinkButtonTool );
 
 /* Static Members */
 
-ve.ui.MWLinkButtonTool.static.name = 'link';
+ve.ui.MWLinkButtonTool.static.name = 'mwLink';
 
 ve.ui.MWLinkButtonTool.static.inspector = 'mwLink';
 

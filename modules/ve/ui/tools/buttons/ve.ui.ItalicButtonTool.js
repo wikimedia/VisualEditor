@@ -26,6 +26,12 @@ ve.inheritClass( ve.ui.ItalicButtonTool, ve.ui.AnnotationButtonTool );
 
 ve.ui.ItalicButtonTool.static.name = 'italic';
 
+ve.ui.ItalicButtonTool.static.icon = {
+	'default': 'italic-a',
+	'en': 'italic-i',
+	'de': 'italic-k'
+};
+
 ve.ui.ItalicButtonTool.static.titleMessage = 'visualeditor-annotationbutton-italic-tooltip';
 
 ve.ui.ItalicButtonTool.static.annotation = { 'name': 'textStyle/italic' };

@@ -26,6 +26,8 @@ ve.inheritClass( ve.ui.LinkButtonTool, ve.ui.InspectorButtonTool );
 
 ve.ui.LinkButtonTool.static.name = 'link';
 
+ve.ui.LinkButtonTool.static.icon = 'link';
+
 ve.ui.LinkButtonTool.static.titleMessage = 'visualeditor-annotationbutton-link-tooltip';
 
 ve.ui.LinkButtonTool.static.inspector = 'link';

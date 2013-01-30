@@ -26,6 +26,8 @@ ve.inheritClass( ve.ui.NumberButtonTool, ve.ui.ListButtonTool );
 
 ve.ui.NumberButtonTool.static.name = 'number';
 
+ve.ui.NumberButtonTool.static.icon = 'number-list';
+
 ve.ui.NumberButtonTool.static.titleMessage = 'visualeditor-listbutton-number-tooltip';
 
 ve.ui.NumberButtonTool.static.style = 'number';
