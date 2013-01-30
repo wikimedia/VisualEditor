@@ -150,6 +150,7 @@ ve.init.mw.ViewPageTarget.compatibility = {
 	ltr: {
 		msie: [['>=', 9]],
 		firefox: [['>=', 11]],
+		iceweasel: [['>=', 10]],
 		safari: [['>=', 5]],
 		chrome: [['>=', 19]],
 		opera: false,
@@ -160,6 +161,7 @@ ve.init.mw.ViewPageTarget.compatibility = {
 	rtl: {
 		msie: [['>=', 9]],
 		firefox: [['>=', 11]],
+		iceweasel: [['>=', 10]],
 		safari: [['>=', 5]],
 		chrome: [['>=', 19]],
 		opera: false,
