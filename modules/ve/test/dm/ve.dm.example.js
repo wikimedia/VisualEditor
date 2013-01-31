@@ -1956,14 +1956,14 @@ ve.dm.example.domToDataCases = {
 			'o',
 			'o',
 			{
-				'type': 'metaBlock',
+				'type': 'metaInline',
 				'attributes': {
 					'style': 'meta',
 					'key': 'mw:foo',
 					'value': 'bar'
 				}
 			},
-			{ 'type': '/metaBlock' },
+			{ 'type': '/metaInline' },
 			{ 'type': '/paragraph' },
 			{ 'type': '/tableCell' },
 			{ 'type': '/tableRow' },
