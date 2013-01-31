@@ -332,16 +332,16 @@ $messages['be-tarask'] = array(
 	'visualeditor-formatdropdown-format-heading5' => 'Загаловак 5',
 	'visualeditor-formatdropdown-format-heading6' => 'Загаловак 6',
 	'visualeditor-formatdropdown-format-preformatted' => 'Аформлены',
-	'visualeditor-annotationbutton-bold-tooltip' => 'Тоўсты', # Fuzzy
-	'visualeditor-annotationbutton-italic-tooltip' => 'Курсіў', # Fuzzy
-	'visualeditor-annotationbutton-link-tooltip' => 'Спасылка', # Fuzzy
-	'visualeditor-indentationbutton-indent-tooltip' => 'Павялічыць водступ', # Fuzzy
-	'visualeditor-indentationbutton-outdent-tooltip' => 'Паменшыць водступ', # Fuzzy
+	'visualeditor-annotationbutton-bold-tooltip' => 'Тоўсты',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Курсіў',
+	'visualeditor-annotationbutton-link-tooltip' => 'Спасылка',
+	'visualeditor-indentationbutton-indent-tooltip' => 'Павялічыць водступ',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Паменшыць водступ',
 	'visualeditor-listbutton-number-tooltip' => 'Нумараваны сьпіс',
 	'visualeditor-listbutton-bullet-tooltip' => 'Маркіраваны сьпіс',
 	'visualeditor-clearbutton-tooltip' => 'Прыбраць афармленьне',
-	'visualeditor-historybutton-undo-tooltip' => 'Скасаваць', # Fuzzy
-	'visualeditor-historybutton-redo-tooltip' => 'Узнавіць', # Fuzzy
+	'visualeditor-historybutton-undo-tooltip' => 'Скасаваць',
+	'visualeditor-historybutton-redo-tooltip' => 'Узнавіць',
 	'visualeditor-inspector-close-tooltip' => 'Зачыніць',
 	'visualeditor-inspector-remove-tooltip' => 'Выдаліць',
 	'visualeditor-viewpage-savewarning' => 'Вы ўпэўненыя, што жадаеце перайсьці ў рэжым прагляду без папярэдняга захаваньня?',
@@ -355,6 +355,7 @@ $messages['be-tarask'] = array(
 	'tag-visualeditor' => '[[Special:Tags|Тэг]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => 'Праўка зробленая празь [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Візуальны рэдактар]]',
 	'visualeditor-descriptionpagelink' => 'Project:Візуальны рэдактар',
+	'visualeditor-alphawarning' => 'Вы выкарыстоўваеце альфа-вэрсію [[{{MediaWiki:Visualeditor-descriptionpagelink}}|візуальнага рэдактара]]. Ён можа павольна працаваць і рабіць памылкі ў зьменах — калі ласка, правярайце кожную праўку, якую вы робіце.',
 );
 
 /** Bulgarian (български)
