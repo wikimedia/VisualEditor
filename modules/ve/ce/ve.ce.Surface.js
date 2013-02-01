@@ -53,7 +53,7 @@ ve.ce.Surface = function VeCeSurface( $container, model, surface ) {
 		'cut': ve.bind( this.onCut, this ),
 		'copy': ve.bind( this.onCopy, this ),
 		'paste': ve.bind( this.onPaste, this ),
-		'dragover drop': ve.bind( this.onDragoverDrop, this ),
+		'dragover drop': ve.bind( this.onDragoverDrop, this )
 	} );
 	if ( $.browser.msie ) {
 		this.$.on( 'beforepaste', ve.bind( this.onPaste, this ) );
@@ -190,7 +190,7 @@ ve.ce.Surface.prototype.documentOnFocus = function () {
 		'mouseup.ve-ce-Surface': ve.bind( this.onDocumentMouseUp, this ),
 		'mousemove.ve-ce-Surface': ve.bind( this.onDocumentMouseMove, this ),
 		'compositionstart.ve-ce-Surface': ve.bind( this.onDocumentCompositionStart, this ),
-		'compositionend.ve-ce-Surface': ve.bind( this.onDocumentCompositionEnd, this ),
+		'compositionend.ve-ce-Surface': ve.bind( this.onDocumentCompositionEnd, this )
 	} );
 	this.surfaceObserver.start( true );
 };

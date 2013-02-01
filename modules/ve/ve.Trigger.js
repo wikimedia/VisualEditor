@@ -136,7 +136,7 @@ ve.Trigger.static.keyAliases = {
 	// Longhand
 	'control': 'ctrl', 'alternate': 'alt',
 	// Symbols
-	'⌘': 'meta', '⎇': 'alt', '⇧': 'shift', '⏎': 'enter', '⌫': 'backspace', '⎋': 'escape',
+	'⌘': 'meta', '⎇': 'alt', '⇧': 'shift', '⏎': 'enter', '⌫': 'backspace', '⎋': 'escape'
 };
 
 /**

@@ -1069,7 +1069,7 @@ ve.dm.example.domToDataCases = {
 				[ {
 					'type': 'link/MWexternal',
 					'data': {
-						'href': 'http://www.mediawiki.org/',
+						'href': 'http://www.mediawiki.org/'
 					},
 					'htmlTagName': 'a',
 					'htmlAttributes': {
@@ -1083,7 +1083,7 @@ ve.dm.example.domToDataCases = {
 				[ {
 					'type': 'link/MWexternal',
 					'data': {
-						'href': 'http://www.mediawiki.org/',
+						'href': 'http://www.mediawiki.org/'
 					},
 					'htmlTagName': 'a',
 					'htmlAttributes': {
@@ -1097,7 +1097,7 @@ ve.dm.example.domToDataCases = {
 				[ {
 					'type': 'link/MWexternal',
 					'data': {
-						'href': 'http://www.mediawiki.org/',
+						'href': 'http://www.mediawiki.org/'
 					},
 					'htmlTagName': 'a',
 					'htmlAttributes': {
@@ -1118,7 +1118,7 @@ ve.dm.example.domToDataCases = {
 				[ {
 					'type': 'link/MWexternal',
 					'data': {
-						'href': 'http://www.mediawiki.org/',
+						'href': 'http://www.mediawiki.org/'
 					},
 					'htmlTagName': 'a',
 					'htmlAttributes': {
@@ -1132,7 +1132,7 @@ ve.dm.example.domToDataCases = {
 				[ {
 					'type': 'link/MWexternal',
 					'data': {
-						'href': 'http://www.mediawiki.org/',
+						'href': 'http://www.mediawiki.org/'
 					},
 					'htmlTagName': 'a',
 					'htmlAttributes': {

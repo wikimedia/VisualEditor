@@ -37,10 +37,10 @@ ve.ui.Inspector = function VeUiInspector( context ) {
 
 	// Events
 	this.$closeButton.on( {
-		'click': ve.bind( this.onCloseButtonClick, this ),
+		'click': ve.bind( this.onCloseButtonClick, this )
 	} );
 	this.$removeButton.on( {
-		'click': ve.bind( this.onRemoveButtonClick, this ),
+		'click': ve.bind( this.onRemoveButtonClick, this )
 	} );
 	this.$form.on( {
 		'submit': ve.bind( this.onFormSubmit, this ),
