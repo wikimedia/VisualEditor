@@ -29,6 +29,8 @@ ve.inheritClass( ve.ui.ClearButtonTool, ve.ui.ButtonTool );
 
 ve.ui.ClearButtonTool.static.name = 'clear';
 
+ve.ui.ClearButtonTool.static.icon = 'clear';
+
 ve.ui.ClearButtonTool.static.titleMessage = 'visualeditor-clearbutton-tooltip';
 
 /* Methods */

@@ -26,6 +26,8 @@ ve.inheritClass( ve.ui.BulletButtonTool, ve.ui.ListButtonTool );
 
 ve.ui.BulletButtonTool.static.name = 'bullet';
 
+ve.ui.BulletButtonTool.static.icon = 'bullet-list';
+
 ve.ui.BulletButtonTool.static.titleMessage = 'visualeditor-listbutton-bullet-tooltip';
 
 ve.ui.BulletButtonTool.static.style = 'bullet';

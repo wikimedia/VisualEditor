@@ -15,6 +15,11 @@
 	background-image: url(images/icons/comment.svg);
 }
 
+.ve-ui-icon-up {
+	/* @embed */
+	background-image: url(images/icons/up.svg);
+}
+
 .ve-ui-icon-down {
 	/* @embed */
 	background-image: url(images/icons/down.svg);
@@ -30,14 +35,34 @@
 	background-image: url(images/icons/arched-arrow-ltr.svg);
 }
 
-.ve-ui-icon-bold:before {
+.ve-ui-icon-bold-a:before {
 	/* @embed */
-	background-image: url(images/icons/bold.svg);
+	background-image: url(images/icons/bold-a.svg);
 }
 
-.ve-ui-icon-italic:before {
+.ve-ui-icon-bold-b:before {
 	/* @embed */
-	background-image: url(images/icons/italic.svg);
+	background-image: url(images/icons/bold-b.svg);
+}
+
+.ve-ui-icon-bold-f:before {
+	/* @embed */
+	background-image: url(images/icons/bold-f.svg);
+}
+
+.ve-ui-icon-italic-a:before {
+	/* @embed */
+	background-image: url(images/icons/italic-a.svg);
+}
+
+.ve-ui-icon-italic-i:before {
+	/* @embed */
+	background-image: url(images/icons/italic-i.svg);
+}
+
+.ve-ui-icon-italic-k:before {
+	/* @embed */
+	background-image: url(images/icons/italic-k.svg);
 }
 
 .ve-ui-icon-link:before {
@@ -50,22 +75,22 @@
 	background-image: url(images/icons/clear.svg);
 }
 
-.ve-ui-icon-number:before {
+.ve-ui-icon-number-list:before {
 	/* @embed */
 	background-image: url(images/icons/number-list-ltr.svg);
 }
 
-.ve-ui-icon-bullet:before {
+.ve-ui-icon-bullet-list:before {
 	/* @embed */
 	background-image: url(images/icons/bullet-list-ltr.svg);
 }
 
-.ve-ui-icon-indent:before {
+.ve-ui-icon-indent-list:before {
 	/* @embed */
 	background-image: url(images/icons/indent-list-ltr.svg);
 }
 
-.ve-ui-icon-outdent:before {
+.ve-ui-icon-outdent-list:before {
 	/* @embed */
 	background-image: url(images/icons/outdent-list-ltr.svg);
 }

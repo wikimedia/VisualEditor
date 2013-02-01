@@ -32,6 +32,8 @@ ve.inheritClass( ve.ui.RedoButtonTool, ve.ui.ButtonTool );
 
 ve.ui.RedoButtonTool.static.name = 'redo';
 
+ve.ui.RedoButtonTool.static.icon = 'redo';
+
 ve.ui.RedoButtonTool.static.titleMessage = 'visualeditor-historybutton-redo-tooltip';
 
 /* Methods */

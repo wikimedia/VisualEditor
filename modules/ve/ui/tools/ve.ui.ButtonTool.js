@@ -29,12 +29,43 @@ ve.ui.ButtonTool = function VeUiButtonTool( toolbar ) {
 	} );
 
 	// Initialization
-	this.$.addClass( 've-ui-buttonTool ve-ui-icon-' + this.constructor.static.name );
+	this.$.addClass( 've-ui-buttonTool' );
+	var name,
+		icon = this.constructor.static.icon,
+		lang = ve.init.platform.getUserLanguage();
+	if ( icon ) {
+		if ( ve.isPlainObject( icon ) ) {
+			name = lang in icon ? icon[lang] : icon['default'];
+		} else {
+			name = icon;
+		}
+		this.$.addClass( 've-ui-icon-' + name );
+	}
 };
 
 /* Inheritance */
 
 ve.inheritClass( ve.ui.ButtonTool, ve.ui.Tool );
+
+/* Static Properties */
+
+/**
+ * Symbolic name of icon.
+ *
+ * Value should be the unique portion of an icon CSS class name, such as 'up' for 've-ui-icon-up'.
+ *
+ * For i18n purposes, this property can be an object containing a `default` icon name property and
+ * additional icon names keyed by language code.
+ *
+ * Example of i18n icon definition:
+ *     { 'default': 'bold-a', 'en': 'bold-b', 'de': 'bold-f' }
+ *
+ * @abstract
+ * @static
+ * @property
+ * @type {string|Object}
+ */
+ve.ui.Tool.static.icon = '';
 
 /* Methods */
 

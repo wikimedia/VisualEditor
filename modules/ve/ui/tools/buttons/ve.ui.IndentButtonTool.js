@@ -26,6 +26,8 @@ ve.inheritClass( ve.ui.IndentButtonTool, ve.ui.IndentationButtonTool );
 
 ve.ui.IndentButtonTool.static.name = 'indent';
 
+ve.ui.IndentButtonTool.static.icon = 'indent-list';
+
 ve.ui.IndentButtonTool.static.titleMessage = 'visualeditor-indentationbutton-indent-tooltip';
 
 ve.ui.IndentButtonTool.static.method = 'increase';

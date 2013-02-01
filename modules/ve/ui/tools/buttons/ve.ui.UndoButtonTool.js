@@ -32,6 +32,8 @@ ve.inheritClass( ve.ui.UndoButtonTool, ve.ui.ButtonTool );
 
 ve.ui.UndoButtonTool.static.name = 'undo';
 
+ve.ui.UndoButtonTool.static.icon = 'undo';
+
 ve.ui.UndoButtonTool.static.titleMessage = 'visualeditor-historybutton-undo-tooltip';
 
 /* Methods */
