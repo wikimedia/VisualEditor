@@ -290,7 +290,7 @@ ve.ce.Node.prototype.getModel = function () {
 ve.ce.Node.getSplitableNode = function ( node ) {
 	var splitableNode = null;
 
-	ve.Node.traverseUpstream( node, function ( node ) {
+	node.traverseUpstream( function ( node ) {
 		if ( node.canBeSplit() ) {
 			splitableNode = node;
 			return true;

@@ -23,13 +23,6 @@ ve.Node = function VeNode( type ) {
 	this.parent = null;
 	this.root = this;
 	this.doc = null;
-
-	// Convenience function for emitting update events - context is bound by enclosing this scope
-	// making it easy to pass through other functions as a callback
-	var node = this;
-	this.emitUpdate = function () {
-		node.emit( 'update' );
-	};
 };
 
 /**
@@ -206,11 +199,11 @@ ve.Node.prototype.detach = function () {
  *
  * For each traversed node, the callback function will be passed the traversed node as a parameter.
  *
- * @param {ve.Node} node Node from which to start traversing
  * @param {Function} callback Callback method to be called for every traversed node
  * @method
  */
-ve.Node.traverseUpstream = function ( node, callback ) {
+ve.Node.prototype.traverseUpstream = function ( callback ) {
+	var node = this;
 	while ( node ) {
 		if ( callback ( node ) === false ) {
 			break;

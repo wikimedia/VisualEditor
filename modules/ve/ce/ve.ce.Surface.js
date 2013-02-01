@@ -836,7 +836,7 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 		}
 	} else {
 		// Split
-		ve.Node.traverseUpstream( node, function ( node ) {
+		node.traverseUpstream( function ( node ) {
 			if ( !node.canBeSplit() ) {
 				return false;
 			}
@@ -1026,7 +1026,7 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 
 			// Find the node that should be completely removed
 			nodeToDelete = sourceNode;
-			ve.Node.traverseUpstream( nodeToDelete, function ( node ) {
+			nodeToDelete.traverseUpstream( function ( node ) {
 				if ( node.getParent().children.length === 1 ) {
 					nodeToDelete = node.getParent();
 					return true;
