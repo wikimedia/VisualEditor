@@ -1527,6 +1527,7 @@ $messages['ka'] = array(
 
 /** Korean (한국어)
  * @author Kwj2772
+ * @author LFM
  * @author 아라
  */
 $messages['ko'] = array(
@@ -1574,7 +1575,7 @@ $messages['ko'] = array(
 	'visualeditor-annotationbutton-italic-tooltip' => '기울인 글씨',
 	'visualeditor-annotationbutton-link-tooltip' => '링크',
 	'visualeditor-indentationbutton-indent-tooltip' => '들여쓰기 높이기',
-	'visualeditor-indentationbutton-outdent-tooltip' => '들여쓰기 낮추기',
+	'visualeditor-indentationbutton-outdent-tooltip' => '들여쓰기 줄이기',
 	'visualeditor-listbutton-number-tooltip' => '번호가 매겨진 목록',
 	'visualeditor-listbutton-bullet-tooltip' => '글머리 기호 목록',
 	'visualeditor-clearbutton-tooltip' => '서식 지우기',
