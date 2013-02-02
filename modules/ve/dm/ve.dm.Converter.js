@@ -517,6 +517,9 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 						// but only if childDataElement is a non-content element
 						if ( context.wrapping && context.canCloseWrapper && !childIsContent ) {
 							stopWrapping();
+						} else if ( !context.wrapping && !context.expectingContent && childIsContent ) {
+							startWrapping();
+							prevElement = wrappingParagraph;
 						}
 						if ( this.nodeFactory.canNodeHaveChildren( childDataElement.type ) ) {
 							// Append child element data
