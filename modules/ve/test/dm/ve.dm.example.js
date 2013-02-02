@@ -673,8 +673,10 @@ ve.dm.example.domToDataCases = {
 	'image': {
 		'html': '<img src="image.png">',
 		'data': [
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			{ 'type': 'image', 'attributes' : { 'html/src' : 'image.png' } },
-			{ 'type' : '/image' }
+			{ 'type' : '/image' },
+			{ 'type': '/paragraph' }
 		]
 	},
 	'paragraph with alienInline inside': {
@@ -753,6 +755,17 @@ ve.dm.example.domToDataCases = {
 			'1',
 			{ 'type': 'break' },
 			{ 'type': '/break' },
+			'2',
+			{ 'type': '/paragraph' }
+		]
+	},
+	'wrapping of bare content starting with inline node': {
+		'html': '<img src="foo.jpg">12',
+		'data': [
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			{ 'type': 'image', 'attributes': { 'html/src': 'foo.jpg' } },
+			{ 'type': '/image' },
+			'1',
 			'2',
 			{ 'type': '/paragraph' }
 		]
