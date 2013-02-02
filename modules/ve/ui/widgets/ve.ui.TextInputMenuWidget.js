@@ -31,7 +31,7 @@ ve.ui.TextInputMenuWidget = function VeUiTextInputMenuWidget( $$, $container ) {
 	// Events
 	this.$.on( {
 		'mousedown': ve.bind( this.onMouseDown, this ),
-		'mouseup': ve.bind( this.onMouseUp, this ),
+		'mouseup': ve.bind( this.onMouseUp, this )
 	} );
 
 	// Initialization
