@@ -472,13 +472,40 @@ $messages['ca'] = array(
 
 /** Czech (česky)
  * @author Chmee2
+ * @author Juandev
  */
 $messages['cs'] = array(
 	'visualeditor' => 'WYSIWYG editor',
 	'visualeditor-desc' => 'WYSIWYG editor pro MediaWiki',
+	'visualeditor-preference-enable' => 'Povolit VisualEditor (pouze ve jmenném prostoru [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|hlavní]] a [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|uživatel]])',
+	'visualeditor-mainnamespacepagelink' => 'Project:Hlavní jmenný prostor',
+	'visualeditor-usernamespacepagelink' => 'Project:Jmenný prostor Uživatel',
+	'visualeditor-notification-saved' => 'Vaše změny do $1 byly uloženy.',
+	'visualeditor-notification-created' => 'Strana $1 byla založena.',
+	'visualeditor-notification-restored' => 'Stránka $1 byla obnovena.',
+	'visualeditor-notification-reported' => 'Problém byl zaznamenán. Děkujeme.',
 	'visualeditor-ca-editsource' => 'Upravit zdroj',
-	'visualeditor-linkinspector-title' => 'Upravit odkaz', # Fuzzy
+	'visualeditor-ca-ve-edit' => 'VisualEditor',
+	'visualeditor-ca-ve-create' => 'VisualEditor',
+	'visualeditor-toolbar-savedialog' => 'Posoudit a uložit',
+	'visualeditor-savedialog-title-review' => 'Překontrolujete Vaše změny',
+	'visualeditor-savedialog-title-report' => 'Nahlásit problém',
+	'visualeditor-savedialog-title-save' => 'Uložit změny',
+	'visualeditor-savedialog-label-review-wrong' => 'Něco není v pořádku',
+	'visualeditor-savedialog-label-review-good' => 'Zdá se mi to dobré',
+	'visualeditor-savedialog-label-report' => 'Nahlásit problém',
+	'visualeditor-savedialog-label-create' => 'Vytvořit stránku',
+	'visualeditor-savedialog-label-save' => 'Uložit stránku',
+	'visualeditor-savedialog-label-restore' => 'Obnovit stránku',
+	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|oznámení}}',
+	'visualeditor-feedback-tool' => 'Zanechat zpětnou vazbu',
+	'tooltip-ca-ve-edit' => 'Editovat tuto stránku VisualEditorem',
+	'visualeditor-inspector-title' => 'Zkontrolovat',
+	'visualeditor-linkinspector-title' => 'Hypertextový odkaz',
 	'visualeditor-linkinspector-label-pagetitle' => 'Název stránky',
+	'visualeditor-linkinspector-suggest-existing-page' => 'Existující stránka',
+	'visualeditor-linkinspector-suggest-new-page' => 'Nová stránka',
+	'visualeditor-linkinspector-suggest-external-link' => 'Externí odkaz',
 	'visualeditor-formatdropdown-title' => 'Změnit formát',
 	'visualeditor-formatdropdown-format-paragraph' => 'Odstavec',
 	'visualeditor-formatdropdown-format-heading1' => 'Nadpis 1',
@@ -488,17 +515,31 @@ $messages['cs'] = array(
 	'visualeditor-formatdropdown-format-heading5' => 'Nadpis 5',
 	'visualeditor-formatdropdown-format-heading6' => 'Nadpis 6',
 	'visualeditor-formatdropdown-format-preformatted' => 'Předformátovaný',
-	'visualeditor-annotationbutton-bold-tooltip' => 'Tučné', # Fuzzy
-	'visualeditor-annotationbutton-italic-tooltip' => 'Kurzíva', # Fuzzy
-	'visualeditor-annotationbutton-link-tooltip' => 'Odkaz', # Fuzzy
-	'visualeditor-indentationbutton-indent-tooltip' => 'Zvětšit odsazení', # Fuzzy
-	'visualeditor-indentationbutton-outdent-tooltip' => 'Zmenšit odsazení', # Fuzzy
+	'visualeditor-annotationbutton-bold-tooltip' => 'Tučný text',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Kurzíva',
+	'visualeditor-annotationbutton-link-tooltip' => 'Vnitřní odkaz',
+	'visualeditor-indentationbutton-indent-tooltip' => 'Zvětšit odsazení',
+	'visualeditor-indentationbutton-outdent-tooltip' => 'Zmenšit odsazení',
 	'visualeditor-listbutton-number-tooltip' => 'Číslovaný seznam',
 	'visualeditor-listbutton-bullet-tooltip' => 'Seznam s odrážkami',
 	'visualeditor-clearbutton-tooltip' => 'Vymazat formátování',
-	'visualeditor-historybutton-undo-tooltip' => 'Zpět', # Fuzzy
+	'visualeditor-historybutton-undo-tooltip' => 'Zpět',
 	'visualeditor-historybutton-redo-tooltip' => 'Znovu', # Fuzzy
+	'visualeditor-inspector-close-tooltip' => 'Zavřít',
+	'visualeditor-inspector-remove-tooltip' => 'Odebrat',
 	'visualeditor-viewpage-savewarning' => 'Opravdu se chcete vrátit k režimu zobrazení bez uložení?',
+	'visualeditor-loadwarning' => 'Chyba při načítání dat ze serveru: $1. Chcete operaci opakovat?',
+	'visualeditor-differror' => 'Chyba při načítání dat ze serveru: $1.',
+	'visualeditor-saveerror' => 'Chyba při ukládání dat na server: $1.',
+	'visualeditor-editconflict' => 'Provedené změny nelze uložit z důvodu editačního konfliktu. Chcete vyřešit editační konflikt manuálně?',
+	'visualeditor-editsummary' => 'Popište Vaše změny',
+	'visualeditor-problem' => 'Popište, co se stalo',
+	'visualeditor-aliennode-tooltip' => 'Promiňte, ale tento prvek nelze editovat VisualEditorem',
+	'tag-visualeditor' => '[[Special:Tags|Značka]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
+	'tag-visualeditor-description' => 'Editace provedená za použití [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditoru]]',
+	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
+	'visualeditor-alphawarning' => 'Používáte alfa verzi [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditoru]]. Může být pomalý a mohou vznikat chybné změny – zkontrolujte prosím každou editaci, kterou uděláte.',
+	'visualeditor-report-notice' => 'Jsem srozuměn/a s tím, že kliknutím na Odeslat, se odešlou mé změny a moje zpětná vazba a že budou uloženy k analýze. Souhlasím s poskytnutím zpětné vazby za [[{{MediaWiki:Visualeditor-report-link}}|Podmínek užití]].',
 );
 
 /** German (Deutsch)
@@ -745,6 +786,17 @@ $messages['et'] = array(
 	'visualeditor-editsummary' => 'Kirjelda, mida muutsid',
 );
 
+/** Basque (euskara)
+ * @author An13sa
+ */
+$messages['eu'] = array(
+	'visualeditor-annotationbutton-bold-tooltip' => 'Beltza',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Etzana',
+	'visualeditor-annotationbutton-link-tooltip' => 'Lotura',
+	'visualeditor-historybutton-undo-tooltip' => 'Desegin',
+	'visualeditor-historybutton-redo-tooltip' => 'Berregin',
+);
+
 /** Persian (فارسی)
  * @author Jdforrester
  * @author Mjbmr
@@ -828,7 +880,7 @@ $messages['fi'] = array(
 	'visualeditor-formatdropdown-format-heading6' => 'Otsikko 6',
 	'visualeditor-formatdropdown-format-preformatted' => 'Esimuotoiltu',
 	'visualeditor-annotationbutton-bold-tooltip' => 'Lihavointi',
-	'visualeditor-annotationbutton-italic-tooltip' => 'Kursiivi',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Kursivointi',
 	'visualeditor-annotationbutton-link-tooltip' => 'Linkki',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Lisää sisennystä',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Vähennä sisennystä',
