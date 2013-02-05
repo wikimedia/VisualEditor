@@ -81,5 +81,8 @@ ve.ui.LinkTargetInputWidget.prototype.getAnnotation = function () {
  * @returns {string} Target
  */
 ve.ui.LinkTargetInputWidget.prototype.getTargetFromAnnotation = function ( annotation ) {
-	return annotation.data.href;
+	if ( annotation instanceof ve.dm.LinkAnnotation ) {
+		return annotation.data.href;
+	}
+	return '';
 };
