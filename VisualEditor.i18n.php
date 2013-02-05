@@ -473,11 +473,12 @@ $messages['ca'] = array(
 /** Czech (česky)
  * @author Chmee2
  * @author Juandev
+ * @author Mormegil
  */
 $messages['cs'] = array(
-	'visualeditor' => 'WYSIWYG editor',
+	'visualeditor' => 'VisualEditor',
 	'visualeditor-desc' => 'WYSIWYG editor pro MediaWiki',
-	'visualeditor-preference-enable' => 'Povolit VisualEditor (pouze ve jmenném prostoru [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|hlavní]] a [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|uživatel]])',
+	'visualeditor-preference-enable' => 'Povolit VisualEditor (pouze v [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|hlavním]] a [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|uživatelském]] jmenném prostoru)',
 	'visualeditor-mainnamespacepagelink' => 'Project:Hlavní jmenný prostor',
 	'visualeditor-usernamespacepagelink' => 'Project:Jmenný prostor Uživatel',
 	'visualeditor-notification-saved' => 'Vaše změny do $1 byly uloženy.',
