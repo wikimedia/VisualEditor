@@ -2472,6 +2472,24 @@ $messages['ro'] = array(
 	'visualeditor-inspector-remove-tooltip' => 'Eliminare',
 );
 
+/** tarandíne (tarandíne)
+ * @author Joetaras
+ */
+$messages['roa-tara'] = array(
+	'visualeditor-ca-editsource' => "Cange 'a sorgende",
+	'visualeditor-linkinspector-label-pagetitle' => "Titole d'a pàgene",
+	'visualeditor-formatdropdown-format-heading1' => 'Testate 1',
+	'visualeditor-formatdropdown-format-heading2' => 'Testate 2',
+	'visualeditor-formatdropdown-format-heading3' => 'Testate 3',
+	'visualeditor-formatdropdown-format-heading4' => 'Testate 4',
+	'visualeditor-formatdropdown-format-heading5' => 'Testate 5',
+	'visualeditor-formatdropdown-format-heading6' => 'Testate 6',
+	'visualeditor-formatdropdown-format-preformatted' => 'Preformattate',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Grascette',
+	'visualeditor-annotationbutton-italic-tooltip' => 'Corsive',
+	'visualeditor-annotationbutton-link-tooltip' => 'Collegamende',
+);
+
 /** Russian (русский)
  * @author Amire80
  * @author Eugrus
