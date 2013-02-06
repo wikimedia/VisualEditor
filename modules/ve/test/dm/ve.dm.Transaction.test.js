@@ -274,7 +274,7 @@ QUnit.test( 'newFromRemoval', 15, function ( assert ) {
 					'type': 'replace',
 					'remove': [
 						'h',
-						{ 'type': 'image', 'attributes': { 'html/src': 'image.png' } },
+						{ 'type': 'image', 'attributes': { 'html/0/src': 'image.png' } },
 						{ 'type': '/image' },
 						'i'
 					],

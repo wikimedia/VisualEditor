@@ -142,13 +142,13 @@ QUnit.test( 'commit/rollback', 66, function ( assert ) {
 					['pushReplaceElementAttribute', 'style', 'bullet', 'number'],
 					['pushReplaceElementAttribute', 'test', undefined, 'abcd'],
 					['pushRetain', 27],
-					['pushReplaceElementAttribute', 'html/src', 'image.png', undefined]
+					['pushReplaceElementAttribute', 'html/0/src', 'image.png', undefined]
 				],
 				'expected': function ( data ) {
 					data[0].attributes.level = 2;
 					data[12].attributes.style = 'number';
 					data[12].attributes.test = 'abcd';
-					delete data[39].attributes['html/src'];
+					delete data[39].attributes['html/0/src'];
 					ve.setProp( data[0], 'internal', 'changed', 'attributes', 1 );
 					ve.setProp( data[12], 'internal', 'changed', 'attributes', 2 );
 					ve.setProp( data[39], 'internal', 'changed', 'attributes', 1 );

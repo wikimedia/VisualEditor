@@ -33,7 +33,7 @@ ve.ce.Node = function VeCeNode( type, model, $element ) {
 	this.$.data( 'node', this );
 	ve.setDomAttributes(
 		this.$[0],
-		this.model.getAttributes( 'html/' ),
+		this.model.getAttributes( 'html/0/' ),
 		this.constructor.static.domAttributeWhitelist
 	);
 };
@@ -117,9 +117,9 @@ ve.ce.Node.static.$shieldTemplate = $( '<img>' )
  * @param {string} to New value
  */
 ve.ce.Node.prototype.onAttributeChange = function ( key, from, to ) {
-	var htmlKey = key.substr( 5 ).toLowerCase();
+	var htmlKey = key.substr( 7 ).toLowerCase();
 	if (
-		key.indexOf( 'html/' ) === 0 &&
+		key.indexOf( 'html/0/' ) === 0 &&
 		htmlKey.length &&
 		this.constructor.static.domAttributeWhitelist.indexOf( htmlKey ) !== -1
 	) {
