@@ -243,7 +243,7 @@
 	 */
 	ve.filterArray = function ( array, callback, context ) {
 		var i, len, value, result = [];
-		if ( Array.prototype.filter ) {
+		if ( array.filter ) {
 			return array.filter( callback, context );
 		} else {
 			for ( i = 0, len = array.length; i < len; i++ ) {
