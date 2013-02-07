@@ -128,9 +128,9 @@ ve.dm.Converter.prototype.getDomElementFromDataElement = function ( dataElement 
 	dataElementAttributes = dataElement.attributes;
 	if ( dataElementAttributes ) {
 		for ( key in dataElementAttributes ) {
-			// Only include 'html/*' attributes and strip the 'html/' from the beginning of the name
-			if ( key.indexOf( 'html/' ) === 0 ) {
-				domElement.setAttribute( key.substr( 5 ), dataElementAttributes[key] );
+			// Only include 'html/0/*' attributes and strip the 'html/0/' from the beginning of the name
+			if ( key.indexOf( 'html/0/' ) === 0 ) {
+				domElement.setAttribute( key.substr( 7 ), dataElementAttributes[key] );
 			}
 		}
 	}
@@ -172,10 +172,10 @@ ve.dm.Converter.prototype.getDataElementFromDomElement = function ( domElement, 
 	domElementAttributes = domElement.attributes;
 	if ( domElementAttributes.length ) {
 		dataElementAttributes = dataElement.attributes = dataElement.attributes || {};
-		// Include all attributes and prepend 'html/' to each attribute name
+		// Include all attributes and prepend 'html/0/' to each attribute name
 		for ( i = 0; i < domElementAttributes.length; i++ ) {
 			domElementAttribute = domElementAttributes[i];
-			dataElementAttributes['html/' + domElementAttribute.name] = domElementAttribute.value;
+			dataElementAttributes['html/0/' + domElementAttribute.name] = domElementAttribute.value;
 		}
 	}
 	if ( this.nodeFactory.isNodeContent( dataElement.type ) && !annotations.isEmpty() ) {
@@ -434,7 +434,7 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 					}
 					// Preserve HTML attributes
 					// FIXME the following is duplicated from getDataElementFromDomElement()
-					// Include all attributes and prepend 'html/' to each attribute name
+					// Include all attributes and prepend 'html/0/' to each attribute name
 					for ( j = 0; j < childDomElement.attributes.length; j++ ) {
 						// ..but exclude attributes we've already processed,
 						// because they'll be overwritten otherwise *sigh*
@@ -443,7 +443,7 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 							childDomElement.attributes[j].name !== ( isLink ? 'rel' : 'property' ) &&
 							childDomElement.attributes[j].name !== ( isLink ? 'href' : 'content' )
 						) {
-							childDataElement.attributes['html/' + childDomElement.attributes[j].name] = childDomElement.attributes[j].value;
+							childDataElement.attributes['html/0/' + childDomElement.attributes[j].name] = childDomElement.attributes[j].value;
 						}
 					}
 					data.push( childDataElement );

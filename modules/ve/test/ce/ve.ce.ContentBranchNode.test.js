@@ -218,7 +218,7 @@ QUnit.test( 'getRenderedContents', function ( assert ) {
 				['b', [ { 'type': 'textStyle/bold' } ]],
 				{
 					'type': 'MWentity',
-					'attributes': { 'character': 'c', 'html/typeof': 'mw:Entity' },
+					'attributes': { 'character': 'c', 'html/0/typeof': 'mw:Entity' },
 					'annotations': [ { 'type': 'textStyle/bold' } ]
 				},
 				{ 'type': '/MWentity' },

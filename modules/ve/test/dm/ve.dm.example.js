@@ -218,7 +218,7 @@ ve.dm.example.data = [
 	// 38 - Plain "h"
 	'h',
 	// 39 - Beginning of inline image
-	{ 'type': 'image', 'attributes': { 'html/src': 'image.png' } },
+	{ 'type': 'image', 'attributes': { 'html/0/src': 'image.png' } },
 	// 40 - End of inline image
 	{ 'type': '/image' },
 	// 41 - Plain "i"
@@ -374,8 +374,8 @@ ve.dm.example.withMeta = [
 		'attributes': {
 			'style': 'meta',
 			'key': null,
-			'html/typeof': 'mw:Placeholder',
-			'html/data-parsoid': 'foobar'
+			'html/0/typeof': 'mw:Placeholder',
+			'html/0/data-parsoid': 'foobar'
 		}
 	},
 	{ 'type': '/metaBlock' }
@@ -477,8 +477,8 @@ ve.dm.example.withMetaMetaData = [
 			'attributes': {
 				'style': 'meta',
 				'key': null,
-				'html/typeof': 'mw:Placeholder',
-				'html/data-parsoid': 'foobar'
+				'html/0/typeof': 'mw:Placeholder',
+				'html/0/data-parsoid': 'foobar',
 			}
 		}
 	]
@@ -639,13 +639,13 @@ ve.dm.example.conversions = {
 		'domElement': ve.example.createDomElement( 'tr' ),
 		'dataElement': { 'type': 'tableRow' }
 	},
-	'paragraph with mw-data attribute': {
+	'paragraph with data-mw attribute': {
 		'domElement': ve.example.createDomElement( 'p', { 'data-mw': '{"test":1234}' } ),
-		'dataElement': { 'type': 'paragraph', 'attributes': { 'html/data-mw': '{"test":1234}' } }
+		'dataElement': { 'type': 'paragraph', 'attributes': { 'html/0/data-mw': '{"test":1234}' } }
 	},
 	'paragraph with style attribute': {
 		'domElement': ve.example.createDomElement( 'p', { 'style': 'color:blue' } ),
-		'dataElement': { 'type': 'paragraph', 'attributes': { 'html/style': 'color:blue' } }
+		'dataElement': { 'type': 'paragraph', 'attributes': { 'html/0/style': 'color:blue' } }
 	}
 };
 
@@ -674,7 +674,7 @@ ve.dm.example.domToDataCases = {
 		'html': '<img src="image.png">',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
-			{ 'type': 'image', 'attributes' : { 'html/src' : 'image.png' } },
+			{ 'type': 'image', 'attributes' : { 'html/0/src' : 'image.png' } },
 			{ 'type' : '/image' },
 			{ 'type': '/paragraph' }
 		]
@@ -724,7 +724,7 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/alienInline' },
 			{
 				'type': 'MWentity',
-				'attributes': { 'character': 'c', 'html/typeof': 'mw:Entity' },
+				'attributes': { 'character': 'c', 'html/0/typeof': 'mw:Entity' },
 				'annotations': [ ve.dm.example.bold, ve.dm.example.italic ]
 			},
 			{ 'type': '/MWentity' },
@@ -763,7 +763,7 @@ ve.dm.example.domToDataCases = {
 		'html': '<img src="foo.jpg">12',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
-			{ 'type': 'image', 'attributes': { 'html/src': 'foo.jpg' } },
+			{ 'type': 'image', 'attributes': { 'html/0/src': 'foo.jpg' } },
 			{ 'type': '/image' },
 			'1',
 			'2',
@@ -1839,12 +1839,12 @@ ve.dm.example.domToDataCases = {
 		'data': [
 			{ 'type': 'paragraph' },
 			'a',
-			{ 'type': 'MWentity', 'attributes': { 'character': '¢', 'html/typeof': 'mw:Entity' } },
+			{ 'type': 'MWentity', 'attributes': { 'character': '¢', 'html/0/typeof': 'mw:Entity' } },
 			{ 'type': '/MWentity' },
 			'b',
-			{ 'type': 'MWentity', 'attributes': { 'character': '¥', 'html/typeof': 'mw:Entity' } },
+			{ 'type': 'MWentity', 'attributes': { 'character': '¥', 'html/0/typeof': 'mw:Entity' } },
 			{ 'type': '/MWentity' },
-			{ 'type': 'MWentity', 'attributes': { 'character': '™', 'html/typeof': 'mw:Entity' } },
+			{ 'type': 'MWentity', 'attributes': { 'character': '™', 'html/0/typeof': 'mw:Entity' } },
 			{ 'type': '/MWentity' },
 			{ 'type': '/paragraph' }
 		]
@@ -1854,12 +1854,12 @@ ve.dm.example.domToDataCases = {
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			'a',
-			{ 'type': 'MWentity', 'attributes': { 'character': '¢', 'html/typeof': 'mw:Entity' } },
+			{ 'type': 'MWentity', 'attributes': { 'character': '¢', 'html/0/typeof': 'mw:Entity' } },
 			{ 'type': '/MWentity' },
 			'b',
-			{ 'type': 'MWentity', 'attributes': { 'character': '¥', 'html/typeof': 'mw:Entity' } },
+			{ 'type': 'MWentity', 'attributes': { 'character': '¥', 'html/0/typeof': 'mw:Entity' } },
 			{ 'type': '/MWentity' },
-			{ 'type': 'MWentity', 'attributes': { 'character': '™', 'html/typeof': 'mw:Entity' } },
+			{ 'type': 'MWentity', 'attributes': { 'character': '™', 'html/0/typeof': 'mw:Entity' } },
 			{ 'type': '/MWentity' },
 			{ 'type': '/paragraph' }
 		]
@@ -1871,7 +1871,7 @@ ve.dm.example.domToDataCases = {
 			'a',
 			' ',
 			' ',
-			{ 'type': 'MWentity', 'attributes': { 'character': ' ', 'html/typeof': 'mw:Entity' } },
+			{ 'type': 'MWentity', 'attributes': { 'character': ' ', 'html/0/typeof': 'mw:Entity' } },
 			{ 'type': '/MWentity' },
 			' ',
 			' ',
@@ -1881,10 +1881,10 @@ ve.dm.example.domToDataCases = {
 			' ',
 			' ',
 			' ',
-			{ 'type': 'MWentity', 'attributes': { 'character': '¥', 'html/typeof': 'mw:Entity' } },
+			{ 'type': 'MWentity', 'attributes': { 'character': '¥', 'html/0/typeof': 'mw:Entity' } },
 			{ 'type': '/MWentity' },
 			'\t',
-			{ 'type': 'MWentity', 'attributes': { 'character': '™', 'html/typeof': 'mw:Entity' } },
+			{ 'type': 'MWentity', 'attributes': { 'character': '™', 'html/0/typeof': 'mw:Entity' } },
 			{ 'type': '/MWentity' },
 			{ 'type': '/paragraph' }
 		]
