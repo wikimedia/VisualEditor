@@ -110,6 +110,21 @@ ve.dm.NodeFactory.prototype.canNodeHaveGrandchildren = function ( type ) {
 };
 
 /**
+ * Check if a node represents metadata.
+ *
+ * @method
+ * @param {string} type Node type
+ * @returns {boolean} The node is meta
+ * @throws {Error} Unknown node type
+ */
+ve.dm.NodeFactory.prototype.isNodeMeta = function ( type ) {
+	if ( type in this.registry ) {
+		return this.registry[type].static.isMeta;
+	}
+	throw new Error( 'Unknown node type: ' + type );
+};
+
+/**
  * Check if a node has a wrapped element in the document data.
  *
  * @method

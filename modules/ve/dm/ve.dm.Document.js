@@ -68,7 +68,10 @@ ve.dm.Document = function VeDmDocument( data, parentDocument ) {
 			// Track the length
 			textLength++;
 		} else {
-			if ( this.data[i].type === 'metaInline' || this.data[i].type === 'metaBlock' ) {
+			if (
+				this.data[i].type.charAt( 0 ) !== '/' &&
+				ve.dm.nodeFactory.isNodeMeta( this.data[i].type )
+			) {
 				// Metadata
 				// Splice the meta element and its closing out of the linmod
 				meta = this.data[i];
