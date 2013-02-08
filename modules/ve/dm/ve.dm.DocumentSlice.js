@@ -8,7 +8,6 @@
 /**
  * DataModel document slice.
  *
- * @extends ve.Node
  * @constructor
  * @param {Array} data Balanced sliced data (will be deep copied internally)
  * @param {ve.Range} [range] Original context within data
