@@ -10,6 +10,12 @@
  *
  * A surface is a top-level object which contains both a surface model and a surface view.
  *
+ *     @example
+ *     new ve.Surface(
+ *         $( '<div>' ).appendTo( document.body ),
+ *         $( '<p>Hello world.</p>' )[0]
+ *     );
+ *
  * @class
  * @constructor
  * @param {string} parent Selector of element to attach to
