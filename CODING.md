@@ -31,7 +31,7 @@ $ gem install jsduck
 #### Run
 ```
 $ cd VisualEditor
-$ jsduck --config=.docs/config.json
+$ .docs/generate.sh
 # open http://localhost/VisualEditor/docs/
 ```
 
