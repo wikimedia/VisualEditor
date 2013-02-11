@@ -836,6 +836,39 @@
 		'map', 'object', 'pre', 'progress', 'video'
 	];
 
+	/**
+	 * Create an HTMLDocument from an HTML string
+	 *
+	 * The html parameter is supposed to be a full HTML document with a doctype and an <html> tag.
+	 * If you pass a document fragment, it may or may not work, this is at the mercy of the browser.
+	 *
+	 * To create an empty document, pass the empty string.
+	 *
+	 * @param {string} html HTML string
+	 * @returns {HTMLDocument} Document constructed from the HTML string
+	 */
+	ve.createDocumentFromHTML = function ( html ) {
+		// According to the spec we should be using DOMParser.prototype.parseFromString or
+		// document.implementation.createHTMLDocument, but the former only works in Firefox
+		// and the latter doesn't work in IE9 and below.
+		// So we're using the good old iframe trick.
+
+		// Create an invisible iframe
+		var newDocument, $iframe = $( '<iframe frameborder="0" width="0" height="0" />'),
+			iframe = $iframe.get( 0 );
+		// Attach it to the document. We have to do this to get a new document out of it
+		document.documentElement.appendChild( iframe );
+		// Write the HTML to it
+		newDocument = ( iframe.contentWindow || iframe.contentDocument ).document;
+		newDocument.open();
+		newDocument.write( html ); // Party like it's 1995!
+		newDocument.close();
+		// Detach the iframe
+		// FIXME detaching breaks access to newDocument in IE
+		iframe.parentNode.removeChild( iframe );
+		return newDocument;
+	};
+
 	// Expose
 	window.ve = ve;
 }() );
