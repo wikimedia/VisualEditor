@@ -14,7 +14,7 @@ $page = current( $pages );
 if ( isset( $_GET['page'] ) && in_array( $path . '/' . $_GET['page'] . '.html', $pages ) ) {
 	$page =  $path . '/' . $_GET['page'] . '.html';
 }
-$html = '<div>' . file_get_contents( $page ) . '</div>';
+$html = file_get_contents( $page );
 
 ?>
 <!DOCTYPE html>
@@ -215,7 +215,7 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 			$(document).ready( function () {
 				new ve.Surface(
 					$( '.ve-demo-content' ),
-					$( <?php echo json_encode( $html ) ?> )[0]
+					ve.createDocumentFromHTML( <?php echo json_encode( $html ) ?> )
 				);
 				$( '.ve-ce-documentNode' ).focus();
 			} );

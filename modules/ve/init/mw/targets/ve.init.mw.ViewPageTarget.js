@@ -293,12 +293,13 @@ ve.init.mw.ViewPageTarget.prototype.deactivate = function ( override ) {
  * Handle successful DOM load event.
  *
  * @method
- * @param {HTMLElement} dom Parsed DOM from server
+ * @param {HTMLDocument} doc Parsed DOM from server
  */
-ve.init.mw.ViewPageTarget.prototype.onLoad = function ( dom ) {
+ve.init.mw.ViewPageTarget.prototype.onLoad = function ( doc ) {
 	if ( this.activating ) {
 		this.edited = false;
-		this.setUpSurface( dom );
+		this.doc = doc;
+		this.setUpSurface( doc );
 		this.setupToolbarEditNotices();
 		this.setupToolbarButtons();
 		this.setupSaveDialog();
@@ -677,15 +678,15 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarEditNotices = function () {
  * Switch to editing mode.
  *
  * @method
- * @param {HTMLElement} dom HTML DOM to edit
+ * @param {HTMLDocument} doc HTML DOM to edit
  */
-ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( dom ) {
+ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc ) {
 	var $contentText = $( '#mw-content-text' );
 
 	// Store the HTML for reporting purposes
-	this.originalHtml = dom.innerHTML;
+	this.originalHtml = doc.body.innerHTML; // TODO store entire document in the future
 	// Initialize surface
-	this.surface = new ve.Surface( $( '#content' ), dom, this.surfaceOptions );
+	this.surface = new ve.Surface( $( '#content' ), doc, this.surfaceOptions );
 	this.surface.getContext().hide();
 	this.$document = this.surface.$.find( '.ve-ce-documentNode' );
 	this.surface.getModel().on( 'transact', this.proxiedOnSurfaceModelTransact );

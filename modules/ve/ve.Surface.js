@@ -19,13 +19,13 @@
  * @class
  * @constructor
  * @param {string} parent Selector of element to attach to
- * @param {HTMLElement} dom HTML element of document to edit
+ * @param {HTMLDocument} doc HTML document to edit
  * @param {Object} options Configuration options
  */
-ve.Surface = function VeSurface( parent, dom, options ) {
+ve.Surface = function VeSurface( parent, doc, options ) {
 	// Properties
 	this.$ = $( '<div>' );
-	this.documentModel = new ve.dm.Document( ve.dm.converter.getDataFromDom( dom ) );
+	this.documentModel = new ve.dm.Document( ve.dm.converter.getDataFromDom( doc ) );
 	this.options = ve.extendObject( true, ve.Surface.defaultOptions, options );
 	this.model = new ve.dm.Surface( this.documentModel );
 	this.view = new ve.ce.Surface( this.$, this.model, this );

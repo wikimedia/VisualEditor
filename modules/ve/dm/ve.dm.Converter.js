@@ -95,21 +95,22 @@ ve.dm.Converter.prototype.onNodeRegister = function ( dataElementType, construct
  *
  * @method
  * @param {Object} dataElement Linear model element
+ * @param {HTMLDocument} doc Document to create DOM elements in
  * @returns {HTMLElement|boolean} DOM element, or false if the element cannot be converted
  */
-ve.dm.Converter.prototype.getDomElementFromDataElement = function ( dataElement ) {
+ve.dm.Converter.prototype.getDomElementFromDataElement = function ( dataElement, doc ) {
 	var key, domElement, dataElementAttributes, wrapper,
 		dataElementType = dataElement.type;
 	if ( dataElementType === 'alienInline' || dataElementType === 'alienBlock' ) {
 		// Alien
 		// Create nodes from source
-		wrapper = document.createElement( 'div' );
+		wrapper = doc.createElement( 'div' );
 		wrapper.innerHTML = dataElement.attributes.html;
 		if ( wrapper.childNodes.length > 1 ) {
 			// Wrap the HTML in a single element, this makes
 			// it much easier to deal with. It'll be unwrapped
 			// at the end of getDomFromData().
-			domElement = document.createElement( 'div' );
+			domElement = doc.createElement( 'div' );
 			domElement.setAttribute( 'data-ve-multi-child-alien-wrapper', 'true' );
 			while ( wrapper.firstChild ) {
 				domElement.appendChild( wrapper.firstChild );
@@ -204,28 +205,36 @@ ve.dm.Converter.prototype.getDataAnnotationFromDomElement = function ( domElemen
  * @param {Object} dataAnnotation Annotation object
  * @returns {HTMLElement} HTML DOM node
  */
-ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function ( dataAnnotation ) {
+ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function ( dataAnnotation, doc ) {
 	var htmlData = dataAnnotation.toHTML(),
-		domElement = document.createElement( htmlData.tag );
+		domElement = doc.createElement( htmlData.tag );
 	ve.setDomAttributes( domElement, htmlData.attributes );
 	return domElement;
 };
 
 /**
- * Convert an HTML DOM tree to a linear model.
- *
- * Do not use the annotations, dataElement and path parameters, they're used for internal
- * recursion only.
+ * Convert an HTML document to a linear model.
+ * @param {HTMLDocument} doc HTML document to convert
+ * @returns {Array} Linear model data
+ */
+ve.dm.Converter.prototype.getDataFromDom = function ( doc ) {
+	// Possibly do things with doc and the head in the future
+	return this.getDataFromDomRecursion( doc.body );
+};
+
+/**
+ * Recursive implementation of getDataFromDom(). For internal use.
  *
  * @method
- * @param {HTMLElement} domElement Wrapper div containing the HTML to convert
+ * @param {HTMLElement} domElement HTML element to convert
  * @param {ve.AnnotationSet} [annotations] Annotations to apply to the generated data
  * @param {Object} [dataElement] Data element to wrap the returned data in
  * @param {Array} [path] Array of linear model element types
  * @param {boolean} [alreadyWrapped] Whether the caller has already started wrapping bare content in a paragraph
  * @returns {Array} Linear model data
  */
-ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, dataElement, path, alreadyWrapped ) {
+ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, annotations,
+		dataElement, path, alreadyWrapped ) {
 	function createAlien( domElement, context, isWrapper ) {
 		// We generate alienBlock elements for block tags and alienInline elements for
 		// inline tags; unless we're in a content location, in which case we have no choice
@@ -242,7 +251,7 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 		if ( isWrapper ) {
 			html =  $( domElement ).html();
 		} else {
-			html = $( '<div>' ).append( $( domElement ).clone() ).html();
+			html = $( '<div>', doc ).append( $( domElement ).clone() ).html();
 		}
 		alien = [
 			{
@@ -342,7 +351,7 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 					// This is the second child in this group, so the
 					// previous child is the first child in this group.
 					// Wrap the previous child
-					aboutWrapper = document.createElement( 'div' );
+					aboutWrapper = doc.createElement( 'div' );
 					aboutWrapper.setAttribute( 'data-ve-aboutgroup', aboutGroup );
 					element.insertBefore( aboutWrapper, prevChild );
 					aboutWrapper.appendChild( prevChild );
@@ -373,6 +382,7 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 	path = path || ['document'];
 	var i, j, childDomElement, annotation, childDataElement, text, childTypes, matches,
 		wrappingParagraph, prevElement, alien, rdfaType, isLink, childAnnotations,
+		doc = domElement.ownerDocument,
 		data = [],
 		branchType = path[path.length - 1],
 		branchHasContent = this.nodeFactory.canNodeContainContent( branchType ),
@@ -493,7 +503,7 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 					childAnnotations = annotations.clone();
 					childAnnotations.push( annotation );
 					data = data.concat(
-						this.getDataFromDom(
+						this.getDataFromDomRecursion(
 							childDomElement, childAnnotations,
 							undefined, path, context.wrapping
 						)
@@ -524,7 +534,7 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
 						if ( this.nodeFactory.canNodeHaveChildren( childDataElement.type ) ) {
 							// Append child element data
 							data = data.concat(
-								this.getDataFromDom(
+								this.getDataFromDomRecursion(
 									childDomElement,
 									new ve.AnnotationSet(),
 									childDataElement,
@@ -744,13 +754,14 @@ ve.dm.Converter.prototype.getDataFromDom = function ( domElement, annotations, d
  *
  * @method
  * @param {Array} data Linear model data
- * @returns {HTMLElement} Wrapper div containing the resulting HTML
+ * @returns {HTMLDocument} Document containing the resulting HTML
  */
 ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 	var text, i, j, k, annotations, annotation, annotationElement, dataElement, arr,
 		childDomElement, pre, ours, theirs, parentDomElement, startClosingAt,
 		isContentNode, changed, parentChanged,
-		container = document.createElement( 'div' ),
+		doc = ve.createDocumentFromHTML( '' ),
+		container = doc.body,
 		domElement = container,
 		annotationStack = new ve.AnnotationSet();
 
@@ -766,7 +777,7 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 			// i points to the first non-text thing, go back one so we don't skip this later
 			i--;
 			// Add text
-			domElement.appendChild( document.createTextNode( text ) );
+			domElement.appendChild( doc.createTextNode( text ) );
 		} else if (
 			ve.isArray( data[i] ) ||
 			(
@@ -802,7 +813,7 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 					for ( j = annotationStack.getLength() - 1; j >= startClosingAt; j-- ) {
 						// Add text if needed
 						if ( text.length > 0 ) {
-							domElement.appendChild( document.createTextNode( text ) );
+							domElement.appendChild( doc.createTextNode( text ) );
 							text = '';
 						}
 						// Traverse up
@@ -819,11 +830,11 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 					if ( !annotationStack.contains( annotation ) ) {
 						// Add text if needed
 						if ( text.length > 0 ) {
-							domElement.appendChild( document.createTextNode( text ) );
+							domElement.appendChild( doc.createTextNode( text ) );
 							text = '';
 						}
 						// Create new node and descend into it
-						annotationElement = this.getDomElementFromDataAnnotation( annotation );
+						annotationElement = this.getDomElementFromDataAnnotation( annotation, doc );
 						domElement.appendChild( annotationElement );
 						domElement = annotationElement;
 						// Add to annotationStack
@@ -838,11 +849,11 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 					// Annotated node
 					// Add text if needed
 					if ( text.length > 0 ) {
-						domElement.appendChild( document.createTextNode( text ) );
+						domElement.appendChild( doc.createTextNode( text ) );
 						text = '';
 					}
 					// Insert the element
-					domElement.appendChild( this.getDomElementFromDataElement( data[i] ) );
+					domElement.appendChild( this.getDomElementFromDataElement( data[i], doc ) );
 					// Increment i once more so we skip over the closing as well
 					i++;
 				}
@@ -853,7 +864,7 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 
 			// Add any gathered text
 			if ( text.length > 0 ) {
-				domElement.appendChild( document.createTextNode( text ) );
+				domElement.appendChild( doc.createTextNode( text ) );
 				text = '';
 			}
 			// Close any remaining annotation nodes
@@ -890,7 +901,7 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 						} else {
 							// Prepend a TextNode
 							domElement.insertBefore(
-								document.createTextNode( pre ),
+								doc.createTextNode( pre ),
 								domElement.firstChild
 							);
 						}
@@ -914,7 +925,7 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 						} else {
 							// Append a TextNode
 							domElement.appendChild(
-								document.createTextNode( ours )
+								doc.createTextNode( ours )
 							);
 						}
 					}
@@ -977,7 +988,7 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 				domElement = parentDomElement;
 			} else {
 				// Create node from data
-				childDomElement = this.getDomElementFromDataElement( dataElement );
+				childDomElement = this.getDomElementFromDataElement( dataElement, doc );
 				// Add reference to internal data
 				if ( dataElement.internal ) {
 					childDomElement.veInternal = dataElement.internal;
@@ -1023,7 +1034,7 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 					if ( ours && ours === theirs ) {
 						// Matches the duplicate, insert a TextNode
 						parentDomElement.insertBefore(
-							document.createTextNode( ours ),
+							doc.createTextNode( ours ),
 							domElement
 						);
 					}
@@ -1038,7 +1049,7 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 			container.lastChild.appendData( container.lastOuterPost );
 		} else {
 			// Append a TextNode
-			container.appendChild( document.createTextNode( container.lastOuterPost ) );
+			container.appendChild( doc.createTextNode( container.lastOuterPost ) );
 		}
 		delete container.lastOuterPost;
 	}
@@ -1063,7 +1074,7 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 			}
 		}
 	} );
-	return container;
+	return doc;
 };
 
 /* Initialization */

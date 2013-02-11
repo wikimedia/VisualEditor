@@ -651,7 +651,7 @@ ve.dm.example.conversions = {
 
 ve.dm.example.domToDataCases = {
 	'paragraph with plain text': {
-		'html': '<p>abc</p>',
+		'html': '<body><p>abc</p></body>',
 		'data': [
 			{ 'type': 'paragraph' },
 			'a',
@@ -661,7 +661,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'annotated text with bold, italic, underline formatting': {
-		'html': '<p><b>a</b><i>b</i><u>c</u></p>',
+		'html': '<body><p><b>a</b><i>b</i><u>c</u></p></body>',
 		'data': [
 			{ 'type': 'paragraph' },
 			['a', [ ve.dm.example.bold ]],
@@ -671,7 +671,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'image': {
-		'html': '<img src="image.png">',
+		'html': '<body><img src="image.png"></body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			{ 'type': 'image', 'attributes' : { 'html/0/src' : 'image.png' } },
@@ -680,7 +680,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'paragraph with alienInline inside': {
-		'html': '<p>a<tt class="foo">b</tt>c</p>',
+		'html': '<body><p>a<tt class="foo">b</tt>c</p></body>',
 		'data': [
 			{ 'type': 'paragraph' },
 			'a',
@@ -694,7 +694,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'paragraphs with an alienBlock between them': {
-		'html': '<p>abc</p><figure>abc</figure><p>def</p>',
+		'html': '<body><p>abc</p><figure>abc</figure><p>def</p></body>',
 		'data': [
 			{ 'type': 'paragraph' },
 			'a',
@@ -711,8 +711,8 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'annotated inline nodes': {
-		'html': '<p>a<b><tt class="foo">b</tt><i><span typeof="mw:Entity">c</span></i></b>' +
-			'<i><br/>d</i>e</p>',
+		'html': '<body><p>a<b><tt class="foo">b</tt><i><span typeof="mw:Entity">c</span></i></b>' +
+			'<i><br/>d</i>e</p></body>',
 		'data': [
 			{ 'type': 'paragraph' },
 			'a',
@@ -739,7 +739,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'wrapping of bare content': {
-		'html': 'abc',
+		'html': '<body>abc</body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			'a',
@@ -749,7 +749,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'wrapping of bare content with inline node': {
-		'html': '1<br/>2',
+		'html': '<body>1<br/>2</body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			'1',
@@ -760,7 +760,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'wrapping of bare content starting with inline node': {
-		'html': '<img src="foo.jpg">12',
+		'html': '<body><img src="foo.jpg">12</body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			{ 'type': 'image', 'attributes': { 'html/0/src': 'foo.jpg' } },
@@ -771,7 +771,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'wrapping of bare content with inline alien': {
-		'html': '1<tt class="bar">baz</tt>2',
+		'html': '<body>1<tt class="bar">baz</tt>2</body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			'1',
@@ -785,7 +785,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'wrapping of bare content with block alien': {
-		'html': '1<figure class="bar">baz</figure>2',
+		'html': '<body>1<figure class="bar">baz</figure>2</body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			'1',
@@ -801,7 +801,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'wrapping of bare content with mw:unrecognized inline alien': {
-		'html': '1<span typeof="mw:Placeholder">baz</span>2',
+		'html': '<body>1<span typeof="mw:Placeholder">baz</span>2</body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			'1',
@@ -815,7 +815,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'wrapping of bare content with mw:unrecognized block alien': {
-		'html': '1<div typeof="mw:Placeholder">baz</div>2',
+		'html': '<body>1<div typeof="mw:Placeholder">baz</div>2</body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			'1',
@@ -831,7 +831,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'wrapping of bare content starting with mw:unrecognized inline alien': {
-		'html': '<span typeof="mw:Placeholder">Foo</span>Bar',
+		'html': '<body><span typeof="mw:Placeholder">Foo</span>Bar</body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			{
@@ -846,7 +846,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'wrapping of bare content ending with mw:unrecognized inline alien': {
-		'html': 'Foo<span typeof="mw:Placeholder">Bar</span>',
+		'html': '<body>Foo<span typeof="mw:Placeholder">Bar</span></body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			'F',
@@ -861,7 +861,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'wrapping of bare content with about group': {
-		'html': '1<tt about="#mwt1">foo</tt><tt about="#mwt1">bar</tt>2',
+		'html': '<body>1<tt about="#mwt1">foo</tt><tt about="#mwt1">bar</tt>2</body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			'1',
@@ -877,7 +877,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'wrapping of bare content between structural nodes': {
-		'html': '<table></table>abc<table></table>',
+		'html': '<body><table></table>abc<table></table></body>',
 		'data': [
 			{ 'type': 'table' },
 			{ 'type': '/table' },
@@ -891,7 +891,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'wrapping of bare content between paragraphs': {
-		'html': '<p>abc</p>def<p></p>',
+		'html': '<body><p>abc</p>def<p></p></body>',
 		'data': [
 			{ 'type': 'paragraph' },
 			'a',
@@ -908,7 +908,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'wrapping prevents empty list items': {
-		'html': '<ul><li></li></ul>',
+		'html': '<body><ul><li></li></ul></body>',
 		'data': [
 			{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
 			{ 'type': 'listItem' },
@@ -934,7 +934,7 @@ ve.dm.example.domToDataCases = {
 			'o',
 			{ 'type': '/paragraph' }
 		],
-		'normalizedHtml': '<p>Foo</p>'
+		'normalizedHtml': '<body><p>Foo</p></body>'
 	},
 	'empty list item with content added by the editor': {
 		'html': null,
@@ -949,14 +949,14 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/listItem' },
 			{ 'type': '/list' }
 		],
-		'normalizedHtml': '<ul><li><p>Foo</p></li></ul>'
+		'normalizedHtml': '<body><ul><li><p>Foo</p></li></ul></body>'
 	},
 	'example document': {
 		'html': ve.dm.example.html,
 		'data': ve.dm.example.data
 	},
 	'list item with space followed by link': {
-		'html': '<ul><li><p> <a rel="mw:WikiLink" href="Foo_bar" data-rt="{&quot;sHref&quot;:&quot;foo bar&quot;}">bar</a></p></li></ul>',
+		'html': '<body><ul><li><p> <a rel="mw:WikiLink" href="Foo_bar" data-rt="{&quot;sHref&quot;:&quot;foo bar&quot;}">bar</a></p></li></ul></body>',
 		'data': [
 			{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
 			{ 'type': 'listItem' },
@@ -1018,8 +1018,8 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'internal link with ./ and ../': {
-		'html': '<p><a rel="mw:WikiLink" href="./../../../Foo/Bar">Foo</a></p>',
-		'normalizedHtml': '<p><a rel="mw:WikiLink" href="./../../../Foo/Bar">Foo</a></p>',
+		'html': '<body><p><a rel="mw:WikiLink" href="./../../../Foo/Bar">Foo</a></p></body>',
+		'normalizedHtml': '<body><p><a rel="mw:WikiLink" href="./../../../Foo/Bar">Foo</a></p></body>',
 		'data': [
 			{ 'type': 'paragraph' },
 			[
@@ -1074,7 +1074,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'numbered external link': {
-		'html': '<p><a rel="mw:ExtLink/Numbered" href="http://www.mediawiki.org/">[1]</a></p>',
+		'html': '<body><p><a rel="mw:ExtLink/Numbered" href="http://www.mediawiki.org/">[1]</a></p></body>',
 		'data': [
 			{ 'type': 'paragraph' },
 			[
@@ -1123,7 +1123,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'URL link': {
-		'html': '<p><a rel="mw:ExtLink/URL" href="http://www.mediawiki.org/">mw</a></p>',
+		'html': '<body><p><a rel="mw:ExtLink/URL" href="http://www.mediawiki.org/">mw</a></p></body>',
 		'data': [
 			{ 'type': 'paragraph' },
 			[
@@ -1158,7 +1158,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'whitespace preservation in headings': {
-		'html': '<h2>Foo</h2><h2> Bar</h2><h2>Baz </h2><h2>  Quux   </h2>',
+		'html': '<body><h2>Foo</h2><h2> Bar</h2><h2>Baz </h2><h2>  Quux   </h2></body>',
 		'data': [
 			{ 'type': 'heading', 'attributes': { 'level': 2 } },
 			'F',
@@ -1196,7 +1196,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'whitespace preservation in list items': {
-		'html': '<ul><li>Foo</li><li> Bar</li><li>Baz </li><li>  Quux   </li></ul>',
+		'html': '<body><ul><li>Foo</li><li> Bar</li><li>Baz </li><li>  Quux   </li></ul></body>',
 		'data': [
 			{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
 			{ 'type': 'listItem' },
@@ -1235,7 +1235,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'whitespace preservation with annotations': {
-		'html': '<p> <i>  Foo   </i>    </p>',
+		'html': '<body><p> <i>  Foo   </i>    </p></body>',
 		'data': [
 			{
 				'type': 'paragraph',
@@ -1253,7 +1253,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'outer whitespace preservation in a list with bare text and a wrapper paragraph': {
-		'html': '\n<ul>\n\n<li>\n\n\nBa re\n\n\n\n</li>\n\n\n\n\n<li>\t<p>\t\tP\t\t\t</p>\t\t\t\t</li>\t\n</ul>\t\n\t\n',
+		'html': '<body>\n<ul>\n\n<li>\n\n\nBa re\n\n\n\n</li>\n\n\n\n\n<li>\t<p>\t\tP\t\t\t</p>\t\t\t\t</li>\t\n</ul>\t\n\t\n</body>',
 		'data': [
 			{ 'type': 'list', 'attributes': { 'style': 'bullet' }, 'internal': { 'whitespace': [ '\n', '\n\n', '\t\n', '\t\n\t\n' ] } },
 			{ 'type': 'listItem', 'internal': { 'whitespace': [ '\n\n', '\n\n\n', '\n\n\n\n', '\n\n\n\n\n' ] } },
@@ -1274,7 +1274,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'outer whitespace preservation in a list with bare text and a sublist': {
-		'html': '<ul>\n<li>\n\nBa re\n\n\n<ul>\n\n\n\n<li> <p>  P   </p>    </li>\t</ul>\t\t</li>\t\t\t</ul>',
+		'html': '<body><ul>\n<li>\n\nBa re\n\n\n<ul>\n\n\n\n<li> <p>  P   </p>    </li>\t</ul>\t\t</li>\t\t\t</ul></body>',
 		'data': [
 			{ 'type': 'list', 'attributes': { 'style': 'bullet' }, 'internal': { 'whitespace': [ undefined, '\n', '\t\t\t' ] } },
 			{ 'type': 'listItem', 'internal': { 'whitespace': [ '\n', '\n\n', '\t\t', '\t\t\t' ] } },
@@ -1297,7 +1297,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'whitespace preservation leaves non-edge content whitespace alone': {
-		'html': '<p> A  B   <b>    C\t</b>\t\tD\t\t\t</p>\nE\n\nF\n\n\n<b>\n\n\n\nG </b>  H   ',
+		'html': '<body><p> A  B   <b>    C\t</b>\t\tD\t\t\t</p>\nE\n\nF\n\n\n<b>\n\n\n\nG </b>  H   </body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'whitespace': [ undefined, ' ', '\t\t\t', '\n' ] } },
 			'A',
@@ -1338,7 +1338,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'whitespace preservation with non-edge content whitespace with nested annotations': {
-		'html': '<p> A  B   <b>    C\t<i>\t\tD\t\t\t</i>\t\t\t\tE\n</b>\n\nF\n\n\n</p>',
+		'html': '<body><p> A  B   <b>    C\t<i>\t\tD\t\t\t</i>\t\t\t\tE\n</b>\n\nF\n\n\n</p></body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'whitespace': [ undefined, ' ', '\n\n\n' ] } },
 			'A',
@@ -1373,7 +1373,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'whitespace preservation with tightly nested annotations': {
-		'html': '<p> A  B   <b><i>\t\tC\t\t\t</i></b>\n\nD\n\n\n</p>',
+		'html': '<body><p> A  B   <b><i>\t\tC\t\t\t</i></b>\n\nD\n\n\n</p></body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'whitespace': [ undefined, ' ', '\n\n\n' ] } },
 			'A',
@@ -1396,7 +1396,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'whitespace preservation with nested annotations with whitespace on the left side': {
-		'html': '<p> A  B   <b>\n\t<i>\t\tC\t\t\t</i></b>\n\nD\n\n\n</p>',
+		'html': '<body><p> A  B   <b>\n\t<i>\t\tC\t\t\t</i></b>\n\nD\n\n\n</p></body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'whitespace': [ undefined, ' ', '\n\n\n' ] } },
 			'A',
@@ -1421,7 +1421,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'whitespace preservation with nested annotations with whitespace on the right side': {
-		'html': '<p> A  B   <b><i>\t\tC\t\t\t</i>\n\t</b>\n\nD\n\n\n</p>',
+		'html': '<body><p> A  B   <b><i>\t\tC\t\t\t</i>\n\t</b>\n\nD\n\n\n</p></body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'whitespace': [ undefined, ' ', '\n\n\n' ] } },
 			'A',
@@ -1446,7 +1446,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'whitespace preservation with aliens': {
-		'html': ' <p typeof="mw:Placeholder">  <br>   </p>    <p>\tFoo\t\t<tt>\t\t\tBar\t\t\t\t</tt>\nBaz\n\n<span typeof="mw:Placeholder">\n\n\nQuux\n\n\n\n</span> \tWhee \n</p>\t\n<figure>\n\tYay \t </figure> \n ',
+		'html': '<body> <p typeof="mw:Placeholder">  <br>   </p>    <p>\tFoo\t\t<tt>\t\t\tBar\t\t\t\t</tt>\nBaz\n\n<span typeof="mw:Placeholder">\n\n\nQuux\n\n\n\n</span> \tWhee \n</p>\t\n<figure>\n\tYay \t </figure> \n </body>',
 		'data': [
 			{
 				'type': 'alienBlock',
@@ -1499,7 +1499,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'whitespace preservation not triggered inside <pre>': {
-		'html': '\n<pre>\n\n\nFoo\n\n\nBar\n\n\n\n</pre>\n\n\n\n\n',
+		'html': '<body>\n<pre>\n\n\nFoo\n\n\nBar\n\n\n\n</pre>\n\n\n\n\n</body>',
 		'data': [
 			{ 'type': 'preformatted', 'internal': { 'whitespace': ['\n', undefined, undefined, '\n\n\n\n\n' ] } },
 			'\n',
@@ -1522,7 +1522,7 @@ ve.dm.example.domToDataCases = {
 		// pre newline hack
 		// TODO we should test this using a better, more .innerHTML-based mechanism for
 		// comparing DOM trees
-		'normalizedHtml': '\n<pre>\n\n\n\nFoo\n\n\nBar\n\n\n\n</pre>\n\n\n\n\n'
+		'normalizedHtml': '<body>\n<pre>\n\n\n\nFoo\n\n\nBar\n\n\n\n</pre>\n\n\n\n\n</body>'
 	},
 	'mismatching whitespace data is ignored': {
 		'html': null,
@@ -1538,10 +1538,10 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/listItem' },
 			{ 'type': '/list' }
 		],
-		'normalizedHtml': ' <ul><li><p>\tA\n</p>  <p>B</p></li></ul>    '
+		'normalizedHtml': '<body> <ul><li><p>\tA\n</p>  <p>B</p></li></ul>    </body>'
 	},
 	'order of nested annotations is preserved': {
-		'html': '<p><b><a rel="mw:WikiLink" href="Foo"><i>Foo</i></a></b></p>',
+		'html': '<body><p><b><a rel="mw:WikiLink" href="Foo"><i>Foo</i></a></b></p></body>',
 		'data': [
 			{ 'type': 'paragraph' },
 			[
@@ -1608,7 +1608,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'nested annotations are closed and reopened in the correct order': {
-		'html': '<p><a rel="mw:WikiLink" href="Foo">F<b>o<i>o</i></b><i>b</i></a><i>a<b>r</b>b<u>a</u>z</i></p>',
+		'html': '<body><p><a rel="mw:WikiLink" href="Foo">F<b>o<i>o</i></b><i>b</i></a><i>a<b>r</b>b<u>a</u>z</i></p></body>',
 		'data': [
 			{ 'type': 'paragraph' },
 			[
@@ -1723,12 +1723,12 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'document with meta elements': {
-		'html': '<!-- No content conversion --><meta property="mw:PageProp/nocc" /><p>Foo' +
+		'html': '<body><!-- No content conversion --><meta property="mw:PageProp/nocc" /><p>Foo' +
 			'<link rel="mw:WikiLink/Category" href="./Category:Bar" />Bar' +
 			'<meta property="mw:foo" content="bar" />Ba<!-- inline -->z</p>' +
 			'<meta property="mw:bar" content="baz" /><!--barbaz-->' +
 			'<link rel="mw:WikiLink/Category" href="./Category:Foo#Bar baz%23quux" />' +
-			'<meta typeof="mw:Placeholder" data-parsoid="foobar" />',
+			'<meta typeof="mw:Placeholder" data-parsoid="foobar" /></body>',
 		'data': ve.dm.example.withMeta
 	},
 	'change markers': {
@@ -1762,19 +1762,19 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/listItem' },
 			{ 'type': '/list' }
 		],
-		'normalizedHtml': '<p data-ve-changed="{&quot;content&quot;:1}">' +
+		'normalizedHtml': '<body><p data-ve-changed="{&quot;content&quot;:1}">' +
 				'Foo<img data-ve-changed="{&quot;attributes&quot;:2}" />' +
 				'</p><p data-ve-changed="{&quot;created&quot;:1}">Bar</p>' +
-				'<ul><li data-ve-changed="{&quot;content&quot;:1}">Baz</li></ul>'
+				'<ul><li data-ve-changed="{&quot;content&quot;:1}">Baz</li></ul></body>'
 	},
 	'about grouping': {
-		'html': '<div typeof="mw:Placeholder" about="#mwt1">Foo</div>' +
+		'html': '<body><div typeof="mw:Placeholder" about="#mwt1">Foo</div>' +
 			'<figure typeof="mw:Placeholder" about="#mwt1">Bar</figure>' +
 			'<figure typeof="mw:Placeholder" about="#mwt2">Baz</figure>' +
 			'<span typeof="mw:Placeholder" about="#mwt2">Quux</span>' +
 			'<p>Whee</p><span typeof="mw:Placeholder" about="#mwt2">Yay</span>' +
 			'<div typeof="mw:Placeholder" about="#mwt2">Blah</div>' +
-			'<span typeof="mw:Placeholder" about="#mwt3">Meh</span>',
+			'<span typeof="mw:Placeholder" about="#mwt3">Meh</span></body>',
 		'data': [
 			{
 				'type': 'alienBlock',
@@ -1818,8 +1818,8 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'whitespace preservation with an about group': {
-		'html': ' <div typeof="mw:Placeholder" about="#mwt1">\tFoo\t\t</div>\t\t\t' +
-			'<div typeof="mw:Placeholder" about="#mwt1">  Bar   </div>    ',
+		'html': '<body> <div typeof="mw:Placeholder" about="#mwt1">\tFoo\t\t</div>\t\t\t' +
+			'<div typeof="mw:Placeholder" about="#mwt1">  Bar   </div>    </body>',
 		'data': [
 			{
 				'type': 'alienBlock',
@@ -1835,7 +1835,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'mw:Entity': {
-		'html': '<p>a<span typeof="mw:Entity">¢</span>b<span typeof="mw:Entity">¥</span><span typeof="mw:Entity">™</span></p>',
+		'html': '<body><p>a<span typeof="mw:Entity">¢</span>b<span typeof="mw:Entity">¥</span><span typeof="mw:Entity">™</span></p></body>',
 		'data': [
 			{ 'type': 'paragraph' },
 			'a',
@@ -1850,7 +1850,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'wrapping with mw:Entity': {
-		'html': 'a<span typeof="mw:Entity">¢</span>b<span typeof="mw:Entity">¥</span><span typeof="mw:Entity">™</span>',
+		'html': '<body>a<span typeof="mw:Entity">¢</span>b<span typeof="mw:Entity">¥</span><span typeof="mw:Entity">™</span></body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			'a',
@@ -1865,7 +1865,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'whitespace preservation with mw:Entity': {
-		'html': '<p> a  <span typeof="mw:Entity"> </span>   b    <span typeof="mw:Entity">¥</span>\t<span typeof="mw:Entity">™</span></p>',
+		'html': '<body><p> a  <span typeof="mw:Entity"> </span>   b    <span typeof="mw:Entity">¥</span>\t<span typeof="mw:Entity">™</span></p></body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'whitespace': [ undefined, ' ' ] } },
 			'a',
@@ -1890,7 +1890,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'block node inside annotation node is alienated': {
-		'html': '<span>\n<p>Bar</p></span>',
+		'html': '<body><span>\n<p>Bar</p></span></body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			[ '\n', [ ve.dm.example.span ] ],
@@ -1906,7 +1906,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'block node inside annotation node surrounded by tables': {
-		'html': '<table></table><span>\n<p>Bar</p></span><table></table>',
+		'html': '<body><table></table><span>\n<p>Bar</p></span><table></table></body>',
 		'data': [
 			{ 'type': 'table' },
 			{ 'type': '/table' },
@@ -1926,7 +1926,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'block node inside annotation node is alienated and continues wrapping': {
-		'html': 'Foo<span>\n<p>Bar</p></span>Baz',
+		'html': '<body>Foo<span>\n<p>Bar</p></span>Baz</body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			'F',
@@ -1948,7 +1948,7 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'whitespace before meta node in wrapping mode': {
-		'html': '<table><tbody><tr><td>Foo\n<meta property="mw:foo" content="bar" /></td></tr></tbody></table>',
+		'html': '<body><table><tbody><tr><td>Foo\n<meta property="mw:foo" content="bar" /></td></tr></tbody></table></body>',
 		'data': [
 			{ 'type': 'table' },
 			{ 'type': 'tableSection', 'attributes': { 'style': 'body' } },

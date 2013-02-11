@@ -40,7 +40,7 @@ ve.init.mw.Target = function VeInitMwTarget( pageName, revision ) {
 	this.submitting = false;
 	this.baseTimeStamp = null;
 	this.startTimeStamp = null;
-	this.dom = null;
+	this.doc = null;
 	this.editNotices = null;
 	this.isMobileDevice = (
 		'ontouchstart' in window ||
@@ -78,7 +78,7 @@ ve.inheritClass( ve.init.mw.Target, ve.EventEmitter );
  * Handle response to a successful load request.
  *
  * This method is called within the context of a target instance. If successful the DOM from the
- * server will be parsed, stored in {this.dom} and then {ve.init.mw.Target.onReady} will be called once
+ * server will be parsed, stored in {this.doc} and then {ve.init.mw.Target.onReady} will be called once
  * the modules are ready.
  *
  * @static
@@ -88,7 +88,7 @@ ve.inheritClass( ve.init.mw.Target, ve.EventEmitter );
  * @emits loadError (null, message, null)
  */
 ve.init.mw.Target.onLoad = function ( response ) {
-	var key, tmp, el,
+	var key, tmp, el, html,
 		data = response ? response.visualeditor : null;
 
 	if ( !data && !response.error ) {
@@ -102,7 +102,14 @@ ve.init.mw.Target.onLoad = function ( response ) {
 			this, null, 'No HTML content in response from server', null
 		);
 	} else {
-		this.dom = $( '<div>' ).html( data.content )[0];
+		// HACK for backwards compatibility with older versions of Parsoid, detect whether
+		// data.content is a document fragment or a full HTML document
+		if ( data.content.match( /<(html|head|body)(>|\s)/ ) ) {
+			html = data.content;
+		} else {
+			html = '<!doctype html><html><head></head><body>' + data.content + '</body></html>';
+		}
+		this.doc = ve.createDocumentFromHTML( html );
 
 		/* Don't show notices with no visible html (bug 43013). */
 
@@ -146,7 +153,7 @@ ve.init.mw.Target.onLoad = function ( response ) {
  * Handle both DOM and modules being loaded and ready.
  *
  * This method is called within the context of a target instance. After the load event is emitted
- * this.dom is cleared, allowing it to be garbage collected.
+ * this.doc is cleared, allowing it to be garbage collected.
  *
  * @static
  * @method
@@ -154,9 +161,9 @@ ve.init.mw.Target.onLoad = function ( response ) {
  */
 ve.init.mw.Target.onReady = function () {
 	this.loading = false;
-	this.emit( 'load', this.dom );
+	this.emit( 'load', this.doc );
 	// Release DOM data
-	this.dom = null;
+	this.doc = null;
 };
 
 /**
@@ -372,14 +379,14 @@ ve.init.mw.Target.prototype.load = function () {
  *     target.save( dom, { 'summary': 'test', 'minor': true, 'watch': false } );
  *
  * @method
- * @param {HTMLElement} dom DOM to save
+ * @param {HTMLDocument} doc Document to save
  * @param {Object} options Saving options
  *  - {string} summary Edit summary
  *  - {boolean} minor Edit is a minor edit
  *  - {boolean} watch Watch the page
  * @returns {boolean} Saving has been started
 */
-ve.init.mw.Target.prototype.save = function ( dom, options ) {
+ve.init.mw.Target.prototype.save = function ( doc, options ) {
 	// Prevent duplicate requests
 	if ( this.saving ) {
 		return false;
@@ -396,7 +403,7 @@ ve.init.mw.Target.prototype.save = function ( dom, options ) {
 			'oldid': this.oldid,
 			'basetimestamp': this.baseTimeStamp,
 			'starttimestamp': this.startTimeStamp,
-			'html': $( dom ).html(),
+			'html': doc.body.innerHTML, // TODO make this send the whole document in the future
 			'token': this.editToken,
 			'summary': options.summary,
 			'minor': Number( options.minor ),
@@ -416,9 +423,9 @@ ve.init.mw.Target.prototype.save = function ( dom, options ) {
  * Post DOM data to the Parsoid API to retreive wikitext diff.
  *
  * @method
- * @param {HTMLElement} dom DOM to compare against (via wikitext).
+ * @param {HTMLDocument} doc Document to compare against (via wikitext).
 */
-ve.init.mw.Target.prototype.showChanges = function ( dom ) {
+ve.init.mw.Target.prototype.showChanges = function ( doc ) {
 	$.ajax( {
 		'url': this.apiUrl,
 		'data': {
@@ -426,7 +433,7 @@ ve.init.mw.Target.prototype.showChanges = function ( dom ) {
 			'action': 'visualeditor',
 			'paction': 'diff',
 			'page': this.pageName,
-			'html': $( dom ).html(),
+			'html': doc.body.innerHTML, // TODO make this send the whole document in the future
 			// TODO: API required editToken, though not relevant for diff
 			'token': this.editToken
 		},
@@ -497,11 +504,11 @@ ve.init.mw.Target.prototype.submit = function ( wikitext, options ) {
  *     );
  *
  * @method
- * @param {HTMLElement} dom DOM to serialize
+ * @param {HTMLDocument} doc Document to serialize
  * @param {Function} callback Function to call when complete, accepts error and wikitext arguments
  * @returns {boolean} Serializing has beeen started
 */
-ve.init.mw.Target.prototype.serialize = function ( dom, callback ) {
+ve.init.mw.Target.prototype.serialize = function ( doc, callback ) {
 	// Prevent duplicate requests
 	if ( this.serializing ) {
 		return false;
@@ -514,7 +521,7 @@ ve.init.mw.Target.prototype.serialize = function ( dom, callback ) {
 		'data': {
 			'action': 'visualeditor',
 			'paction': 'serialize',
-			'html': $( dom ).html(),
+			'html': doc.body.innerHTML, // TODO make this send the whole document in the future
 			'page': this.pageName,
 			'token': this.editToken,
 			'format': 'json'
@@ -548,9 +555,10 @@ ve.init.mw.Target.prototype.reportProblem = function ( message ) {
 			'diff': this.diffHtml,
 			'originalHtml': this.originalHtml,
 			'originalData':
-				ve.dm.converter.getDataFromDom( $( '<div>' ).html( this.originalHtml )[0] ),
+				// originalHTML only has the body's HTML for now, see TODO comment in ve.init.mw.ViewPageTarget.prototype.setUpSurface
+				ve.dm.converter.getDataFromDom( ve.createDocumentFromHTML( '<body>' + this.originalHtml  + '</body>') ),
 			'editedData': editedData,
-			'editedHtml': ve.dm.converter.getDomFromData( editedData ).innerHTML,
+			'editedHtml': ve.dm.converter.getDomFromData( editedData ).body.innerHTML,
 			'wiki': mw.config.get( 'wgDBname' )
 		};
 	$.post(
