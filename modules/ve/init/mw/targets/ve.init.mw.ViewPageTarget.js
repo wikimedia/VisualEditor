@@ -296,18 +296,20 @@ ve.init.mw.ViewPageTarget.prototype.deactivate = function ( override ) {
  * @param {HTMLElement} dom Parsed DOM from server
  */
 ve.init.mw.ViewPageTarget.prototype.onLoad = function ( dom ) {
-	this.edited = false;
-	this.setUpSurface( dom );
-	this.setupToolbarEditNotices();
-	this.setupToolbarButtons();
-	this.setupSaveDialog();
-	this.attachToolbarButtons();
-	this.attachSaveDialog();
-	this.restoreScrollPosition();
-	this.restoreEditSection();
-	this.setupBeforeUnloadHandler();
-	this.$document.focus();
-	this.activating = false;
+	if ( this.activating ) {
+		this.edited = false;
+		this.setUpSurface( dom );
+		this.setupToolbarEditNotices();
+		this.setupToolbarButtons();
+		this.setupSaveDialog();
+		this.attachToolbarButtons();
+		this.attachSaveDialog();
+		this.restoreScrollPosition();
+		this.restoreEditSection();
+		this.setupBeforeUnloadHandler();
+		this.$document.focus();
+		this.activating = false;
+	}
 };
 
 /**
@@ -484,6 +486,10 @@ ve.init.mw.ViewPageTarget.prototype.onViewTabClick = function ( e ) {
 	if ( this.active ) {
 		this.deactivate();
 		// Prevent the edit tab's normal behavior
+		e.preventDefault();
+	} else if ( this.activating ) {
+		this.deactivate( true );
+		this.activating = false;
 		e.preventDefault();
 	}
 };
