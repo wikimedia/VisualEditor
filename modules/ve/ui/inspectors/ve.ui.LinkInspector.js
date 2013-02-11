@@ -105,7 +105,7 @@ ve.ui.LinkInspector.prototype.onOpen = function () {
  * @param {boolean} remove Annotation should be removed
  */
 ve.ui.LinkInspector.prototype.onClose = function ( remove ) {
-	var i, len, annotations,
+	var i, len, annotations, selection,
 		insert = false,
 		undo = false,
 		clear = false,
@@ -113,7 +113,6 @@ ve.ui.LinkInspector.prototype.onClose = function ( remove ) {
 		target = this.targetInput.getValue(),
 		annotation = this.targetInput.getAnnotation(),
 		surface = this.context.getSurface(),
-		selection = surface.getModel().getSelection(),
 		fragment = surface.getModel().getFragment( this.initialSelection, false );
 	// Undefined annotation causes removal
 	if ( !annotation ) {
@@ -136,7 +135,8 @@ ve.ui.LinkInspector.prototype.onClose = function ( remove ) {
 	}
 	if ( insert ) {
 		// Insert default text and select it
-		fragment = fragment.insertContent( target, false );
+		fragment = fragment.insertContent( target, false ).adjustRange( -target.length, 0 );
+
 		// Move cursor to the end of the inserted content
 		selection = new ve.Range( this.initialSelection.start + target.length );
 	}
@@ -156,7 +156,7 @@ ve.ui.LinkInspector.prototype.onClose = function ( remove ) {
 		fragment.annotateContent( 'set', annotation );
 	}
 	// Selection changes may have occured in the insertion and annotation hullabaloo - restore it
-	surface.execute( 'content', 'select', selection );
+	surface.execute( 'content', 'select', selection || new ve.Range( fragment.getRange().end ) );
 	// Reset state
 	this.isNewAnnotation = false;
 };
