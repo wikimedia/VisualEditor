@@ -7,10 +7,14 @@
 
 .ve-surface {
 	margin-top: 0.8em;
+	margin-left: -1.5em;
+	margin-right: -1.5em;
 }
 
 .ve-ce-documentNode {
 	font-size: 0.8em;
+	padding-left: 1.875em; /* 1.5/0.8 */
+	padding-right: 1.875em; /* 1.5/0.8 */
 }
 
 .ve-ui-toolbar-wrapper {
