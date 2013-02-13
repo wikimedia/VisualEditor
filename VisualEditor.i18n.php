@@ -1882,7 +1882,7 @@ $messages['ml'] = array(
 	'visualeditor-annotationbutton-bold-tooltip' => 'കടുപ്പിക്കുക',
 	'visualeditor-annotationbutton-italic-tooltip' => 'ചെരിച്ച്',
 	'visualeditor-annotationbutton-link-tooltip' => 'കണ്ണി',
-	'visualeditor-indentationbutton-indent-tooltip' => 'അരികിലെ ഇട കൂട്ടുക', # Fuzzy
+	'visualeditor-indentationbutton-indent-tooltip' => 'അരികിലെ ഇട കൂട്ടുക',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'അരികിലെ ഇട കുറയ്ക്കുക',
 	'visualeditor-listbutton-number-tooltip' => 'എണ്ണമിട്ട ലിസ്റ്റ്',
 	'visualeditor-listbutton-bullet-tooltip' => 'എണ്ണമിടാത്ത ലിസ്റ്റ്',
@@ -1903,6 +1903,7 @@ $messages['ml'] = array(
 	'tag-visualeditor-description' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|കണ്ടുതിരുത്തൽ സൗകര്യമുപയോഗിച്ച്]] നടത്തിയ തിരുത്തൽ',
 	'visualeditor-descriptionpagelink' => 'Project:കണ്ടുതിരുത്തൽ സൗകര്യം',
 	'visualeditor-alphawarning' => 'താങ്കൾ [[{{MediaWiki:Visualeditor-descriptionpagelink}}|കണ്ടുതിരുത്തൽ സൗകര്യത്തിന്റെ]] ആൽഫാ പതിപ്പ് ആണ് ഉപയോഗിക്കുന്നത്. ഇത് താമസമേറിയതും തെറ്റായ മാറ്റങ്ങൾ ഉണ്ടാക്കുന്നതുമാവാം - ദയവായി താങ്കൾ വരുത്തുന്ന ഓരോ മാറ്റങ്ങളും പരിശോധിക്കുക.',
+	'visualeditor-report-link' => 'foundation:Terms of Use/ml',
 );
 
 /** Marathi (मराठी)
