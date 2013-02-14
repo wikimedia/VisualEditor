@@ -125,7 +125,8 @@ Link text of the dedicated VisualEditor Edit tab.
 	'tooltip-ca-ve-edit' => 'Tooltip of the dedicated VisualEditor Edit tab.',
 	'accesskey-ca-ve-edit' => '{{Ignore}}',
 	'visualeditor-inspector-title' => 'Title of an unnamed inspector',
-	'visualeditor-linkinspector-title' => 'Title of the link inspector dialog',
+	'visualeditor-linkinspector-title' => 'Title of the link inspector dialog.
+{{Identical|Hyperlink}}',
 	'visualeditor-linkinspector-label-pagetitle' => 'Label for the text field that holds the link target in the link inspector',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Label for suggested existing pages in the link inspector',
 	'visualeditor-linkinspector-suggest-new-page' => 'Label for a new page in the link inspector',
