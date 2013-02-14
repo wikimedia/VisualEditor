@@ -15,6 +15,41 @@
 	background-image: url(images/icons/comment.svg);
 }
 
+.ve-ui-icon-template {
+	/* @embed */
+	background-image: url(images/icons/template.svg);
+}
+
+.ve-ui-icon-template-big {
+	/* @embed */
+	background-image: url(images/icons/template-big.svg);
+}
+
+.ve-ui-icon-parameter {
+	/* @embed */
+	background-image: url(images/icons/parameter.svg);
+}
+
+.ve-ui-icon-parameter-big {
+	/* @embed */
+	background-image: url(images/icons/parameter-big.svg);
+}
+
+.ve-ui-icon-parameter-set {
+	/* @embed */
+	background-image: url(images/icons/parameter-set.svg);
+}
+
+.ve-ui-icon-source {
+	/* @embed */
+	background-image: url(images/icons/source.svg);
+}
+
+.ve-ui-icon-source-big {
+	/* @embed */
+	background-image: url(images/icons/source-big.svg);
+}
+
 .ve-ui-icon-up {
 	/* @embed */
 	background-image: url(images/icons/up.svg);
