@@ -28,6 +28,25 @@ body {
 	display: inline-block;
 }
 
+.ve-demo-utilities {
+	margin-left: 2.5em;
+	margin-right: 2.5em;
+	margin-bottom: 1em;
+	border: solid 1px #ddd;
+	border-radius: 0.5em;
+	padding: 1em 2em;
+	font-size: 0.8em;
+}
+
+.ve-demo-utilities-range .ve-ui-widget {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.ve-demo-utilities-range .ve-ui-widget input {
+	width: 4em;
+}
+
 /* Editor */
 
 .ve-surface {

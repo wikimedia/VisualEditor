@@ -147,7 +147,9 @@
 		<script src="../../ve/ui/tools/buttons/ve.ui.RedoButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.UndoButtonTool.js"></script>
 		<script src="../../ve/ui/tools/dropdowns/ve.ui.FormatDropdownTool.js"></script>
+		<script src="../../ve/ui/widgets/ve.ui.ButtonWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.InputWidget.js"></script>
+		<script src="../../ve/ui/widgets/ve.ui.InputLabelWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.TextInputWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.TextInputMenuWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.LinkTargetInputWidget.js"></script>
