@@ -8,8 +8,7 @@
 .ve-ui-inspector {
 	font-family: sans-serif;
 	position: absolute;
-	padding: 0.75em;
-	padding-top: 2.5em;
+	padding: 2.5em 0.75em 0.25em 0.75em;
 	min-width: 15em;
 	z-index: 3;
 }
@@ -61,18 +60,8 @@
 	font-size: 0.8em;
 }
 
-.ve-ui-inspector form input {
-	display: inline-block;
+.ve-ui-inspector .ve-ui-textInputWidget input {
 	width: 20em;
-	font-size: 1em;
-	font-family: sans-serif;
-	background-color: #fff;
-	border: solid 1px #ccc;
-	padding: 0.5em;
-	border-radius: 0.25em;
-}
-.ve-ui-inspector form input:focus {
-	outline: none;
 }
 
 .ve-ui-inspector form input.ve-ui-linkInspector-location {

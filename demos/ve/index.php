@@ -200,7 +200,9 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 		<script src="../../modules/ve/ui/tools/buttons/ve.ui.RedoButtonTool.js"></script>
 		<script src="../../modules/ve/ui/tools/buttons/ve.ui.UndoButtonTool.js"></script>
 		<script src="../../modules/ve/ui/tools/dropdowns/ve.ui.FormatDropdownTool.js"></script>
+		<script src="../../modules/ve/ui/widgets/ve.ui.ButtonWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.InputWidget.js"></script>
+		<script src="../../modules/ve/ui/widgets/ve.ui.InputLabelWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.TextInputWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.TextInputMenuWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.LinkTargetInputWidget.js"></script>
@@ -219,20 +221,13 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 			} );
 		</script>
 
-		<div style="margin-left: 2em; margin-right: 2em; margin-bottom: 1em;">
-			<label>Start</label>
-			<input type="text" style="width: 3em" id="ve-debug-start"/>
-			<label>End</label>
-			<input type="text" style="width: 3em" id="ve-debug-end"/>
-			<br/>
-			<a href="#" id="ve-get-range">Get range from the editor</a>
-			<br/>
-			<a href="#" id="ve-dump-data">Dump data to the console</a>
-			<br/>
-			<a href="#" id="ve-dump-all">Dump all data</a>
-			<br/>
-			<a href="#" id="ve-validate">Validate (DOM Data vs. Model Data)</a>
-			<br/><br/>
+		<div class="ve-demo-utilities">
+			<p>
+				<div class="ve-demo-utilities-range"></div>
+			</p>
+			<p>
+				<div class="ve-demo-utilities-commands"></div>
+			</p>
 			<table id="ve-dump" border="1" width="100%" style="display: none;">
 				<tr>
 					<td>Linear model</td>
@@ -249,33 +244,38 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 
 		<script>
 		$( function () {
-			$( '#ve-validate' ).on( 'click', function ( e ) {
-				var failed = false;
-				$('.ve-ce-branchNode').each( function ( index, element ) {
-					var	$element = $( element ),
-						view = $element.data( 'node' );
-					if ( view.canContainContent() ) {
-						var nodeRange = view.model.getRange();
-						var textModel = ve.instances[0].view.model.getDocument().getText( nodeRange );
-						var textDom = ve.ce.getDomText( view.$[0] );
-						if ( textModel !== textDom ) {
-							failed = true;
-							console.log('Inconsistent data', {
-								'textModel' : textModel,
-								'textDom' : textDom,
-								'element' : element
-							} );
-						}
-					}
-				});
-				if ( failed ) {
-					alert( 'Not valid - check JS console for details' );
-				} else {
-					alert( 'Valid' );
-				}
-				e.preventDefault();
+
+			// Widgets
+			var startInput = new ve.ui.TextInputWidget( $, 've-debug-start' ),
+				endInput = new ve.ui.TextInputWidget( $, 've-debug-end' ),
+				startLabel = new ve.ui.InputLabelWidget( $, 'Start', startInput ),
+				endLabel = new ve.ui.InputLabelWidget( $, 'End', endInput ),
+				getRangeButton = new ve.ui.ButtonWidget( $, 'Get range from the editor' ),
+				dumpDataButton = new ve.ui.ButtonWidget( $, 'Dump data to the console' ),
+				dumpAllButton = new ve.ui.ButtonWidget( $, 'Dump all data' ),
+				validateButton = new ve.ui.ButtonWidget( $, 'Validate (DOM Data vs. Model Data)' );
+
+			// Attach to DOM
+			$( '.ve-demo-utilities-range' ).append(
+				startLabel.$, startInput.$, endLabel.$, endInput.$
+			);
+			$( '.ve-demo-utilities-commands' ).append(
+				getRangeButton.$, dumpDataButton.$, dumpAllButton.$, validateButton.$
+			);
+
+			// Events
+			getRangeButton.on( 'click', function () {
+				var range = ve.instances[0].view.model.getSelection();
+				startInput.setValue( range.start );
+				endInput.setValue( range.end );
 			} );
-			$( '#ve-dump-all' ).on( 'click', function ( e ) {
+			dumpDataButton.on( 'click', function () {
+				var	start = startInput.getValue(),
+					end = endInput.getValue();
+				// TODO: Validate input
+				console.dir( ve.instances[0].view.documentView.model.data.slice( start, end ) );
+			} );
+			dumpAllButton.on( 'click', function () {
 				// linear model dump
 				var $ol = $('<ol start="0"></ol>'),
 					$li,
@@ -335,23 +335,31 @@ $html = '<div>' . file_get_contents( $page ) . '</div>';
 				$('#ve-model-tree-dump').html(getKids(ve.instances[0].documentModel.documentNode));
 				$('#ve-view-tree-dump').html(getKids(ve.instances[0].view.documentView.documentNode));
 				$('#ve-dump').show();
-				e.preventDefault();
-				return false;
 			} );
-			$( '#ve-get-range' ).on( 'click', function ( e ) {
-				var range = ve.instances[0].view.model.getSelection();
-				$( '#ve-debug-start' ).val( range.start );
-				$( '#ve-debug-end' ).val( range.end );
-				e.preventDefault();
-				return false;
-			} );
-			$( '#ve-dump-data' ).on( 'click', function ( e ) {
-				var	start = $( '#ve-debug-start' ).val(),
-					end = $( '#ve-debug-end' ).val();
-				// TODO: Validate input
-				console.dir( ve.instances[0].view.documentView.model.data.slice( start, end ) );
-				e.preventDefault();
-				return false;
+			validateButton.on( 'click', function () {
+				var failed = false;
+				$('.ve-ce-branchNode').each( function ( index, element ) {
+					var	$element = $( element ),
+						view = $element.data( 'node' );
+					if ( view.canContainContent() ) {
+						var nodeRange = view.model.getRange();
+						var textModel = ve.instances[0].view.model.getDocument().getText( nodeRange );
+						var textDom = ve.ce.getDomText( view.$[0] );
+						if ( textModel !== textDom ) {
+							failed = true;
+							console.log('Inconsistent data', {
+								'textModel' : textModel,
+								'textDom' : textDom,
+								'element' : element
+							} );
+						}
+					}
+				});
+				if ( failed ) {
+					alert( 'Not valid - check JS console for details' );
+				} else {
+					alert( 'Valid' );
+				}
 			} );
 		} );
 		</script>

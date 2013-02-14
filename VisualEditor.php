@@ -318,7 +318,9 @@ $wgResourceModules += array(
 
 			've/ui/tools/dropdowns/ve.ui.FormatDropdownTool.js',
 
+			've/ui/widgets/ve.ui.ButtonWidget.js',
 			've/ui/widgets/ve.ui.InputWidget.js',
+			've/ui/widgets/ve.ui.InputLabelWidget.js',
 			've/ui/widgets/ve.ui.TextInputWidget.js',
 			've/ui/widgets/ve.ui.TextInputMenuWidget.js',
 			've/ui/widgets/ve.ui.LinkTargetInputWidget.js',
