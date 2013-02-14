@@ -29,6 +29,8 @@ ve.inheritClass( ve.dm.MetaNode, ve.dm.LeafNode );
 
 ve.dm.MetaNode.static.name = 'meta';
 
+ve.dm.MetaNode.static.isMeta = true;
+
 ve.dm.MetaNode.static.matchTagNames = [ 'meta', 'link' ];
 
 ve.dm.MetaNode.static.toDataElement = function ( domElement, context ) {

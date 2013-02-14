@@ -140,6 +140,17 @@ ve.dm.Node.static.toDomElement = function ( /*dataElement*/ ) {
 };
 
 /**
+ * Whether this node type represents metadata.
+ *
+ * Linear model elements with this type will be moved out of the linear model into the metadata.
+ *
+ * @static
+ * @property {Boolean} static.isMeta
+ * @inheritable
+ */
+ve.dm.Node.static.isMeta = false;
+
+/**
  * Whether this node type has a wrapping element in the linear model. Most node types are wrapped,
  * only special node types are not wrapped.
  *
