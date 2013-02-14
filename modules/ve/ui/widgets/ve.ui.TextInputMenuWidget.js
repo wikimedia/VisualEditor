@@ -54,10 +54,12 @@ ve.inheritClass( ve.ui.TextInputMenuWidget, ve.ui.Widget );
  * @method
  */
 ve.ui.TextInputMenuWidget.prototype.onMouseDown = function ( e ) {
-	this.$groups.find( '.ve-ui-textInputMenuWidget-item-selected' )
-		.removeClass( 've-ui-textInputMenuWidget-item-selected' );
-	$( e.target ).closest( '.ve-ui-textInputMenuWidget-item' )
-		.addClass( 've-ui-textInputMenuWidget-item-selected' );
+	if ( !this.disabled ) {
+		this.$groups.find( '.ve-ui-textInputMenuWidget-item-selected' )
+			.removeClass( 've-ui-textInputMenuWidget-item-selected' );
+		$( e.target ).closest( '.ve-ui-textInputMenuWidget-item' )
+			.addClass( 've-ui-textInputMenuWidget-item-selected' );
+	}
 	e.preventDefault();
 	return false;
 };
@@ -69,7 +71,8 @@ ve.ui.TextInputMenuWidget.prototype.onMouseDown = function ( e ) {
  */
 ve.ui.TextInputMenuWidget.prototype.onMouseUp = function ( e ) {
 	var $item = $( e.target ).closest( '.ve-ui-textInputMenuWidget-item' );
-	if ( $item.length ) {
+
+	if ( !this.disabled && $item.length ) {
 		this.hide();
 		this.emit( 'select', $item.data( 'item' ).data );
 	}

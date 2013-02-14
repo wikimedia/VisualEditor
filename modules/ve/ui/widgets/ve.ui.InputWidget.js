@@ -24,16 +24,11 @@ ve.ui.InputWidget = function VeUiInputWidget( $$, type, name, value ) {
 	// Properties
 	this.$input = this.$$( '<input>' );
 	this.value = this.sanitizeValue( value );
+	this.readOnly = false;
 
 	// Events
 	this.$input.on(
-		'keydown mouseup cut paste change input select',
-		ve.bind( function () {
-			// Allow the stack to clear so the value will be updated
-			setTimeout( ve.bind( function () {
-				this.setValue( this.$input.val() );
-			}, this ), 0 );
-		}, this )
+		'keydown mouseup cut paste change input select', ve.bind( this.onInputChange, this )
 	);
 
 	// Initialization
@@ -54,6 +49,21 @@ ve.inheritClass( ve.ui.InputWidget, ve.ui.Widget );
  */
 
 /* Methods */
+
+/**
+ * Handles potentially value-changing events.
+ *
+ * @method
+ * @param {jQuery.Event} e Event
+ */
+ve.ui.InputWidget.prototype.onInputChange = function () {
+	if ( !this.disabled ) {
+		// Allow the stack to clear so the value will be updated
+		setTimeout( ve.bind( function () {
+			this.setValue( this.$input.val() );
+		}, this ), 0 );
+	}
+};
 
 /**
  * Gets the value of the input.
@@ -95,4 +105,27 @@ ve.ui.InputWidget.prototype.setValue = function ( value, origin ) {
  */
 ve.ui.InputWidget.prototype.sanitizeValue = function ( value ) {
 	return String( value );
+};
+
+/**
+ * Check if the widget is read-only.
+ *
+ * @method
+ * @param {boolean} Button is read-only
+ */
+ve.ui.InputWidget.prototype.isReadOnly = function () {
+	return this.readOnly;
+};
+
+/**
+ * Set the disabled state of the widget.
+ *
+ * This should probably change the widgets's appearance and prevent it from being used.
+ *
+ * @method
+ * @param {boolean} state Disable button
+ */
+ve.ui.InputWidget.prototype.setReadOnly = function ( state ) {
+	this.readOnly = !!state;
+	this.$input.prop( 'readonly', this.readOnly );
 };

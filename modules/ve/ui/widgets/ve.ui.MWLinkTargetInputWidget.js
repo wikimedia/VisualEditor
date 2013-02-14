@@ -55,7 +55,8 @@ ve.inheritClass( ve.ui.MWLinkTargetInputWidget, ve.ui.LinkTargetInputWidget );
  * Handles change events.
  *
  * @method
- * @param {jQuery.Event} e Event
+ * @param {string} value New value
+ * @param {string} origin Cause of event
  */
 ve.ui.MWLinkTargetInputWidget.prototype.onChange = function ( value, origin ) {
 	if ( origin !== 'annotation' ) {
@@ -72,7 +73,9 @@ ve.ui.MWLinkTargetInputWidget.prototype.onChange = function ( value, origin ) {
  * @param {jQuery.Event} e Event
  */
 ve.ui.MWLinkTargetInputWidget.prototype.onClick = function () {
-	this.openMenu();
+	if ( !this.disabled ) {
+		this.openMenu();
+	}
 };
 
 /**
@@ -82,7 +85,9 @@ ve.ui.MWLinkTargetInputWidget.prototype.onClick = function () {
  * @param {jQuery.Event} e Event
  */
 ve.ui.MWLinkTargetInputWidget.prototype.onFocus = function () {
-	this.openMenu();
+	if ( !this.disabled ) {
+		this.openMenu();
+	}
 };
 
 /**
@@ -103,20 +108,23 @@ ve.ui.MWLinkTargetInputWidget.prototype.onBlur = function () {
  */
 ve.ui.MWLinkTargetInputWidget.prototype.onKeyDown = function ( e ) {
 	var handled = false;
-	switch ( e.keyCode ) {
-		// Up arrow
-		case 38:
-			this.menu.selectRelativeItem( -1 );
-			handled = true;
-			break;
-		// Down arrow
-		case 40:
-			this.menu.selectRelativeItem( 1 );
-			handled = true;
-			break;
-	}
-	if ( handled ) {
-		e.preventDefault();
+
+	if ( !this.disabled ) {
+		switch ( e.keyCode ) {
+			// Up arrow
+			case 38:
+				this.menu.selectRelativeItem( -1 );
+				handled = true;
+				break;
+			// Down arrow
+			case 40:
+				this.menu.selectRelativeItem( 1 );
+				handled = true;
+				break;
+		}
+		if ( handled ) {
+			e.preventDefault();
+		}
 	}
 };
 

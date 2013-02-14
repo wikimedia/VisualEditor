@@ -22,6 +22,7 @@ ve.ui.Widget = function VeUiWidget( $$, $element ) {
 	// Properties
 	this.$$ = $$;
 	this.$ = $element || this.$$( '<div>' );
+	this.disabled = false;
 
 	// Initialization
 	this.$.addClass( 've-ui-widget' );
@@ -30,3 +31,32 @@ ve.ui.Widget = function VeUiWidget( $$, $element ) {
 /* Inheritance */
 
 ve.inheritClass( ve.ui.Widget, ve.EventEmitter );
+
+/* Methods */
+
+/**
+ * Check if the widget is disabled.
+ *
+ * @method
+ * @param {boolean} Button is disabled
+ */
+ve.ui.Widget.prototype.isDisabled = function () {
+	return this.disabled;
+};
+
+/**
+ * Set the disabled state of the widget.
+ *
+ * This should probably change the widgets's appearance and prevent it from being used.
+ *
+ * @method
+ * @param {boolean} state Disable button
+ */
+ve.ui.Widget.prototype.setDisabled = function ( state ) {
+	this.disabled = !!state;
+	if ( this.disabled ) {
+		this.$.addClass( 've-ui-widget-disabled' );
+	} else {
+		this.$.removeClass( 've-ui-widget-disabled' );
+	}
+};
