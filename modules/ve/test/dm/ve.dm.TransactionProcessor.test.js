@@ -40,12 +40,20 @@ QUnit.test( 'protection against double application', 3, function ( assert ) {
 	);
 } );
 
-QUnit.test( 'commit/rollback', 66, function ( assert ) {
+QUnit.test( 'commit/rollback', 86, function ( assert ) {
 	var i, key, originalData, originalDoc, msg, testDocument, tx,
 		expectedData, expectedDocument,
 		bold = ve.dm.example.createAnnotation( ve.dm.example.bold ),
 		italic = ve.dm.example.createAnnotation( ve.dm.example.italic ),
 		underline = ve.dm.example.createAnnotation( ve.dm.example.underline ),
+		metaElementInsert = {
+				'type': 'metaInline',
+				'attributes': {
+					'style': 'comment',
+					'text': ' inline '
+				}
+			},
+		metaElementInsertClose = { 'type': '/metaInline' },
 		cases = {
 			'no operations': {
 				'calls': [],
@@ -300,6 +308,66 @@ QUnit.test( 'commit/rollback', 66, function ( assert ) {
 					data.splice( 4, 0, 'b' );
 					ve.setProp( data[0], 'internal', 'changed', 'content', 1 );
 				}
+			},
+			'inserting metadata element into existing element list': {
+				'data': ve.dm.example.withMeta,
+				'calls': [
+					['pushRetain', 11 ],
+					['pushRetainMetadata', 2 ],
+					['pushReplaceMetadata', [], [ metaElementInsert ] ],
+					['pushRetainMetadata', 2 ],
+					['pushRetain', 1 ],
+				],
+				'expected': function( data ) {
+					data.splice( 25, 0, metaElementInsert, metaElementInsertClose );
+				}
+			},
+			'inserting metadata element into empty list': {
+				'data': ve.dm.example.withMeta,
+				'calls': [
+					['pushRetain', 3 ],
+					['pushReplaceMetadata', [], [ metaElementInsert ] ],
+					['pushRetain', 9 ],
+				],
+				'expected': function( data ) {
+					data.splice( 7, 0, metaElementInsert, metaElementInsertClose );
+				}
+			},
+			'removing all metadata elements from a metadata list': {
+				'data': ve.dm.example.withMeta,
+				'calls': [
+					['pushRetain', 11 ],
+					['pushReplaceMetadata', ve.dm.example.withMetaMetaData[11], [] ],
+					['pushRetain', 1 ],
+				],
+				'expected': function( data ) {
+					data.splice( 21, 8 );
+				}
+			},
+			'removing some metadata elements from metadata list': {
+				'data': ve.dm.example.withMeta,
+				'calls': [
+					['pushRetain', 11 ],
+					['pushRetainMetadata', 1 ],
+					['pushReplaceMetadata', ve.dm.example.withMetaMetaData[11].slice( 1, 3 ), [] ],
+					['pushRetainMetadata', 1 ],
+					['pushRetain', 1 ],
+				],
+				'expected': function( data ) {
+					data.splice( 23, 4 );
+				}
+			},
+			'replacing metadata at end of list': {
+				'data': ve.dm.example.withMeta,
+				'calls': [
+					['pushRetain', 11 ],
+					['pushRetainMetadata', 3 ],
+					['pushReplaceMetadata', [ ve.dm.example.withMetaMetaData[11][3] ], [ metaElementInsert ] ],
+					['pushRetain', 1 ],
+				],
+				'expected': function( data ) {
+					data.splice( 27, 2, metaElementInsert, metaElementInsertClose );
+				}
 			}
 		};
 
@@ -321,15 +389,15 @@ QUnit.test( 'commit/rollback', 66, function ( assert ) {
 		if ( 'expected' in cases[msg] ) {
 			// Generate original document
 			originalData = cases[msg].data || ve.dm.example.data;
-			originalDoc = new ve.dm.Document( originalData );
+			originalDoc = new ve.dm.Document( ve.copyArray( originalData ) );
 			testDocument = new ve.dm.Document( ve.copyArray( originalData ) );
 			// Generate expected document
 			expectedData = ve.copyArray( originalData );
 			cases[msg].expected( expectedData );
-			expectedDocument = new ve.dm.Document( expectedData );
+			expectedDocument = new ve.dm.Document( ve.copyArray ( expectedData ) );
 			// Commit
 			ve.dm.TransactionProcessor.commit( testDocument, tx );
-			assert.deepEqual( testDocument.getData(), expectedData, 'commit (data): ' + msg );
+			assert.deepEqual( testDocument.getFullData(), expectedData, 'commit (data): ' + msg );
 			assert.equalNodeTree(
 				testDocument.getDocumentNode(),
 				expectedDocument.getDocumentNode(),
@@ -337,7 +405,7 @@ QUnit.test( 'commit/rollback', 66, function ( assert ) {
 			);
 			// Rollback
 			ve.dm.TransactionProcessor.rollback( testDocument, tx );
-			assert.deepEqual( testDocument.getData(), originalData, 'rollback (data): ' + msg );
+			assert.deepEqual( testDocument.getFullData(), originalData, 'rollback (data): ' + msg );
 			assert.equalNodeTree(
 				testDocument.getDocumentNode(),
 				originalDoc.getDocumentNode(),
