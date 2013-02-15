@@ -27,6 +27,7 @@ ve.dm.TransactionProcessor = function VeDmTransactionProcessor( doc, transaction
 	// Linear model offset that we're currently at. Operations in the transaction are ordered, so
 	// the cursor only ever moves forward.
 	this.cursor = 0;
+	this.metadataCursor = 0;
 	// Adjustment used to convert between linear model offsets in the original linear model and
 	// in the half-updated linear model.
 	this.adjustment = 0;
@@ -99,6 +100,17 @@ ve.dm.TransactionProcessor.prototype.executeOperation = function ( op ) {
 	} else {
 		throw new Error( 'Invalid operation error. Operation type is not supported: ' + op.type );
 	}
+};
+
+/**
+ * Advance the main data cursor.
+ *
+ * @method
+ * @param {number} increment Number of positions to increment the cursor by
+ */
+ve.dm.TransactionProcessor.prototype.advanceCursor = function ( increment ) {
+	this.cursor += increment;
+	this.metadataCursor = 0;
 };
 
 /**
@@ -286,7 +298,7 @@ ve.dm.TransactionProcessor.prototype.applyChangeMarkers = function () {
 /**
  * Execute a retain operation.
  *
- * This method is called within the context of a document synchronizer instance.
+ * This method is called within the context of a transaction processor instance.
  *
  * This moves the cursor by op.length and applies annotations to the characters that the cursor
  * moved over.
@@ -297,13 +309,28 @@ ve.dm.TransactionProcessor.prototype.applyChangeMarkers = function () {
  */
 ve.dm.TransactionProcessor.processors.retain = function ( op ) {
 	this.applyAnnotations( this.cursor + op.length );
-	this.cursor += op.length;
+	this.advanceCursor( op.length );
+};
+
+/**
+ * Execute a metadata retain operation.
+ *
+ * This method is called within the context of a transaction processor instance.
+ *
+ * This moves the metadata cursor by op.length.
+ *
+ * @method
+ * @param {Object} op Operation object:
+ * @param {number} op.length Number of elements to retain
+ */
+ve.dm.TransactionProcessor.processors.retainMetadata = function ( op ) {
+	this.metadataCursor += op.length;
 };
 
 /**
  * Execute an annotate operation.
  *
- * This method is called within the context of a document synchronizer instance.
+ * This method is called within the context of a transaction processor instance.
  *
  * This will add an annotation to or remove an annotation from `this.set`or `this.clear`.
  *
@@ -334,7 +361,7 @@ ve.dm.TransactionProcessor.processors.annotate = function ( op ) {
 /**
  * Execute an attribute operation.
  *
- * This method is called within the context of a document synchronizer instance.
+ * This method is called within the context of a transaction processor instance.
  *
  * This sets the attribute named `op.key` on the element at `this.cursor` to `op.to`, or unsets it if
  * `op.to === undefined`. `op.from `is not checked against the old value, but is used instead of `op.to`
@@ -379,7 +406,7 @@ ve.dm.TransactionProcessor.processors.attribute = function ( op ) {
 /**
  * Execute a replace operation.
  *
- * This method is called within the context of a document synchronizer instance.
+ * This method is called within the context of a transaction processor instance.
  *
  * This replaces a range of linear model data with another at this.cursor, figures out how the model
  * tree needs to be synchronized, and queues this in the DocumentSynchronizer.
@@ -457,7 +484,7 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 			this.setChangeMarker( parentOffset + this.adjustment, 'content' );
 		}
 		// Advance the cursor
-		this.cursor += insert.length;
+		this.advanceCursor( insert.length );
 		this.adjustment += insert.length - remove.length;
 	} else {
 		// Structural replacement
@@ -477,7 +504,7 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 					this.cursor - this.adjustment + opRemove.length
 				) );
 				prevCursor = this.cursor;
-				this.cursor += opInsert.length;
+				this.advanceCursor( opInsert.length );
 				// Paint the removed selection, figure out which nodes were
 				// covered, and add their ranges to the affected ranges list
 				if ( opRemove.length > 0 ) {
@@ -583,4 +610,21 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 			)
 		);
 	}
+};
+
+/**
+ * Execute a metadata replace operation.
+ *
+ * This method is called within the context of a transaction processor instance.
+ *
+ * @method
+ * @param {Object} op Operation object
+ * @param {Array} op.remove Metadata to remove
+ * @param {Array} op.insert Metadata to insert
+ */
+ve.dm.TransactionProcessor.processors.replaceMetadata = function ( op ) {
+	var remove = this.reversed ? op.insert : op.remove,
+		insert = this.reversed ? op.remove : op.insert;
+
+	this.document.spliceMetadata( this.cursor, this.metadataCursor, remove.length, insert );
 };

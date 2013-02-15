@@ -28,7 +28,7 @@ ve.dm.Transaction = function VeDmTransaction() {
  * @param {ve.dm.Document} doc Document to create transaction for
  * @param {number} offset Offset to insert at
  * @param {Array} data Data to insert
- * @returns {ve.dm.Transaction} Transcation that inserts data
+ * @returns {ve.dm.Transaction} Transaction that inserts data
  */
 ve.dm.Transaction.newFromInsertion = function ( doc, offset, insertion ) {
 	var tx = new ve.dm.Transaction(),
@@ -65,7 +65,7 @@ ve.dm.Transaction.newFromInsertion = function ( doc, offset, insertion ) {
  * @method
  * @param {ve.dm.Document} doc Document to create transaction for
  * @param {ve.Range} range Range of data to remove
- * @returns {ve.dm.Transaction} Transcation that removes data
+ * @returns {ve.dm.Transaction} Transaction that removes data
  * @throws {Error} Invalid range
  */
 ve.dm.Transaction.newFromRemoval = function ( doc, range ) {
@@ -163,7 +163,7 @@ ve.dm.Transaction.newFromRemoval = function ( doc, range ) {
  * @param {number} offset Offset of element
  * @param {string} key Attribute name
  * @param {Mixed} value New value, or undefined to remove the attribute
- * @returns {ve.dm.Transaction} Transcation that changes an element
+ * @returns {ve.dm.Transaction} Transaction that changes an element
  * @throws {Error} Cannot set attributes to non-element data
  * @throws {Error} Cannot set attributes on closing element
  */
@@ -252,6 +252,121 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
 		tx.pushStopAnnotating( method, annotation );
 	}
 	tx.pushRetain( data.length - range.end );
+	return tx;
+};
+
+
+/**
+ * Generate a transaction that inserts metadata elements.
+ *
+ * @static
+ * @method
+ * @param {ve.dm.Document} doc Document to create transaction for
+ * @param {number} offset Offset of element
+ * @param {number} index Index of metadata cursor within element
+ * @param {Array} newElements New elements to insert
+ * @returns {ve.dm.Transaction} Transaction that inserts the metadata elements
+ */
+ve.dm.Transaction.newFromMetadataInsertion = function ( doc, offset, index, newElements ) {
+	var tx = new ve.dm.Transaction(),
+		data = doc.getMetadata(),
+		elements = data[offset] || [];
+
+	// Retain up to element
+	tx.pushRetain( offset );
+	// Retain up to metadata element (second dimension)
+	tx.pushRetainMetadata( index );
+	// Insert metadata elements
+	tx.pushReplaceMetadata(
+		[], newElements
+	);
+	// Retain up to end of metadata elements (second dimension)
+	tx.pushRetainMetadata( elements.length - index );
+	// Retain to end of document
+	tx.pushRetain( data.length - offset );
+	return tx;
+};
+
+
+/**
+ * Generate a transaction that removes metadata elements.
+ *
+ * @static
+ * @method
+ * @param {ve.dm.Document} doc Document to create transaction for
+ * @param {number} offset Offset of element
+ * @param {ve.Range} range Range of metadata to remove
+ * @returns {ve.dm.Transaction} Transaction that removes data
+ * @throws {Error} Cannot remove metadata from empty list
+ * @throws {Error} Range out of bounds
+ */
+ve.dm.Transaction.newFromMetadataRemoval = function ( doc, offset, range ) {
+	var selection,
+		tx = new ve.dm.Transaction(),
+		data = doc.getMetadata(),
+		elements = data[offset] || [];
+
+	if ( !elements.length ) {
+		throw new Error( 'Cannot remove metadata from empty list' );
+	}
+
+	if ( range.start < 0 || range.end > elements.length ) {
+		throw new Error( 'Range out of bounds' );
+	}
+
+	selection = elements.slice( range.start, range.end );
+
+	// Retain up to element
+	tx.pushRetain( offset );
+	// Retain up to metadata element (second dimension)
+	tx.pushRetainMetadata( range.start );
+	// Remove metadata elements
+	tx.pushReplaceMetadata(
+		selection, []
+	);
+	// Retain up to end of metadata elements (second dimension)
+	tx.pushRetainMetadata( elements.length - range.end );
+	// Retain to end of document
+	tx.pushRetain( data.length - offset );
+	return tx;
+};
+
+/**
+ * Generate a transaction that relaces a single metadata element.
+ *
+ * @static
+ * @method
+ * @param {ve.dm.Document} doc Document to create transaction for
+ * @param {number} offset Offset of element
+ * @param {number} index Index of metadata cursor within element
+ * @param {Object} newElement New element to insert
+ * @returns {ve.dm.Transaction} Transaction that removes data
+ * @throws {Error} Metadata index out of bounds
+ */
+ve.dm.Transaction.newFromMetadataElementReplacement = function ( doc, offset, index, newElement ) {
+	var oldElement,
+		tx = new ve.dm.Transaction(),
+		data = doc.getMetadata(),
+		elements = data[offset] || [];
+
+	if ( index >= elements.length ) {
+		throw new Error( 'Metadata index out of bounds' );
+	}
+
+	oldElement = elements[index];
+
+	// Retain up to element
+	tx.pushRetain( offset );
+	// Retain up to metadata element (second dimension)
+	tx.pushRetainMetadata( index );
+	// Remove metadata elements
+	tx.pushReplaceMetadata(
+		[ oldElement ], [ newElement ]
+	);
+	// Retain up to end of metadata elements (second dimension)
+	tx.pushRetainMetadata( elements.length - index - 1 );
+	// Retain to end of document
+	tx.pushRetain( data.length - offset );
 	return tx;
 };
 
@@ -637,6 +752,31 @@ ve.dm.Transaction.prototype.pushRetain = function ( length ) {
 };
 
 /**
+ * Add a retain metadata operation.
+ * // TODO: this is a copy/paste of pushRetain (at the moment). Consider a refactor.
+ *
+ * @method
+ * @param {number} length Length of content data to retain
+ * @throws {Error} Cannot retain backwards.
+ */
+ve.dm.Transaction.prototype.pushRetainMetadata = function ( length ) {
+	if ( length < 0 ) {
+		throw new Error( 'Invalid retain length, cannot retain backwards:' + length );
+	}
+	if ( length ) {
+		var end = this.operations.length - 1;
+		if ( this.operations.length && this.operations[end].type === 'retainMetadata' ) {
+			this.operations[end].length += length;
+		} else {
+			this.operations.push( {
+				'type': 'retainMetadata',
+				'length': length
+			} );
+		}
+	}
+};
+
+/**
  * Add a replace operation
  *
  * @method
@@ -654,6 +794,26 @@ ve.dm.Transaction.prototype.pushReplace = function ( remove, insert ) {
 		'insert': insert
 	} );
 	this.lengthDifference += insert.length - remove.length;
+};
+
+/**
+ * Add a replace metadata operation
+ * // TODO: this is a copy/paste of pushRetainMetadata (at the moment). Consider a refactor.
+ *
+ * @method
+ * @param {Array} remove Metadata to remove
+ * @param {Array} insert Metadata to replace 'remove' with
+ */
+ve.dm.Transaction.prototype.pushReplaceMetadata = function ( remove, insert ) {
+	if ( remove.length === 0 && insert.length === 0 ) {
+		// Don't push no-ops
+		return;
+	}
+	this.operations.push( {
+		'type': 'replaceMetadata',
+		'remove': remove,
+		'insert': insert
+	} );
 };
 
 /**

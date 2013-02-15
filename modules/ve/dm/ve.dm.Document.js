@@ -429,6 +429,29 @@ ve.dm.Document.isContentData = function ( data ) {
 	return true;
 };
 
+/**
+ * Get a slice or copy of the provided data.
+ *
+ * @static
+ * @method
+ * @param {Array} sourceData Source data to slice up
+ * @param {ve.Range} [range] Range of data to get, all data will be given by default
+ * @param {boolean} [deep=false] Whether to return a deep copy (WARNING! This may be very slow)
+ * @returns {Array} Slice or copy of document data
+ */
+ve.dm.Document.getDataSlice = function ( sourceData, range, deep ) {
+	var end, data,
+		start = 0;
+	if ( range !== undefined ) {
+		start = Math.max( 0, Math.min( sourceData.length, range.start ) );
+		end = Math.max( 0, Math.min( sourceData.length, range.end ) );
+	}
+	// IE work-around: arr.slice( 0, undefined ) returns [] while arr.slice( 0 ) behaves correctly
+	data = end === undefined ? sourceData.slice( start ) : sourceData.slice( start, end );
+	// Return either the slice or a deep copy of the slice
+	return deep ? ve.copyArray( data ) : data;
+};
+
 /* Methods */
 
 /**
@@ -460,16 +483,19 @@ ve.dm.Document.prototype.commit = function ( transaction ) {
  * @returns {Array} Slice or copy of document data
  */
 ve.dm.Document.prototype.getData = function ( range, deep ) {
-	var end, data,
-		start = 0;
-	if ( range !== undefined ) {
-		start = Math.max( 0, Math.min( this.data.length, range.start ) );
-		end = Math.max( 0, Math.min( this.data.length, range.end ) );
-	}
-	// IE work-around: arr.slice( 0, undefined ) returns [] while arr.slice( 0 ) behaves correctly
-	data = end === undefined ? this.data.slice( start ) : this.data.slice( start, end );
-	// Return either the slice or a deep copy of the slice
-	return deep ? ve.copyArray( data ) : data;
+	return this.constructor.getDataSlice( this.data, range, deep );
+};
+
+/**
+ * Get a slice or copy of the document metadata.
+ *
+ * @method
+ * @param {ve.Range} [range] Range of metadata to get, all metadata will be given by default
+ * @param {boolean} [deep=false] Whether to return a deep copy (WARNING! This may be very slow)
+ * @returns {Array} Slice or copy of document metadata
+ */
+ve.dm.Document.prototype.getMetadata = function ( range, deep ) {
+	return this.constructor.getDataSlice( this.metadata, range, deep );
 };
 
 /**
@@ -516,6 +542,27 @@ ve.dm.Document.prototype.spliceData = function ( offset, remove, insert ) {
 		this.metadata[offset] = reapedFlat.concat( this.metadata[offset] || [] );
 	}
 	return spliced;
+};
+
+/**
+ * Splice metadata into and/or out of the linear model.
+ *
+ * `this.metadata` will be updated accordingly.
+ *
+ * @method
+ * @see ve#batchSplice
+ * @param offset
+ * @param index
+ * @param remove
+ * @param insert
+ */
+ve.dm.Document.prototype.spliceMetadata = function ( offset, index, remove, insert ) {
+	var elements = this.metadata[offset];
+	if ( !elements ) {
+		this.metadata[offset] = elements = [];
+	}
+	insert = insert || [];
+	return ve.batchSplice( elements, index, remove, insert );
 };
 
 /**

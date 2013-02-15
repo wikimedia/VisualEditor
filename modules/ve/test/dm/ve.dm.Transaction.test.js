@@ -1115,3 +1115,122 @@ QUnit.test( 'push*Annotating', 8, function ( assert ) {
 	};
 	runBuilderTests( assert, cases );
 } );
+
+QUnit.test( 'newFromMetadataInsertion', 2, function( assert ) {
+	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.withMeta ) ),
+		element = {
+			'type': 'metaInline',
+			'attributes': {
+				'style': 'comment',
+				'text': ' inline '
+			}
+		},
+		cases = {
+			'inserting metadata element into existing element list': {
+				'args': [ doc, 11, 2, [ element ] ],
+				'ops': [
+					{ 'type': 'retain', 'length': 11 },
+					{ 'type': 'retainMetadata', 'length': 2 },
+					{
+						'type': 'replaceMetadata',
+						'remove': [],
+						'insert': [ element ]
+					},
+					{ 'type': 'retainMetadata', 'length': 2 },
+					{ 'type': 'retain', 'length': 1 },
+				]
+			},
+			'inserting metadata element into empty list': {
+				'args': [ doc, 3, 0, [ element ] ],
+				'ops': [
+					{ 'type': 'retain', 'length': 3 },
+					{
+						'type': 'replaceMetadata',
+						'remove': [],
+						'insert': [ element ]
+					},
+					{ 'type': 'retain', 'length': 9 },
+				]
+			}
+		};
+	runConstructorTests( assert, ve.dm.Transaction.newFromMetadataInsertion, cases );
+} );
+
+QUnit.test( 'newFromMetadataRemoval', 4, function( assert ) {
+	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.withMeta ) ),
+		allElements = ve.dm.example.withMetaMetaData[11],
+		someElements = allElements.slice( 1, 3 ),
+		cases = {
+			'removing all metadata elements from metadata list': {
+				'args': [ doc, 11, new ve.Range( 0, 4 ) ],
+				'ops': [
+					{ 'type': 'retain', 'length': 11 },
+					{
+						'type': 'replaceMetadata',
+						'remove': allElements,
+						'insert': []
+					},
+					{ 'type': 'retain', 'length': 1 },
+				]
+			},
+			'removing some metadata elements from metadata list': {
+				'args': [ doc, 11, new ve.Range( 1, 3 ) ],
+				'ops': [
+					{ 'type': 'retain', 'length': 11 },
+					{ 'type': 'retainMetadata', 'length': 1 },
+					{
+						'type': 'replaceMetadata',
+						'remove': someElements,
+						'insert': []
+					},
+					{ 'type': 'retainMetadata', 'length': 1 },
+					{ 'type': 'retain', 'length': 1 },
+				]
+			},
+			'checks metadata at offset is non-empty': {
+				'args': [ doc, 5, new ve.Range( 1, 3 ) ],
+				'exception': Error
+			},
+			'checks range is valid for metadata at offset': {
+				'args': [ doc, 11, new ve.Range( 1, 5 ) ],
+				'exception': Error
+			}
+		};
+	runConstructorTests( assert, ve.dm.Transaction.newFromMetadataRemoval, cases );
+} );
+
+QUnit.test( 'newFromMetadataElementReplacement', 3, function( assert ) {
+	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.withMeta ) ),
+		newElement = {
+			'type': 'metaInline',
+			'attributes': {
+				'style': 'comment',
+				'text': ' inline '
+			}
+		},
+		oldElement = ve.dm.example.withMetaMetaData[11][3],
+		cases = {
+			'replacing metadata at end of list': {
+				'args': [ doc, 11, 3, newElement ],
+				'ops': [
+					{ 'type': 'retain', 'length': 11 },
+					{ 'type': 'retainMetadata', 'length': 3 },
+					{
+						'type': 'replaceMetadata',
+						'remove': [ oldElement ],
+						'insert': [ newElement ]
+					},
+					{ 'type': 'retain', 'length': 1 },
+				]
+			},
+			'checks offset is in bounds': {
+				'args': [ doc, 15, 0, newElement ],
+				'exception': Error
+			},
+			'checks metadata index is in bounds': {
+				'args': [ doc, 11, 5, newElement ],
+				'exception': Error
+			}
+		};
+	runConstructorTests( assert, ve.dm.Transaction.newFromMetadataElementReplacement, cases );
+} );
