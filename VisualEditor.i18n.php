@@ -148,8 +148,10 @@ Link text of the dedicated VisualEditor Edit tab.
 	'visualeditor-listbutton-number-tooltip' => 'Tooltip for the numbered list button',
 	'visualeditor-listbutton-bullet-tooltip' => 'Tooltip for the bullet list button',
 	'visualeditor-clearbutton-tooltip' => 'Tooltip for the clear formatting button',
-	'visualeditor-historybutton-undo-tooltip' => 'Tooltip string for the undo button',
-	'visualeditor-historybutton-redo-tooltip' => 'Tooltip string for the redo button',
+	'visualeditor-historybutton-undo-tooltip' => 'Tooltip string for the undo button.
+{{Identical|Undo}}',
+	'visualeditor-historybutton-redo-tooltip' => 'Tooltip string for the redo button.
+{{Identical|Redo}}',
 	'visualeditor-inspector-close-tooltip' => 'Tooltip for the button to close an inspector',
 	'visualeditor-inspector-remove-tooltip' => 'Tooltip for the button to remove an annotation in an inspector',
 	'visualeditor-viewpage-savewarning' => 'Text shown when the user tries to leave the editor without saving their changes',
