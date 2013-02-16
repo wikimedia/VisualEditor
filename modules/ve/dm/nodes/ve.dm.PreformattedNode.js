@@ -37,8 +37,8 @@ ve.dm.PreformattedNode.static.toDataElement = function () {
 	return { 'type': 'preformatted' };
 };
 
-ve.dm.PreformattedNode.static.toDomElement = function () {
-	return document.createElement( 'pre' );
+ve.dm.PreformattedNode.static.toDomElements = function () {
+	return [ document.createElement( 'pre' ) ];
 };
 
 /* Registration */

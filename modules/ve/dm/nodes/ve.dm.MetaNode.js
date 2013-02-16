@@ -33,24 +33,25 @@ ve.dm.MetaNode.static.isMeta = true;
 
 ve.dm.MetaNode.static.matchTagNames = [ 'meta', 'link' ];
 
-ve.dm.MetaNode.static.toDataElement = function ( domElement, context ) {
-	var isLink = domElement.nodeName.toLowerCase() === 'link',
+ve.dm.MetaNode.static.toDataElement = function ( domElements, context ) {
+	var firstDomElement = domElements[0],
+		isLink = firstDomElement.nodeName.toLowerCase() === 'link',
 		keyAttr = isLink ? 'rel' : 'property',
 		valueAttr = isLink ? 'href' : 'content',
 		dataElement = {
 			'type': context.expectingContent ? 'metaInline' : 'metaBlock',
 			'attributes': {
 				'style': isLink ? 'link' : 'meta',
-				'key': domElement.getAttribute( keyAttr )
+				'key': firstDomElement.getAttribute( keyAttr )
 			}
 		};
-	if ( domElement.hasAttribute( valueAttr ) ) {
-		dataElement.attributes.value = domElement.getAttribute( valueAttr );
+	if ( firstDomElement.hasAttribute( valueAttr ) ) {
+		dataElement.attributes.value = firstDomElement.getAttribute( valueAttr );
 	}
 	return dataElement;
 };
 
-ve.dm.MetaNode.static.toDomElement = function ( dataElement ) {
+ve.dm.MetaNode.static.toDomElements = function ( dataElement ) {
 	var style = dataElement.attributes && dataElement.attributes.style || 'meta',
 		isLink = style === 'link',
 		tag = isLink ? 'link' : 'meta',
@@ -58,7 +59,7 @@ ve.dm.MetaNode.static.toDomElement = function ( dataElement ) {
 		valueAttr = isLink ? 'href' : 'content',
 		domElement;
 	if ( style === 'comment' ) {
-		return document.createComment( dataElement.attributes && dataElement.attributes.text || '' );
+		return [ document.createComment( dataElement.attributes && dataElement.attributes.text || '' ) ];
 	}
 	domElement = document.createElement( tag );
 	if ( dataElement.attributes && dataElement.attributes.key !== null ) {
@@ -67,7 +68,7 @@ ve.dm.MetaNode.static.toDomElement = function ( dataElement ) {
 	if ( dataElement.attributes && dataElement.attributes.value ) {
 		domElement.setAttribute( valueAttr, dataElement.attributes.value );
 	}
-	return domElement;
+	return [ domElement ];
 };
 
 /* Concrete subclasses */

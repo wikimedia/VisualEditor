@@ -81,7 +81,7 @@ ve.dm.StubBarNode.static.matchRdfaTypes = ['bar'];
 // HACK keep ve.dm.Converter happy for now
 // TODO once ve.dm.Converter is rewritten, this can be removed
 ve.dm.StubBarNode.static.toDataElement = function () {};
-ve.dm.StubBarNode.static.toDomElement = function () {};
+ve.dm.StubBarNode.static.toDomElements = function () {};
 
 /* Tests */
 

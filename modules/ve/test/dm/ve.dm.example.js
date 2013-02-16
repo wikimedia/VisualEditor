@@ -302,7 +302,8 @@ ve.dm.example.withMeta = [
 		'type': 'metaBlock',
 		'attributes': {
 			'style': 'meta',
-			'key': 'mw:PageProp/nocc'
+			'key': 'mw:PageProp/nocc',
+			'html/0/property': 'mw:PageProp/nocc'
 		}
 	},
 	{ 'type': '/metaBlock' },
@@ -315,7 +316,9 @@ ve.dm.example.withMeta = [
 		'attributes': {
 			'style': 'link',
 			'key': 'mw:WikiLink/Category',
-			'value': './Category:Bar'
+			'value': './Category:Bar',
+			'html/0/href': './Category:Bar',
+			'html/0/rel': 'mw:WikiLink/Category'
 		}
 	},
 	{ 'type': '/metaInline' },
@@ -327,7 +330,9 @@ ve.dm.example.withMeta = [
 		'attributes': {
 			'style': 'meta',
 			'key': 'mw:foo',
-			'value': 'bar'
+			'value': 'bar',
+			'html/0/content': 'bar',
+			'html/0/property': 'mw:foo'
 		}
 	},
 	{ 'type': '/metaInline' },
@@ -348,7 +353,9 @@ ve.dm.example.withMeta = [
 		'attributes': {
 			'style': 'meta',
 			'key': 'mw:bar',
-			'value': 'baz'
+			'value': 'baz',
+			'html/0/content': 'baz',
+			'html/0/property': 'mw:bar'
 		}
 	},
 	{ 'type': '/metaBlock' },
@@ -365,7 +372,9 @@ ve.dm.example.withMeta = [
 		'attributes': {
 			'style': 'link',
 			'key': 'mw:WikiLink/Category',
-			'value': './Category:Foo#Bar baz%23quux'
+			'value': './Category:Foo#Bar baz%23quux',
+			'html/0/href': './Category:Foo#Bar baz%23quux',
+			'html/0/rel': 'mw:WikiLink/Category'
 		}
 	},
 	{ 'type': '/metaBlock' },
@@ -408,7 +417,8 @@ ve.dm.example.withMetaMetaData = [
 			'type': 'metaBlock',
 			'attributes': {
 				'style': 'meta',
-				'key': 'mw:PageProp/nocc'
+				'key': 'mw:PageProp/nocc',
+				'html/0/property': 'mw:PageProp/nocc'
 			}
 		}
 	],
@@ -421,7 +431,9 @@ ve.dm.example.withMetaMetaData = [
 			'attributes': {
 				'style': 'link',
 				'key': 'mw:WikiLink/Category',
-				'value': './Category:Bar'
+				'value': './Category:Bar',
+				'html/0/href': './Category:Bar',
+				'html/0/rel': 'mw:WikiLink/Category'
 			}
 		}
 	],
@@ -433,7 +445,9 @@ ve.dm.example.withMetaMetaData = [
 			'attributes': {
 				'style': 'meta',
 				'key': 'mw:foo',
-				'value': 'bar'
+				'value': 'bar',
+				'html/0/content': 'bar',
+				'html/0/property': 'mw:foo'
 			}
 		}
 	],
@@ -454,7 +468,9 @@ ve.dm.example.withMetaMetaData = [
 			'attributes': {
 				'style': 'meta',
 				'key': 'mw:bar',
-				'value': 'baz'
+				'value': 'baz',
+				'html/0/content': 'baz',
+				'html/0/property': 'mw:bar'
 			}
 		},
 		{
@@ -469,7 +485,9 @@ ve.dm.example.withMetaMetaData = [
 			'attributes': {
 				'style': 'link',
 				'key': 'mw:WikiLink/Category',
-				'value': './Category:Foo#Bar baz%23quux'
+				'value': './Category:Foo#Bar baz%23quux',
+				'html/0/href': './Category:Foo#Bar baz%23quux',
+				'html/0/rel': 'mw:WikiLink/Category'
 			}
 		},
 		{
@@ -478,7 +496,7 @@ ve.dm.example.withMetaMetaData = [
 				'style': 'meta',
 				'key': null,
 				'html/0/typeof': 'mw:Placeholder',
-				'html/0/data-parsoid': 'foobar',
+				'html/0/data-parsoid': 'foobar'
 			}
 		}
 	]
@@ -865,13 +883,11 @@ ve.dm.example.domToDataCases = {
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			'1',
-			{ 'type': '/paragraph' },
 			{
-				'type': 'alienBlock',
+				'type': 'alienInline',
 				'attributes': { 'html': '<tt about="#mwt1">foo</tt><tt about="#mwt1">bar</tt>' }
 			},
-			{ 'type': '/alienBlock' },
-			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			{ 'type': '/alienInline' },
 			'2',
 			{ 'type': '/paragraph' }
 		]
@@ -1973,7 +1989,9 @@ ve.dm.example.domToDataCases = {
 				'attributes': {
 					'style': 'meta',
 					'key': 'mw:foo',
-					'value': 'bar'
+					'value': 'bar',
+					'html/0/content': 'bar',
+					'html/0/property': 'mw:foo'
 				}
 			},
 			{ 'type': '/metaInline' },

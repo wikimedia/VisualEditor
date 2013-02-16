@@ -35,7 +35,7 @@ ve.dm.HeadingNode.static.defaultAttributes = {
 
 ve.dm.HeadingNode.static.matchTagNames = [ 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' ];
 
-ve.dm.HeadingNode.static.toDataElement = function ( domElement ) {
+ve.dm.HeadingNode.static.toDataElement = function ( domElements ) {
 	var levels = {
 			'h1': 1,
 			'h2': 2,
@@ -44,13 +44,13 @@ ve.dm.HeadingNode.static.toDataElement = function ( domElement ) {
 			'h5': 5,
 			'h6': 6
 		},
-		level = levels[domElement.nodeName.toLowerCase()];
+		level = levels[domElements[0].nodeName.toLowerCase()];
 	return { 'type': 'heading', 'attributes': { 'level': level } };
 };
 
-ve.dm.HeadingNode.static.toDomElement = function ( dataElement ) {
+ve.dm.HeadingNode.static.toDomElements = function ( dataElement ) {
 	var level = dataElement.attributes && dataElement.attributes.level || 1;
-	return document.createElement( 'h' + level );
+	return [ document.createElement( 'h' + level ) ];
 };
 
 /* Registration */

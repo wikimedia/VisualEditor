@@ -37,24 +37,24 @@ ve.dm.TableSectionNode.static.defaultAttributes = {
 
 ve.dm.TableSectionNode.static.matchTagNames = [ 'thead', 'tbody', 'tfoot' ];
 
-ve.dm.TableSectionNode.static.toDataElement = function ( domElement ) {
+ve.dm.TableSectionNode.static.toDataElement = function ( domElements ) {
 	var styles = {
 			'thead': 'header',
 			'tbody': 'body',
 			'tfoot': 'footer'
 		},
-		style = styles[domElement.nodeName.toLowerCase()] || 'body';
+		style = styles[domElements[0].nodeName.toLowerCase()] || 'body';
 	return { 'type': 'tableSection', 'attributes': { 'style': style } };
 };
 
-ve.dm.TableSectionNode.static.toDomElement = function ( dataElement ) {
+ve.dm.TableSectionNode.static.toDomElements = function ( dataElement ) {
 	var tags = {
 			'header': 'thead',
 			'body': 'tbody',
 			'footer': 'tfoot'
 		},
 		tag = tags[dataElement.attributes && dataElement.attributes.style || 'body'];
-	return document.createElement( tag );
+	return [ document.createElement( tag ) ];
 };
 /* Registration */
 
