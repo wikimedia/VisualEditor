@@ -31,6 +31,8 @@ ve.dm.AlienNode.static.name = 'alien';
 
 ve.dm.AlienNode.static.matchTagNames = [];
 
+ve.dm.AlienNode.static.enableAboutGrouping = true;
+
 ve.dm.AlienNode.static.storeHtmlAttributes = false;
 
 ve.dm.AlienNode.static.toDataElement = function ( domElement, context ) {
