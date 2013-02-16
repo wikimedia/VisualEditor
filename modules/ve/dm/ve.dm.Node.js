@@ -151,6 +151,20 @@ ve.dm.Node.static.toDomElement = function ( /*dataElement*/ ) {
 ve.dm.Node.static.isMeta = false;
 
 /**
+ * Whether HTML attributes should be preserved for this node type. If true, the HTML attributes
+ * of the DOM elements will be stored as linear model attributes. The attribute names be
+ * html/0/attrName, where attrName is the name of the attribute.
+ *
+ * This should generally be enabled, except for node types that store their entire HTML in an
+ * attribute.
+ *
+ * @static
+ * @property {boolean} static.storeHtmlAttributes
+ * @inheritable
+ */
+ve.dm.Node.static.storeHtmlAttributes = true;
+
+/**
  * Whether this node type has a wrapping element in the linear model. Most node types are wrapped,
  * only special node types are not wrapped.
  *
