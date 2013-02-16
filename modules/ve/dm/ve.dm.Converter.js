@@ -244,9 +244,9 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, annot
 		// but to generate an alienInline element.
 		var isInline =
 				// Force inline in content locations (but not wrappers)
-				( !context.wrapping && context.expectingContent ) ||
+				( !context.inWrapper && context.expectingContent ) ||
 				// Also force inline in wrappers that we can't close
-				( context.wrapping && !context.canCloseWrapper ) ||
+				( context.inWrapper && !context.canCloseWrapper ) ||
 				// Look at the tag name otherwise
 				!ve.isBlockElement( domElement ),
 			type = isInline ? 'alienInline' : 'alienBlock',
@@ -302,7 +302,7 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, annot
 			'internal': { 'generated': 'wrapper' }
 		};
 		data.push( wrappingParagraph );
-		context.wrapping = true;
+		context.inWrapper = true;
 		context.canCloseWrapper = true;
 		context.expectingContent = true;
 		processNextWhitespace( wrappingParagraph );
@@ -316,7 +316,7 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, annot
 		}
 		data.push( { 'type': '/paragraph' } );
 		wrappingParagraph = undefined;
-		context.wrapping = false;
+		context.inWrapper = false;
 		context.canCloseWrapper = false;
 		context.expectingContent = originallyExpectingContent;
 	}
@@ -396,7 +396,7 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, annot
 		wrappedWhitespaceIndex,
 		context = {
 			'expectingContent': originallyExpectingContent,
-			'wrapping': alreadyWrapped,
+			'inWrapper': alreadyWrapped,
 			'canCloseWrapper': false
 		};
 	// Open element
@@ -414,10 +414,10 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, annot
 				// Alienate about groups
 				if ( childDomElement.hasAttribute( 'data-ve-aboutgroup' ) ) {
 					alien = createAlien( childDomElement, context, true );
-					if ( context.wrapping && alien[0].type === 'alienBlock' ) {
+					if ( context.inWrapper && alien[0].type === 'alienBlock' ) {
 						stopWrapping();
 					} else if (
-						!context.wrapping && !context.expectingContent &&
+						!context.inWrapper && !context.expectingContent &&
 						alien[0].type === 'alienInline'
 					) {
 						startWrapping();
@@ -479,10 +479,10 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, annot
 					!rdfaType.match( /^mw:Entity/ )
 				) {
 					alien = createAlien( childDomElement, context );
-					if ( context.wrapping && alien[0].type === 'alienBlock' ) {
+					if ( context.inWrapper && alien[0].type === 'alienBlock' ) {
 						stopWrapping();
 					} else if (
-						!context.wrapping && !context.expectingContent &&
+						!context.inWrapper && !context.expectingContent &&
 						alien[0].type === 'alienInline'
 					) {
 						startWrapping();
@@ -498,7 +498,7 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, annot
 				annotation = this.getDataAnnotationFromDomElement( childDomElement );
 				if ( annotation && rdfaType !== 'mw:Entity' ) {
 					// Start auto-wrapping of bare content
-					if ( !context.wrapping && !context.expectingContent ) {
+					if ( !context.inWrapper && !context.expectingContent ) {
 						startWrapping();
 						prevElement = wrappingParagraph;
 					}
@@ -508,7 +508,7 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, annot
 					data = data.concat(
 						this.getDataFromDomRecursion(
 							childDomElement, childAnnotations,
-							undefined, path, context.wrapping
+							undefined, path, context.inWrapper
 						)
 					);
 					break;
@@ -524,13 +524,13 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, annot
 						( originallyExpectingContent && !childIsContent ) ||
 						// Non-content child trying to break wrapping at
 						// the wrong level
-						( context.wrapping && !context.canCloseWrapper && !childIsContent )
+						( context.inWrapper && !context.canCloseWrapper && !childIsContent )
 					) ) {
 						// End auto-wrapping of bare content from a previously processed node
 						// but only if childDataElement is a non-content element
-						if ( context.wrapping && context.canCloseWrapper && !childIsContent ) {
+						if ( context.inWrapper && context.canCloseWrapper && !childIsContent ) {
 							stopWrapping();
-						} else if ( !context.wrapping && !context.expectingContent && childIsContent ) {
+						} else if ( !context.inWrapper && !context.expectingContent && childIsContent ) {
 							startWrapping();
 							prevElement = wrappingParagraph;
 						}
@@ -542,7 +542,7 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, annot
 									new ve.AnnotationSet(),
 									childDataElement,
 									path.concat( childDataElement.type ),
-									context.wrapping
+									context.inWrapper
 								)
 							);
 						} else {
@@ -559,10 +559,10 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, annot
 				}
 				// We don't know what this is, fall back to alien.
 				alien = createAlien( childDomElement, context );
-				if ( context.wrapping && alien[0].type === 'alienBlock' ) {
+				if ( context.inWrapper && alien[0].type === 'alienBlock' ) {
 					stopWrapping();
 				} else if (
-					!context.wrapping && !context.expectingContent &&
+					!context.inWrapper && !context.expectingContent &&
 					alien[0].type === 'alienInline'
 				) {
 					startWrapping();
@@ -581,7 +581,7 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, annot
 					// Strip and store outer whitespace
 					if ( text.match( /^\s+$/ ) ) {
 						// This text node is whitespace only
-						if ( context.wrapping ) {
+						if ( context.inWrapper ) {
 							// We're already wrapping, so output this whitespace
 							// and store it in wrappedWhitespace (see
 							// comment about wrappedWhitespace below)
@@ -615,7 +615,7 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, annot
 						// HACK: . doesn't match newlines in JS, so use
 						// [\s\S] to match any character
 						matches = text.match( /^(\s*)([\s\S]*?)(\s*)$/ );
-						if ( !context.wrapping ) {
+						if ( !context.inWrapper ) {
 							// Wrap the text in a paragraph and output it
 							startWrapping();
 
@@ -715,17 +715,17 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, annot
 		}
 	}
 	// End auto-wrapping of bare content
-	if ( context.wrapping && context.canCloseWrapper ) {
+	if ( context.inWrapper && context.canCloseWrapper ) {
 		stopWrapping();
-		// HACK: don't set context.wrapping = false here because it's checked below
-		context.wrapping = true;
+		// HACK: don't set context.inWrapper = false here because it's checked below
+		context.inWrapper = true;
 	}
 
 	// If we're closing a node that doesn't have any children, but could contain a paragraph,
 	// add a paragraph. This prevents things like empty list items
 	childTypes = this.nodeFactory.getChildNodeTypes( branchType );
 	if ( branchType !== 'paragraph' && dataElement && data[data.length - 1] === dataElement &&
-		!context.wrapping && !this.nodeFactory.canNodeContainContent( branchType ) &&
+		!context.inWrapper && !this.nodeFactory.canNodeContainContent( branchType ) &&
 		!this.nodeFactory.isNodeContent( branchType ) &&
 		( childTypes === null || ve.indexOf( 'paragraph', childTypes ) !== -1 )
 	) {
