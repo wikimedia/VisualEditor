@@ -150,7 +150,6 @@ QUnit.test( 'removeContent', 6, function ( assert ) {
 		expectedData = ve.copyArray( expectedDoc.data.slice( 0, 1 ) )
 			.concat( ve.copyArray( expectedDoc.data.slice( 4, 5 ) ) )
 			.concat( ve.copyArray( expectedDoc.data.slice( 55 ) ) );
-	ve.setProp( expectedData[0], 'internal', 'changed', 'content', 1 );
 	fragment.removeContent();
 	assert.deepEqual(
 		doc.getData(),
@@ -179,7 +178,7 @@ QUnit.test( 'removeContent', 6, function ( assert ) {
 	assert.deepEqual(
 		doc.getData( new ve.Range( 0, 2 ) ),
 		[
-			{ 'type': 'heading', 'attributes': { 'level': 1 }, 'internal': { 'changed': { 'content' : 1 } } },
+			{ 'type': 'heading', 'attributes': { 'level': 1 } },
 			{ 'type': '/heading'}
 		],
 		'removing content empties node'
@@ -240,10 +239,9 @@ QUnit.test( 'wrapNodes/unwrapNodes', 10, function ( assert ) {
 		[
 			{
 				'type': 'list',
-				'attributes': { 'style': 'bullet' },
-				'internal': { 'changed': { 'created': 1 } }
+				'attributes': { 'style': 'bullet' }
 			},
-			{ 'type': 'listItem', 'internal': { 'changed': { 'created': 1 } } },
+			{ 'type': 'listItem' },
 			{ 'type': 'paragraph' },
 			'l',
 			{ 'type': '/paragraph' },
@@ -251,10 +249,9 @@ QUnit.test( 'wrapNodes/unwrapNodes', 10, function ( assert ) {
 			{ 'type': '/list' },
 			{
 				'type': 'list',
-				'attributes': { 'style': 'bullet' },
-				'internal': { 'changed': { 'created': 1 } }
+				'attributes': { 'style': 'bullet' }
 			},
-			{ 'type': 'listItem', 'internal': { 'changed': { 'created': 1 } } },
+			{ 'type': 'listItem' },
 			{ 'type': 'paragraph' },
 			'm',
 			{ 'type': '/paragraph' },
@@ -279,10 +276,9 @@ QUnit.test( 'wrapNodes/unwrapNodes', 10, function ( assert ) {
 		[
 			{
 				'type': 'list',
-				'attributes': { 'style': 'bullet' },
-				'internal': { 'changed': { 'created': 1 } }
+				'attributes': { 'style': 'bullet' }
 			},
-			{ 'type': 'listItem', 'internal': { 'changed': { 'created': 1 } } },
+			{ 'type': 'listItem' },
 			{ 'type': 'paragraph' },
 			'd',
 			{ 'type': '/paragraph' },
@@ -310,7 +306,6 @@ QUnit.test( 'rewrapNodes', 4, function ( assert ) {
 		expectedDoc = ve.dm.example.createExampleDocument(),
 		expectedSurface = new ve.dm.Surface( expectedDoc ),
 		expectedFragment = new ve.dm.SurfaceFragment( expectedSurface, new ve.Range( 43, 55 ) ),
-		created = { 'changed': { 'created': 1 } },
 		expectedData;
 
 	// set up wrapped nodes in example document
@@ -348,9 +343,9 @@ QUnit.test( 'rewrapNodes', 4, function ( assert ) {
 	fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 59, 65 ) );
 	fragment.rewrapNodes( 1, [ { 'type': 'heading', 'attributes': { 'level': 1 } } ] );
 
-	expectedData.splice( 59, 1, { 'type': 'heading', 'attributes': { 'level': 1 }, 'internal': created } );
+	expectedData.splice( 59, 1, { 'type': 'heading', 'attributes': { 'level': 1 } } );
 	expectedData.splice( 61, 1, { 'type': '/heading' } );
-	expectedData.splice( 62, 1, { 'type': 'heading', 'attributes': { 'level': 1 }, 'internal': created } );
+	expectedData.splice( 62, 1, { 'type': 'heading', 'attributes': { 'level': 1 } } );
 	expectedData.splice( 64, 1, { 'type': '/heading' } );
 
 	assert.deepEqual( doc.getData(), expectedData, 'rewrapping paragraphs as headings' );
@@ -373,10 +368,9 @@ QUnit.test( 'wrapAllNodes', 10, function ( assert ) {
 		[
 			{
 				'type': 'list',
-				'attributes': { 'style': 'bullet' },
-				'internal': { 'changed': { 'created': 1 } }
+				'attributes': { 'style': 'bullet' }
 			},
-			{ 'type': 'listItem', 'internal': { 'changed': { 'created': 1 } } },
+			{ 'type': 'listItem' },
 			{ 'type': 'paragraph' },
 			'l',
 			{ 'type': '/paragraph' },
@@ -404,10 +398,9 @@ QUnit.test( 'wrapAllNodes', 10, function ( assert ) {
 		[
 			{
 				'type': 'list',
-				'attributes': { 'style': 'bullet' },
-				'internal': { 'changed': { 'created': 1 } }
+				'attributes': { 'style': 'bullet' }
 			},
-			{ 'type': 'listItem', 'internal': { 'changed': { 'created': 1 } } },
+			{ 'type': 'listItem' },
 			{ 'type': 'paragraph' },
 			'd',
 			{ 'type': '/paragraph' },
@@ -446,8 +439,7 @@ QUnit.test( 'rewrapAllNodes', 6, function ( assert ) {
 		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 5, 37 ) ),
 		expectedDoc = ve.dm.example.createExampleDocument(),
 		expectedSurface = new ve.dm.Surface( expectedDoc ),
-		expectedFragment = new ve.dm.SurfaceFragment( expectedSurface, new ve.Range( 5, 37 ) ),
-		created = { 'changed': { 'created' : 1 } };
+		expectedFragment = new ve.dm.SurfaceFragment( expectedSurface, new ve.Range( 5, 37 ) );
 
 	// Compare a rewrap operation with its equivalent unwrap + wrap
 	// This type of test can only exist if the intermediate state is valid
@@ -478,10 +470,6 @@ QUnit.test( 'rewrapAllNodes', 6, function ( assert ) {
 	);
 
 	expectedData = originalDoc.getData();
-	expectedData[5].internal = created;
-	expectedData[6].internal = created;
-	expectedData[7].internal = created;
-	expectedData[8].internal = created;
 	assert.deepEqual(
 		doc.getData(),
 		expectedData,
@@ -495,7 +483,7 @@ QUnit.test( 'rewrapAllNodes', 6, function ( assert ) {
 	fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 0, 5 ) );
 	fragment.rewrapAllNodes( 1, [ { 'type': 'paragraph' } ] );
 
-	expectedData.splice( 0, 1, { 'type': 'paragraph', 'internal': created } );
+	expectedData.splice( 0, 1, { 'type': 'paragraph' } );
 	expectedData.splice( 4, 1, { 'type': '/paragraph' } );
 
 	assert.deepEqual( doc.getData(), expectedData, 'rewrapping a heading as a paragraph' );
@@ -516,14 +504,10 @@ function runIsolateTest( assert, type, range, expected, label ) {
 }
 
 QUnit.test( 'isolateAndUnwrap', 4, function ( assert ) {
-	var rebuilt = { 'changed': { 'rebuilt': 1 } },
-		createdAndRebuilt = { 'changed': { 'created': 1, 'rebuilt': 1 } };
-
 	runIsolateTest( assert, 'MWheading', new ve.Range( 12, 20 ), function( data ) {
-		data[0].internal = rebuilt;
 		data.splice( 11, 0, { 'type': '/list' } );
 		data.splice( 12, 1 );
-		data.splice( 20, 1, { 'type': 'list', 'attributes': { 'style': 'bullet' }, 'internal': createdAndRebuilt });
+		data.splice( 20, 1, { 'type': 'list', 'attributes': { 'style': 'bullet' } });
 	}, 'isolating paragraph in list item "Item 2" for MWheading');
 
 	runIsolateTest( assert, 'heading', new ve.Range( 12, 20 ), function( data ) {
@@ -533,32 +517,26 @@ QUnit.test( 'isolateAndUnwrap', 4, function ( assert ) {
 	}, 'isolating paragraph in list item "Item 2" for heading');
 
 	runIsolateTest( assert, 'MWheading', new ve.Range( 89, 97 ), function( data ) {
-		data[75].internal = rebuilt;
-		data[76].internal = rebuilt;
-		data[77].internal = rebuilt;
 		data.splice( 88, 1,
 			{ 'type': '/tableRow' },
 			{ 'type': '/tableSection' },
 			{ 'type': '/table' }
 		);
 		data.splice( 99, 1,
-			{ 'type': 'table', 'internal': createdAndRebuilt },
-			{ 'type': 'tableSection', 'attributes': { 'style': 'body' }, 'internal': createdAndRebuilt },
-			{ 'type': 'tableRow', 'internal': createdAndRebuilt }
+			{ 'type': 'table' },
+			{ 'type': 'tableSection', 'attributes': { 'style': 'body' } },
+			{ 'type': 'tableRow' }
 		);
 	}, 'isolating "Cell 2" for MWheading');
 
 	runIsolateTest( assert, 'MWheading', new ve.Range( 202, 212 ), function( data ) {
-		data[186].internal = rebuilt;
-		data[187].internal = rebuilt;
-		data[188].internal = rebuilt;
 		data.splice( 201, 1,
 			{ 'type': '/list' }, { 'type': '/listItem' }, { 'type': '/list' }
 		);
 		data.splice( 214, 1,
-			{ 'type': 'list', 'attributes': { 'style': 'bullet' }, 'internal': createdAndRebuilt },
-			{ 'type': 'listItem', 'internal': createdAndRebuilt },
-			{ 'type': 'list', 'attributes': { 'style': 'number' }, 'internal': createdAndRebuilt }
+			{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
+			{ 'type': 'listItem' },
+			{ 'type': 'list', 'attributes': { 'style': 'number' } }
 		);
 	}, 'isolating paragraph in list item "Nested 2" for MWheading');
 } );

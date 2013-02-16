@@ -38,17 +38,14 @@ function runIndentationChangeTest( assert, range, method, expectedSelection, exp
 
 QUnit.test( 'decrease', 2, function ( assert ) {
 	var i,
-		rebuilt = { 'changed': { 'rebuilt': 1 } },
-		createdAndRebuilt = { 'changed': { 'created': 2, 'rebuilt': 1 } },
 		cases = [
 			{
 				'range': new ve.Range( 14, 16 ),
 				'method': 'decrease',
 				'expectedSelection': new ve.Range( 14, 16 ),
 				'expectedData': function( data ) {
-					data[0].internal = rebuilt;
 					data.splice( 11, 2, { 'type': '/list' }, { 'type': 'paragraph' } );
-					data.splice( 19, 2, { 'type': '/paragraph' }, { 'type': 'list', 'attributes': { 'style': 'bullet' }, 'internal': createdAndRebuilt } );
+					data.splice( 19, 2, { 'type': '/paragraph' }, { 'type': 'list', 'attributes': { 'style': 'bullet' } } );
 				},
 				'expectedOriginalData': function( data ) {
 					// generated: 'wrapper' is removed by the action and not restored by undo

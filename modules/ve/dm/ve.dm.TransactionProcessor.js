@@ -90,13 +90,6 @@ ve.dm.TransactionProcessor.prototype.advanceCursor = function ( increment ) {
  */
 ve.dm.TransactionProcessor.prototype.process = function () {
 	var op;
-	if ( this.reversed ) {
-		// Undo change markers before rolling back the transaction, because the offsets
-		// are relevant to the post-commit state
-		this.applyChangeMarkers();
-		// Unset the change markers we've just undone
-		this.transaction.clearChangeMarkers();
-	}
 
 	// This loop is factored this way to allow operations to be skipped over or executed
 	// from within other operations
@@ -106,10 +99,6 @@ ve.dm.TransactionProcessor.prototype.process = function () {
 	}
 	this.synchronizer.synchronize();
 
-	if ( !this.reversed ) {
-		// Apply the change markers we've accumulated while processing the transaction
-		this.applyChangeMarkers();
-	}
 	// Mark the transaction as committed or rolled back, as appropriate
 	this.transaction.toggleApplied();
 };
@@ -127,7 +116,7 @@ ve.dm.TransactionProcessor.prototype.process = function () {
  * @throws {Error} Annotation to be cleared is not set
  */
 ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
-	var item, isElement, annotated, annotations, i, range, selection, offset,
+	var item, isElement, annotated, annotations, i, range, selection,
 		store = this.document.getStore();
 	if ( this.set.isEmpty() && this.clear.isEmpty() ) {
 		return;
@@ -171,67 +160,7 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 			),
 			'leaves'
 		);
-		for ( i = 0; i < selection.length; i++ ) {
-			offset = !selection[i].node.isWrapped() && selection[i].parentOuterRange ?
-				selection[i].parentOuterRange.start :
-				selection[i].nodeOuterRange.start;
-			this.setChangeMarker( offset + this.adjustment, 'annotations' );
-		}
 		this.synchronizer.pushAnnotation( new ve.Range( this.cursor, to ) );
-	}
-};
-
-/**
- * Set a change marker on the transaction when in commit mode.
- *
- * This function is a no-op in rollback mode.
- *
- * @see ve.dm.Transaction#setChangeMarker
- *
- * @method
- * @param {number} offset
- * @param {string} type
- * @param {boolean} increment
- */
-ve.dm.TransactionProcessor.prototype.setChangeMarker = function ( offset, type, increment ) {
-	// Refuse to set any new change markers while reversing transactions
-	if ( !this.reversed ) {
-		this.transaction.setChangeMarker( offset, type, increment );
-	}
-};
-
-/**
- * Apply the change markers on this.transaction to this.document.
- *
- * Change markers are set (incremented) in commit mode, and unset (decremented) in rollback mode.
- *
- * @method
- */
-ve.dm.TransactionProcessor.prototype.applyChangeMarkers = function () {
-	var offset, type, previousValue, newValue, element,
-		markers = this.transaction.getChangeMarkers(),
-		m = this.reversed ? -1 : 1;
-	for ( offset in markers ) {
-		for ( type in markers[offset] ) {
-			offset = Number( offset );
-			element = this.document.data.getData( offset );
-			previousValue = ve.getProp( element, 'internal', 'changed', type );
-			newValue = ( previousValue || 0 ) + m*markers[offset][type];
-			if ( newValue !== 0 ) {
-				ve.setProp( element, 'internal', 'changed', type, newValue );
-			} else if ( previousValue !== undefined ) {
-				// Value was set but becomes zero, delete the key
-				delete element.internal.changed[type];
-				// If that made .changed empty, delete it
-				if ( ve.isEmptyObject( element.internal.changed ) ) {
-					delete element.internal.changed;
-				}
-				// If that made .internal empty, delete it
-				if ( ve.isEmptyObject( element.internal ) ) {
-					delete element.internal;
-				}
-			}
-		}
 	}
 };
 
@@ -350,7 +279,6 @@ ve.dm.TransactionProcessor.processors.attribute = function ( op ) {
 		op.key,
 		from, to
 	);
-	this.setChangeMarker( this.cursor, 'attributes' );
 };
 
 /**
@@ -372,7 +300,7 @@ ve.dm.TransactionProcessor.processors.attribute = function ( op ) {
  * @param {Array} op.insert Linear model data to insert
  */
 ve.dm.TransactionProcessor.processors.replace = function ( op ) {
-	var node, selection, range, parentOffset,
+	var node, selection, range,
 		remove = this.reversed ? op.insert : op.remove,
 		insert = this.reversed ? op.remove : op.insert,
 		removeMetadata = this.reversed ? op.insertMetadata : op.removeMetadata,
@@ -439,11 +367,6 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 					range.end + this.adjustment + insert.length - remove.length )
 			);
 		}
-		// Set change markers on the parents of the affected nodes
-		for ( i = 0; i < selection.length; i++ ) {
-			parentOffset = ( selection[i].parentOuterRange || selection[i].nodeOuterRange ).start;
-			this.setChangeMarker( parentOffset + this.adjustment, 'content' );
-		}
 		// Advance the cursor
 		this.advanceCursor( insert.length );
 		this.adjustment += insert.length - remove.length;
@@ -485,18 +408,6 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 					), 'siblings' );
 					for ( i = 0; i < selection.length; i++ ) {
 						affectedRanges.push( selection[i].nodeOuterRange );
-						if (
-							selection[i].nodeOuterRange.start < prevCursor - this.adjustment &&
-							selection[i].node.canContainContent()
-						) {
-							// The opening element survives, so this
-							// node will have some of its content
-							// removed and/or have another node merged
-							// into it. Mark the node.
-							// TODO detect special case where closing is replaced
-							parentOffset = selection[i].nodeOuterRange.start + this.adjustment;
-							this.setChangeMarker( parentOffset, 'content' );
-						}
 					}
 				}
 				// Walk through the remove and insert data
@@ -537,18 +448,11 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 								affectedRanges.push( new ve.Range( scopeStart, scopeEnd ) );
 								// Update scope
 								scope = scope.getParent() || scope;
-								// Set change marker
-								this.transaction.setChangeMarker(
-									scopeStart + this.adjustment,
-									'rebuilt'
-								);
 							}
 
 						} else {
 							// Opening element
 							insertLevel++;
-							// Mark as 'created'
-							this.setChangeMarker( prevCursor + i, 'created' );
 						}
 					}
 				}

@@ -2228,42 +2228,6 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/alienMeta' },
 		]
 	},
-	'change markers': {
-		'html': null,
-		'data': [
-			{ 'type': 'paragraph', 'internal': { 'changed': { 'content': 1 } } },
-			'F',
-			'o',
-			'o',
-			{ 'type': 'image', 'internal': { 'changed': { 'attributes': 2 } } },
-			{ 'type': '/image' },
-			{ 'type': '/paragraph' },
-			{ 'type': 'paragraph', 'internal': { 'changed': { 'created': 1 } } },
-			'B',
-			'a',
-			'r',
-			{ 'type': '/paragraph' },
-			{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
-			{ 'type': 'listItem' },
-			{
-				'type': 'paragraph',
-				'internal': {
-					'generated': 'wrapper',
-					'changed': { 'content': 1 }
-				}
-			},
-			'B',
-			'a',
-			'z',
-			{ 'type': '/paragraph' },
-			{ 'type': '/listItem' },
-			{ 'type': '/list' }
-		],
-		'normalizedHtml': '<body><p data-ve-changed="{&quot;content&quot;:1}">' +
-				'Foo<img data-ve-changed="{&quot;attributes&quot;:2}" />' +
-				'</p><p data-ve-changed="{&quot;created&quot;:1}">Bar</p>' +
-				'<ul><li data-ve-changed="{&quot;content&quot;:1}">Baz</li></ul></body>'
-	},
 	'about grouping': {
 		'html': '<body><div typeof="mw:Placeholder" about="#mwt1">Foo</div>' +
 			'<figure typeof="mw:Placeholder" about="#mwt1">Bar</figure>' +

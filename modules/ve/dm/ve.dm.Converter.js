@@ -228,17 +228,6 @@ ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElement
 			}
 		}
 	}
-	// Change markers
-	if (
-		dataElement.internal && dataElement.internal.changed &&
-		!ve.isEmptyObject( dataElement.internal.changed ) &&
-		ve.init.platform.useChangeMarkers()
-	) {
-		domElements[0].setAttribute( 'data-ve-changed',
-			JSON.stringify( dataElement.internal.changed )
-		);
-	}
-
 	return domElements;
 };
 
@@ -807,9 +796,9 @@ ve.dm.Converter.prototype.getDomFromData = function ( documentData, store, inter
  * @throws Unbalanced data: looking for closing /type
  */
 ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container ) {
-	var text, i, j, k, annotations, annotationElement, dataElement, dataElementOrSlice,
+	var text, i, j, annotations, annotationElement, dataElement, dataElementOrSlice,
 		childDomElements, pre, ours, theirs, parentDomElement, lastChild,
-		isContentNode, changed, parentChanged, sibling, previousSiblings, doUnwrap, textNode,
+		isContentNode, sibling, previousSiblings, doUnwrap, textNode,
 		conv = this,
 		doc = container.ownerDocument,
 		domElement = container,
@@ -1062,27 +1051,6 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container ) {
 							domElement.firstChild,
 							domElement
 						);
-					}
-					// Transfer change markers
-					changed = domElement.getAttribute( 'data-ve-changed' );
-					if ( changed ) {
-						parentChanged = parentDomElement.getAttribute( 'data-ve-changed' );
-						if ( parentChanged ) {
-							changed = $.parseJSON( changed );
-							parentChanged = $.parseJSON( parentChanged );
-							for ( k in changed ) {
-								if ( k in parentChanged ) {
-									parentChanged[k] += changed[k];
-								} else {
-									parentChanged[k] = changed[k];
-								}
-							}
-							parentDomElement.setAttribute( 'data-ve-changed',
-								JSON.stringify( parentChanged ) );
-						} else {
-							parentDomElement.setAttribute( 'data-ve-changed',
-								changed );
-						}
 					}
 					parentDomElement.removeChild( domElement );
 				}

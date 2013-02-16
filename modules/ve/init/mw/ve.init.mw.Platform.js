@@ -56,22 +56,6 @@ ve.init.mw.Platform.prototype.getModulesUrl = function () {
 };
 
 /**
- * Check whether to use change markers.
- *
- * Uses the vechangemarkers query string variable.
- *
- * @method
- * @return {boolean}
- */
-ve.init.mw.Platform.prototype.useChangeMarkers = function () {
-	var currentUri = new mw.Uri( window.location.toString() );
-	if ( currentUri && 'venochangemarkers' in currentUri.query ) {
-		return false;
-	}
-	return true;
-};
-
-/**
  * Add multiple messages to the localization system.
  *
  * Wrapper for mw.msg system.
