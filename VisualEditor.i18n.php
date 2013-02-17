@@ -1910,9 +1910,13 @@ $messages['ml'] = array(
 );
 
 /** Marathi (मराठी)
+ * @author Praju23
  * @author Ydyashad
  */
 $messages['mr'] = array(
+	'visualeditor' => 'माझे नाव प्राजक्ता आहे.मी फोरसाईट महाविद्दालयात शिकत आहे.मी बी.सी.ए.मध्ये दुसऱ्या शिकत आहे.',
+	'visualeditor-preference-enable' => 'hi', # Fuzzy
+	'visualeditor-mainnamespacepagelink' => 'सा', # Fuzzy
 	'visualeditor-inspector-title' => 'तपास',
 );
 
