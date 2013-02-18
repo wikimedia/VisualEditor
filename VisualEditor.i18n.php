@@ -132,7 +132,8 @@ Link text of the dedicated VisualEditor Edit tab.
 	'visualeditor-linkinspector-suggest-new-page' => 'Label for a new page in the link inspector',
 	'visualeditor-linkinspector-suggest-external-link' => 'Label for an external (Web) link in the link inspector',
 	'visualeditor-formatdropdown-title' => 'This is a tooltip for the drop-down box for choosing the formatting style of the selected text, such as "Heading 1", "Heading 2" or "Plain text". (This is not related to "file format" or "data format", such as "Wikitext", "HTML", "PDF" etc.)',
-	'visualeditor-formatdropdown-format-paragraph' => 'Item in the formatting dropdown for paragraphs (normal text)',
+	'visualeditor-formatdropdown-format-paragraph' => 'Item in the formatting dropdown for paragraphs (normal text).
+{{Identical|Paragraph}}',
 	'visualeditor-formatdropdown-format-heading1' => 'Item in the formatting dropdown for a level 1 heading',
 	'visualeditor-formatdropdown-format-heading2' => 'Item in the formatting dropdown for a level 2 heading',
 	'visualeditor-formatdropdown-format-heading3' => 'Item in the formatting dropdown for a level 3 heading',
