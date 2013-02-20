@@ -180,10 +180,21 @@ $html = file_get_contents( $page );
 		<script src="../../modules/ve/ui/ve.ui.Frame.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.Inspector.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.InspectorFactory.js"></script>
+		<script src="../../modules/ve/ui/ve.ui.Widget.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.Tool.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.Toolbar.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.ToolFactory.js"></script>
-		<script src="../../modules/ve/ui/ve.ui.Widget.js"></script>
+		<script src="../../modules/ve/ui/widgets/ve.ui.LabeledWidget.js"></script>
+		<script src="../../modules/ve/ui/widgets/ve.ui.FlaggableWidget.js"></script>
+		<script src="../../modules/ve/ui/widgets/ve.ui.ButtonWidget.js"></script>
+		<script src="../../modules/ve/ui/widgets/ve.ui.InputWidget.js"></script>
+		<script src="../../modules/ve/ui/widgets/ve.ui.InputLabelWidget.js"></script>
+		<script src="../../modules/ve/ui/widgets/ve.ui.TextInputWidget.js"></script>
+		<script src="../../modules/ve/ui/widgets/ve.ui.MenuItemWidget.js"></script>
+		<script src="../../modules/ve/ui/widgets/ve.ui.MenuWidget.js"></script>
+		<script src="../../modules/ve/ui/widgets/ve.ui.TextInputMenuWidget.js"></script>
+		<script src="../../modules/ve/ui/widgets/ve.ui.LinkTargetInputWidget.js"></script>
+		<script src="../../modules/ve/ui/widgets/ve.ui.MWLinkTargetInputWidget.js"></script>
 		<script src="../../modules/ve/ui/tools/ve.ui.ButtonTool.js"></script>
 		<script src="../../modules/ve/ui/tools/ve.ui.AnnotationButtonTool.js"></script>
 		<script src="../../modules/ve/ui/tools/ve.ui.InspectorButtonTool.js"></script>
@@ -202,14 +213,6 @@ $html = file_get_contents( $page );
 		<script src="../../modules/ve/ui/tools/buttons/ve.ui.RedoButtonTool.js"></script>
 		<script src="../../modules/ve/ui/tools/buttons/ve.ui.UndoButtonTool.js"></script>
 		<script src="../../modules/ve/ui/tools/dropdowns/ve.ui.FormatDropdownTool.js"></script>
-		<script src="../../modules/ve/ui/widgets/ve.ui.ButtonWidget.js"></script>
-		<script src="../../modules/ve/ui/widgets/ve.ui.InputWidget.js"></script>
-		<script src="../../modules/ve/ui/widgets/ve.ui.InputLabelWidget.js"></script>
-		<script src="../../modules/ve/ui/widgets/ve.ui.TextInputWidget.js"></script>
-		<script src="../../modules/ve/ui/widgets/ve.ui.TextInputMenuWidget.js"></script>
-		<script src="../../modules/ve/ui/widgets/ve.ui.LinkTargetInputWidget.js"></script>
-		<script src="../../modules/ve/ui/widgets/ve.ui.MWLinkTargetInputWidget.js"></script>
-		<script src="../../modules/ve/ui/widgets/ve.ui.MenuWidget.js"></script>
 		<script src="../../modules/ve/ui/inspectors/ve.ui.LinkInspector.js"></script>
 		<script src="../../modules/ve/ui/inspectors/ve.ui.MWLinkInspector.js"></script>
 		<!-- demo -->
@@ -247,24 +250,27 @@ $html = file_get_contents( $page );
 		$( function () {
 
 			// Widgets
-			var startTextInput = new ve.ui.TextInputWidget( $, 've-debug-start' ),
-				endTextInput = new ve.ui.TextInputWidget( $, 've-debug-end' ),
-				startLabel = new ve.ui.InputLabelWidget( $, 'Start', startTextInput ),
-				endLabel = new ve.ui.InputLabelWidget( $, 'End', endTextInput ),
-				getRangeButton = new ve.ui.ButtonWidget( $, 'Get selected range' ),
-				logRangeButton = new ve.ui.ButtonWidget( $, 'Log to console' ),
-				dumpModelButton = new ve.ui.ButtonWidget( $, 'Dump model' ),
-				validateButton = new ve.ui.ButtonWidget( $, 'Validate view and model' );
+			var startTextInput = new ve.ui.TextInputWidget( { 'readOnly': true } ),
+				endTextInput = new ve.ui.TextInputWidget( { 'readOnly': true } ),
+				startTextInputLabel = new ve.ui.InputLabelWidget(
+					{ 'label': 'Start', 'input': startTextInput }
+				),
+				endTextInputLabel = new ve.ui.InputLabelWidget(
+					{ 'label': 'End', 'input': endTextInput }
+				),
+				getRangeButton = new ve.ui.ButtonWidget( { 'label': 'Get selected range' } ),
+				logRangeButton = new ve.ui.ButtonWidget(
+					{ 'label': 'Log to console', 'disabled': true }
+				),
+				dumpModelButton = new ve.ui.ButtonWidget( { 'label': 'Dump model' } ),
+				validateButton = new ve.ui.ButtonWidget( { 'label': 'Validate view and model' } );
 
 			// Initialization
-			logRangeButton.setDisabled( true );
-			startTextInput.setReadOnly( true );
-			endTextInput.setReadOnly( true );
 			$( '.ve-demo-utilities-commands' ).append(
 				getRangeButton.$,
-				startLabel.$,
+				startTextInputLabel.$,
 				startTextInput.$,
-				endLabel.$,
+				endTextInputLabel.$,
 				endTextInput.$,
 				logRangeButton.$,
 				$( '<span class="ve-demo-utilities-commands-divider">&nbsp;</span>' ),

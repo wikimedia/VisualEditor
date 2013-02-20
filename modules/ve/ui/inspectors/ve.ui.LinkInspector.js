@@ -21,7 +21,9 @@ ve.ui.LinkInspector = function VeUiLinkInspector( context ) {
 	this.context = context;
 	this.initialAnnotationHash = null;
 	this.isNewAnnotation = false;
-	this.targetInput = new this.constructor.static.inputWidget( this.frame.$$, context.$overlay );
+	this.targetInput = new this.constructor.static.linkTargetInputWidget( {
+		'$$': this.frame.$$, '$overlay': context.$overlay
+	} );
 
 	// Initialization
 	this.$form.append( this.targetInput.$ );
@@ -39,7 +41,7 @@ ve.ui.LinkInspector.static.titleMessage = 'visualeditor-linkinspector-title';
 
 ve.ui.LinkInspector.static.typePattern = /^link(\/|$)/;
 
-ve.ui.LinkInspector.static.inputWidget = ve.ui.LinkTargetInputWidget;
+ve.ui.LinkInspector.static.linkTargetInputWidget = ve.ui.LinkTargetInputWidget;
 
 /* Methods */
 

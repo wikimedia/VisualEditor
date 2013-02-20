@@ -1,5 +1,5 @@
 /*!
- * VisualEditor user interface Widget styles.
+ * VisualEditor UserInterface Widget styles.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -14,8 +14,8 @@
 	padding: 0.25em 0.75em;
 	border-radius: 0.3em;
 	vertical-align: top;
-	color: #555;
-	text-shadow: 0 1px 1px #fff;
+	color: #333;
+	text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
 	box-shadow: 0 0.1em 0.25em rgba(0, 0, 0, 0.1);
 	text-align: center;
 	font-size: 1em;
@@ -55,13 +55,16 @@
 .ve-ui-buttonWidget:active {
 	border-color: #ddd;
 	box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.07);
+	color: black;
 }
 
-.ve-ui-widget-disabled.ve-ui-buttonWidget {
-	filter: alpha(opacity=50);
+.ve-ui-widget-disabled.ve-ui-buttonWidget,
+.ve-ui-widget-disabled.ve-ui-buttonWidget:active {
+	filter: alpha(opacity=25);
 	opacity: 0.5;
 	cursor: default;
 	box-shadow: none;
+	color: #333;
 }
 
 .ve-ui-widget-disabled.ve-ui-buttonWidget:hover {
@@ -75,12 +78,12 @@
 	line-height: 1.9em;
 }
 
-.ve-ui-buttonWidget-destructive {
+.ve-ui-flaggableWidget-destructive.ve-ui-buttonWidget {
 	/* Red text */
 	color: #d45353;
 }
 
-.ve-ui-buttonWidget-constructive {
+.ve-ui-flaggableWidget-constructive.ve-ui-buttonWidget {
 	/* Green */
 	border: solid 1px #c3e59a;
 	background-color: #f0fbe1;
@@ -97,7 +100,11 @@
 	background-image: linear-gradient(top, #f0fbe1 0%, #c3e59a 100%);
 }
 
-.ve-ui-buttonWidget-primary {
+.ve-ui-flaggableWidget-constructive.ve-ui-buttonWidget:hover {
+	border-color: #a6cf74;
+}
+
+.ve-ui-flaggableWidget-primary.ve-ui-buttonWidget {
 	/* Blue */
 	border: solid 1px #b0d9ee;
 	background-color: #eaf4fa;
@@ -114,31 +121,8 @@
 	background-image: linear-gradient(top, #eaf4fa 0%, #b0d9ee 100%);
 }
 
-/* ve.ui.MenuWidget */
-
-.ve-ui-menuWidget {
-	display: none;
-	position: absolute;
-	border: solid 1px #ccc;
-	border-radius: 0.25em;
-	background-color: #fff;
-	box-shadow: 0 0.25em 1em 0 rgba(0, 0, 0, 0.25);
-	z-index: 3;
-}
-
-.ve-ui-menuWidget-item {
-	padding: 0.6em 0.8em;
-	cursor: pointer;
-	white-space: nowrap;
-}
-
-.ve-ui-menuWidget-item:hover {
-	background-color: #b3d6f6;
-}
-
-.ve-ui-menuWidget-break {
-	margin: 0.33em 0;
-	border-top: solid 1px #ddd;
+.ve-ui-flaggableWidget-primary.ve-ui-buttonWidget:hover {
+	border-color: #84b9d4;
 }
 
 /* ve.ui.TextInputWidget */
@@ -180,12 +164,11 @@
 	text-shadow: 0 1px 1px #fff;
 }
 
-/* ve.ui.TextInputMenuWidget */
+/* ve.ui.MenuWidget */
 
-.ve-ui-textInputMenuWidget {
+.ve-ui-menuWidget {
 	position: absolute;
 	background: #FFFFFF;
-	width: 20em;
 	margin-top: -1px;
 	font-size: 0.8em;
 	z-index: 101;
@@ -194,58 +177,77 @@
 	box-shadow: 0 0.15em 1em 0 rgba(0, 0, 0, 0.2);
 }
 
-.ve-ui-textInputMenuWidget-groups {
+.ve-ui-menuWidget-groups {
 	margin: 0.5em 0;
 	padding: 0;
 	list-style: none;
 }
 
-.ve-ui-textInputMenuWidget-group {
+.ve-ui-menuWidget-group {
 	margin: 0;
 	padding: 0;
 }
 
-.ve-ui-textInputMenuWidget-group-label {
+.ve-ui-menuWidget-group-label {
 	padding: 0.33em 0.75em;
 	color: #888;
 }
 
-.ve-ui-textInputMenuWidget-items {
+.ve-ui-menuWidget-items {
 	margin: 0;
 	padding: 0;
 	list-style: none;
 }
 
-.ve-ui-textInputMenuWidget-item {
-	padding: 0.33em 1.25em;
-	margin: 0;
-	cursor: pointer;
-	color: #0645AD;
+.ve-ui-menuWidget input {
+	position: absolute;
+	width: 0;
+	height: 0;
+	overflow: hidden;
+	opacity: 0;
 }
 
-.ve-ui-textInputMenuWidget-item-label {
+/* ve.ui.MenuItemWidget */
+
+.ve-ui-menuItemWidget {
+	display: block;
+	padding: 0.5em 2em 0.5em 3em;
+	border: none;
+	margin: 0;
+	cursor: pointer;
+	background-position: 1em center;
+	background-repeat: no-repeat;
+}
+
+.ve-ui-menuItemWidget-label {
 	white-space: nowrap;
 }
 
-.ve-ui-textInputMenuWidget-item:hover {
-	background: #E5F3FF;
-}
-
-.ve-ui-textInputMenuWidget-item-selected,
-.ve-ui-textInputMenuWidget-item-selected:hover {
+.ve-ui-menuItemWidget-highlighted {
 	background-color: #b3d6f6;
 }
 
-.ve-ui-textInputMenuWidget-group[rel=newPage] .ve-ui-textInputMenuWidget-item-label {
-	color: #BA0000;
-}
-
-.ve-ui-textInputMenuWidget-group[rel=existingPage] .ve-ui-textInputMenuWidget-item-label,
-.ve-ui-textInputMenuWidget-group[rel=matchingPage] .ve-ui-textInputMenuWidget-item-label,
-.ve-ui-textInputMenuWidget-group[rel=externalLink] .ve-ui-textInputMenuWidget-item-label {
-	color: #0645AD;
-}
+/* ve.ui.MWLinkTargetInputWidget */
 
 .ve-ui-mwLinkTargetInputWidget-pending input {
 	background-image: url(images/pending.gif);
+}
+
+.ve-ui-mwLinkTargetInputWidget-menu.ve-ui-menuWidget {
+	width: 20em;
+}
+
+.ve-ui-mwLinkTargetInputWidget-menu .ve-ui-menuWidget-item {
+	padding: 0.33em 1.25em;
+	color: #0645AD;
+}
+
+.ve-ui-mwLinkTargetInputWidget-menu .ve-ui-menuWidget-group[rel=newPage] .ve-ui-menuWidget-item-label {
+	color: #BA0000;
+}
+
+.ve-ui-mwLinkTargetInputWidget-menu .ve-ui-menuWidget-group[rel=existingPage] .ve-ui-menuWidget-item-label,
+.ve-ui-mwLinkTargetInputWidget-menu .ve-ui-menuWidget-group[rel=matchingPage] .ve-ui-menuWidget-item-label,
+.ve-ui-mwLinkTargetInputWidget-menu .ve-ui-menuWidget-group[rel=externalLink] .ve-ui-menuWidget-item-label {
+	color: #0645AD;
 }

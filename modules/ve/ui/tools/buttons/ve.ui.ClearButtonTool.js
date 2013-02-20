@@ -12,10 +12,11 @@
  * @extends ve.ui.ButtonTool
  * @constructor
  * @param {ve.ui.Toolbar} toolbar
+ * @param {Object} [config] Config options
  */
-ve.ui.ClearButtonTool = function VeUiClearButtonTool( toolbar ) {
+ve.ui.ClearButtonTool = function VeUiClearButtonTool( toolbar, config ) {
 	// Parent constructor
-	ve.ui.ButtonTool.call( this, toolbar );
+	ve.ui.ButtonTool.call( this, toolbar, config );
 
 	// Initialization
 	this.setDisabled( true );

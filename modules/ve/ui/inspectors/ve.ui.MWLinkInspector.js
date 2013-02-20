@@ -1,5 +1,5 @@
 /*!
- * VisualEditor user interface LinkInspector class.
+ * VisualEditor UserInterface LinkInspector class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -28,7 +28,7 @@ ve.inheritClass( ve.ui.MWLinkInspector, ve.ui.LinkInspector );
 
 ve.ui.MWLinkInspector.static.typePattern = /^link\/MW(in|ex)ternal$/;
 
-ve.ui.MWLinkInspector.static.inputWidget = ve.ui.MWLinkTargetInputWidget;
+ve.ui.MWLinkInspector.static.linkTargetInputWidget = ve.ui.MWLinkTargetInputWidget;
 
 /* Methods */
 

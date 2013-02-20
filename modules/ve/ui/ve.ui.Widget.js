@@ -1,5 +1,5 @@
 /*!
- * VisualEditor user interface Widget class.
+ * VisualEditor UserInterface Widget class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -11,26 +11,44 @@
  * @class
  * @abstract
  * @extends ve.EventEmitter
+ *
  * @constructor
- * @param {Function} $$ jQuery for the frame the widget is in
- * @param {jQuery} [$element] Widget element
+ * @param {Object} [config] Config options
+ * @cfg {Function} [$$=$] jQuery for the frame the widget is in
+ * @cfg {boolean} [disabled=false] Disable
  */
-ve.ui.Widget = function VeUiWidget( $$, $element ) {
+ve.ui.Widget = function VeUiWidget( config ) {
+	// Initialize config
+	config = ve.extendObject( { '$$': $, 'disabled': false }, config );
+
 	// Parent constructor
 	ve.EventEmitter.call( this );
 
 	// Properties
-	this.$$ = $$;
-	this.$ = $element || this.$$( '<div>' );
-	this.disabled = false;
+	this.$$ = config.$$;
+	this.$ = this.$$( '<' + this.constructor.static.tagName + '>' );
+	this.disabled = config.disabled;
 
 	// Initialization
 	this.$.addClass( 've-ui-widget' );
+	this.setDisabled( this.disabled );
 };
 
 /* Inheritance */
 
 ve.inheritClass( ve.ui.Widget, ve.EventEmitter );
+
+/* Static Properties */
+
+/**
+ * HTML element name.
+ *
+ * @static
+ * @property
+ * @type {string}
+ * @inheritable
+ */
+ve.ui.Widget.static.tagName = 'div';
 
 /* Methods */
 
@@ -51,6 +69,7 @@ ve.ui.Widget.prototype.isDisabled = function () {
  *
  * @method
  * @param {boolean} state Disable button
+ * @chainable
  */
 ve.ui.Widget.prototype.setDisabled = function ( state ) {
 	this.disabled = !!state;
@@ -59,4 +78,5 @@ ve.ui.Widget.prototype.setDisabled = function ( state ) {
 	} else {
 		this.$.removeClass( 've-ui-widget-disabled' );
 	}
+	return this;
 };

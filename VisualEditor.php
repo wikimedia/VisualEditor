@@ -294,10 +294,10 @@ $wgResourceModules += array(
 			've/ui/ve.ui.Frame.js',
 			've/ui/ve.ui.Inspector.js',
 			've/ui/ve.ui.InspectorFactory.js',
+			've/ui/ve.ui.Widget.js',
 			've/ui/ve.ui.Tool.js',
 			've/ui/ve.ui.Toolbar.js',
 			've/ui/ve.ui.ToolFactory.js',
-			've/ui/ve.ui.Widget.js',
 
 			've/ui/tools/ve.ui.ButtonTool.js',
 			've/ui/tools/ve.ui.AnnotationButtonTool.js',
@@ -305,6 +305,18 @@ $wgResourceModules += array(
 			've/ui/tools/ve.ui.IndentationButtonTool.js',
 			've/ui/tools/ve.ui.ListButtonTool.js',
 			've/ui/tools/ve.ui.DropdownTool.js',
+
+			've/ui/widgets/ve.ui.LabeledWidget.js',
+			've/ui/widgets/ve.ui.FlaggableWidget.js',
+			've/ui/widgets/ve.ui.ButtonWidget.js',
+			've/ui/widgets/ve.ui.InputWidget.js',
+			've/ui/widgets/ve.ui.InputLabelWidget.js',
+			've/ui/widgets/ve.ui.TextInputWidget.js',
+			've/ui/widgets/ve.ui.MenuItemWidget.js',
+			've/ui/widgets/ve.ui.MenuWidget.js',
+			've/ui/widgets/ve.ui.TextInputMenuWidget.js',
+			've/ui/widgets/ve.ui.LinkTargetInputWidget.js',
+			've/ui/widgets/ve.ui.MWLinkTargetInputWidget.js',
 
 			've/ui/tools/buttons/ve.ui.BoldButtonTool.js',
 			've/ui/tools/buttons/ve.ui.ItalicButtonTool.js',
@@ -319,15 +331,6 @@ $wgResourceModules += array(
 			've/ui/tools/buttons/ve.ui.UndoButtonTool.js',
 
 			've/ui/tools/dropdowns/ve.ui.FormatDropdownTool.js',
-
-			've/ui/widgets/ve.ui.ButtonWidget.js',
-			've/ui/widgets/ve.ui.InputWidget.js',
-			've/ui/widgets/ve.ui.InputLabelWidget.js',
-			've/ui/widgets/ve.ui.TextInputWidget.js',
-			've/ui/widgets/ve.ui.TextInputMenuWidget.js',
-			've/ui/widgets/ve.ui.LinkTargetInputWidget.js',
-			've/ui/widgets/ve.ui.MWLinkTargetInputWidget.js',
-			've/ui/widgets/ve.ui.MenuWidget.js',
 
 			've/ui/inspectors/ve.ui.LinkInspector.js',
 			've/ui/inspectors/ve.ui.MWLinkInspector.js',

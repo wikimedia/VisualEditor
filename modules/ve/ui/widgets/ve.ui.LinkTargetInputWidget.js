@@ -1,5 +1,5 @@
 /*!
- * VisualEditor user interface LinkTargetInputWidget class.
+ * VisualEditor UserInterface LinkTargetInputWidget class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -9,22 +9,17 @@
  * Creates an ve.ui.LinkTargetInputWidget object.
  *
  * @class
- * @constructor
  * @extends ve.ui.TextInputWidget
- * @param {Function} $$ jQuery for the frame the widget is in
- * @param {jQuery} $overlay DOM element to add menu to
- * @param {string} [name] Input name, used by HTML forms
- * @param {string} [value] Input value
+ *
+ * @constructor
+ * @param {Object} [config] Config options
  */
-ve.ui.LinkTargetInputWidget = function VeUiLinkTargetInputWidget( $$, $overlay, name, value ) {
+ve.ui.LinkTargetInputWidget = function VeUiLinkTargetInputWidget( config ) {
 	// Parent constructor
-	ve.ui.TextInputWidget.call( this, $$, name, value );
+	ve.ui.TextInputWidget.call( this, config );
 
 	// Properties
 	this.annotation = null;
-
-	// Events
-	this.addListenerMethod( this, 'change', 'onChange' );
 
 	// Initialization
 	this.$.addClass( 've-ui-linkTargetInputWidget' );
@@ -37,17 +32,24 @@ ve.inheritClass( ve.ui.LinkTargetInputWidget, ve.ui.TextInputWidget );
 /* Methods */
 
 /**
- * Handles change events.
+ * Set the value of the input.
+ *
+ * Overrides setValue to keep annotations in sync.
  *
  * @method
  * @param {string} value New value
  */
-ve.ui.LinkTargetInputWidget.prototype.onChange = function ( value ) {
+ve.ui.LinkTargetInputWidget.prototype.setValue = function ( value ) {
+	// Keep annotation in sync with value
+	value = this.sanitizeValue( value );
 	if ( value === '' ) {
 		this.annotation = null;
 	} else {
 		this.setAnnotation( new ve.dm.LinkAnnotation( { 'href': value } ) );
 	}
+
+	// Call parent method
+	ve.ui.TextInputWidget.prototype.setValue.call( this, value );
 };
 
 /**
@@ -57,10 +59,17 @@ ve.ui.LinkTargetInputWidget.prototype.onChange = function ( value ) {
  *
  * @method
  * @param {ve.dm.LinkAnnotation} annotation Link annotation
+ * @chainable
  */
 ve.ui.LinkTargetInputWidget.prototype.setAnnotation = function ( annotation ) {
 	this.annotation = annotation;
-	this.setValue( this.getTargetFromAnnotation( annotation ), 'annotation' );
+
+	// Call parent method
+	ve.ui.TextInputWidget.prototype.setValue.call(
+		this, this.sanitizeValue( this.getTargetFromAnnotation( annotation ) )
+	);
+
+	return this;
 };
 
 /**

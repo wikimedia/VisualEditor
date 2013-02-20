@@ -36,9 +36,11 @@ ve.ui.Frame = function VeUiFrame( config, $container ) {
  * @method
  * @param {number} width Frame width in pixels
  * @param {number} height Frame height in pixels
+ * @chainable
  */
 ve.ui.Frame.prototype.setSize = function ( width, height ) {
 	this.$frame.css( { 'width': width, 'height': height } );
+	return this;
 };
 
 /**
@@ -84,10 +86,12 @@ ve.ui.Frame.prototype.attachFrame = function ( $frame, $container ) {
  *
  * @method
  * @param {string} path Full path to stylesheet
+ * @chainable
  */
 ve.ui.Frame.prototype.loadStylesheet = function ( path ) {
 	// Append style elements to head.
 	this.$$( 'head' ).append(
 		this.$$( '<link rel="stylesheet">' ).attr( 'href', path )
 	);
+	return this;
 };

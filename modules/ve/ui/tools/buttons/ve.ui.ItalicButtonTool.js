@@ -12,10 +12,11 @@
  * @extends ve.ui.AnnotationButtonTool
  * @constructor
  * @param {ve.ui.Toolbar} toolbar
+ * @param {Object} [config] Config options
  */
-ve.ui.ItalicButtonTool = function VeUiItalicButtonTool( toolbar ) {
+ve.ui.ItalicButtonTool = function VeUiItalicButtonTool( toolbar, config ) {
 	// Parent constructor
-	ve.ui.AnnotationButtonTool.call( this, toolbar );
+	ve.ui.AnnotationButtonTool.call( this, toolbar, config );
 };
 
 /* Inheritance */

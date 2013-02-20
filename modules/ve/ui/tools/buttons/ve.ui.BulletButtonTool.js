@@ -12,10 +12,11 @@
  * @extends ve.ui.ListButtonTool
  * @constructor
  * @param {ve.ui.Toolbar} toolbar
+ * @param {Object} [config] Config options
  */
-ve.ui.BulletButtonTool = function VeUiBulletButtonTool( toolbar ) {
+ve.ui.BulletButtonTool = function VeUiBulletButtonTool( toolbar, config ) {
 	// Parent constructor
-	ve.ui.ListButtonTool.call( this, toolbar, 'bullet' );
+	ve.ui.ListButtonTool.call( this, toolbar, config );
 };
 
 /* Inheritance */

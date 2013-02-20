@@ -1,5 +1,5 @@
 /*!
- * VisualEditor user interface TextInputWidget class.
+ * VisualEditor UserInterface TextInputWidget class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -9,20 +9,23 @@
  * Creates an ve.ui.TextInputWidget object.
  *
  * @class
- * @constructor
  * @extends ve.ui.InputWidget
- * @param {Function} $$ jQuery for the frame the widget is in
- * @param {string} [name] Input name, used by HTML forms
- * @param {string} [value] Input value
+ *
+ * @constructor
+ * @param {Object} [config] Config options
  */
-ve.ui.TextInputWidget = function VeUiTextInputWidget( $$, name, value ) {
+ve.ui.TextInputWidget = function VeUiTextInputWidget( config ) {
 	// Parent constructor
-	ve.ui.InputWidget.call( this, $$, 'text', name, value );
+	ve.ui.InputWidget.call( this, config );
 
 	// Initialization
-	this.$.addClass( 've-ui-textInputWidget' ).attr( 'type', 'text' );
+	this.$.addClass( 've-ui-textInputWidget' );
 };
 
 /* Inheritance */
 
 ve.inheritClass( ve.ui.TextInputWidget, ve.ui.InputWidget );
+
+/* Static Properties */
+
+ve.ui.TextInputWidget.static.inputType = 'text';

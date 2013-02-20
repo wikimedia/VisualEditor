@@ -1,5 +1,5 @@
 /*!
- * VisualEditor user interface InputLabelWidget class.
+ * VisualEditor UserInterface InputLabelWidget class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -10,33 +10,43 @@
  *
  * CSS classes will be added to the button for each flag, each prefixed with 've-ui-InputLabelWidget-'
  *
- * @abstract
  * @class
- * @constructor
  * @extends ve.ui.Widget
- * @param {Function} $$ jQuery for the frame the widget is in
- * @param {string} label Button label
- * @param {string[]} [flags] List of styling flags, e.g. 'primary', 'destructive' or 'constructive'
+ * @mixins ve.ui.LabeledWidget
+ *
+ * @constructor
+ * @param {Object} [config] Config options
+ * @cfg {ve.ui.InputWidget|null} [input] Related input widget
  */
-ve.ui.InputLabelWidget = function VeUiInputLabelWidget( $$, label, input ) {
+ve.ui.InputLabelWidget = function VeUiInputLabelWidget( config ) {
+	// Config intialization
+	config = ve.extendObject( { 'input': null }, config );
+
 	// Parent constructor
-	ve.ui.Widget.call( this, $$, $( '<label>' ) );
+	ve.ui.Widget.call( this, config );
+
+	// Mixin constructors
+	ve.ui.LabeledWidget.call( this, this.$, config );
 
 	// Properties
-	this.input = input || null;
+	this.input = config.input;
 
 	// Events
 	this.$.on( 'click', ve.bind( this.onClick, this ) );
 
 	// Initialization
-	this.$
-		.text( label )
-		.addClass( 've-ui-InputLabelWidget' );
+	this.$.addClass( 've-ui-inputLabelWidget' );
 };
 
 /* Inheritance */
 
 ve.inheritClass( ve.ui.InputLabelWidget, ve.ui.Widget );
+
+ve.mixinClass( ve.ui.InputLabelWidget, ve.ui.LabeledWidget );
+
+/* Static Properties */
+
+ve.ui.InputLabelWidget.static.tagName = 'label';
 
 /* Methods */
 
@@ -44,12 +54,11 @@ ve.inheritClass( ve.ui.InputLabelWidget, ve.ui.Widget );
  * Handles mouse click events.
  *
  * @method
- * @param {jQuery.Event} e Event
+ * @param {jQuery.Event} e Mouse click event
  */
-ve.ui.InputLabelWidget.prototype.onClick = function ( e ) {
+ve.ui.InputLabelWidget.prototype.onClick = function () {
 	if ( !this.disabled && this.input ) {
 		this.input.focus();
 	}
-	e.preventDefault();
 	return false;
 };

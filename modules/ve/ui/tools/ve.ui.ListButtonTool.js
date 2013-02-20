@@ -13,10 +13,11 @@
  * @extends ve.ui.ButtonTool
  * @constructor
  * @param {ve.ui.Toolbar} toolbar
+ * @param {Object} [config] Config options
  */
-ve.ui.ListButtonTool = function VeUiListButtonTool( toolbar ) {
+ve.ui.ListButtonTool = function VeUiListButtonTool( toolbar, config ) {
 	// Parent constructor
-	ve.ui.ButtonTool.call( this, toolbar );
+	ve.ui.ButtonTool.call( this, toolbar, config );
 };
 
 /* Inheritance */
@@ -30,6 +31,7 @@ ve.inheritClass( ve.ui.ListButtonTool, ve.ui.ButtonTool );
  * @static
  * @property
  * @type {string}
+ * @inheritable
  */
 ve.ui.ListButtonTool.static.style = '';
 

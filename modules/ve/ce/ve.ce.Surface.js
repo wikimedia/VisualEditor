@@ -146,7 +146,7 @@ ve.ce.Surface.prototype.destroy = function () {
  * Handle document focus events.
  *
  * @method
- * @param {jQuery.Event} e
+ * @param {jQuery.Event} e Focus event
  */
 ve.ce.Surface.prototype.documentOnFocus = function () {
 	this.$document.off( '.ve-ce-Surface' );
@@ -167,7 +167,7 @@ ve.ce.Surface.prototype.documentOnFocus = function () {
  * Handle document blur events.
  *
  * @method
- * @param {jQuery.Event} e
+ * @param {jQuery.Event} e Element blur event
  */
 ve.ce.Surface.prototype.documentOnBlur = function () {
 	this.$document.off( '.ve-ce-Surface' );
@@ -178,7 +178,7 @@ ve.ce.Surface.prototype.documentOnBlur = function () {
  * Handle document mouse down events.
  *
  * @method
- * @param {jQuery.Event} e
+ * @param {jQuery.Event} e Mouse down event
  */
 ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 	// Remember the mouse is down
@@ -201,7 +201,7 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
  * Handle document mouse up events.
  *
  * @method
- * @param {jQuery.Event} e
+ * @param {jQuery.Event} e Mouse up event
  */
 ve.ce.Surface.prototype.onDocumentMouseUp = function ( e ) {
 	this.surfaceObserver.start();
@@ -216,7 +216,7 @@ ve.ce.Surface.prototype.onDocumentMouseUp = function ( e ) {
  * Handle document mouse move events.
  *
  * @method
- * @param {jQuery.Event} e
+ * @param {jQuery.Event} e Mouse move event
  */
 ve.ce.Surface.prototype.onDocumentMouseMove = function () {
 	// Detect beginning of selection by moving mouse while dragging
@@ -232,10 +232,9 @@ ve.ce.Surface.prototype.onDocumentMouseMove = function () {
  * Prevents native dragging and dropping of content.
  *
  * @method
- * @param {jQuery.Event} e
+ * @param {jQuery.Event} e Drag over/drop event
  */
-ve.ce.Surface.prototype.onDocumentDragoverDrop = function ( e ) {
-	e.preventDefault();
+ve.ce.Surface.prototype.onDocumentDragoverDrop = function () {
 	return false;
 };
 
@@ -243,7 +242,7 @@ ve.ce.Surface.prototype.onDocumentDragoverDrop = function ( e ) {
  * Handle document key down events.
  *
  * @method
- * @param {jQuery.Event} e
+ * @param {jQuery.Event} e Key down event
  */
 ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 	if ( this.inIme === true ) {
@@ -301,7 +300,7 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
  * Handle document key press events.
  *
  * @method
- * @param {jQuery.Event} e
+ * @param {jQuery.Event} e Key press event
  */
 ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
 	if ( ve.ce.Surface.isShortcutKey( e ) || e.which === 13 || e.which === 8 || e.which === 0 ) {
@@ -317,7 +316,7 @@ ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
  * Handle document key up events.
  *
  * @method
- * @param {jQuery.Event} e
+ * @param {jQuery.Event} e Key up event
  */
 ve.ce.Surface.prototype.onDocumentKeyUp = function ( e ) {
 	// Detect end of selecting by letting go of shift
@@ -331,7 +330,7 @@ ve.ce.Surface.prototype.onDocumentKeyUp = function ( e ) {
  * Handle cut events.
  *
  * @method
- * @param {jQuery.Event} e
+ * @param {jQuery.Event} e Cut event
  */
 ve.ce.Surface.prototype.onCut = function ( e ) {
 	this.surfaceObserver.stop();
@@ -356,7 +355,7 @@ ve.ce.Surface.prototype.onCut = function ( e ) {
  * Handle copy events.
  *
  * @method
- * @param {jQuery.Event} e
+ * @param {jQuery.Event} e Copy event
  */
 ve.ce.Surface.prototype.onCopy = function () {
 	var sel = rangy.getSelection(),
@@ -378,12 +377,11 @@ ve.ce.Surface.prototype.onCopy = function () {
  * Handle paste events.
  *
  * @method
- * @param {jQuery.Event} e
+ * @param {jQuery.Event} e Paste event
  */
-ve.ce.Surface.prototype.onPaste = function ( e ) {
+ve.ce.Surface.prototype.onPaste = function () {
 	// Prevent pasting until after we are done
 	if ( this.pasting ) {
-		e.preventDefault();
 		return false;
 	}
 	this.pasting = true;
@@ -453,7 +451,7 @@ ve.ce.Surface.prototype.onPaste = function ( e ) {
  * Handle document composition start events.
  *
  * @method
- * @param {jQuery.Event} e
+ * @param {jQuery.Event} e Composition start event
  */
 ve.ce.Surface.prototype.onDocumentCompositionStart = function () {
 	if ( $.browser.msie === true ) {
@@ -467,7 +465,7 @@ ve.ce.Surface.prototype.onDocumentCompositionStart = function () {
  * Handle document composition end events.
  *
  * @method
- * @param {jQuery.Event} e
+ * @param {jQuery.Event} e Composition end event
  */
 ve.ce.Surface.prototype.onDocumentCompositionEnd = function () {
 	this.inIme = false;
@@ -726,10 +724,10 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 };
 
 /**
- * Handle enter key events.
+ * Handle enter key down events.
  *
  * @method
- * @param {jQuery.Event} e
+ * @param {jQuery.Event} e Enter key down event
  */
 ve.ce.Surface.prototype.handleEnter = function ( e ) {
 	var tx, outerParent, outerChildrenCount, list,
@@ -845,10 +843,10 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 };
 
 /**
- * Handle backspace and delete key down events.
+ * Handle delete and backspace key down events.
  *
  * @method
- * @param {jQuery.Event} e
+ * @param {jQuery.Event} e Delete key down event
  * @param {boolean} backspace Key was a backspace
  */
 ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
@@ -1234,7 +1232,7 @@ ve.ce.Surface.prototype.getNodeAndOffset = function ( offset ) {
  * Check if keyboard shortcut modifier key is pressed.
  *
  * @method
- * @param {jQuery.Event} e
+ * @param {jQuery.Event} e Key press event
  */
 ve.ce.Surface.isShortcutKey = function ( e ) {
 	if ( e.ctrlKey || e.metaKey ) {

@@ -23,7 +23,6 @@ ve.ui.Context = function VeUiContext( surface, $overlay ) {
 	this.selecting = false;
 	this.selection = null;
 	this.frame = null;
-	this.menu = null;
 	this.toolbar = null;
 	this.$ = $( '<div class="ve-ui-context"></div>' );
 	this.$callout = $( '<div class="ve-ui-context-callout"></div>' );
@@ -122,6 +121,11 @@ ve.ui.Context.prototype.onSelectionEnd = function () {
 	this.update();
 };
 
+/**
+ * Handle window focus events on the view.
+ *
+ * @method
+ */
 ve.ui.Context.prototype.onWindowFocus = function () {
 	this.hide();
 };
@@ -136,9 +140,7 @@ ve.ui.Context.prototype.onWindowFocus = function () {
 ve.ui.Context.prototype.onBeforeInspectorOpen = function ( name ) {
 	var inspector = this.inspectors[name];
 	// Close menu
-	if ( this.menu ) {
-		this.obscure( this.$menu );
-	}
+	this.obscure( this.$menu );
 	// Remember which inspector is open
 	this.inspector = name;
 	// Resize frame to the size of the inspector.
@@ -188,15 +190,18 @@ ve.ui.Context.prototype.getFrame = function () {
  *
  * @method
  * @returns {ve.ui.Context} Context UserInterface
+ * @chainable
  */
 ve.ui.Context.prototype.destroy = function () {
 	this.$.remove();
+	return this;
 };
 
 /**
  * Updates the context menu.
  *
  * @method
+ * @chainable
  */
 ve.ui.Context.prototype.update = function () {
 	var inspectors,
@@ -215,21 +220,16 @@ ve.ui.Context.prototype.update = function () {
 		inspectors = ve.ui.inspectorFactory.getInspectorsForAnnotations( annotations );
 		if ( inspectors.length ) {
 			// The selection is inspectable but not being inspected
+			// Reset and rebuild the menu
 			this.$menu.empty();
-			// Create inspector toolbar
 			this.toolbar = new ve.ui.Toolbar(
 				$( '<div class="ve-ui-context-toolbar"></div>' ),
 				this.surface,
 				[{ 'name': 'inspectors', 'items' : inspectors }]
 			);
-			// Note: Menu attaches the provided $tool element to the container.
-			this.menu = new ve.ui.MenuWidget(
-				[ { 'name': 'tools', '$': this.toolbar.$ } ], // Tools
-				null, // Callback
-				this.$menu, // Container
-				this.$inner // Parent
-			);
+			this.$menu.append( this.toolbar.$ );
 			if ( !this.visible ) {
+				this.obscure( this.$inspectors );
 				this.show();
 			}
 		}
@@ -237,12 +237,15 @@ ve.ui.Context.prototype.update = function () {
 
 	// Remember selection for next time
 	this.selection = selection.clone();
+
+	return this;
 };
 
 /**
  * Shows the context menu.
  *
  * @method
+ * @chainable
  */
 ve.ui.Context.prototype.show = function () {
 	var selectionRect = this.surface.getView().getSelectionRect();
@@ -268,24 +271,26 @@ ve.ui.Context.prototype.show = function () {
 	}
 	// Position inner context.
 	this.positionInner();
+
+	return this;
 };
 
 /**
  * Hides the context menu.
  *
  * @method
+ * @chainable
  */
 ve.ui.Context.prototype.hide = function () {
 	if ( this.inspector ) {
 		this.closeInspector();
 		this.$overlay.hide();
 	}
-	if ( this.menu ) {
-		this.obscure( this.$menu );
-		this.menu = null;
-	}
+	this.obscure( this.$menu );
 	this.$.css( 'visibility', 'hidden' );
 	this.visible = false;
+
+	return this;
 };
 
 /**
@@ -293,6 +298,7 @@ ve.ui.Context.prototype.hide = function () {
  *
  * @param {jQuery} $overlay
  * @param {jQuery} $element
+ * @chainable
  */
 ve.ui.Context.prototype.positionInner = function () {
 	var $container = this.inspector ? this.$inspectors : this.$menu,
@@ -310,6 +316,8 @@ ve.ui.Context.prototype.positionInner = function () {
 	// Apply dimensions to inner
 	this.$inner.css( { 'left': left, 'height': height, 'width': width } );
 	this.$overlay.css( { 'left': left, 'width': width } );
+
+	return this;
 };
 
 /**
@@ -317,23 +325,24 @@ ve.ui.Context.prototype.positionInner = function () {
  *
  * @method
  * @param {string} name Symbolic name of inspector
- * @returns {boolean} Inspector had to be created
+ * @chainable
+ * @throws {Error} If inspector is unknown
  */
 ve.ui.Context.prototype.initInspector = function ( name ) {
 	var inspector;
 	// Add inspector on demand.
-	if ( ve.ui.inspectorFactory.lookup( name ) ) {
-		if ( !( name in this.inspectors ) ) {
-			inspector = this.inspectors[name] = ve.ui.inspectorFactory.create( name, this );
-			inspector.on( 'beforeOpen', ve.bind( this.onBeforeInspectorOpen, this, name ) );
-			inspector.on( 'afterClose', ve.bind( this.onAfterInspectorClose, this ) );
-			inspector.$.hide();
-			this.frame.$.append( inspector.$ );
-			this.obscure( this.$inspectors );
-		}
-		return true;
+	if ( !ve.ui.inspectorFactory.lookup( name ) ) {
+		throw new Error( 'Unknown inspector: ' + name );
 	}
-	return false;
+	if ( !( name in this.inspectors ) ) {
+		inspector = this.inspectors[name] = ve.ui.inspectorFactory.create( name, this );
+		inspector.on( 'beforeOpen', ve.bind( this.onBeforeInspectorOpen, this, name ) );
+		inspector.on( 'afterClose', ve.bind( this.onAfterInspectorClose, this ) );
+		inspector.$.hide();
+		this.frame.$.append( inspector.$ );
+		this.obscure( this.$inspectors );
+	}
+	return this;
 };
 
 /**
@@ -341,18 +350,19 @@ ve.ui.Context.prototype.initInspector = function ( name ) {
  *
  * @method
  * @param {string} name Symbolic name of inspector
+ * @chainable
  */
 ve.ui.Context.prototype.openInspector = function ( name ) {
 	// Auto-initialize the inspector
-	if ( !this.initInspector( name ) ) {
-		throw new Error( 'Missing inspector. Cannot open nonexistent inspector: ' + name );
-	}
+	this.initInspector( name );
 	// Only allow one inspector open at a time
 	if ( this.inspector ) {
 		this.closeInspector();
 	}
 	// Open the inspector
 	this.inspectors[name].open();
+
+	return this;
 };
 
 /**
@@ -360,6 +370,7 @@ ve.ui.Context.prototype.openInspector = function ( name ) {
  *
  * @method
  * @param {boolean} remove Remove annotation while closing
+ * @chainable
  */
 ve.ui.Context.prototype.closeInspector = function ( remove ) {
 	// Quietly ignore if nothing is open
@@ -367,22 +378,27 @@ ve.ui.Context.prototype.closeInspector = function ( remove ) {
 		// Close the current inspector
 		this.inspectors[this.inspector].close( remove );
 	}
+	return this;
 };
 
 /**
  * Brings inspector into view.
  *
  * @method
+ * @chainable
  */
 ve.ui.Context.prototype.reveal = function ( $element ) {
 	$element.css( 'top', 0 );
+	return this;
 };
 
 /**
  * Make inspector invisible without affecting its visiblity or display properties.
  *
  * @method
+ * @chainable
  */
 ve.ui.Context.prototype.obscure = function ( $element ) {
 	$element.css( 'top', -5000 );
+	return this;
 };

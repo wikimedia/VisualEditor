@@ -40,7 +40,7 @@ ve.inheritClass( ve.ce.AlienNode, ve.ce.LeafNode );
  * Handle mouse enter events.
  *
  * @method
- * @param {jQuery.Event} e
+ * @param {jQuery.Event} e Mouse enter event
  */
 ve.ce.AlienNode.prototype.onMouseEnter = function () {
 	var $phantoms = $( [] ),
@@ -103,7 +103,7 @@ ve.ce.AlienNode.prototype.onUpdate = function () {
  * Handle surface mouse move events.
  *
  * @method
- * @param {jQuery.Event} e
+ * @param {jQuery.Event} e Mouse move event
  */
 ve.ce.AlienNode.prototype.onSurfaceMouseMove = function ( e ) {
 	var $target = $( e.target );

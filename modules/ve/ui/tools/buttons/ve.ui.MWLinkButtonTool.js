@@ -1,5 +1,5 @@
 /*!
- * VisualEditor user interface MWLinkButtonTool class.
+ * VisualEditor UserInterface MWLinkButtonTool class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -12,10 +12,11 @@
  * @extends ve.ui.LinkButtonTool
  * @constructor
  * @param {ve.ui.Toolbar} toolbar
+ * @param {Object} [config] Config options
  */
-ve.ui.MWLinkButtonTool = function VeUiMwLinkButtonTool( toolbar ) {
+ve.ui.MWLinkButtonTool = function VeUiMwLinkButtonTool( toolbar, config ) {
 	// Parent constructor
-	ve.ui.LinkButtonTool.call( this, toolbar );
+	ve.ui.LinkButtonTool.call( this, toolbar, config );
 };
 
 /* Inheritance */

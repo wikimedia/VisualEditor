@@ -96,7 +96,7 @@ ve.ui.Inspector.static.typePattern = new RegExp();
  * Handle close button click events.
  *
  * @method
- * @param {jQuery.Event} e Click event
+ * @param {jQuery.Event} e Mouse click event
  */
 ve.ui.Inspector.prototype.onCloseButtonClick = function () {
 	this.close();
@@ -106,7 +106,7 @@ ve.ui.Inspector.prototype.onCloseButtonClick = function () {
  * Handle remove button click events.
  *
  * @method
- * @param {jQuery.Event} e Click event
+ * @param {jQuery.Event} e Mouse click event
  * @emits 'remove'
  */
 ve.ui.Inspector.prototype.onRemoveButtonClick = function() {
@@ -117,10 +117,9 @@ ve.ui.Inspector.prototype.onRemoveButtonClick = function() {
  * Handle form submission events.
  *
  * @method
- * @param {jQuery.Event} e Submit event
+ * @param {jQuery.Event} e Form submit event
  */
-ve.ui.Inspector.prototype.onFormSubmit = function ( e ) {
-	e.preventDefault();
+ve.ui.Inspector.prototype.onFormSubmit = function () {
 	this.close();
 	return false;
 };
@@ -129,13 +128,12 @@ ve.ui.Inspector.prototype.onFormSubmit = function ( e ) {
  * Handle form keydown events.
  *
  * @method
- * @param {jQuery.Event} e Keydown event
+ * @param {jQuery.Event} e Key down event
  */
 ve.ui.Inspector.prototype.onFormKeyDown = function ( e ) {
 	// Escape
 	if ( e.which === 27 ) {
 		this.close();
-		e.preventDefault();
 		return false;
 	}
 };

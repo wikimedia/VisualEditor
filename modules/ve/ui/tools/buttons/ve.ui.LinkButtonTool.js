@@ -12,10 +12,11 @@
  * @extends ve.ui.InspectorButtonTool
  * @constructor
  * @param {ve.ui.Toolbar} toolbar
+ * @param {Object} [config] Config options
  */
-ve.ui.LinkButtonTool = function VeUiLinkButtonTool( toolbar ) {
+ve.ui.LinkButtonTool = function VeUiLinkButtonTool( toolbar, config ) {
 	// Parent constructor
-	ve.ui.InspectorButtonTool.call( this, toolbar );
+	ve.ui.InspectorButtonTool.call( this, toolbar, config );
 };
 
 /* Inheritance */
