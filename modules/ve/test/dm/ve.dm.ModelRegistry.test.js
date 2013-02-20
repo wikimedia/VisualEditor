@@ -83,6 +83,14 @@ ve.dm.StubBarNode.static.matchRdfaTypes = ['bar'];
 ve.dm.StubBarNode.static.toDataElement = function () {};
 ve.dm.StubBarNode.static.toDomElements = function () {};
 
+ve.dm.StubAbbrNode = function VeDmStubAbbrNode( children, element ) {
+	ve.dm.BranchNode.call( this, 'stub-abbr', children, element );
+};
+ve.inheritClass( ve.dm.StubAbbrNode, ve.dm.BranchNode );
+ve.dm.StubAbbrNode.static.name = 'stub-abbr';
+ve.dm.StubAbbrNode.static.matchTagNames = ['abbr'];
+ve.dm.StubAbbrNode.static.matchRdfaTypes = ['mw:abbr'];
+
 ve.dm.StubRegExpNode = function VeDmStubRegExpNode( children, element ) {
 	ve.dm.BranchNode.call( this, 'stub-regexp', children, element );
 };
@@ -93,7 +101,7 @@ ve.dm.StubRegExpNode.static.matchRdfaTypes = [ /^mw:/ ];
 
 /* Tests */
 
-QUnit.test( 'matchElement', 18, function ( assert ) {
+QUnit.test( 'matchElement', 20, function ( assert ) {
 	var registry = new ve.dm.ModelRegistry(), element;
 	element = document.createElement( 'a' );
 	assert.deepEqual( registry.matchElement( element ), null, 'matchElement() returns null if registry empty' );
@@ -107,6 +115,7 @@ QUnit.test( 'matchElement', 18, function ( assert ) {
 	registry.register( ve.dm.StubSingleTypeAndFuncAnnotation );
 	registry.register( ve.dm.StubSingleTagAndTypeAndFuncAnnotation );
 	registry.register( ve.dm.StubBarNode );
+	registry.register( ve.dm.StubAbbrNode );
 	registry.register( ve.dm.StubRegExpNode );
 
 	element = document.createElement( 'b' );
@@ -129,6 +138,8 @@ QUnit.test( 'matchElement', 18, function ( assert ) {
 	element = document.createElement( 'abbr' );
 	element.setAttribute( 'rel', 'mw:baz' );
 	assert.deepEqual( registry.matchElement( element ), 'stub-regexp', 'RegExp type match' );
+	element.setAttribute( 'rel', 'mw:abbr' );
+	assert.deepEqual( registry.matchElement( element ), 'stub-abbr', 'String match overrides RegExp match' );
 
 	registry.registerExtensionSpecificType( /^mw:/ );
 	registry.registerExtensionSpecificType( 'foo' );
@@ -150,4 +161,6 @@ QUnit.test( 'matchElement', 18, function ( assert ) {
 	element = document.createElement( 'abbr' );
 	element.setAttribute( 'rel', 'mw:baz' );
 	assert.deepEqual( registry.matchElement( element ), 'stub-regexp', 'RegExp type match for extension-specific type' );
+	element.setAttribute( 'rel', 'mw:abbr' );
+	assert.deepEqual( registry.matchElement( element ), 'stub-abbr', 'String match overrides RegExp match for extension-specific type' );
 } );
