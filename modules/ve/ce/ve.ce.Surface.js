@@ -371,28 +371,22 @@ ve.ce.Surface.prototype.onDocumentKeyUp = function ( e ) {
  * @param {jQuery.Event} e
  */
 ve.ce.Surface.prototype.onCut = function ( e ) {
-	var surface = this;
-
 	this.surfaceObserver.stop();
-
 	this.onCopy( e );
-
-	setTimeout( function () {
-		var selection,
-			tx;
+	setTimeout( ve.bind( function () {
+		var selection, tx;
 
 		// We don't like how browsers cut, so let's undo it and do it ourselves.
 		document.execCommand( 'undo', false, false );
-
-		selection = surface.model.getSelection();
+		selection = this.model.getSelection();
 
 		// Transact
-		tx = ve.dm.Transaction.newFromRemoval( surface.documentView.model, selection );
-		surface.model.change( tx, new ve.Range( selection.start ) );
+		tx = ve.dm.Transaction.newFromRemoval( this.documentView.model, selection );
 
-		surface.surfaceObserver.clear();
-		surface.surfaceObserver.start();
-	}, 1 );
+		this.model.change( tx, new ve.Range( selection.start ) );
+		this.surfaceObserver.clear();
+		this.surfaceObserver.start();
+	}, this ), 1 );
 };
 
 /**
