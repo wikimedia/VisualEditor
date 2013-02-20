@@ -17,11 +17,17 @@
 ve.dm.ModelRegistry = function VeDmModelRegistry() {
 	// Parent constructor
 	ve.Registry.call( this );
+	// Map of func presence and tag names to model names
 	// [ { tagName: [modelNamesWithoutFunc] }, { tagName: [modelNamesWithFunc] } ]
 	this.modelsByTag = [ {}, {} ];
+	// Map of func presence and rdfaTypes to model names; only rdfaTypes specified as strings are in here
 	// { matchFunctionPresence: { rdfaType: { tagName: [modelNames] } } }
 	// [ { rdfaType: { tagName: [modelNamesWithoutFunc] } }, { rdfaType: { tagName: [modelNamesWithFunc] } ]
 	this.modelsByTypeAndTag = [];
+	// Map of func presence to array of model names with rdfaType regexps
+	// [ [modelNamesWithoutFunc], [modelNamesWithFunc] ]
+	this.modelsWithTypeRegExps = [ [], [] ];
+	// Map tracking registration order
 	// { nameA: 0, nameB: 1, ... }
 	this.registrationOrder = {};
 	this.nextNumber = 0;
@@ -36,33 +42,27 @@ ve.inheritClass( ve.dm.ModelRegistry, ve.Registry );
 
 /**
  * Helper function for register(). Adds a value to the front of an array in a nested object.
- * Objects and arrays are created if needed. You can specify either two or three keys and a value.
+ * Objects and arrays are created if needed. You can specify one or more keys and a value.
  *
  * Specifically:
- * addType( obj, keyA, keyB, keyC, value ) does obj[keyA][keyB][keyC].unshift( value );
+ * addType( obj, keyA, value ) does obj[keyA].unshift( value );
  * addType( obj, keyA, keyB, value ) does obj[keyA][keyB].unshift( value );
+ * etc.
  *
  * @param {Object} obj Object to add to
- * @param {string} keyA Key into obj
- * @param {string} keyB Key into obj[keyA]
- * @param {string|Mixed} keyC Key into obj[keyA][keyB], or value to add to array if value not set
- * @param {Mixed} [value] Value to add to the array
  */
-function addType( obj, keyA, keyB, keyC, value ) {
-	if ( obj[keyA] === undefined ) {
-		obj[keyA] = {};
+function addType( obj /*, ...*/ ) {
+	var i, len, o = obj;
+	for ( i = 1, len = arguments.length - 2; i < len; i++ ) {
+		if ( o[arguments[i]] === undefined ) {
+			o[arguments[i]] = {};
+		}
+		o = o[arguments[i]];
 	}
-	if ( obj[keyA][keyB] === undefined ) {
-		obj[keyA][keyB] = value === undefined ? [] : {};
+	if ( o[arguments[i]] === undefined ) {
+		o[arguments[i]] = [];
 	}
-	if ( value !== undefined && obj[keyA][keyB][keyC] === undefined ) {
-		obj[keyA][keyB][keyC] = [];
-	}
-	if ( value === undefined ) {
-		obj[keyA][keyB].unshift( keyC );
-	} else {
-		obj[keyA][keyB][keyC].unshift( value );
-	}
+	o[arguments[i]].unshift( arguments[i + 1] );
 }
 
 /* Public methods */
@@ -103,10 +103,14 @@ ve.dm.ModelRegistry.prototype.register = function ( constructor ) {
 		);
 	}
 	for ( i = 0; i < types.length; i++ ) {
-		for ( j = 0; j < tags.length; j++ ) {
-			addType( this.modelsByTypeAndTag,
-				+!!constructor.static.matchFunction, types[i], tags[j], name
-			);
+		if ( types[i] instanceof RegExp ) {
+			addType( this.modelsWithTypeRegExps, +!!constructor.static.matchFunction, name );
+		} else {
+			for ( j = 0; j < tags.length; j++ ) {
+				addType( this.modelsByTypeAndTag,
+					+!!constructor.static.matchFunction, types[i], tags[j], name
+				);
+			}
 		}
 	}
 
@@ -177,13 +181,31 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element ) {
 		return reg.registrationOrder[b] - reg.registrationOrder[a];
 	}
 
-	function matchWithFunc( types, tag ) {
-		var i, j, matches, queue = [];
-		for ( i = 0; i < types.length; i++ ) {
-			matches = ve.getProp( reg.modelsByTypeAndTag, 1, types[i], tag ) || [];
-			for ( j = 0; j < matches.length; j++ ) {
-				queue.push( matches[j] );
+	function matchTypeRegExps( type, tag, withFunc ) {
+		var i, j, types, matches = [], models = reg.modelsWithTypeRegExps[+!!withFunc];
+		for ( i = 0; i < models.length; i++ ) {
+			types = reg.registry[models[i]].static.matchRdfaTypes;
+			for ( j = 0; j < types.length; j++ ) {
+				if (
+					type.match( types[j] ) &&
+					(
+						reg.registry[models[i]].static.matchTagNames === null ||
+						ve.indexOf( tag, reg.registry[models[i]].static.matchTagNames ) !== -1
+					)
+				) {
+					matches.push( models[i] );
+				}
 			}
+		}
+		return matches;
+	}
+
+	function matchWithFunc( types, tag ) {
+		var i, queue = [];
+		for ( i = 0; i < types.length; i++ ) {
+			queue = queue
+				.concat( ve.getProp( reg.modelsByTypeAndTag, 1, types[i], tag ) || [] )
+				.concat( matchTypeRegExps( types[i], tag, true ) );
 		}
 		queue.sort( byRegistrationOrderDesc );
 		for ( i = 0; i < queue.length; i++ ) {
@@ -195,16 +217,18 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element ) {
 	}
 
 	function matchWithoutFunc( types, tag ) {
-		var i, j, matches, winningName = null;
+		var i, queue = [], winningName = null;
 		for ( i = 0; i < types.length; i++ ) {
-			matches = ve.getProp( reg.modelsByTypeAndTag, 0, types[i], tag ) || [];
-			for ( j = 0; j < matches.length; j++ ) {
-				if (
-					winningName === null ||
-					reg.registrationOrder[winningName] < reg.registrationOrder[matches[j]]
-				) {
-					winningName = matches[j];
-				}
+			queue = queue
+				.concat( ve.getProp( reg.modelsByTypeAndTag, 0, types[i], tag ) || [] )
+				.concat( matchTypeRegExps( types[i], tag, false ) );
+		}
+		for ( i = 0; i < queue.length; i++ ) {
+			if (
+				winningName === null ||
+				reg.registrationOrder[winningName] < reg.registrationOrder[queue[i]]
+			) {
+				winningName = queue[i];
 			}
 		}
 		return winningName;

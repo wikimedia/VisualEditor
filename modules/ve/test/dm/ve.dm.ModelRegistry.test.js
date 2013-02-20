@@ -83,9 +83,17 @@ ve.dm.StubBarNode.static.matchRdfaTypes = ['bar'];
 ve.dm.StubBarNode.static.toDataElement = function () {};
 ve.dm.StubBarNode.static.toDomElements = function () {};
 
+ve.dm.StubRegExpNode = function VeDmStubRegExpNode( children, element ) {
+	ve.dm.BranchNode.call( this, 'stub-regexp', children, element );
+};
+ve.inheritClass( ve.dm.StubRegExpNode, ve.dm.BranchNode );
+ve.dm.StubRegExpNode.static.name = 'stub-regexp';
+ve.dm.StubRegExpNode.static.matchTagNames = ['abbr'];
+ve.dm.StubRegExpNode.static.matchRdfaTypes = [ /^mw:/ ];
+
 /* Tests */
 
-QUnit.test( 'matchElement', 16, function ( assert ) {
+QUnit.test( 'matchElement', 18, function ( assert ) {
 	var registry = new ve.dm.ModelRegistry(), element;
 	element = document.createElement( 'a' );
 	assert.deepEqual( registry.matchElement( element ), null, 'matchElement() returns null if registry empty' );
@@ -99,6 +107,7 @@ QUnit.test( 'matchElement', 16, function ( assert ) {
 	registry.register( ve.dm.StubSingleTypeAndFuncAnnotation );
 	registry.register( ve.dm.StubSingleTagAndTypeAndFuncAnnotation );
 	registry.register( ve.dm.StubBarNode );
+	registry.register( ve.dm.StubRegExpNode );
 
 	element = document.createElement( 'b' );
 	assert.deepEqual( registry.matchElement( element ), 'stubnothingset', 'nothingset matches anything' );
@@ -117,6 +126,9 @@ QUnit.test( 'matchElement', 16, function ( assert ) {
 	assert.deepEqual( registry.matchElement( element ), 'stubfunc', 'func-only match' );
 	element.setAttribute( 'rel', 'mw:foo' );
 	assert.deepEqual( registry.matchElement( element ), 'stubsingletypeandfunc', 'type and func match' );
+	element = document.createElement( 'abbr' );
+	element.setAttribute( 'rel', 'mw:baz' );
+	assert.deepEqual( registry.matchElement( element ), 'stub-regexp', 'RegExp type match' );
 
 	registry.registerExtensionSpecificType( /^mw:/ );
 	registry.registerExtensionSpecificType( 'foo' );
@@ -135,4 +147,7 @@ QUnit.test( 'matchElement', 16, function ( assert ) {
 	assert.deepEqual( registry.matchElement( element ), null, 'extension-specific type matching string prevents type match' );
 	element.setAttribute( 'rel', 'foo bar mw:bogus' );
 	assert.deepEqual( registry.matchElement( element ), null, 'two extension-specific types prevent non-extension-specific type match' );
+	element = document.createElement( 'abbr' );
+	element.setAttribute( 'rel', 'mw:baz' );
+	assert.deepEqual( registry.matchElement( element ), 'stub-regexp', 'RegExp type match for extension-specific type' );
 } );

@@ -67,7 +67,7 @@ ve.dm.Annotation.static.name = null;
  * @see ve.dm.ModelRegistry
  *
  * @static
- * @property {Array} static.matchTagNames
+ * @property {string[]} static.matchTagNames
  * @inheritable
  */
 ve.dm.Annotation.static.matchTagNames = null;
@@ -80,7 +80,7 @@ ve.dm.Annotation.static.matchTagNames = null;
  * @see ve.dm.ModelRegistry
  *
  * @static
- * @property {Array} static.matchRdfaType
+ * @property {Array} static.matchRdfaType Array of strings or regular expressions
  * @inheritable
  */
 ve.dm.Annotation.static.matchRdfaTypes = null;

@@ -54,7 +54,7 @@ ve.dm.Node.static.name = null;
  * Empty array means none, null means any.
  * For more information about element matching, see ve.dm.ModelRegistry.
  * @static
- * @property {Array} static.matchTagNames
+ * @property {string[]} static.matchTagNames
  * @inheritable
  */
 ve.dm.Node.static.matchTagNames = null;
@@ -64,7 +64,7 @@ ve.dm.Node.static.matchTagNames = null;
  * Empty array means none, null means any.
  * For more information about element matching, see ve.dm.ModelRegistry.
  * @static
- * @property {Array} static.matchRdfaType
+ * @property {Array} static.matchRdfaType Array of strings or regular expressions
  * @inheritable
  */
 ve.dm.Node.static.matchRdfaTypes = null;
