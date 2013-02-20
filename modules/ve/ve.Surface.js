@@ -18,13 +18,14 @@
  *
  * @class
  * @constructor
- * @param {string} parent Selector of element to attach to
+ * @param {ve.init.Target} target Integration target to add views to
  * @param {HTMLDocument} doc HTML document to edit
  * @param {Object} options Configuration options
  */
-ve.Surface = function VeSurface( parent, doc, options ) {
+ve.Surface = function VeSurface( target, doc, options ) {
 	// Properties
 	this.$ = $( '<div>' );
+	this.target = target;
 	this.documentModel = new ve.dm.Document( ve.dm.converter.getDataFromDom( doc ) );
 	this.options = ve.extendObject( true, ve.Surface.defaultOptions, options );
 	this.model = new ve.dm.Surface( this.documentModel );
@@ -34,12 +35,8 @@ ve.Surface = function VeSurface( parent, doc, options ) {
 	this.commands = {};
 	this.enabled = true;
 
-	// DOM Changes
-	this.$.addClass( 've-surface' );
-	$( parent ).append( this.$ );
-
 	// Initialization
-	// Propagate to each node information that it is live (attached to the live DOM)
+	this.target.$.append( this.$.addClass( 've-surface' ) );
 	this.view.getDocument().getDocumentNode().setLive( true );
 	this.setupToolbars();
 	this.setupCommands();
@@ -259,6 +256,7 @@ ve.Surface.prototype.setupCommands = function () {
 ve.Surface.prototype.setupToolbars = function () {
 	var name, config, toolbar,
 		toolbars = this.options.toolbars;
+
 	for ( name in toolbars ) {
 		config = toolbars[name];
 		if ( ve.isPlainObject( config ) ) {

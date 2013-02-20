@@ -11,14 +11,16 @@
  * Initialization MediaWiki target.
  *
  * @class
- * @extends ve.EventEmitter
+ * @extends ve.init.Target
+ *
  * @constructor
+ * @param {jQuery} $container Conainter to render target into
  * @param {string} pageName Name of target page
  * @param {number} [revision] Revision ID
  */
-ve.init.mw.Target = function VeInitMwTarget( pageName, revision ) {
+ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revision ) {
 	// Parent constructor
-	ve.EventEmitter.call( this );
+	ve.init.Target.call( this, $container );
 
 	// Properties
 	this.pageName = pageName;
@@ -70,7 +72,7 @@ ve.init.mw.Target = function VeInitMwTarget( pageName, revision ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.init.mw.Target, ve.EventEmitter );
+ve.inheritClass( ve.init.mw.Target, ve.init.Target );
 
 /* Static Methods */
 

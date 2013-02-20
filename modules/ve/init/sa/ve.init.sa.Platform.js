@@ -1,15 +1,16 @@
 /*!
- * VisualEditor stand-alone Initialization Target class.
+ * VisualEditor Standalone Initialization Platform class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Initialization stand-alone platform.
+ * Initialization Standalone platform.
  *
  * @class
  * @extends ve.init.Platform
+ *
  * @constructor
  */
 ve.init.sa.Platform = function VeInitSaPlatform() {

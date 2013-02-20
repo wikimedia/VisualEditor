@@ -12,5 +12,4 @@
  * @singleton
  */
 ve.init.sa = {
-	//
 };

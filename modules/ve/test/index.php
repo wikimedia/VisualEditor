@@ -128,6 +128,7 @@
 		<script src="../../ve/ui/ve.ui.Inspector.js"></script>
 		<script src="../../ve/ui/ve.ui.InspectorFactory.js"></script>
 		<script src="../../ve/ui/ve.ui.Widget.js"></script>
+		<script src="../../ve/ui/ve.ui.Dialog.js"></script>
 		<script src="../../ve/ui/ve.ui.Tool.js"></script>
 		<script src="../../ve/ui/ve.ui.Toolbar.js"></script>
 		<script src="../../ve/ui/ve.ui.ToolFactory.js"></script>
@@ -142,6 +143,8 @@
 		<script src="../../ve/ui/widgets/ve.ui.TextInputMenuWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.LinkTargetInputWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.MWLinkTargetInputWidget.js"></script>
+		<script src="../../ve/ui/dialogs/ve.ui.ContentDialog.js"></script>
+		<script src="../../ve/ui/dialogs/ve.ui.MetaDialog.js"></script>
 		<script src="../../ve/ui/tools/ve.ui.ButtonTool.js"></script>
 		<script src="../../ve/ui/tools/ve.ui.AnnotationButtonTool.js"></script>
 		<script src="../../ve/ui/tools/ve.ui.InspectorButtonTool.js"></script>
