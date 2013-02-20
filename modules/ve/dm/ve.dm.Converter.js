@@ -260,14 +260,6 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, annot
 			case Node.ELEMENT_NODE:
 				modelName = this.modelRegistry.matchElement( childDomElement );
 				modelClass = this.modelRegistry.lookup( modelName ) || ve.dm.AlienNode;
-				// HACK: force MetaNode for <meta>/<link> even if they have an mw: type
-				// FIXME EWWWWWW find a better way to handle this
-				if (
-					( childDomElement.nodeName.toLowerCase() === 'meta' || childDomElement.nodeName.toLowerCase() === 'link' ) &&
-					( modelClass.prototype instanceof ve.dm.AlienNode || modelClass === ve.dm.AlienNode )
-				) {
-					modelClass = ve.dm.MetaNode;
-				}
 				if ( modelClass.prototype instanceof ve.dm.Annotation ) {
 					annotation = this.annotationFactory.create( modelName, childDomElement );
 

@@ -241,6 +241,7 @@ $wgResourceModules += array(
 			've/dm/nodes/ve.dm.ListNode.js',
 			've/dm/nodes/ve.dm.MetaNode.js',
 			've/dm/nodes/ve.dm.MWEntityNode.js',
+			've/dm/nodes/ve.dm.MWMetaNode.js',
 			've/dm/nodes/ve.dm.ParagraphNode.js',
 			've/dm/nodes/ve.dm.PreformattedNode.js',
 			've/dm/nodes/ve.dm.TableCellNode.js',

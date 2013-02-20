@@ -133,6 +133,7 @@ $html = file_get_contents( $page );
 		<script src="../../modules/ve/dm/nodes/ve.dm.ListNode.js"></script>
 		<script src="../../modules/ve/dm/nodes/ve.dm.MetaNode.js"></script>
 		<script src="../../modules/ve/dm/nodes/ve.dm.MWEntityNode.js"></script>
+		<script src="../../modules/ve/dm/nodes/ve.dm.MWMetaNode.js"></script>
 		<script src="../../modules/ve/dm/nodes/ve.dm.ParagraphNode.js"></script>
 		<script src="../../modules/ve/dm/nodes/ve.dm.PreformattedNode.js"></script>
 		<script src="../../modules/ve/dm/nodes/ve.dm.TableCellNode.js"></script>
