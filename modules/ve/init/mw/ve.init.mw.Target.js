@@ -104,7 +104,7 @@ ve.init.mw.Target.onLoad = function ( response ) {
 	} else {
 		// HACK for backwards compatibility with older versions of Parsoid, detect whether
 		// data.content is a document fragment or a full HTML document
-		if ( data.content.match( /<(html|head|body)(>|\s)/ ) ) {
+		if ( data.content.match( /^<(!doctype|html|head|body)(>|\s)/ ) ) {
 			html = data.content;
 		} else {
 			html = '<!doctype html><html><head></head><body>' + data.content + '</body></html>';
