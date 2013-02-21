@@ -295,31 +295,26 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 	}
 
 	switch ( e.keyCode ) {
-		// Left arrow
-		case 37:
+		case ve.Keys.DOM_VK_LEFT:
 			if ( this.adjustCursor( -1 ) ) {
 				e.preventDefault();
 			}
 			break;
-		// Right arrow
-		case 39:
+		case ve.Keys.DOM_VK_RIGHT:
 			if ( this.adjustCursor( 1 ) ) {
 				e.preventDefault();
 			}
 			break;
-		// Enter
-		case 13:
+		case ve.Keys.DOM_VK_RETURN:
 			e.preventDefault();
 			this.handleEnter( e );
 			break;
-		// Backspace
-		case 8:
+		case ve.Keys.DOM_VK_BACK_SPACE:
 			this.handleDelete( e, true );
 			this.surfaceObserver.stop( true );
 			this.surfaceObserver.start();
 			break;
-		// Delete
-		case 46:
+		case ve.Keys.DOM_VK_DELETE:
 			this.handleDelete( e, false );
 			this.surfaceObserver.stop( true );
 			this.surfaceObserver.start();
