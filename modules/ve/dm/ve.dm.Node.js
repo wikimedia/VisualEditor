@@ -145,7 +145,7 @@ ve.dm.Node.static.toDomElement = function ( /*dataElement*/ ) {
  * Linear model elements with this type will be moved out of the linear model into the metadata.
  *
  * @static
- * @property {Boolean} static.isMeta
+ * @property {boolean} static.isMeta
  * @inheritable
  */
 ve.dm.Node.static.isMeta = false;
@@ -155,7 +155,7 @@ ve.dm.Node.static.isMeta = false;
  * only special node types are not wrapped.
  *
  * @static
- * @property {Boolean} static.isWrapped
+ * @property {boolean} static.isWrapped
  * @inheritable
  */
 ve.dm.Node.static.isWrapped = true;
@@ -166,7 +166,7 @@ ve.dm.Node.static.isWrapped = true;
  * also known as inline nodes.
  *
  * @static
- * @property {Boolean} static.isContent
+ * @property {boolean} static.isContent
  * @inheritable
  */
 ve.dm.Node.static.isContent = false;
@@ -176,7 +176,7 @@ ve.dm.Node.static.isContent = false;
  * content nodes.
  *
  * @static
- * @property {Boolean} static.canContainContent
+ * @property {boolean} static.canContainContent
  * @inheritable
  */
 ve.dm.Node.static.canContainContent = false;
@@ -189,7 +189,7 @@ ve.dm.Node.static.canContainContent = false;
  * stripping and preservation.
  *
  * @static
- * @property {Boolean} static.hasSignificantWhitespace
+ * @property {boolean} static.hasSignificantWhitespace
  * @inheritable
  */
 ve.dm.Node.static.hasSignificantWhitespace = false;
