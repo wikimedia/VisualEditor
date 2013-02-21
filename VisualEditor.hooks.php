@@ -81,6 +81,8 @@ class VisualEditorHooks {
 				've.BranchNode.test.js',
 				've.LeafNode.test.js',
 				've.Factory.test.js',
+				// VisualEditor Actions Tests
+				'actions/ve.FormatAction.test.js',
 				// VisualEditor DataModel Tests
 				'dm/ve.dm.example.js',
 				'dm/ve.dm.NodeFactory.test.js',
