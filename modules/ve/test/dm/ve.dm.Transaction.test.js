@@ -1164,7 +1164,7 @@ QUnit.test( 'push*Annotating', 8, function ( assert ) {
 QUnit.test( 'newFromMetadataInsertion', 2, function( assert ) {
 	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.withMeta ) ),
 		element = {
-			'type': 'metaInline',
+			'type': 'alienMeta',
 			'attributes': {
 				'style': 'comment',
 				'text': ' inline '
@@ -1247,7 +1247,7 @@ QUnit.test( 'newFromMetadataRemoval', 4, function( assert ) {
 QUnit.test( 'newFromMetadataElementReplacement', 3, function( assert ) {
 	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.withMeta ) ),
 		newElement = {
-			'type': 'metaInline',
+			'type': 'alienMeta',
 			'attributes': {
 				'style': 'comment',
 				'text': ' inline '

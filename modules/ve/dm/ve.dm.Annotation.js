@@ -51,7 +51,8 @@ ve.dm.Annotation.static = {};
 /**
  * Symbolic name for the annotation class.
  *
- * Must be set to a unique string by every subclass.
+ * Must be set to a unique string by every subclass. Must not conflict with names of other nodes,
+ * annotations, or meta items.
  *
  * @static
  * @property {string} [static.name=null]

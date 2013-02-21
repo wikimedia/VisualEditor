@@ -136,17 +136,6 @@ ve.dm.Node.static.toDomElements = function ( /*dataElement*/ ) {
 };
 
 /**
- * Whether this node type represents metadata.
- *
- * Linear model elements with this type will be moved out of the linear model into the metadata.
- *
- * @static
- * @property {boolean} static.isMeta
- * @inheritable
- */
-ve.dm.Node.static.isMeta = false;
-
-/**
  * Whether this node supports about grouping. When a DOM element matches a node type that has
  * about grouping enabled, the converter will look for adjacent siblings with the same value for
  * the about attribute, and ask toDataElement() to produce a single data element for all of those
@@ -164,7 +153,7 @@ ve.dm.Node.static.enableAboutGrouping = false;
 
 /**
  * Whether HTML attributes should be preserved for this node type. If true, the HTML attributes
- * of the DOM elements will be stored as linear model attributes. The attribute names be
+ * of the DOM elements will be stored as linear model attributes. The attribute names will be
  * html/i/attrName, where i is the index of the DOM element in the domElements array, and attrName
  * is the name of the attribute.
  *

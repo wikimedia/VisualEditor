@@ -16,11 +16,12 @@
  * @param {ve.dm.NodeFactory} nodeFactory
  * @param {ve.dm.AnnotationFactory} annotationFactory
  */
-ve.dm.Converter = function VeDmConverter( modelRegistry, nodeFactory, annotationFactory ) {
+ve.dm.Converter = function VeDmConverter( modelRegistry, nodeFactory, annotationFactory, metaItemFactory ) {
 	// Properties
 	this.modelRegistry = modelRegistry;
 	this.nodeFactory = nodeFactory;
 	this.annotationFactory = annotationFactory;
+	this.metaItemFactory = metaItemFactory;
 };
 
 /* Static Methods */
@@ -63,7 +64,7 @@ ve.dm.Converter.getDataContentFromText = function ( text, annotations ) {
  */
 ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElement, doc ) {
 	var domElements, dataElementAttributes, key, matches,
-		nodeClass = this.nodeFactory.lookup( dataElement.type );
+		nodeClass = this.modelRegistry.lookup( dataElement.type );
 	if ( !nodeClass ) {
 		throw new Error( 'Attempting to convert unknown data element type ' + dataElement.type );
 	}
@@ -98,6 +99,13 @@ ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElement
 	return domElements;
 };
 
+/**
+ * Create a data element from a DOM element.
+ * @param {ve.dm.Node|ve.dm.MetaItem} modelClass Model class to use for conversion
+ * @param {HTMLElement[]} domElements DOM elements to convert
+ * @param {Object} context Converter context to pass to toDataElement() (will be cloned)
+ * @returns {Object} Data element
+ */
 ve.dm.Converter.prototype.createDataElement = function ( modelClass, domElements, context ) {
 	var i, j, dataElement, dataElementAttributes, domElementAttributes, domElementAttribute;
 	dataElement = modelClass.static.toDataElement( domElements, ve.copyObject( context ) );
@@ -277,10 +285,22 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, annot
 						)
 					);
 				} else {
+					// Node or meta item
 					aboutGroup = getAboutGroup( childDomElement );
 					childDomElements = modelClass.static.enableAboutGrouping ?
 						aboutGroup : [ childDomElement ];
 					childDataElement = this.createDataElement( modelClass, childDomElements, context );
+
+					if ( modelClass.prototype instanceof ve.dm.MetaItem ) {
+						// No additional processing needed
+						// Write to data and continue
+						data.push( childDataElement );
+						data.push( { 'type': '/' + childDataElement.type } );
+						processNextWhitespace( childDataElement );
+						prevElement = childDataElement;
+						break;
+					}
+
 					childIsContent = this.nodeFactory.isNodeContent( childDataElement.type );
 
 					// If childIsContent isn't what we expect, adjust
@@ -464,14 +484,14 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, annot
 			case Node.COMMENT_NODE:
 				// TODO treat this as a node with nodeName #comment
 				childDataElement = {
-					'type': context.expectingContent ? 'metaInline' : 'metaBlock',
+					'type': 'alienMeta',
 					'attributes': {
 						'style': 'comment',
 						'text': childDomElement.data
 					}
 				};
 				data.push( childDataElement );
-				data.push( { 'type': context.expectingContent ? '/metaInline' : '/metaBlock' } );
+				data.push( { 'type': '/alienMeta' } );
 				processNextWhitespace( childDataElement );
 				prevElement = childDataElement;
 				break;
@@ -547,8 +567,10 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 		} else if (
 			ve.isArray( data[i] ) ||
 			(
-				data[i].annotations !== undefined &&
-				this.nodeFactory.isNodeContent( data[i].type )
+				data[i].annotations !== undefined && (
+					this.metaItemFactory.lookup( data[i].type ) ||
+					this.nodeFactory.isNodeContent( data[i].type )
+				)
 			)
 		) {
 			// Annotated text or annotated nodes
@@ -648,7 +670,8 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 			// Element
 			if ( dataElement.type.charAt( 0 ) === '/' ) {
 				parentDomElement = domElement.parentNode;
-				isContentNode = this.nodeFactory.isNodeContent( data[i].type.substr( 1 ) );
+				isContentNode = this.metaItemFactory.lookup( data[i].type.substr( 1 ) ) ||
+					this.nodeFactory.isNodeContent( data[i].type.substr( 1 ) );
 				// Process whitespace
 				// whitespace = [ outerPre, innerPre, innerPost, outerPost ]
 				if (
@@ -884,4 +907,4 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 
 /* Initialization */
 
-ve.dm.converter = new ve.dm.Converter( ve.dm.modelRegistry, ve.dm.nodeFactory, ve.dm.annotationFactory );
+ve.dm.converter = new ve.dm.Converter( ve.dm.modelRegistry, ve.dm.nodeFactory, ve.dm.annotationFactory, ve.dm.metaItemFactory );

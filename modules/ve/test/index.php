@@ -59,10 +59,12 @@
 		<script src="../../ve/dm/ve.dm.ModelRegistry.js"></script>
 		<script src="../../ve/dm/ve.dm.NodeFactory.js"></script>
 		<script src="../../ve/dm/ve.dm.AnnotationFactory.js"></script>
+		<script src="../../ve/dm/ve.dm.MetaItemFactory.js"></script>
 		<script src="../../ve/dm/ve.dm.Node.js"></script>
 		<script src="../../ve/dm/ve.dm.BranchNode.js"></script>
 		<script src="../../ve/dm/ve.dm.LeafNode.js"></script>
 		<script src="../../ve/dm/ve.dm.Annotation.js"></script>
+		<script src="../../ve/dm/ve.dm.MetaItem.js"></script>
 		<script src="../../ve/dm/ve.dm.TransactionProcessor.js"></script>
 		<script src="../../ve/dm/ve.dm.Transaction.js"></script>
 		<script src="../../ve/dm/ve.dm.Surface.js"></script>
@@ -81,7 +83,6 @@
 		<script src="../../ve/dm/nodes/ve.dm.ImageNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.ListItemNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.ListNode.js"></script>
-		<script src="../../ve/dm/nodes/ve.dm.MetaNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.ParagraphNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.PreformattedNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.TableCellNode.js"></script>
@@ -91,12 +92,13 @@
 		<script src="../../ve/dm/nodes/ve.dm.TextNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.MWEntityNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.MWHeadingNode.js"></script>
-		<script src="../../ve/dm/nodes/ve.dm.MWMetaNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.MWPreformattedNode.js"></script>
 		<script src="../../ve/dm/annotations/ve.dm.LinkAnnotation.js"></script>
 		<script src="../../ve/dm/annotations/ve.dm.MWExternalLinkAnnotation.js"></script>
 		<script src="../../ve/dm/annotations/ve.dm.MWInternalLinkAnnotation.js"></script>
 		<script src="../../ve/dm/annotations/ve.dm.TextStyleAnnotation.js"></script>
+		<script src="../../ve/dm/metaitems/ve.dm.AlienMetaItem.js"></script>
+		<script src="../../ve/dm/metaitems/ve.dm.MWMetaItem.js"></script>
 		<script src="../../ve/ce/ve.ce.js"></script>
 		<script src="../../ve/ce/ve.ce.DomRange.js"></script>
 		<script src="../../ve/ce/ve.ce.NodeFactory.js"></script>

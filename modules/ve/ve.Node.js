@@ -39,7 +39,7 @@ ve.inheritClass( ve.Node, ve.EventEmitter );
 
 /**
  * Symbolic name for the node class. Must be set to a unique string by every subclass. Must not
- * conflict with other node names or other annotation names.
+ * conflict with names of other nodes, annotations or meta items.
  * @static
  * @property {string} [static.name=null]
  * @inheritable
