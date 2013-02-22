@@ -61,7 +61,10 @@ ve.ce.AlienNode.prototype.onMouseEnter = function () {
 		);
 	} );
 	surface.replacePhantoms( $phantoms );
-	surface.$.on( 'mousemove.phantoms', ve.bind( this.onSurfaceMouseMove, this ) );
+	surface.$.on({
+		'mousemove.phantoms': ve.bind( this.onSurfaceMouseMove, this ),
+		'mouseout.phantoms': ve.bind( this.onSurfaceMouseOut, this )
+	});
 };
 
 /**
@@ -103,15 +106,36 @@ ve.ce.AlienNode.prototype.onUpdate = function () {
  * @param {jQuery.Event} e
  */
 ve.ce.AlienNode.prototype.onSurfaceMouseMove = function ( e ) {
-	var surface, $target = $( e.target );
+	var $target = $( e.target );
 	if (
 		!$target.hasClass( 've-ce-surface-phantom' ) &&
 		$target.closest( '.ve-ce-alienNode' ).length === 0
 	) {
-		surface = this.root.getSurface();
-		surface.replacePhantoms( null );
-		surface.$.unbind( 'mousemove.phantoms' );
+		this.clearPhantoms();
 	}
+};
+
+/**
+ * Handle surface mouse out events.
+ *
+ * @method
+ * @param {jQuery.Event} e
+ */
+ve.ce.AlienNode.prototype.onSurfaceMouseOut = function ( e ) {
+	if ( e.toElement === null) {
+		this.clearPhantoms();
+	}
+};
+
+/**
+ * Clears all phantoms and unbinds .phantoms namespace event handlers
+ *
+ * @method
+ */
+ve.ce.AlienNode.prototype.clearPhantoms = function() {
+	var surface = this.root.getSurface();
+	surface.replacePhantoms( null );
+	surface.$.unbind( '.phantoms' );
 };
 
 /* Registration */
