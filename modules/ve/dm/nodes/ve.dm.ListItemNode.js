@@ -35,8 +35,8 @@ ve.dm.ListItemNode.static.toDataElement = function () {
 	return { 'type': 'listItem' };
 };
 
-ve.dm.ListItemNode.static.toDomElement = function () {
-	return document.createElement( 'li' );
+ve.dm.ListItemNode.static.toDomElements = function () {
+	return [ document.createElement( 'li' ) ];
 };
 
 /* Registration */

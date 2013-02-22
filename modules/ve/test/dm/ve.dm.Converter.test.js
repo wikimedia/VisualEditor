@@ -9,6 +9,8 @@ QUnit.module( 've.dm.Converter' );
 
 /* Tests */
 
+// TODO rewrite to test getDataElementOrAnnotationFromDomElement
+/*
 QUnit.test( 'getDataElementFromDomElement', 20, function ( assert ) {
 	var msg, conversion;
 
@@ -21,14 +23,15 @@ QUnit.test( 'getDataElementFromDomElement', 20, function ( assert ) {
 		);
 	}
 } );
+*/
 
-QUnit.test( 'getDomElementFromDataElement', 20, function ( assert ) {
+QUnit.test( 'getDomElementsFromDataElement', 20, function ( assert ) {
 	var msg, conversion;
 
 	for ( msg in ve.dm.example.conversions ) {
 		conversion = ve.dm.example.conversions[msg];
 		assert.equalDomElement(
-			ve.dm.converter.getDomElementFromDataElement( conversion.dataElement ),
+			ve.dm.converter.getDomElementsFromDataElement( conversion.dataElement )[0],
 			conversion.domElement,
 			msg
 		);

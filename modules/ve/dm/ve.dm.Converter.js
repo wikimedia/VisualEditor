@@ -12,21 +12,15 @@
  *
  * @class
  * @constructor
+ * @param {ve.dm.ModelRegistry} modelRegistry
  * @param {ve.dm.NodeFactory} nodeFactory
  * @param {ve.dm.AnnotationFactory} annotationFactory
  */
-ve.dm.Converter = function VeDmConverter( nodeFactory, annotationFactory ) {
+ve.dm.Converter = function VeDmConverter( modelRegistry, nodeFactory, annotationFactory ) {
 	// Properties
+	this.modelRegistry = modelRegistry;
 	this.nodeFactory = nodeFactory;
 	this.annotationFactory = annotationFactory;
-	this.elements = {
-		'toDomElement': {},
-		'toDataElement': {},
-		'dataElementTypes': {}
-	};
-
-	// Events
-	this.nodeFactory.addListenerMethod( this, 'register', 'onNodeRegister' );
 };
 
 /* Static Methods */
@@ -59,79 +53,35 @@ ve.dm.Converter.getDataContentFromText = function ( text, annotations ) {
 /* Methods */
 
 /**
- * Handle register events from the node factory.
- *
- * FIXME
- * If a node is special; such as document, alienInline, alienBlock and text; its {converters}
- * property should be set to null, as to distinguish it from a new node type that someone has simply
- * forgotten to implement converters for.
- *
- * @method
- * @param {string} type Node type
- * @param {Function} constructor Node constructor
- * @throws {Error} Missing conversion data in node implementation
- */
-ve.dm.Converter.prototype.onNodeRegister = function ( dataElementType, constructor ) {
-	if ( !constructor.static.toDomElement || !constructor.static.toDataElement ) {
-		throw new Error( 'Missing static properties in node implementation of ' + dataElementType );
-	} else {
-		var i,
-			domElementTypes = constructor.static.matchTagNames || [],
-			toDomElement = constructor.static.toDomElement,
-			toDataElement = constructor.static.toDataElement;
-		// Registration
-		this.elements.toDomElement[dataElementType] = toDomElement;
-		for ( i = 0; i < domElementTypes.length; i++ ) {
-			this.elements.toDataElement[domElementTypes[i]] = toDataElement;
-			this.elements.dataElementTypes[domElementTypes[i]] = dataElementType;
-		}
-	}
-};
-
-/**
  * Get the DOM element for a given linear model element.
  *
- * This invokes the toDomElement function registered for the element type.
+ * This invokes the toDomElements function registered for the element type.
  *
  * @method
  * @param {Object} dataElement Linear model element
  * @param {HTMLDocument} doc Document to create DOM elements in
  * @returns {HTMLElement|boolean} DOM element, or false if the element cannot be converted
  */
-ve.dm.Converter.prototype.getDomElementFromDataElement = function ( dataElement, doc ) {
-	var key, domElement, dataElementAttributes, wrapper,
-		dataElementType = dataElement.type;
-	if ( dataElementType === 'alienInline' || dataElementType === 'alienBlock' ) {
-		// Alien
-		// Create nodes from source
-		wrapper = doc.createElement( 'div' );
-		wrapper.innerHTML = dataElement.attributes.html;
-		if ( wrapper.childNodes.length > 1 ) {
-			// Wrap the HTML in a single element, this makes
-			// it much easier to deal with. It'll be unwrapped
-			// at the end of getDomFromData().
-			domElement = doc.createElement( 'div' );
-			domElement.setAttribute( 'data-ve-multi-child-alien-wrapper', 'true' );
-			while ( wrapper.firstChild ) {
-				domElement.appendChild( wrapper.firstChild );
-			}
-		} else {
-			domElement = wrapper.firstChild;
-		}
-		return domElement;
+ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElement, doc ) {
+	var domElements, dataElementAttributes, key, matches,
+		nodeClass = this.nodeFactory.lookup( dataElement.type );
+	if ( !nodeClass ) {
+		throw new Error( 'Attempting to convert unknown data element type ' + dataElement.type );
 	}
-	if ( !( dataElementType in this.elements.toDomElement ) ) {
-		// Unsupported element
-		return false;
+	domElements = nodeClass.static.toDomElements( dataElement, doc );
+	if ( !domElements || !domElements.length ) {
+		throw new Error( 'toDomElements() failed to return an array when converting element of type ' + dataElement.type );
 	}
-
-	domElement = this.elements.toDomElement[dataElementType]( dataElement );
 	dataElementAttributes = dataElement.attributes;
 	if ( dataElementAttributes ) {
 		for ( key in dataElementAttributes ) {
-			// Only include 'html/0/*' attributes and strip the 'html/0/' from the beginning of the name
-			if ( key.indexOf( 'html/0/' ) === 0 ) {
-				domElement.setAttribute( key.substr( 7 ), dataElementAttributes[key] );
+			// Only include 'html/i/*' attributes and strip the 'html/i/' from the beginning of the name
+			/*jshint regexp:false */
+			matches = key.match( /^html\/(\d+)\/(.*)$/ );
+			if ( matches ) {
+				if ( domElements[matches[1]] && !domElements[matches[1]].hasAttribute( matches[2] ) ) {
+					domElements[matches[1]].setAttribute( matches[2], dataElementAttributes[key] );
+				}
 			}
 		}
 	}
@@ -141,64 +91,32 @@ ve.dm.Converter.prototype.getDomElementFromDataElement = function ( dataElement,
 		!ve.isEmptyObject( dataElement.internal.changed ) &&
 		ve.init.platform.useChangeMarkers()
 	) {
-		domElement.setAttribute( 'data-ve-changed',
+		domElements[0].setAttribute( 'data-ve-changed',
 			JSON.stringify( dataElement.internal.changed )
 		);
 	}
-	return domElement;
+
+	return domElements;
 };
 
-/**
- * Get the linear model data element for a given DOM element.
- *
- * This invokes the toDataElement function registered for the element type
- *
- * @method
- * @param {HTMLElement} domElement DOM element
- * @param {ve.AnnotationSet} annotations Annotations to apply if the node is a content node
- * @returns {Object|boolean} Linear model element, or false if the node cannot be converted
- */
-ve.dm.Converter.prototype.getDataElementFromDomElement = function ( domElement, annotations ) {
-	var dataElement, domElementAttributes, dataElementAttributes, domElementAttribute, i,
-		domElementType = domElement.nodeName.toLowerCase();
-	annotations = annotations || new ve.AnnotationSet();
-	if (
-		// Unsupported elements
-		!( domElementType in this.elements.toDataElement )
-		// TODO check for generated elements
-	) {
-		return false;
-	}
-	dataElement = this.elements.toDataElement[domElementType]( domElement );
-	domElementAttributes = domElement.attributes;
-	if (
-		dataElement && ve.dm.nodeFactory.doesNodeStoreHtmlAttributes( dataElement.type ) &&
-		domElementAttributes.length
-	) {
-		dataElementAttributes = dataElement.attributes = dataElement.attributes || {};
-		// Include all attributes and prepend 'html/0/' to each attribute name
-		for ( i = 0; i < domElementAttributes.length; i++ ) {
-			domElementAttribute = domElementAttributes[i];
-			dataElementAttributes['html/0/' + domElementAttribute.name] = domElementAttribute.value;
+ve.dm.Converter.prototype.createDataElement = function ( modelClass, domElements, context ) {
+	var i, j, dataElement, dataElementAttributes, domElementAttributes, domElementAttribute;
+	dataElement = modelClass.static.toDataElement( domElements, ve.copyObject( context ) );
+	if ( modelClass.static.storeHTMLAttributes && dataElement ) {
+		for ( i = 0; i < domElements.length; i++ ) {
+			domElementAttributes = domElements[i].attributes;
+			if ( domElementAttributes && domElementAttributes.length ) {
+				dataElementAttributes = dataElement.attributes = dataElement.attributes || {};
+				// Include all attributes and prepend 'html/i/' to each attribute name
+				for ( j = 0; j < domElementAttributes.length; j++ ) {
+					domElementAttribute = domElementAttributes[j];
+					dataElementAttributes['html/' + i + '/' + domElementAttribute.name] =
+						domElementAttribute.value;
+				}
+			}
 		}
 	}
-	if ( this.nodeFactory.isNodeContent( dataElement.type ) && !annotations.isEmpty() ) {
-		dataElement.annotations = annotations.clone();
-	}
 	return dataElement;
-};
-
-/**
- * Check if an HTML DOM node represents an annotation, and if so, build an annotation object for it.
- *
- * Annotation Object:
- *     { 'type': 'type', data: { 'key': 'value', ... } }
- *
- * @param {HTMLElement} domElement HTML DOM node
- * @returns {Object|boolean} Annotation object, or false if the node is not an annotation
- */
-ve.dm.Converter.prototype.getDataAnnotationFromDomElement = function ( domElement ) {
-	return this.annotationFactory.createFromElement( domElement ) || false;
 };
 
 /**
@@ -238,38 +156,6 @@ ve.dm.Converter.prototype.getDataFromDom = function ( doc ) {
  */
 ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, annotations,
 		dataElement, path, alreadyWrapped ) {
-	function createAlien( domElement, context, isWrapper ) {
-		// We generate alienBlock elements for block tags and alienInline elements for
-		// inline tags; unless we're in a content location, in which case we have no choice
-		// but to generate an alienInline element.
-		var isInline =
-				// Force inline in content locations (but not wrappers)
-				( !context.inWrapper && context.expectingContent ) ||
-				// Also force inline in wrappers that we can't close
-				( context.inWrapper && !context.canCloseWrapper ) ||
-				// Look at the tag name otherwise
-				!ve.isBlockElement( domElement ),
-			type = isInline ? 'alienInline' : 'alienBlock',
-			html, alien;
-		if ( isWrapper ) {
-			html =  $( domElement ).html();
-		} else {
-			html = $( '<div>', doc ).append( $( domElement ).clone() ).html();
-		}
-		alien = [
-			{
-				'type': type,
-				'attributes': {
-					'html': html
-				}
-			},
-			{ 'type': '/' + type }
-		];
-		if ( !annotations.isEmpty() ) {
-			alien[0].annotations = annotations.clone();
-		}
-		return alien;
-	}
 	function addWhitespace( element, index, whitespace ) {
 		if ( !element.internal ) {
 			element.internal = {};
@@ -321,76 +207,40 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, annot
 		context.expectingContent = originallyExpectingContent;
 	}
 
-	/**
-	 * Helper function to group adjacent child elements with the same about attribute together.
-	 * If there are multiple adjacent child nodes with the same about attribute, they are
-	 * wrapped in a `<div>` with the data-ve-aboutgroup attribute set.
-	 *
-	 * This function does not wrap single-element about groups, and does not descend into the
-	 * child elements.
-	 *
-	 * @private
-	 * @param element {HTMLElement} Element to process
-	 */
-	function doAboutGrouping( element ) {
-		var child = element.firstChild, textNodes = [],
-			prevChild, aboutGroup, aboutWrapper, childAbout, nextChild, i;
-		while ( child ) {
-			nextChild = child.nextSibling;
-			if ( !child.getAttribute ) {
+	function getAboutGroup( el ) {
+		var textNodes = [], aboutGroup = [ el ], elAbout, node;
+		if ( !el.getAttribute || el.getAttribute( 'about' ) === null ) {
+			return aboutGroup;
+		}
+		elAbout = el.getAttribute( 'about' );
+		for ( node = el.nextSibling; node; node = node.nextSibling ) {
+			if ( !node.getAttribute ) {
 				// Text nodes don't have a getAttribute() method. Thanks HTML DOM,
 				// that's really helpful ^^
-				textNodes.push( child );
-				child = nextChild;
+				textNodes.push( node );
 				continue;
 			}
-			childAbout = child.getAttribute( 'about' );
-			if ( childAbout && !aboutGroup ) {
-				// Start of a new about group
-				aboutGroup = childAbout;
-			} else if ( childAbout && childAbout === aboutGroup ) {
-				// Continuation of the current about group
-				if ( !aboutWrapper ) {
-					// This is the second child in this group, so the
-					// previous child is the first child in this group.
-					// Wrap the previous child
-					aboutWrapper = doc.createElement( 'div' );
-					aboutWrapper.setAttribute( 'data-ve-aboutgroup', aboutGroup );
-					element.insertBefore( aboutWrapper, prevChild );
-					aboutWrapper.appendChild( prevChild );
-				}
-				// Append any outstanding text nodes to the wrapper
-				for ( i = 0; i < textNodes.length; i++ ) {
-					aboutWrapper.appendChild( textNodes[i] );
-				}
-				// Append this child to the wrapper
-				aboutWrapper.appendChild( child );
-			} else if ( aboutGroup ) {
-				// This child isn't in the current about group
-				aboutGroup = undefined;
-				aboutWrapper = undefined;
-				if ( childAbout ) {
-					// Start of a new about group
-					aboutGroup = childAbout;
-				}
+			if ( node.getAttribute( 'about' ) === elAbout ) {
+				aboutGroup = aboutGroup.concat( textNodes );
+				textNodes = [];
+				aboutGroup.push( node );
+			} else {
+				break;
 			}
-			prevChild = child;
-			child = nextChild;
-			textNodes = [];
 		}
+		return aboutGroup;
 	}
 
 	// Fallback to defaults
 	annotations = annotations || new ve.AnnotationSet();
 	path = path || ['document'];
-	var i, j, childDomElement, annotation, childDataElement, text, childTypes, matches,
-		wrappingParagraph, prevElement, alien, rdfaType, isLink, childAnnotations,
-		doc = domElement.ownerDocument,
+	var i, childDomElement, childDomElements, childDataElement, text, childTypes, matches,
+		wrappingParagraph, prevElement, childAnnotations, modelName, modelClass,
+		annotation, childIsContent, aboutGroup,
 		data = [],
 		branchType = path[path.length - 1],
 		branchHasContent = this.nodeFactory.canNodeContainContent( branchType ),
 		originallyExpectingContent = branchHasContent || !annotations.isEmpty(),
-		childIsContent,
 		nextWhitespace = '',
 		wrappedWhitespace = '',
 		wrappedWhitespaceIndex,
@@ -403,101 +253,25 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, annot
 	if ( dataElement ) {
 		data.push( dataElement );
 	}
-	// Do about grouping
-	// FIXME this assumes every about group is an alien
-	doAboutGrouping( domElement );
 	// Add contents
 	for ( i = 0; i < domElement.childNodes.length; i++ ) {
 		childDomElement = domElement.childNodes[i];
 		switch ( childDomElement.nodeType ) {
 			case Node.ELEMENT_NODE:
-				// Alienate about groups
-				if ( childDomElement.hasAttribute( 'data-ve-aboutgroup' ) ) {
-					alien = createAlien( childDomElement, context, true );
-					if ( context.inWrapper && alien[0].type === 'alienBlock' ) {
-						stopWrapping();
-					} else if (
-						!context.inWrapper && !context.expectingContent &&
-						alien[0].type === 'alienInline'
-					) {
-						startWrapping();
-					}
-					data = data.concat( alien );
-					processNextWhitespace( alien[0] );
-					prevElement = alien[0];
-					break;
-				}
-
-				// HACK handle <meta>/<link> separately because of the
-				// metaInline/metaBlock distinction
+				modelName = this.modelRegistry.matchElement( childDomElement );
+				modelClass = this.modelRegistry.lookup( modelName ) || ve.dm.AlienNode;
+				// HACK: force MetaNode for <meta>/<link> even if they have an mw: type
+				// FIXME EWWWWWW find a better way to handle this
 				if (
-					childDomElement.nodeName.toLowerCase() === 'meta' ||
-					childDomElement.nodeName.toLowerCase() === 'link'
+					( childDomElement.nodeName.toLowerCase() === 'meta' || childDomElement.nodeName.toLowerCase() === 'link' ) &&
+					( modelClass.prototype instanceof ve.dm.AlienNode || modelClass === ve.dm.AlienNode )
 				) {
-					isLink = childDomElement.nodeName.toLowerCase() === 'link';
-					childDataElement = {
-						'type': context.expectingContent ? 'metaInline' : 'metaBlock',
-						'attributes': {
-							'style': isLink ? 'link' : 'meta',
-							'key': childDomElement.getAttribute( isLink ? 'rel' : 'property' )
-						}
-					};
-					if ( childDomElement.hasAttribute( isLink ? 'href' : 'content' ) ) {
-						childDataElement.attributes.value = childDomElement.getAttribute( isLink ? 'href' : 'content' );
-					}
-					// Preserve HTML attributes
-					// FIXME the following is duplicated from getDataElementFromDomElement()
-					// Include all attributes and prepend 'html/0/' to each attribute name
-					for ( j = 0; j < childDomElement.attributes.length; j++ ) {
-						// ..but exclude attributes we've already processed,
-						// because they'll be overwritten otherwise *sigh*
-						// FIXME this sucks, we need a new node type API so bad
-						if (
-							childDomElement.attributes[j].name !== ( isLink ? 'rel' : 'property' ) &&
-							childDomElement.attributes[j].name !== ( isLink ? 'href' : 'content' )
-						) {
-							childDataElement.attributes['html/0/' + childDomElement.attributes[j].name] = childDomElement.attributes[j].value;
-						}
-					}
-					data.push( childDataElement );
-					data.push( { 'type': context.expectingContent ? '/metaInline' : '/metaBlock' } );
-					processNextWhitespace( childDataElement );
-					prevElement = childDataElement;
-					break;
+					modelClass = ve.dm.MetaNode;
 				}
-				// Alienate anything with a mw: type that isn't registered
-				// HACK because we don't actually have an RDFa type registry yet,
-				// this hardcodes the set of recognized types
-				rdfaType = childDomElement.getAttribute( 'rel' ) ||
-					childDomElement.getAttribute( 'typeof' ) ||
-					childDomElement.getAttribute( 'property' );
-				if (
-					rdfaType &&
-					rdfaType.match( /^mw:/ ) &&
-					!rdfaType.match( /^mw:WikiLink/ ) &&
-					!rdfaType.match( /^mw:ExtLink/ ) &&
-					!rdfaType.match( /^mw:Entity/ )
-				) {
-					alien = createAlien( childDomElement, context );
-					if ( context.inWrapper && alien[0].type === 'alienBlock' ) {
-						stopWrapping();
-					} else if (
-						!context.inWrapper && !context.expectingContent &&
-						alien[0].type === 'alienInline'
-					) {
-						startWrapping();
-					}
-					data = data.concat( alien );
-					processNextWhitespace( alien[0] );
-					prevElement = alien[0];
-					break;
-				}
+				if ( modelClass.prototype instanceof ve.dm.Annotation ) {
+					annotation = this.annotationFactory.create( modelName, childDomElement );
 
-				// Detect and handle annotated content
-				// HACK except for mw:Entity. We need a node API rewrite, badly
-				annotation = this.getDataAnnotationFromDomElement( childDomElement );
-				if ( annotation && rdfaType !== 'mw:Entity' ) {
-					// Start auto-wrapping of bare content
+					// Start wrapping if needed
 					if ( !context.inWrapper && !context.expectingContent ) {
 						startWrapping();
 						prevElement = wrappingParagraph;
@@ -511,65 +285,62 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, annot
 							undefined, path, context.inWrapper
 						)
 					);
-					break;
-				}
-
-				// Look up child element type
-				childDataElement = this.getDataElementFromDomElement( childDomElement, annotations );
-				if ( childDataElement ) {
+				} else {
+					aboutGroup = getAboutGroup( childDomElement );
+					childDomElements = modelClass.static.enableAboutGrouping ?
+						aboutGroup : [ childDomElement ];
+					childDataElement = this.createDataElement( modelClass, childDomElements, context );
 					childIsContent = this.nodeFactory.isNodeContent( childDataElement.type );
-					// Check that something isn't terribly wrong
-					if ( !(
-						// Non-content child in a content container
-						( originallyExpectingContent && !childIsContent ) ||
-						// Non-content child trying to break wrapping at
-						// the wrong level
-						( context.inWrapper && !context.canCloseWrapper && !childIsContent )
-					) ) {
-						// End auto-wrapping of bare content from a previously processed node
-						// but only if childDataElement is a non-content element
-						if ( context.inWrapper && context.canCloseWrapper && !childIsContent ) {
+
+					// If childIsContent isn't what we expect, adjust
+					if ( !context.expectingContent && childIsContent ) {
+						startWrapping();
+						prevElement = wrappingParagraph;
+					} else if ( context.expectingContent && !childIsContent ) {
+						if ( context.inWrapper && context.canCloseWrapper ) {
 							stopWrapping();
-						} else if ( !context.inWrapper && !context.expectingContent && childIsContent ) {
-							startWrapping();
-							prevElement = wrappingParagraph;
-						}
-						if ( this.nodeFactory.canNodeHaveChildren( childDataElement.type ) ) {
-							// Append child element data
-							data = data.concat(
-								this.getDataFromDomRecursion(
-									childDomElement,
-									new ve.AnnotationSet(),
-									childDataElement,
-									path.concat( childDataElement.type ),
-									context.inWrapper
-								)
-							);
 						} else {
-							// Append empty node
-							data.push( childDataElement );
-							data.push( { 'type': '/' + childDataElement.type } );
+							// Alienate
+							modelClass = ve.dm.AlienNode;
+							childDomElements = modelClass.static.enableAboutGrouping ?
+								aboutGroup : [ childDomElement ];
+							childDataElement = this.createDataElement( modelClass, childDomElements, context );
+							childIsContent = this.nodeFactory.isNodeContent( childDataElement.type );
 						}
-						processNextWhitespace( childDataElement );
-						prevElement = childDataElement;
-						break;
 					}
-					// If something is wrong, fall through, and the bad child
-					// will be alienated below.
+
+					// Annotate child
+					if ( childIsContent && !annotations.isEmpty() ) {
+						childDataElement.annotations = annotations.clone();
+					}
+
+					// Output child and its children, if any
+					if (
+						childDomElements.length === 1 &&
+						this.nodeFactory.canNodeHaveChildren( childDataElement.type )
+					) {
+						// Recursion
+						// Opening and closing elements are added by the recursion too
+						data = data.concat(
+							this.getDataFromDomRecursion(
+								childDomElement,
+								new ve.AnnotationSet(),
+								childDataElement,
+								path.concat( childDataElement.type ),
+								context.inWrapper
+							)
+						);
+					} else {
+						// Write an opening and closing
+						data.push( childDataElement );
+						data.push( { 'type': '/' + childDataElement.type } );
+					}
+					processNextWhitespace( childDataElement );
+					prevElement = childDataElement;
+
+					// In case we consumed multiple childDomElements, adjust i accordingly
+					i += childDomElements.length - 1;
 				}
-				// We don't know what this is, fall back to alien.
-				alien = createAlien( childDomElement, context );
-				if ( context.inWrapper && alien[0].type === 'alienBlock' ) {
-					stopWrapping();
-				} else if (
-					!context.inWrapper && !context.expectingContent &&
-					alien[0].type === 'alienInline'
-				) {
-					startWrapping();
-				}
-				data = data.concat( alien );
-				processNextWhitespace( alien[0] );
-				prevElement = alien[0];
 				break;
 			case Node.TEXT_NODE:
 				text = childDomElement.data;
@@ -700,6 +471,7 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, annot
 				);
 				break;
 			case Node.COMMENT_NODE:
+				// TODO treat this as a node with nodeName #comment
 				childDataElement = {
 					'type': context.expectingContent ? 'metaInline' : 'metaBlock',
 					'attributes': {
@@ -761,7 +533,7 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, annot
  */
 ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 	var text, i, j, k, annotations, annotation, annotationElement, dataElement, arr,
-		childDomElement, pre, ours, theirs, parentDomElement, startClosingAt,
+		childDomElements, pre, ours, theirs, parentDomElement, lastChild, startClosingAt,
 		isContentNode, changed, parentChanged,
 		doc = ve.createDocumentFromHTML( '' ),
 		container = doc.body,
@@ -855,8 +627,11 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 						domElement.appendChild( doc.createTextNode( text ) );
 						text = '';
 					}
-					// Insert the element
-					domElement.appendChild( this.getDomElementFromDataElement( data[i], doc ) );
+					// Insert the elements
+					childDomElements = this.getDomElementsFromDataElement( data[i], doc );
+					for ( j = 0; j < childDomElements.length; j++ ) {
+						domElement.appendChild( childDomElements[j] );
+					}
 					// Increment i once more so we skip over the closing as well
 					i++;
 				}
@@ -909,6 +684,11 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 							);
 						}
 					}
+					lastChild = domElement.veInternal.childDomElements ?
+						domElement.veInternal
+							.childDomElements[domElement.veInternal.childDomElements.length - 1]
+							.lastChild :
+						domElement.lastChild;
 					ours = domElement.veInternal.whitespace[2];
 					if ( domElement.lastOuterPost === undefined ) {
 						// This node didn't have any structural children
@@ -919,10 +699,7 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 						theirs = domElement.lastOuterPost;
 					}
 					if ( ours && ours === theirs ) {
-						if (
-							domElement.lastChild &&
-							domElement.lastChild.nodeType === 3
-						) {
+						if ( lastChild && lastChild.nodeType === 3 ) {
 							// Last child is a TextNode, append to it
 							domElement.lastChild.appendData( ours );
 						} else {
@@ -991,16 +768,19 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 				domElement = parentDomElement;
 			} else {
 				// Create node from data
-				childDomElement = this.getDomElementFromDataElement( dataElement, doc );
+				childDomElements = this.getDomElementsFromDataElement( dataElement, doc );
 				// Add reference to internal data
-				if ( dataElement.internal ) {
-					childDomElement.veInternal = dataElement.internal;
+				childDomElements[0].veInternal = ve.extendObject(
+					{ 'childDomElements': childDomElements },
+					dataElement.internal || {}
+				);
+				// Add elements
+				for ( j = 0; j < childDomElements.length; j++ ) {
+					domElement.appendChild( childDomElements[j] );
 				}
-				// Add element
-				domElement.appendChild( childDomElement );
-				// Descend into child node
+				// Descend into the first child node
 				parentDomElement = domElement;
-				domElement = childDomElement;
+				domElement = childDomElements[0];
 
 				// Process outer whitespace
 				// Every piece of outer whitespace is duplicated somewhere:
@@ -1057,11 +837,6 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 		delete container.lastOuterPost;
 	}
 
-	// Unwrap multi-child alien wrappers
-	$( container ).find( '[data-ve-multi-child-alien-wrapper]' ).each( function() {
-		$( this ).replaceWith( $( this ).contents() );
-	} );
-
 	// Workaround for bug 42469: if a <pre> starts with a newline, that means .innerHTML will
 	// screw up and stringify it with one fewer newline. Work around this by adding a newline.
 	// If we don't see a leading newline, we still don't know if the original HTML was
@@ -1082,4 +857,4 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 
 /* Initialization */
 
-ve.dm.converter = new ve.dm.Converter( ve.dm.nodeFactory, ve.dm.annotationFactory );
+ve.dm.converter = new ve.dm.Converter( ve.dm.modelRegistry, ve.dm.nodeFactory, ve.dm.annotationFactory );

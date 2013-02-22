@@ -31,18 +31,18 @@ ve.dm.MWEntityNode.static.isContent = true;
 
 ve.dm.MWEntityNode.static.matchTagNames = [ 'span' ];
 
-ve.dm.MWEntityNode.static.matchRdfaTypes = [ 'mw:Entity' ]; // TODO ignored, still using a converter hack
+ve.dm.MWEntityNode.static.matchRdfaTypes = [ 'mw:Entity' ];
 
-ve.dm.MWEntityNode.static.toDataElement = function ( domElement ) {
-	return { 'type': 'MWentity', 'attributes': { 'character': domElement.textContent } };
+ve.dm.MWEntityNode.static.toDataElement = function ( domElements ) {
+	return { 'type': 'MWentity', 'attributes': { 'character': domElements[0].textContent } };
 };
 
-ve.dm.MWEntityNode.static.toDomElement = function ( dataElement ) {
+ve.dm.MWEntityNode.static.toDomElements = function ( dataElement ) {
 	var domElement = document.createElement( 'span' ),
 		textNode = document.createTextNode( dataElement.attributes.character );
 	domElement.setAttribute( 'typeof', 'mw:Entity' );
 	domElement.appendChild( textNode );
-	return domElement;
+	return [ domElement ];
 };
 
 /* Registration */

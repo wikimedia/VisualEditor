@@ -35,14 +35,14 @@ ve.dm.ListNode.static.defaultAttributes = {
 
 ve.dm.ListNode.static.matchTagNames = [ 'ul', 'ol' ];
 
-ve.dm.ListNode.static.toDataElement = function ( domElement ) {
-	var style = domElement.nodeName.toLowerCase() === 'ol' ? 'number' : 'bullet';
+ve.dm.ListNode.static.toDataElement = function ( domElements ) {
+	var style = domElements[0].nodeName.toLowerCase() === 'ol' ? 'number' : 'bullet';
 	return { 'type': 'list', 'attributes': { 'style': style } };
 };
 
-ve.dm.ListNode.static.toDomElement = function ( dataElement ) {
+ve.dm.ListNode.static.toDomElements = function ( dataElement ) {
 	var tag = dataElement.attributes && dataElement.attributes.style === 'number' ? 'ol' : 'ul';
-	return document.createElement( tag );
+	return [ document.createElement( tag ) ];
 };
 
 

@@ -35,14 +35,14 @@ ve.dm.TableCellNode.static.defaultAttributes = {
 
 ve.dm.TableCellNode.static.matchTagNames = [ 'td', 'th' ];
 
-ve.dm.TableCellNode.static.toDataElement = function ( domElement ) {
-	var style = domElement.nodeName.toLowerCase() === 'th' ? 'header' : 'data';
+ve.dm.TableCellNode.static.toDataElement = function ( domElements ) {
+	var style = domElements[0].nodeName.toLowerCase() === 'th' ? 'header' : 'data';
 	return { 'type': 'tableCell', 'attributes': { 'style': style } };
 };
 
-ve.dm.TableCellNode.static.toDomElement = function ( dataElement ) {
+ve.dm.TableCellNode.static.toDomElements = function ( dataElement ) {
 	var tag = dataElement.attributes && dataElement.attributes.style === 'header' ? 'th' : 'td';
-	return document.createElement( tag );
+	return [ document.createElement( tag ) ];
 };
 
 /* Registration */

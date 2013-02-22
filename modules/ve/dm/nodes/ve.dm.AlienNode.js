@@ -35,20 +35,29 @@ ve.dm.AlienNode.static.enableAboutGrouping = true;
 
 ve.dm.AlienNode.static.storeHtmlAttributes = false;
 
-ve.dm.AlienNode.static.toDataElement = function ( domElement, context ) {
+ve.dm.AlienNode.static.toDataElement = function ( domElements, context ) {
+	var i, isInline, allTagsInline, type, html;
+	// Check whether all elements are inline elements
+	allTagsInline = true;
+	for ( i = 0; i < domElements.length; i++ ) {
+		if ( ve.isBlockElement( domElements[i] ) ) {
+			allTagsInline = false;
+			break;
+		}
+	}
+
 	// We generate alienBlock elements for block tags and alienInline elements for
 	// inline tags; unless we're in a content location, in which case we have no choice
 	// but to generate an alienInline element.
-	var isInline =
-			// Force inline in content locations (but not wrappers)
-			( context.expectingContent && !context.inWrapper ) ||
-			// Also force inline in wrappers that we can't close
-			( context.inWrapper && !context.canCloseWrapper ) ||
-			// Look at the tag name otherwise
-			!ve.isBlockElement( domElement ),
-		type = isInline ? 'alienInline' : 'alienBlock',
-		// TODO handle about groups somehow
-		html = $( '<div>' ).append( $( domElement ).clone() ).html();
+	isInline =
+		// Force inline in content locations (but not wrappers)
+		( context.expectingContent && !context.inWrapper ) ||
+		// Also force inline in wrappers that we can't close
+		( context.inWrapper && !context.canCloseWrapper ) ||
+		// Look at the tag names otherwise
+		allTagsInline;
+	type = isInline ? 'alienInline' : 'alienBlock';
+	html = $( '<div>', domElements[0].ownerDocument ).append( $( domElements ).clone() ).html();
 	return {
 		'type': type,
 		'attributes': {
@@ -57,11 +66,11 @@ ve.dm.AlienNode.static.toDataElement = function ( domElement, context ) {
 	};
 };
 
-ve.dm.AlienNode.static.toDomElement = function ( dataElement ) {
+ve.dm.AlienNode.static.toDomElements = function ( dataElement ) {
 	var wrapper = document.createElement( 'div' );
 	wrapper.innerHTML = dataElement.attributes.html;
-	// TODO handle multiple nodes (from about groups) somehow
-	return wrapper.firstChild;
+	// Convert wrapper.children to an array
+	return Array.prototype.slice.call( wrapper.childNodes, 0 );
 };
 
 /* Concrete subclasses */
