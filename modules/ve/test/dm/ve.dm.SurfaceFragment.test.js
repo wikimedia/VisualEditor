@@ -174,10 +174,12 @@ QUnit.test( 'wrapNodes', 2, function ( assert ) {
 	);
 } );
 
-QUnit.test( 'wrapAllNodes', 2, function ( assert ) {
+QUnit.test( 'wrapAllNodes/unwrapAllNodes', 10, function ( assert ) {
 	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		surface = new ve.dm.Surface( doc ),
-		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 55, 61 ) );
+		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 55, 61 ) ),
+		expectedData;
+
 	// Make 2 paragraphs into 1 lists of 1 item with 2 paragraphs
 	fragment.wrapAllNodes(
 		[{ 'type': 'list', 'attributes': { 'style': 'bullet' } }, { 'type': 'listItem' }]
@@ -202,6 +204,12 @@ QUnit.test( 'wrapAllNodes', 2, function ( assert ) {
 		],
 		'wrapping nodes can add multiple levels of wrapping to multiple elements'
 	);
+	assert.deepEqual( fragment.getRange(), new ve.Range( 55, 65 ), 'new range contains wrapping elements' );
+
+	fragment.unwrapAllNodes( 2 );
+	assert.deepEqual( doc.getData(), ve.dm.example.data, 'unwrapping 2 levels restores document to original state' );
+	assert.deepEqual( fragment.getRange(), new ve.Range( 55, 61 ), 'range after unwrapping is same as original range' );
+
 	// Make a 1 paragraph into 1 list with 1 item
 	fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 9, 12 ) );
 	fragment.wrapAllNodes(
@@ -224,7 +232,28 @@ QUnit.test( 'wrapAllNodes', 2, function ( assert ) {
 		],
 		'wrapping nodes can add multiple levels of wrapping to a single element'
 	);
-} );
+	assert.deepEqual( fragment.getRange(), new ve.Range( 9, 16 ), 'new range contains wrapping elements' );
+
+	fragment.unwrapAllNodes( 2 );
+	assert.deepEqual( doc.getData(), ve.dm.example.data, 'unwrapping 2 levels restores document to original state' );
+	assert.deepEqual( fragment.getRange(), new ve.Range( 9, 12 ), 'range after unwrapping is same as original range' );
+
+	fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 5, 37 ) );
+
+	assert.throws( function() {
+		fragment.unwrapAllNodes( 20 );
+	}, /cannot unwrap by greater depth/, 'error thrown trying to unwrap more nodes that it is possible to contain' );
+
+	expectedData = ve.copyArray( ve.dm.example.data );
+	expectedData.splice( 5, 4 );
+	expectedData.splice( 29, 4 );
+	fragment.unwrapAllNodes( 4 );
+	assert.deepEqual(
+		doc.getData(),
+		expectedData,
+		'unwrapping 4 levels (table, tableSection, tableRow and tableCell)'
+	);
+});
 
 function runIsolateTest( assert, range, expected, label ) {
 	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.isolationData ) ),
