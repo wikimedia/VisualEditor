@@ -201,13 +201,16 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element ) {
 	}
 
 	function matchWithFunc( types, tag ) {
-		var i, queue = [];
+		var i, queue = [], queue2 = [];
 		for ( i = 0; i < types.length; i++ ) {
-			queue = queue
-				.concat( ve.getProp( reg.modelsByTypeAndTag, 1, types[i], tag ) || [] )
-				.concat( matchTypeRegExps( types[i], tag, true ) );
+			// Queue string matches and regexp matches separately
+			queue = queue.concat( ve.getProp( reg.modelsByTypeAndTag, 1, types[i], tag ) || [] );
+			queue2 = queue2.concat( matchTypeRegExps( types[i], tag, true ) );
 		}
+		// Try string matches first, then regexp matches
 		queue.sort( byRegistrationOrderDesc );
+		queue2.sort( byRegistrationOrderDesc );
+		queue = queue.concat( queue2 );
 		for ( i = 0; i < queue.length; i++ ) {
 			if ( reg.registry[queue[i]].static.matchFunction( element ) ) {
 				return queue[i];
@@ -217,12 +220,14 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element ) {
 	}
 
 	function matchWithoutFunc( types, tag ) {
-		var i, queue = [], winningName = null;
+		var i, queue = [], queue2 = [], winningName = null;
 		for ( i = 0; i < types.length; i++ ) {
-			queue = queue
-				.concat( ve.getProp( reg.modelsByTypeAndTag, 0, types[i], tag ) || [] )
-				.concat( matchTypeRegExps( types[i], tag, false ) );
+			// Queue string and regexp matches separately
+			queue = queue.concat( ve.getProp( reg.modelsByTypeAndTag, 0, types[i], tag ) || [] );
+			queue2 = queue2.concat( matchTypeRegExps( types[i], tag, false ) );
 		}
+		// Only try regexp matches if there are no string matches
+		queue = queue.length > 0 ? queue : queue2;
 		for ( i = 0; i < queue.length; i++ ) {
 			if (
 				winningName === null ||
