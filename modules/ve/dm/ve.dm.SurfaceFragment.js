@@ -690,3 +690,88 @@ ve.dm.SurfaceFragment.prototype.rewrapAllNodes = function () {
 	// TODO: Implement
 	return this;
 };
+
+/**
+ * Isolates the nodes in a fragment.
+ *
+ * The node selection is expanded to siblings and then these are isolated such that they are the
+ * sole children of a parent element which can be placed anywhere.
+ *
+ * @method
+ * @returns {ve.dm.SurfaceFragment} This fragment
+ */
+ve.dm.SurfaceFragment.prototype.isolate = function () {
+	// Handle null fragment
+	if ( !this.surface ) {
+		return this;
+	}
+	var nodes, startSplitNode, endSplitNode, tx,
+		startOffset, endOffset,
+		startSplitRequired = false,
+		endSplitRequired = false,
+		startSplitNodes = [],
+		endSplitNodes = [],
+		fragment = this;
+
+	function createSplits( splitNodes, insertBefore ) {
+		var i, length,
+			startOffsetChange = 0, endOffsetChange = 0, data = [];
+		for ( i = 0, length = splitNodes.length; i < length; i++ ) {
+			data.unshift( { 'type': '/' + splitNodes[i].type } );
+			data.push( splitNodes[i].getClonedElement() );
+
+			if ( insertBefore ) {
+				startOffsetChange += 2;
+				endOffsetChange += 2;
+			}
+		}
+
+		tx = ve.dm.Transaction.newFromInsertion( fragment.document, insertBefore ? startOffset : endOffset, data );
+		fragment.surface.change( tx, !fragment.noAutoSelect && tx.translateRange( fragment.range ) );
+
+		startOffset += startOffsetChange;
+		endOffset += endOffsetChange;
+	}
+
+	nodes = this.document.selectNodes( this.range, 'siblings' );
+
+	// Find start split point, if required
+	startSplitNode = nodes[0].node;
+	startOffset = startSplitNode.getOuterRange().start;
+	while ( startSplitNode.constructor.static.parentNodeTypes !== null ) {
+		if ( startSplitNode.parent.indexOf( startSplitNode ) > 0 ) {
+			startSplitRequired = true;
+		}
+		startSplitNode = startSplitNode.parent;
+		if ( startSplitRequired ) {
+			startSplitNodes.unshift(startSplitNode);
+		} else {
+			startOffset = startSplitNode.getOuterRange().start;
+		}
+	}
+
+	// Find end split point, if required
+	endSplitNode = nodes[nodes.length - 1].node;
+	endOffset = endSplitNode.getOuterRange().end;
+	while ( endSplitNode.constructor.static.parentNodeTypes !== null ) {
+		if ( endSplitNode.parent.indexOf( endSplitNode ) < endSplitNode.parent.getChildren().length - 1 ) {
+			endSplitRequired = true;
+		}
+		endSplitNode = endSplitNode.parent;
+		if ( endSplitRequired ) {
+			endSplitNodes.unshift(endSplitNode);
+		} else {
+			endOffset = endSplitNode.getOuterRange().end;
+		}
+	}
+
+	if ( startSplitRequired ) {
+		createSplits( startSplitNodes, true );
+	}
+
+	if ( endSplitRequired ) {
+		createSplits( endSplitNodes, false );
+	}
+
+	return this;
+};

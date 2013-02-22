@@ -7,7 +7,7 @@
 
 QUnit.module( 've.dm.SurfaceFragment' );
 
-// Tests
+/* Tests */
 
 QUnit.test( 'constructor', 8, function ( assert ) {
 	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
@@ -224,4 +224,49 @@ QUnit.test( 'wrapAllNodes', 2, function ( assert ) {
 		],
 		'wrapping nodes can add multiple levels of wrapping to a single element'
 	);
+} );
+
+function runIsolateTest( assert, range, expected, label ) {
+	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.isolationData ) ),
+		surface = new ve.dm.Surface( doc ),
+		fragment = new ve.dm.SurfaceFragment( surface, range ),
+		data;
+
+	data = ve.copyArray( doc.getFullData() );
+	fragment.isolate();
+	expected( data );
+
+	assert.deepEqual( doc.getFullData(), data, label );
+}
+
+QUnit.test( 'isolate', 2, function ( assert ) {
+	var rebuilt = { 'changed': { 'rebuilt': 1 } },
+		created = { 'changed': { 'created': 1 } },
+		createdAndRebuilt = { 'changed': { 'created': 1, 'rebuilt': 1 } };
+
+	runIsolateTest( assert, new ve.Range( 11, 21 ), function( data ) {
+		data[0].internal = rebuilt;
+		data.splice( 11, 0, { 'type': '/list' }, { 'type': 'list', 'attributes': { 'style': 'bullet' }, 'internal': createdAndRebuilt });
+		data.splice( 23, 0, { 'type': '/list' }, { 'type': 'list', 'attributes': { 'style': 'bullet' }, 'internal': createdAndRebuilt });
+	}, 'isolating list item "Item 2"');
+
+	runIsolateTest( assert, new ve.Range( 88, 108 ), function( data ) {
+		data[75].internal = rebuilt;
+		data[76].internal = rebuilt;
+		data[77].internal = rebuilt;
+		data.splice( 88, 0,
+			{ 'type': '/tableRow' },
+			{ 'type': '/tableSection' },
+			{ 'type': '/table' },
+			{ 'type': 'table', 'internal': createdAndRebuilt },
+			{ 'type': 'tableSection', 'attributes': { 'style': 'body' }, 'internal': createdAndRebuilt },
+			{ 'type': 'tableRow', 'internal': created }
+		);
+		data.splice( 115, 0,
+			{ 'type': '/tableSection' },
+			{ 'type': '/table' },
+			{ 'type': 'table', 'internal': createdAndRebuilt },
+			{ 'type': 'tableSection', 'attributes': { 'style': 'body' }, 'internal': createdAndRebuilt }
+		);
+	}, 'isolating table cells "Cell 2" & "Cell 3"');
 } );
