@@ -151,6 +151,22 @@ ve.dm.Node.static.toDomElement = function ( /*dataElement*/ ) {
 ve.dm.Node.static.isMeta = false;
 
 /**
+ * Whether this node supports about grouping. When a DOM element matches a node type that has
+ * about grouping enabled, the converter will look for adjacent siblings with the same value for
+ * the about attribute, and ask toDataElement() to produce a single data element for all of those
+ * DOM nodes combined.
+ *
+ * The converter doesn't descend into about groups, i.e. it doesn't convert the children of the
+ * DOM elements that make up the about group. This means the resulting linear model element will
+ * be childless.
+ *
+ * @static
+ * @property {boolean} static.enableAboutGrouping
+ * @inheritable
+ */
+ve.dm.Node.static.enableAboutGrouping = false;
+
+/**
  * Whether HTML attributes should be preserved for this node type. If true, the HTML attributes
  * of the DOM elements will be stored as linear model attributes. The attribute names be
  * html/0/attrName, where attrName is the name of the attribute.
