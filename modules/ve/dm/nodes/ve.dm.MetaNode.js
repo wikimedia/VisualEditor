@@ -16,7 +16,7 @@
  * @param {number} [length] Length of content data in document; ignored and overridden to 0
  * @param {Object} [element] Reference to element in linear model
  */
-ve.dm.MetaNode = function VeDmMetaBlockNode( name, length, element ) {
+ve.dm.MetaNode = function VeDmMetaNode( name, length, element ) {
 	// Parent constructor
 	ve.dm.LeafNode.call( this, name, 0, element );
 };
