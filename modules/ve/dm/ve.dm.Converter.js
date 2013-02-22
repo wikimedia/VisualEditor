@@ -171,7 +171,10 @@ ve.dm.Converter.prototype.getDataElementFromDomElement = function ( domElement, 
 	}
 	dataElement = this.elements.toDataElement[domElementType]( domElement );
 	domElementAttributes = domElement.attributes;
-	if ( domElementAttributes.length ) {
+	if (
+		dataElement && ve.dm.nodeFactory.doesNodeStoreHtmlAttributes( dataElement.type ) &&
+		domElementAttributes.length
+	) {
 		dataElementAttributes = dataElement.attributes = dataElement.attributes || {};
 		// Include all attributes and prepend 'html/0/' to each attribute name
 		for ( i = 0; i < domElementAttributes.length; i++ ) {

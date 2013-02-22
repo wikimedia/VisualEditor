@@ -31,6 +31,8 @@ ve.dm.AlienNode.static.name = 'alien';
 
 ve.dm.AlienNode.static.matchTagNames = [];
 
+ve.dm.AlienNode.static.storeHtmlAttributes = false;
+
 ve.dm.AlienNode.static.toDataElement = function ( domElement, context ) {
 	// We generate alienBlock elements for block tags and alienInline elements for
 	// inline tags; unless we're in a content location, in which case we have no choice

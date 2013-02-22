@@ -186,6 +186,20 @@ ve.dm.NodeFactory.prototype.doesNodeHaveSignificantWhitespace = function ( type 
 	throw new Error( 'Unknown node type: ' + type );
 };
 
+/**
+ * Check if the node stores HTML attributes in the linear model.
+ *
+ * @method
+ * @param {string} type Node type
+ * @returns {[type]} The node stores HTML attributes
+ */
+ve.dm.NodeFactory.prototype.doesNodeStoreHtmlAttributes = function ( type ) {
+	if ( type in this.registry ) {
+		return this.registry[type].static.storeHtmlAttributes;
+	}
+	throw new Error( 'Unknown node type: ' + type );
+};
+
 /* Initialization */
 
 ve.dm.nodeFactory = new ve.dm.NodeFactory();
