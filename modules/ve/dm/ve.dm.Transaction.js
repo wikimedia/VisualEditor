@@ -687,18 +687,31 @@ ve.dm.Transaction.prototype.toggleApplied = function () {
  * @returns {number} Translated offset, as it will be after processing transaction
  */
 ve.dm.Transaction.prototype.translateOffset = function ( offset, reversed ) {
-	var i, cursor = 0, adjustment = 0, op, insertLength, removeLength;
+	var i, op, insertLength, removeLength, prevAdjustment, cursor = 0, adjustment = 0;
 	for ( i = 0; i < this.operations.length; i++ ) {
 		op = this.operations[i];
 		if ( op.type === 'replace' ) {
 			insertLength = reversed ? op.remove.length : op.insert.length;
 			removeLength = reversed ? op.insert.length : op.remove.length;
+			prevAdjustment = adjustment;
 			adjustment += insertLength - removeLength;
 			if ( offset === cursor + removeLength ) {
 				// Offset points to right after the removal, translate it
 				return offset + adjustment;
-			} else if ( offset >= cursor && offset < cursor + removeLength ) {
+			} else if ( offset === cursor ) {
+				// The offset points to right before the removal or replacement
+				if ( insertLength === 0 ) {
+					// Translate it to after the removal
+					return cursor + removeLength + adjustment;
+				} else {
+					// Translate it to before the replacement
+					// To translate this correctly, we have to use adjustment as it was before
+					// we adjusted it for this replacement
+					return cursor + prevAdjustment;
+				}
+			} else if ( offset > cursor && offset < cursor + removeLength ) {
 				// The offset points inside of the removal
+				// Translate it to after the removal
 				return cursor + removeLength + adjustment;
 			}
 			cursor += removeLength;
