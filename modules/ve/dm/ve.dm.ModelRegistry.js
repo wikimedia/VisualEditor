@@ -169,7 +169,8 @@ ve.dm.ModelRegistry.prototype.isExtensionSpecificType = function ( type ) {
 ve.dm.ModelRegistry.prototype.matchElement = function ( element ) {
 	var i, name, model, matches, winner, types, elementExtSpecificTypes, matchTypes,
 		tag = element.nodeName.toLowerCase(),
-		typeAttr = element.getAttribute( 'typeof' ) || element.getAttribute( 'rel' ),
+		typeAttr = element.getAttribute( 'typeof' ) || element.getAttribute( 'rel' ) ||
+			element.getAttribute( 'property' ),
 		reg = this;
 
 	function byRegistrationOrderDesc( a, b ) {
@@ -311,5 +312,6 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element ) {
 /* Initialization */
 
 ve.dm.modelRegistry = new ve.dm.ModelRegistry();
+ve.dm.modelRegistry.registerExtensionSpecificType( /^mw:/ );
 
 } )( ve );
