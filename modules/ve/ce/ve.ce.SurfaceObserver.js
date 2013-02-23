@@ -42,12 +42,7 @@ ve.inheritClass( ve.ce.SurfaceObserver, ve.EventEmitter );
  * @param {ve.Range} range Initial range to use
  */
 ve.ce.SurfaceObserver.prototype.clear = function ( range ) {
-	this.rangySelection = {
-		anchorNode: null,
-		anchorOffset: null,
-		focusNode: null,
-		focusOffset: null
-	};
+	this.rangyRange = null;
 	this.range = range || null;
 	this.node = null;
 	this.text = null;
@@ -98,7 +93,7 @@ ve.ce.SurfaceObserver.prototype.stop = function ( poll ) {
  * @param {boolean} async Poll asynchronously
  */
 ve.ce.SurfaceObserver.prototype.poll = function ( async ) {
-	var delayPoll, rangySelection, $branch, node, text, hash, range;
+	var delayPoll, $branch, node, text, hash, range, rangyRange;
 
 	if ( this.timeoutId !== null ) {
 		clearTimeout( this.timeoutId );
@@ -118,30 +113,18 @@ ve.ce.SurfaceObserver.prototype.poll = function ( async ) {
 	}
 
 	range = this.range;
-	rangySelection = rangy.getSelection();
 	node = this.node;
+	rangyRange = ve.ce.RangyRange.newFromRangySelection( rangy.getSelection() );
 
-	if (
-		rangySelection.anchorNode !== this.rangySelection.anchorNode ||
-		rangySelection.anchorOffset !== this.rangySelection.anchorOffset ||
-		rangySelection.focusNode !== this.rangySelection.focusNode ||
-		rangySelection.focusOffset !== this.rangySelection.focusOffset
-	) {
-		this.rangySelection.anchorNode = rangySelection.anchorNode;
-		this.rangySelection.anchorOffset = rangySelection.anchorOffset;
-		this.rangySelection.focusNode = rangySelection.focusNode;
-		this.rangySelection.focusOffset = rangySelection.focusOffset;
-
-		$branch = $( rangySelection.anchorNode ).closest( '.ve-ce-branchNode' );
+	if ( !rangyRange.equals( this.rangyRange ) ){
+		this.rangyRange = rangyRange;
+		$branch = $( rangyRange.anchorNode ).closest( '.ve-ce-branchNode' );
 		if ( $branch.length ) {
 			node = $branch.data( 'node' );
 			if ( node.canHaveGrandchildren() ) {
 				node = null;
 			} else {
-				range = new ve.Range(
-					ve.ce.getOffset( rangySelection.anchorNode, rangySelection.anchorOffset ),
-					ve.ce.getOffset( rangySelection.focusNode, rangySelection.focusOffset )
-				);
+				range = rangyRange.getRange();
 			}
 		}
 	}
