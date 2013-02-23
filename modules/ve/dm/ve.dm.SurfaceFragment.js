@@ -397,7 +397,7 @@ ve.dm.SurfaceFragment.prototype.getSiblingNodes = function () {
  *
  * @method
  * @param {boolean} [value=true] Automatically update surface selection
- * @returns {ve.dm.SurfaceFragment} This fragment
+ * @chainable
  */
 ve.dm.SurfaceFragment.prototype.setAutoSelect = function ( value ) {
 	this.noAutoSelect = !value;
@@ -408,7 +408,7 @@ ve.dm.SurfaceFragment.prototype.setAutoSelect = function ( value ) {
  * Apply the fragment's range to the surface as a selection.
  *
  * @method
- * @returns {ve.dm.SurfaceFragment} This fragment
+ * @chainable
  */
 ve.dm.SurfaceFragment.prototype.select = function () {
 	// Handle null fragment
@@ -432,7 +432,7 @@ ve.dm.SurfaceFragment.prototype.select = function () {
  * @param {string|ve.dm.Annotation} name Annotation name, for example: 'textStyle/bold' or
  * Annotation object
  * @param {Object} [data] Additional annotation data (not used if annotation object is given)
- * @returns {ve.dm.SurfaceFragment} This fragment
+ * @chainable
  */
 ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, name, data ) {
 	// Handle null fragment
@@ -469,7 +469,7 @@ ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, name, data 
  * @method
  * @param {string|Array} content Content to insert, can be either a string or array of data
  * @param {boolean} annotate Content should be automatically annotated to match surrounding content
- * @returns {ve.dm.SurfaceFragment} This fragment
+ * @chainable
  */
 ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
 	// Handle null fragment
@@ -501,7 +501,7 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
  * Remove content in the fragment.
  *
  * @method
- * @returns {ve.dm.SurfaceFragment} This fragment
+ * @chainable
  */
 ve.dm.SurfaceFragment.prototype.removeContent = function () {
 	// Handle null fragment
@@ -534,7 +534,7 @@ ve.dm.SurfaceFragment.prototype.removeContent = function () {
  * @method
  * @param {string} type Element type to convert to
  * @param {Object} [attr] Initial attributes for new element
- * @returns {ve.dm.SurfaceFragment} This fragment
+ * @chainable
  */
 ve.dm.SurfaceFragment.prototype.convertNodes = function ( type, attr ) {
 	// Handle null fragment
@@ -564,7 +564,7 @@ ve.dm.SurfaceFragment.prototype.convertNodes = function ( type, attr ) {
  * @param {Object|Object[]} wrapper Wrapper object, or array of wrapper objects (see above)
  * @param {string} wrapper.type Node type of wrapper
  * @param {Object} [wrapper.attributes] Attributes of wrapper
- * @returns {ve.dm.SurfaceFragment} This fragment
+ * @chainable
  */
 ve.dm.SurfaceFragment.prototype.wrapNodes = function ( wrapper ) {
 	// Handle null fragment
@@ -585,7 +585,7 @@ ve.dm.SurfaceFragment.prototype.wrapNodes = function ( wrapper ) {
  *
  * @method
  * @param {string|string[]} type Node types to unwrap, or array of node types to unwrap
- * @returns {ve.dm.SurfaceFragment} This fragment
+ * @chainable
  */
 ve.dm.SurfaceFragment.prototype.unwrapNodes = function () {
 	// Handle null fragment
@@ -607,7 +607,7 @@ ve.dm.SurfaceFragment.prototype.unwrapNodes = function () {
  * @param {Object|Object[]} wrapper Wrapper object, or array of wrapper objects (see above)
  * @param {string} wrapper.type Node type of wrapper
  * @param {Object} [wrapper.attributes] Attributes of wrapper
- * @returns {ve.dm.SurfaceFragment} This fragment
+ * @chainable
  */
 ve.dm.SurfaceFragment.prototype.rewrapNodes = function () {
 	// Handle null fragment
@@ -635,7 +635,7 @@ ve.dm.SurfaceFragment.prototype.rewrapNodes = function () {
  * @param {Object|Object[]} wrapper Wrapper object, or array of wrapper objects (see above)
  * @param {string} wrapper.type Node type of wrapper
  * @param {Object} [wrapper.attributes] Attributes of wrapper
- * @returns {ve.dm.SurfaceFragment} This fragment
+ * @chainable
  */
 ve.dm.SurfaceFragment.prototype.wrapAllNodes = function ( wrapper ) {
 	// Handle null fragment
@@ -664,7 +664,7 @@ ve.dm.SurfaceFragment.prototype.wrapAllNodes = function ( wrapper ) {
  *
  * @method
  * @param {number} depth Number of nodes to unwrap
- * @returns {ve.dm.SurfaceFragment} This fragment
+ * @chainable
  */
 ve.dm.SurfaceFragment.prototype.unwrapAllNodes = function ( depth ) {
 	// Handle null fragment
@@ -703,7 +703,7 @@ ve.dm.SurfaceFragment.prototype.unwrapAllNodes = function ( depth ) {
  * @param {Object|Object[]} wrapper Wrapper object, or array of wrapper objects (see above)
  * @param {string} wrapper.type Node type of wrapper
  * @param {Object} [wrapper.attributes] Attributes of wrapper
- * @returns {ve.dm.SurfaceFragment} This fragment
+ * @chainable
  */
 ve.dm.SurfaceFragment.prototype.rewrapAllNodes = function () {
 	// Handle null fragment
@@ -721,7 +721,7 @@ ve.dm.SurfaceFragment.prototype.rewrapAllNodes = function () {
  * sole children of a parent element which can be placed anywhere.
  *
  * @method
- * @returns {ve.dm.SurfaceFragment} This fragment
+ * @chainable
  */
 ve.dm.SurfaceFragment.prototype.isolate = function () {
 	// Handle null fragment
