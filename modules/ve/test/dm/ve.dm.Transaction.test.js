@@ -774,7 +774,7 @@ QUnit.test( 'newFromWrap', 8, function ( assert ) {
 } );
 
 QUnit.test( 'translateOffset', function ( assert ) {
-	var tx, mapping, offset;
+	var tx, mapping, offset, expected;
 	// Populate a transaction with bogus data
 	tx = new ve.dm.Transaction();
 	tx.pushReplace( [], ['a','b','c'] );
@@ -788,7 +788,7 @@ QUnit.test( 'translateOffset', function ( assert ) {
 	tx.pushReplace( [], ['n', 'o', 'p'] );
 
 	mapping = {
-		0: 3,
+		0: [0, 3],
 		1: 4,
 		2: 5,
 		3: 6,
@@ -801,19 +801,21 @@ QUnit.test( 'translateOffset', function ( assert ) {
 		10: 9,
 		11: 10,
 		12: 11,
-		13: 16,
+		13: [12, 16],
 		14: 17,
-		15: 21,
+		15: [18, 21],
 		16: 22
 	};
-	QUnit.expect( 17 );
+	QUnit.expect( 2*17 );
 	for ( offset in mapping ) {
-		assert.strictEqual( tx.translateOffset( Number( offset ) ), mapping[offset] );
+		expected = ve.isArray( mapping[offset] ) ? mapping[offset] : [ mapping[offset], mapping[offset] ];
+		assert.strictEqual( tx.translateOffset( Number( offset ) ), expected[1], offset );
+		assert.strictEqual( tx.translateOffset( Number( offset ), false, true ), expected[0], offset + ' (excludeInsertion)' );
 	}
 } );
 
 QUnit.test( 'translateOffsetReversed', function ( assert ) {
-	var tx, mapping, offset;
+	var tx, mapping, offset, expected;
 	// Populate a transaction with bogus data
 	tx = new ve.dm.Transaction();
 	tx.pushReplace( [], ['a','b','c'] );
@@ -835,7 +837,7 @@ QUnit.test( 'translateOffsetReversed', function ( assert ) {
 		5: 2,
 		6: 3,
 		7: 4,
-		8: 9,
+		8: [5, 9],
 		9: 10,
 		10: 11,
 		11: 12,
@@ -843,11 +845,61 @@ QUnit.test( 'translateOffsetReversed', function ( assert ) {
 		13: 13,
 		14: 13,
 		15: 13,
-		16: 13
+		16: 13,
+		17: 14,
+		18: 15,
+		19: 15,
+		20: 15,
+		21: 15,
+		22: 16
 	};
-	QUnit.expect( 17 );
+	QUnit.expect( 23*2 );
 	for ( offset in mapping ) {
-		assert.strictEqual( tx.translateOffset( Number( offset ), true ), mapping[offset] );
+		expected = ve.isArray( mapping[offset] ) ? mapping[offset] : [ mapping[offset], mapping[offset] ];
+		assert.strictEqual( tx.translateOffset( Number( offset ), true ), expected[1], offset );
+		assert.strictEqual( tx.translateOffset( Number( offset ), true, true ), expected[0], offset + ' (excludeInsertion)' );
+	}
+} );
+
+QUnit.test( 'translateRange', function ( assert ) {
+	var i, cases, tx = new ve.dm.Transaction();
+	tx.pushRetain( 55 );
+	tx.pushReplace( [], [ { 'type': 'list', 'attributes': { 'style': 'number' } } ] );
+	tx.pushReplace( [], [ { 'type': 'listItem' } ] );
+	tx.pushRetain( 3 );
+	tx.pushReplace( [], [ { 'type': '/listItem' } ] );
+	tx.pushReplace( [], [ { 'type': 'listItem' } ] );
+	tx.pushRetain( 3 );
+	tx.pushReplace( [], [ { 'type': '/listItem' } ] );
+	tx.pushReplace( [], [ { 'type': '/list' } ] );
+
+	cases = [
+		{
+			'before': new ve.Range( 55, 61 ),
+			'after': new ve.Range( 57, 65 ),
+			'msg': 'Wrapped range is translated to inner range'
+		},
+		{
+			'before': new ve.Range( 54, 62 ),
+			'after': new ve.Range( 54, 68 ),
+			'msg': 'Wrapped range plus one each side is translated to outer range plus one each side'
+		},
+		{
+			'before': new ve.Range( 54, 61 ),
+			'after': new ve.Range( 54, 65 ),
+			'msg': 'Wrapped range plus one on the left'
+		},
+		{
+			'before': new ve.Range( 55, 62 ),
+			'after': new ve.Range( 57, 68 ),
+			'msg': 'wrapped range plus one on the right'
+		}
+	];
+	QUnit.expect( cases.length * 2 );
+
+	for ( i = 0; i < cases.length; i++ ) {
+		assert.deepEqual( tx.translateRange( cases[i].before ), cases[i].after, cases[i].msg );
+		assert.deepEqual( tx.translateRange( cases[i].before.flip() ), cases[i].after.flip(), cases[i].msg + ' (reversed)' );
 	}
 } );
 
