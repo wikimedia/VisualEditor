@@ -146,3 +146,13 @@ ve.Range.prototype.truncate = function ( length ) {
 ve.Range.prototype.isCollapsed = function () {
 	return this.from === this.to;
 };
+
+/**
+ * Check if the range is backwards, i.e. from > to
+ *
+ * @method
+ * @returns {boolean} Range is backwards
+ */
+ve.Range.prototype.isBackwards = function () {
+	return this.from > this.to;
+};

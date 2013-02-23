@@ -9,22 +9,26 @@ QUnit.module( 've.Range' );
 
 /* Tests */
 
-QUnit.test( 'Basic usage', 8, function ( assert ) {
+QUnit.test( 'Basic usage', 12, function ( assert ) {
 	var range;
 
 	range = new ve.Range( 100 , 200 );
 	assert.equal( range.isCollapsed(), false );
+	assert.equal( range.isBackwards(), false );
 	assert.equal( range.getLength(), 100 );
 
 	range = new ve.Range( 200 , 100 );
 	assert.equal( range.isCollapsed(), false );
+	assert.equal( range.isBackwards(), true );
 	assert.equal( range.getLength(), 100 );
 
 	range = new ve.Range( 100 , 100 );
 	assert.equal( range.isCollapsed(), true );
+	assert.equal( range.isBackwards(), false );
 	assert.equal( range.getLength(), 0 );
 
 	range = new ve.Range( 200 );
 	assert.equal( range.isCollapsed(), true );
+	assert.equal( range.isBackwards(), false );
 	assert.equal( range.getLength(), 0 );
 } );
