@@ -257,6 +257,7 @@ $wgResourceModules += array(
 
 			// ce
 			've/ce/ve.ce.js',
+			've/ce/ve.ce.RangyRange.js',
 			've/ce/ve.ce.NodeFactory.js',
 			've/ce/ve.ce.Document.js',
 			've/ce/ve.ce.Node.js',
