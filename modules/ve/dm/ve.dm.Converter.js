@@ -102,7 +102,7 @@ ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElement
 ve.dm.Converter.prototype.createDataElement = function ( modelClass, domElements, context ) {
 	var i, j, dataElement, dataElementAttributes, domElementAttributes, domElementAttribute;
 	dataElement = modelClass.static.toDataElement( domElements, ve.copyObject( context ) );
-	if ( modelClass.static.storeHTMLAttributes && dataElement ) {
+	if ( modelClass.static.storeHtmlAttributes && dataElement ) {
 		for ( i = 0; i < domElements.length; i++ ) {
 			domElementAttributes = domElements[i].attributes;
 			if ( domElementAttributes && domElementAttributes.length ) {
