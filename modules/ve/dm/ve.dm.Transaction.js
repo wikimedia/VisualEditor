@@ -801,11 +801,17 @@ ve.dm.Transaction.prototype.pushReplace = function ( remove, insert ) {
 		// Don't push no-ops
 		return;
 	}
-	this.operations.push( {
-		'type': 'replace',
-		'remove': remove,
-		'insert': insert
-	} );
+	var end = this.operations.length - 1;
+	if ( this.operations.length && this.operations[end].type === 'replace' ) {
+		this.operations[end].insert = this.operations[end].insert.concat( insert );
+		this.operations[end].remove = this.operations[end].remove.concat( remove );
+	} else {
+		this.operations.push( {
+			'type': 'replace',
+			'remove': remove,
+			'insert': insert
+		} );
+	}
 	this.lengthDifference += insert.length - remove.length;
 };
 

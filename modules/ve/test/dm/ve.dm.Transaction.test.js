@@ -689,11 +689,13 @@ QUnit.test( 'newFromWrap', 8, function ( assert ) {
 			'args': [doc, new ve.Range( 13, 25 ), [ { 'type': 'list' } ], [], [ { 'type': 'listItem' } ], []],
 			'ops': [
 				{ 'type': 'retain', 'length': 12 },
-				{ 'type': 'replace', 'remove': [ { 'type': 'list', 'attributes': { 'style': 'bullet' } } ], 'insert': [] },
-				{ 'type': 'replace', 'remove': [ { 'type': 'listItem' } ], 'insert': [] },
+				{
+					'type': 'replace',
+					'remove': [ { 'type': 'list', 'attributes': { 'style': 'bullet' } }, { 'type': 'listItem' } ],
+					'insert': []
+				},
 				{ 'type': 'retain', 'length': 10 },
-				{ 'type': 'replace', 'remove': [ { 'type': '/listItem' } ], 'insert': [] },
-				{ 'type': 'replace', 'remove': [ { 'type': '/list' } ], 'insert': [] },
+				{ 'type': 'replace', 'remove': [ { 'type': '/listItem' }, { 'type': '/list' } ], 'insert': [] },
 				{ 'type': 'retain', 'length': 35 }
 			]
 		},
@@ -711,28 +713,34 @@ QUnit.test( 'newFromWrap', 8, function ( assert ) {
 			'args': [doc, new ve.Range( 55, 61 ), [], [ { 'type': 'list', 'attributes': { 'style': 'number' } } ], [], [ { 'type': 'listItem' } ]],
 			'ops': [
 				{ 'type': 'retain', 'length': 55 },
-				{ 'type': 'replace', 'remove': [], 'insert': [ { 'type': 'list', 'attributes': { 'style': 'number' } } ] },
-				{ 'type': 'replace', 'remove': [], 'insert': [ { 'type': 'listItem' } ] },
+				{
+					'type': 'replace',
+					'remove': [],
+					'insert': [ { 'type': 'list', 'attributes': { 'style': 'number' } }, { 'type': 'listItem' } ]
+				},
 				{ 'type': 'retain', 'length': 3 },
-				{ 'type': 'replace', 'remove': [], 'insert': [ { 'type': '/listItem' } ] },
-				{ 'type': 'replace', 'remove': [], 'insert': [ { 'type': 'listItem' } ] },
+				{ 'type': 'replace', 'remove': [], 'insert': [ { 'type': '/listItem' }, { 'type': 'listItem' } ] },
 				{ 'type': 'retain', 'length': 3 },
-				{ 'type': 'replace', 'remove': [], 'insert': [ { 'type': '/listItem' } ] },
-				{ 'type': 'replace', 'remove': [], 'insert': [ { 'type': '/list' } ] }
+				{ 'type': 'replace', 'remove': [], 'insert': [ { 'type': '/listItem' }, { 'type': '/list' } ] }
 			]
 		},
 		'wraps two adjacent paragraphs in a definitionList': {
 			'args': [doc, new ve.Range( 55, 61 ), [], [ { 'type': 'definitionList' } ], [], [ { 'type': 'definitionListItem', 'attributes': { 'style': 'term' } } ]],
 			'ops': [
 				{ 'type': 'retain', 'length': 55 },
-				{ 'type': 'replace', 'remove': [], 'insert': [ { 'type': 'definitionList' } ] },
-				{ 'type': 'replace', 'remove': [], 'insert': [ { 'type': 'definitionListItem', 'attributes': { 'style': 'term' } } ] },
+				{
+					'type': 'replace',
+					'remove': [],
+					'insert': [ { 'type': 'definitionList' }, { 'type': 'definitionListItem', 'attributes': { 'style': 'term' } } ]
+				},
 				{ 'type': 'retain', 'length': 3 },
-				{ 'type': 'replace', 'remove': [], 'insert': [ { 'type': '/definitionListItem' } ] },
-				{ 'type': 'replace', 'remove': [], 'insert': [ { 'type': 'definitionListItem', 'attributes': { 'style': 'term' } } ] },
+				{
+					'type': 'replace',
+					'remove': [],
+					'insert': [ { 'type': '/definitionListItem' }, { 'type': 'definitionListItem', 'attributes': { 'style': 'term' } } ]
+				},
 				{ 'type': 'retain', 'length': 3 },
-				{ 'type': 'replace', 'remove': [], 'insert': [ { 'type': '/definitionListItem' } ] },
-				{ 'type': 'replace', 'remove': [], 'insert': [ { 'type': '/definitionList' } ] }
+				{ 'type': 'replace', 'remove': [], 'insert': [ { 'type': '/definitionListItem' }, { 'type': '/definitionList' } ] }
 			]
 		},
 		'checks integrity of unwrapOuter parameter': {
@@ -883,12 +891,7 @@ QUnit.test( 'pushReplace', 16, function ( assert ) {
 				{
 					'type': 'replace',
 					'remove': [],
-					'insert': [{ 'type': 'paragraph' }, 'a', 'b']
-				},
-				{
-					'type': 'replace',
-					'remove': [],
-					'insert': ['c', { 'type': '/paragraph' }]
+					'insert': [{ 'type': 'paragraph' }, 'a', 'b', 'c', { 'type': '/paragraph' }]
 				}
 			],
 			'diff': 5
@@ -925,12 +928,7 @@ QUnit.test( 'pushReplace', 16, function ( assert ) {
 			'ops': [
 				{
 					'type': 'replace',
-					'remove': [{ 'type': 'paragraph' }, 'a', 'b'],
-					'insert': []
-				},
-				{
-					'type': 'replace',
-					'remove': ['c', { 'type': '/paragraph' }],
+					'remove': [{ 'type': 'paragraph' }, 'a', 'b', 'c', { 'type': '/paragraph' }],
 					'insert': []
 				}
 			],
@@ -968,13 +966,8 @@ QUnit.test( 'pushReplace', 16, function ( assert ) {
 			'ops': [
 				{
 					'type': 'replace',
-					'remove': ['a', 'b', 'c'],
-					'insert': ['d', 'e', 'f']
-				},
-				{
-					'type': 'replace',
-					'remove': ['g', 'h', 'i'],
-					'insert': ['j', 'k', 'l']
+					'remove': ['a', 'b', 'c', 'g', 'h', 'i'],
+					'insert': ['d', 'e', 'f', 'j', 'k', 'l']
 				}
 			],
 			'diff': 0
