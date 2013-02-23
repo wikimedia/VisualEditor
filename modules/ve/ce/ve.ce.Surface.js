@@ -1109,16 +1109,6 @@ ve.ce.Surface.prototype.adjustCursor = function ( adjustment ) {
 };
 
 /**
- * Show the cursor at an offset.
- *
- * @method
- * @param {number} offset Offset to show cursor at
- */
-ve.ce.Surface.prototype.showCursor = function ( offset ) {
-	this.showSelection( new ve.Range( offset ) );
-};
-
-/**
  * Show selection on a range.
  *
  * @method
@@ -1139,45 +1129,12 @@ ve.ce.Surface.prototype.showSelection = function ( range ) {
 	if ( !range.isCollapsed() ) {
 		start = this.getNodeAndOffset( range.start );
 		end = this.getNodeAndOffset( range.end );
-
-		if ( false && $.browser.msie ) {
-			if ( range.start === range.from ) {
-				if (
-					start.node === this.poll.rangySelection.anchorNode &&
-					start.offset === this.poll.rangySelection.anchorOffset &&
-					end.node === this.poll.rangySelection.focusNode &&
-					end.offset === this.poll.rangySelection.focusOffset
-				) {
-					return;
-				}
-			} else {
-				if (
-					end.node === this.poll.rangySelection.anchorNode &&
-					end.offset === this.poll.rangySelection.anchorOffset &&
-					start.node === this.poll.rangySelection.focusNode &&
-					start.offset === this.poll.rangySelection.focusOffset
-				) {
-					return;
-				}
-			}
-		}
-
 		rangyRange.setStart( start.node, start.offset );
 		rangyRange.setEnd( end.node, end.offset );
 		rangySel.removeAllRanges();
 		rangySel.addRange( rangyRange, range.start !== range.from );
 	} else {
-		start = end = this.getNodeAndOffset( range.start );
-
-		if ( false && $.browser.msie ) {
-			if (
-				start.node === this.poll.rangySelection.anchorNode &&
-				start.offset === this.poll.rangySelection.anchorOffset
-			) {
-				return;
-			}
-		}
-
+		start = this.getNodeAndOffset( range.start );
 		rangyRange.setStart( start.node, start.offset );
 		rangySel.setSingleRange( rangyRange );
 	}
