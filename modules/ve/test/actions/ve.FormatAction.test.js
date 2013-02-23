@@ -22,6 +22,8 @@ function runConverterTest( assert, range, type, attributes, expectedSelection, e
 
 	assert.deepEqual( surface.getModel().getDocument().getFullData(), data, label + ': data models match' );
 	assert.deepEqual( surface.getModel().getSelection(), expectedSelection, label + ': selections match' );
+
+	surface.destroy();
 }
 
 QUnit.test( 'convert', 12, function ( assert ) {
