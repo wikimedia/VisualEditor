@@ -61,7 +61,6 @@ ve.ce.Surface = function VeCeSurface( $container, model, surface ) {
 
 	// Initialization
 	rangy.init();
-	this.cleanLocalStorage();
 	this.$phantoms.addClass( 've-ce-surface-phantoms' );
 	this.$pasteTarget.addClass( 've-ce-surface-paste' ).prop( 'contenteditable', true );
 	this.$.append( this.documentView.getDocumentNode().$, this.$phantoms, this.$pasteTarget );
@@ -139,37 +138,6 @@ ve.ce.Surface.prototype.disable = function () {
  */
 ve.ce.Surface.prototype.destroy = function () {
 	this.$.remove();
-};
-
-/**
- * Clean copy and paste data that's at least a day old in localStorage.
- *
- * @method
- */
-ve.ce.Surface.prototype.cleanLocalStorage = function () {
-	var i, len, key, time, now,
-		keysToRemove = [];
-
-	for ( i = 0, len = localStorage.length; i < len; i++ ) {
-		key = localStorage.key( i );
-
-		if ( key.indexOf( 've-' ) !== 0 ) {
-			return false;
-		}
-
-		time = JSON.parse( localStorage.getItem( key ) ).time;
-		now = new Date().getTime();
-
-		// Offset: 24 days (in miliseconds)
-		if ( now - time > ( 24 * 3600 * 1000 ) ) {
-			// Don't remove keys while iterating. Store them for later removal.
-			keysToRemove.push( key );
-		}
-	}
-
-	$.each( keysToRemove, function ( i, val ) {
-		localStorage.removeItem( val );
-	} );
 };
 
 /*! Native Browser Events */
@@ -402,19 +370,8 @@ ve.ce.Surface.prototype.onCopy = function () {
 	} );
 	key = 've-' + key.replace( /\s/gm, '' );
 
-	// Set clipboard and localStorage
+	// Set clipboard
 	this.clipboard[key] = slice;
-	try {
-		localStorage.setItem(
-			key,
-			JSON.stringify( {
-				'time': new Date().getTime(),
-				'data': slice
-			} )
-		);
-	} catch ( e ) {
-		// Silently ignore
-	}
 };
 
 /**
@@ -458,16 +415,10 @@ ve.ce.Surface.prototype.onPaste = function ( e ) {
 		} );
 		key = 've-' + key.replace( /\s/gm, '' );
 
-		// Get linear model from clipboard, localStorage or create array from unknown pasted content
+		// Get linear model from clipboard or create array from unknown pasted content
 		if ( view.clipboard[key] ) {
 			pasteData = view.clipboard[key];
-		}
-		/*
-		else if ( localStorage.getItem( key ) ) {
-			pasteData = localStorage.getItem( key ).data;
-		}
-		*/
-		else {
+		} else {
 			pasteText = view.$pasteTarget.text().replace( /\n/gm, '');
 			pasteData = new ve.dm.DocumentSlice( pasteText.split( '' ) );
 		}
