@@ -841,7 +841,7 @@
 	/**
 	 * Create an HTMLDocument from an HTML string
 	 *
-	 * The html parameter is supposed to be a full HTML document with a doctype and an <html> tag.
+	 * The html parameter is supposed to be a full HTML document with a doctype and an `<html>` tag.
 	 * If you pass a document fragment, it may or may not work, this is at the mercy of the browser.
 	 *
 	 * To create an empty document, pass the empty string.

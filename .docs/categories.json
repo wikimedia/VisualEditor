@@ -13,7 +13,7 @@
 		"groups": [
 			{
 				"name": "General",
-				"classes": ["ve.ce", "ve.ce.NodeFactory", "ve.ce.Surface", "ve.ce.SurfaceObserver"]
+				"classes": ["ve.ce", "ve.ce.NodeFactory", "ve.ce.Surface", "ve.ce.SurfaceObserver", "ve.ce.RangyRange"]
 			},
 			{
 				"name": "Nodes",
@@ -113,10 +113,6 @@
 				"classes": ["ve.Trigger", "ve.AnnotationSet", "ve.OrderedHashSet", "ve.Surface"]
 			},
 			{
-				"name": "Native",
-				"classes": ["Array", "Boolean", "Date", "Function", "Number", "Object", "RegExp", "String"]
-			},
-			{
 				"name": "Test",
 				"classes": ["ve.QUnit", "ve.QUnit.assert"]
 			}
@@ -128,6 +124,10 @@
 			{
 				"name": "jQuery",
 				"classes": ["jQuery", "jQuery.Event", "QUnit"]
+			},
+			{
+				"name": "JavaScript",
+				"classes": ["Array", "Boolean", "Date", "Function", "Number", "Object", "RegExp", "String"]
 			}
 		]
 	}

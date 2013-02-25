@@ -10,9 +10,9 @@
  *
  * @class
  * @constructor
- * @param {DOMElement} focusNode Selection focus node
+ * @param {HTMLElement} focusNode Selection focus node
  * @param {number} focusOffset Selection focus offset
- * @param {DOMElement} anchorNode Selection anchor node
+ * @param {HTMLElement} anchorNode Selection anchor node
  * @param {number} anchorOffset Selection anchor offset
  */
 ve.ce.RangyRange = function VeCeRangyRange( focusNode, focusOffset, anchorNode, anchorOffset ) {
