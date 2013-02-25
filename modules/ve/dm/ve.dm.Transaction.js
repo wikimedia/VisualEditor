@@ -684,9 +684,12 @@ ve.dm.Transaction.prototype.toggleApplied = function () {
  *
  * @method
  * @param {number} offset Offset in the linear model before the transaction has been processed
+ * @param {boolean} [reversed] Reverse the translation, i.e. translate based on a rollback
+ * @param {boolean} [excludeInsertion] Map the offset immediately before an insertion to
+ *  right before the insertion rather than right after
  * @returns {number} Translated offset, as it will be after processing transaction
  */
-ve.dm.Transaction.prototype.translateOffset = function ( offset, reversed ) {
+ve.dm.Transaction.prototype.translateOffset = function ( offset, reversed, excludeInsertion ) {
 	var i, op, insertLength, removeLength, prevAdjustment, cursor = 0, adjustment = 0;
 	for ( i = 0; i < this.operations.length; i++ ) {
 		op = this.operations[i];
@@ -696,8 +699,14 @@ ve.dm.Transaction.prototype.translateOffset = function ( offset, reversed ) {
 			prevAdjustment = adjustment;
 			adjustment += insertLength - removeLength;
 			if ( offset === cursor + removeLength ) {
-				// Offset points to right after the removal, translate it
-				return offset + adjustment;
+				// Offset points to right after the removal or right before the insertion
+				if ( excludeInsertion && insertLength > removeLength ) {
+					// Translate it to before the insertion
+					return offset + adjustment - insertLength + removeLength;
+				} else {
+					// Translate it to after the removal/insertion
+					return offset + adjustment;
+				}
 			} else if ( offset === cursor ) {
 				// The offset points to right before the removal or replacement
 				if ( insertLength === 0 ) {
@@ -737,7 +746,14 @@ ve.dm.Transaction.prototype.translateOffset = function ( offset, reversed ) {
  * @returns {ve.Range} Translated range, as it will be after processing transaction
  */
 ve.dm.Transaction.prototype.translateRange = function ( range, reversed ) {
-	return new ve.Range( this.translateOffset( range.from, reversed ), this.translateOffset( range.to, reversed ) );
+	var start = this.translateOffset( range.start, reversed, false ),
+		end = this.translateOffset( range.end, reversed, true );
+	if ( range.start <= range.end && start > end ) {
+		// translateOffset() has mapped end to jump over start
+		// Disable the excludeInsertion behavior in this case
+		end = this.translateOffset( range.end, reversed, false );
+	}
+	return range.isBackwards() ? new ve.Range( end, start ) : new ve.Range( start, end );
 };
 
 /**
