@@ -373,6 +373,7 @@ $messages['bg'] = array(
 
 /** Bengali (বাংলা)
  * @author Bellayet
+ * @author Runab
  */
 $messages['bn'] = array(
 	'visualeditor' => 'ভিজ্যুয়ালএডিটর',
@@ -392,12 +393,12 @@ $messages['bn'] = array(
 	'visualeditor-formatdropdown-format-heading4' => 'শিরনামা ৪',
 	'visualeditor-formatdropdown-format-heading5' => 'শিরনামা ৫',
 	'visualeditor-formatdropdown-format-heading6' => 'শিরনামা ৬',
-	'visualeditor-annotationbutton-bold-tooltip' => 'গাঢ়', # Fuzzy
-	'visualeditor-annotationbutton-italic-tooltip' => 'ইটালিক', # Fuzzy
-	'visualeditor-annotationbutton-link-tooltip' => 'লিংক', # Fuzzy
+	'visualeditor-annotationbutton-bold-tooltip' => 'গাঢ়',
+	'visualeditor-annotationbutton-italic-tooltip' => 'ইটালিক',
+	'visualeditor-annotationbutton-link-tooltip' => 'লিংক',
 	'visualeditor-listbutton-number-tooltip' => 'সংখ্যায়িত তালিকা',
 	'visualeditor-listbutton-bullet-tooltip' => 'বুলেটকৃত তালিকা',
-	'visualeditor-historybutton-undo-tooltip' => 'পূর্বাবস্থায় ফেরাও', # Fuzzy
+	'visualeditor-historybutton-undo-tooltip' => 'পূর্বাবস্থা',
 	'visualeditor-inspector-close-tooltip' => 'বন্ধ',
 	'visualeditor-inspector-remove-tooltip' => 'অপসারণ',
 );
@@ -793,9 +794,10 @@ $messages['et'] = array(
 
 /** Basque (euskara)
  * @author An13sa
+ * @author Xabier Armendaritz
  */
 $messages['eu'] = array(
-	'visualeditor-annotationbutton-bold-tooltip' => 'Beltza',
+	'visualeditor-annotationbutton-bold-tooltip' => 'Lodia',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Etzana',
 	'visualeditor-annotationbutton-link-tooltip' => 'Lotura',
 	'visualeditor-historybutton-undo-tooltip' => 'Desegin',
@@ -1907,6 +1909,7 @@ $messages['ml'] = array(
 	'tag-visualeditor-description' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|കണ്ടുതിരുത്തൽ സൗകര്യമുപയോഗിച്ച്]] നടത്തിയ തിരുത്തൽ',
 	'visualeditor-descriptionpagelink' => 'Project:കണ്ടുതിരുത്തൽ സൗകര്യം',
 	'visualeditor-alphawarning' => 'താങ്കൾ [[{{MediaWiki:Visualeditor-descriptionpagelink}}|കണ്ടുതിരുത്തൽ സൗകര്യത്തിന്റെ]] ആൽഫാ പതിപ്പ് ആണ് ഉപയോഗിക്കുന്നത്. ഇത് താമസമേറിയതും തെറ്റായ മാറ്റങ്ങൾ ഉണ്ടാക്കുന്നതുമാവാം - ദയവായി താങ്കൾ വരുത്തുന്ന ഓരോ മാറ്റങ്ങളും പരിശോധിക്കുക.',
+	'visualeditor-report-notice' => 'ഞാൻ വരുത്തുന്ന മാറ്റങ്ങളും എന്റെ പ്രതികരണവും സമർപ്പിക്കുമ്പോൾ, അവ വിശകലനത്തിനായി സമാഹരിക്കപ്പെടുമെന്ന് ഞാൻ മനസ്സിലാക്കുന്നു. എന്റെ പ്രതികരണം [[{{MediaWiki:Visualeditor-report-link}}|ഉപയോഗനിബന്ധനകൾക്ക്]] അനുസൃതമായിരിക്കും എന്ന് ഞാൻ സമ്മതിക്കുന്നു.',
 	'visualeditor-report-link' => 'foundation:Terms of Use/ml',
 );
 
