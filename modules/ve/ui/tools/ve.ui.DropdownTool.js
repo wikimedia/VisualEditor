@@ -13,30 +13,31 @@
  * @extends ve.ui.Tool
  * @constructor
  * @param {ve.ui.Toolbar} toolbar
- * @param {Object[]} items
+ * @param {Object} [config] Config options
  */
-ve.ui.DropdownTool = function VeUiDropdownTool( toolbar, items ) {
+ve.ui.DropdownTool = function VeUiDropdownTool( toolbar, config ) {
 	// Parent constructor
-	ve.ui.Tool.call( this, toolbar );
+	ve.ui.Tool.call( this, toolbar, config );
 
 	// Properties
-	this.menuView = new ve.ui.MenuWidget( items, ve.bind( this.onMenuItemSelect, this ), null, this.$ );
-	this.$icon = $( '<div class="ve-ui-dropdownTool-icon ve-ui-icon-down"></div>' );
-	this.$label = $( '<div class="ve-ui-dropdownTool-label"></div>' );
-	this.$labelText = $( '<span>&nbsp;</span>' );
+	this.menu = new ve.ui.MenuWidget();
+	this.$icon = this.$$( '<div class="ve-ui-dropdownTool-icon ve-ui-icon-down"></div>' );
+	this.$label = this.$$( '<div class="ve-ui-dropdownTool-label"></div>' );
+	this.$labelText = this.$$( '<span>&nbsp;</span>' );
 
 	// Events
-	$( document )
+	this.$$( document )
 		.add( this.toolbar.getSurface().getView().$ )
 		.mousedown( ve.bind( this.onBlur, this ) );
 	this.$.on( {
-		'mousedown': ve.bind( this.onMousedown, this ),
-		'mouseup': ve.bind( this.onMouseup, this )
+		'mousedown': ve.bind( this.onMouseDown, this ),
+		'mouseup': ve.bind( this.onMouseUp, this )
 	} );
+	this.menu.on( 'select', ve.bind( this.onMenuItemSelect, this ) );
 
 	// Initialization
 	this.$
-		.append( this.$icon, this.$label )
+		.append( this.$icon, this.$label, this.menu.$ )
 		.addClass( 've-ui-dropdownTool ve-ui-dropdownTool-' + this.constructor.static.name )
 		.attr( 'title', ve.msg( this.constructor.static.titleMessage ) );
 	this.$label.append( this.$labelText );
@@ -52,11 +53,10 @@ ve.inheritClass( ve.ui.DropdownTool, ve.ui.Tool );
  * Handle the mouse button being pressed.
  *
  * @method
- * @param {jQuery.Event} e Normalized event
+ * @param {jQuery.Event} e Mouse down event
  */
-ve.ui.DropdownTool.prototype.onMousedown = function ( e ) {
+ve.ui.DropdownTool.prototype.onMouseDown = function ( e ) {
 	if ( e.which === 1 ) {
-		e.preventDefault();
 		return false;
 	}
 };
@@ -65,18 +65,18 @@ ve.ui.DropdownTool.prototype.onMousedown = function ( e ) {
  * Handle the mouse button being released.
  *
  * @method
- * @param {jQuery.Event} e Normalized event
+ * @param {jQuery.Event} e Mouse up event
  */
-ve.ui.DropdownTool.prototype.onMouseup = function ( e ) {
+ve.ui.DropdownTool.prototype.onMouseUp = function ( e ) {
 	if ( e.which === 1 ) {
-		// Don't respond to menu clicks
-		var $item = $( e.target ).closest( '.ve-ui-menuWidget' );
-		if ( e.which === 1 && $item.length === 0 ) {
-			this.menuView.open();
+		// Toggle menu
+		if ( this.menu.isVisible() ) {
+			this.menu.hide();
 		} else {
-			this.menuView.close();
+			this.menu.show();
 		}
 	}
+	return false;
 };
 
 /**
@@ -86,11 +86,11 @@ ve.ui.DropdownTool.prototype.onMouseup = function ( e ) {
  * a normal blur event object.
  *
  * @method
- * @param {jQuery.Event} e Normalized event
+ * @param {jQuery.Event} e Mouse down event
  */
 ve.ui.DropdownTool.prototype.onBlur = function ( e ) {
 	if ( e.which === 1 ) {
-		this.menuView.close();
+		this.menu.hide();
 	}
 };
 
@@ -101,11 +101,11 @@ ve.ui.DropdownTool.prototype.onBlur = function ( e ) {
  * to the onSelect method.
  *
  * @method
- * @param {Object} item Menu item
+ * @param {ve.ui.MenuItemWidget|null} item Selected menu item, null if none is selected
  */
 ve.ui.DropdownTool.prototype.onMenuItemSelect = function ( item ) {
 	if ( this.toolbar.getSurface().isEnabled() ) {
-		this.setLabel( item.label );
+		this.setLabel( item && item.label );
 		this.onSelect( item );
 	}
 };
@@ -117,7 +117,7 @@ ve.ui.DropdownTool.prototype.onMenuItemSelect = function ( item ) {
  *
  * @abstract
  * @method
- * @param {Object} item Menu item
+ * @param {ve.ui.MenuItemWidget} item Menu item
  */
 ve.ui.DropdownTool.prototype.onSelect = function () {
 	throw new Error(
@@ -140,7 +140,8 @@ ve.ui.DropdownTool.prototype.onClearState = function () {
  * If the label value is empty, undefined or only contains whitespace an empty label will be used.
  *
  * @method
- * @param {jQuery|string} [value] jQuery HTML node selection or string text value to use for label
+ * @param {jQuery|string} [value] Label text
+ * @chainable
  */
 ve.ui.DropdownTool.prototype.setLabel = function ( value ) {
 	if ( typeof value === 'string' && value.length && /[^\s]*/.test( value ) ) {
@@ -150,4 +151,5 @@ ve.ui.DropdownTool.prototype.setLabel = function ( value ) {
 	} else {
 		this.$labelText.html( '&nbsp;' );
 	}
+	return this;
 };

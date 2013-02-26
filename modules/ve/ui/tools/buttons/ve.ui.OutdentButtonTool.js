@@ -12,10 +12,11 @@
  * @extends ve.ui.IndentationButtonTool
  * @constructor
  * @param {ve.ui.Toolbar} toolbar
+ * @param {Object} [config] Config options
  */
-ve.ui.OutdentButtonTool = function VeUiOutdentButtonTool( toolbar ) {
+ve.ui.OutdentButtonTool = function VeUiOutdentButtonTool( toolbar, config ) {
 	// Parent constructor
-	ve.ui.IndentationButtonTool.call( this, toolbar );
+	ve.ui.IndentationButtonTool.call( this, toolbar, config );
 };
 
 /* Inheritance */

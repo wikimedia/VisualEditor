@@ -14,3 +14,15 @@ ve.ui = {
 	//'inspectorFactory': Initialized in ve.ui.InspectorFactory.js
 	//'toolFactory': Initialized in ve.ui.ToolFactory.js
 };
+
+/**
+ * Gets a jQuery function within a specific document.
+ *
+ * @param {jQuery|HTMLDocument} context Context to bind the function to
+ * @returns {Function} Bound jQuery function
+ */
+ve.ui.get$$ = function ( context ) {
+	return function ( selector ) {
+		return $( selector, context instanceof jQuery ? context.context : context );
+	};
+};

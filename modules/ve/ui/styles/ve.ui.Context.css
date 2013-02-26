@@ -46,25 +46,7 @@
 	border: none;
 }
 
-.ve-ui-context-toolbar .ve-ui-buttonTool {
-	padding: 0.25em;
-	height: 1.25em;
-	width: 1.25em;
-	margin: 0.05em;
-	border: none;
-}
-
-.ve-ui-context-toolbar .ve-ui-buttonTool:before {
-	content: " ";
-	position: absolute;
-	display: block;
-	height: 1.25em;
-	width: 1.25em;
-	background-position: center center;
-	background-repeat: no-repeat;
-	border: none;
-}
-
+.ve-ui-context-toolbar .ve-ui-buttonTool,
 .ve-ui-context-toolbar .ve-ui-buttonTool:hover {
 	border: none;
 }

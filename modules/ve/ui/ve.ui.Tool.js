@@ -8,38 +8,39 @@
 /**
  * UserInterface tool.
  *
+ * @class
  * @abstract
+ * @extends ve.ui.Widget
+ *
  * @constructor
  * @param {ve.ui.Toolbar} toolbar
+ * @param {Object} [config] Config options
  */
-ve.ui.Tool = function VeUiTool( toolbar ) {
-	var tool = this;
+ve.ui.Tool = function VeUiTool( toolbar, config ) {
+	// Parent constructor
+	ve.ui.Widget.call( this, config );
+
 	// Properties
 	this.toolbar = toolbar;
-	this.$ = $( '<div class="ve-ui-tool"></div>' );
 
 	// Events
 	this.toolbar.addListenerMethods(
 		this, { 'updateState': 'onUpdateState', 'clearState': 'onClearState' }
 	);
-	ve.triggerRegistry.on( 'register', function ( name ) {
-		if ( name === tool.constructor.static.name ) {
-			tool.setTitle();
-		}
-	} );
+	ve.triggerRegistry.addListenerMethods(
+		this, { 'register': 'onTriggerRegistryRegister' }
+	);
 
 	// Initialization
 	this.setTitle();
+	this.$.addClass( 've-ui-Tool' );
 };
 
-/* Static Properties */
+/* Inheritance */
 
-/**
- * @static
- * @property
- * @inheritable
- */
-ve.ui.Tool.static = {};
+ve.inheritClass( ve.ui.Tool, ve.ui.Widget );
+
+/* Static Properties */
 
 /**
  * Symbolic name of tool.
@@ -64,21 +65,17 @@ ve.ui.Tool.static.titleMessage = '';
 /* Methods */
 
 /**
- * Sets the tool title attribute in the dom.
+ * Handle trigger registry register events.
  *
- * Combines trigger i18n with tooltip message if trigger exists.
- * Otherwise defaults to titleMessage value.
+ * If a trigger is registered after the tool is loaded, this handler will ensure the tool's title is
+ * updated to reflect the available key command for the tool.
  *
- * @abstract
- * @method
+ * @param {string} name Symbolic name of trigger
  */
-ve.ui.Tool.prototype.setTitle = function () {
-	var trigger = ve.triggerRegistry.lookup( this.constructor.static.name ),
-		labelMessage = ve.msg( this.constructor.static.titleMessage );
-	if ( trigger ) {
-		labelMessage += ' [' + trigger.getMessage() + ']';
+ve.ui.Tool.prototype.onTriggerRegistryRegister = function ( name ) {
+	if ( name === this.constructor.static.name ) {
+		this.setTitle();
 	}
-	this.$.attr( 'title', labelMessage );
 };
 
 /**
@@ -107,4 +104,24 @@ ve.ui.Tool.prototype.onClearState = function () {
 	throw new Error(
 		've.ui.Tool.onClearState not implemented in this subclass:' + this.constructor
 	);
+};
+
+/**
+ * Sets the tool title attribute in the dom.
+ *
+ * Combines trigger i18n with tooltip message if trigger exists.
+ * Otherwise defaults to titleMessage value.
+ *
+ * @abstract
+ * @method
+ * @chainable
+ */
+ve.ui.Tool.prototype.setTitle = function () {
+	var trigger = ve.triggerRegistry.lookup( this.constructor.static.name ),
+		labelMessage = ve.msg( this.constructor.static.titleMessage );
+	if ( trigger ) {
+		labelMessage += ' [' + trigger.getMessage() + ']';
+	}
+	this.$.attr( 'title', labelMessage );
+	return this;
 };

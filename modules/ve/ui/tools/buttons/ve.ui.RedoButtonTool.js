@@ -12,10 +12,11 @@
  * @extends ve.ui.ButtonTool
  * @constructor
  * @param {ve.ui.Toolbar} toolbar
+ * @param {Object} [config] Config options
  */
-ve.ui.RedoButtonTool = function VeUiRedoButtonTool( toolbar ) {
+ve.ui.RedoButtonTool = function VeUiRedoButtonTool( toolbar, config ) {
 	// Parent constructor
-	ve.ui.ButtonTool.call( this, toolbar );
+	ve.ui.ButtonTool.call( this, toolbar, config );
 
 	// Events
 	this.toolbar.getSurface().getModel().addListenerMethod( this, 'history', 'onUpdateState' );

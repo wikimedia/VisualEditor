@@ -8,15 +8,17 @@
 /**
  * UserInterface annotation button tool.
  *
- * @abstract
  * @class
+ * @abstract
  * @extends ve.ui.ButtonTool
+ *
  * @constructor
  * @param {ve.ui.Toolbar} toolbar
+ * @param {Object} [config] Config options
  */
-ve.ui.AnnotationButtonTool = function VeUiAnnotationButtonTool( toolbar ) {
+ve.ui.AnnotationButtonTool = function VeUiAnnotationButtonTool( toolbar, config ) {
 	// Parent constructor
-	ve.ui.ButtonTool.call( this, toolbar );
+	ve.ui.ButtonTool.call( this, toolbar, config );
 };
 
 /* Inheritance */
@@ -32,6 +34,7 @@ ve.inheritClass( ve.ui.AnnotationButtonTool, ve.ui.ButtonTool );
  * @static
  * @property
  * @type {Object}
+ * @inheritable
  */
 ve.ui.AnnotationButtonTool.static.annotation = { 'name': '' };
 

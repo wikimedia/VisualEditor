@@ -1,5 +1,5 @@
 /*!
- * VisualEditor user interface ButtonWidget class.
+ * VisualEditor UserInterface ButtonWidget class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -8,45 +8,47 @@
 /**
  * Creates an ve.ui.ButtonWidget object.
  *
- * CSS classes will be added to the button for each flag, each prefixed with 've-ui-buttonWidget-'
- *
- * @abstract
  * @class
- * @constructor
  * @extends ve.ui.Widget
- * @param {Function} $$ jQuery for the frame the widget is in
- * @param {string} label Button label
- * @param {string[]} [flags] List of styling flags, e.g. 'primary', 'destructive' or 'constructive'
+ * @mixins ve.ui.FlaggableWidget
+ * @mixins ve.ui.LabeledWidget
+ *
+ * @constructor
+ * @param {Object} [config] Config options
  */
-ve.ui.ButtonWidget = function VeUiButtonWidget( $$, label, flags ) {
+ve.ui.ButtonWidget = function VeUiButtonWidget( config ) {
 	// Parent constructor
-	ve.ui.Widget.call( this, $$, $( '<a>' ) );
+	ve.ui.Widget.call( this, config );
 
-	// Properties
-	this.$label = this.$$( '<span>' );
+	// Mixin constructors
+	ve.ui.FlaggableWidget.call( this, config );
+	ve.ui.LabeledWidget.call( this, this.$$( '<span>' ), config );
 
 	// Events
 	this.$.on( 'click', ve.bind( this.onClick, this ) );
 
 	// Initialization
-	this.$label
-		.addClass( 've-ui-buttonWidget-label' )
-		.text( label );
-	this.$
-		.addClass( 've-ui-buttonWidget' )
-		.append( this.$label );
-	if ( ve.isArray( flags ) ) {
-		this.$.addClass( 've-ui-buttonWidget-' + flags.join( ' ve-ui-buttonWidget-' ) );
-	}
+	this.$label.addClass( 've-ui-buttonWidget-label' );
+	this.$.addClass( 've-ui-buttonWidget' ).append( this.$label );
 };
 
 /* Inheritance */
 
 ve.inheritClass( ve.ui.ButtonWidget, ve.ui.Widget );
 
+ve.mixinClass( ve.ui.ButtonWidget, ve.ui.FlaggableWidget );
+
+ve.mixinClass( ve.ui.ButtonWidget, ve.ui.LabeledWidget );
+
+/* Events */
+
 /**
  * @event click
  */
+
+/* Static Properties */
+
+ve.ui.ButtonWidget.static.tagName = 'div';
 
 /* Methods */
 
@@ -54,12 +56,11 @@ ve.inheritClass( ve.ui.ButtonWidget, ve.ui.Widget );
  * Handles mouse click events.
  *
  * @method
- * @param {jQuery.Event} e Event
+ * @param {jQuery.Event} e Mouse click event
  */
-ve.ui.ButtonWidget.prototype.onClick = function ( e ) {
+ve.ui.ButtonWidget.prototype.onClick = function () {
 	if ( !this.disabled ) {
 		this.emit( 'click' );
 	}
-	e.preventDefault();
 	return false;
 };

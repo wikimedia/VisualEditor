@@ -1,5 +1,5 @@
 /*!
- * VisualEditor user interface MWLinkTargetInputWidget class.
+ * VisualEditor UserInterface MWLinkTargetInputWidget class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -11,19 +11,24 @@
  * Creates an ve.ui.MWLinkTargetInputWidget object.
  *
  * @class
- * @constructor
  * @extends ve.ui.LinkTargetInputWidget
- * @param {Function} $$ jQuery for the frame the widget is in
- * @param {jQuery} $overlay DOM element to add menu to
- * @param {string} [name] Input name, used by HTML forms
- * @param {string} [value] Input value
+ *
+ * @constructor
+ * @param {Object} [config] Config options
+ * @cfg {jQuery} [$overlay] Element to append menu to
  */
-ve.ui.MWLinkTargetInputWidget = function VeUiMWLinkTargetInputWidget( $$, $overlay, name, value ) {
+ve.ui.MWLinkTargetInputWidget = function VeUiMWLinkTargetInputWidget( config ) {
+	// Config intialization
+	config = config || {};
+
 	// Parent constructor
-	ve.ui.LinkTargetInputWidget.call( this, $$, name, value );
+	ve.ui.LinkTargetInputWidget.call( this, config );
 
 	// Properties
-	this.menu = new ve.ui.TextInputMenuWidget( $, $overlay );
+	this.menu = new ve.ui.TextInputMenuWidget(
+		this,
+		{ '$$': ve.ui.get$$( config.$overlay ), '$overlay': config.$overlay, '$input': this.$input }
+	);
 	this.annotation = null;
 	this.existingPages = {};
 	this.matchingPages = {};
@@ -36,13 +41,14 @@ ve.ui.MWLinkTargetInputWidget = function VeUiMWLinkTargetInputWidget( $$, $overl
 	this.$input.on( {
 		'click': ve.bind( this.onClick, this ),
 		'focus': ve.bind( this.onFocus, this ),
-		'blur': ve.bind( this.onBlur, this ),
-		'keydown': ve.bind( this.onKeyDown, this )
+		'blur': ve.bind( this.onBlur, this )
 	} );
 	this.menu.on( 'select', ve.bind( this.onMenuItemSelect, this ) );
+	this.on( 'change', ve.bind( this.onChange, this ) );
 
 	// Initialization
 	this.$.addClass( 've-ui-mwLinkTargetInputWidget' );
+	this.menu.$.addClass( 've-ui-mwLinkTargetInputWidget-menu' );
 };
 
 /* Inheritance */
@@ -52,25 +58,10 @@ ve.inheritClass( ve.ui.MWLinkTargetInputWidget, ve.ui.LinkTargetInputWidget );
 /* Methods */
 
 /**
- * Handles change events.
- *
- * @method
- * @param {string} value New value
- * @param {string} origin Cause of event
- */
-ve.ui.MWLinkTargetInputWidget.prototype.onChange = function ( value, origin ) {
-	if ( origin !== 'annotation' ) {
-		this.annotation = null;
-		this.setValue( value );
-		this.openMenu();
-	}
-};
-
-/**
  * Handles click events.
  *
  * @method
- * @param {jQuery.Event} e Event
+ * @param {jQuery.Event} e Mouse click event
  */
 ve.ui.MWLinkTargetInputWidget.prototype.onClick = function () {
 	if ( !this.disabled ) {
@@ -82,7 +73,7 @@ ve.ui.MWLinkTargetInputWidget.prototype.onClick = function () {
  * Handles focus events.
  *
  * @method
- * @param {jQuery.Event} e Event
+ * @param {jQuery.Event} e Input focus event
  */
 ve.ui.MWLinkTargetInputWidget.prototype.onFocus = function () {
 	if ( !this.disabled ) {
@@ -94,135 +85,157 @@ ve.ui.MWLinkTargetInputWidget.prototype.onFocus = function () {
  * Handles blur events.
  *
  * @method
- * @param {jQuery.Event} e Event
+ * @param {jQuery.Event} e Input blur
  */
 ve.ui.MWLinkTargetInputWidget.prototype.onBlur = function () {
 	this.menu.hide();
 };
 
 /**
- * Handles key down events.
+ * Handles change events.
  *
  * @method
- * @param {jQuery.Event} e Event
+ * @param {ve.ui.MenuItemWidget} item Menu item
  */
-ve.ui.MWLinkTargetInputWidget.prototype.onKeyDown = function ( e ) {
-	var handled = false;
-
-	if ( !this.disabled ) {
-		switch ( e.keyCode ) {
-			// Up arrow
-			case 38:
-				this.menu.selectRelativeItem( -1 );
-				handled = true;
-				break;
-			// Down arrow
-			case 40:
-				this.menu.selectRelativeItem( 1 );
-				handled = true;
-				break;
-		}
-		if ( handled ) {
-			e.preventDefault();
-		}
+ve.ui.MWLinkTargetInputWidget.prototype.onMenuItemSelect = function ( item ) {
+	if ( item ) {
+		this.setAnnotation( item.getData() );
 	}
 };
 
 /**
- * Handles change events.
+ * Set the value of the input.
+ *
+ * Overrides setValue to keep annotations in sync.
  *
  * @method
- * @param {ve.dm.LinkAnnotation} annotation Link annotation
+ * @param {string} value New value
  */
-ve.ui.MWLinkTargetInputWidget.prototype.onMenuItemSelect = function ( annotation ) {
-	this.setAnnotation( annotation );
+ve.ui.MWLinkTargetInputWidget.prototype.onChange = function () {
+	this.openMenu();
+};
+
+/**
+ * Set the value of the input.
+ *
+ * Overrides setValue to keep annotations in sync.
+ *
+ * @method
+ * @param {string} value New value
+ */
+ve.ui.MWLinkTargetInputWidget.prototype.setValue = function ( value ) {
+	// Keep annotation in sync with value
+	value = this.sanitizeValue( value );
+
+	// Call parent method
+	ve.ui.TextInputWidget.prototype.setValue.call( this, value );
 };
 
 /**
  * Opens the menu.
  *
  * @method
+ * @chainable
  */
 ve.ui.MWLinkTargetInputWidget.prototype.openMenu = function () {
 	this.populateMenu();
 	this.queryPageExistence();
 	this.queryMatchingPages();
-	if ( !this.menu.isVisible() ) {
+	if ( this.value.length && !this.menu.isVisible() ) {
 		this.menu.show();
-		this.menu.setPosition( this.$input );
 	}
+	return this;
 };
 
 /**
  * Populates the menu.
  *
  * @method
+ * @chainable
  */
 ve.ui.MWLinkTargetInputWidget.prototype.populateMenu = function () {
 	var i, len,
+		items = [],
 		externalLink = this.getExternalLinkAnnotationFromUrl( this.value ),
 		internalLink = this.getInternalLinkAnnotationFromTitle( this.value ),
 		pageExists = this.existingPages[this.value],
 		matchingPages = this.matchingPages[this.value];
 
-	this.menu.clearItems();
+	// Reset items and groups
+	this.menu.clearGroups();
+	this.menu.addGroups( {
+		'externalLink': 'External link',
+		'newPage': 'New page',
+		'existingPage': 'Existing page',
+		'matchingPage': 'Matching page'
+	} );
 
 	// Hide on empty target
 	if ( !this.value.length ) {
 		this.menu.hide();
-		return;
+		return this;
 	}
 
 	// External links
-	this.menu.addGroup( 'externalLink', 'External link' );
 	if ( ve.init.platform.getExternalLinkUrlProtocolsRegExp().test( this.value ) ) {
-		this.menu.addItem( 'externalLink', this.value, externalLink );
+		items.push(
+			new ve.ui.MenuItemWidget( this.value, externalLink, { 'group': 'externalLink' } )
+		);
 	}
 
 	// Internal links
-	this.menu.addGroup( 'newPage', 'New page' );
-	this.menu.addGroup( 'existingPage', 'Existing page' );
-	this.menu.addGroup( 'matchingPage', 'Matching page' );
 	if ( !pageExists && ( !matchingPages || matchingPages.indexOf( this.value ) === -1 ) ) {
-		this.menu.addItem( 'newPage', this.value, internalLink );
+		items.push( new ve.ui.MenuItemWidget( this.value, internalLink, { 'group': 'newPage' } ) );
 	}
 	if ( matchingPages ) {
 		for ( i = 0, len = matchingPages.length; i < len; i++ ) {
 			internalLink = new ve.dm.MWInternalLinkAnnotation( { 'title': matchingPages[i] } );
-			this.menu.addItem(
-				this.value === matchingPages[i] ? 'existingPage' : 'matchingPage',
-				matchingPages[i],
-				internalLink
+			items.push(
+				new ve.ui.MenuItemWidget(
+					matchingPages[i],
+					internalLink,
+					{ 'group': this.value === matchingPages[i] ? 'existingPage' : 'matchingPage' }
+				)
 			);
 		}
 		this.previousMatches = matchingPages;
 	}
 
+	// Add items
+	this.menu.addItems( items );
+
 	// Auto-select
-	this.menu.selectItemByData( this.annotation );
+	this.menu.selectItem( this.menu.getItemFromData( this.annotation ), true );
 	if ( !this.menu.getSelectedItem() ) {
-		this.menu.selectItemByIndex( 0 );
+		this.menu.selectItem( this.menu.getItemFromIndex( 0 ), true );
+		this.annotation = null;
 	}
+
+	return this;
 };
 
 /**
  * Signals that an response is pending.
  *
  * @method
+ * @chainable
  */
 ve.ui.MWLinkTargetInputWidget.prototype.pushPending = function () {
 	this.pending++;
 	this.$.addClass( 've-ui-mwLinkTargetInputWidget-pending' );
+	return this;
 };
 
 /**
  * Signals that an response is complete.
  *
  * @method
+ * @chainable
  */
 ve.ui.MWLinkTargetInputWidget.prototype.popPending = function () {
 	this.pending--;
 	this.$.removeClass( 've-ui-mwLinkTargetInputWidget-pending' );
+	return this;
 };
 
 /**
@@ -280,6 +293,7 @@ ve.ui.MWLinkTargetInputWidget.prototype.getTargetFromAnnotation = function ( ann
  * been cached, or as soon as the API returns a result.
  *
  * @method
+ * @chainable
  */
 ve.ui.MWLinkTargetInputWidget.prototype.queryPageExistence = function () {
 	if ( this.existingPagesRequest ) {
@@ -319,6 +333,7 @@ ve.ui.MWLinkTargetInputWidget.prototype.queryPageExistence = function () {
 			}, this )
 		} );
 	}
+	return this;
 };
 
 /**
@@ -328,6 +343,7 @@ ve.ui.MWLinkTargetInputWidget.prototype.queryPageExistence = function () {
  * been cached, or as soon as the API returns a result.
  *
  * @method
+ * @chainable
  */
 ve.ui.MWLinkTargetInputWidget.prototype.queryMatchingPages = function () {
 	if ( this.matchingPagesRequest ) {
@@ -361,4 +377,5 @@ ve.ui.MWLinkTargetInputWidget.prototype.queryMatchingPages = function () {
 			}, this )
 		} );
 	}
+	return this;
 };
