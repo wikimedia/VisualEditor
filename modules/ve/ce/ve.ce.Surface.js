@@ -774,6 +774,9 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 				documentModel, contentBranchModel.getOuterRange().to, emptyParagraph
 			);
 		}
+	} else if ( e.shiftKey && contentBranchModel.hasSignificantWhitespace() ) {
+		// Insert newline
+		tx = ve.dm.Transaction.newFromInsertion( documentModel, selection.from, '\n' );
 	} else {
 		// Split
 		node.traverseUpstream( function ( node ) {
