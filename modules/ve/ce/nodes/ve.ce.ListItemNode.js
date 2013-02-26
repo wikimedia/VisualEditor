@@ -24,7 +24,7 @@ ve.inheritClass( ve.ce.ListItemNode, ve.ce.BranchNode );
 
 /* Static Properties */
 
-ve.ce.ListItemNode.canBeSplit = true;
+ve.ce.ListItemNode.static.canBeSplit = true;
 
 /* Registration */
 
