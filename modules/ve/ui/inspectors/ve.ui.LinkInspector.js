@@ -95,7 +95,7 @@ ve.ui.LinkInspector.prototype.onOpen = function () {
 	// Set focus on the location input
 	setTimeout( ve.bind( function () {
 		this.targetInput.$.focus().select();
-	}, this ), 0 );
+	}, this ) );
 };
 
 /**

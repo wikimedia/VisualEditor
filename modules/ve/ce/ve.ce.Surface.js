@@ -310,7 +310,7 @@ ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
 	this.handleInsertion();
 	setTimeout( ve.bind( function () {
 		this.surfaceObserver.start();
-	}, this ), 0 );
+	}, this ) );
 };
 
 /**
@@ -349,7 +349,7 @@ ve.ce.Surface.prototype.onCut = function ( e ) {
 		this.model.change( tx, new ve.Range( selection.start ) );
 		this.surfaceObserver.clear();
 		this.surfaceObserver.start();
-	}, this ), 1 );
+	}, this ) );
 };
 
 /**
@@ -446,7 +446,7 @@ ve.ce.Surface.prototype.onPaste = function ( e ) {
 
 		// Allow pasting again
 		view.pasting = false;
-	}, 0 );
+	} );
 };
 
 /**
