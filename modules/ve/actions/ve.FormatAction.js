@@ -111,27 +111,15 @@ ve.FormatAction.splitAndUnwrap = function ( model, list, firstItem, lastItem, se
 	var doc = model.getDocument(),
 		start = firstItem.getOuterRange().start,
 		end = lastItem.getOuterRange().end,
+		fragment = new ve.dm.SurfaceFragment( model, new ve.Range( start, end ), true ),
+		fragmentForSelection = new ve.dm.SurfaceFragment( model, selection, true ),
 		tx;
-	// First split the list before, if needed
-	if ( list.indexOf( firstItem ) > 0 ) {
-		tx = ve.dm.Transaction.newFromInsertion(
-			doc, start, [{ 'type': '/list' }, list.getClonedElement()]
-		);
-		start += 2;
-		end += 2;
-		selection = tx.translateRange( selection );
-		model.change( tx, selection );
-	}
-	// Split the list after, if needed
-	if ( list.indexOf( lastItem ) < list.getChildren().length - 1 ) {
-		tx = ve.dm.Transaction.newFromInsertion(
-			doc, end, [{ 'type': '/list' }, list.getClonedElement()]
-		);
-		selection = tx.translateRange( selection );
-		model.change( tx, selection );
-	}
+
+	fragment.isolate();
+	selection = fragmentForSelection.getRange();
+
 	// Unwrap the list
-	tx = ve.dm.Transaction.newFromWrap( doc, new ve.Range( start, end ),
+	tx = ve.dm.Transaction.newFromWrap( doc, fragment.getRange(),
 		[{ 'type': 'list' }], [], [{ 'type': 'listItem' }], []
 	);
 	selection = tx.translateRange( selection );
