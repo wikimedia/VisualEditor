@@ -1015,7 +1015,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSaveDialog = function () {
 							$editSummaryCount.text(
 								viewPage.editSummaryByteLimit - $.byteLength( $textarea.val() )
 							);
-						}, 0 );
+						} );
 					}
 				} )
 				.end()
@@ -1706,7 +1706,7 @@ ve.init.mw.ViewPageTarget.prototype.onBeforeUnload = function () {
 		// ...but if the user chooses not to leave the page, we need to rebind it
 		setTimeout( function () {
 			window.onbeforeunload = proxiedOnBeforeUnload;
-		}, 1 );
+		} );
 		return message;
 	}
 };

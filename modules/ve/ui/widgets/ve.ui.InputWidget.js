@@ -61,7 +61,7 @@ ve.ui.InputWidget.prototype.onInputChange = function () {
 		// Allow the stack to clear so the value will be updated
 		setTimeout( ve.bind( function () {
 			this.setValue( this.$input.val() );
-		}, this ), 0 );
+		}, this ) );
 	}
 };
 
