@@ -225,22 +225,21 @@ $html = file_get_contents( $page );
 
 		<div class="ve-demo-utilities">
 			<p>
-				<div class="ve-demo-utilities-range"></div>
-			</p>
-			<p>
 				<div class="ve-demo-utilities-commands"></div>
 			</p>
-			<table id="ve-dump" border="1" width="100%" style="display: none;">
-				<tr>
-					<td>Linear model</td>
-					<td>View tree</td>
-					<td>Model tree</td>
-				</tr>
-				<tr>
-					<td width="30%" id="ve-linear-model-dump"></td>
-					<td id="ve-view-tree-dump" style="vertical-align: top;"></td>
-					<td id="ve-model-tree-dump" style="vertical-align: top;"></td>
-				</tr>
+			<table id="ve-dump" class="ve-demo-dump">
+				<thead>
+					<th>Linear model</th>
+					<th>View tree</th>
+					<th>Model tree</th>
+				</thead>
+				<tbody>
+					<tr>
+						<td width="30%" id="ve-linear-model-dump"></td>
+						<td id="ve-view-tree-dump" style="vertical-align: top;"></td>
+						<td id="ve-model-tree-dump" style="vertical-align: top;"></td>
+					</tr>
+				</tbody>
 			</table>
 		</div>
 
@@ -248,36 +247,45 @@ $html = file_get_contents( $page );
 		$( function () {
 
 			// Widgets
-			var startInput = new ve.ui.TextInputWidget( $, 've-debug-start' ),
-				endInput = new ve.ui.TextInputWidget( $, 've-debug-end' ),
-				startLabel = new ve.ui.InputLabelWidget( $, 'Start', startInput ),
-				endLabel = new ve.ui.InputLabelWidget( $, 'End', endInput ),
-				getRangeButton = new ve.ui.ButtonWidget( $, 'Get range from the editor' ),
-				dumpDataButton = new ve.ui.ButtonWidget( $, 'Dump data to the console' ),
-				dumpAllButton = new ve.ui.ButtonWidget( $, 'Dump all data' ),
-				validateButton = new ve.ui.ButtonWidget( $, 'Validate (DOM Data vs. Model Data)' );
+			var startTextInput = new ve.ui.TextInputWidget( $, 've-debug-start' ),
+				endTextInput = new ve.ui.TextInputWidget( $, 've-debug-end' ),
+				startLabel = new ve.ui.InputLabelWidget( $, 'Start', startTextInput ),
+				endLabel = new ve.ui.InputLabelWidget( $, 'End', endTextInput ),
+				getRangeButton = new ve.ui.ButtonWidget( $, 'Get selected range' ),
+				logRangeButton = new ve.ui.ButtonWidget( $, 'Log to console' ),
+				dumpModelButton = new ve.ui.ButtonWidget( $, 'Dump model' ),
+				validateButton = new ve.ui.ButtonWidget( $, 'Validate view and model' );
 
-			// Attach to DOM
-			$( '.ve-demo-utilities-range' ).append(
-				startLabel.$, startInput.$, endLabel.$, endInput.$
-			);
+			// Initialization
+			logRangeButton.setDisabled( true );
+			startTextInput.setReadOnly( true );
+			endTextInput.setReadOnly( true );
 			$( '.ve-demo-utilities-commands' ).append(
-				getRangeButton.$, dumpDataButton.$, dumpAllButton.$, validateButton.$
+				getRangeButton.$,
+				startLabel.$,
+				startTextInput.$,
+				endLabel.$,
+				endTextInput.$,
+				logRangeButton.$,
+				$( '<span class="ve-demo-utilities-commands-divider">&nbsp;</span>' ),
+				dumpModelButton.$,
+				validateButton.$
 			);
 
 			// Events
 			getRangeButton.on( 'click', function () {
 				var range = ve.instances[0].view.model.getSelection();
-				startInput.setValue( range.start );
-				endInput.setValue( range.end );
+				startTextInput.setValue( range.start );
+				endTextInput.setValue( range.end );
+				logRangeButton.setDisabled( false );
 			} );
-			dumpDataButton.on( 'click', function () {
-				var	start = startInput.getValue(),
-					end = endInput.getValue();
+			logRangeButton.on( 'click', function () {
+				var	start = startTextInput.getValue(),
+					end = endTextInput.getValue();
 				// TODO: Validate input
 				console.dir( ve.instances[0].view.documentView.model.data.slice( start, end ) );
 			} );
-			dumpAllButton.on( 'click', function () {
+			dumpModelButton.on( 'click', function () {
 				// linear model dump
 				var $ol = $('<ol start="0"></ol>'),
 					$li,
@@ -287,26 +295,34 @@ $html = file_get_contents( $page );
 
 				for ( var i = 0; i < ve.instances[0].documentModel.data.length; i++ ) {
 					$li = $('<li>');
+					$label = $( '<span>' );
 					element = ve.instances[0].documentModel.data[i];
 					if ( element.type ) {
+						$label.addClass( 've-demo-dump-element' );
 						text = element.type;
 						annotations = element.annotations;
 					} else if ( element.length > 1 ){
+						$label.addClass( 've-demo-dump-achar' );
 						text = element[0];
 						annotations = element[1];
 					} else {
+						$label.addClass( 've-demo-dump-char' );
 						text = element;
 						annotations = undefined;
 					}
+					$label.html( ( text.match( /\S/ ) ? text : '&nbsp;' ) + ' ' );
 					if ( annotations ) {
-						text += ' [' + annotations.get().map(
-							function( ann ) {
-								return ann.name;
-							} ).join(', ') + ']';
+						$label.append(
+							$( '<span>' ).text(
+								'[' + annotations.get().map( function( ann ) {
+									return ann.name;
+								} ).join(', ') + ']'
+							)
+						);
 					}
 
-					$li.text( text );
-					$ol.append($li);
+					$li.append( $label );
+					$ol.append( $li );
 				}
 				$('#ve-linear-model-dump').html($ol);
 
@@ -316,13 +332,17 @@ $html = file_get_contents( $page );
 						$li;
 					for( var i = 0; i < obj.children.length; i++ ) {
 						$li = $('<li>');
+						$label = $( '<span>' ).addClass( 've-demo-dump-element' );
 						if ( obj.children[i].length !== undefined ) {
-							$li.text(
-								obj.children[i].type + ' (' +
-								obj.children[i].length + ')'
+							$li.append(
+								$label
+									.text( obj.children[i].type )
+									.append(
+										$( '<span>' ).text( ' (' + obj.children[i].length + ')' )
+									)
 							);
 						} else {
-							$li.text( obj.children[i].type );
+							$li.append( $label.text( obj.children[i].type ) );
 						}
 
 						if ( obj.children[i].children ) {

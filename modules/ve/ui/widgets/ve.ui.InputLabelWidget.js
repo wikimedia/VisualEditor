@@ -26,14 +26,7 @@ ve.ui.InputLabelWidget = function VeUiInputLabelWidget( $$, label, input ) {
 	this.input = input || null;
 
 	// Events
-	this.$.on(
-		'click',
-		ve.bind( function () {
-			if ( this.input ) {
-				this.input.$input.focus();
-			}
-		}, this )
-	);
+	this.$.on( 'click', ve.bind( this.onClick, this ) );
 
 	// Initialization
 	this.$
@@ -44,3 +37,19 @@ ve.ui.InputLabelWidget = function VeUiInputLabelWidget( $$, label, input ) {
 /* Inheritance */
 
 ve.inheritClass( ve.ui.InputLabelWidget, ve.ui.Widget );
+
+/* Methods */
+
+/**
+ * Handles mouse click events.
+ *
+ * @method
+ * @param {jQuery.Event} e Event
+ */
+ve.ui.InputLabelWidget.prototype.onClick = function ( e ) {
+	if ( !this.disabled && this.input ) {
+		this.input.focus();
+	}
+	e.preventDefault();
+	return false;
+};

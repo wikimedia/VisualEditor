@@ -40,7 +40,7 @@ ve.inheritClass( ve.ui.LinkTargetInputWidget, ve.ui.TextInputWidget );
  * Handles change events.
  *
  * @method
- * @param {jQuery.Event} e Event
+ * @param {string} value New value
  */
 ve.ui.LinkTargetInputWidget.prototype.onChange = function ( value ) {
 	if ( value === '' ) {

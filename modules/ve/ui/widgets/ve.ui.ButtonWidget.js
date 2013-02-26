@@ -26,14 +26,7 @@ ve.ui.ButtonWidget = function VeUiButtonWidget( $$, label, flags ) {
 	this.$label = this.$$( '<span>' );
 
 	// Events
-	this.$.on(
-		'click',
-		ve.bind( function ( e ) {
-			this.emit( 'click' );
-			e.preventDefault();
-			return false;
-		}, this )
-	);
+	this.$.on( 'click', ve.bind( this.onClick, this ) );
 
 	// Initialization
 	this.$label
@@ -54,3 +47,19 @@ ve.inheritClass( ve.ui.ButtonWidget, ve.ui.Widget );
 /**
  * @event click
  */
+
+/* Methods */
+
+/**
+ * Handles mouse click events.
+ *
+ * @method
+ * @param {jQuery.Event} e Event
+ */
+ve.ui.ButtonWidget.prototype.onClick = function ( e ) {
+	if ( !this.disabled ) {
+		this.emit( 'click' );
+	}
+	e.preventDefault();
+	return false;
+};

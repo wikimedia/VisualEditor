@@ -42,7 +42,7 @@ ve.ui.MenuWidget = function VeUiMenuWidget( items, callback, $container, $overla
  * @param {jQuery.Event} e Event
  */
 ve.ui.MenuWidget.prototype.onMouseDown = function ( e ) {
-	if ( e.which === 1 ) {
+	if ( !this.disabled && e.which === 1 ) {
 		e.preventDefault();
 		return false;
 	}
@@ -56,7 +56,7 @@ ve.ui.MenuWidget.prototype.onMouseDown = function ( e ) {
  */
 ve.ui.MenuWidget.prototype.onMouseUp = function ( e ) {
 	var name, i, len, $item, item;
-	if ( e.which === 1 ) {
+	if ( !this.disabled && e.which === 1 ) {
 		$item = $( e.target ).closest( '.ve-ui-menuWidget-item' );
 		if ( $item.length ) {
 			name = $item.attr( 'rel' );
