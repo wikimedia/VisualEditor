@@ -662,6 +662,13 @@ ve.dm.SurfaceFragment.prototype.wrapAllNodes = function ( wrapper ) {
 /**
  * Unwrap nodes in the fragment out of one or more elements.
  *
+ * Unwrap only removes elements from inside the fragment.
+ *
+ * Example:
+ *     // fragment is a selection of: <ul><li><p>text</p></li></ul>
+ *     fragment.unwrapAllNodes( 2 );
+ *     // fragment is now a selection of: <p>text</p>
+ *
  * @method
  * @param {number} depth Number of nodes to unwrap
  * @chainable
@@ -671,7 +678,7 @@ ve.dm.SurfaceFragment.prototype.unwrapAllNodes = function ( depth ) {
 	if ( !this.surface ) {
 		return this;
 	}
-	var i, tx, newRange, wrapper = [],
+	var i, tx, newRange, unwrapper = [],
 		innerRange = new ve.Range( this.range.start + depth, this.range.end - depth );
 
 	if ( this.range.end - this.range.start < depth * 2 ) {
@@ -679,12 +686,12 @@ ve.dm.SurfaceFragment.prototype.unwrapAllNodes = function ( depth ) {
 	}
 
 	for ( i = 0; i < depth; i++ ) {
-		wrapper.push( this.surface.getDocument().data[this.range.start + i] );
+		unwrapper.push( this.surface.getDocument().data[this.range.start + i] );
 	}
 
 	newRange = new ve.Range( this.range.start, this.range.end - ( depth * 2 ) );
 
-	tx = ve.dm.Transaction.newFromWrap( this.document, innerRange, wrapper, [], [], [] );
+	tx = ve.dm.Transaction.newFromWrap( this.document, innerRange, unwrapper, [], [], [] );
 	this.surface.change( tx, !this.noAutoSelect && newRange );
 
 	this.range = newRange;
@@ -705,12 +712,30 @@ ve.dm.SurfaceFragment.prototype.unwrapAllNodes = function ( depth ) {
  * @param {Object} [wrapper.attributes] Attributes of wrapper
  * @chainable
  */
-ve.dm.SurfaceFragment.prototype.rewrapAllNodes = function () {
+ve.dm.SurfaceFragment.prototype.rewrapAllNodes = function ( depth, wrapper ) {
 	// Handle null fragment
 	if ( !this.surface ) {
 		return this;
 	}
-	// TODO: Implement
+	var i, tx, newRange, unwrapper = [],
+		depthChange = wrapper.length - depth,
+		innerRange = new ve.Range( this.range.start + depth, this.range.end - depth );
+
+	if ( this.range.end - this.range.start < depth * 2 ) {
+		throw new Error( 'cannot unwrap by greater depth than maximum theoretical depth of selection' );
+	}
+
+	for ( i = 0; i < depth; i++ ) {
+		unwrapper.push( this.surface.getDocument().data[this.range.start + i] );
+	}
+
+	newRange = new ve.Range( this.range.start, this.range.end + ( depthChange * 2 ) );
+
+	tx = ve.dm.Transaction.newFromWrap( this.document, innerRange, unwrapper, wrapper, [], [] );
+	this.surface.change( tx, !this.noAutoSelect && newRange );
+
+	this.range = newRange;
+
 	return this;
 };
 

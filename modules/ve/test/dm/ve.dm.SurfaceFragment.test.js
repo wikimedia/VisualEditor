@@ -255,6 +255,69 @@ QUnit.test( 'wrapAllNodes/unwrapAllNodes', 10, function ( assert ) {
 	);
 });
 
+QUnit.test( 'rewrapAllNodes', 6, function ( assert ) {
+	var expectedData,
+		doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
+		surface = new ve.dm.Surface( doc ),
+		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 5, 37 ) ),
+		expectedDoc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
+		expectedSurface = new ve.dm.Surface( expectedDoc ),
+		expectedFragment = new ve.dm.SurfaceFragment( expectedSurface, new ve.Range( 5, 37 ) ),
+		created = { 'changed': { 'created' : 1 } };
+
+	// Compare a rewrap operation with its equivalent unwrap + wrap
+	// This type of test can only exist if the intermediate state is valid
+	fragment.rewrapAllNodes(
+		4,
+		[{ 'type': 'list', 'attributes': { 'style': 'bullet' } }, { 'type': 'listItem' }]
+	);
+	expectedFragment.unwrapAllNodes( 4 );
+	expectedFragment.wrapAllNodes(
+		[{ 'type': 'list', 'attributes': { 'style': 'bullet' } }, { 'type': 'listItem' }]
+	);
+	assert.deepEqual(
+		doc.getData(),
+		expectedDoc.getData(),
+		'rewrapping multiple nodes via a valid intermediate state produces the same document as unwrapping then wrapping'
+	);
+	assert.deepEqual( fragment.getRange(), expectedFragment.getRange(), 'new range contains rewrapping elements' );
+
+	// Reverse of first test
+	fragment.rewrapAllNodes(
+		2,
+		[
+			{ 'type': 'table', },
+			{ 'type': 'tableSection', 'attributes': { 'style': 'body' } },
+			{ 'type': 'tableRow' },
+			{ 'type': 'tableCell', 'attributes': { 'style': 'data' } }
+		]
+	);
+
+	expectedData = ve.copyArray( ve.dm.example.data );
+	expectedData[5].internal = created;
+	expectedData[6].internal = created;
+	expectedData[7].internal = created;
+	expectedData[8].internal = created;
+	assert.deepEqual(
+		doc.getData(),
+		expectedData,
+		'rewrapping multiple nodes via a valid intermediate state produces the same document as unwrapping then wrapping'
+	);
+	assert.deepEqual( fragment.getRange(), new ve.Range( 5, 37 ), 'new range contains rewrapping elements' );
+
+	// Rewrap a heading as a paragraph
+	// The intermediate stage (plain text attached to the document) would be invalid
+	// if performed as an unwrap and a wrap
+	fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 0, 5 ) );
+	fragment.rewrapAllNodes( 1, [ { 'type': 'paragraph' } ] );
+
+	expectedData.splice( 0, 1, { 'type': 'paragraph', 'internal': created } );
+	expectedData.splice( 4, 1, { 'type': '/paragraph' } );
+
+	assert.deepEqual( doc.getData(), expectedData, 'rewrapping a heading as a paragraph' );
+	assert.deepEqual( fragment.getRange(), new ve.Range( 0, 5 ), 'new range contains rewrapping elements' );
+});
+
 function runIsolateTest( assert, range, expected, label ) {
 	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.isolationData ) ),
 		surface = new ve.dm.Surface( doc ),

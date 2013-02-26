@@ -459,7 +459,7 @@ ve.dm.Transaction.newFromContentBranchConversion = function ( doc, range, type, 
  *
  * @param {ve.dm.Document} doc Document to generate a transaction for
  * @param {ve.Range} range Range to wrap/unwrap/replace around
- * @param {Array} unwrapOuter Oopening elements to unwrap. These must be immediately *outside* the range.
+ * @param {Array} unwrapOuter Opening elements to unwrap. These must be immediately *outside* the range.
  * @param {Array} wrapOuter Opening elements to wrap around the range.
  * @param {Array} unwrapEach Opening elements to unwrap from each top-level element in the range.
  * @param {Array} wrapEach Opening elements to wrap around each top-level element in the range.
