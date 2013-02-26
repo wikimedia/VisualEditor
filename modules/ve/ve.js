@@ -76,8 +76,13 @@
 	 * @source <https://github.com/Krinkle/K-js>
 	 * @param {Function} targetFn
 	 * @param {Function} originFn
+	 * @throws {Error} If target already inherits from origin
 	 */
 	ve.inheritClass = function ( targetFn, originFn ) {
+		if ( targetFn.prototype instanceof originFn ) {
+			throw new Error( 'Target already inherits from origin' );
+		}
+
 		// Doesn't really require ES5 (jshint/jshint#74@github)
 		/*jshint es5: true */
 		var targetConstructor = targetFn.prototype.constructor;

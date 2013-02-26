@@ -11,7 +11,7 @@ QUnit.module( 've' );
 
 // ve.createObject: Tested upstream (K-js)
 
-QUnit.test( 'inheritClass', 16, function ( assert ) {
+QUnit.test( 'inheritClass', 18, function ( assert ) {
 	var foo, bar;
 
 	function Foo() {
@@ -57,6 +57,14 @@ QUnit.test( 'inheritClass', 16, function ( assert ) {
 	Bar.prototype.bFn = function () {
 		return 'proto of Bar';
 	};
+
+	assert.throws( function () {
+		ve.inheritClass( Bar, Foo );
+	}, 'Throw if target already inherits from source (from an earlier call)' );
+
+	assert.throws( function () {
+		ve.inheritClass( Bar, Object );
+	}, 'Throw if target already inherits from source (naturally, Object)' );
 
 	bar = new Bar();
 
