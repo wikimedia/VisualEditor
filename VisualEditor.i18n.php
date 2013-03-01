@@ -93,9 +93,9 @@ $messages['qqq'] = array(
 	'visualeditor-preference-enable' => 'Label for the user preference to enable the VisualEditor.
 Links are in {{msg-mw|Visualeditor-mainnamespacepagelink}} and {{msg-mw|visualeditor-usernamespacepagelink}}.',
 	'visualeditor-mainnamespacepagelink' => 'Name of a page describing the main namespace (NS0) in this project.
-{{doc-important|Don’t translate “Project”; it is automatically converted to the wiki’s project namespace.}}',
+{{doc-important|Do not translate "Project"; it is automatically converted to the wiki\'s project namespace.}}',
 	'visualeditor-usernamespacepagelink' => 'Name of a page describing the user namespace (NS2) in this project.
-{{doc-important|Don’t translate “Project”; it is automatically converted to the wiki’s project namespace.}}',
+{{doc-important|Do not translate "Project"; it is automatically converted to the wiki\'s project namespace.}}',
 	'visualeditor-notification-saved' => 'Shown after a user saves a page, $1 is a page name.',
 	'visualeditor-notification-created' => 'Shown after a user creates a page, $1 is a page name.',
 	'visualeditor-notification-restored' => 'Shown after a user restores a page to a previous revision. Parameters:
@@ -168,7 +168,7 @@ Link text of the dedicated VisualEditor Edit tab.
 	'tag-visualeditor' => 'Short description of the visualeditor tag ({{msg-mw|Tag-visualeditor}}). Shown on lists of changes (history, recentchanges, etc.) for each edit made using VisualEditor.',
 	'tag-visualeditor-description' => 'Long description of the visualeditor tag ({{msg-mw|Tag-visualeditor}}). Shown on [[Special:Tags]]',
 	'visualeditor-descriptionpagelink' => 'Name of a page describing the use of the VisualEditor in this project.
-{{doc-important|Don’t translate “Project”; it is automatically converted to the wiki’s project namespace.}}',
+{{doc-important|Do not translate "Project"; it is automatically converted to the wiki\'s project namespace.}}',
 	'visualeditor-alphawarning' => 'Edit notice shown when the VisualEditor loads, warning users that the software may have issues',
 	'visualeditor-report-notice' => 'Notice to user that their data will be sent for analysis.
 	Link is in {{msg-mw|Visualeditor-report-link}}.',
