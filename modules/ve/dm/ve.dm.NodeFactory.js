@@ -75,6 +75,21 @@ ve.dm.NodeFactory.prototype.getParentNodeTypes = function ( type ) {
 };
 
 /**
+ * Get suggested parent node types for a node.
+ *
+ * @method
+ * @param {string} type Node type
+ * @returns {string[]|null} List of node types suggested as parents or null if any type is suggested
+ * @throws {Error} Unknown node type
+ */
+ve.dm.NodeFactory.prototype.getSuggestedParentNodeTypes = function ( type ) {
+	if ( type in this.registry ) {
+		return this.registry[type].static.suggestedParentNodeTypes;
+	}
+	throw new Error( 'Unknown node type: ' + type );
+};
+
+/**
  * Check if a node can have children.
  *
  * @method

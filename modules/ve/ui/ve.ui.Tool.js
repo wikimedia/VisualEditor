@@ -53,6 +53,18 @@ ve.inheritClass( ve.ui.Tool, ve.ui.Widget );
 ve.ui.Tool.static.name = '';
 
 /**
+ * CSS class name, rendered as ve-ui-dropdownTool-cssName
+ *
+ * If this is left as null, static.name is used instead.
+ *
+ * @abstract
+ * @static
+ * @property
+ * @type {string}
+ */
+ve.ui.Tool.static.cssName = null;
+
+/**
  * Message key for tool title.
  *
  * @abstract

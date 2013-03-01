@@ -242,8 +242,6 @@ $wgResourceModules += array(
 			've/dm/nodes/ve.dm.ListItemNode.js',
 			've/dm/nodes/ve.dm.ListNode.js',
 			've/dm/nodes/ve.dm.MetaNode.js',
-			've/dm/nodes/ve.dm.MWEntityNode.js',
-			've/dm/nodes/ve.dm.MWMetaNode.js',
 			've/dm/nodes/ve.dm.ParagraphNode.js',
 			've/dm/nodes/ve.dm.PreformattedNode.js',
 			've/dm/nodes/ve.dm.TableCellNode.js',
@@ -251,6 +249,11 @@ $wgResourceModules += array(
 			've/dm/nodes/ve.dm.TableRowNode.js',
 			've/dm/nodes/ve.dm.TableSectionNode.js',
 			've/dm/nodes/ve.dm.TextNode.js',
+
+			've/dm/nodes/ve.dm.MWEntityNode.js',
+			've/dm/nodes/ve.dm.MWHeadingNode.js',
+			've/dm/nodes/ve.dm.MWMetaNode.js',
+			've/dm/nodes/ve.dm.MWPreformattedNode.js',
 
 			've/dm/annotations/ve.dm.LinkAnnotation.js',
 			've/dm/annotations/ve.dm.MWExternalLinkAnnotation.js',
@@ -281,7 +284,6 @@ $wgResourceModules += array(
 			've/ce/nodes/ve.ce.ImageNode.js',
 			've/ce/nodes/ve.ce.ListItemNode.js',
 			've/ce/nodes/ve.ce.ListNode.js',
-			've/ce/nodes/ve.ce.MWEntityNode.js',
 			've/ce/nodes/ve.ce.ParagraphNode.js',
 			've/ce/nodes/ve.ce.PreformattedNode.js',
 			've/ce/nodes/ve.ce.TableCellNode.js',
@@ -289,6 +291,9 @@ $wgResourceModules += array(
 			've/ce/nodes/ve.ce.TableRowNode.js',
 			've/ce/nodes/ve.ce.TableSectionNode.js',
 			've/ce/nodes/ve.ce.TextNode.js',
+			've/ce/nodes/ve.ce.MWEntityNode.js',
+			've/ce/nodes/ve.ce.MWHeadingNode.js',
+			've/ce/nodes/ve.ce.MWPreformattedNode.js',
 
 			// ui
 			've/ui/ve.ui.js',
@@ -337,6 +342,7 @@ $wgResourceModules += array(
 			've/ui/tools/buttons/ve.ui.UndoButtonTool.js',
 
 			've/ui/tools/dropdowns/ve.ui.FormatDropdownTool.js',
+			've/ui/tools/dropdowns/ve.ui.MWFormatDropdownTool.js',
 
 			've/ui/inspectors/ve.ui.LinkInspector.js',
 			've/ui/inspectors/ve.ui.MWLinkInspector.js',

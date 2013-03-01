@@ -82,8 +82,6 @@
 		<script src="../../ve/dm/nodes/ve.dm.ListItemNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.ListNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.MetaNode.js"></script>
-		<script src="../../ve/dm/nodes/ve.dm.MWEntityNode.js"></script>
-		<script src="../../ve/dm/nodes/ve.dm.MWMetaNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.ParagraphNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.PreformattedNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.TableCellNode.js"></script>
@@ -91,6 +89,10 @@
 		<script src="../../ve/dm/nodes/ve.dm.TableRowNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.TableSectionNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.TextNode.js"></script>
+		<script src="../../ve/dm/nodes/ve.dm.MWEntityNode.js"></script>
+		<script src="../../ve/dm/nodes/ve.dm.MWHeadingNode.js"></script>
+		<script src="../../ve/dm/nodes/ve.dm.MWMetaNode.js"></script>
+		<script src="../../ve/dm/nodes/ve.dm.MWPreformattedNode.js"></script>
 		<script src="../../ve/dm/annotations/ve.dm.LinkAnnotation.js"></script>
 		<script src="../../ve/dm/annotations/ve.dm.MWExternalLinkAnnotation.js"></script>
 		<script src="../../ve/dm/annotations/ve.dm.MWInternalLinkAnnotation.js"></script>
@@ -117,7 +119,6 @@
 		<script src="../../ve/ce/nodes/ve.ce.ImageNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.ListItemNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.ListNode.js"></script>
-		<script src="../../ve/ce/nodes/ve.ce.MWEntityNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.ParagraphNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.PreformattedNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.TableCellNode.js"></script>
@@ -125,6 +126,9 @@
 		<script src="../../ve/ce/nodes/ve.ce.TableRowNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.TableSectionNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.TextNode.js"></script>
+		<script src="../../ve/ce/nodes/ve.ce.MWEntityNode.js"></script>
+		<script src="../../ve/ce/nodes/ve.ce.MWHeadingNode.js"></script>
+		<script src="../../ve/ce/nodes/ve.ce.MWPreformattedNode.js"></script>
 		<script src="../../ve/ui/ve.ui.js"></script>
 		<script src="../../ve/ui/ve.ui.Context.js"></script>
 		<script src="../../ve/ui/ve.ui.Frame.js"></script>
@@ -166,6 +170,7 @@
 		<script src="../../ve/ui/tools/buttons/ve.ui.RedoButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.UndoButtonTool.js"></script>
 		<script src="../../ve/ui/tools/dropdowns/ve.ui.FormatDropdownTool.js"></script>
+		<script src="../../ve/ui/tools/dropdowns/ve.ui.MWFormatDropdownTool.js"></script>
 		<script src="../../ve/ui/inspectors/ve.ui.LinkInspector.js"></script>
 		<script src="../../ve/ui/inspectors/ve.ui.MWLinkInspector.js"></script>
 
