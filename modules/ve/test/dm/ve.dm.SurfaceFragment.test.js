@@ -114,10 +114,11 @@ QUnit.test( 'insertContent', 3, function ( assert ) {
 	);
 } );
 
-QUnit.test( 'wrapNodes', 2, function ( assert ) {
+QUnit.test( 'wrapNodes/unwrapNodes', 10, function ( assert ) {
 	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		surface = new ve.dm.Surface( doc ),
 		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 55, 61 ) );
+
 	// Make 2 paragraphs into 2 lists of 1 item each
 	fragment.wrapNodes(
 		[{ 'type': 'list', 'attributes': { 'style': 'bullet' } }, { 'type': 'listItem' }]
@@ -150,6 +151,12 @@ QUnit.test( 'wrapNodes', 2, function ( assert ) {
 		],
 		'wrapping nodes can add multiple levels of wrapping to multiple elements'
 	);
+	assert.deepEqual( fragment.getRange(), new ve.Range( 55, 69 ), 'new range contains wrapping elements' );
+
+	fragment.unwrapNodes( 0, 2 );
+	assert.deepEqual( doc.getData(), ve.dm.example.data, 'unwrapping 2 levels restores document to original state' );
+	assert.deepEqual( fragment.getRange(), new ve.Range( 55, 61 ), 'range after unwrapping is same as original range' );
+
 	// Make a 1 paragraph into 1 list with 1 item
 	fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 9, 12 ) );
 	fragment.wrapNodes(
@@ -172,13 +179,78 @@ QUnit.test( 'wrapNodes', 2, function ( assert ) {
 		],
 		'wrapping nodes can add multiple levels of wrapping to a single element'
 	);
+	assert.deepEqual( fragment.getRange(), new ve.Range( 9, 16 ), 'new range contains wrapping elements' );
+
+	fragment.unwrapNodes( 0, 2 );
+	assert.deepEqual( doc.getData(), ve.dm.example.data, 'unwrapping 2 levels restores document to original state' );
+	assert.deepEqual( fragment.getRange(), new ve.Range( 9, 12 ), 'range after unwrapping is same as original range' );
+
+	fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 8, 34 ) );
+	fragment.unwrapNodes( 3, 1 );
+	assert.deepEqual( fragment.getData(), doc.getData( new ve.Range( 5, 29 ) ), 'unwrapping multiple outer nodes and an inner node' );
+	assert.deepEqual( fragment.getRange(), new ve.Range( 5, 29 ), 'new range contains inner elements' );
+
 } );
 
-QUnit.test( 'wrapAllNodes/unwrapAllNodes', 10, function ( assert ) {
+QUnit.test( 'rewrapNodes', 4, function ( assert ) {
+	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
+		surface = new ve.dm.Surface( doc ),
+		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 43, 55 ) ),
+		expectedDoc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
+		expectedSurface = new ve.dm.Surface( expectedDoc ),
+		expectedFragment = new ve.dm.SurfaceFragment( expectedSurface, new ve.Range( 43, 55 ) ),
+		created = { 'changed': { 'created': 1 } },
+		expectedData;
+
+	// set up wrapped nodes in example document
+	fragment.wrapNodes(
+		[{ 'type': 'list', 'attributes': { 'style': 'bullet' } }, { 'type': 'listItem' }]
+	);
+	expectedFragment.wrapNodes(
+		[{ 'type': 'list', 'attributes': { 'style': 'bullet' } }, { 'type': 'listItem' }]
+	);
+	// range is now 43, 59
+
+	// Compare a rewrap operation with its equivalent unwrap + wrap
+	// This type of test can only exist if the intermediate state is valid
+	fragment.rewrapNodes(
+		2,
+		[{ 'type': 'definitionList' }, { 'type': 'definitionListItem', 'attributes': { 'style': 'term' } }]
+	);
+	expectedFragment.unwrapNodes( 0, 2 );
+	expectedFragment.wrapNodes(
+		[{ 'type': 'definitionList' }, { 'type': 'definitionListItem', 'attributes': { 'style': 'term' } }]
+	);
+
+	assert.deepEqual(
+		doc.getData(),
+		expectedDoc.getData(),
+		'rewrapping multiple nodes via a valid intermediate state produces the same document as unwrapping then wrapping'
+	);
+	assert.deepEqual( fragment.getRange(), expectedFragment.getRange(), 'new range contains rewrapping elements' );
+
+	// Rewrap paragrphs as headings
+	// The intermediate stage (plain text attached to the document) would be invalid
+	// if performed as an unwrap and a wrap
+	expectedData = ve.copyArray( doc.getData() );
+
+	fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 59, 65 ) );
+	fragment.rewrapNodes( 1, [ { 'type': 'heading', 'attributes': { 'level': 1 } } ] );
+
+	expectedData.splice( 59, 1, { 'type': 'heading', 'attributes': { 'level': 1 }, 'internal': created } );
+	expectedData.splice( 61, 1, { 'type': '/heading' } );
+	expectedData.splice( 62, 1, { 'type': 'heading', 'attributes': { 'level': 1 }, 'internal': created } );
+	expectedData.splice( 64, 1, { 'type': '/heading' } );
+
+	assert.deepEqual( doc.getData(), expectedData, 'rewrapping paragraphs as headings' );
+	assert.deepEqual( fragment.getRange(), new ve.Range( 59, 65 ), 'new range contains rewrapping elements' );
+} );
+
+QUnit.test( 'wrapAllNodes', 10, function ( assert ) {
 	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		surface = new ve.dm.Surface( doc ),
 		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 55, 61 ) ),
-		expectedData;
+		expectedData = ve.copyArray( doc.getData() );
 
 	// Make 2 paragraphs into 1 lists of 1 item with 2 paragraphs
 	fragment.wrapAllNodes(
@@ -206,7 +278,7 @@ QUnit.test( 'wrapAllNodes/unwrapAllNodes', 10, function ( assert ) {
 	);
 	assert.deepEqual( fragment.getRange(), new ve.Range( 55, 65 ), 'new range contains wrapping elements' );
 
-	fragment.unwrapAllNodes( 2 );
+	fragment.unwrapNodes( 0, 2 );
 	assert.deepEqual( doc.getData(), ve.dm.example.data, 'unwrapping 2 levels restores document to original state' );
 	assert.deepEqual( fragment.getRange(), new ve.Range( 55, 61 ), 'range after unwrapping is same as original range' );
 
@@ -234,26 +306,25 @@ QUnit.test( 'wrapAllNodes/unwrapAllNodes', 10, function ( assert ) {
 	);
 	assert.deepEqual( fragment.getRange(), new ve.Range( 9, 16 ), 'new range contains wrapping elements' );
 
-	fragment.unwrapAllNodes( 2 );
+	fragment.unwrapNodes( 0, 2 );
 	assert.deepEqual( doc.getData(), ve.dm.example.data, 'unwrapping 2 levels restores document to original state' );
 	assert.deepEqual( fragment.getRange(), new ve.Range( 9, 12 ), 'range after unwrapping is same as original range' );
 
 	fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 5, 37 ) );
 
 	assert.throws( function() {
-		fragment.unwrapAllNodes( 20 );
+		fragment.unwrapNodes( 0, 20 );
 	}, /cannot unwrap by greater depth/, 'error thrown trying to unwrap more nodes that it is possible to contain' );
 
-	expectedData = ve.copyArray( ve.dm.example.data );
 	expectedData.splice( 5, 4 );
 	expectedData.splice( 29, 4 );
-	fragment.unwrapAllNodes( 4 );
+	fragment.unwrapNodes( 0, 4 );
 	assert.deepEqual(
 		doc.getData(),
 		expectedData,
 		'unwrapping 4 levels (table, tableSection, tableRow and tableCell)'
 	);
-});
+} );
 
 QUnit.test( 'rewrapAllNodes', 6, function ( assert ) {
 	var expectedData,
@@ -271,7 +342,7 @@ QUnit.test( 'rewrapAllNodes', 6, function ( assert ) {
 		4,
 		[{ 'type': 'list', 'attributes': { 'style': 'bullet' } }, { 'type': 'listItem' }]
 	);
-	expectedFragment.unwrapAllNodes( 4 );
+	expectedFragment.unwrapNodes( 0, 4 );
 	expectedFragment.wrapAllNodes(
 		[{ 'type': 'list', 'attributes': { 'style': 'bullet' } }, { 'type': 'listItem' }]
 	);
@@ -316,49 +387,65 @@ QUnit.test( 'rewrapAllNodes', 6, function ( assert ) {
 
 	assert.deepEqual( doc.getData(), expectedData, 'rewrapping a heading as a paragraph' );
 	assert.deepEqual( fragment.getRange(), new ve.Range( 0, 5 ), 'new range contains rewrapping elements' );
-});
+} );
 
-function runIsolateTest( assert, range, expected, label ) {
+function runIsolateTest( assert, type, range, expected, label ) {
 	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.isolationData ) ),
 		surface = new ve.dm.Surface( doc ),
 		fragment = new ve.dm.SurfaceFragment( surface, range ),
 		data;
 
 	data = ve.copyArray( doc.getFullData() );
-	fragment.isolate();
+	fragment.isolateAndUnwrap( type );
 	expected( data );
 
 	assert.deepEqual( doc.getFullData(), data, label );
 }
 
-QUnit.test( 'isolate', 2, function ( assert ) {
+QUnit.test( 'isolateAndUnwrap', 4, function ( assert ) {
 	var rebuilt = { 'changed': { 'rebuilt': 1 } },
-		created = { 'changed': { 'created': 1 } },
 		createdAndRebuilt = { 'changed': { 'created': 1, 'rebuilt': 1 } };
 
-	runIsolateTest( assert, new ve.Range( 11, 21 ), function( data ) {
+	runIsolateTest( assert, 'MWheading', new ve.Range( 12, 20 ), function( data ) {
 		data[0].internal = rebuilt;
-		data.splice( 11, 0, { 'type': '/list' }, { 'type': 'list', 'attributes': { 'style': 'bullet' }, 'internal': createdAndRebuilt });
-		data.splice( 23, 0, { 'type': '/list' }, { 'type': 'list', 'attributes': { 'style': 'bullet' }, 'internal': createdAndRebuilt });
-	}, 'isolating list item "Item 2"');
+		data.splice( 11, 0, { 'type': '/list' } );
+		data.splice( 12, 1 );
+		data.splice( 20, 1, { 'type': 'list', 'attributes': { 'style': 'bullet' }, 'internal': createdAndRebuilt });
+	}, 'isolating paragraph in list item "Item 2" for MWheading');
 
-	runIsolateTest( assert, new ve.Range( 88, 108 ), function( data ) {
+	runIsolateTest( assert, 'heading', new ve.Range( 12, 20 ), function( data ) {
+		data.splice( 11, 0, { 'type': 'listItem' } );
+		data.splice( 12, 1 );
+		data.splice( 20, 1, { 'type': '/listItem' });
+	}, 'isolating paragraph in list item "Item 2" for heading');
+
+	runIsolateTest( assert, 'MWheading', new ve.Range( 89, 97 ), function( data ) {
 		data[75].internal = rebuilt;
 		data[76].internal = rebuilt;
 		data[77].internal = rebuilt;
-		data.splice( 88, 0,
+		data.splice( 88, 1,
 			{ 'type': '/tableRow' },
 			{ 'type': '/tableSection' },
-			{ 'type': '/table' },
+			{ 'type': '/table' }
+		);
+		data.splice( 99, 1,
 			{ 'type': 'table', 'internal': createdAndRebuilt },
 			{ 'type': 'tableSection', 'attributes': { 'style': 'body' }, 'internal': createdAndRebuilt },
-			{ 'type': 'tableRow', 'internal': created }
+			{ 'type': 'tableRow', 'internal': createdAndRebuilt }
 		);
-		data.splice( 115, 0,
-			{ 'type': '/tableSection' },
-			{ 'type': '/table' },
-			{ 'type': 'table', 'internal': createdAndRebuilt },
-			{ 'type': 'tableSection', 'attributes': { 'style': 'body' }, 'internal': createdAndRebuilt }
+	}, 'isolating "Cell 2" for MWheading');
+
+	runIsolateTest( assert, 'MWheading', new ve.Range( 202, 212 ), function( data ) {
+		data[186].internal = rebuilt;
+		data[187].internal = rebuilt;
+		data[188].internal = rebuilt;
+		data.splice( 201, 1,
+			{ 'type': '/list' }, { 'type': '/listItem' }, { 'type': '/list' }
 		);
-	}, 'isolating table cells "Cell 2" & "Cell 3"');
+		data.splice( 214, 1,
+			{ 'type': 'list', 'attributes': { 'style': 'bullet' }, 'internal': createdAndRebuilt },
+			{ 'type': 'listItem', 'internal': createdAndRebuilt },
+			{ 'type': 'list', 'attributes': { 'style': 'number' }, 'internal': createdAndRebuilt }
+		);
+	}, 'isolating paragraph in list item "Nested 2" for MWheading');
 } );

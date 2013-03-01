@@ -203,7 +203,7 @@ ve.dm.example.data = [
 	{ 'type': '/paragraph' },
 	// 31 - End of item
 	{ 'type': '/listItem' },
-	// 32 - End of list
+	// 32 - End of lis t
 	{ 'type': '/list' },
 	// 33 - End of cell
 	{ 'type': '/tableCell' },
@@ -2010,7 +2010,9 @@ ve.dm.example.isolationHTML =
 	'<ul><li>Item 4</li><li>Item 5</li><li>Item 6</li></ul>' +
 	'<table><tbody><tr><td>Cell 1</td><td>Cell 2</td><td>Cell 3</td></tr><tr><td>Cell 4</td></tr></tbody></table>' +
 	'Not allowed by dm:' +
-	'<ul><li><h1>Title in list</h1></li><li><pre>Preformatted in list</pre></li></ul>';
+	'<ul><li><h1>Title in list</h1></li><li><pre>Preformatted in list</pre></li></ul>' +
+	'<ul><li><ol><li>Nested 1</li><li>Nested 2</li><li>Nested 3</li></ol></li></ul>' +
+	'<ul><li><p>P1</p><p>P2</p><p>P3</p></li></ul>';
 
 ve.dm.example.isolationData = [
 	{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
@@ -2092,5 +2094,39 @@ ve.dm.example.isolationData = [
 	'P', 'r', 'e', 'f', 'o', 'r', 'm', 'a', 't', 't', 'e', 'd', ' ', 'i', 'n', ' ', 'l', 'i', 's', 't',
 	{ 'type': '/preformatted' },
 	{ 'type': '/listItem' },
-	{ 'type': '/list' }
+	{ 'type': '/list' },
+	{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
+	{ 'type': 'listItem' },
+	{ 'type': 'list', 'attributes': { 'style': 'number' } },
+	{ 'type': 'listItem' },
+	{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+	'N', 'e', 's', 't', 'e', 'd', ' ', '1',
+	{ 'type': '/paragraph' },
+	{ 'type': '/listItem' },
+	{ 'type': 'listItem' },
+	{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+	'N', 'e', 's', 't', 'e', 'd', ' ', '2',
+	{ 'type': '/paragraph' },
+	{ 'type': '/listItem' },
+	{ 'type': 'listItem' },
+	{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+	'N', 'e', 's', 't', 'e', 'd', ' ', '3',
+	{ 'type': '/paragraph' },
+	{ 'type': '/listItem' },
+	{ 'type': '/list' },
+	{ 'type': '/listItem' },
+	{ 'type': '/list' },
+	{ 'type': 'list', 'attributes': { 'style': 'bullet' } },
+	{ 'type': 'listItem' },
+	{ 'type': 'paragraph' },
+	'P', '1',
+	{ 'type': '/paragraph' },
+	{ 'type': 'paragraph' },
+	'P', '2',
+	{ 'type': '/paragraph' },
+	{ 'type': 'paragraph' },
+	'P', '3',
+	{ 'type': '/paragraph' },
+	{ 'type': '/listItem' },
+	{ 'type': '/list' },
 ];
