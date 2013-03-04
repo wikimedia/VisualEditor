@@ -34,8 +34,7 @@ ve.dm.Converter = function VeDmConverter( modelRegistry, nodeFactory, annotation
  * @returns {Array} Linear model data, one element per character
  */
 ve.dm.Converter.getDataContentFromText = function ( text, annotations ) {
-	var characters = text.split( '' ),
-		i;
+	var i, characters = text.split( '' );
 	if ( !annotations || annotations.isEmpty() ) {
 		return characters;
 	}
@@ -161,9 +160,9 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, annot
 			element.internal = {};
 		}
 		// whitespace = [ outerPre, innerPre, innerPost, outerPost ]
-		//           <tag>         text           </tag>          <nextTag>
-		// ^^^^^^^^^^     ^^^^^^^^^    ^^^^^^^^^^^      ^^^^^^^^^^
-		//  outerPre      innerPre      innerPost        outerPost
+		//         <tag>        text         </tag>         <nextTag>
+		// ^^^^^^^^     ^^^^^^^^    ^^^^^^^^^      ^^^^^^^^^
+		// outerPre     innerPre    innerPost      outerPost
 		if ( !element.internal.whitespace ) {
 			element.internal.whitespace = [];
 		}
@@ -526,7 +525,7 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, annot
 ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 	var text, i, j, k, annotations, annotation, annotationElement, dataElement, arr,
 		childDomElements, pre, ours, theirs, parentDomElement, lastChild, startClosingAt,
-		isContentNode, changed, parentChanged,
+		isContentNode, changed, parentChanged, sibling, previousSiblings, doUnwrap, textNode,
 		doc = ve.createDocumentFromHTML( '' ),
 		container = doc.body,
 		domElement = container,
@@ -664,14 +663,16 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 					if ( pre ) {
 						if (
 							domElement.firstChild &&
-							domElement.firstChild.nodeType === 3
+							domElement.firstChild.nodeType === Node.TEXT_NODE
 						) {
 							// First child is a TextNode, prepend to it
 							domElement.firstChild.insertData( 0, pre );
 						} else {
 							// Prepend a TextNode
+							textNode = doc.createTextNode( pre );
+							textNode.veIsWhitespace = true;
 							domElement.insertBefore(
-								doc.createTextNode( pre ),
+								textNode,
 								domElement.firstChild
 							);
 						}
@@ -691,13 +692,15 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 						theirs = domElement.lastOuterPost;
 					}
 					if ( ours && ours === theirs ) {
-						if ( lastChild && lastChild.nodeType === 3 ) {
+						if ( lastChild && lastChild.nodeType === Node.TEXT_NODE ) {
 							// Last child is a TextNode, append to it
 							domElement.lastChild.appendData( ours );
 						} else {
 							// Append a TextNode
+							textNode = doc.createTextNode( ours );
+							textNode.veIsWhitespace = true;
 							domElement.appendChild(
-								doc.createTextNode( ours )
+								textNode
 							);
 						}
 					}
@@ -710,20 +713,50 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 				}
 				// else don't touch lastOuterPost
 
-				// If closing a generated wrapper node, unwrap it
+				// Logic to unwrap empty & wrapper nodes.
 				// It would be nicer if we could avoid generating in the first
 				// place, but then remembering where we have to skip ascending
 				// to the parent would be tricky.
-				// We unwrap all nodes with generated=wrapper, as well as nodes that
-				// have generated=empty and are empty.
-				if (
-					domElement.veInternal && (
-						domElement.veInternal.generated === 'wrapper' || (
-							domElement.veInternal.generated === 'empty' &&
-							domElement.childNodes.length === 0
-						)
-					)
-				) {
+				doUnwrap = false;
+				if( domElement.veInternal ) {
+					switch( domElement.veInternal.generated ) {
+						case 'empty':
+							// 'empty' elements - first ensure they are actually empty
+							if ( domElement.childNodes.length === 0 && (
+									// then check that we are the last child
+									// before unwrapping (and therefore destroying)
+									i === data.length - 1 ||
+									data[i + 1].type.charAt(0) === '/'
+								)
+							) {
+								doUnwrap = true;
+							}
+							break;
+						case 'wrapper':
+							// 'wrapper' elements - ensure there is a block level
+							// element between this element and the previous sibling
+							// wrapper or parent node
+							doUnwrap = true;
+							previousSiblings = domElement.parentElement.childNodes;
+							// Note: previousSiblings includes the current element
+							// so we only go up to length - 2
+							for( j = previousSiblings.length - 2; j >= 0; j-- ) {
+								sibling = previousSiblings[j];
+								if( sibling.nodeType === Node.TEXT_NODE && !sibling.veIsWhitespace ) {
+									// we've found an unwrapped paragraph so don't unwrap
+									doUnwrap = false;
+									break;
+								}
+								if( ve.isBlockElement( sibling ) ) {
+									// there is a block element before the next unwrapped node
+									// so it's safe to unwrap
+									break;
+								}
+							}
+							break;
+					}
+				}
+				if( doUnwrap ) {
 					while ( domElement.firstChild ) {
 						parentDomElement.insertBefore(
 							domElement.firstChild,
@@ -808,8 +841,10 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 					}
 					if ( ours && ours === theirs ) {
 						// Matches the duplicate, insert a TextNode
+						textNode = doc.createTextNode( ours );
+						textNode.veIsWhitespace = true;
 						parentDomElement.insertBefore(
-							doc.createTextNode( ours ),
+							textNode,
 							domElement
 						);
 					}
@@ -819,7 +854,7 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 	}
 	// Process the outerPost whitespace of the very last node
 	if ( container.lastOuterPost !== undefined ) {
-		if ( container.lastChild && container.lastChild.nodeType === 3 ) {
+		if ( container.lastChild && container.lastChild.nodeType === Node.TEXT_NODE ) {
 			// Last child is a TextNode, append to it
 			container.lastChild.appendData( container.lastOuterPost );
 		} else {
