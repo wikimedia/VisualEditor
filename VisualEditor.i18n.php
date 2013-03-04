@@ -1331,6 +1331,13 @@ $messages['ia'] = array(
 	'visualeditor-saveerror' => 'Error durante le salveguarda del datos in le servitor: $1.',
 );
 
+/** Indonesian (Bahasa Indonesia)
+ * @author Kenrick95
+ */
+$messages['id'] = array(
+	'visualeditor-historybutton-undo-tooltip' => 'Balikkan',
+);
+
 /** Icelandic (íslenska)
  * @author Snævar
  */
