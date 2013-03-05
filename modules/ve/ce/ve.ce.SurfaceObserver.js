@@ -114,7 +114,7 @@ ve.ce.SurfaceObserver.prototype.poll = function ( async ) {
 
 	range = this.range;
 	node = this.node;
-	rangyRange = ve.ce.RangyRange.newFromRangySelection( rangy.getSelection() );
+	rangyRange = ve.ce.DomRange.newFromDomSelection( rangy.getSelection() );
 
 	if ( !rangyRange.equals( this.rangyRange ) ){
 		this.rangyRange = rangyRange;

@@ -1,12 +1,12 @@
 /*!
- * VisualEditor RangyRange class.
+ * VisualEditor DomRange class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * RangyRange.
+ * DomRange.
  *
  * @class
  * @constructor
@@ -15,7 +15,7 @@
  * @param {HTMLElement} anchorNode Selection anchor node
  * @param {number} anchorOffset Selection anchor offset
  */
-ve.ce.RangyRange = function VeCeRangyRange( focusNode, focusOffset, anchorNode, anchorOffset ) {
+ve.ce.DomRange = function VeCeDomRange( focusNode, focusOffset, anchorNode, anchorOffset ) {
 	this.focusNode = focusNode;
 	this.focusOffset = focusOffset;
 	this.anchorNode = anchorNode;
@@ -24,15 +24,15 @@ ve.ce.RangyRange = function VeCeRangyRange( focusNode, focusOffset, anchorNode, 
 
 /* Static Methods */
 
-ve.ce.RangyRange.newFromRangySelection = function ( selection ) {
-	return new ve.ce.RangyRange(
+ve.ce.DomRange.newFromDomSelection = function ( selection ) {
+	return new ve.ce.DomRange(
 		selection.focusNode, selection.focusOffset, selection.anchorNode, selection.anchorOffset
 	);
 };
 
 /* Methods */
 
-ve.ce.RangyRange.prototype.equals = function ( other ) {
+ve.ce.DomRange.prototype.equals = function ( other ) {
 	return other &&
 		this.focusNode === other.focusNode &&
 		this.focusOffset === other.focusOffset &&
@@ -40,7 +40,7 @@ ve.ce.RangyRange.prototype.equals = function ( other ) {
 		this.anchorOffset === other.anchorOffset;
 };
 
-ve.ce.RangyRange.prototype.getRange = function () {
+ve.ce.DomRange.prototype.getRange = function () {
 	return new ve.Range(
 		ve.ce.getOffset( this.anchorNode, this.anchorOffset ),
 		ve.ce.getOffset( this.focusNode, this.focusOffset )

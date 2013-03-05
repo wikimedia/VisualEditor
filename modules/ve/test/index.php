@@ -93,7 +93,7 @@
 		<script src="../../ve/dm/annotations/ve.dm.MWInternalLinkAnnotation.js"></script>
 		<script src="../../ve/dm/annotations/ve.dm.TextStyleAnnotation.js"></script>
 		<script src="../../ve/ce/ve.ce.js"></script>
-		<script src="../../ve/ce/ve.ce.RangyRange.js"></script>
+		<script src="../../ve/ce/ve.ce.DomRange.js"></script>
 		<script src="../../ve/ce/ve.ce.NodeFactory.js"></script>
 		<script src="../../ve/ce/ve.ce.Document.js"></script>
 		<script src="../../ve/ce/ve.ce.Node.js"></script>

@@ -13,7 +13,7 @@
 		"groups": [
 			{
 				"name": "General",
-				"classes": ["ve.ce", "ve.ce.NodeFactory", "ve.ce.Surface", "ve.ce.SurfaceObserver", "ve.ce.RangyRange"]
+				"classes": ["ve.ce", "ve.ce.NodeFactory", "ve.ce.Surface", "ve.ce.SurfaceObserver", "ve.ce.DomRange"]
 			},
 			{
 				"name": "Nodes",
