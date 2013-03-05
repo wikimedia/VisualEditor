@@ -96,7 +96,10 @@ ve.init.mw.Target.onLoad = function ( response ) {
 			this, null, 'Invalid response in response from server', null
 		);
 	} else if ( response.error || data.result === 'error' ) {
-		ve.init.mw.Target.onLoadError.call( this, null, 'Server error', null );
+		ve.init.mw.Target.onLoadError.call( this, null,
+			response.error.code + ': ' + response.error.info,
+			null
+		);
 	} else if ( typeof data.content !== 'string' ) {
 		ve.init.mw.Target.onLoadError.call(
 			this, null, 'No HTML content in response from server', null

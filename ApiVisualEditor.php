@@ -24,16 +24,25 @@ class ApiVisualEditor extends ApiBase {
 			}
 			$parserParams['touched'] = $title->getTouched();
 			$parserParams['cache'] = 1;
-			$content = Http::get(
-				// Insert slash since $wgVisualEditorParsoidURL does not
-				// end in a slash
-				wfAppendQuery(
+
+			$req = MWHttpRequest::factory( wfAppendQuery(
 					$wgVisualEditorParsoidURL . '/' . $wgVisualEditorParsoidPrefix .
 						'/' . urlencode( $title->getPrefixedDBkey() ),
 					$parserParams
 				),
-				$wgVisualEditorParsoidTimeout
+				array(
+					'method' => 'GET',
+					'timeout' => $wgVisualEditorParsoidTimeout
+				)
 			);
+			$status = $req->execute();
+
+			if ( $status->isOK() ) {
+				$content = $req->getContent();
+			} else {
+				$this->dieUsage( $req->getContent(), 'parsoidserver-http-'.$req->getStatus() );
+			}
+
 			if ( $content === false ) {
 				return false;
 			}
