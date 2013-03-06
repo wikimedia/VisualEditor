@@ -32,7 +32,7 @@ QUnit.test( 'getChildNodeTypes', 2, function ( assert ) {
 		Error,
 		'throws an exception when getting allowed child nodes of a node of an unregistered type'
 	);
-	factory.register( 'node-factory-node-stub', ve.dm.NodeFactoryNodeStub );
+	factory.register( ve.dm.NodeFactoryNodeStub );
 	assert.deepEqual(
 		factory.getChildNodeTypes( 'node-factory-node-stub' ),
 		[],
@@ -48,7 +48,7 @@ QUnit.test( 'getParentNodeTypes', 2, function ( assert ) {
 		Error,
 		'throws an exception when getting allowed parent nodes of a node of an unregistered type'
 	);
-	factory.register( 'node-factory-node-stub', ve.dm.NodeFactoryNodeStub );
+	factory.register( ve.dm.NodeFactoryNodeStub );
 	assert.deepEqual(
 		factory.getParentNodeTypes( 'node-factory-node-stub' ),
 		null,
@@ -64,7 +64,7 @@ QUnit.test( 'canNodeHaveChildren', 2, function ( assert ) {
 		Error,
 		'throws an exception when checking if a node of an unregistered type can have children'
 	);
-	factory.register( 'node-factory-node-stub', ve.dm.NodeFactoryNodeStub );
+	factory.register( ve.dm.NodeFactoryNodeStub );
 	assert.strictEqual(
 		factory.canNodeHaveChildren( 'node-factory-node-stub' ),
 		false,
@@ -80,7 +80,7 @@ QUnit.test( 'canNodeHaveGrandchildren', 2, function ( assert ) {
 		Error,
 		'throws an exception when checking if a node of an unregistered type can have grandchildren'
 	);
-	factory.register( 'node-factory-node-stub', ve.dm.NodeFactoryNodeStub );
+	factory.register( ve.dm.NodeFactoryNodeStub );
 	assert.strictEqual(
 		factory.canNodeHaveGrandchildren( 'node-factory-node-stub' ),
 		false,

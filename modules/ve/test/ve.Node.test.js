@@ -11,10 +11,12 @@ QUnit.module( 've.Node' );
 
 ve.NodeStub = function VeNodeStub() {
 	// Parent constructor
-	ve.Node.call( this, 'stub' );
+	ve.Node.call( this );
 };
 
 ve.inheritClass( ve.NodeStub, ve.Node );
+
+ve.NodeStub.static.name = 'stub';
 
 /* Tests */
 

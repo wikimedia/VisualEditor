@@ -16,7 +16,7 @@
  */
 ve.dm.TableSectionNode = function VeDmTableSectionNode( children, element ) {
 	// Parent constructor
-	ve.dm.BranchNode.call( this, 'tableSection', children, element );
+	ve.dm.BranchNode.call( this, children, element );
 };
 
 /* Inheritance */

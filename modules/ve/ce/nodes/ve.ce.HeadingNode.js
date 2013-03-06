@@ -16,7 +16,7 @@
 ve.ce.HeadingNode = function VeCeHeadingNode( model ) {
 	// Parent constructor
 	ve.ce.ContentBranchNode.call(
-		this, 'heading', model, ve.ce.BranchNode.getDomWrapper( model, 'level' )
+		this, model, ve.ce.BranchNode.getDomWrapper( model, 'level' )
 	);
 
 	// Events
@@ -26,6 +26,10 @@ ve.ce.HeadingNode = function VeCeHeadingNode( model ) {
 /* Inheritance */
 
 ve.inheritClass( ve.ce.HeadingNode, ve.ce.ContentBranchNode );
+
+/* Static Properties */
+
+ve.ce.HeadingNode.static.name = 'heading';
 
 /* Static Properties */
 
@@ -61,4 +65,4 @@ ve.ce.HeadingNode.prototype.onUpdate = function () {
 
 /* Registration */
 
-ve.ce.nodeFactory.register( 'heading', ve.ce.HeadingNode );
+ve.ce.nodeFactory.register( ve.ce.HeadingNode );

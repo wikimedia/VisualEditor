@@ -15,7 +15,7 @@
  */
 ve.ce.ListItemNode = function VeCeListItemNode( model ) {
 	// Parent constructor
-	ve.ce.BranchNode.call( this, 'listItem', model, $( '<li>' ) );
+	ve.ce.BranchNode.call( this, model, $( '<li>' ) );
 };
 
 /* Inheritance */
@@ -24,8 +24,10 @@ ve.inheritClass( ve.ce.ListItemNode, ve.ce.BranchNode );
 
 /* Static Properties */
 
+ve.ce.ListItemNode.static.name = 'listItem';
+
 ve.ce.ListItemNode.static.canBeSplit = true;
 
 /* Registration */
 
-ve.ce.nodeFactory.register( 'listItem', ve.ce.ListItemNode );
+ve.ce.nodeFactory.register( ve.ce.ListItemNode );

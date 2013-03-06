@@ -15,7 +15,7 @@
  */
 ve.dm.TextNode = function VeDmTextNode( length ) {
 	// Parent constructor
-	ve.dm.LeafNode.call( this, 'text', length );
+	ve.dm.LeafNode.call( this, length );
 };
 
 /* Inheritance */

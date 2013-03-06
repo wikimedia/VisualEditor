@@ -14,16 +14,15 @@
  * @extends ve.ce.Node
  * @mixins ve.LeafNode
  * @constructor
- * @param {string} type Symbolic name of node type
  * @param {ve.dm.LeafNode} model Model to observe
  * @param {jQuery} [$element] Element to use as a container
  */
-ve.ce.LeafNode = function VeCeLeafNode( type, model, $element ) {
+ve.ce.LeafNode = function VeCeLeafNode( model, $element ) {
 	// Mixin constructor
 	ve.LeafNode.call( this );
 
 	// Parent constructor
-	ve.ce.Node.call( this, type, model, $element );
+	ve.ce.Node.call( this, model, $element );
 
 	// DOM Changes
 	if ( model.isWrapped() ) {

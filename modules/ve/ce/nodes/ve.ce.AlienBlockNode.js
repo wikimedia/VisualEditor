@@ -15,7 +15,7 @@
  */
 ve.ce.AlienBlockNode = function VeCeAlienBlockNode( model ) {
 	// Parent constructor
-	ve.ce.AlienNode.call( this, 'alienBlock', model );
+	ve.ce.AlienNode.call( this, model );
 
 	// DOM Changes
 	this.$.addClass( 've-ce-alienBlockNode' );
@@ -25,6 +25,10 @@ ve.ce.AlienBlockNode = function VeCeAlienBlockNode( model ) {
 
 ve.inheritClass( ve.ce.AlienBlockNode, ve.ce.AlienNode );
 
+/* Static Properties */
+
+ve.ce.AlienBlockNode.static.name = 'alienBlock';
+
 /* Registration */
 
-ve.ce.nodeFactory.register( 'alienBlock', ve.ce.AlienBlockNode );
+ve.ce.nodeFactory.register( ve.ce.AlienBlockNode );

@@ -12,14 +12,13 @@
  * @extends ve.EventEmitter
  *
  * @constructor
- * @param {string} type Symbolic name of node type
  */
-ve.Node = function VeNode( type ) {
+ve.Node = function VeNode() {
 	// Parent constructor
 	ve.EventEmitter.call( this );
 
 	// Properties
-	this.type = type;
+	this.type = this.constructor.static.name;
 	this.parent = null;
 	this.root = this;
 	this.doc = null;
@@ -37,6 +36,15 @@ ve.Node = function VeNode( type ) {
 /* Inheritance */
 
 ve.inheritClass( ve.Node, ve.EventEmitter );
+
+/**
+ * Symbolic name for the node class. Must be set to a unique string by every subclass. Must not
+ * conflict with other node names or other annotation names.
+ * @static
+ * @property {string} [static.name=null]
+ * @inheritable
+ */
+ve.Node.static.name = null;
 
 /* Abstract Methods */
 

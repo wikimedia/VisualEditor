@@ -15,7 +15,7 @@
  */
 ve.ce.MWEntityNode = function VeCeMWEntityNode( model ) {
 	// Parent constructor
-	ve.ce.LeafNode.call( this, 'MWentity', model, $( '<span>' ) );
+	ve.ce.LeafNode.call( this, model, $( '<span>' ) );
 
 	// DOM Changes
 	this.$.addClass( 've-ce-MWEntityNode' );
@@ -36,6 +36,10 @@ ve.ce.MWEntityNode = function VeCeMWEntityNode( model ) {
 
 ve.inheritClass( ve.ce.MWEntityNode, ve.ce.LeafNode );
 
+/* Static Properties */
+
+ve.ce.MWEntityNode.static.name = 'MWentity';
+
 /* Methods */
 
 /**
@@ -51,4 +55,4 @@ ve.ce.MWEntityNode.prototype.onUpdate = function () {
 
 /* Registration */
 
-ve.ce.nodeFactory.register( 'MWentity', ve.ce.MWEntityNode );
+ve.ce.nodeFactory.register( ve.ce.MWEntityNode );

@@ -14,16 +14,15 @@
  * @extends ve.dm.Node
  * @mixins ve.LeafNode
  * @constructor
- * @param {string} type Symbolic name of node type
  * @param {number} [length] Length of content data in document
  * @param {Object} [element] Reference to element in linear model
  */
-ve.dm.LeafNode = function VeDmLeafNode( type, length, element ) {
+ve.dm.LeafNode = function VeDmLeafNode( length, element ) {
 	// Mixin constructor
 	ve.LeafNode.call( this );
 
 	// Parent constructor
-	ve.dm.Node.call( this, type, length, element );
+	ve.dm.Node.call( this, length, element );
 };
 
 /* Inheritance */

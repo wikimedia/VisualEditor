@@ -15,7 +15,7 @@
  */
 ve.ce.ListNode = function VeCeListNode( model ) {
 	// Parent constructor
-	ve.ce.BranchNode.call( this, 'list', model, ve.ce.BranchNode.getDomWrapper( model, 'style' ) );
+	ve.ce.BranchNode.call( this, model, ve.ce.BranchNode.getDomWrapper( model, 'style' ) );
 
 	// Events
 	this.model.addListenerMethod( this, 'update', 'onUpdate' );
@@ -26,6 +26,8 @@ ve.ce.ListNode = function VeCeListNode( model ) {
 ve.inheritClass( ve.ce.ListNode, ve.ce.BranchNode );
 
 /* Static Properties */
+
+ve.ce.ListNode.static.name = 'list';
 
 /**
  * Mapping of list style values and DOM wrapper element types.
@@ -86,4 +88,4 @@ ve.ce.ListNode.prototype.canHaveSlugAfter = function () {
 
 /* Registration */
 
-ve.ce.nodeFactory.register( 'list', ve.ce.ListNode );
+ve.ce.nodeFactory.register( ve.ce.ListNode );

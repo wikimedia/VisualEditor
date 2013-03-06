@@ -16,7 +16,7 @@
  */
 ve.dm.CenterNode = function VeDmCenterNode( children, element ) {
 	// Parent constructor
-	ve.dm.BranchNode.call( this, 'center', children, element );
+	ve.dm.BranchNode.call( this, children, element );
 };
 
 /* Inheritance */

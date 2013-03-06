@@ -15,16 +15,15 @@
  * @extends ve.ce.Node
  * @mixins ve.BranchNode
  * @constructor
- * @param {string} type Symbolic name of node type
  * @param {ve.dm.BranchNode} model Model to observe
  * @param {jQuery} [$element] Element to use as a container
  */
-ve.ce.BranchNode = function VeCeBranchNode( type, model, $element ) {
+ve.ce.BranchNode = function VeCeBranchNode( model, $element ) {
 	// Mixin constructor
 	ve.BranchNode.call( this );
 
 	// Parent constructor
-	ve.ce.Node.call( this, type, model, $element );
+	ve.ce.Node.call( this, model, $element );
 
 	// Properties
 	this.domWrapperElementType = this.$.get( 0 ).nodeName.toLowerCase();

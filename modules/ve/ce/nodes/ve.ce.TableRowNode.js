@@ -15,13 +15,17 @@
  */
 ve.ce.TableRowNode = function VeCeTableRowNode( model ) {
 	// Parent constructor
-	ve.ce.BranchNode.call( this, 'tableRow', model, $( '<tr>' ) );
+	ve.ce.BranchNode.call( this, model, $( '<tr>' ) );
 };
 
 /* Inheritance */
 
 ve.inheritClass( ve.ce.TableRowNode, ve.ce.BranchNode );
 
+/* Static Properties */
+
+ve.ce.TableRowNode.static.name = 'tableRow';
+
 /* Registration */
 
-ve.ce.nodeFactory.register( 'tableRow', ve.ce.TableRowNode );
+ve.ce.nodeFactory.register( ve.ce.TableRowNode );

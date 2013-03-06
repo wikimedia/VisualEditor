@@ -15,7 +15,7 @@
  */
 ve.ce.PreformattedNode = function VeCePreformattedNode( model ) {
 	// Parent constructor
-	ve.ce.ContentBranchNode.call( this, 'preformatted', model, $( '<pre>' ) );
+	ve.ce.ContentBranchNode.call( this, model, $( '<pre>' ) );
 };
 
 /* Inheritance */
@@ -24,8 +24,10 @@ ve.inheritClass( ve.ce.PreformattedNode, ve.ce.ContentBranchNode );
 
 /* Static Properties */
 
+ve.ce.PreformattedNode.static.name = 'preformatted';
+
 ve.ce.PreformattedNode.static.canBeSplit = true;
 
 /* Registration */
 
-ve.ce.nodeFactory.register( 'preformatted', ve.ce.PreformattedNode );
+ve.ce.nodeFactory.register( ve.ce.PreformattedNode );

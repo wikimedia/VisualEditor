@@ -13,9 +13,9 @@
  * @constructor
  * @param {ve.dm.AlienNode} model Model to observe.
  */
-ve.ce.AlienNode = function VeCeAlienNode( type, model ) {
+ve.ce.AlienNode = function VeCeAlienNode( model ) {
 	// Parent constructor
-	ve.ce.LeafNode.call( this, type, model );
+	ve.ce.LeafNode.call( this, model );
 
 	// DOM Changes
 	this.$.addClass( 've-ce-alienNode' );
@@ -33,6 +33,10 @@ ve.ce.AlienNode = function VeCeAlienNode( type, model ) {
 /* Inheritance */
 
 ve.inheritClass( ve.ce.AlienNode, ve.ce.LeafNode );
+
+/* Static Properties */
+
+ve.ce.AlienNode.static.name = 'alien';
 
 /* Methods */
 
@@ -140,4 +144,4 @@ ve.ce.AlienNode.prototype.clearPhantoms = function() {
 
 /* Registration */
 
-ve.ce.nodeFactory.register( 'alien', ve.ce.AlienNode );
+ve.ce.nodeFactory.register( ve.ce.AlienNode );

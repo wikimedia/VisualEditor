@@ -90,6 +90,7 @@ $html = file_get_contents( $page );
 		<script src="../../modules/ve/ve.TriggerRegistry.js"></script>
 		<script src="../../modules/ve/ve.Range.js"></script>
 		<script src="../../modules/ve/ve.Node.js"></script>
+		<script src="../../modules/ve/ve.NodeFactory.js"></script>
 		<script src="../../modules/ve/ve.BranchNode.js"></script>
 		<script src="../../modules/ve/ve.LeafNode.js"></script>
 		<script src="../../modules/ve/ve.Surface.js"></script>

@@ -16,7 +16,7 @@
 ve.ce.TableNode = function VeCeTableNode( model ) {
 	// Parent constructor
 	ve.ce.BranchNode.call(
-		this, 'table', model, $( '<table border="1" cellpadding="5" cellspacing="5"></table>' )
+		this, model, $( '<table border="1" cellpadding="5" cellspacing="5"></table>' )
 	);
 };
 
@@ -24,6 +24,10 @@ ve.ce.TableNode = function VeCeTableNode( model ) {
 
 ve.inheritClass( ve.ce.TableNode, ve.ce.BranchNode );
 
+/* Static Properties */
+
+ve.ce.TableNode.static.name = 'table';
+
 /* Registration */
 
-ve.ce.nodeFactory.register( 'table', ve.ce.TableNode );
+ve.ce.nodeFactory.register( ve.ce.TableNode );
