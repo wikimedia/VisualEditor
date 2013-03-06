@@ -13,15 +13,29 @@
  * @extends ve.ui.Dialog
  *
  * @constructor
+ * @param {ve.ui.Surface} surface
  */
-ve.ui.MetaDialog = function VeUiMetaDialog() {
+ve.ui.MetaDialog = function VeUiMetaDialog( surface ) {
 	// Parent constructor
-	ve.ui.Dialog.call( this );
+	ve.ui.Dialog.call( this, surface );
+
+	// TODO: Construct meta dialog inside .ve-ui-dialog-container
 };
 
 /* Inheritance */
 
 ve.inheritClass( ve.ui.MetaDialog, ve.ui.Dialog );
 
-/* Methods */
 
+/* Static Properties */
+
+/**
+ * Localized message for dialog title.
+ *
+ * @static
+ * @property
+ * @type {string}
+ */
+ve.ui.MetaDialog.static.dialogTitleMessage = 'visualeditor-dialog-meta-title';
+
+/* Methods */

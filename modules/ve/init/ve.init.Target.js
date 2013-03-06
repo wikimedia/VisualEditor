@@ -94,7 +94,7 @@ ve.init.Target.prototype.openDialog = function ( name ) {
 	}
 
 	this.currentDialogName = name;
-	dialog.show();
+	dialog.open();
 	this.emit( 'openDialog', name );
 };
 
@@ -109,7 +109,7 @@ ve.init.Target.prototype.closeDialog = function () {
 	var name = this.currentDialogName;
 
 	this.currentDialogName = null;
-	this.dialogs[name].hide();
+	this.dialogs[name].close();
 	this.emit( 'closeDialog', name );
 };
 

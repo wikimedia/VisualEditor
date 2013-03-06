@@ -1,0 +1,28 @@
+.ve-ui-dialog {
+	position: absolute;
+	background: #FFFFFF;
+	line-height: 1em;
+	z-index: 99;
+}
+
+.ve-ui-dialog-title {
+	line-height: 2.6em;
+	height: 2em;
+	padding: 0 .75em;
+	display: inline-block;
+	border-right: solid 1px #f0f3f5;
+	vertical-align: middle;
+	color: #555;
+}
+
+.ve-ui-dialog-actions {
+	float: right;
+	padding: 0.25em;
+	font-size: 0.8em;
+}
+
+.ve-ui-dialog-actions .ve-ui-buttonWidget {
+	margin-left: 0.25em;
+	margin-right: 0.25em;
+	margin-top: 0.2em;
+}
