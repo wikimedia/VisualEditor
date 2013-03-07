@@ -1,5 +1,5 @@
 /*!
- * VisualEditor MediaWiki Initialization Target class.
+ * VisualEditor MediaWiki Initialization Platform class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -12,6 +12,7 @@
  *
  * @class
  * @extends ve.init.Platform
+ *
  * @constructor
  */
 ve.init.mw.Platform = function VeInitMwPlatform() {

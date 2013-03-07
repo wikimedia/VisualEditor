@@ -12,13 +12,16 @@
  *
  * @class
  * @extends ve.init.mw.Target
+ *
  * @constructor
  */
 ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	var currentUri = new mw.Uri( window.location.toString() );
 
 	// Parent constructor
-	ve.init.mw.Target.call( this, mw.config.get( 'wgRelevantPageName' ), currentUri.query.oldid );
+	ve.init.mw.Target.call(
+		this, $( '#content' ), mw.config.get( 'wgRelevantPageName' ), currentUri.query.oldid
+	);
 
 	// Properties
 	this.$document = null;
@@ -98,7 +101,10 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 		'saveError': 'onSaveError',
 		'editConflict': 'onEditConflict',
 		'showChanges': 'onShowChanges',
-		'showChangesError': 'onShowChangesError'
+		'showChangesError': 'onShowChangesError',
+		'addDialog': 'onAddDialog',
+		'openDialog': 'onOpenDialog',
+		'closeDialog': 'onCloseDialog'
 	} );
 
 	// Initialization
@@ -652,7 +658,7 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc ) {
 	// Store the HTML for reporting purposes
 	this.originalHtml = doc.body.innerHTML; // TODO store entire document in the future
 	// Initialize surface
-	this.surface = new ve.Surface( $( '#content' ), doc, this.surfaceOptions );
+	this.surface = new ve.Surface( this, doc, this.surfaceOptions );
 	this.surface.getContext().hide();
 	this.$document = this.surface.$.find( '.ve-ce-documentNode' );
 	this.surface.getModel().on( 'transact', this.proxiedOnSurfaceModelTransact );
@@ -1608,6 +1614,41 @@ ve.init.mw.ViewPageTarget.prototype.onBeforeUnload = function () {
 		} );
 		return message;
 	}
+};
+
+/**
+ * Handle add dialog events.
+ *
+ * @method
+ * @param {string} name Name of added dialog
+ */
+ve.init.mw.ViewPageTarget.prototype.onAddDialog = function ( name ) {
+	var dialog = this.dialogs[name];
+
+	// Append dialog to target container
+	this.$.append( dialog.$ );
+};
+
+/**
+ * Handle open dialog events.
+ *
+ * @method
+ * @param {string} name Name of dialog
+ */
+ve.init.mw.ViewPageTarget.prototype.onOpenDialog = function () {
+	// TODO: Replace toolbar contents with dialog title bar
+	// TODO: Set the dialog size and add window resize handlers to keep it there
+};
+
+/**
+ * Handle close dialog events.
+ *
+ * @method
+ * @param {string} name Name of dialog
+ */
+ve.init.mw.ViewPageTarget.prototype.onCloseDialog = function () {
+	// TODO: Restore toolbar contents
+	// TODO: Remove window resize handlers for dialog
 };
 
 /* Initialization */

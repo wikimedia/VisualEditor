@@ -175,6 +175,7 @@ $wgResourceModules += array(
 			've/ve.EventEmitter.js',
 			've/init/ve.init.js',
 			've/init/ve.init.Platform.js',
+			've/init/ve.init.Target.js',
 		),
 		'debugScripts' => array(
 			've/ve.debug.js',
@@ -295,16 +296,10 @@ $wgResourceModules += array(
 			've/ui/ve.ui.Inspector.js',
 			've/ui/ve.ui.InspectorFactory.js',
 			've/ui/ve.ui.Widget.js',
+			've/ui/ve.ui.Dialog.js',
 			've/ui/ve.ui.Tool.js',
 			've/ui/ve.ui.Toolbar.js',
 			've/ui/ve.ui.ToolFactory.js',
-
-			've/ui/tools/ve.ui.ButtonTool.js',
-			've/ui/tools/ve.ui.AnnotationButtonTool.js',
-			've/ui/tools/ve.ui.InspectorButtonTool.js',
-			've/ui/tools/ve.ui.IndentationButtonTool.js',
-			've/ui/tools/ve.ui.ListButtonTool.js',
-			've/ui/tools/ve.ui.DropdownTool.js',
 
 			've/ui/widgets/ve.ui.LabeledWidget.js',
 			've/ui/widgets/ve.ui.FlaggableWidget.js',
@@ -317,6 +312,16 @@ $wgResourceModules += array(
 			've/ui/widgets/ve.ui.TextInputMenuWidget.js',
 			've/ui/widgets/ve.ui.LinkTargetInputWidget.js',
 			've/ui/widgets/ve.ui.MWLinkTargetInputWidget.js',
+
+			've/ui/dialogs/ve.ui.ContentDialog.js',
+			've/ui/dialogs/ve.ui.MetaDialog.js',
+
+			've/ui/tools/ve.ui.ButtonTool.js',
+			've/ui/tools/ve.ui.AnnotationButtonTool.js',
+			've/ui/tools/ve.ui.InspectorButtonTool.js',
+			've/ui/tools/ve.ui.IndentationButtonTool.js',
+			've/ui/tools/ve.ui.ListButtonTool.js',
+			've/ui/tools/ve.ui.DropdownTool.js',
 
 			've/ui/tools/buttons/ve.ui.BoldButtonTool.js',
 			've/ui/tools/buttons/ve.ui.ItalicButtonTool.js',
