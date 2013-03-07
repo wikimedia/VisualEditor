@@ -95,6 +95,10 @@ ve.ce.SurfaceObserver.prototype.stop = function ( poll ) {
 ve.ce.SurfaceObserver.prototype.poll = function ( async ) {
 	var delayPoll, $branch, node, text, hash, range, rangyRange;
 
+	if ( this.polling === false ) {
+		return;
+	}
+
 	if ( this.timeoutId !== null ) {
 		clearTimeout( this.timeoutId );
 		this.timeoutId = null;
