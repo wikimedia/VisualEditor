@@ -1074,8 +1074,8 @@ ve.ce.Surface.prototype.showSelection = function ( range ) {
 	// Ensure the range we are asking to select is from and to correct offsets - failure to do so
 	// may cause getNodeAndOffset to throw an exception
 	range = new ve.Range(
-		this.getNearestCorrectOffset( range.start ),
-		this.getNearestCorrectOffset( range.end )
+		this.getNearestCorrectOffset( range.from ),
+		this.getNearestCorrectOffset( range.to )
 	);
 
 	if ( !range.isCollapsed() ) {
