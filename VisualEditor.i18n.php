@@ -17,6 +17,9 @@ $messages['en'] = array(
 	'visualeditor-ca-editsource' => 'Edit source',
 	'visualeditor-ca-ve-edit' => 'VisualEditor',
 	'visualeditor-ca-ve-create' => 'VisualEditor',
+	'visualeditor-dialog-meta-title' => 'Page Settings',
+	'visualeditor-dialog-content-title' => 'Generated Content',
+	'visualeditor-dialog-label-apply' => 'Apply changes',
 	'visualeditor-toolbar-savedialog' => 'Review and save',
 	'visualeditor-savedialog-title-review' => 'Review your changes',
 	'visualeditor-savedialog-title-report' => 'Report a problem',
@@ -110,6 +113,9 @@ Link text of the dedicated VisualEditor Edit tab.
 	'visualeditor-ca-ve-create' => '{{Optional}}
 	Link text of the dedicated VisualEditor Create tab.
 {{Identical|visualeditor}}',
+	'visualeditor-dialog-meta-title' => 'MetaData dialog title text',
+	'visualeditor-dialog-content-title' => 'Content dialog title text',
+	'visualeditor-dialog-label-apply' => 'Label text for button to apply changes made in dialog',
 	'visualeditor-toolbar-savedialog' => 'Label text for button to trigger review and save interface',
 	'visualeditor-savedialog-title-review' => 'Title for reviewing slide',
 	'visualeditor-savedialog-title-report' => 'Title for reporting slide',

@@ -1625,6 +1625,8 @@ ve.init.mw.ViewPageTarget.prototype.onBeforeUnload = function () {
 ve.init.mw.ViewPageTarget.prototype.onAddDialog = function ( name ) {
 	var dialog = this.dialogs[name];
 
+	// Init the dialog closed and bypass events.
+	dialog.$.hide();
 	// Append dialog to target container
 	this.$.append( dialog.$ );
 };
@@ -1635,9 +1637,30 @@ ve.init.mw.ViewPageTarget.prototype.onAddDialog = function ( name ) {
  * @method
  * @param {string} name Name of dialog
  */
-ve.init.mw.ViewPageTarget.prototype.onOpenDialog = function () {
-	// TODO: Replace toolbar contents with dialog title bar
-	// TODO: Set the dialog size and add window resize handlers to keep it there
+ve.init.mw.ViewPageTarget.prototype.onOpenDialog = function ( name ) {
+	var dialog = this.dialogs[name],
+		$toolbar = this.surface.toolbars.top.$;
+
+	// Set dialog size.
+	function setDialogSize () {
+		var height = $( 'body' ).height() - $toolbar.height() - $toolbar.offset().top;
+		dialog.$.css( { 'width': $toolbar.width(), 'height': height } );
+	}
+	// Hide to toolbar controls
+	$toolbar.find( '.ve-ui-toolbarGroups, .ve-ui-actions' ).hide();
+
+	// Move the title & actions elements from the dialog into the toolbar.
+	$toolbar.prepend( dialog.$title, dialog.$actions );
+
+	// Init dialog
+	$toolbar.append( dialog.$ );
+
+	setDialogSize();
+	// Put the dialog just under the toolbar.
+	dialog.$.css( { 'top': $toolbar.height() } );
+
+	// Events
+	$( window ).on( { 'resize.ve-dialog': setDialogSize } );
 };
 
 /**
@@ -1646,9 +1669,18 @@ ve.init.mw.ViewPageTarget.prototype.onOpenDialog = function () {
  * @method
  * @param {string} name Name of dialog
  */
-ve.init.mw.ViewPageTarget.prototype.onCloseDialog = function () {
-	// TODO: Restore toolbar contents
-	// TODO: Remove window resize handlers for dialog
+ve.init.mw.ViewPageTarget.prototype.onCloseDialog = function ( name ) {
+	var dialog = this.dialogs[name],
+		$toolbar = this.surface.toolbars.top.$;
+
+	// Move title and action elements back to the top of the dialog.
+	dialog.$.prepend( dialog.$title, dialog.$actions );
+
+	// Show the toolbar elements.
+	$toolbar.find( '.ve-ui-toolbarGroups, .ve-ui-actions' ).show();
+
+	// Events teardown
+	$( window ).off( 'resize.ve-dialog' );
 };
 
 /* Initialization */

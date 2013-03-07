@@ -349,6 +349,7 @@ $wgResourceModules += array(
 			've/ce/styles/ve.ce.Surface.css',
 			// ui
 			've/ui/styles/ve.ui.Context.css',
+			've/ui/styles/ve.ui.Dialog.css',
 			've/ui/styles/ve.ui.Inspector.css',
 			've/ui/styles/ve.ui.Surface.css',
 			've/ui/styles/ve.ui.Toolbar.css',
@@ -408,6 +409,9 @@ $wgResourceModules += array(
 			'visualeditor-saveerror',
 			'visualeditor-editconflict',
 			'visualeditor-aliennode-tooltip',
+			'visualeditor-dialog-meta-title',
+			'visualeditor-dialog-content-title',
+			'visualeditor-dialog-label-apply',
 		),
 	),
 	'ext.visualEditor.icons-raster' => $wgVisualEditorResourceTemplate + array(

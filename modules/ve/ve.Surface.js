@@ -37,6 +37,8 @@ ve.Surface = function VeSurface( target, doc, options ) {
 
 	// Initialization
 	this.target.$.append( this.$.addClass( 've-surface' ) );
+	this.target.addDialog( 'meta', new ve.ui.MetaDialog( this ) );
+
 	this.view.getDocument().getDocumentNode().setLive( true );
 	this.setupToolbars();
 	this.setupCommands();
