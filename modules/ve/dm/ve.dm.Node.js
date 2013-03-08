@@ -11,13 +11,12 @@
  * @abstract
  * @extends ve.Node
  * @constructor
- * @param {string} type Symbolic name of node type
  * @param {number} [length] Length of content data in document
  * @param {Object} [element] Reference to element in linear model
  */
-ve.dm.Node = function VeDmNode( type, length, element ) {
+ve.dm.Node = function VeDmNode( length, element ) {
 	// Parent constructor
-	ve.Node.call( this, type );
+	ve.Node.call( this );
 
 	// Properties
 	this.length = length || 0;
@@ -37,17 +36,6 @@ ve.dm.Node = function VeDmNode( type, length, element ) {
 /* Inheritance */
 
 ve.inheritClass( ve.dm.Node, ve.Node );
-
-/* Static members */
-
-/**
- * Symbolic name for the node class. Must be set to a unique string by every subclass. Must not
- * conflict with other node names or other annotation names.
- * @static
- * @property {string} [static.name=null]
- * @inheritable
- */
-ve.dm.Node.static.name = null;
 
 /**
  * Array of HTML tag names that this node should be a match candidate for.

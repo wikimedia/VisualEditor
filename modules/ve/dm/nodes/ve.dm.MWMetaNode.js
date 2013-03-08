@@ -12,13 +12,12 @@
  * @abstract
  * @extends ve.dm.MetaNode
  * @constructor
- * @param {string} name Node name
  * @param {number} [length] Length of content data in document; ignored and overridden to 0
  * @param {Object} [element] Reference to element in linear model
  */
-ve.dm.MWMetaNode = function VeDmMWMetaNode( name, length, element ) {
+ve.dm.MWMetaNode = function VeDmMWMetaNode( length, element ) {
 	// Parent constructor
-	ve.dm.LeafNode.call( this, name, 0, element );
+	ve.dm.LeafNode.call( this, 0, element );
 };
 
 /* Inheritance */

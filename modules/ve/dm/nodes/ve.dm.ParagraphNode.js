@@ -16,7 +16,7 @@
  */
 ve.dm.ParagraphNode = function VeDmParagraphNode( children, element ) {
 	// Parent constructor
-	ve.dm.BranchNode.call( this, 'paragraph', children, element );
+	ve.dm.BranchNode.call( this, children, element );
 };
 
 /* Inheritance */

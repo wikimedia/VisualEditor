@@ -15,7 +15,7 @@
  */
 ve.ce.BreakNode = function VeCeBreakNode( model ) {
 	// Parent constructor
-	ve.ce.LeafNode.call( this, 'break', model, $( '<br>' ) );
+	ve.ce.LeafNode.call( this, model, $( '<br>' ) );
 
 	// DOM Changes
 	this.$.addClass( 've-ce-BreakNode' );
@@ -25,6 +25,10 @@ ve.ce.BreakNode = function VeCeBreakNode( model ) {
 
 ve.inheritClass( ve.ce.BreakNode, ve.ce.LeafNode );
 
+/* Static Properties */
+
+ve.ce.BreakNode.static.name = 'break';
+
 /* Registration */
 
-ve.ce.nodeFactory.register( 'break', ve.ce.BreakNode );
+ve.ce.nodeFactory.register( ve.ce.BreakNode );

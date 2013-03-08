@@ -15,13 +15,17 @@
  */
 ve.ce.CenterNode = function VeCeCenterNode( model ) {
 	// Parent constructor
-	ve.ce.BranchNode.call( this, 'center', model, $( '<center>') );
+	ve.ce.BranchNode.call( this, model, $( '<center>') );
 };
 
 /* Inheritance */
 
 ve.inheritClass( ve.ce.CenterNode, ve.ce.BranchNode );
 
+/* Static Properties */
+
+ve.ce.CenterNode.static.name = 'center';
+
 /* Registration */
 
-ve.ce.nodeFactory.register( 'center', ve.ce.CenterNode );
+ve.ce.nodeFactory.register( ve.ce.CenterNode );

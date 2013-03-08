@@ -12,13 +12,12 @@
  * @abstract
  * @extends ve.dm.LeafNode
  * @constructor
- * @param {string} name Node name
  * @param {number} [length] Length of content data in document; ignored and overridden to 0
  * @param {Object} [element] Reference to element in linear model
  */
-ve.dm.MetaNode = function VeDmMetaNode( name, length, element ) {
+ve.dm.MetaNode = function VeDmMetaNode( length, element ) {
 	// Parent constructor
-	ve.dm.LeafNode.call( this, name, 0, element );
+	ve.dm.LeafNode.call( this, 0, element );
 };
 
 /* Inheritance */
@@ -85,7 +84,7 @@ ve.dm.MetaNode.static.toDomElements = function ( dataElement ) {
  */
 ve.dm.MetaBlockNode = function VeDmMetaBlockNode( length, element ) {
 	// Parent constructor
-	ve.dm.MetaNode.call( this, 'metaBlock', length, element );
+	ve.dm.MetaNode.call( this, length, element );
 };
 
 ve.inheritClass( ve.dm.MetaBlockNode, ve.dm.MetaNode );
@@ -95,7 +94,7 @@ ve.dm.MetaBlockNode.static.name = 'metaBlock';
 
 ve.dm.MetaInlineNode = function VeDmMetaInlineNode( length, element ) {
 	// Parent constructor
-	ve.dm.MetaNode.call( this, 'metaInline', length, element );
+	ve.dm.MetaNode.call( this, length, element );
 };
 
 ve.inheritClass( ve.dm.MetaInlineNode, ve.dm.MetaNode );

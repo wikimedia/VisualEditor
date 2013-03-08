@@ -16,7 +16,7 @@
 ve.ce.TableSectionNode = function VeCeTableSectionNode( model ) {
 	// Parent constructor
 	ve.ce.BranchNode.call(
-		this, 'tableSection', model, ve.ce.BranchNode.getDomWrapper( model, 'style' )
+		this, model, ve.ce.BranchNode.getDomWrapper( model, 'style' )
 	);
 
 	// Events
@@ -28,6 +28,8 @@ ve.ce.TableSectionNode = function VeCeTableSectionNode( model ) {
 ve.inheritClass( ve.ce.TableSectionNode, ve.ce.BranchNode );
 
 /* Static Properties */
+
+ve.ce.TableSectionNode.static.name = 'tableSection';
 
 /**
  * Mapping of list item style values and DOM wrapper element types.
@@ -56,4 +58,4 @@ ve.ce.TableSectionNode.prototype.onUpdate = function () {
 
 /* Registration */
 
-ve.ce.nodeFactory.register( 'tableSection', ve.ce.TableSectionNode );
+ve.ce.nodeFactory.register( ve.ce.TableSectionNode );

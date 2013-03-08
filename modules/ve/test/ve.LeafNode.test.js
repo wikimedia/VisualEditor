@@ -16,4 +16,6 @@ ve.LeafNodeStub = function VeLeafNodeStub() {
 
 ve.inheritClass( ve.LeafNodeStub, ve.LeafNode );
 
+ve.LeafNodeStub.static.name = 'leaf-stub';
+
 /* Tests */

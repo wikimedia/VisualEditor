@@ -16,7 +16,7 @@
  */
 ve.dm.ListNode = function VeDmListNode( children, element ) {
 	// Parent constructor
-	ve.dm.BranchNode.call( this, 'list', children, element );
+	ve.dm.BranchNode.call( this, children, element );
 };
 
 /* Inheritance */

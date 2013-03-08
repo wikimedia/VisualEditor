@@ -12,13 +12,12 @@
  * @extends ve.Node
  *
  * @constructor
- * @param {string} type Symbolic name of node type
  * @param {ve.dm.Node} model Model to observe
  * @param {jQuery} [$element] Element to use as a container
  */
-ve.ce.Node = function VeCeNode( type, model, $element ) {
+ve.ce.Node = function VeCeNode( model, $element ) {
 	// Parent constructor
-	ve.Node.call( this, type );
+	ve.Node.call( this );
 
 	// Properties
 	this.model = model;
@@ -43,13 +42,6 @@ ve.ce.Node = function VeCeNode( type, model, $element ) {
 ve.inheritClass( ve.ce.Node, ve.Node );
 
 /* Static Members */
-
-/**
- * @static
- * @property
- * @inheritable
- */
-ve.ce.Node.static = {};
 
 /**
  * Whether this node type can be split.

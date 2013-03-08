@@ -16,7 +16,7 @@
  */
 ve.dm.HeadingNode = function VeDmHeadingNode( children, element ) {
 	// Parent constructor
-	ve.dm.BranchNode.call( this, 'heading', children, element );
+	ve.dm.BranchNode.call( this, children, element );
 };
 
 /* Inheritance */

@@ -12,13 +12,12 @@
  * @abstract
  * @extends ve.dm.LeafNode
  * @constructor
- * @param {string} name Node name
  * @param {number} [length] Length of content data in document; ignored and overridden to 0
  * @param {Object} [element] Reference to element in linear model
  */
-ve.dm.AlienNode = function VeDmAlienNode( name, length, element ) {
+ve.dm.AlienNode = function VeDmAlienNode( length, element ) {
 	// Parent constructor
-	ve.dm.LeafNode.call( this, name, 0, element );
+	ve.dm.LeafNode.call( this, 0, element );
 };
 
 /* Inheritance */
@@ -86,7 +85,7 @@ ve.dm.AlienNode.static.toDomElements = function ( dataElement ) {
  */
 ve.dm.AlienBlockNode = function VeDmAlienBlockNode( length, element ) {
 	// Parent constructor
-	ve.dm.AlienNode.call( this, 'alienBlock', length, element );
+	ve.dm.AlienNode.call( this, length, element );
 };
 
 ve.inheritClass( ve.dm.AlienBlockNode, ve.dm.AlienNode );
@@ -104,7 +103,7 @@ ve.dm.AlienBlockNode.static.name = 'alienBlock';
  */
 ve.dm.AlienInlineNode = function VeDmAlienInlineNode( length, element ) {
 	// Parent constructor
-	ve.dm.AlienNode.call( this, 'alienInline', length, element );
+	ve.dm.AlienNode.call( this, length, element );
 };
 
 ve.inheritClass( ve.dm.AlienInlineNode, ve.dm.AlienNode );

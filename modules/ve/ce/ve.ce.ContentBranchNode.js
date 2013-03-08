@@ -13,13 +13,12 @@
  * @abstract
  * @extends ve.ce.BranchNode
  * @constructor
- * @param {string} type Symbolic name of node type
  * @param {ve.dm.BranchNode} model Model to observe
  * @param {jQuery} [$element] Element to use as a container
  */
-ve.ce.ContentBranchNode = function VeCeContentBranchNode( type, model, $element ) {
+ve.ce.ContentBranchNode = function VeCeContentBranchNode( model, $element ) {
 	// Parent constructor
-	ve.ce.BranchNode.call( this, type, model, $element );
+	ve.ce.BranchNode.call( this, model, $element );
 
 	// Events
 	this.addListenerMethod( this, 'childUpdate', 'renderContents' );

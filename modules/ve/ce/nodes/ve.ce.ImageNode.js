@@ -15,7 +15,7 @@
  */
 ve.ce.ImageNode = function VeCeImageNode( model ) {
 	// Parent constructor
-	ve.ce.LeafNode.call( this, 'image', model, $( '<img>' ) );
+	ve.ce.LeafNode.call( this, model, $( '<img>' ) );
 
 	// DOM Changes
 	this.$.addClass( 've-ce-imageNode' );
@@ -25,6 +25,10 @@ ve.ce.ImageNode = function VeCeImageNode( model ) {
 
 ve.inheritClass( ve.ce.ImageNode, ve.ce.LeafNode );
 
+/* Static Properties */
+
+ve.ce.ImageNode.static.name = 'image';
+
 /* Registration */
 
-ve.ce.nodeFactory.register( 'image', ve.ce.ImageNode );
+ve.ce.nodeFactory.register( ve.ce.ImageNode );

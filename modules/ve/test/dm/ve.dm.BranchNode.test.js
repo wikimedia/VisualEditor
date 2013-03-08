@@ -11,7 +11,7 @@ QUnit.module( 've.dm.BranchNode' );
 
 ve.dm.BranchNodeStub = function VeDmBranchNodeStub( children, element ) {
 	// Parent constructor
-	ve.dm.BranchNode.call( this, 'branch-stub', children, element );
+	ve.dm.BranchNode.call( this, children, element );
 };
 
 ve.inheritClass( ve.dm.BranchNodeStub, ve.dm.BranchNode );
@@ -20,7 +20,7 @@ ve.dm.BranchNodeStub.static.name = 'branch-stub';
 
 ve.dm.BranchNodeStub.static.matchTagNames = [];
 
-ve.dm.nodeFactory.register( 'branch-stub', ve.dm.BranchNodeStub );
+ve.dm.nodeFactory.register( ve.dm.BranchNodeStub );
 
 /* Tests */
 

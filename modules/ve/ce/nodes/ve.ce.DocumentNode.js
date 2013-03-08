@@ -15,7 +15,7 @@
  */
 ve.ce.DocumentNode = function VeCeDocumentNode( model, surface ) {
 	// Parent constructor
-	ve.ce.BranchNode.call( this, 'document', model );
+	ve.ce.BranchNode.call( this, model );
 
 	// Properties
 	this.surface = surface;
@@ -29,6 +29,10 @@ ve.ce.DocumentNode = function VeCeDocumentNode( model, surface ) {
 /* Inheritance */
 
 ve.inheritClass( ve.ce.DocumentNode, ve.ce.BranchNode );
+
+/* Static Properties */
+
+ve.ce.DocumentNode.static.name = 'document';
 
 /* Methods */
 
@@ -74,4 +78,4 @@ ve.ce.DocumentNode.prototype.enable = function () {
 
 /* Registration */
 
-ve.ce.nodeFactory.register( 'document', ve.ce.DocumentNode );
+ve.ce.nodeFactory.register( ve.ce.DocumentNode );

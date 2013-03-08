@@ -15,7 +15,7 @@
  */
 ve.ce.TextNode = function VeCeTextNode( model ) {
 	// Parent constructor
-	ve.ce.LeafNode.call( this, 'text', model ); // not using this.$
+	ve.ce.LeafNode.call( this, model ); // not using this.$
 };
 
 /* Inheritance */
@@ -23,6 +23,8 @@ ve.ce.TextNode = function VeCeTextNode( model ) {
 ve.inheritClass( ve.ce.TextNode, ve.ce.LeafNode );
 
 /* Static Properties */
+
+ve.ce.TextNode.static.name = 'text';
 
 ve.ce.TextNode.static.canBeSplit = true;
 
@@ -112,4 +114,4 @@ ve.ce.TextNode.prototype.getAnnotatedHtml = function () {
 
 /* Registration */
 
-ve.ce.nodeFactory.register( 'text', ve.ce.TextNode );
+ve.ce.nodeFactory.register( ve.ce.TextNode );

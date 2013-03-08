@@ -82,7 +82,7 @@ ve.dm.ModelRegistry.prototype.register = function ( constructor ) {
 	if ( constructor.prototype instanceof ve.dm.Annotation ) {
 		ve.dm.annotationFactory.register( name, constructor );
 	} else if ( constructor.prototype instanceof ve.dm.Node ) {
-		ve.dm.nodeFactory.register( name, constructor );
+		ve.dm.nodeFactory.register( constructor );
 	} else {
 		throw new Error( 'Models must be subclasses of ve.dm.Annotation or ve.dm.Node' );
 	}

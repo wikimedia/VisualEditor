@@ -11,7 +11,7 @@ QUnit.module( 've.dm.LeafNode' );
 
 ve.dm.LeafNodeStub = function VeDmLeafNodeStub( length, element ) {
 	// Parent constructor
-	ve.dm.LeafNode.call( this, 'leaf-stub', length, element );
+	ve.dm.LeafNode.call( this, length, element );
 };
 
 ve.inheritClass( ve.dm.LeafNodeStub, ve.dm.LeafNode );
@@ -20,7 +20,7 @@ ve.dm.LeafNodeStub.static.name = 'leaf-stub';
 
 ve.dm.LeafNodeStub.static.matchTagNames = [];
 
-ve.dm.nodeFactory.register( 'leaf-stub', ve.dm.LeafNodeStub );
+ve.dm.nodeFactory.register( ve.dm.LeafNodeStub );
 
 /* Tests */
 

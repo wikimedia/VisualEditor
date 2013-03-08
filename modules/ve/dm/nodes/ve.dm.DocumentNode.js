@@ -15,7 +15,7 @@
  */
 ve.dm.DocumentNode = function VeDmDocumentNode( children ) {
 	// Parent constructor
-	ve.dm.BranchNode.call( this, 'document', children );
+	ve.dm.BranchNode.call( this, children );
 };
 
 /* Inheritance */

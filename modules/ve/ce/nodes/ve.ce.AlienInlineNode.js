@@ -15,7 +15,7 @@
  */
 ve.ce.AlienInlineNode = function VeCeAlienInlineNode( model ) {
 	// Parent constructor
-	ve.ce.AlienNode.call( this, 'alienInline', model );
+	ve.ce.AlienNode.call( this, model );
 
 	// DOM Changes
 	this.$.addClass( 've-ce-alienInlineNode' );
@@ -25,6 +25,10 @@ ve.ce.AlienInlineNode = function VeCeAlienInlineNode( model ) {
 
 ve.inheritClass( ve.ce.AlienInlineNode, ve.ce.AlienNode );
 
+/* Static Properties */
+
+ve.ce.AlienInlineNode.static.name = 'alienInline';
+
 /* Registration */
 
-ve.ce.nodeFactory.register( 'alienInline', ve.ce.AlienInlineNode );
+ve.ce.nodeFactory.register( ve.ce.AlienInlineNode );

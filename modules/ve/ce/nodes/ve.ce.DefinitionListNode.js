@@ -15,13 +15,17 @@
  */
 ve.ce.DefinitionListNode = function VeCeDefinitionListNode( model ) {
 	// Parent constructor
-	ve.ce.BranchNode.call( this, 'definitionList', model, $( '<dl>' ) );
+	ve.ce.BranchNode.call( this, model, $( '<dl>' ) );
 };
 
 /* Inheritance */
 
 ve.inheritClass( ve.ce.DefinitionListNode, ve.ce.BranchNode );
 
+/* Static Properties */
+
+ve.ce.DefinitionListNode.static.name = 'definitionList';
+
 /* Registration */
 
-ve.ce.nodeFactory.register( 'definitionList', ve.ce.DefinitionListNode );
+ve.ce.nodeFactory.register( ve.ce.DefinitionListNode );

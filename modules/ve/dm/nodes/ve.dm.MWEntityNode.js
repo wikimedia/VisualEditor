@@ -16,7 +16,7 @@
  */
 ve.dm.MWEntityNode = function VeDmMWEntityNode( length, element ) {
 	// Parent constructor
-	ve.dm.LeafNode.call( this, 'MWentity', 0, element );
+	ve.dm.LeafNode.call( this, 0, element );
 };
 
 /* Inheritance */

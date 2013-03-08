@@ -16,7 +16,7 @@
 ve.ce.DefinitionListItemNode = function VeCeDefinitionListItemNode( model ) {
 	// Parent constructor
 	ve.ce.BranchNode.call(
-		this, 'definitionListItem', model, ve.ce.BranchNode.getDomWrapper( model, 'style' )
+		this, model, ve.ce.BranchNode.getDomWrapper( model, 'style' )
 	);
 
 	// Events
@@ -28,6 +28,8 @@ ve.ce.DefinitionListItemNode = function VeCeDefinitionListItemNode( model ) {
 ve.inheritClass( ve.ce.DefinitionListItemNode, ve.ce.BranchNode );
 
 /* Static Properties */
+
+ve.ce.DefinitionListItemNode.static.name = 'definitionListItem';
 
 /**
  * Mapping of list item style values and DOM wrapper element types.
@@ -55,4 +57,4 @@ ve.ce.DefinitionListItemNode.prototype.onUpdate = function () {
 
 /* Registration */
 
-ve.ce.nodeFactory.register( 'definitionListItem', ve.ce.DefinitionListItemNode );
+ve.ce.nodeFactory.register( ve.ce.DefinitionListItemNode );
