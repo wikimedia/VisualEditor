@@ -1086,6 +1086,124 @@ ve.dm.Document.prototype.getNearestWordBoundary = function ( offset, direction )
 	}
 };
 
+ve.dm.Document.prototype.getIEStyleWordBoundary = function ( offset, direction ) {
+	var firstChar, mode, i, currentChar,
+		pattern = ve.dm.SurfaceFragment.wordBoundaryPattern,
+		modes = {
+			'STRUCTURAL' : 1,
+			'TEXT' : 2,
+			'BOUNDARY' : 3,
+			'SPACE' : 4
+		};
+
+	if ( direction > 0 ) { // right
+		if ( this.data[offset].type !== undefined ) {
+			mode = modes.STRUCTURAL;
+		} else {
+			firstChar = typeof this.data[offset] === 'string' ? this.data[offset] : this.data[offset][0];
+			if ( !pattern.test( firstChar ) ) {
+				mode = modes.TEXT;
+			} else if ( firstChar !== ' ' ) {
+				mode = modes.BOUNDARY;
+			} else {
+				mode = modes.SPACE;
+			}
+		}
+
+		i = offset + 1;
+
+		do {
+			if ( !this.data[i] ) {
+				break;
+			} else if ( this.data[i].type === undefined ) {
+				currentChar = typeof this.data[i] === 'string' ? this.data[i] : this.data[i][0];
+				if ( mode === modes.STRUCTURAL ) {
+					break;
+				} else if ( mode === modes.SPACE ) {
+					if ( currentChar !== ' ' ) {
+						break;
+					}
+				} else {
+					if ( mode === modes.TEXT ) {
+						if ( currentChar === ' ' ) {
+							mode = modes.SPACE;
+						} else if ( pattern.test( currentChar ) ) {
+							break;
+						}
+					} else if ( mode === modes.BOUNDARY ) {
+						if ( currentChar === ' ' ) {
+							mode = modes.SPACE;
+						} else if ( !pattern.test( currentChar ) ) {
+							break;
+						}
+					}
+				}
+			} else {
+				if ( mode === modes.STRUCTURAL ) {
+					continue;
+				}
+				break;
+			}
+		} while ( this.data[i += 1] );
+		return i;
+	}
+
+	if ( direction < 0 ) { // left
+		if ( this.data[offset-1].type !== undefined ) {
+			mode = modes.STRUCTURAL;
+		} else {
+			firstChar = typeof this.data[offset-1] === 'string' ? this.data[offset-1] : this.data[offset-1][0];
+			if ( !pattern.test( firstChar ) ) {
+				mode = modes.TEXT;
+			} else if ( firstChar !== ' ' ) {
+				mode = modes.BOUNDARY;
+			} else {
+				mode = modes.SPACE;
+			}
+		}
+
+		i = offset - 1 - 1;
+
+		do {
+			if ( !this.data[i] ) {
+				break;
+			} else if ( this.data[i].type === undefined ) {
+				currentChar = typeof this.data[i] === 'string' ? this.data[i] : this.data[i][0];
+				if ( mode === modes.SPACE ) {
+					if ( currentChar === ' ' ) {
+						continue;
+					} else if ( !pattern.test( currentChar ) ) {
+						mode = modes.TEXT;
+						continue;
+					} else {
+						mode = modes.BOUNDARY;
+						continue;
+					}
+				}
+				if ( mode === modes.TEXT ) {
+					if ( currentChar === ' ') {
+						break;
+					}
+					if ( pattern.test( currentChar ) ) {
+						break;
+					}
+				}
+				if ( mode === modes.BOUNDARY ) {
+					if ( currentChar === ' ') {
+						break;
+					}
+					if ( !pattern.test( currentChar ) ) {
+						break;
+					}
+				}
+			} else {
+				break;
+			}
+		} while ( this.data[i -= 1] );
+		return i + 1;
+	}
+};
+
 /**
  * Fix up data so it can safely be inserted into the document data at an offset.
  *
