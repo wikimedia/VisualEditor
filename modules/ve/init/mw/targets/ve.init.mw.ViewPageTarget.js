@@ -1657,7 +1657,7 @@ ve.init.mw.ViewPageTarget.prototype.onOpenDialog = function ( name ) {
 
 	setDialogSize();
 	// Put the dialog just under the toolbar.
-	dialog.$.css( { 'top': $toolbar.height() } );
+	dialog.$.css( { 'top': $toolbar.outerHeight() } );
 
 	// Events
 	$( window ).on( { 'resize.ve-dialog': setDialogSize } );
