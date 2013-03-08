@@ -50,7 +50,9 @@ ve.ce.AlienNode.prototype.onMouseEnter = function () {
 	var $phantoms = $( [] ),
 		$phantomTemplate = ve.ce.Surface.static.$phantomTemplate,
 		surface = this.root.getSurface();
-
+	if ( surface.dragging ) {
+		return;
+	}
 	this.$.find( '.ve-ce-node-shield' ).each( function () {
 		var $shield = $( this ),
 			offset = $shield.offset();
