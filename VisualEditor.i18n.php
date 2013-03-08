@@ -410,12 +410,22 @@ $messages['bn'] = array(
 );
 
 /** Breton (brezhoneg)
+ * @author Fohanno
  * @author Fulup
  * @author Y-M D
  */
 $messages['br'] = array(
 	'visualeditor' => 'VisualEditor',
+	'visualeditor-notification-saved' => 'Enrollet eo bet ho kemmoù en $1',
+	'visualeditor-notification-created' => 'Krouet eo bet $1.',
+	'visualeditor-notification-restored' => 'Assavet eo bet $1.',
 	'visualeditor-ca-editsource' => 'Kemmañ ar vammenn',
+	'visualeditor-toolbar-savedialog' => 'Adwelet hag enrollañ',
+	'visualeditor-savedialog-title-review' => 'Adwelet ho kemmoù',
+	'visualeditor-savedialog-label-create' => 'Krouiñ ar bajenn',
+	'visualeditor-savedialog-label-save' => 'Enrollañ ar bajenn',
+	'visualeditor-savedialog-label-restore' => 'Assevel ar bajenn',
+	'visualeditor-inspector-title' => 'Ensellet',
 	'visualeditor-linkinspector-title' => 'Kemmañ al liamm', # Fuzzy
 	'visualeditor-linkinspector-label-pagetitle' => 'Anv ar bajenn',
 	'visualeditor-formatdropdown-title' => 'Kemmañ ar furmad',
@@ -437,6 +447,9 @@ $messages['br'] = array(
 	'visualeditor-clearbutton-tooltip' => 'Riñsañ ar furmata',
 	'visualeditor-historybutton-undo-tooltip' => 'Dizober', # Fuzzy
 	'visualeditor-historybutton-redo-tooltip' => 'Adober', # Fuzzy
+	'visualeditor-inspector-close-tooltip' => 'Serriñ',
+	'visualeditor-inspector-remove-tooltip' => 'Lemel',
+	'visualeditor-editsummary' => 'Deskrivit petra ho peus cheñchet',
 );
 
 /** Catalan (català)
@@ -572,6 +585,9 @@ $messages['de'] = array(
 	'visualeditor-ca-editsource' => 'Quelltext bearbeiten',
 	'visualeditor-ca-ve-edit' => 'WYSIWYG-Editor',
 	'visualeditor-ca-ve-create' => 'WYSIWYG-Editor',
+	'visualeditor-dialog-meta-title' => 'Seiteneinstellungen',
+	'visualeditor-dialog-content-title' => 'Erzeugter Inhalt',
+	'visualeditor-dialog-label-apply' => 'Änderungen anwenden',
 	'visualeditor-toolbar-savedialog' => 'Überprüfen und speichern',
 	'visualeditor-savedialog-title-review' => 'Änderungen überprüfen',
 	'visualeditor-savedialog-title-report' => 'Ein Problem berichten',
@@ -941,6 +957,9 @@ $messages['fr'] = array(
 	'visualeditor-ca-editsource' => 'Modifier la source',
 	'visualeditor-ca-ve-edit' => 'VisualEditor',
 	'visualeditor-ca-ve-create' => 'VisualEditor',
+	'visualeditor-dialog-meta-title' => 'Paramètres de la page',
+	'visualeditor-dialog-content-title' => 'Contenu généré',
+	'visualeditor-dialog-label-apply' => 'Appliquer les modifications',
 	'visualeditor-toolbar-savedialog' => 'Relire et enregistrer',
 	'visualeditor-savedialog-title-review' => 'Relire vos modifications',
 	'visualeditor-savedialog-title-report' => 'Signaler un problème',
@@ -1472,6 +1491,8 @@ $messages['ja'] = array(
 	'visualeditor-ca-editsource' => 'ソースを編集',
 	'visualeditor-ca-ve-edit' => 'ビジュアルエディター',
 	'visualeditor-ca-ve-create' => 'ビジュアルエディター',
+	'visualeditor-dialog-meta-title' => 'ページの設定',
+	'visualeditor-dialog-label-apply' => '変更内容を適用',
 	'visualeditor-toolbar-savedialog' => '査読して保存',
 	'visualeditor-savedialog-title-review' => '変更内容の査読',
 	'visualeditor-savedialog-title-report' => '問題点の報告',
@@ -1633,6 +1654,9 @@ $messages['ko'] = array(
 	'visualeditor-ca-editsource' => '자료 편집',
 	'visualeditor-ca-ve-edit' => '시각적편집기',
 	'visualeditor-ca-ve-create' => '시각적편집기',
+	'visualeditor-dialog-meta-title' => '문서 설정',
+	'visualeditor-dialog-content-title' => '생성한 내용',
+	'visualeditor-dialog-label-apply' => '바뀜 적용',
 	'visualeditor-toolbar-savedialog' => '검토하고 저장',
 	'visualeditor-savedialog-title-review' => '바뀜 검토하기',
 	'visualeditor-savedialog-title-report' => '문제 보고',
@@ -1797,6 +1821,9 @@ $messages['mk'] = array(
 	'visualeditor-ca-editsource' => 'Уреди извор',
 	'visualeditor-ca-ve-edit' => 'ВизуеленУредник',
 	'visualeditor-ca-ve-create' => 'ВизуеленУредник',
+	'visualeditor-dialog-meta-title' => 'Поставки за страниците',
+	'visualeditor-dialog-content-title' => 'Создадена содржина',
+	'visualeditor-dialog-label-apply' => 'Спроведи измени',
 	'visualeditor-toolbar-savedialog' => 'Провери и зачувај',
 	'visualeditor-savedialog-title-review' => 'Проверете ги вашите промени',
 	'visualeditor-savedialog-title-report' => 'Пријави проблем',
@@ -2964,6 +2991,9 @@ $messages['vi'] = array(
 	'visualeditor-ca-editsource' => 'Sửa đổi mã nguồn',
 	'visualeditor-ca-ve-edit' => 'Trình soạn thị giác',
 	'visualeditor-ca-ve-create' => 'Trình soạn thị giác',
+	'visualeditor-dialog-meta-title' => 'Tùy chọn trang',
+	'visualeditor-dialog-content-title' => 'Nội dung được tạo ra',
+	'visualeditor-dialog-label-apply' => 'Áp dụng các thay đổi',
 	'visualeditor-toolbar-savedialog' => 'Xem lại và lưu',
 	'visualeditor-savedialog-title-review' => 'Xem lại những thay đổi của bạn',
 	'visualeditor-savedialog-title-report' => 'Báo cáo một vấn đề',
