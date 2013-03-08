@@ -18,7 +18,6 @@ ve.ui.Dialog = function VeUiDialog( surface ) {
 	// Parent constructor
 	ve.EventEmitter.call( this );
 
-	var dialog = this;
 	// Properties
 	this.surface = surface;
 	this.visible = false;
@@ -26,15 +25,14 @@ ve.ui.Dialog = function VeUiDialog( surface ) {
 
 	// Initialization
 	this.cancelButton = new ve.ui.ButtonWidget( { 'label': ve.msg( 'cancel' ) } );
-
-	//this.cancelButton.on( 'click', ve.bind( this.surface.target.closeDialog, this ) );
-	this.cancelButton.on( 'click', function() { dialog.surface.target.closeDialog(); } );
+	this.cancelButton.on( 'click', ve.bind( surface.target.closeDialog, surface.target ) );
 
 	this.applyButton = new ve.ui.ButtonWidget( {
 		'label': ve.msg( 'visualeditor-dialog-label-apply' ),
 		'flags': ['constructive'],
 		'disabled': false
 	} );
+	this.applyButton.on( 'click', ve.bind( this.onApply, this ) );
 
 	// Base elements
 	this.$title = $( '<div class="ve-ui-dialog-title"></div>' ).text(
@@ -66,4 +64,9 @@ ve.ui.Dialog.prototype.close = function () {
 	this.emit( 'close' );
 	this.$.hide();
 	this.visible = false;
+};
+
+ve.ui.Dialog.prototype.onApply = function () {
+	this.emit( 'apply' );
+	this.surface.target.closeDialog();
 };
