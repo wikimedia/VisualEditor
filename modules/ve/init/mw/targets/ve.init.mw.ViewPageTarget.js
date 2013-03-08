@@ -1205,6 +1205,9 @@ ve.init.mw.ViewPageTarget.prototype.swapSaveDialog = function ( slide ) {
 			.toggle( slide !== 'review' )
 			.end()
 		// Update title
+		// Give grep a chance to find the usages:
+		// visualeditor-savedialog-title-review, visualeditor-savedialog-title-report,
+		// visualeditor-savedialog-title-save
 		.find( '.ve-init-mw-viewPageTarget-saveDialog-title' )
 			.text( ve.msg( 'visualeditor-savedialog-title-' + slide ) )
 			.end()
