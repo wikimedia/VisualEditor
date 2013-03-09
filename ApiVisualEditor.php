@@ -39,8 +39,17 @@ class ApiVisualEditor extends ApiBase {
 
 			if ( $status->isOK() ) {
 				$content = $req->getContent();
-			} else {
+			} else if ( $status->isGood() ) {
 				$this->dieUsage( $req->getContent(), 'parsoidserver-http-'.$req->getStatus() );
+			} else if ( $errors = $status->getErrorsByType( 'error' ) ) {
+				$error = $errors[0];
+				$code = $error['message'];
+				if( count( $error['params'] ) ) {
+					$message = $error['params'][0];
+				} else {
+					$message = 'MWHttpRequest error';
+				}
+				$this->dieUsage( $message, 'parsoidserver-'.$code );
 			}
 
 			if ( $content === false ) {
