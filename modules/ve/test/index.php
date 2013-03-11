@@ -18,10 +18,12 @@
 		<script src="../../ve/ve.EventEmitter.js"></script>
 		<script src="../../ve/init/ve.init.js"></script>
 		<script src="../../ve/init/ve.init.Platform.js"></script>
+		<script src="../../ve/init/ve.init.Target.js"></script>
 		<script src="../../ve/ve.debug.js"></script>
 		<!-- Standalone Init -->
 		<script src="../../ve/init/sa/ve.init.sa.js"></script>
 		<script src="../../ve/init/sa/ve.init.sa.Platform.js"></script>
+		<script src="../../ve/init/sa/ve.init.sa.Target.js"></script>
 		<script>
 			<?php
 				require( '../../../VisualEditor.i18n.php' );
