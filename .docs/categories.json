@@ -106,7 +106,7 @@
 			},
 			{
 				"name": "Factories",
-				"classes": ["ve.ActionFactory"]
+				"classes": ["ve.ActionFactory", "ve.NodeFactory"]
 			},
 			{
 				"name": "Nodes",

@@ -13,7 +13,7 @@
  * @extends ve.ui.Dialog
  *
  * @constructor
- * @param {ve.ui.Surface} surface
+ * @param {ve.Surface} surface
  */
 ve.ui.MetaDialog = function VeUiMetaDialog( surface ) {
 	// Parent constructor
