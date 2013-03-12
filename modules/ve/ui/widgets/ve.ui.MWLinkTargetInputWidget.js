@@ -44,8 +44,7 @@ ve.ui.MWLinkTargetInputWidget = function VeUiMWLinkTargetInputWidget( config ) {
 		'blur': ve.bind( this.onBlur, this )
 	} );
 	this.menu.on( 'select', ve.bind( this.onMenuItemSelect, this ) );
-	this.on( 'change', ve.bind( this.onChange, this ) );
-
+	this.addListenerMethods( this, {'change': 'onChange'} );
 	// Initialization
 	this.$.addClass( 've-ui-mwLinkTargetInputWidget' );
 	this.menu.$.addClass( 've-ui-mwLinkTargetInputWidget-menu' );
@@ -104,9 +103,8 @@ ve.ui.MWLinkTargetInputWidget.prototype.onMenuItemSelect = function ( item ) {
 };
 
 /**
- * Set the value of the input.
+ * Opens the suggestion menu on input change.
  *
- * Overrides setValue to keep annotations in sync.
  *
  * @method
  * @param {string} value New value
@@ -124,10 +122,7 @@ ve.ui.MWLinkTargetInputWidget.prototype.onChange = function () {
  * @param {string} value New value
  */
 ve.ui.MWLinkTargetInputWidget.prototype.setValue = function ( value ) {
-	// Keep annotation in sync with value
-	value = this.sanitizeValue( value );
-
-	// Call parent method
+	// Keep annotation in sync with value, call parent method.
 	ve.ui.TextInputWidget.prototype.setValue.call( this, value );
 };
 
@@ -187,6 +182,7 @@ ve.ui.MWLinkTargetInputWidget.prototype.populateMenu = function () {
 	if ( !pageExists && ( !matchingPages || matchingPages.indexOf( this.value ) === -1 ) ) {
 		items.push( new ve.ui.MenuItemWidget( this.value, internalLink, { 'group': 'newPage' } ) );
 	}
+
 	if ( matchingPages ) {
 		for ( i = 0, len = matchingPages.length; i < len; i++ ) {
 			internalLink = new ve.dm.MWInternalLinkAnnotation( { 'title': matchingPages[i] } );
@@ -208,7 +204,6 @@ ve.ui.MWLinkTargetInputWidget.prototype.populateMenu = function () {
 	this.menu.selectItem( this.menu.getItemFromData( this.annotation ), true );
 	if ( !this.menu.getSelectedItem() ) {
 		this.menu.selectItem( this.menu.getItemFromIndex( 0 ), true );
-		this.annotation = null;
 	}
 
 	return this;

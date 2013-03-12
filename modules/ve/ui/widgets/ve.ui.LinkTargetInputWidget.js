@@ -65,8 +65,9 @@ ve.ui.LinkTargetInputWidget.prototype.setAnnotation = function ( annotation ) {
 	this.annotation = annotation;
 
 	// Call parent method
+
 	ve.ui.TextInputWidget.prototype.setValue.call(
-		this, this.sanitizeValue( this.getTargetFromAnnotation( annotation ) )
+		this, this.getTargetFromAnnotation( annotation )
 	);
 
 	return this;
