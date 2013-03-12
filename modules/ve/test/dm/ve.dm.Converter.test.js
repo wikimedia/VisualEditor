@@ -42,6 +42,11 @@ QUnit.test( 'getDataFromDom', 49, function ( assert ) {
 	var msg,
 		cases = ve.dm.example.domToDataCases;
 
+	// TODO: this is a hack to make normal heading/preformatted
+	// nodes the most recently registered, instead of the MW versions
+	ve.dm.modelRegistry.register( ve.dm.HeadingNode );
+	ve.dm.modelRegistry.register( ve.dm.PreformattedNode );
+
 	for ( msg in cases ) {
 		if ( cases[msg].html !== null ) {
 			ve.dm.example.preprocessAnnotations( cases[msg].data );

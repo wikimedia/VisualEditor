@@ -60,7 +60,7 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 				// copy-pasted from ve.Surface except using mwLink for the link tool
 				'tools': [
 					{ 'name': 'history', 'items' : ['undo', 'redo'] },
-					{ 'name': 'textStyle', 'items' : ['format'] },
+					{ 'name': 'textStyle', 'items' : ['mwFormat'] },
 					{ 'name': 'textStyle', 'items' : ['bold', 'italic', 'mwLink', 'clear'] },
 					{ 'name': 'list', 'items' : ['number', 'bullet', 'outdent', 'indent'] }
 				]

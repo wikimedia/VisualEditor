@@ -245,6 +245,20 @@ ve.dm.Node.static.childNodeTypes = null;
 ve.dm.Node.static.parentNodeTypes = null;
 
 /**
+ * Array of suggested parent node types for this node type.
+ *
+ * These parent node types are allowed but the editor will avoid creating them.
+ *
+ * An empty array means this node type should not be the child of any node. null means this node type
+ * can be the child of any node type.
+ *
+ * @static
+ * @property {string[]|null} static.suggestedParentNodeTypes
+ * @inheritable
+ */
+ve.dm.Node.static.suggestedParentNodeTypes = null;
+
+/**
  * Default attributes to set for newly created linear model elements. These defaults will be used
  * when creating a new element in ve.dm.NodeFactory#getDataElement when there is no DOM node or
  * existing linear model element to base the attributes on.
@@ -278,6 +292,16 @@ ve.dm.Node.prototype.getChildNodeTypes = function () {
  */
 ve.dm.Node.prototype.getParentNodeTypes = function () {
 	return this.constructor.static.parentNodeTypes;
+};
+
+/**
+ * Get suggested parent node types.
+ *
+ * @method
+ * @returns {string[]|null} List of node types suggested as parents or null if any type is suggested
+ */
+ve.dm.Node.prototype.getSuggestedParentNodeTypes = function () {
+	return this.constructor.static.suggestedParentNodeTypes;
 };
 
 /**
