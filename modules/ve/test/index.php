@@ -188,6 +188,7 @@
 		<script src="ve.LeafNode.test.js"></script>
 		<script src="ve.Factory.test.js"></script>
 		<script src="actions/ve.FormatAction.test.js"></script>
+		<script src="actions/ve.IndentationAction.test.js"></script>
 		<script src="dm/ve.dm.example.js"></script>
 		<script src="dm/ve.dm.NodeFactory.test.js"></script>
 		<script src="dm/ve.dm.Node.test.js"></script>

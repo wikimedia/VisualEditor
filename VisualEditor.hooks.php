@@ -83,6 +83,7 @@ class VisualEditorHooks {
 				've.Factory.test.js',
 				// VisualEditor Actions Tests
 				'actions/ve.FormatAction.test.js',
+				'actions/ve.IndentationAction.test.js',
 				// VisualEditor DataModel Tests
 				'dm/ve.dm.example.js',
 				'dm/ve.dm.NodeFactory.test.js',

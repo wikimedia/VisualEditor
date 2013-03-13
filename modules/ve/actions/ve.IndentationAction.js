@@ -205,14 +205,14 @@ ve.IndentationAction.prototype.unindentListItem = function ( listItem ) {
 	 * 4. Unwrap the now-isolated listItem and the isolated list
 	 */
 	// TODO: Child list handling, gotta figure that out.
-	var tx,
+	var tx, i, length, children, child, splitListRange,
 		surfaceModel = this.surface.getModel(),
+		fragment = surfaceModel.getFragment( listItem.getOuterRange(), true ),
 		documentModel = surfaceModel.getDocument(),
 		list = listItem.getParent(),
 		listElement = list.getClonedElement(),
 		grandParentType = list.getParent().getType(),
-		listItemRange = listItem.getOuterRange(),
-		splitListRange;
+		listItemRange = listItem.getOuterRange();
 
 	// CAREFUL: after initializing the variables above, we cannot use the model tree!
 	// The first transaction will cause rebuilds so the nodes we have references to now
@@ -251,6 +251,23 @@ ve.IndentationAction.prototype.unindentListItem = function ( listItem ) {
 			[]
 		);
 		surfaceModel.change( tx );
+
+		// ensure paragraphs are not wrapper paragraphs now
+		// that they are not in a list
+		children = fragment.getSiblingNodes();
+		for( i = 0, length = children.length; i < length; i++ ) {
+			child = children[i].node;
+			if(
+				child.type === 'paragraph' &&
+				child.element.internal &&
+				child.element.internal.generated === 'wrapper'
+			) {
+				delete child.element.internal.generated;
+				if( ve.isEmptyObject( child.element.internal ) ) {
+					delete child.element.internal;
+				}
+			}
+		}
 	} else {
 		// (3) Split the list away from parentListItem into its own listItem
 		// TODO factor common split logic somehow?
