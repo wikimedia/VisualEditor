@@ -574,25 +574,50 @@ ve.dm.SurfaceFragment.prototype.wrapNodes = function ( wrapper ) {
 	if ( !ve.isArray( wrapper ) ) {
 		wrapper = [wrapper];
 	}
-	var tx = ve.dm.Transaction.newFromWrap( this.document, this.range, [], [], [], wrapper );
-	this.range = tx.translateRange( this.range );
-	this.surface.change( tx, !this.noAutoSelect && this.range );
+	var tx = ve.dm.Transaction.newFromWrap( this.document, this.range, [], [], [], wrapper ),
+		newRange = new ve.Range( this.range.start, this.range.end + tx.getLengthDifference() );
+	this.surface.change( tx, !this.noAutoSelect && newRange );
+	this.range = newRange;
 	return this;
 };
 
 /**
- * Unwrap each node in the fragment out of one or more elements.
+ * Unwrap nodes in the fragment out of one or more elements.
+ *
+ * Example:
+ *     // fragment is a selection of: <ul>「<li><p>a</p></li><li><p>b</p></li>」</ul>
+ *     fragment.unwrapNodes( 1, 1 )
+ *     // fragment is now a selection of: 「<p>a</p><p>b</p>」
  *
  * @method
- * @param {string|string[]} type Node types to unwrap, or array of node types to unwrap
+ * @param {number} outerDepth Number of nodes outside the selection to unwrap
+ * @param {number} innerDepth Number of nodes inside the selection to unwrap
  * @chainable
  */
-ve.dm.SurfaceFragment.prototype.unwrapNodes = function () {
+ve.dm.SurfaceFragment.prototype.unwrapNodes = function ( outerDepth, innerDepth ) {
 	// Handle null fragment
 	if ( !this.surface ) {
 		return this;
 	}
-	// TODO: Implement
+	var i, tx, newRange, innerUnwrapper = [], outerUnwrapper = [];
+
+	if ( this.range.end - this.range.start < innerDepth * 2 ) {
+		throw new Error( 'cannot unwrap by greater depth than maximum theoretical depth of selection' );
+	}
+
+	for ( i = 0; i < innerDepth; i++ ) {
+		innerUnwrapper.push( this.surface.getDocument().data[this.range.start + i] );
+	}
+	for ( i = outerDepth; i > 0; i-- ) {
+		outerUnwrapper.push( this.surface.getDocument().data[this.range.start - i] );
+	}
+
+	tx = ve.dm.Transaction.newFromWrap( this.document, this.range, outerUnwrapper, [], innerUnwrapper, [] );
+	newRange = new ve.Range( this.range.start - outerDepth, this.range.end + outerDepth + tx.getLengthDifference() );
+	this.surface.change( tx, !this.noAutoSelect && newRange );
+
+	this.range = newRange;
+
 	return this;
 };
 
@@ -602,19 +627,46 @@ ve.dm.SurfaceFragment.prototype.unwrapNodes = function () {
  * A wrapper object is a linear model element; a plain object containing a type property and an
  * optional attributes property.
  *
+ * Example:
+ *     // fragment is a selection of: <dl><dt><p>a</p></dt></dl><dl><dt><p>b</p></dt></dl>
+ *     fragment.rewrapNodes(
+ *         2,
+ *         [{ 'type': 'list', 'attributes': { 'style': 'bullet' } }, { 'type': 'listItem' }]
+ *     )
+ *     // fragment is now a selection of: <ul><li><p>a</p></li></ul><ul><li><p>b</p></li></ul>
+ *
  * @method
- * @param {string|string[]} type Node types to unwrap, or array of node types to unwrap
+ * @param {number} depth Number of nodes to unwrap
  * @param {Object|Object[]} wrapper Wrapper object, or array of wrapper objects (see above)
  * @param {string} wrapper.type Node type of wrapper
  * @param {Object} [wrapper.attributes] Attributes of wrapper
  * @chainable
  */
-ve.dm.SurfaceFragment.prototype.rewrapNodes = function () {
+ve.dm.SurfaceFragment.prototype.rewrapNodes = function ( depth, wrapper ) {
 	// Handle null fragment
 	if ( !this.surface ) {
 		return this;
 	}
-	// TODO: Implement
+	var i, tx, newRange, unwrapper = [];
+
+	if ( !ve.isArray( wrapper ) ) {
+		wrapper = [wrapper];
+	}
+
+	if ( this.range.end - this.range.start < depth * 2 ) {
+		throw new Error( 'cannot unwrap by greater depth than maximum theoretical depth of selection' );
+	}
+
+	for ( i = 0; i < depth; i++ ) {
+		unwrapper.push( this.surface.getDocument().data[this.range.start + i] );
+	}
+
+	tx = ve.dm.Transaction.newFromWrap( this.document, this.range, [], [], unwrapper, wrapper );
+	newRange = new ve.Range( this.range.start, this.range.end + tx.getLengthDifference() );
+	this.surface.change( tx, !this.noAutoSelect && newRange );
+
+	this.range = newRange;
+
 	return this;
 };
 
@@ -649,49 +701,8 @@ ve.dm.SurfaceFragment.prototype.wrapAllNodes = function ( wrapper ) {
 		wrapper = [wrapper];
 	}
 
-	newRange = new ve.Range( this.range.start, this.range.end + ( wrapper.length * 2 ) );
-
 	tx = ve.dm.Transaction.newFromWrap( this.document, this.range, [], wrapper, [], [] );
-	this.surface.change( tx, !this.noAutoSelect && newRange );
-
-	this.range = newRange;
-
-	return this;
-};
-
-/**
- * Unwrap nodes in the fragment out of one or more elements.
- *
- * Unwrap only removes elements from inside the fragment.
- *
- * Example:
- *     // fragment is a selection of: <ul><li><p>text</p></li></ul>
- *     fragment.unwrapAllNodes( 2 );
- *     // fragment is now a selection of: <p>text</p>
- *
- * @method
- * @param {number} depth Number of nodes to unwrap
- * @chainable
- */
-ve.dm.SurfaceFragment.prototype.unwrapAllNodes = function ( depth ) {
-	// Handle null fragment
-	if ( !this.surface ) {
-		return this;
-	}
-	var i, tx, newRange, unwrapper = [],
-		innerRange = new ve.Range( this.range.start + depth, this.range.end - depth );
-
-	if ( this.range.end - this.range.start < depth * 2 ) {
-		throw new Error( 'cannot unwrap by greater depth than maximum theoretical depth of selection' );
-	}
-
-	for ( i = 0; i < depth; i++ ) {
-		unwrapper.push( this.surface.getDocument().data[this.range.start + i] );
-	}
-
-	newRange = new ve.Range( this.range.start, this.range.end - ( depth * 2 ) );
-
-	tx = ve.dm.Transaction.newFromWrap( this.document, innerRange, unwrapper, [], [], [] );
+	newRange = new ve.Range( this.range.start, this.range.end + tx.getLengthDifference() );
 	this.surface.change( tx, !this.noAutoSelect && newRange );
 
 	this.range = newRange;
@@ -705,8 +716,13 @@ ve.dm.SurfaceFragment.prototype.unwrapAllNodes = function ( depth ) {
  * A wrapper object is a linear model element; a plain object containing a type property and an
  * optional attributes property.
  *
+ * Example:
+ *     // fragment is a selection of: <h1><p>a</p><p>b</p></h1>
+ *     fragment.rewrapAllNodes( 1, { 'type': 'heading', 'attributes' : { 'level' : 2 } } );
+ *     // fragment is now a selection of: <h2><p>a</p><p>b</p></h2>
+ *
  * @method
- * @param {string|string[]} type Node types to unwrap, or array of node types to unwrap
+ * @param {number} depth Number of nodes to unwrap
  * @param {Object|Object[]} wrapper Wrapper object, or array of wrapper objects (see above)
  * @param {string} wrapper.type Node type of wrapper
  * @param {Object} [wrapper.attributes] Attributes of wrapper
@@ -718,8 +734,11 @@ ve.dm.SurfaceFragment.prototype.rewrapAllNodes = function ( depth, wrapper ) {
 		return this;
 	}
 	var i, tx, newRange, unwrapper = [],
-		depthChange = wrapper.length - depth,
 		innerRange = new ve.Range( this.range.start + depth, this.range.end - depth );
+
+	if ( !ve.isArray( wrapper ) ) {
+		wrapper = [wrapper];
+	}
 
 	if ( this.range.end - this.range.start < depth * 2 ) {
 		throw new Error( 'cannot unwrap by greater depth than maximum theoretical depth of selection' );
@@ -729,9 +748,8 @@ ve.dm.SurfaceFragment.prototype.rewrapAllNodes = function ( depth, wrapper ) {
 		unwrapper.push( this.surface.getDocument().data[this.range.start + i] );
 	}
 
-	newRange = new ve.Range( this.range.start, this.range.end + ( depthChange * 2 ) );
-
 	tx = ve.dm.Transaction.newFromWrap( this.document, innerRange, unwrapper, wrapper, [], [] );
+	newRange = new ve.Range( this.range.start, this.range.end + tx.getLengthDifference() );
 	this.surface.change( tx, !this.noAutoSelect && newRange );
 
 	this.range = newRange;
@@ -740,26 +758,33 @@ ve.dm.SurfaceFragment.prototype.rewrapAllNodes = function ( depth, wrapper ) {
 };
 
 /**
- * Isolates the nodes in a fragment.
+ * Isolates the nodes in a fragment then unwraps them.
  *
- * The node selection is expanded to siblings and then these are isolated such that they are the
- * sole children of a parent element which can be placed anywhere.
+ * The node selection is expanded to siblings. These are isolated such that they are the
+ * sole children of the nearest parent element which can 'type' can exist in.
+ *
+ * The new isolated selection is then safely unwrapped.
  *
  * @method
+ * @param {string} type Node type to isolate for
  * @chainable
  */
-ve.dm.SurfaceFragment.prototype.isolate = function () {
+ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {
 	// Handle null fragment
 	if ( !this.surface ) {
 		return this;
 	}
 	var nodes, startSplitNode, endSplitNode, tx,
 		startOffset, endOffset,
+		outerDepth = 0,
+		factory = ve.dm.nodeFactory,
+		allowedParents = factory.getSuggestedParentNodeTypes( isolateForType ),
 		startSplitRequired = false,
 		endSplitRequired = false,
 		startSplitNodes = [],
 		endSplitNodes = [],
-		fragment = this;
+		fragment = this,
+		newRange = new ve.Range( this.range.start, this.range.end );
 
 	function createSplits( splitNodes, insertBefore ) {
 		var i, length,
@@ -774,38 +799,40 @@ ve.dm.SurfaceFragment.prototype.isolate = function () {
 			}
 		}
 
-		tx = ve.dm.Transaction.newFromInsertion( fragment.document, insertBefore ? startOffset : endOffset, data );
-		fragment.surface.change( tx, !fragment.noAutoSelect && tx.translateRange( fragment.range ) );
+		tx = ve.dm.Transaction.newFromInsertion( fragment.getDocument(), insertBefore ? startOffset : endOffset, data );
+		newRange = new ve.Range( newRange.start, newRange.end + tx.getLengthDifference() );
+		fragment.surface.change( tx, !fragment.noAutoSelect && newRange );
 
 		startOffset += startOffsetChange;
 		endOffset += endOffsetChange;
 	}
 
-	nodes = this.document.selectNodes( this.range, 'siblings' );
+	nodes = this.getDocument().selectNodes( this.range, 'siblings' );
 
 	// Find start split point, if required
 	startSplitNode = nodes[0].node;
 	startOffset = startSplitNode.getOuterRange().start;
-	while ( startSplitNode.constructor.static.parentNodeTypes !== null ) {
-		if ( startSplitNode.parent.indexOf( startSplitNode ) > 0 ) {
+	while( allowedParents !== null && ve.indexOf( startSplitNode.getParent().type, allowedParents ) === -1 ) {
+		if ( startSplitNode.getParent().indexOf( startSplitNode ) > 0 ) {
 			startSplitRequired = true;
 		}
-		startSplitNode = startSplitNode.parent;
+		startSplitNode = startSplitNode.getParent();
 		if ( startSplitRequired ) {
 			startSplitNodes.unshift(startSplitNode);
 		} else {
 			startOffset = startSplitNode.getOuterRange().start;
 		}
+		outerDepth++;
 	}
 
 	// Find end split point, if required
 	endSplitNode = nodes[nodes.length - 1].node;
 	endOffset = endSplitNode.getOuterRange().end;
-	while ( endSplitNode.constructor.static.parentNodeTypes !== null ) {
-		if ( endSplitNode.parent.indexOf( endSplitNode ) < endSplitNode.parent.getChildren().length - 1 ) {
+	while( allowedParents !== null && ve.indexOf( endSplitNode.getParent().type, allowedParents ) === -1 ) {
+		if ( endSplitNode.getParent().indexOf( endSplitNode ) < endSplitNode.getParent().getChildren().length - 1 ) {
 			endSplitRequired = true;
 		}
-		endSplitNode = endSplitNode.parent;
+		endSplitNode = endSplitNode.getParent();
 		if ( endSplitRequired ) {
 			endSplitNodes.unshift(endSplitNode);
 		} else {
@@ -820,6 +847,8 @@ ve.dm.SurfaceFragment.prototype.isolate = function () {
 	if ( endSplitRequired ) {
 		createSplits( endSplitNodes, false );
 	}
+
+	this.unwrapNodes( outerDepth, 0 );
 
 	return this;
 };
