@@ -181,11 +181,11 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 		} else if ( startBetween ) {
 			// start is between the previous sibling and node
 			// so the selection covers all or part of node
-			
+
 			// Descend if
-			// * we are in leaves mode, OR
-			// * we are in covered mode and the end is inside node OR
-			// * we are in branches mode and node is a branch (can have grandchildren)
+			// - we are in leaves mode, OR
+			// - we are in covered mode and the end is inside node OR
+			// - we are in branches mode and node is a branch (can have grandchildren)
 			if ( ( mode === 'leaves' ||
 					( mode === 'covered' && endInside ) ||
 					( mode === 'branches' && node.canHaveGrandchildren() ) ) &&
@@ -300,7 +300,7 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 			// end is between node and the next sibling
 			// start is not inside node, so the selection covers
 			// all of node, then ends
-			
+
 			if (
 				( mode === 'leaves' || ( mode === 'branches' && node.canHaveGrandchildren() ) ) &&
 				node.children && node.children.length
@@ -403,7 +403,7 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 				} );
 			}
 		}
-		
+
 		// Move to the next node
 		if ( nextNode ) {
 			// The next node exists
@@ -458,7 +458,7 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 				// (this is present for sure, because the parent has children)
 				left++;
 			}
-			
+
 			// Skip over nextNode's opening if present
 			if ( nextNode.isWrapped() ) {
 				left++;
