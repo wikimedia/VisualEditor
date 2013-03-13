@@ -11,7 +11,7 @@ QUnit.module( 've.IndentationAction' );
 
 function runIndentationTest( assert, range, method, expectedSelection, expectedData, label ) {
 	var dom = ve.createDocumentFromHTML( ve.dm.example.isolationHTML ),
-		surface = new ve.Surface( $('<div>'),  dom ),
+		surface = new ve.Surface( new ve.init.Target( $( '<div>' ) ),  dom ),
 		indentationAction = new ve.IndentationAction( surface ),
 		data = ve.copyArray( surface.getModel().getDocument().getFullData() );
 
