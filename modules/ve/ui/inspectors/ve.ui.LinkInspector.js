@@ -10,23 +10,17 @@
  *
  * @class
  * @extends ve.ui.Inspector
+ *
  * @constructor
- * @param context
+ * @param {ve.Surface} surface
  */
-ve.ui.LinkInspector = function VeUiLinkInspector( context ) {
+ve.ui.LinkInspector = function VeUiLinkInspector( surface ) {
 	// Parent constructor
-	ve.ui.Inspector.call( this, context );
+	ve.ui.Inspector.call( this, surface );
 
 	// Properties
-	this.context = context;
 	this.initialAnnotationHash = null;
 	this.isNewAnnotation = false;
-	this.targetInput = new this.constructor.static.linkTargetInputWidget( {
-		'$$': this.frame.$$, '$overlay': context.$overlay
-	} );
-
-	// Initialization
-	this.$form.append( this.targetInput.$ );
 };
 
 /* Inheritance */
@@ -46,7 +40,25 @@ ve.ui.LinkInspector.static.linkTargetInputWidget = ve.ui.LinkTargetInputWidget;
 /* Methods */
 
 /**
- * Handle the inspector being initialized.
+ * Handle frame ready events.
+ *
+ * @method
+ */
+ve.ui.LinkInspector.prototype.initialize = function () {
+	// Call parent method
+	ve.ui.Inspector.prototype.initialize.call( this );
+
+	// Properties
+	this.targetInput = new this.constructor.static.linkTargetInputWidget( {
+		'$$': this.$$, '$overlay': this.surface.$overlay
+	} );
+
+	// Initialization
+	this.$form.append( this.targetInput.$ );
+};
+
+/**
+ * Handle the inspector being setup.
  *
  * There are 4 scenarios:
  *     * Zero-length selection not near a word -> no change, text will be inserted on close
@@ -56,9 +68,14 @@ ve.ui.LinkInspector.static.linkTargetInputWidget = ve.ui.LinkTargetInputWidget;
  *
  * @method
  */
-ve.ui.LinkInspector.prototype.onInitialize = function () {
-	var fragment = this.context.getSurface().getModel().getFragment( null, true ),
+ve.ui.LinkInspector.prototype.onSetup = function () {
+	var fragment = this.surface.getModel().getFragment( null, true ),
 		annotation = this.getMatchingAnnotations( fragment ).get( 0 );
+
+	// Call parent method
+	ve.ui.Inspector.prototype.onSetup.call( this );
+
+	// Initialize range
 	if ( !annotation ) {
 		if ( fragment.getRange().isCollapsed() ) {
 			// Expand to nearest word
@@ -69,15 +86,15 @@ ve.ui.LinkInspector.prototype.onInitialize = function () {
 		}
 		if ( !fragment.getRange().isCollapsed() ) {
 			// Create annotation from selection
-			fragment.annotateContent(
-				'set', this.getAnnotationFromTarget( fragment.truncateRange( 255 ).getText() )
-			);
+			annotation = this.getAnnotationFromTarget( fragment.truncateRange( 255 ).getText() );
+			fragment.annotateContent( 'set', annotation );
 			this.isNewAnnotation = true;
 		}
 	} else {
 		// Expand range to cover annotation
 		fragment = fragment.expandRange( 'annotation', annotation );
 	}
+
 	// Update selection
 	fragment.select();
 };
@@ -88,9 +105,13 @@ ve.ui.LinkInspector.prototype.onInitialize = function () {
  * @method
  */
 ve.ui.LinkInspector.prototype.onOpen = function () {
-	var fragment = this.context.getSurface().getModel().getFragment( null, true ),
+	var fragment = this.surface.getModel().getFragment( null, true ),
 		annotation = this.getMatchingAnnotations( fragment ).get( 0 );
 
+	// Call parent method
+	ve.ui.Inspector.prototype.onOpen.call( this );
+
+	// Setup annotation
 	this.initialAnnotationHash = annotation && annotation.getHash();
 	this.targetInput.setAnnotation( annotation );
 
@@ -107,6 +128,9 @@ ve.ui.LinkInspector.prototype.onOpen = function () {
  * @param {boolean} remove Annotation should be removed
  */
 ve.ui.LinkInspector.prototype.onClose = function ( remove ) {
+	// Call parent method
+	ve.ui.Inspector.prototype.onClose.call( this );
+
 	var i, len, annotations, selection,
 		insert = false,
 		undo = false,
@@ -114,8 +138,7 @@ ve.ui.LinkInspector.prototype.onClose = function ( remove ) {
 		set = false,
 		target = this.targetInput.getValue(),
 		annotation = this.targetInput.getAnnotation(),
-		surface = this.context.getSurface(),
-		fragment = surface.getModel().getFragment( this.initialSelection, false );
+		fragment = this.surface.getModel().getFragment( this.initialSelection, false );
 	// Undefined annotation causes removal
 	if ( !annotation ) {
 		remove = true;
@@ -143,8 +166,8 @@ ve.ui.LinkInspector.prototype.onClose = function ( remove ) {
 		selection = new ve.Range( this.initialSelection.start + target.length );
 	}
 	if ( undo ) {
-		// Go back to before we added an annotation in an onInitialize handler
-		surface.execute( 'history', 'undo' );
+		// Go back to before we added an annotation
+		this.surface.execute( 'history', 'undo' );
 	}
 	if ( clear ) {
 		// Clear all existing annotations
@@ -158,7 +181,9 @@ ve.ui.LinkInspector.prototype.onClose = function ( remove ) {
 		fragment.annotateContent( 'set', annotation );
 	}
 	// Selection changes may have occured in the insertion and annotation hullabaloo - restore it
-	surface.execute( 'content', 'select', selection || new ve.Range( fragment.getRange().end ) );
+	this.surface.execute(
+		'content', 'select', selection || new ve.Range( fragment.getRange().end )
+	);
 	// Reset state
 	this.isNewAnnotation = false;
 };

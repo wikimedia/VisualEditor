@@ -13,7 +13,7 @@
  *
  * @constructor
  * @param {Object} [config] Config options
- * @cfg {jQuery} [$overlay=this.$$( 'body' )] Container to render menu into
+ * @cfg {jQuery} [$overlay=this.$$( 'body' )] Element to append menu to
  * @cfg {jQuery} [$input=this.$$( '<input>' )] Input to bind keyboard handlers to
  */
 ve.ui.MenuWidget = function VeUiMenuWidget( config ) {

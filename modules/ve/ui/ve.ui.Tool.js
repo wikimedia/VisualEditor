@@ -72,7 +72,7 @@ ve.ui.Tool.static.cssName = null;
  * @property
  * @type {string}
  */
-ve.ui.Tool.static.titleMessage = '';
+ve.ui.Tool.static.titleMessage = null;
 
 /* Methods */
 
@@ -130,10 +130,12 @@ ve.ui.Tool.prototype.onClearState = function () {
  */
 ve.ui.Tool.prototype.setTitle = function () {
 	var trigger = ve.triggerRegistry.lookup( this.constructor.static.name ),
-		labelMessage = ve.msg( this.constructor.static.titleMessage );
+		labelMessage = this.constructor.static.titleMessage,
+		labelText = labelMessage ? ve.msg( labelMessage ) : '';
+
 	if ( trigger ) {
-		labelMessage += ' [' + trigger.getMessage() + ']';
+		labelText += ' [' + trigger.getMessage() + ']';
 	}
-	this.$.attr( 'title', labelMessage );
+	this.$.attr( 'title', labelText );
 	return this;
 };

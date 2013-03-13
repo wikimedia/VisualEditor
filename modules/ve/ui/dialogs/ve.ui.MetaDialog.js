@@ -18,14 +18,11 @@
 ve.ui.MetaDialog = function VeUiMetaDialog( surface ) {
 	// Parent constructor
 	ve.ui.Dialog.call( this, surface );
-
-	// TODO: Construct meta dialog inside .ve-ui-dialog-container
 };
 
 /* Inheritance */
 
 ve.inheritClass( ve.ui.MetaDialog, ve.ui.Dialog );
-
 
 /* Static Properties */
 
@@ -36,6 +33,8 @@ ve.inheritClass( ve.ui.MetaDialog, ve.ui.Dialog );
  * @property
  * @type {string}
  */
-ve.ui.MetaDialog.static.dialogTitleMessage = 'visualeditor-dialog-meta-title';
+ve.ui.MetaDialog.static.titleMessage = 'visualeditor-dialog-meta-title';
 
-/* Methods */
+/* Registration */
+
+ve.ui.dialogFactory.register( 'meta', ve.ui.MetaDialog );

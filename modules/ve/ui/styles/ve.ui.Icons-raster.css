@@ -5,6 +5,26 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
+.ve-ui-icon-remove {
+	/* @embed */
+	background-image: url(images/icons/remove.png);
+}
+
+.ve-ui-icon-previous {
+	/* @embed */
+	background-image: url(images/icons/move-rtl.png);
+}
+
+.ve-ui-icon-next {
+	/* @embed */
+	background-image: url(images/icons/move-ltr.png);
+}
+
+.ve-ui-icon-window {
+	/* @embed */
+	background-image: url(images/icons/window.png);
+}
+
 .ve-ui-icon-alert {
 	/* @embed */
 	background-image: url(images/icons/alert.png);

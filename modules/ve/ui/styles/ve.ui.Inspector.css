@@ -5,83 +5,37 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-.ve-ui-inspector {
-	font-family: sans-serif;
-	position: absolute;
-	padding: 2.5em 0.75em 0.25em 0.75em;
-	min-width: 15em;
-	z-index: 3;
+.ve-ui-inspector .ve-ui-frame {
+	width: 17.25em;
 }
 
-.ve-ui-inspector-button {
-	position: absolute;
-	top: 0.5em;
-	width: 1.5em;
-	height: 1.5em;
-	background-position: center center;
-	background-repeat: no-repeat;
-	cursor: pointer;
-	filter: alpha(opacity=8);
-	opacity: 0.8;
-}
-
-.ve-ui-inspector-button:hover {
-	filter: alpha(opacity=100);
-	opacity: 1;
+.ve-ui-window-icon {
+	padding-left: 0.5em;
+	margin-left: 0.25em;
+	border-left: solid 1px #eee;
 }
 
 .ve-ui-inspector-closeButton {
-	left: 0.5em;
-	/* @see ve.ui.Icons */
-}
-
-.ve-ui-inspector-titleIcon {
-	position: absolute;
-	left: 2.25em;
-	top: 0.5em;
-	width: 2em;
-	height: 1.5em;
-	background-position: right center;
-	background-repeat: no-repeat;
-	border-left: solid 1px #eee;
-	filter: alpha(opacity=8);
-	opacity: 0.8;
+	float: left;
 }
 
 .ve-ui-inspector-removeButton {
-	right: 0.25em;
-	/* @see ve.ui.Icons */
+	float: right;
 }
 
-.ve-ui-inspector form {
-	margin: 0;
+.ve-ui-window-body form {
+	margin: 0.25em 0 0 0;
 	padding: 0;
 	white-space: nowrap;
-	font-size: 0.8em;
 }
 
-.ve-ui-inspector .ve-ui-textInputWidget input {
+.ve-ui-window-body .ve-ui-textInputWidget input {
 	width: 20em;
 }
 
-.ve-ui-inspector form input.ve-ui-linkInspector-location {
+.ve-ui-window-body form input.ve-ui-linkInspector-location {
 	/* @see ve.ui.Icons */
 	background-position: 18.75em center;
 	background-repeat: no-repeat;
 	padding-right: 1.5em;
-}
-
-.ve-ui-inspector-title {
-	position: absolute;
-	top: 0;
-	left: 5.125em;
-	height: 2.8em;
-	line-height: 2.8em;
-	color: #333;
-	font-size: 0.9em;
-}
-
-.ve-iframe-overlay {
-	position: absolute;
-	top: 0;
 }

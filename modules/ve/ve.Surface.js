@@ -17,6 +17,7 @@
  *     );
  *
  * @class
+ *
  * @constructor
  * @param {ve.init.Target} target Integration target to add views to
  * @param {HTMLDocument} doc HTML document to edit
@@ -25,20 +26,24 @@
 ve.Surface = function VeSurface( target, doc, options ) {
 	// Properties
 	this.$ = $( '<div>' );
+	this.$overlay = $( '<div>' );
 	this.target = target;
 	this.documentModel = new ve.dm.Document( ve.dm.converter.getDataFromDom( doc ) );
 	this.options = ve.extendObject( true, ve.Surface.defaultOptions, options );
 	this.model = new ve.dm.Surface( this.documentModel );
 	this.view = new ve.ce.Surface( this.$, this.model, this );
 	this.context = new ve.ui.Context( this );
+	this.dialogs = new ve.ui.WindowSet( this, ve.ui.dialogFactory );
 	this.toolbars = {};
 	this.commands = {};
 	this.enabled = true;
 
 	// Initialization
-	this.target.$.append( this.$.addClass( 've-surface' ) );
-	this.target.addDialog( 'meta', new ve.ui.MetaDialog( this ) );
-
+	this.$.addClass( 've-surface' ).appendTo( this.target.$ );
+	this.$overlay
+		.addClass( 've-surface-overlay' )
+		.append( this.context.$, this.dialogs.$ )
+		.appendTo( $( 'body' ) );
 	this.view.getDocument().getDocumentNode().setLive( true );
 	this.setupToolbars();
 	this.setupCommands();

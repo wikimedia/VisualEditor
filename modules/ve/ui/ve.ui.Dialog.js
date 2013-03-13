@@ -10,63 +10,72 @@
  *
  * @class
  * @abstract
+ * @extends ve.ui.Window
  *
  * @constructor
  * @param {ve.Surface} surface
  */
 ve.ui.Dialog = function VeUiDialog( surface ) {
 	// Parent constructor
-	ve.EventEmitter.call( this );
+	ve.ui.Window.call( this, surface );
 
 	// Properties
-	this.surface = surface;
 	this.visible = false;
-	this.$ = $( '<div class="ve-ui-dialog"></div>' );
 
 	// Initialization
-	this.cancelButton = new ve.ui.ButtonWidget( { 'label': ve.msg( 'cancel' ) } );
-	this.cancelButton.on( 'click', ve.bind( surface.target.closeDialog, surface.target ) );
-
-	this.applyButton = new ve.ui.ButtonWidget( {
-		'label': ve.msg( 'visualeditor-dialog-label-apply' ),
-		'flags': ['constructive'],
-		'disabled': false
-	} );
-	this.applyButton.on( 'click', ve.bind( this.onApply, this ) );
-
-	// Base elements
-	this.$title = $( '<div class="ve-ui-dialog-title"></div>' ).text(
-		ve.msg( this.constructor.static.dialogTitleMessage )
-	);
-	this.$actions = $( '<div class="ve-ui-dialog-actions"><div>' ).append(
-		this.cancelButton.$, this.applyButton.$
-	);
-	this.$.append( this.$title, this.$actions, $( '<div class="ve-ui-dialog-container"></div>' ) );
+	this.$.addClass( 've-ui-dialog' );
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.Dialog, ve.EventEmitter );
+ve.inheritClass( ve.ui.Dialog, ve.ui.Window );
+
+/* Static Properties */
+
+ve.ui.Dialog.static.stylesheets =
+	ve.ui.Dialog.static.stylesheets.concat( [ 've.ui.Dialog.css' ] );
 
 /* Methods */
 
-ve.ui.Dialog.prototype.isVisible = function () {
-	return this.visible;
+/**
+ * Handle frame ready events.
+ *
+ * @method
+ */
+ve.ui.Dialog.prototype.initialize = function () {
+	// Call parent method
+	ve.ui.Window.prototype.initialize.call( this );
+
+	// Properties
+	this.cancelButton = new ve.ui.ButtonWidget( {
+		'$$': this.$$, 'label': ve.msg( 'visualeditor-dialog-action-cancel' )
+	} );
+	this.applyButton = new ve.ui.ButtonWidget( {
+		'$$': this.$$, 'label': ve.msg( 'visualeditor-dialog-action-apply' ), 'flags': ['primary']
+	} );
+
+	// Events
+	this.cancelButton.on( 'click', ve.bind( this.onCancelButtonClick, this ) );
+	this.applyButton.on( 'click', ve.bind( this.onApplyButtonClick, this ) );
+
+	// Initialization
+	this.$head.append( this.applyButton.$, this.cancelButton.$ );
 };
 
-ve.ui.Dialog.prototype.open = function () {
-	this.emit( 'open' );
-	this.$.show();
-	this.visible = true;
+/**
+ * Handle cancel button click events.
+ *
+ * @method
+ */
+ve.ui.Dialog.prototype.onCancelButtonClick = function () {
+	this.close();
 };
 
-ve.ui.Dialog.prototype.close = function () {
-	this.emit( 'close' );
-	this.$.hide();
-	this.visible = false;
-};
-
-ve.ui.Dialog.prototype.onApply = function () {
-	this.emit( 'apply' );
-	this.surface.target.closeDialog();
+/**
+ * Handle apply button click events.
+ *
+ * @method
+ */
+ve.ui.Dialog.prototype.onApplyButtonClick = function () {
+	this.close( true );
 };

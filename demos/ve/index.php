@@ -32,8 +32,10 @@ $html = file_get_contents( $page );
 		<link rel=stylesheet href="../../modules/ve/ce/styles/ve.ce.Node.css">
 		<link rel=stylesheet href="../../modules/ve/ce/styles/ve.ce.Surface.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Context.css">
+		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Frame.css">
+		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Window.css">
+		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Dialog.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Inspector.css">
-		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Surface.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Tool.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Toolbar.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Widget.css">
@@ -181,16 +183,20 @@ $html = file_get_contents( $page );
 		<script src="../../modules/ve/ui/ve.ui.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.Context.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.Frame.js"></script>
+		<script src="../../modules/ve/ui/ve.ui.Window.js"></script>
+		<script src="../../modules/ve/ui/ve.ui.WindowSet.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.Inspector.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.InspectorFactory.js"></script>
-		<script src="../../modules/ve/ui/ve.ui.Widget.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.Dialog.js"></script>
+		<script src="../../modules/ve/ui/ve.ui.DialogFactory.js"></script>
+		<script src="../../modules/ve/ui/ve.ui.Widget.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.Tool.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.Toolbar.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.ToolFactory.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.LabeledWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.FlaggableWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.ButtonWidget.js"></script>
+		<script src="../../modules/ve/ui/widgets/ve.ui.IconButtonWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.InputWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.InputLabelWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.TextInputWidget.js"></script>

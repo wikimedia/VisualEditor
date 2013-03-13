@@ -8,7 +8,6 @@
 .ve-ui-context {
 	position: absolute;
 	z-index: 2;
-	visibility: hidden;
 }
 
 .ve-ui-context-callout {
@@ -18,12 +17,11 @@
 	background-repeat: no-repeat;
 	width: 15px;
 	height: 8px;
-	cursor: pointer;
-	right: -7px;
+	margin-left: -7px;
 	z-index: 4;
 }
 
-.ve-ui-context-inner {
+.ve-ui-context-body {
 	margin-top: 7px;
 	position: absolute;
 	overflow: hidden;
@@ -31,6 +29,19 @@
 	border-radius: 0.25em;
 	background-color: #fff;
 	box-shadow: 0 0.15em 0.5em 0 rgba(0, 0, 0, 0.2);
+}
+
+.ve-ui-context-body-transition {
+	-webkit-transition: width 100ms, height 100ms, left 100ms;
+	-moz-transition: width 100ms, height 100ms, left 100ms;
+	-ms-transition: width 100ms, height 100ms, left 100ms;
+	-o-transition: width 100ms, height 100ms, left 100ms;
+	transition: width 100ms, height 100ms, left 100ms;
+	-webkit-transition-timing-function: ease-in-out;
+	-moz-transition-timing-function: ease-in-out;
+	-ms-transition-timing-function: ease-in-out;
+	-o-transition-timing-function: ease-in-out;
+	transition-timing-function: ease-in-out;
 }
 
 .ve-ui-context-inspectors, .ve-ui-context-menu {
@@ -44,21 +55,16 @@
 
 .ve-ui-context-toolbar .ve-ui-toolbarGroup {
 	border: none;
+	padding: 0.1em;
 }
 
 .ve-ui-context-toolbar .ve-ui-buttonTool,
 .ve-ui-context-toolbar .ve-ui-buttonTool:hover {
+
 	border: none;
 }
 
 .ve-ui-context-toolbar .ve-ui-buttonTool:active,
 .ve-ui-context-toolbar .ve-ui-buttonTool-active {
 	background-image: none;
-}
-
-.ve-ui-context-frame-overlay {
-	position: absolute;
-	top: 0;
-	left: 0;
-	margin-top: 4px;
 }

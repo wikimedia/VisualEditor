@@ -17,26 +17,8 @@
 ve.init.sa.Target = function VeInitSaTarget( $container ) {
 	// Parent constructor
 	ve.init.Target.call( this, $container );
-
-	// Events
-	this.addListenerMethods( this, { 'addDialog': 'onAddDialog' } );
 };
 
 /* Inheritance */
 
 ve.inheritClass( ve.init.sa.Target, ve.init.Target );
-
-/* Methods */
-
-/**
- * Handle add dialog events.
- *
- * @method
- * @param {string} name Name of added dialog
- */
-ve.init.sa.Target.prototype.onAddDialog = function ( name ) {
-	var dialog = this.dialogs[name];
-
-	// Append dialog to target container
-	this.$.append( dialog.$ );
-};
