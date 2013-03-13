@@ -230,7 +230,7 @@ ve.ce.BranchNode.prototype.setupSlugs = function () {
 		delete this.slugs[key];
 	}
 
-	if ( this.canHaveGrandchildren() ) {
+	if ( this.canHaveChildrenNotContent() ) {
 		$slug = ve.ce.BranchNode.$blockSlugTemplate.clone();
 	} else {
 		$slug = ve.ce.BranchNode.$inlineSlugTemplate.clone();

@@ -125,7 +125,7 @@ ve.ce.SurfaceObserver.prototype.poll = function ( async ) {
 		$branch = $( rangyRange.anchorNode ).closest( '.ve-ce-branchNode' );
 		if ( $branch.length ) {
 			node = $branch.data( 'node' );
-			if ( node.canHaveGrandchildren() ) {
+			if ( node.canHaveChildrenNotContent() ) {
 				node = null;
 			} else {
 				range = rangyRange.getRange();

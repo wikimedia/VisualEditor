@@ -315,13 +315,13 @@ ve.dm.Node.prototype.canHaveChildren = function () {
 };
 
 /**
- * Check if the node can have grandchildren.
+ * Check if the node can have children but not content nor be content.
  *
  * @method
- * @returns {boolean} Node can have grandchildren
+ * @returns {boolean} Node can have children but not content nor be content
  */
-ve.dm.Node.prototype.canHaveGrandchildren = function () {
-	return ve.dm.nodeFactory.canNodeHaveGrandchildren( this.type );
+ve.dm.Node.prototype.canHaveChildrenNotContent = function () {
+	return ve.dm.nodeFactory.canNodeHaveChildrenNotContent( this.type );
 };
 
 /**

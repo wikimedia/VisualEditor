@@ -72,17 +72,17 @@ QUnit.test( 'canNodeHaveChildren', 2, function ( assert ) {
 	);
 } );
 
-QUnit.test( 'canNodeHaveGrandchildren', 2, function ( assert ) {
+QUnit.test( 'canNodeHaveChildrenNotContent', 2, function ( assert ) {
 	var factory = new ve.dm.NodeFactory();
 	assert.throws( function () {
-			factory.canNodeHaveGrandchildren( 'node-factory-node-stub', 23, { 'bar': 'baz' } );
+			factory.canNodeHaveChildrenNotContent( 'node-factory-node-stub', 23, { 'bar': 'baz' } );
 		},
 		Error,
 		'throws an exception when checking if a node of an unregistered type can have grandchildren'
 	);
 	factory.register( ve.dm.NodeFactoryNodeStub );
 	assert.strictEqual(
-		factory.canNodeHaveGrandchildren( 'node-factory-node-stub' ),
+		factory.canNodeHaveChildrenNotContent( 'node-factory-node-stub' ),
 		false,
 		'gets grandchild rules for registered nodes'
 	);

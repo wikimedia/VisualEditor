@@ -353,7 +353,7 @@ ve.dm.Document.isStructuralOffset = function ( data, offset, unrestricted ) {
 				// Inside empty element
 				'/' + left.type === right.type &&
 				// Both are non-content branches (right is the same type)
-				factory.canNodeHaveGrandchildren( left.type ) &&
+				factory.canNodeHaveChildrenNotContent( left.type ) &&
 				(
 					// Only apply this rule in unrestricted mode
 					!unrestricted ||

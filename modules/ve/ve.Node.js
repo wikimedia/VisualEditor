@@ -61,15 +61,15 @@ ve.Node.prototype.canHaveChildren = function () {
 };
 
 /**
- * Check if the node can have grandchildren.
+ * Check if the node can have children but not content nor be content.
  *
  * @method
  * @abstract
- * @returns {boolean} Node can have grandchildren
+ * @returns {boolean} Node can have children but not content nor be content
  * @throws {Error} if not overridden
  */
-ve.Node.prototype.canHaveGrandchildren = function () {
-	throw new Error( 've.Node.canHaveGrandchildren must be overridden in subclass' );
+ve.Node.prototype.canHaveChildrenNotContent = function () {
+	throw new Error( 've.Node.canHaveChildrenNotContent must be overridden in subclass' );
 };
 
 /**

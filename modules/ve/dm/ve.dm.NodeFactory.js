@@ -108,14 +108,14 @@ ve.dm.NodeFactory.prototype.canNodeHaveChildren = function ( type ) {
 };
 
 /**
- * Check if a node can have grandchildren.
+ * Check if a node can have children but not content nor be content.
  *
  * @method
  * @param {string} type Node type
- * @returns {boolean} The node can have grandchildren
+ * @returns {boolean} The node can have children but not content nor be content
  * @throws {Error} Unknown node type
  */
-ve.dm.NodeFactory.prototype.canNodeHaveGrandchildren = function ( type ) {
+ve.dm.NodeFactory.prototype.canNodeHaveChildrenNotContent = function ( type ) {
 	if ( type in this.registry ) {
 		return this.canNodeHaveChildren( type ) &&
 			!this.registry[type].static.canContainContent &&

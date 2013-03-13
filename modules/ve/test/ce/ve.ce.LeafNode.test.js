@@ -32,7 +32,7 @@ QUnit.test( 'canHaveChildren', 1, function ( assert ) {
 	assert.equal( node.canHaveChildren(), false );
 } );
 
-QUnit.test( 'canHaveGrandchildren', 1, function ( assert ) {
+QUnit.test( 'canHaveChildrenNotContent', 1, function ( assert ) {
 	var node = new ve.ce.LeafNodeStub( new ve.dm.LeafNodeStub() );
-	assert.equal( node.canHaveGrandchildren(), false );
+	assert.equal( node.canHaveChildrenNotContent(), false );
 } );
