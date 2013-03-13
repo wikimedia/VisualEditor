@@ -164,7 +164,7 @@ ve.inheritClass( ve.dm.Document, ve.Document );
  *
  * This pattern is tested against one character at a time.
  */
-ve.dm.SurfaceFragment.wordBoundaryPattern = /[^\w'"-\(\)\[\]]+/;
+ve.dm.SurfaceFragment.wordBoundaryPattern = /[^\w'"\-\(\)\[\]]+/;
 
 /**
  * Apply annotations to content data.
