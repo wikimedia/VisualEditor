@@ -1358,6 +1358,36 @@ QUnit.test( 'getNearestWordBoundary', function ( assert ) {
 			'msg': 'number in word (Latin)',
 			'offset': 9,
 			'expected': '(H2O)'
+		},
+		{
+			'phrase': 'Wikipédia l\'encyclopédie libre',
+			'msg': 'extended Latin word',
+			'offset': 15,
+			'expected': 'l\'encyclopédie'
+		},
+		{
+			'phrase': 'Википедия свободная энциклопедия',
+			'msg': 'Cyrillic word',
+			'offset': 14,
+			'expected': 'свободная'
+		},
+		{
+			'phrase': 'την ελεύθερη εγκυκλοπαίδεια',
+			'msg': 'Greek word',
+			'offset': 7,
+			'expected': 'ελεύθερη'
+		},
+		{
+			'phrase': '우리 모두의 백과사전',
+			'msg': 'Hangul word',
+			'offset': 4,
+			'expected': '모두의'
+		},
+		{
+			'phrase': 'This: ٠١٢٣٤٥٦٧٨٩ means 0123456789',
+			'msg': 'Eastern Arabic numerals',
+			'offset': 13,
+			'expected': '٠١٢٣٤٥٦٧٨٩'
 		}
 	];
 	QUnit.expect( cases.length );
