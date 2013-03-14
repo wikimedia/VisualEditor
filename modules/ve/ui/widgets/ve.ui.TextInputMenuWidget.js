@@ -37,16 +37,21 @@ ve.inheritClass( ve.ui.TextInputMenuWidget, ve.ui.MenuWidget );
  * @chainable
  */
 ve.ui.TextInputMenuWidget.prototype.show = function () {
-	var $input = this.input.$input;
+	var dim, offset,
+		$input = this.input.$input;
 
 	// Call parent method
 	ve.ui.MenuWidget.prototype.show.call( this );
 
 	// Position under input
-	this.$.css( {
-		'left': $input.offset().left,
-		'top': $input.offset().top + $input.outerHeight( true )
-	} );
+	dim = $input.offset();
+	dim.top += $input.outerHeight( true );
+	if ( this.input.$$.frame ) {
+		offset = this.input.$$.frame.$.offset();
+		dim.left += offset.left;
+		dim.top += offset.top;
+	}
+	this.$.css( dim );
 
 	return this;
 };

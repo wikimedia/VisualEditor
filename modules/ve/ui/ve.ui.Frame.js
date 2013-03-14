@@ -61,9 +61,8 @@ ve.ui.Frame.prototype.onLoad = function () {
 	doc.close();
 
 	// Properties
-	this.$$ = ve.ui.get$$( doc );
+	this.$$ = ve.ui.get$$( doc, this );
 	this.$content = this.$$( '.ve-ui-frame-content' );
-
 	// Add stylesheets
 	$head = this.$$( 'head' );
 	function embedCss( css ) {

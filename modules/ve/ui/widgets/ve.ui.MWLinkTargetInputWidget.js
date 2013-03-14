@@ -203,8 +203,13 @@ ve.ui.MWLinkTargetInputWidget.prototype.populateMenu = function () {
 
 	// Auto-select
 	this.menu.selectItem( this.menu.getItemFromData( this.annotation ), true );
-	if ( !this.menu.getSelectedItem() ) {
+	if ( this.menu.getSelectedItem() ) {
+		this.menu.highlightItem( this.menu.getSelectedItem() );
+	} else {
 		this.menu.selectItem( this.menu.getItemFromIndex( 0 ), true );
+		if ( this.menu.getSelectedItem() ) {
+			this.menu.highlightItem( this.menu.getItemFromIndex( 0 ) );
+		}
 	}
 
 	return this;

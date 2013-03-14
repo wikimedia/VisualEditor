@@ -111,14 +111,13 @@ ve.ui.LinkInspector.prototype.onOpen = function () {
 	// Call parent method
 	ve.ui.Inspector.prototype.onOpen.call( this );
 
-	// Setup annotation
-	this.initialAnnotationHash = annotation && annotation.getHash();
-	this.targetInput.setAnnotation( annotation );
-
-	// Set focus on the location input
+	// Wait for animation to complete
 	setTimeout( ve.bind( function () {
-		this.targetInput.$.focus().select();
-	}, this ) );
+		// Setup annotation
+		this.initialAnnotationHash = annotation && annotation.getHash();
+		this.targetInput.setAnnotation( annotation );
+		this.targetInput.$input.focus().select();
+	}, this ), 200 );
 };
 
 /**
