@@ -1332,6 +1332,44 @@ QUnit.test( 'getNearestStructuralOffset', function ( assert ) {
 	}
 } );
 
+QUnit.test( 'getNearestWordBoundary', function ( assert ) {
+	var i, doc, left, right, word,
+		cases = [
+		{
+			'phrase': 'visual editor test',
+			'msg': 'simple Latin word',
+			'offset': 10,
+			'expected': 'editor'
+		},
+		{
+			'phrase': 'Computer-aided design',
+			'msg': 'hyphenated Latin word',
+			'offset': 2,
+			'expected': 'Computer-aided'
+		},
+		{
+			'phrase': 'Water (l\'eau) is',
+			'msg': 'apostrophe and parentheses (Latin)',
+			'offset': 8,
+			'expected': '(l\'eau)'
+		},
+		{
+			'phrase': 'Water (H2O) is',
+			'msg': 'number in word (Latin)',
+			'offset': 9,
+			'expected': '(H2O)'
+		}
+	];
+	QUnit.expect( cases.length );
+	for ( i = 0; i < cases.length; i++ ) {
+		doc = new ve.dm.Document( cases[i].phrase.split('') );
+		left = doc.getNearestWordBoundary( cases[i].offset, -1 );
+		right = doc.getNearestWordBoundary( cases[i].offset, 1 );
+		word = cases[i].phrase.substring( left, right );
+		assert.strictEqual( word, cases[i].expected, cases[i].msg );
+	}
+} );
+
 QUnit.test( 'selectNodes', 21, function ( assert ) {
 	var i,
 		doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
