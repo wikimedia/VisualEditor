@@ -9,77 +9,27 @@
  * UserInterface inspector.
  *
  * @class
- * @extends ve.EventEmitter
+ * @extends ve.ui.Window
+ *
  * @constructor
- * @param {ve.ui.Context} context
+ * @param {ve.Surface} surface
  */
-ve.ui.Inspector = function VeUiInspector( context ) {
+ve.ui.Inspector = function VeUiInspector( surface ) {
 	// Inheritance
-	ve.EventEmitter.call( this );
+	ve.ui.Window.call( this, surface );
 
 	// Properties
-	this.context = context;
 	this.initialSelection = null;
-	this.closing = false;
-	this.frame = context.getFrame();
-	this.$ = $( '<div class="ve-ui-inspector"></div>' );
-	this.$form = this.frame.$$( '<form></form>' );
-	this.$title = this.frame.$$( '<div class="ve-ui-inspector-title"></div>' )
-		.text( ve.msg( this.constructor.static.titleMessage ) );
-	this.$titleIcon = this.frame.$$( '<div class="ve-ui-inspector-titleIcon"></div>' )
-		.addClass( 've-ui-icon-' + this.constructor.static.icon );
-	this.$closeButton = this.frame.$$(
-		'<div class="ve-ui-inspector-button ve-ui-inspector-closeButton ve-ui-icon-close"></div>'
-	).attr( 'title', ve.msg( 'visualeditor-inspector-close-tooltip' ) );
-	this.$removeButton = this.frame.$$(
-		'<div class="ve-ui-inspector-button ve-ui-inspector-removeButton ve-ui-icon-remove"></div>'
-	).attr( 'title', ve.msg( 'visualeditor-inspector-remove-tooltip' ) );
-
-	// Events
-	this.$closeButton.on( {
-		'click': ve.bind( this.onCloseButtonClick, this )
-	} );
-	this.$removeButton.on( {
-		'click': ve.bind( this.onRemoveButtonClick, this )
-	} );
-	this.$form.on( {
-		'submit': ve.bind( this.onFormSubmit, this ),
-		'keydown': ve.bind( this.onFormKeyDown, this )
-	} );
 
 	// Initialization
-	this.$.append(
-		this.$closeButton,
-		this.$titleIcon,
-		this.$title,
-		this.$removeButton,
-		this.$form
-	);
+	this.$.addClass( 've-ui-inspector' );
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.Inspector, ve.EventEmitter );
+ve.inheritClass( ve.ui.Inspector, ve.ui.Window );
 
 /* Static Properties */
-
-/**
- * Symbolic name of icon.
- *
- * @static
- * @property
- * @type {string}
- */
-ve.ui.Inspector.static.icon = 'inspector';
-
-/**
- * Localized message for title.
- *
- * @static
- * @property
- * @type {string}
- */
-ve.ui.Inspector.static.titleMessage = 'visualeditor-inspector-title';
 
 /**
  * Pattern to use when matching against annotation type strings.
@@ -90,13 +40,50 @@ ve.ui.Inspector.static.titleMessage = 'visualeditor-inspector-title';
  */
 ve.ui.Inspector.static.typePattern = new RegExp();
 
+ve.ui.Inspector.static.stylesheets =
+	ve.ui.Inspector.static.stylesheets.concat( [ 've.ui.Inspector.css' ] );
+
+ve.ui.Inspector.static.titleMessage = 've-ui-inspector-title';
+
 /* Methods */
+
+/**
+ * Handle frame ready events.
+ *
+ * @method
+ */
+ve.ui.Inspector.prototype.initialize = function () {
+	// Call parent method
+	ve.ui.Window.prototype.initialize.call( this );
+
+	// Initialization
+	this.$form = this.$$( '<form>' );
+	this.closeButton = new ve.ui.IconButtonWidget( {
+		'$$': this.$$, 'icon': 'previous', 'title': ve.msg( 'visualeditor-inspector-close-tooltip' )
+	} );
+	this.removeButton = new ve.ui.IconButtonWidget( {
+		'$$': this.$$, 'icon': 'remove', 'title': ve.msg( 'visualeditor-inspector-remove-tooltip' )
+	} );
+
+	// Events
+	this.$form.on( {
+		'submit': ve.bind( this.onFormSubmit, this ),
+		'keydown': ve.bind( this.onFormKeyDown, this )
+	} );
+	this.closeButton.on( 'click', ve.bind( this.onCloseButtonClick, this ) );
+	this.removeButton.on( 'click', ve.bind( this.onRemoveButtonClick, this ) );
+
+	// Initialization
+	this.closeButton.$.addClass( 've-ui-inspector-closeButton' );
+	this.removeButton.$.addClass( 've-ui-inspector-removeButton' );
+	this.$head.prepend( this.closeButton.$ ).append( this.removeButton.$ );
+	this.$body.append( this.$form );
+};
 
 /**
  * Handle close button click events.
  *
  * @method
- * @param {jQuery.Event} e Mouse click event
  */
 ve.ui.Inspector.prototype.onCloseButtonClick = function () {
 	this.close();
@@ -106,8 +93,6 @@ ve.ui.Inspector.prototype.onCloseButtonClick = function () {
  * Handle remove button click events.
  *
  * @method
- * @param {jQuery.Event} e Mouse click event
- * @emits 'remove'
  */
 ve.ui.Inspector.prototype.onRemoveButtonClick = function() {
 	this.close( true );
@@ -139,38 +124,23 @@ ve.ui.Inspector.prototype.onFormKeyDown = function ( e ) {
 };
 
 /**
- * Handle the inspector being initialized.
- *
- * This gives an inspector an opportunity to make selection and annotation changes prior to the
- * inspector being opened.
- *
- * @method
- */
-ve.ui.Inspector.prototype.onInitialize = function () {
-	// This is a stub, override functionality in child classes
-};
-
-/**
- * Handle the inspector being opened.
- *
- * This is when an inspector would initialize its form with data from the selection.
+ * Handle inspector initialize events.
  *
  * @method
  */
 ve.ui.Inspector.prototype.onOpen = function () {
-	// This is a stub, override functionality in child classes
+	this.initialSelection = this.surface.getModel().getSelection();
+	this.$form.find( ':input:visible:first' ).focus();
 };
 
 /**
- * Handle the inspector being closed.
- *
- * This is when an inspector would apply any changes made in the form to the selection.
+ * Handle inspector initialize events.
  *
  * @method
- * @param {boolean} accept Changes to the form should be applied
+ * @param {boolean} accept Changes have been accepted
  */
 ve.ui.Inspector.prototype.onClose = function () {
-	// This is a stub, override functionality in child classes
+	this.surface.getView().getDocument().getDocumentNode().$.focus();
 };
 
 /**
@@ -182,51 +152,4 @@ ve.ui.Inspector.prototype.onClose = function () {
  */
 ve.ui.Inspector.prototype.getMatchingAnnotations = function ( fragment ) {
 	return fragment.getAnnotations().getAnnotationsByName( this.constructor.static.typePattern );
-};
-
-/**
- * Open inspector.
- *
- * @method
- * @emits 'initialize'
- * @emits 'open'
- */
-ve.ui.Inspector.prototype.open = function () {
-	this.$.show();
-	this.emit( 'beforeInitialize' );
-	if ( this.onInitialize ) {
-		this.onInitialize();
-	}
-	this.emit( 'afterInitialize' );
-	this.initialSelection = this.context.getSurface().getModel().getSelection();
-	this.emit( 'beforeOpen' );
-	if ( this.onOpen ) {
-		this.onOpen();
-	}
-	this.$form.find( ':input:visible:first' ).focus();
-	this.emit( 'afterOpen' );
-};
-
-/**
- * Close inspector.
- *
- * This method guards against recursive calling internally. Recursion on this method is caused by
- * changes to the document occuring in a close handler which in turn produce document model change
- * events, which in turn cause the context to close the inspector again, and so on.
- *
- * @method
- * @emits 'close' (remove)
- */
-ve.ui.Inspector.prototype.close = function ( remove ) {
-	if ( !this.closing ) {
-		this.closing = true;
-		this.$.hide();
-		this.emit( 'beforeClose', remove );
-		if ( this.onClose ) {
-			this.onClose( remove );
-		}
-		this.context.getSurface().getView().getDocument().getDocumentNode().$.focus();
-		this.emit( 'afterClose', remove );
-		this.closing = false;
-	}
 };

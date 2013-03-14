@@ -15,7 +15,7 @@
  *
  * @constructor
  * @param {Object} [config] Config options
- * @cfg {jQuery} [$overlay] Element to append menu to
+ * @cfg {jQuery} [$overlay=this.$$( 'body' )] Element to append menu to
  */
 ve.ui.MWLinkTargetInputWidget = function VeUiMWLinkTargetInputWidget( config ) {
 	// Config intialization
@@ -25,10 +25,11 @@ ve.ui.MWLinkTargetInputWidget = function VeUiMWLinkTargetInputWidget( config ) {
 	ve.ui.LinkTargetInputWidget.call( this, config );
 
 	// Properties
-	this.menu = new ve.ui.TextInputMenuWidget(
-		this,
-		{ '$$': ve.ui.get$$( config.$overlay ), '$overlay': config.$overlay, '$input': this.$input }
-	);
+	this.menu = new ve.ui.TextInputMenuWidget( this, {
+		'$$': ve.ui.get$$( config.$overlay ),
+		'$overlay': config.$overlay || this.$$( 'body' ),
+		'$input': this.$input
+	} );
 	this.annotation = null;
 	this.existingPages = {};
 	this.matchingPages = {};

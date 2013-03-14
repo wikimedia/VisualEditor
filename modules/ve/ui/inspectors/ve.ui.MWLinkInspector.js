@@ -12,12 +12,13 @@
  *
  * @class
  * @extends ve.ui.LinkInspector
+ *
  * @constructor
- * @param context
+ * @param {ve.Surface} surface
  */
-ve.ui.MWLinkInspector = function VeUiMWLinkInspector( context ) {
+ve.ui.MWLinkInspector = function VeUiMWLinkInspector( surface ) {
 	// Parent constructor
-	ve.ui.LinkInspector.call( this, context );
+	ve.ui.LinkInspector.call( this, surface );
 };
 
 /* Inheritance */

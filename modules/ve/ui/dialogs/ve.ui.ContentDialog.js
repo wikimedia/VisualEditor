@@ -33,7 +33,8 @@ ve.inheritClass( ve.ui.ContentDialog, ve.ui.Dialog );
  * @property
  * @type {string}
  */
-ve.ui.ContentDialog.static.dialogTitleMessage = 'visualeditor-dialog-content-title';
+ve.ui.ContentDialog.static.titleMessage = 'visualeditor-dialog-content-title';
 
-/* Methods */
+/* Registration */
 
+ve.ui.dialogFactory.register( 'content', ve.ui.ContentDialog );

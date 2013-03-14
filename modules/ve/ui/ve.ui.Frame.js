@@ -9,26 +9,86 @@
  * UserInterface iframe abstraction.
  *
  * @class
+ * @extends ve.EventEmitter
+ *
  * @constructor
+ * @param {Object} [config] Config options
+ * @cfg {string[]} [stylesheets] List of stylesheet file names, each relative to ve/ui/styles
  */
-ve.ui.Frame = function VeUiFrame( config, $container ) {
-	var i, len;
+ve.ui.Frame = function VeUiFrame( config ) {
+	// Inheritance
+	ve.EventEmitter.call( this );
 
 	// Properties
-	this.$frame = $( '<iframe frameborder="0" scrolling="no"></iframe>' );
-	this.frameDocument = this.attachFrame( this.$frame, $container );
-	this.$ = this.$$( '.ve-ui-frame-container' );
-	this.$$ = ve.bind( this.$$, this );
+	this.initialized = false;
+	this.config = config;
+	this.$ = $( '<iframe>' );
 
-	// Initialization
-	if ( 'stylesheets' in config ) {
-		for ( i = 0, len = config.stylesheets.length; i < len; i++ ) {
-			this.loadStylesheet( config.stylesheets[i] );
-		}
-	}
+	// Events
+	this.$.load( ve.bind( this.onLoad, this ) );
+
+	// Initialize
+	this.$
+		.addClass( 've-ui-frame' )
+		.attr( { 'frameborder': 0, 'scrolling': 'no' } );
 };
 
+/* Inheritance */
+
+ve.inheritClass( ve.ui.Frame, ve.EventEmitter );
+
+/* Events */
+
+/**
+ * @event initialize
+ */
+
 /* Methods */
+
+ve.ui.Frame.prototype.onLoad = function () {
+	var i, len, doc, $head,
+		promises = [],
+		stylesheets = this.config.stylesheets,
+		stylesheetPath = ve.init.platform.getModulesUrl() + '/ve/ui/styles/';
+
+	// Initialize contents
+	doc = this.$.prop( 'contentWindow' ).document;
+	doc.open();
+	doc.write(
+		'<head><base href="' + stylesheetPath + '"></head>' +
+		'<body style="padding:0;margin:0;"><div class="ve-ui-frame-content"></div></body>'
+	);
+	doc.close();
+
+	// Properties
+	this.$$ = ve.ui.get$$( doc );
+	this.$content = this.$$( '.ve-ui-frame-content' );
+
+	// Add stylesheets
+	$head = this.$$( 'head' );
+	function embedCss( css ) {
+		$head.append( '<style>' + css + '</style>' );
+	}
+	for ( i = 0, len = stylesheets.length; i < len; i++ ) {
+		promises.push( $.get( stylesheetPath + stylesheets[i], embedCss ) );
+	}
+	$.when.apply( $, promises )
+		.done( ve.bind( function () {
+			this.initialized = true;
+			this.emit( 'initialize' );
+		}, this ) );
+};
+
+/**
+ *
+ */
+ve.ui.Frame.prototype.run = function ( callback ) {
+	if ( this.initialized ) {
+		callback();
+	} else {
+		this.once( 'initialize', callback );
+	}
+};
 
 /**
  * Sets the size of the frame.
@@ -39,59 +99,6 @@ ve.ui.Frame = function VeUiFrame( config, $container ) {
  * @chainable
  */
 ve.ui.Frame.prototype.setSize = function ( width, height ) {
-	this.$frame.css( { 'width': width, 'height': height } );
-	return this;
-};
-
-/**
- * Execute jQuery function within the context of the frame.
- *
- * @method
- * @param {string} selector jQuery selector
- * @returns {jQuery} jQuery selection
- */
-ve.ui.Frame.prototype.$$ = function ( selector ) {
-	return $( selector, this.frameDocument );
-};
-
-/**
- * Attaches and initializes a frame within a given container.
- *
- * @method
- * @private
- * @param {jQuery} $frame Frame to attach and initialize
- * @param {jQuery} $container Container to append frame to
- * @returns {HTMLElement} Frame document
- */
-ve.ui.Frame.prototype.attachFrame = function ( $frame, $container ) {
-	var doc;
-	// Attach to a document to initialze for real
-	$container.append( $frame );
-	// Get the frame document
-	doc = $frame.prop( 'contentWindow' ).document;
-	// Create an inner frame container
-	doc.write( '<div class="ve-ui-frame-container"></div>' );
-	// Finish the frame to make all browsers happy
-	doc.close();
-	// Basic styles
-	$( 'body', doc ).css( {
-		'padding': 0,
-		'margin': 0
-	} );
-	return doc;
-};
-
-/**
- * Adds a stylesheet to the frame.
- *
- * @method
- * @param {string} path Full path to stylesheet
- * @chainable
- */
-ve.ui.Frame.prototype.loadStylesheet = function ( path ) {
-	// Append style elements to head.
-	this.$$( 'head' ).append(
-		this.$$( '<link rel="stylesheet">' ).attr( 'href', path )
-	);
+	this.$.css( { 'width': width, 'height': height } );
 	return this;
 };

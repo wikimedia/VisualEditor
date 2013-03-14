@@ -5,6 +5,26 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
+/* ve.ui.IconButtonWidget */
+
+.ve-ui-iconButtonWidget {
+	width: 2em;
+	height: 2em;
+	background-position: center center;
+	background-repeat: no-repeat;
+	cursor: pointer;
+	opacity: 0.8;
+	-webkit-transition: opacity 100ms;
+	-moz-transition: opacity 100ms;
+	-ms-transition: opacity 100ms;
+	-o-transition: opacity 100ms;
+	transition: opacity 100ms;
+}
+
+.ve-ui-iconButtonWidget:hover {
+	opacity: 1;
+}
+
 /* ve.ui.ButtonWidget */
 
 .ve-ui-buttonWidget {
@@ -27,10 +47,11 @@
 	user-select: none;
 
 	/* Animation */
-	transition: border-color 100ms;
-	-moz-transition: border-color 100ms;
 	-webkit-transition: border-color 100ms;
+	-moz-transition: border-color 100ms;
+	-ms-transition: border-color 100ms;
 	-o-transition: border-color 100ms;
+	transition: border-color 100ms;
 
 	/* Gray */
 	border: 1px #c9c9c9 solid;
@@ -140,10 +161,11 @@
 	border-radius: 0.25em;
 
 	/* Animation */
-	transition: border-color 200ms, box-shadow 200ms, background-color 200ms;
-	-moz-transition: border-color 200ms, box-shadow 200ms, background-color 200ms;
 	-webkit-transition: border-color 200ms, box-shadow 200ms, background-color 200ms;
+	-moz-transition: border-color 200ms, box-shadow 200ms, background-color 200ms;
+	-ms-transition: border-color 200ms, box-shadow 200ms, background-color 200ms;
 	-o-transition: border-color 200ms, box-shadow 200ms, background-color 200ms;
+	transition: border-color 200ms, box-shadow 200ms, background-color 200ms;
 }
 
 .ve-ui-textInputWidget input:focus {

@@ -22,13 +22,14 @@ ve.ui.Toolbar = function VeUiToolbar( $container, surface, config ) {
 	// Properties
 	this.surface = surface;
 	this.$ = $container;
-	this.$groups = $( '<div class="ve-ui-toolbarGroups"></div>' );
+	this.$groups = $( '<div>' );
 	this.config = config || {};
 
 	// Events
 	this.surface.getModel().on( 'contextChange', ve.bind( this.onContextChange, this ) );
 
 	// Initialization
+	this.$groups.addClass( 've-ui-toolbarGroups' );
 	this.$.prepend( this.$groups );
 	this.setup();
 };
