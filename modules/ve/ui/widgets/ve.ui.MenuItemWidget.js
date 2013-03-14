@@ -50,10 +50,7 @@ ve.ui.MenuItemWidget = function VeUiMenuItemWidget( label, data, config ) {
 	// Initialization
 	this.setLabel( this.label );
 	this.$label.addClass( 've-ui-menuItemWidget-label' );
-	this.$
-		.addClass( 've-ui-menuItemWidget' )
-		.append( this.$label )
-		.data( 'item', this );
+	this.$.addClass( 've-ui-menuItemWidget' ).append( this.$label );
 	this.setHighlighted( config.highlighted );
 	this.$.attr( 'rel', config.rel );
 };
