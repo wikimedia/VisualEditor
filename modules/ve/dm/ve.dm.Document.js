@@ -533,10 +533,14 @@ ve.dm.Document.prototype.getLength = function () {
  * @param insert
  */
 ve.dm.Document.prototype.spliceData = function ( offset, remove, insert ) {
-	var spliced, reaped, reapedFlat, i;
+	var spliced, retain, reaped, reapedFlat, i;
 	insert = insert || [];
 	spliced = ve.batchSplice( this.data, offset, remove, insert );
-	reaped = ve.batchSplice( this.metadata, offset, remove, new Array( insert.length ) );
+	// If we're both inserting and removing in the same operation, don't remove a bunch of metadata
+	// elements only to insert a bunch of new ones. Instead, only add or remove as many as the length
+	// delta.
+	retain = insert.length < remove ? insert.length : remove;
+	reaped = ve.batchSplice( this.metadata, offset + retain, remove - retain, new Array( insert.length - retain ) );
 	// reaped will be an array of arrays, flatten it
 	reapedFlat = [];
 	for ( i = 0; i < reaped.length; i++ ) {
@@ -548,7 +552,7 @@ ve.dm.Document.prototype.spliceData = function ( offset, remove, insert ) {
 	// after the removed data). Add it to the front, because it came from something that was
 	// before it.
 	if ( reapedFlat.length > 0 ) {
-		this.metadata[offset] = reapedFlat.concat( this.metadata[offset] || [] );
+		this.metadata[offset + retain] = reapedFlat.concat( this.metadata[offset] || [] );
 	}
 	return spliced;
 };
