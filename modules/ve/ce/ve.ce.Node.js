@@ -160,15 +160,15 @@ ve.ce.Node.prototype.canHaveChildren = function () {
 };
 
 /**
- * Check if the node can have grandchildren.
+ * Check if the node can have children but not content nor be content.
  *
  * This method passes through to the model.
  *
  * @method
- * @returns {boolean} Model node can have grandchildren
+ * @returns {boolean} Model node can have children but not content nor be content
  */
-ve.ce.Node.prototype.canHaveGrandchildren = function () {
-	return this.model.canHaveGrandchildren();
+ve.ce.Node.prototype.canHaveChildrenNotContent = function () {
+	return this.model.canHaveChildrenNotContent();
 };
 
 /**

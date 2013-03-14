@@ -29,9 +29,9 @@ QUnit.test( 'canHaveChildren', 1, function ( assert ) {
 	assert.equal( node.canHaveChildren(), true );
 } );
 
-QUnit.test( 'canHaveGrandchildren', 1, function ( assert ) {
+QUnit.test( 'canHaveChildrenNotContent', 1, function ( assert ) {
 	var node = new ve.dm.BranchNodeStub();
-	assert.equal( node.canHaveGrandchildren(), true );
+	assert.equal( node.canHaveChildrenNotContent(), true );
 } );
 
 QUnit.test( 'setRoot', 3, function ( assert ) {
