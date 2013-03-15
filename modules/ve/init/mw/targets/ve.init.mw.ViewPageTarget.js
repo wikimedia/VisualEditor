@@ -52,6 +52,7 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 	this.deactivating = false;
 	this.scrollTop = null;
 	this.proxiedOnSurfaceModelTransact = ve.bind( this.onSurfaceModelTransact, this );
+	this.proxiedOnSurfaceModelHistory = ve.bind( this.onSurfaceModelHistory, this );
 	this.surfaceOptions = {
 		'toolbars': {
 			'top': {
@@ -536,15 +537,23 @@ ve.init.mw.ViewPageTarget.prototype.onToolbarFeedbackToolClick = function () {
  * @param {ve.dm.Transaction} tx Processed transaction
  */
 ve.init.mw.ViewPageTarget.prototype.onSurfaceModelTransact = function () {
-	this.edited = true;
-	this.toolbarSaveButton.setDisabled( false );
-
 	// Clear the diff
 	this.$saveDialog
 		.find( '.ve-init-mw-viewPageTarget-saveDialog-slide-review .ve-init-mw-viewPageTarget-saveDialog-viewer' )
 			.empty();
 
 	this.surface.getModel().removeListener( 'transact', this.proxiedOnSurfaceModelTransact );
+};
+
+/**
+ * Handle history events in the surface model.
+ *
+ * @method
+ */
+ve.init.mw.ViewPageTarget.prototype.onSurfaceModelHistory = function () {
+	this.edited = this.surface.getModel().hasPastState();
+	// Disable the save button if we have no history
+	this.toolbarSaveButton.setDisabled( !this.edited );
 };
 
 /**
@@ -659,6 +668,7 @@ ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc ) {
 	this.surface.getContext().hide();
 	this.$document = this.surface.$.find( '.ve-ce-documentNode' );
 	this.surface.getModel().on( 'transact', this.proxiedOnSurfaceModelTransact );
+	this.surface.getModel().on( 'history', this.proxiedOnSurfaceModelHistory );
 	// Transplant the toolbar
 	this.attachToolbar();
 	this.transformPageTitle();
