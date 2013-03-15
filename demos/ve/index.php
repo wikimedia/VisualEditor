@@ -120,6 +120,7 @@ $html = file_get_contents( $page );
 		<script src="../../modules/ve/dm/ve.dm.LeafNode.js"></script>
 		<script src="../../modules/ve/dm/ve.dm.Annotation.js"></script>
 		<script src="../../modules/ve/dm/ve.dm.MetaItem.js"></script>
+		<script src="../../modules/ve/dm/ve.dm.MetaList.js"></script>
 		<script src="../../modules/ve/dm/ve.dm.TransactionProcessor.js"></script>
 		<script src="../../modules/ve/dm/ve.dm.Transaction.js"></script>
 		<script src="../../modules/ve/dm/ve.dm.Surface.js"></script>

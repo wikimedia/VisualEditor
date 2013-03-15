@@ -20,6 +20,9 @@ ve.dm.MetaItem = function VeDmMetaItem( element ) {
 
 	// Properties
 	this.element = element;
+	this.list = null;
+	this.offset = null;
+	this.index = null;
 };
 
 /* Inheritance */
@@ -38,6 +41,15 @@ ve.inheritClass( ve.dm.MetaItem, ve.EventEmitter );
  * @inheritable
  */
 ve.dm.MetaItem.static.name = null;
+
+/**
+ * Symbolic name for the group this meta item type will be grouped in in ve.dm.MetaList.
+ *
+ * @static
+ * @property {String} [static.group='misc']
+ * @inheritable
+ */
+ve.dm.MetaItem.static.group = 'misc';
 
 /**
  * Array of HTML tag names that this meta item should be a match candidate for.
@@ -147,3 +159,95 @@ ve.dm.MetaItem.static.enableAboutGrouping = false;
  * @inheritable
  */
 ve.dm.MetaItem.static.storeHtmlAttributes = true;
+
+/* Methods */
+
+/**
+ * Get the group this meta item belongs to.
+ * @see ve.dm.MetaItem#static.group
+ * @returns {string} Group
+ */
+ve.dm.MetaItem.prototype.getGroup = function () {
+	return this.constructor.static.group;
+};
+
+/**
+ * Get the metadata element this item represents.
+ * @returns {Object} Metadata element (by reference)
+ */
+ve.dm.MetaItem.prototype.getElement = function () {
+	return this.element;
+};
+
+/**
+ * Get the MetaList this item is attached to.
+ * @returns {ve.dm.MetaList|null} Reference to the parent list, or null if not attached
+ */
+ve.dm.MetaItem.prototype.getParentList = function () {
+	return this.list;
+};
+
+/**
+ * Get this item's offset in the linear model.
+ *
+ * This is only known if the item is attached to a MetaList.
+ *
+ * @returns {number|null} Offset, or null if not attached
+ */
+ve.dm.MetaItem.prototype.getOffset = function () {
+	return this.offset;
+};
+
+/**
+ * Get this item's index in the metadata array at the offset.
+ *
+ * This is only known if the item is attached to a MetaList.
+ *
+ * @returns {number|null} Index, or null if not attached
+ */
+ve.dm.MetaItem.prototype.getIndex = function () {
+	return this.index;
+};
+
+/**
+ * Set the offset. This is used by the parent list to synchronize the item with the document state.
+ * @param {number} offset New offset
+ */
+ve.dm.MetaItem.prototype.setOffset = function ( offset ) {
+	this.offset = offset;
+};
+
+/**
+ * Set the index. This is used by the parent list to synchronize the item with the document state.
+ * @param {number} index New index
+ */
+ve.dm.MetaItem.prototype.setIndex = function ( index ) {
+	this.index = index;
+};
+
+/**
+ * Attach this item to a MetaList.
+ * @param {ve.dm.MetaList} list Parent list to attach to
+ * @param {number} offset Offset of this item in the parent list's document
+ * @param {number} index Index of this item in the metadata array at the offset
+ */
+ve.dm.MetaItem.prototype.attach = function ( list, offset, index ) {
+	this.list = list;
+	this.offset = offset;
+	this.index = index;
+};
+
+/**
+ * Detach this item from its parent list.
+ *
+ * This clears the stored offset and index, unless the item has already been attached to another list.
+ *
+ * @param {ve.dm.MetaList} list List to detach from
+ */
+ve.dm.MetaItem.prototype.detach = function ( list ) {
+	if ( this.list === list ) {
+		this.list = null;
+		this.offset = null;
+		this.index = null;
+	}
+};
