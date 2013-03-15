@@ -39,6 +39,7 @@ $wgExtensionCredits['other'][] = array(
 		'Rob Moen',
 		'Subramanya Sastry',
 		'Timo Tijhof',
+		'Ed Sanders',
 	),
 	'version' => '0.1.0',
 	'url' => 'https://www.mediawiki.org/wiki/Extension:VisualEditor',
