@@ -225,6 +225,7 @@ $wgResourceModules += array(
 			've/dm/ve.dm.LeafNode.js',
 			've/dm/ve.dm.Annotation.js',
 			've/dm/ve.dm.MetaItem.js',
+			've/dm/ve.dm.MetaList.js',
 			've/dm/ve.dm.TransactionProcessor.js',
 			've/dm/ve.dm.Transaction.js',
 			've/dm/ve.dm.Surface.js',

@@ -35,6 +35,7 @@
 				"classes": [
 					"ve.dm",
 					"ve.dm.AnnotationFactory",
+					"ve.dm.MetaItemFactory",
 					"ve.dm.ModelRegistry",
 					"ve.dm.Converter",
 					"ve.dm.DocumentSlice",
@@ -53,7 +54,7 @@
 			},
 			{
 				"name": "Meta items",
-				"classes": ["ve.dm.*MetaItem"]
+				"classes": ["ve.dm.*MetaItem", "ve.dm.MetaList"]
 			},
 			{
 				"name": "Nodes",

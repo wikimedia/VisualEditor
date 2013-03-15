@@ -65,6 +65,7 @@
 		<script src="../../ve/dm/ve.dm.LeafNode.js"></script>
 		<script src="../../ve/dm/ve.dm.Annotation.js"></script>
 		<script src="../../ve/dm/ve.dm.MetaItem.js"></script>
+		<script src="../../ve/dm/ve.dm.MetaList.js"></script>
 		<script src="../../ve/dm/ve.dm.TransactionProcessor.js"></script>
 		<script src="../../ve/dm/ve.dm.Transaction.js"></script>
 		<script src="../../ve/dm/ve.dm.Surface.js"></script>
@@ -213,6 +214,7 @@
 		<script src="dm/ve.dm.Surface.test.js"></script>
 		<script src="dm/ve.dm.SurfaceFragment.test.js"></script>
 		<script src="dm/ve.dm.ModelRegistry.test.js"></script>
+		<script src="dm/ve.dm.MetaList.test.js"></script>
 		<script src="ce/ve.ce.test.js"></script>
 		<script src="ce/ve.ce.Document.test.js"></script>
 		<script src="ce/ve.ce.NodeFactory.test.js"></script>
