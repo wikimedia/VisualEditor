@@ -10,23 +10,24 @@
  *
  * @class
  * @abstract
- * @extends ve.EventEmitter
+ * @extends ve.ui.Element
+ * @mixin ve.EventEmitter
  *
  * @constructor
  * @param {Object} [config] Config options
- * @cfg {Function} [$$=$] jQuery for the frame the widget is in
  * @cfg {boolean} [disabled=false] Disable
  */
 ve.ui.Widget = function VeUiWidget( config ) {
 	// Initialize config
-	config = ve.extendObject( { '$$': $, 'disabled': false }, config );
+	config = ve.extendObject( { 'disabled': false }, config );
 
 	// Parent constructor
 	ve.EventEmitter.call( this );
 
+	// Mixin constructors
+	ve.ui.Element.call( this, config );
+
 	// Properties
-	this.$$ = config.$$;
-	this.$ = this.$$( '<' + this.constructor.static.tagName + '>' );
 	this.disabled = config.disabled;
 
 	// Initialization
@@ -36,19 +37,9 @@ ve.ui.Widget = function VeUiWidget( config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.Widget, ve.EventEmitter );
+ve.inheritClass( ve.ui.Widget, ve.ui.Element );
 
-/* Static Properties */
-
-/**
- * HTML element name.
- *
- * @static
- * @property
- * @type {string}
- * @inheritable
- */
-ve.ui.Widget.static.tagName = 'div';
+ve.mixinClass( ve.ui.Widget, ve.EventEmitter );
 
 /* Methods */
 

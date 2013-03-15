@@ -13,7 +13,13 @@
 		"groups": [
 			{
 				"name": "General",
-				"classes": ["ve.ce", "ve.ce.NodeFactory", "ve.ce.Surface", "ve.ce.SurfaceObserver", "ve.ce.DomRange"]
+				"classes": [
+					"ve.ce",
+					"ve.ce.NodeFactory",
+					"ve.ce.Surface",
+					"ve.ce.SurfaceObserver",
+					"ve.ce.DomRange"
+				]
 			},
 			{
 				"name": "Nodes",
@@ -77,7 +83,19 @@
 		"groups": [
 			{
 				"name": "General",
-				"classes": ["ve.ui", "ve.ui.Context", "ve.ui.Frame", "ve.ui.InspectorFactory", "ve.ui.Toolbar", "ve.ui.ToolFactory", "ve.ui.Dialog"]
+				"classes": [
+					"ve.ui",
+					"ve.ui.Context",
+					"ve.ui.Frame",
+					"ve.ui.Toolbar",
+					"ve.ui.Element",
+					"ve.ui.Window",
+					"ve.ui.WindowSet"
+				]
+			},
+			{
+				"name": "Factories",
+				"classes": ["ve.ui.*Factory"]
 			},
 			{
 				"name": "Tools",
@@ -90,6 +108,10 @@
 			{
 				"name": "Widgets",
 				"classes": ["ve.ui.*Widget"]
+			},
+			{
+				"name": "Layouts",
+				"classes": ["ve.ui.*Layout"]
 			},
 			{
 				"name": "Dialogs",
@@ -135,7 +157,9 @@
 			},
 			{
 				"name": "JavaScript",
-				"classes": ["Array", "Boolean", "Date", "Function", "Number", "Object", "RegExp", "String"]
+				"classes": [
+					"Array", "Boolean", "Date", "Function", "Number", "Object", "RegExp", "String"
+				]
 			}
 		]
 	}

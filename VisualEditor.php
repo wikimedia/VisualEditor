@@ -309,10 +309,15 @@ $wgResourceModules += array(
 			've/ui/ve.ui.InspectorFactory.js',
 			've/ui/ve.ui.Dialog.js',
 			've/ui/ve.ui.DialogFactory.js',
+			've/ui/ve.ui.Element.js',
+			've/ui/ve.ui.Layout.js',
 			've/ui/ve.ui.Widget.js',
 			've/ui/ve.ui.Tool.js',
 			've/ui/ve.ui.Toolbar.js',
 			've/ui/ve.ui.ToolFactory.js',
+
+			've/ui/layouts/ve.ui.GridLayout.js',
+			've/ui/layouts/ve.ui.PanelLayout.js',
 
 			've/ui/widgets/ve.ui.LabeledWidget.js',
 			've/ui/widgets/ve.ui.FlaggableWidget.js',
@@ -370,6 +375,7 @@ $wgResourceModules += array(
 			've/ui/styles/ve.ui.Inspector.css',
 			've/ui/styles/ve.ui.Toolbar.css',
 			've/ui/styles/ve.ui.Tool.css',
+			've/ui/styles/ve.ui.Layout.css',
 			've/ui/styles/ve.ui.Widget.css',
 		),
 		'dependencies' => array(
