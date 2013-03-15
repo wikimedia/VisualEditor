@@ -147,6 +147,14 @@ ve.dm.Document = function VeDmDocument( data, parentDocument ) {
 
 ve.inheritClass( ve.dm.Document, ve.Document );
 
+/* Events */
+
+/**
+ * @event transact
+ * @param {ve.dm.Transaction} tx Transaction that was just processed
+ * @param {boolean} reversed Whether the transaction was processed in reverse
+ */
+
 /* Static methods */
 
 /**

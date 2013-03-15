@@ -144,6 +144,8 @@ ve.dm.TransactionProcessor.prototype.process = function () {
 	}
 	// Mark the transaction as committed or rolled back, as appropriate
 	this.transaction.toggleApplied();
+	// Emit an event on the document
+	this.document.emit( 'transact', this.transaction, this.reversed );
 };
 
 /**
