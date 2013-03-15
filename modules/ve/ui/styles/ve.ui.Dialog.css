@@ -58,3 +58,11 @@
 	float: right;
 	margin: 0.125em 0.25em;
 }
+
+.ve-ui-window-body {
+	position: absolute;
+	top: 3.8em;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}

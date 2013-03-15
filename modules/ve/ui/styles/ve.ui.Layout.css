@@ -1,0 +1,22 @@
+/*!
+ * VisualEditor UserInterface Layout styles.
+ *
+ * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+/* ve.ui.GridLayout */
+
+.ve-ui-gridLayout {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+/* ve.ui.PanelLayout */
+
+.ve-ui-panelLayout {
+	position: absolute;
+}

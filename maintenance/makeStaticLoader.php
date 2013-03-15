@@ -52,6 +52,7 @@ class MakeStaticLoader extends Maintenance {
 			'scripts' => array(
 				've/init/sa/ve.init.sa.js',
 				've/init/sa/ve.init.sa.Platform.js',
+				've/init/sa/ve.init.sa.Target.js',
 			),
 			'headAdd' => '
 		<script>

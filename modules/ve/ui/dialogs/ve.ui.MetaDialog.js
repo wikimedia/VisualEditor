@@ -35,6 +35,30 @@ ve.inheritClass( ve.ui.MetaDialog, ve.ui.Dialog );
  */
 ve.ui.MetaDialog.static.titleMessage = 'visualeditor-dialog-meta-title';
 
+/* Methods */
+
+/**
+ * Handle frame ready events.
+ *
+ * @method
+ */
+ve.ui.MetaDialog.prototype.initialize = function () {
+	// Call parent method
+	ve.ui.Dialog.prototype.initialize.call( this );
+
+	// Properties
+	this.outlinePanel = new ve.ui.PanelLayout( { '$$': this.$$ } );
+	this.editorPanel = new ve.ui.PanelLayout( { '$$': this.$$ } );
+	this.layout = new ve.ui.GridLayout(
+		[this.outlinePanel, this.editorPanel],
+		{ '$$': this.$$, 'widths': [1, 2] }
+	);
+
+	// Initialization
+	this.$body.append( this.layout.$ );
+	this.layout.update();
+};
+
 /* Registration */
 
 ve.ui.dialogFactory.register( 'meta', ve.ui.MetaDialog );
