@@ -253,7 +253,6 @@ $wgResourceModules += array(
 
 			've/dm/nodes/ve.dm.MWEntityNode.js',
 			've/dm/nodes/ve.dm.MWHeadingNode.js',
-			've/dm/nodes/ve.dm.MWMetaNode.js',
 			've/dm/nodes/ve.dm.MWPreformattedNode.js',
 
 			've/dm/annotations/ve.dm.LinkAnnotation.js',
