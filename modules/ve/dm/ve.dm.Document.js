@@ -70,7 +70,7 @@ ve.dm.Document = function VeDmDocument( data, parentDocument ) {
 		} else {
 			if (
 				this.data[i].type.charAt( 0 ) !== '/' &&
-				ve.dm.nodeFactory.isNodeMeta( this.data[i].type )
+				ve.dm.metaItemFactory.lookup( this.data[i].type )
 			) {
 				// Metadata
 				// Splice the meta element and its closing out of the linmod

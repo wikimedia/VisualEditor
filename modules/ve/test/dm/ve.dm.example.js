@@ -291,28 +291,28 @@ ve.dm.example.alienData = [
 
 ve.dm.example.withMeta = [
 	{
-		'type': 'metaBlock',
+		'type': 'alienMeta',
 		'attributes': {
 			'style': 'comment',
 			'text': ' No content conversion '
 		}
 	},
-	{ 'type': '/metaBlock' },
+	{ 'type': '/alienMeta' },
 	{
-		'type': 'metaBlock',
+		'type': 'alienMeta',
 		'attributes': {
 			'style': 'meta',
 			'key': 'mw:PageProp/nocc',
 			'html/0/property': 'mw:PageProp/nocc'
 		}
 	},
-	{ 'type': '/metaBlock' },
+	{ 'type': '/alienMeta' },
 	{ 'type': 'paragraph' },
 	'F',
 	'o',
 	'o',
 	{
-		'type': 'metaInline',
+		'type': 'alienMeta',
 		'attributes': {
 			'style': 'link',
 			'key': 'mw:WikiLink/Category',
@@ -321,12 +321,12 @@ ve.dm.example.withMeta = [
 			'html/0/rel': 'mw:WikiLink/Category'
 		}
 	},
-	{ 'type': '/metaInline' },
+	{ 'type': '/alienMeta' },
 	'B',
 	'a',
 	'r',
 	{
-		'type': 'metaInline',
+		'type': 'alienMeta',
 		'attributes': {
 			'style': 'meta',
 			'key': 'mw:foo',
@@ -335,21 +335,21 @@ ve.dm.example.withMeta = [
 			'html/0/property': 'mw:foo'
 		}
 	},
-	{ 'type': '/metaInline' },
+	{ 'type': '/alienMeta' },
 	'B',
 	'a',
 	{
-		'type': 'metaInline',
+		'type': 'alienMeta',
 		'attributes': {
 			'style': 'comment',
 			'text': ' inline '
 		}
 	},
-	{ 'type': '/metaInline' },
+	{ 'type': '/alienMeta' },
 	'z',
 	{ 'type': '/paragraph' },
 	{
-		'type': 'metaBlock',
+		'type': 'alienMeta',
 		'attributes': {
 			'style': 'meta',
 			'key': 'mw:bar',
@@ -358,17 +358,17 @@ ve.dm.example.withMeta = [
 			'html/0/property': 'mw:bar'
 		}
 	},
-	{ 'type': '/metaBlock' },
+	{ 'type': '/alienMeta' },
 	{
-		'type': 'metaBlock',
+		'type': 'alienMeta',
 		'attributes': {
 			'style': 'comment',
 			'text': 'barbaz'
 		}
 	},
-	{ 'type': '/metaBlock' },
+	{ 'type': '/alienMeta' },
 	{
-		'type': 'metaBlock',
+		'type': 'alienMeta',
 		'attributes': {
 			'style': 'link',
 			'key': 'mw:WikiLink/Category',
@@ -377,9 +377,9 @@ ve.dm.example.withMeta = [
 			'html/0/rel': 'mw:WikiLink/Category'
 		}
 	},
-	{ 'type': '/metaBlock' },
+	{ 'type': '/alienMeta' },
 	{
-		'type': 'metaBlock',
+		'type': 'alienMeta',
 		'attributes': {
 			'style': 'meta',
 			'key': null,
@@ -387,7 +387,7 @@ ve.dm.example.withMeta = [
 			'html/0/data-parsoid': 'foobar'
 		}
 	},
-	{ 'type': '/metaBlock' }
+	{ 'type': '/alienMeta' }
 ];
 
 ve.dm.example.withMetaPlainData = [
@@ -407,14 +407,14 @@ ve.dm.example.withMetaPlainData = [
 ve.dm.example.withMetaMetaData = [
 	[
 		{
-			'type': 'metaBlock',
+			'type': 'alienMeta',
 			'attributes': {
 				'style': 'comment',
 				'text': ' No content conversion '
 			}
 		},
 		{
-			'type': 'metaBlock',
+			'type': 'alienMeta',
 			'attributes': {
 				'style': 'meta',
 				'key': 'mw:PageProp/nocc',
@@ -427,7 +427,7 @@ ve.dm.example.withMetaMetaData = [
 	undefined,
 	[
 		{
-			'type': 'metaInline',
+			'type': 'alienMeta',
 			'attributes': {
 				'style': 'link',
 				'key': 'mw:WikiLink/Category',
@@ -441,7 +441,7 @@ ve.dm.example.withMetaMetaData = [
 	undefined,
 	[
 		{
-			'type': 'metaInline',
+			'type': 'alienMeta',
 			'attributes': {
 				'style': 'meta',
 				'key': 'mw:foo',
@@ -454,7 +454,7 @@ ve.dm.example.withMetaMetaData = [
 	undefined,
 	[
 		{
-			'type': 'metaInline',
+			'type': 'alienMeta',
 			'attributes': {
 				'style': 'comment',
 				'text': ' inline '
@@ -464,7 +464,7 @@ ve.dm.example.withMetaMetaData = [
 	undefined,
 	[
 		{
-			'type': 'metaBlock',
+			'type': 'alienMeta',
 			'attributes': {
 				'style': 'meta',
 				'key': 'mw:bar',
@@ -474,14 +474,14 @@ ve.dm.example.withMetaMetaData = [
 			}
 		},
 		{
-			'type': 'metaBlock',
+			'type': 'alienMeta',
 			'attributes': {
 				'style': 'comment',
 				'text': 'barbaz'
 			}
 		},
 		{
-			'type': 'metaBlock',
+			'type': 'alienMeta',
 			'attributes': {
 				'style': 'link',
 				'key': 'mw:WikiLink/Category',
@@ -491,7 +491,7 @@ ve.dm.example.withMetaMetaData = [
 			}
 		},
 		{
-			'type': 'metaBlock',
+			'type': 'alienMeta',
 			'attributes': {
 				'style': 'meta',
 				'key': null,
@@ -1985,7 +1985,7 @@ ve.dm.example.domToDataCases = {
 			'o',
 			'o',
 			{
-				'type': 'metaInline',
+				'type': 'alienMeta',
 				'attributes': {
 					'style': 'meta',
 					'key': 'mw:foo',
@@ -1994,7 +1994,7 @@ ve.dm.example.domToDataCases = {
 					'html/0/property': 'mw:foo'
 				}
 			},
-			{ 'type': '/metaInline' },
+			{ 'type': '/alienMeta' },
 			{ 'type': '/paragraph' },
 			{ 'type': '/tableCell' },
 			{ 'type': '/tableRow' },

@@ -46,6 +46,10 @@
 				"classes": ["ve.dm.*Annotation"]
 			},
 			{
+				"name": "Meta items",
+				"classes": ["ve.dm.*MetaItem"]
+			},
+			{
 				"name": "Nodes",
 				"classes": ["ve.dm.Document", "ve.dm.*Node"]
 			}

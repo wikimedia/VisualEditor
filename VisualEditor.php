@@ -218,10 +218,12 @@ $wgResourceModules += array(
 			've/dm/ve.dm.ModelRegistry.js',
 			've/dm/ve.dm.NodeFactory.js',
 			've/dm/ve.dm.AnnotationFactory.js',
+			've/dm/ve.dm.MetaItemFactory.js',
 			've/dm/ve.dm.Node.js',
 			've/dm/ve.dm.BranchNode.js',
 			've/dm/ve.dm.LeafNode.js',
 			've/dm/ve.dm.Annotation.js',
+			've/dm/ve.dm.MetaItem.js',
 			've/dm/ve.dm.TransactionProcessor.js',
 			've/dm/ve.dm.Transaction.js',
 			've/dm/ve.dm.Surface.js',
@@ -241,7 +243,6 @@ $wgResourceModules += array(
 			've/dm/nodes/ve.dm.ImageNode.js',
 			've/dm/nodes/ve.dm.ListItemNode.js',
 			've/dm/nodes/ve.dm.ListNode.js',
-			've/dm/nodes/ve.dm.MetaNode.js',
 			've/dm/nodes/ve.dm.ParagraphNode.js',
 			've/dm/nodes/ve.dm.PreformattedNode.js',
 			've/dm/nodes/ve.dm.TableCellNode.js',
@@ -259,6 +260,9 @@ $wgResourceModules += array(
 			've/dm/annotations/ve.dm.MWExternalLinkAnnotation.js',
 			've/dm/annotations/ve.dm.MWInternalLinkAnnotation.js',
 			've/dm/annotations/ve.dm.TextStyleAnnotation.js',
+
+			've/dm/metaitems/ve.dm.AlienMetaItem.js',
+			've/dm/metaitems/ve.dm.MWMetaItem.js',
 
 			// ce
 			've/ce/ve.ce.js',

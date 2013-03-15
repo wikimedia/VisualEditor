@@ -47,13 +47,13 @@ QUnit.test( 'commit/rollback', 86, function ( assert ) {
 		italic = ve.dm.example.createAnnotation( ve.dm.example.italic ),
 		underline = ve.dm.example.createAnnotation( ve.dm.example.underline ),
 		metaElementInsert = {
-				'type': 'metaInline',
+				'type': 'alienMeta',
 				'attributes': {
 					'style': 'comment',
 					'text': ' inline '
 				}
 			},
-		metaElementInsertClose = { 'type': '/metaInline' },
+		metaElementInsertClose = { 'type': '/alienMeta' },
 		cases = {
 			'no operations': {
 				'calls': [],
