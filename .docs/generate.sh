@@ -17,5 +17,8 @@ cd $(cd $(dirname $0); pwd)
 ) < eg-iframe.tpl | php > eg-iframe.html
 
 jsduck --config=config.json
+c=$?
 rm eg-iframe.html
 cd - > /dev/null
+# Exit with exit code of jsduck command
+exit $ec
