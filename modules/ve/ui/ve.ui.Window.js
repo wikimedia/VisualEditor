@@ -48,6 +48,21 @@ ve.ui.Window = function VeUiWindow( surface ) {
 
 ve.inheritClass( ve.ui.Window, ve.EventEmitter );
 
+/* Events */
+
+/**
+ * @event setup
+ */
+
+/**
+ * @event open
+ */
+
+/**
+ * @event close
+ * @param {Boolean} accept Changes have been accepted
+ */
+
 /* Static Properties */
 
 /**
@@ -72,41 +87,6 @@ ve.ui.Window.static.stylesheets = [
 	've.ui.Widget.css',
 	( window.devicePixelRatio > 1 ? 've.ui.Icons-vector.css' : 've.ui.Icons-raster.css' )
 ];
-
-/**
- * Symbolic name of icon.
- *
- * @static
- * @property
- * @type {string}
- */
-ve.ui.Window.static.icon = 'window';
-
-/**
- * Localized message for title.
- *
- * @static
- * @property
- * @type {string}
- */
-ve.ui.Window.static.titleMessage = null;
-
-/* Events */
-
-/**
- * @event setup
- */
-
-/**
- * @event open
- */
-
-/**
- * @event close
- * @param {Boolean} accept Changes have been accepted
- */
-
-/* Static Properties */
 
 /**
  * Symbolic name of icon.
@@ -260,6 +240,7 @@ ve.ui.Window.prototype.open = function () {
 		this.$.show();
 		this.visible = true;
 		this.frame.run( ve.bind( function () {
+			this.frame.$.focus();
 			this.onOpen();
 			this.opening = false;
 			this.emit( 'open' );
@@ -284,6 +265,7 @@ ve.ui.Window.prototype.close = function ( remove ) {
 		this.visible = false;
 		this.onClose( remove );
 		this.closing = false;
+		this.frame.$content.find( ':focus' ).blur();
 		this.surface.getView().getDocument().getDocumentNode().$.focus();
 		this.emit( 'close', remove );
 	}

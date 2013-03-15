@@ -130,7 +130,6 @@ ve.ui.Inspector.prototype.onFormKeyDown = function ( e ) {
  */
 ve.ui.Inspector.prototype.onOpen = function () {
 	this.initialSelection = this.surface.getModel().getSelection();
-	this.$form.find( ':input:visible:first' ).focus();
 };
 
 /**

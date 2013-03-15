@@ -19,10 +19,15 @@ ve.ui = {
  * Gets a jQuery function within a specific document.
  *
  * @param {jQuery|HTMLDocument} context Context to bind the function to
+ * @param {ve.ui.Frame} [frame] Frame of the document context
  * @returns {Function} Bound jQuery function
  */
-ve.ui.get$$ = function ( context ) {
-	return function ( selector ) {
+ve.ui.get$$ = function ( context, frame ) {
+	function $$( selector ) {
 		return $( selector, context instanceof jQuery ? context.context : context );
-	};
+	}
+	if ( frame ) {
+		$$.frame = frame;
+	}
+	return $$;
 };

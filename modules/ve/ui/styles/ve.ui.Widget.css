@@ -257,6 +257,7 @@
 
 .ve-ui-mwLinkTargetInputWidget-menu.ve-ui-menuWidget {
 	width: 20em;
+	margin-top: -7px;
 }
 
 .ve-ui-mwLinkTargetInputWidget-menu .ve-ui-menuWidget-item {
