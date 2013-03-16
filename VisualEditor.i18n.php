@@ -1572,6 +1572,7 @@ $messages['ja'] = array(
 	'tag-visualeditor' => '[[Special:Tags|タグ]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|ビジュアルエディター]]',
 	'tag-visualeditor-description' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|ビジュアルエディター]]を使用した編集',
 	'visualeditor-descriptionpagelink' => 'Project:ビジュアルエディター',
+	'visualeditor-alphawarning' => 'あなたは[[{{MediaWiki:Visualeditor-descriptionpagelink}}|ビジュアルエディター]]のアルファ版を使用しています。動作が遅い可能性があり、誤った内容を保存してしまうおそれがあります。保存した結果が正しいか毎回確認してください。',
 	'visualeditor-report-link' => 'foundation:Terms of Use/ja',
 );
 
@@ -3107,8 +3108,9 @@ $messages['zh-hans'] = array(
 	'visualeditor-ca-ve-edit' => '可视化编辑器',
 	'visualeditor-ca-ve-create' => '可视化编辑器',
 	'visualeditor-dialog-meta-title' => '页面设置',
-	'visualeditor-dialog-content-title' => '生成的内容', # Fuzzy
+	'visualeditor-dialog-content-title' => '内容设置',
 	'visualeditor-dialog-action-apply' => '应用更改',
+	'visualeditor-dialog-action-cancel' => '取消',
 	'visualeditor-toolbar-savedialog' => '复查并保存',
 	'visualeditor-savedialog-title-review' => '复查您的更高',
 	'visualeditor-savedialog-title-report' => '报告问题',
