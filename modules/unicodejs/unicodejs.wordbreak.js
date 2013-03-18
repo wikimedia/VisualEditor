@@ -1,0 +1,160 @@
+/*!
+ * Wordbreak module
+ *
+ * Implementation of Unicode's Default Word Boundaries
+ * http://www.unicode.org/reports/tr29/#Default_Word_Boundaries
+ *
+ * @copyright 2013 UnicodeJS team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+( function () {
+	var group,
+		groups = unicodeJS.groups,
+		/**
+		 * @class unicodeJS.wordbreak
+		 * @singleton
+		 */
+		wordbreak = unicodeJS.wordbreak = {},
+		patterns = {};
+
+	// build regexes
+	for ( group in groups ) {
+		patterns[group] = new RegExp( '[' + groups[group] + ']' );
+	}
+
+	function getGroup( chr ) {
+		var group;
+		for ( group in patterns ) {
+			if ( patterns[group].test( chr ) ) {
+				return group;
+			}
+		}
+		return null;
+	}
+
+
+	/**
+	 * Evaluates if the specified position within some text is a word boundary.
+	 * @param {string} text Text
+	 * @param {number} pos Character position
+	 * @returns {boolean} Is the position a word boundary
+	 */
+	wordbreak.isBreakInText = function ( text, pos ) {
+		return unicodeJS.wordbreak.isBreakInTextString( new unicodeJS.TextString( text ), pos );
+	};
+
+	/**
+	 * Evaluates if the sepcified position within some text is a word boundary.
+	 * @param {unicodeJS.TextString} string Text string
+	 * @param {number} pos Character position
+	 * @returns {boolean} Is the position a word boundary
+	 */
+	wordbreak.isBreakInTextString = function ( string, pos ) {
+		// Break at the start and end of text.
+		// WB1: sot ÷
+		// WB2: ÷ eot
+		if ( string.read( pos - 1 ) === null || string.read( pos ) === null ) {
+			return true;
+		}
+
+		// get some context
+		var lft = [], rgt = [], l = 0, r = 0;
+		rgt.push( getGroup( string.read( pos + r  ) ) );
+		lft.push( getGroup( string.read( pos - l - 1 ) ) );
+
+		switch ( true ) {
+			// Do not break within CRLF.
+			// WB3: CR × LF
+			case lft[0] === 'CR' && rgt[0] === 'LF':
+				return false;
+
+			// Otherwise break before and after Newlines (including CR and LF)
+			// WB3a: (Newline | CR | LF) ÷
+			case lft[0] === 'Newline' || lft[0] === 'CR' || lft[0] === 'LF':
+			// WB3b: ÷ (Newline | CR | LF)
+			case rgt[0] === 'Newline' || rgt[0] === 'CR' || rgt[0] === 'LF':
+				return true;
+		}
+
+		// Ignore Format and Extend characters, except when they appear at the beginning of a region of text.
+		// WB4: X (Extend | Format)* → X
+		if ( rgt[0] === 'Extend' || rgt[0] === 'Format' ) {
+			// The Extend|Format character is to the right, so it is attached
+			// to a character to the left, don't split here
+			return false;
+		}
+		// We've reached the end of an Extend|Format sequence, collapse it
+		while ( lft[0] === 'Extend' || lft[0] === 'Format' ) {
+			l++;
+			if ( pos - l - 1 <= 0) {
+				// start of document
+				return true;
+			}
+			lft[lft.length - 1] = getGroup( string.read( pos - l - 1 ) );
+		}
+
+
+		// Do not break between most letters.
+		// WB5: ALetter × ALetter
+		if ( lft[0] === 'ALetter' && rgt[0] === 'ALetter' ) {
+			return false;
+		}
+
+		// some tests beyond this point require more context
+		l++;
+		r++;
+		rgt.push( getGroup( string.read( pos + r ) ) );
+		lft.push( getGroup( string.read( pos - l - 1 ) ) );
+
+		switch ( true ) {
+			// Do not break letters across certain punctuation.
+			// WB6: ALetter × (MidLetter | MidNumLet) ALetter
+			case lft[0] === 'ALetter' && rgt[1] === 'ALetter' &&
+				( rgt[0] === 'MidLetter' || rgt[0] === 'MidNumLet' ):
+			// WB7: ALetter (MidLetter | MidNumLet) × ALetter
+			case rgt[0] === 'ALetter' && lft[1] === 'ALetter' &&
+				( lft[0] === 'MidLetter' || lft[0] === 'MidNumLet' ):
+				return false;
+
+			// Do not break within sequences of digits, or digits adjacent to letters (“3a”, or “A3”).
+			// WB8: Numeric × Numeric
+			case lft[0] === 'Numeric' && rgt[0] === 'Numeric':
+			// WB9: ALetter × Numeric
+			case lft[0] === 'ALetter' && rgt[0] === 'Numeric':
+			// WB10: Numeric × ALetter
+			case lft[0] === 'Numeric' && rgt[0] === 'ALetter':
+				return false;
+
+			// Do not break within sequences, such as “3.2” or “3,456.789”.
+			// WB11: Numeric (MidNum | MidNumLet) × Numeric
+			case rgt[0] === 'Numeric' && lft[1] === 'Numeric' &&
+				( lft[0] === 'MidNum' || lft[0] === 'MidNumLet' ):
+			// WB12: Numeric × (MidNum | MidNumLet) Numeric
+			case lft[0] === 'Numeric' && rgt[1] === 'Numeric' &&
+				( rgt[0] === 'MidNum' || rgt[0] === 'MidNumLet' ):
+				return false;
+
+			// Do not break between Katakana.
+			// WB13: Katakana × Katakana
+			case lft[0] === 'Katakana' && rgt[0] === 'Katakana':
+				return false;
+
+			// Do not break from extenders.
+			// WB13a: (ALetter | Numeric | Katakana | ExtendNumLet) × ExtendNumLet
+			case rgt[0] === 'ExtendNumLet' &&
+				( lft[0] === 'ALetter' || lft[0] === 'Numeric' || lft[0] === 'Katakana' || lft[0] === 'ExtendNumLet' ):
+			// WB13b: ExtendNumLet × (ALetter | Numeric | Katakana)
+			case lft[0] === 'ExtendNumLet' &&
+				( rgt[0] === 'ALetter' || rgt[0] === 'Numeric' || rgt[0] === 'Katakana' ):
+				return false;
+
+			// Do not break between regional indicator symbols.
+			// WB13c: Regional_Indicator × Regional_Indicator
+			case lft[0] === 'Regional_Indicator' && rgt[0] === 'Regional_Indicator':
+				return false;
+		}
+		// Otherwise, break everywhere (including around ideographs).
+		// WB14: Any ÷ Any
+		return true;
+	};
+}() );

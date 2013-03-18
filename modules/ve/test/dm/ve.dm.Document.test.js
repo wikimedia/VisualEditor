@@ -1332,8 +1332,8 @@ QUnit.test( 'getNearestStructuralOffset', function ( assert ) {
 	}
 } );
 
-QUnit.test( 'getNearestWordBoundary', function ( assert ) {
-	var i, doc, left, right, word,
+QUnit.test( 'getNearestWordRange', function ( assert ) {
+	var i, doc, range, word,
 		cases = [
 		{
 			'phrase': 'visual editor test',
@@ -1342,28 +1342,70 @@ QUnit.test( 'getNearestWordBoundary', function ( assert ) {
 			'expected': 'editor'
 		},
 		{
+			'phrase': 'visual editor test',
+			'msg': 'cursor at start of word',
+			'offset': 7,
+			'expected': 'editor'
+		},
+		{
+			'phrase': 'visual editor test',
+			'msg': 'cursor at end of word',
+			'offset': 13,
+			'expected': 'editor'
+		},
+		{
+			'phrase': 'visual editor test',
+			'msg': 'cursor at start of text',
+			'offset': 0,
+			'expected': 'visual'
+		},
+		{
+			'phrase': 'visual editor test',
+			'msg': 'cursor at end of text',
+			'offset': 18,
+			'expected': 'test'
+		},
+		{
 			'phrase': 'Computer-aided design',
 			'msg': 'hyphenated Latin word',
-			'offset': 2,
-			'expected': 'Computer-aided'
+			'offset': 12,
+			'expected': 'aided'
 		},
 		{
 			'phrase': 'Water (l\'eau) is',
 			'msg': 'apostrophe and parentheses (Latin)',
 			'offset': 8,
-			'expected': '(l\'eau)'
+			'expected': 'l\'eau'
 		},
 		{
 			'phrase': 'Water (H2O) is',
 			'msg': 'number in word (Latin)',
 			'offset': 9,
-			'expected': '(H2O)'
+			'expected': 'H2O'
+		},
+		{
+			'phrase': 'The \'word\' is',
+			'msg': 'apostrophes as single quotes',
+			'offset': 7,
+			'expected': 'word'
+		},
+		{
+			'phrase': 'Some "double" quotes',
+			'msg': 'double quotes',
+			'offset': 8,
+			'expected': 'double'
 		},
 		{
 			'phrase': 'Wikipédia l\'encyclopédie libre',
 			'msg': 'extended Latin word',
 			'offset': 15,
 			'expected': 'l\'encyclopédie'
+		},
+		{
+			'phrase': 'Wikipédia l\'encyclopédie libre',
+			'msg': 'Extend characters (i.e. letter + accent)',
+			'offset': 15,
+			'expected': 'l\'encyclopédie'
 		},
 		{
 			'phrase': 'Википедия свободная энциклопедия',
@@ -1388,15 +1430,49 @@ QUnit.test( 'getNearestWordBoundary', function ( assert ) {
 			'msg': 'Eastern Arabic numerals',
 			'offset': 13,
 			'expected': '٠١٢٣٤٥٦٧٨٩'
+		},
+		{
+			'phrase': 'Latinカタカナwrapped',
+			'msg': 'Latin-wrapped Katakana word',
+			'offset': 7,
+			'expected': 'カタカナ'
+		},
+		{
+			'phrase': '维基百科',
+			'msg': 'Hanzi characters (cursor in middle)',
+			'offset': 2,
+			'expected': '百'
+		},
+		{
+			'phrase': '维基百科',
+			'msg': 'Hanzi characters (cursor at end)',
+			'offset': 4,
+			'expected': '科'
+		},
+		{
+			'phrase': 'Costs £1,234.00 each',
+			'msg': 'formatted number sequence',
+			'offset': 11,
+			'expected': '1,234.00'
+		},
+		{
+			'phrase': 'Reset index_of variable',
+			'msg': 'underscore-joined word',
+			'offset': 8,
+			'expected': 'index_of'
 		}
 	];
 	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
 		doc = new ve.dm.Document( cases[i].phrase.split('') );
-		left = doc.getNearestWordBoundary( cases[i].offset, -1 );
-		right = doc.getNearestWordBoundary( cases[i].offset, 1 );
-		word = cases[i].phrase.substring( left, right );
-		assert.strictEqual( word, cases[i].expected, cases[i].msg );
+		range = doc.getNearestWordRange( cases[i].offset );
+		word = cases[i].phrase.substring( range.start, range.end );
+		assert.strictEqual( word, cases[i].expected,
+			cases[i].msg + ': ' +
+			cases[i].phrase.substring( 0, cases[i].offset ) + '│' +
+			cases[i].phrase.substring( cases[i].offset, cases[i].phrase.length ) +
+			' → ' + cases[i].expected
+		);
 	}
 } );
 

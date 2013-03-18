@@ -67,7 +67,15 @@ $wgResourceModules += array(
 	),
 	'jquery.visibleText' => $wgVisualEditorResourceTemplate + array(
 		'scripts' => array(
-			'jquery/jquery.visibleText.js'
+			'jquery/jquery.visibleText.js',
+		),
+	),
+	'unicodejs.wordbreak' => $wgVisualEditorResourceTemplate + array(
+		'scripts' => array(
+			'unicodejs/unicodejs.js',
+			'unicodejs/unicodejs.textstring.js',
+			'unicodejs/unicodejs.wordbreak.groups.js',
+			'unicodejs/unicodejs.wordbreak.js',
 		),
 	),
 	// Alias for backwards compat, safe to remove after
@@ -230,6 +238,7 @@ $wgResourceModules += array(
 			've/dm/ve.dm.Transaction.js',
 			've/dm/ve.dm.Surface.js',
 			've/dm/ve.dm.SurfaceFragment.js',
+			've/dm/ve.dm.DataString.js',
 			've/dm/ve.dm.Document.js',
 			've/dm/ve.dm.DocumentSlice.js',
 			've/dm/ve.dm.DocumentSynchronizer.js',
@@ -390,6 +399,7 @@ $wgResourceModules += array(
 		'dependencies' => array(
 			'jquery',
 			'rangy',
+			'unicodejs.wordbreak',
 			'ext.visualEditor.base',
 			'mediawiki.Title',
 			'jquery.autoEllipsis',

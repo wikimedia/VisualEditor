@@ -13,6 +13,10 @@
 		<script src="../../jquery/jquery.js"></script>
 		<script src="../../rangy/rangy-core.js"></script>
 		<script src="../../rangy/rangy-position.js"></script>
+		<script src="../../unicodejs/unicodejs.js"></script>
+		<script src="../../unicodejs/unicodejs.textstring.js"></script>
+		<script src="../../unicodejs/unicodejs.wordbreak.groups.js"></script>
+		<script src="../../unicodejs/unicodejs.wordbreak.js"></script>
 		<!-- ext.visualEditor.base -->
 		<script src="../../ve/ve.js"></script>
 		<script src="../../ve/ve.EventEmitter.js"></script>
@@ -70,6 +74,7 @@
 		<script src="../../ve/dm/ve.dm.Transaction.js"></script>
 		<script src="../../ve/dm/ve.dm.Surface.js"></script>
 		<script src="../../ve/dm/ve.dm.SurfaceFragment.js"></script>
+		<script src="../../ve/dm/ve.dm.DataString.js"></script>
 		<script src="../../ve/dm/ve.dm.Document.js"></script>
 		<script src="../../ve/dm/ve.dm.DocumentSlice.js"></script>
 		<script src="../../ve/dm/ve.dm.DocumentSynchronizer.js"></script>

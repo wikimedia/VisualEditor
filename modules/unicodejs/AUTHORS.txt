@@ -1,0 +1,7 @@
+Principal Authors (major contributors, alphabetically)
+
+Ed Sanders <esanders@wikimedia.org>
+
+Patch Contributors (minor contributors, alphabetically)
+
+David Chan <david@troi.org>

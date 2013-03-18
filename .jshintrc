@@ -1,6 +1,7 @@
 {
 	"predef": [
 		"ve",
+		"unicodeJS",
 		"QUnit"
 	],
 

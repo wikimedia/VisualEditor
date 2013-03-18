@@ -38,6 +38,7 @@
 					"ve.dm.MetaItemFactory",
 					"ve.dm.ModelRegistry",
 					"ve.dm.Converter",
+					"ve.dm.DataString",
 					"ve.dm.DocumentSlice",
 					"ve.dm.DocumentSynchronizer",
 					"ve.dm.NodeFactory",
@@ -146,6 +147,17 @@
 			{
 				"name": "Test",
 				"classes": ["ve.QUnit", "ve.QUnit.assert"]
+			}
+		]
+	},
+	{
+		"name": "UnicodeJS",
+		"groups": [
+			{
+				"name": "UnicodeJS",
+				"classes": [
+					"unicodeJS.TextString", "unicodeJS.wordbreak"
+				]
 			}
 		]
 	},

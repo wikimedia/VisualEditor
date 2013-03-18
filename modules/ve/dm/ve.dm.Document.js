@@ -1033,43 +1033,57 @@ ve.dm.Document.prototype.getNearestStructuralOffset = function ( offset, directi
 };
 
 /**
- * Get the nearest word boundary.
+ * Get the nearest word boundaries as a range.
  *
- * The offset will first be moved to the nearest content offset if it's not at one already. If a
- * direction was given, the boundary will be found in that direction, otherwise both directions will
- * be calculated and the one with the lowest distance from offset will be returned. Elements are
- * always word boundaries. For more information about what is considered to be a word character,
- * see {ve.dm.SurfaceFragment.wordPattern}.
+ * The offset will first be moved to the nearest content offset if it's not at one already.
+ * Elements are always word boundaries.
  *
  * @method
  * @param {number} offset Offset to start from
- * @param {number} [direction] Direction to prefer matching offset in, -1 for left and 1 for right
- * @returns {number} Nearest word boundary
+ * @returns {ve.Range} Range around nearest word boundaries
  */
-ve.dm.Document.prototype.getNearestWordBoundary = function ( offset, direction ) {
-	var left, right, i, inc,
-		pattern = ve.dm.SurfaceFragment.static.wordBoundaryPattern,
-		data = this.data;
+ve.dm.Document.prototype.getNearestWordRange = function ( offset ) {
+	var offsetLeft, offsetRight, i,
+		dataString = new ve.dm.DataString( this.data );
+
 	offset = this.getNearestContentOffset( offset );
-	if ( !direction ) {
-		left = this.getNearestWordBoundary( offset, -1 );
-		right = this.getNearestWordBoundary( offset, +1 );
-		return offset - left < right - offset ? left : right;
-	} else {
-		inc = direction > 0 ? 1 : -1;
-		i = offset + ( inc > 0 ? 0 : -1 );
-		do {
-			if ( data[i].type === undefined ) {
-				// Plain text extraction
-				if ( pattern.test( typeof data[i] === 'string' ? data[i] : data[i][0] ) ) {
-					break;
-				}
+
+	// If the cursor offset is a break (i.e. the start/end of word) we should
+	// check one position either side to see if there is a non-break
+	// and if so, move the offset accordingly
+	if( unicodeJS.wordbreak.isBreakInTextString( dataString, offset ) ) {
+		if ( !unicodeJS.wordbreak.isBreakInTextString( dataString, offset + 1 ) ) {
+			offset++;
+		} else if( !unicodeJS.wordbreak.isBreakInTextString( dataString, offset - 1 ) ) {
+			offset--;
+		} else {
+			// just return one character to the right, unless we are at the end
+			// of the text, in which case the character to the left
+			if( dataString.read( offset ) !== null ) {
+				return new ve.Range( offset, offset + 1 );
 			} else {
-				break;
+				return new ve.Range( offset - 1, offset );
 			}
-		} while ( data[i += inc] );
-		return i + ( inc > 0 ? 0 : 1 );
+		}
 	}
+
+	i = offset;
+	// Search left and right for next break points
+	while( dataString.read( i++ ) !== null ) {
+		offsetRight = i;
+		if( unicodeJS.wordbreak.isBreakInTextString( dataString, i ) ) {
+			break;
+		}
+	}
+	i = offset;
+	while( dataString.read( i-- ) !== null ) {
+		offsetLeft = i;
+		if( unicodeJS.wordbreak.isBreakInTextString( dataString, i ) ) {
+			break;
+		}
+	}
+
+	return new ve.Range( offsetLeft, offsetRight );
 };
 
 /**

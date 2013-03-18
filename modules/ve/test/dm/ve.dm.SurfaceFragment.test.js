@@ -59,7 +59,7 @@ QUnit.test( 'collapseRange', 3, function ( assert ) {
 	assert.deepEqual( collapsedFragment.getRange(), new ve.Range( 20, 20 ), 'new range is used' );
 } );
 
-QUnit.test( 'expandRange', 1, function ( assert ) {
+QUnit.test( 'expandRange (closest)', 1, function ( assert ) {
 	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
 		surface = new ve.dm.Surface( doc ),
 		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 20, 21 ) );
@@ -68,6 +68,40 @@ QUnit.test( 'expandRange', 1, function ( assert ) {
 		true,
 		'closest with invalid type results in null fragment'
 	);
+} );
+
+QUnit.test( 'expandRange (word)', 1, function ( assert ) {
+	var i, doc, surface, fragment, newFragment, range, word, cases = [
+		{
+			phrase: 'the quick brown fox',
+			range: new ve.Range( 6, 13 ),
+			expected: 'quick brown',
+			msg: 'range starting and ending in latin words'
+		},
+		{
+			phrase: 'the quick brown fox',
+			range: new ve.Range( 18, 12 ),
+			expected: 'brown fox',
+			msg: 'backwards range starting and ending in latin words'
+		},
+		{
+			phrase: 'the quick brown fox',
+			range: new ve.Range( 7, 7 ),
+			expected: 'quick',
+			msg: 'zero-length range'
+		}
+	];
+	QUnit.expect( cases.length*2 );
+	for ( i = 0; i < cases.length; i++ ) {
+		doc = new ve.dm.Document( cases[i].phrase.split('') );
+		surface = new ve.dm.Surface( doc );
+		fragment = new ve.dm.SurfaceFragment( surface, cases[i].range );
+		newFragment = fragment.expandRange( 'word' );
+		range = newFragment.getRange();
+		word = cases[i].phrase.substring( range.start, range.end );
+		assert.strictEqual( word, cases[i].expected, cases[i].msg + ': text' );
+		assert.strictEqual( cases[i].range.isBackwards(), range.isBackwards(), cases[i].msg + ': range direction' );
+	}
 } );
 
 QUnit.test( 'removeContent', 2, function ( assert ) {

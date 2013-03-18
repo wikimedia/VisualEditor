@@ -216,7 +216,7 @@ ve.dm.SurfaceFragment.prototype.trimRange = function () {
  *
  * @method
  * @param {string} [scope='parent'] Method of expansion:
- *  - `word`: Expands to cover the nearest word by looking for word boundary characters
+ *  - `word`: Expands to cover the nearest word by looking for word breaks (see UnicodeJS.wordbreak)
  *  - `annotation`: Expands to cover a given annotation (argument) within the current range
  *  - `root`: Expands to cover the entire document
  *  - `siblings`: Expands to cover all sibling nodes
@@ -233,10 +233,18 @@ ve.dm.SurfaceFragment.prototype.expandRange = function ( scope, type ) {
 	var range, node, nodes, parent;
 	switch ( scope || 'parent' ) {
 		case 'word':
-			range = new ve.Range(
-				this.document.getNearestWordBoundary( this.range.start, -1 ),
-				this.document.getNearestWordBoundary( this.range.end, 1 )
-			);
+			if( this.range.getLength() > 0 ) {
+				range = ve.Range.newCoveringRange( [
+					this.document.getNearestWordRange( this.range.start ),
+					this.document.getNearestWordRange( this.range.end )
+				] );
+				if( this.range.isBackwards() ) {
+					range = range.flip();
+				}
+			} else {
+				// optimisation for zero-length ranges
+				range = this.document.getNearestWordRange( this.range.start );
+			}
 			break;
 		case 'annotation':
 			range = this.document.getAnnotatedRangeFromSelection( this.range, type );
