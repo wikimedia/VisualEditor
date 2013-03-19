@@ -105,8 +105,7 @@ Links are in {{msg-mw|Visualeditor-mainnamespacepagelink}} and {{msg-mw|visualed
 	'visualeditor-notification-restored' => 'Shown after a user restores a page to a previous revision. Parameters:
 * $1 is a page name.',
 	'visualeditor-notification-reported' => 'Thank you message shown after a user reports a problematic page edit.',
-	'visualeditor-ca-editsource' => '{{Optional}}
-Text for the edit source link in the tab dropdown
+	'visualeditor-ca-editsource' => 'Text for the edit source link in the tab dropdown
 {{Identical|visualeditor}}',
 	'visualeditor-ca-ve-edit' => '{{Optional}}
 Link text of the dedicated VisualEditor Edit tab.
@@ -971,8 +970,9 @@ $messages['fr'] = array(
 	'visualeditor-ca-ve-edit' => 'VisualEditor',
 	'visualeditor-ca-ve-create' => 'VisualEditor',
 	'visualeditor-dialog-meta-title' => 'Paramètres de la page',
-	'visualeditor-dialog-content-title' => 'Contenu généré', # Fuzzy
+	'visualeditor-dialog-content-title' => 'Paramètres du contenu',
 	'visualeditor-dialog-action-apply' => 'Appliquer les modifications',
+	'visualeditor-dialog-action-cancel' => 'Annuler',
 	'visualeditor-toolbar-savedialog' => 'Relire et enregistrer',
 	'visualeditor-savedialog-title-review' => 'Relire vos modifications',
 	'visualeditor-savedialog-title-report' => 'Signaler un problème',
@@ -1854,6 +1854,7 @@ $messages['mk'] = array(
 	'visualeditor-dialog-meta-title' => 'Поставки за страниците',
 	'visualeditor-dialog-content-title' => 'Поставки за содржините',
 	'visualeditor-dialog-action-apply' => 'Спроведи измени',
+	'visualeditor-dialog-action-cancel' => 'Откажи',
 	'visualeditor-toolbar-savedialog' => 'Провери и зачувај',
 	'visualeditor-savedialog-title-review' => 'Проверете ги вашите промени',
 	'visualeditor-savedialog-title-report' => 'Пријави проблем',
@@ -2754,6 +2755,13 @@ $messages['si'] = array(
 	'tag-visualeditor' => '[[Special:Tags|ටැගය]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|දෘශ්‍යසංස්කාරක]]',
 	'tag-visualeditor-description' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|දෘශ්‍යසංස්කාරක]] භාවිතා කොට සංස්කරණය සිදු කරන ලදී',
 	'visualeditor-descriptionpagelink' => 'Project:දෘශ්‍යසංස්කාරක',
+);
+
+/** Serbian (Cyrillic script) (српски (ћирилица)‎)
+ * @author Милан Јелисавчић
+ */
+$messages['sr-ec'] = array(
+	'visualeditor-dialog-action-cancel' => 'Откажи',
 );
 
 /** Swedish (svenska)
