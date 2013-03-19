@@ -195,6 +195,7 @@
 		<script src="ve.Trigger.test.js"></script>
 		<script src="ve.Document.test.js"></script>
 		<script src="ve.Node.test.js"></script>
+		<script src="ve.AnnotationSet.test.js"></script>
 		<script src="ve.BranchNode.test.js"></script>
 		<script src="ve.LeafNode.test.js"></script>
 		<script src="ve.Factory.test.js"></script>
