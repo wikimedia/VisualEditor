@@ -11,6 +11,9 @@
 	right: 0;
 	bottom: 0;
 	left: 0;
+	margin: auto;
+	min-height: 3em;
+	max-height: 600px;
 	padding: 1em;
 	line-height: 1em;
 	background-color: #fff;
@@ -19,16 +22,13 @@
 }
 
 .ve-ui-dialog .ve-ui-window-frame {
-	position: fixed;
-	top: 1em;
-	right: 1em;
-	bottom: 1em;
-	left: 1em;
+	width: 800px;
+	height: 100%;
+	margin: auto;
 	background-color: #fff;
 	border: solid 1px #ccc;
 	border-radius: 0.5em;
 	box-shadow: 0 0.2em 1em rgba(0, 0, 0, 0.3);
-	font-size: 0.8em;
 	overflow: hidden;
 }
 
@@ -61,8 +61,13 @@
 
 .ve-ui-window-body {
 	position: absolute;
+	border-top: solid 1px #d0d0d0;
 	top: 3.8em;
 	left: 0;
 	right: 0;
 	bottom: 0;
+}
+
+.ve-ui-metaDialog-outlinePanel {
+	border-right: solid 1px #ddd;
 }

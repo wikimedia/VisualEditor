@@ -12,6 +12,11 @@
 .ve-ui-window-head {
 	height: 2em;
 	padding: 0.5em;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 .ve-ui-window-body {
@@ -34,9 +39,4 @@
 	color: #333;
 	white-space: nowrap;
 	cursor: default;
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
 }

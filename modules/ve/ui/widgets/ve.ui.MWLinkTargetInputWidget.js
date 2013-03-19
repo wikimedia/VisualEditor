@@ -25,20 +25,21 @@ ve.ui.MWLinkTargetInputWidget = function VeUiMWLinkTargetInputWidget( config ) {
 	ve.ui.LinkTargetInputWidget.call( this, config );
 
 	// Properties
-	this.menu = new ve.ui.TextInputMenuWidget( this, {
-		'$$': ve.ui.get$$( config.$overlay ),
-		'$overlay': config.$overlay || this.$$( 'body' ),
-		'$input': this.$input
-	} );
+	this.$overlay = config.$overlay || this.$$( 'body' );
+	this.menu = new ve.ui.TextInputMenuWidget(
+		this, { '$$': ve.ui.get$$( this.$overlay ), 'input': this }
+	);
 	this.annotation = null;
 	this.existingPages = {};
 	this.matchingPages = {};
+	this.existingPagesQuery = null;
 	this.existingPagesRequest = null;
+	this.matchingPagesQuery = null;
 	this.matchingPagesRequest = null;
-	this.waiting = 0;
 	this.previousMatches = null;
 
 	// Events
+	this.$overlay.append( this.menu.$ );
 	this.$input.on( {
 		'click': ve.bind( this.onClick, this ),
 		'focus': ve.bind( this.onFocus, this ),
@@ -151,20 +152,13 @@ ve.ui.MWLinkTargetInputWidget.prototype.openMenu = function () {
  */
 ve.ui.MWLinkTargetInputWidget.prototype.populateMenu = function () {
 	var i, len,
+		menu$$ = this.menu.$$,
 		items = [],
-		externalLink = this.getExternalLinkAnnotationFromUrl( this.value ),
-		internalLink = this.getInternalLinkAnnotationFromTitle( this.value ),
 		pageExists = this.existingPages[this.value],
 		matchingPages = this.matchingPages[this.value];
 
-	// Reset items and groups
-	this.menu.clearGroups();
-	this.menu.addGroups( {
-		'externalLink': 'External link',
-		'newPage': 'New page',
-		'existingPage': 'Existing page',
-		'matchingPage': 'Matching page'
-	} );
+	// Reset
+	this.menu.clearItems();
 
 	// Hide on empty target
 	if ( !this.value.length ) {
@@ -172,28 +166,38 @@ ve.ui.MWLinkTargetInputWidget.prototype.populateMenu = function () {
 		return this;
 	}
 
-	// External links
+	// External link
 	if ( ve.init.platform.getExternalLinkUrlProtocolsRegExp().test( this.value ) ) {
-		items.push(
-			new ve.ui.MenuItemWidget( this.value, externalLink, { 'group': 'externalLink' } )
-		);
+		items.push( new ve.ui.MenuSectionItemWidget(
+			'externalLink', { '$$': menu$$, 'label': 'External link' }
+		) );
+		items.push( new ve.ui.MenuItemWidget(
+			this.getExternalLinkAnnotationFromUrl( this.value ),
+			{ '$$': menu$$, 'rel': 'externalLink', 'label': this.value }
+		) );
 	}
 
-	// Internal links
+	// Internal link
 	if ( !pageExists && ( !matchingPages || matchingPages.indexOf( this.value ) === -1 ) ) {
-		items.push( new ve.ui.MenuItemWidget( this.value, internalLink, { 'group': 'newPage' } ) );
+		items.push( new ve.ui.MenuSectionItemWidget(
+			'newPage', { '$$': menu$$, 'label': 'New page' }
+		) );
+		items.push( new ve.ui.MenuItemWidget(
+			this.getInternalLinkAnnotationFromTitle( this.value ),
+			{ '$$': menu$$, 'rel': 'newPage', 'label': this.value }
+		) );
 	}
 
-	if ( matchingPages ) {
+	// Matching pages
+	if ( matchingPages && matchingPages.length ) {
+		items.push( new ve.ui.MenuSectionItemWidget(
+			'matchingPages', { '$$': menu$$, 'label': 'Matching page' }
+		) );
 		for ( i = 0, len = matchingPages.length; i < len; i++ ) {
-			internalLink = new ve.dm.MWInternalLinkAnnotation( { 'title': matchingPages[i] } );
-			items.push(
-				new ve.ui.MenuItemWidget(
-					matchingPages[i],
-					internalLink,
-					{ 'group': this.value === matchingPages[i] ? 'existingPage' : 'matchingPage' }
-				)
-			);
+			items.push( new ve.ui.MenuItemWidget(
+				new ve.dm.MWInternalLinkAnnotation( { 'title': matchingPages[i] } ),
+				{ '$$': menu$$, 'rel': 'matchingPage', 'label': matchingPages[i] }
+			) );
 		}
 		this.previousMatches = matchingPages;
 	}
@@ -203,14 +207,10 @@ ve.ui.MWLinkTargetInputWidget.prototype.populateMenu = function () {
 
 	// Auto-select
 	this.menu.selectItem( this.menu.getItemFromData( this.annotation ), true );
-	if ( this.menu.getSelectedItem() ) {
-		this.menu.highlightItem( this.menu.getSelectedItem() );
-	} else {
-		this.menu.selectItem( this.menu.getItemFromIndex( 0 ), true );
-		if ( this.menu.getSelectedItem() ) {
-			this.menu.highlightItem( this.menu.getItemFromIndex( 0 ) );
-		}
+	if ( !this.menu.getSelectedItem() ) {
+		this.menu.selectItem( this.menu.getClosestSelectableItem( 0 ), true );
 	}
+	this.menu.highlightItem( this.menu.getSelectedItem() );
 
 	return this;
 };
@@ -297,14 +297,20 @@ ve.ui.MWLinkTargetInputWidget.prototype.getTargetFromAnnotation = function ( ann
  * @chainable
  */
 ve.ui.MWLinkTargetInputWidget.prototype.queryPageExistence = function () {
+	if ( this.existingPagesQuery === this.value ) {
+		// Ignore duplicate requests
+		return;
+	}
 	if ( this.existingPagesRequest ) {
 		this.existingPagesRequest.abort();
+		this.existingPagesQuery = null;
 		this.existingPagesRequest = null;
 	}
 	if ( this.value in this.existingPages ) {
 		this.populateMenu();
 	} else {
 		this.pushPending();
+		this.existingPagesQuery = this.value;
 		this.existingPagesRequest = $.ajax( {
 			'url': mw.util.wikiScript( 'api' ),
 			'data': {
@@ -316,6 +322,7 @@ ve.ui.MWLinkTargetInputWidget.prototype.queryPageExistence = function () {
 			},
 			'dataType': 'json',
 			'success': ve.bind( function ( data ) {
+				this.existingPagesQuery = null;
 				this.existingPagesRequest = null;
 				var page,
 					exists = false;
@@ -347,14 +354,20 @@ ve.ui.MWLinkTargetInputWidget.prototype.queryPageExistence = function () {
  * @chainable
  */
 ve.ui.MWLinkTargetInputWidget.prototype.queryMatchingPages = function () {
+	if ( this.matchingPagesQuery === this.value ) {
+		// Ignore duplicate requests
+		return;
+	}
 	if ( this.matchingPagesRequest ) {
 		this.matchingPagesRequest.abort();
+		this.matchingPagesQuery = null;
 		this.matchingPagesRequest = null;
 	}
 	if ( this.value in this.matchingPages ) {
 		this.populateMenu();
 	} else {
 		this.pushPending();
+		this.matchingPagesQuery = this.value;
 		this.matchingPagesRequest = $.ajax( {
 			'url': mw.util.wikiScript( 'api' ),
 			'data': {
@@ -366,11 +379,15 @@ ve.ui.MWLinkTargetInputWidget.prototype.queryMatchingPages = function () {
 			},
 			'dataType': 'json',
 			'success': ve.bind( function ( data ) {
+				this.matchingPagesQuery = null;
 				this.matchingPagesRequest = null;
 				if ( ve.isArray( data ) && data.length ) {
 					// Cache the matches to the query
 					this.matchingPages[this.value] = data[1];
 					this.populateMenu();
+				} else {
+					// Don't repeat queries that resulted in invalid responses
+					this.matchingPages[this.value] = [];
 				}
 			}, this ),
 			'complete': ve.bind( function () {

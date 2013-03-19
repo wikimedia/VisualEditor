@@ -5,6 +5,12 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
+/* ve.ui.LabeledWidget */
+
+.ve-ui-labeledWidget-label {
+	display: block;
+}
+
 /* ve.ui.IconButtonWidget */
 
 .ve-ui-iconButtonWidget {
@@ -93,7 +99,7 @@
 	box-shadow: none;
 }
 
-.ve-ui-buttonWidget-label {
+.ve-ui-buttonWidget .ve-ui-labeledWidget-label {
 	display: inline-block;
 	vertical-align: middle;
 	line-height: 1.9em;
@@ -144,6 +150,52 @@
 
 .ve-ui-flaggableWidget-primary.ve-ui-buttonWidget:hover {
 	border-color: #84b9d4;
+}
+
+/* ve.ui.SelectWidget */
+
+.ve-ui-selectWidget {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+/* ve.ui.OptionWidget */
+
+.ve-ui-optionWidget {
+	display: block;
+	border: none;
+	list-style: none;
+	margin: 0;
+	padding: 0.5em 2em 0.5em 3em;
+	cursor: pointer;
+}
+
+.ve-ui-optionWidget .ve-ui-labeledWidget-label {
+	white-space: nowrap;
+}
+
+.ve-ui-optionWidget-highlighted {
+	background-color: #b3d6f6;
+}
+
+/* ve.ui.OutlineItemWidget */
+
+.ve-ui-outlineItemWidget {
+	padding: 1.25em 1.25em 1.25em 3.5em;
+	background-position: 1em center;
+	background-repeat: no-repeat; 
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	cursor: pointer;
+	font-size: 1.1em;
+}
+
+.ve-ui-outlineItemWidget.ve-ui-optionWidget-selected {
+	background-color: #a7dcff;
+	text-shadow: 0 1px 1px rgba(255,255,255,0.5);
 }
 
 /* ve.ui.TextInputWidget */
@@ -199,28 +251,6 @@
 	box-shadow: 0 0.15em 1em 0 rgba(0, 0, 0, 0.2);
 }
 
-.ve-ui-menuWidget-groups {
-	margin: 0.5em 0;
-	padding: 0;
-	list-style: none;
-}
-
-.ve-ui-menuWidget-group {
-	margin: 0;
-	padding: 0;
-}
-
-.ve-ui-menuWidget-group-label {
-	padding: 0.33em 0.75em;
-	color: #888;
-}
-
-.ve-ui-menuWidget-items {
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
-
 .ve-ui-menuWidget input {
 	position: absolute;
 	width: 0;
@@ -232,21 +262,15 @@
 /* ve.ui.MenuItemWidget */
 
 .ve-ui-menuItemWidget {
-	display: block;
-	padding: 0.5em 2em 0.5em 3em;
-	border: none;
-	margin: 0;
-	cursor: pointer;
 	background-position: 1em center;
 	background-repeat: no-repeat;
 }
 
-.ve-ui-menuItemWidget-label {
-	white-space: nowrap;
-}
+/* ve.ui.MenuSectionItemWidget */
 
-.ve-ui-menuItemWidget-highlighted {
-	background-color: #b3d6f6;
+.ve-ui-menuSectionItemWidget {
+	padding: 0.33em 0.75em;
+	color: #888;
 }
 
 /* ve.ui.MWLinkTargetInputWidget */
@@ -255,7 +279,9 @@
 	background-image: url(images/pending.gif);
 }
 
-.ve-ui-mwLinkTargetInputWidget-menu.ve-ui-menuWidget {
+/* ve.ui.MWLinkTargetInputWidget */
+
+.ve-ui-mwLinkTargetInputWidget-menu {
 	width: 20em;
 	margin-top: -7px;
 }
@@ -265,12 +291,12 @@
 	color: #0645AD;
 }
 
-.ve-ui-mwLinkTargetInputWidget-menu .ve-ui-menuWidget-group[rel=newPage] .ve-ui-menuWidget-item-label {
+.ve-ui-mwLinkTargetInputWidget-menu .ve-ui-menuItemWidget[rel=newPage] {
 	color: #BA0000;
 }
 
-.ve-ui-mwLinkTargetInputWidget-menu .ve-ui-menuWidget-group[rel=existingPage] .ve-ui-menuWidget-item-label,
-.ve-ui-mwLinkTargetInputWidget-menu .ve-ui-menuWidget-group[rel=matchingPage] .ve-ui-menuWidget-item-label,
-.ve-ui-mwLinkTargetInputWidget-menu .ve-ui-menuWidget-group[rel=externalLink] .ve-ui-menuWidget-item-label {
+.ve-ui-mwLinkTargetInputWidget-menu .ve-ui-menuItemWidget[rel=existingPage],
+.ve-ui-mwLinkTargetInputWidget-menu .ve-ui-menuItemWidget[rel=matchingPage],
+.ve-ui-mwLinkTargetInputWidget-menu .ve-ui-menuItemWidget[rel=externalLink] {
 	color: #0645AD;
 }

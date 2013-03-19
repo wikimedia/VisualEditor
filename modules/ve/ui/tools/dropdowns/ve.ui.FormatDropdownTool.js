@@ -24,7 +24,9 @@ ve.ui.FormatDropdownTool = function VeUiFormatDropdownTool( toolbar, config ) {
 	// Initialization
 	for ( i = 0, len = items.length; i < len; i++ ) {
 		item = items[i];
-		items[i] = new ve.ui.MenuItemWidget( ve.msg( item.label ), item.data, item.options );
+		items[i] = new ve.ui.MenuItemWidget(
+			item.data, { '$$': this.$$, 'rel': item.rel, 'label': ve.msg( item.label ) }
+		);
 	}
 	this.menu.addItems( items );
 };
@@ -49,80 +51,64 @@ ve.ui.FormatDropdownTool.static.titleMessage = 'visualeditor-formatdropdown-titl
 ve.ui.FormatDropdownTool.static.items = [
 	{
 		'label': 'visualeditor-formatdropdown-format-paragraph',
+		'rel': 'paragraph',
 		'data': {
 			'type' : 'paragraph'
-		},
-		'options': {
-			'rel': 'paragraph'
 		}
 	},
 	{
 		'label': 'visualeditor-formatdropdown-format-heading1',
+		'rel': 'heading-1',
 		'data': {
 			'type' : 'heading',
 			'attributes': { 'level': 1 }
-		},
-		'options': {
-			'rel': 'heading-1'
 		}
 	},
 	{
 		'label': 'visualeditor-formatdropdown-format-heading2',
+		'rel': 'heading-2',
 		'data': {
 			'type' : 'heading',
 			'attributes': { 'level': 2 }
-		},
-		'options': {
-			'rel': 'heading-2'
 		}
 	},
 	{
 		'label': 'visualeditor-formatdropdown-format-heading3',
+		'rel': 'heading-3',
 		'data': {
 			'type' : 'heading',
 			'attributes': { 'level': 3 }
-		},
-		'options': {
-			'rel': 'heading-3'
 		}
 	},
 	{
 		'label': 'visualeditor-formatdropdown-format-heading4',
+		'rel': 'heading-4',
 		'data': {
 			'type' : 'heading',
 			'attributes': { 'level': 4 }
-		},
-		'options': {
-			'rel': 'heading-4'
 		}
 	},
 	{
 		'label': 'visualeditor-formatdropdown-format-heading5',
+		'rel': 'heading-5',
 		'data': {
 			'type' : 'heading',
 			'attributes': { 'level': 5 }
-		},
-		'options': {
-			'rel': 'heading-5'
 		}
 	},
 	{
 		'label': 'visualeditor-formatdropdown-format-heading6',
+		'rel': 'heading-6',
 		'data': {
 			'type' : 'heading',
 			'attributes': { 'level': 6 }
-		},
-		'options': {
-			'rel': 'heading-6'
 		}
 	},
 	{
 		'label': 'visualeditor-formatdropdown-format-preformatted',
+		'rel': 'preformatted',
 		'data': {
 			'type' : 'preformatted'
-		},
-		'options': {
-			'rel': 'preformatted'
 		}
 	}
 ];
@@ -179,11 +165,11 @@ ve.ui.FormatDropdownTool.prototype.onUpdateState = function ( nodes ) {
 		}
 	}
 	if ( match ) {
-		this.setLabel( match.label );
-		this.menu.setSelectedItem( match );
+		this.menu.selectItem( match, true );
+		this.setLabel( match.$label.text() );
 	} else {
+		this.menu.selectItem( null, true );
 		this.setLabel();
-		this.menu.setSelectedItem( null );
 	}
 };
 

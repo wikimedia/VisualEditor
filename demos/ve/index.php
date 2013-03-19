@@ -206,12 +206,18 @@ $html = file_get_contents( $page );
 		<script src="../../modules/ve/ui/layouts/ve.ui.PanelLayout.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.LabeledWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.FlaggableWidget.js"></script>
+		<script src="../../modules/ve/ui/widgets/ve.ui.GroupWidget.js"></script>
+		<script src="../../modules/ve/ui/widgets/ve.ui.SelectWidget.js"></script>
+		<script src="../../modules/ve/ui/widgets/ve.ui.OptionWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.ButtonWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.IconButtonWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.InputWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.InputLabelWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.TextInputWidget.js"></script>
+		<script src="../../modules/ve/ui/widgets/ve.ui.OutlineItemWidget.js"></script>
+		<script src="../../modules/ve/ui/widgets/ve.ui.OutlineWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.MenuItemWidget.js"></script>
+		<script src="../../modules/ve/ui/widgets/ve.ui.MenuSectionItemWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.MenuWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.TextInputMenuWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.LinkTargetInputWidget.js"></script>
@@ -248,6 +254,7 @@ $html = file_get_contents( $page );
 					ve.createDocumentFromHTML( <?php echo json_encode( $html ) ?> )
 				);
 				$( '.ve-ce-documentNode' ).focus();
+				//ve.instances[0].dialogs.open( 'meta' );
 			} );
 		</script>
 

@@ -54,8 +54,23 @@ ve.ui.MetaDialog.prototype.initialize = function () {
 		{ '$$': this.$$, 'widths': [1, 2] }
 	);
 
+	// HACK
+	this.outlineWidget = new ve.ui.OutlineWidget( { '$$': this.$$ } );
+	this.outlineWidget.addItems( [
+		new ve.ui.OutlineItemWidget(
+			'categories', { '$$': this.$$, 'icon': 'categories', 'label': 'Categories' }
+		),
+		new ve.ui.OutlineItemWidget(
+			'languages', { '$$': this.$$, 'icon': 'language', 'label': 'Languages' }
+		)
+	] );
+	this.outlineWidget.selectItem( this.outlineWidget.getClosestSelectableItem( 0 ) );
+
 	// Initialization
+	this.outlinePanel.$.addClass( 've-ui-metaDialog-outlinePanel' );
+	this.editorPanel.$.addClass( 've-ui-metaDialog-editorPanel' );
 	this.$body.append( this.layout.$ );
+	this.outlinePanel.$.append( this.outlineWidget.$ );
 	this.layout.update();
 };
 

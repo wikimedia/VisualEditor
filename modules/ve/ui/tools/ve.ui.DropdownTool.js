@@ -20,7 +20,7 @@ ve.ui.DropdownTool = function VeUiDropdownTool( toolbar, config ) {
 	ve.ui.Tool.call( this, toolbar, config );
 
 	// Properties
-	this.menu = new ve.ui.MenuWidget();
+	this.menu = new ve.ui.MenuWidget( { '$$': this.$$ } );
 	this.$icon = this.$$( '<div class="ve-ui-dropdownTool-icon ve-ui-icon-down"></div>' );
 	this.$label = this.$$( '<div class="ve-ui-dropdownTool-label"></div>' );
 	this.$labelText = this.$$( '<span>&nbsp;</span>' );
@@ -109,8 +109,9 @@ ve.ui.DropdownTool.prototype.onBlur = function ( e ) {
  * @param {ve.ui.MenuItemWidget|null} item Selected menu item, null if none is selected
  */
 ve.ui.DropdownTool.prototype.onMenuItemSelect = function ( item ) {
+
 	if ( this.toolbar.getSurface().isEnabled() ) {
-		this.setLabel( item && item.label );
+		this.setLabel( item && item.$label.text() );
 		this.onSelect( item );
 	}
 };

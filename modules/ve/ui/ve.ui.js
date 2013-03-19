@@ -26,6 +26,7 @@ ve.ui.get$$ = function ( context, frame ) {
 	function $$( selector ) {
 		return $( selector, context instanceof jQuery ? context.context : context );
 	}
+	$$.context = context;
 	if ( frame ) {
 		$$.frame = frame;
 	}

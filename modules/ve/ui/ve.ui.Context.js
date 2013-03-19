@@ -218,14 +218,58 @@ ve.ui.Context.prototype.update = function () {
 };
 
 /**
+ * Updates the position and size.
+ *
+ * @method
+ * @chainable
+ */
+ve.ui.Context.prototype.updateDimensions = function () {
+	var position, $container, width, height, bodyWidth, buffer, center, overlapRight, overlapLeft,
+		inspector = this.inspectors.getCurrent();
+
+		// Get cursor position
+		position = this.surface.getView().getSelectionRect().end;
+		if ( position ) {
+			// Get additional dimensions
+			$container = inspector ? this.inspectors.$ : this.$menu;
+			width = $container.outerWidth( true );
+			height = $container.outerHeight( true );
+			bodyWidth = $( 'body' ).width();
+			buffer = ( width / 2 ) + 20;
+			overlapRight = bodyWidth - ( position.x + buffer );
+			overlapLeft = position.x - buffer;
+			center = -( width / 2 );
+
+			// Prevent body from displaying off-screen
+			if ( overlapRight < 0 ) {
+				center += overlapRight;
+			} else if ( overlapLeft < 0 ) {
+				center -= overlapLeft;
+			}
+
+			// Move to just below the cursor
+			this.$.css( { 'left': position.x, 'width': width, 'top': position.y } );
+
+			if ( !this.visible ) {
+				this.$body
+					.css( { 'width': 0, 'height': 0, 'left': 0 } )
+					.addClass( 've-ui-context-body-transition' );
+			}
+
+			this.$body.css( { 'left': center, 'width': width, 'height': height } );
+		}
+
+	return this;
+};
+
+/**
  * Shows the context menu.
  *
  * @method
  * @chainable
  */
 ve.ui.Context.prototype.show = function () {
-	var position, $container, width, height, bodyWidth, buffer, center, overlapRight, overlapLeft,
-		inspector = this.inspectors.getCurrent();
+	var inspector = this.inspectors.getCurrent();
 
 	if ( !this.showing ) {
 		this.showing = true;
@@ -234,40 +278,21 @@ ve.ui.Context.prototype.show = function () {
 
 		// Show either inspector or menu
 		if ( inspector ) {
-			this.inspectors.$.show();
 			this.$menu.hide();
-			inspector.fitHeightToContents();
+			this.inspectors.$.show();
+			inspector.$.css( 'opacity', 0 );
+			// Update size and fade the inspector in after animation is complete
+			setTimeout( ve.bind( function () {
+				inspector.fitHeightToContents();
+				this.updateDimensions();
+				inspector.$.css( 'opacity', 1 );
+			}, this ), 200 );
 		} else {
 			this.inspectors.$.hide();
 			this.$menu.show();
 		}
 
-		// Get dimensions
-		position = this.surface.getView().getSelectionRect().end;
-		$container = inspector ? this.inspectors.$ : this.$menu;
-		width = $container.outerWidth( true );
-		height = $container.outerHeight( true );
-		bodyWidth = $( 'body' ).width();
-		buffer = ( width / 2 ) + 20;
-		overlapRight = bodyWidth - ( position.x + buffer );
-		overlapLeft = position.x - buffer;
-		center = -( width / 2 );
-
-		// Prevent body from displaying off-screen
-		if ( overlapRight < 0 ) {
-			center += overlapRight;
-		} else if ( overlapLeft < 0 ) {
-			center -= overlapLeft;
-		}
-
-		// Move to just below the cursor
-		this.$.css( { 'left': position.x, 'width': width, 'top': position.y } );
-
-		if ( !this.visible ) {
-			this.$body.css( { 'width': 0, 'height': 0, 'left': 0 } );
-		}
-
-		this.$body.css( { 'left': center, 'width': width, 'height': height } );
+		this.updateDimensions();
 
 		this.visible = true;
 		this.showing = false;

@@ -24,6 +24,7 @@ ve.ui.LabeledWidget = function VeUiLabeledWidget( $label, config ) {
 	this.$label = $label;
 
 	// Initialization
+	this.$label.addClass( 've-ui-labeledWidget-label' );
 	this.setLabel( config.label );
 };
 
@@ -43,6 +44,19 @@ ve.ui.LabeledWidget.prototype.setLabel = function ( value ) {
 		this.$label.empty().append( value );
 	} else {
 		this.$label.html( '&nbsp;' );
+	}
+	return this;
+};
+
+/**
+ * Fit the label.
+ *
+ * @method
+ * @chainable
+ */
+ve.ui.LabeledWidget.prototype.fitLabel = function () {
+	if ( this.$label.autoEllipsis ) {
+		this.$label.autoEllipsis( { 'hasSpan': false, 'tooltip': true } );
 	}
 	return this;
 };

@@ -5,8 +5,17 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
+.ve-ui-inspector {
+	-webkit-transition: opacity 100ms;
+	-moz-transition: opacity 100ms;
+	-ms-transition: opacity 100ms;
+	-o-transition: opacity 100ms;
+	transition: opacity 100ms;
+}
+
 .ve-ui-inspector .ve-ui-frame {
 	width: 17.25em;
+	height: 3em;
 }
 
 .ve-ui-window-icon {

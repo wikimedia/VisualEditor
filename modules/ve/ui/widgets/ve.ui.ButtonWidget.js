@@ -28,7 +28,6 @@ ve.ui.ButtonWidget = function VeUiButtonWidget( config ) {
 	this.$.on( 'click', ve.bind( this.onClick, this ) );
 
 	// Initialization
-	this.$label.addClass( 've-ui-buttonWidget-label' );
 	this.$.addClass( 've-ui-buttonWidget' ).append( this.$label );
 };
 

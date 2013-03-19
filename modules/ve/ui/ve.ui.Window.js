@@ -185,10 +185,20 @@ ve.ui.Window.prototype.onClose = function () {
  * Check if window is visible.
  *
  * @method
- * @returns {Boolean} Window is visible
+ * @returns {boolean} Window is visible
  */
 ve.ui.Window.prototype.isVisible = function () {
 	return this.visible;
+};
+
+/**
+ * Get the window frame.
+ *
+ * @method
+ * @returns {ve.ui.Frame} Frame of window
+ */
+ve.ui.Window.prototype.getFrame = function () {
+	return this.frame;
 };
 
 /**
