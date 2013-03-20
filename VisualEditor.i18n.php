@@ -107,10 +107,9 @@ Links are in {{msg-mw|Visualeditor-mainnamespacepagelink}} and {{msg-mw|visualed
 	'visualeditor-notification-reported' => 'Thank you message shown after a user reports a problematic page edit.',
 	'visualeditor-ca-editsource' => 'Text for the edit source link in the tab dropdown
 {{Identical|visualeditor}}',
-	'visualeditor-ca-ve-edit' => '{{Optional}}
-Link text of the dedicated VisualEditor Edit tab.
+	'visualeditor-ca-ve-edit' => 'Link text of the dedicated VisualEditor Edit tab.
 {{Identical|visualeditor}}',
-	'visualeditor-ca-ve-create' => '{{Optional}}
+	'visualeditor-ca-ve-create' => '
 	Link text of the dedicated VisualEditor Create tab.
 {{Identical|visualeditor}}',
 	'visualeditor-dialog-meta-title' => 'MetaData dialog title text',
@@ -2121,6 +2120,7 @@ $messages['ne'] = array(
 );
 
 /** Dutch (Nederlands)
+ * @author Konovalov
  * @author SPQRobin
  * @author Saruman
  * @author Siebrand
@@ -2139,8 +2139,9 @@ $messages['nl'] = array(
 	'visualeditor-ca-ve-edit' => 'Visueel',
 	'visualeditor-ca-ve-create' => 'Visueel',
 	'visualeditor-dialog-meta-title' => 'Pagina-instellingen',
-	'visualeditor-dialog-content-title' => 'Gegenereerd document', # Fuzzy
+	'visualeditor-dialog-content-title' => 'Inhoudsinstelling',
 	'visualeditor-dialog-action-apply' => 'Wijzigingen toepassen',
+	'visualeditor-dialog-action-cancel' => 'Annuleren',
 	'visualeditor-toolbar-savedialog' => 'Controleren en opslaan',
 	'visualeditor-savedialog-title-review' => 'Wijzigingen controleren',
 	'visualeditor-savedialog-title-report' => 'Probleem melden',
