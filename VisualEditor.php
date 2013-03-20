@@ -208,8 +208,6 @@ $wgResourceModules += array(
 			've/ve.LeafNode.js',
 			've/ve.Surface.js',
 			've/ve.Document.js',
-			've/ve.OrderedHashSet.js',
-			've/ve.AnnotationSet.js',
 			've/ve.Action.js',
 			've/ve.ActionFactory.js',
 
@@ -227,6 +225,7 @@ $wgResourceModules += array(
 			've/dm/ve.dm.ModelRegistry.js',
 			've/dm/ve.dm.NodeFactory.js',
 			've/dm/ve.dm.AnnotationFactory.js',
+			've/dm/ve.dm.AnnotationSet.js',
 			've/dm/ve.dm.MetaItemFactory.js',
 			've/dm/ve.dm.Node.js',
 			've/dm/ve.dm.BranchNode.js',
@@ -240,9 +239,14 @@ $wgResourceModules += array(
 			've/dm/ve.dm.SurfaceFragment.js',
 			've/dm/ve.dm.DataString.js',
 			've/dm/ve.dm.Document.js',
+			've/dm/ve.dm.LinearData.js',
 			've/dm/ve.dm.DocumentSlice.js',
 			've/dm/ve.dm.DocumentSynchronizer.js',
+			've/dm/ve.dm.IndexValueStore.js',
 			've/dm/ve.dm.Converter.js',
+
+			've/dm/lineardata/ve.dm.ElementLinearData.js',
+			've/dm/lineardata/ve.dm.MetaLinearData.js',
 
 			've/dm/nodes/ve.dm.AlienNode.js',
 			've/dm/nodes/ve.dm.BreakNode.js',

@@ -36,11 +36,9 @@ QUnit.test( 'canHaveChildrenNotContent', 1, function ( assert ) {
 
 QUnit.test( 'getAnnotations', 3, function ( assert ) {
 	var element = { 'type': 'leaf-stub' },
-		node = new ve.dm.LeafNodeStub( 0, element ),
-		annotationSet = new ve.AnnotationSet( [ new ve.dm.TextStyleBoldAnnotation() ] );
-	assert.deepEqual( node.getAnnotations(), new ve.AnnotationSet(),
-		'undefined .annotations returns empty set' );
+		node = new ve.dm.LeafNodeStub( 0, element );
+	assert.deepEqual( node.getAnnotations(), [], 'undefined .annotations returns empty set' );
 	assert.equal( element.annotations, undefined, 'no .annotations property added' );
-	element.annotations = annotationSet;
-	assert.ok( node.getAnnotations() === annotationSet, 'annotation set is reference equal' );
+	element.annotations = [0];
+	assert.deepEqual( node.getAnnotations(), [0] , 'annotations retrieve indexes when set' );
 } );

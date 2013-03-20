@@ -31,7 +31,7 @@ ve.dm.Converter = function VeDmConverter( modelRegistry, nodeFactory, annotation
  *
  * @static
  * @param {string} text Plain text to convert
- * @param {ve.AnnotationSet} [annotations] Annotations to apply
+ * @param {ve.dm.AnnotationSet} [annotations] Annotations to apply
  * @returns {Array} Linear model data, one element per character
  */
 ve.dm.Converter.getDataContentFromText = function ( text, annotations ) {
@@ -41,11 +41,8 @@ ve.dm.Converter.getDataContentFromText = function ( text, annotations ) {
 	}
 	// Apply annotations to characters
 	for ( i = 0; i < characters.length; i++ ) {
-		// Make a shallow copy of the annotationSet object, otherwise adding an annotation to one
-		// character automatically adds it to all of others as well, annotations should be treated
-		// as immutable, so it's OK to share references, but annotation sets are not immutable, so
-		// it's not safe to share references - each annotated character needs its own set
-		characters[i] = [characters[i], annotations.clone()];
+		// Just store the annotations' indexes from the index-value store
+		characters[i] = [characters[i], annotations.getIndexes().slice()];
 	}
 	return characters;
 };
@@ -142,26 +139,31 @@ ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function ( dataAnnot
 
 /**
  * Convert an HTML document to a linear model.
+ * @param {ve.dm.IndexValueStore} store Index-value store
  * @param {HTMLDocument} doc HTML document to convert
- * @returns {Array} Linear model data
+ * @returns {ve.dm.ElementLinearData} Linear model data
  */
-ve.dm.Converter.prototype.getDataFromDom = function ( doc ) {
+ve.dm.Converter.prototype.getDataFromDom = function ( store, doc ) {
 	// Possibly do things with doc and the head in the future
-	return this.getDataFromDomRecursion( doc.body );
+	return new ve.dm.ElementLinearData(
+		store,
+		this.getDataFromDomRecursion( store, doc.body )
+	);
 };
 
 /**
  * Recursive implementation of getDataFromDom(). For internal use.
  *
  * @method
+ * @param {ve.dm.IndexValueStore} store Index-value store
  * @param {HTMLElement} domElement HTML element to convert
- * @param {ve.AnnotationSet} [annotations] Annotations to apply to the generated data
+ * @param {ve.dm.AnnotationSet} [annotations] Annotations to apply to the generated data
  * @param {Object} [dataElement] Data element to wrap the returned data in
  * @param {Array} [path] Array of linear model element types
  * @param {boolean} [alreadyWrapped] Whether the caller has already started wrapping bare content in a paragraph
  * @returns {Array} Linear model data
  */
-ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, annotations,
+ve.dm.Converter.prototype.getDataFromDomRecursion = function ( store, domElement, annotations,
 		dataElement, path, alreadyWrapped ) {
 	function addWhitespace( element, index, whitespace ) {
 		if ( !element.internal ) {
@@ -239,7 +241,7 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, annot
 	}
 
 	// Fallback to defaults
-	annotations = annotations || new ve.AnnotationSet();
+	annotations = annotations || new ve.dm.AnnotationSet( store );
 	path = path || ['document'];
 	var i, childDomElement, childDomElements, childDataElement, text, childTypes, matches,
 		wrappingParagraph, prevElement, childAnnotations, modelName, modelClass,
@@ -269,7 +271,6 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, annot
 				modelClass = this.modelRegistry.lookup( modelName ) || ve.dm.AlienNode;
 				if ( modelClass.prototype instanceof ve.dm.Annotation ) {
 					annotation = this.annotationFactory.create( modelName, childDomElement );
-
 					// Start wrapping if needed
 					if ( !context.inWrapper && !context.expectingContent ) {
 						startWrapping();
@@ -280,7 +281,7 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, annot
 					childAnnotations.push( annotation );
 					data = data.concat(
 						this.getDataFromDomRecursion(
-							childDomElement, childAnnotations,
+							store, childDomElement, childAnnotations,
 							undefined, path, context.inWrapper
 						)
 					);
@@ -322,7 +323,7 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, annot
 
 					// Annotate child
 					if ( childIsContent && !annotations.isEmpty() ) {
-						childDataElement.annotations = annotations.clone();
+						childDataElement.annotations = annotations.getIndexes().slice();
 					}
 
 					// Output child and its children, if any
@@ -334,8 +335,9 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, annot
 						// Opening and closing elements are added by the recursion too
 						data = data.concat(
 							this.getDataFromDomRecursion(
+								store,
 								childDomElement,
-								new ve.AnnotationSet(),
+								new ve.dm.AnnotationSet( store ),
 								childDataElement,
 								path.concat( childDataElement.type ),
 								context.inWrapper
@@ -539,17 +541,18 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, annot
  * Convert linear model data to an HTML DOM
  *
  * @method
+ * @param {ve.dm.IndexValueStore} store Index-value store
  * @param {Array} data Linear model data
  * @returns {HTMLDocument} Document containing the resulting HTML
  */
-ve.dm.Converter.prototype.getDomFromData = function ( data ) {
+ve.dm.Converter.prototype.getDomFromData = function ( store, data ) {
 	var text, i, j, k, annotations, annotation, annotationElement, dataElement, arr,
 		childDomElements, pre, ours, theirs, parentDomElement, lastChild, startClosingAt,
 		isContentNode, changed, parentChanged, sibling, previousSiblings, doUnwrap, textNode,
 		doc = ve.createDocumentFromHTML( '' ),
 		container = doc.body,
 		domElement = container,
-		annotationStack = new ve.AnnotationSet();
+		annotationStack = new ve.dm.AnnotationSet( store );
 
 	for ( i = 0; i < data.length; i++ ) {
 		if ( typeof data[i] === 'string' ) {
@@ -582,7 +585,9 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 					this.nodeFactory.isNodeContent( data[i].type )
 				)
 			) {
-				annotations = data[i].annotations || data[i][1];
+				annotations = new ve.dm.AnnotationSet(
+					store, store.values( data[i].annotations || data[i][1] )
+				);
 				// Close annotations as needed
 				// Go through annotationStack from bottom to top (low to high),
 				// and find the first annotation that's not in annotations.
@@ -664,7 +669,7 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 				domElement = domElement.parentNode;
 			}
 			// Clear annotationStack
-			annotationStack = new ve.AnnotationSet();
+			annotationStack = new ve.dm.AnnotationSet( store );
 		} else if ( data[i].type !== undefined ) {
 			dataElement = data[i];
 			// Element
@@ -741,8 +746,8 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 				// place, but then remembering where we have to skip ascending
 				// to the parent would be tricky.
 				doUnwrap = false;
-				if( domElement.veInternal ) {
-					switch( domElement.veInternal.generated ) {
+				if ( domElement.veInternal ) {
+					switch ( domElement.veInternal.generated ) {
 						case 'empty':
 							// 'empty' elements - first ensure they are actually empty
 							if ( domElement.childNodes.length === 0 && (
@@ -763,14 +768,14 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 							previousSiblings = domElement.parentElement.childNodes;
 							// Note: previousSiblings includes the current element
 							// so we only go up to length - 2
-							for( j = previousSiblings.length - 2; j >= 0; j-- ) {
+							for ( j = previousSiblings.length - 2; j >= 0; j-- ) {
 								sibling = previousSiblings[j];
-								if( sibling.nodeType === Node.TEXT_NODE && !sibling.veIsWhitespace ) {
+								if ( sibling.nodeType === Node.TEXT_NODE && !sibling.veIsWhitespace ) {
 									// we've found an unwrapped paragraph so don't unwrap
 									doUnwrap = false;
 									break;
 								}
-								if( ve.isBlockElement( sibling ) ) {
+								if ( ve.isBlockElement( sibling ) ) {
 									// there is a block element before the next unwrapped node
 									// so it's safe to unwrap
 									break;
@@ -779,7 +784,7 @@ ve.dm.Converter.prototype.getDomFromData = function ( data ) {
 							break;
 					}
 				}
-				if( doUnwrap ) {
+				if ( doUnwrap ) {
 					while ( domElement.firstChild ) {
 						parentDomElement.insertBefore(
 							domElement.firstChild,

@@ -436,7 +436,7 @@ ve.init.mw.ViewPageTarget.prototype.onEditConflict = function () {
 	if ( confirm( ve.msg( 'visualeditor-editconflict', status ) ) ) {
 		// Get Wikitext from the DOM, and setup a submit call when it's done
 		this.serialize(
-			ve.dm.converter.getDomFromData( this.surface.getDocumentModel().getFullData() ),
+			ve.dm.converter.getDomFromData( this.surface.getDocumentModel().getStore(), this.surface.getDocumentModel().getFullData() ),
 			ve.bind( function ( wikitext ) {
 				this.submit( wikitext, this.getSaveOptions() );
 			}, this )
@@ -572,7 +572,7 @@ ve.init.mw.ViewPageTarget.prototype.onSaveDialogSaveButtonClick = function () {
 	this.saveDialogSaveButton.setDisabled( true );
 	this.$saveDialogLoadingIcon.show();
 	this.save(
-		ve.dm.converter.getDomFromData( this.surface.getDocumentModel().getFullData() ),
+		ve.dm.converter.getDomFromData( this.surface.getDocumentModel().getStore(), this.surface.getDocumentModel().getFullData() ),
 		this.getSaveOptions()
 	);
 };
@@ -1239,11 +1239,11 @@ ve.init.mw.ViewPageTarget.prototype.swapSaveDialog = function ( slide ) {
 			if ( this.pageExists ) {
 				// Has no callback, handled via viewPage.onShowChanges
 				this.showChanges(
-					ve.dm.converter.getDomFromData( this.surface.getDocumentModel().getFullData() )
+					ve.dm.converter.getDomFromData( this.surface.getDocumentModel().getStore(), this.surface.getDocumentModel().getFullData() )
 				);
 			} else {
 				this.serialize(
-					ve.dm.converter.getDomFromData( this.surface.getDocumentModel().getFullData() ),
+					ve.dm.converter.getDomFromData( this.surface.getDocumentModel().getStore(), this.surface.getDocumentModel().getFullData() ),
 					function ( wikitext ) {
 						$viewer.empty().append( $( '<pre>' ).text( wikitext ) );
 
@@ -1544,7 +1544,7 @@ ve.init.mw.ViewPageTarget.prototype.restoreEditSection = function () {
 		this.$document.find( 'h1, h2, h3, h4, h5, h6' ).eq( this.section - 1 ).each( function () {
 			var headingNode = $(this).data( 'node' );
 			if ( headingNode ) {
-				offset = surfaceModel.getDocument().getNearestContentOffset(
+				offset = surfaceModel.getDocument().data.getNearestContentOffset(
 					headingNode.getModel().getOffset()
 				);
 				surfaceModel.change( null, new ve.Range( offset, offset ) );

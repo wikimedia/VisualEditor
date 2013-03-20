@@ -16,21 +16,12 @@
  * @class
  * @extends ve.Document
  * @constructor
- * @param {Array} data Linear model data to start with
+ * @param {HTMLDocument|Array|ve.dm.LinearData} documentOrData HTML document, raw linear model data or LinearData to start with
  * @param {ve.dm.Document} [parentDocument] Document to use as root for created nodes
  */
-ve.dm.Document = function VeDmDocument( data, parentDocument ) {
+ve.dm.Document = function VeDmDocument( documentOrData, parentDocument ) {
 	// Parent constructor
 	ve.Document.call( this, new ve.dm.DocumentNode() );
-
-	// Properties
-	this.parentDocument = parentDocument;
-	this.data = ve.isArray( data ) ? data : [];
-	// Sparse array containing the metadata for each offset
-	// Each element is either undefined, or an array of metadata elements
-	// Because the indexes in the metadata array represent offsets in the data array, the
-	// metadata array has one element more than the data array.
-	this.metadata = new Array( this.data.length + 1 );
 
 	// Initialization
 	/*
@@ -50,9 +41,33 @@ ve.dm.Document = function VeDmDocument( data, parentDocument ) {
 		currentNode = this.documentNode;
 	this.documentNode.setDocument( doc );
 	this.documentNode.setRoot( root );
-	for ( i = 0; i < this.data.length; i++ ) {
+
+	// Properties
+	this.parentDocument = parentDocument;
+
+	if ( documentOrData instanceof ve.dm.LinearData ) {
+		this.data = documentOrData;
+	} else if ( !ve.isArray( documentOrData ) && typeof documentOrData === 'object' ) {
+		this.data = ve.dm.converter.getDataFromDom( new ve.dm.IndexValueStore(), documentOrData );
+	} else {
+		this.data = new ve.dm.ElementLinearData(
+			new ve.dm.IndexValueStore(),
+			ve.isArray( documentOrData ) ? documentOrData : []
+		);
+	}
+	this.store = this.data.getStore();
+
+	// Sparse array containing the metadata for each offset
+	// Each element is either undefined, or an array of metadata elements
+	// Because the indexes in the metadata array represent offsets in the data array, the
+	// metadata array has one element more than the data array.
+	this.metadata = new ve.dm.MetaLinearData( this.getStore(), new Array( this.data.getLength() + 1 ) );
+
+	// extract metadata and build node tree
+	// NB: this.data.getLength() will change as data is spliced out
+	for ( i = 0; i < this.data.getLength(); i++ ) {
 		// Infer that if an item in the linear model has a type attribute than it must be an element
-		if ( this.data[i].type === undefined ) {
+		if ( !this.data.isElementData( i ) ) {
 			// Text node opening
 			if ( !inTextNode ) {
 				// Create a lengthless text node
@@ -68,19 +83,19 @@ ve.dm.Document = function VeDmDocument( data, parentDocument ) {
 			// Track the length
 			textLength++;
 		} else {
-			if (
-				this.data[i].type.charAt( 0 ) !== '/' &&
-				ve.dm.metaItemFactory.lookup( this.data[i].type )
+			// Element data
+			if ( !this.data.isCloseElementData( i ) &&
+				ve.dm.metaItemFactory.lookup( this.data.getData( i ).type )
 			) {
 				// Metadata
 				// Splice the meta element and its closing out of the linmod
-				meta = this.data[i];
+				meta = this.data.getData( i );
 				this.spliceData( i, 2 );
 				// Put the metadata in the meta-linmod
-				if ( !this.metadata[i] ) {
-					this.metadata[i] = [];
+				if ( !this.metadata.getData( i ) ) {
+					this.metadata.setData( i, [] );
 				}
-				this.metadata[i].push( meta );
+				this.metadata.getData( i ).push( meta );
 				// Make sure the loop doesn't skip the next element
 				i--;
 				continue;
@@ -96,11 +111,11 @@ ve.dm.Document = function VeDmDocument( data, parentDocument ) {
 				textLength = 0;
 			}
 			// Element open/close
-			if ( this.data[i].type.charAt( 0 ) !== '/' ) {
+			if ( !this.data.isCloseElementData( i ) ) {
 				// Branch or leaf node opening
 				// Create a childless node
-				node = ve.dm.nodeFactory.create( this.data[i].type, [],
-					this.data[i]
+				node = ve.dm.nodeFactory.create(
+					this.data.getData( i ).type, [], this.data.getData( i )
 				);
 				// Set the root pointer now, to prevent cascading updates
 				node.setRoot( root );
@@ -163,284 +178,26 @@ ve.inheritClass( ve.dm.Document, ve.Document );
  * This method modifies data in place.
  *
  * @method
- * @param {Array} data Data to remove annotations from
- * @param {ve.AnnotationSet} annotationSet Annotations to apply
+ * @param {Array} data Data to apply annotations to
+ * @param {ve.dm.AnnotationSet} annotationSet Annotations to apply
  */
 ve.dm.Document.addAnnotationsToData = function ( data, annotationSet ) {
+	var i, length, newAnnotationSet, store = annotationSet.getStore();
 	if ( annotationSet.isEmpty() ) {
 		// Nothing to do
 		return;
 	}
 	// Apply annotations to data
-	for ( var i = 0; i < data.length; i++ ) {
+	for ( i = 0, length = data.length; i < length; i++ ) {
 		if ( !ve.isArray( data[i] ) ) {
-			data[i] = [data[i], new ve.AnnotationSet()];
+			data[i] = [data[i]];
+			newAnnotationSet = annotationSet.clone();
+		} else {
+			newAnnotationSet = new ve.dm.AnnotationSet( store, store.values( data[i][1] ) );
+			newAnnotationSet.addSet( annotationSet.clone() );
 		}
-		data[i][1].addSet( annotationSet );
+		data[i][1] = newAnnotationSet.getIndexes();
 	}
-};
-
-/**
- * Check if content can be inserted at an offset in document data.
- *
- * This method assumes that any value that has a type property that's a string is an element object.
- *
- * Content offsets:
- *      <heading> a </heading> <paragraph> b c <img> </img> </paragraph>
- *     .         ^ ^          .           ^ ^ ^     .      ^            .
- *
- * Content offsets:
- *      <list> <listItem> </listItem> <list>
- *     .      .          .           .      .
- *
- * @static
- * @method
- * @param {Array} data Document data
- * @param {number} offset Document offset
- * @returns {boolean} Content can be inserted at offset
- */
-ve.dm.Document.isContentOffset = function ( data, offset ) {
-	// Edges are never content
-	if ( offset === 0 || offset === data.length ) {
-		return false;
-	}
-	var left = data[offset - 1],
-		right = data[offset],
-		factory = ve.dm.nodeFactory;
-	return (
-		// Data exists at offsets
-		( left !== undefined && right !== undefined ) &&
-		(
-			// If there's content on the left or the right of the offset than we are good
-			// <paragraph>|a|</paragraph>
-			( typeof left === 'string' || typeof right === 'string' ) ||
-			// Same checks but for annotated characters - isArray is slower, try it next
-			( ve.isArray( left ) || ve.isArray( right ) ) ||
-			// The most expensive test are last, these deal with elements
-			(
-				// Right of a leaf
-				// <paragraph><image></image>|</paragraph>
-				(
-					// Is an element
-					typeof left.type === 'string' &&
-					// Is a closing
-					left.type.charAt( 0 ) === '/' &&
-					// Is a leaf
-					factory.isNodeContent( left.type.substr( 1 ) )
-				) ||
-				// Left of a leaf
-				// <paragraph>|<image></image></paragraph>
-				(
-					// Is an element
-					typeof right.type === 'string' &&
-					// Is not a closing
-					right.type.charAt( 0 ) !== '/' &&
-					// Is a leaf
-					factory.isNodeContent( right.type )
-				) ||
-				// Inside empty content branch
-				// <paragraph>|</paragraph>
-				(
-					// Inside empty element
-					'/' + left.type === right.type &&
-					// Both are content branches (right is the same type)
-					factory.canNodeContainContent( left.type )
-				)
-			)
-		)
-	);
-};
-
-/**
- * Check if structure can be inserted at an offset in document data.
- *
- * If the {unrestricted} param is true than only offsets where any kind of element can be inserted
- * will return true. This can be used to detect the difference between a location that a paragraph
- * can be inserted, such as between two tables but not direclty inside a table.
- *
- * This method assumes that any value that has a type property that's a string is an element object.
- *
- * Structural offsets (unrestricted = false):
- *      <heading> a </heading> <paragraph> b c <img> </img> </paragraph>
- *     ^         . .          ^           . . .     .      .            ^
- *
- * Structural offsets (unrestricted = true):
- *      <heading> a </heading> <paragraph> b c <img> </img> </paragraph>
- *     ^         . .          ^           . . .     .      .            ^
- *
- * Structural offsets (unrestricted = false):
- *      <list> <listItem> </listItem> <list>
- *     ^      ^          ^           ^      ^
- *
- * Content branch offsets (unrestricted = true):
- *      <list> <listItem> </listItem> <list>
- *     ^      .          ^           .      ^
- *
- * @static
- * @method
- * @param {Array} data Document data
- * @param {number} offset Document offset
- * @param {boolean} [unrestricted] Only return true if any kind of element can be inserted at offset
- * @returns {boolean} Structure can be inserted at offset
- */
-ve.dm.Document.isStructuralOffset = function ( data, offset, unrestricted ) {
-	// Edges are always structural
-	if ( offset === 0 || offset === data.length ) {
-		return true;
-	}
-	// Offsets must be within range and both sides must be elements
-	var left = data[offset - 1],
-		right = data[offset],
-		factory = ve.dm.nodeFactory;
-	return (
-		(
-			left !== undefined &&
-			right !== undefined &&
-			typeof left.type === 'string' &&
-			typeof right.type === 'string'
-		) &&
-		(
-			// Right of a branch
-			// <list><listItem><paragraph>a</paragraph>|</listItem>|</list>|
-			(
-				// Is a closing
-				left.type.charAt( 0 ) === '/' &&
-				// Is a branch or non-content leaf
-				(
-					factory.canNodeHaveChildren( left.type.substr( 1 ) ) ||
-					!factory.isNodeContent( left.type.substr( 1 ) )
-				) &&
-				(
-					// Only apply this rule in unrestricted mode
-					!unrestricted ||
-					// Right of an unrestricted branch
-					// <list><listItem><paragraph>a</paragraph>|</listItem></list>|
-					// Both are non-content branches that can have any kind of child
-					factory.getParentNodeTypes( left.type.substr( 1 ) ) === null
-				)
-			) ||
-			// Left of a branch
-			// |<list>|<listItem>|<paragraph>a</paragraph></listItem></list>
-			(
-				// Is not a closing
-				right.type.charAt( 0 ) !== '/' &&
-				// Is a branch or non-content leaf
-				(
-					factory.canNodeHaveChildren( right.type ) ||
-					!factory.isNodeContent( right.type )
-				) &&
-				(
-					// Only apply this rule in unrestricted mode
-					!unrestricted ||
-					// Left of an unrestricted branch
-					// |<list><listItem>|<paragraph>a</paragraph></listItem></list>
-					// Both are non-content branches that can have any kind of child
-					factory.getParentNodeTypes( right.type ) === null
-				)
-			) ||
-			// Inside empty non-content branch
-			// <list>|</list> or <list><listItem>|</listItem></list>
-			(
-				// Inside empty element
-				'/' + left.type === right.type &&
-				// Both are non-content branches (right is the same type)
-				factory.canNodeHaveChildrenNotContent( left.type ) &&
-				(
-					// Only apply this rule in unrestricted mode
-					!unrestricted ||
-					// Both are non-content branches that can have any kind of child
-					factory.getChildNodeTypes( left.type ) === null
-				)
-			)
-		)
-	);
-};
-
-/**
- * Check if data at a given offset is an element.
- *
- * This method assumes that any value that has a type property that's a string is an element object.
- *
- * Element data:
- *      <heading> a </heading> <paragraph> b c <img></img> </paragraph>
- *     ^         . ^          ^           . . ^     ^     ^            .
- *
- * @static
- * @method
- * @param {Array} data Document data
- * @param {number} offset Document offset
- * @returns {boolean} Data at offset is an element
- */
-ve.dm.Document.isElementData = function ( data, offset ) {
-	// Data exists at offset and appears to be an element
-	return data[offset] !== undefined && typeof data[offset].type === 'string';
-};
-
-/**
- * Check for elements in document data.
- *
- * This method assumes that any value that has a type property that's a string is an element object.
- * Elements are discovered by iterating through the entire data array (backwards).
- *
- * @static
- * @method
- * @param {Array} data Document data
- * @returns {boolean} At least one elements exists in data
- */
-ve.dm.Document.containsElementData = function ( data ) {
-	var i = data.length;
-	while ( i-- ) {
-		if ( data[i].type !== undefined ) {
-			return true;
-		}
-	}
-	return false;
-};
-
-/**
- * Check for non-content elements in document data.
- *
- * This method assumes that any value that has a type property that's a string is an element object.
- * Elements are discovered by iterating through the entire data array.
- *
- * @static
- * @method
- * @param {Array} data Document data
- * @returns {boolean} True if all elements in data are content elements
- */
-ve.dm.Document.isContentData = function ( data ) {
-	for ( var i = 0, len = data.length; i < len; i++ ) {
-		if ( data[i].type !== undefined &&
-			data[i].type.charAt( 0 ) !== '/' &&
-			!ve.dm.nodeFactory.isNodeContent( data[i].type )
-		) {
-			return false;
-		}
-	}
-	return true;
-};
-
-/**
- * Get a slice or copy of the provided data.
- *
- * @static
- * @method
- * @param {Array} sourceData Source data to slice up
- * @param {ve.Range} [range] Range of data to get, all data will be given by default
- * @param {boolean} [deep=false] Whether to return a deep copy (WARNING! This may be very slow)
- * @returns {Array} Slice or copy of document data
- */
-ve.dm.Document.getDataSlice = function ( sourceData, range, deep ) {
-	var end, data,
-		start = 0;
-	if ( range !== undefined ) {
-		start = Math.max( 0, Math.min( sourceData.length, range.start ) );
-		end = Math.max( 0, Math.min( sourceData.length, range.end ) );
-	}
-	// IE work-around: arr.slice( 0, undefined ) returns [] while arr.slice( 0 ) behaves correctly
-	data = end === undefined ? sourceData.slice( start ) : sourceData.slice( start, end );
-	// Return either the slice or a deep copy of the slice
-	return deep ? ve.copyArray( data ) : data;
 };
 
 /* Methods */
@@ -486,7 +243,7 @@ ve.dm.Document.prototype.commit = function ( transaction ) {
  * @returns {Array} Slice or copy of document data
  */
 ve.dm.Document.prototype.getData = function ( range, deep ) {
-	return this.constructor.getDataSlice( this.data, range, deep );
+	return this.data.getDataSlice( range, deep );
 };
 
 /**
@@ -498,17 +255,15 @@ ve.dm.Document.prototype.getData = function ( range, deep ) {
  * @returns {Array} Slice or copy of document metadata
  */
 ve.dm.Document.prototype.getMetadata = function ( range, deep ) {
-	return this.constructor.getDataSlice( this.metadata, range, deep );
+	return this.metadata.getDataSlice( range, deep );
 };
 
 /**
- * Get the length of the document.
- *
- * @method
- * @returns {number} Document data length
+ * Get the document's index-value store
+ * @returns {ve.dm.IndexValueStore} The document's index-value store
  */
-ve.dm.Document.prototype.getLength = function () {
-	return this.data.length;
+ve.dm.Document.prototype.getStore = function () {
+	return this.store;
 };
 
 /**
@@ -525,16 +280,17 @@ ve.dm.Document.prototype.getLength = function () {
  * @param offset
  * @param remove
  * @param insert
+ * @returns {Array}
  */
 ve.dm.Document.prototype.spliceData = function ( offset, remove, insert ) {
 	var spliced, retain, reaped, reapedFlat, i;
 	insert = insert || [];
-	spliced = ve.batchSplice( this.data, offset, remove, insert );
+	spliced = this.data.batchSplice( offset, remove, insert );
 	// If we're both inserting and removing in the same operation, don't remove a bunch of metadata
 	// elements only to insert a bunch of new ones. Instead, only add or remove as many as the length
 	// delta.
 	retain = insert.length < remove ? insert.length : remove;
-	reaped = ve.batchSplice( this.metadata, offset + retain, remove - retain, new Array( insert.length - retain ) );
+	reaped = this.metadata.batchSplice( offset + retain, remove - retain, new Array( insert.length - retain ) );
 	// reaped will be an array of arrays, flatten it
 	reapedFlat = [];
 	for ( i = 0; i < reaped.length; i++ ) {
@@ -546,7 +302,7 @@ ve.dm.Document.prototype.spliceData = function ( offset, remove, insert ) {
 	// after the removed data). Add it to the front, because it came from something that was
 	// before it.
 	if ( reapedFlat.length > 0 ) {
-		this.metadata[offset + retain] = reapedFlat.concat( this.metadata[offset] || [] );
+		this.metadata.setData( offset + retain, reapedFlat.concat( this.metadata.getData( offset ) || [] ) );
 	}
 	return spliced;
 };
@@ -562,11 +318,13 @@ ve.dm.Document.prototype.spliceData = function ( offset, remove, insert ) {
  * @param index
  * @param remove
  * @param insert
+ * @returns {Array}
  */
 ve.dm.Document.prototype.spliceMetadata = function ( offset, index, remove, insert ) {
-	var elements = this.metadata[offset];
+	var elements = this.metadata.getData( offset );
 	if ( !elements ) {
-		this.metadata[offset] = elements = [];
+		elements = [];
+		this.metadata.setData( offset, elements );
 	}
 	insert = insert || [];
 	return ve.batchSplice( elements, index, remove, insert );
@@ -580,16 +338,16 @@ ve.dm.Document.prototype.spliceMetadata = function ( offset, index, remove, inse
  * @returns {Array} Data with metadata interleaved
  */
 ve.dm.Document.prototype.getFullData = function () {
-	var result = [], i, j, len = this.data.length;
-	for ( i = 0; i <= len; i++ ) {
-		if ( this.metadata[i] ) {
-			for ( j = 0; j < this.metadata[i].length; j++ ) {
-				result.push( this.metadata[i][j] );
-				result.push( { 'type': '/' + this.metadata[i][j].type } );
+	var result = [], i, j, jLen, iLen = this.data.getLength();
+	for ( i = 0; i <= iLen; i++ ) {
+		if ( this.metadata.getData( i ) ) {
+			for ( j = 0, jLen = this.metadata.getData( i ).length; j < jLen; j++ ) {
+				result.push( this.metadata.getData( i )[j] );
+				result.push( { 'type': '/' + this.metadata.getData( i )[j].type } );
 			}
 		}
-		if ( i < len ) {
-			result.push( this.data[i] );
+		if ( i < iLen ) {
+			result.push( this.data.getData( i ) );
 		}
 	}
 	return result;
@@ -603,7 +361,7 @@ ve.dm.Document.prototype.getFullData = function () {
  */
 ve.dm.Document.prototype.getNodeFromOffset = function ( offset ) {
 	// FIXME duplicated from ve.ce.Document
-	if ( offset < 0 || offset > this.data.length ) {
+	if ( offset < 0 || offset > this.data.getLength() ) {
 		throw new Error( 've.dm.Document.getNodeFromOffset(): offset ' + offset + ' is out of bounds' );
 	}
 	var node = this.documentNode.getNodeFromOffset( offset );
@@ -656,155 +414,6 @@ ve.dm.Document.prototype.getText = function ( range ) {
 };
 
 /**
- * Get annotations covered by an offset.
- *
- * The returned AnnotationSet is a clone of the one in the document data.
- *
- * @method
- * @param {number} offset Offset to get annotations for
- * @returns {ve.AnnotationSet} A set of all annotation objects offset is covered by
- */
-ve.dm.Document.prototype.getAnnotationsFromOffset = function ( offset ) {
-	if ( offset < 0 || offset > this.data.length ) {
-		throw new Error( 've.dm.Document.getAnnotationsFromOffset: offset ' + offset + ' out of bounds' );
-	}
-	// Since annotations are not stored on a closing leaf node,
-	// rewind offset by 1 to return annotations for that structure
-	var annotations;
-	if (
-		ve.isPlainObject( this.data[offset] ) && // structural offset
-		this.data[offset].hasOwnProperty( 'type' ) && // just in case
-		this.data[offset].type.charAt( 0 ) === '/' && // closing offset
-		ve.dm.nodeFactory.canNodeHaveChildren(
-			this.data[offset].type.substr( 1 )
-		) === false // leaf node
-	) {
-		offset = this.getRelativeContentOffset( offset, -1 );
-	}
-
-	annotations = this.data[offset].annotations || this.data[offset][1];
-	return annotations ? annotations.clone() : new ve.AnnotationSet();
-};
-
-/**
- * Gets the range of content surrounding a given offset that's covered by a given annotation.
- *
- * @param {number} offset Offset to begin looking forward and backward from
- * @param {Object} annotation Annotation to test for coverage with
- * @returns {ve.Range|null} Range of content covered by annotation, or null if offset is not covered
- */
-ve.dm.Document.prototype.getAnnotatedRangeFromOffset = function ( offset, annotation ) {
-	var start = offset,
-		end = offset;
-	if ( this.getAnnotationsFromOffset( offset ).contains( annotation ) === false ) {
-		return null;
-	}
-	while ( start > 0 ) {
-		start--;
-		if ( this.getAnnotationsFromOffset( start ).contains( annotation ) === false ) {
-			start++;
-			break;
-		}
-	}
-	while ( end < this.data.length ) {
-		if ( this.getAnnotationsFromOffset( end ).contains( annotation ) === false ) {
-			break;
-		}
-		end++;
-	}
-	return new ve.Range( start, end );
-};
-
-/**
- * Get the range of an annotation found within a range.
- *
- * @param {number} offset Offset to begin looking forward and backward from
- * @param {Object} annotation Annotation to test for coverage with
- * @returns {ve.Range|null} Range of content covered by annotation, or a copy of the range
- */
-ve.dm.Document.prototype.getAnnotatedRangeFromSelection = function ( range, annotation ) {
-	var start = range.start,
-		end = range.end;
-	while ( start > 0 ) {
-		start--;
-		if ( this.getAnnotationsFromOffset( start ).contains( annotation ) === false ) {
-			start++;
-			break;
-		}
-	}
-	while ( end < this.data.length ) {
-		if ( this.getAnnotationsFromOffset( end ).contains( annotation ) === false ) {
-			break;
-		}
-		end++;
-	}
-	return new ve.Range( start, end );
-};
-
-/**
- * Get annotations common to all content in a range.
- *
- * @method
- * @param {ve.Range} range Range to get annotations for
- * @param {boolean} [all] Get all annotations found within the range, not just those that cover it
- * @returns {ve.AnnotationSet} All annotation objects range is covered by
- */
-ve.dm.Document.prototype.getAnnotationsFromRange = function ( range, all ) {
-	var i,
-		left,
-		right;
-	// Look at left side of range for annotations
-	left = this.getAnnotationsFromOffset( range.start );
-	// Shortcut for single character and zero-length ranges
-	if ( range.getLength() === 0 || range.getLength() === 1 ) {
-		return left;
-	}
-	// Iterator over the range, looking for annotations, starting at the 2nd character
-	for ( i = range.start + 1; i < range.end; i++ ) {
-		// Skip non character data
-		if ( ve.dm.Document.isElementData( this.data, i ) ) {
-			continue;
-		}
-		// Current character annotations
-		right = this.getAnnotationsFromOffset( i );
-		if ( all && !right.isEmpty() ) {
-			left.addSet( right );
-		} else if ( !all ) {
-			// A non annotated character indicates there's no full coverage
-			if ( right.isEmpty() ) {
-				return new ve.AnnotationSet();
-			}
-			// Exclude annotations that are in left but not right
-			left.removeNotInSet( right );
-			// If we've reduced left down to nothing, just stop looking
-			if ( left.isEmpty() ) {
-				break;
-			}
-		}
-	}
-	return left;
-};
-
-/**
- * Get a range without any whitespace content at the beginning and end.
- *
- * @method
- * @param {ve.Range} [range] Range of data to get, all data will be given by default
- * @returns {Object} A new range if modified, otherwise returns passed range
- */
-ve.dm.Document.prototype.trimOuterSpaceFromRange = function ( range ) {
-	var start = range.start,
-		end = range.end;
-	while ( this.data[start][0] === ' ' ) {
-		start++;
-	}
-	while ( this.data[end - 1][0] === ' ' ) {
-		end--;
-	}
-	return range.to < range.end ? new ve.Range( end, start ) : new ve.Range( start, end );
-};
-
-/**
  * Rebuild one or more nodes following a change in document data.
  *
  * The data provided to this method may contain either one node or multiple sibling nodes, but it
@@ -836,7 +445,7 @@ ve.dm.Document.prototype.trimOuterSpaceFromRange = function ( range ) {
  */
 ve.dm.Document.prototype.rebuildNodes = function ( parent, index, numNodes, offset, newLength ) {
 	var // Get a slice of the document where it's been changed
-		data = this.data.slice( offset, offset + newLength ),
+		data = this.data.sliceObject( offset, offset + newLength ),
 		// Build document fragment from data
 		fragment = new ve.dm.Document( data, this ),
 		// Get generated child nodes from the document fragment
@@ -845,245 +454,6 @@ ve.dm.Document.prototype.rebuildNodes = function ( parent, index, numNodes, offs
 	ve.batchSplice( parent, index, numNodes, nodes );
 	// Return inserted nodes
 	return nodes;
-};
-
-/**
- * Get an offset at a distance to an offset that passes a validity test.
- *
- * - If {offset} is not already valid, one step will be used to move it to an valid one.
- * - If {offset} is already valid and cannot be moved in the direction of {distance} and still be
- *   valid, it will be left where it is
- * - If {distance} is zero the result will either be {offset} if it's already valid or the
- *   nearest valid offset to the right if possible and to the left otherwise.
- * - If {offset} is after the last valid offset and {distance} is >= 1, or if {offset} if
- *   before the first valid offset and {distance} <= 1 than the result will be the nearest
- *   valid offset in the opposite direction.
- * - If the document does not contain a single valid offset the result will be -1
- *
- * @method
- * @param {number} offset Offset to start from
- * @param {number} distance Number of valid offsets to move
- * @param {Function} callback Function to call to check if an offset is valid which will be
- * given two intital arguments of data and offset
- * @param {Mixed...} [args] Additional arguments to pass to the callback
- * @returns {number} Relative valid offset or -1 if there are no valid offsets in document
- */
-ve.dm.Document.prototype.getRelativeOffset = function ( offset, distance, callback ) {
-	var i, direction,
-		args = Array.prototype.slice.call( arguments, 3 ),
-		start = offset,
-		steps = 0,
-		turnedAround = false;
-	// If offset is already a structural offset and distance is zero than no further work is needed,
-	// otherwise distance should be 1 so that we can get out of the invalid starting offset
-	if ( distance === 0 ) {
-		if ( callback.apply( window, [this.data, offset].concat( args ) ) ) {
-			return offset;
-		} else {
-			distance = 1;
-		}
-	}
-	// Initial values
-	direction = (
-		offset <= 0 ? 1 : (
-			offset >= this.data.length ? -1 : (
-				distance > 0 ? 1 : -1
-			)
-		)
-	);
-	distance = Math.abs( distance );
-	i = start + direction;
-	offset = -1;
-	// Iteration
-	while ( i >= 0 && i <= this.data.length ) {
-		if ( callback.apply( window, [this.data, i].concat( args ) ) ) {
-			steps++;
-			offset = i;
-			if ( distance === steps ) {
-				return offset;
-			}
-		} else if (
-			// Don't keep turning around over and over
-			!turnedAround &&
-			// Only turn around if not a single step could be taken
-			steps === 0 &&
-			// Only turn around if we're about to reach the edge
-			( ( direction < 0 && i === 0 ) || ( direction > 0 && i === this.data.length ) )
-		) {
-			// Before we turn around, let's see if we are at a valid position
-			if ( callback.apply( window, [this.data, start].concat( args ) ) ) {
-				// Stay where we are
-				return start;
-			}
-			// Start over going in the opposite direction
-			direction *= -1;
-			i = start;
-			distance = 1;
-			turnedAround = true;
-		}
-		i += direction;
-	}
-	return offset;
-};
-
-/**
- * Get a content offset at a distance from an offset.
- *
- * This method is a wrapper around {getRelativeOffset}, using {ve.dm.Document.isContentOffset} as
- * the offset validation callback.
- *
- * @method
- * @param {number} offset Offset to start from
- * @param {number} distance Number of content offsets to move
- * @returns {number} Relative content offset or -1 if there are no valid offsets in document
- */
-ve.dm.Document.prototype.getRelativeContentOffset = function ( offset, distance ) {
-	return this.getRelativeOffset( offset, distance, ve.dm.Document.isContentOffset );
-};
-
-/**
- * Get the nearest content offset to an offset.
- *
- * If the offset is already a valid offset, it will be returned unchanged. This method differs from
- * calling {getRelativeContentOffset} with a zero length differece because the direction can be
- * controlled without nessecarily moving the offset if it's already valid. Also, if the direction
- * is 0 or undefined than nearest offsets will be found to the left and right and the one with the
- * shortest distance will be used.
- *
- * This method is a wrapper around {getRelativeOffset}, using {ve.dm.Document.isContentOffset} as
- * the offset validation callback.
- *
- * @method
- * @param {number} offset Offset to start from
- * @param {number} [direction] Direction to prefer matching offset in, -1 for left and 1 for right
- * @returns {number} Nearest content offset or -1 if there are no valid offsets in document
- */
-ve.dm.Document.prototype.getNearestContentOffset = function ( offset, direction ) {
-	if ( ve.dm.Document.isContentOffset( this.data, offset ) ) {
-		return offset;
-	}
-	if ( direction === undefined ) {
-		var left = this.getRelativeOffset( offset, -1, ve.dm.Document.isContentOffset ),
-			right = this.getRelativeOffset( offset, 1, ve.dm.Document.isContentOffset );
-		return offset - left < right - offset ? left : right;
-	} else {
-		return this.getRelativeOffset(
-			offset, direction > 0 ? 1 : -1, ve.dm.Document.isContentOffset
-		);
-	}
-};
-
-/**
- * Get a structural offset at a distance from an offset.
- *
- * This method is a wrapper around {getRelativeOffset}, using {ve.dm.Document.isStructuralOffset} as
- * the offset validation callback.
- *
- * @method
- * @param {number} offset Offset to start from
- * @param {number} distance Number of structural offsets to move
- * @param {boolean} [unrestricted] Only return true if any kind of element can be inserted at offset
- * @returns {number} Relative structural offset
- */
-ve.dm.Document.prototype.getRelativeStructuralOffset = function ( offset, distance, unrestricted ) {
-	// Optimization: start and end are always unrestricted structural offsets
-	if ( distance === 0 && ( offset === 0 || offset === this.data.length ) ) {
-		return offset;
-	}
-	return this.getRelativeOffset(
-		offset, distance, ve.dm.Document.isStructuralOffset, unrestricted
-	);
-};
-
-/**
- * Get the nearest structural offset to an offset.
- *
- * If the offset is already a valid offset, it will be returned unchanged. This method differs from
- * calling {getRelativeStructuralOffset} with a zero length differece because the direction can be
- * controlled without nessecarily moving the offset if it's already valid. Also, if the direction
- * is 0 or undefined than nearest offsets will be found to the left and right and the one with the
- * shortest distance will be used.
- *
- * This method is a wrapper around {getRelativeOffset}, using {ve.dm.Document.isStructuralOffset} as
- * the offset validation callback.
- *
- * @method
- * @param {number} offset Offset to start from
- * @param {number} [direction] Direction to prefer matching offset in, -1 for left and 1 for right
- * @param {boolean} [unrestricted] Only return true if any kind of element can be inserted at offset
- * @returns {number} Nearest structural offset
- */
-ve.dm.Document.prototype.getNearestStructuralOffset = function ( offset, direction, unrestricted ) {
-	if ( ve.dm.Document.isStructuralOffset( this.data, offset, unrestricted ) ) {
-		return offset;
-	}
-	if ( !direction ) {
-		var left = this.getRelativeOffset(
-				offset, -1, ve.dm.Document.isStructuralOffset, unrestricted
-			),
-			right = this.getRelativeOffset(
-				offset, 1, ve.dm.Document.isStructuralOffset, unrestricted
-			);
-		return offset - left < right - offset ? left : right;
-	} else {
-		return this.getRelativeOffset(
-			offset, direction > 0 ? 1 : -1, ve.dm.Document.isStructuralOffset, unrestricted
-		);
-	}
-};
-
-/**
- * Get the nearest word boundaries as a range.
- *
- * The offset will first be moved to the nearest content offset if it's not at one already.
- * Elements are always word boundaries.
- *
- * @method
- * @param {number} offset Offset to start from
- * @returns {ve.Range} Range around nearest word boundaries
- */
-ve.dm.Document.prototype.getNearestWordRange = function ( offset ) {
-	var offsetLeft, offsetRight, i,
-		dataString = new ve.dm.DataString( this.data );
-
-	offset = this.getNearestContentOffset( offset );
-
-	// If the cursor offset is a break (i.e. the start/end of word) we should
-	// check one position either side to see if there is a non-break
-	// and if so, move the offset accordingly
-	if( unicodeJS.wordbreak.isBreakInTextString( dataString, offset ) ) {
-		if ( !unicodeJS.wordbreak.isBreakInTextString( dataString, offset + 1 ) ) {
-			offset++;
-		} else if( !unicodeJS.wordbreak.isBreakInTextString( dataString, offset - 1 ) ) {
-			offset--;
-		} else {
-			// just return one character to the right, unless we are at the end
-			// of the text, in which case the character to the left
-			if( dataString.read( offset ) !== null ) {
-				return new ve.Range( offset, offset + 1 );
-			} else {
-				return new ve.Range( offset - 1, offset );
-			}
-		}
-	}
-
-	i = offset;
-	// Search left and right for next break points
-	while( dataString.read( i++ ) !== null ) {
-		offsetRight = i;
-		if( unicodeJS.wordbreak.isBreakInTextString( dataString, i ) ) {
-			break;
-		}
-	}
-	i = offset;
-	while( dataString.read( i-- ) !== null ) {
-		offsetLeft = i;
-		if( unicodeJS.wordbreak.isBreakInTextString( dataString, i ) ) {
-			break;
-		}
-	}
-
-	return new ve.Range( offsetLeft, offsetRight );
 };
 
 /**

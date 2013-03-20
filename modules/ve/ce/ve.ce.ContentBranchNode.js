@@ -56,7 +56,8 @@ ve.ce.ContentBranchNode.prototype.onSplice = function () {
  */
 ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 	var i, j, open, close, startedClosing, arr, annotation, itemAnnotations, itemHtml, $wrapper,
-		html = '', annotationStack = new ve.AnnotationSet(), annotatedHtml = [];
+		store = this.model.doc.getStore(), html = '',
+		annotationStack = new ve.dm.AnnotationSet( store ), annotatedHtml = [];
 
 	function openAnnotations( annotations ) {
 		var out = '',
@@ -92,13 +93,13 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 	for ( i = 0; i < annotatedHtml.length; i++ ) {
 		if ( ve.isArray( annotatedHtml[i] ) ) {
 			itemHtml = annotatedHtml[i][0];
-			itemAnnotations = annotatedHtml[i][1];
+			itemAnnotations = new ve.dm.AnnotationSet( store, store.values( annotatedHtml[i][1] ) );
 		} else {
 			itemHtml = annotatedHtml[i];
-			itemAnnotations = new ve.AnnotationSet();
+			itemAnnotations = new ve.dm.AnnotationSet( store );
 		}
-		open = new ve.AnnotationSet();
-		close = new ve.AnnotationSet();
+		open = new ve.dm.AnnotationSet( store );
+		close = new ve.dm.AnnotationSet( store );
 
 		// Go through annotationStack from bottom to top (left to right), and
 		// close all annotations starting at the first one that's in annotationStack but

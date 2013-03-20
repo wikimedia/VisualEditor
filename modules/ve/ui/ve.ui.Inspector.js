@@ -146,7 +146,7 @@ ve.ui.Inspector.prototype.onClose = function () {
  *
  * @method
  * @param {ve.dm.SurfaceFragment} fragment Fragment to get matching annotations within
- * @returns {ve.AnnotationSet} Matching annotations
+ * @returns {ve.dm.AnnotationSet} Matching annotations
  */
 ve.ui.Inspector.prototype.getMatchingAnnotations = function ( fragment ) {
 	return fragment.getAnnotations().getAnnotationsByName( this.constructor.static.typePattern );

@@ -10,7 +10,8 @@ QUnit.module( 've.ce.TextNode' );
 /* Tests */
 
 QUnit.test( 'getAnnotatedHtml', function ( assert ) {
-	var i, len, cases;
+	var i, len, cases, doc,
+		store = new ve.dm.IndexValueStore();
 
 	cases = [
 		{
@@ -84,7 +85,7 @@ QUnit.test( 'getAnnotatedHtml', function ( assert ) {
 		{
 			// [ ][A][ ][ ][ ][ ]
 			'data': [{ 'type': 'paragraph' },' ', 'A', ' ', ' ', ' ', ' ',{ 'type': '/paragraph' }],
-			'html': [ '&nbsp;', 'A', ' ', '&nbsp;', ' ',  '&nbsp;' ]
+			'html': [ '&nbsp;', 'A', ' ', '&nbsp;', ' ', '&nbsp;' ]
 		},
 		{
 			// [ ][ ][A][ ][ ][ ]
@@ -94,7 +95,7 @@ QUnit.test( 'getAnnotatedHtml', function ( assert ) {
 		{
 			// [ ][ ][ ][A][ ][ ]
 			'data': [{ 'type': 'paragraph' },' ', ' ', ' ', 'A', ' ', ' ',{ 'type': '/paragraph' }],
-			'html': [ '&nbsp;', ' ',  '&nbsp;', 'A', ' ', '&nbsp;' ]
+			'html': [ '&nbsp;', ' ', '&nbsp;', 'A', ' ', '&nbsp;' ]
 		},
 		{
 			// [ ][ ][ ][ ][A][ ]
@@ -134,13 +135,10 @@ QUnit.test( 'getAnnotatedHtml', function ( assert ) {
 	];
 	QUnit.expect( cases.length );
 	for ( i = 0, len = cases.length; i < len; i++ ) {
-		ve.dm.example.preprocessAnnotations( cases[i].data );
-		ve.dm.example.preprocessAnnotations( cases[i].html );
+		doc = new ve.dm.Document( ve.dm.example.preprocessAnnotations( cases[i].data, store ) );
+		ve.dm.example.preprocessAnnotations( cases[i].html, store );
 		assert.deepEqual(
-			( new ve.ce.TextNode(
-				( new ve.dm.Document( cases[i].data ) )
-					.documentNode.getChildren()[0].getChildren()[0] )
-			).getAnnotatedHtml(),
+			( new ve.ce.TextNode( doc.documentNode.getChildren()[0].getChildren()[0] ) ).getAnnotatedHtml(),
 			cases[i].html
 		);
 	}

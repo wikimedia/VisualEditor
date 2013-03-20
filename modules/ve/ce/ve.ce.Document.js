@@ -148,8 +148,8 @@ ve.ce.Document.prototype.getRelativeOffset = function ( offset, direction, unit 
 		return this.getSiblingWordBoundary( offset, direction );
 	} else { // character
 		bias = direction > 0 ? 1 : -1;
-		relativeContentOffset = this.model.getRelativeContentOffset( offset, direction );
-		relativeStructuralOffset = this.model.getRelativeStructuralOffset( offset + bias, direction, true );
+		relativeContentOffset = this.model.data.getRelativeContentOffset( offset, direction );
+		relativeStructuralOffset = this.model.data.getRelativeStructuralOffset( offset + bias, direction, true );
 		// Check if we've moved into a slug
 		if ( !!this.getSlugAtOffset( relativeStructuralOffset ) ) {
 			// Check if the relative content offset is in the opposite direction we are trying to go

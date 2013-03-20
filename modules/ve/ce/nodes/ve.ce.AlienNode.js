@@ -79,7 +79,7 @@ ve.ce.AlienNode.prototype.onMouseEnter = function () {
  * @method
  */
 ve.ce.AlienNode.prototype.onLive = function () {
-	if( this.live === true ) {
+	if ( this.live === true ) {
 		var $shieldTemplate = this.constructor.static.$shieldTemplate;
 		this.$.add( this.$.find( '*' ) ).each( function () {
 			var $this = $( this );

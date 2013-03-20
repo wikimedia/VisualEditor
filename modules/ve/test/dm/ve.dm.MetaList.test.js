@@ -11,13 +11,13 @@ QUnit.module( 've.dm.MetaList' );
 
 function assertItemsMatchMetadata( assert, metadata, list, msg, full ) {
 	var i, j, k = 0, items = list.getAllItems();
-	for ( i in metadata ) {
-		if ( ve.isArray( metadata[i] ) ) {
-			for ( j = 0; j < metadata[i].length; j++ ) {
+	for ( i in metadata.getData() ) {
+		if ( ve.isArray( metadata.getData( i ) ) ) {
+			for ( j = 0; j < metadata.getData( i ).length; j++ ) {
 				assert.strictEqual( items[k].getOffset(), Number( i ), msg + ' (offset (' + i + ', ' + j + '))' );
 				assert.strictEqual( items[k].getIndex(), j, msg + ' (index(' + i + ', ' + j + '))' );
 				if ( full ) {
-					assert.strictEqual( items[k].getElement(), metadata[i][j], msg + ' (element(' + i + ', ' + j + '))' );
+					assert.strictEqual( items[k].getElement(), metadata.getData( i, j ), msg + ' (element(' + i + ', ' + j + '))' );
 					assert.strictEqual( items[k].getParentList(), list, msg + ' (parentList(' + i + ', ' + j + '))' );
 				}
 				k++;
@@ -28,23 +28,17 @@ function assertItemsMatchMetadata( assert, metadata, list, msg, full ) {
 }
 
 QUnit.test( 'constructor', function ( assert ) {
-	 var i, n = 0,
-		doc = new ve.dm.Document( ve.copyArray( ve.dm.example.withMeta ) ),
+	 var doc = ve.dm.example.createExampleDocument( 'withMeta' ),
 		surface = new ve.dm.Surface( doc ),
 		list = new ve.dm.MetaList( surface ),
 		metadata = doc.metadata;
-	for ( i in metadata ) {
-		if ( ve.isArray( metadata[i] ) ) {
-			n += metadata[i].length;
-		}
-	}
-	QUnit.expect( 4*n + 1 );
+	QUnit.expect( 4*metadata.getTotalDataLength() + 1 );
 	assertItemsMatchMetadata( assert, metadata, list, 'Constructor', true );
 } );
 
 QUnit.test( 'onTransact', function ( assert ) {
-	var i, j, surface, tx, list, n = 0,
-		doc = new ve.dm.Document( ve.copyArray( ve.dm.example.withMeta ) ),
+	var i, j, surface, tx, list,
+		doc = ve.dm.example.createExampleDocument( 'withMeta' ),
 		comment = { 'type': 'alienMeta', 'attributes': { 'style': 'comment', 'text': 'onTransact test' } },
 		heading = { 'type': 'heading', 'attributes': { 'level': 2 } },
 		cases = [
@@ -120,21 +114,16 @@ QUnit.test( 'onTransact', function ( assert ) {
 				'msg': 'Transaction adding and removing text and metadata'
 			}
 	];
-	for ( i in doc.metadata ) {
-		if ( ve.isArray( doc.metadata[i] ) ) {
-			n += doc.metadata[i].length;
-		}
-	}
 	// HACK: This works because most transactions above don't change the document length, and the
 	// ones that do change it cancel out
-	QUnit.expect( cases.length*( 4*n + 2 ) );
+	QUnit.expect( cases.length*( 4*doc.metadata.getTotalDataLength() + 2 ) );
 
 	for ( i = 0; i < cases.length; i++ ) {
 		tx = new ve.dm.Transaction();
 		for ( j = 0; j < cases[i].calls.length; j++ ) {
 			tx[cases[i].calls[j][0]].apply( tx, cases[i].calls[j].slice( 1 ) );
 		}
-		doc = new ve.dm.Document( ve.copyArray( ve.dm.example.withMeta ) );
+		doc = ve.dm.example.createExampleDocument( 'withMeta' ),
 		surface = new ve.dm.Surface( doc );
 		list = new ve.dm.MetaList( surface );
 		// Test both the transaction-via-surface and transaction-via-document flows
@@ -147,38 +136,30 @@ QUnit.test( 'onTransact', function ( assert ) {
 
 QUnit.test( 'findItem', function ( assert ) {
 	var i, j, g, item, element, group, groupDesc,
-		n = 0,
 		groups = [ null ],
-		doc = new ve.dm.Document( ve.copyArray( ve.dm.example.withMeta ) ),
+		doc = ve.dm.example.createExampleDocument( 'withMeta' ),
 		surface = new ve.dm.Surface( doc ),
 		metadata = doc.metadata,
 		list = new ve.dm.MetaList( surface );
 
-	for ( i = 0; i < metadata.length; i++ ) {
-		if ( ve.isArray( metadata[i] ) ) {
-			n += metadata[i].length;
-			for ( j = 0; j < metadata[i].length; j++ ) {
-				group = ve.dm.metaItemFactory.getGroup( metadata[i][j].type );
-				if ( ve.indexOf( group, groups ) === -1 ) {
-					groups.push( group );
-				}
+	for ( i = 0; i < metadata.getLength(); i++ ) {
+		for ( j = 0; j < metadata.getDataLength( i ); j++ ) {
+			group = ve.dm.metaItemFactory.getGroup( metadata.getData( i, j ).type );
+			if ( ve.indexOf( group, groups ) === -1 ) {
+				groups.push( group );
 			}
 		}
-		n++;
 	}
-	QUnit.expect( 2*n*groups.length );
+	QUnit.expect( 2*( metadata.getLength() + metadata.getTotalDataLength() )*groups.length );
 
 	for ( g = 0; g < groups.length; g++ ) {
 		groupDesc = groups[g] === null ? 'all items' : groups[g];
-		for ( i = 0; i < metadata.length; i++ ) {
-			j = 0;
-			if ( ve.isArray( metadata[i] ) ) {
-				for ( j = 0; j < metadata[i].length; j++ ) {
-					item = list.findItem( i, j, groups[g] );
-					element = item === null ? null : list.items[item].getElement();
-					assert.strictEqual( element, metadata[i][j], groupDesc + ' (' + i + ', ' + j + ')' );
-					assert.strictEqual( list.findItem( i, j, groups[g], true ), item, groupDesc + ' (forInsertion) (' + i + ', ' + j + ')' );
-				}
+		for ( i = 0; i < metadata.getLength(); i++ ) {
+			for ( j = 0; j < metadata.getDataLength( i ); j++ ) {
+				item = list.findItem( i, j, groups[g] );
+				element = item === null ? null : list.items[item].getElement();
+				assert.strictEqual( element, metadata.getData( i, j ), groupDesc + ' (' + i + ', ' + j + ')' );
+				assert.strictEqual( list.findItem( i, j, groups[g], true ), item, groupDesc + ' (forInsertion) (' + i + ', ' + j + ')' );
 			}
 			assert.strictEqual( list.findItem( i, j, groups[g] ), null, groupDesc + ' (' + i + ', ' + j + ')' );
 			assert.strictEqual( list.findItem( i, j, groups[g], true ), item + 1, groupDesc + ' (forInsertion) (' + i + ', ' + j + ')' );
@@ -188,7 +169,7 @@ QUnit.test( 'findItem', function ( assert ) {
 
 QUnit.test( 'insertMeta', 5, function ( assert ) {
 	var expected,
-		doc = new ve.dm.Document( ve.copyArray( ve.dm.example.withMeta ) ),
+		doc = ve.dm.example.createExampleDocument( 'withMeta' ),
 		surface = new ve.dm.Surface( doc ),
 		list = new ve.dm.MetaList( surface ),
 		insert = {
@@ -200,44 +181,44 @@ QUnit.test( 'insertMeta', 5, function ( assert ) {
 		};
 
 	list.insertMeta( insert, 2, 0 );
-	assert.deepEqual( doc.metadata[2], [ insert ], 'Inserting metadata at an offset without pre-existing metadata' );
+	assert.deepEqual( doc.metadata.getData( 2 ), [ insert ], 'Inserting metadata at an offset without pre-existing metadata' );
 
-	expected = doc.metadata[0].slice( 0 );
+	expected = doc.metadata.getData( 0 ).slice( 0 );
 	expected.splice( 1, 0, insert );
 	list.insertMeta( insert, 0, 1 );
-	assert.deepEqual( doc.metadata[0], expected, 'Inserting metadata in the middle' );
+	assert.deepEqual( doc.metadata.getData( 0 ), expected, 'Inserting metadata in the middle' );
 
 	expected.push( insert );
 	list.insertMeta( insert, 0 );
-	assert.deepEqual( doc.metadata[0], expected, 'Inserting metadata without passing an index adds to the end' );
+	assert.deepEqual( doc.metadata.getData( 0 ), expected, 'Inserting metadata without passing an index adds to the end' );
 
 	list.insertMeta( insert, 1 );
-	assert.deepEqual( doc.metadata[1], [ insert ], 'Inserting metadata without passing an index without pre-existing metadata' );
+	assert.deepEqual( doc.metadata.getData( 1 ), [ insert ], 'Inserting metadata without passing an index without pre-existing metadata' );
 
 	list.insertMeta( new ve.dm.AlienMetaItem( insert ), 1 );
-	assert.deepEqual( doc.metadata[1], [ insert, insert ], 'Passing a MetaItem rather than an element' );
+	assert.deepEqual( doc.metadata.getData( 1 ), [ insert, insert ], 'Passing a MetaItem rather than an element' );
 } );
 
 QUnit.test( 'removeMeta', 4, function ( assert ) {
 	var expected,
-		doc = new ve.dm.Document( ve.copyArray( ve.dm.example.withMeta ) ),
+		doc = ve.dm.example.createExampleDocument( 'withMeta' ),
 		surface = new ve.dm.Surface( doc ),
 		list = new ve.dm.MetaList( surface );
 
 	list.removeMeta( list.getItemAt( 4, 0 ) );
-	assert.deepEqual( doc.metadata[4], [], 'Removing the only item at offset 4' );
+	assert.deepEqual( doc.metadata.getData( 4 ), [], 'Removing the only item at offset 4' );
 
-	expected = doc.metadata[0].slice( 0 );
+	expected = doc.metadata.getData( 0 ).slice( 0 );
 	expected.splice( 1, 1 );
 	list.removeMeta( list.getItemAt( 0, 1 ) );
-	assert.deepEqual( doc.metadata[0], expected, 'Removing the item at (0,1)' );
+	assert.deepEqual( doc.metadata.getData( 0 ), expected, 'Removing the item at (0,1)' );
 
-	expected = doc.metadata[11].slice( 0 );
+	expected = doc.metadata.getData( 11 ).slice( 0 );
 	expected.splice( 0, 1 );
 	list.getItemAt( 11, 0 ).remove();
-	assert.deepEqual( doc.metadata[11], expected, 'Removing (11,0) using .remove()' );
+	assert.deepEqual( doc.metadata.getData( 11 ), expected, 'Removing (11,0) using .remove()' );
 
 	expected.splice( 1, 1 );
 	list.getItemAt( 11, 1 ).remove();
-	assert.deepEqual( doc.metadata[11], expected, 'Removing (11,1) (formerly (11,2)) using .remove()' );
+	assert.deepEqual( doc.metadata.getData( 11 ), expected, 'Removing (11,1) (formerly (11,2)) using .remove()' );
 } );

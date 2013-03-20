@@ -41,11 +41,11 @@ ve.dm.LeafNode.static.childNodeTypes = [];
  * Get the annotations that apply to the node.
  *
  * Annotations are grabbed directly from the linear model, so they are updated live. If the linear
- * model element doesn't have a .annotations property, an empty set is returned.
+ * model element doesn't have a .annotations property, an empty array is returned.
  *
  * @method
- * @returns {ve.AnnotationSet} Annotation set (by reference!)
+ * @returns {number[]} Annotation set indexes in the index-value store
  */
 ve.dm.LeafNode.prototype.getAnnotations = function () {
-	return this.element.annotations || new ve.AnnotationSet();
+	return this.element.annotations || [];
 };

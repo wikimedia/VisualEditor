@@ -205,17 +205,14 @@ ve.dm.Transaction.newFromAttributeChange = function ( doc, offset, key, value ) 
 ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation ) {
 	var covered, type,
 		tx = new ve.dm.Transaction(),
-		data = doc.getData(),
+		data = doc.data,
 		i = range.start,
 		span = i,
 		on = false;
 	// Iterate over all data in range, annotating where appropriate
 	while ( i < range.end ) {
-		type = data[i].type;
-		if ( type && type.charAt( 0 ) === '/' ) {
-			type = type.substr( 1 );
-		}
-		if ( data[i].type !== undefined && !ve.dm.nodeFactory.isNodeContent( type ) ) {
+		type = data.getType( i );
+		if ( data.isElementData( i ) && !ve.dm.nodeFactory.isNodeContent( type ) ) {
 			// Structural element opening or closing
 			if ( on ) {
 				tx.pushRetain( span );
@@ -223,9 +220,9 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
 				span = 0;
 				on = false;
 			}
-		} else if ( data[i].type === undefined || data[i].type.charAt( 0 ) !== '/' ) {
+		} else if ( !data.isElementData( i ) || !data.isCloseElementData( i ) ) {
 			// Character or content element opening
-			covered = doc.getAnnotationsFromOffset( i ).contains( annotation );
+			covered = data.getAnnotationsFromOffset( i ).contains( annotation );
 			if ( ( covered && method === 'set' ) || ( !covered && method === 'clear' ) ) {
 				// Skip annotated content
 				if ( on ) {
@@ -251,7 +248,7 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
 	if ( on ) {
 		tx.pushStopAnnotating( method, annotation );
 	}
-	tx.pushRetain( data.length - range.end );
+	tx.pushRetain( data.getLength() - range.end );
 	return tx;
 };
 
@@ -269,8 +266,8 @@ ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation 
  */
 ve.dm.Transaction.newFromMetadataInsertion = function ( doc, offset, index, newElements ) {
 	var tx = new ve.dm.Transaction(),
-		data = doc.getMetadata(),
-		elements = data[offset] || [];
+		data = doc.metadata,
+		elements = data.getData( offset ) || [];
 
 	// Retain up to element
 	tx.pushRetain( offset );
@@ -283,7 +280,7 @@ ve.dm.Transaction.newFromMetadataInsertion = function ( doc, offset, index, newE
 	// Retain up to end of metadata elements (second dimension)
 	tx.pushRetainMetadata( elements.length - index );
 	// Retain to end of document
-	tx.pushRetain( data.length - offset );
+	tx.pushRetain( data.getLength() - offset );
 	return tx;
 };
 
@@ -303,8 +300,8 @@ ve.dm.Transaction.newFromMetadataInsertion = function ( doc, offset, index, newE
 ve.dm.Transaction.newFromMetadataRemoval = function ( doc, offset, range ) {
 	var selection,
 		tx = new ve.dm.Transaction(),
-		data = doc.getMetadata(),
-		elements = data[offset] || [];
+		data = doc.metadata,
+		elements = data.getData( offset ) || [];
 
 	if ( !elements.length ) {
 		throw new Error( 'Cannot remove metadata from empty list' );
@@ -327,7 +324,7 @@ ve.dm.Transaction.newFromMetadataRemoval = function ( doc, offset, range ) {
 	// Retain up to end of metadata elements (second dimension)
 	tx.pushRetainMetadata( elements.length - range.end );
 	// Retain to end of document
-	tx.pushRetain( data.length - offset );
+	tx.pushRetain( data.getLength() - offset );
 	return tx;
 };
 
@@ -511,9 +508,9 @@ ve.dm.Transaction.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, u
 		// TODO figure out if we should use the tree/node functions here
 		// rather than iterating over offsets, it may or may not be faster
 		for ( i = range.start; i < range.end; i++ ) {
-			if ( doc.data[i].type !== undefined ) {
+			if ( doc.data.isElementData( i ) ) {
 				// This is a structural offset
-				if ( doc.data[i].type.charAt( 0 ) !== '/' ) {
+				if ( !doc.data.isCloseElementData( i ) ) {
 					// This is an opening element
 					if ( depth === 0 ) {
 						// We are at the start of a top-level element
@@ -560,8 +557,8 @@ ve.dm.Transaction.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, u
 	}
 
 	// Retain up to the end of the document
-	if ( range.end < doc.data.length ) {
-		tx.pushRetain( doc.data.length - range.end - unwrapOuter.length );
+	if ( range.end < doc.data.getLength() ) {
+		tx.pushRetain( doc.data.getLength() - range.end - unwrapOuter.length );
 	}
 
 	return tx;

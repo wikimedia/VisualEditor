@@ -11,7 +11,7 @@ QUnit.module( 've.FormatAction' );
 
 function runConverterTest( assert, range, type, attributes, expectedSelection, expectedData, label ) {
 	var dom = ve.createDocumentFromHTML( ve.dm.example.isolationHTML ),
-		surface = new ve.Surface( new ve.init.Target( $( '<div>' ) ),  dom ),
+		surface = new ve.Surface( new ve.init.Target( $( '<div>' ) ), dom ),
 		formatAction = new ve.FormatAction( surface ),
 		data = ve.copyArray( surface.getModel().getDocument().getFullData() );
 

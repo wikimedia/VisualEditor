@@ -40,7 +40,8 @@ QUnit.test( 'getDomElementsFromDataElement', 20, function ( assert ) {
 
 QUnit.test( 'getDataFromDom', 49, function ( assert ) {
 	var msg,
-		cases = ve.dm.example.domToDataCases;
+		store = new ve.dm.IndexValueStore(),
+		cases = ve.copyObject( ve.dm.example.domToDataCases );
 
 	// TODO: this is a hack to make normal heading/preformatted
 	// nodes the most recently registered, instead of the MW versions
@@ -49,9 +50,9 @@ QUnit.test( 'getDataFromDom', 49, function ( assert ) {
 
 	for ( msg in cases ) {
 		if ( cases[msg].html !== null ) {
-			ve.dm.example.preprocessAnnotations( cases[msg].data );
+			ve.dm.example.preprocessAnnotations( cases[msg].data, store );
 			assert.deepEqual(
-				ve.dm.converter.getDataFromDom( ve.createDocumentFromHTML( cases[msg].html ) ),
+				ve.dm.converter.getDataFromDom( store, ve.createDocumentFromHTML( cases[msg].html ) ).getData(),
 				cases[msg].data,
 				msg
 			);
@@ -61,12 +62,13 @@ QUnit.test( 'getDataFromDom', 49, function ( assert ) {
 
 QUnit.test( 'getDomFromData', 53, function ( assert ) {
 	var msg,
-		cases = ve.dm.example.domToDataCases;
+		store = new ve.dm.IndexValueStore(),
+		cases = ve.copyObject( ve.dm.example.domToDataCases );
 
 	for ( msg in cases ) {
-		ve.dm.example.preprocessAnnotations( cases[msg].data );
+		ve.dm.example.preprocessAnnotations( cases[msg].data, store );
 		assert.equalDomElement(
-			ve.dm.converter.getDomFromData( cases[msg].data ),
+			ve.dm.converter.getDomFromData( store, cases[msg].data ),
 			ve.createDocumentFromHTML( cases[msg].normalizedHtml || cases[msg].html ),
 			msg
 		);
