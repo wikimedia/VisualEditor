@@ -126,6 +126,9 @@ ve.ui.Context.prototype.onInspectorSetup = function () {
  * @param {ve.ui.Inspector} inspector Inspector that's been opened
  */
 ve.ui.Context.prototype.onInspectorOpen = function () {
+	// Transition between menu and inspector
+	this.$body.addClass( 've-ui-context-body-transition' );
+
 	this.show();
 };
 
@@ -137,7 +140,14 @@ ve.ui.Context.prototype.onInspectorOpen = function () {
  * @param {boolean} accept Changes have been accepted
  */
 ve.ui.Context.prototype.onInspectorClose = function () {
+	var $body = this.$body;
+
 	this.update();
+
+	// Disable transitioning after transition completes
+	setTimeout( function () {
+		$body.removeClass( 've-ui-context-body-transition' );
+	}, 200 );
 };
 
 /**
@@ -173,6 +183,11 @@ ve.ui.Context.prototype.update = function () {
 		fragment = this.surface.getModel().getFragment(),
 		selection = fragment.getRange(),
 		inspector = this.inspectors.getCurrent();
+
+	// If the context about to be moved to a new location, don't transition it's size
+	if ( this.selection && this.selection.end !== selection.end ) {
+		this.$body.removeClass( 've-ui-context-body-transition' );
+	}
 
 	if ( inspector && selection.equals( this.selection ) ) {
 		// There's an inspector, and the selection hasn't changed, update the position
@@ -249,9 +264,7 @@ ve.ui.Context.prototype.show = function () {
 		this.$.css( { 'left': position.x, 'width': width, 'top': position.y } );
 
 		if ( !this.visible ) {
-			this.$body
-				.css( { 'width': 0, 'height': 0, 'left': 0 } )
-				.addClass( 've-ui-context-body-transition' );
+			this.$body.css( { 'width': 0, 'height': 0, 'left': 0 } );
 		}
 
 		this.$body.css( { 'left': center, 'width': width, 'height': height } );
@@ -278,9 +291,6 @@ ve.ui.Context.prototype.hide = function () {
 		return this;
 	}
 
-	this.$body
-		.removeClass( 've-ui-context-body-transition' )
-		.css( { 'width': 0, 'height': 0, 'left': 0 } );
 	this.inspectors.$.hide();
 	this.$menu.hide();
 	this.$.hide();
