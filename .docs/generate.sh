@@ -16,9 +16,22 @@ cd $(cd $(dirname $0); pwd)
 	done
 ) < eg-iframe.tpl | php > eg-iframe.html
 
-jsduck --config=config.json
-c=$?
+warnings=`jsduck --config=config.json 2>&1`
+ec=$?
+
 rm eg-iframe.html
 cd - > /dev/null
+
+echo -e "$warnings"
+
+# JSDuck doesn't exit with an error code if there are warnings
+# (only when there are fatal errors). We fixed all warnings
+# in master so lets consider all warnings errors to ensure
+# we don't introduce any new invalid jsduck syntax.
+if [[ "$ec" == "0" && "$warnings" != "" ]]
+then
+	exit 1
+fi
+
 # Exit with exit code of jsduck command
 exit $ec
