@@ -29,10 +29,10 @@
 	 * Create an object that inherits from another object.
 	 *
 	 * @method
-	 * @until ES5: Object.create.
+	 * @until ES5: Object.create
 	 * @source <https://github.com/Krinkle/K-js>
-	 * @param {Object} origin Object to inherit from.
-	 * @return {Object} Empty object that inherits from origin.
+	 * @param {Object} origin Object to inherit from
+	 * @return {Object} Empty object that inherits from origin
 	 */
 	ve.createObject = Object.create || function ( origin ) {
 		function O() {}
@@ -160,7 +160,7 @@
 	 * @method
 	 * @source <https://github.com/Krinkle/K-js>
 	 * @param {Object} origin
-	 * @return {Object} Clone of origin.
+	 * @return {Object} Clone of origin
 	 */
 	ve.cloneObject = function ( origin ) {
 		var key, r;
@@ -178,18 +178,20 @@
 
 	/**
 	 * Check to see if an object is a plain object (created using "{}" or "new Object").
+	 *
 	 * @method
 	 * @source <http://api.jquery.com/jQuery.isPlainObject/>
-	 * @param {Object} obj The object that will be checked to see if it's a plain object.
+	 * @param {Object} obj The object that will be checked to see if it's a plain object
 	 * @return {boolean}
 	 */
 	ve.isPlainObject = $.isPlainObject;
 
 	/**
 	 * Check to see if an object is empty (contains no properties).
+	 *
 	 * @method
 	 * @source <http://api.jquery.com/jQuery.isEmptyObject/>
-	 * @param {Object} obj The object that will be checked to see if it's empty.
+	 * @param {Object} obj The object that will be checked to see if it's empty
 	 * @return {boolean}
 	 */
 	ve.isEmptyObject = $.isEmptyObject;
@@ -198,9 +200,10 @@
 	 * Check whether given variable is an array. Should not use `instanceof` or
 	 * `constructor` due to the inability to detect arrays from a different
 	 * scope.
+	 *
 	 * @method
 	 * @source <http://api.jquery.com/jQuery.isArray/>
-	 * @until ES5: Array.isArray.
+	 * @until ES5: Array.isArray
 	 * @param {Mixed} x
 	 * @return {boolean}
 	 */
@@ -214,25 +217,26 @@
 	 * Performance optimization: http://jsperf.com/function-bind-shim-perf
 	 *
 	 * @method
-	 * @until ES5: Function.prototype.bind.
-	 * @param {Function} func Function to bind.
-	 * @param {Object} context Context for the function.
+	 * @until ES5: Function.prototype.bind
+	 * @param {Function} func Function to bind
+	 * @param {Object} context Context for the function
 	 * @param {Mixed...} [args] Variadic list of arguments to prepend to arguments
-	 * to the bound function.
-	 * @return {Function} The bound.
+	 *   to the bound function
+	 * @return {Function} The bound
 	 */
 	ve.bind = $.proxy;
 
 	/**
 	 * Wrapper for Array.prototype.indexOf.
 	 *
+	 * Values are compared without type coercion.
+	 *
 	 * @method
 	 * @until ES5
-	 * @param {Mixed} value Element to search for.
-	 * @param {Array} array Array to search in.
-	 * @param {number} [fromIndex=0] Index to being searching from.
-	 * @return {number} Index of value in array, or -1 if not found.
-	 * Values are compared without type coercion.
+	 * @param {Mixed} value Element to search for
+	 * @param {Array} array Array to search in
+	 * @param {number} [fromIndex=0] Index to being searching from
+	 * @return {number} Index of value in array, or -1 if not found
 	 */
 	ve.indexOf = $.inArray;
 
@@ -274,10 +278,10 @@
 	 *
 	 * @method
 	 * @param {boolean} [recursive=false]
-	 * @param {Mixed} [target] Object that will receive the new properties.
+	 * @param {Mixed} [target] Object that will receive the new properties
 	 * @param {Mixed...} [sources] Variadic list of objects containing properties
 	 * to be merged into the targe.
-	 * @return {Mixed} Modified version of first or second argument.
+	 * @return {Mixed} Modified version of first or second argument
 	 */
 	ve.extendObject = $.extend;
 

@@ -92,7 +92,7 @@ ve.dm.TransactionProcessor.prototype.nextOperation = function () {
  *
  * @method
  * @param {Object} op Operation object to execute
- * @throws {Error} Operation type is not supported.
+ * @throws {Error} Operation type is not supported
  */
 ve.dm.TransactionProcessor.prototype.executeOperation = function ( op ) {
 	if ( op.type in ve.dm.TransactionProcessor.processors ) {
@@ -156,9 +156,9 @@ ve.dm.TransactionProcessor.prototype.process = function () {
  *
  * @method
  * @param {number} to Offset to stop annotating at, annotating starts at this.cursor
- * @throws {Error} Cannot annotate a branch element.
- * @throws {Error} Annotation to be set is already set.
- * @throws {Error} Annotation to be cleared is not set.
+ * @throws {Error} Cannot annotate a branch element
+ * @throws {Error} Annotation to be set is already set
+ * @throws {Error} Annotation to be cleared is not set
  */
 ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 	var item, element, type, annotated, annotations, i, range, selection, offset;
@@ -341,7 +341,7 @@ ve.dm.TransactionProcessor.processors.retainMetadata = function ( op ) {
  * @param {string} op.method Annotation method, either 'set' to add or 'clear' to remove
  * @param {string} op.bias End point of marker, either 'start' to begin or 'stop' to end
  * @param {string} op.annotation Annotation object to set or clear from content
- * @throws {Error} Invalid annotation method.
+ * @throws {Error} Invalid annotation method
  */
 ve.dm.TransactionProcessor.processors.annotate = function ( op ) {
 	var target;

@@ -61,7 +61,7 @@ ve.init.Platform.prototype.useChangeMarkers = function () {
  *
  * @method
  * @abstract
- * @param {Object} messages Containing plain message values.
+ * @param {Object} messages Containing plain message values
  */
 ve.init.Platform.prototype.addMessages = function () {
 	throw new Error( 've.init.Platform.addMessages must be overridden in subclass' );
@@ -98,7 +98,7 @@ ve.init.Platform.prototype.addParsedMessages = function () {
  * @method
  * @abstract
  * @param {string} key Message key
- * @returns {string} Parsed localized message as HTML string.
+ * @returns {string} Parsed localized message as HTML string
  */
 ve.init.Platform.prototype.getParsedMessage = function () {
 	throw new Error( 've.init.Platform.getParsedMessage must be overridden in subclass' );
@@ -109,7 +109,7 @@ ve.init.Platform.prototype.getParsedMessage = function () {
  *
  * @method
  * @abstract
- * @returns {string} Client platform string.
+ * @returns {string} Client platform string
  */
 ve.init.Platform.prototype.getSystemPlatform = function () {
 	throw new Error( 've.init.Platform.getSystemPlatform must be overridden in subclass' );
@@ -120,7 +120,7 @@ ve.init.Platform.prototype.getSystemPlatform = function () {
  *
  * @method
  * @abstract
- * @returns {string} User language string.
+ * @returns {string} User language string
  */
 ve.init.Platform.prototype.getUserLanguage = function () {
 	throw new Error( 've.init.Platform.getUserLanugage must be overridden in subclass' );

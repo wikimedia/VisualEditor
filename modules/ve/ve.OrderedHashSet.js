@@ -144,7 +144,7 @@ ve.OrderedHashSet.prototype.containsAllOf = function ( set ) {
  *
  * @method
  * @param {Object} value Value to search for
- * @returns {number} Index of value in the set, or -1 if value is not in the set.
+ * @returns {number} Index of value in the set, or -1 if value is not in the set
  */
 ve.OrderedHashSet.prototype.indexOf = function ( value ) {
 	var hash = this.hash( value );
@@ -274,7 +274,7 @@ ve.OrderedHashSet.prototype.push = function ( value ) {
  *
  * @method
  * @param {number} index Index to remove item at. If negative, the counts from the end, see add()
- * @throws {Error} Index out of bounds.
+ * @throws {Error} Index out of bounds
  */
 ve.OrderedHashSet.prototype.removeAt = function ( index ) {
 	if ( index < 0 ) {
@@ -352,7 +352,7 @@ ve.OrderedHashSet.prototype.removeNotInSet = function ( set ) {
  * This returns a copy, the original set is not modified.
  *
  * @method
- * @returns {ve.OrderedHashSet} Copy of the set with the order reversed.
+ * @returns {ve.OrderedHashSet} Copy of the set with the order reversed
  */
 ve.OrderedHashSet.prototype.reversed = function () {
 	var newSet = this.clone();

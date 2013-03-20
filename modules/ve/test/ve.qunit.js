@@ -90,7 +90,7 @@ function getNodeSelectionSummary( selection ) {
  *
  * @method
  * @private
- * @param {HTMLElement} element Element to summarize.
+ * @param {HTMLElement} element Element to summarize
  * @returns {Object} Summary of element.
  */
 function getDomElementSummary( element ) {

@@ -28,7 +28,7 @@ ve.inheritClass( ve.dm.MetaItemFactory, ve.Factory );
  *
  * @method
  * @param {string} type Meta item type
- * @returns {boolean} Whether the item stores HTML attributes.
+ * @returns {boolean} Whether the item stores HTML attributes
  * @throws {Error} Unknown item type
  */
 ve.dm.MetaItemFactory.prototype.doesItemStoreHtmlAttributes = function ( type ) {

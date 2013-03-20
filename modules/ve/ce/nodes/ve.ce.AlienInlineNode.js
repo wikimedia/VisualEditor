@@ -11,7 +11,7 @@
  * @class
  * @extends ve.ce.AlienNode
  * @constructor
- * @param {ve.dm.AlienInlineNode} model Model to observe.
+ * @param {ve.dm.AlienInlineNode} model Model to observe
  */
 ve.ce.AlienInlineNode = function VeCeAlienInlineNode( model ) {
 	// Parent constructor

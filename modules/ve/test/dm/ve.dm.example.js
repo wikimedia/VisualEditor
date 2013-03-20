@@ -25,7 +25,7 @@ ve.dm.example = {};
  * and an instance of ve.AnnotationSet instead of the array.
  *
  * @method
- * @param {Array} data Linear model data. Will be modified.
+ * @param {Array} data Linear model data; will be modified
  */
 ve.dm.example.preprocessAnnotations = function ( data ) {
 	var i, key;

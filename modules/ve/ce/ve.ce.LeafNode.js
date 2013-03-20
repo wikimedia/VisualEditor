@@ -41,7 +41,7 @@ ve.mixinClass( ve.ce.LeafNode, ve.LeafNode );
 /**
  * Get annotated HTML fragments.
  *
- * @see ve.ce.ContentBranchNode.
+ * @see ve.ce.ContentBranchNode
  *
  * An HTML fragment can be:
  * - an HTML string

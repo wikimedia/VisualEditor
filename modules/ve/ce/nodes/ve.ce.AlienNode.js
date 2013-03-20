@@ -11,7 +11,7 @@
  * @class
  * @extends ve.ce.LeafNode
  * @constructor
- * @param {ve.dm.AlienNode} model Model to observe.
+ * @param {ve.dm.AlienNode} model Model to observe
  */
 ve.ce.AlienNode = function VeCeAlienNode( model ) {
 	// Parent constructor

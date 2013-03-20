@@ -652,8 +652,8 @@ ve.dm.Document.prototype.getDataFromNode = function ( node ) {
  * Get plain text of a range.
  *
  * @method
- * @param {ve.Range} [range] Range of data to get the text of.
- * @returns {string|''} Selected text or an empty string.
+ * @param {ve.Range} [range] Range of data to get the text of
+ * @returns {string|''} Selected text or an empty string
  */
 ve.dm.Document.prototype.getText = function ( range ) {
 	var data = this.getData( range ),
@@ -734,7 +734,7 @@ ve.dm.Document.prototype.getAnnotatedRangeFromOffset = function ( offset, annota
  *
  * @param {number} offset Offset to begin looking forward and backward from
  * @param {Object} annotation Annotation to test for coverage with
- * @returns {ve.Range|null} Range of content covered by annotation, or a copy of the range.
+ * @returns {ve.Range|null} Range of content covered by annotation, or a copy of the range
  */
 ve.dm.Document.prototype.getAnnotatedRangeFromSelection = function ( range, annotation ) {
 	var start = range.start,
@@ -804,7 +804,7 @@ ve.dm.Document.prototype.getAnnotationsFromRange = function ( range, all ) {
  *
  * @method
  * @param {ve.Range} [range] Range of data to get, all data will be given by default
- * @returns {Object} A new range if modified, otherwise returns passed range.
+ * @returns {Object} A new range if modified, otherwise returns passed range
  */
 ve.dm.Document.prototype.trimOuterSpaceFromRange = function ( range ) {
 	var start = range.start,

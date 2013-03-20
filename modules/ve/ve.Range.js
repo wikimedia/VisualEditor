@@ -121,7 +121,7 @@ ve.Range.prototype.equals = function ( other ) {
  *
  * @method
  * @param {number} Length of the new range (negative for left-side truncation)
- * @returns {ve.Range} A new range.
+ * @returns {ve.Range} A new range
  */
 ve.Range.prototype.truncate = function ( length ) {
 	if ( length >= 0 ) {
@@ -141,7 +141,7 @@ ve.Range.prototype.truncate = function ( length ) {
  * A collapsed range has equal start and end values making its length zero.
  *
  * @method
- * @returns {boolean} Range is collapsed.
+ * @returns {boolean} Range is collapsed
  */
 ve.Range.prototype.isCollapsed = function () {
 	return this.from === this.to;

@@ -1194,7 +1194,7 @@ ve.init.mw.ViewPageTarget.prototype.resetSaveDialog = function () {
  * Swap state in the save dialog (forwards or backwards).
  *
  * @method
- * @param {string} slide One of 'review', 'report' or 'save'.
+ * @param {string} slide One of 'review', 'report' or 'save'
  * @return {jQuery} The now active slide.
  * @throws {Error} Unknown saveDialog slide
  */

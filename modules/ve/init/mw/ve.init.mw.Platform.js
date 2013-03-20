@@ -115,7 +115,7 @@ ve.init.mw.Platform.prototype.addParsedMessages = function ( messages ) {
  *
  * @method
  * @param {string} key Message key
- * @returns {string} Parsed localized message as HTML string.
+ * @returns {string} Parsed localized message as HTML string
  */
 ve.init.mw.Platform.prototype.getParsedMessage = function ( key ) {
 	if ( key in this.parsedMessages ) {
@@ -130,7 +130,7 @@ ve.init.mw.Platform.prototype.getParsedMessage = function ( key ) {
  * Gets client platform string from browser.
  *
  * @method
- * @returns {string} Client platform string.
+ * @returns {string} Client platform string
  */
 ve.init.mw.Platform.prototype.getSystemPlatform = function () {
 	return $.client.profile().platform;
@@ -140,7 +140,7 @@ ve.init.mw.Platform.prototype.getSystemPlatform = function () {
  * Gets the user language from the browser.
  *
  * @method
- * @returns {string} User language string.
+ * @returns {string} User language string
  */
 ve.init.mw.Platform.prototype.getUserLanguage = function () {
 	return mw.config.get( 'wgUserLanguage' );

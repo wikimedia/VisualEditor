@@ -11,7 +11,7 @@
  * @class
  * @extends ve.ce.LeafNode
  * @constructor
- * @param {ve.dm.MWEntityNode} model Model to observe.
+ * @param {ve.dm.MWEntityNode} model Model to observe
  */
 ve.ce.MWEntityNode = function VeCeMWEntityNode( model ) {
 	// Parent constructor

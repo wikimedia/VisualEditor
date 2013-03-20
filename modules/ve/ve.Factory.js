@@ -49,9 +49,9 @@ ve.Factory.prototype.register = function ( name, constructor ) {
  * constructor directly, so leaving one out will pass an undefined to the constructor.
  *
  * @method
- * @param {string} name Object name.
- * @param {Mixed...} [args] Arguments to pass to the constructor.
- * @returns {Object} The new object.
+ * @param {string} name Object name
+ * @param {Mixed...} [args] Arguments to pass to the constructor
+ * @returns {Object} The new object
  * @throws {Error} Unknown object name
  */
 ve.Factory.prototype.create = function ( name ) {

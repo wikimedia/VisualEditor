@@ -191,7 +191,7 @@ ve.dm.NodeFactory.prototype.doesNodeHaveSignificantWhitespace = function ( type 
  *
  * @method
  * @param {string} type Node type
- * @returns {boolean} Whether the node stores HTML attributes.
+ * @returns {boolean} Whether the node stores HTML attributes
  */
 ve.dm.NodeFactory.prototype.doesNodeStoreHtmlAttributes = function ( type ) {
 	if ( type in this.registry ) {
