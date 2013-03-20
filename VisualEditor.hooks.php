@@ -78,6 +78,7 @@ class VisualEditorHooks {
 				've.example.js',
 				've.Document.test.js',
 				've.Node.test.js',
+				've.AnnotationSet.test.js',
 				've.BranchNode.test.js',
 				've.LeafNode.test.js',
 				've.Factory.test.js',
