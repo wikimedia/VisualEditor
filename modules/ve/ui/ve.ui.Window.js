@@ -14,6 +14,7 @@
  *
  * @constructor
  * @param {ve.Surface} surface
+ * @emits initialize
  */
 ve.ui.Window = function VeUiWindow( surface ) {
 	// Inheritance
@@ -51,16 +52,23 @@ ve.inheritClass( ve.ui.Window, ve.EventEmitter );
 /* Events */
 
 /**
+ * @event initialize
+ */
+
+/**
  * @event setup
+ * @param {ve.ui.Window} win Window that's been setup
  */
 
 /**
  * @event open
+ * @param {ve.ui.Window} win Window that's been opened
  */
 
 /**
  * @event close
- * @param {Boolean} accept Changes have been accepted
+ * @param {ve.ui.Window} win Window that's been closed
+ * @param {boolean} accept Changes have been accepted
  */
 
 /* Static Properties */
@@ -257,6 +265,7 @@ ve.ui.Window.prototype.open = function () {
  * loop.
  *
  * @method
+ * @param {boolean} accept Changes have been accepted
  * @emits close
  */
 ve.ui.Window.prototype.close = function ( remove ) {

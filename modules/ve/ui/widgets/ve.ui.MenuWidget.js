@@ -92,6 +92,7 @@ ve.ui.MenuWidget.prototype.onMouseDown = function () {
  * @method
  * @private
  * @param {ve.ui.MenuItemWidget} item Selected item
+ * @emits select
  */
 ve.ui.MenuWidget.prototype.onItemSelect = function ( item ) {
 	var hash;

@@ -26,11 +26,12 @@ ve.Node = function VeNode() {
 
 /**
  * @event attach
- * @param parent
+ * @param {ve.Node} parent
  */
 
 /**
  * @event detach
+ * @param {ve.Node} parent
  */
 
 /* Inheritance */

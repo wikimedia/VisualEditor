@@ -41,6 +41,12 @@ ve.ce.Node = function VeCeNode( model, $element ) {
 
 ve.inheritClass( ve.ce.Node, ve.Node );
 
+/* Events */
+
+/**
+ * @event live
+ */
+
 /* Static Members */
 
 /**
@@ -309,6 +315,7 @@ ve.ce.Node.prototype.isLive = function () {
  *
  * @method
  * @param {boolean} live The node has been attached to the live DOM (use false on detach)
+ * @emits live
  */
 ve.ce.Node.prototype.setLive = function ( live ) {
 	this.live = live;

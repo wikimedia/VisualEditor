@@ -38,6 +38,17 @@ ve.ui.Toolbar = function VeUiToolbar( $container, surface, config ) {
 
 ve.inheritClass( ve.ui.Toolbar, ve.EventEmitter );
 
+/* Events */
+
+/**
+ * @event updateState
+ * @see ve.dm.SurfaceFragment#getAnnotations
+ * @param {ve.dm.Node[]} nodes List of nodes covered by the current selection
+ * @param {ve.AnnotationSet} full Annotations that cover all of the current selection
+ * @param {ve.AnnotationSet} partial Annotations that cover some or all of the current selection
+ */
+
+
 /* Methods */
 
 /**
@@ -54,8 +65,7 @@ ve.ui.Toolbar.prototype.getSurface = function () {
  * Handle context changes on the surface.
  *
  * @method
- * @emits "updateState" (nodes, full, partial)
- * @emits "clearState"
+ * @emits updateState
  */
 ve.ui.Toolbar.prototype.onContextChange = function () {
 	var i, len, leafNodes,

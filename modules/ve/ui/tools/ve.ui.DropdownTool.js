@@ -131,15 +131,6 @@ ve.ui.DropdownTool.prototype.onSelect = function () {
 };
 
 /**
- * Handle toolbar state being cleared.
- *
- * @method
- */
-ve.ui.DropdownTool.prototype.onClearState = function () {
-	this.setLabel();
-};
-
-/**
  * Set the label.
  *
  * If the label value is empty, undefined or only contains whitespace an empty label will be used.

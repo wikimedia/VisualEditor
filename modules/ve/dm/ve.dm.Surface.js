@@ -33,6 +33,41 @@ ve.dm.Surface = function VeDmSurface( doc ) {
 
 ve.inheritClass( ve.dm.Surface, ve.EventEmitter );
 
+/* Events */
+
+/**
+ * @event lock
+ */
+
+/**
+ * @event unlock
+ */
+
+/**
+ * @event select
+ * @param {ve.ui.MenuItemWidget} item Menu item
+ */
+
+/**
+ * @event transact
+ * @param {ve.dm.Transaction[]} transactions Transactions that have just been processed
+ */
+
+/**
+ * @event contextChange
+ */
+
+/**
+ * @event change
+ * @see #method-change
+ * @param {ve.dm.Transaction|null} transaction
+ * @param {ve.Range|undefined} selection
+ */
+
+/**
+ * @event history
+ */
+
 /* Methods */
 
 /**
@@ -123,7 +158,7 @@ ve.dm.Surface.prototype.getInsertionAnnotations = function () {
  *
  * @method
  * @param {ve.AnnotationSet|null} Insertion anotations to use or null to disable them
- * @emits 'contextChange'
+ * @emits contextChange
  */
 ve.dm.Surface.prototype.setInsertionAnnotations = function ( annotations ) {
 	if ( !this.enabled ) {
@@ -138,7 +173,7 @@ ve.dm.Surface.prototype.setInsertionAnnotations = function ( annotations ) {
  *
  * @method
  * @param {ve.AnnotationSet} Insertion anotation to add
- * @emits 'contextChange'
+ * @emits contextChange
  */
 ve.dm.Surface.prototype.addInsertionAnnotation = function ( annotation ) {
 	if ( !this.enabled ) {
@@ -153,7 +188,7 @@ ve.dm.Surface.prototype.addInsertionAnnotation = function ( annotation ) {
  *
  * @method
  * @param {ve.AnnotationSet} Insertion anotation to remove
- * @emits 'contextChange'
+ * @emits contextChange
  */
 ve.dm.Surface.prototype.removeInsertionAnnotation = function ( annotation ) {
 	if ( !this.enabled ) {
@@ -221,6 +256,12 @@ ve.dm.Surface.prototype.getFragment = function ( range, noAutoSelect ) {
  * @param {ve.dm.Transaction|ve.dm.Transaction[]|null} transactions One or more transactions to
  *     process, or null to process none
  * @param {ve.Range|undefined} selection
+ * @emits lock
+ * @emits select
+ * @emits transact
+ * @emits contextChange
+ * @emits change
+ * @emits unlock
  */
 ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 	if ( !this.enabled ) {
@@ -327,6 +368,7 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
  *
  * @method
  * @param {ve.Range} selection New selection range
+ * @emits history
  */
 ve.dm.Surface.prototype.breakpoint = function ( selection ) {
 	if ( !this.enabled ) {
@@ -346,7 +388,11 @@ ve.dm.Surface.prototype.breakpoint = function ( selection ) {
  * Step backwards in history.
  *
  * @method
+ * @see ve.dm.Document#rollback
  * @returns {ve.Range} Selection or null if no further state could be reached
+ * @emits lock
+ * @emits unlock
+ * @emits history
  */
 ve.dm.Surface.prototype.undo = function () {
 	if ( !this.enabled ) {
@@ -377,7 +423,11 @@ ve.dm.Surface.prototype.undo = function () {
  * Step forwards in history.
  *
  * @method
+ * @see ve.dm.Document#commit
  * @returns {ve.Range} Selection or null if no further state could be reached
+ * @emits lock
+ * @emits unlock
+ * @emits history
  */
 ve.dm.Surface.prototype.redo = function () {
 	if ( !this.enabled ) {

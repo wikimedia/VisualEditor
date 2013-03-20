@@ -17,6 +17,15 @@ ve.EventEmitter = function VeEventEmitter() {
 	this.events = {};
 };
 
+/* Events */
+
+/**
+ * @event newListener
+ * @see #addListener
+ * @param {string} type Name of the event
+ * @param {Function} listener Callback to invoke when event occurs
+ */
+
 /* Methods */
 
 /**
@@ -51,6 +60,7 @@ ve.EventEmitter.prototype.emit = function ( type ) {
  * @param {string} type Type of event to listen to
  * @param {Function} listener Listener to call when event occurs
  * @chainable
+ * @emits newListener
  * @throws {Error} Listener argument is not a function
  */
 ve.EventEmitter.prototype.addListener = function ( type, listener ) {

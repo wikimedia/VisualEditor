@@ -58,6 +58,7 @@ ve.inheritClass( ve.ui.WindowSet, ve.EventEmitter );
  *
  * @method
  * @param {ve.ui.Window} win Window that's been setup
+ * @emits setup
  */
 ve.ui.WindowSet.prototype.onWindowSetup = function ( win ) {
 	this.emit( 'setup', win );
@@ -68,6 +69,7 @@ ve.ui.WindowSet.prototype.onWindowSetup = function ( win ) {
  *
  * @method
  * @param {ve.ui.Window} win Window that's been opened
+ * @emits open
  */
 ve.ui.WindowSet.prototype.onWindowOpen = function ( win ) {
 	this.currentWindow = win;
@@ -80,6 +82,7 @@ ve.ui.WindowSet.prototype.onWindowOpen = function ( win ) {
  * @method
  * @param {ve.ui.Window} win Window that's been opened
  * @param {boolean} accept Changes have been accepted
+ * @emits close
  */
 ve.ui.WindowSet.prototype.onWindowClose = function ( win, accept ) {
 	this.currentWindow = null;

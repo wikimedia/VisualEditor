@@ -24,6 +24,14 @@ ve.Registry = function VeRegistry() {
 
 ve.inheritClass( ve.Registry, ve.EventEmitter );
 
+/* Events */
+
+/**
+ * @event register
+ * @param {string} name
+ * @param {Mixed} data
+ */
+
 /* Methods */
 
 /**
@@ -32,6 +40,7 @@ ve.inheritClass( ve.Registry, ve.EventEmitter );
  * @method
  * @param {string|string[]} name Symbolic name or list of symbolic names
  * @param {Mixed} data Data to associate with symbolic name
+ * @emits register
  * @throws {Error} Name argument must be a string or array
  */
 ve.Registry.prototype.register = function ( name, data ) {

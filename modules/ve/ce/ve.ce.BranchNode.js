@@ -42,17 +42,19 @@ ve.ce.BranchNode = function VeCeBranchNode( model, $element ) {
 	this.onSplice.apply( this, [0, 0].concat( model.getChildren() ) );
 };
 
-/**
- * @event rewrap
- * @param {jQuery} $old
- * @param {jQuery} $new
- */
-
 /* Inheritance */
 
 ve.inheritClass( ve.ce.BranchNode, ve.ce.Node );
 
 ve.mixinClass( ve.ce.BranchNode, ve.BranchNode );
+
+/* Events */
+
+/**
+ * @event rewrap
+ * @param {jQuery} $old
+ * @param {jQuery} $new
+ */
 
 /* Static Properties */
 
@@ -285,6 +287,7 @@ ve.ce.BranchNode.prototype.getSlugAtOffset = function ( offset ) {
  *
  * @method
  * @param {boolean} live New live state
+ * @emits live
  */
 ve.ce.BranchNode.prototype.setLive = function ( live ) {
 	this.live = live;

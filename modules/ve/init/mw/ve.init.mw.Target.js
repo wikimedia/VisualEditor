@@ -52,22 +52,49 @@ ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revision ) {
 
 /**
  * @event load
+ * @param {HTMLDocument} dom
+ */
+
+/**
+ * @event editConflict
  */
 
 /**
  * @event save
+ * @param {string} html
+ */
+
+/**
+ * @event showChanges
+ * @param {string} diff
  */
 
 /**
  * @event loadError
+ * @param {jqXHR|null} jqXHR
+ * @param {string} status Text status message
+ * @param {Mixed|null} error HTTP status text
  */
 
 /**
  * @event saveError
+ * @param {jqXHR|null} jqXHR
+ * @param {string} status Text status message
+ * @param {Mixed|null} error HTTP status text
  */
 
 /**
  * @event showChangesError
+ * @param {jqXHR|null} jqXHR
+ * @param {string} status Text status message
+ * @param {Mixed|null} error HTTP status text
+ */
+
+/**
+ * @event serializeError
+ * @param {jqXHR|null} jqXHR
+ * @param {string} status Text status message
+ * @param {Mixed|null} error HTTP status text
  */
 
 /* Inheritance */
@@ -87,7 +114,7 @@ ve.inheritClass( ve.init.mw.Target, ve.init.Target );
  * @method
  * @param {Object} response XHR Response object
  * @param {string} status Text status message
- * @emits loadError (null, message, null)
+ * @emits loadError
  */
 ve.init.mw.Target.onLoad = function ( response ) {
 	var key, tmp, el, html,
@@ -162,7 +189,7 @@ ve.init.mw.Target.onLoad = function ( response ) {
  *
  * @static
  * @method
- * @emits load (dom)
+ * @emits load
  */
 ve.init.mw.Target.onReady = function () {
 	this.loading = false;
@@ -181,7 +208,7 @@ ve.init.mw.Target.onReady = function () {
  * @param {Object} jqXHR
  * @param {string} status Text status message
  * @param {Mixed} error HTTP status text
- * @emits loadError (jqXHR, status, error)
+ * @emits loadError
  */
 ve.init.mw.Target.onLoadError = function ( jqXHR, status, error ) {
 	this.loading = false;
@@ -197,8 +224,8 @@ ve.init.mw.Target.onLoadError = function ( jqXHR, status, error ) {
  * @method
  * @param {Object} response Response data
  * @param {string} status Text status message
- * @emits save (html)
- * @emits saveError (null, message, null)
+ * @emits editConflict
+ * @emits save
  */
 ve.init.mw.Target.onSave = function ( response ) {
 	this.saving = false;
@@ -233,7 +260,7 @@ ve.init.mw.Target.onSave = function ( response ) {
  * @param {Object} jqXHR
  * @param {string} status Text status message
  * @param {Mixed} error HTTP status text
- * @emits saveError (jqXHR, status, error)
+ * @emits saveError
  */
 ve.init.mw.Target.onSaveError = function ( jqXHR, status, error ) {
 	this.saving = false;
@@ -246,10 +273,9 @@ ve.init.mw.Target.onSaveError = function ( jqXHR, status, error ) {
  *
  * @static
  * @method
- * @param {Object} response Response data
+ * @param {Object} response API response data
  * @param {string} status Text status message
- * @emits save (diffHtml)
- * @emits saveError (null, message, null)
+ * @emits showChanges
  */
 ve.init.mw.Target.onShowChanges = function ( response ) {
 	var data = response.visualeditor;
@@ -279,7 +305,7 @@ ve.init.mw.Target.onShowChanges = function ( response ) {
  * @param {Object} jqXHR
  * @param {string} status Text status message
  * @param {Mixed} error HTTP status text
- * @emits showChangesError (jqXHR, status, error)
+ * @emits showChangesError
  */
 ve.init.mw.Target.onShowChangesError = function ( jqXHR, status, error ) {
 	this.saving = false;
@@ -293,10 +319,8 @@ ve.init.mw.Target.onShowChangesError = function ( jqXHR, status, error ) {
  *
  * @static
  * @method
- * @param {Object} response XHR Response object
+ * @param {Object} data API response data
  * @param {string} status Text status message
- * @emits save (html)
- * @emits saveError (null, message, null)
  */
 ve.init.mw.Target.onSerialize = function ( response ) {
 	this.serializing = false;
@@ -324,14 +348,14 @@ ve.init.mw.Target.onSerialize = function ( response ) {
  *
  * @static
  * @method
- * @param {Object} data HTTP Response object
+ * @param {jqXHR|null} jqXHR
  * @param {string} status Text status message
- * @param {Mixed} error Thrown exception or HTTP error string
- * @emits saveError (response, status, error)
+ * @param {Mixed|null} error HTTP status text
+ * @emits serializeError
  */
-ve.init.mw.Target.onSerializeError = function ( response, status, error ) {
+ve.init.mw.Target.onSerializeError = function ( jqXHR, status, error ) {
 	this.serializing = false;
-	this.emit( 'serializeError', response, status, error );
+	this.emit( 'serializeError', jqXHR, status, error );
 };
 
 /* Methods */
@@ -428,7 +452,7 @@ ve.init.mw.Target.prototype.save = function ( doc, options ) {
  * Post DOM data to the Parsoid API to retreive wikitext diff.
  *
  * @method
- * @param {HTMLDocument} doc Document to compare against (via wikitext).
+ * @param {HTMLDocument} doc Document to compare against (via wikitext)
 */
 ve.init.mw.Target.prototype.showChanges = function ( doc ) {
 	$.ajax( {

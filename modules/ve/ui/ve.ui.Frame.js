@@ -45,6 +45,9 @@ ve.inheritClass( ve.ui.Frame, ve.EventEmitter );
 
 /* Methods */
 
+/**
+ * @emits initialize
+ */
 ve.ui.Frame.prototype.onLoad = function () {
 	var i, len, doc, $head,
 		promises = [],
@@ -79,7 +82,7 @@ ve.ui.Frame.prototype.onLoad = function () {
 };
 
 /**
- *
+ * @param {Function} callback
  */
 ve.ui.Frame.prototype.run = function ( callback ) {
 	if ( this.initialized ) {

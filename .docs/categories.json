@@ -154,7 +154,7 @@
 		"groups": [
 			{
 				"name": "jQuery",
-				"classes": ["jQuery", "jQuery.Event", "QUnit"]
+				"classes": ["jQuery", "jQuery.Event", "jQuery.Promise", "jQuery.Deferred", "jQuery.jqXHR", "QUnit"]
 			},
 			{
 				"name": "JavaScript",
