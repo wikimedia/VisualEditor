@@ -59,7 +59,10 @@ here, for consistency. See [JSDuck/Tags](https://github.com/senchalabs/jsduck/wi
 * @source Text
 * @context {Type} Optional text.
 * @param {Type} name Optional text.
+* @emits name
 * @returns {Type} Optional text.
+* @chainable
+* @throws {Type}
 
 ### Types
 

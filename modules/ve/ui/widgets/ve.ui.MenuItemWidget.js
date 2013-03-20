@@ -178,6 +178,7 @@ ve.ui.MenuItemWidget.prototype.isSelected = function () {
  *
  * @method
  * @param {boolean} [state=false] Highlight item
+ * @emits highlight
  * @chainable
  */
 ve.ui.MenuItemWidget.prototype.setHighlighted = function ( state ) {
@@ -197,6 +198,7 @@ ve.ui.MenuItemWidget.prototype.setHighlighted = function ( state ) {
  * @method
  * @param {boolean} [state=false] Select item
  * @param {boolean} [silent=false] Update UI only, do not emit select event
+ * @emits select
  * @chainable
  */
 ve.ui.MenuItemWidget.prototype.setSelected = function ( state, silent ) {
@@ -216,7 +218,7 @@ ve.ui.MenuItemWidget.prototype.setSelected = function ( state, silent ) {
  * Make the item flash.
  *
  * @method
- * @param {Function} [done] Callback to execute when flash effect is complete.
+ * @param {Function} [done] Callback to execute when flash effect is complete
  */
 ve.ui.MenuItemWidget.prototype.flash = function ( done ) {
 	var $this = this.$;

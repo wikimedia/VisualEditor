@@ -33,6 +33,34 @@ ve.ce.SurfaceObserver = function VeCeSurfaceObserver( documentView ) {
 
 ve.inheritClass( ve.ce.SurfaceObserver, ve.EventEmitter );
 
+/* Events */
+
+/**
+ * When #poll sees a change this event is emitted (before the
+ * properties are updated).
+ *
+ * @event contentChange
+ * @param {HTMLElement} node DOM node the change occured in
+ * @param {Object} previous Old data
+ * @param {Object} previous.text Old plain text content
+ * @param {Object} previous.hash Old DOM hash
+ * @param {ve.Range} previous.range Old selection
+ * @param {Object} next New data
+ * @param {Object} next.text New plain text content
+ * @param {Object} next.hash New DOM hash
+ * @param {ve.Range} next.range New selection
+ */
+
+/**
+ * When #poll observes a change in the document and the new
+ * selection does not equal as the last known selection, this event
+ * is emitted (before the properties are updated).
+ *
+ * @event selectionChange
+ * @param {ve.Range} oldRange
+ * @param {ve.Range} newRange
+ */
+
 /* Methods */
 
 /**
@@ -85,12 +113,14 @@ ve.ce.SurfaceObserver.prototype.stop = function ( poll ) {
 /**
  * Poll for changes.
  *
- * If {async} is false or undefined then polling will occcur asynchronously.
+ * If `async` is false or undefined then polling will occcur asynchronously.
  *
  * TODO: fixing selection in certain cases, handling selection across multiple nodes in Firefox
  *
  * @method
  * @param {boolean} async Poll asynchronously
+ * @emits contentChange
+ * @emits selectionChange
  */
 ve.ce.SurfaceObserver.prototype.poll = function ( async ) {
 	var delayPoll, $branch, node, text, hash, range, rangyRange;

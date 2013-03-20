@@ -70,6 +70,16 @@ ve.ce.Surface = function VeCeSurface( $container, model, surface ) {
 
 ve.inheritClass( ve.ce.Surface, ve.EventEmitter );
 
+/* Events */
+
+/**
+ * @event selectionStart
+ */
+
+/**
+ * @event selectionEnd
+ */
+
 /* Static Properties */
 
 /**
@@ -202,6 +212,7 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
  *
  * @method
  * @param {jQuery.Event} e Mouse up event
+ * @emits selectionEnd
  */
 ve.ce.Surface.prototype.onDocumentMouseUp = function ( e ) {
 	this.surfaceObserver.start();
@@ -217,6 +228,7 @@ ve.ce.Surface.prototype.onDocumentMouseUp = function ( e ) {
  *
  * @method
  * @param {jQuery.Event} e Mouse move event
+ * @emits selectionStart
  */
 ve.ce.Surface.prototype.onDocumentMouseMove = function () {
 	// Detect beginning of selection by moving mouse while dragging
@@ -243,6 +255,7 @@ ve.ce.Surface.prototype.onDocumentDragoverDrop = function () {
  *
  * @method
  * @param {jQuery.Event} e Key down event
+ * @emits selectionStart
  */
 ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 	if ( this.inIme === true ) {
@@ -317,6 +330,7 @@ ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
  *
  * @method
  * @param {jQuery.Event} e Key up event
+ * @emits selectionEnd
  */
 ve.ce.Surface.prototype.onDocumentKeyUp = function ( e ) {
 	// Detect end of selecting by letting go of shift
@@ -477,7 +491,7 @@ ve.ce.Surface.prototype.onDocumentCompositionEnd = function () {
 /**
  * Handle change events.
  *
- * @see ve.dm.Surface#change
+ * @see ve.dm.Surface#method-change
  *
  * @method
  * @param {ve.dm.Transaction|null} transaction
@@ -514,11 +528,11 @@ ve.ce.Surface.prototype.onSelectionChange = function ( oldRange, newRange ) {
  * @param {Object} previous Old data
  * @param {Object} previous.text Old plain text content
  * @param {Object} previous.hash Old DOM hash
- * @param {Object} previous.range Old selection
+ * @param {ve.Range} previous.range Old selection
  * @param {Object} next New data
  * @param {Object} next.text New plain text content
  * @param {Object} next.hash New DOM hash
- * @param {Object} next.range New selection
+ * @param {ve.Range} next.range New selection
  */
 ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 	var data, range, len, annotations, offsetDiff, lengthDiff, sameLeadingAndTrailing,
@@ -1250,8 +1264,8 @@ ve.ce.Surface.isShortcutKey = function ( e ) {
  * This is required for supporting double, tripple, etc. clicking across all browsers.
  *
  * @method
- * @param {Event} e Native event object.
- * @returns {number} Number of clicks detected.
+ * @param {Event} e Native event object
+ * @returns {number} Number of clicks detected
  */
 ve.ce.Surface.prototype.getClickCount = function ( e ) {
 	if ( !$.browser.msie ) {

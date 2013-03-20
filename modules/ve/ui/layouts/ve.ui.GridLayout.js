@@ -76,6 +76,7 @@ ve.ui.GridLayout.static.tagName = 'div';
  * @param {number[]} widths Widths of columns as ratios
  * @param {number[]} heights Heights of rows as ratios
  * @throws {Error} If grid is not large enough to fit all panels
+ * @emits layout
  */
 ve.ui.GridLayout.prototype.layout = function ( widths, heights ) {
 	var x, y,
@@ -114,6 +115,7 @@ ve.ui.GridLayout.prototype.layout = function ( widths, heights ) {
  * Update panel positions and sizes.
  *
  * @method
+ * @emits update
  */
 ve.ui.GridLayout.prototype.update = function () {
 	var x, y, panel,

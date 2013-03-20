@@ -57,6 +57,7 @@ ve.ui.ButtonWidget.static.tagName = 'div';
  *
  * @method
  * @param {jQuery.Event} e Mouse click event
+ * @emits click
  */
 ve.ui.ButtonWidget.prototype.onClick = function () {
 	if ( !this.disabled ) {

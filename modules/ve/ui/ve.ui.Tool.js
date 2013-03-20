@@ -25,7 +25,7 @@ ve.ui.Tool = function VeUiTool( toolbar, config ) {
 
 	// Events
 	this.toolbar.addListenerMethods(
-		this, { 'updateState': 'onUpdateState', 'clearState': 'onClearState' }
+		this, { 'updateState': 'onUpdateState' }
 	);
 	ve.triggerRegistry.addListenerMethods(
 		this, { 'register': 'onTriggerRegistryRegister' }
@@ -101,20 +101,6 @@ ve.ui.Tool.prototype.onTriggerRegistryRegister = function ( name ) {
 ve.ui.Tool.prototype.onUpdateState = function () {
 	throw new Error(
 		've.ui.Tool.onUpdateState not implemented in this subclass:' + this.constructor
-	);
-};
-
-/**
- * Handle the toolbar state being cleared.
- *
- * This is an abstract method that must be overridden in a concrete subclass.
- *
- * @abstract
- * @method
- */
-ve.ui.Tool.prototype.onClearState = function () {
-	throw new Error(
-		've.ui.Tool.onClearState not implemented in this subclass:' + this.constructor
 	);
 };
 

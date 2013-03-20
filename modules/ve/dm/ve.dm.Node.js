@@ -466,7 +466,7 @@ ve.dm.Node.prototype.setLength = function ( length ) {
  * @method
  * @param {number} adjustment Amount to adjust length by
  * @throws {Error} Invalid adjustment error if resulting length is less than 0
- * @emits lengthChange (diff)
+ * @emits lengthChange
  * @emits update
  */
 ve.dm.Node.prototype.adjustLength = function ( adjustment ) {

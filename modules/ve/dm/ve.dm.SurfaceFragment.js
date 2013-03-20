@@ -56,7 +56,7 @@ ve.dm.SurfaceFragment.static = {};
 /**
  * Handle transactions being processed on the document.
  *
- * This keeps the range of the fragment valid, even while other transactions are being processed.
+ * This keeps the range of the fragment valid, even while other transactions are being processed
  *
  * @method
  * @param {ve.dm.Transaction[]} txs Transactions that have just been processed
@@ -341,7 +341,7 @@ ve.dm.SurfaceFragment.prototype.getAnnotations = function ( all ) {
 /**
  * Get all leaf nodes covered by the fragment.
  *
- * @see ve.Document#selectNodes Used to get the return value.
+ * @see ve.Document#selectNodes Used to get the return value
  *
  * @method
  * @returns {Array} List of nodes and related information
@@ -361,7 +361,7 @@ ve.dm.SurfaceFragment.prototype.getLeafNodes = function () {
  * similar to that of {ve.dm.SurfaceFragment.prototype.getLeafNodes} except that if a node is
  * entirely covered, its children aren't returned separately.
  *
- * @see ve.Document#selectNodes for more information about the return value.
+ * @see ve.Document#selectNodes for more information about the return value
  *
  * @method
  * @returns {Array} List of nodes and related information

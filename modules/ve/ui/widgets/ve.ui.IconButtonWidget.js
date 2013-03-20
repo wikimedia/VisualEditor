@@ -54,6 +54,7 @@ ve.ui.IconButtonWidget.static.tagName = 'a';
  *
  * @method
  * @param {jQuery.Event} e Mouse click event
+ * @emits click
  */
 ve.ui.IconButtonWidget.prototype.onClick = function () {
 	if ( !this.disabled ) {

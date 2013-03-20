@@ -112,15 +112,6 @@ ve.ui.ButtonTool.prototype.onClick = function () {
 };
 
 /**
- * Handle the toolbar state being cleared.
- *
- * @method
- */
-ve.ui.ButtonTool.prototype.onClearState = function () {
-	this.setActive( false );
-};
-
-/**
  * Check if the button is active.
  *
  * @method
