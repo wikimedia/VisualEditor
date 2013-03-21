@@ -53,3 +53,85 @@ ve.ce.Document.prototype.getSlugAtOffset = function ( offset ) {
 	var node = this.getNodeFromOffset( offset );
 	return node ? node.getSlugAtOffset( offset ) : null;
 };
+
+/**
+ * Configuration for getSiblingWordBoundary method.
+ */
+ve.ce.Document.static.siblingWordBoundaryConfig = {
+	'default' : {
+		'left' : {
+			'boundary' : { 'text' : true, 'space' : true },
+			'space' : { 'text' : true, 'boundary' : true }
+		},
+		'right' : {
+			'boundary' : { 'text' : true, 'space' : true },
+			'space' : { 'text' : true, 'boundary' : true }
+		}
+	},
+	'ie' : {
+		'left' : {
+			'space' : { 'text' : true, 'boundary' : true }
+		},
+		'right' : {
+			'text' : { 'space' : true },
+			'boundary' : { 'space' : true }
+		}
+	}
+};
+
+/**
+ * Get the nearest word boundary.
+ *
+ * @method
+ * @param {number} offset Offset to start from
+ * @param {number} [direction] Direction to prefer matching offset in, -1 for left and 1 for right
+ * @returns {number} Nearest word boundary
+ */
+ve.ce.Document.prototype.getSiblingWordBoundary = function ( offset, direction ) {
+	var config = ve.ce.Document.static.siblingWordBoundaryConfig,
+		pattern = ve.dm.SurfaceFragment.wordBoundaryPattern,
+		data = this.model.data,
+		i = direction > 0 ? offset : offset - 1,
+		inc = direction > 0 ? 1 : -1,
+		prevChar, nextChar, prevType, nextType;
+
+	config = $.browser.msie ? config.ie : config.default;
+	config = direction > 0 ? config.right : config.left;
+
+	if ( !data[i] || data[i].type !== undefined ) {
+		return -1;
+	} else {
+		prevChar = typeof data[i] === 'string' ? data[i] : data[i][0];
+		if ( !pattern.test( prevChar ) ) {
+			prevType = 'text';
+		} else if ( prevChar !== ' ' ) {
+			prevType = 'boundary';
+		} else {
+			prevType = 'space';
+		}
+		i = i + inc;
+		do {
+			if ( data[i].type !== undefined ) {
+				break;
+			} else {
+				nextChar = typeof data[i] === 'string' ? data[i] : data[i][0];
+				if ( !pattern.test( nextChar ) ) {
+					nextType = 'text';
+				} else if ( nextChar !== ' ' ) {
+					nextType = 'boundary';
+				} else {
+					nextType = 'space';
+				}
+				if ( prevType !== nextType ) {
+					if ( config[prevType] && nextType in config[prevType] ) {
+						prevType = nextType;
+						continue;
+					} else {
+						break;
+					}
+				}
+			}
+		} while ( data[i += inc] );
+		return i + ( inc > 0 ? 0 : 1 );
+	}
+};
