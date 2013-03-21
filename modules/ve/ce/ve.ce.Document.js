@@ -89,7 +89,7 @@ ve.ce.Document.static.siblingWordBoundaryConfig = {
  */
 ve.ce.Document.prototype.getSiblingWordBoundary = function ( offset, direction ) {
 	var config = ve.ce.Document.static.siblingWordBoundaryConfig,
-		pattern = ve.dm.SurfaceFragment.wordBoundaryPattern,
+		pattern = ve.dm.SurfaceFragment.static.wordBoundaryPattern,
 		data = this.model.data,
 		i = direction > 0 ? offset : offset - 1,
 		inc = direction > 0 ? 1 : -1,
