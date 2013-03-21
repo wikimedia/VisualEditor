@@ -163,6 +163,17 @@ ve.dm.MetaItem.static.storeHtmlAttributes = true;
 /* Methods */
 
 /**
+ * Remove this item from the document. Only works if the item is attached to a MetaList.
+ * @throws {Error} Cannot remove detached item
+ */
+ve.dm.MetaItem.prototype.remove = function () {
+	if ( !this.list ) {
+		throw new Error( 'Cannot remove detached item' );
+	}
+	this.list.removeMeta( this );
+};
+
+/**
  * Get the group this meta item belongs to.
  * @see ve.dm.MetaItem#static.group
  * @returns {string} Group
