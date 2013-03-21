@@ -1,5 +1,5 @@
 /*!
- * VisualEditor DataModel MWMetaItem class.
+ * VisualEditor DataModel MWAlienMetaItem class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
@@ -14,20 +14,20 @@
  * @constructor
  * @param {Object} element Reference to element in meta-linmod
  */
-ve.dm.MWMetaItem = function VeDmMWMetaItem( element ) {
+ve.dm.MWAlienMetaItem = function VeDmMWAlienMetaItem( element ) {
 	// Parent constructor
 	ve.dm.AlienMetaItem.call( this, element );
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.dm.MWMetaItem, ve.dm.AlienMetaItem );
+ve.inheritClass( ve.dm.MWAlienMetaItem, ve.dm.AlienMetaItem );
 
 /* Static Properties */
 
-ve.dm.MWMetaItem.static.name = 'MWmeta';
+ve.dm.MWAlienMetaItem.static.name = 'MWalienmeta';
 
-ve.dm.MWMetaItem.static.matchRdfaTypes = [ /^mw:/ ];
+ve.dm.MWAlienMetaItem.static.matchRdfaTypes = [ /^mw:/ ];
 
 // toDataElement inherited from AlienMetaItem, will return regular alienMeta elements but
 // that's fine. This class is only here so that <meta>/<link> tags with an mw: type are correctly
@@ -35,4 +35,4 @@ ve.dm.MWMetaItem.static.matchRdfaTypes = [ /^mw:/ ];
 
 /* Registration */
 
-ve.dm.modelRegistry.register( ve.dm.MWMetaItem );
+ve.dm.modelRegistry.register( ve.dm.MWAlienMetaItem );
