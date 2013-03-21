@@ -9,8 +9,7 @@
  * DataModel transaction processor.
  *
  * This class reads operations from a transaction and applies them one by one. It's not intended
- * to be used directly; use the static functions ve.dm.TransactionProcessor.commit() and .rollback()
- * instead.
+ * to be used directly; use the .commit() and .rollback() methods of ve.dm.Document.
  *
  * NOTE: Instances of this class are not recyclable: you can only call .process() on them once.
  *
@@ -41,40 +40,6 @@ ve.dm.TransactionProcessor = function VeDmTransactionProcessor( doc, transaction
 
 /* See ve.dm.TransactionProcessor.processors */
 ve.dm.TransactionProcessor.processors = {};
-
-/* Static methods */
-
-/**
- * Commit a transaction to a document.
- *
- * @static
- * @method
- * @param {ve.dm.Document} doc Document object to apply the transaction to
- * @param {ve.dm.Transaction} transaction Transaction to apply
- */
-ve.dm.TransactionProcessor.commit = function ( doc, transaction ) {
-	if ( transaction.hasBeenApplied() ) {
-		throw new Error( 'Cannot commit a transaction that has already been committed' );
-	}
-	new ve.dm.TransactionProcessor( doc, transaction, false ).process();
-};
-
-/**
- * Roll back a transaction.
- *
- * This applies the transaction to the document in reverse.
- *
- * @static
- * @method
- * @param {ve.dm.Document} doc Document object to apply the transaction to
- * @param {ve.dm.Transaction} transaction Transaction to apply
- */
-ve.dm.TransactionProcessor.rollback = function ( doc, transaction ) {
-	if ( !transaction.hasBeenApplied() ) {
-		throw new Error( 'Cannot roll back a transaction that has not been committed' );
-	}
-	new ve.dm.TransactionProcessor( doc, transaction, true ).process();
-};
 
 /* Methods */
 
@@ -144,8 +109,6 @@ ve.dm.TransactionProcessor.prototype.process = function () {
 	}
 	// Mark the transaction as committed or rolled back, as appropriate
 	this.transaction.toggleApplied();
-	// Emit an event on the document
-	this.document.emit( 'transact', this.transaction, this.reversed );
 };
 
 /**

@@ -285,7 +285,7 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 				this.bigStack = this.bigStack.slice( 0, this.bigStack.length - this.undoIndex );
 				this.undoIndex = 0;
 				this.smallStack.push( transactions[i] );
-				ve.dm.TransactionProcessor.commit( this.documentModel, transactions[i] );
+				this.documentModel.commit( transactions[i] );
 			}
 		}
 	}

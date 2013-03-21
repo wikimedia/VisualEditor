@@ -135,9 +135,9 @@ QUnit.test( 'onTransact', function ( assert ) {
 		}
 		doc = new ve.dm.Document( ve.copyArray( ve.dm.example.withMeta ) );
 		list = new ve.dm.MetaList( doc );
-		ve.dm.TransactionProcessor.commit( doc, tx );
+		doc.commit( tx );
 		assertItemsMatchMetadata( assert, doc.metadata, list, cases[i].msg, false );
-		ve.dm.TransactionProcessor.rollback( doc, tx );
+		doc.rollback( tx );
 		assertItemsMatchMetadata( assert, doc.metadata, list, cases[i].msg + ' (rollback)', false );
 	}
 } );

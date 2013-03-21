@@ -1533,3 +1533,33 @@ QUnit.test( 'getSlice', function ( assert ) {
 		);
 	}
 } );
+
+QUnit.test( 'protection against double application of transactions', 3, function ( assert ) {
+	var tx = new ve.dm.Transaction(),
+		testDocument = new ve.dm.Document( ve.dm.example.data );
+	tx.pushRetain( 1 );
+	tx.pushReplace( [], ['H', 'e', 'l', 'l', 'o' ] );
+	assert.throws(
+		function () {
+			testDocument.rollback( tx );
+		},
+		Error,
+		'exception thrown when trying to rollback an uncommitted transaction'
+	);
+	testDocument.commit( tx );
+	assert.throws(
+		function () {
+			testDocument.commit( tx );
+		},
+		Error,
+		'exception thrown when trying to commit an already-committed transaction'
+	);
+	testDocument.rollback( tx );
+	assert.throws(
+		function () {
+			testDocument.rollback( tx );
+		},
+		Error,
+		'exception thrown when trying to roll back a transaction that has already been rolled back'
+	);
+} );
