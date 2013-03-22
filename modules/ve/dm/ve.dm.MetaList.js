@@ -49,6 +49,20 @@ ve.dm.MetaList = function VeDmMetaList( surface ) {
 
 ve.inheritClass( ve.dm.MetaList, ve.EventEmitter );
 
+/* Events */
+
+/**
+ * @event insert
+ * @param {ve.dm.MetaItem} item Item that was inserted
+ */
+
+/**
+ * @event remove
+ * @param {ve.dm.MetaItem} item Item that was removed
+ * @param {Number} offset Linear model offset that the item was at
+ * @param {Number} index Index within that offset the item was at
+ */
+
 /* Methods */
 
 /**
@@ -60,9 +74,12 @@ ve.inheritClass( ve.dm.MetaList, ve.EventEmitter );
  * - translate offsets and recompute indices for metadata that has shifted
  * @param {ve.dm.Transaction} tx Transaction that was applied to the document
  * @param {boolean} reversed Whether the transaction was applied in reverse
+ * @emits insert
+ * @emits remove
  */
 ve.dm.MetaList.prototype.onTransact = function ( tx, reversed ) {
-	var i, j, ilen, jlen, ins, rm, item, offset = 0, index = 0, ops = tx.getOperations();
+	var i, j, ilen, jlen, ins, rm, item, offset = 0, index = 0, ops = tx.getOperations(),
+		insertedItems = [], removedItems = [];
 	// Look for replaceMetadata operations in the transaction and insert/remove items as appropriate
 	// This requires we also inspect retain, replace and replaceMetadata operations in order to
 	// track the offset and index. We track the pre-transaction offset, we need to do that in
@@ -86,11 +103,13 @@ ve.dm.MetaList.prototype.onTransact = function ( tx, reversed ) {
 				rm = reversed ? ops[i].insert : ops[i].remove;
 				for ( j = 0, jlen = rm.length; j < jlen; j++ ) {
 					this.deleteRemovedItem( offset, index + j );
+					removedItems.push( { 'item': item, 'offset': offset, 'index': index } );
 				}
 				for ( j = 0, jlen = ins.length; j < jlen; j++ ) {
 					item = ve.dm.metaItemFactory.createFromElement( ins[j] );
 					// offset and index are pre-transaction, but we'll fix them later
 					this.addInsertedItem( offset, index + j, item );
+					insertedItems.push( {'item': item } );
 				}
 				index += rm.length;
 				break;
@@ -110,6 +129,13 @@ ve.dm.MetaList.prototype.onTransact = function ( tx, reversed ) {
 		}
 		this.items[i].setIndex( index );
 		offset = this.items[i].getOffset();
+	}
+
+	for ( i = 0, ilen = insertedItems.length; i < ilen; i++ ) {
+		this.emit( 'insert', insertedItems[i].item );
+	}
+	for ( i = 0, ilen = removedItems.length; i < ilen; i++ ) {
+		this.emit( 'remove', removedItems[i].item, removedItems[i].offset, removedItems[i].index );
 	}
 };
 
@@ -228,6 +254,7 @@ ve.dm.MetaList.prototype.removeMeta = function ( item ) {
  * @param {number} offset Offset in the linear model of the new item
  * @param {number} index  Index of the new item in the metadata array at offset
  * @param {ve.dm.MetaItem} item Item object
+ * @emits insert
  */
 ve.dm.MetaList.prototype.addInsertedItem = function ( offset, index, item ) {
 	var group = item.getGroup(), at = this.findItem( offset, index, null, true );
@@ -239,6 +266,7 @@ ve.dm.MetaList.prototype.addInsertedItem = function ( offset, index, item ) {
 		this.groups[group] = [ item ];
 	}
 	item.attach( this, offset, index );
+	this.emit( 'insert', item );
 };
 
 /**
@@ -249,6 +277,7 @@ ve.dm.MetaList.prototype.addInsertedItem = function ( offset, index, item ) {
  *
  * @param {number} offset Offset in the linear model of the item
  * @param {number} index Index of the item in the metadata array at offset
+ * @emits remove
  */
 ve.dm.MetaList.prototype.deleteRemovedItem = function ( offset, index ) {
 	var item, group, at = this.findItem( offset, index );
@@ -262,6 +291,7 @@ ve.dm.MetaList.prototype.deleteRemovedItem = function ( offset, index ) {
 	if ( at !== null ) {
 		this.groups[group].splice( at, 1 );
 	}
+	this.emit( 'remove', item );
 	item.detach( this );
 };
 
