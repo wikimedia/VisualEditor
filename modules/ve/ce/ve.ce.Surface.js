@@ -258,33 +258,47 @@ ve.ce.Surface.prototype.onDocumentDragoverDrop = function () {
  * @emits selectionStart
  */
 ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
+	var selection, offset, range;
+	// Ignore keydowns while in IME mode but do not preventDefault them.
 	if ( this.inIme === true ) {
 		return;
 	}
-
-	if ( e.which === 229 && $.browser.msie === true ) {
+	if ( $.browser.msie === true && e.which === 229 ) {
 		this.inIme = true;
 		this.handleInsertion();
 		return;
 	}
-
-	// Detect start of selecting using shift+arrow keys
-	if ( !this.dragging && !this.selecting && e.shiftKey && e.keyCode >= 37 && e.keyCode <= 40 ) {
+	// Detect start of selecting using shift+arrow keys.
+	if ( !this.dragging && !this.selecting && e.shiftKey && ve.ce.isArrowKey( e.keyCode ) ) {
 		this.selecting = true;
 		this.emit( 'selectionStart' );
 	}
-
+	if ( ve.ce.isLeftOrRightArrowKey( e.keyCode ) ) {
+		// On Mac OS pressing Command (metaKey) + Left/Right is same as pressing Home/End.
+		// As we are not able to handle it programmatically (because we don't know at which
+		// offsets lines starts and ends) let it happen natively.
+		if ( e.metaKey ) {
+			return;
+		}
+		// Selection is going to be displayed programmatically so prevent default browser behaviour
+		e.preventDefault();
+		// Stop with final poll cycle so we have correct information in model
+		this.surfaceObserver.stop( true );
+		selection = this.model.getSelection();
+		offset = this.getDocument().getRelativeOffset(
+			selection.to,
+			e.keyCode === ve.Keys.DOM_VK_LEFT ? -1 : 1, // direction (left or right)
+			e.altKey === true || e.ctrlKey === true ? 'word' : 'character' // unit
+		);
+		if ( e.shiftKey === true  ) { // expanded range
+			range = new ve.Range( selection.from, offset );
+		} else { // collapsed range (just a cursor)
+			range = new ve.Range( offset );
+		}
+		this.model.change( null, range );
+		return;
+	}
 	switch ( e.keyCode ) {
-		case ve.Keys.DOM_VK_LEFT:
-			if ( this.adjustCursor( -1 ) ) {
-				e.preventDefault();
-			}
-			break;
-		case ve.Keys.DOM_VK_RIGHT:
-			if ( this.adjustCursor( 1 ) ) {
-				e.preventDefault();
-			}
-			break;
 		case ve.Keys.DOM_VK_RETURN:
 			e.preventDefault();
 			this.handleEnter( e );
@@ -513,6 +527,10 @@ ve.ce.Surface.prototype.onChange = function ( transaction, selection ) {
  * @param {ve.Range} newRange
  */
 ve.ce.Surface.prototype.onSelectionChange = function ( oldRange, newRange ) {
+	if ( oldRange && newRange.flip().equals( oldRange ) ) {
+		// Ignore when the newRange is just a flipped oldRange
+		return;
+	}
 	this.disableRendering();
 	this.model.change( null, newRange );
 	this.enableRendering();
