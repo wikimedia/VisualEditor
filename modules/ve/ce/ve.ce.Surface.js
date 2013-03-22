@@ -258,7 +258,7 @@ ve.ce.Surface.prototype.onDocumentDragoverDrop = function () {
  * @emits selectionStart
  */
 ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
-	var selection, offset, range;
+	var selection, offset, range, rangySelection, $fakeElement, rangyRange;
 	// Ignore keydowns while in IME mode but do not preventDefault them.
 	if ( this.inIme === true ) {
 		return;
@@ -296,6 +296,49 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 			range = new ve.Range( offset );
 		}
 		this.model.change( null, range );
+		this.surfaceObserver.start();
+		return;
+	}
+	if ( ve.ce.isUpOrDownArrowKey( e.keyCode ) ) {
+		if ( !$.browser.msie ) {
+			return;
+		}
+		this.surfaceObserver.stop( true );
+		selection = this.model.getSelection();
+		rangySelection = rangy.getSelection();
+		// Perform programatic handling only for selection that is expanded and backwards according
+		// to model data but not according to browser data.
+		if ( selection.getLength() !== 0 &&
+			selection.start !== selection.from &&
+			!rangySelection.isBackwards() ) {
+			if ( !this.hasSlugAtOffset( selection.to ) ) {
+				// create fake element
+				$fakeElement = $ ( '<span>' ).html( ' ' ).css( { 'width' : '0px', 'display' : 'none' } );
+				rangySelection.anchorNode.splitText( rangySelection.anchorOffset );
+				rangySelection.anchorNode.parentNode.insertBefore(
+					$fakeElement[0],
+					rangySelection.anchorNode.nextSibling
+				);
+				// select fake element
+				rangyRange = rangy.createRange();
+				rangyRange.selectNode( $fakeElement[0] );
+				rangySelection.setSingleRange( rangyRange );
+				setTimeout( ve.bind( function() {
+					$fakeElement.remove();
+					this.surfaceObserver.start();
+					this.surfaceObserver.stop( false );
+					if ( e.shiftKey === true  ) { // expanded range
+						range = new ve.Range( selection.from, this.model.getSelection().to );
+					} else { // collapsed range (just a cursor)
+						range = new ve.Range( this.model.getSelection().to );
+					}
+					this.model.change( null, range );
+					this.surfaceObserver.start();
+				}, this ), 0 );
+			}
+		} else {
+			this.surfaceObserver.start();
+		}
 		return;
 	}
 	switch ( e.keyCode ) {
