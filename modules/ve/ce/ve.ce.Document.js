@@ -99,7 +99,7 @@ ve.ce.Document.prototype.getSiblingWordBoundary = function ( offset, direction )
 	config = direction > 0 ? config.right : config.left;
 
 	if ( !data[i] || data[i].type !== undefined ) {
-		return -1;
+		return this.model.getRelativeContentOffset( offset, direction );
 	} else {
 		prevChar = typeof data[i] === 'string' ? data[i] : data[i][0];
 		if ( !pattern.test( prevChar ) ) {
@@ -133,5 +133,23 @@ ve.ce.Document.prototype.getSiblingWordBoundary = function ( offset, direction )
 			}
 		} while ( data[i += inc] );
 		return i + ( inc > 0 ? 0 : 1 );
+	}
+};
+
+/**
+ * Get the relative word or character boundary.
+ *
+ * @method
+ * @param {number} offset Offset to start from
+ * @param {number} [direction] Direction to prefer matching offset in, -1 for left and 1 for right
+ * @param {string} [unit] Unit [word|character]
+ * @returns {number} Relative offset
+ */
+ve.ce.Document.prototype.getRelativeOffset = function ( offset, direction, unit ) {
+	if ( unit === 'word' ) { // word
+		return this.getSiblingWordBoundary( offset, direction );
+	} else { // character
+		// TODO: add support for slugs
+		return this.model.getRelativeContentOffset( offset, direction );
 	}
 };
