@@ -211,7 +211,7 @@ ve.ce.getOffsetFromElementNode = function ( domNode, domOffset, addOuterLength )
 			if ( addOuterLength === true ) {
 				return nodeModel.getOffset() + nodeModel.getOuterLength();
 			} else {
-				return nodeModel.getOffset();
+				return nodeModel.getOffset() + (nodeModel.isWrapped() ? 1 : 0);
 			}
 		} else {
 			node = $domNode.contents().last()[0];
@@ -246,4 +246,16 @@ ve.ce.getOffsetOfSlug  = function ( $node ) {
 	} else {
 		throw new Error( 'Incorrect slug location' );
 	}
+};
+
+ve.ce.isLeftOrRightArrowKey = function ( keyCode ) {
+	return keyCode === ve.Keys.DOM_VK_LEFT || keyCode === ve.Keys.DOM_VK_RIGHT;
+};
+
+ve.ce.isUpOrDownArrowKey = function ( keyCode ) {
+	return keyCode === ve.Keys.DOM_VK_UP || keyCode === ve.Keys.DOM_VK_DOWN;
+};
+
+ve.ce.isArrowKey = function ( keyCode ) {
+	return ve.ce.isLeftOrRightArrowKey( keyCode ) || ve.ce.isUpOrDownArrowKey( keyCode );
 };
