@@ -266,8 +266,15 @@ ve.init.mw.ViewPageTarget.prototype.deactivate = function ( override ) {
 			this.restoreSkinTabs();
 			this.restoreSiteNotice();
 			this.hideSpinner();
-			this.tearDownToolbarButtons();
-			this.detachToolbarButtons();
+
+			if ( this.toolbarCancelButton ) {
+				// If deactivate is called before a successful load, then
+				// setupToolbarButtons has not been called yet and as such tearDownToolbarButtons
+				// would throw an error when trying call methods on the button property (bug 46456)
+				this.tearDownToolbarButtons();
+				this.detachToolbarButtons();
+			}
+
 			this.resetSaveDialog();
 			this.hideSaveDialog();
 			this.detachSaveDialog();
