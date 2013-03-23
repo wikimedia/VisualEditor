@@ -93,36 +93,25 @@ ve.ce.Document.prototype.getSiblingWordBoundary = function ( offset, direction )
 		data = this.model.data,
 		i = direction > 0 ? offset : offset - 1,
 		inc = direction > 0 ? 1 : -1,
-		prevChar, nextChar, prevType, nextType;
-
-	config = $.browser.msie ? config.ie : config.default;
-	config = direction > 0 ? config.right : config.left;
-
+		oneChar, prevType, nextType;
 	if ( !data[i] || data[i].type !== undefined ) {
 		return this.model.getRelativeContentOffset( offset, direction );
 	} else {
-		prevChar = typeof data[i] === 'string' ? data[i] : data[i][0];
-		if ( !pattern.test( prevChar ) ) {
-			prevType = 'text';
-		} else if ( prevChar !== ' ' ) {
-			prevType = 'boundary';
-		} else {
-			prevType = 'space';
-		}
-		i = i + inc;
+		config = $.browser.msie ? config.ie : config.default;
+		config = direction > 0 ? config.right : config.left;
 		do {
 			if ( data[i].type !== undefined ) {
 				break;
 			} else {
-				nextChar = typeof data[i] === 'string' ? data[i] : data[i][0];
-				if ( !pattern.test( nextChar ) ) {
-					nextType = 'text';
-				} else if ( nextChar !== ' ' ) {
+				oneChar = typeof data[i] === 'string' ? data[i] : data[i][0];
+				if ( oneChar === ' ' ) {
+					nextType = 'space';
+				} else if ( pattern.test( oneChar ) ) {
 					nextType = 'boundary';
 				} else {
-					nextType = 'space';
+					nextType = 'text';
 				}
-				if ( prevType !== nextType ) {
+				if ( prevType && prevType !== nextType ) {
 					if ( config[prevType] && nextType in config[prevType] ) {
 						prevType = nextType;
 						continue;
@@ -130,6 +119,7 @@ ve.ce.Document.prototype.getSiblingWordBoundary = function ( offset, direction )
 						break;
 					}
 				}
+				prevType = nextType;
 			}
 		} while ( data[i += inc] );
 		return i + ( inc > 0 ? 0 : 1 );
