@@ -263,7 +263,9 @@ $wgResourceModules += array(
 			've/dm/annotations/ve.dm.TextStyleAnnotation.js',
 
 			've/dm/metaitems/ve.dm.AlienMetaItem.js',
-			've/dm/metaitems/ve.dm.MWMetaItem.js',
+			've/dm/metaitems/ve.dm.MWAlienMetaItem.js',
+			've/dm/metaitems/ve.dm.MWCategoryMetaItem.js',
+			've/dm/metaitems/ve.dm.MWLanguageMetaItem.js',
 
 			// ce
 			've/ce/ve.ce.js',

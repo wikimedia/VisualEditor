@@ -312,16 +312,18 @@ ve.dm.example.withMeta = [
 	'o',
 	'o',
 	{
-		'type': 'alienMeta',
+		'type': 'MWcategory',
 		'attributes': {
-			'style': 'link',
-			'key': 'mw:WikiLink/Category',
-			'value': './Category:Bar',
-			'html/0/href': './Category:Bar',
-			'html/0/rel': 'mw:WikiLink/Category'
+			'hrefPrefix': './',
+			'category': 'Category:Bar',
+			'origCategory': 'Category:Bar',
+			'sortkey': '',
+			'origSortkey': '',
+			'html/0/rel': 'mw:WikiLink/Category',
+			'html/0/href': './Category:Bar'
 		}
 	},
-	{ 'type': '/alienMeta' },
+	{ 'type': '/MWcategory' },
 	'B',
 	'a',
 	'r',
@@ -368,16 +370,18 @@ ve.dm.example.withMeta = [
 	},
 	{ 'type': '/alienMeta' },
 	{
-		'type': 'alienMeta',
+		'type': 'MWcategory',
 		'attributes': {
-			'style': 'link',
-			'key': 'mw:WikiLink/Category',
-			'value': './Category:Foo#Bar baz%23quux',
-			'html/0/href': './Category:Foo#Bar baz%23quux',
+			'hrefPrefix': './',
+			'category': 'Category:Foo foo',
+			'origCategory': 'Category:Foo_foo',
+			'sortkey': 'Bar baz#quux',
+			'origSortkey': 'Bar baz%23quux',
+			'html/0/href': './Category:Foo_foo#Bar baz%23quux',
 			'html/0/rel': 'mw:WikiLink/Category'
 		}
 	},
-	{ 'type': '/alienMeta' },
+	{ 'type': '/MWcategory' },
 	{
 		'type': 'alienMeta',
 		'attributes': {
@@ -427,13 +431,15 @@ ve.dm.example.withMetaMetaData = [
 	undefined,
 	[
 		{
-			'type': 'alienMeta',
+			'type': 'MWcategory',
 			'attributes': {
-				'style': 'link',
-				'key': 'mw:WikiLink/Category',
-				'value': './Category:Bar',
-				'html/0/href': './Category:Bar',
-				'html/0/rel': 'mw:WikiLink/Category'
+				'hrefPrefix': './',
+				'category': 'Category:Bar',
+				'origCategory': 'Category:Bar',
+				'sortkey': '',
+				'origSortkey': '',
+				'html/0/rel': 'mw:WikiLink/Category',
+				'html/0/href': './Category:Bar'
 			}
 		}
 	],
@@ -481,12 +487,14 @@ ve.dm.example.withMetaMetaData = [
 			}
 		},
 		{
-			'type': 'alienMeta',
+			'type': 'MWcategory',
 			'attributes': {
-				'style': 'link',
-				'key': 'mw:WikiLink/Category',
-				'value': './Category:Foo#Bar baz%23quux',
-				'html/0/href': './Category:Foo#Bar baz%23quux',
+				'hrefPrefix': './',
+				'category': 'Category:Foo foo',
+				'origCategory': 'Category:Foo_foo',
+				'sortkey': 'Bar baz#quux',
+				'origSortkey': 'Bar baz%23quux',
+				'html/0/href': './Category:Foo_foo#Bar baz%23quux',
 				'html/0/rel': 'mw:WikiLink/Category'
 			}
 		},
@@ -1743,7 +1751,7 @@ ve.dm.example.domToDataCases = {
 			'<link rel="mw:WikiLink/Category" href="./Category:Bar" />Bar' +
 			'<meta property="mw:foo" content="bar" />Ba<!-- inline -->z</p>' +
 			'<meta property="mw:bar" content="baz" /><!--barbaz-->' +
-			'<link rel="mw:WikiLink/Category" href="./Category:Foo#Bar baz%23quux" />' +
+			'<link rel="mw:WikiLink/Category" href="./Category:Foo_foo#Bar baz%23quux" />' +
 			'<meta typeof="mw:Placeholder" data-parsoid="foobar" /></body>',
 		'data': ve.dm.example.withMeta
 	},
