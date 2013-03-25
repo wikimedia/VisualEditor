@@ -46,7 +46,7 @@ ve.dm.MetaItem.static.name = null;
  * Symbolic name for the group this meta item type will be grouped in in ve.dm.MetaList.
  *
  * @static
- * @property {String} [static.group='misc']
+ * @property {string} [static.group='misc']
  * @inheritable
  */
 ve.dm.MetaItem.static.group = 'misc';
