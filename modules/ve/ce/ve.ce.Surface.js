@@ -258,7 +258,6 @@ ve.ce.Surface.prototype.onDocumentDragoverDrop = function () {
  * @emits selectionStart
  */
 ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
-	var selection, offset, range, rangySelection, $fakeElement, rangyRange;
 	// Ignore keydowns while in IME mode but do not preventDefault them.
 	if ( this.inIme === true ) {
 		return;
@@ -268,101 +267,35 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 		this.handleInsertion();
 		return;
 	}
-	// Detect start of selecting using shift+arrow keys.
-	if ( !this.dragging && !this.selecting && e.shiftKey && ve.ce.isArrowKey( e.keyCode ) ) {
-		this.selecting = true;
-		this.emit( 'selectionStart' );
-	}
-	if ( ve.ce.isLeftOrRightArrowKey( e.keyCode ) ) {
-		// On Mac OS pressing Command (metaKey) + Left/Right is same as pressing Home/End.
-		// As we are not able to handle it programmatically (because we don't know at which
-		// offsets lines starts and ends) let it happen natively.
-		if ( e.metaKey ) {
-			return;
+	if ( ve.ce.isArrowKey( e.keyCode ) ) {
+		// Detect start of selecting using shift+arrow keys.
+		if ( !this.dragging && !this.selecting && e.shiftKey ) {
+			this.selecting = true;
+			this.emit( 'selectionStart' );
 		}
-		// Selection is going to be displayed programmatically so prevent default browser behaviour
-		e.preventDefault();
-		// Stop with final poll cycle so we have correct information in model
-		this.surfaceObserver.stop( true );
-		selection = this.model.getSelection();
-		offset = this.getDocument().getRelativeOffset(
-			selection.to,
-			e.keyCode === ve.Keys.DOM_VK_LEFT ? -1 : 1, // direction (left or right)
-			e.altKey === true || e.ctrlKey === true ? 'word' : 'character' // unit
-		);
-		if ( e.shiftKey === true  ) { // expanded range
-			range = new ve.Range( selection.from, offset );
-		} else { // collapsed range (just a cursor)
-			range = new ve.Range( offset );
-		}
-		this.model.change( null, range );
-		this.surfaceObserver.start();
-		return;
-	}
-	if ( ve.ce.isUpOrDownArrowKey( e.keyCode ) ) {
-		if ( !$.browser.msie ) {
-			return;
-		}
-		this.surfaceObserver.stop( true );
-		selection = this.model.getSelection();
-		rangySelection = rangy.getSelection();
-		// Perform programatic handling only for selection that is expanded and backwards according
-		// to model data but not according to browser data.
-		if ( selection.getLength() !== 0 &&
-			selection.start !== selection.from &&
-			!rangySelection.isBackwards() ) {
-			if ( !this.hasSlugAtOffset( selection.to ) ) {
-				// create fake element
-				$fakeElement = $ ( '<span>' ).html( ' ' ).css( { 'width' : '0px', 'display' : 'none' } );
-				rangySelection.anchorNode.splitText( rangySelection.anchorOffset );
-				rangySelection.anchorNode.parentNode.insertBefore(
-					$fakeElement[0],
-					rangySelection.anchorNode.nextSibling
-				);
-				// select fake element
-				rangyRange = rangy.createRange();
-				rangyRange.selectNode( $fakeElement[0] );
-				rangySelection.setSingleRange( rangyRange );
-				setTimeout( ve.bind( function() {
-					$fakeElement.remove();
-					this.surfaceObserver.start();
-					this.surfaceObserver.stop( false );
-					if ( e.shiftKey === true  ) { // expanded range
-						range = new ve.Range( selection.from, this.model.getSelection().to );
-					} else { // collapsed range (just a cursor)
-						range = new ve.Range( this.model.getSelection().to );
-					}
-					this.model.change( null, range );
-					this.surfaceObserver.start();
-				}, this ), 0 );
-			}
+		if ( ve.ce.isLeftOrRightArrowKey( e.keyCode ) ) {
+			this.handleLeftOrRightArrowKey( e );
 		} else {
-			this.surfaceObserver.start();
+			this.handleUpOrDownArrowKey( e );
 		}
-		return;
-	}
-	switch ( e.keyCode ) {
-		case ve.Keys.DOM_VK_RETURN:
+	} else if ( e.keyCode === ve.Keys.DOM_VK_RETURN ) {
+		e.preventDefault();
+		this.handleEnter( e );
+	} else if ( e.keyCode === ve.Keys.DOM_VK_BACK_SPACE ) {
+		this.handleDelete( e, true );
+		this.surfaceObserver.stop( true );
+		this.surfaceObserver.start();
+	} else if ( e.keyCode === ve.Keys.DOM_VK_DELETE ) {
+		this.handleDelete( e, false );
+		this.surfaceObserver.stop( true );
+		this.surfaceObserver.start();
+	} else {
+		// Execute key command if available
+		this.surfaceObserver.stop( true );
+		if ( this.surface.execute( new ve.Trigger( e ) ) ) {
 			e.preventDefault();
-			this.handleEnter( e );
-			break;
-		case ve.Keys.DOM_VK_BACK_SPACE:
-			this.handleDelete( e, true );
-			this.surfaceObserver.stop( true );
-			this.surfaceObserver.start();
-			break;
-		case ve.Keys.DOM_VK_DELETE:
-			this.handleDelete( e, false );
-			this.surfaceObserver.stop( true );
-			this.surfaceObserver.start();
-			break;
-		default:
-			// Execute key command if available
-			this.surfaceObserver.stop( true );
-			if ( this.surface.execute( new ve.Trigger( e ) ) ) {
-				e.preventDefault();
-			}
-			this.surfaceObserver.start();
+		}
+		this.surfaceObserver.start();
 	}
 };
 
@@ -733,6 +666,85 @@ ve.ce.Surface.prototype.onUnlock = function () {
 };
 
 /*! Utilities */
+
+/**
+ * @method
+ */
+ve.ce.Surface.prototype.handleLeftOrRightArrowKey = function ( e ) {
+	var selection, offset, range;
+	// On Mac OS pressing Command (metaKey) + Left/Right is same as pressing Home/End.
+	// As we are not able to handle it programmatically (because we don't know at which offsets
+	// lines starts and ends) let it happen natively.
+	if ( e.metaKey ) {
+		return;
+	}
+	// Selection is going to be displayed programmatically so prevent default browser behaviour
+	e.preventDefault();
+	// Stop with final poll cycle so we have correct information in model
+	this.surfaceObserver.stop( true );
+	selection = this.model.getSelection();
+	offset = this.getDocument().getRelativeOffset(
+		selection.to,
+		e.keyCode === ve.Keys.DOM_VK_LEFT ? -1 : 1, // direction (left or right)
+		e.altKey === true || e.ctrlKey === true ? 'word' : 'character' // unit
+	);
+	if ( e.shiftKey === true  ) { // expanded range
+		range = new ve.Range( selection.from, offset );
+	} else { // collapsed range (just a cursor)
+		range = new ve.Range( offset );
+	}
+	this.model.change( null, range );
+	this.surfaceObserver.start();
+};
+
+/**
+ * @method
+ */
+ve.ce.Surface.prototype.handleUpOrDownArrowKey = function ( e ) {
+	var selection, rangySelection, rangyRange, range, $fakeElement, $slug;
+	if ( !$.browser.msie ) {
+		return;
+	}
+	this.surfaceObserver.stop( true );
+	selection = this.model.getSelection();
+	rangySelection = rangy.getSelection();
+	// Perform programatic handling only for selection that is expanded and backwards according to
+	// model data but not according to browser data.
+	if ( !selection.isCollapsed() && selection.isBackwards() && !rangySelection.isBackwards() ) {
+		$slug = this.documentView.getSlugAtOffset( selection.to );
+		if ( $slug ) {
+			rangyRange = rangy.createRange();
+			rangyRange.selectNode( $slug[0] );
+			rangySelection.setSingleRange( rangyRange );
+		} else {
+			$fakeElement = $ ( '<span>' ).html( ' ' ).css( { 'width' : '0px', 'display' : 'none' } );
+			rangySelection.anchorNode.splitText( rangySelection.anchorOffset );
+			rangySelection.anchorNode.parentNode.insertBefore(
+				$fakeElement[0],
+				rangySelection.anchorNode.nextSibling
+			);
+			rangyRange = rangy.createRange();
+			rangyRange.selectNode( $fakeElement[0] );
+			rangySelection.setSingleRange( rangyRange );
+		}
+		setTimeout( ve.bind( function() {
+			if ( $fakeElement ) {
+				$fakeElement.remove();
+			}
+			this.surfaceObserver.start();
+			this.surfaceObserver.stop( false );
+			if ( e.shiftKey === true  ) { // expanded range
+				range = new ve.Range( selection.from, this.model.getSelection().to );
+			} else { // collapsed range (just a cursor)
+				range = new ve.Range( this.model.getSelection().to );
+			}
+			this.model.change( null, range );
+			this.surfaceObserver.start();
+		}, this ), 0 );
+	} else {
+		this.surfaceObserver.start();
+	}
+};
 
 /**
  * Handle insertion of content.
