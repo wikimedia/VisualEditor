@@ -389,10 +389,10 @@ ve.dm.Surface.prototype.breakpoint = function ( selection ) {
  *
  * @method
  * @see ve.dm.Document#rollback
- * @returns {ve.Range} Selection or null if no further state could be reached
  * @emits lock
  * @emits unlock
  * @emits history
+ * @returns {ve.Range} Selection or null if no further state could be reached
  */
 ve.dm.Surface.prototype.undo = function () {
 	if ( !this.enabled ) {
@@ -424,10 +424,10 @@ ve.dm.Surface.prototype.undo = function () {
  *
  * @method
  * @see ve.dm.Document#commit
- * @returns {ve.Range} Selection or null if no further state could be reached
  * @emits lock
  * @emits unlock
  * @emits history
+ * @returns {ve.Range} Selection or null if no further state could be reached
  */
 ve.dm.Surface.prototype.redo = function () {
 	if ( !this.enabled ) {

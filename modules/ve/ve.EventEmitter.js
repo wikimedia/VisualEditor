@@ -59,8 +59,8 @@ ve.EventEmitter.prototype.emit = function ( type ) {
  * @method
  * @param {string} type Type of event to listen to
  * @param {Function} listener Listener to call when event occurs
- * @chainable
  * @emits newListener
+ * @chainable
  * @throws {Error} Listener argument is not a function
  */
 ve.EventEmitter.prototype.addListener = function ( type, listener ) {
