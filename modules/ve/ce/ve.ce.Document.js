@@ -95,7 +95,7 @@ ve.ce.Document.prototype.getSiblingWordBoundary = function ( offset, direction )
 		inc = direction > 0 ? 1 : -1,
 		oneChar, prevType, nextType;
 	if ( !data[i] || data[i].type !== undefined ) {
-		return this.model.getRelativeContentOffset( offset, direction );
+		return this.getRelativeOffset( offset, direction, 'character' );
 	} else {
 		config = $.browser.msie ? config.ie : config.default;
 		config = direction > 0 ? config.right : config.left;
@@ -136,10 +136,26 @@ ve.ce.Document.prototype.getSiblingWordBoundary = function ( offset, direction )
  * @returns {number} Relative offset
  */
 ve.ce.Document.prototype.getRelativeOffset = function ( offset, direction, unit ) {
+	var bias, relativeContentOffset, relativeStructuralOffset;
 	if ( unit === 'word' ) { // word
 		return this.getSiblingWordBoundary( offset, direction );
 	} else { // character
-		// TODO: add support for slugs
-		return this.model.getRelativeContentOffset( offset, direction );
+		bias = direction > 0 ? 1 : -1;
+		relativeContentOffset = this.model.getRelativeContentOffset( offset, direction );
+		relativeStructuralOffset = this.model.getRelativeStructuralOffset( offset + bias, direction, true );
+		// Check if we've moved into a slug
+		if ( !!this.getSlugAtOffset( relativeStructuralOffset ) ) {
+			// Check if the relative content offset is in the opposite direction we are trying to go
+			if ( ( relativeContentOffset - offset < 0 ? -1 : 1 ) !== bias ) {
+				// There's nothing past the slug we are already in, stay in it
+				return relativeStructuralOffset;
+			}
+			// There's a slug neaby, go into it if it's closer
+			return direction > 0 ?
+				Math.min( relativeContentOffset, relativeStructuralOffset ) :
+				Math.max( relativeContentOffset, relativeStructuralOffset );
+		} else {
+			return relativeContentOffset;
+		}
 	}
 };

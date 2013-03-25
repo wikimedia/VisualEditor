@@ -1092,62 +1092,6 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 };
 
 /**
- * Adjust the cursor position in a given distance.
- *
- * This method only affects the selection target, preserving selections that are not collapsed and
- * the direction of the selection.
- *
- * @method
- * @param {number} adjustment Distance to adjust the cursor, can be positive or negative
- * @returns {boolean} Cursor was moved
- */
-ve.ce.Surface.prototype.adjustCursor = function ( adjustment ) {
-	// Bypass for zero-adjustment
-	if ( !adjustment ) {
-		return false;
-	}
-	var adjustedTargetOffset,
-		bias = adjustment > 0 ? 1 : -1,
-		selection = this.model.getSelection(),
-		targetOffset = selection.to,
-		documentModel = this.model.getDocument(),
-		relativeContentOffset = documentModel.getRelativeContentOffset( targetOffset, adjustment ),
-		relativeStructuralOffset = documentModel.getRelativeStructuralOffset(
-			targetOffset + bias, adjustment, true
-		);
-	// Check if we've moved into a slug
-	if ( this.hasSlugAtOffset( relativeStructuralOffset ) ) {
-		// Check if the relative content offset is in the opposite direction we are trying to go
-		if ( ( relativeContentOffset - targetOffset < 0 ? -1 : 1 ) !== bias ) {
-			// There's nothing past the slug we are already in, stay in it
-			adjustedTargetOffset = relativeStructuralOffset;
-		} else {
-			// There's a slug neaby, go into it if it's closer
-			adjustedTargetOffset = adjustment < 0 ?
-				Math.max( relativeContentOffset, relativeStructuralOffset ) :
-				Math.min( relativeContentOffset, relativeStructuralOffset );
-		}
-	}
-	// Check if we've moved a different distance than we asked for
-	else if ( relativeContentOffset !== targetOffset + adjustment ) {
-		// We can't trust the browser, move programatically
-		adjustedTargetOffset = relativeContentOffset;
-	}
-	// If the target changed, update the model
-	if ( adjustedTargetOffset ) {
-		this.model.change(
-			null,
-			new ve.Range(
-				selection.isCollapsed() ?
-					adjustedTargetOffset : selection.from, adjustedTargetOffset
-			)
-		);
-		return true;
-	}
-	return false;
-};
-
-/**
  * Show selection on a range.
  *
  * @method
