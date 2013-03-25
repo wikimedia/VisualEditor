@@ -97,8 +97,8 @@ ve.ui.InputWidget.prototype.getValue = function () {
  *
  * @method
  * @param {string} value New value
- * @chainable
  * @emits change
+ * @chainable
  */
 ve.ui.InputWidget.prototype.setValue = function ( value ) {
 	var domValue = this.$input.val();

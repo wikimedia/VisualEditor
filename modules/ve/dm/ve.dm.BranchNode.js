@@ -116,8 +116,8 @@ ve.dm.BranchNode.prototype.shift = function () {
  * @param {number} index Index to remove and or insert nodes at
  * @param {number} howmany Number of nodes to remove
  * @param {ve.dm.BranchNode...} [nodes] Variadic list of nodes to insert
- * @returns {ve.dm.BranchNode[]} Removed nodes
  * @emits splice
+ * @returns {ve.dm.BranchNode[]} Removed nodes
  */
 ve.dm.BranchNode.prototype.splice = function () {
 	var i,
