@@ -300,3 +300,39 @@
 .ve-ui-mwLinkTargetInputWidget-menu .ve-ui-menuItemWidget[rel=externalLink] {
 	color: #0645AD;
 }
+
+/* ve.ui.PopupWidget */
+
+.ve-ui-popupWidget-callout {
+	position: absolute;
+	/* @embed */
+	background-image: url(images/callout.svg);
+	background-repeat: no-repeat;
+	width: 15px;
+	height: 8px;
+	margin-left: -7px;
+	z-index: 4;
+}
+
+.ve-ui-popupWidget-body {
+	margin-top: 7px;
+	position: absolute;
+	overflow: hidden;
+	border: solid 1px #ccc;
+	border-radius: 0.25em;
+	background-color: #fff;
+	box-shadow: 0 0.15em 0.5em 0 rgba(0, 0, 0, 0.2);
+}
+
+.ve-ui-popupWidget-transitioning .ve-ui-popupWidget-body {
+	-webkit-transition: width 100ms, height 100ms, left 100ms;
+	-moz-transition: width 100ms, height 100ms, left 100ms;
+	-ms-transition: width 100ms, height 100ms, left 100ms;
+	-o-transition: width 100ms, height 100ms, left 100ms;
+	transition: width 100ms, height 100ms, left 100ms;
+	-webkit-transition-timing-function: ease-in-out;
+	-moz-transition-timing-function: ease-in-out;
+	-ms-transition-timing-function: ease-in-out;
+	-o-transition-timing-function: ease-in-out;
+	transition-timing-function: ease-in-out;
+}

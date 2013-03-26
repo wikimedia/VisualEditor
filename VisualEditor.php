@@ -324,6 +324,7 @@ $wgResourceModules += array(
 
 			've/ui/widgets/ve.ui.LabeledWidget.js',
 			've/ui/widgets/ve.ui.FlaggableWidget.js',
+			've/ui/widgets/ve.ui.PopupWidget.js',
 			've/ui/widgets/ve.ui.GroupWidget.js',
 			've/ui/widgets/ve.ui.SelectWidget.js',
 			've/ui/widgets/ve.ui.OptionWidget.js',

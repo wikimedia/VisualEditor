@@ -22,21 +22,15 @@ ve.ui.Context = function VeUiContext( surface ) {
 	this.selecting = false;
 	this.selection = null;
 	this.toolbar = null;
-	this.inspectors = new ve.ui.WindowSet( surface, ve.ui.inspectorFactory );
 	this.$ = $( '<div>' );
-	this.$callout = $( '<div>' );
-	this.$body = $( '<div>' );
+	this.popup = new ve.ui.PopupWidget();
 	this.$menu = $( '<div>' );
+	this.inspectors = new ve.ui.WindowSet( surface, ve.ui.inspectorFactory );
 
 	// Initialization
+	this.$.addClass( 've-ui-context' ).append( this.popup.$ );
 	this.inspectors.$.addClass( 've-ui-context-inspectors' );
-	this.$
-		.addClass( 've-ui-context' )
-		.append(
-			this.$callout.addClass( 've-ui-context-callout' ),
-			this.$body.addClass( 've-ui-context-body' )
-		);
-	this.$body.append(
+	this.popup.$body.append(
 		this.$menu.addClass( 've-ui-context-menu' ),
 		this.inspectors.$.addClass( 've-ui-context-inspectors' )
 	);
@@ -127,9 +121,7 @@ ve.ui.Context.prototype.onInspectorSetup = function () {
  */
 ve.ui.Context.prototype.onInspectorOpen = function () {
 	// Transition between menu and inspector
-	this.$body.addClass( 've-ui-context-body-transition' );
-
-	this.show();
+	this.show( true );
 };
 
 /**
@@ -140,14 +132,7 @@ ve.ui.Context.prototype.onInspectorOpen = function () {
  * @param {boolean} accept Changes have been accepted
  */
 ve.ui.Context.prototype.onInspectorClose = function () {
-	var $body = this.$body;
-
 	this.update();
-
-	// Disable transitioning after transition completes
-	setTimeout( function () {
-		$body.removeClass( 've-ui-context-body-transition' );
-	}, 200 );
 };
 
 /**
@@ -184,11 +169,6 @@ ve.ui.Context.prototype.update = function () {
 		selection = fragment.getRange(),
 		inspector = this.inspectors.getCurrent();
 
-	// If the context about to be moved to a new location, don't transition it's size
-	if ( this.selection && this.selection.end !== selection.end ) {
-		this.$body.removeClass( 've-ui-context-body-transition' );
-	}
-
 	if ( inspector && selection.equals( this.selection ) ) {
 		// There's an inspector, and the selection hasn't changed, update the position
 		this.show();
@@ -223,40 +203,22 @@ ve.ui.Context.prototype.update = function () {
  * @method
  * @chainable
  */
-ve.ui.Context.prototype.updateDimensions = function () {
-	var position, $container, width, height, bodyWidth, buffer, center, overlapRight, overlapLeft,
+ve.ui.Context.prototype.updateDimensions = function ( transition ) {
+	var position, $container,
 		inspector = this.inspectors.getCurrent();
 
 		// Get cursor position
 		position = this.surface.getView().getSelectionRect().end;
 		if ( position ) {
-			// Get additional dimensions
 			$container = inspector ? this.inspectors.$ : this.$menu;
-			width = $container.outerWidth( true );
-			height = $container.outerHeight( true );
-			bodyWidth = $( 'body' ).width();
-			buffer = ( width / 2 ) + 20;
-			overlapRight = bodyWidth - ( position.x + buffer );
-			overlapLeft = position.x - buffer;
-			center = -( width / 2 );
-
-			// Prevent body from displaying off-screen
-			if ( overlapRight < 0 ) {
-				center += overlapRight;
-			} else if ( overlapLeft < 0 ) {
-				center -= overlapLeft;
-			}
-
-			// Move to just below the cursor
-			this.$.css( { 'left': position.x, 'width': width, 'top': position.y } );
-
-			if ( !this.visible ) {
-				this.$body
-					.css( { 'width': 0, 'height': 0, 'left': 0 } )
-					.addClass( 've-ui-context-body-transition' );
-			}
-
-			this.$body.css( { 'left': center, 'width': width, 'height': height } );
+			this.$.css( { 'left': position.x, 'top': position.y } );
+			this.popup.display(
+				position.x,
+				position.y,
+				$container.outerWidth( true ),
+				$container.outerHeight( true ),
+				transition
+			);
 		}
 
 	return this;
@@ -268,7 +230,7 @@ ve.ui.Context.prototype.updateDimensions = function () {
  * @method
  * @chainable
  */
-ve.ui.Context.prototype.show = function () {
+ve.ui.Context.prototype.show = function ( transition ) {
 	var inspector = this.inspectors.getCurrent();
 
 	if ( !this.showing ) {
@@ -284,7 +246,7 @@ ve.ui.Context.prototype.show = function () {
 			// Update size and fade the inspector in after animation is complete
 			setTimeout( ve.bind( function () {
 				inspector.fitHeightToContents();
-				this.updateDimensions();
+				this.updateDimensions( transition );
 				inspector.$.css( 'opacity', 1 );
 			}, this ), 200 );
 		} else {
@@ -292,7 +254,7 @@ ve.ui.Context.prototype.show = function () {
 			this.$menu.show();
 		}
 
-		this.updateDimensions();
+		this.updateDimensions( transition );
 
 		this.visible = true;
 		this.showing = false;
