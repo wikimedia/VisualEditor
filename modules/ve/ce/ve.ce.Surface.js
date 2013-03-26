@@ -118,6 +118,21 @@ ve.ce.Surface.static.textPattern = new RegExp(
 	'g'
 );
 
+/**
+ * Get the coordinates of the selection anchor.
+ *
+ * @method
+ * @static
+ */
+ve.ce.Surface.getSelectionRect = function () {
+	var rangySel = rangy.getSelection();
+	return {
+		start: rangySel.getStartDocumentPos(),
+		end: rangySel.getEndDocumentPos()
+	};
+};
+
+
 /* Methods */
 
 /*! Initialization */
@@ -306,7 +321,10 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
  * @param {jQuery.Event} e Key press event
  */
 ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
-	if ( ve.ce.Surface.isShortcutKey( e ) || e.which === 13 || e.which === 8 || e.which === 0 ) {
+	if ( ve.ce.isShortcutKey( e ) ||
+		e.which === ve.Keys.DOM_VK_RETURN ||
+		e.which === ve.Keys.DOM_VK_BACK_SPACE ||
+		e.which === ve.Keys.DOM_VK_UNDEFINED ) {
 		return;
 	}
 	this.handleInsertion();
@@ -701,7 +719,7 @@ ve.ce.Surface.prototype.handleLeftOrRightArrowKey = function ( e ) {
  * @method
  */
 ve.ce.Surface.prototype.handleUpOrDownArrowKey = function ( e ) {
-	var selection, rangySelection, rangyRange, range, $fakeElement, $slug;
+	var selection, rangySelection, rangyRange, range, $element;
 	if ( !$.browser.msie ) {
 		return;
 	}
@@ -711,25 +729,21 @@ ve.ce.Surface.prototype.handleUpOrDownArrowKey = function ( e ) {
 	// Perform programatic handling only for selection that is expanded and backwards according to
 	// model data but not according to browser data.
 	if ( !selection.isCollapsed() && selection.isBackwards() && !rangySelection.isBackwards() ) {
-		$slug = this.documentView.getSlugAtOffset( selection.to );
-		if ( $slug ) {
-			rangyRange = rangy.createRange();
-			rangyRange.selectNode( $slug[0] );
-			rangySelection.setSingleRange( rangyRange );
-		} else {
-			$fakeElement = $ ( '<span>' ).html( ' ' ).css( { 'width' : '0px', 'display' : 'none' } );
+		$element = this.documentView.getSlugAtOffset( selection.to );
+		if ( !$element ) {
+			$element = $( '<span>' ).html( ' ' ).css( { 'width' : '0px', 'display' : 'none' } );
 			rangySelection.anchorNode.splitText( rangySelection.anchorOffset );
 			rangySelection.anchorNode.parentNode.insertBefore(
-				$fakeElement[0],
+				$element[0],
 				rangySelection.anchorNode.nextSibling
 			);
-			rangyRange = rangy.createRange();
-			rangyRange.selectNode( $fakeElement[0] );
-			rangySelection.setSingleRange( rangyRange );
 		}
+		rangyRange = rangy.createRange();
+		rangyRange.selectNode( $element[0] );
+		rangySelection.setSingleRange( rangyRange );
 		setTimeout( ve.bind( function() {
-			if ( $fakeElement ) {
-				$fakeElement.remove();
+			if ( !$element.hasClass( 've-ce-slug' ) ) {
+				$element.remove();
 			}
 			this.surfaceObserver.start();
 			this.surfaceObserver.stop( false );
@@ -940,23 +954,10 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
  * @param {boolean} backspace Key was a backspace
  */
 ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
-	var sourceOffset,
-		targetOffset,
-		sourceSplitableNode,
-		targetSplitableNode,
-		tx,
-		cursorAt,
-		sourceNode,
-		targetNode,
-		sourceData,
-		nodeToDelete,
-		adjacentData,
-		adjacentText,
-		adjacentTextAfterMatch,
-		endOffset,
-		i,
-		selection = this.model.getSelection(),
-		containsInlineElements = false;
+	var sourceOffset, targetOffset, sourceSplitableNode, targetSplitableNode, tx, cursorAt,
+		sourceNode, targetNode, sourceData, nodeToDelete, adjacentData, adjacentText,
+		adjacentTextAfterMatch, endOffset, i, containsInlineElements = false,
+		selection = this.model.getSelection();
 
 	if ( selection.isCollapsed() ) {
 		// Set source and target linmod offsets
@@ -1110,14 +1111,14 @@ ve.ce.Surface.prototype.showSelection = function ( range ) {
 	);
 
 	if ( !range.isCollapsed() ) {
-		start = this.getNodeAndOffset( range.start );
-		end = this.getNodeAndOffset( range.end );
+		start = this.documentView.getNodeAndOffset( range.start );
+		end = this.documentView.getNodeAndOffset( range.end );
 		rangyRange.setStart( start.node, start.offset );
 		rangyRange.setEnd( end.node, end.offset );
 		rangySel.removeAllRanges();
 		rangySel.addRange( rangyRange, range.start !== range.from );
 	} else {
-		start = this.getNodeAndOffset( range.start );
+		start = this.documentView.getNodeAndOffset( range.start );
 		rangyRange.setStart( start.node, start.offset );
 		rangySel.setSingleRange( rangyRange );
 	}
@@ -1192,90 +1193,6 @@ ve.ce.Surface.prototype.hasSlugAtOffset = function ( offset ) {
 };
 
 /**
- * Get a DOM node and DOM element offset for a document offset.
- *
- * The results of this function are meant to be used with rangy.
- *
- * @method
- * @param {number} offset Linear model offset
- * @returns {Object} Object containing a node and offset property where node is an HTML element and
- * offset is the position within the element
- * @throws {Error} Offset could not be translated to a DOM element and offset
- */
-ve.ce.Surface.prototype.getNodeAndOffset = function ( offset ) {
-	var node, startOffset, current, stack, item, $item, length,
-		slug = this.documentView.getSlugAtOffset( offset );
-	if ( slug ) {
-		return { node: slug[0].childNodes[0], offset: 0 };
-	}
-	node = this.documentView.getNodeFromOffset( offset );
-	startOffset = this.documentView.getDocumentNode().getOffsetFromNode( node ) +
-		( ( node.isWrapped() ) ? 1 : 0 );
-	current = [node.$.contents(), 0];
-	stack = [current];
-
-	while ( stack.length > 0 ) {
-		if ( current[1] >= current[0].length ) {
-			stack.pop();
-			current = stack[ stack.length - 1 ];
-			continue;
-		}
-		item = current[0][current[1]];
-		if ( item.nodeType === Node.TEXT_NODE ) {
-			length = item.textContent.length;
-			if ( offset >= startOffset && offset <= startOffset + length ) {
-				return {
-					node: item,
-					offset: offset - startOffset
-				};
-			} else {
-				startOffset += length;
-			}
-		} else if ( item.nodeType === Node.ELEMENT_NODE ) {
-			$item = current[0].eq( current[1] );
-			if ( $item.hasClass('ve-ce-slug') ) {
-				if ( offset === startOffset ) {
-					return {
-						node: $item[0],
-						offset: 1
-					};
-				}
-			} else if ( $item.is( '.ve-ce-branchNode, .ve-ce-leafNode' ) ) {
-				length = $item.data( 'node' ).model.getOuterLength();
-				if ( offset >= startOffset && offset < startOffset + length ) {
-					stack.push( [$item.contents(), 0] );
-					current[1]++;
-					current = stack[stack.length-1];
-					continue;
-				} else {
-					startOffset += length;
-				}
-			} else {
-				stack.push( [$item.contents(), 0] );
-				current[1]++;
-				current = stack[stack.length-1];
-				continue;
-			}
-		}
-		current[1]++;
-	}
-	throw new Error( 'Offset could not be translated to a DOM element and offset: ' + offset );
-};
-
-/**
- * Check if keyboard shortcut modifier key is pressed.
- *
- * @method
- * @param {jQuery.Event} e Key press event
- */
-ve.ce.Surface.isShortcutKey = function ( e ) {
-	if ( e.ctrlKey || e.metaKey ) {
-		return true;
-	}
-	return false;
-};
-
-/**
  * Get the number of consecutive clicks the user has performed.
  *
  * This is required for supporting double, tripple, etc. clicking across all browsers.
@@ -1322,19 +1239,6 @@ ve.ce.Surface.prototype.getClickCount = function ( e ) {
 };
 
 /*! Getters */
-
-/**
- * Get the coordinates of the selection anchor.
- *
- * @method
- */
-ve.ce.Surface.prototype.getSelectionRect = function () {
-	var rangySel = rangy.getSelection();
-	return {
-		start: rangySel.getStartDocumentPos(),
-		end: rangySel.getEndDocumentPos()
-	};
-};
 
 /**
  * Get the surface model.

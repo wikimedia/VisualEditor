@@ -259,3 +259,13 @@ ve.ce.isUpOrDownArrowKey = function ( keyCode ) {
 ve.ce.isArrowKey = function ( keyCode ) {
 	return ve.ce.isLeftOrRightArrowKey( keyCode ) || ve.ce.isUpOrDownArrowKey( keyCode );
 };
+
+/**
+ * Check if keyboard shortcut modifier key is pressed.
+ *
+ * @method
+ * @param {jQuery.Event} e Key press event
+ */
+ve.ce.isShortcutKey = function ( e ) {
+	return e.ctrlKey || e.metaKey;
+};

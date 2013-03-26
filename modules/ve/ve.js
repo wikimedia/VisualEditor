@@ -883,6 +883,7 @@
 	// Based on the KeyEvent DOM Level 3 (add more as you need them)
 	// http://www.w3.org/TR/2001/WD-DOM-Level-3-Events-20010410/DOM3-Events.html#events-Events-KeyEvent
 	ve.Keys = window.KeyEvent || {
+		'DOM_VK_UNDEFINED': 0,
 		'DOM_VK_BACK_SPACE': 8,
 		'DOM_VK_RETURN': 13,
 		'DOM_VK_LEFT': 37,

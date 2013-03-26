@@ -228,7 +228,7 @@ ve.ui.Context.prototype.updateDimensions = function () {
 		inspector = this.inspectors.getCurrent();
 
 		// Get cursor position
-		position = this.surface.getView().getSelectionRect().end;
+		position = ve.ce.Surface.getSelectionRect().end;
 		if ( position ) {
 			// Get additional dimensions
 			$container = inspector ? this.inspectors.$ : this.$menu;
