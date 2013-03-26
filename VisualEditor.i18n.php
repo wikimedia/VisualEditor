@@ -125,7 +125,8 @@ Links are in {{msg-mw|Visualeditor-mainnamespacepagelink}} and {{msg-mw|visualed
 	'visualeditor-savedialog-label-review-good' => 'Label for button to progress to save dialog',
 	'visualeditor-savedialog-label-report' => 'Label for button to trigger report',
 	'visualeditor-savedialog-label-create' => 'Label text for save button when the user is creating a new page',
-	'visualeditor-savedialog-label-save' => 'Label text for save button when the user is editing a current revision of an extant page',
+	'visualeditor-savedialog-label-save' => 'Label text for save button when the user is editing a current revision of an extant page.
+{{Identical|Save page}}',
 	'visualeditor-savedialog-label-restore' => 'Label text for save button when the user is editing a previous revision',
 	'visualeditor-editnotices-tool' => 'Text of tool in the toolbar that shows edit notices (such as [[MediaWiki:editnotice-0]] and [[MediaWiki:editnotice-8/en]]) as a pop-up',
 	'visualeditor-feedback-tool' => 'Text of tool in the toolbar that lets user provide feedback',
@@ -134,7 +135,8 @@ Links are in {{msg-mw|Visualeditor-mainnamespacepagelink}} and {{msg-mw|visualed
 	'visualeditor-window-title' => 'Title of an unnamed inspector',
 	'visualeditor-linkinspector-title' => 'Title of the link inspector dialog.
 {{Identical|Hyperlink}}',
-	'visualeditor-linkinspector-label-pagetitle' => 'Label for the text field that holds the link target in the link inspector',
+	'visualeditor-linkinspector-label-pagetitle' => 'Label for the text field that holds the link target in the link inspector.
+{{Identical|Page title}}',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Label for suggested existing pages in the link inspector',
 	'visualeditor-linkinspector-suggest-new-page' => 'Label for a new page in the link inspector',
 	'visualeditor-linkinspector-suggest-external-link' => 'Label for an external (Web) link in the link inspector',
@@ -522,6 +524,7 @@ $messages['cs'] = array(
 	'visualeditor-ca-editsource' => 'Upravit zdroj',
 	'visualeditor-ca-ve-edit' => 'VisualEditor',
 	'visualeditor-ca-ve-create' => 'VisualEditor',
+	'visualeditor-dialog-action-cancel' => 'Storno',
 	'visualeditor-toolbar-savedialog' => 'Posoudit a uložit',
 	'visualeditor-savedialog-title-review' => 'Zkontrolujte změny',
 	'visualeditor-savedialog-title-report' => 'Nahlásit problém',
@@ -559,7 +562,7 @@ $messages['cs'] = array(
 	'visualeditor-listbutton-bullet-tooltip' => 'Seznam s odrážkami',
 	'visualeditor-clearbutton-tooltip' => 'Vymazat formátování',
 	'visualeditor-historybutton-undo-tooltip' => 'Zpět',
-	'visualeditor-historybutton-redo-tooltip' => 'Znovu', # Fuzzy
+	'visualeditor-historybutton-redo-tooltip' => 'Znovu',
 	'visualeditor-inspector-close-tooltip' => 'Zavřít',
 	'visualeditor-inspector-remove-tooltip' => 'Odebrat',
 	'visualeditor-viewpage-savewarning' => 'Opravdu se chcete vrátit k režimu zobrazení bez uložení?',
@@ -666,8 +669,10 @@ $messages['de-formal'] = array(
 
 /** Zazaki (Zazaki)
  * @author Erdemaslancan
+ * @author Mirzali
  */
 $messages['diq'] = array(
+	'visualeditor-dialog-action-cancel' => 'Bıtexelne',
 	'visualeditor-linkinspector-label-pagetitle' => 'Sernamey pela',
 );
 
@@ -2139,7 +2144,7 @@ $messages['nl'] = array(
 	'visualeditor-ca-ve-edit' => 'Visueel',
 	'visualeditor-ca-ve-create' => 'Visueel',
 	'visualeditor-dialog-meta-title' => 'Pagina-instellingen',
-	'visualeditor-dialog-content-title' => 'Inhoudsinstelling',
+	'visualeditor-dialog-content-title' => 'Instellingen voor inhoud',
 	'visualeditor-dialog-action-apply' => 'Wijzigingen toepassen',
 	'visualeditor-dialog-action-cancel' => 'Annuleren',
 	'visualeditor-toolbar-savedialog' => 'Controleren en opslaan',
@@ -3041,8 +3046,9 @@ $messages['vi'] = array(
 	'visualeditor-ca-ve-edit' => 'Trình soạn thị giác',
 	'visualeditor-ca-ve-create' => 'Trình soạn thị giác',
 	'visualeditor-dialog-meta-title' => 'Tùy chọn trang',
-	'visualeditor-dialog-content-title' => 'Nội dung được tạo ra', # Fuzzy
+	'visualeditor-dialog-content-title' => 'Tùy chọn nội dung',
 	'visualeditor-dialog-action-apply' => 'Áp dụng các thay đổi',
+	'visualeditor-dialog-action-cancel' => 'Hủy bỏ',
 	'visualeditor-toolbar-savedialog' => 'Xem lại và lưu',
 	'visualeditor-savedialog-title-review' => 'Xem lại những thay đổi của bạn',
 	'visualeditor-savedialog-title-report' => 'Báo cáo một vấn đề',
