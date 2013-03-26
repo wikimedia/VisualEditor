@@ -25,6 +25,11 @@
 	background-image: url(images/icons/categories.png);
 }
 
+.ve-ui-icon-settings {
+	/* @embed */
+	background-image: url(images/icons/settings.png);
+}
+
 .ve-ui-icon-remove {
 	/* @embed */
 	background-image: url(images/icons/remove.png);

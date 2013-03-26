@@ -35,6 +35,8 @@ ve.inheritClass( ve.ui.MetaDialog, ve.ui.Dialog );
  */
 ve.ui.MetaDialog.static.titleMessage = 'visualeditor-dialog-meta-title';
 
+ve.ui.MetaDialog.static.icon = 'settings';
+
 /* Methods */
 
 /**
@@ -48,7 +50,9 @@ ve.ui.MetaDialog.prototype.initialize = function () {
 
 	// Properties
 	this.outlinePanel = new ve.ui.PanelLayout( { '$$': this.$$ } );
-	this.editorPanel = new ve.ui.PanelLayout( { '$$': this.$$ } );
+	this.editorPanel = new ve.ui.EditorPanelLayout( {
+		'$$': this.$$, 'title': 'Categories', 'icon': 'categories'
+	} );
 	this.layout = new ve.ui.GridLayout(
 		[this.outlinePanel, this.editorPanel],
 		{ '$$': this.$$, 'widths': [1, 2] }

@@ -49,7 +49,8 @@ ve.inheritClass( ve.ui.Frame, ve.EventEmitter );
  * @emits initialize
  */
 ve.ui.Frame.prototype.onLoad = function () {
-	var i, len, doc, $head,
+	var i, len, doc,
+		css = [],
 		promises = [],
 		stylesheets = this.config.stylesheets,
 		stylesheetPath = ve.init.platform.getModulesUrl() + '/ve/ui/styles/';
@@ -66,16 +67,19 @@ ve.ui.Frame.prototype.onLoad = function () {
 	// Properties
 	this.$$ = ve.ui.get$$( doc, this );
 	this.$content = this.$$( '.ve-ui-frame-content' );
+
 	// Add stylesheets
-	$head = this.$$( 'head' );
-	function embedCss( css ) {
-		$head.append( '<style>' + css + '</style>' );
+	function setter( index ) {
+		return function ( data ) {
+			css[index] = data;
+		};
 	}
 	for ( i = 0, len = stylesheets.length; i < len; i++ ) {
-		promises.push( $.get( stylesheetPath + stylesheets[i], embedCss ) );
+		promises.push( $.get( stylesheetPath + stylesheets[i], setter( i ) ) );
 	}
 	$.when.apply( $, promises )
 		.done( ve.bind( function () {
+			this.$$( 'head' ).append( '<style>' + css.join( '\n' ) + '</style>' );
 			this.initialized = true;
 			this.emit( 'initialize' );
 		}, this ) );

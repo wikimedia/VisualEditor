@@ -11,9 +11,6 @@
 	right: 0;
 	bottom: 0;
 	left: 0;
-	margin: auto;
-	min-height: 3em;
-	max-height: 600px;
 	padding: 1em;
 	line-height: 1em;
 	background-color: #fff;
@@ -22,9 +19,15 @@
 }
 
 .ve-ui-dialog .ve-ui-window-frame {
-	width: 800px;
-	height: 100%;
+	position: fixed;
+	top: 1em;
+	right: 0;
+	bottom: 1em;
+	left: 0;
 	margin: auto;
+	width: 800px;
+	min-height: 3em;
+	max-height: 600px;
 	background-color: #fff;
 	border: solid 1px #ccc;
 	border-radius: 0.5em;
