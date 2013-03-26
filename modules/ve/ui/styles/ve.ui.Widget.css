@@ -271,6 +271,7 @@
 .ve-ui-menuSectionItemWidget {
 	padding: 0.33em 0.75em;
 	color: #888;
+	cursor: default;
 }
 
 /* ve.ui.MWLinkTargetInputWidget */
