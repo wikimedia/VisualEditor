@@ -45,10 +45,6 @@ ve.mixinClass( ve.ui.ButtonWidget, ve.ui.LabeledWidget );
  * @event click
  */
 
-/* Static Properties */
-
-ve.ui.ButtonWidget.static.tagName = 'div';
-
 /* Methods */
 
 /**

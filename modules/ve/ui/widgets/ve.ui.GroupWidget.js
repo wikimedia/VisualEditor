@@ -38,10 +38,6 @@ ve.inheritClass( ve.ui.GroupWidget, ve.ui.Widget );
  * @param {ve.ui.OutlineItemWidget|null} item Selected item or null if no item is selected
  */
 
-/* Static Properties */
-
-ve.ui.GroupWidget.static.tagName = 'div';
-
 /* Methods */
 
 /**
