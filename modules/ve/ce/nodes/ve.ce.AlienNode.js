@@ -19,7 +19,10 @@ ve.ce.AlienNode = function VeCeAlienNode( model ) {
 
 	// DOM Changes
 	this.$.addClass( 've-ce-alienNode' );
-	this.$.attr( 'contenteditable', false );
+
+	// ce="false" inside of ce="true" does not prevent editing in IE
+	// Strangely enough, ce="true" inside of ce="true" does.
+	this.$.attr( 'contenteditable', !!$.browser.msie );
 
 	// Events
 	this.model.addListenerMethod( this, 'update', 'onUpdate' );
