@@ -182,6 +182,7 @@ ve.ce.Surface.prototype.documentOnFocus = function () {
 ve.ce.Surface.prototype.documentOnBlur = function () {
 	this.$document.off( '.ve-ce-Surface' );
 	this.surfaceObserver.stop( true );
+	this.dragging = false;
 };
 
 /**
