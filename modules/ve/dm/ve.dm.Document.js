@@ -449,20 +449,32 @@ ve.dm.Document.getDataSlice = function ( sourceData, range, deep ) {
  * Reverse a transaction's effects on the content data.
  *
  * @method
- * @param {ve.dm.Transaction}
+ * @param {ve.dm.Transaction} transaction Transaction to roll back
+ * @emits transact
+ * @throws {Error} Cannot roll back a transaction that has not been committed
  */
 ve.dm.Document.prototype.rollback = function ( transaction ) {
-	ve.dm.TransactionProcessor.rollback( this, transaction );
+	if ( !transaction.hasBeenApplied() ) {
+		throw new Error( 'Cannot roll back a transaction that has not been committed' );
+	}
+	new ve.dm.TransactionProcessor( this, transaction, true ).process();
+	this.emit( 'transact', transaction, true );
 };
 
 /**
  * Apply a transaction's effects on the content data.
  *
  * @method
- * @param {ve.dm.Transaction}
+ * @param {ve.dm.Transaction} transaction Transaction to apply
+ * @emits transact
+ * @throws {Error} Cannot commit a transaction that has already been committed
  */
 ve.dm.Document.prototype.commit = function ( transaction ) {
-	ve.dm.TransactionProcessor.commit( this, transaction );
+	if ( transaction.hasBeenApplied() ) {
+		throw new Error( 'Cannot commit a transaction that has already been committed' );
+	}
+	new ve.dm.TransactionProcessor( this, transaction, false ).process();
+	this.emit( 'transact', transaction, false );
 };
 
 /**

@@ -9,37 +9,6 @@ QUnit.module( 've.dm.TransactionProcessor' );
 
 /* Tests */
 
-QUnit.test( 'protection against double application', 3, function ( assert ) {
-	var tx,
-		testDocument = new ve.dm.Document( ve.dm.example.data );
-	tx = new ve.dm.Transaction();
-	tx.pushRetain( 1 );
-	tx.pushReplace( [], ['H', 'e', 'l', 'l', 'o' ] );
-	assert.throws(
-		function () {
-			ve.dm.TransactionProcessor.rollback( testDocument, tx );
-		},
-		Error,
-		'exception thrown when trying to rollback an uncommitted transaction'
-	);
-	ve.dm.TransactionProcessor.commit( testDocument, tx );
-	assert.throws(
-		function () {
-			ve.dm.TransactionProcessor.commit( testDocument, tx );
-		},
-		Error,
-		'exception thrown when trying to commit an already-committed transaction'
-	);
-	ve.dm.TransactionProcessor.rollback( testDocument, tx );
-	assert.throws(
-		function () {
-			ve.dm.TransactionProcessor.rollback( testDocument, tx );
-		},
-		Error,
-		'exception thrown when trying to roll back a transaction that has already been rolled back'
-	);
-} );
-
 QUnit.test( 'commit/rollback', 86, function ( assert ) {
 	var i, key, originalData, originalDoc, msg, testDocument, tx,
 		expectedData, expectedDocument,
@@ -396,7 +365,7 @@ QUnit.test( 'commit/rollback', 86, function ( assert ) {
 			cases[msg].expected( expectedData );
 			expectedDocument = new ve.dm.Document( ve.copyArray ( expectedData ) );
 			// Commit
-			ve.dm.TransactionProcessor.commit( testDocument, tx );
+			testDocument.commit( tx );
 			assert.deepEqual( testDocument.getFullData(), expectedData, 'commit (data): ' + msg );
 			assert.equalNodeTree(
 				testDocument.getDocumentNode(),
@@ -404,7 +373,7 @@ QUnit.test( 'commit/rollback', 86, function ( assert ) {
 				'commit (tree): ' + msg
 			);
 			// Rollback
-			ve.dm.TransactionProcessor.rollback( testDocument, tx );
+			testDocument.rollback( tx );
 			assert.deepEqual( testDocument.getFullData(), originalData, 'rollback (data): ' + msg );
 			assert.equalNodeTree(
 				testDocument.getDocumentNode(),
@@ -415,7 +384,7 @@ QUnit.test( 'commit/rollback', 86, function ( assert ) {
 			/*jshint loopfunc:true */
 			assert.throws(
 				function () {
-					ve.dm.TransactionProcessor.commit( testDocument, tx );
+					testDocument.commit( tx );
 				},
 				cases[msg].exception,
 				'commit: ' + msg

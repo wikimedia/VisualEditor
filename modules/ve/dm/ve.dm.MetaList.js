@@ -11,15 +11,16 @@
  * @class
  * @extends ve.EventEmitter
  * @constructor
- * @param {ve.dm.Document} doc Document
+ * @param {ve.dm.Surface} surface Surface model
  */
-ve.dm.MetaList = function VeDmMetaList( doc ) {
+ve.dm.MetaList = function VeDmMetaList( surface ) {
 	var i, j, jlen, metadata, item, group;
 	// Parent constructor
 	ve.EventEmitter.call( this );
 
 	// Properties
-	this.document = doc;
+	this.surface = surface;
+	this.document = surface.getDocument();
 	this.groups = {};
 	this.items = [];
 
@@ -84,12 +85,12 @@ ve.dm.MetaList.prototype.onTransact = function ( tx, reversed ) {
 				ins = reversed ? ops[i].remove : ops[i].insert;
 				rm = reversed ? ops[i].insert : ops[i].remove;
 				for ( j = 0, jlen = rm.length; j < jlen; j++ ) {
-					this.removeItem( offset, index + j );
+					this.deleteRemovedItem( offset, index + j );
 				}
 				for ( j = 0, jlen = ins.length; j < jlen; j++ ) {
 					item = ve.dm.metaItemFactory.createFromElement( ins[j] );
 					// offset and index are pre-transaction, but we'll fix them later
-					this.insertItem( offset, index + j, item );
+					this.addInsertedItem( offset, index + j, item );
 				}
 				index += rm.length;
 				break;
@@ -185,17 +186,50 @@ ve.dm.MetaList.prototype.getAllItems = function () {
 };
 
 /**
+ * Insert new metadata into the document. This builds and processes a transaction that inserts
+ * metadata into the document.
+ * @param {Object|ve.dm.MetaItem} meta Metadata element (or MetaItem) to insert
+ * @param {Number} offset Offset at which to insert the new metadata
+ * @param {Number} [index] Index at which to insert the new metadata, or undefined to add to the end
+ */
+ve.dm.MetaList.prototype.insertMeta = function ( meta, offset, index ) {
+	var tx;
+	if ( meta instanceof ve.dm.MetaItem ) {
+		meta = meta.getElement();
+	}
+	if ( index === undefined ) {
+		index = ( this.document.metadata[offset] || [] ).length;
+	}
+	tx = ve.dm.Transaction.newFromMetadataInsertion( this.document, offset, index, [ meta ] );
+	this.surface.change( tx );
+};
+
+/**
+ * Remove a meta item from the document. This builds and processes a transaction that removes the
+ * associated metadata from the document.
+ * @param {ve.dm.MetaItem} item Item to remove
+ */
+ve.dm.MetaList.prototype.removeMeta = function ( item ) {
+	var tx;
+	tx = ve.dm.Transaction.newFromMetadataRemoval(
+		this.document,
+		item.getOffset(),
+		new ve.Range( item.getIndex(), item.getIndex() + 1 )
+	);
+	this.surface.change( tx );
+};
+
+/**
  * Insert an item at a given offset and index in response to a transaction.
  *
- * This function is for internal usage by onTransact(). To actually insert an item, you need to
- * process a transaction against the document that inserts metadata, then the MetaList will
- * automatically update itself and add the item.
+ * This function is for internal usage by onTransact(). To actually insert an item, use
+ * insertItem().
  *
  * @param {number} offset Offset in the linear model of the new item
  * @param {number} index  Index of the new item in the metadata array at offset
  * @param {ve.dm.MetaItem} item Item object
  */
-ve.dm.MetaList.prototype.insertItem = function ( offset, index, item ) {
+ve.dm.MetaList.prototype.addInsertedItem = function ( offset, index, item ) {
 	var group = item.getGroup(), at = this.findItem( offset, index, null, true );
 	this.items.splice( at, 0, item );
 	if ( this.groups[group] ) {
@@ -210,14 +244,13 @@ ve.dm.MetaList.prototype.insertItem = function ( offset, index, item ) {
 /**
  * Remove an item in response to a transaction.
  *
- * This function is for internal usage by onTransact(). To actually remove an item, you need to
- * process a transaction against the document that removes the associated metadata, then the
- * MetaList will automatically update itself and remove the item.
+ * This function is for internal usage by onTransact(). To actually remove an item, use
+ * removeItem().
  *
  * @param {number} offset Offset in the linear model of the item
  * @param {number} index Index of the item in the metadata array at offset
  */
-ve.dm.MetaList.prototype.removeItem = function ( offset, index ) {
+ve.dm.MetaList.prototype.deleteRemovedItem = function ( offset, index ) {
 	var item, group, at = this.findItem( offset, index );
 	if ( at === null ) {
 		return;
