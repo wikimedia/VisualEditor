@@ -53,7 +53,7 @@ ve.ce.Surface = function VeCeSurface( $container, model, surface ) {
 		'cut': ve.bind( this.onCut, this ),
 		'copy': ve.bind( this.onCopy, this ),
 		'paste': ve.bind( this.onPaste, this ),
-		'dragover drop': ve.bind( this.onDragoverDrop, this )
+		'dragover drop': ve.bind( this.onDocumentDragoverDrop, this )
 	} );
 	if ( $.browser.msie ) {
 		this.$.on( 'beforepaste', ve.bind( this.onPaste, this ) );

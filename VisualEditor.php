@@ -265,6 +265,7 @@ $wgResourceModules += array(
 			've/dm/nodes/ve.dm.MWEntityNode.js',
 			've/dm/nodes/ve.dm.MWHeadingNode.js',
 			've/dm/nodes/ve.dm.MWPreformattedNode.js',
+			've/dm/nodes/ve.dm.MWImageNode.js',
 
 			've/dm/annotations/ve.dm.LinkAnnotation.js',
 			've/dm/annotations/ve.dm.MWExternalLinkAnnotation.js',
@@ -310,6 +311,7 @@ $wgResourceModules += array(
 			've/ce/nodes/ve.ce.MWEntityNode.js',
 			've/ce/nodes/ve.ce.MWHeadingNode.js',
 			've/ce/nodes/ve.ce.MWPreformattedNode.js',
+			've/ce/nodes/ve.ce.MWImageNode.js',
 
 			// ui
 			've/ui/ve.ui.js',

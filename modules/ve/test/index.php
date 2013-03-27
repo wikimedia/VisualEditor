@@ -99,6 +99,7 @@
 		<script src="../../ve/dm/nodes/ve.dm.MWEntityNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.MWHeadingNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.MWPreformattedNode.js"></script>
+		<script src="../../ve/dm/nodes/ve.dm.MWImageNode.js"></script>
 		<script src="../../ve/dm/annotations/ve.dm.LinkAnnotation.js"></script>
 		<script src="../../ve/dm/annotations/ve.dm.MWExternalLinkAnnotation.js"></script>
 		<script src="../../ve/dm/annotations/ve.dm.MWInternalLinkAnnotation.js"></script>
@@ -139,6 +140,7 @@
 		<script src="../../ve/ce/nodes/ve.ce.MWEntityNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.MWHeadingNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.MWPreformattedNode.js"></script>
+		<script src="../../ve/ce/nodes/ve.ce.MWImageNode.js"></script>
 		<script src="../../ve/ui/ve.ui.js"></script>
 		<script src="../../ve/ui/ve.ui.Context.js"></script>
 		<script src="../../ve/ui/ve.ui.Frame.js"></script>
