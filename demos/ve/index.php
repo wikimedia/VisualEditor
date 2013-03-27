@@ -211,6 +211,7 @@ $html = file_get_contents( $page );
 		<script src="../../modules/ve/ui/ve.ui.ToolFactory.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.LabeledWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.FlaggableWidget.js"></script>
+		<script src="../../modules/ve/ui/widgets/ve.ui.PopupWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.GroupWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.SelectWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.OptionWidget.js"></script>
