@@ -328,9 +328,6 @@ $wgResourceModules += array(
 			've/ui/ve.ui.Toolbar.js',
 			've/ui/ve.ui.ToolFactory.js',
 
-			've/ui/layouts/ve.ui.GridLayout.js',
-			've/ui/layouts/ve.ui.PanelLayout.js',
-
 			've/ui/widgets/ve.ui.LabeledWidget.js',
 			've/ui/widgets/ve.ui.FlaggableWidget.js',
 			've/ui/widgets/ve.ui.GroupWidget.js',
@@ -349,6 +346,11 @@ $wgResourceModules += array(
 			've/ui/widgets/ve.ui.TextInputMenuWidget.js',
 			've/ui/widgets/ve.ui.LinkTargetInputWidget.js',
 			've/ui/widgets/ve.ui.MWLinkTargetInputWidget.js',
+
+			've/ui/layouts/ve.ui.GridLayout.js',
+			've/ui/layouts/ve.ui.PanelLayout.js',
+			've/ui/layouts/panels/ve.ui.TitledPanelLayout.js',
+			've/ui/layouts/panels/ve.ui.EditorPanelLayout.js',
 
 			've/ui/dialogs/ve.ui.ContentDialog.js',
 			've/ui/dialogs/ve.ui.MetaDialog.js',

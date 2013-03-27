@@ -154,8 +154,6 @@
 		<script src="../../ve/ui/ve.ui.Tool.js"></script>
 		<script src="../../ve/ui/ve.ui.Toolbar.js"></script>
 		<script src="../../ve/ui/ve.ui.ToolFactory.js"></script>
-		<script src="../../ve/ui/layouts/ve.ui.GridLayout.js"></script>
-		<script src="../../ve/ui/layouts/ve.ui.PanelLayout.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.LabeledWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.FlaggableWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.GroupWidget.js"></script>
@@ -174,6 +172,10 @@
 		<script src="../../ve/ui/widgets/ve.ui.TextInputMenuWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.LinkTargetInputWidget.js"></script>
 		<script src="../../ve/ui/widgets/ve.ui.MWLinkTargetInputWidget.js"></script>
+		<script src="../../ve/ui/layouts/ve.ui.GridLayout.js"></script>
+		<script src="../../ve/ui/layouts/ve.ui.PanelLayout.js"></script>
+		<script src="../../ve/ui/layouts/panels/ve.ui.TitledPanelLayout.js"></script>
+		<script src="../../ve/ui/layouts/panels/ve.ui.EditorPanelLayout.js"></script>
 		<script src="../../ve/ui/dialogs/ve.ui.ContentDialog.js"></script>
 		<script src="../../ve/ui/dialogs/ve.ui.MetaDialog.js"></script>
 		<script src="../../ve/ui/tools/ve.ui.ButtonTool.js"></script>

@@ -18,6 +18,10 @@
 	height: 3em;
 }
 
+.ve-ui-window-head {
+	height: 2em;
+}
+
 .ve-ui-window-icon {
 	padding-left: 0.5em;
 	margin-left: 0.25em;
