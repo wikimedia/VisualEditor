@@ -398,7 +398,6 @@ $wgResourceModules += array(
 			'visualeditor',
 			'visualeditor-inspector-title',
 			'visualeditor-linkinspector-title',
-			'visualeditor-linkinspector-label-pagetitle',
 			'visualeditor-linkinspector-suggest-existing-page',
 			'visualeditor-linkinspector-suggest-new-page',
 			'visualeditor-linkinspector-suggest-external-link',

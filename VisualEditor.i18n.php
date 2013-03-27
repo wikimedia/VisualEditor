@@ -37,7 +37,6 @@ $messages['en'] = array(
 	'accesskey-ca-ve-edit' => '',
 	'visualeditor-window-title' => 'Inspect',
 	'visualeditor-linkinspector-title' => 'Hyperlink',
-	'visualeditor-linkinspector-label-pagetitle' => 'Page title',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Existing page',
 	'visualeditor-linkinspector-suggest-new-page' => 'New page',
 	'visualeditor-linkinspector-suggest-external-link' => 'Web link',
