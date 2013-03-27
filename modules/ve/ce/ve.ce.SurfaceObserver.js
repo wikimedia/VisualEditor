@@ -117,6 +117,9 @@ ve.ce.SurfaceObserver.prototype.stop = function ( poll ) {
  *
  * TODO: fixing selection in certain cases, handling selection across multiple nodes in Firefox
  *
+ * FIXME: Does not work well (selectionChange is not emited) when cursor is placed inside a slug
+ * with a mouse.
+ *
  * @method
  * @param {boolean} async Poll asynchronously
  * @emits contentChange
