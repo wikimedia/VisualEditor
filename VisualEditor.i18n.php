@@ -134,8 +134,6 @@ Links are in {{msg-mw|Visualeditor-mainnamespacepagelink}} and {{msg-mw|visualed
 	'visualeditor-window-title' => 'Title of an unnamed inspector',
 	'visualeditor-linkinspector-title' => 'Title of the link inspector dialog.
 {{Identical|Hyperlink}}',
-	'visualeditor-linkinspector-label-pagetitle' => 'Label for the text field that holds the link target in the link inspector.
-{{Identical|Page title}}',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Label for suggested existing pages in the link inspector',
 	'visualeditor-linkinspector-suggest-new-page' => 'Label for a new page in the link inspector',
 	'visualeditor-linkinspector-suggest-external-link' => 'Label for an external (Web) link in the link inspector',
@@ -539,7 +537,6 @@ $messages['cs'] = array(
 	'tooltip-ca-ve-edit' => 'Editovat tuto stránku VisualEditorem',
 	'visualeditor-window-title' => 'Zkontrolovat',
 	'visualeditor-linkinspector-title' => 'Hypertextový odkaz',
-	'visualeditor-linkinspector-label-pagetitle' => 'Název stránky',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Existující stránka',
 	'visualeditor-linkinspector-suggest-new-page' => 'Nová stránka',
 	'visualeditor-linkinspector-suggest-external-link' => 'Externí odkaz',
@@ -672,7 +669,6 @@ $messages['de-formal'] = array(
  */
 $messages['diq'] = array(
 	'visualeditor-dialog-action-cancel' => 'Bıtexelne',
-	'visualeditor-linkinspector-label-pagetitle' => 'Sernamey pela',
 );
 
 /** Lower Sorbian (dolnoserbski)
@@ -991,7 +987,6 @@ $messages['fr'] = array(
 	'tooltip-ca-ve-edit' => 'Modifier cette page avec VisualEditor',
 	'visualeditor-window-title' => 'Inspecter',
 	'visualeditor-linkinspector-title' => 'Hyperlien',
-	'visualeditor-linkinspector-label-pagetitle' => 'Titre de la page',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Page existante',
 	'visualeditor-linkinspector-suggest-new-page' => 'Nouvelle page',
 	'visualeditor-linkinspector-suggest-external-link' => 'Lien Web',
@@ -2161,7 +2156,6 @@ $messages['nl'] = array(
 	'tooltip-ca-ve-edit' => 'Deze pagina visueel bewerken',
 	'visualeditor-window-title' => 'Inspecteren',
 	'visualeditor-linkinspector-title' => 'Hyperlink',
-	'visualeditor-linkinspector-label-pagetitle' => 'Paginanaam',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Bestaande pagina',
 	'visualeditor-linkinspector-suggest-new-page' => 'Nieuwe pagina',
 	'visualeditor-linkinspector-suggest-external-link' => 'Webkoppeling',
@@ -3063,7 +3057,6 @@ $messages['vi'] = array(
 	'tooltip-ca-ve-edit' => 'Sửa đổi trang này dùng Trình soạn thị giác',
 	'visualeditor-window-title' => 'Kiểm tra',
 	'visualeditor-linkinspector-title' => 'Liên kết',
-	'visualeditor-linkinspector-label-pagetitle' => 'Tên trang',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Trang đã tồn tại',
 	'visualeditor-linkinspector-suggest-new-page' => 'Trang mới',
 	'visualeditor-linkinspector-suggest-external-link' => 'Liên kết Web',
