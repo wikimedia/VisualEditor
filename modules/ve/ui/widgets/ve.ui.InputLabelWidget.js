@@ -58,7 +58,7 @@ ve.ui.InputLabelWidget.static.tagName = 'label';
  */
 ve.ui.InputLabelWidget.prototype.onClick = function () {
 	if ( !this.disabled && this.input ) {
-		this.input.focus();
+		this.input.$.focus();
 	}
 	return false;
 };
