@@ -125,7 +125,7 @@
 	top: 2.5em;
 }
 
-.ve-ui-dropdownTool .ve-ui-labeledWidget-label {
+.ve-ui-dropdownTool .ve-ui-labeledElement-label {
 	display: block;
 	padding: 0.33em 0 0.33em 0;
 }
@@ -134,40 +134,40 @@
 	width: 8em;
 }
 
-.ve-ui-dropdownTool-format .ve-ui-optionWidget[rel="paragraph"] .ve-ui-labeledWidget-label {
+.ve-ui-dropdownTool-format .ve-ui-optionWidget[rel="paragraph"] .ve-ui-labeledElement-label {
 	font-weight: normal;
 }
 
-.ve-ui-dropdownTool-format .ve-ui-optionWidget[rel="heading-1"] .ve-ui-labeledWidget-label {
+.ve-ui-dropdownTool-format .ve-ui-optionWidget[rel="heading-1"] .ve-ui-labeledElement-label {
 	font-size: 188%;
 	font-weight: normal;
 }
 
-.ve-ui-dropdownTool-format .ve-ui-optionWidget[rel="heading-2"] .ve-ui-labeledWidget-label {
+.ve-ui-dropdownTool-format .ve-ui-optionWidget[rel="heading-2"] .ve-ui-labeledElement-label {
 	font-size: 150%;
 	font-weight: normal;
 }
 
-.ve-ui-dropdownTool-format .ve-ui-optionWidget[rel="heading-3"] .ve-ui-labeledWidget-label {
+.ve-ui-dropdownTool-format .ve-ui-optionWidget[rel="heading-3"] .ve-ui-labeledElement-label {
 	font-size: 132%;
 	font-weight: bold;
 }
 
-.ve-ui-dropdownTool-format .ve-ui-optionWidget[rel="heading-4"] .ve-ui-labeledWidget-label {
+.ve-ui-dropdownTool-format .ve-ui-optionWidget[rel="heading-4"] .ve-ui-labeledElement-label {
 	font-size: 116%;
 	font-weight: bold;
 }
 
-.ve-ui-dropdownTool-format .ve-ui-optionWidget[rel="heading-5"] .ve-ui-labeledWidget-label {
+.ve-ui-dropdownTool-format .ve-ui-optionWidget[rel="heading-5"] .ve-ui-labeledElement-label {
 	font-size: 100%;
 	font-weight: bold;
 }
 
-.ve-ui-dropdownTool-format .ve-ui-optionWidget[rel="heading-6"] .ve-ui-labeledWidget-label {
+.ve-ui-dropdownTool-format .ve-ui-optionWidget[rel="heading-6"] .ve-ui-labeledElement-label {
 	font-size: 80%;
 	font-weight: bold;
 }
 
-.ve-ui-dropdownTool-format .ve-ui-optionWidget[rel="preformatted"] .ve-ui-labeledWidget-label {
+.ve-ui-dropdownTool-format .ve-ui-optionWidget[rel="preformatted"] .ve-ui-labeledElement-label {
 	font-family: monospace, "Courier New";
 }

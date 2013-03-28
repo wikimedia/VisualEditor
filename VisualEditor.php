@@ -328,10 +328,11 @@ $wgResourceModules += array(
 			've/ui/ve.ui.Toolbar.js',
 			've/ui/ve.ui.ToolFactory.js',
 
-			've/ui/widgets/ve.ui.LabeledWidget.js',
-			've/ui/widgets/ve.ui.FlaggableWidget.js',
+			've/ui/elements/ve.ui.LabeledWidget.js',
+			've/ui/elements/ve.ui.GroupWidget.js',
+			've/ui/elements/ve.ui.FlaggableElement.js',
+
 			've/ui/widgets/ve.ui.PopupWidget.js',
-			've/ui/widgets/ve.ui.GroupWidget.js',
 			've/ui/widgets/ve.ui.SelectWidget.js',
 			've/ui/widgets/ve.ui.OptionWidget.js',
 			've/ui/widgets/ve.ui.ButtonWidget.js',
@@ -350,7 +351,7 @@ $wgResourceModules += array(
 
 			've/ui/layouts/ve.ui.GridLayout.js',
 			've/ui/layouts/ve.ui.PanelLayout.js',
-			've/ui/layouts/panels/ve.ui.TitledPanelLayout.js',
+			've/ui/layouts/panels/ve.ui.StackPanelLayout.js',
 			've/ui/layouts/panels/ve.ui.EditorPanelLayout.js',
 
 			've/ui/dialogs/ve.ui.ContentDialog.js',
@@ -396,6 +397,7 @@ $wgResourceModules += array(
 			've/ui/styles/ve.ui.Inspector.css',
 			've/ui/styles/ve.ui.Toolbar.css',
 			've/ui/styles/ve.ui.Tool.css',
+			've/ui/styles/ve.ui.Element.css',
 			've/ui/styles/ve.ui.Layout.css',
 			've/ui/styles/ve.ui.Widget.css',
 		),

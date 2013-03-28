@@ -92,6 +92,7 @@ ve.ui.Window.static = {};
 ve.ui.Window.static.stylesheets = [
 	've.ui.Frame.css',
 	've.ui.Window.css',
+	've.ui.Element.css',
 	've.ui.Layout.css',
 	've.ui.Widget.css',
 	( window.devicePixelRatio > 1 ? 've.ui.Icons-vector.css' : 've.ui.Icons-raster.css' )

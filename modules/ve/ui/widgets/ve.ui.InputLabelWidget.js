@@ -12,7 +12,7 @@
  *
  * @class
  * @extends ve.ui.Widget
- * @mixins ve.ui.LabeledWidget
+ * @mixins ve.ui.LabeledElement
  *
  * @constructor
  * @param {Object} [config] Config options
@@ -26,7 +26,7 @@ ve.ui.InputLabelWidget = function VeUiInputLabelWidget( config ) {
 	ve.ui.Widget.call( this, config );
 
 	// Mixin constructors
-	ve.ui.LabeledWidget.call( this, this.$, config );
+	ve.ui.LabeledElement.call( this, this.$, config );
 
 	// Properties
 	this.input = config.input;
@@ -42,7 +42,7 @@ ve.ui.InputLabelWidget = function VeUiInputLabelWidget( config ) {
 
 ve.inheritClass( ve.ui.InputLabelWidget, ve.ui.Widget );
 
-ve.mixinClass( ve.ui.InputLabelWidget, ve.ui.LabeledWidget );
+ve.mixinClass( ve.ui.InputLabelWidget, ve.ui.LabeledElement );
 
 /* Static Properties */
 

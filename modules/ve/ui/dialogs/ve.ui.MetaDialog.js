@@ -50,13 +50,20 @@ ve.ui.MetaDialog.prototype.initialize = function () {
 
 	// Properties
 	this.outlinePanel = new ve.ui.PanelLayout( { '$$': this.$$ } );
-	this.editorPanel = new ve.ui.EditorPanelLayout( {
-		'$$': this.$$, 'title': 'Categories', 'icon': 'categories'
-	} );
+	this.editorPanel = new ve.ui.StackPanelLayout( { '$$': this.$$ } );
+	this.editorPanels = {
+		'categories': new ve.ui.EditorPanelLayout( {
+			'$$': this.$$, 'icon': 'categories', 'label': 'Categories'
+		} ),
+		'languages': new ve.ui.EditorPanelLayout( {
+			'$$': this.$$, 'icon': 'language', 'label': 'Languages'
+		} )
+	};
 	this.layout = new ve.ui.GridLayout(
 		[this.outlinePanel, this.editorPanel],
 		{ '$$': this.$$, 'widths': [1, 2] }
 	);
+	this.editorPanel.addItems( ve.getObjectValues( this.editorPanels ) );
 
 	// HACK
 	this.outlineWidget = new ve.ui.OutlineWidget( { '$$': this.$$ } );
@@ -68,7 +75,11 @@ ve.ui.MetaDialog.prototype.initialize = function () {
 			'languages', { '$$': this.$$, 'icon': 'language', 'label': 'Languages' }
 		)
 	] );
-	this.outlineWidget.selectItem( this.outlineWidget.getClosestSelectableItem( 0 ) );
+	this.outlineWidget
+		.on( 'select', ve.bind( function ( item ) {
+			this.editorPanel.showItem( this.editorPanels[item.getData()] );
+		}, this ) )
+		.selectItem( this.outlineWidget.getClosestSelectableItem( 0 ) );
 
 	// Initialization
 	this.outlinePanel.$.addClass( 've-ui-metaDialog-outlinePanel' );

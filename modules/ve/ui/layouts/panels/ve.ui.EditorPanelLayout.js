@@ -10,7 +10,7 @@
  *
  * @class
  * @extends ve.ui.PanelLayout
- * @mixins ve.ui.LabeledWidget
+ * @mixins ve.ui.LabeledElement
  *
  * @constructor
  * @param {Object} [config] Config options
@@ -24,15 +24,15 @@ ve.ui.EditorPanelLayout = function VeUiEditorPanelLayout( config ) {
 	ve.ui.PanelLayout.call( this, config );
 
 	// Mixin constructors
-	ve.ui.TitledPanelLayout.call( this, this.$$( '<div>' ), config );
+	ve.ui.LabeledElement.call( this, this.$$( '<div>' ), config );
 
 	// Initialization
-	this.$title.addClass( 've-ui-icon-' + config.icon + '-big' );
-	this.$.append( this.$title ).addClass( 've-ui-editorPanelLayout' );
+	this.$label.addClass( 've-ui-icon-' + config.icon + '-big' );
+	this.$.append( this.$label ).addClass( 've-ui-editorPanelLayout' );
 };
 
 /* Inheritance */
 
 ve.inheritClass( ve.ui.EditorPanelLayout, ve.ui.PanelLayout );
 
-ve.mixinClass( ve.ui.EditorPanelLayout, ve.ui.TitledPanelLayout );
+ve.mixinClass( ve.ui.EditorPanelLayout, ve.ui.LabeledElement );

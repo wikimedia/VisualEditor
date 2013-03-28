@@ -1,12 +1,12 @@
 /*!
- * VisualEditor UserInterface LabeledWidget class.
+ * VisualEditor UserInterface LabeledElement class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Creates an ve.ui.LabeledWidget object.
+ * Labeled element.
  *
  * @class
  * @abstract
@@ -16,7 +16,7 @@
  * @param {Object} [config] Config options
  * @cfg {jQuery|string} [label=''] Label text
  */
-ve.ui.LabeledWidget = function VeUiLabeledWidget( $label, config ) {
+ve.ui.LabeledElement = function VeUiLabeledElement( $label, config ) {
 	// Config intialization
 	config = config || {};
 
@@ -24,7 +24,7 @@ ve.ui.LabeledWidget = function VeUiLabeledWidget( $label, config ) {
 	this.$label = $label;
 
 	// Initialization
-	this.$label.addClass( 've-ui-labeledWidget-label' );
+	this.$label.addClass( 've-ui-labeledElement-label' );
 	this.setLabel( config.label );
 };
 
@@ -37,7 +37,7 @@ ve.ui.LabeledWidget = function VeUiLabeledWidget( $label, config ) {
  * @param {jQuery|string} [value] jQuery HTML node selection or string text value to use for label
  * @chainable
  */
-ve.ui.LabeledWidget.prototype.setLabel = function ( value ) {
+ve.ui.LabeledElement.prototype.setLabel = function ( value ) {
 	if ( typeof value === 'string' && value.length && /[^\s]*/.test( value ) ) {
 		this.$label.text( value );
 	} else if ( value instanceof jQuery ) {
@@ -54,7 +54,7 @@ ve.ui.LabeledWidget.prototype.setLabel = function ( value ) {
  * @method
  * @chainable
  */
-ve.ui.LabeledWidget.prototype.fitLabel = function () {
+ve.ui.LabeledElement.prototype.fitLabel = function () {
 	if ( this.$label.autoEllipsis ) {
 		this.$label.autoEllipsis( { 'hasSpan': false, 'tooltip': true } );
 	}

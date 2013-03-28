@@ -1,12 +1,12 @@
 /*!
- * VisualEditor UserInterface FlaggableWidget class.
+ * VisualEditor UserInterface FlaggableElement class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Creates an ve.ui.FlaggableWidget object.
+ * Flaggable element.
  *
  * @class
  * @abstract
@@ -15,7 +15,7 @@
  * @param {Object} [config] Config options
  * @cfg {string[]} [flags=[]] Styling flags, e.g. 'primary', 'destructive' or 'constructive'
  */
-ve.ui.FlaggableWidget = function VeUiFlaggableWidget( config ) {
+ve.ui.FlaggableElement = function VeUiFlaggableElement( config ) {
 	// Config initialization
 	config = config || {};
 
@@ -35,7 +35,7 @@ ve.ui.FlaggableWidget = function VeUiFlaggableWidget( config ) {
  * @param {string} flag Flag name to check
  * @returns {boolean} Has flag
  */
-ve.ui.FlaggableWidget.prototype.hasFlag = function ( flag ) {
+ve.ui.FlaggableElement.prototype.hasFlag = function ( flag ) {
 	return flag in this.flags;
 };
 
@@ -45,7 +45,7 @@ ve.ui.FlaggableWidget.prototype.hasFlag = function ( flag ) {
  * @method
  * @returns {string[]} flags Flag names
  */
-ve.ui.FlaggableWidget.prototype.getFlags = function () {
+ve.ui.FlaggableElement.prototype.getFlags = function () {
 	return ve.getObjectKeys( this.flags );
 };
 
@@ -57,9 +57,9 @@ ve.ui.FlaggableWidget.prototype.getFlags = function () {
  *   values, keyed by flag name
  * @chainable
  */
-ve.ui.FlaggableWidget.prototype.setFlags = function ( flags ) {
+ve.ui.FlaggableElement.prototype.setFlags = function ( flags ) {
 	var i, len, flag,
-		classPrefix = 've-ui-flaggableWidget-';
+		classPrefix = 've-ui-flaggableElement-';
 
 	if ( ve.isArray( flags ) ) {
 		for ( i = 0, len = flags.length; i < len; i++ ) {

@@ -5,12 +5,6 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
-/* ve.ui.LabeledWidget */
-
-.ve-ui-labeledWidget-label {
-	display: block;
-}
-
 /* ve.ui.IconButtonWidget */
 
 .ve-ui-iconButtonWidget {
@@ -99,18 +93,18 @@
 	box-shadow: none;
 }
 
-.ve-ui-buttonWidget .ve-ui-labeledWidget-label {
+.ve-ui-buttonWidget .ve-ui-labeledElement-label {
 	display: inline-block;
 	vertical-align: middle;
 	line-height: 1.9em;
 }
 
-.ve-ui-flaggableWidget-destructive.ve-ui-buttonWidget {
+.ve-ui-flaggableElement-destructive.ve-ui-buttonWidget {
 	/* Red text */
 	color: #d45353;
 }
 
-.ve-ui-flaggableWidget-constructive.ve-ui-buttonWidget {
+.ve-ui-flaggableElement-constructive.ve-ui-buttonWidget {
 	/* Green */
 	border: solid 1px #c3e59a;
 	background-color: #f0fbe1;
@@ -127,11 +121,11 @@
 	background-image: linear-gradient(top, #f0fbe1 0%, #c3e59a 100%);
 }
 
-.ve-ui-flaggableWidget-constructive.ve-ui-buttonWidget:hover {
+.ve-ui-flaggableElement-constructive.ve-ui-buttonWidget:hover {
 	border-color: #a6cf74;
 }
 
-.ve-ui-flaggableWidget-primary.ve-ui-buttonWidget {
+.ve-ui-flaggableElement-primary.ve-ui-buttonWidget {
 	/* Blue */
 	border: solid 1px #b0d9ee;
 	background-color: #eaf4fa;
@@ -148,7 +142,7 @@
 	background-image: linear-gradient(top, #eaf4fa 0%, #b0d9ee 100%);
 }
 
-.ve-ui-flaggableWidget-primary.ve-ui-buttonWidget:hover {
+.ve-ui-flaggableElement-primary.ve-ui-buttonWidget:hover {
 	border-color: #84b9d4;
 }
 
@@ -171,7 +165,7 @@
 	cursor: pointer;
 }
 
-.ve-ui-optionWidget .ve-ui-labeledWidget-label {
+.ve-ui-optionWidget .ve-ui-labeledElement-label {
 	white-space: nowrap;
 }
 

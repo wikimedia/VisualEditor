@@ -10,8 +10,8 @@
  *
  * @class
  * @extends ve.ui.Widget
- * @mixins ve.ui.FlaggableWidget
- * @mixins ve.ui.LabeledWidget
+ * @mixins ve.ui.FlaggableElement
+ * @mixins ve.ui.LabeledElement
  *
  * @constructor
  * @param {Object} [config] Config options
@@ -21,8 +21,8 @@ ve.ui.ButtonWidget = function VeUiButtonWidget( config ) {
 	ve.ui.Widget.call( this, config );
 
 	// Mixin constructors
-	ve.ui.FlaggableWidget.call( this, config );
-	ve.ui.LabeledWidget.call( this, this.$$( '<span>' ), config );
+	ve.ui.FlaggableElement.call( this, config );
+	ve.ui.LabeledElement.call( this, this.$$( '<span>' ), config );
 
 	// Events
 	this.$.on( 'click', ve.bind( this.onClick, this ) );
@@ -35,9 +35,9 @@ ve.ui.ButtonWidget = function VeUiButtonWidget( config ) {
 
 ve.inheritClass( ve.ui.ButtonWidget, ve.ui.Widget );
 
-ve.mixinClass( ve.ui.ButtonWidget, ve.ui.FlaggableWidget );
+ve.mixinClass( ve.ui.ButtonWidget, ve.ui.FlaggableElement );
 
-ve.mixinClass( ve.ui.ButtonWidget, ve.ui.LabeledWidget );
+ve.mixinClass( ve.ui.ButtonWidget, ve.ui.LabeledElement );
 
 /* Events */
 

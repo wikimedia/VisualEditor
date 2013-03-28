@@ -10,7 +10,8 @@
  *
  * @class
  * @abstract
- * @extends ve.ui.GroupWidget
+ * @extends ve.ui.Widget
+ * @mixin ve.ui.GroupElement
  *
  * @constructor
  * @param {Object} [config] Config options
@@ -20,7 +21,10 @@ ve.ui.SelectWidget = function VeUiSelectWidget( config ) {
 	config = config || {};
 
 	// Parent constructor
-	ve.ui.GroupWidget.call( this, config );
+	ve.ui.Widget.call( this, config );
+
+	// Mixin constructors
+	ve.ui.GroupElement.call( this, this.$, config );
 
 	// Properties
 	this.dragging = false;
@@ -41,7 +45,9 @@ ve.ui.SelectWidget = function VeUiSelectWidget( config ) {
 
 /* Inheritance */
 
-ve.inheritClass( ve.ui.SelectWidget, ve.ui.GroupWidget );
+ve.inheritClass( ve.ui.SelectWidget, ve.ui.Widget );
+
+ve.mixinClass( ve.ui.SelectWidget, ve.ui.GroupElement );
 
 /* Events */
 
@@ -336,7 +342,7 @@ ve.ui.SelectWidget.prototype.addItems = function ( items ) {
 			this.hashes[hash] = item;
 		}
 	}
-	ve.ui.GroupWidget.prototype.addItems.call( this, items );
+	ve.ui.GroupElement.prototype.addItems.call( this, items );
 
 	return this;
 };
@@ -361,7 +367,7 @@ ve.ui.SelectWidget.prototype.removeItems = function ( items ) {
 			delete this.hashes[hash];
 		}
 	}
-	ve.ui.GroupWidget.prototype.removeItems.call( this, items );
+	ve.ui.GroupElement.prototype.removeItems.call( this, items );
 
 	return this;
 };
@@ -377,7 +383,7 @@ ve.ui.SelectWidget.prototype.removeItems = function ( items ) {
 ve.ui.SelectWidget.prototype.clearItems = function () {
 	// Clear all items
 	this.hashes = {};
-	ve.ui.GroupWidget.prototype.clearItems.call( this );
+	ve.ui.GroupElement.prototype.clearItems.call( this );
 
 	return this;
 };
