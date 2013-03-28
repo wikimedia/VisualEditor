@@ -60,6 +60,9 @@ ve.ce.Surface = function VeCeSurface( $container, model, surface ) {
 	}
 
 	// Initialization
+	if ( !rangy.initialized ) {
+		rangy.init();
+	}
 	this.$phantoms.addClass( 've-ce-surface-phantoms' );
 	this.$pasteTarget.addClass( 've-ce-surface-paste' ).prop( 'contenteditable', true );
 	this.$.append( this.documentView.getDocumentNode().$, this.$phantoms, this.$pasteTarget );
@@ -122,6 +125,9 @@ ve.ce.Surface.static.textPattern = new RegExp(
  * @static
  */
 ve.ce.Surface.getSelectionRect = function () {
+	if ( !rangy.initialized ) {
+		rangy.init();
+	}
 	var rangySel = rangy.getSelection();
 	return {
 		start: rangySel.getStartDocumentPos(),
@@ -1285,7 +1291,3 @@ ve.ce.Surface.prototype.enableRendering = function () {
 ve.ce.Surface.prototype.disableRendering = function () {
 	this.renderingEnabled = false;
 };
-
-/* Initialization */
-
-rangy.init();
