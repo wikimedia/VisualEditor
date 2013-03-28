@@ -12,8 +12,8 @@
  *
  *     @example
  *     new ve.Surface(
- *         $( '<div>' ).appendTo( document.body ),
- *         $( '<p>Hello world.</p>' )[0]
+ *         new ve.init.sa.Target( $( '<div>' ).appendTo( document.body ) ),
+ *         ve.createDocumentFromHTML( '<p>Hello world.</p>' )
  *     );
  *
  * @class
