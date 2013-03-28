@@ -6,10 +6,10 @@ cd $(cd $(dirname $0); pwd)
 	do
 		if [[ "$l" == "{{VE-LOAD-HEAD}}" ]]
 		then
-			php ../maintenance/makeStaticLoader.php --section=head --ve-path=../modules/
+			php ../maintenance/makeStaticLoader.php --section=head --ve-path=../modules/ $*
 		elif [[ "$l" == "{{VE-LOAD-BODY}}" ]]
 		then
-			php ../maintenance/makeStaticLoader.php --section=body --ve-path=../modules/
+			php ../maintenance/makeStaticLoader.php --section=body --ve-path=../modules/ $*
 		else
 			echo "$l"
 		fi

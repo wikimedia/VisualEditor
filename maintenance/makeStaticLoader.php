@@ -68,7 +68,7 @@ class MakeStaticLoader extends Maintenance {
 		</script>',
 			'bodyAdd' => '<script>
 	<?php
-		require( \'' . $vePath . '../VisualEditor.i18n.php\' );
+		require( ' . var_export( dirname( __DIR__ ) . '/VisualEditor.i18n.php', true ) . ' );
 		echo \'ve.init.platform.addMessages( \' . json_encode( $messages[\'en\'] ) . \');\' . "\n";
 	?>
 	ve.init.platform.setModulesUrl( \'' . $vePath . '\' );
