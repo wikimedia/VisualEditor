@@ -264,7 +264,7 @@ $html = file_get_contents( $page );
 					ve.createDocumentFromHTML( <?php echo json_encode( $html ) ?> )
 				);
 				$( '.ve-ce-documentNode' ).focus();
-				ve.instances[0].dialogs.open( 'meta' );
+				//ve.instances[0].dialogs.open( 'meta' );
 			} );
 		</script>
 
