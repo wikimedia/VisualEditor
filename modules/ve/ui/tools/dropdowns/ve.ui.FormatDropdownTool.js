@@ -45,8 +45,7 @@ ve.ui.FormatDropdownTool.static.titleMessage = 'visualeditor-formatdropdown-titl
  * Options given to ve.ui.DropdownTool.
  *
  * @static
- * @property
- * @type {Object[]}
+ * @property {Object[]}
  */
 ve.ui.FormatDropdownTool.static.items = [
 	{

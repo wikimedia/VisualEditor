@@ -30,8 +30,7 @@ ve.inheritClass( ve.ui.ContentDialog, ve.ui.Dialog );
  * Localized message for dialog title.
  *
  * @static
- * @property
- * @type {string}
+ * @property {string}
  */
 ve.ui.ContentDialog.static.titleMessage = 'visualeditor-dialog-content-title';
 

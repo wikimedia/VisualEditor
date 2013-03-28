@@ -37,8 +37,7 @@ ve.ui.Element.static = {};
  * HTML element name.
  *
  * @static
- * @property
- * @type {string}
+ * @property {string}
  * @inheritable
  */
 ve.ui.Element.static.tagName = 'div';

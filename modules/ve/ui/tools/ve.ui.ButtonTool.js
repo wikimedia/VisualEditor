@@ -63,8 +63,7 @@ ve.inheritClass( ve.ui.ButtonTool, ve.ui.Tool );
  *
  * @abstract
  * @static
- * @property
- * @type {string|Object}
+ * @property {string|Object}
  * @inheritable
  */
 ve.ui.ButtonTool.static.icon = '';

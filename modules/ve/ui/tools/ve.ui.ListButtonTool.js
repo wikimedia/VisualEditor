@@ -29,8 +29,7 @@ ve.inheritClass( ve.ui.ListButtonTool, ve.ui.ButtonTool );
  *
  * @abstract
  * @static
- * @property
- * @type {string}
+ * @property {string}
  * @inheritable
  */
 ve.ui.ListButtonTool.static.style = '';

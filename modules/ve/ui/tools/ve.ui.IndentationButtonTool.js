@@ -31,8 +31,7 @@ ve.inheritClass( ve.ui.IndentationButtonTool, ve.ui.ButtonTool );
  *
  * @abstract
  * @static
- * @property
- * @type {string}
+ * @property {string}
  * @inheritable
  */
 ve.ui.IndentationButtonTool.static.method = '';

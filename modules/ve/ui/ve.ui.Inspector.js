@@ -35,8 +35,7 @@ ve.inheritClass( ve.ui.Inspector, ve.ui.Window );
  * Pattern to use when matching against annotation type strings.
  *
  * @static
- * @property
- * @type {RegExp}
+ * @property {RegExp}
  */
 ve.ui.Inspector.static.typePattern = new RegExp();
 

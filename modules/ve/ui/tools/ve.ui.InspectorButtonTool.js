@@ -31,8 +31,7 @@ ve.inheritClass( ve.ui.InspectorButtonTool, ve.ui.ButtonTool );
  *
  * @abstract
  * @static
- * @property
- * @type {string}
+ * @property {string}
  * @inheritable
  */
 ve.ui.InspectorButtonTool.static.inspector = '';

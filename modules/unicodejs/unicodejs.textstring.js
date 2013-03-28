@@ -6,8 +6,6 @@
  */
 
 /**
- * TextString
- *
  * This class provides a simple interface to fetching plain text
  * from a data source. The base class reads data from a string, but
  * an extended class could provide access to a more complex structure,

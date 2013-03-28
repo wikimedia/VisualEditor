@@ -86,8 +86,7 @@ ve.ui.Window.static = {};
  * @see ve.ui.Frame
  *
  * @static
- * @property
- * @type {Object}
+ * @property {Object}
  */
 ve.ui.Window.static.stylesheets = [
 	've.ui.Frame.css',
@@ -101,8 +100,7 @@ ve.ui.Window.static.stylesheets = [
  * Symbolic name of icon.
  *
  * @static
- * @property
- * @type {string}
+ * @property {string}
  */
 ve.ui.Window.static.icon = 'window';
 
@@ -110,8 +108,7 @@ ve.ui.Window.static.icon = 'window';
  * Localized message for title.
  *
  * @static
- * @property
- * @type {string}
+ * @property {string}
  */
 ve.ui.Window.static.titleMessage = null;
 

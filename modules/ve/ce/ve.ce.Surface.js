@@ -92,8 +92,7 @@ ve.ce.Surface.static = {};
  * Phantom element template.
  *
  * @static
- * @property
- * @type {jQuery}
+ * @property {jQuery}
  */
 ve.ce.Surface.static.$phantomTemplate = $( '<div>' )
 	.addClass( 've-ce-surface-phantom' )
@@ -106,8 +105,7 @@ ve.ce.Surface.static.$phantomTemplate = $( '<div>' )
  * Pattern matching "normal" characters which we can let the browser handle natively.
  *
  * @static
- * @property
- * @type {RegExp}
+ * @property {RegExp}
  */
 ve.ce.Surface.static.textPattern = new RegExp(
 	'[a-zA-Z\\-_’\'‘ÆÐƎƏƐƔĲŊŒẞÞǷȜæðǝəɛɣĳŋœĸſßþƿȝĄƁÇĐƊĘĦĮƘŁØƠŞȘŢȚŦŲƯY̨Ƴąɓçđɗęħįƙłøơşșţțŧųưy̨ƴÁÀÂÄ' +

@@ -63,8 +63,7 @@ ve.mixinClass( ve.ce.BranchNode, ve.BranchNode );
  * Inline slug template.
  *
  * @static
- * @property
- * @type {jQuery}
+ * @property {jQuery}
  */
 ve.ce.BranchNode.$inlineSlugTemplate = $( '<span>' )
 	.addClass( 've-ce-slug' )
@@ -74,8 +73,7 @@ ve.ce.BranchNode.$inlineSlugTemplate = $( '<span>' )
  * Block slug template.
  *
  * @static
- * @property
- * @type {jQuery}
+ * @property {jQuery}
  */
 ve.ce.BranchNode.$blockSlugTemplate =
 	ve.ce.BranchNode.$inlineSlugTemplate.clone().addClass( 've-ce-slugBlock' );

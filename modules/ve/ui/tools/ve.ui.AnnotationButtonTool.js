@@ -32,8 +32,7 @@ ve.inheritClass( ve.ui.AnnotationButtonTool, ve.ui.ButtonTool );
  *
  * @abstract
  * @static
- * @property
- * @type {Object}
+ * @property {Object}
  * @inheritable
  */
 ve.ui.AnnotationButtonTool.static.annotation = { 'name': '' };

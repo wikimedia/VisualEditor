@@ -59,8 +59,7 @@ ve.inheritClass( ve.ui.InputWidget, ve.ui.Widget );
  * HTML input type.
  *
  * @static
- * @property
- * @type {string}
+ * @property {string}
  * @inheritable
  */
 ve.ui.InputWidget.static.inputType = '';

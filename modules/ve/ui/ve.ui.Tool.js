@@ -47,8 +47,7 @@ ve.inheritClass( ve.ui.Tool, ve.ui.Widget );
  *
  * @abstract
  * @static
- * @property
- * @type {string}
+ * @property {string}
  */
 ve.ui.Tool.static.name = '';
 
@@ -59,8 +58,7 @@ ve.ui.Tool.static.name = '';
  *
  * @abstract
  * @static
- * @property
- * @type {string}
+ * @property {string}
  */
 ve.ui.Tool.static.cssName = null;
 
@@ -69,8 +67,7 @@ ve.ui.Tool.static.cssName = null;
  *
  * @abstract
  * @static
- * @property
- * @type {string}
+ * @property {string}
  */
 ve.ui.Tool.static.titleMessage = null;
 

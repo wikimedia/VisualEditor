@@ -6,8 +6,6 @@
  */
 
 /**
- * Surface.
- *
  * A surface is a top-level object which contains both a surface model and a surface view.
  *
  *     @example
