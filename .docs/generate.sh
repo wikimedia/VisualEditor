@@ -22,7 +22,9 @@ ec=$?
 rm eg-iframe.html
 cd - > /dev/null
 
-echo -e "$warnings"
+# Re-colorize
+NORMAL=$(tput sgr0); YELLOW=$(tput setaf 3); MEGANTA=$(tput setaf 5)
+echo "$warnings" | perl -pe "s|^([^ ]+) ([^ ]+) (.*)$|${YELLOW}\1 ${MEGANTA}\2${NORMAL} \3|"
 
 # JSDuck doesn't exit with an error code if there are warnings
 # (only when there are fatal errors). We fixed all warnings
