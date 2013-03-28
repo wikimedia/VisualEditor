@@ -259,14 +259,28 @@ ve.ce.Surface.prototype.onDocumentDragoverDrop = function () {
  * @emits selectionStart
  */
 ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
+	var selection, prevNode;
+
 	// Ignore keydowns while in IME mode but do not preventDefault them.
 	if ( this.inIme === true ) {
 		return;
 	}
-	if ( $.browser.msie === true && e.which === 229 ) {
-		this.inIme = true;
-		this.handleInsertion();
-		return;
+	if ( $.browser.msie === true ) {
+		// Aliens/Entities
+		selection = this.model.getSelection();
+		if ( selection.start !== 0 && selection.isCollapsed() ) {
+			prevNode = this.model.getDocument().getDocumentNode().getNodeFromOffset( selection.start - 1 );
+			if ( !prevNode.canHaveChildren() && !prevNode.canContainContent() ) {
+				this.model.change( null, new ve.Range( selection.start ) );
+			}
+		}
+
+		// IME
+		if ( e.which === 229 ) {
+			this.inIme = true;
+			this.handleInsertion();
+			return;
+		}
 	}
 	if ( ve.ce.isArrowKey( e.keyCode ) ) {
 		// Detect start of selecting using shift+arrow keys.

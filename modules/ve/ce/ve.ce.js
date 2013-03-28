@@ -135,6 +135,11 @@ ve.ce.getOffsetFromTextNode = function ( domNode, domOffset ) {
 	);
 	nodeModel = $node.data( 'node' ).getModel();
 
+	// IE sometimes puts the cursor in a text node inside ce="false". BAD!
+	if ( $node[0].contentEditable === 'false' ) {
+		return nodeModel.getOffset() + nodeModel.getOuterLength();
+	}
+
 	if ( ! $node.hasClass( 've-ce-branchNode' ) ) {
 		return nodeModel.getOffset();
 	}
@@ -202,6 +207,12 @@ ve.ce.getOffsetFromElementNode = function ( domNode, domOffset, addOuterLength )
 			nodeModel = $domNode.next().data( 'node' ).getModel();
 			return nodeModel.getOffset();
 		}
+	}
+
+	// IE sometimes puts the cursor in a text node inside ce="false". BAD!
+	if ( domNode.contentEditable === 'false' ) {
+		nodeModel = $domNode.data( 'node' ).getModel();
+		return nodeModel.getOffset() + nodeModel.getOuterLength();
 	}
 
 	if ( domOffset === 0 ) {
