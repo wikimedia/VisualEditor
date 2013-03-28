@@ -132,16 +132,6 @@ ve.ui.Inspector.prototype.onOpen = function () {
 };
 
 /**
- * Handle inspector initialize events.
- *
- * @method
- * @param {boolean} accept Changes have been accepted
- */
-ve.ui.Inspector.prototype.onClose = function () {
-	this.surface.getView().getDocument().getDocumentNode().$.focus();
-};
-
-/**
  * Get matching annotations within a fragment.
  *
  * @method

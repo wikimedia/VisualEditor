@@ -26,12 +26,6 @@ ve.inheritClass( ve.ui.MetaDialog, ve.ui.Dialog );
 
 /* Static Properties */
 
-/**
- * Localized message for dialog title.
- *
- * @static
- * @property {string}
- */
 ve.ui.MetaDialog.static.titleMessage = 'visualeditor-dialog-meta-title';
 
 ve.ui.MetaDialog.static.icon = 'settings';

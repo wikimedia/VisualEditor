@@ -182,9 +182,11 @@
 		<script src="../../ve/ui/layouts/panels/ve.ui.StackPanelLayout.js"></script>
 		<script src="../../ve/ui/layouts/panels/ve.ui.EditorPanelLayout.js"></script>
 		<script src="../../ve/ui/dialogs/ve.ui.ContentDialog.js"></script>
+		<script src="../../ve/ui/dialogs/ve.ui.MediaDialog.js"></script>
 		<script src="../../ve/ui/dialogs/ve.ui.MetaDialog.js"></script>
 		<script src="../../ve/ui/tools/ve.ui.ButtonTool.js"></script>
 		<script src="../../ve/ui/tools/ve.ui.AnnotationButtonTool.js"></script>
+		<script src="../../ve/ui/tools/ve.ui.DialogButtonTool.js"></script>
 		<script src="../../ve/ui/tools/ve.ui.InspectorButtonTool.js"></script>
 		<script src="../../ve/ui/tools/ve.ui.IndentationButtonTool.js"></script>
 		<script src="../../ve/ui/tools/ve.ui.ListButtonTool.js"></script>
@@ -192,6 +194,7 @@
 		<script src="../../ve/ui/tools/buttons/ve.ui.BoldButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.ItalicButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.ClearButtonTool.js"></script>
+		<script src="../../ve/ui/tools/buttons/ve.ui.MediaButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.LinkButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.MWLinkButtonTool.js"></script>
 		<script src="../../ve/ui/tools/buttons/ve.ui.BulletButtonTool.js"></script>

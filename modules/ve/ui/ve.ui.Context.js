@@ -164,7 +164,7 @@ ve.ui.Context.prototype.destroy = function () {
  * @chainable
  */
 ve.ui.Context.prototype.update = function () {
-	var items,
+	var i, nodes, items,
 		fragment = this.surface.getModel().getFragment(),
 		selection = fragment.getRange(),
 		inspector = this.inspectors.getCurrent();
@@ -175,6 +175,22 @@ ve.ui.Context.prototype.update = function () {
 	} else {
 		// No inspector is open, or the selection has changed, show a menu of available inspectors
 		items = ve.ui.inspectorFactory.getInspectorsForAnnotations( fragment.getAnnotations() );
+		nodes = fragment.getLeafNodes();
+		for ( i = 0; i < nodes.length; i++ ) {
+			if ( nodes[i].range && nodes[i].range.isCollapsed() ) {
+				nodes.splice( i, 1 );
+				i--;
+			}
+		}
+		if ( nodes.length === 1 ) {
+			items = items.concat( ve.ui.dialogFactory.getDialogsForNode( nodes[0].node ) );
+		}
+		for ( i = 0; i < items.length; i++ ) {
+			if ( !ve.ui.toolFactory.lookup( items[i] ) ) {
+				items.splice( i, 1 );
+				i--;
+			}
+		}
 		if ( items.length ) {
 			// There's at least one inspectable annotation, build a menu and show it
 			this.$menu.empty();

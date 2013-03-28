@@ -39,7 +39,7 @@ ve.ui.InspectorFactory.prototype.getTypePattern = function ( name ) {
 };
 
 /**
- * Reduce an annotation set to only those which can be inspected by given inspector.
+ * Get a list of inspectors from a set of annotations.
  *
  * @method
  * @param {ve.dm.AnnotationSet} annotations Annotations to be inspected

@@ -24,6 +24,7 @@ ve.ui.Dialog = function VeUiDialog( surface ) {
 
 	// Initialization
 	this.$.addClass( 've-ui-dialog' );
+	this.$.on( 'mousedown', ve.bind( this.onMouseDown, this ) );
 };
 
 /* Inheritance */
@@ -38,7 +39,35 @@ ve.ui.Dialog.static.stylesheets =
 /* Methods */
 
 /**
- * Handle frame ready events.
+ * Handle mouse down events.
+ *
+ * @method
+ * @param {jQuery.Event} e Mouse down event
+ */
+ve.ui.Dialog.prototype.onMouseDown = function () {
+	return false;
+};
+
+/**
+ * Handle cancel button click events.
+ *
+ * @method
+ */
+ve.ui.Dialog.prototype.onCancelButtonClick = function () {
+	this.close();
+};
+
+/**
+ * Handle apply button click events.
+ *
+ * @method
+ */
+ve.ui.Dialog.prototype.onApplyButtonClick = function () {
+	this.close( true );
+};
+
+/**
+ * Initialize frame contents.
  *
  * @method
  */
@@ -60,22 +89,4 @@ ve.ui.Dialog.prototype.initialize = function () {
 
 	// Initialization
 	this.$head.append( this.applyButton.$, this.cancelButton.$ );
-};
-
-/**
- * Handle cancel button click events.
- *
- * @method
- */
-ve.ui.Dialog.prototype.onCancelButtonClick = function () {
-	this.close();
-};
-
-/**
- * Handle apply button click events.
- *
- * @method
- */
-ve.ui.Dialog.prototype.onApplyButtonClick = function () {
-	this.close( true );
 };
