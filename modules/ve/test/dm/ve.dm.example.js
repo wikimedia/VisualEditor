@@ -675,6 +675,8 @@ ve.dm.example.conversions = {
 	}
 };
 
+ve.dm.example.MWImageHtml = '<a rel="mw:Image" href="./File:image.png" data-parsoid="{&quot;tsr&quot;:[158,216],&quot;src&quot;:&quot;[[Image:VisualEditor-logo.svg|500px|thumb|center|VE logo]]&quot;,&quot;optNames&quot;:{&quot;width&quot;:&quot;$1px&quot;},&quot;dsr&quot;:[158,216,null,null]}"><img height="" width="500" src="/index.php?title=Special:FilePath/image.png&amp;width=500" alt="image.png"></a>';
+
 ve.dm.example.domToDataCases = {
 	'paragraph with plain text': {
 		'html': '<body><p>abc</p></body>',
@@ -702,6 +704,23 @@ ve.dm.example.domToDataCases = {
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
 			{ 'type': 'image', 'attributes' : { 'html/0/src' : 'image.png' } },
 			{ 'type' : '/image' },
+			{ 'type': '/paragraph' }
+		]
+	},
+	'mw:Image': {
+		'html': '<body><p>' + ve.dm.example.MWImageHtml + '</p></body>',
+		'data': [
+			{ 'type': 'paragraph' },
+			{
+				'type': 'MWimage',
+				'attributes': {
+					'src': '/index.php?title=Special:FilePath/image.png&width=500',
+					'width': 500,
+					'height': null,
+					'html': ve.dm.example.MWImageHtml
+				}
+			},
+			{ 'type': '/MWimage' },
 			{ 'type': '/paragraph' }
 		]
 	},
