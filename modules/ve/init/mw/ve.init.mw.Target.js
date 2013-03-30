@@ -576,6 +576,7 @@ ve.init.mw.Target.prototype.reportProblem = function ( message ) {
 	// Gather reporting information
 	var now = new Date(),
 		editedData = this.surface.getDocumentModel().getFullData(),
+		store = this.surface.getDocumentModel().getStore(),
 		report = {
 			'title': this.pageName,
 			'oldid': this.oldid,
@@ -587,7 +588,7 @@ ve.init.mw.Target.prototype.reportProblem = function ( message ) {
 				// originalHTML only has the body's HTML for now, see TODO comment in ve.init.mw.ViewPageTarget.prototype.setUpSurface
 				ve.dm.converter.getDataFromDom( ve.createDocumentFromHTML( '<body>' + this.originalHtml  + '</body>') ),
 			'editedData': editedData,
-			'editedHtml': ve.dm.converter.getDomFromData( editedData ).body.innerHTML,
+			'editedHtml': ve.dm.converter.getDomFromData( store, editedData ).body.innerHTML,
 			'wiki': mw.config.get( 'wgDBname' )
 		};
 	$.post(

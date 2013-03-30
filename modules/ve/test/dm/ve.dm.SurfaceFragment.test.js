@@ -10,7 +10,7 @@ QUnit.module( 've.dm.SurfaceFragment' );
 /* Tests */
 
 QUnit.test( 'constructor', 8, function ( assert ) {
-	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
+	var doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
 		fragment = new ve.dm.SurfaceFragment( surface );
 	// Default range and autoSelect
@@ -27,7 +27,7 @@ QUnit.test( 'constructor', 8, function ( assert ) {
 } );
 
 QUnit.test( 'onTransact', 1, function ( assert ) {
-	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
+	var doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
 		fragment1 = new ve.dm.SurfaceFragment( surface, new ve.Range( 1, 56 ) ),
 		fragment2 = new ve.dm.SurfaceFragment( surface, new ve.Range( 2, 4 ) );
@@ -40,7 +40,7 @@ QUnit.test( 'onTransact', 1, function ( assert ) {
 } );
 
 QUnit.test( 'adjustRange', 3, function ( assert ) {
-	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
+	var doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
 		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 20, 21 ) ),
 		adjustedFragment = fragment.adjustRange( -19, 35 );
@@ -50,7 +50,7 @@ QUnit.test( 'adjustRange', 3, function ( assert ) {
 } );
 
 QUnit.test( 'collapseRange', 3, function ( assert ) {
-	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
+	var doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
 		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 20, 21 ) ),
 		collapsedFragment = fragment.collapseRange();
@@ -60,7 +60,7 @@ QUnit.test( 'collapseRange', 3, function ( assert ) {
 } );
 
 QUnit.test( 'expandRange (closest)', 1, function ( assert ) {
-	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
+	var doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
 		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 20, 21 ) );
 	assert.strictEqual(
@@ -105,7 +105,7 @@ QUnit.test( 'expandRange (word)', 1, function ( assert ) {
 } );
 
 QUnit.test( 'removeContent', 2, function ( assert ) {
-	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
+	var doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
 		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 1, 56 ) ),
 		expectedData = ve.copyArray( ve.dm.example.data.slice( 0, 1 ) )
@@ -126,7 +126,7 @@ QUnit.test( 'removeContent', 2, function ( assert ) {
 } );
 
 QUnit.test( 'insertContent', 3, function ( assert ) {
-	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
+	var doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
 		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 1, 4 ) );
 	fragment.insertContent( ['1', '2', '3'] );
@@ -149,7 +149,8 @@ QUnit.test( 'insertContent', 3, function ( assert ) {
 } );
 
 QUnit.test( 'wrapNodes/unwrapNodes', 10, function ( assert ) {
-	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
+	var doc = ve.dm.example.createExampleDocument(),
+		originalDoc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
 		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 55, 61 ) );
 
@@ -188,7 +189,7 @@ QUnit.test( 'wrapNodes/unwrapNodes', 10, function ( assert ) {
 	assert.deepEqual( fragment.getRange(), new ve.Range( 55, 69 ), 'new range contains wrapping elements' );
 
 	fragment.unwrapNodes( 0, 2 );
-	assert.deepEqual( doc.getData(), ve.dm.example.data, 'unwrapping 2 levels restores document to original state' );
+	assert.deepEqual( doc.getData(), originalDoc.getData(), 'unwrapping 2 levels restores document to original state' );
 	assert.deepEqual( fragment.getRange(), new ve.Range( 55, 61 ), 'range after unwrapping is same as original range' );
 
 	// Make a 1 paragraph into 1 list with 1 item
@@ -216,7 +217,7 @@ QUnit.test( 'wrapNodes/unwrapNodes', 10, function ( assert ) {
 	assert.deepEqual( fragment.getRange(), new ve.Range( 9, 16 ), 'new range contains wrapping elements' );
 
 	fragment.unwrapNodes( 0, 2 );
-	assert.deepEqual( doc.getData(), ve.dm.example.data, 'unwrapping 2 levels restores document to original state' );
+	assert.deepEqual( doc.getData(), originalDoc.getData(), 'unwrapping 2 levels restores document to original state' );
 	assert.deepEqual( fragment.getRange(), new ve.Range( 9, 12 ), 'range after unwrapping is same as original range' );
 
 	fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 8, 34 ) );
@@ -227,10 +228,10 @@ QUnit.test( 'wrapNodes/unwrapNodes', 10, function ( assert ) {
 } );
 
 QUnit.test( 'rewrapNodes', 4, function ( assert ) {
-	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
+	var doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
 		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 43, 55 ) ),
-		expectedDoc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
+		expectedDoc = ve.dm.example.createExampleDocument(),
 		expectedSurface = new ve.dm.Surface( expectedDoc ),
 		expectedFragment = new ve.dm.SurfaceFragment( expectedSurface, new ve.Range( 43, 55 ) ),
 		created = { 'changed': { 'created': 1 } },
@@ -281,7 +282,8 @@ QUnit.test( 'rewrapNodes', 4, function ( assert ) {
 } );
 
 QUnit.test( 'wrapAllNodes', 10, function ( assert ) {
-	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
+	var doc = ve.dm.example.createExampleDocument(),
+		originalDoc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
 		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 55, 61 ) ),
 		expectedData = ve.copyArray( doc.getData() );
@@ -313,7 +315,7 @@ QUnit.test( 'wrapAllNodes', 10, function ( assert ) {
 	assert.deepEqual( fragment.getRange(), new ve.Range( 55, 65 ), 'new range contains wrapping elements' );
 
 	fragment.unwrapNodes( 0, 2 );
-	assert.deepEqual( doc.getData(), ve.dm.example.data, 'unwrapping 2 levels restores document to original state' );
+	assert.deepEqual( doc.getData(), originalDoc.getData(), 'unwrapping 2 levels restores document to original state' );
 	assert.deepEqual( fragment.getRange(), new ve.Range( 55, 61 ), 'range after unwrapping is same as original range' );
 
 	// Make a 1 paragraph into 1 list with 1 item
@@ -341,7 +343,7 @@ QUnit.test( 'wrapAllNodes', 10, function ( assert ) {
 	assert.deepEqual( fragment.getRange(), new ve.Range( 9, 16 ), 'new range contains wrapping elements' );
 
 	fragment.unwrapNodes( 0, 2 );
-	assert.deepEqual( doc.getData(), ve.dm.example.data, 'unwrapping 2 levels restores document to original state' );
+	assert.deepEqual( doc.getData(), originalDoc.getData(), 'unwrapping 2 levels restores document to original state' );
 	assert.deepEqual( fragment.getRange(), new ve.Range( 9, 12 ), 'range after unwrapping is same as original range' );
 
 	fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 5, 37 ) );
@@ -362,10 +364,11 @@ QUnit.test( 'wrapAllNodes', 10, function ( assert ) {
 
 QUnit.test( 'rewrapAllNodes', 6, function ( assert ) {
 	var expectedData,
-		doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
+		doc = ve.dm.example.createExampleDocument(),
+		originalDoc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
 		fragment = new ve.dm.SurfaceFragment( surface, new ve.Range( 5, 37 ) ),
-		expectedDoc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
+		expectedDoc = ve.dm.example.createExampleDocument(),
 		expectedSurface = new ve.dm.Surface( expectedDoc ),
 		expectedFragment = new ve.dm.SurfaceFragment( expectedSurface, new ve.Range( 5, 37 ) ),
 		created = { 'changed': { 'created' : 1 } };
@@ -398,7 +401,7 @@ QUnit.test( 'rewrapAllNodes', 6, function ( assert ) {
 		]
 	);
 
-	expectedData = ve.copyArray( ve.dm.example.data );
+	expectedData = originalDoc.getData();
 	expectedData[5].internal = created;
 	expectedData[6].internal = created;
 	expectedData[7].internal = created;
@@ -424,7 +427,7 @@ QUnit.test( 'rewrapAllNodes', 6, function ( assert ) {
 } );
 
 function runIsolateTest( assert, type, range, expected, label ) {
-	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.isolationData ) ),
+	var doc = ve.dm.example.createExampleDocument( 'isolationData' ),
 		surface = new ve.dm.Surface( doc ),
 		fragment = new ve.dm.SurfaceFragment( surface, range ),
 		data;

@@ -159,15 +159,15 @@ ve.IndentationAction.prototype.indentListItem = function ( listItem ) {
 
 	// (2) Merge the listItem into the previous listItem (if there is one)
 	if (
-		documentModel.data[listItemRange.start].type === 'listItem' &&
-		documentModel.data[listItemRange.start - 1].type === '/listItem'
+		documentModel.data.getData( listItemRange.start ).type === 'listItem' &&
+		documentModel.data.getData( listItemRange.start - 1 ).type === '/listItem'
 	) {
 		mergeStart = listItemRange.start - 1;
 		mergeEnd = listItemRange.start + 1;
 		// (3) If this results in adjacent lists, merge those too
 		if (
-			documentModel.data[mergeEnd].type === 'list' &&
-			documentModel.data[mergeStart - 1].type === '/list'
+			documentModel.data.getData( mergeEnd ).type === 'list' &&
+			documentModel.data.getData( mergeStart - 1 ).type === '/list'
 		) {
 			mergeStart--;
 			mergeEnd++;
@@ -220,7 +220,7 @@ ve.IndentationAction.prototype.unindentListItem = function ( listItem ) {
 	// documentModel.data to find out things about the current structure.
 
 	// (1) Split the listItem into a separate list
-	if ( documentModel.data[listItemRange.start - 1].type !== 'list' ) {
+	if ( documentModel.data.getData( listItemRange.start - 1 ).type !== 'list' ) {
 		// (1a) listItem is not the first child, split the list before listItem
 		tx = ve.dm.Transaction.newFromInsertion( documentModel, listItemRange.start,
 			[ { 'type': '/list' }, listElement ]
@@ -229,7 +229,7 @@ ve.IndentationAction.prototype.unindentListItem = function ( listItem ) {
 		// tx.translateRange( listItemRange ) doesn't do what we want
 		listItemRange = ve.Range.newFromTranslatedRange( listItemRange, 2 );
 	}
-	if ( documentModel.data[listItemRange.end].type !== '/list' ) {
+	if ( documentModel.data.getData( listItemRange.end ).type !== '/list' ) {
 		// (1b) listItem is not the last child, split the list after listItem
 		tx = ve.dm.Transaction.newFromInsertion( documentModel, listItemRange.end,
 			[ { 'type': '/list' }, listElement ]
@@ -255,15 +255,15 @@ ve.IndentationAction.prototype.unindentListItem = function ( listItem ) {
 		// ensure paragraphs are not wrapper paragraphs now
 		// that they are not in a list
 		children = fragment.getSiblingNodes();
-		for( i = 0, length = children.length; i < length; i++ ) {
+		for ( i = 0, length = children.length; i < length; i++ ) {
 			child = children[i].node;
-			if(
+			if (
 				child.type === 'paragraph' &&
 				child.element.internal &&
 				child.element.internal.generated === 'wrapper'
 			) {
 				delete child.element.internal.generated;
-				if( ve.isEmptyObject( child.element.internal ) ) {
+				if ( ve.isEmptyObject( child.element.internal ) ) {
 					delete child.element.internal;
 				}
 			}
@@ -271,7 +271,7 @@ ve.IndentationAction.prototype.unindentListItem = function ( listItem ) {
 	} else {
 		// (3) Split the list away from parentListItem into its own listItem
 		// TODO factor common split logic somehow?
-		if ( documentModel.data[splitListRange.start - 1].type !== 'listItem' ) {
+		if ( documentModel.data.getData( splitListRange.start - 1 ).type !== 'listItem' ) {
 			// (3a) Split parentListItem before list
 			tx = ve.dm.Transaction.newFromInsertion( documentModel, splitListRange.start,
 				[ { 'type': '/listItem' }, { 'type': 'listItem' } ]
@@ -280,7 +280,7 @@ ve.IndentationAction.prototype.unindentListItem = function ( listItem ) {
 			// tx.translateRange( splitListRange ) doesn't do what we want
 			splitListRange = ve.Range.newFromTranslatedRange( splitListRange, 2 );
 		}
-		if ( documentModel.data[splitListRange.end].type !== '/listItem' ) {
+		if ( documentModel.data.getData( splitListRange.end ).type !== '/listItem' ) {
 			// (3b) Split parentListItem after list
 			tx = ve.dm.Transaction.newFromInsertion( documentModel, splitListRange.end,
 				[ { 'type': '/listItem' }, { 'type': 'listItem' } ]

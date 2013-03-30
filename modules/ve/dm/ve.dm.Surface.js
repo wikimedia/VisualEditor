@@ -25,7 +25,7 @@ ve.dm.Surface = function VeDmSurface( doc ) {
 	this.bigStack = [];
 	this.undoIndex = 0;
 	this.historyTrackingInterval = null;
-	this.insertionAnnotations = new ve.AnnotationSet();
+	this.insertionAnnotations = new ve.dm.AnnotationSet( this.documentModel.getStore() );
 	this.enabled = true;
 };
 
@@ -147,7 +147,7 @@ ve.dm.Surface.prototype.getHistory = function () {
  * Get annotations that will be used upon insertion.
  *
  * @method
- * @returns {ve.AnnotationSet|null} Insertion anotations or null if not being used
+ * @returns {ve.dm.AnnotationSet|null} Insertion anotations or null if not being used
  */
 ve.dm.Surface.prototype.getInsertionAnnotations = function () {
 	return this.insertionAnnotations.clone();
@@ -157,7 +157,7 @@ ve.dm.Surface.prototype.getInsertionAnnotations = function () {
  * Set annotations that will be used upon insertion.
  *
  * @method
- * @param {ve.AnnotationSet|null} Insertion anotations to use or null to disable them
+ * @param {ve.dm.AnnotationSet|null} Insertion anotations to use or null to disable them
  * @emits contextChange
  */
 ve.dm.Surface.prototype.setInsertionAnnotations = function ( annotations ) {
@@ -172,7 +172,7 @@ ve.dm.Surface.prototype.setInsertionAnnotations = function ( annotations ) {
  * Add an annotation to be used upon insertion.
  *
  * @method
- * @param {ve.AnnotationSet} Insertion anotation to add
+ * @param {ve.dm.AnnotationSet} Insertion anotation to add
  * @emits contextChange
  */
 ve.dm.Surface.prototype.addInsertionAnnotation = function ( annotation ) {
@@ -187,7 +187,7 @@ ve.dm.Surface.prototype.addInsertionAnnotation = function ( annotation ) {
  * Remove an annotation from those that will be used upon insertion.
  *
  * @method
- * @param {ve.AnnotationSet} Insertion anotation to remove
+ * @param {ve.dm.AnnotationSet} Insertion anotation to remove
  * @emits contextChange
  */
 ve.dm.Surface.prototype.removeInsertionAnnotation = function ( annotation ) {
@@ -330,18 +330,18 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 	// Figure out which offset which we should get insertion annotations from
 	if ( this.selection.isCollapsed() ) {
 		// Get annotations from the left of the cursor
-		offset = this.documentModel.getNearestContentOffset(
+		offset = this.documentModel.data.getNearestContentOffset(
 			Math.max( 0, this.selection.start - 1 ), -1
 		);
 	} else {
 		// Get annotations from the first character of the selection
-		offset = this.documentModel.getNearestContentOffset( this.selection.start );
+		offset = this.documentModel.data.getNearestContentOffset( this.selection.start );
 	}
 	if ( offset === -1 ) {
 		// Document is empty, use empty set
-		annotations = new ve.AnnotationSet();
+		annotations = new ve.dm.AnnotationSet( this.documentModel.getStore() );
 	} else {
-		annotations = this.documentModel.getAnnotationsFromOffset( offset );
+		annotations = this.documentModel.data.getAnnotationsFromOffset( offset );
 	}
 	// Only emit an annotations change event if there's a meaningful difference
 	if (

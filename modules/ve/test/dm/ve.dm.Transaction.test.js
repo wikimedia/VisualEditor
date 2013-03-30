@@ -44,8 +44,10 @@ function runConstructorTests( assert, constructor, cases ) {
 
 QUnit.test( 'newFromInsertion', 13, function ( assert ) {
 	var i, key,
-		doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
-		doc2 = new ve.dm.Document( [ { 'type': 'paragraph' }, { 'type': '/paragraph' } ] ),
+		doc = ve.dm.example.createExampleDocument(),
+		doc2 = new ve.dm.Document(
+			ve.dm.example.preprocessAnnotations( [ { 'type': 'paragraph' }, { 'type': '/paragraph' } ] )
+		),
 		cases = {
 		'paragraph before first element': {
 			'args': [doc, 0, [{ 'type': 'paragraph' }, '1', { 'type': '/paragraph' }]],
@@ -207,10 +209,10 @@ QUnit.test( 'newFromInsertion', 13, function ( assert ) {
 	for ( key in cases ) {
 		for ( i = 0; i < cases[key].ops.length; i++ ) {
 			if ( cases[key].ops[i].remove ) {
-				ve.dm.example.preprocessAnnotations( cases[key].ops[i].remove );
+				ve.dm.example.preprocessAnnotations( cases[key].ops[i].remove, doc.getStore() );
 			}
 			if ( cases[key].ops[i].insert ) {
-				ve.dm.example.preprocessAnnotations( cases[key].ops[i].insert );
+				ve.dm.example.preprocessAnnotations( cases[key].ops[i].insert, doc.getStore() );
 			}
 		}
 	}
@@ -219,8 +221,9 @@ QUnit.test( 'newFromInsertion', 13, function ( assert ) {
 
 QUnit.test( 'newFromRemoval', 15, function ( assert ) {
 	var i, key,
-		alienDoc = new ve.dm.Document( ve.copyArray( ve.dm.example.alienData ) ),
-		doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
+		store = new ve.dm.IndexValueStore(),
+		alienDoc = ve.dm.example.createExampleDocument( 'alienData', store ),
+		doc = ve.dm.example.createExampleDocument( 'data', store ),
 		cases = {
 		'content in first element': {
 			'args': [doc, new ve.Range( 1, 3 )],
@@ -451,10 +454,10 @@ QUnit.test( 'newFromRemoval', 15, function ( assert ) {
 	for ( key in cases ) {
 		for ( i = 0; i < cases[key].ops.length; i++ ) {
 			if ( cases[key].ops[i].remove ) {
-				ve.dm.example.preprocessAnnotations( cases[key].ops[i].remove );
+				ve.dm.example.preprocessAnnotations( cases[key].ops[i].remove, store );
 			}
 			if ( cases[key].ops[i].insert ) {
-				ve.dm.example.preprocessAnnotations( cases[key].ops[i].insert );
+				ve.dm.example.preprocessAnnotations( cases[key].ops[i].insert, store );
 			}
 		}
 	}
@@ -462,7 +465,7 @@ QUnit.test( 'newFromRemoval', 15, function ( assert ) {
 } );
 
 QUnit.test( 'newFromAttributeChange', 4, function ( assert ) {
-	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
+	var doc = ve.dm.example.createExampleDocument(),
 		cases = {
 		'first element': {
 			'args': [doc, 0, 'level', 2],
@@ -503,7 +506,7 @@ QUnit.test( 'newFromAttributeChange', 4, function ( assert ) {
 
 QUnit.test( 'newFromAnnotation', 4, function ( assert ) {
 	var bold = ve.dm.example.createAnnotation( ve.dm.example.bold ),
-		doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
+		doc = ve.dm.example.createExampleDocument(),
 		cases = {
 		'over plain text': {
 			'args': [doc, new ve.Range( 1, 2 ), 'set', bold],
@@ -604,7 +607,7 @@ QUnit.test( 'newFromAnnotation', 4, function ( assert ) {
 } );
 
 QUnit.test( 'newFromContentBranchConversion', 2, function ( assert ) {
-	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
+	var doc = ve.dm.example.createExampleDocument(),
 		i, key,
 		cases = {
 		'range inside a heading, convert to paragraph': {
@@ -658,10 +661,10 @@ QUnit.test( 'newFromContentBranchConversion', 2, function ( assert ) {
 	for ( key in cases ) {
 		for ( i = 0; i < cases[key].ops.length; i++ ) {
 			if ( cases[key].ops[i].remove ) {
-				ve.dm.example.preprocessAnnotations( cases[key].ops[i].remove );
+				ve.dm.example.preprocessAnnotations( cases[key].ops[i].remove, doc.getStore() );
 			}
 			if ( cases[key].ops[i].insert ) {
-				ve.dm.example.preprocessAnnotations( cases[key].ops[i].insert );
+				ve.dm.example.preprocessAnnotations( cases[key].ops[i].insert, doc.getStore() );
 			}
 		}
 	}
@@ -674,7 +677,7 @@ QUnit.test( 'newFromContentBranchConversion', 2, function ( assert ) {
 
 QUnit.test( 'newFromWrap', 8, function ( assert ) {
 	var i, key,
-		doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
+		doc = ve.dm.example.createExampleDocument(),
 		cases = {
 		'changes a heading to a paragraph': {
 			'args': [doc, new ve.Range( 1, 4 ), [ { 'type': 'heading', 'attributes': { 'level': 1 } } ], [ { 'type': 'paragraph' } ], [], []],
@@ -759,10 +762,10 @@ QUnit.test( 'newFromWrap', 8, function ( assert ) {
 	for ( key in cases ) {
 		for ( i = 0; cases[key].ops && i < cases[key].ops.length; i++ ) {
 			if ( cases[key].ops[i].remove ) {
-				ve.dm.example.preprocessAnnotations( cases[key].ops[i].remove );
+				ve.dm.example.preprocessAnnotations( cases[key].ops[i].remove, doc.getStore() );
 			}
 			if ( cases[key].ops[i].insert ) {
-				ve.dm.example.preprocessAnnotations( cases[key].ops[i].insert );
+				ve.dm.example.preprocessAnnotations( cases[key].ops[i].insert, doc.getStore() );
 			}
 		}
 	}
@@ -920,7 +923,9 @@ QUnit.test( 'pushRetain', 4, function ( assert ) {
 } );
 
 QUnit.test( 'pushReplace', 16, function ( assert ) {
-	var i, key, cases = {
+	var i, key,
+		store = new ve.dm.IndexValueStore(),
+		cases = {
 		'insert': {
 			'calls': [
 				['pushReplace', [], [{ 'type': 'paragraph' }, 'a', 'b', 'c', { 'type': '/paragraph' }]]
@@ -1028,16 +1033,16 @@ QUnit.test( 'pushReplace', 16, function ( assert ) {
 	for ( key in cases ) {
 		for ( i = 0; i < cases[key].ops.length; i++ ) {
 			if ( cases[key].ops[i].remove ) {
-				ve.dm.example.preprocessAnnotations( cases[key].ops[i].remove );
+				ve.dm.example.preprocessAnnotations( cases[key].ops[i].remove, store );
 			}
 			if ( cases[key].ops[i].insert ) {
-				ve.dm.example.preprocessAnnotations( cases[key].ops[i].insert );
+				ve.dm.example.preprocessAnnotations( cases[key].ops[i].insert, store );
 			}
 		}
 		for ( i = 0; i < cases[key].calls.length; i++ ) {
 			if ( cases[key].calls[i][0] === 'pushReplace' ) {
-				ve.dm.example.preprocessAnnotations( cases[key].calls[i][1] );
-				ve.dm.example.preprocessAnnotations( cases[key].calls[i][2] );
+				ve.dm.example.preprocessAnnotations( cases[key].calls[i][1], store );
+				ve.dm.example.preprocessAnnotations( cases[key].calls[i][2], store );
 			}
 		}
 	}
@@ -1162,7 +1167,7 @@ QUnit.test( 'push*Annotating', 8, function ( assert ) {
 } );
 
 QUnit.test( 'newFromMetadataInsertion', 2, function( assert ) {
-	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.withMeta ) ),
+	var doc = ve.dm.example.createExampleDocument( 'withMeta' ),
 		element = {
 			'type': 'alienMeta',
 			'attributes': {
@@ -1202,7 +1207,7 @@ QUnit.test( 'newFromMetadataInsertion', 2, function( assert ) {
 } );
 
 QUnit.test( 'newFromMetadataRemoval', 4, function( assert ) {
-	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.withMeta ) ),
+	var doc = ve.dm.example.createExampleDocument( 'withMeta' ),
 		allElements = ve.dm.example.withMetaMetaData[11],
 		someElements = allElements.slice( 1, 3 ),
 		cases = {
@@ -1245,7 +1250,7 @@ QUnit.test( 'newFromMetadataRemoval', 4, function( assert ) {
 } );
 
 QUnit.test( 'newFromMetadataElementReplacement', 3, function( assert ) {
-	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.withMeta ) ),
+	var doc = ve.dm.example.createExampleDocument( 'withMeta' ),
 		newElement = {
 			'type': 'alienMeta',
 			'attributes': {

@@ -199,7 +199,7 @@ QUnit.test( 'getHash: Complex usage', 4, function ( assert ) {
 	assert.equal(
 		ve.getHash( obj ),
 		'{"a":1,"b":1,"c":1,"d":["x","y","z"],"e":{"a":2,"b":2,"c":2}}',
-		'Object with nested array and circular reference'
+		'Object with nested array and nested object'
 	);
 
 	// Include a circular reference

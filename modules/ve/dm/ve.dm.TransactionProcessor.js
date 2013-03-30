@@ -14,6 +14,9 @@
  * NOTE: Instances of this class are not recyclable: you can only call .process() on them once.
  *
  * @class
+ * @param {ve.dm.Document} doc Document
+ * @param {ve.dm.Transaction} transaction Transaction
+ * @param {boolean} reversed Apply in reverse
  * @constructor
  */
 ve.dm.TransactionProcessor = function VeDmTransactionProcessor( doc, transaction, reversed ) {
@@ -32,8 +35,8 @@ ve.dm.TransactionProcessor = function VeDmTransactionProcessor( doc, transaction
 	this.adjustment = 0;
 	// Set and clear are sets of annotations which should be added or removed to content being
 	// inserted or retained.
-	this.set = new ve.AnnotationSet();
-	this.clear = new ve.AnnotationSet();
+	this.set = new ve.dm.AnnotationSet( this.document.getStore() );
+	this.clear = new ve.dm.AnnotationSet( this.document.getStore() );
 };
 
 /* Static members */
@@ -124,29 +127,27 @@ ve.dm.TransactionProcessor.prototype.process = function () {
  * @throws {Error} Annotation to be cleared is not set
  */
 ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
-	var item, element, type, annotated, annotations, i, range, selection, offset;
+	var item, isElement, annotated, annotations, i, range, selection, offset,
+		store = this.document.getStore();
 	if ( this.set.isEmpty() && this.clear.isEmpty() ) {
 		return;
 	}
 	for ( i = this.cursor; i < to; i++ ) {
-		item = this.document.data[i];
-		element = item.type !== undefined;
-		if ( element ) {
-			type = item.type;
-			if ( item.type.charAt( 0 ) === '/' ) {
-				type = type.substr( 1 );
-			}
-			if ( !ve.dm.nodeFactory.isNodeContent( type ) ) {
+		item = this.document.data.getData( i );
+		isElement = this.document.data.isElementData( i );
+		if ( isElement ) {
+			if ( !ve.dm.nodeFactory.isNodeContent( this.document.data.getType( i ) ) ) {
 				throw new Error( 'Invalid transaction, cannot annotate a non-content element' );
 			}
-			if ( item.type.charAt( 0 ) === '/' ) {
+			if ( this.document.data.isCloseElementData( i ) ) {
 				// Closing content element, ignore
 				continue;
 			}
 		}
-		annotated = element ? 'annotations' in item : ve.isArray( item );
-		annotations = annotated ? ( element ? item.annotations : item[1] ) :
-			new ve.AnnotationSet();
+		annotated = isElement ? 'annotations' in item : ve.isArray( item );
+		annotations = annotated ?
+			new ve.dm.AnnotationSet( store, store.values( isElement ? item.annotations : item[1] ) ) :
+			new ve.dm.AnnotationSet( store );
 		// Set and clear annotations
 		if ( annotations.containsAnyOf( this.set ) ) {
 			throw new Error( 'Invalid transaction, annotation to be set is already set' );
@@ -158,24 +159,8 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 		} else {
 			annotations.removeSet( this.clear );
 		}
-		// Auto initialize/cleanup
-		if ( !annotations.isEmpty() && !annotated ) {
-			if ( element ) {
-				// Initialize new element annotation
-				item.annotations = new ve.AnnotationSet( annotations );
-			} else {
-				// Initialize new character annotation
-				this.document.data[i] = [item, new ve.AnnotationSet( annotations )];
-			}
-		} else if ( annotations.isEmpty() && annotated ) {
-			if ( element ) {
-				// Cleanup empty element annotation
-				delete item.annotations;
-			} else {
-				// Cleanup empty character annotation
-				this.document.data[i] = item[0];
-			}
-		}
+		// Store annotation indexes in linear model
+		this.document.data.setAnnotationsAtOffset( i, annotations );
 	}
 	if ( this.cursor < to ) {
 		range = new ve.Range( this.cursor, to );
@@ -229,7 +214,7 @@ ve.dm.TransactionProcessor.prototype.applyChangeMarkers = function () {
 	for ( offset in markers ) {
 		for ( type in markers[offset] ) {
 			offset = Number( offset );
-			element = this.document.data[offset];
+			element = this.document.data.getData( offset );
 			previousValue = ve.getProp( element, 'internal', 'changed', type );
 			newValue = ( previousValue || 0 ) + m*markers[offset][type];
 			if ( newValue !== 0 ) {
@@ -340,7 +325,7 @@ ve.dm.TransactionProcessor.processors.annotate = function ( op ) {
  * @param {Mixed} op.to New attribute value, or undefined to unset
  */
 ve.dm.TransactionProcessor.processors.attribute = function ( op ) {
-	var element = this.document.data[this.cursor],
+	var element = this.document.data.getData( this.cursor ),
 		to = this.reversed ? op.from : op.to,
 		from = this.reversed ? op.to : op.from;
 	if ( element.type === undefined ) {
@@ -390,10 +375,12 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 	var node, selection, range, parentOffset,
 		remove = this.reversed ? op.insert : op.remove,
 		insert = this.reversed ? op.remove : op.insert,
-		removeIsContent = ve.dm.Document.isContentData( remove ),
-		insertIsContent = ve.dm.Document.isContentData( insert ),
-		removeHasStructure = ve.dm.Document.containsElementData( remove ),
-		insertHasStructure = ve.dm.Document.containsElementData( insert ),
+		removeData = new ve.dm.ElementLinearData( this.document.getStore(), remove ),
+		insertData = new ve.dm.ElementLinearData( this.document.getStore(), insert ),
+		removeIsContent = removeData.isContentData(),
+		insertIsContent = insertData.isContentData(),
+		removeHasStructure = removeData.containsElementData(),
+		insertHasStructure = insertData.containsElementData(),
 		operation = op,
 		removeLevel = 0,
 		insertLevel = 0,

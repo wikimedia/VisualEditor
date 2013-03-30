@@ -225,7 +225,7 @@ ve.ce.BranchNode.prototype.setupSlugs = function () {
 	var key, $slug, i;
 
 	// Remove all slugs in this branch
-	for( key in this.slugs ) {
+	for ( key in this.slugs ) {
 		this.slugs[key].remove();
 		delete this.slugs[key];
 	}

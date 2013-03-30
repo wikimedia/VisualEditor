@@ -134,8 +134,8 @@ ve.ui.FormatDropdownTool.prototype.onSelect = function ( item ) {
  *
  * @method
  * @param {ve.dm.Node[]} nodes List of nodes covered by the current selection
- * @param {ve.AnnotationSet} full Annotations that cover all of the current selection
- * @param {ve.AnnotationSet} partial Annotations that cover some or all of the current selection
+ * @param {ve.dm.AnnotationSet} full Annotations that cover all of the current selection
+ * @param {ve.dm.AnnotationSet} partial Annotations that cover some or all of the current selection
  */
 ve.ui.FormatDropdownTool.prototype.onUpdateState = function ( nodes ) {
 	var i, nodesLength, node, j, itemsLength, item, match,

@@ -162,7 +162,7 @@ ve.dm.Annotation.prototype.renderHTML = function () {
 /**
  * Get a hash of the annotation.
  *
- * This is a custom hash function for ve#getHash and should not be overridden by subclasses.
+ * This is a custom hash function for ve#getHash.
  *
  * @method
  * @returns {string} Hash string

@@ -10,7 +10,8 @@ QUnit.module( 've.ce.ContentBranchNode' );
 /* Tests */
 
 QUnit.test( 'getRenderedContents', function ( assert ) {
-	var i, len, $rendered, cases = [
+	var i, len, doc, $rendered,
+		cases = [
 		{
 			'data': [
 				{ 'type': 'paragraph' },
@@ -239,11 +240,8 @@ QUnit.test( 'getRenderedContents', function ( assert ) {
 	];
 	QUnit.expect( cases.length );
 	for ( i = 0, len = cases.length; i < len; i++ ) {
-		ve.dm.example.preprocessAnnotations( cases[i].data );
-		$rendered = ( new ve.ce.ParagraphNode(
-				( new ve.dm.Document( cases[i].data ) )
-					.documentNode.getChildren()[0] )
-			).getRenderedContents();
+		doc = new ve.dm.Document( ve.dm.example.preprocessAnnotations( cases[i].data ) );
+		$rendered = ( new ve.ce.ParagraphNode( doc.documentNode.getChildren()[0] ) ).getRenderedContents();
 		assert.deepEqual( $( '<div>' ).append( $rendered ).html(), cases[i].html );
 	}
 } );

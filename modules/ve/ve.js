@@ -293,7 +293,7 @@
 	 * argument of JSON.stringify and sort the object by key as it's being serialized. This may or may
 	 * not be the fastest way to do this; we should investigate this further.
 	 *
-	 * Objects an arrays are hashed recursively. When hashing an object that has a .getHash()
+	 * Objects and arrays are hashed recursively. When hashing an object that has a .getHash()
 	 * function, we call that function and use its return value rather than hashing the object
 	 * ourselves. This allows classes to define custom hashing.
 	 *
@@ -539,6 +539,7 @@
 	 *                         'index' parameter in Array.prototype.splice
 	 * @param {number} remove Number of elements to remove at the offset. May be zero
 	 * @param {Array} data Array of items to insert at the offset. May not be empty if remove=0
+	 * @returns {Array} Array of items removed
 	 */
 	ve.batchSplice = function ( arr, offset, remove, data ) {
 		// We need to splice insertion in in batches, because of parameter list length limits which vary
@@ -834,7 +835,7 @@
 	ve.isBlockElementType.blockTypes = [
 		'div', 'p',
 		// tables
-		'table', 'tbody', 'thead', 'tfoot', 'caption',  'th', 'tr', 'td',
+		'table', 'tbody', 'thead', 'tfoot', 'caption', 'th', 'tr', 'td',
 		// lists
 		'ul', 'ol', 'li', 'dl', 'dt', 'dd',
 		// HTML5 heading content

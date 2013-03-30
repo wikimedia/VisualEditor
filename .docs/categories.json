@@ -41,6 +41,7 @@
 					"ve.dm.DataString",
 					"ve.dm.DocumentSlice",
 					"ve.dm.DocumentSynchronizer",
+					"ve.dm.IndexValueStore",
 					"ve.dm.NodeFactory",
 					"ve.dm.Surface",
 					"ve.dm.SurfaceFragment",
@@ -51,7 +52,7 @@
 			},
 			{
 				"name": "Annotations",
-				"classes": ["ve.dm.*Annotation"]
+				"classes": ["ve.dm.*Annotation", "ve.dm.AnnotationSet"]
 			},
 			{
 				"name": "Meta items",
@@ -60,6 +61,10 @@
 			{
 				"name": "Nodes",
 				"classes": ["ve.dm.Document", "ve.dm.*Node"]
+			},
+			{
+				"name": "Linear data",
+				"classes": ["ve.dm.*LinearData"]
 			}
 		]
 	},
@@ -142,7 +147,7 @@
 			},
 			{
 				"name": "Misc",
-				"classes": ["ve.Trigger", "ve.AnnotationSet", "ve.OrderedHashSet", "ve.Surface"]
+				"classes": ["ve.Trigger", "ve.Surface"]
 			},
 			{
 				"name": "Test",

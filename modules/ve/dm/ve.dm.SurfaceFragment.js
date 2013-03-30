@@ -34,7 +34,7 @@ ve.dm.SurfaceFragment = function VeDmSurfaceFragment( surface, range, noAutoSele
 	surface.on( 'transact', ve.bind( this.onTransact, this ) );
 
 	// Initialization
-	var length = this.document.getLength();
+	var length = this.document.data.getLength();
 	this.range = new ve.Range(
 		// Clamp range to valid document offsets
 		Math.min( Math.max( this.range.from, 0 ), length ),
@@ -207,7 +207,7 @@ ve.dm.SurfaceFragment.prototype.trimRange = function () {
 		);
 	}
 	return new ve.dm.SurfaceFragment(
-		this.surface, this.document.trimOuterSpaceFromRange( this.range ), this.noAutoSelect
+		this.surface, this.document.data.trimOuterSpaceFromRange( this.range ), this.noAutoSelect
 	);
 };
 
@@ -233,21 +233,21 @@ ve.dm.SurfaceFragment.prototype.expandRange = function ( scope, type ) {
 	var range, node, nodes, parent;
 	switch ( scope || 'parent' ) {
 		case 'word':
-			if( this.range.getLength() > 0 ) {
+			if ( this.range.getLength() > 0 ) {
 				range = ve.Range.newCoveringRange( [
-					this.document.getNearestWordRange( this.range.start ),
-					this.document.getNearestWordRange( this.range.end )
+					this.document.data.getNearestWordRange( this.range.start ),
+					this.document.data.getNearestWordRange( this.range.end )
 				] );
-				if( this.range.isBackwards() ) {
+				if ( this.range.isBackwards() ) {
 					range = range.flip();
 				}
 			} else {
 				// optimisation for zero-length ranges
-				range = this.document.getNearestWordRange( this.range.start );
+				range = this.document.data.getNearestWordRange( this.range.start );
 			}
 			break;
 		case 'annotation':
-			range = this.document.getAnnotatedRangeFromSelection( this.range, type );
+			range = this.document.data.getAnnotatedRangeFromSelection( this.range, type );
 			// Adjust selection if it does not contain the annotated range
 			if ( this.range.start > range.start || this.range.end < range.end ) {
 				// Maintain range direction
@@ -358,15 +358,15 @@ ve.dm.SurfaceFragment.prototype.getText = function () {
  *
  * @method
  * @param {boolean} [all] Get annotations cover some of the fragment
- * @returns {ve.AnnotationSet} All annotation objects range is covered by
+ * @returns {ve.dm.AnnotationSet} All annotation objects range is covered by
  */
 ve.dm.SurfaceFragment.prototype.getAnnotations = function ( all ) {
 	// Handle null fragment
 	if ( !this.surface ) {
-		return new ve.AnnotationSet();
+		return new ve.dm.AnnotationSet( this.getDocument().getStore() );
 	}
 	if ( this.range.getLength() ) {
-		return this.document.getAnnotationsFromRange( this.range, all );
+		return this.getDocument().data.getAnnotationsFromRange( this.range, all );
 	} else {
 		return this.surface.getInsertionAnnotations();
 	}
@@ -463,23 +463,22 @@ ve.dm.SurfaceFragment.prototype.select = function () {
  *
  * @method
  * @param {string} method Mode of annotation, either 'set' or 'clear'
- * @param {string|ve.dm.Annotation} name Annotation name, for example: 'textStyle/bold' or
+ * @param {string|ve.dm.Annotation} nameOrAnnotation Annotation name, for example: 'textStyle/bold' or
  * Annotation object
  * @param {Object} [data] Additional annotation data (not used if annotation object is given)
  * @chainable
  */
-ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, name, data ) {
+ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, nameOrAnnotation, data ) {
 	// Handle null fragment
 	if ( !this.surface ) {
 		return this;
 	}
-	// Extract annotation information
-	if ( name instanceof ve.dm.Annotation ) {
-		data = name.data;
-		name = name.name;
+	var tx, annotation;
+	if ( nameOrAnnotation instanceof ve.dm.Annotation ) {
+		annotation = nameOrAnnotation;
+	} else {
+		annotation = ve.dm.annotationFactory.create( nameOrAnnotation, data );
 	}
-	var tx,
-		annotation = ve.dm.annotationFactory.create( name, data );
 	if ( this.range.getLength() ) {
 		// Apply to selection
 		tx = ve.dm.Transaction.newFromAnnotation( this.document, this.range, method, annotation );
@@ -520,7 +519,7 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
 	}
 	if ( content.length ) {
 		if ( annotate ) {
-			annotations = this.document.getAnnotationsFromOffset( this.range.start - 1 );
+			annotations = this.document.data.getAnnotationsFromOffset( this.range.start - 1 );
 			if ( annotations.getLength() > 0 ) {
 				ve.dm.Document.addAnnotationsToData( content, annotations );
 			}
@@ -640,10 +639,10 @@ ve.dm.SurfaceFragment.prototype.unwrapNodes = function ( outerDepth, innerDepth 
 	}
 
 	for ( i = 0; i < innerDepth; i++ ) {
-		innerUnwrapper.push( this.surface.getDocument().data[this.range.start + i] );
+		innerUnwrapper.push( this.surface.getDocument().data.getData( this.range.start + i ) );
 	}
 	for ( i = outerDepth; i > 0; i-- ) {
-		outerUnwrapper.push( this.surface.getDocument().data[this.range.start - i] );
+		outerUnwrapper.push( this.surface.getDocument().data.getData( this.range.start - i ) );
 	}
 
 	tx = ve.dm.Transaction.newFromWrap( this.document, this.range, outerUnwrapper, [], innerUnwrapper, [] );
@@ -692,7 +691,7 @@ ve.dm.SurfaceFragment.prototype.rewrapNodes = function ( depth, wrapper ) {
 	}
 
 	for ( i = 0; i < depth; i++ ) {
-		unwrapper.push( this.surface.getDocument().data[this.range.start + i] );
+		unwrapper.push( this.surface.getDocument().data.getData( this.range.start + i ) );
 	}
 
 	tx = ve.dm.Transaction.newFromWrap( this.document, this.range, [], [], unwrapper, wrapper );
@@ -779,7 +778,7 @@ ve.dm.SurfaceFragment.prototype.rewrapAllNodes = function ( depth, wrapper ) {
 	}
 
 	for ( i = 0; i < depth; i++ ) {
-		unwrapper.push( this.surface.getDocument().data[this.range.start + i] );
+		unwrapper.push( this.surface.getDocument().data.getData( this.range.start + i ) );
 	}
 
 	tx = ve.dm.Transaction.newFromWrap( this.document, innerRange, unwrapper, wrapper, [], [] );
@@ -846,7 +845,7 @@ ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {
 	// Find start split point, if required
 	startSplitNode = nodes[0].node;
 	startOffset = startSplitNode.getOuterRange().start;
-	while( allowedParents !== null && ve.indexOf( startSplitNode.getParent().type, allowedParents ) === -1 ) {
+	while ( allowedParents !== null && ve.indexOf( startSplitNode.getParent().type, allowedParents ) === -1 ) {
 		if ( startSplitNode.getParent().indexOf( startSplitNode ) > 0 ) {
 			startSplitRequired = true;
 		}
@@ -862,7 +861,7 @@ ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {
 	// Find end split point, if required
 	endSplitNode = nodes[nodes.length - 1].node;
 	endOffset = endSplitNode.getOuterRange().end;
-	while( allowedParents !== null && ve.indexOf( endSplitNode.getParent().type, allowedParents ) === -1 ) {
+	while ( allowedParents !== null && ve.indexOf( endSplitNode.getParent().type, allowedParents ) === -1 ) {
 		if ( endSplitNode.getParent().indexOf( endSplitNode ) < endSplitNode.getParent().getChildren().length - 1 ) {
 			endSplitRequired = true;
 		}

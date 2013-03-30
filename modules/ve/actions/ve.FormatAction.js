@@ -64,7 +64,7 @@ ve.FormatAction.prototype.convert = function ( type, attributes ) {
 		fragments.push( new ve.dm.SurfaceFragment( surfaceModel, contentBranch.getOuterRange(), true ) );
 	}
 
-	for( i = 0, length = fragments.length; i < length; i++ ) {
+	for ( i = 0, length = fragments.length; i < length; i++ ) {
 		fragments[i].isolateAndUnwrap( type );
 	}
 	selection = fragmentForSelection.getRange();

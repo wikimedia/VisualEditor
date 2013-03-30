@@ -603,7 +603,7 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 			).split( '' );
 			// Apply insertion annotations
 			annotations = this.model.getInsertionAnnotations();
-			if ( annotations instanceof ve.AnnotationSet ) {
+			if ( annotations instanceof ve.dm.AnnotationSet ) {
 				ve.dm.Document.addAnnotationsToData( data, this.model.getInsertionAnnotations() );
 			}
 			this.disableRendering();
@@ -652,7 +652,7 @@ ve.ce.Surface.prototype.onContentChange = function ( node, previous, next ) {
 	data = next.text.substring( fromLeft, next.text.length - fromRight ).split( '' );
 	// Get annotations to the left of new content and apply
 	annotations =
-		this.model.getDocument().getAnnotationsFromOffset( nodeOffset + 1 + fromLeft );
+		this.model.getDocument().data.getAnnotationsFromOffset( nodeOffset + 1 + fromLeft );
 	if ( annotations.getLength() ) {
 		ve.dm.Document.addAnnotationsToData( data, annotations );
 	}
@@ -785,12 +785,12 @@ ve.ce.Surface.prototype.handleUpOrDownArrowKey = function ( e ) {
  */
 ve.ce.Surface.prototype.handleInsertion = function () {
 	var slug, data, range, annotations, insertionAnnotations, placeholder,
-		selection = this.model.getSelection();
+		selection = this.model.getSelection(), documentModel = this.model.getDocument();
 
 	// Handles removing expanded selection before inserting new text
 	if ( !selection.isCollapsed() ) {
 		// Pull annotations from the first character in the selection
-		annotations = this.model.documentModel.getAnnotationsFromRange(
+		annotations = documentModel.data.getAnnotationsFromRange(
 			new ve.Range( selection.start, selection.start + 1 )
 		);
 		this.model.change(
@@ -801,7 +801,8 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 		selection = this.model.getSelection();
 		this.model.setInsertionAnnotations( annotations );
 	}
-	insertionAnnotations = this.model.getInsertionAnnotations() || new ve.AnnotationSet();
+	insertionAnnotations = this.model.getInsertionAnnotations() ||
+		new ve.dm.AnnotationSet( documentModel.getStore() );
 	if ( selection.isCollapsed() ) {
 		slug = this.documentView.getSlugAtOffset( selection.start );
 		// Is this a slug or are the annotations to the left different than the insertion
@@ -810,7 +811,7 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 			slug || (
 				selection.start > 0 &&
 				!ve.compareObjects (
-					this.model.getDocument().getAnnotationsFromOffset( selection.start - 1 ),
+					documentModel.data.getAnnotationsFromOffset( selection.start - 1 ),
 					insertionAnnotations
 				)
 			)
@@ -820,9 +821,7 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 				placeholder = [placeholder, insertionAnnotations];
 			}
 			// is this a slug and if so, is this a block slug?
-			if ( slug && ve.dm.Document.isStructuralOffset(
-				this.documentView.model.data, selection.start
-			) ) {
+			if ( slug && documentModel.data.isStructuralOffset( selection.start ) ) {
 				range = new ve.Range( selection.start + 1, selection.start + 2 );
 				data = [{ 'type' : 'paragraph' }, placeholder, { 'type' : '/paragraph' }];
 			} else {
@@ -952,11 +951,11 @@ ve.ce.Surface.prototype.handleEnter = function ( e ) {
 	// Now we can move the cursor forward
 	if ( advanceCursor ) {
 		this.model.change(
-			null, new ve.Range( documentModel.getRelativeContentOffset( selection.from, 1 ) )
+			null, new ve.Range( documentModel.data.getRelativeContentOffset( selection.from, 1 ) )
 		);
 	} else {
 		this.model.change(
-			null, new ve.Range( documentModel.getNearestContentOffset( selection.from ) )
+			null, new ve.Range( documentModel.data.getNearestContentOffset( selection.from ) )
 		);
 	}
 	// Reset and resume polling
@@ -990,7 +989,7 @@ ve.ce.Surface.prototype.handleDelete = function ( e, backspace ) {
 			}
 
 		} else {
-			sourceOffset = this.model.getDocument().getRelativeContentOffset( selection.to, 1 );
+			sourceOffset = this.model.getDocument().data.getRelativeContentOffset( selection.to, 1 );
 			targetOffset = selection.to;
 
 			// At the end of the document - don't do anything and preventDefault
@@ -1168,15 +1167,15 @@ ve.ce.Surface.prototype.getNearestCorrectOffset = function ( offset, direction )
 
 	direction = direction > 0 ? 1 : -1;
 	if (
-		ve.dm.Document.isContentOffset( this.documentView.model.data, offset ) ||
+		this.documentView.model.data.isContentOffset( offset ) ||
 		this.hasSlugAtOffset( offset )
 	) {
 		return offset;
 	}
 
-	contentOffset = this.documentView.model.getNearestContentOffset( offset, direction );
+	contentOffset = this.documentView.model.data.getNearestContentOffset( offset, direction );
 	structuralOffset =
-		this.documentView.model.getNearestStructuralOffset( offset, direction, true );
+		this.documentView.model.data.getNearestStructuralOffset( offset, direction, true );
 
 	if ( !this.hasSlugAtOffset( structuralOffset ) ) {
 		return contentOffset;

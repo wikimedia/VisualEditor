@@ -16,25 +16,40 @@ ve.dm.example = {};
 
 /**
  * Convert arrays of shorthand annotations in a data fragment to AnnotationSets with real
- * annotation objects.
+ * annotation objects, and wraps the result in a ve.dm.ElementLinearData object.
  *
  * Shorthand notation for annotations is:
  * [ 'a', [ { 'type': 'link', 'data': { 'href': '...' }, 'htmlTagName': 'a', 'htmlAttributes': { ... } } ] ]
  *
  * The actual storage format has an instance of ve.dm.LinkAnnotation instead of the plain object,
- * and an instance of ve.AnnotationSet instead of the array.
+ * and an instance of ve.dm.AnnotationSet instead of the array.
  *
  * @method
- * @param {Array} data Linear model data; will be modified
+ * @param {Array} data Linear model data
+ * @param {ve.dm.IndexValueStore} [store] Index-value store to use, creates one if undefined
+ * @returns {ve.dm.ElementLinearData} Element linear data store
+ * @throws {Error} Example data passed to preprocessAnnotations by reference
  */
-ve.dm.example.preprocessAnnotations = function ( data ) {
+ve.dm.example.preprocessAnnotations = function ( data, store ) {
 	var i, key;
-	for ( i = 0; i < data.length; i++ ) {
-		key = data[i].annotations ? 'annotations' : 1;
-		if ( ve.isArray( data[i][key] ) ) {
-			data[i][key] = ve.dm.example.createAnnotationSet( data[i][key] );
+
+	// Sanity check to make sure ve.dm.example data has not been passed in
+	// by reference. Always use ve.copyArray.
+	for ( i in ve.dm.example ) {
+		if ( data === ve.dm.example[i] ) {
+			throw new Error( 'Example data passed to preprocessAnnotations by reference' );
 		}
 	}
+
+	store = store || new ve.dm.IndexValueStore();
+	for ( i = 0; i < data.length; i++ ) {
+		key = data[i].annotations ? 'annotations' : 1;
+		// check for shorthand annotation objects in array
+		if ( ve.isArray( data[i][key] ) && data[i][key][0].type ) {
+			data[i][key] = ve.dm.example.createAnnotationSet( store, data[i][key] ).getIndexes();
+		}
+	}
+	return new ve.dm.ElementLinearData( store, data );
 };
 
 /**
@@ -62,14 +77,14 @@ ve.dm.example.createAnnotation = function ( annotation ) {
  *
  * @method
  * @param {Array} annotations Array of annotations in shorthand format
- * @return {ve.AnnotationSet}
+ * @return {ve.dm.AnnotationSet}
  */
-ve.dm.example.createAnnotationSet = function ( annotations ) {
+ve.dm.example.createAnnotationSet = function ( store, annotations ) {
 	var i;
 	for ( i = 0; i < annotations.length; i++ ) {
 		annotations[i] = ve.dm.example.createAnnotation( annotations[i] );
 	}
-	return new ve.AnnotationSet( annotations );
+	return new ve.dm.AnnotationSet( store, annotations );
 };
 
 /* Some common annotations in shorthand format */
@@ -77,6 +92,27 @@ ve.dm.example.bold = { 'type': 'textStyle/bold', 'htmlTagName': 'b', 'htmlAttrib
 ve.dm.example.italic = { 'type': 'textStyle/italic', 'htmlTagName': 'i', 'htmlAttributes': {} };
 ve.dm.example.underline = { 'type': 'textStyle/underline', 'htmlTagName': 'u', 'htmlAttributes': {} };
 ve.dm.example.span = { 'type': 'textStyle/span', 'htmlTagName': 'span', 'htmlAttributes': {} };
+
+/**
+ * Creates a document from example data.
+ *
+ * Defaults to ve.dm.example.data if no name is supplied.
+ *
+ * @param {string} [name='data'] Named element of ve.dm.example
+ * @param {ve.dm.IndexValueStore} [store] A specific index-value store to use, optionally.
+ * @returns {ve.dm.Document} Document
+ * @throws {Error} Example data not found
+ */
+ve.dm.example.createExampleDocument = function( name, store ) {
+	name = name || 'data';
+	store = store || new ve.dm.IndexValueStore();
+	if ( ve.dm.example[name] === undefined ) {
+		throw new Error( 'Example data \'' + name + '\' not found' );
+	}
+	return new ve.dm.Document(
+		ve.dm.example.preprocessAnnotations( ve.copyArray( ve.dm.example[name] ), store )
+	);
+};
 
 /**
  * Serialized HTML.
@@ -263,7 +299,6 @@ ve.dm.example.data = [
 	{ 'type': '/paragraph' }
 	// 61 - End of document
 ];
-ve.dm.example.preprocessAnnotations( ve.dm.example.data );
 
 ve.dm.example.alienData = [
 	// 0 - Open alienBlock

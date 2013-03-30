@@ -10,13 +10,13 @@ QUnit.module( 've.dm.DocumentSynchronizer' );
 /* Tests */
 
 QUnit.test( 'getDocument', 1, function ( assert ) {
-	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
+	var doc = ve.dm.example.createExampleDocument(),
 		ds = new ve.dm.DocumentSynchronizer( doc );
 	assert.strictEqual( ds.getDocument(), doc );
 } );
 
 QUnit.test( 'synchronize', 6, function ( assert ) {
-	var doc = new ve.dm.Document( ve.copyArray( ve.dm.example.data ) ),
+	var doc = ve.dm.example.createExampleDocument(),
 		ds = new ve.dm.DocumentSynchronizer( doc ),
 		firstTextNodeUpdates = 0,
 		firstTextNodeAnnotations = 0,
@@ -26,13 +26,13 @@ QUnit.test( 'synchronize', 6, function ( assert ) {
 		secondTextNodeLengthChanges = [];
 
 	// Annotate "a" with bold formatting
-	doc.data[1] = ['a', new ve.AnnotationSet( [ new ve.dm.TextStyleBoldAnnotation() ] )];
+	doc.data[1] = ['a', new ve.dm.AnnotationSet( doc.getStore(), [ new ve.dm.TextStyleBoldAnnotation() ] )];
 	ds.pushAnnotation( new ve.Range( 1, 2 ) );
 	// Insert "xyz" between "a" and "b"
 	doc.spliceData( 2, 0, [ 'x', 'y', 'z' ] );
 	ds.pushResize( doc.getDocumentNode().getNodeFromOffset( 2 ), 3 );
 	// Annotate "d" with italic formatting (was at 10, now at 13)
-	doc.data[13] = ['d', new ve.AnnotationSet( [ new ve.dm.TextStyleItalicAnnotation() ] )];
+	doc.data[13] = ['d', new ve.dm.AnnotationSet( doc.getStore(), [ new ve.dm.TextStyleItalicAnnotation() ] )];
 	ds.pushAnnotation( new ve.Range( 10, 11 ) );
 
 	doc.getDocumentNode().getChildren()[0].getChildren()[0].on( 'update', function () {

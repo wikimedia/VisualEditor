@@ -66,6 +66,31 @@ ve.dm.LinkAnnotation.prototype.toHTML = function () {
 	return parentResult;
 };
 
+/**
+ * Get a hash of the link annotation.
+ *
+ * This extends the basic annotation hash by adding htmlAttributes.rel
+ * if it present.
+ *
+ * This is a custom hash function for ve#getHash.
+ *
+ * @method
+ * @returns {string} Hash string
+ */
+ve.dm.LinkAnnotation.prototype.getHash = function () {
+	var keys = [ 'name', 'data' ], obj = {}, i;
+	for ( i = 0; i < keys.length; i++ ) {
+		if ( this[keys[i]] !== undefined ) {
+			obj[keys[i]] = this[keys[i]];
+		}
+	}
+	if ( this.htmlAttributes && this.htmlAttributes.rel ) {
+		obj.htmlAttributes = {};
+		obj.htmlAttributes.rel = this.htmlAttributes.rel;
+	}
+	return ve.getHash( obj );
+};
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.LinkAnnotation );

@@ -224,7 +224,7 @@ ve.dm.MetaList.prototype.insertMeta = function ( meta, offset, index ) {
 		meta = meta.getElement();
 	}
 	if ( index === undefined ) {
-		index = ( this.document.metadata[offset] || [] ).length;
+		index = ( this.document.metadata.getData( offset ) || [] ).length;
 	}
 	tx = ve.dm.Transaction.newFromMetadataInsertion( this.document, offset, index, [ meta ] );
 	this.surface.change( tx );

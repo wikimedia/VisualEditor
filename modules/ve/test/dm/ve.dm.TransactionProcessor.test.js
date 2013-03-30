@@ -10,8 +10,9 @@ QUnit.module( 've.dm.TransactionProcessor' );
 /* Tests */
 
 QUnit.test( 'commit/rollback', 86, function ( assert ) {
-	var i, key, originalData, originalDoc, msg, testDocument, tx,
-		expectedData, expectedDocument,
+	var i, key, originalData, originalDoc,
+		msg, testDoc, tx, expectedData, expectedDoc,
+		store = ve.dm.example.createExampleDocument().getStore(),
 		bold = ve.dm.example.createAnnotation( ve.dm.example.bold ),
 		italic = ve.dm.example.createAnnotation( ve.dm.example.italic ),
 		underline = ve.dm.example.createAnnotation( ve.dm.example.underline ),
@@ -48,9 +49,9 @@ QUnit.test( 'commit/rollback', 86, function ( assert ) {
 					['pushStopAnnotating', 'set', underline]
 				],
 				'expected': function ( data ) {
-					data[1] = ['a', new ve.AnnotationSet( [ bold ] )];
-					data[2] = ['b', new ve.AnnotationSet( [ bold ] )];
-					data[3] = ['c', new ve.AnnotationSet( [ bold, underline ] )];
+					data[1] = ['a', store.indexes( [ bold ] )];
+					data[2] = ['b', store.indexes( [ bold ] )];
+					data[3] = ['c', store.indexes( [ bold, underline ] )];
 					ve.setProp( data[0], 'internal', 'changed', 'annotations', 2 );
 				}
 			},
@@ -62,9 +63,9 @@ QUnit.test( 'commit/rollback', 86, function ( assert ) {
 					['pushStopAnnotating', 'set', bold]
 				],
 				'expected': function ( data ) {
-					data[38] = ['h', new ve.AnnotationSet( [ bold ] )];
-					data[39].annotations = new ve.AnnotationSet( [ bold ] );
-					data[41] = ['i', new ve.AnnotationSet( [ bold ] )];
+					data[38] = ['h', store.indexes( [ bold ] )];
+					data[39].annotations = store.indexes( [ bold ] );
+					data[41] = ['i', store.indexes( [ bold ] )];
 					ve.setProp( data[37], 'internal', 'changed', 'annotations', 2 );
 					ve.setProp( data[39], 'internal', 'changed', 'annotations', 1 );
 				}
@@ -244,7 +245,7 @@ QUnit.test( 'commit/rollback', 86, function ( assert ) {
 					['pushRetain', 3],
 					[
 						'pushReplace',
-						[['c', [ ve.dm.example.italic ]]],
+						[['c', [ve.dm.example.italic]]],
 						[]
 					],
 					['pushRetain', 6],
@@ -343,8 +344,8 @@ QUnit.test( 'commit/rollback', 86, function ( assert ) {
 	for ( key in cases ) {
 		for ( i = 0; i < cases[key].calls.length; i++ ) {
 			if ( cases[key].calls[i][0] === 'pushReplace' ) {
-				ve.dm.example.preprocessAnnotations( cases[key].calls[i][1] );
-				ve.dm.example.preprocessAnnotations( cases[key].calls[i][2] );
+				ve.dm.example.preprocessAnnotations( cases[key].calls[i][1], store );
+				ve.dm.example.preprocessAnnotations( cases[key].calls[i][2], store );
 			}
 		}
 	}
@@ -358,25 +359,31 @@ QUnit.test( 'commit/rollback', 86, function ( assert ) {
 		if ( 'expected' in cases[msg] ) {
 			// Generate original document
 			originalData = cases[msg].data || ve.dm.example.data;
-			originalDoc = new ve.dm.Document( ve.copyArray( originalData ) );
-			testDocument = new ve.dm.Document( ve.copyArray( originalData ) );
+			originalDoc = new ve.dm.Document(
+				ve.dm.example.preprocessAnnotations( ve.copyArray( originalData ), store )
+			);
+			testDoc = new ve.dm.Document(
+				ve.dm.example.preprocessAnnotations( ve.copyArray( originalData ), store )
+			);
 			// Generate expected document
 			expectedData = ve.copyArray( originalData );
 			cases[msg].expected( expectedData );
-			expectedDocument = new ve.dm.Document( ve.copyArray ( expectedData ) );
+			expectedDoc = new ve.dm.Document(
+				ve.dm.example.preprocessAnnotations( expectedData, store )
+			);
 			// Commit
-			testDocument.commit( tx );
-			assert.deepEqual( testDocument.getFullData(), expectedData, 'commit (data): ' + msg );
+			testDoc.commit( tx );
+			assert.deepEqual( testDoc.getFullData(), expectedDoc.getFullData(), 'commit (data): ' + msg );
 			assert.equalNodeTree(
-				testDocument.getDocumentNode(),
-				expectedDocument.getDocumentNode(),
+				testDoc.getDocumentNode(),
+				expectedDoc.getDocumentNode(),
 				'commit (tree): ' + msg
 			);
 			// Rollback
-			testDocument.rollback( tx );
-			assert.deepEqual( testDocument.getFullData(), originalData, 'rollback (data): ' + msg );
+			testDoc.rollback( tx );
+			assert.deepEqual( testDoc.getFullData(), originalDoc.getFullData(), 'rollback (data): ' + msg );
 			assert.equalNodeTree(
-				testDocument.getDocumentNode(),
+				testDoc.getDocumentNode(),
 				originalDoc.getDocumentNode(),
 				'rollback (tree): ' + msg
 			);
@@ -384,7 +391,7 @@ QUnit.test( 'commit/rollback', 86, function ( assert ) {
 			/*jshint loopfunc:true */
 			assert.throws(
 				function () {
-					testDocument.commit( tx );
+					testDoc.commit( tx );
 				},
 				cases[msg].exception,
 				'commit: ' + msg
