@@ -711,23 +711,28 @@ $messages['eo'] = array(
 /** Spanish (español)
  * @author Armando-Martin
  * @author Erdemaslancan
+ * @author Fitoschido
  * @author Imre
  * @author Jdforrester
  * @author Ralgis
  */
 $messages['es'] = array(
-	'visualeditor' => 'VisualEditor',
+	'visualeditor' => 'Editor visual',
 	'visualeditor-desc' => 'Editor visual para MediaWiki',
 	'visualeditor-preference-enable' => 'Activar el editor visual (sólo en los espacios de nombres [[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|principal]]) y de [[{{MediaWiki:Visualeditor-usernamespacepagelink}}|usuario]]',
 	'visualeditor-mainnamespacepagelink' => 'Project:Espacio principal',
 	'visualeditor-usernamespacepagelink' => 'Project:Espacio de nombres de usuario',
 	'visualeditor-notification-saved' => 'Tus cambios en $1 han sido guardados',
-	'visualeditor-notification-created' => '$1 ha sido creado',
-	'visualeditor-notification-restored' => '$1 ha sido restaurada.',
-	'visualeditor-notification-reported' => 'Tu problema ha sido reportado. Gracias.',
+	'visualeditor-notification-created' => 'Se ha creado $1.',
+	'visualeditor-notification-restored' => 'Se ha restaurado $1.',
+	'visualeditor-notification-reported' => 'Se ha informado de tu problema. Gracias.',
 	'visualeditor-ca-editsource' => 'Editar fuente',
 	'visualeditor-ca-ve-edit' => 'Editor visual',
 	'visualeditor-ca-ve-create' => 'Editor visual',
+	'visualeditor-dialog-meta-title' => 'Configuración de página',
+	'visualeditor-dialog-content-title' => 'Configuración del contenido',
+	'visualeditor-dialog-action-apply' => 'Aplicar los cambios',
+	'visualeditor-dialog-action-cancel' => 'Cancelar',
 	'visualeditor-toolbar-savedialog' => 'Revisar y guardar',
 	'visualeditor-savedialog-title-review' => 'Revisa tus cambios',
 	'visualeditor-savedialog-title-report' => 'Informar sobre un problema',
@@ -741,9 +746,8 @@ $messages['es'] = array(
 	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|aviso|avisos}}',
 	'visualeditor-feedback-tool' => 'Comentar',
 	'tooltip-ca-ve-edit' => 'Editar esta página con el editor visual VisualEditor',
-	'visualeditor-inspector-title' => 'Inspeccionar',
+	'visualeditor-window-title' => 'Inspeccionar',
 	'visualeditor-linkinspector-title' => 'Hiperenlace',
-	'visualeditor-linkinspector-label-pagetitle' => 'Título de la página',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Página existente',
 	'visualeditor-linkinspector-suggest-new-page' => 'Nueva página',
 	'visualeditor-linkinspector-suggest-external-link' => 'Enlace web',
@@ -767,7 +771,7 @@ $messages['es'] = array(
 	'visualeditor-historybutton-undo-tooltip' => 'Deshacer', # Fuzzy
 	'visualeditor-historybutton-redo-tooltip' => 'Rehacer', # Fuzzy
 	'visualeditor-inspector-close-tooltip' => 'Cerrar',
-	'visualeditor-inspector-remove-tooltip' => 'Borrar',
+	'visualeditor-inspector-remove-tooltip' => 'Eliminar',
 	'visualeditor-viewpage-savewarning' => '¿Estás seguro que quieres volver al modo de visualización sin guardar primero?',
 	'visualeditor-loadwarning' => 'Error al cargar los datos del servidor: $1. ¿Le gustaría volver a intentarlo?',
 	'visualeditor-differror' => 'Error al cargar datos del servidor: $1.',
@@ -778,8 +782,8 @@ $messages['es'] = array(
 	'visualeditor-aliennode-tooltip' => 'Lo sentimos, este elemento no se puede editar mediante el editor visual',
 	'tag-visualeditor' => '[[Special:Tags|Etiqueta]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Editor visual]]',
 	'tag-visualeditor-description' => 'Edición realizada con el [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
-	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
-	'visualeditor-alphawarning' => 'Estás utilizando una versión alfa del [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Editor Visual]]. Puede ser lenta y producir cambios erróneos - Comprueba cada edición que realices.',
+	'visualeditor-descriptionpagelink' => 'Project:EditorVisual',
+	'visualeditor-alphawarning' => 'Estás utilizando una versión alfa del [[{{MediaWiki:Visualeditor-descriptionpagelink}}|Editor visual]]. Puede ser lenta y producir cambios erróneos; comprueba cada edición que realices.',
 	'visualeditor-report-notice' => 'Entiendo que haciendo clic en el botón Enviar transmito mis cambios y mis comentarios, que se almacenarán para su análisis. Estoy de acuerdo en proporcionar esta información, de conformidad con las [[{{MediaWiki:Visualeditor-report-link}}|Condiciones de uso]].',
 );
 
