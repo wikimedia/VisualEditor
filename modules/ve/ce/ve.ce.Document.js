@@ -96,16 +96,17 @@ ve.ce.Document.prototype.getSiblingWordBoundary = function ( offset, direction )
 		i = direction > 0 ? offset : offset - 1,
 		inc = direction > 0 ? 1 : -1,
 		oneChar, prevType, nextType;
-	if ( !data[i] || data[i].type !== undefined ) {
+
+	if ( data.getData( i ) === undefined || data.isElementData( i ) ) {
 		return this.getRelativeOffset( offset, direction, 'character' );
 	} else {
 		config = $.browser.msie ? config.ie : config.default;
 		config = direction > 0 ? config.right : config.left;
 		do {
-			if ( data[i].type !== undefined ) {
+			if ( data.isElementData( i ) ) {
 				break;
 			} else {
-				oneChar = typeof data[i] === 'string' ? data[i] : data[i][0];
+				oneChar = data.getCharacterData( i );
 				if ( oneChar === ' ' ) {
 					nextType = 'space';
 				} else if ( pattern.test( oneChar ) ) {
@@ -123,7 +124,7 @@ ve.ce.Document.prototype.getSiblingWordBoundary = function ( offset, direction )
 				}
 				prevType = nextType;
 			}
-		} while ( data[i += inc] );
+		} while ( data.getCharacterData( i += inc ) );
 		return i + ( inc > 0 ? 0 : 1 );
 	}
 };
