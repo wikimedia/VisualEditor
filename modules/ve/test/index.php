@@ -232,13 +232,13 @@
 		<script src="dm/ve.dm.Document.test.js"></script>
 		<script src="dm/ve.dm.DocumentSynchronizer.test.js"></script>
 		<script src="dm/ve.dm.IndexValueStore.test.js"></script>
+		<script src="dm/ve.dm.LinearData.test.js"></script>
 		<script src="dm/ve.dm.Transaction.test.js"></script>
 		<script src="dm/ve.dm.TransactionProcessor.test.js"></script>
 		<script src="dm/ve.dm.Surface.test.js"></script>
 		<script src="dm/ve.dm.SurfaceFragment.test.js"></script>
 		<script src="dm/ve.dm.ModelRegistry.test.js"></script>
 		<script src="dm/ve.dm.MetaList.test.js"></script>
-		<script src="dm/lineardata/ve.dm.LinearData.test.js"></script>
 		<script src="dm/lineardata/ve.dm.ElementLinearData.test.js"></script>
 		<script src="dm/lineardata/ve.dm.MetaLinearData.test.js"></script>
 		<script src="ce/ve.ce.test.js"></script>
