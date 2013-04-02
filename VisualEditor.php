@@ -205,7 +205,7 @@ $wgResourceModules += array(
 			've/ve.TriggerRegistry.js',
 			've/ve.Range.js',
 			've/ve.Node.js',
-			've/ve.NodeFactory.js',
+			've/ve.NamedClassFactory.js',
 			've/ve.BranchNode.js',
 			've/ve.LeafNode.js',
 			've/ve.Surface.js',

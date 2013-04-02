@@ -42,7 +42,7 @@
 		<script src="../../ve/ve.TriggerRegistry.js"></script>
 		<script src="../../ve/ve.Range.js"></script>
 		<script src="../../ve/ve.Node.js"></script>
-		<script src="../../ve/ve.NodeFactory.js"></script>
+		<script src="../../ve/ve.NamedClassFactory.js"></script>
 		<script src="../../ve/ve.BranchNode.js"></script>
 		<script src="../../ve/ve.LeafNode.js"></script>
 		<script src="../../ve/ve.Surface.js"></script>
