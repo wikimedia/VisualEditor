@@ -334,8 +334,8 @@ $wgResourceModules += array(
 			've/ui/ve.ui.Toolbar.js',
 			've/ui/ve.ui.ToolFactory.js',
 
-			've/ui/elements/ve.ui.LabeledWidget.js',
-			've/ui/elements/ve.ui.GroupWidget.js',
+			've/ui/elements/ve.ui.LabeledElement.js',
+			've/ui/elements/ve.ui.GroupElement.js',
 			've/ui/elements/ve.ui.FlaggableElement.js',
 
 			've/ui/widgets/ve.ui.PopupWidget.js',
