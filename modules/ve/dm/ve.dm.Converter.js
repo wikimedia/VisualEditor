@@ -98,7 +98,7 @@ ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElement
 
 /**
  * Create a data element from a DOM element.
- * @param {ve.dm.Node|ve.dm.MetaItem} modelClass Model class to use for conversion
+ * @param {ve.dm.Node|ve.dm.MetaItem|ve.dm.Annotation} modelClass Model class to use for conversion
  * @param {HTMLElement[]} domElements DOM elements to convert
  * @param {Object} context Converter context to pass to toDataElement() (will be cloned)
  * @returns {Object} Data element
@@ -245,7 +245,7 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( store, domElement
 	path = path || ['document'];
 	var i, childDomElement, childDomElements, childDataElement, text, childTypes, matches,
 		wrappingParagraph, prevElement, childAnnotations, modelName, modelClass,
-		annotation, childIsContent, aboutGroup,
+		annotation, annotationData, childIsContent, aboutGroup,
 		data = [],
 		branchType = path[path.length - 1],
 		branchHasContent = this.nodeFactory.canNodeContainContent( branchType ),
@@ -270,7 +270,10 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( store, domElement
 				modelName = this.modelRegistry.matchElement( childDomElement );
 				modelClass = this.modelRegistry.lookup( modelName ) || ve.dm.AlienNode;
 				if ( modelClass.prototype instanceof ve.dm.Annotation ) {
-					annotation = this.annotationFactory.create( modelName, childDomElement );
+					annotationData = this.createDataElement( modelClass, [ childDomElement ], context );
+				}
+				if ( modelClass.prototype instanceof ve.dm.Annotation && annotationData ) {
+					annotation = this.annotationFactory.create( modelName, annotationData );
 					// Start wrapping if needed
 					if ( !context.inWrapper && !context.expectingContent ) {
 						startWrapping();
@@ -627,7 +630,9 @@ ve.dm.Converter.prototype.getDomFromData = function ( store, data ) {
 							text = '';
 						}
 						// Create new node and descend into it
-						annotationElement = this.getDomElementFromDataAnnotation( annotation, doc );
+						annotationElement = this.getDomElementsFromDataElement(
+							annotation.getLinmodAnnotation(), doc
+						)[0];
 						domElement.appendChild( annotationElement );
 						domElement = annotationElement;
 						// Add to annotationStack

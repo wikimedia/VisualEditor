@@ -13,11 +13,11 @@
  * @class
  * @extends ve.dm.Annotation
  * @constructor
- * @param {HTMLElement|Object} element
+ * @param {Object} linmodAnnotation
  */
-ve.dm.LinkAnnotation = function VeDmLinkAnnotation( element ) {
+ve.dm.LinkAnnotation = function VeDmLinkAnnotation( linmodAnnotation ) {
 	// Parent constructor
-	ve.dm.Annotation.call( this, element );
+	ve.dm.Annotation.call( this, linmodAnnotation );
 };
 
 /* Inheritance */
@@ -40,55 +40,19 @@ ve.dm.LinkAnnotation.static.name = 'link';
  */
 ve.dm.LinkAnnotation.static.matchTagNames = ['a'];
 
-/* Methods */
-
-/**
- * Get annotation data, especially the href of the link.
- *
- * @method
- * @param {HTMLElement} element
- * @returns {Object} Annotation data, containing href property
- */
-ve.dm.LinkAnnotation.prototype.getAnnotationData = function( element ) {
-	return { 'href': element.getAttribute( 'href' ) };
-};
-
-/**
- * Convert to an object with HTML element information.
- *
- * @method
- * @returns {Object} HTML element information, including tag and attributes properties
- */
-ve.dm.LinkAnnotation.prototype.toHTML = function () {
-	var parentResult = ve.dm.Annotation.prototype.toHTML.call( this );
-	parentResult.tag = 'a';
-	parentResult.attributes.href = this.data.href;
-	return parentResult;
-};
-
-/**
- * Get the hash object of the link annotation.
- *
- * This extends the basic annotation hash by adding htmlAttributes.rel
- * if it present.
- *
- * This is a custom hash function for ve#getHash.
- *
- * @method
- * @returns {Object} Object to hash
- */
-ve.dm.LinkAnnotation.prototype.getHashObject = function () {
-	var keys = [ 'name', 'data' ], obj = {}, i;
-	for ( i = 0; i < keys.length; i++ ) {
-		if ( this[keys[i]] !== undefined ) {
-			obj[keys[i]] = this[keys[i]];
+ve.dm.LinkAnnotation.static.toDataElement = function ( domElements ) {
+	return {
+		'type': 'link',
+		'attributes': {
+			'href': domElements[0].getAttribute( 'href' )
 		}
-	}
-	if ( this.htmlAttributes && this.htmlAttributes.rel ) {
-		obj.htmlAttributes = {};
-		obj.htmlAttributes.rel = this.htmlAttributes.rel;
-	}
-	return obj;
+	};
+};
+
+ve.dm.LinkAnnotation.static.toDomElements = function ( dataElement ) {
+	var domElement = document.createElement( 'a' );
+	domElement.setAttribute( 'href', dataElement.attributes.href );
+	return [ domElement ];
 };
 
 /* Registration */

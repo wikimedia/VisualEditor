@@ -491,6 +491,7 @@ ve.dm.Node.prototype.getOffset = function () {
  * Return value is by reference if array or object.
  *
  * @method
+ * @param {string} key Name of attribute to get
  * @returns {Mixed} Value of attribute, or undefined if no such attribute exists
  */
 ve.dm.Node.prototype.getAttribute = function ( key ) {

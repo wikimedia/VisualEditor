@@ -22,9 +22,6 @@ ve.ce.MWEntityNode = function VeCeMWEntityNode( model ) {
 	// Need CE=false to prevent selection issues
 	this.$.attr( 'contenteditable', false );
 
-	// Properties
-	this.currentSource = null;
-
 	// Events
 	this.model.addListenerMethod( this, 'update', 'onUpdate' );
 

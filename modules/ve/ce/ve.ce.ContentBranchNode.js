@@ -49,40 +49,18 @@ ve.ce.ContentBranchNode.prototype.onSplice = function () {
 };
 
 /**
- * Get an HTML rendering of contents.
+ * Get an HTML rendering of the contents.
  *
  * @method
- * @returns {string} HTML rendering
+ * @returns {jQuery}
  */
 ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
-	var i, j, open, close, startedClosing, arr, annotation, itemAnnotations, itemHtml, $wrapper,
-		store = this.model.doc.getStore(), html = '',
-		annotationStack = new ve.dm.AnnotationSet( store ), annotatedHtml = [];
-
-	function openAnnotations( annotations ) {
-		var out = '',
-			annotation, i, arr, rendered;
-		arr = annotations.get();
-		for ( i = 0; i < arr.length; i++ ) {
-			annotation = arr[i];
-			rendered = annotation.renderHTML();
-			out += ve.getOpeningHtmlTag( rendered.tag, rendered.attributes );
-			annotationStack.push( annotation );
-		}
-		return out;
-	}
-
-	function closeAnnotations( annotations ) {
-		var out = '',
-			annotation, i, arr;
-		arr = annotations.get();
-		for ( i = 0; i < arr.length; i++ ) {
-			annotation = arr[i];
-			out += '</' + annotation.renderHTML().tag + '>';
-			annotationStack.remove( annotation );
-		}
-		return out;
-	}
+	var i, j, itemHtml, itemAnnotations, startClosingAt, arr, annotation, $ann,
+		store = this.model.doc.getStore(),
+		annotationStack = new ve.dm.AnnotationSet( store ),
+		annotatedHtml = [],
+		$wrapper = $( '<div>' ),
+		$current = $wrapper;
 
 	// Gather annotated HTML from the child nodes
 	for ( i = 0; i < this.children.length; i++ ) {
@@ -98,60 +76,51 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 			itemHtml = annotatedHtml[i];
 			itemAnnotations = new ve.dm.AnnotationSet( store );
 		}
-		open = new ve.dm.AnnotationSet( store );
-		close = new ve.dm.AnnotationSet( store );
 
-		// Go through annotationStack from bottom to top (left to right), and
-		// close all annotations starting at the first one that's in annotationStack but
-		// not in itemAnnotations. Then reopen the ones that are in itemAnnotations.
-		startedClosing = false;
+		// FIXME code largely copied from ve.dm.Converter
+		// Close annotations as needed
+		// Go through annotationStack from bottom to top (low to high),
+		// and find the first annotation that's not in annotations.
+		startClosingAt = undefined;
 		arr = annotationStack.get();
 		for ( j = 0; j < arr.length; j++ ) {
 			annotation = arr[j];
-			if (
-				!startedClosing &&
-				annotationStack.contains( annotation ) &&
-				!itemAnnotations.contains( annotation )
-			) {
-				startedClosing = true;
+			if ( !itemAnnotations.contains( annotation ) ) {
+				startClosingAt = j;
+				break;
 			}
-			if ( startedClosing ) {
-				// Because we're processing these in reverse order, we need
-				// to put these in close in reverse order
-				close.add( annotation, 0 );
-				if ( itemAnnotations.contains( annotation ) ) {
-					// open needs to be reversed with respect to close
-					open.push( annotation );
-				}
+		}
+		if ( startClosingAt !== undefined ) {
+			// Close all annotations from top to bottom (high to low)
+			// until we reach startClosingAt
+			for ( j = annotationStack.getLength() - 1; j >= startClosingAt; j-- ) {
+				// Traverse up
+				$current = $current.parent();
+				// Remove from annotationStack
+				annotationStack.removeAt( j );
 			}
 		}
 
-		// Open all annotations that are in right but not in left
-		open.addSet( itemAnnotations.diffWith( annotationStack ) );
+		// Open annotations as needed
+		arr = itemAnnotations.get();
+		for ( j = 0; j < arr.length; j++ ) {
+			annotation = arr[j];
+			if ( !annotationStack.contains( annotation ) ) {
+				// Create new node and descend into it
+				$ann = ve.ce.annotationFactory.create( annotation.getType(), annotation ).$;
+				$current.append( $ann );
+				$current = $ann;
+				// Add to annotationStack
+				annotationStack.push( annotation );
+			}
+		}
 
-		// Output the annotation closings and openings
-		html += closeAnnotations( close );
-		html += openAnnotations( open );
 		// Output the actual HTML
-		if ( typeof itemHtml === 'string' ) {
-			// Output it directly
-			html += itemHtml;
-		} else {
-			// itemHtml is a jQuery object, output a placeholder
-			html += '<div class="ve-ce-contentBranch-placeholder" rel="' + i + '"></div>';
-		}
+		$current.append( itemHtml );
 	}
-	// Close all remaining open annotations
-	html += closeAnnotations( annotationStack.reversed() );
-
-	$wrapper = $( '<div>' ).html( html );
-	// Replace placeholders
-	$wrapper.find( '.ve-ce-contentBranch-placeholder' ).each( function() {
-		var $this = $( this ), item = annotatedHtml[$this.attr( 'rel' )];
-		$this.replaceWith( ve.isArray( item ) ? item[0] : item );
-	} );
 
 	return $wrapper.contents();
+
 };
 
 /**

@@ -15,11 +15,16 @@
 				"name": "General",
 				"classes": [
 					"ve.ce",
+					"ve.ce.AnnotationFactory",
 					"ve.ce.NodeFactory",
 					"ve.ce.Surface",
 					"ve.ce.SurfaceObserver",
 					"ve.ce.DomRange"
 				]
+			},
+			{
+				"name": "Annotations",
+				"classes": ["ve.ce.*Annotation"]
 			},
 			{
 				"name": "Nodes",
