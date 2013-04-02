@@ -55,12 +55,24 @@ ve.ce.ContentBranchNode.prototype.onSplice = function () {
  * @returns {jQuery}
  */
 ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
-	var i, j, itemHtml, itemAnnotations, startClosingAt, arr, annotation, $ann,
+	var i, itemHtml, itemAnnotations, $ann,
 		store = this.model.doc.getStore(),
 		annotationStack = new ve.dm.AnnotationSet( store ),
 		annotatedHtml = [],
 		$wrapper = $( '<div>' ),
 		$current = $wrapper;
+
+	function openAnnotation( annotation ) {
+		// Create a new DOM node and descend into it
+		$ann = ve.ce.annotationFactory.create( annotation.getType(), annotation ).$;
+		$current.append( $ann );
+		$current = $ann;
+	}
+
+	function closeAnnotation() {
+		// Traverse up
+		$current = $current.parent();
+	}
 
 	// Gather annotated HTML from the child nodes
 	for ( i = 0; i < this.children.length; i++ ) {
@@ -77,43 +89,9 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 			itemAnnotations = new ve.dm.AnnotationSet( store );
 		}
 
-		// FIXME code largely copied from ve.dm.Converter
-		// Close annotations as needed
-		// Go through annotationStack from bottom to top (low to high),
-		// and find the first annotation that's not in annotations.
-		startClosingAt = undefined;
-		arr = annotationStack.get();
-		for ( j = 0; j < arr.length; j++ ) {
-			annotation = arr[j];
-			if ( !itemAnnotations.contains( annotation ) ) {
-				startClosingAt = j;
-				break;
-			}
-		}
-		if ( startClosingAt !== undefined ) {
-			// Close all annotations from top to bottom (high to low)
-			// until we reach startClosingAt
-			for ( j = annotationStack.getLength() - 1; j >= startClosingAt; j-- ) {
-				// Traverse up
-				$current = $current.parent();
-				// Remove from annotationStack
-				annotationStack.removeAt( j );
-			}
-		}
-
-		// Open annotations as needed
-		arr = itemAnnotations.get();
-		for ( j = 0; j < arr.length; j++ ) {
-			annotation = arr[j];
-			if ( !annotationStack.contains( annotation ) ) {
-				// Create new node and descend into it
-				$ann = ve.ce.annotationFactory.create( annotation.getType(), annotation ).$;
-				$current.append( $ann );
-				$current = $ann;
-				// Add to annotationStack
-				annotationStack.push( annotation );
-			}
-		}
+		ve.dm.Converter.openAndCloseAnnotations( annotationStack, itemAnnotations,
+			openAnnotation, closeAnnotation
+		);
 
 		// Output the actual HTML
 		$current.append( itemHtml );

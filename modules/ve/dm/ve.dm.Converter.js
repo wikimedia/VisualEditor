@@ -35,16 +35,63 @@ ve.dm.Converter = function VeDmConverter( modelRegistry, nodeFactory, annotation
  * @returns {Array} Linear model data, one element per character
  */
 ve.dm.Converter.getDataContentFromText = function ( text, annotations ) {
-	var i, characters = text.split( '' );
+	var i, len, characters = text.split( '' );
 	if ( !annotations || annotations.isEmpty() ) {
 		return characters;
 	}
 	// Apply annotations to characters
-	for ( i = 0; i < characters.length; i++ ) {
+	for ( i = 0, len = characters.length; i < len; i++ ) {
 		// Just store the annotations' indexes from the index-value store
 		characters[i] = [characters[i], annotations.getIndexes().slice()];
 	}
 	return characters;
+};
+
+/**
+ * Utility function for annotation rendering. Transforms one set of annotations into another
+ * by opening and closing annotations. Each time an annotation is opened or closed, the associated
+ * callback is called with the annotation passed as a parameter.
+ *
+ * Note that currentSet will be modified, and will be equal to targetSet once this function returns.
+ *
+ * @param {ve.dm.AnnotationSet} currentSet The set of annotations currently opened. Will be modified.
+ * @param {ve.dm.AnnotationSet} targetSet The set of annotations we want to have.
+ * @param {Function} open Callback called when an annotation is opened. Passed a ve.dm.Annotation.
+ * @param {Function} close Callback called when an annotation is closed. Passed a ve.dm.Annotation.
+ */
+ve.dm.Converter.openAndCloseAnnotations = function ( currentSet, targetSet, open, close ) {
+	var i, len, arr, annotation, startClosingAt;
+	// Close annotations as needed
+	// Go through annotationStack from bottom to top (low to high),
+	// and find the first annotation that's not in annotations.
+	arr = currentSet.get();
+	for ( i = 0, len = arr.length; i < len; i++ ) {
+		annotation = arr[i];
+		if ( !targetSet.contains( annotation ) ) {
+			startClosingAt = i;
+			break;
+		}
+	}
+	if ( startClosingAt !== undefined ) {
+		// Close all annotations from top to bottom (high to low)
+		// until we reach startClosingAt
+		for ( i = currentSet.getLength() - 1; i >= startClosingAt; i-- ) {
+			close( arr[i] );
+			// Remove from currentClone
+			currentSet.removeAt( i );
+		}
+	}
+
+	// Open annotations as needed
+	arr = targetSet.get();
+	for ( i = 0, len = arr.length; i < len; i++ ) {
+		annotation = arr[i];
+		if ( !currentSet.contains( annotation ) ) {
+			open( annotation );
+			// Add to currentClone
+			currentSet.push( annotation );
+		}
+	}
 };
 
 /* Methods */
@@ -549,13 +596,38 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( store, domElement
  * @returns {HTMLDocument} Document containing the resulting HTML
  */
 ve.dm.Converter.prototype.getDomFromData = function ( store, data ) {
-	var text, i, j, k, annotations, annotation, annotationElement, dataElement, arr,
-		childDomElements, pre, ours, theirs, parentDomElement, lastChild, startClosingAt,
+	var text, i, j, k, annotations, annotationElement, dataElement,
+		childDomElements, pre, ours, theirs, parentDomElement, lastChild,
 		isContentNode, changed, parentChanged, sibling, previousSiblings, doUnwrap, textNode,
+		conv = this,
 		doc = ve.createDocumentFromHTML( '' ),
 		container = doc.body,
 		domElement = container,
 		annotationStack = new ve.dm.AnnotationSet( store );
+
+	function openAnnotation( annotation ) {
+		// Add text if needed
+		if ( text.length > 0 ) {
+			domElement.appendChild( doc.createTextNode( text ) );
+			text = '';
+		}
+		// Create new node and descend into it
+		annotationElement = conv.getDomElementsFromDataElement(
+			annotation.getElement(), doc
+		)[0];
+		domElement.appendChild( annotationElement );
+		domElement = annotationElement;
+	}
+
+	function closeAnnotation() {
+		// Add text if needed
+		if ( text.length > 0 ) {
+			domElement.appendChild( doc.createTextNode( text ) );
+			text = '';
+		}
+		// Traverse up
+		domElement = domElement.parentNode;
+	}
 
 	for ( i = 0; i < data.length; i++ ) {
 		if ( typeof data[i] === 'string' ) {
@@ -591,54 +663,9 @@ ve.dm.Converter.prototype.getDomFromData = function ( store, data ) {
 				annotations = new ve.dm.AnnotationSet(
 					store, store.values( data[i].annotations || data[i][1] )
 				);
-				// Close annotations as needed
-				// Go through annotationStack from bottom to top (low to high),
-				// and find the first annotation that's not in annotations.
-				startClosingAt = undefined;
-				arr = annotationStack.get();
-				for ( j = 0; j < arr.length; j++ ) {
-					annotation = arr[j];
-					if ( !annotations.contains( annotation ) ) {
-						startClosingAt = j;
-						break;
-					}
-				}
-				if ( startClosingAt !== undefined ) {
-					// Close all annotations from top to bottom (high to low)
-					// until we reach startClosingAt
-					for ( j = annotationStack.getLength() - 1; j >= startClosingAt; j-- ) {
-						// Add text if needed
-						if ( text.length > 0 ) {
-							domElement.appendChild( doc.createTextNode( text ) );
-							text = '';
-						}
-						// Traverse up
-						domElement = domElement.parentNode;
-						// Remove from annotationStack
-						annotationStack.removeAt( j );
-					}
-				}
-
-				// Open annotations as needed
-				arr = annotations.get();
-				for ( j = 0; j < arr.length; j++ ) {
-					annotation = arr[j];
-					if ( !annotationStack.contains( annotation ) ) {
-						// Add text if needed
-						if ( text.length > 0 ) {
-							domElement.appendChild( doc.createTextNode( text ) );
-							text = '';
-						}
-						// Create new node and descend into it
-						annotationElement = this.getDomElementsFromDataElement(
-							annotation.getElement(), doc
-						)[0];
-						domElement.appendChild( annotationElement );
-						domElement = annotationElement;
-						// Add to annotationStack
-						annotationStack.push( annotation );
-					}
-				}
+				ve.dm.Converter.openAndCloseAnnotations( annotationStack, annotations,
+					openAnnotation, closeAnnotation
+				);
 
 				if ( data[i].annotations === undefined ) {
 					// Annotated text
