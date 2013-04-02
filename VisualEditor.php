@@ -224,6 +224,7 @@ $wgResourceModules += array(
 
 			// dm
 			've/dm/ve.dm.js',
+			've/dm/ve.dm.Model.js',
 			've/dm/ve.dm.ModelRegistry.js',
 			've/dm/ve.dm.NodeFactory.js',
 			've/dm/ve.dm.AnnotationFactory.js',

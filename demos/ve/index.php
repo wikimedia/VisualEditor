@@ -113,6 +113,7 @@ $html = file_get_contents( $page );
 		<script src="../../modules/ve/actions/ve.InspectorAction.js"></script>
 		<script src="../../modules/ve/actions/ve.ListAction.js"></script>
 		<script src="../../modules/ve/dm/ve.dm.js"></script>
+		<script src="../../modules/ve/dm/ve.dm.Model.js"></script>
 		<script src="../../modules/ve/dm/ve.dm.ModelRegistry.js"></script>
 		<script src="../../modules/ve/dm/ve.dm.NodeFactory.js"></script>
 		<script src="../../modules/ve/dm/ve.dm.AnnotationFactory.js"></script>

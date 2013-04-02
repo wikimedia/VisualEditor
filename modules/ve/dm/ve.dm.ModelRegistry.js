@@ -7,9 +7,9 @@
 ( function ( ve ) {
 
 /**
- * Registry for models. A model is a node or an annotation.
+ * Registry for models.
  *
- * To register a new node type or annotation type, call ve.dm.modelRegistry.register()
+ * To register a new model type, call ve.dm.modelRegistry.register()
  *
  * @extends ve.Registry
  * @constructor
@@ -70,7 +70,7 @@ function addType( obj /*, ...*/ ) {
 /**
  * Register a model type.
  * @param {string} name Symbolic name for the model
- * @param {ve.dm.Annotation|ve.dm.Node|ve.dm.MetaItem} constructor Subclass of ve.dm.Annotation, ve.dm.Node or ve.dm.MetaItem
+ * @param {ve.dm.Model} constructor Subclass of ve.dm.Model
  */
 ve.dm.ModelRegistry.prototype.register = function ( constructor ) {
 	var i, j, tags, types, name = constructor.static && constructor.static.name;

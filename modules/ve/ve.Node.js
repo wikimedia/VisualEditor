@@ -9,12 +9,12 @@
  * Generic node.
  *
  * @abstract
- * @extends ve.EventEmitter
+ * @mixins ve.EventEmitter
  *
  * @constructor
  */
 ve.Node = function VeNode() {
-	// Parent constructor
+	// Mixin constructor
 	ve.EventEmitter.call( this );
 
 	// Properties
@@ -36,16 +36,7 @@ ve.Node = function VeNode() {
 
 /* Inheritance */
 
-ve.inheritClass( ve.Node, ve.EventEmitter );
-
-/**
- * Symbolic name for the node class. Must be set to a unique string by every subclass. Must not
- * conflict with names of other nodes, annotations or meta items.
- * @static
- * @property {string} [static.name=null]
- * @inheritable
- */
-ve.Node.static.name = null;
+ve.mixinClass( ve.Node, ve.EventEmitter );
 
 /* Abstract Methods */
 

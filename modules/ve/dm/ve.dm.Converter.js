@@ -98,7 +98,7 @@ ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElement
 
 /**
  * Create a data element from a DOM element.
- * @param {ve.dm.Node|ve.dm.MetaItem|ve.dm.Annotation} modelClass Model class to use for conversion
+ * @param {ve.dm.Model} modelClass Model class to use for conversion
  * @param {HTMLElement[]} domElements DOM elements to convert
  * @param {Object} context Converter context to pass to toDataElement() (will be cloned)
  * @returns {Object} Data element
@@ -631,7 +631,7 @@ ve.dm.Converter.prototype.getDomFromData = function ( store, data ) {
 						}
 						// Create new node and descend into it
 						annotationElement = this.getDomElementsFromDataElement(
-							annotation.getLinmodAnnotation(), doc
+							annotation.getElement(), doc
 						)[0];
 						domElement.appendChild( annotationElement );
 						domElement = annotationElement;

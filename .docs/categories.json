@@ -39,6 +39,7 @@
 				"name": "General",
 				"classes": [
 					"ve.dm",
+					"ve.dm.Model",
 					"ve.dm.AnnotationFactory",
 					"ve.dm.MetaItemFactory",
 					"ve.dm.ModelRegistry",

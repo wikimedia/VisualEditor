@@ -18,11 +18,11 @@
  * @class
  * @extends ve.dm.LinkAnnotation
  * @constructor
- * @param {Object} linmodAnnotation
+ * @param {Object} element
  */
-ve.dm.MWExternalLinkAnnotation = function VeDmMWExternalLinkAnnotation( linmodAnnotation ) {
+ve.dm.MWExternalLinkAnnotation = function VeDmMWExternalLinkAnnotation( element ) {
 	// Parent constructor
-	ve.dm.LinkAnnotation.call( this, linmodAnnotation );
+	ve.dm.LinkAnnotation.call( this, element );
 };
 
 /* Inheritance */
@@ -31,18 +31,8 @@ ve.inheritClass( ve.dm.MWExternalLinkAnnotation, ve.dm.LinkAnnotation );
 
 /* Static Properties */
 
-/**
- * @static
- * @property static.name
- * @inheritdoc
- */
 ve.dm.MWExternalLinkAnnotation.static.name = 'link/MWexternal';
 
-/**
- * @static
- * @property static.matchTagNames
- * @inheritdoc
- */
 ve.dm.MWExternalLinkAnnotation.static.matchRdfaTypes = [
 	'mw:ExtLink', 'mw:ExtLink/Numbered', 'mw:ExtLink/URL'
 ];

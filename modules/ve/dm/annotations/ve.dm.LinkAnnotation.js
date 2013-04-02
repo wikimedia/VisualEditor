@@ -13,11 +13,11 @@
  * @class
  * @extends ve.dm.Annotation
  * @constructor
- * @param {Object} linmodAnnotation
+ * @param {Object} element
  */
-ve.dm.LinkAnnotation = function VeDmLinkAnnotation( linmodAnnotation ) {
+ve.dm.LinkAnnotation = function VeDmLinkAnnotation( element ) {
 	// Parent constructor
-	ve.dm.Annotation.call( this, linmodAnnotation );
+	ve.dm.Annotation.call( this, element );
 };
 
 /* Inheritance */
@@ -26,18 +26,8 @@ ve.inheritClass( ve.dm.LinkAnnotation, ve.dm.Annotation );
 
 /* Static Properties */
 
-/**
- * @static
- * @property static.name
- * @inheritdoc
- */
 ve.dm.LinkAnnotation.static.name = 'link';
 
-/**
- * @static
- * @property static.matchTagNames
- * @inheritdoc
- */
 ve.dm.LinkAnnotation.static.matchTagNames = ['a'];
 
 ve.dm.LinkAnnotation.static.toDataElement = function ( domElements ) {

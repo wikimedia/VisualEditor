@@ -14,11 +14,11 @@
  * @class
  * @extends ve.dm.LinkAnnotation
  * @constructor
- * @param {HTMLElement|Object} linmodAnnotation
+ * @param {Object} element
  */
-ve.dm.MWInternalLinkAnnotation = function VeDmMWInternalLinkAnnotation( linmodAnnotation ) {
+ve.dm.MWInternalLinkAnnotation = function VeDmMWInternalLinkAnnotation( element ) {
 	// Parent constructor
-	ve.dm.LinkAnnotation.call( this, linmodAnnotation );
+	ve.dm.LinkAnnotation.call( this, element );
 };
 
 /* Inheritance */
@@ -27,18 +27,8 @@ ve.inheritClass( ve.dm.MWInternalLinkAnnotation, ve.dm.LinkAnnotation );
 
 /* Static Properties */
 
-/**
- * @static
- * @property static.name
- * @inheritdoc
- */
 ve.dm.MWInternalLinkAnnotation.static.name = 'link/MWinternal';
 
-/**
- * @static
- * @property static.matchTagNames
- * @inheritdoc
- */
 ve.dm.MWInternalLinkAnnotation.static.matchRdfaTypes = ['mw:WikiLink'];
 
 ve.dm.MWInternalLinkAnnotation.static.toDataElement = function ( domElements ) {
