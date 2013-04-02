@@ -1,42 +1,25 @@
 /*!
- * VisualEditor UserInterface GroupWidget class.
+ * VisualEditor UserInterface GroupElement class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Create an ve.ui.GroupWidget object.
+ * Group element.
  *
  * @class
  * @abstract
- * @extends ve.ui.Widget
  *
  * @constructor
- * @param {Object} [config] Config options
+ * @param {jQuery} $group Group element
  */
-ve.ui.GroupWidget = function VeUiGroupWidget( config ) {
-	// Config intialization
-	config = config || {};
-
-	// Parent constructor
-	ve.ui.Widget.call( this, config );
-
+ve.ui.GroupElement = function VeUiGroupElement( $group ) {
 	// Properties
+	this.$group = $group;
 	this.items = [];
-	this.$items = $( [] );
+	this.$items = this.$$( [] );
 };
-
-/* Inheritance */
-
-ve.inheritClass( ve.ui.GroupWidget, ve.ui.Widget );
-
-/* Events */
-
-/**
- * @event select
- * @param {ve.ui.OutlineItemWidget|null} item Selected item or null if no item is selected
- */
 
 /* Methods */
 
@@ -44,9 +27,9 @@ ve.inheritClass( ve.ui.GroupWidget, ve.ui.Widget );
  * Get items.
  *
  * @method
- * @returns {ve.ui.OutlineItemWidget[]} Items
+ * @returns {ve.ui.Element[]} Items
  */
-ve.ui.GroupWidget.prototype.getItems = function () {
+ve.ui.GroupElement.prototype.getItems = function () {
 	return this.items.slice( 0 );
 };
 
@@ -54,10 +37,10 @@ ve.ui.GroupWidget.prototype.getItems = function () {
  * Add items.
  *
  * @method
- * @param {ve.ui.Widget[]} items Item
+ * @param {ve.ui.Element[]} items Item
  * @chainable
  */
-ve.ui.GroupWidget.prototype.addItems = function ( items ) {
+ve.ui.GroupElement.prototype.addItems = function ( items ) {
 	var i, len, item;
 
 	for ( i = 0, len = items.length; i < len; i++ ) {
@@ -69,7 +52,7 @@ ve.ui.GroupWidget.prototype.addItems = function ( items ) {
 		}
 		// Add the item
 		this.items.push( item );
-		this.$.append( item.$ );
+		this.$group.append( item.$ );
 		this.$items = this.$items.add( item.$ );
 	}
 
@@ -82,10 +65,10 @@ ve.ui.GroupWidget.prototype.addItems = function ( items ) {
  * Items will be detached, not removed, so they can be used later.
  *
  * @method
- * @param {ve.ui.Widget[]} items Items to remove
+ * @param {ve.ui.Element[]} items Items to remove
  * @chainable
  */
-ve.ui.GroupWidget.prototype.removeItems = function ( items ) {
+ve.ui.GroupElement.prototype.removeItems = function ( items ) {
 	var i, len, item, index;
 
 	// Remove specific items
@@ -110,7 +93,7 @@ ve.ui.GroupWidget.prototype.removeItems = function ( items ) {
  * @method
  * @chainable
  */
-ve.ui.GroupWidget.prototype.clearItems = function () {
+ve.ui.GroupElement.prototype.clearItems = function () {
 	this.items = [];
 	this.$items.detach();
 

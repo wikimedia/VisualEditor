@@ -45,6 +45,7 @@ $html = file_get_contents( $page );
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Inspector.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Toolbar.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Tool.css">
+		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Element.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Layout.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Widget.css">
 
@@ -214,10 +215,10 @@ $html = file_get_contents( $page );
 		<script src="../../modules/ve/ui/ve.ui.Tool.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.Toolbar.js"></script>
 		<script src="../../modules/ve/ui/ve.ui.ToolFactory.js"></script>
-		<script src="../../modules/ve/ui/widgets/ve.ui.LabeledWidget.js"></script>
-		<script src="../../modules/ve/ui/widgets/ve.ui.FlaggableWidget.js"></script>
+		<script src="../../modules/ve/ui/elements/ve.ui.LabeledElement.js"></script>
+		<script src="../../modules/ve/ui/elements/ve.ui.GroupElement.js"></script>
+		<script src="../../modules/ve/ui/elements/ve.ui.FlaggableElement.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.PopupWidget.js"></script>
-		<script src="../../modules/ve/ui/widgets/ve.ui.GroupWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.SelectWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.OptionWidget.js"></script>
 		<script src="../../modules/ve/ui/widgets/ve.ui.ButtonWidget.js"></script>
@@ -235,8 +236,8 @@ $html = file_get_contents( $page );
 		<script src="../../modules/ve/ui/widgets/ve.ui.MWLinkTargetInputWidget.js"></script>
 		<script src="../../modules/ve/ui/layouts/ve.ui.GridLayout.js"></script>
 		<script src="../../modules/ve/ui/layouts/ve.ui.PanelLayout.js"></script>
-		<script src="../../modules/ve/ui/layouts/panels/ve.ui.TitledPanelLayout.js"></script>
 		<script src="../../modules/ve/ui/layouts/panels/ve.ui.EditorPanelLayout.js"></script>
+		<script src="../../modules/ve/ui/layouts/panels/ve.ui.StackPanelLayout.js"></script>
 		<script src="../../modules/ve/ui/dialogs/ve.ui.ContentDialog.js"></script>
 		<script src="../../modules/ve/ui/dialogs/ve.ui.MetaDialog.js"></script>
 		<script src="../../modules/ve/ui/tools/ve.ui.ButtonTool.js"></script>

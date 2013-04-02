@@ -113,6 +113,10 @@
 				"classes": ["ve.ui.*Inspector"]
 			},
 			{
+				"name": "Elements",
+				"classes": ["ve.ui.*Element"]
+			},
+			{
 				"name": "Widgets",
 				"classes": ["ve.ui.*Widget"]
 			},

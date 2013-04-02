@@ -11,7 +11,7 @@
  * @class
  * @abstract
  * @extends ve.ui.Widget
- * @mixins ve.ui.LabeledWidget
+ * @mixins ve.ui.LabeledElement
  *
  * @constructor
  * @param {Mixed} data Option data
@@ -29,7 +29,7 @@ ve.ui.OptionWidget = function VeUiOptionWidget( data, config ) {
 	ve.ui.Widget.call( this, config );
 
 	// Mixin constructors
-	ve.ui.LabeledWidget.call( this, this.$$( '<span>' ), config );
+	ve.ui.LabeledElement.call( this, this.$$( '<span>' ), config );
 
 	// Properties
 	this.data = data;
@@ -50,7 +50,7 @@ ve.ui.OptionWidget = function VeUiOptionWidget( data, config ) {
 
 ve.inheritClass( ve.ui.OptionWidget, ve.ui.Widget );
 
-ve.mixinClass( ve.ui.OptionWidget, ve.ui.LabeledWidget );
+ve.mixinClass( ve.ui.OptionWidget, ve.ui.LabeledElement );
 
 /* Static Properties */
 
