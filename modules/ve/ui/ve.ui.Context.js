@@ -290,7 +290,7 @@ ve.ui.Context.prototype.hide = function () {
 
 	if ( inspector ) {
 		// This will recurse, but inspector will be undefined next time
-		inspector.close();
+		inspector.close( 'hide' );
 		return this;
 	}
 
@@ -311,17 +311,5 @@ ve.ui.Context.prototype.hide = function () {
  */
 ve.ui.Context.prototype.openInspector = function ( name ) {
 	this.inspectors.open( name );
-	return this;
-};
-
-/**
- * Closes currently open inspector.
- *
- * @method
- * @param {boolean} remove Remove annotation while closing
- * @chainable
- */
-ve.ui.Context.prototype.closeInspector = function ( remove ) {
-	this.inspectors.close( remove );
 	return this;
 };

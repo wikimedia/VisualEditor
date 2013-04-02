@@ -48,7 +48,7 @@ ve.inheritClass( ve.ui.WindowSet, ve.EventEmitter );
 /**
  * @event close
  * @param {ve.ui.Window} win Window that's been closed
- * @param {boolean} accept Changes have been accepted
+ * @param {string} action Action that caused the window to be closed
  */
 
 /* Methods */
@@ -102,6 +102,8 @@ ve.ui.WindowSet.prototype.getCurrent = function () {
 /**
  * Opens a given window.
  *
+ * Any already open dialog will be closed.
+ *
  * @method
  * @param {string} name Symbolic name of window
  * @chainable
@@ -112,6 +114,9 @@ ve.ui.WindowSet.prototype.open = function ( name ) {
 	if ( !this.factory.lookup( name ) ) {
 		throw new Error( 'Unknown window: ' + name );
 	}
+	if ( this.currentWindow ) {
+		throw new Error( 'Cannot open another window while another one is active' );
+	}
 	if ( !( name in this.windows ) ) {
 		win = this.windows[name] = this.factory.create( name, this.surface );
 		win.on( 'setup', ve.bind( this.onWindowSetup, this, win ) );
@@ -119,22 +124,8 @@ ve.ui.WindowSet.prototype.open = function ( name ) {
 		win.on( 'close', ve.bind( this.onWindowClose, this, win ) );
 		this.$.append( win.$ );
 	}
-	this.close();
+
 	this.windows[name].open();
 
-	return this;
-};
-
-/**
- * Closes currently open window.
- *
- * @method
- * @param {boolean} accept Changes have been accepted
- * @chainable
- */
-ve.ui.WindowSet.prototype.close = function ( accept ) {
-	if ( this.currentWindow ) {
-		this.currentWindow.close( accept );
-	}
 	return this;
 };

@@ -44,16 +44,6 @@ ve.InspectorAction.prototype.open = function ( name ) {
 	this.surface.getContext().openInspector( name );
 };
 
-/**
- * Close any open inspector.
- *
- * @method
- * @param {boolean} remove Remove annotation being inspected
- */
-ve.InspectorAction.prototype.close = function ( remove ) {
-	this.surface.getContext().closeInspector( remove );
-};
-
 /* Registration */
 
 ve.actionFactory.register( 'inspector', ve.InspectorAction );

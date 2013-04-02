@@ -49,7 +49,7 @@ ve.ui.Dialog.prototype.onMouseDown = function () {
  * @method
  */
 ve.ui.Dialog.prototype.onCancelButtonClick = function () {
-	this.close();
+	this.close( 'cancel' );
 };
 
 /**
@@ -58,7 +58,7 @@ ve.ui.Dialog.prototype.onCancelButtonClick = function () {
  * @method
  */
 ve.ui.Dialog.prototype.onApplyButtonClick = function () {
-	this.close( true );
+	this.close( 'apply' );
 };
 
 /**

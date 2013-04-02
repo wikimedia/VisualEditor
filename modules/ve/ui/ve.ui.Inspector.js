@@ -82,7 +82,7 @@ ve.ui.Inspector.prototype.initialize = function () {
  * @method
  */
 ve.ui.Inspector.prototype.onCloseButtonClick = function () {
-	this.close();
+	this.close( 'back' );
 };
 
 /**
@@ -91,7 +91,7 @@ ve.ui.Inspector.prototype.onCloseButtonClick = function () {
  * @method
  */
 ve.ui.Inspector.prototype.onRemoveButtonClick = function() {
-	this.close( true );
+	this.close( 'remove' );
 };
 
 /**
@@ -101,7 +101,7 @@ ve.ui.Inspector.prototype.onRemoveButtonClick = function() {
  * @param {jQuery.Event} e Form submit event
  */
 ve.ui.Inspector.prototype.onFormSubmit = function () {
-	this.close();
+	this.close( 'apply' );
 	return false;
 };
 
@@ -114,13 +114,22 @@ ve.ui.Inspector.prototype.onFormSubmit = function () {
 ve.ui.Inspector.prototype.onFormKeyDown = function ( e ) {
 	// Escape
 	if ( e.which === 27 ) {
-		this.close();
+		this.close( 'back' );
 		return false;
 	}
 };
 
 /**
- * Handle inspector initialize events.
+ * Handle inspector setup events.
+ *
+ * @method
+ */
+ve.ui.Inspector.prototype.onSetup = function () {
+	this.previousSelection = this.surface.getModel().getSelection();
+};
+
+/**
+ * Handle inspector open events.
  *
  * @method
  */

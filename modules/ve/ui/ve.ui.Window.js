@@ -72,7 +72,7 @@ ve.inheritClass( ve.ui.Window, ve.EventEmitter );
 /**
  * @event close
  * @param {ve.ui.Window} win Window that's been closed
- * @param {boolean} accept Changes have been accepted
+ * @param {string} action Action that caused the window to be closed
  */
 
 /* Static Properties */
@@ -196,7 +196,7 @@ ve.ui.Window.prototype.onOpen = function () {
  * To be notified after this method is called, listen to the `close` event.
  *
  * @method
- * @param {boolean} accept Changes have been accepted
+ * @param {string} action Action that caused the window to be closed
  */
 ve.ui.Window.prototype.onClose = function () {
 	// This is a stub, override functionality in child classes
@@ -295,19 +295,19 @@ ve.ui.Window.prototype.open = function () {
  * loop.
  *
  * @method
- * @param {boolean} accept Changes have been accepted
+ * @param {boolean} action Action that caused the window to be closed
  * @emits close
  */
-ve.ui.Window.prototype.close = function ( remove ) {
+ve.ui.Window.prototype.close = function ( action ) {
 	if ( !this.closing ) {
 		this.closing = true;
 		this.$.hide();
 		this.visible = false;
-		this.onClose( remove );
+		this.onClose( action );
 		this.closing = false;
 		this.frame.$content.find( ':focus' ).blur();
 		this.surface.getView().getDocument().getDocumentNode().$.focus();
-		this.emit( 'close', remove );
+		this.emit( 'close', action );
 	}
 };
 

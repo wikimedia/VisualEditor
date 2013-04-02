@@ -124,17 +124,18 @@ ve.ui.LinkInspector.prototype.onOpen = function () {
  * Handle the inspector being opened.
  *
  * @method
- * @param {boolean} remove Annotation should be removed
+ * @param {string} action Action that caused the window to be closed
  */
-ve.ui.LinkInspector.prototype.onClose = function ( remove ) {
+ve.ui.LinkInspector.prototype.onClose = function ( action ) {
 	// Call parent method
-	ve.ui.Inspector.prototype.onClose.call( this );
+	ve.ui.Inspector.prototype.onClose.call( this, action );
 
 	var i, len, annotations, selection,
 		insert = false,
 		undo = false,
 		clear = false,
 		set = false,
+		remove = action === 'remove',
 		target = this.targetInput.getValue(),
 		annotation = this.targetInput.getAnnotation(),
 		fragment = this.surface.getModel().getFragment( this.initialSelection, false );
@@ -178,6 +179,9 @@ ve.ui.LinkInspector.prototype.onClose = function ( remove ) {
 	if ( set ) {
 		// Apply new annotation
 		fragment.annotateContent( 'set', annotation );
+	}
+	if ( action === 'back' ) {
+		selection = this.previousSelection;
 	}
 	// Selection changes may have occured in the insertion and annotation hullabaloo - restore it
 	this.surface.execute(
