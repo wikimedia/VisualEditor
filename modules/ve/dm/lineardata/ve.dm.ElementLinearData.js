@@ -671,7 +671,7 @@ ve.dm.ElementLinearData.prototype.getNearestStructuralOffset = function ( offset
  * @returns {ve.Range} Range around nearest word boundaries
  */
 ve.dm.ElementLinearData.prototype.getNearestWordRange = function ( offset ) {
-	var offsetLeft, offsetRight, i,
+	var offsetLeft, offsetRight,
 		dataString = new ve.dm.DataString( this.getData() );
 
 	offset = this.getNearestContentOffset( offset );
@@ -679,10 +679,10 @@ ve.dm.ElementLinearData.prototype.getNearestWordRange = function ( offset ) {
 	// If the cursor offset is a break (i.e. the start/end of word) we should
 	// check one position either side to see if there is a non-break
 	// and if so, move the offset accordingly
-	if ( unicodeJS.wordbreak.isBreakInTextString( dataString, offset ) ) {
-		if ( !unicodeJS.wordbreak.isBreakInTextString( dataString, offset + 1 ) ) {
+	if ( unicodeJS.wordbreak.isBreak( dataString, offset ) ) {
+		if ( !unicodeJS.wordbreak.isBreak( dataString, offset + 1 ) ) {
 			offset++;
-		} else if ( !unicodeJS.wordbreak.isBreakInTextString( dataString, offset - 1 ) ) {
+		} else if ( !unicodeJS.wordbreak.isBreak( dataString, offset - 1 ) ) {
 			offset--;
 		} else {
 			// just return one character to the right, unless we are at the end
@@ -695,21 +695,8 @@ ve.dm.ElementLinearData.prototype.getNearestWordRange = function ( offset ) {
 		}
 	}
 
-	i = offset;
-	// Search left and right for next break points
-	while ( dataString.read( i++ ) !== null ) {
-		offsetRight = i;
-		if ( unicodeJS.wordbreak.isBreakInTextString( dataString, i ) ) {
-			break;
-		}
-	}
-	i = offset;
-	while ( dataString.read( i-- ) !== null ) {
-		offsetLeft = i;
-		if ( unicodeJS.wordbreak.isBreakInTextString( dataString, i ) ) {
-			break;
-		}
-	}
+	offsetRight = unicodeJS.wordbreak.nextBreakOffset( dataString, offset );
+	offsetLeft = unicodeJS.wordbreak.prevBreakOffset( dataString, offset );
 
 	return new ve.Range( offsetLeft, offsetRight );
 };
