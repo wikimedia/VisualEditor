@@ -48,7 +48,7 @@ ve.dm.TextStyleAnnotation.static.toDataElement = function ( domElements ) {
 	};
 };
 
-ve.dm.TextStyleAnnotation.static.toDomElements = function ( dataElement ) {
+ve.dm.TextStyleAnnotation.static.toDomElements = function ( dataElement, doc ) {
 	var nodeNames = {
 		'bold': 'b',
 		'italic': 'i',
@@ -62,7 +62,7 @@ ve.dm.TextStyleAnnotation.static.toDomElements = function ( dataElement ) {
 		'superScript': 'sup',
 		'subScript': 'sub'
 	};
-	return [ document.createElement( nodeNames[dataElement.type.substring( 10 )] ) ];
+	return [ doc.createElement( nodeNames[dataElement.type.substring( 10 )] ) ];
 };
 
 

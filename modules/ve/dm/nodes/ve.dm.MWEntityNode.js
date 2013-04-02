@@ -37,9 +37,9 @@ ve.dm.MWEntityNode.static.toDataElement = function ( domElements ) {
 	return { 'type': 'MWentity', 'attributes': { 'character': domElements[0].textContent } };
 };
 
-ve.dm.MWEntityNode.static.toDomElements = function ( dataElement ) {
-	var domElement = document.createElement( 'span' ),
-		textNode = document.createTextNode( dataElement.attributes.character );
+ve.dm.MWEntityNode.static.toDomElements = function ( dataElement, doc ) {
+	var domElement = doc.createElement( 'span' ),
+		textNode = doc.createTextNode( dataElement.attributes.character );
 	domElement.setAttribute( 'typeof', 'mw:Entity' );
 	domElement.appendChild( textNode );
 	return [ domElement ];

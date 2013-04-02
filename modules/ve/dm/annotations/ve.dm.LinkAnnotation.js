@@ -39,8 +39,8 @@ ve.dm.LinkAnnotation.static.toDataElement = function ( domElements ) {
 	};
 };
 
-ve.dm.LinkAnnotation.static.toDomElements = function ( dataElement ) {
-	var domElement = document.createElement( 'a' );
+ve.dm.LinkAnnotation.static.toDomElements = function ( dataElement, doc ) {
+	var domElement = doc.createElement( 'a' );
 	domElement.setAttribute( 'href', dataElement.attributes.href );
 	return [ domElement ];
 };

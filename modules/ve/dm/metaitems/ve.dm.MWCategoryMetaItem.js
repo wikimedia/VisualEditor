@@ -48,9 +48,9 @@ ve.dm.MWCategoryMetaItem.static.toDataElement = function ( domElements ) {
 	};
 };
 
-ve.dm.MWCategoryMetaItem.static.toDomElements = function ( dataElement ) {
+ve.dm.MWCategoryMetaItem.static.toDomElements = function ( dataElement, doc ) {
 	var href,
-		domElement = document.createElement( 'link' ),
+		domElement = doc.createElement( 'link' ),
 		hrefPrefix = dataElement.attributes.hrefPrefix || '',
 		category = dataElement.attributes.category || '',
 		sortkey = dataElement.attributes.sortkey || '',

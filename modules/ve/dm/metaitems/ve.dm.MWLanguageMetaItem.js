@@ -41,8 +41,8 @@ ve.dm.MWLanguageMetaItem.static.toDataElement = function ( domElements ) {
 	};
 };
 
-ve.dm.MWLanguageMetaItem.static.toDomElements = function ( dataElement ) {
-	var domElement = document.createElement( 'link' );
+ve.dm.MWLanguageMetaItem.static.toDomElements = function ( dataElement, doc ) {
+	var domElement = doc.createElement( 'link' );
 	domElement.setAttribute( 'rel', 'mw:WikiLink/Language' );
 	domElement.setAttribute( 'href', dataElement.attributes.href );
 	return [ domElement ];

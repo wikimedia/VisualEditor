@@ -47,9 +47,9 @@ ve.dm.MWInternalLinkAnnotation.static.toDataElement = function ( domElements ) {
 	};
 };
 
-ve.dm.MWInternalLinkAnnotation.static.toDomElements = function ( dataElement ) {
+ve.dm.MWInternalLinkAnnotation.static.toDomElements = function ( dataElement, doc ) {
 	var href,
-		domElement = document.createElement( 'a' ),
+		domElement = doc.createElement( 'a' ),
 		title = dataElement.attributes.title,
 		origTitle = dataElement.attributes.origTitle;
 	if ( origTitle && decodeURIComponent( origTitle ).replace( /_/g, ' ' ) === title ) {

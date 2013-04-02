@@ -48,9 +48,9 @@ ve.dm.HeadingNode.static.toDataElement = function ( domElements ) {
 	return { 'type': 'heading', 'attributes': { 'level': level } };
 };
 
-ve.dm.HeadingNode.static.toDomElements = function ( dataElement ) {
+ve.dm.HeadingNode.static.toDomElements = function ( dataElement, doc ) {
 	var level = dataElement.attributes && dataElement.attributes.level || 1;
-	return [ document.createElement( 'h' + level ) ];
+	return [ doc.createElement( 'h' + level ) ];
 };
 
 /* Registration */

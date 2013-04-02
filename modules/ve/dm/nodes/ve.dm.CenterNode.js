@@ -33,8 +33,8 @@ ve.dm.CenterNode.static.toDataElement = function () {
 	return { 'type': 'center' };
 };
 
-ve.dm.CenterNode.static.toDomElements = function () {
-	return [ document.createElement( 'center' ) ];
+ve.dm.CenterNode.static.toDomElements = function ( dataElement, doc ) {
+	return [ doc.createElement( 'center' ) ];
 };
 
 /* Registration */

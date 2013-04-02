@@ -35,8 +35,8 @@ ve.dm.ParagraphNode.static.toDataElement = function () {
 	return { 'type': 'paragraph' };
 };
 
-ve.dm.ParagraphNode.static.toDomElements = function () {
-	return [ document.createElement( 'p' ) ];
+ve.dm.ParagraphNode.static.toDomElements = function ( dataElement, doc ) {
+	return [ doc.createElement( 'p' ) ];
 };
 
 /* Registration */

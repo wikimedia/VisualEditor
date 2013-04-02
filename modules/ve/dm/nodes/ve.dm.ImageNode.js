@@ -35,8 +35,8 @@ ve.dm.ImageNode.static.toDataElement = function () {
 	return { 'type': 'image' };
 };
 
-ve.dm.ImageNode.static.toDomElements = function () {
-	return [ document.createElement( 'img' ) ];
+ve.dm.ImageNode.static.toDomElements = function ( dataElement, doc ) {
+	return [ doc.createElement( 'img' ) ];
 };
 
 /* Registration */

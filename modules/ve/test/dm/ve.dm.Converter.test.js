@@ -26,12 +26,13 @@ QUnit.test( 'getDataElementFromDomElement', 20, function ( assert ) {
 */
 
 QUnit.test( 'getDomElementsFromDataElement', 20, function ( assert ) {
-	var msg, conversion;
+	var msg, conversion, doc;
 
 	for ( msg in ve.dm.example.conversions ) {
 		conversion = ve.dm.example.conversions[msg];
+		doc = conversion.domElement.ownerDocument;
 		assert.equalDomElement(
-			ve.dm.converter.getDomElementsFromDataElement( conversion.dataElement )[0],
+			ve.dm.converter.getDomElementsFromDataElement( conversion.dataElement, doc )[0],
 			conversion.domElement,
 			msg
 		);

@@ -40,9 +40,9 @@ ve.dm.DefinitionListItemNode.static.toDataElement = function ( domElements ) {
 	return { 'type': 'definitionListItem', 'attributes': { 'style': style } };
 };
 
-ve.dm.DefinitionListItemNode.static.toDomElements = function ( dataElement ) {
+ve.dm.DefinitionListItemNode.static.toDomElements = function ( dataElement, doc ) {
 	var tag = dataElement.attributes && dataElement.attributes.style === 'term' ? 'dt' : 'dd';
-	return [ document.createElement( tag ) ];
+	return [ doc.createElement( tag ) ];
 };
 
 /* Registration */

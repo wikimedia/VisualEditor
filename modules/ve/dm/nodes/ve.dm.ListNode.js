@@ -40,9 +40,9 @@ ve.dm.ListNode.static.toDataElement = function ( domElements ) {
 	return { 'type': 'list', 'attributes': { 'style': style } };
 };
 
-ve.dm.ListNode.static.toDomElements = function ( dataElement ) {
+ve.dm.ListNode.static.toDomElements = function ( dataElement, doc ) {
 	var tag = dataElement.attributes && dataElement.attributes.style === 'number' ? 'ol' : 'ul';
-	return [ document.createElement( tag ) ];
+	return [ doc.createElement( tag ) ];
 };
 
 

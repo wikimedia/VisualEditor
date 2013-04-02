@@ -40,9 +40,9 @@ ve.dm.TableCellNode.static.toDataElement = function ( domElements ) {
 	return { 'type': 'tableCell', 'attributes': { 'style': style } };
 };
 
-ve.dm.TableCellNode.static.toDomElements = function ( dataElement ) {
+ve.dm.TableCellNode.static.toDomElements = function ( dataElement, doc ) {
 	var tag = dataElement.attributes && dataElement.attributes.style === 'header' ? 'th' : 'td';
-	return [ document.createElement( tag ) ];
+	return [ doc.createElement( tag ) ];
 };
 
 /* Registration */

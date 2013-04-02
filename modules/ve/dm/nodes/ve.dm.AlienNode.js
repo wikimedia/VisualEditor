@@ -65,8 +65,8 @@ ve.dm.AlienNode.static.toDataElement = function ( domElements, context ) {
 	};
 };
 
-ve.dm.AlienNode.static.toDomElements = function ( dataElement ) {
-	var wrapper = document.createElement( 'div' );
+ve.dm.AlienNode.static.toDomElements = function ( dataElement, doc ) {
+	var wrapper = doc.createElement( 'div' );
 	wrapper.innerHTML = dataElement.attributes.html;
 	// Convert wrapper.children to an array
 	return Array.prototype.slice.call( wrapper.childNodes, 0 );

@@ -50,9 +50,9 @@ ve.dm.MWImageNode.static.toDataElement = function ( domElements ) {
 	};
 };
 
-ve.dm.MWImageNode.static.toDomElements = function ( dataElement ) {
+ve.dm.MWImageNode.static.toDomElements = function ( dataElement, doc ) {
 	//TODO: rebuild html from attributes
-	var wrapper = document.createElement( 'div' );
+	var wrapper = doc.createElement( 'div' );
 	wrapper.innerHTML = dataElement.attributes.html;
 	// Convert wrapper.children to an array
 	return Array.prototype.slice.call( wrapper.childNodes, 0 );

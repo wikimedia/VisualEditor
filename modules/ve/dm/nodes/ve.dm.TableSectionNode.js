@@ -47,14 +47,14 @@ ve.dm.TableSectionNode.static.toDataElement = function ( domElements ) {
 	return { 'type': 'tableSection', 'attributes': { 'style': style } };
 };
 
-ve.dm.TableSectionNode.static.toDomElements = function ( dataElement ) {
+ve.dm.TableSectionNode.static.toDomElements = function ( dataElement, doc ) {
 	var tags = {
 			'header': 'thead',
 			'body': 'tbody',
 			'footer': 'tfoot'
 		},
 		tag = tags[dataElement.attributes && dataElement.attributes.style || 'body'];
-	return [ document.createElement( tag ) ];
+	return [ doc.createElement( tag ) ];
 };
 /* Registration */
 

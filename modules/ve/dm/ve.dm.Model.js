@@ -126,10 +126,11 @@ ve.dm.Model.static.toDataElement = function ( /*domElements, context*/ ) {
  * @static
  * @inheritable
  * @method
- * @param {Object} Linear model element with a type property and optionally an attributes property
+ * @param {Object} dataElement Linear model element with a type property and optionally an attributes property
+ * @param {HTMLDocument} doc HTML document for creating elements
  * @returns {HTMLElement[]} DOM elements
  */
-ve.dm.Model.static.toDomElements = function ( /*dataElement*/ ) {
+ve.dm.Model.static.toDomElements = function ( /*dataElement, doc*/ ) {
 	throw new Error( 've.dm.Model subclass must implement toDomElements' );
 };
 

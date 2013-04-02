@@ -46,7 +46,7 @@ ve.dm.AlienMetaItem.static.toDataElement = function ( domElements ) {
 	return dataElement;
 };
 
-ve.dm.AlienMetaItem.static.toDomElements = function ( dataElement ) {
+ve.dm.AlienMetaItem.static.toDomElements = function ( dataElement, doc ) {
 	var style = dataElement.attributes && dataElement.attributes.style || 'meta',
 		isLink = style === 'link',
 		tag = isLink ? 'link' : 'meta',
@@ -54,9 +54,9 @@ ve.dm.AlienMetaItem.static.toDomElements = function ( dataElement ) {
 		valueAttr = isLink ? 'href' : 'content',
 		domElement;
 	if ( style === 'comment' ) {
-		return [ document.createComment( dataElement.attributes && dataElement.attributes.text || '' ) ];
+		return [ doc.createComment( dataElement.attributes && dataElement.attributes.text || '' ) ];
 	}
-	domElement = document.createElement( tag );
+	domElement = doc.createElement( tag );
 	if ( dataElement.attributes && dataElement.attributes.key !== null ) {
 		domElement.setAttribute( keyAttr, dataElement.attributes.key );
 	}

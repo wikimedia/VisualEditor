@@ -35,8 +35,8 @@ ve.dm.DefinitionListNode.static.toDataElement = function () {
 	return { 'type': 'definitionList' };
 };
 
-ve.dm.DefinitionListNode.static.toDomElements = function () {
-	return [ document.createElement( 'dl' ) ];
+ve.dm.DefinitionListNode.static.toDomElements = function ( dataElement, doc ) {
+	return [ doc.createElement( 'dl' ) ];
 };
 
 /* Registration */

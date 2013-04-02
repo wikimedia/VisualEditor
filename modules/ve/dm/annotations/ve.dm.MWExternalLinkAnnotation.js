@@ -45,7 +45,7 @@ ve.dm.MWExternalLinkAnnotation.static.toDataElement = function ( domElements ) {
 };
 
 ve.dm.MWExternalLinkAnnotation.static.toDomElements = function ( dataElement ) {
-	var parentResult = ve.dm.LinkAnnotation.static.toDomElements( dataElement );
+	var parentResult = ve.dm.LinkAnnotation.static.toDomElements.apply( this, arguments );
 	parentResult[0].setAttribute( 'rel', dataElement.attributes.rel || 'mw:ExtLink' );
 	return parentResult;
 };

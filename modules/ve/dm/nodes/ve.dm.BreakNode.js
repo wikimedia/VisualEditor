@@ -35,8 +35,8 @@ ve.dm.BreakNode.static.toDataElement = function () {
 	return { 'type': 'break' };
 };
 
-ve.dm.BreakNode.static.toDomElements = function () {
-	return [ document.createElement( 'br' ) ];
+ve.dm.BreakNode.static.toDomElements = function ( dataElement, doc ) {
+	return [ doc.createElement( 'br' ) ];
 };
 
 /* Registration */

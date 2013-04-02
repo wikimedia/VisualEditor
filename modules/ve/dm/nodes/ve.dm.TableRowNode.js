@@ -37,8 +37,8 @@ ve.dm.TableRowNode.static.toDataElement = function () {
 	return { 'type': 'tableRow' };
 };
 
-ve.dm.TableRowNode.static.toDomElements = function () {
-	return [ document.createElement( 'tr' ) ];
+ve.dm.TableRowNode.static.toDomElements = function ( dataElement, doc ) {
+	return [ doc.createElement( 'tr' ) ];
 };
 
 /* Registration */
