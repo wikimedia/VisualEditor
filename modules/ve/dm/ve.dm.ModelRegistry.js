@@ -71,22 +71,27 @@ function addType( obj /*, ...*/ ) {
  * Register a model type.
  * @param {string} name Symbolic name for the model
  * @param {ve.dm.Model} constructor Subclass of ve.dm.Model
+ * @throws Models must be subclasses of ve.dm.Model
+ * @throws No factory associated with this ve.dm.Model subclass
  */
 ve.dm.ModelRegistry.prototype.register = function ( constructor ) {
 	var i, j, tags, types, name = constructor.static && constructor.static.name;
 	if ( typeof name !== 'string' || name === '' ) {
 		throw new Error( 'Model names must be strings and must not be empty' );
 	}
+	if ( !( constructor.prototype instanceof ve.dm.Model ) ) {
+		throw new Error( 'Models must be subclasses of ve.dm.Model' );
+	}
 
 	// Register the model with the right factory
 	if ( constructor.prototype instanceof ve.dm.Annotation ) {
-		ve.dm.annotationFactory.register( name, constructor );
+		ve.dm.annotationFactory.register( constructor );
 	} else if ( constructor.prototype instanceof ve.dm.Node ) {
 		ve.dm.nodeFactory.register( constructor );
 	} else if ( constructor.prototype instanceof ve.dm.MetaItem ) {
-		ve.dm.metaItemFactory.register( name, constructor );
+		ve.dm.metaItemFactory.register( constructor );
 	} else {
-		throw new Error( 'Models must be subclasses of ve.dm.Annotation, ve.dm.Node or ve.dm.MetaItem' );
+		throw new Error( 'No factory associated with this ve.dm.Model subclass' );
 	}
 	// Call parent implementation
 	ve.Registry.prototype.register.call( this, name, constructor );
