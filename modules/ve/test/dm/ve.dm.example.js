@@ -114,6 +114,12 @@ ve.dm.example.createExampleDocument = function( name, store ) {
 	);
 };
 
+ve.dm.example.testDir = window.mw ?
+	( window.mw.config.get( 'wgExtensionAssetsPath' ) + '/VisualEditor/modules/ve/test' ) :
+	'.';
+
+ve.dm.example.imgSrc = ve.dm.example.testDir + '/example.png';
+
 /**
  * Serialized HTML.
  *
@@ -144,7 +150,7 @@ ve.dm.example.html =
 			'</td>' +
 		'</tr>' +
 	'</table>' +
-	'<pre>h<img src="image.png">i</pre>'+
+	'<pre>h<img src="' + ve.dm.example.imgSrc + '">i</pre>'+
 	'<dl>' +
 		'<dt>' +
 			'<p>j</p>' +
@@ -254,7 +260,7 @@ ve.dm.example.data = [
 	// 38 - Plain "h"
 	'h',
 	// 39 - Beginning of inline image
-	{ 'type': 'image', 'attributes': { 'html/0/src': 'image.png' } },
+	{ 'type': 'image', 'attributes': { 'html/0/src': ve.dm.example.imgSrc } },
 	// 40 - End of inline image
 	{ 'type': '/image' },
 	// 41 - Plain "i"
@@ -607,7 +613,7 @@ ve.dm.example.tree = new ve.dm.DocumentNode( [
 			], ve.dm.example.data[7] )
 		], ve.dm.example.data[6] )
 	], ve.dm.example.data[5] ),
-	// Preformatted with "h[image.png]i"
+	// Preformatted with "h[example.png]i"
 	new ve.dm.PreformattedNode( [
 		new ve.dm.TextNode( 1 ),
 		new ve.dm.ImageNode( [], ve.dm.example.data[39] ),
@@ -710,7 +716,7 @@ ve.dm.example.conversions = {
 	}
 };
 
-ve.dm.example.MWImageHtml = '<a rel="mw:Image" href="./File:image.png" data-parsoid="{&quot;tsr&quot;:[158,216],&quot;src&quot;:&quot;[[Image:VisualEditor-logo.svg|500px|thumb|center|VE logo]]&quot;,&quot;optNames&quot;:{&quot;width&quot;:&quot;$1px&quot;},&quot;dsr&quot;:[158,216,null,null]}"><img height="" width="500" src="/index.php?title=Special:FilePath/image.png&amp;width=500" alt="image.png"></a>';
+ve.dm.example.MWImageHtml = '<a rel="mw:Image" href="./File:Wiki.png" data-parsoid="{&quot;tsr&quot;:[158,216],&quot;src&quot;:&quot;[[Image:Wiki.png|500px|thumb|center|Example wiki file]]&quot;,&quot;optNames&quot;:{&quot;width&quot;:&quot;$1px&quot;},&quot;dsr&quot;:[158,216,null,null]}"><img height="" width="500" src="/index.php?title=Special:FilePath/Wiki.png&amp;width=500" alt="Wiki.png"></a>';
 
 ve.dm.example.domToDataCases = {
 	'paragraph with plain text': {
@@ -734,10 +740,10 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'image': {
-		'html': '<body><img src="image.png"></body>',
+		'html': '<body><img src="' + ve.dm.example.imgSrc + '"></body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
-			{ 'type': 'image', 'attributes' : { 'html/0/src' : 'image.png' } },
+			{ 'type': 'image', 'attributes' : { 'html/0/src' : ve.dm.example.imgSrc } },
 			{ 'type' : '/image' },
 			{ 'type': '/paragraph' }
 		]
@@ -749,7 +755,7 @@ ve.dm.example.domToDataCases = {
 			{
 				'type': 'MWimage',
 				'attributes': {
-					'src': '/index.php?title=Special:FilePath/image.png&width=500',
+					'src': '/index.php?title=Special:FilePath/Wiki.png&width=500',
 					'width': 500,
 					'height': null,
 					'html': ve.dm.example.MWImageHtml
@@ -840,10 +846,10 @@ ve.dm.example.domToDataCases = {
 		]
 	},
 	'wrapping of bare content starting with inline node': {
-		'html': '<body><img src="foo.jpg">12</body>',
+		'html': '<body><img src="' + ve.dm.example.imgSrc + '">12</body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
-			{ 'type': 'image', 'attributes': { 'html/0/src': 'foo.jpg' } },
+			{ 'type': 'image', 'attributes': { 'html/0/src': ve.dm.example.imgSrc } },
 			{ 'type': '/image' },
 			'1',
 			'2',
