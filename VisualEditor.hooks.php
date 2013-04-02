@@ -92,6 +92,7 @@ class VisualEditorHooks {
 				'dm/ve.dm.Converter.test.js',
 				'dm/ve.dm.BranchNode.test.js',
 				'dm/ve.dm.LeafNode.test.js',
+				'dm/ve.dm.LinearData.test.js',
 				'dm/nodes/ve.dm.TextNode.test.js',
 				'dm/ve.dm.Document.test.js',
 				'dm/ve.dm.DocumentSynchronizer.test.js',
@@ -102,7 +103,6 @@ class VisualEditorHooks {
 				'dm/ve.dm.SurfaceFragment.test.js',
 				'dm/ve.dm.ModelRegistry.test.js',
 				'dm/ve.dm.MetaList.test.js',
-				'dm/lineardata/ve.dm.LinearData.test.js',
 				'dm/lineardata/ve.dm.ElementLinearData.test.js',
 				'dm/lineardata/ve.dm.MetaLinearData.test.js',
 				// VisualEditor ContentEditable Tests
