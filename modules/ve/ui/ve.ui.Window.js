@@ -130,11 +130,13 @@ ve.ui.Window.prototype.initialize = function () {
 		.addClass( 've-ui-icon-' + this.constructor.static.icon );
 	this.$head = this.$$( '<div class="ve-ui-window-head"></div>' );
 	this.$body = this.$$( '<div class="ve-ui-window-body"></div>' );
+	this.$overlay = this.$$( '<div class="ve-ui-window-overlay"></div>' );
 
 	// Initialization
 	this.frame.$content.append(
 		this.$head.append( this.$icon, this.$title ),
-		this.$body
+		this.$body,
+		this.$overlay
 	);
 };
 
