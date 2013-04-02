@@ -11,6 +11,8 @@
  * @class
  * @abstract
  * @extends ve.dm.Model
+ * @mixins ve.EventEmitter
+ *
  * @constructor
  * @param {Object} element Reference to element in meta-linmod
  */

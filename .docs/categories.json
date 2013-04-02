@@ -15,6 +15,7 @@
 				"name": "General",
 				"classes": [
 					"ve.ce",
+					"ve.ce.View",
 					"ve.ce.AnnotationFactory",
 					"ve.ce.NodeFactory",
 					"ve.ce.Surface",

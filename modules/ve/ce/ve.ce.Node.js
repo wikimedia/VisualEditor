@@ -9,7 +9,8 @@
  * Generic ContentEditable node.
  *
  * @abstract
- * @extends ve.Node
+ * @extends ve.ce.View
+ * @mixins ve.Node
  *
  * @constructor
  * @param {ve.dm.Node} model Model to observe
@@ -17,35 +18,22 @@
  */
 ve.ce.Node = function VeCeNode( model, $element ) {
 	// Parent constructor
+	ve.ce.View.call( this, model, $element );
+	// Mixin constructor
 	ve.Node.call( this );
 
 	// Properties
-	this.model = model;
-	this.$ = $element || $( '<div>' );
 	this.parent = null;
-	this.live = false;
 
 	// Events
 	this.model.on( 'attributeChange', ve.bind( this.onAttributeChange, this ) );
-
-	// Initialization
-	this.$.data( 'node', this );
-	ve.setDomAttributes(
-		this.$[0],
-		this.model.getAttributes( 'html/0/' ),
-		this.constructor.static.domAttributeWhitelist
-	);
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.Node, ve.Node );
+ve.inheritClass( ve.ce.Node, ve.ce.View );
 
-/* Events */
-
-/**
- * @event live
- */
+ve.mixinClass( ve.ce.Node, ve.Node );
 
 /* Static Members */
 
@@ -60,30 +48,6 @@ ve.inheritClass( ve.ce.Node, ve.Node );
  * @inheritable
  */
 ve.ce.Node.static.canBeSplit = false;
-
-/**
- * Allowed attributes for DOM elements.
- *
- * This list includes attributes that are generally safe to include in HTML loaded from a
- * foreign source and displaying it inside the browser. It doesn't include any event attributes,
- * for instance, which would allow arbitrary JavaScript execution. This alone is not enough to
- * make HTML safe to display, but it helps.
- *
- * TODO: Rather than use a single global list, set these on a per-node basis to something that makes
- * sense for that node in particular.
- *
- * @static
- * @property static.domAttributeWhitelist
- * @inheritable
- */
-ve.ce.Node.static.domAttributeWhitelist = [
-	'abbr', 'about', 'align', 'alt', 'axis', 'bgcolor', 'border', 'cellpadding', 'cellspacing',
-	'char', 'charoff', 'cite', 'class', 'clear', 'color', 'colspan', 'datatype', 'datetime',
-	'dir', 'face', 'frame', 'headers', 'height', 'href', 'id', 'itemid', 'itemprop', 'itemref',
-	'itemscope', 'itemtype', 'lang', 'noshade', 'nowrap', 'property', 'rbspan', 'rel',
-	'resource', 'rev', 'rowspan', 'rules', 'scope', 'size', 'span', 'src', 'start', 'style',
-	'summary', 'title', 'type', 'typeof', 'valign', 'value', 'width'
-];
 
 /**
  * Template for shield elements.
@@ -270,16 +234,6 @@ ve.ce.Node.prototype.canBeSplit = function () {
 };
 
 /**
- * Get the model the node observes.
- *
- * @method
- * @returns {ve.dm.Node} Model the node observes
- */
-ve.ce.Node.prototype.getModel = function () {
-	return this.model;
-};
-
-/**
  * Get the closest splittable node upstream.
  *
  * @method
@@ -298,26 +252,4 @@ ve.ce.Node.getSplitableNode = function ( node ) {
 	} );
 
 	return splitableNode;
-};
-
-/**
- * Check if the node is attached to the live DOM.
- *
- * @method
- * @returns {boolean} Node is attached to the live DOM
- */
-ve.ce.Node.prototype.isLive = function () {
-	return this.live;
-};
-
-/**
- * Set live state.
- *
- * @method
- * @param {boolean} live The node has been attached to the live DOM (use false on detach)
- * @emits live
- */
-ve.ce.Node.prototype.setLive = function ( live ) {
-	this.live = live;
-	this.emit( 'live' );
 };

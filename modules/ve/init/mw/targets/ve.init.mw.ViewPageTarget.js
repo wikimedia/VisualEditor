@@ -1541,7 +1541,7 @@ ve.init.mw.ViewPageTarget.prototype.restoreEditSection = function () {
 			surfaceView = this.surface.getView(),
 			surfaceModel = surfaceView.getModel();
 		this.$document.find( 'h1, h2, h3, h4, h5, h6' ).eq( this.section - 1 ).each( function () {
-			var headingNode = $(this).data( 'node' );
+			var headingNode = $(this).data( 'view' );
 			if ( headingNode ) {
 				offset = surfaceModel.getDocument().data.getNearestContentOffset(
 					headingNode.getModel().getOffset()
