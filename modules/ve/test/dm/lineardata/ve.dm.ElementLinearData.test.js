@@ -392,6 +392,108 @@ QUnit.test( 'getAnnotatedRangeFromOffset', 1, function ( assert ) {
 	}
 } );
 
+QUnit.test( 'trimOuterSpaceFromRange', function ( assert ) {
+	var i, elementData,
+		data = [
+			// 0
+			{ 'type': 'paragraph' },
+			// 1
+			' ',
+			// 2
+			'F',
+			// 3
+			'o',
+			// 4
+			'o',
+			// 5
+			' ',
+			// 6
+			' ',
+			// 7
+			[ ' ', ve.dm.example.bold ],
+			// 8
+			[ ' ', ve.dm.example.italic ],
+			// 9
+			[ 'B', ve.dm.example.italic ],
+			// 10
+			'a',
+			// 11
+			'r',
+			// 12
+			' ',
+			// 13
+			{ 'type': '/paragraph' }
+			// 14
+		],
+		cases = [
+			{
+				'msg': 'Word without spaces is untouched',
+				'range': new ve.Range( 2, 5 ),
+				'trimmed': new ve.Range( 2, 5 )
+			},
+			{
+				'msg': 'Consecutive words with spaces in between but not at the edges are untouched',
+				'range': new ve.Range( 2, 12 ),
+				'trimmed': new ve.Range( 2, 12 )
+			},
+			{
+				'msg': 'Single space is trimmed from the start',
+				'range': new ve.Range( 1, 4 ),
+				'trimmed': new ve.Range( 2, 4 )
+			},
+			{
+				'msg': 'Single space is trimmed from the end',
+				'range': new ve.Range( 3, 6 ),
+				'trimmed': new ve.Range( 3, 5 )
+			},
+			{
+				'msg': 'Single space is trimmed from both sides',
+				'range': new ve.Range( 1, 6 ),
+				'trimmed': new ve.Range( 2, 5 )
+			},
+			{
+				'msg': 'Different number of spaces trimmed on each side',
+				'range': new ve.Range( 1, 7 ),
+				'trimmed': new ve.Range( 2, 5 )
+			},
+			{
+				'msg': 'Annotated spaces are trimmed correctly from the end',
+				'range': new ve.Range( 3, 9 ),
+				'trimmed': new ve.Range( 3, 5 )
+			},
+			{
+				'msg': 'Annotated spaces are trimmed correctly from the start',
+				'range': new ve.Range( 7, 10 ),
+				'trimmed': new ve.Range( 9, 10 )
+			},
+			{
+				'msg': 'Trimming annotated spaces at the end and plain spaces at the start',
+				'range': new ve.Range( 1, 9 ),
+				'trimmed': new ve.Range( 2, 5 )
+			},
+			{
+				'msg': 'Spaces are trimmed from the ends but not in the middle',
+				'range': new ve.Range( 1, 13 ),
+				'trimmed': new ve.Range( 2, 12 )
+			},
+			{
+				'msg': 'All-whitespace range is trimmed to empty range',
+				'range': new ve.Range( 5, 9 ),
+				'trimmed': new ve.Range( 5, 5 )
+			}
+		];
+
+	QUnit.expect( cases.length );
+	elementData = ve.dm.example.preprocessAnnotations( data );
+	for ( i = 0; i < cases.length; i++ ) {
+		assert.deepEqual(
+			elementData.trimOuterSpaceFromRange( cases[i].range ),
+			cases[i].trimmed,
+			cases[i].msg
+		);
+	}
+} );
+
 QUnit.test( 'isContentOffset', function ( assert ) {
 	var i, left, right,
 		data = new ve.dm.ElementLinearData( new ve.dm.IndexValueStore(), [
