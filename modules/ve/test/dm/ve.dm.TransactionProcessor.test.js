@@ -120,7 +120,7 @@ QUnit.test( 'commit/rollback', 86, function ( assert ) {
 					['pushReplaceElementAttribute', 'style', 'bullet', 'number'],
 					['pushReplaceElementAttribute', 'test', undefined, 'abcd'],
 					['pushRetain', 27],
-					['pushReplaceElementAttribute', 'html/0/src', 'image.png', undefined]
+					['pushReplaceElementAttribute', 'html/0/src', ve.dm.example.imgSrc, undefined]
 				],
 				'expected': function ( data ) {
 					data[0].attributes.level = 2;
