@@ -30,6 +30,9 @@ ve.dm.AlienNode.static.name = 'alien';
 
 ve.dm.AlienNode.static.storeHtmlAttributes = false;
 
+// TODO: Develop better method to test for generated content
+ve.dm.AlienNode.static.generatedContent = true;
+
 ve.dm.AlienNode.static.toDataElement = function ( domElements, converter ) {
 	var isInline = this.isHybridInline( domElements, converter ),
 		type = isInline ? 'alienInline' : 'alienBlock',
