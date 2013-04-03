@@ -46,43 +46,70 @@ ve.inheritClass( ve.ui.Frame, ve.EventEmitter );
 /* Methods */
 
 /**
+ * Handle frame load events.
+ *
+ * Once the iframe's stylesheets are loaded, the `initialize` event will be emitted.
+ *
+ * Sounds simple right? Read on...
+ *
+ * When you create a dynamic iframe using open/write/close, the window.load event for the
+ * iframe is triggered when you call close, and there's no further load event to indicate that
+ * everything is actually loaded.
+ *
+ * By dynamically adding stylesheet links, we can detect when each link is loaded by testing if we
+ * have access to each of their `sheet.cssRules` properties. Every 10ms we poll to see if we have
+ * access to the style's `sheet.cssRules` property yet.
+ *
+ * However, because of security issues, we never have such access if the stylesheet came from a
+ * different site. Thus, we are left with linking to the stylesheets through a style element with
+ * multiple `@import` statements - which ends up being simpler anyway. Since we created that style,
+ * we always have access, and its contents are only available when everything is done loading.
+ *
  * @emits initialize
  */
 ve.ui.Frame.prototype.onLoad = function () {
-	var i, len, doc,
-		css = [],
-		promises = [],
+	var win = this.$.prop( 'contentWindow' ),
+		doc = win.document,
 		stylesheets = this.config.stylesheets,
-		stylesheetPath = ve.init.platform.getModulesUrl() + '/ve/ui/styles/';
+		initialize = ve.bind( function () {
+			this.initialized = true;
+			this.emit( 'initialize' );
+		}, this );
 
 	// Initialize contents
-	doc = this.$.prop( 'contentWindow' ).document;
+	win.setup = function () {
+		var interval, rules,
+			style = doc.createElement( 'style' );
+
+		// Import all stylesheets
+		style.textContent = '@import "' + stylesheets.join( '";\n@import "' ) + '";';
+		doc.body.appendChild( style );
+
+		// Poll for access to stylesheet content
+		interval = setInterval( function () {
+			try {
+				// MAGIC: only accessible when the stylesheet is loaded
+				rules = style.sheet.cssRules;
+				// If that didn't throw an exception, we're done loading
+				clearInterval( interval );
+				// Protect against IE running interval one extra time after clearing
+				if ( !this.initialized ) {
+					initialize();
+				}
+			} catch ( e ) {}
+		} );
+	};
 	doc.open();
 	doc.write(
-		'<head><base href="' + stylesheetPath + '"></head>' +
-		'<body style="padding:0;margin:0;"><div class="ve-ui-frame-content"></div></body>'
+		'<body style="padding:0;margin:0;">' +
+			'<div class="ve-ui-frame-content"></div><script>setup();</script>' +
+		'</body>'
 	);
 	doc.close();
 
 	// Properties
 	this.$$ = ve.ui.get$$( doc, this );
 	this.$content = this.$$( '.ve-ui-frame-content' );
-
-	// Add stylesheets
-	function setter( index ) {
-		return function ( data ) {
-			css[index] = data;
-		};
-	}
-	for ( i = 0, len = stylesheets.length; i < len; i++ ) {
-		promises.push( $.get( stylesheetPath + stylesheets[i], setter( i ) ) );
-	}
-	$.when.apply( $, promises )
-		.done( ve.bind( function () {
-			this.$$( 'head' ).append( '<style>' + css.join( '\n' ) + '</style>' );
-			this.initialized = true;
-			this.emit( 'initialize' );
-		}, this ) );
 };
 
 /**
