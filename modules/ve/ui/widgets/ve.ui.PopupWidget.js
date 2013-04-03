@@ -15,6 +15,9 @@
  * @param {Object} [config] Config options
  */
 ve.ui.PopupWidget = function VeUiPopupWidget( config ) {
+	// Config intialization
+	config = config || {};
+
 	// Parent constructor
 	ve.ui.Widget.call( this, config );
 
@@ -23,6 +26,7 @@ ve.ui.PopupWidget = function VeUiPopupWidget( config ) {
 	this.$callout = $( '<div>' );
 	this.$body = $( '<div>' );
 	this.transitionTimeout = null;
+	this.align = config.align || 'center';
 
 	// Initialization
 	this.$
@@ -72,16 +76,31 @@ ve.ui.PopupWidget.prototype.hide = function () {
  * @chainable
  */
 ve.ui.PopupWidget.prototype.display = function ( x, y, width, height, transition ) {
-	var buffer = ( width / 2 ) + 20,
-		center = -( width / 2 ),
-		overlapRight = this.$$( 'body' ).width() - ( x + buffer ),
-		overlapLeft = x - buffer;
+	var left, overlapLeft, overlapRight,
+		padding = 15;
 
-	// Prevent viewport clipping
+	switch ( this.align ) {
+		case 'left':
+			// Inset callout from left
+			left = -padding;
+			break;
+		case 'right':
+			// Inset callout from right
+			left = -width + padding;
+			break;
+		default:
+			// Place callout in center
+			left = -width / 2;
+			break;
+	}
+
+	// Prevent viewport clipping, using padding between body and popup edges
+	overlapRight = this.$$( 'body' ).width() - ( x + ( width + left + ( padding * 2 ) ) );
+	overlapLeft = x + ( left - ( padding * 2 ) );
 	if ( overlapRight < 0 ) {
-		center += overlapRight;
+		left += overlapRight;
 	} else if ( overlapLeft < 0 ) {
-		center -= overlapLeft;
+		left -= overlapLeft;
 	}
 
 	// Prevent transition from being interrupted
@@ -100,7 +119,7 @@ ve.ui.PopupWidget.prototype.display = function ( x, y, width, height, transition
 
 	// Position body relative to anchor and adjust size
 	this.$body.css( {
-		'left': center, 'width': width, 'height': height === undefined ? 'auto' : height
+		'left': left, 'width': width, 'height': height === undefined ? 'auto' : height
 	} );
 
 	return this;
