@@ -40,7 +40,7 @@ QUnit.test( 'isBreakInText', function ( assert ) {
 		context =
 			text.substring( Math.max( i - 4, 0 ), i ) +
 			'│' +
-			text.substring( i, Math.min ( i + 4, text.length ) )
+			text.substring( i, Math.min( i + 4, text.length ) )
 		;
 		assert.equal(
 			unicodeJS.wordbreak.isBreakInText( text, i ),

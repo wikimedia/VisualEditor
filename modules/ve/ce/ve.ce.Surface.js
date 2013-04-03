@@ -100,7 +100,7 @@ ve.ce.Surface.static = {};
 ve.ce.Surface.static.$phantomTemplate = $( '<div>' )
 	.addClass( 've-ce-surface-phantom' )
 	.attr( {
-		'title': ve.msg ( 'visualeditor-aliennode-tooltip' ),
+		'title': ve.msg( 'visualeditor-aliennode-tooltip' ),
 		'draggable': false
 	} );
 
@@ -810,7 +810,7 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 		if (
 			slug || (
 				selection.start > 0 &&
-				!ve.compareObjects (
+				!ve.compareObjects(
 					documentModel.data.getAnnotationsFromOffset( selection.start - 1 ),
 					insertionAnnotations
 				)

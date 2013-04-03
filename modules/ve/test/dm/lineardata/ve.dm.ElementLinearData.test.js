@@ -374,7 +374,7 @@ QUnit.test( 'getAnnotatedRangeFromOffset', 1, function ( assert ) {
 			],
 			'annotation': { 'type': 'textStyle/bold' },
 			'offset': 3,
-			'expected': new ve.Range ( 1, 7 )
+			'expected': new ve.Range( 1, 7 )
 		}
 	];
 

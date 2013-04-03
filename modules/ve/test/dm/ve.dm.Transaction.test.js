@@ -781,7 +781,7 @@ QUnit.test( 'translateOffset', function ( assert ) {
 	// Populate a transaction with bogus data
 	tx = new ve.dm.Transaction();
 	tx.pushReplace( [], ['a','b','c'] );
-	tx.pushRetain ( 5 );
+	tx.pushRetain( 5 );
 	tx.pushReplace( ['d', 'e', 'f', 'g'], [] );
 	tx.pushRetain( 2 );
 	tx.pushStartAnnotating( 'set', { 'type': 'textStyle/bold' } );
@@ -822,7 +822,7 @@ QUnit.test( 'translateOffsetReversed', function ( assert ) {
 	// Populate a transaction with bogus data
 	tx = new ve.dm.Transaction();
 	tx.pushReplace( [], ['a','b','c'] );
-	tx.pushRetain ( 5 );
+	tx.pushRetain( 5 );
 	tx.pushReplace( ['d', 'e', 'f', 'g'], [] );
 	tx.pushRetain( 2 );
 	tx.pushStartAnnotating( 'set', { 'type': 'textStyle/bold' } );
