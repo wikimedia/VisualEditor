@@ -49,23 +49,18 @@ class MakeStaticLoader extends Maintenance {
 			),
 		);
 
-		$wgResourceModules['Standalone Init'] = array(
+		// Customized version to init standalone instead of mediawiki platform.
+		$wgResourceModules['ext.visualEditor.base#standalone-init'] = array(
 			'styles' => array(
 				've/init/sa/styles/ve.init.sa.css',
 			),
-			'scripts' => array(
-				've/init/sa/ve.init.sa.js',
-				've/init/sa/ve.init.sa.Platform.js',
-				've/init/sa/ve.init.sa.Target.js',
-			),
-			'headAdd' => '
-		<script>
-			if ( window.devicePixelRatio > 1 ) {
-				document.write( \'<link rel="stylesheet" href="' . $vePath . 've/ui/styles/ve.ui.Icons-vector.css">\' );
-			} else {
-				document.write( \'<link rel="stylesheet" href="' . $vePath . 've/ui/styles/ve.ui.Icons-raster.css">\' );
-			}
-		</script>',
+			'headAdd' => '<script>
+	if ( window.devicePixelRatio > 1 ) {
+		document.write( \'<link rel="stylesheet" href="' . $vePath . 've/ui/styles/ve.ui.Icons-vector.css">\' );
+	} else {
+		document.write( \'<link rel="stylesheet" href="' . $vePath . 've/ui/styles/ve.ui.Icons-raster.css">\' );
+	}
+</script>',
 			'bodyAdd' => '<script>
 	<?php
 		require( ' . var_export( dirname( __DIR__ ) . '/VisualEditor.i18n.php', true ) . ' );
@@ -73,7 +68,16 @@ class MakeStaticLoader extends Maintenance {
 	?>
 	ve.init.platform.setModulesUrl( \'' . $vePath . '\' );
 </script>'
-		);
+		) + $wgResourceModules['ext.visualEditor.base'];
+		$baseScripts = &$wgResourceModules['ext.visualEditor.base#standalone-init']['scripts'];
+		$baseScripts = array_filter( $baseScripts, function ( $script ) {
+			return strpos( $script, 've/init/mw/ve.init.mw' ) === false;
+		} );
+		$baseScripts = array_merge( $baseScripts, array(
+			've/init/sa/ve.init.sa.js',
+			've/init/sa/ve.init.sa.Platform.js',
+			've/init/sa/ve.init.sa.Target.js',
+		) );
 
 		$self = isset( $_SERVER['PHP_SELF'] ) ? $_SERVER['PHP_SELF'] :  ( lcfirst( __CLASS__ ) . '.php' );
 
@@ -81,8 +85,7 @@ class MakeStaticLoader extends Maintenance {
 
 		$modules = array(
 			'Dependencies',
-			'ext.visualEditor.base',
-			'Standalone Init',
+			'ext.visualEditor.base#standalone-init',
 			'ext.visualEditor.core',
 		);
 		foreach ( $modules as $module ) {
