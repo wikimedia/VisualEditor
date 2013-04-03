@@ -765,22 +765,21 @@ ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
 			ve.msg( 'visualeditor-ca-editsource' ),
 			'ca-editsource'
 		);
-		$caEdit.remove();
 
 		// Create "Edit" tab.
+		$caEdit.remove();
 		caVeEdit = mw.util.addPortletLink(
-			pTabsId ,
+			pTabsId,
 			// Use url instead of '#'.
 			// So that 1) one can always open it in a new tab, even when
 			// onEditTabClick is bound.
 			// 2) when onEditTabClick is not bound (!isViewPage) it will
 			// just work.
 			this.veEditUri,
-			// Message: 'edit' or 'create'
-			ve.msg( action ),
-			'ca-edit',
-			ve.msg( 'tooltip-ca-edit' ),
-			ve.msg( 'accesskey-ca-edit' ),
+			$caEdit.text(),
+			$caEdit.attr( 'id' ),
+			$caEdit.attr( 'title' ),
+			$caEdit.attr( 'accesskey' ),
 			caVeEditNextnode
 		);
 	}
