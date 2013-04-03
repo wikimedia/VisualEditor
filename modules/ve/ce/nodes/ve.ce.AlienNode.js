@@ -9,30 +9,25 @@
  * ContentEditable alien node.
  *
  * @class
- * @extends ve.ce.LeafNode
+ * @extends ve.ce.GeneratedContentNode
  * @constructor
  * @param {ve.dm.AlienNode} model Model to observe
  */
 ve.ce.AlienNode = function VeCeAlienNode( model ) {
 	// Parent constructor
-	ve.ce.LeafNode.call( this, model );
+	ve.ce.GeneratedContentNode.call( this, model );
 
 	// DOM Changes
 	this.$.addClass( 've-ce-alienNode' );
-	this.$.attr( 'contenteditable', false );
 
 	// Events
-	this.model.addListenerMethod( this, 'update', 'onUpdate' );
 	this.addListenerMethod( this, 'live', 'onLive' );
 	this.$.on( 'mouseenter', ve.bind( this.onMouseEnter, this ) );
-
-	// Initialization
-	this.onUpdate();
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.AlienNode, ve.ce.LeafNode );
+ve.inheritClass( ve.ce.AlienNode, ve.ce.GeneratedContentNode );
 
 /* Static Properties */
 
@@ -96,11 +91,6 @@ ve.ce.AlienNode.prototype.onLive = function () {
 	}
 };
 
-/**
- * Handle update events.
- *
- * @method
- */
 ve.ce.AlienNode.prototype.onUpdate = function () {
 	this.$.html( this.model.getAttribute( 'html' ) );
 };

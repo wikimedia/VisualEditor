@@ -251,6 +251,7 @@ $wgResourceModules += array(
 			've/dm/lineardata/ve.dm.ElementLinearData.js',
 			've/dm/lineardata/ve.dm.MetaLinearData.js',
 
+			've/dm/nodes/ve.dm.GeneratedContentNode.js',
 			've/dm/nodes/ve.dm.AlienNode.js',
 			've/dm/nodes/ve.dm.BreakNode.js',
 			've/dm/nodes/ve.dm.CenterNode.js',
@@ -271,8 +272,8 @@ $wgResourceModules += array(
 
 			've/dm/nodes/ve.dm.MWEntityNode.js',
 			've/dm/nodes/ve.dm.MWHeadingNode.js',
-			've/dm/nodes/ve.dm.MWPreformattedNode.js',
 			've/dm/nodes/ve.dm.MWImageNode.js',
+			've/dm/nodes/ve.dm.MWPreformattedNode.js',
 
 			've/dm/annotations/ve.dm.LinkAnnotation.js',
 			've/dm/annotations/ve.dm.MWExternalLinkAnnotation.js',
@@ -299,6 +300,7 @@ $wgResourceModules += array(
 			've/ce/ve.ce.Surface.js',
 			've/ce/ve.ce.SurfaceObserver.js',
 
+			've/ce/nodes/ve.ce.GeneratedContentNode.js',
 			've/ce/nodes/ve.ce.AlienNode.js',
 			've/ce/nodes/ve.ce.AlienInlineNode.js',
 			've/ce/nodes/ve.ce.AlienBlockNode.js',
@@ -318,10 +320,11 @@ $wgResourceModules += array(
 			've/ce/nodes/ve.ce.TableRowNode.js',
 			've/ce/nodes/ve.ce.TableSectionNode.js',
 			've/ce/nodes/ve.ce.TextNode.js',
+
 			've/ce/nodes/ve.ce.MWEntityNode.js',
 			've/ce/nodes/ve.ce.MWHeadingNode.js',
-			've/ce/nodes/ve.ce.MWPreformattedNode.js',
 			've/ce/nodes/ve.ce.MWImageNode.js',
+			've/ce/nodes/ve.ce.MWPreformattedNode.js',
 
 			've/ce/annotations/ve.ce.LinkAnnotation.js',
 			've/ce/annotations/ve.ce.MWExternalLinkAnnotation.js',

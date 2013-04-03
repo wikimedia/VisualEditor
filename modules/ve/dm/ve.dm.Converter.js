@@ -148,11 +148,12 @@ ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElement
  * @param {ve.dm.Model} modelClass Model class to use for conversion
  * @param {HTMLElement[]} domElements DOM elements to convert
  * @param {Object} context Converter context to pass to toDataElement() (will be cloned)
+ * @param {ve.dm.IndexValueStore} store Index-value store
  * @returns {Object} Data element
  */
-ve.dm.Converter.prototype.createDataElement = function ( modelClass, domElements, context ) {
+ve.dm.Converter.prototype.createDataElement = function ( modelClass, domElements, context, store ) {
 	var i, j, dataElement, dataElementAttributes, domElementAttributes, domElementAttribute;
-	dataElement = modelClass.static.toDataElement( domElements, ve.copyObject( context ) );
+	dataElement = modelClass.static.toDataElement( domElements, ve.copyObject( context ), store );
 	if ( modelClass.static.storeHtmlAttributes && dataElement ) {
 		for ( i = 0; i < domElements.length; i++ ) {
 			domElementAttributes = domElements[i].attributes;
@@ -340,7 +341,7 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( store, domElement
 					aboutGroup = getAboutGroup( childDomElement );
 					childDomElements = modelClass.static.enableAboutGrouping ?
 						aboutGroup : [ childDomElement ];
-					childDataElement = this.createDataElement( modelClass, childDomElements, context );
+					childDataElement = this.createDataElement( modelClass, childDomElements, context, store );
 
 					if ( modelClass.prototype instanceof ve.dm.MetaItem ) {
 						// No additional processing needed
@@ -366,7 +367,7 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( store, domElement
 							modelClass = ve.dm.AlienNode;
 							childDomElements = modelClass.static.enableAboutGrouping ?
 								aboutGroup : [ childDomElement ];
-							childDataElement = this.createDataElement( modelClass, childDomElements, context );
+							childDataElement = this.createDataElement( modelClass, childDomElements, context, store );
 							childIsContent = this.nodeFactory.isNodeContent( childDataElement.type );
 						}
 					}

@@ -10,27 +10,23 @@
  *
  * @class
  * @abstract
- * @extends ve.dm.LeafNode
+ * @extends ve.dm.GeneratedContentNode
  * @constructor
  * @param {number} [length] Length of content data in document; ignored and overridden to 0
  * @param {Object} [element] Reference to element in linear model
  */
 ve.dm.AlienNode = function VeDmAlienNode( length, element ) {
 	// Parent constructor
-	ve.dm.LeafNode.call( this, 0, element );
+	ve.dm.GeneratedContentNode.call( this, 0, element );
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.dm.AlienNode, ve.dm.LeafNode );
+ve.inheritClass( ve.dm.AlienNode, ve.dm.GeneratedContentNode );
 
 /* Static members */
 
 ve.dm.AlienNode.static.name = 'alien';
-
-ve.dm.AlienNode.static.matchTagNames = [];
-
-ve.dm.AlienNode.static.enableAboutGrouping = true;
 
 ve.dm.AlienNode.static.storeHtmlAttributes = false;
 

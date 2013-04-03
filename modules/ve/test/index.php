@@ -82,6 +82,7 @@
 		<script src="../../ve/dm/ve.dm.Converter.js"></script>
 		<script src="../../ve/dm/lineardata/ve.dm.ElementLinearData.js"></script>
 		<script src="../../ve/dm/lineardata/ve.dm.MetaLinearData.js"></script>
+		<script src="../../ve/dm/nodes/ve.dm.GeneratedContentNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.AlienNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.BreakNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.CenterNode.js"></script>
@@ -101,8 +102,8 @@
 		<script src="../../ve/dm/nodes/ve.dm.TextNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.MWEntityNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.MWHeadingNode.js"></script>
-		<script src="../../ve/dm/nodes/ve.dm.MWPreformattedNode.js"></script>
 		<script src="../../ve/dm/nodes/ve.dm.MWImageNode.js"></script>
+		<script src="../../ve/dm/nodes/ve.dm.MWPreformattedNode.js"></script>
 		<script src="../../ve/dm/annotations/ve.dm.LinkAnnotation.js"></script>
 		<script src="../../ve/dm/annotations/ve.dm.MWExternalLinkAnnotation.js"></script>
 		<script src="../../ve/dm/annotations/ve.dm.MWInternalLinkAnnotation.js"></script>
@@ -124,6 +125,7 @@
 		<script src="../../ve/ce/ve.ce.LeafNode.js"></script>
 		<script src="../../ve/ce/ve.ce.Surface.js"></script>
 		<script src="../../ve/ce/ve.ce.SurfaceObserver.js"></script>
+		<script src="../../ve/ce/nodes/ve.ce.GeneratedContentNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.AlienNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.AlienInlineNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.AlienBlockNode.js"></script>
@@ -145,8 +147,8 @@
 		<script src="../../ve/ce/nodes/ve.ce.TextNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.MWEntityNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.MWHeadingNode.js"></script>
-		<script src="../../ve/ce/nodes/ve.ce.MWPreformattedNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.MWImageNode.js"></script>
+		<script src="../../ve/ce/nodes/ve.ce.MWPreformattedNode.js"></script>
 		<script src="../../ve/ce/annotations/ve.ce.LinkAnnotation.js"></script>
 		<script src="../../ve/ce/annotations/ve.ce.MWExternalLinkAnnotation.js"></script>
 		<script src="../../ve/ce/annotations/ve.ce.MWInternalLinkAnnotation.js"></script>
