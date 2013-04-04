@@ -38,6 +38,7 @@ $html = file_get_contents( $page );
 		<link rel=stylesheet href="../../modules/ve/ce/styles/ve.ce.DocumentNode.css">
 		<link rel=stylesheet href="../../modules/ve/ce/styles/ve.ce.Node.css">
 		<link rel=stylesheet href="../../modules/ve/ce/styles/ve.ce.Surface.css">
+		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Context.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Frame.css">
 		<link rel=stylesheet href="../../modules/ve/ui/styles/ve.ui.Window.css">

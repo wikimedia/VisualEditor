@@ -413,6 +413,7 @@ $wgResourceModules += array(
 			've/ce/styles/ve.ce.Node.css',
 			've/ce/styles/ve.ce.Surface.css',
 			// ui
+			've/ui/styles/ve.ui.css',
 			've/ui/styles/ve.ui.Context.css',
 			've/ui/styles/ve.ui.Frame.css',
 			've/ui/styles/ve.ui.Window.css',
@@ -471,6 +472,7 @@ $wgResourceModules += array(
 			'visualeditor-dialog-content-title',
 			'visualeditor-dialog-action-apply',
 			'visualeditor-dialog-action-cancel',
+			'visualeditor-dialog-action-close',
 		),
 	),
 	'ext.visualEditor.icons-raster' => $wgVisualEditorResourceTemplate + array(

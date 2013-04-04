@@ -44,11 +44,11 @@ ve.ui.Dialog.prototype.onMouseDown = function () {
 };
 
 /**
- * Handle cancel button click events.
+ * Handle close button click events.
  *
  * @method
  */
-ve.ui.Dialog.prototype.onCancelButtonClick = function () {
+ve.ui.Dialog.prototype.onCloseButtonClick = function () {
 	this.close( 'cancel' );
 };
 
@@ -62,6 +62,26 @@ ve.ui.Dialog.prototype.onApplyButtonClick = function () {
 };
 
 /**
+ * Close dialog.
+ *
+ * This method overrides the parent close method to allow animation, but still provides the same
+ * recursion blocking and eventually calls the parent method.
+ *
+ * @method
+ * @param {boolean} action Action that caused the window to be closed
+ * @emits close
+ */
+ve.ui.Dialog.prototype.close = function ( action ) {
+	if ( !this.closing ) {
+		this.$.addClass( 've-ui-dialog-closing' );
+		setTimeout( ve.bind( function () {
+			ve.ui.Window.prototype.close.call( this, action );
+			this.$.removeClass( 've-ui-dialog-closing' );
+		}, this ), 250 );
+	}
+};
+
+/**
  * Initialize frame contents.
  *
  * @method
@@ -70,20 +90,23 @@ ve.ui.Dialog.prototype.initialize = function () {
 	// Call parent method
 	ve.ui.Window.prototype.initialize.call( this );
 
-	// Properties
-	this.cancelButton = new ve.ui.ButtonWidget( {
-		'$$': this.$$, 'label': ve.msg( 'visualeditor-dialog-action-cancel' )
-	} );
 	this.applyButton = new ve.ui.ButtonWidget( {
 		'$$': this.$$, 'label': ve.msg( 'visualeditor-dialog-action-apply' ), 'flags': ['primary']
 	} );
+	// Properties
+	this.closeButton = new ve.ui.IconButtonWidget( {
+		'$$': this.$$, 'title': ve.msg( 'visualeditor-dialog-action-close' ), 'icon': 'close'
+	} );
 
 	// Events
-	this.cancelButton.on( 'click', ve.bind( this.onCancelButtonClick, this ) );
+	this.closeButton.on( 'click', ve.bind( this.onCloseButtonClick, this ) );
 	this.applyButton.on( 'click', ve.bind( this.onApplyButtonClick, this ) );
 
 	// Initialization
-	this.$head.append( this.applyButton.$, this.cancelButton.$ );
+	this.closeButton.$.addClass( 've-ui-window-closeButton' );
+	this.applyButton.$.addClass( 've-ui-window-applyButton' );
+	this.$head.append( this.closeButton.$ );
+	this.$foot.append( this.applyButton.$ );
 };
 
 /* Initialization */

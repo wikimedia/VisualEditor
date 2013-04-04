@@ -16,6 +16,19 @@
 	background-color: #fff;
 	background-color: rgba(255,255,255,0.5);
 	z-index: 200;
+	-webkit-animation: ve-ui-fade-in 250ms ease-in-out 0 1 normal;
+	-moz-animation: ve-ui-fade-in 250ms ease-in-out 0 1 normal;
+	-ms-animation: ve-ui-fade-in 250ms ease-in-out 0 1 normal;
+	-o-animation: ve-ui-fade-in 250ms ease-in-out 0 1 normal;
+	animation: ve-ui-fade-in 250ms ease-in-out 0 1 normal;
+}
+
+.ve-ui-dialog-closing {
+	-webkit-animation: ve-ui-fade-in 250ms ease-in-out 0 1 reverse;
+	-moz-animation: ve-ui-fade-in 250ms ease-in-out 0 1 reverse;
+	-ms-animation: ve-ui-fade-in 250ms ease-in-out 0 1 reverse;
+	-o-animation: ve-ui-fade-in 250ms ease-in-out 0 1 reverse;
+	animation: ve-ui-fade-in 250ms ease-in-out 0 1 reverse;
 }
 
 .ve-ui-dialog .ve-ui-window-frame {
@@ -26,13 +39,26 @@
 	left: 0;
 	margin: auto;
 	width: 800px;
-	min-height: 3em;
+	min-height: 12em;
 	max-height: 600px;
 	background-color: #fff;
 	border: solid 1px #ccc;
 	border-radius: 0.5em;
 	box-shadow: 0 0.2em 1em rgba(0, 0, 0, 0.3);
 	overflow: hidden;
+	-webkit-animation: ve-ui-zoom-in 250ms ease-in-out 0 1 normal;
+	-moz-animation: ve-ui-zoom-in 250ms ease-in-out 0 1 normal;
+	-ms-animation: ve-ui-zoom-in 250ms ease-in-out 0 1 normal;
+	-o-animation: ve-ui-zoom-in 250ms ease-in-out 0 1 normal;
+	animation: ve-ui-zoom-in 250ms ease-in-out 0 1 normal;
+}
+
+.ve-ui-dialog-closing .ve-ui-window-frame {
+	-webkit-animation: ve-ui-zoom-in 250ms ease-in-out 0 1 reverse;
+	-moz-animation: ve-ui-zoom-in 250ms ease-in-out 0 1 reverse;
+	-ms-animation: ve-ui-zoom-in 250ms ease-in-out 0 1 reverse;
+	-o-animation: ve-ui-zoom-in 250ms ease-in-out 0 1 reverse;
+	animation: ve-ui-zoom-in 250ms ease-in-out 0 1 reverse;
 }
 
 .ve-ui-dialog .ve-ui-frame {
@@ -40,11 +66,35 @@
 	height: 100%;
 }
 
+.ve-ui-window-head,
+.ve-ui-window-body,
+.ve-ui-window-foot {
+	position: absolute;
+	left: 0;
+	right: 0;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	overflow: hidden;
+}
+
 .ve-ui-window-head {
-	height: 2.8em;
-	background-image: url(images/fade-up.png);
-	background-position: left bottom;
-	background-repeat: repeat-x;
+	top: 0;
+	height: 3.8em;
+	padding: 0.5em;
+}
+
+.ve-ui-window-foot {
+	bottom: 0;
+	height: 4.8em;
+	padding: 1em;
+}
+
+.ve-ui-window-body {
+	box-shadow: 0 0 0.66em rgba(0,0,0,0.25);
+	background-color: #fff;
+	top: 3.8em;
+	bottom: 4.8em;
 }
 
 .ve-ui-window-icon {
@@ -57,18 +107,14 @@
 	line-height: 2.8em;
 }
 
-.ve-ui-window-head .ve-ui-buttonWidget {
+.ve-ui-window-foot .ve-ui-buttonWidget {
 	float: right;
 	margin: 0.125em 0.25em;
 }
 
-.ve-ui-window-body {
-	position: absolute;
-	border-top: solid 1px #d0d0d0;
-	top: 3.8em;
-	left: 0;
-	right: 0;
-	bottom: 0;
+.ve-ui-window-closeButton {
+	float: right;
+	margin: 0.25em 0.25em;
 }
 
 .ve-ui-metaDialog-outlinePanel {

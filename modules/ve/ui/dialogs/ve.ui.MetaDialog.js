@@ -42,7 +42,7 @@ ve.ui.MetaDialog.prototype.initialize = function () {
 	ve.ui.Dialog.prototype.initialize.call( this );
 
 	// Properties
-	this.outlinePanel = new ve.ui.PanelLayout( { '$$': this.$$ } );
+	this.outlinePanel = new ve.ui.PanelLayout( { '$$': this.$$, 'scroll': true } );
 	this.editorPanel = new ve.ui.StackPanelLayout( { '$$': this.$$ } );
 	this.editorPanels = {
 		'categories': new ve.ui.EditorPanelLayout( {

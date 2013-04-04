@@ -22,6 +22,7 @@ $messages['en'] = array(
 	'visualeditor-dialog-media-title' => 'Media settings',
 	'visualeditor-dialog-action-apply' => 'Apply changes',
 	'visualeditor-dialog-action-cancel' => 'Cancel',
+	'visualeditor-dialog-action-close' => 'Close',
 	'visualeditor-toolbar-savedialog' => 'Review and save',
 	'visualeditor-savedialog-title-review' => 'Review your changes',
 	'visualeditor-savedialog-title-report' => 'Report a problem',
