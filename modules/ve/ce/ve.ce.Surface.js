@@ -288,7 +288,8 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 		selection = this.model.getSelection();
 		if ( selection.start !== 0 && selection.isCollapsed() ) {
 			prevNode = this.model.getDocument().getDocumentNode().getNodeFromOffset( selection.start - 1 );
-			if ( !prevNode.canHaveChildren() && !prevNode.canContainContent() ) {
+			// TODO: Check for generated content
+			if ( prevNode.type === 'MWimage' || prevNode.type === 'alienInline' ) {
 				this.model.change( null, new ve.Range( selection.start ) );
 			}
 		}
