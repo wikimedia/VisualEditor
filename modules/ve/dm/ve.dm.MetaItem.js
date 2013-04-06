@@ -26,6 +26,7 @@ ve.dm.MetaItem = function VeDmMetaItem( element ) {
 	this.list = null;
 	this.offset = null;
 	this.index = null;
+	this.move = null;
 };
 
 /* Inheritance */
@@ -111,6 +112,39 @@ ve.dm.MetaItem.prototype.setOffset = function ( offset ) {
  */
 ve.dm.MetaItem.prototype.setIndex = function ( index ) {
 	this.index = index;
+};
+
+/**
+ * Queue up a change to the item's offset and index.
+ * @param {number} offset New offset
+ * @param {number} index New index
+ */
+ve.dm.MetaItem.prototype.setMove = function ( offset, index ) {
+	this.move = {
+		'offset': offset,
+		'index': index
+	};
+};
+
+/**
+ * Whether or not a move is pending.
+ * @returns {boolean} A move is pending
+ */
+ve.dm.MetaItem.prototype.isMovePending = function () {
+	return this.move !== null;
+};
+
+/**
+ * Apply the pending move and clear it.
+ * @throws No move pending
+ */
+ve.dm.MetaItem.prototype.applyMove = function () {
+	if ( this.move === null ) {
+		throw new Error( 'No move pending' );
+	}
+	this.setOffset( this.move.offset );
+	this.setIndex( this.move.index );
+	this.move = null;
 };
 
 /**

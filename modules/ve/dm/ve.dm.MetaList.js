@@ -78,7 +78,8 @@ ve.inheritClass( ve.dm.MetaList, ve.EventEmitter );
  * @emits remove
  */
 ve.dm.MetaList.prototype.onTransact = function ( tx, reversed ) {
-	var i, j, ilen, jlen, ins, rm, item, offset = 0, index = 0, ops = tx.getOperations(),
+	var i, j, k, ilen, jlen, klen, ins, rm, retain, itemIndex, item,
+		offset = 0, newOffset = 0, index = 0, ops = tx.getOperations(),
 		insertedItems = [], removedItems = [];
 	// Look for replaceMetadata operations in the transaction and insert/remove items as appropriate
 	// This requires we also inspect retain, replace and replaceMetadata operations in order to
@@ -89,10 +90,37 @@ ve.dm.MetaList.prototype.onTransact = function ( tx, reversed ) {
 		switch ( ops[i].type ) {
 			case 'retain':
 				offset += ops[i].length;
+				newOffset += ops[i].length;
 				index = 0;
 				break;
 			case 'replace':
+				// if we have metadata replace info we can calulcate the new
+				// offset and index directly
+				ins = reversed ? ops[i].removeMetadata : ops[i].insertMetadata;
+				rm = reversed ? ops[i].insertMetadata : ops[i].removeMetadata;
+				retain = ops[i].retainMetadata || 0;
+				if ( rm !== undefined ) {
+					// find the first itemIndex - the rest should be in order after it
+					for ( j = 0, jlen = rm.length; j < jlen; j++ ) {
+						if ( rm[j] !== undefined ) {
+							itemIndex = this.findItem( offset + retain + j, 0 );
+							break;
+						}
+					}
+					// iterate through all the inserted metaItems
+					for ( j = 0, jlen = ins.length; j < jlen; j++ ) {
+						item = ins[j];
+						if ( item !== undefined ) {
+							for ( k = 0, klen = item.length; k < klen; k++ ) {
+								// Queue up the move for later so we don't break the metaItem ordering
+								this.items[itemIndex].setMove( newOffset + retain + j, k );
+								itemIndex++;
+							}
+						}
+					}
+				}
 				offset += reversed ? ops[i].insert.length : ops[i].remove.length;
+				newOffset += reversed ? ops[i].remove.length : ops[i].insert.length;
 				index = 0;
 				break;
 			case 'retainMetadata':
@@ -121,13 +149,19 @@ ve.dm.MetaList.prototype.onTransact = function ( tx, reversed ) {
 	offset = -1;
 	index = 0;
 	for ( i = 0, ilen = this.items.length; i < ilen; i++ ) {
-		this.items[i].setOffset( tx.translateOffset( this.items[i].getOffset(), reversed ) );
-		if ( this.items[i].getOffset() === offset ) {
-			index++;
+		if ( this.items[i].isMovePending() ) {
+			// move was calculated from metadata replace info, just apply it
+			this.items[i].applyMove();
 		} else {
-			index = 0;
+			// otherwise calculate the new offset from the transaction
+			this.items[i].setOffset( tx.translateOffset( this.items[i].getOffset(), reversed ) );
+			if ( this.items[i].getOffset() === offset ) {
+				index++;
+			} else {
+				index = 0;
+			}
+			this.items[i].setIndex( index );
 		}
-		this.items[i].setIndex( index );
 		offset = this.items[i].getOffset();
 	}
 
@@ -293,4 +327,3 @@ ve.dm.MetaList.prototype.deleteRemovedItem = function ( offset, index ) {
 	item.detach( this );
 	return item;
 };
-

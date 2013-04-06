@@ -14,11 +14,11 @@ function assertItemsMatchMetadata( assert, metadata, list, msg, full ) {
 	for ( i in metadata.getData() ) {
 		if ( ve.isArray( metadata.getData( i ) ) ) {
 			for ( j = 0; j < metadata.getData( i ).length; j++ ) {
-				assert.strictEqual( items[k].getOffset(), Number( i ), msg + ' (offset (' + i + ', ' + j + '))' );
-				assert.strictEqual( items[k].getIndex(), j, msg + ' (index(' + i + ', ' + j + '))' );
+				assert.strictEqual( items[k].getOffset(), Number( i ), msg + ' (' + k + ': offset (' + i + ', ' + j + '))' );
+				assert.strictEqual( items[k].getIndex(), j, msg + ' (' + k + ': index(' + i + ', ' + j + '))' );
 				if ( full ) {
-					assert.strictEqual( items[k].getElement(), metadata.getData( i, j ), msg + ' (element(' + i + ', ' + j + '))' );
-					assert.strictEqual( items[k].getParentList(), list, msg + ' (parentList(' + i + ', ' + j + '))' );
+					assert.strictEqual( items[k].getElement(), metadata.getData( i, j ), msg + ' (' + k + ': element(' + i + ', ' + j + '))' );
+					assert.strictEqual( items[k].getParentList(), list, msg + ' (' + k + ': parentList(' + i + ', ' + j + '))' );
 				}
 				k++;
 			}
@@ -46,11 +46,11 @@ QUnit.test( 'onTransact', function ( assert ) {
 				// delta: 0
 				'calls': [
 					[ 'pushRetain', 1 ],
-					[ 'pushReplace', [], [ 'Q', 'u', 'u', 'x' ] ],
+					[ 'pushReplace', doc, 1, 0, [ 'Q', 'u', 'u', 'x' ] ],
 					[ 'pushRetain', 3 ],
-					[ 'pushReplace', [ 'B' ], [] ],
+					[ 'pushReplace', doc, 4, 1, [] ],
 					[ 'pushRetain', 1 ],
-					[ 'pushReplace', [ 'r', 'B', 'a', 'z' ], [ '!' ] ],
+					[ 'pushReplace', doc, 6, 4, [ '!' ] ],
 					[ 'pushRetain', 2 ]
 				],
 				'msg': 'Transaction inserting, replacing and removing text'
@@ -75,9 +75,9 @@ QUnit.test( 'onTransact', function ( assert ) {
 			{
 				// delta: 0
 				'calls': [
-					[ 'pushReplace', [ ve.dm.example.withMetaPlainData[0] ], [ heading ] ],
+					[ 'pushReplace', doc, 0, 1, [ heading ] ],
 					[ 'pushRetain', 9 ],
-					[ 'pushReplace', [ ve.dm.example.withMetaPlainData[10] ], [ { 'type': '/heading' } ] ]
+					[ 'pushReplace', doc, 10, 1, [ { 'type': '/heading' } ] ]
 				],
 				'msg': 'Transaction converting paragraph to heading'
 			},
@@ -85,7 +85,7 @@ QUnit.test( 'onTransact', function ( assert ) {
 				// delta: -9
 				'calls': [
 					[ 'pushRetain', 1 ],
-					[ 'pushReplace', ve.dm.example.withMetaPlainData.slice( 1, 10 ), [] ],
+					[ 'pushReplace', doc, 1, 9, [] ],
 					[ 'pushRetain', 1 ]
 				],
 				'msg': 'Transaction blanking paragraph'
@@ -94,7 +94,7 @@ QUnit.test( 'onTransact', function ( assert ) {
 				// delta: +11
 				'calls': [
 					[ 'pushRetain', 11 ],
-					[ 'pushReplace', [], ve.dm.example.withMetaPlainData ],
+					[ 'pushReplace', doc, 11, 0, ve.dm.example.withMetaPlainData ],
 				],
 				'msg': 'Transaction adding second paragraph at the end'
 			},
@@ -102,13 +102,13 @@ QUnit.test( 'onTransact', function ( assert ) {
 				// delta: -2
 				'calls': [
 					[ 'pushRetain', 1 ],
-					[ 'pushReplace', ve.dm.example.withMetaPlainData.slice( 1, 8 ), [] ],
+					[ 'pushReplace', doc, 1, 7, [] ],
 					[ 'pushRetain', 1 ],
 					[ 'pushReplaceMetadata', [ ve.dm.example.withMetaMetaData[9][0] ], [] ],
 					[ 'pushRetain', 2 ],
 					[ 'pushRetainMetadata', 2 ],
 					// The two operations below have to be in this order because of bug 46138
-					[ 'pushReplace', [], [ { 'type': 'paragraph' }, 'a', 'b', 'c', { 'type': '/paragraph' } ] ],
+					[ 'pushReplace', doc, 11, 0, [ { 'type': 'paragraph' }, 'a', 'b', 'c', { 'type': '/paragraph' } ] ],
 					[ 'pushReplaceMetadata', [], [ comment ] ]
 				],
 				'msg': 'Transaction adding and removing text and metadata'

@@ -24,6 +24,32 @@ ve.dm.MetaLinearData = function VeDmMetaLinearData( store, data ) {
 
 ve.inheritClass( ve.dm.MetaLinearData, ve.dm.LinearData );
 
+/* Static Methods */
+
+/**
+ * Takes an array of meta linear data arrays and collapses them into a single array.
+ *
+ * Undefined values will be discarded e.g.
+ * [ [ metaItem1, metaItem2 ], undefined, [ metaItem3 ], undefined ]
+ * =>
+ * [ [ metaItem1, metaItem2, metaItem3 ] ]
+ *
+ * @static
+ * @param {Array} data Meta linear data arrays
+ * @returns {Array} Merged data
+ */
+ve.dm.MetaLinearData.static.merge = function ( data ) {
+	var i, merged = [];
+	for ( i = 0; i < data.length; i++ ) {
+		if ( data[i] !== undefined ) {
+			merged = merged.concat( data[i] );
+		}
+	}
+	return [ merged ];
+};
+
+/* Methods */
+
 /**
  * Gets linear data from specified index(es).
  *
@@ -43,8 +69,6 @@ ve.dm.MetaLinearData.prototype.getData = function ( offset, metadataOffset ) {
 		return this.data[offset] === undefined ? undefined : this.data[offset][metadataOffset];
 	}
 };
-
-/* Methods */
 
 /**
  * Gets number of metadata elements at specified offset.
