@@ -152,6 +152,7 @@ Links are in {{msg-mw|Visualeditor-mainnamespacepagelink}} and {{msg-mw|visualed
 	'visualeditor-annotationbutton-bold-tooltip' => 'Tooltip string for bold button',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Tooltip string for italic button',
 	'visualeditor-annotationbutton-link-tooltip' => 'Tooltip string for link button',
+	'visualeditor-dialogbutton-media-tooltip' => '{{Identical|Media}}',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Tooltip string for list indent button',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Tooltip string for list outdent button',
 	'visualeditor-listbutton-number-tooltip' => 'Tooltip for the numbered list button',
@@ -223,6 +224,7 @@ $messages['ast'] = array(
 	'visualeditor-ca-ve-create' => 'Editor visual',
 	'visualeditor-dialog-meta-title' => 'Configuración de páxina',
 	'visualeditor-dialog-content-title' => 'Configuración del conteníu',
+	'visualeditor-dialog-media-title' => 'Configuración de multimedia',
 	'visualeditor-dialog-action-apply' => 'Aplicar los cambeos',
 	'visualeditor-dialog-action-cancel' => 'Encaboxar',
 	'visualeditor-toolbar-savedialog' => 'Revisar y guardar',
@@ -240,7 +242,6 @@ $messages['ast'] = array(
 	'tooltip-ca-ve-edit' => 'Editar esta páxina con VisualEditor',
 	'visualeditor-window-title' => 'Inspeicionar',
 	'visualeditor-linkinspector-title' => 'Hiperenllaz',
-	'visualeditor-linkinspector-label-pagetitle' => 'Títulu de la páxina',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Páxina esistente',
 	'visualeditor-linkinspector-suggest-new-page' => 'Páxina nueva',
 	'visualeditor-linkinspector-suggest-external-link' => 'Enllaz web',
@@ -256,6 +257,7 @@ $messages['ast'] = array(
 	'visualeditor-annotationbutton-bold-tooltip' => 'Negrina',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Cursiva',
 	'visualeditor-annotationbutton-link-tooltip' => 'Enllaz',
+	'visualeditor-dialogbutton-media-tooltip' => 'Multimedia',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Aumentar la sangría',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Disminuir la sangría',
 	'visualeditor-listbutton-number-tooltip' => 'Llista numberada',
@@ -598,6 +600,7 @@ $messages['de'] = array(
 	'visualeditor-ca-ve-create' => 'WYSIWYG-Editor',
 	'visualeditor-dialog-meta-title' => 'Seiteneinstellungen',
 	'visualeditor-dialog-content-title' => 'Inhaltseinstellungen',
+	'visualeditor-dialog-media-title' => 'Medieneinstellungen',
 	'visualeditor-dialog-action-apply' => 'Änderungen anwenden',
 	'visualeditor-dialog-action-cancel' => 'Abbrechen',
 	'visualeditor-toolbar-savedialog' => 'Überprüfen und speichern',
@@ -615,7 +618,6 @@ $messages['de'] = array(
 	'tooltip-ca-ve-edit' => 'Diese Seite mit dem WYSIWYG-Editor bearbeiten',
 	'visualeditor-window-title' => 'Inspizieren',
 	'visualeditor-linkinspector-title' => 'Hyperlink',
-	'visualeditor-linkinspector-label-pagetitle' => 'Seitenname',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Vorhandene Seite',
 	'visualeditor-linkinspector-suggest-new-page' => 'Neue Seite',
 	'visualeditor-linkinspector-suggest-external-link' => 'Weblink',
@@ -631,6 +633,7 @@ $messages['de'] = array(
 	'visualeditor-annotationbutton-bold-tooltip' => 'Fett',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Kursiv',
 	'visualeditor-annotationbutton-link-tooltip' => 'Link',
+	'visualeditor-dialogbutton-media-tooltip' => 'Medien',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Einzug vergrößern',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Einzug verkleinern',
 	'visualeditor-listbutton-number-tooltip' => 'Nummerierte Liste',
@@ -885,6 +888,7 @@ $messages['fa'] = array(
  * @author Nedergard
  * @author Nike
  * @author Olli
+ * @author Silvonen
  * @author VezonThunder
  */
 $messages['fi'] = array(
@@ -898,6 +902,8 @@ $messages['fi'] = array(
 	'visualeditor-ca-editsource' => 'Muokkaa lähdetekstiä',
 	'visualeditor-ca-ve-edit' => 'Visuaalinen muokkain',
 	'visualeditor-ca-ve-create' => 'Visuaalinen muokkain',
+	'visualeditor-dialog-meta-title' => 'Sivun asetukset',
+	'visualeditor-dialog-content-title' => 'Sisällön asetukset',
 	'visualeditor-dialog-action-cancel' => 'Peruuta',
 	'visualeditor-toolbar-savedialog' => 'Tarkista ja tallenna',
 	'visualeditor-savedialog-title-review' => 'Tarkista muutoksesi',
@@ -956,6 +962,7 @@ $messages['fi'] = array(
  * @author Crochet.david
  * @author Gomoko
  * @author Hello71
+ * @author Metroitendo
  * @author Nicolas NALLET
  * @author Npettiaux
  * @author Urhixidur
@@ -976,6 +983,7 @@ $messages['fr'] = array(
 	'visualeditor-ca-ve-create' => 'VisualEditor',
 	'visualeditor-dialog-meta-title' => 'Paramètres de la page',
 	'visualeditor-dialog-content-title' => 'Paramètres du contenu',
+	'visualeditor-dialog-media-title' => 'Paramètres du média',
 	'visualeditor-dialog-action-apply' => 'Appliquer les modifications',
 	'visualeditor-dialog-action-cancel' => 'Annuler',
 	'visualeditor-toolbar-savedialog' => 'Relire et enregistrer',
@@ -1008,6 +1016,7 @@ $messages['fr'] = array(
 	'visualeditor-annotationbutton-bold-tooltip' => 'Gras',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Italique',
 	'visualeditor-annotationbutton-link-tooltip' => 'Lien',
+	'visualeditor-dialogbutton-media-tooltip' => 'Média',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Augmenter l’indentation',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Diminuer l’indentation',
 	'visualeditor-listbutton-number-tooltip' => 'Liste numérotée',
@@ -1102,8 +1111,9 @@ $messages['gl'] = array(
 	'visualeditor-ca-editsource' => 'Editar a fonte',
 	'visualeditor-ca-ve-edit' => 'Editor visual',
 	'visualeditor-ca-ve-create' => 'Editor visual',
-	'visualeditor-dialog-meta-title' => 'Configuracións da páxina',
+	'visualeditor-dialog-meta-title' => 'Configuración da páxina',
 	'visualeditor-dialog-content-title' => 'Configuración do contido',
+	'visualeditor-dialog-media-title' => 'Configuración dos ficheiros multimedia',
 	'visualeditor-dialog-action-apply' => 'Aplicar os cambios',
 	'visualeditor-dialog-action-cancel' => 'Cancelar',
 	'visualeditor-toolbar-savedialog' => 'Revisar e gardar',
@@ -1121,7 +1131,6 @@ $messages['gl'] = array(
 	'tooltip-ca-ve-edit' => 'Editar esta páxina co editor visual',
 	'visualeditor-window-title' => 'Inspeccionar',
 	'visualeditor-linkinspector-title' => 'Hiperligazón',
-	'visualeditor-linkinspector-label-pagetitle' => 'Título da páxina',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Páxina existente',
 	'visualeditor-linkinspector-suggest-new-page' => 'Páxina nova',
 	'visualeditor-linkinspector-suggest-external-link' => 'Ligazón web',
@@ -1137,6 +1146,7 @@ $messages['gl'] = array(
 	'visualeditor-annotationbutton-bold-tooltip' => 'Negra',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Cursiva',
 	'visualeditor-annotationbutton-link-tooltip' => 'Ligazón',
+	'visualeditor-dialogbutton-media-tooltip' => 'Ficheiros multimedia',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Aumentar a sangría',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Diminuír a sangría',
 	'visualeditor-listbutton-number-tooltip' => 'Lista numerada',
@@ -1164,6 +1174,7 @@ $messages['gl'] = array(
 
 /** Hebrew (עברית)
  * @author Amire80
+ * @author ExampleTomer
  * @author חיים
  */
 $messages['he'] = array(
@@ -1198,7 +1209,6 @@ $messages['he'] = array(
 	'tooltip-ca-ve-edit' => 'עריכה באמצעות עורך חזותי',
 	'visualeditor-window-title' => 'חקירה',
 	'visualeditor-linkinspector-title' => 'היפר־קישור',
-	'visualeditor-linkinspector-label-pagetitle' => 'כותרת דף',
 	'visualeditor-linkinspector-suggest-existing-page' => 'דף קיים',
 	'visualeditor-linkinspector-suggest-new-page' => 'דף חדש',
 	'visualeditor-linkinspector-suggest-external-link' => 'קישור לרשת',
@@ -1214,6 +1224,7 @@ $messages['he'] = array(
 	'visualeditor-annotationbutton-bold-tooltip' => 'בולט',
 	'visualeditor-annotationbutton-italic-tooltip' => 'נטוי',
 	'visualeditor-annotationbutton-link-tooltip' => 'קישור',
+	'visualeditor-dialogbutton-media-tooltip' => 'מדיה',
 	'visualeditor-indentationbutton-indent-tooltip' => 'הגדלת הזחה',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'הקטנת הזחה',
 	'visualeditor-listbutton-number-tooltip' => 'רשימה ממוספרת',
@@ -1523,6 +1534,7 @@ $messages['ja'] = array(
 	'visualeditor-ca-ve-create' => 'ビジュアルエディター',
 	'visualeditor-dialog-meta-title' => 'ページの設定',
 	'visualeditor-dialog-content-title' => 'コンテンツの設定',
+	'visualeditor-dialog-media-title' => 'メディアの設定',
 	'visualeditor-dialog-action-apply' => '変更内容を適用',
 	'visualeditor-dialog-action-cancel' => 'キャンセル',
 	'visualeditor-toolbar-savedialog' => '査読して保存',
@@ -1555,6 +1567,7 @@ $messages['ja'] = array(
 	'visualeditor-annotationbutton-bold-tooltip' => '太字',
 	'visualeditor-annotationbutton-italic-tooltip' => '斜体',
 	'visualeditor-annotationbutton-link-tooltip' => 'リンク',
+	'visualeditor-dialogbutton-media-tooltip' => 'メディア',
 	'visualeditor-indentationbutton-indent-tooltip' => 'インデント',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'インデント解除',
 	'visualeditor-listbutton-number-tooltip' => '番号付き箇条書き',
@@ -1835,6 +1848,14 @@ $messages['lb'] = array(
  */
 $messages['lt'] = array(
 	'visualeditor-feedback-prompt' => 'Palikti atsiliepimą',
+);
+
+/** Latvian (latviešu)
+ * @author Admresdeserv.
+ */
+$messages['lv'] = array(
+	'visualeditor-dialog-media-title' => 'Mediju iestatījumi',
+	'visualeditor-dialogbutton-media-tooltip' => 'Medijs',
 );
 
 /** Macedonian (македонски)
@@ -3046,6 +3067,7 @@ $messages['vi'] = array(
 	'visualeditor-ca-ve-create' => 'Trình soạn thị giác',
 	'visualeditor-dialog-meta-title' => 'Tùy chọn trang',
 	'visualeditor-dialog-content-title' => 'Tùy chọn nội dung',
+	'visualeditor-dialog-media-title' => 'Tùy chọn phương tiện',
 	'visualeditor-dialog-action-apply' => 'Áp dụng các thay đổi',
 	'visualeditor-dialog-action-cancel' => 'Hủy bỏ',
 	'visualeditor-toolbar-savedialog' => 'Xem lại và lưu',
@@ -3078,6 +3100,7 @@ $messages['vi'] = array(
 	'visualeditor-annotationbutton-bold-tooltip' => 'Đậm',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Xiên',
 	'visualeditor-annotationbutton-link-tooltip' => 'Liên kết',
+	'visualeditor-dialogbutton-media-tooltip' => 'Phương tiện',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Tăng lề',
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Thụt lề',
 	'visualeditor-listbutton-number-tooltip' => 'Danh sách đánh số',
@@ -3190,19 +3213,39 @@ $messages['zh-hans'] = array(
 $messages['zh-hant'] = array(
 	'visualeditor' => '可視化編輯器',
 	'visualeditor-desc' => 'MediaWiki的可視化編輯器',
+	'visualeditor-preference-enable' => '啟用VisualEditor（僅在[[{{MediaWiki:Visualeditor-mainnamespacepagelink}}|主]]和[[{{MediaWiki:Visualeditor-usernamespacepagelink}}|用戶]]名字空間）',
 	'visualeditor-mainnamespacepagelink' => 'Project:主名字空間',
 	'visualeditor-usernamespacepagelink' => 'Project:用戶名字空間',
+	'visualeditor-notification-saved' => '你對$1的更改經已儲存。',
+	'visualeditor-notification-created' => '$1已建立。',
+	'visualeditor-notification-restored' => '$1已恢復。',
+	'visualeditor-notification-reported' => '已經報告您的問題。謝謝。',
 	'visualeditor-ca-editsource' => '編輯源代碼',
 	'visualeditor-ca-ve-edit' => '可視化編輯器',
 	'visualeditor-ca-ve-create' => '可視化編輯器',
+	'visualeditor-dialog-meta-title' => '頁面設定',
+	'visualeditor-dialog-content-title' => '內容設定',
+	'visualeditor-dialog-media-title' => '媒體設置',
+	'visualeditor-dialog-action-apply' => '套用',
+	'visualeditor-dialog-action-cancel' => '取消',
+	'visualeditor-toolbar-savedialog' => '複查並儲存',
+	'visualeditor-savedialog-title-review' => '複查您的更改',
 	'visualeditor-savedialog-title-report' => '報告問題',
 	'visualeditor-savedialog-title-save' => '保存您的修改',
+	'visualeditor-savedialog-label-review-wrong' => '有此問題',
+	'visualeditor-savedialog-label-review-good' => '沒有問題',
 	'visualeditor-savedialog-label-report' => '報告問題',
 	'visualeditor-savedialog-label-create' => '建立文章',
+	'visualeditor-savedialog-label-save' => '儲存本頁',
+	'visualeditor-savedialog-label-restore' => '恢復頁面',
+	'visualeditor-editnotices-tool' => '$1{{PLURAL:$1|條通知|條通知}}',
 	'visualeditor-feedback-tool' => '留下反饋',
-	'visualeditor-linkinspector-title' => '編輯鏈接', # Fuzzy
-	'visualeditor-linkinspector-label-pagetitle' => '頁面標題',
+	'tooltip-ca-ve-edit' => '使用VisualEditor編輯此頁',
+	'visualeditor-window-title' => '檢查',
+	'visualeditor-linkinspector-title' => '超連結',
+	'visualeditor-linkinspector-suggest-existing-page' => '已存在的頁面',
 	'visualeditor-linkinspector-suggest-new-page' => '新頁面',
+	'visualeditor-linkinspector-suggest-external-link' => '網頁連結',
 	'visualeditor-formatdropdown-title' => '更改格式',
 	'visualeditor-formatdropdown-format-paragraph' => '段落',
 	'visualeditor-formatdropdown-format-heading1' => '標題 1',
@@ -3212,21 +3255,30 @@ $messages['zh-hant'] = array(
 	'visualeditor-formatdropdown-format-heading5' => '標題 5',
 	'visualeditor-formatdropdown-format-heading6' => '標題 6',
 	'visualeditor-formatdropdown-format-preformatted' => '預格式化文本',
-	'visualeditor-annotationbutton-bold-tooltip' => '粗體', # Fuzzy
-	'visualeditor-annotationbutton-italic-tooltip' => '斜體', # Fuzzy
-	'visualeditor-annotationbutton-link-tooltip' => '連結', # Fuzzy
-	'visualeditor-indentationbutton-indent-tooltip' => '增加縮進', # Fuzzy
-	'visualeditor-indentationbutton-outdent-tooltip' => '減少縮進', # Fuzzy
+	'visualeditor-annotationbutton-bold-tooltip' => '粗體',
+	'visualeditor-annotationbutton-italic-tooltip' => '斜體',
+	'visualeditor-annotationbutton-link-tooltip' => '連結',
+	'visualeditor-dialogbutton-media-tooltip' => '媒體',
+	'visualeditor-indentationbutton-indent-tooltip' => '增加縮進',
+	'visualeditor-indentationbutton-outdent-tooltip' => '減少縮進',
 	'visualeditor-listbutton-number-tooltip' => '有序列表',
 	'visualeditor-listbutton-bullet-tooltip' => '無序列表',
 	'visualeditor-clearbutton-tooltip' => '清除格式',
-	'visualeditor-historybutton-undo-tooltip' => '撤銷', # Fuzzy
-	'visualeditor-historybutton-redo-tooltip' => '重做', # Fuzzy
+	'visualeditor-historybutton-undo-tooltip' => '撤銷',
+	'visualeditor-historybutton-redo-tooltip' => '重做',
 	'visualeditor-inspector-close-tooltip' => '關閉',
 	'visualeditor-inspector-remove-tooltip' => '移除',
 	'visualeditor-viewpage-savewarning' => '您確實要不保存而回到查看模式嗎？',
 	'visualeditor-loadwarning' => '從服務器載入數據錯誤：$1。您想重試嗎？',
+	'visualeditor-differror' => '從伺服器載入資料時出現錯誤：$1 。',
 	'visualeditor-saveerror' => '向服務器保存數據錯誤：$1。',
+	'visualeditor-editconflict' => '由於編輯衝突，無法儲存您的更改。你想要手動解決衝突嗎？',
+	'visualeditor-editsummary' => '描述您的更改',
+	'visualeditor-problem' => '描述發生了什麼問題',
+	'visualeditor-aliennode-tooltip' => '抱歉，此部份無法使用編輯VisualEditor',
 	'tag-visualeditor' => '[[Special:Tags|標籤]]：[[{{MediaWiki:Visualeditor-descriptionpagelink}}|可視化編輯器]]',
+	'tag-visualeditor-description' => '使用[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]的編輯',
 	'visualeditor-descriptionpagelink' => 'Project:可視化編輯器',
+	'visualeditor-alphawarning' => '你正在使用Alpha版本的[[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]。它可能會很慢，或製造錯誤更改 - 請檢查您所做的每次編輯。',
+	'visualeditor-report-notice' => '我明白按下提交按鈕，將傳送我的更改和反饋，它們將被儲存以供分析。我同意按照[[{{MediaWiki:Visualeditor-report-link}}|使用條款]]提供反饋內容。',
 );
