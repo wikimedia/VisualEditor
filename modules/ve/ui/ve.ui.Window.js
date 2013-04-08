@@ -43,6 +43,10 @@ ve.ui.Window = function VeUiWindow( surface ) {
 		this.initialize();
 		this.emit( 'initialize' );
 	}, this ) );
+
+	this.$.load( ve.bind( function () {
+		this.frame.initialize();
+	}, this ) );
 };
 
 /* Inheritance */
@@ -80,22 +84,7 @@ ve.inheritClass( ve.ui.Window, ve.EventEmitter );
  */
 ve.ui.Window.static = {};
 
-/**
- * Options for frame.
- *
- * @see ve.ui.Frame
- *
- * @static
- * @property {Object}
- */
-ve.ui.Window.static.stylesheets = [
-	've.ui.Frame.css',
-	've.ui.Window.css',
-	've.ui.Element.css',
-	've.ui.Layout.css',
-	've.ui.Widget.css',
-	( window.devicePixelRatio > 1 ? 've.ui.Icons-vector.css' : 've.ui.Icons-raster.css' )
-];
+ve.ui.Window.static.stylesheets = [];
 
 /**
  * Symbolic name of icon.
@@ -112,6 +101,38 @@ ve.ui.Window.static.icon = 'window';
  * @property {string}
  */
 ve.ui.Window.static.titleMessage = null;
+
+/* Static Methods */
+
+/**
+ * Add a stylesheet to be loaded into the window's frame.
+ *
+ * @param {string[]} paths List of absolute stylesheet paths
+ */
+ve.ui.Window.static.addStylesheetFiles = function ( paths ) {
+	if ( !this.hasOwnProperty( 'stylesheets' ) ) {
+		this.stylesheets = this.stylesheets.slice( 0 );
+	}
+	this.stylesheets.push.apply( this.stylesheets, paths );
+};
+
+/**
+ * Add a stylesheet from the /ve/ui/styles directory.
+ *
+ * @param {string[]} files Names of stylesheet files
+ */
+ve.ui.Window.static.addLocalStylesheets = function ( files ) {
+	var i, len,
+		base = ve.init.platform.getModulesUrl() + 've/ui/styles/',
+		paths = [];
+
+	// Prepend base path to each file name
+	for ( i = 0, len = files.length; i < len; i++ ) {
+		paths[i] = base + files[i];
+	}
+
+	this.addStylesheetFiles( paths );
+};
 
 /* Methods */
 
@@ -289,3 +310,14 @@ ve.ui.Window.prototype.close = function ( remove ) {
 		this.emit( 'close', remove );
 	}
 };
+
+/* Initialization */
+
+ve.ui.Window.static.addLocalStylesheets( [
+	've.ui.Frame.css',
+	've.ui.Window.css',
+	've.ui.Element.css',
+	've.ui.Layout.css',
+	've.ui.Widget.css',
+	( window.devicePixelRatio > 1 ? 've.ui.Icons-vector.css' : 've.ui.Icons-raster.css' )
+] );

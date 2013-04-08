@@ -39,9 +39,6 @@ ve.inheritClass( ve.ui.Inspector, ve.ui.Window );
  */
 ve.ui.Inspector.static.typePattern = new RegExp();
 
-ve.ui.Inspector.static.stylesheets =
-	ve.ui.Inspector.static.stylesheets.concat( [ 've.ui.Inspector.css' ] );
-
 ve.ui.Inspector.static.titleMessage = 've-ui-inspector-title';
 
 /* Methods */
@@ -141,3 +138,7 @@ ve.ui.Inspector.prototype.onOpen = function () {
 ve.ui.Inspector.prototype.getMatchingAnnotations = function ( fragment ) {
 	return fragment.getAnnotations().getAnnotationsByName( this.constructor.static.typePattern );
 };
+
+/* Initialization */
+
+ve.ui.Inspector.static.addLocalStylesheets( [ 've.ui.Inspector.css' ] );

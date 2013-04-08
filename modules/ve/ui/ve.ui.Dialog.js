@@ -31,11 +31,6 @@ ve.ui.Dialog = function VeUiDialog( surface ) {
 
 ve.inheritClass( ve.ui.Dialog, ve.ui.Window );
 
-/* Static Properties */
-
-ve.ui.Dialog.static.stylesheets =
-	ve.ui.Dialog.static.stylesheets.concat( [ 've.ui.Dialog.css' ] );
-
 /* Methods */
 
 /**
@@ -90,3 +85,7 @@ ve.ui.Dialog.prototype.initialize = function () {
 	// Initialization
 	this.$head.append( this.applyButton.$, this.cancelButton.$ );
 };
+
+/* Initialization */
+
+ve.ui.Dialog.static.addLocalStylesheets( [ 've.ui.Dialog.css' ] );
