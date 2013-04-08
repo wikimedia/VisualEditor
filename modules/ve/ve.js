@@ -319,7 +319,7 @@
 		var normalized, keys, i, len;
 		if ( val && typeof val.getHashObject === 'function' ) {
 			// This object has its own custom hash function, use it
-			return val.getHashObject();
+			val = val.getHashObject();
 		}
 		if ( !ve.isArray( val ) && Object( val ) === val ) {
 			// Only normalize objects when the key-order is ambiguous

@@ -132,42 +132,77 @@ QUnit.test( 'inheritClass', 18, function ( assert ) {
 
 // ve.extendObject: Tested upstream (jQuery)
 
-QUnit.test( 'getHash: Basic usage', 5, function ( assert ) {
-	var tmp, hash, objects;
+QUnit.test( 'getHash: Basic usage', 7, function ( assert ) {
+	var tmp,
+		cases = {},
+		hash = '{"a":1,"b":1,"c":1}',
+		customHash = '{"first":1,"last":1}';
 
-	objects = {};
-
-	objects['a-z literal'] = {
-		a: 1,
-		b: 1,
-		c: 1
+	cases['a-z literal'] = {
+		object: {
+			a: 1,
+			b: 1,
+			c: 1
+		},
+		hash: hash
 	};
 
-	objects['z-a literal'] = {
-		c: 1,
-		b: 1,
-		a: 1
+	cases['z-a literal'] = {
+		object: {
+			c: 1,
+			b: 1,
+			a: 1
+		},
+		hash: hash
 	};
 
 	tmp = {};
-	objects['a-z augmented'] = tmp;
+	cases['a-z augmented'] = {
+		object: tmp,
+		hash: hash
+	};
 	tmp.a = 1;
 	tmp.b = 1;
 	tmp.c = 1;
 
 	tmp = {};
-	objects['z-a augmented'] = tmp;
+	cases['z-a augmented'] = {
+		object: tmp,
+		hash: hash
+	};
 	tmp.c = 1;
 	tmp.b = 1;
 	tmp.a = 1;
 
-	hash = '{"a":1,"b":1,"c":1}';
+	cases['custom hash'] = {
+		object: {
+			getHashObject: function () {
+				return {
+					'first': 1,
+					'last': 1
+				};
+			}
+		},
+		hash: customHash
+	};
 
-	$.each( objects, function ( key, val ) {
+	cases['custom hash reversed'] = {
+		object: {
+			getHashObject: function () {
+				return {
+					'last': 1,
+					'first': 1
+				};
+			}
+		},
+		hash: customHash
+	};
+
+	$.each( cases, function ( key, val ) {
 		assert.equal(
-			ve.getHash( val ),
-			hash,
-			'Similar enough objects have the same hash, regardless of "property order"'
+			ve.getHash( val.object ),
+			val.hash,
+			key + ': object has expected hash, regardless of "property order"'
 		);
 	});
 
