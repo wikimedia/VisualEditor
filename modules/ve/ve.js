@@ -317,9 +317,9 @@
 	 */
 	ve.getHash.keySortReplacer = function ( key, val ) {
 		var normalized, keys, i, len;
-		if ( val && typeof val.getHash === 'function' ) {
+		if ( val && typeof val.getHashObject === 'function' ) {
 			// This object has its own custom hash function, use it
-			return val.getHash();
+			return val.getHashObject();
 		}
 		if ( !ve.isArray( val ) && Object( val ) === val ) {
 			// Only normalize objects when the key-order is ambiguous

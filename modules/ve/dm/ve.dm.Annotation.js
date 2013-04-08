@@ -160,19 +160,19 @@ ve.dm.Annotation.prototype.renderHTML = function () {
 };
 
 /**
- * Get a hash of the annotation.
+ * Get the hash object of the annotation.
  *
  * This is a custom hash function for ve#getHash.
  *
  * @method
- * @returns {string} Hash string
+ * @returns {Object} Object to hash
  */
-ve.dm.Annotation.prototype.getHash = function () {
+ve.dm.Annotation.prototype.getHashObject = function () {
 	var keys = [ 'name', 'data' ], obj = {}, i;
 	for ( i = 0; i < keys.length; i++ ) {
 		if ( this[keys[i]] !== undefined ) {
 			obj[keys[i]] = this[keys[i]];
 		}
 	}
-	return ve.getHash( obj );
+	return obj;
 };

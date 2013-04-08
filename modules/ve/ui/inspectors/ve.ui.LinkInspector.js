@@ -114,7 +114,7 @@ ve.ui.LinkInspector.prototype.onOpen = function () {
 	// Wait for animation to complete
 	setTimeout( ve.bind( function () {
 		// Setup annotation
-		this.initialAnnotationHash = annotation && annotation.getHash();
+		this.initialAnnotationHash = annotation && ve.getHash( annotation );
 		this.targetInput.setAnnotation( annotation );
 		this.targetInput.$input.focus().select();
 	}, this ), 200 );
@@ -148,7 +148,7 @@ ve.ui.LinkInspector.prototype.onClose = function ( remove ) {
 		if ( this.initialSelection.isCollapsed() ) {
 			insert = true;
 		}
-		if ( annotation.getHash() !== this.initialAnnotationHash ) {
+		if ( ve.getHash( annotation ) !== this.initialAnnotationHash ) {
 			if ( this.isNewAnnotation ) {
 				undo = true;
 			} else {
