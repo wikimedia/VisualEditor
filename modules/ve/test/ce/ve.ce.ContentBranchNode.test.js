@@ -10,9 +10,10 @@ QUnit.module( 've.ce.ContentBranchNode' );
 /* Tests */
 
 QUnit.test( 'getRenderedContents', function ( assert ) {
-	var i, len, doc, $rendered,
+	var i, len, doc, $rendered, $wrapper,
 		cases = [
 		{
+			'msg': 'Plain text without annotations',
 			'data': [
 				{ 'type': 'paragraph' },
 				'a',
@@ -23,6 +24,7 @@ QUnit.test( 'getRenderedContents', function ( assert ) {
 			'html': 'abc'
 		},
 		{
+			'msg': 'Bold text',
 			'data': [
 				{ 'type': 'paragraph' },
 				['a', [ { 'type': 'textStyle/bold' } ]],
@@ -33,6 +35,7 @@ QUnit.test( 'getRenderedContents', function ( assert ) {
 			'html': '<b>abc</b>'
 		},
 		{
+			'msg': 'Bold character, plain character, italic character',
 			'data': [
 				{ 'type': 'paragraph' },
 				['a', [ { 'type': 'textStyle/bold' } ]],
@@ -43,6 +46,7 @@ QUnit.test( 'getRenderedContents', function ( assert ) {
 			'html': '<b>a</b>b<i>c</i>'
 		},
 		{
+			'msg': 'Bold, italic and underlined text (same order)',
 			'data': [
 				{ 'type': 'paragraph' },
 				['a', [
@@ -65,6 +69,7 @@ QUnit.test( 'getRenderedContents', function ( assert ) {
 			'html': '<b><i><u>abc</u></i></b>'
 		},
 		{
+			'msg': 'Varying order in consecutive range doesn\'t affect rendering',
 			'data': [
 				{ 'type': 'paragraph' },
 				['a', [
@@ -87,6 +92,7 @@ QUnit.test( 'getRenderedContents', function ( assert ) {
 			'html': '<b><i><u>abc</u></i></b>'
 		},
 		{
+			'msg': 'Varying order in non-consecutive range does affect rendering',
 			'data': [
 				{ 'type': 'paragraph' },
 				['a', [
@@ -105,6 +111,7 @@ QUnit.test( 'getRenderedContents', function ( assert ) {
 			'html': '<b><i><u>a</u></i></b>b<u><b><i>c</i></b></u>'
 		},
 		{
+			'msg': 'Text annotated in varying order, surrounded by plain text',
 			'data': [
 				{ 'type': 'paragraph' },
 				'a',
@@ -133,6 +140,7 @@ QUnit.test( 'getRenderedContents', function ( assert ) {
 			'html': 'abc<b><i><u>def</u></i></b>ghi'
 		},
 		{
+			'msg': 'Out-of-order closings do not produce misnested tags',
 			'data': [
 				{ 'type': 'paragraph' },
 				'a',
@@ -160,6 +168,7 @@ QUnit.test( 'getRenderedContents', function ( assert ) {
 			'html': 'abc<b><i><u>d</u></i></b><i><u>e<b>f</b></u></i>ghi'
 		},
 		{
+			'msg': 'Additional openings are added inline, even when out of order',
 			'data': [
 				{ 'type': 'paragraph' },
 				'a',
@@ -187,6 +196,7 @@ QUnit.test( 'getRenderedContents', function ( assert ) {
 			'html': 'abc<i><u><b>d</b>e<b>f</b></u></i>ghi'
 		},
 		{
+			'msg': 'Out-of-order closings surrounded by plain text',
 			'data': [
 				{ 'type': 'paragraph' },
 				'a',
@@ -210,9 +220,10 @@ QUnit.test( 'getRenderedContents', function ( assert ) {
 				'i',
 				{ 'type': '/paragraph' }
 			],
-			'html': 'abc<i><u><b>d</b></u></i><u><b>ef</b></u>ghi'
+			'html': 'abc<i><u><b>d</b></u></i><b><u>ef</u></b>ghi'
 		},
 		{
+			'msg': 'Annotation spanning text and inline nodes',
 			'data': [
 				{ 'type': 'paragraph' },
 				'a',
@@ -242,6 +253,9 @@ QUnit.test( 'getRenderedContents', function ( assert ) {
 	for ( i = 0, len = cases.length; i < len; i++ ) {
 		doc = new ve.dm.Document( ve.dm.example.preprocessAnnotations( cases[i].data ) );
 		$rendered = ( new ve.ce.ParagraphNode( doc.documentNode.getChildren()[0] ) ).getRenderedContents();
-		assert.deepEqual( $( '<div>' ).append( $rendered ).html(), cases[i].html );
+		$wrapper = $( '<div>' ).append( $rendered );
+		// HACK strip out all the class="ve-ce-TextStyleAnnotation ve-ce-TextStyleBoldAnnotation" crap
+		$wrapper.find( '.ve-ce-TextStyleAnnotation' ).removeAttr( 'class' );
+		assert.equalDomElement( $wrapper[0], $( '<div>' ).html( cases[i].html )[0], cases[i].msg );
 	}
 } );

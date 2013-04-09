@@ -112,8 +112,10 @@
 		<script src="../../ve/dm/metaitems/ve.dm.MWLanguageMetaItem.js"></script>
 		<script src="../../ve/ce/ve.ce.js"></script>
 		<script src="../../ve/ce/ve.ce.DomRange.js"></script>
+		<script src="../../ve/ce/ve.ce.AnnotationFactory.js"></script>
 		<script src="../../ve/ce/ve.ce.NodeFactory.js"></script>
 		<script src="../../ve/ce/ve.ce.Document.js"></script>
+		<script src="../../ve/ce/ve.ce.Annotation.js"></script>
 		<script src="../../ve/ce/ve.ce.Node.js"></script>
 		<script src="../../ve/ce/ve.ce.BranchNode.js"></script>
 		<script src="../../ve/ce/ve.ce.ContentBranchNode.js"></script>
@@ -143,6 +145,10 @@
 		<script src="../../ve/ce/nodes/ve.ce.MWHeadingNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.MWPreformattedNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.MWImageNode.js"></script>
+		<script src="../../ve/ce/annotations/ve.ce.LinkAnnotation.js"></script>
+		<script src="../../ve/ce/annotations/ve.ce.MWExternalLinkAnnotation.js"></script>
+		<script src="../../ve/ce/annotations/ve.ce.MWInternalLinkAnnotation.js"></script>
+		<script src="../../ve/ce/annotations/ve.ce.TextStyleAnnotation.js"></script>
 		<script src="../../ve/ui/ve.ui.js"></script>
 		<script src="../../ve/ui/ve.ui.Context.js"></script>
 		<script src="../../ve/ui/ve.ui.Frame.js"></script>

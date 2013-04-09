@@ -47,7 +47,12 @@ ve.ui.MWLinkInspector.prototype.getAnnotationFromTarget = function ( target ) {
 	// Figure out if this is an internal or external link
 	if ( ve.init.platform.getExternalLinkUrlProtocolsRegExp().test( target ) ) {
 		// External link
-		return new ve.dm.MWExternalLinkAnnotation( { 'href': target } );
+		return new ve.dm.MWExternalLinkAnnotation( {
+			'type': 'link/MWexternal',
+			'attributes': {
+				'href': target
+			}
+		} );
 	} else {
 		// Internal link
 		// TODO: In the longer term we'll want to have autocompletion and existence and validity
@@ -61,7 +66,12 @@ ve.ui.MWLinkInspector.prototype.getAnnotationFromTarget = function ( target ) {
 				target = ':' + target;
 			}
 		} catch ( e ) { }
-		return new ve.dm.MWInternalLinkAnnotation( { 'title': target } );
+		return new ve.dm.MWInternalLinkAnnotation( {
+			'type': 'link/MWinternal',
+			'attributes': {
+				'title': target
+			}
+		} );
 	}
 };
 

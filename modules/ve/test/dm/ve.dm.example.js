@@ -19,7 +19,7 @@ ve.dm.example = {};
  * annotation objects, and wraps the result in a ve.dm.ElementLinearData object.
  *
  * Shorthand notation for annotations is:
- * [ 'a', [ { 'type': 'link', 'data': { 'href': '...' }, 'htmlTagName': 'a', 'htmlAttributes': { ... } } ] ]
+ * [ 'a', [ { 'type': 'link', 'attributes': { 'href': '...' } ] ]
  *
  * The actual storage format has an instance of ve.dm.LinkAnnotation instead of the plain object,
  * and an instance of ve.dm.AnnotationSet instead of the array.
@@ -55,18 +55,11 @@ ve.dm.example.preprocessAnnotations = function ( data, store ) {
 /**
  * Create an annotation object from shorthand notation.
  * @method
- * @param {Object} annotation Plain object with type, data, htmlTagName and htmlAttributes properties
+ * @param {Object} annotation Plain object with type and attributes properties
  * @return {ve.dm.Annotation} Instance of the right ve.dm.Annotation subclass
  */
 ve.dm.example.createAnnotation = function ( annotation ) {
-	var ann, annKey;
-	ann = ve.dm.annotationFactory.create( annotation.type );
-	for ( annKey in annotation ) {
-		if ( annKey !== 'type' ) {
-			ann[annKey] = annotation[annKey];
-		}
-	}
-	return ann;
+	return ve.dm.annotationFactory.create( annotation.type, annotation );
 };
 
 /**
@@ -88,10 +81,10 @@ ve.dm.example.createAnnotationSet = function ( store, annotations ) {
 };
 
 /* Some common annotations in shorthand format */
-ve.dm.example.bold = { 'type': 'textStyle/bold', 'htmlTagName': 'b', 'htmlAttributes': {} };
-ve.dm.example.italic = { 'type': 'textStyle/italic', 'htmlTagName': 'i', 'htmlAttributes': {} };
-ve.dm.example.underline = { 'type': 'textStyle/underline', 'htmlTagName': 'u', 'htmlAttributes': {} };
-ve.dm.example.span = { 'type': 'textStyle/span', 'htmlTagName': 'span', 'htmlAttributes': {} };
+ve.dm.example.bold = { 'type': 'textStyle/bold' };
+ve.dm.example.italic = { 'type': 'textStyle/italic' };
+ve.dm.example.underline = { 'type': 'textStyle/underline' };
+ve.dm.example.span = { 'type': 'textStyle/span' };
 
 /**
  * Creates a document from example data.
@@ -1049,16 +1042,13 @@ ve.dm.example.domToDataCases = {
 				'b',
 				[ {
 					'type': 'link/MWinternal',
-					'data': {
+					'attributes': {
 						'title': 'Foo bar',
 						'origTitle': 'Foo_bar',
-						'hrefPrefix': ''
-					},
-					'htmlTagName': 'a',
-					'htmlAttributes': {
-						'data-rt': '{"sHref":"foo bar"}',
-						'href': 'Foo_bar',
-						'rel': 'mw:WikiLink'
+						'hrefPrefix': '',
+						'html/0/data-rt': '{"sHref":"foo bar"}',
+						'html/0/href': 'Foo_bar',
+						'html/0/rel': 'mw:WikiLink'
 					}
 				} ]
 			],
@@ -1066,16 +1056,13 @@ ve.dm.example.domToDataCases = {
 				'a',
 				[ {
 					'type': 'link/MWinternal',
-					'data': {
+					'attributes': {
 						'title': 'Foo bar',
 						'origTitle': 'Foo_bar',
-						'hrefPrefix': ''
-					},
-					'htmlTagName': 'a',
-					'htmlAttributes': {
-						'data-rt': '{"sHref":"foo bar"}',
-						'href': 'Foo_bar',
-						'rel': 'mw:WikiLink'
+						'hrefPrefix': '',
+						'html/0/data-rt': '{"sHref":"foo bar"}',
+						'html/0/href': 'Foo_bar',
+						'html/0/rel': 'mw:WikiLink'
 					}
 				} ]
 			],
@@ -1083,16 +1070,13 @@ ve.dm.example.domToDataCases = {
 				'r',
 				[ {
 					'type': 'link/MWinternal',
-					'data': {
+					'attributes': {
 						'title': 'Foo bar',
 						'origTitle': 'Foo_bar',
-						'hrefPrefix': ''
-					},
-					'htmlTagName': 'a',
-					'htmlAttributes': {
-						'data-rt': '{"sHref":"foo bar"}',
-						'href': 'Foo_bar',
-						'rel': 'mw:WikiLink'
+						'hrefPrefix': '',
+						'html/0/data-rt': '{"sHref":"foo bar"}',
+						'html/0/href': 'Foo_bar',
+						'html/0/rel': 'mw:WikiLink'
 					}
 				} ]
 			],
@@ -1110,15 +1094,12 @@ ve.dm.example.domToDataCases = {
 				'F',
 				[ {
 					'type': 'link/MWinternal',
-					'data': {
+					'attributes': {
 						'title': 'Foo/Bar',
 						'origTitle': 'Foo/Bar',
-						'hrefPrefix': './../../../'
-					},
-					'htmlTagName': 'a',
-					'htmlAttributes': {
-						'href': './../../../Foo/Bar',
-						'rel': 'mw:WikiLink'
+						'hrefPrefix': './../../../',
+						'html/0/href': './../../../Foo/Bar',
+						'html/0/rel': 'mw:WikiLink'
 					}
 				} ]
 			],
@@ -1126,15 +1107,12 @@ ve.dm.example.domToDataCases = {
 				'o',
 				[ {
 					'type': 'link/MWinternal',
-					'data': {
+					'attributes': {
 						'title': 'Foo/Bar',
 						'origTitle': 'Foo/Bar',
-						'hrefPrefix': './../../../'
-					},
-					'htmlTagName': 'a',
-					'htmlAttributes': {
-						'href': './../../../Foo/Bar',
-						'rel': 'mw:WikiLink'
+						'hrefPrefix': './../../../',
+						'html/0/href': './../../../Foo/Bar',
+						'html/0/rel': 'mw:WikiLink'
 					}
 				} ]
 			],
@@ -1142,15 +1120,12 @@ ve.dm.example.domToDataCases = {
 				'o',
 				[ {
 					'type': 'link/MWinternal',
-					'data': {
+					'attributes': {
 						'title': 'Foo/Bar',
 						'origTitle': 'Foo/Bar',
-						'hrefPrefix': './../../../'
-					},
-					'htmlTagName': 'a',
-					'htmlAttributes': {
-						'href': './../../../Foo/Bar',
-						'rel': 'mw:WikiLink'
+						'hrefPrefix': './../../../',
+						'html/0/href': './../../../Foo/Bar',
+						'html/0/rel': 'mw:WikiLink'
 					}
 				} ]
 			],
@@ -1165,13 +1140,11 @@ ve.dm.example.domToDataCases = {
 				'[',
 				[ {
 					'type': 'link/MWexternal',
-					'data': {
-						'href': 'http://www.mediawiki.org/'
-					},
-					'htmlTagName': 'a',
-					'htmlAttributes': {
+					'attributes': {
 						'href': 'http://www.mediawiki.org/',
-						'rel': 'mw:ExtLink/Numbered'
+						'rel': 'mw:ExtLink/Numbered',
+						'html/0/href': 'http://www.mediawiki.org/',
+						'html/0/rel': 'mw:ExtLink/Numbered'
 					}
 				} ]
 			],
@@ -1179,13 +1152,11 @@ ve.dm.example.domToDataCases = {
 				'1',
 				[ {
 					'type': 'link/MWexternal',
-					'data': {
-						'href': 'http://www.mediawiki.org/'
-					},
-					'htmlTagName': 'a',
-					'htmlAttributes': {
+					'attributes': {
 						'href': 'http://www.mediawiki.org/',
-						'rel': 'mw:ExtLink/Numbered'
+						'rel': 'mw:ExtLink/Numbered',
+						'html/0/href': 'http://www.mediawiki.org/',
+						'html/0/rel': 'mw:ExtLink/Numbered'
 					}
 				} ]
 			],
@@ -1193,13 +1164,11 @@ ve.dm.example.domToDataCases = {
 				']',
 				[ {
 					'type': 'link/MWexternal',
-					'data': {
-						'href': 'http://www.mediawiki.org/'
-					},
-					'htmlTagName': 'a',
-					'htmlAttributes': {
+					'attributes': {
 						'href': 'http://www.mediawiki.org/',
-						'rel': 'mw:ExtLink/Numbered'
+						'rel': 'mw:ExtLink/Numbered',
+						'html/0/href': 'http://www.mediawiki.org/',
+						'html/0/rel': 'mw:ExtLink/Numbered'
 					}
 				} ]
 			],
@@ -1214,13 +1183,11 @@ ve.dm.example.domToDataCases = {
 				'm',
 				[ {
 					'type': 'link/MWexternal',
-					'data': {
-						'href': 'http://www.mediawiki.org/'
-					},
-					'htmlTagName': 'a',
-					'htmlAttributes': {
+					'attributes': {
 						'href': 'http://www.mediawiki.org/',
-						'rel': 'mw:ExtLink/URL'
+						'rel': 'mw:ExtLink/URL',
+						'html/0/href': 'http://www.mediawiki.org/',
+						'html/0/rel': 'mw:ExtLink/URL'
 					}
 				} ]
 			],
@@ -1228,13 +1195,11 @@ ve.dm.example.domToDataCases = {
 				'w',
 				[ {
 					'type': 'link/MWexternal',
-					'data': {
-						'href': 'http://www.mediawiki.org/'
-					},
-					'htmlTagName': 'a',
-					'htmlAttributes': {
+					'attributes': {
 						'href': 'http://www.mediawiki.org/',
-						'rel': 'mw:ExtLink/URL'
+						'rel': 'mw:ExtLink/URL',
+						'html/0/href': 'http://www.mediawiki.org/',
+						'html/0/rel': 'mw:ExtLink/URL'
 					}
 				} ]
 			],
@@ -1634,15 +1599,12 @@ ve.dm.example.domToDataCases = {
 					ve.dm.example.bold,
 					{
 						'type': 'link/MWinternal',
-						'data': {
+						'attributes': {
 							'hrefPrefix': '',
 							'origTitle': 'Foo',
-							'title': 'Foo'
-						},
-						'htmlTagName': 'a',
-						'htmlAttributes': {
-							'href': 'Foo',
-							'rel': 'mw:WikiLink'
+							'title': 'Foo',
+							'html/0/href': 'Foo',
+							'html/0/rel': 'mw:WikiLink'
 						}
 					},
 					ve.dm.example.italic
@@ -1654,15 +1616,12 @@ ve.dm.example.domToDataCases = {
 					ve.dm.example.bold,
 					{
 						'type': 'link/MWinternal',
-						'data': {
+						'attributes': {
 							'hrefPrefix': '',
 							'origTitle': 'Foo',
-							'title': 'Foo'
-						},
-						'htmlTagName': 'a',
-						'htmlAttributes': {
-							'href': 'Foo',
-							'rel': 'mw:WikiLink'
+							'title': 'Foo',
+							'html/0/href': 'Foo',
+							'html/0/rel': 'mw:WikiLink'
 						}
 					},
 					ve.dm.example.italic
@@ -1674,15 +1633,12 @@ ve.dm.example.domToDataCases = {
 					ve.dm.example.bold,
 					{
 						'type': 'link/MWinternal',
-						'data': {
+						'attributes': {
 							'hrefPrefix': '',
 							'origTitle': 'Foo',
-							'title': 'Foo'
-						},
-						'htmlTagName': 'a',
-						'htmlAttributes': {
-							'href': 'Foo',
-							'rel': 'mw:WikiLink'
+							'title': 'Foo',
+							'html/0/href': 'Foo',
+							'html/0/rel': 'mw:WikiLink'
 						}
 					},
 					ve.dm.example.italic
@@ -1700,15 +1656,12 @@ ve.dm.example.domToDataCases = {
 				[
 					{
 						'type': 'link/MWinternal',
-						'data': {
+						'attributes': {
 							'hrefPrefix': '',
 							'origTitle': 'Foo',
-							'title': 'Foo'
-						},
-						'htmlTagName': 'a',
-						'htmlAttributes': {
-							'href': 'Foo',
-							'rel': 'mw:WikiLink'
+							'title': 'Foo',
+							'html/0/href': 'Foo',
+							'html/0/rel': 'mw:WikiLink'
 						}
 					}
 				]
@@ -1718,15 +1671,12 @@ ve.dm.example.domToDataCases = {
 				[
 					{
 						'type': 'link/MWinternal',
-						'data': {
+						'attributes': {
 							'hrefPrefix': '',
 							'origTitle': 'Foo',
-							'title': 'Foo'
-						},
-						'htmlTagName': 'a',
-						'htmlAttributes': {
-							'href': 'Foo',
-							'rel': 'mw:WikiLink'
+							'title': 'Foo',
+							'html/0/href': 'Foo',
+							'html/0/rel': 'mw:WikiLink'
 						}
 					},
 					ve.dm.example.bold
@@ -1737,15 +1687,12 @@ ve.dm.example.domToDataCases = {
 				[
 					{
 						'type': 'link/MWinternal',
-						'data': {
+						'attributes': {
 							'hrefPrefix': '',
 							'origTitle': 'Foo',
-							'title': 'Foo'
-						},
-						'htmlTagName': 'a',
-						'htmlAttributes': {
-							'href': 'Foo',
-							'rel': 'mw:WikiLink'
+							'title': 'Foo',
+							'html/0/href': 'Foo',
+							'html/0/rel': 'mw:WikiLink'
 						}
 					},
 					ve.dm.example.bold,
@@ -1757,15 +1704,12 @@ ve.dm.example.domToDataCases = {
 				[
 					{
 						'type': 'link/MWinternal',
-						'data': {
+						'attributes': {
 							'hrefPrefix': '',
 							'origTitle': 'Foo',
-							'title': 'Foo'
-						},
-						'htmlTagName': 'a',
-						'htmlAttributes': {
-							'href': 'Foo',
-							'rel': 'mw:WikiLink'
+							'title': 'Foo',
+							'html/0/href': 'Foo',
+							'html/0/rel': 'mw:WikiLink'
 						}
 					},
 					ve.dm.example.italic

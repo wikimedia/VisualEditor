@@ -257,7 +257,12 @@ ve.ui.MWLinkTargetInputWidget.prototype.getInternalLinkAnnotationFromTitle = fun
 			target = ':' + target;
 		}
 	} catch ( e ) { }
-	return new ve.dm.MWInternalLinkAnnotation( { 'title': target } );
+	return new ve.dm.MWInternalLinkAnnotation( {
+		'type': 'link/MWinternal',
+		'attributes': {
+			'title': target
+		}
+	} );
 };
 
 /**
@@ -268,7 +273,12 @@ ve.ui.MWLinkTargetInputWidget.prototype.getInternalLinkAnnotationFromTitle = fun
  * @returns {ve.dm.MWExternalLinkAnnotation}
  */
 ve.ui.MWLinkTargetInputWidget.prototype.getExternalLinkAnnotationFromUrl = function ( target ) {
-	return new ve.dm.MWExternalLinkAnnotation( { 'href': target } );
+	return new ve.dm.MWExternalLinkAnnotation( {
+		'type': 'link/MWexternal',
+		'attributes': {
+			'href': target
+		}
+	} );
 };
 
 /**
@@ -280,9 +290,9 @@ ve.ui.MWLinkTargetInputWidget.prototype.getExternalLinkAnnotationFromUrl = funct
  */
 ve.ui.MWLinkTargetInputWidget.prototype.getTargetFromAnnotation = function ( annotation ) {
 	if ( annotation instanceof ve.dm.MWExternalLinkAnnotation ) {
-		return annotation.data.href;
+		return annotation.getAttribute( 'href' );
 	} else if ( annotation instanceof ve.dm.MWInternalLinkAnnotation ) {
-		return annotation.data.title;
+		return annotation.getAttribute( 'title' );
 	}
 	return '';
 };

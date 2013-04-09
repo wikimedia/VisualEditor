@@ -45,7 +45,12 @@ ve.ui.LinkTargetInputWidget.prototype.setValue = function ( value ) {
 	if ( value === '' ) {
 		this.annotation = null;
 	} else {
-		this.setAnnotation( new ve.dm.LinkAnnotation( { 'href': value } ) );
+		this.setAnnotation( new ve.dm.LinkAnnotation( {
+			'type': 'link',
+			'attributes': {
+				'href': value
+			}
+		} ) );
 	}
 
 	// Call parent method
@@ -92,7 +97,7 @@ ve.ui.LinkTargetInputWidget.prototype.getAnnotation = function () {
  */
 ve.ui.LinkTargetInputWidget.prototype.getTargetFromAnnotation = function ( annotation ) {
 	if ( annotation instanceof ve.dm.LinkAnnotation ) {
-		return annotation.data.href;
+		return annotation.getAttribute( 'href' );
 	}
 	return '';
 };

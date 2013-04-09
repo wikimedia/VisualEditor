@@ -13,16 +13,16 @@
  *     <a rel="mw:ExtLink/Numbered">
  *     <a rel="mw:ExtLink/URL">
  *
- * Each example is semantically slightly different, but don't need special treatment (yet).
+ * Each example is semantically slightly different, but they don't need special treatment (yet).
  *
  * @class
  * @extends ve.dm.LinkAnnotation
  * @constructor
- * @param {HTMLElement|Object} element
+ * @param {Object} linmodAnnotation
  */
-ve.dm.MWExternalLinkAnnotation = function VeDmMWExternalLinkAnnotation( element ) {
+ve.dm.MWExternalLinkAnnotation = function VeDmMWExternalLinkAnnotation( linmodAnnotation ) {
 	// Parent constructor
-	ve.dm.LinkAnnotation.call( this, element );
+	ve.dm.LinkAnnotation.call( this, linmodAnnotation );
 };
 
 /* Inheritance */
@@ -47,22 +47,17 @@ ve.dm.MWExternalLinkAnnotation.static.matchRdfaTypes = [
 	'mw:ExtLink', 'mw:ExtLink/Numbered', 'mw:ExtLink/URL'
 ];
 
-/**
- * Convert to an object with HTML element information.
- *
- * @method
- * @returns {Object} HTML element information, including tag and attributes properties
- */
-ve.dm.MWExternalLinkAnnotation.prototype.toHTML = function () {
-	var parentResult = ve.dm.LinkAnnotation.prototype.toHTML.call( this );
-	parentResult.attributes.rel = parentResult.attributes.rel || 'mw:ExtLink';
+ve.dm.MWExternalLinkAnnotation.static.toDataElement = function ( domElements ) {
+	var parentResult = ve.dm.LinkAnnotation.static.toDataElement.apply( this, arguments );
+	parentResult.type = 'link/MWexternal';
+	parentResult.attributes.rel = domElements[0].getAttribute( 'rel' );
 	return parentResult;
 };
 
-ve.dm.MWExternalLinkAnnotation.prototype.renderHTML = function () {
-	var result = this.toHTML();
-	result.attributes.title = this.data.href;
-	return result;
+ve.dm.MWExternalLinkAnnotation.static.toDomElements = function ( dataElement ) {
+	var parentResult = ve.dm.LinkAnnotation.static.toDomElements( dataElement );
+	parentResult[0].setAttribute( 'rel', dataElement.attributes.rel || 'mw:ExtLink' );
+	return parentResult;
 };
 
 /* Registration */

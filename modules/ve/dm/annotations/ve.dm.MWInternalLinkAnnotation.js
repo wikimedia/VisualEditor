@@ -14,11 +14,11 @@
  * @class
  * @extends ve.dm.LinkAnnotation
  * @constructor
- * @param {HTMLElement|Object} element
+ * @param {HTMLElement|Object} linmodAnnotation
  */
-ve.dm.MWInternalLinkAnnotation = function VeDmMWInternalLinkAnnotation( element ) {
+ve.dm.MWInternalLinkAnnotation = function VeDmMWInternalLinkAnnotation( linmodAnnotation ) {
 	// Parent constructor
-	ve.dm.LinkAnnotation.call( this, element );
+	ve.dm.LinkAnnotation.call( this, linmodAnnotation );
 };
 
 /* Inheritance */
@@ -41,60 +41,40 @@ ve.dm.MWInternalLinkAnnotation.static.name = 'link/MWinternal';
  */
 ve.dm.MWInternalLinkAnnotation.static.matchRdfaTypes = ['mw:WikiLink'];
 
-/* Methods */
-
-/**
- * Get annotation data, especially the href of the link.
- *
- * @method
- * @param {HTMLElement} element
- * @returns {Object} Annotation data, containing 'hrefPrefix' and 'title' properties
- */
-ve.dm.MWInternalLinkAnnotation.prototype.getAnnotationData = function ( element ) {
+ve.dm.MWInternalLinkAnnotation.static.toDataElement = function ( domElements ) {
 	// Get title from href
 	// The href is simply the title, unless we're dealing with a page that has slashes in its name
 	// in which case it's preceded by one or more instances of "./" or "../", so strip those
 	/*jshint regexp:false */
-	var matches = element.getAttribute( 'href' ).match( /^((?:\.\.?\/)*)(.*)$/ );
+	var matches = domElements[0].getAttribute( 'href' ).match( /^((?:\.\.?\/)*)(.*)$/ );
 	return {
-		// Store the ./ and ../ prefixes so we can restore them on the way out
-		'hrefPrefix': matches[1],
-		'title': decodeURIComponent( matches[2] ).replace( /_/g, ' ' ),
-		'origTitle': matches[2]
+		'type': 'link/MWinternal',
+		'attributes': {
+			'hrefPrefix': matches[1],
+			'title': decodeURIComponent( matches[2] ).replace( /_/g, ' ' ),
+			'origTitle': matches[2]
+		}
 	};
 };
 
-/**
- * Convert to an object with HTML element information.
- *
- * @method
- * @returns {Object} HTML element information, including tag and attributes properties
- */
-ve.dm.MWInternalLinkAnnotation.prototype.toHTML = function () {
+ve.dm.MWInternalLinkAnnotation.static.toDomElements = function ( dataElement ) {
 	var href,
-		parentResult = ve.dm.LinkAnnotation.prototype.toHTML.call( this );
-	if (
-		this.data.origTitle &&
-		decodeURIComponent( this.data.origTitle ).replace( /_/g, ' ' ) === this.data.title
-	) {
+		domElement = document.createElement( 'a' ),
+		title = dataElement.attributes.title,
+		origTitle = dataElement.attributes.origTitle;
+	if ( origTitle && decodeURIComponent( origTitle ).replace( /_/g, ' ' ) === title ) {
 		// Restore href from origTitle
-		href = this.data.origTitle;
+		href = origTitle;
 		// Only use hrefPrefix if restoring from origTitle
-		if ( this.data.hrefPrefix ) {
-			href = this.data.hrefPrefix + href;
+		if ( dataElement.attributes.hrefPrefix ) {
+			href = dataElement.attributes.hrefPrefix + href;
 		}
 	} else {
-		href = encodeURIComponent( this.data.title );
+		href = encodeURIComponent( title );
 	}
-	parentResult.attributes.href = href;
-	parentResult.attributes.rel = 'mw:WikiLink';
-	return parentResult;
-};
-
-ve.dm.MWInternalLinkAnnotation.prototype.renderHTML = function () {
-	var result = this.toHTML();
-	result.attributes.title = this.data.title;
-	return result;
+	domElement.setAttribute( 'href', href );
+	domElement.setAttribute( 'rel', 'mw:WikiLink' );
+	return [ domElement ];
 };
 
 /* Registration */

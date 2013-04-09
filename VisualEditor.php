@@ -286,8 +286,10 @@ $wgResourceModules += array(
 			// ce
 			've/ce/ve.ce.js',
 			've/ce/ve.ce.DomRange.js',
+			've/ce/ve.ce.AnnotationFactory.js',
 			've/ce/ve.ce.NodeFactory.js',
 			've/ce/ve.ce.Document.js',
+			've/ce/ve.ce.Annotation.js',
 			've/ce/ve.ce.Node.js',
 			've/ce/ve.ce.BranchNode.js',
 			've/ce/ve.ce.ContentBranchNode.js',
@@ -318,6 +320,11 @@ $wgResourceModules += array(
 			've/ce/nodes/ve.ce.MWHeadingNode.js',
 			've/ce/nodes/ve.ce.MWPreformattedNode.js',
 			've/ce/nodes/ve.ce.MWImageNode.js',
+
+			've/ce/annotations/ve.ce.LinkAnnotation.js',
+			've/ce/annotations/ve.ce.MWExternalLinkAnnotation.js',
+			've/ce/annotations/ve.ce.MWInternalLinkAnnotation.js',
+			've/ce/annotations/ve.ce.TextStyleAnnotation.js',
 
 			// ui
 			've/ui/ve.ui.js',
