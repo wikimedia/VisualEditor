@@ -46,7 +46,7 @@ ve.ui.MetaDialog.prototype.initialize = function () {
 	this.editorPanel = new ve.ui.StackPanelLayout( { '$$': this.$$ } );
 	this.editorPanels = {
 		'categories': new ve.ui.EditorPanelLayout( {
-			'$$': this.$$, 'icon': 'categories', 'label': 'Categories'
+			'$$': this.$$, 'icon': 'tag', 'label': 'Categories'
 		} ),
 		'languages': new ve.ui.EditorPanelLayout( {
 			'$$': this.$$, 'icon': 'language', 'label': 'Languages'
@@ -62,7 +62,7 @@ ve.ui.MetaDialog.prototype.initialize = function () {
 	this.outlineWidget = new ve.ui.OutlineWidget( { '$$': this.$$ } );
 	this.outlineWidget.addItems( [
 		new ve.ui.OutlineItemWidget(
-			'categories', { '$$': this.$$, 'icon': 'categories', 'label': 'Categories' }
+			'categories', { '$$': this.$$, 'icon': 'tag', 'label': 'Categories' }
 		),
 		new ve.ui.OutlineItemWidget(
 			'languages', { '$$': this.$$, 'icon': 'language', 'label': 'Languages' }
