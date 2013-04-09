@@ -9,17 +9,17 @@
  * DataModel annotation factory.
  *
  * @class
- * @extends ve.Factory
+ * @extends ve.NamedClassFactory
  * @constructor
  */
 ve.dm.AnnotationFactory = function VeDmAnnotationFactory() {
 	// Parent constructor
-	ve.Factory.call( this );
+	ve.NamedClassFactory.call( this );
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.dm.AnnotationFactory, ve.Factory );
+ve.inheritClass( ve.dm.AnnotationFactory, ve.NamedClassFactory );
 
 /* Initialization */
 
