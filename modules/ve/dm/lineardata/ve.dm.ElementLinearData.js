@@ -466,11 +466,11 @@ ve.dm.ElementLinearData.prototype.getAnnotationsFromRange = function ( range, al
 ve.dm.ElementLinearData.prototype.trimOuterSpaceFromRange = function ( range ) {
 	var start = range.start,
 		end = range.end;
-	while ( this.getCharacterData( start ) === ' ' ) {
-		start++;
-	}
 	while ( this.getCharacterData( end - 1 ) === ' ' ) {
 		end--;
+	}
+	while ( start < end && this.getCharacterData( start ) === ' ' ) {
+		start++;
 	}
 	return range.to < range.end ? new ve.Range( end, start ) : new ve.Range( start, end );
 };
