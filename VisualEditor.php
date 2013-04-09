@@ -290,6 +290,7 @@ $wgResourceModules += array(
 			've/ce/ve.ce.AnnotationFactory.js',
 			've/ce/ve.ce.NodeFactory.js',
 			've/ce/ve.ce.Document.js',
+			've/ce/ve.ce.View.js',
 			've/ce/ve.ce.Annotation.js',
 			've/ce/ve.ce.Node.js',
 			've/ce/ve.ce.BranchNode.js',

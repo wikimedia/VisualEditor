@@ -55,7 +55,7 @@ ve.ce.getDomText = function ( element ) {
 			} else if ( $element.hasClass( 've-ce-leafNode' ) ) {
 				// For leaf nodes, don't return the content, but return
 				// the right amount of characters so the offsets match up
-				numChars = $element.data( 'node' ).getOuterLength();
+				numChars = $element.data( 'view' ).getOuterLength();
 				return new Array( numChars + 1 ).join( '\u2603' );
 			} else {
 				// Traverse its children
@@ -133,7 +133,7 @@ ve.ce.getOffsetFromTextNode = function ( domNode, domOffset ) {
 	$node = $( domNode ).closest(
 		'.ve-ce-branchNode, .ve-ce-leafNode'
 	);
-	nodeModel = $node.data( 'node' ).getModel();
+	nodeModel = $node.data( 'view' ).getModel();
 
 	// IE sometimes puts the cursor in a text node inside ce="false". BAD!
 	if ( $node[0].contentEditable === 'false' ) {
@@ -171,7 +171,7 @@ ve.ce.getOffsetFromTextNode = function ( domNode, domOffset ) {
 			} else if ( $item.hasClass( 've-ce-leafNode' ) ) {
 				offset += 2;
 			} else if ( $item.hasClass( 've-ce-branchNode' ) ) {
-				offset += $item.data( 'node' ).getOuterLength();
+				offset += $item.data( 'view' ).getOuterLength();
 			} else {
 				stack.push( [$item.contents(), 0 ] );
 				current[1]++;
@@ -200,25 +200,25 @@ ve.ce.getOffsetFromElementNode = function ( domNode, domOffset, addOuterLength )
 
 	if ( $domNode.hasClass( 've-ce-slug' ) ) {
 		if ( $domNode.prev().length ) {
-			nodeModel = $domNode.prev().data( 'node' ).getModel();
+			nodeModel = $domNode.prev().data( 'view' ).getModel();
 			return nodeModel.getOffset() + nodeModel.getOuterLength();
 		}
 		if ( $domNode.next().length ) {
-			nodeModel = $domNode.next().data( 'node' ).getModel();
+			nodeModel = $domNode.next().data( 'view' ).getModel();
 			return nodeModel.getOffset();
 		}
 	}
 
 	// IE sometimes puts the cursor in a text node inside ce="false". BAD!
 	if ( domNode.contentEditable === 'false' ) {
-		nodeModel = $domNode.data( 'node' ).getModel();
+		nodeModel = $domNode.data( 'view' ).getModel();
 		return nodeModel.getOffset() + nodeModel.getOuterLength();
 	}
 
 	if ( domOffset === 0 ) {
-		node = $domNode.data( 'node' );
+		node = $domNode.data( 'view' );
 		if ( node ) {
-			nodeModel = $domNode.data( 'node' ).getModel();
+			nodeModel = $domNode.data( 'view' ).getModel();
 			if ( addOuterLength === true ) {
 				return nodeModel.getOffset() + nodeModel.getOuterLength();
 			} else {
@@ -249,10 +249,10 @@ ve.ce.getOffsetFromElementNode = function ( domNode, domOffset, addOuterLength )
 ve.ce.getOffsetOfSlug  = function ( $node ) {
 	var model;
 	if ( $node.index() === 0 ) {
-		model = $node.parent().data( 'node' ).getModel();
+		model = $node.parent().data( 'view' ).getModel();
 		return model.getOffset() + ( model.isWrapped() ? 1 : 0 );
 	} else if ( $node.prev().length ) {
-		model = $node.prev().data( 'node' ).getModel();
+		model = $node.prev().data( 'view' ).getModel();
 		return model.getOffset() + model.getOuterLength();
 	} else {
 		throw new Error( 'Incorrect slug location' );

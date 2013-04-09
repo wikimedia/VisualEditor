@@ -116,6 +116,7 @@
 		<script src="../../ve/ce/ve.ce.AnnotationFactory.js"></script>
 		<script src="../../ve/ce/ve.ce.NodeFactory.js"></script>
 		<script src="../../ve/ce/ve.ce.Document.js"></script>
+		<script src="../../ve/ce/ve.ce.View.js"></script>
 		<script src="../../ve/ce/ve.ce.Annotation.js"></script>
 		<script src="../../ve/ce/ve.ce.Node.js"></script>
 		<script src="../../ve/ce/ve.ce.BranchNode.js"></script>

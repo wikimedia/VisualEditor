@@ -172,6 +172,7 @@ $html = file_get_contents( $page );
 		<script src="../../modules/ve/ce/ve.ce.AnnotationFactory.js"></script>
 		<script src="../../modules/ve/ce/ve.ce.NodeFactory.js"></script>
 		<script src="../../modules/ve/ce/ve.ce.Document.js"></script>
+		<script src="../../modules/ve/ce/ve.ce.View.js"></script>
 		<script src="../../modules/ve/ce/ve.ce.Annotation.js"></script>
 		<script src="../../modules/ve/ce/ve.ce.Node.js"></script>
 		<script src="../../modules/ve/ce/ve.ce.BranchNode.js"></script>
@@ -424,8 +425,8 @@ $html = file_get_contents( $page );
 			validateButton.on( 'click', function () {
 				var failed = false;
 				$('.ve-ce-branchNode').each( function ( index, element ) {
-					var	$element = $( element ),
-						view = $element.data( 'node' );
+					var $element = $( element ),
+						view = $element.data( 'view' );
 					if ( view.canContainContent() ) {
 						var nodeRange = view.model.getRange();
 						var textModel = ve.instances[0].view.model.getDocument().getText( nodeRange );

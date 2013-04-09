@@ -157,7 +157,7 @@ ve.ce.SurfaceObserver.prototype.poll = function ( async ) {
 		this.rangyRange = rangyRange;
 		$branch = $( rangyRange.anchorNode ).closest( '.ve-ce-branchNode' );
 		if ( $branch.length ) {
-			node = $branch.data( 'node' );
+			node = $branch.data( 'view' );
 			if ( node.canHaveChildrenNotContent() ) {
 				node = null;
 			} else {

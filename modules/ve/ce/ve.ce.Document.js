@@ -216,7 +216,7 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 					};
 				}
 			} else if ( $item.is( '.ve-ce-branchNode, .ve-ce-leafNode' ) ) {
-				length = $item.data( 'node' ).model.getOuterLength();
+				length = $item.data( 'view' ).model.getOuterLength();
 				if ( offset >= startOffset && offset < startOffset + length ) {
 					stack.push( [$item.contents(), 0] );
 					current[1]++;

@@ -129,7 +129,7 @@ ve.ce.BranchNode.getDomWrapper = function ( model, key ) {
  *
  * This method uses {getDomWrapperType} to determine the proper element type to use.
  *
- * WARNING: The contents, .data( 'node' ) and any classes the wrapper already has will be moved to
+ * WARNING: The contents, .data( 'view' ) and any classes the wrapper already has will be moved to
  * the new wrapper, but other attributes and any other information added using $.data() will be
  * lost upon updating the wrapper. To retain information added to the wrapper, subscribe to the
  * 'rewrap' event and copy information from the {$old} wrapper the {$new} wrapper.
@@ -146,8 +146,8 @@ ve.ce.BranchNode.prototype.updateDomWrapper = function ( key ) {
 		$element = $( document.createElement( type ) );
 		// Copy classes
 		$element.attr( 'class', this.$.attr( 'class' ) );
-		// Copy .data( 'node' )
-		$element.data( 'node', this.$.data( 'node' ) );
+		// Copy .data( 'view' )
+		$element.data( 'view', this.$.data( 'view' ) );
 		// Move contents
 		$element.append( this.$.contents() );
 		// Emit an event that can be handled to copy other things over if needed
