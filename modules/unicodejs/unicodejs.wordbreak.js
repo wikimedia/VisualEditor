@@ -32,15 +32,55 @@
 		return null;
 	}
 
+	/**
+	 * Find the next word break offset.
+	 * @param {unicodeJS.TextString} string TextString
+	 * @param {number} pos Character position
+	 * @param {boolean} [onlyAlphaNumeric=false] When set, ignores a break if the previous character is not alphaNumeric
+	 * @returns {number} Returns the next offset which is a word break
+	 */
+	wordbreak.nextBreakOffset = function( string, pos, onlyAlphaNumeric ) {
+		return wordbreak.moveBreakOffset( 1, string, pos, onlyAlphaNumeric );
+	};
 
 	/**
-	 * Evaluates if the specified position within some text is a word boundary.
-	 * @param {string} text Text
+	 * Find the previous word break offset.
+	 * @param {unicodeJS.TextString} string TextString
 	 * @param {number} pos Character position
-	 * @returns {boolean} Is the position a word boundary
+	 * @param {boolean} [onlyAlphaNumeric=false] When set, ignores a break if the previous character is not alphaNumeric
+	 * @returns {number} Returns the previous offset which is a word break
 	 */
-	wordbreak.isBreakInText = function ( text, pos ) {
-		return unicodeJS.wordbreak.isBreakInTextString( new unicodeJS.TextString( text ), pos );
+	wordbreak.prevBreakOffset = function( string, pos, onlyAlphaNumeric ) {
+		return wordbreak.moveBreakOffset( -1, string, pos, onlyAlphaNumeric );
+	};
+
+	/**
+	 * Find the next word break offset in a specified direction.
+	 * @param {number} direction Direction to search in, should be plus or minus one
+	 * @param {unicodeJS.TextString} string TextString
+	 * @param {number} pos Character position
+	 * @param {boolean} [onlyAlphaNumeric=false] When set, ignores a break if the previous character is not alphaNumeric
+	 * @returns {number} Returns the previous offset which is word break
+	 */
+	wordbreak.moveBreakOffset = function( direction, string, pos, onlyAlphaNumeric ) {
+		var lastGroup, i = pos,
+			// when moving backwards, use the character to the left of the cursor
+			readCharOffset = direction > 0 ? 0 : -1;
+		// Search backwards for the previous break point
+		while ( string.read( i + readCharOffset ) !== null ) {
+			i += direction;
+			if ( unicodeJS.wordbreak.isBreak( string, i ) ) {
+				// Check previous character was alpha-numeric if required
+				if ( onlyAlphaNumeric ) {
+					lastGroup = getGroup( string.read( i - direction + readCharOffset ) );
+					if( lastGroup !== 'ALetter' && lastGroup !== 'Numeric' && lastGroup !== 'Katakana' ) {
+						continue;
+					}
+				}
+				break;
+			}
+		}
+		return i;
 	};
 
 	/**
@@ -49,7 +89,7 @@
 	 * @param {number} pos Character position
 	 * @returns {boolean} Is the position a word boundary
 	 */
-	wordbreak.isBreakInTextString = function ( string, pos ) {
+	wordbreak.isBreak = function ( string, pos ) {
 		// Break at the start and end of text.
 		// WB1: sot ÷
 		// WB2: ÷ eot
