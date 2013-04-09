@@ -43,10 +43,11 @@ ve.Range.newFromTranslatedRange = function ( range, distance ) {
  *
  * @method
  * @param {Array} ranges Array of ve.Range objects (at least one)
+ * @param {boolean} backwards Return a backwards range
  * @returns {ve.Range} Range that spans all of the given ranges
  */
-ve.Range.newCoveringRange = function ( ranges ) {
-	var minStart, maxEnd, i;
+ve.Range.newCoveringRange = function ( ranges, backwards ) {
+	var minStart, maxEnd, i, range;
 	if ( !ranges || ranges.length === 0 ) {
 		throw new Error( 'newCoveringRange() requires at least one range' );
 	}
@@ -60,7 +61,12 @@ ve.Range.newCoveringRange = function ( ranges ) {
 			maxEnd = ranges[i].end;
 		}
 	}
-	return new ve.Range( minStart, maxEnd );
+	if ( backwards ) {
+		range = new ve.Range( maxEnd, minStart );
+	} else {
+		range = new ve.Range( minStart, maxEnd );
+	}
+	return range;
 };
 
 /* Methods */

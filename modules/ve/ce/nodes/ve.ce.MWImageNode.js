@@ -59,8 +59,20 @@ ve.ce.MWImageNode.prototype.onUpdate = function () {
  * @param {jQuery.Event} e Click event
  */
 ve.ce.MWImageNode.prototype.onClick = function ( e ) {
-	e.preventDefault();
-	return false;
+	var range,
+	    surfaceModel = this.getRoot().getSurface().getModel(),
+	    selection = surfaceModel.getSelection();
+
+	range = new ve.Range(
+		this.model.getOffset(),
+		this.model.getOffset() + this.model.getOuterLength()
+	);
+
+	if ( e.shiftKey ) {
+		range = ve.Range.newCoveringRange( [ selection, range ], selection.from > range.from );
+	}
+
+	this.getRoot().getSurface().getModel().change( null, range );
 };
 
 /**
