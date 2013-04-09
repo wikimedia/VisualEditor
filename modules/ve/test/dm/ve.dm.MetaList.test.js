@@ -135,7 +135,7 @@ QUnit.test( 'onTransact', function ( assert ) {
 } );
 
 QUnit.test( 'findItem', function ( assert ) {
-	var i, j, g, item, element, group, groupDesc,
+	var i, j, g, item, element, expectedElement, group, groupDesc, items, next,
 		groups = [ null ],
 		doc = ve.dm.example.createExampleDocument( 'withMeta' ),
 		surface = new ve.dm.Surface( doc ),
@@ -154,15 +154,26 @@ QUnit.test( 'findItem', function ( assert ) {
 
 	for ( g = 0; g < groups.length; g++ ) {
 		groupDesc = groups[g] === null ? 'all items' : groups[g];
+		items = groups[g] === null ? list.items : list.groups[groups[g]];
+		next = 0;
 		for ( i = 0; i < metadata.getLength(); i++ ) {
 			for ( j = 0; j < metadata.getDataLength( i ); j++ ) {
 				item = list.findItem( i, j, groups[g] );
-				element = item === null ? null : list.items[item].getElement();
-				assert.strictEqual( element, metadata.getData( i, j ), groupDesc + ' (' + i + ', ' + j + ')' );
-				assert.strictEqual( list.findItem( i, j, groups[g], true ), item, groupDesc + ' (forInsertion) (' + i + ', ' + j + ')' );
+				next = item !== null ? item + 1 : next;
+				element = item === null ? null : items[item].getElement();
+				expectedElement = metadata.getData( i, j );
+				if (
+					groups[g] !== null && expectedElement &&
+					ve.dm.metaItemFactory.getGroup( expectedElement.type ) !== groups[g]
+				) {
+					expectedElement = null;
+				}
+				assert.strictEqual( element, expectedElement, groupDesc + ' (' + i + ', ' + j + ')' );
+				assert.strictEqual( list.findItem( i, j, groups[g], true ), item !== null ? item : next,
+					groupDesc + ' (forInsertion) (' + i + ', ' + j + ')' );
 			}
 			assert.strictEqual( list.findItem( i, j, groups[g] ), null, groupDesc + ' (' + i + ', ' + j + ')' );
-			assert.strictEqual( list.findItem( i, j, groups[g], true ), item + 1, groupDesc + ' (forInsertion) (' + i + ', ' + j + ')' );
+			assert.strictEqual( list.findItem( i, j, groups[g], true ), next, groupDesc + ' (forInsertion) (' + i + ', ' + j + ')' );
 		}
 	}
 } );
