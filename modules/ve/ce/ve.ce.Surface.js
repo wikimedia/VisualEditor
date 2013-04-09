@@ -277,30 +277,18 @@ ve.ce.Surface.prototype.onDocumentDragoverDrop = function () {
  * @emits selectionStart
  */
 ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
-	var selection, prevNode;
-
 	// Ignore keydowns while in IME mode but do not preventDefault them.
 	if ( this.inIme === true ) {
 		return;
 	}
-	if ( $.browser.msie === true ) {
-		// Aliens/Entities
-		selection = this.model.getSelection();
-		if ( selection.start !== 0 && selection.isCollapsed() ) {
-			prevNode = this.model.getDocument().getDocumentNode().getNodeFromOffset( selection.start - 1 );
-			// TODO: Check for generated content
-			if ( prevNode.type === 'MWimage' || prevNode.type === 'alienInline' ) {
-				this.model.change( null, new ve.Range( selection.start ) );
-			}
-		}
 
-		// IME
-		if ( e.which === 229 ) {
-			this.inIme = true;
-			this.handleInsertion();
-			return;
-		}
+	// IME
+	if ( $.browser.msie === true && e.which === 229 ) {
+		this.inIme = true;
+		this.handleInsertion();
+		return;
 	}
+
 	if ( ve.ce.isArrowKey( e.keyCode ) ) {
 		// Detect start of selecting using shift+arrow keys.
 		if ( !this.dragging && !this.selecting && e.shiftKey ) {
@@ -340,6 +328,23 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
  * @param {jQuery.Event} e Key press event
  */
 ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
+	var selection, prevNode, documentModel = this.model.getDocument();
+
+	// Prevent IE from editing Aliens/Entities
+	if ( $.browser.msie === true ) {
+		selection = this.model.getSelection();
+		if ( selection.start !== 0 && selection.isCollapsed() ) {
+			prevNode = documentModel.getDocumentNode().getNodeFromOffset( selection.start - 1 );
+			if (
+				!this.documentView.getSlugAtOffset( selection.start ) &&
+				prevNode.isContent() &&
+				documentModel.data.isCloseElementData( selection.start - 1 )
+			) {
+				this.model.change( null, new ve.Range( selection.start ) );
+			}
+		}
+	}
+
 	if ( ve.ce.isShortcutKey( e ) ||
 		e.which === ve.Keys.DOM_VK_RETURN ||
 		e.which === ve.Keys.DOM_VK_BACK_SPACE ||
