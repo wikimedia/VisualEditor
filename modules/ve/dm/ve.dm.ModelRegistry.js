@@ -174,9 +174,8 @@ ve.dm.ModelRegistry.prototype.isExtensionSpecificType = function ( type ) {
  */
 ve.dm.ModelRegistry.prototype.matchElement = function ( element ) {
 	var i, name, model, matches, winner, types, elementExtSpecificTypes, matchTypes,
+		hasExtSpecificTypes,
 		tag = element.nodeName.toLowerCase(),
-		typeAttr = element.getAttribute( 'typeof' ) || element.getAttribute( 'rel' ) ||
-			element.getAttribute( 'property' ),
 		reg = this;
 
 	function byRegistrationOrderDesc( a, b ) {
@@ -189,6 +188,7 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element ) {
 			types = reg.registry[models[i]].static.matchRdfaTypes;
 			for ( j = 0; j < types.length; j++ ) {
 				if (
+					types[j] instanceof RegExp &&
 					type.match( types[j] ) &&
 					(
 						reg.registry[models[i]].static.matchTagNames === null ||
@@ -202,18 +202,51 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element ) {
 		return matches;
 	}
 
-	function matchWithFunc( types, tag ) {
+	function matchesAllTypes( types, name ) {
+		var i, j, haveMatch, matchTypes = reg.registry[name].static.matchRdfaTypes;
+		for ( i = 0; i < types.length; i++ ) {
+			haveMatch = false;
+			for ( j = 0; j < matchTypes.length; j++ ) {
+				if ( matchTypes[j] instanceof RegExp ) {
+					if ( types[i].match( matchTypes[j] ) ) {
+						haveMatch = true;
+						break;
+					}
+				} else {
+					if ( types[i] === matchTypes[j] ) {
+						haveMatch = true;
+						break;
+					}
+				}
+			}
+			if ( !haveMatch ) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	function matchWithFunc( types, tag, mustMatchAll ) {
 		var i, queue = [], queue2 = [];
 		for ( i = 0; i < types.length; i++ ) {
 			// Queue string matches and regexp matches separately
 			queue = queue.concat( ve.getProp( reg.modelsByTypeAndTag, 1, types[i], tag ) || [] );
 			queue2 = queue2.concat( matchTypeRegExps( types[i], tag, true ) );
 		}
+		if ( mustMatchAll ) {
+			// Filter out matches that don't match all types
+			queue = ve.filterArray( queue, function ( name ) { return matchesAllTypes( types, name ); } );
+			queue2 = ve.filterArray( queue2, function ( name ) { return matchesAllTypes( types, name ); } );
+		}
 		// Try string matches first, then regexp matches
 		queue.sort( byRegistrationOrderDesc );
 		queue2.sort( byRegistrationOrderDesc );
 		queue = queue.concat( queue2 );
 		for ( i = 0; i < queue.length; i++ ) {
+			if ( mustMatchAll && !matchesAllTypes( types, queue[i] ) ) {
+				// Skip matches that don't match all types if that's required
+				continue;
+			}
 			if ( reg.registry[queue[i]].static.matchFunction( element ) ) {
 				return queue[i];
 			}
@@ -221,16 +254,25 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element ) {
 		return null;
 	}
 
-	function matchWithoutFunc( types, tag ) {
+	function matchWithoutFunc( types, tag, mustMatchAll ) {
 		var i, queue = [], queue2 = [], winningName = null;
 		for ( i = 0; i < types.length; i++ ) {
 			// Queue string and regexp matches separately
 			queue = queue.concat( ve.getProp( reg.modelsByTypeAndTag, 0, types[i], tag ) || [] );
 			queue2 = queue2.concat( matchTypeRegExps( types[i], tag, false ) );
 		}
+		if ( mustMatchAll ) {
+			// Filter out matches that don't match all types
+			queue = ve.filterArray( queue, function ( name ) { return matchesAllTypes( types, name ); } );
+			queue2 = ve.filterArray( queue2, function ( name ) { return matchesAllTypes( types, name ); } );
+		}
 		// Only try regexp matches if there are no string matches
 		queue = queue.length > 0 ? queue : queue2;
 		for ( i = 0; i < queue.length; i++ ) {
+			if ( mustMatchAll && !matchesAllTypes( types, queue[i] ) ) {
+				// Skip matches that don't match all types if that's required
+				continue;
+			}
 			if (
 				winningName === null ||
 				reg.registrationOrder[winningName] < reg.registrationOrder[queue[i]]
@@ -241,14 +283,24 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element ) {
 		return winningName;
 	}
 
-	types = typeAttr ? typeAttr.split( ' ' ) : [];
+	types = [];
+	if ( element.getAttribute( 'rel' ) ) {
+		types = types.concat( element.getAttribute( 'rel' ).split( ' ' ) );
+	}
+	if ( element.getAttribute( 'typeof' ) ) {
+		types = types.concat( element.getAttribute( 'typeof' ).split( ' ' ) );
+	}
+	if ( element.getAttribute( 'property' ) ) {
+		types = types.concat( element.getAttribute( 'property' ).split( ' ' ) );
+	}
 	elementExtSpecificTypes = ve.filterArray( types, ve.bind( this.isExtensionSpecificType, this ) );
+	hasExtSpecificTypes = elementExtSpecificTypes.length !== 0;
 	// If the element has extension-specific types, only use those for matching and ignore its
 	// other types. If it has no extension-specific types, use all of its types.
-	matchTypes = elementExtSpecificTypes.length === 0 ? types : elementExtSpecificTypes;
+	matchTypes = hasExtSpecificTypes ? elementExtSpecificTypes : types;
 	if ( types.length ) {
 		// func+tag+type match
-		winner = matchWithFunc( matchTypes, tag );
+		winner = matchWithFunc( matchTypes, tag, hasExtSpecificTypes );
 		if ( winner !== null ) {
 			return winner;
 		}
@@ -256,14 +308,14 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element ) {
 		// func+type match
 		// Only look at rules with no tag specified; if a rule does specify a tag, we've
 		// either already processed it above, or the tag doesn't match
-		winner = matchWithFunc( matchTypes, '' );
+		winner = matchWithFunc( matchTypes, '', hasExtSpecificTypes );
 		if ( winner !== null ) {
 			return winner;
 		}
 	}
 
 	// Do not check for type-less matches if the element has extension-specific types
-	if ( elementExtSpecificTypes.length === 0 ) {
+	if ( !hasExtSpecificTypes ) {
 		// func+tag match
 		matches = ve.getProp( this.modelsByTag, 1, tag ) || [];
 		// No need to sort because individual arrays in modelsByTag are already sorted
@@ -294,7 +346,7 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element ) {
 	}
 
 	// tag+type
-	winner = matchWithoutFunc( matchTypes, tag );
+	winner = matchWithoutFunc( matchTypes, tag, hasExtSpecificTypes );
 	if ( winner !== null ) {
 		return winner;
 	}
@@ -302,7 +354,7 @@ ve.dm.ModelRegistry.prototype.matchElement = function ( element ) {
 	// type only
 	// Only look at rules with no tag specified; if a rule does specify a tag, we've
 	// either already processed it above, or the tag doesn't match
-	winner = matchWithoutFunc( matchTypes, '' );
+	winner = matchWithoutFunc( matchTypes, '', hasExtSpecificTypes );
 	if ( winner !== null ) {
 		return winner;
 	}

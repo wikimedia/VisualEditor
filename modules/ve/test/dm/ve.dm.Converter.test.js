@@ -38,7 +38,7 @@ QUnit.test( 'getDomElementsFromDataElement', 20, function ( assert ) {
 	}
 } );
 
-QUnit.test( 'getDataFromDom', 50, function ( assert ) {
+QUnit.test( 'getDataFromDom', 51, function ( assert ) {
 	var msg,
 		store = new ve.dm.IndexValueStore(),
 		cases = ve.copyObject( ve.dm.example.domToDataCases );
@@ -60,7 +60,7 @@ QUnit.test( 'getDataFromDom', 50, function ( assert ) {
 	}
 } );
 
-QUnit.test( 'getDomFromData', 54, function ( assert ) {
+QUnit.test( 'getDomFromData', 55, function ( assert ) {
 	var msg,
 		store = new ve.dm.IndexValueStore(),
 		cases = ve.copyObject( ve.dm.example.domToDataCases );
