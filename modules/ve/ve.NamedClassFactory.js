@@ -1,25 +1,25 @@
 /*!
- * VisualEditor NodeFactory class.
+ * VisualEditor NamedClassFactory class.
  *
  * @copyright 2011-2013 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Generic node factory.
+ * Generic factory for classes with a .static.name property.
  *
  * @abstract
  * @extends ve.Factory
  * @constructor
  */
-ve.NodeFactory = function VeNodeFactory() {
+ve.NamedClassFactory = function VeNamedClassFactory() {
 	// Parent constructor
 	ve.Factory.call( this );
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.NodeFactory, ve.Factory );
+ve.inheritClass( ve.NamedClassFactory, ve.Factory );
 
 /* Methods */
 
@@ -28,12 +28,12 @@ ve.inheritClass( ve.NodeFactory, ve.Factory );
  *
  * @method
  * @param {Function} constructor Constructor to use when creating object
- * @throws {Error} Node names must be strings and must not be empty
+ * @throws {Error} Names must be strings and must not be empty
  */
-ve.NodeFactory.prototype.register = function ( constructor ) {
+ve.NamedClassFactory.prototype.register = function ( constructor ) {
 	var name = constructor.static && constructor.static.name;
 	if ( typeof name !== 'string' || name === '' ) {
-		throw new Error( 'Node names must be strings and must not be empty' );
+		throw new Error( 'Names must be strings and must not be empty' );
 	}
 	ve.Factory.prototype.register.call( this, name, constructor );
 };

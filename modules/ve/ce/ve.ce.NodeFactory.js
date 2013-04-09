@@ -9,17 +9,17 @@
  * ContentEditable node factory.
  *
  * @class
- * @extends ve.NodeFactory
+ * @extends ve.NamedClassFactory
  * @constructor
  */
 ve.ce.NodeFactory = function VeCeNodeFactory() {
 	// Parent constructor
-	ve.NodeFactory.call( this );
+	ve.NamedClassFactory.call( this );
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.ce.NodeFactory, ve.NodeFactory );
+ve.inheritClass( ve.ce.NodeFactory, ve.NamedClassFactory );
 
 /* Methods */
 
