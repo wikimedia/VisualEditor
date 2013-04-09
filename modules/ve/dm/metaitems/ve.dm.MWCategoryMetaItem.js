@@ -51,11 +51,11 @@ ve.dm.MWCategoryMetaItem.static.toDataElement = function ( domElements ) {
 ve.dm.MWCategoryMetaItem.static.toDomElements = function ( dataElement ) {
 	var href,
 		domElement = document.createElement( 'link' ),
-		hrefPrefix = dataElement.attributes.hrefPrefix,
-		category = dataElement.attributes.category,
-		sortkey = dataElement.attributes.sortkey,
-		origCategory = dataElement.attributes.origCategory,
-		origSortkey = dataElement.attributes.origSortkey,
+		hrefPrefix = dataElement.attributes.hrefPrefix || '',
+		category = dataElement.attributes.category || '',
+		sortkey = dataElement.attributes.sortkey || '',
+		origCategory = dataElement.attributes.origCategory || '',
+		origSortkey = dataElement.attributes.origSortkey || '',
 		normalizedOrigCategory = decodeURIComponent( origCategory ).replace( /_/g, ' ' ),
 		normalizedOrigSortkey = decodeURIComponent( origSortkey );
 	if ( normalizedOrigSortkey === sortkey ) {
