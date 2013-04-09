@@ -1759,6 +1759,24 @@ ve.dm.example.domToDataCases = {
 			'<meta typeof="mw:Placeholder" data-parsoid="foobar" /></body>',
 		'data': ve.dm.example.withMeta
 	},
+	'RDFa types spread across two attributes': {
+		'html': '<body><link rel="mw:WikiLink/Category" href="./Category:Foo" about="#mwt1" typeof="mw:Object/Template"></body>',
+		'data': [
+			{
+				'type': 'alienMeta',
+				'attributes': {
+					'style': 'link',
+					'key': 'mw:WikiLink/Category',
+					'value': './Category:Foo',
+					'html/0/rel': 'mw:WikiLink/Category',
+					'html/0/href': './Category:Foo',
+					'html/0/about': '#mwt1',
+					'html/0/typeof': 'mw:Object/Template'
+				}
+			},
+			{ 'type': '/alienMeta' },
+		]
+	},
 	'change markers': {
 		'html': null,
 		'data': [

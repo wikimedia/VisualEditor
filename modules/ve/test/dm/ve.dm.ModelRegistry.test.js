@@ -101,7 +101,7 @@ ve.dm.StubRegExpNode.static.matchRdfaTypes = [ /^mw:/ ];
 
 /* Tests */
 
-QUnit.test( 'matchElement', 20, function ( assert ) {
+QUnit.test( 'matchElement', 23, function ( assert ) {
 	var registry = new ve.dm.ModelRegistry(), element;
 	element = document.createElement( 'a' );
 	assert.deepEqual( registry.matchElement( element ), null, 'matchElement() returns null if registry empty' );
@@ -163,4 +163,11 @@ QUnit.test( 'matchElement', 20, function ( assert ) {
 	assert.deepEqual( registry.matchElement( element ), 'stub-regexp', 'RegExp type match for extension-specific type' );
 	element.setAttribute( 'rel', 'mw:abbr' );
 	assert.deepEqual( registry.matchElement( element ), 'stub-abbr', 'String match overrides RegExp match for extension-specific type' );
+	element.setAttribute( 'rel', 'mw:abbr mw:foo' );
+	assert.deepEqual( registry.matchElement( element ), 'stub-regexp', 'Additional extension-specific type (mw:foo) breaks string match, throws back to regexp match' );
+	element.setAttribute( 'rel', 'mw:abbr foo' );
+	assert.deepEqual( registry.matchElement( element ), null, 'Additional extension-specific type (foo) breaks match' );
+	element.setAttribute( 'rel', 'mw:abbr' );
+	element.setAttribute( 'typeof', 'foo' );
+	assert.deepEqual( registry.matchElement( element ), null, 'Types split over two attributes still breaks match' );
 } );
