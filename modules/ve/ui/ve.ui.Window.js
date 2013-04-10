@@ -123,7 +123,7 @@ ve.ui.Window.static.addStylesheetFiles = function ( paths ) {
  */
 ve.ui.Window.static.addLocalStylesheets = function ( files ) {
 	var i, len,
-		base = ve.init.platform.getModulesUrl() + 've/ui/styles/',
+		base = ve.init.platform.getModulesUrl() + '/ve/ui/styles/',
 		paths = [];
 
 	// Prepend base path to each file name
