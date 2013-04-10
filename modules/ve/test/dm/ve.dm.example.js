@@ -715,6 +715,8 @@ ve.dm.example.conversions = {
 };
 
 ve.dm.example.MWImageHtml = '<a rel="mw:Image" href="./File:Wiki.png" data-parsoid="{&quot;tsr&quot;:[158,216],&quot;src&quot;:&quot;[[Image:Wiki.png|500px|thumb|center|Example wiki file]]&quot;,&quot;optNames&quot;:{&quot;width&quot;:&quot;$1px&quot;},&quot;dsr&quot;:[158,216,null,null]}"><img height="" width="500" src="/index.php?title=Special:FilePath/Wiki.png&amp;width=500" alt="Wiki.png"></a>';
+ve.dm.example.MWTemplateSpan = '<span about="#mwt1" typeof="mw:Object/Template" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Test&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;Hello, world!&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,40],&quot;src&quot;:&quot;{{Test|Hello, world!}}&quot;,&quot;dsr&quot;:[18,40,null,null]}"></span>';
+ve.dm.example.MWTemplateContent = '<p about="#mwt1" data-parsoid="{}">Hello, world!</p>';
 
 ve.dm.example.domToDataCases = {
 	'paragraph with plain text': {
@@ -774,6 +776,32 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/MWimage' },
 			{ 'type': '/paragraph' }
 		]
+	},
+	'mw:Template': {
+		'html': '<body>' + ve.dm.example.MWTemplateSpan + ve.dm.example.MWTemplateContent + '</body>',
+		'data': [
+			{
+				'type': 'MWtemplate',
+				'mw': {
+					'id': 'mwt1',
+					'target': { 'wt' : 'Test' },
+					'params': {
+						'1': { 'wt': 'Hello, world!' }
+					}
+				},
+				'about': '#mwt1',
+				'attributes': {
+					'html/0/about': '#mwt1',
+					'html/0/data-mw': '{\"id\":\"mwt1\",\"target\":{\"wt\":\"Test\"},\"params\":{\"1\":{\"wt\":\"Hello, world!\"}}}',
+					'html/0/data-parsoid': '{\"tsr\":[18,40],\"src\":\"{{Test|Hello, world!}}\",\"dsr\":[18,40,null,null]}',
+					'html/0/typeof': 'mw:Object/Template',
+					'html/1/about': '#mwt1',
+					'html/1/data-parsoid': '{}'
+				},
+			},
+			{ 'type': '/MWtemplate' },
+		],
+		'normalizedHtml': ve.dm.example.MWTemplateSpan
 	},
 	'paragraph with alienInline inside': {
 		'html': '<body><p>a<tt class="foo">b</tt>c</p></body>',
