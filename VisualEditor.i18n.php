@@ -22,6 +22,7 @@ $messages['en'] = array(
 	'visualeditor-dialog-media-title' => 'Media settings',
 	'visualeditor-dialog-action-apply' => 'Apply changes',
 	'visualeditor-dialog-action-cancel' => 'Cancel',
+	'visualeditor-dialog-action-close' => 'Close',
 	'visualeditor-toolbar-savedialog' => 'Review and save',
 	'visualeditor-savedialog-title-review' => 'Review your changes',
 	'visualeditor-savedialog-title-report' => 'Report a problem',
@@ -1170,14 +1171,6 @@ $messages['gl'] = array(
 	'visualeditor-alphawarning' => 'Está utilizando a versión alpha do [[{{MediaWiki:Visualeditor-descriptionpagelink}}|editor visual]]. Pode ser lenta e facer modificacións erróneas. Comprobe todas as edicións que faga.',
 	'visualeditor-report-notice' => 'Entendo que ao premer no botón "Enviar" hei transmitir as miñas modificacións e os meus comentarios, que quedarán rexistrados para a súa análise. Acepto achegar os comentarios de acordo cos [[{{MediaWiki:Visualeditor-report-link}}|termos de uso]].',
 	'visualeditor-report-link' => 'foundation:Terms of Use/gl',
-);
-
-/** Gujarati (ગુજરાતી)
- * @author KartikMistry
- */
-$messages['gu'] = array(
-	'visualeditor-dialog-media-title' => 'મીડિયા ગોઠવણીઓ',
-	'visualeditor-dialogbutton-media-tooltip' => 'મીડિયા',
 );
 
 /** Hebrew (עברית)
