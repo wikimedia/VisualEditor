@@ -239,13 +239,11 @@ ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElement
  * Create a data element from a DOM element.
  * @param {ve.dm.Model} modelClass Model class to use for conversion
  * @param {HTMLElement[]} domElements DOM elements to convert
- * @param {Object} context Converter context to pass to toDataElement() (will be cloned)
- * @param {ve.dm.IndexValueStore} store Index-value store
  * @returns {Object} Data element
  */
-ve.dm.Converter.prototype.createDataElement = function ( modelClass, domElements, context, store ) {
+ve.dm.Converter.prototype.createDataElement = function ( modelClass, domElements ) {
 	var i, j, dataElement, dataElementAttributes, domElementAttributes, domElementAttribute;
-	dataElement = modelClass.static.toDataElement( domElements, ve.copyObject( context ), store );
+	dataElement = modelClass.static.toDataElement( domElements, this );
 	if ( modelClass.static.storeHtmlAttributes && dataElement ) {
 		for ( i = 0; i < domElements.length; i++ ) {
 			domElementAttributes = domElements[i].attributes;
@@ -422,7 +420,7 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 				modelName = this.modelRegistry.matchElement( childDomElement );
 				modelClass = this.modelRegistry.lookup( modelName ) || ve.dm.AlienNode;
 				if ( modelClass.prototype instanceof ve.dm.Annotation ) {
-					annotationData = this.createDataElement( modelClass, [ childDomElement ], context );
+					annotationData = this.createDataElement( modelClass, [ childDomElement ] );
 				}
 				if ( modelClass.prototype instanceof ve.dm.Annotation && annotationData ) {
 					annotation = this.annotationFactory.create( modelName, annotationData );
@@ -442,7 +440,7 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 					aboutGroup = getAboutGroup( childDomElement );
 					childDomElements = modelClass.static.enableAboutGrouping ?
 						aboutGroup : [ childDomElement ];
-					childDataElement = this.createDataElement( modelClass, childDomElements, context, this.store );
+					childDataElement = this.createDataElement( modelClass, childDomElements );
 
 					if ( modelClass.prototype instanceof ve.dm.MetaItem ) {
 						// No additional processing needed
@@ -468,7 +466,7 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 							modelClass = ve.dm.AlienNode;
 							childDomElements = modelClass.static.enableAboutGrouping ?
 								aboutGroup : [ childDomElement ];
-							childDataElement = this.createDataElement( modelClass, childDomElements, context, this.store );
+							childDataElement = this.createDataElement( modelClass, childDomElements );
 							childIsContent = this.nodeFactory.isNodeContent( childDataElement.type );
 						}
 					}

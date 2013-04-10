@@ -30,7 +30,7 @@ ve.dm.AlienNode.static.name = 'alien';
 
 ve.dm.AlienNode.static.storeHtmlAttributes = false;
 
-ve.dm.AlienNode.static.toDataElement = function ( domElements, context ) {
+ve.dm.AlienNode.static.toDataElement = function ( domElements, converter ) {
 	var i, isInline, allTagsInline, type, html;
 	// Check whether all elements are inline elements
 	allTagsInline = true;
@@ -46,9 +46,9 @@ ve.dm.AlienNode.static.toDataElement = function ( domElements, context ) {
 	// but to generate an alienInline element.
 	isInline =
 		// Force inline in content locations (but not wrappers)
-		( context.expectingContent && !context.inWrapper ) ||
+		( converter.isExpectingContent() && !converter.isInWrapper() ) ||
 		// Also force inline in wrappers that we can't close
-		( context.inWrapper && !context.canCloseWrapper ) ||
+		( converter.isInWrapper() && !converter.canCloseWrapper() ) ||
 		// Look at the tag names otherwise
 		allTagsInline;
 	type = isInline ? 'alienInline' : 'alienBlock';
