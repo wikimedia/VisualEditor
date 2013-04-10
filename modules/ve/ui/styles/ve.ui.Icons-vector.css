@@ -5,6 +5,11 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
+.ve-ui-reference {
+	/* @embed */
+	background-image: url(images/icons/reference.svg);
+}
+
 .ve-ui-icon-picture {
 	/* @embed */
 	background-image: url(images/icons/picture.svg);
@@ -20,14 +25,14 @@
 	background-image: url(images/icons/language.svg);
 }
 
-.ve-ui-icon-categories-big {
+.ve-ui-icon-tag-big {
 	/* @embed */
-	background-image: url(images/icons/categories-big.svg);
+	background-image: url(images/icons/tag-big.svg);
 }
 
-.ve-ui-icon-categories {
+.ve-ui-icon-tag {
 	/* @embed */
-	background-image: url(images/icons/categories.svg);
+	background-image: url(images/icons/tag.svg);
 }
 
 .ve-ui-icon-settings {
