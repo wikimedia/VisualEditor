@@ -253,7 +253,12 @@ ve.dm.example.data = [
 	// 38 - Plain "h"
 	'h',
 	// 39 - Beginning of inline image
-	{ 'type': 'image', 'attributes': { 'html/0/src': ve.dm.example.imgSrc } },
+	{ 'type': 'image', 'attributes': {
+		'html/0/src': ve.dm.example.imgSrc,
+		'src': ve.dm.example.imgSrc,
+		'width': null,
+		'height': null
+	} },
 	// 40 - End of inline image
 	{ 'type': '/image' },
 	// 41 - Plain "i"
@@ -736,7 +741,12 @@ ve.dm.example.domToDataCases = {
 		'html': '<body><img src="' + ve.dm.example.imgSrc + '"></body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
-			{ 'type': 'image', 'attributes' : { 'html/0/src' : ve.dm.example.imgSrc } },
+			{ 'type': 'image', 'attributes' : {
+				'html/0/src' : ve.dm.example.imgSrc,
+				'width': null,
+				'height': null,
+				'src': ve.dm.example.imgSrc
+			} },
 			{ 'type' : '/image' },
 			{ 'type': '/paragraph' }
 		]
@@ -748,10 +758,17 @@ ve.dm.example.domToDataCases = {
 			{
 				'type': 'MWimage',
 				'attributes': {
+					'html/0-0/alt': 'Wiki.png',
+					'html/0-0/height': '',
+					'html/0-0/src': '/index.php?title=Special:FilePath/Wiki.png&width=500',
+					'html/0-0/width': '500',
+					'html/0/data-parsoid': '{"tsr":[158,216],"src":"[[Image:Wiki.png|500px|thumb|center|Example wiki file]]","optNames":{"width":"$1px"},"dsr":[158,216,null,null]}',
+					'html/0/href': './File:Wiki.png',
+					'html/0/rel': 'mw:Image',
 					'src': '/index.php?title=Special:FilePath/Wiki.png&width=500',
 					'width': 500,
 					'height': null,
-					'html': ve.dm.example.MWImageHtml
+					'isLinked': true
 				}
 			},
 			{ 'type': '/MWimage' },
@@ -842,7 +859,12 @@ ve.dm.example.domToDataCases = {
 		'html': '<body><img src="' + ve.dm.example.imgSrc + '">12</body>',
 		'data': [
 			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
-			{ 'type': 'image', 'attributes': { 'html/0/src': ve.dm.example.imgSrc } },
+			{ 'type': 'image', 'attributes': {
+				'html/0/src': ve.dm.example.imgSrc,
+				'src': ve.dm.example.imgSrc,
+				'width': null,
+				'height': null
+			} },
 			{ 'type': '/image' },
 			'1',
 			'2',

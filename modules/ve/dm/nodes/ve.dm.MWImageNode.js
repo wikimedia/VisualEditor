@@ -9,53 +9,64 @@
  * DataModel MediaWiki image node.
  *
  * @class
- * @extends ve.dm.LeafNode
+ * @extends ve.dm.ImageNode
  * @constructor
  * @param {number} [length] Length of content data in document
  * @param {Object} [element] Reference to element in linear model
  */
 ve.dm.MWImageNode = function VeDmMWImageNode( length, element ) {
-	ve.dm.LeafNode.call( this, 0, element );
+	ve.dm.ImageNode.call( this, 0, element );
 };
 
 /* Inheritance */
 
-ve.inheritClass( ve.dm.MWImageNode, ve.dm.LeafNode );
+ve.inheritClass( ve.dm.MWImageNode, ve.dm.ImageNode );
 
 /* Static Properties */
 
 ve.dm.MWImageNode.static.name = 'MWimage';
 
-ve.dm.MWImageNode.static.isContent = true;
+ve.dm.MWImageNode.static.matchTagNames = null;
 
 ve.dm.MWImageNode.static.matchRdfaTypes = [ 'mw:Image' ];
 
-ve.dm.MWImageNode.static.storeHtmlAttributes = false;
-
 ve.dm.MWImageNode.static.toDataElement = function ( domElements ) {
-	var $node = $( domElements[0].childNodes[0] ),
-		width = $node.attr( 'width' ),
-		height = $node.attr( 'height' ),
-		html = $( '<div>', domElements[0].ownerDocument ).append( $( domElements ).clone() ).html();
+	var i, j, childNode, children = Array.prototype.slice.call( domElements[0].children, 0 ),
+		parentResult = ve.dm.ImageNode.static.toDataElement.apply(
+			this, [ children ].concat( Array.prototype.slice.call( arguments, 1 ) )
+		),
+		dataElement = ve.copyObject( parentResult );
 
-	return {
-		'type': this.name,
+	// Preserve the child nodes' attributes in html/0-i/foo
+	for ( i = 0; i < domElements[0].childNodes.length; i++ ) {
+		childNode = domElements[0].childNodes[i];
+		for ( j = 0; j < childNode.attributes.length; j++ ) {
+			dataElement.attributes['html/0-' + i + '/' + childNode.attributes[j].name] =
+				childNode.attributes[j].value;
+		}
+	}
+
+	return ve.extendObject( true, dataElement, {
+		'type': 'MWimage',
 		'attributes': {
-			'src': $node.attr( 'src' ),
-			'width': width !== '' ? Number( width ) : null,
-			'height': height !== '' ? Number( height ) : null,
-			// TODO: don't store html, just enough attributes to rebuild
-			'html': html
-		},
-	};
+			'isLinked': domElements[0].nodeName.toLowerCase() === 'a'
+		}
+	} );
 };
 
 ve.dm.MWImageNode.static.toDomElements = function ( dataElement, doc ) {
-	//TODO: rebuild html from attributes
-	var wrapper = doc.createElement( 'div' );
-	wrapper.innerHTML = dataElement.attributes.html;
-	// Convert wrapper.children to an array
-	return Array.prototype.slice.call( wrapper.childNodes, 0 );
+	var k, wrapper = doc.createElement( dataElement.attributes.isLinked ? 'a' : 'span' ),
+		imageDomElement = ve.dm.ImageNode.static.toDomElements.apply( this, arguments )[0];
+
+	wrapper.appendChild( imageDomElement );
+	// Restore attributes from html/0-0/*
+	for ( k in dataElement.attributes ) {
+		if ( k.indexOf( 'html/0-0/' ) === 0 ) {
+			imageDomElement.setAttribute( k.substr( 9 ), dataElement.attributes[k] );
+		}
+	}
+
+	return [ wrapper ];
 };
 
 /* Registration */

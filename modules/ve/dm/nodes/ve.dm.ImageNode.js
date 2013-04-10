@@ -31,12 +31,25 @@ ve.dm.ImageNode.static.isContent = true;
 
 ve.dm.ImageNode.static.matchTagNames = [ 'img' ];
 
-ve.dm.ImageNode.static.toDataElement = function () {
-	return { 'type': 'image' };
+ve.dm.ImageNode.static.toDataElement = function ( domElements ) {
+	var $node = $( domElements[0] ),
+		width = $node.attr( 'width' ),
+		height = $node.attr( 'height' );
+
+	return {
+		'type': 'image',
+		'attributes': {
+			'src': $node.attr( 'src' ),
+			'width': width !== undefined && width !== '' ? Number( width ) : null,
+			'height': height !== undefined && height !== '' ? Number( height ) : null
+		}
+	};
 };
 
 ve.dm.ImageNode.static.toDomElements = function ( dataElement, doc ) {
-	return [ doc.createElement( 'img' ) ];
+	var domElement = doc.createElement( 'img' );
+	ve.setDomAttributes( domElement, dataElement.attributes, [ 'src', 'width', 'height' ] );
+	return [ domElement ];
 };
 
 /* Registration */
