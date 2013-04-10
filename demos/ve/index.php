@@ -88,7 +88,7 @@ $html = file_get_contents( $page );
 				require( '../../modules/../VisualEditor.i18n.php' );
 				echo 've.init.platform.addMessages( ' . json_encode( $messages['en'] ) . ');' . "\n";
 			?>
-			ve.init.platform.setModulesUrl( '../../modules/' );
+			ve.init.platform.setModulesUrl( '../../modules' );
 		</script>
 		<!-- ext.visualEditor.core -->
 		<script src="../../modules/ve/ve.Registry.js"></script>

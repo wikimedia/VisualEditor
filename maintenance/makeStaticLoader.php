@@ -32,9 +32,9 @@ class MakeStaticLoader extends Maintenance {
 		$vePath = $this->getOption( 've-path',
 			$target === 'demo'
 			// From /demos/ve/index.php
-			? '../../modules/'
+			? '../../modules'
 			// From /modules/ve/test/index.html
-			: '../../'
+			: '../..'
 		);
 
 		$wgResourceModules['Dependencies'] = array(
@@ -56,9 +56,9 @@ class MakeStaticLoader extends Maintenance {
 			),
 			'headAdd' => '<script>
 	if ( window.devicePixelRatio > 1 ) {
-		document.write( \'<link rel="stylesheet" href="' . $vePath . 've/ui/styles/ve.ui.Icons-vector.css">\' );
+		document.write( \'<link rel="stylesheet" href="' . $vePath . '/ve/ui/styles/ve.ui.Icons-vector.css">\' );
 	} else {
-		document.write( \'<link rel="stylesheet" href="' . $vePath . 've/ui/styles/ve.ui.Icons-raster.css">\' );
+		document.write( \'<link rel="stylesheet" href="' . $vePath . '/ve/ui/styles/ve.ui.Icons-raster.css">\' );
 	}
 </script>',
 			'bodyAdd' => '<script>
