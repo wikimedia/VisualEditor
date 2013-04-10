@@ -277,7 +277,12 @@ QUnit.test( 'newFromRemoval', 15, function ( assert ) {
 					'type': 'replace',
 					'remove': [
 						'h',
-						{ 'type': 'image', 'attributes': { 'html/0/src': ve.dm.example.imgSrc } },
+						{ 'type': 'image', 'attributes': {
+							'html/0/src': ve.dm.example.imgSrc,
+							'src': ve.dm.example.imgSrc,
+							'width': null,
+							'height': null
+						} },
 						{ 'type': '/image' },
 						'i'
 					],
