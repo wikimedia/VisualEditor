@@ -192,10 +192,26 @@ ve.dm.NodeFactory.prototype.doesNodeHaveSignificantWhitespace = function ( type 
  * @method
  * @param {string} type Node type
  * @returns {boolean} Whether the node stores HTML attributes
+ * @throws {Error} Unknown node type
  */
 ve.dm.NodeFactory.prototype.doesNodeStoreHtmlAttributes = function ( type ) {
 	if ( type in this.registry ) {
 		return this.registry[type].static.storeHtmlAttributes;
+	}
+	throw new Error( 'Unknown node type: ' + type );
+};
+
+/**
+ * Check if the node handles its own children.
+ *
+ * @method
+ * @param {string} type Node type
+ * @returns {boolean} Whether the node handles its own children
+ * @throws {Error} Unknown node type
+ */
+ve.dm.NodeFactory.prototype.doesNodeHandleOwnChildren = function ( type ) {
+	if ( type in this.registry ) {
+		return this.registry[type].static.handlesOwnChildren;
 	}
 	throw new Error( 'Unknown node type: ' + type );
 };

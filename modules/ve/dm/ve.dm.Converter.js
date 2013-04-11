@@ -194,17 +194,18 @@ ve.dm.Converter.prototype.canCloseWrapper = function () {
  * This invokes the toDomElements function registered for the element type.
  *
  * @method
- * @param {Object} dataElement Linear model element
+ * @param {Object|Array} dataElement Linear model element or data slice
  * @param {HTMLDocument} doc Document to create DOM elements in
  * @returns {HTMLElement|boolean} DOM element, or false if the element cannot be converted
  */
-ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElement, doc ) {
+ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElements, doc ) {
 	var domElements, dataElementAttributes, key, matches,
+		dataElement = ve.isArray( dataElements ) ? dataElements[0] : dataElements,
 		nodeClass = this.modelRegistry.lookup( dataElement.type );
 	if ( !nodeClass ) {
 		throw new Error( 'Attempting to convert unknown data element type ' + dataElement.type );
 	}
-	domElements = nodeClass.static.toDomElements( dataElement, doc );
+	domElements = nodeClass.static.toDomElements( dataElements, doc, this );
 	if ( !domElements || !domElements.length ) {
 		throw new Error( 'toDomElements() failed to return an array when converting element of type ' + dataElement.type );
 	}
@@ -239,16 +240,23 @@ ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElement
  * Create a data element from a DOM element.
  * @param {ve.dm.Model} modelClass Model class to use for conversion
  * @param {HTMLElement[]} domElements DOM elements to convert
- * @returns {Object} Data element
+ * @returns {Object|Array|null} Data element or array of linear model data, or null to alienate
  */
-ve.dm.Converter.prototype.createDataElement = function ( modelClass, domElements ) {
-	var i, j, dataElement, dataElementAttributes, domElementAttributes, domElementAttribute;
-	dataElement = modelClass.static.toDataElement( domElements, this );
-	if ( modelClass.static.storeHtmlAttributes && dataElement ) {
+ve.dm.Converter.prototype.createDataElements = function ( modelClass, domElements ) {
+	var i, j, dataElements, dataElementAttributes, domElementAttributes,
+		domElementAttribute;
+	dataElements = modelClass.static.toDataElement( domElements, this );
+	if ( !dataElements ) {
+		return null;
+	}
+	if ( !ve.isArray( dataElements ) ) {
+		dataElements = [ dataElements ];
+	}
+	if ( dataElements[0] && modelClass.static.storeHtmlAttributes ) {
 		for ( i = 0; i < domElements.length; i++ ) {
 			domElementAttributes = domElements[i].attributes;
 			if ( domElementAttributes && domElementAttributes.length ) {
-				dataElementAttributes = dataElement.attributes = dataElement.attributes || {};
+				dataElementAttributes = dataElements[0].attributes = dataElements[0].attributes || {};
 				// Include all attributes and prepend 'html/i/' to each attribute name
 				for ( j = 0; j < domElementAttributes.length; j++ ) {
 					domElementAttribute = domElementAttributes[j];
@@ -258,7 +266,7 @@ ve.dm.Converter.prototype.createDataElement = function ( modelClass, domElements
 			}
 		}
 	}
-	return dataElement;
+	return dataElements;
 };
 
 /**
@@ -385,7 +393,7 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 		return aboutGroup;
 	}
 
-	var i, childDomElement, childDomElements, childDataElement, text, childTypes, matches,
+	var i, childDomElement, childDomElements, childDataElements, text, childTypes, matches,
 		wrappingParagraph, prevElement, childAnnotations, modelName, modelClass,
 		annotation, childIsContent, aboutGroup,
 		data = [],
@@ -420,20 +428,29 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 				modelName = this.modelRegistry.matchElement( childDomElement );
 				modelClass = this.modelRegistry.lookup( modelName ) || ve.dm.AlienNode;
 				if ( modelClass.prototype instanceof ve.dm.Annotation ) {
-					childDataElement = this.createDataElement( modelClass, [ childDomElement ] );
+					childDataElements = this.createDataElements( modelClass, [ childDomElement ] );
 				} else {
 					// Node or meta item
 					aboutGroup = getAboutGroup( childDomElement );
 					childDomElements = modelClass.static.enableAboutGrouping ?
 						aboutGroup : [ childDomElement ];
-					childDataElement = this.createDataElement( modelClass, childDomElements );
+					childDataElements = this.createDataElements( modelClass, childDomElements );
 				}
 
-				// Update modelClass to reflect the type we got back
-				modelClass = this.modelRegistry.lookup( childDataElement.type );
+				if ( !childDataElements ) {
+					// Alienate
+					modelClass = ve.dm.AlienNode;
+					childDomElements = modelClass.static.enableAboutGrouping ?
+						aboutGroup : [ childDomElement ];
+					childDataElements = this.createDataElement( modelClass, childDomElements );
+				} else {
+					// Update modelClass to reflect the type we got back
+					modelClass = this.modelRegistry.lookup( childDataElements[0].type );
+				}
+
 				// Now take the appropriate action based on that
 				if ( modelClass.prototype instanceof ve.dm.Annotation ) {
-					annotation = this.annotationFactory.create( modelName, childDataElement );
+					annotation = this.annotationFactory.create( modelName, childDataElements[0] );
 					// Start wrapping if needed
 					if ( !context.inWrapper && !context.expectingContent ) {
 						startWrapping();
@@ -450,14 +467,16 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 					if ( modelClass.prototype instanceof ve.dm.MetaItem ) {
 						// No additional processing needed
 						// Write to data and continue
-						data.push( childDataElement );
-						data.push( { 'type': '/' + childDataElement.type } );
-						processNextWhitespace( childDataElement );
-						prevElement = childDataElement;
+						if ( childDataElements.length === 1 ) {
+							childDataElements.push( { 'type': '/' + childDataElements[0].type } );
+						}
+						data = data.concat( childDataElements );
+						processNextWhitespace( childDataElements[0] );
+						prevElement = childDataElements[0];
 						break;
 					}
 
-					childIsContent = this.nodeFactory.isNodeContent( childDataElement.type );
+					childIsContent = this.nodeFactory.isNodeContent( childDataElements[0].type );
 
 					// If childIsContent isn't what we expect, adjust
 					if ( !context.expectingContent && childIsContent ) {
@@ -471,35 +490,39 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 							modelClass = ve.dm.AlienNode;
 							childDomElements = modelClass.static.enableAboutGrouping ?
 								aboutGroup : [ childDomElement ];
-							childDataElement = this.createDataElement( modelClass, childDomElements );
-							childIsContent = this.nodeFactory.isNodeContent( childDataElement.type );
+							childDataElements = this.createDataElements( modelClass, childDomElements );
+							childIsContent = this.nodeFactory.isNodeContent( childDataElements[0].type );
 						}
 					}
 
 					// Annotate child
 					if ( childIsContent && !context.annotations.isEmpty() ) {
-						childDataElement.annotations = context.annotations.getIndexes().slice();
+						childDataElements[0].annotations = context.annotations.getIndexes().slice();
 					}
 
-					// Output child and its children, if any
+					// Output child and process children if needed
 					if (
+						childDataElements.length === 1 &&
 						childDomElements.length === 1 &&
-						this.nodeFactory.canNodeHaveChildren( childDataElement.type )
+						this.nodeFactory.canNodeHaveChildren( childDataElements[0].type ) &&
+						!this.nodeFactory.doesNodeHandleOwnChildren( childDataElements[0].type )
 					) {
 						// Recursion
 						// Opening and closing elements are added by the recursion too
 						data = data.concat(
-							this.getDataFromDomRecursion( childDomElement, childDataElement,
+							this.getDataFromDomRecursion( childDomElement, childDataElements[0],
 								new ve.dm.AnnotationSet( this.store )
 							)
 						);
 					} else {
-						// Write an opening and closing
-						data.push( childDataElement );
-						data.push( { 'type': '/' + childDataElement.type } );
+						if ( childDataElements.length === 1 ) {
+							childDataElements.push( { 'type': '/' + childDataElements[0].type } );
+						}
+						// Write childDataElements directly
+						data = data.concat( childDataElements );
 					}
-					processNextWhitespace( childDataElement );
-					prevElement = childDataElement;
+					processNextWhitespace( childDataElements[0] );
+					prevElement = childDataElements[0];
 
 					// In case we consumed multiple childDomElements, adjust i accordingly
 					i += childDomElements.length - 1;
@@ -635,17 +658,19 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 				break;
 			case Node.COMMENT_NODE:
 				// TODO treat this as a node with nodeName #comment
-				childDataElement = {
-					'type': 'alienMeta',
-					'attributes': {
-						'style': 'comment',
-						'text': childDomElement.data
-					}
-				};
-				data.push( childDataElement );
-				data.push( { 'type': '/alienMeta' } );
-				processNextWhitespace( childDataElement );
-				prevElement = childDataElement;
+				childDataElements = [
+					{
+						'type': 'alienMeta',
+						'attributes': {
+							'style': 'comment',
+							'text': childDomElement.data
+						}
+					},
+					{ 'type': '/alienMeta' }
+				];
+				data = data.concat( childDataElements );
+				processNextWhitespace( childDataElements[0] );
+				prevElement = childDataElements[0];
 				break;
 		}
 	}
@@ -698,12 +723,25 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
  * @returns {HTMLDocument} Document containing the resulting HTML
  */
 ve.dm.Converter.prototype.getDomFromData = function ( store, data ) {
-	var text, i, j, k, annotations, annotationElement, dataElement,
+	var doc = ve.createDocumentFromHTML( '' );
+	this.getDomSubtreeFromData( store, data, doc.body );
+	return doc;
+};
+
+/**
+ * Convert linear model data to an HTML DOM subtree and add it to a container element.
+ *
+ * @param {ve.dm.IndexValueStore} store Index-value store
+ * @param {Array} data Linear model data
+ * @param {HTMLElement} container DOM element to add the generated elements to. Should be empty.
+ * @throws Unbalanced data: looking for closing /type
+ */
+ve.dm.Converter.prototype.getDomSubtreeFromData = function ( store, data, container ) {
+	var text, i, j, k, annotations, annotationElement, dataElement, dataElementOrSlice,
 		childDomElements, pre, ours, theirs, parentDomElement, lastChild,
 		isContentNode, changed, parentChanged, sibling, previousSiblings, doUnwrap, textNode,
 		conv = this,
-		doc = ve.createDocumentFromHTML( '' ),
-		container = doc.body,
+		doc = container.ownerDocument,
 		domElement = container,
 		annotationStack = new ve.dm.AnnotationSet( store );
 
@@ -729,6 +767,32 @@ ve.dm.Converter.prototype.getDomFromData = function ( store, data ) {
 		}
 		// Traverse up
 		domElement = domElement.parentNode;
+	}
+
+	function getDataElementOrSlice() {
+		var dataSlice, j, depth, handlesOwn = false;
+		try {
+			handlesOwn = ve.dm.nodeFactory.doesNodeHandleOwnChildren( data[i].type );
+		} catch ( e ) {}
+
+		if ( handlesOwn ) {
+			j = i + 1;
+			depth = 1;
+			while ( j < data.length && depth > 0 ) {
+				if ( data[j].type ) {
+					depth += data[j].type.charAt( 0 ) === '/' ? -1 : 1;
+				}
+				j++;
+			}
+			if ( j >= data.length ) {
+				throw new Error( 'Unbalanced data: looking for closing /' +
+					dataElement.type );
+			}
+			dataSlice = data.slice( i, j + 1 );
+		} else {
+			dataSlice = data[i];
+		}
+		return dataSlice;
 	}
 
 	for ( i = 0; i < data.length; i++ ) {
@@ -780,12 +844,16 @@ ve.dm.Converter.prototype.getDomFromData = function ( store, data ) {
 						text = '';
 					}
 					// Insert the elements
-					childDomElements = this.getDomElementsFromDataElement( data[i], doc );
+					dataElementOrSlice = getDataElementOrSlice();
+					childDomElements = this.getDomElementsFromDataElement( dataElementOrSlice, doc );
 					for ( j = 0; j < childDomElements.length; j++ ) {
 						domElement.appendChild( childDomElements[j] );
 					}
-					// Increment i once more so we skip over the closing as well
-					i++;
+					if ( ve.isArray( dataElementOrSlice ) ) {
+						i += dataElementOrSlice.length - 1;
+					} else {
+						i++; // Skip the closing
+					}
 				}
 				i++;
 			}
@@ -955,7 +1023,8 @@ ve.dm.Converter.prototype.getDomFromData = function ( store, data ) {
 				domElement = parentDomElement;
 			} else {
 				// Create node from data
-				childDomElements = this.getDomElementsFromDataElement( dataElement, doc );
+				dataElementOrSlice = getDataElementOrSlice();
+				childDomElements = this.getDomElementsFromDataElement( dataElementOrSlice, doc );
 				// Add reference to internal data
 				childDomElements[0].veInternal = ve.extendObject(
 					{ 'childDomElements': childDomElements },
@@ -1011,6 +1080,10 @@ ve.dm.Converter.prototype.getDomFromData = function ( store, data ) {
 						);
 					}
 				}
+
+				if ( ve.isArray( dataElementOrSlice ) ) {
+					i += dataElementOrSlice.length - 2;
+				}
 			}
 		}
 	}
@@ -1041,7 +1114,6 @@ ve.dm.Converter.prototype.getDomFromData = function ( store, data ) {
 			}
 		}
 	} );
-	return doc;
 };
 
 /* Initialization */

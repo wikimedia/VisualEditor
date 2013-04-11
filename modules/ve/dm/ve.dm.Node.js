@@ -46,6 +46,26 @@ ve.mixinClass( ve.dm.Node, ve.Node );
 /* Static Properties */
 
 /**
+ * Whether this node handles its own children. After converting a DOM node to a linear model
+ * node of this type, the converter checks this property. If it's false, the converter will descend
+ * into the DOM node's children, recursively convert them, and attach the resulting nodes as
+ * children of the linear model node. If it's true, the converter will not descend, and will
+ * expect the node's toDataElement() to have handled the entire DOM subtree.
+ *
+ * The same is true when converting from linear model data to DOM: if this property is true,
+ * toDomElements() will be passed the node's data element and all of its children and will be
+ * expected to convert the entire subtree. If it's false, the converter will descend into the
+ * child nodes and convert each one individually.
+ *
+ * If .static.childNodeTypes is set to [], this property is ignored and will be assumed to be true.
+ *
+ * @static
+ * @type {Boolean} static.handlesOwnChildren
+ * @inheritable
+ */
+ve.dm.Node.static.handlesOwnChildren = false;
+
+/**
  * Whether this node type has a wrapping element in the linear model. Most node types are wrapped,
  * only special node types are not wrapped.
  *

@@ -106,12 +106,18 @@ ve.dm.Model.static.matchFunction = null;
  * (usually the model's own .static.name, but that's not required). It may optionally have an attributes
  * property set to an object with key-value pairs. Any other properties are not allowed.
  *
+ * This function may return a single linear model element, or an array of balanced linear model
+ * data. If this function needs to recursively convert a DOM node (e.g. a child of one of the
+ * DOM elements passed in), it can call converter.getDataFromDomRecursion( domElement ). Note that
+ * if an array is returned, the converter will not descend into the DOM node's children; the model
+ * will be assumed to have handled those children.
+ *
  * @static
  * @inheritable
  * @method
  * @param {HTMLElement[]} domElements DOM elements to convert. Usually only one element
  * @param {ve.dm.Converter} converter Converter object
- * @returns {Object|null} Linear model element, or null to alienate
+ * @returns {Object|Array|null} Linear model element, or array with linear model data, or null to alienate
  */
 ve.dm.Model.static.toDataElement = function ( /*domElements, converter*/ ) {
 	throw new Error( 've.dm.Model subclass must implement toDataElement' );
@@ -121,6 +127,11 @@ ve.dm.Model.static.toDataElement = function ( /*domElements, converter*/ ) {
  * Static function to convert a linear model data element for this model type back to one or more
  * DOM elements.
  *
+ * If this model is a node with .handlesOwnChildren set to true, dataElement will be an array of
+ * the linear model data of this node and all of its children, rather than a single element.
+ * In this case, this function way want to recursively convert linear model data to DOM, which can
+ * be done with converter.getDomSubtreeFromData( store, data, containerElement );
+ *
  * NOTE: If this function returns multiple DOM elements, the DOM elements produced by the children
  * of this model (if it's a node and has children) will be attached to the first DOM element in the array.
  * For annotations, only the first element is used, and any additional elements are ignored.
@@ -128,11 +139,12 @@ ve.dm.Model.static.toDataElement = function ( /*domElements, converter*/ ) {
  * @static
  * @inheritable
  * @method
- * @param {Object} dataElement Linear model element with a type property and optionally an attributes property
+ * @param {Object|Array} dataElement Linear model element or array of linear model data
  * @param {HTMLDocument} doc HTML document for creating elements
+ * @param {ve.dm.Converter} converter Converter object to optionally call .getDomSubtreeFromData() on
  * @returns {HTMLElement[]} DOM elements
  */
-ve.dm.Model.static.toDomElements = function ( /*dataElement, doc*/ ) {
+ve.dm.Model.static.toDomElements = function ( /*dataElement, doc, converter*/ ) {
 	throw new Error( 've.dm.Model subclass must implement toDomElements' );
 };
 
