@@ -26,6 +26,8 @@ ve.inheritClass( ve.dm.MWCategoryMetaItem, ve.dm.MetaItem );
 
 ve.dm.MWCategoryMetaItem.static.name = 'MWcategory';
 
+ve.dm.MWCategoryMetaItem.static.group = 'MWcategory';
+
 ve.dm.MWCategoryMetaItem.static.matchTagNames = [ 'link' ];
 
 ve.dm.MWCategoryMetaItem.static.matchRdfaTypes = [ 'mw:WikiLink/Category' ];
