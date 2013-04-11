@@ -102,14 +102,14 @@ ve.dm.MetaList.prototype.onTransact = function ( tx, reversed ) {
 				ins = reversed ? ops[i].remove : ops[i].insert;
 				rm = reversed ? ops[i].insert : ops[i].remove;
 				for ( j = 0, jlen = rm.length; j < jlen; j++ ) {
-					this.deleteRemovedItem( offset, index + j );
+					item = this.deleteRemovedItem( offset, index + j );
 					removedItems.push( { 'item': item, 'offset': offset, 'index': index } );
 				}
 				for ( j = 0, jlen = ins.length; j < jlen; j++ ) {
 					item = ve.dm.metaItemFactory.createFromElement( ins[j] );
 					// offset and index are pre-transaction, but we'll fix them later
 					this.addInsertedItem( offset, index + j, item );
-					insertedItems.push( {'item': item } );
+					insertedItems.push( { 'item': item } );
 				}
 				index += rm.length;
 				break;
@@ -266,7 +266,6 @@ ve.dm.MetaList.prototype.addInsertedItem = function ( offset, index, item ) {
 		this.groups[group] = [ item ];
 	}
 	item.attach( this, offset, index );
-	this.emit( 'insert', item );
 };
 
 /**
@@ -291,7 +290,7 @@ ve.dm.MetaList.prototype.deleteRemovedItem = function ( offset, index ) {
 	if ( at !== null ) {
 		this.groups[group].splice( at, 1 );
 	}
-	this.emit( 'remove', item );
 	item.detach( this );
+	return item;
 };
 
