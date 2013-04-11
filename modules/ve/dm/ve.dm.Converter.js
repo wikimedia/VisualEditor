@@ -387,7 +387,7 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 
 	var i, childDomElement, childDomElements, childDataElement, text, childTypes, matches,
 		wrappingParagraph, prevElement, childAnnotations, modelName, modelClass,
-		annotation, annotationData, childIsContent, aboutGroup,
+		annotation, childIsContent, aboutGroup,
 		data = [],
 		nextWhitespace = '',
 		wrappedWhitespace = '',
@@ -420,10 +420,20 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 				modelName = this.modelRegistry.matchElement( childDomElement );
 				modelClass = this.modelRegistry.lookup( modelName ) || ve.dm.AlienNode;
 				if ( modelClass.prototype instanceof ve.dm.Annotation ) {
-					annotationData = this.createDataElement( modelClass, [ childDomElement ] );
+					childDataElement = this.createDataElement( modelClass, [ childDomElement ] );
+				} else {
+					// Node or meta item
+					aboutGroup = getAboutGroup( childDomElement );
+					childDomElements = modelClass.static.enableAboutGrouping ?
+						aboutGroup : [ childDomElement ];
+					childDataElement = this.createDataElement( modelClass, childDomElements );
 				}
-				if ( modelClass.prototype instanceof ve.dm.Annotation && annotationData ) {
-					annotation = this.annotationFactory.create( modelName, annotationData );
+
+				// Update modelClass to reflect the type we got back
+				modelClass = this.modelRegistry.lookup( childDataElement.type );
+				// Now take the appropriate action based on that
+				if ( modelClass.prototype instanceof ve.dm.Annotation ) {
+					annotation = this.annotationFactory.create( modelName, childDataElement );
 					// Start wrapping if needed
 					if ( !context.inWrapper && !context.expectingContent ) {
 						startWrapping();
@@ -437,11 +447,6 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 					);
 				} else {
 					// Node or meta item
-					aboutGroup = getAboutGroup( childDomElement );
-					childDomElements = modelClass.static.enableAboutGrouping ?
-						aboutGroup : [ childDomElement ];
-					childDataElement = this.createDataElement( modelClass, childDomElements );
-
 					if ( modelClass.prototype instanceof ve.dm.MetaItem ) {
 						// No additional processing needed
 						// Write to data and continue
