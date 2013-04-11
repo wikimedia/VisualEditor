@@ -116,9 +116,17 @@ Links are in {{msg-mw|Visualeditor-mainnamespacepagelink}} and {{msg-mw|visualed
 {{Identical|visualeditor}}',
 	'visualeditor-dialog-meta-title' => 'MetaData dialog title text',
 	'visualeditor-dialog-content-title' => 'Content dialog title text',
-	'visualeditor-dialog-action-apply' => 'Label text for button to apply changes made in dialog',
+	'visualeditor-dialog-action-apply' => 'Label text for button to apply changes made in dialog.
+
+See also:
+* {{msg-mw|Visualeditor-dialog-action-close}}',
 	'visualeditor-dialog-action-cancel' => 'Used as button text.
 {{Identical|Cancel}}',
+	'visualeditor-dialog-action-close' => 'Used as tooltip for the "Close" button.
+
+See also:
+* {{msg-mw|Visualeditor-dialog-action-apply}}
+{{Identical|Close}}',
 	'visualeditor-toolbar-savedialog' => 'Label text for button to trigger review and save interface',
 	'visualeditor-savedialog-title-review' => 'Title for reviewing slide',
 	'visualeditor-savedialog-title-report' => 'Title for reporting slide',
@@ -604,6 +612,7 @@ $messages['de'] = array(
 	'visualeditor-dialog-media-title' => 'Medieneinstellungen',
 	'visualeditor-dialog-action-apply' => 'Änderungen anwenden',
 	'visualeditor-dialog-action-cancel' => 'Abbrechen',
+	'visualeditor-dialog-action-close' => 'Schließen',
 	'visualeditor-toolbar-savedialog' => 'Überprüfen und speichern',
 	'visualeditor-savedialog-title-review' => 'Änderungen überprüfen',
 	'visualeditor-savedialog-title-report' => 'Ein Problem berichten',
@@ -987,6 +996,7 @@ $messages['fr'] = array(
 	'visualeditor-dialog-media-title' => 'Paramètres du média',
 	'visualeditor-dialog-action-apply' => 'Appliquer les modifications',
 	'visualeditor-dialog-action-cancel' => 'Annuler',
+	'visualeditor-dialog-action-close' => 'Fermer',
 	'visualeditor-toolbar-savedialog' => 'Relire et enregistrer',
 	'visualeditor-savedialog-title-review' => 'Relire vos modifications',
 	'visualeditor-savedialog-title-report' => 'Signaler un problème',
@@ -1117,6 +1127,7 @@ $messages['gl'] = array(
 	'visualeditor-dialog-media-title' => 'Configuración dos ficheiros multimedia',
 	'visualeditor-dialog-action-apply' => 'Aplicar os cambios',
 	'visualeditor-dialog-action-cancel' => 'Cancelar',
+	'visualeditor-dialog-action-close' => 'Pechar',
 	'visualeditor-toolbar-savedialog' => 'Revisar e gardar',
 	'visualeditor-savedialog-title-review' => 'Revisar os seus cambios',
 	'visualeditor-savedialog-title-report' => 'Informar sobre un problema',
@@ -1173,9 +1184,18 @@ $messages['gl'] = array(
 	'visualeditor-report-link' => 'foundation:Terms of Use/gl',
 );
 
+/** Gujarati (ગુજરાતી)
+ * @author KartikMistry
+ */
+$messages['gu'] = array(
+	'visualeditor-dialog-media-title' => 'મીડિયા ગોઠવણીઓ',
+	'visualeditor-dialogbutton-media-tooltip' => 'મીડિયા',
+);
+
 /** Hebrew (עברית)
  * @author Amire80
  * @author ExampleTomer
+ * @author Orsa
  * @author חיים
  */
 $messages['he'] = array(
@@ -1195,6 +1215,7 @@ $messages['he'] = array(
 	'visualeditor-dialog-content-title' => 'הגדרות תוכן',
 	'visualeditor-dialog-action-apply' => 'החל שינויים',
 	'visualeditor-dialog-action-cancel' => 'ביטול',
+	'visualeditor-dialog-action-close' => 'סגור',
 	'visualeditor-toolbar-savedialog' => 'סקירה ושמירה',
 	'visualeditor-savedialog-title-review' => 'סקירת השינויים שלך',
 	'visualeditor-savedialog-title-report' => 'דיווח על בעיה',
@@ -1538,6 +1559,7 @@ $messages['ja'] = array(
 	'visualeditor-dialog-media-title' => 'メディアの設定',
 	'visualeditor-dialog-action-apply' => '変更内容を適用',
 	'visualeditor-dialog-action-cancel' => 'キャンセル',
+	'visualeditor-dialog-action-close' => '閉じる',
 	'visualeditor-toolbar-savedialog' => '査読して保存',
 	'visualeditor-savedialog-title-review' => '変更内容の査読',
 	'visualeditor-savedialog-title-report' => '問題点の報告',
@@ -1703,8 +1725,10 @@ $messages['ko'] = array(
 	'visualeditor-ca-ve-create' => '시각적편집기',
 	'visualeditor-dialog-meta-title' => '문서 설정',
 	'visualeditor-dialog-content-title' => '컨텐츠 설정',
+	'visualeditor-dialog-media-title' => '미디어 설정',
 	'visualeditor-dialog-action-apply' => '바뀜 적용',
 	'visualeditor-dialog-action-cancel' => '취소',
+	'visualeditor-dialog-action-close' => '닫기',
 	'visualeditor-toolbar-savedialog' => '검토하고 저장',
 	'visualeditor-savedialog-title-review' => '바뀜 검토하기',
 	'visualeditor-savedialog-title-report' => '문제 보고',
@@ -1720,7 +1744,6 @@ $messages['ko'] = array(
 	'tooltip-ca-ve-edit' => '시각적편집기로 이 문서 편집',
 	'visualeditor-window-title' => '검사',
 	'visualeditor-linkinspector-title' => '하이퍼링크',
-	'visualeditor-linkinspector-label-pagetitle' => '문서 제목',
 	'visualeditor-linkinspector-suggest-existing-page' => '기존 문서',
 	'visualeditor-linkinspector-suggest-new-page' => '새 문서',
 	'visualeditor-linkinspector-suggest-external-link' => '웹 링크',
@@ -1736,6 +1759,7 @@ $messages['ko'] = array(
 	'visualeditor-annotationbutton-bold-tooltip' => '굵은 글씨',
 	'visualeditor-annotationbutton-italic-tooltip' => '기울인 글씨',
 	'visualeditor-annotationbutton-link-tooltip' => '링크',
+	'visualeditor-dialogbutton-media-tooltip' => '미디어',
 	'visualeditor-indentationbutton-indent-tooltip' => '들여쓰기 높이기',
 	'visualeditor-indentationbutton-outdent-tooltip' => '들여쓰기 줄이기',
 	'visualeditor-listbutton-number-tooltip' => '번호가 매겨진 목록',
@@ -2170,6 +2194,7 @@ $messages['nl'] = array(
 	'visualeditor-dialog-media-title' => 'Mediainstellingen',
 	'visualeditor-dialog-action-apply' => 'Wijzigingen toepassen',
 	'visualeditor-dialog-action-cancel' => 'Annuleren',
+	'visualeditor-dialog-action-close' => 'Sluiten',
 	'visualeditor-toolbar-savedialog' => 'Controleren en opslaan',
 	'visualeditor-savedialog-title-review' => 'Wijzigingen controleren',
 	'visualeditor-savedialog-title-report' => 'Probleem melden',
@@ -2301,6 +2326,7 @@ $messages['os'] = array(
  * @author Matma Rex
  * @author Mikołka
  * @author Odie2
+ * @author Ty221
  * @author WTM
  */
 $messages['pl'] = array(
@@ -2316,6 +2342,7 @@ $messages['pl'] = array(
 	'visualeditor-ca-editsource' => 'Edytuj kod źródłowy',
 	'visualeditor-ca-ve-edit' => 'VisualEditor',
 	'visualeditor-ca-ve-create' => 'VisualEditor',
+	'visualeditor-dialog-action-close' => 'Zamknij',
 	'visualeditor-toolbar-savedialog' => 'Sprawdź i zapisz',
 	'visualeditor-savedialog-title-review' => 'Przeglądnij swoje zmiany',
 	'visualeditor-savedialog-title-report' => 'Zgłoś problem',
@@ -2331,7 +2358,6 @@ $messages['pl'] = array(
 	'tooltip-ca-ve-edit' => 'Edytuj tą stronę z VisualEditor',
 	'visualeditor-window-title' => 'Zbadaj',
 	'visualeditor-linkinspector-title' => 'Hiperłącze',
-	'visualeditor-linkinspector-label-pagetitle' => 'Tytuł strony',
 	'visualeditor-linkinspector-suggest-existing-page' => 'Istniejąca strona',
 	'visualeditor-linkinspector-suggest-new-page' => 'Nowa strona',
 	'visualeditor-linkinspector-suggest-external-link' => 'Link zewnętrzny',
