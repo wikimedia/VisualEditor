@@ -346,7 +346,7 @@ ve.dm.TransactionProcessor.processors.attribute = function ( op ) {
 	}
 
 	this.synchronizer.pushAttributeChange(
-		this.document.getNodeFromOffset( this.cursor + 1 ),
+		this.document.documentNode.getNodeFromOffset( this.cursor + 1 ),
 		op.key,
 		from, to
 	);
