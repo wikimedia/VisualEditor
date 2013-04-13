@@ -42,9 +42,12 @@ ve.dm.MWTemplateNode.static.getHashObject = function ( dataElement ) {
 ve.dm.MWTemplateNode.static.toDataElement = function ( domElements, converter ) {
 	var dataElement,
 		about = domElements[0].getAttribute( 'about' ),
-		mw = JSON.parse( domElements[0].getAttribute( 'data-mw' ) );
+		mw = JSON.parse( domElements[0].getAttribute( 'data-mw' ) ),
+		isInline = this.isHybridInline( domElements, converter ),
+		type = isInline ? 'MWtemplateInline' : 'MWtemplateBlock';
+
 	dataElement = {
-		'type': this.name,
+		'type': type,
 		'mw': mw,
 		'about': about
 	};
@@ -62,6 +65,52 @@ ve.dm.MWTemplateNode.static.toDomElements = function ( dataElement, doc ) {
 	return [ span ];
 };
 
+/* Concrete subclasses */
+
+/**
+ * DataModel MediaWiki template block node.
+ *
+ * @class
+ * @extends ve.dm.MWTemplateNode
+ * @constructor
+ * @param {number} [length] Length of content data in document; ignored and overridden to 0
+ * @param {Object} [element] Reference to element in linear model
+ */
+ve.dm.MWTemplateBlockNode = function VeDmMWTemplateBlockNode( length, element ) {
+	// Parent constructor
+	ve.dm.MWTemplateNode.call( this, length, element );
+};
+
+ve.inheritClass( ve.dm.MWTemplateBlockNode, ve.dm.MWTemplateNode );
+
+ve.dm.MWTemplateBlockNode.static.matchTagNames = [];
+
+ve.dm.MWTemplateBlockNode.static.name = 'MWtemplateBlock';
+
+/**
+ * DataModel MediaWiki template inline node.
+ *
+ * @class
+ * @extends ve.dm.MWTemplateNode
+ * @constructor
+ * @param {number} [length] Length of content data in document; ignored and overridden to 0
+ * @param {Object} [element] Reference to element in linear model
+ */
+ve.dm.MWTemplateInlineNode = function VeDmMWTemplateInlineNode( length, element ) {
+	// Parent constructor
+	ve.dm.MWTemplateNode.call( this, length, element );
+};
+
+ve.inheritClass( ve.dm.MWTemplateInlineNode, ve.dm.MWTemplateNode );
+
+ve.dm.MWTemplateInlineNode.static.matchTagNames = [];
+
+ve.dm.MWTemplateInlineNode.static.name = 'MWtemplateInline';
+
+ve.dm.MWTemplateInlineNode.static.isContent = true;
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.MWTemplateNode );
+ve.dm.modelRegistry.register( ve.dm.MWTemplateBlockNode );
+ve.dm.modelRegistry.register( ve.dm.MWTemplateInlineNode );

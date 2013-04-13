@@ -128,8 +128,6 @@
 		<script src="../../ve/ce/ve.ce.SurfaceObserver.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.GeneratedContentNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.AlienNode.js"></script>
-		<script src="../../ve/ce/nodes/ve.ce.AlienInlineNode.js"></script>
-		<script src="../../ve/ce/nodes/ve.ce.AlienBlockNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.BreakNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.CenterNode.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.DefinitionListItemNode.js"></script>

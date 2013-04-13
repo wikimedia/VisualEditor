@@ -715,8 +715,11 @@ ve.dm.example.conversions = {
 };
 
 ve.dm.example.MWImageHtml = '<a rel="mw:Image" href="./File:Wiki.png" data-parsoid="{&quot;tsr&quot;:[158,216],&quot;src&quot;:&quot;[[Image:Wiki.png|500px|thumb|center|Example wiki file]]&quot;,&quot;optNames&quot;:{&quot;width&quot;:&quot;$1px&quot;},&quot;dsr&quot;:[158,216,null,null]}"><img height="" width="500" src="/index.php?title=Special:FilePath/Wiki.png&amp;width=500" alt="Wiki.png"></a>';
-ve.dm.example.MWTemplateSpan = '<span about="#mwt1" typeof="mw:Object/Template" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Test&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;Hello, world!&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,40],&quot;src&quot;:&quot;{{Test|Hello, world!}}&quot;,&quot;dsr&quot;:[18,40,null,null]}"></span>';
-ve.dm.example.MWTemplateContent = '<p about="#mwt1" data-parsoid="{}">Hello, world!</p>';
+ve.dm.example.MWBlockTemplateSpan = '<span about="#mwt1" typeof="mw:Object/Template" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Test&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;Hello, world!&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,40],&quot;src&quot;:&quot;{{Test|Hello, world!}}&quot;,&quot;dsr&quot;:[18,40,null,null]}"></span>';
+ve.dm.example.MWBlockTemplateContent = '<p about="#mwt1" data-parsoid="{}">Hello, world!</p>';
+ve.dm.example.MWInlineTemplateOpen = '<span about="#mwt1" typeof="mw:Object/Template" data-mw="{&quot;id&quot;:&quot;mwt1&quot;,&quot;target&quot;:{&quot;wt&quot;:&quot;Inline&quot;},&quot;params&quot;:{&quot;1&quot;:{&quot;wt&quot;:&quot;1,234&quot;}}}" data-parsoid="{&quot;tsr&quot;:[18,34],&quot;src&quot;:&quot;{{Inline|1,234}}&quot;,&quot;dsr&quot;:[18,34,null,null]}">';
+ve.dm.example.MWInlineTemplateContent = '$1,234.00';
+ve.dm.example.MWInlineTemplateClose = '</span>';
 
 ve.dm.example.domToDataCases = {
 	'paragraph with plain text': {
@@ -777,11 +780,11 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/paragraph' }
 		]
 	},
-	'mw:Template': {
-		'html': '<body>' + ve.dm.example.MWTemplateSpan + ve.dm.example.MWTemplateContent + '</body>',
+	'mw:Template (block level)': {
+		'html': '<body>' + ve.dm.example.MWBlockTemplateSpan + ve.dm.example.MWBlockTemplateContent + '</body>',
 		'data': [
 			{
-				'type': 'MWtemplate',
+				'type': 'MWtemplateBlock',
 				'mw': {
 					'id': 'mwt1',
 					'target': { 'wt' : 'Test' },
@@ -799,9 +802,35 @@ ve.dm.example.domToDataCases = {
 					'html/1/data-parsoid': '{}'
 				},
 			},
-			{ 'type': '/MWtemplate' },
+			{ 'type': '/MWtemplateBlock' },
 		],
-		'normalizedHtml': ve.dm.example.MWTemplateSpan
+		'normalizedHtml': ve.dm.example.MWBlockTemplateSpan
+	},
+	'mw:Template (inline)': {
+		'html': '<body>' + ve.dm.example.MWInlineTemplateOpen + ve.dm.example.MWInlineTemplateContent + ve.dm.example.MWInlineTemplateClose + '</body>',
+		'data': [
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			{
+				'type': 'MWtemplateInline',
+				'mw': {
+					'id': 'mwt1',
+					'target': { 'wt' : 'Inline' },
+					'params': {
+						'1': { 'wt': '1,234' }
+					}
+				},
+				'about': '#mwt1',
+				'attributes': {
+					'html/0/about': '#mwt1',
+					'html/0/data-mw': '{\"id\":\"mwt1\",\"target\":{\"wt\":\"Inline\"},\"params\":{\"1\":{\"wt\":\"1,234\"}}}',
+					'html/0/data-parsoid': '{\"tsr\":[18,34],\"src\":\"{{Inline|1,234}}\",\"dsr\":[18,34,null,null]}',
+					'html/0/typeof': 'mw:Object/Template'
+				},
+			},
+			{ 'type': '/MWtemplateInline' },
+			{ 'type': '/paragraph' }
+		],
+		'normalizedHtml': ve.dm.example.MWInlineTemplateOpen + ve.dm.example.MWInlineTemplateClose
 	},
 	'paragraph with alienInline inside': {
 		'html': '<body><p>a<tt class="foo">b</tt>c</p></body>',

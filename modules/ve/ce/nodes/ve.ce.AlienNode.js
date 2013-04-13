@@ -9,6 +9,7 @@
  * ContentEditable alien node.
  *
  * @class
+ * @abstract
  * @extends ve.ce.GeneratedContentNode
  * @constructor
  * @param {ve.dm.AlienNode} model Model to observe
@@ -134,6 +135,58 @@ ve.ce.AlienNode.prototype.clearPhantoms = function() {
 	surface.$.unbind( '.phantoms' );
 };
 
+/* Concrete subclasses */
+
+/**
+ * ContentEditable alien block node.
+ *
+ * @class
+ * @extends ve.ce.AlienNode
+ * @constructor
+ * @param {ve.dm.AlienBlockNode} model Model to observe
+ */
+ve.ce.AlienBlockNode = function VeCeAlienBlockNode( model ) {
+	// Parent constructor
+	ve.ce.AlienNode.call( this, model );
+
+	// DOM Changes
+	this.$.addClass( 've-ce-alienBlockNode' );
+};
+
+/* Inheritance */
+
+ve.inheritClass( ve.ce.AlienBlockNode, ve.ce.AlienNode );
+
+/* Static Properties */
+
+ve.ce.AlienBlockNode.static.name = 'alienBlock';
+
+/**
+ * ContentEditable alien inline node.
+ *
+ * @class
+ * @extends ve.ce.AlienNode
+ * @constructor
+ * @param {ve.dm.AlienInlineNode} model Model to observe
+ */
+ve.ce.AlienInlineNode = function VeCeAlienInlineNode( model ) {
+	// Parent constructor
+	ve.ce.AlienNode.call( this, model );
+
+	// DOM Changes
+	this.$.addClass( 've-ce-alienInlineNode' );
+};
+
+/* Inheritance */
+
+ve.inheritClass( ve.ce.AlienInlineNode, ve.ce.AlienNode );
+
+/* Static Properties */
+
+ve.ce.AlienInlineNode.static.name = 'alienInline';
+
 /* Registration */
 
 ve.ce.nodeFactory.register( ve.ce.AlienNode );
+ve.ce.nodeFactory.register( ve.ce.AlienBlockNode );
+ve.ce.nodeFactory.register( ve.ce.AlienInlineNode );

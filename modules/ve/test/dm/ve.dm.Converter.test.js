@@ -39,8 +39,8 @@ QUnit.test( 'getDomElementsFromDataElement', 20, function ( assert ) {
 	}
 } );
 
-QUnit.test( 'getDataFromDom', 52, function ( assert ) {
-	var msg,
+QUnit.test( 'getDataFromDom', function ( assert ) {
+	var msg, n = 0,
 		store = new ve.dm.IndexValueStore(),
 		cases = ve.copyObject( ve.dm.example.domToDataCases );
 
@@ -48,6 +48,13 @@ QUnit.test( 'getDataFromDom', 52, function ( assert ) {
 	// nodes the most recently registered, instead of the MW versions
 	ve.dm.modelRegistry.register( ve.dm.HeadingNode );
 	ve.dm.modelRegistry.register( ve.dm.PreformattedNode );
+
+	for ( msg in cases ) {
+		if ( cases[msg].html !== null ) {
+			n++;
+		}
+	}
+	QUnit.expect( n );
 
 	for ( msg in cases ) {
 		if ( cases[msg].html !== null ) {
@@ -61,10 +68,15 @@ QUnit.test( 'getDataFromDom', 52, function ( assert ) {
 	}
 } );
 
-QUnit.test( 'getDomFromData', 56, function ( assert ) {
-	var msg,
+QUnit.test( 'getDomFromData', function ( assert ) {
+	var msg, n = 0,
 		store = new ve.dm.IndexValueStore(),
 		cases = ve.copyObject( ve.dm.example.domToDataCases );
+
+	for ( msg in cases ) {
+		n++;
+	}
+	QUnit.expect( n );
 
 	for ( msg in cases ) {
 		ve.dm.example.preprocessAnnotations( cases[msg].data, store );

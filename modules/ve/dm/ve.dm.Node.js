@@ -60,7 +60,7 @@ ve.mixinClass( ve.dm.Node, ve.Node );
  * If .static.childNodeTypes is set to [], this property is ignored and will be assumed to be true.
  *
  * @static
- * @type {Boolean} static.handlesOwnChildren
+ * @type {boolean} static.handlesOwnChildren
  * @inheritable
  */
 ve.dm.Node.static.handlesOwnChildren = false;
@@ -172,6 +172,35 @@ ve.dm.Node.static.getHashObject = function ( dataElement ) {
 		type: dataElement.type,
 		attributes: dataElement.attributes
 	};
+};
+
+/**
+ * Determine if a hybrid element is inline and allowed to be inline in this context
+ *
+ * We generate block elements for block tags and inline elements for inline
+ * tags; unless we're in a content location, in which case we have no choice
+ * but to generate an inline element.
+ *
+ * @param {HTMLElement[]} domElements DOM elements being converted
+ * @param {ve.dm.Converter} converter Converter object
+ * @returns {boolean} The element is inline
+ */
+ve.dm.Node.static.isHybridInline = function ( domElements, converter ) {
+	var i, length, allTagsInline = true;
+
+	for ( i = 0, length = domElements.length; i < length; i++ ) {
+		if ( ve.isBlockElement( domElements[i] ) ) {
+			allTagsInline = false;
+			break;
+		}
+	}
+
+	// Force inline in content locations (but not wrappers)
+	return ( converter.isExpectingContent() && !converter.isInWrapper() ) ||
+		// ..also force inline in wrappers that we can't close
+		( converter.isInWrapper() && !converter.canCloseWrapper() ) ||
+		// ..otherwise just look at the tag names
+		allTagsInline;
 };
 
 /* Methods */

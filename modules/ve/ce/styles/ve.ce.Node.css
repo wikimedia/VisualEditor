@@ -53,11 +53,13 @@
 	content: '';
 }
 
-.ve-ce-alienBlockNode {
+.ve-ce-alienBlockNode,
+.ve-ce-MWtemplateBlockNode, {
 	display: block;
 }
 
-.ve-ce-alienInlineNode {
+.ve-ce-alienInlineNode,
+.ve-ce-MWtemplateInlineNode {
 	display: inline;
 }
 

@@ -303,8 +303,6 @@ $wgResourceModules += array(
 
 			've/ce/nodes/ve.ce.GeneratedContentNode.js',
 			've/ce/nodes/ve.ce.AlienNode.js',
-			've/ce/nodes/ve.ce.AlienInlineNode.js',
-			've/ce/nodes/ve.ce.AlienBlockNode.js',
 			've/ce/nodes/ve.ce.BreakNode.js',
 			've/ce/nodes/ve.ce.CenterNode.js',
 			've/ce/nodes/ve.ce.DefinitionListItemNode.js',

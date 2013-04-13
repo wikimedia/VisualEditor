@@ -104,7 +104,7 @@ ve.dm.Converter.openAndCloseAnnotations = function ( currentSet, targetSet, open
  * Check whether this converter instance is currently inside a getDataFromDom() conversion.
  *
  * @method
- * @returns {Boolean} Whether we're converting
+ * @returns {boolean} Whether we're converting
  */
 ve.dm.Converter.prototype.isConverting = function () {
 	return this.contextStack !== null;

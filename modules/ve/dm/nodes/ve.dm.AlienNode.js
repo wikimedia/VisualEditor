@@ -31,28 +31,10 @@ ve.dm.AlienNode.static.name = 'alien';
 ve.dm.AlienNode.static.storeHtmlAttributes = false;
 
 ve.dm.AlienNode.static.toDataElement = function ( domElements, converter ) {
-	var i, isInline, allTagsInline, type, html;
-	// Check whether all elements are inline elements
-	allTagsInline = true;
-	for ( i = 0; i < domElements.length; i++ ) {
-		if ( ve.isBlockElement( domElements[i] ) ) {
-			allTagsInline = false;
-			break;
-		}
-	}
+	var isInline = this.isHybridInline( domElements, converter ),
+		type = isInline ? 'alienInline' : 'alienBlock',
+		html = $( '<div>', domElements[0].ownerDocument ).append( $( domElements ).clone() ).html();
 
-	// We generate alienBlock elements for block tags and alienInline elements for
-	// inline tags; unless we're in a content location, in which case we have no choice
-	// but to generate an alienInline element.
-	isInline =
-		// Force inline in content locations (but not wrappers)
-		( converter.isExpectingContent() && !converter.isInWrapper() ) ||
-		// Also force inline in wrappers that we can't close
-		( converter.isInWrapper() && !converter.canCloseWrapper() ) ||
-		// Look at the tag names otherwise
-		allTagsInline;
-	type = isInline ? 'alienInline' : 'alienBlock';
-	html = $( '<div>', domElements[0].ownerDocument ).append( $( domElements ).clone() ).html();
 	return {
 		'type': type,
 		'attributes': {
