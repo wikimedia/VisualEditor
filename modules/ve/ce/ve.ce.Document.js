@@ -55,31 +55,6 @@ ve.ce.Document.prototype.getSlugAtOffset = function ( offset ) {
 };
 
 /**
- * Configuration for getSiblingWordBoundary method.
- */
-ve.ce.Document.static.siblingWordBoundaryConfig = {
-	'default' : {
-		'left' : {
-			'boundary' : { 'text' : true, 'space' : true },
-			'space' : { 'text' : true, 'boundary' : true }
-		},
-		'right' : {
-			'boundary' : { 'text' : true, 'space' : true },
-			'space' : { 'text' : true, 'boundary' : true }
-		}
-	},
-	'ie' : {
-		'left' : {
-			'space' : { 'text' : true, 'boundary' : true }
-		},
-		'right' : {
-			'text' : { 'space' : true },
-			'boundary' : { 'space' : true }
-		}
-	}
-};
-
-/**
  * Get the nearest word boundary.
  * This method is in CE instead of DM because its behaviour depends on the browser (IE/non-IE) and
  * that information is closer to view layer. (CE)
@@ -90,43 +65,8 @@ ve.ce.Document.static.siblingWordBoundaryConfig = {
  * @returns {number} Nearest word boundary
  */
 ve.ce.Document.prototype.getSiblingWordBoundary = function ( offset, direction ) {
-	var config = ve.ce.Document.static.siblingWordBoundaryConfig,
-		pattern = ve.dm.SurfaceFragment.static.wordBoundaryPattern,
-		data = this.model.data,
-		i = direction > 0 ? offset : offset - 1,
-		inc = direction > 0 ? 1 : -1,
-		oneChar, prevType, nextType;
-
-	if ( data.getData( i ) === undefined || data.isElementData( i ) ) {
-		return this.getRelativeOffset( offset, direction, 'character' );
-	} else {
-		config = $.browser.msie ? config.ie : config.default;
-		config = direction > 0 ? config.right : config.left;
-		do {
-			if ( data.isElementData( i ) ) {
-				break;
-			} else {
-				oneChar = data.getCharacterData( i );
-				if ( oneChar === ' ' ) {
-					nextType = 'space';
-				} else if ( pattern.test( oneChar ) ) {
-					nextType = 'boundary';
-				} else {
-					nextType = 'text';
-				}
-				if ( prevType && prevType !== nextType ) {
-					if ( config[prevType] && nextType in config[prevType] ) {
-						prevType = nextType;
-						continue;
-					} else {
-						break;
-					}
-				}
-				prevType = nextType;
-			}
-		} while ( data.getCharacterData( i += inc ) );
-		return i + ( inc > 0 ? 0 : 1 );
-	}
+	var dataString = new ve.dm.DataString( this.model.getData() );
+	return unicodeJS.wordbreak.moveBreakOffset( direction, dataString, offset, true );
 };
 
 /**
