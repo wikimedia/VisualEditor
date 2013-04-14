@@ -73,7 +73,9 @@ ve.ui.Toolbar.prototype.onContextChange = function () {
 
 	leafNodes = fragment.getLeafNodes();
 	for ( i = 0, len = leafNodes.length; i < len; i++ ) {
-		nodes.push( leafNodes[i].node );
+		if ( len === 1 || !leafNodes[i].range || leafNodes[i].range.getLength() ) {
+			nodes.push( leafNodes[i].node );
+		}
 	}
 	this.emit( 'updateState', nodes, fragment.getAnnotations(), fragment.getAnnotations( true ) );
 };
