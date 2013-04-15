@@ -401,6 +401,7 @@ $messages['bg'] = array(
 );
 
 /** Bengali (বাংলা)
+ * @author Aftab1995
  * @author Bellayet
  * @author Runab
  */
@@ -410,9 +411,9 @@ $messages['bn'] = array(
 	'visualeditor-ca-editsource' => 'উৎস সম্পাদনা',
 	'visualeditor-ca-ve-edit' => 'ভিজ্যুয়ালএডিটর',
 	'visualeditor-ca-ve-create' => 'ভিজ্যুয়ালএডিটর',
+	'visualeditor-dialog-action-close' => 'বন্ধ',
 	'visualeditor-savedialog-label-create' => 'পাতা তৈরি',
 	'visualeditor-savedialog-label-save' => 'পাতা সংরক্ষণ',
-	'visualeditor-linkinspector-label-pagetitle' => 'পাতার শিরোনাম',
 	'visualeditor-linkinspector-suggest-new-page' => 'নতুন পাতা',
 	'visualeditor-linkinspector-suggest-external-link' => 'ওয়েব লিঙ্ক',
 	'visualeditor-formatdropdown-format-paragraph' => 'প্যারাগ্রাফ',
@@ -1907,6 +1908,7 @@ $messages['mk'] = array(
 	'visualeditor-dialog-media-title' => 'Поставки за слики и снимки',
 	'visualeditor-dialog-action-apply' => 'Спроведи измени',
 	'visualeditor-dialog-action-cancel' => 'Откажи',
+	'visualeditor-dialog-action-close' => 'Затвори',
 	'visualeditor-toolbar-savedialog' => 'Провери и зачувај',
 	'visualeditor-savedialog-title-review' => 'Проверете ги вашите промени',
 	'visualeditor-savedialog-title-report' => 'Пријави проблем',
@@ -2819,6 +2821,7 @@ $messages['si'] = array(
  */
 $messages['sr-ec'] = array(
 	'visualeditor-dialog-action-cancel' => 'Откажи',
+	'visualeditor-dialog-action-close' => 'Затвори',
 );
 
 /** Swedish (svenska)
@@ -3101,6 +3104,7 @@ $messages['vi'] = array(
 	'visualeditor-dialog-media-title' => 'Tùy chọn phương tiện',
 	'visualeditor-dialog-action-apply' => 'Áp dụng các thay đổi',
 	'visualeditor-dialog-action-cancel' => 'Hủy bỏ',
+	'visualeditor-dialog-action-close' => 'Đóng',
 	'visualeditor-toolbar-savedialog' => 'Xem lại và lưu',
 	'visualeditor-savedialog-title-review' => 'Xem lại những thay đổi của bạn',
 	'visualeditor-savedialog-title-report' => 'Báo cáo một vấn đề',
