@@ -66,6 +66,7 @@ $wgResourceModules += array(
 		'scripts' => array(
 			'rangy/rangy-core.js',
 			'rangy/rangy-position.js',
+			'rangy/rangy-export.js',
 		),
 	),
 	'jquery.visibleText' => $wgVisualEditorResourceTemplate + array(
