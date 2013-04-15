@@ -126,7 +126,7 @@ ve.ce.SurfaceObserver.prototype.stop = function ( poll ) {
  * @emits selectionChange
  */
 ve.ce.SurfaceObserver.prototype.poll = function ( async ) {
-	var delayPoll, $branch, node, text, hash, range, rangyRange;
+	var delayPoll, $nodeOrSlug, node, text, hash, range, rangyRange;
 
 	if ( this.polling === false ) {
 		return;
@@ -155,13 +155,12 @@ ve.ce.SurfaceObserver.prototype.poll = function ( async ) {
 
 	if ( !rangyRange.equals( this.rangyRange ) ){
 		this.rangyRange = rangyRange;
-		$branch = $( rangyRange.anchorNode ).closest( '.ve-ce-branchNode' );
-		if ( $branch.length ) {
-			node = $branch.data( 'view' );
-			if ( node.canHaveChildrenNotContent() ) {
-				node = null;
-			} else {
-				range = rangyRange.getRange();
+		node = null;
+		$nodeOrSlug = $( rangyRange.anchorNode ).closest( '.ve-ce-branchNode, .ve-ce-slug' );
+		if ( $nodeOrSlug.length ) {
+			range = rangyRange.getRange();
+			if ( !$nodeOrSlug.hasClass( 've-ce-slug' ) ) {
+				node = $nodeOrSlug.data( 'view' );
 			}
 		}
 	}
