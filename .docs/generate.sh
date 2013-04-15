@@ -16,7 +16,9 @@ cd $(cd $(dirname $0); pwd)
 	done
 ) < eg-iframe.tpl | php > eg-iframe.html
 
-warnings=`jsduck --config=config.json 2>&1`
+# Disable parallel processing which seems to be causing
+# problems under Ruby 1.8
+warnings=`jsduck --config=config.json --processes=0 2>&1`
 ec=$?
 
 rm eg-iframe.html
