@@ -74,9 +74,6 @@ ve.ce.Document.prototype.getSiblingWordBoundary = function ( offset, direction )
  * This method is in CE instead of DM because it uses information about slugs about which model
  * does not know at all.
  *
- * FIXME: In certain cases returned offset is the same as passed offset which prevents cursor from
- * moving.
- *
  * @method
  * @param {number} offset Offset to start from
  * @param {number} [direction] Direction to prefer matching offset in, -1 for left and 1 for right
@@ -84,9 +81,16 @@ ve.ce.Document.prototype.getSiblingWordBoundary = function ( offset, direction )
  * @returns {number} Relative offset
  */
 ve.ce.Document.prototype.getRelativeOffset = function ( offset, direction, unit ) {
-	var bias, relativeContentOffset, relativeStructuralOffset;
+	var bias, relativeContentOffset, relativeStructuralOffset, newOffset;
 	if ( unit === 'word' ) { // word
-		return this.getSiblingWordBoundary( offset, direction );
+		// Method getSiblingWordBoundary does not "move/jump" over element data. If passed offset is
+		// an element data offset then the same offset is returned - and in such case this method
+		// fallback to the other path (character) which does "move/jump" over element data.
+		newOffset = this.getSiblingWordBoundary( offset, direction );
+		if ( offset === newOffset ) {
+			newOffset = this.getRelativeOffset( offset, direction, 'character' );
+		}
+		return newOffset;
 	} else { // character
 		bias = direction > 0 ? 1 : -1;
 		relativeContentOffset = this.model.data.getRelativeContentOffset( offset, direction );
