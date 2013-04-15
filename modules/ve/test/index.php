@@ -158,6 +158,7 @@
 		<script src="../../ve/ui/ve.ui.Frame.js"></script>
 		<script src="../../ve/ui/ve.ui.Window.js"></script>
 		<script src="../../ve/ui/ve.ui.WindowSet.js"></script>
+		<script src="../../ve/ui/ve.ui.ViewRegistry.js"></script>
 		<script src="../../ve/ui/ve.ui.Inspector.js"></script>
 		<script src="../../ve/ui/ve.ui.InspectorFactory.js"></script>
 		<script src="../../ve/ui/ve.ui.Dialog.js"></script>

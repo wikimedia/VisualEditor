@@ -164,7 +164,7 @@ ve.ui.Context.prototype.destroy = function () {
  * @chainable
  */
 ve.ui.Context.prototype.update = function () {
-	var i, nodes, items,
+	var i, nodes, views,
 		fragment = this.surface.getModel().getFragment( null, false ),
 		selection = fragment.getRange(),
 		inspector = this.inspectors.getCurrent();
@@ -174,7 +174,7 @@ ve.ui.Context.prototype.update = function () {
 		this.show();
 	} else {
 		// No inspector is open, or the selection has changed, show a menu of available inspectors
-		items = ve.ui.inspectorFactory.getInspectorsForAnnotations( fragment.getAnnotations() );
+		views = ve.ui.viewRegistry.getViewsForAnnotations( fragment.getAnnotations() );
 		nodes = fragment.getLeafNodes();
 		for ( i = 0; i < nodes.length; i++ ) {
 			if ( nodes[i].range && nodes[i].range.isCollapsed() ) {
@@ -183,15 +183,15 @@ ve.ui.Context.prototype.update = function () {
 			}
 		}
 		if ( nodes.length === 1 ) {
-			items = items.concat( ve.ui.dialogFactory.getDialogsForNode( nodes[0].node ) );
+			views = views.concat( ve.ui.viewRegistry.getViewsForNode( nodes[0].node ) );
 		}
-		for ( i = 0; i < items.length; i++ ) {
-			if ( !ve.ui.toolFactory.lookup( items[i] ) ) {
-				items.splice( i, 1 );
+		for ( i = 0; i < views.length; i++ ) {
+			if ( !ve.ui.toolFactory.lookup( views[i] ) ) {
+				views.splice( i, 1 );
 				i--;
 			}
 		}
-		if ( items.length ) {
+		if ( views.length ) {
 			// There's at least one inspectable annotation, build a menu and show it
 			this.$menu.empty();
 			if ( this.toolbar ) {
@@ -200,7 +200,7 @@ ve.ui.Context.prototype.update = function () {
 			this.toolbar = new ve.ui.Toolbar(
 				$( '<div class="ve-ui-context-toolbar"></div>' ),
 				this.surface,
-				[{ 'name': 'inspectors', 'items' : items }]
+				[{ 'name': 'inspectors', 'items' : views }]
 			);
 			this.$menu.append( this.toolbar.$ );
 			this.show();

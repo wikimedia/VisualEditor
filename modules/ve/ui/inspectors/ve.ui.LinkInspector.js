@@ -33,7 +33,7 @@ ve.ui.LinkInspector.static.icon = 'link';
 
 ve.ui.LinkInspector.static.titleMessage = 'visualeditor-linkinspector-title';
 
-ve.ui.LinkInspector.static.typePattern = /^link(\/|$)/;
+ve.ui.LinkInspector.static.modelClasses = [ ve.dm.LinkAnnotation ];
 
 ve.ui.LinkInspector.static.linkTargetInputWidget = ve.ui.LinkTargetInputWidget;
 
@@ -227,3 +227,5 @@ ve.ui.LinkInspector.prototype.getAnnotationFromTarget = function ( target ) {
 /* Registration */
 
 ve.ui.inspectorFactory.register( 'link', ve.ui.LinkInspector );
+
+ve.ui.viewRegistry.register( 'link', ve.ui.LinkInspector );

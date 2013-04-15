@@ -57,8 +57,7 @@ ve.ui.InspectorButtonTool.prototype.onClick = function () {
  */
 ve.ui.InspectorButtonTool.prototype.onUpdateState = function ( nodes, full ) {
 	this.setActive(
-		full.hasAnnotationWithName(
-			ve.ui.inspectorFactory.getTypePattern( this.constructor.static.inspector )
-		)
+		ve.ui.viewRegistry.getViewsForAnnotations( full )
+			.indexOf( this.constructor.static.inspector ) !== -1
 	);
 };

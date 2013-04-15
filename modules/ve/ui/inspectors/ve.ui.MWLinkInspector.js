@@ -27,7 +27,9 @@ ve.inheritClass( ve.ui.MWLinkInspector, ve.ui.LinkInspector );
 
 /* Static properties */
 
-ve.ui.MWLinkInspector.static.typePattern = /^link\/MW(in|ex)ternal$/;
+ve.ui.MWLinkInspector.static.modelClasses = [
+	ve.dm.MWExternalLinkAnnotation, ve.dm.MWInternalLinkAnnotation
+];
 
 ve.ui.MWLinkInspector.static.linkTargetInputWidget = ve.ui.MWLinkTargetInputWidget;
 
@@ -78,3 +80,5 @@ ve.ui.MWLinkInspector.prototype.getAnnotationFromTarget = function ( target ) {
 /* Registration */
 
 ve.ui.inspectorFactory.register( 'mwLink', ve.ui.MWLinkInspector );
+
+ve.ui.viewRegistry.register( 'mwLink', ve.ui.MWLinkInspector );

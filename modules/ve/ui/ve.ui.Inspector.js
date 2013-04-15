@@ -9,13 +9,14 @@
  * UserInterface inspector.
  *
  * @class
+ * @abstract
  * @extends ve.ui.Window
  *
  * @constructor
  * @param {ve.Surface} surface
  */
 ve.ui.Inspector = function VeUiInspector( surface ) {
-	// Inheritance
+	// Parent constructor
 	ve.ui.Window.call( this, surface );
 
 	// Properties
@@ -30,14 +31,6 @@ ve.ui.Inspector = function VeUiInspector( surface ) {
 ve.inheritClass( ve.ui.Inspector, ve.ui.Window );
 
 /* Static Properties */
-
-/**
- * Pattern to use when matching against annotation type strings.
- *
- * @static
- * @property {RegExp}
- */
-ve.ui.Inspector.static.typePattern = new RegExp();
 
 ve.ui.Inspector.static.titleMessage = 've-ui-inspector-title';
 
@@ -145,7 +138,11 @@ ve.ui.Inspector.prototype.onOpen = function () {
  * @returns {ve.dm.AnnotationSet} Matching annotations
  */
 ve.ui.Inspector.prototype.getMatchingAnnotations = function ( fragment ) {
-	return fragment.getAnnotations().getAnnotationsByName( this.constructor.static.typePattern );
+	var constructor = this.constructor;
+
+	return fragment.getAnnotations().filter( function ( annnotation ) {
+		return ve.ui.viewRegistry.isViewRelatedToModel( constructor, annnotation );
+	} );
 };
 
 /* Initialization */

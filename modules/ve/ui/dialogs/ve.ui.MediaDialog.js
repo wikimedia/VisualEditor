@@ -30,8 +30,10 @@ ve.ui.MediaDialog.static.titleMessage = 'visualeditor-dialog-media-title';
 
 ve.ui.MediaDialog.static.icon = 'picture';
 
-ve.ui.MediaDialog.static.nodeClasses = [ve.dm.MWImageNode];
+ve.ui.MediaDialog.static.modelClasses = [ ve.dm.MWImageNode ];
 
 /* Registration */
 
 ve.ui.dialogFactory.register( 'media', ve.ui.MediaDialog );
+
+ve.ui.viewRegistry.register( 'media', ve.ui.MediaDialog );

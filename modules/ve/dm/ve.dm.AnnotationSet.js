@@ -44,22 +44,22 @@ ve.dm.AnnotationSet.prototype.clone = function () {
  * Get an annotation set containing only annotations within the set with a specific name.
  *
  * @method
- * @param {string|RegExp} name Regular expression or string to compare types with
+ * @param {string} name Type name
  * @returns {ve.dm.AnnotationSet} Copy of annotation set
  */
 ve.dm.AnnotationSet.prototype.getAnnotationsByName = function ( name ) {
-	return this.filter( 'name', name );
+	return this.filter( function ( annotation ) { return annotation.name === name; } );
 };
 
 /**
  * Check if any annotations in the set have a specific name.
  *
  * @method
- * @param {string|RegExp} name Regular expression or string to compare names with
+ * @param {string} name Type name
  * @returns {boolean} Annotation of given type exists in the set
  */
 ve.dm.AnnotationSet.prototype.hasAnnotationWithName = function ( name ) {
-	return this.containsMatching( 'name', name );
+	return this.containsMatching( function ( annotation ) { return annotation.name === name; } );
 };
 
 /**
@@ -177,19 +177,17 @@ ve.dm.AnnotationSet.prototype.indexOf = function ( value ) {
 /**
  * Filter the set by an item property.
  *
- * This returns a new set with all values in the set for which value.property matches filter (if
- * filter is a RegExp) or is equal to filter,
+ * This returns a new set with all values in the set for which the callback returned true for.
  *
  * @method
- * @param {string} property Property to check
- * @param {Mixed|RegExp} filter Regular expression or value to filter for
+ * @param {Function} callback Function that takes an annotation and returns boolean true to include
  * @param {boolean} [returnBool] For internal use only
  * @returns {ve.dm.AnnotationSet} New set containing only the matching values
  */
-ve.dm.AnnotationSet.prototype.filter = function ( property, filter, returnBool ) {
+ve.dm.AnnotationSet.prototype.filter = function ( callback, returnBool ) {
 	var i, length, result, value;
+
 	if ( !returnBool ) {
-		// TODO: Consider alternative ways to instantiate a new set of the same type as the subclass
 		result = this.clone();
 		// TODO: Should we be returning this on all methods that modify the original? Might help
 		// with chainability, but perhaps it's also confusing because most chainable methods return
@@ -198,10 +196,7 @@ ve.dm.AnnotationSet.prototype.filter = function ( property, filter, returnBool )
 	}
 	for ( i = 0, length = this.getLength(); i < length; i++ ) {
 		value = this.getStore().value( this.getIndex( i ) );
-		if (
-			( filter instanceof RegExp && filter.test( value[property] ) ) ||
-			( typeof filter === 'string' && value[property] === filter )
-		) {
+		if ( callback( value ) ) {
 			if ( returnBool ) {
 				return true;
 			} else {
@@ -220,12 +215,11 @@ ve.dm.AnnotationSet.prototype.filter = function ( property, filter, returnBool )
  * @see ve.dm.AnnotationSet#filter
  *
  * @method
- * @param {string} property
- * @param {Mixed|RegExp} filter
+ * @param {Function} callback Function that takes an annotation and returns boolean true to include
  * @returns {boolean} True if at least one value matches, false otherwise
  */
-ve.dm.AnnotationSet.prototype.containsMatching = function ( property, filter ) {
-	return this.filter( property, filter, true );
+ve.dm.AnnotationSet.prototype.containsMatching = function ( callback ) {
+	return this.filter( callback, true );
 };
 
 /**

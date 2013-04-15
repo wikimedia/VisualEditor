@@ -112,6 +112,10 @@
 				"classes": ["ve.ui.*Factory"]
 			},
 			{
+				"name": "Registries",
+				"classes": ["ve.ui.*Registry"]
+			},
+			{
 				"name": "Tools",
 				"classes": ["ve.ui.*Tool"]
 			},

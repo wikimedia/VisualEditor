@@ -79,15 +79,12 @@ ve.AnnotationAction.prototype.toggle = function ( name, data ) {
  * Clear all annotations.
  *
  * @method
- * @param {string|RegExp} [filter] Annotation name or RegExp that matches types
  */
-ve.AnnotationAction.prototype.clearAll = function ( filter ) {
+ve.AnnotationAction.prototype.clearAll = function () {
 	var i, len, arr,
 		fragment = this.surface.getModel().getFragment(),
 		annotations = fragment.getAnnotations( true );
-	if ( typeof filter === 'string' || filter instanceof RegExp ) {
-		annotations = annotations.getAnnotationsByName( filter );
-	}
+
 	arr = annotations.get();
 	// TODO: Allow multiple annotations to be set or cleared by ve.dm.SurfaceFragment, probably
 	// using an annotation set and ideally building a single transaction
