@@ -11,6 +11,7 @@
  * @class
  * @extends ve.ce.LeafNode
  * @mixins ve.ce.FocusableNode
+ * @mixins ve.ce.RelocatableNode
  *
  * @constructor
  * @param {ve.dm.ImageNode} model Model to observe
@@ -21,18 +22,18 @@ ve.ce.ImageNode = function VeCeImageNode( model ) {
 
 	// Mixin constructors
 	ve.ce.FocusableNode.call( this );
+	ve.ce.RelocatableNode.call( this );
+
+	// Properties
+	this.$image = this.$;
 
 	// Events
 	this.model.addListenerMethod( this, 'update', 'onUpdate' );
-	this.$.on( {
-		'click': ve.bind( this.onClick, this ),
-		'dragstart': ve.bind( this.onDragStart, this ),
-		'dragend': ve.bind( this.onDragEnd, this )
-	} );
+	this.$image.on( 'click', ve.bind( this.onClick, this ) );
 
 	// Initialization
-	ve.setDomAttributes( this.$[0], this.model.getAttributes(), ['src', 'width', 'height'] );
-	this.$.addClass( 've-ce-imageNode' );
+	ve.setDomAttributes( this.$image[0], this.model.getAttributes(), ['src', 'width', 'height'] );
+	this.$image.addClass( 've-ce-imageNode' );
 };
 
 /* Inheritance */
@@ -40,6 +41,7 @@ ve.ce.ImageNode = function VeCeImageNode( model ) {
 ve.inheritClass( ve.ce.ImageNode, ve.ce.LeafNode );
 
 ve.mixinClass( ve.ce.ImageNode, ve.ce.FocusableNode );
+ve.mixinClass( ve.ce.ImageNode, ve.ce.RelocatableNode );
 
 /* Static Properties */
 
@@ -54,40 +56,17 @@ ve.ce.ImageNode.static.name = 'image';
  * @param {jQuery.Event} e Click event
  */
 ve.ce.ImageNode.prototype.onClick = function ( e ) {
-	var range,
-	    surfaceModel = this.getRoot().getSurface().getModel(),
-	    selection = surfaceModel.getSelection();
+	var surfaceModel = this.getRoot().getSurface().getModel(),
+		selectionRange = surfaceModel.getSelection(),
+		nodeRange = this.model.getOuterRange();
 
-	range = new ve.Range(
-		this.model.getOffset(),
-		this.model.getOffset() + this.model.getOuterLength()
-	);
-
-	if ( e.shiftKey ) {
-		range = ve.Range.newCoveringRange( [ selection, range ], selection.from > range.from );
-	}
-
-	this.getRoot().getSurface().getModel().change( null, range );
-};
-
-/**
- * Handle the dragstart.
- *
- * @method
- * @param {jQuery.Event} e Dragstart event
- */
-ve.ce.ImageNode.prototype.onDragStart = function () {
-	return false;
-};
-
-/**
- * Handle the dragend.
- *
- * @method
- * @param {jQuery.Event} e Dragstart event
- */
-ve.ce.ImageNode.prototype.onDragEnd = function () {
-	return false;
+	surfaceModel.getFragment(
+		e.shiftKey ?
+			ve.Range.newCoveringRange(
+				[ selectionRange, nodeRange ], selectionRange.from > nodeRange.from
+			) :
+			nodeRange
+	).select();
 };
 
 /* Registration */

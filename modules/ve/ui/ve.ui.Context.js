@@ -20,6 +20,7 @@ ve.ui.Context = function VeUiContext( surface ) {
 	this.visible = false;
 	this.showing = false;
 	this.selecting = false;
+	this.relocating = false;
 	this.selection = null;
 	this.toolbar = null;
 	this.$ = $( '<div>' );
@@ -41,7 +42,9 @@ ve.ui.Context = function VeUiContext( surface ) {
 	} );
 	this.surface.getView().addListenerMethods( this, {
 		'selectionStart': 'onSelectionStart',
-		'selectionEnd': 'onSelectionEnd'
+		'selectionEnd': 'onSelectionEnd',
+		'relocationStart': 'onRelocationStart',
+		'relocationEnd': 'onRelocationEnd'
 	} );
 	this.inspectors.addListenerMethods( this, {
 		'setup': 'onInspectorSetup',
@@ -62,14 +65,14 @@ ve.ui.Context = function VeUiContext( surface ) {
  * Changes are ignored while the user is selecting text.
  *
  * @method
- * @param {ve.dm.Transaction} tx Change transaction
+ * @param {ve.dm.Transaction[]} transactions Change transactions
  * @param {ve.Range} selection Change selection
  */
-ve.ui.Context.prototype.onChange = function ( tx, selection ) {
+ve.ui.Context.prototype.onChange = function ( transactions, selection ) {
 	if ( selection && selection.start === 0 ) {
 		return;
 	}
-	if ( selection && !this.selecting ) {
+	if ( selection && !this.selecting && !this.draggingAndDropping ) {
 		this.update();
 	}
 };
@@ -91,6 +94,28 @@ ve.ui.Context.prototype.onSelectionStart = function () {
  */
 ve.ui.Context.prototype.onSelectionEnd = function () {
 	this.selecting = false;
+	if ( !this.relocating ) {
+		this.update();
+	}
+};
+
+/**
+ * Handle selection start events on the view.
+ *
+ * @method
+ */
+ve.ui.Context.prototype.onRelocationStart = function () {
+	this.relocating = true;
+	this.hide();
+};
+
+/**
+ * Handle selection end events on the view.
+ *
+ * @method
+ */
+ve.ui.Context.prototype.onRelocationEnd = function () {
+	this.relocating = false;
 	this.update();
 };
 

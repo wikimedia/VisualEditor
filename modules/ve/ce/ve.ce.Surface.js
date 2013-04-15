@@ -32,6 +32,7 @@ ve.ce.Surface = function VeCeSurface( $container, model, surface ) {
 	this.clipboard = {};
 	this.renderingEnabled = true;
 	this.dragging = false;
+	this.relocating = false;
 	this.selecting = false;
 	this.$phantoms = $( '<div>' );
 	this.$pasteTarget = $( '<div>' );
@@ -54,7 +55,8 @@ ve.ce.Surface = function VeCeSurface( $container, model, surface ) {
 		'cut': ve.bind( this.onCut, this ),
 		'copy': ve.bind( this.onCopy, this ),
 		'paste': ve.bind( this.onPaste, this ),
-		'dragover drop': ve.bind( this.onDocumentDragoverDrop, this )
+		'dragover': ve.bind( this.onDocumentDragOver, this ),
+		'drop': ve.bind( this.onDocumentDrop, this )
 	} );
 	if ( $.browser.msie ) {
 		this.$.on( 'beforepaste', ve.bind( this.onPaste, this ) );
@@ -81,6 +83,14 @@ ve.inheritClass( ve.ce.Surface, ve.EventEmitter );
 
 /**
  * @event selectionEnd
+ */
+
+/**
+ * @event relocationStart
+ */
+
+/**
+ * @event relocationEnd
  */
 
 /* Static Properties */
@@ -259,14 +269,70 @@ ve.ce.Surface.prototype.onDocumentMouseMove = function () {
 };
 
 /**
- * Handle document dragover and drop events.
+ * Handle document dragover events.
  *
- * Prevents native dragging and dropping of content.
+ * Limits native drag and drop behavior.
  *
  * @method
- * @param {jQuery.Event} e Drag over/drop event
+ * @param {jQuery.Event} e Drag over event
  */
-ve.ce.Surface.prototype.onDocumentDragoverDrop = function () {
+ve.ce.Surface.prototype.onDocumentDragOver = function () {
+	if ( !this.relocating ) {
+		return false;
+	} else if ( this.selecting ) {
+		this.emit( 'selectionEnd' );
+		this.selecting = false;
+		this.dragging = false;
+	}
+};
+
+/**
+ * Handle document drop events.
+ *
+ * Limits native drag and drop behavior.
+ *
+ * TODO: Look into using drag and drop data transfer to embed the dragged element's original range
+ * (for dragging within one document) and serialized linear model data (for dragging between
+ * multiple documents) and use a special mimetype, like application-x/VisualEditor, to allow
+ * dragover and drop events on the surface, removing the need to give the surface explicit
+ * instructions to allow and prevent dragging and dropping a certain node.
+ *
+ * @method
+ * @param {jQuery.Event} e Drag drop event
+ */
+ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
+	var node = this.relocating;
+
+	if ( node ) {
+		// Process drop operation after native drop has been prevented below
+		setTimeout( ve.bind( function () {
+			var dropPoint, nodeData, originFragment, targetFragment,
+				nodeRange = node.getModel().getOuterRange();
+
+			// Get a fragment from the drop point
+			dropPoint = rangy.positionFromPoint( e.originalEvent.pageX, e.originalEvent.pageY );
+			if ( !dropPoint ) {
+				// Getting position from point supported
+				return false;
+			}
+			targetFragment = this.model.getFragment(
+				new ve.Range( ve.ce.getOffset( dropPoint.node, dropPoint.offset ) ), false
+			);
+
+			// Get a fragment and data of the node being dragged
+			originFragment = this.model.getFragment( nodeRange, false );
+			nodeData = originFragment.getData();
+
+			// Remove node from old location (auto-updates targetFragment's range)
+			originFragment.removeContent().destroy();
+
+			// Re-insert node at new location and re-select it
+			targetFragment.insertContent( nodeData );
+			targetFragment.adjustRange( -nodeData.length, 0 ).select().destroy();
+			targetFragment.destroy();
+		}, this ) );
+	}
+
 	return false;
 };
 
@@ -733,6 +799,34 @@ ve.ce.Surface.prototype.onLock = function () {
 ve.ce.Surface.prototype.onUnlock = function () {
 	this.surfaceObserver.clear( this.model.getSelection() );
 	this.surfaceObserver.start();
+};
+
+/*! Relocation */
+
+/**
+ * Start a relocation action.
+ *
+ * @see ve.ce.RelocatableNode
+ *
+ * @method
+ * @param {ve.ce.Node} node Node being relocated
+ */
+ve.ce.Surface.prototype.startRelocation = function ( node ) {
+	this.relocating = node;
+	this.emit( 'relocationStart', node );
+};
+
+/**
+ * Complete a relocation action.
+ *
+ * @see ve.ce.RelocatableNode
+ *
+ * @method
+ * @param {ve.ce.Node} node Node being relocated
+ */
+ve.ce.Surface.prototype.endRelocation = function () {
+	this.emit( 'relocationEnd', this.relocating );
+	this.relocating = null;
 };
 
 /*! Utilities */

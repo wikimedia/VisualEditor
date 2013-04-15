@@ -217,7 +217,7 @@ ve.ce.getOffsetFromElementNode = function ( domNode, domOffset, addOuterLength )
 
 	if ( domOffset === 0 ) {
 		node = $domNode.data( 'view' );
-		if ( node ) {
+		if ( node && node instanceof ve.ce.Node ) {
 			nodeModel = $domNode.data( 'view' ).getModel();
 			if ( addOuterLength === true ) {
 				return nodeModel.getOffset() + nodeModel.getOuterLength();

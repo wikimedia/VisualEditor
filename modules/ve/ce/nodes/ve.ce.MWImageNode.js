@@ -17,13 +17,16 @@
 	// Parent constructor
 	ve.ce.ImageNode.call( this, model );
 
-	// Initialization
-	this.$.addClass( 've-ce-MWImageNode' );
+	// Properties
 	this.$image = this.$;
 	this.$ = $( '<' + ( model.getAttribute( 'isLinked' ) ? 'a' : 'span' ) + '>' );
 
 	// Initialization
-	this.$.attr( 'contenteditable', false ).append( this.$image );
+	this.$
+		.attr( 'contenteditable', false )
+		.addClass( 've-ce-mwImageNode' )
+		.append( this.$image )
+		.data( 'view', this.$image.data( 'view' ) );
 	this.onUpdate();
 };
 
