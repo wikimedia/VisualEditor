@@ -14,7 +14,7 @@
  */
 ve.dm.Model = function VeDmModel( element ) {
 	// Properties
-	this.element = element || { 'type': this.constructor.static.name, 'attributes': {} };
+	this.element = element || { 'type': this.constructor.static.name };
 };
 
 ve.dm.Model.static = {};
