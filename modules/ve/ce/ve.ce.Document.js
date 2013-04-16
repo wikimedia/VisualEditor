@@ -94,7 +94,10 @@ ve.ce.Document.prototype.getRelativeOffset = function ( offset, direction, unit 
 		// Check if we've moved into a slug
 		if ( !!this.getSlugAtOffset( relativeStructuralOffset ) ) {
 			// Check if the relative content offset is in the opposite direction we are trying to go
-			if ( ( relativeContentOffset - offset < 0 ? -1 : 1 ) !== bias ) {
+			if (
+				relativeContentOffset === offset ||
+				( relativeContentOffset - offset < 0 ? -1 : 1 ) !== bias
+			) {
 				// There's nothing past the slug we are already in, stay in it
 				return relativeStructuralOffset;
 			}
