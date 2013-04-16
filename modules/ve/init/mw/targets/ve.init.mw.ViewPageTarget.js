@@ -721,7 +721,7 @@ ve.init.mw.ViewPageTarget.prototype.tearDownSurface = function () {
  * @method
  */
 ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
-	var action, pTabsId, $caSource, $caEdit, caVeEdit, caVeEditNextnode, uriClone;
+	var action, pTabsId, $caSource, $caEdit, caVeEdit, caVeEditSource, caVeEditNextnode, uriClone;
 	$caEdit = $( '#ca-edit' );
 	$caSource = $( '#ca-viewsource' );
 	caVeEditNextnode = $caEdit.next().get( 0 );
@@ -758,12 +758,15 @@ ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
 	} else {
 		// Create "Edit source" link.
 		// Re-create instead of convert ca-edit since we don't want to copy over accesskey etc.
-		mw.util.addPortletLink(
-			'p-cactions',
+		caVeEditSource = mw.util.addPortletLink(
+			pTabsId,
 			// Use original href to preserve oldid etc. (bug 38125)
 			$caEdit.find( 'a' ).attr( 'href' ),
 			ve.msg( 'visualeditor-ca-editsource' ),
-			'ca-editsource'
+			'ca-editsource',
+			null,
+			null,
+			caVeEditNextnode
 		);
 
 		// Create "Edit" tab.
@@ -780,7 +783,7 @@ ve.init.mw.ViewPageTarget.prototype.setupSkinTabs = function () {
 			$caEdit.attr( 'id' ),
 			$caEdit.attr( 'title' ),
 			$caEdit.attr( 'accesskey' ),
-			caVeEditNextnode
+			caVeEditSource
 		);
 	}
 
