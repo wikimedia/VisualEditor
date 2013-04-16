@@ -60,13 +60,14 @@ class VisualEditorHooks {
 	 */
 	public static function onMakeGlobalVariablesScript( array &$vars, OutputPage $out ) {
 		global $wgVisualEditorEnableSectionEditLinks, $wgVisualEditorParsoidProblemReportURL,
-			$wgVisualEditorParsoidURL;
+			$wgVisualEditorParsoidURL, $wgVisualEditorEnableExperimentalCode;
 		$vars['wgVisualEditor'] = array(
 			'isPageWatched' => $out->getUser()->isWatched( $out->getTitle() ),
 			'enableSectionEditLinks' => $wgVisualEditorEnableSectionEditLinks,
 			'reportProblemURL' => $wgVisualEditorParsoidProblemReportURL !== null ?
 				$wgVisualEditorParsoidProblemReportURL :
 				"$wgVisualEditorParsoidURL/_bugs/",
+			'enableExperimentalCode' => $wgVisualEditorEnableExperimentalCode,
 		);
 
 		return true;
@@ -122,6 +123,7 @@ class VisualEditorHooks {
 			),
 			'dependencies' => array(
 				'ext.visualEditor.core',
+				'ext.visualEditor.experimental',
 				'ext.visualEditor.viewPageTarget',
 			),
 			'localBasePath' => dirname( __FILE__ ) . '/modules/ve/test',

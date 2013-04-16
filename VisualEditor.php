@@ -25,6 +25,8 @@ $wgVisualEditorParsoidProblemReportURL = null;
 $wgVisualEditorNamespaces = array( NS_MAIN );
 // Whether to use change tagging for VisualEditor edits
 $wgVisualEditorUseChangeTagging = true;
+// Whether to enable incomplete experimental code
+$wgVisualEditorEnableExperimentalCode = false;
 
 /* Setup */
 
@@ -276,9 +278,7 @@ $wgResourceModules += array(
 
 			've/dm/nodes/ve.dm.MWEntityNode.js',
 			've/dm/nodes/ve.dm.MWHeadingNode.js',
-			've/dm/nodes/ve.dm.MWImageNode.js',
 			've/dm/nodes/ve.dm.MWPreformattedNode.js',
-			've/dm/nodes/ve.dm.MWTemplateNode.js',
 
 			've/dm/annotations/ve.dm.LinkAnnotation.js',
 			've/dm/annotations/ve.dm.MWExternalLinkAnnotation.js',
@@ -327,9 +327,7 @@ $wgResourceModules += array(
 
 			've/ce/nodes/ve.ce.MWEntityNode.js',
 			've/ce/nodes/ve.ce.MWHeadingNode.js',
-			've/ce/nodes/ve.ce.MWImageNode.js',
 			've/ce/nodes/ve.ce.MWPreformattedNode.js',
-			've/ce/nodes/ve.ce.MWTemplateNode.js',
 
 			've/ce/annotations/ve.ce.LinkAnnotation.js',
 			've/ce/annotations/ve.ce.MWExternalLinkAnnotation.js',
@@ -480,6 +478,18 @@ $wgResourceModules += array(
 			'visualeditor-dialog-action-cancel',
 			'visualeditor-dialog-action-close',
 		),
+	),
+	'ext.visualEditor.experimental' => $wgVisualEditorResourceTemplate + array(
+		'scripts' => array(
+			've/dm/nodes/ve.dm.MWImageNode.js',
+			've/dm/nodes/ve.dm.MWTemplateNode.js',
+
+			've/ce/nodes/ve.ce.MWImageNode.js',
+			've/ce/nodes/ve.ce.MWTemplateNode.js',
+		),
+		'dependencies' => array(
+			'ext.visualEditor.core',
+		)
 	),
 	'ext.visualEditor.icons-raster' => $wgVisualEditorResourceTemplate + array(
 		'styles' => array(

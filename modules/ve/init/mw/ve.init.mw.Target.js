@@ -30,7 +30,11 @@ ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revision ) {
 	this.apiUrl = mw.util.wikiScript( 'api' );
 	this.submitUrl = ( new mw.Uri( mw.util.wikiGetlink( this.pageName ) ) )
 		.extend( { 'action': 'submit' } );
-	this.modules = ['ext.visualEditor.core', 'ext.visualEditor.specialMessages']
+	this.modules = [
+			mw.config.get( 'wgVisualEditor' ).enableExperimentalCode ?
+				'ext.visualEditor.experimental' : 'ext.visualEditor.core',
+			'ext.visualEditor.specialMessages'
+		]
 		.concat(
 			window.devicePixelRatio > 1 ?
 				['ext.visualEditor.viewPageTarget.icons-vector', 'ext.visualEditor.icons-vector'] :
