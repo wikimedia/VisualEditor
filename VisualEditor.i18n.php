@@ -116,6 +116,7 @@ Links are in {{msg-mw|Visualeditor-mainnamespacepagelink}} and {{msg-mw|visualed
 {{Identical|visualeditor}}',
 	'visualeditor-dialog-meta-title' => 'MetaData dialog title text',
 	'visualeditor-dialog-content-title' => 'Content dialog title text',
+	'visualeditor-dialog-media-title' => 'Title for the editing dialog to set how a media item is displayed on the page',
 	'visualeditor-dialog-action-apply' => 'Label text for button to apply changes made in dialog.
 
 See also:
