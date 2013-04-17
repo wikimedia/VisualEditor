@@ -69,21 +69,23 @@ QUnit.test( 'getDataFromDom', function ( assert ) {
 } );
 
 QUnit.test( 'getDomFromData', function ( assert ) {
-	var msg, n = 0,
+	var msg, originalData, n = 0,
 		store = new ve.dm.IndexValueStore(),
 		cases = ve.copyObject( ve.dm.example.domToDataCases );
 
 	for ( msg in cases ) {
 		n++;
 	}
-	QUnit.expect( n );
+	QUnit.expect( 2*n );
 
 	for ( msg in cases ) {
 		ve.dm.example.preprocessAnnotations( cases[msg].data, store );
+		originalData = ve.copyArray( cases[msg].data );
 		assert.equalDomElement(
 			ve.dm.converter.getDomFromData( store, cases[msg].data ),
 			ve.createDocumentFromHTML( cases[msg].normalizedHtml || cases[msg].html ),
 			msg
 		);
+		assert.deepEqual( cases[msg].data, originalData, msg + ' (data hasn\'t changed)' );
 	}
 } );

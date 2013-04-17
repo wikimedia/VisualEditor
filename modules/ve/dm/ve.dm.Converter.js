@@ -1025,10 +1025,11 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( store, data, contai
 				// Create node from data
 				dataElementOrSlice = getDataElementOrSlice();
 				childDomElements = this.getDomElementsFromDataElement( dataElementOrSlice, doc );
-				// Add reference to internal data
+				// Add clone of internal data; we use a clone rather than a reference because
+				// we modify .veInternal.whitespace[1] in some cases
 				childDomElements[0].veInternal = ve.extendObject(
 					{ 'childDomElements': childDomElements },
-					dataElement.internal || {}
+					ve.copyObject( dataElement.internal || {} )
 				);
 				// Add elements
 				for ( j = 0; j < childDomElements.length; j++ ) {
