@@ -592,7 +592,7 @@ ve.init.mw.Target.prototype.reportProblem = function ( message ) {
 			'wiki': mw.config.get( 'wgDBname' )
 		};
 	$.post(
-		'http://parsoid.wmflabs.org/_bugs/',
+		mw.config.get( 'wgVisualEditor' ).reportProblemURL,
 		{ 'data': JSON.stringify( report ) },
 		function () {
 			// This space intentionally left blank

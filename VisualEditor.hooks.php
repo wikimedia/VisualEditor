@@ -59,10 +59,13 @@ class VisualEditorHooks {
 	 * Adds extra variables to the page config.
 	 */
 	public static function onMakeGlobalVariablesScript( array &$vars, OutputPage $out ) {
-		global $wgVisualEditorEnableSectionEditLinks;
+		global $wgVisualEditorEnableSectionEditLinks, $wgVisualEditorParsoidProblemReportURL;
 		$vars['wgVisualEditor'] = array(
 			'isPageWatched' => $out->getUser()->isWatched( $out->getTitle() ),
-			'enableSectionEditLinks' => $wgVisualEditorEnableSectionEditLinks
+			'enableSectionEditLinks' => $wgVisualEditorEnableSectionEditLinks,
+			'reportProblemURL' => $wgVisualEditorParsoidProblemReportURL !== null ?
+				$wgVisualEditorParsoidProblemReportURL :
+				"$wgVisualEditorParsoidURL/_bugs/",
 		);
 
 		return true;

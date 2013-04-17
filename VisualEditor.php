@@ -18,6 +18,9 @@ $wgVisualEditorParsoidURL = 'http://localhost:8000';
 $wgVisualEditorParsoidPrefix = 'localhost';
 // Timeout for HTTP requests to Parsoid in seconds
 $wgVisualEditorParsoidTimeout = 100;
+// URL to post reports from the "Report problem" dialog to
+// Defaults to "$wgVisualEditorParsoidURL/_bugs/" if null
+$wgVisualEditorParsoidProblemReportURL = null;
 // Namespaces to enable VisualEditor in
 $wgVisualEditorNamespaces = array( NS_MAIN );
 // Whether to use change tagging for VisualEditor edits
