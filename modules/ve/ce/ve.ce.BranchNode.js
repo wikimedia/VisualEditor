@@ -28,8 +28,8 @@ ve.ce.BranchNode = function VeCeBranchNode( model, $element ) {
 	// Properties
 	this.domWrapperElementType = this.$.get( 0 ).nodeName.toLowerCase();
 	this.slugs = { };
-	this.emitChildUpdate = ve.bind( function () {
-		this.emit( 'childUpdate' );
+	this.emitChildUpdate = ve.bind( function ( transaction ) {
+		this.emit( 'childUpdate', transaction );
 	}, this );
 
 	// Events

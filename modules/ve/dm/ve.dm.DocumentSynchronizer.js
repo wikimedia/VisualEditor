@@ -21,12 +21,13 @@
  * @constructor
  * @param {ve.dm.Document} doc Document to synchronize
  */
-ve.dm.DocumentSynchronizer = function VeDmDocumentSynchronizer( doc ) {
+ve.dm.DocumentSynchronizer = function VeDmDocumentSynchronizer( doc, transaction ) {
 	// Properties
 	this.document = doc;
 	this.actionQueue = [];
 	this.eventQueue = [];
 	this.adjustment = 0;
+	this.transaction = transaction;
 };
 
 /* Static Properties */
@@ -255,7 +256,7 @@ ve.dm.DocumentSynchronizer.prototype.queueEvent = function ( node ) {
 		node.queuedEventHashes[hash] = true;
 		this.eventQueue.push( {
 			'node': node,
-			'args': args
+			'args': args.concat( this.transaction )
 		} );
 	}
 };
