@@ -129,7 +129,7 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 	// Detach all child nodes from this.$
 	// We can't use this.$.empty() because that destroys .data() and event handlers
 	this.$.contents().each( function () {
-		$(this).detach();
+		$( this ).detach();
 	} );
 
 	// Reattach child nodes with the right annotations

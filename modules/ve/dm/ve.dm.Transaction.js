@@ -102,7 +102,7 @@ ve.dm.Transaction.newFromRemoval = function ( doc, range ) {
 			removeEnd = ( last.range || last.nodeRange ).end;
 		}
 		tx.pushRetain( removeStart );
-		tx.pushReplace( doc, removeStart, removeEnd - removeStart, [] );
+		tx.addSafeRemoveOps( doc, removeStart, removeEnd );
 		tx.pushRetain( data.length - removeEnd );
 		// All done
 		return tx;
@@ -135,7 +135,7 @@ ve.dm.Transaction.newFromRemoval = function ( doc, range ) {
 
 			// Push the previous removal first
 			tx.pushRetain( removeStart - offset );
-			tx.pushReplace( doc, removeStart, removeEnd - removeStart, [] );
+			tx.addSafeRemoveOps( doc, removeStart, removeEnd );
 			offset = removeEnd;
 
 			// Now start this removal
@@ -146,7 +146,7 @@ ve.dm.Transaction.newFromRemoval = function ( doc, range ) {
 	// Apply the last removal, if any
 	if ( removeEnd !== null ) {
 		tx.pushRetain( removeStart - offset );
-		tx.pushReplace( doc, removeStart, removeEnd - removeStart, [] );
+		tx.addSafeRemoveOps( doc, removeStart, removeEnd );
 		offset = removeEnd;
 	}
 	// Retain up to the end of the document
@@ -800,6 +800,38 @@ ve.dm.Transaction.prototype.pushRetainMetadata = function ( length ) {
 			} );
 		}
 	}
+};
+
+/**
+ * Adds a replace op to remove the desired range and, where required, splices in retain ops
+ * to prevent the deletion of internal data.
+ *
+ * @param {ve.dm.Document} doc Document
+ * @param {number} removeStart Offset to start removing from
+ * @param {number} removeEnd Offset to remove to
+ */
+ve.dm.Transaction.prototype.addSafeRemoveOps = function ( doc, removeStart, removeEnd ) {
+	var i, retainStart, internalStackDepth = 0;
+	// Iterate over removal range and use a stack counter to determine if
+	// we are inside an internal node
+	for ( i = removeStart; i <= removeEnd; i++ ) {
+		if ( doc.data.isElementData( i ) && ve.dm.nodeFactory.isNodeInternal( doc.data.getType( i ) ) ) {
+			if ( !doc.data.isCloseElementData( i ) ) {
+				if ( internalStackDepth === 0 ) {
+					this.pushReplace( doc, removeStart, i - removeStart, [] );
+					retainStart = i;
+				}
+				internalStackDepth++;
+			} else {
+				internalStackDepth--;
+				if ( internalStackDepth === 0 ) {
+					this.pushRetain( i + 1 - retainStart );
+					removeStart = i + 1;
+				}
+			}
+		}
+	}
+	this.pushReplace( doc, removeStart, removeEnd - removeStart, [] );
 };
 
 /**

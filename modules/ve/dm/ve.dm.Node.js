@@ -66,6 +66,15 @@ ve.mixinClass( ve.dm.Node, ve.Node );
 ve.dm.Node.static.handlesOwnChildren = false;
 
 /**
+ * Whether this node type is internal. Internal node types are ignored by the converter.
+ *
+ * @static
+ * @property {boolean} static.isInternal
+ * @inheritable
+ */
+ve.dm.Node.static.isInternal = false;
+
+/**
  * Whether this node type has a wrapping element in the linear model. Most node types are wrapped,
  * only special node types are not wrapped.
  *

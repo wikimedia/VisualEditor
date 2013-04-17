@@ -216,6 +216,21 @@ ve.dm.NodeFactory.prototype.doesNodeHandleOwnChildren = function ( type ) {
 	throw new Error( 'Unknown node type: ' + type );
 };
 
+/**
+ * Check if the node is internal.
+ *
+ * @method
+ * @param {string} type Node type
+ * @returns {boolean} Whether the node is internal
+ * @throws {Error} Unknown node type
+ */
+ve.dm.NodeFactory.prototype.isNodeInternal = function ( type ) {
+	if ( type in this.registry ) {
+		return this.registry[type].static.isInternal;
+	}
+	throw new Error( 'Unknown node type: ' + type );
+};
+
 /* Initialization */
 
 ve.dm.nodeFactory = new ve.dm.NodeFactory();

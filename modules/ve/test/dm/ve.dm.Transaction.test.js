@@ -221,11 +221,11 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 } );
 
 QUnit.test( 'newFromRemoval', function ( assert ) {
-	var i, key,
-		store = new ve.dm.IndexValueStore(),
-		doc = ve.dm.example.createExampleDocument( 'data', store ),
-		alienDoc = ve.dm.example.createExampleDocument( 'alienData', store ),
-		metaDoc = ve.dm.example.createExampleDocument( 'withMeta', store ),
+	var i, key, store,
+		doc = ve.dm.example.createExampleDocument( 'data' ),
+		alienDoc = ve.dm.example.createExampleDocument( 'alienData' ),
+		metaDoc = ve.dm.example.createExampleDocument( 'withMeta' ),
+		internalDoc = ve.dm.example.createExampleDocument( 'internalData' ),
 		cases = {
 			'content in first element': {
 				'args': [doc, new ve.Range( 1, 3 )],
@@ -471,11 +471,70 @@ QUnit.test( 'newFromRemoval', function ( assert ) {
 					},
 					{ 'type': 'retain', 'length': 2 }
 				]
+			},
+			'selection including internal nodes doesn\'t remove them': {
+				'args': [internalDoc, new ve.Range( 2, 24 )],
+				'ops': [
+					{ 'type': 'retain', 'length': 2 },
+					{
+						'type': 'replace',
+						'remove': [
+							'o', 'o',
+							{ 'type': '/paragraph' }
+						],
+						'insert': []
+					},
+					{ 'type': 'retain', 'length': 16 },
+					{
+						'type': 'replace',
+						'remove': [
+							{ 'type': 'paragraph' },
+							'Q', 'u'
+						],
+						'insert': []
+					},
+					{ 'type': 'retain', 'length': 3 }
+				]
+			},
+			'selection ending with internal nodes': {
+				'args': [internalDoc, new ve.Range( 2, 21 )],
+				'ops': [
+					{ 'type': 'retain', 'length': 2 },
+					{
+						'type': 'replace',
+						'remove': [
+							'o', 'o'
+						],
+						'insert': []
+					},
+					{ 'type': 'retain', 'length': 23 },
+				]
+			},
+			'selection starting with internal nodes': {
+				'args': [internalDoc, new ve.Range( 5, 24 )],
+				'ops': [
+					{ 'type': 'retain', 'length': 22 },
+					{
+						'type': 'replace',
+						'remove': [
+							'Q', 'u'
+						],
+						'insert': []
+					},
+					{ 'type': 'retain', 'length': 3 },
+				]
+			},
+			'selection of just internal nodes returns a no-op transaction': {
+				'args': [internalDoc, new ve.Range( 5, 21 )],
+				'ops': [
+					{ 'type': 'retain', 'length': 27 },
+				]
 			}
 		};
 	QUnit.expect( ve.getObjectKeys( cases ).length );
 	for ( key in cases ) {
 		for ( i = 0; i < cases[key].ops.length; i++ ) {
+			store = cases[key].args[0].getStore();
 			if ( cases[key].ops[i].remove ) {
 				ve.dm.example.preprocessAnnotations( cases[key].ops[i].remove, store );
 			}
@@ -632,8 +691,8 @@ QUnit.test( 'newFromAnnotation', function ( assert ) {
 } );
 
 QUnit.test( 'newFromContentBranchConversion', function ( assert ) {
-	var doc = ve.dm.example.createExampleDocument(),
-		i, key,
+	var i, key, store,
+		doc = ve.dm.example.createExampleDocument(),
 		cases = {
 			'range inside a heading, convert to paragraph': {
 				'args': [doc, new ve.Range( 1, 2 ), 'paragraph'],
@@ -686,11 +745,12 @@ QUnit.test( 'newFromContentBranchConversion', function ( assert ) {
 	QUnit.expect( ve.getObjectKeys( cases ).length );
 	for ( key in cases ) {
 		for ( i = 0; i < cases[key].ops.length; i++ ) {
+			store = cases[key].args[0].getStore();
 			if ( cases[key].ops[i].remove ) {
-				ve.dm.example.preprocessAnnotations( cases[key].ops[i].remove, doc.getStore() );
+				ve.dm.example.preprocessAnnotations( cases[key].ops[i].remove, store );
 			}
 			if ( cases[key].ops[i].insert ) {
-				ve.dm.example.preprocessAnnotations( cases[key].ops[i].insert, doc.getStore() );
+				ve.dm.example.preprocessAnnotations( cases[key].ops[i].insert, store );
 			}
 		}
 	}
