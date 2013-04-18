@@ -70,7 +70,7 @@ ve.init.mw.ViewPageTarget = function VeInitMwViewPageTarget() {
 		'commands': ['bold', 'italic', 'mwLink', 'undo', 'redo', 'indent', 'outdent']
 	};
 	this.currentUri = currentUri;
-	this.restoring = !!this.oldid;
+	this.restoring = this.oldid === mw.config.get( 'wgCurRevisionId' );
 	this.section = currentUri.query.vesection || null;
 	this.namespaceName = mw.config.get( 'wgCanonicalNamespace' );
 	this.viewUri = new mw.Uri( mw.util.wikiGetlink( this.pageName ) );
