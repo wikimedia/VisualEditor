@@ -37,6 +37,7 @@ ve.ce.Surface = function VeCeSurface( $container, model, surface ) {
 	this.$pasteTarget = $( '<div>' );
 	this.pasting = false;
 	this.clickHistory = [];
+	this.focusedNode = null;
 
 	// Events
 	this.surfaceObserver.addListenerMethods(
@@ -530,8 +531,35 @@ ve.ce.Surface.prototype.onDocumentCompositionEnd = function () {
  * @param {ve.Range|undefined} selection
  */
 ve.ce.Surface.prototype.onChange = function ( transaction, selection ) {
-	if ( selection && this.isRenderingEnabled() ) {
-		this.showSelection( selection );
+	var start, end,
+		next = null,
+		previous = this.focusedNode;
+
+	if ( selection ) {
+		if ( this.isRenderingEnabled() ) {
+			this.showSelection( selection );
+		}
+		// Detect when only a single inline element is selected
+		if ( !selection.isCollapsed() ) {
+			start = this.documentView.getDocumentNode().getNodeFromOffset( selection.start + 1 );
+			if ( typeof start.setFocused === 'function' ) {
+				end = this.documentView.getDocumentNode().getNodeFromOffset( selection.end - 1 );
+				if ( start === end ) {
+					next = start;
+				}
+			}
+		}
+		// Update nodes if something changed
+		if ( previous !== next ) {
+			if ( previous ) {
+				previous.setFocused( false );
+				this.focusedNode = null;
+			}
+			if ( next ) {
+				next.setFocused( true );
+				this.focusedNode = start;
+			}
+		}
 	}
 };
 
