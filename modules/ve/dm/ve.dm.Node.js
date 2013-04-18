@@ -209,14 +209,27 @@ ve.dm.Node.static.isHybridInline = function ( domElements, converter ) {
  * Get a clone of the node's document data element.
  *
  * The attributes object will be deep-copied, and the .internal.generated property will be removed,
- * if present.
+ * if present. Any html/* attributes will be removed as well.
  *
  * @returns {Object} Cloned element object
  */
 ve.dm.Node.prototype.getClonedElement = function () {
-	var clone = ve.copyObject( this.element );
+	var attr, clone = ve.copyObject( this.element );
 	if ( clone.internal ) {
 		delete clone.internal.generated;
+		if ( ve.isEmptyObject( clone.internal ) ) {
+			delete clone.internal;
+		}
+	}
+	if ( this.element.attributes ) {
+		for ( attr in this.element.attributes ) {
+			if ( attr.substr( 0, 5 ) === 'html/' ) {
+				 delete clone.attributes[attr];
+			}
+		}
+		if ( ve.isEmptyObject( clone.attributes ) ) {
+			delete clone.attributes;
+		}
 	}
 	return clone;
 };
