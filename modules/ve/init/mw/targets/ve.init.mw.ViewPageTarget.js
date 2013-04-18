@@ -668,8 +668,6 @@ ve.init.mw.ViewPageTarget.prototype.setupToolbarEditNotices = function () {
 ve.init.mw.ViewPageTarget.prototype.setUpSurface = function ( doc ) {
 	var $contentText = $( '#mw-content-text' );
 
-	// Store the HTML for reporting purposes
-	this.originalHtml = doc.body.innerHTML; // TODO store entire document in the future
 	// Initialize surface
 	this.surface = new ve.Surface( this, doc, this.surfaceOptions );
 	this.surface.getContext().hide();

@@ -134,6 +134,7 @@ ve.init.mw.Target.onLoad = function ( response ) {
 			this, null, 'No HTML content in response from server', null
 		);
 	} else {
+		this.originalHtml = data.content;
 		// HACK for backwards compatibility with older versions of Parsoid, detect whether
 		// data.content is a document fragment or a full HTML document
 		if ( data.content.match( /^<(!doctype|html|head|body)(>|\s)/ ) ) {
