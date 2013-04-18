@@ -1166,7 +1166,6 @@ ve.dm.example.domToDataCases = {
 	},
 	'internal link with ./ and ../': {
 		'html': '<body><p><a rel="mw:WikiLink" href="./../../../Foo/Bar">Foo</a></p></body>',
-		'normalizedHtml': '<body><p><a rel="mw:WikiLink" href="./../../../Foo/Bar">Foo</a></p></body>',
 		'data': [
 			{ 'type': 'paragraph' },
 			[
