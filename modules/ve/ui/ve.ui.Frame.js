@@ -95,13 +95,16 @@ ve.ui.Frame.prototype.onLoad = function () {
 		try {
 			// MAGIC: only accessible when the stylesheet is loaded
 			rules = style.sheet.cssRules;
-			// If that didn't throw an exception, we're done loading
-			clearInterval( interval );
-			// Protect against IE running interval one extra time after clearing
-			if ( !this.initialized ) {
-				initialize();
-			}
-		} catch ( e ) { }
+		} catch ( e ) {
+			// Try again in 10ms
+			return;
+		}
+		// If that didn't throw an exception, we're done loading
+		clearInterval( interval );
+		// Protect against IE running interval one extra time after clearing
+		if ( !this.initialized ) {
+			initialize();
+		}
 	}, this ), 10 );
 
 	// Properties
