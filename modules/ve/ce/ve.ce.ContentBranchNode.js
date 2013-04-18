@@ -24,6 +24,13 @@ ve.ce.ContentBranchNode = function VeCeContentBranchNode( model, $element ) {
 	var lastTransaction;
 
 	// Events
+	// Main purpose of code below is to increase performance by ensuring that renderContents() is
+	// called exactly once after transaction is processed. Case when childUpdate event is received
+	// multiple times is for instance when entire paragraph with multiple nodes inside it
+	// (e.g. <p>123<alien></alien>456</p>) is being annotated.
+	// Keeping reference to transaction object in view may look like anti pattern - however please
+	// have in mind that this transaction here is not being used in any other way than just as
+	// a flag to figure out if renderContents should be executed or not.
 	this.on( 'childUpdate', ve.bind( function( transaction ) {
 		if ( lastTransaction !== transaction ) {
 			lastTransaction = transaction;
