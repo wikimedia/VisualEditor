@@ -27,7 +27,7 @@ ve.ui.SelectWidget = function VeUiSelectWidget( config ) {
 	ve.ui.GroupElement.call( this, this.$, config );
 
 	// Properties
-	this.dragging = false;
+	this.pressed = false;
 	this.selecting = null;
 	this.hashes = {};
 
@@ -73,6 +73,7 @@ ve.ui.SelectWidget.prototype.onMouseDown = function ( e ) {
 	var item;
 
 	if ( !this.disabled && e.which === 1 ) {
+		this.pressed = true;
 		item = this.getTargetItem( e );
 		if ( item && item.isSelectable() ) {
 			this.selectItem( item, true );
@@ -91,6 +92,7 @@ ve.ui.SelectWidget.prototype.onMouseDown = function ( e ) {
  * @param {jQuery.Event} e Mouse down event
  */
 ve.ui.SelectWidget.prototype.onMouseUp = function ( e ) {
+	this.pressed = false;
 	if ( !this.disabled && e.which === 1 && this.selecting ) {
 		this.selectItem( this.selecting );
 		this.selecting = null;
@@ -108,7 +110,7 @@ ve.ui.SelectWidget.prototype.onMouseUp = function ( e ) {
 ve.ui.SelectWidget.prototype.onMouseMove = function ( e ) {
 	var item;
 
-	if ( !this.disabled && e.which === 1 ) {
+	if ( !this.disabled && this.pressed ) {
 		item = this.getTargetItem( e );
 		if ( item && item !== this.selecting && item.isSelectable() ) {
 			this.selectItem( item, true );
