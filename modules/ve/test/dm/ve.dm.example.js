@@ -2094,6 +2094,26 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/paragraph' }
 		]
 	},
+	'context-sensitive nodes are alienated correctly': {
+		'html': '<table><caption>Foo</caption><tbody><tr><td>Bar</td></tr></tbody></table>',
+		'data': [
+			{ 'type': 'table' },
+			{ 'type': 'alienBlock', 'attributes': { 'html': '<caption>Foo</caption>' } },
+			{ 'type': '/alienBlock' },
+			{ 'type': 'tableSection', 'attributes': { 'style': 'body' } },
+			{ 'type': 'tableRow' },
+			{ 'type': 'tableCell', 'attributes': { 'style': 'data' } },
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			'B',
+			'a',
+			'r',
+			{ 'type': '/paragraph' },
+			{ 'type': '/tableCell' },
+			{ 'type': '/tableRow' },
+			{ 'type': '/tableSection' },
+			{ 'type': '/table' }
+		]
+	},
 	'whitespace before meta node in wrapping mode': {
 		'html': '<body><table><tbody><tr><td>Foo\n<meta property="mw:foo" content="bar" /></td></tr></tbody></table></body>',
 		'data': [
