@@ -1673,6 +1673,62 @@ ve.dm.example.domToDataCases = {
 			{ 'type': '/table' }
 		]
 	},
+	'whitespace preservation with wrapped text, comments and language links': {
+		'html': '<body><!-- Foo --> <!-- Bar -->\nFoo\n' +
+			'<link rel="mw:WikiLink/Language" href="http://de.wikipedia.org/wiki/Foo">\n' +
+			'<link rel="mw:WikiLink/Language" href="http://fr.wikipedia.org/wiki/Foo"></body>',
+		'data': [
+			{
+				'type': 'alienMeta',
+				'internal': { 'whitespace': [ undefined, undefined, undefined, ' ' ] },
+				'attributes': {
+					'style': 'comment',
+					'text': ' Foo '
+				}
+			},
+			{ 'type': '/alienMeta' },
+			{
+				'type': 'alienMeta',
+				'internal': { 'whitespace': [ ' ', undefined, undefined, '\n' ] },
+				'attributes': {
+					'style': 'comment',
+					'text': ' Bar '
+				}
+			},
+			{ 'type': '/alienMeta' },
+			{
+				'type': 'paragraph',
+				'internal': {
+					'generated': 'wrapper',
+					'whitespace': [ '\n', undefined, undefined, '\n' ]
+				}
+			},
+			'F',
+			'o',
+			'o',
+			{ 'type': '/paragraph' },
+			{
+				'type': 'MWlanguage',
+				'attributes': {
+					'href': 'http://de.wikipedia.org/wiki/Foo',
+					'html/0/href': 'http://de.wikipedia.org/wiki/Foo',
+					'html/0/rel': 'mw:WikiLink/Language'
+				},
+				'internal': { 'whitespace': [ '\n', undefined, undefined, '\n' ] }
+			},
+			{ 'type': '/MWlanguage' },
+			{
+				'type': 'MWlanguage',
+				'attributes': {
+					'href': 'http://fr.wikipedia.org/wiki/Foo',
+					'html/0/href': 'http://fr.wikipedia.org/wiki/Foo',
+					'html/0/rel': 'mw:WikiLink/Language'
+				 },
+				'internal': { 'whitespace': [ '\n' ] }
+			},
+			{ 'type': '/MWlanguage' }
+		]
+	},
 	'mismatching whitespace data is ignored': {
 		'html': null,
 		'data': [
@@ -2134,8 +2190,10 @@ ve.dm.example.domToDataCases = {
 			'F',
 			'o',
 			'o',
+			{ 'type': '/paragraph' },
 			{
 				'type': 'alienMeta',
+				'internal': { 'whitespace': [ '\n' ] },
 				'attributes': {
 					'style': 'meta',
 					'key': 'mw:foo',
@@ -2145,7 +2203,6 @@ ve.dm.example.domToDataCases = {
 				}
 			},
 			{ 'type': '/alienMeta' },
-			{ 'type': '/paragraph' },
 			{ 'type': '/tableCell' },
 			{ 'type': '/tableRow' },
 			{ 'type': '/tableSection' },
