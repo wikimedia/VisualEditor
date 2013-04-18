@@ -586,7 +586,10 @@ ve.init.mw.Target.prototype.reportProblem = function ( message ) {
 			'originalHtml': this.originalHtml,
 			'originalData':
 				// originalHTML only has the body's HTML for now, see TODO comment in ve.init.mw.ViewPageTarget.prototype.setUpSurface
-				ve.dm.converter.getDataFromDom( ve.createDocumentFromHTML( '<body>' + this.originalHtml  + '</body>') ),
+				// FIXME: need to expand this data before sending it, see bug 47319
+				ve.dm.converter.getDataFromDom( store,
+					ve.createDocumentFromHTML( '<body>' + this.originalHtml  + '</body>' )
+			),
 			'editedData': editedData,
 			'editedHtml': ve.dm.converter.getDomFromData( store, editedData ).body.innerHTML,
 			'wiki': mw.config.get( 'wgDBname' )
