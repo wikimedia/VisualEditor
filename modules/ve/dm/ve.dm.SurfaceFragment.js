@@ -29,9 +29,10 @@ ve.dm.SurfaceFragment = function VeDmSurfaceFragment( surface, range, noAutoSele
 	this.surface = surface;
 	this.document = surface.getDocument();
 	this.noAutoSelect = !!noAutoSelect;
+	this.onTransactHandler = ve.bind( this.onTransact, this );
 
 	// Events
-	surface.on( 'transact', ve.bind( this.onTransact, this ) );
+	surface.on( 'transact', this.onTransactHandler );
 
 	// Initialization
 	var length = this.document.data.getLength();
@@ -105,6 +106,21 @@ ve.dm.SurfaceFragment.prototype.getRange = function () {
  */
 ve.dm.SurfaceFragment.prototype.isNull = function () {
 	return this.surface === undefined;
+};
+
+/**
+ * Destroys fragment, removing event handlers and object references, leaving the fragment null.
+ *
+ * Call this whenever you are done using a fragment.
+ *
+ * @method
+ */
+ve.dm.SurfaceFragment.prototype.destroy = function () {
+	if ( this.surface ) {
+		this.surface.removeListener( 'transact', this.onTransactHandler );
+		this.surface = null;
+		this.document = null;
+	}
 };
 
 /**

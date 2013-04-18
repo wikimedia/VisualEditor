@@ -42,7 +42,7 @@ ve.AnnotationAction.static.methods = ['set', 'clear', 'toggle', 'clearAll'];
  * @param {Object} [data] Additional annotation data
  */
 ve.AnnotationAction.prototype.set = function ( name, data ) {
-	this.surface.getModel().getFragment().annotateContent( 'set', name, data );
+	this.surface.getModel().getFragment().annotateContent( 'set', name, data ).destroy();
 };
 
 /**
@@ -53,7 +53,7 @@ ve.AnnotationAction.prototype.set = function ( name, data ) {
  * @param {Object} [data] Additional annotation data
  */
 ve.AnnotationAction.prototype.clear = function ( name, data ) {
-	this.surface.getModel().getFragment().annotateContent( 'clear', name, data );
+	this.surface.getModel().getFragment().annotateContent( 'clear', name, data ).destroy();
 };
 
 /**
@@ -68,9 +68,11 @@ ve.AnnotationAction.prototype.clear = function ( name, data ) {
  */
 ve.AnnotationAction.prototype.toggle = function ( name, data ) {
 	var fragment = this.surface.getModel().getFragment();
-	fragment.annotateContent(
-		fragment.getAnnotations().hasAnnotationWithName( name ) ? 'clear' : 'set', name, data
-	);
+	fragment
+		.annotateContent(
+			fragment.getAnnotations().hasAnnotationWithName( name ) ? 'clear' : 'set', name, data
+		)
+		.destroy();
 };
 
 /**
@@ -92,6 +94,7 @@ ve.AnnotationAction.prototype.clearAll = function ( filter ) {
 	for ( i = 0, len = arr.length; i < len; i++ ) {
 		fragment.annotateContent( 'clear', arr[i].name, arr[i].data );
 	}
+	fragment.destroy();
 };
 
 /* Registration */

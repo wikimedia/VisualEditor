@@ -65,9 +65,10 @@ ve.IndentationAction.prototype.increase = function () {
 		this.indentListItem(
 			documentModel.getNodeFromOffset( fragments[i].getRange().start + 1 )
 		);
+		fragments[i].destroy();
 	}
 
-	selected.select();
+	selected.select().destroy();
 
 	return increased;
 };
@@ -103,9 +104,10 @@ ve.IndentationAction.prototype.decrease = function () {
 		this.unindentListItem(
 			documentModel.getNodeFromOffset( fragments[i].getRange().start + 1 )
 		);
+		fragments[i].destroy();
 	}
 
-	selected.select();
+	selected.select().destroy();
 
 	return decreased;
 };
@@ -299,6 +301,7 @@ ve.IndentationAction.prototype.unindentListItem = function ( listItem ) {
 		);
 		surfaceModel.change( tx );
 	}
+	fragment.destroy();
 };
 
 /* Registration */

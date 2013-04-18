@@ -165,7 +165,7 @@ ve.ui.Context.prototype.destroy = function () {
  */
 ve.ui.Context.prototype.update = function () {
 	var i, nodes, items,
-		fragment = this.surface.getModel().getFragment(),
+		fragment = this.surface.getModel().getFragment( null, false ),
 		selection = fragment.getRange(),
 		inspector = this.inspectors.getCurrent();
 
@@ -194,6 +194,9 @@ ve.ui.Context.prototype.update = function () {
 		if ( items.length ) {
 			// There's at least one inspectable annotation, build a menu and show it
 			this.$menu.empty();
+			if ( this.toolbar ) {
+				this.toolbar.destroy();
+			}
 			this.toolbar = new ve.ui.Toolbar(
 				$( '<div class="ve-ui-context-toolbar"></div>' ),
 				this.surface,
@@ -209,6 +212,8 @@ ve.ui.Context.prototype.update = function () {
 
 	// Remember selection for next time
 	this.selection = selection.clone();
+
+	fragment.destroy();
 
 	return this;
 };

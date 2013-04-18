@@ -69,7 +69,8 @@ ve.ui.LinkInspector.prototype.initialize = function () {
  * @method
  */
 ve.ui.LinkInspector.prototype.onSetup = function () {
-	var fragment = this.surface.getModel().getFragment( null, true ),
+	var expandedFragment, trimmedFragment, truncatedFragment,
+		fragment = this.surface.getModel().getFragment( null, true ),
 		annotation = this.getMatchingAnnotations( fragment ).get( 0 );
 
 	// Call parent method
@@ -79,24 +80,33 @@ ve.ui.LinkInspector.prototype.onSetup = function () {
 	if ( !annotation ) {
 		if ( fragment.getRange().isCollapsed() ) {
 			// Expand to nearest word
-			fragment = fragment.expandRange( 'word' );
+			expandedFragment = fragment.expandRange( 'word' );
+			fragment.destroy();
+			fragment = expandedFragment;
 		} else {
 			// Trim whitespace
-			fragment = fragment.trimRange();
+			trimmedFragment = fragment.trimRange();
+			fragment.destroy();
+			fragment = trimmedFragment;
 		}
 		if ( !fragment.getRange().isCollapsed() ) {
 			// Create annotation from selection
-			annotation = this.getAnnotationFromTarget( fragment.truncateRange( 255 ).getText() );
+			truncatedFragment = fragment.truncateRange( 255 );
+			fragment.destroy();
+			fragment = truncatedFragment;
+			annotation = this.getAnnotationFromTarget( fragment.getText() );
 			fragment.annotateContent( 'set', annotation );
 			this.isNewAnnotation = true;
 		}
 	} else {
 		// Expand range to cover annotation
-		fragment = fragment.expandRange( 'annotation', annotation );
+		expandedFragment = fragment.expandRange( 'annotation', annotation );
+		fragment.destroy();
+		fragment = expandedFragment;
 	}
 
 	// Update selection
-	fragment.select();
+	fragment.select().destroy();
 };
 
 /**
@@ -118,6 +128,8 @@ ve.ui.LinkInspector.prototype.onOpen = function () {
 		this.targetInput.setAnnotation( annotation );
 		this.targetInput.$input.focus().select();
 	}, this ), 200 );
+
+	fragment.destroy();
 };
 
 /**
@@ -130,7 +142,7 @@ ve.ui.LinkInspector.prototype.onClose = function ( action ) {
 	// Call parent method
 	ve.ui.Inspector.prototype.onClose.call( this, action );
 
-	var i, len, annotations, selection,
+	var i, len, annotations, selection, adjustedFragment,
 		insert = false,
 		undo = false,
 		clear = false,
@@ -160,7 +172,10 @@ ve.ui.LinkInspector.prototype.onClose = function ( action ) {
 	}
 	if ( insert ) {
 		// Insert default text and select it
-		fragment = fragment.insertContent( target, false ).adjustRange( -target.length, 0 );
+		fragment.insertContent( target, false );
+		adjustedFragment = fragment.adjustRange( -target.length, 0 );
+		fragment.destroy();
+		fragment = adjustedFragment;
 
 		// Move cursor to the end of the inserted content
 		selection = new ve.Range( this.initialSelection.start + target.length );
@@ -189,6 +204,8 @@ ve.ui.LinkInspector.prototype.onClose = function ( action ) {
 	);
 	// Reset state
 	this.isNewAnnotation = false;
+
+	fragment.destroy();
 };
 
 /**

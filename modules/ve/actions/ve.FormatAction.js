@@ -49,7 +49,7 @@ ve.FormatAction.prototype.convert = function ( type, attributes ) {
 		surfaceView = this.surface.getView(),
 		surfaceModel = this.surface.getModel(),
 		selection = surfaceModel.getSelection(),
-		fragmentForSelection = new ve.dm.SurfaceFragment( surfaceModel, selection, true ),
+		fragmentForSelection = surfaceModel.getFragment( selection, true ),
 		doc = surfaceModel.getDocument(),
 		fragments = [];
 
@@ -61,13 +61,14 @@ ve.FormatAction.prototype.convert = function ( type, attributes ) {
 			selected[i].node.getParent() :
 			selected[i].node;
 
-		fragments.push( new ve.dm.SurfaceFragment( surfaceModel, contentBranch.getOuterRange(), true ) );
+		fragments.push( surfaceModel.getFragment( contentBranch.getOuterRange(), true ) );
 	}
 
 	for ( i = 0, length = fragments.length; i < length; i++ ) {
-		fragments[i].isolateAndUnwrap( type );
+		fragments[i].isolateAndUnwrap( type ).destroy();
 	}
 	selection = fragmentForSelection.getRange();
+	fragmentForSelection.destroy();
 
 	txs = ve.dm.Transaction.newFromContentBranchConversion( doc, selection, type, attributes );
 	surfaceModel.change( txs, selection );
