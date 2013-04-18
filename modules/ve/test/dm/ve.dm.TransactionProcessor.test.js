@@ -9,9 +9,10 @@ QUnit.module( 've.dm.TransactionProcessor' );
 
 /* Tests */
 
-QUnit.test( 'commit/rollback', 86, function ( assert ) {
-	var i, key, originalData, originalDoc,
+QUnit.test( 'commit/rollback', function ( assert ) {
+	var i, originalData, originalDoc,
 		msg, testDoc, tx, expectedData, expectedDoc,
+		n = 0,
 		store = ve.dm.example.createExampleDocument().getStore(),
 		bold = ve.dm.example.createAnnotation( ve.dm.example.bold ),
 		italic = ve.dm.example.createAnnotation( ve.dm.example.italic ),
@@ -142,7 +143,7 @@ QUnit.test( 'commit/rollback', 86, function ( assert ) {
 			'inserting text': {
 				'calls': [
 					['pushRetain', 1],
-					['pushReplace', [], ['F', 'O', 'O']]
+					['pushReplace', 1, 0, ['F', 'O', 'O']]
 				],
 				'expected': function ( data ) {
 					data.splice( 1, 0, 'F', 'O', 'O' );
@@ -152,7 +153,7 @@ QUnit.test( 'commit/rollback', 86, function ( assert ) {
 			'removing text': {
 				'calls': [
 					['pushRetain', 1],
-					['pushReplace', ['a'], []]
+					['pushReplace', 1, 1, []]
 				],
 				'expected': function ( data ) {
 					data.splice( 1, 1 );
@@ -162,7 +163,7 @@ QUnit.test( 'commit/rollback', 86, function ( assert ) {
 			'replacing text': {
 				'calls': [
 					['pushRetain', 1],
-					['pushReplace', ['a'], ['F', 'O', 'O']]
+					['pushReplace', 1, 1, ['F', 'O', 'O']]
 				],
 				'expected': function ( data ) {
 					data.splice( 1, 1, 'F', 'O', 'O' );
@@ -172,7 +173,7 @@ QUnit.test( 'commit/rollback', 86, function ( assert ) {
 			'emptying text': {
 				'calls': [
 					['pushRetain', 10],
-					['pushReplace', ['d'], []]
+					['pushReplace', 10, 1, []]
 				],
 				'expected': function ( data ) {
 					data.splice( 10, 1 );
@@ -182,7 +183,7 @@ QUnit.test( 'commit/rollback', 86, function ( assert ) {
 			'inserting mixed content': {
 				'calls': [
 					['pushRetain', 1],
-					['pushReplace', ['a'], ['F', 'O', 'O', {'type':'image'}, {'type':'/image'}, 'B', 'A', 'R']]
+					['pushReplace', 1, 1, ['F', 'O', 'O', {'type':'image'}, {'type':'/image'}, 'B', 'A', 'R']]
 				],
 				'expected': function ( data ) {
 					data.splice( 1, 1, 'F', 'O', 'O', {'type':'image'}, {'type':'/image'}, 'B', 'A', 'R' );
@@ -191,13 +192,9 @@ QUnit.test( 'commit/rollback', 86, function ( assert ) {
 			},
 			'converting an element': {
 				'calls': [
-					[
-						'pushReplace',
-						[{ 'type': 'heading', 'attributes': { 'level': 1 } }],
-						[{ 'type': 'paragraph' }]
-					],
+					['pushReplace', 0, 1, [{ 'type': 'paragraph' }]],
 					['pushRetain', 3],
-					['pushReplace', [{ 'type': '/heading' }], [{ 'type': '/paragraph' }]]
+					['pushReplace', 4, 1, [{ 'type': '/paragraph' }]]
 				],
 				'expected': function ( data ) {
 					data[0].type = 'paragraph';
@@ -210,8 +207,7 @@ QUnit.test( 'commit/rollback', 86, function ( assert ) {
 				'calls': [
 					['pushRetain', 2],
 					[
-						'pushReplace',
-						[],
+						'pushReplace', 2, 0,
 						[{ 'type': '/heading' }, { 'type': 'heading', 'attributes': { 'level': 1 } }]
 					]
 				],
@@ -229,11 +225,7 @@ QUnit.test( 'commit/rollback', 86, function ( assert ) {
 			'merging an element': {
 				'calls': [
 					['pushRetain', 57],
-					[
-						'pushReplace',
-						[{ 'type': '/paragraph' }, { 'type': 'paragraph' }],
-						[]
-					]
+					['pushReplace', 57, 2, []]
 				],
 				'expected': function ( data ) {
 					data.splice( 57, 2 );
@@ -243,17 +235,9 @@ QUnit.test( 'commit/rollback', 86, function ( assert ) {
 			'stripping elements': {
 				'calls': [
 					['pushRetain', 3],
-					[
-						'pushReplace',
-						[['c', [ve.dm.example.italic]]],
-						[]
-					],
+					['pushReplace', 3, 1, []],
 					['pushRetain', 6],
-					[
-						'pushReplace',
-						['d'],
-						[]
-					]
+					['pushReplace', 10, 1, []]
 				],
 				'expected': function ( data ) {
 					data.splice( 10, 1 );
@@ -272,7 +256,7 @@ QUnit.test( 'commit/rollback', 86, function ( assert ) {
 				],
 				'calls': [
 					['pushRetain', 4],
-					['pushReplace', [], ['b']]
+					['pushReplace', 4, 0, ['b']]
 				],
 				'expected': function ( data ) {
 					data.splice( 4, 0, 'b' );
@@ -338,33 +322,47 @@ QUnit.test( 'commit/rollback', 86, function ( assert ) {
 				'expected': function( data ) {
 					data.splice( 27, 2, metaElementInsert, metaElementInsertClose );
 				}
+			},
+			'removing data from between metadata merges metadata': {
+				'data': ve.dm.example.withMeta,
+				'calls': [
+					['pushRetain', 7 ],
+					['pushReplace', 7, 2, []],
+					['pushRetain', 2 ],
+				],
+				'expected': function( data ) {
+					data.splice( 15, 2 );
+					ve.setProp( data[4], 'internal', 'changed', 'content', 1 );
+				}
 			}
 		};
 
-	for ( key in cases ) {
-		for ( i = 0; i < cases[key].calls.length; i++ ) {
-			if ( cases[key].calls[i][0] === 'pushReplace' ) {
-				ve.dm.example.preprocessAnnotations( cases[key].calls[i][1], store );
-				ve.dm.example.preprocessAnnotations( cases[key].calls[i][2], store );
-			}
-		}
+	for ( msg in cases ) {
+		n += ( 'expected' in cases[msg] ) ? 4 : 1;
 	}
+	QUnit.expect( n );
 
 	// Run tests
 	for ( msg in cases ) {
+		// Generate original document
+		originalData = cases[msg].data || ve.dm.example.data;
+		originalDoc = new ve.dm.Document(
+			ve.dm.example.preprocessAnnotations( ve.copyArray( originalData ), store )
+		);
+		testDoc = new ve.dm.Document(
+			ve.dm.example.preprocessAnnotations( ve.copyArray( originalData ), store )
+		);
+
 		tx = new ve.dm.Transaction();
 		for ( i = 0; i < cases[msg].calls.length; i++ ) {
+			// pushReplace needs the document as its first argument
+			if ( cases[msg].calls[i][0] === 'pushReplace' ) {
+				cases[msg].calls[i].splice( 1, 0, testDoc );
+			}
 			tx[cases[msg].calls[i][0]].apply( tx, cases[msg].calls[i].slice( 1 ) );
 		}
+
 		if ( 'expected' in cases[msg] ) {
-			// Generate original document
-			originalData = cases[msg].data || ve.dm.example.data;
-			originalDoc = new ve.dm.Document(
-				ve.dm.example.preprocessAnnotations( ve.copyArray( originalData ), store )
-			);
-			testDoc = new ve.dm.Document(
-				ve.dm.example.preprocessAnnotations( ve.copyArray( originalData ), store )
-			);
 			// Generate expected document
 			expectedData = ve.copyArray( originalData );
 			cases[msg].expected( expectedData );

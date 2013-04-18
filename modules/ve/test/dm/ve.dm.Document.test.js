@@ -9,7 +9,7 @@ QUnit.module( 've.dm.Document' );
 
 /* Tests */
 
-QUnit.test( 'constructor', 7, function ( assert ) {
+QUnit.test( 'constructor', 8, function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument();
 	assert.equalNodeTree( doc.getDocumentNode(), ve.dm.example.tree, 'node tree matches example data' );
 	assert.throws(
@@ -29,6 +29,9 @@ QUnit.test( 'constructor', 7, function ( assert ) {
 		doc.getDocumentNode(),
 		new ve.dm.DocumentNode( [ new ve.dm.TextNode( 4 ) ] ),
 		'plain text input is handled correctly'
+	);
+	assert.deepEqual( doc.getMetadata(), new Array( 5 ),
+		'sparse metadata array is created'
 	);
 
 	doc = new ve.dm.Document( [ { 'type': 'paragraph' }, { 'type': '/paragraph' } ] );
@@ -64,48 +67,33 @@ QUnit.test( 'getFullData', 1, function ( assert ) {
 	assert.deepEqual( doc.getFullData(), ve.dm.example.withMeta );
 } );
 
-QUnit.test( 'spliceData', 12, function ( assert ) {
-	var doc = ve.dm.example.createExampleDocument( 'withMeta' ),
-		fullData = ve.copyArray( ve.dm.example.withMeta ),
-		plainData = ve.copyArray( ve.dm.example.withMetaPlainData ),
-		metaData = ve.copyArray( ve.dm.example.withMetaMetaData ),
-		actualResult, expectedResult;
+QUnit.test( 'getMetadataReplace', 3, function ( assert ) {
+	var replace, expectedReplace,
+		doc = ve.dm.example.createExampleDocument( 'withMeta' );
 
-	actualResult = doc.spliceData( 2, 0, [ 'X', 'Y' ] );
-	expectedResult = plainData.splice( 2, 0, 'X', 'Y' );
-	fullData.splice( 6, 0, 'X', 'Y' );
-	metaData.splice( 2, 0, undefined, undefined );
-	assert.deepEqual( doc.getData(), plainData, 'adding two elements at offset 2 (plain data)' );
-	assert.deepEqual( doc.getMetadata(), metaData, 'adding two elements at offset 2 (metadata)' );
-	assert.deepEqual( doc.getFullData(), fullData, 'adding two elements at offset 2 (full data)' );
+	replace = doc.getMetadataReplace( 10, 1, [] );
+	expectedReplace = {
+		'retain': 0,
+		'remove': doc.getMetadata().slice( 10, 12 ),
+		'insert': ve.dm.MetaLinearData.static.merge( doc.getMetadata().slice( 10, 12 ) )
+	};
+	assert.deepEqual( replace, expectedReplace, 'removing one element at offset 10' );
 
-	actualResult = doc.spliceData( 10, 1 );
-	expectedResult = plainData.splice( 10, 1 );
-	fullData.splice( 18, 1 );
-	metaData.splice( 10, 1 );
-	assert.deepEqual( doc.getData(), plainData, 'removing one element at offset 10 (plain data)' );
-	assert.deepEqual( doc.getMetadata(), metaData, 'removing one element at offset 10 (metadata)' );
-	assert.deepEqual( doc.getFullData(), fullData, 'removing one element at offset 10 (full data)' );
+	replace = doc.getMetadataReplace( 5, 2, [] );
+	expectedReplace = {
+		'retain': 0,
+		'remove': doc.getMetadata().slice( 5, 8 ),
+		'insert': ve.dm.MetaLinearData.static.merge( doc.getMetadata().slice( 5, 8 ) )
+	};
+	assert.deepEqual( replace, expectedReplace, 'removing two elements at offset 5' );
 
-	actualResult = doc.spliceData( 5, 2 );
-	expectedResult = plainData.splice( 5, 2 );
-	fullData.splice( 9, 1 );
-	fullData.splice( 11, 1 );
-	metaData.splice( 5, 3, metaData[6] );
-	assert.deepEqual( doc.getData(), plainData, 'removing two elements at offset 5 (plain data)' );
-	assert.deepEqual( doc.getMetadata(), metaData, 'removing two elements at offset 5 (metadata)' );
-	assert.deepEqual( doc.getFullData(), fullData, 'removing two elements at offset 5 (full data)' );
-
-	actualResult = doc.spliceData( 1, 8 );
-	expectedResult = plainData.splice( 1, 8 );
-	fullData.splice( 5, 4 );
-	fullData.splice( 7, 2 );
-	fullData.splice( 9, 1 );
-	fullData.splice( 11, 1 );
-	metaData.splice( 1, 9, metaData[5].concat( metaData[7] ).concat( metaData[8] ) );
-	assert.deepEqual( doc.getData(), plainData, 'blanking paragraph, removing 8 elements at offset 1 (plain data)' );
-	assert.deepEqual( doc.getMetadata(), metaData, 'blanking paragraph, removing 8 elements at offset 1 (metadata)' );
-	assert.deepEqual( doc.getFullData(), fullData, 'blanking paragraph, removing 8 elements at offset 1 (full data)' );
+	replace = doc.getMetadataReplace( 1, 8, [] );
+	expectedReplace = {
+		'retain': 0,
+		'remove': doc.getMetadata().slice( 1, 10 ),
+		'insert': ve.dm.MetaLinearData.static.merge( doc.getMetadata().slice( 1, 10 ) )
+	};
+	assert.deepEqual( replace, expectedReplace, 'blanking paragraph, removing 8 elements at offset 1' );
 } );
 
 QUnit.test( 'getNodeFromOffset', function ( assert ) {
@@ -230,7 +218,7 @@ QUnit.test( 'rebuildNodes', 2, function ( assert ) {
 	// XXX: Create a new document node tree from the old one
 	tree = new ve.dm.DocumentNode( ve.dm.example.tree.getChildren() );
 	// Replace table with paragraph
-	doc.spliceData( 5, 32, [ { 'type': 'paragraph' }, 'a', 'b', 'c', { 'type': '/paragraph' } ] );
+	doc.data.batchSplice( 5, 32, [ { 'type': 'paragraph' }, 'a', 'b', 'c', { 'type': '/paragraph' } ] );
 	tree.splice( 1, 1, new ve.dm.ParagraphNode(
 		[new ve.dm.TextNode( 3 )], doc.data.getData( 5 )
 	) );
@@ -380,7 +368,7 @@ QUnit.test( 'protection against double application of transactions', 3, function
 	var tx = new ve.dm.Transaction(),
 		testDocument = new ve.dm.Document( ve.dm.example.data );
 	tx.pushRetain( 1 );
-	tx.pushReplace( [], ['H', 'e', 'l', 'l', 'o' ] );
+	tx.pushReplace( testDocument, 1, 0, ['H', 'e', 'l', 'l', 'o' ] );
 	assert.throws(
 		function () {
 			testDocument.rollback( tx );

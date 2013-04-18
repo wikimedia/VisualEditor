@@ -38,7 +38,7 @@ ve.dm.Transaction.newFromInsertion = function ( doc, offset, insertion ) {
 	// Retain up to insertion point, if needed
 	tx.pushRetain( offset );
 	// Insert data
-	tx.pushReplace( [], insertion );
+	tx.pushReplace( doc, offset, 0, insertion );
 	// Retain to end of document, if needed (for completeness)
 	tx.pushRetain( data.length - offset );
 	return tx;
@@ -102,7 +102,7 @@ ve.dm.Transaction.newFromRemoval = function ( doc, range ) {
 			removeEnd = ( last.range || last.nodeRange ).end;
 		}
 		tx.pushRetain( removeStart );
-		tx.pushReplace( data.slice( removeStart, removeEnd ), [] );
+		tx.pushReplace( doc, removeStart, removeEnd - removeStart, [] );
 		tx.pushRetain( data.length - removeEnd );
 		// All done
 		return tx;
@@ -135,7 +135,7 @@ ve.dm.Transaction.newFromRemoval = function ( doc, range ) {
 
 			// Push the previous removal first
 			tx.pushRetain( removeStart - offset );
-			tx.pushReplace( data.slice( removeStart, removeEnd ), [] );
+			tx.pushReplace( doc, removeStart, removeEnd - removeStart, [] );
 			offset = removeEnd;
 
 			// Now start this removal
@@ -146,7 +146,7 @@ ve.dm.Transaction.newFromRemoval = function ( doc, range ) {
 	// Apply the last removal, if any
 	if ( removeEnd !== null ) {
 		tx.pushRetain( removeStart - offset );
-		tx.pushReplace( data.slice( removeStart, removeEnd ), [] );
+		tx.pushReplace( doc, removeStart, removeEnd - removeStart, [] );
 		offset = removeEnd;
 	}
 	// Retain up to the end of the document
@@ -412,11 +412,11 @@ ve.dm.Transaction.newFromContentBranchConversion = function ( doc, range, type, 
 				branchOuterRange.start - ( previousBranch ? previousBranchOuterRange.end : 0 )
 			);
 			// Replace the opening
-			tx.pushReplace( [data[branchOuterRange.start]], [ve.copyObject( opening )] );
+			tx.pushReplace( doc, branchOuterRange.start, 1, [ve.copyObject( opening )] );
 			// Retain the contents
 			tx.pushRetain( branch.getLength() );
 			// Replace the closing
-			tx.pushReplace( [data[branchOuterRange.end - 1]], [ve.copyObject( closing )] );
+			tx.pushReplace( doc, branchOuterRange.end - 1, 1, [ve.copyObject( closing )] );
 			// Remember this branch and its range for next time
 			previousBranch = branch;
 			previousBranchOuterRange = branchOuterRange;
@@ -499,8 +499,8 @@ ve.dm.Transaction.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, u
 			}
 		}
 		// Instead of putting in unwrapOuter as given, put it in the
-		// way it appears in the mode,l so we pick up any attributes
-		tx.pushReplace( unwrapOuterData, ve.copyArray( wrapOuter ) );
+		// way it appears in the model so we pick up any attributes
+		tx.pushReplace( doc, range.start - unwrapOuter.length, unwrapOuter.length, ve.copyArray( wrapOuter ) );
 	}
 
 	if ( wrapEach.length > 0 || unwrapEach.length > 0 ) {
@@ -527,7 +527,7 @@ ve.dm.Transaction.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, u
 						}
 						// Instead of putting in unwrapEach as given, put it in the
 						// way it appears in the model, so we pick up any attributes
-						tx.pushReplace( ve.copyArray( unwrapEachData ), ve.copyArray( wrapEach ) );
+						tx.pushReplace( doc, i, unwrapEach.length, ve.copyArray( wrapEach ) );
 
 						// Store this offset for later
 						startOffset = i;
@@ -541,7 +541,7 @@ ve.dm.Transaction.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, u
 						// Retain the contents of what we're wrapping
 						tx.pushRetain( i - startOffset + 1 - unwrapEach.length*2 );
 						// Replace the closing elements
-						tx.pushReplace( ve.copyArray( closingUnwrapEach ), ve.copyArray( closingWrapEach ) );
+						tx.pushReplace( doc, i + 1 - unwrapEach.length, unwrapEach.length, ve.copyArray( closingWrapEach ) );
 					}
 				}
 			}
@@ -553,7 +553,7 @@ ve.dm.Transaction.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, u
 	}
 
 	if ( wrapOuter.length > 0 || unwrapOuter.length > 0 ) {
-		tx.pushReplace( closingArray( unwrapOuter ), closingArray( wrapOuter ) );
+		tx.pushReplace( doc, range.end, unwrapOuter.length, closingArray( wrapOuter ) );
 	}
 
 	// Retain up to the end of the document
@@ -601,7 +601,7 @@ ve.dm.Transaction.prototype.getOperations = function () {
 ve.dm.Transaction.prototype.hasOperationWithType = function ( type ) {
 	var i, len;
 	for ( i = 0, len = this.operations.length; i < len; i++ ) {
-		if ( this.operations[i].type  === type ) {
+		if ( this.operations[i].type === type ) {
 			return true;
 		}
 	}
@@ -803,34 +803,52 @@ ve.dm.Transaction.prototype.pushRetainMetadata = function ( length ) {
 };
 
 /**
- * Add a replace operation
+ * Add a replace operation, keeping metadata in sync if required
  *
  * @method
- * @param {Array} remove Data to remove
- * @param {Array} insert Data to replace 'remove' with
+ * @param {ve.dm.Document} doc Document model
+ * @param {number} offset Offset to start at
+ * @param {number} removeLength Number of data items to remove
+ * @param {Array} insert Data to insert
  */
-ve.dm.Transaction.prototype.pushReplace = function ( remove, insert ) {
-	if ( remove.length === 0 && insert.length === 0 ) {
+ve.dm.Transaction.prototype.pushReplace = function ( doc, offset, removeLength, insert ) {
+	if ( removeLength === 0 && insert.length === 0 ) {
 		// Don't push no-ops
 		return;
 	}
-	var end = this.operations.length - 1;
-	if ( this.operations.length && this.operations[end].type === 'replace' ) {
-		this.operations[end].insert = this.operations[end].insert.concat( insert );
-		this.operations[end].remove = this.operations[end].remove.concat( remove );
+
+	var op, end = this.operations.length - 1,
+		lastOp = end >= 0 ? this.operations[end] : null,
+		remove = doc.getData( new ve.Range( offset, offset + removeLength ) ),
+		metadataReplace = doc.getMetadataReplace( offset, removeLength, insert ),
+		retainMetadata = metadataReplace.retain,
+		removeMetadata = metadataReplace.remove,
+		insertMetadata = metadataReplace.insert;
+
+	if ( lastOp && lastOp.type === 'replace' && !lastOp.removeMetadata && !removeMetadata ) {
+		// simple replaces can just be concatenated
+		// TODO: allow replaces with meta to be merged?
+		lastOp.insert = lastOp.insert.concat( insert );
+		lastOp.remove = lastOp.remove.concat( remove );
 	} else {
-		this.operations.push( {
+		op = {
 			'type': 'replace',
 			'remove': remove,
 			'insert': insert
-		} );
+		};
+		if ( removeMetadata !== undefined ) {
+			op.retainMetadata = retainMetadata;
+			op.removeMetadata = removeMetadata;
+			op.insertMetadata = insertMetadata;
+		}
+		this.operations.push( op );
 	}
 	this.lengthDifference += insert.length - remove.length;
 };
 
 /**
  * Add a replace metadata operation
- * // TODO: this is a copy/paste of pushRetainMetadata (at the moment). Consider a refactor.
+ * // TODO: this is a copy/paste of pushReplace (at the moment). Consider a refactor.
  *
  * @method
  * @param {Array} remove Metadata to remove

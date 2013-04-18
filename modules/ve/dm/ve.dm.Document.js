@@ -61,7 +61,7 @@ ve.dm.Document = function VeDmDocument( documentOrData, parentDocument ) {
 	// Each element is either undefined, or an array of metadata elements
 	// Because the indexes in the metadata array represent offsets in the data array, the
 	// metadata array has one element more than the data array.
-	this.metadata = new ve.dm.MetaLinearData( this.getStore(), new Array( this.data.getLength() + 1 ) );
+	this.metadata = new ve.dm.MetaLinearData( this.getStore(), [] );
 
 	// extract metadata and build node tree
 	// NB: this.data.getLength() will change as data is spliced out
@@ -90,7 +90,7 @@ ve.dm.Document = function VeDmDocument( documentOrData, parentDocument ) {
 				// Metadata
 				// Splice the meta element and its closing out of the linmod
 				meta = this.data.getData( i );
-				this.spliceData( i, 2 );
+				this.data.splice( i, 2 );
 				// Put the metadata in the meta-linmod
 				if ( !this.metadata.getData( i ) ) {
 					this.metadata.setData( i, [] );
@@ -146,6 +146,12 @@ ve.dm.Document = function VeDmDocument( documentOrData, parentDocument ) {
 				currentNode = parentStack[parentStack.length - 1];
 			}
 		}
+	}
+	// pad out the metadata array
+	if ( this.metadata.getLength() < this.data.getLength() + 1 ) {
+		this.metadata.data = this.metadata.data.concat(
+			new Array( 1 + this.data.getLength() - this.metadata.getLength() )
+		);
 	}
 
 	if ( inTextNode ) {
@@ -260,6 +266,8 @@ ve.dm.Document.prototype.getMetadata = function ( range, deep ) {
 
 /**
  * Get the document's index-value store
+ *
+ * @method
  * @returns {ve.dm.IndexValueStore} The document's index-value store
  */
 ve.dm.Document.prototype.getStore = function () {
@@ -267,44 +275,34 @@ ve.dm.Document.prototype.getStore = function () {
 };
 
 /**
- * Splice data into and/or out of the linear model.
- *
- * `this.metadata` will be updated accordingly.
- *
- * Always use this function, never use `this.data.splice()` directly, otherwise the linear model
- * (`this.data`) and the meta-linmod (`this.metadata`) can get out of sync. The semantics of the
- * parameters are identical to those of ve#batchSplice
+ * Get the metadata replace operation required to keep data & metadata in sync after a splice
  *
  * @method
- * @see ve#batchSplice
- * @param offset
- * @param remove
- * @param insert
- * @returns {Array}
+ * @param {number} offset Data offset to start at
+ * @param {number} remove Number of elements being removed
+ * @param {Array} insert Element data being inserted
+ * @returns {Object} Metadata replace operation to keep data & metadata in sync
  */
-ve.dm.Document.prototype.spliceData = function ( offset, remove, insert ) {
-	var spliced, retain, reaped, reapedFlat, i;
-	insert = insert || [];
-	spliced = this.data.batchSplice( offset, remove, insert );
-	// If we're both inserting and removing in the same operation, don't remove a bunch of metadata
-	// elements only to insert a bunch of new ones. Instead, only add or remove as many as the length
-	// delta.
-	retain = insert.length < remove ? insert.length : remove;
-	reaped = this.metadata.batchSplice( offset + retain, remove - retain, new Array( insert.length - retain ) );
-	// reaped will be an array of arrays, flatten it
-	reapedFlat = [];
-	for ( i = 0; i < reaped.length; i++ ) {
-		if ( reaped[i] !== undefined ) {
-			reapedFlat = reapedFlat.concat( reaped[i] );
+ve.dm.Document.prototype.getMetadataReplace = function( offset, remove, insert ) {
+	var removeMetadata, insertMetadata, replace = {};
+	if ( remove > insert.length ) {
+		// if we are removing more than we are inserting we need to collapse the excess metadata
+		removeMetadata = this.getMetadata( new ve.Range( offset + insert.length, offset + remove + 1 ) );
+		// check removeMetadata is non-empty
+		if ( !ve.compareArrays( removeMetadata, new Array( removeMetadata.length ) ) ) {
+			insertMetadata = ve.dm.MetaLinearData.static.merge( removeMetadata );
+			replace.retain = insert.length;
+			replace.remove = removeMetadata;
+			replace.insert = insertMetadata;
 		}
 	}
-	// Add reaped metadata to the metadata that is now at offset (and used to be immediately
-	// after the removed data). Add it to the front, because it came from something that was
-	// before it.
-	if ( reapedFlat.length > 0 ) {
-		this.metadata.setData( offset + retain, reapedFlat.concat( this.metadata.getData( offset ) || [] ) );
+	// if insert.length === remove metadata can just stay where it is
+	if ( insert.length > remove ) {
+		// if we are inserting more than we are removing then we need to pad out with undefineds
+		replace.retain = remove;
+		replace.insert = new Array( insert.length - remove );
 	}
-	return spliced;
+	return replace;
 };
 
 /**
