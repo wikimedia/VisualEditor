@@ -83,7 +83,7 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 	for ( i = 0; i < annotatedHtml.length; i++ ) {
 		if ( ve.isArray( annotatedHtml[i] ) ) {
 			itemHtml = annotatedHtml[i][0];
-			itemAnnotations = new ve.dm.AnnotationSet( store, store.values( annotatedHtml[i][1] ) );
+			itemAnnotations = new ve.dm.AnnotationSet( store, annotatedHtml[i][1] );
 		} else {
 			itemHtml = annotatedHtml[i];
 			itemAnnotations = new ve.dm.AnnotationSet( store );

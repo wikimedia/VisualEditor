@@ -15,8 +15,8 @@ QUnit.test( 'Basic usage', 27, function ( assert ) {
 		bold = new ve.dm.TextStyleBoldAnnotation(),
 		italic = new ve.dm.TextStyleItalicAnnotation(),
 		underline = new ve.dm.TextStyleUnderlineAnnotation(),
-		annotationSet = new ve.dm.AnnotationSet( store, [ bold, italic ] ),
-		annotationSet2 = new ve.dm.AnnotationSet( store, [ italic, underline ] ),
+		annotationSet = new ve.dm.AnnotationSet( store, store.indexes( [ bold, italic ] ) ),
+		annotationSet2 = new ve.dm.AnnotationSet( store, store.indexes( [ italic, underline ] ) ),
 		emptySet = new ve.dm.AnnotationSet( store );
 
 	assert.equal( annotationSet.getLength(), 2, 'getLength is 2' );
@@ -49,7 +49,7 @@ QUnit.test( 'Basic usage', 27, function ( assert ) {
 	annotationSet2.removeSet( annotationSet );
 	assert.equal( annotationSet2.isEmpty(), true, 'set2 is empty after removeSet' );
 
-	annotationSet2 = new ve.dm.AnnotationSet( store, [ italic, underline ] );
+	annotationSet2 = new ve.dm.AnnotationSet( store, store.indexes( [ italic, underline ] ) );
 	annotationSet2.removeNotInSet( annotationSet );
 	assert.equal( annotationSet.contains( italic ) && !annotationSet.contains( underline ), true, 'contains italic not underline after removeNotInSet' );
 	annotationSet2.add( underline, 1 );

@@ -313,7 +313,7 @@ ve.dm.ElementLinearData.prototype.getAnnotationsFromOffset = function ( offset )
 
 	annotations = this.getData( offset ).annotations || this.getData( offset )[1];
 	return annotations ?
-		new ve.dm.AnnotationSet( this.getStore(), this.getStore().values( annotations ) ) :
+		new ve.dm.AnnotationSet( this.getStore(), annotations ) :
 		new ve.dm.AnnotationSet( this.getStore() );
 };
 

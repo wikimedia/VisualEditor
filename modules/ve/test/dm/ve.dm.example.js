@@ -77,7 +77,7 @@ ve.dm.example.createAnnotationSet = function ( store, annotations ) {
 	for ( i = 0; i < annotations.length; i++ ) {
 		annotations[i] = ve.dm.example.createAnnotation( annotations[i] );
 	}
-	return new ve.dm.AnnotationSet( store, annotations );
+	return new ve.dm.AnnotationSet( store, store.indexes( annotations ) );
 };
 
 /* Some common annotations in shorthand format */
