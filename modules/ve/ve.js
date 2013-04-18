@@ -268,6 +268,86 @@
 	};
 
 	/**
+	 * Compute the union (duplicate-free merge) of a set of arrays.
+	 *
+	 * Arrays values must be convertable to object keys (strings)
+	 *
+	 * By building an object (with the values for keys) in parallel with
+	 * the array, a new item's existence in the union can be computed faster
+	 *
+	 * @param {Array...} arrays Arrays to union
+	 * @returns {Array} Union of the arrays
+	 */
+	ve.simpleArrayUnion = function () {
+		var i, ilen, j, jlen, arr, obj = {}, result = [];
+		for ( i = 0, ilen = arguments.length; i < ilen; i++ ) {
+			arr = arguments[i];
+			for ( j = 0, jlen = arr.length; j < jlen; j++ ) {
+				if ( !obj[arr[j]] ) {
+					obj[arr[j]] = true;
+					result.push( arr[j] );
+				}
+			}
+		}
+		return result;
+	};
+
+	/**
+	 * Compute the intersection of two arrays (items in both arrays).
+	 *
+	 * Arrays values must be convertable to object keys (strings)
+	 *
+	 * @param {Array} a First array
+	 * @param {Array} b Second array
+	 * @returns {Array} Intersection of arrays
+	 */
+	ve.simpleArrayIntersection = function ( a, b ) {
+		return ve.simpleArrayCombine( a, b, true );
+	};
+
+	/**
+	 * Compute the difference of two arrays (items in 'a' but not 'b').
+	 *
+	 * Arrays values must be convertable to object keys (strings)
+	 *
+	 * @param {Array} a First array
+	 * @param {Array} b Second array
+	 * @returns {Array} Intersection of arrays
+	 */
+	ve.simpleArrayDifference = function ( a, b ) {
+		return ve.simpleArrayCombine( a, b, false );
+	};
+
+	/**
+	 * Combine arrays (intersection or difference).
+	 *
+	 * An intersection checks the item exists in 'b' while difference checks it doesn't.
+	 *
+	 * Arrays values must be convertable to object keys (strings)
+	 *
+	 * By building an object (with the values for keys) of 'b' we can
+	 * compute the result faster
+	 *
+	 * @param {Array} a First array
+	 * @param {Array} b Second array
+	 * @param {boolean} includeB Include items in 'b'
+	 * @returns {Array} Combination (intersection or difference) of arrays
+	 */
+	ve.simpleArrayCombine = function ( a, b, includeB ) {
+		var i, ilen, isInB, bObj = {}, result = [];
+		for ( i = 0, ilen = b.length; i < ilen; i++ ) {
+			bObj[b[i]] = true;
+		}
+		for ( i = 0, ilen = a.length; i < ilen; i++ ) {
+			isInB = !!bObj[a[i]];
+			if ( isInB === includeB ) {
+				result.push( a[i] );
+			}
+		}
+		return result;
+	};
+
+	/**
 	 * Merge properties of one or more objects into another.
 	 * Preserves original object's inheritance (e.g. Array, Object, whatever).
 	 * In case of array or array-like objects only the indexed properties
