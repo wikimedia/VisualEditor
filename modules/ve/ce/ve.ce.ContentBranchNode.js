@@ -20,8 +20,16 @@ ve.ce.ContentBranchNode = function VeCeContentBranchNode( model, $element ) {
 	// Parent constructor
 	ve.ce.BranchNode.call( this, model, $element );
 
+	// Properties
+	var lastTransaction;
+
 	// Events
-	this.addListenerMethod( this, 'childUpdate', 'renderContents' );
+	this.on( 'childUpdate', ve.bind( function( transaction ) {
+		if ( lastTransaction !== transaction ) {
+			lastTransaction = transaction;
+			this.renderContents();
+		}
+	}, this ) );
 
 	// Initialization
 	this.renderContents();

@@ -24,7 +24,7 @@ ve.dm.TransactionProcessor = function VeDmTransactionProcessor( doc, transaction
 	this.document = doc;
 	this.transaction = transaction;
 	this.operations = transaction.getOperations();
-	this.synchronizer = new ve.dm.DocumentSynchronizer( doc );
+	this.synchronizer = new ve.dm.DocumentSynchronizer( doc, transaction );
 	this.reversed = reversed;
 	// Linear model offset that we're currently at. Operations in the transaction are ordered, so
 	// the cursor only ever moves forward.
