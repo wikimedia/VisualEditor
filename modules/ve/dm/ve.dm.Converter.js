@@ -829,7 +829,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( store, data, contai
 				)
 			) {
 				annotations = new ve.dm.AnnotationSet(
-					store, store.values( data[i].annotations || data[i][1] )
+					store, data[i].annotations || data[i][1]
 				);
 				ve.dm.Converter.openAndCloseAnnotations( annotationStack, annotations,
 					openAnnotation, closeAnnotation

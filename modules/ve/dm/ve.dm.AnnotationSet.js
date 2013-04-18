@@ -10,12 +10,12 @@
  *
  * @constructor
  * @param {ve.dm.IndexValueStore} store Index value store
- * @param {Object[]} [annotations] Array of annotation objects
+ * @param {Object[]} [indexes] Array of indexes into the store
  */
-ve.dm.AnnotationSet = function VeDmAnnotationSet( store, annotations ) {
+ve.dm.AnnotationSet = function VeDmAnnotationSet( store, indexes ) {
 	// Parent constructor
 	this.store = store;
-	this.storeIndexes = annotations ? this.getStore().indexes( annotations ) : [];
+	this.storeIndexes = indexes || [];
 };
 
 /* Methods */
@@ -37,7 +37,7 @@ ve.dm.AnnotationSet.prototype.getStore = function () {
  * @returns {ve.dm.AnnotationSet} Copy of annotation set
  */
 ve.dm.AnnotationSet.prototype.clone = function () {
-	return new ve.dm.AnnotationSet( this.getStore(), this.get() );
+	return new ve.dm.AnnotationSet( this.getStore(), this.storeIndexes.slice( 0 ) );
 };
 
 /**

@@ -146,7 +146,7 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 		}
 		annotated = isElement ? 'annotations' in item : ve.isArray( item );
 		annotations = annotated ?
-			new ve.dm.AnnotationSet( store, store.values( isElement ? item.annotations : item[1] ) ) :
+			new ve.dm.AnnotationSet( store, isElement ? item.annotations : item[1] ) :
 			new ve.dm.AnnotationSet( store );
 		// Set and clear annotations
 		if ( annotations.containsAnyOf( this.set ) ) {

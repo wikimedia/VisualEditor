@@ -199,7 +199,7 @@ ve.dm.Document.addAnnotationsToData = function ( data, annotationSet ) {
 			data[i] = [data[i]];
 			newAnnotationSet = annotationSet.clone();
 		} else {
-			newAnnotationSet = new ve.dm.AnnotationSet( store, store.values( data[i][1] ) );
+			newAnnotationSet = new ve.dm.AnnotationSet( store, data[i][1] );
 			newAnnotationSet.addSet( annotationSet.clone() );
 		}
 		data[i][1] = newAnnotationSet.getIndexes();
