@@ -45,7 +45,7 @@ ve.dm.AlienNode.static.toDataElement = function ( domElements, converter ) {
 
 ve.dm.AlienNode.static.toDomElements = function ( dataElement, doc ) {
 	var wrapper = doc.createElement( 'div' );
-	wrapper.innerHTML = dataElement.attributes.html;
+	$( wrapper ).html( dataElement.attributes.html );
 	// Convert wrapper.children to an array
 	return Array.prototype.slice.call( wrapper.childNodes, 0 );
 };
