@@ -124,6 +124,7 @@
 		<script src="../../ve/ce/ve.ce.BranchNode.js"></script>
 		<script src="../../ve/ce/ve.ce.ContentBranchNode.js"></script>
 		<script src="../../ve/ce/ve.ce.LeafNode.js"></script>
+		<script src="../../ve/ce/ve.ce.FocusableNode.js"></script>
 		<script src="../../ve/ce/ve.ce.Surface.js"></script>
 		<script src="../../ve/ce/ve.ce.SurfaceObserver.js"></script>
 		<script src="../../ve/ce/nodes/ve.ce.GeneratedContentNode.js"></script>

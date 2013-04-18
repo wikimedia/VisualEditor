@@ -10,12 +10,17 @@
  *
  * @class
  * @extends ve.ce.LeafNode
+ * @mixins ve.ce.FocusableNode
+ *
  * @constructor
  * @param {ve.dm.ImageNode} model Model to observe
  */
 ve.ce.ImageNode = function VeCeImageNode( model ) {
 	// Parent constructor
 	ve.ce.LeafNode.call( this, model, $( '<img>' ) );
+
+	// Mixin constructors
+	ve.ce.FocusableNode.call( this );
 
 	// Events
 	this.model.addListenerMethod( this, 'update', 'onUpdate' );
@@ -33,6 +38,8 @@ ve.ce.ImageNode = function VeCeImageNode( model ) {
 /* Inheritance */
 
 ve.inheritClass( ve.ce.ImageNode, ve.ce.LeafNode );
+
+ve.mixinClass( ve.ce.ImageNode, ve.ce.FocusableNode );
 
 /* Static Properties */
 
