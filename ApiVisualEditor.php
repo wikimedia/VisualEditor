@@ -13,10 +13,8 @@ class ApiVisualEditor extends ApiBase {
 		global $wgVisualEditorParsoidURL, $wgVisualEditorParsoidPrefix,
 			$wgVisualEditorParsoidTimeout;
 		if ( $title->exists() ) {
-			if ( !isset( $parserParams['oldid'] ) ) {
-				// Don't allow race condition where the latest revision ID changes while we are waiting
-				// for a response from Parsoid
-				$parserParams['oldid'] = $title->getLatestRevId();
+			if ( $parserParams['oldid'] === 0 ) {
+				$parserParams['oldid'] = ''; // Parsoid wants empty string rather than zero
 			}
 			$revision = Revision::newFromId( $parserParams['oldid'] );
 			if ( $revision === null ) {
@@ -67,15 +65,19 @@ class ApiVisualEditor extends ApiBase {
 		);
 	}
 
-	protected function postHTML( $title, $html ) {
+	protected function postHTML( $title, $html, $parserParams ) {
 		global $wgVisualEditorParsoidURL, $wgVisualEditorParsoidPrefix,
 			$wgVisualEditorParsoidTimeout;
+		if ( $parserParams['oldid'] === 0 ) {
+			$parserParams['oldid'] = '';
+		}
 		return Http::post(
 			$wgVisualEditorParsoidURL . '/' . $wgVisualEditorParsoidPrefix .
 				'/' . urlencode( $title->getPrefixedDBkey() ),
 			array(
 				'postData' => array( 'content' => $html ),
-				'timeout' => $wgVisualEditorParsoidTimeout
+				'timeout' => $wgVisualEditorParsoidTimeout,
+				'oldid' => $parserParams['oldid']
 			)
 		);
 	}
@@ -184,10 +186,7 @@ class ApiVisualEditor extends ApiBase {
 				$page->getNamespace(), 'novenamespace' );
 		}
 
-		$parserParams = array();
-		if ( is_numeric( $params['oldid'] ) ) {
-			$parserParams['oldid'] = intval( $params['oldid'] );
-		}
+		$parserParams = array( 'oldid' => $params['oldid'] );
 
 		if ( $params['paction'] === 'parse' ) {
 			$parsed = $this->getHTML( $page, $parserParams );
@@ -211,14 +210,14 @@ class ApiVisualEditor extends ApiBase {
 			if ( $params['html'] === null ) {
 				$this->dieUsageMsg( 'missingparam', 'html' );
 			}
-			$serialized = array( 'content' => $this->postHTML( $page, $params['html'] ) );
+			$serialized = array( 'content' => $this->postHTML( $page, $params['html'], $parserParams ) );
 			if ( $serialized === false ) {
 				$this->dieUsage( 'Error contacting the Parsoid server', 'parsoidserver' );
 			} else {
 				$result = array_merge( array( 'result' => 'success' ), $serialized );
 			}
 		} elseif ( $params['paction'] === 'save' || $params['paction'] === 'diff' ) {
-			$wikitext = $this->postHTML( $page, $params['html'] );
+			$wikitext = $this->postHTML( $page, $params['html'], $parserParams );
 
 			if ( $wikitext === false ) {
 				$this->dieUsage( 'Error contacting the Parsoid server', 'parsoidserver' );
@@ -275,7 +274,11 @@ class ApiVisualEditor extends ApiBase {
 			),
 			'basetimestamp' => null,
 			'starttimestamp' => null,
-			'oldid' => null,
+			'oldid' => array(
+				ApiBase::PARAM_REQUIRED => true,
+				ApiBase::PARAM_TYPE => 'integer',
+				ApiBase::PARAM_DFLT => 0
+			),
 			'minor' => null,
 			'watch' => null,
 			'html' => null,
@@ -307,7 +310,7 @@ class ApiVisualEditor extends ApiBase {
 		return array(
 			'page' => 'The page to perform actions on.',
 			'paction' => 'Action to perform',
-			'oldid' => 'The revision number to use.',
+			'oldid' => 'The revision number to use. If zero, the empty string is passed to Parsoid to indicate new page creation.',
 			'minor' => 'Flag for minor edit.',
 			'html' => 'HTML to send to parsoid in exchange for wikitext',
 			'summary' => 'Edit summary',

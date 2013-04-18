@@ -25,7 +25,7 @@ ve.init.mw.Target = function VeInitMwTarget( $container, pageName, revision ) {
 	// Properties
 	this.pageName = pageName;
 	this.pageExists = mw.config.get( 'wgArticleId', 0 ) !== 0;
-	this.oldid = revision || '';
+	this.oldid = revision || mw.config.get( 'wgCurRevisionId' );
 	this.editToken = mw.user.tokens.get( 'editToken' );
 	this.apiUrl = mw.util.wikiScript( 'api' );
 	this.submitUrl = ( new mw.Uri( mw.util.wikiGetlink( this.pageName ) ) )
@@ -463,6 +463,7 @@ ve.init.mw.Target.prototype.showChanges = function ( doc ) {
 			'action': 'visualeditor',
 			'paction': 'diff',
 			'page': this.pageName,
+			'oldid': this.oldid,
 			'html': doc.body.innerHTML, // TODO make this send the whole document in the future
 			// TODO: API required editToken, though not relevant for diff
 			'token': this.editToken
@@ -553,6 +554,7 @@ ve.init.mw.Target.prototype.serialize = function ( doc, callback ) {
 			'paction': 'serialize',
 			'html': doc.body.innerHTML, // TODO make this send the whole document in the future
 			'page': this.pageName,
+			'oldid': this.oldid,
 			'token': this.editToken,
 			'format': 'json'
 		},
