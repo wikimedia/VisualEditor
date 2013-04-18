@@ -68,44 +68,41 @@ ve.inheritClass( ve.ui.Frame, ve.EventEmitter );
  * @emits initialize
  */
 ve.ui.Frame.prototype.onLoad = function () {
-	var win = this.$.prop( 'contentWindow' ),
+	var interval, rules,
+		win = this.$.prop( 'contentWindow' ),
 		doc = win.document,
-		stylesheets = this.config.stylesheets,
+		style = doc.createElement( 'style' ),
 		initialize = ve.bind( function () {
 			this.initialized = true;
 			this.emit( 'initialize' );
 		}, this );
 
 	// Initialize contents
-	win.setup = function () {
-		var interval, rules,
-			style = doc.createElement( 'style' );
-
-		// Import all stylesheets
-		style.textContent = '@import "' + stylesheets.join( '";\n@import "' ) + '";';
-		doc.body.appendChild( style );
-
-		// Poll for access to stylesheet content
-		interval = setInterval( function () {
-			try {
-				// MAGIC: only accessible when the stylesheet is loaded
-				rules = style.sheet.cssRules;
-				// If that didn't throw an exception, we're done loading
-				clearInterval( interval );
-				// Protect against IE running interval one extra time after clearing
-				if ( !this.initialized ) {
-					initialize();
-				}
-			} catch ( e ) {}
-		} );
-	};
 	doc.open();
 	doc.write(
 		'<body style="padding:0;margin:0;">' +
-			'<div class="ve-ui-frame-content"></div><script>setup();</script>' +
+			'<div class="ve-ui-frame-content"></div>' +
 		'</body>'
 	);
 	doc.close();
+
+	// Import all stylesheets
+	style.textContent = '@import "' + this.config.stylesheets.join( '";\n@import "' ) + '";';
+	doc.body.appendChild( style );
+
+	// Poll for access to stylesheet content
+	interval = setInterval( ve.bind( function () {
+		try {
+			// MAGIC: only accessible when the stylesheet is loaded
+			rules = style.sheet.cssRules;
+			// If that didn't throw an exception, we're done loading
+			clearInterval( interval );
+			// Protect against IE running interval one extra time after clearing
+			if ( !this.initialized ) {
+				initialize();
+			}
+		} catch ( e ) { }
+	}, this ), 10 );
 
 	// Properties
 	this.$$ = ve.ui.get$$( doc, this );
