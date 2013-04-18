@@ -32,7 +32,7 @@ ve.ce.ContentBranchNode = function VeCeContentBranchNode( model, $element ) {
 	// have in mind that this transaction here is not being used in any other way than just as
 	// a flag to figure out if renderContents should be executed or not.
 	this.on( 'childUpdate', ve.bind( function( transaction ) {
-		if ( lastTransaction !== transaction ) {
+		if ( !lastTransaction || lastTransaction !== transaction ) {
 			lastTransaction = transaction;
 			this.renderContents();
 		}
