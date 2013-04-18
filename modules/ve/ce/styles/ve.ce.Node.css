@@ -85,3 +85,45 @@ li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
 	margin: 0;
 	padding: 0;
 }
+
+.ve-ce-resizableNode-handles {
+	position: absolute;
+	border: solid 1px rgba(0,0,0,0.25);
+	z-index: 10000;
+	box-sizing: border-box;
+}
+
+.ve-ce-resizableNode-handles div {
+	position: absolute;
+	width: 0.66em;
+	height: 0.66em;
+	border: solid 0.125em #fff;
+	background-color: #333;
+	box-shadow: 0 0.1em 0.2em rgba(0,0,0,0.75);
+	border-radius: 1em;
+	box-sizing: border-box;
+}
+
+.ve-ce-resizableNode-nwHandle {
+	cursor: nw-resize;
+	left: -0.33em;
+	top: -0.33em;
+}
+
+.ve-ce-resizableNode-neHandle {
+	cursor: ne-resize;
+	right: -0.33em;
+	top: -0.33em;
+}
+
+.ve-ce-resizableNode-swHandle {
+	cursor: sw-resize;
+	bottom: -0.33em;
+	left: -0.33em;
+}
+
+.ve-ce-resizableNode-seHandle {
+	cursor: se-resize;
+	bottom: -0.33em;
+	right: -0.33em;
+}

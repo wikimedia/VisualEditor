@@ -18,7 +18,6 @@
 	ve.ce.ImageNode.call( this, model );
 
 	// Properties
-	this.$image = this.$;
 	this.$ = $( '<' + ( model.getAttribute( 'isLinked' ) ? 'a' : 'span' ) + '>' );
 
 	// Initialization
@@ -39,10 +38,6 @@ ve.inheritClass( ve.ce.MWImageNode, ve.ce.ImageNode );
 ve.ce.MWImageNode.static.name = 'MWimage';
 
 /* Methods */
-
-ve.ce.MWImageNode.prototype.onUpdate = function () {
-	// ...
-};
 
 /* Registration */
 

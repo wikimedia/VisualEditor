@@ -183,6 +183,7 @@ $html = file_get_contents( $page );
 		<script src="../../modules/ve/ce/ve.ce.LeafNode.js"></script>
 		<script src="../../modules/ve/ce/ve.ce.FocusableNode.js"></script>
 		<script src="../../modules/ve/ce/ve.ce.RelocatableNode.js"></script>
+		<script src="../../modules/ve/ce/ve.ce.ResizableNode.js"></script>
 		<script src="../../modules/ve/ce/ve.ce.Surface.js"></script>
 		<script src="../../modules/ve/ce/ve.ce.SurfaceObserver.js"></script>
 		<script src="../../modules/ve/ce/nodes/ve.ce.GeneratedContentNode.js"></script>
