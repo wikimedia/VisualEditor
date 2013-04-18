@@ -1652,6 +1652,28 @@ ve.dm.example.domToDataCases = {
 		// comparing DOM trees
 		'normalizedHtml': '<body>\n<pre>\n\n\n\nFoo\n\n\nBar\n\n\n\n</pre>\n\n\n\n\n</body>'
 	},
+	'whitespace preservation in table cell starting with text and ending with annotation': {
+		'html': '<body><table><tbody><tr><td>Foo <b>Bar</b></td></tr></tbody></table></body>',
+		'data': [
+			{ 'type': 'table' },
+			{ 'type': 'tableSection', 'attributes': { 'style': 'body' } },
+			{ 'type': 'tableRow' },
+			{ 'type': 'tableCell', 'attributes': { 'style': 'data' } },
+			{ 'type': 'paragraph', 'internal': { 'generated': 'wrapper' } },
+			'F',
+			'o',
+			'o',
+			' ',
+			[ 'B', [ ve.dm.example.bold ] ],
+			[ 'a', [ ve.dm.example.bold ] ],
+			[ 'r', [ ve.dm.example.bold ] ],
+			{ 'type': '/paragraph' },
+			{ 'type': '/tableCell' },
+			{ 'type': '/tableRow' },
+			{ 'type': '/tableSection' },
+			{ 'type': '/table' }
+		]
+	},
 	'mismatching whitespace data is ignored': {
 		'html': null,
 		'data': [

@@ -462,6 +462,8 @@ ve.dm.Converter.prototype.getDataFromDomRecursion = function ( domElement, wrapp
 					data = data.concat(
 						this.getDataFromDomRecursion( childDomElement, undefined, childAnnotations )
 					);
+					// Clear wrapped whitespace
+					wrappedWhitespace = '';
 				} else {
 					// Node or meta item
 					if ( modelClass.prototype instanceof ve.dm.MetaItem ) {
