@@ -24,9 +24,10 @@ ve.ui.Toolbar = function VeUiToolbar( $container, surface, config ) {
 	this.$ = $container;
 	this.$groups = $( '<div>' );
 	this.config = config || {};
+	this.onContextChangeHandler = ve.bind( this.onContextChange, this );
 
 	// Events
-	this.surface.getModel().on( 'contextChange', ve.bind( this.onContextChange, this ) );
+	this.surface.getModel().on( 'contextChange', this.onContextChangeHandler );
 
 	// Initialization
 	this.$groups.addClass( 've-ui-toolbarGroups' );
@@ -68,7 +69,7 @@ ve.ui.Toolbar.prototype.getSurface = function () {
  */
 ve.ui.Toolbar.prototype.onContextChange = function () {
 	var i, len, leafNodes,
-		fragment = this.surface.getModel().getFragment(),
+		fragment = this.surface.getModel().getFragment( null, false ),
 		nodes = [];
 
 	leafNodes = fragment.getLeafNodes();
@@ -78,6 +79,7 @@ ve.ui.Toolbar.prototype.onContextChange = function () {
 		}
 	}
 	this.emit( 'updateState', nodes, fragment.getAnnotations(), fragment.getAnnotations( true ) );
+	fragment.destroy();
 };
 
 /**
@@ -106,4 +108,16 @@ ve.ui.Toolbar.prototype.setup = function () {
 		// Append group
 		this.$groups.append( $group );
 	}
+};
+
+/**
+ * Destroys toolbar, removing event handlers and DOM elements.
+ *
+ * Call this whenever you are done using a toolbar.
+ *
+ * @method
+ */
+ve.ui.Toolbar.prototype.destroy = function () {
+	this.surface.getModel().removeListener( 'contextChange', this.onContextChangeHandler );
+	this.$.remove();
 };
