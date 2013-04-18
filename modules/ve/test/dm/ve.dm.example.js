@@ -1645,11 +1645,7 @@ ve.dm.example.domToDataCases = {
 			'\n',
 			'\n',
 			{ 'type': '/preformatted' }
-		],
-		// pre newline hack
-		// TODO we should test this using a better, more .innerHTML-based mechanism for
-		// comparing DOM trees
-		'normalizedHtml': '<body>\n<pre>\n\n\n\nFoo\n\n\nBar\n\n\n\n</pre>\n\n\n\n\n</body>'
+		]
 	},
 	'whitespace preservation in table cell starting with text and ending with annotation': {
 		'html': '<body><table><tbody><tr><td>Foo <b>Bar</b></td></tr></tbody></table></body>',

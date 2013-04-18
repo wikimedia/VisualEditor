@@ -437,7 +437,7 @@ ve.init.mw.Target.prototype.save = function ( doc, options ) {
 			'oldid': this.oldid,
 			'basetimestamp': this.baseTimeStamp,
 			'starttimestamp': this.startTimeStamp,
-			'html': doc.body.innerHTML, // TODO make this send the whole document in the future
+			'html': ve.properInnerHTML( doc.body ), // TODO make this send the whole document in the future
 			'token': this.editToken,
 			'summary': options.summary,
 			'minor': Number( options.minor ),
@@ -468,7 +468,7 @@ ve.init.mw.Target.prototype.showChanges = function ( doc ) {
 			'paction': 'diff',
 			'page': this.pageName,
 			'oldid': this.oldid,
-			'html': doc.body.innerHTML, // TODO make this send the whole document in the future
+			'html': ve.properInnerHTML( doc.body ), // TODO make this send the whole document in the future
 			// TODO: API required editToken, though not relevant for diff
 			'token': this.editToken
 		},
@@ -556,7 +556,7 @@ ve.init.mw.Target.prototype.serialize = function ( doc, callback ) {
 		'data': {
 			'action': 'visualeditor',
 			'paction': 'serialize',
-			'html': doc.body.innerHTML, // TODO make this send the whole document in the future
+			'html': ve.properInnerHTML( doc.body ), // TODO make this send the whole document in the future
 			'page': this.pageName,
 			'oldid': this.oldid,
 			'token': this.editToken,
@@ -598,7 +598,7 @@ ve.init.mw.Target.prototype.reportProblem = function ( message ) {
 					ve.createDocumentFromHTML( '<body>' + this.originalHtml  + '</body>' )
 			),
 			'editedData': editedData,
-			'editedHtml': ve.dm.converter.getDomFromData( store, editedData ).body.innerHTML,
+			'editedHtml': ve.properInnerHTML( ve.dm.converter.getDomFromData( store, editedData ).body ),
 			'wiki': mw.config.get( 'wgDBname' )
 		};
 	$.post(

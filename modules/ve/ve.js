@@ -881,6 +881,49 @@
 		return newDocument;
 	};
 
+	/**
+	 * Get the actual inner HTML of a DOM node.
+	 *
+	 * In most browsers, .innerHTML is broken and eats newlines in <pre>s, see
+	 * https://bugzilla.mozilla.org/show_bug.cgi?id=838954 . This function detects this behavior
+	 * and works around it, to the extent possible. <pre>\nFoo</pre> will become <pre>Foo</pre>
+	 * if the browser is broken, but newlines are preserved in all other cases.
+	 *
+	 * @param {HTMLElement} element HTML element to get inner HTML of
+	 * @returns {string} Inner HTML
+	 */
+	ve.properInnerHTML = function ( element ) {
+		var div, $element;
+		if ( ve.isPreInnerHTMLBroken === undefined ) {
+			// Test whether newlines in <pre> are serialized back correctly
+			div = document.createElement( 'div' );
+			div.innerHTML = '<pre>\n\n</pre>';
+			ve.isPreInnerHTMLBroken = div.innerHTML === '<pre>\n</pre>';
+		}
+
+		if ( !ve.isPreInnerHTMLBroken ) {
+			return element.innerHTML;
+		}
+
+		// Workaround for bug 42469: if a <pre> starts with a newline, that means .innerHTML will
+		// screw up and stringify it with one fewer newline. Work around this by adding a newline.
+		// If we don't see a leading newline, we still don't know if the original HTML was
+		// <pre>Foo</pre> or <pre>\nFoo</pre> , but that's a syntactic difference, not a semantic
+		// one, and handling that is Parsoid's job.
+		$element = $( element ).clone();
+		$element.find( 'pre, textarea, listing' ).each( function() {
+			var matches;
+			if ( this.firstChild && this.firstChild.nodeType === Node.TEXT_NODE ) {
+				matches = this.firstChild.data.match( /^(\r\n|\r|\n)/ );
+				if ( matches && matches[1] ) {
+					// Prepend a newline exactly like the one we saw
+					this.firstChild.insertData( 0, matches[1] );
+				}
+			}
+		} );
+		return $element.get( 0 ).innerHTML;
+	};
+
 	// Based on the KeyEvent DOM Level 3 (add more as you need them)
 	// http://www.w3.org/TR/2001/WD-DOM-Level-3-Events-20010410/DOM3-Events.html#events-Events-KeyEvent
 	ve.Keys = window.KeyEvent || {
