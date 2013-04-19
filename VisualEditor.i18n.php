@@ -75,8 +75,8 @@ $messages['en'] = array(
 	'tag-visualeditor' => '[[Special:Tags|Tag]]: [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'tag-visualeditor-description' => 'Edit made using the [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]',
 	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
-	'visualeditor-alphawarning' => 'You are using an alpha version of the [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]. It may be slow and make erroneous changes - please check each edit that you make.',
-	'visualeditor-report-notice' => 'I understand that by clicking to submit I will transmit my changes and my feedback which will be stored for analysis. I agree to provide feedback in accordance with the [[{{MediaWiki:Visualeditor-report-link}}|Terms of Use]].',
+	'visualeditor-alphawarning' => 'You are using an alpha version of the [[{{MediaWiki:Visualeditor-descriptionpagelink}}|VisualEditor]]. It may be slow and make erroneous changes—please check each edit that you make.',
+	'visualeditor-report-notice' => 'I understand that by clicking "Report problem" I will transmit my changes and my feedback, which will be stored for analysis. I agree to provide feedback in accordance with the [[{{MediaWiki:Visualeditor-report-link}}|Terms of Use]].',
 	'visualeditor-report-link' => 'foundation:Terms of Use',
 );
 
