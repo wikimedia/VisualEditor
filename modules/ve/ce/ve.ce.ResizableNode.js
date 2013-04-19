@@ -48,7 +48,7 @@ ve.ce.ResizableNode = function VeCeResizableNode( $resizable ) {
  * @method
  */
 ve.ce.ResizableNode.prototype.onResizableFocus = function () {
-	var offset = this.$image.offset();
+	var offset = this.$resizable.offset();
 
 	this.$resizeHandles
 		.css( {
@@ -61,14 +61,14 @@ ve.ce.ResizableNode.prototype.onResizableFocus = function () {
 
 	this.$resizeHandles
 		.find('.ve-ce-resizableNode-neHandle').css( {
-			'margin-right': -this.$image.width()
+			'margin-right': -this.$resizable.width()
 		} ).end()
 		.find('.ve-ce-resizableNode-swHandle').css( {
-			'margin-bottom': -this.$image.height()
+			'margin-bottom': -this.$resizable.height()
 		} ).end()
 		.find('.ve-ce-resizableNode-seHandle').css( {
-			'margin-right': -this.$image.width(),
-			'margin-bottom': -this.$image.height()
+			'margin-right': -this.$resizable.width(),
+			'margin-bottom': -this.$resizable.height()
 		} );
 };
 
@@ -88,12 +88,17 @@ ve.ce.ResizableNode.prototype.onResizableBlur = function () {
  * @param {jQuery.Event} e Click event
  */
 ve.ce.ResizableNode.prototype.onResizeHandlesCornerMouseDown = function ( e ) {
+	// Hide context menu
+	// TODO: Maybe there's a more generic way to handle this sort of thing? For relocation it's
+	// handled in ve.ce.Surface
+	this.root.getSurface().getSurface().getContext().hide();
 
 	// Set bounding box width and undo the handle margins
 	this.$resizeHandles
+		.addClass( 've-ce-resizableNode-handles-resizing' )
 		.css( {
-			'width': this.$image.width(),
-			'height': this.$image.height()
+			'width': this.$resizable.width(),
+			'height': this.$resizable.height()
 		} );
 
 	this.$resizeHandles.children().css( 'margin', 0 );
@@ -160,18 +165,18 @@ ve.ce.ResizableNode.prototype.onDocumentMouseMove = function ( e ) {
 		}
 
 		// Unconstrained dimensions and ratio
-		newWidth = Math.max( Math.min( this.$image.width() + diff.x, max ), min );
-		newHeight = Math.max( Math.min( this.$image.height() + diff.y, max ), min );
+		newWidth = Math.max( Math.min( this.$resizable.width() + diff.x, max ), min );
+		newHeight = Math.max( Math.min( this.$resizable.height() + diff.y, max ), min );
 		newRatio = newWidth / newHeight;
 
 		// Fix the ratio
 		if ( this.ratio > newRatio ) {
 			dimensions.width = newWidth;
-			dimensions.height = this.$image.height() +
-				( newWidth - this.$image.width() ) / this.ratio;
+			dimensions.height = this.$resizable.height() +
+				( newWidth - this.$resizable.width() ) / this.ratio;
 		} else {
-			dimensions.width = this.$image.width() +
-				( newHeight - this.$image.height() ) * this.ratio;
+			dimensions.width = this.$resizable.width() +
+				( newHeight - this.$resizable.height() ) * this.ratio;
 			dimensions.height = newHeight;
 		}
 
@@ -209,22 +214,40 @@ ve.ce.ResizableNode.prototype.onDocumentMouseUp = function () {
 		height = this.$resizeHandles.outerHeight(),
 		surfaceModel = this.getRoot().getSurface().getModel(),
 		documentModel = surfaceModel.getDocument(),
-		selection = surfaceModel.getSelection(),
-		txs = [];
+		selection = surfaceModel.getSelection();
 
+	this.$resizeHandles.removeClass( 've-ce-resizableNode-handles-resizing' );
 	$( document ).off( '.ve-ce-resizableNode' );
 	this.resizing = false;
 
-	if ( this.model.getAttribute( 'width' ) !== width ) {
-		txs.push( ve.dm.Transaction.newFromAttributeChange( documentModel, offset, 'width', width ) );
-	}
-	if ( this.model.getAttribute( 'height' ) !== height ) {
-		txs.push( ve.dm.Transaction.newFromAttributeChange( documentModel, offset, 'height', height ) );
-	}
-	if ( txs.length > 0 ) {
-		surfaceModel.change( txs, selection );
-	}
+	// Transition image resize
+	this.$resizable
+		.addClass( 've-ce-resizableNode-transitioning' )
+		.css( { 'width': width, 'height': height } );
 
-	// HACK: Update bounding box
-	this.onResizableFocus();
+	// Allow resize to occur before re-rendering
+	setTimeout( ve.bind( function () {
+		var txs = [];
+
+		// Prevent further transitioning
+		this.$resizable.removeClass( 've-ce-resizableNode-transitioning' );
+
+		// Apply changes to the model
+		if ( this.model.getAttribute( 'width' ) !== width ) {
+			txs.push( ve.dm.Transaction.newFromAttributeChange(
+				documentModel, offset, 'width', width
+			) );
+		}
+		if ( this.model.getAttribute( 'height' ) !== height ) {
+			txs.push( ve.dm.Transaction.newFromAttributeChange(
+				documentModel, offset, 'height', height
+			) );
+		}
+		if ( txs.length > 0 ) {
+			surfaceModel.change( txs, selection );
+		}
+
+		// HACK: Update bounding box
+		this.onResizableFocus();
+	}, this ), 200 );
 };
