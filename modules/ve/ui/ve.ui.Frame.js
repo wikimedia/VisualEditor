@@ -80,9 +80,12 @@ ve.ui.Frame.prototype.onLoad = function () {
 	// Initialize contents
 	doc.open();
 	doc.write(
-		'<body style="padding:0;margin:0;">' +
-			'<div class="ve-ui-frame-content"></div>' +
-		'</body>'
+		'<!doctype html>' +
+		'<html>' +
+			'<body style="padding:0;margin:0;">' +
+				'<div class="ve-ui-frame-content"></div>' +
+			'</body>' +
+		'</html>'
 	);
 	doc.close();
 
