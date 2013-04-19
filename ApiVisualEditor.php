@@ -75,9 +75,11 @@ class ApiVisualEditor extends ApiBase {
 			$wgVisualEditorParsoidURL . '/' . $wgVisualEditorParsoidPrefix .
 				'/' . urlencode( $title->getPrefixedDBkey() ),
 			array(
-				'postData' => array( 'content' => $html ),
-				'timeout' => $wgVisualEditorParsoidTimeout,
-				'oldid' => $parserParams['oldid']
+				'postData' => array( 
+					'content' => $html,
+					'oldid' => $parserParams['oldid'] 
+				),
+				'timeout' => $wgVisualEditorParsoidTimeout
 			)
 		);
 	}
