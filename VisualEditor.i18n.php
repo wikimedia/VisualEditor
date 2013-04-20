@@ -191,6 +191,7 @@ See also:
 	'visualeditor-alphawarning' => 'Edit notice shown when the VisualEditor loads, warning users that the software may have issues',
 	'visualeditor-report-notice' => 'Notice to user that their data will be sent for analysis.
 Link is in {{msg-mw|Visualeditor-report-link}}.
+
 The name of the button that the user is expected to click is {{msg-mw|visualeditor-savedialog-label-report}}.',
 	'visualeditor-report-link' => '{{optional}}
 Interwiki link to the terms of use for this project: https://wikimediafoundation.org/wiki/Terms_of_Use
@@ -490,6 +491,7 @@ $messages['ca'] = array(
 	'visualeditor-notification-saved' => 'Els canvis a $1 han estat desats.',
 	'visualeditor-notification-created' => '$1 ha estat creat.',
 	'visualeditor-notification-restored' => '$1 ha estat restaurada.',
+	'visualeditor-ca-editsource' => 'Modifica la font',
 	'visualeditor-ca-ve-edit' => 'Editor visual',
 	'visualeditor-dialog-action-close' => 'Tancar',
 	'visualeditor-toolbar-savedialog' => 'Revisa i desa',
@@ -502,6 +504,7 @@ $messages['ca'] = array(
 	'visualeditor-savedialog-label-save' => 'Desa la pàgina',
 	'visualeditor-editnotices-tool' => '$1 {{PLURAL:$1|avís|avisos}}',
 	'visualeditor-feedback-tool' => 'Comentaris',
+	'tooltip-ca-ve-edit' => "Modifica aquesta pàgina amb l'editor visual",
 	'visualeditor-formatdropdown-format-paragraph' => 'Paràgraf',
 	'visualeditor-formatdropdown-format-heading1' => 'Encapçalament 1',
 	'visualeditor-formatdropdown-format-heading2' => 'Encapçalament 2',
@@ -512,6 +515,7 @@ $messages['ca'] = array(
 	'visualeditor-annotationbutton-bold-tooltip' => 'Negreta',
 	'visualeditor-annotationbutton-italic-tooltip' => 'Cursiva',
 	'visualeditor-annotationbutton-link-tooltip' => 'Enllaç',
+	'visualeditor-dialogbutton-media-tooltip' => 'Fitxer multimèdia',
 	'visualeditor-indentationbutton-indent-tooltip' => 'Augmenta el sagnat', # Fuzzy
 	'visualeditor-indentationbutton-outdent-tooltip' => 'Disminueix el sagnat', # Fuzzy
 	'visualeditor-listbutton-number-tooltip' => 'Llista numerada',
@@ -521,6 +525,7 @@ $messages['ca'] = array(
 	'visualeditor-viewpage-savewarning' => 'Esteu segurs que voleu tornar a la pàgina sense desar abans?',
 	'visualeditor-editsummary' => 'Descriviu el que heu canviat',
 	'visualeditor-aliennode-tooltip' => "Disculpeu, aquest element no es pot modificar amb l'editor visual",
+	'tag-visualeditor-description' => "Modificació feta amb l'[[{{MediaWiki:Visualeditor-descriptionpagelink}}|editor visual]]",
 	'visualeditor-alphawarning' => "Esteu utilitzant una versió alfa de l'[[{{MediaWiki:Visualeditor-descriptionpagelink}}|editor visual]]. Pot ser lent i fer canvis erronis - comproveu tots els canvis fets.",
 );
 
@@ -1278,7 +1283,7 @@ $messages['he'] = array(
 	'tag-visualeditor-description' => 'העריכה נעשתה באמצעות [[{{MediaWiki:Visualeditor-descriptionpagelink}}|העורך החזותי]]',
 	'visualeditor-descriptionpagelink' => 'Project:VisualEditor',
 	'visualeditor-alphawarning' => 'זוהי גרסת אלפא של [[{{MediaWiki:Visualeditor-descriptionpagelink}}|העורך החזותי]]. היא עלולה להיות אטית ולעשות שינויים שגויים – נא לבדוק כל עריכה שנעשית באמצעותה.',
-	'visualeditor-report-notice' => 'ברור לי שלחיצה על "שליחה" פירושה שליחה של השינויים שלי והן של המשוב שלי, שיישמר לצורך ניתוח וכן הסכמה לספק משוב בהתאם ל[[{{MediaWiki:Visualeditor-report-link}}|תנאי השימוש]].', # Fuzzy
+	'visualeditor-report-notice' => 'ברור לי שלחיצה על "דיווח על בעיה" פירושה שליחה של השינויים שלי והן של המשוב שלי, שיישמר לצורך ניתוח וכן הסכמה לספק משוב בהתאם ל[[{{MediaWiki:Visualeditor-report-link}}|תנאי השימוש]].',
 );
 
 /** Hindi (हिन्दी)
@@ -1628,7 +1633,7 @@ $messages['ja'] = array(
 	'tag-visualeditor-description' => '[[{{MediaWiki:Visualeditor-descriptionpagelink}}|ビジュアルエディター]]を使用した編集',
 	'visualeditor-descriptionpagelink' => 'Project:ビジュアルエディター',
 	'visualeditor-alphawarning' => 'あなたは[[{{MediaWiki:Visualeditor-descriptionpagelink}}|ビジュアルエディター]]のアルファ版を使用しています。動作が遅い可能性があり、誤った内容を保存してしまうおそれがあります。保存した結果が正しいか毎回確認してください。',
-	'visualeditor-report-notice' => '私は投稿ボタンを押すことで自身の変更とフィードバックを送信し、分析のために保管されることを理解します。[[{{MediaWiki:Visualeditor-report-link}}|利用規約]]に従ってフィードバックを提供することに同意します。',
+	'visualeditor-report-notice' => '私は「問題点を報告」ボタンを押すことで自身の変更とフィードバックを送信し、それが分析のために保管されることを理解します。[[{{MediaWiki:Visualeditor-report-link}}|利用規約]]に従ってフィードバックを提供することに同意します。',
 	'visualeditor-report-link' => 'foundation:Terms of Use/ja',
 );
 
@@ -1974,7 +1979,7 @@ $messages['mk'] = array(
 	'tag-visualeditor-description' => 'Уредувањето е извршено со [[{{MediaWiki:Visualeditor-descriptionpagelink}}|ВизуеленУредник]]',
 	'visualeditor-descriptionpagelink' => 'Project:ВизуеленУредник',
 	'visualeditor-alphawarning' => 'Користите алфа-верзија на [[{{MediaWiki:Visualeditor-descriptionpagelink}}|ВизуеленУредник]]. Имајте предвид дека може да биде бавен и да прави некои погрешни измени - затоа, проверувајте го секое извршено уредување.',
-	'visualeditor-report-notice' => 'Разбирам дека стискајќи (поднесувајќи) го ова, ќе ги пренесам моите промени и одѕивот на место кајшто ќе бидат складирани за анализа. Се согласувам мојот одѕив да се поведува по [[{{MediaWiki:Visualeditor-report-link}}|Условите на употреба]].', # Fuzzy
+	'visualeditor-report-notice' => 'Разбирам дека стискајќи на „Пријави проблем“ ќе ги пренесам моите промени и одѕивот на место кајшто ќе бидат складирани за анализа. Се согласувам да давам одѕив во склад со [[{{MediaWiki:Visualeditor-report-link}}|Условите на употреба]].',
 	'visualeditor-report-link' => 'foundation:Terms of Use/mk',
 );
 
