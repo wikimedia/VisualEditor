@@ -35,34 +35,45 @@ ve.dm.MWTemplateNode.static.matchRdfaTypes = [ 'mw:Object/Template' ];
 ve.dm.MWTemplateNode.static.getHashObject = function ( dataElement ) {
 	return {
 		type: dataElement.type,
-		mw: dataElement.mw
+		mw: dataElement.attributes.mw
 	};
 };
 
 ve.dm.MWTemplateNode.static.toDataElement = function ( domElements, converter ) {
 	var dataElement,
-		about = domElements[0].getAttribute( 'about' ),
 		mw = JSON.parse( domElements[0].getAttribute( 'data-mw' ) ),
 		isInline = this.isHybridInline( domElements, converter ),
 		type = isInline ? 'MWtemplateInline' : 'MWtemplateBlock';
 
 	dataElement = {
 		'type': type,
-		'mw': mw,
-		'about': about
+		'attributes': {
+			'mw': mw,
+			'mwOriginal': ve.copyObject( mw )
+		}
 	};
 	this.storeHtml( dataElement, domElements, converter.getStore() );
 	return dataElement;
 };
 
-ve.dm.MWTemplateNode.static.toDomElements = function ( dataElement, doc ) {
-	var span = doc.createElement( 'span' );
-	// All we need to send back to Parsoid is the original template marker,
-	// with a reconstructed data-mw property.
-	span.setAttribute( 'about', dataElement.about );
-	span.setAttribute( 'typeof', 'mw:Object/Template' );
-	span.setAttribute( 'data-mw', JSON.stringify( dataElement.mw ) );
-	return [ span ];
+ve.dm.MWTemplateNode.static.toDomElements = function ( dataElement, doc, converter ) {
+	var wrapper, span, index, html;
+	if ( ve.compareObjects( dataElement.attributes.mw, dataElement.attributes.mwOriginal ) ) {
+		// If the template is unchanged just send back the original html so selser can skip over it
+		index = converter.getStore().indexOfHash( ve.getHash( this.getHashObject( dataElement ) ) );
+		html = converter.getStore().value( index );
+		wrapper = doc.createElement( 'div' );
+		$( wrapper ).html( html );
+		// Convert wrapper.children to an array
+		return Array.prototype.slice.call( wrapper.childNodes, 0 );
+	} else {
+		span = doc.createElement( 'span' );
+		// All we need to send back to Parsoid is the original template marker,
+		// with a reconstructed data-mw property.
+		span.setAttribute( 'typeof', 'mw:Object/Template' );
+		span.setAttribute( 'data-mw', JSON.stringify( dataElement.attributes.mw ) );
+		return [ span ];
+	}
 };
 
 /* Concrete subclasses */
