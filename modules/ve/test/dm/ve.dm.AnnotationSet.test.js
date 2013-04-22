@@ -9,7 +9,7 @@ QUnit.module( 've.dm.AnnotationSet' );
 
 /* Tests */
 
-QUnit.test( 'Basic usage', 27, function ( assert ) {
+QUnit.test( 'Basic usage', 28, function ( assert ) {
 	var annotationSet3,
 		store = new ve.dm.IndexValueStore(),
 		bold = new ve.dm.TextStyleBoldAnnotation(),
@@ -30,6 +30,10 @@ QUnit.test( 'Basic usage', 27, function ( assert ) {
 	assert.equal( annotationSet.containsAllOf( annotationSet ), true, 'containsAllOf self is true' );
 	assert.equal( annotationSet.indexOf( italic ), 1, 'indexOf italic is 1' );
 	assert.equal( annotationSet.indexOf( underline ), -1, 'indexOf underline is -1' );
+	assert.deepEqual(
+		annotationSet.filter( function ( annotation ) { return annotation.name === 'textStyle/bold'; } ).get(),
+		[ bold ], 'filter for name=textStyle/bold returns just bold annotation'
+	);
 	assert.equal( annotationSet.hasAnnotationWithName( 'textStyle/bold' ), true, 'hasAnnotationWithName textStyle/bold is true' );
 	assert.equal( annotationSet.hasAnnotationWithName( 'textStyle/underline' ), false, 'hasAnnotationWithName underline is false' );
 

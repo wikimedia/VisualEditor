@@ -185,7 +185,7 @@ ve.dm.AnnotationSet.prototype.indexOf = function ( value ) {
  * @returns {ve.dm.AnnotationSet} New set containing only the matching values
  */
 ve.dm.AnnotationSet.prototype.filter = function ( callback, returnBool ) {
-	var i, length, result, value;
+	var i, length, result, storeIndex, value;
 
 	if ( !returnBool ) {
 		result = this.clone();
@@ -195,12 +195,13 @@ ve.dm.AnnotationSet.prototype.filter = function ( callback, returnBool ) {
 		result.removeAll();
 	}
 	for ( i = 0, length = this.getLength(); i < length; i++ ) {
-		value = this.getStore().value( this.getIndex( i ) );
+		storeIndex = this.getIndex( i );
+		value = this.getStore().value( storeIndex );
 		if ( callback( value ) ) {
 			if ( returnBool ) {
 				return true;
 			} else {
-				result.push( value );
+				result.storeIndexes.push( storeIndex );
 			}
 		}
 	}
@@ -261,10 +262,7 @@ ve.dm.AnnotationSet.prototype.add = function ( value, index ) {
  * @param {ve.dm.AnnotationSet} set Set to add to the set
  */
 ve.dm.AnnotationSet.prototype.addSet = function ( set ) {
-	var i;
-	for ( i = 0; i < set.getLength(); i++ ) {
-		this.push( set.get( i ) );
-	}
+	this.storeIndexes = ve.simpleArrayUnion( this.getIndexes(), set.getIndexes() );
 };
 
 /**
@@ -332,10 +330,7 @@ ve.dm.AnnotationSet.prototype.removeAll = function () {
  * @param {ve.dm.AnnotationSet} set Set to remove from the set
  */
 ve.dm.AnnotationSet.prototype.removeSet = function ( set ) {
-	var i;
-	for ( i = 0; i < set.getLength(); i++ ) {
-		this.remove( set.get( i ) );
-	}
+	this.storeIndexes = ve.simpleArrayDifference( this.getIndexes(), set.getIndexes() );
 };
 
 /**
@@ -345,12 +340,7 @@ ve.dm.AnnotationSet.prototype.removeSet = function ( set ) {
  * @param {ve.dm.AnnotationSet} set Set to intersect with the set
  */
 ve.dm.AnnotationSet.prototype.removeNotInSet = function ( set ) {
-	var i;
-	for ( i = this.getLength() - 1; i >= 0; i-- ) {
-		if ( !set.contains( this.get( i ) ) ) {
-			this.removeAt( i );
-		}
-	}
+	this.storeIndexes = ve.simpleArrayIntersection( this.getIndexes(), set.getIndexes() );
 };
 
 /**
